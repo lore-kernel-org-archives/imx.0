@@ -1,71 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781F134D915
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B891136CDFD
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771923760; cv=none; b=fly5oKZCR+BBaPJ30KL06LoyEd5TvKenkgbNMMQyiWtzLH9O5OETgQGsJaS12ZrgQ4rxRKbkn/QAzWEURcu1LI1PpTW91COef6Bhyof2LFOJ3urcbBiX7a6IhWiF0dqb8KLqBnlGs+eVzDsPj9f40LZmmTyKYBBzo3q0nvDxL0o=
+	t=1771925857; cv=none; b=fnLZbgIy/C1J/3Pb/jmr7YFksjz7JIl9UEkOqSGwAUUYs6YcyE/PzmBvcHDBSZauSENiupyL66ly3zZ7eKjX2zVdh/n75VOGn4iuARLN5ZHolrungtoSAEEjTVGuKGFIX3lKw0Kk3XbBMzYYPjZntyEhSKm/29nBaTulBC7BzNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771923760; c=relaxed/simple;
-	bh=dd/gT6QA+Dp8Thp1escmNkBWo8V0/a+d5yMpDmFY/co=;
+	s=arc-20240116; t=1771925857; c=relaxed/simple;
+	bh=g8edeZSicPJhy++p3maHG8V56bDu+kyumjD/ZT9RxXk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K1AMTgXu8BCbh8vryInvQzQwvJFpMdBCtBfxut5L2jnYny8/H/ICoI80UuX0vE+KCw08r7ro19M7eD8Dii5V2efl0VoaFAkapQKQhOUID/y+du4nfLeBfDrgoSqjklu+7YO9cRxKGpQQc/oWoGDF8omlKSdiS1yCRhW1w/gG0VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHv0N+EL; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Eu3FO7qW81SymSBf8F1emyVB2olU+j4XLn/yl5DeiYpQ8/HWJmR3oD8eHZASTBUxdEShOgjp8Hwf3LYuNUogh31rgPoqMvZvLc5OrehBu8EhoYUUNZ+LH6QRvdDRzDOTYHzIyjfAxjCyYXZbxDEi0621dMbIQE3IlV/iiY68pkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADBNcvUY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHv0N+EL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424C3C19423
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:02:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADBNcvUY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0CC2BCC6
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771923760;
-	bh=dd/gT6QA+Dp8Thp1escmNkBWo8V0/a+d5yMpDmFY/co=;
+	s=k20201202; t=1771925857;
+	bh=g8edeZSicPJhy++p3maHG8V56bDu+kyumjD/ZT9RxXk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tHv0N+ELI40VPhWnDz2DTayTADymk3xbwJk82BEoyiBSs9ka2/Ld6scqeD04wXYMX
-	 PMxSaTUbAO62zO+UdhI85awhDzle9Qjt1CamZtisgsvl31tkIXc/Lj1CelJX+Gm0yu
-	 9XmrmmtWqcOnZQyKuw/You2XfX/PW4XCqpEdK/oCY8g5++VEc3CRLEFWRNhoyL4PoH
-	 czUgpbK1GRC/jazU151rOCPnetFGNbYfL+KAL1rJIe9cn5VOteOw9UzeRH7x+y62Zs
-	 I+Tsp7q3mfVmp0wiq8YWjGtDFQu/zbAGYqXLodx3d/TVcotG6m6ym4PLXdiJy7zskm
-	 zsQmjfXitXQNA==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79427f739b0so48179957b3.3
-        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 01:02:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWSG3cK10ZM9NCxHS1LycKJzv2zfxvXgyzraI4BhBO+5iDvt4DFq9TUkjdVJjilTB2KHyo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxIUZw2VGQ/PT4q3gSAFMZczfaAkXOPcJFqw1PJ8e72zSrShUur
-	jEg1MDVT7XvSAkm0Sh9XN/edxiVkRDgz8yFBzx1frsMoYhiOsFmcThkVmdpaVfT/V0Drk5V7SgR
-	TmztJyauc2Uam4envc6czxPicJo04uR8=
-X-Received: by 2002:a05:690c:64ca:b0:794:d639:366 with SMTP id
- 00721157ae682-79828f18d18mr102093417b3.26.1771923759669; Tue, 24 Feb 2026
- 01:02:39 -0800 (PST)
+	b=ADBNcvUYlfljcYMUK1YXe6mWXiZyA0e20GKeaTNKWidPih5IS7X18yQ7xBzX4XR2k
+	 YLo4ksg5UcaOfk9K/uUe1ZTeYPDFaVCb/xedtqh3u8m9AgfT4i2VqHgVS49GDCYOBi
+	 7qx2tEPJyLOD/bkLqf+HNccjdkP5s8CmUbM+gsKtSChqWvpMCqYNku8h4pyHPh9329
+	 zZ2jAXRogmpLvmoq48k3qr1njxCfKuTnCeijehPzXPelC2kZ1VeYWz6hTZIKNBnjwY
+	 cNrlsiryUdVASp8/fn8bJ3eomuICcrx52MVBwgu4/dX/skjtXmHOIOcReWOZtYKzFK
+	 hVdaitIlxrdkg==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79853c0f5b9so10810007b3.0
+        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 01:37:37 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUU879zEsmrefVXHy8wYwDhU6P/0ahqUx6sBk5fyeeFgUpXqy27M6lSFOP6TcMBBnJUEx4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YycuObqlfA8+i9HSUNJtKJI8axdOWAD6OI2FzDyPlD4qsa4kfxx
+	RK7DoB5AiwVZCfzxEiSlcPUf16V6jOvWOPEA4Et82UrMZ3k0p/2/CKrusnfW95/aiQfSqnUs53P
+	//NBaSrqkt+xpoWEhrC+C+teplj/Wi6I=
+X-Received: by 2002:a05:690c:e3e5:b0:798:1b2d:4b6c with SMTP id
+ 00721157ae682-79828cde4bamr107400237b3.11.1771925856834; Tue, 24 Feb 2026
+ 01:37:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260211-imx2_iomux_warning-v1-0-1c5233771b32@nxp.com> <20260211-imx2_iomux_warning-v1-2-1c5233771b32@nxp.com>
-In-Reply-To: <20260211-imx2_iomux_warning-v1-2-1c5233771b32@nxp.com>
+References: <20260212213656.662437-1-shenwei.wang@nxp.com> <20260212213656.662437-4-shenwei.wang@nxp.com>
+ <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com> <13f9d767-61d6-4e29-b36e-6dcc860ccb11@lunn.ch>
+ <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com> <396819f2-dd00-4c09-8bc7-c035a5282a56@lunn.ch>
+ <PAXPR04MB9185A908F5090F0CA4FF05F78968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <b21b9ee5-d84e-47f8-86b5-c111ecc3d43d@lunn.ch> <PAXPR04MB918576D67A268E59242964A08968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
+ <b4c422ce-3538-40aa-8bfa-b70f02774b5d@foss.st.com> <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 24 Feb 2026 10:02:28 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmPRLy1iJWRtfpS-7OS2533AY42OU87U6hUT59efz-B8A@mail.gmail.com>
-X-Gm-Features: AaiRm52oa2BbbnnLKw9EN11_kQbctbk-A3FEXDfTH-WIg6jXcZh2TKpyJ74DM6w
-Message-ID: <CAD++jLmPRLy1iJWRtfpS-7OS2533AY42OU87U6hUT59efz-B8A@mail.gmail.com>
-Subject: Re: [PATCH 2/4] dt-bindings: pinctrl: imx35: add compatible string fsl,imx25-iomuxc
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Jacky Bai <ping.bai@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 24 Feb 2026 10:37:25 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkHwKxcDu7oX+_+N00SSfEMrj4CBEKUYZTEmTZv5Gjb2Q@mail.gmail.com>
+X-Gm-Features: AaiRm53tdO9PraGZNM_tmFUQUZSiJUlpqFoMJNSwiXKqWWTvRU2E_PWdBXxyRms
+Message-ID: <CAD++jLkHwKxcDu7oX+_+N00SSfEMrj4CBEKUYZTEmTZv5Gjb2Q@mail.gmail.com>
+Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shuah Khan <skhan@linuxfoundation.org>, 
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 11, 2026 at 10:00=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On Mon, Feb 23, 2026 at 9:33=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com>=
+ wrote:
 
-> Add compatible string fsl,imx25-iomuxc.
+> Arnaud, if you agree with the points above, my proposal is the following:
+>  - Remove the fields you mentioned in the protocol and update the driver =
+accordingly so
+> that we can establish a true baseline for a generic implementation we all=
+ agree.
+>  - Then prepare a separate patch to add support for existing NXP platform=
+s by introducing
+> the necessary fix=E2=80=91up functions.
 >
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Please let me know if this approach works for you. My goal is to find a s=
+olution that works for
+> everyone =E2=80=94 even though I know that pleasing everyone is almost im=
+possible.
 
-This patch (2/4) applied to the pinctrl tree.
+This looks good to me, and Arnaud seems happy too so let's go ahead
+with this.
 
 Yours,
 Linus Walleij
