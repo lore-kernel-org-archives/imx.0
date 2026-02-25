@@ -1,200 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2883AA1A1;
-	Wed, 25 Feb 2026 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA7F3B8D67
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 13:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772025545; cv=none; b=grABulwaiX+75VZnYds3nIi3Qel+Ab1G20VSEohu0Fvqk0V5XenXEWb8ePKqHLZJVvwmfFQBeC7XCSLctA7IJUUYNWXcRuEvZ6N6dy2qHzC5F5Snpp/E2REkV2bQxEI/LDUpAED0M1gc/LLWIVEaxv+MN/6XycwqJ28Zo8DrAYc=
+	t=1772026273; cv=none; b=Lub/xX4wNr1yofH1WAF35umDHJ1Vnf3sGS7TnOBsSKcYpG+FwJ/bQYmW35DjEw8+3zUBge5fGyB63NF0WLO+Z9ronU4FcSu4CTwFh5wu1b1oBglQDucaK0ktv9G3HtusWuTJswkaW5sUz1Q6E00gkcP8pikmnK5znWMnX2jvF/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772025545; c=relaxed/simple;
-	bh=5riuDhoRH89LPwoWwriVShczWVODF9iwBss2N5Jcg44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qNVjXnHbB41M+rOAJBinFTKOb5g1uTPT39fd+sLhEgOmDDjJNUkzHOR8zFUxbDqhWKGA+8Uu2Wle5TrDsjXJAT5XeLUL8Rl2qlKS3LBMxogFAbqBvbtBPFi3ABnHdnatizePBDz3sl/vx6uAHpWZHY+1CV7EhdHlguzwJeOkFD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rotTWz+e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772026273; c=relaxed/simple;
+	bh=/48T+4l4iZtBbRi6T7U/AVuXVc3uThox+MEEPlMuVxk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J3zYamSOT3Hamwbmap+15woj93xSRDGhYEGuNJ7mIBBo9+vnPYTCgIYKqORVW5o+h/z3ps5ZApUU8LlebaN9wN+xZK4KoJ9d4GVDBi5Jy6eh7kbmEE6p0+OvGn1FiopaN0pd28x+gIGthnik2/KEcknyeHTfV0vJN5LFGQiWIEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAsi852I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rotTWz+e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E71C116D0;
-	Wed, 25 Feb 2026 13:18:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAsi852I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC248C2BCB2
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 13:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772025544;
-	bh=5riuDhoRH89LPwoWwriVShczWVODF9iwBss2N5Jcg44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rotTWz+eL4ZazqHfyQ1TRb5+ivzSTKrvyxPSUUrUGXHIbAE0TOvU7cT0nrZtY+Bu3
-	 uoCtzh+VAZvKkuRzWvrFHDZcm+tG8SPpAlOyMg6J+n3xGCiXdcsSiCoMEuIy8SIa0P
-	 zE3zBle5o2aOqd3Z214PeDyjfdnB92ALBKktjf0ilvLaOf1vObFdhN8n6vRSyPDo5N
-	 dULX/2tX5bxNL9AHr91IeXBqAx91FlXb5rt/Y/iSuvrNNREJiqdNsew+ozt9gL/Uel
-	 5XdxiRbLSQGZXoOzGi9jtWSWZDWNCZqHhtDtCXtkNL1lKxh5VZOLMpIq3Oi0Kzjmin
-	 MFZbq0EeBdwwg==
-Date: Wed, 25 Feb 2026 18:48:54 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, Frank.Li@nxp.com, 
-	bhelgaas@google.com, lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, kernel@pengutronix.de, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 00/12] pci-imx6: Add support for parsing the reset
- property in new Root Port binding
-Message-ID: <iswqrdkb6gcoa62wy2hf7zv4pdeafhvcijvvbqhg6lafphrpwc@cpghj7h6zf5s>
-References: <20260225105523.748775-1-sherry.sun@nxp.com>
+	s=k20201202; t=1772026272;
+	bh=/48T+4l4iZtBbRi6T7U/AVuXVc3uThox+MEEPlMuVxk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vAsi852I6GtlZqJrKc1nreG5WL38J0a7DblELx/msmF7z0yjmXkBD0nU76UWf3Qgf
+	 zrnOHXblIBcojCqez017n6mWh0GDvsY6YIXmmRoUiEyJZN2fGZgwZbbxMLtTh+hGWQ
+	 /fRHGh+jz+SPW9ueiVVFttQAhgdWEnfmz/Ta4ztr+R5WwU3fUaXLbXPrK7VLyByVE4
+	 j8LcjBFT/1K/w0ETG7ZT/UUN9HKjkOiFo6W40i2x/IVElmsnRbNTM6xysiLbyMEE4H
+	 IPRAMggYRz+iyXM4Fo7ggIHZiKglvqyE3hPaj7DzWeH+7FUmkB2UHEUt96K5OeRmri
+	 6expzjnEqM3qA==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b8fb6ad3243so937803866b.1
+        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 05:31:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX501Jb5fq5wg1IMnI2hdtfetNgs4OOQJYrHJ15SIBbWI3FfBG+A5Cf7UNxLPmC5uaODzQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+9IV5yK64dvQQIrlo5vvRSoSZ3V0QsYA13ycckw9pezPlojpX
+	SmulS+mW8QbW9tOzGwE6tc9OJtPxs655PeLIYqVpOB2z2wn+hpZOsAsnTKX82ltiVYhZnIoYQ2o
+	CwLufjFVqCXjD3g+WVNj4AxalPMabbQ==
+X-Received: by 2002:a17:907:d0a:b0:b73:572d:3b07 with SMTP id
+ a640c23a62f3a-b9081b3b176mr1168239266b.28.1772026271083; Wed, 25 Feb 2026
+ 05:31:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260225105523.748775-1-sherry.sun@nxp.com>
+References: <20260219144200.2633404-1-robh@kernel.org> <aZ5VgoDF4QvWaCgE@shlinux89>
+In-Reply-To: <aZ5VgoDF4QvWaCgE@shlinux89>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 25 Feb 2026 07:30:59 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJH_JHd2Z_eGCVC7ZC6f++i0B0sgO0S+H=6pEPkDaQb_w@mail.gmail.com>
+X-Gm-Features: AaiRm5387ptX5lq7w4u8E_PCK0Uoy67m5yPpQa0GfE5zATrxIDOZ9S4knTtqULo
+Message-ID: <CAL_JsqJH_JHd2Z_eGCVC7ZC6f++i0B0sgO0S+H=6pEPkDaQb_w@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: freescale: imx93: Add Ethos-U65 NPU and SRAM nodes
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Forrest Shi <xuelin.shi@nxp.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 25, 2026 at 06:55:11PM +0800, Sherry Sun wrote:
-> This patch set adds support for parsing the reset property in new Root Port
-> binding in pci-imx6 driver, similar to the implementation in the qcom pcie
-> driver[1].
-> 
-> Also introduce generic helper functions to parse Root Port device tree
-> nodes and extract common properties like reset GPIOs. This allows multiple
-> PCI host controller drivers to share the same parsing logic.
-> 
-> Define struct pci_host_port to hold common Root Port properties
-> (currently only reset GPIO descriptor) and add
-> pci_host_common_parse_ports() to parse Root Port nodes from device tree.
-> Also add the 'ports' list to struct pci_host_bridge for better maintain
-> parsed Root Port information.
-> 
-> The plan is to add the wake-gpio property to the root port in subsequent
-> patches. Also, the vpcie-supply property will be moved to the root port
-> node later based on the refactoring patch set for the PCI pwrctrl
-> framework[2]. 
-> 
-> The initial idea is to adopt the Manivannan’s recent PCIe M.2 KeyE
-> connector support patch set[3] and PCI power control framework patches[2],
-> and extend them to the pcie-imx6 driver. Since the new M.2/pwrctrl model is
-> implemented based on Root Ports and requires the pwrctrl driver to bind to
-> a Root Port device, we need to introduce a Root Port child node on i.MX
-> boards that provide an M.2 connector.
-> 
-> To follow a more standardized DT structure, it also makes sense to move
-> the reset-gpios and wake-gpios properties into the Root Port node. These
-> signals logically belong to the Root Port rather than the host bridge,
-> and placing them there aligns with the new M.2/pwrctrl model.
-> 
-> Regarding backward compatibility, as Frank suggested, I will not remove
-> the old reset-gpio property from existing DTS files to avoid function
-> break.
-> 
-> For new i.MX platforms — such as the upcoming i.MX952-evk will add
-> vpcie-supply, reset-gpios, and wake-gpios directly under the Root Port
-> node.
-> Therefore, driver updates are needed to support both the legacy
-> properties and the new standardized Root Port based layout.
-> 
-> [1] https://lore.kernel.org/linux-pci/20250702-perst-v5-0-920b3d1f6ee1@qti.qualcomm.com/
-> [2] https://lore.kernel.org/linux-pci/20260115-pci-pwrctrl-rework-v5-0-9d26da3ce903@oss.qualcomm.com/
-> [3] https://lore.kernel.org/linux-pci/20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com/
-> 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+On Tue, Feb 24, 2026 at 7:49=E2=80=AFPM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
+>
+> Hi Rob,
+>
+> On Thu, Feb 19, 2026 at 08:41:59AM -0600, Rob Herring (Arm) wrote:
+> >i.MX93 contains an Arm Ethos-U65 NPU. The NPU uses the internal SRAM for
+> >temporary buffers. The SRAM is larger than 96KB, but that is all that is
+> >available to non-secure world.
+> >
+> >Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> >---
+> >NXP folks, any comments on NPU freq? IIRC, the clock controller supports
+> >setting the freq to 1GHz. Is that supported?
+>
+> NPU supports three freqs:
+> 500MHz for Low Drive mode
+> 800MHz for Nominal Drive mode
+> 1GHz for Over drive mode
+>
+> The NXP downstream choose nominal drive mode for peripherals,
+> in NXP downstream, there is a driver to do nominal and over drive
+> mode switch for the SoC at runtime(through sysfs interface by user), ther=
+e
+> is no dedicated arm core voltage supply, there is only one vdd soc supply=
+.
+>
+> To avoid introduce complexity to various drivers, drivers use nomimal fre=
+q,
+> so OD->ND switch does not require drivers to update its own clock frequen=
+cies.
+>
+> >---
+> > arch/arm64/boot/dts/freescale/imx93.dtsi | 23 +++++++++++++++++++++++
+> > 1 file changed, 23 insertions(+)
+> >
+> >diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/=
+dts/freescale/imx93.dtsi
+> >index 7b27012dfcb5..d826d4b5a06b 100644
+> >--- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> >+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> >@@ -43,6 +43,29 @@ map0 {
+> >                       };
+> >               };
+> >       };
+> >+
+> >+      sram: sram@20480000 {
+> >+              compatible =3D "mmio-sram";
+> >+              reg =3D <0x0 0x20480000 0x0 0x18000>;
+> >+              #address-cells =3D <1>;
+> >+              #size-cells =3D <1>;
+> >+              ranges =3D <0x0 0x0 0x20480000 0x18000>;
+> >+      };
+> >+
+> >+      soc@0 {
+> >+              npu@4a900000 {
+> >+                      compatible =3D "fsl,imx93-npu", "arm,ethos-u65";
+> >+                      reg =3D <0x4a900000 0x1000>;
+> >+                      interrupts =3D <GIC_SPI 178 IRQ_TYPE_LEVEL_HIGH>;
+> >+                      power-domains =3D <&mlmix>;
+> >+                      clocks =3D <&clk IMX93_CLK_ML>, <&clk IMX93_CLK_M=
+L_APB>;
+> >+                      clock-names =3D "core", "apb";
+> >+                      sram =3D <&sram>;
+> >+                      assigned-clocks =3D <&clk IMX93_CLK_ML>, <&clk IM=
+X93_CLK_ML_APB>;
+> >+                      assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PL=
+L_PFD1>, <&clk IMX93_CLK_24M>;
+> >+                      assigned-clock-rates =3D <800000000>, <24000000>;
+>
+> APB could run at 133.3MHz.
 
-Please do not send next version before closing or even giving a window.
+24MHz does seem a bit slow. Do you know what parent would that be?
 
-- Mani
-
-> ---
-> Changes in V6:
-> 1. Drop the pre-allocate pci_host_bridge struct changes in dw_pcie_host_init()
->    and imx_pcie_probe().
-> 2. Parse Root Port nodes in dw_pcie_host_init() as Frank and Mani suggested.
-> 3. Move the imx_pcie_parse_legacy_binding() from imx_pcie_probe() to
->    imx_pcie_host_init(), so that dw_pcie_host_init() parse Root Port first, if
->    no Root Port nodes were parsed(indicated by empty ports list), then parse
->    legacy binding.
-> 4. Add device pointer parameter for pci_host_common_parse_ports().
-> 5. Add NULL pointer check for reset gpio in imx_pcie_parse_legacy_binding().
-> 
-> Changes in V5:
-> 1. Add the Root Port list(pci_host_port) to struct pci_host_bridge for better
->    maintain parsed Root Port information.
-> 2. Delete the pci_host_common_delete_ports() as now the Root Port list in
->    pci_host_bridge can be cleared by pci_release_host_bridge_dev().
-> 3. Change the common API pci_host_common_parse_ports() pass down struct
->    pci_host_bridge *. 
-> 4. Modify dw_pcie_host_init() to allow drivers to pre-allocate pci_host_bridge
->    struct when needed.
-> 5. Allocate bridge early in imx_pcie_probe() to parse Root Ports.
-> 
-> Changes in V4:
-> 1. Add common helpers for parsing Root Port properties in pci-host-common.c in
->    patch#2.
-> 2. Call common pci_host_common_parse_ports() and pci_host_common_delete_ports()
->    in pci-imx6 driver.
-> 3. Use PCIE_T_PVPERL_MS and PCIE_RESET_CONFIG_WAIT_MS instead of magic number
->    100 in patch#3 as Manivannan suggested.
-> 4. Use "PERST#" instead of "PCIe reset" for the reset gpio lable in patch#3.
-> 
-> Changes in V3:
-> 1. Improve the patch#2 commit message as Frank suggested.
-> 2. Add Reviewed-by tag for patch#1.
-> 
-> Changes in V2:
-> 1. Improve the patch#1 commit message as Frank suggested.
-> 2. Also mark the reset-gpio-active-high property as deprecated in
->    imx6q-pcie DT binding as Rob suggested.
-> 3. The imx_pcie_delete_ports() has been moved up so that the
->    imx_pcie_parse_ports() can call this helper function in error handling.
-> 4. Keep the old reset-gpio property in the host bridge node for the
->    existing dts files and add comments to avoid confusion.
-> ---
-> 
-> Sherry Sun (12):
->   dt-bindings: PCI: fsl,imx6q-pcie: Add reset GPIO in Root Port node
->   PCI: host-generic: Add common helpers for parsing Root Port properties
->   PCI: dwc: Parse Root Port nodes in dw_pcie_host_init()
->   PCI: imx6: Add support for parsing the reset property in new Root Port
->     binding
->   arm: dts: imx6qdl: Add Root Port node and PERST property
->   arm: dts: imx6sx: Add Root Port node and PERST property
->   arm: dts: imx7d: Add Root Port node and PERST property
->   arm64: dts: imx8mm: Add Root Port node and PERST property
->   arm64: dts: imx8mp: Add Root Port node and PERST property
->   arm64: dts: imx8mq: Add Root Port node and PERST property
->   arm64: dts: imx8dxl/qm/qxp: Add Root Port node and PERST property
->   arm64: dts: imx95: Add Root Port node and PERST property
-> 
->  .../bindings/pci/fsl,imx6q-pcie.yaml          | 32 ++++++++
->  .../arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  5 ++
->  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi        | 11 +++
->  .../arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |  5 ++
->  arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |  5 ++
->  arch/arm/boot/dts/nxp/imx/imx6sx.dtsi         | 11 +++
->  arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts       |  5 ++
->  arch/arm/boot/dts/nxp/imx/imx7d.dtsi          | 11 +++
->  .../boot/dts/freescale/imx8-ss-hsio.dtsi      | 11 +++
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |  5 ++
->  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi |  5 ++
->  arch/arm64/boot/dts/freescale/imx8mm.dtsi     | 11 +++
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |  5 ++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi     | 11 +++
->  arch/arm64/boot/dts/freescale/imx8mq-evk.dts  | 10 +++
->  arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 22 ++++++
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts  | 10 +++
->  .../boot/dts/freescale/imx8qm-ss-hsio.dtsi    | 22 ++++++
->  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts |  5 ++
->  .../boot/dts/freescale/imx95-15x15-evk.dts    |  5 ++
->  .../boot/dts/freescale/imx95-19x19-evk.dts    | 10 +++
->  arch/arm64/boot/dts/freescale/imx95.dtsi      | 22 ++++++
->  drivers/pci/controller/dwc/pci-imx6.c         | 76 +++++++++++++++----
->  .../pci/controller/dwc/pcie-designware-host.c |  8 ++
->  drivers/pci/controller/pci-host-common.c      | 58 ++++++++++++++
->  drivers/pci/controller/pci-host-common.h      | 15 ++++
->  drivers/pci/probe.c                           |  2 +
->  include/linux/pci.h                           |  1 +
->  28 files changed, 384 insertions(+), 15 deletions(-)
-> 
-> -- 
-> 2.37.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Rob
