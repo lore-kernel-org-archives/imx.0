@@ -1,141 +1,89 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827803D9020
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 16:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABFB3DA7CE
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 16:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772037658; cv=none; b=eN1oO5Ctuj07D9I1onwZ08pWPuYiS0jse2YvI+5/Vf8v7YbiBsmYh7UaspMQRSuIfOp821obI8HHmqPh0D1E3i81CUUjQcFZY8P8zxbMBgAkGxHknsttFslEzoT7Le6MbPtFpQAL+CUXwvSzCOTFXR8k16W+17OB73IMfniBUWg=
+	t=1772038002; cv=none; b=QZW68JI5enBfVkIxB1GX+KpnaC+WcWLhMBB3N4Zc/ssrjUlww+BTa6QgPI2PR/Bd8lDXbBEv966Peltkfw6ZdyX+8fD4ns8MEMqOGVGlQyqVjjDNvQe3oc9YMTNfQGS272zAjpEUtk/VtgfbD8q4VYE/TM1QbxSQe+dLTWqzltY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772037658; c=relaxed/simple;
-	bh=fg1onnz8md+No8HrMWJrdd2FjHskuWmMxJA94664OhU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h0iRqKbny0fSorJDQpjwXtlhdbsuwZPsJx0mVRqxEmsL15F+OkV1p4cD3GAbGsMgDSRxStx2r8hvjOKUNKm2enbofQ3zlGI1E6bgdP898pj/ADCFsVcgMzwCibJGTPV6ogo1mZ+xDOIZCoLDofglyqti2MF2vqtyTiYAwdDuhXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=McWIVGyi; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772038002; c=relaxed/simple;
+	bh=M8/zoise0kqPkEtltRBb9dJx3yYarZ/7FX4RBH/H9lo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F8gJZojcflbNMXRgmZqE5H9Zo6KYlgyQSK4/qe4OTwhN8bFA1A1i8lw4Af3Lg055Gzjk6Q3CvXKKFkqsJIbH5jLU3obtEXvkD1MMLzrnwWruXa14UUfiaZ08EVTA/AoOXde2nxKjbGJKI2t+X2L77tGKVQxDgIJ9qvE/i4tDJLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Sa38iQd+; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="McWIVGyi"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-483abed83b6so34075545e9.0
-        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 08:40:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772037654; x=1772642454; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eBqFP7Hzw46CSYhpPo7qadiVR6MSgoNAqRWTUg+WnDg=;
-        b=McWIVGyiL7mMGJN1zg24yfgYnKycNknAxjFOj51eXY6CKbqM5z9CvBp/Hh+atCh9xg
-         zwKOa706mXF61SOJmabyKaJHlTAnM/pGOLJ8tj/UqHRbYXWkBqgcPyzNy9A0zQM0k3GX
-         Wcsd71CPsIeckqqrajQqZorSQMCn9VaqmzfYN17IiCHdtPHbQn4aO1/n1o5jujOnw5if
-         9H4H9u9ThSQ9R3FcTv/aLFj5FKPFpspW4YNOuJkuTFXrXWWNuI17dve4mH+6jT4pmUvn
-         PvsR75xkH7T+o3ws9c/9hAWIqf9JB99UNVCUbEkk7VdWIBKStnzMq9kgkoppLL70qqpd
-         xueA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772037654; x=1772642454;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eBqFP7Hzw46CSYhpPo7qadiVR6MSgoNAqRWTUg+WnDg=;
-        b=QtYOTyaK+3GXqELv1ujXWiqoL5T07veDVio9fu9m7fUZzR5oXJVQYFz8v6EBAi1f2n
-         65x9/nI1vFZdODTo7Fl5jvQbkU9V7V4idE5OFUil6036kb9OKJR1pj7DSDb4HT2MKRDr
-         3+ZV2jLqLbHXIkNRLGgWpwz3eagNbKF5AaZipK0SYKr40nwvHoIS8lPceSyx/vxtlfXK
-         rPyCXAYWZXsVY4ToFEEe07lHwmxl0aiJMJ9+ssFchPgC2Ia9j2k9p+/vo3+SoaAUKp1h
-         UMjsfxm3K9N1IJSqrjDPylevPxS7OnQ39Y2ybCCEhRueJ+kzWZDWMLZ/G/5yeM6GskdL
-         QlNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBcUaU/35IWZyCh7VcvERl2gSPBiTJnlEaHetV+eYeCmrIMDyx7ObK7weJfhyRcrzlYJY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjeT7dlAjsZhEVE6u4fjn3S0K8n3iSXtuG2w24pyX4HqKOjuOa
-	4D0bzcnHsP6WBuL4KZnhwGa8kGMRR/3Ywb2ezvegJAMROTmEBpa+TgO5
-X-Gm-Gg: ATEYQzwxM2/tCGS7KfMG3lMwDfjQ4GQxWjIrCTjDsKvFOqt+QG2beFS1g02W16tt2zu
-	vkOk7XRBOmeRrf//xzt8KcXd7Lq+4DrufcUp/KHRZktY314ztzKn/69tx85AyMYvB/GN37mQmjq
-	MS6P/5AASSMuq3gt0FVCLrLBPQaKc2akIJro4DZuUoZsjkUhdlyreGhmX4gv2Yy5mtZCUmJwZYy
-	+uLnnyysmSRQPFStFeHKFvs0BJTTRizBF88QWjGL8xk+LDMMIO1NUEpfq96fphCBOuaqjcs5f+A
-	wGuPYoFRkTrvehqDdLg+5AoI37lkiSuSIKJPMlNt877XYUgMpPz+F152yUMxUnD9eOmXh4X0/eO
-	C+A+c+QD/ZmJs3qNEDfU9pMk5NU2Ldqz6j2uArjpOYueKpOUUz73LXjrGCZlexIroEwkjgmGhJ5
-	Cby7iyLG/RVD/8f8psG1+4b2s7o1fLHvzmwa9irEuOlLDfkoA/A7XYKmf6Vxuy2L0LjCRguOJSh
-	LXNfC/a4KS6Qq8UK1BKCQ==
-X-Received: by 2002:a05:600c:638d:b0:480:1e40:3d2 with SMTP id 5b1f17b1804b1-483a95f5a62mr252604165e9.29.1772037653504;
-        Wed, 25 Feb 2026 08:40:53 -0800 (PST)
-Received: from [10.0.1.128] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd6854c7sm183843845e9.0.2026.02.25.08.40.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Feb 2026 08:40:52 -0800 (PST)
-Message-ID: <4307232b-1df1-412c-8105-d9eab181b493@gmail.com>
-Date: Wed, 25 Feb 2026 17:40:51 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Sa38iQd+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DE0854E41120;
+	Wed, 25 Feb 2026 16:46:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CBDA5FDE6;
+	Wed, 25 Feb 2026 16:46:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0122110369259;
+	Wed, 25 Feb 2026 17:46:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772037997; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nnBjrX0bQL3U41NR9f2JQMbwQ/kpp6U5NlGNmgZ8yJA=;
+	b=Sa38iQd+A9UKiqdZk/EdYjEH6IBO5bXLaf0J6duKpVyx8/5+NjLYE550rxS7kLJUpbpHY8
+	eB50pkmmpah8JYJwqV/iT4h1cI3uiSibfVSTduskPOQhZAvMmoR2KDPs0mdDd2Yx9lPqd6
+	gKZanXCP8ffkN80WWGgJ/0eLb71d7YuZJ+a35EW5WOLeAH0izuKn1tcU1wslNNoj/QFQJg
+	q87D7w2MtOgobKscNEY2h2aTgMKt9zDGeccgmdZoolDrEXj0b+DcOplelDiZt1vaxkEe/m
+	idP2ulswtNRCJrKEISKNX2X4RNejHlMMei41fYPIcO9LV9edq/8v5zzFmVkPMA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-mtd@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/3] ARM: dts: imx: clean up imx2* NAND CHECK_DTBS warnings
+Date: Wed, 25 Feb 2026 17:46:25 +0100
+Message-ID: <177203795880.1985489.4831780196878536315.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260213-imx25_nand_dtb_warnings-v2-0-f9d4b43bba24@nxp.com>
+References: <20260213-imx25_nand_dtb_warnings-v2-0-f9d4b43bba24@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] remoteproc: imx_rproc: Fix unreachable platform
- prepare_ops
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>
-Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Peng Fan <peng.fan@nxp.com>, Dan Carpenter <dan.carpenter@linaro.org>
-References: <20260208-imx-rproc-fix-v1-1-ad74555eb9a4@nxp.com>
-Content-Language: en-US
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-In-Reply-To: <20260208-imx-rproc-fix-v1-1-ad74555eb9a4@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On Fri, 13 Feb 2026 12:08:24 -0500, Frank Li wrote:
+> The nand-controller schema enforces specific node naming. Adjust the
+> existing DTs instead of modifying the YAML schema to match legacy layouts.
+> 
+> Update the DTs to follow the modern NAND controller layout, which has
+> been used in the MTD subsystem for many years.
+> 
+> 
+> [...]
 
+Applied to nand/next, thanks!
 
-On 2/8/26 12:30, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Smatch reports unreachable code in imx_rproc_prepare(), where an early
-> return inside the reserved-memory parsing loop prevents platform
-> prepare_ops from being executed.
-> 
-> When of_reserved_mem_region_to_resource() fails, imx_rproc_prepare()
-> returns immediately, so the platform-specific prepare callback is never
-> called. As a result, prepare_ops such as imx_rproc_sm_lmm_prepare() on
-> i.MX95 have no chance to run.
-> 
-> This is problematic when Linux controls the M7 Logical Machine and is
-> responsible for preparing resources such as TCM. Without running the
-> platform prepare callback, loading the M7 ELF into TCM may fail if the
-> bootloader did not power up and initialize TCM.
-> 
-> Fix this by breaking out of the reserved-memory loop instead of
-> returning, allowing the platform prepare_ops to be executed as intended.
-> 
-> Fixes: edd2a9956055 ("remoteproc: imx_rproc: Introduce prepare ops for imx_rproc_dcfg")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-remoteproc/aYYXAa2Fj36XG4yQ@p14s/T/#t
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index f5f916d6790519360f446f063e09d018c5654953..8c8ddbf995a46b01627d15a2eb3da0b72eee6285 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -617,7 +617,7 @@ static int imx_rproc_prepare(struct rproc *rproc)
->  
->  		err = of_reserved_mem_region_to_resource(np, i++, &res);
->  		if (err)
-> -			return 0;
-> +			break;
->  
->  		/*
->  		 * Ignore the first memory region which will be used vdev buffer.
-> 
-> ---
-> base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
-> change-id: 20260208-imx-rproc-fix-843dd1031b5b
-> 
-> Best regards,
+[1/3] dt-bindings: mtd: mxc-nand: add i.MX25 and i.MX27 nand support
+      commit: d86e70e9ca995942e848515b089e9be7430c862e
 
-Tested-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
 
+Kind regards,
+Miquèl
