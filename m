@@ -1,126 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2551DB95E
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 21:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0542A2FB0A3;
+	Wed, 25 Feb 2026 22:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772056068; cv=none; b=jOHdw54x199GrmOk8I8zNMshzXQ7AnSSnu9l/sGXpswn8LGGyEK4I377SWuUdyTGqMvl+IWNToN3p2dEsMniD4bdN4aQjYQsbc8NfoTJV3llEDy1Zdk2LgGiyov3d+LRYg/3CLUAkGXSYkv4IUmYy0X5ygw+qpfYBi0XqJ8s6/8=
+	t=1772059797; cv=none; b=inQ2vR2s9wFsAc2NbU8MEgq7R+gXRA7FqoIavpKyeb51pSHN1vEvPgffMmShEwhq/tPNcqOqOHeUX0vfZ1w8ABMknFIuhTGUaDykq/DezCAsHGofMHt4Uue3tyVCLbc2TExHWDFuMMvkjxpOtUtNDYwoVQ31YHNooDncYvqPkpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772056068; c=relaxed/simple;
-	bh=l8N6B+v3LKcBSMQDhhMsq1Ou4LUvHgBtC7GiADD7q1o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o7TDGgz29ywHV+du4LKw2nVvokZcPTO3mfIHjw/6d46zVje/6qpQvvJOWOWQAGrFC/NrK47zpkqI4x+2sAzFh+k29GvlC+Nr/OXMzZzk2v+tvvVjzG7aEJBytBodm+bGKLP6+5AVAzkie+AO7/KG/byI10U2R4D7HKmzFJ0zHfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNwdo0nU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772059797; c=relaxed/simple;
+	bh=mgxqDo5rlL2fSjIeQ+XKlvcKVTdg4JhBlzt9laj0qHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q8Z0l65NT8KEPzD4yiuYtvF2DHwjx9lgMxiVpDwKxQqelkCejjwOSiQPAOgKVQLRIt8XbajxF9W0OEMtYPTxoUZQe5XBSkrp6OBftkeWvSVrDIQo0u3gHkFNphm/x5KX43DMi/zChOiMiTQf1cvSlVT58FawgdXNrx2Xs1fhk5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLQgSWqw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNwdo0nU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2215C2BCAF
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 21:47:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLQgSWqw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F67C116D0;
+	Wed, 25 Feb 2026 22:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772056067;
-	bh=l8N6B+v3LKcBSMQDhhMsq1Ou4LUvHgBtC7GiADD7q1o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lNwdo0nUY0vYNlniM9tZn3gVIj62mw9G4B/6roySJN2yYSIKp3Wl6adjb9q3m7M8F
-	 3U+qdqQuwsI+L/D53LkkRLNmsjH64zrvmQTYwG9xtZtg4urFoV+mSrjt5/M7pDxJ17
-	 8QLkWyiQTcRJumUZJgjzpV+z2Eh54aP0okn5EnZwMfz2RBGa+s7aJwxio2m7V2W4PC
-	 pRI/La+3ZJOEnrHypTCrYI99pE1Q2sWsaEhLPWj3dDAzEKWait8gxLs1TWDH+upu+U
-	 jVutIDBZwWqE6SmOFaC15sUFxWQIrY2XSL16u9bGwI1tnNY51R0tVq/D+TDSM1Kzak
-	 vTu8DBpj4e92w==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b9347d8dd90so25222466b.3
-        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 13:47:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWm/GWn18VcRhSRxYF4XwUq1num7CqSIIzq5d6D6VGhlR+vGi3guaKJK7vO99S0Wl9a0No=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyDn/NHyJG99uEO1BkoBBUTuEnRx+B+9PO5KQpyj8oDJ3R1edlS
-	zyTDItjHGjWLSbuHYe/kWJCcm+2k20WlYBLG6C3EN3jK/cSQT6eAi4CKkQfd83ahrOmW7FoxBkw
-	yi4sJT5A4mSIFIv1IfN84IJ5wqhJ08A==
-X-Received: by 2002:a17:906:38cb:b0:b8f:7200:63bd with SMTP id
- a640c23a62f3a-b9351794335mr92810866b.42.1772056066379; Wed, 25 Feb 2026
- 13:47:46 -0800 (PST)
+	s=k20201202; t=1772059796;
+	bh=mgxqDo5rlL2fSjIeQ+XKlvcKVTdg4JhBlzt9laj0qHg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bLQgSWqwB5/tv0+42PqFvJIC6uAPHKjAVuUraKTMifpKvdyvIvgx2av6xiXb+jH5w
+	 vfxvNUjNhJQFj7zDnuSMySWY8oxqftC2658+awD+Z+ssthXdxbiRx2An5UKGIFeWSW
+	 m+38CS/WIcesBthKltLTgLd6s6YyLAEHVGDq4KfM7hukPxRtfCPnQNWC84zww7ujzV
+	 GkMRN2aBhoBsLVtQ+AL+0EQxWMyo9+QZJEmm9A++JG1qYr+RfGPm9tKIQRmFWkajWl
+	 82fndr47I2wtRIv+6rSlpJIR0iMlE8DmQUIsXlOHENAShAHcrP2x+JZZmYK471ujpS
+	 y9e3wzlMle7Ig==
+Date: Wed, 25 Feb 2026 23:49:49 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Koichiro Den <den@valinux.co.jp>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-nvme@lists.infradead.org, mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: Re: [PATCH v3 0/9] dmaengine: Add new API to combine configuration
+ and descriptor preparation
+Message-ID: <aZ98jbxb2Wh-yRe1@ryzen>
+References: <20260105-dma_prep_config-v3-0-a8480362fd42@nxp.com>
+ <aXD/EYqhhRJEN8oy@lizhi-Precision-Tower-5810>
+ <aX0EXjM4LlO3Hygd@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-8-b45da45903c8@oss.qualcomm.com> <20260224183213.GA3239922-robh@kernel.org>
- <CAMRc=MfAuDqQZQAPXnJPJ9P1OV38dsQb0CWCh_EtZVq_G9dwsA@mail.gmail.com>
-In-Reply-To: <CAMRc=MfAuDqQZQAPXnJPJ9P1OV38dsQb0CWCh_EtZVq_G9dwsA@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 25 Feb 2026 15:47:35 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLr3zzBfVujuj2kO3VCngV-wa97e+xEQj_sjakzRXyZSw@mail.gmail.com>
-X-Gm-Features: AaiRm539jdazKEwDTNuu6a7Fra_2vBg28zXqHEjYX1GN3S7PxX9gedX_Y-Td3eI
-Message-ID: <CAL_JsqLr3zzBfVujuj2kO3VCngV-wa97e+xEQj_sjakzRXyZSw@mail.gmail.com>
-Subject: Re: [PATCH v2 8/9] soc: renesas: don't access of_root directly
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aX0EXjM4LlO3Hygd@lizhi-Precision-Tower-5810>
 
-On Wed, Feb 25, 2026 at 3:42=E2=80=AFAM Bartosz Golaszewski <brgl@kernel.or=
-g> wrote:
->
-> On Tue, Feb 24, 2026 at 7:32=E2=80=AFPM Rob Herring <robh@kernel.org> wro=
-te:
-> >
-> > On Mon, Feb 23, 2026 at 02:37:23PM +0100, Bartosz Golaszewski wrote:
-> > > Don't access of_root directly as it reduces the build test coverage f=
-or
-> > > this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper fun=
-ctions
-> > > to retrieve the relevant information.
-> > >
-> > > Suggested-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.=
-com>
-> > > ---
-> > >  drivers/soc/renesas/renesas-soc.c | 7 ++++++-
-> > >  1 file changed, 6 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/soc/renesas/renesas-soc.c b/drivers/soc/renesas/=
-renesas-soc.c
-> > > index 38ff0b823bdaf1ba106bfb57ed423158d9103f8d..bd8ba0ac30fa91fcf2a10=
-edd0d58b064650085cf 100644
-> > > --- a/drivers/soc/renesas/renesas-soc.c
-> > > +++ b/drivers/soc/renesas/renesas-soc.c
-> > > @@ -6,6 +6,7 @@
-> > >   */
-> > >
-> > >  #include <linux/bitfield.h>
-> > > +#include <linux/cleanup.h>
-> > >  #include <linux/io.h>
-> > >  #include <linux/of.h>
-> > >  #include <linux/of_address.h>
-> > > @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
-> > >       const char *soc_id;
-> > >       int ret;
-> > >
-> > > -     match =3D of_match_node(renesas_socs, of_root);
-> > > +     struct device_node *root __free(device_node) =3D of_find_node_b=
-y_path("/");
-> > > +     if (!root)
-> > > +             return -ENOENT;
-> > > +
-> > > +     match =3D of_match_node(renesas_socs, root);
-> >
-> > Doesn't of_machine_device_match() work here?
-> >
->
-> No, because we're using the returned address of the matching struct
-> of_device_id later in the function. If you think it's a better idea to
-> introduce of_machine_match_node(), let me know but I think that should
-> be done separately.
+On Fri, Jan 30, 2026 at 02:19:58PM -0500, Frank Li wrote:
+> 
+> Vinod Koul:
+> 
+> 	Do you have chance to pick up (at least first 2 patches) for 6.20?
+> So I can start do more cleanup work.
 
-No, it's fine.
+Why only the first two patches?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Mani has already given his ack and said that he thinks it should go via
+the dmaengine tree:
+https://lore.kernel.org/dmaengine/6f4elcu5iql65jeqfeqhmllquv253xh4gb37ivef2kyvsj5lps@w35ciehuwxym/
+
+The series still applies to dmaengine/next btw :)
+
+
+Kind regards,
+Niklas
