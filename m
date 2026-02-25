@@ -1,132 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CF638759D;
-	Wed, 25 Feb 2026 09:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDBA38E5E1
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 09:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772011522; cv=none; b=rmAKFAlc3FV5FhskqnAl/UiQFVmQAkONUVbwi8Y0izmlN4KczugUxfACAUnNOhWUSMkPvPhb9/yMRjL8Efl7Ys7Q962Hfld1O/CgSMxY5eNLGk3z2clxFZt7fQkZgQ/o5Mjutq00cI1LGzQHS0VUpsgTQmXEEz0gVfr5Bghdf5w=
+	t=1772011555; cv=none; b=k61Rx9aE38f67824hY/eU2xhor/XyHD/T/tsKnVYMt0oJZy+m9b+WwteUfaJaV1XkpnQBshISnir2oP2w1PdmJnXxk/LlgB+GmbATj8K3QzRQ1rl6PK0e8gJi543/MZBBCEpfuxD2cfPwVxVd+NKzOROcuOW61ddP6eonoG0agk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772011522; c=relaxed/simple;
-	bh=3F7Z5Pfj8Pt/optjPDV9G8Xvyryo9NuHarxp+2EdQZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEyHQFMdKByNwgclp+gwk7Yt3QSPo3FIg8Ok0rBT+1eAKz6Glnn1LnlUasub7ndmzPCM8RIVWtJ8lDiFe8AkyBBknSt2DcNCjxBajzoFUquPzJApzZY2S74KwKcqGSKbuYt9T/GU1ZZtbHH7S08I3ubiydiH/TZU3PZWQFIT4NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJXxxlHB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772011555; c=relaxed/simple;
+	bh=rgKp5YVqKagpJ90dBd1U0u98y/nDFSmcQ/5cAIgBGO4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CqL4LMg1R8u4deVP2CjsF3pRfS3qFqVGSkcLUz92MoHQp51UzNFJ8SdmI2xd2WHYayuUdoQaqnNmAUh0eduofogylelPanwrooFoi27XsMVVsxFisnibcS7B5cSco/cq1nJRihuWViWLM2FaxXfcuwkVVJtsmKdbfZzl+VGeVoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hlifViC1; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJXxxlHB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EE0C2BC86;
-	Wed, 25 Feb 2026 09:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772011522;
-	bh=3F7Z5Pfj8Pt/optjPDV9G8Xvyryo9NuHarxp+2EdQZw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJXxxlHBV0DRrSf9EXAEusXlJPeHnoT0EXFvLsrldQu/5D1nC+cn49GEzCZn5mSbM
-	 A/xtGjS6xvWhP74lBLA/DVb/a4R6aeCiawcKj3TaGKNHT/TXw8XSi16nLSzWcQlnis
-	 v0m+TCnAHsyPXyt2AknbqUGNEyD6LZYPnXc76KzrSaqQiZhlkwECxt+w/6vM3LLfHp
-	 khpI2max/MI8mlIiNJLbDhcnYr2sSLHsuQBluXaRBJHXwNwXKsHHqzTo30n1Yu2Ss+
-	 qSurO9g1H5v2Zq3H06S6xZDG61BdabR3sXwIssrYT/w6bZq7HIzDkIaA3SmP20SxVt
-	 Lug+csEN4rnXw==
-From: Simon Horman <horms@kernel.org>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hlifViC1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=id9ft50ikpeYq2+DbJZJyBUEH3jA2m0GVsep0KOPZy4=; b=hlifViC1PGDWeKiILXqnlayMso
+	ML3lAMkdhTOBBO9Q7f/62nWqghLstcjiKEe2DJci0UOgpAUqXOzzx0RPIyepl68I/nr9mEg5/tqr4
+	0ge+0080csH7Cf9webe7Nj7vj+3VM5itj5uwP1rCjk+T1oPTBZFm0w+hqelpvhsAsRt6RUcX1VTmJ
+	L6QIiwR4Rv3WtzI8idcTPYnpENciT49idMr69PlYCwIB5AQmdDticanOvDeqXfx5hCRoIqDXfSKD0
+	MlQJyTX5mezGgVjhCqHVPz9aYRQpTMPyQsJPsqWafrYW6LTySQSiKTchGrefDZSiHEvJqJQiOiVbG
+	gzyvf4NQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46704)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vvB9B-000000006Lo-0h2P;
+	Wed, 25 Feb 2026 09:25:33 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vvB96-000000000pi-2Vrn;
+	Wed, 25 Feb 2026 09:25:28 +0000
+Date: Wed, 25 Feb 2026 09:25:28 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: jan.petrous@oss.nxp.com
-Cc: Simon Horman <horms@kernel.org>,
-	alexandre.torgue@foss.st.com,
-	devicetree@vger.kernel.org,
-	festevam@gmail.com,
-	chester62515@gmail.com,
-	s.hauer@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org,
-	davem@davemloft.net,
-	mbrugger@suse.com,
-	netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	s32@nxp.com,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	robh@kernel.org,
-	kuba@kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	ghennadi.procopciuc@oss.nxp.com,
-	kernel@pengutronix.de,
-	shawnguo@kernel.org,
-	edumazet@google.com,
-	mcoquelin.stm32@gmail.com,
-	imx@lists.linux.dev
-Subject: Re: [v5,4/4] stmmac: s32: enable support for Multi-IRQ mode
-Date: Wed, 25 Feb 2026 09:25:13 +0000
-Message-ID: <20260225092513.174261-1-horms@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
-References: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 3/5] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <aZ7ACLx1yUMWPAsZ@shell.armlinux.org.uk>
+References: <20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com>
+ <20260225-dwmac_multi_irq-v6-3-245bf1d7110c@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225-dwmac_multi_irq-v6-3-245bf1d7110c@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Wed, Feb 25, 2026 at 10:20:35AM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> set them to allow using Multi-IRQ mode.
+> 
+> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-stmmac: s32: enable support for Multi-IRQ mode
+As you have added support for these IRQs into the generic code,
+shouldn't the generic dwmac binding doc reflect that this is now
+supported?
 
-This commit enables Multi-IRQ mode for the S32 DWMAC driver, allowing
-per-queue IRQs for improved performance. The driver checks for multiple
-queues and per-queue IRQs, enabling multi-IRQ mode when both are present.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> index af594a096676..4aad7077c9d6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-
-[ ... ]
-
-> @@ -165,6 +165,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
->  	plat->core_type = DWMAC_CORE_GMAC4;
->  	plat->pmt = 1;
->  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
-> +
-> +	/* Check for multi-IRQ config. Assumption: symmetrical rx/tx queues */
-> +	if (plat->rx_queues_to_use > 1 &&
-> +	    (res.rx_irq[0] > 0 && res.tx_irq[0] > 0)) {
-> +		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
-> +		dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
-> +	} else {
-> +		dev_info(dev, "MAC IRQ mode selected\n");
-> +	}
-
-Does this validation check all queues have IRQs? The condition verifies
-only res.rx_irq[0] and res.tx_irq[0] but doesn't confirm that higher
-queues have IRQs when rx_queues_to_use > 1.
-
-If a device tree specifies multiple queues but only provides IRQs for
-queue 0:
-
-    snps,rx-queues-to-use = <2>;
-    interrupt-names = "macirq", "rx-queue-0", "tx-queue-0";
-                      /* queue 1 IRQs missing */
-
-The driver would enable STMMAC_FLAG_MULTI_MSI_EN, but later in
-stmmac_request_irq_multi_msi() (drivers/net/ethernet/stmicro/stmmac/
-stmmac_main.c), queues with rx_irq[i] == 0 are silently skipped:
-
-    for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
-        if (priv->rx_irq[i] <= 0)
-            continue;  /* queue 1+ skipped, no handler registered */
-        ...
-    }
-
-This would leave higher-numbered queues with no interrupt handler,
-causing packet loss when traffic arrives on those queues.
-
-Would it be safer to validate all queue IRQs before enabling multi-IRQ
-mode, or fall back to MAC IRQ mode if any queue IRQ is missing?
-
-> +
->  	plat->rx_fifo_size = 20480;
->  	plat->tx_fifo_size = 20480;
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
