@@ -1,192 +1,124 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020124.outbound.protection.outlook.com [52.101.228.124])
+Received: from mx-relay90-hz2.antispameurope.com (mx-relay90-hz2.antispameurope.com [94.100.136.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E6F31B830
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 08:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2F2314B96
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 08:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.190
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772008238; cv=fail; b=pzIwS8m2osGcsZ3/izmBWs0fIGXh27tUkevt7y8ubngMYnpXlEYqQuJW9MMbTxre85YLezhUqXuycU3M6bIfj2t0XCs/II4Rimrz5Ziq/F/q72Lji/660doaFMJS3r+2yG8h4KpzBMCaNoKwRIain9z96ZDVxU12oa/3p/TQwZU=
+	t=1772008539; cv=pass; b=czjWSUk3vswsAxVkZHQ+5LjYQak+u+72kbqty3+EGGNGAhdxQrbCdSHlz8bkJ4NniPlWpr+9kTvF/S126K+auK3h4gCtpl3E3Gb50d1E7LIweE+Yo1IR+g/ETFIZpp8eJVDVmg0/swOIF6PyRM4QI8EfsThp+jiR8LCGWh6fET4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772008238; c=relaxed/simple;
-	bh=dXeKqtye3EbL4jQNwNCtKy+sIyOwUNOwvz+GYI0/p88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Hngid6IknyFolT9OCRQNtUEJDHOSsqaJhreaun0sWUBS1LoUBgUS7XVomMTFxHkjj8bCa9pfnGgAEcGEu4kr1VZBBgb4iY4lnu5JJ3NEDp1hTmIsUu3j6cIsYl+rwUcIGva6/vsJeETRLYT/tx8S8rEY29Uh6QRTiHxnU4Bhol8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=GFF+S7TX; arc=fail smtp.client-ip=52.101.228.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	s=arc-20240116; t=1772008539; c=relaxed/simple;
+	bh=1gkTqDJCr7YvexlyH8uqEU34iwOjv/arQZOv6mbwl/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RgBs2kLqBAZwP59eKgAVziPmlERoD39urWDzosRsn92O0pN5MOWUEpce0pfzWfI0CS85m7kSFqNIDhe1ximxb9XSBeTO4dWj9zSJHDJz2ib7LeK2LTB0O0HZNvpXFZkCi3p7Npm5elB3f24UcH2VJ25lLqp2R1f0GV4QzkcuW8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JW/aUkyL; arc=pass smtp.client-ip=94.100.136.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="GFF+S7TX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=asTTdaGKk09TGZgu9r0sVHHzI98aeSiwprkd6VSiWjJOhtcsX3pYMm8ceuCChkstUi91ZmkInv6JDzpWpx8FueDTh+tOn0asD9RUB7c78QPh/CVNlaZkMXFhZubZPh6A9uswMhDHBJj65ZJMSxljNv/7EUqMPXRB+H7vwGaCOIr7psfwWUu64srY3zLRj1DvHTbUehUDZ3Ml9eqsdTJSSbK6KKzjbqm52hiSE+c0MlAvmftWVDOeMjY7i9tsD+O/199TteKVTDyeyQJvgmnqd9MiJfJeabn/tZ7aUMcLqzFL/3eBsWKCtKPnshEI/Z1Yhh3n3pjn8WhKbjRoOrKU1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ni78Dehiz6xLYgJL7WcjTkKfQoejn1NMV2lENGyPkvc=;
- b=XNf/+CxSJ5TqiDLovCIJHxyUu19wn98qS/IWM66zxA256LEPo25312GAbJs3gMuS7k6MBLhOZfvgY4g0ajSzNLXN/+YQxHFu+dvnxajzVPGpTIgD+AMpEesLEwLKMdm+khNyU8zbFCbHAk1QWvwbflVGjDApt8N286RFvVxQg0DZ6BkURX2SiqGGklYZxNVc8FOWOvKpmAXwAHUjGaziIdMq2kbyTSo//uftvCuUbE9iMLp9VQQgo7E5OUZLGr0lRCnBirMH66/CwAlk8oBQXl3aBgsIXnFGbR7wT65JXsKEXfvzvmflu0MvE/RsPUwJ6XcViDTRxU/fzVnSWESTtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ni78Dehiz6xLYgJL7WcjTkKfQoejn1NMV2lENGyPkvc=;
- b=GFF+S7TXQx0EaaUH4ufAfEb8G0cl3GvEvvuV0iNHrLfCTpkvpUPxRTQBuwBGH1Xv4xxiNeIdoYCf0w/DK1gXOVmukEtCapt8SPkYm2Gf99LmgMxOkWzgEHg4X/IN0cZT1RNLLj0QwcJCKdx2sxURhljICTMStuu3DQkHEr6Hdow=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TYTP286MB3897.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:187::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Wed, 25 Feb
- 2026 08:30:34 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
- 08:30:34 +0000
-Date: Wed, 25 Feb 2026 17:30:33 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Christoph Hellwig <hch@lst.de>, Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 04/11] dmaengine: dw-edma: Remove ll_max = -1 in
- dw_edma_channel_setup()
-Message-ID: <6d6c222faypvbo6fvs7tad2gtzxqqzlsjkrbefwmgxodt5thbc@lylpaqxozrg7>
-References: <20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com>
- <20260109-edma_ll-v2-4-5c0b27b2c664@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260109-edma_ll-v2-4-5c0b27b2c664@nxp.com>
-X-ClientProxiedBy: TY4PR01CA0048.jpnprd01.prod.outlook.com
- (2603:1096:405:372::13) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JW/aUkyL"
+ARC-Authentication-Results: i=1; mx-gate90-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=ANOrIzf22DYFST/OGsWrBLVKkhNoHDH6p+6DszzjdIE=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772008515;
+ b=gPRnHzuXM5n4lDGybV1uXmxM78+lxWVr2SnX9Vp9SUZADzW4eK1VRFlnSysa1nQWyEH3qWev
+ QcC3JDpjjzF8Wvzo6qe/n8NpD5mLu2wPbNldzsczt64sPcxMCYpZpDz3nqFjof+soWBgMnbyFdu
+ SzdtpzrHt/I4ssMpr7klWlDhDv+mE9FCLclw6LG4+5nbuYvsP9J+qzsda2Lr0WOdwHim9iBid1F
+ nSYezsx+jHi3dgQ1Mw4nJ5+qNL4GF11gyxBiKvpdtj6LUosOTUtzjx0dcoBKwovdGMqhSWph0jM
+ 1aOpV3rFRxNa2D+8pA2hC9HvzuZNdT16OspZNNbrfZueg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772008515;
+ b=W4E/ez1S79wPbc89sR5vDZ4q1aRL41u+rgyYO1FFUvxxmjytxnkaVOIE2eklk3UIvWJkccv2
+ je1TotkkOtDU1SEZKwNa3qsRcQFuUK3U78wRJcqHz1ToEt1nXzxa8qzIAMtpwjhIar+9pnYTTGb
+ 8POjAfGJ2GUYWr3ZfVBX9GXRZjjmurfzyJdoWEhm4ssqfoX2cQJH0HHtdpiw6RXo9n1X/RQzAIq
+ vM5OjxxR8XfmbTfChnP5wYePyj1VkBjvdWwwBNiYWem5IC7kBY1mPTm6RrLjDMrNZXvRBpugHVS
+ 85RIZ59byLeeDfq54Pyhq86enm9psXtjbp+yjVtYU45VA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay90-hz2.antispameurope.com;
+ Wed, 25 Feb 2026 09:35:15 +0100
+Received: from schifferm-ubuntu.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: nora.schiffer@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 59917CC0D25;
+	Wed, 25 Feb 2026 09:35:04 +0100 (CET)
+From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Subject: [PATCH] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix UART1 RTS/CTS muxing
+Date: Wed, 25 Feb 2026 09:34:18 +0100
+Message-ID: <20260225083419.5639-1-nora.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYTP286MB3897:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9deaa3e-118c-4863-7aee-08de744824e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7U8LW5UJfQtG86WI1G8Pq1mzRAt/gonsWpXeHworbBQxM4njoUZCaCNiU/dT?=
- =?us-ascii?Q?z/Zg8wut27TBgaSYMLCIxnp+R//2VqQJUF1Clil1PKgKCZJKTRujzOSUb1lB?=
- =?us-ascii?Q?BXOJmjqVTeXTsoX0b+iVES+U+OQdTpguNCDZzRqwP3z2wnkhhEsuh0AdvnuA?=
- =?us-ascii?Q?IUhLGHwpWS3PZpABO3PJQNU35Z6Ro8mcxfI2l8imvnznZJZx6tC/nx6aSxcU?=
- =?us-ascii?Q?V7wRtE9QsF8IpLL+/iDLQ2uQsmew61sowFTkDo2NuusfHs/wf0AjLK2q8iAX?=
- =?us-ascii?Q?sF79VXoArfKOnxVQIbw2kaYOLg5t6xSGItH3jz/AYjUlS6DgAoOoDJylcMQV?=
- =?us-ascii?Q?0GzI8q3uDH1b0bjiQ7u1QK5ewr39RATpSjJFsHXEA1c+HNmwaRmL/+NCfp7H?=
- =?us-ascii?Q?Iz6EGHiadElYO/rmN0S2ovuydOqm8oeOjA8ifhQ+jHUYrm7yJW7jEZ+0tlVW?=
- =?us-ascii?Q?4R2ue0ZMvbX0Tcx93Vl0FXnd2bscHmyrR9qBfHPQt6Y0CDOgpzTsNmc/hWAp?=
- =?us-ascii?Q?cC30fVA0gzzc2Lfl357rmli5CWUqeLb5/Ua9HfmAyqY/aaxNPepRzyPq4wQg?=
- =?us-ascii?Q?4VbHR7rWtY1dy6SNJSRhAhJ8HH6lUrvashXBIwteGzCaOPdybJURFE9CE9aP?=
- =?us-ascii?Q?UVWLgXiNOTZ8wpfoYROH33uGzSIzMYfGHtHtKJcmoZh3j+lb6ttG2C6aL+jB?=
- =?us-ascii?Q?l42kWgTgEKyiJp2CschOkHRIFbeSVgSv3M5pq10we0sUkooZK+tqasaB5y9E?=
- =?us-ascii?Q?abSdOWVdMMwV/TVULNtrpTJObwZd3jiAC2yOKgYgOwGZdP4NoN9lTivU35uz?=
- =?us-ascii?Q?c/QX13QT+GrXDM3JXN7w7E2WtRijrL13jg3o2JyFYmScHHT9K/alj/5qIBJv?=
- =?us-ascii?Q?iw9RgI5suVHPsUz3OdiuRCP00PgoisHgK7rg5LfNldn8lL+JApKY5bXHKYmo?=
- =?us-ascii?Q?dqdREQhh+LHanXEjhsJom8zjUGE8swJ9xdRYV3LFFeVFzJm3jjZWtyAkov9n?=
- =?us-ascii?Q?b1zCkRZE+a4JF36nJGZqupUG2/eRmBVhScbza3HGv5AXxuxfa2oOehIei03v?=
- =?us-ascii?Q?jDoY9+0qbhjTqFBiCmlUryAeXnGttFguhnPsy5qUp9CTJGzekUkGzhZvhFRI?=
- =?us-ascii?Q?UCDFlMrCIrLWyedt7aVRDLoPx656vH0kx2/W5yl5neKBvnGC22lWrSoQRhrF?=
- =?us-ascii?Q?jzElsQXz0empXZWgEIWZOW47fS9bzz7QSKwLS0W+ZHEzP+t4w6KRtzbX+yQM?=
- =?us-ascii?Q?Jvzc06nym6CstNZSTkX4Qa5QnraTbTPZh12be2s7VEXFXG3V6QGFFteTN6F3?=
- =?us-ascii?Q?mGo+7bJFJeJJrOkXWhM7IfVseOM2raf30simndqxyjyR22k3PjUZUfpU50d2?=
- =?us-ascii?Q?poNoizwHRkZBRSEeNiRdKU1PXuSqq+nNXFLH1DVwZDU/BR5pWUgejS8fUIte?=
- =?us-ascii?Q?o1mHczYInA5JwBtJM5AAiE/FqkJgnKHdI2Tl/SMI8qpLxb5LsiWuBz6lBrPH?=
- =?us-ascii?Q?qv+8y8D3BNjFVdjQUbQ3AcPXLfTHSbdSiWGwApGDm3Ors4Hmjr8X3EQ0lHr0?=
- =?us-ascii?Q?2zhGf+74C20gBpJtuKQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Qf1kN4J/hlUo2KrBqqVlS07kwoZKjmJWjNRbxEZwS3+DYWzeDDyXAvo4YYwt?=
- =?us-ascii?Q?aZkEzKeA6rXr5sLWqf11HilmP2JoGR2lUkc/koJvKgaBdVEO7IlVOA4QjPu1?=
- =?us-ascii?Q?OzX31WTxXkWv7cL+cP1VEFsHFxNuZGauGNbUGUuySzXlPaVPnbqU7VKttn6Q?=
- =?us-ascii?Q?0uNqrt2i4OUoixnsUFmurDx4bpZ4EDNKaCzw9wcVLj3sqqcNK1jGIPVbCE2M?=
- =?us-ascii?Q?yjShWvG8aX+tFWMnq9QNsS7ToBcqJsAMNvJC88IUqmHb+0qxh1icEylaGxOP?=
- =?us-ascii?Q?jGeJS5/gJ2HaMCYqHcs4BkTyR8LGHW4mfmrxknfzyOvDovBVR7RCyDARyQdh?=
- =?us-ascii?Q?HZnNK6itHgGCvh+YIOl4Zez8hSpw0maLWYDWXoeHXU+PRSd0wHrS7lj2xVhn?=
- =?us-ascii?Q?ONwJuUp4rJF6i4mSgjjlhy+Rv+hFOhui5xyMvSfizng5S9uiwOsfghtzwUOS?=
- =?us-ascii?Q?MIkysrNR4/GVG5PgrPmXa38mXsDPJH1S3l/X3uSpMwHKZzkh7GkErke5xcpF?=
- =?us-ascii?Q?ljWk3vZgBPEUJuEnd6Odua3h8rkbbOJO7dgVGPY18QmMF1lp/oW72uamFC5C?=
- =?us-ascii?Q?Xtga7pKqtzOg/oIT+HlcKz1L1Xw59ej9GnrfPMl7kJs3tcT2kAGEGg4mybmj?=
- =?us-ascii?Q?LwhTP4VSAZF/QjPhzT2vrvI0raFRMlLD+fZ2BGzNx0kujx11MUFvwZjJk1Ou?=
- =?us-ascii?Q?EZZj7r1/MdmeoYN432S04G5kmMzOx/4z4bfbsRQ2l+WSMsJ/bdYj24GUhlL0?=
- =?us-ascii?Q?6e84r2MkmBvqzy+9Cjo7dTKtf3bKh5eXR9Sj5DxDwBHzGvwZaSdU9RGEZSZx?=
- =?us-ascii?Q?3grtyPE0V2TXMthdcaMfij+bbGDrjNNOHpYr2o9m9yUkTZMhPlyB5zB80j8O?=
- =?us-ascii?Q?5+Cxb/7fXzBf/qgvVzC/J6beYoMrFzr+13gBTJCsrAF75D4L0aOhqG93+lFp?=
- =?us-ascii?Q?GqUmEHCHDNO+yUwOXMhLEIe9p1V/Nx1ZA8avJ47VsuSO95xXcMcDQxalhsSW?=
- =?us-ascii?Q?oFI4gOQ3AGII0EgklZbtUfObKrve1NUG4h04tiXypuda3OkqaKYZEwGxlJX6?=
- =?us-ascii?Q?FnxbZGFWiEGaE1x0pejBQc2DOX6qRknQjCMPJ2cPnjZ023ME6F02VGYS8KwS?=
- =?us-ascii?Q?uJboI+CXK0QRPU/DVLky7wX0caUuolJwinvFs7RLAHjVdYT3ZrDswl0hvmsi?=
- =?us-ascii?Q?S74t620ZzazGTE0jkJ40hEkS7KwO9TJIKDysp9p9y4sbMhawnCoA5V6IV3vS?=
- =?us-ascii?Q?gVnyouDFxwjMMGVj0wOWc196FAv7a1X96JjoGPxxlsY315JQ0GsvuSkIcHhX?=
- =?us-ascii?Q?OqAZS6SX9QivXCLADOXev3Zv7/lJrrG0llWn6aNdyC9pmMmYwST7W+cKfGBs?=
- =?us-ascii?Q?Nw4DImWQqt0Bv/ZRO6bmH2KZHr8ChRwLu1cDHJvx8fWrTxjusAMIQz+yfBEX?=
- =?us-ascii?Q?SLrO02nYUJXYPa0o8x2gRlsFmN86YfANLRXtAxNLg3unAzAjBzqyZyi8nKSi?=
- =?us-ascii?Q?x2Ea0w6MxKNLuaWE+fZcON4xk2Q1KVlm0WKUhft+bq4HQTllxMbMqPr2m090?=
- =?us-ascii?Q?YznZ1Rutcm3RIsB+sZSXvSZhkHCFwoslSjX7xmdllcB4IJEevoE8mAAIia3o?=
- =?us-ascii?Q?g9bb3TrQeXo4P6L7doWAsThODYYDDqPoi8g7SWWxBvrlTjCqfx5AjXujDt6A?=
- =?us-ascii?Q?cvOsuvPZTmNcdgNnZh/C9Aerxd64oQ8B3E4eOTPYABmzdrr2vebuSW6zIWCg?=
- =?us-ascii?Q?W/ZtRNYMt1CC7TDuVPbxfesar4XnYzRYsNrP/HvftHM5/vF2e/CO?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9deaa3e-118c-4863-7aee-08de744824e2
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 08:30:33.9389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lHkZojpeWt0+cPH9c5YHd/q9EOp5jv7uD+BhVYA2TFoD+7LgB5EIuPmMn5mMmEzeICn0PrIo6GHwSoQp6+X01g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTP286MB3897
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:nora.schiffer@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: nora.schiffer@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay90-hz2.antispameurope.com with 4fLSZd0gYQzWygV
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:1e9880415023cc401d11ce049b439fb1
+X-cloud-security:scantime:1.897
+DKIM-Signature: a=rsa-sha256;
+ bh=ANOrIzf22DYFST/OGsWrBLVKkhNoHDH6p+6DszzjdIE=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772008515; v=1;
+ b=JW/aUkyLMvYFGcLqbKF0tQi+V30ExYVCWiKtndhSZJjym/2BEkA9+V8+7lvU9gctn8MyPRVv
+ O+q+pgj3MYveYhHEidUEYbxyqmRSnO5U7Tq2JNwHKxdBk+4vndggt8ogWJf4L8MP/X5DEWwf/1F
+ CruGA3s5+kC9eWAFWBRswMl1krA2je84UzuODSDalw9Sz5agC/9fC48KaFLhvAi8mMTiAF/vYZb
+ 0ibITikqg/hqwL5WMsfIev8YzamjSrLzk1LCllkyod4we9X/lgzvbCc0UPHKaPj4NISgIC6/Ga3
+ PzMxepdUyZzpcbwbWBy7JHfZZQ9bYOZeff4dcZpAmaZ2A==
 
-On Fri, Jan 09, 2026 at 10:28:24AM -0500, Frank Li wrote:
-> dw_edma_channel_setup() calculates ll_max based on the size of the
-> ll_region, but the value is later overwritten with -1, preventing the
-> code from ever reaching the calculated ll_max.
-> 
-> Typically ll_max is around 170 for a 4 KB page and four DMA R/W channels.
-> It is uncommon for a single DMA request to reach this limit, so the issue
-> has not been observed in practice. However, if it occurs, the driver may
-> overwrite adjacent memory before reporting an error.
-> 
-> Remove the incorrect assignment so the calculated ll_max is honored
-> 
-> Fixes: 31fb8c1ff962d ("dmaengine: dw-edma: Improve the linked list and data blocks definition")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/dma/dw-edma/dw-edma-core.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-> index c6b014949afe82f10362711fc8a956fe60a72835..b154bdd7f2897d9a28df698a425afc1b1c93698b 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
-> @@ -770,7 +770,6 @@ static int dw_edma_channel_setup(struct dw_edma *dw, u32 wr_alloc, u32 rd_alloc)
->  			chan->ll_max = (chip->ll_region_wr[chan->id].sz / EDMA_LL_SZ);
->  		else
->  			chan->ll_max = (chip->ll_region_rd[chan->id].sz / EDMA_LL_SZ);
-> -		chan->ll_max -= 1;
+The pinmuxing for UART1 was mixing DCE and DTE modes, which cannot work.
+Consistently use DCE mode.
 
-Just curious: wasn't this to reserve one slot for the final link element?
+This switches the RTS and CTS pins, which is fine for this board, as
+UART1 is routed to a pin header.
 
-Best regards,
-Koichiro
+Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
+Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+---
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->  
->  		dev_vdbg(dev, "L. List:\tChannel %s[%u] max_cnt=%u\n",
->  			 str_write_read(chan->dir == EDMA_DIR_WRITE),
-> 
-> -- 
-> 2.34.1
-> 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+index b7f69c92b7748..1665a5030b993 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+@@ -848,8 +848,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
+ 	pinctrl_uart1: uart1grp {
+ 		fsl,pins = <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
+ 			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
+-			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
+-			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
++			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
++			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
+ 	};
+ 
+ 	pinctrl_uart1_gpio: uart1gpiogrp {
+-- 
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+https://www.tq-group.com/
+
