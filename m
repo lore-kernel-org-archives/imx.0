@@ -1,265 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AF530B52A;
-	Wed, 25 Feb 2026 21:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267A730AD0B
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 21:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772053345; cv=none; b=lE0Jtvg/TEHTNLsh2ucDE7odT43h9S2IsmJxyRLrEusSAsv4FQV3XZy4NT3vs/7RvPD/+TTNB/WiEUe/w+9BeZs1DImHhijwhSoP0SAe2kzYkTNC04pSDg9an6t5e04BRCgLnhUrY6VRntUEiB3TPbmVHghr7DZ0UGIozY1RKvI=
+	t=1772054828; cv=none; b=hjmbVZj3uIpTljBVeLU8LAgKT/CGEasWQwlnE80lKlZTYHFx9aXUBxAfuWCVXElgBfdF1m18xkA90+/YU+MFohSiijNqwScubRFm2/AKXXAotgdtaPia/2cd01/bYKPNscfhDNNZokj7KgKvQXmNtxI5dTXJr6LBnSmO/89ihzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772053345; c=relaxed/simple;
-	bh=Jy6N4IhDvASBtWTrPNraJpD5E/n58S/X9rF10vWsGxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KLnqgjL3pEiG8X0TzwXgG8epLV8LrwxZfbpVRa5hMeMHZP9F1WGNaqNu9kkmzk4rX9ANa2dyRLnW+fkie+ThiFgTSw/HmuTIFDLqaeGWz6rPzNtnsCLZUcXNzw+xGT9vysGFfGWKruDxFjAJs0psRmdiPnV7rCAzIN6hGFO5SH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a23zWkRX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772054828; c=relaxed/simple;
+	bh=yGGMDF5JAAyQ7t/X+LED3I2wNOi+oFXMl1uT9N+vUHk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=UGXhb2TLJSVdwfOKoTKngcDyjApB+2S24UesQYy36GcoUaP7jP1CdUNshn9JydxLgTytaJyFFMQZ9il0Ey4csk7f5zpKaGP0vbk0qLhXI+5hSuP2UX1JC37HHUbiVBxZXh3mzPezBfI3WvRz6Jh7BuYITFdeUhhqd/a0MJYP03k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QztS+Ln3; arc=none smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a23zWkRX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D99C116D0;
-	Wed, 25 Feb 2026 21:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772053344;
-	bh=Jy6N4IhDvASBtWTrPNraJpD5E/n58S/X9rF10vWsGxo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a23zWkRXy8vl9KpsWM3WnIQDHv5KYZxIkD9EzaTAuYeMVllHnEtvD7eDFZIOvpovG
-	 NyT3pHLz6vBKDacWjPBF2Y7YLvtK+UpcOHVeAlr6IVFmUMqOKUyLUHoxeLCIefGe/4
-	 KDA1ElBAy3D3WtzRCmMr1IRZmeKwexlOtSozi568vaUtgwtjjov2SRc8vLAmc5upa8
-	 fpy5OHgptojo/HYMS3m2GA6hFJcObfwfN0rCVE7s9b9LwjKgcEot1q8FAEhsyU6svv
-	 huy/XM8X573n77N53VjBQ3iJdQ/gcaCcs++iMY0V9TjMjmLkJ5YpeyAvbI0yX0qepC
-	 WUD4dpEJBnxZw==
-Date: Wed, 25 Feb 2026 15:02:18 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, 
-	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>, 
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <l7vmhr5rg444pqp47x2k5ejamjnisx5rqwfmfr6m2tjazxpbm6@wq2vd4hcxco2>
-References: <CANLsYkxAwgG1WkMRr8EJZuSUnN_jKVnsWhWTakVqhvtMBO365A@mail.gmail.com>
- <PAXPR04MB91851D3DA6A92669CB5926A18974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CANLsYkw-8ERXy3v8Sv55Cpq=+41Toez3EjLMbENAkavvr8STeQ@mail.gmail.com>
- <PAXPR04MB9185B68BC640D940534E44098974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <d4c8f7dd-c0a8-4721-9750-47429637d8c1@lunn.ch>
- <PAXPR04MB9185BB6443B9E1E407F409D68974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <ndozoc6qdrpv3xuktumsah56im5rbtg6iwerq3xi2xkcuyewpx@szswqvojleg3>
- <AS8PR04MB917652D63DB090D22129D3D78975A@AS8PR04MB9176.eurprd04.prod.outlook.com>
- <2b72kkgwe5hio4uwrxj5oi72llkxhx7egw442fugq6unv7unah@5bfve7k3mvky>
- <PAXPR04MB918508A39832000D786E8F938975A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QztS+Ln3"
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-45ee8823e2aso131066b6e.0
+        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 13:27:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1772054825; x=1772659625; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6qd3od5gT9Y56WsM6DlqnASWYdZTTGBmXPSgA7J3iS4=;
+        b=QztS+Ln3cKv67X3oioAg+EIDDYHSV35JUR6XEGahZX6TtIkDzwSji7hqc6ojErwQLy
+         mjTfCIk690Z1rG3pTpyOiMtaEoEpc1MK1S7GIlji10GwNnAJOeBqun2Bij5D7Ys9oSNs
+         9F4skP4HpcplbNrLEeBguRXYljODjfZ+4eiVMuCEaYqPCguq+Ner9o22TXfGds8g6VFT
+         uTfR3GtHuKS49bHCVOW8ITI1R6S2ipXSJJ5jIsfnmX4LOj9zZo1RgQj0dOdw3H8lfJXO
+         l/untvncyP9l8UZtE+fvXt5CNAfCgkX+4diyb0vLLtwIimcASq+RANsqhmjn73PmBSAp
+         dh4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772054825; x=1772659625;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6qd3od5gT9Y56WsM6DlqnASWYdZTTGBmXPSgA7J3iS4=;
+        b=dFqn++cImIKrX9uUFr2XElXFvTcj1tCHaatsRZ0TM+2DU2+ubfH9I25H3nj7V0wxGh
+         Di0TMS6IlBrjikDAcaaW1PT1dpFJWq9YImmWgVc6n7pMyaFA8DNJgxA2EkLklbctuaKp
+         pTXuLmXHSk+JzEcK4kEEuZhoc9vRJZ47l3kZC9Y8mVq4gxiSbSbl2X+kEY39bdHfX0r7
+         IXnhlDjN0rT5gABBM4bwn21Zx77t906i+0BlmlHOLS2rjUU1p9ngYv9gtLLWNh54qjTZ
+         bCibZFeOopgOn7u+wMXzUBuX9lRKdc2dq9YgZmEOMaDA63HvkziYMPhjYipl0o60EHdS
+         83lg==
+X-Forwarded-Encrypted: i=1; AJvYcCULTBl6fWYoJ0blzHRcStfn8anok+PxsQeIa3OpUHQFgjeqGxDxa6B0q7nF4wTZ6X3pyzA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzqf0wwzVFT3J1qVSzzsyxyNpR8LtGCUBjeUz8KtoH3qHgV80Ew
+	yBdIx+EONp9BgutpMavWIodWXkILhXsoXCxTg6s7QR5QgIOK3Xi81HZuzHL3h4nFH3g=
+X-Gm-Gg: ATEYQzwJqoDi7KRL1UTc+9RedZPfTxl9kZSOUulYyypsQOAVK0RHnzxoQ8HTZ25RlP/
+	h05iW97eWOFzi9OqypUE8024gfkI+qxV72oKTmzB0hzvjp1HowkRZ473xhy5KjZThEJdYYAjx5v
+	6sfnxUhmOhANSxycx2diK4rP0Za83RHTgkfXHhErgLDuZ4YbgLo49of3DqfROqRbj9FutdG5ii0
+	faY0N6Q2cqMFVcHhyairQJj4gMbUtFVVPC4x/eF1kufYAAdkGWj9WXHS5ZAOgxCpsMfM3OTk2On
+	NI26EVDBIMFRva9TJocMFFdq8qKr075X1T3wJcNcyK11NqdZxf/26XOE7vRblXJamo/uZnwGcBg
+	OJqxScDN0FnPvElsZWxMgCdAclyKHqxSnZV61Ie6GshDCW7BO1u3Rl+AIosGn0j+jhlFEg8oUCq
+	eOBZkOHMGSJv6zpT6WB+HW4tSYUpRhEUE8NAVMMbcE+41xiCLprqKAf0nyKVCkugg5GnFLSdw=
+X-Received: by 2002:a05:6870:2188:b0:3e8:8e56:671a with SMTP id 586e51a60fabf-4157b210230mr8655778fac.54.1772054824819;
+        Wed, 25 Feb 2026 13:27:04 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:146:def2:caeb:cb1f? ([2600:8803:e7e4:500:146:def2:caeb:cb1f])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160cf2572bsm64198fac.2.2026.02.25.13.27.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 13:27:04 -0800 (PST)
+Message-ID: <120c7f33-4ca1-4d35-ac1b-b65362f1adfc@baylibre.com>
+Date: Wed, 25 Feb 2026 15:27:01 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR04MB918508A39832000D786E8F938975A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/7] iio: Rename 'sign' field to `format` in struct
+ iio_scan_type
+To: Francesco Lavra <flavra@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lucas Stankus <lucas.p.stankus@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>,
+ Ramona Gradinariu <ramona.gradinariu@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Petre Rodan <petre.rodan@subdimension.ro>,
+ Dan Robertson <dan@dlrobertson.com>, Benson Leung <bleung@chromium.org>,
+ Guenter Roeck <groeck@chromium.org>, Jiri Kosina <jikos@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Esteban Blanc <eblanc@baylibre.com>, Jorge Marques
+ <jorge.marques@analog.com>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>,
+ Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Renato Lui Geh
+ <renatogeh@gmail.com>, Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andreas Klinger
+ <ak@it-klinger.de>, Paul Cercueil <paul@crapouillou.net>,
+ Ramona Bolboaca <ramona.bolboaca@analog.com>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Kent Gustavsson <kent@minoris.se>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Heiko Stuebner <heiko@sntech.de>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Kurt Borja <kuurtb@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <jpaulo.silvagoncalves@gmail.com>, =?UTF-8?Q?Leonard_G=C3=B6hrs?=
+ <l.goehrs@pengutronix.de>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Haibo Chen <haibo.chen@nxp.com>, Salih Erim <salih.erim@amd.com>,
+ Conall O'Griofa <conall.ogriofa@amd.com>, Michal Simek
+ <michal.simek@amd.com>, Gustavo Silva <gustavograzs@gmail.com>,
+ Tomasz Duszynski <tduszyns@gmail.com>, Roan van Dijk <roan@protonic.nl>,
+ Jyoti Bhayana <jbhayana@google.com>, Mariel Tinaco
+ <Mariel.Tinaco@analog.com>, Nishant Malpani <nish.malpani25@gmail.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Alex Lanzano
+ <lanzano.alex@gmail.com>, Jagath Jog J <jagathjog1996@gmail.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+ Remi Buisson <remi.buisson@tdk.com>, Christian Eggers <ceggers@arri.de>,
+ Mudit Sharma <muditsharma.info@gmail.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, =?UTF-8?Q?Ond=C5=99ej_Jir?=
+ =?UTF-8?Q?man?= <megi@xff.cz>, Song Qiang <songqiang1304521@gmail.com>,
+ Dixit Parmar <dixitparmar19@gmail.com>,
+ Gerald Loacker <gerald.loacker@wolfvision.net>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ chrome-platform@lists.linux.dev, linux-input@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
+ linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20260225100421.2366864-1-flavra@baylibre.com>
+ <20260225101735.2368252-1-flavra@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20260225101735.2368252-1-flavra@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 25, 2026 at 08:31:33PM +0000, Shenwei Wang wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Bjorn Andersson <andersson@kernel.org>
-> > Sent: Wednesday, February 25, 2026 1:44 PM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > Cc: Andrew Lunn <andrew@lunn.ch>; Mathieu Poirier
-> > <mathieu.poirier@linaro.org>; Arnaud POULIQUEN
-> > <arnaud.pouliquen@foss.st.com>; Linus Walleij <linusw@kernel.org>; Bartosz
-> > Golaszewski <brgl@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Rob Herring
-> > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > <conor+dt@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
-> > <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
-> > gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
-> > devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
-> > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; dl-linux-imx <linux-
-> > imx@nxp.com>; Bartosz Golaszewski <brgl@bgdev.pl>
-> > Subject: [EXT] Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-> > 
-> > Caution: This is an external email. Please take care when clicking links or opening
-> > attachments. When in doubt, report the message using the 'Report this email'
-> > button
-> > 
-> > 
-> > On Wed, Feb 25, 2026 at 05:54:00PM +0000, Shenwei Wang wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Bjorn Andersson <andersson@kernel.org>
-> > > > Sent: Wednesday, February 25, 2026 9:53 AM
-> > > > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > > > Cc: Andrew Lunn <andrew@lunn.ch>; Mathieu Poirier
-> > > > <mathieu.poirier@linaro.org>; Arnaud POULIQUEN
-> > > > <arnaud.pouliquen@foss.st.com>; Linus Walleij <linusw@kernel.org>;
-> > > > Bartosz Golaszewski <brgl@kernel.org>; Jonathan Corbet
-> > > > <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
-> > > > <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Frank Li
-> > > > <frank.li@nxp.com>; Sascha Hauer <s.hauer@pengutronix.de>; Shuah
-> > > > Khan <skhan@linuxfoundation.org>; linux- gpio@vger.kernel.org;
-> > > > linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix
-> > > > Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > > > <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
-> > > > devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
-> > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
-> > > > dl-linux-imx <linux- imx@nxp.com>; Bartosz Golaszewski
-> > > > <brgl@bgdev.pl>
-> > > > Subject: [EXT] Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg
-> > > > GPIO driver On Tue, Feb 24, 2026 at 10:43:06PM +0000, Shenwei Wang
-> > wrote:
-> > > > >
-> > > > >
-> > > > > > -----Original Message-----
-> > > > > > From: Andrew Lunn <andrew@lunn.ch>
-> > > > > > Sent: Tuesday, February 24, 2026 4:15 PM
-> > > > > > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > > > > > Cc: Mathieu Poirier <mathieu.poirier@linaro.org>; Bjorn
-> > > > > > Andersson <andersson@kernel.org>; Arnaud POULIQUEN
-> > > > > > <arnaud.pouliquen@foss.st.com>; Linus Walleij
-> > > > > > <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>;
-> > > > > > Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
-> > > > > > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > > > > > <conor+dt@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
-> > > > > > <s.hauer@pengutronix.de>; Shuah Khan
-> > > > > > <skhan@linuxfoundation.org>; linux- gpio@vger.kernel.org;
-> > > > > > linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > > > > > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > > > > > <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
-> > > > > > devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
-> > > > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
-> > > > > > dl-linux-imx <linux- imx@nxp.com>; Bartosz Golaszewski
-> > > > > > <brgl@bgdev.pl>
-> > > > > > Subject: [EXT] Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg
-> > > > > > GPIO driver
-> > > > > > > Please explain how you would design your generic rpmsg-gpio
-> > > > > > > driver which is derived From gpio-virtio?
-> > > > > >
-> > > > > > We have already seen the virtio commands are pretty much
-> > > > > > identical to what i suggested.
-> > > > > >
-> > > > > > You could just replace virtqueue_add_sgs() with rpmsg_sendto()
-> > > > > > and reimplement
-> > > > > > virtio_gpio_request_vq() to be the callback registered with
-> > > > rpmsg_create_ept().
-> > > > > > The rest of basic GPIO handling should not need any changes at all.
-> > > > > >
-> > > > >
-> > > > > Creating endpoints and calling rpmsg_sendto() is only a small part
-> > > > > of the picture. You also need to manage the service announcement
-> > > > > from the remote side and handle asynchronous notification
-> > > > > messages. That entire flow is already implemented in the existing
-> > virtio_rpmsg_bus driver.
-> > > > > Re‑implementing those pieces just to mimic gpio‑virtio over RPMSG
-> > > > > would
-> > > > essentially mean reinventing the wheel without any real benefit.
-> > > > >
-> > > >
-> > > > I can absolutely see a benefit to this, there are multiple different
-> > > > rpmsg backends supported in Linux, so a gpio-rpmsg driver could be used by
-> > any one of them.
-> > > >
-> > > > I don't see this to be a case of "reinventing the wheel". Instead we
-> > > > copy what looks to be a very functional wheel and make it fit rpmsg.
-> > > > This will result in some "duplication", but rpmsg already provide
-> > > > the life cycle management and has a clean send/callback interface,
-> > > > so there shouldn't be any inventing...
-> > > >
-> > >
-> > > Interesting — could you walk me through how you’d structure the driver
-> > > with the new proposal? I’d like to see how you would layer it conceptually.
-> > >
-> > > The current RPMSG solution:
-> > >
-> > >      On Remoteprc                      On Linux
-> > > GPIOs -> RPMSG -> VIRTIO == VIRTIO -> RPMSG -> GPIO-RPMSG drivers
-> > >
-> > > The VIRTIO solution:
-> > >
-> > >      On Remoteprc                     On Linux
-> > >           GPIO -> VIRTIO == VIRTIO -> GPIO-VIRTIO driver
-> > >
-> > > Your proposal:
-> > >
-> > >      On Remoteprc                     On Linux
-> > > GPIOs -> RPMSG -> VIRTIO == VIRTIO -> ???
-> > 
-> > What I'm suggesting is the following:
-> > 
-> > GPIOs -> RPMSG -> VIRTIO == VIRTIO -> RPMSG -> GPIO-RPMSG
-> >        ^                                    ^
-> >        \-----+------------------------------/
-> >              |
-> >              |
-> > With this interface on being directly derived from the existing protocol (and likely
-> > the implementation as well) using gpio-virtio.
-> > 
-> > You can have multiple "GPIOs" (presumably a "bank" each) instances and that
-> > will be reflected in having multiple "GPIO-RPMSG" instances.
-> > 
-> > I haven't made any attempts at implementing this, but it looks very similar to
-> > gpio-virtio in concept and it looks very similar to the exiting RPMSG tty in the
-> > sense of being a generic implementation.
-> > 
-> > To reach something functional on the Linux side it seems to be a matter of taking
-> > the gpio-virtio driver, register a rpmsg_driver instead, change _virtio_gpio_req()
-> > to use rpmsg_send(), and perform the actions of virtio_gpio_event_vq() in the
-> > rpmsg_driver callback function.
-> > 
-> 
-> Thanks for the explanation. If I’m understanding correctly, what you’re suggesting is 
-> essentially a driver that merges the roles of a virtio_driver and an rpmsg_driver into a 
-> single source file. There may be opportunities for a few function reuse, but overall it 
-> would still result in a fairly distinct codebase.
+On 2/25/26 4:17 AM, Francesco Lavra wrote:
+> This field is used to differentiate between signed and unsigned integers.
+> A following commit will extend its use to in order to add support for non-
+> integer scan elements; therefore, change its name from 'sign' to a more
+> generic 'format'.
 > 
 
-Most of the non-boilerplate code in gpio-virtio would be impacted by
-differences between rpmsg and virtio. So combining the two
-implementations in a single source file would add complexity to an
-otherwise straightforward driver, only with trivial parts reused.
-
-My expectation is that it will be better to just have two separate
-drivers - but reuse all the design-work done in the gpio-virtio.
-
-Regards,
-Bjorn
-
-> Thanks,
-> Shenwei
-> 
-> > Regards,
-> > Bjorn
-> > 
-> > >
-> > > Thanks,
-> > > Shenwei
-> > >
-> > > > Similarly, I'm guessing that there's a firmware-side implementation
-> > > > of virtio-gpio in Zephyr, it should be straightforward to transplant this to the
-> > rpmsg interface.
-> > > >
-> > > > Regards,
-> > > > Bjorn
-> > > >
-> > > > > Thanks,
-> > > > > Shenwei
-> > > > >
-> > > > > > Interrupt support does however need some changes. The
-> > > > > > virtio_gpio_request_vq() replacement would need to see if the
-> > > > > > received message indicates an interrupt and call the equivalent
-> > > > > > of virtio_gpio_event_vq(), since rpmsg does not have a separate
-> > > > > > mechanism to
-> > > > deliver interrupts, unlike rpmsg.
-> > > > > >
-> > > > > > At a guess, 90% of the code would stay the same?
-> > > > > >
-> > > > > >    Andrew
+Maybe Jonathan is OK with doing this all at once, but another alternative
+could be to introduce a union to allow both names at the same time, then
+we could make the change more gradually.
