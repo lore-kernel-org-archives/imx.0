@@ -1,119 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E25038E5C5
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 09:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F39275861
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 10:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772012562; cv=none; b=P/J/FyHUVnTp0k9e4lXU3iHRxGNHbO84jENT2uc/Yzl53VH8QSDrYUtSCUms7wc89Tx+V4WVe8O7zVO++2FuHgwPE+6d8ItRQAwm8KdcCthJEGmZHPEypMTqzm151U7vJn5gRlBTi30q7wCSh6OUs7UO/FZ4kTo/hPUTn+PCKIw=
+	t=1772013681; cv=none; b=fmLb4RIlZHLPcQ8WsxjjT4I9RnNa7QjHzW3eTTs3GJNzbcjZgAsKi+ua6yCs2OuiwxcLCtgxHVL1T5Xsi8zIIvSfzeS7ldh0oWbzjy3mjwvDecIpXDlW1hDrvnt2tUL23TGkfgUSuP9n9kg4pR2Yxm0WENO9syB/ffku/LBjmuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772012562; c=relaxed/simple;
-	bh=K9a2s9JYkj0KSLlC0p3v78WuyHO3yDxajztaUeqowf4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RBbhcU3ix600e9sTM9Nu6VkDf3diT+mlqxgPHIUKFRKujeQFl0ZviBXh1/7GKrn2kPmNjfVR+TsmRQi9OiYDQThQdDmWK/S10UTEWSs8+FO4VPFGIowVwLECS1FCt9KMsFEfCDUru0ht98dI2rk7qdf/wx8tJtYc+vFqT2O+Ttc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mT9Spqfg; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mT9Spqfg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D720C2BC9E
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 09:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772012562;
-	bh=K9a2s9JYkj0KSLlC0p3v78WuyHO3yDxajztaUeqowf4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mT9SpqfgCsu/X3E++A3RmEyNDeS1Jlb38T25+6EctL4aTNtrYmIn9sJwobi0Kjivc
-	 SIWlIil8HD6rI4tZWkASdHUvWoNLME+BBS77ASy39EdP9AEAvu8Grv97sZx0mgt4gA
-	 FeuVzd0nOinFN0twGSxBNd48CSosm2UTZtSO4BSCkLC9t3U6SY6VNPtrfdwBTtZPix
-	 cjoD2KrAApoFMf/6vraGzPtSqKDsk0JAwdh9JUpg0jU9012elBvMgLfvKfToNyDphC
-	 cRF+6q6DtW/u0Fl2wkp2IU3lxk1cSXZg3CgiNc7XIWbaJI8xW6WZRbGZZKtucy4U+G
-	 mWWi1ENNudy+g==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-389e139ee5eso5180331fa.0
-        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 01:42:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUrdiLsnkRyJRsSnzzyRrSjffljEG2mNptUSWDpHg794YVkF9a4jpiWm6bD+q6zf9EQF1g=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz17EBGqClc6esPMiYGtpPlnXKhg1WtDINSXXV+aQfXppwARyef
-	WSsOlroWkeMkPXKFUW4nWFP9BUHSL4zVw6CJy2WNfF7siB6Ze6f2k1fPKf6ls6ZDdSFjLOGza22
-	kIk+2apmlFpT2qCuY7HlW9YgNMsf0JlWhDsbShdGgqg==
-X-Received: by 2002:a2e:9e46:0:b0:388:25c1:d969 with SMTP id
- 38308e7fff4ca-389a5d14de0mr32354961fa.9.1772012560925; Wed, 25 Feb 2026
- 01:42:40 -0800 (PST)
+	s=arc-20240116; t=1772013681; c=relaxed/simple;
+	bh=yQgA846g9F0VfW6BuzxXhG7ymqpug5mYDB100JdwX9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aFI6gzELxMjAdzRRf13PCFWZKglvocxrP7xee3rjSNmePExJRhH1D86SJU2VdH+YeB3ZjSiJSddtTP7M3p1lydJ1GkoBgjfVmm31oaYKZLUWPE10etWOEq3zrJtLmTh6zMMKgj5ITUyP9Cv69hhXKALW8SaAYsMY2MxL+maKubI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 28B381A30BB;
+	Wed, 25 Feb 2026 11:01:13 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F001C1A2F90;
+	Wed, 25 Feb 2026 11:01:12 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id ADB012037D;
+	Wed, 25 Feb 2026 11:01:12 +0100 (CET)
+Date: Wed, 25 Feb 2026 11:01:12 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Simon Horman <horms@kernel.org>
+Cc: alexandre.torgue@foss.st.com, devicetree@vger.kernel.org,
+	festevam@gmail.com, chester62515@gmail.com, s.hauer@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, davem@davemloft.net,
+	mbrugger@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	s32@nxp.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	robh@kernel.org, kuba@kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	ghennadi.procopciuc@oss.nxp.com, kernel@pengutronix.de,
+	shawnguo@kernel.org, edumazet@google.com, mcoquelin.stm32@gmail.com,
+	imx@lists.linux.dev
+Subject: Re: [v5,1/4] net: stmmac: platform: read channels irq
+Message-ID: <aZ7IaP0pFRLYR/iA@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260223-dwmac_multi_irq-v5-1-8fc699a5fac4@oss.nxp.com>
+ <20260225092456.174241-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-8-b45da45903c8@oss.qualcomm.com> <20260224183213.GA3239922-robh@kernel.org>
-In-Reply-To: <20260224183213.GA3239922-robh@kernel.org>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Wed, 25 Feb 2026 10:42:26 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfAuDqQZQAPXnJPJ9P1OV38dsQb0CWCh_EtZVq_G9dwsA@mail.gmail.com>
-X-Gm-Features: AaiRm52qiNgvNEan0Ja9tgnzlKTIzAcLn92f5zLzhmXEy4_h8wLWb64Qeoqf4C4
-Message-ID: <CAMRc=MfAuDqQZQAPXnJPJ9P1OV38dsQb0CWCh_EtZVq_G9dwsA@mail.gmail.com>
-Subject: Re: [PATCH v2 8/9] soc: renesas: don't access of_root directly
-To: Rob Herring <robh@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225092456.174241-1-horms@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Feb 24, 2026 at 7:32=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Mon, Feb 23, 2026 at 02:37:23PM +0100, Bartosz Golaszewski wrote:
-> > Don't access of_root directly as it reduces the build test coverage for
-> > this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper funct=
-ions
-> > to retrieve the relevant information.
-> >
-> > Suggested-by: Rob Herring <robh@kernel.org>
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
-> > ---
-> >  drivers/soc/renesas/renesas-soc.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/soc/renesas/renesas-soc.c b/drivers/soc/renesas/re=
-nesas-soc.c
-> > index 38ff0b823bdaf1ba106bfb57ed423158d9103f8d..bd8ba0ac30fa91fcf2a10ed=
-d0d58b064650085cf 100644
-> > --- a/drivers/soc/renesas/renesas-soc.c
-> > +++ b/drivers/soc/renesas/renesas-soc.c
-> > @@ -6,6 +6,7 @@
-> >   */
-> >
-> >  #include <linux/bitfield.h>
-> > +#include <linux/cleanup.h>
-> >  #include <linux/io.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_address.h>
-> > @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
-> >       const char *soc_id;
-> >       int ret;
-> >
-> > -     match =3D of_match_node(renesas_socs, of_root);
-> > +     struct device_node *root __free(device_node) =3D of_find_node_by_=
-path("/");
-> > +     if (!root)
-> > +             return -ENOENT;
+On Wed, Feb 25, 2026 at 09:24:56AM +0000, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> net: stmmac: platform: read channels irq
+> 
+> This commit adds support for reading IRQ resources for all rx/tx channels
+> in the stmmac platform driver to enable Multi-IRQ mode for platform glue
+> drivers.
+> 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > index 5c9fd91a1db9..6166a9b0c0bb 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > @@ -700,6 +700,9 @@ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+> >  int stmmac_get_platform_resources(struct platform_device *pdev,
+> >  				  struct stmmac_resources *stmmac_res)
+> >  {
+> > +	char name[16];
+> > +	int i;
 > > +
-> > +     match =3D of_match_node(renesas_socs, root);
->
-> Doesn't of_machine_device_match() work here?
->
+> >  	memset(stmmac_res, 0, sizeof(*stmmac_res));
+> >
+> >  	/* Get IRQ information early to have an ability to ask for deferred
+> > @@ -735,7 +738,42 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+> >
+> >  	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+> >
+> > -	return PTR_ERR_OR_ZERO(stmmac_res->addr);
+> > +	if (IS_ERR(stmmac_res->addr))
+> > +		return PTR_ERR(stmmac_res->addr);
+> > +
+> > +	/* RX channels irq */
+> > +	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
+> > +		scnprintf(name, sizeof(name), "rx-queue-%d", i);
+> > +		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
+> > +									 name);
+> > +		if (stmmac_res->rx_irq[i] <= 0) {
+> > +			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
+> > +				return -EPROBE_DEFER;
+> > +			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
+> > +
+> > +			/* Stop on first unset rx-queue-%i property member */
+> > +			stmmac_res->rx_irq[i] = 0;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	/* TX channels irq */
+> > +	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
+> > +		scnprintf(name, sizeof(name), "tx-queue-%d", i);
+> > +		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
+> > +									 name);
+> > +		if (stmmac_res->tx_irq[i] <= 0) {
+> > +			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
+> > +				return -EPROBE_DEFER;
+> > +			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
+> > +
+> > +			/* Stop on first unset tx-queue-%i property member */
+> > +			stmmac_res->tx_irq[i] = 0;
+> > +			break;
+> > +		}
+> > +	}
+> 
+> This isn't a bug, but the RX and TX channel IRQ handling blocks follow an
+> identical 14-line pattern that differs only in the queue name format string
+> and target array. Both blocks format the IRQ name with scnprintf(), call
+> platform_get_irq_byname_optional(), check for -EPROBE_DEFER, log a debug
+> message on error, and break on the first missing IRQ.
+> 
+> Could this duplication be reduced with a helper function? Note that the
+> existing code in this function already contains similar non-factored
+> patterns for wol_irq and sfty_irq handling, so this level of duplication
+> may be acceptable in this file's style.
+> 
 
-No, because we're using the returned address of the matching struct
-of_device_id later in the function. If you think it's a better idea to
-introduce of_machine_match_node(), let me know but I think that should
-be done separately.
+Hi Simon,
+I already addressed this in v6, I sent today.
 
-Bart
+/Jan
