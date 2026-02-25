@@ -1,292 +1,276 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013029.outbound.protection.outlook.com [52.101.83.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160E9303A0A
-	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 20:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EAC306B21
+	for <imx@lists.linux.dev>; Wed, 25 Feb 2026 20:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772050412; cv=pass; b=deIGhHmGmtbwUrL1GKw5y0N5ANZPJQ/RXjUSgrJSVxIaY9VEoCFRXcV7EW3AO/SRrktJ0GxhYI2XKopvO1imxUiOlp8SU3K1OX0Nkn0irxnQaz9pbycAg3XUVDSmr8MgXUVIB2giNOuBqMOdEQXzj8U6LhlEHm4ZL6YElHuoSjA=
+	t=1772051224; cv=fail; b=X5C/yf2QD0mfRckOk+O7YIqdcN3FY0H3WKKsnmfjq2vPkLmBnwslKWCxIQnvGFj+GauZk6XS++elZrFkqmDeXNBJ2/IUSdxOLZz3J7eH1YrNZUabHzYN9eTzu7SD2hOC8IFBGuhdhzq4tyBp9+renR5zYudxs8jKq+/p+Z3jnEw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772050412; c=relaxed/simple;
-	bh=9q8Y0kUrIRVhPMFVgzKcNNbHUH9mwt1Xes87zJml6Pw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u1PxSt8PUcdIuZN/Ng3dO/2o49tC5JAucp0ijciP3C3nx2ToxocfFMW9uBVji8rQhqn3xg+aV9O9uszM9dZMN3lARA+ymxB1LklM8gbd6sLPkXIi5zuSn4ZvMWMRLTU6N5wX8LcADj44iw7jejdSW2FM/RDVwxoQ9n/xXJF5E8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fmfjdxnj; arc=pass smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772051224; c=relaxed/simple;
+	bh=mSVcdU6zCZaKta92R/CYaC9bvoT/RzVzyUnCzR/MCcI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jvVGY3Or1gway9iR0PWBhWWywXdqHi2lbrzRTDoWQsolC3k6Q9M1/IePho/WGqfGU0J8D5hxhFWoLBr02jJolUMq5CeyXX4vATgQab39dzpoz06xlLnhWvdYaTJ/cOFRC8PecezIhPVNh4Wkbkml4bdpyHx+gc5DBYWqH4GAghk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F+R7wxAD; arc=fail smtp.client-ip=52.101.83.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fmfjdxnj"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3870c7479c6so1636671fa.3
-        for <imx@lists.linux.dev>; Wed, 25 Feb 2026 12:13:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772050409; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VyKaYuUgqOpic93DM/6r0rEomLDAi7xGAWTqtYY1TVBrmIEQDQKI8tV2Y5S2eFdGe+
-         VoFOq6WRRiLUqvzUvZ8k8LFuWI+fZryO7xr8ZRliidSbaO6ts1D/JfUY8rUQD+MlVCY1
-         FsIByj3HENSW8BJyo4WDGph8EyqhaYc4d2Y0+2+/cZiB62m6nYS+ZJQob5AZGUp3XFPF
-         u7mClrzyXDyM+jHvp8NR4bNoHajtcu4cdOdPeoUSFGEK7iONACfXoXa+eEOEnKPCyQdj
-         LG5b9mGZnMXcAsVmNiCHSOAR7eZlYFFPzAz2/FWrCKhDgMiQ3632Q+7mYEt18BBhSM2C
-         rgjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jSAGY3jaZ3RvEybYcW3gxciDEtD8yNQZ0KpITDOaq5k=;
-        fh=Jwxq7fmTWXyV2yDbYz385gkMou2FcmFVICYT628mMYA=;
-        b=K8X+9KasRwcfMJ088sIIuy1iTSHU207tepCYnyj7PVv/K92H5trECZE9WUD2RfRu/3
-         BVOQcYhHZ7/codwejbvK+F/m8mx9RP8ofVLulzbA7danvvodwQHUFxM7ccVuY9dyM5UL
-         bm/vtJX+53n0M3rC4O3bS2gto1u8YcQCaaGcuhoISG6deoN2hSPD3bPyJcI0tSU9TKcJ
-         E1IHklBcV+5lVcfffV1iL81NSpT/0sys0v7YWx3XcZjcXU8/+gRv7uCMg09406Zw3xUC
-         y4PZfaXoGIMpAvm43LZwDh6Co3ysqvXrLCV/r2TkTEjtoqYLN3pEtqzOe87o04+WPUDv
-         ea0A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772050409; x=1772655209; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jSAGY3jaZ3RvEybYcW3gxciDEtD8yNQZ0KpITDOaq5k=;
-        b=FmfjdxnjOX7cyAi2gwffaNn/uQy87a27GO/BVBsaSThdEg0Mbv/xjn8yvlIsznfgzG
-         s5MPLb90JithIbs5AqdNbw7fJKS3Oael5J4vJvIJ24vE/Dc+ODHRKutAGbJWwHqeKy6C
-         ZPK2I/AZFBfnposVrWCeacu5bWEomEWfkWqT5Ig9Ud6tNZ1CgulW0UnfXsk0Q86NjVpo
-         OCc37cW9d+qzBFRqn6pZjd16+DpORJ5hNfRJOjEyriO6OSyIyOkq3qEHYQzs9PBb0Htw
-         INeLB04kzF8wi2Q6Fl9Tbg39zy1WKOtCwPvrHsOX8XX1mh+nnAZPnDyg6ktbA5COAQRp
-         KGIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772050409; x=1772655209;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jSAGY3jaZ3RvEybYcW3gxciDEtD8yNQZ0KpITDOaq5k=;
-        b=O3gD7rJd3xEbjmKR0cOuadbCutIKhKUcLUfPi64FqM+4SEOBfbS33E5FU41Fssw05/
-         c7ncttL43xuuczRMOHLMxM4xR+EKvEm6e7uprRORNIJw0tuHNH41OGSRU1O9iGRd4Wao
-         /ybupykcuw7zrkJHhTVp1FEOESEjMwHYDP9qSDAzlxYMdFV+YQIycZwY+RXA+zRIMUNT
-         r52wD3DX7OjWWYdrEkg6znYYP6lAEP4W3zRzivuHPxJp5x5YsIzHi1FWrJb0CAMuD45r
-         Gw+GdqHDBOV6zSP1JDaKN2XQ9PWJ8XHcoGWhQpdxZ9/WjJosJIZC5e7Aa8tt8mJRSe/j
-         3FcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCxyOsKabAj92cvAkp/x5bm0ToaMl59JqoMp+wihu/+f+J2buHzt+9bFmfPWmdWpX28RQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwrRX5Zg4R7x9Mke7BQcqTW4aYuOOZPJUbo6B86W5vLSU/0daY5
-	KGBJ/SUwKjNbrGh7klOGuVrLAZS8c4Q/rYKVGrEv17pT9MeYHkHQywzkPO/7NFzqe+LlmoEuypO
-	gVgTTiUwCt4HqzTgXCXAQcTBo2xRUVMU5iYOIpRU=
-X-Gm-Gg: ATEYQzyTjH4D9Fty4ypIuzDHH68O8egTKzpJXXjs3Li6e6gGlCjnKjvmZRqcwVrsRZR
-	aOUeiQ742RAqIpZsgoqxFEvk2bOx46/rWkfcpY3MZEl5vYU9WSpGhV0yyo9lP0Qw7zOhs1v9soX
-	pz1I3e94FiQ4hkxmNMyfBURTd1xH4CmXFHjUxQ0X3yBHVyMp8ri5VFslsMJd1YlMDX6K8DBoPe0
-	nZ/xLKSikMi9fbWcS/BZVux4EC93XWcQ/eJ1RUngoqKe9UbdjPPzU/7JgCxZE0B5Qrc5x9vCLFw
-	lgRrHqEnvG93wXFcqePiSHrrAcwdsKb49tDE4ubN
-X-Received: by 2002:a05:651c:12c9:b0:387:189d:18da with SMTP id
- 38308e7fff4ca-389ee27b9cfmr4932171fa.15.1772050408884; Wed, 25 Feb 2026
- 12:13:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F+R7wxAD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uAY+GF1y60rTxWdwqOa0VxZpg2gd6WhtPsMFhzdL1OzpajeUY45gj7xA6VSl1zLj/tPmx4U2JzOPtrq2Cbwb5K96ggjKwCXJTYpf/pc6cB4rxx097TXfolYndsgcNKuu/xTFeFjMY6VI8Ny28dINK7/SdIgLzEeweSdKrb23wDitpaUcsaXdUwsh0YatbX0OtsJpLkYQgSI4OQ1Kk4XOLuA/lfpKRT4uagf1MhfHs0wZsbvhpksDnR+Aw/5X+DCgD+Tppogiw7e09ZABlwa4t15ecInhh8zXMn0kGwBWNjoXXAgGU9ll6M068mDulU1emgupbQtbdif0yvi5r7Nx0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VmWDQ8t0KR1xTsteB4oI/73cR1VaAxkeYefXR/F2ApA=;
+ b=O9aBsMzSFOwCLk0kRpN5I2RtVhvhyTjZQ0OssXrn8ce3/ceR2td/m8ASCN+vn0VfViYLxOomg0spcI3vWT4UgES5i6s2bQxgMjBvE1E5pI3qe8SlMNhVur+V7KPCMDzik3xii3T9WaDRPQK/+uF1TRQKVIIio/8x+pHcpvgboVy/RrDvHuuCgcqkLrRmOfDlAClEYjT9fvrQii3EsfdXIMYVy/loDOmVzBM8ylNGOeb37RF3KLgeGfLMASk+klpMIbnJtmekVM6bOKJKmQqH8Lt7o48zfXwHR4ueI1GOHmeU+03RvTX+aAe8xJ8gh+dF8gvzWqoTh7f5h/eLiDy5DQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VmWDQ8t0KR1xTsteB4oI/73cR1VaAxkeYefXR/F2ApA=;
+ b=F+R7wxADX9c+DQMadJpwessnsPfdKi+BNp3QctQZOU3sTTbFb4zhs6HfkFPPaVmTmqk0vQ82pknbrcSEpgiDvxWPnB3OxfM2mQRe7k8f0qVoXmO8gS30M6telbpa2MN/QuRGTeqVtn99YuYWWi6M69oYAXMUsU4ufHVumOQgBRKWWDHdkD+axt5Wt8pm8gm6GdXus2Uh1sriMfX/kYh+KDfC0lGTnsqCg3Y3t5Wl69gt2c+LIGH+xp8IRcMJdbUOe4cbFgQU9TvWrvwLKsvMNP5DF1ON2JF9GWidn2XyZgRinLkWtbxTbW2gvJEHecFOG1RJPtGob7e2rsQn3kW9kA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM0PR04MB7172.eurprd04.prod.outlook.com (2603:10a6:208:192::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Wed, 25 Feb
+ 2026 20:26:59 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 20:26:59 +0000
+Date: Wed, 25 Feb 2026 15:26:47 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Damien Le Moal <dlemoal@kernel.org>, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v2 5/9] PCI: dwc: Replace certain BAR_RESERVED with
+ BAR_DISABLED in glue drivers
+Message-ID: <aZ9bB8IvnBmcbe75@lizhi-Precision-Tower-5810>
+References: <20260225170324.4033466-11-cassel@kernel.org>
+ <20260225170324.4033466-16-cassel@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225170324.4033466-16-cassel@kernel.org>
+X-ClientProxiedBy: SJ0PR03CA0385.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::30) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260224031909.3546487-1-xu.yang_2@nxp.com> <CAOMZO5Br6uEJ5ffq4JCary5p3Di+bF4MDmUtOEdDqpU6xs6VJA@mail.gmail.com>
- <2r3pvujs6vdl5si5rnplgnezw4nllyunshipetvztowkngkv3h@glsewrhncjvl>
-In-Reply-To: <2r3pvujs6vdl5si5rnplgnezw4nllyunshipetvztowkngkv3h@glsewrhncjvl>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 25 Feb 2026 17:13:17 -0300
-X-Gm-Features: AaiRm53JHk978u2bbhFsJ_lOm7BJAyxifLIyYXonISViwgClwT1I3i3YuV5dprg
-Message-ID: <CAOMZO5De8a88+1uFzBv_aDNFz7KRd4Y-+AL-eeBcK_d+i+COWA@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: port: add delay after usb_hub_set_port_power()
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, m.grzeschik@pengutronix.de, 
-	stern@rowland.harvard.edu, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com, 
-	Marco Felsch <m.felsch@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM0PR04MB7172:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16c31a26-5a70-46c4-8926-08de74ac3a1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|7416014|376014|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	SY6V/vsYR+d5Q94bP+b0raadgvJDkrCgtKM5vFWuf7V3VJZYIreHuQyjcNpslD5NDigX50bvQbB622V1avxArFL0UpCMUwjj+EI8RzU+HFq1WlOTIy0GHmd6lBXgddl6JTYsuu1ARsh8d4p3sa6Gsp3vWc1ht6GvU7c95Cw1dFMXQcS1wrb0uPpenTc3H8Ide3JA0wthl7UY2B0ydCGNSpB8WortT4aoO5zq+v1LNh6FDV/9ofwmrmVYmmpy4WqY/pofuLkXjEyNN/gzeUXvZG5qwNvVFH3jqpNtyLIo95a2OCiiHp7JxA2CdM74dHY7/AvJLpTsD5sqNH8a7jWN5ZKY77dxc2d88QLOx8Dbrt5Crbkdh/XYc5qhx8QwDh3v9Bfq7nnwDzkL+6SfNxQg+kF5s/nch4acQhZUS29F3QeF7BZY2rZeLY7xckIpmPJEY9pAfp6opcBAIvkoY41CBXDZWs6n+WR4jFBqg5YvHGm33EqNobWNcWn9DlySnX1wrnoWXwHH88McsS0IRRJ5dpVtzxBfsuUmRemnVAFI0uf+gs/DQpp7rNSdj12swglnDFaPjTmYYq3ClusLbPY60IEQ1/5KNnMhIYtFElUbr8leVpSsvjAeDiC5lundel4tbJmgGXMclTP1CtpDzkA1H6bEVMTmyq8FVkEY2Zf3caHeKtwl6OyuuflKgIP4QmeCrDX/35XnafFVHIZFTb7pB/SYaBKGm7iUudo3s5oAZ2IAVrV/q5V7WXRQg7x54Dciy6Klg2kdcZMYmkA2+NDtafgPkxo7PUkpHbQjt9PrfFk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(7416014)(376014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/8jOnGrpSxNR7laNmHlCR6HFzbKbA+vAqxRFbYWIRz3flZGKQkTC70IyG2JT?=
+ =?us-ascii?Q?bsuB1OEVBjEV1ZWafs6KwE8ZBmF4XhcIVzoNdKzCtRH9c4yrs3YW//XBAWGu?=
+ =?us-ascii?Q?HNyO0KQxGtv5dvP+h/DDhOFodQwrwzf9h1A7n5ZXXy71FB/RN7Ewb/95fs+X?=
+ =?us-ascii?Q?GE7fGXX5nc3dkOJX1+qFzvasTQ1KbvrRy+GmnB1fpq48TfczsdNNeXz8T0ip?=
+ =?us-ascii?Q?RPIHxb8iUNue68Rdk6GM9Bulhks8021/lorHW2GRbBL3ECDQskHRItDKnLO0?=
+ =?us-ascii?Q?4s5E4fBV1MHL66o1ZAlyMQSIf36jJzrl8KE6KxnFUMj8GAOjBNxnDioGDNsz?=
+ =?us-ascii?Q?9Z+AjbSnoXEkMcJxRpheP0RHyK0NZEWbfZV0yOr7JeUcQO/U4oMbYhlem7Pt?=
+ =?us-ascii?Q?5FHJGRRYkakoNodjWvTD2ZZarFB0Y8AuipqtoaLguTH3gjHupWRfSqPPqtx3?=
+ =?us-ascii?Q?6FxDXw0Dbp0fy3jjKxJphCZtvPQR8Yao2Qzb0sRhAX7JgnSktsaSGeycFRJz?=
+ =?us-ascii?Q?700cFF/Mi6PvHTFqNnWA9oSSoc30WJsD1p3vEESYKoc6YCncEBkpy0qritZ8?=
+ =?us-ascii?Q?WxdkcWHH+N3uFSH9lJfud5Mn50V4R2CP+YvOwZGi8JeWRE95XgICcRQPsQRp?=
+ =?us-ascii?Q?nG6VamzU0YT3vPpAy36Jjxt7rovyLem0EXdm1bghk8MFYU11Zgr96EbN8esI?=
+ =?us-ascii?Q?UGs1b2Twq4ABsOUCrJ+q7+GSPUQ0IlUD9M6vKk8AfWTFrVP0JcSXDmKFhwJo?=
+ =?us-ascii?Q?rzsT7EMwfCByp+CfnBQxEDQQB/bKwo2S4tEv5RPkSPKCjam4+E1q3nx6teko?=
+ =?us-ascii?Q?JGvbacvU9lmjIfAAE19yOv/0AJZqNOMFM8DL0EGnkNrvfmHqC3s7Nz18mXsx?=
+ =?us-ascii?Q?PytendAb7f0TXRxPn+jTlDXtEMKiCnO+O2XdNN2Xo3CAfoWVn8lYiihMQ1fV?=
+ =?us-ascii?Q?b98xTjfrnLoCubiVhZ17QFaT8dQDLX9P3i9p0UaDAecICeM0Pf7poSCDbFPJ?=
+ =?us-ascii?Q?/xvdTob6kvMFVuzZxGHNua8n+9XVN9r6kZXhrC5Mdbi+JJpJd4zjIObPzD3X?=
+ =?us-ascii?Q?rigUWKm71zBWM7IyJ2z9JcRFb7XsZFc7a5rcNIFtSmHbZtlpO0jYixn2xUXs?=
+ =?us-ascii?Q?wsr3Iq8Y3wxC31aBhf+4ie7rtqEy5u79RGQstLC7zrM7IiemPWj4NBH5tHzP?=
+ =?us-ascii?Q?aknw1S8n/+i/awXag93RERfPQZHectmxnzdtW5R7NL134G3OBhDExpaimmRz?=
+ =?us-ascii?Q?/orzOpLBG4I2U3Uer5p6VcHmtB8RRwnill9fHg7MTn9s3co+9DzAcWFDTdnp?=
+ =?us-ascii?Q?mWwZiaXbaPkUbBkmG557S+KWVdh0BXY4/eDjvhRl6/Tb0ZMkEQ5zcI5W7t8p?=
+ =?us-ascii?Q?tf1et/oEu4e7XcTObbvZqqL+WksdF6ki8L9Jv/RCJr15ACVjykRI9UgsSC9c?=
+ =?us-ascii?Q?OjZvKjrDZXIQvCcnmkNMD8ZO+77if6TkVwIHmR3GGm+Md8PBw/NW+M2sYOtZ?=
+ =?us-ascii?Q?p0/hm2PpgLXnLGkIeK0x7JcFD02VnVgOfNTnQ4viD8Jw1lWx3fl2rXIwZcaF?=
+ =?us-ascii?Q?AgG18QxMtaQDOHZIcM+Qvl2NcNggGzkOiADuf+pkgNutuCu+Nvx3h9L5DPGG?=
+ =?us-ascii?Q?zwXV4Rl9pGSCnat1VNyFMOQZ6z9w2SFquKE2e7LaeSevoQ3IcMAOumgqg+Wq?=
+ =?us-ascii?Q?tX4uKEYJMjN4DHiWv4ddBKL8LogMJ3DI5QQkDQQ1FEbgJ8YR?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16c31a26-5a70-46c4-8926-08de74ac3a1d
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 20:26:59.3915
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cnBXGN0dl1mK+hV31k5hm+u32Qj4CK0uer1iJ+u2SyzFj0O95rNHTrGsqbgzb8p7U1RcsK/FAc/YZrRuqT8vsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7172
 
-Hi Xu Yang,
-
-On Wed, Feb 25, 2026 at 4:47=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+On Wed, Feb 25, 2026 at 06:03:28PM +0100, Niklas Cassel wrote:
+> Most DWC based EPC glue drivers that have BARs marked as BAR_RESERVED in
+> epc_features also call dw_pcie_ep_reset_bar() for these reserved BARs in
+> ep->ops->init(). (The only exception is pci-keystone.c.)
 >
-> Hi Fabio,
+> An EPF driver will be able to get/enable BARs that have been disabled/reset
+> using dw_pcie_ep_reset_bar(), except if the BAR is marked as BAR_RESERVED
+> (see pci_epc_get_next_free_bar()).
 >
-> On Tue, Feb 24, 2026 at 09:19:51AM -0300, Fabio Estevam wrote:
-> > Hi Xu Yang,
-> >
-> > On Tue, Feb 24, 2026 at 12:17=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wr=
-ote:
-> > >
-> > > When a port is disabled, an attached device will be disconnected.  Th=
-is
-> > > causes a port-status-change event, which will race with hub autosuspe=
-nd
-> > > (if the disabled port was the only connected port on its hub), causin=
-g
-> > > an immediate resume and a second autosuspend.  Both of these can be
-> > > avoided by adding a short delay after the call to
-> > > usb_hub_set_port_power().
-> > >
-> > > Below log shows what is happening:
-> > >
-> > > $ echo 1 > usb1-port1/disable
-> > > [   37.958239] usb 1-1: USB disconnect, device number 2
-> > > [   37.964101] usb 1-1: unregistering device
-> > > [   37.970070] hub 1-0:1.0: hub_suspend
-> > > [   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
-> > > [   37.974412] usb usb1: bus auto-suspend, wakeup 1
-> > > [   37.988175] usb usb1: suspend raced with wakeup event         <---
-> > > [   37.993947] usb usb1: usb auto-resume
-> > > [   37.998401] hub 1-0:1.0: hub_resume
-> > > [   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
-> > > [   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
-> > > [   38.118645] hub 1-0:1.0: hub_suspend
-> > > [   38.122963] usb usb1: bus auto-suspend, wakeup 1
-> > > [   38.200368] usb usb1: usb wakeup-resume
-> > > [   38.204982] usb usb1: usb auto-resume
-> > > [   38.209376] hub 1-0:1.0: hub_resume
-> > > [   38.213676] usb usb1-port1: status 0101 change 0001
-> > > [   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
-> > > [   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
-> > > [   38.457429] usb 1-1: new high-speed USB device number 3 using ci_h=
-drc
-> > >
-> > > Then, port change bit will be fixed to the final state and
-> > > usb_clear_port_feature() can correctly clear it after this period. Th=
-is
-> > > will also avoid usb runtime suspend routine to run because
-> > > usb_autopm_put_interface() not run yet.
-> > >
-> > > Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port =
-power")
-> > > Cc: stable@kernel.org
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> >
-> > On an imx6x-sdb board, I still get the inconsistency below even after
-> > applying your patch:
-> >
-> > # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> > [   20.656414] usb 1-1: USB disconnect, device number 2
-> >
-> > # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> > [   28.263516] usb 1-1: new high-speed USB device number 3 using ci_hdr=
-c
-> > [   28.466813] usb 1-1: New USB device found, idVendor=3D0457,
-> > idProduct=3D0151, bcdDevice=3D 1.00
-> > [   28.466949] usb 1-1: New USB device strings: Mfr=3D1, Product=3D2, S=
-erialNumber=3D3
-> > [   28.467039] usb 1-1: Product: USB Mass Storage Device
-> > [   28.467086] usb 1-1: Manufacturer: USBest Technology
-> > [   28.467126] usb 1-1: SerialNumber: 000000000003FF
-> > [   28.501826] usb-storage 1-1:1.0: USB Mass Storage device detected
-> > [   28.510452] usb-storage 1-1:1.0: Quirks match for vid 0457 pid 0151:=
- 80
-> > [   28.517597] scsi host0: usb-storage 1-1:1.0
-> > [   28.524066] usb 1-1: USB disconnect, device number 3
+> Thus, all EPC drivers that have BARs marked as BAR_RESERVED in epc_features
+> and call dw_pcie_ep_reset_bar(), should really have these BARs marked as
+> BAR_DISABLED. If dw_pcie_ep_reset_bar() is not called by the glue driver,
+> the BARs are kept as BAR_RESERVED.
 >
-> It's another different problem.
+> No EPC drivers outside drivers/pci/controllers/dwc mark their BARs as
+> BAR_RESERVED, so there is nothing to do in non-DWC based EPC drivers.
 >
-> For ports which VBUS are not controlled by PORTSC.PP (always on VBUS
-> regulator or Type-C controlled VBUS), they are still powered on after
-> you disable the ports. This will cause PORTSC.CCS still be set after it.
+> Tested-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>  drivers/pci/controller/dwc/pci-imx6.c         | 12 ++++++------
+>  drivers/pci/controller/dwc/pci-keystone.c     | 12 ++++++++++++
+>  drivers/pci/controller/dwc/pcie-rcar-gen4.c   |  6 +++---
+>  drivers/pci/controller/dwc/pcie-tegra194.c    |  8 ++++----
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c |  4 ++--
+>  5 files changed, 27 insertions(+), 15 deletions(-)
 >
-> When usb_autopm_get_interface() gets called, hub_resume will check CCS
-> bit and check new connection again. So you see new device is reported.
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index a5b8d0b71677..ec1e3557ca53 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1433,19 +1433,19 @@ static int imx_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  static const struct pci_epc_features imx8m_pcie_epc_features = {
+>  	DWC_EPC_COMMON_FEATURES,
+>  	.msi_capable = true,
+> -	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_1] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_3] = { .type = BAR_DISABLED, },
+>  	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
+> -	.bar[BAR_5] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_5] = { .type = BAR_DISABLED, },
+>  	.align = SZ_64K,
+>  };
 >
-> Below patch will be a workaround for the issue when you disable the port
-> many times:
-> https://lore.kernel.org/linux-usb/20260223-v6-16-topic-usb-onboard-dev-v5=
--1-28d3018a8026@pengutronix.de/
-
-I applied Marco's patch, and it fixes the inconsistent state that I
-reported before on the imx6sx-sdb:
-
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-[  110.494838] usb 1-1: USB disconnect, device number 3
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-
-Now I want the USB OTG2 VBUS to be turned off.
-
-I understand that the chipidea driver does not turn off VBUS when
-vbus-supply is passed, so I tried using the pin as
-MX6SX_PAD_GPIO1_IO12__USB_OTG2_PWR:
-
---- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
-@@ -70,17 +70,6 @@ reg_usb_otg1_vbus: regulator-usb-otg1-vbus {
-                enable-active-high;
-        };
-
--       reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
--               compatible =3D "regulator-fixed";
--               pinctrl-names =3D "default";
--               pinctrl-0 =3D <&pinctrl_usb_otg2>;
--               regulator-name =3D "usb_otg2_vbus";
--               regulator-min-microvolt =3D <5000000>;
--               regulator-max-microvolt =3D <5000000>;
--               gpio =3D <&gpio1 12 GPIO_ACTIVE_HIGH>;
--               enable-active-high;
--       };
--
-        reg_psu_5v: regulator-psu-5v {
-                compatible =3D "regulator-fixed";
-                regulator-name =3D "PSU-5V0";
-@@ -347,7 +336,8 @@ &usbotg1 {
- };
-
- &usbotg2 {
--       vbus-supply =3D <&reg_usb_otg2_vbus>;
-+       pinctrl-names =3D "default";
-+       pinctrl-0 =3D <&pinctrl_usb_otg2>;
-        dr_mode =3D "host";
-        status =3D "okay";
- };
-@@ -636,7 +626,7 @@ MX6SX_PAD_GPIO1_IO10__ANATOP_OTG1_ID        0x17059
-
-        pinctrl_usb_otg2: usbot2ggrp {
-                fsl,pins =3D <
--                       MX6SX_PAD_GPIO1_IO12__GPIO1_IO_12       0x10b0
-+                       MX6SX_PAD_GPIO1_IO12__USB_OTG2_PWR      0x10b0
-                >;
-        };
-
-This works in the opposite way:
-
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# [   48.509650] mxs_phy 20c9000.usbphy: vbus is not valid
-[   48.940605] usb 1-1: new high-speed USB device number 3 using ci_hdrc
-[   49.144001] usb 1-1: New USB device found, idVendor=3D0457,
-idProduct=3D0151, bcdDevice=3D 1.00
-[   49.144133] usb 1-1: New USB device strings: Mfr=3D1, Product=3D2, Seria=
-lNumber=3D3
-[   49.144225] usb 1-1: Product: USB Mass Storage Device
-[   49.144273] usb 1-1: Manufacturer: USBest Technology
-[   49.144314] usb 1-1: SerialNumber: 000000000003FF
-[   49.179136] usb-storage 1-1:1.0: USB Mass Storage device detected
-[   49.188023] usb-storage 1-1:1.0: Quirks match for vid 0457 pid 0151: 80
-[   49.195308] scsi host0: usb-storage 1-1:1.0
-[   50.252746] scsi 0:0:0:0: Direct-Access     Ut163
-USB2FlashStorage 0.00 PQ: 0 ANSI: 2
-[   50.291866] sd 0:0:0:0: [sda] 248000 512-byte logical blocks: (127
-MB/121 MiB)
-[   50.301593] sd 0:0:0:0: [sda] Write Protect is off
-[   50.308917] sd 0:0:0:0: [sda] Asking for cache data failed
-[   50.309042] sd 0:0:0:0: [sda] Assuming drive cache: write through
-[   50.342155]  sda: sda1
-[   50.345288] sd 0:0:0:0: [sda] Attached SCSI removable disk
-
-#
-#
-# echo 0 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-# [   57.161272] usb 1-1: USB disconnect, device number 3
-
-Then I passed the 'power-active-high' property, but it failed:
-
-# echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-[   16.892793] usb 1-1: USB disconnect, device number 2
-# [   18.330848] usb usb1-port1: Cannot enable. Maybe the USB cable is bad?
-[   19.240797] usb usb1-port1: Cannot enable. Maybe the USB cable is bad?
-[   19.248159] usb usb1-port1: attempt power cycle
-[   20.520852] usb usb1-port1: Cannot enable. Maybe the USB cable is bad?
-[   21.430861] usb usb1-port1: Cannot enable. Maybe the USB cable is bad?
-[   21.437883] usb usb1-port1: unable to enumerate USB device
-
-Any ideas on how to properly turn off the OTG2 VBUS?
-
-Thanks
+>  static const struct pci_epc_features imx8q_pcie_epc_features = {
+>  	DWC_EPC_COMMON_FEATURES,
+>  	.msi_capable = true,
+> -	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_5] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_1] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_3] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_5] = { .type = BAR_DISABLED, },
+>  	.align = SZ_64K,
+>  };
+>
+> diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+> index 20fa4dadb82a..278d2dba1db0 100644
+> --- a/drivers/pci/controller/dwc/pci-keystone.c
+> +++ b/drivers/pci/controller/dwc/pci-keystone.c
+> @@ -933,6 +933,18 @@ static const struct pci_epc_features ks_pcie_am654_epc_features = {
+>  	DWC_EPC_COMMON_FEATURES,
+>  	.msi_capable = true,
+>  	.msix_capable = true,
+> +	/*
+> +	 * TODO: This driver is the only DWC glue driver that had BAR_RESERVED
+> +	 * BARs, but did not call dw_pcie_ep_reset_bar() for the reserved BARs.
+> +	 *
+> +	 * To not change the existing behavior, these BARs were not migrated to
+> +	 * BAR_DISABLED. If this driver wants the BAR_RESERVED BARs to be
+> +	 * disabled, it should migrate them to BAR_DISABLED.
+> +	 *
+> +	 * If they actually should be enabled, then the driver must also define
+> +	 * what is behind these reserved BARs, see the definition of struct
+> +	 * pci_epc_bar_rsvd_region.
+> +	 */
+>  	.bar[BAR_0] = { .type = BAR_RESERVED, },
+>  	.bar[BAR_1] = { .type = BAR_RESERVED, },
+>  	.bar[BAR_2] = { .type = BAR_RESIZABLE, },
+> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> index a6912e85e4dd..9dd05bac22b9 100644
+> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> @@ -422,10 +422,10 @@ static int rcar_gen4_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
+>  	DWC_EPC_COMMON_FEATURES,
+>  	.msi_capable = true,
+> -	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_1] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_3] = { .type = BAR_DISABLED, },
+>  	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256 },
+> -	.bar[BAR_5] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_5] = { .type = BAR_DISABLED, },
+>  	.align = SZ_1M,
+>  };
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+> index 31aa9a494dbc..9f9453e8cd23 100644
+> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
+> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+> @@ -1994,10 +1994,10 @@ static const struct pci_epc_features tegra_pcie_epc_features = {
+>  	.bar[BAR_0] = { .type = BAR_FIXED, .fixed_size = SZ_1M,
+>  			.only_64bit = true, },
+>  	.bar[BAR_1] = { .type = BAR_64BIT_UPPER, },
+> -	.bar[BAR_2] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_4] = { .type = BAR_RESERVED, },
+> -	.bar[BAR_5] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_2] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_3] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_4] = { .type = BAR_DISABLED, },
+> +	.bar[BAR_5] = { .type = BAR_DISABLED, },
+>  	.align = SZ_64K,
+>  };
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> index f873a1659592..5bde3ee682b5 100644
+> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> @@ -429,8 +429,8 @@ static const struct uniphier_pcie_ep_soc_data uniphier_pro5_data = {
+>  		.bar[BAR_1] = { .type = BAR_64BIT_UPPER, },
+>  		.bar[BAR_2] = { .only_64bit = true, },
+>  		.bar[BAR_3] = { .type = BAR_64BIT_UPPER, },
+> -		.bar[BAR_4] = { .type = BAR_RESERVED, },
+> -		.bar[BAR_5] = { .type = BAR_RESERVED, },
+> +		.bar[BAR_4] = { .type = BAR_DISABLED, },
+> +		.bar[BAR_5] = { .type = BAR_DISABLED, },
+>  	},
+>  };
+>
+> --
+> 2.53.0
+>
