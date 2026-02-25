@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C364288C3F;
-	Wed, 25 Feb 2026 11:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F68E392C31;
+	Wed, 25 Feb 2026 11:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772018460; cv=none; b=BgSVjBa9ewbY/RGda3IksK8PvxvQ/VX/s7eCRUFpdetMxOD2TvEx7xbkB1d+Wf05A7Hi89s3m2t9SS7Ij74vnwu+i1vxi8Hug20ceUngfLsnux+Lb7DCRp+aQVG091walffMphGIqxng6tw6x6WtPCnDyDGBwjduv0iIi2zLl7I=
+	t=1772018641; cv=none; b=KUrjlxYmI+Cq1sQR7TKWFwRdkSKQjIcRG0tM2V2L/L6KO2g+J2ClZNE/sdq1nVDPf0DxQ2pywH1tird6ULS/jWC1DLHDn+87NEVybcuK+gn7SCUK1/7TezyhCWT/ILw21O7muRaGC1XUqqbYWs8/hhNUISXFLKdMlJPk8Fc2QTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772018460; c=relaxed/simple;
-	bh=PIWBI9xHwQPeXFfDMuUlC2Tm2esfZZ4bw/oW27XCZXo=;
+	s=arc-20240116; t=1772018641; c=relaxed/simple;
+	bh=0Ef/0nls1pisIbmcaBsc8YPx1zgEYlaXxLw1AYOR7DU=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=p3+KU2gV2qAksDtw8FzQ7iHJ4Ye6lffSlCOPX/lm09b5vM9t/u+6Ers2QoR6oVZ1pLZun/NMYnrmTfR8MA4JtdnfzCqxILIdYzmcfk0Nx5ku+rKPDjBOAcOd6Enqwt84+Y4fORZd3RI6QqvQuGmrxv7jbwUHlkYQxJklH0+CFVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJLGjn1i; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=b5qZFuOFnxjJMk/+055y4KK+vBt/t4d8e+4lr7x7y/79Q/Rg0dFguygS7R9ETTj4DPBkNoHQdi8xl1ry5wPjUpPPeoYmKEeYDbbBNlrHiHc1xFjzgULaEyZo9llrC+tilcmQrG7Sfk1ZlBqM7oabDHrW9+Mx3QLW7BI+KVuIZ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/zEyutA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJLGjn1i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C49C19421;
-	Wed, 25 Feb 2026 11:20:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/zEyutA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E85C19421;
+	Wed, 25 Feb 2026 11:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772018459;
-	bh=PIWBI9xHwQPeXFfDMuUlC2Tm2esfZZ4bw/oW27XCZXo=;
+	s=k20201202; t=1772018641;
+	bh=0Ef/0nls1pisIbmcaBsc8YPx1zgEYlaXxLw1AYOR7DU=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=hJLGjn1iIZZYJe2jBxBy8t8RHbdkwCk/4HLJbWFTZDsHETMxFIkvfo9eeG3kr2WxA
-	 jfL9sTUhln9geF+wS/pCP9Pm31bV2twRtIQ/ubWb54Mx4IvgiLN/PpghNQPEVH313S
-	 5f0jxg7Ixga0zh6tpBac4VFxzYaLnP8xnGAGS4Qm2jP4CFWfRfFfTj2zm3HPZ4SBD6
-	 5tsJvN/NDqIoukEMoMnwc0Dd1fyQLyimxtzeVJb6E0sCEigTIPOPfJECMo9ndnRj3e
-	 VVWc1Au0nsdNkd4nbw/JHlBB0NpDWJ3ZgS/ippN34mlC+XkkDpC0EwQ7uFASm7sQaR
-	 s/f/NEwAO8kkg==
+	b=i/zEyutARgWZ6yth0I7OISzFxVRbwA1O/XuV/AKDBUqahMiuRmSskFrIp2jWMIMWW
+	 OeyjUNp360eV2MRkTWab6EvaN4j4eue/8f+xxw6ljWdYWkuplQZ+RaM6E5by8ynP7v
+	 bOSq6wIdlGRsdroYLsMbqxVfHEQhzhK2p37DqXO3HKIj207hvQWv3hLjaJZ8ZnUrod
+	 AwO/xuHkmsksKmQShA5P0Cy+WoB0yo4WA52zIDAbuoGBEUKhrprwhA4T6EfzGD9wx+
+	 TdJlxqL+CLZu/Nma//NExwWAuFlIDppeG+HLwXh/82RSrYQy+w/oLfEn3xEsMJ6zfj
+	 h/fjmlifXoEAA==
 From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, Joy Zou <joy.zou@nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com>
-References: <20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com>
-Subject: Re: [PATCH] dmaengine: fsl-edma: fix channel parameter config for
- fixed channel requests
-Message-Id: <177201845784.86127.12049882833167858735.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 16:50:57 +0530
+To: Frank.Li@nxp.com, Zhen Ni <zhen.ni@easystack.cn>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org
+In-Reply-To: <20251014024730.751237-1-zhen.ni@easystack.cn>
+References: <20251014024730.751237-1-zhen.ni@easystack.cn>
+Subject: Re: [PATCH] dmaengine: fsl-edma: Remove redundant check in
+ fsl_edma_free_chan_resources()
+Message-Id: <177201863982.93331.18424024162495140615.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 16:53:59 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,21 +46,16 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Wed, 17 Sep 2025 17:53:42 +0800, Joy Zou wrote:
-> Configure only the requested channel when a fixed channel is specified
-> to avoid modifying other channels unintentionally.
+On Tue, 14 Oct 2025 10:47:30 +0800, Zhen Ni wrote:
+> clk_disable_unprepare() is safe to call with a NULL clk, the
+> FSL_EDMA_DRV_HAS_CHCLK check is reduntante. Clean up redundant checks.
 > 
-> Fix parameter configuration when a fixed DMA channel is requested on
-> i.MX9 AON domain and i.MX8QM/QXP/DXL platforms. When a client requests
-> a fixed channel (e.g., channel 6), the driver traverses channels 0-5
-> and may unintentionally modify their configuration if they are unused.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] dmaengine: fsl-edma: fix channel parameter config for fixed channel requests
-      commit: 2e7b5cf72e51c9cf9c8b75190189c757df31ddd9
+[1/1] dmaengine: fsl-edma: Remove redundant check in fsl_edma_free_chan_resources()
+      commit: 490c367b5fbcba6bb653077312c8ef477adf79b5
 
 Best regards,
 -- 
