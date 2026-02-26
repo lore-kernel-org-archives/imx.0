@@ -1,196 +1,138 @@
-Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D682EAD15
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772110984; cv=pass; b=Xt7OSKnz0SMp84K1pK8T3tD+f10ctQAZBspedWCPpHdD5Pd2E+4Ds6IHHirW2lFUCzUSoAstQ1QBb/M39KsKr4WTPDN8QcbGaFf9PkxD2tvOJl5GnqYWctEo9ngxpGIgTGtDMRwIf46EnIUexz5SNWZBmWdvAparE/kr/cP2Px8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772110984; c=relaxed/simple;
-	bh=SljvMyVpWZagSTeRRnT8VtO028A6jXhZWcyKuHNmTRw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W+9F8JT8967yMhX/3L6KLvP+NeTIDIxCEvjUFu7cRscAdJcFiWUesRVrbMXl/YuqUwF4XgSsc2Bsah0j2Vesq1oJKjNv1QCXpiN7uCcRrcCMf7mqSAlYQUEhReiqliKX032bOzuzXXTSi5KtAJqWuM1aB+2EQyG3QScjx4iEzw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LoH9KX6G; arc=pass smtp.client-ip=94.100.134.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LoH9KX6G"
-ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=3+0rShqS9k9rFyhHYa5/c8HF+LK7zM3g98pXYzCnqk8=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1772110954;
- b=XGpUJwhLG1oKqa53KkA9Pi1vLPBsPGQtJCIvb1kdZqXr3An+sa4jRxduz2EqJ/FueoDRB7wJ
- hdHX1aFnomXlJFC3LN3RJNk2fyPslKAomP1qvT4fXLMnu9HY38DjSrrGsiqY5CqnoJwX8GPrvIT
- 6GDTbdTvZvSMH5e/ErRBBhaBG1LN2YShLvHhAGyz1gIXPj0D8ZQj7N/UVSMCSACTv1FVXGqG4WW
- XnmO3VyJ+/LSTgHXGM+o7tFInnauw3OE/Vao2KgBOqDMeD+BkvK+VWSfWMVdCT7924HLS6rSYy2
- VDt9lvNN1jrw5O9sgPUk1oDFOdjFN4eueHHxmRROo4E3g==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1772110954;
- b=KmFePpjw3e/GAGQeS5HtNbA4658kOz8Z0ozCEuwwBaHZHHAmzM4cthYF3FEUA8FMqeNBg+Lq
- Cv9LEcS5kBd2bPLEAJFkXRc97l+MjP0/d3uiIrgI/pMcQug9IEo+hf9pXXMa1TprO77Bs3mWbv7
- AkzEn00KorRN1XuoggkeXqhXgJkiLiXNq8pVpIEZU+YOxevsbUZJRxj9u+e7MZZNe5eaegBaTNS
- orz2zSA9OktGeNdclM2Il8b5dqJ/Sbr7pERegnpK+CPZYzUW74DoeTms0dClLWMx7bdfmj3NbBL
- FHmFZpyagFHJ5kOnvPqw+9a/Mm8QZ2OFs7zk0z0s3JGlQ==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
- Thu, 26 Feb 2026 14:02:34 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id A4A97A4079E;
-	Thu, 26 Feb 2026 14:02:24 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] arm64: dts: tqma8mpql-mba8mpxl: Configure multiple queues on eqos
-Date: Thu, 26 Feb 2026 14:02:20 +0100
-Message-ID: <20260226130223.613325-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3686F36C0BE
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772113267; cv=none; b=rPLtn2h5QEeIc78kteAWYL8tnnUXRaxid+fkxyUl98QHleD7kRC8EMHhTNhd72rJZrMYLE8u344qtlbOMALjvf9D7fjO5b0o3amIxM32VQPpdR4jMXFeW6gO03w9AoSy7obaOS7aLoNbwf/PDEG8JiWbAPv6zP2ZAkuqbo/S8I0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772113267; c=relaxed/simple;
+	bh=/7MY8hy5jQlEhxj9eGiR1iRl0W6znJ9KfDclM2QxDN8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GzWrZiR6DgA/ySdwdp9jG1KLyZCs8vVMpuYmnQLffKFctyd5nkK/7Jc/nbBjHzQHU6lFy/PJm3/Oa31/QCCzs2FotIcVukjE3SoshseJMuVhF0iqCIuPtHXvLApzkZUNZqybtC9YTX0vRYcrqO5vZLXy2Nmp040bXdaCx3ak/n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 05E7A1A14A6;
+	Thu, 26 Feb 2026 14:40:58 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EBD211A2549;
+	Thu, 26 Feb 2026 14:40:57 +0100 (CET)
+Received: from lsv15149.swis.ro-buh01.nxp.com (lsv15149.swis.ro-buh01.nxp.com [10.162.246.145])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 3F2952035B;
+	Thu, 26 Feb 2026 14:40:56 +0100 (CET)
+From: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
+Subject: [PATCH 0/9] accel: New driver for NXP's Neutron NPU
+Date: Thu, 26 Feb 2026 15:40:39 +0200
+Message-Id: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4fMBSd33hjz3yb2J
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:fbd8ca17c9567a87f8e16a470c36f457
-X-cloud-security:scantime:1.606
-DKIM-Signature: a=rsa-sha256;
- bh=3+0rShqS9k9rFyhHYa5/c8HF+LK7zM3g98pXYzCnqk8=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1772110953; v=1;
- b=LoH9KX6GiPyPb+qur2hxM6jbfAVUgZXJlm0oEHJzw/o3RUm7b88igrCy3saJjKO2Gx+YbPZT
- E/SjQDNZ7wPlysUx6oK7Uf+X7BwNzDR5IU/HVGflnZo9ZCk554lqPsdNZoKhiWOP4kOtialbEbu
- Kx57MGzOQoWfL+GdM1+CbnXGqxSH51vu76hde+bLwfMIk7yPUCODzBTEEIRfgr8HLgiSobbuo7V
- LkPmxMlRYxoDqUv1D8OX3gubI5jIPQj0lLGdLwud/tFoc4HeDeX+lt/P4Eb/KqOlIo6xFnRCG6I
- qlYKZu4M2Kd27FOijxffSHNfyjL7auxUakWScc1aXHTpA==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFhNoGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIyMz3bzU0pKi/DzdZBNj01RjyxRDM/M0JaDqgqLUtMwKsEnRsbW1AOD
+ Yn/tZAAAA
+X-Change-ID: 20260226-neutron-c435e39d167f
+To: Oded Gabbay <ogabbay@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, Jiwei Fu <jiwei.fu@nxp.com>, 
+ Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>, 
+ Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772113256; l=3577;
+ i=ruxandra.radulescu@nxp.com; s=20260204; h=from:subject:message-id;
+ bh=/7MY8hy5jQlEhxj9eGiR1iRl0W6znJ9KfDclM2QxDN8=;
+ b=XoBoTREGvNXkcj74Qdwpy1rPE9Srk5uacOSO9MTQQEa59XXxIe2u/tWgmnYx+T7BKj7G+iZtI
+ ZjQy748HLl7D6BMVVeD4pa/vQ8RKwzMN3ApPcTl7A9vLaek1BrNL4df
+X-Developer-Key: i=ruxandra.radulescu@nxp.com; a=ed25519;
+ pk=zoq4b4OYR0c4faAH97xoTxdr6vfR8OvPbS+Cx0XhIBY=
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-The MBa8MPxL mainboard has an integrated PHY connected to the EQOS
-ethernet controller which can support up to five queues. Configure
-these queues in the same manor as done on the imx8mp-evk.
+Introduce a new accel driver for the Neutron Neural Processing Unit
+(NPU), along with associated dt-bindings and DTS node.
 
-Setting DMA to threas mode is necessary to prevent FIFO overflows, see
-commit 0bc3e333a0c82 ("arm64: dts: imx8mp-evk: configure multiple queues
-on eqos")
+The first patch extends the GEM DMA helper APIs to allow bidirectional
+mapping of non-coherent DMA buffers. While not part of the Neutron
+driver, it's a prerequisite allowing us to use the GEM DMA helper.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Neutron is a Neural Processing Unit from NXP, providing machine
+learning (ML) acceleration for edge AI applications. Neutron is
+integrated on NXP SoCs such as the i.MX95.
+
+The NPU consists of the following:
+- RISC-V core running a proprietary firmware
+- One or more Neutron cores, representing the main computation
+  engine performing ML operations
+- Dedicated fast memory (TCM)
+- DMA engine that handles data transfers between DDR and TCM
+
+The firmware is closed source and distributed as a binary here [1].
+
+The Neutron software stack also contains a userspace library [1] and
+a LiteRT custom delegate [2] that allow integration with standard
+LiteRT tools.
+
+[1] https://github.com/nxp-upstream/neutron/tree/upstream
+[2] https://github.com/nxp-imx/tflite-neutron-delegate
+
+Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 ---
-Changes in v3:
-* Add empty line between paraphs
-* Collect Frank's R-b
+Ioana Ciocoi-Radulescu (9):
+      drm/gem-dma: Add flag for bidirectional mapping of non-coherent GEM DMA buffers
+      accel/neutron: Add documentation for NXP Neutron accelerator driver
+      dt-bindings: npu: Add bindings for NXP Neutron
+      accel/neutron: Add driver for NXP Neutron NPU
+      accel/neutron: Add GEM buffer object support
+      accel/neutron: Add mailbox support
+      accel/neutron: Add job submission IOCTL
+      accel/neutron: Add logging support
+      arm64: dts: imx95: Add Neutron node
 
- .../freescale/imx8mp-tqma8mpql-mba8mpxl.dts   | 67 +++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ Documentation/accel/index.rst                      |   1 +
+ Documentation/accel/neutron/index.rst              |  12 +
+ Documentation/accel/neutron/neutron.rst            | 131 ++++++++
+ .../devicetree/bindings/npu/nxp,imx95-neutron.yaml |  95 ++++++
+ MAINTAINERS                                        |  10 +
+ arch/arm64/boot/dts/freescale/imx95.dtsi           |  28 ++
+ drivers/accel/Kconfig                              |   1 +
+ drivers/accel/Makefile                             |   3 +-
+ drivers/accel/neutron/Kconfig                      |  16 +
+ drivers/accel/neutron/Makefile                     |  12 +
+ drivers/accel/neutron/neutron_debugfs.c            |  34 ++
+ drivers/accel/neutron/neutron_debugfs.h            |  15 +
+ drivers/accel/neutron/neutron_device.c             | 239 ++++++++++++++
+ drivers/accel/neutron/neutron_device.h             | 158 +++++++++
+ drivers/accel/neutron/neutron_driver.c             | 262 +++++++++++++++
+ drivers/accel/neutron/neutron_driver.h             |  16 +
+ drivers/accel/neutron/neutron_gem.c                | 115 +++++++
+ drivers/accel/neutron/neutron_gem.h                |  14 +
+ drivers/accel/neutron/neutron_job.c                | 367 +++++++++++++++++++++
+ drivers/accel/neutron/neutron_job.h                |  45 +++
+ drivers/accel/neutron/neutron_mailbox.c            |  47 +++
+ drivers/accel/neutron/neutron_mailbox.h            |  42 +++
+ drivers/gpu/drm/drm_gem_dma_helper.c               |   6 +-
+ include/drm/drm_gem_dma_helper.h                   |   3 +
+ include/uapi/drm/neutron_accel.h                   | 130 ++++++++
+ 25 files changed, 1799 insertions(+), 3 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260226-neutron-c435e39d167f
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index ad49bf85a04d3..890d1e525a489 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -336,6 +336,9 @@ &eqos {
- 	pinctrl-0 = <&pinctrl_eqos>, <&pinctrl_eqos_phy>;
- 	phy-mode = "rgmii-id";
- 	phy-handle = <&ethphy3>;
-+	snps,force_thresh_dma_mode;
-+	snps,mtl-tx-config = <&mtl_tx_setup>;
-+	snps,mtl-rx-config = <&mtl_rx_setup>;
- 	status = "okay";
- 
- 	mdio {
-@@ -359,6 +362,70 @@ ethphy3: ethernet-phy@3 {
- 			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
- 		};
- 	};
-+
-+	mtl_tx_setup: tx-queues-config {
-+		snps,tx-queues-to-use = <5>;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x1>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x2>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x4>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x8>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0xf0>;
-+		};
-+	};
-+
-+	mtl_rx_setup: rx-queues-config {
-+		snps,rx-queues-to-use = <5>;
-+		snps,rx-sched-sp;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x1>;
-+			snps,map-to-dma-channel = <0>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x2>;
-+			snps,map-to-dma-channel = <1>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x4>;
-+			snps,map-to-dma-channel = <2>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x8>;
-+			snps,map-to-dma-channel = <3>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0xf0>;
-+			snps,map-to-dma-channel = <4>;
-+		};
-+	};
- };
- 
- &fec {
+Best regards,
 -- 
-2.43.0
+Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 
