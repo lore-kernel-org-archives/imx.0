@@ -1,180 +1,893 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011006.outbound.protection.outlook.com [52.101.52.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B61338A70D
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 14:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772117320; cv=none; b=O1oBN4+ve8mz/6tgwPpiVLJuuyvuaMAWu3y33WNg4ZbOnYliUI7MuhAmnlDPR25QKDmFHoXg/hQIHRA1VZdN6O3hvEDQqroraYrbhRosM2p2mID1AcOMfwtw1P/tj48EoXUPqZLTfCAdTZQLSwV07eVQmUIzNUSNLHBWc4OMrpk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772117320; c=relaxed/simple;
-	bh=7zTQA8lPctzwCwCjXrHIP1VZj+HCyeAawrW7SHbynq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XW1ojd/8vRpgWIInAn2dj9Qx4HQSGVl1virqKy0piP5juN0dv0C3IQOAmRYpJ5Wy8Z6++FERFla9FE74cW8NaBDRNKj5EALPM/z3YNOksvZnLLcs8Ep7Jzai5/s73xZhiWiG7IJ3dS0llVmYwk5/4f4Xb8vRVBketl4/diDGRWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BDHiyDHq; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC17372B26
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 15:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772118013; cv=fail; b=ZCbmt4h4HMgpP8Q+DXuaJUrA8Q+zKurbqtB50NOddJofZMgDwzP5bNZobl9QiRytRtoYeyTrQbD+F9RgIfZj//jrva6A/KqJ7/IjZyCaAKM/ThFtqpw25o/Pvmd/nzUCun0ap8tX461I/nMFD0w+uiW+kVxmj2+gEx9kfpK5TMo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772118013; c=relaxed/simple;
+	bh=VY7+iJipaTxPy5tdLMsxHBAtMTf0HXbcOYVT3YcMdFw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=g4WPfRrkjfqomqbtamnxA5curi/TDtbhNoQJ8vfyP132urGcJnYuzzuYKecU5GE7O1FtFuRXxMceB28AnYEMJPJS2xD1I6I/V+S2dJ+xdF7hyT9nS42cB7dvc9GSXK6wvMOV6wHGVzGGFkLv69/RWkNbP5mpxepnSVcuNYLlibk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aX9SBK1b; arc=fail smtp.client-ip=52.101.52.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BDHiyDHq"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2addb31945aso6539825ad.1
-        for <imx@lists.linux.dev>; Thu, 26 Feb 2026 06:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772117319; x=1772722119; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r/bj7g2xVbgir6ea9eN+82z6ip7UdFAQ5IC4Yz8wr/Y=;
-        b=BDHiyDHqYrhuapa4Nq7QmFGNO2M8xFM9LmMjlDfw2D3+5m9ujCPRYNu/NECb3DoAG4
-         kxENSE1VfyA3HkyCvkgIofQm2ZhWtm69yYvboJPYF/HFdvf4Dg4/MlZG59LZ7pAR23E2
-         L8N1wL8oUkeutzXzL7VgJG6QRrK7/dSSqOSRWP57hMOA0sL7NyWdJ9a8koQCF4Ckqzzt
-         TyUs0tG8QtUi5KEr0CyESGn9LtFUZlhmg0IDX/eQXKToXRbQa9shjd3BxMuLIaYmD9/R
-         jDwK3Sj1JLLV2XisGkDG5XH8bIut+5zpOQXRqQagsG7Jd7eT7WS99w0ytn/CX7dOHfrY
-         RHNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772117319; x=1772722119;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r/bj7g2xVbgir6ea9eN+82z6ip7UdFAQ5IC4Yz8wr/Y=;
-        b=bXVZSSuK9fKgQCpVQ4jaSPy7+XBeOichZhd0bLMARML41V5SP/dxT/VTCvVd0QzuQn
-         mBcDK8/KioJ4FijqZEqups9yqYwUbQQZNLHRXMlZ+3xkcD6FQb27vfEDCECsOvMg9wf8
-         GsxkXPHLYOE64ELR8R6kMnccMcfFLCGpqSurfR3c6Bs6CzjqjhQsp7lpIUwmlq0e1+Xo
-         LwaLfkQAjnQW5bMrRF+Y6IS2RMDnldBjFAdF2cs9RYX5+QPI/PCoBBRR3gVr7n/nij79
-         /1AxEO84pGYeCAKS1cXLfXD5Hr4bsNFe1IyPoXFJUslejOUfnkaOJ2JytFeNwE94tyrs
-         I56Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXoCk8fuK1twARacgn+IeJOZv06QnUUHTnTwdgF7A5vPvrlHnpZbwpBUD2DWT0HtUdIDEM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCGCrnNIQnsl7jFpc7vubaBnJfXvSLiTGjD7IKKbYh791P4x76
-	MHw6VZ+/+iKKChAvGj2WDcQYbBbMoHx+Ru2MLQKlqGx+SsrfYmkLHqXH
-X-Gm-Gg: ATEYQzwhyuX3vybRfchS/PDEWJJhd/vHdzKKjRoaUkZUdq6QDI+Il7epPg2Wy9Ggmct
-	6wtMZNDpNJQ9R217bY9irtW/WcKXP9sfot132LeHyf8p2gQSsS4Byv6jFKdw618P6GQfz2xrMNM
-	UMAKGg9mGVKSt5XtC4KEeBdIr+SzMxTLsrmIW4fGE8tLZ2Ymss0Evb9a40ZdzxMbvIubvzWH+8N
-	fDCjw0oF5YY5S900RkZX93wkZXavPdTVgVoZSAOIm5GkOM3r2snJ2h2/XZozVcPneuKtpGlxWSm
-	Vr9KZ5E7TE8OF3LqTppw9sPtW0XeGj3jmoLJ2y0LVCWoV1PSC22dcaItLlJAIPilQ1TmYeT/liy
-	RQl+H/5bQFqZSPcgD/7kn08ipJtGk1lOWECfmt1t5gQeppjUePm4ImjamNDWxm9PSgJn2M75Lop
-	XQjgFc8w3/imaoCtMVR54wA6Pr+lD1G80nw6j8FRI3hZM1WLWXjkYI4Xb8hJEeKoY5T/4=
-X-Received: by 2002:a17:902:e785:b0:2ad:c1e1:c286 with SMTP id d9443c01a7336-2adc1e1c458mr70241875ad.24.1772117318539;
-        Thu, 26 Feb 2026 06:48:38 -0800 (PST)
-Received: from wig-Precision-3660.. (125-227-154-99.hinet-ip.hinet.net. [125.227.154.99])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69fa65sm27871825ad.58.2026.02.26.06.48.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 06:48:38 -0800 (PST)
-From: Wig Cheng <onlywig@gmail.com>
-To: shawnguo@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	zaq14760@gmail.com,
-	Wig Cheng <onlywig@gmail.com>
-Subject: [PATCH v5 1/1] arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
-Date: Thu, 26 Feb 2026 22:48:19 +0800
-Message-ID: <20260226144819.3428730-2-onlywig@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260226144819.3428730-1-onlywig@gmail.com>
-References: <20260226144819.3428730-1-onlywig@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aX9SBK1b"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ipXDqFrEuvgVUzEYbaXC+VVvSuzMhWqYqg+8csOytL8J1btxq6O1GV1c33FFM2ty2jmSeuTxANC+2YG0eEKICXi2cSRGNfeSvIG3riWukWrMYYBMfyRS/M0Gqp/EYJMIgrIMLcqwXWuyk105VG+A/kyMsqlDp7WiEqOSukH3iigbIHv7EB6XDzg7TH/H0HWoBEzBNZpq1CaLSsItkIncfPGI6lki2W6hNGw3LalbmME4pRUQgBkXJ57eqMB8VpHRKnGJ1757paOREvHiysGALOLD7UsXL8reW05uStLVeez9nwLYqz5FCwZebzFTFSMrhcFvYKiKpPQOQ8hz77KofA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=48F6svqXtC5Sy2nl5H2DF7sub791rjWNKqQweOaNt+4=;
+ b=EOT47zpLK15KsYHZ+zopBcoBa3J+Z+WfvdZWaoSRl6HpXPNuF6ge690uiqRFdMaYEsPHvxX8x7GOIP8eEVNEkjklgS0xW3sAIN/SFc9VE+NgekJkJHy3sCDzN73A2E/DOFQROYHLaE6uhZYmsxtnFojWjiT2PetWbaqBF76xBUZ4Dbf26/Vp0fYB7sAXq44XhnkQv2uXlFSUdT1vLMEwDOxcX6nmcCbGdir15xvoDF/fQY+ZKTopGGqsM8wqsPENq6hM5su42m2HLDxPUQYO8k62/+L9coOg8p9VO+fcOv2ekMQUcx9H00NJkauFZh7gZLwLKfk1pX33CObkk+tbfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=48F6svqXtC5Sy2nl5H2DF7sub791rjWNKqQweOaNt+4=;
+ b=aX9SBK1bATl6BhiWLyR364PJfxVPD3VFL2cC6dk8u5vcqBH/3Tgktp9LjopodeZGQHhqXfusD/OqIqHJsX/IkKOpscDoiDjOt5WzYnDwhiDRWQur7FteZ3sgSNeQoeYq+5jpsmZuNvlynBBJK3dJ5n/HJ6qwwQ7luYUe83AK98k=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SN7PR12MB7322.namprd12.prod.outlook.com (2603:10b6:806:299::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
+ 2026 15:00:03 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
+ 15:00:02 +0000
+Message-ID: <09364420-1044-4c9b-9907-b92b06653eaf@amd.com>
+Date: Thu, 26 Feb 2026 15:59:49 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/9] accel/neutron: Add job submission IOCTL
+To: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>,
+ Oded Gabbay <ogabbay@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, Jiwei Fu <jiwei.fu@nxp.com>,
+ Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>
+References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
+ <20260226-neutron-v1-7-46eccb3bb50a@nxp.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260226-neutron-v1-7-46eccb3bb50a@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4P288CA0045.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d3::18) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB7322:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b162715-8dab-4b79-94ab-08de7547b75b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	lK8mN3gBWhDTEvgt2/8RxX0UHMJhbu7pPFSrM5wuOFKXr3RTstIS72JRChvKHSq713vcB/blDNptdSQkR0LVQYoRzH8LXZo/e4SsLZSBGJG1scCuwg7apFhDK84++FRG+AHW6Vv7nnrDduwM5cFJHKiQAYaux5uHFyNRlty+H1AVBXjYN+IJV8Y27jaCUSPkl1bk/EIXNR8Xxl24qxixgKwFnbMp1pB0diT6AChFdUf6Ek0jD5Ak+FlXQK/kugRViTfIybaxArrjAxOOIrDmwKPkKebo9rUHV20374Yl9WGvb60PkwCC7p+wns6yDd+KlwOt+Hn25JCrhFjN2R93IlnOn7+CU+7/zqLVm5adiePLLzuKWI40Jjaok20Xkr+EHTwFXpsnA3l4bdHhiogV3RRWPvF+x5iI4LcLUzpwvcodqppHGKtCPPfGY2hEVdzvD4OJivBvBFTPIugNPlZsG5++LRTxT11KLbupBqOrcKKN8COqxjYbf5cIMpc4oxFmOla4QdfP+jg/L+Iao+g0d73lYllwPeLCZDWo1WoZ0+d5ydg3ceKNZ0anWwpVKfRaF8MN3wlVQeIFKXYxs2B9Pl4QquxO72WEGWvnXqio2SlrKc++f2bctrMnBum55S+SXopgqPcwZEdUYQL0nsoWEuUKluSbLWryFfFOJnXu2ySIaNyIhvQ3x7Ny+PcRdekVcG/85k+TaFfTzstqVs+e9ie4iPmkSvJ99tQLNIZqX9MO+AdrFC5sT5xB/Y3iPQ3OffSOACbC4R09CQ8++bDnJg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?djVOWjU5LzYxQUdtN2hDZU1FL1VFdGhCNEU1NDVLOHVZZWtBeDZLSlloYXdG?=
+ =?utf-8?B?WXczV3lGSkxIcmlDc2RHUXFNUVFsaitVditCOTh2R3N6NmZTNFdjeU9ZWmNL?=
+ =?utf-8?B?eEVVNDNESlVSa1hFd3V2cVEvMHd5RVhRanN1RUovaklVaDhLRUt4TXRoNEds?=
+ =?utf-8?B?UWdBM2FrK1hWaStFVUpsQnZkaEc1NjFiZVIybGlNbWpQdldSUEZVUXEzSFVs?=
+ =?utf-8?B?akhVNGFXV21hWWRyUXJ2cjRNTDVjSXRxL0pnWkFnR0RGNWpKbk00MzF6VTFw?=
+ =?utf-8?B?em9iSWI3dTBIcEFBQ3pDWFJuZmpOVllkbzJqd08zWVdyRjBCbXVVb1ZvUkNy?=
+ =?utf-8?B?L2F4V2hTT1FGSVFvM3NicXd0NE1TdEM2NlBEcjZzSUJBSXlXZkJrby9wNWsw?=
+ =?utf-8?B?VGRONXJyamJXM0lUbkZZeVhBZHJjdEVpNTh5ZGNUL1lmdjYydFhFbkpXUWYx?=
+ =?utf-8?B?dnRuSnV4N2dTYXJ2Nmc0dFJKaVRQNjZaZDRyYUVQU2xTdDZCbkdIQjBKZk11?=
+ =?utf-8?B?aGV3R0J3TEM4SC9kamUzOTc3cUZWMHQwbVNROTNSbU5RMlViblB6RStOTG5B?=
+ =?utf-8?B?S3FULzRJblF6UXZQUjdVZkxMaHphSkE3VFFoS0szZkdmZWVzUHZxUkxWZDlI?=
+ =?utf-8?B?Z0c1VW5aQUZ5eFJiemUySEgrWE53bEd1RHA0YlVUSWJNSUliOWdQdWlXYnNY?=
+ =?utf-8?B?UlZvVjhtL05CZytjUWhKRlY5Q0VYbStYTGV1L25BcVlxeEZkNzNMUXNBQmFH?=
+ =?utf-8?B?ekxtVDQ1K2RGN01zOEt3dW5uTzZXT1lLT1ZlaUxBM3VvakFXc0N5V2RqUTFi?=
+ =?utf-8?B?TTdLKzJKTklEVWdBZkUwb0FzdE9IK1hCNXRSM0dCVmsrV0lWTDl0ZFM3NlBa?=
+ =?utf-8?B?RDJPZTBQS2RCY2pUVHhwS3lnVGZ6dGlBTzBmV2JyRGV0b244Q0dsdkh4a1lv?=
+ =?utf-8?B?bjFCTjl5ZXhYamZzVi9jcytRb0tLUVA5OUgrSEVtaC9LZ1BpV0NZSFF3dEI3?=
+ =?utf-8?B?aWZzdVRySDFXbUEwcG4zVlduUmRKazU1WEVGekxTMEdrODNIanUwWXhMalBD?=
+ =?utf-8?B?WmZNNzJqQ1diRGxRdU45Z3k5ajJ4dXJDaG9OMnQvMDR6TEVjM3N4ZjZXSS9G?=
+ =?utf-8?B?ZHM0cE1neGhveEtTSi9DWWRmQ1dZWGtSNXZmQ2k1YlVsU3lTN3ByM0FVWk1L?=
+ =?utf-8?B?ZHV1OW12Ly8veHgyc092aUxxZTlNcHA4L3JBRWlOQWI5Wm9KWWxGSG1DQzBh?=
+ =?utf-8?B?M0QyK3RMdWh4ajhqMjJrQ0hEdlVxaUhMZExnSTJKM0g3RittQmdPRXBVajlX?=
+ =?utf-8?B?bXUrZFlzV2NEejMwYmdNOEJVL3RnZjY2ZjlMTW9UM25ObUxpV1VGMFVtT0R5?=
+ =?utf-8?B?akhJT1dscExocTU3Z0J3ZGQyVEpXd2hQQWxWNUNBdVh1dHdKM3dLc1Y5SGlS?=
+ =?utf-8?B?cDNPYklsaVJmUzdFUDhBR0pUSlloYTAxUUZ3VW5lRUMxWTRqeWI2T3dqTlF2?=
+ =?utf-8?B?a3hXTEJXVXdNdGpLbFRXTWwrZG5SWEhwMExKWmtzbEhHSkppU2xDdTEycWQy?=
+ =?utf-8?B?NHNGekdPVE1RbWV1ckhLQTA5VUpwaS9XOEEwQzBldldJeFhYMlpWWVdHZnpE?=
+ =?utf-8?B?REhmSDB3MXFzSG8rRzlvdk5wUkozY0xvUnNkZjd5blJ0WURCdjRpcXlsNW9a?=
+ =?utf-8?B?VU5ISFFHeUR6bmd2aXRyZWdrUmFuZ1hjVEo0MWR4bXFKWFhQeVpPdkJlMktW?=
+ =?utf-8?B?SHFKUGliSGoyNGwyVTlOdzE0a3V1NjQzUS8vSmU1TWx3ZC9QSDYvcUV0WDJB?=
+ =?utf-8?B?MEx1bThKYUVJNjg0akFBZGx2N0ZRd1pxWlJ6Nm5lY2tuQzNUU2tuWmI3ZkRG?=
+ =?utf-8?B?eThJeHJWUXZVQTlFUDhwMjRBbjVveG5jekhyMzFNNlBxRkpSc1Vxa2M5QkQ5?=
+ =?utf-8?B?TDZBcG8zVXNwMUc3TU1nT0huNVVGNUNvUUxORk40VlZRSkNIU3BEOEwrdytw?=
+ =?utf-8?B?NHM1eFprQVI4ZGMyVC81WWEzZ0phdTFjTjZycTFpV2dIQTFwRk5nOTFIakND?=
+ =?utf-8?B?UzhLYVZCN0lXcmJCdkN2WWlhNURJY0d2d0lCbkoxRE1uNjcxTHVSWlQ2QkZ0?=
+ =?utf-8?B?bENWeGg0aU5vcndLejNiU1NhM2NpQlMzV3lzeDN2TFBNUlI5aE5UVEk3K05j?=
+ =?utf-8?B?T0Y2MkcraHF4amJ3N0puTnJHaUVtRmtuR1M1SlRMUFNRTEpRNXdva3VHcmJG?=
+ =?utf-8?B?N2Y2Y0lJOU9HNVd0bnFXU2J5NHpobEphWlpOVFM2VG1OdjBvTE8vM0k4MSsw?=
+ =?utf-8?Q?2JMu3zNpU16MJixqoh?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b162715-8dab-4b79-94ab-08de7547b75b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 15:00:02.6199
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ujwAhCbT/Fj92rix5dOwPGPjabe/a/iLgW3W1IQEOJQOfzaCLlJ3Wg0eUYMG3fru
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7322
 
-Add device tree overlay to support the MayQueen PixPaper e-paper display
-on the NXP i.MX93 FRDM board. The display is connected via LPSPI3
-interface and uses GPIO pins for reset, busy and DC control.
+On 2/26/26 14:40, Ioana Ciocoi-Radulescu wrote:
+> [Sie erhalten nicht häufig E-Mails von ruxandra.radulescu@nxp.com. Weitere Informationen, warum dies wichtig ist, finden Sie unter https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> Neutron can execute a single job at a time. For now, only inference
+> jobs are supported. Each job has exactly one BO associated with it.
+> 
+> When submitting a job, user also provides a syncobj handle on which it
+> will wait for job completion.
+> 
+> We use the DRM GPU scheduler for job management. Large part of the job
+> submission code is based on the example of the ethosu driver.
+> 
+> Signed-off-by: Jiwei Fu <jiwei.fu@nxp.com>
+> Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
+> ---
+>  drivers/accel/neutron/Makefile         |   1 +
+>  drivers/accel/neutron/neutron_device.c |   8 +-
+>  drivers/accel/neutron/neutron_device.h |  21 ++
+>  drivers/accel/neutron/neutron_driver.c |  28 ++-
+>  drivers/accel/neutron/neutron_driver.h |   3 +
+>  drivers/accel/neutron/neutron_job.c    | 367 +++++++++++++++++++++++++++++++++
+>  drivers/accel/neutron/neutron_job.h    |  45 ++++
+>  include/uapi/drm/neutron_accel.h       |  51 +++++
+>  8 files changed, 519 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
+> index 192ed896a9f9..ac6dd576521c 100644
+> --- a/drivers/accel/neutron/Makefile
+> +++ b/drivers/accel/neutron/Makefile
+> @@ -6,4 +6,5 @@ neutron-y := \
+>         neutron_driver.o \
+>         neutron_device.o \
+>         neutron_gem.o \
+> +       neutron_job.o \
+>         neutron_mailbox.o
+> diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
+> index e5c09105be99..571ec906ad72 100644
+> --- a/drivers/accel/neutron/neutron_device.c
+> +++ b/drivers/accel/neutron/neutron_device.c
+> @@ -7,6 +7,7 @@
+>  #include <linux/iopoll.h>
+> 
+>  #include "neutron_device.h"
+> +#include "neutron_job.h"
+>  #include "neutron_mailbox.h"
+> 
+>  void neutron_enable_irq(struct neutron_device *ndev)
+> @@ -32,9 +33,14 @@ void neutron_handle_irq(struct neutron_device *ndev)
+>         /* Write 1 to clear */
+>         writel_relaxed(appstatus & APPSTATUS_CLEAR_MASK, NEUTRON_REG(ndev, APPSTATUS));
+> 
+> -       if (appstatus & APPSTATUS_FAULTCAUSE_MASK)
+> +       if (appstatus & APPSTATUS_FAULTCAUSE_MASK) {
+>                 dev_err(ndev->dev, "Neutron halted due to fault: 0x%lx\n",
+>                         FIELD_GET(APPSTATUS_FAULTCAUSE_MASK, appstatus));
+> +               return neutron_job_err_handler(ndev);
+> +       }
+> +
+> +       if (appstatus & APPSTATUS_INFDONE)
+> +               neutron_job_done_handler(ndev);
+>  }
+> 
+>  #define neutron_boot_done(appctrl) \
+> diff --git a/drivers/accel/neutron/neutron_device.h b/drivers/accel/neutron/neutron_device.h
+> index 8e4df7462d82..0ed72965774d 100644
+> --- a/drivers/accel/neutron/neutron_device.h
+> +++ b/drivers/accel/neutron/neutron_device.h
+> @@ -9,8 +9,10 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/bits.h>
+>  #include <drm/drm_device.h>
+> +#include <drm/gpu_scheduler.h>
+> 
+>  struct clk_bulk_data;
+> +struct neutron_job;
+> 
+>  #define NEUTRON_FIRMWARE_NAME          "NeutronFirmware.elf"
+> 
+> @@ -92,6 +94,13 @@ enum neutron_mem_id {
+>   * @clks: Neutron clocks
+>   * @num_clks: Number of clocks
+>   * @flags: Software flags used by driver
+> + * @fence_lock: DMA fence lock
+> + * @sched: GPU scheduler
+> + * @sched_lock: Scheduler lock, for neutron_push_job
+> + * @fence_context: Fence context
+> + * @job_seqno: Job sequence number
+> + * @job_lock: Job lock, for active_job handling
+> + * @active_job: Currently active job
+>   */
+>  struct neutron_device {
+>         struct drm_device base;
+> @@ -103,6 +112,18 @@ struct neutron_device {
+>         struct clk_bulk_data *clks;
+>         int num_clks;
+>         u32 flags;
+> +
+> +       /* For dma_fence */
+> +       spinlock_t fence_lock;
 
-The overlay configures:
-    - LPSPI3 pinmux for SPI communication (MOSI, MISO, CLK, CE0)
-    - PixPaper display device with proper GPIO assignments
-    - SPI frequency set to 1MHz for stable operation
+I've just pushed a patch set to drm-misc-next which makes the fence_lock superflous in most cases. Just provide NULL as lock when calling to dma_fence_init().
 
-Enable Open-EP Community pixpaper-213-c support on NXP i.MX93.
+> +       struct drm_gpu_scheduler sched;
+> +       /* For neutron_push_job */
+> +       struct mutex sched_lock;
+> +       u64 fence_context;
+> +       u64 job_seqno;
+> +
+> +       /* For active_job handling */
+> +       struct mutex job_lock;
+> +       struct neutron_job *active_job;
+>  };
+> 
+>  #define to_neutron_device(drm) \
+> diff --git a/drivers/accel/neutron/neutron_driver.c b/drivers/accel/neutron/neutron_driver.c
+> index c9a18bf52037..ceae1f7e8359 100644
+> --- a/drivers/accel/neutron/neutron_driver.c
+> +++ b/drivers/accel/neutron/neutron_driver.c
+> @@ -19,40 +19,53 @@
+>  #include "neutron_device.h"
+>  #include "neutron_driver.h"
+>  #include "neutron_gem.h"
+> +#include "neutron_job.h"
+> 
+>  #define NEUTRON_SUSPEND_DELAY_MS 1000
+> 
+>  static const struct drm_ioctl_desc neutron_drm_ioctls[] = {
+>         DRM_IOCTL_DEF_DRV(NEUTRON_CREATE_BO, neutron_ioctl_create_bo, 0),
+>         DRM_IOCTL_DEF_DRV(NEUTRON_SYNC_BO, neutron_ioctl_sync_bo, 0),
+> +       DRM_IOCTL_DEF_DRV(NEUTRON_SUBMIT_JOB, neutron_ioctl_submit_job, 0),
+>  };
+> 
+>  static int neutron_open(struct drm_device *drm, struct drm_file *file)
+>  {
+>         struct neutron_device *ndev = to_neutron_device(drm);
+>         struct neutron_file_priv *npriv;
+> +       int ret;
+> 
+>         npriv = kzalloc_obj(*npriv);
+>         if (!npriv)
+>                 return -ENOMEM;
+> 
+>         npriv->ndev = ndev;
+> -       file->driver_priv = npriv;
+> 
+> +       ret = neutron_job_open(npriv);
+> +       if (ret)
+> +               goto err_free;
+> +
+> +       file->driver_priv = npriv;
+>         return 0;
+> +
+> +err_free:
+> +       kfree(npriv);
+> +       return ret;
+>  }
+> 
+>  static void neutron_postclose(struct drm_device *drm, struct drm_file *file)
+>  {
+>         struct neutron_file_priv *npriv = file->driver_priv;
+> 
+> +       neutron_job_close(npriv);
+>         kfree(npriv);
+>  }
+> 
+>  DEFINE_DRM_ACCEL_FOPS(neutron_drm_driver_fops);
+> 
+>  static const struct drm_driver neutron_drm_driver = {
+> -       .driver_features        = DRIVER_COMPUTE_ACCEL | DRIVER_GEM,
+> +       .driver_features        = DRIVER_COMPUTE_ACCEL | DRIVER_GEM |
+> +                                 DRIVER_SYNCOBJ,
+>         .name                   = "neutron",
+>         .desc                   = "NXP Neutron driver",
+>         .major                  = 1,
+> @@ -151,19 +164,25 @@ static int neutron_probe(struct platform_device *pdev)
+>                 return ret;
+>         }
+> 
+> -       ret = devm_pm_runtime_enable(dev);
+> +       ret = neutron_job_init(ndev);
+>         if (ret)
+>                 goto free_reserved;
+> 
+> +       ret = devm_pm_runtime_enable(dev);
+> +       if (ret)
+> +               goto free_job;
+> +
+>         pm_runtime_set_autosuspend_delay(dev, NEUTRON_SUSPEND_DELAY_MS);
+>         pm_runtime_use_autosuspend(dev);
+> 
+>         ret = drm_dev_register(&ndev->base, 0);
+>         if (ret)
+> -               goto free_reserved;
+> +               goto free_job;
+> 
+>         return 0;
+> 
+> +free_job:
+> +       neutron_job_fini(ndev);
+>  free_reserved:
+>         of_reserved_mem_device_release(&pdev->dev);
+> 
+> @@ -175,6 +194,7 @@ static void neutron_remove(struct platform_device *pdev)
+>         struct neutron_device *ndev = platform_get_drvdata(pdev);
+> 
+>         drm_dev_unregister(&ndev->base);
+> +       neutron_job_fini(ndev);
+>         of_reserved_mem_device_release(&pdev->dev);
+>  }
+> 
+> diff --git a/drivers/accel/neutron/neutron_driver.h b/drivers/accel/neutron/neutron_driver.h
+> index cd52b5eb2d27..b709de74105a 100644
+> --- a/drivers/accel/neutron/neutron_driver.h
+> +++ b/drivers/accel/neutron/neutron_driver.h
+> @@ -4,10 +4,13 @@
+>  #ifndef __NEUTRON_DRIVER_H__
+>  #define __NEUTRON_DRIVER_H__
+> 
+> +#include <drm/gpu_scheduler.h>
+> +
+>  struct neutron_device;
+> 
+>  struct neutron_file_priv {
+>         struct neutron_device *ndev;
+> +       struct drm_sched_entity sched_entity;
+>  };
+> 
+>  #endif /* __NEUTRON_DRIVER_H__ */
+> diff --git a/drivers/accel/neutron/neutron_job.c b/drivers/accel/neutron/neutron_job.c
+> new file mode 100644
+> index 000000000000..316e361166a2
+> --- /dev/null
+> +++ b/drivers/accel/neutron/neutron_job.c
+> @@ -0,0 +1,367 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/* Copyright 2025-2026 NXP */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/pm_runtime.h>
+> +#include <drm/drm_file.h>
+> +#include <drm/drm_print.h>
+> +#include <drm/drm_gem_dma_helper.h>
+> +#include <drm/neutron_accel.h>
+> +
+> +#include "neutron_driver.h"
+> +#include "neutron_device.h"
+> +#include "neutron_gem.h"
+> +#include "neutron_mailbox.h"
+> +#include "neutron_job.h"
+> +
+> +#define NEUTRON_JOB_TIMEOUT_MS 5000
+> +
+> +static const char *neutron_fence_get_driver_name(struct dma_fence *fence)
+> +{
+> +       return "neutron";
+> +}
+> +
+> +static const char *neutron_fence_get_timeline_name(struct dma_fence *fence)
+> +{
+> +       return "neutron-npu";
+> +}
+> +
+> +static const struct dma_fence_ops neutron_fence_ops = {
+> +       .get_driver_name = neutron_fence_get_driver_name,
+> +       .get_timeline_name = neutron_fence_get_timeline_name,
+> +};
+> +
+> +static void neutron_hw_submit(struct neutron_job *job)
+> +{
+> +       struct neutron_device *ndev = job->ndev;
+> +       struct neutron_mbox_cmd cmd = {0};
+> +       u32 base_l, base_h;
+> +       u64 base_addr;
+> +       int ret;
+> +
+> +       switch (job->type) {
+> +       case DRM_NEUTRON_JOB_INFERENCE:
+> +               cmd.id = NEUTRON_CMD_INFERENCE;
+> +               cmd.args[0] = job->inference.tensor_offset;
+> +               cmd.args[1] = job->inference.microcode_offset;
+> +               cmd.args[2] = job->inference.tensor_count;
+> +               break;
+> +       default:
+> +               dev_WARN(ndev->dev, "Unknown job type: %d\n", job->type);
+> +               return;
+> +       }
+> +
+> +       base_addr = to_drm_gem_dma_obj(job->bo)->dma_addr;
+> +       base_l = lower_32_bits(base_addr);
+> +       base_h = upper_32_bits(base_addr);
+> +
+> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASEDDRL));
+> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASEINOUTL));
+> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASESPILLL));
+> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASEDDRH));
+> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASEINOUTH));
+> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASESPILLH));
+> +
+> +       ret = neutron_mbox_send_cmd(ndev, &cmd);
+> +       if (ret) {
+> +               /* Nothing we can do here, we'll reset the device on timeout */
+> +               dev_err(ndev->dev, "Failed to submit job, device is busy\n");
+> +       }
+> +}
+> +
+> +void neutron_job_err_handler(struct neutron_device *ndev)
+> +{
+> +       guard(mutex)(&ndev->job_lock);
+> +
+> +       if (ndev->active_job)
+> +               drm_sched_fault(&ndev->sched);
+> +}
+> +
+> +void neutron_job_done_handler(struct neutron_device *ndev)
+> +{
+> +       struct neutron_mbox_state state;
+> +
+> +       neutron_mbox_read_state(ndev, &state);
+> +       if (state.status != NEUTRON_FW_STATUS_DONE) {
+> +               dev_err(ndev->dev, "Inconsistent firmware state: status 0x%x, err 0x%x\n",
+> +                       state.status, state.err_code);
+> +               return neutron_job_err_handler(ndev);
+> +       }
+> +
+> +       if (state.err_code != 0)
+> +               dev_warn(ndev->dev, "Job finished with error: 0x%x\n",
+> +                        state.err_code);
 
-Signed-off-by: Wig Cheng <onlywig@gmail.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  4 ++
- .../freescale/imx93-11x11-frdm-pixpaper.dtso  | 50 +++++++++++++++++++
- 2 files changed, 54 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
+Not mandatory but you might also want to forward that as error to your dma_fence, see dma_fence_set_error(). 
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 700bab4d3e60..aa5eb1626c10 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -417,6 +417,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-i3c.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm.dtb
-+
-+imx93-11x11-frdm-pixpaper-dtbs += imx93-11x11-frdm.dtb imx93-11x11-frdm-pixpaper.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm-pixpaper.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
-new file mode 100644
-index 000000000000..28aeff9520e2
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Device Tree Overlay for Mayqueen (Open-EP Community) pixpaper display
-+ * support on NXP FRDM i.MX 93 Development Board
-+ *
-+ * Copyright (C) 2026 Wig Cheng <onlywig@gmail.com>
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx93-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&iomuxc {
-+	pinctrl_lpspi3: lpspi3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO08__GPIO2_IO08		0x3fe /* SPI3 CE0 */
-+			MX93_PAD_GPIO_IO09__LPSPI3_SIN		0x3fe /* SPI3 MISO */
-+			MX93_PAD_GPIO_IO10__LPSPI3_SOUT		0x3fe /* SPI3 MOSI */
-+			MX93_PAD_GPIO_IO11__LPSPI3_SCK		0x3fe /* SPI3 CLK */
-+		>;
-+	};
-+
-+	pinctrl_epd_ctrl: epdctrlgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO05__GPIO2_IO05		0x31e /* DC pin */
-+			MX93_PAD_GPIO_IO06__GPIO2_IO06		0x31e /* RESET pin */
-+			MX93_PAD_GPIO_IO26__GPIO2_IO26		0x31e /* BUSY pin */
-+		>;
-+	};
-+};
-+
-+&lpspi3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpspi3>, <&pinctrl_epd_ctrl>;
-+	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	display@0 {
-+		compatible = "mayqueen,pixpaper";
-+		reg = <0>;
-+		spi-max-frequency = <1000000>;
-+		reset-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		dc-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		busy-gpios = <&gpio2 26 GPIO_ACTIVE_HIGH>;
-+	};
-+};
--- 
-2.43.0
+> +
+> +       /* Reset Neutron internal state to prepare for next inference */
+> +       neutron_mbox_reset_state(ndev);
+> +
+> +       scoped_guard(mutex, &ndev->job_lock) {
+> +               if (ndev->active_job) {
+> +                       dma_fence_signal(ndev->active_job->neutron_fence);
+> +                       ndev->active_job = NULL;
+> +               }
+> +       }
+> +}
+> +
+> +static void neutron_cleanup_job(struct kref *ref)
+> +{
+> +       struct neutron_job *job = container_of(ref, struct neutron_job, refcnt);
+> +
+> +       pm_runtime_put_autosuspend(job->ndev->base.dev);
+> +
+> +       dma_fence_put(job->neutron_fence);
+> +       dma_fence_put(job->sched_fence);
+> +       drm_gem_object_put(job->bo);
+> +       drm_syncobj_put(job->syncobj);
+> +
+> +       kfree(job);
+> +}
+> +
+> +static void neutron_put_job(struct neutron_job *job)
+> +{
+> +       kref_put(&job->refcnt, neutron_cleanup_job);
+> +}
+> +
+> +static void neutron_free_job(struct drm_sched_job *sched_job)
+> +{
+> +       struct neutron_job *job = to_neutron_job(sched_job);
+> +
+> +       drm_sched_job_cleanup(sched_job);
+> +       neutron_put_job(job);
+> +}
+> +
+> +static struct dma_fence *neutron_run_job(struct drm_sched_job *sched_job)
+> +{
+> +       struct neutron_job *job = to_neutron_job(sched_job);
+> +       struct dma_fence *fence = job->neutron_fence;
+> +       struct neutron_device *ndev = job->ndev;
+> +
+> +       if (unlikely(job->base.s_fence->finished.error))
+> +               return NULL;
+> +
+> +       dma_fence_init(fence, &neutron_fence_ops, &ndev->fence_lock,
+> +                      ndev->fence_context, ++ndev->job_seqno);
+> +       dma_fence_get(fence);
+> +
+> +       scoped_guard(mutex, &ndev->job_lock) {
+> +               ndev->active_job = job;
+> +               neutron_hw_submit(job);
+> +       }
+> +
+> +       return fence;
+> +}
+> +
+> +static enum drm_gpu_sched_stat neutron_timedout_job(struct drm_sched_job *sched_job)
+> +{
+> +       struct neutron_job *job = to_neutron_job(sched_job);
+> +       struct neutron_device *ndev = job->ndev;
+> +       struct neutron_mbox_state state;
+> +
+> +       /* We assume Neutron is stuck, retrieve current state and reset */
+> +       neutron_mbox_read_state(ndev, &state);
+> +       dev_err(ndev->dev, "Neutron timedout, status: 0x%x, err: 0x%x\n",
+> +               state.status, state.err_code);
+> +
+> +       drm_sched_stop(&ndev->sched, sched_job);
+> +
+> +       scoped_guard(mutex, &ndev->job_lock)
+> +               ndev->active_job = NULL;
+> +
+> +       pm_runtime_force_suspend(ndev->dev);
+> +       pm_runtime_force_resume(ndev->dev);
+> +
+> +       drm_sched_start(&ndev->sched, 0);
+> +
+> +       return DRM_GPU_SCHED_STAT_RESET;
+> +}
+> +
+> +static void neutron_cancel_job(struct drm_sched_job *sched_job)
+> +{
+> +       struct neutron_job *job = to_neutron_job(sched_job);
+> +       struct neutron_device *ndev = job->ndev;
+> +
+> +       guard(mutex)(&ndev->job_lock);
+> +
+> +       if (!dma_fence_is_signaled(job->neutron_fence)) {
+> +               dma_fence_set_error(job->neutron_fence, -ECANCELED);
+> +               dma_fence_signal(job->neutron_fence);
+> +       }
+> +}
+> +
+> +static const struct drm_sched_backend_ops neutron_sched_ops = {
+> +       .run_job = neutron_run_job,
+> +       .free_job = neutron_free_job,
+> +       .timedout_job = neutron_timedout_job,
+> +       .cancel_job = neutron_cancel_job,
+> +};
+> +
+> +int neutron_job_init(struct neutron_device *ndev)
+> +{
+> +       const struct drm_sched_init_args args = {
+> +               .ops = &neutron_sched_ops,
+> +               .num_rqs = DRM_SCHED_PRIORITY_COUNT,
+> +               .credit_limit = 1,
+> +               .timeout = msecs_to_jiffies(NEUTRON_JOB_TIMEOUT_MS),
+> +               .name = dev_name(ndev->dev),
+> +               .dev = ndev->dev,
+> +       };
+> +       int ret;
+> +
+> +       ret = devm_mutex_init(ndev->dev, &ndev->sched_lock);
+> +       if (ret)
+> +               return ret;
+> +       ret = devm_mutex_init(ndev->dev, &ndev->job_lock);
+> +       if (ret)
+> +               return ret;
+> +       spin_lock_init(&ndev->fence_lock);
+> +
+> +       ndev->fence_context = dma_fence_context_alloc(1);
+> +
+> +       ret = drm_sched_init(&ndev->sched, &args);
+> +       if (ret)
+> +               dev_err(ndev->dev, "Error creating DRM scheduler\n");
+> +
+> +       return ret;
+> +}
+> +
+> +void neutron_job_fini(struct neutron_device *ndev)
+> +{
+> +       drm_sched_fini(&ndev->sched);
+> +}
+> +
+> +int neutron_job_open(struct neutron_file_priv *npriv)
+> +{
+> +       struct neutron_device *ndev = npriv->ndev;
+> +       struct drm_gpu_scheduler *sched = &ndev->sched;
+> +       int ret;
+> +
+> +       ret = drm_sched_entity_init(&npriv->sched_entity,
+> +                                   DRM_SCHED_PRIORITY_NORMAL,
+> +                                   &sched, 1, NULL);
+> +       if (ret)
+> +               dev_err(ndev->dev, "Error creating scheduler entity\n");
+> +
+> +       return ret;
+> +}
+> +
+> +void neutron_job_close(struct neutron_file_priv *npriv)
+> +{
+> +       drm_sched_entity_destroy(&npriv->sched_entity);
+> +}
+> +
+> +static int neutron_push_job(struct neutron_job *job)
+> +{
+> +       struct neutron_device *ndev = job->ndev;
+> +       struct ww_acquire_ctx acquire_ctx;
+> +       int ret;
+> +
+> +       ret = drm_gem_lock_reservations(&job->bo, 1, &acquire_ctx);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = dma_resv_reserve_fences(job->bo->resv, 1);
+> +       if (ret)
+> +               goto out_unlock_res;
+> +
+> +       ret = drm_sched_job_add_implicit_dependencies(&job->base, job->bo, true);
+> +       if (ret)
+> +               goto out_unlock_res;
+> +
+> +       ret = pm_runtime_resume_and_get(ndev->base.dev);
+> +       if (ret)
+> +               goto out_unlock_res;
+> +
+> +       scoped_guard(mutex, &ndev->sched_lock) {
+> +               drm_sched_job_arm(&job->base);
+> +
+> +               job->sched_fence = dma_fence_get(&job->base.s_fence->finished);
+> +               drm_syncobj_replace_fence(job->syncobj, job->sched_fence);
+> +
+> +               kref_get(&job->refcnt);
+> +               drm_sched_entity_push_job(&job->base);
+> +
+> +               dma_resv_add_fence(job->bo->resv, job->sched_fence,
+> +                                  DMA_RESV_USAGE_WRITE);
+> +       }
+> +
+> +out_unlock_res:
+> +       drm_gem_unlock_reservations(&job->bo, 1, &acquire_ctx);
+> +
+> +       return ret;
+> +}
+> +
+> +int neutron_ioctl_submit_job(struct drm_device *drm, void *data, struct drm_file *filp)
+> +{
+> +       struct neutron_device *ndev = to_neutron_device(drm);
+> +       struct neutron_file_priv *npriv = filp->driver_priv;
+> +       struct drm_neutron_submit_job *args = data;
+> +       struct neutron_job *job;
+> +       int ret;
+> +
+> +       if (args->pad)
+> +               return -EINVAL;
+> +
+> +       job = kzalloc_obj(*job);
+> +       if (!job)
+> +               return -ENOMEM;
+> +
+> +       job->ndev = ndev;
+> +       kref_init(&job->refcnt);
+> +
+> +       job->neutron_fence = kzalloc_obj(*job->neutron_fence);
+> +       if (!job->neutron_fence) {
+> +               ret = -ENOMEM;
+> +               goto out_free_job;
+> +       }
+> +
+> +       switch (args->type) {
+> +       case DRM_NEUTRON_JOB_INFERENCE:
+> +               memcpy(&job->inference, &args->inference,
+> +                      sizeof(args->inference));
+> +               break;
+> +       default:
+> +               dev_dbg(ndev->dev, "Invalid job type %d\n", args->type);
+> +               ret = -EINVAL;
+> +               goto out_free_fence;
+> +       }
+> +
+> +       job->bo = drm_gem_object_lookup(filp, args->bo_handle);
+> +       if (!job->bo) {
+> +               dev_dbg(ndev->dev, "Invalid BO handle\n");
+> +               ret = -ENOENT;
+> +               goto out_free_fence;
+> +       }
+> +
+> +       job->syncobj = drm_syncobj_find(filp, args->syncobj_handle);
+> +       if (!job->syncobj) {
+> +               dev_dbg(ndev->dev, "Invalid syncobj handle\n");
+> +               ret = -ENOENT;
+> +               goto out_put_gem;
+> +       }
+> +
+> +       ret = drm_sched_job_init(&job->base, &npriv->sched_entity, 1, NULL,
+> +                                filp->client_id);
+> +       if (ret)
+> +               goto out_put_syncobj;
+> +
+> +       ret = neutron_push_job(job);
+> +       if (ret)
+> +               goto out_sched_cleanup;
+> +
+> +       neutron_put_job(job);
+> +
+> +       return 0;
+> +
+> +out_sched_cleanup:
+> +       drm_sched_job_cleanup(&job->base);
+> +out_put_syncobj:
+> +       drm_syncobj_put(job->syncobj);
+> +out_put_gem:
+> +       drm_gem_object_put(job->bo);
+> +out_free_fence:
+> +       kfree(job->neutron_fence);
+> +out_free_job:
+> +       kfree(job);
+> +
+> +       return ret;
+> +}
+> diff --git a/drivers/accel/neutron/neutron_job.h b/drivers/accel/neutron/neutron_job.h
+> new file mode 100644
+> index 000000000000..bb7773aeb218
+> --- /dev/null
+> +++ b/drivers/accel/neutron/neutron_job.h
+> @@ -0,0 +1,45 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/* Copyright 2025-2026 NXP */
+> +
+> +#ifndef __NEUTRON_JOB_H__
+> +#define __NEUTRON_JOB_H__
+> +
+> +#include <linux/kref.h>
+> +#include <drm/drm_gem.h>
+> +#include <drm/drm_syncobj.h>
+> +#include <drm/gpu_scheduler.h>
+> +#include <drm/neutron_accel.h>
+> +
+> +#include "neutron_driver.h"
+> +
+> +struct neutron_device;
+> +struct neutron_file_priv;
+> +
+> +struct neutron_job {
+> +       struct drm_sched_job base;
+> +       struct neutron_device *ndev;
+> +       struct dma_fence *neutron_fence;
+
+> +       struct dma_fence *sched_fence;
+
+That looks superflous to me. You should always have the scheduler fence through the base.
+
+> +       struct drm_syncobj *syncobj;
+
+Why do you want to keep the syncobj around?
+
+
+Apart from those notes looks pretty good to me, but I'm a bit disapointed that there isn't any DMA-buf support to review :)
+
+Regards,
+Christian.
+
+> +       struct drm_gem_object *bo;
+> +       enum drm_neutron_job_type type;
+> +       union {
+> +               struct drm_neutron_inference_job inference;
+> +       };
+> +       struct kref refcnt;
+> +};
+> +
+> +#define to_neutron_job(job) \
+> +       container_of(job, struct neutron_job, base)
+> +
+> +int neutron_job_init(struct neutron_device *dev);
+> +void neutron_job_fini(struct neutron_device *dev);
+> +int neutron_job_open(struct neutron_file_priv *npriv);
+> +void neutron_job_close(struct neutron_file_priv *npriv);
+> +
+> +void neutron_job_done_handler(struct neutron_device *dev);
+> +void neutron_job_err_handler(struct neutron_device *dev);
+> +
+> +int neutron_ioctl_submit_job(struct drm_device *dev, void *data, struct drm_file *filp);
+> +
+> +#endif /* __NEUTRON_JOB_H__ */
+> diff --git a/include/uapi/drm/neutron_accel.h b/include/uapi/drm/neutron_accel.h
+> index 2f5639f2e0e8..a9e5682709d2 100644
+> --- a/include/uapi/drm/neutron_accel.h
+> +++ b/include/uapi/drm/neutron_accel.h
+> @@ -15,10 +15,12 @@ extern "C" {
+>   *
+>   * @DRM_NEUTRON_CREATE_BO: Create a buffer object
+>   * @DRM_NEUTRON_SYNC_BO: Sync (parts of) the buffer object memory
+> + * @DRM_NEUTRON_SUBMIT_JOB: Submit a job to the device
+>   */
+>  enum drm_neutron_ioctl {
+>         DRM_NEUTRON_CREATE_BO = 0,
+>         DRM_NEUTRON_SYNC_BO,
+> +       DRM_NEUTRON_SUBMIT_JOB,
+>  };
+> 
+>  /**
+> @@ -64,6 +66,51 @@ struct drm_neutron_sync_bo {
+>         __u64 offset;
+>  };
+> 
+> +/**
+> + * enum drm_neutron_job_type - Type of job to submit to Neutron device
+> + *
+> + * @DRM_NEUTRON_JOB_INFERENCE: Inference job
+> + */
+> +enum drm_neutron_job_type {
+> +       DRM_NEUTRON_JOB_INFERENCE = 0,
+> +};
+> +
+> +/**
+> + * struct drm_neutron_inference_job - Inference job descriptor
+> + *
+> + * @tensor_offset: Offset of tensor array inside job BO
+> + * @microcode_offset: Microcode offset inside BO
+> + * @tensor_count: Number of valid tensors
+> + * @pad: MBZ
+> + */
+> +struct drm_neutron_inference_job {
+> +       __u32 tensor_offset;
+> +       __u32 microcode_offset;
+> +       __u32 tensor_count;
+> +       __u32 pad[5];
+> +};
+> +
+> +/**
+> + * struct drm_neutron_submit_job - Submit a job to Neutron device
+> + *
+> + * @type: Job type, one of enum drm_neutron_job_type
+> + * @bo_handle: BO handle for this job
+> + * @inference: Inference job descriptor (when type is DRM_NEUTRON_JOB_INFERENCE)
+> + * @reserved: Reserved for future job types
+> + * @syncobj_handle: Handle of syncobj on which user waits for job completion
+> + * @pad: MBZ
+> + */
+> +struct drm_neutron_submit_job {
+> +       __u32 type;
+> +       __u32 bo_handle;
+> +       union {
+> +               struct drm_neutron_inference_job inference;
+> +               __u32 reserved[8];
+> +       };
+> +       __u32 syncobj_handle;
+> +       __u32 pad;
+> +};
+> +
+>  #define DRM_IOCTL_NEUTRON_CREATE_BO \
+>         DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_CREATE_BO, \
+>                  struct drm_neutron_create_bo)
+> @@ -72,6 +119,10 @@ struct drm_neutron_sync_bo {
+>         DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SYNC_BO, \
+>                  struct drm_neutron_sync_bo)
+> 
+> +#define DRM_IOCTL_NEUTRON_SUBMIT_JOB \
+> +       DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SUBMIT_JOB, \
+> +                struct drm_neutron_submit_job)
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+> 
+> --
+> 2.34.1
+> 
 
