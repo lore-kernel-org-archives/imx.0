@@ -1,69 +1,66 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52923EBF20
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 19:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1124657F7
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 20:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772133049; cv=none; b=Az030jeGNzQ6A8Jo/X7avxBWtbyeE6j5VcnI0cVBpnOB7oHbtNUkhv0Wf+LjW8dCcXsOhDMgC19XPADYpMLk1jEBSZ+fsDgSY8LX/JMlZX/MiE+DAUxYbZc+jmPI7Mza8tMDoQmxDdtWVTM2Og3d1z7VXViteGW4A6gGZ4kRjXk=
+	t=1772136385; cv=none; b=OY4U3Qsfk2OLwbSSOmCGvouaZ8tFyTjOzmNznNRvOZoOodijolvZGID6rFcAP8/hqhCFaDRg7itanoy5DRaKttTOXuY9u/5DejKEfB89resiT2Y2zfrBGQzjFAku0VZTvmJDkkWhOwFtkCH+BBFsqvLW3dQeYMxYFHL76zP6qE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772133049; c=relaxed/simple;
-	bh=1IzP64jz/SkcJX5dvo8R+ulnS8fQwbekOalpkBEHnII=;
+	s=arc-20240116; t=1772136385; c=relaxed/simple;
+	bh=KmOWNIRgBHtWMlabix2KX/fbklWBKHIUOM7hsUpVbZI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=llXyC8DxF6ICMTHt/kCBkVeKxFFUtFJErTbEq9P6TUcdbRoxEdZSMazC4Kv/+sXMlIXmwjfzL7IdCdywQeEGNCv0Z5l1fodYErgLFejFDsVdc9KdreXA2575Agy9nj+31mxzSqYL2RvWe24iRjoppkNcuD1eLBhCcEXrtG6j1Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Uuo9qJeA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=sNyCXjcXtGFgBClXHr3y60g2RCHRaWQeYE/f4+Au8k6K7iVr3gJ76R7kWUqUxQCmRz1VXb8mf7QQUeFCuhi11DJle/expTidn/TgLMAbyFLLKmWpli5pIOhvEmyc+8NQeCrVB9qbiyzrtCG0ccdXEianrUWcz/eJ+Nd958X3H1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jV9Qy09M; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Uuo9qJeA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HjiR1TwqXK5Qwrd2T9B+rxf4jSStXBuyud6ZyusRPjc=; b=Uuo9qJeAxZxhSDQvCG2THyfgn6
-	goN/SZ5wYmb4g5wzXTMlNaPWkQqKj7uB/6w566SYrPrujxs50sfZYENwPPn3t9yfpjvYbPXUlilqs
-	8efDz3idaa358SjlUOzL6LOYivhtxwyWu6qwu3GnzrfJyZW8mWfOAmfqaObgWxP9unvufSwvsMrOf
-	edMti+IBUeaF7wa0m+Tt/d92YkneueFcO8a80EDhHf73MxhTIn4vGXNBuZxqaS/gxlDyEiqUPTdNd
-	5T+8sKrFrKX+VM2XS0Y+YFMS15vuekaYIfoUBiFJ/j1X7MnCd4/6ap/QOzc5nMk2L1DHkyOZq4WYj
-	fIDgys9g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50450)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vvgkl-000000008Lp-1Mml;
-	Thu, 26 Feb 2026 19:10:27 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vvgkg-000000002GM-2Yxa;
-	Thu, 26 Feb 2026 19:10:22 +0000
-Date: Thu, 26 Feb 2026 19:10:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: jan.petrous@oss.nxp.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jV9Qy09M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772136382; x=1803672382;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KmOWNIRgBHtWMlabix2KX/fbklWBKHIUOM7hsUpVbZI=;
+  b=jV9Qy09MBhv9FYG0/AVKqbQKS0cxtDGJQdE2QzkmshEUn6sP0iuCBc4G
+   Wm2xlo9ppEjmdtYD4FL0qH+x+Onb1eNojU1VyTmuplUlPrEg6f4NJHtyx
+   J/B/NeYvyjmeztVIQQq+DYInJUZAwNNLULzFbChDS5ZwGdPDEhXCQjzx9
+   fIWqFvs+MPsZWzojy2fYBFsf/JfpN3rH279KpLU3E3cDHuM4SoYTbOkPq
+   LqVSEAEsvOcpqTEqAfN7UC1csVrNmDnT55XiW8D9ZejWVjTdN9AvG/QuV
+   LuxyGKv5tXdQY+quEQuVKIukPKaoVNX6vZlQLWpzE3ypNdVsurIX+Wuz7
+   g==;
+X-CSE-ConnectionGUID: KNW5YpFMRmq4/7c8KRpR/w==
+X-CSE-MsgGUID: IIKw6DOURM6WQMZYiwKMTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="77047366"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="77047366"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 12:06:21 -0800
+X-CSE-ConnectionGUID: 8weXfwV+Q/Oabc0IuCwCUQ==
+X-CSE-MsgGUID: C9Q0tHYhTOidXFABJm3akQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="220805385"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.167])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 12:06:20 -0800
+Date: Thu, 26 Feb 2026 22:06:17 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Robin van der Gracht <robin@protonic.nl>,
+	Andy Shevchenko <andy@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	vladimir.oltean@nxp.com, boon.khai.ng@altera.com
-Subject: Re: [PATCH v7 2/5] net: stmmac: platform: read channels irq
-Message-ID: <aaCankErMJZ2XM_s@shell.armlinux.org.uk>
-References: <20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com>
- <20260226-dwmac_multi_irq-v7-2-f8fe3b945bb4@oss.nxp.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [RESEND V1 1/1] dt-bindings: auxdisplay: change to
+ unevaluatedProperties
+Message-ID: <aaCnuYmWPBGVBb4Z@smile.fi.intel.com>
+References: <20260226172258.257089-1-Frank.Li@nxp.com>
+ <aaCIEs-65JQUkSyA@smile.fi.intel.com>
+ <20260226-nanometer-reproach-8c87569cc837@spud>
+ <20260226-observant-finishing-c07452049544@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,122 +69,42 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226-dwmac_multi_irq-v7-2-f8fe3b945bb4@oss.nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20260226-observant-finishing-c07452049544@spud>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Feb 26, 2026 at 09:54:07AM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Thu, Feb 26, 2026 at 05:54:54PM +0000, Conor Dooley wrote:
+> On Thu, Feb 26, 2026 at 05:53:43PM +0000, Conor Dooley wrote:
+> > On Thu, Feb 26, 2026 at 07:51:14PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Feb 26, 2026 at 12:22:57PM -0500, Frank Li wrote:
+> > > > Change additionalProperties to unevaluatedProperties because it refs to
+> > > > /schemas/input/matrix-keymap.yaml.
+> > > > 
+> > > > Fix below CHECK_DTBS warnings:
+> > > > arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> > > >         from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+> > > > 
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > Resend include Rob's Ack tag:
+> > > > 	Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> > > 
+> > > I didn't get this. If it's official, make it official.
+> > 
+> > Funnily enough, b4 picks up Rob's ack, although I think it gets it from
+> > the original posting.
+> > 
+> > > Also, shouldn't it have a Fixes tag.
+> > 
+> > Sounds like it should, yes.
 > 
-> Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
-> for platform glue drivers.
-> 
-> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 46 +++++++++++++++++++++-
->  1 file changed, 45 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> index 5c9fd91a1db9..93bd915ab6eb 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> @@ -697,9 +697,40 @@ struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
->  }
->  EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
->  
-> +static int stmmac_pltfr_get_queue_irqs(struct platform_device *pdev,
-> +				       struct stmmac_resources *stmmac_res,
-> +				       bool tx)
-> +{
-> +	int *irqs = tx ? &stmmac_res->tx_irq[0] : &stmmac_res->rx_irq[0];
-> +	char name[16];
-> +	int i;
-> +
-> +	/* RX channels irq */
-> +	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES) {
+> And if that requires a resend, the specific binding should likely be
+> cited in the subject line.
 
-You've missed that there are two separate definitions for tx and rx
-queues - while they are currently the same number, code shouldn't
-make that assumption.
-
-> +		scnprintf(name, sizeof(name), "%cx-queue-%d",
-> +			  tx ? 't' : 'r', i);
-
-I'm not happy with this method of combining the two loops.
-
-Maybe instead:
-
-static int stmmac_pltfr_get_irq_array(struct platform_device *pdev,
-				      const char *fmt, int *irqs,
-				      size_t num)
-{
-	char name[16];
-	size_t i;
-
-	for (i = 0; i < num; i++) {
-		if (snprintf(name, sizeof(name), fmt, i) >= sizeof(name))
-			return -EINVAL;
-
-		irqs[i] = platform_get_irq_byname_optional(pdev, name);
-		if (irqs[i] == -EPROBE_DEFER) {
-			return irqs[i];
-		} else if (irqs[i] <= 0) {
-			dev_dbg(&pdev->dev, "IRQ %s not found\n", name);
-
-			irqs[i] = 0;
-			break;
-		}
-	}
-
-	return 0;
-}
-
-which has the advantage that it becomes a generic helper for getting an
-any array of IRQs.
-
->  int stmmac_get_platform_resources(struct platform_device *pdev,
->  				  struct stmmac_resources *stmmac_res)
->  {
-> +	int ret;
-> +
->  	memset(stmmac_res, 0, sizeof(*stmmac_res));
->  
->  	/* Get IRQ information early to have an ability to ask for deferred
-> @@ -735,7 +766,20 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
->  
->  	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
->  
-> -	return PTR_ERR_OR_ZERO(stmmac_res->addr);
-> +	if (IS_ERR(stmmac_res->addr))
-> +		return PTR_ERR(stmmac_res->addr);
-> +
-> +	/* TX channels irq */
-> +	ret = stmmac_pltfr_get_queue_irqs(pdev, stmmac_res, true);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* RX channels irq */
-> +	ret = stmmac_pltfr_get_queue_irqs(pdev, stmmac_res, false);
-> +	if (ret)
-> +		return ret;
-
-These then become:
-
-	ret = stmmac_pltfr_get_irq_array(pdev, "tx-queue-%d", 
-					 stmmac_res->tx_irq,
-					 MTL_MAX_TX_QUEUES);
-	if (ret)
-		return ret;
-
-	ret = stmmac_pltfr_get_irq_array(pdev, "rx-queue-%d", 
-					 stmmac_res->rx_irq,
-					 MTL_MAX_RX_QUEUES);
-	if (ret)
-		return ret;
-
-This has the advantage that one can grep for rx-queue to find it,
-and we also use the correct limit for each queue type.
+Yeah, please resend with tags added and Subject corrected.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
