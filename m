@@ -1,157 +1,177 @@
-Received: from mx-relay60-hz1.antispameurope.com (mx-relay60-hz1.antispameurope.com [94.100.133.230])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B3A38F948
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 08:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.230
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772095988; cv=pass; b=hfZYjhfbIpdHVAyDtqSSvEQiIA7wiEXjUZuRn4ARcSq4yvFCEhYtakelA1PpaK+b7CVC2O+eNBnf5nOLNelNs2BkFlnkG8eHTyCEqNwIyXNUBh/n815WSEvtQRtoIL0OAMhPe9lssZIE9bHn1+oVF6y0qYPG91D//V7exCgqILI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772095988; c=relaxed/simple;
-	bh=uimvKOO39GkZdBj9POB5Xa7eFoV+1pJ5ljpxLfXiy5w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f0KCSlFC0jXt2izZeU+SJUV8rPoz4OSAZwAhTJL2+wnfmmcXZKWmEH/7Dhyb55v4QRHY6GovuiVFpQZmTlQUk2noieR20q7LnbYM5TdCmS8PMeFytYvNkt8L9I1YZUy46Gn7LTrDrYsPy++Q0F3IYwVBtkKq8W9GtnkQDk8v8vo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EzHhc7Rh; arc=pass smtp.client-ip=94.100.133.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1182AE68;
+	Thu, 26 Feb 2026 08:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772096055; cv=none; b=TUND+qgYVpj5t83VZMbI7yHOrLiFz0JbPqeSkUCnm1UlJTTcKoAnD38jmxTO9TfbOmzBTG6e4LvxGKcawMwVHOC9D5soxLpjMzomgL0w6OMWaatLYyFbbllGU05dinjtVtTHZRNjlHJj+X+hk854+dnT2Rv+b6zu9sJn0mYpR/M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772096055; c=relaxed/simple;
+	bh=MGkjI1HZcHX6Aqy2EL90L2nZD2qE3PqctGLEz7PLx6k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d35TbKVEKWA6t8FbyPOkQglKxMPL7uE5U4jy0x2WN+zo8reoeid+yqQKzW6+N3jtft0Yd31r0I8/30ekcQ9GNcoaaeajSMD+Cdi3CJouLvhR1+yH8jSqWHv35ssKeW5wm8FCbbGEHIoRMNGzvEWw3OR5yyL4tSRI8RX9GO98fsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpK1DIiG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EzHhc7Rh"
-ARC-Authentication-Results: i=1; mx-gate60-hz1.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=pZA7AsIzdwCY7ab6l8jLMqVVu0K3dmUt9FW8oclhVyw=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1772095951;
- b=KMSjJ8eSHFFhAI6XV6qJrwjpEKi6M5tK7GrZoLBU1/XYiObk9AIir+pALxmEcQmauzsDOEXQ
- +rFqSAsFVGnwqQJQEAw9I3TLeVONP9gY3xEboIEKsGgVcCyMOLgR9sYK7ehVqnNqqa0EvDCLsdQ
- WDj0rv/NKBU5XqMRmqBr47/D35FNUEnK+2j5XwKcl02b5Ad6wAj4UJNUdW5CkiaN+1MQZt0c6vu
- pm5KlfJz5I1FrvmWEX8P9uYqusklj32wdmMs/A7O3PQieC0+V/CoEdEgvcs2yUgbLhxbe3dnPTr
- PVii/kGhZsSy2ctWYdIBX3wMSNYZsPMXjd7FJRU1ck92Q==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1772095951;
- b=Isyizm/9/5lbJ1HLf7onSbZ2tfbT9SCfF9+wWB7MlYL+3fdXJha7otl3dpNdflY5ZrB5yfGh
- 1V36MqYB3iNd/DFH8ezzmITe4byKjexFGtS1uaNJey1FCnm+Gz+ISB1FIBWy8euZd9862MVbDnt
- J300AAfx1czkU2rTxLL/vVDfEAPrQkiSuJ+S6IMr4EoGOC4cS+uhsvtQ6B9OeWNKk3X2vslWFU6
- 9JjyZVdIuVyFYXGTWKyY2hL648bv+uewSy/e0jP5Y5per9VMyKL/jH3RK3aYEil2Ufafxzd62r4
- qR2sq5GiEkmOVPE55CRGzjoFRWS/vc5dTDic2j7NiAAcQ==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay60-hz1.antispameurope.com;
- Thu, 26 Feb 2026 09:52:31 +0100
-Received: from [192.168.153.128] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: nora.schiffer@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 419F65A0F0A;
-	Thu, 26 Feb 2026 09:52:23 +0100 (CET)
-Message-ID: <ccc6e9665ec8d432a5729fb18a757bb76cd95d9e.camel@ew.tq-group.com>
-Subject: Re: [PATCH] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314:
- fix UART1 RTS/CTS muxing
-From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,  linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux@ew.tq-group.com,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 26 Feb 2026 09:52:22 +0100
-In-Reply-To: <aZ8YFYbRIHlcmWk3@lizhi-Precision-Tower-5810>
-References: <20260225083419.5639-1-nora.schiffer@ew.tq-group.com>
-	 <aZ8YFYbRIHlcmWk3@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpK1DIiG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CAC68C19422;
+	Thu, 26 Feb 2026 08:54:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772096054;
+	bh=MGkjI1HZcHX6Aqy2EL90L2nZD2qE3PqctGLEz7PLx6k=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=LpK1DIiGIZTfM7mE9RMqTS9zJ5u5nSyxkbh39xfrEO69DG8zmL7DHBNkpY9slYOHv
+	 9csvQqNfnu6X1TAed2+bhAaTtgCb6TJxP2y5mzgJhSF1UDW/ryG9oBoubEeEic+zI7
+	 q2ACH6kL+T4o8vWoR6q4T/PvMnJN6XaxUaCZ8Q2kjWKQ4DQ08VHDacURqfuQn596iw
+	 Z3Ta5msYD+mU7h4mIvG35QSkbUvj4ewqAmxUB1iqyLtY4OMVElZBsLFydyJeEmIsvL
+	 MWV1un/IjHiY8iPIHh6R76J6LwhqzX4k0i95YH68BxQysXrrVT3F2Re2R7faYDj6qP
+	 25VwRXFyFBB6g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADEBEFC5913;
+	Thu, 26 Feb 2026 08:54:14 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH v7 0/5] Support multi-channel IRQs in stmmac platform
+ drivers
+Date: Thu, 26 Feb 2026 09:54:05 +0100
+Message-Id: <20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-cloud-security-sender:nora.schiffer@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: nora.schiffer@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay60-hz1.antispameurope.com with 4fM4w80B2Yz28yMP
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:daeffe5ef58851175bcfb2fcf892fa20
-X-cloud-security:scantime:1.389
-DKIM-Signature: a=rsa-sha256;
- bh=pZA7AsIzdwCY7ab6l8jLMqVVu0K3dmUt9FW8oclhVyw=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1772095950; v=1;
- b=EzHhc7RhArXl9cIPb4yYbpw2HGCyC/vPjRt0bonbDXBK8aCJN/z9TTvsiTNtO7BVVfH0i93U
- qbRYiMBlS6FLpIcJEl8f98Da2gqzvN9YfMbn4N3WBRwx5XUNDz6l9dMPQhnhHawYVjeTXzIHJVR
- rTIFrrYWp/GmbVfzJ/LKL2yjltRWW+Ilxs8LP5ADCMVdQjQ/ro5jm1qbMUUQgKhmbbKod6mkmaa
- 3u1TcDHvOI1UmXgBoe5iZF3TUChnHFMADJp1cA5FV0BCnr2IVN5J0KCTkgoc0uvLYVhd27EQLEX
- FKZmLcYBYHINkF26KcYIgJjcJCyGP9C/7mEYW66h8tLnA==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC0KoGkC/23O207DMAyA4VeZck2mxDk04Yr3QGhK3ZhFou1oR
+ hma+u6kE4ii7PK35M++shynFDN73F3ZFOeU0ziUaB52DI9heI08daUZCDAShOfdZx/w0H+8ndM
+ hTe/cd46s0BYQJStbpylSutzE55fSx5TP4/R1OzDLdfpjSV1Zs+SCK2sshFZET83TmPN+uJz2O
+ PZs1Wb4FawoRC3AKrQOPCjRiUbWgtoKqhZUERCNImij8/aOoLeCqwVdBAcUlCYkIKgF8yfAvR/
+ MKhBa74OhgLoW7FYwtWCLANq0JLtGSoH/hWVZvgEzge5R+gEAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772096053; l=4026;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=MGkjI1HZcHX6Aqy2EL90L2nZD2qE3PqctGLEz7PLx6k=;
+ b=op1+qBlwqIf+sPHSkfy20RksFc+0ZunpL53mVhj/dInyo9aZ9Ijr7cQ7zuzj9ZFg/oShNRwqc
+ 2fTdJVb+70uAH4y4NZWy4txMz9KpDTT4dhL1aaw1ikeoyM20FFrcSi9
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Wed, 2026-02-25 at 10:41 -0500, Frank Li wrote:
-> On Wed, Feb 25, 2026 at 09:34:18AM +0100, Nora Schiffer wrote:
-> > The pinmuxing for UART1 was mixing DCE and DTE modes, which cannot work=
-.
-> > Consistently use DCE mode.
-> >=20
-> > This switches the RTS and CTS pins, which is fine for this board, as
-> > UART1 is routed to a pin header.
->=20
-> Is below commit better?
->=20
-> UART1 operates in DCE mode, but the RTS/CTS pins were incorrectly
-> configured using the DTE pinmux setting.
->=20
-> Correct the pinmux to match DCE mode, which does not affect existing
-> functionality because UART1 signals are routed to a pin header.
+The stmmac core supports two interrupt modes, controlled by the
+flag STMMAC_FLAG_MULTI_MSI_EN:
 
-Hi Frank,
+- When the flag is set, the driver uses multi-channel IRQ mode (Multi-IRQ).
+- Otherwise, a single IRQ line is requested (aka MAC-IRQ):
 
-your commit message sounds better, do you want me to send a v2?
+static int stmmac_request_irq(struct net_device *dev)
+{
+        /* Request the IRQ lines */
+        if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN)
+                ret = stmmac_request_irq_multi_msi(dev);
+        else
+                ret = stmmac_request_irq_single(dev);
+}
 
-Best,
-Nora
+At present, only PCI drivers (Intel and Loongson) make use of the Multi-IRQ
+mode. This concept can be extended to DT-based embedded glue drivers
+(dwmac-xxx.c).
+
+This series adds support for reading per-channel IRQs from the DT node and
+reuses the existing STMMAC_FLAG_MULTI_MSI_EN flag to enable multi-IRQ
+operation in platform drivers.
+
+The final decision if Multi-IRQ gets enabled remains on glue driver
+to allow implementing any reguirements/limitions the focused platform
+needs.
+
+NXP S32G2/S32G3/S32R SoCs integrate the DWMAC IP with multi-channel
+interrupt support. The dwmac-s32.c driver change is provided as an example of
+enabling multi-IRQ mode for non-PCI drivers.
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+Changes in v7:
+- Optimized 2 similar loops on queue rx/tx irq reading
+- Swap the yaml and dts patches with hope it fix dt_binding_check failing
+- Link to v6: https://lore.kernel.org/r/20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com
+
+Changes in v6:
+- Added 2 mintainers which were not covered by 'b4 prep --auto-to-cc'
+  but complained on patchwork check
+- Added helper macro for loop over queue-based arrays (inspired by AI
+  review)
+- Added full validation on all channel IRQs
+- Link to v5: https://lore.kernel.org/r/20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com
+
+Changes in v5:
+- fixed typo in "symetrical"
+- cleaned negative return value on platform_get_irq_byname_optional()
+  in stmmac_get_platform_resources()
+- rebased on v7.0-rc1
+- Link to v4: https://lore.kernel.org/r/20260128-dwmac_multi_irq-v4-0-82fa34fcf2f2@oss.nxp.com
+
+Changes in v4:
+- Fixed IRQ reading check
+- Made cleaner the IRQ validity (to get AI reviewer happy)
+- Fixed minItems of interrupts property in yaml
+- Link to v3: https://lore.kernel.org/r/20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com
+
+Changes in v3:
+- removed RFC prefix
+- rebased on v6.19-rc6
+- fixed forgotten extra line setting to Multi-IRQ unconditionally
+- fixed yaml
+- Link to v2: https://lore.kernel.org/r/20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com
+
+Changes in v2:
+- Fixed incorrect buffer len for 'rx-queue-%d' property check
+- Added backward compatibility to not break old settings
+- Fixed DT example in yaml
+- Link to v1: https://lore.kernel.org/r/20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com
+
+---
+Jan Petrous (OSS) (5):
+      net: stmmac: Use helper macro for loop over queue-based arrays
+      net: stmmac: platform: read channels irq
+      arm64: dts: s32: set Ethernet channel irqs
+      dt-bindings: net: nxp,s32-dwmac: Declare per-queue interrupts
+      stmmac: s32: enable support for Multi-IRQ mode
+
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 ++++++++++++++++++---
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           | 26 ++++++++++--
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           | 26 ++++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 36 ++++++++++++++++-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |  3 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 16 ++++----
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 46 +++++++++++++++++++++-
+ 8 files changed, 177 insertions(+), 22 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20251209-dwmac_multi_irq-9d8f60462cc1
+
+Best regards,
+-- 
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
 
-
->=20
-> Frank
-> >=20
-> > Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RA=
-S314")
-> > Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
-> > ---
-> >  .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras3=
-14.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-> > index b7f69c92b7748..1665a5030b993 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-> > @@ -848,8 +848,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
-> >  	pinctrl_uart1: uart1grp {
-> >  		fsl,pins =3D <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
-> >  			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
-> > -			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
-> > -			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
-> > +			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
-> > +			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
-> >  	};
-> >=20
-> >  	pinctrl_uart1_gpio: uart1gpiogrp {
-> > --
-> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
-Germany
-> > Amtsgericht M=C3=BCnchen, HRB 105018
-> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
- Schneider
-> > https://www.tq-group.com/
-> >=20
-
---=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-https://www.tq-group.com/
