@@ -1,123 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427173C1960;
-	Thu, 26 Feb 2026 18:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52923EBF20
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 19:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772130766; cv=none; b=DI0TRC1Utox7MubYli3hSjoUUMzz9s0ZBSxCdTZNNxKsGhn1kFQ7Nq2DZ+g1JOrCYA8aNwniiAznn5/qzShZ0kkUYHycVUg6klYqhWyAKlX0rfHzBjS6kjD/0d24GPp9bCzwBPOs3+a3uz2ErSIFvcNYE3eVCl3D6g3Sw1fRE94=
+	t=1772133049; cv=none; b=Az030jeGNzQ6A8Jo/X7avxBWtbyeE6j5VcnI0cVBpnOB7oHbtNUkhv0Wf+LjW8dCcXsOhDMgC19XPADYpMLk1jEBSZ+fsDgSY8LX/JMlZX/MiE+DAUxYbZc+jmPI7Mza8tMDoQmxDdtWVTM2Og3d1z7VXViteGW4A6gGZ4kRjXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772130766; c=relaxed/simple;
-	bh=N8EvG1YDcXWDl3bwAN61yHEjOaLXvTjQ1QRf4EDRPdM=;
+	s=arc-20240116; t=1772133049; c=relaxed/simple;
+	bh=1IzP64jz/SkcJX5dvo8R+ulnS8fQwbekOalpkBEHnII=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lsTUnC0EYTJXlDIwnfXzemt7/PSjDxToCX978qaNJvMqr14C6Y3yxNun4WH9udmC6g+jS4CzhMDVWgbfstvDP0aYMTMLG24zCTHT7yrDDCqeltQrmsHlEEk33URzN1HFYWLWFNGoB91OEdFVZq1mxBDoD6OfqI3siLfiGguyzJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiUe93PJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=llXyC8DxF6ICMTHt/kCBkVeKxFFUtFJErTbEq9P6TUcdbRoxEdZSMazC4Kv/+sXMlIXmwjfzL7IdCdywQeEGNCv0Z5l1fodYErgLFejFDsVdc9KdreXA2575Agy9nj+31mxzSqYL2RvWe24iRjoppkNcuD1eLBhCcEXrtG6j1Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Uuo9qJeA; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiUe93PJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEC9C19423;
-	Thu, 26 Feb 2026 18:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772130765;
-	bh=N8EvG1YDcXWDl3bwAN61yHEjOaLXvTjQ1QRf4EDRPdM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WiUe93PJUkT0DcKQB17DGQ+wENTIV524bzjtNztCz7F9LFfOTmHLCInzTCeA+KniW
-	 +4srugdN39n9q4ldGRqGyxQqklT3ZwfP/yDnADnUbJmEsW0DPZwka3TZVYi9W8ofGw
-	 jn0Inp3kCWk1wNWmGgUbXEMaxajYdsvW7S/OrAMUPtijXfnCfTvbL5UZKtsZxBI5FL
-	 LHjPIlE8f3AnhtxQXGZLRXS2MUQVm9/SDCBR3l6XZPA3A+8/owFR4ztZVEqwBSQkYP
-	 nhF8WjUJ4Hty8sRlW4qv89cwBMMcgaVDIAEnobM2zJpyfScepD5NhztYf6KVG9dc3U
-	 VlWyOF6F/9lew==
-Date: Thu, 26 Feb 2026 18:32:41 +0000
-From: Conor Dooley <conor@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Uuo9qJeA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=HjiR1TwqXK5Qwrd2T9B+rxf4jSStXBuyud6ZyusRPjc=; b=Uuo9qJeAxZxhSDQvCG2THyfgn6
+	goN/SZ5wYmb4g5wzXTMlNaPWkQqKj7uB/6w566SYrPrujxs50sfZYENwPPn3t9yfpjvYbPXUlilqs
+	8efDz3idaa358SjlUOzL6LOYivhtxwyWu6qwu3GnzrfJyZW8mWfOAmfqaObgWxP9unvufSwvsMrOf
+	edMti+IBUeaF7wa0m+Tt/d92YkneueFcO8a80EDhHf73MxhTIn4vGXNBuZxqaS/gxlDyEiqUPTdNd
+	5T+8sKrFrKX+VM2XS0Y+YFMS15vuekaYIfoUBiFJ/j1X7MnCd4/6ap/QOzc5nMk2L1DHkyOZq4WYj
+	fIDgys9g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50450)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vvgkl-000000008Lp-1Mml;
+	Thu, 26 Feb 2026 19:10:27 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vvgkg-000000002GM-2Yxa;
+	Thu, 26 Feb 2026 19:10:22 +0000
+Date: Thu, 26 Feb 2026 19:10:22 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: jan.petrous@oss.nxp.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"A.s. Dong" <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: fsl: fsl,imx7ulp-smc1: Add #clock-cells
-Message-ID: <20260226-writing-deviation-183872d04d50@spud>
-References: <20260226-imx7ulp-v1-0-3fd611ceb346@nxp.com>
- <20260226-imx7ulp-v1-1-3fd611ceb346@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	vladimir.oltean@nxp.com, boon.khai.ng@altera.com
+Subject: Re: [PATCH v7 2/5] net: stmmac: platform: read channels irq
+Message-ID: <aaCankErMJZ2XM_s@shell.armlinux.org.uk>
+References: <20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com>
+ <20260226-dwmac_multi_irq-v7-2-f8fe3b945bb4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OajtArW2knqHAoo7"
-Content-Disposition: inline
-In-Reply-To: <20260226-imx7ulp-v1-1-3fd611ceb346@nxp.com>
-
-
---OajtArW2knqHAoo7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260226-dwmac_multi_irq-v7-2-f8fe3b945bb4@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Feb 26, 2026 at 07:04:15PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->=20
-> Add missing #clock-cells to make it work as a clock controller.
-
-Yes, that is what adding #clock-cells would do, but why is it correct to
-do? That's what your commit message needs to explain.
-
->=20
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Thu, Feb 26, 2026 at 09:54:07AM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
+> for platform glue drivers.
+> 
+> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 > ---
->  Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-pm.yaml | 5 =
-+++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-=
-pm.yaml b/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-pm.ya=
-ml
-> index 9d377e193c123c7de0ec4db4d4a649ed966b2d9a..7ad470260c0d08bd1e7146ef4=
-9e5f60dd6c6d4d7 100644
-> --- a/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-pm.yaml
-> +++ b/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-pm.yaml
-> @@ -28,6 +28,9 @@ properties:
->    reg:
->      maxItems: 1
-> =20
-> +  '#clock-cells':
-> +    const: 1
+>  .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 46 +++++++++++++++++++++-
+>  1 file changed, 45 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> index 5c9fd91a1db9..93bd915ab6eb 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> @@ -697,9 +697,40 @@ struct clk *stmmac_pltfr_find_clk(struct plat_stmmacenet_data *plat_dat,
+>  }
+>  EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+>  
+> +static int stmmac_pltfr_get_queue_irqs(struct platform_device *pdev,
+> +				       struct stmmac_resources *stmmac_res,
+> +				       bool tx)
+> +{
+> +	int *irqs = tx ? &stmmac_res->tx_irq[0] : &stmmac_res->rx_irq[0];
+> +	char name[16];
+> +	int i;
 > +
->    clocks:
->      maxItems: 2
-> =20
-> @@ -39,6 +42,7 @@ properties:
->  required:
->    - compatible
->    - reg
-> +  - '#clock-cells'
-> =20
->  additionalProperties: false
-> =20
-> @@ -47,4 +51,5 @@ examples:
->      smc1@40410000 {
->          compatible =3D "fsl,imx7ulp-smc1";
->          reg =3D <0x40410000 0x1000>;
-> +        #clock-cells =3D <1>;
->      };
->=20
-> --=20
-> 2.37.1
->=20
+> +	/* RX channels irq */
+> +	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES) {
 
---OajtArW2knqHAoo7
-Content-Type: application/pgp-signature; name="signature.asc"
+You've missed that there are two separate definitions for tx and rx
+queues - while they are currently the same number, code shouldn't
+make that assumption.
 
------BEGIN PGP SIGNATURE-----
+> +		scnprintf(name, sizeof(name), "%cx-queue-%d",
+> +			  tx ? 't' : 'r', i);
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaCRyAAKCRB4tDGHoIJi
-0v20AQC4sUG4JoVI3CpaoBHkbkr2YwTf5dR1LiB9S3tyVqo0nAEAh1D/G084CmKO
-oddyy3pQD21ZktgbFlmi4PAuDbmBGw0=
-=jjBH
------END PGP SIGNATURE-----
+I'm not happy with this method of combining the two loops.
 
---OajtArW2knqHAoo7--
+Maybe instead:
+
+static int stmmac_pltfr_get_irq_array(struct platform_device *pdev,
+				      const char *fmt, int *irqs,
+				      size_t num)
+{
+	char name[16];
+	size_t i;
+
+	for (i = 0; i < num; i++) {
+		if (snprintf(name, sizeof(name), fmt, i) >= sizeof(name))
+			return -EINVAL;
+
+		irqs[i] = platform_get_irq_byname_optional(pdev, name);
+		if (irqs[i] == -EPROBE_DEFER) {
+			return irqs[i];
+		} else if (irqs[i] <= 0) {
+			dev_dbg(&pdev->dev, "IRQ %s not found\n", name);
+
+			irqs[i] = 0;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+which has the advantage that it becomes a generic helper for getting an
+any array of IRQs.
+
+>  int stmmac_get_platform_resources(struct platform_device *pdev,
+>  				  struct stmmac_resources *stmmac_res)
+>  {
+> +	int ret;
+> +
+>  	memset(stmmac_res, 0, sizeof(*stmmac_res));
+>  
+>  	/* Get IRQ information early to have an ability to ask for deferred
+> @@ -735,7 +766,20 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+>  
+>  	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+>  
+> -	return PTR_ERR_OR_ZERO(stmmac_res->addr);
+> +	if (IS_ERR(stmmac_res->addr))
+> +		return PTR_ERR(stmmac_res->addr);
+> +
+> +	/* TX channels irq */
+> +	ret = stmmac_pltfr_get_queue_irqs(pdev, stmmac_res, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* RX channels irq */
+> +	ret = stmmac_pltfr_get_queue_irqs(pdev, stmmac_res, false);
+> +	if (ret)
+> +		return ret;
+
+These then become:
+
+	ret = stmmac_pltfr_get_irq_array(pdev, "tx-queue-%d", 
+					 stmmac_res->tx_irq,
+					 MTL_MAX_TX_QUEUES);
+	if (ret)
+		return ret;
+
+	ret = stmmac_pltfr_get_irq_array(pdev, "rx-queue-%d", 
+					 stmmac_res->rx_irq,
+					 MTL_MAX_RX_QUEUES);
+	if (ret)
+		return ret;
+
+This has the advantage that one can grep for rx-queue to find it,
+and we also use the correct limit for each queue type.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
