@@ -1,86 +1,63 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80A7355F52
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 17:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A691332612
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 17:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772127905; cv=none; b=j/gkcHS0jNFkngordJVnM5QMD1mDXV6x62HKTmEgZVgiHiTNprkGvlgcL6agh0AjsPw6Hb8ioEZSO3Uk8F2rHdJkYAHhl/RI3xIr839PyhcmIGpzVDEc1AZi9cfFYTQR2CfSRNK3KTmTqdjASOp3In8i5z/SQtxzSjkgK+Chkyg=
+	t=1772128281; cv=none; b=XIOol6Ur1CRdhNABdFdPFxivbQuFNOEvlFvjjajOtMdKxRXTLYso5PJ36GDLjZvlFybeoP1Vg+4QtNUWdJwAjEk8cHKoBf0Zxv/Mlq1k2miqysopcbzgHk+g+IAHsOPpBMFm1Nardnw1XArPymL/I5482ht6x+yI+Clkh8jGQh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772127905; c=relaxed/simple;
-	bh=kweqCw7nmF7ZNGp7vL1pa93p5Vo7GbVX5Lf9kd9JOhQ=;
+	s=arc-20240116; t=1772128281; c=relaxed/simple;
+	bh=+qK3PHCrqi1lnXheNRqOJUIPgXyJ0wM78kYFEAUUPOs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cJkQzCRMzmZKFNZk0q0Nk9lWow1txFuKq/4MxrUKU3dmlJqfMmXqWf+E6Wuy2QTWLQriGoa6fQdX3wyvd+j+iVi7qSBn6V3buUO6KlqJ11hrCpKvIF5zqB9CKFF0QcZnCoEVhXv/jZXhjCZWaMgI02XmuJAxCKm8LyFXB2SFOjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RNYAuoyr; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=koX67pCpz/EkXA+vNF4T5gruHe0NvSHQzHOdMNNb6NoVs5OKJpAUgdjmKHE33902ibBaiGMvIwMSamL5HRILopVgVmExqgLP2Jh4DiNBYJhmWTYRXnqB17UYXFBhcXIhmrNG9N/8fTWggKvX/HLofleF1xQ4EliUBCNBd6vnzfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nh9GkyVp; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNYAuoyr"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b934fdced05so139902266b.3
-        for <imx@lists.linux.dev>; Thu, 26 Feb 2026 09:45:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772127902; x=1772732702; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwTJv9LGSAlffYlkadnvjA+g9OCfZ1CRMJttWHSXLMM=;
-        b=RNYAuoyruXlm+jhpHB/w58k6xtxL3xOIu2dzXADDg/4jjNY9b0H2KIYKJX4m9p3Wua
-         OSSldtbCxX0vFvQR2Poa9Pv0I4lPWHqWSM53BdUVoLQfUVcqEqOSrwVisa0GNESVUooC
-         bLwnEpZkSv+a0NiBoIKMRfVHUPsSQd3iVw2mkByWmtIr+FUhKMu7P/CCmTFElZKbMJ0R
-         f0CY0Q9J0lkNIM8kqxq6fm8mFaWFtnj5nks5wqLj6Kv1g6hYFl+M3X3XUu72G+FWvgWS
-         TAT53MhsekeW36pJchwRmucPWCoFojuPluJDD+5siZuFcXXPPeB7Q0rcM0ZAQ87pL5J5
-         RqKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772127902; x=1772732702;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lwTJv9LGSAlffYlkadnvjA+g9OCfZ1CRMJttWHSXLMM=;
-        b=a7kqymcHC0bq/AkbDqyZ55EmOdgnIScyxlO3mv8vuN8HbLtWAkN0d9SRhILAhzpo3d
-         BTtWcalwgQVfhYeaGMCe9Mfeyb9GZgDkDBa8ryURgq4Mi+wOESEkUlEsWgcYbMVx55p8
-         HHyuupFZDhZbCqd0u52l3IVNMs5Ktdz3QXLpNMUSeRfCYIjBlOH9XXCXo9JV0+5okmaY
-         zT3M4+eI1gSdIbLrC5vT/nyiTR1IWP/4h1iLnTDabjm5lOZRg3DH0orJ+4FKb87fsDLH
-         iaT9I0j+PhsWW/Q3pGj/n0pTQ/F04OlSP/afJ0FoY0fI98R9VGE2NMRbNhuU9Vqw+BR3
-         Houg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBYtsPKpeYZTVLq3hAiXMRzaBguKTPNNg++v770Ie+8aZRW63wiFnXf81e5TgXSqgu9DY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyeGXRafjym1lYLXembvHSDAze0DV0Dg9/KzdEqJsK/SamuG0k+
-	moMyIukKQyZee0GPjc52gpgZvx8bBtfGoZ2oQ82zS3KUJx9BdVVEbsQp
-X-Gm-Gg: ATEYQzw1JzJ17CttJywI5hHjtMBIek7iDIcQcYrrk4BX5VliRq3Hn240p/mVJF0pTSo
-	v0IJboGrbJvn2+gZ5amFhDAU8nh4xvECGDjQCiijfmRBGKi4whdwns0bnVDiOPYDi4PljLUYjD9
-	GYSydEmQN72JIw6GinTf5gOxTbD8+0pgs7iOynGt4PW1/2cpnDSaU8xwN9Zh8fbF66Oe2dia6Bd
-	0BRbD5qPL9p4bUHffNwn9w4ufQ3kCYqSb2hM+A2YTOqxj7R2xkiywLtxR9mL4qpatkHk1hOBTWT
-	6GAh4ZWVHbYXJ8bwKsf+uiK/rjsKrqSaeXr/8US9TmFiJ6zfekhY0/8XPPusY/k8XWlkXh+eiKw
-	jBcN+vNIoW45zlMaTnbEClU4COzprZtWFtMz5EPSi3g7hoBG/ZtdCEKkZpjqKI9PByUnwisQdMo
-	FoFHI1CmANB2ISYZk7HYovYxQ6Vo3faF1ZG8GYkzCH8cJUZkvHEgRfaYMMSQsCjOZ6ri5OGv7LO
-	9cAQEokQNFG2TKbHl6/aTNO/1WXvJJlcfIDpaD6i4VXTpw=
-X-Received: by 2002:a17:907:f497:b0:b83:32b7:21b0 with SMTP id a640c23a62f3a-b935b502ecamr191281066b.17.1772127901905;
-        Thu, 26 Feb 2026 09:45:01 -0800 (PST)
-Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ab13564sm81364866b.9.2026.02.26.09.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 09:45:01 -0800 (PST)
-Date: Thu, 26 Feb 2026 18:44:59 +0100
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nh9GkyVp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772128280; x=1803664280;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+qK3PHCrqi1lnXheNRqOJUIPgXyJ0wM78kYFEAUUPOs=;
+  b=Nh9GkyVpLENWTI7SQ0N070XMZxShyXYNoLK2EA9VKLF7PWsgCY1ff6Jt
+   CZ/2+Tsb0EtPiOBMdYeCLa0gU/qIs1Kc/w+E7cdexnPi7IbKght8qJffe
+   QXwNPDIJHxYYJ3Fzgc54dxHXoBwUvIM1Z66L9ZWBSkuffrN4avoNqeVxW
+   qqxfnnGruILL1gi7XzkQOGE70JMtFyfyGvFof9oME3C9aSxaESI8FY7vM
+   45Up17/B1N4Bmt3dVfmMov93/ZDtV97RRqkfXk+4PiYXCSQYGVTQQINCp
+   XsSc+vNxlcHuZ6TgBvcDRy/x0zLFWVGkvy04OzMcJLTMmCC7jTDtQGQuc
+   A==;
+X-CSE-ConnectionGUID: +QZYErfPQc6fwkEtp00V7A==
+X-CSE-MsgGUID: Z+I+9UO2TkWYuQjIMMUnCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73305597"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="73305597"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 09:51:19 -0800
+X-CSE-ConnectionGUID: G+bOsObvTpy3w3naMNZPJA==
+X-CSE-MsgGUID: 443axLycSWiUdQJYoqtLyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="216652160"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.167])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 09:51:17 -0800
+Date: Thu, 26 Feb 2026 19:51:14 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Robin van der Gracht <robin@protonic.nl>,
+	Andy Shevchenko <andy@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v1 06/11] arm64: dts: freescale: imx8mm-var-som: Update
- WiFi/BT configuration
-Message-ID: <aaCGmyqONKj7GoOy@Lord-Beerus.station>
-References: <cover.1771353301.git.stefano.r@variscite.com>
- <3e79c4d806b8b8024b71bc99c36b09a2fbb90a65.1771353301.git.stefano.r@variscite.com>
- <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
- <aZTEm8nUUVcKZH0v@Lord-Beerus.station>
- <aZXqSz_OsCC64P7i@lizhi-Precision-Tower-5810>
- <aZX0WB_6qPoCYVvC@Lord-Beerus.station>
- <aZ28RtuAWcatyVAf@Lord-Beerus.station>
- <aZ4YdCIG2JIT6BQS@lizhi-Precision-Tower-5810>
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [RESEND V1 1/1] dt-bindings: auxdisplay: change to
+ unevaluatedProperties
+Message-ID: <aaCIEs-65JQUkSyA@smile.fi.intel.com>
+References: <20260226172258.257089-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,51 +66,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZ4YdCIG2JIT6BQS@lizhi-Precision-Tower-5810>
+In-Reply-To: <20260226172258.257089-1-Frank.Li@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Frank,
-
-On Tue, Feb 24, 2026 at 04:30:28PM -0500, Frank Li wrote:
+On Thu, Feb 26, 2026 at 12:22:57PM -0500, Frank Li wrote:
+> Change additionalProperties to unevaluatedProperties because it refs to
+> /schemas/input/matrix-keymap.yaml.
 > 
-> If can't auto detected, I think keep old dts, use overlay change to new
-> one.
+> Fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
+>         from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
 > 
-> For example, board.dtb
-> 
-> you can rename board.dtb to board-revA.dtb
-> new board.dtb, by apply verb.dtso to board-revA.dtb.  Or you direct use
-> board-revb.dtb.
-> 
-> If change is big, you can create new one.
-> 
-> Frank
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Resend include Rob's Ack tag:
+> 	Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-Thanks for the clarification, I understand that the preferred approach
-would be to keep the existing Broadcom-based DTS unchanged and add a
-separate description for the IW612-based revision.
+I didn't get this. If it's official, make it official.
 
-My only concern is avoiding confusion in mainline.
+Also, shouldn't it have a Fixes tag.
 
-The Broadcom-based SOM revision is obsolete and no longer manufactured.
-All currently produced VAR-SOM-MX8MM modules use the IW612 module, and
-this will remain the only production hardware going forward.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I would like to avoid giving the impression that we are actively
-supporting two parallel SOM revisions in mainline, while in reality
-only the IW612-based hardware exists in production.
 
-For this reason, would it be acceptable to:
-
-  - move the Broadcom-based description into an explicitly legacy
-    revision-specific DTS (kept unchanged for existing users), and
-  - update the main imx8mm-var-som DTS to reflect the current
-    IW612-based hardware?
-
-This would preserve compatibility for older boards, but ensure that
-the primary DTS in mainline represents the hardware that is actually
-produced and aligns with the rest of the VAR-SOM family.
-
-Thank you again for your support and your patience!
-
-Best regards,
-Stefano
