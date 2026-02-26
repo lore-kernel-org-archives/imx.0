@@ -1,186 +1,196 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010047.outbound.protection.outlook.com [52.101.69.47])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABCF44D025
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 20:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772137768; cv=fail; b=bkVjCJFOzJgC0i0N2eVKnaez5UWY+0wRJWB/BRJocGjeohJEyAFrn+xs9LyLWaeO9hry9q08thIz5aekzHqDAQAiB00j2VBKiHQpq1bmhf8czH1SAR7N73Kd5nOkafpFyk9YDt5OWggxJEB949kt4+k7Dw3ktWaxmka5E0Nqfx4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772137768; c=relaxed/simple;
-	bh=oCvzHSoIrGpDeZ86/qPz6f0XeqzCJiD3/LLPOzelg+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BWE4k8RYBmQjc69tSsb732ROanq2KE60jQlPGoo30Ir4P1TUz9P+fhrZMRPYyVBKHbc8qZnhR45pAQplMfQ8PL1Mt8ZWKo2RtQfeSjjR5JciOR72+njcHY6Kdx3QRYnFzjhpKjLdxjIBLBajt6/dux25PYKAg4+U/c+LdtXnsu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KnCcb9bE; arc=fail smtp.client-ip=52.101.69.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402CF3D3CE3;
+	Thu, 26 Feb 2026 21:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772140568; cv=none; b=bwLajS0XJKnsY6x7WsH6Rnf+beSrU9KQpQQLBcSfYUZxo7vKulCuZQBXO6VTVSewxomsPWmVA9DgtIjvpdp3KmmIaLuOIZMOWeJxOBdD28zYXO463QVRoYtiCeJSsFem8w8s1Jvv1av6y5arYDfvDR+AtyJHx2KcS6Fv8+GPFvg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772140568; c=relaxed/simple;
+	bh=YwPQeyGBzJcABYucg90H9LmrLb/nelrgO9edJ4pmwS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snPUq72W0u4MH+2VOUN3hdvNHewNh0I08G5zGSTsZySBvJHsq33syokBhMFfZ5Im6l1r8SCWmr4L19Q8QxybCaYK2FiLbTFXZ8cMFVUbT+Sw0OjxXyw8dACVzerJ5B8uvbz32BMPOPxAcivGBerQJub0XjmVj09Td/4Nfw5vof8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZ0XYGDU; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KnCcb9bE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PuzI4CdE6C7aEQAvkM8X49ioqw+BWPBbzw/Fnlr0KjjOdBE+0FdtCsNErsyfaBPk6dEsLviOXWUt8DCpPUhqU3qdTitJ2MtVr7Ydfji1goNs6cp3wqrISbnCsr4BUI/eJn9FMbZS7Lwxc7rAbFtbcK0hkxL/qBcwX7/yA6Me+5Zsq5qUN9dLI3PE/7ddGaFPNw288HH4IY5AfXAi3i0dfPiRUtY75tCXubRrI9ov7Qpg6Neow3LGcGswKdW9JFBHOS2gKZPNmCIsNAvYMbhwujof97dJHTqOcw7g5b9YwbdWntwPsH05snVwkjsgXtYAefp4VGkquMz7IoNbhXyLsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4Poxp2JWc69/vHor6nBnNZIqaTgtk/6XkLYrAWR5duw=;
- b=M/FKl8OQA5uKKWCvBD5BAWazNZY/qmRBDXhyHX3iLlnm+k4ROU2aoEPvBW+0i4s9nhjHpmBcYpKPX1185rRf4b+wC1GY6maZsX6FRK40NzglMsWlasJLosbWlUiSMAYo3Gz8+6sRN6FGmwGyOk95fV+8ZQ3Zb8Sc6BClVL0qnQ+9yN63nq+AjQqLWAwJ7Dt6qrKRf2qxp1/V+T7ZSgU4tHR4VOua3RKmkTyt2+l5rBuhGlZWV5Oi1RooZE7YmDWLUGWD3gNvORpK/5S1ez6hSlAEfuXAOgjqfy1KnUm0nYPz6/kabdUxcufsu7GjiJXDpdsJDDvKgKUdRNecQTs84g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4Poxp2JWc69/vHor6nBnNZIqaTgtk/6XkLYrAWR5duw=;
- b=KnCcb9bEhXj7k4bRL9NBoA7TFBcTuh4/t75+LKzb6s4u//pi9MnquDlQFEG7V2cHL/bq17LqqsBRDwc8tpqnfB2jYFnEbyIw1iKlDOVKdv9uBoo2G3IhEZWS7JIarc9jgjOLLMEp16Uhl131XqzSS4Pak0GFTKELHdtLtEZDejGmyJQmsVaL6/aF9M2Gx2RtqxBlJVZr2PFdrqNNzeNmolRf9UQDCrj330Ayb8SCvNeFsayQqiq1P/siYhyR4aplPyK4TMMkl9RT21lJzfS6vdDNpXuYyQU5+8iy8nzbv4MmdObtiHLt2kpcuFdEmMyqJHhsG8BZXxPEjgMdA7WsJw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by GV4PR04MB11307.eurprd04.prod.outlook.com (2603:10a6:150:297::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Thu, 26 Feb
- 2026 20:29:21 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 20:29:20 +0000
-Date: Thu, 26 Feb 2026 15:29:13 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZ0XYGDU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772140563; x=1803676563;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YwPQeyGBzJcABYucg90H9LmrLb/nelrgO9edJ4pmwS0=;
+  b=AZ0XYGDUIzxJ3qK14WHSQJSrpceUeObiO7kQbUmgngDhcRd8c7re8lDQ
+   /91vY3V8VEG5pWO1MHLvxtYYEbyqU09Kk0Xxd7sMLkbQvFfT5THJgr5FS
+   eNqTPeXAXOppdCRPk7lvB0uU17EBxCgHiIHt9yhM6AofMRxNq5fvOBlTY
+   aPCANQrAclX7cihPQarmgXyI7C8dPpYNl65u5LzC0xSR2ETDKcz+PKrrh
+   asQ+uVaFPgboyVleYNAz62SRoqzAc6yD14sRrjajkntCg2AezmZ88XjIO
+   BOCUA/jguBHNqC/29RDG2IIT4UwigbO2vfr6gtibgR/edXwC1NKaSEpEu
+   g==;
+X-CSE-ConnectionGUID: B9rlDDsIT2GHtw8acIJlTg==
+X-CSE-MsgGUID: QZNJtY5JSfaobuYi0htVqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="72422795"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="72422795"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 13:16:02 -0800
+X-CSE-ConnectionGUID: KF8q2MCfQ7KO5yyM2PuPtA==
+X-CSE-MsgGUID: booS3pxyQp61NWJ++rs5Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
+   d="scan'208";a="216816235"
+Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 26 Feb 2026 13:15:57 -0800
+Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vviiA-000000009sp-1VpU;
+	Thu, 26 Feb 2026 21:15:54 +0000
+Date: Fri, 27 Feb 2026 05:15:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v1 06/11] arm64: dts: freescale: imx8mm-var-som: Update
- WiFi/BT configuration
-Message-ID: <aaCtGQHQiQOdUIAq@lizhi-Precision-Tower-5810>
-References: <cover.1771353301.git.stefano.r@variscite.com>
- <3e79c4d806b8b8024b71bc99c36b09a2fbb90a65.1771353301.git.stefano.r@variscite.com>
- <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
- <aZTEm8nUUVcKZH0v@Lord-Beerus.station>
- <aZXqSz_OsCC64P7i@lizhi-Precision-Tower-5810>
- <aZX0WB_6qPoCYVvC@Lord-Beerus.station>
- <aZ28RtuAWcatyVAf@Lord-Beerus.station>
- <aZ4YdCIG2JIT6BQS@lizhi-Precision-Tower-5810>
- <aaCGmyqONKj7GoOy@Lord-Beerus.station>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaCGmyqONKj7GoOy@Lord-Beerus.station>
-X-ClientProxiedBy: SA1P222CA0086.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:35e::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	Jiwei Fu <jiwei.fu@nxp.com>, Forrest Shi <xuelin.shi@nxp.com>,
+	Alexandru Taran <alexandru.taran@nxp.com>,
+	Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
+Subject: Re: [PATCH 5/9] accel/neutron: Add GEM buffer object support
+Message-ID: <202602270531.MP8x6wo3-lkp@intel.com>
+References: <20260226-neutron-v1-5-46eccb3bb50a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV4PR04MB11307:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2183d1e6-0966-468d-18d6-08de7575b8ab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	wWI82kK5PwPrd88L+vBmoLRaaW1b6ybHMwaOhMlF7EdRlKNCsg/FBCUkbYP2JjvS55QPKr240Gas3V0zbOPsFYb08ud32Hg9sMMNl0O2NynMrD2k9DSTI+jKqQirb52/PG6nbJy3l8AByt2U1zAVfPi3JZX/ttWvcK73odpTHtb5ruc75GkulX1tvIs/bBBZXw8fctQ9hbMZp2tUMEgfjWIa/3SDpm59/jtXBeDmnqbOuS8Wo5s1unxiqJI/DSs7v+4ETcD+P3Vh1qhcpCcYwUF9NFPN4SHQAMxQo1rtqzA9fxlt5wJ2a9mWAARh3QlmXitcSSPgVPSNyX99Ja9J/IIvQeKHZEjbHYcg9MeaeRljAN1WFCrUuI2CsW2c639mLieJ/mW3jBDlGMw1fQ4Y/lRDtkJYBTe5lnLwA0f2tHq/lI9roXsrWJ+LuCJ5++P0ANwfGYNItK+BTPvWk1rz0Ffp3hBcjqfjMjLDzz4GtC7w8SnQG9opFFL/TgrbZzt6yEbvthnpdL17rD/mimTxkCkXnSr1CoSiJSkNdvlzBuBAMIN1mPcVFVW1k8fRzFxTrs1iMgnvKI6M91IK4Ddp4I4vEXaDHlRjszDcEOhW+qDfiGGS4zB5A/ijAG9uyHA0nklVBe7bv8HHbpLI1SRhoSGxZ1edp5S3rWl/yJuHNcanvsxAi1WD9MmjQmjOTWG871uUf1crUkV5bzs5N4DfpyXURDeFgSxB7QH/8YXjtA2L67gUsybqMt0yPq6a8TOhTLTT1tiXP3LaiPCCbzxzK7woKPRsT0EB3YDOQoqjAd0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tOIMViNLQbxVf8GcvyWDHbtwW+kNr5INbLi4x3NQI13cwN4YspEZwFgZi22j?=
- =?us-ascii?Q?PcQeW9IaHNsUiMrKmcKa1nEfWtvJvT1YteBWEZiLFVwRGfWHVDxsHpX2fP0J?=
- =?us-ascii?Q?JfOQIAiN3wdqnrFChPDTKPwzqcS9A8tgQM385d0ReFu1sQ+kpnFjNsOl83ox?=
- =?us-ascii?Q?NwCvP9jhFpeXpfDBbNA95aNSRvwGduqpkO5/scobEK2d0IjcJskU/2SW3Oqs?=
- =?us-ascii?Q?b3tf+vKsnb1q0zDqhxBBCyvd0rA1B+yorTBO7DgpwmskNtjf+c/GoaC5HFkm?=
- =?us-ascii?Q?nAsE8lmn8XJ7HmT5Y41pTR3SogXxEuBuD4+KSJDIgcQ0ZmJ02NOKHX7eF/JU?=
- =?us-ascii?Q?K2gXuBEbVPP5cWNHQvYvXeIcI+mEpveonZocjnef5XYVPW+MatfZ9UhBtwzw?=
- =?us-ascii?Q?QT71k5etA4xDj1ynzgEqL0Lutn207s7EqLPQBiOoiyj2suQ0dvYYCs7HS+ST?=
- =?us-ascii?Q?A0HrqvSazkq29qDZl4AeacSywioZ/CzEX2vDVkTm7qkGkaGAXCkw8MWJw9kP?=
- =?us-ascii?Q?EITGy/99zCGlGj3eoCK8reKQGzwHPk20hG4jb/IaewES3DfV/JAXtYkw3s3A?=
- =?us-ascii?Q?DAviSX+GF5/pHlkfMl4XQxqiGtS5eB8FUkEPBjL9aTsa/xU35hPhyGeBnHJx?=
- =?us-ascii?Q?hRNeqMaRtjwhcJtrySvlhnSS7T4CdtaZJ4AK+LoPHK3OSGEwj2usRYRSF49r?=
- =?us-ascii?Q?A0wlze8oYRSMs5egwhUbnhd7mFw/e5ebiFaLx0HJv01NuCjccCjR7QzCXvlC?=
- =?us-ascii?Q?GoEWZL+U0AqugSK3PlFlepPDHC9Hxs+ESm05apARDxDKUmX3B06HhrOKiE7t?=
- =?us-ascii?Q?lIPa/nFwvJ+Tl8d3blvewOKWm1kus8JT2sYed7bekG2hssimvP2a6DK5Fln1?=
- =?us-ascii?Q?DpYJYxE3NUGgkotnXu5EmCYteGhRy4/HtjXpCyWUuCNltR2gFNa0xAX9MyQq?=
- =?us-ascii?Q?injuBZSIwbq8ZNb8y6JL64N96uAeYMSBvusMX364/UuwkyDcICQwvq9LF2IF?=
- =?us-ascii?Q?7yEH+0jg9kPAY9F1ll3bJsAsKp80Ql6paOUR4qvRY+XLF/6XNhQBoHssVy+d?=
- =?us-ascii?Q?x9OV/WqxQu3dUS+a1ERl5yuT2EmXREwHkzMILo2RWHhjaPMQZyh8fGsPFFkC?=
- =?us-ascii?Q?a0TYWaO4dWgkcC9mYX8CY3uTQhpvPcKYdN05YRz7WmYQpC1Po5HQ1VsygrMY?=
- =?us-ascii?Q?MUHH03ONyjJHMuYOhDPtc52b9EAG8SLCL9Wg/6sEy927PVYCBY1VGZc/4FoE?=
- =?us-ascii?Q?5yQgfZA0aLmpzzOoGRKPaEhoUEQqnEqjTN31sUAbfVnIpeE82UDfdPP3jR0H?=
- =?us-ascii?Q?PFWOVahgHCmwstSjssnrmELbHz3fs0KCZEOaiKrflVBqeD/WZoKfn75/jfoX?=
- =?us-ascii?Q?eMCY5t2ZZfocRdRIR935GfZHp4i7DUJYhBNWCmTNDEbwrHM4ulqgco5k7k3U?=
- =?us-ascii?Q?QhYKlYBixSNdOO9BLkTLrU+TcVYpMUbS5MlNbGXTlftG2RfKwsv4C1Y2dnYJ?=
- =?us-ascii?Q?ZpH3om+F8vigDHxYjHA/f67AN7R00E3OTADDFeWTa0IOfjKj5yVEoimUcMsG?=
- =?us-ascii?Q?7P8I2b3rrowBuG2aTflxGmJIlynTc9RNhLvS2R9e7vNgIn9UuMYSx5QfPQVk?=
- =?us-ascii?Q?FebqgmeNfWBTkwV92mTt22ITrTEDX3FfYPeUsm1PjkQDWwTEFQNqPuZXBlo1?=
- =?us-ascii?Q?Bc+MfULWDz/CJyqAFfV541Uu35kDWdzH4+t7u1O3bN+gKKGd?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2183d1e6-0966-468d-18d6-08de7575b8ab
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 20:29:20.4624
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hVmSuE1hNTrMMkv0W4QvXdc6eCioO09HOEcjuuvy5YqBxx+thx1XF+4qjGVHd4JIXe507yfQjIvLXic5zZEuxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11307
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226-neutron-v1-5-46eccb3bb50a@nxp.com>
 
-On Thu, Feb 26, 2026 at 06:44:59PM +0100, Stefano Radaelli wrote:
-> Hi Frank,
->
-> On Tue, Feb 24, 2026 at 04:30:28PM -0500, Frank Li wrote:
-> >
-> > If can't auto detected, I think keep old dts, use overlay change to new
-> > one.
-> >
-> > For example, board.dtb
-> >
-> > you can rename board.dtb to board-revA.dtb
-> > new board.dtb, by apply verb.dtso to board-revA.dtb.  Or you direct use
-> > board-revb.dtb.
-> >
-> > If change is big, you can create new one.
-> >
-> > Frank
->
-> Thanks for the clarification, I understand that the preferred approach
-> would be to keep the existing Broadcom-based DTS unchanged and add a
-> separate description for the IW612-based revision.
->
-> My only concern is avoiding confusion in mainline.
->
-> The Broadcom-based SOM revision is obsolete and no longer manufactured.
-> All currently produced VAR-SOM-MX8MM modules use the IW612 module, and
-> this will remain the only production hardware going forward.
->
-> I would like to avoid giving the impression that we are actively
-> supporting two parallel SOM revisions in mainline, while in reality
-> only the IW612-based hardware exists in production.
->
-> For this reason, would it be acceptable to:
->
->   - move the Broadcom-based description into an explicitly legacy
->     revision-specific DTS (kept unchanged for existing users), and
->   - update the main imx8mm-var-som DTS to reflect the current
->     IW612-based hardware?
+Hi Ioana,
 
-The direction is correct. Just try to reduce duplicate the same code.
+kernel test robot noticed the following build warnings:
 
-Frank
+[auto build test WARNING on 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ioana-Ciocoi-Radulescu/drm-gem-dma-Add-flag-for-bidirectional-mapping-of-non-coherent-GEM-DMA-buffers/20260226-221222
+base:   6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+patch link:    https://lore.kernel.org/r/20260226-neutron-v1-5-46eccb3bb50a%40nxp.com
+patch subject: [PATCH 5/9] accel/neutron: Add GEM buffer object support
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20260227/202602270531.MP8x6wo3-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602270531.MP8x6wo3-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602270531.MP8x6wo3-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/accel/neutron/neutron_gem.c:52:6: warning: variable 'gem_obj' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+      52 |         if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/drm/drm_print.h:789:2: note: expanded from macro 'drm_WARN_ON'
+     789 |         drm_WARN((drm), (x), "%s",                                      \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     790 |                  "drm_WARN_ON(" __stringify(x) ")")
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/drm/drm_print.h:779:2: note: expanded from macro 'drm_WARN'
+     779 |         WARN(condition, "%s %s: [drm] " format,                         \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     780 |                         dev_driver_string(__drm_to_dev(drm)),           \
+         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     781 |                         dev_name(__drm_to_dev(drm)), ## arg)
+         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/asm-generic/bug.h:163:36: note: expanded from macro 'WARN'
+     163 | #define WARN(condition, format...) ({                                   \
+         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     164 |         int __ret_warn_on = !!(condition);                              \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     165 |         if (unlikely(__ret_warn_on))                                    \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     166 |                 __WARN_printf(TAINT_WARN, format);                      \
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     167 |         unlikely(__ret_warn_on);                                        \
+         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     168 | })
+         | ~~
+   drivers/accel/neutron/neutron_gem.c:67:21: note: uninitialized use occurs here
+      67 |         drm_gem_object_put(gem_obj);
+         |                            ^~~~~~~
+   drivers/accel/neutron/neutron_gem.c:52:2: note: remove the 'if' if its condition is always false
+      52 |         if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      53 |                 ret = -EFAULT;
+         |                 ~~~~~~~~~~~~~~
+      54 |                 goto out_put;
+         |                 ~~~~~~~~~~~~~
+      55 |         }
+         |         ~
+   drivers/accel/neutron/neutron_gem.c:38:32: note: initialize the variable 'gem_obj' to silence this warning
+      38 |         struct drm_gem_object *gem_obj;
+         |                                       ^
+         |                                        = NULL
+   1 warning generated.
 
 
->
-> This would preserve compatibility for older boards, but ensure that
-> the primary DTS in mainline represents the hardware that is actually
-> produced and aligns with the rest of the VAR-SOM family.
->
-> Thank you again for your support and your patience!
->
-> Best regards,
-> Stefano
+vim +52 drivers/accel/neutron/neutron_gem.c
+
+    33	
+    34	int neutron_ioctl_create_bo(struct drm_device *drm, void *data, struct drm_file *filp)
+    35	{
+    36		struct drm_neutron_create_bo *args = data;
+    37		struct drm_gem_dma_object *dma_obj;
+    38		struct drm_gem_object *gem_obj;
+    39		size_t size;
+    40		int ret;
+    41	
+    42		if (!args->size || args->pad)
+    43			return -EINVAL;
+    44	
+    45		size = ALIGN(args->size, NEUTRON_BO_ALIGN);
+    46	
+    47		dma_obj = drm_gem_dma_create(drm, size);
+    48		if (IS_ERR(dma_obj))
+    49			return PTR_ERR(dma_obj);
+    50	
+    51		/* We expect correctly aligned buffers, but double-check */
+  > 52		if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
+    53			ret = -EFAULT;
+    54			goto out_put;
+    55		}
+    56	
+    57		gem_obj = &dma_obj->base;
+    58		ret = drm_gem_handle_create(filp, gem_obj, &args->handle);
+    59		if (ret)
+    60			goto out_put;
+    61	
+    62		args->map_offset = drm_vma_node_offset_addr(&gem_obj->vma_node);
+    63		args->size = gem_obj->size;
+    64	
+    65	out_put:
+    66		/* No need to keep a reference of the GEM object. Freeing is handled by user */
+    67		drm_gem_object_put(gem_obj);
+    68	
+    69		return ret;
+    70	}
+    71	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
