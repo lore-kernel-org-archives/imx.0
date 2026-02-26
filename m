@@ -1,32 +1,31 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4D536CE09
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6C336D4FF
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772113269; cv=none; b=KalRtcOeVRk8iTDVFs7QUHLEnLcSnQhFV92NRehOMJyUKRpGJIg2IUzoakpg03xSLSkCBEyC54nricpkn2YyJCIdT7xhIBPBQwNE0+cVYZ1AiyvDqwuSofzwO/x0IfDiQD3nXfC7MV6hLZWhsOeVxY3WuM2UuqQli+lYT5vyTec=
+	t=1772113270; cv=none; b=uPcJDmVhnvMG8MDre01/hz+Peiw2h69/VwpBsksLWNBKFiLQwVmHzfsCN8yxGxklqGSLi+l62X10srttdYnXwyF9tQG+oWX4IYyx1UxNj524omCnH8qu4IH59/l/RbWZTd/Xvmzhm1NZfl4VvNfMfdgp3dn7DAaoFfGJlSz/1Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772113269; c=relaxed/simple;
-	bh=70OP0Dj1Z9Nhg2uTfcWxmjST7VKQFl9/cXvxpjdBVks=;
+	s=arc-20240116; t=1772113270; c=relaxed/simple;
+	bh=HFuzMjntYvhOCHE0AaufcFtwUGeRoiICS772u9gKCik=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=btXbmMNB80O1NzHmJnsHti030gUO1I4GqbOSZ7zD5xj9l3lV9pyZPLagqWTs3yX6yWCChRDhEA5xUbdla9YCdG+vqrAJ0ed3IBXJ5UUeONyC1wfq1MwwqsHTpj7AlXK+p5lizhk2hp3GaDsG7HHUkmTRNM7CrRT1h3SBPRk+puY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	 In-Reply-To:To:Cc; b=Rr8JIJiUKBEuhCSUEsuckK7Z1dp0DX2CxQoQBk8bl4XF+f35mn/JS00vPOOjqOIAYyuSYpaWb4wSolVNXtdfHdIzSRFpquXErY+47bDVSFGpWSznMYcgln2aVLPb2cVcliUIflAB43IixCv+NFkpfM3UtK/JKUlnKHrKvlxshzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6231F202549;
-	Thu, 26 Feb 2026 14:41:00 +0100 (CET)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CF3BA1A254A;
+	Thu, 26 Feb 2026 14:41:06 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 28BDC202C27;
-	Thu, 26 Feb 2026 14:41:00 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B7E371A253C;
+	Thu, 26 Feb 2026 14:41:06 +0100 (CET)
 Received: from lsv15149.swis.ro-buh01.nxp.com (lsv15149.swis.ro-buh01.nxp.com [10.162.246.145])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 6EDD020376;
-	Thu, 26 Feb 2026 14:40:58 +0100 (CET)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0E9D92035B;
+	Thu, 26 Feb 2026 14:41:05 +0100 (CET)
 From: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Date: Thu, 26 Feb 2026 15:40:41 +0200
-Subject: [PATCH 2/9] accel/neutron: Add documentation for NXP Neutron
- accelerator driver
+Date: Thu, 26 Feb 2026 15:40:47 +0200
+Subject: [PATCH 8/9] accel/neutron: Add logging support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +34,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-neutron-v1-2-46eccb3bb50a@nxp.com>
+Message-Id: <20260226-neutron-v1-8-46eccb3bb50a@nxp.com>
 References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
 In-Reply-To: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
 To: Oded Gabbay <ogabbay@kernel.org>, 
@@ -53,192 +52,260 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>, 
  Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772113256; l=7020;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772113256; l=7700;
  i=ruxandra.radulescu@nxp.com; s=20260204; h=from:subject:message-id;
- bh=70OP0Dj1Z9Nhg2uTfcWxmjST7VKQFl9/cXvxpjdBVks=;
- b=8snYNlqD0ArdowhVMHi4fky8m1s3uu2Sgmh8z+MCPxBpHYyxaM/jPPavdv2oTxe3/SS+vrOs2
- KGH+5xMQ5zNDdOXXUoc9yvcYl3RvMBDTlrafP7LIw3aSly+FkLo3DO5
+ bh=HFuzMjntYvhOCHE0AaufcFtwUGeRoiICS772u9gKCik=;
+ b=JD6RNGZkvSwooK6itGN7AQtmsv1GIa1vMOZgr3/jI62PEolio3hc8V0Q3ylaLw9iGMO19geVk
+ kkJRmvebtDwCd1nFbpiR2OGbaJpOMgkziFwnjKlIE468r+z2Lb7D0zF
 X-Developer-Key: i=ruxandra.radulescu@nxp.com; a=ed25519;
  pk=zoq4b4OYR0c4faAH97xoTxdr6vfR8OvPbS+Cx0XhIBY=
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-Neutron is NXP's Neural Processing Unit (NPU) and it's integrated on
-the i.MX95 SoC. It is capable of running inferences on a large range
-of ML models and targets edge AI applications.
+Expose the Neutron firmware log via debugfs interface. The log resides
+in internal device memory.
 
 Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 ---
- Documentation/accel/index.rst           |   1 +
- Documentation/accel/neutron/index.rst   |  12 +++
- Documentation/accel/neutron/neutron.rst | 131 ++++++++++++++++++++++++++++++++
- 3 files changed, 144 insertions(+)
+ drivers/accel/neutron/Makefile          |  2 +
+ drivers/accel/neutron/neutron_debugfs.c | 34 ++++++++++++++++
+ drivers/accel/neutron/neutron_debugfs.h | 15 +++++++
+ drivers/accel/neutron/neutron_device.c  | 69 +++++++++++++++++++++++++++++++++
+ drivers/accel/neutron/neutron_device.h  | 17 ++++++++
+ drivers/accel/neutron/neutron_driver.c  |  3 ++
+ 6 files changed, 140 insertions(+)
 
-diff --git a/Documentation/accel/index.rst b/Documentation/accel/index.rst
-index cbc7d4c3876a..dbe177074739 100644
---- a/Documentation/accel/index.rst
-+++ b/Documentation/accel/index.rst
-@@ -9,5 +9,6 @@ Compute Accelerators
+diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
+index ac6dd576521c..6d5c204460af 100644
+--- a/drivers/accel/neutron/Makefile
++++ b/drivers/accel/neutron/Makefile
+@@ -8,3 +8,5 @@ neutron-y := \
+ 	neutron_gem.o \
+ 	neutron_job.o \
+ 	neutron_mailbox.o
++
++neutron-$(CONFIG_DEBUG_FS) += neutron_debugfs.o
+diff --git a/drivers/accel/neutron/neutron_debugfs.c b/drivers/accel/neutron/neutron_debugfs.c
+new file mode 100644
+index 000000000000..a392286e40b7
+--- /dev/null
++++ b/drivers/accel/neutron/neutron_debugfs.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* Copyright 2025 NXP */
++
++#include <linux/debugfs.h>
++
++#include "neutron_device.h"
++#include "neutron_debugfs.h"
++
++static ssize_t fw_log_read(struct file *f, char __user *buf, size_t count, loff_t *pos)
++{
++	struct neutron_device *ndev = file_inode(f)->i_private;
++
++	if (!ndev->log.size)
++		return 0;
++
++	if (ndev->flags & NEUTRON_BOOTED)
++		neutron_read_log(ndev, count);
++
++	return simple_read_from_buffer(buf, count, pos, ndev->log.buf,
++				       ndev->log.buf_count);
++}
++
++static const struct file_operations fw_log_fops = {
++	.owner = THIS_MODULE,
++	.read = fw_log_read,
++};
++
++void neutron_debugfs_init(struct neutron_device *ndev)
++{
++	struct dentry *debugfs_root;
++
++	debugfs_root = ndev->base.debugfs_root;
++	debugfs_create_file("fw_log", 0444, debugfs_root, ndev, &fw_log_fops);
++}
+diff --git a/drivers/accel/neutron/neutron_debugfs.h b/drivers/accel/neutron/neutron_debugfs.h
+new file mode 100644
+index 000000000000..7cd4b5af55a6
+--- /dev/null
++++ b/drivers/accel/neutron/neutron_debugfs.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* Copyright 2025 NXP */
++
++#ifndef __NEUTRON_DEBUGFS_H__
++#define __NEUTRON_DEBUGFS_H__
++
++struct neutron_device;
++
++#if defined(CONFIG_DEBUG_FS)
++void neutron_debugfs_init(struct neutron_device *ndev);
++#else
++static inline void neutron_debugfs_init(struct neutron_device *ndev) {}
++#endif
++
++#endif /* __NEUTRON_DEBUGFS_H__ */
+diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
+index 571ec906ad72..a5cedc91ad25 100644
+--- a/drivers/accel/neutron/neutron_device.c
++++ b/drivers/accel/neutron/neutron_device.c
+@@ -77,6 +77,70 @@ static void neutron_stop(struct neutron_device *ndev)
+ 			   100, 100 * USEC_PER_MSEC);
+ }
  
-    introduction
-    amdxdna/index
-+   neutron/index
-    qaic/index
-    rocket/index
-diff --git a/Documentation/accel/neutron/index.rst b/Documentation/accel/neutron/index.rst
-new file mode 100644
-index 000000000000..8f15346d16c7
---- /dev/null
-+++ b/Documentation/accel/neutron/index.rst
-@@ -0,0 +1,12 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
++static void neutron_init_logging(struct neutron_device *ndev)
++{
++	size_t old_size = ndev->log.size;
++	u32 ringctrl;
 +
-+==========================
-+ accel/neutron NPU driver
-+==========================
++	ringctrl = readl_relaxed(NEUTRON_REG(ndev, RINGCTRL));
 +
-+The accel/neutron driver supports the Neutron NPU (Neural Processing Unit)
-+from NXP.
++	ndev->log.base = ndev->mem_regions[NEUTRON_MEM_DTCM].va +
++			 NEUTRON_DTCM_BANK1_OFFSET +
++			 FIELD_GET(RINGCTRL_ADDR_MASK, ringctrl);
++	ndev->log.size = FIELD_GET(RINGCTRL_SIZE_MASK, ringctrl) *
++			 RINGCTRL_SIZE_MULT;
 +
-+.. toctree::
++	if (ndev->log.size == 0) {
++		dev_info(ndev->dev, "Firmware logging is disabled\n");
++		return;
++	}
 +
-+   neutron
-diff --git a/Documentation/accel/neutron/neutron.rst b/Documentation/accel/neutron/neutron.rst
-new file mode 100644
-index 000000000000..c5066d53ce69
---- /dev/null
-+++ b/Documentation/accel/neutron/neutron.rst
-@@ -0,0 +1,131 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
++	/* If size didn't change, keep using the old buffer */
++	if (old_size == ndev->log.size)
++		return;
 +
-+.. include:: <isonum.txt>
++	devm_kfree(ndev->dev, ndev->log.buf);
++	ndev->log.buf = devm_kmalloc(ndev->dev, ndev->log.size, GFP_KERNEL);
++	if (!ndev->log.buf) {
++		ndev->log.size = 0;
++		dev_warn(ndev->dev, "Failed to allocate log buffer, logging is disabled\n");
++	}
++}
 +
-+====================
-+ Neutron NPU Driver
-+====================
++/* Read up to count bytes from device log into local buffer */
++void neutron_read_log(struct neutron_device *ndev, size_t count)
++{
++	size_t bytes, remaining;
++	u32 head, tail;
 +
-+:Copyright: |copy| 2026 NXP
++	ndev->log.buf_count = 0;
 +
-+Overview
-+========
++	if (!(ndev->flags & NEUTRON_BOOTED) || !ndev->log.size)
++		return;
 +
-+Neutron is NXP's eIQ Neutron Neural Processing Unit (NPU). It is a highly
-+scalable, power-efficient machine learning accelerator targeting quantized
-+ML models for edge AI applications. Neutron is integrated into i.MX95 and
-+other NXP platforms.
++	tail = readl_relaxed(NEUTRON_REG(ndev, TAIL));
++	head = readl_relaxed(NEUTRON_REG(ndev, HEAD));
 +
-+A more detailed description of Neutron NPU and usage scenarios can be
-+found at [1]_.
++	if (tail == head)
++		return;
 +
-+Hardware Description
-+====================
++	/* Read from head to end of buffer or tail */
++	bytes = (head < tail) ? (tail - head) : (ndev->log.size - head);
++	bytes = min(count, bytes);
++	memcpy_fromio(ndev->log.buf, ndev->log.base + head, bytes);
++	ndev->log.buf_count = bytes;
 +
-+Neutron has the following hardware components:
++	/* Read from start of buffer, if it wraps around */
++	if (head > tail && bytes < count) {
++		remaining = min(count - bytes, tail);
++		memcpy_fromio(ndev->log.buf + bytes, ndev->log.base, remaining);
++		ndev->log.buf_count += remaining;
++	}
 +
-+- RISC-V core: this is the "brain" of the Neutron NPU. It runs a proprietary
-+  firmware responsible for programming registers, processing commands and
-+  managing the other hardware components
-+- one or more Neutron cores: the main computation engine performing Machine
-+  Learning (ML) operations
-+- TCM: a dedicated fast memory
-+- Data Mover: a DMA engine that handles data transfers between system memory
-+  and Neutron's internal memory
++	head = (head + ndev->log.buf_count) % ndev->log.size;
++	writel_relaxed(head, NEUTRON_REG(ndev, HEAD));
++}
 +
-+Software Stack
-+==============
+ static void __iomem *neutron_tcm_da_to_va(struct neutron_device *ndev, u64 da)
+ {
+ 	struct neutron_mem_region *mem;
+@@ -158,6 +222,8 @@ int neutron_boot(struct neutron_device *ndev)
+ 	/* Prepare device to receive jobs */
+ 	neutron_mbox_reset_state(ndev);
+ 
++	neutron_init_logging(ndev);
 +
-+The following software components are required for running an inference
-+on the Neutron accelerator:
+ 	ndev->flags |= NEUTRON_BOOTED;
+ 
+ 	return 0;
+@@ -165,6 +231,9 @@ int neutron_boot(struct neutron_device *ndev)
+ 
+ void neutron_shutdown(struct neutron_device *ndev)
+ {
++	/* Device log becomes unavailable after shutdown, save it */
++	neutron_read_log(ndev, ndev->log.size);
 +
-+- Neutron converter [2]_, [3]_: this is an offline tool that converts models
-+  from standard TFLite (LiteRT) format to a custom format for execution on the
-+  Neutron NPU;
-+- An inference engine, e.g. LiteRT's XNNPack, which in turn uses
-+- A LiteRT custom delegate [4]_ to dispatch custom operators to Neutron NPU;
-+- A userspace library [5]_ that the delegate links to, which wraps IOCTLs
-+  to the kernel driver in a higher-level API. It handles microcode, weights
-+  and kernels preparation and base address computations needed by the NPU for
-+  job execution. It also triggers cache syncs when required;
-+- The Neutron kernel driver, which handles device initialization and
-+  communicates directly with the Neutron firmware;
-+- Neutron firmware [5]_, a proprietary firmware that executes on the RISC-V
-+  core and directly drives the execution of the NPU hardware.
+ 	neutron_stop(ndev);
+ 	ndev->flags &= ~NEUTRON_BOOTED;
+ }
+diff --git a/drivers/accel/neutron/neutron_device.h b/drivers/accel/neutron/neutron_device.h
+index 0ed72965774d..bf06878ac370 100644
+--- a/drivers/accel/neutron/neutron_device.h
++++ b/drivers/accel/neutron/neutron_device.h
+@@ -85,11 +85,26 @@ enum neutron_mem_id {
+ 	NEUTRON_MEM_MAX
+ };
+ 
++/**
++ * struct neutron_log - Neutron log buffer descriptor
++ * @base: base address of the log buffer in device memory
++ * @size: Size of the log buffer
++ * @buf: Kernel buffer for log data
++ * @buf_count: Number of bytes available in the kernel buffer
++ */
++struct neutron_log {
++	void __iomem *base;
++	size_t size;
++	void *buf;
++	size_t buf_count;
++};
 +
-+Usage Flow
-+==========
+ /**
+  * struct neutron_device - Neutron device structure
+  * @base: Base DRM device
+  * @dev: Pointer to underlying device
+  * @mem_regions: Array of memory region descriptors
++ * @log: Log buffer descriptor
+  * @irq: IRQ number
+  * @clks: Neutron clocks
+  * @num_clks: Number of clocks
+@@ -107,6 +122,7 @@ struct neutron_device {
+ 	struct device *dev;
+ 
+ 	struct neutron_mem_region mem_regions[NEUTRON_MEM_MAX];
++	struct neutron_log log;
+ 
+ 	int irq;
+ 	struct clk_bulk_data *clks;
+@@ -137,5 +153,6 @@ void neutron_shutdown(struct neutron_device *ndev);
+ void neutron_enable_irq(struct neutron_device *ndev);
+ void neutron_disable_irq(struct neutron_device *ndev);
+ void neutron_handle_irq(struct neutron_device *ndev);
++void neutron_read_log(struct neutron_device *ndev, size_t bytes);
+ 
+ #endif /* __NEUTRON_DEVICE_H__ */
+diff --git a/drivers/accel/neutron/neutron_driver.c b/drivers/accel/neutron/neutron_driver.c
+index ceae1f7e8359..14b4bc3a79d1 100644
+--- a/drivers/accel/neutron/neutron_driver.c
++++ b/drivers/accel/neutron/neutron_driver.c
+@@ -18,6 +18,7 @@
+ 
+ #include "neutron_device.h"
+ #include "neutron_driver.h"
++#include "neutron_debugfs.h"
+ #include "neutron_gem.h"
+ #include "neutron_job.h"
+ 
+@@ -168,6 +169,8 @@ static int neutron_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto free_reserved;
+ 
++	neutron_debugfs_init(ndev);
 +
-+This section describes the steps required to run an inference job on the
-+Neutron NPU.
-+
-+Offline Conversion
-+------------------
-+
-+The first step is to convert a standard TFLite model using the Neutron
-+converter. Supported standard operators are extracted together and mapped
-+to one or multiple **NeutronGraph** custom operators in the converted model.
-+Standard operators that are not supported by the NPU are left unchanged and
-+will be executed on the CPU.
-+
-+Runtime Flow
-+------------
-+
-+On the platform's Cortex-A cores running Linux, the LiteRT inference engine
-+is responsible for loading the ML model, pre-processing the input data and
-+handing over the tensor computation to the NPU via the custom delegate.
-+
-+The inference engine can be exercised via one of the standard TFLite tools
-+(e.g. benchmark_model, label_image, etc) or via any custom application that
-+uses the LiteRT runtime API.
-+
-+When preparing to run an inference job, userspace requests a memory buffer
-+from the kernel driver. It loads both the model and the input data in the
-+buffer, while also reserving a section for the inference output. It then
-+issues a job submission command with the prepared buffer and waits for
-+completion.
-+
-+The kernel driver sends the inference job details to the Neutron firmware
-+via mailbox registers. The NPU executes the inference and issues an interrupt
-+to the Linux core once it is finished. The driver in return marks the job
-+as complete so userspace can access and post-process the output.
-+
-+Boot Sequence
-+=============
-+
-+The Neutron driver is responsible for loading the firmware image and
-+initiating the NPU boot sequence. The device is powered down during suspend
-+and each resume operation implies running the firmware load and boot sequence
-+again.
-+
-+Hardware Constraints
-+====================
-+
-+Cache Coherency
-+---------------
-+
-+Some of the NXP platforms that Neutron is integrated on, including i.MX95,
-+do not ensure Neutron memory coherency at hardware level, generating the
-+need for explicit DMA sync operations. Given that only parts of the memory
-+buffer may require syncing at any given time (e.g. multiple inferences using
-+the same model but different input data) and that the kernel driver is unaware
-+of the buffer partitioning, the sync operations are driven from userspace.
-+
-+Buffer alignment
-+----------------
-+
-+The Neutron DMA engine requires the inference buffers to be aligned to 1MB
-+boundary. We allocate buffers for Neutron NPU from a reserved CMA pool that
-+satisfies this alignment requirement.
-+
-+References
-+==========
-+
-+.. [1] i.MX Machine Learning User's Guide: https://www.nxp.com/docs/en/user-guide/UG10166.pdf
-+.. [2] Neutron Converter binary and User Guide available for download here:
-+       https://www.nxp.com/design/design-center/software/eiq-ai-development-environment/eiq-toolkit-for-end-to-end-model-development-and-deployment:EIQ-TOOLKIT
-+.. [3] NXP's eIQ PyPi repository: https://eiq.nxp.com/repository/eiq-neutron-sdk/
-+.. [4] TFLite delegate source code: https://github.com/nxp-imx/tflite-neutron-delegate
-+.. [5] Neutron firmware, library and TFLite delegate available here as binaries:
-+       https://github.com/nxp-upstream/neutron/tree/upstream
-+
+ 	ret = devm_pm_runtime_enable(dev);
+ 	if (ret)
+ 		goto free_job;
 
 -- 
 2.34.1
