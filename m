@@ -1,239 +1,160 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011066.outbound.protection.outlook.com [52.101.65.66])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013052.outbound.protection.outlook.com [40.107.162.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFA632C942
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 10:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238F63161B1
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 11:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772103535; cv=fail; b=XF5uo8r1JHMImKHYRTKgRW3Gsonx6PiZPmVhKy2VVexIP7JJAS8Abzd76zNyAL2xXWh2CWZeSYJfMG+02ZFlKbqU2wUWCZ2HVOk/lj6B4QPMQlbM4X0X/FP8NMhM+/TbZtI0AjE6V37DKmTYU6bB/o+TYzXDYTFkObwwVw/J5oo=
+	t=1772103775; cv=fail; b=E/0dssJS/+LgBJ9nNsbbZ1ID3K3V0treNl0x+8Fz97/LYz00kbGq9KCQo+CZ83yBNxqrk8Ue0YQFAsnvnV+i2sVQ/VulXvVhCiCf6m0FPa+wTxADgKMwqdQ7ma3zrmS8L0mGBEV01iI3Z71nMWDj9g50eydlR0mhwIO3tzVoMFg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772103535; c=relaxed/simple;
-	bh=ioTU+vjAfJzzyyzu1hTlZ4UoFFiLKbB+pN542vX/GDc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=X0UhQ9kYsig49z2eApIhvgf3S+hWOBUkb1ZJNKutG5piI1i/E+bAO4Gsmu8BWVpTN/UoqtcrGIEZ8MQ375Q1ezyOF2SdCpvl8LEt8tkMJbvsDKzfGKK9TiRNwIWlCfOSZH3OxTE8inlJ8vkC0mgwIktj3UGHiuU2EIPkTMvAf50=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dZ0hLR7I; arc=fail smtp.client-ip=52.101.65.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1772103775; c=relaxed/simple;
+	bh=YNXD2kIv0/HxxrQD7N50cUZLv+OC8VEwYvHYyc4fIzQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=nd/wpzVtJfaC5QWxHdnhgVOAJV00p/nNKg1yaBROqf/nBQyUwoz9TvZI14nraJ5T4lXj5+rGUjwJZr+IAEFFTe4DWlKzqsZOgYMfY0XF2jbXkSdLGn2V4Ack7BOZylf8luei0KqovFlsu1eluZEmaa5twCtptzppxydG+z0PLwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XxlASPx9; arc=fail smtp.client-ip=40.107.162.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dZ0hLR7I"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XxlASPx9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q4qsg2fO7Ou/BcjBVZO918F61e8KF3TTOK14YTKDKS6cY++RoDjS8fKADmxVGrCCP/DHyKGX0bCV8wUKQu2jw04Kzh48Lke2DwbWe9UIHbm2tOxx0/tBFIthWSqk2hUXWWOXhtOaVnHu5QYmH93sHgT5MMNF8IoUGyp5xydLYlSgbPE/TUxb9907Hx2CXqBiNlCH0NWvl3izMirrWQnrEamXhxWt8u0SssrJG4q4SFmPE1BqAdf9gr9N2g8JZG7wVwBY7NEYr8QK1LffWAqi08k8IgVqDCKouS6Ch5OeoI8KRHDn/U7IlUAQV8t4ERh1PR3varD/a39yYr6P0+eCGw==
+ b=UWFB0aZr8wYem7io1oHiSiF3tcFQibzmtBGkLjp8HW9XF64gOER3HQF05ow5CtCje7TsSv87J3UmQTCmkOHAvL16eKFOofZErUDnuhgbc6+fvv6lyKSjcFSTXs9S/+2jIHG6V1bxxfpOF1n093MgP4OWjp1DdEnDYfDQoZHvaEZLrHW9Ls8qXUEZYl+MPmgcD+CmrhFMT0XtNZfP4pD+RiylT11kxwP6XT9hY0zym2OneJh4gNm44xv1by4W7OXTgf/YZUtb5/MKISvd35fhzNTmJyQ8MQJc2JR+6rhBaUqO2Hd+u1rOGXYokbh39qU+cf/gNZfHOYRPBh1TWqjVNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XFHtejPoxK9CfCspbtw72xLzYtf/WljI31sL+6ScVVQ=;
- b=vcUuLULI0ODxQqWAkIih49DP3f25Q2Iv0Qv9agwHtegScVJulN0jz4iqzB0PO/ERpIWZ509GkN1Ikh3HrVRq0yEqk0p0FDh693pSMz6wujDdX0EW7mEpjB/f6ng79Od0fPjFt+GLRCJYdTLsn7Iog7oIdO9I8tJnKKC60y4gLj31XhvN3851oObsF7k8pecY68SBXBpzbQMf9FG7+mxj9+q6H7ZAv8yBYi3lNrME554zCUZ9ZrNfdXtwcvB7pJOYMJOCPpMJkrMYBDUY24ksUvTEYaRSUvgwHSFr9gww+SsSKgYmzjoELq0iDMLjmUwKkKrNsGZ17w3fxIFQqmqsqg==
+ bh=8kTUgeoBSWgqAtHfG+dvff2sEmukUFOAe89sFfcQnLU=;
+ b=d+fDp2qq0IetcGHXZ8WTvvpriDKDaE3BWUoeEOfHIPCJ08rdowJBFKGuN7457UFQQ3VCQxwX5NaWRKYnLkj1VUzS9zf8+rOa6mv3RHwdYwjpprMTgLlMOswf5TQzSc04V66PJ6QshzXY9UjQo46LQPldThGbMTBgnf0lS8d640mK+6OpR7mlNsHmGobI62cMN3vCsMP2T5zDVmJkWLAtUSmbNvqHK9N+YGRHBHd9n0+4NYYOpC3RLYirCCtNPWPK1dmLwiIfxMDQjpgkbBv+4QFq+sPdmbt4nrGXHB4ATEOnVuNBekTrSsK/n8drq0bRE2KSmVA0ZoO8SwCtgfamIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XFHtejPoxK9CfCspbtw72xLzYtf/WljI31sL+6ScVVQ=;
- b=dZ0hLR7IYCedZIWNZvvbliu5/lKcotYd7avWqZTtbJBiXb5LimXyCACUurWXuiAs3d9K8NcKsjJpXbxAPwdC3ITYQD6BO0xVzrTz2OmJBVxe6lqedyJVBPjk/GsChUgoM8iiQ4mytDeoMzoa9wyq4VgKu8fRTAJb2IJ/Vl2ovjhmamlgW8NEL4j9/mDwGhQr9FjziwHiXa2Lh5+y6vW7U4aDiSMVng7fiQm4KOmUTFo7P9QV4sgEGtW4rtiS8ckgW5Z1QsRnWj8OqXxfHEj/dAp+1sgqCYdgaJwZvGIpXByhZdHMwmAHfhpy/n6XlN+okqHYQlRoG/uqWiSIEPL3jw==
+ bh=8kTUgeoBSWgqAtHfG+dvff2sEmukUFOAe89sFfcQnLU=;
+ b=XxlASPx94oETyrNXNFmdfRfuwMklZZj+TbdBhsN69MXny+Tx6+To4q7Gb9XYT27betXVU1hFgd+FYLckngDNKxQKpmfny2605/Y3MECpNoRaO1xa0AW6UuA3nvaDGRjSA96XlQ/nO4EMzQh8Oun/bQE6HDCRZQV6joSQnCCqVN1W4Ke4RckWZ1z+Yru2LTw4brE9wB/UInfGSblcRbbmrQubBe/piBjb5ttIYbLNGulzxxEL8QB7spQsHBTkd7qRN3H6cqJl9Fq3sLZRtLYc9cPoeSKwD31Lv4yaoTlPu3r9+Zo7LrZXUyDWxpV1rOJx5IYuGvrJT3rz4yzwu68Nlg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8825.eurprd04.prod.outlook.com (2603:10a6:20b:408::7)
- by AMBPR04MB11762.eurprd04.prod.outlook.com (2603:10a6:20b:6f1::14) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB8PR04MB7068.eurprd04.prod.outlook.com (2603:10a6:10:fe::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Thu, 26 Feb
- 2026 10:58:47 +0000
-Received: from AM9PR04MB8825.eurprd04.prod.outlook.com
- ([fe80::49d0:5fa7:d131:7781]) by AM9PR04MB8825.eurprd04.prod.outlook.com
- ([fe80::49d0:5fa7:d131:7781%6]) with mapi id 15.20.9654.013; Thu, 26 Feb 2026
- 10:58:47 +0000
-Date: Thu, 26 Feb 2026 18:51:07 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: gregkh@linuxfoundation.org, m.grzeschik@pengutronix.de, 
-	stern@rowland.harvard.edu, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, jun.li@nxp.com, Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH v2] usb: port: add delay after usb_hub_set_port_power()
-Message-ID: <srg6y4zggr4vqofigb4hn5hfvwwci4bdspzq3hfuo5nelykw3t@n7ywcsb5savf>
-References: <20260224031909.3546487-1-xu.yang_2@nxp.com>
- <CAOMZO5Br6uEJ5ffq4JCary5p3Di+bF4MDmUtOEdDqpU6xs6VJA@mail.gmail.com>
- <2r3pvujs6vdl5si5rnplgnezw4nllyunshipetvztowkngkv3h@glsewrhncjvl>
- <CAOMZO5De8a88+1uFzBv_aDNFz7KRd4Y-+AL-eeBcK_d+i+COWA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5De8a88+1uFzBv_aDNFz7KRd4Y-+AL-eeBcK_d+i+COWA@mail.gmail.com>
-X-ClientProxiedBy: SG2PR01CA0185.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::19) To AM9PR04MB8825.eurprd04.prod.outlook.com
- (2603:10a6:20b:408::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Thu, 26 Feb
+ 2026 11:02:51 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e%7]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
+ 11:02:50 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH 0/2] ARM: dts: Add CPU clock and OPP table for i.MX7ULP
+Date: Thu, 26 Feb 2026 19:04:14 +0800
+Message-Id: <20260226-imx7ulp-v1-0-3fd611ceb346@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAK4ooGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIyMz3czcCvPSnALdZBMLU0Oz1FQjoyQTJaDqgqLUtMwKsEnRsbW1AN6
+ ADJ9ZAAAA
+X-Change-ID: 20260226-imx7ulp-c48516ee22b4
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, "A.s. Dong" <aisheng.dong@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SI1PR02CA0002.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::16) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8825:EE_|AMBPR04MB11762:EE_
-X-MS-Office365-Filtering-Correlation-Id: b861a1e5-4af6-4e5d-29b6-08de752603a4
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB8PR04MB7068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54d902b4-f62d-454c-17d0-08de75269545
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|52116014|366016|19092799006|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	Mc8/dSKPdtOGW/c7i2lJ3SH6bViM3W+BKfTd2//gK8BanqIiaFjAQ4ptmW1MwNJnr7zMMH3kM9KXdzironJstV6zLlcR9oXBJWciG0g+zNmO8BXq5XXvezjO6WxrxlhCTpgsw/LO+NzBE2EZJ7RFLP7PRV85vDxfkHhBiOsCSVmegsS02JDzpmyvLq4IpyjL00urBYMWBAJ2Q6UsJoeS6citdg/kbahkI+ZXI8dcvk9VGRiQTOnrSi/OFyo1gVMsbk6Fg3Lb7XeuLghBUH5dlm7KKp3czfBRQJllZT1ND1mRxUM4LCuTN6XruVUPnqbGyXa87EDyhGLWBXcx3AuSN+tn8KWYwhGJYiBEzfbObuA+l0KQQYm6k8LA7bMcKVyV8/ZOuhk6hvmeC4HtjaFIi7v2AhsGEDmICEF0PNoDoq5sBvk/7PAOns0ZVYG9Xs37J/wohrYl5SyeEqBaTD+or9mtWmEECw55tMVQRxW3JoErMiLOPhCJlPcaRvoHXUyI483BieN9WffmXikMwIKkKjQoTVL4x7GQQrjcN2/T6ynCUQT0pMEQhaTqwNYcxOjrYenkbqWQW/mDpVSyBvZp2Bw0tOhVlPQ5mMGMOh+S8as6QSMxZX+Btdyohi91HMxdB9yhw91RXV9458p/pLb9WYLPWLK5mhEsmk2EQM6dFiPqIrZalnXPHs4Lsv72cccoyZHGh9mNi+AfrBXvvEse1VbexoCKIby9iOZYVtDgeYkwJPMqn0j2aM4D0McFE44O
+	xH1mQUQI+9CoiAhfSnMt2pnE10V4j/HfKhFwkJB51dotxZwdCLBbst0R/xOeqZhy2n28KnChhPpDGB8WaniU1blAqXdYU1In7ujrGgiZf1eZn7RSnBNTFAOyHDmuEpafvOJqxP10IktAj8n+B1weQHYjUl81HrBB/RqDv9Cb4TuSMqNBbBLw2QRRStNMzy/sq+ydns5RdNPv+nHkHypbi5D4QDzCLnd6XcSDMIFx1LN7NC3hpwvAvNj5/6Ef86iw9Iy7jO+wxW80cJ2xibI0p1AgTkgmK+QyUYakdWEz63qzWcS+nbBUEOMfH4fJRkJcQO4dXL8Xzdlqj/xsi7t2HStiy+SxJNM8MzoRyUoMlH5BWgNHWyFvWIkKUtwEY4B0RkBnBCP97P7TNHT8fCh2v5hekeNw/FHU+JeAfl44aiZYxrovrnZD3VuowfPQdC8UbzZtZc5bgRKr0yFMOy57MU6PvJEX3c1By7fzWKX9av5J1dUPehy8ScpeS0GSgZ7f9EUASbJ5fQ4z47lMCC0jjyJst/mJgIWV+7+2R3+QD9biFhJVBEmSKLwQn+ZJzcyiQ3b+FdI1cGLhH+KNsSMeRrKVTZ/JVX0B2AThqXgAHdCuC/F/gROkR34acnd1mg7TJyDv/29Zg28DNpBB6hg2jQiu5QWod5G/nLcQh8NSlgCqgeyXY4G4ReXjRKhjTN4finVBXJ1ceH+uB++vUTKlQQfVfoI9pNzSmSWiNW8Nxs+9Nv1wG5NyIrT4KuhbKeTXMPlZngh7NLTY0MsnYQ63VzhfZQ8uJfl6Si26YWXZEcA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8825.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZW91L2xpcktaSStZaXFtMHNMbG8rVG1td1BxeGs3SG9XbXVqQnNDS2Q5dVVP?=
- =?utf-8?B?WTNYWHRnejBNUXNYaytUZUNSbENlN1dreDFxU09YU2ZhVm5sZndlQWxlbEZp?=
- =?utf-8?B?R1BVZnlXOW1TMU00UXpJYVRlMlJRQ0JmeWdNRStjaWwwMGlZNHpDWVlreUVh?=
- =?utf-8?B?ck50cE1iN240VFduUnlQY051L0RvdkNJVWs1VmZIRDlWKyt5UEZLZTYwU3ZP?=
- =?utf-8?B?RnJ0a25pWTY5Sm5JU1NxL1EvaVVHUFJiWGVGd1hRQ1ZuK0FHU0lzZjdqLzFL?=
- =?utf-8?B?WmpxUllueG1wa0Z5Yyt5bSs5bnNybjZ3d1F5ZlpiNXpBM2FCRFBrcmhZVkMx?=
- =?utf-8?B?c2hnbUI4THZ4UCtiUVNKcVdTSGtmRXhERm5aK1M1NHdJQkczeEZhV1VHR0Mz?=
- =?utf-8?B?ZTBYVXJoQUVKUmszZG5rL2duZU5uWU1OZXcvYjdGYUZ5M2JuaG9ndUlwS2Zn?=
- =?utf-8?B?Y3RiWlRFMWlhYlNxaFMzaEc2cndSUUVnbVVsMS83WWVzY281SnhpVjA2RFFs?=
- =?utf-8?B?NS9XN2xUQmhiQk85UjdCU3dnWW5sOEN3anB2b003MlJDY0wyR0VMQ1dUODRQ?=
- =?utf-8?B?UjZVeG9xUXd0Q0FwbHhHQ1piZ0lXRGxUZHVoVEtzRk04WGkvNGhyMHZ1NGlD?=
- =?utf-8?B?a2k0Y1R1aXBtWUYzb3VLbTNCc2ExS2JJcm9LVFBpa09nbitYUXVzYmJtUnRO?=
- =?utf-8?B?WTR6YU1kN1VFZWF6ZFFpVHFQMmljSXNha1VKUjZDUDVyZm4vVDJWTjJnY2ZK?=
- =?utf-8?B?SFZON3oyWjllRTI0Y1ozT3NPcnU4M0lhRkRRTStxdEpXZTZoVGR0VHF4QWJ2?=
- =?utf-8?B?RldFYU16Uk5NNFd5MndOUjhSLytOY2I1VE54SlRLQVVLSWdqRXozVHlaelFD?=
- =?utf-8?B?R1hWSWEzQ1JrNmVzVGVUL0s4UkUrcXhWR0YvYlJ0aUlBMTdjcWZUcUJZaDZQ?=
- =?utf-8?B?WU1pVE9DVkJZc1N5UUhZd29JZ1pWMUlsMlhOV1lCZW94WmNPU2VmS05GdEYw?=
- =?utf-8?B?b3AySXBudDFZUmtxeUxITUk4anBYT2Z6ayszajB3d3JsbWhjU0JuTXlEenNK?=
- =?utf-8?B?TGhHbGdUekFnNXkrSk9ldUg1c0xLbE5JSlZ5dTlwd2JIZ1J3TXFrM3pnOC94?=
- =?utf-8?B?NjVtMFE4SWtWcS9NYmhPWmlpU1I5QlJwYTIrdHVGQU9HelNjRU5mY3N3bi9K?=
- =?utf-8?B?QkpaTWp3V2xDbUs0MVl6Qmh5cDRUZHhlV3RrZzBRQ2xmRkNDMjRUNncyZCt0?=
- =?utf-8?B?SVhsSHRKSi81bGNyeG9XZnVGaW9OU05od0RMLzhOSllmUStXbG0yMFo5MEpH?=
- =?utf-8?B?NlBHRzhJcitOYVZKVHNnVVAyZTJGbnlsVjVYbzR6QnpCUHBPRWZTNzZDd3Y4?=
- =?utf-8?B?bm5XTTJtR1pzQ2FnM1U3L0FSeFViV2FFNUs2L3E0WW9RdmNxOWxCZjBxeUU0?=
- =?utf-8?B?NWJvLzQ3N1p4a002d3FhS2M0cG5kSzRGVExoUm1jZFBQVTN2R3MyZlpSc2Fa?=
- =?utf-8?B?b0Q5ODBmaUp6NTJjalkzVSt5Wjc5dmlpUkZlb1UwdGduUXZXeTh6cVZScDg4?=
- =?utf-8?B?eXIwUWsxUkZRY3hmc2gzV0R6VE5SRnUyTmprTTFWUmlQMXFobFhxYXpmeDdu?=
- =?utf-8?B?OC9XMUFOM2VGcnpZcC9sbmN2TERpY3Y4WFoxd1p3b0x2OVJSVzE4SFZUQlNR?=
- =?utf-8?B?dU41RXp4dkRlMEdVL1l6WVlzNktSQ3lUUWczR0RtSTZ1NEJVTURxT1piOHM4?=
- =?utf-8?B?RXRqU1VNNUJrbnQzVXBDT2lCL2YrL3EvOTFKNDV3L3grOUZNN3Q5b1FYQzZa?=
- =?utf-8?B?R3g5ZVlNUXBuWGlKZ0IxVHFqQ0ZDaElrUFhQbVRaelQ0bFVPZ0lzWCtjeW1n?=
- =?utf-8?B?MTlVMFZRWXB2ZlNYeTFTY0JaUzJ2QTMzZFBFMmkzY0ZRQi93K2FYdFFieU9B?=
- =?utf-8?B?WGlObFNVNU9BRjZTVk9BQ0RldVlqSzhBbnowUGVTOC93NVlRVEdQVnNycXpG?=
- =?utf-8?B?ZUVnWllXS3pFcWxmdnh5ZUlQY1dtWlRwUmlydnhCNHF6TW5udjhqK2JPSEdG?=
- =?utf-8?B?RFg2V0RrK1lQTDZGV0tOZ0hmcVQwd1YzVW9kMExCeDZPd1BGMHVWVnBtZloz?=
- =?utf-8?B?OWtwN2ZCOUFFRE5xQmczcUFpQkNLdy9oaUYvd3BuQndXZmwzUzRkU0lMakt2?=
- =?utf-8?B?TFVlVUdFb3cwRHlEdDU3VHIwUEliRDJZN2I5MjVKQVdDRDIyM25oNWVWVFFB?=
- =?utf-8?B?L3FjSHRMdWxocEU0N09qTTBUUE04aXptUFgxK1RDU01Db1BDTkNrRjZaWkFS?=
- =?utf-8?B?ajRQb21DbWYzZjNJNFhqeHdZaWpDSWlFeVo0eThaYVBqS0M2KzdXUT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b861a1e5-4af6-4e5d-29b6-08de752603a4
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8825.eurprd04.prod.outlook.com
+	=?utf-8?B?NGpSZDllMFFMWnJqenB2aS9GblF5UFFrMDByQ25Ic2ZPMTVCNVNMTStsTWN4?=
+ =?utf-8?B?bnhwTjF6a2s2VVZaa2lWU0VucjVScVRTc255UDB3blNuZi9EZFE3UzBGdHN5?=
+ =?utf-8?B?M3RER0tSL3NCdVBHNGFja1FzcytkU0lMYXNHWEI5Y0tKZnVaSTV6b3VReTM2?=
+ =?utf-8?B?RWllbmVrNGxuN3g4VlJzdFRCSVRCUHl6Q2JISDFSdkZjVmFPb1JkeWxMNGhz?=
+ =?utf-8?B?a0Q5Vm9vQ25zM3AwanZmREtyNGFESjE1aU5hWWhPRlhJbzJPMXhFNCtudDc2?=
+ =?utf-8?B?QnRvSEwvZGM4TXUwa0FqRjM3UkR6cU9yd2V0WjJ1cElLTVovbFZPTUZoQ2Nn?=
+ =?utf-8?B?aWlzZ0ZOazlhcDZXSCtObXFzdy90TjA3M0xGb2w1SkdONUVPVXlnM0ZyanFD?=
+ =?utf-8?B?c3FwczFtSllId3ZzNVlJVXg4TW9jV0hxQ0JCZVVlcWNKai9rNHVFMEllejdY?=
+ =?utf-8?B?RlhxVDhENWxvMUdnN1UyUHhUZ1UvOUhxTGcwYVlHOUJ1Tno4UnczRG5LVmU2?=
+ =?utf-8?B?SFh1eGVDRDhNZXN5RDZrc2ZoVDNSY1JNQlVaTHNNUmpjUitWZFRQaWFzdGFl?=
+ =?utf-8?B?bElNcGI4ZXl1Ry91TXVnbUdXTGpZWWcrUTlsRTZJeFY4TDZ2SkczYjBuWjYy?=
+ =?utf-8?B?dDRHTER6UkU2OElnYUc4QWZhdWFla0FjelpoTTRkOGxEVURmVkFCTFNEd05J?=
+ =?utf-8?B?WWVTQTk2TEFCOFEwZExGMTF5ajFPMDZoeDNJNVFqbEI4MW1ZNkhOZFJacEJS?=
+ =?utf-8?B?V2pLc0R6SzdkZmsrTXU2bTZUUE1WS0lRaWNpMXlwcTJYUFJuMmE3SXpld2hO?=
+ =?utf-8?B?eG1Ua0Naay9temU5M1grMVJFK0RvZmxoeFVCRGZjSThzVFhPdlZIMHFCVlE4?=
+ =?utf-8?B?VG5KY1NhWW5vZ3I5a3V0aVZDYmxqNE5tZ3htSGp2NW9pcnRlZ2NneGl1Z0Nj?=
+ =?utf-8?B?cTJ4VVViY3I3dlVZakt1ckF3QzRkNy9ud2tqVGoxd0M2Z2JseFQ0NDZUK1hm?=
+ =?utf-8?B?cTk3dDl3ODdGR09BdkRqb0x3ZHk0QVFDVGcvc28wNlh1cG8yc1hrVzc1Y1dV?=
+ =?utf-8?B?eDdidTdVay9sU0xXQWd2dlNGUG43STJXTitEUVk2cXlZQURXK3ZEVld6bGd2?=
+ =?utf-8?B?M1phNmpzU2VXUVpjNWFTZ3Y5RkorcXNTY0JjS2JsNkdCTDI5Q0hQYnFLVlFG?=
+ =?utf-8?B?MzgzbGV2NWJrNlVUT2RnNXVwZDBLdkZOYWdDY0k0UmtkNncwNXBsVWN0dlk2?=
+ =?utf-8?B?NGZtUENpcVZIdmExenhMbkxRdys5MDhLNzE2a3NHNVpIbXFMTkZMUWdsUHJz?=
+ =?utf-8?B?S3NIczZNQXB6UENWR1ZMdXhkQ0pMclY3djZTaG1mZE1lNGJ5S2w0V2s5Nkw4?=
+ =?utf-8?B?MWlRUnRTT0lqeXZlTi9MVmF2bVVKNThpTTFYbzA1NTJ5L3lrZm9jL01nMXJh?=
+ =?utf-8?B?UmIveWNqT1F3SmRBa0hyT3BuWlVpWVdTb1BSenNxV01FelVtZVdSMzFPeTR3?=
+ =?utf-8?B?ck5vUXNOcVdvbzNNMFhjRGY1Vkl1ZnF5K1NiMFFpUm5PNXNQeVRmcUJsNDBw?=
+ =?utf-8?B?dGFNOW01SjlkWW52K1p4cXZzOXZUNFJtcTNtdGwrY29zc2c1QlJHdEJzRW01?=
+ =?utf-8?B?NWZGbnYzTlRnYnRUZ1Q5ZExpWGFwRjRxazE5aDhUckovT3psckl6aVlueFN3?=
+ =?utf-8?B?S3NGcTgvVmFkZERjakQ5LzBYbGhYWkNHaFhsa09GdHNwUktLdW5ZbXkzbDlk?=
+ =?utf-8?B?UWdGMVRGWXRJTzBLV2k5R3FCcUhsckY3WDZTMTdoZkkxU20yWEdxNjNsMXRi?=
+ =?utf-8?B?QlVoeVZWWFZVZFpsSmE3TmYxaEIyNEYzTFJCYnRrQ3NCS0dxMkRFbGNiS1lS?=
+ =?utf-8?B?RjZvZjdQc1d3WmtOaklzRmc2eUhGUHQzWk8vR0ZxL2I4R3BQZkpxditCRDNE?=
+ =?utf-8?B?Y3dzMzVEQW9RVC91YkhBN0JpNHlvd2w5KzdQQTFTVlZkd1VmL2gwcGN3bUlt?=
+ =?utf-8?B?OGVzenU5S3hrcjhnM0FWbWNLZmRyZStJc2FxbHVyMk1XUm1aM3NYQ3RRa25m?=
+ =?utf-8?B?cGFZV2t0ZXRobGZDbkhFZzRWWS9WUWpXQVRpVHIySkNuRk5zbS9YdWNNb0o3?=
+ =?utf-8?B?WkEzS0poQXZqWXZzSW5RS2tGUGQvQ2NlRjAzSldMd2YwMzI3TVFGRzNOdHNv?=
+ =?utf-8?B?d2Y3N1JUT3dVQUl6dElZZVdkUGNCRDkrUllidUQ3NUswdGlacGpRMDBtaFhs?=
+ =?utf-8?B?S2hEY1VLRm5CRmtzOEx2OXZ1cDVSWmxlYzJXWGE5WlpGVHlBVmtoQy82MjB4?=
+ =?utf-8?B?TGwwbUNVUnBGWjRtVCt3QXU3d1ZvODRDTlM3aGNTNlV0K2J5RWN1UT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54d902b4-f62d-454c-17d0-08de75269545
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 10:58:47.1076
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:02:50.8863
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0mGIPhg7lhhUSowcZHQ/LFg+G4N81RHM25RgEB+nmqG8PVQf6hy0iAeoy+dEa5wpDajyBlBaJ2/HwWxk3RJ7Ew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11762
+X-MS-Exchange-CrossTenant-UserPrincipalName: RU5iQFCUce8OhdeuLqvTePWjVLLNq/tex4a2ZesS2qHzE5F/7h9rbJW6dzQOfNlQExnMmuxLNAudaJnm4NzSyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7068
 
-On Wed, Feb 25, 2026 at 05:13:17PM -0300, Fabio Estevam wrote:
-> Hi Xu Yang,
-> 
-> On Wed, Feb 25, 2026 at 4:47 AM Xu Yang <xu.yang_2@nxp.com> wrote:
-> >
-> > Hi Fabio,
-> >
-> > On Tue, Feb 24, 2026 at 09:19:51AM -0300, Fabio Estevam wrote:
-> > > Hi Xu Yang,
-> > >
-> > > On Tue, Feb 24, 2026 at 12:17 AM Xu Yang <xu.yang_2@nxp.com> wrote:
-> > > >
-> > > > When a port is disabled, an attached device will be disconnected.  This
-> > > > causes a port-status-change event, which will race with hub autosuspend
-> > > > (if the disabled port was the only connected port on its hub), causing
-> > > > an immediate resume and a second autosuspend.  Both of these can be
-> > > > avoided by adding a short delay after the call to
-> > > > usb_hub_set_port_power().
-> > > >
-> > > > Below log shows what is happening:
-> > > >
-> > > > $ echo 1 > usb1-port1/disable
-> > > > [   37.958239] usb 1-1: USB disconnect, device number 2
-> > > > [   37.964101] usb 1-1: unregistering device
-> > > > [   37.970070] hub 1-0:1.0: hub_suspend
-> > > > [   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
-> > > > [   37.974412] usb usb1: bus auto-suspend, wakeup 1
-> > > > [   37.988175] usb usb1: suspend raced with wakeup event         <---
-> > > > [   37.993947] usb usb1: usb auto-resume
-> > > > [   37.998401] hub 1-0:1.0: hub_resume
-> > > > [   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
-> > > > [   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
-> > > > [   38.118645] hub 1-0:1.0: hub_suspend
-> > > > [   38.122963] usb usb1: bus auto-suspend, wakeup 1
-> > > > [   38.200368] usb usb1: usb wakeup-resume
-> > > > [   38.204982] usb usb1: usb auto-resume
-> > > > [   38.209376] hub 1-0:1.0: hub_resume
-> > > > [   38.213676] usb usb1-port1: status 0101 change 0001
-> > > > [   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
-> > > > [   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
-> > > > [   38.457429] usb 1-1: new high-speed USB device number 3 using ci_hdrc
-> > > >
-> > > > Then, port change bit will be fixed to the final state and
-> > > > usb_clear_port_feature() can correctly clear it after this period. This
-> > > > will also avoid usb runtime suspend routine to run because
-> > > > usb_autopm_put_interface() not run yet.
-> > > >
-> > > > Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
-> > > > Cc: stable@kernel.org
-> > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > >
-> > > On an imx6x-sdb board, I still get the inconsistency below even after
-> > > applying your patch:
-> > >
-> > > # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> > > [   20.656414] usb 1-1: USB disconnect, device number 2
-> > >
-> > > # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> > > [   28.263516] usb 1-1: new high-speed USB device number 3 using ci_hdrc
-> > > [   28.466813] usb 1-1: New USB device found, idVendor=0457,
-> > > idProduct=0151, bcdDevice= 1.00
-> > > [   28.466949] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> > > [   28.467039] usb 1-1: Product: USB Mass Storage Device
-> > > [   28.467086] usb 1-1: Manufacturer: USBest Technology
-> > > [   28.467126] usb 1-1: SerialNumber: 000000000003FF
-> > > [   28.501826] usb-storage 1-1:1.0: USB Mass Storage device detected
-> > > [   28.510452] usb-storage 1-1:1.0: Quirks match for vid 0457 pid 0151: 80
-> > > [   28.517597] scsi host0: usb-storage 1-1:1.0
-> > > [   28.524066] usb 1-1: USB disconnect, device number 3
-> >
-> > It's another different problem.
-> >
-> > For ports which VBUS are not controlled by PORTSC.PP (always on VBUS
-> > regulator or Type-C controlled VBUS), they are still powered on after
-> > you disable the ports. This will cause PORTSC.CCS still be set after it.
-> >
-> > When usb_autopm_get_interface() gets called, hub_resume will check CCS
-> > bit and check new connection again. So you see new device is reported.
-> >
-> > Below patch will be a workaround for the issue when you disable the port
-> > many times:
-> > https://lore.kernel.org/linux-usb/20260223-v6-16-topic-usb-onboard-dev-v5-1-28d3018a8026@pengutronix.de/
-> 
-> I applied Marco's patch, and it fixes the inconsistent state that I
-> reported before on the imx6sx-sdb:
-> 
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> [  110.494838] usb 1-1: USB disconnect, device number 3
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> # echo 1 >  /sys/bus/usb/devices/1-0\:1.0/usb1-port1/disable
-> 
-> Now I want the USB OTG2 VBUS to be turned off.
-> 
-> I understand that the chipidea driver does not turn off VBUS when
-> vbus-supply is passed, so I tried using the pin as
-> MX6SX_PAD_GPIO1_IO12__USB_OTG2_PWR:
+Patch 1 is a binding update to add missing #clock-cells, otherwise
+there is CHECK_DTBS warning.
+clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
 
-No. You can't do this because CI_HDRC_TURN_VBUS_EARLY_ON won't take effect
-as we talked in previous thread. Then, USB phy will work abnormally.
+And the clock will be used for cpufreq as done in patch 2.
 
-I recommend to unbind/bind the device for switching VBUS off/on. 
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Peng Fan (2):
+      dt-bindings: fsl: fsl,imx7ulp-smc1: Add #clock-cells
+      ARM: dts: imx7ulp: Add CPU clock and OPP table support
 
-Thanks,
-Xu Yang
+ .../bindings/arm/freescale/fsl,imx7ulp-pm.yaml     |  5 ++++
+ arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi             | 28 ++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+---
+base-commit: 3ef088b0c5772a6f75634e54aa34f5fc0a2c041c
+change-id: 20260226-imx7ulp-c48516ee22b4
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
