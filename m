@@ -1,73 +1,78 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011006.outbound.protection.outlook.com [52.101.52.6])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012065.outbound.protection.outlook.com [52.101.66.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC17372B26
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 15:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948193D2FF5
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 15:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772118013; cv=fail; b=ZCbmt4h4HMgpP8Q+DXuaJUrA8Q+zKurbqtB50NOddJofZMgDwzP5bNZobl9QiRytRtoYeyTrQbD+F9RgIfZj//jrva6A/KqJ7/IjZyCaAKM/ThFtqpw25o/Pvmd/nzUCun0ap8tX461I/nMFD0w+uiW+kVxmj2+gEx9kfpK5TMo=
+	t=1772118791; cv=fail; b=F9jhpM3hT3pAAObqrkFgU5O651dsaOZ33d/Euyg2pLsCE4ttCAu6wyqnPx5UnYbxueVj3/XbzDKFKmv0AWh2iIxIlwNw5tju52MuK/O/v1xYE8Vz3Zf/nZGhftL5qjR/oSwcI6BDi5xXGZiYleYObrdwwb1aG/cXG4GXOb974uA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772118013; c=relaxed/simple;
-	bh=VY7+iJipaTxPy5tdLMsxHBAtMTf0HXbcOYVT3YcMdFw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=g4WPfRrkjfqomqbtamnxA5curi/TDtbhNoQJ8vfyP132urGcJnYuzzuYKecU5GE7O1FtFuRXxMceB28AnYEMJPJS2xD1I6I/V+S2dJ+xdF7hyT9nS42cB7dvc9GSXK6wvMOV6wHGVzGGFkLv69/RWkNbP5mpxepnSVcuNYLlibk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aX9SBK1b; arc=fail smtp.client-ip=52.101.52.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1772118791; c=relaxed/simple;
+	bh=agGUhwrAqQFnVAfvr0eVv+8rhDeuxyPw1rtkowz6TeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EToarVGQbufG4EXmON4KgHPVT6+usM3pFmqBg43Y3x/TnKwhjm+Ht3zI4WdoAZOw6XfaecpJJsxThkvlzp6i9+un+hhcDEpmIfWf4L4UEu+9G6NmDfwEITYk5y+Ik9RaKlzHUBxpnpAuSHb21HxViB6rz/WyWLlEtPEwWeIctpA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gE7f3hLE; arc=fail smtp.client-ip=52.101.66.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aX9SBK1b"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gE7f3hLE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ipXDqFrEuvgVUzEYbaXC+VVvSuzMhWqYqg+8csOytL8J1btxq6O1GV1c33FFM2ty2jmSeuTxANC+2YG0eEKICXi2cSRGNfeSvIG3riWukWrMYYBMfyRS/M0Gqp/EYJMIgrIMLcqwXWuyk105VG+A/kyMsqlDp7WiEqOSukH3iigbIHv7EB6XDzg7TH/H0HWoBEzBNZpq1CaLSsItkIncfPGI6lki2W6hNGw3LalbmME4pRUQgBkXJ57eqMB8VpHRKnGJ1757paOREvHiysGALOLD7UsXL8reW05uStLVeez9nwLYqz5FCwZebzFTFSMrhcFvYKiKpPQOQ8hz77KofA==
+ b=cej45FXntVLGRPrEC9paIQNFzJdsOY/TO6fevZweAuFUBCi/VeUIXCATQnpdXSCyWMW1MWH4Yx/xJicZUeMQ9EPJfRuPWzPZmGtcLx1+e0WVRH2Ml4vZ7u5wP2Gp2UkSYNHQU/64+7MlvKX33oiGBjsPuoo/aEV7pmVqCfvvAmIClc513N4aDnf+HraPQZouO6u85iB8gghVwt5bpCBQSIJxuMpV9yz7SzmpoLiM8o60miq1CIa9wnKRcqLFFTxoZpb3c80V79jmBwdYd6FUh5oSm6AQsrpz9mSqt8C5z+SwqKq7epBSTX4gCtdSpp5/fc08WV6MOLfhGSsrL177lA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=48F6svqXtC5Sy2nl5H2DF7sub791rjWNKqQweOaNt+4=;
- b=EOT47zpLK15KsYHZ+zopBcoBa3J+Z+WfvdZWaoSRl6HpXPNuF6ge690uiqRFdMaYEsPHvxX8x7GOIP8eEVNEkjklgS0xW3sAIN/SFc9VE+NgekJkJHy3sCDzN73A2E/DOFQROYHLaE6uhZYmsxtnFojWjiT2PetWbaqBF76xBUZ4Dbf26/Vp0fYB7sAXq44XhnkQv2uXlFSUdT1vLMEwDOxcX6nmcCbGdir15xvoDF/fQY+ZKTopGGqsM8wqsPENq6hM5su42m2HLDxPUQYO8k62/+L9coOg8p9VO+fcOv2ekMQUcx9H00NJkauFZh7gZLwLKfk1pX33CObkk+tbfQ==
+ bh=PBusy3UNwvndP4A8XNsI8Y27dkjl68vPbo/mwFPQap8=;
+ b=lmvLan1gpRxrP5QyNZy5oA0H/Ys29qSYmJI8wvEyub5+OgjRGE74EQaN2qTYnAZ8NrWjYc2e4Oy5dTDnHUxVnq6fNKtLtr0G/OB6/+raDnFbbQxi0JeBT96LXUuLh6cBIx+rs0A9QKLHUqBGgJaDUin0Rg5VZMs0rXFvgVESJXFn7MMPwFG6KrobZDWHMb8o2zFr4cwTUasipeo9g7G8F36wi2NCt87A+jVWgnupfeY7AP0Pj++2FMvJu4SHkWOFXJ3v3CvLMAuwbk48wdCWWCVneAwCUTs6hGSPcALOjDe7CNJ5LRJIh0XWqPZ3+vX3LB1IbXQy4xeDa5IuzGB+yA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=48F6svqXtC5Sy2nl5H2DF7sub791rjWNKqQweOaNt+4=;
- b=aX9SBK1bATl6BhiWLyR364PJfxVPD3VFL2cC6dk8u5vcqBH/3Tgktp9LjopodeZGQHhqXfusD/OqIqHJsX/IkKOpscDoiDjOt5WzYnDwhiDRWQur7FteZ3sgSNeQoeYq+5jpsmZuNvlynBBJK3dJ5n/HJ6qwwQ7luYUe83AK98k=
+ bh=PBusy3UNwvndP4A8XNsI8Y27dkjl68vPbo/mwFPQap8=;
+ b=gE7f3hLE4WWmy4DW4eV8WBjCdfPLpH1WkEvq9hnGKEqXXGL5f5IrQfWiTl/vFgtRFFTyusIZy8edn5FeFxRa2sfpC6V3S4pBt2set5mDnJ3k2KWNFHA0fYJuNr82oV3frUXwkZoWeRiCGTJq6Q6/h7AVy3BD0uOwNVapEC2svSmwF1/KRrAHEciGUZOvJjfDs9xJPfRZdoM2NysX+iqPaAhoWHjZxCc5mqU0HoIaLQbMt00jnojMBwrBTqFcexui3qBrYAbLTvdwjTuXs2+kC/y0QGFyns/D/fv2gCCv0r2Woukan0kkCxED9sdtPGZ0J329aKR/eYUM6h3IxBeBcA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SN7PR12MB7322.namprd12.prod.outlook.com (2603:10b6:806:299::6) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PA1PR04MB10100.eurprd04.prod.outlook.com (2603:10a6:102:45c::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
- 2026 15:00:03 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 15:00:02 +0000
-Message-ID: <09364420-1044-4c9b-9907-b92b06653eaf@amd.com>
-Date: Thu, 26 Feb 2026 15:59:49 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/9] accel/neutron: Add job submission IOCTL
-To: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>,
- Oded Gabbay <ogabbay@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, Jiwei Fu <jiwei.fu@nxp.com>,
- Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>
-References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
- <20260226-neutron-v1-7-46eccb3bb50a@nxp.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260226-neutron-v1-7-46eccb3bb50a@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Thu, 26 Feb
+ 2026 15:13:05 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
+ 15:13:05 +0000
+Date: Thu, 26 Feb 2026 10:12:54 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Max Krummenacher <max.oss.09@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "ARM: dts: imx: move nand related property under
+ nand@0"
+Message-ID: <aaBi9lipWTG5l0hs@lizhi-Precision-Tower-5810>
+References: <20260219151157.2549198-1-max.oss.09@gmail.com>
+ <aZcz1vRg4KtAKUd_@lizhi-Precision-Tower-5810>
+ <aZdDF6BObEu_C4KJ@toolbox>
+ <aZdnhv2QC1szMCVl@lizhi-Precision-Tower-5810>
+ <aZ80BWH6DRu8_W_S@toolbox>
+ <aZ82pG3PO1HxD18B@lizhi-Precision-Tower-5810>
+ <aaBA65_zLu8S6WMS@toolbox>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT4P288CA0045.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::18) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+In-Reply-To: <aaBA65_zLu8S6WMS@toolbox>
+X-ClientProxiedBy: BY3PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::7) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,819 +80,550 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB7322:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b162715-8dab-4b79-94ab-08de7547b75b
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA1PR04MB10100:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b85acd5-1dc3-4c11-ea9f-08de75498a9d
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|921020;
+ BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|19092799006|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	lK8mN3gBWhDTEvgt2/8RxX0UHMJhbu7pPFSrM5wuOFKXr3RTstIS72JRChvKHSq713vcB/blDNptdSQkR0LVQYoRzH8LXZo/e4SsLZSBGJG1scCuwg7apFhDK84++FRG+AHW6Vv7nnrDduwM5cFJHKiQAYaux5uHFyNRlty+H1AVBXjYN+IJV8Y27jaCUSPkl1bk/EIXNR8Xxl24qxixgKwFnbMp1pB0diT6AChFdUf6Ek0jD5Ak+FlXQK/kugRViTfIybaxArrjAxOOIrDmwKPkKebo9rUHV20374Yl9WGvb60PkwCC7p+wns6yDd+KlwOt+Hn25JCrhFjN2R93IlnOn7+CU+7/zqLVm5adiePLLzuKWI40Jjaok20Xkr+EHTwFXpsnA3l4bdHhiogV3RRWPvF+x5iI4LcLUzpwvcodqppHGKtCPPfGY2hEVdzvD4OJivBvBFTPIugNPlZsG5++LRTxT11KLbupBqOrcKKN8COqxjYbf5cIMpc4oxFmOla4QdfP+jg/L+Iao+g0d73lYllwPeLCZDWo1WoZ0+d5ydg3ceKNZ0anWwpVKfRaF8MN3wlVQeIFKXYxs2B9Pl4QquxO72WEGWvnXqio2SlrKc++f2bctrMnBum55S+SXopgqPcwZEdUYQL0nsoWEuUKluSbLWryFfFOJnXu2ySIaNyIhvQ3x7Ny+PcRdekVcG/85k+TaFfTzstqVs+e9ie4iPmkSvJ99tQLNIZqX9MO+AdrFC5sT5xB/Y3iPQ3OffSOACbC4R09CQ8++bDnJg==
+ oeCPb67GNQWyBxmJRQkEVuEiAgXzd15TG1dAK/3IBW/HfUYgTBsAu+TFPB48s7R945iw0zNqW1D6WZyVMIIgEDaFTmxd4LpJXqm5foyU9LiZk7OjYL7kTfV9nERHUCFiUiIipsuRamzk9JLpWKXXkxii22+QphafjGbCjS1JmWU+fYVH+p1uh2J0jsGUCdqeClL6b66uzfuI8m247FBgkSIzmhhAVIi77LcsUATz/BpAIHyuU56XthBjYT5JbEni95d8dlZuBMRv0v06HSL+JBvgHGzgg63/DWxz9hKYnBd6CJGNFAtodZ50LZB8MXojW1UUPTvc6SGDq1YQWVWjcUAxYOLLEl73pTsB+5Xv2JPWtPub19veqhrZI1kRUw9UPmGuFuMHCMDq2X5YbbX8rrsNsitBOCBFc30Ht/CtazG8Qx5Ai9tcew6ESjF+fZYmFc3YPFs3OdWVUsx8XxYjoor9WQ2f5DXJBcim75CCxCeJhqSJyHpRf12hq+jDVZPgjZMnQrECLyN0J3mbwUfg1HIotOyIcTPFCg8RdP2VKMlRUZiriTfJ/b3cawbc2KG4apkJpeCAuhdP1x6m5cylXmI5AYnefC41+YoHh4xPDfNRHGvsLeTeRy2Sv+xXZTQIu3OlAPunyALTrJr+6DjRGEta1py+uVn11o+oRn7PJO4p3Duh97uweJ8XqmsOYYKBiz5WoExWdSDZODBxOAaacvJk+Rn3jvb3wcTMe8uQnfXGixAwgZIs2VahugHpnW13VCpKqp1bTlNTPGtSA7s8kR4+4DTaBOvIQ7p634djvvI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(19092799006)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djVOWjU5LzYxQUdtN2hDZU1FL1VFdGhCNEU1NDVLOHVZZWtBeDZLSlloYXdG?=
- =?utf-8?B?WXczV3lGSkxIcmlDc2RHUXFNUVFsaitVditCOTh2R3N6NmZTNFdjeU9ZWmNL?=
- =?utf-8?B?eEVVNDNESlVSa1hFd3V2cVEvMHd5RVhRanN1RUovaklVaDhLRUt4TXRoNEds?=
- =?utf-8?B?UWdBM2FrK1hWaStFVUpsQnZkaEc1NjFiZVIybGlNbWpQdldSUEZVUXEzSFVs?=
- =?utf-8?B?akhVNGFXV21hWWRyUXJ2cjRNTDVjSXRxL0pnWkFnR0RGNWpKbk00MzF6VTFw?=
- =?utf-8?B?em9iSWI3dTBIcEFBQ3pDWFJuZmpOVllkbzJqd08zWVdyRjBCbXVVb1ZvUkNy?=
- =?utf-8?B?L2F4V2hTT1FGSVFvM3NicXd0NE1TdEM2NlBEcjZzSUJBSXlXZkJrby9wNWsw?=
- =?utf-8?B?VGRONXJyamJXM0lUbkZZeVhBZHJjdEVpNTh5ZGNUL1lmdjYydFhFbkpXUWYx?=
- =?utf-8?B?dnRuSnV4N2dTYXJ2Nmc0dFJKaVRQNjZaZDRyYUVQU2xTdDZCbkdIQjBKZk11?=
- =?utf-8?B?aGV3R0J3TEM4SC9kamUzOTc3cUZWMHQwbVNROTNSbU5RMlViblB6RStOTG5B?=
- =?utf-8?B?S3FULzRJblF6UXZQUjdVZkxMaHphSkE3VFFoS0szZkdmZWVzUHZxUkxWZDlI?=
- =?utf-8?B?Z0c1VW5aQUZ5eFJiemUySEgrWE53bEd1RHA0YlVUSWJNSUliOWdQdWlXYnNY?=
- =?utf-8?B?UlZvVjhtL05CZytjUWhKRlY5Q0VYbStYTGV1L25BcVlxeEZkNzNMUXNBQmFH?=
- =?utf-8?B?ekxtVDQ1K2RGN01zOEt3dW5uTzZXT1lLT1ZlaUxBM3VvakFXc0N5V2RqUTFi?=
- =?utf-8?B?TTdLKzJKTklEVWdBZkUwb0FzdE9IK1hCNXRSM0dCVmsrV0lWTDl0ZFM3NlBa?=
- =?utf-8?B?RDJPZTBQS2RCY2pUVHhwS3lnVGZ6dGlBTzBmV2JyRGV0b244Q0dsdkh4a1lv?=
- =?utf-8?B?bjFCTjl5ZXhYamZzVi9jcytRb0tLUVA5OUgrSEVtaC9LZ1BpV0NZSFF3dEI3?=
- =?utf-8?B?aWZzdVRySDFXbUEwcG4zVlduUmRKazU1WEVGekxTMEdrODNIanUwWXhMalBD?=
- =?utf-8?B?WmZNNzJqQ1diRGxRdU45Z3k5ajJ4dXJDaG9OMnQvMDR6TEVjM3N4ZjZXSS9G?=
- =?utf-8?B?ZHM0cE1neGhveEtTSi9DWWRmQ1dZWGtSNXZmQ2k1YlVsU3lTN3ByM0FVWk1L?=
- =?utf-8?B?ZHV1OW12Ly8veHgyc092aUxxZTlNcHA4L3JBRWlOQWI5Wm9KWWxGSG1DQzBh?=
- =?utf-8?B?M0QyK3RMdWh4ajhqMjJrQ0hEdlVxaUhMZExnSTJKM0g3RittQmdPRXBVajlX?=
- =?utf-8?B?bXUrZFlzV2NEejMwYmdNOEJVL3RnZjY2ZjlMTW9UM25ObUxpV1VGMFVtT0R5?=
- =?utf-8?B?akhJT1dscExocTU3Z0J3ZGQyVEpXd2hQQWxWNUNBdVh1dHdKM3dLc1Y5SGlS?=
- =?utf-8?B?cDNPYklsaVJmUzdFUDhBR0pUSlloYTAxUUZ3VW5lRUMxWTRqeWI2T3dqTlF2?=
- =?utf-8?B?a3hXTEJXVXdNdGpLbFRXTWwrZG5SWEhwMExKWmtzbEhHSkppU2xDdTEycWQy?=
- =?utf-8?B?NHNGekdPVE1RbWV1ckhLQTA5VUpwaS9XOEEwQzBldldJeFhYMlpWWVdHZnpE?=
- =?utf-8?B?REhmSDB3MXFzSG8rRzlvdk5wUkozY0xvUnNkZjd5blJ0WURCdjRpcXlsNW9a?=
- =?utf-8?B?VU5ISFFHeUR6bmd2aXRyZWdrUmFuZ1hjVEo0MWR4bXFKWFhQeVpPdkJlMktW?=
- =?utf-8?B?SHFKUGliSGoyNGwyVTlOdzE0a3V1NjQzUS8vSmU1TWx3ZC9QSDYvcUV0WDJB?=
- =?utf-8?B?MEx1bThKYUVJNjg0akFBZGx2N0ZRd1pxWlJ6Nm5lY2tuQzNUU2tuWmI3ZkRG?=
- =?utf-8?B?eThJeHJWUXZVQTlFUDhwMjRBbjVveG5jekhyMzFNNlBxRkpSc1Vxa2M5QkQ5?=
- =?utf-8?B?TDZBcG8zVXNwMUc3TU1nT0huNVVGNUNvUUxORk40VlZRSkNIU3BEOEwrdytw?=
- =?utf-8?B?NHM1eFprQVI4ZGMyVC81WWEzZ0phdTFjTjZycTFpV2dIQTFwRk5nOTFIakND?=
- =?utf-8?B?UzhLYVZCN0lXcmJCdkN2WWlhNURJY0d2d0lCbkoxRE1uNjcxTHVSWlQ2QkZ0?=
- =?utf-8?B?bENWeGg0aU5vcndLejNiU1NhM2NpQlMzV3lzeDN2TFBNUlI5aE5UVEk3K05j?=
- =?utf-8?B?T0Y2MkcraHF4amJ3N0puTnJHaUVtRmtuR1M1SlRMUFNRTEpRNXdva3VHcmJG?=
- =?utf-8?B?N2Y2Y0lJOU9HNVd0bnFXU2J5NHpobEphWlpOVFM2VG1OdjBvTE8vM0k4MSsw?=
- =?utf-8?Q?2JMu3zNpU16MJixqoh?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b162715-8dab-4b79-94ab-08de7547b75b
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+ =?utf-8?B?bXJiWndyVkUzWHdmNGgvZ054QzFPaGJKaU95T3p3eFdURUNRS1lETC9KTHBV?=
+ =?utf-8?B?V29sTUtjWEc1aExCMWVYUVlWOVF1VHJ3d0Z6MmZaNzR0L2FmZWZyRm5ubVFm?=
+ =?utf-8?B?dU9zN1RPTGNqeHYzeW9xblYvbXB3ZTdHd0VoNlhia0REZUZrbVNpckZOcWt3?=
+ =?utf-8?B?VHlOZGNZWTRiY1A5c3kwa1QrMXV5RzVKYmRvSk1pdEMwRENUdGduZTNhbzJT?=
+ =?utf-8?B?cTlEalo4YXJseGJXRTlBRDFlY2w4eUpPeklySjZHallvcUNiSkoxL1RxdGYv?=
+ =?utf-8?B?cU9sU2lGWk96M2JaQnp3dFUzdGMrcjE4Z0pUem1mUXVJSW44Wng0OXExREF0?=
+ =?utf-8?B?MHJmcFMwYVlHdUtmY25CQjNvM3g2WVJsZTVGWDEwcjBZMlJaeUVJZzhXb2FJ?=
+ =?utf-8?B?cWJISzhrVlFmSmlvWjZVcW82Y2djR29pa09DT3Z4UWdlTG9wMi9McUE3Q1dK?=
+ =?utf-8?B?ZUNEU1JtRzd6VVNJMW1uSWdPcFFFMXp0MnlTSW10M0J2NUduaU5JZ2o0Tkpw?=
+ =?utf-8?B?OVk0UzRJRXZEQXFXb3YzNVluRFZRUTZMTnU0aUFzUmFjeitZRnFQUUErSzJx?=
+ =?utf-8?B?dCt5dDcvbXRXWkE4eVdWa1FYeHExTGVGcG9jOSsrRXU2NlZTdXR6bjN1VHlv?=
+ =?utf-8?B?Z21QZHBlaFRWWEZKdEplNXFLWGs4VTAxemtGdWpSMkszNTRscjhPUEg4MkhG?=
+ =?utf-8?B?TGJUcmhlRmNXMlNQMGlSUE9jTTVhMHdTb2VzZTRqSFVCT01RdnFRdkdCZW0x?=
+ =?utf-8?B?THVqVS9NZmpFSGdWNlVMYm91S1R2cjBjNFdpdEJSbDU0Qi9sKzZpUGlueUwx?=
+ =?utf-8?B?RHc5TWdXcHJ4ZkRmRmhUNTk5eFhwVUhBWDYrd0VPM1ozNG9ueUdpVnpSbXBu?=
+ =?utf-8?B?NGppL1FVRlVUSnlPVWZiRHVjcmxOWmZIWTdsWmlyZ2U5b3dRLytvNTk0b2hC?=
+ =?utf-8?B?OXo1ZjhxTWhQRU8yUjdkUWt4d3BoMm9CS2FmWitrRW9sbEFISDA1aEYzdWli?=
+ =?utf-8?B?ZVRGMHpVM1k3Z0pLMXBHYTZZaDZkZUJGTitqSlRkeGhuNTFmaUloSVBUcDNh?=
+ =?utf-8?B?VndrWnVwSjFUR2xVOTJpaFM0YisvMUNGbkptS2wrTGwzNW43Nzl2cS9GZ0pz?=
+ =?utf-8?B?ellXME91aWJ1ZEsvOExYa29xMXZ2LzJuSGZGUzZpYmcwVk5CUTlxZ3hMcmlP?=
+ =?utf-8?B?S1ZiQ05sdHQwdzdPRWxsd3o2c1pQcDhMbnZLYjdpWEFIRkdCeXRSOWNObW81?=
+ =?utf-8?B?cEloVWJsbkV0WFdwdDNzU2swUThGMTdWWVJvb0ZnbllkRk5Cb29qV25Nak53?=
+ =?utf-8?B?UEhRbnQyRlEvalFmbFgydm5rbEFLYzlzeHVaMmlNbjlMMDF0RERvMkpvVnk1?=
+ =?utf-8?B?dXBsOVMrUUtwZXhObkVORnFTc3hJVUFnbS9yZWJQaFArY2h1QjFJa3JlVnJJ?=
+ =?utf-8?B?UDI1MnJsTUhZdXJER3ZqQXNEclZxcU4vQ3ZVNm9CbEhTRisvOUlnZ3ZyQ3ZD?=
+ =?utf-8?B?dGlSdi9ndndmeDVuUEM5QWxSblZkdjR5VkIvTHF3c1V3V3ZORy94NGYvTmd6?=
+ =?utf-8?B?N0JTUmRISW1EWnRRbldKWVFteTVuQWtSZGw5a3VpVWJEbjNyNUpxV0JBREFO?=
+ =?utf-8?B?NDExRTZoQ0ZnWUhmUkpFU0lQMllhZURsZ0o0a0pTbUgvSmdYS2pCWmExaEZm?=
+ =?utf-8?B?ME5OU2JZcVZBeFc3ZzBuZW9vL2xLZ0IrR29YeVVtaytGeUZqdFY1SGE5aGtt?=
+ =?utf-8?B?TU5QNFU1bFFVUXYxc0JDRWYwcEZvczhvenVkdXJQMDRRRTZCVzN2eVR2czJG?=
+ =?utf-8?B?K0EzRjFUZ2NiZVZXalRqZUVKM0VGVzNRcmg1ZVRaWXY2V0dzRkRaZUlYWTg5?=
+ =?utf-8?B?L25ZSjI1Nk5aRXM5YS8zQXN2cGZsNE1jbWh0TWJwM1NNbWFNeHlBS0Y0NHY0?=
+ =?utf-8?B?L0ROM0I2c3ZjYWZaaXY2NVBqMmJNRHA4MEZ4cjVGRHdwR2NKeVg0bkVpYWRJ?=
+ =?utf-8?B?OFBuM0R4cTlBRVVGOFE5MlVhT08vbFZIaURPNUZkWkR1T0pYVHAwUU9IZHg2?=
+ =?utf-8?B?akUwaWZKaXZGbHFVc2J2M1QrZklBZlFuMnNyUlNzK3lsSGY4QkxNQzEwTHp0?=
+ =?utf-8?B?eTRoamIreENpR3JpUzAyMlFHMElBZmg1azZ5SFJUdVIyUHowZzBCa1VvKy9n?=
+ =?utf-8?B?T294d3I2TnBRb1dXZ3BOd0Y3YWxsZk8zM011Tlp2TEdBZXFKTUJGVVJIVVZQ?=
+ =?utf-8?B?dWpqOWxac1RHc25TZHVnSjUwd205YTdpZUdWa3NiWWxTWU5YeFFvZ05XRW55?=
+ =?utf-8?B?cDMxSTRMOVd3RlBHck5XakNaM1pqUzdGMzExZm1yVkNEOGlzaXBGUT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b85acd5-1dc3-4c11-ea9f-08de75498a9d
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 15:00:02.6199
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 15:13:05.5040
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ujwAhCbT/Fj92rix5dOwPGPjabe/a/iLgW3W1IQEOJQOfzaCLlJ3Wg0eUYMG3fru
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7322
+X-MS-Exchange-CrossTenant-UserPrincipalName: FZV/pWIUomZwseSjEYF5V7X73x/y4gu8v3vEXuTzRJyZPHCCwa2IPFXvrbohDg5PEHPjB9xw87szyPDGMje0Qg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10100
 
-On 2/26/26 14:40, Ioana Ciocoi-Radulescu wrote:
-> [Sie erhalten nicht häufig E-Mails von ruxandra.radulescu@nxp.com. Weitere Informationen, warum dies wichtig ist, finden Sie unter https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Neutron can execute a single job at a time. For now, only inference
-> jobs are supported. Each job has exactly one BO associated with it.
-> 
-> When submitting a job, user also provides a syncobj handle on which it
-> will wait for job completion.
-> 
-> We use the DRM GPU scheduler for job management. Large part of the job
-> submission code is based on the example of the ethosu driver.
-> 
-> Signed-off-by: Jiwei Fu <jiwei.fu@nxp.com>
-> Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-> ---
->  drivers/accel/neutron/Makefile         |   1 +
->  drivers/accel/neutron/neutron_device.c |   8 +-
->  drivers/accel/neutron/neutron_device.h |  21 ++
->  drivers/accel/neutron/neutron_driver.c |  28 ++-
->  drivers/accel/neutron/neutron_driver.h |   3 +
->  drivers/accel/neutron/neutron_job.c    | 367 +++++++++++++++++++++++++++++++++
->  drivers/accel/neutron/neutron_job.h    |  45 ++++
->  include/uapi/drm/neutron_accel.h       |  51 +++++
->  8 files changed, 519 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
-> index 192ed896a9f9..ac6dd576521c 100644
-> --- a/drivers/accel/neutron/Makefile
-> +++ b/drivers/accel/neutron/Makefile
-> @@ -6,4 +6,5 @@ neutron-y := \
->         neutron_driver.o \
->         neutron_device.o \
->         neutron_gem.o \
-> +       neutron_job.o \
->         neutron_mailbox.o
-> diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
-> index e5c09105be99..571ec906ad72 100644
-> --- a/drivers/accel/neutron/neutron_device.c
-> +++ b/drivers/accel/neutron/neutron_device.c
-> @@ -7,6 +7,7 @@
->  #include <linux/iopoll.h>
-> 
->  #include "neutron_device.h"
-> +#include "neutron_job.h"
->  #include "neutron_mailbox.h"
-> 
->  void neutron_enable_irq(struct neutron_device *ndev)
-> @@ -32,9 +33,14 @@ void neutron_handle_irq(struct neutron_device *ndev)
->         /* Write 1 to clear */
->         writel_relaxed(appstatus & APPSTATUS_CLEAR_MASK, NEUTRON_REG(ndev, APPSTATUS));
-> 
-> -       if (appstatus & APPSTATUS_FAULTCAUSE_MASK)
-> +       if (appstatus & APPSTATUS_FAULTCAUSE_MASK) {
->                 dev_err(ndev->dev, "Neutron halted due to fault: 0x%lx\n",
->                         FIELD_GET(APPSTATUS_FAULTCAUSE_MASK, appstatus));
-> +               return neutron_job_err_handler(ndev);
-> +       }
-> +
-> +       if (appstatus & APPSTATUS_INFDONE)
-> +               neutron_job_done_handler(ndev);
->  }
-> 
->  #define neutron_boot_done(appctrl) \
-> diff --git a/drivers/accel/neutron/neutron_device.h b/drivers/accel/neutron/neutron_device.h
-> index 8e4df7462d82..0ed72965774d 100644
-> --- a/drivers/accel/neutron/neutron_device.h
-> +++ b/drivers/accel/neutron/neutron_device.h
-> @@ -9,8 +9,10 @@
->  #include <linux/spinlock.h>
->  #include <linux/bits.h>
->  #include <drm/drm_device.h>
-> +#include <drm/gpu_scheduler.h>
-> 
->  struct clk_bulk_data;
-> +struct neutron_job;
-> 
->  #define NEUTRON_FIRMWARE_NAME          "NeutronFirmware.elf"
-> 
-> @@ -92,6 +94,13 @@ enum neutron_mem_id {
->   * @clks: Neutron clocks
->   * @num_clks: Number of clocks
->   * @flags: Software flags used by driver
-> + * @fence_lock: DMA fence lock
-> + * @sched: GPU scheduler
-> + * @sched_lock: Scheduler lock, for neutron_push_job
-> + * @fence_context: Fence context
-> + * @job_seqno: Job sequence number
-> + * @job_lock: Job lock, for active_job handling
-> + * @active_job: Currently active job
->   */
->  struct neutron_device {
->         struct drm_device base;
-> @@ -103,6 +112,18 @@ struct neutron_device {
->         struct clk_bulk_data *clks;
->         int num_clks;
->         u32 flags;
-> +
-> +       /* For dma_fence */
-> +       spinlock_t fence_lock;
+On Thu, Feb 26, 2026 at 01:47:39PM +0100, Max Krummenacher wrote:
+> On Wed, Feb 25, 2026 at 12:51:32PM -0500, Frank Li wrote:
+> > On Wed, Feb 25, 2026 at 06:40:21PM +0100, Max Krummenacher wrote:
+> > > On Thu, Feb 19, 2026 at 02:41:58PM -0500, Frank Li wrote:
+> > > > On Thu, Feb 19, 2026 at 06:06:31PM +0100, Max Krummenacher wrote:
+> > > > > Hi Frank
+> > > > >
+> > > > > On Thu, Feb 19, 2026 at 11:01:26AM -0500, Frank Li wrote:
+> > > > > > On Thu, Feb 19, 2026 at 04:11:49PM +0100, max.oss.09@gmail.com wrote:
+> > > > > > > From: Max Krummenacher <max.krummenacher@toradex.com>
+> > > > > > >
+> > > > > > > This reverts commit 8124b4a4a96b57d6cc3705a9df9623c52baa047b.
+> > > > > > >
+> > > > > > > The change introduced a regression: at least Colibri iMX6ULL and
+> > > > > > > Colibri iMX7 no longer boot with that commit applied, while they boot
+> > > > > > > again after reverting it.
+> > > > > > >
+> > > > > > > Although this has only been verified on these two modules, the issue
+> > > > > > > is expected to affect all device trees using the gpmi-nand driver.
+> > > > > > >
+> > > > > > > [    0.876938] Creating 5 MTD partitions on "gpmi-nand":
+> > > > > > > [    0.876974] 0x000000000000-0x000000080000 : "mx7-bcb"
+> > > > > > > [    0.879860] 0x000000080000-0x000000200000 : "u-boot1"
+> > > > > > > [    0.884761] 0x000000200000-0x000000380000 : "u-boot2"
+> > > > > > > [    0.886993] 0x000000380000-0x000000400000 : "u-boot-env"
+> > > > > > > [    0.894686] 0x000000400000-0x000020000000 : "ubi"
+> > > > > > > [    0.899054] gpmi-nand 33002000.nand-controller: driver registered.
+> > > > > > > ...
+> > > > > > > [    0.960443] ubi0: default fastmap pool size: 200
+> > > > > > > [    0.960476] ubi0: default fastmap WL pool size: 100
+> > > > > > > [    0.960500] ubi0: attaching mtd4
+> > > > > > > [    1.636355] ubi0 error: scan_peb: bad image sequence number 1588722158 in PEB 4060, expected 1574791632
+> > > > > > > ...
+> > > > > > > [    1.649889] ubi0 error: ubi_attach_mtd_dev: failed to attach mtd4, error -22
+> > > > > > > [    1.650029] UBI error: cannot attach mtd4
+> > > > > > > ...
+> > > > > > > [    1.670262] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,253)
+> > > > > >
+> > > > > > Can you help found the real reason why not boot?
+> > > > > > nand@0 is preferred format for MTD raw nand.
+> > > > > >
+> > > > > > Frank
+> > > > >
+> > > > > I guess the root cause is that the driver for gpmi-nand predates the
+> > > > > update of the binding rules which want the nand device described in
+> > > > > a child node 'nand@0' also for nand controllers which only can
+> > > > > control one nand chip.
+> > > > >
+> > > > > While it is possible to update the driver in the same patch set as
+> > > > > changing the device tree to understand the new dtb rules, maybe even
+> > > > > falling back to the old definitions this likely breaks other users,
+> > > > > most notable U-Boot.
+> > > >
+> > > > GPMI is widely used, include i.MX8 still use GPMI. Does below patch fix
+> > > > boot problem?
+> > >
+> > > My concern is that the new device tree (with the nand@0 subnode) is not
+> > > yet understood by other consumers of the DT sources, e.g. U‑Boot, older
+> > > Linux kernels (before the driver change), possibly barebox, and any
+> > > other consumer that relies on the kernel DT files.
+> >
+> > I understand, but we need move forward. we can keep both for transition.
+> >
+> > >
+> > > Updating only the Linux driver to support both the new and old bindings
+> > > therefore solves only part of the problem. As long as these other
+> > > consumers do not understand both bindings as well, we cannot safely
+> > > update the shared DT sources. So I think the commit needs to be reverted.
+> > >
+> > > In addition, the proposed fix in the driver is likely incomplete:
+> > > with the old binding there may be child nodes (i.e for partitions).
+> > > 'np = of_get_next_child(this->pdev->dev.of_node, NULL);' does then find
+> > > a node whcih is not the node that actually describes the single NAND
+> > > chip.
+> >
+> > I know it is incomplete, just want to check if it is the reason cause
+> > boot failure.
+> >
+> > >
+> > > An alternative approach could be to update the binding documentation
+> > > so that, specifically for the GPMI driver, the older binding is also
+> > > considered valid.
+> >
+> > Not easy to do that, I try many method to update yaml file. common nand
+> > flash detect node node "nand-controller".
+> >
+> > > Once the driver supports both the old and the new binding, the old
+> > > form could be marked as deprecated, but still allowed for compatibility.
+> > > This would avoid breaking existing consumers while giving us a path
+> > > to migrate DTs over time.
+> >
+> > Needn't revert all, just revert delete part, keep both to help migrate.
+> >
+> > anyways, I need know if of_get_next_child(this->pdev->dev.of_node, NULL);
+> > fix your problem.
+>
+> I tested the following on Colibri iMX7.
+>
+> kernel 7.0-rc1 and DTB are built from an untouched kernel at commit
+> 7dff99b35460 ("Remove WARN_ALL_UNSEEDED_RANDOM kernel config option").
+>
+> kernel 7.0-rc1 patched has the sources as above plus the changes you
+> propose to the gpmi-nand driver.
+>
+> DTB-reverted has the sources as above plus commit 8124b4a4a96b ("ARM:
+> dts: imx: move nand related property under nand@0") reverted.
+>
+>                               DTB        DTB-reverted
+>
+> kernel 7.0-rc1                fail       boots
+>
+> kernel 7.0-rc1 patched        boots      boots
 
-I've just pushed a patch set to drm-misc-next which makes the fence_lock superflous in most cases. Just provide NULL as lock when calling to dma_fence_init().
+Thanks you for testing. I will work a formal patch for it. Can you help
+rework you patch, which keep both properties, just revert deleted part
+and keep everything nand@0, so it help transistion. you also start work
+uboot part.
 
-> +       struct drm_gpu_scheduler sched;
-> +       /* For neutron_push_job */
-> +       struct mutex sched_lock;
-> +       u64 fence_context;
-> +       u64 job_seqno;
-> +
-> +       /* For active_job handling */
-> +       struct mutex job_lock;
-> +       struct neutron_job *active_job;
->  };
-> 
->  #define to_neutron_device(drm) \
-> diff --git a/drivers/accel/neutron/neutron_driver.c b/drivers/accel/neutron/neutron_driver.c
-> index c9a18bf52037..ceae1f7e8359 100644
-> --- a/drivers/accel/neutron/neutron_driver.c
-> +++ b/drivers/accel/neutron/neutron_driver.c
-> @@ -19,40 +19,53 @@
->  #include "neutron_device.h"
->  #include "neutron_driver.h"
->  #include "neutron_gem.h"
-> +#include "neutron_job.h"
-> 
->  #define NEUTRON_SUSPEND_DELAY_MS 1000
-> 
->  static const struct drm_ioctl_desc neutron_drm_ioctls[] = {
->         DRM_IOCTL_DEF_DRV(NEUTRON_CREATE_BO, neutron_ioctl_create_bo, 0),
->         DRM_IOCTL_DEF_DRV(NEUTRON_SYNC_BO, neutron_ioctl_sync_bo, 0),
-> +       DRM_IOCTL_DEF_DRV(NEUTRON_SUBMIT_JOB, neutron_ioctl_submit_job, 0),
->  };
-> 
->  static int neutron_open(struct drm_device *drm, struct drm_file *file)
->  {
->         struct neutron_device *ndev = to_neutron_device(drm);
->         struct neutron_file_priv *npriv;
-> +       int ret;
-> 
->         npriv = kzalloc_obj(*npriv);
->         if (!npriv)
->                 return -ENOMEM;
-> 
->         npriv->ndev = ndev;
-> -       file->driver_priv = npriv;
-> 
-> +       ret = neutron_job_open(npriv);
-> +       if (ret)
-> +               goto err_free;
-> +
-> +       file->driver_priv = npriv;
->         return 0;
-> +
-> +err_free:
-> +       kfree(npriv);
-> +       return ret;
->  }
-> 
->  static void neutron_postclose(struct drm_device *drm, struct drm_file *file)
->  {
->         struct neutron_file_priv *npriv = file->driver_priv;
-> 
-> +       neutron_job_close(npriv);
->         kfree(npriv);
->  }
-> 
->  DEFINE_DRM_ACCEL_FOPS(neutron_drm_driver_fops);
-> 
->  static const struct drm_driver neutron_drm_driver = {
-> -       .driver_features        = DRIVER_COMPUTE_ACCEL | DRIVER_GEM,
-> +       .driver_features        = DRIVER_COMPUTE_ACCEL | DRIVER_GEM |
-> +                                 DRIVER_SYNCOBJ,
->         .name                   = "neutron",
->         .desc                   = "NXP Neutron driver",
->         .major                  = 1,
-> @@ -151,19 +164,25 @@ static int neutron_probe(struct platform_device *pdev)
->                 return ret;
->         }
-> 
-> -       ret = devm_pm_runtime_enable(dev);
-> +       ret = neutron_job_init(ndev);
->         if (ret)
->                 goto free_reserved;
-> 
-> +       ret = devm_pm_runtime_enable(dev);
-> +       if (ret)
-> +               goto free_job;
-> +
->         pm_runtime_set_autosuspend_delay(dev, NEUTRON_SUSPEND_DELAY_MS);
->         pm_runtime_use_autosuspend(dev);
-> 
->         ret = drm_dev_register(&ndev->base, 0);
->         if (ret)
-> -               goto free_reserved;
-> +               goto free_job;
-> 
->         return 0;
-> 
-> +free_job:
-> +       neutron_job_fini(ndev);
->  free_reserved:
->         of_reserved_mem_device_release(&pdev->dev);
-> 
-> @@ -175,6 +194,7 @@ static void neutron_remove(struct platform_device *pdev)
->         struct neutron_device *ndev = platform_get_drvdata(pdev);
-> 
->         drm_dev_unregister(&ndev->base);
-> +       neutron_job_fini(ndev);
->         of_reserved_mem_device_release(&pdev->dev);
->  }
-> 
-> diff --git a/drivers/accel/neutron/neutron_driver.h b/drivers/accel/neutron/neutron_driver.h
-> index cd52b5eb2d27..b709de74105a 100644
-> --- a/drivers/accel/neutron/neutron_driver.h
-> +++ b/drivers/accel/neutron/neutron_driver.h
-> @@ -4,10 +4,13 @@
->  #ifndef __NEUTRON_DRIVER_H__
->  #define __NEUTRON_DRIVER_H__
-> 
-> +#include <drm/gpu_scheduler.h>
-> +
->  struct neutron_device;
-> 
->  struct neutron_file_priv {
->         struct neutron_device *ndev;
-> +       struct drm_sched_entity sched_entity;
->  };
-> 
->  #endif /* __NEUTRON_DRIVER_H__ */
-> diff --git a/drivers/accel/neutron/neutron_job.c b/drivers/accel/neutron/neutron_job.c
-> new file mode 100644
-> index 000000000000..316e361166a2
-> --- /dev/null
-> +++ b/drivers/accel/neutron/neutron_job.c
-> @@ -0,0 +1,367 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/* Copyright 2025-2026 NXP */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/pm_runtime.h>
-> +#include <drm/drm_file.h>
-> +#include <drm/drm_print.h>
-> +#include <drm/drm_gem_dma_helper.h>
-> +#include <drm/neutron_accel.h>
-> +
-> +#include "neutron_driver.h"
-> +#include "neutron_device.h"
-> +#include "neutron_gem.h"
-> +#include "neutron_mailbox.h"
-> +#include "neutron_job.h"
-> +
-> +#define NEUTRON_JOB_TIMEOUT_MS 5000
-> +
-> +static const char *neutron_fence_get_driver_name(struct dma_fence *fence)
-> +{
-> +       return "neutron";
-> +}
-> +
-> +static const char *neutron_fence_get_timeline_name(struct dma_fence *fence)
-> +{
-> +       return "neutron-npu";
-> +}
-> +
-> +static const struct dma_fence_ops neutron_fence_ops = {
-> +       .get_driver_name = neutron_fence_get_driver_name,
-> +       .get_timeline_name = neutron_fence_get_timeline_name,
-> +};
-> +
-> +static void neutron_hw_submit(struct neutron_job *job)
-> +{
-> +       struct neutron_device *ndev = job->ndev;
-> +       struct neutron_mbox_cmd cmd = {0};
-> +       u32 base_l, base_h;
-> +       u64 base_addr;
-> +       int ret;
-> +
-> +       switch (job->type) {
-> +       case DRM_NEUTRON_JOB_INFERENCE:
-> +               cmd.id = NEUTRON_CMD_INFERENCE;
-> +               cmd.args[0] = job->inference.tensor_offset;
-> +               cmd.args[1] = job->inference.microcode_offset;
-> +               cmd.args[2] = job->inference.tensor_count;
-> +               break;
-> +       default:
-> +               dev_WARN(ndev->dev, "Unknown job type: %d\n", job->type);
-> +               return;
-> +       }
-> +
-> +       base_addr = to_drm_gem_dma_obj(job->bo)->dma_addr;
-> +       base_l = lower_32_bits(base_addr);
-> +       base_h = upper_32_bits(base_addr);
-> +
-> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASEDDRL));
-> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASEINOUTL));
-> +       writel_relaxed(base_l, NEUTRON_REG(ndev, BASESPILLL));
-> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASEDDRH));
-> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASEINOUTH));
-> +       writel_relaxed(base_h, NEUTRON_REG(ndev, BASESPILLH));
-> +
-> +       ret = neutron_mbox_send_cmd(ndev, &cmd);
-> +       if (ret) {
-> +               /* Nothing we can do here, we'll reset the device on timeout */
-> +               dev_err(ndev->dev, "Failed to submit job, device is busy\n");
-> +       }
-> +}
-> +
-> +void neutron_job_err_handler(struct neutron_device *ndev)
-> +{
-> +       guard(mutex)(&ndev->job_lock);
-> +
-> +       if (ndev->active_job)
-> +               drm_sched_fault(&ndev->sched);
-> +}
-> +
-> +void neutron_job_done_handler(struct neutron_device *ndev)
-> +{
-> +       struct neutron_mbox_state state;
-> +
-> +       neutron_mbox_read_state(ndev, &state);
-> +       if (state.status != NEUTRON_FW_STATUS_DONE) {
-> +               dev_err(ndev->dev, "Inconsistent firmware state: status 0x%x, err 0x%x\n",
-> +                       state.status, state.err_code);
-> +               return neutron_job_err_handler(ndev);
-> +       }
-> +
-> +       if (state.err_code != 0)
-> +               dev_warn(ndev->dev, "Job finished with error: 0x%x\n",
-> +                        state.err_code);
+I plan give additional 1 year to do transistion. This type layout actually
+exist for long time.
 
-Not mandatory but you might also want to forward that as error to your dma_fence, see dma_fence_set_error(). 
+Frank
 
-> +
-> +       /* Reset Neutron internal state to prepare for next inference */
-> +       neutron_mbox_reset_state(ndev);
-> +
-> +       scoped_guard(mutex, &ndev->job_lock) {
-> +               if (ndev->active_job) {
-> +                       dma_fence_signal(ndev->active_job->neutron_fence);
-> +                       ndev->active_job = NULL;
-> +               }
-> +       }
-> +}
-> +
-> +static void neutron_cleanup_job(struct kref *ref)
-> +{
-> +       struct neutron_job *job = container_of(ref, struct neutron_job, refcnt);
-> +
-> +       pm_runtime_put_autosuspend(job->ndev->base.dev);
-> +
-> +       dma_fence_put(job->neutron_fence);
-> +       dma_fence_put(job->sched_fence);
-> +       drm_gem_object_put(job->bo);
-> +       drm_syncobj_put(job->syncobj);
-> +
-> +       kfree(job);
-> +}
-> +
-> +static void neutron_put_job(struct neutron_job *job)
-> +{
-> +       kref_put(&job->refcnt, neutron_cleanup_job);
-> +}
-> +
-> +static void neutron_free_job(struct drm_sched_job *sched_job)
-> +{
-> +       struct neutron_job *job = to_neutron_job(sched_job);
-> +
-> +       drm_sched_job_cleanup(sched_job);
-> +       neutron_put_job(job);
-> +}
-> +
-> +static struct dma_fence *neutron_run_job(struct drm_sched_job *sched_job)
-> +{
-> +       struct neutron_job *job = to_neutron_job(sched_job);
-> +       struct dma_fence *fence = job->neutron_fence;
-> +       struct neutron_device *ndev = job->ndev;
-> +
-> +       if (unlikely(job->base.s_fence->finished.error))
-> +               return NULL;
-> +
-> +       dma_fence_init(fence, &neutron_fence_ops, &ndev->fence_lock,
-> +                      ndev->fence_context, ++ndev->job_seqno);
-> +       dma_fence_get(fence);
-> +
-> +       scoped_guard(mutex, &ndev->job_lock) {
-> +               ndev->active_job = job;
-> +               neutron_hw_submit(job);
-> +       }
-> +
-> +       return fence;
-> +}
-> +
-> +static enum drm_gpu_sched_stat neutron_timedout_job(struct drm_sched_job *sched_job)
-> +{
-> +       struct neutron_job *job = to_neutron_job(sched_job);
-> +       struct neutron_device *ndev = job->ndev;
-> +       struct neutron_mbox_state state;
-> +
-> +       /* We assume Neutron is stuck, retrieve current state and reset */
-> +       neutron_mbox_read_state(ndev, &state);
-> +       dev_err(ndev->dev, "Neutron timedout, status: 0x%x, err: 0x%x\n",
-> +               state.status, state.err_code);
-> +
-> +       drm_sched_stop(&ndev->sched, sched_job);
-> +
-> +       scoped_guard(mutex, &ndev->job_lock)
-> +               ndev->active_job = NULL;
-> +
-> +       pm_runtime_force_suspend(ndev->dev);
-> +       pm_runtime_force_resume(ndev->dev);
-> +
-> +       drm_sched_start(&ndev->sched, 0);
-> +
-> +       return DRM_GPU_SCHED_STAT_RESET;
-> +}
-> +
-> +static void neutron_cancel_job(struct drm_sched_job *sched_job)
-> +{
-> +       struct neutron_job *job = to_neutron_job(sched_job);
-> +       struct neutron_device *ndev = job->ndev;
-> +
-> +       guard(mutex)(&ndev->job_lock);
-> +
-> +       if (!dma_fence_is_signaled(job->neutron_fence)) {
-> +               dma_fence_set_error(job->neutron_fence, -ECANCELED);
-> +               dma_fence_signal(job->neutron_fence);
-> +       }
-> +}
-> +
-> +static const struct drm_sched_backend_ops neutron_sched_ops = {
-> +       .run_job = neutron_run_job,
-> +       .free_job = neutron_free_job,
-> +       .timedout_job = neutron_timedout_job,
-> +       .cancel_job = neutron_cancel_job,
-> +};
-> +
-> +int neutron_job_init(struct neutron_device *ndev)
-> +{
-> +       const struct drm_sched_init_args args = {
-> +               .ops = &neutron_sched_ops,
-> +               .num_rqs = DRM_SCHED_PRIORITY_COUNT,
-> +               .credit_limit = 1,
-> +               .timeout = msecs_to_jiffies(NEUTRON_JOB_TIMEOUT_MS),
-> +               .name = dev_name(ndev->dev),
-> +               .dev = ndev->dev,
-> +       };
-> +       int ret;
-> +
-> +       ret = devm_mutex_init(ndev->dev, &ndev->sched_lock);
-> +       if (ret)
-> +               return ret;
-> +       ret = devm_mutex_init(ndev->dev, &ndev->job_lock);
-> +       if (ret)
-> +               return ret;
-> +       spin_lock_init(&ndev->fence_lock);
-> +
-> +       ndev->fence_context = dma_fence_context_alloc(1);
-> +
-> +       ret = drm_sched_init(&ndev->sched, &args);
-> +       if (ret)
-> +               dev_err(ndev->dev, "Error creating DRM scheduler\n");
-> +
-> +       return ret;
-> +}
-> +
-> +void neutron_job_fini(struct neutron_device *ndev)
-> +{
-> +       drm_sched_fini(&ndev->sched);
-> +}
-> +
-> +int neutron_job_open(struct neutron_file_priv *npriv)
-> +{
-> +       struct neutron_device *ndev = npriv->ndev;
-> +       struct drm_gpu_scheduler *sched = &ndev->sched;
-> +       int ret;
-> +
-> +       ret = drm_sched_entity_init(&npriv->sched_entity,
-> +                                   DRM_SCHED_PRIORITY_NORMAL,
-> +                                   &sched, 1, NULL);
-> +       if (ret)
-> +               dev_err(ndev->dev, "Error creating scheduler entity\n");
-> +
-> +       return ret;
-> +}
-> +
-> +void neutron_job_close(struct neutron_file_priv *npriv)
-> +{
-> +       drm_sched_entity_destroy(&npriv->sched_entity);
-> +}
-> +
-> +static int neutron_push_job(struct neutron_job *job)
-> +{
-> +       struct neutron_device *ndev = job->ndev;
-> +       struct ww_acquire_ctx acquire_ctx;
-> +       int ret;
-> +
-> +       ret = drm_gem_lock_reservations(&job->bo, 1, &acquire_ctx);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = dma_resv_reserve_fences(job->bo->resv, 1);
-> +       if (ret)
-> +               goto out_unlock_res;
-> +
-> +       ret = drm_sched_job_add_implicit_dependencies(&job->base, job->bo, true);
-> +       if (ret)
-> +               goto out_unlock_res;
-> +
-> +       ret = pm_runtime_resume_and_get(ndev->base.dev);
-> +       if (ret)
-> +               goto out_unlock_res;
-> +
-> +       scoped_guard(mutex, &ndev->sched_lock) {
-> +               drm_sched_job_arm(&job->base);
-> +
-> +               job->sched_fence = dma_fence_get(&job->base.s_fence->finished);
-> +               drm_syncobj_replace_fence(job->syncobj, job->sched_fence);
-> +
-> +               kref_get(&job->refcnt);
-> +               drm_sched_entity_push_job(&job->base);
-> +
-> +               dma_resv_add_fence(job->bo->resv, job->sched_fence,
-> +                                  DMA_RESV_USAGE_WRITE);
-> +       }
-> +
-> +out_unlock_res:
-> +       drm_gem_unlock_reservations(&job->bo, 1, &acquire_ctx);
-> +
-> +       return ret;
-> +}
-> +
-> +int neutron_ioctl_submit_job(struct drm_device *drm, void *data, struct drm_file *filp)
-> +{
-> +       struct neutron_device *ndev = to_neutron_device(drm);
-> +       struct neutron_file_priv *npriv = filp->driver_priv;
-> +       struct drm_neutron_submit_job *args = data;
-> +       struct neutron_job *job;
-> +       int ret;
-> +
-> +       if (args->pad)
-> +               return -EINVAL;
-> +
-> +       job = kzalloc_obj(*job);
-> +       if (!job)
-> +               return -ENOMEM;
-> +
-> +       job->ndev = ndev;
-> +       kref_init(&job->refcnt);
-> +
-> +       job->neutron_fence = kzalloc_obj(*job->neutron_fence);
-> +       if (!job->neutron_fence) {
-> +               ret = -ENOMEM;
-> +               goto out_free_job;
-> +       }
-> +
-> +       switch (args->type) {
-> +       case DRM_NEUTRON_JOB_INFERENCE:
-> +               memcpy(&job->inference, &args->inference,
-> +                      sizeof(args->inference));
-> +               break;
-> +       default:
-> +               dev_dbg(ndev->dev, "Invalid job type %d\n", args->type);
-> +               ret = -EINVAL;
-> +               goto out_free_fence;
-> +       }
-> +
-> +       job->bo = drm_gem_object_lookup(filp, args->bo_handle);
-> +       if (!job->bo) {
-> +               dev_dbg(ndev->dev, "Invalid BO handle\n");
-> +               ret = -ENOENT;
-> +               goto out_free_fence;
-> +       }
-> +
-> +       job->syncobj = drm_syncobj_find(filp, args->syncobj_handle);
-> +       if (!job->syncobj) {
-> +               dev_dbg(ndev->dev, "Invalid syncobj handle\n");
-> +               ret = -ENOENT;
-> +               goto out_put_gem;
-> +       }
-> +
-> +       ret = drm_sched_job_init(&job->base, &npriv->sched_entity, 1, NULL,
-> +                                filp->client_id);
-> +       if (ret)
-> +               goto out_put_syncobj;
-> +
-> +       ret = neutron_push_job(job);
-> +       if (ret)
-> +               goto out_sched_cleanup;
-> +
-> +       neutron_put_job(job);
-> +
-> +       return 0;
-> +
-> +out_sched_cleanup:
-> +       drm_sched_job_cleanup(&job->base);
-> +out_put_syncobj:
-> +       drm_syncobj_put(job->syncobj);
-> +out_put_gem:
-> +       drm_gem_object_put(job->bo);
-> +out_free_fence:
-> +       kfree(job->neutron_fence);
-> +out_free_job:
-> +       kfree(job);
-> +
-> +       return ret;
-> +}
-> diff --git a/drivers/accel/neutron/neutron_job.h b/drivers/accel/neutron/neutron_job.h
-> new file mode 100644
-> index 000000000000..bb7773aeb218
-> --- /dev/null
-> +++ b/drivers/accel/neutron/neutron_job.h
-> @@ -0,0 +1,45 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +/* Copyright 2025-2026 NXP */
-> +
-> +#ifndef __NEUTRON_JOB_H__
-> +#define __NEUTRON_JOB_H__
-> +
-> +#include <linux/kref.h>
-> +#include <drm/drm_gem.h>
-> +#include <drm/drm_syncobj.h>
-> +#include <drm/gpu_scheduler.h>
-> +#include <drm/neutron_accel.h>
-> +
-> +#include "neutron_driver.h"
-> +
-> +struct neutron_device;
-> +struct neutron_file_priv;
-> +
-> +struct neutron_job {
-> +       struct drm_sched_job base;
-> +       struct neutron_device *ndev;
-> +       struct dma_fence *neutron_fence;
-
-> +       struct dma_fence *sched_fence;
-
-That looks superflous to me. You should always have the scheduler fence through the base.
-
-> +       struct drm_syncobj *syncobj;
-
-Why do you want to keep the syncobj around?
-
-
-Apart from those notes looks pretty good to me, but I'm a bit disapointed that there isn't any DMA-buf support to review :)
-
-Regards,
-Christian.
-
-> +       struct drm_gem_object *bo;
-> +       enum drm_neutron_job_type type;
-> +       union {
-> +               struct drm_neutron_inference_job inference;
-> +       };
-> +       struct kref refcnt;
-> +};
-> +
-> +#define to_neutron_job(job) \
-> +       container_of(job, struct neutron_job, base)
-> +
-> +int neutron_job_init(struct neutron_device *dev);
-> +void neutron_job_fini(struct neutron_device *dev);
-> +int neutron_job_open(struct neutron_file_priv *npriv);
-> +void neutron_job_close(struct neutron_file_priv *npriv);
-> +
-> +void neutron_job_done_handler(struct neutron_device *dev);
-> +void neutron_job_err_handler(struct neutron_device *dev);
-> +
-> +int neutron_ioctl_submit_job(struct drm_device *dev, void *data, struct drm_file *filp);
-> +
-> +#endif /* __NEUTRON_JOB_H__ */
-> diff --git a/include/uapi/drm/neutron_accel.h b/include/uapi/drm/neutron_accel.h
-> index 2f5639f2e0e8..a9e5682709d2 100644
-> --- a/include/uapi/drm/neutron_accel.h
-> +++ b/include/uapi/drm/neutron_accel.h
-> @@ -15,10 +15,12 @@ extern "C" {
->   *
->   * @DRM_NEUTRON_CREATE_BO: Create a buffer object
->   * @DRM_NEUTRON_SYNC_BO: Sync (parts of) the buffer object memory
-> + * @DRM_NEUTRON_SUBMIT_JOB: Submit a job to the device
->   */
->  enum drm_neutron_ioctl {
->         DRM_NEUTRON_CREATE_BO = 0,
->         DRM_NEUTRON_SYNC_BO,
-> +       DRM_NEUTRON_SUBMIT_JOB,
->  };
-> 
->  /**
-> @@ -64,6 +66,51 @@ struct drm_neutron_sync_bo {
->         __u64 offset;
->  };
-> 
-> +/**
-> + * enum drm_neutron_job_type - Type of job to submit to Neutron device
-> + *
-> + * @DRM_NEUTRON_JOB_INFERENCE: Inference job
-> + */
-> +enum drm_neutron_job_type {
-> +       DRM_NEUTRON_JOB_INFERENCE = 0,
-> +};
-> +
-> +/**
-> + * struct drm_neutron_inference_job - Inference job descriptor
-> + *
-> + * @tensor_offset: Offset of tensor array inside job BO
-> + * @microcode_offset: Microcode offset inside BO
-> + * @tensor_count: Number of valid tensors
-> + * @pad: MBZ
-> + */
-> +struct drm_neutron_inference_job {
-> +       __u32 tensor_offset;
-> +       __u32 microcode_offset;
-> +       __u32 tensor_count;
-> +       __u32 pad[5];
-> +};
-> +
-> +/**
-> + * struct drm_neutron_submit_job - Submit a job to Neutron device
-> + *
-> + * @type: Job type, one of enum drm_neutron_job_type
-> + * @bo_handle: BO handle for this job
-> + * @inference: Inference job descriptor (when type is DRM_NEUTRON_JOB_INFERENCE)
-> + * @reserved: Reserved for future job types
-> + * @syncobj_handle: Handle of syncobj on which user waits for job completion
-> + * @pad: MBZ
-> + */
-> +struct drm_neutron_submit_job {
-> +       __u32 type;
-> +       __u32 bo_handle;
-> +       union {
-> +               struct drm_neutron_inference_job inference;
-> +               __u32 reserved[8];
-> +       };
-> +       __u32 syncobj_handle;
-> +       __u32 pad;
-> +};
-> +
->  #define DRM_IOCTL_NEUTRON_CREATE_BO \
->         DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_CREATE_BO, \
->                  struct drm_neutron_create_bo)
-> @@ -72,6 +119,10 @@ struct drm_neutron_sync_bo {
->         DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SYNC_BO, \
->                  struct drm_neutron_sync_bo)
-> 
-> +#define DRM_IOCTL_NEUTRON_SUBMIT_JOB \
-> +       DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SUBMIT_JOB, \
-> +                struct drm_neutron_submit_job)
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> 
-> --
-> 2.34.1
-> 
-
+>
+> Regards
+> Max
+>
+> >
+> > Frank
+> > >
+> > > Regards,
+> > > Max
+> > >
+> > > >
+> > > > diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> > > > index 51f595fbc834e..fb126a7c4a61e 100644
+> > > > --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> > > > +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> > > > @@ -2680,6 +2680,7 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
+> > > >  {
+> > > >         struct nand_chip *chip = &this->nand;
+> > > >         struct mtd_info  *mtd = nand_to_mtd(chip);
+> > > > +       struct device_node *np;
+> > > >         int ret;
+> > > >
+> > > >         /* init the MTD data structures */
+> > > > @@ -2688,7 +2689,10 @@ static int gpmi_nand_init(struct gpmi_nand_data *this)
+> > > >
+> > > >         /* init the nand_chip{}, we don't support a 16-bit NAND Flash bus. */
+> > > >         nand_set_controller_data(chip, this);
+> > > > -       nand_set_flash_node(chip, this->pdev->dev.of_node);
+> > > > +       np = of_get_next_child(this->pdev->dev.of_node, NULL);
+> > > > +       if (!np)
+> > > > +               np = this->pdev->dev.of_node;
+> > > > +       nand_set_flash_node(chip, np);
+> > > >         chip->legacy.block_markbad = gpmi_block_markbad;
+> > > >         chip->badblock_pattern  = &gpmi_bbt_descr;
+> > > >         chip->options           |= NAND_NO_SUBPAGE_WRITE;
+> > > >
+> > > > Frank
+> > > > >
+> > > > >
+> > > > > So I don't see a quick fix other than reverting and living with the
+> > > > > dtb_check warning.
+> > > > >
+> > > > > Regards,
+> > > > > Max
+> > > > >
+> > > > > > >
+> > > > > > > Fixes: 8124b4a4a96b ("ARM: dts: imx: move nand related property under nand@0")
+> > > > > > > Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+> > > > > > >
+> > > > > > > ---
+> > > > > > >
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi      |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi         |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi |  6 +-----
+> > > > > > >  .../boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi      |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi           |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts            |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi          |  6 +-----
+> > > > > > >  .../boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi  |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi          |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi       | 12 ++++--------
+> > > > > > >  .../boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi   | 12 ++++--------
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts     |  6 +-----
+> > > > > > >  arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi          |  8 ++------
+> > > > > > >  15 files changed, 22 insertions(+), 82 deletions(-)
+> > > > > > >
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi
+> > > > > > > index f452764fae00..547fb141ec0c 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi
+> > > > > > > @@ -36,12 +36,8 @@ &clks {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c3 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi
+> > > > > > > index 58ecdb87c6d4..9975b6ee433d 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi
+> > > > > > > @@ -172,12 +172,8 @@ eth_phy: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi
+> > > > > > > index 6f3becd33a5b..aa9a442852f4 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi
+> > > > > > > @@ -102,12 +102,8 @@ ethphy: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+> > > > > > > index f2140dd8525f..85e278eb2016 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi
+> > > > > > > @@ -73,12 +73,8 @@ ethphy: ethernet-phy@3 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "disabled";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c3 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
+> > > > > > > index 131a3428ddb8..c93dbc595ef6 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
+> > > > > > > @@ -260,14 +260,10 @@ fixed-link {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	#address-cells = <1>;
+> > > > > > >  	#size-cells = <0>;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c3 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
+> > > > > > > index d29adfef5fdb..57297d6521cf 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
+> > > > > > > @@ -252,13 +252,9 @@ etnphy: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	fsl,no-blockmark-swap;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+> > > > > > > index 40d530c1dc29..2a6bb5ff808a 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+> > > > > > > @@ -133,12 +133,8 @@ ethphy1: ethernet-phy@1 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi
+> > > > > > > index 776f6f78ee46..e34c8cbe36ae 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi
+> > > > > > > @@ -101,12 +101,8 @@ ethphy0: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "disabled";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi
+> > > > > > > index 27e4d2aec137..a3ea1b208462 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi
+> > > > > > > @@ -63,12 +63,8 @@ ethphy1: ethernet-phy@1 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "disabled";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> > > > > > > index dc53f9286ffe..1992dfb53b45 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> > > > > > > @@ -296,13 +296,9 @@ &fec2 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	fsl,no-blockmark-swap;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &i2c2 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
+> > > > > > > index eaed2cbf0c82..ec3c1e7301f4 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi
+> > > > > > > @@ -160,15 +160,11 @@ &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > >  	fsl,use-minimum-ecc;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > > +	nand-ecc-mode = "hw";
+> > > > > > > +	nand-ecc-strength = <8>;
+> > > > > > > +	nand-ecc-step-size = <512>;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -		nand-ecc-mode = "hw";
+> > > > > > > -		nand-ecc-strength = <8>;
+> > > > > > > -		nand-ecc-step-size = <512>;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  /* I2C3_SDA/SCL on SODIMM 194/196 (e.g. RTC on carrier board) */
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+> > > > > > > index 3dfd43b32055..43518bf07602 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+> > > > > > > @@ -43,15 +43,11 @@ ethphy0: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-ecc-mode = "hw";
+> > > > > > > +	nand-ecc-strength = <0>;
+> > > > > > > +	nand-ecc-step-size = <0>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-ecc-mode = "hw";
+> > > > > > > -		nand-ecc-strength = <0>;
+> > > > > > > -		nand-ecc-step-size = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &iomuxc {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi
+> > > > > > > index fc298f57bfff..83b9de17cee2 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi
+> > > > > > > @@ -60,12 +60,8 @@ ethphy0: ethernet-phy@0 {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "disabled";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &uart1 {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> > > > > > > index 8ec18eae98a4..2d9f495660c9 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts
+> > > > > > > @@ -25,12 +25,8 @@ usdhc2_pwrseq: usdhc2-pwrseq {
+> > > > > > >  &gpmi {
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	status = "okay";
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  &snvs_poweroff {
+> > > > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
+> > > > > > > index a41dc4edfc0d..8666dcd7fe97 100644
+> > > > > > > --- a/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
+> > > > > > > +++ b/arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi
+> > > > > > > @@ -375,14 +375,10 @@ &gpio7 {
+> > > > > > >  /* NAND on such SKUs */
+> > > > > > >  &gpmi {
+> > > > > > >  	fsl,use-minimum-ecc;
+> > > > > > > +	nand-ecc-mode = "hw";
+> > > > > > > +	nand-on-flash-bbt;
+> > > > > > >  	pinctrl-names = "default";
+> > > > > > >  	pinctrl-0 = <&pinctrl_gpmi_nand>;
+> > > > > > > -
+> > > > > > > -	nand@0 {
+> > > > > > > -		reg = <0>;
+> > > > > > > -		nand-ecc-mode = "hw";
+> > > > > > > -		nand-on-flash-bbt;
+> > > > > > > -	};
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  /* On-module Power I2C */
+> > > > > > > --
+> > > > > > > 2.42.0
+> > > > > > >
