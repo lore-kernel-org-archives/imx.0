@@ -1,84 +1,135 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024A9287253;
-	Thu, 26 Feb 2026 05:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360C28643C;
+	Thu, 26 Feb 2026 06:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772082745; cv=none; b=BJVc375YTEU5W2Rx/fd/bGP3CeWcgRHuy9xLE31kvhpnk01EOS/d2eSh/w7OAOSXV/mMs5eJ48/2ujgMD2yZ9IjMOvQx1JrsB8QkOxcTLiNC60hhUSDQevGEFKXK/GXqD0YUmQSXlAADo0FqXeoq0OGVYPp0lXFAwPJ7GMraWoE=
+	t=1772087613; cv=none; b=kW+1QafDlq9Vkf/G1aZl3kuRjZ9quMSMr1JkBeVYZwghOxEISjACoRcrblWo5lkC8Jykww18qPBtWnCvj7FW2DwUw233ySpxPejeIbDTJDPKOrmxJhlqJQf51ZZymdrlBxVeVM1SnvYN+EkLpC2y3+47MX/YgPbJlwHfIQ5V5VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772082745; c=relaxed/simple;
-	bh=ylk3+PwGHSF4af3iWtOwVBcvgxKwhdl4uCvtpQxJrtg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aU2dnzKo2rNku6LtDIV5BiGbTdpveQ8tiywNI8SZ/MxICOtxBsxhFYmQD38QYl7GQR513dq/4AvYJepsuRJKlVb1MStAlvtEUyTmfxxkWOH/exHSQRWLoKmoTE/fSELhORQRnj1GmScj5qHG7EOG1IWlHVzIf8MbR8jm4XzPplo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oxJn+/FQ; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1772087613; c=relaxed/simple;
+	bh=TQcjNDCthRmxoghOT2T0FWsXkA4piqIaaOpYR6a5s4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAqQ9PP6a8Kn/KQAdVyM3HErvjfmDAlppQLC6rpNJkF/50yk/xQ0dzQA34gNw325IDjf5EpsyzhA4pSR+2jL1ugjE/E8loi0EURTeMsQB9/l4L1VOKxxmoE8ZHeXnaA292rdYLVXYDk87xRooCCdx8NbRzu9f+iczX9yidTyyMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbGSrvcu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oxJn+/FQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=MBwNyNwsAXcXiZseHhSAbS6xtXvxrsrDgwhLAPWdzLQ=; b=oxJn+/FQmqNLZSXcQwhq5Xnapg
-	Yau/9KheZ0Rx8Uo47rpSBB19BxPoto/C6qLsOYpqd+S40TygLNxmxde1aAMUcgkNJJE/ExHo2dbu/
-	tZoWp+wtIFzEo1qqKDso/dHM5owNNZ/WaoyhG1xXDtzacrZMMERuZfOoyh2YV0U0Q55Org4CncY03
-	boJoMdqzoiMMsFJQugMUbDviOVD1ndHSXrxwhEFTKKv+ao7B7LbCsSe9rqs5/HlmMTccHA7u2NhTj
-	lR9cWSYt3Q5svQKyzd/SkID1RR7E81nv/eHSLR9LH7uS1C9NnI82mj8tufIb/OsGw3Y3OObUY97Lh
-	xAftGVhQ==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvTfh-00000005PKh-0yCG;
-	Thu, 26 Feb 2026 05:12:21 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH] dmaengine: fsl-edma: fix all kernel-doc warnings
-Date: Wed, 25 Feb 2026 21:12:20 -0800
-Message-ID: <20260226051220.548566-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbGSrvcu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C6FC19422;
+	Thu, 26 Feb 2026 06:33:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772087613;
+	bh=TQcjNDCthRmxoghOT2T0FWsXkA4piqIaaOpYR6a5s4o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hbGSrvcupcn+h4fSa+L/b7cSolIXGPrRwp3dyI0q9iPQYaqipe3QccDiDR54tHkHW
+	 F+4AIwN/JRG5wOv/BWdUi71OGxvlhvmA2Is7wj2VbS3L7yoIZpWN2DNNJNHL4q0TdM
+	 dcV1WucverRdKdncs4SYMtwxg800QKxv1DVxsKktYcExupBmWynxOmvBQvt6J+80aW
+	 /pOkRY82quk9Y8q9pCTCwGS9oDzcaSTAf4QAHpMtsIFqqt07/OlbDMfTaHUuXxuSC6
+	 Y2eVFhzbQB6Y+mdr+k8L8jd4To3IDy0BpTfFJoP/Gavqj0VrJNBHy0lMkBI5mfeFTJ
+	 G2owFRTaeTFiA==
+Date: Thu, 26 Feb 2026 12:03:24 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Minghuan Lian <minghuan.Lian@nxp.com>, 
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
+Message-ID: <6xnmjhwm5mfrff6gyomwrnft3bfuxvun2cxi56lx6qvlugxg6l@yossniactj2r>
+References: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
 
-Use the correct kernel-doc format and struct member names to eliminate
-these kernel-doc warnings:
+On Mon, Jan 12, 2026 at 08:17:11PM +0100, Steffen Trumtrar wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> The layerscape pcie host controller could also be compiled as module.
+> Add the necessary infrastructure to allow building as module instead of
+> only as builtin driver.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Warning: include/linux/platform_data/dma-mcf-edma.h:35 struct member
- 'dma_channels' not described in 'mcf_edma_platform_data'
-Warning: include/linux/platform_data/dma-mcf-edma.h:35 struct member
- 'slave_map' not described in 'mcf_edma_platform_data'
-Warning: include/linux/platform_data/dma-mcf-edma.h:35 struct member
- 'slavecnt' not described in 'mcf_edma_platform_data'
+Applied to controller/dwc-layerscape, thanks!
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-Cc: dmaengine@vger.kernel.org
-Cc: Vinod Koul <vkoul@kernel.org>
+- Mani
 
- include/linux/platform_data/dma-mcf-edma.h |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> ---
+>  drivers/pci/controller/dwc/Kconfig          |  2 +-
+>  drivers/pci/controller/dwc/pci-layerscape.c | 16 +++++++++++++++-
+>  2 files changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> index 519b59422b479..abfa4a6e62c25 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -121,7 +121,7 @@ config PCI_IMX6_EP
+>  	  DesignWare core functions to implement the driver.
+>  
+>  config PCI_LAYERSCAPE
+> -	bool "Freescale Layerscape PCIe controller (host mode)"
+> +	tristate "Freescale Layerscape PCIe controller (host mode)"
+>  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+>  	depends on PCI_MSI
+>  	select PCIE_DW_HOST
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index a44b5c256d6e2..14d6ac4fc53fd 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/init.h>
+>  #include <linux/iopoll.h>
+> +#include <linux/module.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/of_address.h>
+> @@ -403,8 +404,16 @@ static const struct dev_pm_ops ls_pcie_pm_ops = {
+>  	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
+>  };
+>  
+> +static void ls_pcie_remove(struct platform_device *pdev)
+> +{
+> +	struct ls_pcie *pcie = platform_get_drvdata(pdev);
+> +
+> +	dw_pcie_host_deinit(&pcie->pci->pp);
+> +}
+> +
+>  static struct platform_driver ls_pcie_driver = {
+>  	.probe = ls_pcie_probe,
+> +	.remove = ls_pcie_remove,
+>  	.driver = {
+>  		.name = "layerscape-pcie",
+>  		.of_match_table = ls_pcie_of_match,
+> @@ -412,4 +421,9 @@ static struct platform_driver ls_pcie_driver = {
+>  		.pm = &ls_pcie_pm_ops,
+>  	},
+>  };
+> -builtin_platform_driver(ls_pcie_driver);
+> +module_platform_driver(ls_pcie_driver);
+> +
+> +MODULE_AUTHOR("Minghuan Lian <Minghuan.Lian@freescale.com>");
+> +MODULE_DESCRIPTION("Layerscape PCIe host controller driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_DEVICE_TABLE(of, ls_pcie_of_match);
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20260112-v6-19-topic-layerscape-pcie-9d10b6542139
+> 
+> Best regards,
+> -- 
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> 
 
---- linux-next-20260225.orig/include/linux/platform_data/dma-mcf-edma.h
-+++ linux-next-20260225/include/linux/platform_data/dma-mcf-edma.h
-@@ -26,8 +26,9 @@ bool mcf_edma_filter_fn(struct dma_chan
- /**
-  * struct mcf_edma_platform_data - platform specific data for eDMA engine
-  *
-- * @ver			The eDMA module version.
-- * @dma_channels	The number of eDMA channels.
-+ * @dma_channels:	The number of eDMA channels.
-+ * @slave_map:		Slave device map
-+ * @slavecnt:		Number of entries in @slave_map
-  */
- struct mcf_edma_platform_data {
- 	int dma_channels;
+-- 
+மணிவண்ணன் சதாசிவம்
