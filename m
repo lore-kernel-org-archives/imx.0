@@ -1,196 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013000.outbound.protection.outlook.com [40.107.159.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402CF3D3CE3;
-	Thu, 26 Feb 2026 21:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772140568; cv=none; b=bwLajS0XJKnsY6x7WsH6Rnf+beSrU9KQpQQLBcSfYUZxo7vKulCuZQBXO6VTVSewxomsPWmVA9DgtIjvpdp3KmmIaLuOIZMOWeJxOBdD28zYXO463QVRoYtiCeJSsFem8w8s1Jvv1av6y5arYDfvDR+AtyJHx2KcS6Fv8+GPFvg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772140568; c=relaxed/simple;
-	bh=YwPQeyGBzJcABYucg90H9LmrLb/nelrgO9edJ4pmwS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=snPUq72W0u4MH+2VOUN3hdvNHewNh0I08G5zGSTsZySBvJHsq33syokBhMFfZ5Im6l1r8SCWmr4L19Q8QxybCaYK2FiLbTFXZ8cMFVUbT+Sw0OjxXyw8dACVzerJ5B8uvbz32BMPOPxAcivGBerQJub0XjmVj09Td/4Nfw5vof8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZ0XYGDU; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8666D2EBBA9
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 22:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772146552; cv=fail; b=jFQjru9UInigm95x3pb7IeSS1ycVaH0b8B6NtDoBs4s5qAJirMJbSbZv+eRjnYVRWRl9OET9uZzM08ZNIY2qq3xN/cCujyLnjVHlsigY4Lnp+tUZUUu41XE2Tnh+tu/qrmkr84Mbt/NZAIG9fCfeT1MFODd31X2M53D3fflaGUs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772146552; c=relaxed/simple;
+	bh=h3bgxDx1KYCdhCZqHlGkJAosnkpiZiR22kEzhAanjO8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=K7kneMCjIdI/E6ZYuZngO/zrkwSht6VxvCTL1SkdFwQQ2fxcoDzWWPamtn9ZSLnaXqkYIMgW9njHLEqn/OKrqIRP7Gss+LCjYqnRwLYtRi2PWfJVxUQ3r/f1So0sKGAjzhxmsQ8TEZH4nWL39hzQxJ3u/V23nDC6hzI5oON+BtM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oPN+W0RK; arc=fail smtp.client-ip=40.107.159.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZ0XYGDU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772140563; x=1803676563;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YwPQeyGBzJcABYucg90H9LmrLb/nelrgO9edJ4pmwS0=;
-  b=AZ0XYGDUIzxJ3qK14WHSQJSrpceUeObiO7kQbUmgngDhcRd8c7re8lDQ
-   /91vY3V8VEG5pWO1MHLvxtYYEbyqU09Kk0Xxd7sMLkbQvFfT5THJgr5FS
-   eNqTPeXAXOppdCRPk7lvB0uU17EBxCgHiIHt9yhM6AofMRxNq5fvOBlTY
-   aPCANQrAclX7cihPQarmgXyI7C8dPpYNl65u5LzC0xSR2ETDKcz+PKrrh
-   asQ+uVaFPgboyVleYNAz62SRoqzAc6yD14sRrjajkntCg2AezmZ88XjIO
-   BOCUA/jguBHNqC/29RDG2IIT4UwigbO2vfr6gtibgR/edXwC1NKaSEpEu
-   g==;
-X-CSE-ConnectionGUID: B9rlDDsIT2GHtw8acIJlTg==
-X-CSE-MsgGUID: QZNJtY5JSfaobuYi0htVqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="72422795"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="72422795"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 13:16:02 -0800
-X-CSE-ConnectionGUID: KF8q2MCfQ7KO5yyM2PuPtA==
-X-CSE-MsgGUID: booS3pxyQp61NWJ++rs5Zw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="216816235"
-Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 26 Feb 2026 13:15:57 -0800
-Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vviiA-000000009sp-1VpU;
-	Thu, 26 Feb 2026 21:15:54 +0000
-Date: Fri, 27 Feb 2026 05:15:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	Jiwei Fu <jiwei.fu@nxp.com>, Forrest Shi <xuelin.shi@nxp.com>,
-	Alexandru Taran <alexandru.taran@nxp.com>,
-	Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Subject: Re: [PATCH 5/9] accel/neutron: Add GEM buffer object support
-Message-ID: <202602270531.MP8x6wo3-lkp@intel.com>
-References: <20260226-neutron-v1-5-46eccb3bb50a@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oPN+W0RK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K1DXo7kAhX6kQch9tIrrMBv0SD28niG27zP1wmkYTr2G0J7lHhLfpl8vDQj6xiIxZDQWTJY5wH7koJYi1/ey0gjZwbRFyXqWgO67amLL2a685C4Oggw2kwbYvaoWJGMRu/q5AwvAt4GSI+ZO0VeWF1tu5CwpOtlXSUEYsf8MD2yvu448bnaIbRBe2U3uubDjZAH8QQu58vq9sIz3KK3lwE+tCfwG0EHzd9Tf6ZZnOpH8kqlcmh7emtaEQheMyomxGbDpZPQcdSeBnxHyVKxEe64ztkzFJ+Md5UMqeRXF498cBgt3Aoeba0AhEHRTDG3yosfN3HuvNaSZi5CsdNq2CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e/Jy9QZ8feGzgR/ndiUI1mIjd84VgVslpU35awyma48=;
+ b=tRkIe4NXzy80pjscOhHdku59/SAaDU4+a2ZSBkvcK8wSGLYvyuDnjb1DNh3XXuIfg4SyN6Cnn2AJgULKhtjqS2AHLnL/tdk57WZHnnIF2HFOtbDmggvSsG3srUe03WqaGUvo6LVtjPRLqbWqk8GuVl0403gyUeVXWD9DLhcpKYvmNHzBb+8C1ZWZQjFC37id2eU90qJig9WuzxXZZPWg582zErcmLqWuwV3IhZVCJ85YQlsvSHovLTcOiHKKnVMalsz2Nb+EO5HWnvYspeG0luacg90Dajd9jfi5ycF6CgqVKlgzTt2xjTJaAgAkYGHsoBsBk2ITMC/jPusQejzI9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e/Jy9QZ8feGzgR/ndiUI1mIjd84VgVslpU35awyma48=;
+ b=oPN+W0RKYR/Nje/qn9P92MROpN9NuiEmMpT9g4LGyPKNMRyOcznASHenCdbRUhwPvClqZbWMt2kCKb5+Q8V6HIbqMTZt0fkdaKBcCwnBYU5qW3zpRZorBACpFqSxcJvWMT+sF7+9ic963Rkv59cvEEaaM4RdqswBYLA5hM/tz5sLo1Yw0T5UydkLizFru8DPt4MJTJyhwAfodZ00vOMy3yRnYanBw15lzkdprzljoNPPRvA8yC2snhlYPYGzzZtwpQ/m8YSZ8ZGX49mBJI9AUndEF/cyzFroNrchdz4MDdpuzxIAuSArBoSFPrBEX+fs/ia75JlqRbUDGKuPeVoH2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM0PR04MB12143.eurprd04.prod.outlook.com (2603:10a6:20b:744::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Thu, 26 Feb
+ 2026 22:55:46 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
+ 22:55:46 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 0/3] media: v4l: async: add helper API
+ v4l2_async_pad_init_and_register_subdev()
+Date: Thu, 26 Feb 2026 17:55:25 -0500
+Message-Id: <20260226-v4l2_init_register-v2-0-902d7140f9fa@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF7PoGkC/32NXQrDIBCErxL2uRbdSPrz1HuUEETXZKE1QYOkB
+ O9emwP08RtmvtkhUWRKcG92iJQ58Rwq4KkBO5kwkmBXGVBiJ1FJkfULBw68DpFGTitFIalz0jj
+ rDSqowyWS5+2QPvvKU63N8XN8ZPVL/+qyElJcPenWX1yrb/4RtuVs5zf0pZQvbP5JCLIAAAA=
+X-Change-ID: 20260210-v4l2_init_register-0e6d0adcfa21
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Michael Riesch <michael.riesch@collabora.com>, 
+ Maxime Ripard <mripard@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772146544; l=1401;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=h3bgxDx1KYCdhCZqHlGkJAosnkpiZiR22kEzhAanjO8=;
+ b=vPgwEoz/Xmk3XWhgpOPX9hQeuCO2TIPZYsvPg8wi5voe/cVXQXhklv1NRnjn0l91m1sbguTWQ
+ 43777LR2ky6AIxgoSIPY/r7HnNxieRaVMn332v5XzuamSQAO5J+xe0q
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BYAPR03CA0025.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::38) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226-neutron-v1-5-46eccb3bb50a@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM0PR04MB12143:EE_
+X-MS-Office365-Filtering-Correlation-Id: 561304fd-a087-4fbd-0da1-08de758a2d89
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	RXJlL+zTRG44h+tra/Hsg7ZSKcE+A29HrfnViX6YLs7V/aImKjTTt2MmXY49pzmHyKvBi90Xon54k9wtkw14H4KyNAoUMJxo6m6emHjbu9RXUS8rUfW1oG0ULAJQhFoseHSh0qHYz3FKRdvw+GjxWgN3HnIdYe18L+2E6YRh6b17pJcYDcZkJrrlLCTs247jbPzJyvfOHPuJrYDcxwXzBRflaGj06xxjWMz/i0oEidfeBllHjhy9c0ccDlWa8gKFhZu8C+w2s44cmOuFxB393jJ2jtDMpoo67wq6j7/+DpWMdohstcLzznNOulxOyecdhWdUImucZiqTP/Wxj/l24fZuXS31zQiYpAqjn1DS06iI1myvQ4cyM8Wwz2ADXwwnDX9WgI7vh69BGy2a4zHlwM2rc72/psDfp0J9Yg8ZEj6jM7jE9sKZql4NQ7rID8xZYzFSE1CdcH1gGpsp8FgSJwjyUAktpt5NujBY6I+Dqpt+zryVYhCckocRMXlN5QD2w1Q84zQuI/clWPrpgT2Krki1WOaayrFzYhXAyYYrljIuvwzb8UU5pL2EAlsoFMMwphiQaEKZNfH+qGmFT18TqAS14r5hM3g2tPXnJL9Cxf/Fi0v9+6CrGvA83xntva4MRq0OB6uowSnRWRYqH4Qi3wJW0Y8NKbT09I1RINRhB16hsXbsKxPsTMtjFsQAAtSa2ryIO5KAQ2Z2JUBJpevkiSjprx2ngSoCq4lnytbpAVYU4Cy91iTktM1kqnx9y+sD
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?anVySHU1U0FuYXp4VVE2cUwrNk9XMnQ4T21qK2I4VlZyaG5raUp0Y3Ywd29h?=
+ =?utf-8?B?N2ZaOFhDcFV1VmpldlpVeGhkUWtGLzUraEdxK0ttWUFCbTdwZy8veW5LZU1D?=
+ =?utf-8?B?ZFp4V25mSHVQNFJIb2tZYmQvUU5CSFNxbkRaM09mbmw3RVNlNlZGSTl2Y05a?=
+ =?utf-8?B?cEdxSGZzMkhGa2xXWTF3emJEWUh1RVMrcUFWTzlCWWZOY0dqTENoZWxSTklj?=
+ =?utf-8?B?WXdReU83NUhRb2NEemRrQ0hvQUxYRnRZei9nNzdpNU1Rem5XcnY5Qis1UHdo?=
+ =?utf-8?B?bk5QQWV3dElBZ2NiV2ZTTnZ1Y1dyUWJ5UlpPM09nYmd1RlRIVlVhWmk0b2Jp?=
+ =?utf-8?B?TmFIandNOE1xN0FXZitudjJ4SFZPYlZBUVVGM3pBMENYQUh2d1I1UjlkK0Fp?=
+ =?utf-8?B?UVFZdTU2S21wNWxmSnRNcFFKelp4eEt0WFBMelE3R1ByOGlCVjNFVVFwdkNM?=
+ =?utf-8?B?RFdJMng2KzBMOUd6eXErVE5OeDl0VDBuZ1RNRlF4U2ZSeHlmN0V6a3lFcjF0?=
+ =?utf-8?B?ejNTL09tRlM0ck9DU0JCTCs4STRLUVNrMlAzMXdVSGUyU2hGOUsxYm9ESnhR?=
+ =?utf-8?B?aXREOHRwSjlvdCtNak5WM01qM1ZtbmJuRWlGRlR4R0lLYlY3V0pIdCtKbDFl?=
+ =?utf-8?B?SjN3MERZeDAya2RaNjh6d09lQ2ZzeG0rM21TOUJ1ZWg0WU9HN2dVdHpBRExn?=
+ =?utf-8?B?Wk5ta3hyZURJZXNuZjNESnladitJTFIzeHV1dVpXdnVibjNvdW5ENzFFOWU0?=
+ =?utf-8?B?T3piYUFmeHhCZkZlRzZSZnJtajdwMWZNR1ZORytsRExMR0VJNmdLeEpmM3Jj?=
+ =?utf-8?B?dmU2WjlydTZNcUtqT1BXODdISUxaQkh0N09iSXo1NjE3d1cyKzF0WnB5V012?=
+ =?utf-8?B?cjgreTVGSytvYTNkckFFc05IclIyV3YwYm5iZHg1RDVQL0Zrd0tXYzRSSUpu?=
+ =?utf-8?B?Vkd6clIyNVpVcGVobmxqWDhSeEI3U3p6cERaOWFkL0NKY2xjNi83L3d1eEVx?=
+ =?utf-8?B?TmNpSk9Ubm9CZENYN0xGcXdHSlJBemZvR3FvcmM5cmxaendLRHdEc1hEUy9E?=
+ =?utf-8?B?SnhYZElVYS8wdWgzc0JqdEh1NHQxT0d1ZTg2SUlzcy9UYjhmRTBoc080bnR6?=
+ =?utf-8?B?MWZRVk1qUDl1VlluUXZKTUlteC9qVWs1NUd3TmRwV2xnWHF2dHZRb2tIV1l6?=
+ =?utf-8?B?WjB1V1ZwaVh0cHFMZHJrak5wUXNyUUNQWllqSWhneU9uU01LbXB3bVByTUdi?=
+ =?utf-8?B?NGg2U0ZESndBcit3L25HVkJ4N0FTQWVKUS9aelhvZnZYaXhheVM2TDJKK0VI?=
+ =?utf-8?B?dnorZUs0Qjk4c1lOcVIyQkhaT09UUUs0T0FGVkJRRDhtM0M5eVVHckpIc1Y4?=
+ =?utf-8?B?czRDcHh5WmhwSTFTYXZXL3ZaVjQ5dkkvQ1IxNjl6QmEraG5jZTdqc0FTQ2JR?=
+ =?utf-8?B?M0VKbjZ1VnFKb0pBUXZoeHpqZyt5aFVQTGt0L3AzT0lhTVMyL3Z5SFJDckx0?=
+ =?utf-8?B?a2dXRnJxYWFMdlpmQlBIZHlCV0RpeHJKTXczSEVWa2h5MWIrQzNwRUxMUEQ1?=
+ =?utf-8?B?MDN6YjVnL2p1RmRjWXpiU3FlQjAzNEMzenNDN2ZWaWJWVmM5aFQ3UElHTVFU?=
+ =?utf-8?B?RVU3YzZVUzhWcXpORnB2WFFFZHR0SXRjYjRiUVNEamNqczNqc1BVSktmNWJz?=
+ =?utf-8?B?QWo2NDZLZGhCdExObDcyMTNObjV6MHJGWFAxdU5WdkpZWExTb2RXT2J1Rlhm?=
+ =?utf-8?B?c2RMYUZQODBTK1dMNEpKeDlvMUJ1U2QwOTRLakhZN0VwbEp3RzVmaVBsUUta?=
+ =?utf-8?B?SUpUZEhSSjlnYmpOV0FjckI1cmJFaEZ4TFdMRGxKTTNYS2hpOFBYWjVpWUlH?=
+ =?utf-8?B?bmZ0ZC84eDRtS1A0UStMU05EaHN6aWRDNG56RHorTEh1OExodzZlU254ZEQ0?=
+ =?utf-8?B?aGYxeS94dkVQSy95THFLQmJ4eFd6M2Q2aVhsdzB6V1BNUFo2Smw2dndITG8r?=
+ =?utf-8?B?T3lhL0pNUG5HUmdIbkVHUEtsa01PNmIrTWU4WFZ3eEk3R2RZazFMU1h2OGkw?=
+ =?utf-8?B?T3Q3UFZxbXdSUnJBOXNKM0hIdHk3Rm5yTmRINWhGek0vd28xVElpcUQ1V2ZR?=
+ =?utf-8?B?OERBZ1l0TWNhdlgwMzFUNmJIZ25YcUpvSUtxM1ROY3ZrY0Nkb2I0TCt4aVF5?=
+ =?utf-8?B?U21KbW9UK1ZEby9ySlY4Ulc2MHhHM2hwNUk4UUdLblpJOCt5eGxBVk1SZ0Fl?=
+ =?utf-8?B?WVVQTGg5MXNwa1Y4NDY0VkcyWkNaUTVlYmJDeEJiaHN3QUhMYUpJNVB0RHpD?=
+ =?utf-8?B?bG9PWE94NmcyU0FJQnkyc1hUY3dSbWcrTFhPc29JYy9Zb1lRS2dtQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 561304fd-a087-4fbd-0da1-08de758a2d89
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 22:55:46.5174
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rfFRjQwBpiBe2UM8r39I4lwNZxuIV1YMIDo3GfshsYQOQ6cAACD3jtuCwEkCWU4rYC7FL5uWF7VmtdUPJQqGxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12143
 
-Hi Ioana,
+Add the helper API v4l2_async_pad_init_and_register_subdev(), which
+combines media_entity_pads_init(), v4l2_subdev_init_finalize(), and
+v4l2_async_register_subdev() into a single call.
 
-kernel test robot noticed the following build warnings:
+Reduce code duplication and simplify error handling in drivers.
 
-[auto build test WARNING on 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f]
+Only change dwc and cdns. If agree add API, more driver can be simplified.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ioana-Ciocoi-Radulescu/drm-gem-dma-Add-flag-for-bidirectional-mapping-of-non-coherent-GEM-DMA-buffers/20260226-221222
-base:   6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-patch link:    https://lore.kernel.org/r/20260226-neutron-v1-5-46eccb3bb50a%40nxp.com
-patch subject: [PATCH 5/9] accel/neutron: Add GEM buffer object support
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20260227/202602270531.MP8x6wo3-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602270531.MP8x6wo3-lkp@intel.com/reproduce)
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+- Change API name to media_async_register_subdev()
+- pass down __v4l2_async_register_subdev() as argument to extend more
+support in future.
+- Link to v1: https://lore.kernel.org/r/20260210-v4l2_init_register-v1-0-8fe43f7d349f@nxp.com
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602270531.MP8x6wo3-lkp@intel.com/
+---
+Frank Li (3):
+      media: v4l: async: add helper API media_async_register_subdev()
+      media: synopsys: Use media_async_register_subdev() to simplify code
+      media: cadence: cdns-csi2rx: Use media_async_register_subdev() to simplify code
 
-All warnings (new ones prefixed by >>):
+ drivers/media/platform/cadence/cdns-csi2rx.c     | 17 +++---------
+ drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 13 +---------
+ drivers/media/v4l2-core/v4l2-async.c             | 33 ++++++++++++++++++++++++
+ include/media/v4l2-async.h                       | 22 ++++++++++++++++
+ 4 files changed, 59 insertions(+), 26 deletions(-)
+---
+base-commit: bc0bfce7d0f8204e0bbadcee72e87ad9ec105c73
+change-id: 20260210-v4l2_init_register-0e6d0adcfa21
 
->> drivers/accel/neutron/neutron_gem.c:52:6: warning: variable 'gem_obj' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-      52 |         if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/drm/drm_print.h:789:2: note: expanded from macro 'drm_WARN_ON'
-     789 |         drm_WARN((drm), (x), "%s",                                      \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     790 |                  "drm_WARN_ON(" __stringify(x) ")")
-         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/drm/drm_print.h:779:2: note: expanded from macro 'drm_WARN'
-     779 |         WARN(condition, "%s %s: [drm] " format,                         \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     780 |                         dev_driver_string(__drm_to_dev(drm)),           \
-         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     781 |                         dev_name(__drm_to_dev(drm)), ## arg)
-         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:163:36: note: expanded from macro 'WARN'
-     163 | #define WARN(condition, format...) ({                                   \
-         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     164 |         int __ret_warn_on = !!(condition);                              \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     165 |         if (unlikely(__ret_warn_on))                                    \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     166 |                 __WARN_printf(TAINT_WARN, format);                      \
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     167 |         unlikely(__ret_warn_on);                                        \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     168 | })
-         | ~~
-   drivers/accel/neutron/neutron_gem.c:67:21: note: uninitialized use occurs here
-      67 |         drm_gem_object_put(gem_obj);
-         |                            ^~~~~~~
-   drivers/accel/neutron/neutron_gem.c:52:2: note: remove the 'if' if its condition is always false
-      52 |         if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      53 |                 ret = -EFAULT;
-         |                 ~~~~~~~~~~~~~~
-      54 |                 goto out_put;
-         |                 ~~~~~~~~~~~~~
-      55 |         }
-         |         ~
-   drivers/accel/neutron/neutron_gem.c:38:32: note: initialize the variable 'gem_obj' to silence this warning
-      38 |         struct drm_gem_object *gem_obj;
-         |                                       ^
-         |                                        = NULL
-   1 warning generated.
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
-
-vim +52 drivers/accel/neutron/neutron_gem.c
-
-    33	
-    34	int neutron_ioctl_create_bo(struct drm_device *drm, void *data, struct drm_file *filp)
-    35	{
-    36		struct drm_neutron_create_bo *args = data;
-    37		struct drm_gem_dma_object *dma_obj;
-    38		struct drm_gem_object *gem_obj;
-    39		size_t size;
-    40		int ret;
-    41	
-    42		if (!args->size || args->pad)
-    43			return -EINVAL;
-    44	
-    45		size = ALIGN(args->size, NEUTRON_BO_ALIGN);
-    46	
-    47		dma_obj = drm_gem_dma_create(drm, size);
-    48		if (IS_ERR(dma_obj))
-    49			return PTR_ERR(dma_obj);
-    50	
-    51		/* We expect correctly aligned buffers, but double-check */
-  > 52		if (drm_WARN_ON(drm, !IS_ALIGNED(dma_obj->dma_addr, NEUTRON_BO_ALIGN))) {
-    53			ret = -EFAULT;
-    54			goto out_put;
-    55		}
-    56	
-    57		gem_obj = &dma_obj->base;
-    58		ret = drm_gem_handle_create(filp, gem_obj, &args->handle);
-    59		if (ret)
-    60			goto out_put;
-    61	
-    62		args->map_offset = drm_vma_node_offset_addr(&gem_obj->vma_node);
-    63		args->size = gem_obj->size;
-    64	
-    65	out_put:
-    66		/* No need to keep a reference of the GEM object. Freeing is handled by user */
-    67		drm_gem_object_put(gem_obj);
-    68	
-    69		return ret;
-    70	}
-    71	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
