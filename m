@@ -1,31 +1,31 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3304C36C5A1
-	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D4B36E466
+	for <imx@lists.linux.dev>; Thu, 26 Feb 2026 13:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772113270; cv=none; b=b5tZ4fOAWu2fWolF4QnXVuuP58kA+FHrYn+F5AulPA+GCzF1UXmLmCukWCXErE/aa2YBolG6mF9G0EGSmx3gDl4tJrP/4dn9WuGhuwnVl5qxFqLCqCepgIRUQNlIfaCwB2PIMFlbf96FD8sh7If9djTPICKgoYz7BzlGFRBR7a4=
+	t=1772113271; cv=none; b=As1QW9uK2Ju3XAHSlGSDv7Hebf0fYe9Nc/siYzZERcCmccHK0E49yReenbxnGVgeunsd9QdZB998iJw7CbJ++13CpuHDK0mviYffkrnlTj8TFku3Y7YrPOiUVGNBXpALwkVo7XqVMGg8bC5yOiPuqIt1t8cAX58/F+3sZFILLaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772113270; c=relaxed/simple;
-	bh=h3bWVlktlUdQ/pRmPzjGCjqsU3sTnai48N2RHMkisd0=;
+	s=arc-20240116; t=1772113271; c=relaxed/simple;
+	bh=4tUFBDNFe36c+mcDJ/TUmnKANKlcvCmSziTeWU5kAHY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Kq/sIBPBULSbj2/jqXpfbl9NbDV7Z+jH51yPG4miMX0ReVt0ASPP/OjufUQN0ou27BLwRbDR6JRCcdn5iguaTNfaBMX7gtb+YPmWQqrujYWp1l22SRIGKRWZr2jFgi1tH9PjGUpSZIkB5vXeFZ4Ul9Jw/DkiN/WAsL64F3VwE24=
+	 In-Reply-To:To:Cc; b=RNz53Bn1vnp6sZsN6OS+P51wnqD4RGOWRY+slr/VCj6AgPBOfA2stdcOeAGD/T4KCRLHigto9pARmSWmCjXDe+6ENEl8rJ1w3Jvoaa9gP7pth6Va+Z02PHbddhWTy8jIvmB9+hNiqx+hxWu/eiZ2FOM+KYcXiVH5kJl3UNpN2TM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B3AD1201533;
-	Thu, 26 Feb 2026 14:41:05 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DCC8620151F;
+	Thu, 26 Feb 2026 14:41:07 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A3E2920152C;
-	Thu, 26 Feb 2026 14:41:05 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CD44920153B;
+	Thu, 26 Feb 2026 14:41:07 +0100 (CET)
 Received: from lsv15149.swis.ro-buh01.nxp.com (lsv15149.swis.ro-buh01.nxp.com [10.162.246.145])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id EBF352035B;
-	Thu, 26 Feb 2026 14:41:03 +0100 (CET)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 22DA22035B;
+	Thu, 26 Feb 2026 14:41:06 +0100 (CET)
 From: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Date: Thu, 26 Feb 2026 15:40:46 +0200
-Subject: [PATCH 7/9] accel/neutron: Add job submission IOCTL
+Date: Thu, 26 Feb 2026 15:40:48 +0200
+Subject: [PATCH 9/9] arm64: dts: imx95: Add Neutron node
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -34,7 +34,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-neutron-v1-7-46eccb3bb50a@nxp.com>
+Message-Id: <20260226-neutron-v1-9-46eccb3bb50a@nxp.com>
 References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
 In-Reply-To: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
 To: Oded Gabbay <ogabbay@kernel.org>, 
@@ -52,741 +52,70 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>, 
  Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772113256; l=20473;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772113256; l=1689;
  i=ruxandra.radulescu@nxp.com; s=20260204; h=from:subject:message-id;
- bh=h3bWVlktlUdQ/pRmPzjGCjqsU3sTnai48N2RHMkisd0=;
- b=pGoxDwycOetg2D7F9EEoF6cV0+sW+I3yqE9OYiCuxd3DtjkFlXNtebwVsGpi+MH+kjOBmUgeM
- IIoxg4rfRRsDR2iNSL6RXptE0copl5tFePqG2atiPRAzURyLoQWWz3Q
+ bh=4tUFBDNFe36c+mcDJ/TUmnKANKlcvCmSziTeWU5kAHY=;
+ b=i4gdK2fWXKlkKm+telHbxNq04X/A+NXwzbBH9AwpDRh87tKHmqQ+L+rNqeCY6UkJFgGxmeDUF
+ +rSE8KSbNgBBucn0Qom0GzJhb2QD3OLVA/acP8Se/lmSVTQOpR/ywtv
 X-Developer-Key: i=ruxandra.radulescu@nxp.com; a=ed25519;
  pk=zoq4b4OYR0c4faAH97xoTxdr6vfR8OvPbS+Cx0XhIBY=
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-Neutron can execute a single job at a time. For now, only inference
-jobs are supported. Each job has exactly one BO associated with it.
-
-When submitting a job, user also provides a syncobj handle on which it
-will wait for job completion.
-
-We use the DRM GPU scheduler for job management. Large part of the job
-submission code is based on the example of the ethosu driver.
+Add the node for Neutron NPU. Also add a reserved memory region
+for allocating Neutron buffers, which have a 1MB alignment
+constraint.
 
 Signed-off-by: Jiwei Fu <jiwei.fu@nxp.com>
 Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 ---
- drivers/accel/neutron/Makefile         |   1 +
- drivers/accel/neutron/neutron_device.c |   8 +-
- drivers/accel/neutron/neutron_device.h |  21 ++
- drivers/accel/neutron/neutron_driver.c |  28 ++-
- drivers/accel/neutron/neutron_driver.h |   3 +
- drivers/accel/neutron/neutron_job.c    | 367 +++++++++++++++++++++++++++++++++
- drivers/accel/neutron/neutron_job.h    |  45 ++++
- include/uapi/drm/neutron_accel.h       |  51 +++++
- 8 files changed, 519 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx95.dtsi | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
-index 192ed896a9f9..ac6dd576521c 100644
---- a/drivers/accel/neutron/Makefile
-+++ b/drivers/accel/neutron/Makefile
-@@ -6,4 +6,5 @@ neutron-y := \
- 	neutron_driver.o \
- 	neutron_device.o \
- 	neutron_gem.o \
-+	neutron_job.o \
- 	neutron_mailbox.o
-diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
-index e5c09105be99..571ec906ad72 100644
---- a/drivers/accel/neutron/neutron_device.c
-+++ b/drivers/accel/neutron/neutron_device.c
-@@ -7,6 +7,7 @@
- #include <linux/iopoll.h>
+diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+index 55e2da094c88..7a41bb50d650 100644
+--- a/arch/arm64/boot/dts/freescale/imx95.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+@@ -336,6 +336,19 @@ sram1: sram@204c0000 {
+ 		#size-cells = <1>;
+ 	};
  
- #include "neutron_device.h"
-+#include "neutron_job.h"
- #include "neutron_mailbox.h"
- 
- void neutron_enable_irq(struct neutron_device *ndev)
-@@ -32,9 +33,14 @@ void neutron_handle_irq(struct neutron_device *ndev)
- 	/* Write 1 to clear */
- 	writel_relaxed(appstatus & APPSTATUS_CLEAR_MASK, NEUTRON_REG(ndev, APPSTATUS));
- 
--	if (appstatus & APPSTATUS_FAULTCAUSE_MASK)
-+	if (appstatus & APPSTATUS_FAULTCAUSE_MASK) {
- 		dev_err(ndev->dev, "Neutron halted due to fault: 0x%lx\n",
- 			FIELD_GET(APPSTATUS_FAULTCAUSE_MASK, appstatus));
-+		return neutron_job_err_handler(ndev);
-+	}
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
 +
-+	if (appstatus & APPSTATUS_INFDONE)
-+		neutron_job_done_handler(ndev);
- }
- 
- #define neutron_boot_done(appctrl) \
-diff --git a/drivers/accel/neutron/neutron_device.h b/drivers/accel/neutron/neutron_device.h
-index 8e4df7462d82..0ed72965774d 100644
---- a/drivers/accel/neutron/neutron_device.h
-+++ b/drivers/accel/neutron/neutron_device.h
-@@ -9,8 +9,10 @@
- #include <linux/spinlock.h>
- #include <linux/bits.h>
- #include <drm/drm_device.h>
-+#include <drm/gpu_scheduler.h>
- 
- struct clk_bulk_data;
-+struct neutron_job;
- 
- #define NEUTRON_FIRMWARE_NAME		"NeutronFirmware.elf"
- 
-@@ -92,6 +94,13 @@ enum neutron_mem_id {
-  * @clks: Neutron clocks
-  * @num_clks: Number of clocks
-  * @flags: Software flags used by driver
-+ * @fence_lock: DMA fence lock
-+ * @sched: GPU scheduler
-+ * @sched_lock: Scheduler lock, for neutron_push_job
-+ * @fence_context: Fence context
-+ * @job_seqno: Job sequence number
-+ * @job_lock: Job lock, for active_job handling
-+ * @active_job: Currently active job
-  */
- struct neutron_device {
- 	struct drm_device base;
-@@ -103,6 +112,18 @@ struct neutron_device {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
- 	u32 flags;
-+
-+	/* For dma_fence */
-+	spinlock_t fence_lock;
-+	struct drm_gpu_scheduler sched;
-+	/* For neutron_push_job */
-+	struct mutex sched_lock;
-+	u64 fence_context;
-+	u64 job_seqno;
-+
-+	/* For active_job handling */
-+	struct mutex job_lock;
-+	struct neutron_job *active_job;
- };
- 
- #define to_neutron_device(drm) \
-diff --git a/drivers/accel/neutron/neutron_driver.c b/drivers/accel/neutron/neutron_driver.c
-index c9a18bf52037..ceae1f7e8359 100644
---- a/drivers/accel/neutron/neutron_driver.c
-+++ b/drivers/accel/neutron/neutron_driver.c
-@@ -19,40 +19,53 @@
- #include "neutron_device.h"
- #include "neutron_driver.h"
- #include "neutron_gem.h"
-+#include "neutron_job.h"
- 
- #define NEUTRON_SUSPEND_DELAY_MS 1000
- 
- static const struct drm_ioctl_desc neutron_drm_ioctls[] = {
- 	DRM_IOCTL_DEF_DRV(NEUTRON_CREATE_BO, neutron_ioctl_create_bo, 0),
- 	DRM_IOCTL_DEF_DRV(NEUTRON_SYNC_BO, neutron_ioctl_sync_bo, 0),
-+	DRM_IOCTL_DEF_DRV(NEUTRON_SUBMIT_JOB, neutron_ioctl_submit_job, 0),
- };
- 
- static int neutron_open(struct drm_device *drm, struct drm_file *file)
- {
- 	struct neutron_device *ndev = to_neutron_device(drm);
- 	struct neutron_file_priv *npriv;
-+	int ret;
- 
- 	npriv = kzalloc_obj(*npriv);
- 	if (!npriv)
- 		return -ENOMEM;
- 
- 	npriv->ndev = ndev;
--	file->driver_priv = npriv;
- 
-+	ret = neutron_job_open(npriv);
-+	if (ret)
-+		goto err_free;
-+
-+	file->driver_priv = npriv;
- 	return 0;
-+
-+err_free:
-+	kfree(npriv);
-+	return ret;
- }
- 
- static void neutron_postclose(struct drm_device *drm, struct drm_file *file)
- {
- 	struct neutron_file_priv *npriv = file->driver_priv;
- 
-+	neutron_job_close(npriv);
- 	kfree(npriv);
- }
- 
- DEFINE_DRM_ACCEL_FOPS(neutron_drm_driver_fops);
- 
- static const struct drm_driver neutron_drm_driver = {
--	.driver_features	= DRIVER_COMPUTE_ACCEL | DRIVER_GEM,
-+	.driver_features	= DRIVER_COMPUTE_ACCEL | DRIVER_GEM |
-+				  DRIVER_SYNCOBJ,
- 	.name			= "neutron",
- 	.desc			= "NXP Neutron driver",
- 	.major			= 1,
-@@ -151,19 +164,25 @@ static int neutron_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ret = devm_pm_runtime_enable(dev);
-+	ret = neutron_job_init(ndev);
- 	if (ret)
- 		goto free_reserved;
- 
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		goto free_job;
-+
- 	pm_runtime_set_autosuspend_delay(dev, NEUTRON_SUSPEND_DELAY_MS);
- 	pm_runtime_use_autosuspend(dev);
- 
- 	ret = drm_dev_register(&ndev->base, 0);
- 	if (ret)
--		goto free_reserved;
-+		goto free_job;
- 
- 	return 0;
- 
-+free_job:
-+	neutron_job_fini(ndev);
- free_reserved:
- 	of_reserved_mem_device_release(&pdev->dev);
- 
-@@ -175,6 +194,7 @@ static void neutron_remove(struct platform_device *pdev)
- 	struct neutron_device *ndev = platform_get_drvdata(pdev);
- 
- 	drm_dev_unregister(&ndev->base);
-+	neutron_job_fini(ndev);
- 	of_reserved_mem_device_release(&pdev->dev);
- }
- 
-diff --git a/drivers/accel/neutron/neutron_driver.h b/drivers/accel/neutron/neutron_driver.h
-index cd52b5eb2d27..b709de74105a 100644
---- a/drivers/accel/neutron/neutron_driver.h
-+++ b/drivers/accel/neutron/neutron_driver.h
-@@ -4,10 +4,13 @@
- #ifndef __NEUTRON_DRIVER_H__
- #define __NEUTRON_DRIVER_H__
- 
-+#include <drm/gpu_scheduler.h>
-+
- struct neutron_device;
- 
- struct neutron_file_priv {
- 	struct neutron_device *ndev;
-+	struct drm_sched_entity sched_entity;
- };
- 
- #endif /* __NEUTRON_DRIVER_H__ */
-diff --git a/drivers/accel/neutron/neutron_job.c b/drivers/accel/neutron/neutron_job.c
-new file mode 100644
-index 000000000000..316e361166a2
---- /dev/null
-+++ b/drivers/accel/neutron/neutron_job.c
-@@ -0,0 +1,367 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright 2025-2026 NXP */
-+
-+#include <linux/delay.h>
-+#include <linux/pm_runtime.h>
-+#include <drm/drm_file.h>
-+#include <drm/drm_print.h>
-+#include <drm/drm_gem_dma_helper.h>
-+#include <drm/neutron_accel.h>
-+
-+#include "neutron_driver.h"
-+#include "neutron_device.h"
-+#include "neutron_gem.h"
-+#include "neutron_mailbox.h"
-+#include "neutron_job.h"
-+
-+#define NEUTRON_JOB_TIMEOUT_MS 5000
-+
-+static const char *neutron_fence_get_driver_name(struct dma_fence *fence)
-+{
-+	return "neutron";
-+}
-+
-+static const char *neutron_fence_get_timeline_name(struct dma_fence *fence)
-+{
-+	return "neutron-npu";
-+}
-+
-+static const struct dma_fence_ops neutron_fence_ops = {
-+	.get_driver_name = neutron_fence_get_driver_name,
-+	.get_timeline_name = neutron_fence_get_timeline_name,
-+};
-+
-+static void neutron_hw_submit(struct neutron_job *job)
-+{
-+	struct neutron_device *ndev = job->ndev;
-+	struct neutron_mbox_cmd cmd = {0};
-+	u32 base_l, base_h;
-+	u64 base_addr;
-+	int ret;
-+
-+	switch (job->type) {
-+	case DRM_NEUTRON_JOB_INFERENCE:
-+		cmd.id = NEUTRON_CMD_INFERENCE;
-+		cmd.args[0] = job->inference.tensor_offset;
-+		cmd.args[1] = job->inference.microcode_offset;
-+		cmd.args[2] = job->inference.tensor_count;
-+		break;
-+	default:
-+		dev_WARN(ndev->dev, "Unknown job type: %d\n", job->type);
-+		return;
-+	}
-+
-+	base_addr = to_drm_gem_dma_obj(job->bo)->dma_addr;
-+	base_l = lower_32_bits(base_addr);
-+	base_h = upper_32_bits(base_addr);
-+
-+	writel_relaxed(base_l, NEUTRON_REG(ndev, BASEDDRL));
-+	writel_relaxed(base_l, NEUTRON_REG(ndev, BASEINOUTL));
-+	writel_relaxed(base_l, NEUTRON_REG(ndev, BASESPILLL));
-+	writel_relaxed(base_h, NEUTRON_REG(ndev, BASEDDRH));
-+	writel_relaxed(base_h, NEUTRON_REG(ndev, BASEINOUTH));
-+	writel_relaxed(base_h, NEUTRON_REG(ndev, BASESPILLH));
-+
-+	ret = neutron_mbox_send_cmd(ndev, &cmd);
-+	if (ret) {
-+		/* Nothing we can do here, we'll reset the device on timeout */
-+		dev_err(ndev->dev, "Failed to submit job, device is busy\n");
-+	}
-+}
-+
-+void neutron_job_err_handler(struct neutron_device *ndev)
-+{
-+	guard(mutex)(&ndev->job_lock);
-+
-+	if (ndev->active_job)
-+		drm_sched_fault(&ndev->sched);
-+}
-+
-+void neutron_job_done_handler(struct neutron_device *ndev)
-+{
-+	struct neutron_mbox_state state;
-+
-+	neutron_mbox_read_state(ndev, &state);
-+	if (state.status != NEUTRON_FW_STATUS_DONE) {
-+		dev_err(ndev->dev, "Inconsistent firmware state: status 0x%x, err 0x%x\n",
-+			state.status, state.err_code);
-+		return neutron_job_err_handler(ndev);
-+	}
-+
-+	if (state.err_code != 0)
-+		dev_warn(ndev->dev, "Job finished with error: 0x%x\n",
-+			 state.err_code);
-+
-+	/* Reset Neutron internal state to prepare for next inference */
-+	neutron_mbox_reset_state(ndev);
-+
-+	scoped_guard(mutex, &ndev->job_lock) {
-+		if (ndev->active_job) {
-+			dma_fence_signal(ndev->active_job->neutron_fence);
-+			ndev->active_job = NULL;
-+		}
-+	}
-+}
-+
-+static void neutron_cleanup_job(struct kref *ref)
-+{
-+	struct neutron_job *job = container_of(ref, struct neutron_job, refcnt);
-+
-+	pm_runtime_put_autosuspend(job->ndev->base.dev);
-+
-+	dma_fence_put(job->neutron_fence);
-+	dma_fence_put(job->sched_fence);
-+	drm_gem_object_put(job->bo);
-+	drm_syncobj_put(job->syncobj);
-+
-+	kfree(job);
-+}
-+
-+static void neutron_put_job(struct neutron_job *job)
-+{
-+	kref_put(&job->refcnt, neutron_cleanup_job);
-+}
-+
-+static void neutron_free_job(struct drm_sched_job *sched_job)
-+{
-+	struct neutron_job *job = to_neutron_job(sched_job);
-+
-+	drm_sched_job_cleanup(sched_job);
-+	neutron_put_job(job);
-+}
-+
-+static struct dma_fence *neutron_run_job(struct drm_sched_job *sched_job)
-+{
-+	struct neutron_job *job = to_neutron_job(sched_job);
-+	struct dma_fence *fence = job->neutron_fence;
-+	struct neutron_device *ndev = job->ndev;
-+
-+	if (unlikely(job->base.s_fence->finished.error))
-+		return NULL;
-+
-+	dma_fence_init(fence, &neutron_fence_ops, &ndev->fence_lock,
-+		       ndev->fence_context, ++ndev->job_seqno);
-+	dma_fence_get(fence);
-+
-+	scoped_guard(mutex, &ndev->job_lock) {
-+		ndev->active_job = job;
-+		neutron_hw_submit(job);
-+	}
-+
-+	return fence;
-+}
-+
-+static enum drm_gpu_sched_stat neutron_timedout_job(struct drm_sched_job *sched_job)
-+{
-+	struct neutron_job *job = to_neutron_job(sched_job);
-+	struct neutron_device *ndev = job->ndev;
-+	struct neutron_mbox_state state;
-+
-+	/* We assume Neutron is stuck, retrieve current state and reset */
-+	neutron_mbox_read_state(ndev, &state);
-+	dev_err(ndev->dev, "Neutron timedout, status: 0x%x, err: 0x%x\n",
-+		state.status, state.err_code);
-+
-+	drm_sched_stop(&ndev->sched, sched_job);
-+
-+	scoped_guard(mutex, &ndev->job_lock)
-+		ndev->active_job = NULL;
-+
-+	pm_runtime_force_suspend(ndev->dev);
-+	pm_runtime_force_resume(ndev->dev);
-+
-+	drm_sched_start(&ndev->sched, 0);
-+
-+	return DRM_GPU_SCHED_STAT_RESET;
-+}
-+
-+static void neutron_cancel_job(struct drm_sched_job *sched_job)
-+{
-+	struct neutron_job *job = to_neutron_job(sched_job);
-+	struct neutron_device *ndev = job->ndev;
-+
-+	guard(mutex)(&ndev->job_lock);
-+
-+	if (!dma_fence_is_signaled(job->neutron_fence)) {
-+		dma_fence_set_error(job->neutron_fence, -ECANCELED);
-+		dma_fence_signal(job->neutron_fence);
-+	}
-+}
-+
-+static const struct drm_sched_backend_ops neutron_sched_ops = {
-+	.run_job = neutron_run_job,
-+	.free_job = neutron_free_job,
-+	.timedout_job = neutron_timedout_job,
-+	.cancel_job = neutron_cancel_job,
-+};
-+
-+int neutron_job_init(struct neutron_device *ndev)
-+{
-+	const struct drm_sched_init_args args = {
-+		.ops = &neutron_sched_ops,
-+		.num_rqs = DRM_SCHED_PRIORITY_COUNT,
-+		.credit_limit = 1,
-+		.timeout = msecs_to_jiffies(NEUTRON_JOB_TIMEOUT_MS),
-+		.name = dev_name(ndev->dev),
-+		.dev = ndev->dev,
++		neutron_pool: neutron-pool {
++			compatible = "shared-dma-pool";
++			size = <0x0 0x8000000>;
++			alignment = <0x0 0x100000>;
++			reusable;
++		};
 +	};
-+	int ret;
 +
-+	ret = devm_mutex_init(ndev->dev, &ndev->sched_lock);
-+	if (ret)
-+		return ret;
-+	ret = devm_mutex_init(ndev->dev, &ndev->job_lock);
-+	if (ret)
-+		return ret;
-+	spin_lock_init(&ndev->fence_lock);
+ 	firmware {
+ 		scmi {
+ 			compatible = "arm,scmi";
+@@ -2181,5 +2194,20 @@ ddr-pmu@4e090dc0 {
+ 			reg = <0x0 0x4e090dc0 0x0 0x200>;
+ 			interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
 +
-+	ndev->fence_context = dma_fence_context_alloc(1);
-+
-+	ret = drm_sched_init(&ndev->sched, &args);
-+	if (ret)
-+		dev_err(ndev->dev, "Error creating DRM scheduler\n");
-+
-+	return ret;
-+}
-+
-+void neutron_job_fini(struct neutron_device *ndev)
-+{
-+	drm_sched_fini(&ndev->sched);
-+}
-+
-+int neutron_job_open(struct neutron_file_priv *npriv)
-+{
-+	struct neutron_device *ndev = npriv->ndev;
-+	struct drm_gpu_scheduler *sched = &ndev->sched;
-+	int ret;
-+
-+	ret = drm_sched_entity_init(&npriv->sched_entity,
-+				    DRM_SCHED_PRIORITY_NORMAL,
-+				    &sched, 1, NULL);
-+	if (ret)
-+		dev_err(ndev->dev, "Error creating scheduler entity\n");
-+
-+	return ret;
-+}
-+
-+void neutron_job_close(struct neutron_file_priv *npriv)
-+{
-+	drm_sched_entity_destroy(&npriv->sched_entity);
-+}
-+
-+static int neutron_push_job(struct neutron_job *job)
-+{
-+	struct neutron_device *ndev = job->ndev;
-+	struct ww_acquire_ctx acquire_ctx;
-+	int ret;
-+
-+	ret = drm_gem_lock_reservations(&job->bo, 1, &acquire_ctx);
-+	if (ret)
-+		return ret;
-+
-+	ret = dma_resv_reserve_fences(job->bo->resv, 1);
-+	if (ret)
-+		goto out_unlock_res;
-+
-+	ret = drm_sched_job_add_implicit_dependencies(&job->base, job->bo, true);
-+	if (ret)
-+		goto out_unlock_res;
-+
-+	ret = pm_runtime_resume_and_get(ndev->base.dev);
-+	if (ret)
-+		goto out_unlock_res;
-+
-+	scoped_guard(mutex, &ndev->sched_lock) {
-+		drm_sched_job_arm(&job->base);
-+
-+		job->sched_fence = dma_fence_get(&job->base.s_fence->finished);
-+		drm_syncobj_replace_fence(job->syncobj, job->sched_fence);
-+
-+		kref_get(&job->refcnt);
-+		drm_sched_entity_push_job(&job->base);
-+
-+		dma_resv_add_fence(job->bo->resv, job->sched_fence,
-+				   DMA_RESV_USAGE_WRITE);
-+	}
-+
-+out_unlock_res:
-+	drm_gem_unlock_reservations(&job->bo, 1, &acquire_ctx);
-+
-+	return ret;
-+}
-+
-+int neutron_ioctl_submit_job(struct drm_device *drm, void *data, struct drm_file *filp)
-+{
-+	struct neutron_device *ndev = to_neutron_device(drm);
-+	struct neutron_file_priv *npriv = filp->driver_priv;
-+	struct drm_neutron_submit_job *args = data;
-+	struct neutron_job *job;
-+	int ret;
-+
-+	if (args->pad)
-+		return -EINVAL;
-+
-+	job = kzalloc_obj(*job);
-+	if (!job)
-+		return -ENOMEM;
-+
-+	job->ndev = ndev;
-+	kref_init(&job->refcnt);
-+
-+	job->neutron_fence = kzalloc_obj(*job->neutron_fence);
-+	if (!job->neutron_fence) {
-+		ret = -ENOMEM;
-+		goto out_free_job;
-+	}
-+
-+	switch (args->type) {
-+	case DRM_NEUTRON_JOB_INFERENCE:
-+		memcpy(&job->inference, &args->inference,
-+		       sizeof(args->inference));
-+		break;
-+	default:
-+		dev_dbg(ndev->dev, "Invalid job type %d\n", args->type);
-+		ret = -EINVAL;
-+		goto out_free_fence;
-+	}
-+
-+	job->bo = drm_gem_object_lookup(filp, args->bo_handle);
-+	if (!job->bo) {
-+		dev_dbg(ndev->dev, "Invalid BO handle\n");
-+		ret = -ENOENT;
-+		goto out_free_fence;
-+	}
-+
-+	job->syncobj = drm_syncobj_find(filp, args->syncobj_handle);
-+	if (!job->syncobj) {
-+		dev_dbg(ndev->dev, "Invalid syncobj handle\n");
-+		ret = -ENOENT;
-+		goto out_put_gem;
-+	}
-+
-+	ret = drm_sched_job_init(&job->base, &npriv->sched_entity, 1, NULL,
-+				 filp->client_id);
-+	if (ret)
-+		goto out_put_syncobj;
-+
-+	ret = neutron_push_job(job);
-+	if (ret)
-+		goto out_sched_cleanup;
-+
-+	neutron_put_job(job);
-+
-+	return 0;
-+
-+out_sched_cleanup:
-+	drm_sched_job_cleanup(&job->base);
-+out_put_syncobj:
-+	drm_syncobj_put(job->syncobj);
-+out_put_gem:
-+	drm_gem_object_put(job->bo);
-+out_free_fence:
-+	kfree(job->neutron_fence);
-+out_free_job:
-+	kfree(job);
-+
-+	return ret;
-+}
-diff --git a/drivers/accel/neutron/neutron_job.h b/drivers/accel/neutron/neutron_job.h
-new file mode 100644
-index 000000000000..bb7773aeb218
---- /dev/null
-+++ b/drivers/accel/neutron/neutron_job.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright 2025-2026 NXP */
-+
-+#ifndef __NEUTRON_JOB_H__
-+#define __NEUTRON_JOB_H__
-+
-+#include <linux/kref.h>
-+#include <drm/drm_gem.h>
-+#include <drm/drm_syncobj.h>
-+#include <drm/gpu_scheduler.h>
-+#include <drm/neutron_accel.h>
-+
-+#include "neutron_driver.h"
-+
-+struct neutron_device;
-+struct neutron_file_priv;
-+
-+struct neutron_job {
-+	struct drm_sched_job base;
-+	struct neutron_device *ndev;
-+	struct dma_fence *neutron_fence;
-+	struct dma_fence *sched_fence;
-+	struct drm_syncobj *syncobj;
-+	struct drm_gem_object *bo;
-+	enum drm_neutron_job_type type;
-+	union {
-+		struct drm_neutron_inference_job inference;
-+	};
-+	struct kref refcnt;
-+};
-+
-+#define to_neutron_job(job) \
-+	container_of(job, struct neutron_job, base)
-+
-+int neutron_job_init(struct neutron_device *dev);
-+void neutron_job_fini(struct neutron_device *dev);
-+int neutron_job_open(struct neutron_file_priv *npriv);
-+void neutron_job_close(struct neutron_file_priv *npriv);
-+
-+void neutron_job_done_handler(struct neutron_device *dev);
-+void neutron_job_err_handler(struct neutron_device *dev);
-+
-+int neutron_ioctl_submit_job(struct drm_device *dev, void *data, struct drm_file *filp);
-+
-+#endif /* __NEUTRON_JOB_H__ */
-diff --git a/include/uapi/drm/neutron_accel.h b/include/uapi/drm/neutron_accel.h
-index 2f5639f2e0e8..a9e5682709d2 100644
---- a/include/uapi/drm/neutron_accel.h
-+++ b/include/uapi/drm/neutron_accel.h
-@@ -15,10 +15,12 @@ extern "C" {
-  *
-  * @DRM_NEUTRON_CREATE_BO: Create a buffer object
-  * @DRM_NEUTRON_SYNC_BO: Sync (parts of) the buffer object memory
-+ * @DRM_NEUTRON_SUBMIT_JOB: Submit a job to the device
-  */
- enum drm_neutron_ioctl {
- 	DRM_NEUTRON_CREATE_BO = 0,
- 	DRM_NEUTRON_SYNC_BO,
-+	DRM_NEUTRON_SUBMIT_JOB,
++		neutron: neutron@4ab00000 {
++			compatible = "nxp,imx95-neutron";
++			reg = <0x0 0x4ab00000 0x0 0x00000400>,
++			      <0x0 0x4ab10000 0x0 0x00010000>,
++			      <0x0 0x4ab08000 0x0 0x00008000>;
++			reg-names = "regs", "itcm", "dtcm";
++			memory-region = <&neutron_pool>;
++			interrupts = <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&scmi_clk IMX95_CLK_NPU>,
++				 <&scmi_clk IMX95_CLK_NPUAPB>;
++			clock-names = "npu", "npu_apb";
++			power-domains = <&scmi_devpd IMX95_PD_NPU>;
++			iommus = <&smmu 0xd>;
++		};
+ 	};
  };
- 
- /**
-@@ -64,6 +66,51 @@ struct drm_neutron_sync_bo {
- 	__u64 offset;
- };
- 
-+/**
-+ * enum drm_neutron_job_type - Type of job to submit to Neutron device
-+ *
-+ * @DRM_NEUTRON_JOB_INFERENCE: Inference job
-+ */
-+enum drm_neutron_job_type {
-+	DRM_NEUTRON_JOB_INFERENCE = 0,
-+};
-+
-+/**
-+ * struct drm_neutron_inference_job - Inference job descriptor
-+ *
-+ * @tensor_offset: Offset of tensor array inside job BO
-+ * @microcode_offset: Microcode offset inside BO
-+ * @tensor_count: Number of valid tensors
-+ * @pad: MBZ
-+ */
-+struct drm_neutron_inference_job {
-+	__u32 tensor_offset;
-+	__u32 microcode_offset;
-+	__u32 tensor_count;
-+	__u32 pad[5];
-+};
-+
-+/**
-+ * struct drm_neutron_submit_job - Submit a job to Neutron device
-+ *
-+ * @type: Job type, one of enum drm_neutron_job_type
-+ * @bo_handle: BO handle for this job
-+ * @inference: Inference job descriptor (when type is DRM_NEUTRON_JOB_INFERENCE)
-+ * @reserved: Reserved for future job types
-+ * @syncobj_handle: Handle of syncobj on which user waits for job completion
-+ * @pad: MBZ
-+ */
-+struct drm_neutron_submit_job {
-+	__u32 type;
-+	__u32 bo_handle;
-+	union {
-+		struct drm_neutron_inference_job inference;
-+		__u32 reserved[8];
-+	};
-+	__u32 syncobj_handle;
-+	__u32 pad;
-+};
-+
- #define DRM_IOCTL_NEUTRON_CREATE_BO \
- 	DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_CREATE_BO, \
- 		 struct drm_neutron_create_bo)
-@@ -72,6 +119,10 @@ struct drm_neutron_sync_bo {
- 	DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SYNC_BO, \
- 		 struct drm_neutron_sync_bo)
- 
-+#define DRM_IOCTL_NEUTRON_SUBMIT_JOB \
-+	DRM_IOWR(DRM_COMMAND_BASE + DRM_NEUTRON_SUBMIT_JOB, \
-+		 struct drm_neutron_submit_job)
-+
- #if defined(__cplusplus)
- }
- #endif
 
 -- 
 2.34.1
