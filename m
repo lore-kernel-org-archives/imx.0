@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE88396D06;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CDC396D24;
 	Thu, 26 Feb 2026 08:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772096055; cv=none; b=fCjvghcmu/11FM7uX3GUPG5TGMD6fpk/fkynFihsz2TLkvIjtJW8V9oLsrjdgA4R3fJE/Yu5zdzd7UPHTx5+jzFGCepcm6fOScYRWFJyaqcsobtMR+ykIDONHO4AiReBncmiKczdY0uZpc5AFGtp5Jvr8JM6Bj/S8ENCzduxCXk=
+	t=1772096055; cv=none; b=h8mRVIoxMgNszY6rqKVJjm7Rd2m1G/JWvW+v6TnQl76ynSjIMwyya+I7YJv/R2laO3xY4OaLu1adX7oo/LVJa8k7bTCh6soWX61NIOpnSc88x4bEwJUyEIZstVAzYuEsEeh850SAIhPY+s1+LxyJ929H162FYxVA/7xJlS0Ajbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772096055; c=relaxed/simple;
-	bh=Q9V6sTMaJ2pd7d5NGrdgzvEcNvyFxJE7OuvaMwzwrfQ=;
+	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=E85Hjd/WeiuiP9/lJWy8BURnne43Azfkcu4GpeI1o3znMEPWA8eDCK4lbsto24C8CeArP6xbMdRv7SlGw7TqMRtpLaXGskpVDg3pdFt4M+gw+IBho3onrZdilfDhGwrxiHKwkLSGElovPN6v9hMxogTPy1l49dKkUEl8F1CQ/PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEnTesdL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=EL8WU6TsRSFjXSIoGAYrQTOvu4cvN9aMVtWHYZzlBtOrUueqT9b/Hw4v+uSNlo2UXUhEkSxS1QJN+aUqaMNSYly/yhVhKiICEXL/SEyme8dxjbr4rU4F11/ZRhZgCXyB70LPbKBgYHDq3m8V3gE5v0tvg7WW17rKIWH9WdIRSEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBmEEySy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEnTesdL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DE03C19424;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBmEEySy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47EF5C2BCB1;
 	Thu, 26 Feb 2026 08:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772096055;
-	bh=Q9V6sTMaJ2pd7d5NGrdgzvEcNvyFxJE7OuvaMwzwrfQ=;
+	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OEnTesdLTXh3CRG5FMziIXiU5v7UC1fFPXvISlCawSgWNkNG00f6jobgbp4NEqCTG
-	 w4d80TikFRuNdyWYoIaWZCjXtiG+vMVxxdu0HNFaQKTwrniV7JU9JxNOuJnvV3hCfT
-	 2HqVLHXm6AsXZYWY7uYtNTWSJPKRIEi/W89Jf8uVVX7zanc/nQ+OX7WK3pJ2lUozjN
-	 /1l5Nso20pqtJixJo070o2aImKJLEKti3AQZRW2XYaFWDm/9zAOpmtDWIPqdrodQ7Z
-	 IDYAGRyGfXZENuxjdkz9gMGuAHBQRi966HOd0ZNnFPvBOVzK4Mo9VIyYQAjPwpKPVt
-	 MThc4+jlmWUjQ==
+	b=NBmEEySyjir0pNKDyl8fZ8qAfnmFnYbxr9lDgyxpvgXoQ/+zgaz0MfudOEH09W4hh
+	 M8rKq+oPF9Ehx6tzMETgWhGSmhd0oUHM7dkoG8CpItZ2N3H5a1y94rWWpuk3Y4H/0L
+	 rMXHs4PkPLV7UPPdAawLMLfnnR1WYblzIhRQ7xtLkuO57pce3vmUxZZtSIF8do9DoC
+	 9ejFCjVFFUViZjGdJFxUt7o4fSRWm4wIUpQx4D3TbOb2R4KfvufJov1AiyVp3l3zWM
+	 lAYtpBL7a1iF63GMo23vxuhIgAoTKjY2L/Hvfjy3OMI6rapDSqn3KFgLevqlwAuFv/
+	 nlec5xtKVfZcA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE62AFC5913;
-	Thu, 26 Feb 2026 08:54:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38AF2FC5916;
+	Thu, 26 Feb 2026 08:54:15 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Thu, 26 Feb 2026 09:54:06 +0100
-Subject: [PATCH v7 1/5] net: stmmac: Use helper macro for loop over
- queue-based arrays
+Date: Thu, 26 Feb 2026 09:54:09 +0100
+Subject: [PATCH v7 4/5] dt-bindings: net: nxp,s32-dwmac: Declare per-queue
+ interrupts
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-dwmac_multi_irq-v7-1-f8fe3b945bb4@oss.nxp.com>
+Message-Id: <20260226-dwmac_multi_irq-v7-4-f8fe3b945bb4@oss.nxp.com>
 References: <20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com>
 In-Reply-To: <20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -63,11 +63,11 @@ Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772096053; l=4143;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772096053; l=3455;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=AN9BxArjvT+LtwWtaoyDzsO4XeDTxufZg6uDwPtH3+8=;
- b=qx4zViXLhquemljUdcK9/hePoUKUSGDPdEFSLQaAUKxdNbrTHqfA5yznxNKgqzJbgLNjeQe5h
- HwPpAWooWzzCnl0hEP7EkpABcn72M2PYEy57NzXZsGL5wKXTtsMpsUG
+ bh=Ulgz8SoBFJZWXNyBqoPUpgpX/c4gObaapFU2nTXzIJo=;
+ b=UT9Qnilg/WovbJ350EVFkkHtyTiIJ/8YySev0ZAZqayVGhbPMzLEiSpapf65FmRkFN42GTtjD
+ jsQfEpx3uCsAnn+P+DQUXtsW/Pt4oKRObdxxyWJxA2CxT7ahzuivfgj
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -77,103 +77,92 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The stmmac driver contains similar pattern for processing queue-based
-arrays, ie. interrupt lines, etc. Factor out the for loop and provide
-a macro STMMAC_FOREACH_MTL_QUEUE(var, limit).
+The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+set them to allow using Multi-IRQ mode.
 
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac.h        |  3 +++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 16 ++++++++--------
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 49893b9fb88c..3890e82c69f6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -233,7 +233,7 @@ static void dwxgmac2_prog_mtl_tx_algorithms(struct mac_device_info *hw,
- 	writel(value, ioaddr + XGMAC_MTL_OPMODE);
+diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+index 1b2934f3c87c..3a0e41b63c3d 100644
+--- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-# Copyright 2021-2024 NXP
++# Copyright 2021-2026 NXP
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+@@ -16,6 +16,8 @@ description:
+   the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+   interface over Pinctrl device or the output can be routed
+   to the embedded SerDes for SGMII connectivity.
++  The DWMAC instances have connected all RX/TX queues interrupts,
++  enabling load balancing of data traffic across all CPU cores.
  
- 	/* Set ETS if desired */
--	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES) {
- 		value = readl(ioaddr + XGMAC_MTL_TCx_ETS_CONTROL(i));
- 		value &= ~XGMAC_TSA;
- 		if (ets)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 51c96a738151..c972ad8e79f8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -382,6 +382,9 @@ enum stmmac_state {
+ properties:
+   compatible:
+@@ -45,10 +47,22 @@ properties:
+       FlexTimer Modules connect to GMAC_0.
  
- extern const struct dev_pm_ops stmmac_simple_pm_ops;
+   interrupts:
+-    maxItems: 1
++    minItems: 11
++    maxItems: 11
  
-+#define STMMAC_FOREACH_MTL_QUEUE(var, limit) \
-+	for (var = 0; var < (limit); var++)
-+
- int stmmac_mdio_unregister(struct net_device *ndev);
- int stmmac_mdio_register(struct net_device *ndev);
- int stmmac_mdio_reset(struct mii_bus *mii);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index edf0799b7236..b920ca17b2be 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3875,7 +3875,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- 	}
+   interrupt-names:
+-    const: macirq
++    items:
++      - const: macirq
++      - const: tx-queue-0
++      - const: rx-queue-0
++      - const: tx-queue-1
++      - const: rx-queue-1
++      - const: tx-queue-2
++      - const: rx-queue-2
++      - const: tx-queue-3
++      - const: rx-queue-3
++      - const: tx-queue-4
++      - const: rx-queue-4
  
- 	/* Request Rx MSI irq */
--	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
-+	STMMAC_FOREACH_MTL_QUEUE(i, priv->plat->rx_queues_to_use) {
- 		if (i >= MTL_MAX_RX_QUEUES)
- 			break;
- 		if (priv->rx_irq[i] == 0)
-@@ -3899,7 +3899,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- 	}
- 
- 	/* Request Tx MSI irq */
--	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
-+	STMMAC_FOREACH_MTL_QUEUE(i, priv->plat->tx_queues_to_use) {
- 		if (i >= MTL_MAX_TX_QUEUES)
- 			break;
- 		if (priv->tx_irq[i] == 0)
-@@ -4084,10 +4084,10 @@ static int __stmmac_open(struct net_device *dev,
- 			 struct stmmac_dma_conf *dma_conf)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
-+	int ret, i;
- 	u32 chan;
--	int ret;
- 
--	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES)
- 		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
- 			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
- 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
-@@ -7734,9 +7734,9 @@ static int __stmmac_dvr_probe(struct device *device,
- 	priv->device = device;
- 	priv->dev = ndev;
- 
--	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES)
- 		u64_stats_init(&priv->xstats.rxq_stats[i].napi_syncp);
--	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES) {
- 		u64_stats_init(&priv->xstats.txq_stats[i].q_syncp);
- 		u64_stats_init(&priv->xstats.txq_stats[i].napi_syncp);
- 	}
-@@ -7759,9 +7759,9 @@ static int __stmmac_dvr_probe(struct device *device,
- 	priv->sfty_irq = res->sfty_irq;
- 	priv->sfty_ce_irq = res->sfty_ce_irq;
- 	priv->sfty_ue_irq = res->sfty_ue_irq;
--	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_RX_QUEUES)
- 		priv->rx_irq[i] = res->rx_irq[i];
--	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
-+	STMMAC_FOREACH_MTL_QUEUE(i, MTL_MAX_TX_QUEUES)
- 		priv->tx_irq[i] = res->tx_irq[i];
- 
- 	if (!is_zero_ether_addr(res->mac))
+   clocks:
+     items:
+@@ -88,8 +102,28 @@ examples:
+               <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
+         nxp,phy-sel = <&gpr 0x4>;
+         interrupt-parent = <&gic>;
+-        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-        interrupt-names = "macirq";
++        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 0: tx, rx */
++                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 1: tx, rx */
++                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 2: tx, rx */
++                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 3: tx, rx */
++                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 4: tx, rx */
++                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq",
++                          "tx-queue-0", "rx-queue-0",
++                          "tx-queue-1", "rx-queue-1",
++                          "tx-queue-2", "rx-queue-2",
++                          "tx-queue-3", "rx-queue-3",
++                          "tx-queue-4", "rx-queue-4";
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         snps,mtl-tx-config = <&mtl_tx_setup>;
+         clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
 
 -- 
 2.47.0
