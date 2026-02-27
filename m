@@ -1,118 +1,87 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE7E36C0CB;
-	Fri, 27 Feb 2026 17:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B82D36EAA8;
+	Fri, 27 Feb 2026 18:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772215095; cv=none; b=Psdh9Sms69mVOx9gKLe2l4Ez/F8U+1TVh7tWczvR7Tlli+sh0xkzEJ+l4eCQJZCqN+vfC9tv2W/Gc/GSlh/YDNtjePsX4IU15ul7wMPjJwpSdY8DvckkfD47MGpGesJYCkrLa7CmLLsWHlHRYL7o35cUCIHMZkpAlFvzUcwfAbQ=
+	t=1772216231; cv=none; b=Gboqg66Ai6/7fZ3s4hY88B2DNQ4zkUYGB+VyNK5gTHrTQGDtrV77+2oayIKT7S0MmiNodEoiw6SiuSt5baRdXTyH06gpQNJrts7Z6PKlmW0VroRbpEb3ZRO+A2oUSak8h1+Uu80y31ej8ZzMq5/nYhkXz+6Jm6xCtdlsW5hu6kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772215095; c=relaxed/simple;
-	bh=7c6HFX4NEwk2FMm96FTQ88HHYGNIC4bFpu3jZhULeoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kLJmw9VDJzLdeCgZsJqVsV07JqV+kFzgJE9mpqRES0HUgVMDb0RhNOtsRVU4DXjGjKw+i4qYZx/zBB2X6ykMTVxroZv/Da0g1LOUi6vjaHW76/Dz6Qm3XBvSRvrfIasIKaR+cFu7oAOrm4JnXnUC+DxWuevzbPchWblhcRsl2L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wlPFGzas; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1772216231; c=relaxed/simple;
+	bh=AdqCVfgpAB3vp48KPqAzK7xJZl0u8xamspTLJbyFYiM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nes4vPrreLOekgY21oPs51oLuJA/9h/w5h6NKsmCXnyAfNKHfWq+tTOdfgA0hQdOfwyFtVyIcklLbzxdKIcInCHdYEx6rVL5zNwrcAcHmxHJ06aC5syXrI+wS5rhjsdymHGXrm0U4hjGroGiPvsfYSsUI1uM23wLYh6rmvknHro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZ/PqopN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wlPFGzas"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=+cD8P2tgu0apAWqjJEf8nXuFb43/7yGEaH3yQ4zcVZs=; b=wlPFGzas5TRFXsWMzr30uerhNP
-	MRX6pfwee1ZFOljpvujmJKcCZaTp5Unlq7RZNXCR2DYjbLVincwqBDjKNxHaUYNgA3ymJMPeqvDOb
-	bPg9o/HJH0nTdqDnuC7pELBjLiW+rn8f9XsD1KjgG2KDft8OZmXuOWpxveKWEUXjfQf+Uifyo7tfG
-	Tsytl618n+VLIFD28N5nqdjJYWEQLe6NGGaC8qlfx/WuE8cmseeJt/vvp5lTWOSrV6VtF6ZEkxpri
-	zOnBUfDjLjpQseSAt4h8ueYhhGD89WEevl7DQaykRUP0KdfYP/lR951pnQ1nfZ4kjddlB50P6+3P5
-	gJGe0yXg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vw26F-00000008sDD-0tzI;
-	Fri, 27 Feb 2026 17:58:03 +0000
-Message-ID: <4186c887-fec4-4677-a7b0-e48c52ac5dea@infradead.org>
-Date: Fri, 27 Feb 2026 09:58:02 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZ/PqopN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB381C116C6;
+	Fri, 27 Feb 2026 18:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772216231;
+	bh=AdqCVfgpAB3vp48KPqAzK7xJZl0u8xamspTLJbyFYiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BZ/PqopN73NVxSrssnsR+f0dGcbvScne0375jQFl9MFFvjjyOdLCneh99i3E1SWxs
+	 zPOLVEo4bcJnXTUuDBWWjhgH+55krLVajFuZMfZTkkWLWNRNexO/GS5nSbG96v0sUQ
+	 7ic3QFantdnA1n3EqWMBX4zyh8IDKidrTIoG4hRXIEX37klPhH/7EQ2VwffbDjZNYL
+	 0LEElJ6yqs0rFXkGbmIIJWZ9NvtVSerMf5KKTEvsLXQbxk9WNA1fzLFperaROg5hCn
+	 We/f1tvNolTlZ0KevAcAG8QVU3GtstGCYY1Rk5Zf88u2prUprTaZP7KdqR2Q/w8pzA
+	 LcweeqCBkhVGg==
+Date: Fri, 27 Feb 2026 18:17:06 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v4 1/4] dt-bindings: media: ti,ds90ub953: Add new range
+ for remote GPIO data
+Message-ID: <20260227-buffoon-carpool-7a73ccdb8eb9@spud>
+References: <20260227-ds90ub953-v4-0-dea596205f9e@nxp.com>
+ <20260227-ds90ub953-v4-1-dea596205f9e@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] usb: dwc3: add needs_full_reinit flag
-To: Xu Yang <xu.yang_2@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
- Li Jun <jun.li@nxp.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-0-08c10b08ebb6@nxp.com>
- <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-2-08c10b08ebb6@nxp.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-2-08c10b08ebb6@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi--
-
-On 2/12/26 12:35 AM, Xu Yang wrote:
-> The current design assumes that the controller remains powered when wakeup
-> is enabled. However, some SoCs provide wakeup capability even when the
-> controller itself is powered down, using separate dedicated wakeup logic.
-> This allows additional power savings, but requires the controller to be
-> fully re‑initialized after system resume.
-> 
-> To support these SoCs, introduce a flag needs_full_reinit for the purpose.
-> And the glue layer needs to indicate if the controller needs this behavior
-> by setting a same flag needs_full_reinit in dwc3_properties.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
-> Changes in v4:
->  - also rename core_may_lose_power to needs_full_reinit
->  - add R-b tag
-> Changes in v3:
->  - no changes
-> Changes in v2:
->  - put core_may_lose_power into dwc3_properties and check it in
->    dwc3_get_software_properties()
->  - rename may_lose_power to needs_full_reinit
-> ---
->  drivers/usb/dwc3/core.c | 9 +++++++--
->  drivers/usb/dwc3/core.h | 3 +++
->  drivers/usb/dwc3/glue.h | 3 +++
->  3 files changed, 13 insertions(+), 2 deletions(-)
-> 
-
-> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-> index a35b3db1f9f3..67bcc8dccc89 100644
-> --- a/drivers/usb/dwc3/core.h
-> +++ b/drivers/usb/dwc3/core.h
-> @@ -1119,6 +1119,8 @@ struct dwc3_glue_ops {
->   * @usb3_lpm_capable: set if hadrware supports Link Power Management
->   * @usb2_lpm_disable: set to disable usb2 lpm for host
->   * @usb2_gadget_lpm_disable: set to disable usb2 lpm for gadget
-> + * @needs_full_reinit: set to indicate the core may lose power and need full
-> +			initialization during system pm
-
-The line above should begin with
- *
-
-Please correct it so that kernel-doc doesn't complain:
-
-WARNING: drivers/usb/dwc3/core.h:1122 bad line:                         initialization during system pm
-
-Thanks.
-
->   * @disable_scramble_quirk: set if we enable the disable scramble quirk
->   * @u2exit_lfps_quirk: set if we enable u2exit lfps quirk
->   * @u2ss_inp3_quirk: set if we enable P3 OK for U2/SS Inactive quirk
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pzRdTIxGwv1KPsTb"
+Content-Disposition: inline
+In-Reply-To: <20260227-ds90ub953-v4-1-dea596205f9e@nxp.com>
 
 
+--pzRdTIxGwv1KPsTb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Feb 27, 2026 at 07:21:10PM +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+>=20
+> The DS90UB953 supports four pins, GPIO0 through GPIO3. When enabled as an
+> output, it can be programed to output local data or remote data coming
+> from the remote compatible deserializer.
+>=20
+> Make a different GPIO range for remote ones.
+>=20
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
+
+--pzRdTIxGwv1KPsTb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaHfogAKCRB4tDGHoIJi
+0mHgAQDqkV16HQ1woOMuAhpKuzDdlBaNuDv8HlhSYlhOhrtcfgEAm2otfL5wfLR+
+nxS5gFFrRXH/6sJesP9befmJ5DKF5Qg=
+=Ky1T
+-----END PGP SIGNATURE-----
+
+--pzRdTIxGwv1KPsTb--
