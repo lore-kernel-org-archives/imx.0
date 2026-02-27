@@ -1,173 +1,178 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011032.outbound.protection.outlook.com [52.101.65.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F36B364943
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 06:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772174562; cv=fail; b=MdJ+YnURyeS4cik/MHNmuxoV364WuB3jJ8oGiqtl1rgQ9H5ryEKSQ7BdZookXB2Ped6hU7ZEtjjvmgTt/THh733+gyOcH6wXZCBRytfWo9gAXdF+EL4bD05JSxg2Edm8728Za4Pkrfqw6xXWFxhw+PTGZcfedsqemjodgqTPPpw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772174562; c=relaxed/simple;
-	bh=WpZyJtr8gSE90Sk0GOTr/QNsVPhq4BhF1IRPl/1B7xs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jOzw06dtONNp2WGcTbNQBjdoLcF8ZzC62B4TzLfdBtB32OXtD0eHkdn+U+gCHQYzgmLMTC0dycEBsDBT1W6pHih61jxMr4ONhCT9uqKHCLzUelbSCDm2zGxrZ2WxziL3NZEVF09kClk6D4TYgmW1HcQd8SFr38oGqT+gQoRq1P8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=M/oKjXJQ; arc=fail smtp.client-ip=52.101.65.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEF433262E;
+	Fri, 27 Feb 2026 07:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772175988; cv=none; b=JA0BLFGelSHF0lutof6Ryb7cTcXY+3AfVdcTVEgPscxTiaXpmvyUw0dGgtQ9itdpsXZUxTtT2Dum5TpPmbrO936fvw0msoMYphaw8vmWI1dp7hbgLYYXOlsldmSNWVNhSQREyVvpp3v6//QZOqFCR0iYBiYiwEKf2ejr5eNABdg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772175988; c=relaxed/simple;
+	bh=X8vtJkSyc7mKsCpLbrfh/YJAHY+sBdNmmDe83pbDGfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S/0c/M6rNykvgSjPec5LnuRmt5Omtw9X9rYzd1JqtgeWu8ZQq/isvByJFcDSfouAs1l0HsXENp9A5GsJrq0J0zLScunjoYcCU4QjXb5axgRK9EeeZ142jOrPiQH3cE0W7Vxh4W/zSCvUm6JZLM84bGBnoutQ3u0T4ZSBvjoBnTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5qRZFOn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="M/oKjXJQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x3w29WkRaq8G6FFjci/A3vEnpfAGty+ikySYc0B1uMDpA70VB8WieeRrHs3/WG0ZDJY4ZmE6XYslY2qDW7EqzwYMfKnbt9tdXWvFMy9YHn9j7q688ZPrcpW3bviZHBNVLJFXrbokoik4do4I4Og6ukQTs9BatDIh6pIC8keH/M1fFcwZnFiu3AohNukJsN22+gffiUyjYyY6OpOnUhDrqIc/orbY++B1fU1JzulMPzxEq7fP5/xBb7n76N6M58UTOj2rYHw0KwzlEQTZxS1cLtOh+zsH/ZWyPKJOwITzSSxIjWsTZAcIeJZa2kng93gDQ2NnRJvQyUq71auPPtxWvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bs4pNX1CHtif2d/wOrg3qke6/nQrVUtxWXicmpsz9pw=;
- b=o4iuJTjA5Px7ohcyulKXwKGr5WGME1+ExoQpneK0dsnPAAWTDxX0ZlRDckPMCAvMk4AH8pCYi6gzBI5LZPimR3njNs2mtdevIhJfmUQcbJkLMorI0og4fkR+ocTb0R6lDuzrRiQWzWS7V7uGpDjeKvSDuotZR2CzpvBbpxA4Y85Q+1jqLOhxw2tGKRBY5/XdAOhXH+/LN91vkmzdtv7zvekoGoVdDYh9uSnpTNOndxAL2o0gswvazdiI4QJW8O6C08egAOWY6Hu8JxpCLzkVw3rx+9VjKp7J8Pw90UqWQCwd6Yy9olU/WTcn8N8vptEteGx+FF6pPhzqh0/8UwFsLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bs4pNX1CHtif2d/wOrg3qke6/nQrVUtxWXicmpsz9pw=;
- b=M/oKjXJQNfJuD8WMI25MGv9OcEw3aTH3yfIYYwYYD/pc1zb9L1xfrZwimOB3fcwzb+0FlPYncmz6MmTzd5Oo89M4kP9uUCPe9abCnBgKt/aFqZIGKsPQ+RKlUnu4GDrQdlLW+kRTTMoNrIi9JaEqn39niedzuUT8zcswWpsAcJd5hlzV36oZp52lAvz8us4CCOf8n8dGDlvwPFXUsb7EyYOv0jkX2PMz7HUrB3VMlFEZLZABoHqwCKNRbNoW1+zCfsR37+NbtZBWMBKoTFE0ib7ogw3gBOEyxNgyY343NZVmwe4XhucVXQRbL7xnrWS+tY4hwEq+1e04RzssqN0n1w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by AS8PR04MB8753.eurprd04.prod.outlook.com (2603:10a6:20b:42c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
- 2026 06:42:36 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 06:42:36 +0000
-Message-ID: <16172163-8aef-4d94-be62-70e159aae182@oss.nxp.com>
-Date: Fri, 27 Feb 2026 08:45:29 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] dt-bindings: npu: Add bindings for NXP Neutron
-To: Conor Dooley <conor@kernel.org>,
- Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Cc: Oded Gabbay <ogabbay@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, Jiwei Fu <jiwei.fu@nxp.com>,
- Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>,
- Rob Herring <robh@kernel.org>
-References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
- <20260226-neutron-v1-3-46eccb3bb50a@nxp.com>
- <20260226-unthread-reformat-92b855c4acf9@spud>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260226-unthread-reformat-92b855c4acf9@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0161.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:99::20) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5qRZFOn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85001C116C6;
+	Fri, 27 Feb 2026 07:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772175987;
+	bh=X8vtJkSyc7mKsCpLbrfh/YJAHY+sBdNmmDe83pbDGfk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=V5qRZFOnCBFNgJH2F3MySablqUS0kgHUbs8dfLZO0EVJq+VpFHNezh4h+N0BDtQRJ
+	 oYON+hh8ftyipK1Gu07+US3wr9hUoUCBkXyXQ1Gp0NCcY2iKH9nbFryFFLwRRZApco
+	 p2JSo9FOOVZNz5wJ+2DBBmi+CL5hpBux7jC6vK1uUS+OLvnVoE/e5+9maKJRz9K0/D
+	 fqdP7keTn/B1NlmDR8q8Ot2U68ExvWzF/7ItfvOQ2uR9GOCyEa2QU+FniKIKNUIrAc
+	 0wp0tNkcRkGtDWY0cx4ilcFhEO4m4iceuA5BmanZ643ocNCIdoDVeNdnKyXJJpq6BD
+	 SAZDJWQxBHkSw==
+Message-ID: <9970272b-b406-4a25-a7d9-8197934f8c3a@kernel.org>
+Date: Fri, 27 Feb 2026 08:06:20 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|AS8PR04MB8753:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35cc6583-34a3-49e9-4dcf-08de75cb6451
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	QTDRE5jtkdJ2sq1/96mrGsau8CMjqOOFdvsNLcBNTbOYP38qYVX4JOMFfwjPNZh8LFzztXQHOMSc3nFR9WF7FxmTKTlyIjfJCMPmXTbfaNd4PHSrkjQ2Y2RzF+TH3gzNOo7CDRMJsB3p1qzZi67vydTB3Mg+Ah4YQMGM37WKPO2e4y06TkzR65Er3iMLuTSmT8R0GIeWD5kYfLmmy6s8+RqHUo4r33PhuNv0f+r8Jl9muzx7gnlQMewLsEGZ59osm+1/t1GFDGAkgubaURGhYO+4S4++U1Z0rq37I8mMvrSxUIibTIvafDc6aPEGdtoFn2gkMdkxnVuHmyi2j20Q6w26XzdlWjSiyBHQf2jzZ814Svhrit0SaeHhENhcDSn+8p4KzMHQh/IQIpFzlzkmr/lAjLBLGnCCVdaPfmVjbLsDwQOK8XXyZoWBFW+gq2GQeKGdsTuCslot70jZbJjVVno2KG6m3RPmbKIP+7b7k5bi74gt4SMFCAKHprI0TU6ALP0l6+wvj6h/WLP0wGvRUDD9aSchLoCcpk+AEYpUZvRWB9ZisPkP3mQKKx/AxQZEZ5EFK4OJGPy6NdH0YiNo/oAkpmfO6FKm+7dEYg90wp7hGar8VvWK2A6BFlCJHTeLJM1+sAstKWBtqnmI0P3mUxK4O5vWba1LVNjaLqOTD8XHZyjrlTdigDUe92xc0JcrhHHctD/mvWwo2B4gjOsvEuyJV2IPSkOakvw4GcpKPBk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?enFuN2V4QTlVbXhuS296V0cvMS9jYkJqZUZSeVMwelg2eHNHa1hJNHhpaHRv?=
- =?utf-8?B?cXIwcmhPbVNwdEVTZXpxZ3lPZEpFd052UGVpOU1qT2JuUGtQWlVtYTltZVB2?=
- =?utf-8?B?TU9VY1dVV0UxbldhK25TaHlYMi9ReEFHUW1BclNna0IzZ2ZBOHhqcXUzTnB1?=
- =?utf-8?B?eXp2RXl4SzBFRFgvNHJrMlpLUmwvUGFsVTVMbHVGaHNCK1FuRTlLUHVxcWZ1?=
- =?utf-8?B?UCtnSGtIRVlLRnJrRGg3MWR6ZW9SQ0lrck51RER2RDBOK0NVOUVoTFdtanJL?=
- =?utf-8?B?cm9NZXlybm1vOE93dExZTXh5aHI3M0NDMWNTd0xZVnczZXRiYXBUaE54U3pH?=
- =?utf-8?B?TGZnRlYxcllLdHdLeWcvTG5HMHUwaitpaVVYOTlTVFhoM3Y2TTY4MWZaWWlJ?=
- =?utf-8?B?MXc0VEwzb0hrbzVzTWg3V1c4bFhRblQxRHkxMU9wQUNnZ0VFd0t0Q0taQnln?=
- =?utf-8?B?NXZlbzNKMlVacTZPL3BPVlFpRWJ4amtVQ210ejZsSE0vQVZoWk9KQVV2cHRu?=
- =?utf-8?B?RU9SV2NNSjlubnFhcExxQ3M1WjkxclQ5VWVNM3BPS20yVm1STmY3ajN6Lzll?=
- =?utf-8?B?c05ndWdqOUZoR3UwOGc1Q3JlWTdFcklmN3dVcU1tUmNsZUNXRWRkKy9INjl4?=
- =?utf-8?B?alJTeEFjUlBXbytEYkgySnJmcklCVGp6c3gyV3MrU0VBdHMvWG4xdnp5MzF1?=
- =?utf-8?B?RUZiYmhYc2lhWVFjeEUrNmRRU3VuL2w1UnNIcVJJaWlTU2h5S3RNdit2aEhU?=
- =?utf-8?B?VzB0OVdqaFB3NDZHc1NlYUNYcGlobWRyYUVYVjZhZnNWRGVmVUk0NVVmNzEw?=
- =?utf-8?B?c3MyNVd1bTh3TEhGZDZRNlNpMExNSmpoZUZPNkIxeHNZWGVLcDVjc3ViTTR2?=
- =?utf-8?B?TWVHc1hkZGFLWmcydHJiR0FvbHlidGhBNUZSZWY2V1pqVDF5cWtvSTl2WnZO?=
- =?utf-8?B?NS91TXRLMjhzL1h3MnFDVllJdWlhdVIybFF5Vy9oQVJZRVNHUFNGazF3Qk9i?=
- =?utf-8?B?RFVwWDZ1SjQzdmROS1doNUE3VUNNOTJsMEdLMGVzSEpERDVJQVF0OTFQMkJk?=
- =?utf-8?B?ZjFFN2thYVI4WFBGL053OWtjUGFSTHNBR0pUSGhVOFBtNFNEOEl2NEYxY1R5?=
- =?utf-8?B?bHpCWTFjcGpobkdSTExiY1VwaG1mbEdYZ1djOEFiZkNITFNaTjJPRGttOHh5?=
- =?utf-8?B?cUpZc1YveU5iV01FT2JCVlJtRnNoQU90Uk9FK0svVFpsTUx5c291bGtYQzUw?=
- =?utf-8?B?ZHMvUHo1VlNyVmRsUGJQYXBVZ2pHNXdxUmZ0bjhhT2UvME16M3VEU0JjTVFM?=
- =?utf-8?B?N0M1QzNLTlgyVDV4QnFYMkptL0lMZ0lHU2RaWFNSM3ZiV3Qrc2owZEhrT0Zv?=
- =?utf-8?B?cGJ1NkkzajZoQU5raGJkU2lFMGNHOXg3ZlppWDM1NkwyNTkzTCtvREpwbjdq?=
- =?utf-8?B?NHpjNEZueGMweGlKckQ4NndCVkZtNWEvMnpJeEJ1L3Q3VDBJWmxUSWo5cVNo?=
- =?utf-8?B?aVBoQkw5SFlYZktkbmtYcUpCWGZ3VzUyTmpHemtkbFl1aUx2QXlJUjkvSnV3?=
- =?utf-8?B?NHJVRVM0aS9vMVo3T3hhREtmcW1NRGEycUhUbkxXNXhxYTYzdTF3NGJ2aVRm?=
- =?utf-8?B?NE9pa1dkdUZKa2w3MjBpWld6cWRCd01ybjZpSlMrRms3L0U5Zm91Q2cvY0g4?=
- =?utf-8?B?QWsxRWtaQ0szbHNncGZOLzVVekpqbk1yRW5YZlBvc0FvNGNBY1FVN1E3bFNT?=
- =?utf-8?B?aUZwWWVtVVEvNmFJMjMydHJvUVA0bjlJRFF6Q2YzLysyMWgrWFlXYW8weXRh?=
- =?utf-8?B?RHU5Sk9GWG5TUGt1cFNvUHVNTDJmakdEcG9jV3NPWE94MnphaEkvenA5ajRp?=
- =?utf-8?B?R3ByaVI3ak5YZ0hLUnNCM21NYjlBZWFZSzczOUt1dlp4MFpzeWE0N2VQbVV4?=
- =?utf-8?B?c3hTVE1OWldURU1qYkFyTEVVVGkyWUZUMDlIYkw1YU1LZ05KZFpqSGx0MWEx?=
- =?utf-8?B?eHp1NE9DL2xKS3lidERUM08zL21kTUhjTUkxcTZBbU5kNVFCOFBKY1dXclJy?=
- =?utf-8?B?Qit0YjhiQWxJdW5wV2ZyV3lKekdkd1JXdGNTUGRzb2VZaWlmaWd6Rk55QVFZ?=
- =?utf-8?B?RGFQd1p3VVR4OUswSTJFM25KendGZkJGVjNQaXkrL0F0OHpZUEk2YThYU3NF?=
- =?utf-8?B?eXZwZlF3Ni9HRUlwNlVJTVZJdDNuU2Izd0cxYzZlZlJ0cy9pdXA1amhjWEsr?=
- =?utf-8?B?ZVVNSFNhdFp6TktmRTZ2a0xiUVRJbk9NWmZNUUJPVDBIbzFUeDZhbVdiUzlE?=
- =?utf-8?B?N0JjY0luNSttZWYrb3lscVdvQjB5WWwwcWJhNE9CUDhHczFibkxkQT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35cc6583-34a3-49e9-4dcf-08de75cb6451
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 06:42:36.1355
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2CZrlWE3LHoWj6YMtjPcymVpk3o7SsJDz/RBgyZsZDR2TH4TkCpv267XHuo3oze0DmcpbIcMNXdJ1vGPC7pKhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8753
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] dt-bindings: npu: Add bindings for NXP Neutron
+To: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>,
+ Oded Gabbay <ogabbay@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, Jiwei Fu <jiwei.fu@nxp.com>,
+ Forrest Shi <xuelin.shi@nxp.com>, Alexandru Taran <alexandru.taran@nxp.com>
+References: <20260226-neutron-v1-0-46eccb3bb50a@nxp.com>
+ <20260226-neutron-v1-3-46eccb3bb50a@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260226-neutron-v1-3-46eccb3bb50a@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2/26/26 20:20, Conor Dooley wrote:
-[..]
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +
->> +    bus {
->> +      #address-cells = <2>;
->> +      #size-cells = <2>;
->> +
->> +      neutron@4ab00000 {
-> "neutron" is not a generic node name. This should be something like
-> "accelerator" or similar.
->
-The only dts nodes I could find using accel subsystem are from rockhip. And they use npu@
+On 26/02/2026 14:40, Ioana Ciocoi-Radulescu wrote:
 
-e.g:
+A nit, subject: drop second/last, redundant "bindings for". The
+"dt-bindings" prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
 
-»       rknn_core_0: npu@fdab0000 {
-»       »       compatible = "rockchip,rk3588-rknn-core";
+> +
+> +  memory-region:
+> +    description:
+> +      Phandle referencing a "shared-dma-pool" to be used for Neutron
+> +      inference buffers, which need to be 1MB aligned.
+> +
+> +      The memory region must be defined with alignment of 1MB and size
+> +      should be large enough to accommodate the targeted ML models. It
+> +      should be marked as reusable.
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    minItems: 2
+> +    maxItems: 3
 
-Also, Ethos-U64 introduced by Rob with [1] is using npu@.
+Why is this flexible?
 
-So, I think we should go wit that. I haven't seen any document to standardize the naming.
+> +
+> +  clock-names:
+> +    minItems: 2
+> +    items:
+> +      - const: npu
 
-[1] https://www.spinics.net/lists/kernel/msg6055856.html
+Name "npu" is pretty pointless.
+
+> +      - const: npu_apb
+> +      - const: npu_cgc
+
+Drop npu perfix everywhere.
+
+
+> +
+> +  iommus:
+> +    maxItems: 1
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - memory-region
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    bus {
+> +      #address-cells = <2>;
+> +      #size-cells = <2>;
+> +
+> +      neutron@4ab00000 {
+> +              compatible = "nxp,imx95-neutron";
+
+Messed indentation. Read writing bindings / writing schema.
+
+
+
+Best regards,
+Krzysztof
