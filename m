@@ -1,169 +1,305 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023138.outbound.protection.outlook.com [40.107.159.138])
+Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC8F30DD22
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 13:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB192D94AC
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 13:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772199229; cv=fail; b=hfSt+PAk8g/fYmLuUDhTH5BdxuKoMJnFabjPrKtFxs1TXhU9Di36vu1fVDVJZbRyTu8tz4f9QIAY+CAosFWmZLVoK7qM14hECQIZ2tNgGlRrNFvAQSmwUBYi1YAh4MjcPT+95ZbIq2txmlPwWq/5Daixss6aZBp4eOOpoaBnMz8=
+	t=1772199732; cv=pass; b=F/swIgRyrWutB5dqJEG6Jq121inhznlVefCyV4MPP4ZjzoOzKguy1F9TSbKlIFnHr6mmECMR3dVxATao21t0O/PPrJRQPrCAzihImEMfyjThYoJ/la0mdHjExYg1wrkw038EOLKTLyHUDz9fqiRNN3YoTnG0DM3YcWEymDDfdS8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772199229; c=relaxed/simple;
-	bh=Mdngs0pj/jp4XS2NoHDhIeq/RqOmwZhVHMPuV3ZbzPY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=KN8Z3EfPG2lthUhQyzTPWC3ivJTgGPFrEQlM4Dc/L0SVgvpg4UB8p8WqpkP4wAneaNmVkn2H5v6Bhzi+AtEFAus3wNDqxqsrxIO7R7iy57l6mBCWoxLiUaQ+WFitBUaEEVLtCYGGgzxJJWHtVmjfHHFrvJsGCJhZrJFJoTZlZ4k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=2dKehdVJ; arc=fail smtp.client-ip=40.107.159.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
+	s=arc-20240116; t=1772199732; c=relaxed/simple;
+	bh=jLVFCfmCwwDGYyE2TA37Jk9yg0QSrnQZYu/oVIAKa00=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tqrt4pXUmbL/8xtbTTYKJo0sQtcP9xJITunT03iHrWo/eMCCRFKltF0MQuMuC37RWF4BRI8PKWW7YImDmJQziT+V4Uu82ZSTjBfpL9MOB2fduxlXKjYGNQsKoV9nqjYiW9NkhMTtEFMwWTeme7wov9EYEF3EhNaabeDfZrqbCyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=I4XvwU+T; arc=pass smtp.client-ip=94.100.134.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="2dKehdVJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nmj1oRLTYSkSioun65At5N5UjPLvz3D3vHnDj8Pafx7Kn10R47WfcIDxalA591LKTbG+FAVckIlVnjI3DAcl3iFXqMPd1lc5v0Vu2VNS4NzfpYT6E0I+cNvwihpH9pPpA/IgvO7Ou93h7S1bSJtT8BM4vfQYTmvKKMHHVU4L88+MDwM6Pg5YE0aXNbzV9aPQHtGi8t0bac1bsC1hBo5H1nrxP0a8dj9X30EEazFz3WUCji7lDZPiwJa7KcaQ96Z4oC8Pf/QBFhU7owHA9JzrEmIUj0sOO72ZITm8KZJPLT8E2DJ7dw5b9uVGdf/a2xM4S0bBydQK9ANkNC3BNTlkcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FDL3Xll34IaRtQkm/l2bA9I7lsn9lChZiouT+lFWH14=;
- b=KKemMl6rog40LAUU0sQS6CMsw56X05v1xR9qs5mcLYp05EAr0ylPaboW1v/tDMWRne338m0QPAlPspfawZ+lEYj1ausuIFp2IwNNtFeF8OiJdmuL3ExtiAbsFl+j20RcE/xBkld9IhH0lWwpCMYwaCEnBr/UiF0vuNZVe9dkuF9Gm1IPu6/lnKgWHDxpVqW3tF6cTnfpWuuBo9Ps37o7CAtGYDKU8l+sD+wF1r47qU82wbBPqouSCUM6omYJJaoRyNw46KBoN+WWpg0f//CR1qTEKSTWQ38PP9VDCOFdVqjTjQiRRT3NaSmgYiSb907F4ldLecJZJ++NR/naZYZljA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FDL3Xll34IaRtQkm/l2bA9I7lsn9lChZiouT+lFWH14=;
- b=2dKehdVJKqoifzx9oYWxpGCJ4tIfHTV5GXuZO+lX9CboH3iqitYuN5Tpm+jYBVNNBiVKdv+xi44rdxGD4voA+/CQP5UrFpNwQI9MSGDQJFQRIWgy0oQMMxj/qi6/OBAjCykpJtZ8WgDu2oBpQ8mpWM1RJqqzpkIvPwjTP6kY9PYTFtHaIU7kufPSFlmNALHLvSR6zUkYHUNw0J9T09SEesDLcSNbQCt0rUjHIDoHebR+P6FDYdd8ayB+N1pzrTa576Ku6yDIh79NW/Vopnw5aAoW2KP+TredADZFzh1upt0Lhmy9apLb6nKqTBgmhTCX4hPmystTIMWgzI4/ftcYQw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com (2603:10a6:20b:6f3::7)
- by DU4PR04MB10719.eurprd04.prod.outlook.com (2603:10a6:10:580::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
- 2026 13:33:45 +0000
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::ee70:7a62:e9f:12b7]) by AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::ee70:7a62:e9f:12b7%7]) with mapi id 15.20.9632.017; Fri, 27 Feb 2026
- 13:33:45 +0000
-Message-ID: <9f2b7b20-fa00-4bcf-b7e0-5f2365d780bc@gocontroll.com>
-Date: Fri, 27 Feb 2026 14:33:37 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] arm64: dts: imx8mp-frdm: Use symbolic macros for
- IOMUXC_SW_PAD_CTL_PAD
-To: Daniel Baluta <daniel.baluta@nxp.com>, Frank.Li@nxp.com
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260227130242.1702329-1-daniel.baluta@nxp.com>
- <20260227130242.1702329-3-daniel.baluta@nxp.com>
-Content-Language: en-US
-From: Maud Spierings <maudspierings@gocontroll.com>
-In-Reply-To: <20260227130242.1702329-3-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR10CA0059.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:150::39) To AMBPR04MB11741.eurprd04.prod.outlook.com
- (2603:10a6:20b:6f3::7)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="I4XvwU+T"
+ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=yd7VoGo5h85v/tCZbd5Wr9gZqrsgFKoh7cUl95XNvMI=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772199711;
+ b=pEsPckY2Zx+nrurpQSmhZeDbEw3Th/w28NLPyTp0xua5kO8+RfIS3bZYHS1J60KTn2o48+Pz
+ 1aFdYTuhs/b6oioqnw5tQc1WS5mWvMGpXACDYVF6pic050lqZ5O9LXE+r7b2dASIzNU6tWHEdfx
+ 0OyM9NUJcmJsHiqKRseoxs8iX6pMquFadPLR/28Vdr0aMnMa9RWbYnBweULjZniY59htzqYIAGM
+ 6g9ivc4q5nC2uYPBBIcmr9sfEYvAv55FXnvtRIGHIh2FyUBMTpybZZLlZskODZFLljDYJfr0y6S
+ xuexzLnQ36mKnK3ruRuA9NkNzr+p5uQx3GSqYgbbhPivQ==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772199711;
+ b=YW9Hllj4YvTmugmYSJGxq/Qb4CTx972IhR//SDUWekxZ2d/WG8r0R8qjCEZxzxpgiowoZmUN
+ Onnaz7IgbecfCNe7rB2bt9hfd8aDM4rgQ4o+rCInYXovAAclql9yye8IrnytiMwjLGGs86zUkA3
+ LqSWO89FxryVN5u131iqhdOl/8k77c76uC0UqakhCPQbYyfYMsA5fAMm+ZnTQblUmztaCWKglM7
+ dJvZNRM/Hx25FiktOkpjnlFjyC2rAgwgY2G/gwu0JN0ctlCHmPIIIRTwDLyUuWkJKKI3NGtC5Zv
+ kogXwe5+GriYDIIGcOVAUI3ndtQoexkBa9gkjVcE6N84A==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
+ Fri, 27 Feb 2026 14:41:51 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id E8E585A0F0A;
+	Fri, 27 Feb 2026 14:41:40 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Wei Fang <wei.fang@nxp.com>
+Cc: aziz.sellami@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v3 net-next 1/3] net: enetc: set the external PHY address in IERB
+ for port MDIO usage
+Date: Fri, 27 Feb 2026 14:41:40 +0100
+Message-ID: <7825188.GXAFRqVoOG@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20251119102557.1041881-2-wei.fang@nxp.com>
+References:
+ <20251119102557.1041881-1-wei.fang@nxp.com>
+ <20251119102557.1041881-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR04MB11741:EE_|DU4PR04MB10719:EE_
-X-MS-Office365-Filtering-Correlation-Id: a17d99eb-4574-4286-272e-08de7604d461
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	yqUm3mKgV4q2x2xi6YwEU+a2WkDN3fBEJdqm7yvxtEHd9qoDJi9VzcEWFnTG+/Sd+N1EUhTBNbM/BuZRMDUmRQcxlKmcWUq5XgHnEOt0OGUH7rxYCKNqL9sWAE/C0Dtq/iC1LKnLXYsNvmoRd3Hyhz5ThMpKyVrgmYDCVziT7TI8cMTjLikpOB4lsb0L9oa8uTdwu6TZ9eu7lqQYBWpoDXUdQ4GHkNeMLMEAeunnOhgwxEutLl9z+Qbq2xb3sj0HezapJczeqiSwtt4wyFBb5HC2PcWZuzOwW1suUpKPawOuvn0ub0KkKoAAlKIqL9rdlk6iwA9QOPLQ1MucSMg1+09oNDUaE23Nf8GUFr9A6btKA8Bjp5wNE4HO3eINWXrnANRR9HArA4681Z0G2wigul2mYTQnhKFkpQDGDxlqkrCMs9UPoxGuhYQLg/lZgBTncWoqOEUsI7ecb/A/XSfD5EN1IWuIoe+9RCwRPrXEUcszMIeNw2h/fjKP9IbHmBMkCSMXHRlNyn+YXjmNaP79QUpnYxvg80bToKxQEaCumXr5xxDkobB8PnkVOTrxcFP5XyOQwpHasrzhKy0onCHPp6p4Oh/30t6qVejtYQ2XC0bjT+wT+UQukGcaqt73E+odA077zhWrkHFtpUPIEqFQTaYcS2J025xf2H/seYLDPMg+N12FyJBgTXii/3S8Hoxf2nH2pVXZEHz1K6nW7kGceOyAOX7WZc1jpFU88GIvYYM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB11741.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bVladlVPNmNqWU9GczVaSWg2OTNZL1lvSTl3eThxRUI3SlFUbko1Y0NzWEt2?=
- =?utf-8?B?ZHlrbjlVa0pwNUxqVWFSYW44VmpCZmhmUGFIRjd0QWl0aTF1L053Yy9nUDBr?=
- =?utf-8?B?MFlGQkNDeVBnait6czJMOEVncTdYOWtzUUpNUW1KMVdNUUVGQVZIbVA4cnVS?=
- =?utf-8?B?Vk9LOGNpVlpoSUk3NG9HZ3ZDVEcxdUNndTBrTlB0R1VhMTIzOEZuMkREaEF0?=
- =?utf-8?B?aEJaakc0RGY1cEszMEgxdjVFekhVQTJreTA0enFKL3BQV1J4bUY5c0lHcmE1?=
- =?utf-8?B?OXUrMnd0UjlZV1cwb1M5ZjdRUW13bEtMK01hdlYxaWwvZzlaZ2Y4VDBFd0E0?=
- =?utf-8?B?UDd0akV0SmUzSGxvajRZZzMvWGZtZjFPSk5sRlkxN3R1Y1prUngwRlRKNDN3?=
- =?utf-8?B?WENOM3dqQnY0L1JLU1N1ZHl1TS9KdE5XOW9DTzdkWk95Q3dtNlhhell5N21X?=
- =?utf-8?B?NWQ4YmpmQThyUmMzc0lJQmhXSEZzY3RwOHNNbHdya1BydmpuNzMzcHRNMTY0?=
- =?utf-8?B?SU85cVY1TlhrMnpWbXRlVkVlclNmZlNRbFBZc0FTQVA2UDB4VWJkVlVCdG5v?=
- =?utf-8?B?ekU3cnd1UUdQRm5oWFpTK085UlVnc2pNQk9hNUxIUk94TVhoYTl6cUV6djVZ?=
- =?utf-8?B?VjJCYW4zcVhHT3FlZVo2WEFCeUk0NjBBRDVZb3Y3bHd3Ly9LZ3A1dlFTakhr?=
- =?utf-8?B?a1NscDRiNEIxaVg0T29qdi9NL2Q5L0hLMFZtcTRNT3kyem9GdHlkTEV2MHkv?=
- =?utf-8?B?dzlXWlppWUNoQ1M0VXMrOWdoUjFPYlV4Tmg5MGFQVEFrVkdzT2FjN2dJbXRo?=
- =?utf-8?B?aUU0K29QS1dQS2JwY3hoM3NObTZoYlJJNHRuM3VtUVZ3YXhrRWhtWE5mUFRX?=
- =?utf-8?B?dm5zWld5M0Jvc2FvNXowZlNTRC9LZWcwYXk2WFl5T3d1bTRzV2FmdGNSakpq?=
- =?utf-8?B?K2kwNlBUMlo0Z2VTQVk1RFZFNVJRNGs2Tld4TFV4YWVNZTZWTkhHbnhRMENX?=
- =?utf-8?B?Z2Eydjk5UG4zeVBPR3dkOTJISTBVaEg5aURZM3lVV2hRZzlER1A4UnlWZ0ZQ?=
- =?utf-8?B?MGY2VjVsYU9jTEhSWnJsSjcvQ0tFUjF6U2JpdHhWZUdneTZwdHJkWklIN3FS?=
- =?utf-8?B?Mkt3ODdxcTF1dkpqRUlLekdZcWsvcWgxQzNXNkRpWGxnUUVNZ2paN21Jdm50?=
- =?utf-8?B?ZWs1eUpnZUlCdmNjcE1nRHl1Z1lVM2pvQUd5MitycDNUVkpXdjFYTmxvM1Fx?=
- =?utf-8?B?SmY3WUZ3cktRQ3JBR29rRXkxWVZUemtncWZIRjg4bVhSUGNRMGpJbTkvOUZX?=
- =?utf-8?B?WURKa0VNMWdyN1Y4VFJ4S3pOMEUyREFzUkR4SWVXbzlhck5GcVBoOHpZWlNR?=
- =?utf-8?B?cHFNU0N0VHdCeFU1b2FqQ1dvK2hENlhzUjNjRWlNT0ZLY1JaL1RyVUpnM1hm?=
- =?utf-8?B?UWl6LzRWMStpSERwdHhDZUM3blJmVk5EVnc3YXV6VnN4ak1BdTZ2OTByeUs0?=
- =?utf-8?B?UTlCNXc0Z2Fkb2psL0lIM0VkNndHa05HUkNtUVpvQVZiZ0R6aXJ3Z3ZST0Fa?=
- =?utf-8?B?azRSV3RTNkY1V3NGZ2JCaW1vYkRPRG93bWpPSjJoMFBxWUJlSnk0R2hMaVo5?=
- =?utf-8?B?TmlVZVdpYzZ3aHZZRGplTFJHS0hyN2xxUWFCWHNoWmxXZjBtejltTENOUlJQ?=
- =?utf-8?B?MTNiN0dHQVlNNTg1YXI5SGcvTENkd2x4NExqOEM5cUxNcVRHaGlhaWRzZGdv?=
- =?utf-8?B?d3dDUmJCQlFtUHFraisxekkrRitDcU41SDR3Wm9LZUdab0llNkZBTGhhblJE?=
- =?utf-8?B?SDQzY09BV3ZXZzVJSUFsNjNqaWRJWFlHc1oxYnFBRG5STHVNV2RRN2FGcWR1?=
- =?utf-8?B?S0NrV3kyekpnUVVJVzBrLzc4WEhSV3R3TmZzWjRJOTBYS3JQcmZRd0JlMjln?=
- =?utf-8?B?dCtYV1ZIU2wzeWIvcmo4Tjdwd0FzZjM3UEl5b1BPZlZsQktMVWEwMzVlSVpj?=
- =?utf-8?B?K093eEZndnRRakVmdkxLaXh1SWlacDBBZXpTVVNRVzRmQzNlcnpwUnVnM3N2?=
- =?utf-8?B?MG5kTXRvNkMySUN5NmQ2ekVYOWdMazVyY2N3THE1UDFidlB4bzFTVFdpSVZM?=
- =?utf-8?B?V0dRL3Rvano3amxCYjZYSXZocTFTSWNVSTVXUE9LUnBVSnUzUHFEdVgrWnZP?=
- =?utf-8?B?a3M0NWZoZXZCWGFGYWt4WWdNcHVxTDlBNkZqcGJOQU5ZdE5MMzFxNUk2SUc1?=
- =?utf-8?B?ajFmTng2TVU2ckVZTnJjS1VxcHR4VG1oeVUreTBIOTlYWXdDaUNBY21ocUZu?=
- =?utf-8?B?d0lGQllyb2xEWG1EbS9LeDFJNVorZDA1TjA3RlZ5dVB5aGpLR2NqeS83bXdu?=
- =?utf-8?Q?U+OfAp/Rq+RdDQc53ssBxu4q7CUCbDhZB2wAI+LejtQrx?=
-X-MS-Exchange-AntiSpam-MessageData-1: d2SapXTNuc51MEtTst5nMTcR2OesMEo6AhA=
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a17d99eb-4574-4286-272e-08de7604d461
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB11741.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 13:33:44.9183
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J09Nu2lkhISxMBy0Kwq+Z8Hu8kkf6bIvpTrxopfdr7Ug2taYs4Xg/k0gx/s5dr2YqPRIx0Sh6tSnbAFmPz5InoPNcCr+OvNASzpwuuRJC8w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10719
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4fMqHT4hrrz1kNt46
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:06b01824bbfbcb4227c6efdf7863bdb3
+X-cloud-security:scantime:1.786
+DKIM-Signature: a=rsa-sha256;
+ bh=yd7VoGo5h85v/tCZbd5Wr9gZqrsgFKoh7cUl95XNvMI=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772199710; v=1;
+ b=I4XvwU+TwZPpdnlAvgTXhuP3aeYm7o3JCmQ6Jy/NDksLNP1p6+Fn9+0IOSLtQEICFrMrULbO
+ 2Hao+rJxwg732kHFJxHqqX0k3OHVaVPXOZV5c7vDBKKVfBm1cp9Pb28XSXzMoMrj9fx6ljQIyd7
+ QQI10oohYS2nZrwwq//OmTqlDDdOLppIrZXKwCeBb9Sg5+dgTFiYENw1pStpY+G7T1W67NxXMMm
+ mXAIfUwIjJlihKbt7GYvzaytkrJOweKMO5TnDj/zQP5r+A5pYoN78mk4wKzYG2Eejvf4wybu9sv
+ z/zWHodzcmkvSPiSCyMHugtAmcpufelvgCDitVjyS8I/A==
 
-Hi Daniel,
+Hi,
 
-On 2/27/26 14:02, Daniel Baluta wrote:
-> Currently, in order to configure IOMUXC_SW_PAD_CTL_PAD a magic raw value
-> is written in this register. This makes code not obvious to read and
-> modify.
-> 
-> So, to help with code readability instead of the magic values use
-> symbolic macros.
-> 
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+sorry for the very late reply. I didn't get the chance to boot our
+i.MX95 based board (TQMa95xxSA) in the meantime.
+
+Am Mittwoch, 19. November 2025, 11:25:55 CET schrieb Wei Fang:
+> The ENETC supports managing its own external PHY through its port MDIO
+> functionality. To use this function, the PHY address needs be set in the
+> corresponding LaBCR register in the Integrated Endpoint Register Block
+> (IERB), which is used for pre-boot initialization of NETC PCIe functions.
+> The port MDIO can only work properly when the PHY address accessed by the
+> port MDIO matches the corresponding LaBCR[MDIO_PHYAD_PRTAD] value.
+>=20
+> Because the ENETC driver only registers the MDIO bus (port MDIO bus) when
+> it detects an MDIO child node in its node, similarly, the netc-blk-ctrl
+> driver only resolves the PHY address and sets it in the corresponding
+> LaBCR when it detects an MDIO child node in the ENETC node.
+>=20
+> Co-developed-by: Aziz Sellami <aziz.sellami@nxp.com>
+> Signed-off-by: Aziz Sellami <aziz.sellami@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
->   arch/arm64/boot/dts/freescale/imx8mp-frdm.dts | 132 +++++++++++-------
->   .../arm64/boot/dts/freescale/imx8mp-pinfunc.h |   2 +
->   2 files changed, 86 insertions(+), 48 deletions(-)
+>  .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 141 +++++++++++++++++-
+>  1 file changed, 140 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drive=
+rs/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> index d7aee3c934d3..6dd54b0d9616 100644
+> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> @@ -67,6 +67,9 @@
+>  #define IERB_EMDIOFAUXR			0x344
+>  #define IERB_T0FAUXR			0x444
+>  #define IERB_ETBCR(a)			(0x300c + 0x100 * (a))
+> +#define IERB_LBCR(a)			(0x1010 + 0x40 * (a))
+> +#define  LBCR_MDIO_PHYAD_PRTAD(addr)	(((addr) & 0x1f) << 8)
+> +
+>  #define IERB_EFAUXR(a)			(0x3044 + 0x100 * (a))
+>  #define IERB_VFAUXR(a)			(0x4004 + 0x40 * (a))
+>  #define FAUXR_LDID			GENMASK(3, 0)
+> @@ -322,6 +325,142 @@ static int netc_unlock_ierb_with_warm_reset(struct =
+netc_blk_ctrl *priv)
+>  				 1000, 100000, true, priv->prb, PRB_NETCRR);
+>  }
+> =20
+> +static int netc_get_phy_addr(struct device_node *np)
+> +{
+> +	struct device_node *mdio_node, *phy_node;
+> +	u32 addr =3D 0;
+> +	int err =3D 0;
+> +
+> +	mdio_node =3D of_get_child_by_name(np, "mdio");
+> +	if (!mdio_node)
+> +		return 0;
 
-[snip]
+If there is no 'mdio' node below enetc_portX node, then 0 is returned...
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> index 26e7a9428c4c7..c963913e3c626 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> @@ -38,6 +38,8 @@
->   				  MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)
->   #define MX8MP_I2C_DEFAULT (MX8MP_PULL_UP | MX8MP_HYS_SCHMITT | \
->   			   MX8MP_PULL_ENABLE | MX8MP_SION)
-> +#define MX8MP_NAND_DATA_DEFAULT (MX8MP_FSEL_FAST | MX8MP_PULL_UP | \
-> +				 MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)
+> +
+> +	phy_node =3D of_get_next_child(mdio_node, NULL);
+> +	if (!phy_node)
+> +		goto of_put_mdio_node;
+> +
+> +	err =3D of_property_read_u32(phy_node, "reg", &addr);
+> +	if (err)
+> +		goto of_put_phy_node;
+> +
+> +	if (addr >=3D PHY_MAX_ADDR)
+> +		err =3D -EINVAL;
+> +
+> +of_put_phy_node:
+> +	of_node_put(phy_node);
+> +
+> +of_put_mdio_node:
+> +	of_node_put(mdio_node);
+> +
+> +	return err ? err : addr;
+> +}
+> +
+> +static int netc_parse_emdio_phy_mask(struct device_node *np, u32 *phy_ma=
+sk)
+> +{
+> +	u32 mask =3D 0;
+> +
+> +	for_each_child_of_node_scoped(np, child) {
+> +		u32 addr;
+> +		int err;
+> +
+> +		err =3D of_property_read_u32(child, "reg", &addr);
+> +		if (err)
+> +			return err;
+> +
+> +		if (addr >=3D PHY_MAX_ADDR)
+> +			return -EINVAL;
+> +
+> +		mask |=3D BIT(addr);
+> +	}
+> +
+> +	*phy_mask =3D mask;
+> +
+> +	return 0;
+> +}
+> +
+> +static int netc_get_emdio_phy_mask(struct device_node *np, u32 *phy_mask)
+> +{
+> +	for_each_child_of_node_scoped(np, child) {
+> +		for_each_child_of_node_scoped(child, gchild) {
+> +			if (!of_device_is_compatible(gchild, "pci1131,ee00"))
+> +				continue;
+> +
+> +			return netc_parse_emdio_phy_mask(gchild, phy_mask);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx95_enetc_mdio_phyaddr_config(struct platform_device *pdev)
+> +{
+> +	struct netc_blk_ctrl *priv =3D platform_get_drvdata(pdev);
+> +	struct device_node *np =3D pdev->dev.of_node;
+> +	struct device *dev =3D &pdev->dev;
+> +	int bus_devfn, addr, err;
+> +	u32 phy_mask =3D 0;
+> +
+> +	err =3D netc_get_emdio_phy_mask(np, &phy_mask);
+> +	if (err) {
+> +		dev_err(dev, "Failed to get PHY address mask\n");
+> +		return err;
+> +	}
+> +
+> +	/* Update the port EMDIO PHY address through parsing phy properties.
+> +	 * This is needed when using the port EMDIO but it's harmless when
+> +	 * using the central EMDIO. So apply it on all cases.
+> +	 */
+> +	for_each_child_of_node_scoped(np, child) {
+> +		for_each_child_of_node_scoped(child, gchild) {
+> +			if (!of_device_is_compatible(gchild, "pci1131,e101"))
+> +				continue;
+> +
+> +			bus_devfn =3D netc_of_pci_get_bus_devfn(gchild);
+> +			if (bus_devfn < 0) {
+> +				dev_err(dev, "Failed to get BDF number\n");
+> +				return bus_devfn;
+> +			}
+> +
+> +			addr =3D netc_get_phy_addr(gchild);
+> +			if (addr < 0) {
+> +				dev_err(dev, "Failed to get PHY address\n");
+> +				return addr;
+> +			}
+> +
+> +			if (phy_mask & BIT(addr)) {
 
-Isn't this the same as the USDHC default that is above the i2c one?
+=2E.. which will break here if there is an Ethernet PHY using address 0 in =
+'netc_emdio' node.
+See arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi node ethernet-phy@0.
 
-Kind regards,
-Maud
+Best regards,
+Alexander
+
+> +				dev_err(dev,
+> +					"Find same PHY address in EMDIO and ENETC node\n");
+> +				return -EINVAL;
+> +			}
+> +
+> +			/* The default value of LaBCR[MDIO_PHYAD_PRTAD ] is
+> +			 * 0, so no need to set the register.
+> +			 */
+> +			if (!addr)
+> +				continue;
+> +
+> +			switch (bus_devfn) {
+> +			case IMX95_ENETC0_BUS_DEVFN:
+> +				netc_reg_write(priv->ierb, IERB_LBCR(0),
+> +					       LBCR_MDIO_PHYAD_PRTAD(addr));
+> +				break;
+> +			case IMX95_ENETC1_BUS_DEVFN:
+> +				netc_reg_write(priv->ierb, IERB_LBCR(1),
+> +					       LBCR_MDIO_PHYAD_PRTAD(addr));
+> +				break;
+> +			case IMX95_ENETC2_BUS_DEVFN:
+> +				netc_reg_write(priv->ierb, IERB_LBCR(2),
+> +					       LBCR_MDIO_PHYAD_PRTAD(addr));
+> +				break;
+> +			default:
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int imx95_ierb_init(struct platform_device *pdev)
+>  {
+>  	struct netc_blk_ctrl *priv =3D platform_get_drvdata(pdev);
+> @@ -349,7 +488,7 @@ static int imx95_ierb_init(struct platform_device *pd=
+ev)
+>  	/* NETC TIMER */
+>  	netc_reg_write(priv->ierb, IERB_T0FAUXR, 7);
+> =20
+> -	return 0;
+> +	return imx95_enetc_mdio_phyaddr_config(pdev);
+>  }
+> =20
+>  static int imx94_get_enetc_id(struct device_node *np)
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
