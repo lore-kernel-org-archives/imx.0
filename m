@@ -1,185 +1,183 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011066.outbound.protection.outlook.com [52.101.65.66])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFA53233E8
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 15:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772206362; cv=fail; b=FY6NlPbSK/1pvxuVlAoix+75XEXzhRd6g3Y9Bs1flWjTouiQWvNzrVQVWPz/b39ox8REXZ2eFoB9Y1lJdf7dJsHT/0lFEXul5IbVPnJm8DUw4sCPLzNPj/94QOWOwVNqc1pcrEPr2OmX0alepoLZFOb/sHh9xb7VgEpVaO0rf2Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772206362; c=relaxed/simple;
-	bh=upaeCo1lSw/KGzVgygw/U91HhesB2rMbvJy/dCxyubY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LITqZvOCbIRCs2RkKbkpATEM7mel0DrBE6QGauydXQB3iUHvPSqQ6RYiLZg6gm0m4nPjsDg+kJbzFBX2kWQN2PuSwJq0y7H4tUAUV3+Hx/EzFhej0IXzLDLpdVxQjp1/10PSCSCm0t560yKLdGtXdzoHpH8zJEAyRKbeMxGjfUw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jS86pNld; arc=fail smtp.client-ip=52.101.65.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7573443CECD
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 15:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772207134; cv=none; b=hp/jv9Xrc4kzTkzoYjnI8OKWWzncbNh3xlmh7QD1nKjPeDaXzox75V6epF1ITfRKk7p0trVNgNnM3Kqg1NTsNSLC3KH+BNILcHf3hRKIZI0np91hqbvJSnxivJJQ93oEVVViADpNbvKgN6jEH19emf91dyKjBULOhbEdhBT5QcQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772207134; c=relaxed/simple;
+	bh=s4fL6BemrOkQhgBVFMKclB63U/HSNTX4nIyb1wZr6Ss=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tJ/pGHxw4tneuGIISwjPmVsFP3D0r6M4bBRThV2lQjmGxR+Lspgb2lM+dSDghp0khnuXLm8xTdfiwrWpPFbM6w12zcsKIBgM2Tih3DEDOIVmkO4oPnqFk8KtaPjU+PW+a/ge9vW1+/zs2bNT2BJoxO5gLnTAqAoIRgCzRyvYLog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=PIDUtrah; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jS86pNld"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aR6hPwJvNdsLGLQeQ+4w4KW4YqOggWuo1cOz+6YwdgjQ+AmKk1o1wlUBou+2dzuWJ81TbhuxfgeTkwkRbWQp4vQzeCLhcW9cl+UtxQ0NoGX2wVZanucg5uXvMcC5kXvxdxT/mFThzmrEAbvmoqVzluJKDWDL4dfmPEZYZHYaZqv0PaidQsBdNF3WFf+eNFNeOUdxc6Mi+G9Ovn37iLClom4jWZFzAiSBpTPP8CpoanHNE1Pgl1vpYEmsBqMZCZ1w0p/bql6PD7yx77aJQFtEcCrMrIRpt/ezamJX5zXkUi6S7Ce7RI+gir4ct4nDMNnqUiBI3X0/a1SliH07R/B6jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=upaeCo1lSw/KGzVgygw/U91HhesB2rMbvJy/dCxyubY=;
- b=wgsuSSz2R27QS7BkGOxRZpJsoiX2WQrAO0bHhpduVlBfIHfeSXVlYUEIQJhSlXRwFWAF2O+9qkmyACsv/qs1S4M9+NhXOoLRX/J4tUiJoLD9eY+DOZt3NTTmdWGjjPD58+xL5JPN7MPBymui8iZ3UI+Fc5rKljh/CeXKvV8j7fIt3XLqB5bZ5WufpFJd244afP92F25G8yYEsi6+PjVKSnuvmcsJtq08NkffUIssXze2LOu1IsYHoaOy0gu2XpvOxMr9VhOMVNdVPnlnXHtCnkHEG9HbMT2xDcY4MOij33+itRSAIjodfMF2zcZrPrhhYJMGUhTvEq9NhUV8KMn7Zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=upaeCo1lSw/KGzVgygw/U91HhesB2rMbvJy/dCxyubY=;
- b=jS86pNldN+s6FnGlSMA6ukVuGHIqE115aCQq3YXtcpc7kSEicPn8D/GqwJP7kIu3irFPItG6mO5W5o4lWufAXXixjEjlpF1Wcre8hUVUgrrY7VPO75Gr6i9Syb23fm+/VEer4JH7qgKEeC2EkHz3gcm7b9n/Rn1udm1ctCu+k8ZxXq7JMvhFDGlaeQb3FkRkgj9QTQSgkd7Vo1YVKheKGZLKGHhoIXxvKd3NcV1neOa6C8e9JiZ87Glc8pWHll7tFklDwSjrBao1S4d7R1PjT+8MtVTq2KYzNY0anuxXSx6htGYLp8w/YT+s+QczJMC4AEcKMcaG3oek2U2BCXjn3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
- by DB8PR04MB6923.eurprd04.prod.outlook.com (2603:10a6:10:114::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
- 2026 15:32:38 +0000
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 15:32:38 +0000
-Date: Fri, 27 Feb 2026 10:32:30 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v2 3/6] pinctrl: add optional .release_mux() callback
-Message-ID: <aaG5DpyET-vri-Vj@lizhi-Precision-Tower-5810>
-References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com>
- <20260225-pinctrl-mux-v2-3-1436a25fa454@nxp.com>
- <CAD++jLkhH566rqkkQfWnOiAokxB8mLXw=eqrVN_pgs+dd8TkxQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jLkhH566rqkkQfWnOiAokxB8mLXw=eqrVN_pgs+dd8TkxQ@mail.gmail.com>
-X-ClientProxiedBy: SJ0PR05CA0054.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::29) To DU0PR04MB9372.eurprd04.prod.outlook.com
- (2603:10a6:10:35b::7)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="PIDUtrah"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1772207131;
+	bh=s4fL6BemrOkQhgBVFMKclB63U/HSNTX4nIyb1wZr6Ss=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PIDUtrahR+x1pvSzrQQvKkE+nh9iA5yYQjDQ6GpPl6LsxWoQ9ZleIf92pGu4RzqGV
+	 I7Fs6ept6Vyiuju1cBpVjpmxXrSRf9QtVFQnrADrqbOU0+8XMCEjeLQj83xEjRfhWm
+	 sh7hfReXk2aeGZm5yTvUeSFDiENNDJIOjN9yxHb7GEP0+Ud6sltzMGwbT+0W4W0e0k
+	 s4euNJpz0OcokrLIi8zY0+X6wyXdUHiA8Z7UN4kKoHs261q3g2IpEHhpCjjTi8rGdf
+	 MsZHY4AjLLmLzAcq6FO3jtpk0wqGgX0TwcsCxc2ZvTAX64O+Zqqv2J1M9B+o0/ZLQC
+	 EL7hAzpsHpiQg==
+Received: from [IPV6:2a01:e0a:212:79f0:be92:a52a:153f:7a60] (unknown [IPv6:2a01:e0a:212:79f0:be92:a52a:153f:7a60])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aferraris)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2494017E0D04;
+	Fri, 27 Feb 2026 16:45:31 +0100 (CET)
+Message-ID: <073cbeb3-04a8-4b26-a7b6-ef0b7654c34c@collabora.com>
+Date: Fri, 27 Feb 2026 16:45:30 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|DB8PR04MB6923:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88181ba0-0bae-4bc0-ad40-08de76157068
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|19092799006|7416014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	c7uaySS86uB2f5JhjmspK+dD+G5rgZDq/iMJQH7MFlCHNTjucpF/CjvE1SlbKi9FhKkUkUfMPxmrY8qpLpES+3Oq8hqpcFibAV56ZeZzvLYrLwJ81YNkA06uuN1FYf5Nm+bfBFVF7UeIjRpl6O1TA9W4tqXFHJdK50uDQQ5yhxcUBIbTXKOYG6cDm1NerTaBNGyqNq18dYtXYuK9j8VOBrt/h5PhWGmeVAnr99ogpmL163P843osaC5Nv2nsHkQnHS6vvYJD5JQZo+8+DH0yi2Ly8V/S3K9hxYXLJKjZXoCpKCdJBZt5CiMn33N+Wj2DG+7cTxgA/X0jWqCjDf6Fcr1QrKfovkp+sQ1Bg/eNtCdKo7zWMtjL5NjA9G/9UOwOmv306OLwWuQTeO+yppgDeq/4R0AKlAmVwVCVHKjkfQK+wHXCYeX2fkoL+D3ARfdAvE6hpP/urv7pSkYYcG7gsfeIgs89aI9+ZZfwiRirHeOqG1KVTZ9SNN7u8YSpv9A67jjA79CcV66AexnBQGHzazBSXJ5fGHaNQVsmHd6KPtXpY6dv/GGZCgZBfsOWlOhSbUQTXm7hWYACe/sIEjgKMm5RQZEOuobn0fo1IM3qbTeS9ZtNIgycB972zYC6Q50P1SfypzePRzVbCUQjVmPyHvnMh7TNSXgK4Arig2qQkoM2CnaITCOVoPH977uOTRl88C9gik0q4wGrW39A6WudcO3WOqBq1hdECrm7ssywwjydvJFqyllPA1jHvzvvs4Hu1Qio8fu86E40QVa4XU1er/0FDONeFvqf+BtgqyP3Ex4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bVl1TWUzY3ZPWmpqYnBHRm1rTmh1QnJlRTI2S0xvQkNJRm8xZEYrbjF2WDVn?=
- =?utf-8?B?bE5SVFlqZmN6ZGlmR252dk54ZXZrdFVsd245b2xCTlBSVmVBZnQzN0NGekNX?=
- =?utf-8?B?bEhNUUlVdnJQL0VybXdoTm5YeHQ1MlFrNlFZMTkzcEFJYkdwY25ESlZobVlr?=
- =?utf-8?B?aXV6bVV4SXJaS2pIM0JvNFU2dUluRXFPanF4NGtnVjVwM0svc3pPRWFHUEJD?=
- =?utf-8?B?bGxGangrcm5KajVCSUgwMThNS0xhN3NROHc3bXhMcnRxZFVJOXU1NEwwbzVP?=
- =?utf-8?B?VDFoM2ZsSlVXVm9sN3ZoeFp0b2FRelo2VEt0aVFUckdFbkFRbkhVbmZhSTVj?=
- =?utf-8?B?VHNTQ2hVa2VmWXB3Si9vNXVyWUN1WDhGbW5TWk1LMG1sVERnUUREYndkWWVC?=
- =?utf-8?B?RUtiWXFEQ0RpSXBiN0Vpd09GV2ZRbjJPbThzU2RmSk1SSnlWdmFmRS83eHQ3?=
- =?utf-8?B?aTYrL1VSZ0dkNWl2NGk3SVd1L05UVWhVaVhzVUVSYThjM2svdSs4clkzakp2?=
- =?utf-8?B?Y0RQZDhWbWJ6STlHTVgxWnh4STByQ2ZhN2syZ253emlCeXFFZkV2OWJpWCtP?=
- =?utf-8?B?WTNxUUNMM3BpNzJyTGhNQ29Qa2Y5dXZHNXZkZFcvNWtObS90RW5xdVlCaGpS?=
- =?utf-8?B?NGgvME05bGR3bEJ6dEVTVytobUpDK3hnSCs5bFE3U3Z0b2IwM1Q4NFk0WEpJ?=
- =?utf-8?B?RlJmOVkzcGxyY1lXbkJSTDlJcFZPbTR5eFhTNVJadmYwTjY0ZTNQOUkzSGJj?=
- =?utf-8?B?Q2kvUXZaUmlDalFZWEpwWDZ4Nm9zTVVURUlQUkRTVlVVc2E5R2doeHk2dmNt?=
- =?utf-8?B?MFBkeGN3bXNGbXhhVGx3eE8wYWFBS0NPOUlEUldRL0lxaGpOb29abUdocHUy?=
- =?utf-8?B?YmpkSWxuMkMzNlB6eElqTGIvOUNFNjlud1djVGkrNzFQSXRGdDFkcThEMk1p?=
- =?utf-8?B?dlVsSE05REY3Yk82K0tPQ3Z2dFNaek9zVzYrUHE2Myt1MGdzb01HRHljUGQ5?=
- =?utf-8?B?NGlJa3hOajI1L3VYMUNYSFMzWnVUK1hyL3RTNk14S0VGMGlubEJ6ZkxCS2dT?=
- =?utf-8?B?OWhlcnhIYXJBN1hoODh6eUJhK3lpQzZabjJnc1gyR01TdWMyWXdtRDA5K2hs?=
- =?utf-8?B?TVZ3SFdJOXpOVHlKQW1Fci9oQlpYYnJKWHp4MGthcXhNTXhrRmI1NEo5ZXQ2?=
- =?utf-8?B?VVJJR3RWZlJ1TWxJTDBsRHM5UDRCdTBNWHU2S0VNMzV5eEVrMGpmZGhZUVE2?=
- =?utf-8?B?NWZMYldhMU9yMDE2UENFYkJhdWwrVnUrZGphc0g2UHlFWGlUdjF0YnNIZzV3?=
- =?utf-8?B?RG50UG9hak1rNGVpY1l5VDBsUDUyTXBPemtkcWpxMzJUVzMzeDdqaVdFcjVI?=
- =?utf-8?B?VDJ6dXd0TkRKemdqWnZ0TXhZVFE1UVhyN0IxNGlxYWtDYU05djhzMTVKRVc2?=
- =?utf-8?B?UmYyRjJLQTVKQTV1NmUzVFlzR2pKOTJ6TE1TdWFuMlpmOHlSYjRnYkV6Qk1I?=
- =?utf-8?B?OXBLTTNZVjBYd1pRVmxiKzZBRE16ZExqTmxDQ2Q5UWlUbUpyNkp5U1Q2cWdz?=
- =?utf-8?B?dUd6azR5akt6QzlmaUQxYkpxQzU2NHppcTlzb050Nk9wYVJIT3dYQzE5dEV4?=
- =?utf-8?B?QW13emdvQ0dxeGJsbGg5N3BsclkwQ0hYQjAybTRRdk9iY0k0bzIrZGxKbXdM?=
- =?utf-8?B?bHlyT1NpTnEvSGVSeWFDeVlTMFpBaHRLZFJZaTlpM3NDWTNIZVd3ZzNmUFVN?=
- =?utf-8?B?a3J3cko3YWUxRGVNUDJRUnh1R1pyT0VncUpUN0o2RFh5VVRXbFgyTFpKeXYr?=
- =?utf-8?B?N01kRGtjZFR1c2w3YXNKMUN0ZkpRQTd3UXFrcy94cHBHY3c2aXJaOWFrVTFS?=
- =?utf-8?B?V2JTdlVWUFduTk8zdEwzNFkxeldISllsTHBkRXpJTFozZVhOUm5DcS9DRUlO?=
- =?utf-8?B?dTZTMGMwT2tHcG13NW4zQVRYTVhpaGhDSmZLVjRoY2UwVVFIaWxwTzB3UThY?=
- =?utf-8?B?d25xUVNhMUIweVpmaXpyVkt2ZFNFNEUra3AyalJoaWVKeWJZZ24yNjNHYWF3?=
- =?utf-8?B?SWZsbmd3d0dJS1pxWkRObUk2cU5ZUElBanNqakx5RzBGVzBSeEhtcllRR1NV?=
- =?utf-8?B?ZXRBdUZVamc1eHZXS2xjbHJJc091M1lBSjFZblRML0dlM2NqQldBeVlFL2Ji?=
- =?utf-8?B?MXZINUpTWFlCYWFaT1pER3psZmNtSy9rc1c2ZGZVd2ZQYU9tZDFsc2xwankv?=
- =?utf-8?B?RWJLYnhaYWhhSzgyK1gxaWZmaXJFUDJEMjR6OTdSdk1CT2RjVXJjOG1RWENv?=
- =?utf-8?Q?VYn5oB7gaeA5gpzIM+?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88181ba0-0bae-4bc0-ad40-08de76157068
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 15:32:38.7954
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pug0qQYJR/dA3LLCqyYS6eCOsva4FojYoeqoCliQrKqIPzTDrHANZ+qvjbemqz2aBiAcp/b9i+nku0sBr1Hz2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6923
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "tcpm: allow looking for role_sw device in the
+ main node"
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: badhri@google.com, heikki.krogerus@linux.intel.com,
+ gregkh@linuxfoundation.org, dsimic@manjaro.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+References: <20260224110139.3812757-1-xu.yang_2@nxp.com>
+ <30bc5aeb-382b-49e0-824a-303230110313@collabora.com>
+ <im3nnajzv2hdu3kv2hknxi3jaz3oam5pujdoapva4hs5rzguky@t45ryche6n5k>
+From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Content-Language: en-US, fr
+Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
+ 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
+ L9jD4jU=
+In-Reply-To: <im3nnajzv2hdu3kv2hknxi3jaz3oam5pujdoapva4hs5rzguky@t45ryche6n5k>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 27, 2026 at 10:07:05AM +0100, Linus Walleij wrote:
-> On Thu, Feb 26, 2026 at 12:55 AM Frank Li <Frank.Li@nxp.com> wrote:
->
-> > Add an optional .release_mux() callback to the pinmux_ops.
-> >
-> > Some devices require releasing resources that were previously acquired in
-> > .set_mux(). Providing a dedicated .release_mux() callback allows drivers to
-> > properly clean up hardware state or associated resources when a mux
-> > function is no longer active.
-> >
-> > The callback is optional and does not affect existing drivers.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
->
-> Can you explain why you need this custom code for this?
->
-> Nominally pin control defines and puts the hardware into a
-> number of states such as:
-> "default"
-> "idle"
-> "sleep"
-> "init"
->
-> Usually (at least for silicon) what .release_mux() would to
-> is semantically equivalent to a transition into the "init" or
-> "sleep" state. And if these are not descriptive enough you can
-> even define a "released" state.
->
-> Is it not possible to reach the set-up of the hardware that you
-> are desiring by just defining such a relaxed state?
+Hi Xu,
 
-I am not familiar with pinctrl code. I just need a place to call a callback
-which do opposite work at .set_mux() function.
+Le 25/02/2026 à 03:57, Xu Yang a écrit :
+> Hi Arnaud,
+> 
+> On Tue, Feb 24, 2026 at 12:33:33PM +0100, Arnaud Ferraris wrote:
+>> Hi,
+>>
+>> Le 24/02/2026 à 12:01, Xu Yang a écrit :
+>>> This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
+>>
+>> I believe a plain revert isn't the right solution here, as we'll get to the
+>> same point as we were before 1366cd228b0c, where some devices stopped
+>> working properly with newer kernels.
+> 
+> I don't think 1366cd228b0c fix the real root problem because the description
+> should be wrong in the commit message. If -EPROBE_DEFER is returned by
+> fwnode_usb_role_switch_get(), the ports node should be in connector node
+> instead of tcpc node. However, you get the error when ports in tcpc node.
+> 
+> Could you double check the issue, so we can find a proper solution and avoid
+> the further regression?
 
-I see pair function pinmux_enable_setting() call .set_mux() and
- pinmux_disable_setting() just missing do oppsite work of .set_mux();
+Sure, I'll come up with more details asap, either tomorrow or early next 
+week.
 
-I may think too simple. I just do insmod/rmmod test. Any suggestion where
-is good place to put it?
+Best regards,
+Arnaud
 
-Does it call pair pinmux_enable(disable)_setting when switch state?
+> 
+>>
+>>>
+>>> The fwnode_usb_role_switch_get() returns NULL only if no connection is
+>>> found, returns ERR_PTR(-EPROBE_DEFER) if connection is found but deferred
+>>> probe is needed, or a valid pointer of usb_role_switch.
+>>>
+>>> When switching from NULL check to IS_ERR_OR_NULL(), usb_role_switch_get()
+>>> will return NULL pointer which will override ERR_PTR(-EPROBE_DEFER) which
+>>> is returned by fwnode_usb_role_switch_get(). Then usb role switch can't be
+>>> obtained because the defer probe info is lost. So the unique error should
+>>> not be regarded the same as NULL.
+>>>
+>>> Fixes: 1366cd228b0c ("tcpm: allow looking for role_sw device in the main node")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>>>
+>>> ---
+>>> Also correct a description in 1366cd228b0c ("tcpm: allow looking for
+>>> role_sw device in the main node"), if the ports are defined in the tcpc
+>>> main node, NULL pointer is returned by fwnode_usb_role_switch_get()
+>>> instead of an error.
+>>> ---
+>>>    drivers/usb/typec/tcpm/tcpm.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+>>> index 1d2f3af034c5..8e0e14a2704e 100644
+>>> --- a/drivers/usb/typec/tcpm/tcpm.c
+>>> +++ b/drivers/usb/typec/tcpm/tcpm.c
+>>> @@ -7890,7 +7890,7 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
+>>>    	port->partner_desc.identity = &port->partner_ident;
+>>>    	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
+>>> -	if (IS_ERR_OR_NULL(port->role_sw))
+>>> +	if (!port->role_sw)
+>>
+>> It might be worth saving the error and restoring it after the call to
+>> usb_role_switch_get() instead, something like:
+>>
+>> 	if (IS_ERR_OR_NULL(port->role_sw)) {
+>> 		err = PTR_ERR(port->role_sw);
+>> 		port->role_sw = usb_role_switch_get(port->dev);
+>> 		if (!port->role_sw)
+>> 			port->role_sw = ERR_PTR(err);
+>> 	}
+> 
+> It works but we'd better to get the thing clear firstly.
+> 
+> Thanks,
+> Xu Yang
 
-Frank
-
->
-> Yours,
-> Linus Walleij
