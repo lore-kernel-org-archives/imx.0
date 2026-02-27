@@ -1,205 +1,210 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013045.outbound.protection.outlook.com [40.107.159.45])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8151320D4E9
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 07:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772177748; cv=fail; b=YjEhUdA2xfL+2GRO9qySxZEYGnN9S9KWmXH03bECOjtrsXNgt7kEJez9nKmmC93G2mv1j4rd7lflA3JmTaBZyZjM1yYSFTik4xDGyTWYFHrX+JGENl9ktYnNrmTDVJ0O0ZiQ50e6oUCxbeWMJyXqKsMYPsOemnXDGSVCqaoBlhU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772177748; c=relaxed/simple;
-	bh=N+5eX8jXAEzJayTzyjO+45UpnGxSVVnAxgUaNDbMGRc=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=OX2vsMnBuiRTSbs4lOAHZkJrRBlt4YpJ3txBSPY1Z/rH4JG7zyrEJMqnx23GVvICrHKmXSW1lL5tWllaKhkLdYus5VHHsfLTG4irmgBw2m9Msxa6ppLntnarNZKMzde2aE445cnM+nwkNrIPqZyiH1/VS2DvyHAT5XDLSUpwPIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=h30ZQaMz; arc=fail smtp.client-ip=40.107.159.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C7163
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772180383; cv=none; b=iuLL058kF6g88gFn3RIg8+veM57f3j9yfEJ4DZsEPY4WRwPqrf6S7i37HHnbu9snXUJw1fVz8ropXT2vj46kyFj3ll3WvLhJn/ogA0qxw+1wSARqtgx6ebq+Qra4QrF4BVUC7ax0V+Oz2+f2GWS1fbpdS+oWgd3CcBkYVYeYnGQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772180383; c=relaxed/simple;
+	bh=BZkKJ60dM1sCJoV/yPXvzNVQmdyrllYqT3tsVenPo7I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oQtstZkkENToEJaz/Y1DgDS+27vwInbUexgnxINiYDDwLsFskQsXVu1e8VnaNAD3oQj1WF0Q+5gLVosSGKzuvoBWV7RKIHFN3pVKbnfLFaDS4RnfhZ6oHV6P06aorm2qOyj4Vo5yzdwT9NBX6W1vIHdduV0Lc9y6BSc1FneK34k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=YesEvtDd; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="h30ZQaMz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=usROWmhFrwj59lDxdrzXHEBamPJec5hIRoe5UNp5VOnRib+2hSu+FnCnli+bzNnzn0Aq+dolo6tPhCV+B2kQ2P0Ne5XU5Ic+WN9iw9B8OYEfKeXSJlcPj1H0FjHxL6w7nDYF5603EtMB9hH7uhGtZ8RInBlkag9mR/Hu15NknN9BZRfoZVe/7n6vqE7CeVf13hyGWUVSuAFZkdU43gGE2okhvPomIN1PCSJmXk6kwI/aiAOmO6Smw28pgcnpwUthu/pcmVN/2peQmp5WyfVQxehbaKyzjBTzb3Dl5yQPJfDMby4wOodxqV9a8vS5qbIBXo26Uj5IpmzLNDIhtk/OmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IoHJ4ImvXmU0plrueOPM+Le42l3mps+PmtM/z9jCD2o=;
- b=XLP+Ip8BAOpdU5RxI0mSc8d/GcHTX1DSp+xyC9qpoBdFjtzBI2S/cfR0e+ru1ILIUXzdS/6Cp/5zZy4XlVtHXQLhlrGIVy7aTo098nAEpoYCnASqKl/3PRl94j9Dp4EH4Q/C9Ck8D/uHGyaUSgEZcT0Wa4Q+xqWsIJLgEGdks8Tsay2hap4CYv7z2u32KoY+t6aYYplWsaL0UkH0HT5LPHA9CHM4KWxw6tUUL6pvbie8Ji8Zkeqwez3UtJGK08BJJBfQGdNtMqDyACbhYB0K7myvGxT0YNM2uCdDRwKUjYtCsEDuvKq4MiGXz4Oz1eZ2uWwpl0aAyUiv7oWEwFWi9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IoHJ4ImvXmU0plrueOPM+Le42l3mps+PmtM/z9jCD2o=;
- b=h30ZQaMzptQ+uZbWKeuDOKr+Wa4RXFsdRQdHgf7SrYr1HQes7zak5zmScc+p8vjnqC64ZQ6uNCRGi+3D/x0uMdhNq5UQ5pvXZSQBcEUv3GnGaaoF5X1OVUeXlS67ho7Lh18BgSSCUqUWYUpk9d0B/3B8BI3MmXHl9TddpfqlS1q5RJOmVT5Q5z4aet9fjM2wgqbE66gilhdQegzFe6VFXqxP44chjvtPy1NTKI5t16DEVDuqK2MaWWE9FcjvK+APfTP6Jn1QG6T+LPTnnBKwT1QDpR/27/n4F5Bocrhs7I0v4ztx3R3sWQ2dUuG1MuUZU8rOziUIMfbbe2LRlcu6+w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DU2PR04MB8837.eurprd04.prod.outlook.com (2603:10a6:10:2e0::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
- 2026 07:35:43 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%4]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 07:35:43 +0000
-From: Liu Ying <victor.liu@nxp.com>
-Date: Fri, 27 Feb 2026 15:36:41 +0800
-Subject: [PATCH] drm/bridge: imx93-mipi-dsi: Fix mode validation
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260227-imx93-mipi-dsi-fix-mode-validation-v1-1-a9cd67991280@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAIhJoWkC/x2NSwqDQBAFryK9ToNpfzFXCVkMTmseZFRmRAbEu
- 9u4LHj16qCkEZroXRwUdUfCMhs8HwUNPzdPyvDGJKW0pUjHCLmvOGAF+wQekTksXnl3f3i3mc6
- 1NMOrEyd1X5EdrVFtdkc+3/O8AM7h5g50AAAA
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Liu Ying <victor.liu@nxp.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: SG2P153CA0011.APCP153.PROD.OUTLOOK.COM (2603:1096::21) To
- AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="YesEvtDd"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772180377; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=weHy5upVfL/CTdyKtRtnXdAw6Ax8FQqZLwgVe9u7JuU=;
+	b=YesEvtDdyLVDZLOYaGrtowNWvjLC1RirUyaaKxz7uNPFwXzC1VLPezLpHD2IcyZfBO5EOrPeEVO9PH+xCY3+IuNMqDPAO2gtN5NOnCx2ETDSyaq0kW24g/MqJ2OU2d47wB4hAuclf9orK9yFfzt1VuuYIhVQ9fte+bq7JZOZTpk=
+Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WztidQ5_1772180374 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Feb 2026 16:19:36 +0800
+From: Wen Gu <guwen@linux.alibaba.com>
+To: tglx@kernel.org,
+	tglx@linutronix.de,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	mani@kernel.org,
+	imran.shaik@oss.qualcomm.com
+Cc: vladimir.oltean@nxp.com,
+	wei.fang@nxp.com,
+	xiaoning.wang@nxp.com,
+	jonathan.lemon@gmail.com,
+	vadim.fedorenko@linux.dev,
+	yangbo.lu@nxp.com,
+	svens@linux.ibm.com,
+	dwmw2@infradead.org,
+	nick.shi@broadcom.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-fpga@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-s390@vger.kernel.org,
+	dust.li@linux.alibaba.com,
+	xuanzhuo@linux.alibaba.com,
+	taniya.das@oss.qualcomm.com
+Subject: [RFC v2 0/2] ptp: Move non-NIC PHC drivers from netdev to clock/timekeeping maintainership
+Date: Fri, 27 Feb 2026 16:19:32 +0800
+Message-Id: <20260227081934.96865-1-guwen@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU2PR04MB8837:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6611806-291f-4222-04ed-08de75d2d04b
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|19092799006|376014|7416014|52116014|1800799024|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
- genGjR797er6088o0YRUQouaCkeGc2sYVcNQHNhiV8cUduKuWsqYPwqBrjRl81aEH0/AhiSu4bV82e5zWV5kWf+3ROAxENmSV7++gxxnO1LoypB4S3eNs7+x/YvOcl12g7UWFtkIO2HDaX3Ty7RzIXhRboOX5R936mHvv8oiO4m6o/iNzRdi2XbL6EyxIvVYxaEfrU+PdoogcHlnkIcDVPODRQ3xauz7/oBCQi+ZaQQzRoWWPHC5aKuPbo5Ho0kqKow91sAhplxWgGPnL/nuMMDpVhZpPWDF96QbC4LUSNhUMz4ffxQo+u0l679QBhfzIC7su8i9pysEPpxWb4RPxPYtOGxqo8cLtzhpQqfvUIqceSw8Nmi09l932OnZDuaVReknfykJsxDO2vQWRRDK9QgTl+h/QrG8522zJqZRh6VA6UY3Ao9RyfsZ4FUkqCB75tL7sBSEb8ZEwDPIbag9uMoftduxufUxe5pgSE1PEzy7m8b9OMqr8MYD91fhJ1HQXv4xrZNBjJGs/NIKaaOyqkHHm6rU9flbgIXiCcX8JZHDZMVbNbitvyJFdh8ulPPVpMTJgkiEAOG+1EtaGERZb58Fc75CTwWusyuECfogU/FXu0IiGZwiXDbpj1/3a3/PJOQDHFOEkmujehaA5EaYOzkuhtYog9rXQbGb+HCADdvOUb9k+4y8jJusOEgK6MpAEsfKxdyXc7iVQzVK1eNfIsqsyr0qb4usFg3lvoy9hErPGtF8TgjUq4P1lpNyIX1bELEenA/8yQc4pMLZClXy4cTzW5a7C69JvC6VHn6IbC+pRitFnkPKcBPR3krz34UH
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(52116014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?TmdiSjlRT3R4cnVGNFlNenVvQlFJQngzQ09qZlJxSE1vbUF3SlNaSUJQeVJ0?=
- =?utf-8?B?ZEZucy9kRVNWTlhrVndsUzVSZjNETktiRzkyRHNCSmgxMzhoazdOOVVlaXYz?=
- =?utf-8?B?U3FzbGpaR0tkaUcrRmJPemZCLzhTZXBTR2NCS1M1MXBNcTY3ZE9Xa1dxVW52?=
- =?utf-8?B?VDF3Zy9wMEgyTnlFTFl2RjkzRXVRY2xiV1ZaamdCNHA3Sk9KeTZlV1RNWXRM?=
- =?utf-8?B?VUtKUVRkZEtyNnRIK3NBazhtTXd2WWgzV3gvUTJCZCs2VU9kRTF6c2tJbnhn?=
- =?utf-8?B?dGFhRlgzckFwSzdoZDJid1k3UlNNRUw5T1dtN1dHWjZPWG41bzZhb1Zic1VO?=
- =?utf-8?B?cmZrZjhtWUpBMzZFeHYzM013RThxdjF5SDZmbEVoeTZTcThyRFgrMnJhWW9u?=
- =?utf-8?B?SGVyRGtZQ3J4ckxLSFJlejFnb0I1Wk0yanlCV280TXl1QkhqRGd1c1ZvVWFL?=
- =?utf-8?B?K2RaMlRpM3Nsek9oY0RLcDhsQVQrRHFFbzZTR3VsRlJUZlllVTRDMEowNFlK?=
- =?utf-8?B?K292TFJOdEZUZVlQeUYzOGNTem1zYm50SGE4QWN0SVg4QmRoRG1RalVHUmwv?=
- =?utf-8?B?VjZ1b09TdHd1ZlpvNUM5d2wrY0lScTFVS01HZVQ4S2t3d21wcWFoa2Y5M0pr?=
- =?utf-8?B?eHoxNlhaay94bHZ5Y21JbzlzUW04U2RWRjlDUGxRZW92YnVHZ2t1anJoYnkv?=
- =?utf-8?B?cFEzSHc4S05zeGdkNUNRYWllUUNvNHVDSmNLTXVQSDlDTXRUWTZuK3AwS09k?=
- =?utf-8?B?QjZjbTh6QmlSbHNzVG1oRTY5TVg3WGN0MVdyZ0dTTlNyTFdOOFZnbWFidE5a?=
- =?utf-8?B?RzMrTHRqUlRBQng4MjVNVWJMa2ZMUFBkYlRSdkF1L0wycGRaTGhTUnVOVkxL?=
- =?utf-8?B?S2lxMythQjRoM2dXWE5oSnNnQzFPWDBTWTlaQXBhSjJqVlF0KzdKdnBSSGJs?=
- =?utf-8?B?QlZIVnZPc0E0QWFkbVdvOHJ1MXp1bzJ4RjA5eDVoRTZ3OU56a1RZYjlWME5s?=
- =?utf-8?B?dm9IMkFXMEc5ZzE2UmZMRkVTS1JkRlFaRVhtWVUzV1h5RGRmUWtlNC9EL0wx?=
- =?utf-8?B?amZ1dVYyZk1QUGw2dEVIUGVSKzNkbERYQ3pzdHMvK3hZbVltTGNrSTNQbitq?=
- =?utf-8?B?SFlXNFRncWhYenY5VytrMW1vUVN2OW4vaDFrektXTFNNMk1mZzh2YmxtcXFu?=
- =?utf-8?B?ZFFvbVl0OVdMbWN2R3pGSzF1OXREQlFtQ2V1OG5LTk1vQmZVOUVWeEw0OHBs?=
- =?utf-8?B?RmIwYXk2V3FwbmQ2NVBDemt6cnhva1VMNVRPL0RIeExMdE1xUEV6SDFQajA1?=
- =?utf-8?B?c3dHUDk2WjVoQ3YydGRpbVd3bit0YXlQa2ZCYVpnRHFsVEpaQnVqZ2hTNDh4?=
- =?utf-8?B?QXNnZmJLeW1HcWNWeW1INFYxUjc3RTg3RnNXWGdDSmpTaVhwTFVDTlE4ZFE4?=
- =?utf-8?B?aHFjNHZ4NDEvNFNmYmRGUm5DV1YwYjhWdlR3dG5DelpDWmx6NFVFeElqR0FJ?=
- =?utf-8?B?Z3ZpSE1USlpJNVJRb3VMRjMxM1hGTi9pSjN0WWFXOFNXdklGRU80d0NKd1p5?=
- =?utf-8?B?K05sZFpxYllQVkhTSHlKeDdMcERnV0RHVWhSUHNsWVdBMUgvbS9ZWjh0Tzhm?=
- =?utf-8?B?OGRNK3p4SU0xeUlIRUFlcVpxb29KTWR2NERUN215K3hyM0RTN1RLZnlsdGRK?=
- =?utf-8?B?RC82OWIzRml0dWZ4aERTajgxQXgyTGVoLy8zSFZ3V1B1blo4aWVSU1B5azE4?=
- =?utf-8?B?R0Y1SElRVFUyTmFTN3dGOTVpcW5CUWtmek9VV2lRUTEzS1hTckNDRzZtTERT?=
- =?utf-8?B?K3BjOFJWMjNLaHhyRmczd2puVUk3NHNMUGp4aTN6QzA4czF0SUFlcUtCS1U4?=
- =?utf-8?B?UDI4eWJRUy9uU01jRkF3a0hpM3lTSzJXNnFSemNhY0lUWjc4U2Y3blRFU0Rr?=
- =?utf-8?B?WUVOR04xK3RCZjVtdW1yL3dGaVBDSmlQelYxQnZtNzhyT0dDRTJEdzdWZUpB?=
- =?utf-8?B?Q0dlZEp4TGx5UWs1STBQem1LSGoxQlZaM2hyY3NDZm5OTG5lM3huMjBHMjRs?=
- =?utf-8?B?dVo5aFVCOWF4L0JUbFgrVnpzNkFiL213Nk5hVHVERDQ0NDlvT1pQalcrYUtY?=
- =?utf-8?B?VzBydHJrVmFMQnlWczAvRUhqNDRiaC8yWDMvSHQ5bUtlSWxiRU5jWjFSRjFF?=
- =?utf-8?B?YjRHWm05M2djNTNEV0NkUVRqMktycCswZDV1YWY2SVdnZlBnTVRqOU9rU2Y2?=
- =?utf-8?B?d09RejVvSFVxWmIvQnNkU1dhU3hUaE43UmFPSjhkQ0VuVm1CcFZDdTFIaGU0?=
- =?utf-8?B?RHBqeHNqWS9CRG9OQnNXWnpZZUYxU1lXMVZtZGpkMjFQbGMrcXZEdz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6611806-291f-4222-04ed-08de75d2d04b
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 07:35:43.3453
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2Lh1gwW584msFfvbDnBOkd+8GhV31+UXVqLlOzwgfx15GxGr8k6QPNpSfG5QRu841BOCuVOSHtqs/7cxpBOjjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8837
+Content-Transfer-Encoding: 8bit
 
-Instead of checking the last bridge's operation bit masks against
-DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
-+/-0.5% pixel clock rate deviation, check any bridge after this bridge,
-because the last bridge is usually a display connector bridge without
-any operation bit mask when the clock rate deviation is allowed.
+Hi all,
 
-Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
-Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()")
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
----
- drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c | 33 ++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+This RFC v2 is a follow-up to [1].
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-index 8f312f9edf97..6d65df9ed970 100644
---- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-@@ -493,21 +493,24 @@ static enum drm_mode_status
- imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_display_mode *mode)
- {
- 	struct drm_bridge *dmd_bridge = dw_mipi_dsi_get_bridge(dsi->dmd);
--	struct drm_bridge *last_bridge __free(drm_bridge_put) =
--		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
--
--	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
--	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
--		unsigned long pixel_clock_rate = mode->clock * 1000;
--		unsigned long rounded_rate;
--
--		/* Allow +/-0.5% pixel clock rate deviation */
--		rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
--		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
--		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
--			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "\n",
--				DRM_MODE_ARG(mode));
--			return MODE_NOCLOCK;
-+
-+	drm_for_each_bridge_in_chain_from(dmd_bridge, bridge) {
-+		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
-+		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
-+			unsigned long pixel_clock_rate = mode->clock * 1000;
-+			unsigned long rounded_rate;
-+
-+			/* Allow +/-0.5% pixel clock rate deviation */
-+			rounded_rate = clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
-+			if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
-+			    rounded_rate > pixel_clock_rate * 1005 / 1000) {
-+				dev_dbg(dsi->dev,
-+					"failed to round clock for mode " DRM_MODE_FMT "\n",
-+					DRM_MODE_ARG(mode));
-+				return MODE_NOCLOCK;
-+			}
-+
-+			break;
- 		}
- 	}
- 
 
----
-base-commit: 877552aa875839314afad7154b5a561889e87ea9
-change-id: 20260227-imx93-mipi-dsi-fix-mode-validation-425c872a2493
+# Background
 
-Best regards,
+The PTP Hardware Clock (PHC) interface (/dev/ptpX and the standard PTP_*
+ioctls) was originally introduced for IEEE 1588 / network oriented clock
+drivers. Over time, it has also become a common userspace API for many non-NIC
+high-precision clock implementations (virtualization/platform/architecture
+provided clocks) [2-6], and more are expected to appear [7-8].
+
+During the review of these incoming non IEEE 1588 based PHC drivers, concerns
+were raised that such "non-NIC" clocks may not be a good fit for the netdev
+maintainership model [9], where PTP/PHC drivers are currently maintained. This
+leaves an unclear upstream home and maintainership model for this class of
+drivers.
+
+
+# Proposal
+
+This RFC proposes moving PHC drivers that expose a high-precision clock to
+userspace via the existing PTP interface (/dev/ptpX + standard PTP_* ioctls),
+but are not tied to the traditional NIC/IEEE 1588 packet timestamping
+pipeline, out of the netdev maintainership scope and into a clock/timekeeping
+maintainership scope.
+
+As discussed in [1], this series makes the separation explicit by splitting
+drivers/ptp/ into the following groups, to prepare for clearer ownership and
+future maintenance:
+
+  - drivers/ptp/          : PTP core infrastructure and userspace ABI
+                            (ptp_clock.c, ptp_chardev.c, ptp_sysfs.c,
+                             ptp_vclock.c, etc.) remain here.
+
+  - drivers/ptp/ieee1588/ : network / IEEE 1588 oriented PTP drivers.
+
+  - drivers/ptp/emulated/ : non IEEE 1588 PTP drivers. they are typically
+                            platform/architecture/virtualization/speical
+                            hardware provided high precision time sources.
+
+Patch 1 performs the refactor: move drivers and split Kconfig/Makefiles
+accordingly, without intended functional changes.
+
+Patch 2 updates MAINTAINERS to match the new layout and adds a dedicated entry
+for drivers/ptp/emulated/, moving review and ownership routing for this class
+of drivers away from the netdev maintainership.
+
+No userspace ABI changes are intended, this is a refactor and maintenance
+metadata update only.
+
+
+# Request for comments
+
+1. Following the clocksource/timekeeping and POSIX timer areas, this RFC routes
+changes for drivers/ptp/emulated/ to linux-kernel@vger.kernel.org (rather than
+netdev). However, the preferred integration path is still unclear (e.g. which
+tree should take such changes, and who should collect/pull them for merging). We
+would really appreciate guidance from the time/clock maintainers, especially any
+input from Thomas Gleixner, on the preferred tree/workflow for these changes.
+
+2. This RFC currently lists us as the maintainers for drivers/ptp/emulated/ as a
+fallback contact point. Ideally, we would prefer this area to be maintained by
+clock/time experts in the long run. Suggestions on more suitable maintainers are
+very welcome.
+
+
+Thanks for any input.
+
+Regards.
+
+[1] https://lore.kernel.org/all/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a0e136d436ded817c0aade72efdefa56a00b4e5e
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7d10001e20e46ad6ad95622164686bc2cbfc9802
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2d7de7a3010d713fb89b7ba99e6fdc14475ad106
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3716a49a81ba19dda7202633a68b28564ba95eb5
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9a17125a18f9ae1e1233a8e2d919059445b9d6fd
+[7] https://lore.kernel.org/netdev/20251030121314.56729-1-guwen@linux.alibaba.com/
+[8] https://lore.kernel.org/mhi/20250818-tsc_time_sync-v1-0-2747710693ba@oss.qualcomm.com/
+[9] https://lore.kernel.org/netdev/20251127083610.6b66a728@kernel.org/
+
+Wen Gu (2):
+  ptp: split clock drivers into two subdirectories
+  MAINTAINERS: update PTP maintainer entries after directory split
+
+ MAINTAINERS                                  |  39 ++-
+ drivers/ptp/Kconfig                          | 255 ++-----------------
+ drivers/ptp/Makefile                         |  27 +-
+ drivers/ptp/emulated/Kconfig                 |  81 ++++++
+ drivers/ptp/emulated/Makefile                |  12 +
+ drivers/ptp/{ => emulated}/ptp_kvm_arm.c     |   0
+ drivers/ptp/{ => emulated}/ptp_kvm_common.c  |   0
+ drivers/ptp/{ => emulated}/ptp_kvm_x86.c     |   0
+ drivers/ptp/{ => emulated}/ptp_ocp.c         |   0
+ drivers/ptp/{ => emulated}/ptp_s390.c        |   0
+ drivers/ptp/{ => emulated}/ptp_vmclock.c     |   0
+ drivers/ptp/{ => emulated}/ptp_vmw.c         |   0
+ drivers/ptp/ieee1588/Kconfig                 | 159 ++++++++++++
+ drivers/ptp/ieee1588/Makefile                |  15 ++
+ drivers/ptp/{ => ieee1588}/ptp_clockmatrix.c |   0
+ drivers/ptp/{ => ieee1588}/ptp_clockmatrix.h |   0
+ drivers/ptp/{ => ieee1588}/ptp_dfl_tod.c     |   0
+ drivers/ptp/{ => ieee1588}/ptp_dte.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_fc3.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_fc3.h         |   0
+ drivers/ptp/{ => ieee1588}/ptp_idt82p33.c    |   0
+ drivers/ptp/{ => ieee1588}/ptp_idt82p33.h    |   0
+ drivers/ptp/{ => ieee1588}/ptp_ines.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_mock.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_netc.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_pch.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_qoriq.c       |   0
+ 27 files changed, 322 insertions(+), 266 deletions(-)
+ create mode 100644 drivers/ptp/emulated/Kconfig
+ create mode 100644 drivers/ptp/emulated/Makefile
+ rename drivers/ptp/{ => emulated}/ptp_kvm_arm.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_common.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_x86.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_ocp.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_s390.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmclock.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmw.c (100%)
+ create mode 100644 drivers/ptp/ieee1588/Kconfig
+ create mode 100644 drivers/ptp/ieee1588/Makefile
+ rename drivers/ptp/{ => ieee1588}/ptp_clockmatrix.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_clockmatrix.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_dfl_tod.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_dte.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_fc3.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_fc3.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_idt82p33.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_idt82p33.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_ines.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_mock.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_netc.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_pch.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_qoriq.c (100%)
+
 -- 
-Liu Ying <victor.liu@nxp.com>
+2.43.5
 
