@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B82D36EAA8;
-	Fri, 27 Feb 2026 18:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9742936B075;
+	Fri, 27 Feb 2026 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772216231; cv=none; b=Gboqg66Ai6/7fZ3s4hY88B2DNQ4zkUYGB+VyNK5gTHrTQGDtrV77+2oayIKT7S0MmiNodEoiw6SiuSt5baRdXTyH06gpQNJrts7Z6PKlmW0VroRbpEb3ZRO+A2oUSak8h1+Uu80y31ej8ZzMq5/nYhkXz+6Jm6xCtdlsW5hu6kQ=
+	t=1772216362; cv=none; b=ZnnYYKS7Gwn4VUROAjKnta5qmcftQcYzmSVoFoY9NZpALFfyFPHxHJCVIutfLD+LLITUzbY33xzb9L2bcsnOongqIg48UvunlSRiR+sfrWCLNKwLcdSn1UX71N9Lc/mGvKVcWLpX9OMO2maAmdVXt78PbDcw4p5WMgmtwTe7o6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772216231; c=relaxed/simple;
-	bh=AdqCVfgpAB3vp48KPqAzK7xJZl0u8xamspTLJbyFYiM=;
+	s=arc-20240116; t=1772216362; c=relaxed/simple;
+	bh=V0bfSsuRknInB6xRH9NssiVSDGKhBRnDXYF8T1wSQi4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nes4vPrreLOekgY21oPs51oLuJA/9h/w5h6NKsmCXnyAfNKHfWq+tTOdfgA0hQdOfwyFtVyIcklLbzxdKIcInCHdYEx6rVL5zNwrcAcHmxHJ06aC5syXrI+wS5rhjsdymHGXrm0U4hjGroGiPvsfYSsUI1uM23wLYh6rmvknHro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZ/PqopN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fi4+jG0YIC1SCensuDaB52GN4EQNpryAO6Y5dOctH0n3sZCKUIFrq4NgqzA1bqzSnoJb1ubTCF6vP/0KhaSPJYkprwtK0kDZA7pK7uQj1vIO1PD7PvDV0VZs3h++qKNDO4IAjDscFczyXts83PdQnSBJf/dqxcR/fqmbxeX7YKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WEpOnVK/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZ/PqopN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB381C116C6;
-	Fri, 27 Feb 2026 18:17:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WEpOnVK/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C240FC116C6;
+	Fri, 27 Feb 2026 18:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772216231;
-	bh=AdqCVfgpAB3vp48KPqAzK7xJZl0u8xamspTLJbyFYiM=;
+	s=k20201202; t=1772216362;
+	bh=V0bfSsuRknInB6xRH9NssiVSDGKhBRnDXYF8T1wSQi4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BZ/PqopN73NVxSrssnsR+f0dGcbvScne0375jQFl9MFFvjjyOdLCneh99i3E1SWxs
-	 zPOLVEo4bcJnXTUuDBWWjhgH+55krLVajFuZMfZTkkWLWNRNexO/GS5nSbG96v0sUQ
-	 7ic3QFantdnA1n3EqWMBX4zyh8IDKidrTIoG4hRXIEX37klPhH/7EQ2VwffbDjZNYL
-	 0LEElJ6yqs0rFXkGbmIIJWZ9NvtVSerMf5KKTEvsLXQbxk9WNA1fzLFperaROg5hCn
-	 We/f1tvNolTlZ0KevAcAG8QVU3GtstGCYY1Rk5Zf88u2prUprTaZP7KdqR2Q/w8pzA
-	 LcweeqCBkhVGg==
-Date: Fri, 27 Feb 2026 18:17:06 +0000
+	b=WEpOnVK/8rc6kLoqa/5aArPRS+jrh/bzXy4cqB8hVl0YDfpu3HqPkKwbOrWuFSgfN
+	 Rt+uyiAsuXct2FsJCDpPdBHWjXC0nEXUdHV32zGBVFfNksxryt17SDZ1/20L7kx4Eq
+	 drIjlnqOYPcQlsS4SbgPZxpGJwR3h/9ZZc4hSr21XQgfKLEuxBVEBKGoagfSvVD53Q
+	 gI1M8HMrceysiN52IL/WQ2x92JoInBl+H5TZFIYtzyH+OIBxsS9BQo11hAR+Qqxrrk
+	 jwSGrYxpqiK73DhhIELDK1Da+n7lGyEmuwVNpXHfINs31Y1V5xQRtBHsp7lgQXrnLO
+	 tCkA4NO3IQ+kQ==
+Date: Fri, 27 Feb 2026 18:19:17 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
@@ -39,7 +39,7 @@ Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	imx@lists.linux.dev, Guoniu Zhou <guoniu.zhou@nxp.com>
 Subject: Re: [PATCH v4 1/4] dt-bindings: media: ti,ds90ub953: Add new range
  for remote GPIO data
-Message-ID: <20260227-buffoon-carpool-7a73ccdb8eb9@spud>
+Message-ID: <20260227-consensus-outbreak-2bda246886e7@spud>
 References: <20260227-ds90ub953-v4-0-dea596205f9e@nxp.com>
  <20260227-ds90ub953-v4-1-dea596205f9e@nxp.com>
 Precedence: bulk
@@ -49,12 +49,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pzRdTIxGwv1KPsTb"
+	protocol="application/pgp-signature"; boundary="wO71g9rmMq2rMVfq"
 Content-Disposition: inline
 In-Reply-To: <20260227-ds90ub953-v4-1-dea596205f9e@nxp.com>
 
 
---pzRdTIxGwv1KPsTb
+--wO71g9rmMq2rMVfq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -69,19 +69,49 @@ On Fri, Feb 27, 2026 at 07:21:10PM +0800, Guoniu Zhou wrote:
 > Make a different GPIO range for remote ones.
 >=20
 > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml | 8 ++++++=
+--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yam=
+l b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> index 2e129bf573b79e0ca8f25b4ec5fc6ea76c50abd7..0444f3739b775848d17adfebc=
+4158e83b69adf9c 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> @@ -20,9 +20,13 @@ properties:
+> =20
+>    '#gpio-cells':
+>      const: 2
+> -    description:
+> +    description: >
+>        First cell is the GPIO pin number, second cell is the flags. The G=
+PIO pin
+> -      number must be in range of [0, 3].
+> +      number must be in range of [0, 3] when enabled as an input.
+> +
+> +      If enabled as an output, the GPIO pin number must be in range of
+> +      [0, 7] and [0, 3] for local GPIO data, [4, 7] for GPIO data coming
+> +      from remote compatible deserializer.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
 
---pzRdTIxGwv1KPsTb
+Actually no, I take my ack back. This doesn't make sense to me, I think
+the wording needs improvement. I think it might be as little as:
+	If enabled as an output, the GPIO pin number must be in range of
+	[0, 7]. [0, 3] are for local GPIO data and [4, 7] for GPIO data coming
+	from remote compatible deserializer.
+
+
+--wO71g9rmMq2rMVfq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaHfogAKCRB4tDGHoIJi
-0mHgAQDqkV16HQ1woOMuAhpKuzDdlBaNuDv8HlhSYlhOhrtcfgEAm2otfL5wfLR+
-nxS5gFFrRXH/6sJesP9befmJ5DKF5Qg=
-=Ky1T
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaHgJQAKCRB4tDGHoIJi
+0t3zAP99ZwKieph2a6yb8bAid0TnKtimYlllwcSNHImjVr3daQD/Q6+EdJ7XnyCc
+LFEaQUV9OUKHLIiECgaH5SgfHJJSUQI=
+=ptI0
 -----END PGP SIGNATURE-----
 
---pzRdTIxGwv1KPsTb--
+--wO71g9rmMq2rMVfq--
