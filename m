@@ -1,154 +1,148 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442C8421EE4
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 14:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C220342E00B
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 14:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772200993; cv=none; b=PC8GI0OIL6FKJu6dGZG19BBoIawVopy6DpGseU3uqgxJEcb5BpissUHztcpDWZQP9rpXn63BpPD5zZbMVvuRWbyIsCChAUb98AEGFyyumE6b3vZ3qyj0RdRF412NpY5ErvC2VkJn9lv4vDz0r6TG3xwkLZzEfXIy1GVJM7+XVz8=
+	t=1772200995; cv=none; b=GoAJ2g2nOzgWBBfeBCaCtYvX6PdJ+jRFhcEzsMPmK/Yss9QJtPQU8KCpNzEXTo+J9ImHHjx1NsNdiVMfhAb8cBwM1e8Bfz2jBI4vw3E3Ym9ba3gOg3i+yIMpjB7NiwmhcJGNvYtvQhm+0zvQQmm+lzS/bGE6ItgOEDqsyOoh+U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772200993; c=relaxed/simple;
-	bh=jT14jpW+74aFxWT5k0JsiKiyPP15AQVRZS7/5fdgNS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP71fvleiXly7fmRLuqZg5xRqwlLPEYH4uTnNrW7/I26Vg2q9tqqgMnaY5K5mVFKtlVDg6mCEw2wUgLOWCHUt25ZIW1reZrwxw9AG6lcw3GvheOBiakSAxGWx+iBVGQiYbezr/KA0ak9qVgpbQe+jNEDcWzYWO8fs9/Y5kfX3jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UJTMWavT; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1772200995; c=relaxed/simple;
+	bh=B7fHy1cGZkNQ2wdNUr90lrf+1d59/jJ2MVkVEhWoe5Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Gn2xpCOWExrUMJRnzjliGzyQDulZ/9IogGPyHTcSmWNvuxBEyASdnb2JKnzalxRKTsl94yPIhlPQOJCeu59HfARf1PvzdHfnTsHQ8fCVuD4XqEAE7EfI7C3iiInsdFDk6GJDzzclLSd5WLOQhHGNEJXqc5kB7PK0e8LW4M2Udaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K9VK2Csq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UJTMWavT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B490EC406A8;
-	Fri, 27 Feb 2026 14:03:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C98215FE74;
-	Fri, 27 Feb 2026 14:03:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13EAB1036946C;
-	Fri, 27 Feb 2026 15:02:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772200986; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JD+Fs5XfMyLydBRoehNihG/5lsm5NM0S4zMf8NGpirs=;
-	b=UJTMWavTrQZj4uGo3x/IOTThbijDw6KGvh6HO1NhCQpo0ef2dKJiWyO39VTLHbjFI+WpRH
-	P0RqrvS8K+KANgpm1dFbGQ/wxc8J1RWrupAlddncc7UaeVgIGrwyY/F7k+3Gdh0L7K50sG
-	aCTcm+PD9mPPXfbCBsR3iUp/SCfl1rAlJAp3Y/uLsSHS0WgfLhX0U/ngFZHJBLbFDtxHCS
-	JAYU93X/n4HJYHW+iRGTXMI7x10nVff6ZA18dXf+W6c3JsE+3pGsyh6XV750WwoJicJ8pS
-	mZ3hcO4ci2o0IBN3qGnB6KXLT3yMJCn4hqAZCHHou+kR4LsTaE2yy+MC4vFMDw==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v5 28/28] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
-Date: Fri, 27 Feb 2026 14:54:25 +0100
-Message-ID: <20260227135428.783983-29-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260227135428.783983-1-herve.codina@bootlin.com>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K9VK2Csq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772200993;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oV2BIg3dhsX9PonNzGGB5cY2QemaB9h/4eyj8OI7C6o=;
+	b=K9VK2CsqIh+/JIu/LqW5Rpp7ewizZw653IqlFNd01ZAtfmMycjDWyYjNEMzw7OoN3gkh1r
+	jv8vkhaqpxp5R3kKpg/1XL2c3a9pG626/PnR+/RH2FzrQtgtHGj/LgAUsmLXDjfzvDw+rn
+	kymMX4u8ThUdFwO2T6cCCHAOIyn7XfE=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-319-hrkpvOFIM4CeqeTeQ60i1w-1; Fri, 27 Feb 2026 09:03:11 -0500
+X-MC-Unique: hrkpvOFIM4CeqeTeQ60i1w-1
+X-Mimecast-MFC-AGG-ID: hrkpvOFIM4CeqeTeQ60i1w_1772200990
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-358f8b01604so7287862a91.3
+        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 06:03:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772200990; x=1772805790;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oV2BIg3dhsX9PonNzGGB5cY2QemaB9h/4eyj8OI7C6o=;
+        b=lzEMMZ9QghPvJ81mhNCBZ4WSMeN+D+RjnpALen4hAP8O/h/d5eqkSzxwV8Zt63+t7T
+         b+38rtR/e+EQzBzwpO7GsGMrok8KvPtLIJPETuhBHoZYM2Ir+uJOf4hHV63odNJ5ATJM
+         rwlTMxfS3P73LzBN7sWuebYLCjEnUo5uXllr0sQSCm28iPvzRT+ZHx0ZNAk1fwo2PpV4
+         mTrrPe1xCRJSkQalnpuUe77S/EbpJHbtDvrWcHvhuqpHgRJIM5uqrCUPo9PIxnMc16xl
+         q9UKIc1HIpIbRqD/sTdqLW1aVsnPyK6X1DPKxbHlkkDIt3F0xNSDGZXzNgEKjFzUkKKt
+         iMwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXlsubGoYYWAf2CUDwRH3Nuk6TgXvUlk18hYkvXslSigseeDKTAmffyF+kCYqr8eMioaDo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxn3BFtKetyuNGSH+lJSS2HyVZmr0wbklR6/l+mDxzbaIanwJBz
+	46PYK0UvB9yIvpa7zgQzhKiQEWvHL8pprYBgbMSS/J+oKtUHFRktkt8hc5Q1Jo8lvQhNY98HbWh
+	Pov+x2mN1/rZgjkKPv1DXg6V4OX6pdeTxdgOrUgnmAp6YJq78+BmQQA==
+X-Gm-Gg: ATEYQzwL4MEuyyx5ZjIPCs1IktUpaSdLtlr/9xNMWe2YvV5b9SDTN/YS5iNJtK8ErjV
+	tRoaIz8L/8hwhrTmoGrWtqEbUmIlbYnXXuM1IWZP9xPCDaUdkM532po5imXEfKgcQIEFk3MHp3u
+	Su0rNJa0zux6DGmy9UbCIfnulObuXQISvxYWRZMd0X87X3apkkcy4wK7uI5fMVR3EnvfYe5QYqf
+	MTNAHYbOe3jBbGgz4qAA2SAy3Tp+pnu6kyhblOM3b8zuy3rDQzlZ6T6oMso6XmLUAbr/cFcpU+5
+	D2YCzVwVWRZGQx6ECzhQBjGJEVBGiMCkV35Ld+O2U0hEQahhnt1Od0uGivg+J8oeV1DL7CMI9hS
+	alGf9VFfR0m+kPVgyPtEWneTNeByy/7pOm1/iBngY4fhi9+3p0aiDuQ==
+X-Received: by 2002:a17:90b:5710:b0:341:88c9:6eb2 with SMTP id 98e67ed59e1d1-35965c3385fmr2137025a91.1.1772200989860;
+        Fri, 27 Feb 2026 06:03:09 -0800 (PST)
+X-Received: by 2002:a17:90b:5710:b0:341:88c9:6eb2 with SMTP id 98e67ed59e1d1-35965c3385fmr2136984a91.1.1772200989423;
+        Fri, 27 Feb 2026 06:03:09 -0800 (PST)
+Received: from jkangas-thinkpadp1gen3.rmtuswa.csb ([2601:1c2:4400:eb20:99f3:ffd5:11da:6745])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35913269232sm5305497a91.5.2026.02.27.06.03.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 06:03:09 -0800 (PST)
+Date: Fri, 27 Feb 2026 06:03:07 -0800
+From: Jared Kangas <jkangas@redhat.com>
+To: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, chester62515@gmail.com,
+	cosmin.stoica@nxp.com, adrian.nitu@freescale.com,
+	stefan-gabriel.mirea@nxp.com, Mihaela.Martinas@freescale.com,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	s32@nxp.com, imx@lists.linux.dev, clizzi@redhat.com,
+	aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com
+Subject: Re: [PATCH 00/13] Add DMA support for LINFlexD UART driver
+Message-ID: <aaGkGwbk-sh0YJqj@jkangas-thinkpadp1gen3.rmtuswa.csb>
+References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: OnEzDRfrp1L5hulPsv0yXt7PcJ_v8SLIlQ6PmNm0SwY_1772200990
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Recently, new device-tree nodes were added in the overlay to add support
-for SFPs on LAN966x PCI device.
+Hi Larisa,
 
-The LAN966X Kconfig help section mentions drivers related to devices
-added based on the overlay description.
+On Mon, Feb 16, 2026 at 04:01:52PM +0100, Larisa Grigore wrote:
+> This patchset enhances the LINFlexD UART driver and its device tree bindings to
+> support DMA transfers, configurable clock inputs, dynamic baudrate changes, and
+> termios features. It also includes a series of fixes and improvements to ensure
+> reliable operation across various modes and configurations.
+> 
+> The changes added can be summarized as follows:
+> 1. Fixes with respect to FIFO handling, locking, interrupt related registers and
+> INITM mode transition.
 
-Add drivers related to devices described by those new nodes in the
-already existing driver list.
+Tested this series with the default devicetree configuration by booting
+the board to a login prompt about 200 times. Without the series applied,
+I was seeing a bug roughly every 30-50 boots where the kernel would
+would hang in linflex_console_putchar() waiting for DTFTFF. In my tests
+with the series applied, I didn't see any regressions and the bug no
+longer appeared. Thanks for the fix!
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/misc/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+Tested-by: Jared Kangas <jkangas@redhat.com> # S32G3, interrupt-driven
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 9c285a7c88ba..69825dc0f85e 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -635,13 +635,18 @@ config MCHP_LAN966X_PCI
- 	  Even if this driver does not depend on those other drivers, in order
- 	  to have a fully functional board, the following drivers are needed:
- 	    - fixed-clock (COMMON_CLK)
-+	    - i2c-mux-pinctrl (I2C_MUX_PINCTRL)
- 	    - lan966x-cpu-syscon (MFD_SYSCON)
-+	    - lan966x-gck (COMMON_CLK_LAN966X)
- 	    - lan966x-miim (MDIO_MSCC_MIIM)
- 	    - lan966x-oic (LAN966X_OIC)
- 	    - lan966x-pinctrl (PINCTRL_OCELOT)
- 	    - lan966x-serdes (PHY_LAN966X_SERDES)
- 	    - lan966x-switch (LAN966X_SWITCH)
- 	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
-+	    - sam9x60-i2c (I2C_AT91)
-+	    - sama5d2-flexcom (MFD_ATMEL_FLEXCOM)
-+	    - sfp (SFP)
- 
- source "drivers/misc/c2port/Kconfig"
- source "drivers/misc/eeprom/Kconfig"
--- 
-2.53.0
+> 2. Removal of the earlycon workaround, as proper FIFO handling and INITM
+> transitions now ensure stable behavior.
+> 3. Support for configurable stop bits and dynamic baudrate changes based on
+> clock inputs and termios settings.
+> 4. Optional DMA support for RX and TX paths, preventing character loss during
+> high-throughput operations like copy-paste. Cyclic DMA is used for RX to avoid
+> gaps between transactions.
+> 
+> Larisa Grigore (8):
+>   serial: linflexuart: Clean SLEEP bit in LINCR1 after suspend
+>   serial: linflexuart: Check FIFO full before writing
+>   serial: linflexuart: Correctly clear UARTSR in buffer mode
+>   serial: linflexuart: Update RXEN/TXEN outside INITM mode
+>   serial: linflexuart: Ensure FIFO is empty when entering INITM
+>   serial: linflexuart: Revert earlycon workaround
+>   serial: linflexuart: Add support for configurable stop bits
+>   serial: linflexuart: Add DMA support
+> 
+> Radu Pirea (5):
+>   serial: linflexuart: Fix locking in set_termios
+>   dt-bindings: serial: fsl-linflexuart: add clock input properties
+>   dt-bindings: serial: fsl-linflexuart: add dma properties
+>   serial: linflexuart: Add support for changing baudrate
+>   serial: linflexuart: Avoid stopping DMA during receive operations
+> 
+>  .../bindings/serial/fsl,s32-linflexuart.yaml  |  31 +
+>  drivers/tty/serial/fsl_linflexuart.c          | 972 +++++++++++++++---
+>  2 files changed, 846 insertions(+), 157 deletions(-)
+> 
+> -- 
+> 2.47.0
+> 
 
