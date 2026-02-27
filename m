@@ -1,205 +1,112 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1696163
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9EC315D23
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772180385; cv=none; b=EgtU5DVkU4stYql4pNUjaM2Vjgf0nkxdqAP2Aey5O4fpFhRJyORXOvSjiU9lzgQMN0l8OVpxhPeLr6Y9tUsH4oCvIeSYUUZDZCwnQyxXOm8/uMrHOBhg0GWWbv9OuaFLjNX5OSl5jvYKsxyK6e8Ey4dXSeNbbCrNkZo1gWNcKTg=
+	t=1772180703; cv=none; b=ZA3cvn263dadeWmswcQ9PDpk9XR8qEYw7p6t8ajnEy1lYscbGO4Xktu+6xac0Kc+FW0AYckHEOLXSMbECpUrKUTwzyw4QfdKjAl9J7nKFuwo/AkLCuMleAE1/IaGIalF/1vMeUgQrQcYFtPwTZ9glJ/lVBShcIcPXQrWogFNnJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772180385; c=relaxed/simple;
-	bh=5Wt8gx4rI5m/M6u27nYgNDnE3vydq6IQNcRy0M29H9w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFRxPl6Li3i9h7FXW47CzizhNBHEzgqJFHg5AkZyEN7LdCVgX4yc83oLPFdKn2ptk8R60ExnkYebjg3qWNP4wf3dMwoo72fDEttddTT6Z8v/+hK9aXjiQUq6GP10XDbENavOzTDo5DMMDpxygg26zuF8ItGdTUrR7iv53GEhlKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=iAjbCi5t; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="iAjbCi5t"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1772180381; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
-	bh=BfJ/fUzo8zYw/G5W0TxdzYxzrEE9dyyQWn+P671kgCQ=;
-	b=iAjbCi5te+7RWOhv2+KxI57bbkJ/mnMa1yvRBLIAqjKP3t1gjYrub9GiW9fj8jpjGbDrkwzmfLCbGrTLJeyXkReQLU6bPbPMK0yk4Z1LJwWanGTo2ysG45hIpaDcCTWA1w3+F1EwHCjOudAHY6EvicAZ39glWEICj5xYFutplI0=
-Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WztjMg._1772180378 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 27 Feb 2026 16:19:39 +0800
-From: Wen Gu <guwen@linux.alibaba.com>
-To: tglx@kernel.org,
-	tglx@linutronix.de,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	mani@kernel.org,
-	imran.shaik@oss.qualcomm.com
-Cc: vladimir.oltean@nxp.com,
-	wei.fang@nxp.com,
-	xiaoning.wang@nxp.com,
-	jonathan.lemon@gmail.com,
-	vadim.fedorenko@linux.dev,
-	yangbo.lu@nxp.com,
-	svens@linux.ibm.com,
-	dwmw2@infradead.org,
-	nick.shi@broadcom.com,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-fpga@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-s390@vger.kernel.org,
-	dust.li@linux.alibaba.com,
-	xuanzhuo@linux.alibaba.com,
-	taniya.das@oss.qualcomm.com
-Subject: [RFC v2 2/2] MAINTAINERS: update PTP maintainer entries after directory split
-Date: Fri, 27 Feb 2026 16:19:34 +0800
-Message-Id: <20260227081934.96865-3-guwen@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20260227081934.96865-1-guwen@linux.alibaba.com>
-References: <20260227081934.96865-1-guwen@linux.alibaba.com>
+	s=arc-20240116; t=1772180703; c=relaxed/simple;
+	bh=m1v1NON76PMqrwAK+QogHbEEQapfrZUSwmgoYwLysaM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OZINmVYE4J1FpEFJi9w1AEXq17F6iORHXf3ul9KQXQGG0AS3iEpJrOK6zXHZPWJwMfQNLUgHY/wosw+jRtw10/FEZZXDP3AvuLtP1c5obxd3g+VZKyMlPf5OXLfZhRwt+V2sJjTxfhAAbdzEX9Avxt9W/eGfrYo1t7KXtVlKXGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c70ab3b5fcso246593685a.2
+        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 00:25:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772180701; x=1772785501;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BRbyV6rB0ACPTuZRlxL65vpkYib9H0d5lAlAjAED1c4=;
+        b=M9qGWAjk8Z2NN0b6t8IAN0Ant9bVWTi8/rF+FOU3RlLaH6x5YmIfTq9B+SX8rx+/43
+         OG1+2fKrSM6SjLtDJ8uIKKa+ajDe6WSRBewDd+p98JQVbBqPsya2kT2v6+40iXZXs4SQ
+         AehZfZSOlvpiG6E/a87nh5GvjYcpjqGUySSO1RQ8OAWuc+qkO+m+NpPpm/joZrYobUsa
+         YBbKRT55RO7J1XVXo0An74IHGMfjdijoFcfrGdVVm9kF1bVAkz1Nqc8E6/8EiYGc7LQL
+         L4h4ylU6IDP+522wFCa1xyI5q5u7KMTHoHSqDenkk+knWRPL60G2/uozxhkH5z1Tersc
+         PLJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQVu8bdbgFFdQzkLt8UB+PKOnNz3wFP5tQhhz5GT0fd4K9wP90X73kU4TFTUAZZd5kPxk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzYBvKozDW/8YXIOfGZzr+kAwYH3N9iSaAUXuOUd2nkWmG2PKTn
+	GkffW1E9qq1zbAVMNU3X12DVr+ALcC5a0hgvTabW9wFbEgjUPmE/BmtqsCsH7y997o8=
+X-Gm-Gg: ATEYQzyb2LojCPYTp8Qo2D2dtxFJQkIPWdA0AVOY8Ob+2keBXNLpNASq8wgy8avTFYq
+	IP+qqtyJW+bkiFZ518i/5jhJd43vtFxORIZrx3NwUzOw7VK+r8zwvtOzEaLD+FNVPJsM5fFenBq
+	d0e83QaNurm3HDRG8iOFqpGYeucm5qi/xDONOLMK5deqPRz54fMKvxOJ1SvBTIMrlA9EcPv5mpG
+	wD+Slg7OVSFjtSS6JP7apYOzEudEPkGgYsUeV7MU4/fDi27IhRb0YkPKV8dyckmCq65jHw1IotU
+	ZlRjrftzjjflPMq8VF6qtNZADKdcsfN0t5xYVOweEyMB3Nz/a2r3aBbXQ0UIUU0V1f2lSwcBqoM
+	fFRhksEiusO39kftIhVQbBgVdWPHJoR3URmIL/r3CSIInRi2xWemKfN8L44lWFlGCdFfBNRCVqI
+	2Tfgmyhk6ru6ZFH7vhV40HDgT+gB3gYaGmfF1riJVcVzadiTZP6hbu+fNEX706J4gjEilkLzM/L
+	XY=
+X-Received: by 2002:a05:620a:454a:b0:8c6:d34e:9c51 with SMTP id af79cd13be357-8cbc8d81793mr238605685a.24.1772180701511;
+        Fri, 27 Feb 2026 00:25:01 -0800 (PST)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf71ae8esm406800585a.41.2026.02.27.00.25.01
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Feb 2026 00:25:01 -0800 (PST)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-506a019a7f3so21987541cf.3
+        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 00:25:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUA30ynguv94oqNTPvfSMJSenFOCEO1L7ZQWAHrlqVhqibfIiDRkpBIwGdVJx9ir9mwKd4=@lists.linux.dev
+X-Received: by 2002:a05:6102:3747:b0:5f5:3619:8bd1 with SMTP id
+ ada2fe7eead31-5ff32494193mr1107329137.25.1772180228608; Fri, 27 Feb 2026
+ 00:17:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260226-clk-det-rate-fw-managed-v1-0-4421dd2f6dc6@redhat.com> <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
+In-Reply-To: <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 27 Feb 2026 09:16:57 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXfPPs26ZUnWd+_+xUU0DJ44ewTMrtbzco3J2Bs165+Xw@mail.gmail.com>
+X-Gm-Features: AaiRm52todzA8Sr5byokA4vkDZ2E-x17wtaWy3OW25tgrEahH799QvmVZU00ayM
+Message-ID: <CAMuHMdXfPPs26ZUnWd+_+xUU0DJ44ewTMrtbzco3J2Bs165+Xw@mail.gmail.com>
+Subject: Re: [PATCH 01/13] clk: add new flag CLK_ROUNDING_FW_MANAGED
+To: Brian Masney <bmasney@redhat.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
+	Andrea della Porta <andrea.porta@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Orson Zhai <orsonzhai@gmail.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Sudeep Holla <sudeep.holla@kernel.org>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Tudor Ambarus <tudor.ambarus@linaro.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, arm-scmi@vger.kernel.org, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Update MAINTAINERS to match the new drivers/ptp/ directory layout after
-splitting emulated and IEEE 1588 network-oriented drivers into
-subdirectories.
+Hi Brian,
 
-Adjust file patterns and per-driver entries to point to their new
-locations, and add a dedicated MAINTAINERS entry for the emulated PTP
-clock drivers.
+Thanks for your patch!
 
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
----
- MAINTAINERS | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+On Thu, 26 Feb 2026 at 19:17, Brian Masney <bmasney@redhat.com> wrote:
+> There are some clocks where the rounding is managed by the hardware, and
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b8d8a5c41597..c87715fc8d1f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10253,7 +10253,7 @@ F:	Documentation/devicetree/bindings/ptp/fsl,ptp.yaml
- F:	drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp*
- F:	drivers/net/ethernet/freescale/dpaa2/dprtc*
- F:	drivers/net/ethernet/freescale/enetc/enetc_ptp.c
--F:	drivers/ptp/ptp_qoriq.c
-+F:	drivers/ptp/ieee1588/ptp_qoriq.c
- F:	include/linux/fsl/ptp_qoriq.h
- 
- FREESCALE QUAD SPI DRIVER
-@@ -13134,7 +13134,7 @@ INTEL PTP DFL ToD DRIVER
- L:	linux-fpga@vger.kernel.org
- L:	netdev@vger.kernel.org
- S:	Orphan
--F:	drivers/ptp/ptp_dfl_tod.c
-+F:	drivers/ptp/ieee1588/ptp_dfl_tod.c
- 
- INTEL QUADRATURE ENCODER PERIPHERAL DRIVER
- M:	Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-@@ -18321,7 +18321,10 @@ F:	Documentation/devicetree/bindings/net/
- F:	Documentation/networking/net_cachelines/net_device.rst
- F:	drivers/connector/
- F:	drivers/net/
--F:	drivers/ptp/
-+F:	drivers/ptp/Kconfig
-+F:	drivers/ptp/Makefile
-+F:	drivers/ptp/ieee1588/
-+F:	drivers/ptp/ptp*
- F:	drivers/s390/net/
- F:	include/dt-bindings/net/
- F:	include/linux/cn_proc.h
-@@ -19104,7 +19107,7 @@ L:	imx@lists.linux.dev
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml
--F:	drivers/ptp/ptp_netc.c
-+F:	drivers/ptp/ieee1588/ptp_netc.c
- 
- NXP PF5300/PF5301/PF5302 PMIC REGULATOR DEVICE DRIVER
- M:	Woodrow Douglass <wdouglass@carnegierobotics.com>
-@@ -19815,9 +19818,9 @@ F:	include/dt-bindings/
- OPENCOMPUTE PTP CLOCK DRIVER
- M:	Jonathan Lemon <jonathan.lemon@gmail.com>
- M:	Vadim Fedorenko <vadim.fedorenko@linux.dev>
--L:	netdev@vger.kernel.org
-+L:	linux-kernel@vger.kernel.org
- S:	Maintained
--F:	drivers/ptp/ptp_ocp.c
-+F:	drivers/ptp/emulated/ptp_ocp.c
- 
- OPENCORES I2C BUS DRIVER
- M:	Peter Korsgaard <peter@korsgaard.com>
-@@ -21255,15 +21258,25 @@ W:	http://linuxptp.sourceforge.net/
- F:	Documentation/ABI/testing/sysfs-ptp
- F:	Documentation/driver-api/ptp.rst
- F:	drivers/net/phy/dp83640*
--F:	drivers/ptp/*
-+F:	drivers/ptp/Kconfig
-+F:	drivers/ptp/Makefile
-+F:	drivers/ptp/ieee1588/
-+F:	drivers/ptp/ptp*
- F:	include/linux/ptp_cl*
- K:	(?:\b|_)ptp(?:\b|_)
- 
-+PTP EMULATED CLOCK SUPPORT
-+M:	Wen Gu <guwen@linux.alibaba.com>
-+M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-+L:	linux-kernel@vger.kernel.org
-+S:	Maintained
-+F:	drivers/ptp/emulated/
-+
- PTP MOCKUP CLOCK SUPPORT
- M:	Vladimir Oltean <vladimir.oltean@nxp.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
--F:	drivers/ptp/ptp_mock.c
-+F:	drivers/ptp/ieee1588/ptp_mock.c
- F:	include/linux/ptp_mock.h
- 
- PTP VIRTUAL CLOCK SUPPORT
-@@ -21275,10 +21288,10 @@ F:	net/ethtool/phc_vclocks.c
- 
- PTP VMCLOCK SUPPORT
- M:	David Woodhouse <dwmw2@infradead.org>
--L:	netdev@vger.kernel.org
-+L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/ptp/amazon,vmclock.yaml
--F:	drivers/ptp/ptp_vmclock.c
-+F:	drivers/ptp/emulated/ptp_vmclock.c
- F:	include/uapi/linux/vmclock-abi.h
- 
- PTRACE SUPPORT
-@@ -23328,7 +23341,7 @@ S390 PTP DRIVER
- M:	Sven Schnelle <svens@linux.ibm.com>
- L:	linux-s390@vger.kernel.org
- S:	Supported
--F:	drivers/ptp/ptp_s390.c
-+F:	drivers/ptp/emulated/ptp_s390.c
- 
- S390 SCM DRIVER
- M:	Vineeth Vijayan <vneethv@linux.ibm.com>
-@@ -28217,9 +28230,9 @@ M:	Nick Shi <nick.shi@broadcom.com>
- R:	Ajay Kaher <ajay.kaher@broadcom.com>
- R:	Alexey Makhalov <alexey.makhalov@broadcom.com>
- R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
--L:	netdev@vger.kernel.org
-+L:	linux-kernel@vger.kernel.org
- S:	Supported
--F:	drivers/ptp/ptp_vmw.c
-+F:	drivers/ptp/emulated/ptp_vmw.c
- 
- VMWARE VMCI DRIVER
- M:	Bryan Tan <bryan-bt.tan@broadcom.com>
+s/hardware/firmware/
+
+You got me totally confused, also/especially in the cover letter! ;-)
+
+> the determine_rate() clk ops is just a noop that simply returns 0. Add a
+> new flag for these type of clocks, and update the clk core so that the
+> determine_rate() clk op is not required when this flag is set.
+>
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.43.5
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
