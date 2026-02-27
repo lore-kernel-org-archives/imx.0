@@ -1,215 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013054.outbound.protection.outlook.com [52.101.83.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AA73E8C79
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 14:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772203504; cv=none; b=Sl7aKpiV785bWORmcX0NuNMDp8PMUjWyPy1nGxZ8o2fJKMko3ISZyux92dKb0yAkyQhzx7Q69Fpg49tUt73EO2fZy7VjvgJD7YxL3CCl3Kan8uyOi66g4alf5saF4lX8LJefqvN2V+ou/vrT/jNvzpte6HZyCfAq3QmJoJCtjnA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772203504; c=relaxed/simple;
-	bh=eQ7qXAOyj81yfe/+OeMnHJ4AQMCfEecRpWABhPohsPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=oJj6/pROQK4kvQ7iOz2GZaXYs+tnqukwQNRU8lrvDZJwPoYKSpOAaLwVVU//QxTPi9rQKtCom9svsSdKHPZdDEYKn1jzkmOkmKrs7fTvfTRU6NyA596gThHORcCYK8U9ffnmVkj0PyBD0njP8fBAVbj1ozjP9hZaQFXzDLqzJKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uua0fC8f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DCE43635E
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 15:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772204957; cv=fail; b=HfX45JSo67WO9L8Y7gk/h6u1f/anYgWasGvDaFaWwn+FTDKPCFu1terb3ex1AqjRQbAoUMO5kiCMb5IUA0zR/ppD2gEq1kd1QTVzqMeDf3d8B+JnxLmo2pybpHK3eaZlhyr27cx1kQd0j1Z4Xi4uLKeEJ/6vuEJHWme6Gs4C9AY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772204957; c=relaxed/simple;
+	bh=d5ynbrEhuPhVjxA01XoOSe8J06lrY0j1vJerIH1eG/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=s7fhgcs5zp/dCt9DZW7kDE759HNKgsQJk9VtiUYCIn9ndmR3QMQDddctWZp/YlFCAlxAAdwP/subkUhuiiS07J7vzJbq+1lDweuHlTC7Z4D6pml4JGLRltjayeSvsSedszfLn/ALHv6y4YdpAh6BiF8AfnD8PPAPyiwVzSon18k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YU2gaWEv; arc=fail smtp.client-ip=52.101.83.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uua0fC8f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772203502;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pjpP6CrvDx4JRD336SFvsZfBjEjd+fqZc06LPodyXOg=;
-	b=Uua0fC8fsiwn9RWG5DaRKfjOcJvXQwSOYIHFOiqLtwaFGksJ1pqx2f6uR9Ddt8n4lCzO41
-	JLRy5n/t154LbGmfUlabxckKm2xSgvGvuXxu2a5QsHIuOCmkvSo3dtedKKR9tKD/eY58c5
-	l54cVlJjVhVzwtII4SSM55yOsqzuqVE=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-371-dDbU4F0OONSZcE9QaOrUyQ-1; Fri, 27 Feb 2026 09:44:59 -0500
-X-MC-Unique: dDbU4F0OONSZcE9QaOrUyQ-1
-X-Mimecast-MFC-AGG-ID: dDbU4F0OONSZcE9QaOrUyQ_1772203499
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-89546cbb998so201880846d6.0
-        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 06:44:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772203498; x=1772808298;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pjpP6CrvDx4JRD336SFvsZfBjEjd+fqZc06LPodyXOg=;
-        b=oKQFym0hZMJvAltaR3G/x4xC4sWYS2rHgNbqRzelZtaFgEZNv/KOxyeQxt/+lpoy34
-         HvyignwqNO+M6jua2CNnNvehFr5jMXpwGColcfg4013V5eUCKGKwFcO6W6wUXAIeuZry
-         tjkXk+3uR5zz+3aHXUXqf8BwxVuxY3GkJt29U1E11KXKlGz8vJqD321E9Jtng5QqhJAT
-         m5E7DKzO+8CjLYxaDGtjao17g8uScqgXmzXcQtT3xNN0IHjW02Qg62pN0475v1Qj6OTX
-         XwT3IG9gXHkeHuZRmPTI3bxl0Bj0m6EpOYYVxb8bHT8jOIJjMFAE2GTN0v8dDB95Fnte
-         uxog==
-X-Forwarded-Encrypted: i=1; AJvYcCXiuFoHHLOIH/FPy2XpbacfdCWMyk0TmMZ46F8XF0lepVVqZ1jltLWU8A1fBnmHtO/mnQU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwsnaOzNl0u1+9rKLdCYgsNt4h8DzVa6sdwHWrfnOPwV4Q8MlZ
-	Q2Z74dSI1W807xcbbKDcv09HN5aQ6rEotLnKMXYP76/tWcBSRb1U258lyKh+YZ3Z/l9OkVRecW3
-	v0EDdcq18BZvzqdOPcP1s5rDbskshlJmhFslbCpOpxDRnGiLgC4kg9Q==
-X-Gm-Gg: ATEYQzz6ChUMbHvRiaFtvRzMicxfOGux1ZHWKC5hATcdQWt4O9O/9Np7iUkKW+xQq8y
-	AoMcWxYdgtzhkeNKqkZlzKetqv1u1LOkQvT9Ssl1N+ArP9DRpcHdR8/S2FNT7hWQ1XVBr3N5Czq
-	3Wez/LW6+qEtOVxb0o64ULsRraUH9L4V0yCo6ro/0iZaKGFIKrv24BWnZhdjufYptUvYCn8OM7j
-	T1+Lh4ail/rwchpcM2Rent4Dv/qvjx05njxb4fkO6IfkNYm2t09QJQUMv32IcnoHPm+vGDCbMnG
-	iKtJPELOZVfOuzmBlFym/UZ/Awe0VCzHNLZo5HHiJ17+Dm/j2UUcXspPM9mkRUX5UOApq3znqJe
-	d9DQ+2e3rnX/ZnimiTfFua1nML4tt0GK6/A0aNPrbVvN9b0FZ5WUCl6sE
-X-Received: by 2002:a05:6214:2481:b0:88a:2360:7f15 with SMTP id 6a1803df08f44-899d1d86467mr45187686d6.12.1772203498554;
-        Fri, 27 Feb 2026 06:44:58 -0800 (PST)
-X-Received: by 2002:a05:6214:2481:b0:88a:2360:7f15 with SMTP id 6a1803df08f44-899d1d86467mr45187146d6.12.1772203498037;
-        Fri, 27 Feb 2026 06:44:58 -0800 (PST)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c73a3130sm45123526d6.49.2026.02.27.06.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 06:44:57 -0800 (PST)
-Date: Fri, 27 Feb 2026 09:44:55 -0500
-From: Brian Masney <bmasney@redhat.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>, Frank Li <Frank.Li@nxp.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 01/13] clk: add new flag CLK_ROUNDING_FW_MANAGED
-Message-ID: <aaGt5-ZWoXQ9Hz74@redhat.com>
-References: <20260226-clk-det-rate-fw-managed-v1-0-4421dd2f6dc6@redhat.com>
- <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
- <TY3PR01MB113465A96D1EEBB43C82C12A98673A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YU2gaWEv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MtWKHqVEd1x2h7vtVdTh3I+h/1QPz7AlbYGBQkx4p+gPx8rtYpVnDoqsCb3cdO7VuTtlE3B5piXnKZLpZuOSYIK9u7WNUFhZXSa9wkp/9DcUQYkYXmZ1FxaOjhHF21PJFBTd0H9tzoV0SPORPaVzzttupP94ULTBE6NSryIJQfpFOiT1aaFbu8jW2Cf0m6e9E/ZddEPiZ8vZG+GarQ7cJHrZGCljSCrypmx0rBOcxb3IFUoK+TE8CSzGlXiGjtuoCZhA1y0uAyRl7SjHVyLthTg+Itj7DCU76n3tmm5A/t07S0+ipzfF02M48fljI9M7QnMk3F/gwaU16eWfEwt0Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rMf7laHOqNWDPt4rr3SrdDEULQ82MKX1c2G0yAWVCmw=;
+ b=lHmNlcv5SwOWkO6Z4ED9Vp4AVOeujwuplsLWWQZesF66xxLl/FD0L+suX7i0WLFF/I/QgKPiU3s+xgBz9loHshTd0GwkL8xIDSFwpaBUA6/GEpZL1pVl5VrKWym2QYncVUKXkkl1SyDL9+0HGbyOD75teT8FYUCQNEGnL77vk3LrHyFOqYcE/B1yVZhUIxb4O6DbIGq8+bHX+qMAY8HJ9R/aK18QHG/jTfn3ahnng1A4NnQ2BMJhBOffpifn5QfvL/7VxBxlvTEbzihqlr8pewK92zsw39ACt2fI6KMFTJla4gvufMsXMWY5UZchrc9EvH/dmMaJdiCL9lYWMxSTHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rMf7laHOqNWDPt4rr3SrdDEULQ82MKX1c2G0yAWVCmw=;
+ b=YU2gaWEvfVeh62JheeKHBzOGRPItuhNIGyMePRXhGjEbexK3BrGUOMvJK5bwJSdi0+ymDwUPPOdsa1Xo3KiOUsH6VbwZZCr5o8AW3Dubwzhxo9vRsEitPp59gnEFdCRD7MWH/n4X2QzRXz5Owja7FsxlW+FSVhcmay4txq7o5pPnKTxcBE3ZCYyH3fmE3zI1LfRex2Q+pINn1RgCK9SJ/iQBU7x89XZO8e2aBTpzcTV8rGt9jK3KI78D3ZtpLCFALFnsfeJQafOkrEAtrF8PDQDb3qtG7FOa9TdfBRXtJSsiGnXVzElztb7B3VNJX+NpTb0ec7ef2YWdOi8jsDvU8g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
+ by AS4PR04MB9715.eurprd04.prod.outlook.com (2603:10a6:20b:4f9::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
+ 2026 15:09:12 +0000
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
+ 15:09:12 +0000
+Date: Fri, 27 Feb 2026 10:09:03 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	maudspierings@gocontroll.com
+Subject: Re: [RFC PATCH 2/2] arm64: dts: imx8mp-frdm: Use symbolic macros for
+ IOMUXC_SW_PAD_CTL_PAD
+Message-ID: <aaGzj11fjemaKLrQ@lizhi-Precision-Tower-5810>
+References: <20260227130242.1702329-1-daniel.baluta@nxp.com>
+ <20260227130242.1702329-3-daniel.baluta@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227130242.1702329-3-daniel.baluta@nxp.com>
+X-ClientProxiedBy: BY3PR10CA0020.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::25) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <TY3PR01MB113465A96D1EEBB43C82C12A98673A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EvsUkZgjc24MDKk-D5vs7Z1cR8eaKGaYQgoWIXy_bLo_1772203499
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|AS4PR04MB9715:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6262efc8-731c-4be8-e047-08de76122a34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	mXSTnagKZPbwn/G/r8tgCzsZfqJSiM7XaZr7iZNMMxzZ4rE+X4UVGKX+WsKJxbs6bL5V8lne67X+UduROi/5xdIz/ILeW9r5yDvhEe85OsgwFr66YjpnxuvSgPTl5Zb9O29jHwDN9rtoYxXJxiJrMatIoSEiKuD5ZZGAukYJx4iEMBgykj4nv8ioBsXaRyVu/VhJiEKtRh6/HZjIR2pI7r1k4irvSaDYp4T8mx9ssbM2rvn5Q9C9JADDhoJbGtJ2FkfbWUl5vcAJjBJ1fBUACuzIRcLD1h2OyWfKeZC3X3e0SoXBlpDGmV+UEA3GgilPdOkFTdxRKl5IBr4idnbDwgxOqC6M3gsZWjnZt66sVpQZUpeT2oCRznQov7C6yXsrI9Z5lP/nC39TG45ewRlt8mdQxERnKRyA2u/PNcPz3HkybmtRBV2ggJpTfK9WSC+BukFjUPio+5pHAYYPZ+VF0eaFfOozjWaRi0htMftyeRps05TH26XwzwPhFznCaB9qW7STgdbdlDP/9I94RHANNfla5ycSL50r/zHcH+yEXyXsvk+MGR6Mx7HnVXhPR49tsDvGqWv4mr9LznS8wMEC76mrHw6D0qpRGwv7/Qg6iYfxPjL1+ONCy8lv/jDfY5HWikGHJg7d76cJfFinb3bOZKL85Z7VcMsBzTBSYiQfDLdaWYZKpX6scs7/FZnluuIVRlcjnOYcfh2VC2UncGN7Ru6pZgJ5DYcDL3iZCJaxx8jh3c0AuiI+m4MFE9pI77vTB98SKwHm21CR5R42w7ujl0Joi0gyyYE3X+v7E6YNT/M=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZD2oOinpenq3FGQm4U3VDfCWZFnl2Qh0OXcxuJPCTOLOEq9qn3mpy0Q4OhEZ?=
+ =?us-ascii?Q?10M8O1ScufrP+GVlAsnmXOhufPXsaF3pgQxlV+9nIHI4D3OqlEbveaxOmI2G?=
+ =?us-ascii?Q?3QAorzKb5G8WJH9LjspqnGAHzRAfB+z+WRaOnL+/LViUrfd7oPrJ7+ZQOCfi?=
+ =?us-ascii?Q?MejryLrraX2xxTfOzMaJmq7Ge0tiPRH3z8nMdyXThaUEXLHmxSL2dIa5NE4y?=
+ =?us-ascii?Q?R+If7UEcmZaaM6aF6c0zi0jNd4cy1Ih71IGx7tp2OFXVUUp0D0BFTql7z7I6?=
+ =?us-ascii?Q?QGq9ptMdtwkH/LwmDBx+pXPcYsYrlbPXOx1PMf621AEVv2DEiFYCy5wsDIU2?=
+ =?us-ascii?Q?Wv2HgG9ilyA+v9ufcIqtggVYZD56hrf0MUZO1q9EyRL4PJ58lvuo0fI/9TH7?=
+ =?us-ascii?Q?2TaaU8MMRagSZKwCmM6CFz5h1n+4vSZV/Jb3Sn3BpX0qaOko20MaGPIxwbJI?=
+ =?us-ascii?Q?zz1UDmpuiUDC0rN+tkagIPx6LekKPwg/V48/9gMBpXr97Lc5JbrUnWqvCoC1?=
+ =?us-ascii?Q?SXgnVchI4nbIhGIuF9b1nc2kfy1ERTxvhSSAmsFrx3fo3AzTwzYJQ4lhCcbp?=
+ =?us-ascii?Q?vo9AgMOXG7Ri0/Zyj+qwdWVBRHriLReYDSlvGCXmOa5+U3R/HXCvKCfgzX/C?=
+ =?us-ascii?Q?34GV0MARuioAKKVWLjKauJ4ABpM194U7z9mvqsUAynVBrbCO1akVwCELU8k/?=
+ =?us-ascii?Q?WegjeeV9/IP9AqI6NpYfAfZCLVSFaBOWeBErHO5vBJR+ERoHPozo9ees3wCD?=
+ =?us-ascii?Q?f/TdLjsCsS2DuEZXSJvE5VJV5IDKy+C1YnpAbwH5dTfINt2674thgHs7IjoM?=
+ =?us-ascii?Q?N5fG8imjvLwwGIfxIpXwMaOWSq79uRD/ZpdZc+IbXYL6CgiVfb7fKBmStAGg?=
+ =?us-ascii?Q?IzPkbZWma2kIYbOVM1Qo7kFa4WdHXt6ROLbJhfTZ01pcIOEa3DbXQSAQfeNl?=
+ =?us-ascii?Q?huQ6iOefQgmy8pGcu/Fqdyo3UZIrvTIh+u0gRxOOqwiufRnfgU4y5NYycf5y?=
+ =?us-ascii?Q?Ptfvb7N/ZoBhPo4fqngbckHGZXS1Wx5nCj9KP5vykFYEH+Tq0S0RgWXKRr3D?=
+ =?us-ascii?Q?cxDbvS+pt6q2IBtnxV8zTV6FbRHK82kUOKonoWF1KB7IBXFs5+2zwvOs5tyD?=
+ =?us-ascii?Q?rG+co30qneMMeMsTV6Kwj8mZCh9gtUWVr6Z+C4b0Nuv0Q/gRyPb4bFVQafzm?=
+ =?us-ascii?Q?F5y0WSjVJQiSf6Xs7YpxG+x31mM/E2J4F9NCstT3B5SrrmNqYEBaYCkX36KO?=
+ =?us-ascii?Q?iOsH/tdgFtSlVlGmGfOIcUnTR4WQjvNiFj+0nSMArB72u3cEUPZb3nhewX0k?=
+ =?us-ascii?Q?VSpn9JIp9GhYZIb+2H7fJVHjcX0cr1ZxSE+lg3gHeEX0vYfX7flormr8Kop+?=
+ =?us-ascii?Q?5EggW65tVuO265qB+iwt9K62Rojs4WEPduIW4hdIA5b1IAslgQhBlTlExNfi?=
+ =?us-ascii?Q?AnO44QLoIwIftx6dXe3Xzk/bbWA/6k7ALPmT00dukQDgyBtdOH02U4mve9/f?=
+ =?us-ascii?Q?LSxcjrEC7ebZ5FMaZxLPlAqa1tT+gBH7I81rEsEzfx9rXw09EweAYBK/j0ra?=
+ =?us-ascii?Q?l2HDfASn/+/PtFcmWgBOa/2O+0uLl7jYcSplVIBKYOKtktFP56pEsXthHrGX?=
+ =?us-ascii?Q?z500cNz/LXwg7n23F4IOu1Nh9f7rK9KIX1T5tk86Zg0dg+OM6tRKzqX5iyce?=
+ =?us-ascii?Q?3PMEfz2EwqdZkwIxbKLBpakjj2MNdwstLUzc/WgeVAxmaqcz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6262efc8-731c-4be8-e047-08de76122a34
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 15:09:12.4330
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jE5pfo91OriTsmojx+FcRSCqIfLJrxfL7zrL2rsG5DloqPy0bbn3qBX8tFCbNbr/2BgaWgaD3H2iqmS5YVs0/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9715
 
-On Fri, Feb 27, 2026 at 12:00:55PM +0000, Biju Das wrote:
-> > -----Original Message-----
-> > From: linux-arm-kernel <linux-arm-kernel-bounces@lists.infradead.org> On Behalf Of Brian Masney
-> > Sent: 26 February 2026 18:17
-> > Subject: [PATCH 01/13] clk: add new flag CLK_ROUNDING_FW_MANAGED
-> > 
-> > There are some clocks where the rounding is managed by the hardware, and the determine_rate() clk ops
-> > is just a noop that simply returns 0. Add a new flag for these type of clocks, and update the clk core
-> > so that the
-> > determine_rate() clk op is not required when this flag is set.
-> > 
-> > Signed-off-by: Brian Masney <bmasney@redhat.com>
-> > 
-[snip]
-> >  drivers/clk/clk.c            | 24 +++++++++++++++++++++---
-> >  include/linux/clk-provider.h |  2 ++
-> >  2 files changed, 23 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c index
-> > fd418dc988b1c60c49e3ac9c0c44aa132dd5da28..0a522a0817411c7f7c6e9cffd6f024e672a331a8 100644
-> > --- a/drivers/clk/clk.c
-> > +++ b/drivers/clk/clk.c
-> > @@ -1557,6 +1557,20 @@ static int __init clk_disable_unused(void)  }
-> > late_initcall_sync(clk_disable_unused);
-> > 
-> > +/**
-> > + * clk_is_rounding_fw_managed - Check to see if clk rounding is handled
-> > +by the
-> > + * firmware.
-> > + * @core: the clk to check
-> > + *
-> > + * Clks that have this flag enabled do not need to have a
-> > +determine_rate() op
-> > + * set, and will always return success for any rounding operation since
-> > +the
-> > + * firmware will deal with the rounding.
-> > + */
-> > +static inline bool clk_is_rounding_fw_managed(struct clk_core *core) {
-> > +	return core->flags & CLK_ROUNDING_FW_MANAGED; }
-> > +
-> >  static int clk_core_determine_round_nolock(struct clk_core *core,
-> >  					   struct clk_rate_request *req)
-> >  {
-> > @@ -1589,6 +1603,8 @@ static int clk_core_determine_round_nolock(struct clk_core *core,
-> >  		req->rate = core->rate;
-> >  	} else if (core->ops->determine_rate) {
-> >  		return core->ops->determine_rate(core->hw, req);
-> > +	} else if (clk_is_rounding_fw_managed(core)) {
-> > +		return 0;
-> >  	} else {
-> >  		return -EINVAL;
-> >  	}
-> > @@ -1673,7 +1689,7 @@ EXPORT_SYMBOL_GPL(clk_hw_forward_rate_request);
-> > 
-> >  static bool clk_core_can_round(struct clk_core * const core)  {
-> > -	return core->ops->determine_rate;
-> > +	return core->ops->determine_rate || clk_is_rounding_fw_managed(core);
-> >  }
-> > 
-> >  static int clk_core_round_rate_nolock(struct clk_core *core, @@ -3528,6 +3544,7 @@ static const
-> > struct {
-> >  	ENTRY(CLK_IS_CRITICAL),
-> >  	ENTRY(CLK_OPS_PARENT_ENABLE),
-> >  	ENTRY(CLK_DUTY_CYCLE_PARENT),
-> > +	ENTRY(CLK_ROUNDING_FW_MANAGED),
-> >  #undef ENTRY
-> >  };
-> > 
-> > @@ -3906,7 +3923,7 @@ static int __clk_core_init(struct clk_core *core)
-> > 
-> >  	/* check that clk_ops are sane.  See Documentation/driver-api/clk.rst */
-> >  	if (core->ops->set_rate && !core->ops->determine_rate &&
-> > -	      core->ops->recalc_rate) {
-> > +	      core->ops->recalc_rate && !clk_is_rounding_fw_managed(core)) {
-> >  		pr_err("%s: %s must implement .determine_rate in addition to .recalc_rate\n",
-> >  		       __func__, core->name);
-> >  		ret = -EINVAL;
-> > @@ -3920,7 +3937,8 @@ static int __clk_core_init(struct clk_core *core)
-> >  		goto out;
-> >  	}
-> > 
-> > -	if (core->ops->set_parent && !core->ops->determine_rate) {
-> > +	if (core->ops->set_parent && !core->ops->determine_rate &&
-> > +	    !clk_is_rounding_fw_managed(core)) {
-> 
-> >  		pr_err("%s: %s must implement .set_parent & .determine_rate\n",
-> >  			__func__, core->name);
-> >  		ret = -EINVAL;
-> 
-> 
-> After applying patch#11, I get a message as you removed .determine_rate, Also it breaks display.
-> 
-> [    0.096414] __clk_core_init: .pll5_foutpostdiv must implement .round_rate or .determine_rate in addition to .recalc_rate
+On Fri, Feb 27, 2026 at 03:02:42PM +0200, Daniel Baluta wrote:
+> Currently, in order to configure IOMUXC_SW_PAD_CTL_PAD a magic raw value
+> is written in this register. This makes code not obvious to read and
+> modify.
+>
+> So, to help with code readability instead of the magic values use
+> symbolic macros.
 
-Thanks for testing. This happens because rzg2l_cpg_pll_clk_register()
-doesn't have the new flag set. I'll fix this, and go through all of the
-others again just to make sure I don't miss any others.
+Use symbolic macros instead of the magic values to improve code readability.
 
-Brian
+>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp-frdm.dts | 132 +++++++++++-------
+>  .../arm64/boot/dts/freescale/imx8mp-pinfunc.h |   2 +
+>  2 files changed, 86 insertions(+), 48 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
+> index 55690f5e53d7e..206c8d939796e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
+> @@ -252,104 +252,140 @@ &usdhc3 {
+...
+>  		>;
+>  	};
+>  };
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
+> index 26e7a9428c4c7..c963913e3c626 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
+> @@ -38,6 +38,8 @@
+>  				  MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)
+>  #define MX8MP_I2C_DEFAULT (MX8MP_PULL_UP | MX8MP_HYS_SCHMITT | \
+>  			   MX8MP_PULL_ENABLE | MX8MP_SION)
+> +#define MX8MP_NAND_DATA_DEFAULT (MX8MP_FSEL_FAST | MX8MP_PULL_UP | \
+> +				 MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)
 
+It is not NAND, should be
+	MX8MP_USDHC_DATA_DEFAULT
+
+Frank
+>
+>  /*
+>   * The pin function ID is a tuple of
+> --
+> 2.45.2
+>
