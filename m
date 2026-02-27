@@ -1,136 +1,248 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48613491C8
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 16:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7773491DB
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 16:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772210332; cv=none; b=GB56oCr0lyJJnq34ccbCYQWMW/C9Ac1P50CLnphYjmOtigFYbjebPSoGzAISLU3qKOJKa8oQ9odX5vCcXc8XRNQn7qZjOZcUEeQKyyXjcO50lFA9UrQvB9S5I6oQYdS44/V7z9wsfBfLHiMnCbhASrTuL0ItVz8HMnt7RxEKRK8=
+	t=1772211030; cv=none; b=huYf2mocCswVLnbkfhicpHynU3kaJFCwCcSVFQSoP1ow225GGxVNzhPCUAt8ZgcX6qghaix3pJhW7jbAaza7sKwJ9W9fKI14oOpre9T8KBFMuF061F8hO0gLg4oPtMgX8ElOEHYs7SbU4WRJ2Hyf8asZqAuuoWgYVn6JD8R5T2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772210332; c=relaxed/simple;
-	bh=nR+w4zGkLQzjRTIc7kjY/q5/CbnV6sRdNO5FlWgP6N0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=t8VbeMpKU8WZ3ziOugnLEAq/KeSPSH8MXWBoAEAjc18C1VNKCb7lMSstHeH2YEYUUdrFJBLQ+1y7Bn4QFeqpGvogYueJYiTtbbr+OL49/ORNKN88zKQDZEVQuZD9wM3N2hPw9NzGj1c3oiLlvO/RL65Ab6Wq5hmTBuVFsUd1KAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LwTSWEkE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LwTSWEkE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772210329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4eN+vouZzrt2RU3yojqU84OifC1c0sqNvd03CXYM2zE=;
-	b=LwTSWEkERjiNucD0CR8xwpFQOH9g4g71BDRizht76z606tD42mNY+lrcQJTS9PlJuN+LtI
-	1+3iaDYPPCUSvMomxx2/mRgx4ASVVkFhR695f2XsAze1ZxYBybq8xSFMTByykVle0442Zx
-	kRwVrvcpwbNCPHp/loqVqqwBE8fFM30=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-FC20vR0dPLu6dVnuS2aW9w-1; Fri, 27 Feb 2026 11:38:47 -0500
-X-MC-Unique: FC20vR0dPLu6dVnuS2aW9w-1
-X-Mimecast-MFC-AGG-ID: FC20vR0dPLu6dVnuS2aW9w_1772210326
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-899b4ce513cso214688766d6.3
-        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:38:47 -0800 (PST)
+	s=arc-20240116; t=1772211030; c=relaxed/simple;
+	bh=8QooufOo4pPMQ94Tm+1S+IKUXQJzBKWDChzX4qil09A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CG10jL9LvDQpg2KeRbD50yI+ggPvT2rH0eFzSytY0SlAzBRBtaDjtAJ/vJo9+vy1QNfsIYCopC/Fj0GzTWsDYUJLfzXSu7P57FHvUESMEqBpnKMIsSS9IK5C/IaigFJkvqyxfITsCo5I44AE5vAiPMkHUSzVkMNnY3YaQC4Uf6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-56a87098868so817315e0c.1
+        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:50:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772210326; x=1772815126;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1772211028; x=1772815828;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4eN+vouZzrt2RU3yojqU84OifC1c0sqNvd03CXYM2zE=;
-        b=ZmmHBhkuwXmUlDMmV4SZ9o8sP2HF7eHaIDbXaU8gPQQv2oAUARR7W2zFNgZKkVazTU
-         YezxKTFV3PnsKP9mtIr5r8oQlysgJKZ1nEl+VoYqNcnU6oj+sm+d5aVWd+fHyKSRiutH
-         JqJO8Tglz/dx1xsrEJ18iRk9nWQrVGQ/kdwoEckUwL0/xA/RXicM7lZD4gJG40zgYpIL
-         5dbdH/tNtcZe0o5h2a2GWzuapTHBt7TZ8MSONawADlY/Ea1291NOMYUtWkFBTvVdS20n
-         mWGZelSWS4aAiT+Y+Niy42RxjpGoLOQJOUwR+NZOv8Vm+QmvNuzzzdiJFtwa2CwM1/d3
-         XL8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWwoBzAcXOpOHSBG5VCWK/ALSwZTSspZGXchWk68mGkEIfPiv41n5c8CfQwc30xN5NRGLY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwBjmhAWjjcOcSrX309bbe8JED/aTMyMlkXU/MIo2bqyofZRbPu
-	orAsQTU2yC0F+tFnjrJKgQVwMOjt5CwOHJQhK2PLNA6mtRPxAu7aOn2Ha87mNmlIZGQOm8Yyexu
-	0NZayiAZQhdug4J3+QSNhZPSCp9fpkIzFgxoWQJlIwOar0hwTpnnUOA==
-X-Gm-Gg: ATEYQzwquNz2RTVLzy1hOFK8E8cGzbFZhfzjr35MflXLDQbruqy/zhZUpJ+uHjf7osd
-	uh9kW1a8nFS2dIq8kB2eooAx1JKNTd6ImVBUsGKl1voXzU1jlJmUtb4RQil5J7nGfv1BYzbcupQ
-	+8WF72uncIKYwt5hmTWUgD2gUT+cqmeeLg5crJ59RptTkSgfJ0SDut/6vtF8L9mmnTFktMZpnGD
-	V3cccjM4LOcININEdvP+yE+5+IlNlqRincQ3k3tTWR+XONkTUw3tWxVi0ZQ0B3yxgVNJeyz2Enc
-	6VtmAsZvzaHlGiZEsvbV2CpX3b3AGKnOFSrRGH50F1F/6Y3nKVi5qD0rBTlLYJYPVVVxJT9LBa2
-	H+049lZ3PrjJKSohMjUBmBWOIgiHgSCywmQdTgSKD7dEyX6eWheuMeS0I
-X-Received: by 2002:a05:6214:21c6:b0:899:a57e:887a with SMTP id 6a1803df08f44-899d1d84730mr49660126d6.8.1772210326383;
-        Fri, 27 Feb 2026 08:38:46 -0800 (PST)
-X-Received: by 2002:a05:6214:21c6:b0:899:a57e:887a with SMTP id 6a1803df08f44-899d1d84730mr49659456d6.8.1772210325713;
-        Fri, 27 Feb 2026 08:38:45 -0800 (PST)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50751256df4sm24041401cf.16.2026.02.27.08.38.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 08:38:44 -0800 (PST)
-Date: Fri, 27 Feb 2026 11:38:42 -0500
-From: Brian Masney <bmasney@redhat.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Abel Vesa <abelvesa@kernel.org>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>, Frank Li <Frank.Li@nxp.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, arm-scmi@vger.kernel.org,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Biju Das <biju.das.jz@bp.renesas.com>
-Subject: Re: [PATCH 01/13] clk: add new flag CLK_ROUNDING_FW_MANAGED
-Message-ID: <aaHIkpuK7AFXbeM-@redhat.com>
-References: <20260226-clk-det-rate-fw-managed-v1-0-4421dd2f6dc6@redhat.com>
- <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
+        bh=AIGPgG8NajjCLfKfqfkEsLDhUiGu4xrfbhUgqAmvE/8=;
+        b=C1NeIPSDEuoWr2uvsxOpazbMr0J35Y4FFP9ohrOLG9ErsHxHxk5YaToFicRA4w+bFC
+         e9TJKV23GMqjvSRZ6BLj73Zi1N9B/BK4ZpUtSudSl2bY8qaM1AOhPkqmkZiJFZz8h0a7
+         oc+KqtkPRu1g0mhDJnFpqcjVK/mkPMpgVnqjTpYW2IWyVvPkcDIyzAhskLcC8Rw4QqxV
+         175KP73fj78djyczMK5lJFabI75mgco7z7cp2CEbl+xBLecR1XPKyIujpO0mgNe2FpbX
+         51Euh2O9DWdNvZChiQePwQBNsB6bE4XXlAYL0lnAot9eX75wB8JO3ww6zdOEIj7VUbg6
+         4yLg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9XQFd6SzVdpfCM+8G/qpu2N8H6u8spYv2xOvp7rbPswVoNTYMJqUTPkE7i/aDrJKO93k=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5Z6PHf9X/XSluBZNUtDKua/FDnHVutoQEBjPJort+pVRO5So/
+	vUfHUyfhcBJdgY750t3c2DtidOE3g/hbIVIo1HMKlCr4D4X4gIw3h5E8wZqrvKSWDt8=
+X-Gm-Gg: ATEYQzzAw+LL9o0mK2IFpNV0uU0i8k5Zw96xxps7pqr/MYgrJVxhsC4vvK0C0kVXVLV
+	zjeWTPIbLd7dLzvFkFaBokmc0cDciEV9+TOGOBt1YgmJZhk2pRGQwZT7wKYsabrsKMlfXZbsTih
+	ZAz2KYyQty1SYU0w8C/0uJ75+Wsw9DsfV2JfJ+tvWXY8Y4IRys8JSd94H174NNXysaplIARBgZA
+	NopVmHxLOOfHw+sOFtvxyiusypaAkqloNUOSh5aXSiHu3w31co75Qej7iE0FapoSDe6oc6h0jLN
+	U6ymtMdC4iwC7pMEKmMe7rN84blk8lN6iOEUdP0TUucUTUbPYJA75Gn0Tf+XtJhTeEEXZyrYtVA
+	lu/oU3lBc8p1lwEt9EOW9Ms2rxY6ZqeMjsxKLyvY9Ac7Csr9B8/QuDys4xdS0XIGFDl3D4f81bG
+	MA+xbhITOb1CNeYTsRgJ8p3R9u/smIkJmnoje6a0O+/vgucgerA0V+KtfVsecs
+X-Received: by 2002:a05:6122:4683:b0:567:39dc:43fd with SMTP id 71dfb90a1353d-56aa0be13ecmr1871071e0c.19.1772211027984;
+        Fri, 27 Feb 2026 08:50:27 -0800 (PST)
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56a91659421sm7563918e0c.0.2026.02.27.08.50.26
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Feb 2026 08:50:27 -0800 (PST)
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-94dd687e040so498311241.3
+        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 08:50:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX5ogxuS8cbOAnc6JN7E6QetTgJMR0y3Bw93YvIFiVRifUbUGbrgCm0kUu5T9j3fXSHmdo=@lists.linux.dev
+X-Received: by 2002:a05:6102:c01:b0:5f5:33c9:c9b3 with SMTP id
+ ada2fe7eead31-5ff32536408mr1676835137.29.1772211026292; Fri, 27 Feb 2026
+ 08:50:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3JI8qEFHoR9n3VY6OFVCVuCoaqH_1d6ZikMR4f6rkoU_1772210326
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260227135428.783983-1-herve.codina@bootlin.com> <20260227135428.783983-4-herve.codina@bootlin.com>
+In-Reply-To: <20260227135428.783983-4-herve.codina@bootlin.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 27 Feb 2026 17:50:14 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUAHXNbGfJFcUMQbzPqRS0S_RErU8u7t=AdmX0ZFQMjhQ@mail.gmail.com>
+X-Gm-Features: AaiRm53ZqgozcqNHytSHwR_CUbVuY8sQSeRMANHqThlNEOeyZsxQir9SPbAYLBo
+Message-ID: <CAMuHMdUAHXNbGfJFcUMQbzPqRS0S_RErU8u7t=AdmX0ZFQMjhQ@mail.gmail.com>
+Subject: Re: [PATCH v5 03/28] of: dynamic: Fix overlayed devices not probing
+ because of fw_devlink
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 26, 2026 at 01:16:45PM -0500, Brian Masney wrote:
-> There are some clocks where the rounding is managed by the hardware, and
-> the determine_rate() clk ops is just a noop that simply returns 0. Add a
-> new flag for these type of clocks, and update the clk core so that the
-> determine_rate() clk op is not required when this flag is set.
-> 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
-> 
-...
-> diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-> index 1cda2c78dffaff037f0f16b0f11106b63b3a746f..187f8248a9c840c701cbbba99bb7cdeef7b654ee 100644
-> --- a/include/linux/clk-provider.h
-> +++ b/include/linux/clk-provider.h
-> @@ -32,6 +32,8 @@
->  #define CLK_OPS_PARENT_ENABLE	BIT(12)
->  /* duty cycle call may be forwarded to the parent clock */
->  #define CLK_DUTY_CYCLE_PARENT	BIT(13)
-> +/* clock rate rounding is managed by firmware, don't require determine_rate */
-> +#define CLK_ROUNDING_FW_MANAGED		BIT(14)
+Hi Herv=C3=A9,
 
-Based on a conversation in the Renesas driver change, I think we should
-rename this flag to CLK_ROUNDING_NOOP. Let me know if there are any
-objections, or suggestions for a better name. I'll let let this sit out
-there for about a week or so before sending a v2.
+On Fri, 27 Feb 2026 at 14:56, Herve Codina <herve.codina@bootlin.com> wrote=
+:
+> From: Saravana Kannan <saravanak@google.com>
+>
+> When an overlay is applied, if the target device has already probed
+> successfully and bound to a device, then some of the fw_devlink logic
+> that ran when the device was probed needs to be rerun. This allows newly
+> created dangling consumers of the overlayed device tree nodes to be
+> moved to become consumers of the target device.
+>
+> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
+x6=3D9F9rZ+-KzjOg@mail.gmail.com/
+> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@goo=
+gle.com/
+> [Herve: Rebase on top of recent kernel and use get_device_from_fwnode()]
+> [Herve: Add the call to driver_deferred_probe_trigger()]
 
-Brian
+Thanks, that last change did the trick, finally!
 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers(s=
+truct fwnode_handle *fwnode,
+>                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
+>  }
+>
+> +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
+> +{
+> +       struct fwnode_handle *child;
+> +
+> +       guard(mutex)(&fwnode_link_lock);
+> +
+> +       fwnode_for_each_available_child_node(dev->fwnode, child)
+> +               __fw_devlink_pickup_dangling_consumers(child, dev->fwnode=
+);
+> +       __fw_devlink_link_to_consumers(dev);
+> +}
+> +
+> +/**
+> + * fw_devlink_refresh_fwnode - Recheck the tree under this firmware node
+> + * @fwnode: The fwnode under which the fwnode tree has changed
+> + *
+> + * This function is mainly meant to adjust the supplier/consumer depende=
+ncies
+> + * after a fwnode tree overlay has occurred.
+> + */
+> +void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
+> +{
+> +       struct device *dev;
+> +
+> +       /*
+> +        * Find the closest ancestor fwnode that has been converted to a =
+device
+> +        * that can bind to a driver (bus device).
+> +        */
+> +       fwnode_handle_get(fwnode);
+> +       do {
+> +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
+> +                       continue;
+> +
+> +               dev =3D get_device_from_fwnode(fwnode);
+> +               if (!dev)
+> +                       continue;
+> +
+> +               if (dev->bus)
+> +                       break;
+> +
+> +               put_device(dev);
+> +       } while ((fwnode =3D fwnode_get_next_parent(fwnode)));
+> +
+> +       /*
+> +        * If none of the ancestor fwnodes have (yet) been converted to a=
+ device
+> +        * that can bind to a driver, there's nothing to fix up.
+> +        */
+> +       if (!fwnode)
+> +               return;
+> +
+> +       WARN(device_is_bound(dev) && dev->links.status !=3D DL_DEV_DRIVER=
+_BOUND,
+> +            "Don't multithread overlaying and probing the same device!\n=
+");
+> +
+> +       /*
+> +        * If the device has already bound to a driver, then we need to r=
+edo
+> +        * some of the work that was done after the device was bound to a
+> +        * driver. If the device hasn't bound to a driver, running thing =
+too
+
+things
+
+> +        * soon would incorrectly pick up consumers that it shouldn't.
+> +        */
+> +       if (dev->links.status =3D=3D DL_DEV_DRIVER_BOUND) {
+> +               fw_devlink_pickup_dangling_consumers(dev);
+> +               /*
+> +                * Some of dangling consumers could have been put previou=
+sly in
+> +                * the deferred probe list due to the unavailability of t=
+heir
+> +                * suppliers. Those consumers have been picked up and som=
+e of
+> +                * their suppliers links have been update. Time to re-try=
+ their
+
+updated
+
+> +                * probe sequence.
+> +                */
+> +               driver_deferred_probe_trigger();
+> +       }
+> +
+> +       put_device(dev);
+> +       fwnode_handle_put(fwnode);
+> +}
+> +
+>  static DEFINE_MUTEX(device_links_lock);
+>  DEFINE_STATIC_SRCU(device_links_srcu);
+>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
