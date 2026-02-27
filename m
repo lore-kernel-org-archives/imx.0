@@ -1,95 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2599A37BE8F
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 09:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E246A326D79
+	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 09:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772183237; cv=none; b=NG661gwGSca1kU9eEzOLoG76MuR37/X4M20uYc1af3BwMNy1Ufeio5p78rtCY9GA1i0lpY2TWzC0lioiiGk6Qeyts+9hmGrdDOvTaiC1ubuudOx+vZkihiypEuTN9PSxLZajhHVKiXQF2Fnd58AzfQiI+EV8mkzxRNEDx9MkbDk=
+	t=1772183803; cv=none; b=uUH3jzk1jgsZGlLke7H+BWKLXg1U2PkTqgDE+LPfQPZpflY744LdS8zTg+JWCQLNqijzHRJhUXDxpyFUsVGYPFwcdDKnHEPMV+pwLT4Xo3PrZR14gv6aOLgH7YyK/nNgg8k7liV1dPF/j+wSzPTM0cZ9mJp5BkJJC5jwU0viCPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772183237; c=relaxed/simple;
-	bh=iJlIp2Jd8MRpaEmt3ERKwjfAuXpf+arP7sigceDz708=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XnycsBU2IRyAqnoCcEZk3azoNsNQDjY1dI2Z4mp7Belv+ErYfKfAsBTEeSgVUgeTGDEQ25aPjaVkseRFnMZhowEGX9grBpXXTZrp1nudLFiH7nPMnJ1qdrgjxtZLxtbNs3zuNbbomSxk2FamJelqCgJgbiQGu2tBurkWBRYJq/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6XZEm5L; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6XZEm5L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD816C19425
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 09:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772183236;
-	bh=iJlIp2Jd8MRpaEmt3ERKwjfAuXpf+arP7sigceDz708=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B6XZEm5Loj7nbC7IPRaIIZ98noBpTcUwaljgWR76ZI4Lp195f71wBP8ha8VgoHuLT
-	 HAwpahZ7hAH8qRCnN1l19bo9DLSgOp4Z+tUuU+7dtE2AoMu5vYXOtFvb1wj8hmrgBr
-	 CvaN83gJx4+E3f2TVF1LNN04SE760xottyjb2+vqXJXRZ1J69xQKCOAhRrpXM2x+pt
-	 4L6Cmixs6LeEEDOKHMdQM+1qYsUEHqhDp2Qgkdveq5/aQShsgeumo13LZBw0e0z1va
-	 PopjfFmxYAJawsZgyjD9mNw2o51sN8iAE/PRYXpDIAzLP3uVag5JMbY7NQIv5/BqjD
-	 Z+n/fiiWBIgVA==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-79800183233so25258067b3.1
-        for <imx@lists.linux.dev>; Fri, 27 Feb 2026 01:07:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWvNvpD0fPL8Ubni75ZH+60sbIIp3C0FVRB/GBzEYjtPj1VzAJ04kjmR5eIt8HS/t1ELks=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZUaj7RTF7IAuIpKsiwq9zmN/rqWfN4yPqY2xYHrIYURq2D8Cv
-	bYdkgAA0lDfOBy0DSmNTuHxfSRm7uWb4e+qj29kkbo0qS23bcel8EjntZkE/1rIzLCabA/JkskI
-	WTGlO3gDdBy6PrQvIvN4MHS+cQglsG2Q=
-X-Received: by 2002:a05:690c:c4f1:b0:796:3a4f:68fc with SMTP id
- 00721157ae682-7988599b8ddmr16545447b3.8.1772183236207; Fri, 27 Feb 2026
- 01:07:16 -0800 (PST)
+	s=arc-20240116; t=1772183803; c=relaxed/simple;
+	bh=y4Gg8StWVxc70nPTjHzbFNozRlWAE+RWWrT3WYVr3BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IUo87angYCsGs0/hyc5S2PAwRhlvCdAbD1PO7+6v/u06WCyudC3k5RKVDGHynGDDj1PId7wX9KhF3AMUOEYHhBZEPL43lxYq9UBdMUYrRuZipYR7XEqUG3T6r2j0noVP8bezU4XQcv45g7YhkIbuxBfVLZWyFZ24ti0b/5rB9n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowACXQm7vYKFplIPTCA--.13808S2;
+	Fri, 27 Feb 2026 17:16:31 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: andersson@kernel.org,
+	mathieu.poirier@linaro.org
+Cc: robh@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH] remoteproc: imx_rproc: Fix NULL vs IS_ERR() bug in imx_rproc_addr_init()
+Date: Fri, 27 Feb 2026 17:15:46 +0800
+Message-Id: <20260227091546.4044246-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com> <20260225-pinctrl-mux-v2-3-1436a25fa454@nxp.com>
-In-Reply-To: <20260225-pinctrl-mux-v2-3-1436a25fa454@nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 27 Feb 2026 10:07:05 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkhH566rqkkQfWnOiAokxB8mLXw=eqrVN_pgs+dd8TkxQ@mail.gmail.com>
-X-Gm-Features: AaiRm53Lbwco9BrUIdxm4d59KoLZW9tFK5jbswawEBmolXkm0y6cwkUJ5XgitnE
-Message-ID: <CAD++jLkhH566rqkkQfWnOiAokxB8mLXw=eqrVN_pgs+dd8TkxQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] pinctrl: add optional .release_mux() callback
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACXQm7vYKFplIPTCA--.13808S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZr4DKw4kWFW5tr15uw15urg_yoWfKFg_CF
+	yIvrWxXw10vFyjka4Uuw4Syay2yr109Fna9F15ta9xJrW3Wr12krW8Xr1DZas5X39xWry5
+	Wr92qFW7ZrnrCjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbsxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
+	6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
+	ZFpf9x0JUqhFxUUUUU=
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On Thu, Feb 26, 2026 at 12:55=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
+The devm_ioremap_resource_wc() function never returns NULL, it returns
+error pointers.  Update the error checking to match.
 
-> Add an optional .release_mux() callback to the pinmux_ops.
->
-> Some devices require releasing resources that were previously acquired in
-> .set_mux(). Providing a dedicated .release_mux() callback allows drivers =
-to
-> properly clean up hardware state or associated resources when a mux
-> function is no longer active.
->
-> The callback is optional and does not affect existing drivers.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+---
+ drivers/remoteproc/imx_rproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can you explain why you need this custom code for this?
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index d33d1e2c41a4..0dd80e688b0e 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -812,7 +812,7 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+ 
+ 		/* Not use resource version, because we might share region */
+ 		priv->mem[b].cpu_addr = devm_ioremap_resource_wc(&pdev->dev, &res);
+-		if (!priv->mem[b].cpu_addr) {
++		if (IS_ERR(priv->mem[b].cpu_addr)) {
+ 			dev_err(dev, "failed to remap %pr\n", &res);
+ 			return -ENOMEM;
+ 		}
+-- 
+2.25.1
 
-Nominally pin control defines and puts the hardware into a
-number of states such as:
-"default"
-"idle"
-"sleep"
-"init"
-
-Usually (at least for silicon) what .release_mux() would to
-is semantically equivalent to a transition into the "init" or
-"sleep" state. And if these are not descriptive enough you can
-even define a "released" state.
-
-Is it not possible to reach the set-up of the hardware that you
-are desiring by just defining such a relaxed state?
-
-Yours,
-Linus Walleij
