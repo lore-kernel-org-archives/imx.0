@@ -1,105 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0A634DCEE
-	for <imx@lists.linux.dev>; Fri, 27 Feb 2026 17:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE7E36C0CB;
+	Fri, 27 Feb 2026 17:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772214126; cv=none; b=aeI9dUaJZYvLlTvM7FUVZGRSgugvDefLML6hoeV4JfiNJ3esaQb7VoHFdAhFsrqKWuOosu+6GAWAjQ/3ra8LQLyazfd6sJB6NAKgGjY8YZzQr3kh9l4Fddi5zRTCZ2fanqKeSPfPVJ3bRO/yeSn+56OFMwbOVbZToPVRf6bnwWw=
+	t=1772215095; cv=none; b=Psdh9Sms69mVOx9gKLe2l4Ez/F8U+1TVh7tWczvR7Tlli+sh0xkzEJ+l4eCQJZCqN+vfC9tv2W/Gc/GSlh/YDNtjePsX4IU15ul7wMPjJwpSdY8DvckkfD47MGpGesJYCkrLa7CmLLsWHlHRYL7o35cUCIHMZkpAlFvzUcwfAbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772214126; c=relaxed/simple;
-	bh=uLZDjCFgfzsq0FIprBHCwoTZtnqNId9JxICufdli1kc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KOBwg62BTbeB/r1LfMk8qrGw7NT+jDyR+USRtkDcf9F8cslt1c0UPWceYgRumIqDue39XoPfRFcQZeSNgFCD1L7LbLFc0VU+AReqPLCkZgSnoI56h/LOl6u+O8SWRZ9W3mWhveLGUKPrKweQVHbnlm5RUoPafXAxJdGPl2tYqfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fJDqC/+P; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772215095; c=relaxed/simple;
+	bh=7c6HFX4NEwk2FMm96FTQ88HHYGNIC4bFpu3jZhULeoQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kLJmw9VDJzLdeCgZsJqVsV07JqV+kFzgJE9mpqRES0HUgVMDb0RhNOtsRVU4DXjGjKw+i4qYZx/zBB2X6ykMTVxroZv/Da0g1LOUi6vjaHW76/Dz6Qm3XBvSRvrfIasIKaR+cFu7oAOrm4JnXnUC+DxWuevzbPchWblhcRsl2L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wlPFGzas; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fJDqC/+P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772214124; x=1803750124;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uLZDjCFgfzsq0FIprBHCwoTZtnqNId9JxICufdli1kc=;
-  b=fJDqC/+Pq1DBtVpgnUETNViOkWQfMEpxBbF/0/2tDdyjK89PpSihsDLy
-   cBCLaFBfmzJX8jmBoIesumy7+v98zhZ49MI/v6ChABTxszwtSKUUb4LEi
-   RNtc5gfbGDaZZOU7aLYq7chJv3vHyQVyqSqKrtG/PnHEQR1Yba0Mm+64P
-   ZVSwyMjsAnnqwoMed/kGVBVpduNZ0mEnfLLjkt4lQkHFO7ygR2iVRGPyW
-   junZz0UbFPWj3kOa32Dc+qQjEU5IHWrVcYKDHZreQ92PRnfc8cO8/41W/
-   OFUSovUBTRPykf6F+kd417K3fTIIZ+DxI8nbMY23RBUA73yCEum4+hs8t
-   A==;
-X-CSE-ConnectionGUID: c2RNODjWTKG04wd7JcTN0w==
-X-CSE-MsgGUID: yhT54rSYQj+uBM7jTueSUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="60875901"
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="60875901"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 09:42:03 -0800
-X-CSE-ConnectionGUID: JDy7mhgwQAOJSGtuEoCMWQ==
-X-CSE-MsgGUID: 022vlSEySdyxoLVaQ0zMsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="216196541"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.180])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 09:42:01 -0800
-Date: Fri, 27 Feb 2026 19:41:58 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Robin van der Gracht <robin@protonic.nl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: auxdisplay: Use
- unevaluatedProperties to fix common property warning
-Message-ID: <aaHXZtFWpyW8Pn2l@ashevche-desk.local>
-References: <20260227165836.3445577-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wlPFGzas"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=+cD8P2tgu0apAWqjJEf8nXuFb43/7yGEaH3yQ4zcVZs=; b=wlPFGzas5TRFXsWMzr30uerhNP
+	MRX6pfwee1ZFOljpvujmJKcCZaTp5Unlq7RZNXCR2DYjbLVincwqBDjKNxHaUYNgA3ymJMPeqvDOb
+	bPg9o/HJH0nTdqDnuC7pELBjLiW+rn8f9XsD1KjgG2KDft8OZmXuOWpxveKWEUXjfQf+Uifyo7tfG
+	Tsytl618n+VLIFD28N5nqdjJYWEQLe6NGGaC8qlfx/WuE8cmseeJt/vvp5lTWOSrV6VtF6ZEkxpri
+	zOnBUfDjLjpQseSAt4h8ueYhhGD89WEevl7DQaykRUP0KdfYP/lR951pnQ1nfZ4kjddlB50P6+3P5
+	gJGe0yXg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vw26F-00000008sDD-0tzI;
+	Fri, 27 Feb 2026 17:58:03 +0000
+Message-ID: <4186c887-fec4-4677-a7b0-e48c52ac5dea@infradead.org>
+Date: Fri, 27 Feb 2026 09:58:02 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227165836.3445577-1-Frank.Li@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] usb: dwc3: add needs_full_reinit flag
+To: Xu Yang <xu.yang_2@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
+ Li Jun <jun.li@nxp.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-0-08c10b08ebb6@nxp.com>
+ <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-2-08c10b08ebb6@nxp.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260212-add-flatten-dts-based-dwc3-imx-driver-v4-2-08c10b08ebb6@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 27, 2026 at 11:58:34AM -0500, Frank Li wrote:
-> Change additionalProperties to unevaluatedProperties because it refs to
-> /schemas/input/matrix-keymap.yaml.
+Hi--
+
+On 2/12/26 12:35 AM, Xu Yang wrote:
+> The current design assumes that the controller remains powered when wakeup
+> is enabled. However, some SoCs provide wakeup capability even when the
+> controller itself is powered down, using separate dedicated wakeup logic.
+> This allows additional power savings, but requires the controller to be
+> fully re‑initialized after system resume.
 > 
-> Fix below CHECK_DTBS warnings:
-> arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
->         from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+> To support these SoCs, introduce a flag needs_full_reinit for the purpose.
+> And the glue layer needs to indicate if the controller needs this behavior
+> by setting a same flag needs_full_reinit in dwc3_properties.
 > 
-> Fixes: f12b457c6b25c ("dt-bindings: auxdisplay: ht16k33: Convert to json-schema")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > ---
-> Change in v2
-> 	- Add Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> 	- Add fixes tags
+> Changes in v4:
+>  - also rename core_may_lose_power to needs_full_reinit
+>  - add R-b tag
+> Changes in v3:
+>  - no changes
+> Changes in v2:
+>  - put core_may_lose_power into dwc3_properties and check it in
+>    dwc3_get_software_properties()
+>  - rename may_lose_power to needs_full_reinit
+> ---
+>  drivers/usb/dwc3/core.c | 9 +++++++--
+>  drivers/usb/dwc3/core.h | 3 +++
+>  drivers/usb/dwc3/glue.h | 3 +++
+>  3 files changed, 13 insertions(+), 2 deletions(-)
 > 
-> Resend include Rob's Ack tag:
-> 	Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-Independently on `b4` and its functionality this is incorrect way to put tags.
-This has to be done in the same way as SoB above, for example.
-I've just explained this already second time.
+> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+> index a35b3db1f9f3..67bcc8dccc89 100644
+> --- a/drivers/usb/dwc3/core.h
+> +++ b/drivers/usb/dwc3/core.h
+> @@ -1119,6 +1119,8 @@ struct dwc3_glue_ops {
+>   * @usb3_lpm_capable: set if hadrware supports Link Power Management
+>   * @usb2_lpm_disable: set to disable usb2 lpm for host
+>   * @usb2_gadget_lpm_disable: set to disable usb2 lpm for gadget
+> + * @needs_full_reinit: set to indicate the core may lose power and need full
+> +			initialization during system pm
 
-> Rob's Acked at
-> https://lore.kernel.org/imx/175796984570.3379405.7210704746413204244.robh@kernel.org/
+The line above should begin with
+ *
 
-No need to resend _this_ this time.
-Thanks!
+Please correct it so that kernel-doc doesn't complain:
 
--- 
-With Best Regards,
-Andy Shevchenko
+WARNING: drivers/usb/dwc3/core.h:1122 bad line:                         initialization during system pm
+
+Thanks.
+
+>   * @disable_scramble_quirk: set if we enable the disable scramble quirk
+>   * @u2exit_lfps_quirk: set if we enable u2exit lfps quirk
+>   * @u2ss_inp3_quirk: set if we enable P3 OK for U2/SS Inactive quirk
 
 
