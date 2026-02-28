@@ -1,114 +1,247 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B092C3244
-	for <imx@lists.linux.dev>; Sat, 28 Feb 2026 10:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C02944D019;
+	Sat, 28 Feb 2026 15:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772276124; cv=none; b=e5JZIQPM/y+rryD7xO/ezpT31oNlgN/8NfEEmqjvaBXSJ7QwA6J3YJPR0At11VwhWMG38jS5QKB5fnd1VavF2YT5is2FIiXKlXDc1mUvuHZ0dE+wC/1nkIYdhFEXIEneKlGVotDBE4kF6erbx99wTyaJDtSbXCymVEEYsbDWkCY=
+	t=1772291143; cv=none; b=CF+doGGRQq7zXyaiKzjjLnlCmPgGtIuCY7cZYWRHkFw6lXI8LF6cq4rF5DJ7lEK9j4KQpGU4/aDfjmrHiGR2E8SxYE7vvlRzF4L3iJFmNzrka6yUy5gkpLckAb6/4rQl23viQjgBLlJhtCXWzzrzJm7YR0LI7pE/onivu9cZw3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772276124; c=relaxed/simple;
-	bh=sltUJYHQLvNrGwgmWBIzDOT6CpSQTCgkF/nZxy3C85U=;
+	s=arc-20240116; t=1772291143; c=relaxed/simple;
+	bh=0OxJIGMPv76RywmKCdOMvITmwAh2+4ivhDnHMnZnzag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eC6pDjaDI0dNIwR7r7Ig66Z7MGrE35azf9a3+Df8wI4Kbuj9jQGOzaVjUY0cWa55OSgAYi3LqRQ4Y/guxTiKEk3UjglIXm+kRkD0qcIZiaqqim2kyOK7y90+LTjPK4gJHStO0CVv8RsrL4Z3QGrh+U8S5B9E7ZGlCzAQXbeqLPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jUCRXCzA; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPuJK2ivuAPxu4pR989LFyivE1hWTRpEOua0LJ5MuOlxN12KLKZIosDFMnGfy1QgAZYsHcB6BexoVH7zi7NYtQdDN0emroQxlefwuDyDvDfn3AN8GN97qVG+YClcKEgeUJ6ZIu/akW6ne5BowBJMpaMM9j1S4j87BK0kuM+xUIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ch1Gg2yA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jUCRXCzA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772276123; x=1803812123;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sltUJYHQLvNrGwgmWBIzDOT6CpSQTCgkF/nZxy3C85U=;
-  b=jUCRXCzAM14GzoMonJ4Wb2QNbaK6Fi6TnPk6IxboGKi9ksgL3vXAHuWt
-   b5mrFeJi7A0R8YDTVj1uBg01Ry1+papg5Epg/E2vLDBHAkVjA+U+T9WPg
-   CBgUC/kpgIb25Xp8JU7FB23i78RJ68xTQq6hkjJzFOYzTAW61foENfIY2
-   vrOzUsj5VWQziB0MNr2KFIT7N9w5cuim0FfDmWeEukT2lhiMdkoYMcjS7
-   zQtP5dT44bQ22v+50dWatzJMEdPkuPQYaCMjU9TCMn21Tu82l7i2+Cc9u
-   fo9kep/9GDqt7B5TvthlCrI9QsXEGK9WaVVwg8y3wnaWvdNvciivnHiRR
-   w==;
-X-CSE-ConnectionGUID: qmfA4lo5T1KhC3aeO+R/Yg==
-X-CSE-MsgGUID: rr5nG9wLQZO8Vf/6gZ9ccw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="73414999"
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="73414999"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 02:55:23 -0800
-X-CSE-ConnectionGUID: 5XP05eZlQnyy6AWNIqpWqg==
-X-CSE-MsgGUID: p1HUPkTCRTq+gPnCl72Hjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="247647835"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.224])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 02:55:20 -0800
-Date: Sat, 28 Feb 2026 12:55:17 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Robin van der Gracht <robin@protonic.nl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: auxdisplay: Use
- unevaluatedProperties to fix common property warning
-Message-ID: <aaLJlcG-jRPgEte5@ashevche-desk.local>
-References: <20260227165836.3445577-1-Frank.Li@nxp.com>
- <aaHXZtFWpyW8Pn2l@ashevche-desk.local>
- <aaIeEy3uc7nYBy9k@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ch1Gg2yA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF0AC19424;
+	Sat, 28 Feb 2026 15:05:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772291143;
+	bh=0OxJIGMPv76RywmKCdOMvITmwAh2+4ivhDnHMnZnzag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ch1Gg2yAQ1PMpheX8+vCmGY8HMEwDFC/hs8l0hqgf2x2w4fkDrBVkS26fABBzrX/b
+	 tOatzn+ODy9Qfl2iFvAMrPoYNA+dETAbqE+ZlRgx1BD2n7lQss9UtXusRO8re9CrBJ
+	 rHCOJrUGjqjs63PyTMZX8TYRgFZtNaIQ9nkKlmSUxlFAOVucxN28nOVrpCUvGWimnn
+	 e2piRZmLR58wfKxdi4IeBlId6JdYpvNAJHF5ttgVRkGXomCi1qr0YQx16DDnr0RuLD
+	 vJQmNUVaI0xEw/yJmMFtcNI0HnGHZUvrJjMj/Pqk2lvcHu9uI0mWUxMTqrHC3Fea4m
+	 izPytNjE6AS7A==
+Date: Sat, 28 Feb 2026 20:35:26 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Sherry Sun <sherry.sun@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, Frank Li <frank.li@nxp.com>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V5 02/12] PCI: host-generic: Add common helpers for
+ parsing Root Port properties
+Message-ID: <2pxztu4pnngj55bqvrqjukaeatzcr6t267trfimlnctgznocsz@svgi3dyvcme2>
+References: <20260213040852.3340547-1-sherry.sun@nxp.com>
+ <20260213040852.3340547-3-sherry.sun@nxp.com>
+ <woglgacwnhpzy3wrevjs4am4rs754tajzmhvndli4u2fycmzuf@rvbwfzcgnsrf>
+ <VI0PR04MB12114C1EF27CE2314B2E789EE9274A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <dzykdgno7cuy5pc6gcooq7s2dbdzb5p2tktuswk6uiyrnx5fzi@nv7hbkodrxce>
+ <VI0PR04MB12114F7059ED27ABAB51FDBE99272A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <AS8PR04MB8833F7D36FFA325DD87023308C70A@AS8PR04MB8833.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aaIeEy3uc7nYBy9k@lizhi-Precision-Tower-5810>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8833F7D36FFA325DD87023308C70A@AS8PR04MB8833.eurprd04.prod.outlook.com>
 
-On Fri, Feb 27, 2026 at 05:43:31PM -0500, Frank Li wrote:
-> On Fri, Feb 27, 2026 at 07:41:58PM +0200, Andy Shevchenko wrote:
-> > On Fri, Feb 27, 2026 at 11:58:34AM -0500, Frank Li wrote:
-> > > Change additionalProperties to unevaluatedProperties because it refs to
-> > > /schemas/input/matrix-keymap.yaml.
+On Sat, Feb 28, 2026 at 01:58:43AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Sherry Sun <sherry.sun@nxp.com>
+> > Sent: 2026年2月26日 11:40
+> > To: Manivannan Sadhasivam <mani@kernel.org>
+> > Cc: Hongxing Zhu <hongxing.zhu@nxp.com>; l.stach@pengutronix.de; Frank
+> > Li <frank.li@nxp.com>; bhelgaas@google.com; lpieralisi@kernel.org;
+> > kwilczynski@kernel.org; robh@kernel.org; krzk+dt@kernel.org;
+> > conor+dt@kernel.org; s.hauer@pengutronix.de; festevam@gmail.com;
+> > imx@lists.linux.dev; kernel@pengutronix.de; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: RE: [PATCH V5 02/12] PCI: host-generic: Add common helpers for
+> > parsing Root Port properties
+> > 
+> > > Subject: Re: [PATCH V5 02/12] PCI: host-generic: Add common helpers
+> > > for parsing Root Port properties
 > > >
-> > > Fix below CHECK_DTBS warnings:
-> > > arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
-> > >         from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+> > > On Tue, Feb 24, 2026 at 10:24:41AM +0000, Sherry Sun wrote:
+> > > > > Subject: Re: [PATCH V5 02/12] PCI: host-generic: Add common
+> > > > > helpers for parsing Root Port properties
+> > > > >
+> > > > > On Fri, Feb 13, 2026 at 12:08:42PM +0800, Sherry Sun wrote:
+> > > > > > Introduce generic helper functions to parse Root Port device
+> > > > > > tree nodes and extract common properties like reset GPIOs. This
+> > > > > > allows multiple PCI host controller drivers to share the same parsing
+> > logic.
+> > > > > >
+> > > > > > Define struct pci_host_port to hold common Root Port properties
+> > > > > > (currently only reset GPIO descriptor) and add
+> > > > > > pci_host_common_parse_ports() to parse Root Port nodes from
+> > > > > > device
+> > > > > tree.
+> > > > > >
+> > > > > > Also add the 'ports' list to struct pci_host_bridge for better
+> > > > > > maintain parsed Root Port information.
+> > > > > >
+> > > > > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > > > > > ---
+> > > > > >  drivers/pci/controller/pci-host-common.c | 58
+> > > > > > ++++++++++++++++++++++++
+> > > > > > ++++++++++++++++++++++++ drivers/pci/controller/pci-host-common.
+> > > > > > ++++++++++++++++++++++++ h
+> > > > > > ++++++++++++++++++++++++ |
+> > > > > 15 ++++++
+> > > > > >  drivers/pci/probe.c                      |  2 +
+> > > > > >  include/linux/pci.h                      |  1 +
+> > > > > >  4 files changed, 76 insertions(+)
+> > > > > >
+> > > > > > diff --git a/drivers/pci/controller/pci-host-common.c
+> > > > > > b/drivers/pci/controller/pci-host-common.c
+> > > > > > index d6258c1cffe5..0c35907a5076 100644
+> > > > > > --- a/drivers/pci/controller/pci-host-common.c
+> > > > > > +++ b/drivers/pci/controller/pci-host-common.c
+> > > > > > @@ -9,6 +9,7 @@
+> > > > > >
+> > > > > >  #include <linux/kernel.h>
+> > > > > >  #include <linux/module.h>
+> > > > > > +#include <linux/gpio/consumer.h>
+> > > > > >  #include <linux/of.h>
+> > > > > >  #include <linux/of_address.h>
+> > > > > >  #include <linux/of_pci.h>
+> > > > > > @@ -17,6 +18,63 @@
+> > > > > >
+> > > > > >  #include "pci-host-common.h"
+> > > > > >
+> > > > > > +/**
+> > > > > > + * pci_host_common_parse_port - Parse a single Root Port node
+> > > > > > + * @bridge: PCI host bridge
+> > > > > > + * @node: Device tree node of the Root Port
+> > > > > > + *
+> > > > > > + * Returns: 0 on success, negative error code on failure  */
+> > > > > > +static int pci_host_common_parse_port(struct pci_host_bridge
+> > *bridge,
+> > > > > > +                                 struct device_node *node) {
+> > > > > > +   struct device *dev = &bridge->dev;
+> > > > > > +   struct pci_host_port *port;
+> > > > > > +   struct gpio_desc *reset;
+> > > > > > +
+> > > > > > +   reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
+> > > > > > +                                 "reset", GPIOD_OUT_HIGH,
+> > > > > > + "PERST#");
+> > > > >
+> > > > > For usecases like link retention from bootloader to kernel, this
+> > > > > could be requested as GPIOD_ASIS:
+> > > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
+> > > > > lo
+> > > > >
+> > > re.ke%2F&data=05%7C02%7Csherry.sun%40nxp.com%7C7957eace8620494e
+> > > da250
+> > > > >
 > > >
-> > > Fixes: f12b457c6b25c ("dt-bindings: auxdisplay: ht16k33: Convert to json-schema")
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > Change in v2
-> > > 	- Add Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> > > 	- Add fixes tags
+> > 8de74700adc%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63907
+> > > 622173
+> > > > >
 > > >
-> > > Resend include Rob's Ack tag:
-> > > 	Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> >
-> > Independently on `b4` and its functionality this is incorrect way to put tags.
-> > This has to be done in the same way as SoB above, for example.
-> > I've just explained this already second time.
-> 
-> Sorry mess up during debug something.
+> > 6969266%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiO
+> > > iIwLjAu
+> > > > >
+> > >
+> > MDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%
+> > > 7C%7
+> > > > >
+> > >
+> > C&sdata=S6ME9QOAFR5OC8w5WRjFeHW46t4OAxVkVz6E3pCJWQk%3D&rese
+> > > rved=0
+> > > > > rnel.org%2Flinux-pci%2F20260109-link_retain-v1-3-
+> > > > >
+> > >
+> > 7e6782230f4b%40oss.qualcomm.com%2F&data=05%7C02%7Csherry.sun%40
+> > > > >
+> > >
+> > nxp.com%7C55c78c3dde694150dd1408de6d778ccd%7C686ea1d3bc2b4c6fa9
+> > > > >
+> > >
+> > 2cd99c5c301635%7C0%7C0%7C639068557422583280%7CUnknown%7CTWFp
+> > > > >
+> > >
+> > bGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4z
+> > > > >
+> > > MiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=zZAzwcH
+> > > > > U2y8kH4YP0OoTVN66tUlCEq6m2aAKkWCFeTM%3D&reserved=0
+> > > > >
+> > > >
+> > > > Hi Manivannan,
+> > > >
+> > > > I understand the concern about supporting use‑cases where the PCIe
+> > > > link is intentionally retained from bootloader to kernel. However,
+> > > > relying on GPIOD_ASIS may introduces a practical problem: it removes
+> > > > any guarantee about the PERST# level during the early power‑on
+> > window.
+> > > >
+> > > > According to the PCIe initialization requirements, PERST# must
+> > > > remain asserted until power rails and REFCLK are valid. If we
+> > > > request the GPIO as GPIOD_ASIS, the kernel no longer controls or
+> > > > even knows the actual state of PERST# at probe time, which means the
+> > > > device may observe a deassert reset before power/clock stable, it is
+> > > > risky even
+> > > > xx_pcie_host_init() asserts/deasserts PERST# again after enable
+> > > > power rails hoping to reset the device cleanly. Once PERST# is
+> > > > released before power or clock rails are fully valid, the device may
+> > > > already have entered undefined or partially‑initialized states. Even
+> > > > if the driver asserts PERST# later, this does not guarantee that all
+> > > > internal domains return to a well‑defined reset state. Some
+> > > > implementations do not route PERST# to all functional blocks, or
+> > > > early deassert during unstable power/clock conditions can leave the
+> > > > PCIe controller or endpoint
+> > > PHY/LTSSM in inconsistent conditions. Consequently, such a sequence
+> > > can still lead to undefined device state, failed link training, or
+> > > inconsistent enumeration behavior.
+> > > >
+> > >
+> > > I don't think this is true. Even if you request PERST# as GPIOD_ASIS,
+> > > if you explicitly assert it *before* doing the controller
+> > > initialization, net result would be the same.
+> > >
+> > > Like,
+> > > 	devm_fwnode_gpiod_get(GPIOD_ASIS)
+> > > 	...
+> > > 	assert_perst()
+> > > 	(perform controller initialization and enable resources)
+> > > 	deassert_perst()
+> > >
+> > > So if you request PERST# as GPIOD_OUT_HIGH, the first assert_perst()
+> > > becomes a NOP, otherwise, the endpoint gets asserted right before the
+> > > controller initialization.
+> > >
+> > Hi Manivannan,
+> > Got your point, seems there are some issues in the order of assert/deassert
+> > and power/clk enable in pci-imx6 driver. Maybe I need to readjust the
+> > sequence internal imx_pcie_host_init().
+> > 
+> > Thanks, will change to use GPIOD_ASIS in next version.
+> If the GPIOD_ASIS is used, the PERST# should be asserted before vpcie3v3
+>  or vpcie3v3aux is turned on.
+> That's the reason why GPIOD_OUT_HIGH is set in the probe of pci-imx6.c
+>  driver currently.
 
-> > > Rob's Acked at
-> > > https://lore.kernel.org/imx/175796984570.3379405.7210704746413204244.robh@kernel.org/
-> >
-> > No need to resend _this_ this time.
+That's fine. We can add a separate PERST# assert before enabling 3.3v
+regulator.
 
-I was under impression that the only thing is missing is Rob's Ack, but it
-appears that something else should also be addressed. I think it warrants
-the v3.
+- Mani
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+மணிவண்ணன் சதாசிவம்
