@@ -1,68 +1,84 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478F232FA21
-	for <imx@lists.linux.dev>; Sun,  1 Mar 2026 08:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536DE32E126
+	for <imx@lists.linux.dev>; Sun,  1 Mar 2026 08:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772352426; cv=none; b=RAUi/fo34K4HnildOFZtX+NfbPquSs+hFJ9QGMoQ14cNlcCJgYxfjSimUS/adwExCU4uyOaZBjeJhf/YmgCcRMupiWp3wUCIp8Y1HDAH5RfG7i8VHOI05+vbJe5plMMguanz80pnS9ZFbKIQbKy/95/5dDjMnX/grVcFkWU/yVI=
+	t=1772354167; cv=none; b=W+KpCiIIUdgVvTCjxWkgVkcu8CPQlvUIjXQQ+XpjWwX5deaF0tJ21UIcKMjGQ/Z8vlFT7rAxFnSnlZGIHfiDIXibPRbDl9JMftMNbUlylY8x2U4UoiFxrkVc3cCAWwx2x9tT94OI/XloNdqJfczOUp+i36XKY/NAsXYhEsTOxBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772352426; c=relaxed/simple;
-	bh=tgaTiLnqDVU09V+sOch0MS59MDRnaMGowpS7pQpkHvk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g7NfB0ZPLOwuPI5kqPeq4jdGwnQKxcmIGLYikwZCKh2vJI+At6tGBskZ3b3x5U3VskZUprDYkPV8Ry2Z128n4W3qXIBZ/UeKxDXtXQFYtU+y4U0Ew+YqMa/vuRkB+R0aZJOE3nJd3+yOIyW2fM2yPLfMf7d5QUncMw+y2T6G8FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nga5rf1P; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772354167; c=relaxed/simple;
+	bh=H6nPK0TK5n+SrUMyTi0tJArgcayT5+iAOxNLWT6jD+I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=U8cRS60R4d4Wo/FNWdZkxees3TJ5RrlmbI1ulRL7MJZ43CDpOK000swFuJaeOdF4HbR7g695xgdZ9zRvVceXHObGPvWxLiIpq9dlZrSRJWi4yzAp7reOrdboTq8PtoXjEVZDTWIoC/3ER5r+EF7gF15UvXnYTvh9l/qM2cvpyfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Soibzn4N; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U1w/2pMx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nga5rf1P"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3597fea200dso559533a91.3
-        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 00:07:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Soibzn4N";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U1w/2pMx"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6216kFRM530173
+	for <imx@lists.linux.dev>; Sun, 1 Mar 2026 08:36:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=h/J87S3x56AlWUvhsWA468
+	cx/T1N6JOg3YVREGRvJqA=; b=Soibzn4N/ZkM5J3qoqIornB47kjVSoW4OSYFdA
+	JxHI+jCEFG5AvcKA6uqJnh2JesMWopy+nx3HDqBpTUvNGDuFejcPfcLe9Wzv31dL
+	lZmPlWfTua+C1ln4pDhPH3wO0uF/KAKlbaurOU0Lyvb/HT3LlRYDU5RicRjeIINR
+	QpXTC9yyk0HMnRkljCIyNpxDx3575VsDL+yiy4jgj2xHmPPD5HbYk9UXvz0mnraL
+	sorBjyjDTyJXLHZLUZX9b2mC5nbJ0Wy1mT6ghkzAsD2FR+BQU64qTD44WcqMK0f9
+	o5vQEB9V06sSulMdm2F48Z6RTI7ze1Qmdf4VUiOntKatRtgg==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cksgq2f97-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Sun, 01 Mar 2026 08:36:05 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8273494d873so1290993b3a.1
+        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 00:36:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772352423; x=1772957223; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MUY9ZBmDZl+OfoG0SmjcuxGXm9iN1eBUEEJQwad6G5U=;
-        b=Nga5rf1PHC4GlH8rfL37MtO2moolgsAEX03YrLA118nT0d0FRMq+Jzxv1n7iDMPlSO
-         uLxW1wWk7OUFGcUkp2SRdnXkKxHM4loiO/NEfkdsW+jKOVvgI1wCmvJybny25BFn6nFj
-         JwloX9arQgjbClFQCYHkq8lvTdAw6U11PI29IH5Jy/7qwkagy5OSVvdJEwOGvjT5D2HR
-         Uea240OQ9r1pgg1pjXuq0y0L6JJLUu4Zu+RHnSJ/dHng4btYxLKuGcxYH50j4/wnZugI
-         DnQYiKjWAe1RUOPZftE6r0aF2AOGKrdyFViwtgWUwDSwaWF8EcUMsAY9kZotef7cOnrB
-         ZH6A==
+        d=oss.qualcomm.com; s=google; t=1772354165; x=1772958965; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h/J87S3x56AlWUvhsWA468cx/T1N6JOg3YVREGRvJqA=;
+        b=U1w/2pMxSe57mVbfzrlRiXT0/Dqnfmv+i94w844Xlb6ih3cNJoykWNoROCgSHPDrGO
+         /coHcFXPc7ItnrPe4c5QDo8rJSxYK5rQfAyOL4Gs1QAC9aEEv1YANjcysuZgyI1zQu6Q
+         TACLcTAR4vYws94GXNEEDsHwcB4gOneuDHLSfURbubhxKsH+mUpW/FMgcpS8Kbt/AC1U
+         agekW3dvHVHwtBM3eBhJnGvGtrFSF+faxHCplgXWKkvUD1zU0QG5Szz7ETt0HYKI3HaB
+         nV2cKvmh61XJJB4uhmIiCPfUkZXHUSLrdZ08HEekMiaEKKy3X/xRlhXvNn0et8Ej98K8
+         XzPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772352423; x=1772957223;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MUY9ZBmDZl+OfoG0SmjcuxGXm9iN1eBUEEJQwad6G5U=;
-        b=B1go6lPzipMw2egwNpk+4DK9/CRa1bcFpWiymV0KOwHgAh9W4Sk5+KoCQ+5FVkZ7pp
-         2izdjYvc15QxYgSUQOmeIQRWn67FRDfM5ZQhWfdms3nVOnse8DxqUI/80tE1puXc36rV
-         iZGh+iGSnEujORt1BzdWkJUoAtvfXKOhcV+GqXhyUDwYnybMwSKzIsQAEcfjUoMIYj7f
-         /AAFzc9YBRrEfAnGknGz4zbv8El9kzJ32IDrDgJ5Ku4NzZukKh9CJaINISaJXA1M+iCO
-         cAfIx3MqnQL/8P04TJFMSHhWVKjXflUUF7sqiDVukC96zrsY10w/5EkE2zacZUXRK9uH
-         C6fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXKzTe17QlrPAq9oyczfDM3awufb+GU7mTYJsAfMi+YVB7yny+LUk5AqgWxEbb371pTaeY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqzXMCDajLSrzcuqNC1Nth18TQyNhtjNgoRLLo9V2yzyuklJr/
-	pheuaQnhH0I1UmOwtj6mw7gWd9MTRgpQtl8/RueL+GXLnVOflJw06xrJ
-X-Gm-Gg: ATEYQzx/wyYvBQq+m2oPrP3ao2F7gMeO5bccbQpggs+7aCeO+4X38AG7/Piu0cKds2P
-	XfK1s0G29I5B5WK3SBtRjTiblJDAjclXyx5JLp2Kx+RfH2ghnZ+OM+ut89pUPIpaFWv3Tl7TWfd
-	g2/W5nwkzPTMaU8AuFFioy/8G1Xexim0ZmLk4sV47RyZLEfPfvMzFCLvjwbU1cByplhnev/GNOZ
-	IxOOIRmmQMMeL7mLytRtmZvauhaiKxHHWEHjHWY65zLUxZzfKnlRafifv4XqPLCGzGWqw4eA5ho
-	SVfP+h+NeIPXa897PJH6V9GAWUqMz2ApOTzCxArJUeQwmOY9rI0XGrF8eNKeIxHA/mPcfhql66h
-	tVECURhc4A6gB+4HGjVR05rYo22oPaWeBmD42sQgcUx5T7giU8N4MIhUxTB0TjI0fG14O3aLYWS
-	PFm/7b2ZccprTq7G06IKyHtLpAYUsgGKyLqCahOSk8as/abOQn7p9nEvFvsCmOUB498/Q6nEjsv
-	P/ziIhAgGAqlMz5YuyooscUwQBhOoeAIhvH4jBOTqF5MTMg03gR50cvpAC/Hqg0rhil8aXT+nmA
-X-Received: by 2002:a17:90a:e18f:b0:356:8719:f516 with SMTP id 98e67ed59e1d1-35965ceaf7dmr8142105a91.24.1772352423345;
-        Sun, 01 Mar 2026 00:07:03 -0800 (PST)
-Received: from [192.168.2.3] ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359135ef1d7sm8885384a91.5.2026.03.01.00.06.55
+        d=1e100.net; s=20230601; t=1772354165; x=1772958965;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h/J87S3x56AlWUvhsWA468cx/T1N6JOg3YVREGRvJqA=;
+        b=BL807ji7vw09CuZzzJFled199b7sRgwlh/m9tuL4MXPRoE1I1MUYS8AbygkqZmaSwT
+         ArPfJ4UVItwzwntG/JxvQ9v66TMhaUnddwo33nPmj1FAG0qqkPZ5sXUkpcWiWSE5H3J1
+         qgaIG4kFR3fyD5U6qEMAI+404lOSbSROt5aZd0uMj0ghrUki2cASjM7VYh4UGrRwzdUZ
+         LGp60HRjIqLhDCP7ofafiAujAtnDf9RUPW0roeoQYqqkwB5IYp5GHoVRPq/hIXAkTVgs
+         4mwNQu1s5ArTGGLG9OvOIVxYDSe2Ojb9b/rb7DfuWdFJ9IUq3L3E/Ln6EIUVVzVdK81H
+         ER2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVWeF7jPE5yMerysgHKRrgIIuq8Hr6/Dtz2oP0Lb3LTsUCfZsuvfJyC6FRZtOZiasXgoGI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxKYl6jjZr/D2Pd5dL2o0+CBujR1FaeRc7uCnxQIJnfb2TjmZDI
+	yrWjuewXXiKz/elfYfn3WXx2fu3tqTCDb5+OmZifq35NxdkeMG9p5Q7epQGHTb7lfiqidkPSxoC
+	AkclWno6WS773FEV5A16DYwKET6SSuJKM+cowIMH1hCXG5YOl3wnaCIU=
+X-Gm-Gg: ATEYQzzckiedamVH+z/otNDxGAJcUzi/6kdqQpLQgy2nMUq7hwTzDVe1qVmTb05D4Ck
+	yGox6jo5DBaDYDyaU2k7tVeYGQTdXcmtJklUUdYG5YP3Tkfe4g5WJVC01xEDRMg2PhdpP/aLT3r
+	eW724rOqS61QZna/fYQGVh7MGjmobbs9/d5ClbGHpBsxtrm3U832n4rmJoGytMEo4+GteNVlZlA
+	AqV29xb7LnXsDN2nmSe34FAWmQrKOSjVMk3IBmzpIctxVh1V5uozaw3Pm56qbiA575Yo9mmztSf
+	ALQmJQbWnfEtpTikPeshZUo62anJe4Sfyb55vCJZ+//xVAlKrEykWOZv1kQ4GK/WcKzqSdl5MOO
+	QGa/zItQakIva0tWKuqDr2jbz0acb3PvBqA/xIp7xexIzVGvnCbFcgSbJ
+X-Received: by 2002:a05:6a00:1d14:b0:823:1444:7873 with SMTP id d2e1a72fcca58-827398630afmr9488154b3a.32.1772354164658;
+        Sun, 01 Mar 2026 00:36:04 -0800 (PST)
+X-Received: by 2002:a05:6a00:1d14:b0:823:1444:7873 with SMTP id d2e1a72fcca58-827398630afmr9488110b3a.32.1772354164035;
+        Sun, 01 Mar 2026 00:36:04 -0800 (PST)
+Received: from hu-vjitta-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa82dd09sm9177300a12.28.2026.03.01.00.35.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 00:07:02 -0800 (PST)
-From: James Calligeros <jcalligeros99@gmail.com>
-Date: Sun, 01 Mar 2026 18:05:26 +1000
-Subject: [PATCH v3 7/7] ASoC: tas2770: expose SDOUT bus keeper via
- set_tdm_idle
+        Sun, 01 Mar 2026 00:36:03 -0800 (PST)
+From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+Subject: [PATCH v9 0/3] of: parsing of multi #{iommu,msi}-cells in maps
+Date: Sun, 01 Mar 2026 14:04:18 +0530
+Message-Id: <20260301-parse_iommu_cells-v9-0-4d1bceecc5e1@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,178 +87,182 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260301-tdm-idle-slots-v3-7-c6ac5351489a@gmail.com>
-References: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
-In-Reply-To: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
- Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>, 
- Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
- Frank Li <Frank.Li@nxp.com>
-Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
- James Calligeros <jcalligeros99@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4520;
- i=jcalligeros99@gmail.com; h=from:subject:message-id;
- bh=tgaTiLnqDVU09V+sOch0MS59MDRnaMGowpS7pQpkHvk=;
- b=owGbwMvMwCV2xczoYuD3ygTG02pJDJmLP2dcTLpzemWex/bfGxXUDX58YpGPWnFnj8yUCo28u
- 2eU9EtmdExkYRDjYrAUU2TZ0CTkMduI7Wa/SOVemDmsTCBDpEUaGICAhYEvNzGv1EjHSM9U21DP
- 0EjHWMeIgYtTAKbaUpCR4YJRr9JVri/nYzdXH/q9TWVPg7Cu/fqlz6NSj7Bqmj44Y8PwT00yTkn
- RuGpje8r1VntOyysFth9LO+97iO69NGWv9stOdgA=
-X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
- fpr=B08212489B3206D98F1479BDD43632D151F77960
+X-B4-Tracking: v=1; b=H4sIAAr6o2kC/x3MTQqAIBBA4avErBM0ob+rRIjZVANq4VAE0d2Tl
+ t/ivQcYEyFDXzyQ8CKmPWZ0ZQFus3FFQXM2VLKqpZZKHDYxGtpDOI1D71kop3VTtxanyULujoQ
+ L3f9zGN/3A61zjrxjAAAA
+To: Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, imx@lists.linux.dev,
+        xen-devel@lists.xenproject.org,
+        Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>,
+        linux-arm-msm@vger.kernel.org,
+        Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772354153; l=4172;
+ i=vijayanand.jitta@oss.qualcomm.com; s=20260301; h=from:subject:message-id;
+ bh=H6nPK0TK5n+SrUMyTi0tJArgcayT5+iAOxNLWT6jD+I=;
+ b=0138PH3DyBpH6CTf5Gshrd2F5CdUzVc0F0MxX4wX0mhvTjGvGhC4k9OE5ekOV5Mibl6bnxqrt
+ Gf0jdcWnaG7Anf+I2c3nVSolMIhssmbuOeaTts0urN2JZSagf5VqNQT
+X-Developer-Key: i=vijayanand.jitta@oss.qualcomm.com; a=ed25519;
+ pk=Lpi7Cs3wHe8KZtqvyci7FTOLzsKpEHKGCaPNZw+1zRI=
+X-Proofpoint-GUID: hSHsTYDITtMLxJHndlftvFwYTORrQ_nc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAxMDA3NiBTYWx0ZWRfX1Bc89+saz/6A
+ ecHR++BS1XB/EYH0l1fqBJKsJ04l6wcnqBWGj+pfG00mR6F3b73KBQ+Wvx5/REh1IIGBnSaUTGF
+ m/5tMjnPe33lNRgEZWRhiPpP1L3pOSf/va8zwjmJXbTDBBv2dyr6MKTvb7e+9c/1OWYNl1Ew84+
+ 7NkBtENG8CqFXgrWlDPhNoFgpGQQjilC+0yKI6pX36rWFBsCEaO2h7ObD5vch+pU9EI+9siI4Ds
+ HTZsEk6Aqb7Mf1Yq7KxJ/zcxRYMfcqt3Rq5GnXh3hyBlpaP9FIivRa1TgodQF0BYC62m+dIyNxT
+ Tnt7G2bA260+eTXefIrRfjfYLcXQmYsOWvCNVTK5/R95aT9/kikk9dxu0g0Ih7Bj/uLdc909GJH
+ EdELBpbm26yF2L6aXXGVGMdBkOVNPL31ShMI+2YlWkmGKlhzLJXVJWWhUMPcD2Yd0U94vwHylK/
+ Ma74QW7WU2OJDdTE3/A==
+X-Authority-Analysis: v=2.4 cv=bdRmkePB c=1 sm=1 tr=0 ts=69a3fa75 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=NEAV23lmAAAA:8
+ a=hUMMoPFcHhpVZiwYRzIA:9 a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: hSHsTYDITtMLxJHndlftvFwYTORrQ_nc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-01_01,2026-02-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 clxscore=1011
+ malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603010076
 
-TAS2770 includes a bus keeper which can be used to control the behaviour
-of the SDOUT pin during specified TDM slots. The chip can either pull
-the pin to ground, actively transmit zeroes, or keep the pin floating
-(default/uninitialised behaviour).
+So far our parsing of {iommu,msi}-map properites has always blindly
+assumed that the output specifiers will always have exactly 1 cell.
+This typically does happen to be the case, but is not actually enforced
+(and the PCI msi-map binding even explicitly states support for 0 or 1
+cells) - as a result we've now ended up with dodgy DTs out in the field
+which depend on this behaviour to map a 1-cell specifier for a 2-cell
+provider, despite that being bogus per the bindings themselves.
 
-Expose the bus keeper via the set_tdm_idle DAI op so that it can be
-configured by consumers.
+Since there is some potential use[1] in being able to map at least
+single input IDs to multi-cell output specifiers (and properly support
+0-cell outputs as well), add support for properly parsing and using the
+target nodes' #cells values, albeit with the unfortunate complication of
+still having to work around expectations of the old behaviour too.
+							-- Robin.
 
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Unlike single #{}-cell, it is complex to establish a linear relation
+between input 'id' and output specifier for multi-cell properties, thus
+it is always expected that len never going to be > 1. 
+
+These changes have been tested on QEMU for the arm64 architecture.
+
+[1] https://lore.kernel.org/all/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
+
+V9:
+  - Updated TO/CC list based on feedback to include all relevant
+    maintainers.
+  - No functional changes to the patches themselves.
+
+  Link to V8:
+  https://lore.kernel.org/all/20260226074245.3098486-1-vijayanand.jitta@oss.qualcomm.com/
+
+V8:
+  - Removed mentions of of_map_args from commit message to match code.
+
+  Link to V7:
+  https://lore.kernel.org/all/20260210101157.2145113-1-vijayanand.jitta@oss.qualcomm.com/
+
+V7:
+  - Removed of_map_id_args structure and replaced it with
+    of_phandle_args as suggested by Dmitry.
+
+  Link to V6:
+  https://lore.kernel.org/all/20260121055400.937856-1-vijayanand.jitta@oss.qualcomm.com/
+
+V6:
+  - Fixed build error reported by kernel test bot.
+
+  Link to V5:
+  https://lore.kernel.org/all/20260118181125.1436036-1-vijayanand.jitta@oss.qualcomm.com/
+
+V5:
+  - Fixed Build Warnings.
+  - Raised PR for iommu-map dtschema: https://github.com/devicetree-org/dt-schema/pull/184
+
+  Link to V4:
+  https://lore.kernel.org/all/20251231114257.2382820-1-vijayanand.jitta@oss.qualcomm.com/
+
+V4:
+  - Added Reviewed-by tag.
+  - Resolved warnings reported by kernel test bot, minor code
+    reorganization.
+
+  Link to V3:
+  https://lore.kernel.org/all/20251221213602.2413124-1-vijayanand.jitta@oss.qualcomm.com/
+
+V3:
+  - Added Reviewed-by tag.
+  - Updated of_map_id_args struct as a wrapper to of_phandle_args and
+    added comment description as suggested by Rob Herring.
+
+  Link to V2:
+  https://lore.kernel.org/all/20251204095530.8627-1-vijayanand.jitta@oss.qualcomm.com/
+
+V2:
+  - Incorporated the patches from Robin that does the clean implementation.
+  - Dropped the patches the were adding multi-map support from this series
+    as suggested.
+
+V1:
+ https://lore.kernel.org/all/cover.1762235099.git.charan.kalla@oss.qualcomm.com/
+
+RFC:
+ https://lore.kernel.org/all/20250928171718.436440-1-charan.kalla@oss.qualcomm.com/#r
+
+Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
 ---
- sound/soc/codecs/tas2770.c | 75 +++++++++++++++++++++++++
- sound/soc/codecs/tas2770.h | 12 ++++
- 2 files changed, 87 insertions(+)
+Charan Teja Kalla (1):
+      of: factor arguments passed to of_map_id() into a struct
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index 6f878b01716f..d4d7d056141b 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -492,11 +492,86 @@ static int tas2770_set_dai_tdm_slot(struct snd_soc_dai *dai,
- 	return 0;
- }
- 
-+static int tas2770_set_dai_tdm_idle(struct snd_soc_dai *dai,
-+				    unsigned int tx_mask,
-+				    unsigned int rx_mask,
-+				    int tx_mode, int rx_mode)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct tas2770_priv *tas2770 = snd_soc_component_get_drvdata(component);
-+	int ret;
-+
-+	/* We don't support setting anything for SDIN */
-+	if (rx_mode)
-+		return -EOPNOTSUPP;
-+
-+	if (tas2770->idle_tx_mode == tx_mode)
-+		return 0;
-+
-+	switch (tx_mode) {
-+	case SND_SOC_DAI_TDM_IDLE_PULLDOWN:
-+		ret = snd_soc_component_update_bits(component, TAS2770_DIN_PD,
-+						    TAS2770_DIN_PD_SDOUT,
-+						    TAS2770_DIN_PD_SDOUT);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+	case SND_SOC_DAI_TDM_IDLE_ZERO:
-+		ret = snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG4,
-+						    TAS2770_TDM_CFG_REG4_TX_KEEPER,
-+						    TAS2770_TDM_CFG_REG4_TX_KEEPER);
-+		if (ret)
-+			return ret;
-+
-+		ret = snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG4,
-+						    TAS2770_TDM_CFG_REG4_TX_FILL, 0);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+	case SND_SOC_DAI_TDM_IDLE_HIZ:
-+		ret = snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG4,
-+						    TAS2770_TDM_CFG_REG4_TX_KEEPER,
-+						    TAS2770_TDM_CFG_REG4_TX_KEEPER);
-+		if (ret)
-+			return ret;
-+
-+		ret = snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG4,
-+						    TAS2770_TDM_CFG_REG4_TX_FILL,
-+						    TAS2770_TDM_CFG_REG4_TX_FILL);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+	case SND_SOC_DAI_TDM_IDLE_OFF:
-+		ret = snd_soc_component_update_bits(component, TAS2770_DIN_PD,
-+						    TAS2770_DIN_PD_SDOUT, 0);
-+		if (ret)
-+			return ret;
-+
-+		ret = snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG4,
-+						    TAS2770_TDM_CFG_REG4_TX_KEEPER, 0);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	tas2770->idle_tx_mode = tx_mode;
-+
-+	return 0;
-+}
-+
- static const struct snd_soc_dai_ops tas2770_dai_ops = {
- 	.mute_stream = tas2770_mute,
- 	.hw_params  = tas2770_hw_params,
- 	.set_fmt    = tas2770_set_fmt,
- 	.set_tdm_slot = tas2770_set_dai_tdm_slot,
-+	.set_tdm_idle = tas2770_set_dai_tdm_idle,
- 	.no_capture_mute = 1,
- };
- 
-diff --git a/sound/soc/codecs/tas2770.h b/sound/soc/codecs/tas2770.h
-index 3fd2e7003c50..102040b6bdf8 100644
---- a/sound/soc/codecs/tas2770.h
-+++ b/sound/soc/codecs/tas2770.h
-@@ -67,6 +67,14 @@
- #define TAS2770_TDM_CFG_REG3_RXS_SHIFT 0x4
- #define TAS2770_TDM_CFG_REG3_30_MASK  GENMASK(3, 0)
- #define TAS2770_TDM_CFG_REG3_30_SHIFT 0
-+    /* TDM Configuration Reg4 */
-+#define TAS2770_TDM_CFG_REG4  TAS2770_REG(0X0, 0x0E)
-+#define TAS2770_TDM_CFG_REG4_TX_LSB_CFG BIT(7)
-+#define TAS2770_TDM_CFG_REG4_TX_KEEPER_CFG BIT(6)
-+#define TAS2770_TDM_CFG_REG4_TX_KEEPER BIT(5)
-+#define TAS2770_TDM_CFG_REG4_TX_FILL BIT(4)
-+#define TAS2770_TDM_CFG_REG4_TX_OFFSET_MASK GENMASK(3, 1)
-+#define TAS2770_TDM_CFG_REG4_TX_EDGE_FALLING BIT(0)
-     /* TDM Configuration Reg5 */
- #define TAS2770_TDM_CFG_REG5  TAS2770_REG(0X0, 0x0F)
- #define TAS2770_TDM_CFG_REG5_VSNS_MASK  BIT(6)
-@@ -115,6 +123,9 @@
- #define TAS2770_TEMP_LSB  TAS2770_REG(0X0, 0x2A)
-     /* Interrupt Configuration */
- #define TAS2770_INT_CFG  TAS2770_REG(0X0, 0x30)
-+    /* Data In Pull-Down */
-+#define TAS2770_DIN_PD  TAS2770_REG(0X0, 0x31)
-+#define TAS2770_DIN_PD_SDOUT BIT(7)
-     /* Misc IRQ */
- #define TAS2770_MISC_IRQ  TAS2770_REG(0X0, 0x32)
-     /* Clock Configuration */
-@@ -146,6 +157,7 @@ struct tas2770_priv {
- 	int pdm_slot;
- 	bool dac_powered;
- 	bool unmuted;
-+	int idle_tx_mode;
- };
- 
- #endif /* __TAS2770__ */
+Robin Murphy (2):
+      of: Add convenience wrappers for of_map_id()
+      of: Respect #{iommu,msi}-cells in maps
 
+ drivers/cdx/cdx_msi.c                    |   3 +-
+ drivers/iommu/of_iommu.c                 |   6 +-
+ drivers/irqchip/irq-gic-its-msi-parent.c |   2 +-
+ drivers/of/base.c                        | 148 ++++++++++++++++++++++---------
+ drivers/of/irq.c                         |   3 +-
+ drivers/pci/controller/dwc/pci-imx6.c    |  12 ++-
+ drivers/pci/controller/pcie-apple.c      |   5 +-
+ drivers/xen/grant-dma-ops.c              |   3 +-
+ include/linux/of.h                       |  33 +++++--
+ 9 files changed, 152 insertions(+), 63 deletions(-)
+---
+base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+change-id: 20260301-parse_iommu_cells-1c33768aebba
+
+Best regards,
 -- 
-2.53.0
+Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
 
