@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C194F283C89;
-	Sun,  1 Mar 2026 01:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963B82727EB;
+	Sun,  1 Mar 2026 01:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328322; cv=none; b=dXzzdUFwVTWFDP378ALdkkuODLc+S7DbMRfbZ578oXvqRrlUVEiOEZpDEsTmiGNRftndaYQpWR+3fA1eeNnvo3n3aeMp+8l+Y4j4tw7hZ49l1j8AwcaIM/cHrOcJxsGpDHJ9ejcqG/swxbtVOW25xhqMu2gydLu3YPPLxBcipeQ=
+	t=1772328412; cv=none; b=NDiLUknybBZts3mfbX+wVFiUToqTx8y4AfNS51O1aTUG/Gp1HeEC29w6HbOnbdT5W0OQUvUxmul1egY7e7KFCqjeJ76c/GWu6imf5Cpi/PlMk1wU1d6tTfn13hbFClnoMF4n72pr42ieW1MHpddPgky40UYqw5oOEkDRt1ifeCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328322; c=relaxed/simple;
-	bh=p1l63WeXc4D9MuN7I3Wqx11wL6kIqX8nQK0itJKGcQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bsowhm8jl2FSgK9Z3wBX61gXScI2P2Mn2D/4u5VS0kVeA21DgRepHdPL69yhYKd8Ls88h2uHPbTevr3neUyjCY1jTagrOzTNoSZCKlvWhpR3nCK0SYPNaRb6yOadAw0aW05KSSYvuK1f31DRvv1eZmjVEkVcFZizNOIBTmwX7jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAnOB9an; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772328412; c=relaxed/simple;
+	bh=3MZKkAQ+/lLbtqIpHBglDDD43lZAIdpQLWVxkjT8l2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LuUBIGKuf3g14A3IT4XexzNy/i+ZriMHRVp5QlwNE93NIfFEXgNq+HYTUu5cAIoxRJNzJbUG3wbBaw2dU6LerjcEZERU53f6r7UtqVwABPe7+IXmR6bHYjUDbp680Ve4DiRg3uNJOn+QEDYSjVVQG/7HIsaaaLCQttTKle7JbeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtsX3nUS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAnOB9an"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2502C19424;
-	Sun,  1 Mar 2026 01:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtsX3nUS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6389EC19421;
+	Sun,  1 Mar 2026 01:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328322;
-	bh=p1l63WeXc4D9MuN7I3Wqx11wL6kIqX8nQK0itJKGcQI=;
+	s=k20201202; t=1772328412;
+	bh=3MZKkAQ+/lLbtqIpHBglDDD43lZAIdpQLWVxkjT8l2c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=EAnOB9an4Rt20OfuYaBR6+H2e4RHgXdlWqzo7kVyTBDu8aAyhQUAI8Onb1oOwet2i
-	 Wrmgybr0V5C4prR/Qjm70bp3kb9hQe2h540dCt5+9AodzysIDLLMoHL8QwgvyRBqJI
-	 PFyvIhSMSFfx3JMcxgB83FW33+UgPDRIjTL2BzAX5k/WNN2G4g5n78UXi7pNxt5mxL
-	 TBfM5DmmZTwF4I9TN6qVUZLcbmuW/iTQdYNCG8eu/E/TE0r3RsXTi99q6uchoZ7kJt
-	 XkzzWu6gQ0q2HT7sbCcPdB+a2CnsJn1FFX6o2UySThcsHEQcz/VMeiTV4txiYzz+lz
-	 hTs5sVSiI7YFQ==
+	b=PtsX3nUS9Gkr404JbGiBiq8uEpGxthcYqNO2ReRbrqPQkwFvl2SSPKx3tIJa36ZHi
+	 5AK37xjFqpIHTltK65QwLMRrWgKMR2pxKdbRtivbNhp2F6HRcvK4QUgygtDKpPj5qU
+	 ykXjoACDmurwDVIMVLUQCUiOrkSxSHrpjVgJtJohdkLdMGEgSzBpgCaPCaYKsXDQ5Z
+	 o92vo8bsIfQkfH43lXlGuDUYdPmjsbRNf5rSi86uk6QR5+u1PpotLbzHPJepticLsJ
+	 8aZZDtypp9l4FoJI6g+k8nPiaTdeIRPuQfNDNNVdwWJyMlG6mE17bpr/ezJVhoxnI+
+	 40SS6u8r4l29A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	peng.fan@nxp.com
-Cc: Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-remoteproc@vger.kernel.org,
+	carlos.song@nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i2c@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "remoteproc: imx_rproc: Fix invalid loaded resource table detection" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:25:20 -0500
-Message-ID: <20260301012520.1682420-1-sashal@kernel.org>
+Subject: FAILED: Patch "i2c: imx-lpi2c: fix SMBus block read NACK after byte count" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:26:49 -0500
+Message-ID: <20260301012650.1684287-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -57,55 +58,217 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 26aa5295010ffaebcf8f1991c53fa7cf2ee1b20d Mon Sep 17 00:00:00 2001
-From: Peng Fan <peng.fan@nxp.com>
-Date: Thu, 29 Jan 2026 09:44:48 +0800
-Subject: [PATCH] remoteproc: imx_rproc: Fix invalid loaded resource table
- detection
+From efdc383d1cc28d45cbf5a23b5ffa997010aaacb4 Mon Sep 17 00:00:00 2001
+From: Carlos Song <carlos.song@nxp.com>
+Date: Fri, 23 Jan 2026 18:54:58 +0800
+Subject: [PATCH] i2c: imx-lpi2c: fix SMBus block read NACK after byte count
 
-imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-resource table even when the current firmware does not provide one.
+The LPI2C controller sends a NACK at the end of a receive command
+unless another receive command is already queued in MTDR. During
+SMBus block reads, this causes the controller to NACK immediately
+after receiving the block length byte, aborting the transfer before
+the data bytes are read.
 
-When the device tree contains a "rsc-table" entry, priv->rsc_table is
-non-NULL and denotes where a resource table would be located if one is
-present in memory. However, when the current firmware has no resource
-table, rproc->table_ptr is NULL. The function still returns
-priv->rsc_table, and the remoteproc core interprets this as a valid loaded
-resource table.
+Fix this by queueing a second receive command as soon as the block
+length byte is received, keeping MTDR non-empty and ensuring
+continuous ACKs. The initial receive command reads the block length,
+and the subsequent command reads the remaining data bytes according
+to the reported length.
 
-Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-there is no resource table for the current firmware (i.e. when
-rproc->table_ptr is NULL). This aligns the function's semantics with the
-remoteproc core: a loaded resource table is only reported when a valid
-table_ptr exists.
-
-With this change, starting firmware without a resource table no longer
-triggers a crash.
-
-Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Cc: <stable@vger.kernel.org> # v4.10+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260123105459.3448822-1-carlos.song@nxp.com
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 107 ++++++++++++++++++++++-------
+ 1 file changed, 83 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 375de79168a1c..f5f916d679051 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
- {
- 	struct imx_rproc *priv = rproc->priv;
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index be7134eefc2f5..f97f73faec82d 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -5,6 +5,7 @@
+  * Copyright 2016 Freescale Semiconductor, Inc.
+  */
  
-+	/* No resource table in the firmware */
-+	if (!rproc->table_ptr)
-+		return NULL;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -90,6 +91,7 @@
+ #define MRDR_RXEMPTY	BIT(14)
+ #define MDER_TDDE	BIT(0)
+ #define MDER_RDDE	BIT(1)
++#define MSR_RDF_ASSERTED(x) FIELD_GET(MSR_RDF, (x))
+ 
+ #define SCR_SEN		BIT(0)
+ #define SCR_RST		BIT(1)
+@@ -482,7 +484,7 @@ static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atom
+ 
+ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+-	unsigned int blocklen, remaining;
++	unsigned int remaining;
+ 	unsigned int temp, data;
+ 
+ 	do {
+@@ -493,15 +495,6 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
+ 		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
+ 	} while (1);
+ 
+-	/*
+-	 * First byte is the length of remaining packet in the SMBus block
+-	 * data read. Add it to msgs->len.
+-	 */
+-	if (lpi2c_imx->block_data) {
+-		blocklen = lpi2c_imx->rx_buf[0];
+-		lpi2c_imx->msglen += blocklen;
+-	}
+-
+ 	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
+ 
+ 	if (!remaining) {
+@@ -514,12 +507,7 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
+ 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
+ 
+ 	/* multiple receive commands */
+-	if (lpi2c_imx->block_data) {
+-		lpi2c_imx->block_data = 0;
+-		temp = remaining;
+-		temp |= (RECV_DATA << 8);
+-		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+-	} else if (!(lpi2c_imx->delivered & 0xff)) {
++	if (!(lpi2c_imx->delivered & 0xff)) {
+ 		temp = (remaining > CHUNK_DATA ? CHUNK_DATA : remaining) - 1;
+ 		temp |= (RECV_DATA << 8);
+ 		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+@@ -557,18 +545,77 @@ static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
+ 	return err;
+ }
+ 
+-static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
+-				struct i2c_msg *msgs)
++static unsigned int lpi2c_SMBus_block_read_length_byte(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned int temp;
++	unsigned int data;
 +
- 	if (priv->rsc_table)
- 		return (struct resource_table *)priv->rsc_table;
++	data = readl(lpi2c_imx->base + LPI2C_MRDR);
++	lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
++
++	return data;
++}
++
++static int lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
++			       struct i2c_msg *msgs)
++{
++	unsigned int temp, val, block_len;
++	int ret;
+ 
+ 	lpi2c_imx->rx_buf = msgs->buf;
+ 	lpi2c_imx->block_data = msgs->flags & I2C_M_RECV_LEN;
+ 
+ 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
+-	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
+-	temp |= (RECV_DATA << 8);
+-	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++
++	if (!lpi2c_imx->block_data) {
++		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
++		temp |= (RECV_DATA << 8);
++		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++	} else {
++		/*
++		 * The LPI2C controller automatically sends a NACK after the last byte of a
++		 * receive command, unless the next command in MTDR is also a receive command.
++		 * If MTDR is empty when a receive completes, a NACK is sent by default.
++		 *
++		 * To comply with the SMBus block read spec, we start with a 2-byte read:
++		 * The first byte in RXFIFO is the block length. Once this byte arrives, the
++		 * controller immediately updates MTDR with the next read command, ensuring
++		 * continuous ACK instead of NACK.
++		 *
++		 * The second byte is the first block data byte. Therefore, the subsequent
++		 * read command should request (block_len - 1) bytes, since one data byte
++		 * has already been read.
++		 */
++
++		writel((RECV_DATA << 8) | 0x01, lpi2c_imx->base + LPI2C_MTDR);
++
++		ret = readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val,
++					 MSR_RDF_ASSERTED(val), 1, 1000);
++		if (ret) {
++			dev_err(&lpi2c_imx->adapter.dev, "SMBus read count failed %d\n", ret);
++			return ret;
++		}
++
++		/* Read block length byte and confirm this SMBus transfer meets protocol */
++		block_len = lpi2c_SMBus_block_read_length_byte(lpi2c_imx);
++		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
++			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read length\n");
++			return -EPROTO;
++		}
++
++		/*
++		 * When block_len shows more bytes need to be read, update second read command to
++		 * keep MTDR non-empty and ensuring continuous ACKs. Only update command register
++		 * here. All block bytes will be read out at IRQ handler or lpi2c_imx_read_atomic()
++		 * function.
++		 */
++		if (block_len > 1)
++			writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
++
++		lpi2c_imx->msglen += block_len;
++		msgs->len += block_len;
++	}
++
++	return 0;
+ }
+ 
+ static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
+@@ -613,6 +660,10 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+ 	if (!lpi2c_imx->can_use_dma)
+ 		return false;
+ 
++	/* DMA is not suitable for SMBus block read */
++	if (msg->flags & I2C_M_RECV_LEN)
++		return false;
++
+ 	/*
+ 	 * When the length of data is less than I2C_DMA_THRESHOLD,
+ 	 * cpu mode is used directly to avoid low performance.
+@@ -623,10 +674,14 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ 			      struct i2c_msg *msg)
+ {
++	int ret;
++
+ 	reinit_completion(&lpi2c_imx->complete);
+ 
+ 	if (msg->flags & I2C_M_RD) {
+-		lpi2c_imx_read_init(lpi2c_imx, msg);
++		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
++		if (ret)
++			return ret;
+ 		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
+ 	} else {
+ 		lpi2c_imx_write(lpi2c_imx, msg);
+@@ -638,8 +693,12 @@ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ static int lpi2c_imx_pio_xfer_atomic(struct lpi2c_imx_struct *lpi2c_imx,
+ 				     struct i2c_msg *msg)
+ {
++	int ret;
++
+ 	if (msg->flags & I2C_M_RD) {
+-		lpi2c_imx_read_init(lpi2c_imx, msg);
++		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
++		if (ret)
++			return ret;
+ 		return lpi2c_imx_read_atomic(lpi2c_imx, msg);
+ 	}
  
 -- 
 2.51.0
