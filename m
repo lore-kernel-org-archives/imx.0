@@ -1,68 +1,68 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB6C1FC0EA
-	for <imx@lists.linux.dev>; Sun,  1 Mar 2026 08:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBEE32ED27
+	for <imx@lists.linux.dev>; Sun,  1 Mar 2026 08:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772352385; cv=none; b=oguc/NN9gZOJkpNaotgeyh/IQtDoIyDw22eukeGJu5cVGZmA+o6gxIlsYcmL0S1QJCad0VP0dmyQShR39faiZhfDI30wjZr2XU/YY2mClD/VbIlD9MWApkihrRAPIHXCTzhQuVe8CVTxpYPIU6Ett5/Efcg45DcEP2k70ROB8mM=
+	t=1772352393; cv=none; b=qBLhthgZabEJEpPHGYeFA+AQd49MNSTXg1nVDgqAeKaTVamkfhMtiLkAhPAV7NXyURwFPUO3rq3shdGcgehEBoV0fsLFHrjye/ttOYBXi1G4aN9ZDiCg7mkGFagXePrkDUgjF+2DpibQhE/dbpFSexBMUk2stp+/AAYkqmZ1SJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772352385; c=relaxed/simple;
-	bh=lwN3AXla5E+hMpOvc4cTc/hS2rvMFZBUZ7ENOshqDaA=;
+	s=arc-20240116; t=1772352393; c=relaxed/simple;
+	bh=115g/WH2mtui7fHuZcwchXsAefVgpriJAftdKhU/VY4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BZaV4igaU1cyEvf31/qzLio1DeX3hy6oJQLq5B+NBbs538cSYAn5r/NVuegvTm5dqZoFxxY00qaHkbbBABYZQ8qPI0DDQ5yReHFyBV/KBss9+HNrxT5DhuOnDwF3QGPpzbdtbf+tnOcqA4/qSUrPsHjYdgZM+B04KhgUf4lYlLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjMYmitq; arc=none smtp.client-ip=209.85.215.170
+	 In-Reply-To:To:Cc; b=pnM3vzrjWKv+Cc6YPzSb68ljOelRo0Zym6KxT+S6MAlMo7PHtBlHDxDxrrmi2geuy6vShUaWMv5ls+4GRFPJXE6key7rkK94m1h554jvp40sAo0ZfRVvYKSaXN7xaCdwrRVhg8ED4y46mmrHQN5lBpdKgDbilOAx939JpXPV1NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfdJbame; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjMYmitq"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c70f191313cso1340751a12.3
-        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 00:06:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfdJbame"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-359866a1d02so291027a91.0
+        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 00:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772352384; x=1772957184; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1772352392; x=1772957192; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SejpEdn5w8C9URiM1Is7ely7u34ezEnpcYmkEzh4N/0=;
-        b=QjMYmitqBuaCgQmtideiRl/6uYeNIOUtucNhwkklj+NPTuFtjukSSY9+CaxBWXuocY
-         jjKxjiOOFdOcmVdW94z1b3n+CubJNMTaPHjGIiBwZJvbcSr/rbBGrxFRScJ5b7NWtipA
-         GMnJp60z2CfQ9L7bMB8GSgApEZjdrIdRZdDnfSFuv1NB0S5q0prnOpNIqnkbmQR2HLrG
-         sEdLlU4oj/zCHO6EN9N6C74mydpJA3ijfYo/ktt9VK4LBYYK5KQ9YO2IBtzvjBCCbpo6
-         moU5gLzJT6HDM5GECdpleN1iJIyDx/REWCPbL0ADUdoqmAFX8sksQB7zK7Enp18KMrTz
-         RwwA==
+        bh=fGlR6YzXE5keZeD5R4R4wdzj80ZRJofyKqhSLLbK2aA=;
+        b=kfdJbameUfqfOjMPhygU9OusuYpuBtB5WKcOIWLeeBmD88cOEUAXvbcVgoPyvsC8mm
+         0XIkpPsqZxs3eu5lwxo3ZEYekP0NdRhGX6WAYYwcNRzEf+fDNrSHAJrXNBQxGzw+YyYF
+         wyHmigjw5H92E2jgBZg8YhrqliRGSCkf8qz6LvaV4npkiuTiRfsHF54+4ERqxDk63XWE
+         XcmD61UlhljF3IbTBBgn/dKSPeEvsL+NUj/yYH2vBv7jYrOHsUCbQlvhw3r9XADFpU3A
+         5f9niHi/gixnvcNtvqBQtY2IbxlKHlm4L6PX0E0x8aGUBOda9qum4lX7/CV24npPc0Q2
+         8Ueg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772352384; x=1772957184;
+        d=1e100.net; s=20230601; t=1772352392; x=1772957192;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=SejpEdn5w8C9URiM1Is7ely7u34ezEnpcYmkEzh4N/0=;
-        b=H+84qrWxUHcCpEDpk6PK+z6YzCFDbVb7amKa9iwgScfhcF9TOwx/22f56iAwfNJxps
-         pWb6ZmIymraXtEtf6NUqMayOoBaaKnwb028TMdnHlx/bu2n6lprLvTr0Dnxk718cxBNJ
-         62I6eSUI4SQLl2PHFVHMN1Es6BmFMBjmMxGPFLh9kRsoNw8FMtJ95ZQ/+Nrgex3RpdWk
-         fi8WSK3SXNhYlGqn/OBsDWYeeSTUqYqj598kx02S+fTyYoa3cxrfL+lFHSzDMU95LfSG
-         GAEbZA8jRfv27vou39jfCxIEs+RaVaox2icu5/7wpKqSAtsyi4ZVGWeUQNkopKay3/mv
-         ZyUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyRtC6fp88YwtdS8NKXVCI4zc6NqjArhR1X9v28bGzGB2q0KZ+cCem/OYz9Zfr9RdGnXQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw42h7OTLy13uMlNJi2JqFxXEtt+7WfwYpBppj1tMHunfWrZ9WU
-	6E+Fcfm/8BcwimyMfv10hG0JNPvfL4gfoCB2cp/ssuh2mLKeQSt0+B0O
-X-Gm-Gg: ATEYQzy9cp9sMSY3O4BxSxqzNVCE4aqDLdzUopTFEo1Yvpbvlu4kH/1T5gd4VmAp+8W
-	jLbanOacV6h4XZltZLU4oUGHKcJ2LbJ3bLpGxZgOaRW9KIjlcdK89nb0792btqFaJY9dGQvUM1b
-	fTXYgIGRb4ZazcHPdzVBp2eVzIg9gRcUprk5SCr3siJv5J8cp74hCLd6UlyInzM5/zD+CJj+GuI
-	PnvDCu2YCV1AcyIuj5OF/pbTTednZZGaaJjKHdI5s1dQLeAi6rW5c9m1wgs8f1CEyhmutow9OBW
-	21sHrjegmiPOoL7bhhX53zthXoL0NPMGeZ3GIi3RRsLF/71GP8mYmWRzlrmWJMWR68Rr7NzWkrj
-	UpkI2YWK8jjQkOC0rH/MygF4tvwxpJf3BY8uPqc9Ewpjd3KPvJHLAPSnXNfo81vxyhY9Zy8HLKo
-	Bpf4LlIBp27B7gpaSKzC8cWyJ2TI3ddeITyz9di6xkdjNkgvqmb6EqDnzyv2Cg2KnjqQ26oyva7
-	O+t1zQSlFTN5opmhMUDBykslZOopIH4hu9Nz33UWv2Or/GWbrKiGNQst9FIW8HyIMmnKAsZb9y9
-X-Received: by 2002:a17:90b:5408:b0:341:134:a962 with SMTP id 98e67ed59e1d1-35965ccab15mr6135772a91.28.1772352383697;
-        Sun, 01 Mar 2026 00:06:23 -0800 (PST)
+        bh=fGlR6YzXE5keZeD5R4R4wdzj80ZRJofyKqhSLLbK2aA=;
+        b=TP53VvmIU/qp9Tpu/8oTlf1Hlh+BL3MU2GaC/q/AVna3t+RhCCCTsh4gPxj/+vaB7A
+         U70zbC58XCpOexDnl0IzT0gSsgbgF5HTDQzeVLayGNZjbLPfHsXvG4tSkDOstD6sWLlN
+         yznSqN3o1FYBPs4I0whZojxkTR4V2lXG6z5fi3IRxzvKnpUG6HpwPe5nYZorO9fBhYMX
+         7sTlxrYdN0wCYmRIqmX49FRlnCdgeQ6gCtC52BEVSTJX0/WAZtgFfCUzvO+HUBLJ7McR
+         yo0yK8JsWgaJwS18kp0RdzvJ8G6evyiPVX5yOCGhZjNk7OJmbZUewfNagcXWkTklVrgO
+         HvGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXs8tEoDH5ZIOiLipyjyU2Ryu2JupG46+6fHC8IH3LJGdznae9wemDJivSubqYzC83gb2k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyzpQqyfYntvM8BJQ+hXRxgVJWfz4h3q3QX/BHOe99NHP787GBK
+	jDCoiGkyUgGf3voPsHrhKsS7JXpQmX1rokCpHJebZioiQgM7LVjUesAZ
+X-Gm-Gg: ATEYQzwu+1qvmTHEbHpZSMdeKdRnDVYRuiEeDa8gHkAfgSImh7LQozIH6TYMsjDK2ow
+	8RbD19O7Nueydyy4Mprz6HC7fvtDcjtwLo6Z8Jxt/eoFHeZri5EfgjqHFFFYjaQuIRWTGVaKTKM
+	AhYXEcoJt6rNHNsXUbzFn8J5BYY8GluDCUzx8Zf0vQtwMfJ43GFNz8XtagffqBqo+6oGkukvKbX
+	+omFABkKsv3VLwP8JsSutTfsU2pjsUsNohfPNOXLPIHVopgyu3f3+IJ1kMivoqPQTDIFCTXUoHj
+	ko1jYT7FFP33yU0S7/LEs7n61l6HmhOwSodXmbTIqb+JNoh0UrF4KXHBNEfTyI3stTefFRIAzOm
+	rwPPEY0xFH2oU6sozA3NZNidEcteqkkoog5Exg3UQbGOCaSpqj2PbBJVU3fR4lyyJRfCd5JP1FW
+	4/m7Bp1b6NtQthRy7mLQBd7f4Gq6sFOc58uB5SBGcUiAKtuXM+bZv9LMMKzc9ln+Dhv5TrJVlxq
+	8FsrstBHvRzCWLCJeEzxyrALahsGYGSc+GKooQ4B+yaEUF5mzi760sa++M+hWcnp1RKmcJpnQ+o
+X-Received: by 2002:a17:90b:578e:b0:34c:2db6:578f with SMTP id 98e67ed59e1d1-35965cccb83mr6714723a91.19.1772352392000;
+        Sun, 01 Mar 2026 00:06:32 -0800 (PST)
 Received: from [192.168.2.3] ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359135ef1d7sm8885384a91.5.2026.03.01.00.06.16
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359135ef1d7sm8885384a91.5.2026.03.01.00.06.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 00:06:23 -0800 (PST)
+        Sun, 01 Mar 2026 00:06:31 -0800 (PST)
 From: James Calligeros <jcalligeros99@gmail.com>
-Date: Sun, 01 Mar 2026 18:05:21 +1000
-Subject: [PATCH v3 2/7] ASoC: dt-bindings: update tdm-slot.txt references
- to tdm-slot.yaml
+Date: Sun, 01 Mar 2026 18:05:22 +1000
+Subject: [PATCH v3 3/7] ASoC: dt-bindings: add TDM slot idle mode
+ properties
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260301-tdm-idle-slots-v3-2-c6ac5351489a@gmail.com>
+Message-Id: <20260301-tdm-idle-slots-v3-3-c6ac5351489a@gmail.com>
 References: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
 In-Reply-To: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -90,92 +90,65 @@ Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
  James Calligeros <jcalligeros99@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2590;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2001;
  i=jcalligeros99@gmail.com; h=from:subject:message-id;
- bh=lwN3AXla5E+hMpOvc4cTc/hS2rvMFZBUZ7ENOshqDaA=;
- b=owGbwMvMwCV2xczoYuD3ygTG02pJDJmLP6cHMG3JNUtnOnhEU8P3mFxZpKZOq9r+mHi5Zf112
- n8W7lrVMZGFQYyLwVJMkWVDk5DHbCO2m/0ilXth5rAygQyRFmlgAAIWBr7cxLxSIx0jPVNtQz1D
- Ix1jHSMGLk4BmOrtJQz/LDoPXY//4G2ZqVPwOXFFua35oXjbRTty8nIZnjV5Ltrkw/CbjWWO294
- VAcvlGK7uLd4ovun4uwWP3tfumPhD8feCpi8T2AE=
+ bh=115g/WH2mtui7fHuZcwchXsAefVgpriJAftdKhU/VY4=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDJmLP6fH1CYvWfDi6+VdS/ptHsxy/zZ9/q/rWu7bdB9du
+ c1wrz6BrWMiC4MYF4OlmCLLhiYhj9lGbDf7RSr3wsxhZQIZIi3SwAAELAx8uYl5pUY6Rnqm2oZ6
+ hkY6xjpGDFycAjDV96cxMvRPZA5hNnB6kNker/euf6nWnZJG5XMz9l95IXBFaqHH4QUM/13ivlz
+ XP+vO+XRlp0D1vO8fDn37U1wXWD5Z6kr+pOTQSCYA
 X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
  fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-Ensure that all references to tdm-slot.txt have been updated to
-tdm-slot.yaml, and are schema-compliant.
+Add properties to describe TDM slot idle behaviour. These properties can
+be used to describe how a DAI is supposed to behave when not active.
+
+For example, Apple Silicon laptops split a single I2S bus between two
+physical lines which are combined at an OR gate in front of the
+receiving port. One codec on each line is expected to transmit zeroes
+during the active TDM slots of the opposite line, or we will have corrupted
+data at the receiver.
 
 Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
 ---
- .../bindings/sound/imx-audio-card.yaml   |  9 +++------
- .../bindings/sound/simple-card.yaml      | 14 ++------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ .../bindings/sound/tdm-slot.yaml         | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-index 3c75c8c78987..5424d4f16f52 100644
---- a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-+++ b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-@@ -24,6 +24,7 @@ patternProperties:
-       cpu/codec dais.
+diff --git a/Documentation/devicetree/bindings/sound/tdm-slot.yaml b/Documentation/devicetree/bindings/sound/tdm-slot.yaml
+index ca71e3660f62..457a899e8872 100644
+--- a/Documentation/devicetree/bindings/sound/tdm-slot.yaml
++++ b/Documentation/devicetree/bindings/sound/tdm-slot.yaml
+@@ -20,6 +20,20 @@ properties:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     description: Width, in bits, of each slot
  
-     type: object
-+    $ref: tdm-slot.yaml#
- 
-     properties:
-       link-name:
-@@ -38,13 +39,9 @@ patternProperties:
-             - i2s
-             - dsp_b
- 
--      dai-tdm-slot-num:
--        description: see tdm-slot.txt.
--        $ref: /schemas/types.yaml#/definitions/uint32
-+      dai-tdm-slot-num: true
- 
--      dai-tdm-slot-width:
--        description: see tdm-slot.txt.
--        $ref: /schemas/types.yaml#/definitions/uint32
-+      dai-tdm-slot-width: true
- 
-       playback-only:
-         description: link is used only for playback
-diff --git a/Documentation/devicetree/bindings/sound/simple-card.yaml b/Documentation/devicetree/bindings/sound/simple-card.yaml
-index 533d0a1da56e..a14716b2732f 100644
---- a/Documentation/devicetree/bindings/sound/simple-card.yaml
-+++ b/Documentation/devicetree/bindings/sound/simple-card.yaml
-@@ -27,14 +27,6 @@ definitions:
-     description: dai-link uses bit clock inversion
-     $ref: /schemas/types.yaml#/definitions/flag
- 
--  dai-tdm-slot-num:
--    description: see tdm-slot.txt.
--    $ref: /schemas/types.yaml#/definitions/uint32
--
--  dai-tdm-slot-width:
--    description: see tdm-slot.txt.
--    $ref: /schemas/types.yaml#/definitions/uint32
--
-   system-clock-frequency:
-     description: |
-       If a clock is specified and a multiplication factor is given with
-@@ -115,6 +107,8 @@ definitions:
- 
-   dai:
-     type: object
-+    $ref: tdm-slot.yaml#
++  dai-tdm-idle-mode:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum:
++      - none
++      - off
++      - zero
++      - pulldown
++      - hiz
++      - pullup
++      - drivehigh
++    description: Drive mode for inactive/idle TDM slots. For hardware that
++      implements .set_tdm_idle(). Optional. "None" represents undefined
++      behaviour and is the same as not setting this property.
 +
-     properties:
-       sound-dai:
-         maxItems: 1
-@@ -133,10 +127,6 @@ definitions:
-       bitclock-master:
-         $ref: /schemas/types.yaml#/definitions/flag
+ patternProperties:
+   '^dai-tdm-slot-[rt]x-mask$':
+     $ref: /schemas/types.yaml#/definitions/uint32-array
+@@ -30,4 +44,9 @@ patternProperties:
+       a mask. The first element of the array is slot 0 (LSB). Any nonzero
+       value will be treated as 1.
  
--      dai-tdm-slot-num:
--        $ref: "#/definitions/dai-tdm-slot-num"
--      dai-tdm-slot-width:
--        $ref: "#/definitions/dai-tdm-slot-width"
-       clocks:
-         maxItems: 1
-       system-clock-frequency:
++  '^dai-tdm-slot-[rt]x-idle-mask$':
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Idle slot mask. Optional. A bit being set to 1 indicates
++      that the corresponding TDM slot is inactive/idle.
++
+ additionalProperties: true
 
 -- 
 2.53.0
