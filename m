@@ -1,278 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB2C190664;
-	Sun,  1 Mar 2026 02:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4333148D0
+	for <imx@lists.linux.dev>; Sun,  1 Mar 2026 08:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330632; cv=none; b=jxwnN5bEQ6eTM2wZkhEsPRBkgZOurCcTO8G7P7EE2nj276ssZCNxO2/acMJkc39WQ3DD+/15JTTvnUnBFO/V8frFkma3jvqhCv2LxhsujwqWtx7aohOG1/Niqsw7RC2h/zBYLIDpt/E9x2C4Yc8yidGkMQ/SfyQqoxSq16A7yPs=
+	t=1772352370; cv=none; b=R3bZfq4k1k0ypiktJA1raeaY2DiAQccJPL6uSkSANulbyD54Vv755NjUFZMRW5sn7S2qMI+XtcIm8s1KahHfvvETJflm5dmRjByhuWUlLnNfiC+zKrDtcP+ZCRWHTXM29sFnPtegvO2xX9cugqCPt2TBYUFefs2Ty6z7N4fTa5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330632; c=relaxed/simple;
-	bh=ZsU7kq9bmoqZf/0tYxQwyAyC9nmm5BgnueLyyJWqEsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pUzw06UCKEfQkhED9ZVWTnk1BUPwrYcAcwZzryTzMkI7245Ve/9L8Qn+w5bH49NhgVLKRJa41BXy8io1J5jUT2Mtc3Rk/Ggt/Py25zxZpyecqVcs8WK/n7mG6+G2IkEKpp+H2KV75Jv8sDeTI8GNDfaJDbFzUBnesASzxJxQcfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJzCPEsV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772352370; c=relaxed/simple;
+	bh=URUffd83HAMRz7HWjO4F6ZoezvrN+kfv+dGBuqFAmzY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iGrPjKmDsk5dgyuQjvi7XBV8RY8i68KF6kXNZqgiiSUZ0xTSrjAJv0qgfsB456Ke44Wh0DPjiI4qUPzcx/xRuU4yPGLgRAeni0tdd6q6xP5Y76I0zSiaUBWq85+Smw8sFRo5K4rZM05bgXH1Oe5b5Yd8flGGZZ/c4ireXz42o0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCO3rdfK; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJzCPEsV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB8BC19421;
-	Sun,  1 Mar 2026 02:03:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330632;
-	bh=ZsU7kq9bmoqZf/0tYxQwyAyC9nmm5BgnueLyyJWqEsg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nJzCPEsVMYOf7DyA8VQBtU4/raxdk03beNzUOrIEdZtnPdlpTC0/hpSAb+2cK4KnU
-	 b9Lhdg9x9cE1R5BC+GKu0FGP/pjMZlKqvVvgXCO7RN/LUBDEyUD6DRM+HBjDLfjtdE
-	 k2xNGyebRbk3KO9apeFDzT//byy7p/RCKD7lIOGaxJBZj9vw9aBv65kVKcarhSOZcJ
-	 cuwsCFF5q0VDJPZwV2MuQygeLyLBmZODT9i2bQSPIoPaY+K8Ia1gwv28OH1gI0UwFo
-	 hOiMuiG8jXIzSn4LhA+8r/gKEn68jI98GKpYBkazhur8kHj0hX0Tg1ZXsPSEEXIUcJ
-	 eQ7WOuqBuKLPg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	carlos.song@nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: FAILED: Patch "i2c: imx-lpi2c: fix SMBus block read NACK after byte count" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:03:49 -0500
-Message-ID: <20260301020350.1731983-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCO3rdfK"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so1140189a12.3
+        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 00:06:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772352368; x=1772957168; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=enGdRrsaB6ZR8xDsA9BNubZAoRwYGJLgTDSI2U7J/do=;
+        b=LCO3rdfK1aqDGOChYpAY5P6vJ0svCCxbvW4rhe/pQSba/dc65qjg24ERC45S2yv4B5
+         1r/Fz9on5n8KfI9XQbVbCX6WVtQvvj06QXzH8WKExbJ5y8RsbnriPb6EdXYGaVC87l4M
+         YaH2yiItkAqKUJS9ECIJLc0FvBAoNZJP2UXLd7gJ5Qiz4EQ1sAbNJUvHMv8vDLgXnGrR
+         74lDedUilPqPud6+rAw8N18GDPj5ZuaEYYNN4WT2ZcZHk4vX+FmYn/4/YLatbtlduCgU
+         PldZttldiIZv+dBl/7N1a7fqYZPnym6bTJvOYDC4Sw8D7Gpt9wv4S1vQFC25UaZZ3RyF
+         dc8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772352368; x=1772957168;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=enGdRrsaB6ZR8xDsA9BNubZAoRwYGJLgTDSI2U7J/do=;
+        b=g3elxh7+bq9EedcRl/M2FEeDtY+k/R8zzw1ENdpMAbuvDZ5W1IbshJxrV5u9cpU1Is
+         CSXZPEFiHsNbBa2cBhjJBGJBaIgE7giv5gu2MuC8/SFOpKKzppCNEWbmgdpVZJHvvjVn
+         +i514Gkc/MrDHbYiUiFklhH5IlZRDILp21uwWQVmXs4VNCqvMNgZxGwokyNtNHPpXiuV
+         ILyZ23U1L/JafEA3LACVh/V9HktRtXe7B9nLqfU1n4kUPmSWb78jzuGSBEjA2mLrrtjS
+         7/9i9F9EF/ZmN6uAT1T+K3bTGUoIxi0ToLr+OoXqR5L38MpdsN9lSxivpmFoXA2R1u2c
+         UH4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXPOj1/IQM+SQVICgQ5D2Uf63GDmNbIMG1OdgbHt709MHO705qksZcJYLpx9k/7byXMIZ4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4OsnKw6uWCymYALeulB+xx/KITK/JRBVxLOgjBWDebt3cL5WZ
+	T3JFI+HeLDl2793eUzH1aYV2ftWL0rCaZjvCCC/k0qFcXc81NeH6ULbF
+X-Gm-Gg: ATEYQzyiALO5hPzBQT5YG9Nrkn+/XCfKtu4ej+TzFIPjM3bJLJGOohgglMwI1eeJtBM
+	UGeU6r+nkJZkkLc6pupq82hovTTgjq9GwTqTHtzBsMFTNV42qeIcq1LSxlRgZjDU6QPanGViO8w
+	X2d671tCrZNRuqWFTnLyG84y812gzs7PjQdzuqhaadODDQvRFCLuqWMBmp6i8mWorNxAr6mI07U
+	oabud68k8nwTdIN72CP6nenrlAn6QEaaQSEfk04lulec80SVGuKT1UpdfwWFSZIZLpVQaeiB2M+
+	sYOX0YpKECrDwH6dpdGkYxgx9eEHjWDROB0GiIIqUVw5eJDvMwacKYW1fg1is/6gRA3YFij8RZD
+	sZ+MrY5Z7Ix4vQdUWKXd0bn5JGRxAUJGokj7AzQ1oM5NlZ5krgFgeFGy0ULl5RIUZa2FZperQ9B
+	HyM8kxPLAMQ7TBF8z2BgAisbdyK6mSvrBQUeOG9AbqGid9dLG/usTDzZ7JWPN+vz73vKmb8L435
+	lDLUDnHQoVuD6lS/5sLtYlKPGTpZRZV5zHzOWP+rhizEFrMHM6ufbpKGneq7KxLmNF5ZanrnaPx
+X-Received: by 2002:a17:90b:3dc8:b0:359:8727:6448 with SMTP id 98e67ed59e1d1-3598727677amr1667062a91.17.1772352367924;
+        Sun, 01 Mar 2026 00:06:07 -0800 (PST)
+Received: from [192.168.2.3] ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359135ef1d7sm8885384a91.5.2026.03.01.00.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2026 00:06:07 -0800 (PST)
+From: James Calligeros <jcalligeros99@gmail.com>
+Subject: [PATCH v3 0/7] ASoC: basic support for configuring bus keepers
+Date: Sun, 01 Mar 2026 18:05:19 +1000
+Message-Id: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD/zo2kC/2WOQQqDMBBFryJZNyUTrdSueo/SRUxGHVAjiYQW8
+ e4dhYK0y/eH95hFRAyEUdyyRQRMFMmPDPkpE7YzY4uSHLPQSl9AK5CzG3jqUcbez1GCqk3Fp9K
+ ZQrA0BWzotQcfT+aO4uzDe+8n2NZvqvpNJZBK5ldn6qasrQK8t4Oh/mz9ILZU0gdd/32SNOvoC
+ leVBeQG7VFf1/UDGPBWnOsAAAA=
+X-Change-ID: 20251201-tdm-idle-slots-10ba92516da4
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>, 
+ Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
+ James Calligeros <jcalligeros99@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4466;
+ i=jcalligeros99@gmail.com; h=from:subject:message-id;
+ bh=URUffd83HAMRz7HWjO4F6ZoezvrN+kfv+dGBuqFAmzY=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDJmLPyd/fhnxamfW29rG17umLWie13V2beT0qq2a6eqtE
+ QcdY+zUOiayMIhxMViKKbJsaBLymG3EdrNfpHIvzBxWJpAh0iINDEDAwsCXm5hXaqRjpGeqbahn
+ aKRjrGPEwMUpAFNtdoSRYV9L4Ay5BVaLZm0u6XvVO/Hwo2MZma/kv+7bmvqBd+vrkNOMDO9jLdO
+ Plvya5iNc9fXvLK+ggHPZ6htE1QM9TIIXXm6R4gcA
+X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
+ fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi all,
 
-Thanks,
-Sasha
+This series introduces some infrastructure to allow platform drivers
+to specify what a DAI should be doing when it is not active on the
+bus. The primary use case for this is configuring bus keepers which
+may be integrated into various codecs. The instigating use case for
+this functionality is an interesting bus topology on Apple Silicon
+laptops with multiple codecs.
 
------------------- original commit in Linus's tree ------------------
+Most Apple Silicon laptops have six codecs split into groups of
+three, driving a pair of dual opposed woofers and a tweeter for
+L/R stereo sound. These codecs report the voltage and current across
+their connected voice coils back to the SoC via the SDOUT pin,
+represented as PCM data sent via configurable TDM slots. This data is
+used in conjunction with the connected speaker's Thiele/Small Parameters
+to ensure that the speaker is not being driven to levels that would
+permanently damage them. This is integrated into CoreAudio on macOS.
+speakersafetyd[1] handles this for Linux.
 
-From efdc383d1cc28d45cbf5a23b5ffa997010aaacb4 Mon Sep 17 00:00:00 2001
-From: Carlos Song <carlos.song@nxp.com>
-Date: Fri, 23 Jan 2026 18:54:58 +0800
-Subject: [PATCH] i2c: imx-lpi2c: fix SMBus block read NACK after byte count
+All of the codec SDOUT pins are attached to a single receiver port
+on the SoC's I2S peripheral, however are split across two physical
+data lines (one each for the left and right codec groups). The receiver
+has an OR gate in front of it, which is used to sum the two lines.
 
-The LPI2C controller sends a NACK at the end of a receive command
-unless another receive command is already queued in MTDR. During
-SMBus block reads, this causes the controller to NACK immediately
-after receiving the block length byte, aborting the transfer before
-the data bytes are read.
+If at any point a codec is trying to transmit data, and the "opposite"
+line ends up floating high, the transmitting codec's data will be
+corrupted. We need to guarantee that the idle line stays idle.
 
-Fix this by queueing a second receive command as soon as the block
-length byte is received, keeping MTDR non-empty and ensuring
-continuous ACKs. The initial receive command reads the block length,
-and the subsequent command reads the remaining data bytes according
-to the reported length.
+In the downstream Asahi Linux kernel[2], we set up one codec in each
+group to zero-fill or pull down its line while a codec on the opposite
+line is actively transmitting. This is done entirely in the codec
+driver, however this approach is over-fit for this one use case. This
+sort of functionality may also be of use for other hardware, so following
+previous mailing list discussions[3], I have tried to expose the
+functionality in a more configurable and generic way.
 
-Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v4.10+
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260123105459.3448822-1-carlos.song@nxp.com
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+I have integrated this approach into our downstream platform driver
+and select Devicetrees as an example of how this mechanism is intended
+to be used[4].
+
+Regards,
+James
+
+[1] https://github.com/AsahiLinux/speakersafetyd
+[2] https://github.com/AsahiLinux/linux/tree/bits/070-audio
+[3] https://lore.kernel.org/asahi/20250227-apple-codec-changes-v3-17-cbb130030acf@gmail.com/
+[4] https://github.com/chadmed/tree/tdm-revised2
+
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c | 107 ++++++++++++++++++++++-------
- 1 file changed, 83 insertions(+), 24 deletions(-)
+Changes in v3:
+- Rebased patch set
+- Elided unnecessary $defs in tdm-slot.yaml
+- Referenced entire tdm-slot.yaml instead of per-property definitions in imx-audio-card.yaml
+- Changed repetitive TDM slot property definitions to patternProperties in tdm-slot.yaml
+- Link to v2: https://lore.kernel.org/r/20251221-tdm-idle-slots-v2-0-ed4d96413aec@gmail.com
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index be7134eefc2f5..f97f73faec82d 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -5,6 +5,7 @@
-  * Copyright 2016 Freescale Semiconductor, Inc.
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
-@@ -90,6 +91,7 @@
- #define MRDR_RXEMPTY	BIT(14)
- #define MDER_TDDE	BIT(0)
- #define MDER_RDDE	BIT(1)
-+#define MSR_RDF_ASSERTED(x) FIELD_GET(MSR_RDF, (x))
- 
- #define SCR_SEN		BIT(0)
- #define SCR_RST		BIT(1)
-@@ -482,7 +484,7 @@ static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atom
- 
- static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
- {
--	unsigned int blocklen, remaining;
-+	unsigned int remaining;
- 	unsigned int temp, data;
- 
- 	do {
-@@ -493,15 +495,6 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
- 		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
- 	} while (1);
- 
--	/*
--	 * First byte is the length of remaining packet in the SMBus block
--	 * data read. Add it to msgs->len.
--	 */
--	if (lpi2c_imx->block_data) {
--		blocklen = lpi2c_imx->rx_buf[0];
--		lpi2c_imx->msglen += blocklen;
--	}
--
- 	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
- 
- 	if (!remaining) {
-@@ -514,12 +507,7 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
- 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
- 
- 	/* multiple receive commands */
--	if (lpi2c_imx->block_data) {
--		lpi2c_imx->block_data = 0;
--		temp = remaining;
--		temp |= (RECV_DATA << 8);
--		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
--	} else if (!(lpi2c_imx->delivered & 0xff)) {
-+	if (!(lpi2c_imx->delivered & 0xff)) {
- 		temp = (remaining > CHUNK_DATA ? CHUNK_DATA : remaining) - 1;
- 		temp |= (RECV_DATA << 8);
- 		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-@@ -557,18 +545,77 @@ static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
- 	return err;
- }
- 
--static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
--				struct i2c_msg *msgs)
-+static unsigned int lpi2c_SMBus_block_read_length_byte(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	unsigned int temp;
-+	unsigned int data;
-+
-+	data = readl(lpi2c_imx->base + LPI2C_MRDR);
-+	lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
-+
-+	return data;
-+}
-+
-+static int lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
-+			       struct i2c_msg *msgs)
-+{
-+	unsigned int temp, val, block_len;
-+	int ret;
- 
- 	lpi2c_imx->rx_buf = msgs->buf;
- 	lpi2c_imx->block_data = msgs->flags & I2C_M_RECV_LEN;
- 
- 	lpi2c_imx_set_rx_watermark(lpi2c_imx);
--	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
--	temp |= (RECV_DATA << 8);
--	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+
-+	if (!lpi2c_imx->block_data) {
-+		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-+		temp |= (RECV_DATA << 8);
-+		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+	} else {
-+		/*
-+		 * The LPI2C controller automatically sends a NACK after the last byte of a
-+		 * receive command, unless the next command in MTDR is also a receive command.
-+		 * If MTDR is empty when a receive completes, a NACK is sent by default.
-+		 *
-+		 * To comply with the SMBus block read spec, we start with a 2-byte read:
-+		 * The first byte in RXFIFO is the block length. Once this byte arrives, the
-+		 * controller immediately updates MTDR with the next read command, ensuring
-+		 * continuous ACK instead of NACK.
-+		 *
-+		 * The second byte is the first block data byte. Therefore, the subsequent
-+		 * read command should request (block_len - 1) bytes, since one data byte
-+		 * has already been read.
-+		 */
-+
-+		writel((RECV_DATA << 8) | 0x01, lpi2c_imx->base + LPI2C_MTDR);
-+
-+		ret = readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val,
-+					 MSR_RDF_ASSERTED(val), 1, 1000);
-+		if (ret) {
-+			dev_err(&lpi2c_imx->adapter.dev, "SMBus read count failed %d\n", ret);
-+			return ret;
-+		}
-+
-+		/* Read block length byte and confirm this SMBus transfer meets protocol */
-+		block_len = lpi2c_SMBus_block_read_length_byte(lpi2c_imx);
-+		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
-+			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read length\n");
-+			return -EPROTO;
-+		}
-+
-+		/*
-+		 * When block_len shows more bytes need to be read, update second read command to
-+		 * keep MTDR non-empty and ensuring continuous ACKs. Only update command register
-+		 * here. All block bytes will be read out at IRQ handler or lpi2c_imx_read_atomic()
-+		 * function.
-+		 */
-+		if (block_len > 1)
-+			writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
-+
-+		lpi2c_imx->msglen += block_len;
-+		msgs->len += block_len;
-+	}
-+
-+	return 0;
- }
- 
- static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
-@@ -613,6 +660,10 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
- 	if (!lpi2c_imx->can_use_dma)
- 		return false;
- 
-+	/* DMA is not suitable for SMBus block read */
-+	if (msg->flags & I2C_M_RECV_LEN)
-+		return false;
-+
- 	/*
- 	 * When the length of data is less than I2C_DMA_THRESHOLD,
- 	 * cpu mode is used directly to avoid low performance.
-@@ -623,10 +674,14 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
- static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
- 			      struct i2c_msg *msg)
- {
-+	int ret;
-+
- 	reinit_completion(&lpi2c_imx->complete);
- 
- 	if (msg->flags & I2C_M_RD) {
--		lpi2c_imx_read_init(lpi2c_imx, msg);
-+		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
-+		if (ret)
-+			return ret;
- 		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
- 	} else {
- 		lpi2c_imx_write(lpi2c_imx, msg);
-@@ -638,8 +693,12 @@ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
- static int lpi2c_imx_pio_xfer_atomic(struct lpi2c_imx_struct *lpi2c_imx,
- 				     struct i2c_msg *msg)
- {
-+	int ret;
-+
- 	if (msg->flags & I2C_M_RD) {
--		lpi2c_imx_read_init(lpi2c_imx, msg);
-+		ret = lpi2c_imx_read_init(lpi2c_imx, msg);
-+		if (ret)
-+			return ret;
- 		return lpi2c_imx_read_atomic(lpi2c_imx, msg);
- 	}
- 
+Changes in v2:
+- Reworked tdm-slot.yaml schema to silence dtschema warnings
+- Properly referenced new tdm-slot.yaml schema in affected bindings,
+  again silencing dtschema warnings
+- Add PULLUP and DRIVE_HIGH as possible bus keeper modes
+- Reworded commit messages and cover letter to more clearly explain
+  what the goal is here
+- Link to v1: https://lore.kernel.org/r/20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com
+
+---
+James Calligeros (7):
+      ASoC: dt-bindings: convert tdm-slot to YAML
+      ASoC: dt-bindings: update tdm-slot.txt references to tdm-slot.yaml
+      ASoC: dt-bindings: add TDM slot idle mode properties
+      ASoC: soc-dai: define possible idle TDM slot modes
+      ASoC: soc-dai: add common operation to set TDM idle mode
+      ASoC: tas2764: expose SDOUT bus keeper via set_tdm_idle operation
+      ASoC: tas2770: expose SDOUT bus keeper via set_tdm_idle
+
+ .../bindings/sound/imx-audio-card.yaml   |  9 +--
+ .../bindings/sound/simple-card.yaml      | 14 +---
+ .../bindings/sound/tdm-slot.txt          | 29 --------
+ .../bindings/sound/tdm-slot.yaml         | 52 ++++++++++++++
+ include/sound/soc-dai.h                  | 22 ++++++
+ sound/soc/codecs/tas2764.c               | 95 +++++++++++++++++++++++++
+ sound/soc/codecs/tas2764.h               | 11 +++
+ sound/soc/codecs/tas2770.c               | 75 +++++++++++++++++++
+ sound/soc/codecs/tas2770.h               | 12 ++++
+ sound/soc/soc-dai.c                      | 40 +++++++++++
+ 10 files changed, 312 insertions(+), 47 deletions(-)
+---
+base-commit: d898041bfb8667f4bad10abba5dedd7edd88c751
+change-id: 20251201-tdm-idle-slots-10ba92516da4
+
+Best regards,
 -- 
-2.51.0
-
-
-
+James Calligeros <jcalligeros99@gmail.com>
 
