@@ -1,31 +1,31 @@
 Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EDD369206;
-	Mon,  2 Mar 2026 19:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D9C369204;
+	Mon,  2 Mar 2026 19:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772478667; cv=none; b=PsIuY9QOYFKosl2AlBHyejUhbNICm0EkBcDKlCLZ8T+NJPfhEZB5hvW7d2/F/T2A0XcVHa6mGqOIyL79qN/kLFbMmbMfUwvsfGGO7dlnT3+uB1nQ4H+Bj2g5ecXjJGEXFidpqH8SS3JTo/onee1PELjDeDW59QlzicbhEm7Z8iM=
+	t=1772478668; cv=none; b=cuiOJP/afsSTMrbMH4UglfTKP93btLeb9v/MS7qVlYyZ6oqMPfuiOMtnVVwo19mJbBBhfYiGJb0ssi4RHti0WMwPleHcJkZMz48htAqkHw46ZvDP8Au8lUKMTaEhldYDRGgQArx6WEnut58MUPTv5fJgKuUbZsNaHs6avLF4tEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772478667; c=relaxed/simple;
-	bh=RgTB+VComrsvy0UepgtTo1u/3AOKL17mM3l9DdqOY8Q=;
+	s=arc-20240116; t=1772478668; c=relaxed/simple;
+	bh=XM9t98xb89N1ZlhujZTmlv4c9tV1d43E3bTEhZWQM84=;
 	h=From:To:Cc:Date:Message-ID:In-Reply-To:References:MIME-Version:
-	 Subject; b=Q9zOx2m2K10QskgXL1/97JaHosr/Smm1jZ4nMzmcWVYrxz+CSk3cBv1DHHrRrH+kkPlds6hW9+ay368wMG1kEU4ffcgxQtLf+YN1vxjEN6OVMbR43TN5EmBfKmvCFnjJGd48R+JFEJeuBNZlJ65D0p4U8CNeVQX4uyPSg9d1bpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=xVGu5yG9; arc=none smtp.client-ip=162.243.120.170
+	 Subject; b=Ae8mpF1lA1nsrMVrnlhLRfmSlAvN9Dr164WbnMVxVLVZGA8ANMsPvO6hbcIVHR2nDLxr5ex3rq1/T6CcpxFMtBOoWX2WufwLryqcI/Uq4xRELS5NCg2BZRyBnWyWfYXpMXRe1v+19nNoYzoiJrqIh3URW55z3Wh9rC5C8/2yB7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=D4h9MOx5; arc=none smtp.client-ip=162.243.120.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="xVGu5yG9"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="D4h9MOx5"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
 	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Cc:To
 	:From:subject:date:message-id:reply-to;
-	bh=eLBVbmAAAVsEz0x8golWQm+S6FLxF1rb4QI2LLhQark=; b=xVGu5yG9Yir/yRkWz92EHqc15P
-	ImHDqv6NT8OJNNOK3nZNA+oQ8TYVxhnMCIBHmC0Lu4oZbEgSCtuGf6T+HCVkOixc6LH6PoZMPeZHF
-	HUxdphbIOCrCMdSTyHd5EkJthdTD0211BEvz2uK4gR9FczxgeuIDlOgmKrp0SLriqBWQ=;
+	bh=RXeuyAaTvwAMCt0q3PFB8EJk7uqdNN6rk4nzvIkVw+E=; b=D4h9MOx5xJCrIvC98NK8rry24O
+	ktvWnAcFNA88e2f7miLu+vTHTNhf4Xv8DYgaqIZctUKK2gLVUXuuRj/H2Z2NUwvLzYNZoz/ucndBV
+	b1V7c7e3EfAdwxSQqX23gFAzlESv/zCXdqKUDZg38r7+D0UtaTnLWvRRR0S8jJmtP3i0=;
 Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:59962 helo=pettiford.lan)
 	by mail.hugovil.com with esmtpa (Exim 4.92)
 	(envelope-from <hugo@hugovil.com>)
-	id 1vx8fL-0007Wl-Df; Mon, 02 Mar 2026 14:10:51 -0500
+	id 1vx8fA-0007Wl-5z; Mon, 02 Mar 2026 14:10:40 -0500
 From: Hugo Villeneuve <hugo@hugovil.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -55,8 +55,8 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	hugo@hugovil.com,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon,  2 Mar 2026 14:03:44 -0500
-Message-ID: <20260302190953.669325-9-hugo@hugovil.com>
+Date: Mon,  2 Mar 2026 14:03:38 -0500
+Message-ID: <20260302190953.669325-3-hugo@hugovil.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260302190953.669325-1-hugo@hugovil.com>
 References: <20260302190953.669325-1-hugo@hugovil.com>
@@ -74,195 +74,57 @@ X-Spam-Report:
 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
 	* -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
 	*      [score: 0.0000]
-Subject: [PATCH 08/14] ARM: dts: imx6ul-var-som: factor out SD card support
+Subject: [PATCH 02/14] ARM: dts: imx6ul-var-som: fix warning for boolean property with a value
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-Move SD support to a separate include, since it cannot be used at the
-same time as the Wifi/BT module.
+dmesg warning:
+
+  OF: /soc/bus@2000000/ethernet@20b4000/mdio/ethernet-phy@3: Read of
+      boolean property 'micrel,rmii-reference-clock-select-25-mhz' with a
+      value.
+
+Using of_property_read_bool() for non-boolean properties is deprecated and
+results in a warning during runtime since commit c141ecc3cecd
+("of: Warn when of_property_read_bool() is used on non-boolean properties")
+
+micrel,rmii-reference-clock-select-25-mhz is a boolean property and should
+not have a value, so remove it.
 
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 ---
- .../dts/nxp/imx/imx6ul-var-som-common.dtsi    | 33 ++++++++++++
- .../imx/imx6ul-var-som-concerto-common.dtsi   | 51 -------------------
- .../dts/nxp/imx/imx6ul-var-som-concerto.dts   |  1 +
- .../boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi   | 27 ++++++++++
- .../dts/nxp/imx/imx6ull-var-som-concerto.dts  |  1 +
- 5 files changed, 62 insertions(+), 51 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi
+ arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-index 22b0c4e0725a5..dd4ecff1eb786 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-@@ -139,6 +139,39 @@ MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
- 		>;
- 	};
- 
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x17059
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
-+		>;
-+	};
-+
- 	pinctrl_usdhc2: usdhc2grp {
- 		fsl,pins = <
- 			MX6UL_PAD_NAND_RE_B__USDHC2_CLK		0x10069
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
-index 10a23ae104359..ea8d9905ce6e7 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
-@@ -186,45 +186,6 @@ MX6UL_PAD_UART3_TX_DATA__ANATOP_OTG1_ID	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc1: usdhc1grp {
--		fsl,pins = <
--			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
--			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x17059
--			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
--			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
--			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
--			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
--		>;
--	};
--
--	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
--		fsl,pins = <
--			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
--			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
--			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
--			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
--			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
--			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
--		>;
--	};
--
--	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
--		fsl,pins = <
--			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
--			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
--			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
--			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
--			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
--			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
--		>;
--	};
--
--	pinctrl_usdhc1_gpio: usdhc1-gpiogrp {
--		fsl,pins = <
--			MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x1b0b1 /* CD */
--		>;
--	};
--
- 	pinctrl_wdog: wdoggrp {
- 		fsl,pins = <
- 			MX6UL_PAD_GPIO1_IO01__WDOG1_WDOG_B	0x78b0
-@@ -286,18 +247,6 @@ &usbotg2 {
- 	status = "okay";
- };
- 
--&usdhc1 {
--	pinctrl-names = "default", "state_100mhz", "state_200mhz";
--	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
--	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
--	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
--	cd-gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
--	no-1-8-v;
--	keep-power-in-suspend;
--	wakeup-source;
--	status = "okay";
--};
--
- &wdog1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_wdog>;
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
-index 11b45f105b7ad..85ebac30d7bed 100644
+index 9ff3b374a2b31..085985356668f 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
 +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
-@@ -11,6 +11,7 @@
- 
- #include "imx6ul-var-som.dtsi"
- #include "imx6ul-var-som-concerto-common.dtsi"
-+#include "imx6ul-var-som-sd.dtsi"
- 
- / {
- 	model = "Variscite VAR-SOM-6UL Concerto Board (6UL CPU)";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi
-new file mode 100644
-index 0000000000000..0e6d9b945eb4a
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Support optional SD card interface on Variscite VAR-SOM-6UL module.
-+ *
-+ * Copyright 2019-2024 Variscite Ltd.
-+ * Copyright 2026 Dimonoff
-+ */
-+
-+&iomuxc {
-+	pinctrl_usdhc1_gpio: usdhc1-gpiogrp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x1b0b1 /* CD */
-+		>;
-+	};
-+};
-+
-+&usdhc1 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
-+	cd-gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
-+	no-1-8-v;
-+	keep-power-in-suspend;
-+	wakeup-source;
-+	status = "okay";
-+};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
-index 7c601af2657d7..ebf88c3e1addc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
-@@ -10,6 +10,7 @@
- 
- #include "imx6ull-var-som.dtsi"
- #include "imx6ul-var-som-concerto-common.dtsi"
-+#include "imx6ul-var-som-sd.dtsi"
- 
- / {
- 	model = "Variscite VAR-SOM-6UL Concerto Board (6ULL CPU)";
+@@ -79,7 +79,7 @@ ethphy1: ethernet-phy@3 {
+ 			reset-gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <100000>;
+ 			micrel,led-mode = <0>;
+-			micrel,rmii-reference-clock-select-25-mhz = <1>;
++			micrel,rmii-reference-clock-select-25-mhz;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
+index 3fb5e2fb68777..30032be6fdd50 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
+@@ -64,7 +64,7 @@ ethphy0: ethernet-phy@1 {
+ 			reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <100000>;
+ 			micrel,led-mode = <1>;
+-			micrel,rmii-reference-clock-select-25-mhz = <1>;
++			micrel,rmii-reference-clock-select-25-mhz;
+ 		};
+ 	};
+ };
 -- 
 2.47.3
 
