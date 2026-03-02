@@ -1,164 +1,156 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011070.outbound.protection.outlook.com [40.107.130.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A0D3859E1
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 07:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772437633; cv=none; b=W8HMo+Q4vIVPGbg0wQ4VegEmbqddg48JePqnPLfUVL/v12HWvia/ZEdO6yaBmPz4PA2kFiTXDE2Y988L4ZFRZdI3kWRw1DHTiMyIavFardYRvmHk1OTTO2TOk4oj6MrQsdRoiCPAFwRWk/oJ5xquuFBmf/gBy3n9I2PhxrimPlk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772437633; c=relaxed/simple;
-	bh=xSIZpSl0bzT5ncKHIOJrQHcDCKTg9OSZ3st72BWj5dQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Am07/rMrq3ARnK0ThYaIIK0f+H5hXXHQotM9jddZHk5Ba3FkZhKO4zVfr8+QmEmEJvg8w4QDi6khAHBgh7nup9qIv5+45nT3eH11m+Ho83nqEAfUXxxjmlerrfcMQ0zmt7BERRWV+7cumcHJsB4OIOZkyVNA7OfrhKlTmVdO5GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lrsaw564; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D129387373
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 07:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772438356; cv=fail; b=tTQwaD3EX83A7DOvsBmdbsHKwxBRCKw64pLBlOktcwp5P1WBETUBnzj04hxdwVKHnD345GmSyecuQOT/lNxxAeFmgdc9/rFn5NSZcG3+c4rl3n5+MbDxGT0jL6eoG/05gQxNse2lmG9nRGKClPiHCCnm45tPViyy27RlDqnJFIU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772438356; c=relaxed/simple;
+	bh=WLQtsMdDS6scj+LoCkyddaAULYuX1fJjLaOsOaPNvTY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=K8V6EJ9usvbA+6OkFDjdgVNNDZ1AMBjBXxXbuBZlsK3h4WG4Kfv9qDF9TTVg/nlpW0Gd5GIly5dBPXMdBN7epXkeogT7fhYznepYaSHMCswi72Y53+XI4lhWs6YZGhuI6s7g9Y106iCzc8om4bAjh/vZvZdRIOO0m1nsLiO3m/4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lSZtzUkh; arc=fail smtp.client-ip=40.107.130.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lrsaw564"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-389e87e3452so62049521fa.3
-        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 23:47:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772437629; x=1773042429; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e68qiM5Z/tLR2me+b5hOCaInO/EcJkXq3qS1H6cb7Bs=;
-        b=Lrsaw5647yjCysf/HfgbeD+J5CEnzJSDaXBcmh/i8AsVIfuPW8kbnoO8xO/Fg2bffS
-         Wo4zWWD6Vj/LvJw5BIAeJ7Djo0ZURZW4+js+njJhRRs8GswUoy+mo20ePQm60FpoB+tL
-         DwKAbKdLLxWzO3vvh6a79eMoYrLovkDNQ+Cak6RE3k3KnHDWbZUyVIvxpdl/lYQNY5M0
-         XB+f2PSIgUrOwvUIIFpdlBhwR0CdM3bQu/clJ3ycPop8RY3eZVzWzVpwMnhOQtY4tjfD
-         qdwUvy3KOBOEBL9epBlwlg4dkS3IHBUk8mU4Iia4i0pP5zIFpoUFl06blx4mIMB0psnv
-         cQJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772437629; x=1773042429;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e68qiM5Z/tLR2me+b5hOCaInO/EcJkXq3qS1H6cb7Bs=;
-        b=pVvgeVwEv4CyVVQw276x3DqPFCYwD9uG6d07ohMhiDvCaRxavn2oG28Xux2pgvUPcv
-         99vWPFT5CIOrnWREhQNM/OuOX1km146Q+7/A/tALbw0KSRs6EddZh0H7psChUTfgSCYb
-         nfvVAqvm2Gc88gQ88YU2wiBqR+TPmfOrUHfuFv5PGg/jixIOh1c7Dc6ZqFuE6HeRvgUY
-         2DEedDWHs4c6LL5WGRdf7wzSh9vhDUnJNIgCZ2dZVJT7ScU9p7KUJFdhcxXbVIwTx9fk
-         SXquXichoIKbhbosrFfq0yAH4tPOQYqMZrFdVXtPFaO+jEeh9Lf7fmaBGSRJykVNC++l
-         MHnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyEPdKj4eJlCn2DOCSjtV8nxsZS3GWoa+WVhFxr8pbfI2eoW4WLjb023Op06O0A75ePHU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfGznSAXvx/A0fjy2aBdrIL05HQ4M33NeNRzfZ+pXxsT+ete9u
-	8l9g62MoS7GrKKPBxH+kOCcsKZTEUW6XbO2CqfeTPdkp9EKmmX8sSFyA
-X-Gm-Gg: ATEYQzxb5VVM8wNAQW0ssw5JbOZS8xwX4J4Mr+L35/BjFbjN1jV/5aVIRY5RGir9LiH
-	4Yv73yf7UnkOkh0oT1t1mjRa08t4lkesKn3XY2FygOHl/lDuf4shPOXnKoHnK/fsIOKyqaeGc/O
-	57xR9UEOj/7LNHT1Fxt+TWW4JLl8nOe91QJIsfa5habqGs81No/zC5BEs2TLieEvQ1E+Hq4o7Ap
-	bqdwaATGOeA7xkGCvbghqEoKy1vdMaTyIj//BnkXb8sx8ap2bh8ABRpFQ8Vi+0XL0Lgk1F6+0pI
-	z9XUfP9mJUN1iceq7X1NA1t6GJ2nPWshhRO3lJOvzPYm43LWZNFKzVU0FcWTFp6H5WG/prNEFDi
-	CgVupPaHIB5KtfTAp2x7wwzCfX5dTVn8u1FYiBeNkI7h0uqNPRXwgyngoYRVkrxDirYprlPW54/
-	9pZbD16fWraNq0aMp/99gj4EHSkg==
-X-Received: by 2002:a05:651c:1c7:b0:383:1c5f:84c7 with SMTP id 38308e7fff4ca-389ff130e18mr78428611fa.12.1772437628986;
-        Sun, 01 Mar 2026 23:47:08 -0800 (PST)
-Received: from [10.38.18.76] ([213.255.186.37])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a10a319f05sm3299418e87.50.2026.03.01.23.47.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Mar 2026 23:47:08 -0800 (PST)
-Message-ID: <ac23aec1-6dce-4dd5-8990-9fad40998478@gmail.com>
-Date: Mon, 2 Mar 2026 09:47:05 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lSZtzUkh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WJHIJu5zbetLsmk57pnkAruYbfJAykKVeBZ/PK1y0SuTN5r3Jctpn2r0d3MoY8rugCb38bCQrQrXxlpxhjIMjmrf6vT3RcDeocrUIQKFOPrvD6yMNLkWvAEPcda4gTCcuLIO1WpH7WXOSiCs9yE/7jIN2AfMT0tci1a24hfIeNRKxEl969wfjFOP1zyG9YvMQEQzoIrMv61QNe5ZLnaQmFyJ5NmuQTYWRnNnEutjPS8cxsmgpT0A81sWyNSfNtByf6Fo605xpWrZdGeKexABfbw+TmNG3JcGhpoVJKL4BDpqI5swn+imvtZ6ON2tirBacNaC4QnN0edTwUP6d8qjFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OnxIemEz11r57VK8e1dRtNVvYPaNfCx6ZWPmiTflAbo=;
+ b=fBkiJP729bU4EyFdxg19s9dqvVOzSPqECxgxYoeQu/HZlT44ITtPINaevsmrfm2PVh+mQ+cBh0r2N+PL1xgfXDTjgyY7RsgRpGxlIqcYoBlhlU7PRms+8ExcaqROSSyT0+FhQ/fvCiDu2ifUAtSOm9lR/0IV1sIp1bXnV76HUXxVUgCMybRBTsydp/q7WlrnD5MlM08a1K5vhDntOJQU7Rqn6M6T7k6v7WaNDTLMPbCJWeyKZVrn3fgH0gQuf53+4nfRJ3DquhtCT+xQdcGh3SiUuS+CI35nGsE1tc5C9DtM4iTcGgFLOsTKvySGvPrbCrbVhhBHuMGznft50qB2RA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OnxIemEz11r57VK8e1dRtNVvYPaNfCx6ZWPmiTflAbo=;
+ b=lSZtzUkhsyH2IPPOa599R8NCa7jR0zNhgT6glrzwvKBxhJI0HzqFB9sgqc4UaHERHO3NUaXFI7dzs9+Cy9EtnsZOX0iAR86P+JwsozFBDK0ID2sULnRqNadTj7r2WeIM3rjsIovhbtMYYfv8WgHm8+PTDgN6fnKCohQpGMiaud5Z0Jltcm5zyuogGad489ufwUTv8cqmv8+/9Lz+O9FBQnNuVpD28rroMrXPqbUBZwHmDFRrnvz19daqJlQFFkkqLe1NeSNr4Ejyfxbbk1290LNtf1nAZiKnum8M5Ov5VDRvd2+l4wZ9YIxmMEjhF77Ns1HP8PrJFrraL81UJmXbmg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
+ by VI2PR04MB11218.eurprd04.prod.outlook.com (2603:10a6:800:29a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 07:59:08 +0000
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::32c4:a8a7:1724:b754]) by DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::32c4:a8a7:1724:b754%6]) with mapi id 15.20.9654.015; Mon, 2 Mar 2026
+ 07:59:08 +0000
+From: ziniu.wang_1@nxp.com
+To: adrian.hunter@intel.com,
+	ulf.hansson@linaro.org,
+	haibo.chen@nxp.com
+Cc: Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-mmc@vger.kernel.org,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] mmc: sdhci-esdhc-imx: add 1-bit bus width support
+Date: Mon,  2 Mar 2026 16:00:53 +0800
+Message-Id: <20260302080057.974102-1-ziniu.wang_1@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P190CA0034.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d1::10) To DU2PR04MB8567.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d6::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF node
- through the adapter struct
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
- Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
- Andi Shyti <andi.shyti@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
- Frank Li <Frank.Li@nxp.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-rpi-kernel@lists.infradead.org,
- Matti Vaittinen <mazziesaccount@gmail.com>
-References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
- <20260223-i2c-adap-dev-config-v2-1-d78db0a6fcf7@oss.qualcomm.com>
-Content-Language: en-US
-From: Kalle Niemi <kaleposti@gmail.com>
-In-Reply-To: <20260223-i2c-adap-dev-config-v2-1-d78db0a6fcf7@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|VI2PR04MB11218:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f2369c1-cf3e-4c6e-b863-08de783194ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	lDjQX1Gth84f/6eqPwoCZEsadB1mQqUinX/hBDrCsGDsw+fmP8FZ8SiU09YLLINxUwS3Msnb3fr38hREoSlw0URcrue330mW65gD3K8TUjKRX1mDt7DFsaj/G+dkkh4K3VNQ620FEE3AOBYAhhC5nk8hn/W+q07JCzxggsV6A2CW9UP6LmqC7xI5kM1/UkKuKLiT6FVndInpyWX3mxeebzDlQiWIaUajWwVYlak4H3LoA7CpN+wnsLCGWlqJ4/CAZjeDtgbdx44Tbgmt6Fxkfu5tZSL/mQ467ExDXi/2zZBnRnPY3hBGPsZONctIuPVrsyN4H1b67oAJvJkDTqaAh7PYgAMUr9ZgFcBw13dfoiGfG7J29tkmpk/GGvS6rA0+vGaPp2lzQfVuBuUEkcuLIMAv/qyHRJFCGvMyzd96Jw9rxDIVcM4FxUFwJxnzw7gEehTK/x1/zj4IEvTLK5TAzXK7oIM4a1T4t55tnUBGuCzkn9ol04A0O3cUQnYAx5IgyHiIWtiLUFHe8MpLRF76fkoQ0OgThnJ9jCrtxjGAa1uco/w6mr656VTe56qVEjpDYv043Uq2ZxUCtf5re52iSBuTJgLTjZKOWcrPoVHsz3VbVZMzURX2ALNdjcsLJa4T6MB6FltKMEASztZrUlKsz8qHrT+BRjJhg/EYG83yqesYSFjvst2jZiSmSlbMoG/8zaf+jXAVKijgOcmsQXXbqjx6e8BTOzqYcreQsNfVURynj3qVksJfOqUBUr9RJZbiJ3VfSTccSsbSpWykXO1JxRHRmay1+U1qux+B6NQG+x0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4XpbeCo3dIsMCWsFIitHHEJ1Lli5Cr9b5XCDKWwzGt2aQP/yhphx1S1B5EHr?=
+ =?us-ascii?Q?DkK2UiipPDXXjJSHH2I2f0ppAJSihdpHfelsqD4R9mmywC6roBh0rdLxSCEu?=
+ =?us-ascii?Q?C1kKesg7mQ2ZWvrTYQOwc+W7RJpX/SdGw9EUmdXDwD4LMKjqrHc++1b2dt97?=
+ =?us-ascii?Q?KvAyI4XyO9U8HWyUAMcI7doyLPQY6l5Q+V/k9/f4pBTWDcPwZg/1G3OAkHnV?=
+ =?us-ascii?Q?TPrVCBXRQZ6MAoZYwb6NzX4jkKVij/pmcXO3hDaX7YjXxYohQZnKpzpoVQjm?=
+ =?us-ascii?Q?Wa9kQmzQVQWajxkDexcFyMRDs06zyhnG0kci2ToEDJhIal7KhWxSyJq1bMfH?=
+ =?us-ascii?Q?ZsUavmTcz3po3W7FIfyNuGmodjG6PGhSvUAPTAEoLbIBimqXzob9RjHHyMAd?=
+ =?us-ascii?Q?BHBJS2zlOA/YPUetzZ/MUsYctHMtHg7jxzWHrhNC68SPkIot7HLChJZrihs/?=
+ =?us-ascii?Q?e3tiN9jjB9dl02TrgOJ+W1tye46mCVKoCPREl0JZTzqTRNSFcSxWuNe3At7G?=
+ =?us-ascii?Q?ZmMCehbhFdLmHycygPgVgfp10vJ0LX7vq6Cx80+7NuFBSFdVT2tubSrMaCh1?=
+ =?us-ascii?Q?vlI3reFbfEF5zKRsCCZwAqGF2KBcVAFB+kf0bNLylJV7naP9IHVTiJwKxbXg?=
+ =?us-ascii?Q?H20zGg4/0Y0CKPpAMfXwjQpWX8Xb/ZJkuYIbYCsXT/AYuiEVmSZOOE5QftLS?=
+ =?us-ascii?Q?5RwhFnslin/EUwshthocSQfOt6nGYS4oOKo3wlL993ZYnLRgC/0uMCMldQcO?=
+ =?us-ascii?Q?xwo9xAK9JLW84nDXaJmuzXZz95heB2iFFSdEgLiacZ13smFoxwZq8JRwnrcH?=
+ =?us-ascii?Q?nc+Bb5KipyjfqXU+m4zqK3+EAHWCSqJtCklo2GdZNH7C5lvfnfwhpqqvihlB?=
+ =?us-ascii?Q?wjYzISyYIEMYnB9QeWl7XdOU7yjlSBbr7EkF/cAYAAu7lx2HrrYBAlyKnUCb?=
+ =?us-ascii?Q?EGptAz+od4lzAe6XJpnN0ARqcy3gGjBr1WmwTasuh4u+J+0fv3jDBLyfWznq?=
+ =?us-ascii?Q?276fUJlq9OXd4AkIOiArImUTsBAQT61s+hMNrnfBw0W6mEa8lyEKtL/NCxZK?=
+ =?us-ascii?Q?ESz30x+lVAdHnXCnmTHeTHe3iEdRaAUAuvjpHuDM1kaYhiiSrxufpk6Zyfuu?=
+ =?us-ascii?Q?JSdlKN9DNbcuCwuIjS2PQe+g7LB4+dLkgA5eyvAeec2siI6Yo/EVG0TeGGg+?=
+ =?us-ascii?Q?7aLBNw6bhgWgqRywbC9hfVyQUfE/+8MtXFOvSN/BEmT4FX59x4m7PIFtTNhf?=
+ =?us-ascii?Q?eSagAErw+uma1dEnhvF+TP73fd65MoxjmdDjxxaziZOC83ykp5EtvYYASpVx?=
+ =?us-ascii?Q?ufVKCgzwqJPV13vL14tf106X8aglGaKRLo3JLc+Brb+N8+5hdOsh20tHmR5G?=
+ =?us-ascii?Q?oJWrhzkbw8SLz7VnXhptTJg9faKCmg/ln1LGJOtvDIwJam4NUKe5WCCZzdLR?=
+ =?us-ascii?Q?AaodtzBploJWWC80lXbr218k1yyX5kWIb+2yZg/ckluIC3u4+RCWWJ5TxNPm?=
+ =?us-ascii?Q?3Q1YzejHH1sX7czXE4J1JDBXuELIa9CEGJh9EOArXBZ6Z0oMW0fswu9qS7bn?=
+ =?us-ascii?Q?YRDULLy2oet12hLGRgGReXbfZGCk0vg28UeDMT/Q9E5+lmcHr+/Or+Klw/Re?=
+ =?us-ascii?Q?vAX1lcciUqWhm/fAuqYPqZ0c4JdrwNbYCpKWloSIrPckxxm7Fga4O5lrN+kM?=
+ =?us-ascii?Q?90GMewhO0whoUsNclJsWHAnndwMTAjnB7K51GyaA/WAAcK33stZyRgblVLfd?=
+ =?us-ascii?Q?WuLSs4J2OA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f2369c1-cf3e-4c6e-b863-08de783194ce
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 07:59:08.2769
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E9wF1G2SYefdqSCuLlGT+FZzO6ee3uwuEEt41kFW1ssQamGtPOxm2sAjSHQxax2Pa20lsmHJepj+VUd82wA4uA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11218
 
-On 2/23/26 11:05, Bartosz Golaszewski wrote:
-> In order to stop i2c bus drivers from dereferencing the struct device
-> embedded in struct i2c_adapter, let's allow configuring the parent
-> device and OF-node of the adapter directly through dedicated fields.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->   drivers/i2c/i2c-core-base.c | 5 +++++
->   include/linux/i2c.h         | 4 ++++
->   2 files changed, 9 insertions(+)
-> 
-> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> index 9c46147e3506d15d53b9b7d6b592709de56e41b9..dd8cec9b04c64b8340d20e018ab5ba28f1f7f5c9 100644
-> --- a/drivers/i2c/i2c-core-base.c
-> +++ b/drivers/i2c/i2c-core-base.c
-> @@ -1561,6 +1561,11 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
->   	adap->dev.type = &i2c_adapter_type;
->   	device_initialize(&adap->dev);
->   
-> +	if (!adap->dev.parent)
-> +		adap->dev.parent = adap->parent;
-> +	if (!adap->dev.of_node)
-> +		adap->dev.of_node = adap->of_node;
-> +
->   	/*
->   	 * This adapter can be used as a parent immediately after device_add(),
->   	 * setup runtime-pm (especially ignore-children) before hand.
-> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-> index 20fd41b51d5c85ee1665395c07345faafd8e2fca..72677f29aff161530bc3c497d1e07144a44eb9e4 100644
-> --- a/include/linux/i2c.h
-> +++ b/include/linux/i2c.h
-> @@ -761,6 +761,10 @@ struct i2c_adapter {
->   	struct irq_domain *host_notify_domain;
->   	struct regulator *bus_regulator;
->   
-> +	/* Device configuration. */
-> +	struct device *parent;
-> +	struct device_node *of_node;
-> +
->   	struct dentry *debugfs;
->   
->   	/* 7bit address space */
-> 
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-Hello,
+This series adds 1-bit bus width support for sdhci-esdhc-imx driver.
 
-Automated driver test system bisected this commit to be the first bad 
-commit, linux-next next-20260227 was tested. Failed tests include driver 
-tests for ROHM PMIC and accelerometers, which are connected to 
-BeagleBone Black.
+Currently sdhci-esdhc-imx doesn't support 1-bit width because it
+doesn't call sdhci_get_property() to parse "bus-width = <1>" and
+set SDHCI_QUIRK_FORCE_1_BIT_DATA quirk.
 
-The failed driver tests all fail to first i2cget and the tests stop 
-there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such file or 
-directory".
+After adding sdhci_get_property(), another issue is exposed:
+mmc_select_hs200() returns 0 without switching when 1-bit bus is
+used, causing mmc_select_timing() to skip mmc_select_hs(). This
+leaves eMMC in legacy mode (26MHz) instead of High Speed (52MHz).
 
-BR
-Kalle Niemi
+Fix by dropping incompatible UHS/DDR/HS200/HS400 caps in
+mmc_validate_host_caps() for 1-bit width, and clean up duplicate
+code now handled by common framework.
+
+Luke Wang (4):
+  mmc: core: fix timing selection for 1-bit bus width
+  mmc: sdhci-esdhc-imx: add 1-bit bus width support
+  mmc: sdhci-esdhc-imx: remove duplicate HS400 bus width validation
+  mmc: sdhci-pltfm: remove duplicate DTS property parsing
+
+ drivers/mmc/core/host.c            | 19 ++++++++++++++-----
+ drivers/mmc/host/sdhci-esdhc-imx.c |  6 +-----
+ drivers/mmc/host/sdhci-pltfm.c     |  7 -------
+ 3 files changed, 15 insertions(+), 17 deletions(-)
+
+-- 
+2.34.1
 
