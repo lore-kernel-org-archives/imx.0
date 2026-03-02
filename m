@@ -1,158 +1,162 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013055.outbound.protection.outlook.com [52.101.72.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676BC41B351
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772468056; cv=none; b=OLTCxvViJbUW4PnMVUtNZUCKVrq66Kr+nzZZ3LouTfkL8PcswRudkDXQjU301uNUH7dTdMN03WTaXiS4mJ+iAiahGjR3G9OYRQ2t9gkS7K+oqrTHBZVqdazPNeMOvH4jL1+pO1qk2t8n8ARWcM4t0ZFjOPJaDylyw2qTJx0njJk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772468056; c=relaxed/simple;
-	bh=0Dly/K1fpHf6jNYWK8kzIVX3YYjOqRl73kYdjmbt2Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lZV8w9LX5xKC0VsGtarpJH3di+5gKdEuWoWtBuVZok3svUaCyY1d1KvQK8bHC9vPSP/D7l/eSdm2bOwL6fp3sKpJVhAE6YCJ0lgtFjVcmbUyZ3M+KAmRUBDV85l6vrKWlkt8c2LU0LR4Ushud3INJP4N/t2U+X0W4YBfAfnSL8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=OW7jSdks; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66782E06E4
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772468263; cv=fail; b=p7gHCebrsyhGDSs7kMiiyUZ5RQpjLSc+XklmoPOj3LTTwD4/CXCsANexgBX8NCOZDdjiroMRF1LKITTpf3ZH3x1ah6P6B78cZNHBxuhJFqVlT9OuWJNVfOlOZgNz06DWDOBYRCJhcSXLeTxdjhkbWHamLHJg4C6vQ/kqKbvxYlw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772468263; c=relaxed/simple;
+	bh=NXYwvZpZ+wo9S9F1F9pajZYS9s/A8nUkdZu7jOxrxok=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GzR/fRTymRSNoSpeobvAh9VXL2aJIxlOoIhbFQXMeoc12I697GStfV0QQpkkr7tg1pMx5+pQ2ieP06hcchqJwo0gqKWr8BNKSvm7fTrYMiWU7Pq5am7lLc8mhA1ZSDEpYgVkmI6w9RTCGQsiqHTHNLdR31qFjKOr2wzqlfhbKa0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VgxaBtZA; arc=fail smtp.client-ip=52.101.72.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="OW7jSdks"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1vx5uO-0000000AEDW-3S4f;
-	Mon, 02 Mar 2026 17:14:12 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=twQe7m5x4QDzYF5myGO1qmalh+JuN/K7HsbfYxfx4IQ=; b=OW7jSdksduYz+IKSvOLDkKN61z
-	3stPn86I1Zpe3QM5ckzmWFy9QKdsLUm1afvc7mqa9jqSrsSe/HF2/UDMZ62nQEWps7ipDbyFKPiVR
-	B+i33nquzzN1C2mXfxh21wa5Gu4aAS/qpyikokftCREziVEfX/TnqygdkoVhF04Dhv6A+qn5OvTkU
-	vIA0BdP9CNGr3KG2rGgl7NeB6ktSCXuuxxCtOOKSwVx2SsE3wwuLUMj0qMAMS2pyIhfk68kfDoOFQ
-	1iFMM+u2zIw2O5oxhtUVW/Ql/PbtbqWjgYRdj0qwgQyK8kB0uCv7WxaiKTVaGvQN0LxGpEg200Mnx
-	Qv/VMSDA==;
-Date: Mon, 2 Mar 2026 17:14:07 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Bartosz Golaszewski
- <bartosz.golaszewski@oss.qualcomm.com>, Mukesh Kumar Savaliya
- <mukesh.savaliya@oss.qualcomm.com>, Viken Dadhaniya
- <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Branden Scott <sbranden@broadcom.com>,
- bcm-kernel-feedback-list@broadcom.com, Vignesh R <vigneshr@ti.com>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Patrice
- Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Linus Walleij
- <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, Matti Vaittinen
- <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF
- node through the adapter struct
-Message-ID: <20260302171407.5afe3b12@kemnade.info>
-In-Reply-To: <CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
-References: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com>
-	<20260302160923.53abf2ea@kemnade.info>
-	<CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VgxaBtZA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J4pOoWtFzEMScbQn449DX8aHI8P42zPKaf3y8jOhvGlJHjjbGjpKiStDIE9INcDPK3G6UHGgIYUKwuAmYdMyoXLwCHPaYkR/mLvWx9SBNX6hBRpajA2UXtCCqZARNbKX63b1p5RvSoSpLe9zK3ZQ7gAhEYQ6SQVpItVzYHw7wjk8cYUPiIkDxA/XhIy/TbhmuuCe5Jj8inydQuDuut0irLijoOZQ7nuqfNHvmou6ChbPSeAfufX40Rq2cNhkBJxOAAcUVVZjfJzvib3ZwYrhb+DyHUBIXyVMqF60G7YHh0XLlD1XiC3gNGlinRZU90HqgYu3nLxwtRdp4XTrL8bj3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8MdGrXtiWos6mAdJuGLkf9HRJuxCdgWxsC/yx3w3TlE=;
+ b=DTvfQ3gjQEdTMQxLgxyLlVJuFn1B2TjSKFSt2QDlVuQ1vqCq5vif5GHF82ZXdbtRn9VQEisHBeb+G3/HCbiuvjezWXjWRCTzsQAgWGI/ERCkbMlCWPqihWMBz1ILVfYqd9hrAb3kE/2GP7fuhbq5sAkzfXVT04NKKmE/rxxhWg6su3kQajzYVty3/ZYCzc5017FWWiPrRhVb7VhITCvUok5xBVfg+91EFDsMKZqjmJ8wKj9qlV+1ZluSeDjitcZar0irDFgxccluphilxgurmyJEnLvVHrtyLd9D9S8DQOiCdiTeaskGq27ITcMYvY2H21MPAX3UYt6DoluAmtokHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8MdGrXtiWos6mAdJuGLkf9HRJuxCdgWxsC/yx3w3TlE=;
+ b=VgxaBtZA0C1XzH5wJ47tkMpkSzyuMu3wi14rcdLJ+ymL2v/dlf3KE+cnwcr+A7TA8Z/caSeb7QjJmbpKfw4/ad2M1N9DJRunbK6nbjzM0/BhCFNOmt9NJdMYe/NDC2RSOUxESe3P+QZDj9rLO8uOuUR93t4AfbEvH4zHSMQUGb7GoMJaXv+4/IMwWSeUJh2hEfD3b42A7KDwcZNhcX0gEC/DYNOYpQlCry6Gp3sTEGWunH/fln45dIg1eDSEbdw0uMngMuRxQHTe+nB5KrF86u+V51gy00FMsMr/ft8bYsb3a0uBpz0o5aNyL1QNasp0u5Gvhcj0ecL5PLqXG6RSRA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AS1PR04MB9700.eurprd04.prod.outlook.com (2603:10a6:20b:473::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 16:17:36 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 16:17:36 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	Sherry Sun <sherry.sun@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH V2 0/2] arm64: dts: imx8mp-evk: Add usdhc1 for SDIO WiFi support
+Date: Mon,  2 Mar 2026 11:17:18 -0500
+Message-ID: <177246823148.2061109.13064548977487642609.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260205073454.3709673-1-sherry.sun@nxp.com>
+References: <20260205073454.3709673-1-sherry.sun@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR10CA0001.namprd10.prod.outlook.com
+ (2603:10b6:806:a7::6) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2 Mar 2026 16:42:58 +0100
-Bartosz Golaszewski <brgl@kernel.org> wrote:
-
-> On Mon, Mar 2, 2026 at 4:11=E2=80=AFPM Andreas Kemnade <andreas@kemnade.i=
-nfo> wrote:
-> >
-> > On Mon, 2 Mar 2026 12:38:27 +0200
-> > Kalle Niemi <kaleposti@gmail.com> wrote:
-> > =20
-> > > =EF=BB=BFOn 3/2/26 10:55, Bartosz Golaszewski wrote: =20
-> > > > On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail=
-.com> wrote: =20
-> > > >> On 2/23/26 11:05, Bartosz Golaszewski wrote: =20
-> > > >>> In order to stop i2c bus drivers from dereferencing the struct de=
-vice
-> > > >>> embedded in struct i2c_adapter, let's allow configuring the parent
-> > > >>> device and OF-node of the adapter directly through dedicated fiel=
-ds.
-> > > >>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualc=
-omm.com>
-> > > >>> --- =20
-> > > >> Hello,
-> > > >> Automated driver test system bisected this commit to be the first =
-bad
-> > > >> commit, linux-next next-20260227 was tested. Failed tests include =
-driver
-> > > >> tests for ROHM PMIC and accelerometers, which are connected to
-> > > >> BeagleBone Black.
-> > > >> The failed driver tests all fail to first i2cget and the tests stop
-> > > >> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such f=
-ile or
-> > > >> directory". =20
-> > > > Wolfram: well, now it would actually be useful to know which commit
-> > > > exactly is the culprit so maybe splitting the changes is not a bad
-> > > > idea after all.
-> > > > Kalle: which i2c bus driver fails here? Any errors in kernel log?
-> > > > Bart =20
-> > >
-> > > Hello Bart,
-> > >
-> > > i2c-1 and i2c-2 are failing. I am not seeing any i2c errors in kernel=
- log. I got two failures without the dmesg available (this is bugged test s=
-equence, and not a kernel crash), but those got the same stdout message "Co=
-uld not open file ...." as all others.
-> > > =20
-> > Probably I am using the same host driver
-> >
-> > tested on OMAP3 DM3730, result: i2c drivers get bound to their devices,
-> > no obvious trouble. But controllers are registered with high indexes.
-> >
-> > localhost:~# i2cdetect -l
-> > i2c-3   i2c             OMAP I2C adapter                        I2C ada=
-pter
-> > i2c-4   i2c             OMAP I2C adapter                        I2C ada=
-pter
-> > i2c-5   i2c             OMAP I2C adapter                        I2C ada=
-pter
-> > localhost:~# uname -a
-> > Linux localhost 7.0.0-rc1-next-20260227 #27 SMP Mon Mar  2 11:56:27 CET=
- 2026 armv7l Linux
-> >
-> > Regards,
-> > Andreas =20
->=20
-> Hi! Does the change I posted earlier in this thread help?
->=20
-It does *not* as written earlier.
-
-Just for comparison, with the offending patch reverted, it
-looks like this:
-
-localhost:~# i2cdetect -l
-i2c-0	i2c       	OMAP I2C adapter                	I2C adapter
-i2c-1	i2c       	OMAP I2C adapter                	I2C adapter
-i2c-2	i2c       	OMAP I2C adapter                	I2C adapter
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS1PR04MB9700:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14029c64-1760-4feb-c47b-08de78773791
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	AJY+6J9R5t6aav+El2/Xaej7gSLkcVafVj/xTMcj3hJRDo72kXSmZkG01GmDeSXO5iQHOiF9JPqCQDxaufoRmXZJkMMHpt0SO24wXQh41YDQogOHdkVuIeweaeCqRTWrxLyxK/YKunFL1ViNsWOgQ5ohRoydmOI9h7rqzBJxeNNvqmh8msui0TRylFf1tlmmJ414xfcSJZxspIowq/6M/0ZNQvPmaZupG1vapbmAekkl4fw44uHac/jHIFB2l09ywSDVLK2VQO9/7L9ZrLcvLUX7cfDRfJkywSe6R055ZOHOEoD84v/v9sd3JpVLZ1VZ2pHe4iMdn9BK4lIN7qCI9x7xecTlY6qS+WyiBWLaBHAJbUl/BNZHEaq3zVjN6+7URz0vSVeZWi3jWnYirDhWoto+kMQSTagYHz/JIPj8sREBnYQ2q5WLB6zADlzknsD9vo+Z6UwRPdT2Ho3mhHezzFTyP+T4+/iGE9q4/wy2FQQwUxGp9C/cLDIv2iHuQUz4ehZ7/S+VzrASOTsOoFvA6jxwtDNHKWbQTm2xOMoeLPCndHa/GEhnBn+IeBG+Vwjapq/kxRMN9wlBduNo4WpA1qy2mYZFmWjvKRR4L6FX8abnTg6AhIlcer6YEUoHp6UTsDPZFQGTemocBYIq/c9U+xGbolGzce5jUGV60RCjlBQbIe2NalU6ZmoBhVYFG/IX6EYzsiiEkbkecXfCLfGTip02ZrZ6BMOcpa4dsvEJNuD3CZvTm4/pYwHzEn63/MY1H1eULsS81+Mf1Be+h+Xz5a0nLgWTZuX7/WMMzqAe+Bg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YjB3c2tkNmdNYjArMnBoTFpSbk14Z2ZGRGJpeHE1OEtHUHdNMVpqK3lQMENH?=
+ =?utf-8?B?eW8xQnVGaitqd3dPZWt2Kzh1bmRBZ0xoeURwODBaVWkxUkxIU1ZtOW1WeEFa?=
+ =?utf-8?B?SkZjKzZZNG9rTTk4NmVXVEg4QkJzZytwM3Z0Z0FmWkMvVnZsZG1kQ2dPaVJj?=
+ =?utf-8?B?SWJZSVBFQyt5cHcvMTZMZGgrcmt1WmpTUjNjNGZDT3AyYm5qdkVKNlFCUzhI?=
+ =?utf-8?B?S2ZTbzlvcGdYUVROekJTUUtYY1dva2taZTc2UjVrTWNIT0RxdTk2SzNWVUd6?=
+ =?utf-8?B?NUVOSlFCRDVkenVPM1ppdWhzZWNmMGNhQ2FnQW4vOXhERkYrczR2Y243NUpm?=
+ =?utf-8?B?WDJDbEh3MW1uQko0NlFSbGhXNUtzNko2RmlZRUl0b01NMmJGWnpQRHg5RXEx?=
+ =?utf-8?B?aFhHalVXL3d5ajlDTDRMOVduYzQrTGtxRlhpSU5TSm1RUmhjenV3Z1ZxV1JR?=
+ =?utf-8?B?YkQ5SVQzRm11QVZOWDljVUt0NU5ZYWRBaTZTbmROUVhGWjhpYlJyWG9CdUpV?=
+ =?utf-8?B?NUYvOVZwam9HVmlBYjR2QUVhODBWbHZQME85VkNVYVoxendadGkzbXl4YXhS?=
+ =?utf-8?B?bU1odFFZQlRrclhGdUcybEdFOXRZWWtXUVRJaXpyQTViekxEbllmUFo4bWh2?=
+ =?utf-8?B?eHhPamwreXFjenJWREJkWFVQTVc5WVFTMjIwdGd3RktsdGovcG5lc3dTMnQ3?=
+ =?utf-8?B?dlRhQ2IxYWs2YU03cGQxYUxLZEZVRGMzYmFwN2p1Q1BvVUY2QjZCN0NvZE50?=
+ =?utf-8?B?Q0x2a0JISlZ3RTdYYklwMmpuUmdDdjdOSjE4NUtZYjgraGlNTnQvVGZaRXRq?=
+ =?utf-8?B?cWVxWHhPWEMzWTZSWjVZNTM1SmZ4aUxBc3d0bTFhYy9NbkFuQnRMVzFwR3BK?=
+ =?utf-8?B?TExjQmRzbkFjaUdxODRabGg1TS9TUVhRUWd3WWdBSWtvdlBSdmxFblNoejdY?=
+ =?utf-8?B?ZmMwS2J5NENUZXc0eWlTRDc4bEw3b1FQNEFUVXM1T3A1SGJhSGZNQzIwUlZv?=
+ =?utf-8?B?R0x2OUQ3KzFTZkdzMXNCWVdwYmkwQld2b2dDZmJCYTQ0VWowRlhCUFJWTita?=
+ =?utf-8?B?VmgzeC82c0JDV1BNNUlTRlFZcUpzVGhldU5RMFlzMkppelE3azk5QWdSdTU4?=
+ =?utf-8?B?ci8wSlNZVnk5Smt6QnNZWTRVSjFINFB6cFA2YmRuNkR2Zml1VTZOZjk0WG42?=
+ =?utf-8?B?UlpLUjRBZzVQbW1PcHcwRFNtbDRwQWRLMmp6MkVldUxITzFwY3J1NFhWeC96?=
+ =?utf-8?B?N1hRSHVTVnVGYjloeUlQb081Sjc5UFlSQXlFaGx3TUdwcFNDdXpGTmhQVVM1?=
+ =?utf-8?B?bzZ3L0N4UW8wVFd0T0FhQ1FVdEhyeUU4K3FaN2xrRlRMS3NnVCtGZ2ZOcHAz?=
+ =?utf-8?B?YVV1a3N2SWsybVUwWG9JbDlLSTVScmEwdloxd3IrdjhrK3FndGE1RlFoUUlC?=
+ =?utf-8?B?L2FoWFdIaEVlUEJkODRJVEpIdCtUaXp6blJIOGtIY242QkEzVkFaaG53eDVU?=
+ =?utf-8?B?Y21ONWxUS3VYbjNQaWxBcWxtNmJhSjNJSEdIK2tqL1gzR21ZalVVeVZsa09R?=
+ =?utf-8?B?R2h4YWd2VDB2THhzN0wxcS82V0xSaFBhTkNEWm1QbHNEZkhMemFWMVJPSXhr?=
+ =?utf-8?B?YkNuWXAzUm1idkxkU2d4Y24xNVpZajhuV0lJUytJcktDSk1EZkRScXFsM3gz?=
+ =?utf-8?B?U0RVWHorNHM1SGsxZFRQU0F3Q1JiYnBUclE5eVdFZmNMVHltbDRXS2xlc2lY?=
+ =?utf-8?B?UEJ6VnNucGF6VVFlZ0NwdDg0OHVVVzZzT0pIK1p3U2Fzayt1SWU5Z1hEWHFY?=
+ =?utf-8?B?NHVpbVpEbmo5QzhrMEFNMFRLZHNTcERoT1RGSkZDbzZTTVVkaEEzamxTZjRi?=
+ =?utf-8?B?ZjU4TVZnZUpJRlBaWlJleHZUSnpKR0QyblpOVWJDeks1bzdWcnY2MTVQRkNh?=
+ =?utf-8?B?OTNwSE9iN2k5d0ErT1M3SUhhQXVPam9wOW4zekZlelVwdTM2S1FjVHErRWJs?=
+ =?utf-8?B?ckFOWnZMc1d0Wks3aGJRdUNJU1pZbVhXSlQ1dzU1WGV5YlBOcklCcXBrOU9o?=
+ =?utf-8?B?R3VwcGtoT2JOcm54VUJ0NzRzNERtVXJ3b0M5cWlyb0EwMkNCR0ZwSzdiYmhP?=
+ =?utf-8?B?RSszODdzc015Y2UzVmhueGpYZVV2czl4c2tDbXV0NVQ2VExLd2ZuUERlb2lM?=
+ =?utf-8?B?TmNSdE1VdVlvNE5ocnpXa2hSNGowNmJhd1BlOXRVdExEUkRyVy84c3ZPWWda?=
+ =?utf-8?B?S3NZMEF5UytZVW93cXpxSTBqM2JRbEJCam52L1lKSFQ5TXFMRGxZdXl2SFd6?=
+ =?utf-8?B?QUc3eVFCUWVPOHpPS3VhSWxpWE94OWlGQ29zRXpLYWdPQkxZbSs3QT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14029c64-1760-4feb-c47b-08de78773791
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 16:17:36.4945
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: W2CXxR3PxM7Va9phGub7FtZRYI+hY0trYPATG5kQd9nmsiRqBPzSozuYqrJu/IiDAO+qR/xo/n/3uMVZ8ff/PA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9700
 
 
-So as long only kernel drivers are used and matched via devicetree compatib=
-le
-nothing seems to care about the change of bus numbers.
+On Thu, 05 Feb 2026 15:34:52 +0800, Sherry Sun wrote:
+> This patch set adds usdhc1 support to enable M.2 SDIO WiFi on the
+> i.MX8MP EVK. The M.2 connector on this board can operate in both PCIe
+> and SDIO modes, and SDIO-based WLAN modules require proper power control
+> through the same M.2 WLAN enable line (W_DISABLE1 on pin 56).
+> 
+> Patch 1 corrects the IOMUX configuration by enabling the pull-select bit
+> for the M.2 regulator GPIO, ensuring that the weak pull-up is actually
+> applied.
+> Patch 2 enables usdhc1 and associated pinctrl settings needed for SDIO
+> WiFi operation on the M.2 connector.
+> 
+> [...]
 
-Regards,
-Andreas
+Applied, thanks!
+
+[1/2] arm64: dts: imx8mp-evk: Enable pull select bit for PCIe regulator GPIO (M.2 W_DISABLE1)
+      (no commit info)
+[2/2] arm64: dts: imx8mp-evk: Add usdhc1 for SDIO WiFi support
+      (no commit info)
+
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
