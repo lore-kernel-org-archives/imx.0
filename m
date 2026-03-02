@@ -1,184 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013033.outbound.protection.outlook.com [40.107.162.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB5236C584
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 13:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772457677; cv=none; b=XyVMeMBktmfn3m/hudz5YMe2OBwllNKKKEDikHMLF6dJ5/CDA0V5Ve6Q5mLPMUZ8eBxExsenZyjYHF5qQFuFLMBT6guWjDd2XIYNpGUeqKeLPlK34Dn3Yina/WXz3m/RPmz3YPM6BoVCjnoZPU2GkvayfcN2c8AsRyD96JME9P0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772457677; c=relaxed/simple;
-	bh=Pf94sfCIJI9BUBbVIb9M5Np6YIpqH0nC+NCN1J44u/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=adI9KBl+ToKAdXcylfawKP34Tcg2/ZjxWPUg5u95+tLeW+jGG9XC9wm1FQtpDRscZQjM0JHLVaPcYfKKFFq+0tx1FaTNjYWBBdmVxRRoPZWYcx09Jv3Lhnv4DyA2C4O6g0HD9sxuzQsp97d8ijmpq5rDSO/phJHke7gYL/LYl04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cxNUpnIj; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6110377021
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 13:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772458536; cv=fail; b=kBGkQNvMYdFyTr1OQruJli+uZbZSRsX3IdFWfpYOFw7e9iun8BHF/0FA4ZArhD7XGlnjoyHvGxNwD1PWB3fUU8eLHPlJliAVnP8qCopgZNMaHA2SNbEk6qLISYtuCm4YwmhpplkVgp55H/D/bUZP26CBnB2dxhku3v4PIfkMlo4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772458536; c=relaxed/simple;
+	bh=DTESMKJJzIVjwflmyXYdb4C3YiioJfeW9dal7UUgPWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kvpZ/93M0Yto7K3prh4K++n0FKxGYqO0o4DuMkWvTGV8G4sNpyK4kChBUzMGmn3bCs7JfI/n06c+TjPV7zfn/fNwbfJPZ5FUObmQdJrsiKqzXs3O82CxqsxeSzz3y+yA7QFSqyLQlSiDV1cIb4M9rTVGVkrMKrcxzGtJoDrD67g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dd6+sUPE; arc=fail smtp.client-ip=40.107.162.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cxNUpnIj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772457675; x=1803993675;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Pf94sfCIJI9BUBbVIb9M5Np6YIpqH0nC+NCN1J44u/A=;
-  b=cxNUpnIjxYT2E6XlEWNc59BXSVxnrhltC6UXF60EVnPqCKrtWkvOFaS4
-   ZVe++AFhoI0FEBMunmqFu+oOy1SsBt8MUCgi3N5ZqWeCLSpH7S8VHzNy+
-   qoJpuNLAzQ+cHlrrdSvIz5PdrNJfLtEVQQ2gJHoPX9nbtp3VQdO35K8Gf
-   Kmsps4Jl4FoOykZPzpE78ieq4xYVj6HW9D2U7zdZZhDi7Wv1Ji3qZeAid
-   q/m7bgwdoE2Xj5WbEHVasaPInPXW8F98oHELTTNjemTSkkrQudNNSaYuk
-   Ogqz3QJgPxrTPXuX5UlfitERzIUNm5T8bn/24nrMYCoCAJOX1PgczZ5ou
-   g==;
-X-CSE-ConnectionGUID: pwbTyrmxT6WQygLf0bvAtA==
-X-CSE-MsgGUID: 14jp+tCVQqiifr822okgPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73649461"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="73649461"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 05:21:15 -0800
-X-CSE-ConnectionGUID: 6UVxLDjJSHqLDQrsr0eO/w==
-X-CSE-MsgGUID: 3tbVJbR3QuWoe1udCHpF8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="221805022"
-Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.89])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 05:21:12 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 2CE241212D6;
-	Mon, 02 Mar 2026 15:21:39 +0200 (EET)
-Date: Mon, 2 Mar 2026 15:21:39 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Maxime Ripard <mripard@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/3] media: v4l: async: add helper API
- media_async_register_subdev()
-Message-ID: <aaWO49Dga6gHgOXS@kekkonen.localdomain>
-References: <20260226-v4l2_init_register-v2-0-902d7140f9fa@nxp.com>
- <20260226-v4l2_init_register-v2-1-902d7140f9fa@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dd6+sUPE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b3c65r2ZeNEmyJ5rKCD8IHF/BkwRY2nteIk5uuTN11gEiMEROwnvNEhmbjI+Yr+8Jvc1jxoVLuDjxbWFSO6d3UpOAnx2UHavNg1XD6mnYSWP1yKtES62c67W4T42Ur51hijyvEJP11yi8Omgwbq4h/Y0dR1euYCWDJngj/PeqFD/41T5a89r9k59pPDu2JhEq29RK6KpcdvFV1IL7BkkkxGMRiYRlKZYRdGsu+pp+d2Ko4N/zwJwjOLkqO8jayScXI8wHmBWJffwp/FjX9zQtu/3qT/z/b7984XE5R2jCiDmhxLfEFiEHVPlxIeIe8qOPyr6a2/1FvHHD5m4+7xaZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qBCrNLp+ZJ46EVLn0EtiM2/MYFlqm/MnvkBxoA8lE7U=;
+ b=vUOx7tNFJPmbb8VaWITinqn6XlQbPwprV+sZdpOGjGMsidFtxqUgQQ9y9KzPAMFmg+FODtiGNpwSYJm5Pcch5DLtgrPjgrtaZ4W18HvotSPgtPi2JoxJhM1m986mxLc+4lUHX0erJ2+fwCFUwoa0jdQY0LvMcBGTRmu/b/lshIpOJgLPOzWvtUGBoHQzbCg58dSKnsCf/lnMVmY3wzJEimDDohHoh6k+S3fsRK+wIF24yL9z2mLzzN6E6mHs561wHXZzzerD/uCyUEsr8HFsAc9cm1jIJOPZkQPAul4QuGUMVy0oZ3E/6qtKHiCDbGPM6wVrLQCwtw3IFkj5BvHaKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qBCrNLp+ZJ46EVLn0EtiM2/MYFlqm/MnvkBxoA8lE7U=;
+ b=Dd6+sUPESkRGE5yj7hJ+BW0W1Q/nzxpouD37r/5PtFsCnsxV+KvgY9WfwIB47rlrQ6b6zZbyPt+s+lrVSqJbhC9g7VaYU2iNjoe60WhV/5vJBN5MdRlK59LgP3GFvmbxyWGwRaQK4TZ2pNyPFnGKwkYw2JWlixhoHG27rjDtxsUz4C7YSSnFTVaWc+m1mjQhEF7qXwQoufq9xPrOPYDzPXeV2QtbCi1HQCSusglk4YeVjMJZBEXs8jT92udTn1e4oCR1WDkd4HO0UXpKrqF1FqER2psmufWIu44jiJiFWTLmjo6hsiym4ZMxGhhcebR0f+PMiZUX7lps1WavTHeCYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
+ by VI0PR04MB10758.eurprd04.prod.outlook.com (2603:10a6:800:25c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 13:35:31 +0000
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 13:35:31 +0000
+From: Daniel Baluta <daniel.baluta@nxp.com>
+To: Frank.Li@nxp.com
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	maudspierings@gocontroll.com,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: [PATCH v2 0/2] imx8mp-frdm: Enhance code readability
+Date: Mon,  2 Mar 2026 15:38:03 +0200
+Message-ID: <20260302133806.76191-1-daniel.baluta@nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P191CA0040.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::9) To AS8PR04MB8247.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f2::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226-v4l2_init_register-v2-1-902d7140f9fa@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|VI0PR04MB10758:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31be0f7d-3c29-4c08-825b-08de786092be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	qk7xhNT+aCAyYG1pCCPORIfeq2U0qkkgDWMReDqJbI+kyur4X+jzYLlRlPgBLTTpd+tLJYc8enapTp7RE5fFvwxYquEIqwyx9uJ6HryuOwtX5QI9jH72kSWF6P3CpT7tAN2rCs5ijpDSbPEgUDgcl2R52fy/EATcpmlEg2XLSXNwnEDNONhcnuRgOWjCEYMzK7u15tR5BqSOMsHvIl1Mwojfhxa5hxSxVHm4/tK7nloUbArMJvsbbPfKllCrVHKaH1B1CwfsLeGSGG25DF95slvE3yO7x6Da68sXXrrkGVEnNAjKhsY35PFHF6l73KvQ7arrPINQfw7LHgmevcQ12Di+YTQ2FlVueNy8+b/U0IiIPicTNRt2nEpyf/mhtb4NXRxiiBMWKcZ60QkJ3kER+ib4QQr3niMY+FfGcnsJNPGFG5CFy1/3hrKcmS0CkRnJVEr1LWTbiRu4aDAalXTWQRdOFj4O9kxLM7X63QvRqibeHLn+KmjoBVFPX6JJaqZbWxYDm74AIs+5TE+9Hev8L4EcGISz0AA+pspcxJQbgT3/rfFDxPYhobSga2Kfziun+46W9ScxL/qtgYMGvkQgRdaQCDzFowPmYSBsubrYB5b22CUMWxAYh1Zoyjntj6BuS0tMuqo1Yp8/JDhotXtg2q0yIoO9GMYs5m7R4uKsfqFcMroAylC0PDgWcQZW5PT5oVy4M5RmR4MqKMEq2tik/pQF/6Jr+Vbi2VMYHI3YVR92eTZGQL8samcGTNWSucJKk2K77N1NmZc0L076zV3H+4WcApC7Ny86nWOZCYGIIFM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7Lqy3FDmEsNllb2a78st0ltSLF5QLN1nsPSdiYeKYVjdRlklPbM7Xo6ZUUAf?=
+ =?us-ascii?Q?WkzZp4orO1JwH4SjjiHXhEM4+WlA8r2FA20KkFV+gfHwrDRX2HA0TB/zAw59?=
+ =?us-ascii?Q?xlbwSdX4lSOm1c3bPxVZIBKctmVs22rgphmYhLP8bD07u/U7s0sKZei0FTu7?=
+ =?us-ascii?Q?2OyM2lwHI/0qZ/zGe/MajfrA3EY5Rb4gNWAMB84W+kLcSZRSgjbLKL7+Fo8D?=
+ =?us-ascii?Q?36VfAfa62UyyaVFQhbCYcoPtCMg/w9+9R7AB+cILb8gFUTS6vmCBXSdPXZvb?=
+ =?us-ascii?Q?zTVcnkWby7PUxlRTW41gnC2SEOxTZ5Y/Mp9Fuc5T/46rvoLaSNP+4kDSn7eo?=
+ =?us-ascii?Q?WdSbvPwE4VP4efeUjoMbiQ4in5znUvxQSP9kHe3cJEJZ+yB9D5AcdZ6Ohqn1?=
+ =?us-ascii?Q?rau3JPKpGcxPnocWz37v4FKYJFL8AMP3z3NamfmKn9rWwGe68xfSz1ZQabgL?=
+ =?us-ascii?Q?TmJSrygQAsyqJNb4OFSdBklItNS00bzKkF7Q2GeFzNZwOm0Nu8NKdPwwSIjX?=
+ =?us-ascii?Q?UT6D2oCsGSDtiQbkBAnRApPX9zO4T2xBig9ay65wQFEADvcC5ATYBE8m9oQ8?=
+ =?us-ascii?Q?xCZyVHI0W50/xIIfv3FOYp4LGiC2DVTP18toihLP2VCI01JhTlrIIYMaRg7/?=
+ =?us-ascii?Q?tS54dACfS5+0o7ayXNIFriDc5q5CG5oq8TqBELxD+tkTq8NORd7WTWHIptSt?=
+ =?us-ascii?Q?W4IJODun51uSsJj7COu+aZ68czQowauOtY/N9cM8isbpRHVD80k6Tb+DIo/G?=
+ =?us-ascii?Q?NdXrgOYU3pUsMYfQl4FPbMJyBHnNRHDTfqcaYcHXxZPIwjzL1t6f56SzQOLX?=
+ =?us-ascii?Q?SY9iNISMYAK/JnaDT/p8++vghNtzAV00g6szewj9q6Eewb3g9F0xys/CzjNP?=
+ =?us-ascii?Q?7+92PRPQhUh3GEd1Uv6f/m5QzBv+adWJyGTV0X9ElXPLwUpp4Drh2x79+xzg?=
+ =?us-ascii?Q?GoPOEnJbn0tp6XQefJ+8t++5Kma6Tki6cP6mS+ZiAwR4OpkWHnKui0SW58MZ?=
+ =?us-ascii?Q?17sI9nazfzQj1wzYW8p7DYgqKJo8UF/wVJCw4ps4ZvbViMj5GqYIrbIhCPgl?=
+ =?us-ascii?Q?mAkTnGGotPFvuq1EWYfa9lp46Aga1MvWr1CZE4q3T8qQHJScz6fa+8u2EjD4?=
+ =?us-ascii?Q?rbTRK3CcA04oq/CYEs9Rb3xY4R7PhAIF1tpU4FIJdjVOcyD05zJVc0au6jAK?=
+ =?us-ascii?Q?0DMBExCunC/PnLfAN1rPzv6xV1g95KyujjzgitLRa5wi0WcEJFA/Hef1Tm6p?=
+ =?us-ascii?Q?GZ9Q/18tA+OQjoEkkr8qLt8o2bcReZ8dDxMoOC2MzIVhTFt0r4HSe+w0lx1N?=
+ =?us-ascii?Q?ayuxpGGeGRl2YdEmcQNHXbBrX07g0x8DuEnKhJz61uIsl9tJPJA306hNc73X?=
+ =?us-ascii?Q?kZKfyfG8yqbysmiBF2kJK8/wQdN4DYz2GCkwFrnsHNbz/rmeeW6MKHe7P6d5?=
+ =?us-ascii?Q?ccNjZWtxMairRDxq4njiXICC493IpS1n5bVGqkATdpzFjOHZNZdfU1TSbpKI?=
+ =?us-ascii?Q?zGtTn5v30zW4O5o7RysGTCBkVxAWhABBEL9X4YChqM64npCZQ5P/50NqdFLz?=
+ =?us-ascii?Q?rOyiRqQcuqFQi+EbyB13BzbLImIxDSsQLFRpdbnNHEcJR1UX3+0La1rsrmIF?=
+ =?us-ascii?Q?sxNaYDkPTVb84X4+eC0ofOL5DWmd264Nb+YDCkYrFqlmeCLHVQbDdAM2ziYI?=
+ =?us-ascii?Q?ku9R3MdDWDeethmBPZoH0fzaH2IQNvjRSguAMKHdeoy+vSfbMzGaEM+kJp/H?=
+ =?us-ascii?Q?Gk3ywHX6lw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31be0f7d-3c29-4c08-825b-08de786092be
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 13:35:31.0381
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b/mutK2lBUajMUcO9VAW5x0KvnCsucwak29XqyO0Ewk9ycbhAnIEqgP2JONq+NtCjggmV81Me/bZGXi9EH+3nQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10758
 
-Hi Frank,
+Enhance the readability of IOMUXC_SW_PAD_CTL_PAD configuration by using
+symbolic macros instead of magic values.
 
-Thanks for the set.
+First patch makes MX8MP_I2C_DEFAULT independent of DS so it can be
+re-used in multiple places.
 
-On Thu, Feb 26, 2026 at 05:55:26PM -0500, Frank Li wrote:
-> Add the helper API media_async_register_subdev(), which
-> combines media_entity_pads_init(), v4l2_subdev_init_finalize(), and
-> v4l2_async_register_subdev() into a single call.
-> 
-> Reduce code duplication and simplify error handling in drivers.
+Second patch makes uses on the macros introduce with:
+31ff1060175c458 ("arm64: dts: imx8mp: Add pinctrl config definitions")
+in order to make code easier to read and understand.
 
-I appreciate your efforts to try to simplify registering a sensor
-sub-device, but I'm not sure this gets far enough to make a notable
-difference: the new function calls two functions typically needed and
-requires the driver to implement a new one for registering a sub-device.
+Changes since v1:
+   * v1: https://lore.kernel.org/imx/20260227130242.1702329-1-daniel.baluta@nxp.com/
+   * remove RFC tag as seems v1 got positive feedback
+   * add R-b tag from Maud for patch 1/2
+   * update commit message for patch 2/2 as suggested by Frank
+   * Use existing macro instead of introducing MX8MP_NAND_DATA_DEFAULT
+     as suggested by Maud and Frank
 
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/media/v4l2-core/v4l2-async.c | 33 +++++++++++++++++++++++++++++++++
->  include/media/v4l2-async.h           | 22 ++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
-> 
-> diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
-> index 1c08bba9ecb91f46b7479da613d6c1688d4b0b5c..e07173f566fbd8fa332b5e58be288e806b4c0482 100644
-> --- a/drivers/media/v4l2-core/v4l2-async.c
-> +++ b/drivers/media/v4l2-core/v4l2-async.c
-> @@ -19,6 +19,7 @@
->  #include <linux/slab.h>
->  #include <linux/types.h>
->  
-> +#include <media/media-entity.h>
->  #include <media/v4l2-async.h>
->  #include <media/v4l2-device.h>
->  #include <media/v4l2-fwnode.h>
-> @@ -881,6 +882,38 @@ int __v4l2_async_register_subdev(struct v4l2_subdev *sd, struct module *module)
->  }
->  EXPORT_SYMBOL(__v4l2_async_register_subdev);
->  
-> +int __media_pad_init_and_register_subdev(struct v4l2_subdev *sd, u16 num_pads,
-> +	struct media_pad *pads,
-> +	int (*register_subdev)(struct v4l2_subdev *sd, struct module *module),
-> +	struct module *module)
-> +{
-> +	int ret;
-> +
-> +	if (!register_subdev)
-> +		return -EINVAL;
-> +
-> +	ret = media_entity_pads_init(&sd->entity, num_pads, pads);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = v4l2_subdev_init_finalize(sd);
-> +	if (ret)
-> +		goto err_entity_cleanup;
-> +
-> +	ret = register_subdev(sd, module);
-> +	if (ret)
-> +		goto err_subdev_cleanup;
-> +
-> +	return 0;
-> +
-> +err_subdev_cleanup:
-> +	v4l2_subdev_cleanup(sd);
-> +err_entity_cleanup:
-> +	media_entity_cleanup(&sd->entity);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(__media_pad_init_and_register_subdev);
-> +
->  void v4l2_async_unregister_subdev(struct v4l2_subdev *sd)
->  {
->  	struct v4l2_async_connection *asc, *asc_tmp;
-> diff --git a/include/media/v4l2-async.h b/include/media/v4l2-async.h
-> index f26c323e9c963065fd7c19d6d9835df1194bc069..220a302a626732e15452f3efb19b03bdc51e64d5 100644
-> --- a/include/media/v4l2-async.h
-> +++ b/include/media/v4l2-async.h
-> @@ -336,6 +336,28 @@ int __v4l2_async_register_subdev(struct v4l2_subdev *sd, struct module *module);
->  int __must_check
->  v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd);
->  
-> +struct media_pad;
-> +
-> +int __must_check
-> +__media_pad_init_and_register_subdev(struct v4l2_subdev *sd, u16 num_pads,
-> +	struct media_pad *pads,
-> +	int (*register_subdev)(struct v4l2_subdev *sd, struct module *module),
-> +	struct module *module);
-> +
-> +/**
-> + * media_async_register_subdev - Initialize the entity pads and
-> + *				 registers a sub-device to the
-> + *				 asynchronous subdevice framework
-> + * @sd: pointer to &struct v4l2_subdev
-> + * @num_pads: total number of sink and source pads
-> + * @pads: Array of @num_pads pads.
-> + *
-> + * Returns an error on failure, 0 on success.
-> + */
-> +#define media_async_register_subdev(sd, num_pads, pads)			\
-> +	__media_pad_init_and_register_subdev(sd, num_pads, pads,	\
-> +					     __v4l2_async_register_subdev, \
-> +					     THIS_MODULE)
->  /**
->   * v4l2_async_unregister_subdev - unregisters a sub-device to the asynchronous
->   *	subdevice framework
-> 
+Daniel Baluta (2):
+  arm64: dts: imx8mp: Make MX8MP_I2C_DEFAULT independent on drive
+    strength
+  arm64: dts: imx8mp-frdm: Use symbolic macros for IOMUXC_SW_PAD_CTL_PAD
+
+ arch/arm64/boot/dts/freescale/imx8mp-frdm.dts | 132 +++++++++++-------
+ .../arm64/boot/dts/freescale/imx8mp-pinfunc.h |   2 +-
+ .../imx8mp-tx8p-ml81-moduline-display-106.dts |  16 +--
+ .../boot/dts/freescale/imx8mp-tx8p-ml81.dtsi  |   8 +-
+ 4 files changed, 97 insertions(+), 61 deletions(-)
 
 -- 
-Kind regards,
+2.45.2
 
-Sakari Ailus
