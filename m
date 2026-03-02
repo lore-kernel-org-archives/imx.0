@@ -1,115 +1,189 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013024.outbound.protection.outlook.com [40.107.162.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1F536C9C6;
-	Mon,  2 Mar 2026 12:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772454296; cv=none; b=sFG+ZKX1azKLtlt+wPLDPXjbsqOjKHNzi37yveuRd8y3gHNzq3T3ijmr8bRUbWU1OXUKxtBca/krx8EPz3UVBiyv+feEjFNc7pFspc3fiVbVWaoVKJqCkHVQvi87lvccuo+uPWuh53a3bwan+/8RZHYxJHAiBjXCRGWrkiOqJa0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772454296; c=relaxed/simple;
-	bh=x7t/iAkWcnd9QyYdAw+6vUuJizpL9ieaOGsdRW/mZTI=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nARK7p/dt1QpDCYCUv5+4jhUqv33aIzcFdnKrAOdEKyFTVRHfSAX4L0ZC25tTaJNihoW1CLpnFY4YsBFWdHtMDp5To+/jwanNfvKP77y1CUOr7LR+lDiT/QqszsXZ9aQ1ucknHs+IRYX7pWdzzP3qDyo/VudTtP8+QgiQzZ0oEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fPdQs3pfrzJ46p4;
-	Mon,  2 Mar 2026 20:24:21 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id E1AB340584;
-	Mon,  2 Mar 2026 20:24:52 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Mar
- 2026 12:24:50 +0000
-Date: Mon, 2 Mar 2026 12:24:49 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Herve Codina <herve.codina@bootlin.com>
-CC: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
- Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha Hauer"
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, "Michael Turquette"
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, "Andi Shyti"
-	<andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, "Arnd Bergmann" <arnd@arndb.de>, Saravana
- Kannan <saravanak@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, Charles
- Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
-	<rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
- Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
- Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
- Jiang" <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, "Shawn Guo" <shawnguo@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-clk@vger.kernel.org>,
-	<linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-sound@vger.kernel.org>,
-	<patches@opensource.cirrus.com>, <linux-gpio@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Allan Nielsen
-	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
-	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 11/28] cxl/test: Use fw_devlink_set_device()
-Message-ID: <20260302122449.00006c77@huawei.com>
-In-Reply-To: <20260227135428.783983-12-herve.codina@bootlin.com>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
-	<20260227135428.783983-12-herve.codina@bootlin.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7205030C60D
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 12:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772455436; cv=fail; b=XmC49ozFlWJmarrSGb2M6bIESze1J4DYlb0jE34WKyfRhcnNCxBqAxTKTPKgULYW/S5qBfk8tHP18/GL/0I55oYcdBAcHOpehe/CcHF8ltgOWT9U3EwA6uRnl8LUexosMSfrWHls6UFhXGYH2v0B9gfPHxjH8y3zb68xWFWh3S0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772455436; c=relaxed/simple;
+	bh=bfkSkZ6HdeuPWWVNsLi6pwi1XFAULxz1+PqUvKuN+b4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=p2htuwXTI7I2DH0Ba9tjLdt1OE+l8f662/OuhhdDeYTU/QCk+NngDIp40qpuvCsoh1Ro6xO/Udq5pQVOSpCD7e5qLPuRcIKISRddtz70N5XMR77GqXDSlkLNfXN1dvtYaC0iMhctvBGj0yhsP/pHv5pMvP1v1nCtqSvjMrMa/RU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QZ6F05O0; arc=fail smtp.client-ip=40.107.162.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QZ6F05O0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D6S98F/Uxs0nuckIdlHhiKPqS6ZR0SRrvtg2t+48vgmahfma205hnhKUIUE/I5yfl9XbOJGWf9yr8MVoHPfOudHhkRdD0dFg9wzGMaB07seQZzaIdCAxLVuOdsY263fCIOD74BYHrYTm1eNglpkUeNTqhAjbHEEy9r5qu3zJlBd5buclUl7o/dU4zQVw8QYkGcGm9v80z26twBf8DcjV4mMfsgf6hnS8Dc3vpB5lCWnwVopeg0w67yHSDmDGGNtc7k01cLMNT2wJqZWM8NQE7RWaLHJyeiD9Ff+Kk8qlxMGHJr30gNBHOTaG6no6bHhoTetFrIR/E8en/qx0avDSaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bfkSkZ6HdeuPWWVNsLi6pwi1XFAULxz1+PqUvKuN+b4=;
+ b=NpuEBuF2Aw2GZ3dza8rz/GTligHZxl3Vdx6E4Mi4e9yTqJGdJkm+aBmJF4ibfzYan4mcGdfDKpMoCouHjmiwcivXYvlxC+mMirp7B9hNUWNC3sr7XDIUQKm+thL6iwh0NkoHuvkZ4mQAVKWAuvUgp7e7zQF/6i7tjes6N26tPqnPrOZbLVFRnWr7yUmUi/FZdhbr6LKBcYX1DiwtMYcu+/YsxqNa0jALzWmVGwERCVnxrnTjh7OOc5YKNf1jgVDUcItM9B4xwxrBgv4I5i7SeJvx1mFyU8m6w+az0pnK36wkxKJGjA5vACPIeOs+4T9XOVoggxXKE7prpGNUkv6qlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bfkSkZ6HdeuPWWVNsLi6pwi1XFAULxz1+PqUvKuN+b4=;
+ b=QZ6F05O0BX1LQ2YCa91oBGnSuv0aeGro/n4BynpbAHLIzTC/4FPzPg5SxVI9KqDHKR/39pnWMMoOB7yPahsGCaDJIF9RJLSWiQG43bnh9x0jWmJbJ4MVGU3aEW5ZWOCvf0u8sDE4Sj7o5B1jp+0bOkp5COpqlm6jECj8bzyY3MDCC8JsJCEUh6HIEkDj5Of28KiWfVHrvUd3L77HAQpK0/p4lwANIGmkUYKitFRafnc9ma8iIDfJW76D+Bu+sQ5nPMFZdWz9xvJvQ0pxs+vvfQEYqQu0Qtuwls6zclvcBAy8oxx8hjB8CXNol2g57v7VB8nwkrq5xwTuD1Ybh/uw4g==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI0PR04MB10297.eurprd04.prod.outlook.com (2603:10a6:800:236::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 12:43:49 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 12:43:49 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+CC: Aziz Sellami <aziz.sellami@nxp.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 1/3] net: enetc: set the external PHY address
+ in IERB for port MDIO usage
+Thread-Topic: [PATCH v3 net-next 1/3] net: enetc: set the external PHY address
+ in IERB for port MDIO usage
+Thread-Index:
+ AQHcWUIZubUzIGCEW0O6wKhHNvVaErWXKxYAgADhsyCAA4l3AIAAAaTAgAAdkICAABhqQA==
+Date: Mon, 2 Mar 2026 12:43:49 +0000
+Message-ID:
+ <PAXPR04MB8510B2E527F0936558920F7C887EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20251119102557.1041881-1-wei.fang@nxp.com>
+ <5972322.DvuYhMxLoT@steina-w>
+ <PAXPR04MB85104CDE52FE824736E44ACB887EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <2256661.irdbgypaU6@steina-w>
+In-Reply-To: <2256661.irdbgypaU6@steina-w>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI0PR04MB10297:EE_
+x-ms-office365-filtering-correlation-id: 4c38e545-71ea-441a-1dd8-08de78595a23
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|1800799024|19092799006|38070700021;
+x-microsoft-antispam-message-info:
+ aREnsWiYK+IUDw/bblJTuw+ziMNGb9MnjBGVCDoUoHhQIV1dxeaZECMzvzXpyldlM9hKhP5jv2rydz2MbXFJevKQm4PMNMNFBFHpWhbR3+wA/yxNSKT7xcnVGaXJI0B526iprG/SbvSX2wJGA8LrakLcXlh7DFIbHwfofa6tq2dZ5RvgLBIVbZwsJ3n2FnS1yzOIRPfp8RSyfnWUE3S7yhm05SV66e4LN4b2MyI8uVsMqQtNBaxDZpPbpuNwbLfoKM7N7krfTltAxEX+D2+VNJ6CgKaS10nE5JV4m/kRv3/3JCah/jsGkE+KNUuIcTYuxVXuJ2cuGxmK6KvNmQuDUYK1DaR2mTZOX8kWDiFK7hWgChftvIw7WSmb2+008cXZcSVl5zY3w+hyg1o1uT7ALwLIJqSEtOfeHsptFrlrxUVmMxUGgoWrkV+VESFFgHB3fRBzahfHKy5vbk6RDkr9GOHACAZbp8pEycIsUzqfj3EvXmqMWnNgPhmYa25WKkVkSfOWDvSZc8mlwPi8IP8X98/e2g4TjJmGnQCFcEV6ffyAQS53df9FC8/Ta8eVMLcZHM3ue7GUh+M9QvEU0cTdDJpBhGgw1IRClB1ZPpCSGyLJ9G7DGobyu/EF9lMoYI2BZXaMNfTB3jnxY+wwjJ7h4LrXlaHK0pVrxQ2Rsa0rwh5tnZ35FHCymiPchP2cujkXNoxgAp/A0KuqRd9sMOMuRCjeDqVtUQ/RMGmYiP+3hRcWz4KMMdk+Ik4rJuNSYTp9CvuhXP1xSqEEaV+g8p53Pyd42SFYNLxnSHI5Bp/K+ao=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?fHAVojkYL0Io3Ks3Tczt37UEPtmgHXwcC+PRPQNPqZCPAMMHrdt9QWjdwXnu?=
+ =?us-ascii?Q?NzbIBIdbk9TH0wgppB/yg7mSwDqsGTfr/jNgzm7VYDsHm8VPFpfrDsKZrfmt?=
+ =?us-ascii?Q?eWIWQejd7IB4iTjeB7IIvp+R/wZchIA/KkAnU8VFT2dAtC+OTMSTC6zSua8O?=
+ =?us-ascii?Q?ga4rBSUu9qlIoOF4ZSaTZTiwA4gcXybTZ+VhnhAN7UG/jIeEFNDJwZxdDVaQ?=
+ =?us-ascii?Q?qJZEPsGkElibC16L1kiziv4Fy/dXRMbAgfASHI2rIbD5kDzrinKfyloUaaiQ?=
+ =?us-ascii?Q?6UXOgZshjXwnv368idUelriSzs+TlhT3y5LSxw7F1tiOpWTw0Q5SjwyB/cuK?=
+ =?us-ascii?Q?yEW3aotlLW2y+4TgGVOmfSmZ7IQz3XmOdgsJet5r01btaJkElBszE7j6qU7W?=
+ =?us-ascii?Q?WcVo0gK9Ns9HvHw2g4uTqlzxacr7FHm5ioAxbP9UmI4bY2XWGk8/FzTPm7qe?=
+ =?us-ascii?Q?mR1m/8TeOSf1QZXqffSeyJrkBAc1rzPWeZZlPQMUIa7zng2SJMJLH14S93qz?=
+ =?us-ascii?Q?BsceM3Ou7EK48S7O3VZ+g3umgPWmwT1Gk02Hru04dhOCDrGrvWwm87AhDh5y?=
+ =?us-ascii?Q?sd00QyIEuifltDERIYkimGFvgIBxs05VFjlXsB/zU6CHW+iFj4lgPcmh7Jp6?=
+ =?us-ascii?Q?vlk4kaOzN4vHYDitsRaIRE79025w7Td+Qlv3xWv7wJaapHKQ9xUJPck/Iplq?=
+ =?us-ascii?Q?AdPFcsRqCM7FKw+ShpkfHX3Mq8KeRE9poBhiKnKSJXqz8MIzjpeAOTVlbI7p?=
+ =?us-ascii?Q?0lSfnzm2/7o38K5H2QB4pJtrjHuQlFRU4iwRL5dAzZe+rk00Q/dN0w8+wKIc?=
+ =?us-ascii?Q?N9VjwVx3Eu2TUZoEaCzXFQfy3hknR/ond79d4Je3tSWLk+hoqH7xeoNVerzL?=
+ =?us-ascii?Q?Fcwq6obypXR/1mzsP43b6XXX0LLw/O3kh/Xv7a3ypz6CmM+tHW/nRYt4Bq+j?=
+ =?us-ascii?Q?2WC+52eQ5A3dOcV6EUT44q1c7vw26Kg1lUkmJlPWOXc6Tsx5vsp3NYchCXne?=
+ =?us-ascii?Q?88ahSanVQXvRkKCkap3bjXShDLwBiQpU4pkvFoIGXeJLnaR23JzNT7ITpaa2?=
+ =?us-ascii?Q?H9TKRjGTsc4bZ3TPuvetV677IoElX9cP+s1qtiulPGLEJxhCMrMfXaV5SeC4?=
+ =?us-ascii?Q?ytYjP76+LgSBKm7lOfA+XWUv9L/xRdBzaEO1TGbg6mMOxvh2mR+nDsv6jXbk?=
+ =?us-ascii?Q?uJu1BP1MVRfGIS1iWexiaOEy/Me7axmOB/dIrJPJgGcZKmjJHF9yieYrv5TZ?=
+ =?us-ascii?Q?FOtD761pba0BfaI0Du21qmxh52TMj/AUK8KXbSybXmfSWg/kNLr3W3c7+42U?=
+ =?us-ascii?Q?FMw8MYDfJ7PnmRrzkjDtMBEd++gwA9lJR2RxlPv7Vuhl29Bk6wru3+7w/Jsa?=
+ =?us-ascii?Q?8Y5ql97Rm05ncS5w1Ah7AHuDl50iVNptjI+6/I75P/vym+0u+PcYKIV/WPy5?=
+ =?us-ascii?Q?z88pTTOOPQLHsRGoV7aGLlGq6uzK6k1IEzAAoODWPJczuITgwZqtnMZjW5hP?=
+ =?us-ascii?Q?7MPEmIGVnS8iMO92KPgscDoQJ5eYIYVwyPL5BZ4N2jl/UdkCZtdLlF4R09Eo?=
+ =?us-ascii?Q?79j5c33j8XzNBnhErFWAx58XbMWuK0Xvcg7GvAoq1OFxm657peN1nKblky24?=
+ =?us-ascii?Q?JPozTDAUzrt29H6Iu/p9FTjxsHtIGceg+e1JmHVvaKrJAnnIFs9dgHvB0FGF?=
+ =?us-ascii?Q?wJmdqkE/9DW1corjyRCNhqkId09l+Axwa2nWyXtNh3zttqgu?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c38e545-71ea-441a-1dd8-08de78595a23
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2026 12:43:49.2720
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0Xb5SZgN4lvh+RVSuMACLosm0ShP7BbIWIYjIt6niAlxGjJeCzKJmczGHFnr/AjMcBAecJB/mdqYsi7LpxUsvQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10297
 
-On Fri, 27 Feb 2026 14:54:08 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
-
-> The code set directly fwnode.dev field.
+> > > > AFAIU, the PHY address 0 is a special address, below is the descrip=
+tion of
+> > > > PHYAD from IEEE 802.3 Clause 22.
+> > > >
+> > > > A PHY that is connected to the station management entity via the
+> > > > mechanical interface defined in 22.6 shall always respond to transa=
+ctions
+> > > > addressed to PHY Address zero <00000>. A station management entity
+> > > > that is attached to multiple PHYs must have prior knowledge of the
+> > > > appropriate PHY Address for each PHY.
+> > > >
+> > > > Therefore, for most PHYs, PHY address 0 is typically used as the br=
+oadcast
+> > > > address or default response address. In designs that control multip=
+le PHYs
+> > > > via EMDIO, it is recommended to avoid setting a specific PHY to add=
+ress 0
+> > > > to prevent bus conflicts.
+> > >
+> > > I know about this special meaning, but there are hardware design whic=
+h do
+> not
+> > > take this into account.
+> >
+> > This might cause potential issues, as all PHYs attached to the same MDI=
+O bus
+> will
+> > respond to the accesses to PHY address 0.
 >=20
-> Use the dedicated fw_devlink_set_device() helper to perform this
-> operation.
+> Is that really the case? So far we didn't have any problems with
+> PHYAD 0 and 3 on the same bus. I did a bit of research but couldn't find =
+any
+> information backing that PHYAD 0 is actually a broadcast address. All I c=
+ould
+> find is the case with just a single PHY on a MDIO bus, defaulting to 0.
 >=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-=46rom practical point of view, what path do you expect this to take?
-Is there urgency to make the change, or does it make more sense to
-add the helper this cycle and cleanup up the various places it can be
-used next?
+There is no problem if there is only a single PHY on the bus. But if there =
+are
+multiple PHYs, as address 0 is the default response address, there PHYs wil=
+l
+respond to transactions addressed to PHY address 0.
 
-> ---
->  tools/testing/cxl/test/cxl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The reason you didn't see the problem is because the two PHYs on your
+boards are the same model, so their configurations are identical. However,
+if you disable the PHY with address 0 via the MDIO bus, both PHYs might
+be disabled.
+
+> > Is this problem unfixable?
 >=20
-> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-> index 3d9107b2661c..7f232a869389 100644
-> --- a/tools/testing/cxl/test/cxl.c
-> +++ b/tools/testing/cxl/test/cxl.c
-> @@ -1137,7 +1137,7 @@ static void mock_companion(struct acpi_device *adev=
-, struct device *dev)
->  	device_initialize(&adev->dev);
->  	fwnode_init(&adev->fwnode, NULL);
->  	device_set_node(dev, &adev->fwnode);
-> -	adev->fwnode.dev =3D dev;
-> +	fw_devlink_set_device(&adev->fwnode, dev);
->  }
-> =20
->  #ifndef SZ_64G
+> Right now our problem is that the software doesn't work any more.
+>=20
+
+I'm sorry, but I still recommend against using address 0 when there are
+multiple PHYs on the MDIO bus.
 
