@@ -1,124 +1,138 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F3E41B349
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 15:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E44411636
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 15:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465768; cv=none; b=VJP+cdax3RIHnegL2Etb8DQPBTeNBFbxbnrRCsSwwOz8gQBLAo1K9Xwm5OLwUYCjfmK+74aPOvjzU09k96TWTpS3KUG+mQJoVXLZCb3arpcnPHmwU6+kz7gT9KUNp7/Mv3G76VFwOquQPq+tx1DmYYQ5RBk8ygJ3ugfPp1wQtik=
+	t=1772466193; cv=none; b=lKcHXWrbTjHriamQRyXC33omYMG5gl9Mr5+M920wqkityCXczDO+HbX9Wgb/KMcGgk3Bz0s2KE5kelWtfvHSRrkPdMMYVUEV/fG5yFYIzxLvtGstrn2z/A1KVrCuMNo0LGSMI3tYq4fPrl0YYK+mXEbfCN53yhf+eBKwcr4BqKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465768; c=relaxed/simple;
-	bh=3iYO0kg6ueKYDxo+WUqxQW/1ohu/Io5iWqOcMOoZVaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fVn0MEXEBZlWsI41oE4qjk/WH0QzbGMO9rxhZBQQ2g4+mnAsmdYxC3MnCXXj1/enfoJFDhXhPfKVxSElTsYYRU0Of39M8ib5qm0YIncxojLDupUSLASrySqHA03r5mYb2wAynrDaxGXJK89dpbUKEa9ir9U933dqnYGy+nw7mYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=noBkohPQ; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1772466193; c=relaxed/simple;
+	bh=NYYtAmlTRII+aT4YTVrTRvC2DVAVLf9Fp6itPFnhyig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HXytsXJtsYUrfmKHGTghJGzQ/bkLR6sbxnRfyqaOJCEFyDUtAGsh8zwF0hCEHIFrvo8WYp9pQw4OvKQk52XLZOvMr35xN76aAz57lSHSKDY7hSx4X5GgBCtvUnRRFsS+IneExJqDO5jZeMk91p7LhAWxNTnLLJ3NNsTq4yyoB40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4Z6EXBs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="noBkohPQ"
-Received: from mail.andi.de1.cc ([178.238.236.174])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1vx4vx-0000000AE8x-3NKF;
-	Mon, 02 Mar 2026 16:11:45 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=fOE00VOY5CO+udhbXmZXmQz9cKeY+YffWZiDPf2sZPk=; b=noBkohPQtvbuoZmsWo6lCfVC0v
-	wnxzq1SQ5Lj/pBCMSx747FmzuCK3eO9Ch94CEp6EBHx2GpGzcEerfJlEq3n25yBTSh935UFK8DGD4
-	SzpfFNUZZdnGXXIg7FSlb6nQN0crQj1+1RVt0ZZrhPMu/VabG3RzgYsd+0pDI8YtVWoftgAogzXGG
-	/Kt60pHaK6B/3iUjTMbmMNc/i8GCJHUQ93IX3MyLxeBxH+Y2VHs239W1HoqMHwAv+BQ0YU39VuaD6
-	rxdtCJn8AyOra+wikSbvm26LeV9ISHk9b2tds38fBYg7DDQIVOZYTRpNq1xyd648ZITveXnM4+DWx
-	DsvP98lQ==;
-Date: Mon, 2 Mar 2026 16:09:23 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Kalle Niemi <kaleposti@gmail.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Bartosz Golaszewski
- <bartosz.golaszewski@oss.qualcomm.com>, Mukesh Kumar Savaliya
- <mukesh.savaliya@oss.qualcomm.com>, Viken Dadhaniya
- <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Branden Scott <sbranden@broadcom.com>,
- bcm-kernel-feedback-list@broadcom.com, Vignesh R <vigneshr@ti.com>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Patrice
- Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Linus Walleij
- <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, Matti Vaittinen
- <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF
- node through the adapter struct
-Message-ID: <20260302160923.53abf2ea@kemnade.info>
-In-Reply-To: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com>
-References: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4Z6EXBs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF1AC2BCB3
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 15:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772466192;
+	bh=NYYtAmlTRII+aT4YTVrTRvC2DVAVLf9Fp6itPFnhyig=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u4Z6EXBsWrGIvbVtVDs2CcXUVPD1z1UII8ZrJ8CHFyOaYhSqs5pRF7l4NrWxWuxo5
+	 GLbo7j968ZBz3SmstCj3zyX+kiIluz8xKmAYue77NNgve/51WK5TVEyEHb48bUC6Yd
+	 +z4Y7iW+P8nUx7fi/qe/cA2balaQFaKQDUyP5101EzR0XWQjW9CiNV9eeEwiuJDOKg
+	 Qr2/9hfokq9uLvjA4/cc4EQyeztXu1KOex6iEoIONDAaZ6Tp1Y37tL1Ua+aNzhw4+W
+	 UhCWqJ3JPTrgsnaabrPXncAbTEniBQE3b+GWv7RWvYBtFOlmEKiYPqSr6Iv2PuY/Yk
+	 7lPikg9iAVncA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38a01c80c34so46189261fa.0
+        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 07:43:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWwVyfH5PLEWKJHctR1J42I28VlkjTXrjWXgAfASPaE73XlXoMQMn5FhF2TPo/paaLs6p4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcHeDplOExgMhPSMfLZiaV0YYng567678DhOZeBOrvntudK9ey
+	o/5Z3/RKsBHKDB7hq2joXnH/CIzIbpFoN13b+4xCC09cNg1ZPTd19pycbuXKIGVGNL07lUwI3rF
+	LgDGosL4cdrzZowkYWP3WdJTYGbQylZSXOjeYwfLG4Q==
+X-Received: by 2002:a2e:b891:0:b0:387:da4:1664 with SMTP id
+ 38308e7fff4ca-389ff36c5abmr88837761fa.36.1772466190790; Mon, 02 Mar 2026
+ 07:43:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com> <20260302160923.53abf2ea@kemnade.info>
+In-Reply-To: <20260302160923.53abf2ea@kemnade.info>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 2 Mar 2026 16:42:58 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
+X-Gm-Features: AaiRm52x3shdJxbM6URWEGFBH14dpZAQC7dlrMWm0mp4oa5cHSJhvWQjaHcwLdY
+Message-ID: <CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
+Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF node
+ through the adapter struct
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Branden Scott <sbranden@broadcom.com>, bcm-kernel-feedback-list@broadcom.com, 
+	Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2 Mar 2026 12:38:27 +0200
-Kalle Niemi <kaleposti@gmail.com> wrote:
-
-> =EF=BB=BFOn 3/2/26 10:55, Bartosz Golaszewski wrote:
-> > On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail.com=
-> wrote: =20
-> >> On 2/23/26 11:05, Bartosz Golaszewski wrote: =20
-> >>> In order to stop i2c bus drivers from dereferencing the struct device
-> >>> embedded in struct i2c_adapter, let's allow configuring the parent
-> >>> device and OF-node of the adapter directly through dedicated fields.
-> >>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.=
-com>
-> >>> --- =20
-> >> Hello,
-> >> Automated driver test system bisected this commit to be the first bad
-> >> commit, linux-next next-20260227 was tested. Failed tests include driv=
+On Mon, Mar 2, 2026 at 4:11=E2=80=AFPM Andreas Kemnade <andreas@kemnade.inf=
+o> wrote:
+>
+> On Mon, 2 Mar 2026 12:38:27 +0200
+> Kalle Niemi <kaleposti@gmail.com> wrote:
+>
+> > =EF=BB=BFOn 3/2/26 10:55, Bartosz Golaszewski wrote:
+> > > On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail.c=
+om> wrote:
+> > >> On 2/23/26 11:05, Bartosz Golaszewski wrote:
+> > >>> In order to stop i2c bus drivers from dereferencing the struct devi=
+ce
+> > >>> embedded in struct i2c_adapter, let's allow configuring the parent
+> > >>> device and OF-node of the adapter directly through dedicated fields=
+.
+> > >>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcom=
+m.com>
+> > >>> ---
+> > >> Hello,
+> > >> Automated driver test system bisected this commit to be the first ba=
+d
+> > >> commit, linux-next next-20260227 was tested. Failed tests include dr=
+iver
+> > >> tests for ROHM PMIC and accelerometers, which are connected to
+> > >> BeagleBone Black.
+> > >> The failed driver tests all fail to first i2cget and the tests stop
+> > >> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such fil=
+e or
+> > >> directory".
+> > > Wolfram: well, now it would actually be useful to know which commit
+> > > exactly is the culprit so maybe splitting the changes is not a bad
+> > > idea after all.
+> > > Kalle: which i2c bus driver fails here? Any errors in kernel log?
+> > > Bart
+> >
+> > Hello Bart,
+> >
+> > i2c-1 and i2c-2 are failing. I am not seeing any i2c errors in kernel l=
+og. I got two failures without the dmesg available (this is bugged test seq=
+uence, and not a kernel crash), but those got the same stdout message "Coul=
+d not open file ...." as all others.
+> >
+> Probably I am using the same host driver
+>
+> tested on OMAP3 DM3730, result: i2c drivers get bound to their devices,
+> no obvious trouble. But controllers are registered with high indexes.
+>
+> localhost:~# i2cdetect -l
+> i2c-3   i2c             OMAP I2C adapter                        I2C adapt=
 er
-> >> tests for ROHM PMIC and accelerometers, which are connected to
-> >> BeagleBone Black.
-> >> The failed driver tests all fail to first i2cget and the tests stop
-> >> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such file =
-or
-> >> directory". =20
-> > Wolfram: well, now it would actually be useful to know which commit
-> > exactly is the culprit so maybe splitting the changes is not a bad
-> > idea after all.
-> > Kalle: which i2c bus driver fails here? Any errors in kernel log?
-> > Bart =20
->=20
-> Hello Bart,
->=20
-> i2c-1 and i2c-2 are failing. I am not seeing any i2c errors in kernel log=
-. I got two failures without the dmesg available (this is bugged test seque=
-nce, and not a kernel crash), but those got the same stdout message "Could =
-not open file ...." as all others.
->=20
-Probably I am using the same host driver
+> i2c-4   i2c             OMAP I2C adapter                        I2C adapt=
+er
+> i2c-5   i2c             OMAP I2C adapter                        I2C adapt=
+er
+> localhost:~# uname -a
+> Linux localhost 7.0.0-rc1-next-20260227 #27 SMP Mon Mar  2 11:56:27 CET 2=
+026 armv7l Linux
+>
+> Regards,
+> Andreas
 
-tested on OMAP3 DM3730, result: i2c drivers get bound to their devices,
-no obvious trouble. But controllers are registered with high indexes.
+Hi! Does the change I posted earlier in this thread help?
 
-localhost:~# i2cdetect -l
-i2c-3	i2c       	OMAP I2C adapter                	I2C adapter
-i2c-4	i2c       	OMAP I2C adapter                	I2C adapter
-i2c-5	i2c       	OMAP I2C adapter                	I2C adapter
-localhost:~# uname -a
-Linux localhost 7.0.0-rc1-next-20260227 #27 SMP Mon Mar  2 11:56:27 CET 202=
-6 armv7l Linux
-
-Regards,
-Andreas
+Bart
