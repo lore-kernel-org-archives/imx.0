@@ -1,228 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013061.outbound.protection.outlook.com [40.107.159.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A224043635F
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772470204; cv=none; b=MWpfa4lz2n43Aj2EggjhX/3QtmDFBvTEHElqsweBtp8oUFPD7ZbzQ31o+7D/Tk5ky+PQPXA893TO74kFuVWxoBNlsO0lWtIoyZaJiKr5GXdbTuImnLkIBe82RwrOfjRJ7YkgWdclWhU8391xsk/JNCAvtvqzsvAir2IAsBzg8/s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772470204; c=relaxed/simple;
-	bh=PXmSMkqkwrVUT5CWT6Z0DwoFzUVtklcyfpBugDs8vX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MZA6GinIFhGjed0zLMvpGuGbBbyG7Mbb/l8AOOpftYdvtOs36/5qFZ/zq9Cn4g64yWFoSSKcCXlZIirNlNAsnThshVBaFgIBiZtwHQ0SxPQxccEBLVFMPVPEUIVoph3rfFmEmmL0Qqzt60b2n4/b55IGGX5LfVp5ugaNg9aMPUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bpWl2izV; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F4E423A8E
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772470330; cv=fail; b=X70B8Z+hrfyRPBB+pDDLyMpJMcNx4qa00p/BszkkQNu4Of5motTJpA10+fam4RhIpk+K6fdG2p6c/5tcPXc3fKzozwuJyduIcjBRaUSH3eUbYZuZxF5mr8NFXeLkeSXc4s0uP4kkJ4b5oI5kbpe0Zk5T5TdoRrjpCoWY8DjIM+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772470330; c=relaxed/simple;
+	bh=W0ezom5mzXV10RyC5n37yC9WSH2+zIwASd6FcxuA5xM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 Content-Type:MIME-Version; b=jitaFzspFwZTBGDyu7uJ+Rr5+sRmjI5NYezWMiknoLKcAU6Y3Nth5r1iIVhPlPwr02dz1JsPC1j+VCt1P+PyzqyPV+fPkeOdnj9WTISGCxhARrRMjnqjKsYRr8DCcCMsjDhs7WpERAVAUXrmbX8jTDM8pxdXGRgztjHnRDaeu2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=a1srk+5a; arc=fail smtp.client-ip=40.107.159.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bpWl2izV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772470203; x=1804006203;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PXmSMkqkwrVUT5CWT6Z0DwoFzUVtklcyfpBugDs8vX8=;
-  b=bpWl2izVqVp4emYYloOKGRd1cgLlHreOccY4Jjsmat0zA0U9crqeeizB
-   zsp4ycZR6dP8rphbSmE6nks3RjDb1Fj0OWiwXsF+0aRLrA/XN4xM1lrUS
-   VxKhQmAUzL526DZiYr1B/G7/uVHlWfDU1vKndv3Kjexj+wahZCzDuZgFy
-   GAk6dho0wwxH/VPSFmoBPxhCuyu1bjFWCP89fddokTUZQTJpnjDz3KKLC
-   /QK2k4Vi70edtTcOtpt9v57UHtInW9Yj7w0/0zj2WphrFkxDEZg4iJBtC
-   N23Y/fwtBcbHyvI+qJBb7SCOHWjWoMdPm33XlElfDu8D1kwy1vmiFvlwO
-   Q==;
-X-CSE-ConnectionGUID: S5esZKFYTSW7B/aOQAc/1A==
-X-CSE-MsgGUID: uWZyAuImQyazRRT9YjpJAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="76087748"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="76087748"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:50:02 -0800
-X-CSE-ConnectionGUID: J7rvuV8UQ8GQ9dm8unOUlg==
-X-CSE-MsgGUID: +8k5wQNnQ2adGIhuTQ1uIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="216947209"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa010.jf.intel.com with ESMTP; 02 Mar 2026 08:49:52 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id B1CD4312CC;
-	Mon,  2 Mar 2026 16:49:49 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: bpf@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kselftest@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH bpf v4 9/9] xdp: produce a warning when calculated tailroom is negative
-Date: Mon,  2 Mar 2026 17:17:22 +0100
-Message-ID: <20260302161723.858616-10-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260302161723.858616-1-larysa.zaremba@intel.com>
-References: <20260302161723.858616-1-larysa.zaremba@intel.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="a1srk+5a"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ww8hYBKf7e5Y+AjQqMeg6IKmQST0RSR72/l/JeBjbYLeDV5DumhfcH8K0HzVdjxwegnR9JVDs9ov/uruR8afGb/ccS4qjjvcBmq8imLrhsvfqQH/B3oq01tBPu2LRVpcs5r71v3+E0klujrack4gGW+86F/64lyHfL1Z2D4GrxYd6WR6PCAO+WDZ6BYfis/HwAHbUxDZB6D5rgpBaX0u71w5toRe9/QxgeUTrdfyqE+UQW45WuMFJ/VQEZ38ybL0IKpKqVZPTBtQFp7Ufq5/Zqu5oed+SX2UN7E3JdPP0KTnf8SycnW40n13fUaaWqWgu0d+HrdASKAA2nLC4ngJLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z96YKgKUprb5t+62raIgGYWgk33hYDZhKnqi+h2MfNM=;
+ b=iY1Nwh81hXeLbgvb4pKbiaa6wodWpEdqZw7tO9P4PHefb0jhVQblA3Qyt7O6SBkJTbTylj3smZCF9UoME3SURNNQKTUZUZwpxQRoBDfhthxTamerkqluVVO73Z6/IbXlByCr5iqirB62IP3e3PUsDg4hVjkuF3XT8RMB15qsjWEMurbk4ADKzxN11cPVL+oN39wjLtZ7ozExJYxA+jXI4472jWgwXDnkbfHOxFkWChvqtY7mHsaZY3Vmz9WE2/WLbwROx9A5+a4i9rWBFPLiRuMO39487AJsJyFIhJL0DSz65CVHBpiYRjYq7v1HcBGFPTdzflztpMJr7g2niNwbgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z96YKgKUprb5t+62raIgGYWgk33hYDZhKnqi+h2MfNM=;
+ b=a1srk+5amO2f2MYgX6akNCdlQSfMjbxi+xJMuk43I1B+lYIj6hIHhFRJex3RHybfEIWUGjjY1wtfH6EhIWwsmbiEXkl+4m/YLmguVd0tWY/yXpOdrkbSKt0S4BFezkn1u03OBE4jaA87Pw6xaxbIpdKVR8oD+0EwSw8bi4Z/fxzfpVBTlfOvNIvixqOM90AcnTFTDk5Ygom3FyrImwsEqJosBSgNZNmHfHx6pQEmrxkze1ZcYzLdhMKyv/yqZSy/O56v4PWQVDu1A7sdUZZKbRoUlhbOl+BEV4mVkpMViifDbr27vuo6mHOumxagAn5yHUiE1DsT8Fqseqj2hJ6OYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AMDPR04MB11652.eurprd04.prod.outlook.com (2603:10a6:20b:718::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 16:52:05 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 16:52:05 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260212-imx28_dtb_warning-v1-0-696bcf1a992a@nxp.com>
+References: <20260212-imx28_dtb_warning-v1-0-696bcf1a992a@nxp.com>
+Subject: Re: [PATCH 0/8] ARM: dts: imx28: cleanup all CHECK_DTBS warnings
+ for imx23 and imx28
+Message-Id: <177247032266.2112985.15137761878583862320.b4-ty@nxp.com>
+Date: Mon, 02 Mar 2026 11:52:02 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: PH7P221CA0017.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::32) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AMDPR04MB11652:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54b72ea5-b92a-41c8-e8eb-08de787c08c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	829o3yvrD+pcqx/Y4rcGpdouBUwqGJAyLYlqwCSaiDT8pSCBUWRIaDKDZG6CoW5kW/hX3Tgj19NWOUYnDZwoyR1cfdrlOO/7buXbtBbSKhNxumvIlQe9Y+2NsTDK+2pJofA69bEDBYnfdniENIo1YK1Tho2tFwhLKYNa5D+0LHmuk1D3bFPWfJWAFZQbgW9GKWMwHgOU/mote2ChKtB+yHrRvLRIADJu7XZbBdtsCGjbtJz2M+XSuhRSMNB+F+Yta18du1NvomdTUr7PbzDE4Hpgbv1sFmA+V43c2oYzpNrkIh9Dbqz8chnBfodlQWe+IvWzOHGrLLseWsXLBmZ9Kk67n+Haj2823B8wwoNn56arU6NSuEXIXzIG6MHhIDQZL4hdZwSw9Mb1VC7YmpHt9Z7+Q6Zm4+RxemmK9UVbG+7n9HLlE6GpGfmzhbBVKpcRbhsnub0GhTP98UzO82GruEnf2FQzhbQHXvE04kk1+pAf/TN9j9jEyvACC2XmH0Dgqpxaa1tI7IuDb/yDy7kq9oSWZP0iq7k421DrDp0Rdj/lapemv3CfW2Xa9+aJSeTia1ZDP+4eGAK7U959aA8W+imPd1Iii7a/jrbWZhG+dHcIRnF6WEgMvGYI0Q+kEUemZGsCMRl+/wXBmwuNL+OviXIUB4LNlG8XydLQ7QjjKj+zxG/Y4g29t46NdePUMjVCWBu7WaUM6AdW2mvUlJ5wbdtt7qdHEyRDJrT7wvrgmVySgAJqTuHO8qjMg32czhe4jrQZzg9haI7zmvtEX7aE/+v7Lj/af3QPuHL2dxCu4Wk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NXZid0lDRzhZSllKcmtKMkxXektVbE1Ja3R6cmplTktKQklPMG1xY3lHcTlq?=
+ =?utf-8?B?SVQxUjhiQnlIck9seUVhR1hIMk9PT3hXQkZWZ2tLN1pWdjQxMU5aRk5iSXRj?=
+ =?utf-8?B?aXBhWjBZck9ZMnJ6L0didERXZW11czZwTk1KM1dWZFRzNTMwd2NTcWpwNkVP?=
+ =?utf-8?B?Y1dvdFJNbjhPYWN0ZmRoMTZyOUtPUlRSK3Vwam5uRmRvcmh6UUI4blg1T3N5?=
+ =?utf-8?B?UVdIR0tkS3hzVFRxTGw1NnJzUG5zM2doQnlxSWdvcGFxamg1U2VKc0NqdTJ0?=
+ =?utf-8?B?blkySkpPUGpJOG5MVXRRODkxaDhyYzkvdjBzUkgvRnFSdFBVV25ObDZHbStk?=
+ =?utf-8?B?SE9VRGJPbmU5RS8zYks4aVJ4WkJvbGc3NERTaFF2dWRBUDdFTm9KL2FncUpj?=
+ =?utf-8?B?UFB2VWJhbWQxV2ZyZVV3eEpIRTl5SVRORUg4TFZ6RHdDeHFJNHliYmliakpw?=
+ =?utf-8?B?WWNtVEcybEZ6bFV4Ump4Wi9HTlZKSE5wcnFKWllLREt3ZmhlUnYzZzd5aExS?=
+ =?utf-8?B?K3NWMFdQMjRRL3cwZDlZSktITkFRdjdHRkpaTHpyM0FiZjBEcDBKWm45TXpS?=
+ =?utf-8?B?WTBRaFYxMWFDNjVIQnV1aWJwZGQwbzQ2eUxBOE5DSjFLYjRHUUcyaHI5aDh6?=
+ =?utf-8?B?QVpwZG5mZFF0YUJOcWJ6ZkJMeU0xZlVoWHBCc2RpRzJpNGUrOWtyZ1F5TXZL?=
+ =?utf-8?B?RUlqUnpyMmdQVDljck5rZFp2QzFBYnZwTG16aXFNWXVISXJxQ1U0MWFVU29v?=
+ =?utf-8?B?R3RhTjlrT1Z2ZExVWFlYRFdUSUt2VU9VY09jaHdLNUUyRlpYYkJ3a1pOd0xD?=
+ =?utf-8?B?Yldva2ZNdU1WdWphRCs3dk1KUFRrTmMrNzQ0cStyOGZBU0YrVkt2R1NxT1FI?=
+ =?utf-8?B?SXZSQkJnRlNhWWtLMTQ0WC9USnFZLzJxWXhSWlI0d2h6RFpUcWhTcTVuR2pB?=
+ =?utf-8?B?SlB5eHg3TXRYOG1QTXZhMDY5RG8wZHRmNVdlTkxvaGpReUUvL3FUanZIWnlq?=
+ =?utf-8?B?VVcyYS8vUUJCWmlTRUlTME9GMHAvd3ZjUndGNmJvVnZxcjRkdFZzSWlobG8w?=
+ =?utf-8?B?SVBGL1R6VzA3cnBSOFExT3dMZzlNK0s0djJ2Y05lN25QUUhobXFLVlVTWG9K?=
+ =?utf-8?B?NkZkSUNCN1pIaEZKdUs5VlNzK1hWR3o4L3dBN0xCQWFiN20zRjhCS0I0S3Nl?=
+ =?utf-8?B?L3p5dUx0bldSeVp2WUJ6R2pZdERkQ2E4YWF1d3ZRdnVqRWdUWFhpMWoydEt2?=
+ =?utf-8?B?aDRYODA4QVBiVSthVTVNVGRkVk5aNUFLWEY1cGxxRGpJbnZwR2wxTjNoNGow?=
+ =?utf-8?B?Wk5pYkJjSFRsUU8wTW42S1ZKSnlnMHJQKzdXQTZMd21zQzdWaEI0M2wyU2c1?=
+ =?utf-8?B?TnVhdmh0aHk3cW9lS2QvNVl1MjdmTUg3Q2tiWitIK0FFZHVsLzZMMGxHM1gw?=
+ =?utf-8?B?eU9oSUY5V244RTh2TEhTb1hPVmdUVUVMOFNpdGJvd2tBZUhzU29XTEtSeDFm?=
+ =?utf-8?B?VTBqSmdzT09NVnNtRUJKTDJYUys1dkVuakJ3MlQ2VDM0S1poc2RFZlNxb3A0?=
+ =?utf-8?B?NTNCbkxNNk42VVhwZ0F3M3BqdGg4Sld0ME4zV2pTQ0ZlaWM4S1pSaDZ6OEZl?=
+ =?utf-8?B?UCs3aHhIWXJJWTlieDUwaWV0R2U3Y09DMTYrenlWNFFzcE55Ym1uZjFwWlEw?=
+ =?utf-8?B?bnJNR1FKK0toTlI3cUhMRUFEQnpVUkxpMVJHcUJ6RFBUbk5KL2tJaXRvU1hw?=
+ =?utf-8?B?cVF1VHpsc25MZnRJTVIxMldOU3hNcUI4SUVuVGVyZlNKQmptZ1N4dlp6MU12?=
+ =?utf-8?B?VDBMZG9NRFR0cFlPQ2hvYkxWR0IxeFRodGdUeEt2d1Q4bkFRZ0VxRkNMaWRR?=
+ =?utf-8?B?cU1PZlhVaGNKV2FKa0dnL3p1ckNQcU9JQmcwTDBVYmdsb290S0NEM1JQNHBz?=
+ =?utf-8?B?OXhPem5RSERuWTVJVFJDdjJOSHpiSGhUamErZ25lVnlhV0QxcG5lZzhJS2o5?=
+ =?utf-8?B?OWFsQjFQRHBZWkZGUTBZTFE2cFRQS3VoNWU4LzBYQ09CNDAyQnd1TWE4REQr?=
+ =?utf-8?B?QUlHTlBmYmVOZzNBU0g3YUFZWmlCaG5QTGJQT0o4MzR0bXEzTUUrdEhueXZz?=
+ =?utf-8?B?UUxmcXpTSFltM29EYkRoc0txVis0TURBU3E4R2szeitzcnNpcUtJUmJ5eXpU?=
+ =?utf-8?B?MThycmxaRGE3aTM5QTIzRFFjT0cxbG93WjVSaGVUek1BT2pwNFIyWnhlZVRD?=
+ =?utf-8?B?V1lJMWNrVElZQlZuWnNoRkpxRGRqWGZybDBwUkZYVGp0V01IVElnOXZZRjNp?=
+ =?utf-8?B?UTVjS3VwZUdiMUJ5eEJleEk0a2RuVlBKL3dibUxvN3BibitJaDFXdz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54b72ea5-b92a-41c8-e8eb-08de787c08c2
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 16:52:05.2801
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qo8p6XTEtcCfom5ng2kU/7Y3t3t1CaqYpFvrD8aPS9P+29idIGxA+ik50gbTqMyuth2/M3YIhEQiDKhOn6mm7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11652
 
-Many ethernet drivers report xdp Rx queue frag size as being the same as
-DMA write size. However, the only user of this field, namely
-bpf_xdp_frags_increase_tail(), clearly expects a truesize.
 
-Such difference leads to unspecific memory corruption issues under certain
-circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
-running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
-all DMA-writable space in 2 buffers. This would be fine, if only
-rxq->frag_size was properly set to 4K, but value of 3K results in a
-negative tailroom, because there is a non-zero page offset.
+On Thu, 12 Feb 2026 11:19:42 -0500, Frank Li wrote:
+> Clean up all CHECK_DTBS warnings for imx23 and imx28.
+> 
+> 66379a677ad41 ARM: dts: imx28-tx28: rename compatible to "edt,edt-ft5206"
+> Not sure board use exact edt,edt-ft5206, but it is comaptible with
+> edt,edt-ft5306 and edt,edt-ft5406.
+> 
+> 6346f7ecad97a ARM: dts: imx28-tx28: remove undocumented aliases
+> Not sure why set these mystery aliases.
+> 
+> [...]
 
-We are supposed to return -EINVAL and be done with it in such case, but due
-to tailroom being stored as an unsigned int, it is reported to be somewhere
-near UINT_MAX, resulting in a tail being grown, even if the requested
-offset is too much (it is around 2K in the abovementioned test). This later
-leads to all kinds of unspecific calltraces.
+Applied, thanks!
 
-[ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
-[ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
-[ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
-[ 7340.339230]  in xskxceiver[42b5,400000+69000]
-[ 7340.340300]  likely on CPU 6 (core 0, socket 6)
-[ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
-[ 7340.340888]  likely on CPU 3 (core 0, socket 3)
-[ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
-[ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
-[ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
-[ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
-[ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
-[ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
-[ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
-[ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
-[ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
-[ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
-[ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
-[ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
-[ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
-[ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
-[ 7340.421237] PKRU: 55555554
-[ 7340.421623] Call Trace:
-[ 7340.421987]  <TASK>
-[ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
-[ 7340.422855]  swap_pte_batch+0xa7/0x290
-[ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
-[ 7340.424102]  zap_pte_range+0x281/0x580
-[ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
-[ 7340.425177]  unmap_page_range+0x24d/0x420
-[ 7340.425714]  unmap_vmas+0xa1/0x180
-[ 7340.426185]  exit_mmap+0xe1/0x3b0
-[ 7340.426644]  __mmput+0x41/0x150
-[ 7340.427098]  exit_mm+0xb1/0x110
-[ 7340.427539]  do_exit+0x1b2/0x460
-[ 7340.427992]  do_group_exit+0x2d/0xc0
-[ 7340.428477]  get_signal+0x79d/0x7e0
-[ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
-[ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
-[ 7340.430159]  do_syscall_64+0x188/0x6b0
-[ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
-[ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
-[ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
-[ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
-[ 7340.433015]  ? __handle_mm_fault+0x445/0x690
-[ 7340.433582]  ? count_memcg_events+0xd6/0x210
-[ 7340.434151]  ? handle_mm_fault+0x212/0x340
-[ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
-[ 7340.435271]  ? clear_bhb_loop+0x30/0x80
-[ 7340.435788]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436299]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436812]  ? clear_bhb_loop+0x30/0x80
-[ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 7340.437973] RIP: 0033:0x7f4161b14169
-[ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
-[ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-[ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
-[ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
-[ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
-[ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
-[ 7340.444586]  </TASK>
-[ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
-[ 7340.449650] ---[ end trace 0000000000000000 ]---
+[1/8] ARM: dts: imx23/28: set #size-cells of NAND controller to 0
+      (no commit info)
+[2/8] ARM: dts: imx28: add nand@0 node and partitions
+      (no commit info)
+[3/8] ARM: dts: imx23: fix interrupt names for dma-controller@80024000
+      (no commit info)
+[4/8] ARM: dts: imx23/28: add "led-" prefix to LED subnodes
+      (no commit info)
+[5/8] ARM: dts: imx28: rename gpios-reset to reset-gpios of hx8357
+      (no commit info)
+[6/8] ARM: dts: imx28-sps1: remove undocumented fallback compatible "mr25h256"
+      (no commit info)
+[7/8] ARM: dts: imx28-tx28: rename compatible to "edt,edt-ft5206"
+      (no commit info)
+[8/8] ARM: dts: imx28-tx28: remove undocumented aliases
+      (no commit info)
 
-The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
-drivers to not do this. Therefore, make tailroom a signed int and produce a
-warning when it is negative to prevent such mistakes in the future.
-
-Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- net/core/filter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index d6fafb3633b0..a77d23fe2359 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4150,13 +4150,14 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
- 	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
- 	struct xdp_rxq_info *rxq = xdp->rxq;
--	unsigned int tailroom;
-+	int tailroom;
- 
- 	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
- 		return -EOPNOTSUPP;
- 
- 	tailroom = rxq->frag_size - skb_frag_size(frag) -
- 		   skb_frag_off(frag) % rxq->frag_size;
-+	WARN_ON_ONCE(tailroom < 0);
- 	if (unlikely(offset > tailroom))
- 		return -EINVAL;
- 
--- 
-2.52.0
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
