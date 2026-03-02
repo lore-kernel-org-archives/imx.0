@@ -1,341 +1,158 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3FA41160F
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676BC41B351
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772467874; cv=none; b=CJnt7lUH1o1YQSn689iuZrRHMDjkviAPtI6mitA8w+Jt7DHjT8f9EQb+gAViCGKsv4E3pP2ET8+Z03kuGqXlC+z8j1utsYflGLG/Mga+Mu2wdri530xpGfSYb1tF35Pn9bq/sZSUzb4Zy6vz8D5QFs1kzP3Xg2MGTO1cGDe7rMs=
+	t=1772468056; cv=none; b=OLTCxvViJbUW4PnMVUtNZUCKVrq66Kr+nzZZ3LouTfkL8PcswRudkDXQjU301uNUH7dTdMN03WTaXiS4mJ+iAiahGjR3G9OYRQ2t9gkS7K+oqrTHBZVqdazPNeMOvH4jL1+pO1qk2t8n8ARWcM4t0ZFjOPJaDylyw2qTJx0njJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772467874; c=relaxed/simple;
-	bh=KqVXjbvJWseSstgPJYVSJJSGwuBW/69FBIYoLhzr2pU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=N0rb4hjee6vyLLJ2upbCoMYZTeLi4xmuhRFqRQvYXkPwpz9gSnTKvBrgUwI3tzd2dHSzdHeiR53QSEsPgXHbFvB2klWhpk8DlPFz4AWyBLF7VdVWFPWZLGt4aC/r/z/lkLfTHE+0esb3XYGS7KRX7e023QpqHDJPeblVMYPs3oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vx5rC-0002vi-Is; Mon, 02 Mar 2026 17:10:54 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 02 Mar 2026 17:10:41 +0100
-Subject: [PATCH v10 2/3] drm/bridge: imx: Add i.MX93 parallel display
- format configuration support
+	s=arc-20240116; t=1772468056; c=relaxed/simple;
+	bh=0Dly/K1fpHf6jNYWK8kzIVX3YYjOqRl73kYdjmbt2Tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lZV8w9LX5xKC0VsGtarpJH3di+5gKdEuWoWtBuVZok3svUaCyY1d1KvQK8bHC9vPSP/D7l/eSdm2bOwL6fp3sKpJVhAE6YCJ0lgtFjVcmbUyZ3M+KAmRUBDV85l6vrKWlkt8c2LU0LR4Ushud3INJP4N/t2U+X0W4YBfAfnSL8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=OW7jSdks; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="OW7jSdks"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1vx5uO-0000000AEDW-3S4f;
+	Mon, 02 Mar 2026 17:14:12 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=twQe7m5x4QDzYF5myGO1qmalh+JuN/K7HsbfYxfx4IQ=; b=OW7jSdksduYz+IKSvOLDkKN61z
+	3stPn86I1Zpe3QM5ckzmWFy9QKdsLUm1afvc7mqa9jqSrsSe/HF2/UDMZ62nQEWps7ipDbyFKPiVR
+	B+i33nquzzN1C2mXfxh21wa5Gu4aAS/qpyikokftCREziVEfX/TnqygdkoVhF04Dhv6A+qn5OvTkU
+	vIA0BdP9CNGr3KG2rGgl7NeB6ktSCXuuxxCtOOKSwVx2SsE3wwuLUMj0qMAMS2pyIhfk68kfDoOFQ
+	1iFMM+u2zIw2O5oxhtUVW/Ql/PbtbqWjgYRdj0qwgQyK8kB0uCv7WxaiKTVaGvQN0LxGpEg200Mnx
+	Qv/VMSDA==;
+Date: Mon, 2 Mar 2026 17:14:07 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Bartosz Golaszewski
+ <bartosz.golaszewski@oss.qualcomm.com>, Mukesh Kumar Savaliya
+ <mukesh.savaliya@oss.qualcomm.com>, Viken Dadhaniya
+ <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Branden Scott <sbranden@broadcom.com>,
+ bcm-kernel-feedback-list@broadcom.com, Vignesh R <vigneshr@ti.com>, Aaro
+ Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+ Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Patrice
+ Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Linus Walleij
+ <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, Matti Vaittinen
+ <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF
+ node through the adapter struct
+Message-ID: <20260302171407.5afe3b12@kemnade.info>
+In-Reply-To: <CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
+References: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com>
+	<20260302160923.53abf2ea@kemnade.info>
+	<CAMRc=Mcg7_MAGA2_Ue7etOHvLOxpRs7aOBHxRM3AdAHyscFxDw@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-v6-18-topic-imx93-parallel-display-v10-2-634fe2778c7a@pengutronix.de>
-References: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
-In-Reply-To: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
- Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- luca.ceresoli@bootlin.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, kernel@pengutronix.de, 
- Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Liu Ying <victor.liu@nxp.com>
+On Mon, 2 Mar 2026 16:42:58 +0100
+Bartosz Golaszewski <brgl@kernel.org> wrote:
 
-NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-field. Add a DRM bridge driver to support the display format configuration.
+> On Mon, Mar 2, 2026 at 4:11=E2=80=AFPM Andreas Kemnade <andreas@kemnade.i=
+nfo> wrote:
+> >
+> > On Mon, 2 Mar 2026 12:38:27 +0200
+> > Kalle Niemi <kaleposti@gmail.com> wrote:
+> > =20
+> > > =EF=BB=BFOn 3/2/26 10:55, Bartosz Golaszewski wrote: =20
+> > > > On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail=
+.com> wrote: =20
+> > > >> On 2/23/26 11:05, Bartosz Golaszewski wrote: =20
+> > > >>> In order to stop i2c bus drivers from dereferencing the struct de=
+vice
+> > > >>> embedded in struct i2c_adapter, let's allow configuring the parent
+> > > >>> device and OF-node of the adapter directly through dedicated fiel=
+ds.
+> > > >>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualc=
+omm.com>
+> > > >>> --- =20
+> > > >> Hello,
+> > > >> Automated driver test system bisected this commit to be the first =
+bad
+> > > >> commit, linux-next next-20260227 was tested. Failed tests include =
+driver
+> > > >> tests for ROHM PMIC and accelerometers, which are connected to
+> > > >> BeagleBone Black.
+> > > >> The failed driver tests all fail to first i2cget and the tests stop
+> > > >> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such f=
+ile or
+> > > >> directory". =20
+> > > > Wolfram: well, now it would actually be useful to know which commit
+> > > > exactly is the culprit so maybe splitting the changes is not a bad
+> > > > idea after all.
+> > > > Kalle: which i2c bus driver fails here? Any errors in kernel log?
+> > > > Bart =20
+> > >
+> > > Hello Bart,
+> > >
+> > > i2c-1 and i2c-2 are failing. I am not seeing any i2c errors in kernel=
+ log. I got two failures without the dmesg available (this is bugged test s=
+equence, and not a kernel crash), but those got the same stdout message "Co=
+uld not open file ...." as all others.
+> > > =20
+> > Probably I am using the same host driver
+> >
+> > tested on OMAP3 DM3730, result: i2c drivers get bound to their devices,
+> > no obvious trouble. But controllers are registered with high indexes.
+> >
+> > localhost:~# i2cdetect -l
+> > i2c-3   i2c             OMAP I2C adapter                        I2C ada=
+pter
+> > i2c-4   i2c             OMAP I2C adapter                        I2C ada=
+pter
+> > i2c-5   i2c             OMAP I2C adapter                        I2C ada=
+pter
+> > localhost:~# uname -a
+> > Linux localhost 7.0.0-rc1-next-20260227 #27 SMP Mon Mar  2 11:56:27 CET=
+ 2026 armv7l Linux
+> >
+> > Regards,
+> > Andreas =20
+>=20
+> Hi! Does the change I posted earlier in this thread help?
+>=20
+It does *not* as written earlier.
 
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-[m.felsch@pengutronix.de: port to v7.0-rc1]
-[m.felsch@pengutronix.de: add review feedback (Alexander)]
-[m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-[m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-[m.felsch@pengutronix.de: add bus-width support]
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
- drivers/gpu/drm/bridge/imx/Makefile     |   1 +
- drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 225 ++++++++++++++++++++++++++++++++
- 3 files changed, 237 insertions(+)
+Just for comparison, with the offending patch reverted, it
+looks like this:
 
-diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-index b9028a5e5a065c3237b404111d8df57e8e017f9d..47829300a4486a090514ebe914b7667a703039a9 100644
---- a/drivers/gpu/drm/bridge/imx/Kconfig
-+++ b/drivers/gpu/drm/bridge/imx/Kconfig
-@@ -99,4 +99,15 @@ config DRM_IMX93_MIPI_DSI
- 	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
- 	  processor.
- 
-+config DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER
-+	tristate "NXP i.MX91/i.MX93 parallel display format converter"
-+	depends on OF
-+	select DRM_KMS_HELPER
-+	help
-+	  On i.MX93 and i.MX91 SoCs the parallel display format output is
-+	  controlled via the MEDIAMIX BLK-CTRL DISPLAY_MUX.
-+
-+	  Say 'Y' or 'M' if you use the parallel display output path on a
-+	  i.MX93 or i.MX91 SoC.
-+
- endif # ARCH_MXC || COMPILE_TEST
-diff --git a/drivers/gpu/drm/bridge/imx/Makefile b/drivers/gpu/drm/bridge/imx/Makefile
-index 8d01fda25451aaa1bf51a068da18948094327116..da57fde2d813b88cdde89115ca801b4cfc69afbd 100644
---- a/drivers/gpu/drm/bridge/imx/Makefile
-+++ b/drivers/gpu/drm/bridge/imx/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_DRM_IMX8QXP_PIXEL_COMBINER) += imx8qxp-pixel-combiner.o
- obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK) += imx8qxp-pixel-link.o
- obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK_TO_DPI) += imx8qxp-pxl2dpi.o
- obj-$(CONFIG_DRM_IMX93_MIPI_DSI) += imx93-mipi-dsi.o
-+obj-$(CONFIG_DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER) += imx93-pdfc.o
-diff --git a/drivers/gpu/drm/bridge/imx/imx93-pdfc.c b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..56698168a66bf716762a139b6fea318bf450f6b5
---- /dev/null
-+++ b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+/*
-+ * Copyright 2022-2025 NXP
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/media-bus-format.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_graph.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <drm/drm_atomic_state_helper.h>
-+#include <drm/drm_bridge.h>
-+
-+#define IMX93_DISPLAY_MUX_REG		0x60
-+#define PARALLEL_DISP_FORMAT		GENMASK(10, 8)
-+#define FORMAT_RGB888_TO_RGB888		FIELD_PREP(PARALLEL_DISP_FORMAT, 0)
-+#define FORMAT_RGB888_TO_RGB666		FIELD_PREP(PARALLEL_DISP_FORMAT, 1)
-+#define FORMAT_RGB565_TO_RGB565		FIELD_PREP(PARALLEL_DISP_FORMAT, 2)
-+
-+struct imx93_pdfc {
-+	struct drm_bridge bridge;
-+	struct device *dev;
-+	struct regmap *regmap;
-+	u32 phy_bus_width;
-+};
-+
-+static struct imx93_pdfc *bridge_to_imx93_pdfc(struct drm_bridge *bridge)
-+{
-+	return container_of(bridge, struct imx93_pdfc, bridge);
-+}
-+
-+static int
-+imx93_pdfc_bridge_attach(struct drm_bridge *bridge, struct drm_encoder *encoder,
-+			 enum drm_bridge_attach_flags flags)
-+{
-+	return drm_bridge_attach(bridge->encoder, bridge->next_bridge, bridge, flags);
-+}
-+
-+static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
-+					    struct drm_atomic_state *state)
-+{
-+	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-+	const struct drm_bridge_state *bridge_state;
-+	unsigned int mask = PARALLEL_DISP_FORMAT;
-+	unsigned int val;
-+
-+	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
-+
-+	switch (bridge_state->output_bus_cfg.format) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+	case MEDIA_BUS_FMT_FIXED:
-+		val = FORMAT_RGB888_TO_RGB888;
-+		if (pdfc->phy_bus_width == 18) {
-+			/*
-+			 * Can be valid if physical bus limitation exists,
-+			 * therefore use dev_dbg().
-+			 */
-+			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
-+			val = FORMAT_RGB888_TO_RGB666;
-+		}
-+		break;
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+		val = FORMAT_RGB888_TO_RGB666;
-+		break;
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+		val = FORMAT_RGB565_TO_RGB565;
-+		break;
-+	}
-+
-+	regmap_update_bits(pdfc->regmap, IMX93_DISPLAY_MUX_REG, mask, val);
-+}
-+
-+/* TODO: Add YUV formats */
-+static const u32 imx93_pdfc_bus_output_fmts[] = {
-+	MEDIA_BUS_FMT_FIXED,
-+	MEDIA_BUS_FMT_RGB888_1X24,
-+	MEDIA_BUS_FMT_RGB666_1X18,
-+	MEDIA_BUS_FMT_RGB565_1X16,
-+};
-+
-+static bool imx93_pdfc_bus_output_fmt_supported(const  u32 fmt)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
-+		if (imx93_pdfc_bus_output_fmts[i] == fmt)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static u32 *
-+imx93_pdfc_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
-+					    struct drm_bridge_state *bridge_state,
-+					    struct drm_crtc_state *crtc_state,
-+					    struct drm_connector_state *conn_state,
-+					    u32 output_fmt,
-+					    unsigned int *num_input_fmts)
-+{
-+	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-+	u32 *input_fmts;
-+
-+	*num_input_fmts = 0;
-+
-+	input_fmts = kmalloc_obj(*input_fmts, GFP_KERNEL);
-+	if (!input_fmts)
-+		return NULL;
-+
-+	*num_input_fmts = 1;
-+
-+	if (!imx93_pdfc_bus_output_fmt_supported(output_fmt)) {
-+		dev_dbg(pdfc->dev, "No valid output bus-fmt detected, fallback to MEDIA_BUS_FMT_RGB888_1X24\n");
-+		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
-+		return input_fmts;
-+	}
-+
-+	switch (output_fmt) {
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+		input_fmts[0] = output_fmt;
-+		break;
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+	case MEDIA_BUS_FMT_FIXED:
-+		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
-+		break;
-+	}
-+
-+	return input_fmts;
-+}
-+
-+static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
-+					  struct drm_bridge_state *bridge_state,
-+					  struct drm_crtc_state *crtc_state,
-+					  struct drm_connector_state *conn_state)
-+{
-+	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-+	const u32 format = bridge_state->output_bus_cfg.format;
-+
-+	if (imx93_pdfc_bus_output_fmt_supported(format))
-+		return 0;
-+
-+	dev_warn(pdfc->dev, "Unsupported output bus format: 0x%x\n", format);
-+
-+	return -EINVAL;
-+}
-+
-+static const struct drm_bridge_funcs funcs = {
-+	.attach			= imx93_pdfc_bridge_attach,
-+	.atomic_enable		= imx93_pdfc_bridge_atomic_enable,
-+	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
-+	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
-+	.atomic_get_input_bus_fmts	= imx93_pdfc_bridge_atomic_get_input_bus_fmts,
-+	.atomic_check		= imx93_pdfc_bridge_atomic_check,
-+	.atomic_reset		= drm_atomic_helper_bridge_reset,
-+};
-+
-+static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct drm_bridge *next_bridge;
-+	struct imx93_pdfc *pdfc;
-+	struct device_node *ep;
-+	int err;
-+
-+	pdfc = devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
-+	if (IS_ERR(pdfc))
-+		return PTR_ERR(pdfc);
-+
-+	pdfc->regmap = syscon_node_to_regmap(dev->of_node->parent);
-+	if (IS_ERR(pdfc->regmap))
-+		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
-+				     "failed to get regmap\n");
-+
-+	/* No limits per default */
-+	pdfc->phy_bus_width = 24;
-+
-+	/* Get output ep (port1/endpoint) */
-+	ep = of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
-+	if (ep) {
-+		err = of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
-+		of_node_put(ep);
-+
-+		/* bus-width is optional but it must have valid data if present */
-+		if (err && err != -EINVAL)
-+			return dev_err_probe(dev, err,
-+					     "failed to query bus-width\n");
-+	}
-+
-+	next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
-+	if (IS_ERR(next_bridge))
-+		return dev_err_probe(dev, PTR_ERR(next_bridge),
-+				     "failed to get next bridge\n");
-+	pdfc->dev = dev;
-+	pdfc->bridge.of_node = dev->of_node;
-+	pdfc->bridge.type = DRM_MODE_CONNECTOR_DPI;
-+	pdfc->bridge.next_bridge = next_bridge;
-+
-+	return devm_drm_bridge_add(dev, &pdfc->bridge);
-+}
-+
-+static const struct of_device_id imx93_pdfc_dt_ids[] = {
-+	{ .compatible = "nxp,imx93-pdfc", },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, imx93_pdfc_dt_ids);
-+
-+static struct platform_driver imx93_pdfc_bridge_driver = {
-+	.probe	= imx93_pdfc_bridge_probe,
-+	.driver	= {
-+		.of_match_table = imx93_pdfc_dt_ids,
-+		.name = "imx93_pdfc",
-+	},
-+};
-+module_platform_driver(imx93_pdfc_bridge_driver);
-+
-+MODULE_DESCRIPTION("NXP i.MX93 parallel display format configuration driver");
-+MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
-+MODULE_LICENSE("GPL");
+localhost:~# i2cdetect -l
+i2c-0	i2c       	OMAP I2C adapter                	I2C adapter
+i2c-1	i2c       	OMAP I2C adapter                	I2C adapter
+i2c-2	i2c       	OMAP I2C adapter                	I2C adapter
 
--- 
-2.47.3
 
+So as long only kernel drivers are used and matched via devicetree compatib=
+le
+nothing seems to care about the change of bus numbers.
+
+Regards,
+Andreas
