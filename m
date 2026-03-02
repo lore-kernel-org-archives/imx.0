@@ -1,544 +1,164 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8373859E6
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 07:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772436949; cv=pass; b=DH1Anh2AYibbpd15WrKvhOZcQZwMSf+IggLm1+CsuRtpLGsS6BLCEY/ZG7ZqUKT2ZcUMlsLZZ+ro45YZNi21/6O+Ih3wsvdFdU/0Hx3RcZuMHFoc4kMYp6hOAZtXKQJBXBYgTSt5dbvWPez7JzcftNLKpxhV5R/h2AWziwCE5XI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772436949; c=relaxed/simple;
-	bh=ujd5yXOhTDzHrD3boEovwrv4TuSWaU3Puvvt4/TwwnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cY9MQubUge6tdLqwH12g6/xnxFoyiOFokDwpbiTwn/mbWAGyCGntHmoiAXLkAYIbY4uBGN9p2p3xJIg0R/0rGJvsMcqQ+zR3reCCdJzLlWVkCOpRCoqsV0a4rNtvm2D+i35S51WAJab9Gv85ZW5bU6ootm5kzpJzfe28EhTEHjA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WjpfyOow; arc=pass smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A0D3859E1
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 07:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772437633; cv=none; b=W8HMo+Q4vIVPGbg0wQ4VegEmbqddg48JePqnPLfUVL/v12HWvia/ZEdO6yaBmPz4PA2kFiTXDE2Y988L4ZFRZdI3kWRw1DHTiMyIavFardYRvmHk1OTTO2TOk4oj6MrQsdRoiCPAFwRWk/oJ5xquuFBmf/gBy3n9I2PhxrimPlk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772437633; c=relaxed/simple;
+	bh=xSIZpSl0bzT5ncKHIOJrQHcDCKTg9OSZ3st72BWj5dQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Am07/rMrq3ARnK0ThYaIIK0f+H5hXXHQotM9jddZHk5Ba3FkZhKO4zVfr8+QmEmEJvg8w4QDi6khAHBgh7nup9qIv5+45nT3eH11m+Ho83nqEAfUXxxjmlerrfcMQ0zmt7BERRWV+7cumcHJsB4OIOZkyVNA7OfrhKlTmVdO5GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lrsaw564; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WjpfyOow"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-46391f4c1f9so2761936b6e.0
-        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 23:35:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772436944; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gRAspAAukHoW5DEnHOGqKJ07Q/r/62Gw30J4vQNq8ycDz4Xt4kz9XkQ2/sEjezoyNJ
-         efSK9Ar8Gv0VN+pHlbehZiVqYzCWhpg7Jp0fyqmraHLHsCxkLVZj8RJWJeTiwp0tEXkK
-         9QQuDltyF5oN3wT880rQsXYn/r3pAoNmvkNB67deCpWJlg//ePi3uIl/lxbYYJo5j77S
-         91RintN2clE6690LTDKZ97hsvyBm14cWj4n/OKGq2ZS2iuAQ+HTQJMBjxusxuFvlGemt
-         yFp+rTvkpeydhwI3ZVeU+4DiNSNmF+Sk0VPJSiw9yLOKD7ph5g/s7rPLifYODV1b9Ke7
-         SwNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2mC1y6DD7pcz5Nf2sOZ2nH/LBUN0Jx9nFjMcf/CfvDQ=;
-        fh=qb1SoSGKMnTG4ODTttSXJhLIUTM/n2mEEdmatwbiOcM=;
-        b=fGvjOw69Eddw7H2p70If9LYXfvlO6Nl9iFcqJoTxMAizFe0bD1tVa6tdKmco9v8RQH
-         DYhoFGyaIfubNVPz0q+N4tZxl8/rOHrLhyNqXGFlQ5gCIlFFYCjflj0116LLIHsRfon5
-         VqHF4H4c5szf63Ezx0Mo72unWuqcPhvsV166lynhK8LSsdPo1jtfeJmnZekWvQTRSzzX
-         kzdjB3SIIFtL7843GwiPWVicvtptOSbcEAM1nOVoTD6f1Q21Z2uaaj/RZ2+/eLHhY+oP
-         +RTGzATtj1KxZp5G2a/JohAeTGNki5oenZW+oIGGlgVXr7+h0hobIHNw1yxX5XaA43C+
-         3D8Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lrsaw564"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-389e87e3452so62049521fa.3
+        for <imx@lists.linux.dev>; Sun, 01 Mar 2026 23:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772436944; x=1773041744; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2mC1y6DD7pcz5Nf2sOZ2nH/LBUN0Jx9nFjMcf/CfvDQ=;
-        b=WjpfyOowbZ8njVeJyvg5zpMngRjUG0STVMYjeCFN+v3su1Ul0vV250s22JUnuRmna5
-         lJIZ2Bv6rSn4du4okmhW+xQV9UpxNYI353VCz5/lsgVYjKlLDSLWM9ax+5mrKIf2v9VW
-         NpGa3Apu6w3EN2HBRc0LzNLn/W2ifFm+ZK0k4E/0CL1RNYH3t4VX/tglMARlEDe78kzt
-         05pSUqqHq9rdD6agximm2EH+QYDeuBNtBp4rnROsAnbp+mIB3JBPSyKOy09GjyaSWVOx
-         leZL3fz1pY3fepZYwjQS55wXYnxdkzBqSU2o8eusIXblEruGlr7cDfZwr6dpV1exhvfj
-         cR9g==
+        d=gmail.com; s=20230601; t=1772437629; x=1773042429; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e68qiM5Z/tLR2me+b5hOCaInO/EcJkXq3qS1H6cb7Bs=;
+        b=Lrsaw5647yjCysf/HfgbeD+J5CEnzJSDaXBcmh/i8AsVIfuPW8kbnoO8xO/Fg2bffS
+         Wo4zWWD6Vj/LvJw5BIAeJ7Djo0ZURZW4+js+njJhRRs8GswUoy+mo20ePQm60FpoB+tL
+         DwKAbKdLLxWzO3vvh6a79eMoYrLovkDNQ+Cak6RE3k3KnHDWbZUyVIvxpdl/lYQNY5M0
+         XB+f2PSIgUrOwvUIIFpdlBhwR0CdM3bQu/clJ3ycPop8RY3eZVzWzVpwMnhOQtY4tjfD
+         qdwUvy3KOBOEBL9epBlwlg4dkS3IHBUk8mU4Iia4i0pP5zIFpoUFl06blx4mIMB0psnv
+         cQJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772436944; x=1773041744;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2mC1y6DD7pcz5Nf2sOZ2nH/LBUN0Jx9nFjMcf/CfvDQ=;
-        b=PH5+KOI/JlXnvmr7VG5T6j3CF3lyMhWNb3/eDAEp+SGNdVQBDwohGTZGi5hLNyV97V
-         GY6JlYM8bBOEEJtYxlq68jaKG4sotG6tA5B25Xyp8033g3ucXXW4hUcsWk2HKvnNpU69
-         oOatj8ciPMlih5zVt3r4V2Upi6kYjHM+nvBJ39PUVGjmaoUpq3UG3hh0sW4cSPn99Y47
-         FAzZ+IvAF0NAcUfDdo79nlKSvH2n3sjqJhZgBDI6zwMFwV8CR1q/MESe5CkP2swLbG+N
-         oZlbp+0ewrPyUR7TO6ZftJZkQIjNzzAt9G4d77+ZMlqDLixqtRBhovisG9cRqeRYt96x
-         riKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTIxZO/enLpZMjXhhAWnRqgDajsl9ut96s0I32KbjimSq8dsTlncYgiy7Sfz8j1seKmrI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwruLdLV5bN0OtSu8Lb+nanK0cErL5mRxpFbT5Z0aiJC8Kn9X6q
-	i7Tijn951dVo/Eth7RTuiaaqN4SqdLAuJ47SqEVpj5ivEVP2D+73SDCnUjNuBDzQSKpxzfnDuwR
-	mBdBaiUM/A05cem6erzCy7sApd5HJaLU=
-X-Gm-Gg: ATEYQzxy+WWLYMj/yRJawWiTxly8h6shtVeC56IIMGXaD2wgfPt/73ffWSbsPINO2QQ
-	97Mecm6LaRL7j8QL7R08THBAJ4MLwfqMBbuRWkDtY+sSrtU2Su9iX9JfaSnh+3nfSKd38Siz86v
-	MKlowyHMvkj5O0Rfq1Uvl8UGCqTx4PGapjk+1uNDFMmoaVz2UNalkPACpLB4EL+q+MVfh0IzycR
-	TQ0Lil15FiYRChcWMLb+QJNzFP3+LEgWWntkWtz5kVGwVfLhYKZH4s/m37FgfU1595KkO31KU7u
-	DLlsp7GpyqFcwiXffsmjLmZmsny67s7KNbD4ORFB0nweg6y74oX/ljZfRsoE+Llkq01j+HN6qP7
-	FwePuKMk5XQ==
-X-Received: by 2002:a05:6820:4988:b0:66e:1928:ca4f with SMTP id
- 006d021491bc7-679faf11891mr5541109eaf.49.1772436943542; Sun, 01 Mar 2026
- 23:35:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772437629; x=1773042429;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e68qiM5Z/tLR2me+b5hOCaInO/EcJkXq3qS1H6cb7Bs=;
+        b=pVvgeVwEv4CyVVQw276x3DqPFCYwD9uG6d07ohMhiDvCaRxavn2oG28Xux2pgvUPcv
+         99vWPFT5CIOrnWREhQNM/OuOX1km146Q+7/A/tALbw0KSRs6EddZh0H7psChUTfgSCYb
+         nfvVAqvm2Gc88gQ88YU2wiBqR+TPmfOrUHfuFv5PGg/jixIOh1c7Dc6ZqFuE6HeRvgUY
+         2DEedDWHs4c6LL5WGRdf7wzSh9vhDUnJNIgCZ2dZVJT7ScU9p7KUJFdhcxXbVIwTx9fk
+         SXquXichoIKbhbosrFfq0yAH4tPOQYqMZrFdVXtPFaO+jEeh9Lf7fmaBGSRJykVNC++l
+         MHnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyEPdKj4eJlCn2DOCSjtV8nxsZS3GWoa+WVhFxr8pbfI2eoW4WLjb023Op06O0A75ePHU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyfGznSAXvx/A0fjy2aBdrIL05HQ4M33NeNRzfZ+pXxsT+ete9u
+	8l9g62MoS7GrKKPBxH+kOCcsKZTEUW6XbO2CqfeTPdkp9EKmmX8sSFyA
+X-Gm-Gg: ATEYQzxb5VVM8wNAQW0ssw5JbOZS8xwX4J4Mr+L35/BjFbjN1jV/5aVIRY5RGir9LiH
+	4Yv73yf7UnkOkh0oT1t1mjRa08t4lkesKn3XY2FygOHl/lDuf4shPOXnKoHnK/fsIOKyqaeGc/O
+	57xR9UEOj/7LNHT1Fxt+TWW4JLl8nOe91QJIsfa5habqGs81No/zC5BEs2TLieEvQ1E+Hq4o7Ap
+	bqdwaATGOeA7xkGCvbghqEoKy1vdMaTyIj//BnkXb8sx8ap2bh8ABRpFQ8Vi+0XL0Lgk1F6+0pI
+	z9XUfP9mJUN1iceq7X1NA1t6GJ2nPWshhRO3lJOvzPYm43LWZNFKzVU0FcWTFp6H5WG/prNEFDi
+	CgVupPaHIB5KtfTAp2x7wwzCfX5dTVn8u1FYiBeNkI7h0uqNPRXwgyngoYRVkrxDirYprlPW54/
+	9pZbD16fWraNq0aMp/99gj4EHSkg==
+X-Received: by 2002:a05:651c:1c7:b0:383:1c5f:84c7 with SMTP id 38308e7fff4ca-389ff130e18mr78428611fa.12.1772437628986;
+        Sun, 01 Mar 2026 23:47:08 -0800 (PST)
+Received: from [10.38.18.76] ([213.255.186.37])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a10a319f05sm3299418e87.50.2026.03.01.23.47.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 01 Mar 2026 23:47:08 -0800 (PST)
+Message-ID: <ac23aec1-6dce-4dd5-8990-9fad40998478@gmail.com>
+Date: Mon, 2 Mar 2026 09:47:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260302002729.19438-1-dakr@kernel.org> <20260302002729.19438-2-dakr@kernel.org>
-In-Reply-To: <20260302002729.19438-2-dakr@kernel.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Mon, 2 Mar 2026 15:35:32 +0800
-X-Gm-Features: AaiRm50_s22j6LsCWMU-TfsOHqNdXrP3vXkDmNbbxBCzOFnGOAxq_l0pLMJKbQI
-Message-ID: <CALbr=LbsXYYVGc6d6AC7APDW+u+UHzLj2-c3DNcMKN2ZSyYYJw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] driver core: generalize driver_override in struct device
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
-	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org, Wang Jiayue <akaieurus@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF node
+ through the adapter struct
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+ Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+ Andi Shyti <andi.shyti@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org,
+ Matti Vaittinen <mazziesaccount@gmail.com>
+References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
+ <20260223-i2c-adap-dev-config-v2-1-d78db0a6fcf7@oss.qualcomm.com>
+Content-Language: en-US
+From: Kalle Niemi <kaleposti@gmail.com>
+In-Reply-To: <20260223-i2c-adap-dev-config-v2-1-d78db0a6fcf7@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 2, 2026 at 8:27=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> Currently, there are 12 busses (including platform and PCI) that
-> duplicate the driver_override logic for their individual devices.
->
-> All of them seem to be prone to the bug described in [1].
->
-> While this could be solved for every bus individually using a separate
-> lock, solving this in the driver-core generically results in less (and
-> cleaner) changes overall.
->
-> Thus, move driver_override to struct device, provide corresponding
-> accessors for busses and handle locking with a separate lock internally.
->
-> In particular, add device_set_driver_override(),
-> device_has_driver_override(), device_match_driver_override() and a
-> helper, DEVICE_ATTR_DRIVER_OVERRIDE(), to declare the corresponding
-> sysfs store() and show() callbacks.
->
-> Until all busses have migrated, keep driver_set_override() in place.
->
-> Note that we can't use the device lock for the reasons described in [2].
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220789 [1]
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kern=
-el.org/ [2]
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-Hi Danilo,
-
-I wanted to test if this fixes the issue using PoCs, but I'm hitting a
-KASAN splat right during boot. The issue disappears if I revert this
-patch.
-
-KASAN report:
-[    7.266874] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    7.267707] BUG: KASAN: slab-use-after-free in device_release+0x1f4/0x24=
-0
-[    7.267707] Read of size 8 at addr ffff888003f4a370 by task kworker/1:0/=
-24
-[    7.267707]
-[    7.267707] CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0 Not tainted
-7.0.0-rc2-00001-gc1a10dc76109 #4 PREEMP
-[    7.267707] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX,
-arch_caps fix, 1996), BIOS 1.16.3-de4
-[    7.267707] Workqueue: events_long serio_handle_event
-[    7.267707] Call Trace:
-[    7.267707]  <TASK>
-[    7.267707]  dump_stack_lvl+0x66/0xa0
-[    7.267707]  print_report+0xce/0x660
-[    7.267707]  ? device_release+0x1f4/0x240
-[    7.267707]  ? __virt_addr_valid+0x208/0x410
-[    7.267707]  ? device_release+0x1f4/0x240
-[    7.267707]  kasan_report+0xe0/0x110
-[    7.267707]  ? device_release+0x1f4/0x240
-[    7.267707]  device_release+0x1f4/0x240
-[    7.267707]  kobject_put+0x1c8/0x450
-[    7.267707]  atkbd_connect+0x615/0x9e0
-[    7.267707]  ? __pfx_atkbd_connect+0x10/0x10
-[    7.267707]  ? kernfs_create_link+0x169/0x230
-[    7.267707]  ? do_raw_spin_unlock+0x53/0x220
-[    7.267707]  serio_driver_probe+0x72/0xb0
-[    7.267707]  really_probe+0x254/0x910
-[    7.267707]  __driver_probe_device+0x20b/0x3d0
-[    7.267707]  driver_probe_device+0x45/0x130
-[    7.267707]  __driver_attach+0x1f6/0x550
-[    7.267707]  ? __pfx___driver_attach+0x10/0x10
-[    7.267707]  bus_for_each_dev+0x103/0x180
-[    7.267707]  ? __pfx_bus_for_each_dev+0x10/0x10
-[    7.267707]  ? _raw_spin_unlock_irqrestore+0x3f/0x50
-[    7.267707]  ? lockdep_hardirqs_on_prepare+0xea/0x1a0
-[    7.267707]  serio_handle_event+0x1ce/0x840
-[    7.267707]  process_one_work+0x7fc/0x1760
-[    7.267707]  ? __pfx_process_one_work+0x10/0x10
-[    7.267707]  ? lock_is_held_type+0x8f/0x100
-[    7.267707]  ? __pfx_serio_handle_event+0x10/0x10
-[    7.267707]  worker_thread+0x593/0xfb0
-[    7.267707]  ? __pfx_worker_thread+0x10/0x10
-[    7.267707]  kthread+0x319/0x400
-[    7.267707]  ? __pfx_kthread+0x10/0x10
-[    7.267707]  ret_from_fork+0x590/0x830
-[    7.267707]  ? __pfx_ret_from_fork+0x10/0x10
-[    7.267707]  ? __switch_to+0x860/0xe50
-[    7.267707]  ? __switch_to_asm+0x39/0x70
-[    7.267707]  ? __switch_to_asm+0x33/0x70
-[    7.267707]  ? __pfx_kthread+0x10/0x10
-[    7.267707]  ret_from_fork_asm+0x1a/0x30
-[    7.267707]  </TASK>
-[    7.267707]
-[    7.267707] Allocated by task 24:
-[    7.267707]  kasan_save_stack+0x33/0x60
-[    7.267707]  kasan_save_track+0x14/0x30
-[    7.267707]  __kasan_kmalloc+0x8f/0xa0
-[    7.267707]  input_allocate_device+0x3f/0x330
-[    7.267707]  atkbd_connect+0x97/0x9e0
-[    7.267707]  serio_driver_probe+0x72/0xb0
-[    7.267707]  really_probe+0x254/0x910
-[    7.267707]  __driver_probe_device+0x20b/0x3d0
-[    7.267707]  driver_probe_device+0x45/0x130
-[    7.267707]  __driver_attach+0x1f6/0x550
-[    7.267707]  bus_for_each_dev+0x103/0x180
-[    7.267707]  serio_handle_event+0x1ce/0x840
-[    7.267707]  process_one_work+0x7fc/0x1760
-[    7.267707]  worker_thread+0x593/0xfb0
-[    7.267707]  kthread+0x319/0x400
-[    7.267707]  ret_from_fork+0x590/0x830
-[    7.267707]  ret_from_fork_asm+0x1a/0x30
-[    7.267707]
-[    7.267707] Freed by task 24:
-[    7.267707]  kasan_save_stack+0x33/0x60
-[    7.267707]  kasan_save_track+0x14/0x30
-[    7.267707]  kasan_save_free_info+0x3b/0x60
-[    7.267707]  __kasan_slab_free+0x43/0x70
-[    7.267707]  kfree+0x193/0x4f0
-[    7.267707]  input_dev_release+0xa6/0xd0
-[    7.267707]  device_release+0x9a/0x240
-[    7.267707]  kobject_put+0x1c8/0x450
-[    7.267707]  atkbd_connect+0x615/0x9e0
-[    7.267707]  serio_driver_probe+0x72/0xb0
-[    7.267707]  really_probe+0x254/0x910
-[    7.267707]  __driver_probe_device+0x20b/0x3d0
-[    7.267707]  driver_probe_device+0x45/0x130
-[    7.267707]  __driver_attach+0x1f6/0x550
-[    7.267707]  bus_for_each_dev+0x103/0x180
-[    7.267707]  serio_handle_event+0x1ce/0x840
-[    7.267707]  process_one_work+0x7fc/0x1760
-[    7.267707]  worker_thread+0x593/0xfb0
-[    7.267707]  kthread+0x319/0x400
-[    7.267707]  ret_from_fork+0x590/0x830
-[    7.267707]  ret_from_fork_asm+0x1a/0x30
-[    7.267707]
-[    7.267707] The buggy address belongs to the object at ffff888003f4a000
-[    7.267707]  which belongs to the cache kmalloc-2k of size 2048
-[    7.267707] The buggy address is located 880 bytes inside of
-[    7.267707]  freed 2048-byte region [ffff888003f4a000, ffff888003f4a800)
-[    7.267707]
-[    7.267707] The buggy address belongs to the physical page:
-[    7.267707] page: refcount:0 mapcount:0 mapping:0000000000000000
-index:0xffff888003f4b800 pfn:0x3f48
-[    7.267707] head: order:3 mapcount:0 entire_mapcount:0
-nr_pages_mapped:0 pincount:0
-[    7.267707] flags: 0x100000000000240(workingset|head|node=3D0|zone=3D1)
-[    7.267707] page_type: f5(slab)
-[    7.267707] raw: 0100000000000240 ffff888001043240 ffff888001041088
-ffff888001041088
-[    7.267707] raw: ffff888003f4b800 0000000000050002 00000000f5000000
-0000000000000000
-[    7.267707] head: 0100000000000240 ffff888001043240
-ffff888001041088 ffff888001041088
-[    7.267707] head: ffff888003f4b800 0000000000050002
-00000000f5000000 0000000000000000
-[    7.267707] head: 0100000000000003 ffffea00000fd201
-00000000ffffffff 00000000ffffffff
-[    7.267707] head: 0000000000000000 0000000000000000
-00000000ffffffff 0000000000000000
-[    7.267707] page dumped because: kasan: bad access detected
-[    7.267707]
-[    7.267707] Memory state around the buggy address:
-[    7.267707]  ffff888003f4a200: fb fb fb fb fb fb fb fb fb fb fb fb
-fb fb fb fb
-[    7.267707]  ffff888003f4a280: fb fb fb fb fb fb fb fb fb fb fb fb
-fb fb fb fb
-[    7.267707] >ffff888003f4a300: fb fb fb fb fb fb fb fb fb fb fb fb
-fb fb fb fb
-[    7.267707]                                                             =
- ^
-[    7.267707]  ffff888003f4a380: fb fb fb fb fb fb fb fb fb fb fb fb
-fb fb fb fb
-[    7.267707]  ffff888003f4a400: fb fb fb fb fb fb fb fb fb fb fb fb
-fb fb fb fb
-[    7.267707] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    7.293685] Disabling lock debugging due to kernel taint
-
-This is on a basic QEMU x86_64 VM. Note that I did not apply the "WIP:
-treewide: make callsites use generic driver_override" patch.
-
-I'm currently looking into the root cause.
-
-Thanks.
-
+On 2/23/26 11:05, Bartosz Golaszewski wrote:
+> In order to stop i2c bus drivers from dereferencing the struct device
+> embedded in struct i2c_adapter, let's allow configuring the parent
+> device and OF-node of the adapter directly through dedicated fields.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 > ---
->  drivers/base/core.c    |  2 ++
->  drivers/base/dd.c      | 60 +++++++++++++++++++++++++++++++
->  include/linux/device.h | 81 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 143 insertions(+)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 791f9e444df8..a8cb90577d10 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2566,6 +2566,7 @@ static void device_release(struct kobject *kobj)
->         else
->                 WARN(1, KERN_ERR "Device '%s' does not have a release() f=
-unction, it is broken and must be fixed. See Documentation/core-api/kobject=
-.rst.\n",
->                         dev_name(dev));
-> +       kfree(dev->driver_override.name);
->         kfree(p);
->  }
->
-> @@ -3159,6 +3160,7 @@ void device_initialize(struct device *dev)
->         kobject_init(&dev->kobj, &device_ktype);
->         INIT_LIST_HEAD(&dev->dma_pools);
->         mutex_init(&dev->mutex);
-> +       spin_lock_init(&dev->driver_override.lock);
->         lockdep_set_novalidate_class(&dev->mutex);
->         spin_lock_init(&dev->devres_lock);
->         INIT_LIST_HEAD(&dev->devres_head);
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index 0354f209529c..697e36e63cab 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -381,6 +381,66 @@ static void __exit deferred_probe_exit(void)
->  }
->  __exitcall(deferred_probe_exit);
->
-> +int __device_set_driver_override(struct device *dev, const char *s, size=
-_t len)
-> +{
-> +       const char *new, *old;
-> +       char *cp;
+>   drivers/i2c/i2c-core-base.c | 5 +++++
+>   include/linux/i2c.h         | 4 ++++
+>   2 files changed, 9 insertions(+)
+> 
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 9c46147e3506d15d53b9b7d6b592709de56e41b9..dd8cec9b04c64b8340d20e018ab5ba28f1f7f5c9 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -1561,6 +1561,11 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+>   	adap->dev.type = &i2c_adapter_type;
+>   	device_initialize(&adap->dev);
+>   
+> +	if (!adap->dev.parent)
+> +		adap->dev.parent = adap->parent;
+> +	if (!adap->dev.of_node)
+> +		adap->dev.of_node = adap->of_node;
 > +
-> +       if (!s)
-> +               return -EINVAL;
+>   	/*
+>   	 * This adapter can be used as a parent immediately after device_add(),
+>   	 * setup runtime-pm (especially ignore-children) before hand.
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index 20fd41b51d5c85ee1665395c07345faafd8e2fca..72677f29aff161530bc3c497d1e07144a44eb9e4 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -761,6 +761,10 @@ struct i2c_adapter {
+>   	struct irq_domain *host_notify_domain;
+>   	struct regulator *bus_regulator;
+>   
+> +	/* Device configuration. */
+> +	struct device *parent;
+> +	struct device_node *of_node;
 > +
-> +       /*
-> +        * The stored value will be used in sysfs show callback (sysfs_em=
-it()),
-> +        * which has a length limit of PAGE_SIZE and adds a trailing newl=
-ine.
-> +        * Thus we can store one character less to avoid truncation durin=
-g sysfs
-> +        * show.
-> +        */
-> +       if (len >=3D (PAGE_SIZE - 1))
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * Compute the real length of the string in case userspace sends =
-us a
-> +        * bunch of \0 characters like python likes to do.
-> +        */
-> +       len =3D strlen(s);
-> +
-> +       if (!len) {
-> +               /* Empty string passed - clear override */
-> +               spin_lock(&dev->driver_override.lock);
-> +               old =3D dev->driver_override.name;
-> +               dev->driver_override.name =3D NULL;
-> +               spin_unlock(&dev->driver_override.lock);
-> +               kfree(old);
-> +
-> +               return 0;
-> +       }
-> +
-> +       cp =3D strnchr(s, len, '\n');
-> +       if (cp)
-> +               len =3D cp - s;
-> +
-> +       new =3D kstrndup(s, len, GFP_KERNEL);
-> +       if (!new)
-> +               return -ENOMEM;
-> +
-> +       spin_lock(&dev->driver_override.lock);
-> +       old =3D dev->driver_override.name;
-> +       if (cp !=3D s) {
-> +               dev->driver_override.name =3D new;
-> +               spin_unlock(&dev->driver_override.lock);
-> +       } else {
-> +               /* "\n" passed - clear override */
-> +               dev->driver_override.name =3D NULL;
-> +               spin_unlock(&dev->driver_override.lock);
-> +
-> +               kfree(new);
-> +       }
-> +       kfree(old);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(__device_set_driver_override);
-> +
->  /**
->   * device_is_bound() - Check if device is bound to a driver
->   * @dev: device to check
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 0be95294b6e6..4599156d5cbd 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -266,6 +266,33 @@ ssize_t device_show_string(struct device *dev, struc=
-t device_attribute *attr,
->         struct dev_ext_attribute dev_attr_##_name =3D \
->                 { __ATTR(_name, (_mode) & ~0222, device_show_string, NULL=
-), (_var) }
->
-> +/**
-> + * DEVICE_ATTR_DRIVER_OVERRIDE - Define sysfs driver_override attribute =
-callbacks
-> + *
-> + * Generates the standard driver_override_show() and driver_override_sto=
-re()
-> + * sysfs callbacks and the static DEVICE_ATTR_RW(driver_override) declar=
-ation.
-> + */
-> +#define DEVICE_ATTR_DRIVER_OVERRIDE()                                   =
-       \
-> +static ssize_t driver_override_store(struct device *dev,                =
-       \
-> +                                    struct device_attribute *attr,      =
-       \
-> +                                    const char *buf, size_t count)      =
-       \
-> +{                                                                       =
-       \
-> +       int ret;                                                         =
-       \
-> +                                                                        =
-       \
-> +       ret =3D __device_set_driver_override(dev, buf, count);           =
-         \
-> +       if (ret)                                                         =
-       \
-> +               return ret;                                              =
-       \
-> +                                                                        =
-       \
-> +       return count;                                                    =
-       \
-> +}                                                                       =
-       \
-> +static ssize_t driver_override_show(struct device *dev,                 =
-               \
-> +                                   struct device_attribute *attr, char *=
-buf)   \
-> +{                                                                       =
-       \
-> +       guard(spinlock)(&dev->driver_override.lock);                     =
-       \
-> +       return sysfs_emit(buf, "%s\n", dev->driver_override.name);       =
-       \
-> +}                                                                       =
-       \
-> +static DEVICE_ATTR_RW(driver_override)
-> +
->  #define DEVICE_ATTR_IGNORE_LOCKDEP(_name, _mode, _show, _store) \
->         struct device_attribute dev_attr_##_name =3D              \
->                 __ATTR_IGNORE_LOCKDEP(_name, _mode, _show, _store)
-> @@ -483,6 +510,8 @@ struct device_physical_location {
->   *             on.  This shrinks the "Board Support Packages" (BSPs) and
->   *             minimizes board-specific #ifdefs in drivers.
->   * @driver_data: Private pointer for driver specific info.
-> + * @driver_override: Driver name to force a match.  Do not touch directl=
-y; use
-> + *                  device_set_driver_override() instead.
->   * @links:     Links to suppliers and consumers of this device.
->   * @power:     For device power management.
->   *             See Documentation/driver-api/pm/devices.rst for details.
-> @@ -576,6 +605,10 @@ struct device {
->                                            core doesn't touch it */
->         void            *driver_data;   /* Driver data, set and get with
->                                            dev_set_drvdata/dev_get_drvdat=
-a */
-> +       struct {
-> +               const char      *name;
-> +               spinlock_t      lock;
-> +       } driver_override;
->         struct mutex            mutex;  /* mutex to synchronize calls to
->                                          * its driver.
->                                          */
-> @@ -701,6 +734,54 @@ struct device_link {
->
->  #define kobj_to_dev(__kobj)    container_of_const(__kobj, struct device,=
- kobj)
->
-> +int __device_set_driver_override(struct device *dev, const char *s, size=
-_t len);
-> +
-> +/**
-> + * device_set_driver_override() - Helper to set or clear driver override=
-.
-> + * @dev: Device to change
-> + * @s: NUL-terminated string, new driver name to force a match, pass emp=
-ty
-> + *     string to clear it ("" or "\n", where the latter is only for sysf=
-s
-> + *     interface).
-> + *
-> + * Helper to set or clear driver override of a device.
-> + *
-> + * Returns: 0 on success or a negative error code on failure.
-> + */
-> +static inline int device_set_driver_override(struct device *dev, const c=
-har *s)
-> +{
-> +       return __device_set_driver_override(dev, s, strlen(s));
-> +}
-> +
-> +/**
-> + * device_has_driver_override() - Check if a driver override has been se=
-t.
-> + * @dev: device to check
-> + *
-> + * Returns true if a driver override has been set for this device.
-> + */
-> +static inline bool device_has_driver_override(struct device *dev)
-> +{
-> +       guard(spinlock)(&dev->driver_override.lock);
-> +       return !!dev->driver_override.name;
-> +}
-> +
-> +/**
-> + * device_match_driver_override() - Match a driver against the device's =
-driver_override.
-> + * @dev: device to check
-> + * @drv: driver to match against
-> + *
-> + * Returns > 0 if a driver override is set and matches the given driver,=
- 0 if a
-> + * driver override is set but does not match, or < 0 if a driver overrid=
-e is not
-> + * set at all.
-> + */
-> +static inline int device_match_driver_override(struct device *dev,
-> +                                              const struct device_driver=
- *drv)
-> +{
-> +       guard(spinlock)(&dev->driver_override.lock);
-> +       if (dev->driver_override.name)
-> +               return !strcmp(dev->driver_override.name, drv->name);
-> +       return -1;
-> +}
-> +
->  /**
->   * device_iommu_mapped - Returns true when the device DMA is translated
->   *                      by an IOMMU
-> --
-> 2.53.0
->
+>   	struct dentry *debugfs;
+>   
+>   	/* 7bit address space */
+> 
+
+Hello,
+
+Automated driver test system bisected this commit to be the first bad 
+commit, linux-next next-20260227 was tested. Failed tests include driver 
+tests for ROHM PMIC and accelerometers, which are connected to 
+BeagleBone Black.
+
+The failed driver tests all fail to first i2cget and the tests stop 
+there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such file or 
+directory".
+
+BR
+Kalle Niemi
+
