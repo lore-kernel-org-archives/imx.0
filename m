@@ -1,331 +1,107 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C195138BF70
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 08:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772441717; cv=pass; b=gzr6NVgSyHZllp4zhoyIPfEr4fLMbh4m6J9Nj2YSveheNs1cSniiM65mi3LHDnc0dZkf0H8+6a9Uj+roSETkaMOmI/30yB7HPx+zHlhY/lccqCjsB419fYolKdstPCNJ88ASBUYgIUFLL7TEZ5wDkt+DNcAGypcTVnAZ+sjaBWY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AC238BF9E
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 08:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772441717; cv=none; b=Z4ezFQ+8WpN13ZqihkHkzw35e1GdbhFZaNM677YAUSTB/s5X1izzpYobptM5IDCZxmsqzoQRmwH+eGQGdb3juvPeJdmWyDI3fI7KZurCM9oNmEUTQx1PxDQCfDRcH/Zv9LFPWQA8pLSQx0JT2FmEc/2PsWx4yRvEqM+nSTOviUo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772441717; c=relaxed/simple;
-	bh=bFpTLNONMCtq/hflXyzdrakhOOHzGsAXXxv5XUvHc6c=;
+	bh=Wr4tlDRl6oPSAmOvngxm+4SQmIJt0rroCHEQsJvSNW8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=omlGl3uUBU23rS+L/mtz9soes7TCZfmA/UlbQpNrOP2HWSj1oJGV9dxQ9fN0ebnmQGMKAEpqo4Dfe/LD4HkIEf564ptF2oc6Y7qnxbhk6KDsoWfPW7L1EWjwRs8DVi0EVTw9lmwFsucegCllA21B9ePIs8rE22eCheCPuND7jyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dG98TFvv; arc=pass smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=NQWss5dg1QM/8Ue326YQrquzBostb4JNUHd28gWwN06VsECes1c/hisdUgowmqEEg7hdYUZmZ7UjjZkQyu6aPxOLQTTwgLnGuhbnn7++23o+OM/gbaME+eHXO4vM10nGJtY2VnQyGqsYNQYvv9KFtmWE+GMpMraMpiCehRTkqEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OguXo6j+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dG98TFvv"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d19d3c7208so3230730a34.0
-        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 00:55:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772441715; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VdVl2+0eqCkFCM4iJWHfq4aLSDKeT7OkN/5j+NhXTBwdOC2xFJC/JU9zm3ajyd9t8q
-         sc0lOiIs1zlA8po9xPKYnIKrH10nOfbwBqXuYcZnxlL25avTUd3QJCXWYzHHpw03JzAa
-         JEK41GfRcqbDVKvZ1RdtS+chL/etWYMCwTC/0H+1unAwf2TmETg9jx8HrwQqYa7ejntG
-         JBisheRSeyO6uCCELVfjEjYAQ58VGdamLIlWIu0o+/yJHNM+VL3S345dmtadwqiu4G4p
-         MRee1Ug6/dYUTkGMuu05Ui7N1PL5cNQAyaue32K2C1K83soBu6Pq+oZK1rVmBuWMNNTE
-         PzRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ePit+T4AFW9LmVvwSqNQ9rEOMAXI8L897EaFC+SIDkg=;
-        fh=cD3Vji93VxYwqpIHCDfsA3E/CCrPIcP6oSRJvTECuQg=;
-        b=Fto16Hjb+vBDqd7LNCATFAFwbC/L0NA3cA/l3+nGRsoEnBz1Ia9f3kOSY5zf9n7UGn
-         OceP/O09yPYSfcQD9vXzbM7hdaZJHr0bzTBWwP/5fRnch/3Q5ungRBgyaoh4cz9w9RQN
-         EQdNBBHEOv8F1QWNu3ol3jvPMJou1onpvvOlyuQI1D/2oBzDqFIj4QHkyp+3igvJfm7y
-         RjTtzgeIYW9UAVkXSYbae+NfkeGSjdT10rbmIS+GyPbs6WqA0+RR27CMbYUlLiDaxZ3h
-         I9NZ/seIRnAl+588+PTVs/r9AR1xuZkdiYFwPMqtJl8qAwqYAfnM9geMDmY9Tjzg3ubo
-         uHkw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772441715; x=1773046515; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ePit+T4AFW9LmVvwSqNQ9rEOMAXI8L897EaFC+SIDkg=;
-        b=dG98TFvvJuyeExUiGQ7q1jZm4ZiOclXGPKIPQvoRPtz4i3F5Hwyg59Xknn7KfZ0aA4
-         YbYZXaEu41huf7oxtnlJ1kxhayCq2Xz+Bnn7V9wLzw8gaI023x8x6eesJIN0GV32vV8N
-         0dJ0GUUi4hX0maEuXBqZLA5UDyPmDBGYTD42F2owkkbH7nZ93tL+XZBNhpDvNoM/LBtT
-         6C7xDFGdaec9IE1RIcOzO9KhGG3MTJOT4+6+7EqfqVP2uxyG21O0tvL9NcSZ8u1p0KRj
-         kD7U1G2hmpSBIhoEsn1AZA1txccHB2As+dKwCQpBlFrFfUyBEJOGU5zT6ACDQ/o938WJ
-         W0Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772441715; x=1773046515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ePit+T4AFW9LmVvwSqNQ9rEOMAXI8L897EaFC+SIDkg=;
-        b=F7lFIv4be74Gu9zoozMmGKoMlcw8nwMbShu2RTCw9D/KHYaeb2bxrZyw/KgAYhwk//
-         TPMUTxvwYEhQ8m/HRhT3CibU7O82alg+GCdD/M6nsoQ3u+4Zvd3tWZN8X3Bc7JYaJQvR
-         j12phZqNa8pIgu2DBKic3WiKln+dX8IwBhximSefofMqYCAnbcs6ilaFThhyXeHHUQ95
-         pLEh6vcIcrtWurD0a/YSgn3g73HkXXTMmumpNm6lCqGXHGgUZI+h3lWpczP/Bke+OQQz
-         LYEmPYoqxmv65WpkelJXGIVsbCpGEAoBfOzo/ls+srKwsrj9asPPN0v3zSgfFE94lLFx
-         xbFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXOMskdcnqv1J5qZ2lD5rr2aL4vznf4GL3tifBI9SSOOJuIkoBXWTWufCeCdr2lYy0g/Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzuVj+7QTGcOjPrsRgEbNhNOn7/rfk0saarvk157ADZ7/tbxLHl
-	54PPqCq4VEZMVRhbA6PylQ5RIZMERntnfjgBDxnBuJOTS5tMopKLF80HopbQ51NUd+aLzYQbSrH
-	fWOa6OiICpnaBXQJnEtfL2+WF6Fz/C1M=
-X-Gm-Gg: ATEYQzxTLvJyc/Pl3gEQSS1p7EvNcjEfCEsosVpMFFCuAj54arzE15GUZ5N4AQ7onuM
-	Yh2XVq45b/cbY8Mq1DZNaxaeJIhYs4U2hDkCbqhwhWVZyeaDXTDAXgvzznrhTTCo5djA85S4oI2
-	6VcXFi5LodmBWBDkny0j7Xe1/7gW9osxi/sawu1LPaZ2LhkLIaA6ikiI6tDVEbya6hXyMZsOzcA
-	m5ly5bVRtagNr/8gYXI7NO4vtAS0cRSJMhG9MFj8wUFYsj5SxQSYzWatZ3Hdjwjh+zgbtPFBwfb
-	LmZXz92XRd7QIcP8reIvrLaiVmnFnXfwiejgH75Nlz7uJP/cPHg7OBfg+V0VD9OtUI+kqY9I+Tw
-	=
-X-Received: by 2002:a05:6870:330b:b0:3d3:d18f:8920 with SMTP id
- 586e51a60fabf-41626fba307mr7800002fac.31.1772441714550; Mon, 02 Mar 2026
- 00:55:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OguXo6j+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9914C2BC87
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 08:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772441717;
+	bh=Wr4tlDRl6oPSAmOvngxm+4SQmIJt0rroCHEQsJvSNW8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=OguXo6j+KGJe55bk8IEbL9rPsIwNgDL+hdSJOPpCsW/UrwfixWfneOL/Rb43NbMtc
+	 Xy5/b14r7HsT4zNEi2b2YcsmmLnvxZpss2TO3oeU/hHA7LoxqJNyFhsBOLdHXdSV/w
+	 K24Lna4qdmybb9yy2G097bEfGlymxU2jyISEverK2tROniRtRqJz0/7zcc5AVcKtoz
+	 NTN9Blzhz6bWJfWxNH/36qRtEStrmkzmjZ5hI0GgTU7YX2faK4vL9vw1h482OHEbdG
+	 a29y1JPJtLhEWbefKHPW6aul8+MG2dMoa1ACD48/aez0IGvTstccEgSWdbW5n8PPFo
+	 XYdOtKQ3n0xSw==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3870dec27f4so2869231fa.1
+        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 00:55:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVmzoqqMsJktbcIRvlhZjU+SSZTgUiKEcByLyvtkO8Lg49hRGTrYelSmF3pEvyjink9NrA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwTWzURoMBZgso5wxLNrKXGwfeVBZ2nR+jGQSIr5MCpZp3spTN
+	/zLvpS41CN+omXpyiMikfOBhQSc1UY96JKLE4mnz8wgXZgDitKf9FKRDMlsMfwA35utVpd3Fuxp
+	g7BzDeAeSLJ/EGW5NX7wDxN4vpPBXCMWYf/NrW1kG4g==
+X-Received: by 2002:a2e:b018:0:b0:37f:d9ba:747 with SMTP id
+ 38308e7fff4ca-389f1d73cecmr65334241fa.5.1772441715946; Mon, 02 Mar 2026
+ 00:55:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260302002729.19438-1-dakr@kernel.org> <20260302002729.19438-4-dakr@kernel.org>
-In-Reply-To: <20260302002729.19438-4-dakr@kernel.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Mon, 2 Mar 2026 16:55:04 +0800
-X-Gm-Features: AaiRm51xUTuS6Qp9H7dqDZ552mwa44_EA1IClTLmHMV7GPVb6Uir69uksp6caw0
-Message-ID: <CALbr=LbNE+aviHf+EwZNohzm86skWJu=adQsHaM98vQyKUAyvQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] driver core: platform: use generic driver_override infrastructure
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
-	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org, Wang Jiayue <akaieurus@gmail.com>
+References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
+ <20260223-i2c-adap-dev-config-v2-1-d78db0a6fcf7@oss.qualcomm.com> <ac23aec1-6dce-4dd5-8990-9fad40998478@gmail.com>
+In-Reply-To: <ac23aec1-6dce-4dd5-8990-9fad40998478@gmail.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 2 Mar 2026 09:55:04 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mf7vQYosm7ViZRg31EdPipfuD=wboMtEneGDCXc20tweQ@mail.gmail.com>
+X-Gm-Features: AaiRm53-Jiy54KH5rFLuIQyxPw_sYDt2pmqB7mKXc8_Bgm_qwPjbm9X-evfdjaM
+Message-ID: <CAMRc=Mf7vQYosm7ViZRg31EdPipfuD=wboMtEneGDCXc20tweQ@mail.gmail.com>
+Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF node
+ through the adapter struct
+To: Kalle Niemi <kaleposti@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
+	Matti Vaittinen <mazziesaccount@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 2, 2026 at 8:28=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
-rote:
+On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail.com> wr=
+ote:
 >
-> When a driver is probed through __driver_attach(), the bus' match()
-> callback is called without the device lock held, thus accessing the
-> driver_override field without a lock, which can cause a UAF.
+> On 2/23/26 11:05, Bartosz Golaszewski wrote:
+> > In order to stop i2c bus drivers from dereferencing the struct device
+> > embedded in struct i2c_adapter, let's allow configuring the parent
+> > device and OF-node of the adapter directly through dedicated fields.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
+m>
+> > ---
+> >
 >
-> Fix this by using the driver-core driver_override infrastructure taking
-> care of proper locking internally.
+> Hello,
 >
-> Note that calling match() from __driver_attach() without the device lock
-> held is intentional. [1]
+> Automated driver test system bisected this commit to be the first bad
+> commit, linux-next next-20260227 was tested. Failed tests include driver
+> tests for ROHM PMIC and accelerometers, which are connected to
+> BeagleBone Black.
 >
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kern=
-el.org/ [1]
-> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220789
-> Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'dri=
-ver_override'")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> The failed driver tests all fail to first i2cget and the tests stop
+> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such file or
+> directory".
+>
 
-Looks good to me.
+Wolfram: well, now it would actually be useful to know which commit
+exactly is the culprit so maybe splitting the changes is not a bad
+idea after all.
 
-One minor note for the commit message: this UAF can also be triggered
-from the bind_store path, not just __driver_attach(). It would be good
-to mention this as well.
+Kalle: which i2c bus driver fails here? Any errors in kernel log?
 
-Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
-
-> ---
->  arch/sh/drivers/platform_early.c |  6 ++++--
->  drivers/base/platform.c          | 35 +++++---------------------------
->  drivers/bus/simple-pm-bus.c      |  4 ++--
->  drivers/clk/imx/clk-scu.c        |  3 +--
->  drivers/slimbus/qcom-ngd-ctrl.c  |  6 ++----
->  include/linux/platform_device.h  |  5 -----
->  sound/soc/samsung/i2s.c          |  6 +++---
->  7 files changed, 17 insertions(+), 48 deletions(-)
->
-> diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_=
-early.c
-> index 143747c45206..3cd17bb0be67 100644
-> --- a/arch/sh/drivers/platform_early.c
-> +++ b/arch/sh/drivers/platform_early.c
-> @@ -25,10 +25,12 @@ static int platform_match(struct device *dev, struct =
-device_driver *drv)
->  {
->         struct platform_device *pdev =3D to_platform_device(dev);
->         struct platform_driver *pdrv =3D to_platform_driver(drv);
-> +       int ret;
->
->         /* When driver_override is set, only bind to the matching driver =
-*/
-> -       if (pdev->driver_override)
-> -               return !strcmp(pdev->driver_override, drv->name);
-> +       ret =3D device_match_driver_override(dev, drv);
-> +       if (ret >=3D 0)
-> +               return ret;
->
->         /* Then try to match against the id table */
->         if (pdrv->id_table)
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index b45d41b018ca..22ae87921a7a 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -603,7 +603,6 @@ static void platform_device_release(struct device *de=
-v)
->         kfree(pa->pdev.dev.platform_data);
->         kfree(pa->pdev.mfd_cell);
->         kfree(pa->pdev.resource);
-> -       kfree(pa->pdev.driver_override);
->         kfree(pa);
->  }
->
-> @@ -1306,33 +1305,7 @@ static ssize_t numa_node_show(struct device *dev,
->  }
->  static DEVICE_ATTR_RO(numa_node);
->
-> -static ssize_t driver_override_show(struct device *dev,
-> -                                   struct device_attribute *attr, char *=
-buf)
-> -{
-> -       struct platform_device *pdev =3D to_platform_device(dev);
-> -       ssize_t len;
-> -
-> -       device_lock(dev);
-> -       len =3D sysfs_emit(buf, "%s\n", pdev->driver_override);
-> -       device_unlock(dev);
-> -
-> -       return len;
-> -}
-> -
-> -static ssize_t driver_override_store(struct device *dev,
-> -                                    struct device_attribute *attr,
-> -                                    const char *buf, size_t count)
-> -{
-> -       struct platform_device *pdev =3D to_platform_device(dev);
-> -       int ret;
-> -
-> -       ret =3D driver_set_override(dev, &pdev->driver_override, buf, cou=
-nt);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return count;
-> -}
-> -static DEVICE_ATTR_RW(driver_override);
-> +DEVICE_ATTR_DRIVER_OVERRIDE();
->
->  static struct attribute *platform_dev_attrs[] =3D {
->         &dev_attr_modalias.attr,
-> @@ -1377,10 +1350,12 @@ static int platform_match(struct device *dev, con=
-st struct device_driver *drv)
->  {
->         struct platform_device *pdev =3D to_platform_device(dev);
->         struct platform_driver *pdrv =3D to_platform_driver(drv);
-> +       int ret;
->
->         /* When driver_override is set, only bind to the matching driver =
-*/
-> -       if (pdev->driver_override)
-> -               return !strcmp(pdev->driver_override, drv->name);
-> +       ret =3D device_match_driver_override(dev, drv);
-> +       if (ret >=3D 0)
-> +               return ret;
->
->         /* Attempt an OF style match first */
->         if (of_driver_match_device(dev, drv))
-> diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-> index 3f00d953fb9a..c920bd6fbaaf 100644
-> --- a/drivers/bus/simple-pm-bus.c
-> +++ b/drivers/bus/simple-pm-bus.c
-> @@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *=
-pdev)
->          * that's not listed in simple_pm_bus_of_match. We don't want to =
-do any
->          * of the simple-pm-bus tasks for these devices, so return early.
->          */
-> -       if (pdev->driver_override)
-> +       if (device_has_driver_override(&pdev->dev))
->                 return 0;
->
->         match =3D of_match_device(dev->driver->of_match_table, dev);
-> @@ -78,7 +78,7 @@ static void simple_pm_bus_remove(struct platform_device=
- *pdev)
->  {
->         const void *data =3D of_device_get_match_data(&pdev->dev);
->
-> -       if (pdev->driver_override || data)
-> +       if (device_has_driver_override(&pdev->dev) || data)
->                 return;
->
->         dev_dbg(&pdev->dev, "%s\n", __func__);
-> diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-> index a85ec48a798b..9b33df9967ec 100644
-> --- a/drivers/clk/imx/clk-scu.c
-> +++ b/drivers/clk/imx/clk-scu.c
-> @@ -706,8 +706,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name=
-,
->         if (ret)
->                 goto put_device;
->
-> -       ret =3D driver_set_override(&pdev->dev, &pdev->driver_override,
-> -                                 "imx-scu-clk", strlen("imx-scu-clk"));
-> +       ret =3D device_set_driver_override(&pdev->dev, "imx-scu-clk");
->         if (ret)
->                 goto put_device;
->
-> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-c=
-trl.c
-> index 9aa7218b4e8d..1ed6be6e85d2 100644
-> --- a/drivers/slimbus/qcom-ngd-ctrl.c
-> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
-> @@ -1535,10 +1535,8 @@ static int of_qcom_slim_ngd_register(struct device=
- *parent,
->                 ngd->id =3D id;
->                 ngd->pdev->dev.parent =3D parent;
->
-> -               ret =3D driver_set_override(&ngd->pdev->dev,
-> -                                         &ngd->pdev->driver_override,
-> -                                         QCOM_SLIM_NGD_DRV_NAME,
-> -                                         strlen(QCOM_SLIM_NGD_DRV_NAME))=
-;
-> +               ret =3D device_set_driver_override(&ngd->pdev->dev,
-> +                                                QCOM_SLIM_NGD_DRV_NAME);
->                 if (ret) {
->                         platform_device_put(ngd->pdev);
->                         kfree(ngd);
-> diff --git a/include/linux/platform_device.h b/include/linux/platform_dev=
-ice.h
-> index 813da101b5bf..ed1d50d1c3c1 100644
-> --- a/include/linux/platform_device.h
-> +++ b/include/linux/platform_device.h
-> @@ -31,11 +31,6 @@ struct platform_device {
->         struct resource *resource;
->
->         const struct platform_device_id *id_entry;
-> -       /*
-> -        * Driver name to force a match.  Do not set directly, because co=
-re
-> -        * frees it.  Use driver_set_override() to set or clear it.
-> -        */
-> -       const char *driver_override;
->
->         /* MFD cell pointer */
->         struct mfd_cell *mfd_cell;
-> diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-> index e9964f0e010a..140907a41a70 100644
-> --- a/sound/soc/samsung/i2s.c
-> +++ b/sound/soc/samsung/i2s.c
-> @@ -1360,10 +1360,10 @@ static int i2s_create_secondary_device(struct sam=
-sung_i2s_priv *priv)
->         if (!pdev_sec)
->                 return -ENOMEM;
->
-> -       pdev_sec->driver_override =3D kstrdup("samsung-i2s", GFP_KERNEL);
-> -       if (!pdev_sec->driver_override) {
-> +       ret =3D device_set_driver_override(&pdev_sec->dev, "samsung-i2s")=
-;
-> +       if (ret) {
->                 platform_device_put(pdev_sec);
-> -               return -ENOMEM;
-> +               return ret;
->         }
->
->         ret =3D platform_device_add(pdev_sec);
-> --
-> 2.53.0
->
+Bart
