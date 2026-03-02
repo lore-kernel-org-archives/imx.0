@@ -1,114 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACDA395D8C;
-	Mon,  2 Mar 2026 10:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531C5375AD2
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446368; cv=none; b=ngzOcrI598cmdQ/cifO2Cc6rq5ncMUPrL8+Ld95F+AHPpj8oCFGjG3ajZEIHg1D3DKMvcotbu653OZ8CqiP4mKK3/O4duhuUml/8kneaUP25V/7VYS1ba/Q/nKflH4nsyIdRS2Rjkrx2tDmYraLLfhXWm5GzXSSgYNMDMeTOmPQ=
+	t=1772447064; cv=none; b=JTvdkqc9U5964IVenqJZZj/HWqpqpUY5nbepw7lZkgp+MW7MxezaMzcjAsUePoeanPo9YyBS1yLeGSPnYu9zTVAIJ7qoYRt77MVYaz0cY3G9zdNwAFxmnwYLim1yZWWoERyXOSSE2D9KF80Z0Fer4uTyPX/LQ26xQHQ5oK41w4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446368; c=relaxed/simple;
-	bh=IpjrEFyehLT0TkRIrcHD2AoKqZumVIp1mwIT13gst3Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=IXKZLIpsmscTpYtrLzigIlfcr9tp2brkDLymCY6AnFGMipwj3v7VWyyIMkkI0HI2Uu17FFRKxhEcjfoZwRaFuE/K705K/LAsTfdGO2kASv9wY1FOE2bAtH93RGRZGy+GSQU8tuEyCsJmtONfbqCvXxLNSiHpCNvAd+O/LeOGJCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmpAxEBG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmpAxEBG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F11C2BC87;
-	Mon,  2 Mar 2026 10:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772446368;
-	bh=IpjrEFyehLT0TkRIrcHD2AoKqZumVIp1mwIT13gst3Y=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=RmpAxEBGItszJNn6JGBimENj9S+2Qn+RBZDA2YHTAV8OA7rkeZ97F+C1UXno2nBlc
-	 vK1NKNe3w86X2iiFv8ixqYmd3wkT7KclNB8QpHZim0RNbjeoQkl9kR/hXjrI3lv+Kg
-	 XSY1K1sVa8DuXpFkKSUj7zKhO8b3LYKS8CO1sbegzrOxAejxeeObeOjhH1fhXSxqrq
-	 Zj8oQxrhN5uUBmCNuw6Fr1h7mhRoOhnwuUJ01hBXkH9kf4JihMT7kgG6Rvq0qWe+a/
-	 7F4NzbI6mPHVgOTjVcJPbZPjpTH0yNmeqR0BN1jy28vMmT3nILsw4wfdyuvO6oLrhK
-	 7QCJmBqyJ+AQw==
+	s=arc-20240116; t=1772447064; c=relaxed/simple;
+	bh=x/JPmKMpl9B76cHoeYrYmU9vcZQiUMxDoJ1jEnJhn+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KfUJFsSPn727pN0YO6aAOVC3hycHQW/2qOPZTRe7CSUqXPzVNkWMWomMxhmOqJw2y1ZMAb6hHnSZTHbmQWC5DXx1QoJvK48MGpSS6bVvppr8mycG6UBV48lYnwyEoVs2o45Clg9vh7HzLQifYRGQHsSMbhRxEFZ/UQgKt8ZxPAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vx0Rk-0003LN-I6; Mon, 02 Mar 2026 11:24:16 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vx0Ri-003MZu-2o;
+	Mon, 02 Mar 2026 11:24:16 +0100
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id BD6624F5071;
+	Mon, 02 Mar 2026 10:24:15 +0000 (UTC)
+Date: Mon, 2 Mar 2026 11:24:15 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Wolfgang Grandegger <wg@grandegger.com>, "open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: can: nxp,sja1000: add reference
+ to mc-peripheral-props.yaml
+Message-ID: <20260302-didactic-neon-ara-91dabe-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260212163000.1195586-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3xheu2vifpjpnbcm"
+Content-Disposition: inline
+In-Reply-To: <20260212163000.1195586-1-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--3xheu2vifpjpnbcm
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 11:12:43 +0100
-Message-Id: <DGS7SQHM3V5U.2DNQV68AMSITF@kernel.org>
-Subject: Re: [PATCH 0/3] driver core: generalize driver_override
- infrastructure
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <ysato@users.sourceforge.jp>, <dalias@libc.org>,
- <glaubitz@physik.fu-berlin.de>, <abelvesa@kernel.org>, <srini@kernel.org>,
- <s.nawrocki@samsung.com>, <nuno.sa@analog.com>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-hwmon@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-sound@vger.kernel.org>,
- <linux-sh@vger.kernel.org>, "Wang Jiayue" <akaieurus@gmail.com>
-To: "Gui-Dong Han" <hanguidong02@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260302002729.19438-1-dakr@kernel.org>
- <CALbr=LYYUH_yQL1PO7mXzK6Oubt0LvKb0714iZCx_eEXScVdyQ@mail.gmail.com>
-In-Reply-To: <CALbr=LYYUH_yQL1PO7mXzK6Oubt0LvKb0714iZCx_eEXScVdyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: can: nxp,sja1000: add reference
+ to mc-peripheral-props.yaml
+MIME-Version: 1.0
 
-On Mon Mar 2, 2026 at 10:41 AM CET, Gui-Dong Han wrote:
->> Danilo Krummrich (3):
->>   driver core: generalize driver_override in struct device
->>   hwmon: axi-fan: don't use driver_override as IRQ name
->>   driver core: platform: use generic driver_override infrastructure
+On 12.02.2026 11:30:00, Frank Li wrote:
+> Add a reference to mc-peripheral-props.yaml to allow vendor-specific
+> properties for memory access timings.
 >
-> Hi Danilo,
+> Fix below CHECK_DTBS warings:
+> arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dtb: can@4,0 (nxp,sja1=
+000): Unevaluated properties are not allowed ('fsl,weim-cs-timing' was unex=
+pected)
+>         from schema $id: http://devicetree.org/schemas/net/can/nxp,sja100=
+0.yaml
 >
-> It looks like some usages of platform_device->driver_override were
-> missed. I found them here:
-> - drivers/bus/simple-pm-bus.c
-> - drivers/clk/imx/clk-scu.c
-> - drivers/slimbus/qcom-ngd-ctrl.c
-> - sound/soc/samsung/i2s.c
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-They should all be covered by patch 3, no?
+Applied to linux-can.
 
-> The good news is these can be easily updated to use the new APIs. This
-> is required to avoid breaking the build, since the field is removed
-> from struct platform_device. The previous build likely passed because
-> these weren't enabled. I will use allyesconfig for testing going
-> forward.
->
-> I scanned for similar cases and most fit the new APIs perfectly. One
-> exception is drivers/xen/xen-pciback/pci_stub.c. It does
-> strcmp(dev->driver_override, PCISTUB_DRIVER_NAME) instead of using
-> drv->name. We might want to change device_match_driver_override() to
-> take a const char * instead to handle this.
+regards,
+Marc
 
-xen_pcibk_pci_driver should use the exact same define, so we can just conve=
-rt
-this to:
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/p=
-ci_stub.c
-index e4b27aecbf0591..301207b4a30dac 100644
---- a/drivers/xen/xen-pciback/pci_stub.c
-+++ b/drivers/xen/xen-pciback/pci_stub.c
-@@ -609,9 +609,9 @@ static int pcistub_probe(struct pci_dev *dev, const str=
-uct pci_device_id *id)
+--3xheu2vifpjpnbcm
+Content-Type: application/pgp-signature; name="signature.asc"
 
- 	match =3D pcistub_match(dev);
+-----BEGIN PGP SIGNATURE-----
 
--	if ((dev->driver_override &&
--	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
--	    match) {
-+	if (device_match_driver_override(&dev->dev,
-+					 &xen_pcibk_pci_driver.driver) > 0 ||
-+					 match) {
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaaVlTQAKCRDMOmT6rpmt
+0hV8AQDLbjBMOU3liC2+KNR/C1BDNT2Yf0FVuMUud3z5t4H+FgEAtLu6taoyRf/I
+vHxV2hgCJE4w5SqT3nANcwejnBwvBAQ=
+=7CYj
+-----END PGP SIGNATURE-----
 
- 		if (dev->hdr_type !=3D PCI_HEADER_TYPE_NORMAL
- 		    && dev->hdr_type !=3D PCI_HEADER_TYPE_BRIDGE) {
-
-I.e. no separate API needed.
-
-> Besides axi-fan, I didn't find any other drivers that need to read
-> driver_override. This is great, as it means we hopefully won't need to
-> expose a read API at all.
-
-Great, thanks for checking.
+--3xheu2vifpjpnbcm--
