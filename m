@@ -1,81 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DA435F607;
-	Mon,  2 Mar 2026 11:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DE30C60D;
+	Mon,  2 Mar 2026 12:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772450853; cv=none; b=JRTZOY6ZDW/JErDHQcAyOSwZTZgyP1TctiNqcEcdE3hxpO601tywzt47QHBvO9t59hEYJkwfQQQiB8LfHTuqy3gFMVi7mGDf0FHEMi3JMIoJ2WmNuvFcuf4ksMwEjF7RxP0QASif+RAW+rue6/fWAxNkv8yhuJGzKLgO3vJwrzI=
+	t=1772454108; cv=none; b=PPP08Og/1gH1/K62ETyk5q0nntSnrREZKSLsIuSOAPYrIbnsnlPCUTBwvev47uO+c0iRJBflLRqtQyv3pxciQmNtxBYyaPA3TBH08U2o2asUmKjIWOqPfcgiQQ6DaiNewBoK1In8WAvhBbDSclPuHMKvCKGmOBszrWV1G66hpN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772450853; c=relaxed/simple;
-	bh=nF1QXwyCcdzGFo2JvN07s6YZSCOpZ7lAk4rFgnXi0BI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yg6NWQgx7rvuu7O2RdE4T8MXdhG2hCUwEgEHyjwKGbq5NkIztk6XjdDuHdusLZWE1UlwIG/jYgTdudrDIB3wmrFZkGdjsO8g45SrHXOtxnRw+oCFyg01LT5eeUheEcsgTpsxfM4l32yQZggCeW57b3XFveeTOtCckG4h5bXYZMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RV2/KBa/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RV2/KBa/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90344C19423;
-	Mon,  2 Mar 2026 11:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772450853;
-	bh=nF1QXwyCcdzGFo2JvN07s6YZSCOpZ7lAk4rFgnXi0BI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RV2/KBa/aVpQN1rZuC+QHybsJmtBOZHtLSOLCleLU/mPUh5ywWZ/WoTdQ0IR2dAV7
-	 iN9Ozj4IDJNMkh7PXwlzMX9D+BsOTEXX0haStS4xEUoiQMkESL873KekrqN26CtIZ4
-	 P4giwdE8HztLsznI/U1EFkTUzGpGbX8LghbzQtGf+KgF7ywRVMJS8A7zQQJYpk0/tI
-	 4QUXxMw5QeVwr/SruuX61oMNYDobiHjsVyFXSGmhPRuSsdYrbTN9cLrod79z+OCDxP
-	 g8gyRRr2I7N85GUR+XTvdOzwSJFQujOXuHdCZ+6Q9xIqKzzWlJwwSwb6Q4gngskgM/
-	 sXV2QaSoCC7qw==
-Date: Mon, 2 Mar 2026 11:27:26 +0000
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Brian Masney <bmasney@redhat.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	linux-kernel@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>, Frank Li <Frank.Li@nxp.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, arm-scmi@vger.kernel.org,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 01/13] clk: add new flag CLK_ROUNDING_FW_MANAGED
-Message-ID: <20260302-conscious-obedient-dormouse-0f65a0@sudeepholla>
-References: <20260226-clk-det-rate-fw-managed-v1-0-4421dd2f6dc6@redhat.com>
- <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
+	s=arc-20240116; t=1772454108; c=relaxed/simple;
+	bh=hY4/1V4CPkbzOM46xddbLCRjIns1Rne2oR81yNkRkMQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YXMjU5Hq9AE3bsB294B4236N4D6zdsubwL35rYZKCmeowgGhlDwOKrL+bXNkATE6eVKnzy+lv3fAIeQ5AVtjFIwku9Kq794lJRatVPi4Oj6282df3I+kz+VdNuu3EUq8MoS2eD9zQH1L3llLbN5eCmUGhVHWeTLT32/5Gz1wKZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fPdLq4LTKzHnGhl;
+	Mon,  2 Mar 2026 20:20:51 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 53AA54056B;
+	Mon,  2 Mar 2026 20:21:43 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Mar
+ 2026 12:21:41 +0000
+Date: Mon, 2 Mar 2026 12:21:39 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Herve Codina <herve.codina@bootlin.com>
+CC: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
+ Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha Hauer"
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, "Michael Turquette"
+	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, "Andi Shyti"
+	<andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, "Arnd Bergmann" <arnd@arndb.de>, Saravana
+ Kannan <saravanak@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+	<rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
+ Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
+ Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+	<sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
+ Jiang" <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, "Shawn Guo" <shawnguo@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-clk@vger.kernel.org>,
+	<linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+	<patches@opensource.cirrus.com>, <linux-gpio@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Allan Nielsen
+	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
+	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 10/28] cxl/test: Use device_set_node()
+Message-ID: <20260302122139.00000041@huawei.com>
+In-Reply-To: <20260227135428.783983-11-herve.codina@bootlin.com>
+References: <20260227135428.783983-1-herve.codina@bootlin.com>
+	<20260227135428.783983-11-herve.codina@bootlin.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226-clk-det-rate-fw-managed-v1-1-4421dd2f6dc6@redhat.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 
-On Thu, Feb 26, 2026 at 01:16:45PM -0500, Brian Masney wrote:
-> There are some clocks where the rounding is managed by the hardware, and
-> the determine_rate() clk ops is just a noop that simply returns 0. Add a
-> new flag for these type of clocks, and update the clk core so that the
-> determine_rate() clk op is not required when this flag is set.
+On Fri, 27 Feb 2026 14:54:07 +0100
+Herve Codina <herve.codina@bootlin.com> wrote:
+
+> The code set directly dev->fwnode.
 > 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
+> Use the dedicated helper to perform this operation.
 > 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-Acked-by: Sudeep Holla <sudeep.holla@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
--- 
-Regards,
-Sudeep
+> ---
+>  tools/testing/cxl/test/cxl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+> index 81e2aef3627a..3d9107b2661c 100644
+> --- a/tools/testing/cxl/test/cxl.c
+> +++ b/tools/testing/cxl/test/cxl.c
+> @@ -1136,7 +1136,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+>  {
+>  	device_initialize(&adev->dev);
+>  	fwnode_init(&adev->fwnode, NULL);
+> -	dev->fwnode = &adev->fwnode;
+> +	device_set_node(dev, &adev->fwnode);
+>  	adev->fwnode.dev = dev;
+>  }
+>  
+
