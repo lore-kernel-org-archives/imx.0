@@ -1,120 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB58C329C5F
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACDA395D8C;
+	Mon,  2 Mar 2026 10:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446358; cv=none; b=Lo9DoYyG3kA7GezKR7sRG4Q7OrFbViiBAWtmXbtiUXl5wPTcJS5Nge9y2KiCukFDEvRLuShGMMX6kbSI8VHdGWhRtYVvZccENxe/YQc7xa8dHDfu2aBbJGwFpRSMTp1dpuCEqGll+t9+vrT1QrmSjttGmU6F+LwzE6c1Rykgq9s=
+	t=1772446368; cv=none; b=ngzOcrI598cmdQ/cifO2Cc6rq5ncMUPrL8+Ld95F+AHPpj8oCFGjG3ajZEIHg1D3DKMvcotbu653OZ8CqiP4mKK3/O4duhuUml/8kneaUP25V/7VYS1ba/Q/nKflH4nsyIdRS2Rjkrx2tDmYraLLfhXWm5GzXSSgYNMDMeTOmPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446358; c=relaxed/simple;
-	bh=dmKKCEMChf9iozh5/BFVZZx9ALF9hCLR/Z/vU9qXNm8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IPb5oUH2thWQu03jEQLLf+fY5vimrL8SYbxN5naI7THL9GX0l+Tn4gMeC4W3o5dC84x/tAgZiiBr7u/Opw1hkGipzJVCDxNG7kqLA3YFAmqvIHQOBE7RWebhvLHOQfBcE22HYUimHe/tACuhGdrXx/+8vYCx2ipZEXpS4U9XWU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNrmHv2R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772446368; c=relaxed/simple;
+	bh=IpjrEFyehLT0TkRIrcHD2AoKqZumVIp1mwIT13gst3Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=IXKZLIpsmscTpYtrLzigIlfcr9tp2brkDLymCY6AnFGMipwj3v7VWyyIMkkI0HI2Uu17FFRKxhEcjfoZwRaFuE/K705K/LAsTfdGO2kASv9wY1FOE2bAtH93RGRZGy+GSQU8tuEyCsJmtONfbqCvXxLNSiHpCNvAd+O/LeOGJCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmpAxEBG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNrmHv2R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2FAC4AF0B
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:12:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmpAxEBG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F11C2BC87;
+	Mon,  2 Mar 2026 10:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772446358;
-	bh=dmKKCEMChf9iozh5/BFVZZx9ALF9hCLR/Z/vU9qXNm8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lNrmHv2R3N5gLRM45Ge37DwjBvl8fEeCAwiLFtsgFARHWInrtuSzjeI1k8R8bR4se
-	 jEQybZnkIfE+ljHL10eZPvLwVpH/pRrgDP54Jrzvjwd8pppqu8KDrhTJKgDphlKV13
-	 hThAk/25e3y9U81XEjVO9qMIpIUEs09pg3Zs7zBPNEx7FWyay4Pcgw3akrQBisZzUR
-	 ZdnuIpxonzXdr36o2YT7dumrt/DKri0homViNn8ATmhpSkXFn8aVHwi4qmkSk+WMBS
-	 icnHnEm33h8Jjf0IrW9JvbiflGZAi3PdCL0+2Zdr429FsXF3ONjciYL7a5fLh7kmvu
-	 vkrE1tlBjMPMg==
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64c9fcc24b3so2955132d50.1
-        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 02:12:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXhVVsRkwdG5Uy34inkkMII4tsZFXhU92koWBd/NDJdgKNBNEJg0xNqqafQ9RtCsiKlaNs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyyl2lEsig9XZceX/TQ2Bz6IYpj6uzA6Cb8ruubGnA8PluYWfcM
-	2+2UyxuvEeb20vpJu7XlRLBNYvr4JAoO3yWh+vV2hRbbrGYh6l16yr6DVdTLQxLmUhO18yM+pzZ
-	ef+v0aRPuHWwJRwuOl0bjrdrK6RTwYrQ=
-X-Received: by 2002:a05:690e:175c:b0:64c:97ad:17dc with SMTP id
- 956f58d0204a3-64cc22c28damr6768085d50.66.1772446358117; Mon, 02 Mar 2026
- 02:12:38 -0800 (PST)
+	s=k20201202; t=1772446368;
+	bh=IpjrEFyehLT0TkRIrcHD2AoKqZumVIp1mwIT13gst3Y=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=RmpAxEBGItszJNn6JGBimENj9S+2Qn+RBZDA2YHTAV8OA7rkeZ97F+C1UXno2nBlc
+	 vK1NKNe3w86X2iiFv8ixqYmd3wkT7KclNB8QpHZim0RNbjeoQkl9kR/hXjrI3lv+Kg
+	 XSY1K1sVa8DuXpFkKSUj7zKhO8b3LYKS8CO1sbegzrOxAejxeeObeOjhH1fhXSxqrq
+	 Zj8oQxrhN5uUBmCNuw6Fr1h7mhRoOhnwuUJ01hBXkH9kf4JihMT7kgG6Rvq0qWe+a/
+	 7F4NzbI6mPHVgOTjVcJPbZPjpTH0yNmeqR0BN1jy28vMmT3nILsw4wfdyuvO6oLrhK
+	 7QCJmBqyJ+AQw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com>
- <20260225-pinctrl-mux-v2-3-1436a25fa454@nxp.com> <CAD++jLkhH566rqkkQfWnOiAokxB8mLXw=eqrVN_pgs+dd8TkxQ@mail.gmail.com>
- <aaG5DpyET-vri-Vj@lizhi-Precision-Tower-5810>
-In-Reply-To: <aaG5DpyET-vri-Vj@lizhi-Precision-Tower-5810>
-From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 2 Mar 2026 11:12:27 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnVXgvKjF-8QdZONTBX6WK2q=XidZix0LSsyS2Sjq9tBA@mail.gmail.com>
-X-Gm-Features: AaiRm53iWIXpU3ZbOeuRosqaBYYTRiks42ceJwmNYd1HTxwTkyNjI2SuJYHEfX4
-Message-ID: <CAD++jLnVXgvKjF-8QdZONTBX6WK2q=XidZix0LSsyS2Sjq9tBA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] pinctrl: add optional .release_mux() callback
-To: Frank Li <Frank.li@nxp.com>
-Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Mar 2026 11:12:43 +0100
+Message-Id: <DGS7SQHM3V5U.2DNQV68AMSITF@kernel.org>
+Subject: Re: [PATCH 0/3] driver core: generalize driver_override
+ infrastructure
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+ <glaubitz@physik.fu-berlin.de>, <abelvesa@kernel.org>, <srini@kernel.org>,
+ <s.nawrocki@samsung.com>, <nuno.sa@analog.com>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-hwmon@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+ <linux-sh@vger.kernel.org>, "Wang Jiayue" <akaieurus@gmail.com>
+To: "Gui-Dong Han" <hanguidong02@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260302002729.19438-1-dakr@kernel.org>
+ <CALbr=LYYUH_yQL1PO7mXzK6Oubt0LvKb0714iZCx_eEXScVdyQ@mail.gmail.com>
+In-Reply-To: <CALbr=LYYUH_yQL1PO7mXzK6Oubt0LvKb0714iZCx_eEXScVdyQ@mail.gmail.com>
 
-On Fri, Feb 27, 2026 at 4:32=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
-> On Fri, Feb 27, 2026 at 10:07:05AM +0100, Linus Walleij wrote:
-> > On Thu, Feb 26, 2026 at 12:55=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wr=
-ote:
-> >
-> > > Add an optional .release_mux() callback to the pinmux_ops.
-> > >
-> > > Some devices require releasing resources that were previously acquire=
-d in
-> > > .set_mux(). Providing a dedicated .release_mux() callback allows driv=
-ers to
-> > > properly clean up hardware state or associated resources when a mux
-> > > function is no longer active.
-> > >
-> > > The callback is optional and does not affect existing drivers.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> >
-> > Can you explain why you need this custom code for this?
-> >
-> > Nominally pin control defines and puts the hardware into a
-> > number of states such as:
-> > "default"
-> > "idle"
-> > "sleep"
-> > "init"
-> >
-> > Usually (at least for silicon) what .release_mux() would to
-> > is semantically equivalent to a transition into the "init" or
-> > "sleep" state. And if these are not descriptive enough you can
-> > even define a "released" state.
-> >
-> > Is it not possible to reach the set-up of the hardware that you
-> > are desiring by just defining such a relaxed state?
+On Mon Mar 2, 2026 at 10:41 AM CET, Gui-Dong Han wrote:
+>> Danilo Krummrich (3):
+>>   driver core: generalize driver_override in struct device
+>>   hwmon: axi-fan: don't use driver_override as IRQ name
+>>   driver core: platform: use generic driver_override infrastructure
 >
-> I am not familiar with pinctrl code. I just need a place to call a callba=
-ck
-> which do opposite work at .set_mux() function.
+> Hi Danilo,
 >
-> I see pair function pinmux_enable_setting() call .set_mux() and
->  pinmux_disable_setting() just missing do oppsite work of .set_mux();
->
-> I may think too simple. I just do insmod/rmmod test. Any suggestion where
-> is good place to put it?
->
-> Does it call pair pinmux_enable(disable)_setting when switch state?
+> It looks like some usages of platform_device->driver_override were
+> missed. I found them here:
+> - drivers/bus/simple-pm-bus.c
+> - drivers/clk/imx/clk-scu.c
+> - drivers/slimbus/qcom-ngd-ctrl.c
+> - sound/soc/samsung/i2s.c
 
-The pinmux states are more like a state machine, you transition
-between different states.
+They should all be covered by patch 3, no?
 
-I think in this case you may want your driver or the device driver
-core to transition to the "init" state to release the mux, see
-my other reply.
+> The good news is these can be easily updated to use the new APIs. This
+> is required to avoid breaking the build, since the field is removed
+> from struct platform_device. The previous build likely passed because
+> these weren't enabled. I will use allyesconfig for testing going
+> forward.
+>
+> I scanned for similar cases and most fit the new APIs perfectly. One
+> exception is drivers/xen/xen-pciback/pci_stub.c. It does
+> strcmp(dev->driver_override, PCISTUB_DRIVER_NAME) instead of using
+> drv->name. We might want to change device_match_driver_override() to
+> take a const char * instead to handle this.
 
-Yours,
-Linus Walleij
+xen_pcibk_pci_driver should use the exact same define, so we can just conve=
+rt
+this to:
+
+diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/p=
+ci_stub.c
+index e4b27aecbf0591..301207b4a30dac 100644
+--- a/drivers/xen/xen-pciback/pci_stub.c
++++ b/drivers/xen/xen-pciback/pci_stub.c
+@@ -609,9 +609,9 @@ static int pcistub_probe(struct pci_dev *dev, const str=
+uct pci_device_id *id)
+
+ 	match =3D pcistub_match(dev);
+
+-	if ((dev->driver_override &&
+-	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
+-	    match) {
++	if (device_match_driver_override(&dev->dev,
++					 &xen_pcibk_pci_driver.driver) > 0 ||
++					 match) {
+
+ 		if (dev->hdr_type !=3D PCI_HEADER_TYPE_NORMAL
+ 		    && dev->hdr_type !=3D PCI_HEADER_TYPE_BRIDGE) {
+
+I.e. no separate API needed.
+
+> Besides axi-fan, I didn't find any other drivers that need to read
+> driver_override. This is great, as it means we hopefully won't need to
+> expose a read API at all.
+
+Great, thanks for checking.
