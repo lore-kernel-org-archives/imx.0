@@ -1,131 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60085426ECD
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E07B2836A0;
+	Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772471901; cv=none; b=RmMyQmIOV6HOANbT9sjbRoGKOJQT5P1Dc4tcAcCNGZJr18XcTPJj5Ja6CdOZjGdxcAxsn2SfRMHH/zPZsaUtOZq4pkf0QLah2D0eluJ1bx4X+whB3wkal/4b65BgUwsN/OMT2M2vy+s5RlkYuVHHYU6ogdq6n5LzJ1ZQsIx92HA=
+	t=1772472762; cv=none; b=rtZ2pHGzqzTh5NpR3siXjhGlkTH8041UsiXrQGhEY+McfdVN9KYq6shX+qSqRxd5XzpCnXfN+zvCmq1cRSWgvNf7TFAudgCrJt7XHUGBid6tvMQsYx3PJMV36pfpfPswicrjTJhwoCNpYAgVDRS9EyDXxVhK+DlnK9yeN5XRpjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772471901; c=relaxed/simple;
-	bh=+MqM9KmRITyYRwaK2vO3M8KAYNBFVTYRhLwmb87Tibc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DadlDj43IlO6TsZ1WhR6av1zs8wyrviJP2QNK9gx7ELHlpJoOJ97CiOpxsC5fNT6etRzbkSMkAmgIKmEKdMubg7mp+r4N4Cx827uW5xytsH4uAIonXZE4qg2fTggTi/YYCIf7mEAJkwwGdDi/ZaOqBicLs6F/UdO/7SjYbPSUgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kb3Nqe5R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772472762; c=relaxed/simple;
+	bh=tnpn0LaJUMgqytRuDhKqOEYHDYHlXW9Sposq8jF6yqc=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=fZoj5tagoh5B0+RS+AItIaS/yBm8Dc5g5KECCz0/tpAk/wPztqSSV3MbwfgyCEeMKqijyIgGhdO3CTdCnivKC4rmyGHuz3uopL0aZB6CclQuWdx2DtBf32++4suIItUrOzFtNa2NvNAViia36KaPaxBRx25JL+oHTtBuOkvn748=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOCI1e9j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kb3Nqe5R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C47C2BCC9
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 17:18:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOCI1e9j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05836C19423;
+	Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772471901;
-	bh=+MqM9KmRITyYRwaK2vO3M8KAYNBFVTYRhLwmb87Tibc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kb3Nqe5RRQ6fZzn0hWpidUfbL2ksozo7iqaxctiNEtWQg41IQH7CybnHljjB6FoYE
-	 tSqIamkvZDxigySxPoGdI/0koM8f95QpBE1nv/YQ6xf+CWYKIwIQT17nJnZKj9D1uU
-	 gHmiMDtDSr6R8cgZGprDUbS0MDKyrdTvYRBJo4AKX5I3FqPu6dPUeUdM6EfGSah9/c
-	 K7u5M5qykk2BStQ3UsxRnqWs0FXcuJhgCnawQcW6y5xsruO5RS0j4A0zGSRKHHFd/Y
-	 ixHTWvP+28P17nLzxy813d5t+NivpygbdSHdkY8Wb8aGpAKPaQEClVjIjgG5G7dP4G
-	 ZRjj3CL+wcY0w==
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1270ac5d3efso4489248c88.1
-        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 09:18:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVfYymH14YduByH7LXcN1L7zcwzn44FWLYCh8U3cZk7jhubZE2nyU9YeudWB6+hJ1T4ezs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/swTbCJpuHjpwbfinlOgju1T8tdCmi92JsyKql7IZh0Tf2mmP
-	ezXjh2yIBZUd8yBOgcAMiSPtYYGiwJKlNYwuNoUN84x3e69V5b9j5MfWX63UToNIgIJZXQ+PqIx
-	0+pQdmypFC/1tq6utkY10yajrxcLINobM0sX/wxAd9w==
-X-Received: by 2002:a05:7022:2524:b0:11b:c2fd:3960 with SMTP id
- a92af1059eb24-1278fbff709mr5725970c88.28.1772471900307; Mon, 02 Mar 2026
- 09:18:20 -0800 (PST)
+	s=k20201202; t=1772472761;
+	bh=tnpn0LaJUMgqytRuDhKqOEYHDYHlXW9Sposq8jF6yqc=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=iOCI1e9j41WFatME/LLVC5T1+T/WcxsPTAnOYO9sprUHt1kELdT+C2dRHK4rFRust
+	 x+epksgA5XRcUa7gGWVY1MzYB8CPLAXW8KSCqSKlzgRlBw4D8icLQQuNcNNnLp8V6e
+	 +zKAVEaS5gK5BgGkBZ6OfWM6cZAhnkeqaNvkI1Ip0pRwugn9T0W0jJxILMq+QELrxn
+	 hcYnbvH3SPn+vWTxasUExKSAfkQlWAj0jl8rPu7QS7u96cKFuJIxCMJdHjOjirfa4L
+	 L0jicTT98m6eZAlrsniOazXvil57Ovsu1Bf9RdQCQM7BFSb58lKO0zAHdB+hAnRD7M
+	 PylBsJsJjSyVg==
+Content-Type: multipart/mixed; boundary="===============7315119925973411465=="
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-8-b45da45903c8@oss.qualcomm.com> <CAMuHMdX-rdzLhOFEJYBXzCYX5jH2E1=ydGWKgNkD0Nqx-tGr4Q@mail.gmail.com>
-In-Reply-To: <CAMuHMdX-rdzLhOFEJYBXzCYX5jH2E1=ydGWKgNkD0Nqx-tGr4Q@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Mon, 2 Mar 2026 18:18:06 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfwQm58Md+rH0gfwAdKf2mdtZ=2VRDzXQOZpGVcQgeyMw@mail.gmail.com>
-X-Gm-Features: AaiRm50zY2ACynZYq07UnZgsPpbD86ujojZTOhhFyYjI7hbWVv0-GS9VJ_fMHck
-Message-ID: <CAMRc=MfwQm58Md+rH0gfwAdKf2mdtZ=2VRDzXQOZpGVcQgeyMw@mail.gmail.com>
-Subject: Re: [PATCH v2 8/9] soc: renesas: don't access of_root directly
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <392614bc3c9c3a8b2c42e263181431dd0484f5cc41b0b9831e53d1bcdcb4b6ed@mail.kernel.org>
+In-Reply-To: <20260302161723.858616-7-larysa.zaremba@intel.com>
+References: <20260302161723.858616-7-larysa.zaremba@intel.com>
+Subject: Re: [PATCH bpf v4 6/9] i40e: use xdp.frame_sz as XDP RxQ info frag_size
+From: bot+bpf-ci@kernel.org
+To: larysa.zaremba@intel.com,bpf@vger.kernel.org
+Cc: larysa.zaremba@intel.com,claudiu.manoil@nxp.com,vladimir.oltean@nxp.com,wei.fang@nxp.com,xiaoning.wang@nxp.com,andrew+netdev@lunn.ch,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,anthony.l.nguyen@intel.com,przemyslaw.kitszel@intel.com,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,kpsingh@kernel.org,haoluo@google.com,jolsa@kernel.org,horms@kernel.org,shuah@kernel.org,aleksander.lobakin@intel.com,maciej.fijalkowski@intel.com,bastien.curutchet@bootlin.com,tushar.vyavahare@intel.com,kernelxing@tencent.com,rbm@suse.com,echaudro@redhat.com,lorenzo@kernel.org,toke@redhat.com,imx@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,intel-wired-lan@lists.osuosl.org,linux-kselftest@vger.kernel.org,aleksandr.loktionov@intel.com,dtatulea@nvidia.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
 
-On Mon, Mar 2, 2026 at 5:47=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68k=
-.org> wrote:
->
-> Hi Bartosz,
->
-> On Mon, 23 Feb 2026 at 14:38, Bartosz Golaszewski
-> <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> > Don't access of_root directly as it reduces the build test coverage for
-> > this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper funct=
-ions
-> > to retrieve the relevant information.
-> >
-> > Suggested-by: Rob Herring <robh@kernel.org>
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
->
-> > --- a/drivers/soc/renesas/renesas-soc.c
-> > +++ b/drivers/soc/renesas/renesas-soc.c
->
-> > @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
-> >         const char *soc_id;
-> >         int ret;
-> >
-> > -       match =3D of_match_node(renesas_socs, of_root);
-> > +       struct device_node *root __free(device_node) =3D of_find_node_b=
-y_path("/");
-> > +       if (!root)
-> > +               return -ENOENT;
-> > +
-> > +       match =3D of_match_node(renesas_socs, root);
-> >         if (!match)
-> >                 return -ENODEV;
-> >
->
-> I still find it silly to add a call to of_find_node_by_path().
-> In your reply to my comment on v1, you said you don't want to add
-> another helper.
->
-> Currently we have two helpers in this area:
->   1. of_machine_device_match(), which returns bool, and tells if a
->      match is available,
->   2. of_machine_get_match_data(), which returns the match data, if a
->      match is available.
-> But there is no helper to return the actual match?
-> of_machine_device_match() would be fine, if it wouldn't cast the result
-> to bool...
->
-> As there is no cost (binary size-wise) in having the helper that returns
-> the match, too, I have sent a series[1] to do that. The last patch[2]
-> is an alternative to this patch, avoiding the need to add a call to
-> of_find_node_by_path().
->
-> [1] "[PATCH 0/7] of: Add and use of_machine_get_match() helper"
->     https://lore.kernel.org/cover.1772468323.git.geert+renesas@glider.be
-> [2] "[PATCH 7/7] soc: renesas: Convert to of_machine_get_match()"
->     https://lore.kernel.org/10876b30a8bdb7d1cfcc2f23fb859f2ffea335fe.1772=
-468323.git.geert+renesas@glider.be
->
+--===============7315119925973411465==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Sure, I'm fine with this patch being dropped and your series queued instead=
-.
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> @@ -3567,6 +3567,7 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+>  	struct i40e_vsi *vsi = ring->vsi;
+>  	u32 chain_len = vsi->back->hw.func_caps.rx_buf_chain_len;
+>  	u16 pf_q = vsi->base_queue + ring->queue_index;
+> +	u32 xdp_frame_sz = i40e_rx_pg_size(ring) / 2;
+>  	struct i40e_hw *hw = &vsi->back->hw;
 
-Bart
+On PAGE_SIZE < 8192 systems, i40e_rx_pg_size() calls
+i40e_rx_pg_order() which checks ring->rx_buf_len:
+
+i40e_txrx.h:i40e_rx_pg_order() {
+    #if (PAGE_SIZE < 8192)
+        if (ring->rx_buf_len > (PAGE_SIZE / 2))
+            return 1;
+    #endif
+        return 0;
+}
+
+At this point in the function, ring->rx_buf_len still holds the
+value from the previous configuration. It is not updated until
+later in the function body:
+
+i40e_main.c:i40e_configure_rx_ring() {
+    ...
+    u32 xdp_frame_sz = i40e_rx_pg_size(ring) / 2;  // stale rx_buf_len
+    ...
+    ring->rx_buf_len = vsi->rx_buf_len;  // updated here, after init
+    ...
+}
+
+Could this lead to a wrong xdp_frame_sz on 4K page systems when
+ring->rx_buf_len changes across the PAGE_SIZE/2 (2048) boundary
+between configurations?
+
+For example, after AF_XDP ZC teardown on a standard MTU interface,
+the previous rx_buf_len from XSK (~3840 with default 4K chunks) is
+above 2048, giving pg_order=1 and xdp_frame_sz=4096. But the new
+vsi->rx_buf_len for standard MTU is 1534, which would give
+pg_order=0 and the correct xdp_frame_sz=2048.
+
+With frag_size set to 4096 but actual buffers only 2048 bytes,
+bpf_xdp_frags_increase_tail() would see frag_size > frame_sz and
+return -EOPNOTSUPP.
+
+The previous code computed i40e_rx_pg_size(ring) / 2 at the skip
+label, after ring->rx_buf_len was already updated, so this ordering
+issue did not exist before.
+
+Would it work to move the computation after the rx_buf_len
+assignment, for example:
+
+    ring->rx_buf_len = vsi->rx_buf_len;
+
+    xdp_frame_sz = i40e_rx_pg_size(ring) / 2;
+
+    if (ring->vsi->type != I40E_VSI_MAIN)
+        goto skip;
+
+> [ ... ]
+
+> @@ -3616,7 +3618,7 @@
+>  	}
+>
+>  skip:
+> -	xdp_init_buff(&ring->xdp, i40e_rx_pg_size(ring) / 2, &ring->xdp_rxq);
+> +	xdp_init_buff(&ring->xdp, xdp_frame_sz, &ring->xdp_rxq);
+
+> [ ... ]
+
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22586694870
+
+AI-authorship-score: low
+AI-authorship-explanation: The commit shows domain-specific driver knowledge, targeted fix with minimal changes, and a natural commit message style consistent with human kernel developers.
+issues-found: 1
+issue-severity-score: low
+issue-severity-explanation: Variable initialization order causes wrong xdp_frame_sz on 4K page systems when rx_buf_len crosses the PAGE_SIZE/2 boundary between reconfigurations, leading to bpf_xdp_adjust_tail returning -EOPNOTSUPP incorrectly but no memory corruption.
+
+--===============7315119925973411465==--
