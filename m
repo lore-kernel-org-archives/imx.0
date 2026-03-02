@@ -1,136 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013008.outbound.protection.outlook.com [52.101.83.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E07B2836A0;
-	Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772472762; cv=none; b=rtZ2pHGzqzTh5NpR3siXjhGlkTH8041UsiXrQGhEY+McfdVN9KYq6shX+qSqRxd5XzpCnXfN+zvCmq1cRSWgvNf7TFAudgCrJt7XHUGBid6tvMQsYx3PJMV36pfpfPswicrjTJhwoCNpYAgVDRS9EyDXxVhK+DlnK9yeN5XRpjY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772472762; c=relaxed/simple;
-	bh=tnpn0LaJUMgqytRuDhKqOEYHDYHlXW9Sposq8jF6yqc=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=fZoj5tagoh5B0+RS+AItIaS/yBm8Dc5g5KECCz0/tpAk/wPztqSSV3MbwfgyCEeMKqijyIgGhdO3CTdCnivKC4rmyGHuz3uopL0aZB6CclQuWdx2DtBf32++4suIItUrOzFtNa2NvNAViia36KaPaxBRx25JL+oHTtBuOkvn748=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOCI1e9j; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDB5426EBF
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 17:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772472766; cv=fail; b=JPzZ00CTeRLb44bL5JkpqHabqvn9RlxdP/wJ+puNcjrEstaS0F1rMvUKoDxKBn77L2XeU/nK2iIUl4XYFfSlX3ANdXX8r00PYO3X5jp/TkK4HgPLj2BdvVsUvfZ8FZqnwxwwRmliceeDnRq+UgFWn52auj7yrveSPxHfh9kPE5A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772472766; c=relaxed/simple;
+	bh=QhHxoTUK2ssoTqZyTVpk3zsIzZrj9wUL02noMOIgYQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UV1hv8wKivqMBDr4XkLjcmi6BIsOQSS2CtliTabCKK1K/xJ6KKXjDeO5FDp3jfHsVO5k4iPKR6G4Mdq8HHzvY89svFPkg+KFmN+MludGPnqAU/76AYU6vm2nU2FBYxjJllGyudQvHruKONop/ygupVAo0M/qUOTSkQcO0nXDDuU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vmq8wgOh; arc=fail smtp.client-ip=52.101.83.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOCI1e9j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05836C19423;
-	Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772472761;
-	bh=tnpn0LaJUMgqytRuDhKqOEYHDYHlXW9Sposq8jF6yqc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=iOCI1e9j41WFatME/LLVC5T1+T/WcxsPTAnOYO9sprUHt1kELdT+C2dRHK4rFRust
-	 x+epksgA5XRcUa7gGWVY1MzYB8CPLAXW8KSCqSKlzgRlBw4D8icLQQuNcNNnLp8V6e
-	 +zKAVEaS5gK5BgGkBZ6OfWM6cZAhnkeqaNvkI1Ip0pRwugn9T0W0jJxILMq+QELrxn
-	 hcYnbvH3SPn+vWTxasUExKSAfkQlWAj0jl8rPu7QS7u96cKFuJIxCMJdHjOjirfa4L
-	 L0jicTT98m6eZAlrsniOazXvil57Ovsu1Bf9RdQCQM7BFSb58lKO0zAHdB+hAnRD7M
-	 PylBsJsJjSyVg==
-Content-Type: multipart/mixed; boundary="===============7315119925973411465=="
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vmq8wgOh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PXGH88Ze2gYiN90qd/s+fqe/Y5mdTW8eSOfMSmy1KIn+Uzhk9eHnXpuddVLXd2BCqhJk9cRcIU7SOL9nWXvjMZCd+T7KIoWEPwyQnq6SEA1q8t84t8DBluIWy9TOFdCQUL1aFHa3PgANI9xHEAG75maqqN3TpNDFrl/psfOvZl+jVC+XurJztHvUz/QcosHnjqII9OaIDSwUwINqzBVnWiC6DKdakA2Pwcube6ySViJmcPctIxwBXpH2XmqcAg7fXN+makIQ6Z3QWuBYa7wnPsbEyr0nvrbhKaW+Z+6nI6k5HH5LLYXjn+8qGUTMOlg0CB7buUbf4PDiF9HSCpW8Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jf5Kmcks1ngtq9TFXySGgxd2xZhdjnqjTnL4DZJAuNo=;
+ b=lO3031KS/BxvtTOA8eX09HSo42+FrOTSCKvUypP+LLLGarHV3GUTCDYQE9iIpKj89uEy8LbIt9reXKNX088Qx2oyA8s5IPEPii2j5Tmp8MzgJ9jg+sxRNLSxMjOSA8WIoDZU3rOkZ7Wq4phlU3jJ6MhKmlq/5aeCiKHgJTyTAkKsGptvJl5Oy7ig03xzv4/AKg3nPokNEFCs1mpvigvEPGxusSpKk5upYGjxwO4L/hI5ICPPRUe15PTMB3Kwj2kIYMyiw+WiIa669+7oHKH3c+sGRBbqMUIQcBEBLHa/0o2pu4k74X29ki7SIGnxFuOkgLTySEFDGpWVSMYXdwkf5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jf5Kmcks1ngtq9TFXySGgxd2xZhdjnqjTnL4DZJAuNo=;
+ b=Vmq8wgOhet/aF9NaySspsJnaPbhQHOHI9ovC5kyCEjglX/qH4Ipc0vgGIXJ8myLy1p5w1vMFP0LPH99IgI2/CcF+9w+8X5cqpx4MaT3SKDocJfvdRrUX0wmE6a2pvSd9C2rACnlGOnOIDGGh7LSGI/ciYh0yMqf8MBPQZXXQMMGCwL4GibDfSf4YsbUUC8LJuXHDwDGks/iAJXeR2vwhUKLp+LSCVYJXmj39BSUn87h+xaaD8/b4PgvThFCCn71Oh5MoF1QapbbX9KbOdN2JL+ZaxHtHZRoHapZ5Dcn9NcbeN9+PrKyfsFvTMfLjTznlTe0DHO7iw7Vmhr5EYJeSGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DB9PR04MB11662.eurprd04.prod.outlook.com (2603:10a6:10:60e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.18; Mon, 2 Mar
+ 2026 17:32:41 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 17:32:41 +0000
+Date: Mon, 2 Mar 2026 12:32:33 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: imx91-11x11-evk: Add usdhc3 for SDIO WiFi
+ support
+Message-ID: <aaXJsQd6z4cmusym@lizhi-Precision-Tower-5810>
+References: <20260205100647.3745669-1-sherry.sun@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205100647.3745669-1-sherry.sun@nxp.com>
+X-ClientProxiedBy: BYAPR07CA0045.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <392614bc3c9c3a8b2c42e263181431dd0484f5cc41b0b9831e53d1bcdcb4b6ed@mail.kernel.org>
-In-Reply-To: <20260302161723.858616-7-larysa.zaremba@intel.com>
-References: <20260302161723.858616-7-larysa.zaremba@intel.com>
-Subject: Re: [PATCH bpf v4 6/9] i40e: use xdp.frame_sz as XDP RxQ info frag_size
-From: bot+bpf-ci@kernel.org
-To: larysa.zaremba@intel.com,bpf@vger.kernel.org
-Cc: larysa.zaremba@intel.com,claudiu.manoil@nxp.com,vladimir.oltean@nxp.com,wei.fang@nxp.com,xiaoning.wang@nxp.com,andrew+netdev@lunn.ch,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,anthony.l.nguyen@intel.com,przemyslaw.kitszel@intel.com,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,kpsingh@kernel.org,haoluo@google.com,jolsa@kernel.org,horms@kernel.org,shuah@kernel.org,aleksander.lobakin@intel.com,maciej.fijalkowski@intel.com,bastien.curutchet@bootlin.com,tushar.vyavahare@intel.com,kernelxing@tencent.com,rbm@suse.com,echaudro@redhat.com,lorenzo@kernel.org,toke@redhat.com,imx@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,intel-wired-lan@lists.osuosl.org,linux-kselftest@vger.kernel.org,aleksandr.loktionov@intel.com,dtatulea@nvidia.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon,  2 Mar 2026 17:32:41 +0000 (UTC)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB11662:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3e5576d-a852-43fe-e7a0-08de7881b49c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|52116014|1800799024|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	7ENQgTRdC5ePWM5kJo5/BpsMhcXzkfBXPSEYdW+G0vxnoOeolFSENtyP7Al/WUaQFThKG71JtXnccY0uL+aP6P1J/02FsT3dWV8utOobnUFEmNJGeRObTn5KHwuoMMI7ZngnCGNtze/gLfC/bP6EWPAgd8xZIo0mnE9JPp4roBDwGYZC7mx4yKwQBMcPc4aLbgXdxnihKddZxFKab5Q2dnxI8LjracF9c8gVkQmXmUJOEeXFSmFvVTfdJ5k4dFlWlw7oIq9t8GyDRJ/+TT2NeklKLPDYejQaMQkKQ/zXjvpjD6noEoz+u3mZOS6RBkkz1GTYpY0vO7862aZ84YDSUs7xMTiwsrUFSHVd++3YdAy7vKaIhj2ezUNuLFTA8/Th3K4OFxu4MgfBK1MUboB5lFYlY19TnT9qNNmjAuskUPGLyxFmu4m5NE2HjxRoTVofJ91D8ux2o8yU0l8/BmaS3dRA0wTcyvOb4NScO/I/JDRkfV/ZkPg+NQVPiwDRrX7Xk6ODxRCItyXzSq98/JTSbSgkSzs32mwa8Urz2o8re2XInsaLyz5ADuQ6JLpc+GPQKf77vOcS76u2cOmwNpUagiaKmO3c8bnwXEIc2jkLBDjC3X10CkmIuZILEIhoKRSNV84XxhsDqDjm4xxuHEV+fYxUCKHlSE4Of0v+8y7xWwJFCm7Rkvvx6dQ+M/XuOXfxSqBTtbeKTEMe8DUEO4yHGXyzKg0yI9pr9IhtlnvNO8+A++FZb+9TBlxvTTvTYO736jq/w9osHlD+nhj72LTW8ZH5bD5gPnb2x26xY8CGJbc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(52116014)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Xaw/BFzNMmWKhYVf3dRekwIAHfJP0dm3qTCVldqnykWwHczRzAnM4lURhIne?=
+ =?us-ascii?Q?IoZFrTWP3P8Ez5LOWNW/PF+ZTM9bIRHVWqCsMCSHaaX/MQAeNBg8aiDE7CA2?=
+ =?us-ascii?Q?MoN5dctV6gwzDaZKKlyrcYzpaV9bJAfvXENYiJ3mqshNkCgrCWrVlXVArcoN?=
+ =?us-ascii?Q?Q0nwWWNK+s6Ba2F6wi9P2W87D9T+aXKGnNy7cSNxGwOF5hs4nnF7fdFTdWJx?=
+ =?us-ascii?Q?89fBC/k0q+4ZmHIUUWqA0kUPWSzG8K8GnRun1XL7cCw3kCaaYna8uqZcAgmY?=
+ =?us-ascii?Q?qF0OgdGcjv329iGeGYg9rsA8Q0RnIK3ont/P26FxLvotqlne8LUpt0rYxQyl?=
+ =?us-ascii?Q?TzupWgdacdLwAL3T1UP/HcY/OpW6w3o+Puasn49Rc53jN7KzkQpyrJUl2IGj?=
+ =?us-ascii?Q?3/TAooaCmufDBsmYKl35gYOp2C1e/G6cxXAMOAUFVZVK8YfDLoDnjWMVad60?=
+ =?us-ascii?Q?Q0NBpDGuimH54XKF9hQh2wSyxOadnMjubKBLLUnPUw45lc4L92CcJsBA1kaO?=
+ =?us-ascii?Q?y0Wk156tyu91D5eC9b0DY8tBJMZMdZA5mpMA6vl7IbrqTKi097BO+PtAQ9Lm?=
+ =?us-ascii?Q?ajWqWB2VbOPEZml2GpQW+KC3yBclu8mIAZ35srlGsfYywTDwlGWKK8KxCBdc?=
+ =?us-ascii?Q?wpFHw4eWzd3OYrJm/ASH9z7N37GgoMf598S4+MRiZcqJhxT9xXjLY3p+0KSo?=
+ =?us-ascii?Q?htYwFpLz4daUnNFL+p/FJJbLbEI+Z2Ey740higEsPZ/PnkZgDoKIWMQlG8TW?=
+ =?us-ascii?Q?xkG2MWZmZOd0LKHRtkisW+Kgz2L87ETO1gPcM6m4xNRU1Va50Z+5dd6xT+ZI?=
+ =?us-ascii?Q?wxxlnZXmHbdSFPxiXMnF6OQVwnisL8xoTnEcAjB/uzMHOvUG4ei4xPK7XWce?=
+ =?us-ascii?Q?VWIagEKkDmUepkjktg4QnUr7wZuIb6WG3+MBkjYy9KfkxgPZJE9E3a6ErdOd?=
+ =?us-ascii?Q?q92dONDzTkFQBq978F6UrddUnbiUf5OYHPcdoIMuJOa+GCqG78/KLNujryNr?=
+ =?us-ascii?Q?Sh7AxH+VaBVLqRKNj3qfCcbP/OFVUNry01koiWEouvCGmxHv9ZSOJtojobjH?=
+ =?us-ascii?Q?DL4m4mmSNnijLfzGJiuchYyJMmiQZxAffb13kMm7ZXA7mljRYkdZ/B3x3dag?=
+ =?us-ascii?Q?zRgUqiCt/ORATuUGAKn4/99rUYas6ttiw4z9snK+UNP7cEIi0KIg8LtcAecN?=
+ =?us-ascii?Q?LXFfHebEpwnLOZW3sZTbnGYJuNrvbFNYgqCMcOkvefSJUMLN4DR87EUf/4NR?=
+ =?us-ascii?Q?5LLj1DVjrf0QcHDwR0rFjV9x4o8HOodLrYeedU0YoB7dDnIOorZRv1Nz62dz?=
+ =?us-ascii?Q?vfnEIsrGewa2Xbxnuq9amj+2x3ZlJ6I/iPinqM9JHSWpiXFUoDrkUYVTUQPB?=
+ =?us-ascii?Q?nQqcoQ2LpVILWWBK+H6A9W7d6bgWuJlWo9yLtwr3dFiKbgVZl/aDei5RKB1q?=
+ =?us-ascii?Q?/XQAY7+DmEYHjHPw+8Vv80v0ABd2HDWRNG3G6xlpEfyJwubXjkU3kJ7xmsyY?=
+ =?us-ascii?Q?6GYpGhu9EFq1GnOH2cQrDYmVvu+v1Nlw5EMs51CpT3FODobgiE2YfU2T01wv?=
+ =?us-ascii?Q?rNV4OvgP44VYwoYR3qmKay/O/xBevO1bDDUcdB8UcUhV5K4Gn4TUvVPCq+Wf?=
+ =?us-ascii?Q?w2Ak6U5XucwNtHR0zPi8xQFyK9JPcPzyZX4UCGaA8d3Z39VJtyV9bH257953?=
+ =?us-ascii?Q?ahwLh9kl4cp6GuBvKjIWtzEIuSQNV+sPW5Q3kIe66QHAyCqMDkRQCtQ1Ev0E?=
+ =?us-ascii?Q?iPuigeVUrA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3e5576d-a852-43fe-e7a0-08de7881b49c
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 17:32:41.0691
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G5tfOAiac3A93dsrVHkvkpf+hC9NKprH4uS/fBxNYu/535OXM3aJs4pWFkmBdY+Q3fiaWyfTCppRieT4eV6xFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11662
 
---===============7315119925973411465==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> @@ -3567,6 +3567,7 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
->  	struct i40e_vsi *vsi = ring->vsi;
->  	u32 chain_len = vsi->back->hw.func_caps.rx_buf_chain_len;
->  	u16 pf_q = vsi->base_queue + ring->queue_index;
-> +	u32 xdp_frame_sz = i40e_rx_pg_size(ring) / 2;
->  	struct i40e_hw *hw = &vsi->back->hw;
-
-On PAGE_SIZE < 8192 systems, i40e_rx_pg_size() calls
-i40e_rx_pg_order() which checks ring->rx_buf_len:
-
-i40e_txrx.h:i40e_rx_pg_order() {
-    #if (PAGE_SIZE < 8192)
-        if (ring->rx_buf_len > (PAGE_SIZE / 2))
-            return 1;
-    #endif
-        return 0;
-}
-
-At this point in the function, ring->rx_buf_len still holds the
-value from the previous configuration. It is not updated until
-later in the function body:
-
-i40e_main.c:i40e_configure_rx_ring() {
-    ...
-    u32 xdp_frame_sz = i40e_rx_pg_size(ring) / 2;  // stale rx_buf_len
-    ...
-    ring->rx_buf_len = vsi->rx_buf_len;  // updated here, after init
-    ...
-}
-
-Could this lead to a wrong xdp_frame_sz on 4K page systems when
-ring->rx_buf_len changes across the PAGE_SIZE/2 (2048) boundary
-between configurations?
-
-For example, after AF_XDP ZC teardown on a standard MTU interface,
-the previous rx_buf_len from XSK (~3840 with default 4K chunks) is
-above 2048, giving pg_order=1 and xdp_frame_sz=4096. But the new
-vsi->rx_buf_len for standard MTU is 1534, which would give
-pg_order=0 and the correct xdp_frame_sz=2048.
-
-With frag_size set to 4096 but actual buffers only 2048 bytes,
-bpf_xdp_frags_increase_tail() would see frag_size > frame_sz and
-return -EOPNOTSUPP.
-
-The previous code computed i40e_rx_pg_size(ring) / 2 at the skip
-label, after ring->rx_buf_len was already updated, so this ordering
-issue did not exist before.
-
-Would it work to move the computation after the rx_buf_len
-assignment, for example:
-
-    ring->rx_buf_len = vsi->rx_buf_len;
-
-    xdp_frame_sz = i40e_rx_pg_size(ring) / 2;
-
-    if (ring->vsi->type != I40E_VSI_MAIN)
-        goto skip;
-
-> [ ... ]
-
-> @@ -3616,7 +3618,7 @@
->  	}
+On Thu, Feb 05, 2026 at 06:06:47PM +0800, Sherry Sun wrote:
+> Add usdhc3 to support M.2 SDIO WiFi on i.MX91 11x11 EVK board.
 >
->  skip:
-> -	xdp_init_buff(&ring->xdp, i40e_rx_pg_size(ring) / 2, &ring->xdp_rxq);
-> +	xdp_init_buff(&ring->xdp, xdp_frame_sz, &ring->xdp_rxq);
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx91-11x11-evk.dts    | 96 +++++++++++++++++++
+>  1 file changed, 96 insertions(+)
+>
+...
+> +	pinctrl_usdhc3_sleep: usdhc3grpsleep {
 
-> [ ... ]
+I rename usdhc3grpsleep to usdhc3-sleepgrp, please run CHECK_DTBS before
+submit patch to make sure not warning.
 
+Frank
 
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22586694870
-
-AI-authorship-score: low
-AI-authorship-explanation: The commit shows domain-specific driver knowledge, targeted fix with minimal changes, and a natural commit message style consistent with human kernel developers.
-issues-found: 1
-issue-severity-score: low
-issue-severity-explanation: Variable initialization order causes wrong xdp_frame_sz on 4K page systems when rx_buf_len crosses the PAGE_SIZE/2 boundary between reconfigurations, leading to bpf_xdp_adjust_tail returning -EOPNOTSUPP incorrectly but no memory corruption.
-
---===============7315119925973411465==--
+> +		fsl,pins = <
+> +			MX91_PAD_SD3_CLK__GPIO3_IO20                             0x31e
+> +			MX91_PAD_SD3_CMD__GPIO3_IO21                             0x31e
+> +			MX91_PAD_SD3_DATA0__GPIO3_IO22                           0x31e
+> +			MX91_PAD_SD3_DATA1__GPIO3_IO23                           0x31e
+> +			MX91_PAD_SD3_DATA2__GPIO3_IO24                           0x31e
+> +			MX91_PAD_SD3_DATA3__GPIO3_IO25                           0x31e
+> +		>;
+> +	};
+>  };
+> --
+> 2.37.1
+>
