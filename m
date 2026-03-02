@@ -1,99 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956F038F22B;
-	Mon,  2 Mar 2026 10:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBCE38F62D
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772445944; cv=none; b=sqmNPW4/OUSyynI8NA0VNnFlRb/4BcuRb6CIOwjSCcAsimTCeTbQEUsq4toxYwVNGgXW3irIST7Rzo679irLC1fAM0gC0zzKoEQ/PWsILd+IMo2hVquHOFdAqhVgh2ucWO8ML7G0Q+DgR5i426glp4BjcxmcmKKIeDQTfx800Q0=
+	t=1772446272; cv=none; b=QsCTzX9e+v1GkjDnIN+GEq9hugeViA074UzF2ZfzmOL/uVEXjQW9YyZH8CoRQeNFFmbKA8n9/J1jWbyuQf+ua7PL9k+v6MHuQ5Bswd9yC7YNe7U+M+T8aeIu8rxMUaBifKmUi55by9U++f5Wi6xh8Gr4vrYyRnl3btAsHW9KoVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772445944; c=relaxed/simple;
-	bh=AExjFJB+beaJdH5ifnqVz1hAtu3ohEGrYIxKmLjlols=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=e0g8c0Lp1YtnWnut3BtW4J8UaBby2N9F1wnFBXnx0lNZO44pldYVhZkTDKDdIr6ybAAzJxJv9swrePhraWt/vsImUBpU73Jfzy2cyV8KNQ8KhkT+8fkCZt6m0jwPOy9MblGaVTlsRM/SyiYok8KQqTiDmAIUpRtJBroHeRTo/9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/ipLqMS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772446272; c=relaxed/simple;
+	bh=5rGx+CQxlmdX0QBjsQC9nBGMb/T8RhLBrNveef/NwRA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gp9zsXJs3MHMdcl8zYnaIGJ3t3iTH8GgQ3ssoQpkavgi+kmD4ImIELuuToScVF1XIXVQpM1U3gxJfACd4p1XiV8/vPmsoW5gvlB7uxCycTu3CXc7OJLSRlzrNNVIUfLK7k6vB36VrOz318Gsy+JlI0JALUIENI1oACfTMgAP2JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utn49JxZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/ipLqMS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA70AC19423;
-	Mon,  2 Mar 2026 10:05:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utn49JxZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28866C2BCB3
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772445944;
-	bh=AExjFJB+beaJdH5ifnqVz1hAtu3ohEGrYIxKmLjlols=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=N/ipLqMSUK+TNM3M79c2Bu/mT10HYrcuIH6HHVm9TmCLBzTOanVy4iqKH9qBsvS0v
-	 M+4XUy76NBCuucr+sjuFay/CEJizKz0jNGqJOJ17GN57L7Jc1kkiCR99SO183rcBLz
-	 kY9/3m+KEZjm7xhjbtzrwvDhng5/b+qOV3Cp7wPAXPzEHIwswUroySG3G/10sooyH/
-	 1M7/2jlCF1+MhIeED4VyB7v4+fH6rhB9pkZTRvwSxB2LSPSJmKbRyDnrGtL5rv0RxI
-	 GECIyFgbmQfqxcwqQH1bupgZZiZqjYXcy6cLtg4osRotpAM6X4xUsRjv5JEu2hXqH4
-	 xDe6Tt+wPr+qw==
+	s=k20201202; t=1772446272;
+	bh=5rGx+CQxlmdX0QBjsQC9nBGMb/T8RhLBrNveef/NwRA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=utn49JxZm3uPD9TuLu1lY4whf2lgHQXpnN/5s4NwISLN4GnfGxTf40s5qVGHwpwzI
+	 EY1B1NPNrE1Szflo+Byk18yuFnfP9oHdoCxCbYqqx1vPu2Ite0EQlWI+gOJxuX3xhT
+	 l7orLlXC0GliBqKt7oLpsds9ACl6bDWw61yf1wmhBhn1eGKufZUYLanHsDbqJd+Nfw
+	 iYSMUULBuHCoqK0uW3yKl/wR7SngDqu+yEmySUQDgH+1c6PtwGV0E3olM20CBfmTL2
+	 FmENHzE1SCmgtFhNZQHlz02nZDCK55s0nPpCKw0YE3MUJ4hfAJL5lEwkuhLCDDVEUd
+	 BZRMryGbnqBxg==
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79801df3e42so50989167b3.0
+        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 02:11:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXv4QM/CWMg+3LRpjVnrIiz+S4UZz4lifOYkCx5MHqLO1L84MGMfSvomcqAQy0OhD0kik0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJcwBJgQ+O1Uw7efZaP76ZHAEf5YnoIollVzt7FziJLGLl1Jv6
+	RqNKKX8pCWGhcVoXZVl3Y2uRFLcPe2NoBiC/58B15kIjBoPdgkZuKC4OIg/eJAc1ZWfrSIv/HHd
+	ufrfppMNqZAm2M4QvSPLnqq5hxqoLNGw=
+X-Received: by 2002:a05:690c:3686:b0:797:d46b:e86e with SMTP id
+ 00721157ae682-79874be88demr139170977b3.14.1772446271443; Mon, 02 Mar 2026
+ 02:11:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com>
+ <20260225-pinctrl-mux-v2-4-1436a25fa454@nxp.com> <CAD++jLkT83xz+PSzZZv_Mv+Mqx_+W30d_xk68EDG-sdmFF3x3A@mail.gmail.com>
+ <aaG2xQDnMVGGAOJE@lizhi-Precision-Tower-5810>
+In-Reply-To: <aaG2xQDnMVGGAOJE@lizhi-Precision-Tower-5810>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 2 Mar 2026 11:11:00 +0100
+X-Gmail-Original-Message-ID: <CAD++jLm=6pTh7N5UAXFaaYWCs5DhfQdb+8TnM5XLcYC886=kLw@mail.gmail.com>
+X-Gm-Features: AaiRm52VNn0UFirxG2TzpKTirdRC2cHuoSLXvPJ-P8L7Wd2YNQMbqv19Df0g77c
+Message-ID: <CAD++jLm=6pTh7N5UAXFaaYWCs5DhfQdb+8TnM5XLcYC886=kLw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] pinctrl: add generic board-level pinctrl driver
+ using mux framework
+To: Frank Li <Frank.li@nxp.com>
+Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Mar 2026 11:05:39 +0100
-Message-Id: <DGS7NBNUSBI6.16D6UP28IAXYS@kernel.org>
-Subject: Re: [PATCH 1/3] driver core: generalize driver_override in struct
- device
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <ysato@users.sourceforge.jp>, <dalias@libc.org>,
- <glaubitz@physik.fu-berlin.de>, <abelvesa@kernel.org>, <srini@kernel.org>,
- <s.nawrocki@samsung.com>, <nuno.sa@analog.com>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-hwmon@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-sound@vger.kernel.org>,
- <linux-sh@vger.kernel.org>, "Wang Jiayue" <akaieurus@gmail.com>
-To: "Gui-Dong Han" <hanguidong02@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260302002729.19438-1-dakr@kernel.org>
- <20260302002729.19438-2-dakr@kernel.org>
- <CALbr=LYqfhMi4eGp18r20XFzOWqRYCB8tO0mc_TAydb5cgbX-A@mail.gmail.com>
-In-Reply-To: <CALbr=LYqfhMi4eGp18r20XFzOWqRYCB8tO0mc_TAydb5cgbX-A@mail.gmail.com>
 
-On Mon Mar 2, 2026 at 9:36 AM CET, Gui-Dong Han wrote:
-> Applying the following diff fixes the KASAN issue. It was just a minor bu=
-g.
+On Fri, Feb 27, 2026 at 4:23=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+> On Fri, Feb 27, 2026 at 10:20:14AM +0100, Linus Walleij wrote:
+> > On Thu, Feb 26, 2026 at 12:55=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wr=
+ote:
+
+> > > +static void mux_pinmux_release_mux(struct pinctrl_dev *pctldev,
+> > > +                                  unsigned int func_selector,
+> > > +                                  unsigned int group_selector)
+> > > +{
+> > > +       struct mux_pinctrl *mpctl =3D pinctrl_dev_get_drvdata(pctldev=
+);
+> > > +       const struct function_desc *function;
+> > > +       struct mux_pin_function *func;
+> > > +
+> > > +       guard(mutex)(&mpctl->lock);
+> > > +
+> > > +       function =3D pinmux_generic_get_function(pctldev, func_select=
+or);
+> > > +       func =3D function->data;
+> > > +
+> > > +       mux_state_deselect(func->mux_state);
+> > > +
+> > > +       mpctl->cur_select =3D -1;
+> > > +}
+> >
+> > As mentioned I have my doubts about this, explain why this hardware
+> > is so different that this is needed.
 >
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index a8cb90577d10..09b98f02f559 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2556,6 +2556,7 @@ static void device_release(struct kobject *kobj)
->         devres_release_all(dev);
+> As board mux (uart and flexcan) exist, for example, only one of UART and
+> FlexCAN work.
 >
->         kfree(dev->dma_range_map);
-> +       kfree(dev->driver_override.name);
+> when modprobe uart.ko,  mux_state_select called.
 >
->         if (dev->release)
->                 dev->release(dev);
-> @@ -2566,7 +2567,6 @@ static void device_release(struct kobject *kobj)
->         else
->                 WARN(1, KERN_ERR "Device '%s' does not have a
-> release() function, it is broken and must be fixed. See
-> Documentation/core-api/kobject.rst.\n",
->                         dev_name(dev));
-> -       kfree(dev->driver_override.name);
->         kfree(p);
->  }
-
-Yes, we must not access dev after the release callbacks has been called; no=
- idea
-how this kfree() ended up below. Thanks for catching!
-
-> With this applied, along with the PCI driver diff from the WIP patch,
-> the issue is resolved. I tested this on PCI and both PoCs no longer
-> trigger KASAN. I also ran with other debug options enabled (lockdep,
-> sleep inside atomic, etc.) and hit no warnings.
+> So flexcan driver can't get such mux as expected.
 >
-> I was working on a similar patch recently, but your version is better.
-> Not returning the string directly provides better encapsulation and
-> makes the API much harder to misuse.
+> when remmod uart.ko, we need release mux_state, so flexcan driver can
+> get such resource.
+>
+> Genernally, DT may only enouble one of UART or flexcan.
+>
+> but insmod uart.ko
+>     rmmod uart.ko
+>
+>     insmod uart.ko (here also need release previous's state at prevous rm=
+mod).
 
-Ah, right, I remember you mentioned that! If you want I can add your
-Co-developed-by: to this patch to account for your work.
+Can't you just enter the state "init"? This can be used
+explicitly on the uart .remove() path using pinctrl_pm_select_init_state().
 
-> Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Sure the device core does not do it automatically but this is a
+special case.
+
+If you want a generic solution without having to change any drivers,
+Add pinctrl_unbind_pins() to drivers/base/pinctrl.c and call on the
+generic .remove path for all drivers to put the device into "init"
+state during rmmod.
+
+This gives us better control of the actual hardware states I think?
+
+Yours,
+Linus Walleij
