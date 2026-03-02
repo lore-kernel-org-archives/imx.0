@@ -1,198 +1,108 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE10E309F09
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 16:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78EB425CDE
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 17:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772470746; cv=none; b=LWRupxaK9av8ZSbQFa/hzVPvXqP+b1ZZpVh6Rs8DvKD5jM8cRwEYAwXhsu3ougVR2aphAF8J362h7r3TJ4BOqu64+hZludpRjZVskab7MnMuT4BTorFqUZRjvBvgGT44u+FMfYCNhFTCFh4eJYyvjK/OE/FpzMjQ/dC8SkWUxZo=
+	t=1772470936; cv=none; b=JQE5in8td0klVDfgMMKvZhogxYUe3xPnWDoHWL/TQftKqV9JWj25y0+znBSSv+a3RDkPQTXWmmep9IjBGv34mIjpWfZhy7d72raRE1ZY/+He2+zkmX59yowa77/WT+KHSlZy4xMQSvJLPHnhvLcXA+tPwZPK6UZQQliP38Wj7rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772470746; c=relaxed/simple;
-	bh=uiJ0RBXKk0XUNumW6onkF1ex71/gnR+cuyox1cQnjB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGJ76UPMCQg78TvV0XZrYs4RU3+fU73bTRtJ1ajfTn1h9gfYDjolvXBCBPv7UvjB06BYUTkQXKKbzt16P81BLgdD+YbZGPbddNnRIXrQzwgVM1EW6sfyxMFliQv9JTxkb1QhUk0B80DUT/8hm+1FDMgxiWKbS9FNfAOLvNnJoY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=rxv8OHCQ; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1772470936; c=relaxed/simple;
+	bh=zMnCw1GpmTZEPh8ioUPoTvQ7T/FR4oKatNjLKI9czoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ris8IM8Yt0zdG9nIdlsux0LEsUQ++tobw+hUjQjpEGhnm4P+jIb5Li+zwvv0AtXajPA6g0Dk5eFx2cVeuQDmRTwuWJs0a5uFXBEnc+75T+EADFyjOdCdK+L2cDL0xi4pxRVEDadlRG27rf3OKPLirsbFe5aS7cgwyCvKrXt1Bm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1NBIAKT; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="rxv8OHCQ"
-Received: from mail.andi.de1.cc ([178.238.236.174])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1vx6bm-0000000AEGW-2nfT;
-	Mon, 02 Mar 2026 17:59:02 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=odYzrck29LAOJzj3S/U8ypRmw6yfV/uqVpybrs/IoRA=; b=rxv8OHCQZ75qUbOT2J8Uqae4Cn
-	Tcxwz4Fgv2EAMSeyQ5hvYhpWiQaVOAO8C6vdgGkzlUjxgyeKTZnUNfm5swOOKFk0FSh1hHf+HM2QV
-	BRissMDMOifQuTjY/fGMOMWjwej36iXTM24Y0Y/L2o5WpNhnT8en1La2uBemc4wldttOyS/96DvUk
-	QIABMgTR5flvk9rfyt8Ux8JoukeMKLo5SpIu09A0+mvAkR6oZNxZ4mWnBK4dPCKyH27Prf02VZojL
-	s1bsVLX4m4E2Fb9by8VKwi9z61LtGqhmgV5DhMulCCukdkERSenZq/HtOA8Zr5EVh0GnORv06+WG+
-	kuFgM5IA==;
-Date: Mon, 2 Mar 2026 17:56:40 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Bartosz Golaszewski
- <bartosz.golaszewski@oss.qualcomm.com>, Mukesh Kumar Savaliya
- <mukesh.savaliya@oss.qualcomm.com>, Viken Dadhaniya
- <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Branden Scott <sbranden@broadcom.com>,
- bcm-kernel-feedback-list@broadcom.com, Vignesh R <vigneshr@ti.com>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Patrice
- Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Linus Walleij
- <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, Matti Vaittinen
- <mazziesaccount@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v2 01/12] i2c: allow setting the parent device and OF
- node through the adapter struct
-Message-ID: <20260302175640.1020393d@kemnade.info>
-In-Reply-To: <20260302165928.0e85b93c@kemnade.info>
-References: <EDF3FB58-4747-442E-8463-6F1C6E568962@gmail.com>
-	<CAMRc=Mc1+GX52A56kBLD0XytvL=E7kpjLDiqNkR=fici4-qUnw@mail.gmail.com>
-	<20260302165928.0e85b93c@kemnade.info>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1NBIAKT"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439b97a8a8cso1094664f8f.1
+        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 09:02:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772470934; x=1773075734; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QaijC/p2L1n1TZ0ZHl3fOCy3J+kOaUlNmbkDRGgocyM=;
+        b=d1NBIAKT5g2pOMsObFLQ1suGHBMW4kjGKfA2kEyfiRXs3I2ZM1IPVpf7fRAddwXy1a
+         boDACkwgF33lJxk5rK6avrSiMPL1F/nAc7haPkCDlyvx7Faj05GqSdWChMyUniBfkY9p
+         SYZQ1xpaqe2+tzYDviLuOGToLHAELu1AbikOwjYMLr0qB+PoJuEIdwPcvAL1kCQKNS/5
+         7DRtlqxieR598LjQjXK76u0r2C8Xe66RH26D6YNXkLE3OEAhtMfd1mQFpVcCvfoG/NTt
+         1ZZiGacQRqukQ5LTPN+ut15QgLz91EBeYNDslcmdnA3lWuZ6F5r4dwvyQh0sJOd8whke
+         BcTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772470934; x=1773075734;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QaijC/p2L1n1TZ0ZHl3fOCy3J+kOaUlNmbkDRGgocyM=;
+        b=dcnOmHvH/hYDkyFAq8Z8H+EX06h3G7VX0XhNfeLkOYFj7amOb1H7vuUCnLPU594qaZ
+         +Haw92GxFk1rlNizxaJkjHYOyE0hwWMtsTZQbrRAjyHzl6BQ4OUPwogbKRpGgK5zmm33
+         mPozcTbFdnL72tHi68RRdt2DJ4wOY0wtvfiq5iK4UNvz+zBXG0f4GAjPqOed9X+MKoM4
+         q2SeMWYhHBAFRbdgo4p8JVOfSoAkmE0l5KdmMI1mnnjNezoHlHjjZFqFy+EtFmGAOZ18
+         8Nog/K/l75ctpGhWGBhrE+XL1pq444hqYTWe/ZSW+6JqXXsrPiojd9v7xAYoXmj7Yjst
+         D7yg==
+X-Forwarded-Encrypted: i=1; AJvYcCVTBUN21OemXIVybYMDyTxW9a2tk7FxwIJjKSfMpaD/Ca9gK4d/26Fk49bIXwTYwqdnBuw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx97kVl4d5ODAhC61R+WAvo/NuJJKVjiCEZ9XPdbRqUtJc8ssBk
+	V8WUzlZNG/wd9GSGn2yOp15lV6B8dY7grYyS9djYzY1UTgc3K+0Pom8B
+X-Gm-Gg: ATEYQzzuaOm7mUf/PO9P+iP/a8Faby3a5gqW+P/VzDV0cTSvYbU40I02Z3gCGjkKp7h
+	5S3AANa8jxd/CBMRJA1LwTrZYH/G9nQrvQNfoOjDwk0JeC8XwvJbq8pfLT1s1/5zP/2O87i2xM7
+	ffazvwUeBQrL4p98iCD63hb993tkwTXQzbqgKdmDD0AWC2k6j9Jp0aKkFIMgdJc6YgHW4aMakVp
+	wUtz1ekpRbs3hTk+u1gpuYFt+kScWKPBff1KfwuG2EXrbg+XMXdPEbqJj+PtryCzeS1OwWs//gz
+	Gc/D0+tSLUzF9LdeiXKLdP2lF6ikhZ8IJLqN6On2EHgx2mrY0azp/y4B3PknsUgAiXuSmy1Y7ZP
+	EujeIc4QI6vgYvLoXxI6Ve1RNhajonrl/jA+JcfSbrJGVFJXYnRIjWIrmXYA8WQulDqIqf7hGgc
+	1XK+AN5UnWiW1QJOZhLOwC/L5uscaE/BCZCyQSZyj+hys+kd8G1lUR5hpkPog09q+FNrp/fTh4K
+	yeZ8mxhaWsMO8THzqzOg5nFDwqq/UDItadxBFovdgVqPNooabES+MOG
+X-Received: by 2002:a05:6000:4011:b0:439:b922:8479 with SMTP id ffacd0b85a97d-439b92285dfmr5706628f8f.36.1772470933596;
+        Mon, 02 Mar 2026 09:02:13 -0800 (PST)
+Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ac9f3e5bsm19606933f8f.37.2026.03.02.09.02.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 09:02:12 -0800 (PST)
+Date: Mon, 2 Mar 2026 18:02:10 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+	festevam@gmail.com, alexander.stein@ew.tq-group.com,
+	dario.binacchi@amarulasolutions.com, primoz.fiser@norik.com,
+	Markus.Niebel@tq-group.com, y.moog@phytec.de, josua@solid-run.com,
+	francesco.dolcini@toradex.com, maudspierings@gocontroll.com,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>
+Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: Add support for Variscite
+ DART-MX91
+Message-ID: <aaXCkswynHreRURk@Lord-Beerus.station>
+References: <20260205100125.9095-1-stefano.r@variscite.com>
+ <20260205100125.9095-3-stefano.r@variscite.com>
+ <aYSzgRRGewX6uSlc@lizhi-Precision-Tower-5810>
+ <aaW7EpLmhxk3elmd@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaW7EpLmhxk3elmd@lizhi-Precision-Tower-5810>
 
-On Mon, 2 Mar 2026 16:59:28 +0100
-Andreas Kemnade <andreas@kemnade.info> wrote:
+Hi Frank
 
-> On Mon, 2 Mar 2026 03:08:24 -0800
-> Bartosz Golaszewski <brgl@kernel.org> wrote:
->=20
-> > On Mon, 2 Mar 2026 11:38:27 +0100, Kalle Niemi <kaleposti@gmail.com> sa=
-id: =20
-> > > On 3/2/26 10:55, Bartosz Golaszewski wrote:   =20
-> > >> On Mon, Mar 2, 2026 at 8:47=E2=80=AFAM Kalle Niemi <kaleposti@gmail.=
-com> wrote:   =20
-> > >>> On 2/23/26 11:05, Bartosz Golaszewski wrote:   =20
-> > >>>> In order to stop i2c bus drivers from dereferencing the struct dev=
-ice
-> > >>>> embedded in struct i2c_adapter, let's allow configuring the parent
-> > >>>> device and OF-node of the adapter directly through dedicated field=
-s.
-> > >>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualco=
-mm.com>
-> > >>>> ---   =20
-> > >>> Hello,
-> > >>> Automated driver test system bisected this commit to be the first b=
-ad
-> > >>> commit, linux-next next-20260227 was tested. Failed tests include d=
-river
-> > >>> tests for ROHM PMIC and accelerometers, which are connected to
-> > >>> BeagleBone Black.
-> > >>> The failed driver tests all fail to first i2cget and the tests stop
-> > >>> there: "Could not open file '/dev/i2c-2' or 'dev/i2c/2': No such fi=
-le or
-> > >>> directory".   =20
-> > >> Wolfram: well, now it would actually be useful to know which commit
-> > >> exactly is the culprit so maybe splitting the changes is not a bad
-> > >> idea after all.
-> > >> Kalle: which i2c bus driver fails here? Any errors in kernel log?
-> > >> Bart   =20
-> > >
-> > > Hello Bart,
-> > >
-> > > i2c-1 and i2c-2 are failing. I am not seeing any i2c errors in kernel=
- log. I got two failures without the dmesg available (this is bugged test s=
-equence, and not a kernel crash), but those got the same stdout message "Co=
-uld not open file ...." as all others.
-> > >
-> > > -Kalle
-> > >   =20
-> >=20
-> > I meant what driver are you using but I suppose it's i2c-omap.
-> >=20
-> > Can you try the following change and let me know if it fixes the issue?
-> >=20
-> > diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-> > index dd8cec9b04c6..01656f82d2c6 100644
-> > --- a/drivers/i2c/i2c-core-base.c
-> > +++ b/drivers/i2c/i2c-core-base.c
-> > @@ -1548,6 +1548,11 @@ static int i2c_register_adapter(struct i2c_adapt=
-er *adap)
-> >  	if (adap->timeout =3D=3D 0)
-> >  		adap->timeout =3D HZ;
-> >=20
-> > +	if (!adap->dev.parent)
-> > +		adap->dev.parent =3D adap->parent;
-> > +	if (!adap->dev.of_node)
-> > +		adap->dev.of_node =3D adap->of_node;
-> > +
-> >  	/* register soft irqs for Host Notify */
-> >  	res =3D i2c_setup_host_notify_irq_domain(adap);
-> >  	if (res) {
-> > @@ -1561,11 +1566,6 @@ static int i2c_register_adapter(struct i2c_adapt=
-er *adap)
-> >  	adap->dev.type =3D &i2c_adapter_type;
-> >  	device_initialize(&adap->dev);
-> >=20
-> > -	if (!adap->dev.parent)
-> > -		adap->dev.parent =3D adap->parent;
-> > -	if (!adap->dev.of_node)
-> > -		adap->dev.of_node =3D adap->of_node;
-> > -
-> >  	/*
-> >  	 * This adapter can be used as a parent immediately after device_add(=
-),
-> >  	 * setup runtime-pm (especially ignore-children) before hand.
-> >  =20
-> No changes here. Devices probe, bus indexes are still shifted.
-> If I take that into account, i2cget still works.
->=20
-> But I think there is no defined order anyways. So if
-> I would add e.g. usb device provoding i2c busses early than
-> omap-i2c for some odd reason, things were messed anyways.
->=20
-> On the other hand, just having numbers skipped seems to be odd.
->=20
-ok, looked around further,
-We have aliases, so numbers should be static
+On Mon, Mar 02, 2026 at 11:30:10AM -0500, Frank Li wrote:
+> 
+> dts part can't apply, please rebase.
+> 
 
+Thanks for the feedback.
 
-i2c_add_adapter calls i2c_register_adapter() as the
-last thing, but needs to determine the number earlier.
+I rebased the series on top of the current mainline (Linux master tree) and
+it applies cleanly on my side.
 
-This seems to help:
+Could you please let me know which specific tree/branch I should rebase
+onto for the DTS changes? I will respin the series accordingly.
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index dd8cec9b04c6..e22d784202b8 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1657,10 +1657,9 @@ static int __i2c_add_numbered_adapter(struct i2c_ada=
-pter *adap)
-  */
- int i2c_add_adapter(struct i2c_adapter *adapter)
- {
--	struct device *dev =3D &adapter->dev;
- 	int id;
-=20
--	id =3D of_alias_get_id(dev->of_node, "i2c");
-+	id =3D of_alias_get_id(adapter->of_node, "i2c");
- 	if (id >=3D 0) {
- 		adapter->nr =3D id;
- 		return __i2c_add_numbered_adapter(adapter);
-
-> Regards,
-> Andreas
->=20
->=20
-
+Best regards,
+Stefano
