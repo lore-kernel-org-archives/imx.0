@@ -1,62 +1,71 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012058.outbound.protection.outlook.com [52.101.66.58])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010048.outbound.protection.outlook.com [52.101.69.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96DB39150D
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 20:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415A13D0F1D
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 20:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483831; cv=fail; b=kJSKYeUSFgAG5jvv3N6jpVRatsbTH2arv3ZfTB0DLjZjzOYWSnmXGCRJR6pHA0Oqnh58+ajQJTs9RISmTmRL7U7WcX6s2qEIH/JtzJ6+ZZSk4B9IrJ8dmgaE1ZHI8toNqT3HQMQikS6N6CY92fHOqyJwgkME85NoxKToHzOSHrs=
+	t=1772484640; cv=fail; b=XEPVl6xd+iLW0PFkxE9ZsHFAlTJfpj5yX5JTE3FbsSEAg/TN9+a5cNRsGj4cMEdDXmJYf1vewn4ydKoxptC8smVltk+dPJSNDGXVkaVpsBornhR8ZRbetdO9Zn0Gdex2nh9BYwpPTewQIlB33+8F+bGDGa3FCWrQeW+AvH2X2tY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483831; c=relaxed/simple;
-	bh=EuOpwFPev3uA+ZcJ6CcFPJco+cD0r/lp0Fzv6PicnU8=;
+	s=arc-20240116; t=1772484640; c=relaxed/simple;
+	bh=aYgksmXZa5kd0fCZqIED3exWPrJzljwzv43X5CpbeAY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Qwnuc57isYho1I2qIDuLVmr5848o7edRZ8N3doGTCXS2oX5PqqeXMJmxIqOUpQwOvDt81TsXbl0o6ryGLtYu26tfVRVx77v8NoZzlT1pJF31/PNSn4dqH8GvAz41VXFHDiRQyxAy7vV0e+qmzPH29+DY7ikyTCeMJs2+85gs3sc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AWyve1Gv; arc=fail smtp.client-ip=52.101.66.58
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KNwAp5xXwr7geKJGeRUoMlyDRo0ca08H/SrHXgA5pN0v8oLbkf9BEyDJrhZUPOooVhPYPP+cQB8muT7rLmHnfJfc9x0ZBImnEc/R1Thix0sAELcnAq4eUXhY9Oy5p96XtU/19PYlKnjCIYnZC5RqtHFNgXSNM8q1Wxkj/aB9dq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DqiCTgWT; arc=fail smtp.client-ip=52.101.69.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AWyve1Gv"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DqiCTgWT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pPktjBNUfmUWtjoFYYfcdff472zy6cqqjIDqsFif3pQJyPBUb1DTs+hpHlVaNgLkhNu471EU2JsbPv3uuv6p09akBjVP/nxtFs9jPzh83jJ552TdlXCx3Xk3/ykyzdhMl+DxdU2+Nl0wm1t1rrm8Sbxm9zgAC7+AHw26qUJo5v7xiCVr1iq4mZTWm4f3hCvH8yZT3MeRJ0yDwmJ2oinaQlxw7pkfXJ3sdjI1InNu17qs09zEfJqawANkDFMSX+Fjs3Sa/rhiBfUc89X076qSFg/ov+JGSdKLijiwDVyiLUm4oXYJWf8blsUmw2dfDbR0AQVOmWHdSE2Qh1yq36Np8g==
+ b=JVxnL+9+sjKSECDScRerwzNB0gtuX1iKmUqkJeb8VulSMQlxx1rhYQGseKY4bjhp8zIYF1m0EsApSzSLwHSgXS5kWKeb4LJVaW4sTNyVraJi+MpLVs2Cra+Nn06gIIEnxaYCw5EyXx6XoL/Pe/hfRO4Jd58avgEPqFhMOUeOkDSDWbdaOmQ0VLURM9yPZoKMd/vi/wpMmLmiEPwnB+bKDUx3PbDFalNBqq50D4Kq51ilf4uMx0Y0fZvx7ocN7Ej19Dp3ik696ifr/KOUdDsqAENQY8FD1KlXR4m4BtQld5p4q02Gnjgjy6tHUA8+wknv1grzGEKVASfMZo22ZAj4GA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tg2ZTu6aOX72dQDAWrZhwPo+4zsQYTvhwY6z2RLpA1E=;
- b=Gh3LSb68+U2Irwrh6H3p4XpDzSujhgMQvbP5CtyZ5h8dDRxrwvF4ONixIodw7t+RxnljllbTaQi/qSMG+IezISX0ZvObfsvIS/RbORLEoqMi0DBcLV4m5MvC6df2MKOjJiac9TtslyKHtk21zF2v8b80nDWWOPbDNpJUJrVtok/gAB+k+SK234zOMnWbda0DGA3nYAcm4QhzANwyYn/ffGWjKqaEZQhciCmcUb0MkQKhNkaGjrfNfojxl0Ldui9sdPQZ6TPz5Mu/OfP7gnmUnm+8PuP4L/OISKRyVheCplMfiJYiBwAvRDOcRUe255GmoO3JrAAknrDeW6hiTlc02A==
+ bh=PYtb/1TP+S6XdBc1qBMkrn39DbnohAwt51ESAhpYQYs=;
+ b=vkfoAZT97LZLxqECJx7qtaGhHU2YuhXtZAgnrkFQDZBk01aXGa7ToroEgLeIppdMbYcWjTgMoRaqL5HcVwvq31oczUvIbZgcGoWrDXOT1deOMibWm52wGF3o7bBlOiu441EUzJ3pFsl/r7+IeMcvtR071mPoB1QhY/KOFKb74OC6aW22a1K70Evg1C8/vZzAbe14DA/eTMMDgQhoL2t494outyr6a5E4qkCtBqK1ZGrEUKQFTrSgrJMbXFXnuNn7R8wT7DGH8LyajxmTTWYMU3RUIImWs9vj6TZBOGHLUYyIsJW3TeWwHdSz8FwJ5H9uyJ14m73N5JV+B4uxmjhPRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tg2ZTu6aOX72dQDAWrZhwPo+4zsQYTvhwY6z2RLpA1E=;
- b=AWyve1GvdVIcyuwOIadhkHBV8b945yi7u8ZVQzhvgtBHMkhonIgEL/M5GfTWJFzJeTb3AL6ZH7ca6U/VcpjPT5nAmfAmr4gB1rDvW59Bt5FVTFrHkh1lCPlhYz/x3ETB0LjFAi5RVob36x0TyFjl9984Y5WUKbqQ4kY7gf1mXC6z/mMAxtz67eqQ5x4hqV0ydsTe4mPS66FAJ8UqnQv3EhbGyahks84eZEU420QfWZ7Z8bx1eOScBBZGvjzbAAsfO56RECaNMlWP9zCL+RJGyL4JaOlQXLbDr9a02tgZxV00yCWu509KfXVQ3CnwpXYxUJ8RLkeQCGEw7AWdGOIiEg==
+ bh=PYtb/1TP+S6XdBc1qBMkrn39DbnohAwt51ESAhpYQYs=;
+ b=DqiCTgWTnyf8Q9BsLwt47RgVWeB4ZTbbiNQW8K7kv4mK3b68iA74mnpDvVfavKYtDSZHPpZmEZlWTYertrO4rR6HMKXNsi5IzNJMopB86wIZ7hWocfgwFMbYxz214fXcjr5S65qv0SXPn7jwIJ9IWpde8MdkwM0s4H1EiXFHGXhs0daARpbr7CArGoF0eWKVnY76/JGC+/q8if+FhKMlsKfFPuBKf5iLgBVupa7O5wstsy5P5ZZFcQndIj8s3Vj9BnbK4YxwmRFq/Emj2/5EjkwCj7JqsPqx5VUjg3tgl/5bIUBHOz6HqgVr0d59EBgMTooaFmxRtKtpNJFr3XpFVA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PA2PR04MB10445.eurprd04.prod.outlook.com (2603:10a6:102:41f::10) with
+ by GV2PR04MB11445.eurprd04.prod.outlook.com (2603:10a6:150:2af::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Mon, 2 Mar
- 2026 20:37:05 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 20:50:31 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 20:37:05 +0000
-Date: Mon, 2 Mar 2026 15:36:56 -0500
+ 20:50:31 +0000
+Date: Mon, 2 Mar 2026 15:50:21 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: sherry.sun@nxp.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	festevam@gmail.com, Richard Zhu <hongxing.zhu@nxp.com>
-Cc: kernel@pengutronix.de, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] Add i.MX943 PCIe supports
-Message-ID: <aaX06NS_XpPYYHlc@lizhi-Precision-Tower-5810>
-References: <20260209055745.1545129-1-hongxing.zhu@nxp.com>
- <177246919562.2086883.17926195087426226216.b4-ty@nxp.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se, jernej.skrabec@gmail.com, airlied@gmail.com,
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+	laurent.pinchart+renesas@ideasonboard.com,
+	antonin.godard@bootlin.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: Re: [PATCH 07/14] ARM: dts: imx6ul-var-som-concerto: Factor out
+ common parts for all CPU variants
+Message-ID: <aaX4DYzfR2HifTtf@lizhi-Precision-Tower-5810>
+References: <20260302190953.669325-1-hugo@hugovil.com>
+ <20260302190953.669325-8-hugo@hugovil.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <177246919562.2086883.17926195087426226216.b4-ty@nxp.com>
-X-ClientProxiedBy: BY5PR03CA0005.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::15) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260302190953.669325-8-hugo@hugovil.com>
+X-ClientProxiedBy: PH7P220CA0123.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::26) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,88 +74,532 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA2PR04MB10445:EE_
-X-MS-Office365-Filtering-Correlation-Id: a96a9a86-a5b3-40d8-a9ad-08de789b77bb
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB11445:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16030164-54ad-42c9-4574-08de789d57e3
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|52116014|38350700014;
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	qQD2aj8pLm3EkjmFJ342w4hXeZ+Re/zg/G9uXRiOx08BJpw/JkAROpVw2qBSxpqf4X/VlJ7QFg+buucSCoGb1vBbYvYODmUZVz79uzOiGHMbBkKLSivzgrmfG+m+AHIe8YMcSrvrp2+TtE9p1z5JKC1UxMs0bt60eBmroxvE+K9ZWN0/jbtO1xiR9zF0cuXBRAAr7a+Qkj6hWdc73UBYQK3eNXZ3xhSOlqaxaeprBH6+OwCe2odq3wsHZc8eYIs65FG4mcQhcTu9cfKNe9HMVbsKjKeaokfV5tgFPb4DBPn3iYjarxwUjnJdt6KjZVPs6GGnDY2FULj/7HoKEVKtw7gvP6MO4vuOH6Iz5l90P9D/RRSmDqAyxxC+sf0UgOzW8CXQ8X4R+vukxBTgrbyfg2ypMlQtuOivRhd5I963K+oi06EC5I4WliqAjPwPlVqXSo4BO18hLZuK6zcLNkDp6+5VuC7VK6JC1ZwAgC1M9d+ewB91nQ5C7c/FXKP9bEWkiR8VLQkPrZhHjX9vkIznYEvQry7ErxzQPzfH/D0db/9xBhexXaEhqPZKTt10iHbJ5kEVpPdTdHnGsbTtlakJMjtzpYi1ARRPIlOrAwyW2LvkLaV6oHOGTkWx04uYMa3VX0O3BnYpg/J/NfnPRKyiA3CTLMlbro3If6bF4BoEP7zy6d7lTGcXdiKFpPF1ObijX/kxCdBIbk4wlhLiLxSRC7KfbZYwJMj9B44JLbpK4A+pFS6uE1/1M//kNGdB7uMpBEMjxxbCvyNn+EeyikOjjryWibmVe7g0wMDWW6Daih8=
+ Hiq+yQIgjugnve6q9g9Bf8s3KQjFoiyKGjhZNLJYojDJefVX732jzXz2uncuOVRDIOQvbURtXXTeSIBYfbacIAtspQmvJYmB75ZlSm62l0ciGwJP5l3FmPWykM6MfdrJBwHUIk9jRuuhw+dOzS8Zcfmueoct3WEPN0SmeMfwO5kT+H3ga3Bpi9iw3B4LXGs2Xp9DVNvbel8pwRY2COljAENuja8hk+pG5BLYICZtlLKp9EzIA7rMVMDyL4bJnhrpurawLWXDA/4NB+JLNF1MvUo8MRB+8RBcIExdzw2k04ML8+wnOdxLBfkBtmUbtyH/XCYQJIIqSYcs1aTksVPOn7F6bqgkN5akYizD9Aw0bFpo553qwOiHfSPhbLiKv/PCbQDWrCyqyuKjkZnFeihhlhJYFzfFfokwKxPaxznsyKYBkZtFu3R45TtR7kW7nPvUVbtkaeILtZKc8MaatRWi+QUZoctuX0XIEarhT+uwZSFSwaY/44O8+QF+IYeiQyFGyzwjzESzFkh6xivp8nqPPKvHAK4xdBqajOKw7Jxy3g05dofOpvChyd14y9PmyW6HI1TGrxSxurPYkywmCtW0oX2ocl8mLTh3X/pp5bv0y/X0q4+RdanIPB6IwhD5xnrMrYBoz+8vZlbGaMOzcfsqpNgzFjfelnAYCvylrBKntGNYJBnZrUuO2PeKOtbWhe8zT3418YQkehkNu3WsmqdluVLH+7AkIVDH91lxy63uIUGZ81J/SBzKeKMyKCpteiOJhtMGgxtpsKmlnj6s/jWcuvbmK/YJwRVw4S8OKXnIavk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qKQ8tK4YCCWA4Hq+1GM6wuJd1mqYsmF5opi025kwyTFceUe/W2LRgjisllge?=
- =?us-ascii?Q?TwML8SFOis7AY3UATgvZq6ieDKqWV/oBAtvtMIa+ElBl9B5rxPTzEJ9aE/hV?=
- =?us-ascii?Q?lwvsHrYilfrQ7zGKHIrSKq3jbyl3DM3hk0ijCqB35talOxy0r/9vCBKchldr?=
- =?us-ascii?Q?hFX4f+jpX0OWLsMeoo92OGp1sWsfiJO+I2KRCOf0Zo5MyCjVKiS4hMt3fUjT?=
- =?us-ascii?Q?lWAzU8+/NlA6gLp4LCA5k+aDT1HpyPEeiAoOLDVPiQWQPaFhsz2aGpPF4IWC?=
- =?us-ascii?Q?tfwN3UcmwTOJl/6V6NxH+pLSXEt4g0PBnWrxQDH4EEGVr/79ucdWbM+daykN?=
- =?us-ascii?Q?0vozeQeFGgzekHSwydxbQIaH75Of5OsQXYBeFyI0Dg9Tv0HOuRGoNroZ8oTq?=
- =?us-ascii?Q?JdydAoyRw1de0R+Ciwog6dYIwXh8wvKW9E7x7bGXQ9p7+VMR+mVwe+7m3zZh?=
- =?us-ascii?Q?UfY9ndcZRSFBYJK7Qizoo9v4WfR2wJSH9vp2uRN8ednBtAAw1bUdPD3vRBu/?=
- =?us-ascii?Q?hkXZG/tei9dd/rwAkhbW/egplBmo9v/m0QVDjRIvqL5ZzSnsLL5eFcbc0y/V?=
- =?us-ascii?Q?rcGbPvf+D0KgTfmJh8Vs+XdUefGA4IgnNSDfsMOU9viTv58Z6UYYML9YbCEd?=
- =?us-ascii?Q?8TD/usi5ggcYx9ic+NCelkXBjgTnjkWG5DPaF17jzERrHlvVxYr46ZZH2KE6?=
- =?us-ascii?Q?PSAQ3N81QKM0l0Iu0aTOVuMpDgWNSeuLJy8X37hFe0BKHduFkj8w0a6n3w/j?=
- =?us-ascii?Q?ibryQcIPqSpcliWd2z4C1b42lwZe8G5+xRjVYrip82/EIwbxioWV7jTcdjWB?=
- =?us-ascii?Q?mOIMNYUetwaajDgX0ftFncRjbopvlBe1kzbPvzdAbU9+loESrRLTQBO/e1dE?=
- =?us-ascii?Q?jZJ4JkYBDclKViUG+Dqi31DBGykQsYhSwPjOKFMBKXQPhYoZb8nWfji2B5Sq?=
- =?us-ascii?Q?AUWAPcQIVgas4DmPSuX6zsvfgW35kppQmjrnMGLlHPB8gvLgG6DgpaFXI56W?=
- =?us-ascii?Q?9g3FIcDCMoaM/xD7ChdYhYXBqeUso4h4V2vglXI9vskmFetxdNhEFjaqZKxq?=
- =?us-ascii?Q?KOPAIcIouEwOOiioEo1up8zp8DOmG7uBoCBPSOl3U3urkXR1hyEGfbdWBVtD?=
- =?us-ascii?Q?ftFW5n2kKlIBcOgJlFzD6xHCkWG+LtEwXC078NuJVRyQqzhhu/gem5tUESiF?=
- =?us-ascii?Q?EZeJJRhHGthim66X98EzhSbUj2u4/e+amlr1v8paodWXmv3hTxwg03JbOWVo?=
- =?us-ascii?Q?S5MW4MNf06RNyxCT0k7mwXD7y+zEa+ZiXtU339F55lnEMKZmiomIOn+tF9jn?=
- =?us-ascii?Q?Arg7TPW4wDmQBJ8oVfKlcmrJDBYcM3hgLR9oEsNMR23meaFO1BRBqgnv89DX?=
- =?us-ascii?Q?ntQpG3nSAOsoR7PnHJEERUiK0LMYfFHOuHewHe5jKS7UoRgiezPUNVM+xpTl?=
- =?us-ascii?Q?t7yf+7Jn/xPYO086DpFG+Ohu1mb1y84YGs9mFQHMGqqe1NRsf29t7yHybz9E?=
- =?us-ascii?Q?9UWDnfBDMUVXdTzOhdPua9epVkY/7S0TzkBVXmpUp3+Mxtk7FQyPA9PBgBpB?=
- =?us-ascii?Q?3AuHmbUvYP0k4FmqhbZvyHwrfdzkG6Ceogh+DLggI/ZjMGSH9Ei88Txr/2GW?=
- =?us-ascii?Q?7nhkTWty1eUd1+7irgbrB5xHcerMti1j0siw+zUUPu0GkvgVfYy8fU9KZWja?=
- =?us-ascii?Q?iOh6RXEYu27AJ8Kf4xf0txcD84PlbSWnG9oZKgu7Cgd/vJCh?=
+ =?us-ascii?Q?bVmmM/s5mY7zQoAISBUqguGtsm31RDnJIwJ6zFSgXPLxPrwVb2aX5lF3+TCh?=
+ =?us-ascii?Q?re4OYPM/cAVf+YOWqZEC8r6ulv60xvAtqPUA+x16m8W3D2+N0+yK/rqMf7vc?=
+ =?us-ascii?Q?tgPGD/GUR9FqI39x6Cq/56+no2zHC6YDgT0BmViHy7/x1HSLc48fDRz67WwY?=
+ =?us-ascii?Q?+eT9iVMNBDzId9X44przN3yY7ijE6jPP0LPS25EKq2+ozkqOL7YVUJjOImf3?=
+ =?us-ascii?Q?XwjkFxHv7sbEv4P/wGWrM9dsZ+eAUqc9qjdk9zjBd3ZbfiBviSN9KbOkqmFT?=
+ =?us-ascii?Q?J9HJbGAfkUDJY/6ipd7PeL5IhKKICP4aoKCnV798kn85Jt2e3mzs24h0bWmQ?=
+ =?us-ascii?Q?10TH0A/6FaNQm6mZ50s9G0u+Rq0gzaGz1NaZrTWJnvq70lE3ziV8GR1So4QS?=
+ =?us-ascii?Q?0wzTKX/LFa+q0Wm4dfrBPLkKWzPG3JQffffzxNNchGWG3dGCrCiju2J50RUa?=
+ =?us-ascii?Q?OSr7bfAz0XmSWwz18qZzk8KHe1rONEOdMPKzdZ4AI4rtBooK+cncoeqP+C/G?=
+ =?us-ascii?Q?98a3akUnm5u/31XKBemVmG/edhI5KPj5h0CGCeHFP0vBb058edcFe4GtyXbr?=
+ =?us-ascii?Q?/JDD2aOYMK24GXsrCFqmW6fYZ8eqaWZVQdwluPBNavdhwsGSIw7+Dx+kY+7/?=
+ =?us-ascii?Q?S4L+4kGF4R0vkUDaP8wwRbOmAHxBagKJ03DIwzlKzaxcpTohREhp0g6dmAgW?=
+ =?us-ascii?Q?OCq5Cq1nzmuwnnx0ifF03ttsi/Hqqjtg+W1vADIAqDMTi7aLSJTTWvWnjivU?=
+ =?us-ascii?Q?lzPJgxBKe5XNxEgWV2G7HsCvaboOpnTIVKWitQxtcfFU4egNhpIKMh3m5PzJ?=
+ =?us-ascii?Q?76X1QIpegbgfdSr8H18yNB7E+JJ/EM2d2FJCYWbDGUDEFEYZoVnwdJAFbPie?=
+ =?us-ascii?Q?KoqudR9FeQuxSLEi1uRKAt3HqjzNcCLDZSdrgsyS2UGCAuoMT9Oo9U5QVrhr?=
+ =?us-ascii?Q?UVUXNcOAivsJZlt4JoC/1OjROdson6jZ/jQMIeY9J8AgdMVqGR/V86x56vmD?=
+ =?us-ascii?Q?MKK1Hz2CGm2fNrUvV69sfiuTbqolb3nTf5sVdVLh5bjvDRDqHR8cziBRR/1U?=
+ =?us-ascii?Q?//cFKyx7DlbCVV7M+cZNg8yYaHAqw3XFGANz7n2PdzyE3AFicsuXVcfhJcgD?=
+ =?us-ascii?Q?i0PhFmSUHfzy4IS4CMFhqLdCeyChIpPVs+MHekxghk4HCibyAp80fh0OB8Jb?=
+ =?us-ascii?Q?WFAVBiiTzhS77AxQMGHDntvXLgBVgfaN+ew41I6w9VVPhgpa77faGcxoY5nb?=
+ =?us-ascii?Q?/iYpDh+LfA9RIYyfVNqVsVEkLT9DZw4uERLD6EuH41UPaiJ4xhQOwlKFMQsl?=
+ =?us-ascii?Q?6OuHpGUrbNuDwLdpnxoS9MPoE5btz/5ITD6GmYmRa508/i5khCgU66aPVpJ4?=
+ =?us-ascii?Q?gJm7J9v69LFf8qYrjypkVJ3IaqRYOFWFoTfIs60kou0+bqEIM06TiCXctUHB?=
+ =?us-ascii?Q?7IEyperDGFoKJPGJ8lwp8A1zXL6/2CP1R3b4/D+6NmbY2lUxQHDyIM74EOjr?=
+ =?us-ascii?Q?A96v+h0gNtOl7Kx+LiBWR0grU7gsSY9eh1lwfeukZPu+jX14QuPeT3uUtPXG?=
+ =?us-ascii?Q?3D08QOyWXPIxG/jb0EASiuBeGkWDysmdi+eiDxnlZCnhw0fGNTc24UWVCe36?=
+ =?us-ascii?Q?cOx4hIC8muii5nZB5ozxWcvb1qCKLJ7utc3CvHBQhCJffWz54cOvAyAXxVEW?=
+ =?us-ascii?Q?UpzmgpDHxcbwd386k4V3YjWPzwu20kNJRBymCOCKKrNDwGMuD02DRuKaJj0O?=
+ =?us-ascii?Q?0aPlgwdzaQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a96a9a86-a5b3-40d8-a9ad-08de789b77bb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16030164-54ad-42c9-4574-08de789d57e3
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:37:05.8777
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:50:31.4132
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AaPPDFPLBUC63xoBGgug+nGrVsCNd4pRLb06AK7A2dKAL18Qvm3hasDqGZSqQ847863HugoZxOdE3omlqD1oPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10445
+X-MS-Exchange-CrossTenant-UserPrincipalName: cgsR8ItHO4KhdL7KeIwUbwc8jCSx4rVnO5AaIgejNiz3s16mx62hWhzO9idANtiuWDH/sknXU6HdKCQz93oalQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11445
 
-On Mon, Mar 02, 2026 at 11:33:15AM -0500, Frank Li wrote:
+On Mon, Mar 02, 2026 at 02:03:43PM -0500, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 >
-> On Mon, 09 Feb 2026 13:57:42 +0800, Richard Zhu wrote:
-> > This patch-set adds i.MX943 PCIe supports on EVK board. Please pay
-> > attention to that it relies on the patch-set[1], and the PCIe1 port on
-> > the EVK board relies on the {2].
-> >
-> > Both of them are queuing up to be included in the coming 6.20 kernel.
-> > [1] https://lore.kernel.org/imx/176649331066.523506.9443864112044699350.b4-ty@kernel.org/
-> > [2] https://lore.kernel.org/imx/inzg46tc2fwsajxq4vzdyuiq7krzy6xtcg2mjaieninz7zsmgm@mtdjr4tuegpq/
-> >
-> > [...]
+> Export common parts to the Variscite VAR-SOM-6UL dtsi so that they can be
+> reused on other boards.
 >
-> Applied, thanks!
->
-> [1/3] arm64: dts: imx94: add pcie0 and pcie0-ep supports
->       (no commit info)
-> [2/3] arm64: dts: imx943: add pcie1 and pcie1-ep supports
->       (no commit info)
-> [3/3] arm64: dts: imx943-evk: Add pcie[0,1] and pcie-ep[0,1] support
->       (no commit info)
+> This will simplify adding future dedicated device tree files for each CPU
+> variant.
 
-Sorry, I dropped these 3 patch because there are DTB_CHECK warnings. If
-there are extra dt_binding dependence, let me know.
+Simplify adding ...
+
+>
+> Add i2c1 pinctrl to var-som dtsi pinmux, so that it can be reused by other
+> boards.
+>
+> Reorder pinctrl_gpio_leds to respect alphabetical order.
+
+this one use new patch.
+
+>
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/Makefile            |   1 +
+>  .../dts/nxp/imx/imx6ul-var-som-common.dtsi    |   7 +
+>  ...ts => imx6ul-var-som-concerto-common.dtsi} |  17 +-
+>  .../dts/nxp/imx/imx6ul-var-som-concerto.dts   | 312 +-----------------
+>  .../dts/nxp/imx/imx6ull-var-som-concerto.dts  |  17 +
+>  5 files changed, 33 insertions(+), 321 deletions(-)
+>  copy arch/arm/boot/dts/nxp/imx/{imx6ul-var-som-concerto.dts => imx6ul-var-som-concerto-common.dtsi} (95%)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+> index de4142e8f3ce8..bc534d0fb1412 100644
+> --- a/arch/arm/boot/dts/nxp/imx/Makefile
+> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
+> @@ -376,6 +376,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
+>  	imx6ull-tarragon-slavext.dtb \
+>  	imx6ull-tqma6ull2-mba6ulx.dtb \
+>  	imx6ull-tqma6ull2l-mba6ulx.dtb \
+> +	imx6ull-var-som-concerto.dtb \
+
+keep alphabet order
 
 Frank
-
+>  	imx6ull-uti260b.dtb \
+>  	imx6ulz-14x14-evk.dtb \
+>  	imx6ulz-bsh-smm-m2.dtb
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
+> index 2072e8ba4d469..22b0c4e0725a5 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
+> @@ -104,6 +104,13 @@ MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029	/* WLAN Enable */
+>  		>;
+>  	};
 >
-> Best regards,
+> +	pinctrl_i2c1: i2c1grp {
+> +		fsl,pins = <
+> +			MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
+> +			MX6UL_PAD_CSI_MCLK__I2C1_SDA		0x4001b8b0
+> +		>;
+> +	};
+> +
+>  	pinctrl_sai2: sai2grp {
+>  		fsl,pins = <
+>  			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
+> similarity index 95%
+> copy from arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+> copy to arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
+> index d16e75164fd18..10a23ae104359 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-common.dtsi
+> @@ -1,19 +1,15 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  /*
+>   * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-6UL
+> - * Variscite SoM mounted on it
+> + * Variscite SoM mounted on it, for all CPU variants.
+>   *
+>   * Copyright 2019 Variscite Ltd.
+>   * Copyright 2025 Bootlin
+>   */
+>
+> -#include "imx6ul-var-som.dtsi"
+>  #include <dt-bindings/leds/common.h>
+>
+>  / {
+> -	model = "Variscite VAR-SOM-6UL Concerto Board";
+> -	compatible = "variscite,mx6ulconcerto", "variscite,var-som-imx6ul", "fsl,imx6ul";
+> -
+>  	chosen {
+>  		stdout-path = &uart1;
+>  	};
+> @@ -144,22 +140,15 @@ MX6UL_PAD_NAND_CE1_B__GPIO4_IO14	0x17059
+>  		>;
+>  	};
+>
+> -	pinctrl_gpio_leds: gpio-ledsgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* GPLED2 */
+> -		>;
+> -	};
+> -
+>  	pinctrl_gpio_key_wakeup: gpio-keys-wakeupgrp {
+>  		fsl,pins = <
+>  			MX6UL_PAD_SNVS_TAMPER8__GPIO5_IO08	0x17059
+>  		>;
+>  	};
+>
+> -	pinctrl_i2c1: i2c1grp {
+> +	pinctrl_gpio_leds: gpio-ledsgrp {
+>  		fsl,pins = <
+> -			MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
+> -			MX6UL_PAD_CSI_MCLK__I2C1_SDA		0x4001b8b0
+> +			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* GPLED2 */
+>  		>;
+>  	};
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+> index d16e75164fd18..11b45f105b7ad 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+> @@ -1,320 +1,18 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  /*
+>   * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-6UL
+> - * Variscite SoM mounted on it
+> + * Variscite SoM mounted on it (6UL CPU variant).
+>   *
+>   * Copyright 2019 Variscite Ltd.
+>   * Copyright 2025 Bootlin
+>   */
+>
+> +/dts-v1/;
+> +
+>  #include "imx6ul-var-som.dtsi"
+> -#include <dt-bindings/leds/common.h>
+> +#include "imx6ul-var-som-concerto-common.dtsi"
+>
+>  / {
+> -	model = "Variscite VAR-SOM-6UL Concerto Board";
+> +	model = "Variscite VAR-SOM-6UL Concerto Board (6UL CPU)";
+>  	compatible = "variscite,mx6ulconcerto", "variscite,var-som-imx6ul", "fsl,imx6ul";
+> -
+> -	chosen {
+> -		stdout-path = &uart1;
+> -	};
+> -
+> -	gpio-keys {
+> -		compatible = "gpio-keys";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_gpio_key_back>, <&pinctrl_gpio_key_wakeup>;
+> -
+> -		key-back {
+> -			gpios = <&gpio4 14 GPIO_ACTIVE_LOW>;
+> -			linux,code = <KEY_BACK>;
+> -		};
+> -
+> -		key-wakeup {
+> -			gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
+> -			linux,code = <KEY_WAKEUP>;
+> -			wakeup-source;
+> -		};
+> -	};
+> -
+> -	leds {
+> -		compatible = "gpio-leds";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_gpio_leds>;
+> -
+> -		led-0 {
+> -			function = LED_FUNCTION_STATUS;
+> -			color = <LED_COLOR_ID_GREEN>;
+> -			label = "gpled2";
+> -			gpios = <&gpio1 25 GPIO_ACTIVE_HIGH>;
+> -			linux,default-trigger = "heartbeat";
+> -		};
+> -	};
+> -};
+> -
+> -&can1 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_flexcan1>;
+> -	status = "okay";
+> -};
+> -
+> -&fec1 {
+> -	status = "disabled";
+> -};
+> -
+> -&fec2 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_enet2>, <&pinctrl_enet2_gpio>, <&pinctrl_enet2_mdio>;
+> -	phy-mode = "rmii";
+> -	phy-handle = <&ethphy1>;
+> -	status = "okay";
+> -
+> -	mdio {
+> -		#address-cells = <1>;
+> -		#size-cells = <0>;
+> -
+> -		ethphy1: ethernet-phy@3 {
+> -			compatible = "ethernet-phy-ieee802.3-c22";
+> -			reg = <3>;
+> -			clocks = <&rmii_ref_clk>;
+> -			clock-names = "rmii-ref";
+> -			reset-gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
+> -			reset-assert-us = <100000>;
+> -			micrel,led-mode = <0>;
+> -			micrel,rmii-reference-clock-select-25-mhz;
+> -		};
+> -	};
+> -};
+> -
+> -&i2c1 {
+> -	clock-frequency = <100000>;
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_i2c1>;
+> -	status = "okay";
+> -
+> -	rtc@68 {
+> -		/*
+> -		 * To actually use this interrupt
+> -		 * connect pins J14.8 & J14.10 on the Concerto-Board.
+> -		 */
+> -		compatible = "dallas,ds1337";
+> -		reg = <0x68>;
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_rtc>;
+> -		interrupt-parent = <&gpio1>;
+> -		interrupts = <10 IRQ_TYPE_EDGE_FALLING>;
+> -	};
+> -};
+> -
+> -&iomuxc {
+> -	pinctrl_enet2: enet2grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_ENET2_RX_EN__ENET2_RX_EN	0x1b0b0
+> -			MX6UL_PAD_ENET2_RX_ER__ENET2_RX_ER	0x1b0b0
+> -			MX6UL_PAD_ENET2_RX_DATA0__ENET2_RDATA00	0x1b0b0
+> -			MX6UL_PAD_ENET2_RX_DATA1__ENET2_RDATA01	0x1b0b0
+> -			MX6UL_PAD_ENET2_TX_EN__ENET2_TX_EN	0x1b0b0
+> -			MX6UL_PAD_ENET2_TX_DATA0__ENET2_TDATA00	0x1b0b0
+> -			MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0b0
+> -			MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2	0x4001b031
+> -		>;
+> -	};
+> -
+> -	pinctrl_enet2_gpio: enet2-gpiogrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x1b0b0 /* fec2 reset */
+> -		>;
+> -	};
+> -
+> -	pinctrl_enet2_mdio: enet2-mdiogrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_GPIO1_IO06__ENET2_MDIO	0x1b0b0
+> -			MX6UL_PAD_GPIO1_IO07__ENET2_MDC		0x1b0b0
+> -		>;
+> -	};
+> -
+> -	pinctrl_flexcan1: flexcan1grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART3_RTS_B__FLEXCAN1_RX	0x1b020
+> -			MX6UL_PAD_UART3_CTS_B__FLEXCAN1_TX	0x1b020
+> -		>;
+> -	};
+> -
+> -	pinctrl_gpio_key_back: gpio-key-backgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_NAND_CE1_B__GPIO4_IO14	0x17059
+> -		>;
+> -	};
+> -
+> -	pinctrl_gpio_leds: gpio-ledsgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25	0x1b0b0	/* GPLED2 */
+> -		>;
+> -	};
+> -
+> -	pinctrl_gpio_key_wakeup: gpio-keys-wakeupgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_SNVS_TAMPER8__GPIO5_IO08	0x17059
+> -		>;
+> -	};
+> -
+> -	pinctrl_i2c1: i2c1grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
+> -			MX6UL_PAD_CSI_MCLK__I2C1_SDA		0x4001b8b0
+> -		>;
+> -	};
+> -
+> -	pinctrl_pwm4: pwm4grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_GPIO1_IO05__PWM4_OUT		0x110b0
+> -		>;
+> -	};
+> -
+> -	pinctrl_rtc: rtcgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_JTAG_MOD__GPIO1_IO10		0x1b0b0 /* RTC alarm IRQ */
+> -		>;
+> -	};
+> -
+> -	pinctrl_uart1: uart1grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
+> -			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
+> -		>;
+> -	};
+> -
+> -	pinctrl_uart5: uart5grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_CSI_DATA00__UART5_DCE_TX	0x1b0b1
+> -			MX6UL_PAD_CSI_DATA01__UART5_DCE_RX	0x1b0b1
+> -			MX6UL_PAD_GPIO1_IO09__UART5_DCE_CTS	0x1b0b1
+> -			MX6UL_PAD_GPIO1_IO08__UART5_DCE_RTS	0x1b0b1
+> -		>;
+> -	};
+> -
+> -	pinctrl_usb_otg1_id: usbotg1idgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_UART3_TX_DATA__ANATOP_OTG1_ID	0x17059
+> -		>;
+> -	};
+> -
+> -	pinctrl_usdhc1: usdhc1grp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
+> -			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x17059
+> -			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
+> -			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
+> -			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
+> -			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
+> -		>;
+> -	};
+> -
+> -	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
+> -			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
+> -			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
+> -			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
+> -			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
+> -			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
+> -		>;
+> -	};
+> -
+> -	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
+> -			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
+> -			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
+> -			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
+> -			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
+> -			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
+> -		>;
+> -	};
+> -
+> -	pinctrl_usdhc1_gpio: usdhc1-gpiogrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x1b0b1 /* CD */
+> -		>;
+> -	};
+> -
+> -	pinctrl_wdog: wdoggrp {
+> -		fsl,pins = <
+> -			MX6UL_PAD_GPIO1_IO01__WDOG1_WDOG_B	0x78b0
+> -		>;
+> -	};
+> -};
+> -
+> -&pwm4 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_pwm4>;
+> -	status = "okay";
+> -};
+> -
+> -&snvs_pwrkey {
+> -	status = "disabled";
+> -};
+> -
+> -&snvs_rtc {
+> -	status = "disabled";
+> -};
+> -
+> -&tsc {
+> -	/*
+> -	 * Conflics with wdog1 ext-reset-output & SD CD pins,
+> -	 * so we keep it disabled by default.
+> -	 */
+> -	status = "disabled";
+> -};
+> -
+> -/* Console UART */
+> -&uart1 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_uart1>;
+> -	status = "okay";
+> -};
+> -
+> -/* ttymxc4 UART */
+> -&uart5 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_uart5>;
+> -	uart-has-rtscts;
+> -	status = "okay";
+> -};
+> -
+> -&usbotg1 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_usb_otg1_id>;
+> -	dr_mode = "otg";
+> -	disable-over-current;
+> -	srp-disable;
+> -	hnp-disable;
+> -	adp-disable;
+> -	status = "okay";
+> -};
+> -
+> -&usbotg2 {
+> -	dr_mode = "host";
+> -	disable-over-current;
+> -	status = "okay";
+> -};
+> -
+> -&usdhc1 {
+> -	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> -	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
+> -	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
+> -	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
+> -	cd-gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
+> -	no-1-8-v;
+> -	keep-power-in-suspend;
+> -	wakeup-source;
+> -	status = "okay";
+> -};
+> -
+> -&wdog1 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_wdog>;
+> -	/*
+> -	 * To actually use ext-reset-output
+> -	 * connect pins J17.3 & J17.8 on the Concerto-Board
+> -	 */
+> -	fsl,ext-reset-output;
+>  };
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
+> new file mode 100644
+> index 0000000000000..7c601af2657d7
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
+> @@ -0,0 +1,17 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-6UL
+> + * Variscite SoM mounted on it (6ULL CPU variant).
+> + *
+> + * Copyright 2026 Dimonoff
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include "imx6ull-var-som.dtsi"
+> +#include "imx6ul-var-som-concerto-common.dtsi"
+> +
+> +/ {
+> +	model = "Variscite VAR-SOM-6UL Concerto Board (6ULL CPU)";
+> +	compatible = "variscite,mx6ullconcerto", "variscite,var-som-imx6ull", "fsl,imx6ull";
+> +};
 > --
-> Frank Li <Frank.Li@nxp.com>
+> 2.47.3
 >
