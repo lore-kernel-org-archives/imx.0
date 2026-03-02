@@ -1,187 +1,138 @@
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-relay91-hz1.antispameurope.com (mx-relay91-hz1.antispameurope.com [94.100.132.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0119332907
-	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772447931; cv=none; b=ppQteXWlzsw9VuVplHIr9INLPQ+EmScc6VlyZ+rHWZtOuoqDzgVNtcaGYYooqoVqbdLNwkbMuGyKdhsjgQGaUSUy5rLR+vThEry2kL907CsiPUJOQR1zN9JBVcxAzmwC9Q3blwpNVu0eMe36ayWWECPGC3dgOA4W+lhb439d1lk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772447931; c=relaxed/simple;
-	bh=PO0TbLRbiVrKvdhPwH7RKWikT/wKrrUI+0ibUOovsCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uWG0HArWsWO4NKbTQY7EfeLVW/ENH2P7rLouYpapYY6bWCK8UYHDpcbZa6fQOFtqhpC0rshuKenplmnSqUZDXIxDvujFcOCfb6tkzGEeCTF/xwkmUu2B7BJTlXm1/nxrX4z23Fk+8Y1D6yhTZinF1tYFiO1qMqYEsCFhYaYGgMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5ff09bb6271so2695449137.0
-        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 02:38:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772447929; x=1773052729;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bl7RAWu6mKzowPFnldQghONe5pbsD04RWaX4BUYhOlo=;
-        b=um4it9jPerwld/guot5ICnhlqG4QORY+FHf2j4ZPatiPnfbrwrHTwEATkKt1UDqI+Z
-         uCj+XihKxN3E3wNQFnztKdDqUKPHAqs2GJwqe8UqXw0/0nwVnekWB/dNwYpNHeOABd5O
-         gkpY9BUshZqrUYD1O4E0PnEqfZzb77/yCVA1kaO1clY1PenWvz6LwOkldSgt5vfVjS3Q
-         sqXumzcbib9JZkJckFltupA0ELbEUBRpDC07V6fUjHiYMbMutIJ/yFnbWeJeWg/4JTPx
-         NnDy3ZGKIuzstnglWG3A2iTEMrikrAk+Y5EXuVEYEhWYjMpczfuvDQYPAlozOfLxMjhD
-         pFhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxeZAsBvh6NUeVmmpnJhTv534KycfqCsdv12YwmDftlAhyZkQHu9yYHB2ZaReD/hpcTbE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzy6FVXjTDbCwaZhWAGVZytBPx7WpZSZH3X58ORIwC2LZrCfjCN
-	NLtJP+SAl/1I9jgyHulOSAbAmgyvbHzsAz+WzYlR8Fq9A1HThbyy1m2EMzohYs4z
-X-Gm-Gg: ATEYQzy+/l9yhIyDc2Hl2d10AT33QjTSZAz+tszZuVeSik9dq5Lb/M764DpiNHfvHjv
-	tZv/01Q9rYwVl4Pxr3h2mDUWKqtHGpriVH+ReCIdePGGaCE8zGLAFopkysNx0tKDsK2Us7igC+u
-	qEuCoPRfNQUVzQ+3aFEWRNpfNEhZTsedIBXDEHd/dBJDpAbFoM2OpTOR4ecgo+PBqWgiaftLcpf
-	ehVMXnJSRnCdEJ2tRm6H83nyV9WsmZWdG7CAxBrd4cVBq32/aEonFGu9rZIvtgcnox7eQBnOND/
-	3OYL5b2swE+k4sX77Fpft3MCNBFaD16voyBDJMj0NrtcNc1PAb2g1kvMd6NSm8TIKgj46NtosMa
-	4qrGbzf79jDI2q/5Rt0HOv4ehQb5b8MFB/s9ZTCGILuUTnJhyG53ho66s6JvEGPAVwy2X3veV4c
-	nQdsKVnAcDZyCSBA+SBpvyZGAOcv1VO8nc4+KA6rp++PNCsbzRRkItL2LyCJYrKyo4
-X-Received: by 2002:a05:6102:5091:b0:5ef:b51c:e7fa with SMTP id ada2fe7eead31-5ff1cfa2bb8mr8550079137.16.1772447928752;
-        Mon, 02 Mar 2026 02:38:48 -0800 (PST)
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com. [209.85.221.171])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94df65c4951sm11422440241.14.2026.03.02.02.38.47
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Mar 2026 02:38:47 -0800 (PST)
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5674f3e80edso4088625e0c.1
-        for <imx@lists.linux.dev>; Mon, 02 Mar 2026 02:38:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWqTcOxM+qFmFXF1i8g3rnQS2KblJVnnwjqUnYV2zF434Weh+xF6UTHeL5gHyXkT+ITtlQ=@lists.linux.dev
-X-Received: by 2002:a05:6102:440e:b0:5ef:b32c:dff8 with SMTP id
- ada2fe7eead31-5ff1cda8e40mr7754538137.5.1772447927548; Mon, 02 Mar 2026
- 02:38:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2033E344
+	for <imx@lists.linux.dev>; Mon,  2 Mar 2026 10:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772448247; cv=pass; b=Pn3qgA+f98z9fMwgWKoqyoF3yPX/LXChvWcUcGKCVAoREJTfd/GMTmdsl386OGhEhoWYibBUX7j2I/deGT79+diRfLGBgvlLYk7y+7NNTOSyBspsBHpAaeXljUeQ4UVZn1aKC896wbWEQWaZlm6EMHrnsMFh24aaG4OvTw6r+xk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772448247; c=relaxed/simple;
+	bh=Zhg3wd9xAGHuRd/US5knN/LK3wxevhznuToaUN92Usc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g7DqHGRzpA5Z8i/zd8SNoeEKDCSVWH6PpvIFkTvglsrMZQ2HS2t/vRP9Qi/+RFQculUh8Xm/VPXGCxHApqJbrsmAddg+PD3z2/2KWdcgdpPAchf/RvQyCxF3KGHrQZe7ETOO6EGGYoER/qpy+lgLpuavs1d7Vdww/2XMDxJk3BI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jmTOwuyW; arc=pass smtp.client-ip=94.100.132.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jmTOwuyW"
+ARC-Authentication-Results: i=1; mx-gate91-hz1.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=9o7xK2KLyVLPeKdnPq73iKRcvJgeK10gXor6T1iRFhg=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772448179;
+ b=nHyLklHzD5jb18gjt5767K0zpbFu2sCSJi/cpt64V936ANK5w2/VFLjoNVxRJg8TwBoFbe16
+ JxRrM0B9xvXm2eKxPm4ojceLm9oJJ0FEN3uHpVwOUYttgW9WBH0lPRnFt075IYL56JeBdkoRQlv
+ 3BIgi+q2RKWSkYlGVuXuNFxk61LxkfpCRb4gbKdD6l2hM8DMHLegLkVJBA+Khg1PzpVO8BxAowQ
+ 98MGCocUMr+zFb9wETf9t78hdWSXnzY/dNDN4JpyL3k3XgKksTpDfozvjKph2/3uW5BtwujOk8v
+ 5pgecBzkq4+37W+ohAn3x2YCFjfDobwlpp2A1zA3uYo4g==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772448179;
+ b=Uuwlpbw966aHn5dcv3fKhgLHjPPDavHecnTCvdz9tVBvFQYuaPtJ4CqlVEkcB63VA6jml4FF
+ pddZWu7BDyArUgD0+bPAGIv0INjiv8QNR4x+Uffs6YErHJsgfwZ3PB3jcCYaA3wulYCwsNVu3UG
+ aF91szHTcHEay4XBznKGsX5BXzMkYr3LH3uwauvHlQHdbHGJY7IZyuU+JTorht3N63B2fQUXKUT
+ IXY0Vjz+c7skiNKnW0by5eXcW1GqQY+xNr8Ql/q8wPcK4k2PUHc0Ng4Yz5JkJ0QwgULZubu9mim
+ fVeYsBCLd4gPPq8xWYDl+UL3p2xBf3ARL4ot8WJMLuzpA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay91-hz1.antispameurope.com;
+ Mon, 02 Mar 2026 11:42:59 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id D99EACC0CCA;
+	Mon,  2 Mar 2026 11:42:49 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux@ew.tq-group.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Subject:
+ Re: [PATCH v2] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix
+ UART1 RTS/CTS muxing
+Date: Mon, 02 Mar 2026 11:42:49 +0100
+Message-ID: <5083150.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260302084548.6471-1-nora.schiffer@ew.tq-group.com>
+References: <20260302084548.6471-1-nora.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260302002729.19438-1-dakr@kernel.org> <20260302002729.19438-2-dakr@kernel.org>
- <CAMuHMdUi3uNoDJ67WkNSKn=BD1F7D1Ot=gz4TwFPvaaYmKaNcg@mail.gmail.com> <DGS82WWLXPJ0.2EH4VJSF30UR5@kernel.org>
-In-Reply-To: <DGS82WWLXPJ0.2EH4VJSF30UR5@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 2 Mar 2026 11:38:36 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVe7Z3k1sz2dEYqfpp7uqdYjrqL-gRbUE7CPBpOA+-RfA@mail.gmail.com>
-X-Gm-Features: AaiRm52rSumTG3nFZ9P6FzWdxvQ0hMzWVlbis5lyqzx4MgKVwMUrLmFH3gE-zLg
-Message-ID: <CAMuHMdVe7Z3k1sz2dEYqfpp7uqdYjrqL-gRbUE7CPBpOA+-RfA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] driver core: generalize driver_override in struct device
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com, 
-	ysato@users.sourceforge.jp, dalias@libc.org, glaubitz@physik.fu-berlin.de, 
-	abelvesa@kernel.org, srini@kernel.org, s.nawrocki@samsung.com, 
-	nuno.sa@analog.com, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay91-hz1.antispameurope.com with 4fPb9l44JYzMpHt
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security:scantime:1.592
+DKIM-Signature: a=rsa-sha256;
+ bh=9o7xK2KLyVLPeKdnPq73iKRcvJgeK10gXor6T1iRFhg=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772448179; v=1;
+ b=jmTOwuyWt8NHGn9WzpYsv0gjsg+Ug4qZwxlwJh3Z5Xr58wtaQ3BRZoouGwRZ1HB8pXvhgnFF
+ w4MPEwXbw+xTH6Vh65gXbgJdJMvc4zaSde3cLs9mhc/8guky7MpF7vsOHBtuag0nf8veGLbD4Du
+ ekyhtJx7t4RteEPCS3S1hSnFZkprsn9DUk0KaG/mr75r9JJmpjdD3zASIVKZO3urydti3EDylDI
+ e0z0Mg4AI9R7x7r8c6N5gUSUyvQ4qN2KdcCqAFTbP0cYRl8vRe8xwFqBIvcEimwVhkqDsv9Gvi0
+ yRdFizddiKXY7MzHHrqF6eaC72yo0mCWOk9yDNSoJQatA==
 
-Hi Danilo,
+Am Montag, 2. M=E4rz 2026, 09:45:48 CET schrieb Nora Schiffer:
+> UART1 operates in DCE mode, but the RTS/CTS pins were incorrectly
+> configured using the DTE pinmux setting.
+>=20
+> Correct the pinmux to match DCE mode. Switching the RTS and CTS signals
+> is fine for this board, as UART1 is routed to a pin header. Existing
+> functionality is unaffected, as RTS/CTS could never have worked with
+> the incorrect pinmux.
+>=20
+> Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS3=
+14")
+> Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 
-On Mon, 2 Mar 2026 at 11:26, Danilo Krummrich <dakr@kernel.org> wrote:
-> On Mon Mar 2, 2026 at 11:00 AM CET, Geert Uytterhoeven wrote:
-> >> --- a/drivers/base/dd.c
-> >> +++ b/drivers/base/dd.c
-> >> @@ -381,6 +381,66 @@ static void __exit deferred_probe_exit(void)
-> >>  }
-> >>  __exitcall(deferred_probe_exit);
-> >>
-> >> +int __device_set_driver_override(struct device *dev, const char *s, size_t len)
-> >> +{
-> >> +       const char *new, *old;
-> >> +       char *cp;
-> >> +
-> >> +       if (!s)
-> >> +               return -EINVAL;
-> >> +
-> >> +       /*
-> >> +        * The stored value will be used in sysfs show callback (sysfs_emit()),
-> >> +        * which has a length limit of PAGE_SIZE and adds a trailing newline.
-> >> +        * Thus we can store one character less to avoid truncation during sysfs
-> >> +        * show.
-> >> +        */
-> >> +       if (len >= (PAGE_SIZE - 1))
-> >> +               return -EINVAL;
-> >> +
-> >> +       /*
-> >> +        * Compute the real length of the string in case userspace sends us a
-> >> +        * bunch of \0 characters like python likes to do.
-> >> +        */
-> >> +       len = strlen(s);
-> >> +
-> >
-> > The newline case below is is basically the same case as the empty
-> > string.  Hence if you would move the newline check here:
-> >
-> >     if (len) {
-> >             cp = strnchr(s, len, '\n');
-> >             if (cp)
-> >                     len = cp - s;
-> >     }
-> >
-> > then the "cp != s" check below is no longer needed.
-> >
-> >> +       if (!len) {
-> >> +               /* Empty string passed - clear override */
-> >> +               spin_lock(&dev->driver_override.lock);
-> >> +               old = dev->driver_override.name;
-> >> +               dev->driver_override.name = NULL;
-> >> +               spin_unlock(&dev->driver_override.lock);
-> >> +               kfree(old);
-> >> +
-> >> +               return 0;
-> >> +       }
-> >
-> > Also, this block can be eliminated completely...
-> >
-> >> +
-> >> +       cp = strnchr(s, len, '\n');
-> >> +       if (cp)
-> >> +               len = cp - s;
-> >> +
-> >> +       new = kstrndup(s, len, GFP_KERNEL);
-> >> +       if (!new)
-> >> +               return -ENOMEM;
-> >
-> > ... by pre-initializing new to NULL, and making the allocation of new
-> > conditional on len being non-zero.
-> >
-> >> +
-> >> +       spin_lock(&dev->driver_override.lock);
-> >> +       old = dev->driver_override.name;
-> >> +       if (cp != s) {
-> >> +               dev->driver_override.name = new;
-> >> +               spin_unlock(&dev->driver_override.lock);
-> >> +       } else {
-> >> +               /* "\n" passed - clear override */
-> >> +               dev->driver_override.name = NULL;
-> >> +               spin_unlock(&dev->driver_override.lock);
-> >> +
-> >> +               kfree(new);
-> >> +       }
-> >> +       kfree(old);
-> >> +
-> >> +       return 0;
-> >> +}
-> >> +EXPORT_SYMBOL_GPL(__device_set_driver_override);
->
-> This is essentially a copy of driver_set_override(). Except for the required
-> minor changes I intentionally kept it "as is" as it will go through -fixes and
-> we know it works properly.
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>=20
+> v2: updated commit message based on suggestion by Frank Li
+>=20
+>=20
+>  .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314=
+=2Edts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+> index b7f69c92b7748..1665a5030b993 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+> @@ -848,8 +848,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
+>  	pinctrl_uart1: uart1grp {
+>  		fsl,pins =3D <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
+>  			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
+> -			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
+> -			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
+> +			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
+> +			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
+>  	};
+> =20
+>  	pinctrl_uart1_gpio: uart1gpiogrp {
+>=20
 
-So I will have two to fix? ;-)
 
-> Do you mind sending a follow-up patch with your suggested improvements?
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Adding it to my TODO list, if this patch makes it as-is.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
