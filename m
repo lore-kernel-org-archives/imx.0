@@ -1,269 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B890C33DEE0;
-	Tue,  3 Mar 2026 11:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2233FE06
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 12:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772539067; cv=none; b=I+jyviOZ3utaZ+XsRyS1AHHG4ibl09HvRt6hxjXo0eowxl91qW3gmuRtk8WxBfeVG+2RlAhWnB+kA1juAOg6bbtoQFv7N1EDjKLfjyCKtEkDMe9Lovw2VaXy/vh/Cymn4P8hZBttNe0Pe1+YDv894qvrfSfH0chk12iAAMcp47I=
+	t=1772540023; cv=none; b=d9giYUo3y2XnHLdOhm/IlOVmN+tzXF1dw+SlDI9l9sEES3Oa+c9NPhSQy5Q4NOOfskhqH7syS4qCgYSd2lqwYtdrmANHscD7eOekJbCw5mudUMyNMDF4Y6awIHFV2do4EaZZB+zsymuPu4HdbEbcZcFffJA/8sD7idIn4Z7fISo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772539067; c=relaxed/simple;
-	bh=gMiU4B7aXqUIwr1QMMO3H+NRPoBJrVaacNBNpA/ZYTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ag6cXEMPaSWcK8/+LIeszzCqybIt83y/SWhHn25XbTq8Nlfil8wLx8qKl2CKueKiRksQLO9IOZt7yln8WpAkFVi+FsE044tN3E0rkhdmYy80Ulu6icsAJ9c656+5xXVQIQMkWqXNxbr5V8QgJYRA6zOnIQJ93ol8Uewd1lkayoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYdEyHSk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772540023; c=relaxed/simple;
+	bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kjqZZWlgmr8cVxsCDWqsi45rxYqwR2BSX1Hta6awPvfSPWQEjQgERh4p7lrnla65iMFG4YhSJf4WNQ7/5HWpTv0r3VBrUk6xip3fXaEzpMYBVUxmhpU11rm8B6oaZaRTiqJdHVcXfAjGb1APpdTVGE6wHLKtxZup5w705nWu+SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PJPsutLG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Fyn1q3Fo; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYdEyHSk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1C5C116C6;
-	Tue,  3 Mar 2026 11:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772539067;
-	bh=gMiU4B7aXqUIwr1QMMO3H+NRPoBJrVaacNBNpA/ZYTw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYdEyHSkPk0Q+jTdZU0EFxuXND5MW1lXOobmRpuVKvoecoW1h8SuvPEp13UvRI1e+
-	 42muQQmPujqgFsZEI+JjIZcieTQKhCPIBKqn7y/qeY/U3XUcIo8y33sb4I448Z31HE
-	 KCmFRgwUWOpCxKJNX8z8SO0BlrQRYWA0kSj/EclyQkm/VcXF5GnZw337xCA1khtx0O
-	 HB0R/1D16n0DZSsxIpFXqQzxYE4M0n/XDQvj0F+g3YxDO09O5aBi/bZVo4DMVctiE9
-	 7cOkRdaxC7ABOF0Qf+pjiwypPWnF1kjhoGin3HansScyRnRh4ueaQGcWM6Z/l41IZw
-	 ZLOYBQEyIBaHg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	hanguidong02@gmail.com,
-	ysato@users.sourceforge.jp,
-	dalias@libc.org,
-	glaubitz@physik.fu-berlin.de,
-	abelvesa@kernel.org,
-	srini@kernel.org,
-	s.nawrocki@samsung.com,
-	nuno.sa@analog.com
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-hwmon@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 4/4] driver core: platform: use generic driver_override infrastructure
-Date: Tue,  3 Mar 2026 12:53:21 +0100
-Message-ID: <20260303115720.48783-5-dakr@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260303115720.48783-1-dakr@kernel.org>
-References: <20260303115720.48783-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PJPsutLG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Fyn1q3Fo"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239n5Br1838249
+	for <imx@lists.linux.dev>; Tue, 3 Mar 2026 12:13:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=n9ThQZCHpRyOYZogBfVZbhe1
+	AsrapF6ZWMmRMx4dKmg=; b=PJPsutLGKx6Z/C+LJW1AwgvhyWXOFTNddc1IU7eE
+	dMiYq+/eRmJb8RHBM2MlbKnC9hYidZuiH7jXPVu/BvaFZnWLyDMWIbQOkej71gIu
+	89UlJMTJiTR93ArIEJdO4184Ovpv5f3//pi82MmE35XhXZ2e63siqB6dwl7qZ1er
+	fVD+BRbdl97gflTaiV2boobS8+er7Kt6UPSCsbKpaP70t6m9MhbjaNy/limKoaHJ
+	u9qu2h6oGeXq8CgC5ei3yV8gyziMZmGRCWt/Ow3PeeiTtb7FiZCYprmFrNOSpH1y
+	rHQZvjvVuzl6IDQ2Yn68xUJe4JKjXPALEO53BOcaI6iLgA==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnngga4ff-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Tue, 03 Mar 2026 12:13:41 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5069ba5af5bso370362041cf.2
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 04:13:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772540021; x=1773144821; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
+        b=Fyn1q3FoCYIpbG3hflxmzeMyo0UNBeIw1JoroZmrgkvTQb+cFZVtD+SE/rmSi4NSEM
+         P1V4NQCsQ6W9XJaEZVkXzU5pItucX9zHOM7S+hyrr0cVg8xPAUT49Vh3UrJ7sRLl9693
+         dmxcVJzjd657Wxvxt0YJvr7/B4l3UP7CxVx8OkW6sT9YoI1pNG7yqboyxAWZq7oGy6DE
+         fPYdpgLSUTRzjYOXsY/5NDhyuuZmN3dYjsTFZs7mauiFoicLSNIDGpO+C62NYruy5OfP
+         tH5Fq8PvNiONRJB4ibzKBTSsGy4z94oqJVAZSA6ojgUw7Q1Slhgp0gR+rsXZQGgdxzU/
+         Q8ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772540021; x=1773144821;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
+        b=KwyzaJJALwsvRXBx95q7Y3bnUFXA9hwWPuGtWwi4HqmKCbtMXMYMFftdU1NQxWFzLJ
+         SzQTrUvWbXFms1eBE3XadgzJXUxmesKesTsNKsV+byufra6gsUnsf/8R+d+YjVDFeM6C
+         mlfwlycdQ/Bp7UYVoOgGgm5mfaak+7aKWFhUfq1+2WCiuqxCPwjpAjv9VGDeKjBb4uF3
+         ZPyJIqeFXCUjnqgZ8smj17i4c7OmJY/ZcgUoTGms4F8pd+m7R6XdqmpBjZH3kp1wQZ0o
+         JARJHbEM2LvW6SPSBopzZ7ODQXUrxIMBiFCtB8Dj11EEmqScvc3526Se63YuykLd5be0
+         mKSw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEkTH6pA83AN+NYPUm6sWvsEWX/2eqPumEN+DOEmhsDLvlNW9PZ7FTNN6Xhd02dhLP9ZM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy6grSCM/b0SRudMAbBrp6+t38aBpRdyOzTHey3CT62TQE5xgxw
+	UF6kXa8oShPAm7ZDdZRqPyuQfrVaxp/eT5KmPZ58W37Y/AULuEpieNXtL4igZtUfA5268oi5PJa
+	N1zIp55Os6y3Yrbsk63QfOIBNbLZ6Iqh9BLfiCss0IWcZYtyPCbTVmQw=
+X-Gm-Gg: ATEYQzzNqsC//haNSnU7rF6iVGcFuBAcErs74mS5EAvBvgK0r7oLL19eM3sPrIc2zLA
+	GeDMO7p0kUHbDyT09Up91lqljvsM3IH515ZZnIcouf0NoIerziSYMcJtVm4R71wzTAMXEty3Wim
+	aFmxEZTHgvy3KwuVy2janm6rTFPu5dfxKWEzbvLhWV0bujC3YCi6anojyLO6iI7Br2uPhxkFlGY
+	XkhKWx4I+Xh1V51K3D3RmR21dCcDqIs50XcLfh52Cj/UVJT7q4y/qWhSiQ0Mgli4AKy9U030t1L
+	jG2+THSlMrDLqRxgIBPhVOcn14xWjMZUMV0niyh50wOTImOQoNgJQlNroDBagzSwqt/FIlGqCSY
+	KqQ8Nqz0/3g+xLDyjWRszJVYdkjRjR4XPTOqM
+X-Received: by 2002:ac8:57d4:0:b0:506:a289:fd3c with SMTP id d75a77b69052e-5075273e97amr209392671cf.17.1772540020521;
+        Tue, 03 Mar 2026 04:13:40 -0800 (PST)
+X-Received: by 2002:ac8:57d4:0:b0:506:a289:fd3c with SMTP id d75a77b69052e-5075273e97amr209392191cf.17.1772540019993;
+        Tue, 03 Mar 2026 04:13:39 -0800 (PST)
+Received: from oss.qualcomm.com ([86.121.162.109])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744ad8f8bsm131749141cf.27.2026.03.03.04.13.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 04:13:38 -0800 (PST)
+Date: Tue, 3 Mar 2026 14:13:34 +0200
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Felix Gu <ustc.gu@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+        Peng Fan <peng.fan@nxp.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Akshay Bhat <akshay.bhat@timesys.com>,
+        Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>, linux-clk@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] clk: imx: imx6q: Fix device node reference leak
+ in of_assigned_ldb_sels()
+Message-ID: <nfrgeg6uzbkzri5cedihxfw65dnsglytkhbajutuutddvyabuh@mtnjxxde3gzm>
+References: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
+ <20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com>
+ <aYIxjWYq3OwwmrTO@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYIxjWYq3OwwmrTO@lizhi-Precision-Tower-5810>
+X-Authority-Analysis: v=2.4 cv=P7E3RyAu c=1 sm=1 tr=0 ts=69a6d075 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=pGLkceISAAAA:8 a=8AirrxEcAAAA:8 a=Vg6-HkV-eu1WfDdlyz8A:9 a=CjuIK1q_8ugA:10
+ a=a_PwQJl-kcHnX1M80qC6:22 a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-GUID: dvDaXJPvSbTudWab18006t7H1oJZtoQW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5NSBTYWx0ZWRfX7NqIVVPttteV
+ +PAIrpXW6WTp2A/6MRbgz7jGzEVWcpBo/tqBRadn8RictnU0Qbi22U8SZSwF5YDlrO3xRCaxnqz
+ TWdaGchvdjussYJDIWpuZKAbc13iAQq7nMoF8wodKSViGuVcn7DpvPfZO0VU+nn57b7HVOuIJuj
+ tx7zRihjopqXC+tsCWwBIVG7A5ooKA6vxa53iTT4jog/sfEBaeAt7aAQmOAbuos3TbHJ2Xr6fpg
+ u8LpKp8bX7LQYKJPP8UK/P+V5bsZSDUx1lpP93F7JZCyN4rWtmWV7fV3Ka23oi90rHkeO9Jj7OA
+ CimxjnP8DNi1bNYoRZ0UyLCBpVcRGuzVPXaytkvEGaPNFXkFXvI+x7fAXtYR0/2DMDQGf25yVVp
+ Y8JikDm+cMerXGOwmwNvIsaJxSxucQGO9NH3uMuH7cvD+gx72jklQV7jEvQlstsOKkdOQJuxB2z
+ NvD0ICnl6DaQUaEs6RA==
+X-Proofpoint-ORIG-GUID: dvDaXJPvSbTudWab18006t7H1oJZtoQW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603030095
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+On 26-02-03 12:34:05, Frank Li wrote:
+> On Tue, Feb 03, 2026 at 10:07:58PM +0800, Felix Gu wrote:
+> > The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
+> > but never calls of_node_put() to release the reference, causing a memory
+> > leak.
+> >
+> > Fix this by adding proper cleanup calls on all exit paths.
+> >
+> > Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
+> > Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> > ---
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+Frank, please trim your replies.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
-
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'driver_override'")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- arch/sh/drivers/platform_early.c |  6 ++++--
- drivers/base/platform.c          | 37 +++++---------------------------
- drivers/bus/simple-pm-bus.c      |  4 ++--
- drivers/clk/imx/clk-scu.c        |  3 +--
- drivers/slimbus/qcom-ngd-ctrl.c  |  6 ++----
- include/linux/platform_device.h  |  5 -----
- sound/soc/samsung/i2s.c          |  6 +++---
- 7 files changed, 17 insertions(+), 50 deletions(-)
-
-diff --git a/arch/sh/drivers/platform_early.c b/arch/sh/drivers/platform_early.c
-index 143747c45206..3cd17bb0be67 100644
---- a/arch/sh/drivers/platform_early.c
-+++ b/arch/sh/drivers/platform_early.c
-@@ -25,10 +25,12 @@ static int platform_match(struct device *dev, struct device_driver *drv)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Then try to match against the id table */
- 	if (pdrv->id_table)
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index b45d41b018ca..d44591d52e36 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -603,7 +603,6 @@ static void platform_device_release(struct device *dev)
- 	kfree(pa->pdev.dev.platform_data);
- 	kfree(pa->pdev.mfd_cell);
- 	kfree(pa->pdev.resource);
--	kfree(pa->pdev.driver_override);
- 	kfree(pa);
- }
- 
-@@ -1306,38 +1305,9 @@ static ssize_t numa_node_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(numa_node);
- 
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
--	device_unlock(dev);
--
--	return len;
--}
--
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *platform_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_numa_node.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
- 
-@@ -1377,10 +1347,12 @@ static int platform_match(struct device *dev, const struct device_driver *drv)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Attempt an OF style match first */
- 	if (of_driver_match_device(dev, drv))
-@@ -1516,6 +1488,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
- const struct bus_type platform_bus_type = {
- 	.name		= "platform",
- 	.dev_groups	= platform_dev_groups,
-+	.driver_override = true,
- 	.match		= platform_match,
- 	.uevent		= platform_uevent,
- 	.probe		= platform_probe,
-diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-index 3f00d953fb9a..c920bd6fbaaf 100644
---- a/drivers/bus/simple-pm-bus.c
-+++ b/drivers/bus/simple-pm-bus.c
-@@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
- 	 * that's not listed in simple_pm_bus_of_match. We don't want to do any
- 	 * of the simple-pm-bus tasks for these devices, so return early.
- 	 */
--	if (pdev->driver_override)
-+	if (device_has_driver_override(&pdev->dev))
- 		return 0;
- 
- 	match = of_match_device(dev->driver->of_match_table, dev);
-@@ -78,7 +78,7 @@ static void simple_pm_bus_remove(struct platform_device *pdev)
- {
- 	const void *data = of_device_get_match_data(&pdev->dev);
- 
--	if (pdev->driver_override || data)
-+	if (device_has_driver_override(&pdev->dev) || data)
- 		return;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index a85ec48a798b..9b33df9967ec 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -706,8 +706,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 	if (ret)
- 		goto put_device;
- 
--	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
--				  "imx-scu-clk", strlen("imx-scu-clk"));
-+	ret = device_set_driver_override(&pdev->dev, "imx-scu-clk");
- 	if (ret)
- 		goto put_device;
- 
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 9aa7218b4e8d..1ed6be6e85d2 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1535,10 +1535,8 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 		ngd->id = id;
- 		ngd->pdev->dev.parent = parent;
- 
--		ret = driver_set_override(&ngd->pdev->dev,
--					  &ngd->pdev->driver_override,
--					  QCOM_SLIM_NGD_DRV_NAME,
--					  strlen(QCOM_SLIM_NGD_DRV_NAME));
-+		ret = device_set_driver_override(&ngd->pdev->dev,
-+						 QCOM_SLIM_NGD_DRV_NAME);
- 		if (ret) {
- 			platform_device_put(ngd->pdev);
- 			kfree(ngd);
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 813da101b5bf..ed1d50d1c3c1 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -31,11 +31,6 @@ struct platform_device {
- 	struct resource	*resource;
- 
- 	const struct platform_device_id	*id_entry;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- 
- 	/* MFD cell pointer */
- 	struct mfd_cell *mfd_cell;
-diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-index e9964f0e010a..140907a41a70 100644
---- a/sound/soc/samsung/i2s.c
-+++ b/sound/soc/samsung/i2s.c
-@@ -1360,10 +1360,10 @@ static int i2s_create_secondary_device(struct samsung_i2s_priv *priv)
- 	if (!pdev_sec)
- 		return -ENOMEM;
- 
--	pdev_sec->driver_override = kstrdup("samsung-i2s", GFP_KERNEL);
--	if (!pdev_sec->driver_override) {
-+	ret = device_set_driver_override(&pdev_sec->dev, "samsung-i2s");
-+	if (ret) {
- 		platform_device_put(pdev_sec);
--		return -ENOMEM;
-+		return ret;
- 	}
- 
- 	ret = platform_device_add(pdev_sec);
--- 
-2.53.0
-
+Thanks.
