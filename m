@@ -1,148 +1,233 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011008.outbound.protection.outlook.com [52.101.65.8])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62213DEAE3
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772552974; cv=fail; b=HOfTaNz5DgORInvtlpmeVOkMWihlKtNoGZ2gX1LRwLsPDbgXCI5PvZ+5aOwcBmd9dhC9dVp16l4Ynf8sTQxnmt6sGgvzG7JF2N4x2464zyMLMFrj2zZ5JiND6GvRmRxGlDlTvldv7OhgKfCMB7sjaP/vY+RODwD7sR3d+c//ZlM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772552974; c=relaxed/simple;
-	bh=SCyBe3gIHNLeGeXxTXUkJ5k3mZklBfKz5hXUXuYFCRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SJGhJJl4gtzX/36BR6dIM3gGyXSWhvnMVc63mxiwhrJ/WXDrmDLrzKzxKRd0MAR1VRRzjh+GcHsESTvtf+Cs3Ke3pG/MMXLBorzLRp+usfzGpZZCT0pibV47seVoUm2ScqOudJOkEW9K3DbBK0G1QB4+8u/4XDjGjkiitEcMGwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W7S2aF0f; arc=fail smtp.client-ip=52.101.65.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W7S2aF0f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eYB1YwLAe3RJNtdaEvdtt0xm3skn9YIbI+dBUS/epeRYT7ApiUyWedZaIkRpNb2yr9AOn5r56WjIPvSUxphFtdhduSI4lctS63Ka/qKzOYy7KpvCMn1MnirWeo7ZTV0nA3E7j2L1jrZKZdp4/RdOuGYbdYITNQoY54P0Qo5JX0TJrFzpGOInZZW5bvhtJXUToZo+Ljh85v3//XtGziPfLZUg4xgY2EM6ympJgKfgDYszROdqGYtT7msMyDjMyB7EbAuX0WuEtqf0Jpqa9Zwsi88kBTo5hXNiJZKehm93gkNeyS0gDOs9y1d+ZFGtiubAHDAu0N/V1Mzyq9Kj/7GSHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CecY6Wk3vqRuZ944d3EHq2brxcHaJTkQOttVB3Sb/dE=;
- b=vTEMJTvgulM+h1UQh1wcIDmsnfnwnX28pHe+VkCijROfqF1+ex6URj4ZCkRVQ/BjtiIdOoikymuqzFzoNUotqN/5ttGDmVSPYnydd42QXFrMQsVWxoOGcAZpVOAECQ5wcnRCHlGXsEXmpIDKLBA9BYGT0Xgg3UJSL1EuintgbrHoFlRPTyReNazbfY/reDFOWbR50Kd/6RN0j1DTzwx/qLSPJ9e6O3MF4QAKB+0UdT+70nqflcfgAQQUz7ugBxv2zXvJ3dwGylEUvSRgM3kw6KeXpwGmoKO6ofDslCGaKj/EeWK3HsDSGY1s+94VqUaROcKaeJugvwOhrrwXgIAG/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CecY6Wk3vqRuZ944d3EHq2brxcHaJTkQOttVB3Sb/dE=;
- b=W7S2aF0fIcLbazAWgSUxa4U5KqWJnu5InIzN2ob+nEL+/4S/+la6KHRjIy71Ya8V/QIqPyTOpeFwx42FT0tPqY1OICiD7hN+/vXziX/Ht6EcAxP5HDPos0UtonQJLPGKHuuVR24t27l1071i5dPUR7+5JED+LJvr6gBxvSU/oJ7SmiK1PWhbFywFpAP1GeXMizNhw2ICaq8JMrPu94j0DcrU0iofTHSevAB2+N9C96ViduCJWTIO0dToTmCbhw7Kci0ooNflMPKcF80EcbNK7h4cXSSLE/jCncc6dLuGjTjtW8N0Qwq+WIWrys1htYezwmhr+V8guUya55aDCQL7YQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DUZPR04MB9871.eurprd04.prod.outlook.com (2603:10a6:10:4b1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.18; Tue, 3 Mar
- 2026 15:49:29 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 15:49:29 +0000
-Date: Tue, 3 Mar 2026 10:49:22 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] usb: dwc3: add '*'  for @needs_full_reinit comment
-Message-ID: <aacDAgN-5bXp51ZO@lizhi-Precision-Tower-5810>
-References: <20260303021559.4021177-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303021559.4021177-1-xu.yang_2@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0352.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1F4949EF
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772553067; cv=none; b=HiNOvbVBKaucaKPNjL4Vl7xi6Oko0k0OlyfAECx5BEZYwCrvEVXCjFnCR2QnWQ900nmbFfMXY6jgtjVgyTAQC0SNw1aIf+3sXDNPh3Y8J0fX5Bo6vGO9XgLSC+GwvI8Xskg24ELNFOi99Hyw8ZWfQjWgrEm6oAKb3fI8hYkBaio=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772553067; c=relaxed/simple;
+	bh=+Sm/P01h0kFbiVviehOODArZCDJSwlqi41ntmhONvrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s58gJZkFtZZM1Nt7PRrHUYx9PA9ehZvsYBjWVltJIVUTwcp5pFxe2EP0Tncq5wK39x5Dt8g8jUuUCXr2bjmeFdINQrGOXwhI/nAvWTfEc5W3BIlfjjTUi4ubLQF3m2MEUPcKTPhGju6hv62OVNpsRDXjdajT1HsV0t+4utgxLGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxS16-000579-GX; Tue, 03 Mar 2026 16:50:36 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxS11-003ZRH-2s;
+	Tue, 03 Mar 2026 16:50:33 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxS13-0000000G7Cv-0QPS;
+	Tue, 03 Mar 2026 16:50:33 +0100
+Date: Tue, 3 Mar 2026 16:50:33 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v11 3/3] arm64: dts: imx93: Add parallel display output
+ nodes
+Message-ID: <5esgi6k7sji6nwmp7ch3xcajrc6xxc3yfxe2iqq6z6wuvznuts@ytchokq2uy5t>
+References: <20260303-v6-18-topic-imx93-parallel-display-v11-0-1b03733c8461@pengutronix.de>
+ <20260303-v6-18-topic-imx93-parallel-display-v11-3-1b03733c8461@pengutronix.de>
+ <tyqgkbmkmenkdqdptb3baeizmvsdoyfjnaudlpb4jnz4py7cpb@oy64pijka2yz>
+ <aacCBGRAd6JbktHU@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DUZPR04MB9871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 048a7c0a-9e5f-47de-1c54-08de793c74b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	IUbfxcQ5SsxOEK3w/sJhrjV8o4zkDwlE3KSwxk4eUY6QjQFFZ0Qo7EkBwgoSb8SmRoxtVuTwqvH+3ueJlTIOsnJ2vqFcE495vQzHEoF1UynjIDu5cAcv+Z9BXEA0lDedqFCoOW2QSRe/8o+JRZLCWH4fbUvEJ//CYxmh1fZg8Hz4E0A5PLP3HLQt7zjZbPoU/bjLIGsFo3/4vBDyDFfT0OG816165MDdDoS1ncVeLCK+1NH6G5MZPKW7Z+updiGnHaXIzqSVMJZ8MXSOUB6c0hPO4n8sDpjUe5Mv+FLQ+YmfcdObj7jX6WZjDnu96DI1/EsWOOdHXb8D9S6ck3QaUQS6e3U5ia2q+9LD//HveZO0dDLggxxBQzwAczbBq03BgUA3AV4G/wkf2UDV6hz7mv/uES00CE2o4xvHUpWvpVU8dEOGgxBfn9cFoRV/Z9gMCr643ZHwRuefetmLiBgXJCn9smZi+DoNkCHifp+ynDL5abwLsxEi+UyEQ6P05MHwNmcrlOnoHLY6+j2W+1tw9wqJr9llEzOL2Exzam/jc9x9HAWmBWV/pIqNHiKxYsX/7TcRNlUOL7A6gpejDpJEubdv3eXHGgaMXzLrzwGcnHpaSF5QxEJCbbHTPaYfxBw++fYlPD1PVYUtFdZiePGpm+DhdTW7K9nWGVToWTm3nwXtT45RC7e1Ek4eT0cNKCUMd587n9jEoIXTpN3m8QhzRuQir58nIbI6SJyuN5zfdLMwfXlrbROirKiQiMjr2Rykm2ChtWzsfleVCTcO67nNLUSC/U3qHh/aNgZOCYtBzEQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LNo7GyEf5osXXZUx5nF9A6lhTae8ibO4zun76mp0hTSC0FhMzQxOYZ77OHEO?=
- =?us-ascii?Q?sCsZIcDZ8nBKY1gsDQmsxkLSimVSq+h4PywBQTayfEOJIJgSvhfU9T5pSppw?=
- =?us-ascii?Q?8iRWMf1Lxw8uU4CI2dj72fLJJR0awLPMV0b5pvYOhdNNXTooxIve/h6KTpwM?=
- =?us-ascii?Q?BtZIc5GmOPVyvmGogJhpL3NQL6UHm8KiVsY/aL4+RzqP+cmFW1k5rYOOAJnw?=
- =?us-ascii?Q?5D7/dCsmt8TF/j56il//1Z8iS76PVCGlHfQR5x//DiHa926ZeJ5mBngskRAX?=
- =?us-ascii?Q?xMHQoH1TBsf7nJuSdwg/tczNhqU/mkk1l/Q/NLy6DYgxcxRAp+HMnMylutU1?=
- =?us-ascii?Q?qAIJVqF9s081FnnTvSW4vW1oLz5lJga2UgKva5k9qGIxlBVtkkCXVZVgUExM?=
- =?us-ascii?Q?gzGiKLsH0Pim5QMOnVOZclWWV6wUELGNyj3d5rshKrKdGp6c1rI7+h++c2oO?=
- =?us-ascii?Q?6zsfO8oLkTO0wlUE5gTIok5VN1bBZJyhcaf5e0GofvOoLdlpiib9+7IZ0jqS?=
- =?us-ascii?Q?PtISKQM3Sv42WoSNY+bkPoR9hC/wam0su2DHY2N8vk7CibIQA1NXHDwEIWI7?=
- =?us-ascii?Q?BdHRdsRpcjrffugXHX6Q6XaAzlrvfNYIV6szSni0E1otYz82efJqxAEaeLA4?=
- =?us-ascii?Q?yN80asG6700Nh9jiG+rYdjNEw6yPTPSWBrpnEzu/wqkLP+UhnSdKtC91B7Iz?=
- =?us-ascii?Q?h+pJ7IBZVt0sfxOr+B9npOelslZN34eGgPc4g/LW2D3NTANwR1OyiOf0FdU4?=
- =?us-ascii?Q?wfjxLOiLDR4v3Q5DVvP1yNdQ8UGHqKqp7RjSCyQY0mt0MT0qbqYfiBewweX7?=
- =?us-ascii?Q?4RlEkvO9jVbLY0vmZbzMKidxnUC0Jk/QNccqdOQIGqkgOXCiWnu4AUv/X27E?=
- =?us-ascii?Q?HkFT8MAmhMVozbzgmUL1LGlH/kWKU5M8bH1mg5HV+QYXq15VHeYJqfuUCub/?=
- =?us-ascii?Q?MWnQ225+v3IlAqv9F7iIWJ/rjyMbVZx1XW4zQk13QMIxcdSYURhIwHmue68v?=
- =?us-ascii?Q?LKw5Ds7XHSczX0mO0+xLDpooykacLCLMKOf3hdDhENrvmTu7P3D2OvXopJNm?=
- =?us-ascii?Q?b9X1YVDQPa0N6w202XMvAKvEJOnYy90+E9vGYd/yQJL5qg045ERGNoaY+nML?=
- =?us-ascii?Q?t0egQkU+3zWdgyQNf1D/p6xmplhiVc4zA92deAw7YpkT6WwDz3lGJBRWoVlO?=
- =?us-ascii?Q?AS15eDCkoFsWvBdm5+qJEiwCZCJZiNe8F9/k+RpTjnYeDV1oawnYhXp21S0h?=
- =?us-ascii?Q?e9C3YRzk0erl10tIgLUte1kYVy6BqNVKaOq0KrLzIgpkqrYd3FoGFHdeybKi?=
- =?us-ascii?Q?UnZ3roOZdiRQftIQomoaMG6Obx1qBgCBcmQ5LmMm1mm+eJrg+8COvoUyPD2u?=
- =?us-ascii?Q?DBunYxOXOXoaYsquK9PjAg0Ff0m6TU9avMSk+lIQ7W+4BdXGJe9fq+vsjMvA?=
- =?us-ascii?Q?SfqJstUm/l7RqlCIwXJcsbTOheW46+SgZdgW5CF6icALXJ3VoOnogqwbnKxK?=
- =?us-ascii?Q?+1ZwqdYrTFZn8CIK5Vne+OGUki95nEtsHte/mCt6XGONV5S30yjZQRGKueTb?=
- =?us-ascii?Q?zUQD/1fcpMK4Y6hkuIgHsiy73GlJTdPA+lWHLTDQN5TV2BT6pt982eqH9Sxp?=
- =?us-ascii?Q?hHBv8aXgeCWogp7lksMAkdtvhOKsxG/hRAlmq57YgIqikHsSCm18Miw/d7t/?=
- =?us-ascii?Q?oIPWrbxetclsJlPk/KJFJH0yAHq8rH30jgyMotq02OzvHo74c3OJs3owM00U?=
- =?us-ascii?Q?JVxuMTA/BA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 048a7c0a-9e5f-47de-1c54-08de793c74b0
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 15:49:29.8086
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Sm/mGTjAH/tUjlp9FFecP7U4jU5vqswGGmZHdnK6IwwBVmVoZfN7QFy1AnALU/eI4govtdHmjwtVqk1D7FDJGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9871
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aacCBGRAd6JbktHU@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Mar 03, 2026 at 10:15:58AM +0800, Xu Yang wrote:
-> Fix a comment codestyle of needs_full_reinit.
+On 26-03-03, Frank Li wrote:
+> On Tue, Mar 03, 2026 at 11:42:08AM +0100, Marco Felsch wrote:
+> > Hi Frank,
+> >
+> > On 26-03-03, Marco Felsch wrote:
+> > > Add required OF nodes to support the i.MX93 parallel output (DPI) path.
+> > >
+> > > On the i.MX93 a single LCDIF is connected to three bridges: DPI, LVDS
+> > > LDB and the MIPI-DSI whereas the i.MX91 support only the DPI bridge.
+> > >
+> > > Map endpoint@0 as DPI bridge output since the i.MX93 TRM (Figure 485.
+> > > MEDIAMIX block diagram) doesn't mention any port-number <-> bridge
+> > > combination.
+> > >
+> > > Set the MEDIA-AXI and MEDIA-APB clocks to the overdrive (OD) values
+> > > since the i.MX93 and i.MX91 use the overdrive (OD) clk settings per
+> > > default.
+> > >
+> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> >
+> > Please ignore this particular patch since you already applied this one.
+> 
+> You can skip these when you post new version. post delta if need update,
+> I can squash to previous patch as need.
+> 
+> >
+> > Next time we should align the apply with the rest of the patch series if
+> > dt-bindings and driver behaviors are involved. In such case the final
+> > integration patch should be merged at the end and not at the beginning
+> > :)
+> 
+> You request apply at :)
+> https://lore.kernel.org/all/fl2br7rtcjrjj2uqxva7ai3xbvjwrrbbl2ruaoqolrccr2rd5p@z33qfx7dpavf/
 
-Fix kernel-doc issue?
+I meant the whole series :) Although I'm unaware which maintainer is
+taken which part. Sorry for causing troubles on your site. However if
+you would try to apply this on your tree, git would have told you that
+nothing needs to be applied because this patch is untouched.
 
-Frank
+Regards,
+  Marco
 
->
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  drivers/usb/dwc3/core.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-> index 67bcc8dccc89..7adb8e74bd84 100644
-> --- a/drivers/usb/dwc3/core.h
-> +++ b/drivers/usb/dwc3/core.h
-> @@ -1120,7 +1120,7 @@ struct dwc3_glue_ops {
->   * @usb2_lpm_disable: set to disable usb2 lpm for host
->   * @usb2_gadget_lpm_disable: set to disable usb2 lpm for gadget
->   * @needs_full_reinit: set to indicate the core may lose power and need full
-> -			initialization during system pm
-> + *			initialization during system pm
->   * @disable_scramble_quirk: set if we enable the disable scramble quirk
->   * @u2exit_lfps_quirk: set if we enable u2exit lfps quirk
->   * @u2ss_inp3_quirk: set if we enable P3 OK for U2/SS Inactive quirk
-> --
-> 2.34.1
->
+> 
+> Frank
+> >
+> > Thanks,
+> >   Marco
+> >
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 54 ++++++++++++++++++++++
+> > >  arch/arm64/boot/dts/freescale/imx93.dtsi           | 12 +++++
+> > >  2 files changed, 66 insertions(+)
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> > > index 7958cef353766a430df5e626ff2403dc05a974b1..5a8813df6bc993d559fb0b20fc742a106bfe6315 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> > > @@ -1122,8 +1122,62 @@ media_blk_ctrl: system-controller@4ac10000 {
+> > >  				 <&clk IMX93_CLK_MIPI_DSI_GATE>;
+> > >  			clock-names = "apb", "axi", "nic", "disp", "cam",
+> > >  				      "pxp", "lcdif", "isi", "csi", "dsi";
+> > > +			assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
+> > > +					  <&clk IMX93_CLK_MEDIA_APB>,
+> > > +					  <&clk IMX93_CLK_MEDIA_DISP_PIX>;
+> > > +			assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
+> > > +						 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
+> > > +						 <&clk IMX93_CLK_VIDEO_PLL>;
+> > > +			assigned-clock-rates = <400000000>, <133333333>;
+> > >  			#power-domain-cells = <1>;
+> > >  			status = "disabled";
+> > > +
+> > > +			dpi_bridge: dpi-bridge {
+> > > +				compatible = "nxp,imx93-pdfc";
+> > > +				status = "disabled";
+> > > +
+> > > +				ports {
+> > > +					#address-cells = <1>;
+> > > +					#size-cells = <0>;
+> > > +
+> > > +					port@0 {
+> > > +						reg = <0>;
+> > > +
+> > > +						dpi_from_lcdif: endpoint {
+> > > +							remote-endpoint = <&lcdif_to_dpi>;
+> > > +						};
+> > > +					};
+> > > +
+> > > +					port@1 {
+> > > +						reg = <1>;
+> > > +
+> > > +						dpi_to_panel: endpoint {
+> > > +						};
+> > > +					};
+> > > +				};
+> > > +			};
+> > > +		};
+> > > +
+> > > +		lcdif: display-controller@4ae30000 {
+> > > +			compatible = "fsl,imx93-lcdif";
+> > > +			reg = <0x4ae30000 0x23c>;
+> > > +			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
+> > > +			clocks = <&clk IMX93_CLK_MEDIA_DISP_PIX>,
+> > > +				 <&clk IMX93_CLK_LCDIF_GATE>,
+> > > +				 <&clk IMX93_CLK_MEDIA_AXI>;
+> > > +			clock-names = "pix", "axi", "disp_axi";
+> > > +			power-domains = <&media_blk_ctrl IMX93_MEDIABLK_PD_LCDIF>;
+> > > +			status = "disabled";
+> > > +
+> > > +			port {
+> > > +				#address-cells = <1>;
+> > > +				#size-cells = <0>;
+> > > +
+> > > +				lcdif_to_dpi: endpoint@0 {
+> > > +					reg = <0>;
+> > > +					remote-endpoint = <&dpi_from_lcdif>;
+> > > +				};
+> > > +			};
+> > >  		};
+> > >
+> > >  		usbotg1: usb@4c100000 {
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > > index 7b27012dfcb564650882dc8c40e836e797b2fda1..5436b48b30e89eb1f939b398ce1bf105abe7e34b 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > > @@ -150,6 +150,18 @@ l3_cache: l3-cache {
+> > >  	};
+> > >  };
+> > >
+> > > +&lcdif {
+> > > +	port {
+> > > +		lcdif_to_ldb: endpoint@1 {
+> > > +			reg = <1>;
+> > > +		};
+> > > +
+> > > +		lcdif_to_dsi: endpoint@2 {
+> > > +			reg = <2>;
+> > > +		};
+> > > +	};
+> > > +};
+> > > +
+> > >  &src {
+> > >  	mlmix: power-domain@44461800 {
+> > >  		compatible = "fsl,imx93-src-slice";
+> > >
+> > > --
+> > > 2.47.3
+> > >
+> >
+> > --
+> > #gernperDu
+> > #CallMeByMyFirstName
+> >
+> > Pengutronix e.K.                           |                             |
+> > Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
