@@ -1,189 +1,146 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829433FE27
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 13:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772543022; cv=pass; b=LdiWTCrpY/NSDtwKiX8eR2z+0HmJrhet7pnB3bsSWJ3vneIzCxdnDLNX3VfQjVvex2EYU4YhwxDQQGjnUzuOXqpeL1jlkKxvUceIrO/8WhnZQuUKwJm9Vrj/RT0C633FeADoyISHUpnaK4lRyrW/urz65mqk2Y/yzyqPrlaNhRo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772543022; c=relaxed/simple;
-	bh=bdXuAHR+W7DcDsgTssbNNylZwjKna61a4d2JwD1CRZQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FySihXVLRy7et5AV0+lHG6R1BRjzdfgfmW/hmsuv2aZ6CF8scGOjqVs3Py6cD3J0ZGPs7sPTVKUudrvfgOnClmj19s1lXG19hwpSqdH7oOP2R4o9iKgrJV8T+OaemogacYVsLZOgJSxbTnV6bq2f76Vh/PSzrDhuAkh503E7f0g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UA2w1T63; arc=pass smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA14347C6
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 13:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772543503; cv=none; b=pLi90TW/HotU77OGZJ4k4YmQ+cIPY4yHB1bNorQ8rTrGx68vM1Fk7S7lsE00/L7LBWc0AUdUBk9LBsZNrjFm5ERA1jKhIAGqMccPr8EOdyiMeQFIYI88XKXYD9EDWEJGrg6yVWDIzPOTU+7i9tDtLgD9DMHfIMlgqZxD7/6Au1I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772543503; c=relaxed/simple;
+	bh=ozN+qojTTgLnsoEN6uH9ZEIQmW3hWK859Xy3p8UVIPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EbD3k6lKRboMrd/ACP7i1yJtGUeEb/V7d8Rkb9aFBEcbp7oZh3GzwOnmPglxAIvqfzrsPKnD56x8WDB3zPzQ1uUHV7WID6MUy7r5WWJC0i3bEs0D24r8ZH4bsMDf+k7nf7oLDO5iqZSitk+Sq7o1h08KNxq8FVNukMxsbrnr+PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kalYhP+L; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=W5or2asV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UA2w1T63"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4152698e745so291901fac.1
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 05:03:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772543020; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R59T9K5EOnoQcXL7nYNP7efby1kbWRfqHwTgKOfA6XIJ9png5KiL50dy21mc1h5RmR
-         4IiOIrQnXXngjbqH+cCCUsO7YH+rEJ8iE1jJAoTFkNtM3TUxpFinvT33SgleqvWjA56R
-         YNqqYbchEVDqF+4CKoHofL+HjjvyPh9+tJZuuAJy+BHcM1moI8hk2qfziH2DqyPG03ey
-         N1mjC630hp1PMrA8dZrEGQt0rKhPFhQ0UKlBC6Mpru8opz4dEt6vyJZVmTsTEBrUp9th
-         PlsDRUO+wP/IoWTRGB8Mx+9EAP68k6EST4vWsKvW6uv9DOvt8S0YEaE8Dfpqzv0BXWjx
-         OtEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fXJCi76LsoMAmD6ooe8NZCj0HaxUTDKfSurt+CM2Xuw=;
-        fh=is4cPssltmZX4aerWv0j0hAgkwnG5jzTNcncbrP0DiI=;
-        b=aRG7oN9Pn+y0nM6C3bE/pmZfNLl8fzXOgVBO1cWnr5Dl5RjSPUtyobdNhTwX1cU6Uv
-         KA4Ji60CShYI9oHFfnEnH0cbcRPUPoV8LFKqyowLoeZUJn2aQXt2pp0LWk7Lss8QqK9q
-         l1CjhpcsLnL0ajO5fl3dOOXEN42L8rxsKwimQF8sWiWOsHq6OzaMf17xjt1nrRrApSMT
-         49/QfbWXn89383gF6IgcptBf7JvDFu0ulAzTOyfOQEWEe+53pxT+39Paqc6obOq/ts3I
-         lv0K6FJSfyBUXDFDH6QVnD7vHWw3+MN5iGGXiuWWUKsg+Ay6kZONvdzsMyf8fLc9A9FB
-         0HRw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kalYhP+L";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="W5or2asV"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239n7Aw2630006
+	for <imx@lists.linux.dev>; Tue, 3 Mar 2026 13:11:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=snhnMYJDQkat9qXJwHdTGT4j
+	0E3K9+24fQ/tGb/FHwE=; b=kalYhP+Ltoz84W/vWpoW3Ii5QCbGAfW/QxzwlkqT
+	0llIux2NAdG/Lf8YjRtWyP/7DsUZFv6+ZMDvvxiJ0wWmFChR/GLxvaoAF4QGzyfw
+	wQ6oHsOsCh12Tpt97Y4wG85YP4Kqgci4U0wLYuYK6hjj6OXSWDLHuJPTOFZlbody
+	YUzJ/gifjsdCS9xx0Kmh1fSVttTEpFYg0nfI+BGjuuCZczSHt/UBePVHf9zEfr2y
+	pCqIAH43GGnudV9Qt4k4gwLtYbZZVZZnxRpP+O5ZUItZK2NAp4ctxtooDyGisZj+
+	bG2C2oPJNe3bnh9Sq/g7kCRnM69I1vrwVnEfAOTUtV7d9g==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnhx5awbs-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Tue, 03 Mar 2026 13:11:41 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c882774f0dso3806838885a.2
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 05:11:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772543020; x=1773147820; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fXJCi76LsoMAmD6ooe8NZCj0HaxUTDKfSurt+CM2Xuw=;
-        b=UA2w1T63xwSD9UnMQXWyB1dSF33loNrcnpqIS/AOirkl6abRqHjGVarsenD5SucfCd
-         L0cxi6GcPQ+IhqHV14K3oMIRxexEEBjwyIwU8YPimWKOdsnnhaV0r9EZmCRv4cekbVN6
-         qIm6G89rT9ogN+9dgCKIAEl0lkqgIM2bRYvIpR9gvpgMVouTFUShbj/pT+S9RXZecsbv
-         EyAZZl/JD/tljBKVPi4fE5hMycKtmdrwERpF9k2ubBNTC8sV+wLmHTk+uuo0y2y6vHqC
-         XsTg+gLBJ/VqJ8TExh2CUET8yS/VBjM3Ctf5Pomp6pRFxYbTgC41QBHATNa1dqkeJn93
-         j+oA==
+        d=oss.qualcomm.com; s=google; t=1772543501; x=1773148301; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=snhnMYJDQkat9qXJwHdTGT4j0E3K9+24fQ/tGb/FHwE=;
+        b=W5or2asV4TJj1pZNdxGihF8l5wiCjF6hIww5jWBbI7jtr6vBFVMoAHVoAeLqc+CXg8
+         N0zmYxRmS+zZbWYjLOy4niHNaazW9AXlErjf/uGhzeT0Sr6hzHP0FP5GnDb4nx63uI88
+         9oR1zGItOOFn8dGDZ6k0MGBcKnw6k6SiFag8sbUA/8S5XTGR3FvW9+7ZfgfAxqmnl8xC
+         HMuCt4CORJiXCsY4m4RixgjtdST/GOQYdISnEYaKyTAAQChzpXwo5qaJHTXfzuf4Rmka
+         Q6CcQWf0E5b18I3D3UcrIT1BYdxjtj7QrwkVHN3arA1dsUqwZM/exIqJGRxSlPHemBDU
+         PTsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772543020; x=1773147820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fXJCi76LsoMAmD6ooe8NZCj0HaxUTDKfSurt+CM2Xuw=;
-        b=B/3ZVK0lHypN/VEEmaC70vL8Wgna4srYWid3mMFRQE9ZsAibkgdrdXpY0bl3sQNm1N
-         5PvgY1s5Uqj3zxD0tVWF7dJPd11e3CGL7RFEAAM03XllFHdN91bChr0Cm7e28aZZou9F
-         CXNsBWcMty2Aq8ottv9TkXnlP6FNKRRCC+PEP7aESBfaWYPV81N51kNMlxmt4DdiuBeB
-         sj5UoMDyYIHxiFZ5UQ12NSCQMBlpQl07yxcn7T6FYVdWIuM3wzcQJlvoP3keBhNHvkrq
-         rEF3hqCrSfOl5/Ru5XQiNdyvoYU9emBiuxUwVZiepa2jYO30efVpJYFPp8xCIWUM/Iwt
-         B5xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjyBbltxQ23YJYNB+SjlU7BI+dvyt0BBMT/XpNGuDgolDHF/IrtFFjMM0m55Pwj1Rieq8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxafadutgCMR2ZyFjX0oWP2ZJ8LUGQWBwVmPmEvgLs1U1KrVjgq
-	yI3e2iI2pMVejnXWXqx/QDz4Khz4MZrTnOkU3V867ApeS8C+YwXhJgmUXye96cnGFgCIxx/E9Yy
-	evPK9gZJPqXofsmbPormhJskra5RVDSA=
-X-Gm-Gg: ATEYQzyfeKX+DPeI0s474UzfI4rcsMopwQo+/7zZwzdH43/+5y3DByUXKxKtrn59SLr
-	Ak5c7wIbLuVr7TPhzwEW4ggPlVZQBElDL44qC0xx/MUzJ8bNcplf/1R4b7JF3RlUuQaelc63C57
-	0TfUA/2kpwEV+bWb0lGW8tOyBDfZC4CGSR2+JWe9Fm5Ti0QoABdbgC7p/mfzXY330gB2mnLrozj
-	IRZ4mxGy00jGeufU1H2qJ5Dm+64FUp6Mihz3Bk4RauNHZMjKc8fnN41SYOjjchQUfqiZ5Jq4jgp
-	IrjhlE8fRtG4gNbn/ri+aGJo1op/QIuMW8rBl82vRSDh4IcCT4FIm1JVL1PosDGjXj2yd2/loQ=
-	=
-X-Received: by 2002:a05:6871:7383:b0:3e8:9e7b:4ea4 with SMTP id
- 586e51a60fabf-41626e21440mr7566575fac.6.1772543019367; Tue, 03 Mar 2026
- 05:03:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772543501; x=1773148301;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=snhnMYJDQkat9qXJwHdTGT4j0E3K9+24fQ/tGb/FHwE=;
+        b=WvpH9D1jCc1SNCE0OZYInmwyge6E4VKVJMSFxrX1WbAxtUNzw9Xn91sDwPificozj9
+         oJivixQypTH1JS7W/MjEuTEQT+4EDXFpncG+8qno1rBiIMxQERuKckY7DuyeNqnaCtWA
+         beNKiXqrF4ThgmUEM8tf7fTpOzLSzAAEqhaiLscCUjqn95XY1EE+yNXA88/Oa1NzIrzF
+         NTqcB7c+QoC4uJxsmvZw48McQXecfcHzjuf69y61BxLKQFnfDY3jYAgwDwKE+CvuGggh
+         e7jMtlqh/ZvcTAX5C0I57PHqa+EM/lYS9ZFS4nGK6wjUdcRdFtCwM5NzZSBu3iMFLe8D
+         e+qg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjzKiKi77gYDIj83oA599WkGNEC5oi5Liz2/Ec9ie746WyboJFnBLq5g9exHtkLakBOSA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxn5l/FF1rbaCvxW+LBgwuQ/+SrlZpWRbyA5jTLBNvmud74MMdK
+	6iymXts4fQSAtyJpFfbo+bajoFTT0kvKYho/mGyZy9dJrWQZLEL3X+D7ZvF9MPB6Kz0VmSMcRBn
+	8PGlxJ2ivyVDsG2svs/rh2YgrKwO1PdWF+9E7bOI0KGGYJJpAQHlg3ZI=
+X-Gm-Gg: ATEYQzyCZrFtynZSuAnuk/SKHJQ1Xg6PK38iePOJ9OTFfdrfYm7fcmMDzns7S7Vu3q1
+	3tEzNe864NxA9IfWCFuL52F66xHV5vXYH8YNpPtd5zJTHKe6y92EAn9A4izVvhsT7kpZczDiwNN
+	wpzeAdwT/ja2HrEf9kwdnaS0bWnVRjXHSQeYvMpbf+pcXxCHFMXWtQWcrDW17JQmpmAtAMmGa9k
+	3BvBDaQDVHWx53tirYvZe5k4YHk8a50G26mSMojCDiXlBOj1VWo5grrbazfA+hhhETPrvmsCFvh
+	ufHF6FEDO9I23Ut0jY9+T3rgJ3P7n9gTHmo2I21/90K3aJ9bfyHLKyAV1EuFGfM9s0Cjflp/Vaq
+	Av0/du/o5moO12WJVLa+jpL94EWzUnhwbDbIA
+X-Received: by 2002:a05:620a:1706:b0:8ca:2cf9:819d with SMTP id af79cd13be357-8cbc8d9a85amr2048341585a.26.1772543500784;
+        Tue, 03 Mar 2026 05:11:40 -0800 (PST)
+X-Received: by 2002:a05:620a:1706:b0:8ca:2cf9:819d with SMTP id af79cd13be357-8cbc8d9a85amr2048333885a.26.1772543500109;
+        Tue, 03 Mar 2026 05:11:40 -0800 (PST)
+Received: from oss.qualcomm.com ([86.121.162.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485126563ebsm16384845e9.1.2026.03.03.05.11.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 05:11:38 -0800 (PST)
+Date: Tue, 3 Mar 2026 15:11:36 +0200
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+        imx@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 0/3] ARM: dts: imx6: cleanup imx6/7 CCM related
+ CHECK_DTBS warnings
+Message-ID: <56f6t2u5peqndhfwxubvhcksusrgkxpqd5woz3i46gpl3q7vc2@5ykg5q6acn5a>
+References: <20260121-ccm_dts-v3-0-820ce9b5fa38@nxp.com>
+ <aaYKUC7pWjS1Xnpd@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260303115720.48783-1-dakr@kernel.org>
-In-Reply-To: <20260303115720.48783-1-dakr@kernel.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Tue, 3 Mar 2026 21:03:28 +0800
-X-Gm-Features: AaiRm51hHETXLy5xgoyPjMD6CQcJQj3Ex8YjBm7PX7a5CmSkvNYD_5jZKUYKtjs
-Message-ID: <CALbr=LaQoV0L2dxiHKvoP2weZNWEXXG434ir8k-Ej=ouBiEWHg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] driver core: generalize driver_override infrastructure
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
-	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org, Wang Jiayue <akaieurus@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaYKUC7pWjS1Xnpd@lizhi-Precision-Tower-5810>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDEwNCBTYWx0ZWRfXwb/bNbw7YcaK
+ l1YiAAV9Y2DjM0N5G1UjB/Tf2SM4aFu3ptSeOWz88WxZoZJYyyPaiZQGdXXnCnG+B5N/5kNxRdz
+ YIc7RuKiuESxCcLsI6sUut6n/UsBkWqhTuDdbWezplpgy9Zdn843Jh1g81ISRhea9C4W7CjxWwW
+ ymRt6fcftBmGqAkMVl/1Gh9eMeHuRzhRQ4xTNci4Zn3KD8cNdIp1szXGJMx/nWFodksMOEy99y8
+ EUJrgwSANPkEaEy4GpXJodPaD6Mzqt4yDkYUIUORoU73eby1cN2Ap3qJgIA1T+bBdnlTqKImbF0
+ EJGhftYJI6Y/HcRorgPIlGBrs2L1Vsbe5c4PmN0Z5lMINqMDAtqVzSocjL3Av0JDGCyPf7BWp+G
+ gA7hq3QtdYo1p6JAGR0GgqJxP/KQQz1Dq2QTW2HYsdUzt4ewj/PgyTCJhcByVPU8HhuyXBTfAyy
+ yg/02O9+oQibzaZzS1Q==
+X-Authority-Analysis: v=2.4 cv=T9CBjvKQ c=1 sm=1 tr=0 ts=69a6de0d cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=8AirrxEcAAAA:8 a=poxx6UPob8T2UUUd9QAA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22 a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-GUID: EV4b20XL2-hlih4g-3Ci4NP5on_k3y-o
+X-Proofpoint-ORIG-GUID: EV4b20XL2-hlih4g-3Ci4NP5on_k3y-o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 malwarescore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603030104
 
-On Tue, Mar 3, 2026 at 7:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> Currently, there are 12 busses (including platform and PCI) that duplicat=
-e the
-> driver_override logic for their individual devices.
->
-> All of them seem to be prone to the bug described in [1].
->
-> While this could be solved for every bus individually using a separate lo=
-ck,
-> solving this in the driver-core generically results in less (and cleaner)
-> changes overall.
->
-> Thus, move driver_override to struct device, provide corresponding access=
-ors for
-> busses and handle locking with a separate lock internally.
->
-> In particular, add device_set_driver_override(), device_has_driver_overri=
-de(),
-> device_match_driver_override() and a helper, DEVICE_ATTR_DRIVER_OVERRIDE(=
-), to
-> declare the corresponding sysfs store() and show() callbacks.
+On 26-03-02 17:08:16, Frank Li wrote:
+> On Wed, Jan 21, 2026 at 01:04:14PM -0500, Frank Li wrote:
+> > cleanup imx6/7 CCM related CHECK_DTBS warnings
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> 
+> Abel Vesa:
+> 
+> 	Can you help pick binding part?  So I can start pick dts part.
 
-Hi Danilo,
-
-Thanks for the v2. The code looks good and the bus_type approach is
-much cleaner.
-
-Just a minor note on the commit messages for the cover letter and
-patch 1: they still mention adding the DEVICE_ATTR_DRIVER_OVERRIDE()
-helper, even though it was correctly dropped in this version.
+Done.
 
 Thanks.
-
->
-> Until all busses have migrated, keep driver_set_override() in place.
->
-> Note that we can't use the device lock for the reasons described in [2].
->
-> This patch series includes the migration of the platform bus; patches for=
- all
-> other affected busses still need to be extracted as a follow-up of the WI=
-P
-> treewide patch in [3].
->
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D220789
-> [2] https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel=
-.org/
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=
-=3Ddriver_override
->
-> Changes in v2:
->   - Drop DEVICE_ATTR_DRIVER_OVERRIDE() and make driver_override a
->     struct bus_type feature instead.
->   - Add driver_override documentation in .../driver-model/binding.rst.
->   - Move kfree(dev->driver_override.name) before release().
->   - hwmon: axi-fan: Use NULL instead of dev_name() in
->     devm_request_threaded_irq().
->
-> Danilo Krummrich (4):
->   driver core: generalize driver_override in struct device
->   docs: driver-model: document driver_override
->   hwmon: axi-fan: don't use driver_override as IRQ name
->   driver core: platform: use generic driver_override infrastructure
->
->  .../driver-api/driver-model/binding.rst       | 48 +++++++++++++++
->  arch/sh/drivers/platform_early.c              |  6 +-
->  drivers/base/bus.c                            | 43 ++++++++++++-
->  drivers/base/core.c                           |  2 +
->  drivers/base/dd.c                             | 60 +++++++++++++++++++
->  drivers/base/platform.c                       | 37 ++----------
->  drivers/bus/simple-pm-bus.c                   |  4 +-
->  drivers/clk/imx/clk-scu.c                     |  3 +-
->  drivers/hwmon/axi-fan-control.c               |  2 +-
->  drivers/slimbus/qcom-ngd-ctrl.c               |  6 +-
->  include/linux/device.h                        | 54 +++++++++++++++++
->  include/linux/device/bus.h                    |  4 ++
->  include/linux/platform_device.h               |  5 --
->  sound/soc/samsung/i2s.c                       |  6 +-
->  14 files changed, 228 insertions(+), 52 deletions(-)
->
->
-> base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-> --
-> 2.53.0
->
