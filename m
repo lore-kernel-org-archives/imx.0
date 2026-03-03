@@ -1,146 +1,137 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA14347C6
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 13:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D69521773F
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 13:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772543503; cv=none; b=pLi90TW/HotU77OGZJ4k4YmQ+cIPY4yHB1bNorQ8rTrGx68vM1Fk7S7lsE00/L7LBWc0AUdUBk9LBsZNrjFm5ERA1jKhIAGqMccPr8EOdyiMeQFIYI88XKXYD9EDWEJGrg6yVWDIzPOTU+7i9tDtLgD9DMHfIMlgqZxD7/6Au1I=
+	t=1772544094; cv=none; b=HqYEx81N+kpCyOHi+PxPiSGkXnsjuNGBwsl/QQ7OkFdzkiZTGgrgm2VjPXWi5i4HPZzsWs9+Em9xlZe4oPyk2TQgWBEroqh4LWvO4U0C3lTVEcXisAJovv/6LApby9xvu4W3hwV2Moik23u1yoEBUze38kK6EbKtHkOktuAfpKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772543503; c=relaxed/simple;
-	bh=ozN+qojTTgLnsoEN6uH9ZEIQmW3hWK859Xy3p8UVIPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EbD3k6lKRboMrd/ACP7i1yJtGUeEb/V7d8Rkb9aFBEcbp7oZh3GzwOnmPglxAIvqfzrsPKnD56x8WDB3zPzQ1uUHV7WID6MUy7r5WWJC0i3bEs0D24r8ZH4bsMDf+k7nf7oLDO5iqZSitk+Sq7o1h08KNxq8FVNukMxsbrnr+PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kalYhP+L; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=W5or2asV; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1772544094; c=relaxed/simple;
+	bh=qQ8cVIgoJLxTfOYZEyEm9nD6RyTJa6yvfBv32MH0W6k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Azec1GSstPVGL2eB8WjdGxM7km3X3akpPBgZucVOR1DcUFbPS/aKQ1SUad2aXzg30JWN6lukYprOCAAv/puS9cu7P+XDpngDv1Sp/BkDO23UioSAdzn/MbEGnuxkQ5pQyIWUVJiKLqAuasYL0JuQXekLLsAknbMG7PZp50xi4ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UkVpxOq2; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kalYhP+L";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="W5or2asV"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239n7Aw2630006
-	for <imx@lists.linux.dev>; Tue, 3 Mar 2026 13:11:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=snhnMYJDQkat9qXJwHdTGT4j
-	0E3K9+24fQ/tGb/FHwE=; b=kalYhP+Ltoz84W/vWpoW3Ii5QCbGAfW/QxzwlkqT
-	0llIux2NAdG/Lf8YjRtWyP/7DsUZFv6+ZMDvvxiJ0wWmFChR/GLxvaoAF4QGzyfw
-	wQ6oHsOsCh12Tpt97Y4wG85YP4Kqgci4U0wLYuYK6hjj6OXSWDLHuJPTOFZlbody
-	YUzJ/gifjsdCS9xx0Kmh1fSVttTEpFYg0nfI+BGjuuCZczSHt/UBePVHf9zEfr2y
-	pCqIAH43GGnudV9Qt4k4gwLtYbZZVZZnxRpP+O5ZUItZK2NAp4ctxtooDyGisZj+
-	bG2C2oPJNe3bnh9Sq/g7kCRnM69I1vrwVnEfAOTUtV7d9g==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnhx5awbs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 03 Mar 2026 13:11:41 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c882774f0dso3806838885a.2
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 05:11:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UkVpxOq2"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae50a33ff8so17509365ad.3
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 05:21:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772543501; x=1773148301; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=snhnMYJDQkat9qXJwHdTGT4j0E3K9+24fQ/tGb/FHwE=;
-        b=W5or2asV4TJj1pZNdxGihF8l5wiCjF6hIww5jWBbI7jtr6vBFVMoAHVoAeLqc+CXg8
-         N0zmYxRmS+zZbWYjLOy4niHNaazW9AXlErjf/uGhzeT0Sr6hzHP0FP5GnDb4nx63uI88
-         9oR1zGItOOFn8dGDZ6k0MGBcKnw6k6SiFag8sbUA/8S5XTGR3FvW9+7ZfgfAxqmnl8xC
-         HMuCt4CORJiXCsY4m4RixgjtdST/GOQYdISnEYaKyTAAQChzpXwo5qaJHTXfzuf4Rmka
-         Q6CcQWf0E5b18I3D3UcrIT1BYdxjtj7QrwkVHN3arA1dsUqwZM/exIqJGRxSlPHemBDU
-         PTsw==
+        d=gmail.com; s=20230601; t=1772544093; x=1773148893; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rSgIttgxow4KdsVl0fAW0hH1qFQjzwhPA8Ucjoz0JJk=;
+        b=UkVpxOq2bUz8o+m/f5V43Mbt52X1guGkcSal/1Iladat2CTh/G32D/veI8PXtEZy6L
+         uJkaZSnj73ozNhmTrLGCMUCFSKuwOhpOv6T5ScaNw1mf5sv+Pgy9sTF8LZ0Tw7TIn0fm
+         QGWJrvp8tMcMId5CWnRJbnBEtXd6N8duOp018GEWwK2U0B9zrmdY5PFL46jZwFZh/B26
+         frtYAuYrtGh1PCrvk8r/kAhFiBCiAxmQbuCFoKntyEwRNtjhlSnVx8bzxTKCXp7sFofy
+         WYROA8PzvJ0dh33V3ZyckhaqmZPKURQzX+NPW9RehbwTJIsNvh00V3GUx9d9O/oXXchE
+         3yOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772543501; x=1773148301;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=snhnMYJDQkat9qXJwHdTGT4j0E3K9+24fQ/tGb/FHwE=;
-        b=WvpH9D1jCc1SNCE0OZYInmwyge6E4VKVJMSFxrX1WbAxtUNzw9Xn91sDwPificozj9
-         oJivixQypTH1JS7W/MjEuTEQT+4EDXFpncG+8qno1rBiIMxQERuKckY7DuyeNqnaCtWA
-         beNKiXqrF4ThgmUEM8tf7fTpOzLSzAAEqhaiLscCUjqn95XY1EE+yNXA88/Oa1NzIrzF
-         NTqcB7c+QoC4uJxsmvZw48McQXecfcHzjuf69y61BxLKQFnfDY3jYAgwDwKE+CvuGggh
-         e7jMtlqh/ZvcTAX5C0I57PHqa+EM/lYS9ZFS4nGK6wjUdcRdFtCwM5NzZSBu3iMFLe8D
-         e+qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjzKiKi77gYDIj83oA599WkGNEC5oi5Liz2/Ec9ie746WyboJFnBLq5g9exHtkLakBOSA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxn5l/FF1rbaCvxW+LBgwuQ/+SrlZpWRbyA5jTLBNvmud74MMdK
-	6iymXts4fQSAtyJpFfbo+bajoFTT0kvKYho/mGyZy9dJrWQZLEL3X+D7ZvF9MPB6Kz0VmSMcRBn
-	8PGlxJ2ivyVDsG2svs/rh2YgrKwO1PdWF+9E7bOI0KGGYJJpAQHlg3ZI=
-X-Gm-Gg: ATEYQzyCZrFtynZSuAnuk/SKHJQ1Xg6PK38iePOJ9OTFfdrfYm7fcmMDzns7S7Vu3q1
-	3tEzNe864NxA9IfWCFuL52F66xHV5vXYH8YNpPtd5zJTHKe6y92EAn9A4izVvhsT7kpZczDiwNN
-	wpzeAdwT/ja2HrEf9kwdnaS0bWnVRjXHSQeYvMpbf+pcXxCHFMXWtQWcrDW17JQmpmAtAMmGa9k
-	3BvBDaQDVHWx53tirYvZe5k4YHk8a50G26mSMojCDiXlBOj1VWo5grrbazfA+hhhETPrvmsCFvh
-	ufHF6FEDO9I23Ut0jY9+T3rgJ3P7n9gTHmo2I21/90K3aJ9bfyHLKyAV1EuFGfM9s0Cjflp/Vaq
-	Av0/du/o5moO12WJVLa+jpL94EWzUnhwbDbIA
-X-Received: by 2002:a05:620a:1706:b0:8ca:2cf9:819d with SMTP id af79cd13be357-8cbc8d9a85amr2048341585a.26.1772543500784;
-        Tue, 03 Mar 2026 05:11:40 -0800 (PST)
-X-Received: by 2002:a05:620a:1706:b0:8ca:2cf9:819d with SMTP id af79cd13be357-8cbc8d9a85amr2048333885a.26.1772543500109;
-        Tue, 03 Mar 2026 05:11:40 -0800 (PST)
-Received: from oss.qualcomm.com ([86.121.162.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485126563ebsm16384845e9.1.2026.03.03.05.11.37
+        d=1e100.net; s=20230601; t=1772544093; x=1773148893;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rSgIttgxow4KdsVl0fAW0hH1qFQjzwhPA8Ucjoz0JJk=;
+        b=sTUVvmQKJeaSP0jwFTId8LMsYnEdOYgaAHtlpMgx3iuesCyfGZRS7KVLClfqvRuH4w
+         3xbjTvtlx9wVfUHzvyNk7MaDKZqpXU3rPJx8251es2li7ZnYpN/V7ynOLkyBD0ZRpkxl
+         x3rl8Bh+pLSgbDg1tKvh1vF1Q9TFjJIFYdb8RYOl/+SyOq6hF+MaGO65YCbLcpeW6RxD
+         +B2QTnWKKfsMWGO80yCk5ZMEpYmvt/Yv1EQs09phDHiMHpZ6Wp0eIWwkA/QRy7NDayd/
+         UX6IGwy6eNgJ7CJPaz+IN0VAKwZI6BMRpVHfLvg6H4W7TTNUwtt107PWkZSV+wNTcXN4
+         d/Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCWeTjGK2QfUTFeWg5tn2p3mZUShaaTQN14fqsI5oUhpR88GW7oTcdjEUeGNbrPdj+S1MG0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKXxRzceR3HD9aqi07PMBEXgj5NQy5sUUWS0NdMwZWlEeF352m
+	ec8TiIR5XNcWbkcBnPtuDhM5kPtq3S+XqID6rvY+JGhbAJ31PmBRBYrCqoFRW2Ged+g=
+X-Gm-Gg: ATEYQzyC8C2/sbgB3pKaMuCIgIsmDnSOEKBX+sH/5+wsAm2+uT43UkCsyXSpu8Spcws
+	QJln+E8XK7bF1AeO6ZosL2dToEMA6WZWFlyCifHxhCdnBpmmIK2op9O5kpDa2/YnX1G/3Lrb0kt
+	OK5ZYn3FOtkW8v1PvHTkCNr4IJ8WD/q6U6VHv3hO5l15/yzGyTNUCirSFJnVfOOgfCui9JKKU77
+	MOZl71ahOqcZRCXxGyhSbdr5q7VnTYU8XhmNR2RdcfqcCvoUnfrvkbKk6ZUpEwcRB83h0w6xeXo
+	M2ljCswjIDkd4oDwr62NHNxUFswjaPdJPJKrRpBr/xl7ftffncUkiAjdYa3qcKvCYf930FNRheX
+	YJfCcYal4zTUgQH3MuR02Uww52+wcoXwJRnrQNSzNw7dV5K68LVXPPbu1tvLpxaaBFCnaoRkvbk
+	0EfXmxNQ5MmLin+jq2Sxm546vheD3gZbrx5RT3rMSwiL9ET7Y=
+X-Received: by 2002:a17:902:cece:b0:2ae:3bb2:a8c0 with SMTP id d9443c01a7336-2ae3bb2ac50mr116402345ad.44.1772544092428;
+        Tue, 03 Mar 2026 05:21:32 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:f9d2:c148:3305:e3bf])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b48f4sm168764255ad.13.2026.03.03.05.21.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 05:11:38 -0800 (PST)
-Date: Tue, 3 Mar 2026 15:11:36 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-        imx@lists.linux.dev, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 0/3] ARM: dts: imx6: cleanup imx6/7 CCM related
- CHECK_DTBS warnings
-Message-ID: <56f6t2u5peqndhfwxubvhcksusrgkxpqd5woz3i46gpl3q7vc2@5ykg5q6acn5a>
-References: <20260121-ccm_dts-v3-0-820ce9b5fa38@nxp.com>
- <aaYKUC7pWjS1Xnpd@lizhi-Precision-Tower-5810>
+        Tue, 03 Mar 2026 05:21:32 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 03 Mar 2026 21:21:27 +0800
+Subject: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated
+ operations
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaYKUC7pWjS1Xnpd@lizhi-Precision-Tower-5810>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDEwNCBTYWx0ZWRfXwb/bNbw7YcaK
- l1YiAAV9Y2DjM0N5G1UjB/Tf2SM4aFu3ptSeOWz88WxZoZJYyyPaiZQGdXXnCnG+B5N/5kNxRdz
- YIc7RuKiuESxCcLsI6sUut6n/UsBkWqhTuDdbWezplpgy9Zdn843Jh1g81ISRhea9C4W7CjxWwW
- ymRt6fcftBmGqAkMVl/1Gh9eMeHuRzhRQ4xTNci4Zn3KD8cNdIp1szXGJMx/nWFodksMOEy99y8
- EUJrgwSANPkEaEy4GpXJodPaD6Mzqt4yDkYUIUORoU73eby1cN2Ap3qJgIA1T+bBdnlTqKImbF0
- EJGhftYJI6Y/HcRorgPIlGBrs2L1Vsbe5c4PmN0Z5lMINqMDAtqVzSocjL3Av0JDGCyPf7BWp+G
- gA7hq3QtdYo1p6JAGR0GgqJxP/KQQz1Dq2QTW2HYsdUzt4ewj/PgyTCJhcByVPU8HhuyXBTfAyy
- yg/02O9+oQibzaZzS1Q==
-X-Authority-Analysis: v=2.4 cv=T9CBjvKQ c=1 sm=1 tr=0 ts=69a6de0d cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=8AirrxEcAAAA:8 a=poxx6UPob8T2UUUd9QAA:9 a=CjuIK1q_8ugA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-GUID: EV4b20XL2-hlih4g-3Ci4NP5on_k3y-o
-X-Proofpoint-ORIG-GUID: EV4b20XL2-hlih4g-3Ci4NP5on_k3y-o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 malwarescore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603030104
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260303-spi-nxp-v1-1-b78570db28ce@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFbgpmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwNj3eKCTN28igLdFHODJEvzRIuUNAMLJaDqgqLUtMwKsEnRsbW1APj
+ jibRZAAAA
+X-Change-ID: 20260303-spi-nxp-d70b97a8df08
+To: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772544089; l=1628;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=qQ8cVIgoJLxTfOYZEyEm9nD6RyTJa6yvfBv32MH0W6k=;
+ b=oGyL50RMeoOF6bnHxpZE3ErdeVNP2WcZc4Cs6okMYfM68WGQBmcJ5N9XO49DbR7IiA5uDhble
+ q8S7hIWbPYDBP4jHV+uyQVjOJ0oA+8nZvG8rzmuJu+Zjme9oOvBtyNN
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On 26-03-02 17:08:16, Frank Li wrote:
-> On Wed, Jan 21, 2026 at 01:04:14PM -0500, Frank Li wrote:
-> > cleanup imx6/7 CCM related CHECK_DTBS warnings
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> 
-> Abel Vesa:
-> 
-> 	Can you help pick binding part?  So I can start pick dts part.
+The driver currently calls init_completion() during every spi_mem_op.
+Tchnically it may work, but it's not the recommended pattern.
 
-Done.
+According to the kernel documentation: Calling init_completion() on
+the same completion object twice is most likely a bug as it
+re-initializes the queue to an empty queue and enqueued tasks
+could get "lost" - use reinit_completion() in that case, but be
+aware of other races.
 
-Thanks.
+So moves the initial initialization to probe function and uses
+reinit_completion() for subsequent perations.
+
+Fixes: 29c8c00d9f9d ("spi: add driver for NXP XSPI controller")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-nxp-xspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+index 06fcdf22990b..7b2de5612964 100644
+--- a/drivers/spi/spi-nxp-xspi.c
++++ b/drivers/spi/spi-nxp-xspi.c
+@@ -958,7 +958,7 @@ static int nxp_xspi_do_op(struct nxp_xspi *xspi, const struct spi_mem_op *op)
+ 		writel(reg, base + XSPI_RBCT);
+ 	}
+ 
+-	init_completion(&xspi->c);
++	reinit_completion(&xspi->c);
+ 
+ 	/* Config the data address */
+ 	writel(op->addr.val + xspi->memmap_phy, base + XSPI_SFP_TG_SFAR);
+@@ -1273,6 +1273,8 @@ static int nxp_xspi_probe(struct platform_device *pdev)
+ 
+ 	nxp_xspi_default_setup(xspi);
+ 
++	init_completion(&xspi->c);
++
+ 	ret = devm_request_irq(dev, irq,
+ 			nxp_xspi_irq_handler, 0, pdev->name, xspi);
+ 	if (ret)
+
+---
+base-commit: d517cb8cea012f43b069617fc8179b45404f8018
+change-id: 20260303-spi-nxp-d70b97a8df08
+
+Best regards,
+-- 
+Felix Gu <ustc.gu@gmail.com>
+
