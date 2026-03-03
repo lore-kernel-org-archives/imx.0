@@ -1,134 +1,114 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13103373C1D
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 09:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2AE37DE9E
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 09:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529061; cv=none; b=U1Ov4yPNzZkPcBdiJyB4a3OGjCk4TDBW6Htc+xJ3xBguTNFN6hChzUeTHiaI/fsspyn1RQlFc7YqYeXbzoOO7Zne8OmBcDzblb5rkSkXmOvdl2BPk2HDj1ko2dDQgbwyuyn4pkmOKHdfDgVQue9dltBcRjaZM2KZZzFFUEHD6r4=
+	t=1772529253; cv=none; b=sBCOoDhZ4dKefZZhDZ9ets0ZXmfryStK0CcB2Dnxpgy4eFrSNAbhtRRD3iurxfERK8JerNvWRCjW4AuxhWK3XeL+S+TzUZ3zVq0ZW13Cthf/lKw+NFzmwVPDxt4TVUqzOnlFiPwMbyMAlxPPS+kAsvgfabqUTJdjsKOzl8OeYGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772529061; c=relaxed/simple;
-	bh=w8Kx1qlt4D62VcByjefxrRx2gnqxk8TlOdvwp54Diog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gM2MnfO3rHmg4CP6McwktNeCq330wtwnNSdHX+QFldg2eKV7vNHJxrdssv3NvxLih9lJdzJYbq7ismj227kUAgFvi5YKdwnr3s3IDo04UNmmZn6qQxdeb7NQp1Vmq6U4Vhsxic+xBTG45DPSrO1GwfOuhH74JlYa6ah0e5kSvLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlAZfsK4; arc=none smtp.client-ip=209.85.210.172
+	s=arc-20240116; t=1772529253; c=relaxed/simple;
+	bh=5l2Kz22xEk2Atptg+7LjAz1lULYa/VgXF4E1315Awb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PNZ+KgGkwJ/Ug2mmhIPCCIdvvlBvcRNB+H4MzAdCr+c4cNVMAOHSaNfTvRoDpbNqDl49yqUD/aIShj9XFkjaY47jGm6O32Axh7DUWZC/WgqyxDMzIWBVanrLycD4VKIq6dpO9i/KcJlqlBGAc1R3mTiPYIrN8aGwRsEhcJ5Urg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcyZ1KRt; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlAZfsK4"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-827307b12dfso2931214b3a.1
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 01:10:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcyZ1KRt"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4836f363d0dso47386555e9.3
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 01:14:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772529059; x=1773133859; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ieqeIgWXtsJGqN9iYbh1K+fW5zi5u0kpmcIzoP8Jzk=;
-        b=RlAZfsK4Q9mKe7Knvr+3o2BSXvCJ+kiAEUjHcbYVB7ZhEGZpWzpmGB+aOrYd/Ky1PM
-         YFnBHXS2+SOXJ12HgqbfUTpX0cBJzQygZDhzLad7aprw5M685bMogqx827Y3mg2SuGsU
-         /QLkiECLp92JAvgUJccMMoVJ36Do8EjmvWb9WorvxmQAeJ4k0niEuYe+fM6fNUDev1W8
-         SvZpRQhUHg0gtNUBKOFyssHKEZxWcbVe81CfHcxzRJVcvrbaJPEcmZDmbwdLd3nk4ooG
-         26u+93d67dodldAyLa1o2MPGZlcJOeZMMvluP55Jnn89T68EidX+F0wRjdS+d3teaVTT
-         zS+A==
+        d=gmail.com; s=20230601; t=1772529251; x=1773134051; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pfdnRKMwt4rIrADe9QK97cFlPrIqJK1YbAhHvdHHa88=;
+        b=lcyZ1KRtL7mv7H6xMzSPbzev1T4ldxmof4mr9dJVaS3U4CdJgLCBJbFh8Gd/NXmo9d
+         b14h2ZYmM4HsvC6bRdspEbUanPf8VMDxBYVIoh1ssmQdGqLtmkEpYIeBiH/NacZgj3Tr
+         LIYm6ssPm9+naCpvtBK1r34mmtXpkAh16CQLBkdv5qg00+EOWozM1DEbEUseQnp3r2Y4
+         sQTceyOf9+xGOmTOao7yUosTbG2tD0YhRXJIxeke3taohaDl2mqUZ9UO3ESAkrfF3oNN
+         4l/uCYSPLA1AqeU+pyLEoa3FpxDJP7KzlyHhd1fb4rkfwBbWrm8EL9Lmdw/IgKTaRZ0Q
+         f3Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772529059; x=1773133859;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5ieqeIgWXtsJGqN9iYbh1K+fW5zi5u0kpmcIzoP8Jzk=;
-        b=FHZEMKKwkpBe+tR9hCaLP27Ri4C8vSj18p4YJBYgpsiIg1uYXb8rNc6y4JFXhMm5f4
-         Hhx8dQLypnp7PJai/ccCVVqONffcPapUeraOq/ivYS6SsKO8/XcJLOpWG33yUPiU8lrI
-         RnC5o896nF9SUYoybOu7+jzB92wb8mv809NdvoXFNzvYtNooLJ2bEyhVfuQ0VwcBhCTb
-         VwbsjgAbWJWNaRQ9ugicLB9XrjXO/q5vNYzjIEKlRcucB4FwByETq8ulfLfXAXCP0sKV
-         m4nxKrQGwVO8VvuR5kFP5PXl77OGW8+IdHlfaraaI0VaLleHfux1pGCCfR3HPZRdSC4U
-         j95w==
-X-Forwarded-Encrypted: i=1; AJvYcCVd0wQQUETFUgG7o5c9fjJJlUY8e+pDRW7ee7/mmv7HB8qpGMGJa58bQVGsDWMR3xw4EO8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOe/eR7da5C+9ytqLlz3VqQBb4Ui4ZHVfkGERYv8LEPjN5w0AC
-	XR9sdr/nhqfiaaB38m7pDyNjHRaCR8qR/+22dy1xNKhCU7uiBQmDAtb5
-X-Gm-Gg: ATEYQzx30YBafK75jNooWcrHWYFuMsivrb/WdieAmkmeeBc8DIIHGv6RkzSkxDsH6WX
-	5YaNUa9+iAYgPhYg/NrGQy0Em7uwBF0Pb2qmWC0P/bQi+RMCaR4e8cEyfy65PqgQvKjw46HaXFb
-	bzbjgR90+nvuXaksnnVSNd7TsoX07kAGmHqRf3CGyFOIA4a0dCjAO/1y49dlsccannnxVbSm/6W
-	6CvvaBTLO5Pc2Wts6sqVTKqJI3Ef7rLJ8vM44KSEb2KopEfBdQrEQXJFoTi3sCtCen1X23gGlLG
-	sNUBquLRVcmooC+BzaoaGgwDe7HeixyRRq9rMrkWpvd9BvO5QoNoz89xOy7t/eNpy6GtiSDuVmk
-	UnLetS6M+jZXUizP8irYvhq5hzRUvuTw/Je8rVWsNmG+OpPMcLvk+ZdTJULl7/56yi8Ygdx69sK
-	vsT8+23j7MIYIjcmokENJH8EK04StiGUrUgknfOO922NKMSjEEXhWMd9ad9WbSEzzlTC4oN+vzg
-	DZFh/lQnIgcNNBY/4hC/qMiGaHwS4IJr0TEPoQtdjesGjcrIkJRpR2G5yif75AEs09xizzNqBsb
-	Xg8=
-X-Received: by 2002:a05:6a00:1ad4:b0:825:2927:3aa6 with SMTP id d2e1a72fcca58-8295d82a9abmr1551612b3a.14.1772529059400;
-        Tue, 03 Mar 2026 01:10:59 -0800 (PST)
-Received: from setsuna.localnet ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739db4955sm16000114b3a.29.2026.03.03.01.10.52
+        d=1e100.net; s=20230601; t=1772529251; x=1773134051;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pfdnRKMwt4rIrADe9QK97cFlPrIqJK1YbAhHvdHHa88=;
+        b=C00l+6rJzhCGp7zfVuexeTTLXa+gTu8XM3YDiNsP3cdI+UbApC8qIysilM2cIOZZta
+         EFV8/pSF9MBmWpvdmNX8Km+LCmzi9NhmVE9EeYhALYzwjIKGkQjFbhSYl6RvxRzAQz1H
+         ItQgeHXnRn51AE49zKRIVzCxhB65l7gI9pKft84xi0EpS8avYuIVf9V0xmfPsK6y7RFo
+         0sN7x537epQBOxEx5dE/UFuKQzvvQHiwkMJB8ESqi89tHskknF6oroocZ+lZzxIrdfjc
+         R4zdngclvcUYbnmd8ckjHn8JPTCIvtDRd6fIiAcxOIvR1d/q540iJtvv8mx43WzdAjQ6
+         N7pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEucDrnfEbSNp/7s0PGRNJkYrsjwDDgfhzEnJEzeweHP83eEnTUWM59+HuK+TwD1GtsjE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YygN5bLbL5K1bQ6VWqZYgZqNXS0Qbl0IUeWl+VYbLWlTADKd/L6
+	3nSTrnqi4nwKJ3z6Pvls31E2XbqzUqZeGrECU/8PSkwRSHUSbCZ6YQbG
+X-Gm-Gg: ATEYQzzDeYqNt8qS/x2d4f0be1Q1SnNo8h3KPXMdUv/buwy9BSZU+gogT4h/TXwwama
+	lXu/5yilOe4r0g3UkoMwnY4aBtlqFbaRee3ng3MCLAIQJvCgotQP84P0v6sxzzOrGMZu1D+buxY
+	uHBDRX+F7bb+/dmzst3AlK/PdkeqWPfyrPz+0I8wLPnP8PL+wQxsAeLIUPF+fO8wZY6DhC0jg58
+	dFHvDBbu+EaYn5GHRiSoEbi2Ywgp5LU4kHWkhVsoe8OD+eYL6f8eUi/s2s7rPcyowymxHJQIR4B
+	TUdrvZxlqTmKYWo2ZuaoqYuy2mXuHENjS1OEsVTFnrrwlBMZtQMcdeP+86L4ASk2HrwznLgL+jS
+	DmGLy6EYki7osfGo+kwxH+V2ElpmY0i5ZMvCjlE1NkGM8DuGFIcTg0nGPqrrxe+3gflSPCce0br
+	/bp9LGNB4D00ur+dh0zCgmCys=
+X-Received: by 2002:a05:600c:a16:b0:46e:4a13:e6c6 with SMTP id 5b1f17b1804b1-483c9bfb2f2mr273658985e9.19.1772529250689;
+        Tue, 03 Mar 2026 01:14:10 -0800 (PST)
+Received: from eichest-laptop ([77.109.188.37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7030b9sm376259165e9.4.2026.03.03.01.14.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 01:10:59 -0800 (PST)
-From: James Calligeros <jcalligeros99@gmail.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
- Baojun Xu <baojun.xu@ti.com>, Frank Li <Frank.Li@nxp.com>,
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev
-Subject:
- Re: [PATCH v3 5/7] ASoC: soc-dai: add common operation to set TDM idle mode
-Date: Tue, 03 Mar 2026 19:10:49 +1000
-Message-ID: <4716405.LvFx2qVVIh@setsuna>
-In-Reply-To: <877brtacgp.wl-kuninori.morimoto.gx@renesas.com>
-References:
- <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
- <20260301-tdm-idle-slots-v3-5-c6ac5351489a@gmail.com>
- <877brtacgp.wl-kuninori.morimoto.gx@renesas.com>
+        Tue, 03 Mar 2026 01:14:10 -0800 (PST)
+Date: Tue, 3 Mar 2026 10:14:08 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com,
+	stefan.eichenberger@toradex.com, francesco.dolcini@toradex.com,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated after last
+ read
+Message-ID: <aaamYByn9dZEIBWb@eichest-laptop>
+References: <20260218150940.131354-1-eichest@gmail.com>
+ <20260218150940.131354-3-eichest@gmail.com>
+ <aZXoTGK_v3L4pc-E@lizhi-Precision-Tower-5810>
+ <aZXq4gn4xhInQQlq@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZXq4gn4xhInQQlq@eichest-laptop>
 
-Hi Kuniori,
+Hi Frank,
 
-On Tuesday, 3 March 2026 12:11:50=E2=80=AFpm Australian Eastern Standard Ti=
-me Kuninori=20
-Morimoto wrote:
-> > +int snd_soc_dai_set_tdm_idle(struct snd_soc_dai *dai,
-> > +			     unsigned int tx_mask, unsigned int rx_mask,
-> > +			     int tx_mode, int rx_mode);
->=20
-> Do we need "rx_mode" ?
-> Only "tx_mode" is enough if my understanding was correct.
+On Wed, Feb 18, 2026 at 05:37:54PM +0100, Stefan Eichenberger wrote:
+> Hi Frank,
+> 
+> On Wed, Feb 18, 2026 at 11:26:52AM -0500, Frank Li wrote:
+> > On Wed, Feb 18, 2026 at 04:08:50PM +0100, Stefan Eichenberger wrote:
+> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > >
+> > > When reading from the I2DR register, right after releasing the bus by
+> > > clearing MSTA and MTX, the I2C controller might still generate an
+> > > additional clock cycle which can cause devices to misbehave. Ensure to
+> > 
+> > Do you means SCL have additional toggle? You capture waveform?
+> > 
+> 
+> Yes exactly. We were able to capture the waveform when the issue
+> happens. It doesn't always happen though, it depends on how much time
+> passes between clearing MSTA and MTX and reading from I2DR.
+> 
+> If you want to see the waveform, I uploaded it to our server:
+> https://share.toradex.com/dwnhcrl6b9toib6
+> You can see the additional clock at the right end, after "0x17 + NAK".
 
-=46or our (Asahi) purposes yes, we only require TX. However, TAS2770 also
-has a bus keeper on SDIN, and I suspect other hardware may too. Rather than
-break the API later on should the need to configure this arise,
-I decided to add the capability now. I am happy to get rid of it if
-we think it is superfluous at this time though.
+Have you had a chance to look at the waveform? Do you have any concerns
+about the proposed solution?
 
-> This patch-set adds new snd_soc_dai_set_tdm_idle(), but no one is calling
-> it. Who use it ??
-
-Currently no one in tree consumes this API, and it is likely that no one wi=
-ll
-until we submit our platform driver. See the linked resources in the cover
-letter for more details.
-
-In the interests of transparency, I don't expect to have the
-platform driver ready for submission any time soon; it is a bit of a mess
-and given that I did not write most of it I still need to wrap my head
-around why certain decisions were made during its design. However, we
-are 100% committed to getting it merged at some point.
-
-If you would prefer I can resubmit this series along with the driver
-once it is ready, so that there is an example consumer for the API.
-
-Regards,
-
-James Calligeros
-
-
+Best regards,
+Stefan
