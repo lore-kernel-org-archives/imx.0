@@ -1,233 +1,162 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010027.outbound.protection.outlook.com [52.101.84.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1F4949EF
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553067; cv=none; b=HiNOvbVBKaucaKPNjL4Vl7xi6Oko0k0OlyfAECx5BEZYwCrvEVXCjFnCR2QnWQ900nmbFfMXY6jgtjVgyTAQC0SNw1aIf+3sXDNPh3Y8J0fX5Bo6vGO9XgLSC+GwvI8Xskg24ELNFOi99Hyw8ZWfQjWgrEm6oAKb3fI8hYkBaio=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553067; c=relaxed/simple;
-	bh=+Sm/P01h0kFbiVviehOODArZCDJSwlqi41ntmhONvrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s58gJZkFtZZM1Nt7PRrHUYx9PA9ehZvsYBjWVltJIVUTwcp5pFxe2EP0Tncq5wK39x5Dt8g8jUuUCXr2bjmeFdINQrGOXwhI/nAvWTfEc5W3BIlfjjTUi4ubLQF3m2MEUPcKTPhGju6hv62OVNpsRDXjdajT1HsV0t+4utgxLGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxS16-000579-GX; Tue, 03 Mar 2026 16:50:36 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxS11-003ZRH-2s;
-	Tue, 03 Mar 2026 16:50:33 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxS13-0000000G7Cv-0QPS;
-	Tue, 03 Mar 2026 16:50:33 +0100
-Date: Tue, 3 Mar 2026 16:50:33 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v11 3/3] arm64: dts: imx93: Add parallel display output
- nodes
-Message-ID: <5esgi6k7sji6nwmp7ch3xcajrc6xxc3yfxe2iqq6z6wuvznuts@ytchokq2uy5t>
-References: <20260303-v6-18-topic-imx93-parallel-display-v11-0-1b03733c8461@pengutronix.de>
- <20260303-v6-18-topic-imx93-parallel-display-v11-3-1b03733c8461@pengutronix.de>
- <tyqgkbmkmenkdqdptb3baeizmvsdoyfjnaudlpb4jnz4py7cpb@oy64pijka2yz>
- <aacCBGRAd6JbktHU@lizhi-Precision-Tower-5810>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DDB48C3E1
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772553240; cv=fail; b=BMNMAk4GgOMXZju94i38yY3vnBgjOq8XR5qyzIXJqhYrW5eHnNOVD8LyUmWB4kREGxU7QvSZItgcg8ZQnbDDH2OMgN+VDdNoMUx/tLl64EEcvNO7cO8MJQkCk6usxzTIO6wNWB3nQgC4Ir5Wu2J7oJa1e8SOC32Wg5LFilTJa44=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772553240; c=relaxed/simple;
+	bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mVJJE8WhCP9DSoc1YSuxsf+2luIMCAfi4OBAz3Bdq3j9vCNGERmAQvGp577I08l4pomgBKCICHQTGLiaJGwEq2q1sVB9rmQYzxDeoDn8b6AgsapS3/Uj6EVBMaDArV0yLw4dacc1+9YNmFLGlTNDhw7REJiiTop0zOnJLLcwz6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dy2ABM78; arc=fail smtp.client-ip=52.101.84.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dy2ABM78"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wziwGCVFxIUJbIsxMc3JceWbcmHrfyXgxhwBekSPaWG+YhBvi8oihbPOmPXHUaHPA1JAp1+totAX5bYACoViUGHkUKlVrZhiHRuRKtvZ159rY+v6xHchAhYth6CPEQj/dF6CiQ78a9vEF3IH7qjYh6ioCRR9Le/0Oj8ZUHAQY654Pqxy/GoyNwJsVQvKQ5QzGu8ybeiT2Ro+VlEmYGhhmajQlawWlb502+atw9IkDoeWR61zRySIJn1CYpxbhPXOI7/MUNnz2zYdkSdZBRQZMCYTnTEJ1yvRaIQ9eybuTBRMkmZALauCqpq+uFHF021X7km/Kz+K4CTsQX06QoInaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
+ b=BE+f2VNtW/80TYr4aei/ygkrrmln7PB/5D6sAni+lzbKFC5TSJ5ti5HuKIvtUKRYUF4NKLRzoN/usXAsZkEFS52a73pgGkmLPFeq9WaHhTrFdzczGFhCEBnrRzWWDisOaaXAfaEYKlieIIA5ld31Dbzr7KvPker3Yk5QOb4JX2nVilLNfhGxcJ+GP2YIBpx6vyqZOAkWrOinhZZgTulgW2PE382W3u3VpOk/FefiDzSUX5nqL/brm6N/UXea2JnAhoAjSKpx5ASXi9sYiWjQB1sa1Lg2PLDcBZ81Ws06Zo3xO1N6FQqnxryNU3/YXNze1GZ2UlZkxiphyHr7RQbffQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
+ b=dy2ABM78jTu8qw7gcu80IF3GPfQyFy1NO9xoPaneRagZa74AlZASfoThevO/snmI8a2qvxSWGKZUtSrcamhDOVWPV9vubbgLwPoeUOFWv9jvlXukkAB076ST1c81McphLG/c5EM+k2DG39PHPSBZ3HEhmShNhEvTFcxyTo74HWkWnWiQWW5i6EaqC46wVYW0fs+6PlpyC/JwxbWLTsVJmv5jt4iPOmvU1iy/PhzCuQzpD/c53ufiZ2+aoa8Rhngozduag9nw26/J++cvhQwh1sampwDAzUVhZTcNnrQsjc84D6Ow1x0Qz8g/pR+6PXn3sJBB9fTDfD8PBOekLWkRgw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM8PR04MB8019.eurprd04.prod.outlook.com (2603:10a6:20b:24b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
+ 2026 15:53:54 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
+ 15:53:54 +0000
+Date: Tue, 3 Mar 2026 10:53:46 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Stefan Eichenberger <eichest@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com,
+	stefan.eichenberger@toradex.com, francesco.dolcini@toradex.com,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated after last
+ read
+Message-ID: <aacECsJ6O8QjHsUa@lizhi-Precision-Tower-5810>
+References: <20260218150940.131354-1-eichest@gmail.com>
+ <20260218150940.131354-3-eichest@gmail.com>
+ <aZXoTGK_v3L4pc-E@lizhi-Precision-Tower-5810>
+ <aZXq4gn4xhInQQlq@eichest-laptop>
+ <aaamYByn9dZEIBWb@eichest-laptop>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaamYByn9dZEIBWb@eichest-laptop>
+X-ClientProxiedBy: PH8P220CA0060.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d9::16) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aacCBGRAd6JbktHU@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM8PR04MB8019:EE_
+X-MS-Office365-Filtering-Correlation-Id: b35e202a-ea50-4180-a0cc-08de793d122d
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ TCqvdkXZ82wIocqAMD2WapyfcyDobK1f2Gd+1hEdKG/5nkSeKdxcadaw87UTEBmmaixgBfmVtf3W0CWIiYHzKRiwAJWmypcibtLF10hNK2oKq1Zu4PSM/Vx1ZF9gncB7Z24INGq3evzy9EgWvfUKBF76fwVFp6h3ViIXpIRq5hY6pAOIY7y+3T08qtpKb3jJREqt+EyUAALWNhZLAsZmf8iUYMWPqOybqzbYoALPlSqnHwcWuBeytpv+uNhqHRw9gZ06J9B9xNMrdeVkrr5jTwJyp+PmyQEXl8turd6eGzSo9SrNfScx6N6HJ1Mo7eOmXc0GUWD88WI3ivXQtEOTyzHTzzdJbBK0N52en/OiK9aiVH7usuEyiBr/OqVsLQYNpb6r0Z0wfjX6GEoEkoNAGP0IN782BCupxsETn+fCcGIZAmw9und9jLXJqF0t6OkJUbLGq2YVvifHIzOoZusWXXCo+Z4//jBFLth8NUmLHtVtZgNU/rD8XtP3yeiZ4rhtqsUyETd8WlXj5YqcnuJr1E9rcT08KLnAQjNrUu1PkPqvl/KM9sMafmKB8KOcB61YomNttQFlcfSj51rjij1xqJ7Ask76gTu5tsWULIbviT4ql0qzTHwsHZY+k+C/fEj+GSJQjgClWfIr2oWjSChMPry8c7HvNts9UFTizTk+V/C2oq3LKmlqYHZvSR8jOYm/6ubk1BHNjVcE4MQcCL6S4d7oGpCXjozEXh+G3151cxykcIMuxsIPMHfMd+T5MhEP
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?N5s0zifpi0l5aqucLgK3JX6f1d1KNh8JtwSrZbn1Aam9ZZfkq0gXFY6Atvec?=
+ =?us-ascii?Q?6o8BrbiLYn0a9GYunutAWNyLRQL9U82GDM/Oko7TWK3DagRPlmMMJ8YW8qmT?=
+ =?us-ascii?Q?x4QC99N/CHtpoSMimN36BmElt1fLl/asRVc2enipPozlgXfx+X2Ka4SDcSgp?=
+ =?us-ascii?Q?klWAe4i3jTedLcrp6irAL1mYnMIcvF28OZcSugYiIo58lKK6gOcoXTBf0jWz?=
+ =?us-ascii?Q?HA39BPpYdqWg0EGgWCURy0e+smT5m8dGSW3Y43R8eZ9Sb/19vZjhyt3NX/vV?=
+ =?us-ascii?Q?athOHpA0XLDYIJZRwwlolRm+A7DROvCGMFAnIGXPA4H609WDGGFaKhsElXXA?=
+ =?us-ascii?Q?9pi13a9xtds0NGnCu1z5ziun4iUO7sE+mykOBV91jE8vRPMnL4T6yRwlJkqk?=
+ =?us-ascii?Q?3WnS1/hiMpfNfME/jLO3rPycWHKR6IYa+GrEbdtOpuPpksEFDl+Ts3u82HmY?=
+ =?us-ascii?Q?IiDgWf+Z1cf24AW5Vcfr4tJrk5RNko0BHOmLgyrG6kkNc5rvy7uJBdLes0hi?=
+ =?us-ascii?Q?w88w0OMnKynoGr8knCFLo3nj5sl73WVqoh+tGlmHoqeNKJ9yYwpUXX6bqi/e?=
+ =?us-ascii?Q?c2vQOvlLBkw3/xy4wDvuHFNHUV5D0davPtnhxHPwvENYvw420bh+CSTizwXr?=
+ =?us-ascii?Q?ptWkiVhwdAN29Spx3xKREdT/yybV5IZKSeyaP0KxNYlie2XgYHdt+gZNWyKN?=
+ =?us-ascii?Q?4TBxme1uIGecPMEhLofF1UBxjnLHBthkZQeFwquhevFJ9YH/F/Y8T3xk05+1?=
+ =?us-ascii?Q?d4s8t6Wmoy6CHQsCGYp1aIChE3VRX9Q8kTz1oLxWLQZNRm2T0kqFUh27EiZW?=
+ =?us-ascii?Q?sZyPy6OnGGnOfTF1RjhCLwvFSaDuMXdaaKVHrapwJJDmQ4KqIY7KzqNsH5+k?=
+ =?us-ascii?Q?cTkD/8u603DS+IA/Oo3/mtSWf3pjfyWZAlK+0HylsHAH6CExbaWVY8j3p4j7?=
+ =?us-ascii?Q?9M5dkJvnNss6trJTKEe18EmkBBUgRDls76Jvf3mRcTk1ZQtOgGUawB/8MFuR?=
+ =?us-ascii?Q?MBc2o4whAjcXf+jmY7A6tm7RMUSkaPUoZB8iKeWGezUq/Jvcg7RIiYzoMi2N?=
+ =?us-ascii?Q?nh3vpq7TBq5W/Wf7k7xVXAITWfc85He2ZN0qDfvaWrHlRwRynCfSH2eDyEpv?=
+ =?us-ascii?Q?stHTjz83vAiXCBUt+16T6xlgBdzVkQGzQiEA5/j3LMP06NACLecx3k+iXhXm?=
+ =?us-ascii?Q?EzG0Nc96N0/spm0A3cblRMl/wMVYZgnSSDBOIyYpa1NMceH5AsheOgpvFk/X?=
+ =?us-ascii?Q?RvxriSaM1C4/TDo3iYpuwOxgO+kTiSH8ya6PjP51ZfwhbLt96Pyzi1loTutl?=
+ =?us-ascii?Q?I16T+BV2AfbFm5EUSknn7iNu5A6U+DWBg4Dm/SbrAyRbCs/9JN+WgNmKHKo7?=
+ =?us-ascii?Q?SjdV2uYAV3NA00tMa0DqMjNl7Z92UgJeuyeEspCVcUVcJENlpyABKhRPaLOo?=
+ =?us-ascii?Q?uPVQHC839c0CAAOyVuB62FHdyQN2FEI4WvXe5FWjwJUlFn+HWHEoPr376f+F?=
+ =?us-ascii?Q?p4JqAl8wP3hSWj1dOWBCQK7ksReXaKy6/18QN9iBhVLB50pSuiuZ/APxU74g?=
+ =?us-ascii?Q?hvwKp32yh2bsvOxjp9YIuBcsaFEO/o9WSCvNX/oXAqcFfo9tVfsgBG1mC62J?=
+ =?us-ascii?Q?UFf4IH+om2bplzbnauf3frsbr9O48ANnkr6H2JDQekHeaFvaQ8unogzgsNhe?=
+ =?us-ascii?Q?9dfySMp1Mxezugg1xvhe7O6Qk1YM3h4zoJi0sgygWaPKOuPq?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b35e202a-ea50-4180-a0cc-08de793d122d
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 15:53:53.9431
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: urbmlsMV/srGZ/a/zk6Ebidz80BJERXS0jwbvMi1t95kd7r95VMk3Y5befM9QUk1KtueUp5YjhJDGPowTluHtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8019
 
-On 26-03-03, Frank Li wrote:
-> On Tue, Mar 03, 2026 at 11:42:08AM +0100, Marco Felsch wrote:
+On Tue, Mar 03, 2026 at 10:14:08AM +0100, Stefan Eichenberger wrote:
+> Hi Frank,
+>
+> On Wed, Feb 18, 2026 at 05:37:54PM +0100, Stefan Eichenberger wrote:
 > > Hi Frank,
 > >
-> > On 26-03-03, Marco Felsch wrote:
-> > > Add required OF nodes to support the i.MX93 parallel output (DPI) path.
+> > On Wed, Feb 18, 2026 at 11:26:52AM -0500, Frank Li wrote:
+> > > On Wed, Feb 18, 2026 at 04:08:50PM +0100, Stefan Eichenberger wrote:
+> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > >
+> > > > When reading from the I2DR register, right after releasing the bus by
+> > > > clearing MSTA and MTX, the I2C controller might still generate an
+> > > > additional clock cycle which can cause devices to misbehave. Ensure to
 > > >
-> > > On the i.MX93 a single LCDIF is connected to three bridges: DPI, LVDS
-> > > LDB and the MIPI-DSI whereas the i.MX91 support only the DPI bridge.
+> > > Do you means SCL have additional toggle? You capture waveform?
 > > >
-> > > Map endpoint@0 as DPI bridge output since the i.MX93 TRM (Figure 485.
-> > > MEDIAMIX block diagram) doesn't mention any port-number <-> bridge
-> > > combination.
-> > >
-> > > Set the MEDIA-AXI and MEDIA-APB clocks to the overdrive (OD) values
-> > > since the i.MX93 and i.MX91 use the overdrive (OD) clk settings per
-> > > default.
-> > >
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > >
-> > Please ignore this particular patch since you already applied this one.
-> 
-> You can skip these when you post new version. post delta if need update,
-> I can squash to previous patch as need.
-> 
+> > Yes exactly. We were able to capture the waveform when the issue
+> > happens. It doesn't always happen though, it depends on how much time
+> > passes between clearing MSTA and MTX and reading from I2DR.
 > >
-> > Next time we should align the apply with the rest of the patch series if
-> > dt-bindings and driver behaviors are involved. In such case the final
-> > integration patch should be merged at the end and not at the beginning
-> > :)
-> 
-> You request apply at :)
-> https://lore.kernel.org/all/fl2br7rtcjrjj2uqxva7ai3xbvjwrrbbl2ruaoqolrccr2rd5p@z33qfx7dpavf/
+> > If you want to see the waveform, I uploaded it to our server:
+> > https://share.toradex.com/dwnhcrl6b9toib6
+> > You can see the additional clock at the right end, after "0x17 + NAK".
+>
+> Have you had a chance to look at the waveform? Do you have any concerns
+> about the proposed solution?
 
-I meant the whole series :) Although I'm unaware which maintainer is
-taken which part. Sorry for causing troubles on your site. However if
-you would try to apply this on your tree, git would have told you that
-nothing needs to be applied because this patch is untouched.
+I am fine. Add carlos, who did many work about I2C.
 
-Regards,
-  Marco
-
-> 
-> Frank
-> >
-> > Thanks,
-> >   Marco
-> >
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 54 ++++++++++++++++++++++
-> > >  arch/arm64/boot/dts/freescale/imx93.dtsi           | 12 +++++
-> > >  2 files changed, 66 insertions(+)
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> > > index 7958cef353766a430df5e626ff2403dc05a974b1..5a8813df6bc993d559fb0b20fc742a106bfe6315 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> > > @@ -1122,8 +1122,62 @@ media_blk_ctrl: system-controller@4ac10000 {
-> > >  				 <&clk IMX93_CLK_MIPI_DSI_GATE>;
-> > >  			clock-names = "apb", "axi", "nic", "disp", "cam",
-> > >  				      "pxp", "lcdif", "isi", "csi", "dsi";
-> > > +			assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
-> > > +					  <&clk IMX93_CLK_MEDIA_APB>,
-> > > +					  <&clk IMX93_CLK_MEDIA_DISP_PIX>;
-> > > +			assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
-> > > +						 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-> > > +						 <&clk IMX93_CLK_VIDEO_PLL>;
-> > > +			assigned-clock-rates = <400000000>, <133333333>;
-> > >  			#power-domain-cells = <1>;
-> > >  			status = "disabled";
-> > > +
-> > > +			dpi_bridge: dpi-bridge {
-> > > +				compatible = "nxp,imx93-pdfc";
-> > > +				status = "disabled";
-> > > +
-> > > +				ports {
-> > > +					#address-cells = <1>;
-> > > +					#size-cells = <0>;
-> > > +
-> > > +					port@0 {
-> > > +						reg = <0>;
-> > > +
-> > > +						dpi_from_lcdif: endpoint {
-> > > +							remote-endpoint = <&lcdif_to_dpi>;
-> > > +						};
-> > > +					};
-> > > +
-> > > +					port@1 {
-> > > +						reg = <1>;
-> > > +
-> > > +						dpi_to_panel: endpoint {
-> > > +						};
-> > > +					};
-> > > +				};
-> > > +			};
-> > > +		};
-> > > +
-> > > +		lcdif: display-controller@4ae30000 {
-> > > +			compatible = "fsl,imx93-lcdif";
-> > > +			reg = <0x4ae30000 0x23c>;
-> > > +			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-> > > +			clocks = <&clk IMX93_CLK_MEDIA_DISP_PIX>,
-> > > +				 <&clk IMX93_CLK_LCDIF_GATE>,
-> > > +				 <&clk IMX93_CLK_MEDIA_AXI>;
-> > > +			clock-names = "pix", "axi", "disp_axi";
-> > > +			power-domains = <&media_blk_ctrl IMX93_MEDIABLK_PD_LCDIF>;
-> > > +			status = "disabled";
-> > > +
-> > > +			port {
-> > > +				#address-cells = <1>;
-> > > +				#size-cells = <0>;
-> > > +
-> > > +				lcdif_to_dpi: endpoint@0 {
-> > > +					reg = <0>;
-> > > +					remote-endpoint = <&dpi_from_lcdif>;
-> > > +				};
-> > > +			};
-> > >  		};
-> > >
-> > >  		usbotg1: usb@4c100000 {
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-> > > index 7b27012dfcb564650882dc8c40e836e797b2fda1..5436b48b30e89eb1f939b398ce1bf105abe7e34b 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-> > > @@ -150,6 +150,18 @@ l3_cache: l3-cache {
-> > >  	};
-> > >  };
-> > >
-> > > +&lcdif {
-> > > +	port {
-> > > +		lcdif_to_ldb: endpoint@1 {
-> > > +			reg = <1>;
-> > > +		};
-> > > +
-> > > +		lcdif_to_dsi: endpoint@2 {
-> > > +			reg = <2>;
-> > > +		};
-> > > +	};
-> > > +};
-> > > +
-> > >  &src {
-> > >  	mlmix: power-domain@44461800 {
-> > >  		compatible = "fsl,imx93-src-slice";
-> > >
-> > > --
-> > > 2.47.3
-> > >
-> >
-> > --
-> > #gernperDu
-> > #CallMeByMyFirstName
-> >
-> > Pengutronix e.K.                           |                             |
-> > Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Frank
+>
+> Best regards,
+> Stefan
