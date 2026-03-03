@@ -1,126 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B091A37CD59;
-	Tue,  3 Mar 2026 16:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8822A37B03C
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772556132; cv=none; b=ooKfF9yFXJAGH575pfRmyUTsQy92tW6bc0E4bjkLmRdIeX85V8KXJF41io5bbKSfIbxvLPPq8P441d+xeegfWBCGeabjb3tnJTQMN/0fhltbaM1oblAv3YrFLc9CRRohQo63bECCR5PNaOrvEF4zCr36AwKZ9ZBdN0mScYMf8JU=
+	t=1772557071; cv=none; b=BnveC2TyPrTuQjNePvcyRxC+66ObAjI2+t9XF/3jE3t4+wR7lhpflCzNQL3MaP1+1N/owWhYQWdFkwPeX+aUdm+025e940taOTKIr2Cll2JwOSPAPdepbU4Jbzr+I3b5/Mb66kKhFT8onOcR4oaSD0Yac+ZxVjm3veTaMCAA7/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772556132; c=relaxed/simple;
-	bh=W+8PidUEXESOH6dzGHWWec1+CrSIW7MIlvEsDcbatgo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfPpyBjqgOAINvpkZVviDOaEgumXztydTnR3WAEe1PKMbniGIZhycRnU1ABEMzbjV6c0V08BF2n3YSq2YBwXD0eBnmsw+mb2M++TgwvOyuCIoP1XBvTysFA5ADQ0I2vvVCITA/YXEOjn34eLSajzxNq6vBGjKMzpnkXOVuZMeac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrkcEQLw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772557071; c=relaxed/simple;
+	bh=3/GzSmoRFQsgGZDBWOEZf5WA45dc4iHal7c2SQqyU/M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dhaj0d20F4Xy+bXbphrj0WhgdKGhOP8dJR6SRf99RS7YB9lR9envDLvubEArkoZRzA3byoaeXkEnkDOp3/Vi1wkltiSatVoIKRENLUOAMrGyJRfa2ZmkEWl0ciZNpWXAaY/ADmF0x+RO6wc6EIHvms5CkMYHy5VUQxL3/S7dieE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KF3orNr1; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrkcEQLw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4F3C116C6;
-	Tue,  3 Mar 2026 16:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772556132;
-	bh=W+8PidUEXESOH6dzGHWWec1+CrSIW7MIlvEsDcbatgo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BrkcEQLwzTitTADAopFpz6Wg4ixT5ZNhAmOqz9s4pQvNaecsvaCaMkcquPDXJjCnh
-	 uqjh8WWagZn6AaANcJi9qHeIAaWOR3H4SECpEotYfJiF+IOPQaq9LKUWZC1y4VEgIP
-	 2KpGAC38/794p0Fp6JiTspiJRcmyKzrZcCtsmEessVrtjBqAo8x6ZCrkm8y6KsJXne
-	 1bdP2URXGCQJVVtaN52lEKCslPaZH5pHuv04nQf6uUizy5V4pdp2YKna6e5kRzp7DS
-	 Vcb6Pvx537FPyzBP8NS53GphF0QeG1A8+WdFWMLMXO9yyLy5tI2bINBx75rVpCtJ4U
-	 c6JvIXGRw80tA==
-Date: Tue, 3 Mar 2026 22:12:01 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev
-Subject: Re: i.MX8M Plus PCIe link regression
-Message-ID: <ac24flkmrooacnpt53swuurkbxvorbjx2yb4s3zdevqua6ddls@wjc3bcsl7zif>
-References: <23024521.EfDdHjke4D@steina-w>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KF3orNr1"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c7103601c8cso2738702a12.2
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 08:57:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772557070; x=1773161870; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=DV/HSQAamVa6HSuuaGYt1Sx9aCryyCjzy9hIsHP5+oE=;
+        b=KF3orNr1XUQA/hwP34neLmC2cas/NTSUOjEHmsQDCt/hPNsuJb38mcTOFIvaBoo9VW
+         +/KWkI4X2up7Lal9LKvDfFCc182J1WkoptumpKGtsr0PUQwkfiRb2P1IiqvIAEPTBrkE
+         3V22L8mjXLjWVzNYPvkXTw2O6b0B+eo/IDKRhWopGR4dIUmyXbuAeHzP1NCsAgQFobgL
+         LRlRI24Q9J0fSpdu967Q2OVcltrUhp/ro1Q8n9El98jHR6vdA3+wseCKX+4tDK6IB2eT
+         JHmJ44Yd1VtzwYaYqVFY+Ja3lEt20lT4DJ3kkt2CL9FOJH43QygYyQzxZhVkZHPZ+g3e
+         6eiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772557070; x=1773161870;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DV/HSQAamVa6HSuuaGYt1Sx9aCryyCjzy9hIsHP5+oE=;
+        b=ky0uEJu7WYsM+pTbWMWFDEaAFqT1s2lIYUXVTrzIoRkXU6Xfo/sHfN6lxxhFNzNPk0
+         UJZ+L1q7e+U2mbMUdNTZPzYelJu7cG8D5ZfagCO8k+ijNvET846MDFSKak0bfVCNWHiY
+         Tsgz47E/HyZ3poneEjo0LbQYx3fw3C2/TCUIaSMNKxVdCFv6LRc373YS+EUHJRu6oRli
+         s60lN0UCD3Dvh2YNFzZiCWjOozVKjqiB6iSDm6q9aNex+TNQHXWEzI0g8ZwT3uIx7AH5
+         nJal7fnfP/Tz8gKom9B5gRpRKwQzlOllshUqr6YUoawHFHEy+bOIs4zKNW75wWsA4jhr
+         +6Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRqsf7JP/QXdH3GZKdU0esmeK4PjKaYi2YliTWC2vdamDxFAzKF9TL2Bx4eHriWPivxtE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0I1UnG2F8sPqJSvssjMKB3SYl/4v5eLY+QG7cZ6swL1oUerNp
+	56nZsJTePhr3hzCJ9uG3qsBKx4vz4jDhr0057kRprwJeY0SCm/YMLi9a
+X-Gm-Gg: ATEYQzzKzvCnYas+m5MyzxH5hwdj+MlJ5uOBaFDznxtO5YcOP2hnsqwXoQ0kS1WnHLP
+	frkGWBBJGeJu1euyek6qWA7wCuclSA5k+S1kY9ULr3DK8H8vgPvuzvZqo92xc4NFGY8ij7G5wEx
+	Urso8XZWlv+tSzqJoAEAx8d9Y8MbKt/s8FTzUHulDrcM5lqNvMjpYzr/7Kx/36tpcqehnggKUoM
+	L3lTs4D36LApeUeScBxRwRCGxRHIFTVnE7cbcm8JChmq1dmcuFzdJwJ8VhYBmpBaXGLiQA5GxDK
+	M3fEMzbXJllBAYx+ZY1LZyGyd3fnwAxrWtONvenkTlkg83zC0jvJ7mLIEqwMSH9MU03WSCdoIGD
+	QtYLbi2BpdYSa3I7VWequ4KI1qk+vOWalPzGvqteN6tbIysJT4tFIcvY+rmADyyUxZPNb7O/q0h
+	cPQP5VYV2seQvj4WO5JCsbh7uEu9R1kwmeVpyg6WmqJGip96+MGzjQOwV1jx+CAYt3l810HQ4Ij
+	0qSpd5Up/c=
+X-Received: by 2002:a17:903:2f89:b0:2ae:6317:56e3 with SMTP id d9443c01a7336-2ae63175cb8mr20707785ad.28.1772557069742;
+        Tue, 03 Mar 2026 08:57:49 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae4802645bsm83989515ad.12.2026.03.03.08.57.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Mar 2026 08:57:49 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <4a7ac923-0f1a-431f-a029-8843a8eddca3@roeck-us.net>
+Date: Tue, 3 Mar 2026 08:57:47 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] hwmon: axi-fan: don't use driver_override as IRQ
+ name
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com,
+ ysato@users.sourceforge.jp, dalias@libc.org, glaubitz@physik.fu-berlin.de,
+ abelvesa@kernel.org, srini@kernel.org, s.nawrocki@samsung.com,
+ nuno.sa@analog.com, driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-hwmon@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-sh@vger.kernel.org,
+ Guenter Roeck <groeck7@gmail.com>
+References: <20260303115720.48783-1-dakr@kernel.org>
+ <20260303115720.48783-4-dakr@kernel.org>
+ <b46c5757-b67d-4949-b8d8-54b799464b5d@roeck-us.net>
+ <DGTACERFTTCV.29XON9ZLYAEQL@kernel.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAmgrMyQFCSbODQkACgkQyx8mb86fmYGcWRAA
+ oRwrk7V8fULqnGGpBIjp7pvR187Yzx+lhMGUHuM5H56TFEqeVwCMLWB2x1YRolYbY4MEFlQg
+ VUFcfeW0OknSr1s6wtrtQm0gdkolM8OcCL9ptTHOg1mmXa4YpW8QJiL0AVtbpE9BroeWGl9v
+ 2TGILPm9mVp+GmMQgkNeCS7Jonq5f5pDUGumAMguWzMFEg+Imt9wr2YA7aGen7KPSqJeQPpj
+ onPKhu7O/KJKkuC50ylxizHzmGx+IUSmOZxN950pZUFvVZH9CwhAAl+NYUtcF5ry/uSYG2U7
+ DCvpzqOryJRemKN63qt1bjF6cltsXwxjKOw6CvdjJYA3n6xCWLuJ6yk6CAy1Ukh545NhgBAs
+ rGGVkl6TUBi0ixL3EF3RWLa9IMDcHN32r7OBhw6vbul8HqyTFZWY2ksTvlTl+qG3zV6AJuzT
+ WdXmbcKN+TdhO5XlxVlbZoCm7ViBj1+PvIFQZCnLAhqSd/DJlhaq8fFXx1dCUPgQDcD+wo65
+ qulV/NijfU8bzFfEPgYP/3LP+BSAyFs33y/mdP8kbMxSCjnLEhimQMrSSo/To1Gxp5C97fw5
+ 3m1CaMILGKCmfI1B8iA8zd8ib7t1Rg0qCwcAnvsM36SkrID32GfFbv873bNskJCHAISK3Xkz
+ qo7IYZmjk/IJGbsiGzxUhvicwkgKE9r7a1rOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAmgrMyQFCSbODQkACgkQyx8mb86fmYHlgg/9
+ H5JeDmB4jsreE9Bn621wZk7NMzxy9STxiVKSh8Mq4pb+IDu1RU2iLyetCY1TiJlcxnE362kj
+ njrfAdqyPteHM+LU59NtEbGwrfcXdQoh4XdMuPA5ADetPLma3YiRa3VsVkLwpnR7ilgwQw6u
+ dycEaOxQ7LUXCs0JaGVVP25Z2hMkHBwx6BlW6EZLNgzGI2rswSZ7SKcsBd1IRHVf0miwIFYy
+ j/UEfAFNW+tbtKPNn3xZTLs3quQN7GdYLh+J0XxITpBZaFOpwEKV+VS36pSLnNl0T5wm0E/y
+ scPJ0OVY7ly5Vm1nnoH4licaU5Y1nSkFR/j2douI5P7Cj687WuNMC6CcFd6j72kRfxklOqXw
+ zvy+2NEcXyziiLXp84130yxAKXfluax9sZhhrhKT6VrD45S6N3HxJpXQ/RY/EX35neH2/F7B
+ RgSloce2+zWfpELyS1qRkCUTt1tlGV2p+y2BPfXzrHn2vxvbhEn1QpQ6t+85FKN8YEhJEygJ
+ F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
+ FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <DGTACERFTTCV.29XON9ZLYAEQL@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <23024521.EfDdHjke4D@steina-w>
 
-On Tue, Mar 03, 2026 at 01:38:13PM +0100, Alexander Stein wrote:
-> Hi,
+On 3/3/26 08:25, Danilo Krummrich wrote:
+> On Tue Mar 3, 2026 at 5:23 PM CET, Guenter Roeck wrote:
+>> On Tue, Mar 03, 2026 at 12:53:20PM +0100, Danilo Krummrich wrote:
+>>> Do not use driver_override as IRQ name, as it is not guaranteed to point
+>>> to a valid string; use NULL instead (which makes the devm IRQ helpers
+>>> use dev_name()).
+>>>
+>>> Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
+>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+>>
+>> Applied.
 > 
-> these days I noticed that there is a PCIe link regression on my i.MX8MP
-> platform (TQMa8MPxL) running next-20260227.
-> I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip link up 
-> workaround for newer platforms"). I always get the following errors:
+> I need this patch in the driver-core tree, otherwise I can't land patch 4 of
+> this series [1]. :(
 > 
-> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
-> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+> Any chance you can drop it from your tree?
 > 
-> Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2 device is
-> detected without issues.
-> 
-> Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
-> b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both Gen 1 and
-> Gen 2 devices are detect. Commit 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc is only
-> required for conflict free revert.
-> 
-> Here is a summary with outputs:
-> Gen 1 device
-> > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
-> > RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 01)
-> 
-> Gen 2 device
-> > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
-> > 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 PCIe SATA 6
-> > Gb/s RAID controller (rev 20)
-> 
-> output of "dmesg | grep imx6q-pcie". Common part for all tests:
-> > imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
-> > imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
-> > 0x0000000000
-> > imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
-> > 0x0018000000
-> > imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 == cpu 0x1ff00000
-> > imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K, limit 16G
-> 
-> next-20260227
-> Gen 1
-> > imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
-> > imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
-> 
-> Gen 2
-> > imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
-> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
-> 
-> next-20260227 + reverts
-> Gen 1
-> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
-> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
-> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
-> 
-> Gen 2
-> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
-> > imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
-> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
-> 
-> What can we do here? I'm wondering why Gen 2 trains correctly, while Gen 1
-> doesn't.
+> [1] https://lore.kernel.org/driver-core/20260303115720.48783-5-dakr@kernel.org/
 > 
 
-Thanks for the report and sorry for the breakage. Commit 9c03e30e3ade3, mentions
-that the workaround is only needed for the i.MX6 platforms. So I'm not sure why
-the patch breaks i.MX8M and that too only for Gen 1 speed.
+Sure, I'll drop it. Please add
 
-Also, before 9c03e30e3ade3, LTSSM was always started in Gen 1, but as per your
-finding, only Gen 1 devices fail to work. So the code till
-imx_pcie_wait_for_speed_change() shouldn't have an impact. Maybe the issue is
-due to skipping imx_pcie_wait_for_speed_change()?
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-Richard, thoughts?
+Thanks,
+Guenter
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
