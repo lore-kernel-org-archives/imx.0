@@ -1,131 +1,115 @@
-Received: from mx-relay32-hz1.antispameurope.com (mx-relay32-hz1.antispameurope.com [94.100.133.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61694301CC
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 14:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.208
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772548745; cv=pass; b=Siiv9ZKpm9z8h4rxkgxanALAWhRUwAVIvLzlum7j2rNa21Imz2gJluDsisRxPUVuBCO1/Gp27lshAZr2IWI6KvlN1+QEfL71vB6e54+UwRoyFcFbMLFr/il+uCYQhQWMybjYwKlfd6IMrW1+9x6F54TDuDspEATBAhnYu1bFveY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772548745; c=relaxed/simple;
-	bh=qnO7IRr0LlEJaNRBAGoo2LWcIhj9SGvdD+DC52MgbfA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZAKEQzVycE6TstHEiteTGRshRNIhUqNvpP0/dTK1FOuuCp1ZuteaojWfXcD/1j+EtS4eivWS56CEGQ1pFxw/i9eft5yzlD2a3DcDCAAoKxff94+DLgtQwwEcdrDpoUZgMo3JcVrYpZecJNNHDoBWOkf/VludVB2vvREI24aQhxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mXNO3bJs; arc=pass smtp.client-ip=94.100.133.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C8547D94F
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 14:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772549564; cv=none; b=sOxl438rhzkXE8kLm3WPxYk9+vo1cAaZprYEMMDVC97EQGWuoCIHcwMdYuMW8uxc5hjq4uskujUGSfsjXx3L6Xkjn8SVjZwo6t20RuofYSIjWum4zDIE9dgoxezGFeh1oMyOasrJcn9OghVmaEXTMwj/P9NJB94MK6nBqdPvzdM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772549564; c=relaxed/simple;
+	bh=mSRQ1eMomHCwVtqBWfZCdjiyysv7g8iYFUzJOGWZess=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hyHa94eT6UYdDqqiy0cU7Z79S6kiklr/IXUyDbwwNufsV4X4AfQ0vC7CzEcQzlIeCyyE2Q0ADtM2HywSCVp+yfhg6JGX7VqsNVcMEBb43Yo2aQYeE/GRyo8NyRkyWDo6uxxn+BEeP+kpAejZYwhbR36PN8LvPVAdtv4ZJtxRPsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJlGbsYi; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mXNO3bJs"
-ARC-Authentication-Results: i=1; mx-gate32-hz1.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=zT632VR0gROFa3F9kvU2rdhPuRa8nKqiAx8K/kUtGPY=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1772548682;
- b=bs6hmyl9Q7XqfYKVT8T2JP51V9nDnQyvzMJEqvIBSwI+H91sO32AnB+53+uqiRQPIb2NJRzq
- 7wKGrqYKh5deP629nz0SuyBIN45KuCDiAbvwR6VT+YZBjtFABiFPs1opqahFeTHxjxGHhczhTK9
- sBIKhFm17IsN27EFNi3bC2SK5nfnxannB7fsQvJZnYcJx/mXt6ho/J6wxD4fKSC0iPix7TFHGDw
- Bh0VfW3k2OtJjIwKABMMsv3zSKRBAlcyHb4kcgaVy1cESl15CkUksfLn2xsbA8BzVCsLjDZawVK
- 9Vjyxd6RceS6WDdrlx/++tjrA1AsijwXkU6Hby5B6aDDg==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1772548682;
- b=rDxDuJEETfFXJDDu3KPhX8cqt20iC7YuF7+58s/3dxNxX0PMpDVhohNEKqxdZ1OT4EBYpx15
- cFdBoWSmG8ZA/LFK6FB1T1//b4PGdUClM9kZ9gqg5yN/QvQbDM6DB7ipzUYe/H/YmlVeus1kShL
- dJOUCnwGgUtDYL6BBzGr56nVKy7dXUZ6rABGqy1JwTWrigIhRhPX6zPC7FZMdfKKpfvOP/A0SEz
- MnbDDQfkPKGHmy8dZlnrUG5R1h+z01jITh6LTICYPcWVvSDYRb/gwWq7nRhCi6U09RFoKGkB4XM
- R9Ewj280mCceQUy3NHqKXXdoxg/Ia0XD4yjzGmoEy8iaA==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay32-hz1.antispameurope.com;
- Tue, 03 Mar 2026 15:38:02 +0100
-Received: from [10.123.75.134] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: max.merchel@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id A5C73CC0E07;
-	Tue,  3 Mar 2026 15:37:53 +0100 (CET)
-Message-ID: <ac506790-fbe4-4902-895a-a94822f11b39@ew.tq-group.com>
-Date: Tue, 3 Mar 2026 15:37:53 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJlGbsYi"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-439b7c2788dso1507525f8f.1
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 06:52:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772549561; x=1773154361; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=h+8QbcRC2pjzuahdlMd9N/WzqWRbPt5M/XdWso0LY5g=;
+        b=iJlGbsYij98khT/9/gyjmim1V6G0Ewm2IeD2QZCZZaki4fFk+hdWh+ENx2WTQKYKk+
+         fZURZV6Ld2Yqn6XfuW2L7O0KvjsCmeZUCeVyD/7CQ5uuB619vJ7drBlwM60WnD32215r
+         Qv+JjphDGTlS97bBpwqODiCvhvP/tc6KGY2nBz1oihFypdJaSpKiZA9ByIQEyS/nV0UO
+         m7FTPqOr17sNAfmHDolimH8u1neSLLr0jYrM3q/fcyUAtD+XqacatikvdE6ve7F0JOy8
+         cKF+PDhqv2CboIGblHxL5pBeejFZvz3ieyhcCBEaDhhd8SR/KnTwwX7c0/80hPCqfAv/
+         2K8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772549561; x=1773154361;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h+8QbcRC2pjzuahdlMd9N/WzqWRbPt5M/XdWso0LY5g=;
+        b=NWau2RcSLtcWFvgr+RVkhL/QBk+w5glw2RD1OSv75OlCW3/ujl/+0McBqaLgQySNn3
+         l7AmswNSXturbKe7XgGxRA94y8+R2ZnFAk9Z+5aXo0uwvfRSjE3LA1QdR3I3MfiNNn6f
+         uGpoasukrI6fQz+dqkPcp5bCfu6szAHO3M82ZgT68ckyjaYUCRb6CDVZGySApuvJLh+s
+         GmSEGCanBPANGl/tgNic+R8YlkkCecYzrOYbdUt0M9SY2cwG/wQsSkOkDCKdI/PLZg7M
+         Soyr4Pg63VhkNOVRqBPlaWQ9NIrQrn8o6AUyHHhTlQQ2nLubxIrFkM/Wpnz1Xk/p5OFT
+         s9ew==
+X-Forwarded-Encrypted: i=1; AJvYcCVYHlR7GmgqEBHrRSsmOXg1xOo3APLiBV3N+mm6zNh7oooIe2ZG5FGORxJEucHr/ZBiSO0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz1zieUyRERbQlpw0jSXUdKIIu06mirT1fri9okLbjT9x79J83O
+	oGmbPyv/vlZsFahiwxk+cRTwvWKLaxt4qNz86XN7utE2UokIBGr4SbuJ
+X-Gm-Gg: ATEYQzx9VVs5elBF3m01A9TPEoBqCYZKgOo35t/qZ/WrY4On2Y5wBU9CgbDodxQ4lER
+	tdFH/DNffIAzP4FrdtQ5hdtC3yWCzp2ZFYAW5BTFhE5xChqxZgg524neNhzyWkrnnPDykVbsbPS
+	CiUbUnaFg7KhSmXtFAeLqOM4DJEFSiMycxLJjUeR0pfDjgZgQxsg2/jQrg5gkPgJNIX6pFkPpWq
+	mnErjy7dhdISBsrTIkm33d4q14kwqFeWAC6b7HA8bGodf+VjjMj+KO2LspdP9G3I48k6xFfIavd
+	IRtpRq5F7cvfft12Xtauf1418DdhRxizThpTA0Dk10HwQ8xmuBANpFEhY0HF3sXjejV+rjMoeM5
+	TJ1ATj/ITziErNf263rt9CmhWucDD2eqed2RD+zCpT0XhXhN//jfAxBiom13N5qxhczeBZVGMnI
+	tWbQqypI/IsKG+YlFuPDwV8M3I1703MRs=
+X-Received: by 2002:a05:6000:4387:b0:439:c279:32ea with SMTP id ffacd0b85a97d-439c27935b1mr3280566f8f.39.1772549560930;
+        Tue, 03 Mar 2026 06:52:40 -0800 (PST)
+Received: from [192.168.1.187] ([148.63.225.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b03db76bsm20531779f8f.18.2026.03.03.06.52.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 06:52:40 -0800 (PST)
+Message-ID: <bddd7c86f5d9535ce5fe58e6271396da40750cb0.camel@gmail.com>
+Subject: Re: [PATCH v2 3/4] hwmon: axi-fan: don't use driver_override as IRQ
+ name
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, hanguidong02@gmail.com, ysato@users.sourceforge.jp, 
+	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
+	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com
+Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, 	linux-sound@vger.kernel.org,
+ linux-sh@vger.kernel.org
+Date: Tue, 03 Mar 2026 14:53:24 +0000
+In-Reply-To: <20260303115720.48783-4-dakr@kernel.org>
+References: <20260303115720.48783-1-dakr@kernel.org>
+	 <20260303115720.48783-4-dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] ARM: dts: TQMa6UL: modify for use in bootloaders
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260220143107.186956-1-Max.Merchel@ew.tq-group.com>
-Content-Language: en-US
-From: Max Merchel <max.merchel@ew.tq-group.com>
-In-Reply-To: <20260220143107.186956-1-Max.Merchel@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:max.merchel@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay32-hz1.antispameurope.com with 4fQJLV27Cgz9022
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:f0f40d72e89aaf42e08c864d0bda316f
-X-cloud-security:scantime:1.450
-DKIM-Signature: a=rsa-sha256;
- bh=zT632VR0gROFa3F9kvU2rdhPuRa8nKqiAx8K/kUtGPY=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1772548681; v=1;
- b=mXNO3bJsrMAbnskKKmA0iUZYfwCLit2EtXjs5wJusAYgTWebormbl7jOKNXRm9DNHoL3ovch
- 07waEVtmfTYDY+Aize3LreD5x+1HSK9GopL4TpSkivtb5jVGob0q6FdUd7YekIYOJIyuyjbnebp
- JlqHiwy4JIPAaxda+WFaYo0D3MaYi/cMijKRrP0ZnbIXPLGNFkLmLzswZlIcOPKKpTsutG97V9X
- 0jDhYe/H8CEs/ORdUpFQC0hEFhFVoy1HTfyFFNAou/HRTnc4CIkts/vF9XOmcRvO3CKDXPsDIt0
- ss1vzCp4nhGLwE5YqXF+eMrke8Dvu+TBmjQ7pR6ME90nQ==
 
+On Tue, 2026-03-03 at 12:53 +0100, Danilo Krummrich wrote:
+> Do not use driver_override as IRQ name, as it is not guaranteed to point
+> to a valid string; use NULL instead (which makes the devm IRQ helpers
+> use dev_name()).
+>=20
+> Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
 
-Am 20.02.26 um 15:31 schrieb Max Merchel:
-> This series contains modifications for using Linux device trees
-> in bootloaders. Changes from U-Boot bootloader are incorporated
-> directly into the Linux device trees.
-> 
-> Changes in v2:
-> Improved commit messages for commits that add boot-phase properties.
-> Add forgotten boot property for the spba-bus in imx6ul.dtsi.
-> 
-> Max Merchel (4):
->    ARM: dts: imx6ul/imx6ull: add boot phase properties
->    ARM: dts: imx6ul[l]-tqma6ul[l]: add boot phase properties
->    ARM: dts: mba6ulx: add boot phase properties
->    ARM: dts: tqma6ul[l]: correct spelling of TQ-Systems
-> 
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi   | 10 ++++++++++
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi         |  1 +
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l-mba6ulx.dts |  4 ++--
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi        |  1 +
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi  |  1 +
->   arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi |  1 +
->   arch/arm/boot/dts/nxp/imx/imx6ul.dtsi                  |  7 +++++++
->   arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi       |  1 +
->   .../boot/dts/nxp/imx/imx6ull-tqma6ull2l-mba6ulx.dts    |  2 +-
->   arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi      |  3 ++-
->   arch/arm/boot/dts/nxp/imx/imx6ull.dtsi                 |  1 +
->   arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi                 |  6 ++++++
->   12 files changed, 34 insertions(+), 4 deletions(-)
-> 
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Any further feedback on this?
-
--- 
-Best regards,
-Max
-
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+> =C2=A0drivers/hwmon/axi-fan-control.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-cont=
+rol.c
+> index b7bb325c3ad9..01590dfa55e6 100644
+> --- a/drivers/hwmon/axi-fan-control.c
+> +++ b/drivers/hwmon/axi-fan-control.c
+> @@ -507,7 +507,7 @@ static int axi_fan_control_probe(struct platform_devi=
+ce *pdev)
+> =C2=A0	ret =3D devm_request_threaded_irq(&pdev->dev, ctl->irq, NULL,
+> =C2=A0					axi_fan_control_irq_handler,
+> =C2=A0					IRQF_ONESHOT | IRQF_TRIGGER_HIGH,
+> -					pdev->driver_override, ctl);
+> +					NULL, ctl);
+> =C2=A0	if (ret)
+> =C2=A0		return dev_err_probe(&pdev->dev, ret,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to request an irq\n");
