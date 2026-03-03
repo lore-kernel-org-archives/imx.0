@@ -1,171 +1,161 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010051.outbound.protection.outlook.com [52.101.84.51])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D383BFE47
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 21:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772571795; cv=fail; b=ARuNRu6vKClOn8YgntrfWhh87EAK33LoYi3uL7RAvc+QBZEAUoybncZmNmiiAvAl+an9ItIReK647Zmpz+zvFE3nESl8n86nkWhHOjdnnlsI7hC3bhp2YKORv0hg8YG1Th6JW5DweKGJh78OsGn3+ipekr1uIod6wBimCMTMS2M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772571795; c=relaxed/simple;
-	bh=vQzNmfHty0a8R7i44+4APMyp2tiOm0fXFC7TwBlbpwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uRvsK8JC5UzLTCaZ33zV6vFDxTc2tBieNg78f9gG+kQRKIZOWJRcgUwHtRNXB/fOua6QMOR/KdXnO+RIj7rd3haUe6Ii/PZb+yiiSnku+kj9caRq7qZEzpm2rSaNyBvdImJ2fArW914wW+CGhqE2hd5flzg5C0g1JuxXrzsAql4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ed3IWpPT; arc=fail smtp.client-ip=52.101.84.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ed3IWpPT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XkcEfJJ0WaAKLfDp9EtmqxQRBoKTzJnTgMqOSH1N/HBhnpMEP3GLFZ3JzB771+N8bCiBODrb93+wgXMN+suu+nEDUIsIFtHmey1hui9lEAZWBG/uz+BuhWobcGbOeyLlw+zkKb7n/EFJs6KhJBP+JYvBrKBxo0MzHaCGn+57KGRYcYHyLJjLDUj9gsXtLMN5f3ziPS1LszKpwyp1ipcD6oXJ4rC8maqGJs8O/dj7K+zOc4p0soE4IrlCchNH+++xrnmX2Dk5p0wQzTmEfS/QeW43y5ffKzOxmwmhgXC53OBffA5X3Yauw2GDYcQJQmWJD9/RVU0wbEoS3Is8jdK62A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JBf2T7z09usgbBZ3wZTiAXnO9iofJOVKJ5qBFaG17WY=;
- b=WSpBsM4+zv7fFmVFBDBQt9ZMf0w6zFaW3Y0KKdP5ec0BvgttpPYHbFNINRXWaBVcaM8boXOOUaIk9bnZF8fV8vzZkKyk42He9aovrxO5Jkfny/cGSAh8rqGJPl9oDw/QjwXRrzhJiU5r0a2gX9frQZafw0y1uOJIxKqkpQTpP9CmNpvWPSwzHOs7m8UHeLj1RdSdljKC/BKO8R8cMaDD1ZSF6nJxM/YUQ7XcspidBBJq+pajwLy3MhxG6fL2dXfNeuY4IQLk6ECZAxBNWep/3R+rAkF6NDclxCGiWAI+y3qFxoBei2WU5RFo9Tq4lXBg3i1sRwH2Gthsdo3xIOPHUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JBf2T7z09usgbBZ3wZTiAXnO9iofJOVKJ5qBFaG17WY=;
- b=ed3IWpPT8X3RWems/Q3TlCaLPn77DRrv0DlWqmaWAMmGhE3RYvYX2NlT8t1usWHk8gHwBPRP1z8Jkn9CES+FgmmXJBCvfBCvsXAwBuxirt2A38seAKB1BGkh3zxhJUu/TOJqMPkpDPkC/1u3MJwXoS0DENLEvDJT+LAf8luiYInnMAcFOhgR4lQitsCeY7onDcWL+vTs9Vj03MdupI6gNSlMvfziI9cgTrbE0YPuc8ZxfVL5wjoicoi0ZrHfYRc/Gb3BzeVPHxcelK13ZbfVf7Dm2yO415s4Ofoqv7uTdUOVGICfxhmk440g5kzYso+LVh64DH8LZo0/mEJRpDVL/Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PAXPR04MB8639.eurprd04.prod.outlook.com (2603:10a6:102:21e::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 21:03:07 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 21:03:07 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Han Xu <han.xu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	Eberhard Stoll <eberhard.stoll@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH RFC 3/7] mtd: spinand: winbond: Add RX sampling delay values
-Date: Tue,  3 Mar 2026 16:01:17 -0500
-Message-ID: <20260303210131.2966214-22-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-3-9326bbc492d6@kontron.de>
-References: <20260303-fsl-qspi-rx-sampling-delay-v1-3-9326bbc492d6@kontron.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR05CA0014.namprd05.prod.outlook.com
- (2603:10b6:806:2d2::23) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D352C49218D
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 21:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772572962; cv=none; b=B/L8HiqRRQEsWBK6KfaIWtGFM0aw7ajd7dhjxPOQhEbAdO+nFMhCEiqt+vUEjkZ3slEs3zqSTLXj9gDLsnt8e57aiH+D4l/DxWQOeccu+v7BZ2jXbHLoM2C2l+4PA67crtBx1j9yjLQqlCegumqvmcuYURbaygzZTJew0IwAO+g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772572962; c=relaxed/simple;
+	bh=s5KsJEnDIZDKyvDOkFuYgw4SVvoVaal7mtVJSjN28ck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oFQ434FYg1Om7GazT+LNvyucqc74Z1ieaZD7lvf4U7PQIxu8GrrkbPweANG6Z+/uRaJzU7CGQpSYlxqyFjnZa7e3mWYhvQP+gmpay2lCYA+rbeRPdi9e17CVXEi0nw1n14R8PjvCDzbc5Vwjya9Uawv5gWmfp5g6FJ24d00d/FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxXBs-0000S8-Bq; Tue, 03 Mar 2026 22:22:04 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxXBo-003bpC-2q;
+	Tue, 03 Mar 2026 22:22:02 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxXBq-0000000G9tJ-0Owv;
+	Tue, 03 Mar 2026 22:22:02 +0100
+Date: Tue, 3 Mar 2026 22:22:02 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v11 2/3] drm/bridge: imx: Add i.MX93 parallel display
+ format configuration support
+Message-ID: <3dyb7wc7tg6hc4o4qocn4nft7bu3hbdpxcnv7cln2q6vkxo7bw@dtnswwyou5sp>
+References: <20260303-v6-18-topic-imx93-parallel-display-v11-2-1b03733c8461@pengutronix.de>
+ <20260303210131.2966214-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8639:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd92376d-c44f-48b5-1afe-08de79684510
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	FhwlsXgH6o+WZQkBDx2siy9+KqQaqMmHC3gXXEAhL6Ko8DP04LuGXx3NdPqVWQ/70PGE/YO8TgvyVi10KiwRINr2mAs4toViu3VBUXhWRvaxa2OLoQRQ6P9YFc9NCbc9M63tTf6NckW+ax+i2ZWZ9TbSAM/nFVeU3t3T0KvNHf5a4qCpOsHirJgZolodtwCujgOyZGcBgBI4aUhApRVTsn2Tl4HRuDQzs27h4EvQuzQZ6GHwmgyYOkBGLtfBjW2fvVesVE7n53s86xA71VONEqIjoolh+UADTc0P50PaO3hWreFQOXGjM+tKCQ/DeM0tHyUKAxf9J15sba/YOaonKWjeYJ87DanRoNZwl0kIIdLQ60pB5oD9ZGjdad/2GG5/NEGqhbHUNrHf7sOBTqa0yFQDBdPO8JSApqLPt1+GReTpiHH4U8ibpjR1HF0e7ulTboa/FyIWbRn9ANuyH7YLWtr6jLycPu1ZwKCusNDIe8D54uEc1QBj+kUo2z8EAjm/7jWNLhErpcBmLzKKwddePWpHT/aF+WcesrNewfLgG97wjaoD/O7ScEiibxOtng2PCYIboWHvT20Pi33D5nPTRXKi31fwfIS9aBZk6qKMmnDNrb2ZmX+TFaeBeg1TcAe0DGRrNdXfnwq43IDlHMhU1PDug0wDGtAIR/SFmLdH86eem0OMnxjs5gZK5jT2/lkAfLIrvGgBNwuVQBtzHoPqVDlgKinHLga+4izFGY5g5rgDQob1cx1dJ5S2SlzCmd3AWuvZegEgR/ak0rIUrV30nxLrHzZyzK9AJxlU/q1WpJA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SXRTWWxUanc0a2xHcHN2cnFOVWpHbG83TUNucUhzdzFueklPc3lzNHZqSEZ4?=
- =?utf-8?B?SVpscnhjMGU4WW1XUk5IYU9tK1RRUXh5dWxpc0I4Z2VPTHd4WXJZN210MXBZ?=
- =?utf-8?B?czR3V1R2RDZQMlRhWmliTUUwY2Fwd2lremY0NUorRm8xZXZsajFtS2I2cTVm?=
- =?utf-8?B?R2NFYXo1RVpWanB3cG84T2FyS054K2cwZWg0QUJnS2RlVGNDam5vMkxJS0VD?=
- =?utf-8?B?bzhqL1hZNHdZTFlzZVlnSWRtVnZ3M3dHOE1nNlNhSUI1QldtNVRIMHJMTXJ1?=
- =?utf-8?B?MmxBcmNSTFp0MS9VK0Fhb1BsZ2JnRDdzaXVoTmIxRzVmNFdONVVkaVlDZG90?=
- =?utf-8?B?ZXBaRUx0NDhjT0lNcHBKbGhuZXZwRE53TkRzN1Yxb2hhTU9YeEY5T01ja1lY?=
- =?utf-8?B?Y3ZpeE80aUFPUmRTQ2dDTGhkM2M5SDFJWVRHR2lPR1R6OTFYSXhNRWRLeVhW?=
- =?utf-8?B?QWYwS0gzT1VNbW15UUpzR3RWME95SDBualJWZVYrSGlDaXkwNEF1eDNqTC9S?=
- =?utf-8?B?aTh5dkFNZG5DcThTcUVoeVRpSk53TjlOakhqNTZnUi9jbnRaZ2lDZTY2cTY2?=
- =?utf-8?B?a0VBeThaVmRudEE1dm8raGxGU0dNSlg5NU1mZ0IzMkwzVmN1akpOcU5GSmNB?=
- =?utf-8?B?R3RZN3BhTEtZZHl2akgrZ0VmQ2VsaVlZcEFkdGsvVGxUeWoxS3p4bU5xN1hH?=
- =?utf-8?B?am1kaFlPTFVLdFVtdzdSSk9uaEM2dDErT2JEVjNSN0hJaDRmZUd5UURMTVZX?=
- =?utf-8?B?eGRqK255dGZ3TDJXVUFXUzJOUlNBWWJLUnMyZzFKbG9RRnl0dnpaVVlGWXI1?=
- =?utf-8?B?bFBGamRKS0w4bmxXZnVvaFZCaDAxM3QvL292NElxRURqS1lOMGgxUW0yaHI0?=
- =?utf-8?B?MU0yaHVsQm1sbnhoRVZmQ0c4bTlacEN2RVBKM3lCMk5PZDNuVWZWS1hjSkpS?=
- =?utf-8?B?ZFlQRnBPS0xTdzl1YmhtSnF2bFdYSjg0eEhRUW1JRnBsMTNlc01QWUhjbkR1?=
- =?utf-8?B?bWZKZHQxSFRIYVhZOEF1Z01IbjJoMzVTdE1GOVRIamxaaUpXSU5rTGU5Ty90?=
- =?utf-8?B?eDRtdHB5RDlJSmFWc0VxMDVDblQ1dWFDYUI1ZVNRUkZHL3pSZ3YvVVVuaXU4?=
- =?utf-8?B?Wmw1aklHcmMwN25lUlBFcHdVVkt1UTBFSkpOVkh6eGVGU2QyZkhUaTJTYmk2?=
- =?utf-8?B?Um1sa0UrUHZpdFVoRWRuNHZ3SjlWTU9PUU5hbG4rSTVRSVROcDErVU5hdmkx?=
- =?utf-8?B?MHc5bWd3U2NOMEZrMUdhL2o0OElnV1BDVGZGTnIxT0RKSmd4eXA4NkVZUW9W?=
- =?utf-8?B?bW9EZHUxWXZuZWY1SWV5aXkvZkkyVGdBbnh6S1hMa3djM09KaWZ0SUZaZ1Nh?=
- =?utf-8?B?YzF1WDRTMFFmdFdLWHZ0b1k3aTBiT1lzTUV5dzVxS3FKVDZoY3VKWnY0YUVw?=
- =?utf-8?B?Q0h2Q3ozQ05rclloMkoySUxFME5iMGw3MnQ2a3hsRmhOd296WU5GZU9scWZJ?=
- =?utf-8?B?ZElJSDZ6Q3lhMGhmaWVySDk1eUJPbWQwZjlSSG92cVBYYzkvYVlSdllpemQx?=
- =?utf-8?B?WEtUNnRiUGhwbXZRVnVWaWx0OXNqd1doOERNVlZ1dGZnQmdLQ3gxZUIwOW9l?=
- =?utf-8?B?OERDL3dGTGF6d2tuRjUrTy9QK05PaDZxekNDdGQvc0FUYW9HVXpiRWdiZSsr?=
- =?utf-8?B?ajRpUGh5Q0UzSlUvZTViWTUvY2orMmhmcmRHUnp1LzRhTmlsVzNuMGNRRW5C?=
- =?utf-8?B?UDQ0VHVpNnMwQktkUEFPckh0MWZaVWU5cmswSi9aNGtLR1krcVlBSTlQSVl6?=
- =?utf-8?B?QXFKa3JBeFFmdWtuR1ZjeS91a0JsRDAwRENtRWZUT3I2LzRoVWp2SGhTUitO?=
- =?utf-8?B?bW80WEZ4MWp6L21WY0l3UFNNNUJJcmpRREl3QTBxRGM1bzg2K0dwTWVCbCtk?=
- =?utf-8?B?UG9tOVFjL2t4UjNsNU9uUlA1YWwrUE9YMThzREZZQ050dEdUcWYrK3R5cGph?=
- =?utf-8?B?YUhPN0x4U2J5b3NuWGpmYkxMRXlldmNBbzBuaHlmT3pneGNBeHJUaEYrUFZR?=
- =?utf-8?B?NDFTeUJ3V0JFNmIyMGtGK09PVmhIY09XZDUvWnhLbWFJT0RQa3VUY1pUb2px?=
- =?utf-8?B?djJXWjBmR3NmcEgxdElGQ1M2VWNUd29KRWpkbXNRbXc5eDl2UTgya2w5WEpw?=
- =?utf-8?B?Y0kxVElPRm5KZzh5RUxwRDlwWEI4bVg3Q2lDYUNHRWFVUFd3TFRBQXgyOEx0?=
- =?utf-8?B?cEY1MWlvM3hSNjROL2k0b1R4am9KTUkyeFZYcDBGUUNvaXNFV0Z2bHZTMFE0?=
- =?utf-8?B?Zy9hMVdRc3JrdE5zRFNxWVQvVEJGM0ZRakR5NCtTbmFEMlNvVk5EQT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd92376d-c44f-48b5-1afe-08de79684510
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 21:03:07.8682
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6chsOh9VPpCM4u4buEeDQDedG2SLqlgu8F1L6ToHNyxkQ2jt2frvhwQUJ+MkxyeQWXJraDbKWR3iQRyAqDCRpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8639
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303210131.2966214-2-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Frank Li (AI-BOT) <frank.li@nxp.com>
+On 26-03-03, Frank Li wrote:
+> From: Frank Li (AI-BOT) <frank.li@nxp.com>
+> 
+> AI bot review and may be useless.
 
-AI bot review and may be useless.
+Hi Frank,
 
-The patch looks straightforward—adding RX sampling delay parameters to
-Winbond SPI NAND device entries. A few observations:
+albeit I'm very open to new technology, I would appreciate it if your
+AI-BOT is used internally first till you're convinced that it reports
+real issues instead of false-positives.
 
-> -		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
-> +		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
-> +		     SPINAND_RX_SAMPLING_DELAY(6)),
+Regards,
+  Marco
 
-Trailing comma removal on the SPINAND_ECCINFO line is correct for the
-macro continuation. Consistent across all hunks.
+> > +static u32 *
+> > +imx93_pdfc_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
+> > +					    struct drm_bridge_state *bridge_state,
+> > +					    struct drm_crtc_state *crtc_state,
+> > +					    struct drm_connector_state *conn_state,
+> > +					    u32 output_fmt,
+> > +					    unsigned int *num_input_fmts)
+> > +{
+> > +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
+> > +	u32 *input_fmts;
+> > +
+> > +	*num_input_fmts = 0;
+> > +
+> > +	input_fmts = kmalloc_obj(*input_fmts);
+> > +	if (!input_fmts)
+> > +		return NULL;
+> 
+> Missing kfree(input_fmts) in error path if the switch statement
+> or subsequent logic fails. Consider allocating a fixed-size array
+> or using devm_kzalloc() instead.
+> 
+> > +	*num_input_fmts = 1;
+> > +
+> > +	if (!imx93_pdfc_bus_output_fmt_supported(output_fmt)) {
+> > +		dev_dbg(pdfc->dev, "No valid output bus-fmt detected, fallback to MEDIA_BUS_FMT_RGB888_1X24\n");
+> 
+> Line exceeds 80 characters (97 chars). Break into two lines.
+> 
+> > +		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
+> > +		return input_fmts;
+> > +	}
+> > +
+> > +	switch (output_fmt) {
+> > +	case MEDIA_BUS_FMT_RGB888_1X24:
+> > +	case MEDIA_BUS_FMT_RGB565_1X16:
+> > +		input_fmts[0] = output_fmt;
+> > +		break;
+> > +	case MEDIA_BUS_FMT_RGB666_1X18:
+> > +	case MEDIA_BUS_FMT_FIXED:
+> > +		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
+> > +		break;
+> > +	}
+> 
+> Switch statement lacks default case. Add default case to handle
+> unexpected format values explicitly.
+> 
+> > +static int imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
+> > +					    struct drm_atomic_state *state)
+> > +{
+> > +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
+> > +	const struct drm_bridge_state *bridge_state;
+> > +	unsigned int mask = PARALLEL_DISP_FORMAT;
+> > +	unsigned int val;
+> > +
+> > +	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
+> > +
+> > +	switch (bridge_state->output_bus_cfg.format) {
+> > +	case MEDIA_BUS_FMT_RGB888_1X24:
+> > +	case MEDIA_BUS_FMT_FIXED:
+> > +		val = FORMAT_RGB888_TO_RGB888;
+> > +		if (pdfc->phy_bus_width == 18) {
+> > +			/*
+> > +			 * Can be valid if physical bus limitation exists,
+> > +			 * therefore use dev_dbg().
+> > +			 */
+> > +			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
+> > +			val = FORMAT_RGB888_TO_RGB666;
+> > +		}
+> > +		break;
+> > +	case MEDIA_BUS_FMT_RGB666_1X18:
+> > +		val = FORMAT_RGB888_TO_RGB666;
+> > +		
+> 
 
-> +		     SPINAND_RX_SAMPLING_DELAY(6)),
+-- 
+#gernperDu 
+#CallMeByMyFirstName
 
-The delay values (6, 7, 8) appear to come from datasheets per the commit
-message. No obvious logic errors, but consider adding a brief inline
-comment explaining the tCLQV mapping if the values are not self-evident
-to future maintainers. For example:
-
-  /* tCLQV from datasheet */
-  SPINAND_RX_SAMPLING_DELAY(6)),
-
-This is minor—the commit message already documents the intent. The patch
-is mechanically sound: consistent formatting, no resource leaks, no
-locking issues. All entries follow the same pattern.
-
-One style note: ensure the macro SPINAND_RX_SAMPLING_DELAY is defined
-elsewhere in the patchset (likely in an earlier patch in the series).
-If not already reviewed, verify its signature matches the usage here.
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
