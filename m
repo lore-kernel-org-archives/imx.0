@@ -1,389 +1,120 @@
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811E71946DA;
-	Tue,  3 Mar 2026 16:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEBC4F7965
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555778; cv=none; b=QzPNgbTzwBwp6lKbv+gfWvcLozoEOsxCG7kfPKNVAc034P7eNESynEL2yyMTRNhc0bVmu6Zwp1VinB6YIpoEzkfFlJR6z1EvihYcY2QqDBHrqtlxUoaoyssc3OlRx4D0vdAFshJO2+kV7bCfxP6Mzf11e1upwjXJ7Aavm1CMxno=
+	t=1772555832; cv=none; b=Q/tL0VKXrJSVicSvruF/ofNKBD8x+OV5Bjb82WdDAZ2YgSzfARSmNBa6I60sBuxytxKkhc5sWH/m4uwbv2x95OfN4Gr0v8XbbEZE5JNrD4tnmBf51QsfCxt+pPfa4ZjVA+0wY0I/DG0t3kvw1dN8O4Cn2XqSfE3R8BcgrhmWyq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772555778; c=relaxed/simple;
-	bh=au9gvSiUIFb0p3C/562jH8TMSfh9iGCanBNSryQsBAg=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=jLRQe0a3Hl0upik414aYhsAr3UHYs/Q/Ppj8KcJmJo56cjUw9jRfluTzEM8iLhnXm9+6HxB795YMRO5ILldCU2HVZXiENJ3FpPM6QqSo4xMd0mQst4LCl7LyhPmEBbEEmUEHtbHrlLxxS1MLAONgkcZJJMfetcyIuooaUm6Fk7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=jmIkxYut; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+	s=arc-20240116; t=1772555832; c=relaxed/simple;
+	bh=ZnYngTlVQzycdtY2m/RKcREfQ/63W022ZEx/xYzEu6g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JfL2bYJb20PpUDQmRvcOG9Cllbl26FC2wNK/ou8wBLhz1jXhhVvj+fFJlXjbjJ+IcM+9nsyR2w+5WearGx4aq/ky/+hra72c8oh32tNK7QV5JK5GMYEoAHMpWQxOqa1VO+vCbXBGjdlfOW8/NLbSym3mFk0+RuFUhhnsaLL6OOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=RJ7ZVyJG; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="jmIkxYut"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=evyGeAJvvK1MN947HgA4QPVqRhM2uQephRsOtkH7lAU=; b=jmIkxYut3a8FwnIrHgBhbMNixj
-	8m0mAzOGW+vO8tlJH53yg61uK3JypFmDGFQSvvWtxD6DAJM+GMOQ+T/YILhwqX/N2yL6ShDRTG8x6
-	OfscdRbd5IkPlwsKDeb2DL+ywd+3qGj01GtfWFjc6AQKlsC5A2LsuHKwugat8JvbN/7Y=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41828 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1vxSj4-00069R-Hf; Tue, 03 Mar 2026 11:36:03 -0500
-Date: Tue, 3 Mar 2026 11:36:01 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- shawnguo@kernel.org, laurent.pinchart+renesas@ideasonboard.com,
- antonin.godard@bootlin.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>
-Message-Id: <20260303113601.abbc3366161ebac99d93538c@hugovil.com>
-In-Reply-To: <aab9uWjgzg4-ScFg@lizhi-Precision-Tower-5810>
-References: <20260302190953.669325-1-hugo@hugovil.com>
-	<20260302190953.669325-10-hugo@hugovil.com>
-	<aaX6P_ulJTq_pipa@lizhi-Precision-Tower-5810>
-	<20260302164231.616bd69c106cbcdd107d9cbb@hugovil.com>
-	<aab9uWjgzg4-ScFg@lizhi-Precision-Tower-5810>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="RJ7ZVyJG"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1772555396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BQpGPSsrmt5iFf8ycx5AlTFs3GDIIi8/v45rG7lvG9E=;
+	b=RJ7ZVyJG+KcCDsqtEKVaft96gFljbG0QnrDqcEaQhES+7duAAfX9XINpkZukPWPpxkQAiT
+	ObisQQAu7sFaBTTgu0IgG9BsNECNUic/ml4yyp0cjs2sr+vTF6boKHhnZ167h4+WexxYRc
+	qXpCUxRKwiKqJ8ftvhF5jIjwC3MaO94llQMZ1JZOEbjKRwG7Z63eTESJFx9jxEr/p0LfRL
+	xw0t/xF5P+4PsdGnOkw3Ed8B2ZQC1+FPr3dxDyIdqixE2tuKRjfHMgW/0pZ3WkNtBz2tX/
+	y/ijtE6uisHrTzbbHXhx7leBJv2D3sEarAbLex26HU8x+n2r7ahL7pUogiwnZQ==
+Date: Tue, 03 Mar 2026 17:29:22 +0100
+Subject: [PATCH RFC 1/7] spi: Add 'rx_sampling_delay_ns' parameter for
+ clock to RX delay
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-	* -0.8 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH 09/14] ARM: dts: imx6ul-var-som: add proper Wifi and
- Bluetooth support
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-1-9326bbc492d6@kontron.de>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+To: Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Han Xu <han.xu@nxp.com>
+Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, imx@lists.linux.dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2060;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=XlqBJm6qGT+yufD3x6JPfqlL1/qFkwpILnGBWgECzFk=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9OFDXvSpisb72j5uznvPbPw02vpJ/ZntCx4pCG9w
+ v3sRnaPjlIWBjEuBlkxRRYpfovXtmaxPvLHqqNg5rAygQxh4OIUgImcfsbwPzT+ugjrrn1B97v9
+ 9zXN3j/Rr5G/wptL/tuMrt+SLF8vXWJk2Hr1cm7jOe9JRpKBu2ecjPu7OXmiaPC77y1v1MQDEn5
+ N4gUA
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-Hi Frank,
-On Tue, 3 Mar 2026 10:26:49 -0500
-Frank Li <Frank.li@nxp.com> wrote:
+From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-> On Mon, Mar 02, 2026 at 04:42:31PM -0500, Hugo Villeneuve wrote:
-> > On Mon, 2 Mar 2026 15:59:43 -0500
-> > Frank Li <Frank.li@nxp.com> wrote:
-> >
-> > > On Mon, Mar 02, 2026 at 02:03:45PM -0500, Hugo Villeneuve wrote:
-> > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > >
-> > > > The existing configuration of the optional Wifi/Bluetooth module was
-> > > > copied from the original Variscite kernel tree, and requires custom
-> > > > scripts to properly configure the Wifi/Bluetooth module.
-> > > >
-> > > > Add proper support for the optional Wifi and Bluetooth configuration on
-> > > > VAR-SOM-6UL so that it works out of the box, without any custom scripts.
-> > > >
-> > > > The SD card interface cannot be used if the Wifi/BT module is in use.
-> > >
-> > > ARM: dts: imx6ul-var-som: add proper Wifi and Bluetooth support
-> >
-> > This looks identical to the initial commit message?
-> 
-> Yes, sorry, My means needn't unrelated stuff. use below sentence should be
-> enough.
-> 
-> Frank
+Some high speed SPI devices require a delay between the controller
+clock and the sampling point of the client device. This 'clock to
+receive data delay' value is often referenced as tCLQV in SPI device
+data sheets.
 
-Ok :)
+Not respecting this can lead to data being sampled too early when
+the client doesn't yet reflect the correct level at the data out
+pin(s).
 
+There are two ways to handle the situation:
 
-> >
-> > > Add the optional Wifi and Bluetooth dtb on AR-SOM-6UL so that it works out
-> > > of the box.
-> >
-> > See comments below about name of dtb.
-> >
-> >
-> > > The SD card interface cannot be used if the Wifi/BT module is in use.
-> > >
-> > >
-> > > >
-> > > > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > > ---
-> > > >  arch/arm/boot/dts/nxp/imx/Makefile            |  2 +
-> > > >  .../dts/nxp/imx/imx6ul-var-som-common.dtsi    | 18 ++---
-> > > >  .../nxp/imx/imx6ul-var-som-concerto-full.dts  | 18 +++++
-> > > >  .../boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi | 75 +++++++++++++++++++
-> > > >  arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi | 15 ++++
-> > > >  .../nxp/imx/imx6ull-var-som-concerto-full.dts | 18 +++++
-> > > >  .../arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi | 15 ++++
-> > > >  7 files changed, 151 insertions(+), 10 deletions(-)
-> > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
-> > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
-> > > >  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts
-> > > >
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-> > > > index bc534d0fb1412..c7f24ee63071f 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/Makefile
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/Makefile
-> > > > @@ -339,6 +339,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
-> > > >  	imx6ul-tx6ul-0011.dtb \
-> > > >  	imx6ul-tx6ul-mainboard.dtb \
-> > > >  	imx6ul-var-som-concerto.dtb \
-> > > > +	imx6ul-var-som-concerto-full.dtb \
-> > >
-> > > how about imx6ul-var-som-concerto-wifi.dtb?
-> >
-> > There is an exponential number of possible configurations (sd + wifi,
-> > eemc + wifi, eemc + eth and no wifi, etc). To simplify, I am simply
-> > adding a full DTB which will support all options on the EVK.
-> >
-> > Hugo.
-> >
-> >
-> > > >  	imx6ull-14x14-evk.dtb \
-> > > >  	imx6ull-colibri-aster.dtb \
-> > > >  	imx6ull-colibri-emmc-aster.dtb \
-> > > > @@ -377,6 +378,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
-> > > >  	imx6ull-tqma6ull2-mba6ulx.dtb \
-> > > >  	imx6ull-tqma6ull2l-mba6ulx.dtb \
-> > > >  	imx6ull-var-som-concerto.dtb \
-> > > > +	imx6ull-var-som-concerto-full.dtb \
-> > > >  	imx6ull-uti260b.dtb \
-> > > >  	imx6ulz-14x14-evk.dtb \
-> > > >  	imx6ulz-bsh-smm-m2.dtb
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-> > > > index dd4ecff1eb786..af8c5d2db53d4 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-common.dtsi
-> > > > @@ -19,6 +19,14 @@ memory@80000000 {
-> > > >  		reg = <0x80000000 0x20000000>;
-> > > >  	};
-> > > >
-> > > > +	reg_3p3v: regulator-3p3v {
-> > > > +		compatible = "regulator-fixed";
-> > > > +		regulator-name = "3P3V";
-> > > > +		regulator-min-microvolt = <3300000>;
-> > > > +		regulator-max-microvolt = <3300000>;
-> > > > +		regulator-always-on;
-> > > > +	};
-> > > > +
-> > > >  	reg_gpio_dvfs: reg-gpio-dvfs {
-> > > >  		compatible = "regulator-gpio";
-> > > >  		regulator-min-microvolt = <1300000>;
-> > > > @@ -68,9 +76,6 @@ ethphy0: ethernet-phy@1 {
-> > > >  };
-> > > >
-> > > >  &iomuxc {
-> > > > -	pinctrl-names = "default";
-> > > > -	pinctrl-0 = <&pinctrl_hog>;
-> > > > -
-> > > >  	pinctrl_enet1: enet1grp {
-> > > >  		fsl,pins = <
-> > > >  			MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0
-> > > > @@ -97,13 +102,6 @@ MX6UL_PAD_GPIO1_IO07__ENET1_MDC		0x1b0b0
-> > > >  		>;
-> > > >  	};
-> > > >
-> > > > -	pinctrl_hog: hoggrp {
-> > > > -		fsl,pins = <
-> > > > -			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT Enable */
-> > > > -			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029	/* WLAN Enable */
-> > > > -		>;
-> > > > -	};
-> > > > -
-> > > >  	pinctrl_i2c1: i2c1grp {
-> > > >  		fsl,pins = <
-> > > >  			MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
-> > > > new file mode 100644
-> > > > index 0000000000000..519250b31db24
-> > > > --- /dev/null
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
-> > > > @@ -0,0 +1,18 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0+
-> > > > +/*
-> > > > + * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-6UL
-> > > > + * Variscite SoM mounted on it (6UL CPU variant).
-> > > > + *
-> > > > + * Copyright 2026 Dimonoff
-> > > > + */
-> > > > +
-> > > > +/dts-v1/;
-> > > > +
-> > > > +#include "imx6ul-var-som.dtsi"
-> > > > +#include "imx6ul-var-som-concerto-common.dtsi"
-> > > > +#include "imx6ul-var-som-wifi.dtsi"
-> > > > +
-> > > > +/ {
-> > > > +	model = "Variscite VAR-SOM-6UL Concerto Board (6UL CPU)";
-> > > > +	compatible = "variscite,mx6ulconcerto", "variscite,var-som-imx6ul", "fsl,imx6ul";
-> > > > +};
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
-> > > > new file mode 100644
-> > > > index 0000000000000..6d16ff7909dab
-> > > > --- /dev/null
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
-> > > > @@ -0,0 +1,75 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0+
-> > > > +/*
-> > > > + * Support optional Wifi/Bluetooth on Variscite VAR-SOM-6UL module.
-> > > > + *
-> > > > + * Copyright 2019-2024 Variscite Ltd.
-> > > > + * Copyright 2026 Dimonoff
-> > > > + */
-> > > > +
-> > > > +/ {
-> > > > +	reg_sd1_vmmc: regulator_sd1_vmmc {
-> > > > +		compatible = "regulator-fixed";
-> > > > +		regulator-name = "VMMC1";
-> > > > +		regulator-min-microvolt = <3300000>;
-> > > > +		regulator-max-microvolt = <3300000>;
-> > > > +		gpio = <&gpio5 2 GPIO_ACTIVE_HIGH>;
-> > > > +		enable-active-high;
-> > > > +		startup-delay-us = <10000>;
-> > > > +	};
-> > > > +
-> > > > +	usdhc1_pwrseq: usdhc1-pwrseq {
-> > > > +		compatible = "mmc-pwrseq-simple";
-> > > > +		pinctrl-names = "default";
-> > > > +		pinctrl-0 = <&pinctrl_brcm_wifi>;
-> > > > +		reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
-> > > > +	};
-> > > > +};
-> > > > +
-> > > > +&iomuxc {
-> > > > +	pinctrl_32k_clk: 32kclkgrp {
-> > > > +		/*
-> > > > +		 * For TP option, an additional oscillator is assembled on the
-> > > > +		 * SOM to provide 32 kHz to the WiFi module. Without TP option,
-> > > > +		 * this pin is configured to provide the 32 KHz clock to the
-> > > > +		 * WiFi module.
-> > > > +		 */
-> > > > +		fsl,pins = <
-> > > > +			MX6UL_PAD_GPIO1_IO03__OSC32K_32K_OUT	0x03029
-> > > > +		>;
-> > > > +	};
-> > > > +};
-> > > > +
-> > > > +&tsc {
-> > > > +	status = "disabled";
-> > > > +};
-> > > > +
-> > > > +/* Bluetooth UART */
-> > > > +&uart2 {
-> > > > +	bluetooth {
-> > > > +		compatible = "brcm,bcm43438-bt";
-> > > > +		pinctrl-names = "default";
-> > > > +		pinctrl-0 = <&pinctrl_brcm_bt>;
-> > > > +		shutdown-gpios = <&gpio5 4 GPIO_ACTIVE_HIGH>;
-> > > > +		vbat-supply = <&reg_3p3v>;
-> > > > +		vddio-supply = <&reg_3p3v>;
-> > > > +	};
-> > > > +};
-> > > > +
-> > > > +&usdhc1 {
-> > > > +	#address-cells = <1>;
-> > > > +	#size-cells = <0>;
-> > > > +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> > > > +	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_32k_clk>;
-> > > > +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_32k_clk>;
-> > > > +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_32k_clk>;
-> > > > +	no-1-8-v;
-> > > > +	non-removable;
-> > > > +	mmc-pwrseq = <&usdhc1_pwrseq>;
-> > > > +	vmmc-supply = <&reg_sd1_vmmc>;
-> > > > +	status = "okay";
-> > > > +
-> > > > +	brcmf: wifi@1 {
-> > > > +		compatible = "brcm,bcm4329-fmac"; /* LWB option: Sterling LWB5 */
-> > > > +		reg = <1>;
-> > > > +	};
-> > > > +};
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> > > > index 35a0c0b3603fd..b4e6a9316dd81 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> > > > @@ -15,3 +15,18 @@ / {
-> > > >  	model = "Variscite VAR-SOM-6UL module";
-> > > >  	compatible = "variscite,var-som-imx6ul", "fsl,imx6ul";
-> > > >  };
-> > > > +
-> > > > +&iomuxc {
-> > > > +	pinctrl_brcm_bt: brcm-bt-grp {
-> > > > +		fsl,pins = <
-> > > > +			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT_REG_ON (BT_EN) */
-> > > > +		>;
-> > > > +	};
-> > > > +
-> > > > +	pinctrl_brcm_wifi: brcm-wifi-grp {
-> > > > +		fsl,pins = <
-> > > > +			MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x1b0b0	/* WL_PWR (WIFI_PWR 5G) */
-> > > > +			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x1b0b0	/* WL_REG_ON (WIFI_EN) */
-> > > > +		>;
-> > > > +	};
-> > > > +};
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts
-> > > > new file mode 100644
-> > > > index 0000000000000..7c0e313603630
-> > > > --- /dev/null
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts
-> > > > @@ -0,0 +1,18 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0+
-> > > > +/*
-> > > > + * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-6UL
-> > > > + * Variscite SoM mounted on it (6ULL CPU variant).
-> > > > + *
-> > > > + * Copyright 2026 Dimonoff
-> > > > + */
-> > > > +
-> > > > +/dts-v1/;
-> > > > +
-> > > > +#include "imx6ull-var-som.dtsi"
-> > > > +#include "imx6ul-var-som-concerto-common.dtsi"
-> > > > +#include "imx6ul-var-som-wifi.dtsi"
-> > > > +
-> > > > +/ {
-> > > > +	model = "Variscite VAR-SOM-6UL Concerto Board (6ULL CPU)";
-> > > > +	compatible = "variscite,mx6ullconcerto", "variscite,var-som-imx6ull", "fsl,imx6ull";
-> > > > +};
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> > > > index ba482a97623b2..3067ff6a1bc74 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> > > > @@ -13,3 +13,18 @@ / {
-> > > >  	model = "Variscite VAR-SOM-6UL module";
-> > > >  	compatible = "variscite,var-som-imx6ull", "fsl,imx6ull";
-> > > >  };
-> > > > +
-> > > > +&iomuxc {
-> > > > +	pinctrl_brcm_bt: brcm-bt-grp {
-> > > > +		fsl,pins = <
-> > > > +			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT_REG_ON (BT_EN) */
-> > > > +		>;
-> > > > +	};
-> > > > +
-> > > > +	pinctrl_brcm_wifi: brcm-wifi-grp {
-> > > > +		fsl,pins = <
-> > > > +			MX6ULL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x1b0b0	/* WL_PWR (WIFI_PWR 5G) */
-> > > > +			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x1b0b0	/* WL_REG_ON (WIFI_EN) */
-> > > > +		>;
-> > > > +	};
-> > > > +};
-> > > > --
-> > > > 2.47.3
-> > > >
-> > >
-> >
-> >
-> > --
-> > Hugo Villeneuve
-> 
+1. Reduce the controller clock to the amount where the sampling
+   point requirement of the client is still met, meaning the
+   clock period being greater than two times tCLQV.
 
+2. If the host controller supports it, compensate by delaying the
+   sampling point to meet the tCLQV requirement of the client.
+
+Add a parameter 'rx_sampling_delay_ns' in struct spi_device to enable
+setting the clock to RX data delay for each SPI device, so drivers
+can check and act upon this timing requirement.
+
+Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index af7cfee7b8f60..4f8a0c28e1d46 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -181,6 +181,7 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
+  * @num_tx_lanes: Number of transmit lanes wired up.
+  * @rx_lane_map: Map of peripheral lanes (index) to controller lanes (value).
+  * @num_rx_lanes: Number of receive lanes wired up.
++ * @rx_sampling_delay_ns: spi clk to spi rx data delay
+  *
+  * A @spi_device is used to interchange data between an SPI target device
+  * (usually a discrete chip) and CPU memory.
+@@ -235,6 +236,8 @@ struct spi_device {
+ 	struct spi_delay	cs_setup;
+ 	struct spi_delay	cs_hold;
+ 	struct spi_delay	cs_inactive;
++	/* Transfer characteristics */
++	u32			rx_sampling_delay_ns; /* clk to rx data delay */
+ 
+ 	u8			chip_select[SPI_DEVICE_CS_CNT_MAX];
+ 	u8			num_chipselect;
 
 -- 
-Hugo Villeneuve
+2.53.0
+
