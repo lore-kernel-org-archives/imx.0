@@ -1,214 +1,120 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013019.outbound.protection.outlook.com [52.101.72.19])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732FD35AC32
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 13:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772544525; cv=fail; b=DWhzsFA/LZp8cEJ0Yry9E6hv5wfOP1JXBp1znku2USRsxlniHT32xiOx1N3ON9tEr8A9ghJ6dHXEknU2xw/5M519/S4yEYwEdNH2Nm+HBTEaBOH61SpS9kFpXaN8Qc5M7M15UTixMA8Hfaaqm5n9pqqr0pVTfQvZkj77SlHs008=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772544525; c=relaxed/simple;
-	bh=ja/gXrTR+tCeZPugtvLmbDyAhvkEmTap+XiVGirts6E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ucjUracoLGHx346ioLNARG2X//dwt51Z6NXDVPQ0pb3xmJjGrqYonECHy4uw0uyqPr/V5DfGLtOV/bJkC51kpvEkAvfWbkNGHS7Wch5o0b33ktsrQL0uTVAqDDhKmnIC0BsEO9OGssSRSJIitQ3Zw3+PLhlDMCgiOrhkexRhEWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dfhFEIOX; arc=fail smtp.client-ip=52.101.72.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817F23A5E7B;
+	Tue,  3 Mar 2026 14:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772547163; cv=none; b=AdUGQpVlROL+Z14INEJ8seuKhTb5bRHdBQQaW+vzQ4c4ejOEw+rqrx0x0Km9e2uIpBAAy4WtOpd+AzSaq7RU6gu9Ek/d5f9OAUH7828g5InHAfu9YvqS+E4IFcWsRt7f+fugz0ZjMBKraw6ag9RyjdWU8BN5rJbVjVnP4g4qZVU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772547163; c=relaxed/simple;
+	bh=dPGInr9bJSJ4aaTC8V6Vfs27BwEv/iSgsWjWG9xQ8Pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VgGNSRa/nRW5IUISlBVLbf+ovl5eEyjETSImOEm7ZHdN6xbs09HGwUiqCOD9N5rkwRvh5+5wy0VtvRYM6iNiW8ozPXwpeLp2AzAzmdgZ0XA7900RLSh2scJtePmNbDrAurC4XHdAOjg4ge0m18Xp2EONxBKsdHQmhZQHwKW0PJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PKXnJBTJ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dfhFEIOX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EJZDsRV3hJks4kWkx/zaJXG7S/c4I5Enm1iXy8OGIs6vFTiDJq8kxGn1i33UFshT86vvO4SHd5S0nlJiLTo0krYtnETHm51KOHdlFWguVAphJ8JpWXg6/Au/oGn8ywcof7ISUFLXxTaUedXrhwDvWB+j0akB5xgR3ohQYkPIHNgrE5zqN5b9tDn3+2LqeZXd7G7jGK2PVoNH81TraRDZ7svvRgbOV/m2fQmwKN6BxHlcWWLYZ6GmqYbimZhynQ9qLPKUmouyFr4Lp3rEJpyvooGurJyPdAQGMem0RFGcW2/VeBOOAHqEicbZ4r9bnpnWvV2BCzUX/uLeGKH/BCIiRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4iwPEMpRirm7pIit9/49c42AHreC0mLnTl1pBAVKMp8=;
- b=aVTXmNSrU7T/g7gJOjky3DWAdArYCiI+RBAJkNzJgJ6ROCh2IaiGAuXleUjGW8DaqDsUxfE+72uvG1wei8PPO0kiGVkTZz5dn7cvixNJq6GvfeQdCjKr5o0LiB2sui1HH+TYLQ3P7LdGCp1ZoyNBb7r0tkBLdaII2r+DcNwWvPHDMtcmBFOM6iPSHKFOjmE52D7ZwXQy9TD773TtfHVrrb9RPRsWVKpaqCm4gSHe825CsNC67sYW3Fd3lYyOP83v5X1SNDGAU4j/h/Kt8THSo1tBzwpyaOTHKVN1kgzGmsNrNIQ3tlRbtWAzTVrGITrQdCwlR/gwxANwpNnpxqXAqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4iwPEMpRirm7pIit9/49c42AHreC0mLnTl1pBAVKMp8=;
- b=dfhFEIOXtRwT20QDS8E0to6kL06FurhF7VJuQC7eVG88EJvlIwreAzEKn6Na6o2exryo4vCBjMV2cYA/JVK/Fwc7s9vOkG43QT7s4ag09XK586iQPUX7LS2Fn6aAdCDqUEHW18AM2E5ULn6n+T0XZ9Jn96YUtvfQ+xJEJbtCFXPR2m6WtBxE5qdNcpG9yLY2XH2DeDCD86FUvnm8pX7n7oDpSOCFGqjYumF25oaJkq60LCYrFW6EpejAPTZZ1vWg13n2slbLDNGrJFxIguF1kyi68iRUWVX8nsySWEc9YmUvFKawO3nwKToC535MdtTz/88EBTazXFqEFH7QyEh69g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV4PR04MB11308.eurprd04.prod.outlook.com
- (2603:10a6:150:297::19) by DU4PR04MB11771.eurprd04.prod.outlook.com
- (2603:10a6:10:624::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 13:28:39 +0000
-Received: from GV4PR04MB11308.eurprd04.prod.outlook.com
- ([fe80::b043:b2d1:9a94:1891]) by GV4PR04MB11308.eurprd04.prod.outlook.com
- ([fe80::b043:b2d1:9a94:1891%5]) with mapi id 15.20.9654.013; Tue, 3 Mar 2026
- 13:28:39 +0000
-Message-ID: <fca0541b-0b05-4231-98da-06027aefd9c0@oss.nxp.com>
-Date: Tue, 3 Mar 2026 15:28:34 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
- module
-Content-Language: en-GB
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PKXnJBTJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CBC561A2357;
+	Tue,  3 Mar 2026 14:12:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 935E15FF29;
+	Tue,  3 Mar 2026 14:12:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29A51102F19D0;
+	Tue,  3 Mar 2026 15:12:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772547155; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=NDntnEFk19MkiUVyHnkpMvjEQ0xuOComNTKHqxzRgtY=;
+	b=PKXnJBTJeOSAhEFdsakoatz9eZVQJsYsja7QCQMQzgMh/5rn1PRNYjh0Y43mXfXGOsBQe3
+	ylbpcNlkEYOZJgf5w2TjuKlN6BoKRqaUv2T7NSWnft4+R5CB1JRZXmzrvE9foIFtljC0dX
+	9lnks0jyXkMRsFdgc/AIne583SVg0IBmmZGSlbX4ZFFiZoIRIMxN3ep1XEp5lG3ykQNMTV
+	2MMAGU53bJevHap0Qjn6XIWdND7dFzJBZWAWKL1cGUcMwe1FByNjIm1aDXdWkatlTF4u4d
+	eRAAosIijuZ77ayzdkxgCV3s0AjnR8VvyjdUbgJKG2IeDC3gKeA+0ZFLN444JQ==
+Date: Tue, 3 Mar 2026 15:12:10 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
- devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
- Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- "Vincent Guittot devicetree @ vger . kernel . org"
- <vincent.guittot@linaro.org>, Rob Herring <robh@kernel.org>
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
- <20260121021913.GA1704619-robh@kernel.org>
- <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
- <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
- <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
- <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
- <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
- <fe755e85-1558-4272-bdd4-af7a2038ab1f@kernel.org>
- <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
-From: Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-In-Reply-To: <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P190CA0059.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:656::26) To GV4PR04MB11308.eurprd04.prod.outlook.com
- (2603:10a6:150:297::19)
+ Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "Michael
+ Turquette" <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+ "Andi Shyti" <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Arnd
+ Bergmann" <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
+ Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
+ Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
+ Jiang" <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ "Shawn Guo" <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <patches@opensource.cirrus.com>,
+ <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 07/28] driver core: fw_devlink: Introduce
+ fw_devlink_set_device()
+Message-ID: <20260303151210.6e8462b8@bootlin.com>
+In-Reply-To: <20260302122336.00006bd8@huawei.com>
+References: <20260227135428.783983-1-herve.codina@bootlin.com>
+	<20260227135428.783983-8-herve.codina@bootlin.com>
+	<20260302122336.00006bd8@huawei.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV4PR04MB11308:EE_|DU4PR04MB11771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a5684db-14a7-4732-0f79-08de7928c7ed
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|19092799006;
-X-Microsoft-Antispam-Message-Info:
-	mt9H15WXygaQ2YVRpx5ch+EnTeBzTAZcMdS2rJYN3YjwL7vpemuekkq1+bkc+3kekWRu8kbUPD9n7ze+btv6zbeXZOYmpO4e+I/1alrIvXQu27PhL5hidp9Z80244Oo1fsui9WlHgWMks913tYoasjpbVQMpdxst9EO1yAtydGi9XX2sOUiPii7NzmKmgxJD4D8UkqdZfHDvLl50g21ZgyjNdhUD29t+8e9jhUQYX8Wx1ggMwPX29Js30uXgi+8HEFMWXmLEzS7s7G9FWMRBNLQEN2pkV+CtJXy1dJm+cjPko8npIYB63+dzfwTDVnt9SPGw0PGWBe8hHbvzS08BBleHQGOK8Y950kshQOwhEs0ywxrHcAr2OGWQ97PAvA3OWsUuFO3LlSa1l4BQQd8mivEjnsNKxchh2BkPH1x/HevZ7AuAVg2kI/W5TmKiNO3oFm0Pi+UhARecEHlXLMdav8ziIoCF/EgjhzFRFFgbP/HEDh06/Ge65cnbQ9dxr0ymrNyCeparImU3pLqkPRlXMdVw1LLxNEaqYuKANYovnndcRPWwhDfM3lM0eDVrG7CensLLVj/St1AqTj7a4hhYwYKZJUu1TmjzGMgZ93c2a8o2Yw3vv1WHyAR5VzaMLqLqNpBF/B/SWEBCnwOGHKXvBCGTLrkrsfqtk2hjQMRSyxteheCmr3R2UMp2jvk6g8kx
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV4PR04MB11308.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(19092799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TXl5dUhoVEhlWmVmMEdIUjMydTVzRWxQcTdPcjREMHpxR0R0aFBERnEvR0d1?=
- =?utf-8?B?WkpldGNBTEwxQVBmTHVjSE9EbGNsWWRLNGRMaW1kZXhUblFHZEViMjVOOHRT?=
- =?utf-8?B?SmRjS0Z3dWMvcVhpa1pSNFA5TzArWFo5Z200WUl0eGJaeTZaa1A0TEwvNXRm?=
- =?utf-8?B?eUphbjlGTndRK1NYYkFhcTJPT1cyNWhHREswOCsrdURDRXN0UlRWdWhnTEsx?=
- =?utf-8?B?WlJJdWQ5TWhXeXBCRWxXMExteHR3UVhqNU1SUk9sUjMrQUZRVDMrVkVvc0Zo?=
- =?utf-8?B?eXpHZUVpREVnY2JtUWJRRjhMMFpaRUhyL2NFT3VWM0dyN3JIMCtwSHdTaUVs?=
- =?utf-8?B?YjFwSWpJak5pN0tQbjU4aC9LdWprbkc1NW9RZkVrUHR2UFh6U0N2RGZ1S3Fn?=
- =?utf-8?B?S0xGY0k3SjhzZ2ZrbTBUZHhVRjBNTWxLS3NnSTAzeUFIaHR2SitVUnRwdGVr?=
- =?utf-8?B?UGx0T3c2cURMdUt3QmNKNFhWQ3lRR3BhRWthM1RZekt5R1VtdVQwaGd6Zjhk?=
- =?utf-8?B?c2h1U1dkQTdnVXZneFlUbXRVUWQzUXJuMXJUT2tuU2NEbkMyeEdWY3lhSnYv?=
- =?utf-8?B?L1BDQ0lhdVNMVGJ0eS9janhSVmZTN0ZVTlNodkpMckR2MU81QTdqc1RxV2Vl?=
- =?utf-8?B?c29HdDc2dDJFNWJEN2Y5bXIvS3FLcXpoYnNva1lSZFBiRHNXRXNLMVZBQUJH?=
- =?utf-8?B?eHh5cjkvR0ZHWVpwNWYwSHZ0YUI0cmwrdDArdFNxNWN3Tk4vN0dwQ1lLOHgz?=
- =?utf-8?B?dEtWWlpoWXQvdHRWbmNjMUYrOVByZGZUZ0xxV2wwODd3cjYrYW1Qc1VlVWdR?=
- =?utf-8?B?RWhMTVZtSkRrdFA5Ym9UUmZYc0l3YStRS3RTM0VjR0lnRDd0RjJOaDRMRnQ1?=
- =?utf-8?B?eEdOZTZpYVpVUFgxMmNnMHBYTThqZCtWWlhvaDZvbUR4NXJadFZNRE4rNDFQ?=
- =?utf-8?B?L0dPb0wzekxxeldOQ1QwenF3cEhob2lBbk1hRmF1UGJsdGduN29iNXBSR2FI?=
- =?utf-8?B?OW1yUzlLK0lub09jRmZnREhDeEM1Yk9lRVQxTzA1d1hBd1VTWjFBZlhTem5i?=
- =?utf-8?B?N1dhaC9oeWVpUmlqYUMzTVYxUDVVZTJmd2d5Nm1lYkZZTXVqSGRodzMrQ3hp?=
- =?utf-8?B?aFk4UUI4OEtibWViYkxVRHpoUkdOYTU4NEltTG1ybjJLWUphQkJjcUFWUzFs?=
- =?utf-8?B?bm9pWXhGVmpuSFNxZWVvZmpPMFZuSzVmdWpveGZLQ01vNGp1Q1BNSjFZcGda?=
- =?utf-8?B?WUp4TUp1Ry9LZE85WVYxa0pNdnZGT1pPejFXaEJDRU53YmdMcnNpeWRaZHJG?=
- =?utf-8?B?ZGFsUDQ2eEg1bXl3VVJaOXd4d3dlSGJIZ1krNmdiMmIrczljdXZoZlN5YlNL?=
- =?utf-8?B?MUxycm5SKzUxd3lrVGNYUktkZVk0dFZRSFYzSjJpNk9EaXliYUhUK1F5NHpH?=
- =?utf-8?B?Nnl2ZU9UeDRQZ3FTMlp3bUhmazBIZE1Pa0RmU1RWRzAvaUJoWE1EWktTSDFq?=
- =?utf-8?B?VS90NDN2a0E3bkpoc0ZocjE0Y2lyc25nZnMyN2pjS1JFTXlyVXZaQ29xenJ3?=
- =?utf-8?B?cW5NQXU3OGdxN3lLcXR4Zk5hVklLUlVGTXRBR0pNZ2gzQnByMXZURm1Tb3cr?=
- =?utf-8?B?WjNwbldLV2tEZFBWRXhLemlZL2I5U0JPSzA2Q3czMkQvcEhKMklabFNIQnBE?=
- =?utf-8?B?dThHSkE4L01RT0NzNUw4VGhIVCtpYTE4eWhoeFBlVDA5UThHc25DcEtDbm1C?=
- =?utf-8?B?ZitYeGZiVzQ0NDlxYWl5a2UxOFI0cWp5a3M2dTJPMFdLUWg0NnNpVVBDYUxw?=
- =?utf-8?B?dVlUUDl6Zm9UZ09wR1BTeUMvYys5bllBc0lLUGI2YWtWb2NqMkgzcDNSSk1Y?=
- =?utf-8?B?V1dTTXhVSVRXeXlvRlc2a0RpWHdFNjBFSTdzR1c4SkhaeTBCVkhhV1ZtZDRs?=
- =?utf-8?B?OEdaalVTS3IxOXhBcFc3Z1g3dVRSY3pYTG9zSzdGcmRQdkxwLys5NTdTMi91?=
- =?utf-8?B?eW1tTnI5MXpKRFNuVlR2TVNPU3NpR0EzOVkySEdHZ3czTS8wNTBzT092eHZK?=
- =?utf-8?B?dmROb3FDUmxic0ZBN0pWOGcvT2NBaVVaQ0crQjlDaXVpVEwwYjhwWEdzemhQ?=
- =?utf-8?B?b3IwRW83R1NITWNNdGlUMVNoeTg4SHVDSUk4V2szVGk4ZUJ1bkxOb0lnbGx2?=
- =?utf-8?B?eGVrb2dKMmpMNXlYbUF0aGM2MUF4RytlNjBXbS8xVTFoWFFsU0V1UG9CSThF?=
- =?utf-8?B?d2RMMUhXS3Y3cmk4YWd2dGZ6S3hlVzBlVnFBNDVqbUtVNlEybkF3ajJZMzJx?=
- =?utf-8?B?SDJpRmgzcTU2NUVmZ0djc09zQ2pVU0FneWpmLzFTa001aWV1dFcwZTNkVnFB?=
- =?utf-8?Q?avszBtVmIh3LOOx4=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a5684db-14a7-4732-0f79-08de7928c7ed
-X-MS-Exchange-CrossTenant-AuthSource: GV4PR04MB11308.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 13:28:39.5360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: obgc1PecZMB7je7UeSj++/s+JqQrNCOAEWD3dF47MDZ59H8wGj1M47mexwYwky6/E/n8KhpYKHIQ5Iu6vILMXE28j6CRGBxL/yOiBvof3FY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11771
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Krzysztof & Arnd,
+Hi Jonathan,
 
-On 2/25/2026 11:40 AM, Ghennadi Procopciuc wrote:
+On Mon, 2 Mar 2026 12:23:36 +0000
+Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
 
-[ ...]
-
-> Hi Krzysztof & Arnd,
+> On Fri, 27 Feb 2026 14:54:04 +0100
+> Herve Codina <herve.codina@bootlin.com> wrote:
 > 
-> I still believe that nvmem is a suitable and accurate mechanism for
-> describing SoC‑specific identification information, as originally
-> proposed in [0], assuming the necessary adjustments are made.
-> 
-> More specifically, instead of modeling software-defined cells, the nvmem
-> layout would describe the actual hardware registers backing this
-> information. One advantage of this approach is that consumer nodes (for
-> example PCIe, Ethernet, or other IPs that need SoC identification data)
-> can reference these registers using the standard nvmem-cells /
-> nvmem-cell-names mechanism, without introducing custom, per-subsystem
-> bindings.
-> 
-> Looking at the nvmem binding documentation [1], it appears that
-> individual fields of identification registers (similar to MIDR) could,
-> in principle, be exposed using a bits property, for example:
-> 
-> family_letter@4009c004 {
->   reg = <0x4009c004 0x4>;
->   bits = <31 26>;
-> };
-> 
-> That said, an alternative (and arguably more common) approach is to
-> expose entire registers as fixed-layout cells, and let consumers decode
-> bitfields in software. Below is an example of how this would look when
-> embedded in the existing SIUL2 node, without relying on per-field bits
-> properties:
-> 
+> > Setting fwnode->dev is specific to fw_devlink.
+> > 
+> > In order to avoid having a direct 'fwnode->dev = dev;' in several
+> > place in the kernel, introduce fw_devlink_set_device() helper to perform
+> > this operation.
+> >   
+> I don't mind the helper, but the description could do with a little
+> detail on why.  Is it just to avoid visibility of internal details, or
+> is there a stronger reason?
 
-[...]
+I think the idea was to avoid visibility.
 
-> [0]
-> https://lore.kernel.org/all/20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com/
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/nvmem/nvmem.yaml#n82
-> 
+It cames from feedback received on my first iteration
+  https://lore.kernel.org/all/20250408145139.293c79a2@bootlin.com/
 
-Are you comfortable with this proposal?
+I found the idea relevant and so I did the patch.
 
-I'm asking because it was initially considered a viable option, but the
-discussion later shifted to the fact that the nvmem cells were
-fabricated and did not accurately describe the underlying hardware.
+Best regards,
+Hervé
 
--- 
-Regards,
-Ghennadi
