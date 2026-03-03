@@ -1,217 +1,183 @@
-Received: from mail.fris.de (mail.fris.de [116.203.77.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9093ED5B5
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555408; cv=none; b=bk4WOQfQZsCDtvLGX1XuH/Vo/6wZ9J1ZdVgHFdAbeWvJuZDmdEgJpHL87xn76T/lwVVHkzQsNdF5kC/PoXU7IPU+RFEwAF4QcXN4KgD4HuYgSsOYaqQa2HlWa1Fg10xXGX9Qw9okjEt5CZTnkm4HSNLZNRJy0mj5npFsZK4/B0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772555408; c=relaxed/simple;
-	bh=hhA/kekrHLYT7uqa4N13c7/4irrilRSPetcEkoldtSg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rYTWmuUgAFbqTn7omFL3AYaBxkrtkE2f2fSeoJXxRJOOwpP1cxZI/gfG2BA0UO1kXDQvzlZS9Cje8E6y+YyHyM5izFBRYdxWx9SQXSNSW5dpaSlYN2IkjPg4990IQeRy5SKn1u2uu7LLiyKiX3jZMEx5HKJ8VLwf1yFJPq6rAUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=Pp6Nc3Cp; arc=none smtp.client-ip=116.203.77.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADEE3CC9F4
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772555669; cv=pass; b=hGLXFNSo2UyXFApOzEaJ9B9miJP/rSDgi6L6nbHz0UXAmuu6l7YyzMg5mKyVPvzARa8Y62Fg+xo0lJ8knq/ryEdXO162FdbWdXKMJeqh563HZqlrdoROZ6alhRBE9RfEiEZmzMi1jBOXOu55ionj+3bRLVU0SJToGS55RO5tCXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772555669; c=relaxed/simple;
+	bh=YfpJerSZNcEs9ES51CQUrX40G1QuMUASx0dNHuE8DLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aDfFd9WTnLzYvhM3lRUk1jFRtmxXmbMkir/0WPQ0rLi5zPOZTsdw3WGKsMHsZpTJnZglngZlvfK1cSVvvpSJmw9MAaUxRNjT3+EAt0LTJCNc3TDeZDBh+yPA8Hh4EVg0XDukwjL6lAlrqFCTN1adiBiRyVTIDs0AU9aMhsSi0Cw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=iCarABmd; arc=pass smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="Pp6Nc3Cp"
-From: Frieder Schrempf <frieder@fris.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1772555397;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9cQhV2OiJ4DlfedZpH/R3rEHE14PIfUJqqPTZYp7QUU=;
-	b=Pp6Nc3CpwIIn5asGLiOHOSd3GqtpgaZC1ICn9uIEQ91cLlYda6UlSL/49xQ271caQwXLlq
-	hMpMUJrpIzQIvd2vpheuMxHuaVFcwBbtz+aVFlJYnYnlZo9JtVISZr6O/dsk9rs7zuDAQ4
-	WXYlPvXYaFP3RreuqBjioZqs/iUaS2cuArJ2RZoI9fYOtwfNXPfLHCgzxGLfSljp5+P24L
-	VkQChDTAf21LAJE/5LKxGteLJbi0HkFyEET7o/l5Aiviam6y5RC1NNEv1862EkCtcRfzcR
-	DM8tJCWBige64Ri4I+nqm7o3E1x/bU1miPv2RjGx13OQr/S20Nkb8XophmrYXA==
-Date: Tue, 03 Mar 2026 17:29:26 +0100
-Subject: [PATCH RFC 5/7] spi: Add RX sampling point adjustment
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="iCarABmd"
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7d596ab0917so3592679a34.1
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 08:34:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772555667; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ViOeyuHvrFmS6pQcISqiI8DWeticpwenhh1pnZjZ44TMIrpNr0CpdjWMyts/7uzkvc
+         dEeiAHROp246NeziKlrNt3S3Q3ZYla5nnpNM+tJ0tDb/zWAbnzE2NgHM2hNfTJ+Ppf2o
+         ekHmeTBbURZzaCm8cntHwqVSGmxdeykt/P+VGmfmYDoG92/5Gp/uUgt5jtE+M3kMMAEJ
+         M2YGkgaSykPJUUTS5o7m+Y6uySOYAP0Hc69nsQmsxI0atwZI9fiObE417/5wnrromg61
+         pqrFE+cc8c4dcu8JLMqL+PBn7y2ufJk+mlAzKRWf3a/onWi3bm6/7ndhdEmP1Nu7C65N
+         xyyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OInpfxdiwHy6VQDY2/Hp0QyT65G097CPkyEA74gq5QQ=;
+        fh=wh8glsKPqXE3Cubf0Oo/gWYBRm7+yKYpshHVUUjl1nY=;
+        b=Qx7BMGYYb2P7moLRtvOjDZ8GBCsX+2wXCU/h6T+hMrYB0MoVxJZ3wMD7wQNLj9EPOK
+         vWM98U633H9jvRWpQIG/vjzOqv2WpZ4C89Z4/2XYiRADjGcDs99GD8dLjy6ZsZuOHst1
+         GXqmGzNPuvAOHTbtqUb+k2x3fUFlZ79CMhz1Ni7Y27yveYvguvCZvd3IDIp8xlMF4T7q
+         xXK2UpcoWxzQka2tRRxvHX3SI7GNReIcU02IOWa9AIuDhQh9cbZPiJQ2FQdYz7KBJz01
+         QsUOq37U+zCZoJA20EgsxGRgheHMhkdNAqAIeyovHCDYpSipws6KKBomQ95j3TuvOm/H
+         1nQA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1772555667; x=1773160467; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OInpfxdiwHy6VQDY2/Hp0QyT65G097CPkyEA74gq5QQ=;
+        b=iCarABmdqFJdx4609T1A2KQ4SX6MSJu9K1hydNDIxcHeF09zNUhCB0r+VHsEl394fi
+         8S5fG8sBKoXprbEoO8zESJl+fjU9jjzTLyZkH8qam+jtZMQJmeHMclkX5CYBKfBIOJDP
+         m6zCuU6KmSnIp+jRr6CrV7pEWeWSv3jY/8nStbn50C10w2LeRFt1Ofi0RKoQ6aPQOQg0
+         jKZXKIysWEsARpOkznLyGx/AyGdsy7oHXlFUcC51oY+skT6xAHXkEyvsJdh75JQmhqur
+         vMvIPOXk9L5ncBdg1jCC9yIEkCUdy3OoFr333LYiSCnVz0ctSnbEDWeY64Kydn7eqhlq
+         qWiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772555667; x=1773160467;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OInpfxdiwHy6VQDY2/Hp0QyT65G097CPkyEA74gq5QQ=;
+        b=D37EiFBTlO89zOZG9ciOplqbfVCGdS8Ewu+sfSWrH6pBAzSp5VbyX5ZH824OFPRX/A
+         kbh9giO+Jo/C27W/PPI6AuEAmUaFSGrqAblZJc0nHMUxSq9c/mtmBh3C70GUgAdO+hS3
+         fQ7kjkUE2fPmv9q3VtqIIpe0jtOwoew9SqfXCFB/NA5TjtZ43In1RUKBPN7vzEH7i63q
+         ja3/8YUyhomT0yQMxFPZAJlLXb6cnxNaToyg5YYKvi5Et6iw8ylPAPBXCJWXzt9HmOhq
+         lGDljecH4SU0i34Fa3KHtTfFsJh+V5udBdenJ5aovVWU1yyw7khQ617jJKIa+Se26nnV
+         tixQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIGYHgPORE7ncyaC13mNsagMJb/N67gnwhtqZGTrTKgTPm0GuJvsZVJqVdFVZ6hFJ+Cyo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzInE4xKvaQBUoCLUoDJriwRr1+9q4g0txBKjaq20YIMtTW0TJR
+	tQk3MTyh6OmRjjO7ieqB7vyCviEzHRgXBLPbDZej8ljiswfoH3BFL5ucPgdXBhEJP4HN2oqgUi6
+	YvzN3GYTHfFJtTagg/IBkjD3Xv7dI+wXxu/C6yZ9DsA==
+X-Gm-Gg: ATEYQzwCOXv+m84V5jE6y2QdEY6DMOXQqlnChumiRgjAjkgGo4l4Pcx7jMyZS2zwaqY
+	IrfcvFrsb9szUA7H+rVt9oJkoYw+c9sROnSFnbKGITLKrKsMho5Qkkfjr8pkqt5rshPsOvGqnK9
+	dvyV2jtT4tUKB2Y6wt7dvgI7XF2FU2CDfxp1aOZNwqbwEqODQXE2EPIxErkpIytlYHvhjh/5F+B
+	+fdlYhHPjuqadtrWbnu9fz0wf3ITZ0C+6N/UnlZxdkyAglK5HInsdHyumyMJwmW8J05OIemGseE
+	MMNIePU=
+X-Received: by 2002:a05:6830:6e54:b0:7d4:8c9d:dd2b with SMTP id
+ 46e09a7af769-7d5be1fc888mr1174689a34.0.1772555666720; Tue, 03 Mar 2026
+ 08:34:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-5-9326bbc492d6@kontron.de>
-References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
-In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
-To: Mark Brown <broonie@kernel.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Han Xu <han.xu@nxp.com>
-Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mtd@lists.infradead.org, imx@lists.linux.dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5737;
- i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=rxgCw1+pDnvqWT9mh/JJrKWrgFwnOW+QIMt7NVQjShA=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T1PNxMPcscmFyyfYnjr8/q6q+a90g/o38crb2qQ8d
- mxaWDi7o5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCJ96xkZlh+yqPtidcB03rWP
- ajO+6vJd0BOUEqnI/r9s4Q9/UanKs4wMd4uyjh3jXLjs4ctnxz0k1pSpc7WKLkh7zKlYdNoncFc
- UOwA=
-X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
- fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
+References: <23024521.EfDdHjke4D@steina-w>
+In-Reply-To: <23024521.EfDdHjke4D@steina-w>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 3 Mar 2026 08:34:14 -0800
+X-Gm-Features: AaiRm50Px49HlJBebz525BmL7mRczLSo_5VnSZhLsGQrektayrJby8PDCB-XxsA
+Message-ID: <CAJ+vNU1m6Uw8GrXO5+o6UGRUwcXrVJJ0BSUF4rrqLN+RsL6Mrw@mail.gmail.com>
+Subject: Re: i.MX8M Plus PCIe link regression
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, Richard Zhu <hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+On Tue, Mar 3, 2026 at 4:38=E2=80=AFAM Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi,
+>
+> these days I noticed that there is a PCIe link regression on my i.MX8MP
+> platform (TQMa8MPxL) running next-20260227.
+> I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip link up
+> workaround for newer platforms"). I always get the following errors:
+>
+> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error =
+-110
+>
+> Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2 device=
+ is
+> detected without issues.
+>
+> Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
+> b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both Gen 1 =
+and
+> Gen 2 devices are detect. Commit 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc=
+ is only
+> required for conflict free revert.
+>
+> Here is a summary with outputs:
+> Gen 1 device
+> > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
+> > RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 01)
+>
+> Gen 2 device
+> > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 PCIe SA=
+TA 6
+> > Gb/s RAID controller (rev 20)
+>
+> output of "dmesg | grep imx6q-pcie". Common part for all tests:
+> > imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+> > imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
+> > 0x0000000000
+> > imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
+> > 0x0018000000
+> > imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 =3D=3D cpu 0x1ff0000=
+0
+> > imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K, limit =
+16G
+>
+> next-20260227
+> Gen 1
+> > imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_STA=
+RT
+> > imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with erro=
+r -110
+>
+> Gen 2
+> > imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+>
+> next-20260227 + reverts
+> Gen 1
+> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+>
+> Gen 2
+> > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> > imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+> > imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+>
+> What can we do here? I'm wondering why Gen 2 trains correctly, while Gen =
+1
+> doesn't.
+>
+> Best regards,
+> Alexander
 
-Some SPI devices such as SPI NAND chips specify a clock-to-RX-sampling
-delay constraint, which means that for the data read from the device
-at a certain clock rate, we need to make sure that the point at
-which the data is sampled is correct.
+Hi Alexander,
 
-The default is to assume that the data can be sampled one half clock
-cycle after the triggering clock edge. For high clock rates, this
-can be too early.
+Does your link partner perhaps suffer from some errata?
 
-To check this we introduce a new core function spi_set_rx_sampling_point()
-and a handler set_rx_sampling_point() in the SPI controller.
+Ironically I have had PCI link issues that required the patch you are
+needing to revert on IMX8MP with specific switches.
 
-Controllers implementing set_rx_sampling_point() can calculate the
-sampling point delay using the helper spi_calc_rx_sampling_point()
-and store the value to set the appropriate registers during transfer.
+Best Regards,
 
-In case the controller capabilities are not sufficient to compensate
-the RX delay, spi_set_rx_sampling_point() returns a reduced clock
-rate value that is safe to use.
-
-This commit does not introduce generic logic for controllers that
-don't implement set_rx_sampling_point() in order to reduce the clock
-rate if the RX sampling delay requirement can not be met.
-
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
- drivers/spi/spi.c       | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |  8 ++++++
- 2 files changed, 81 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 61f7bde8c7fbb..b039007ed430f 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3988,6 +3988,77 @@ static int spi_set_cs_timing(struct spi_device *spi)
- 	return status;
- }
- 
-+/**
-+ * spi_calc_rx_sampling_point - calculate RX sampling delay cycles
-+ * @spi: the device that requires specific a RX sampling delay
-+ * @freq: pointer to the clock frequency setpoint for the calculation. This gets
-+ *        altered to a reduced value if required.
-+ * @max_delay_cycles: the upper limit of supported delay cycles
-+ * @delay_cycles_per_clock_cycle: the ratio between delay cycles and
-+ *				  master clock cycles
-+ *
-+ * This function takes in the rx_sampling_delay_ns value from the SPI device
-+ * and the given clock frequency setpoint and calculates the required sampling
-+ * delay cycles to meet the device's spec. It uses the given controller
-+ * constraints and if those are exceeded, it adjusts the clock frequency
-+ * setpoint to a lower value that is safe to be used.
-+ *
-+ * Return: calculated number of delay cycles
-+ */
-+unsigned int spi_calc_rx_sampling_point(struct spi_device *spi, unsigned int *freq,
-+					u16 max_delay_cycles,
-+					u16 delay_cycles_per_clock_cycle)
-+{
-+	unsigned long long temp;
-+	u16 delay_cycles;
-+
-+	/* if sampling delay is zero, we assume the default sampling point can be used */
-+	if (!spi->rx_sampling_delay_ns)
-+		return 0;
-+
-+	temp = *freq * delay_cycles_per_clock_cycle * spi->rx_sampling_delay_ns;
-+	do_div(temp, 1000000000UL);
-+	delay_cycles = temp;
-+
-+	if (delay_cycles > max_delay_cycles) {
-+		/*
-+		 * Reduce the clock to the point where the sampling delay requirement
-+		 * can be met.
-+		 */
-+		delay_cycles = max_delay_cycles;
-+		temp = (1000000000UL * delay_cycles);
-+		do_div(temp, spi->rx_sampling_delay_ns * delay_cycles_per_clock_cycle);
-+		*freq = temp;
-+	}
-+
-+	dev_dbg(&spi->controller->dev, "calculated RX sampling point delay: %u cycle(s) at %lu KHz", delay_cycles, *freq / 1000);
-+
-+	return delay_cycles;
-+}
-+EXPORT_SYMBOL_GPL(spi_calc_rx_sampling_point);
-+
-+/**
-+ * spi_set_rx_sampling_point - set the RX sampling delay in the controller driver
-+ * @spi: the device that requires specific a RX sampling delay
-+ * @freq: the clock frequency setpoint for the RX sampling delay calculation
-+ *
-+ * This function calls the set_rx_sampling_point() handle in the controller
-+ * driver it is available. This makes sure that the controller uses the proper
-+ * RX sampling point adjustment. This function should be called whenever
-+ * the devices rx_sampling_delay_ns or the currently used clock frequency
-+ * changes.
-+ *
-+ * Return: adjusted clock frequency
-+ */
-+unsigned int spi_set_rx_sampling_point(struct spi_device *spi, unsigned int freq)
-+{
-+	if (spi->controller->set_rx_sampling_point)
-+		return spi->controller->set_rx_sampling_point(spi, spi->max_speed_hz);
-+
-+	return freq;
-+}
-+EXPORT_SYMBOL_GPL(spi_set_rx_sampling_point);
-+
- /**
-  * spi_setup - setup SPI mode and clock rate
-  * @spi: the device whose settings are being modified
-@@ -4090,6 +4161,8 @@ int spi_setup(struct spi_device *spi)
- 		}
- 	}
- 
-+	spi->max_speed_hz = spi_set_rx_sampling_point(spi, spi->max_speed_hz);
-+
- 	status = spi_set_cs_timing(spi);
- 	if (status) {
- 		mutex_unlock(&spi->controller->io_mutex);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 4f8a0c28e1d46..f5be4f54d1424 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -685,6 +685,9 @@ struct spi_controller {
- 	 */
- 	int (*set_cs_timing)(struct spi_device *spi);
- 
-+	/* set RX sampling point */
-+	unsigned int (*set_rx_sampling_point)(struct spi_device *spi, unsigned int freq);
-+
- 	/*
- 	 * Bidirectional bulk transfers
- 	 *
-@@ -1337,6 +1340,11 @@ extern int spi_setup(struct spi_device *spi);
- extern int spi_async(struct spi_device *spi, struct spi_message *message);
- extern int spi_target_abort(struct spi_device *spi);
- 
-+unsigned int spi_calc_rx_sampling_point(struct spi_device *spi, unsigned int *freq,
-+					       u16 max_delay_cycles,
-+					       u16 delay_cycles_per_clock_cycle);
-+unsigned int spi_set_rx_sampling_point(struct spi_device *spi, unsigned int freq);
-+
- static inline size_t
- spi_max_message_size(struct spi_device *spi)
- {
-
--- 
-2.53.0
-
+Tim
