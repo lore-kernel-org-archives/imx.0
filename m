@@ -1,189 +1,186 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B60438F63F
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 09:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A70A39890C
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 10:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772531661; cv=none; b=hGL10LyESSEHkmvEHcxfCCcqOzu3YptuysMN/qoaQDXn3derI5pjYJGI2ilh73yEFdIZTyj9QaamWQDovmFK1qs73yZM2Q0E7NW9AZrkY7WGAHa5AVEhHZmXLXnO4qHRiihEpnmqmlcKcDtfkMt/1qXXYCUPZI6zYuPPXRQvQec=
+	t=1772532823; cv=none; b=ZdzApyMMjpoEz/odo2Khx4illZGtiuF1UyVIyi/L29EPAmrMJmOCB7xzW+YpeJTW3r4vjh6DvTtbIJ1sqlglqwVUdrgVraYAREPOZtnUUDmpSeFYvEWLO0UlEdji1iWX9AqxyXVDguT0BigtQNCQyo1lHYi1mfy+MWAB1m0ZuYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772531661; c=relaxed/simple;
-	bh=d3yrrUMprMXThY8dV86NIYBbK0Wr0DMzlFlkODlPjwM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=dxl1DhzLyuSEA85gqGjqrDFti1XduH2hKdMv9+cjiN8CHdTOgyiA+MkDFuTnBXGjhhnVCMRgnJclgZ6/wMPTUIjGUWwv+euPJ1GQX/rmoxlbm+dr8pY9IntI1MmehZ/jZtPAHs4/IN4x3WNM5Potoy8CblK125xrW9nMukoxR1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yHIp9qbL; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yHIp9qbL"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B233C1A22B4;
-	Tue,  3 Mar 2026 09:54:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7E5205FF29;
-	Tue,  3 Mar 2026 09:54:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0481103695F3;
-	Tue,  3 Mar 2026 10:54:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772531654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=D4B+fqv1Q4afrFn9HAZJqj6Nm/zmdWDCD9AzHRpLCIw=;
-	b=yHIp9qbLWNRM7L5uL0cVbKgUvYxtLjY07FFZee+XHhU87qlGyOf/Wl0Jl0SmOlQo9Xj4O8
-	JrpFG1OpxJpXIyrPSPKvXXMdy8oJi2/NfP9MfAuFTTCqRINrXOE+WvebbLJSDNkCIAfTQm
-	CIV5U72GuO05+L8eUIjWkdTHnSuMyMBPogbwauxcOoslNwkxh2yY9kYxEl9M+2zXM3Z4tL
-	KcypOlo6T5fTDAfdPd3PR2IaImE8gF1mH6TDjRJdZvd/o0rQPy9GTQU/h/9bTeXrdGzGby
-	sP1FFCi3BGPc9xts2phfbOFkqwsKMg/DDdbgwn4vyExKtFojI9gRWU6xa8ca0Q==
+	s=arc-20240116; t=1772532823; c=relaxed/simple;
+	bh=aOxhc6XiKyqjFRyylPkVA9D1penuoruaQ6JHGItXsGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SxAPadIG3hR2MwYG2dWFmTr563U1KF1R+Nk9F42WfI6DzzpF0CQq/OA71tzKC9GkeICFWs8f6yEm9uFT0noh+myYs/57843yCEk/R4gBEFSt1kqMsDIqcD4jxWIUnYHC6gipSzDQ2yyjPpYAqj2gjRys/hUfAV1rpVJCajGEn7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxMkl-0001RA-VG; Tue, 03 Mar 2026 11:13:23 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxMkj-003Wua-0a;
+	Tue, 03 Mar 2026 11:13:22 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vxMkk-0000000G2Od-1b45;
+	Tue, 03 Mar 2026 11:13:22 +0100
+Date: Tue, 3 Mar 2026 11:13:22 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, frank.li@nxp.com
+Subject: Re: [PATCH v10 2/3] drm/bridge: imx: Add i.MX93 parallel display
+ format configuration support
+Message-ID: <2mbaz4jixv3h5ofvaneoe7muwr7snvwzs6lulorj4yul6arglt@ac5kzsx7zw4c>
+References: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
+ <20260302-v6-18-topic-imx93-parallel-display-v10-2-634fe2778c7a@pengutronix.de>
+ <d97a9c0c-bdda-466a-8131-73799cdb20cd@nxp.com>
+ <jyawx2cllg2jecdvx6bdfv4qiinfiwb6cuuwdhditpr2g2evee@qiox37ahgczd>
+ <edc74093-abe3-4782-8e81-afd87222c146@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Mar 2026 10:54:03 +0100
-Message-Id: <DGT20ZJ3Q4WP.3OTQJYWGSYGUD@bootlin.com>
-Subject: Re: [PATCH v9 10/15] drm/bridge: analogix_dp: Add new API
- analogix_dp_finish_probe()
-Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
- <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
- <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
- <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
- <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
- <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
- <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
- <andy.yan@rock-chips.com>, <dmitry.baryshkov@oss.qualcomm.com>,
- <dianders@chromium.org>, <m.szyprowski@samsung.com>,
- <jani.nikula@intel.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
-To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
- <neil.armstrong@linaro.org>, <rfoss@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
- <20260210071225.2566099-11-damon.ding@rock-chips.com>
-In-Reply-To: <20260210071225.2566099-11-damon.ding@rock-chips.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <edc74093-abe3-4782-8e81-afd87222c146@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hello Damon,
+On 26-03-03, Liu Ying wrote:
+> On Tue, Mar 03, 2026 at 09:05:43AM +0100, Marco Felsch wrote:
+> > On 26-03-03, Liu Ying wrote:
+> >> On Mon, Mar 02, 2026 at 05:10:41PM +0100, Marco Felsch wrote:
+> >>> From: Liu Ying <victor.liu@nxp.com>
+> >>>
+> >>> NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
+> >>> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> >>> field. Add a DRM bridge driver to support the display format configuration.
+> >>>
+> >>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> >>> [m.felsch@pengutronix.de: port to v7.0-rc1]
+> >>> [m.felsch@pengutronix.de: add review feedback (Alexander)]
+> >>> [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
+> >>> [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
+> >>> [m.felsch@pengutronix.de: add bus-width support]
+> >>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> >>> ---
+> >>>  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
+> >>>  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
+> >>>  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 225 ++++++++++++++++++++++++++++++++
+> >>>  3 files changed, 237 insertions(+)
+> >>>
+> >>
+> >> [...]
+> >>
+> >>> +static bool imx93_pdfc_bus_output_fmt_supported(const  u32 fmt)
+> >>
+> >> As I mentioned in v9, can you drop const?
+> >> I don't think const is needed.
+> > 
+> > It makes sense to spot failures early. Albeit this function is very
+> > small, the fmt shouldn't be changed and therefore needs to be const.
+> 
+> If fmt is a pointer, then I think it makes sense to keep const.
+> Otherwise, it looks a bit over engineered to have const, since this
+> function is really small and no one would try to change fmt.
 
-On Tue Feb 10, 2026 at 8:12 AM CET, Damon Ding wrote:
-> Since the panel/bridge should logically be positioned behind the
-> Analogix bridge in the display pipeline, it makes sense to handle
-> the panel/bridge parsing on the Analogix side. Therefore, we add
-> a new API analogix_dp_finish_probe(), which combines the panel/bridge
-> parsing with component addition, to do it.
->
-> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+I'm aware that this is a copy of the output_cfg.format value. Would it
+be a non const value you could mess with it and return the wrong value
+afterwards. Keeping it const avoids this. Not sure why a 'const' is
+worth the discussion :/
 
-...
+> > I forgot to add the double space fix though, thanks.
+> > 
+> >>> +{
+> >>> +	int i;
+> >>> +
+> >>> +	for (i = 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
+> >>> +		if (imx93_pdfc_bus_output_fmts[i] == fmt)
+> >>> +			return true;
+> >>> +	}
+> >>> +
+> >>> +	return false;
+> >>> +}
+> 
+> [...]
+> 
+> >>> +static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
+> >>> +					  struct drm_bridge_state *bridge_state,
+> >>> +					  struct drm_crtc_state *crtc_state,
+> >>> +					  struct drm_connector_state *conn_state)
+> >>> +{
+> >>> +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
+> >>> +	const u32 format = bridge_state->output_bus_cfg.format;
+> >>
+> >> Can you drop const?
+> > 
+> > No because this function is not supposed to change the format. The
+> > function documentation says: this function can alter the bus_cfg.flags
+> > bit _not_ the format.
+> 
+> The local variable format is not a pointer, so literally the value of
+> bridge_state->output_bus_cfg.format cannot be changed through format,
+> which follows the documentation.  So, I think const could be dropped.
 
-> @@ -1581,6 +1583,52 @@ struct drm_dp_aux *analogix_dp_get_aux(struct anal=
-ogix_dp_device *dp)
->  }
->  EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
->
-> +static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
-> +{
-> +	struct analogix_dp_device *dp =3D to_dp(aux);
-> +	struct analogix_dp_plat_data *plat_data =3D dp->plat_data;
-> +	int port =3D plat_data->dev_type =3D=3D EXYNOS_DP ? 0 : 1;
-> +	int ret;
-> +
-> +	/*
-> +	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no va=
-lid panel
-> +	 * or bridge nodes. The driver should go on for the driver-free bridge =
-or the DP
-> +	 * mode applications.
-> +	 */
-> +	ret =3D drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
-> +					  &plat_data->panel, &plat_data->next_bridge);
-> +	if (ret && ret !=3D -ENODEV)
-> +		return ret;
-> +
-> +	return component_add(dp->dev, plat_data->ops);
-> +}
-> +
-> +int analogix_dp_finish_probe(struct analogix_dp_device *dp)
-> +{
-> +	int ret;
-> +
-> +	ret =3D devm_of_dp_aux_populate_bus(&dp->aux, analogix_dp_aux_done_prob=
-ing);
-> +	if (ret) {
-> +		/*
-> +		 * If devm_of_dp_aux_populate_bus() returns -ENODEV, the done_probing(=
-) will
-> +		 * not be called because there are no EP devices. Then the callback fu=
-nction
-> +		 * analogix_dp_aux_done_probing() will be called directly in order to =
-support
-> +		 * the other valid DT configurations.
-> +		 *
-> +		 * NOTE: The devm_of_dp_aux_populate_bus() is allowed to return -EPROB=
-E_DEFER.
+Same here, I'm aware that this is not the pointer value but it holds a
+copy of the value. Any adaptions made to the copy will fail, any
+assignment of a const value to a non const value will prints at least a
+warning to show that something is wrong within this function. Only a
+direct bridge_state->output_bus_cfg.format assigned would cause no
+compiler error/warning, fingers crossed that this will not happen.
 
-Uhm, if it is allowed to return -EPROBE_DEFER...
+I'm not sure why the 'const' is such a big problem in your oppinion.
+Everything works just fine and we've done everything in our power to
+avoid a wrong function behavior.
 
-> +		 */
-> +		if (ret !=3D -ENODEV) {
-> +			dev_err(dp->dev, "failed to populate aux bus\n");
-> +			return ret;
-> +		}
+Regards,
+  Marco
 
-...then you shouldn't dev_err() when -EPROBE_DEFER is returned.
 
-Either use dev_err_probe() (which would also simplify your code) or check
-for if (ret !=3D -ENODEV && ret !=3D -EPROBE_DEFER).
+> 
+> > 
+> > Regards,
+> >   Marco
+> > 
+> > 
+> > 
+> >>
+> >> -- 
+> >> Regards,
+> >> Liu Ying
+> >>
+> > 
+> 
+> -- 
+> Regards,
+> Liu Ying
+> 
 
-> +
-> +		return analogix_dp_aux_done_probing(&dp->aux);
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(analogix_dp_finish_probe);
-> +
->  MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
->  MODULE_DESCRIPTION("Analogix DP Core Driver");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analog=
-ix_dp.h
-> index 3428ffff24c5..bae969dec63a 100644
-> --- a/include/drm/bridge/analogix_dp.h
-> +++ b/include/drm/bridge/analogix_dp.h
-> @@ -30,6 +30,7 @@ struct analogix_dp_plat_data {
->  	struct drm_bridge *next_bridge;
->  	struct drm_encoder *encoder;
->  	struct drm_connector *connector;
-> +	const struct component_ops *ops;
+-- 
+#gernperDu 
+#CallMeByMyFirstName
 
-Is adding a new stored field a good idea? Can it be instead passed as an
-argument to analogix_dp_finish_probe()?
-
-Note I don't have a strong opinion here, just the added struct field seems
-overkill for being used just once.
-
-> @@ -49,5 +50,6 @@ int analogix_dp_stop_crc(struct drm_connector *connecto=
-r);
->
->  struct analogix_dp_plat_data *analogix_dp_aux_to_plat_data(struct drm_dp=
-_aux *aux);
->  struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp);
-> +int analogix_dp_finish_probe(struct analogix_dp_device *dp);
->
->  #endif /* _ANALOGIX_DP_H_ */
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
