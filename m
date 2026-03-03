@@ -1,35 +1,37 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F361D4DD6F1
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8AD4F7968
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555832; cv=none; b=eU+PT+5C9oqF4zaR3Uy+rfNNrD8/bp4LTsGQFVVlh89MfR58zqL8LOTAp+CaPnoVn99Cgh6GGDAfkK4hSAWVX7xxMqBC9sbjEzsrrs01bUxVeS2I6ivDw0q45o9sFWutXdpO2GkOdoOw7VnOKrDhk6lwTFtXNogjUNBez2SxR3c=
+	t=1772555832; cv=none; b=N/uFraU+NyUbbeyZHMHf351FLlKP+ejqH2Mrfxry5Fa9e4N9kaQqyrfyVrhSvoQJn8UZTNqtePPhs/Lca3m1wGIiD5RKzmbW7kdyHqdPL5xACoQqEM5xV5nLYnVza5VhHS+5+I21skkN7NsGaMB2SzW7P2I/qGf6Qzi4Pd/2+Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772555832; c=relaxed/simple;
-	bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HMw0rpmwj5t3NZoyrEBb/M0RwVdC/FZs26FCEPQfMCclBRuxUcRqcNhEjHLVfcblAQP7+KwuS0HsPOFxB7Zsez1Z3HrvW3AGheGRmH6YT6XEhuLFs9AiSSPEZLs4Eax7otSjsHeuxtTlzpAkz9tWnQn4CEIhNjjIr5p4dPCVBug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=J8D4EZ6B; arc=none smtp.client-ip=116.203.77.234
+	bh=u/mj6enjZVhQTntyAzChX6YGjn8caASUn1GrbNlmsRY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kY9pINi5YMso42sVMJmrTrKc1SMoET1VSTaqiVcVWwOXgruFH5rBFF0sv4SgPb3Tr4RjgnDC+z0Th1sIhOo71Trj7ftTAYs7vL7OwafSfpGZDmLhEy+MNftfbDFUz5YtNmCvXj5uUisO8+xn8qXHApCpAnQA8UAjeuGuA8TpfNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=Pr5md9R9; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="J8D4EZ6B"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="Pr5md9R9"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1772555396;
+	t=1772555397;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yyUqdUEqhJyknAkJorlxRX2q3YtJbxtKcmib+aj9K9c=;
-	b=J8D4EZ6By/kAutGk56KiJkwZi/LnkHlnmvP+lm+lDnFc2ftdzb0zwc4GZrv331+baXn3/c
-	1pqto+EsmpSk0m370KTbHaMuq0LkKMDSZKapc3bJGBw569vQWyJtLKo9YPS9BLELBkCuWy
-	ZZV8HwVNXxvzskFmDUK4brWuq9S39MrZgeQHz154g19UN7lxIAF7fLzT0MMIGGShavPDkG
-	ku1yuGUhHrRHX5g96dQPGt7P6cJrjjYHpbal8e/xvV7s69x8QK15pPF07yTbB/RngcJB/D
-	9wCyFMLEcuTNX4p4ruWuEv49q3tVw/NqxcrdqFEMbsqp30uUQoJuYOgULH0iNA==
-Subject: [PATCH RFC 0/7] Support for SPI RX Sampling Delay Compensation
-Date: Tue, 03 Mar 2026 17:29:21 +0100
-Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n4V326l6j+UN/QUc6C6H7//EMmn8uimk+2KtK4YoNFE=;
+	b=Pr5md9R9pPJa1rWI6bCDoa9yT9iO6BLgDEl6wtN5sjCoQ7OLktynCTxAUCIktNmBpgNor7
+	i+TCleRAdZL7RW2bTcXgs8AHpK5Kd3oW19FtJ4XfqzNXL/dSkPAMjRs6oeH4Lrp6FTqK1a
+	dyBlxXfF8bfrPff26q+heIpY+BBhTmzq8kWv9tNyA6EsikQa7FlRZVuHCjpyB+ZqPWVH+S
+	te15eCRncYbcisgU9Byr4U6t4auQo/m2SNpEyE3InOQGdeEcO1gHwEueU4Da/aNPpXTQ+6
+	4lFO+jYgGDqJ+euBpvKEQ6TyscBA2p6XFY6QQumVoMlPo3YYUtl5pD/Ld9EYXQ==
+Date: Tue, 03 Mar 2026 17:29:25 +0100
+Subject: [PATCH RFC 4/7] mtd: spinand: toshiba: Add RX sampling delay
+ values
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -38,10 +40,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQqDMAwA0F+RnA20BoV5HfgBXmWHotEFalcbG
- B3iv694fJd3gnISVuirExJ/ReUTCmxdwfx2YWOUpRga03SGDOGqHg+Ngimjuj16CRsu7N0PH5a
- IWztzawhKEBOvku98gnF4wuu6/ojaOc5xAAAA
-X-Change-ID: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-4-9326bbc492d6@kontron.de>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
 To: Mark Brown <broonie@kernel.org>, 
  Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
@@ -52,103 +53,199 @@ Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
  Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mtd@lists.infradead.org, imx@lists.linux.dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4091;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8132;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9O1gN/bt7Cx5ixWrG/lFfpxen7CC8GVy6s+sJ74Y
- BkXPdm0o5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCIz5jEyrC9s2bq4tH1BIFP4
- rRjRk3fZQ0RuNK9pt7r/e1/Obun+mYwMmz62L+gX9mOUC64ut6hj2PSFS6Fks3J2aW9DwY/Lbh6
- 8AA==
+ bh=YS9m+8/VwL0xEzMaavaBPStGEta14s9GR3DcIa/S2T4=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9NcLc6rK749PvtjZb989Iwvn8Qi3Is/T3yWyniqQ
+ qiYR0Wto5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCJxNYwMJ9dMmLr/6m49VjXb
+ h5senFN68zVswfXjGXPeuhU53zzq38TwP/fnogvK9kcnRx5w1RARLT3k/5WzVu3nmuDLvInmjm+
+ u8wEA
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-This is an attempt to continue the efforts started in [1] to support
-SPI devices that are clocked at high speeds and have a significant
-delay in the RX path.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-This aims to handle the known RX path delay introduced by the SPI
-device itself and specified in the datasheet as maximum tCLQV value
-by:
+Add tCLQV (Clock Low to Output Valid) parameter from datasheets
+for Toshiba/Kioxia SPI NAND chips. This allows to let the drivers
+properly handle high sampling delays at high clock speeds.
 
-1. Applying compensation if the controller driver supports it
-2. Reducing the clock frequency to a safe value if the controller
-   driver's compensation capabilities are exceeded.
-
-I'm sending this as a new RFC as quite a few things have changed
-compared to [1] and a lot of time has passed. Also I'm quite unsure
-if the layering for this implementation is correct and wether
-it conflicts or overlaps with the PHY tuning series [2] in some
-way.
-
-This approach adds a new attribute for SPI devices to track the
-RX sampling delay requirements of the device and extends the SPI
-NAND drivers for Toshiba and Winbond devices to specify the values
-from the datasheets (patch 1-4).
-
-Then it adds calls to a new handler in the SPI controller drivers to
-the core and provides a generic helper to calculate the delay cycles
-(patch 5-6).
-
-At last it implements the new handler for the FSL QSPI driver in
-order to compensate the RX sampling delay, or as a fallback reduce
-the clock rate to a value that is safe to use without violating the
-RX sampling delay requirement of the device (patch 7).
-
-This does not yet implement the fallback to reduce the clock rate
-for controllers that don't have compensation capabilities or that
-have not yet implemented the compensation handler. Therefore this
-series doesn't cause changes in behavior for controllers other than
-FSL QSPI.
-
-Please note that some drivers such as spi-stm32-qspi.c currently
-enable a RX sampling delay of one half clock cycle unconditionally
-for all devices. While this works in general, as all currently known
-devices are in range of sampling the data at this point, when testing
-this approach with FSL QSPI it failed at low clock rates (e.g.
-100 kHz). This is probably due to the sampling happening too late,
-when the data line is alredy changing its state as the delay is
-negligible compared to the (rather long) clock period in this case.
-
-This series was tested on i.MX6UL with the following SPI NAND devices:
-
-* Toshiba/Kioxia TC58CVG2S0HRAIJ (133 MHz, tCLQV max. 6 ns)
-* Winbond W25M02GV (104 MHz, tCLQV max. 7 ns)
-* Winbond W25N02KV (104 MHz, tCLQV max. 7 ns)
-
-The former two chips seem to work fine even without this patchset,
-probably due to the actual RX sampling delay being lower than the
-maximum value specified in the datasheet. The latter chip fails
-reading at 104 MHz without RX sampling delay compensation.
-
-[1] https://lore.kernel.org/all/20231026152316.2729575-1-estl@gmx.net/
-[2] https://patchwork.ozlabs.org/project/linux-mtd/cover/20260113141617.1905039-1-s-k6@ti.com/
-
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
-Eberhard Stoll (4):
-      spi: Add 'rx_sampling_delay_ns' parameter for clock to RX delay
-      mtd: spinand: Add support for clock to RX delay setting
-      mtd: spinand: winbond: Add RX sampling delay values
-      spi: spi-fsl-qspi: Add support for RX data sampling point adjustment
+ drivers/mtd/nand/spi/toshiba.c | 48 +++++++++++++++++++++++++++---------------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
 
-Frieder Schrempf (3):
-      mtd: spinand: toshiba: Add RX sampling delay values
-      spi: Add RX sampling point adjustment
-      spi: spi-mem: Call spi_set_rx_sampling_point() for each op
+diff --git a/drivers/mtd/nand/spi/toshiba.c b/drivers/mtd/nand/spi/toshiba.c
+index ef649162ee680..7679f3acbae07 100644
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -118,7 +118,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 2Gb (1st generation) */
+ 	SPINAND_INFO("TC58CVG1S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xCB),
+@@ -129,7 +130,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 3.3V 4Gb (1st generation) */
+ 	SPINAND_INFO("TC58CVG2S0HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xCD),
+@@ -140,7 +142,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 1.8V 1Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG0S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xB2),
+@@ -151,7 +154,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 1.8V 2Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG1S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xBB),
+@@ -162,7 +166,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 1.8V 4Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG2S0HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xBD),
+@@ -173,7 +178,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 
+ 	/*
+ 	 * 2nd generation serial nand has HOLD_D which is equivalent to
+@@ -189,7 +195,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 2Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CVG1S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xEB),
+@@ -200,7 +207,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 4Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CVG2S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xED),
+@@ -211,7 +219,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 8Gb (2nd generation) */
+ 	SPINAND_INFO("TH58CVG3S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xE4),
+@@ -222,7 +231,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 1Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG0S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD2),
+@@ -233,7 +243,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 2Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG1S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xDB),
+@@ -244,7 +255,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 4Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG2S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xDD),
+@@ -255,7 +267,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 8Gb (2nd generation) */
+ 	SPINAND_INFO("TH58CYG3S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD4),
+@@ -266,7 +279,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 1Gb (1st generation) */
+ 	SPINAND_INFO("TC58NYG0S3HBAI4",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xA1),
+@@ -277,7 +291,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
+ 	/* 1.8V 4Gb (1st generation) */
+ 	SPINAND_INFO("TH58NYG2S3HBAI4",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xAC),
+@@ -288,7 +302,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
+ 	/* 1.8V 8Gb (1st generation) */
+ 	SPINAND_INFO("TH58NYG3S0HBAI6",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xA3),
+@@ -299,7 +313,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
+ };
+ 
+ static const struct spinand_manufacturer_ops toshiba_spinand_manuf_ops = {
 
- drivers/mtd/nand/spi/core.c    |  1 +
- drivers/mtd/nand/spi/toshiba.c | 48 ++++++++++++++++---------
- drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++--------
- drivers/spi/spi-fsl-qspi.c     | 80 ++++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-mem.c          |  2 ++
- drivers/spi/spi.c              | 73 ++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h    |  5 +++
- include/linux/spi/spi.h        | 11 ++++++
- 8 files changed, 231 insertions(+), 31 deletions(-)
----
-base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-change-id: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
-
-Best regards,
 -- 
-Frieder Schrempf <frieder.schrempf@kontron.de>
+2.53.0
 
