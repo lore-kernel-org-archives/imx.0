@@ -1,197 +1,102 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD1148C3E1
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4164DA556
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553358; cv=none; b=A0Xvp/SpnfeumkQOemt4JVd+KdiLBVGgi7x2GBpXeaLmJqqE0WT60WyJ5969tHH9P91MjjsNdtKz+0uykGM2wUYOh9yiUb60ngwukzmSAS55sX+dRlYIwTMBZcblnkThRsbENOuckJPRAqCaYz6QBGtqFeFILYvcO61T3hflDS8=
+	t=1772554993; cv=none; b=NDaxiunH3h39ezW7jeev8QGKI8doqkR/tmW5GK3BfT/uPxa8+yN20ge0RekH23FacPTb6Cv+EW/6MOUZAXXxWR4DCwiUQ9cK+QpSxrGdj2Uc39Zz2pvDJhXXWiekGDPrk0YwuWXJY3Jx4fqZGrrLoMFR4SvT53AKsb4EdDGzz1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553358; c=relaxed/simple;
-	bh=08otPddaBSK/iJqaPlVYLa99pVemHYoMD+SbFgLpoVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SFWByEmJZX++KGl7eZkdFs/wulnHv9Majy+yd7SygF1N0pZuW3YDDx8j+I58B8NKM/qePw3wCPQ7zDhJ11BKr2dXk+E732DCY+DLSQS9t0PfUuRm5L721QD416PcocO3nk79OG/xHkzikjO8EuYtkkYyv/TaNPaIQXeSIznWInA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pdp4ijtm; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1772554993; c=relaxed/simple;
+	bh=QnDe6CqK7d7iv5p2X8yN4ClZilCQfBmh+Ih5CDsKBrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BwUX2E08XHZqZkyDB6Kux/OWrmwdDoHvltxNpEP/KAjXxJSaCYGR3u72vgfAqUIds0ReKNpTyExcX+id93vOP3V0wrJRzw08mNzN9SlxvFIrGFzXc1bafrTcKBXXZ9Bwyp76cB09OE/NyFAvv+3UwN6bKYNyOe8pzRjvJaRnVm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i7cOzEeN; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pdp4ijtm"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4398d9a12c6so4610669f8f.2
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 07:55:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i7cOzEeN"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2ba895adfeaso5100751eec.0
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 08:23:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772553356; x=1773158156; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1772554987; x=1773159787; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hCve6WB7p5HFK86K5uC4kN5A3SIG4RHj/dCOzJXHcas=;
-        b=Pdp4ijtmN2x1EXmBXJoKJ8gQC6fXz8DuqtjbhEME2AJmRuNxBANzmxjHQ9gkyvu0jC
-         JBLm4xTQlqh8jX8FPSiEHSDBBMMpjW0q2wHPo7Xx0+Q2VGOHUTI+LazQpZPNkttHs9Vc
-         RPcvS/RP2w8WpScpNrt3TUP0RwZCSmfzEMzsfr2Hkt7adSPZlDMQtZHh7/YAYW5DF0Zr
-         FPnT/pmS8+y+bWmgj/RHO15+a1yozX9tKWekLNHt1+3oOguMfFoBejOUCyKbQzmARGvy
-         WtB0uuktA7KBMFgCF2bZy7/qBauVpJv53h15Sci+Ppyek4oWg+CC2U3J6l+Fxujz1FeX
-         iG5g==
+        bh=42DkLzycZBouCea5OS9Ta3kLGIhHRc8gf8Jgyx1nJCE=;
+        b=i7cOzEeNjS5AoJiPVYHZw8vbBzxmY7/IMWJCfQM3wO4Uew9OzOY+txP716GhcwIbKv
+         4+tvmsp/PLqhjpNl3cwOti8YMTH6bWlmdMeapW3LFS+fk4gII2vCOhdQL3L1iEub/35g
+         auJi2oU80ySBQK9C50ezUix8cl2Fv2oDpRukvRKWWqiCzYf8ZxMN4uioSjfxme+DTjxA
+         X042jFdl3CC86pJrI8lmpOyImzQqcTckBoWOliI+bgt5NzUTEXtxrnyRt5+kV/+u4K9/
+         fRxwWh9WrN/+csnNbQsJvqyuEUGmvgxqNkLF4IgaNxdQwDozponRdlxNjRAO7un85zTN
+         1INw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772553356; x=1773158156;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1772554987; x=1773159787;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hCve6WB7p5HFK86K5uC4kN5A3SIG4RHj/dCOzJXHcas=;
-        b=NQpUWKU2be9XvJYuOw0x8p/xekY7umYbIvvLGYtVxuG4bWTjfjjT4sNKWpiG9erAcy
-         o62PmCsubL9PLlfiwKUFSIM5KuLX3RUepoSeIy2lxX4QclB78sm0zFIkWPgezI5WPw/X
-         ooXohUtdz48hiS33YbGZ+hchFTbLvkhKofXAz6TWA3CZIodoAt168vpXgzL1oQ/8KiWH
-         bhvkIf7ZTqp4nUItzZSEj3cg7fh/LnMKlFb3whFlNgfqK5GHX9Vl5hSLHNN7hSh+U2ke
-         EbA+BfgeF9+kIfC2FcGBtScQxEfkDb8MyBUD7JZwNX4PcuKH4gZrs+olMFP/i1RG94ek
-         ipLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUp6M7d/EQUu8F671ylwoAJH1QWDJNo3mwo0S41guUDQun//CNEVI5tgfx8CXK4ahj9lXI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwzQlbzKn72JDKIopq+mG2p5RdH7XbLp47gbgHOV7dBXpK+pQOJ
-	472dt0kzkfxj0K7gAP4L2Gl3s7VCtPQi2bdgm5G3W5ITfIq/c2DZeYi5
-X-Gm-Gg: ATEYQzxSfdMrUoricQQMkap+lqIusQx99mx/076FuZ14I0N4Inj5fIb1CNl51EIT1n6
-	UE8piep16EyxCzrg8frC5WS+gWBxx7es2fM+7Vi28A/cdYCMmBbMuj9wXL1ubyVpYcFu7iwlGy0
-	OyFnS/+/Lye9g9VG0fywWRSBuKaUeho0Dljyb5dflo97LJe9MLCc+0p4vPyhkknn9/+bTXHI1UC
-	yFMtEXmH27FHdU0n10M+TBItY1/pXDM7U3CS1EMS2l4afVRFpaLQhb6IU/R9443C/rG+asY1RQu
-	lvs+s5Bxynoba6Nig+BhLHlXtZuZX0mrJNTfxl9cqtqDzyWFu7S2LHjW/P1b7YXfDOHy9Bgusc6
-	cNxBQ3Q83MDLedzRGOeUJjUBDkzwNOaWlCzfo8qwkITxxfIExb55cl1FyeFH1oXLEWCqWBBoLtf
-	j0VFlqPD6NKciTgq97Za0pEBgOj/VyFtStY9DJFwnab1A7XZnvZZd3rBtly71LkhqV1OP05w==
-X-Received: by 2002:a05:600c:8b84:b0:479:2f95:5179 with SMTP id 5b1f17b1804b1-483c9bb1adbmr288516035e9.15.1772553355437;
-        Tue, 03 Mar 2026 07:55:55 -0800 (PST)
-Received: from [192.168.68.74] (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b485a0b6sm20131646f8f.39.2026.03.03.07.55.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Mar 2026 07:55:55 -0800 (PST)
-Message-ID: <84ccccd0-bbf6-4f36-9862-68264f85ed9e@gmail.com>
-Date: Tue, 3 Mar 2026 16:55:53 +0100
+        bh=42DkLzycZBouCea5OS9Ta3kLGIhHRc8gf8Jgyx1nJCE=;
+        b=IkVPtyZVWyj808ZkiIjTRAoOg+ucYsG3WouKTvwwUWVQ586a+Wm8NSNNO2YouDHuVv
+         engt7SSiEZ1FgDIq4PbHjPjhe/AGYe5oPt5H3x/SYx/FpP7cAjqlIDHQ53wdUEslF4dI
+         k3SuMM6+lNpoyf3Vwafd63RkR2FVjB7zAOwoCKmZhPO2NMlLgbnMYA+U8FsFvPoSk5CE
+         tOlnewqvWsin2/X7fBJ/tNRynJ+b0rekYUTVMf1klHAY2JHXWHYnodfrGWKIZ2CoMu1L
+         z2YHiDENmkOSsVtu6ro7ZI3l4UCMxzA9LhNWtnrVdWrKgT+0ZA0E0gnpzQoK/Wa3apWN
+         U3mg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgTzMA4O05G/xBLV+qctXuiWRY/zCO6vZxE4Iz0pCNGgx8AvaLTtFgN33w8AwoRueNnNI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwyzMjXy/qJrAdz/MGIVDCnmr8DiFMqVTLiQ4yC36jRfaOaasBz
+	D+6zQN2aZMYoy448wor6tR4aaRExYKvKeU9AE71iqdIfhvQdj8ryjQgd
+X-Gm-Gg: ATEYQzwKYAEzWID+J6rwWY4zfVHUJ5kAIufHCIsTTybLdDy+2WrbUo6pWXvHX2vXK59
+	BYi4GQTPxpnUv4RCS6fByyKFvS2OWQf1lEFyADscrfzhp70X6GLkCYgnfUxGgUJQMEWATHuz57q
+	iws9SvtSgCWeOk84K3Un27lXpYKmNCFvwAsK7dMFJc1EaxarC/nVIy4A3Z3hv86M1QwzRo+on1g
+	/SrUpTz0+GkaKyPE8Uo36wJudcrgdQIKuD5d1mjDMydL9Vmne0XA0d52WkAhh0ahjwVLK2380uU
+	GwLxsfVGAvUa8643kH+nEeLOlSlhzEAFnYQo+HEogg0BstWtWGvdcko+gtB4Dw0KRBoQn9jEXfY
+	okKRWwuxiCv4QpL/hzWTtnd8E3RZUKs1Qy5TihZLeYgpRMS7iNSTKTx1TuJocFsPdmvb7Uu4gOS
+	l7LOuYNmevaPjQEcC6uFOBVFNeS0LfUpuktBPU4T2K6rzxibQ=
+X-Received: by 2002:a05:693c:8151:b0:2be:2b16:b99f with SMTP id 5a478bee46e88-2be2b170190mr181320eec.13.1772554986631;
+        Tue, 03 Mar 2026 08:23:06 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdd1cefd7esm14967005eec.9.2026.03.03.08.23.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 08:23:06 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 3 Mar 2026 08:23:04 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com,
+	ysato@users.sourceforge.jp, dalias@libc.org,
+	glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, srini@kernel.org,
+	s.nawrocki@samsung.com, nuno.sa@analog.com,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-sh@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] hwmon: axi-fan: don't use driver_override as IRQ
+ name
+Message-ID: <b46c5757-b67d-4949-b8d8-54b799464b5d@roeck-us.net>
+References: <20260303115720.48783-1-dakr@kernel.org>
+ <20260303115720.48783-4-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] arm64: dts: freescale: imx95-toradex-smarc: Support
- Cortex M7
-To: Frank Li <Frank.li@nxp.com>, peng.fan@oss.nxp.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260303121324.1576841-1-ghidoliemanuele@gmail.com>
- <aacAYYuPkqgV3QYu@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-In-Reply-To: <aacAYYuPkqgV3QYu@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260303115720.48783-4-dakr@kernel.org>
 
-
-
-On 3/3/26 16:38, Frank Li wrote:
-> On Tue, Mar 03, 2026 at 01:13:06PM +0100, Emanuele Ghidoli wrote:
->> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
->>
->> Enable Cortex M7, the vring nodes, a mailbox and reserve DDR memory for
->> the M7. The remoteproc framework is so capable to load and run the M7
->> firmware.
->>
->> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
->> ---
->>  .../dts/freescale/imx95-toradex-smarc.dtsi    | 50 +++++++++++++++++++
->>  1 file changed, 50 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
->> index 5932ba238a8a..77c4a6dee098 100644
->> --- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
->> @@ -42,6 +42,16 @@ clk_serdes_eth_ref: clock-eth-ref {
->>  		enable-gpios = <&som_gpio_expander_1 13 GPIO_ACTIVE_HIGH>;
->>  	};
->>
->> +	cm7: remoteproc-cm7 {
->> +		compatible = "fsl,imx95-cm7";
->> +		mbox-names = "tx", "rx", "rxdb";
->> +		mboxes = <&mu7 0 1
->> +			  &mu7 1 1
->> +			  &mu7 3 1>;
->> +		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
->> +				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>, <&m7_reserved>;
->> +	};
->> +
->>  	connector {
->>  		compatible = "gpio-usb-b-connector", "usb-b-connector";
->>  		/* SMARC P64 - USB0_OTG_ID */
->> @@ -156,6 +166,42 @@ linux_cma: linux,cma {
->>  			alloc-ranges = <0 0x80000000 0 0x7f000000>;
->>  			linux,cma-default;
->>  		};
->> +
->> +		m7_reserved: memory@80000000 {
->> +			reg = <0 0x80000000 0 0x1000000>;
->> +			no-map;
->> +		};
->> +
->> +		rsc_table: memory@88220000 {
+On Tue, Mar 03, 2026 at 12:53:20PM +0100, Danilo Krummrich wrote:
+> Do not use driver_override as IRQ name, as it is not guaranteed to point
+> to a valid string; use NULL instead (which makes the devm IRQ helpers
+> use dev_name()).
 > 
-> I remember driver use hardcode rsc-table, I suggest fan pan to update
-> driver to support memory-region-names to avoid use hidden ABI.
-> 
-> Fan peng, what's current status?
-> 
-> Frank
-> 
->> +			reg = <0 0x88220000 0 0x1000>;
->> +			no-map;
->> +		};
->> +
->> +		vdev0vring0: memory@88000000 {
->> +			reg = <0 0x88000000 0 0x8000>;
->> +			no-map;
->> +		};
->> +
->> +		vdev0vring1: memory@88008000 {
->> +			reg = <0 0x88008000 0 0x8000>;
->> +			no-map;
->> +		};
->> +
->> +		vdev1vring0: memory@88010000 {
->> +			reg = <0 0x88010000 0 0x8000>;
->> +			no-map;
->> +		};
->> +
->> +		vdev1vring1: memory@88018000 {
->> +			reg = <0 0x88018000 0 0x8000>;
->> +			no-map;
->> +		};
->> +
->> +		vdevbuffer: memory@88020000 {
->> +			compatible = "shared-dma-pool";
->> +			reg = <0 0x88020000 0 0x100000>;
->> +			no-map;
->> +		};
->>  	};
->>  };
->>
->> @@ -572,6 +618,10 @@ &lpuart3 {
->>  	pinctrl-0 = <&pinctrl_uart3>;
->>  };
->>
->> +&mu7 {
->> +	status = "okay";
->> +};
->> +
->>  /* SMARC MDIO, shared between all ethernet ports */
->>  &netc_emdio {
->>  	pinctrl-names = "default";
->> --
->> 2.43.0
->>
+> Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Nuno S� <nuno.sa@analog.com>
 
-Thanks Frank. You’re right.
-I spotted that my patch is not working as expected, due to a last minute
-renaming on my side.
-I’ll rework the patch accordingly and send a v2 to align to current expected
-naming.
+Applied.
 
-Emanuele
+Thanks,
+Guenter
