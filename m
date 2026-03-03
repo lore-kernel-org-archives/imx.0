@@ -1,162 +1,197 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010027.outbound.protection.outlook.com [52.101.84.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DDB48C3E1
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553240; cv=fail; b=BMNMAk4GgOMXZju94i38yY3vnBgjOq8XR5qyzIXJqhYrW5eHnNOVD8LyUmWB4kREGxU7QvSZItgcg8ZQnbDDH2OMgN+VDdNoMUx/tLl64EEcvNO7cO8MJQkCk6usxzTIO6wNWB3nQgC4Ir5Wu2J7oJa1e8SOC32Wg5LFilTJa44=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553240; c=relaxed/simple;
-	bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mVJJE8WhCP9DSoc1YSuxsf+2luIMCAfi4OBAz3Bdq3j9vCNGERmAQvGp577I08l4pomgBKCICHQTGLiaJGwEq2q1sVB9rmQYzxDeoDn8b6AgsapS3/Uj6EVBMaDArV0yLw4dacc1+9YNmFLGlTNDhw7REJiiTop0zOnJLLcwz6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dy2ABM78; arc=fail smtp.client-ip=52.101.84.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD1148C3E1
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 15:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772553358; cv=none; b=A0Xvp/SpnfeumkQOemt4JVd+KdiLBVGgi7x2GBpXeaLmJqqE0WT60WyJ5969tHH9P91MjjsNdtKz+0uykGM2wUYOh9yiUb60ngwukzmSAS55sX+dRlYIwTMBZcblnkThRsbENOuckJPRAqCaYz6QBGtqFeFILYvcO61T3hflDS8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772553358; c=relaxed/simple;
+	bh=08otPddaBSK/iJqaPlVYLa99pVemHYoMD+SbFgLpoVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SFWByEmJZX++KGl7eZkdFs/wulnHv9Majy+yd7SygF1N0pZuW3YDDx8j+I58B8NKM/qePw3wCPQ7zDhJ11BKr2dXk+E732DCY+DLSQS9t0PfUuRm5L721QD416PcocO3nk79OG/xHkzikjO8EuYtkkYyv/TaNPaIQXeSIznWInA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pdp4ijtm; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dy2ABM78"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wziwGCVFxIUJbIsxMc3JceWbcmHrfyXgxhwBekSPaWG+YhBvi8oihbPOmPXHUaHPA1JAp1+totAX5bYACoViUGHkUKlVrZhiHRuRKtvZ159rY+v6xHchAhYth6CPEQj/dF6CiQ78a9vEF3IH7qjYh6ioCRR9Le/0Oj8ZUHAQY654Pqxy/GoyNwJsVQvKQ5QzGu8ybeiT2Ro+VlEmYGhhmajQlawWlb502+atw9IkDoeWR61zRySIJn1CYpxbhPXOI7/MUNnz2zYdkSdZBRQZMCYTnTEJ1yvRaIQ9eybuTBRMkmZALauCqpq+uFHF021X7km/Kz+K4CTsQX06QoInaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
- b=BE+f2VNtW/80TYr4aei/ygkrrmln7PB/5D6sAni+lzbKFC5TSJ5ti5HuKIvtUKRYUF4NKLRzoN/usXAsZkEFS52a73pgGkmLPFeq9WaHhTrFdzczGFhCEBnrRzWWDisOaaXAfaEYKlieIIA5ld31Dbzr7KvPker3Yk5QOb4JX2nVilLNfhGxcJ+GP2YIBpx6vyqZOAkWrOinhZZgTulgW2PE382W3u3VpOk/FefiDzSUX5nqL/brm6N/UXea2JnAhoAjSKpx5ASXi9sYiWjQB1sa1Lg2PLDcBZ81Ws06Zo3xO1N6FQqnxryNU3/YXNze1GZ2UlZkxiphyHr7RQbffQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8KB7SJJedz0ghcFBRh7YECjx/G/N+4yd9t91ilfrEq4=;
- b=dy2ABM78jTu8qw7gcu80IF3GPfQyFy1NO9xoPaneRagZa74AlZASfoThevO/snmI8a2qvxSWGKZUtSrcamhDOVWPV9vubbgLwPoeUOFWv9jvlXukkAB076ST1c81McphLG/c5EM+k2DG39PHPSBZ3HEhmShNhEvTFcxyTo74HWkWnWiQWW5i6EaqC46wVYW0fs+6PlpyC/JwxbWLTsVJmv5jt4iPOmvU1iy/PhzCuQzpD/c53ufiZ2+aoa8Rhngozduag9nw26/J++cvhQwh1sampwDAzUVhZTcNnrQsjc84D6Ow1x0Qz8g/pR+6PXn3sJBB9fTDfD8PBOekLWkRgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AM8PR04MB8019.eurprd04.prod.outlook.com (2603:10a6:20b:24b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 15:53:54 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 15:53:54 +0000
-Date: Tue, 3 Mar 2026 10:53:46 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Stefan Eichenberger <eichest@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com,
-	stefan.eichenberger@toradex.com, francesco.dolcini@toradex.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated after last
- read
-Message-ID: <aacECsJ6O8QjHsUa@lizhi-Precision-Tower-5810>
-References: <20260218150940.131354-1-eichest@gmail.com>
- <20260218150940.131354-3-eichest@gmail.com>
- <aZXoTGK_v3L4pc-E@lizhi-Precision-Tower-5810>
- <aZXq4gn4xhInQQlq@eichest-laptop>
- <aaamYByn9dZEIBWb@eichest-laptop>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaamYByn9dZEIBWb@eichest-laptop>
-X-ClientProxiedBy: PH8P220CA0060.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:2d9::16) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pdp4ijtm"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4398d9a12c6so4610669f8f.2
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 07:55:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772553356; x=1773158156; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hCve6WB7p5HFK86K5uC4kN5A3SIG4RHj/dCOzJXHcas=;
+        b=Pdp4ijtmN2x1EXmBXJoKJ8gQC6fXz8DuqtjbhEME2AJmRuNxBANzmxjHQ9gkyvu0jC
+         JBLm4xTQlqh8jX8FPSiEHSDBBMMpjW0q2wHPo7Xx0+Q2VGOHUTI+LazQpZPNkttHs9Vc
+         RPcvS/RP2w8WpScpNrt3TUP0RwZCSmfzEMzsfr2Hkt7adSPZlDMQtZHh7/YAYW5DF0Zr
+         FPnT/pmS8+y+bWmgj/RHO15+a1yozX9tKWekLNHt1+3oOguMfFoBejOUCyKbQzmARGvy
+         WtB0uuktA7KBMFgCF2bZy7/qBauVpJv53h15Sci+Ppyek4oWg+CC2U3J6l+Fxujz1FeX
+         iG5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772553356; x=1773158156;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hCve6WB7p5HFK86K5uC4kN5A3SIG4RHj/dCOzJXHcas=;
+        b=NQpUWKU2be9XvJYuOw0x8p/xekY7umYbIvvLGYtVxuG4bWTjfjjT4sNKWpiG9erAcy
+         o62PmCsubL9PLlfiwKUFSIM5KuLX3RUepoSeIy2lxX4QclB78sm0zFIkWPgezI5WPw/X
+         ooXohUtdz48hiS33YbGZ+hchFTbLvkhKofXAz6TWA3CZIodoAt168vpXgzL1oQ/8KiWH
+         bhvkIf7ZTqp4nUItzZSEj3cg7fh/LnMKlFb3whFlNgfqK5GHX9Vl5hSLHNN7hSh+U2ke
+         EbA+BfgeF9+kIfC2FcGBtScQxEfkDb8MyBUD7JZwNX4PcuKH4gZrs+olMFP/i1RG94ek
+         ipLw==
+X-Forwarded-Encrypted: i=1; AJvYcCUp6M7d/EQUu8F671ylwoAJH1QWDJNo3mwo0S41guUDQun//CNEVI5tgfx8CXK4ahj9lXI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwzQlbzKn72JDKIopq+mG2p5RdH7XbLp47gbgHOV7dBXpK+pQOJ
+	472dt0kzkfxj0K7gAP4L2Gl3s7VCtPQi2bdgm5G3W5ITfIq/c2DZeYi5
+X-Gm-Gg: ATEYQzxSfdMrUoricQQMkap+lqIusQx99mx/076FuZ14I0N4Inj5fIb1CNl51EIT1n6
+	UE8piep16EyxCzrg8frC5WS+gWBxx7es2fM+7Vi28A/cdYCMmBbMuj9wXL1ubyVpYcFu7iwlGy0
+	OyFnS/+/Lye9g9VG0fywWRSBuKaUeho0Dljyb5dflo97LJe9MLCc+0p4vPyhkknn9/+bTXHI1UC
+	yFMtEXmH27FHdU0n10M+TBItY1/pXDM7U3CS1EMS2l4afVRFpaLQhb6IU/R9443C/rG+asY1RQu
+	lvs+s5Bxynoba6Nig+BhLHlXtZuZX0mrJNTfxl9cqtqDzyWFu7S2LHjW/P1b7YXfDOHy9Bgusc6
+	cNxBQ3Q83MDLedzRGOeUJjUBDkzwNOaWlCzfo8qwkITxxfIExb55cl1FyeFH1oXLEWCqWBBoLtf
+	j0VFlqPD6NKciTgq97Za0pEBgOj/VyFtStY9DJFwnab1A7XZnvZZd3rBtly71LkhqV1OP05w==
+X-Received: by 2002:a05:600c:8b84:b0:479:2f95:5179 with SMTP id 5b1f17b1804b1-483c9bb1adbmr288516035e9.15.1772553355437;
+        Tue, 03 Mar 2026 07:55:55 -0800 (PST)
+Received: from [192.168.68.74] (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b485a0b6sm20131646f8f.39.2026.03.03.07.55.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Mar 2026 07:55:55 -0800 (PST)
+Message-ID: <84ccccd0-bbf6-4f36-9862-68264f85ed9e@gmail.com>
+Date: Tue, 3 Mar 2026 16:55:53 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM8PR04MB8019:EE_
-X-MS-Office365-Filtering-Correlation-Id: b35e202a-ea50-4180-a0cc-08de793d122d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
- TCqvdkXZ82wIocqAMD2WapyfcyDobK1f2Gd+1hEdKG/5nkSeKdxcadaw87UTEBmmaixgBfmVtf3W0CWIiYHzKRiwAJWmypcibtLF10hNK2oKq1Zu4PSM/Vx1ZF9gncB7Z24INGq3evzy9EgWvfUKBF76fwVFp6h3ViIXpIRq5hY6pAOIY7y+3T08qtpKb3jJREqt+EyUAALWNhZLAsZmf8iUYMWPqOybqzbYoALPlSqnHwcWuBeytpv+uNhqHRw9gZ06J9B9xNMrdeVkrr5jTwJyp+PmyQEXl8turd6eGzSo9SrNfScx6N6HJ1Mo7eOmXc0GUWD88WI3ivXQtEOTyzHTzzdJbBK0N52en/OiK9aiVH7usuEyiBr/OqVsLQYNpb6r0Z0wfjX6GEoEkoNAGP0IN782BCupxsETn+fCcGIZAmw9und9jLXJqF0t6OkJUbLGq2YVvifHIzOoZusWXXCo+Z4//jBFLth8NUmLHtVtZgNU/rD8XtP3yeiZ4rhtqsUyETd8WlXj5YqcnuJr1E9rcT08KLnAQjNrUu1PkPqvl/KM9sMafmKB8KOcB61YomNttQFlcfSj51rjij1xqJ7Ask76gTu5tsWULIbviT4ql0qzTHwsHZY+k+C/fEj+GSJQjgClWfIr2oWjSChMPry8c7HvNts9UFTizTk+V/C2oq3LKmlqYHZvSR8jOYm/6ubk1BHNjVcE4MQcCL6S4d7oGpCXjozEXh+G3151cxykcIMuxsIPMHfMd+T5MhEP
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?N5s0zifpi0l5aqucLgK3JX6f1d1KNh8JtwSrZbn1Aam9ZZfkq0gXFY6Atvec?=
- =?us-ascii?Q?6o8BrbiLYn0a9GYunutAWNyLRQL9U82GDM/Oko7TWK3DagRPlmMMJ8YW8qmT?=
- =?us-ascii?Q?x4QC99N/CHtpoSMimN36BmElt1fLl/asRVc2enipPozlgXfx+X2Ka4SDcSgp?=
- =?us-ascii?Q?klWAe4i3jTedLcrp6irAL1mYnMIcvF28OZcSugYiIo58lKK6gOcoXTBf0jWz?=
- =?us-ascii?Q?HA39BPpYdqWg0EGgWCURy0e+smT5m8dGSW3Y43R8eZ9Sb/19vZjhyt3NX/vV?=
- =?us-ascii?Q?athOHpA0XLDYIJZRwwlolRm+A7DROvCGMFAnIGXPA4H609WDGGFaKhsElXXA?=
- =?us-ascii?Q?9pi13a9xtds0NGnCu1z5ziun4iUO7sE+mykOBV91jE8vRPMnL4T6yRwlJkqk?=
- =?us-ascii?Q?3WnS1/hiMpfNfME/jLO3rPycWHKR6IYa+GrEbdtOpuPpksEFDl+Ts3u82HmY?=
- =?us-ascii?Q?IiDgWf+Z1cf24AW5Vcfr4tJrk5RNko0BHOmLgyrG6kkNc5rvy7uJBdLes0hi?=
- =?us-ascii?Q?w88w0OMnKynoGr8knCFLo3nj5sl73WVqoh+tGlmHoqeNKJ9yYwpUXX6bqi/e?=
- =?us-ascii?Q?c2vQOvlLBkw3/xy4wDvuHFNHUV5D0davPtnhxHPwvENYvw420bh+CSTizwXr?=
- =?us-ascii?Q?ptWkiVhwdAN29Spx3xKREdT/yybV5IZKSeyaP0KxNYlie2XgYHdt+gZNWyKN?=
- =?us-ascii?Q?4TBxme1uIGecPMEhLofF1UBxjnLHBthkZQeFwquhevFJ9YH/F/Y8T3xk05+1?=
- =?us-ascii?Q?d4s8t6Wmoy6CHQsCGYp1aIChE3VRX9Q8kTz1oLxWLQZNRm2T0kqFUh27EiZW?=
- =?us-ascii?Q?sZyPy6OnGGnOfTF1RjhCLwvFSaDuMXdaaKVHrapwJJDmQ4KqIY7KzqNsH5+k?=
- =?us-ascii?Q?cTkD/8u603DS+IA/Oo3/mtSWf3pjfyWZAlK+0HylsHAH6CExbaWVY8j3p4j7?=
- =?us-ascii?Q?9M5dkJvnNss6trJTKEe18EmkBBUgRDls76Jvf3mRcTk1ZQtOgGUawB/8MFuR?=
- =?us-ascii?Q?MBc2o4whAjcXf+jmY7A6tm7RMUSkaPUoZB8iKeWGezUq/Jvcg7RIiYzoMi2N?=
- =?us-ascii?Q?nh3vpq7TBq5W/Wf7k7xVXAITWfc85He2ZN0qDfvaWrHlRwRynCfSH2eDyEpv?=
- =?us-ascii?Q?stHTjz83vAiXCBUt+16T6xlgBdzVkQGzQiEA5/j3LMP06NACLecx3k+iXhXm?=
- =?us-ascii?Q?EzG0Nc96N0/spm0A3cblRMl/wMVYZgnSSDBOIyYpa1NMceH5AsheOgpvFk/X?=
- =?us-ascii?Q?RvxriSaM1C4/TDo3iYpuwOxgO+kTiSH8ya6PjP51ZfwhbLt96Pyzi1loTutl?=
- =?us-ascii?Q?I16T+BV2AfbFm5EUSknn7iNu5A6U+DWBg4Dm/SbrAyRbCs/9JN+WgNmKHKo7?=
- =?us-ascii?Q?SjdV2uYAV3NA00tMa0DqMjNl7Z92UgJeuyeEspCVcUVcJENlpyABKhRPaLOo?=
- =?us-ascii?Q?uPVQHC839c0CAAOyVuB62FHdyQN2FEI4WvXe5FWjwJUlFn+HWHEoPr376f+F?=
- =?us-ascii?Q?p4JqAl8wP3hSWj1dOWBCQK7ksReXaKy6/18QN9iBhVLB50pSuiuZ/APxU74g?=
- =?us-ascii?Q?hvwKp32yh2bsvOxjp9YIuBcsaFEO/o9WSCvNX/oXAqcFfo9tVfsgBG1mC62J?=
- =?us-ascii?Q?UFf4IH+om2bplzbnauf3frsbr9O48ANnkr6H2JDQekHeaFvaQ8unogzgsNhe?=
- =?us-ascii?Q?9dfySMp1Mxezugg1xvhe7O6Qk1YM3h4zoJi0sgygWaPKOuPq?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b35e202a-ea50-4180-a0cc-08de793d122d
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 15:53:53.9431
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: urbmlsMV/srGZ/a/zk6Ebidz80BJERXS0jwbvMi1t95kd7r95VMk3Y5befM9QUk1KtueUp5YjhJDGPowTluHtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8019
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] arm64: dts: freescale: imx95-toradex-smarc: Support
+ Cortex M7
+To: Frank Li <Frank.li@nxp.com>, peng.fan@oss.nxp.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260303121324.1576841-1-ghidoliemanuele@gmail.com>
+ <aacAYYuPkqgV3QYu@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+In-Reply-To: <aacAYYuPkqgV3QYu@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 03, 2026 at 10:14:08AM +0100, Stefan Eichenberger wrote:
-> Hi Frank,
->
-> On Wed, Feb 18, 2026 at 05:37:54PM +0100, Stefan Eichenberger wrote:
-> > Hi Frank,
-> >
-> > On Wed, Feb 18, 2026 at 11:26:52AM -0500, Frank Li wrote:
-> > > On Wed, Feb 18, 2026 at 04:08:50PM +0100, Stefan Eichenberger wrote:
-> > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > >
-> > > > When reading from the I2DR register, right after releasing the bus by
-> > > > clearing MSTA and MTX, the I2C controller might still generate an
-> > > > additional clock cycle which can cause devices to misbehave. Ensure to
-> > >
-> > > Do you means SCL have additional toggle? You capture waveform?
-> > >
-> >
-> > Yes exactly. We were able to capture the waveform when the issue
-> > happens. It doesn't always happen though, it depends on how much time
-> > passes between clearing MSTA and MTX and reading from I2DR.
-> >
-> > If you want to see the waveform, I uploaded it to our server:
-> > https://share.toradex.com/dwnhcrl6b9toib6
-> > You can see the additional clock at the right end, after "0x17 + NAK".
->
-> Have you had a chance to look at the waveform? Do you have any concerns
-> about the proposed solution?
 
-I am fine. Add carlos, who did many work about I2C.
 
-Frank
->
-> Best regards,
-> Stefan
+On 3/3/26 16:38, Frank Li wrote:
+> On Tue, Mar 03, 2026 at 01:13:06PM +0100, Emanuele Ghidoli wrote:
+>> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+>>
+>> Enable Cortex M7, the vring nodes, a mailbox and reserve DDR memory for
+>> the M7. The remoteproc framework is so capable to load and run the M7
+>> firmware.
+>>
+>> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+>> ---
+>>  .../dts/freescale/imx95-toradex-smarc.dtsi    | 50 +++++++++++++++++++
+>>  1 file changed, 50 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+>> index 5932ba238a8a..77c4a6dee098 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+>> @@ -42,6 +42,16 @@ clk_serdes_eth_ref: clock-eth-ref {
+>>  		enable-gpios = <&som_gpio_expander_1 13 GPIO_ACTIVE_HIGH>;
+>>  	};
+>>
+>> +	cm7: remoteproc-cm7 {
+>> +		compatible = "fsl,imx95-cm7";
+>> +		mbox-names = "tx", "rx", "rxdb";
+>> +		mboxes = <&mu7 0 1
+>> +			  &mu7 1 1
+>> +			  &mu7 3 1>;
+>> +		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+>> +				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>, <&m7_reserved>;
+>> +	};
+>> +
+>>  	connector {
+>>  		compatible = "gpio-usb-b-connector", "usb-b-connector";
+>>  		/* SMARC P64 - USB0_OTG_ID */
+>> @@ -156,6 +166,42 @@ linux_cma: linux,cma {
+>>  			alloc-ranges = <0 0x80000000 0 0x7f000000>;
+>>  			linux,cma-default;
+>>  		};
+>> +
+>> +		m7_reserved: memory@80000000 {
+>> +			reg = <0 0x80000000 0 0x1000000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		rsc_table: memory@88220000 {
+> 
+> I remember driver use hardcode rsc-table, I suggest fan pan to update
+> driver to support memory-region-names to avoid use hidden ABI.
+> 
+> Fan peng, what's current status?
+> 
+> Frank
+> 
+>> +			reg = <0 0x88220000 0 0x1000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		vdev0vring0: memory@88000000 {
+>> +			reg = <0 0x88000000 0 0x8000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		vdev0vring1: memory@88008000 {
+>> +			reg = <0 0x88008000 0 0x8000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		vdev1vring0: memory@88010000 {
+>> +			reg = <0 0x88010000 0 0x8000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		vdev1vring1: memory@88018000 {
+>> +			reg = <0 0x88018000 0 0x8000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		vdevbuffer: memory@88020000 {
+>> +			compatible = "shared-dma-pool";
+>> +			reg = <0 0x88020000 0 0x100000>;
+>> +			no-map;
+>> +		};
+>>  	};
+>>  };
+>>
+>> @@ -572,6 +618,10 @@ &lpuart3 {
+>>  	pinctrl-0 = <&pinctrl_uart3>;
+>>  };
+>>
+>> +&mu7 {
+>> +	status = "okay";
+>> +};
+>> +
+>>  /* SMARC MDIO, shared between all ethernet ports */
+>>  &netc_emdio {
+>>  	pinctrl-names = "default";
+>> --
+>> 2.43.0
+>>
+
+Thanks Frank. You’re right.
+I spotted that my patch is not working as expected, due to a last minute
+renaming on my side.
+I’ll rework the patch accordingly and send a v2 to align to current expected
+naming.
+
+Emanuele
