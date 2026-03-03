@@ -1,75 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED32A3BFE37;
-	Tue,  3 Mar 2026 16:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9FB47DD65
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 16:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555113; cv=none; b=qPEcdnLtjd0oZ/+pkufzfXLby36isxxQlY2l8CFEqmODJGd6omXrSDZmL+QqdYuaHDJQFJlNEVMgi6o18Zy/gptPdfRClFgOzK8eLGgknUYy9RD+KQyvFLl4hpTH/Qd7MZLridjb096/QJFM9PW7oHoSsTfX5rmceHv8jAoFgVc=
+	t=1772555408; cv=none; b=RHC7xmBk1UQa7yyp9/PzIxDf6iVmaDQvDP4EUe1JCvg9E6bugi9Nfrbe9AyGPv4EdGap6L8wFYS34/EAlelAEWRBP/8izeUg28Dnovi0ILodEhJTGc+FqhU5efTyo5soCUHWKBnl9BIuDezNBAd4SCbPeAz4b7PzZzLtCchNrHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772555113; c=relaxed/simple;
-	bh=Lzei46mZsFfkX8o4DbwriZnJFbQPag4hXLTsoTS7WBM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ufewpV3NyqF995Onq03JwLll3VEOZFhcgY7ALLG0S816+1Gcb0IIN45pH73tpjLNjB7usAjuK/2F+txe7JPZck5r9R5TWizXTtG68KoTSQVhUTwLqeN8DMKABc7qn/UvbwZsiLWBjZIFhB6aJDqWSBfgKwKrHltHRhrEmqcynJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1gDciMK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772555408; c=relaxed/simple;
+	bh=yL/xSbcaZwuUOu6gkmddpGfg1RNwAiNrd9YKVZaYdN4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cUyopbze40npS2FkYUzY52Y7FvqcuQ7O65i8n+88j4XRez0g3q8RK9g8sJ+ei998QCX9sdUHjOuzfTfSefJ7X6eIOaYPEDHxR53DfTdNtPKlsPnEpad8WZJSR0DkYdcdpQ9Zr1VZQ9paQ842K33ZjFU1ZKHZBo+5fFKFRwkhkiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=uh8WI7mG; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1gDciMK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D8FC116C6;
-	Tue,  3 Mar 2026 16:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772555112;
-	bh=Lzei46mZsFfkX8o4DbwriZnJFbQPag4hXLTsoTS7WBM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=b1gDciMKmxqJFhLhN4FetRczLqf+CttHovYs2ls9wewYfiUZA2KA+DpSzV/pA6tfO
-	 LvyRXRWxbMDL2lShxxrawxA3nBnbO+6eU1/9cZ8aPq0SaUEcnA+xMwRnz1mRl2n9aa
-	 IxrtMYO6W3tFizgT4R6uzfnfWCUHnQmIpUt4uPoEhbVgi3SXIgMAmQarA2Psq+QIkD
-	 7CRMsin1l+1ITxQeb50Q2mjNjDHF7lByhF8gMaxYucxv4AidELFS01HWE3PzOqIW3D
-	 gnR+QTlNwIaS0A053PS4zkXfM2G9e2EVDoG0bGxmvmgh6Xd4dNP0qJpRYeDbQjFeC+
-	 39Qy5OO1udjBg==
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="uh8WI7mG"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1772555398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0jEzN+ZbuPiy2X43ltzsOH8xhPtq3QTkuVtmlsPHM9I=;
+	b=uh8WI7mG1o6aI/mjEFxWTylQAQHFKTSjYQ96O6N7o74Oo8x/T7qAALbKOm4Fn3qWQ3z3EA
+	dfVXtmnGsKr6kRsxyhIL07ctqko0sq8dVVW3l6sIZctd0O0VuTEU6WYjKPngwiGvhQfJyc
+	ijO04WpWy1+rMVySo93grJ5edJATcvU8CzFTfZyhog53+knXMm4/buPCNyPZ6Nh2T1DvyM
+	28h89o48kWGG7Mffxn07dXfFk/4jmawRLZ5NLEkNRxDdZzXkoz3mD8bvv9XDJUEuZSdFPa
+	qXa73xU0NW8g8Ot8i/88+gvV2IJSco/Sujdvnq7X0T4QzjyAsjkCzv3NwbemfQ==
+Date: Tue, 03 Mar 2026 17:29:27 +0100
+Subject: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point() for
+ each op
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Mar 2026 17:25:07 +0100
-Message-Id: <DGTACERFTTCV.29XON9ZLYAEQL@kernel.org>
-Subject: Re: [PATCH v2 3/4] hwmon: axi-fan: don't use driver_override as IRQ
- name
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <hanguidong02@gmail.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
- <glaubitz@physik.fu-berlin.de>, <abelvesa@kernel.org>, <srini@kernel.org>,
- <s.nawrocki@samsung.com>, <nuno.sa@analog.com>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-hwmon@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-sound@vger.kernel.org>,
- <linux-sh@vger.kernel.org>, "Guenter Roeck" <groeck7@gmail.com>
-To: "Guenter Roeck" <linux@roeck-us.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260303115720.48783-1-dakr@kernel.org>
- <20260303115720.48783-4-dakr@kernel.org>
- <b46c5757-b67d-4949-b8d8-54b799464b5d@roeck-us.net>
-In-Reply-To: <b46c5757-b67d-4949-b8d8-54b799464b5d@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+To: Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Han Xu <han.xu@nxp.com>
+Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, imx@lists.linux.dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=789;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=LwNCpqII5STHerKJFGgtW51z+gveZ5FdSLV1sPEkDaQ=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T1P05w+c/q8f1HEL/z9e/rvzbY+NyWeGXpP/6wQ/3
+ bgsUW7ZUcrCIMbFICumyCLFb/Ha1izWR/5YdRTMHFYmkCEMXJwCMJHcOIb/HoluqStOqzE3b4qy
+ +nDB45R3uEPozJs2q9cbHDpUoaH4lOGvoJtN7NmJf64wx6T4qTF9z9qRK2F/MEEjoXFpik9k1EU
+ WAA==
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-On Tue Mar 3, 2026 at 5:23 PM CET, Guenter Roeck wrote:
-> On Tue, Mar 03, 2026 at 12:53:20PM +0100, Danilo Krummrich wrote:
->> Do not use driver_override as IRQ name, as it is not guaranteed to point
->> to a valid string; use NULL instead (which makes the devm IRQ helpers
->> use dev_name()).
->>=20
->> Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->
-> Applied.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-I need this patch in the driver-core tree, otherwise I can't land patch 4 o=
-f
-this series [1]. :(
+With clock rates changing on a per-op basis, we need to make sure
+that we meet the RX sampling point delay constraint of the underlying
+SPI chip.
 
-Any chance you can drop it from your tree?
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ drivers/spi/spi-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1] https://lore.kernel.org/driver-core/20260303115720.48783-5-dakr@kernel.=
-org/
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index a09371a075d2e..6b8bee7d6f5e3 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -589,6 +589,8 @@ void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op)
+ {
+ 	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
+ 		op->max_freq = mem->spi->max_speed_hz;
++
++	op->max_freq = spi_set_rx_sampling_point(mem->spi, op->max_freq);
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_freq);
+ 
+
+-- 
+2.53.0
+
