@@ -1,146 +1,154 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx-relay100-hz2.antispameurope.com (mx-relay100-hz2.antispameurope.com [94.100.136.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6A340DB9
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 12:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772540979; cv=none; b=aQDqoDiMi3ZiNxiPZweyzn8D+kEr4w4MXZ4XPosHzLBBPHKLfDHEgs4fRaABqLIZEUFqWRFK2fCMY+u1wUbySMOD7Al/F0sxTlZvRPJICeJz4Kkhqbo0wIE+C/fYhPB1ob3oJw0q6HJaI1RDRtxHboX1yTZ3NuqkB7wWh64LWQ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772540979; c=relaxed/simple;
-	bh=ew9uwciLzf+70VcuN1RrFEQC2tUzp5KQFWMO6L9R5BA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LoXAymiThebj2sPQ3g5SMQCeQWEoQ+CIpDrQFH9x0LgYYWdccJJBgdc2SjtFKZvFIPqNkIbAgZU8T/HBkUJrKi9HUoja2K35E1NDf+PktIz1ku80OXC9Bo31QaZUveVhhgy3gfW78PW2XfGwfKSFrEozczWIdk8Z8QWyhgKWxts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lK2W9hql; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CqB3Cgg9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BC41A8F97
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 12:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772541546; cv=pass; b=uMA75odqeI5pYIrVEqszTHtjh6NcBUrHLrFalSbgWv2ZgvK1ElT0pb6KaEsciR0sk4vL1rCxvPB3SfdCFymwQ8TU5UG4S65lAKHh6xpArv2h8sDt4wNgbv1poD2TfiGOBFg/rykTVXTXm7CU1n5RT2j36sxdbEc0Z5f+AUmYwmg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772541546; c=relaxed/simple;
+	bh=EhOFLiDAZMEmzb83dQYayfEKstu3tlm0p7ycV6i5JPs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e7p0VtXuU5PLs7EUpry6ymjJlXCKXiN9ZRkexe0SkgqvZnMbbGmt6lSns4K+O2QRjHz1sjY//7RVGz371sr7nnIR5ixLlD1oY2G8EADo6hPbRskR+LJ3blqC1z6P8LCixgz4DU5MV0HwbMNVs2IPjz4fFnx5rM/ev3PTg6Sf6W4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=YvAbcta7; arc=pass smtp.client-ip=94.100.136.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lK2W9hql";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CqB3Cgg9"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239nHDK2630346
-	for <imx@lists.linux.dev>; Tue, 3 Mar 2026 12:29:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+UFaVOOEMjvopJDZvAVmSn/0K5xprbHB0u9j+BhT9u8=; b=lK2W9hqlq9NQpHKO
-	j6+PqyxsfrTcNUVrmSY/G7pZ0R0VxkHi16XgNJ8z7HVEOS0UEnUyMj79ruuw1Nyr
-	jKzO4sUgKF1vdtUE3K1g++/V4rIYesG+LrMjj5UrVXD4oT25YAgoIpbkp/i+P1nK
-	O4+hmxmVCikWkzFLRucws+OGH9ZfjLblKT0Mu3gQERlqtylqCeIj6nqUriHdb/AW
-	TxiEgAZre8s6ebCYXm4/WMYipDkqy0OFnNnyG6X2iTapPvqaDyEFtoGsfd0YMltd
-	C9GEwhY+6ZkGqtGvtxOuDo5F+4Xi3e1R0LsaJA7+s2J/zaVLF7D0tqf35DXf78hR
-	cvi3Hg==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnhx5ashg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 03 Mar 2026 12:29:37 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cb52a9c0eeso4329166085a.2
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 04:29:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772540976; x=1773145776; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+UFaVOOEMjvopJDZvAVmSn/0K5xprbHB0u9j+BhT9u8=;
-        b=CqB3Cgg9jb9XPE8OJEmVuP3hbWqptXhd/HuSZtR9Oleq9VHlq5aUusgh3eH00xAOGG
-         bvqjJnAHL5xR/yOafyxhkE874PbQHJ754Xssl/IU8+VEaTsk7RyISpXuweySHLR5ny0e
-         aEq1cf57CZtpDzGl3bnhC2FvW4Rgfhj/rxbc+WBCakpTt3VgAizYAsU0NQMOBUKTJ1Dm
-         AEOT59H51fHKuSw+4g9c67z2yPEFw1WFbOiXCBE8e5wfHjHUIBEvTCyWGnIm1CNaEN0s
-         34wlBu66c85RJt/Pie7OOCpxIbB5RqI/jvLIg4LFFUjewcaXVqAq/YvtgxHYJ0ySlqHl
-         fvbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772540976; x=1773145776;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+UFaVOOEMjvopJDZvAVmSn/0K5xprbHB0u9j+BhT9u8=;
-        b=gJbcn821pxF1EIoAsjpyPnermf6+/WnbRxHEaQpABSosrF/EVFZvGA3czwHwUy5q1K
-         cWy/Z9F8xRPlfeXOqds9Eq34Q2REMTTvyI7gOx0f9rXhDRE+HyvT/3OZ5D/OYYLfjYia
-         XqHgUGoJMLbPQKqhuqIx+wZ/IOsO/MhouIDjzL7dsskAsirC/p7VHxDtFIZ4Bmnihthc
-         tlgLdU25oN7VkNMRvFk+WwD3aoDSW/MACx3ySlqLB/7z6XPOcAdylJAevUdO6CIbQw7l
-         MuN3jletZIPUVu4fL2XoHfjbA47ERSyvDwbe/xgfsmRCbGhV4lzb8PPtCGO6Up1wecEv
-         KBCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUOe7KpVUhQHcWbwuxwz5BPwvdb66ia4QK3uUv2mVn6gffQu9nH8OCpCWENF0mRij9wQp0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5HhsntGYpljk0tMEEZYBVDwHCIm85PZzhdYsFMf89k9ajbvQI
-	YJgbz/Gk5m7hwTTNCiQEZ3xaqm69j7+PdvXssVUX3fbIKSascuJqF/c20ooVlEio+oC3iNr69Vw
-	5gV0B34QLQcTUwTEnsJNeF6svok4muVZxU+sZA9W0d77J7/ITSAnfmsA=
-X-Gm-Gg: ATEYQzzgYmhSa+eSb/VWus8yBHlx6HFvtLFB+zTcWJBe/6cXzVTOTQMaAgbLuLQX0aT
-	IWQ80LR6SWLT8n6A6Cd7oquYM2Pp2slg+bj4jaWtTGxzf6XrK/25Y8JqOKLB4DtWZRmFWzzsr4K
-	vV/7LUr+MywpJVhl/BMMU00GW+tFBpum0eR4kE7l7Ktpx2C8fu3DWiyugp5wvZgTdo+gSMYpwrT
-	eRvZLQZImGiAgX7Exwt8WvoYyOX+hfyX0qISD5GUQxO3GnmcPVh0xWYy2+D9W6WloaQ5fHrmB4n
-	Nt7KKdgMXmi/AvLuGKu7sL6ostUkEkyGKzZrdDCjm4K1T1U2o8l+mr9eRLruu6NINlZyFQ/9efS
-	yBCXgHO2iQngVybOne2YKUKgB2w+0mw==
-X-Received: by 2002:a05:620a:444b:b0:8cb:4d9b:6b4d with SMTP id af79cd13be357-8cbc8d6f180mr1874331985a.10.1772540976321;
-        Tue, 03 Mar 2026 04:29:36 -0800 (PST)
-X-Received: by 2002:a05:620a:444b:b0:8cb:4d9b:6b4d with SMTP id af79cd13be357-8cbc8d6f180mr1874327885a.10.1772540975729;
-        Tue, 03 Mar 2026 04:29:35 -0800 (PST)
-Received: from hackbox.lan ([86.121.162.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd750701sm498035965e9.11.2026.03.03.04.29.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 04:29:35 -0800 (PST)
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: (subset) [PATCH v3 0/3] ARM: dts: imx6: cleanup imx6/7 CCM related CHECK_DTBS warnings
-Date: Tue,  3 Mar 2026 14:29:25 +0200
-Message-ID: <177254093027.989057.8587839568838242001.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260121-ccm_dts-v3-0-820ce9b5fa38@nxp.com>
-References: <20260121-ccm_dts-v3-0-820ce9b5fa38@nxp.com>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="YvAbcta7"
+ARC-Authentication-Results: i=1; mx-gate100-hz2.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=lWwoqo46Zr/3jyyKrQqeEXquRAWf+PTNX5MMsSlQxIA=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772541498;
+ b=McbctVlyjtb/4urO6OwmUHgC/muy6uCh3qtQWtL5C9ScNjrQtua3l1L9QwV++4eViMh54n1h
+ Wfc9N0lPK5jnlbAZH1JlZjGjTOBi6VGKKpBzripunW4mnfjBozHwcU0Bgq+TT5j6kUpnUOztb+M
+ 4xHc/n+09Zp+qAoi8GPvKR40zoeeRHfrBE9kJRvZSM+mBwD6mS4U+A9SzoSk+HPJm3iB3xnVJai
+ cfg3Dk/UshZfxulxTthJ4h22bOW02dnzBtbSkD6WtB09WqG0SlKWA/f02G1ibKMLsUXYgOwnB8c
+ eICNhPZgHgGCvd7nx4I6QBf5NEMvvzqenkr2P7fMXuw4A==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772541498;
+ b=R/t9s7VHpYTSEPdRxoBGMlN0fiC8bypC7eHS8kjRiB9Wjj7DEKCjtDOqjZ0Nab2Vx/asogfY
+ u3tkQ0SVutcavpuNYE4LLabTa4J67Grp5VT67CJ+uzT/cSX64DsB059FnOIuoaXRAEEKYXhqyOI
+ bYgnZ/wqatjzMe5uqSxnr5GnpCoiVc2Zdjw5UPdp11vXF8QwKb3N1yjV2garr3+stljMkrVFAbw
+ SmMzoL7Uez17wUJA23wx2bBM2WWyDsWYsmnxA34Fxj1cxlQtvpq0RvxL87atWcKpQKCa8cJgZW3
+ mfGillao8MOgAYWm/vDh5CjPFJoM1ezxclzRU0h0TSspg==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay100-hz2.antispameurope.com;
+ Tue, 03 Mar 2026 13:38:18 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id AA64E220B43;
+	Tue,  3 Mar 2026 13:38:13 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, Richard Zhu <hongxing.zhu@nxp.com>
+Subject: i.MX8M Plus PCIe link regression
+Date: Tue, 03 Mar 2026 13:38:13 +0100
+Message-ID: <23024521.EfDdHjke4D@steina-w>
+Organization: TQ-Systems GmbH
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5NyBTYWx0ZWRfX2K9tC3b3iDke
- 2sTV3rfGxVwWvne3lcSO271gWk0ltJCtusIeqNWwpjC/pGQ1mJAb/t6usbMpT9VI8C49iAhl+t7
- 8FGA4iTCqrP2s/Kuh7m5lNvb41ErFShKAt8cAkIw3TCIZGlvCgJ6A120dne6ZvyRTyM/5ke6VUm
- QXc+RjT1zZAg3yYoSMhdWCUJvoc411c4iAmNXjEXfm5tgQy78NJu4fXuRNCiHXftfQBCemKm885
- Cx59bfPprNvgMqhossU3vNJdRO33KVN7xVhCFDBLnEFoT+tk+iUxhVl/LKKYQJyxNUo+432w5HL
- QnXx7x2YBqY3VP18lKCnD/4ygdHh6/Z/19GLPgpn0y28YEUEHWXZTGwpxLtO+q/9+I30jLF5opz
- 8bcE6d6cuzLPa+0nD18hlDjFv1VxYxvOJefizy7y4WCjMLsZEZZISBmySWllwHoB6Zw6GAFIAj9
- 5zIEL/pUIj18K+jfOSw==
-X-Authority-Analysis: v=2.4 cv=T9CBjvKQ c=1 sm=1 tr=0 ts=69a6d431 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=EUspDBNiAAAA:8 a=HS7iJHYFZOvZgwlv4tsA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-GUID: EedlpXqiaGdcqOg2wSMMpeVsDShnjk6E
-X-Proofpoint-ORIG-GUID: EedlpXqiaGdcqOg2wSMMpeVsDShnjk6E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 malwarescore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603030097
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay100-hz2.antispameurope.com with 4fQFhP74nLz3PJhp
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:850274fae2b2e7370f7fd9100b832d79
+X-cloud-security:scantime:1.471
+DKIM-Signature: a=rsa-sha256;
+ bh=lWwoqo46Zr/3jyyKrQqeEXquRAWf+PTNX5MMsSlQxIA=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772541497; v=1;
+ b=YvAbcta7MZpA5HWATbnZBhbYpsjOODCPLNzdo+TXhw8yUQbOeEd2IbU8w8M9bpZpbKrmszY0
+ LRVYDTf/ruZ4wQOo77lwCBMwLnJSB0FV1uR34kVOsrN2P62nXTUd2S+pb+h/IrhaKl7VqUigZVB
+ fciCnRUCMy4HxbRSGoU0MuiuGVDqi/x+S79rOE5USveyRZ4cMT6dTKcdpY1c8cIEt2aMkMdY+Qt
+ 30wJ8aYOVlG0bXY+WWuzAdLsqzC30pbD467LXS9g4d9VFdzjWE7/LVUygxlua3l3Mez7TWw20Ey
+ Sd/Uwt2J7XK2VOkhKNWASmrtMYziQq85QEHae1kXthfhw==
 
+Hi,
 
-On Wed, 21 Jan 2026 13:04:14 -0500, Frank Li wrote:
-> cleanup imx6/7 CCM related CHECK_DTBS warnings
-> 
-> 
+these days I noticed that there is a PCIe link regression on my i.MX8MP
+platform (TQMa8MPxL) running next-20260227.
+I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip link up=20
+workaround for newer platforms"). I always get the following errors:
 
-Applied, thanks!
+imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -1=
+10
 
-[1/3] dt-bindings: clock: imx6q[ul]-clock: add optional clock enet[1]_ref_pad
-      commit: 51ac0f4b6d5f4965153d8c39644ecfb228480396
+Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2 device is
+detected without issues.
+
+Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
+b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both Gen 1 and
+Gen 2 devices are detect. Commit 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc i=
+s only
+required for conflict free revert.
+
+Here is a summary with outputs:
+Gen 1 device
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
+> RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 01)
+
+Gen 2 device
+> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 PCIe SATA=
+ 6
+> Gb/s RAID controller (rev 20)
+
+output of "dmesg | grep imx6q-pcie". Common part for all tests:
+> imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+> imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
+> 0x0000000000
+> imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
+> 0x0018000000
+> imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 =3D=3D cpu 0x1ff00000
+> imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K, limit 16G
+
+next-20260227
+Gen 1
+> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error =
+=2D110
+
+Gen 2
+> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+
+next-20260227 + reverts
+Gen 1
+> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+
+Gen 2
+> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+
+What can we do here? I'm wondering why Gen 2 trains correctly, while Gen 1
+doesn't.
 
 Best regards,
--- 
-Abel Vesa <abel.vesa@oss.qualcomm.com>
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
