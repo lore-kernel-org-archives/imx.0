@@ -1,151 +1,173 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2233FE06
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 12:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB3233B6EF
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 12:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772540023; cv=none; b=d9giYUo3y2XnHLdOhm/IlOVmN+tzXF1dw+SlDI9l9sEES3Oa+c9NPhSQy5Q4NOOfskhqH7syS4qCgYSd2lqwYtdrmANHscD7eOekJbCw5mudUMyNMDF4Y6awIHFV2do4EaZZB+zsymuPu4HdbEbcZcFffJA/8sD7idIn4Z7fISo=
+	t=1772540034; cv=none; b=m+PwjNpqXGW5I8Hj11U5TayN/1LzYlbW4WUkrMdPrrTSHW49kYVly8m0A+7ICO2h3lF4f5GY8wTsWR+rvaKhkkIl8A34U3Ec5+8xL/hrM4wOAzJQYcXtZAH04aTKFsXF3jmN8/4phPOvGd6fLf0kUkavALhhs+PBrbgzrVZe3dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772540023; c=relaxed/simple;
-	bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kjqZZWlgmr8cVxsCDWqsi45rxYqwR2BSX1Hta6awPvfSPWQEjQgERh4p7lrnla65iMFG4YhSJf4WNQ7/5HWpTv0r3VBrUk6xip3fXaEzpMYBVUxmhpU11rm8B6oaZaRTiqJdHVcXfAjGb1APpdTVGE6wHLKtxZup5w705nWu+SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PJPsutLG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Fyn1q3Fo; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1772540034; c=relaxed/simple;
+	bh=iaaMMI/k7WQJvHt1nbIJyR0XOGadyN9uqrto12B+tb8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y9re9usrSdpr4JrgZovIDiVkMZaHCRAJ2Wbi1WCDF8ycGOaYBCMfr6sSZ/08SEJDTsTmN3yN1wR37Q2iV0HU1HB80ZNm/rt4hEhikwRfye6Y8I1v7br7OyLGkLXEMWeA3sna7I3EGi2wQlSU9vSGP5C67NGB1k0sAzYRmf3Cxlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V9OHjrUD; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PJPsutLG";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Fyn1q3Fo"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239n5Br1838249
-	for <imx@lists.linux.dev>; Tue, 3 Mar 2026 12:13:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=n9ThQZCHpRyOYZogBfVZbhe1
-	AsrapF6ZWMmRMx4dKmg=; b=PJPsutLGKx6Z/C+LJW1AwgvhyWXOFTNddc1IU7eE
-	dMiYq+/eRmJb8RHBM2MlbKnC9hYidZuiH7jXPVu/BvaFZnWLyDMWIbQOkej71gIu
-	89UlJMTJiTR93ArIEJdO4184Ovpv5f3//pi82MmE35XhXZ2e63siqB6dwl7qZ1er
-	fVD+BRbdl97gflTaiV2boobS8+er7Kt6UPSCsbKpaP70t6m9MhbjaNy/limKoaHJ
-	u9qu2h6oGeXq8CgC5ei3yV8gyziMZmGRCWt/Ow3PeeiTtb7FiZCYprmFrNOSpH1y
-	rHQZvjvVuzl6IDQ2Yn68xUJe4JKjXPALEO53BOcaI6iLgA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnngga4ff-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 03 Mar 2026 12:13:41 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5069ba5af5bso370362041cf.2
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 04:13:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9OHjrUD"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4836f4cbe0bso47822495e9.3
+        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 04:13:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772540021; x=1773144821; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
-        b=Fyn1q3FoCYIpbG3hflxmzeMyo0UNBeIw1JoroZmrgkvTQb+cFZVtD+SE/rmSi4NSEM
-         P1V4NQCsQ6W9XJaEZVkXzU5pItucX9zHOM7S+hyrr0cVg8xPAUT49Vh3UrJ7sRLl9693
-         dmxcVJzjd657Wxvxt0YJvr7/B4l3UP7CxVx8OkW6sT9YoI1pNG7yqboyxAWZq7oGy6DE
-         fPYdpgLSUTRzjYOXsY/5NDhyuuZmN3dYjsTFZs7mauiFoicLSNIDGpO+C62NYruy5OfP
-         tH5Fq8PvNiONRJB4ibzKBTSsGy4z94oqJVAZSA6ojgUw7Q1Slhgp0gR+rsXZQGgdxzU/
-         Q8ug==
+        d=gmail.com; s=20230601; t=1772540031; x=1773144831; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gqNb2+lvfz7Zcwb57rdSTxDdzqT6Z0aXOwyE7epiZnM=;
+        b=V9OHjrUDCvcxhNWIPlVfSoxmNlWk8AqEI1F/UqL5DJ6l3jbDpLWCXd61aiUQFgIrk7
+         RFb5saYtLLlX4mGOlVE8FPQMXY9NcAzF3e9d4JeI22koi1qLISKtpAL3t6ssOQoRjREw
+         JnkxD7g/b2uHZoatwk5imS7a3T7kgvPlxO16Hx5iASliKAVR4qLBNMZw7CTGZHnFFwMG
+         X5br8snqWwb0XOxw/k5yHBHKAUdemv+0q/1NWdUHUfJkQ3ZyBw4ygcSoNYTSwEdcL6r9
+         4P1dtqTdd7l9bIYYkyFt7JE+NitO+UHbFJWdRtOs/tezlXAY9g005gJzazeN6pWn7Q6j
+         2IXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772540021; x=1773144821;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n9ThQZCHpRyOYZogBfVZbhe1AsrapF6ZWMmRMx4dKmg=;
-        b=KwyzaJJALwsvRXBx95q7Y3bnUFXA9hwWPuGtWwi4HqmKCbtMXMYMFftdU1NQxWFzLJ
-         SzQTrUvWbXFms1eBE3XadgzJXUxmesKesTsNKsV+byufra6gsUnsf/8R+d+YjVDFeM6C
-         mlfwlycdQ/Bp7UYVoOgGgm5mfaak+7aKWFhUfq1+2WCiuqxCPwjpAjv9VGDeKjBb4uF3
-         ZPyJIqeFXCUjnqgZ8smj17i4c7OmJY/ZcgUoTGms4F8pd+m7R6XdqmpBjZH3kp1wQZ0o
-         JARJHbEM2LvW6SPSBopzZ7ODQXUrxIMBiFCtB8Dj11EEmqScvc3526Se63YuykLd5be0
-         mKSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEkTH6pA83AN+NYPUm6sWvsEWX/2eqPumEN+DOEmhsDLvlNW9PZ7FTNN6Xhd02dhLP9ZM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6grSCM/b0SRudMAbBrp6+t38aBpRdyOzTHey3CT62TQE5xgxw
-	UF6kXa8oShPAm7ZDdZRqPyuQfrVaxp/eT5KmPZ58W37Y/AULuEpieNXtL4igZtUfA5268oi5PJa
-	N1zIp55Os6y3Yrbsk63QfOIBNbLZ6Iqh9BLfiCss0IWcZYtyPCbTVmQw=
-X-Gm-Gg: ATEYQzzNqsC//haNSnU7rF6iVGcFuBAcErs74mS5EAvBvgK0r7oLL19eM3sPrIc2zLA
-	GeDMO7p0kUHbDyT09Up91lqljvsM3IH515ZZnIcouf0NoIerziSYMcJtVm4R71wzTAMXEty3Wim
-	aFmxEZTHgvy3KwuVy2janm6rTFPu5dfxKWEzbvLhWV0bujC3YCi6anojyLO6iI7Br2uPhxkFlGY
-	XkhKWx4I+Xh1V51K3D3RmR21dCcDqIs50XcLfh52Cj/UVJT7q4y/qWhSiQ0Mgli4AKy9U030t1L
-	jG2+THSlMrDLqRxgIBPhVOcn14xWjMZUMV0niyh50wOTImOQoNgJQlNroDBagzSwqt/FIlGqCSY
-	KqQ8Nqz0/3g+xLDyjWRszJVYdkjRjR4XPTOqM
-X-Received: by 2002:ac8:57d4:0:b0:506:a289:fd3c with SMTP id d75a77b69052e-5075273e97amr209392671cf.17.1772540020521;
-        Tue, 03 Mar 2026 04:13:40 -0800 (PST)
-X-Received: by 2002:ac8:57d4:0:b0:506:a289:fd3c with SMTP id d75a77b69052e-5075273e97amr209392191cf.17.1772540019993;
-        Tue, 03 Mar 2026 04:13:39 -0800 (PST)
-Received: from oss.qualcomm.com ([86.121.162.109])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744ad8f8bsm131749141cf.27.2026.03.03.04.13.35
+        d=1e100.net; s=20230601; t=1772540031; x=1773144831;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gqNb2+lvfz7Zcwb57rdSTxDdzqT6Z0aXOwyE7epiZnM=;
+        b=bqHDHZsz/Wy0sUvXQ1M9tbv63/1q9wp3UTyXf1StFW86y8AcpykZKvOxok7tqXF5HO
+         TWmLfMuAnVvEwP5zsGDsFoVZ8AXIneRETbmL3UXkvcNmf/+pkq3kkVa87ZoVOhFpj9eE
+         BZuz6VbIiSusfXXK8/vfsE55K3AhHDZzbXdSZaL44MVGW72BLfLrW9yLBF2C5YiWrIjn
+         vKOLZbyT6PsaOoanaA9cgk1SvGR0ZNRXYARMsh8SYRYpPGq+CzVMOdYz1c4geUzxuuip
+         +s+WF16a5EWbMynuXskgOc+/blFpwKmdSfBbi4TlKex6SrpfGrYPF9qNV2lHBUqGZEzp
+         d/Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUz8yAQk83mO3VPdRpGZsYR14/jZdNkFtHZdMRN6L4nuvlvuW4DH9Y2BN3o6ERqnG4SG9M=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz9iRh1mJf21sR+tkUi6+oPGbmHjetYetvEPuvTYFvXSYjiOnhg
+	qCztcAXH5UmQVzxTvRR+qP2XtTwLYmw2HaUrOK3dW9ZawWzXlNZ2p4dU
+X-Gm-Gg: ATEYQzxBYB1tbtj5nDvCPLFG4RI8SgCmILZTvfgdew/UHY2od8yAT0pPF17gPMxVPjM
+	QsohgBbRxiuEsA0RHY/t8ymwwL/mC9CE89Bi1RKelzqwM1gRKutDGgd982PmwhqmXH7Jj8FOren
+	TLTW1UqIZOgAYlGDC5nbaDSQYFUWlE6mMOaPMzIn/bH3HtVDhDB1cKJOaihTUyjpA6rBvMIxLVc
+	nI2jbUvvSyZgub2IQDYPSqrBValdu6oABRL/gw9frxg/Zm/GmfSURT1HhhzcLc75GORaaXZAD4c
+	hBYEzDR4b7iQbied3p64B7hmGiNZbi27KSdHh58lDstFLTsTACKGyNEkfqDuoRkFxEFnd8xF7t0
+	nko300tYhDONXn5HoWoSHKmjTCcfuZ41LV1c+5ZvlQ72zcxLYCMeaXcdCNOKM3/JIMvxpBlFB6i
+	h5pKTqEmR8IgzIFz7gv6ROZ0PpkD95atOZ8bNJafqPllyiM9qHA8o28xK/APSXmWkhtMfdMMmw9
+	Tsgd+bbbnmXZJtC
+X-Received: by 2002:a05:600c:4fc8:b0:47b:e2a9:2bd7 with SMTP id 5b1f17b1804b1-483c9beaca0mr330124105e9.19.1772540031180;
+        Tue, 03 Mar 2026 04:13:51 -0800 (PST)
+Received: from emanueleg-nb.corp.toradex.int (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c75b272sm33572593f8f.24.2026.03.03.04.13.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 04:13:38 -0800 (PST)
-Date: Tue, 3 Mar 2026 14:13:34 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Felix Gu <ustc.gu@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
-        Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Akshay Bhat <akshay.bhat@timesys.com>,
-        Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>, linux-clk@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] clk: imx: imx6q: Fix device node reference leak
- in of_assigned_ldb_sels()
-Message-ID: <nfrgeg6uzbkzri5cedihxfw65dnsglytkhbajutuutddvyabuh@mtnjxxde3gzm>
-References: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
- <20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com>
- <aYIxjWYq3OwwmrTO@lizhi-Precision-Tower-5810>
+        Tue, 03 Mar 2026 04:13:50 -0800 (PST)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx95-toradex-smarc: Support Cortex M7
+Date: Tue,  3 Mar 2026 13:13:06 +0100
+Message-ID: <20260303121324.1576841-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYIxjWYq3OwwmrTO@lizhi-Precision-Tower-5810>
-X-Authority-Analysis: v=2.4 cv=P7E3RyAu c=1 sm=1 tr=0 ts=69a6d075 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=pGLkceISAAAA:8 a=8AirrxEcAAAA:8 a=Vg6-HkV-eu1WfDdlyz8A:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22 a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-GUID: dvDaXJPvSbTudWab18006t7H1oJZtoQW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5NSBTYWx0ZWRfX7NqIVVPttteV
- +PAIrpXW6WTp2A/6MRbgz7jGzEVWcpBo/tqBRadn8RictnU0Qbi22U8SZSwF5YDlrO3xRCaxnqz
- TWdaGchvdjussYJDIWpuZKAbc13iAQq7nMoF8wodKSViGuVcn7DpvPfZO0VU+nn57b7HVOuIJuj
- tx7zRihjopqXC+tsCWwBIVG7A5ooKA6vxa53iTT4jog/sfEBaeAt7aAQmOAbuos3TbHJ2Xr6fpg
- u8LpKp8bX7LQYKJPP8UK/P+V5bsZSDUx1lpP93F7JZCyN4rWtmWV7fV3Ka23oi90rHkeO9Jj7OA
- CimxjnP8DNi1bNYoRZ0UyLCBpVcRGuzVPXaytkvEGaPNFXkFXvI+x7fAXtYR0/2DMDQGf25yVVp
- Y8JikDm+cMerXGOwmwNvIsaJxSxucQGO9NH3uMuH7cvD+gx72jklQV7jEvQlstsOKkdOQJuxB2z
- NvD0ICnl6DaQUaEs6RA==
-X-Proofpoint-ORIG-GUID: dvDaXJPvSbTudWab18006t7H1oJZtoQW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0 bulkscore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603030095
+Content-Transfer-Encoding: 8bit
 
-On 26-02-03 12:34:05, Frank Li wrote:
-> On Tue, Feb 03, 2026 at 10:07:58PM +0800, Felix Gu wrote:
-> > The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-> > but never calls of_node_put() to release the reference, causing a memory
-> > leak.
-> >
-> > Fix this by adding proper cleanup calls on all exit paths.
-> >
-> > Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-> > Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> > ---
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-Frank, please trim your replies.
+Enable Cortex M7, the vring nodes, a mailbox and reserve DDR memory for
+the M7. The remoteproc framework is so capable to load and run the M7
+firmware.
 
-Thanks.
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+---
+ .../dts/freescale/imx95-toradex-smarc.dtsi    | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+index 5932ba238a8a..77c4a6dee098 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+@@ -42,6 +42,16 @@ clk_serdes_eth_ref: clock-eth-ref {
+ 		enable-gpios = <&som_gpio_expander_1 13 GPIO_ACTIVE_HIGH>;
+ 	};
+ 
++	cm7: remoteproc-cm7 {
++		compatible = "fsl,imx95-cm7";
++		mbox-names = "tx", "rx", "rxdb";
++		mboxes = <&mu7 0 1
++			  &mu7 1 1
++			  &mu7 3 1>;
++		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
++				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>, <&m7_reserved>;
++	};
++
+ 	connector {
+ 		compatible = "gpio-usb-b-connector", "usb-b-connector";
+ 		/* SMARC P64 - USB0_OTG_ID */
+@@ -156,6 +166,42 @@ linux_cma: linux,cma {
+ 			alloc-ranges = <0 0x80000000 0 0x7f000000>;
+ 			linux,cma-default;
+ 		};
++
++		m7_reserved: memory@80000000 {
++			reg = <0 0x80000000 0 0x1000000>;
++			no-map;
++		};
++
++		rsc_table: memory@88220000 {
++			reg = <0 0x88220000 0 0x1000>;
++			no-map;
++		};
++
++		vdev0vring0: memory@88000000 {
++			reg = <0 0x88000000 0 0x8000>;
++			no-map;
++		};
++
++		vdev0vring1: memory@88008000 {
++			reg = <0 0x88008000 0 0x8000>;
++			no-map;
++		};
++
++		vdev1vring0: memory@88010000 {
++			reg = <0 0x88010000 0 0x8000>;
++			no-map;
++		};
++
++		vdev1vring1: memory@88018000 {
++			reg = <0 0x88018000 0 0x8000>;
++			no-map;
++		};
++
++		vdevbuffer: memory@88020000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x88020000 0 0x100000>;
++			no-map;
++		};
+ 	};
+ };
+ 
+@@ -572,6 +618,10 @@ &lpuart3 {
+ 	pinctrl-0 = <&pinctrl_uart3>;
+ };
+ 
++&mu7 {
++	status = "okay";
++};
++
+ /* SMARC MDIO, shared between all ethernet ports */
+ &netc_emdio {
+ 	pinctrl-names = "default";
+-- 
+2.43.0
+
