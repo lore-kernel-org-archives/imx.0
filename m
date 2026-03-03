@@ -1,186 +1,162 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A70A39890C
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 10:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EE139099A
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 10:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772532823; cv=none; b=ZdzApyMMjpoEz/odo2Khx4illZGtiuF1UyVIyi/L29EPAmrMJmOCB7xzW+YpeJTW3r4vjh6DvTtbIJ1sqlglqwVUdrgVraYAREPOZtnUUDmpSeFYvEWLO0UlEdji1iWX9AqxyXVDguT0BigtQNCQyo1lHYi1mfy+MWAB1m0ZuYg=
+	t=1772533381; cv=none; b=tVKJpyLnA20CJbp3r4wR0CrOD2v4QcHEefsA8f2oWG/5EXmALRw1yJOHe9SIBYQAr28tarJXoba1VwlobetQqj98wRq6PGtTDj0NTKsdRAn6ujk4qQ5d+IXpC0vTz0RC/gEbVK1q87+Q4YdlP/VkqvZ3AxuUPhp6grBMdPGauQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772532823; c=relaxed/simple;
-	bh=aOxhc6XiKyqjFRyylPkVA9D1penuoruaQ6JHGItXsGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxAPadIG3hR2MwYG2dWFmTr563U1KF1R+Nk9F42WfI6DzzpF0CQq/OA71tzKC9GkeICFWs8f6yEm9uFT0noh+myYs/57843yCEk/R4gBEFSt1kqMsDIqcD4jxWIUnYHC6gipSzDQ2yyjPpYAqj2gjRys/hUfAV1rpVJCajGEn7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxMkl-0001RA-VG; Tue, 03 Mar 2026 11:13:23 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxMkj-003Wua-0a;
-	Tue, 03 Mar 2026 11:13:22 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vxMkk-0000000G2Od-1b45;
-	Tue, 03 Mar 2026 11:13:22 +0100
-Date: Tue, 3 Mar 2026 11:13:22 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, frank.li@nxp.com
-Subject: Re: [PATCH v10 2/3] drm/bridge: imx: Add i.MX93 parallel display
- format configuration support
-Message-ID: <2mbaz4jixv3h5ofvaneoe7muwr7snvwzs6lulorj4yul6arglt@ac5kzsx7zw4c>
-References: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
- <20260302-v6-18-topic-imx93-parallel-display-v10-2-634fe2778c7a@pengutronix.de>
- <d97a9c0c-bdda-466a-8131-73799cdb20cd@nxp.com>
- <jyawx2cllg2jecdvx6bdfv4qiinfiwb6cuuwdhditpr2g2evee@qiox37ahgczd>
- <edc74093-abe3-4782-8e81-afd87222c146@nxp.com>
+	s=arc-20240116; t=1772533381; c=relaxed/simple;
+	bh=8QZ53I8aO4e9npdtwEIXgVcvJzLr6gDPjE3K7JQDGO0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=sZLIssSHXDcq0Q7KXEgmtPKmzuqsuWRKebLNUKYxirO/6D6cTrnp7FKSZyq8/Qgd0U888TFohA5A/GFhLhlgf54yP/iNi1IzvtEuCnPvtmzxknxby0AwAjUlcoC+MNDkP1P9LEQBfsnOWH3kNWcq6NLeQsn6wtoUyhATJC59Bog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=bJ0dKuac; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="bJ0dKuac"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1772533344; x=1773138144; i=markus.elfring@web.de;
+	bh=cQst+PSOV/+vNa7AIa+9u6jBKddkoF+Y1hVwXQIv8B0=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=bJ0dKuac2Zj/y1ysNiPEPkZX28t6flUPArmQxQArMoV+2uv6JLWmqO2P3CtoiRUX
+	 oTTbOFQIKPV4eiDJa+731pwHaTa5KnngtqsC06kle4wz4zQ6zn4gSCrXONo8hkmvF
+	 cbR9Xz1eAO2jzd0jhvQvWNqNO4mOYqp8gQmF744Dp88o8+6SOCt+4tvP6IBXxbodc
+	 RxT4tIPEYzANFfJuXZtY97j2nhag1hL0nHH6UujdDgfnGOcqQQ+FVBZOttYY22GtN
+	 BEXJYEfp5q218x1L4ijSfiRsesJegseC/Xp61W5sok7gvuq8jlDwtQ5QJ1868Q7Iq
+	 v60H3TMsEiixhZRv4w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N79N8-1vcM042M72-013J3L; Tue, 03
+ Mar 2026 11:22:24 +0100
+Message-ID: <11b010bd-3435-4e78-bfcc-4bbc13106429@web.de>
+Date: Tue, 3 Mar 2026 11:22:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <edc74093-abe3-4782-8e81-afd87222c146@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+To: Chun-Hung Wu <chun-hung.wu@mediatek.com>,
+ Walter Chang <walter.chang@mediatek.com>,
+ Zhipeng Wang <zhipeng.wang_1@nxp.com>, linux-mediatek@lists.infradead.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ kernel@pengutronix.de
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Alexandre Mergnat <amergnat@baylibre.com>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Jindong Yue <jindong.yue@nxp.com>, John Stultz <jstultz@google.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>, Richard Liu
+ <xuegang.liu@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+References: <20260119095511.3030739-4-zhipeng.wang_1@nxp.com>
+Subject: Re: [PATCH v2 3/4] clocksource/drivers/timer-mediatek: Make
+ timer-mediatek become loadable module
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260119095511.3030739-4-zhipeng.wang_1@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aYut6SNpFH3u9i+TdmBskbprmbJGoCn7YPSgqI8npb+W9tqMPs5
+ qwAY5huDYPiwt6IZovA33pZN9T/vQeR5ThmUhWUBkOTUqfirMVcDJ/+gA/9RoxIl0YvsUjb
+ 2DeRjGdmA7CxRcvXRdQFWxixHXJtcqeHsdNxVHN1aqwqGD1fG9lur2l4M0x4z5pETW7XomR
+ WneiPGXsgmW+eGv39GxWQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:duAUeuz/2+s=;/uPyBeUCY5kCDowLloTnNl3fY47
+ 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
+ eJ0iZtUXCCFKsz90yxCQvcv4fQn+u
 
-On 26-03-03, Liu Ying wrote:
-> On Tue, Mar 03, 2026 at 09:05:43AM +0100, Marco Felsch wrote:
-> > On 26-03-03, Liu Ying wrote:
-> >> On Mon, Mar 02, 2026 at 05:10:41PM +0100, Marco Felsch wrote:
-> >>> From: Liu Ying <victor.liu@nxp.com>
-> >>>
-> >>> NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-> >>> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> >>> field. Add a DRM bridge driver to support the display format configuration.
-> >>>
-> >>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> >>> [m.felsch@pengutronix.de: port to v7.0-rc1]
-> >>> [m.felsch@pengutronix.de: add review feedback (Alexander)]
-> >>> [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-> >>> [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-> >>> [m.felsch@pengutronix.de: add bus-width support]
-> >>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> >>> ---
-> >>>  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
-> >>>  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
-> >>>  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 225 ++++++++++++++++++++++++++++++++
-> >>>  3 files changed, 237 insertions(+)
-> >>>
-> >>
-> >> [...]
-> >>
-> >>> +static bool imx93_pdfc_bus_output_fmt_supported(const  u32 fmt)
-> >>
-> >> As I mentioned in v9, can you drop const?
-> >> I don't think const is needed.
-> > 
-> > It makes sense to spot failures early. Albeit this function is very
-> > small, the fmt shouldn't be changed and therefore needs to be const.
-> 
-> If fmt is a pointer, then I think it makes sense to keep const.
-> Otherwise, it looks a bit over engineered to have const, since this
-> function is really small and no one would try to change fmt.
+> Make the timer-mediatek driver which can register
+> an always-on timer as tick_broadcast_device on
+> MediaTek SoCs become loadable module in GKI.
 
-I'm aware that this is a copy of the output_cfg.format value. Would it
-be a non const value you could mess with it and return the wrong value
-afterwards. Keeping it const avoids this. Not sure why a 'const' is
-worth the discussion :/
+* You may occasionally put more than 49 characters into text lines
+  of such a change description.
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv7.0-rc2#n659
 
-> > I forgot to add the double space fix though, thanks.
-> > 
-> >>> +{
-> >>> +	int i;
-> >>> +
-> >>> +	for (i = 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
-> >>> +		if (imx93_pdfc_bus_output_fmts[i] == fmt)
-> >>> +			return true;
-> >>> +	}
-> >>> +
-> >>> +	return false;
-> >>> +}
-> 
-> [...]
-> 
-> >>> +static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
-> >>> +					  struct drm_bridge_state *bridge_state,
-> >>> +					  struct drm_crtc_state *crtc_state,
-> >>> +					  struct drm_connector_state *conn_state)
-> >>> +{
-> >>> +	struct imx93_pdfc *pdfc = bridge_to_imx93_pdfc(bridge);
-> >>> +	const u32 format = bridge_state->output_bus_cfg.format;
-> >>
-> >> Can you drop const?
-> > 
-> > No because this function is not supposed to change the format. The
-> > function documentation says: this function can alter the bus_cfg.flags
-> > bit _not_ the format.
-> 
-> The local variable format is not a pointer, so literally the value of
-> bridge_state->output_bus_cfg.format cannot be changed through format,
-> which follows the documentation.  So, I think const could be dropped.
+* Would a summary phrase like =E2=80=9CConvert timer-mediatek to a loadabl=
+e module=E2=80=9D
+  be more appropriate?
 
-Same here, I'm aware that this is not the pointer value but it holds a
-copy of the value. Any adaptions made to the copy will fail, any
-assignment of a const value to a non const value will prints at least a
-warning to show that something is wrong within this function. Only a
-direct bridge_state->output_bus_cfg.format assigned would cause no
-compiler error/warning, fingers crossed that this will not happen.
-
-I'm not sure why the 'const' is such a big problem in your oppinion.
-Everything works just fine and we've done everything in our power to
-avoid a wrong function behavior.
 
 Regards,
-  Marco
-
-
-> 
-> > 
-> > Regards,
-> >   Marco
-> > 
-> > 
-> > 
-> >>
-> >> -- 
-> >> Regards,
-> >> Liu Ying
-> >>
-> > 
-> 
-> -- 
-> Regards,
-> Liu Ying
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Markus
