@@ -1,50 +1,51 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011045.outbound.protection.outlook.com [40.107.130.45])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011052.outbound.protection.outlook.com [52.101.65.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FE63254A3
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 03:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D8037DE84
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 03:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772507020; cv=fail; b=iHan1f9P5/5CULhK1dPIYDcgO2/uW8EEUxEyHZBHaz4q7oAUT+6AEpGJUrZwqjLpq6+Ux970WCBnK0bvVARvE+K1w30Xa6F7PHbf7UYuuPybMPvyBDTEQcnaQF9AQxQBE8lhEnQqdJMQB8laHP+DSw+eqvnTNCOpii4XaTPw68s=
+	t=1772507771; cv=fail; b=s0N1ytFDcaCTzfi9OGunojWZmBoduxI8U56SrS98Fnwm5gD2DRreMxeOtz9fb72c7A0WN7qfLSnb11FxWo6A6c4mMtb3tIoT7hwOoXgwkUx1b2/btssEuSQzeqLBmnDXC3Zyv2Ns5XENjCMdsjrrOrSRw48c+7jabVW6kkaP2lA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772507020; c=relaxed/simple;
-	bh=qMB8mCdfBjNg/e1TqZfn3Pc8NgR+9/GUVBF+oURRTIY=;
+	s=arc-20240116; t=1772507771; c=relaxed/simple;
+	bh=2+5OkqZMm1Vw5yQ9jORvvBC9M7pIXQ6pZCNfhhKSAN4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=NlX9L7Xdu2zmpETTudgbx2GRr5uw6DhSnXmSiITwhCJx/MXXLGon8dQJ+gxdklOGBXl4WGIHS1iqVc3tD9/JBUd9fyolJIIGzAYq/tLHE2LlrHAQcVK+e/c4YOZvuSBh3xI3IC6eyLt17RvbY2fmQS3zWCxtRvuMIvfmlW0OOPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OBvJ6whM; arc=fail smtp.client-ip=40.107.130.45
+	 Content-Type:MIME-Version; b=hHXwpXhQtThFn2xQHvBi1l7QZzaNCjabCf2sJ411SaTdUWpqFCLeqJ+rMnYtFXXQkb+Q8BYf9bsEdjC+WILV9su6ta1BRGH4P1oaEFoTSvklbHT4WTxq6IMDJgO04ssHrkaEUg/eD9r3JRTlPtkyjb30otqSRzqSsUwECrOYolY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O/Cat3In; arc=fail smtp.client-ip=52.101.65.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OBvJ6whM"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O/Cat3In"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bu+hkyP8NpVPj0eTJ7n/qgLUFSzzjyJfI7Rk70nERD/3vrGgz9hCGrm3x8ofGkuTEZ7Cwyp4WOqCpm5nKM/ObaTqksx0eI4wT8KIKhp7Kg/U0kYpwbgT7d3DWY6Oj43L99LmV3IK7/pnQUd4lQPbmsk3hxMn1Sm+pqIKBjbhzHQBNcQZo25fULsSdIMGDKdfLGAAuwWip2BCF11onFUKyGLipqk5baJmyOxfW+3aANZRtz58esRwYot/4m3ZSC6AFmNUE4LKMkeFxN94wyEwYja07sfND/ddir5ApI/z39nEnKPPWTL115nG5EMXaHzGNOJty0wi6YvpLsAw0i12zg==
+ b=h28MlsiA0asFEQ8+DwdAyMORNw9z36r0WxkDQDsNkJp3Lxb41SnMOD1RhI5b2h3yfewSHlNJI+j3IhtG5mFV63w3cPdK8KBL5IbynzflOV5pIYwaasFPKv5z1qqVtDHXh3u5YTfrKpzmIpHz9CgLBiBejfNAEHUizEkK51IuWF3v0pkfj14JqVcQgPqVkvrlIytTuwDoqeLxnrjhmiQj2b23DzVGmTaIpkGjHM+C78Bug9QXzu/OCfSmKgQZq/63xuGvp6Ano1teRNy32ND6hPE2Zovi4+XQCdfliqjyVp0MtpWiyhUpytNCqWC99779VErviPnUzRyvb8z33Mvn5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fffFgRZRyntqg1vkQDhzr9SUQndcMf0ptNqz8p2/GMM=;
- b=wau1g2yrwXEAjxHbN18OfoSH+9aOrhFI5SlWx45BvdJDViti7KAaUDtCjnelW4SJsIkSRVsCIDZOxUQqPZT/+ME/yeXZGzbc1ONh+IRD4zTYoFGdUZrTLk/GHd6yJ9K/ycgWuZC/zbCWYqSyp6V4kCcjKWTKJlHPIRmdinqxDe5kJOvy8A1gOjUZCYFEDHp5AYPUa81KSuFRuGA2fPVSxlGYWCeKWJ/mbfci7KSWsSb154jh5DZHUyqJbh/akClRlbqlf1flYMF2zNIWMcqJVUgszWSHRB8OvzSFiLonvLYnb4YiD3lw5Q8IjLHYyWHdtmKGKTwKxvqh8R3Z0PidPg==
+ bh=HgFu+/oYwp/MZLJURfVdcRKK+YqhyO9CUNXE/yActtk=;
+ b=vRWRFjK0U9qu2bgUBZbruTlCc1GCaSE71BX2RoMxxfdRpUPjpuwYjlD4w6puP5cdxbR4E64iIHKRrr8faZpZ/g0e5p+G7MbDOs8L46pJeUxI+w/7US7ktQwG/YAuYmMu8zzp3o1To02TT9KhvhYUBYVt+p/hx1x7DYfzXolrTAbVxiioJM9lCQlp8oEsq0tbSl/3SxMtRaZ0cLrCAscnWZJRC3XfIqd2tkmCnwObkKWPgdJq9CU+dtDc+uHa9gtFwH/uwFfIKAHNFSrrVtBijwpHR9xGgPJgOllYl3xng2Z7bFabx5WrG/Y6D4gZy8Y9h+LUNcWpYJmpjgcq8Q8ODw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fffFgRZRyntqg1vkQDhzr9SUQndcMf0ptNqz8p2/GMM=;
- b=OBvJ6whMOoVHdMFUOZSISsFTk+N9CzGlVouDeETck09LNVXvXd0h0L9ccCG3RsfCzSZaACI6s35BFZ/aSHueiMsQae9zhDovozyveS7DZHcFbv2yh4jK6Z6TOqjJnneqoqF2om2KtEwtOoFf1mr1iLelKSjuF23xzOrGah0rnvXHz9/GM8/Tm12fAZsajnz+Tbba/bMUYcgV3wzil93O++c42FTyxpmp6MsEfXQrkhZVDHWZ3s8IhrAy0pm0xtjdL6q3+bLKS3UCE6fZd0//cpYwoucgoUofbP5856glaRg8Z2H4dBFZh1UvX1Rvn5WysN3ADTYsIvyvW5wiNZfjJg==
+ bh=HgFu+/oYwp/MZLJURfVdcRKK+YqhyO9CUNXE/yActtk=;
+ b=O/Cat3InP3yu9mLq/xlaV8fmVQDob2VXCvQOqdxXWoHd83UV2EDHKCoDazM+eCCRhVJv3DAduldKiu355jVoR7IGGXJZ04yX5JWzA/3Ad8JZ5DCtxYcFxFpGZGLl7+IsVitsFTMwJb4SJ9R4ANeatcegqlC81WFFMd4IyWJAK9+qjHCf5X7clF0khjxiDx1iirckvcpreXRkfNNGrN/EjIXwuxB4vg/L7Mvp2IrYkGa/+QVJVvGjtBqjl6YnIq/l+HEelGy9gyQORzn8/MDRhVlqGaoxfGf4i2VYmVcTwms3G0LmztZ/dg2KRi6XOAXdOcLeO3yCUpA2jE0mKwp1Vg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DU2PR04MB9018.eurprd04.prod.outlook.com (2603:10a6:10:2d9::11) with
+ by GVXPR04MB10849.eurprd04.prod.outlook.com (2603:10a6:150:21d::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Tue, 3 Mar
- 2026 03:03:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Tue, 3 Mar
+ 2026 03:16:04 +0000
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::4609:64af:8a4b:fd64%4]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 03:03:34 +0000
-Message-ID: <522ab537-1460-4eea-b992-e27df85805bd@nxp.com>
-Date: Tue, 3 Mar 2026 11:04:37 +0800
+ 03:16:04 +0000
+Message-ID: <7d708ede-a576-4eae-b319-ebd54dbc5163@nxp.com>
+Date: Tue, 3 Mar 2026 11:17:05 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/3] Add i.MX91/93 parallel display support
+Subject: Re: [PATCH v10 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
 To: Marco Felsch <m.felsch@pengutronix.de>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -63,12 +64,14 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, frank.li@nxp.com
 References: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
+ <20260302-v6-18-topic-imx93-parallel-display-v10-1-634fe2778c7a@pengutronix.de>
 From: Liu Ying <victor.liu@nxp.com>
 Content-Language: en-US
-In-Reply-To: <20260302-v6-18-topic-imx93-parallel-display-v10-0-634fe2778c7a@pengutronix.de>
+In-Reply-To: <20260302-v6-18-topic-imx93-parallel-display-v10-1-634fe2778c7a@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SI2PR01CA0014.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::17) To AM7PR04MB7046.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0113.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::14) To AM7PR04MB7046.eurprd04.prod.outlook.com
  (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,168 +80,192 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU2PR04MB9018:EE_
-X-MS-Office365-Filtering-Correlation-Id: b171fea7-0a9a-434d-a07b-08de78d17543
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB10849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67da3580-300f-4b3f-cddb-08de78d3344e
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|19092799006|1800799024|921020|7053199007;
+ BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|921020|7053199007;
 X-Microsoft-Antispam-Message-Info:
- gJqGoD8WCJo10JKaTR6SZ266s+iiw5nUW1SkDW5SR4XHk7fM5gNDM0vAoRctw4DHnyuS7JwvNkRIgt/rBqGllnFSxgH0RDoiO4kD5loaYKKVrkgGMpT++Vd5Z656UQzhN4IqTPJXE0+984a2MWouOhe8NKg0cXinTDwlSxBD3Mcyjh/gnPWwzG8suqxJQRQoqg8A7/IDSnM4zUE+/QeVCoxKuy+MOJT56YkGiec+GfLXpR195+GY9ZHKa9riRHljtn/RGrPW+36QkzNtj6PB6BlD7i7doWTqQekeUHwa+Nb8CitgEE/clLYa3tWfDUsGNEUycWy8p/3n6I7X1N2/5zEhENVGgwdhiueFqbgNMn2l7BXIpAejHW2vw2gKJDJz2qGKqaQcMICMRrnfNrei45YoTT1l0/XqC+tNDMI1nS/dChll3Xmrx9Sw2fxmOi5cheDMX1AKPEDrqjE/7/UULP6wZsooe3nQBDhzWqbK6g2THl4lx3koneK/zFpZyHG3REGbWPz30+uuEXKdW6j+/EcAlfX4QkQbTqF4JqugSli3aJRGZLKwV68LwlCjFuOOPf6y8epaUvrCRecrOBTMPB+WJ5DJ2osTQZQ8HJxlRyu6xcRPwBy5F7lPO5rJ9rLlyMxe138K2xxiU5HSDRtFfEPbCD4bG9wNIMNquGGNNnuyQ+T9pDTBHtQaXK3Byy5YNpfyOCqV4nQDcw4upokx/ELKW1IA2VyUF3h114q7rKP3rPs/vKcUym003LA4D5i7b6iW+Ie7ELiq4JlScAc43A==
+ Z02N65tGpickgP9g8fmo/mAE4Yzl+d1VswQJ8a3gpLNTF23xnUR4SC+Z0QkzvLeO46ym9iTgHjDzE8PefVwLKHzXfpYW14/WwKdnAxPD0MrVueiCS5rpssvyCWuOA7j/J1yXY/UnszNssKzu+98xDlWhrpX/zOj/xOVxTDvFkivbH+XCHiOqW+b5xxZI38NKe0lLgIeVm/8d/xkKOEtH/gFEvurSm0jnUFdE8SZ7gglZXIao9iS/ktAQ7DEPj00jGYg4KOV95+bE/utUn2SzYwInWJZSjf63NxXbvjvC44elsC1P25FjIvfb8f3YBuDvmEkz98jMuTCfLYuhLMkBGpD47ozfHCyc3/tZchTkrM7CBgemK/AVGRM8y/nQ/EIa+FFEGyJwaVZX+opgxTpMXvjmSTAF385Tj+2KN76NeFCFTTlakl+RQV+Y+2itA1uA+tAaRUJPu3dw6jvKjeN6Veq7S4CGeMv2bFgdp6IQgDPI79TH4zma00rKnp1nwvSD1JD7sHHrqiD7C+if8qzejettxSsdTI0p3jDtF1wy1c7f5OPV+TAnXct1RIKxNToXRaj+ISnJPZ5+7h80oUHn93yBcK8ylgJLpWSK//1jBkMAsL/Sb5LnENmpace6uOhEuDxRM+p3kO1wMS5nY9NGvrT3QjZTmLIjUfziNxQNBOF73G0F/XAQcusTfkKxZPMTfBC3A35Bwrns8Hc9wkPEewh44P5CE/00IarU2HI0ypld/8bbv8Nn9bRQ5vVVVSgS76MjFUXi4NUwaFXrMGArkA==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?a3U1L1NYZU9nMUl0V0lMSzRRTXVEckx3b1dDeVBGWElqdmxVb05BK3Nxb05m?=
- =?utf-8?B?amFUUmxmZVlXREVFaEw5NzRGa1pXN0Z0SVRKSFpHTjlRTnhnNFVDV2c4Mm03?=
- =?utf-8?B?NjVaT1UrVXlFanQ5SkhPV0JMZ3pTMyt0UzFYY05rTnRKYWlTb3RyRUUzYWtI?=
- =?utf-8?B?dVBCNFRYRzVHVXRJVFVwT1lVeThRSTZYTlpqZm5GMTREelkvZFJzMmF1c1ZU?=
- =?utf-8?B?QTRQVFNsZExsS09ITzdaeVZDTmpaaE5ieXk3WXc1ZlRhSFhhQ0xvcWRlOHhp?=
- =?utf-8?B?UXZ1SFlqNTBRWjRuL213K1ZOMGVBOExjTW1WSEN0dFVKMzRTbCs5bDFqbGl1?=
- =?utf-8?B?TVVQNVVHcnYvbjlDQktxYzFTaW1iaUtrYXVDSmlGY3owalBINDFveitRaVQ1?=
- =?utf-8?B?cGtkbWJvQ1pING40QmNkaWF0M0NhZFlCckpUYjdMSVI4Y0t1QTh1a3NWZnVj?=
- =?utf-8?B?SEkxTGpwSzdpbUViYTNjTlpwY3QwZkJqVVQ1TElyQkd3d2trb3pqK1RzSWZX?=
- =?utf-8?B?cWFDbmVqYmxGT0l4U2hWMFNPMVBiUm5QNG8rWGNZUmgxcjZjOGZpb3Q3Mm9P?=
- =?utf-8?B?QXR2SFJIYVFJOUlUQ3M0eWRmNDhJbDRMTDJXVHY2NlF5Y1Nsbi9ocCsydXEx?=
- =?utf-8?B?YVc0VXZyaUpFY3kwSno1WERaU0tvVXpjSjFHNlpaa1UrbWFFdnc3M3lIa2M1?=
- =?utf-8?B?K3BoTVdOazR0SXFSU3MzYUI0VytHcmthemd2OW5jR3pMTjJzbTg0UDc5YXph?=
- =?utf-8?B?cXdxUVZQbW9XMkZ3L3AvVHBCbWpjbmVxSGwzWDZXY3hXcE4vak9nRWtxYUhX?=
- =?utf-8?B?MHpsbFhqSU91aFIwd21qNGZpa0E3WUJJclRWd2N4N3MxdExvZlhtODhpUDJ6?=
- =?utf-8?B?U29lSGZVMWlLakk3TzE3MTJST2l5N2lqR2VrTW5ONnF0VGRjREdmRTA5cmtr?=
- =?utf-8?B?aHFNTVZsN2M5cGJzRlBEN2cxM3lnaGlJZCtvMXZMNG5ISE16cHZQZ3pEcE0r?=
- =?utf-8?B?TUFHc1NPcUowSzRKcXNobjNYdlVsT3pvamJoOTRNSXV5Q3BreTlCSklNeE00?=
- =?utf-8?B?cjJhU1dSbHY4L0ZxdjQ1TC9Wd0xZV1pxYzR2MWdsZklLb081MlZuZVdhaWhq?=
- =?utf-8?B?bWtlTk5QcWFaRjdVZzVkVUE5MHV0c2w4WkhRZjJoVTRqdGJ4eXMxNnc2aVNN?=
- =?utf-8?B?VW5rbnRlVUhIWFM4RExhbERUc3hVR0kvLzlCbnc1MDF3RnE2ZHIwTldBVzNV?=
- =?utf-8?B?SWdyblE1YlhScGhXZmc2T0JXQUs4TjFKM2RkTU14S1lZMjY0S0xRREhQb01t?=
- =?utf-8?B?Qm5DckNLbkNXT1lyRVhXQXU2MXN5UGxrVFI0N25rd1pRZmJ5RWduZE9PVnZV?=
- =?utf-8?B?SDlrcXowd0IyYTZGQzc3dlhkVEc3TkhBWHROclNJaTd0Sm5xTEtvUDBUWldD?=
- =?utf-8?B?L0IvMG5CbktJalNHM0dDK0tVWjIwK3pPM0ZFTGZOZWVjaW41Y1dtY0s4bWVy?=
- =?utf-8?B?OXRBbytPWU4vMkdDUVZvR3lXYmxHWkI4REl2QUowTFMvUzVPc2xVUWJQeC9B?=
- =?utf-8?B?bTVROTJZWEEwaE1hNHJ4dE4vUXVXYzhaSDZFRkZOWmVJSEVTbXlpK3ZJczdv?=
- =?utf-8?B?VWl0aUxnOE1GTHUrV2ZBZUNkR0x6MHlTY2dldFhtTEEvZFZkaDRQYTRNbTQx?=
- =?utf-8?B?UmdNRDdlTXVQRnB1NE1laDVyQU4zcmNzcy9yS0c4VkdPc3IzZVZBcEZ2Mm5w?=
- =?utf-8?B?OFJ3RXBLQTYzbDVQSzNsRUw0TXd2WjNoOXAvT0tzYUVyNzVLeFdtREJaVWRU?=
- =?utf-8?B?YjU0MGhnSlZOZWRnR0VwUEFsdDIva05xZGhZcDVTYVRlem43QUM5R0NkZXha?=
- =?utf-8?B?M2JpTGdCQld3NGdsQVFUUGZnSVl4eGUwdlpwZnl4ZFU2LzcwSEJBRlA1VzRs?=
- =?utf-8?B?OVA0V1JZdTM2bU8rM0hFNkM1S0xkSllwRldkL3ppTXVWSCswbXVscy8zemtv?=
- =?utf-8?B?UkJpVVRZS09UQitJZTNRT1FQU0pkeXJ5YlNDenVIWnI4Q3FwQTI3dDI3eXhX?=
- =?utf-8?B?SWhBcmQxU2J1M1NnamxTa2p2L2trSFdhS1c2ZGJLZEJkTVh5Q0o3OEtpa2R4?=
- =?utf-8?B?L0owM0pZZnQ2VE8wSjIzMlM4RWFsTHZrVmlaV2Y2bExzMVRQOTZkWEQ3QzNV?=
- =?utf-8?B?bnBHYXNIMlJzcVAybmNhb3dZRkFvR3o3dUlOTWtrdno0bURRWVRIOGJhUGI3?=
- =?utf-8?B?eEZpZFdzWW51dFBGNFBsTm5zVFlac3pJRU5HOE1YQk9ZaXJtNFkxaldCeEJC?=
- =?utf-8?B?WTlpZTQyNWZNckZJTGJoM1o1SC9zdUdOOG9nUTFBQ0lvalFlSnZqQT09?=
+ =?utf-8?B?dExkMGpNU0s4clJrSnZ0ZWdVcytsM1M3UVo0NFl0NVM5Y2FNLzlkcXhqN2I2?=
+ =?utf-8?B?akZSKyt3Ylh1Qzk2VnlJSWZNdXVnK1FOcklxMTlpdDZRZmtYdzArd2FydEtk?=
+ =?utf-8?B?Mnh1NDIvUC9LU0JaN3R2ZE9UbTk2cWNEUjY1SU1lN2ZuMzNqTFZuVW9tVTVk?=
+ =?utf-8?B?K0I0WC9acjlRbWtBdlVaNnUxZmFDSlZiZjhiQ1cwT3VMNG1HSHNoV2JsWjZG?=
+ =?utf-8?B?R2R5enhnSktqMXRDbW9vcnUvZVZtNFM1ZmltMFZrYW5ydCttMkg2VTBVcVlC?=
+ =?utf-8?B?YUF4UEZiSXc3SStKaHRWd1lTMFlCT3VVRk1WRHd2OWg4cHZPZDVqWVYweCsv?=
+ =?utf-8?B?ejR2WllMRGhadlNYS1hxVFBGaXFscFB6enpkL2VLRDR0TWlsZVBpYW40MmZl?=
+ =?utf-8?B?dXgrMXJaSnN4d3I3bnF5T2xkR1M5K1hLcDk4L0tOWkU4aWxBbzQ2L1BWOXZI?=
+ =?utf-8?B?OUhnK1ZJMHRWUU44TFJiTXlLb1pKL3l3ZFh3Y1lnZk9YRXptcWs0S3ViMElX?=
+ =?utf-8?B?YW9KSmIreEJ2d21WeHhsMTVLT3BkWFlRLzlXNFNaWHBWSHh4SWRKQ1R3bnFo?=
+ =?utf-8?B?d1BMazBiUEFjWjkwOWxVczY0T0pkbzlJZHBtaFZFK2o4NWZuQUxnSmw4M1Zt?=
+ =?utf-8?B?OG02Q0lUbWVPTGc5cHZYTWc3ZVluNVY2TlN5b3ZCeUNCZU13cjhaZE96d0VF?=
+ =?utf-8?B?RnpRcXBkdEhEeCtvWmJCWXZobEtPczdub3I5aGU2MFNRVU1CbE8yR3Z0MGJt?=
+ =?utf-8?B?bjFtcnF6c0laS29POEFJeStmMUQ2V0Y3a083M2JhZGxvdndkZk5xLzFaVVNp?=
+ =?utf-8?B?dnJ0MGdPVjFaM3hTTndacmNRT0tqOWpaenpGaWhKVDdlbW91dVNCOTNFSzZG?=
+ =?utf-8?B?NUhXckZuL2s0RXZlK051NlZCL05ORlNLZFpERzUvSmRiWFJ4OFFMTmZ0UDJL?=
+ =?utf-8?B?ejREMUk0dU56N1RQeklDT1NCbmhiVGc0eHNKVll0a0tlSGp6TXJBSk5NSmJH?=
+ =?utf-8?B?NzZpMElycE5XWEw1R3Q2d2NzbGZJdms1VjhYcHJVU3h5U1FYZm9tUHNzV3Mw?=
+ =?utf-8?B?c1JBZjVuWkFvbjJoTFdwYy8vRy8vNlZ0MlI5UWJEaTFVL3pYZXUvdmJRSFZO?=
+ =?utf-8?B?Nk96ZFhJZllQNU9lVytVWkNubFpEbW8vWk5uVG9IbktQRUhoQ3A1MWJ1RTU2?=
+ =?utf-8?B?SWduQXBxUzJOL2tsbU4rS1J4b1crM0dBNDVrbnc4WElJWkxvY0oyYS9UR2pU?=
+ =?utf-8?B?NzEwakdrZW92c3R1amFpOWorMklkOVJFRTN4Qi9Md0h2dFU0ODExN2plN09l?=
+ =?utf-8?B?Zm1lMUI3YjQvcy8xWkdwTTBqWjlBVFBHVFExUnoxWDY1R3VTaDRSSEhtaC9X?=
+ =?utf-8?B?dnFTQjRpL3B5cFVLcWhDMVpjU2M2TVRGL24yZW1FOGZQSEYxaHczbUNtbEJ0?=
+ =?utf-8?B?TEdkT2piUVJpeGYvbm10UWZSSStWWmxwajhCMU5QR1MyVjk5b05Uc2N5a2dv?=
+ =?utf-8?B?TGlLaWpkbTJ4aEhFK1lzSThPMCtWZ2wvVnZwOXQybXNwSlJvTVQzcjdTOEZJ?=
+ =?utf-8?B?TWpncW0xRUxlYTd3SUU0Q2VsaXEyMmF4a21BMTkxZDVIYTBRM2tVRG1UOU9Q?=
+ =?utf-8?B?bncweUI2OCsyMkplZUdXSnpPRFV3VDFHZzQwWllraWtmSEVsY3E1UVRQNS90?=
+ =?utf-8?B?ZWhlU3Q5c0pjc0FEOHd1dDJwOFZYM0xMZTdCMVJJcFV3bU5XWUUvd2s3SFJQ?=
+ =?utf-8?B?bHFuT0ZydXZ3THd6Y3lIcGh1dFQ1Mzk4TFlNR2JxMmpobGNRVGdTa2xkUWd1?=
+ =?utf-8?B?a09peGhPaWhCcGx1T3Zib2VRVFVHQUNzRi9lMnNoNUJEL1EwTkNqOTVNRWVa?=
+ =?utf-8?B?dDlUQVQxN1ZhUVMrekVmOTZhS2ZnVUF0K0dBbHlVTGlFam42WGpPN012OWpF?=
+ =?utf-8?B?UGduQkcwT3VLbysxcmRJaVNpRTVNbmNGbkc2L3NjNGkyekFhckIwVW9OVE9w?=
+ =?utf-8?B?MDkxSkg4ejdsTHhWR2FIcTd5Q2huTVhvWlFDYUhHZ2N3TlJidXMwRUkwd1dC?=
+ =?utf-8?B?Z0hIc3dYVExzYU54b2NwOUg2UkNMb05wbnpCWmlMdFJpWGJHUjB3RDBNUXRW?=
+ =?utf-8?B?WE5IeHZWZmNXY2swRnliZU5URWc1LzdoYjNoU0YzU25UV21HZWV2Y1F3TlZP?=
+ =?utf-8?B?bUtXelRoNUtsNkZUTnpkUEVRV3duY3QrRW5xdGx5YnNiL2kzZVpFdElmNXQz?=
+ =?utf-8?B?Tm5UajNaTyt1T1VEWEtoTlYzYWJYakZobVVJSHRQa2pvSVBDRlRDQ3hxMm5n?=
+ =?utf-8?B?OEVrcWgwQmNnNkpadEpaU1E2Qy9kV2FZYmRWeHh3N0hLU2tiZFpxZz09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b171fea7-0a9a-434d-a07b-08de78d17543
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67da3580-300f-4b3f-cddb-08de78d3344e
 X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 03:03:34.7620
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 03:16:04.7021
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3ZkXWEKqYRuq8qjWcNf4+ZnPk58723tw8gnD5GMIH6OSt8dfamPW56s35M+ENga3ijsEn0FPVRjgmjJybmrdFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9018
+X-MS-Exchange-CrossTenant-UserPrincipalName: jbAHrGWfzvQxQWOjyAWViX5Vr5fSsG8IYDVXy/YisadbiA678QRKF2wo6LBfFDPRJ/cu/XNcvJd7Jx/o8cxWjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10849
 
-On Mon, Mar 02, 2026 at 05:10:39PM +0100, Marco Felsch wrote:
-> Hi,
-
-Hi Marco,
-
-Since Frank Li is a new "ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" maintainer,
-you should copy him.  I'm Cc'ing him here.
-
+On Mon, Mar 02, 2026 at 05:10:40PM +0100, Marco Felsch wrote:
+> From: Liu Ying <victor.liu@nxp.com>
 > 
-> this patchset adds the driver, dt-bindings and dt integration required
-> to drive a parallel display on the i.MX93.
+> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Document the Parallel Display Format Configuration(PDFC) subnode
+> and add the subnode to example.
 > 
-> Since the i.MX91 register layout equals the one from the i.MX93, I added
-> the support for both but tested only the i.MX93 case.
-> 
-> This patchset depends on:
->  - https://lore.kernel.org/all/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de/
-> 
-> @Conor Dooley
-> I dropped your r-b tag since I added the 'bus-width' property.
-> 
-> Regards,
->   Marco
-> 
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> [m.felsch@pengutronix.de: port to v7.0-rc1]
+> [m.felsch@pengutronix.de: add bus-width]
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
-> Changes in v10:
-> - Link to v9: https://lore.kernel.org/r/20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de
-> - Add MEDIA_BUS_FMT_FIXED (Liu)
-> - Drop next_bridge from driver struct and use bridge.next_bridge (Liu)
-> - Drop linux/of_address.h include (Liu)
-> - imx93-pdfc: drop bridge.driver_private usage++ (Liu)
-> - Make use of kmalloc_obj() (Liu)
+>  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 78 ++++++++++++++++++++++
+>  1 file changed, 78 insertions(+)
 > 
-> Changes in v9:
-> - Link to v8: https://lore.kernel.org/r/20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de
-> - dt-bindings: drop unncessary changes (Frank)
-> - imx93-pdfc: drop bridge.driver_private usage (Luca)
-> - Kconfig: Adapt Kconfig symbol and prompt (Luca)
-> 
-> Changes in v8:
-> - Link to v7: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de
-> - dt-bindings: add nxp,imx91-pdfc compatible (Liu)
-> - dt-bindings: use video-interfaces.yaml# (Liu)
-> - dt-bindings: s/data lanes/data lines/ (Liu)
-> - dt-bindings: drop 'reg' poperty
-> - dt-bindings: drop #address-cells, #size-cells
-> - imx93-pdfc: drop drm/drm_print.h include (Liu)
-> - imx93-pdfc: s/exist/exists/ (Liu)
-> - imx93-pdfc: drop MEDIA_BUS_FMT_FIXED from imx93_pdfc_bus_output_fmts
-> - imx93-pdfc: imx93_pdfc_bus_output_fmt_supported: make fmt const
-> - imx93-pdfc: Rework input-fmt selection to always fallback to a sane
->               default.
-> - imx93-pdfc: imx93_pdfc_bridge_atomic_check: make use of
-> 	      imx93_pdfc_bus_output_fmt_supported() 
-> - imx93-pdfc: drop 'reg' dt-property usage
-> - imx93-pdfc: imx93_pdfc_bridge_probe: pass -1 for endpoint reg value (Liu)
-> 
-> Changes in v7:
-> - Link to v6: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-parallel-display-v6-0-7b056e1e5b1e@pengutronix.de
-> - Add missing bits.h and bitfield.h headers (lkp)
-> 
-> Changes in v6:
-> - Link to v5: https://lore.kernel.org/all/20250304082434.834031-1-victor.liu@nxp.com/
-> - Add bus-width support
-> - rebase onto v6.18-rc1
-> - add review feedback (Alexander)
-> - driver license "GPL v2" -> "GPL" (checkpatch)
-> - make use of reg of-property
-> - fix to short Kconfig description (checkpath)
-> - add OF integration
-> 
-> ---
-> Liu Ying (2):
->       dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and example
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> index 34aea58094e55365a2f9c86092f637e533f954ff..d828c2e82965c7a4cd69a67136047d83c96b0a35 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> @@ -40,6 +40,58 @@ properties:
+>      minItems: 8
+>      maxItems: 10
+>  
+> +  dpi-bridge:
 
-This one and ...
+Cc'ing Frank.
 
->       drm/bridge: imx: Add i.MX93 parallel display format configuration support
-> 
-> Marco Felsch (1):
->       arm64: dts: imx93: Add parallel display output nodes
+fsl,ldb.yaml documents fsl,imx6sx-ldb, fsl,imx8mp-ldb and fsl,imx93-ldb
+with a reg property.  Since all of them are child devices of either GPR
+or BLK_CTRL and this dpi-bridge is a child device of BLK_CTRL without a
+reg property, how can we handle the inconsistency?  At least, with this
+patch and the current fsl,ldb.yaml, we cannot add an i.MX93 LDB child
+node.
 
-... this one in v9 were applied by Frank, so you should no longer send them.
-
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      compatible:
+> +        enum:
+> +          - nxp,imx91-pdfc
+> +          - nxp,imx93-pdfc
+> +
+> +      ports:
+> +        $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +        properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: Input port node to receive pixel data.
+> +
+> +          port@1:
+> +            $ref: /schemas/graph.yaml#/$defs/port-base
+> +            unevaluatedProperties: false
+> +            description: Output port node to downstream pixel data receivers.
+> +
+> +            properties:
+> +              endpoint:
+> +                $ref: /schemas/media/video-interfaces.yaml#
+> +                unevaluatedProperties: false
+> +
+> +                properties:
+> +                  bus-width:
+> +                    enum: [ 16, 18, 24 ]
+> +                    description:
+> +                      Specify the physical parallel bus width.
+> +
+> +                      This property is optional if the display bus-width
+> +                      matches the SoC bus-width, e.g. a 18-bit RGB666 (display)
+> +                      is connected and all 18-bit data lines are muxed to the
+> +                      parallel-output pads.
+> +
+> +                      This property must be set to 18 to cut only the LSBs
+> +                      instead of the MSBs in case a 24-bit RGB888 display is
+> +                      connected and only the lower 18-bit data lanes are muxed
+> +                      to the parallel-output pads.
+> +
+> +        required:
+> +          - port@0
+> +          - port@1
+> +
+> +    required:
+> +      - compatible
+> +      - ports
+> +
+>  allOf:
+>    - if:
+>        properties:
+> @@ -112,4 +164,30 @@ examples:
+>                 clock-names = "apb", "axi", "nic", "disp", "cam",
+>                               "pxp", "lcdif", "isi", "csi", "dsi";
+>        #power-domain-cells = <1>;
+> +
+> +      dpi-bridge {
+> +        compatible = "nxp,imx93-pdfc";
+> +
+> +        ports {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          port@0 {
+> +            reg = <0>;
+> +
+> +            pdfc_from_lcdif: endpoint {
+> +              remote-endpoint = <&lcdif_to_pdfc>;
+> +            };
+> +          };
+> +
+> +          port@1 {
+> +            reg = <1>;
+> +
+> +            pdfc_to_panel: endpoint {
+> +              remote-endpoint = <&panel_from_pdfc>;
+> +              bus-width = <18>;
+> +            };
+> +          };
+> +        };
+> +      };
+>      };
 > 
->  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml |  78 +++++++
->  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi |  54 +++++
->  arch/arm64/boot/dts/freescale/imx93.dtsi           |  12 ++
->  drivers/gpu/drm/bridge/imx/Kconfig                 |  11 +
->  drivers/gpu/drm/bridge/imx/Makefile                |   1 +
->  drivers/gpu/drm/bridge/imx/imx93-pdfc.c            | 225 +++++++++++++++++++++
->  6 files changed, 381 insertions(+)
-> ---
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> change-id: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
-> 
-> Best regards,
 
 -- 
 Regards,
