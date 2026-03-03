@@ -1,123 +1,122 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx-relay90-hz2.antispameurope.com (mx-relay90-hz2.antispameurope.com [94.100.136.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4869423A7A
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 14:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772548121; cv=none; b=cMctcj2ve5PMcYrnL+kjsXdoSaMvFdvMqJiZj4SG3bxXFxHxQxRHYBkYhYyUwrhTNDeHCkoTy+ksqqXk+lTLxC4VE8TXb/ObVZHID1bFKcswVShHn+WIikRc+WRzekc9o/lVf5B165DyWQCPpLaMyOUhBKGq1rCTwY8ePYMMCxY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772548121; c=relaxed/simple;
-	bh=sFdspMKJumEMO4fDQc2+117471ZtpGFHB8cFzHcqV9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmyIIxujcsiWmnUtFZ1jd3JkEsCwXGYyJCNvjKz5KyoI9R7ihP7r2S2eDaiY1FWZAaIgh6HXfhhKnrDUQlp8Uysri6bfBN6PewTCnsIWbvT+RPT1FjATVAgVDYsfyPf8yUd4R/znSP/w3qeCTHjMT9+QuAHaz+1RPBppsvIlZoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=d/O+JXo5; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAFA36C9F8
+	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 14:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.190
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772548684; cv=pass; b=pmhoHWzh9CnNe99nB0Wt2RSQleYw/Xp3oTggVfNWDN1/8Ggcju8ZOUCbAjgkRE9suILcbNIs/FInntWiLLlYVCyVcFEjTHTqU8ZWAAlxRoPInkgWt+xZ/su3kYp5REKCSQO+/KJs7oeBh6xtT2ulPWa6hm/D8CvcYZ0e+tHl7us=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772548684; c=relaxed/simple;
+	bh=rVuybQUqazKyV8k4hcvo27/qV8xyidoXn7ChdP0vDYQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XOXzMZbPKrG2Ij59R6JEG+sCV3fkRHyZhP7uYOq0n1Un48UyG3+re8Na0j+6WdKMQa1rLeqUclHrd52J3clvebyEMiRYnsEWmkIaMkzG/bkeOcooWn0pHzLQxWReDVWj5RhssB2DOskq7F0dT1qs4U0IKpYM/6r+o4tq8YfU7gk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KAzYSg+Z; arc=pass smtp.client-ip=94.100.136.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="d/O+JXo5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4B2E21A233A;
-	Tue,  3 Mar 2026 14:28:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1815E5FF29;
-	Tue,  3 Mar 2026 14:28:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BC881036864C;
-	Tue,  3 Mar 2026 15:28:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772548112; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GWUy5XUp50lxxjU1GZxGSJIelBHwpc1HiL3azJ0BLV4=;
-	b=d/O+JXo543vedMVvGLT5gKQytZfFXK8awsVgYA6R2ojxBslqYDSqG0VaRPH7bRUxFJlQN8
-	1vkegNiRGY41CrTbPRA1NgXIqSpHHXeFNACKcalOr4bzHngc7EbH0CSSUuvUxXHy5MVFSy
-	vEESymOX/4StaUul4BCuzjnEikImvMMtImKAjJiVJGCmUvbpNeHT+w2j0OOFIPwqXLeYpl
-	cStsMnmcoZTIpyS3EgJxQykjVvH8H5XHlQadKad7TsG6qk3H2sE9QULsdlhxCLsvdS6N3P
-	Oejd8rD6YiajdGxXjpbhWcTxEQM/3Nco4XUAiT9M4D/MHRwg24QTsSLti/Lp2w==
-Date: Tue, 3 Mar 2026 15:28:12 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
- Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "Michael
- Turquette" <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- "Andi Shyti" <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Arnd
- Bergmann" <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
- Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
- Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
- Jiang" <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- "Shawn Guo" <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <patches@opensource.cirrus.com>,
- <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 11/28] cxl/test: Use fw_devlink_set_device()
-Message-ID: <20260303152812.5d699701@bootlin.com>
-In-Reply-To: <20260302122449.00006c77@huawei.com>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
-	<20260227135428.783983-12-herve.codina@bootlin.com>
-	<20260302122449.00006c77@huawei.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KAzYSg+Z"
+ARC-Authentication-Results: i=1; mx-gate90-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=BtZl4GKtGgoXKB3Ht+zrsFdv8HOLRY0L6GMQM5yR7QM=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772548667;
+ b=hqrds0FKLDv5eDHsOtf2QP5N+DmbdYTAQ/yC4HRanl9pD6jzC6PA77iJzvrw1Kba9G3ncID0
+ j//SOPbJEHPeGJIZS5mTcmpGCQ+clpcxTgtXjNcaVAtUNNTnEaT57mZNnRSN2FKuaY70b5YwRRT
+ njV+SrtkXci3NgNKoH2ilF0y7I2anSn4QEml+E82g4nhAm2jEXFS6z5Jv1uu+FIylSGlyDzvGHU
+ u3XuBWE1IJBpiqhE8xFwvN9n375RiuSRJwD/CFuXLdVecyp2obOJIC3R0CH4mlUdyMVHw0VqXUe
+ ITRmnJzvTokBEjKM75C7bRzoSknXOrNtP6vuyLCczpA5A==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772548667;
+ b=ZJ16sUo2ThmB5ZQMy9arPUmetzA01O7gm9kfG++xkeZWvdFHlo+oBO+JjOlHakJ09BrFCoWG
+ bIO4dTUEn7i/BkoN15vSuEk5MGWy8TIz33X88SJz4I5ThWrwjkGrMfeW44zulu+SJiVoI/bplXJ
+ Rp3vpfeCtYc3nnPFy2T/ygci4JF4h9AFyZro676ZO2PYt7IsMei3+8FmTCsCgnQuoH+f9iHAYPR
+ X0Yr5ZrDZBlzc37hHYviWvtoadxA3Y5vmyja3NyQCfHJhnZ9HAkkWfCS8IQI5w28SelsK0OKuh/
+ gtIIhe2luoKx/kINgEzWMDOdYFuFhrjgslVFqGMaWJFRQ==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay90-hz2.antispameurope.com;
+ Tue, 03 Mar 2026 15:37:47 +0100
+Received: from [10.123.75.134] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: max.merchel@ew.tq-group.com)
+	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id DFBB7A4079E;
+	Tue,  3 Mar 2026 15:37:40 +0100 (CET)
+Message-ID: <113446c6-3b1c-457d-a29b-682cdc9e5577@ew.tq-group.com>
+Date: Tue, 3 Mar 2026 15:37:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] ARM: dts: TQMa6: modify for use in bootloaders
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260220143008.186851-1-Max.Merchel@ew.tq-group.com>
+Content-Language: en-US
+From: Max Merchel <max.merchel@ew.tq-group.com>
+In-Reply-To: <20260220143008.186851-1-Max.Merchel@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-cloud-security-sender:max.merchel@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay90-hz2.antispameurope.com with 4fQJLF4WpFzX1Yg
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:9fd46e5f27eaa805456295327e3d5223
+X-cloud-security:scantime:1.206
+DKIM-Signature: a=rsa-sha256;
+ bh=BtZl4GKtGgoXKB3Ht+zrsFdv8HOLRY0L6GMQM5yR7QM=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772548667; v=1;
+ b=KAzYSg+ZV+xUt0fZhjr1tod9fmZs0Kkq2DjNO24h2qexBqC2ostfTnREWHSmlazIi2tEcNno
+ 2487PE1O6ijfvudmygwOSgqw0kgDkbpFmBlqdkusVw2vjZpIKGKhzKSvFNKW4DMj1TmJ2wcrAL1
+ HWewsbLm+zgUe5XcyJVmhimBGtzS2wB6r7fymcrhEeLK3qExzjilqPYYyrXq39rj0MNqgX5MKID
+ iBf9QircBVAw27iRUYmst3P0JWY2GQY/qIO8HHjLRMv1SlL2PFBGkRK/oXUx8s2s55Kv3F4UtCm
+ ax1B0NiZ7Oygxo2BvLVszyjezA5exvJ34dB1Jt0q748CQ==
 
-Hi Jonathan,
 
-On Mon, 2 Mar 2026 12:24:49 +0000
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-
-> On Fri, 27 Feb 2026 14:54:08 +0100
-> Herve Codina <herve.codina@bootlin.com> wrote:
+Am 20.02.26 um 15:30 schrieb Max Merchel:
+> This series contains modifications for using Linux device trees
+> in bootloaders. Changes from U-Boot bootloader are incorporated
+> directly into the Linux device trees.
 > 
-> > The code set directly fwnode.dev field.
-> > 
-> > Use the dedicated fw_devlink_set_device() helper to perform this
-> > operation.
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>  
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Changes in v2:
+> Improved commit messages for commits that add boot-phase properties.
 > 
-> From practical point of view, what path do you expect this to take?
-> Is there urgency to make the change, or does it make more sense to
-> add the helper this cycle and cleanup up the various places it can be
-> used next?
+> Max Merchel (4):
+>    ARM: dts: imx6qdl-tqma6: add missing labels
+>    ARM: dts: imx6qdl: add boot phase properties
+>    ARM: dts: imx6qdl-tqma6: add boot phase properties
+>    ARM: dts: imx6qdl-mba6: add boot phase properties
+> 
+>   arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi   | 12 ++++++++++++
+>   arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi  | 11 +++++++++++
+>   arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi |  5 +++--
+>   arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi |  6 ++++--
+>   arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi        |  6 ++++++
+>   5 files changed, 36 insertions(+), 4 deletions(-)
+> 
 
-I hoped to have patches 7 to 12 applied by one maintainer on his/her trees.
+Any further feedback on this?
 
-As it is related to fw_devlink, I expect to have them applied by a driver
-core maintainer.
-
-Any other plan can work as well.
-
+-- 
 Best regards,
-Hervé
+Max
+
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
