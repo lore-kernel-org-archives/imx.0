@@ -1,76 +1,72 @@
 Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011007.outbound.protection.outlook.com [52.101.70.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990E3375F72
-	for <imx@lists.linux.dev>; Tue,  3 Mar 2026 21:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5105021FF4C;
+	Tue,  3 Mar 2026 21:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772571757; cv=fail; b=gt48O3ieC8sM5PlIDE+0+QzAoWT+Kuxoy5uAD0DH9Dmbgxj1gr3K+L3BaqkgPmfyBCsG7WBhTLuza4FTqG6/AK1Oam6QLJvKHnEo68S+MgyRRgWAateX3EJ245+9pPhP5MdrU1DZTrm/bpuzL4CvlaI7QlmlwAX1i9MesUcuDO0=
+	t=1772571758; cv=fail; b=YSgkkU/GPG/7tNGI8GHb8iPn3DmcbZAXoadeGl7OFqwgx8IFuOeRwtpmTSOQ8MMqjR03EfLk1S/gCLR+L055fkr1gmEFEvE58degRTykT5tL5CfpKN45fBP6coYr8h8luROm+powv1bFrrK3xcwh/JaVQLVtG/R1CyGiV4ziz44=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772571757; c=relaxed/simple;
-	bh=x7PL1U/7u/GqCO97rqU3NRxKBHSNe4FiZXhd0NaWjVQ=;
+	s=arc-20240116; t=1772571758; c=relaxed/simple;
+	bh=N4TxgSNEeAxJ+Hn+lrOXC42iffdTXxV8AKATvU9pH+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oggGUhlhdLWet1AaWHxVkjxm99NtO5AavZcCnS60k4t03VcoiE8EAW7GzbjfPh5FSQrtCBZjK2nJTD0gqJS+mDkp9nP1CTFIcs802/hHodXOQ9EHCWU1Z7o8eH0wNWlynaY/Ud7xKd6+SvpNIUaUEfNYjetNqHHzTIqJYK6tNUA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ARcrpChL; arc=fail smtp.client-ip=52.101.70.7
+	 Content-Type:MIME-Version; b=qOsLLbQgbHlNTmtfRoC6T3aM4LEuEAIaW+XSUg3rabm+jGUPLlelWDHdcOX5ai1Ke+c58XsTFBDemHMSY/G+PmB0rBY2l5KUC9DymURNBaIJbeGDuS8zmJ2Rol6IJSrt+Dpu7VVw61PpPyP9tS8acaHzz7TLG7G0/Zn7PRqPcrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WOPmefoh; arc=fail smtp.client-ip=52.101.70.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ARcrpChL"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WOPmefoh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L72IV1Zrv3a56RCk5AAzQRGBxJ5vy6aQjcv/eiCoVU6bXvl862D2wYR7twVFinKuPyLRkNEk9B1Dp/AwGAdkO8fKGI80RBGUq5toSjUhgPY9L5RE642oWMFEbzmKEfXO6tXuEftqV7Jd1F5IKUhzn6R5aN30mldPKyJ1sFRMqIaFi8wnBVPSVdVIEwpQ6/pO8PidyOv2SxgrFWQp8XKFcCi/mem7EK0kh22R5+3ITKKwWpCjFZ235bdNVD457o+j4OP/2R7ZvyKJyhJgi2oMPYX5QK70VCgXIySLLyW9ujFWCT33WgdwcoS+5WSYTpILTD4At3yjkJAFDwG7CEmhBA==
+ b=N0c0XBSyLsHRJO2of9Id2jqXfmgMYtsiWmbd+b8Dh6pqwoKZntM1h6JZSIaXsTaAzxnGGmJ4u/qQwl9fqWVhniIy0I4aYnVHoRONvdJGSt3N9C4VJQwUNthDZE54I6yF7HTWp7p5N9zIGYqYZz+h1gcgeEhxYD06sni2nt2SCKOCMZUUW0pBBYDZ3lC6WJK/31H8HtBj4utboN1bpkVwMvt96kgGb8oVM50gWOqcr/noeCi7YyrPHejEgORWtX9ztvyjisodeVRml9UqwCPRiIcRa5nmR5b5ikXp9KF8glr04sK80BH7SnM3SS2GNeBhFarnfrJ9Cq4cR/VJP5QYig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ePOV3SqX5mlUQ6WT0rPhjJj71KRKYX7wMQztxYVzEhY=;
- b=ODeavs+TGbxy+HcXMi7xGx1J323kaP+gzwh6y8URBJvMfsX4VZgXZSUlLKcM5wGj3QUQrhOXyv0IhucQUF/+dcbrSwPVzFa348MYJLaD6gSfzWIbqrey8K4MYzgZmaaGNHz20iskGK6qjBoUUP7zvb475KJGt+F6Yk4sSroJDd/aMYg8MmJ9J2uDjvJWm/Kc8GuqohyZld7F/ueWG6eNThoTzu1FyjgnHrw1fU8QwtUiPFziL/P99lyiayLPxg2Ea0zoOOC0l6nXrUA6DM12w2zXuTz18enMJc5MZRO9gGZ8pwHuTuoJXL+BvPr+MTfYogB1S7KaN0RO58/axYud5w==
+ bh=25PTrhWjTAhZEg63K5aZdBMhoUCXwapuX4m7iNV5lBg=;
+ b=akR5geM4zhS+E8JraFd4l36OcD9GClueiEouZ7e0idS9/H9m6ch6gAB5JUyp+qgDuYUTSZOK0xtwEULEPt9Ll5KXtbWOh9mKRBC8wTVkqEITGpBuypjPQs0ncjQil5LwjTcjntsuAW+dWFPzagvbThkrrxkAHrE16vOYMLn7FQHmTZO8CRmlyr8j5/Kf5WNAlg6g+RgX5RZV/mnfSa76PzSAIM3/jvXs54Wuqu1TClsJ4//9+y+ghUG1NeiMHZQj+gRcGf9Rr1kSmaz8TzDKKfLf4yUizFPN4a7jp6W2kx1FVrey/v9ql64c3qwFFJDCILP2irs0t2FvLF1LiAAhRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ePOV3SqX5mlUQ6WT0rPhjJj71KRKYX7wMQztxYVzEhY=;
- b=ARcrpChLvlHJYnaVjgij6vmA/K5S3crHZWVDGGkoA+/eN/nSMeSK1uCSyOJ2oURwYDYGxnDfuo5QBZsjAzCmGjIHJQgAtNrlPPgxtDLj6MbpoeySGRtB4yGgkMS7ihFrXwd0/skXAtJzbD1jkVE9FXm+Z7xl7ig1EE3I/rk6nJeEEFgBhNsLeVo1Q3t2ck41R4Mz+G5RsSzgNajm/hjwKVTHns5PkmdshiykiQGC+p+sssf9Jik/yGsjHZ0NMkLqvzfWCTmw7sExftFat+7Go4R+4Z2Z4fgdhmP++2CmY/MrG1T5ADXrIT7p4WFiXGcxApIXt0DfppNLCmyL4dRi7g==
+ bh=25PTrhWjTAhZEg63K5aZdBMhoUCXwapuX4m7iNV5lBg=;
+ b=WOPmefoh+1Bt8O3Ky0leiDuDP8+L+ZXDzUih3K0cC0uTWcz+DR6I+7S0VMYi+cLouCA1VVDNgdT1s1D7bloUA6r0b0BskbZIklN5kaJmVWGuj6sMIgiza9ZGFhwS+c3rXGMCtWNdhq2sGHXBSIuaiUWov7Tenedxg+jxvESimU4sEjzJaeqeIp+AMED49gn1byIaI5+mvqOVwYcPK5UX+gG6A22B3mKvx05W57rQqJiT7K2UH554iUvqn+wiLG29e4tYAH6J6FeixGpsgZo7Eo9a8Xnv8cRIDl6153T9L/V/cJPCiKMmwNCLdVuAMfrIs/MdVyOACnM2jBO5Po+iDw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
  by GVUPR04MB12217.eurprd04.prod.outlook.com (2603:10a6:150:33d::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 21:02:29 +0000
+ 2026 21:02:32 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 21:02:29 +0000
+ 21:02:32 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	hanguidong02@gmail.com,
+	ysato@users.sourceforge.jp,
+	dalias@libc.org,
+	glaubitz@physik.fu-berlin.de,
+	abelvesa@kernel.org,
+	srini@kernel.org,
+	s.nawrocki@samsung.com,
+	nuno.sa@analog.com
 Cc: Frank Li <frank.li@nxp.com>,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Yannic Moog <y.moog@phytec.de>,
-	Josua Mayer <josua@solid-run.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx91-var-dart: Add support for Variscite Sonata board
-Date: Tue,  3 Mar 2026 16:01:04 -0500
-Message-ID: <20260303210131.2966214-9-Frank.Li@nxp.com>
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-hwmon@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/4] driver core: generalize driver_override in struct device
+Date: Tue,  3 Mar 2026 16:01:05 -0500
+Message-ID: <20260303210131.2966214-10-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aec58b97aecd317e1fe274afc2844334feb9b9ab.1772534362.git.stefano.r@variscite.com>
-References: <aec58b97aecd317e1fe274afc2844334feb9b9ab.1772534362.git.stefano.r@variscite.com>
+In-Reply-To: <20260303115720.48783-2-dakr@kernel.org>
+References: <20260303115720.48783-2-dakr@kernel.org>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SA1PR05CA0014.namprd05.prod.outlook.com
@@ -84,104 +80,154 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GVUPR04MB12217:EE_
-X-MS-Office365-Filtering-Correlation-Id: 278f3079-fe5e-4cea-4db1-08de79682e1c
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Office365-Filtering-Correlation-Id: c6d8bd2f-64e1-4db7-b931-08de79683020
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|52116014|19092799006|7416014|376014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|52116014|19092799006|7416014|376014|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
- xBlu2MoU6tg2w4rRp7TlU1y3AtW1FJq4TiJjNFCTM571ewcZ90GGn0ovFiP/68ElXwruvgH6exHoNq2fdN8WiLOsj2Ud5sY00rJnIKkmPnXKdKMDGolWhhff5GIlMochoy8rWCOz6k2SHSEfpyxCNX4phl4Qr8jWtPpK0hpC8vhaK9VYilKCHy4DiSPmchbEb9XNWLLXwhdq1Iazsm8XB851/+V2cxmEjKffbCSWvjJboaFo2xLuClVZei4ZyXkMgxo3b+OrLwah35g6J7T7OJd2dK08g+srwWoUsybli+G/3h437fBsHrHGLVjTrUZAGBFYnJ+eO/HV//TPd/RXAeA3NahUQ2VPAlkbteyloA0IOlG7vsHltohoQkQj4zfwpGgjgNR6utTEzowEPliLnpROvSGq6eKN1GCLQsmnvWSrZgd1WkVDWFArIdDoCil14jp0JOUecxb+KpuVyK85DarqaHQmQ6d4NosR2WRUxiANVZdsE96rej7dK6J/285jA9Grv5uS3GNK1E1Lmyj+7rovod9ncdNbevgNuiHPUnQaThiXTq7EH8R/0ezchjE7Qxn6mskLkLwYUoCKabjg5nU7KGKfRjbULgQXdjDBmAQ7Ay0qTN/Y50jKe9vFquuuhi9S/W9wAceD3Q+nnYbX1mVjvMkjtAEPt6kiALzhbT5lz6ToY08HzmwNRUo6pOSrjLYjN9hSE9vApJNZ/yPz+4BIhSlohyOlneqPMm+ks/jaLUqLDFjiNG9CtkczjIP9cuAn4W35ym/Y7oFT7orBLJCOutFt7rdhGAZ8m4DdULA=
+	NFd/UOQswrCvuX4yQTRAtdCkcxtR2oV6CTXtt2MEx1r3CnuW5W4zHiYEk+A9I9VN6CBl8UQO1+nM4J103h+6JkYGp2Qy2EwtqJW0Nr5oUxyajkI22k1BkyWuetDCxpjmC0wGBIxlWj4O3Mjq7OAeQhSYTNOqns7IUEZ682k3erBKM/fm6oiCZew9OsPYBCfSa1/MQD3iAYcUNc0IW6VhezKeP7g1Zf2p/QHrCEPjmM79oVjdhC6aWG7mbWLveQRZhTUeL4UGcvd6MMWiYToqpS55kcTIsQSNxCaV0Lb1sx26PQNpq3HhQMtJPRnUDHpPxEqlX5z102G0mykPJRTvhrTxw9bvf+M5EtmQdZKiIqC/3tgHj8VnWUEQ0F7XL3dLhhcOmjiYSDDa2mxdFJnIJS3QhPVK+cOTKIBrAYKg0MGi9vFjJmFLQxD1MCUkm1GNRdB2GfJi03o8xEDVIIVFFtCmbVp7mxGCrX/txJP1I25u20UJ8EV7xPVlQ5KPHpngLq4Af9lpq6QnfbkqHHfHvZK3Alii7ASVObaSt/kFMyMLrPInKFseRX9J3uLndjamQ3LhzvjoaYDIG94RA48eg2v+DWYUVp/UyvgUiAy7elm5f8UhbuvSXYMxeWsg+Pbu6qw/CBl38MFOpDRQVKlKK3zwtodf7GL6rr4s/CtFKS4dISOqO47JoAJYZZ8uXnds4aNkRVxGrvMADAtgH1uMWLt3/Yob5gTUT/CQFJcUmUSUstiPn4JW1adeK7KJwXT8hoU2iFSR0TozBErbOWQ/RhG3jsh08V3yswHz/dR7OIkvMXMyXvW3Oq4wmuZEWFYn
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(19092799006)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(19092799006)(7416014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?ubBTDEvdzozjlslB8COiQYDi6g8m1NJujkUXK2asjo4sUL2yIC+pIRDuwDSc?=
- =?us-ascii?Q?dek/0S/EAgTiF9dRu9V1sNSiytTu6v+fKwlgPQUGF8xHoFciZe36e3uMr0UV?=
- =?us-ascii?Q?aBfRuqQdlbB3EKeooKepuwa4ZqKiWCZoiREPsXvAWU9Se1+XqXakRHpd4OWO?=
- =?us-ascii?Q?gS31gPQtO1KjFvilSynY58Fam6Zwa2HfAG0A37HiOeoGJbKSv/n+MUBvympO?=
- =?us-ascii?Q?ApWROJtzNA6kizmvvJqzlrLSKdAMQb/cB1nmvHAy50SlEA7doRY1WO1vgdIS?=
- =?us-ascii?Q?qSxSkokCrJX8LV6mRhJFOZVZF66/ekn/lb7V9cPNeKM7fbOJuT9VZjtSXA9t?=
- =?us-ascii?Q?eK44U8bH3js7yGzMGb3y2CYyUa0kbSPLy2mOgIx+4MjQdFvoGl2LueYAmd/h?=
- =?us-ascii?Q?LcsrupXxOQKgPXGeRGuhjhy+voxwoT06cyFX0d1SaB6SELQRijRrKsTVzxyA?=
- =?us-ascii?Q?OsiQX1rUlUPExcfmM8gaOP+hzrrzqFsPTWcehL+vKzuJo34rVjR3SP29KfH2?=
- =?us-ascii?Q?YLqVI05Jtycte79u+ZM+9lPSj/a227dOmLbSd66vfXNCKmCi+Te+g47JHYtB?=
- =?us-ascii?Q?cx2sQnnASMEeBHVGK4a+8W1TsfYkcYhsbL4FeyPmh8BoPqmMok2zOG5Nv1Ks?=
- =?us-ascii?Q?sIxeZlxRp7EgSb4RfuRXATQUp3qTyQjzL+8XCCMOGQh43vPX4c/5meDBUbHe?=
- =?us-ascii?Q?x/JcOMCCk1V02YZeUBvrc1UWjkr+wMb19pfUWV+WQs3orAq/m7yBdoxmX+lh?=
- =?us-ascii?Q?/9/YLzMossLoWMK/dz87KBXVHH3X47am6dPCDYRWyMuprpcIh3dDC4LXUkgJ?=
- =?us-ascii?Q?buCSTBk96UbQ4E2vl8k8sLZfMVTHpI8mw7RyQBK98Hl3g/b4nSrhz2JEUSv0?=
- =?us-ascii?Q?Bv6xgdnEmcCiNV2S+OYg57k9XPqHjM1t6VYwpzNrn5GLgPwRGXTtTsEWkNYr?=
- =?us-ascii?Q?U0ZUJQMqBsiHmTRIpe/8QC/nHgBdw4Pzs2JFNTCfKKjMuWFDakam3l+pTxW0?=
- =?us-ascii?Q?INEYRKMSrnCn0iLq4GZ7QSXy3NYKkgDusLuSdXmku8pQCoCrbXsUVhfilge8?=
- =?us-ascii?Q?yyUWqE0ZdS7sohcqmu5txyyJMtQBooOQSfFlGZi2ADvTYIbiArKHTXolXMh6?=
- =?us-ascii?Q?sQLtVYqhMRBoZ7koLCL2TMygx4gULrE6FDKFPQds4+R6lErwoC+jiUeE0/n0?=
- =?us-ascii?Q?qSlHZkAumsebhzUE46IL8kfzqAdwgKj+US9aLJ5O8Jg4ymXdR8Xs2AY1b/Qa?=
- =?us-ascii?Q?+BVM6cM1v5QBEFuwtp09l4R+Q0m7snvQN6O9fZsjuOOZwe9jjdS+3jg8sEgZ?=
- =?us-ascii?Q?V7i1f4IDB7bBNCNMj5RmPeGX2MIGqOcHSKMxfLehn1y0Qfi/QQvwGg1HTBmr?=
- =?us-ascii?Q?THBa/b3P26G5IfLxIvgYcwXzQf3zRPdrmkQX9xu1qn1t6AAsMg8HKL+dWGUX?=
- =?us-ascii?Q?esF6lwoP+D0JwCWaNnsrf1+nveDGg8u9BouplcCQlv4SRyVtrvMeHAMWbLOP?=
- =?us-ascii?Q?5BOjysL2HD0cFgtrPlT0cb4LxlGcbJ0SoucZ8fv4jfIlmD2Rp0pDs0QQgFV1?=
- =?us-ascii?Q?sjkOWsNmraoO9l5bkR9kTOiVabtFOaaiOQ9n+K6cN5Mavqx9Q+lbjlXjyHCu?=
- =?us-ascii?Q?KLre4SWcv/WI3VC98gIMECoXHIIWX7kO9yfImM4AgLoQUeGsvU9IeqqqyH4W?=
- =?us-ascii?Q?KApsWYr/1wy4hRMvmIw23BRPpn3VA4TKG05XIiFWPRfw2ZF8l0vp5yszgD8f?=
- =?us-ascii?Q?SsFhgZEnGA=3D=3D?=
+	=?us-ascii?Q?8tDOkyk0ztXuZ/W+Pcdr6z6Qh01EJz8QIdUqssLnBY3NEwKInBFMro9t+2lJ?=
+ =?us-ascii?Q?5boWY2VauOYGYn7YOEGikabumhUgttMNtBWHQYdcSP94hh2IpgIHkeG1yom9?=
+ =?us-ascii?Q?jtXck2LsbQdn/rTsBbulDj8YKjv8fkafpNSasDZWOOTx8oXfpDv9lBfl7933?=
+ =?us-ascii?Q?CC5vdWeDu+wUQOeSwYZClAqUMbOY41Qr5s9YzdZ2O8QVKVKlZktru00CodVr?=
+ =?us-ascii?Q?WDb1ufqNctfk+XzBdr12lgZwNSDRBL6Ws1RSFErKDrFPKUJbx1XzmNcyLvqQ?=
+ =?us-ascii?Q?nkJpu0x9Cxg36CTrZV5WikILemO9AcapwNQjxgjP6b9gR9ax3oxZXPorBfhh?=
+ =?us-ascii?Q?yAvFSPDOgOWMBy651IQOVN1CQgqdDbghYktf9IxyhaAKO50lXG31Q3iI690d?=
+ =?us-ascii?Q?pRJ4GyPlDV3KYNRqF1aZ67qrttUTegKMHyRxMiGdQddu+ZVnNfsefAoK4cH8?=
+ =?us-ascii?Q?5bh97NFsaSXv9t5FaVUrfsWLzrgXxqcpkY7DD5VIPcszA45L4EGnvFBuFXTC?=
+ =?us-ascii?Q?9l0hGQLPz65n98eOJgcwfBlCp7HaSt0/Nq08M0Dnl77JgK3QCd8ZKwXovH7/?=
+ =?us-ascii?Q?fJdsHJ23aW5zGs3/s3vk80rF4uMj+O0GUyJKBz6pmnYVxc/Bdxu9EFupqgSF?=
+ =?us-ascii?Q?2S2idfR1khFV6f0mmGiB/g21LTuy//F4DKn0SnvuOwnGeWKBkeJdirISYAmz?=
+ =?us-ascii?Q?epcwwbY1v9Zpql/WojJp+h7Bm2ChPYOs0INlqpwg5oTp4IUgHhz2QNonPv1Y?=
+ =?us-ascii?Q?Ihlj9GNtjyG9fYlwDygXHCLv2vGz+gjlaBM67JB5O2nzBurTjmPTYguXe5ec?=
+ =?us-ascii?Q?ypYh8xZRdcfmL9N70Gm/l4pSITP32Mm9lZ6ANeS81cpSBD/kp1tNEsjULsJc?=
+ =?us-ascii?Q?eM2lIp/7vZNuBIlz/DRQ87LNZX2crWSp3igmhNeXlFimkaU2zkHHyDeAlV40?=
+ =?us-ascii?Q?Jc76aOH7E5P5K87UoIVsEJnSU56ZflKMYjsWodJloEZ/XYvDMeT6wzFxJsx+?=
+ =?us-ascii?Q?aCh1Qk53TjlWTgu5LG0uj3nWYLtVta7D+EZUXrbuHiRL+RSKeAKuo9hGFw4G?=
+ =?us-ascii?Q?VPPd6rR9WrYl/xwbZmqeepZHmstQoBFlQEVL5Ty/fQ9EJlC12Qcg/BsQBT1k?=
+ =?us-ascii?Q?bqw/Crmd6/mDIHhdPwLLvDN9/n4GePGHHOXTs30UTNoHoMhVZtt614PkGYwz?=
+ =?us-ascii?Q?tgL2OayrmH54CDtcv/AtvAPBaCueX+qj52aDLiAr8q2Dcjhzn0vHJeYgDaNK?=
+ =?us-ascii?Q?M21y4Gxog4MAnx+/3eWegCvUJdqLXO16J6+Pn4Qc9pdesqoKyKx7dL+vcFsf?=
+ =?us-ascii?Q?rbrAHyDf63EG/9q4sXkubh64nVUezU3njGN2+J3tnoCCfGL2wM0BBrHXd5EO?=
+ =?us-ascii?Q?4SWSTsiSUbUZcCaTpIzmfK+PBqnXYk2rwI6yPvwD72i9SFXcUgVMlkxcs1CT?=
+ =?us-ascii?Q?XN43Dxc7cYA8vGGSfGTBmfKOvxkQBG0dTFPZ/2UGYmrbetvWUZ6itTu5y7+/?=
+ =?us-ascii?Q?x7veVUDli+5nzsDXn9jUrq3GqhWSPcYS7zx7CoYKbS/FbCa+gYe/GA8BXI1n?=
+ =?us-ascii?Q?+7QvzNkiYMn3Y2U/nFwmTl4PcCMmQgFRCzaAuB03ZHuCxkPAmMlEkFhz4S7N?=
+ =?us-ascii?Q?y3GZgtJVh0vRISNHqHGGNVnBbOIGFlmbkfxeyT69t7RN8OSSuuxU6d8WtZTb?=
+ =?us-ascii?Q?8Z9AtcIFXdH1KR4szLs+VuO5wwKp3oQjfDlXWgUBYuz0xJAu20zyhfyyz1gL?=
+ =?us-ascii?Q?ksDM+XHMsQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 278f3079-fe5e-4cea-4db1-08de79682e1c
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6d8bd2f-64e1-4db7-b931-08de79683020
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 21:02:29.3157
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 21:02:32.6105
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pnS2F6PsWxewKu+lScA+ZbmbyqrHJ0yxteRmNpp7DbP6cxB+J9LNg1fymsy1zl7gcYBoS6Ydr0oBVlIwlKukcQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: wyvHvoUTOGlzgOfezEApEgARBTE1gSDg7gpbFNv0aBFouZFKwbX74DzvuuyTkPWyzblqg26m5rVPUeXEDzUuPQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVUPR04MB12217
 
 From: Frank Li (AI-BOT) <frank.li@nxp.com>
 
 AI bot review and may be useless.
 
-This is a device tree patch, not C code, so traditional kernel style rules
-don't apply. However, a few observations:
+> +static ssize_t driver_override_store(struct device *dev,
+> +				     struct device_attribute *attr,
+> +				     const char *buf, size_t count)
+> +{
+> +	int ret;
+> +
+> +	ret = __device_set_driver_override(dev, buf, count);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return count;
+> +}
 
-> +	pinctrl_lpi2c7: lpi2c7grp {
-> +		fsl,pins = <
-> +			MX91_PAD_GPIO_IO07__LPI2C7_SCL			0x40000b9e
-> +			MX91_PAD_GPIO_IO06__LPI2C7_SDA			0x40000b9e
-> +		>;
-> +	};
+Potential issue: if __device_set_driver_override() succeeds but
+modifies state, returning 'count' may not reflect actual bytes
+consumed if buf contains embedded nulls. Consider documenting
+expected behavior or validating input length upfront.
 
-This pinctrl group is defined but never referenced in any &lpi2c7 node.
-Consider removing it or adding the corresponding device node.
+> +static ssize_t driver_override_show(struct device *dev,
+> +				    struct device_attribute *attr, char *buf)
+> +{
+> +	guard(spinlock)(&dev->driver_override.lock);
+> +	return sysfs_emit(buf, "%s\n", dev->driver_override.name);
+> +}
 
-> +	pinctrl_lpi2c7_gpio: lpi2c7-gpiogrp {
-> +		fsl,pins = <
-> +			MX91_PAD_GPIO_IO07__GPIO2_IO7			0x31e
-> +			MX91_PAD_GPIO_IO06__GPIO2_IO6			0x31e
-> +		>;
-> +	};
+Potential NULL dereference: if dev->driver_override.name is NULL,
+sysfs_emit() will print "(null)". Add explicit check or document
+that NULL is acceptable output.
 
-Same issue: orphaned pinctrl group with no consumer.
+> +	if (sp->bus->driver_override) {
+> +		error = device_add_group(dev, &driver_override_dev_group);
+> +		if (error)
+> +			goto out_groups;
+> +	}
 
-> +	pinctrl_rtc: rtcgrp {
-> +		fsl,pins = <
-> +			MX91_PAD_GPIO_IO02__GPIO2_IO2			0x31e
-> +		>;
-> +	};
+Error path bug: on device_add_group() failure, code jumps to
+out_groups but should jump to out_override (which doesn't exist
+yet). This leaks the sysfs link created below. Reorder or add
+intermediate label.
 
-Orphaned pinctrl group. The RTC is on I2C (address 0x68) and doesn't appear
-to use this GPIO in the device tree.
+> +	error = sysfs_create_link(&sp->devices_kset->kobj, &dev->kobj, dev_name(dev));
+> +	if (error)
+> -		goto out_groups;
+> +		goto out_override;
 
-> +	pinctrl_uart7: uart7grp {
-> +		fsl,pins = <
-> +			MX91_PAD_GPIO_IO09__LPUART7_RX			0x31e
-> +			MX91_PAD_GPIO_IO08__LPUART7_TX			0x31e
-> +		>;
-> +	};
+Good: label renamed to match new cleanup order.
 
-Orphaned pinctrl group. No &lpuart7 node is enabled.
+> +out_override:
+> +	if (dev->bus->driver_override)
+> +		device_remove_group(dev, &driver_override_dev_group);
 
-Consider cleaning up unused pinctrl definitions or adding the corresponding
-device nodes. Otherwise, the patch looks structurally sound for a carrier
-board DTS.
+Potential issue: dev->bus may be NULL or different from sp->bus at
+this point. Use sp->bus for consistency with the add path above.
+
+> +int __device_set_driver_override(struct device *dev, const char *s, size_t len)
+> +{
+> +	const char *new, *old;
+> +	char *cp;
+> +
+> +	if (!s)
+> +		return -EINVAL;
+
+Inconsistency: len parameter is passed but then recalculated via
+strlen(s) below. If len is meant to be trusted, don't recalculate.
+If not, remove the parameter or document why both exist.
+
+> +	len = strlen(s);
+
+This overwrites the len parameter, making the initial bounds check
+at PAGE_SIZE potentially useless. Clarify intent: is len from
+userspace or always recomputed?
+
+> +	new = kstrndup(s, len, GFP_KERNEL);
+> +	if (!new)
+> +		return -ENOMEM;
+> +
+> +	spin_lock(&dev->driver_override.lock);
+> +	old = dev->driver_override.name;
+> +	if (cp != s) {
+> +		dev->driver_override.name = new;
+> +		spin_unlock(&dev->driver_override.lock);
+> +	} else {
+> +		/* "\n" passed - clear override */
+> +		dev->driver_override.name = NULL;
+> +		spin_unlock(&dev->driver_override.lock);
+> +
+> +		kfree(new);
+> +	}
+> +	kfree(old);
+
+Logic is correct but confusing: cp is set only if '\n' is found, so
+the condition `if (cp != s)` is checking "was newline NOT at start".
+Add a comment explaining the two paths (newline-at-start clears,
+otherwise
