@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660CA34DB41;
-	Wed,  4 Mar 2026 15:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AA34AB19;
+	Wed,  4 Mar 2026 15:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639375; cv=none; b=g7mdlJZf+9SeVUKOmELE0vuzbkvkw+x8cTclfO+nKePv51C9AeszbQzhywdmHCJtl2TR3wkQaR10g/7ojoPu1wQt6Y7JuZZSAnGDzksvkqvFWGHet8X88ab9DnRvnKWFfRPBQCPquJS+MxBdm34gVvyCaONINTjcU0GVaZQVQvg=
+	t=1772639564; cv=none; b=Kt7gax5HRwSUHSQ+HEFh6CCu6e/crVzDMz5XCkDouCdKBZqWuAZFzHatYXphkz6LG7gYlIk/CXslZGiyPR7LyyUL8is2hf4ex1mQTmykFHFUfvAZrvT0UMkUW8gu88V9Nrdgs0H91Kho2s3+8YjxwGSdAD08gC3PXg0/jyvXX3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639375; c=relaxed/simple;
-	bh=IX7WCg4dPH2qu2e+EkixB5EoOLtKx1kA9p+NNtTOBpU=;
+	s=arc-20240116; t=1772639564; c=relaxed/simple;
+	bh=s8RT9aid5CaLzg2B/m21offcuElLXSv4jiHs7HriTbM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NV67Rbtz8UxqoVATIbpsWPqjOKGnztKbNNVrfQBxkEpgv5SRJGnp3naBz9Ne4j9uJJmlCGl36D0kFRbpTsXvRfqyQ+koIFkJuR+HXbWZ2wbJrPZIb+LiddizjCw9KTj43YjLVqtdko0gE4SBzhT3Zv7e0Braa+wcBfp93iKmaMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZtHWwFYN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=TZp+aCSPD7fXUpvlVKBSF/8Igbu6zkq45C0ykoZ0CV7rDKvrUMni4xoq24UngVQwgGi8gaAdn9tizL2ivfqXhdT0phIpSSSuuEG/BbZv4IOlnnHJh6EAPdxmV7M1quOKNijG1/SYS4UOGgMEnu8mEK5mLeR78rEUhoEgH8QUsbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSlJQbJ9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZtHWwFYN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD5DC4CEF7;
-	Wed,  4 Mar 2026 15:49:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSlJQbJ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEF7C4CEF7;
+	Wed,  4 Mar 2026 15:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772639375;
-	bh=IX7WCg4dPH2qu2e+EkixB5EoOLtKx1kA9p+NNtTOBpU=;
+	s=k20201202; t=1772639564;
+	bh=s8RT9aid5CaLzg2B/m21offcuElLXSv4jiHs7HriTbM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZtHWwFYNQShmyxEp/vMAU/153NWxsd0d2JjBLHDpnxj6a12HZOz+CMAv1/JmoO+kp
-	 jH6+Hydk3qFsowlK7cngvlZUJDCfFM9DFB6Xd4mE49Zm3N0UibuAqlbNM08Vxi0vfg
-	 lbe3+BKHfNZlnoy+iUIPUlWoZUiuO79SL/O+YLjEfbz/lCQygbTRdfaw+jFMtN4U3q
-	 CZbJNJX6T0/5+tOJ3IE0U4wIhwf+CIjBQ8/zeFdlCh9blX+fG0dDr4GToANxsyv3gP
-	 6DYY27OZmausiTzVE1mIJdmSbQFdcegaKu/lv1q6oslvSvCz3KQpxgK2/lzt+pFJvQ
-	 vlUnKXGHI7HeQ==
-Message-ID: <dda5b0b0-1a8d-4d37-aa82-9515dab2cbc0@kernel.org>
-Date: Wed, 4 Mar 2026 16:49:27 +0100
+	b=GSlJQbJ9rDrcd62FGVxRhx7FpuhX7EqvNZThhcIYs/hw/SzEIwpjOYLs7W5IahLtH
+	 iIUyOxuSe4z8QWroGeXrr0b4qXqHudZL6z7MfjPkr7gmB5SfJhrBUmgWCSloRjReAy
+	 25KMODB4AszAMnaFBkP1FT04PBLTOVKwtpcPlOamF2sy9nhH8ET+C4uPxC2soeV01p
+	 mrWaEBrWsIi3m74qGdFz0s4HInXUtAOLzZrGdwPTJH5EmIVOUmT6D+WRYmZXrPoq2s
+	 JsxrslTG20r9pBptAdOQSCKLnLPT5ippKup0Qg9v4O7jBvAkuahgou3lyog+BpAlAs
+	 8HfysDuFuCSRQ==
+Message-ID: <0d8de9b8-1e02-4873-94e3-71eb09b5104b@kernel.org>
+Date: Wed, 4 Mar 2026 16:52:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,27 +35,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
- subnode to schema and example
+Subject: Re: [PATCH v1] arm64: dts: freescale: imx95-toradex-smarc: Support
+ Cortex M7
 To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+ <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- luca.ceresoli@bootlin.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Marco Felsch <m.felsch@pengutronix.de>
-References: <20260303-v6-18-topic-imx93-parallel-display-v11-1-1b03733c8461@pengutronix.de>
- <20260303210131.2966214-1-Frank.Li@nxp.com>
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260303121324.1576841-1-ghidoliemanuele@gmail.com>
+ <20260303210131.2966214-14-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,37 +92,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260303210131.2966214-1-Frank.Li@nxp.com>
+In-Reply-To: <20260303210131.2966214-14-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/03/2026 22:00, Frank Li wrote:
+On 03/03/2026 22:01, Frank Li wrote:
 > From: Frank Li (AI-BOT) <frank.li@nxp.com>
 > 
 > AI bot review and may be useless.
 > 
-> This is a device tree bindings patch, not kernel C code. The YAML
-> schema additions look structurally sound. A few observations:
+
+..
+
+> ---
 > 
->> +  dpi-bridge:
->> +    type: object
->> +    additionalProperties: false
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - nxp,imx91-pdfc
->> +          - nxp,imx93-pdfc
+>> +&mu7 {
+>> +	status = "okay";
+>> +};
 > 
-> The compatible strings should be documented in a separate vendor
-> prefix file (nxp.yaml) if not already present. Verify they exist
-> in Documentation/devicetree/bindings/vendor-prefixes.yaml.
+> Ensure mu7 node is defined elsewhere in the base device tree; this
+> patch only enables it without defining its properties.
 
-What?!?!?
-
-This is nonsense.
-
-Also, you are responding to an already reviewed patch.
+What? That's useless comment. Stop sending such feedback. It is just WRONG.
 
 Best regards,
 Krzysztof
