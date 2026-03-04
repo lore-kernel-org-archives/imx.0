@@ -1,61 +1,63 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281F63195F9
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 14:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1003B531F
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 14:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772633028; cv=none; b=T7eNRm2pbiaoCbSGM7dKbBfV1yGx13L94PsFECMfQJFDIlwX2aWy0nfNoKVO1KIY7pvaVh460YYeebn/yMXzW45lPJ7l2eLfnMjuIKZiRJWTmjxYdAEYmJ/eK6pUrDKZLR0nJdRsLRYd5Q2SK61LZ2J2ZLpX9k7n3weovYSzjyw=
+	t=1772633077; cv=none; b=F7YGZygIK8gkXnF1pfVpJ+8Vt18b3e9SzcdyNnuia9vIfypcAyaodYWq3RIFNlVoAy8p8GwaJc32+oZavi/yfdxZz+5SUWlaKTEwCOhKdqByLN2qxZinDw5mMhtRGeA8HOc2qTo5F5I8CJLTcTRqsy5n9HMtq/nawYO2noVZDNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772633028; c=relaxed/simple;
-	bh=Ea39uNzoOXcUgiTO5xa3wS8NidKAL1a3PPM4jAgctJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlPGY0PySXr1KkJBR5a3HmBaHBE58VoGlzKMw1YmjcW1BhSV+tsrPz5Pyt8lPv+jOKT76B8FTIvTwvQ2QdLGGKuDv3Wo3THfaw+HvoT1FXKwokYXMPrTD93O7yzhpBpAV6JDNLex2cSGQQY3nOZhKByrDkAMrdC4dn3bC49ADIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4z3qSPJ; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1772633077; c=relaxed/simple;
+	bh=fysw4+7uigVqwi3HpSXPiZOY0cBAcQNqSX3ljElSVyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C/fvHRC39TgZsOtKWlLYB662uQ1KsIpegbvvnWzr6V4MGC0A0BGz8pG/X6tw15GMEsDJUbdcxF+i+8cK3BL6ROZflOirI0TOWnPsTBMpSWZ0g4xqOB9wogk8gV95Korv80Y+5QE6yPHPGwU+n/ZrMkmRohqo7Rw9hwFsTI6K3z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZkkRGzMn; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4z3qSPJ"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c7103601c8cso3237712a12.2
-        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 06:03:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZkkRGzMn"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-358e3cc5e7eso3047597a91.0
+        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 06:04:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772633026; x=1773237826; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMG/35vxQWRecO7x0lChQ2qa5zQ+cEwiNdTCEbyqm04=;
-        b=f4z3qSPJ70fpG4cuvegR24CPZvRr0qm9oEbV66zH4tNmQUsFQdyXuSw9LP4TTXT+3G
-         l6Rnad049f+xfxeU01MtrDUL+3LWnhncZlo3i/PQHxRcmJV5D1cZGD3QW5MhJ6pAD4dn
-         wQGzIlxB2HXYtSo7lK8AoaJpTcoK5xxZ2wj7fBzfTsnVQ8pTHW6t76oFWAuFYQ1IMZT5
-         odvUkOQxFcpPKoF5u4zNOz0wyFeGXMMnWl+IJDwCIXZaZHo5J/gz5xCNdQpGoD4WTtNv
-         7fPjEo9VCZRzqHYb85NPqClTdBzxgxnsCTRvpqwwTS+XmC77w75A4GPE4RIi83XHGV/w
-         eFew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772633026; x=1773237826;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772633075; x=1773237875; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wMG/35vxQWRecO7x0lChQ2qa5zQ+cEwiNdTCEbyqm04=;
-        b=gQoR/9C3X3vSyhBtYM/FqMScEE1Xeydx8rNZOjmrlhQM7kofYYrAlWW46bwkWF+4Lu
-         22c95wHueSUy/JeCq/L/5ii+wQWTJoi0/nSx5gmiRxxQZgS/xMlNaxEudwESGBijRnZ9
-         ADp7qFqnpA1wxFGnVaE7CxYlSRoa1wE6K7CdaJ/MlPX8fJEUU29tYJcJP4Zyw1gW9za5
-         L4slCTZrGkP27UWQXATi82vx1zEdXloJYcSWRFZ3RxErW1uB8swAFTIMMG3jfMynjW+E
-         IHTicT8YpDy9DnnhWM7RpwpxblXNaeK2cQL+MHBq5apuszDi79iT9HYAh8xXpo2xuk1O
-         t4Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7/MaF6fb1PL+3UoUD1lM4/xlZ/9OIGOglMpG5aRv/kib/3880+x1gohf1cl00wf0NbkA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw29u7bXe7FrzewkxxzvCUnJscBZYjONgOGKQnOqoGgIs7PUDc5
-	1lv1l9U3Kvrm6+JN094rv1FOsj8iEnCgYZJSWaUxT0IyqCeaAcsMEiq2
-X-Gm-Gg: ATEYQzxiWz5rtFkv7UHGKB0AAXmRa8TK5fOsrjXsPGOjDIXi+v8GhAfH8SJ6qwt7krC
-	Ev1ibEKgIytY/t4PgejQpBZnF+V+dq3Poj9cj0jyrV9m5vkS52yWdiWEVNXQSLHOu2q0qwnmaK5
-	MdbfUo2hJwt9Pvm/oU3d69k4322uHqirXcoavk7TKrnmxgF3pqFpwHE34P8XhFKP5ubj/m43GfA
-	FJKLWQSTeijn/QeEM2hNTqTv0xzpYpBHTvUUMUIZM4OS5WFb/JQO6FPhEBlPwmGZAHBBDMBx/0c
-	jy7NNLiBgmhkRlFGDpkyH/g1ugnw/auP81DTf6X8v1wzJtVRchX1MwdGNITtGNFCnmrA2HHrxRw
-	f+26uAY5miSd9RqBxUA0nMos1qN10WpPA2aE7+mL6Dd52i80J6c8kh3r1lQ1wDhEnlkmX0Wyovl
-	GegBaLGa8CWB/MDY97RK0GHGuVGNUmOHg=
-X-Received: by 2002:a17:90b:3d50:b0:356:2fc5:30f5 with SMTP id 98e67ed59e1d1-359a69cad3amr2158954a91.13.1772633026479;
-        Wed, 04 Mar 2026 06:03:46 -0800 (PST)
+        bh=9HTAseI2RZvMiSq6piqVCjZa6XAi6fGRFqwpnmtjoWI=;
+        b=ZkkRGzMnhxcVniyKAsghQps0xV3hdAoMHFMWM/WdqBstAkK7JiG6bhdRYQkOi5b3W8
+         aH0rHg+7n4Ia9YiinZHSr4ZVNdffRiGhPKe0PYx6z/9LkIDn5QckfnXezh4unjWpFnuj
+         ZUmG3RnCU4x3/ywWJOB99w7cBcjV6u2td1vEcFqivMqddE1gZVXyhglk6GqdezYv0/u9
+         qDft8H4W6F1c/u67a1RhL3t4qMwZLH+gNeARHSRxsOW0V93rvdal6Odbm72jOqDxT4ha
+         l4k6J+U6pRlLsl/itjPFF5G4mNMgrtaI85Q9HpuDZHtPSmo5DGUa5npvokHbGSDN6Pxq
+         pZmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772633075; x=1773237875;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9HTAseI2RZvMiSq6piqVCjZa6XAi6fGRFqwpnmtjoWI=;
+        b=ufIbWIVIOs99F2/AdyR265F7VABJECc5uEIL0QgiUm3WjTkgdZvk9cTPyVpOdz+F5b
+         r1HEB2dN7NZ8zXzoo7dWN8gfpA4dqdQMQRdIznUtBRq8eNGrfKffriMXzTEVsiFwygEn
+         4NbUsompfqNldjZ9E1KS0VZ8E17t55RPkU/hPPhu+/Dz6RGsXHzAL7u2qGQSceb25FoR
+         nRrZQqUzSNtyYMrCHjVTG4ZNunYFd4kLbHEX6DZ1f7scGrVjLnBjBoFxFaVi7Z3akHMi
+         l7b5JtOGhkdbie0R1yIhmAR4zc6IMZcXkeSimbG7RO+7v/uyLy1zMICWEp6XXBxHMGYA
+         vDYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeSnagEHWEakWzCJ+3QBjxferQlT88E9mn86HxRtQ6mEGW6029yJW1EpC6bl8QbEk7vUU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwU7xZzILfK802FG0An2Hjqth5ODADXxlemVR1xvw5k9EXJvQG+
+	IhInU45b0qaVXZS1PMEm4FGvReLMmUT8WeLSfSpYycwhrz6bJqaQ3ns0
+X-Gm-Gg: ATEYQzwdzlUzanOynKUaKtslFK2H0lwbQT+hicOb0ZAWMKt+wZNgWeLMom1FMju9NHz
+	66by61/JkhLz4bJZWE4PEQLLd/Yap5EHoL+B9lAWGqDlHkXTwZ985VXmO/0HT4gOkesS6wShJfY
+	1FOyfR2EBfb3ptCAwLpNlc3Q41TqrMA2k5svBVQtmrSFIgQevk4AN0dR71cnRvsuBpdPze421d6
+	VFNj85UpoQh2TmnEwvxKOsq5W6ZmMr21J38+A08MApSAkk/txgt9oO1C562NQeKHU9fI7KGhmAs
+	eqE6wi4CSRpXkNlivqVfBQjgePjM1nvVeyXxOyM7la+OjPuZHeqkPb7zPW0mxO4scaSwjMIa6XS
+	mcRZvAxGSjlmeBRSA8jLGJYwnGkf4FXXq9Ddbz0OppqtuECLDcl5KUr3tw45+YE6EyAx6nousKq
+	+NI5JVXWsm3Owk2lZ0XJAcdmvGa3s0/Ik=
+X-Received: by 2002:a17:90b:4ecd:b0:359:120f:d3aa with SMTP id 98e67ed59e1d1-359a69e5682mr2092330a91.14.1772633074556;
+        Wed, 04 Mar 2026 06:04:34 -0800 (PST)
 Received: from rockpi-5b ([45.112.0.200])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0f80sm6826545a91.16.2026.03.04.06.03.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0f80sm6826545a91.16.2026.03.04.06.04.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 06:03:45 -0800 (PST)
+        Wed, 04 Mar 2026 06:04:33 -0800 (PST)
 From: Anand Moon <linux.amoon@gmail.com>
 To: Vignesh Raghavendra <vigneshr@ti.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
@@ -93,12 +95,12 @@ To: Vignesh Raghavendra <vigneshr@ti.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
 	Niklas Cassel <cassel@kernel.org>,
+	Koichiro Den <den@valinux.co.jp>,
 	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Koichiro Den <den@valinux.co.jp>,
 	Hans Zhang <18255117159@163.com>,
-	Sai Krishna Musham <sai.krishna.musham@amd.com>,
 	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	Sai Krishna Musham <sai.krishna.musham@amd.com>,
 	Vidya Sagar <vidyas@nvidia.com>,
 	linux-omap@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
 	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
@@ -113,10 +115,12 @@ To: Vignesh Raghavendra <vigneshr@ti.com>,
 	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
 	linux-riscv@lists.infradead.org (open list:SIFIVE DRIVERS:Keyword:fu[57]40)
 Cc: Anand Moon <linux.amoon@gmail.com>
-Subject: [RFC v1 00/18] PCI: Enable async probe by default
-Date: Wed,  4 Mar 2026 19:21:43 +0530
-Message-ID: <20260304140329.7089-1-linux.amoon@gmail.com>
+Subject: [RFC v1 01/18] PCI: al: Allow asynchronous probing for background link training
+Date: Wed,  4 Mar 2026 19:21:44 +0530
+Message-ID: <20260304140329.7089-2-linux.amoon@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260304140329.7089-1-linux.amoon@gmail.com>
+References: <20260304140329.7089-1-linux.amoon@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -125,60 +129,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Following recent asynchronous probing updates to the Rockchip PCIe
-controller, this change enables default async probe functionality for
-all DesignWare Core (DWC) based controllers to optimize boot times [0]. 
+Establishing a PCIe link can take a while, allow asynchronous probing so
+that link establishment can happen in the background while other devices
+are being probed.
 
-[0] https://lore.kernel.org/all/20260226101032.1042-1-linux.amoon@gmail.com/
+Signed-off-by: Anand Moon <linux.amoon@gmail.com>
+---
+ drivers/pci/controller/dwc/pcie-al.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This PROBE_PREFER_ASYNCHRONOUS flag help to parallelize device initialization.
-
-Thanks
--Anand
-
-Anand Moon (18):
-  PCI: al: Allow asynchronous probing for background link training
-  PCI: amd-mdb: Allow asynchronous probing for background link training
-  PCI: armada8x: Allow asynchronous probing for background link training
-  PCI: artpec6: Allow asynchronous probing for background link training
-  PCI: bt1: Allow asynchronous probing for background link training
-  PCI: dra7xx: Allow asynchronous probing for background link training
-  PCI: exynos: Allow asynchronous probing for background link training
-  PCI: fu740: Allow asynchronous probing for background link training
-  PCI: intel-gw: Allow asynchronous probing for background link training
-  PCI: keystone: Allow asynchronous probing for background link training
-  PCI: keembay: Allow asynchronous probing for background link training
-  PCI: kirin: Allow asynchronous probing for background link training
-  PCI: layerscape: Allow asynchronous probing for background link
-    training
-  PCI: meson: Allow asynchronous probing for background link training
-  PCI: sophgo: Allow asynchronous probing for background link training
-  PCI: tegra194: Allow asynchronous probing for background link training
-  PCI: uniphier: Allow asynchronous probing for background link training
-  PCI: visconti: Allow asynchronous probing for background link training
-
- drivers/pci/controller/dwc/pci-dra7xx.c     | 1 +
- drivers/pci/controller/dwc/pci-exynos.c     | 1 +
- drivers/pci/controller/dwc/pci-keystone.c   | 1 +
- drivers/pci/controller/dwc/pci-layerscape.c | 1 +
- drivers/pci/controller/dwc/pci-meson.c      | 1 +
- drivers/pci/controller/dwc/pcie-al.c        | 1 +
- drivers/pci/controller/dwc/pcie-amd-mdb.c   | 1 +
- drivers/pci/controller/dwc/pcie-armada8k.c  | 1 +
- drivers/pci/controller/dwc/pcie-artpec6.c   | 1 +
- drivers/pci/controller/dwc/pcie-bt1.c       | 1 +
- drivers/pci/controller/dwc/pcie-fu740.c     | 7 ++++---
- drivers/pci/controller/dwc/pcie-intel-gw.c  | 1 +
- drivers/pci/controller/dwc/pcie-keembay.c   | 1 +
- drivers/pci/controller/dwc/pcie-kirin.c     | 1 +
- drivers/pci/controller/dwc/pcie-sophgo.c    | 1 +
- drivers/pci/controller/dwc/pcie-tegra194.c  | 1 +
- drivers/pci/controller/dwc/pcie-uniphier.c  | 1 +
- drivers/pci/controller/dwc/pcie-visconti.c  | 1 +
- 18 files changed, 21 insertions(+), 3 deletions(-)
-
-
-base-commit: 0031c06807cfa8aa51a759ff8aa09e1aa48149af
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index 345c281c74fe..6e3f52ccc1fa 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -383,6 +383,7 @@ static struct platform_driver al_pcie_driver = {
+ 		.name	= "al-pcie",
+ 		.of_match_table = al_pcie_of_match,
+ 		.suppress_bind_attrs = true,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe = al_pcie_probe,
+ };
 -- 
 2.50.1
 
