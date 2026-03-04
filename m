@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960E634DB72;
-	Wed,  4 Mar 2026 15:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660CA34DB41;
+	Wed,  4 Mar 2026 15:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639330; cv=none; b=lzpScxb61NGXV6YsYvmUQ/JP2cL5auUSEa90ZCwLxMlbLfC5UqMR1aeCkU9rELoM5YvKr8dKQsl4lbkv/RxJfBTyXUnNsNUpfxNpad+4MpnI9b8/AHRCXPCKsrtMVe2bYpL/YF7DYLpA+joPIvTrhKWuHcYWiXlJkWjs9LcTS3Q=
+	t=1772639375; cv=none; b=g7mdlJZf+9SeVUKOmELE0vuzbkvkw+x8cTclfO+nKePv51C9AeszbQzhywdmHCJtl2TR3wkQaR10g/7ojoPu1wQt6Y7JuZZSAnGDzksvkqvFWGHet8X88ab9DnRvnKWFfRPBQCPquJS+MxBdm34gVvyCaONINTjcU0GVaZQVQvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639330; c=relaxed/simple;
-	bh=nyPOodj0r3uuFMG4MYn1D4CHIhTVyJQ6Y23f2GrzAmA=;
+	s=arc-20240116; t=1772639375; c=relaxed/simple;
+	bh=IX7WCg4dPH2qu2e+EkixB5EoOLtKx1kA9p+NNtTOBpU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pBNMG9fp+4bcl8TpwkwfYg3jH6lKrFErYEjnUfgDi/mdHmWuRY2+5hf972dNE5zmSBMgiBBa6HQh0FUhNsqxe7Kg6z5uYastG9ArSo4vJZP6yPYk0CGRn7gLVm8tnM7Bu6v8DKAJXJtFi+0TQ/rlxE68PqKBB68doIvcykUFYVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaHDPRm1; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=NV67Rbtz8UxqoVATIbpsWPqjOKGnztKbNNVrfQBxkEpgv5SRJGnp3naBz9Ne4j9uJJmlCGl36D0kFRbpTsXvRfqyQ+koIFkJuR+HXbWZ2wbJrPZIb+LiddizjCw9KTj43YjLVqtdko0gE4SBzhT3Zv7e0Braa+wcBfp93iKmaMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZtHWwFYN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaHDPRm1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41110C4CEF7;
-	Wed,  4 Mar 2026 15:48:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZtHWwFYN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD5DC4CEF7;
+	Wed,  4 Mar 2026 15:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772639330;
-	bh=nyPOodj0r3uuFMG4MYn1D4CHIhTVyJQ6Y23f2GrzAmA=;
+	s=k20201202; t=1772639375;
+	bh=IX7WCg4dPH2qu2e+EkixB5EoOLtKx1kA9p+NNtTOBpU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iaHDPRm1/EtvurOGe67VXNsR4KW5CvTZ4Q3YI1RmSfHJbb3OnVSzkooXMXfhOSgRh
-	 QaRpignKZirTdapLZ/F1nl3+CGfXMOLSezc1oWybsXmEXLQ3LFfPe1GmLEBrHgNkT/
-	 fGUXrnapbtQ/he/VVpaxY4UzbZhT2MYINXFggbHq7vtVA11xx4Y2apTH5GKNk8VtT/
-	 xGuDETEeQIxKtXX5i8Cmh9RDRcwTxzpnBqpk2zcMeCeXJndWU58KB6+xcvfUWaLAQz
-	 puqmSjkx6ukYRT6VZTBN6HoGFNgyTZVxltipxmrqEIgfb7AzyjuYincXCV2Rvtzqig
-	 lf46c4Z9DeeMQ==
-Message-ID: <abb7551b-1392-4656-a420-da1fc21f08a2@kernel.org>
-Date: Wed, 4 Mar 2026 16:48:41 +0100
+	b=ZtHWwFYNQShmyxEp/vMAU/153NWxsd0d2JjBLHDpnxj6a12HZOz+CMAv1/JmoO+kp
+	 jH6+Hydk3qFsowlK7cngvlZUJDCfFM9DFB6Xd4mE49Zm3N0UibuAqlbNM08Vxi0vfg
+	 lbe3+BKHfNZlnoy+iUIPUlWoZUiuO79SL/O+YLjEfbz/lCQygbTRdfaw+jFMtN4U3q
+	 CZbJNJX6T0/5+tOJ3IE0U4wIhwf+CIjBQ8/zeFdlCh9blX+fG0dDr4GToANxsyv3gP
+	 6DYY27OZmausiTzVE1mIJdmSbQFdcegaKu/lv1q6oslvSvCz3KQpxgK2/lzt+pFJvQ
+	 vlUnKXGHI7HeQ==
+Message-ID: <dda5b0b0-1a8d-4d37-aa82-9515dab2cbc0@kernel.org>
+Date: Wed, 4 Mar 2026 16:49:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -109,18 +109,29 @@ On 03/03/2026 22:00, Frank Li wrote:
 > From: Frank Li (AI-BOT) <frank.li@nxp.com>
 > 
 > AI bot review and may be useless.
-
-Then don't post it. Please post useful reviews.
-
-...
-
 > 
-> Overall: schema is well-structured, example is complete, and
-> documentation is clear. No blocking issues detected.
+> This is a device tree bindings patch, not kernel C code. The YAML
+> schema additions look structurally sound. A few observations:
+> 
+>> +  dpi-bridge:
+>> +    type: object
+>> +    additionalProperties: false
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - nxp,imx91-pdfc
+>> +          - nxp,imx93-pdfc
+> 
+> The compatible strings should be documented in a separate vendor
+> prefix file (nxp.yaml) if not already present. Verify they exist
+> in Documentation/devicetree/bindings/vendor-prefixes.yaml.
 
-What is the point of telling this? Just unnecessary traffic and mailbox
-pollution.
+What?!?!?
 
+This is nonsense.
+
+Also, you are responding to an already reviewed patch.
 
 Best regards,
 Krzysztof
