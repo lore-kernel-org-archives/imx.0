@@ -1,141 +1,117 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396D1917F0
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 12:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772628056; cv=pass; b=CIrFZbL3jPc0aZkkImSClgmXrTPLlyIsOXiB4z5Iz8+J/EKbqM2JWrQO6W/ApgVwxpJiOIe/shhV9wwjve/kpIWSCsrSb7kedV+100vkyKtdAdMbCWc92fiULUMFJkJUIzoLh7DND5e7aVLkaj9xJ1bxF4Ea3wKmnTv9JYn74q0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772628056; c=relaxed/simple;
-	bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/7KAWdAVF/r8e5/hUD/ymBCx2qKXTMCbRMlZ+Hnj28vpMYLqeIuc/DBPmxDP/+7aOxsB8afZGZARVeEW/CVu2Ty/hnI/xbr09JSO3Km2dNETmu5DzHj2R12wsTjhWnZCOKU9hFavnN3i5qvC8Wc60UVQVWF6DzIQ4q556KRylU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RARVKDW9; arc=pass smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F283368B5
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 12:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772628452; cv=none; b=u+F24I8tHKsR3iHIxAugreuqE8u5roDd3A1ei+CM+Tx8c2EpYfYS+Ng61BAUvfOcg2KQyZQbNcoQ1YJxnLIRmS0trssF3DqbDVPLkcudT5OttQJ9zR4Wp3lvSxzlG9bz4IPlNeOVWzjCiP+Ll1OhelhIdcM9/alqr1KI/Km/UlA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772628452; c=relaxed/simple;
+	bh=tVJB/5QV1ClMp/xbJ+PLWJPyv5EQ41vZXbE/F9ItU+4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fNP742wPPB8GTwPvDMd2pXSFQJQXC/nhWUrrIdQaQT8uk+6EMI540NbML3Xf+PO2ayrRyxRpD49Zev+1epVpwY/MLQt0xHFdLtcW14FZeYCMmSBh4menM2nZZuqv4mt1EozeiAHR4TO/srFdCR1NCXkwCRx0ARGFHdGkYP0WK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbnO2lur; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RARVKDW9"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c6e248aa446so2681391a12.1
-        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 04:40:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772628055; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UPP9YGsHiPY1Zbg9YxHI1BGTmE8OchbgkyrUILiBKeOUGCTjcO/uwTErzVX8Qz7LyZ
-         LAO9zcySJiVzTfi7NX+0Q2/Aqx6Bq7Ej1NqTXRkuE26saN60QvKXP1Q/lQB6yGDXcGvr
-         8Rv/r/wE7W//H7tHyCTP447KviMMzF7t0k/Qf37O/sTXR26LtQX1tMZL5iwWVeMzDX6P
-         YR5GpqElJNLTD/HfkRbX+uNPBKaOHnMkE0EYqO0EszAPxSKBySBiBqf6IaIVDZqyzugj
-         l2cKiERpfH2Ezy0sYVTJJ+bZVsrUovBWvG7NEZMMKnmaa89Xru5hL1zUCouMnMC7wASq
-         p8Eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
-        fh=ZTF6+0E6ZDhQslKZiSPiFXgVlze6MElildT+3/F5Nb4=;
-        b=M/EFmO8dCn/AD0h/vIqn8B8LUA2OFO2qfn98HITBp/4Mc1FW0OGB9tLkIslz1HSE3C
-         p/hSXZRS/bB7ocewrVDm5RsjlVJS9n+4OB1sP3hRN+KYpQa8pX/2yn3WH8TUSi2rJSnM
-         3bvmd+IAiFAtreLvsuPHgqNjs7ZnnvxiMrcri6remCXh+tHy2yrr4nlhNmfaw0kumjaC
-         CZGrIxfOGzpxuTHyJJxzNg75ABizaI512gVPhxrJwVPKZXuNRcL9nYfxYmP7rzH/mEYU
-         wERaBMkCeH4aXnMKZM0YdZvT6QigX+h/1e08xBqr+0XxF1MpQgk5VmYrU0bsB/msxdQ9
-         +n0g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbnO2lur"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35994d84c6dso1191127a91.2
+        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 04:47:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772628055; x=1773232855; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
-        b=RARVKDW9ewvpoArKD6F/0Vmkowfig9JWkazqU/XJ2qk+9aKdsx5apmpfyn98OXdwlh
-         c1N8yBPxFKNS0rnY6n3Utaha6XF3PTD7YsVn2yiumwuS2+TZf66zjAvAnZ0b9Ef5aw2e
-         rzlhhLf12ChthLdJMUamuZi7s6NsmYfd7kWM+cIWlB9Ol72XkmO0cJz233YQksfyOQlp
-         8SgEpJzCXyyzVGL0i1VMBhOf7igdLB6CJfH27JXsaYBHXeCGOPFDOXlTkxeTfzZirYSK
-         33QIw2UKU6kwG9kwScLjbjzrN/qtASNkQJK2mLPPCTyCUagpOytC5RLZz1pVRqFP2RGd
-         tFVQ==
+        d=gmail.com; s=20230601; t=1772628451; x=1773233251; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=un236t70aK9C+LYKfl6LV8hfmsluRaGW5mOoPgkCRvY=;
+        b=ZbnO2lurflv1+98bqXD7ArFkEEOr9kotMRtKqRa5r8P7B2RVSyH+oVj3ksTHWmnV0R
+         AhvbOk5bF4TbLO/4dU5+FKNvuBrPR52RmCcPGcxmgrR3Atf6h+pzUtIgjFgrb4Wax8Mb
+         NUim4AIQWLJa0hkHw+3Kd/YWdivYraJNt8qs+P0y5CXZimp1ltMAsa4mtRGXSJu/bbNg
+         lroV6acjEY0X64x0B86Qo+5ICTjULHJiTb4Cu1QiLiPzh4WJWKmvyByLZ/YgNx3I2Yhm
+         NV2qPS+1FAaVa9VLPRWxlLku3Rf8lrk8kbDEriWrg6GJj7s8BNfBrSrGc7sDN+oZyQCQ
+         UE7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772628055; x=1773232855;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
-        b=L7rIj6HSVt5AWT74hDikZoAWH/D8+2zMxRWXKh47p008QMHNdXmPtgXSXByKLhAOp8
-         uk62ob5WiBQk6F5HSBGuQfDiexSiEsMSJP1TUcTF7sQQu3G+15wUKLBuU7fys4NYKKg2
-         nKp2e6PfRUq1bkoXUZMyaYNESNZSgr5QvU+wwCGJmsD/dw0l+/fyEnWc7A9dqzQnjRYM
-         1fjYxhUxyYUashgwlS/s2bla5WRRQUTGay1cmGBySTEyLvuzOKSSGzNidGQgueo9/SeN
-         xa++31B+6tGCq1nVzfySMONwQuP4SsVdxmHTTC3PhIq8wkBOZIKl4BICb56o/2Rk84nH
-         mJQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNZxM7Ki3FnJxXN5QmkeUOCZAOMZBHR/SICPfF/eNZLPDqFfhfaN35x81v88trZJeFjyU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyDgUUYBX5XuB/klFk3bxAgSAhWS5pPMy3nb/T/qc1cYYm1VmgV
-	RIM/Nb2ytnzAHtZORqtYTt3bxD58Rx7FjMXhWnb9TnyGLy9RcxPCwtaJ5U/qhb07UxXNmN1h/za
-	vqMu+8o2DwJkTTQNpsiAA+iCza+kjW7c=
-X-Gm-Gg: ATEYQzx7q4L/tJkP/D9T/pc9utksKQ/xJFwTCw+8rjZl6zZid0ipUaojuR2CSVBdaTo
-	LF0AbLMd6Wz7TzSsJwwdf+2VFyU3vby4EW4gqJM5CMs6fkpJsnsAJgQbC9gD8UrsSV2VC7SOTbS
-	ugoqO0bbTrpFeF0uh1xP/26fLzmX4ly7KGTH4yTWHfsFAR7icjtX5zkuzmw7urqL1LI1KpyowEd
-	4hV1+0wYXXP7xp+71+QQMX0RJuM4eT5URBy2PaOLxcVBx9OGGtdJwtfs7PvPHgyA7zGumbl7N+g
-	8mHVUwPuL33LmJDlHrY=
-X-Received: by 2002:a17:902:ce8e:b0:2ae:4a4e:1e25 with SMTP id
- d9443c01a7336-2ae6aa649dcmr19233535ad.25.1772628054893; Wed, 04 Mar 2026
- 04:40:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772628451; x=1773233251;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=un236t70aK9C+LYKfl6LV8hfmsluRaGW5mOoPgkCRvY=;
+        b=WtnMTpTUIN0SGD1UaYbr2QxA44nNqENab8eSZRMoZYNoXNoAK1eNjGBCU2mBkWQTkN
+         dTuTpsgV8w5tvNiItHWydAD7ZI4u5vi5J6RcIptGzMuqoUF9Dpd1FCtg/bVAR3MEqZaZ
+         29jVlOIsyWJYt5Up8/G622HysxubRBqhqtH+ClMpewBqUBtsCunXpbkBQodrbk+w7fFH
+         +ODW0GancM/PnrrJkK4XRsuwDB71RsaPhNiZyqfN8dqyNYDgaqaC5XDNjEmNp8yq8C5C
+         DhoZ9jIYSZjkWClWUrWrtRhbaLYAzglG+cUVyRfv7fGlZxwZ5PAkwgBCvlRmI1UjYeys
+         uf4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXwZCgjtYVfR7ddXhAR+J1lvjWtKydU4SzaDIHBbOD1SqF8epzrMfLDVQXPUYKKG8K+/vk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYRSy16fhCPSTyzgblrEMz2n4oRqF0fzPn5KSTFefep8o32oJi
+	3tf6CcXP4p9ynC0Zrn1s7nf7us1YFutuCJq3BtlgRnj+cIl9TRMsbpZB
+X-Gm-Gg: ATEYQzwZn/Je3QRRH2RdSXET8gsiSuPX/5Od4KPo3uMPrlYFjWB8HOCOgkvKOSQLUPe
+	B6St7vTuqG1qKSd45IMShdN7g2wTLtWJHYlDaOLC94VvT6W0xKMRRGbPi5boGHi9LXJ4J5JJjtl
+	79hd7qCPkOio9Wt5o0vTwKjJ6Xcpe2dnLCswk6EwH5e4uMnCl94ktM3A+aibs6PSj07IsJ1hLfS
+	eDSlTp7nvbamk38PRcM5i0Lv5zYD4hi8qzNZYxv22M8rDaCEy8x/fsmBTokD6iewkmH7j7+1EWV
+	uLip7vxEiCsRPKbzkomlveRb+JJhFZ6Z8/qSvEhBku0DjwCSokj6PaqsQilqtN80qGyEo+r6Duq
+	dTdkLPscdtgSfoPYXgh+WphWLy6lin+EQoczoXmu37sCUoOIYuzAB9Stqu6gJpHsmtiIN2dC7E4
+	IaSUH7ZNuNvc5oExrSMwDSJfmrx1+lHgG/6eHf
+X-Received: by 2002:a17:90b:4fd0:b0:359:8055:df63 with SMTP id 98e67ed59e1d1-359a6893bb2mr1883589a91.0.1772628450743;
+        Wed, 04 Mar 2026 04:47:30 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:c48d:9c04:d04e:c13a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0625sm5000450a91.13.2026.03.04.04.47.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 04:47:30 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Subject: [PATCH v2 0/3] spi: nxp: Use reinit_completion() for repeated
+ operations
+Date: Wed, 04 Mar 2026 20:47:18 +0800
+Message-Id: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260303-spi-nxp-v1-1-b78570db28ce@gmail.com> <DU4PR04MB12275755ABE75588FF75BF65C907CA@DU4PR04MB12275.eurprd04.prod.outlook.com>
-In-Reply-To: <DU4PR04MB12275755ABE75588FF75BF65C907CA@DU4PR04MB12275.eurprd04.prod.outlook.com>
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Wed, 4 Mar 2026 20:40:43 +0800
-X-Gm-Features: AaiRm519fMWevOrxACIjx0JfN7SzPZoQPXxnqjFQdS-XzmfkrSmDhriX6o8zRcM
-Message-ID: <CAN4SLj2P3qzN-N4dsjzo-0bF9NPLG_-Ad5YWkL97rOrGo-gW5w@mail.gmail.com>
-Subject: Re: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated operations
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANYpqGkC/2XMSw7CIBSF4a00dyyG0ijoyH2YDnjctjexQMCQm
+ oa9i506/E9Ovh0yJsIM926HhIUyBd9CnDqwi/YzMnKtQXBx5QMfWI7E/BaZk9zcpFZu4graOya
+ caDuk59h6ofwO6XPApf+t/0bpWc+MVBfJnRHK4mNeNb3ONqww1lq/7ovEcZ4AAAA=
+X-Change-ID: 20260303-spi-nxp-d70b97a8df08
+To: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>, 
+ Boris Brezillon <bbrezillon@kernel.org>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772628443; l=793;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=tVJB/5QV1ClMp/xbJ+PLWJPyv5EQ41vZXbE/F9ItU+4=;
+ b=eADYv+bdcOtbSTN4igmdAr7rsRR1fF5UYei4LYGy6xymPEqT3Ih91iSIHCF6FeSYm7KuayXW0
+ 8Ajv53wMpBjDTpH7CInKfK4vP6zdRN1n24GmfREnYwaLgyReQG+Vhy+
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On Wed, Mar 4, 2026 at 3:23=E2=80=AFPM Bough Chen <haibo.chen@nxp.com> wrot=
-e:
->
-> > -----Original Message-----
-> > From: Felix Gu <ustc.gu@gmail.com>
-> > Sent: 2026=E5=B9=B43=E6=9C=883=E6=97=A5 21:21
-> > To: Han Xu <han.xu@nxp.com>; Bough Chen <haibo.chen@nxp.com>; Mark
-> > Brown <broonie@kernel.org>; Frank Li <frank.li@nxp.com>
-> > Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-kernel@vger.k=
-ernel.org;
-> > Felix Gu <ustc.gu@gmail.com>
-> > Subject: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated op=
-erations
-> >
-> > The driver currently calls init_completion() during every spi_mem_op.
-> > Tchnically it may work, but it's not the recommended pattern.
-> >
-> > According to the kernel documentation: Calling init_completion() on the=
- same
-> > completion object twice is most likely a bug as it re-initializes the q=
-ueue to an
-> > empty queue and enqueued tasks could get "lost" - use reinit_completion=
-() in
-> > that case, but be aware of other races.
-> >
-> > So moves the initial initialization to probe function and uses
-> > reinit_completion() for subsequent perations.
->
-> Hi Felix,
->
-> Good catch, I think spi-nxp-fspi.c and spi-fsl-qspi.c also have the same =
-issue, can you help fix?
->
-> As Frank's comment, there is one typo: perations -> operations, please fi=
-x it and feel free to add my tag in next version.
-> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
->
-> Regards
-> Haibo Chen
-Hi Bough and Frank,
-Thanks for review, I will send V2 for this.
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+Changes in v2:
+- Fix Frank's comments.
+- Fix for spi-nxp-fspi.c and spi-fsl-qspi.c suggested by Bough. 
+- Link to v1: https://lore.kernel.org/r/20260303-spi-nxp-v1-1-b78570db28ce@gmail.com
+
+---
+Felix Gu (3):
+      spi: nxp-xspi: Use reinit_completion() for repeated operations
+      spi: nxp-fspi: Use reinit_completion() for repeated operations
+      spi: fsl-qspi: Use reinit_completion() for repeated operations
+
+ drivers/spi/spi-fsl-qspi.c | 3 ++-
+ drivers/spi/spi-nxp-fspi.c | 3 ++-
+ drivers/spi/spi-nxp-xspi.c | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+---
+base-commit: d517cb8cea012f43b069617fc8179b45404f8018
+change-id: 20260303-spi-nxp-d70b97a8df08
 
 Best regards,
-Felix
+-- 
+Felix Gu <ustc.gu@gmail.com>
+
