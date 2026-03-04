@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AA34AB19;
-	Wed,  4 Mar 2026 15:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD934AB19;
+	Wed,  4 Mar 2026 15:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639564; cv=none; b=Kt7gax5HRwSUHSQ+HEFh6CCu6e/crVzDMz5XCkDouCdKBZqWuAZFzHatYXphkz6LG7gYlIk/CXslZGiyPR7LyyUL8is2hf4ex1mQTmykFHFUfvAZrvT0UMkUW8gu88V9Nrdgs0H91Kho2s3+8YjxwGSdAD08gC3PXg0/jyvXX3k=
+	t=1772639685; cv=none; b=a8JMtJFOQFpRVTpodMH8loGa269lupgkxsRi/UIXN4X6m07pMPfVsCVxNJksxOK0t4k1ST/1uDOnQMuuyN+fFpvkHKtyGbLOHsO4Mn7nM6k4JG4PZ5bgdX4TB8/nvA5HSufFUxTkM1aT3Fv6alMdKfPxIoVOvGmAadz0RCwduJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639564; c=relaxed/simple;
-	bh=s8RT9aid5CaLzg2B/m21offcuElLXSv4jiHs7HriTbM=;
+	s=arc-20240116; t=1772639685; c=relaxed/simple;
+	bh=QlsJuLHckh6Mhy8Ly+9BkzszlQ9anHptIAU1Q9z4D6Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TZp+aCSPD7fXUpvlVKBSF/8Igbu6zkq45C0ykoZ0CV7rDKvrUMni4xoq24UngVQwgGi8gaAdn9tizL2ivfqXhdT0phIpSSSuuEG/BbZv4IOlnnHJh6EAPdxmV7M1quOKNijG1/SYS4UOGgMEnu8mEK5mLeR78rEUhoEgH8QUsbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSlJQbJ9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=JXL+8MNXC2xl1c6mUnvzCA19hPesYJbztmcclbNnmTifdSMg2+9nPufVZPLQxsKpLhs2H9Y4wJvrum2uWLdjxFjyLoA+Lg/eZa/R/Eg91mCc5WOWw6r+u7uoIhdhqs4DqO4OV4sX1pUbhUdFWExchtYRKhQjWPlSvPA/JHQwPsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuLV5zDH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSlJQbJ9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEF7C4CEF7;
-	Wed,  4 Mar 2026 15:52:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuLV5zDH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8A3C4CEF7;
+	Wed,  4 Mar 2026 15:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772639564;
-	bh=s8RT9aid5CaLzg2B/m21offcuElLXSv4jiHs7HriTbM=;
+	s=k20201202; t=1772639685;
+	bh=QlsJuLHckh6Mhy8Ly+9BkzszlQ9anHptIAU1Q9z4D6Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GSlJQbJ9rDrcd62FGVxRhx7FpuhX7EqvNZThhcIYs/hw/SzEIwpjOYLs7W5IahLtH
-	 iIUyOxuSe4z8QWroGeXrr0b4qXqHudZL6z7MfjPkr7gmB5SfJhrBUmgWCSloRjReAy
-	 25KMODB4AszAMnaFBkP1FT04PBLTOVKwtpcPlOamF2sy9nhH8ET+C4uPxC2soeV01p
-	 mrWaEBrWsIi3m74qGdFz0s4HInXUtAOLzZrGdwPTJH5EmIVOUmT6D+WRYmZXrPoq2s
-	 JsxrslTG20r9pBptAdOQSCKLnLPT5ippKup0Qg9v4O7jBvAkuahgou3lyog+BpAlAs
-	 8HfysDuFuCSRQ==
-Message-ID: <0d8de9b8-1e02-4873-94e3-71eb09b5104b@kernel.org>
-Date: Wed, 4 Mar 2026 16:52:40 +0100
+	b=MuLV5zDHB7PppDbRrIgiA6DqLtvPrce7Q/kz2ceveoK6H8VNlqrQSnVWx4PUY6x7G
+	 lF8PWqNnLHxmrtCGMH21sU1hTyWTcK1zQEH5n5mbASRAx/bxp+ybDJ28Aggyaql1fk
+	 frx5ib6PuHJ2XXJi+zlH5K7hS5Qcj3Z/DUdYsH2ugYb22BEtUIckOzLLVxvspqhPe5
+	 O0zIaXH4kNcewaC9ZZo+g+IekD3SXC32jFGTi3Rv+iMUZKMGS885FKF/WowxfN4+7k
+	 p0FLMAdibE34WhcmFFwxYrZ5UJvwQppkSNV7DyytsEJkVSGu/KE0PfNw/w95AZRQrr
+	 UDsFgJyGvAKgg==
+Message-ID: <e7f0c171-d5f1-4b3f-9155-a774511451c1@kernel.org>
+Date: Wed, 4 Mar 2026 16:54:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,18 +35,60 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] arm64: dts: freescale: imx95-toradex-smarc: Support
- Cortex M7
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260303121324.1576841-1-ghidoliemanuele@gmail.com>
- <20260303210131.2966214-14-Frank.Li@nxp.com>
+Subject: Re: [RFC v1 08/18] PCI: fu740: Allow asynchronous probing for
+ background link training
+To: Frank Li <Frank.Li@nxp.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Minghuan Lian
+ <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+ Roy Zang <roy.zang@nxp.com>, Yue Wang <yue.wang@Amlogic.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jonathan Chocron <jonnyc@amazon.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>, Paul Walmsley <pjw@kernel.org>,
+ Greentime Hu <greentime.hu@sifive.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Chuanhua Lei <lchuanhua@maxlinear.com>,
+ Srikanth Thokala <srikanth.thokala@intel.com>,
+ Xiaowei Song <songxiaowei@hisilicon.com>,
+ Binghui Wang <wangbinghui@hisilicon.com>,
+ Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+ Niklas Cassel <cassel@kernel.org>, Hans Zhang <18255117159@163.com>,
+ "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Thomas Gleixner
+ <tglx@kernel.org>, Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+ Sai Krishna Musham <sai.krishna.musham@amd.com>,
+ Nagarjuna Kristam <nkristam@nvidia.com>, Vidya Sagar <vidyas@nvidia.com>,
+ "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-omap@vger.kernel.org>,
+ "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-pci@vger.kernel.org>,
+ "moderated list:PCI DRIVER FOR TI DRA7XX/J721E"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:PCI DRIVER FOR SAMSUNG EXYNOS"
+ <linux-samsung-soc@vger.kernel.org>,
+ "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
+ <linuxppc-dev@lists.ozlabs.org>,
+ "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <imx@lists.linux.dev>,
+ "open list:PCIE DRIVER FOR AMLOGIC MESON"
+ <linux-amlogic@lists.infradead.org>,
+ "open list:PCIE DRIVER FOR AXIS ARTPEC" <linux-arm-kernel@axis.com>,
+ "open list:SOPHGO DEVICETREES and DRIVERS" <sophgo@lists.linux.dev>,
+ "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+ "open list:SIFIVE DRIVERS:Keyword:fu [57] 40"
+ <linux-riscv@lists.infradead.org>
+Cc: Anand Moon <linux.amoon@gmail.com>
+References: <20260304140329.7089-9-linux.amoon@gmail.com>
+ <20260304145540.3331304-3-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,28 +134,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260303210131.2966214-14-Frank.Li@nxp.com>
+In-Reply-To: <20260304145540.3331304-3-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/03/2026 22:01, Frank Li wrote:
+On 04/03/2026 15:55, Frank Li wrote:
 > From: Frank Li (AI-BOT) <frank.li@nxp.com>
 > 
+> Commit message has a typo:
+> 
+>> Fix the identation of the callback functions.
+> 
+> Should be "indentation" (two 'n's).
+> 
+> The code changes look good otherwise. The indentation fix aligns with kernel
+> style (8-char tabs), and adding PROBE_PREFER_ASYNCHRONOUS is a straightforward
+> addition that matches the stated intent.
+> 
 > AI bot review and may be useless.
-> 
 
-..
-
-> ---
-> 
->> +&mu7 {
->> +	status = "okay";
->> +};
-> 
-> Ensure mu7 node is defined elsewhere in the base device tree; this
-> patch only enables it without defining its properties.
-
-What? That's useless comment. Stop sending such feedback. It is just WRONG.
+So don't send us useless reviews. Trim your reply list, so only you see
+them.
 
 Best regards,
 Krzysztof
