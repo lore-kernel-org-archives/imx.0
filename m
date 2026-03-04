@@ -1,114 +1,126 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386F1334C28
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 15:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960E634DB72;
+	Wed,  4 Mar 2026 15:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772637855; cv=none; b=g+gDHKPFaxambnVI8H6dtzRBPvgoakNPOeZ4MjNQpUm6F8+HpFDOBmDiDURei1eiyE8Eg8yQr5AW1JIFR+SP3U94pzm/CpakZOUYJ+aVyXfHVfCBnB+55P5tsc0PaXSCblJsnBZmgzIivfO4fINv50zsvooA0ftIgeP/wjCrga0=
+	t=1772639330; cv=none; b=lzpScxb61NGXV6YsYvmUQ/JP2cL5auUSEa90ZCwLxMlbLfC5UqMR1aeCkU9rELoM5YvKr8dKQsl4lbkv/RxJfBTyXUnNsNUpfxNpad+4MpnI9b8/AHRCXPCKsrtMVe2bYpL/YF7DYLpA+joPIvTrhKWuHcYWiXlJkWjs9LcTS3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772637855; c=relaxed/simple;
-	bh=dfE4q7Thd4sYvAKlXBLqeJG6yDSF0ZgLNXzgSZoQgtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S25lPOR9sIV1nxWlrE9gWEgRQlvTxAlNUPghCfzTZ6jiljrDznYKjUxZTQBnmcjDdIFldWKNsd+7nlFjQWipjgmw2IIDo+t7Vp84wkPsqiy4DjeFurEy+Qsff2eTdlp+h3IaR2iCxeUVI4PZ/OsoMFypATwUPvHJoKE5g6W05s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=lp4aDmwG; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	s=arc-20240116; t=1772639330; c=relaxed/simple;
+	bh=nyPOodj0r3uuFMG4MYn1D4CHIhTVyJQ6Y23f2GrzAmA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pBNMG9fp+4bcl8TpwkwfYg3jH6lKrFErYEjnUfgDi/mdHmWuRY2+5hf972dNE5zmSBMgiBBa6HQh0FUhNsqxe7Kg6z5uYastG9ArSo4vJZP6yPYk0CGRn7gLVm8tnM7Bu6v8DKAJXJtFi+0TQ/rlxE68PqKBB68doIvcykUFYVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaHDPRm1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="lp4aDmwG"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c70b5594f4so720111085a.1
-        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 07:24:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1772637853; x=1773242653; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mldFBg2hMy87EWdNzYofBYb0Zx4ZHm48yGEZLUqC4O0=;
-        b=lp4aDmwGBt8xyGxLEEs33qoaHD2PM+Y7w95qRS9Ie/0jtKtngc85YskPmv8o27tJk7
-         0iyqkcICWXyso2oIrt1XEhOSsuc7KrVqE6OcA3WGk+n/P/LexS6y3Pj4aEAE6EnCtjG5
-         3oRFqbvqr9A5SQjcLTxm6U8e4ZR2jryYA1ptV7Y5BwfHJANTgpohbuMXpC4t8S9m+Wps
-         fS2k8dNHpMuvGgqOz3a7Pyx42RKQtUyP58B7UHThv9zbAimk6ZlRCueiylSLQW86XMV7
-         aZqPYXJyjXLjCfe4Vgapf2F/7+cHN9B/hZVPBQs0mBlqbLeiZyIcDJAYHoUpVIClxibE
-         hrTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772637853; x=1773242653;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mldFBg2hMy87EWdNzYofBYb0Zx4ZHm48yGEZLUqC4O0=;
-        b=XhW3/yg8/+JXIHGrWUS8B6wzkKC7mTmJzxyVoPcJ8gcavjvMTZD6P/EOvBdZcgS3/s
-         vAbX0v7CIoWwWijHNdeI6qGv+ZnFXUw5Fzb3G/sfdKW6Omh1ligNekRky79D7nq3zwCJ
-         ohiUiGspi+RTcepytrOqzp2YlhcgDRwlOAkvlGQABUonZxmsaGBDLnFFx8iATETIyDRF
-         YF3xw22Wu3JWVuFaOAle57fcn2oYcwFwNrqdeUAPMupK0bYgvrzsIgfysEmuWZ3GQu2h
-         NtPjGJAopeLAnm4DpCtBt6TUO8lXgDRhFOahJlM3ApqfsUmEG8cr1uNwBo4lKCK7Kftd
-         bvPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWT3xWtfUiCvGSft/serrxZD5IsU1w/nq+kaEaeJ6fsbjT60QECYWBGVCm8w0ogf4x3JqQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxihTSXRldfY+LiRaZaYY4/ck1wwp9g89IQmruymtPYvHE2UX+Y
-	E43HyDWsaw+F9TYkMGgJ/SlRv1J7U75gG0Wgz7RF2l4H5k1FW9VfVT4zFxlHfEAV6g==
-X-Gm-Gg: ATEYQzxqqHlZdOKT0w+LR74bEI9cQiPPrjQZifV5D+XPunL00UuLNzSKo3FwyfPjfWF
-	FH1k55kZY9mdCVR+4hK+zZzcNaPtv/Z7Z18vZ2lBfOW47/ACd7x/E+OdI4BQqvhw6ZSn+P2a+PF
-	IijjXeiPuYW/LmIGQssc1VbnFbUqKvpfnfPUmgUFA6szH0//VmGlUtQMpa1CqJu0o7T2d31Cpl1
-	Zb02Uzd/cURvzXoyDpnFvKEfpEjyyJON1ilL9XFiHHQhlc4H9GEdPi01yVr+ZHxVRJrzLiI5Jzt
-	VwNpOgSA+tbY3WSvaN2iO272+ni73MIZ7PTCRM+LRIQ3RzexnKZ/C88sGVooV/F29ERxt2IR90J
-	8GhN7tDKae1s+YIwRLNZh8caF7n0wJ/nweWsZFrty5hNVzK9NWPYuTDGqzjxDOKzPui7gWPyVRD
-	EymbSl8WBPtJ7DTa/WcP1WmJVLADQarDEqHKe+k9u76A==
-X-Received: by 2002:a05:620a:4511:b0:8cb:50f9:20f6 with SMTP id af79cd13be357-8cd50bc3181mr725909685a.34.1772637852980;
-        Wed, 04 Mar 2026 07:24:12 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6fb519sm1667252185a.29.2026.03.04.07.24.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 07:24:12 -0800 (PST)
-Date: Wed, 4 Mar 2026 10:24:09 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Xu Yang <xu.yang_2@nxp.com>, Mathias Nyman <mathias.nyman@intel.com>
-Cc: gregkh@linuxfoundation.org, tglx@kernel.org, mingo@kernel.org,
-	claudiu.beznea.uj@bp.renesas.com, kees@kernel.org,
-	bigeasy@linutronix.de, ulf.hansson@linaro.org,
-	rafael.j.wysocki@intel.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: hcd: queue wakeup_work to system_freezable_wq
- workqueue
-Message-ID: <c35d4aae-038f-428c-9b69-09230043dd60@rowland.harvard.edu>
-References: <20260304115729.857136-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaHDPRm1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41110C4CEF7;
+	Wed,  4 Mar 2026 15:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772639330;
+	bh=nyPOodj0r3uuFMG4MYn1D4CHIhTVyJQ6Y23f2GrzAmA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iaHDPRm1/EtvurOGe67VXNsR4KW5CvTZ4Q3YI1RmSfHJbb3OnVSzkooXMXfhOSgRh
+	 QaRpignKZirTdapLZ/F1nl3+CGfXMOLSezc1oWybsXmEXLQ3LFfPe1GmLEBrHgNkT/
+	 fGUXrnapbtQ/he/VVpaxY4UzbZhT2MYINXFggbHq7vtVA11xx4Y2apTH5GKNk8VtT/
+	 xGuDETEeQIxKtXX5i8Cmh9RDRcwTxzpnBqpk2zcMeCeXJndWU58KB6+xcvfUWaLAQz
+	 puqmSjkx6ukYRT6VZTBN6HoGFNgyTZVxltipxmrqEIgfb7AzyjuYincXCV2Rvtzqig
+	 lf46c4Z9DeeMQ==
+Message-ID: <abb7551b-1392-4656-a420-da1fc21f08a2@kernel.org>
+Date: Wed, 4 Mar 2026 16:48:41 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304115729.857136-1-xu.yang_2@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ luca.ceresoli@bootlin.com
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Marco Felsch <m.felsch@pengutronix.de>
+References: <20260303-v6-18-topic-imx93-parallel-display-v11-1-1b03733c8461@pengutronix.de>
+ <20260303210131.2966214-1-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260303210131.2966214-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 04, 2026 at 07:57:29PM +0800, Xu Yang wrote:
-> After commit 4fb352df14de ("PM: sleep: Do not flag runtime PM workqueue
-> as freezable"), pm_wq workqueue will be unfreezable during system pm. This
-> brings issue as below:
+On 03/03/2026 22:00, Frank Li wrote:
+> From: Frank Li (AI-BOT) <frank.li@nxp.com>
+> 
+> AI bot review and may be useless.
+
+Then don't post it. Please post useful reviews.
 
 ...
 
-> The reason is if the host controller resume routine xhci_resume() call
-> usb_hcd_resume_root_hub(), wakeup_work will be queued and run immediately.
-> Then usb_autoresume_device() will be called and usb device will exit
-> runtime suspended state (if it was suspended before). For a hub device,
-> hub_resume()/hub_reset_resume() will be called accordingly.
 > 
-> After the host controller device system resume is finished, the root hub
-> usb device "usb1" will do system resume too. Then hub_resume() will be
-> called again.
-> 
-> Above sequence will cause hub->urb to be submitted twice. To avoid this
-> issue, restore the previous behavior by queuing wakeup_work to
-> system_freezable_wq workqueue.
+> Overall: schema is well-structured, example is complete, and
+> documentation is clear. No blocking issues detected.
 
-I don't think this patch is an appropriate fix for the problem.  One 
-indication of this is the fact that you have not considered the reasons 
-for making the runtime PM workqueue freezable in the first place, as 
-described in the 4fb352df14de commit.
+What is the point of telling this? Just unnecessary traffic and mailbox
+pollution.
 
-A better question to ask would be: Why does xhci_resume() call 
-usb_hcd_resume_root_hub()?  That does not seem like the right thing to 
-do -- at least, not in this scenario.  The proper time to resume the 
-root hub after a system sleep is when the PM core calls its resume 
-routine.
 
-Alan Stern
+Best regards,
+Krzysztof
