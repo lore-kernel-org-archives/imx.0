@@ -1,445 +1,244 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013016.outbound.protection.outlook.com [52.101.83.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE68330E0D5
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 02:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF6A3FBA7
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 02:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772591280; cv=pass; b=XRI2vnlxN3mNSTehsn7T91thK40qp0OgNKRGuPqR9lyq+9Ws6RvMh670KVW83jk6p5GU/8s5SCCwkKss0fdogMy/PAe3A02WQkfdhdwBVB/kvFccUmi5gI9yHGhtgDHo2fBC5yJGMQ6wuZnwiScmXt5HdYPtrPE9M5I3DlkHoIk=
+	t=1772592957; cv=fail; b=U1UfhJJmUwp8ToQLgoT3dNlZ0NkF5rs/XlcA8Xf/8SNgmAaEBTMfrtBfs54Xfau2zxKo5juGAvSkSm3MPB9mTSO/8yCaCCSYGbw9ms+R5o4J7R/xQEodUzLlTFSGXOhFlDQKZZNa6NCctWB0bLGgfxNVeNqbnOgfIMhL9NZ+mVU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772591280; c=relaxed/simple;
-	bh=py3aKKVn93HvEcbikt3U0dk2M/t9J8+imzeqfvnOlMA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EN7haVeu9T+ORJhiYqJH5DD8FgV81FaawVoai9QmMGowmBXLVmDkK4YWwKIr523BxC6+JVk1AIRAobBog72U4YWqqwo/f6vFldDgVxa/fZqKRUawgSZm1K3NqKdso00wpgPyOUQQekIO99bQ+JUdzrEgfvxPaH5uC7Tme32niUE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byAACM31; arc=pass smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772592957; c=relaxed/simple;
+	bh=Govvo2aHVEfuvFSgi6qC0GeE3xRLpLdcDwTkFmmAU9g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=r4nPVGWbeRG52RhB5Izc9StKeP1dZ2ipImfD2Q9qpJop0Mi1HdpaBwMoft9ccacIim3svHK8yUZsy1xyNFhClBjOwybFBs4zV1ITHl4FnNn01Nz65udj3wY+0q+1PMLagPs1b2OLh1DTZ2FHUoDOyge3ZehY+h7001S/IMEcpEI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MeCpXgt5; arc=fail smtp.client-ip=52.101.83.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byAACM31"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-45effa36240so4917432b6e.1
-        for <imx@lists.linux.dev>; Tue, 03 Mar 2026 18:27:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772591278; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LC48Jni1+F1kjMq6LXdK1zvOGL2v7HkwbDJcCYFeI7rRZ+6oNOVidAc4mGpb09AKVY
-         32HroD+TPYOlf6tllDCzT/eT8FTIMhQWt6BCWcwP2n+RvXd8H1Xrwkz+T6Rl9Dp9dtH8
-         s6hKPy/lWPP4pYFxWt53r5SFPpnQn4pGZASPV/n7JYkklHNuY3BDeTAfGxiAqsHF7Czv
-         u3O52buGBLBfIgHlsWu7P0d6WADhywOikc6tiPHtghC8vlaQ7LrqJL0mn6aLUCPLLXLF
-         wJqH0xOMo0AGamX51siAOwh1M2RYOupBtDrNQ/FWxPlakQ7nl/vjeyx2xfBWOMFNdyYH
-         iREw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6Lcbeb/64UCshEgxWIZnEJ+ommj9WqeVen8Lhvcah74=;
-        fh=aBk9n7zskZBVSlWjQ279H/O4ZSyMwHmIW13V31BQyPs=;
-        b=BA6+FhBF61uC4gQEWAc57Y8nzSlxhq7Xr2/hYfoh8Vzs4bUxpavaEYtT7mXw5VrGZj
-         HWoHsjaJM41smGTTn3PBaM7NAbqVBWxYzy9mPUzJbxFZCvJ7RcUCPD1hCGovI1Akwvav
-         mcnksxNPq04/VwiTzXh4+uq/NL1SCHWGjE1ENBZ5N08roIlgtM0icHEq/MW6Ys18BoDR
-         AlP5P0Ha7UmNfOlk0BX9v3hxDGAsscBKiTGAFzUonQ1mb+MuvPiiXsUCqgOtrX54h0kj
-         rIspsJKrdrm3Omc8ic3U6RTGMU3EFmcAGzgnvrHY16p7Kc7SBjBwpJP+DXFsKcrcgppS
-         TKbw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772591278; x=1773196078; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Lcbeb/64UCshEgxWIZnEJ+ommj9WqeVen8Lhvcah74=;
-        b=byAACM31PQo/5YwCr9GqxCTgRiBZe2lJ6SxnNnF2nq0xzZZL9m+fbl2j2S6WY6sle9
-         R5fpvixkHa9kx+z3hOX8tVDNu4zI3XkFcKhtnKJdgh5xg7K0Ryzh9EHPTy8ndQl+f9d4
-         Kb2lDraOPEAsmeyazPu0At44Oda93ce4E5B8VdCWK+KIw89hXMeJtUFU8JPyxwr0uCKI
-         5qoAN53W/fvPGKLZSecZjzklFX+S6Fwb2MxuiUCKNCSCF3N/NqawPPsr2f5VgB0g6Ja1
-         fRpNhxB1sTD20F68rd13xqbz1FUBX4NU9JxeQ2HnXP+qs3kuBCWYMQBbqopR8YQDHMxn
-         Xrig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772591278; x=1773196078;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Lcbeb/64UCshEgxWIZnEJ+ommj9WqeVen8Lhvcah74=;
-        b=w2TP6NlAgLAKeN2065Gl9Ct7IA2LKrVf0+vo8ZsrI91FxWIE4AwU32mDMhZ8kRZMV0
-         BKdYkI2dQUP9U5R3yPyGHX7nIToxEuFqua4vfIRiRhrRH13XuDY1g4U/al79+1kr2EIY
-         pkT/EVWr/hvda/1VGA4AzUuaU82OI7RlwCIHDCIML8hTDvNl/lz5wzycmHSIYNUEqH7m
-         uR93R5CfkD5d3aodTzvtAc2ZXwTRkAOX3s9X4NTvSKfP2kldiCwuXkqvM/dUnG4tWf6X
-         t8j9G9BmGflYbWqWLS6Ot6pVpR4iDwLOiTizlTnQURIXiyFinNiPUxs9FC3wdo2opkzk
-         DFPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvm5OiyYvbyjn8blR7aIiY7lfS7smas06KZHO3k6x+4YvNrEj4XzrmqFue+MOm8UkiEW0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwP5k3Vv17gabVyfKV3pZ2BCfNygYjRjUSXFHdSYSw3prRxJa6x
-	+4/Rs5AfVGw2kejTmEefD1n4budUcRB08WzcEP/6uEjuKrfddoxDAKuCwnbL1kqpvI2e/ifwGBy
-	T3O6qQLkSL5CfROZ4qUeAlCTFRi7rIR0=
-X-Gm-Gg: ATEYQzysj5ismKUi2OQMjYEeGnmJkUxKoCu3pwggswLzQKDPCZ1tU1YAKBehPZbOwX5
-	/6olmC7TU4OxxXbeoE7uzKiB81AGPQTk4fBJfVymPcjR+JPLmqrVz8+UYqSFvaXrNvo06rFUg/Y
-	VdkUxXHX1VVblqJ01gIdVbcJA1f2xpOLq/QPf7dk10HCbZQmKj8y4IlXRezKarzyoLzf1vpY08y
-	EmiYU9xLCLFj42uNdYml9SUljSwmYF+ZyPjdiks5Gsb8ItzZTk031DZSyVCWfrDYvVnosNaSkzt
-	gvXROe0cxTLedIhhHx6QgnuwD/0Ff9DMkBTQNQC2hft7EzB02OPGV7knLY4iG1LJpFHnlvd8Rw=
-	=
-X-Received: by 2002:a05:6808:30a1:b0:463:f9ad:a4cf with SMTP id
- 5614622812f47-4651abb472dmr293614b6e.23.1772591277687; Tue, 03 Mar 2026
- 18:27:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MeCpXgt5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YWLKf/amXfNJwX4yhJsXoSOSOKCfJwbzd5sFOidtlsx4K+5KSUxYSvKI0DtcsDqZQqkiWKtRc1FSHEYoWWMHlprwkcbhY0ZIripyuH04iQbjhcFdf6LSdZ640IOzmFnHsLdh+VaHtRFlQA70IC6Q3qen9Dciyp+5n3SJ61iKwTe6+p4usrSX9K3RcTCjK3pLnFRvogRzAyw69W9DE6xS2GZflaUeCpGlyKz8yQIQNsrDTtHRC3ELaUnWimLfN6BAPTopXJ+E/eRt0xDn7A5mgxykEhmS4cCA5tO+K49PVMIN4rwE2OEk43CqK6tfW+qPgKvjwX/remkxiwNToX5gdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Govvo2aHVEfuvFSgi6qC0GeE3xRLpLdcDwTkFmmAU9g=;
+ b=sjFIF3R8Icdf4lC7hwPEe6P/dv7vGpO9PLkXpwap4teplMoZXEgQ/+ppmXQfzF3IvyeAIkfDL6b+Ze03jbfs6LVt9cwCkjHUHdScUo8ypvq3seunVVxIW8w9u/V6voD1Q6U2e4xUn13WALSJ++x5Hamm4//ILgUB3JiBHpMf065nEBJJmDJAeGL8fEU5DXlt/H9nWXDvBAGegpKKLRK49hyLrHFcLTorRTVD9nNpRsWQvscjusWyzmTMlNzYUHH+OH1ZgprHAdomaW079t4XWT3TLt3ySJQdY1BDr34mSZE4VWNe+I4/Sw1PKPnFaqrVLI3t7J1RuT3xjaK0PQerhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Govvo2aHVEfuvFSgi6qC0GeE3xRLpLdcDwTkFmmAU9g=;
+ b=MeCpXgt5+7yH4sll6ajKYPAZKmtJN56QMxFmV2oZdtDoedAeU2HiPTmFlU3DRQONqGBjv9xEqLbvN1hBBzzEbGUqgF6yf6jSudS+4PZWgJjMoTmw5bB2hZwBH1F+kJVQsNOFQD6fsY5UBOaoXrP4eCLK3Hn90xYRrL1IUvsmmtn0WEaRjTX5sQAZg65xHt0IQ/ZPRe6tdPhw1Av/UxK3KuSDGcPYcUQYHwrH2K3ZZ0UzXzSDorXnTp9U4Rkvb/LsjE91nENVWAYm2P0tQhRm2Fj8UA4LDFuJvs0RLKtZoM+4PF3lucDkMbxbqhshxFRTS6gqwIi66K6LfxHNg9hVxA==
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
+ by DB9PR04MB11535.eurprd04.prod.outlook.com (2603:10a6:10:5de::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
+ 2026 02:55:51 +0000
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86%3]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
+ 02:55:51 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>, Alexander Stein
+	<alexander.stein@ew.tq-group.com>
+CC: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: i.MX8M Plus PCIe link regression
+Thread-Topic: i.MX8M Plus PCIe link regression
+Thread-Index: AQHcqwqiM5BRpSHuW02VclDUtZdi+bWdAzuAgACdDUA=
+Date: Wed, 4 Mar 2026 02:55:51 +0000
+Message-ID:
+ <AS8PR04MB88332979F06EDE29E751BCE18C7CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+References: <23024521.EfDdHjke4D@steina-w>
+ <ac24flkmrooacnpt53swuurkbxvorbjx2yb4s3zdevqua6ddls@wjc3bcsl7zif>
+In-Reply-To: <ac24flkmrooacnpt53swuurkbxvorbjx2yb4s3zdevqua6ddls@wjc3bcsl7zif>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8833:EE_|DB9PR04MB11535:EE_
+x-ms-office365-filtering-correlation-id: 96ae2e01-727a-4b54-7149-08de79998bdf
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|38070700021;
+x-microsoft-antispam-message-info:
+ 7tGjwwE0Jp5DHMwGi0geGqpNmUBq91ty5pXTPESG1+HVXn3LKF9G0vK+0pQU/2sISc6k2nLEcs/PqV8JZpOg5o36lMhVGDNgMA3oU4IbXGMPPpy3Pl8diQINX3huV/qbrOYc3AWT4om+la8Pyuv+wxajhYbrodFSZYrsOr6Sm2C1c4r/fLYLn0aJOTSdeeIK0n4+vaOJ7Shq97gmyiEfiIK6qWssVRap6UQmF9B8im/pduKiMdPYCA9MsTYgRO0CGO2SHwAsQJdg+XD1lk3tM1lptiA9qfr2LRG9MphuZ/1ApxFfD7df0pTsHK+wSSvAFVAvfXt7FbXzZmgasZIcpXm9bSvRIh6DLyDsjW/QiMzRg3FYMfbzxA7j2IrC4kEQH3rIt/4RL4ACE0YJ7+oVF17fbd+D+wzpXDruumhzV2qfjlg0A6W4qVJgbwMefg6I3NrTXBXzhFT3D660flW9Tz6zfVbpOviLxGSq0VFhEnmBCVjpSb3/90fCRXosF1aJMRHiijeEHp51OidheJPqZ94Vy/1S5WqrOT+6FVbRKEEM0DbWVI6ci2nSZA5T21n2Io/bWPcFUOEn7UaFOS1QzxtAOfj2StntAtcMpjKX64l9YIuz4074BSTngt5cTA+DVfVt9tr3AG6h7ekcK7qjm5CN2pXh0JYzneHckYYDgCYsDSCMtd5OynvQz0C38tH7XLcnWlwUCMafhn2A4GxBX+tGoiVsD67dAVJ+7qid5n19WEZiFpM1GYqfnSzJP18iZihCWwebPIor/DjInF6Cz3rD7OY/8iciZra2WzSKGtA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Z1pNelY1VVhQRDNQOTRybWk1K3lqVzhpM1FHMENVQVNaV2x6VXd0VTdhdk5F?=
+ =?utf-8?B?eVZrVGNHRTR2SGtYNE9vNGdRY3dhSUQyR0pMeU9sODkyK3ZCS05hYTdxZStG?=
+ =?utf-8?B?YTlzTkxRYU5wZHlmemxVMnlLdFlzQ1VsMmtpZjk3Q0QzTGl5NHNXaUdJc1BZ?=
+ =?utf-8?B?aHloT1BLc2JycHpJWFdVTUxvWUg1aUlnWFA1c1MrTWVZNXV2L0U2aDZRVVI1?=
+ =?utf-8?B?ejZiNnhxYWtzUGx5Q1VkdVUzTzk3MW9jeXNkZlFxZW11T2JQZ2VsTm5TTEVx?=
+ =?utf-8?B?ajJ0MzFLTTdodkw5ajNFVTJZaDA3Y0EvOXBVNFEzY2VzcWpISWdYNlBiWkJi?=
+ =?utf-8?B?aU5UZmVBRGZtUEw5SWZVaUhkU21neU9kZHpvWTc2Z0V5RGdidVhHVm1Nc1Rh?=
+ =?utf-8?B?SmZqRTBhMHJ3VWQ2alpKd3loZThvSkxlMWhKWFpJTkRZOW1wODJ4WlphQzZO?=
+ =?utf-8?B?UjVrQWtQaDEvSStWNkNkMm91TE5lREZBWllWSkhRMGIxMVZvU3BrU21lL3Br?=
+ =?utf-8?B?clZFMWdaK1RpSUFYSWpwUTl2NnR5cU1lMzFhYmgyN0FQL3pjcit3RG9Sd2hz?=
+ =?utf-8?B?YjZNRCt2MFRwR2JJbnhCK2l4TFVoeWtHWkp5b21YQ2N3YWs2UjNBNzMxd1JF?=
+ =?utf-8?B?ZFNKTUdvSUhhRFVKbzczUHJxcittN2taOHVsbXM3eVNHS3JZTStleEJWS2Zt?=
+ =?utf-8?B?bmFkbFFDM1E0V2RmMDRyYys1RzRvMWlkdEtrWUFIcXpsM04wVDZYZlRjd1F5?=
+ =?utf-8?B?YnF1MUhrS1NHRmc1eEI4blhLZ0xpclZEanJ0OEpxREQ3ZTBuZjBCbkNLcHFP?=
+ =?utf-8?B?ZWxyWUNvMzI3SElsb3JuL3FIdkU5U0JOWUJDU0ZnQUE0VGtxSzN4RGljNDVY?=
+ =?utf-8?B?QzdDY2RkcDlURERBTk1yd2ppNVpSSmVjMk5remNVWVBCMFljVE1BenArcjV1?=
+ =?utf-8?B?N3RRMlVMQUpqK3lEMHRnRm1WTmNFdEEvK3R4aEU3NlNsNnpnMWFiOVViM0VI?=
+ =?utf-8?B?ak9Xb2g2clN5dDFGZzJoQ3VxRU5ReHQrT0FWcG1QUHJucjVDaDZtelVmNnhx?=
+ =?utf-8?B?NTlRVEJ1ZzdKNEdud05kVER5amNMZU90M3ZtTGxOSTlpRHRjMHM0bHM1REoz?=
+ =?utf-8?B?d1FvOTNwZVdHRDd3cUFhcU55UVEwVlJ6NDQzbTEzMnY4WGs2dVlCS0xKc1gz?=
+ =?utf-8?B?RkdjRlQrV1l2Z2U0dzhUZUZwa2hpVXdzZWowNFFFUGhRazliSUQrM2gwNmU3?=
+ =?utf-8?B?Y2Y4MXUwTFlNNE1XMmU4THAvMUdGY1QxWlVVYS9YQ0xhMjF6QXdvVS9pNHVV?=
+ =?utf-8?B?MEY1Rnp5N0Jrb1RsVTQ0cDNrQWpyWHptWEppRHZSdTJrbHB1T1ZLZlMwMWZJ?=
+ =?utf-8?B?VmNmWjNXcU16VXhGNEVIVmVQaGxjcERsMEgzSTF6dXd4N2RjYkFkY1d3eFVS?=
+ =?utf-8?B?UnVROGxuUnpRM25ITHdsVi9NNUQycmZveDVIRm9ZY1NNT2xNNkhLejF6Q1d2?=
+ =?utf-8?B?Qnh4Sko0K1U2WjZiRzBuZk1kbzJQNml2QUNhT1BUdmlpMkNlL1Z1bkZ2WGdx?=
+ =?utf-8?B?Z2NPemc3NkhlMG8yMi9aRmJiYmY0dm1STmhZUHhlc1h3T0ErSVEyZFU0bWdi?=
+ =?utf-8?B?TXg5MlB0V2hBMUJKS25HVFNBZzNpS0p5eG1ibUdLVjd5c2NVSlVzTUJ5azlW?=
+ =?utf-8?B?YmhucnN5ektnbm04VmduYXExemVjSWNtaHB3RlI5OXZ5YlBLSi84MkxtK0xK?=
+ =?utf-8?B?YlVXRDJIZ3FHcFgvaFpSajhqY3FHWWFGS3NkSW1lUGo5Y2dESmFLeEx5ZHd4?=
+ =?utf-8?B?VHNlZU5aanpGdXRPNTBSMXc4ay9IY1hPMTgrV2tDVVExdmlROUxIZEhKelFN?=
+ =?utf-8?B?dEtPKy9pUzdBWjc1WDVjSFBWSW9pcXlRZWRlRXBydW1RaVNaNXFLUmZqNU0r?=
+ =?utf-8?B?RHlDOGg3a1Z0Zzl0dm1RVE9idFRCWmRBMGZiS25HMXpaVjQ1M2JrT09raHEz?=
+ =?utf-8?B?eVR3S2gxeHlrNytpdnBnUGZSYXNOM3Y4VXhoVUF5cjMzcVRSbGpLNHBJNjdi?=
+ =?utf-8?B?UC9RQUVFL1ZiZUp2UXFzN3Z3emJGMWJBQnJTR3NuSWdVbDZ0WnVJOVdIOCtF?=
+ =?utf-8?B?OGhxUTI0VkppRjE1K25acURNMVVFd2YxYTVvVTFSWVpDOXdGcjNjWkRhYTF0?=
+ =?utf-8?B?ZlpyUmRIZ1lObXF5OVprdGEzOHVYenA2WE5WWXhjK1Y0ZU4rN0M2eWs4STFL?=
+ =?utf-8?B?bU9UT2dFNUhEMkxEQndYQmhnNStodlFQSGdjMzY5WHEvalRka1Ewa1NnL3hw?=
+ =?utf-8?Q?UcbS0uKCF/Bz8Iy/9K?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260303115720.48783-1-dakr@kernel.org> <20260303115720.48783-2-dakr@kernel.org>
-In-Reply-To: <20260303115720.48783-2-dakr@kernel.org>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Wed, 4 Mar 2026 10:27:49 +0800
-X-Gm-Features: AaiRm50ScKkUps_9Yhs72XBQaSHbpuEPqc11o2wDZQVrApNZde3wmBwc1fLjihM
-Message-ID: <CALbr=LaR0B4BhEQ6md0nBe=7KtPHJYPq6i_p9Gn+s8zcoFAW6A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] driver core: generalize driver_override in struct device
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, abelvesa@kernel.org, 
-	srini@kernel.org, s.nawrocki@samsung.com, nuno.sa@analog.com, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-hwmon@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-sh@vger.kernel.org, Wang Jiayue <akaieurus@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96ae2e01-727a-4b54-7149-08de79998bdf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2026 02:55:51.6544
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FtEuFHK0JdgYJKDVAbeEh7HTWBijOMMZiGCG/MBs0sR0MytDZ9Af1++2SF0ts9Hs8t4YbLon9GYPZqsjz5ohrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11535
 
-On Tue, Mar 3, 2026 at 7:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> Currently, there are 12 busses (including platform and PCI) that
-> duplicate the driver_override logic for their individual devices.
->
-> All of them seem to be prone to the bug described in [1].
->
-> While this could be solved for every bus individually using a separate
-> lock, solving this in the driver-core generically results in less (and
-> cleaner) changes overall.
->
-> Thus, move driver_override to struct device, provide corresponding
-> accessors for busses and handle locking with a separate lock internally.
->
-> In particular, add device_set_driver_override(),
-> device_has_driver_override(), device_match_driver_override() and a
-> helper, DEVICE_ATTR_DRIVER_OVERRIDE(), to declare the corresponding
-> sysfs store() and show() callbacks.
->
-> Until all busses have migrated, keep driver_set_override() in place.
->
-> Note that we can't use the device lock for the reasons described in [2].
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220789 [1]
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kern=
-el.org/ [2]
-> Co-developed-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-Tested this on QEMU PCI with various debug options enabled.
-Everything looks good so far, no issues found.
-
-Will keep testing.
-
-> ---
->  drivers/base/bus.c         | 43 ++++++++++++++++++++++++++-
->  drivers/base/core.c        |  2 ++
->  drivers/base/dd.c          | 60 ++++++++++++++++++++++++++++++++++++++
->  include/linux/device.h     | 54 ++++++++++++++++++++++++++++++++++
->  include/linux/device/bus.h |  4 +++
->  5 files changed, 162 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-> index bb61d8adbab1..c734e7162b74 100644
-> --- a/drivers/base/bus.c
-> +++ b/drivers/base/bus.c
-> @@ -504,6 +504,36 @@ int bus_for_each_drv(const struct bus_type *bus, str=
-uct device_driver *start,
->  }
->  EXPORT_SYMBOL_GPL(bus_for_each_drv);
->
-> +static ssize_t driver_override_store(struct device *dev,
-> +                                    struct device_attribute *attr,
-> +                                    const char *buf, size_t count)
-> +{
-> +       int ret;
-> +
-> +       ret =3D __device_set_driver_override(dev, buf, count);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return count;
-> +}
-> +
-> +static ssize_t driver_override_show(struct device *dev,
-> +                                   struct device_attribute *attr, char *=
-buf)
-> +{
-> +       guard(spinlock)(&dev->driver_override.lock);
-> +       return sysfs_emit(buf, "%s\n", dev->driver_override.name);
-> +}
-> +static DEVICE_ATTR_RW(driver_override);
-> +
-> +static struct attribute *driver_override_dev_attrs[] =3D {
-> +       &dev_attr_driver_override.attr,
-> +       NULL,
-> +};
-> +
-> +static const struct attribute_group driver_override_dev_group =3D {
-> +       .attrs =3D driver_override_dev_attrs,
-> +};
-> +
->  /**
->   * bus_add_device - add device to bus
->   * @dev: device being added
-> @@ -537,9 +567,15 @@ int bus_add_device(struct device *dev)
->         if (error)
->                 goto out_put;
->
-> +       if (sp->bus->driver_override) {
-> +               error =3D device_add_group(dev, &driver_override_dev_grou=
-p);
-> +               if (error)
-> +                       goto out_groups;
-> +       }
-> +
->         error =3D sysfs_create_link(&sp->devices_kset->kobj, &dev->kobj, =
-dev_name(dev));
->         if (error)
-> -               goto out_groups;
-> +               goto out_override;
->
->         error =3D sysfs_create_link(&dev->kobj, &sp->subsys.kobj, "subsys=
-tem");
->         if (error)
-> @@ -550,6 +586,9 @@ int bus_add_device(struct device *dev)
->
->  out_subsys:
->         sysfs_remove_link(&sp->devices_kset->kobj, dev_name(dev));
-> +out_override:
-> +       if (dev->bus->driver_override)
-> +               device_remove_group(dev, &driver_override_dev_group);
->  out_groups:
->         device_remove_groups(dev, sp->bus->dev_groups);
->  out_put:
-> @@ -607,6 +646,8 @@ void bus_remove_device(struct device *dev)
->
->         sysfs_remove_link(&dev->kobj, "subsystem");
->         sysfs_remove_link(&sp->devices_kset->kobj, dev_name(dev));
-> +       if (dev->bus->driver_override)
-> +               device_remove_group(dev, &driver_override_dev_group);
->         device_remove_groups(dev, dev->bus->dev_groups);
->         if (klist_node_attached(&dev->p->knode_bus))
->                 klist_del(&dev->p->knode_bus);
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 791f9e444df8..09b98f02f559 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2556,6 +2556,7 @@ static void device_release(struct kobject *kobj)
->         devres_release_all(dev);
->
->         kfree(dev->dma_range_map);
-> +       kfree(dev->driver_override.name);
->
->         if (dev->release)
->                 dev->release(dev);
-> @@ -3159,6 +3160,7 @@ void device_initialize(struct device *dev)
->         kobject_init(&dev->kobj, &device_ktype);
->         INIT_LIST_HEAD(&dev->dma_pools);
->         mutex_init(&dev->mutex);
-> +       spin_lock_init(&dev->driver_override.lock);
->         lockdep_set_novalidate_class(&dev->mutex);
->         spin_lock_init(&dev->devres_lock);
->         INIT_LIST_HEAD(&dev->devres_head);
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index 0354f209529c..697e36e63cab 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -381,6 +381,66 @@ static void __exit deferred_probe_exit(void)
->  }
->  __exitcall(deferred_probe_exit);
->
-> +int __device_set_driver_override(struct device *dev, const char *s, size=
-_t len)
-> +{
-> +       const char *new, *old;
-> +       char *cp;
-> +
-> +       if (!s)
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * The stored value will be used in sysfs show callback (sysfs_em=
-it()),
-> +        * which has a length limit of PAGE_SIZE and adds a trailing newl=
-ine.
-> +        * Thus we can store one character less to avoid truncation durin=
-g sysfs
-> +        * show.
-> +        */
-> +       if (len >=3D (PAGE_SIZE - 1))
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * Compute the real length of the string in case userspace sends =
-us a
-> +        * bunch of \0 characters like python likes to do.
-> +        */
-> +       len =3D strlen(s);
-> +
-> +       if (!len) {
-> +               /* Empty string passed - clear override */
-> +               spin_lock(&dev->driver_override.lock);
-> +               old =3D dev->driver_override.name;
-> +               dev->driver_override.name =3D NULL;
-> +               spin_unlock(&dev->driver_override.lock);
-> +               kfree(old);
-> +
-> +               return 0;
-> +       }
-> +
-> +       cp =3D strnchr(s, len, '\n');
-> +       if (cp)
-> +               len =3D cp - s;
-> +
-> +       new =3D kstrndup(s, len, GFP_KERNEL);
-> +       if (!new)
-> +               return -ENOMEM;
-> +
-> +       spin_lock(&dev->driver_override.lock);
-> +       old =3D dev->driver_override.name;
-> +       if (cp !=3D s) {
-> +               dev->driver_override.name =3D new;
-> +               spin_unlock(&dev->driver_override.lock);
-> +       } else {
-> +               /* "\n" passed - clear override */
-> +               dev->driver_override.name =3D NULL;
-> +               spin_unlock(&dev->driver_override.lock);
-> +
-> +               kfree(new);
-> +       }
-> +       kfree(old);
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(__device_set_driver_override);
-> +
->  /**
->   * device_is_bound() - Check if device is bound to a driver
->   * @dev: device to check
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 0be95294b6e6..e65d564f01cd 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -483,6 +483,8 @@ struct device_physical_location {
->   *             on.  This shrinks the "Board Support Packages" (BSPs) and
->   *             minimizes board-specific #ifdefs in drivers.
->   * @driver_data: Private pointer for driver specific info.
-> + * @driver_override: Driver name to force a match.  Do not touch directl=
-y; use
-> + *                  device_set_driver_override() instead.
->   * @links:     Links to suppliers and consumers of this device.
->   * @power:     For device power management.
->   *             See Documentation/driver-api/pm/devices.rst for details.
-> @@ -576,6 +578,10 @@ struct device {
->                                            core doesn't touch it */
->         void            *driver_data;   /* Driver data, set and get with
->                                            dev_set_drvdata/dev_get_drvdat=
-a */
-> +       struct {
-> +               const char      *name;
-> +               spinlock_t      lock;
-> +       } driver_override;
->         struct mutex            mutex;  /* mutex to synchronize calls to
->                                          * its driver.
->                                          */
-> @@ -701,6 +707,54 @@ struct device_link {
->
->  #define kobj_to_dev(__kobj)    container_of_const(__kobj, struct device,=
- kobj)
->
-> +int __device_set_driver_override(struct device *dev, const char *s, size=
-_t len);
-> +
-> +/**
-> + * device_set_driver_override() - Helper to set or clear driver override=
-.
-> + * @dev: Device to change
-> + * @s: NUL-terminated string, new driver name to force a match, pass emp=
-ty
-> + *     string to clear it ("" or "\n", where the latter is only for sysf=
-s
-> + *     interface).
-> + *
-> + * Helper to set or clear driver override of a device.
-> + *
-> + * Returns: 0 on success or a negative error code on failure.
-> + */
-> +static inline int device_set_driver_override(struct device *dev, const c=
-har *s)
-> +{
-> +       return __device_set_driver_override(dev, s, s ? strlen(s) : 0);
-> +}
-> +
-> +/**
-> + * device_has_driver_override() - Check if a driver override has been se=
-t.
-> + * @dev: device to check
-> + *
-> + * Returns true if a driver override has been set for this device.
-> + */
-> +static inline bool device_has_driver_override(struct device *dev)
-> +{
-> +       guard(spinlock)(&dev->driver_override.lock);
-> +       return !!dev->driver_override.name;
-> +}
-> +
-> +/**
-> + * device_match_driver_override() - Match a driver against the device's =
-driver_override.
-> + * @dev: device to check
-> + * @drv: driver to match against
-> + *
-> + * Returns > 0 if a driver override is set and matches the given driver,=
- 0 if a
-> + * driver override is set but does not match, or < 0 if a driver overrid=
-e is not
-> + * set at all.
-> + */
-> +static inline int device_match_driver_override(struct device *dev,
-> +                                              const struct device_driver=
- *drv)
-> +{
-> +       guard(spinlock)(&dev->driver_override.lock);
-> +       if (dev->driver_override.name)
-> +               return !strcmp(dev->driver_override.name, drv->name);
-> +       return -1;
-> +}
-> +
->  /**
->   * device_iommu_mapped - Returns true when the device DMA is translated
->   *                      by an IOMMU
-> diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
-> index 99c3c83ea520..cda597812324 100644
-> --- a/include/linux/device/bus.h
-> +++ b/include/linux/device/bus.h
-> @@ -63,6 +63,9 @@ struct fwnode_handle;
->   *                     this bus.
->   * @pm:                Power management operations of this bus, callback=
- the specific
->   *             device driver's pm-ops.
-> + * @driver_override:   Set to true if this bus supports the driver_overr=
-ide
-> + *                     mechanism, which allows userspace to force a spec=
-ific
-> + *                     driver to bind to a device via a sysfs attribute.
->   * @need_parent_lock:  When probing or removing a device on this bus, th=
-e
->   *                     device core should lock the device's parent.
->   *
-> @@ -104,6 +107,7 @@ struct bus_type {
->
->         const struct dev_pm_ops *pm;
->
-> +       bool driver_override;
->         bool need_parent_lock;
->  };
->
-> --
-> 2.53.0
->
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNYW5pdmFubmFuIFNhZGhhc2l2
+YW0gPG1hbmlAa2VybmVsLm9yZz4NCj4gU2VudDogMjAyNuW5tDPmnIg05pelIDA6NDINCj4gVG86
+IEhvbmd4aW5nIFpodSA8aG9uZ3hpbmcuemh1QG54cC5jb20+OyBBbGV4YW5kZXIgU3RlaW4NCj4g
+PGFsZXhhbmRlci5zdGVpbkBldy50cS1ncm91cC5jb20+DQo+IENjOiBsaW51eC1wY2lAdmdlci5r
+ZXJuZWwub3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGlteEBs
+aXN0cy5saW51eC5kZXYNCj4gU3ViamVjdDogUmU6IGkuTVg4TSBQbHVzIFBDSWUgbGluayByZWdy
+ZXNzaW9uDQo+IA0KPiBPbiBUdWUsIE1hciAwMywgMjAyNiBhdCAwMTozODoxM1BNICswMTAwLCBB
+bGV4YW5kZXIgU3RlaW4gd3JvdGU6DQo+ID4gSGksDQo+ID4NCj4gPiB0aGVzZSBkYXlzIEkgbm90
+aWNlZCB0aGF0IHRoZXJlIGlzIGEgUENJZSBsaW5rIHJlZ3Jlc3Npb24gb24gbXkNCj4gPiBpLk1Y
+OE1QIHBsYXRmb3JtIChUUU1hOE1QeEwpIHJ1bm5pbmcgbmV4dC0yMDI2MDIyNy4NCj4gPiBJIGNv
+dWxkIGJpc2VjdCBpdCBiYWNrIHRvIGNvbW1pdCA5YzAzZTMwZTNhZGUzICgiUENJOiBpbXg2OiBT
+a2lwIGxpbmsNCj4gPiB1cCB3b3JrYXJvdW5kIGZvciBuZXdlciBwbGF0Zm9ybXMiKS4gSSBhbHdh
+eXMgZ2V0IHRoZSBmb2xsb3dpbmcgZXJyb3JzOg0KPiA+DQo+ID4gaW14NnEtcGNpZSAzMzgwMDAw
+MC5wY2llOiBMaW5rIGZhaWxlZCB0byBjb21lIHVwLiBMVFNTTToNCj4gPiBDRkdfTElOS1dEX1NU
+QVJUIGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogcHJvYmUgd2l0aCBkcml2ZXINCj4gPiBpbXg2
+cS1wY2llIGZhaWxlZCB3aXRoIGVycm9yIC0xMTANCj4gPg0KPiA+IENvbm5lY3RlZCBpcyBhIEdl
+bjEgUENJZSAtPiBFdGhlcm5ldCBhZGFwdGVyLiBJbnRlcmVzdGluZ2x5IGEgR2VuMg0KPiA+IGRl
+dmljZSBpcyBkZXRlY3RlZCB3aXRob3V0IGlzc3Vlcy4NCj4gPg0KPiA+IFJldmVydGluZyAzYzk2
+YTYxZGQyZTA5OGRkYThkY2FjM2RjZTNkMzhhM2M4N2FmYmZjIGFuZA0KPiA+IGI5YThkMjhlYmJm
+MTE4YmIzZWFjOTUzZjRhMzdhYmJkMzQxMjU3YWIgImZpeGVzIiBteSBwbGF0Zm9ybSwgYm90aA0K
+PiBHZW4NCj4gPiAxIGFuZCBHZW4gMiBkZXZpY2VzIGFyZSBkZXRlY3QuIENvbW1pdA0KPiA+IDNj
+OTZhNjFkZDJlMDk4ZGRhOGRjYWMzZGNlM2QzOGEzYzg3YWZiZmMgaXMgb25seSByZXF1aXJlZCBm
+b3IgY29uZmxpY3QNCj4gZnJlZSByZXZlcnQuDQo+ID4NCj4gPiBIZXJlIGlzIGEgc3VtbWFyeSB3
+aXRoIG91dHB1dHM6DQo+ID4gR2VuIDEgZGV2aWNlDQo+ID4gPiAwMDowMC4wIFBDSSBicmlkZ2U6
+IFN5bm9wc3lzLCBJbmMuIERXQ191c2IzIC8gUENJZSBicmlkZ2UgKHJldiAwMSkNCj4gPiA+IDAx
+OjAwLjAgRXRoZXJuZXQgY29udHJvbGxlcjogUmVhbHRlayBTZW1pY29uZHVjdG9yIENvLiwgTHRk
+Lg0KPiA+ID4gUlRMODExMS84MTY4LzgyMTEvODQxMSBQQ0kgRXhwcmVzcyBHaWdhYml0IEV0aGVy
+bmV0IENvbnRyb2xsZXIgKHJldg0KPiA+ID4gMDEpDQo+ID4NCj4gPiBHZW4gMiBkZXZpY2UNCj4g
+PiA+IDAwOjAwLjAgUENJIGJyaWRnZTogU3lub3BzeXMsIEluYy4gRFdDX3VzYjMgLyBQQ0llIGJy
+aWRnZSAocmV2IDAxKQ0KPiA+ID4gMDE6MDAuMCBTQVRBIGNvbnRyb2xsZXI6IE1hcnZlbGwgVGVj
+aG5vbG9neSBHcm91cCBMdGQuIDg4U0U5MTI4IFBDSWUNCj4gPiA+IFNBVEEgNiBHYi9zIFJBSUQg
+Y29udHJvbGxlciAocmV2IDIwKQ0KPiA+DQo+ID4gb3V0cHV0IG9mICJkbWVzZyB8IGdyZXAgaW14
+NnEtcGNpZSIuIENvbW1vbiBwYXJ0IGZvciBhbGwgdGVzdHM6DQo+ID4gPiBpbXg2cS1wY2llIDMz
+ODAwMDAwLnBjaWU6IGhvc3QgYnJpZGdlIC9zb2NAMC9wY2llQDMzODAwMDAwIHJhbmdlczoNCj4g
+PiA+IGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogICAgICAgSU8gMHgwMDFmZjgwMDAwLi4weDAw
+MWZmOGZmZmYgLT4NCj4gPiA+IDB4MDAwMDAwMDAwMA0KPiA+ID4gaW14NnEtcGNpZSAzMzgwMDAw
+MC5wY2llOiAgICAgIE1FTSAweDAwMTgwMDAwMDAuLjB4MDAxZmVmZmZmZiAtPg0KPiA+ID4gMHgw
+MDE4MDAwMDAwDQo+ID4gPiBpbXg2cS1wY2llIDMzODAwMDAwLnBjaWU6IGNvbmZpZyByZWdbMV0g
+MHgxZmYwMDAwMCA9PSBjcHUgMHgxZmYwMDAwMA0KPiA+ID4gaW14NnEtcGNpZSAzMzgwMDAwMC5w
+Y2llOiBpQVRVOiB1bnJvbGwgVCwgNCBvYiwgNCBpYiwgYWxpZ24gNjRLLA0KPiA+ID4gbGltaXQg
+MTZHDQo+ID4NCj4gPiBuZXh0LTIwMjYwMjI3DQo+ID4gR2VuIDENCj4gPiA+IGlteDZxLXBjaWUg
+MzM4MDAwMDAucGNpZTogTGluayBmYWlsZWQgdG8gY29tZSB1cC4gTFRTU006DQo+ID4gPiBDRkdf
+TElOS1dEX1NUQVJUIGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogcHJvYmUgd2l0aCBkcml2ZXIN
+Cj4gPiA+IGlteDZxLXBjaWUgZmFpbGVkIHdpdGggZXJyb3IgLTExMA0KPiA+DQo+ID4gR2VuIDIN
+Cj4gPiA+IGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogUENJZSBHZW4uMiB4MSBsaW5rIHVwIGlt
+eDZxLXBjaWUNCj4gPiA+IDMzODAwMDAwLnBjaWU6IFBDSSBob3N0IGJyaWRnZSB0byBidXMgMDAw
+MDowMA0KPiA+DQo+ID4gbmV4dC0yMDI2MDIyNyArIHJldmVydHMNCj4gPiBHZW4gMQ0KPiA+ID4g
+aW14NnEtcGNpZSAzMzgwMDAwMC5wY2llOiBQQ0llIEdlbi4xIHgxIGxpbmsgdXAgaW14NnEtcGNp
+ZQ0KPiA+ID4gMzM4MDAwMDAucGNpZTogUENJZSBHZW4uMSB4MSBsaW5rIHVwIGlteDZxLXBjaWUg
+MzM4MDAwMDAucGNpZTogUENJDQo+ID4gPiBob3N0IGJyaWRnZSB0byBidXMgMDAwMDowMA0KPiA+
+DQo+ID4gR2VuIDINCj4gPiA+IGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogUENJZSBHZW4uMSB4
+MSBsaW5rIHVwIGlteDZxLXBjaWUNCj4gPiA+IDMzODAwMDAwLnBjaWU6IFBDSWUgR2VuLjIgeDEg
+bGluayB1cCBpbXg2cS1wY2llIDMzODAwMDAwLnBjaWU6IFBDSQ0KPiA+ID4gaG9zdCBicmlkZ2Ug
+dG8gYnVzIDAwMDA6MDANCj4gPg0KPiA+IFdoYXQgY2FuIHdlIGRvIGhlcmU/IEknbSB3b25kZXJp
+bmcgd2h5IEdlbiAyIHRyYWlucyBjb3JyZWN0bHksIHdoaWxlDQo+ID4gR2VuIDEgZG9lc24ndC4N
+Cj4gPg0KPiANCj4gVGhhbmtzIGZvciB0aGUgcmVwb3J0IGFuZCBzb3JyeSBmb3IgdGhlIGJyZWFr
+YWdlLiBDb21taXQgOWMwM2UzMGUzYWRlMywNCj4gbWVudGlvbnMgdGhhdCB0aGUgd29ya2Fyb3Vu
+ZCBpcyBvbmx5IG5lZWRlZCBmb3IgdGhlIGkuTVg2IHBsYXRmb3Jtcy4gU28NCj4gSSdtIG5vdCBz
+dXJlIHdoeSB0aGUgcGF0Y2ggYnJlYWtzIGkuTVg4TSBhbmQgdGhhdCB0b28gb25seSBmb3IgR2Vu
+IDENCj4gc3BlZWQuDQo+IA0KPiBBbHNvLCBiZWZvcmUgOWMwM2UzMGUzYWRlMywgTFRTU00gd2Fz
+IGFsd2F5cyBzdGFydGVkIGluIEdlbiAxLCBidXQgYXMgcGVyDQo+IHlvdXIgZmluZGluZywgb25s
+eSBHZW4gMSBkZXZpY2VzIGZhaWwgdG8gd29yay4gU28gdGhlIGNvZGUgdGlsbA0KPiBpbXhfcGNp
+ZV93YWl0X2Zvcl9zcGVlZF9jaGFuZ2UoKSBzaG91bGRuJ3QgaGF2ZSBhbiBpbXBhY3QuIE1heWJl
+IHRoZQ0KPiBpc3N1ZSBpcyBkdWUgdG8gc2tpcHBpbmcgaW14X3BjaWVfd2FpdF9mb3Jfc3BlZWRf
+Y2hhbmdlKCk/DQo+IA0KPiBSaWNoYXJkLCB0aG91Z2h0cz8NCkhpIE1haW5pOg0KUHJpb3IgdG8g
+Y2FsbGluZyBpbXhfcGNpZV93YWl0X2Zvcl9zcGVlZF9jaGFuZ2UoKSwgdGhlIFBDSWUgbGluayBt
+dXN0DQogYWxyZWFkeSBiZSBlc3RhYmxpc2hlZC4gQmVmb3JlIGNvbW1pdCA5YzAzZTMwZTNhZGUz
+LCB0aGUgc3BlZWQgY2hhbmdlDQogcHJvY2VkdXJlIHdhcyBvbmx5IGluaXRpYXRlZCBhZnRlciB0
+aGUgaW5pdGlhbCBHZW4xIGxpbmsgd2FzIHN1Y2Nlc3NmdWxseQ0KIGJyb3VnaHQgdXAuDQoNCkhp
+IEFsZXhhbmRlcjoNClNvcnJ5IGZvciB0aGUgYnJlYWthZ2UuDQpCZWZvcmUgY29tbWl0IDljMDNl
+MzBlM2FkZTMsIGkuTVg4TVAgUENJZSBmb3JjZWQgR2VuMSBsaW5rIHRyYWluaW5nDQogaW5pdGlh
+bGx5LCB0aGVuIHN3aXRjaGVkIHRvIEdlbjMgYWZ0ZXIgbGluay11cCBieSB0cmlnZ2VyaW5nIGEg
+c3BlZWQNCiBjaGFuZ2UuIEFmdGVyIGNvbW1pdCA5YzAzZTMwZTNhZGUzLCBsaW5rIHRyYWluaW5n
+IHN0YXJ0cyBkaXJlY3RseSBhdA0KIHRoZSBHZW4zIGNhcGFiaWxpdHkgbGV2ZWwuDQoNClRoZSB0
+d28gbGluayB0cmFpbmluZyBtZXRob2RzIGRpZmZlciBvbmx5IGluIHRoZSBpLk1YOE1QIFJvb3Qg
+Q29tcGxleCAoUkMpDQogbGluayBjYXBhYmlsaXR5IGNvbmZpZ3VyYXRpb24gcHJpb3IgdG8gbGlu
+ayB0cmFpbmluZzogb25lIG1ldGhvZCBmb3JjZXMNCiBHZW4xIHNwZWVkLCB3aGlsZSB0aGUgb3Ro
+ZXIgcmV0YWlucyB0aGUgZGVmYXVsdCBHZW4zIHNldHRpbmcgaW4geW91ciB0ZXN0cy4NCg0KRm9y
+dHVuYXRlbHksIEkgYWxzbyBoYXZlIGEgUlRMODE2OEUgR2lnYWJpdCBuZXR3b3JrIGNhcmQgb24g
+aGFuZC4NCkJhc2VkIG9uIHY3LjAtcmMxLCBoZXJlIGlzIHRoZSB0ZXN0cyBsb2cgb24gbXkgaS5N
+WDhNUCBFVksgYm9hcmQgYW5kIG9uZSBNLjINCktleSBFIHRvIFBDSWUgc3RhbmRhcmQgc2xvdCBl
+eGNoYW5nZSBhZGFwdG9yLg0KDQpMb2dzOg0Kcm9vdEBpbXg4bXBldms6fiMgZG1lc2cgfCBncmVw
+IHBjaQ0KWyAgICAyLjE3MjQyMF0gaW14NnEtcGNpZSAzMzgwMDAwMC5wY2llOiBob3N0IGJyaWRn
+ZSAvc29jQDAvcGNpZUAzMzgwMDAwMCByYW5nZXM6DQpbICAgIDIuMTcyNTE2XSBpbXg2cS1wY2ll
+IDMzODAwMDAwLnBjaWU6ICAgICAgIElPIDB4MDAxZmY4MDAwMC4uMHgwMDFmZjhmZmZmIC0+IDB4
+MDAwMDAwMDAwMA0KWyAgICAyLjE3MjU0NV0gaW14NnEtcGNpZSAzMzgwMDAwMC5wY2llOiAgICAg
+IE1FTSAweDAwMTgwMDAwMDAuLjB4MDAxZmVmZmZmZiAtPiAweDAwMTgwMDAwMDANClsgICAgMi4x
+NzI2MzFdIGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogY29uZmlnIHJlZ1sxXSAweDFmZjAwMDAw
+ID09IGNwdSAweDFmZjAwMDAwDQpbICAgIDIuMzgwMDY1XSBpbXg2cS1wY2llIDMzODAwMDAwLnBj
+aWU6IGlBVFU6IHVucm9sbCBULCA0IG9iLCA0IGliLCBhbGlnbiA2NEssIGxpbWl0IDE2Rw0KWyAg
+ICAyLjU3OTYwNF0gaW14NnEtcGNpZSAzMzgwMDAwMC5wY2llOiBQQ0llIEdlbi4xIHgxIGxpbmsg
+dXANClsgICAgMi41ODAwMjBdIGlteDZxLXBjaWUgMzM4MDAwMDAucGNpZTogUENJIGhvc3QgYnJp
+ZGdlIHRvIGJ1cyAwMDAwOjAwDQo8c25pcHBlZD4NClsgICAgMi41ODM2NTNdIHBjaSAwMDAwOjAx
+OjAwLjA6IFsxMGVjOjgxNjhdIHR5cGUgMDAgY2xhc3MgMHgwMjAwMDAgUENJZSBFbmRwb2ludA0K
+WyAgICAyLjU4Mzg1OF0gcGNpIDAwMDA6MDE6MDAuMDogQkFSIDAgW2lvICAweDAwMDAtMHgwMGZm
+XQ0KWyAgICAyLjU4Mzg4NV0gcGNpIDAwMDA6MDE6MDAuMDogQkFSIDIgW21lbSAweDAwMDAwMDAw
+LTB4MDAwMDBmZmYgNjRiaXRdDQpbICAgIDIuNTgzOTAyXSBwY2kgMDAwMDowMTowMC4wOiBCQVIg
+NCBbbWVtIDB4MDAwMDAwMDAtMHgwMDAwM2ZmZiA2NGJpdCBwcmVmXQ0KWyAgICAyLjU4MzkxNF0g
+cGNpIDAwMDA6MDE6MDAuMDogUk9NIFttZW0gMHgwMDAwMDAwMC0weDAwMDFmZmZmIHByZWZdDQpb
+ICAgIDIuNTg0MjgwXSBwY2kgMDAwMDowMTowMC4wOiBzdXBwb3J0cyBEMSBEMg0KWyAgICAyLjU4
+NDMyMF0gcGNpIDAwMDA6MDE6MDAuMDogUE1FIyBzdXBwb3J0ZWQgZnJvbSBEMCBEMSBEMiBEM2hv
+dCBEM2NvbGQNClsgICAgMi41OTU2MTVdIHBjaSAwMDAwOjAxOjAwLjA6IEFTUE06IGRlZmF1bHQg
+c3RhdGVzIEwwcyBMMQ0Kcm9vdEBpbXg4bXBldms6fiMNCnJvb3RAaW14OG1wZXZrOn4jIGxzcGNp
+DQowMDowMC4wIFBDSSBicmlkZ2U6IFN5bm9wc3lzLCBJbmMuIERXQ191c2IzIC8gUENJZSBicmlk
+Z2UgKHJldiAwMSkNCjAxOjAwLjAgRXRoZXJuZXQgY29udHJvbGxlcjogUmVhbHRlayBTZW1pY29u
+ZHVjdG9yIENvLiwgTHRkLiBSVEw4MTExLzgxNjgvODIxMS84NDExIFBDSSBFeHByZXNzIEdpZ2Fi
+aXQgRXRoZXJuZXQgQ29udHJvbGxlciAocmV2IDA2KQ0KDQpCZXN0IFJlZ2FyZHMNClJpY2hhcmQN
+Cj4gDQo+IC0gTWFuaQ0KPiANCj4gLS0NCj4g4K6u4K6j4K6/4K614K6j4K+N4K6j4K6p4K+NIOCu
+muCupOCuvuCumuCuv+CuteCuruCvjQ0K
