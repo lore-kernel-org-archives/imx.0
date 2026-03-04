@@ -1,185 +1,114 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010019.outbound.protection.outlook.com [52.101.84.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AD33976AC;
-	Wed,  4 Mar 2026 14:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636217; cv=fail; b=jsyGZWhPbzLeMvYyRe5+k1Sgc2w+jT6H8z0HX5lO7Cxe/Vllc9F7sxcIQQCQtwZXFHW4EVJYBZcTqI8uW+GBcXeU7rsq5cVqAJT8LfKqpLmMwVea+TpJEHVD1Ebi1+4oeZVkkVKovJPyALrPvoaTq3srP2/AQEj711z64tK9f2U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636217; c=relaxed/simple;
-	bh=9zbnzsKvry3cQSg9sPGefVepkKkEVkmPTXLh+ae2IWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Tooi0fzJfOiyTEmpDwy/ZdQ+GcWP4q5ASdHMqTECUh1nupSdhZwmFTG8O4hWgaQMmwUl43o4B09voilUvyXJDXolXRtZ3iMcNiDdMaza5GEJdcd/I25ryzB7UgKWhZ8pM2dxmYvESz6puKzfPZKmCct2umFGUMF36WEkh7pJwIc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XwnbZ7QT; arc=fail smtp.client-ip=52.101.84.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386F1334C28
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 15:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772637855; cv=none; b=g+gDHKPFaxambnVI8H6dtzRBPvgoakNPOeZ4MjNQpUm6F8+HpFDOBmDiDURei1eiyE8Eg8yQr5AW1JIFR+SP3U94pzm/CpakZOUYJ+aVyXfHVfCBnB+55P5tsc0PaXSCblJsnBZmgzIivfO4fINv50zsvooA0ftIgeP/wjCrga0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772637855; c=relaxed/simple;
+	bh=dfE4q7Thd4sYvAKlXBLqeJG6yDSF0ZgLNXzgSZoQgtM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S25lPOR9sIV1nxWlrE9gWEgRQlvTxAlNUPghCfzTZ6jiljrDznYKjUxZTQBnmcjDdIFldWKNsd+7nlFjQWipjgmw2IIDo+t7Vp84wkPsqiy4DjeFurEy+Qsff2eTdlp+h3IaR2iCxeUVI4PZ/OsoMFypATwUPvHJoKE5g6W05s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=lp4aDmwG; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XwnbZ7QT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O6UXO1PhZPXZeK8ivh5+UEGBoT1B+sxXuqbV6l9uYfEILV6DzNU3sdqAHT4aMLNgeVHWCt7mMcFk0hjvBWn1Nl9/FJYpUY+eW0r22DRTgF00TCYKI4XOX3XXDeB8qrNK9dn+KC6GPHo2r5VX9BB9fKjzm2tscLt2lVY+IZlm/2XynBkKsPdO/SUETUF5e3M4zU+POQGMEgb3IliTmFLMjJ7EKpMzJdSpU5YteacZdS6Gswlx2P461NVUPUFk0EtteXyjYQB0cwMiiHv+dPxnXqIk7N+qMOwQYKnN/ZGmOmPh3LyNf5oHLw6q3MNPn/L6bP1203PQhujCHA66oig5vQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9zbnzsKvry3cQSg9sPGefVepkKkEVkmPTXLh+ae2IWY=;
- b=HNEYJF7GPR9Q2P78wMSX3qe2JJmJXYYV4TgOrNwFw4keskSr4mW9iXqh0RTIp3+dq1XpshsKpfHtF/48YowJka2FaEEcrHY+MVdtUX/dD3H/jLS3uA4CNam2XDQQ3q0YnqG/+62XW6bMF0Z6Mvw9x2JU5eBHu0MWNfO8cpYADpGoPIoef1E8OddZL22mYTByi0hz6lApd4PXbk0erSZHS7wSSsfbij7noTc9rOBIr1SFQYbYYyfWJicw8mlyPlwlfFFAfQ83Tkx0LwGkUo3Q7HRDmtU1CvCOh4QEcge6t2zVgDZKCCf6NSrKWQko1wanNHyc0lwS9PAR1HOdb4/TvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9zbnzsKvry3cQSg9sPGefVepkKkEVkmPTXLh+ae2IWY=;
- b=XwnbZ7QTtkMN3o/96jM+z773OFtnCz2hWklgJwkjIwfP+jVjHN0UqVYIHrWAVVNxXOqb/U+j5hr31qgl8c4UMZnJFAZtAdsipJOE4AWlFYYbp27XmC8Fj40UbgDBYNVXDGjDYyfhSFIydU2ZvNtVyJlNvJjExLfRAsnBnplE9SBSvZKmou6hsKRZA8JZIoRUcGMnbU43FzJeATSdyKzBdvDpSd0U5ohhN4LBuAy9ZXwMocj+zKhHVlsjUiGf31Ypr8BGykGOJQ+Prng9Tq89H0CZxNpIFZK15xCjLLjnZtZFlOwGrZhV1+QdcQlkapHZyq8y6bzSdb3JhHcHY2Bk5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PR3PR04MB7404.eurprd04.prod.outlook.com (2603:10a6:102:8f::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
- 2026 14:56:52 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Wed, 4 Mar 2026
- 14:56:52 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>,
-	Roy Zang <roy.zang@nxp.com>,
-	Yue Wang <yue.wang@Amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jonathan Chocron <jonnyc@amazon.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Greentime Hu <greentime.hu@sifive.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Chuanhua Lei <lchuanhua@maxlinear.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hans Zhang <18255117159@163.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	Sai Krishna Musham <sai.krishna.musham@amd.com>,
-	Nagarjuna Kristam <nkristam@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	linux-omap@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR TI DRA7XX/J721E),
-	linux-kernel@vger.kernel.org (open list),
-	linux-samsung-soc@vger.kernel.org (open list:PCI DRIVER FOR SAMSUNG EXYNOS),
-	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	imx@lists.linux.dev (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
-	linux-amlogic@lists.infradead.org (open list:PCIE DRIVER FOR AMLOGIC MESON),
-	linux-arm-kernel@axis.com (open list:PCIE DRIVER FOR AXIS ARTPEC),
-	sophgo@lists.linux.dev (open list:SOPHGO DEVICETREES and DRIVERS),
-	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
-	linux-riscv@lists.infradead.org (open list:SIFIVE DRIVERS:Keyword:fu[57]40)
-Cc: Frank Li <frank.li@nxp.com>,
-	Anand Moon <linux.amoon@gmail.com>
-Subject: Re: [RFC v1 08/18] PCI: fu740: Allow asynchronous probing for background link training
-Date: Wed,  4 Mar 2026 09:55:37 -0500
-Message-ID: <20260304145540.3331304-3-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260304140329.7089-9-linux.amoon@gmail.com>
-References: <20260304140329.7089-9-linux.amoon@gmail.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA9PR13CA0146.namprd13.prod.outlook.com
- (2603:10b6:806:27::31) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="lp4aDmwG"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c70b5594f4so720111085a.1
+        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 07:24:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1772637853; x=1773242653; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mldFBg2hMy87EWdNzYofBYb0Zx4ZHm48yGEZLUqC4O0=;
+        b=lp4aDmwGBt8xyGxLEEs33qoaHD2PM+Y7w95qRS9Ie/0jtKtngc85YskPmv8o27tJk7
+         0iyqkcICWXyso2oIrt1XEhOSsuc7KrVqE6OcA3WGk+n/P/LexS6y3Pj4aEAE6EnCtjG5
+         3oRFqbvqr9A5SQjcLTxm6U8e4ZR2jryYA1ptV7Y5BwfHJANTgpohbuMXpC4t8S9m+Wps
+         fS2k8dNHpMuvGgqOz3a7Pyx42RKQtUyP58B7UHThv9zbAimk6ZlRCueiylSLQW86XMV7
+         aZqPYXJyjXLjCfe4Vgapf2F/7+cHN9B/hZVPBQs0mBlqbLeiZyIcDJAYHoUpVIClxibE
+         hrTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772637853; x=1773242653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mldFBg2hMy87EWdNzYofBYb0Zx4ZHm48yGEZLUqC4O0=;
+        b=XhW3/yg8/+JXIHGrWUS8B6wzkKC7mTmJzxyVoPcJ8gcavjvMTZD6P/EOvBdZcgS3/s
+         vAbX0v7CIoWwWijHNdeI6qGv+ZnFXUw5Fzb3G/sfdKW6Omh1ligNekRky79D7nq3zwCJ
+         ohiUiGspi+RTcepytrOqzp2YlhcgDRwlOAkvlGQABUonZxmsaGBDLnFFx8iATETIyDRF
+         YF3xw22Wu3JWVuFaOAle57fcn2oYcwFwNrqdeUAPMupK0bYgvrzsIgfysEmuWZ3GQu2h
+         NtPjGJAopeLAnm4DpCtBt6TUO8lXgDRhFOahJlM3ApqfsUmEG8cr1uNwBo4lKCK7Kftd
+         bvPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWT3xWtfUiCvGSft/serrxZD5IsU1w/nq+kaEaeJ6fsbjT60QECYWBGVCm8w0ogf4x3JqQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxihTSXRldfY+LiRaZaYY4/ck1wwp9g89IQmruymtPYvHE2UX+Y
+	E43HyDWsaw+F9TYkMGgJ/SlRv1J7U75gG0Wgz7RF2l4H5k1FW9VfVT4zFxlHfEAV6g==
+X-Gm-Gg: ATEYQzxqqHlZdOKT0w+LR74bEI9cQiPPrjQZifV5D+XPunL00UuLNzSKo3FwyfPjfWF
+	FH1k55kZY9mdCVR+4hK+zZzcNaPtv/Z7Z18vZ2lBfOW47/ACd7x/E+OdI4BQqvhw6ZSn+P2a+PF
+	IijjXeiPuYW/LmIGQssc1VbnFbUqKvpfnfPUmgUFA6szH0//VmGlUtQMpa1CqJu0o7T2d31Cpl1
+	Zb02Uzd/cURvzXoyDpnFvKEfpEjyyJON1ilL9XFiHHQhlc4H9GEdPi01yVr+ZHxVRJrzLiI5Jzt
+	VwNpOgSA+tbY3WSvaN2iO272+ni73MIZ7PTCRM+LRIQ3RzexnKZ/C88sGVooV/F29ERxt2IR90J
+	8GhN7tDKae1s+YIwRLNZh8caF7n0wJ/nweWsZFrty5hNVzK9NWPYuTDGqzjxDOKzPui7gWPyVRD
+	EymbSl8WBPtJ7DTa/WcP1WmJVLADQarDEqHKe+k9u76A==
+X-Received: by 2002:a05:620a:4511:b0:8cb:50f9:20f6 with SMTP id af79cd13be357-8cd50bc3181mr725909685a.34.1772637852980;
+        Wed, 04 Mar 2026 07:24:12 -0800 (PST)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6fb519sm1667252185a.29.2026.03.04.07.24.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 07:24:12 -0800 (PST)
+Date: Wed, 4 Mar 2026 10:24:09 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Xu Yang <xu.yang_2@nxp.com>, Mathias Nyman <mathias.nyman@intel.com>
+Cc: gregkh@linuxfoundation.org, tglx@kernel.org, mingo@kernel.org,
+	claudiu.beznea.uj@bp.renesas.com, kees@kernel.org,
+	bigeasy@linutronix.de, ulf.hansson@linaro.org,
+	rafael.j.wysocki@intel.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: hcd: queue wakeup_work to system_freezable_wq
+ workqueue
+Message-ID: <c35d4aae-038f-428c-9b69-09230043dd60@rowland.harvard.edu>
+References: <20260304115729.857136-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PR3PR04MB7404:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc9ca2d1-44e2-41e6-91e5-08de79fe4518
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|7416014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	A0uSeeTwJuvvbKh36i3LoGlUoeTU6xTEhoou//AznbAegKhNk+S8a/EyCpZv7ykYbE4mS5CYre39Q03bttqXHpPdEjE/0CUvv/iOCvBs270lGmGRAf/FGpzye9tvLYkhbOY9HfQXq1PpayGJyOxcpI58Y52HXZgbaW/xmFPAbrcspxtz5UZKqjWBgjMk2bi1eaKXq30TKtZsBsAwfXpDB7uKu3cmZQP/Ys6neXO6U0hEajVdZk8ETcmeX2GHljRc15LSs4GphZBvZJcwc6cb905J0+G09RI4R1X77iltDH2sirXBdNNP6ZDskO20l4ijNvIudnYqm12l+EKK5mjQQbJbDxGFxqWUFMS90hpcaOmypi6EktBHnFyquGLUd594pZ4lYHlCebQMHABPKcw8lm1M2CPYJEyw8uDnOmElgioCGMdHDGZn0C3R0mNySCqofFsVY7X+hwRp7Tygpd8JBROnTwaOWdUt6c2y5gRdoqpwfRPeQ7+CZmwdy0M7JwEw53KZaf05kmRRB0vifqoMXunSUaxpHE3+08r3SfUYGbf0rTvk2BWo56Qzbofn4iK0gg96x8KkFOzakI2N6dLrcxMHBYBHbnvR2sjFe9LFMxLla+zyJJU7n7quJ7i0WSfJ7ImvvYUniRndKrjRZDC78ra/46uuxqwK4V8xZ+g0wS1yi9zkUzOVc/MIFhyDa1PGXNx/RTCmw555VumRg3qcd4Dgslr4xTpl6gAtrkdZbndtR/zjN22SHXLv85zID//PUOagkN4FXCQsWt8jsgF5i6GI7guMEHb28piXkNSKxrcrTW/hSvmLwl7W3V6N01fm
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zjpCgEmOqyXai+Z8pvLK6bwMme1/gJbrobUO+UTVfJvmEDq0Fik0VHWeB/gU?=
- =?us-ascii?Q?Ir8ZE/NNZXFDxnf+0di7ghlDcJJZ1lA/NaJvj0sx4RvV7MZbvC+7m4BdefzN?=
- =?us-ascii?Q?1vu5NNS2dYVtN3+HCDcosrc9vSnKjamhvbMbna8r1HaH1R2Rt1myhU78TLN1?=
- =?us-ascii?Q?ZYajnwUct9nFqvmL7dPcQFTtcfjWwAqaH/vZznsfflMovSWtkXqP8KFZv10M?=
- =?us-ascii?Q?TrKhJ7hUMSLlkptHXQgV0NXevjJyw72GFt3II23VUdwUUrx1//ivUixCl2Rh?=
- =?us-ascii?Q?D6xsq5RYPY8P5N+yQVkGbMOJ4g+FEjrEVOb5dYg3Xap02uenwu8FXNVmcE/r?=
- =?us-ascii?Q?I997PwD51I9pXbVBp3Bt7GjcJIKNHqXmjNBZjhDEWb0Kv9/zby4wTSjY4Sog?=
- =?us-ascii?Q?UVuIRZ+ojuDODiQQsFwwzqVIWuEc21U0cBwof07Hq/lMmHpezn5vEn96eXwv?=
- =?us-ascii?Q?maGhnK/9ZV6OCQqVfSggrWX7ixeJZAQrhu5sXettBLwFLwcbU5C6ohzoGnDs?=
- =?us-ascii?Q?9yASvACG7K/y+ruGFWoMANUUE0VgxkN/JfneJFcpyFMoSUFguF0QEr/hXa1H?=
- =?us-ascii?Q?ibeUEcdLhR2e12xRDS0mSPc1Be9jJNo8BrTTSA28AyJhbw2jdCJgp3lo88TS?=
- =?us-ascii?Q?G2jKkyUELXpskZjH0IYk7Qm3fVfi0pY+dKB1YfuQPbEz77S+tBjU4BY8r91R?=
- =?us-ascii?Q?JKcRHC5k0GlxyeMrRwKSkEp6v9I9OIAqbdRX6hYNa6ynYib42Hxl94U9WRdU?=
- =?us-ascii?Q?xm3sQaTKcPszfnqIjJOI64601wz4KzdE5NK9FUvbMjuSGfuRQ/gjN4cDDZg1?=
- =?us-ascii?Q?N5QqVbxhvHu2JPsB9jzcpz4SzCVLGqVYpGAT+VkxIv5vmmZ8h4358hDkifIt?=
- =?us-ascii?Q?zT14GMtfRsk1XSqq5M0mZx62P/LQUuWPosJqMOeoalt2qAmLeJQPY2CvIR9J?=
- =?us-ascii?Q?t3mV4DCP7AkYBdreZvvpcJSQsUcshCvQbhc5EPflTadKl/SBDb60Fxc9ZU3S?=
- =?us-ascii?Q?iUyGkEMrCzir7SMsaRFyQWmh9HFdy5TnBcluxfz7fODx6ZZBXlfqEI5eji99?=
- =?us-ascii?Q?dm5/MrAEnVOiEIqJhaoc7S/EcYolNDiyTvolC7X5pJsaE+75fG4JOCmrWyy6?=
- =?us-ascii?Q?hwJHxMQb4HXyxHtp53N49UKU0BZh1HZZV46XVSKORqEbwa12E2SjgOYTHJoA?=
- =?us-ascii?Q?8mUoTyv7qgQpnKV93QkU05kUqMLt3zn8BoIM6VqPfb1uv9JisAUZanS1JERg?=
- =?us-ascii?Q?GfD9tNxTlmoCnb4MEa+eCKHs6+lB/abQIXcOiuC7GSA4YLUW9t1f1JyX0QH/?=
- =?us-ascii?Q?dMN/D5uM8Gx1vcYJc/Eawu1A8QABI6Ts6PYEV+gd/1g7JuGNIYcIByGqcVG/?=
- =?us-ascii?Q?x9Y5Frq7hR5c+j+NIvDqqBK3292zWFKNqGiq5Fc1WrrzTx6WS+QKD5l13g9h?=
- =?us-ascii?Q?B8m7DWKdXdxyhPPmcTBWgFjQprqHNtmE3NHZO3sO52VgAeDjxeEMoGYePybT?=
- =?us-ascii?Q?bkGzvav/sUaVFWKzZd7xiEM4WLE6edU90jt2o3QFTBWyKDzh49m6NlHAnw2f?=
- =?us-ascii?Q?OcGdg7fH5MUc1CqMcUBq6nYIaqVQPXV5FABmxP7lubNLnvf7nT+zVCE1ZuML?=
- =?us-ascii?Q?32CrpYeuL+I9bOpGuDP0gQqOFot7ZJ/4JtKATyFgfMNNWN43I7u0I/ZA5g/l?=
- =?us-ascii?Q?aOzlWfJjSyfHPphbZh3JToOLn3vO/C1CYwNqtjVPCdgeV+/s?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc9ca2d1-44e2-41e6-91e5-08de79fe4518
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 14:56:52.4022
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z5y6CXu7lglSYwJ0M52NIxWZOpIAOuszzXn/JPHQGaBOTXsX8VZR1Yx7PtUC2C+jLi7etBSL/kAgLvfpPhTpHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7404
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304115729.857136-1-xu.yang_2@nxp.com>
 
-From: Frank Li (AI-BOT) <frank.li@nxp.com>
+On Wed, Mar 04, 2026 at 07:57:29PM +0800, Xu Yang wrote:
+> After commit 4fb352df14de ("PM: sleep: Do not flag runtime PM workqueue
+> as freezable"), pm_wq workqueue will be unfreezable during system pm. This
+> brings issue as below:
 
-Commit message has a typo:
+...
 
-> Fix the identation of the callback functions.
+> The reason is if the host controller resume routine xhci_resume() call
+> usb_hcd_resume_root_hub(), wakeup_work will be queued and run immediately.
+> Then usb_autoresume_device() will be called and usb device will exit
+> runtime suspended state (if it was suspended before). For a hub device,
+> hub_resume()/hub_reset_resume() will be called accordingly.
+> 
+> After the host controller device system resume is finished, the root hub
+> usb device "usb1" will do system resume too. Then hub_resume() will be
+> called again.
+> 
+> Above sequence will cause hub->urb to be submitted twice. To avoid this
+> issue, restore the previous behavior by queuing wakeup_work to
+> system_freezable_wq workqueue.
 
-Should be "indentation" (two 'n's).
+I don't think this patch is an appropriate fix for the problem.  One 
+indication of this is the fact that you have not considered the reasons 
+for making the runtime PM workqueue freezable in the first place, as 
+described in the 4fb352df14de commit.
 
-The code changes look good otherwise. The indentation fix aligns with kernel
-style (8-char tabs), and adding PROBE_PREFER_ASYNCHRONOUS is a straightforward
-addition that matches the stated intent.
+A better question to ask would be: Why does xhci_resume() call 
+usb_hcd_resume_root_hub()?  That does not seem like the right thing to 
+do -- at least, not in this scenario.  The proper time to resume the 
+root hub after a system sleep is when the PM core calls its resume 
+routine.
 
-AI bot review and may be useless.
+Alan Stern
