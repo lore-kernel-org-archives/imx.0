@@ -1,134 +1,260 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012007.outbound.protection.outlook.com [52.101.66.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C9C386444
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 21:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772659634; cv=none; b=T+hdTV0HkY7MJhiNM7yPb/5+0ULp3YJw/JA/42x81UwaQnTkz9JWP5zbJhLefHIc2iQUP/eCrihudjG2WDAfL98HiYGdMPBV7IBIjNKhGOcZ262AoO//C+0x19UUcgYi7GsXhVuXgJBsByMDj46cNmcNxuqf4KoDbx9U5ntHrZ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772659634; c=relaxed/simple;
-	bh=F2afGMEwB5uJJhwzMOSueMg3oN353FwXCET/CyT3Ua4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=WURgUyO2Ddvs3r3OXxg9gABoQd+uZ4w4YCrcJlVky34r4rD5K/rLhM/JdPyKLEJMXzgNvPFwTwFKqb6+qxTuP/l9Z8vb++z8yk74apasSCcWuvrKDUx0pyXAZGrFHnIwgpncJ+dVaprznUx0HCez24WkkosU7sByUgCyhGoxNCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gzg3Bi6t; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537D33A6F10
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 22:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772661890; cv=fail; b=hNTE1nyyv6MI31Y2GiEIJSqpTG3R2+BkEQbzmPbCaE2uf70Uu6tQn9itRVuY4GRyAE1mDjGtzOHpDrhkeBXz3NwJT+gm+u/8XP4CmNkT+Xf8M7eCpzqHlSK9sVs8yFmiG9+aHzjADduPKLCvMhUdilLCNNQmB/nW5eb4xNvw7bA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772661890; c=relaxed/simple;
+	bh=tHEmlSWVpLMlv2iLmayzBXly3VH0B9UrpS79YAxwJyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=G1Jwsa+P0K6rfe7nHH5LUicBL7uZ44Qp71OF4V7Q9eXaA1PfFTdqqzYoHVgDHiuLI1lDItH/4fju9vEWwT4GxJyaCRkE8kF6KBKf1wMcKFxrbNyVFVUbYCv78nOlDXqVUBapq2RiQinUJCMISlASD+fGOYjmWIE2v8geFYFg7bk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mFtNS1MC; arc=fail smtp.client-ip=52.101.66.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gzg3Bi6t"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4806fd9033bso12280235e9.3
-        for <imx@lists.linux.dev>; Wed, 04 Mar 2026 13:27:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772659632; x=1773264432; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqrYXjS07WWLu9a4fdG6oSfjRISyxlXE1cioRIfnuGw=;
-        b=gzg3Bi6tLacJwNAiUR9avdmUluOvIV5H2YjvfLbO2hIP7FWRXkHEt64FboWYL4eEPa
-         7IugKoM/J2KRhILeZhti08pO30b+N3MBty2XNLZRyBhEY0rGPKf5bAWBFLidUMGJmp1j
-         K8dHyT1RJ8FWC+bQYxPBSaGIZIFmzZrnbWYIosyaAZwllaMuWx4CBiP5F/k2wnvJfnbv
-         AQBWY7ZNbELafaLElPY28SmNRw7xAoLjoBb/TsiBO1pz9MVRNWfGTs4vMg29BHQgYjmG
-         D1B0Fpshbv85Wa5ILVNFsB7cNlXE/4tw2t7BJIcWU5X5xV8e2QASqoJ7KTDhaVrN0Nqz
-         aTGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772659632; x=1773264432;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QqrYXjS07WWLu9a4fdG6oSfjRISyxlXE1cioRIfnuGw=;
-        b=VJjVpYZQZVKsz8HIYMJtefoMVqDxd2x0k85M3/tL1zifH94VM5fzqpO8uZJfEHLdVH
-         0+xTpo5mYN/r+AE68Zp89pvAeW5sCb4qzbFR1K0Qrsi+enI5Z580wEg5hdg1ZE0WokYO
-         2fUQ2KMzIIyoiOkb0FX3CKfFiwj2w9M/VNkwLIcpjuxywtRP8pCrKkTtJig85dFZ/d38
-         VxwEr8jHL4YPkTYT9cVkGZWhom42j4+RgSZtUSpQ5dfbB76XELX/5ac+JqpzsdYpvHuE
-         2GZ2JkvTgV1SOGBcmeOeVasHvPuVWsosVSpaIZWJZ/6E0eN55ZCy26D8hBYGtj+LGYDu
-         IeQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqSra2MJh8BQt9ef0Pbu55UOp2evs3Kr5nKSpf8ktgtPngtNpi5MAJx2cL2RKNmyTUSLo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwFuGyGeyzhUgY0fg/Cq9GkF7NYDQEvNXmHPKO/NdOJUTHC0p1Q
-	ZR1v2pHMjXcVCvfW39Da6pq65EuW1TlxDAZAY3h2015sy6qJyCHovXmb
-X-Gm-Gg: ATEYQzybZf+D7IexN3Kb7hrTOzfUdWVmvfe1agNeHow25hlfzj7FpW+7BE6B0pylExm
-	xxezCbEwF9O+rU8rkwBvT2ho1rRmhXmmjmotQ/1/exIe96CCEMpa1LguUphu7WPzlI21A4lhPd7
-	VfKILLCJtVL36nF7pZI4OOaqCV0QlI1hfSdDfn84CWxXolS7QBHR4eh3joKZoGqdDsMdE9Go4NY
-	06s2iTKsWYl3p++pY3yAXY3PTQlzO1MsL5PAfI3ImHkj+pLTejUEjV3uFdXawpItlsAVAKWYEW7
-	0MHmaWquo4l5z9AeNhwAzv/9/AJUXzPOvX2HurnHQbBfauxJ2SDk0sjB3kIrB1CvGIsJHA02moN
-	FX4FOMj/J6kSMdDHSBODkVyVibk5aTn4qbtCJwCRx45tKn21Baz11UFtpTo8+ezW4KNVbVfZFR7
-	wW458rZvjiT9RpPOrjw1IVUD+7wA==
-X-Received: by 2002:a05:600c:8b32:b0:483:7d93:9f8a with SMTP id 5b1f17b1804b1-4851982c755mr35027765e9.1.1772659631369;
-        Wed, 04 Mar 2026 13:27:11 -0800 (PST)
-Received: from skbuf ([2a02:2f04:d00e:3600:16aa:c9ad:4288:9dcc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851a82dac3sm46980315e9.0.2026.03.04.13.27.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 13:27:10 -0800 (PST)
-Date: Wed, 4 Mar 2026 23:27:08 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-phy@lists.infradead.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND 1/1] phy: freescale: imx8qm-hsio: provide regmap names
-Message-ID: <20260304212437.z34yjprrovewmlm5@skbuf>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mFtNS1MC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T1IeN9OvhMzQrk3zhHtRSW7GsFCsFfFC6RwiEDhVxUk3OZMfymcC+J06g/o3JytuuQiihU2mA4d3/6rET2QIGVQ32ECF3h7Tzy2iVPBuFIs/xObGNLu//OXDiRdpjAnxJLGbo/geTeCZrvHmyQXOqm141N98bbtpeWzP7/rNt7LaIyl/IKTzwt77IjYQX/6vXg9J1Di1HUw2aTsXQgu7CtdDaPkEsL4T632Zckf/dcFJ02pQ9Vd3mFH5TWSgVQevjDvMkfRzTL6nuWF87pXg94UnE8Kn2+HVxOoMkfZMLQYpZz9H3fcOMwIR2E9vZu5ZATkE+pIrAfPkPkoDbWfFnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m3qRt6ry4njU3gb6wcNyJVTnuqx1Jei5x/3anVRHYvM=;
+ b=Yc0rSIGlpM28FvNUMCPR81kXDLEgHStEFdP66S2u1RninaFbndzINtLU8i57Y92hrjpkUrU8PnUsWrpzYe9nKYg/bK23fU0TqTPwuaxQj5Qev9EqlrhLaZOHYWqWj1CbO7WujGqQogvO8jkv/QUUeAcJ1n51y7+OKAltd4253Qgf5JoRfjhvyoUydx6Y0gJCkjhDzmHLFuJ9kvzN5KE9Lr+s5/7UJg+VMWQIoSGMMIP62Z20Vuwye819ATe5lohHrZhItaiWyDEJ6978Z3g+JxGF0q1GxXzAtmx2Gcgy2umqMhfPmAM+1ndANurQKLOi21V1/yOEozspPHHdFTeSJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m3qRt6ry4njU3gb6wcNyJVTnuqx1Jei5x/3anVRHYvM=;
+ b=mFtNS1MC/bDtV2yiozDCLf3ooKdBDvDJCPR5kV+8MFVsABPwh7jtACcX2tBPPdqGhhRv35/23WJZcNBnZxVQtojsEh4NIQoNmQ4r+tkKaEHinVSA0hGsSA/JQsl7t7YNa9HoCbxrV8uNsO82J0FoDToXGyGieMXS+w1NmS+dVgZ5eKvLRJ/5Kqju+GJE80oPdJHbYv9tQGAtaGQ/ZAPW0Al7V67jxm13fNZMUpT30SYjyP73txVp3o16Y5JGtrq4pQmIk9XU2cbUWDwrn7zJm16U3G8t+Sr/nQq0bv+lC5ZgJaP5LDLcCRbdrHPgcFDICR9hS4l0v5Vi1d+NpIcK5Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM7PR04MB6999.eurprd04.prod.outlook.com (2603:10a6:20b:de::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
+ 2026 22:04:44 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Wed, 4 Mar 2026
+ 22:04:44 +0000
+Date: Wed, 4 Mar 2026 17:04:36 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Maxime Ripard <mripard@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/3] media: v4l: async: add helper API
+ media_async_register_subdev()
+Message-ID: <aaisdJSsFE5-PLx1@lizhi-Precision-Tower-5810>
+References: <20260226-v4l2_init_register-v2-0-902d7140f9fa@nxp.com>
+ <20260226-v4l2_init_register-v2-1-902d7140f9fa@nxp.com>
+ <aaWO49Dga6gHgOXS@kekkonen.localdomain>
+ <aaWwHlvmvvMQKElk@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaWwHlvmvvMQKElk@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: BY3PR03CA0005.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211144949.1128122-1-alexander.stein@ew.tq-group.com>
- <20260211144949.1128122-1-alexander.stein@ew.tq-group.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM7PR04MB6999:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d11b486-3482-49c5-b35c-08de7a3a0b20
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	VDjnBUuim5QuZId+sOLnZ4DU2gPhVvQtrzhkyuApdCjJ28CU8SXZga9cM/WvSJpv58yrX6qNTXGwOgRGvu8db5Z3TwgMF7a8Q1lf8bcbhxmi36o1PuvJFyhYDYDAQm8JRPTykZHP/W4cVuNgy/6KloyMUAufB2VwOt4LXbNtuNCQuR/kEcr3jpHOrQ6aegUqXah0zi6QNNv4KuPZAOuflZLLVgaHm3MXtiqz80dxE5L/fsghNGbiPWVox//eYl8eYjdLUSCMy8j0MKopHBOYaBJx/19IxIALuhnLmdiKSYwdj5kd3hUG87FZZ8P9U0f/tyx+a1ih6TpL+qI07/dM5I6nmGfTabr25qHyqt2o5LL3XiDJppaTkb8uXgRpEu2cig5fiklhuTyiPPm8V7hhACkJGGaKDrzgVDyDEPzXP54kT7XjmmXOeis1k+lmVGwD0DjdBy/ujHJKXeXHzB6qQjaUR+j9IYhncrl/k3+dir/qa6JVUjBzxdiaM2USUjmR2kVMjntmXx/fPepV8W3haYQKOzEO7fhts1As2lh3A3LnKxlTd0GBj+jsxZSbCXDKTF6VgzWHlr0sykIc0qwnHVdKo2vMlrMm/g1Y01BnRKeV0JSRJq+APO/QhyfLUMIo57kt3ZI7OK9yBj88hPpJFrMpThO/N+dGkDr8TchaEa2RzYQoew+XCCqaGnu4YTLLg5swwm9whdMi1FS9vrIwMccFgO1AP/qFRmuUokOV+NHwYb1Ql/L+YStIuVbT8m14YfhFl6e2udJ2riDwQc2qkKeiwvupnGIXEs19U3xEPy8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?nzENjykOZIElDWW3Qt2/L/sC85aE7d6BmV5B5iWN8BCtHz15yyAnd+wgVfqc?=
+ =?us-ascii?Q?/SlpC09QUNNCCW5Eqkmgtl7C7l08LsIFr6xKWbwbo3Nw5B0AudQ5KKOn02WI?=
+ =?us-ascii?Q?RoWWf64PRpyc5y5z7CBEbyBe0VlgWvqu7RuIWaAGybZEASMVPrCRSJZtzsY1?=
+ =?us-ascii?Q?4tgum/C/nowM/0khNhdogxAI3ueyd1giot3aLHuF437o1ktEeX34Hx8HanQU?=
+ =?us-ascii?Q?EBXnYBSCYATwNUydp2IknnsJpaSTFiopu/A56xCDzPn+ul2MAP7D2MerC8aF?=
+ =?us-ascii?Q?6h75GuQzMC/tne6730t3AnOvIotBL/xaJjvflmn7NySpvYs5dPQ1gdIF+HSn?=
+ =?us-ascii?Q?37qQZKVzGX0NdU4U7fFQb5xIEh2zES34Eyae4groLhT25k6wYzd7B6TDo2B/?=
+ =?us-ascii?Q?y0OjimS3WuRzP7KcbLWWRpdooK++jo0f6ILvk/d74ODcVM4orZKe8OO3vcWD?=
+ =?us-ascii?Q?8IrzX/CtZUqrr4sB6xu9ccc+bTkiKjSQ5QD8IBB8eLGTUa/SxQFpzFN4XRY9?=
+ =?us-ascii?Q?W+hePeA4cP2+cgYr+68eXo7Z8e8k0JgBj5EXyDSkHHFQZSuM577BZNdqVKUf?=
+ =?us-ascii?Q?PRmcwUPhF5Z6HOVVNdFxLT0myLDysnBAwpo2sgM8bajJyGjbZFUkNTvoJU5F?=
+ =?us-ascii?Q?VTlsAWDWFt/T4XBXyDfpa/hWJPxY5caS9NfDyfjRpZznyDmUch0zo1WYbSfz?=
+ =?us-ascii?Q?HufpwKtWLUMa1tX4fDXJ0f8t0UvFVOLpf9r8UPmIprmFsqXIkXY5uNbuUh3i?=
+ =?us-ascii?Q?WAAZ9KBlU6LInTgpbSvj8s1Nq0i+JpKemRY1Dl6WZHBSbqQSLHOHZra+vG6G?=
+ =?us-ascii?Q?bWoBthM+V2ZL499PXQb+8dpo0Lpwu5gy+1hedv/boiUwC80tpFXgb/8n8Kim?=
+ =?us-ascii?Q?p4MsmAMtPnkiaDLcxWJpTz0thwxRryHy/lf9HIQnjRojpX5kKXQShhkDq3jl?=
+ =?us-ascii?Q?RpBNRHbWIwkdFXr5SsAv1EKc2jkfrpNG6Dq6wiG4DuO/P+5IRLsrnyUWq1P2?=
+ =?us-ascii?Q?oZGP25nE+kVYnlB3tf2uiqKDZnqbp0E3IvmVC+Hh2UlxCTcPGfHpzXX2Kax1?=
+ =?us-ascii?Q?9AGWxPmSOrJMiMl0qt5iR+gkBpKzYxXAZVDNHX0PDiB9dHU//B9AY+XpODB7?=
+ =?us-ascii?Q?93TeYktGzgfllwg5eWGUZG4RtM64bYt5ZVxbrgqqzs7kKo8uOdPuU78I5w4g?=
+ =?us-ascii?Q?glV++TFgnINhTJOEQl5E8US/X/74HxJL6c45n9Hh0nhO0+IPn1IREDniyxBJ?=
+ =?us-ascii?Q?+h6DIBtwRgzyez6gH5WiegzFv80zPPdGxYDwmEhL24KHdXIZmmepZIl7n9mR?=
+ =?us-ascii?Q?pROZci3gBQIfHuytiIABXGteBRJAOjxQo4ARIsw/DYZEZeTM/1WS88HeZyzk?=
+ =?us-ascii?Q?9PjbOsBgxxdayJotEwp5T+NtHGoOHfEAjGn/oGn9q1AiVA0Tnh4iGHJqcIm6?=
+ =?us-ascii?Q?APMi1sqfd02X4dMmXxSyFgxfi1Ziii5gsCKxJ5qwjH0ZT1gw2nzh3fDEQSKL?=
+ =?us-ascii?Q?IYOSrXSA60m2PBLpT63RdbB3+BUW1xSjzrgyPaysgwdeFxHeZJVWpJJTrHCc?=
+ =?us-ascii?Q?DDijZRO8TplBrx7sMXTeMGlkXHFboTAL1uZL7JM3M6M1mL7Pedg/nGGcR2S1?=
+ =?us-ascii?Q?cJSEDq5XNRWbVw7YJxcWyrr56PL1t7vE5M2ul3tWDoIsjJOZnyeDhlEUInpC?=
+ =?us-ascii?Q?o2bwdJwzKa4hydtxyPycXjlmOBUmCuLrRoUyvlUmGQjY1kM/NqkY4Z+P7/we?=
+ =?us-ascii?Q?MN93mC2KTQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d11b486-3482-49c5-b35c-08de7a3a0b20
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 22:04:44.8623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pi7RZWyyKuhYgzuh3CVrIbjHlkULumQxfUDLHh/XwhOUOituiVDyDV8rLbOyht25cWjeJYBNlkIRJ7999m8yjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6999
 
-On Wed, Feb 11, 2026 at 03:49:48PM +0100, Alexander Stein wrote:
-> This driver uses multiple regmaps, which will causes name conflicts
-> in debugfs like:
->   debugfs: '5f1a0000.phy' already exists in 'regmap'
-> Fix this by using a dedicated regmap config for each resource, each
-> having a dedicated regmap name.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Same as the one sent in December but with an updated CC list.
-> 
->  drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 23 +++++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> index 279b8ac7822df..4ab45c9f53dff 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> @@ -107,7 +107,22 @@ static const char * const lan2_pcieb_clks[] = {"apb_pclk2", "pclk2", "ctl1_crr",
->  static const char * const lan2_sata_clks[] = {"pclk2", "epcs_tx", "epcs_rx",
->  					      "phy1_crr", "misc_crr"};
->  
-> -static const struct regmap_config regmap_config = {
-> +static const struct regmap_config regmap_phy_config = {
-> +	.name = "phy",
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +};
-> +
-> +static const struct regmap_config regmap_ctrl_config = {
-> +	.name = "ctrl",
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +};
-> +
-> +static const struct regmap_config regmap_misc_config = {
-> +	.name = "misc",
+On Mon, Mar 02, 2026 at 10:43:26AM -0500, Frank Li wrote:
+> On Mon, Mar 02, 2026 at 03:21:39PM +0200, Sakari Ailus wrote:
+> > Hi Frank,
+> >
+> > Thanks for the set.
+> >
+> > On Thu, Feb 26, 2026 at 05:55:26PM -0500, Frank Li wrote:
+> > > Add the helper API media_async_register_subdev(), which
+> > > combines media_entity_pads_init(), v4l2_subdev_init_finalize(), and
+> > > v4l2_async_register_subdev() into a single call.
+> > >
+> > > Reduce code duplication and simplify error handling in drivers.
+> >
+> > I appreciate your efforts to try to simplify registering a sensor
+> > sub-device, but I'm not sure this gets far enough to make a notable
+> > difference: the new function calls two functions typically needed and
+> > requires the driver to implement a new one for registering a sub-device.
+>
+> I not sure what's you means. Actually online one
+> media_async_register_subdev() funciton need be called at driver's probe,
+> which simple error handler much.  You can refer patch 2/3. (reduce 12 line
+> codes)
+>
+> In file, drivers/media/platform/synopsys/dw-mipi-csi2rx.c, about 600 line
+> codes, only 20-30 line related hardware register access, others is overhead
+> of subdev driver.
 
-Since __regmap_init() doesn't keep a persistent reference to the config,
-just performs a deep copy of it (including regmap_set_name() ->
-kstrdup_const()), technically you could have gotten away with just a
-single on-stack regmap_config whose .name you kept changing for all 3
-calls.
+Any feedback? Original I plan to create function similar to
+v4l2_async_register_subdev_sensor(), like v4l2_async_register_subdev_1to1()
+for only 1 sink and 1 source sub-devices and delete
+dw_mipi_csi2rx_register_notifier(), many driver duplicate similar logic.
 
-But this is perfectly valid as well.
+But slow review process and try start a simple refraction firstly.
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Frank
 
-I don't think you need to do anything further, just wait for Vinod to
-start going through the backlog.
+>
+> Frank
+> >
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/media/v4l2-core/v4l2-async.c | 33 +++++++++++++++++++++++++++++++++
+> > >  include/media/v4l2-async.h           | 22 ++++++++++++++++++++++
+> > >  2 files changed, 55 insertions(+)
+> > >
+> > > diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
+> > > index 1c08bba9ecb91f46b7479da613d6c1688d4b0b5c..e07173f566fbd8fa332b5e58be288e806b4c0482 100644
+> > > --- a/drivers/media/v4l2-core/v4l2-async.c
+> > > +++ b/drivers/media/v4l2-core/v4l2-async.c
+> > > @@ -19,6 +19,7 @@
+> > >  #include <linux/slab.h>
+> > >  #include <linux/types.h>
+> > >
+> > > +#include <media/media-entity.h>
+> > >  #include <media/v4l2-async.h>
+> > >  #include <media/v4l2-device.h>
+> > >  #include <media/v4l2-fwnode.h>
+> > > @@ -881,6 +882,38 @@ int __v4l2_async_register_subdev(struct v4l2_subdev *sd, struct module *module)
+> > >  }
+> > >  EXPORT_SYMBOL(__v4l2_async_register_subdev);
+> > >
+> > > +int __media_pad_init_and_register_subdev(struct v4l2_subdev *sd, u16 num_pads,
+> > > +	struct media_pad *pads,
+> > > +	int (*register_subdev)(struct v4l2_subdev *sd, struct module *module),
+> > > +	struct module *module)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	if (!register_subdev)
+> > > +		return -EINVAL;
+> > > +
+> > > +	ret = media_entity_pads_init(&sd->entity, num_pads, pads);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = v4l2_subdev_init_finalize(sd);
+> > > +	if (ret)
+> > > +		goto err_entity_cleanup;
+> > > +
+> > > +	ret = register_subdev(sd, module);
+> > > +	if (ret)
+> > > +		goto err_subdev_cleanup;
+> > > +
+> > > +	return 0;
+> > > +
+> > > +err_subdev_cleanup:
+> > > +	v4l2_subdev_cleanup(sd);
+> > > +err_entity_cleanup:
+> > > +	media_entity_cleanup(&sd->entity);
+> > > +	return ret;
+> > > +}
+> > > +EXPORT_SYMBOL(__media_pad_init_and_register_subdev);
+> > > +
+> > >  void v4l2_async_unregister_subdev(struct v4l2_subdev *sd)
+> > >  {
+> > >  	struct v4l2_async_connection *asc, *asc_tmp;
+> > > diff --git a/include/media/v4l2-async.h b/include/media/v4l2-async.h
+> > > index f26c323e9c963065fd7c19d6d9835df1194bc069..220a302a626732e15452f3efb19b03bdc51e64d5 100644
+> > > --- a/include/media/v4l2-async.h
+> > > +++ b/include/media/v4l2-async.h
+> > > @@ -336,6 +336,28 @@ int __v4l2_async_register_subdev(struct v4l2_subdev *sd, struct module *module);
+> > >  int __must_check
+> > >  v4l2_async_register_subdev_sensor(struct v4l2_subdev *sd);
+> > >
+> > > +struct media_pad;
+> > > +
+> > > +int __must_check
+> > > +__media_pad_init_and_register_subdev(struct v4l2_subdev *sd, u16 num_pads,
+> > > +	struct media_pad *pads,
+> > > +	int (*register_subdev)(struct v4l2_subdev *sd, struct module *module),
+> > > +	struct module *module);
+> > > +
+> > > +/**
+> > > + * media_async_register_subdev - Initialize the entity pads and
+> > > + *				 registers a sub-device to the
+> > > + *				 asynchronous subdevice framework
+> > > + * @sd: pointer to &struct v4l2_subdev
+> > > + * @num_pads: total number of sink and source pads
+> > > + * @pads: Array of @num_pads pads.
+> > > + *
+> > > + * Returns an error on failure, 0 on success.
+> > > + */
+> > > +#define media_async_register_subdev(sd, num_pads, pads)			\
+> > > +	__media_pad_init_and_register_subdev(sd, num_pads, pads,	\
+> > > +					     __v4l2_async_register_subdev, \
+> > > +					     THIS_MODULE)
+> > >  /**
+> > >   * v4l2_async_unregister_subdev - unregisters a sub-device to the asynchronous
+> > >   *	subdevice framework
+> > >
+> >
+> > --
+> > Kind regards,
+> >
+> > Sakari Ailus
