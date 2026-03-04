@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD934AB19;
-	Wed,  4 Mar 2026 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637453469E6;
+	Wed,  4 Mar 2026 15:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639685; cv=none; b=a8JMtJFOQFpRVTpodMH8loGa269lupgkxsRi/UIXN4X6m07pMPfVsCVxNJksxOK0t4k1ST/1uDOnQMuuyN+fFpvkHKtyGbLOHsO4Mn7nM6k4JG4PZ5bgdX4TB8/nvA5HSufFUxTkM1aT3Fv6alMdKfPxIoVOvGmAadz0RCwduJ4=
+	t=1772639729; cv=none; b=IjFvlNWmT3w+s7POtnfS18MfZCDa6V48225pPDi6RMqM7BMFlJNyxkbOGhqqiQJ5Fuicx+AL3W6S/9gYh/NkqZwTpWqmNegCCa4xpSFUEQmEP7ylAZtrFCpaarr+UFm9oGpqxcTFthV0LbmDBr4FyENThbIPTu+5iJSAyo4A/JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639685; c=relaxed/simple;
-	bh=QlsJuLHckh6Mhy8Ly+9BkzszlQ9anHptIAU1Q9z4D6Q=;
+	s=arc-20240116; t=1772639729; c=relaxed/simple;
+	bh=ABz42zLJsDylI4eJTmW95G8I/nLM8maLSCBDhdPGCB0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JXL+8MNXC2xl1c6mUnvzCA19hPesYJbztmcclbNnmTifdSMg2+9nPufVZPLQxsKpLhs2H9Y4wJvrum2uWLdjxFjyLoA+Lg/eZa/R/Eg91mCc5WOWw6r+u7uoIhdhqs4DqO4OV4sX1pUbhUdFWExchtYRKhQjWPlSvPA/JHQwPsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuLV5zDH; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=YMo31QWubX+3aE4Aka1NPzE11ngAYeF7S7cFtuapXhETGKG8aTcG0IFbaANdTYmuOFxug5xqN56AbTPgtiC6I8oO8+kULj24a+XldAuNTeJBbYDWGrMyPwkloKqUV6d4dELYcu7Q4Y1qcU5Yj+J8Uc0owUnmZVb+w/J3ar9hjtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVyfMExt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuLV5zDH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8A3C4CEF7;
-	Wed,  4 Mar 2026 15:54:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVyfMExt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A24C4CEF7;
+	Wed,  4 Mar 2026 15:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772639685;
-	bh=QlsJuLHckh6Mhy8Ly+9BkzszlQ9anHptIAU1Q9z4D6Q=;
+	s=k20201202; t=1772639729;
+	bh=ABz42zLJsDylI4eJTmW95G8I/nLM8maLSCBDhdPGCB0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MuLV5zDHB7PppDbRrIgiA6DqLtvPrce7Q/kz2ceveoK6H8VNlqrQSnVWx4PUY6x7G
-	 lF8PWqNnLHxmrtCGMH21sU1hTyWTcK1zQEH5n5mbASRAx/bxp+ybDJ28Aggyaql1fk
-	 frx5ib6PuHJ2XXJi+zlH5K7hS5Qcj3Z/DUdYsH2ugYb22BEtUIckOzLLVxvspqhPe5
-	 O0zIaXH4kNcewaC9ZZo+g+IekD3SXC32jFGTi3Rv+iMUZKMGS885FKF/WowxfN4+7k
-	 p0FLMAdibE34WhcmFFwxYrZ5UJvwQppkSNV7DyytsEJkVSGu/KE0PfNw/w95AZRQrr
-	 UDsFgJyGvAKgg==
-Message-ID: <e7f0c171-d5f1-4b3f-9155-a774511451c1@kernel.org>
-Date: Wed, 4 Mar 2026 16:54:31 +0100
+	b=fVyfMExttLwdhcRAkciRqEv2gfEJKIapjYgottINew3vTuCopPDCu8uVV64f/deKK
+	 Y3FKjyE1k+kOy/fah3fQjBBH8LOb2Sj1zEs7C7ehqUZerOe+d3trNjzRZcXx75Pe3H
+	 iyoZt5EdCBQQu+ma9ufm/atM+CB/Mu+hssRhkVNtXxTPgupKawbqUAwsUnqpTpJtAf
+	 F7Q8T/krrV96QvxbhOEiqa2MBXdMDjLyEaVINV8ftOTnS9L4DH9cuMLyJqaxL7EI9s
+	 NvBxqRTYA+WyyzKlC+iM/hAeYItIU/VtJmfBe/8bxJud1dgFgiS7oFZo1QgsO7n34L
+	 j0LUT9KMAidQA==
+Message-ID: <bc061b0b-448d-43d5-91c2-db2864e0f7c2@kernel.org>
+Date: Wed, 4 Mar 2026 16:55:22 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,60 +35,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 08/18] PCI: fu740: Allow asynchronous probing for
- background link training
-To: Frank Li <Frank.Li@nxp.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
- Alim Akhtar <alim.akhtar@samsung.com>, Minghuan Lian
- <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
- Roy Zang <roy.zang@nxp.com>, Yue Wang <yue.wang@Amlogic.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Jonathan Chocron <jonnyc@amazon.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jesper Nilsson <jesper.nilsson@axis.com>, Paul Walmsley <pjw@kernel.org>,
- Greentime Hu <greentime.hu@sifive.com>,
- Samuel Holland <samuel.holland@sifive.com>,
- Chuanhua Lei <lchuanhua@maxlinear.com>,
- Srikanth Thokala <srikanth.thokala@intel.com>,
- Xiaowei Song <songxiaowei@hisilicon.com>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
- Niklas Cassel <cassel@kernel.org>, Hans Zhang <18255117159@163.com>,
- "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
- Sai Krishna Musham <sai.krishna.musham@amd.com>,
- Nagarjuna Kristam <nkristam@nvidia.com>, Vidya Sagar <vidyas@nvidia.com>,
- "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-omap@vger.kernel.org>,
- "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-pci@vger.kernel.org>,
- "moderated list:PCI DRIVER FOR TI DRA7XX/J721E"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:PCI DRIVER FOR SAMSUNG EXYNOS"
- <linux-samsung-soc@vger.kernel.org>,
- "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
- <linuxppc-dev@lists.ozlabs.org>,
- "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <imx@lists.linux.dev>,
- "open list:PCIE DRIVER FOR AMLOGIC MESON"
- <linux-amlogic@lists.infradead.org>,
- "open list:PCIE DRIVER FOR AXIS ARTPEC" <linux-arm-kernel@axis.com>,
- "open list:SOPHGO DEVICETREES and DRIVERS" <sophgo@lists.linux.dev>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
- "open list:SIFIVE DRIVERS:Keyword:fu [57] 40"
- <linux-riscv@lists.infradead.org>
-Cc: Anand Moon <linux.amoon@gmail.com>
-References: <20260304140329.7089-9-linux.amoon@gmail.com>
- <20260304145540.3331304-3-Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 2/3] arm64: dts: freescale: Add support for Variscite
+ DART-MX91
+To: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev
+Cc: pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Markus Niebel <Markus.Niebel@tq-group.com>,
+ Matthias Schiffer <matthias.schiffer@tq-group.com>,
+ Yannic Moog <y.moog@phytec.de>, Josua Mayer <josua@solid-run.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Primoz Fiser <primoz.fiser@norik.com>, linux-arm-kernel@lists.infradead.org
+References: <5ab5a20c07cd0631fdecc7dba03f0ebb91dfe098.1772534362.git.stefano.r@variscite.com>
+ <20260303210131.2966214-8-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -134,27 +98,24 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260304145540.3331304-3-Frank.Li@nxp.com>
+In-Reply-To: <20260303210131.2966214-8-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/03/2026 15:55, Frank Li wrote:
+On 03/03/2026 22:01, Frank Li wrote:
 > From: Frank Li (AI-BOT) <frank.li@nxp.com>
 > 
-> Commit message has a typo:
-> 
->> Fix the identation of the callback functions.
-> 
-> Should be "indentation" (two 'n's).
-> 
-> The code changes look good otherwise. The indentation fix aligns with kernel
-> style (8-char tabs), and adding PROBE_PREFER_ASYNCHRONOUS is a straightforward
-> addition that matches the stated intent.
-> 
 > AI bot review and may be useless.
+> 
+>> +/*
+>> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
+>> + *
+>> + */
+> 
+> Copyright year is 2026, which is in the future. Should be 2024 or
+> current year.
 
-So don't send us useless reviews. Trim your reply list, so only you see
-them.
+Why are you sending such junk to public mailing lists?
 
 Best regards,
 Krzysztof
