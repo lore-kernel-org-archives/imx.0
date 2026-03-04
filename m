@@ -1,236 +1,290 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010013.outbound.protection.outlook.com [52.101.69.13])
+Received: from mx-relay28-hz2.antispameurope.com (mx-relay28-hz2.antispameurope.com [94.100.136.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D8B34D907
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 08:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625E37C908
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 08:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.228
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772612047; cv=fail; b=l7eUErT30o5wnamqhh2M9ogOzMrPAgowYiHLKeJQKokZvOgkoZvUWhmUpoP1P0x5B76OKONzn93u98PVTRUBQ9ayeyXsl8sAkZxALyuyjcqc42j10ZblfIEONbmYfif8TQhXGF/2h39Kr6NOVNtRRgu4RKOVj1eBquIGcstT/zI=
+	t=1772614087; cv=pass; b=C//tU/JDqsuE4k2Ntl7jFxLFdpPtuL50PMopoP/H0IJJZW5buQDpk+Mi8SIqp0Hx6qt0Sj4xLqvHwfdkUAk3qE+J+wABAHPIQcle5nLZ/dzZewE/l9m4pX5b1dkUzFrzgVexQNOnH/ASxjla88khEjIGjR0oUofqEloaTVd/Uwk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772612047; c=relaxed/simple;
-	bh=/g1Cj81SiZAhmj0y76zlr3OkHd3yV5gEFT6Rc3QcHZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ggGPe+FC96+2wGJRG02mhvzBOEjtdoi9iO8g5/hwy9jPNI0K6mk/Y4NURGb6t2DSX6FR3GgXKA1AWrtf0FfKX3hqo+5bslc4zDoEzZRWpjnjMm5gU2x0vVMLOQdoM09nMpOklzxuhUfDa7Aob7ChYeA9td7acGGFPIE21tUZSRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hxgaq4qn; arc=fail smtp.client-ip=52.101.69.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1772614087; c=relaxed/simple;
+	bh=RXSffSzEJPRbTJBVRVQaYy+1Rbgr2pp8gsOU8CPq9xk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fK4nLBrDEpSApMVX6yQhycTSu/tOmQJlHy/zCQiL08z58sI1vS/IYnDkpOog7uiZm0SiqBEN8lbfp8vP8CGEyg3CZ503Qpxam0sE9DI8hmwRCCYFImYGILL/iQcIyyzzl3hJPaMKMui3EJIBPUakb0Vxtt4UPb2jcM+bsQ2tV3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qLkqEtDl; arc=pass smtp.client-ip=94.100.136.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hxgaq4qn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MSCSuOKajXr9AisobfAiXj08EPd9T+TjIHE0+t+GJFV1hL+YmBeJKGrG8OTElzxJ/IBppVIiAXEEd1fboqaHppfhFZrlHeHW0I80/SAR/jOfXKk5M2EXtIpN1VJS/RN8N13MxTLI+G9mvoNcvI0fkgHR1uJytN9NQ1fDmSEcjRbbmcChmKEdULJOfjA1zDx6ak+AqpAbHCPD0k/mg0ahtEBHkR2JCRlgrg4cYgosgT9AQ2WEaqii9DJwy4NlnD2whFZevMjIiyNiMp85v5uuKLYN/S4bvLbAZoh97kR9HouEzrdrcgR9ZJkSbo8HyyesNAcIZ/VD4AgR9DvvahskCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RheqG8VKoXurtUZph32KCkaOsl2zT9kaxrRYmaNlN/E=;
- b=S7YZl737Bd8t9ToGs1k3ZhhIJrdj4tcI4E9QsS9WjQCV2NtA3FqPjDiBAk8ENRYFNNy3VGxc8vLMlfGPKXNq5R4D4ZqhHi1jFRH4rPA+BOWnnpMU2Rm2Xa+t/qg8xeS7rwpDIy8Ih6G5SYi/l5S1Q4jNA5jszHuYW8HsPV/XjwKDUUECMGdRJasqcQcoZq/qhu2GVZrksQcW6RFrcp40pxjj5q0zZb2p7hL+7cvk8iOMHV/d+TsnHhMhCM+LKTaBuAMgbtQYMAMTaCG0qurCbkUV81QLLiDDF54KCfJ6exGlYoInFnQd8kD1/lI8co11kgoY8gTiybyUcQ6HHiC3lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RheqG8VKoXurtUZph32KCkaOsl2zT9kaxrRYmaNlN/E=;
- b=hxgaq4qnt6ZGsL9vlMBaqn0r9jrvAFgxSGhkdctTbAUrl1K7RTviDS3EXYf3RvdpJ1Du+q1pGPyteGxNYTOaOY0tw0TaZi98v5e42DkWtWw9a68NbaRTjl9aDbhUltF7XvGyjKNmCNDE8eF32xhaI9gXx0vJ150NDNKQFoidy0dUYkNFO24X1Q65gdERrRFs80RT80hGlfV1niEsltmeI4bKUMItlLM1ajxhWKOef5G2a6ygJuSw6bHvkBGE4DAdZSvm9gSMKirFD1ruN/KYOdHehQ9oni7GJfIGom0LKrdJVUbcsz9FiOyzJSnFMcrLqJAB/M3Acd1pKqU0XKOWUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8420.eurprd04.prod.outlook.com (2603:10a6:20b:3fd::16)
- by DB8PR04MB6796.eurprd04.prod.outlook.com (2603:10a6:10:11e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 08:14:01 +0000
-Received: from AS8PR04MB8420.eurprd04.prod.outlook.com
- ([fe80::3f0f:857:96a5:17f]) by AS8PR04MB8420.eurprd04.prod.outlook.com
- ([fe80::3f0f:857:96a5:17f%3]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 08:14:01 +0000
-From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-To: daniel.lezcano@linaro.org,
-	tglx@kernel.org
-Cc: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	chun-hung.wu@mediatek.com,
-	walter.chang@mediatek.com,
-	jstultz@google.com,
-	amergnat@baylibre.com,
-	aisheng.dong@nxp.com,
-	jindong.yue@nxp.com,
-	xuegang.liu@nxp.com
-Subject: [PATCH v4 4/4] clocksource/drivers/imx-tpm: Support building imx-tpm driver as module
-Date: Wed,  4 Mar 2026 17:12:07 +0900
-Message-Id: <20260304081207.4030882-5-zhipeng.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260304081207.4030882-1-zhipeng.wang_1@nxp.com>
-References: <20260304081207.4030882-1-zhipeng.wang_1@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0117.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::21) To AS8PR04MB8420.eurprd04.prod.outlook.com
- (2603:10a6:20b:3fd::16)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qLkqEtDl"
+ARC-Authentication-Results: i=1; mx-gate28-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=Tc5060lOULfVsdNRxfTIuSjgRGoa5zkf8LbdJsu7Flc=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772614048;
+ b=Sll2g0lYLdF0N1hxswhJVi3TnPHKuR/rccK4ZhZxN/IdIjaJOSWaADEZadw86DM8r2mQWKLj
+ zmI4qLQhs7LioXPA/1AlSde1LnLjK30q8BO0CleAjBRUg0lC17A8JAgXi8RS73YCS8MgIYvAhud
+ Fp2XUDNsv/1nGu7uwjNOWIZqLNHxftWu5YKG/rjda6Vk9OjcbC9oyKVTQR20VgcU5hL5bF240Ta
+ MtLbrtoWXlUbQg0EqVrn93k6Q1ahTcV61LESKk6xakEUXXr8sfZGPXDX+M0Q/XDzTNZS0cEBHMY
+ Laa19nRVI6MxHea34nREJJNe+s/yWBmUuuHEF8dzxfGrQ==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772614048;
+ b=RsRDZpiqfilvDeN2jONVQpRWh5Qg5Y+5CxrazqjMoKi92FrcrdYI5d4Xr3O1+WhYJg7DZ9Im
+ mvdrXhJDy1W4kg/NzG8YMoIjZFKmbxI54KIYCue7nRw6t9N7IvHdZGt/1Iw2xJWV7iqHbNCYlfz
+ kUwD9y88vFmW+Gc9+ap32DhuCPFoK1ztJQPRnsBt2Lv7m0/+bfdYfFneCAmBTCxLaO2vdo4mcTo
+ VMPs+xpfzh4ohqjIHraMtHZ32WeoeaGmTBiXIdW/1ZMmKZr1Jh/GGHVYqk6SzNKVEOWucygGPUg
+ 7dDAcJqyf2ojhNHG6UbxjgL2BzhGub2Nfmej+7GV2HTdw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay28-hz2.antispameurope.com;
+ Wed, 04 Mar 2026 09:47:28 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 5ED3ACC0D36;
+	Wed,  4 Mar 2026 09:47:23 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>,
+ Manivannan Sadhasivam <mani@kernel.org>
+Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: i.MX8M Plus PCIe link regression
+Date: Wed, 04 Mar 2026 09:47:23 +0100
+Message-ID: <6102060.LvFx2qVVIh@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <2qto2ddqmtks37wxtklxo4ctvxyezmgtjcuprnk6crant5fvsu@vdbmqomrcqt3>
+References:
+ <23024521.EfDdHjke4D@steina-w>
+ <AS8PR04MB88332979F06EDE29E751BCE18C7CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+ <2qto2ddqmtks37wxtklxo4ctvxyezmgtjcuprnk6crant5fvsu@vdbmqomrcqt3>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8420:EE_|DB8PR04MB6796:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4431126-d3c2-43cb-f135-08de79c5fe45
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	l/SMbmV56fH/170R0k0FkXM4qT6oV11zfPQREexwkK8tS50DRWxyWyxYf7ZGbQ15JKunwamGwkb/io5MrJz7CWsJcV4oIGL2gYhnkkCY6s1xtt1wxCjgYzWuAhKOh4m4kw+w3K4XaGK6mnOXard4Qr72TzY3Oju2xNcSW/GKJKY3NvcuOYt+jhHfxWkNQGlgvtSoNdoEnlMdMdVQA0f/hpsO0IgWpXYnx8D3d38m6a1+xU9nsLDs/dxiGcPkb+9N0fAay1XkO1fu9vGfW5CJ3eLuv7EE8oUxirsvOmgADvgvBI+0+ov/Dgtbo3qMLVmRxZMTVrVsoFNNP8q6GAV5lM3LQsJY60IIfcW3mn+mm+KPJlJ2Fsca+yEDXQ8KxUskVJkUWXlMX6m2qI9dp404mfF52+220nfpqQv9bIgGSMl6en9agwfEOCQGaLPyzs8yFZrWpy183nD4YeX6sC7AU2EoeBNHMNvWlv0hXEDkY2CCPQ9oWT2RDwg1yHGjUp9GapgpDWGyFgVHfZEkjssLfs0qQxJlCylMkmA9Ind2nMFFys6AfRabn9p8RfDCGmWllOjYNMbJOfAPdC0+nv14lI1bsTaMnwRwVgKoO8lyDecdLWLC7L+QiAxZbLRqI3SxYwM+FOzuG5IX+LJFP9jZ2qvHbVjieTKfyBQz/qb2dIeLhY45y+9i5uepooxJkCAQcli1tLGdCExZI4dSsqXyMJMQ68/7pusqA7DD7eRPmJq9OQD+zwxygYTDLC4XygyrVzn3AwuFgebQ8IDyi+nK88c+wFG3dilMuzYha6WevN8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8420.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YEK6U8OkhEJwV3h3OZkVuWxzKtcZpP3THoR//1l3u+IsaZ5sw7adhRX6NRKn?=
- =?us-ascii?Q?zl6QgOPP2dC/sCxvOPbdPmobMIUdtgbw3/1iF/GWdJN2WnQbQ2K+hUWF/D4+?=
- =?us-ascii?Q?1MmWCGv6pywoESwhv7fyT5+b89D4VomMWWFhfzuNMMWUc2Q9WKc9QXJyxnvd?=
- =?us-ascii?Q?KAw64MwNWRfiVWFqPsCbVkZdjVuFkAhfzo+1NwHEo437/W/qbcR88uhJnUnK?=
- =?us-ascii?Q?bjN19hUMi80PpK5HDpkhJxdRXEY2JazaverQaqHIHMKqWRtCVaj7yXoj9qCb?=
- =?us-ascii?Q?igBAdMiYf0b7pc2iMTS/7eCITq4+QmtNlyrQlu96IVTDJzro+ebqpmKw2Q1b?=
- =?us-ascii?Q?fZGCnqOzVcdGjzINv92NsjF7GorQ2uwx2R7LA/8dxjQ02WgSyMUQGe1t5ufF?=
- =?us-ascii?Q?VTqle4B5eDNuGyAngzuXCbO5gDdR2pHH2mr4PCXF7umLZrqPCi+I5jrEWOhH?=
- =?us-ascii?Q?PQVrPxW+IpcH84+Kv6xJ9N9uL2yNmREcRORZZm/UCg+ZvJOslyte8aQqNco6?=
- =?us-ascii?Q?2JvwWqBvQ4iTzpnT/yoiCCWG3sY1PxWu6OVFug8HvcLyoQd2i2aJqfQl8KEn?=
- =?us-ascii?Q?rNlPtbhOMdR8upLcO0R41I76bTRH/MLv1IBy/mDzGqQ466yIy+sEidZktCw4?=
- =?us-ascii?Q?OMk2RPT+Op0Zy3fAP1Ax+nMdoFz8g8jSNs/dknHbzHW4jD4lpf0Y6a25H8KO?=
- =?us-ascii?Q?WqFr0+kY7nfFLTDaZiSiV7YB6gvg3Zvl4lQF+8mhknVnb0BaKm6OmDcF7CIr?=
- =?us-ascii?Q?By07Eas7kQpEAuiHzAHemin0s0F3o7171DFgvCGCD4rjabuo868NACqD9Go3?=
- =?us-ascii?Q?j67PiEV4W/OHlcAXE25cndK4bajIskwP3KsYXHaOEgQKQjI4tflSTCRmjpY0?=
- =?us-ascii?Q?QaH+JhAC4Qpxun8WkoJFyopYjPJ3JREEGH74EWR/pRm57bbqKQPw0ytbF9UT?=
- =?us-ascii?Q?+IqWWE0ZPqmBngs0E876r5KK1OmYYIyPBL87g1JKYAByN2CBhRT+f1PUr1Q4?=
- =?us-ascii?Q?H7pAVcM5zlhpcOkSHkUUw4Xb0+9LKnWaW/nPbhsOwglQwud8vWg21QlGOIKp?=
- =?us-ascii?Q?ieL7A8ZkFUjAAvXvj2qgwqcCOsDy95AG95kJPQUmpR7aWBGWgmdLbbo50cyQ?=
- =?us-ascii?Q?+nY2w+dnfLi/hZM4kBo03Hsv4z0tgiMlqcLwiCgoujW5Mfa5zsTw6w43l8lW?=
- =?us-ascii?Q?qLUZtZYT2ZXL+fmxo13E/WxQ9Bs59+6gX/nytNuMr2hO3AUOzaLYHm7CwFte?=
- =?us-ascii?Q?9do9vDptnn+/HJZVmV5OeECDg7itcz4JNZ3e8tZpCksj7WUVLMb0BxO4pgBZ?=
- =?us-ascii?Q?IjkYKL4CFaeLz0onwEa6CBB2MskUi/jlscIMI6GjXmRw2eQdeM/M8lL8sbJx?=
- =?us-ascii?Q?oFzHm5+XQki7J9oyeiOjAVV658pDgtfwJfGej8+2YoqzBxxiaax4PEOyaUJC?=
- =?us-ascii?Q?tQQm37hlrDazZnlz94Z5luUx6psWqb+kBulYzGQ1XKO0SHF2rJZX623saqSf?=
- =?us-ascii?Q?Pt62zJ8MsT3Bq+W4JXeSZsIbiXfk4wj7eZiEIgRlxVyoK/D0iuxVaG7KCaIv?=
- =?us-ascii?Q?eKZDh3ugXd1RxYi7mgLbxpgWnwLN4anIrtufJ1vyZ615ClH4l84DL/BT73DT?=
- =?us-ascii?Q?TaN7zJPtJCxY0c7pPdCnTets1+hp66TbHyZJ2wAD3xD55kOiYzerTtMnxTYN?=
- =?us-ascii?Q?dLJdJnW2MIAW+lsbq+bY9Gly6Tr2aPCu8DNe7Gm7RumlI8WwVCYqMRGGE1AE?=
- =?us-ascii?Q?zwF82z+VHQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4431126-d3c2-43cb-f135-08de79c5fe45
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8420.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 08:14:01.6430
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MH12i4qzQAoIni6rRlAMEPHvHjFgYBO/1z7vCKFV0GIVb2Idx6XOg99IDuMdpegX+PJGVAvIUr51vlQjvwtBvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6796
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay28-hz2.antispameurope.com with 4fQmWb5Jc5z1QKgG
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:327ce3c9e8c61b36ad9fc7d5cc2ee034
+X-cloud-security:scantime:1.715
+DKIM-Signature: a=rsa-sha256;
+ bh=Tc5060lOULfVsdNRxfTIuSjgRGoa5zkf8LbdJsu7Flc=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772614047; v=1;
+ b=qLkqEtDlK0XE6Z7SKXwW+88U9MP++a64AD2RJphBrtE97swH8yPCu0SoPvWGTPgNb9PyONUX
+ sp1UJsSmLYg4GS4npXbFVfjT+TEkxFvZ9XPln7thGT2S7i4b3xt6vPEGsLpFoS7DHuDNs1grlZe
+ DEggdXG3+Jfg16J8kkJBfldHbOSYDWcphkk843WW2NA9zsScNBFh7iqckzcTHqYI9bYIrqKOE3w
+ zMgfB1wvaGBI/3fh7rUiuydLjQPhCXzjxcvr0H7XEkLi1uEx7ag2jS61GWfip0HC6rxVF+RnhYc
+ QE6Sfp+ho23v+6KEHqiidcKHVm1R3I3gtu3RubHX3YrNA==
 
-From: Jindong Yue <jindong.yue@nxp.com>
+Hi,
 
-Change defconfig as tristate type and add platform driver
-to support building it as a module.
+Am Mittwoch, 4. M=C3=A4rz 2026, 07:32:48 CET schrieb Manivannan Sadhasivam:
+> On Wed, Mar 04, 2026 at 02:55:51AM +0000, Hongxing Zhu wrote:
+> > > -----Original Message-----
+> > > From: Manivannan Sadhasivam <mani@kernel.org>
+> > > Sent: 2026=E5=B9=B43=E6=9C=884=E6=97=A5 0:42
+> > > To: Hongxing Zhu <hongxing.zhu@nxp.com>; Alexander Stein
+> > > <alexander.stein@ew.tq-group.com>
+> > > Cc: linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+> > > imx@lists.linux.dev
+> > > Subject: Re: i.MX8M Plus PCIe link regression
+> > >=20
+> > > On Tue, Mar 03, 2026 at 01:38:13PM +0100, Alexander Stein wrote:
+> > > > Hi,
+> > > >
+> > > > these days I noticed that there is a PCIe link regression on my
+> > > > i.MX8MP platform (TQMa8MPxL) running next-20260227.
+> > > > I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip li=
+nk
+> > > > up workaround for newer platforms"). I always get the following err=
+ors:
+> > > >
+> > > > imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
+> > > > CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
+> > > > imx6q-pcie failed with error -110
+> > > >
+> > > > Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2
+> > > > device is detected without issues.
+> > > >
+> > > > Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
+> > > > b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both
+> > > Gen
+> > > > 1 and Gen 2 devices are detect. Commit
+> > > > 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc is only required for confl=
+ict
+> > > free revert.
+> > > >
+> > > > Here is a summary with outputs:
+> > > > Gen 1 device
+> > > > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > > > 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
+> > > > > RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (r=
+ev
+> > > > > 01)
+> > > >
+> > > > Gen 2 device
+> > > > > 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+> > > > > 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 P=
+CIe
+> > > > > SATA 6 Gb/s RAID controller (rev 20)
+> > > >
+> > > > output of "dmesg | grep imx6q-pcie". Common part for all tests:
+> > > > > imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+> > > > > imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
+> > > > > 0x0000000000
+> > > > > imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
+> > > > > 0x0018000000
+> > > > > imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 =3D=3D cpu 0x1=
+ff00000
+> > > > > imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K,
+> > > > > limit 16G
+> > > >
+> > > > next-20260227
+> > > > Gen 1
+> > > > > imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
+> > > > > CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
+> > > > > imx6q-pcie failed with error -110
+> > > >
+> > > > Gen 2
+> > > > > imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie
+> > > > > 33800000.pcie: PCI host bridge to bus 0000:00
+> > > >
+> > > > next-20260227 + reverts
+> > > > Gen 1
+> > > > > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
+> > > > > 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie 33800000.pcie: PCI
+> > > > > host bridge to bus 0000:00
+> > > >
+> > > > Gen 2
+> > > > > imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
+> > > > > 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie 33800000.pcie: PCI
+> > > > > host bridge to bus 0000:00
+> > > >
+> > > > What can we do here? I'm wondering why Gen 2 trains correctly, while
+> > > > Gen 1 doesn't.
+> > > >
+> > >=20
+> > > Thanks for the report and sorry for the breakage. Commit 9c03e30e3ade=
+3,
+> > > mentions that the workaround is only needed for the i.MX6 platforms. =
+So
+> > > I'm not sure why the patch breaks i.MX8M and that too only for Gen 1
+> > > speed.
+> > >=20
+> > > Also, before 9c03e30e3ade3, LTSSM was always started in Gen 1, but as=
+ per
+> > > your finding, only Gen 1 devices fail to work. So the code till
+> > > imx_pcie_wait_for_speed_change() shouldn't have an impact. Maybe the
+> > > issue is due to skipping imx_pcie_wait_for_speed_change()?
+> > >=20
+> > > Richard, thoughts?
+> > Hi Maini:
+> > Prior to calling imx_pcie_wait_for_speed_change(), the PCIe link must
+> >  already be established. Before commit 9c03e30e3ade3, the speed change
+> >  procedure was only initiated after the initial Gen1 link was successfu=
+lly
+> >  brought up.
+> >=20
+> > Hi Alexander:
+> > Sorry for the breakage.
+> > Before commit 9c03e30e3ade3, i.MX8MP PCIe forced Gen1 link training
+> >  initially, then switched to Gen3 after link-up by triggering a speed
+> >  change. After commit 9c03e30e3ade3, link training starts directly at
+> >  the Gen3 capability level.
+> >=20
+> > The two link training methods differ only in the i.MX8MP Root Complex (=
+RC)
+> >  link capability configuration prior to link training: one method forces
+> >  Gen1 speed, while the other retains the default Gen3 setting in your t=
+ests.
+> >=20
+>=20
+> I still don't understand why the link fails to train at Gen 1.
 
-Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
----
- drivers/clocksource/Kconfig         |  2 +-
- drivers/clocksource/timer-imx-tpm.c | 36 ++++++++++++++++++++++++++---
- 2 files changed, 34 insertions(+), 4 deletions(-)
+Independently from the configured maximum link speed, shouldn't the initial
+link be Gen1 anyway and upgraded to Gen 2 later on?
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 2112efb85029..1ba3e9bca3db 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -613,7 +613,7 @@ config CLKSRC_IMX_GPT
- 	select CLKSRC_MMIO
- 
- config CLKSRC_IMX_TPM
--	bool "Clocksource using i.MX TPM" if COMPILE_TEST
-+	tristate "Clocksource using i.MX TPM"
- 	depends on (ARM || ARM64) && HAVE_CLK
- 	select CLKSRC_MMIO
- 	select TIMER_OF
-diff --git a/drivers/clocksource/timer-imx-tpm.c b/drivers/clocksource/timer-imx-tpm.c
-index 92c025b70eb6..419d094459b2 100644
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -8,6 +8,8 @@
- #include <linux/clocksource.h>
- #include <linux/delay.h>
- #include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/sched_clock.h>
- 
- #include "timer-of.h"
-@@ -152,7 +154,7 @@ static struct timer_of to_tpm = {
- 	},
- };
- 
--static int __init tpm_clocksource_init(void)
-+static int tpm_clocksource_init(void)
- {
- #if defined(CONFIG_ARM)
- 	tpm_delay_timer.read_current_timer = &tpm_read_current_timer;
-@@ -171,7 +173,7 @@ static int __init tpm_clocksource_init(void)
- 				     clocksource_mmio_readl_up);
- }
- 
--static void __init tpm_clockevent_init(void)
-+static void tpm_clockevent_init(void)
- {
- 	clockevents_config_and_register(&to_tpm.clkevt,
- 					timer_of_rate(&to_tpm) >> 3,
-@@ -180,7 +182,7 @@ static void __init tpm_clockevent_init(void)
- 					1));
- }
- 
--static int __init tpm_timer_init(struct device_node *np)
-+static int tpm_timer_init(struct device_node *np)
- {
- 	struct clk *ipg;
- 	int ret;
-@@ -241,4 +243,32 @@ static int __init tpm_timer_init(struct device_node *np)
- 
- 	return tpm_clocksource_init();
- }
-+#ifdef MODULE
-+static int tpm_timer_probe(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+
-+	return tpm_timer_init(np);
-+}
-+
-+static const struct of_device_id tpm_timer_match_table[] = {
-+	{ .compatible = "fsl,imx7ulp-tpm" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, tpm_timer_match_table);
-+
-+static struct platform_driver tpm_timer_driver = {
-+	.probe		= tpm_timer_probe,
-+	.driver		= {
-+		.name	= "tpm-timer",
-+		.of_match_table = tpm_timer_match_table,
-+	},
-+};
-+module_platform_driver(tpm_timer_driver);
-+
-+#else
- TIMER_OF_DECLARE(imx7ulp, "fsl,imx7ulp-tpm", tpm_timer_init);
-+#endif
-+
-+MODULE_DESCRIPTION("i.MX TPM Timer Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.34.1
+I added some debug output to dw_pcie_link_up()
+
+imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link=
+_speed: 3
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f704
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f722
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -1=
+10
+
+
+imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link=
+_speed: 2
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -1=
+10
+
+
+imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link=
+_speed: 1
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
+imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+
+So for any maximum speed above Gen1 it seems that LTSSM is stuck at link
+training.
+Unfortunately only link training and link up bits are defined and RM doesn't
+show anything, so I don't know what the other bits are indicating.
+
+=46or a Gen2 device the link training succeeds right away.
+
+imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link=
+_speed: 2
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
+imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
 
