@@ -1,170 +1,147 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4036355F50
-	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 07:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772609562; cv=fail; b=joTB3ozNCDtvD2qbO5bqNytJ7rngXW15dBm4qCDnKkB9qKD5W/PcFcR374bKrcSKVYqe/MjSoWZijeyb6ADeQyH3fMhlUlr/VvayETIiWW5DgrOtMnlxxQbhmDiAOL4rFdKXr5/+CAuuMqToKb3WlbdHdGYyycLKMtak9RssPRY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772609562; c=relaxed/simple;
-	bh=+BaDke9Eb4Ly0OlxjCZuPTELg2hQoQrqEtKAm19PfZs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NAFUhhxI6iebFq5xe2VMAv9quAMgOTCCJzPBtHuDW+L/fTi1MykfbTPij/sk9iLqvOWBNFAoA+z+1lHIkRNEbg39MF96uw8QEC/g7i9oXl6PcYoeZzw8YslrBFvRjon5eOUqJrmbhaXBKUJXgi4ftxB6AJ94wa0u8dJGjYM4Vg8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W39isyUG; arc=fail smtp.client-ip=52.101.66.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841E43890FB
+	for <imx@lists.linux.dev>; Wed,  4 Mar 2026 08:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772611294; cv=none; b=kwoXzES+h1tODiWnBdJUP6RX9FEA8fK2ceyvrDTlGugf7r7W3ENQwtby4XuY6ykRxun/vIEbbu6ipvnSkKb1TEKUtKA0saezVaCqIaqxAJNhrk1ayKwNebVvjbvYSnrAX/Kz9nVqTNhKD2pw4c8HBZ4uqPVI3o2fe/tHozx837A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772611294; c=relaxed/simple;
+	bh=4fX78MIcE7tbm3F+4FhgdlR2KoXjcbcAT2iiQLrMxQA=;
+	h=Content-Type:Date:Message-Id:Cc:From:To:Subject:Mime-Version:
+	 References:In-Reply-To; b=WSt1pLMe6ZAqU8cqQ2M6oSeox9ANgGYt/Kryo2mYR8Xo3QnATGOimMMyUUDx2OfKesVpgWDOXXtIUqjI2Fv1l8iy5uCu4DfQP5f7rw7KHN+/CJH/QpLBN+t2n5G2ExSAnw4KiV0nRsedLQrYB4Q+1oZ4hh+ZLQXj09TM2J7pq3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sEfJKaEN; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W39isyUG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LZkCBVeSD+Ym+SxbUiudZmOQ4svMZVq8gJMfdSo8GL6Cl1cvP/+PcJZVqKZR5P2/AFitYXxoNeQ6sMzdqlfi1DKbWBxg9PPueSElglSsUW/lZW0cNTCe7NOHBemKy57G+4uytOlSxoYXGo/I69PwokKQN1TJV7ak+E8zaQ9IqLB46s5OL0OaOHy3kbivQGHpLR1e3fT5FIPHmFZPnbnKh6C9t0NA0ZzKd1+4h7MFeiqkckCrS7VtAuA5Td4YV1bOYim1jz1W8dLVre+rvdYo/c2Rl1JpU9/Uu+o/Ao0GpTMNtOyYzUMQ8yFh6cEpGK+RW9bSnGEgjN9AzAG1cU0wHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4zx7RQd1cChKKd3BgM3N+fgQfJCK7qHbgJ/xIwVKflU=;
- b=dC85x1C4i10wCyPLtiV6etDNFNoz8QQ6xbeYgCxWrshmG/pNx1xddLyzDVmJXSirS5Qgm2CSSsSCIXQ7zhTMMwwIDR1BF9lN8swOVbx9to76o+rYpreS9Dvmcs6xVXBOH0/oKLarHyVz3VOaLvcfM7Ww+TL+/sqZwf4gKv0yDqr5fH4Vtsy0d+JAfjy/yKhGOvFUuWSbNRppUao4M14ugOlW5RvzT7btfzXyk1Z7EKqtmviYU/K+9HlvM+MOnLIwhKs8HSf/Nu82SeR11slZu9YuyoOW1ZFYN55s20qUP+CAHfyj1Ubjiu0iIIIwQSow0jWSMqpTkzllcud43q+3eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4zx7RQd1cChKKd3BgM3N+fgQfJCK7qHbgJ/xIwVKflU=;
- b=W39isyUG7YrAviGGC0kfvlwgFdV4iI7aG79Gtw/zm5skjTAYRTP2BYnOkzV7cbgBYgXRv+2sEowt9TER5iFe3OLlOyq93Awyx0ZqLN4pAKdKZ1NCFA6ODRKfsV0ys5HUJ/ouQvJCOup4VkQZE/XuJcBYG7491wCgWDWhdVRR45OsEAfWEiW8jRK8/JOR8BqpLOd9L78errxnLq/+pgeo8NDpbT8aX6qfiVZjgnLcn56x7UqeujOoCeq2r1UGNWw2z32EhQgjvyUksCGJZtdVnKXZcbTCxiXBaUiCg646WbInxTqqT753s1gL5/TxMILWqcRutlVBOSF8fF2g20u7mA==
-Received: from AM9PR04MB8382.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::11)
- by VI2PR04MB11076.eurprd04.prod.outlook.com (2603:10a6:800:279::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 07:32:35 +0000
-Received: from AM9PR04MB8382.eurprd04.prod.outlook.com
- ([fe80::f02b:c2a0:7fd:6d63]) by AM9PR04MB8382.eurprd04.prod.outlook.com
- ([fe80::f02b:c2a0:7fd:6d63%3]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 07:32:35 +0000
-From: Clark Wang <xiaoning.wang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>
-CC: Aziz Sellami <aziz.sellami@nxp.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net] net: enetc: fix fallback PHY address handling and do
- not skip setting for addr 0
-Thread-Topic: [PATCH net] net: enetc: fix fallback PHY address handling and do
- not skip setting for addr 0
-Thread-Index: AQHcqviOpjbtGSL300qey6gG6/Ti/LWd7xXA
-Date: Wed, 4 Mar 2026 07:32:35 +0000
-Message-ID:
- <AM9PR04MB8382C3FED0AFF56F67D8653CF37CA@AM9PR04MB8382.eurprd04.prod.outlook.com>
-References: <20260303103047.228005-1-wei.fang@nxp.com>
-In-Reply-To: <20260303103047.228005-1-wei.fang@nxp.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8382:EE_|VI2PR04MB11076:EE_
-x-ms-office365-filtering-correlation-id: 86896b7c-dadc-443a-e772-08de79c034b1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- pEuKf4VEwbxk7FkixyYQ74oD3p9gcXZ+nhMHpjCdqdZ0oU/8M74y3rm2YpVrYQJfvVVzHVJvpbZKnA9hu4HOTJP+IfQbt1fy++G634v+IBiCjfwnU7eXY1vsfalMwU7l/Du3FTH3aurlta/sYzQluWtRC5eh35+POQGnBLtftUvmB8A7Ir+fY3R4HWEAwHnIQJ1TVoFxiT9GV63THvQfFdr8xCJbSrbe2X1Vc1fjn8bvK1O5aVOBBsmks/dup6CNvX/pNU7Dei0cZALF1FpuMPgEXmD/P+GHFxxWJXI9WP0Hpa+KM64Na3kg6I9ZazT2565X0J1Px6GmOmfrANizH8KExnCkEtl99Je5mAdpih6imfe10EiMfnaSqGriYHAcewqSEIowZQYVvmO/zQIz25gMzheZ36pGGcc8xb1W+pvtec7q3utuUgkxWEdvKxAwUpj66Ighd48mjqj7EabKtDcxpIL2okVMq/pSOVBHwc3VFfOkHj9OYGpjBb7AIKJpwRqp5zXaEhbPaWLY5BF3ktKewW4QPy0DNUdXCCFzIGqSz4hRNNmq20JJ8p2twgWZfqGw1KTXHrpxWGapMId/GKVask4n9iWx/u/VtF+m/9Q9ncVtNNr1rfcM15g6gxDhVubnbK8+/nBDNg9VQjBS/v58e8CIEZB8JzKydThBtNUqyVQOl2AnY3QhUdVuzVfFdqYN5M8KLRznav6xjykTfl7FdsxMcAaRwgZFBH9fdPYIf/xvIhcZChL9hJbo8fUKZAJR+nogdPCcRnH15yIF2qrnZe26e72vN3j/tFcZl4k=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8382.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?C5132dqlLreiMIiH7fKmuOkp6MXELpNLZwIujtk/VBEQ2J1eZXybABKGiJd/?=
- =?us-ascii?Q?SH3uml57L4whPkv4wMHRx0WFW5wUlZ5ms2jfmnU5sbOqUHkAYhYFs1nSG1+5?=
- =?us-ascii?Q?5Nx6ZQrOuGbY8vP72bBdCeoVsoZf2bUjHYtuMA22X96aO/cvt2wQNjPPWXMZ?=
- =?us-ascii?Q?pk36Rm57G8/f0JoxyFb7Fog85ZF5AOqCPjMdWKUnQGjKl9RO4REl6PWqKln3?=
- =?us-ascii?Q?1y+EzOQQ8rR0w9QjzWY+f/+7CH3WZBQsqx5LWlNZz4wAAmlSCKhXEzwsLAWY?=
- =?us-ascii?Q?oyneOu54Nr9TGaEuKIGCvIwSdOG1l2W7/ZF6MGkQBgEk39PTJIn7jOX2qleG?=
- =?us-ascii?Q?l4erXKoW1VLohEw1d0nYkWR5JOdcT5JDilhrYwGX6TDCY1/3nKGxD2+sdy6q?=
- =?us-ascii?Q?/myVXZF+wjPrcyxm5sHAZtmIUvfO9BQt5l1rC6Su962LdRP+g0raf5/gRE8B?=
- =?us-ascii?Q?iHGyRgs0DAUQ2lbB+gAW/pBeQ69S4qpF27loaLTj+GOKUtWr+wAOLekmTXZW?=
- =?us-ascii?Q?09r/qdezhJJiF03MQcgpwtsAYaW3qolsNK0JKP2VpS/FmGysRlcQNZjVEkNW?=
- =?us-ascii?Q?PnNfOy9yEoeoJBNarYOxVyGyPQc7vq2uFXONHqo4veo/9qUekOPR9LGQT2o9?=
- =?us-ascii?Q?CMFVL9eMpHpBLlNoLk6onKDGZmf6rz8R+Ln+94NdF1HhgNpyUGD57Grcx8Je?=
- =?us-ascii?Q?8xBopC0R2xj4/ly7BSNe+XKbQ9AeWi1drrd8zD0VtNTbBDCrKLSVRTEoQ6Ml?=
- =?us-ascii?Q?IPcJxYKbM2yrOgT5N54Rc2/bFrhnOFIr/tC7IIzDv5WAw9f7ddAu8hhWxOUZ?=
- =?us-ascii?Q?s0RPiM1kwm9TkzLXrqj9fO3N4VTR2wUO1zTbLaAWYF2uFLJ/3X3OcvTMPz4m?=
- =?us-ascii?Q?+q5aDhdaxSbU32NK4UDqyXLMBFgg/QYrN25AkE+Wq9SgQ/jGhBaux5zDtUdk?=
- =?us-ascii?Q?Xpd+/VZz0alvUoNqz2ejsxmxaL0/zTGPd2GsGFfCNuI3B8htmZp4Xvid1tsp?=
- =?us-ascii?Q?2Hp7PDXn/B6yis+kgUP5HBBxv76pkvN6sIhUEk3fGH5CDmiMk7a80VGDWZcj?=
- =?us-ascii?Q?+VD2W2wIu3rAI7wddZ/hejJatfmak4KnWqIoHzSqpR70ZiRn4mKOifUO7O6r?=
- =?us-ascii?Q?d+mUVXHB7WH4Kn0nHTNf+r+mqYzehtBk9VfuMu78T+njBF7Ve1y1v9KwwSqi?=
- =?us-ascii?Q?IVmaIiTIqT7vkdoxvA9e829nX/CWJC4hwvfJIYqr3iDOzR+PMGo1zvrMFgGc?=
- =?us-ascii?Q?HxvKH1VNIVpZPcHRTkcBx8oVn4T+ycS2U+y0yUkkl4E3s/uFhUqe3+rq9o+m?=
- =?us-ascii?Q?X/0ugmQJ98oPXRLQZnvGMp2k1iz3BkuJA918OifBGJopn68+3OXeEC8pPdaa?=
- =?us-ascii?Q?tHaVe9kGU8d90ic0AVtJXECMjjTwG2KJjGJOztoCd+EmZi4PFbHeF3LzkP4G?=
- =?us-ascii?Q?CkYN8560SxC7AKY6mizSKIVUEq15AeIQoESg9dke/74c0t/pDcTLB2s8wwrY?=
- =?us-ascii?Q?5aJ3h1kD9c4jcnbrG90Tfsn2o/QbMxSJwfEMm7Twy2lIeyH42bM11HG/3CND?=
- =?us-ascii?Q?69XOhhvPBpk+X21NSJiIJ5822b60xqxtEw4fLYEYaVYG2ZALFSHvf6ev8I3C?=
- =?us-ascii?Q?mCiQuD6duHBT157qMMFo1joqtLTi+gjSA98iUbju7G2+raRlSnDvPt5nUFTa?=
- =?us-ascii?Q?s2V631n6P44PFRUXMny3EKTXncCKjTdpq9hMmGBE82tB2pKRoUkKegAIRy1f?=
- =?us-ascii?Q?EPxcQbIGeQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sEfJKaEN"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CAAE74E42531;
+	Wed,  4 Mar 2026 08:01:28 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 98F0D5FF5C;
+	Wed,  4 Mar 2026 08:01:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B9B810369414;
+	Wed,  4 Mar 2026 09:01:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772611287; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=EUWq5kpBIjsc0+kAM5GMY0X+W2LCngNN6LmjmMbSbKA=;
+	b=sEfJKaEN0ReR/PcKLCvhIin7UaqONdSGTccrky3vrUuXx1S+uI3hVV8kw1lhdbSmiSvb8n
+	7eAZy5FGo8RTXiMTycVYB/O1IZ8HyFZ1fObyINHKAAWCZ75WNY3XpD2zS67JfzKUDbZByd
+	oeoX/SbQUvv6tn36HHgjOecMSgQIovWqIQdQlhi0XhBVD6NAfnSOLP/qN123etXDHZjk9g
+	wEAquxlveb/dWrboNrT0UrC+g2a1yKDbzDyqyhuG13xuPh3gH8+YSpMJckD8hJMEURWaZ2
+	HfVM8VIjyEtyz2QdB5MyPEmPuEzk04gZVU0SFxBd5QqDEgue9bnuJmZB+o8DqA==
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Mar 2026 09:01:20 +0100
+Message-Id: <DGTU9887GHPO.2FUQ3QITRG7F8@bootlin.com>
+Cc: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <andrzej.hajda@intel.com>, <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+ <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+ <tzimmermann@suse.de>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+ <festevam@gmail.com>, <shawnguo@kernel.org>,
+ <laurent.pinchart+renesas@ideasonboard.com>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>, "Hugo
+ Villeneuve" <hvilleneuve@dimonoff.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Hugo Villeneuve" <hugo@hugovil.com>, "Frank Li" <Frank.li@nxp.com>
+Subject: Re: [PATCH 08/14] ARM: dts: imx6ul-var-som: factor out SD card
+ support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8382.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86896b7c-dadc-443a-e772-08de79c034b1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2026 07:32:35.7315
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fDfEVswATKepS+qZUPhkapo/Sbzm8K/f5NqgqKvRgsg1U9MyyXvCKDnodOFdUjxG3tWrZ7V21WX0GXSDruuzpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11076
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+References: <20260302190953.669325-1-hugo@hugovil.com>
+ <20260302190953.669325-9-hugo@hugovil.com>
+ <aaX5E7-3xvkaVV-o@lizhi-Precision-Tower-5810>
+ <20260302161545.f6b76209400e8fbe35cd51a0@hugovil.com>
+In-Reply-To: <20260302161545.f6b76209400e8fbe35cd51a0@hugovil.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-> The current netc_get_phy_addr() implementation falls back to PHY address
-> 0 when the "mdio" node or any PHY child node is missing. On i.MX95, this
-> causes failures when a real PHY is actually assigned address 0 and is
-> managed through the EMDIO interface, the bit 0 of phy_mask becomes set,
-> leading imx95_enetc_mdio_phyaddr_config() to return an error, and the
-> netc_blk_ctrl driver probe subsequently fails. Fix this by returning
-> -ENODEV when neither an "mdio" node nor any PHY node is present.
->=20
-> Given that some platforms may use PHY address 0 (I suppose the PHY may
-> not treat address 0 as a broadcast address or default response address).
-> It is possible for some boards to connect multiple PHYs to a single
-> ENETC MAC, for example:
->=20
->   - a SGMII PHY with a non-zero address (selected via DTS_A)
->   - a RGMII PHY with address 0 (selected via DTS_B)
->=20
-> For the case where the ENETC port MDIO is used to manage the PHY, when
-> switching from DTS_A to DTS_B via soft reboot,
-> LaBCR[MDIO_PHYAD_PRTAD]
-> must be updated to 0 because the NETCMIX block is not reset during soft
-> reboot. However, the current driver explicitly skips configuring address
-> 0, which leaves the hardware in an inconsistent state.
->=20
-> Therefore, remove the special-case skip of PHY address 0 so that valid
-> configurations using address 0 are properly supported.
->=20
-> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Closes: https://lore.kernel.org/all/7825188.GXAFRqVoOG@steina-w
-> Fixes: 6633df05f3ad ("net: enetc: set the external PHY address in IERB fo=
-r
-> port MDIO usage")
-> Fixes: 50bfd9c06f0f ("net: enetc: set external PHY address in IERB for i.=
-MX94
-> ENETC")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Hi,
 
-Reviewed-by: Clark Wang <xiaoning.wang@nxp.com>
+On Mon Mar 2, 2026 at 10:15 PM CET, Hugo Villeneuve wrote:
+> Hi Frank,
+>
+> On Mon, 2 Mar 2026 15:54:43 -0500
+> Frank Li <Frank.li@nxp.com> wrote:
+>
+>> On Mon, Mar 02, 2026 at 02:03:44PM -0500, Hugo Villeneuve wrote:
+>> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>> >
+>> > Move SD support to a separate include, since it cannot be used at the
+>>=20
+>> s/include/dtsi/
+>
+> Ok. I will also change it in all the other commit messages.
+>
+> =20
+>> > same time as the Wifi/BT module.
+>>=20
+>> what's relation ship between wifi/bt? you just move sd related part to a
+>> dtsi file.
+>
+> As stated in commit message, the SD card interface cannot be used if
+> the Wifi/BT module is in use.
+>
+> Sd card is not mandatory, for example on our board we do not have it,
+> so we need to have it disabled.
 
-Thanks!
-Clark Wang
+My two cents: if SDCard and WiFi/Bt support are the only mutually exclusive
+features for this SoM, then how about the following organization:
+
+Three SoM dtsi files:
+
+imx6ul-var-som-common.dtsi
+
+  imx6ul-var-som-wifi-bt.dtsi:
+    #include "imx6ul-var-som-common.dtsi"
+
+  imx6ul-var-som-sd.dtsi:
+    #include "imx6ul-var-som-common.dtsi"
+
+A common concerto dtsi file:
+
+  imx6ul-var-som-concerto-common.dtsi
+
+Separate concerto dts files:
+
+  imx6ul-var-som-concerto-wifi-bt.dts:
+    #include "imx6ul-var-som-wifi-bt.dtsi"
+    #include "imx6ul-var-som-concerto-common.dtsi"
+
+  imx6ul-var-som-concerto-sd.dts
+    #include "imx6ul-var-som-sd.dtsi"
+    #include "imx6ul-var-som-concerto-common.dtsi"
+
+And possibly the following one to avoid breaking compatibility:
+
+  imx6ul-var-som-concerto.dts
+    #include "imx6ul-var-som-sd.dtsi"
+    #include "imx6ul-var-som-concerto-common.dtsi"
+
+In any case, the imx6ul-var-som-concerto-common.dtsi should be full-feature=
+d
+(and thus avoid the imx6ull-var-som-concerto-full.dts file from patch 09/14=
+), if
+that's possible?
+
+But I don't know if this follows common practices, and if this is possible,=
+ but
+I think it's clearer as a user to know if the DTS I will use will support
+WiFi/BT _or_ support SDCard by looking at its name.
+
+Of course this is based on the assumption that those two features are the o=
+nly
+mutually exclusive ones.
+
+What do you think?
+
+Antonin
