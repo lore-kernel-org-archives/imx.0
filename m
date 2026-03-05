@@ -1,138 +1,168 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8309B378832
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 10:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C137AA83;
+	Thu,  5 Mar 2026 10:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772706802; cv=none; b=BP0uDKoLaJRxuvBaj4is5tAAvMTgqqcKdhBWz13e9icLa0NmUP8dMkABgA3ZCRqYKiwqNcGGiuUUB9LN87OWNQmyCySPVDXCww+V8EpobNWGJhVBpqSmu4MUF74aRuSdwDz0q3SNh/rSlC1icbyHgXRVwnBmGjaVql0to+065ig=
+	t=1772707137; cv=none; b=DPZDolij282wzUaZfrRoUJYGE0n9GG1FeiYJApJhbQFSVSCecAqEJa1nJEyXZs9nvzVR65X04AmUoFei8AqW2uISleXB4Z2nAsu8rJwNcQCQGHBe7jZJ5Z0SFWMypS0xkSJqjn6ePN9t5YDeYvI6Qi/en5i5EijIIR3R9U32RK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772706802; c=relaxed/simple;
-	bh=O2ceNp0v1y7OfAwh+zyQ5ZRZ8khQkWInlECudLwPWvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ou8gbnEpvpgIBMJPGSY5CgmPDdtF410EcMmX6ojMe9qojjsX2J0n8wRhbrGIOMPx/ehqinWK6+MuyeCY9DaZN6lD0ZGuHstk7NqUeNAckEqvsb5JufxQcEokJ3AByF9DFwCMYT0bPJcQQ1DyPmT+xC5+THeCgXjIN1HUOT/n8TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vy60p-0005YH-Bg; Thu, 05 Mar 2026 11:32:59 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vy60m-003rpi-1E;
-	Thu, 05 Mar 2026 11:32:57 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vy60n-00000002Foi-2UBF;
-	Thu, 05 Mar 2026 11:32:57 +0100
-Date: Thu, 5 Mar 2026 11:32:57 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org, 
-	hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca, benjamin.gaignard@collabora.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de, 
-	sebastian.fricke@collabora.com, shawnguo@kernel.org, ulf.hansson@linaro.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	fra.schnyder@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de, Frank.li@nxp.com, 
-	peng.fan@nxp.com, eagle.zhou@nxp.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] media: verisilicon: Fix kernel panic due to
- __initconst misuse
-Message-ID: <azwbgxp4pl3m6klyvd5htmy7h7pc76nqvvgmi6pudvfl7zippl@svv7tiibyrci>
-References: <20260305100149.722-1-ming.qian@oss.nxp.com>
+	s=arc-20240116; t=1772707137; c=relaxed/simple;
+	bh=56dnd+yJBrELoNOf74QX1gXElP1APH+JtJUeVGWJ7VE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JzcvfSpi7cZos+vl3vrC0VMRaO+3gTLlcwWXrjnAMWRqoZ61gmP7SlICkYlUfb2QibMU50R0svbunedpx4zLxi5MjjdO7DBWwBYTwXCG5Styf0dfOhXMyLqZDAPOdJhkenyk9NlIpMG3qn34q/Krh/EabrigzF2j/cvtigSW0ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNXALXvs; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNXALXvs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD304C116C6;
+	Thu,  5 Mar 2026 10:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772707136;
+	bh=56dnd+yJBrELoNOf74QX1gXElP1APH+JtJUeVGWJ7VE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aNXALXvs+G1hWLA6P+I+h/DReCJXZSm97mHKep8u8GFL36LFVxIH+i5y7WFv+iKDf
+	 45lyWVNJcbnfmUSizIK1p/UBS8e7RFQIp5f3mE6X07ogThBerQzn7xQC0Shd7VE7cU
+	 KiR82ar/+6EdLt20Ma6DhKNQwIrZ038LN8Mc5GCw/5/EpuWBWmx2bY5TlKmOVzfZ5w
+	 GuNJtHMaYCew95aZFYNZ+rUml6q3wiVNhVMuCROl8gMx+t0njgof7PG++ea3FnNO1k
+	 Mxr4pwcNMwUq/T0qaURlUt+cqz7aRmpPKyfU3p/AJmRmDIUXrcXM0NOAv/TJeEX+Lh
+	 nsjyHZw1EbifA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vy66Y-0000000GOmb-1qAv;
+	Thu, 05 Mar 2026 10:38:54 +0000
+Date: Thu, 05 Mar 2026 10:38:53 +0000
+Message-ID: <86tsuu7e82.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Antoine Tenart <atenart@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Nishanth Menon <nm@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 3/4] irqchip/gic: Use GIC_* DT binding definitions
+In-Reply-To: <CAMuHMdWWYNGThGYsj6Oakwx-1RKO_BrENiSSUi08ZzfE_b3EXA@mail.gmail.com>
+References: <cover.1772644406.git.geert+renesas@glider.be>
+	<d22488d128d39fcd90359f59559fac637bb4b04c.1772644406.git.geert+renesas@glider.be>
+	<86v7fa7fdq.wl-maz@kernel.org>
+	<CAMuHMdWWYNGThGYsj6Oakwx-1RKO_BrENiSSUi08ZzfE_b3EXA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305100149.722-1-ming.qian@oss.nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: geert@linux-m68k.org, tglx@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, lpieralisi@kernel.org, atenart@kernel.org, florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, mark-pk.tsai@mediatek.com, daniel@thingy.jp, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, thierry.reding@gmail.com, jonathanh@nvidia.com, nm@ti.com, kristo@kernel.org, ssantosh@kernel.org, hayashi.kunihiko@socionext.com, mhiramat@kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 26-03-05, ming.qian@oss.nxp.com wrote:
-> From: Ming Qian <ming.qian@oss.nxp.com>
+On Thu, 05 Mar 2026 10:24:23 +0000,
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > 
-> Fix a kernel panic when probing the driver as a module:
+> Hi Marc,
 > 
->   Unable to handle kernel paging request at virtual address
->   ffffd9c18eb05000
->   of_find_matching_node_and_match+0x5c/0x1a0
->   hantro_probe+0x2f4/0x7d0 [hantro_vpu]
+> On Thu, 5 Mar 2026 at 11:13, Marc Zyngier <maz@kernel.org> wrote:
+> > On Wed, 04 Mar 2026 17:21:58 +0000,
+> > Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+> > > Replace magic numbers by symbolic DT binding definitions.  This improves
+> > > readability, and makes it easier to find where the various GIC
+> > > interrupts types are handled.
+> > >
+> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > 
-> The imx8mq_vpu_shared_resources array is referenced by variant
-> structures through their shared_devices field. When built as a
-> module, __initconst causes this data to be freed after module
-> init, but it's later accessed during probe, causing a page fault.
+> > > --- a/drivers/irqchip/irq-gic-v3.c
+> > > +++ b/drivers/irqchip/irq-gic-v3.c
+> > > @@ -35,6 +35,8 @@
+> > >  #include <asm/smp_plat.h>
+> > >  #include <asm/virt.h>
+> > >
+> > > +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> > > +
+> > >  #include "irq-gic-common.h"
+> > >
+> > >  static u8 dist_prio_irq __ro_after_init = GICV3_PRIO_IRQ;
+> > > @@ -1602,25 +1604,25 @@ static int gic_irq_domain_translate(struct irq_domain *d,
+> > >                       return -EINVAL;
+> > >
+> > >               switch (fwspec->param[0]) {
+> > > -             case 0:                 /* SPI */
+> > > +             case GIC_SPI:
+> >
+> > I'd rather not do that. I use *numeric* values on purpose, because
+> > that's what the DT *binding* describes, and I have no control over
+> > what lives in that include file (it gets changed without me being even
+> > Cc'd).
+> >
+> > So I want to stick to the binding, and not to the interpretation of
+> > it. If you want symbolic values to be used, describe them in the
+> > binding, have a tool to generate the values from the binding, and use
+> > that everywhere.
 > 
-> The imx8mq_vpu_shared_resources is referenced from non-init code,
-> so keeping __initconst or __initconst_or_module here is wrong.
-> 
-> Drop the __initconst annotation and let it live in the normal .rodata
-> section.
-> 
-> Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC")
-> Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
-> Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia23b42rj3wlmpl67@rvkbuirx7kkp/
-> Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
+> This sounds more like a philosophical debate, so I'd like to defer
+> to the DT maintainers...
 
-This fix was suggested by Krzysztof :)
+That's not philosophical.
 
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v2
-> - Remove __initconst
-> - Add missing Reported-by tag
-> - Add missing Suggested-by tag
-> - Remove comments of sentinel to pass checkpatch.pl
+That's a pragmatic approach to having a common source of information,
+and a unique reference. Carrying an extra copy that can be
+independently changed is a source of errors, which I've been trying to
+reduce in other parts of the kernel (system register description and
+encoding, for example).
+
 > 
->  drivers/media/platform/verisilicon/imx8m_vpu_hw.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> About you not being notified: that can be fixed easily ;-)
 > 
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> index 6f8e43b7f157..6fbe3c581032 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> @@ -343,10 +343,10 @@ const struct hantro_variant imx8mq_vpu_variant = {
->  	.num_regs = ARRAY_SIZE(imx8mq_reg_names)
->  };
->  
-> -static const struct of_device_id imx8mq_vpu_shared_resources[] __initconst = {
-> +static const struct of_device_id imx8mq_vpu_shared_resources[] = {
->  	{ .compatible = "nxp,imx8mq-vpu-g1", },
->  	{ .compatible = "nxp,imx8mq-vpu-g2", },
-> -	{ /* sentinel */ }
-> +	{}
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2110,6 +2110,7 @@ F:        arch/arm64/include/asm/arch_gicv3.h
+>  F:     drivers/irqchip/irq-gic*.[ch]
+>  F:     include/linux/irqchip/arm-gic*.h
+>  F:     include/linux/irqchip/arm-vgic-info.h
+> +F:     include/dt-bindings/interrupt-controller/arm-gic.h
 
-Unnecessary change.
+I'm actively trying to *remove* myself from the kernel, not to grab
+more stuff.
 
-With both fixed:
+Thanks,
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-
-
->  };
->  
->  const struct hantro_variant imx8mq_vpu_g1_variant = {
-> -- 
-> 2.52.0
-> 
-> 
+	M.
 
 -- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Without deviation from the norm, progress is not possible.
