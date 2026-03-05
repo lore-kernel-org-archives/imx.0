@@ -1,117 +1,262 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5345A28C869;
-	Thu,  5 Mar 2026 21:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD00F3382C2;
+	Thu,  5 Mar 2026 21:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772746463; cv=none; b=ruGta9xFbZaqONzE2lfCTN5mklT1Q2U/V1jj8hooVk5Rkg1OR/eQATcQoA/U1O+41bWoP6nVQkJklIDyurDBGEttRwSe/TqAqvQH+TG/Ep6OtNtUsOGm9J4xEdi5+PXBeA6JiAIlBJ2SSsmCmrUFyBbcKQCP4KrYj+/NJvdki0E=
+	t=1772747241; cv=none; b=XveUSn+SM3lmJXlh6Q1YZecp13QZMJIUn/1V+yifRP2qFPssNzwp05EA79SBPbygkLA0eZBk8KXcKL3EuoV+bB1jpwRC4gAVus8mq4mqUJEk5Vn8HqFRjwxA06e7z6/nPgihcmGZ4qiQkeRtC5ym7EksC9KBbsSOxJtJfVpATf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772746463; c=relaxed/simple;
-	bh=4bj8WeR3MRqO5HdbhsyYQWaJ7TeYnyTNaNYHXinwFlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vDl9P4m5wqaIpThAF7O7LQaxNQIOUsZ7YAu8SvWWOxMsTr3sjvycim/lucXAKkHv2Of/yZYLBe6TMdfg2PaFmfA9ksI6UnGVsy3x32UEAfvEjl1lD2wYziWkLl8pqJzT3LNZxQfSZeN31hGqCmzz/Lit292ttc/Etwnazgb2aOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQbRyxnS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772747241; c=relaxed/simple;
+	bh=u0gj4H2h3Emn6PHCQ3NTJ6S3USkiCu4juy7VLJs6MK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDTP+pjdAf833l2pXBxVfT8SRPy+P1O1hkRBkhUpOUvhl6o+4O61UcaqDobUw0frIOkcIaIrO6j5i1JVaUQYcuULH3tCILvnop8M0OwCw+7QW2JXhGcnjKTheiBD43ZZz0dMEzGy5+TkLUld2oesn5lQEDrevRfs8OQ2tVhPHgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oyoG2yF5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQbRyxnS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423D0C2BCB0;
-	Thu,  5 Mar 2026 21:34:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oyoG2yF5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA1CC116C6;
+	Thu,  5 Mar 2026 21:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772746462;
-	bh=4bj8WeR3MRqO5HdbhsyYQWaJ7TeYnyTNaNYHXinwFlE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IQbRyxnSTrNl/nGkq7EYFA2q4DAX8EyXvKJv6A/RGx3iix3NfOUSFIkavYU2+b7vZ
-	 z8X4nEjYryr81QEGwViq5JG1nNj9v6F7RDMpJd4IswO1i/Qh8oD6ou2eE69A8yCIPU
-	 WvG5UagvDb/afymFG5K2ZaELFiqlSo2dBPnc+JxaVuu8bo8jXRDUaOy6qJCbRyHBqo
-	 dGb1RB9I2ESy7yC3LjkbrLhTu8rp80m49e8peo9H6cdCGAIYrzBiDsFyLathEWeD4O
-	 MANMwYABvv2BgBBJBH9KG83k0VZFkHQvwYz52FcDlra/QmfGXJ9U8ljL3XdicTyHh9
-	 HrNO0WcQ4HNhQ==
-Message-ID: <c64ee6d6-d948-4146-8463-0e68ba542404@kernel.org>
-Date: Thu, 5 Mar 2026 22:34:18 +0100
+	s=k20201202; t=1772747241;
+	bh=u0gj4H2h3Emn6PHCQ3NTJ6S3USkiCu4juy7VLJs6MK8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oyoG2yF5B15y9Q5opzbe48/xqw/zEN/T6mwkbwIrHuNF/42yYeHMyAjl5ywJZXbgG
+	 4EZUKXvDRtMKjoAtHPGx3L9Nr8Y/rTzM4wJT9MldC7zoNLCst4XHv4NJZsp2DNZFyZ
+	 D1MHbqJG+BL/VExFOdNCTK9uSAKtDVz7abBLO/rDR8lLv/3iismgy95mI6m6DeSpyo
+	 oxDbb99Ib4gNDkpEsMj6AWSHxilPpBZpBooEQiWSUGxSs5K1fzA9OYoGp57sAr5dU5
+	 fmzFvUyNtrpdK8gfpJzTO7otOCU7TtXcPqH/6btO+MCDk18AjGmYBjF/CPzxr/Wt4W
+	 o0AY+HjRydIXA==
+Date: Thu, 5 Mar 2026 15:47:20 -0600
+From: Rob Herring <robh@kernel.org>
+To: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, imx@lists.linux.dev,
+	xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v9 1/3] of: Add convenience wrappers for of_map_id()
+Message-ID: <20260305214720.GA317432-robh@kernel.org>
+References: <20260301-parse_iommu_cells-v9-0-4d1bceecc5e1@oss.qualcomm.com>
+ <20260301-parse_iommu_cells-v9-1-4d1bceecc5e1@oss.qualcomm.com>
+ <86342janlx.wl-maz@kernel.org>
+ <d3687764-024d-4dbc-9342-8edc9b4f1fdd@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] ARM: dts: imx6sx: remove fallback compatible string
- fsl,imx28-lcdif
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>
-References: <20260305212312.4053922-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260305212312.4053922-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d3687764-024d-4dbc-9342-8edc9b4f1fdd@oss.qualcomm.com>
 
-On 05/03/2026 22:23, Frank Li wrote:
-> i.MX6SX uses the v6 LCDIF controller, while i.MX28 uses the older v4
-> version. The driver has supported the "fsl,imx6sx-lcdif" compatible string
-> since the initial commit:
+On Wed, Mar 04, 2026 at 03:02:14PM +0530, Vijayanand Jitta wrote:
 > 
->    commit 45d59d704080 ("drm: Add new driver for MXSFB controller")
 > 
-> Therefore the fallback compatible string "fsl,imx28-lcdif" is not required
-> and can be removed.
+> On 3/1/2026 3:16 PM, Marc Zyngier wrote:
+> > On Sun, 01 Mar 2026 08:34:19 +0000,
+> > Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com> wrote:
+> >>
+> >> From: Robin Murphy <robin.murphy@arm.com>
+> >>
+> >> Since we now have quite a few users parsing "iommu-map" and "msi-map"
+> >> properties, give them some wrappers to conveniently encapsulate the
+> >> appropriate sets of property names. This will also make it easier to
+> >> then change of_map_id() to correctly account for specifier cells.
+> >>
+> >> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> >> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> >> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> >> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+> >> ---
+> >>  drivers/cdx/cdx_msi.c                    |  3 +--
+> >>  drivers/iommu/of_iommu.c                 |  4 +---
+> >>  drivers/irqchip/irq-gic-its-msi-parent.c |  2 +-
+> >>  drivers/of/irq.c                         |  3 +--
+> >>  drivers/pci/controller/dwc/pci-imx6.c    |  6 ++----
+> >>  drivers/pci/controller/pcie-apple.c      |  3 +--
+> >>  drivers/xen/grant-dma-ops.c              |  3 +--
+> >>  include/linux/of.h                       | 14 ++++++++++++++
+> >>  8 files changed, 22 insertions(+), 16 deletions(-)
+> >>
+> >> diff --git a/drivers/cdx/cdx_msi.c b/drivers/cdx/cdx_msi.c
+> >> index 91b95422b263..63b3544ec997 100644
+> >> --- a/drivers/cdx/cdx_msi.c
+> >> +++ b/drivers/cdx/cdx_msi.c
+> >> @@ -128,8 +128,7 @@ static int cdx_msi_prepare(struct irq_domain *msi_domain,
+> >>  	int ret;
+> >>  
+> >>  	/* Retrieve device ID from requestor ID using parent device */
+> >> -	ret = of_map_id(parent->of_node, cdx_dev->msi_dev_id, "msi-map", "msi-map-mask",
+> >> -			NULL, &dev_id);
+> >> +	ret = of_map_msi_id(parent->of_node, cdx_dev->msi_dev_id, NULL, &dev_id);
+> >>  	if (ret) {
+> >>  		dev_err(dev, "of_map_id failed for MSI: %d\n", ret);
+> >>  		return ret;
+> >> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> >> index 6b989a62def2..a511ecf21fcd 100644
+> >> --- a/drivers/iommu/of_iommu.c
+> >> +++ b/drivers/iommu/of_iommu.c
+> >> @@ -48,9 +48,7 @@ static int of_iommu_configure_dev_id(struct device_node *master_np,
+> >>  	struct of_phandle_args iommu_spec = { .args_count = 1 };
+> >>  	int err;
+> >>  
+> >> -	err = of_map_id(master_np, *id, "iommu-map",
+> >> -			 "iommu-map-mask", &iommu_spec.np,
+> >> -			 iommu_spec.args);
+> >> +	err = of_map_iommu_id(master_np, *id, &iommu_spec.np, iommu_spec.args);
+> >>  	if (err)
+> >>  		return err;
+> >>  
+> >> diff --git a/drivers/irqchip/irq-gic-its-msi-parent.c b/drivers/irqchip/irq-gic-its-msi-parent.c
+> >> index d36b278ae66c..b63343a227a9 100644
+> >> --- a/drivers/irqchip/irq-gic-its-msi-parent.c
+> >> +++ b/drivers/irqchip/irq-gic-its-msi-parent.c
+> >> @@ -180,7 +180,7 @@ static int of_pmsi_get_msi_info(struct irq_domain *domain, struct device *dev, u
+> >>  
+> >>  	struct device_node *msi_ctrl __free(device_node) = NULL;
+> >>  
+> >> -	return of_map_id(dev->of_node, dev->id, "msi-map", "msi-map-mask", &msi_ctrl, dev_id);
+> >> +	return of_map_msi_id(dev->of_node, dev->id, &msi_ctrl, dev_id);
+> >>  }
+> >>  
+> >>  static int its_pmsi_prepare(struct irq_domain *domain, struct device *dev,
+> >> diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+> >> index 6367c67732d2..e37c1b3f8736 100644
+> >> --- a/drivers/of/irq.c
+> >> +++ b/drivers/of/irq.c
+> >> @@ -817,8 +817,7 @@ u32 of_msi_xlate(struct device *dev, struct device_node **msi_np, u32 id_in)
+> >>  	 * "msi-map" or an "msi-parent" property.
+> >>  	 */
+> >>  	for (parent_dev = dev; parent_dev; parent_dev = parent_dev->parent) {
+> >> -		if (!of_map_id(parent_dev->of_node, id_in, "msi-map",
+> >> -				"msi-map-mask", msi_np, &id_out))
+> >> +		if (!of_map_msi_id(parent_dev->of_node, id_in, msi_np, &id_out))
+> >>  			break;
+> >>  		if (!of_check_msi_parent(parent_dev->of_node, msi_np))
+> >>  			break;
+> >> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> >> index a5b8d0b71677..bff8289f804a 100644
+> >> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> >> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> >> @@ -1144,8 +1144,7 @@ static int imx_pcie_add_lut_by_rid(struct imx_pcie *imx_pcie, u32 rid)
+> >>  	u32 sid = 0;
+> >>  
+> >>  	target = NULL;
+> >> -	err_i = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask",
+> >> -			  &target, &sid_i);
+> >> +	err_i = of_map_iommu_id(dev->of_node, rid, &target, &sid_i);
+> >>  	if (target) {
+> >>  		of_node_put(target);
+> >>  	} else {
+> >> @@ -1158,8 +1157,7 @@ static int imx_pcie_add_lut_by_rid(struct imx_pcie *imx_pcie, u32 rid)
+> >>  	}
+> >>  
+> >>  	target = NULL;
+> >> -	err_m = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask",
+> >> -			  &target, &sid_m);
+> >> +	err_m = of_map_msi_id(dev->of_node, rid, &target, &sid_m);
+> >>  
+> >>  	/*
+> >>  	 *   err_m      target
+> >> diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+> >> index 2d92fc79f6dd..a0937b7b3c4d 100644
+> >> --- a/drivers/pci/controller/pcie-apple.c
+> >> +++ b/drivers/pci/controller/pcie-apple.c
+> >> @@ -764,8 +764,7 @@ static int apple_pcie_enable_device(struct pci_host_bridge *bridge, struct pci_d
+> >>  	dev_dbg(&pdev->dev, "added to bus %s, index %d\n",
+> >>  		pci_name(pdev->bus->self), port->idx);
+> >>  
+> >> -	err = of_map_id(port->pcie->dev->of_node, rid, "iommu-map",
+> >> -			"iommu-map-mask", NULL, &sid);
+> >> +	err = of_map_iommu_id(port->pcie->dev->of_node, rid, NULL, &sid);
+> >>  	if (err)
+> >>  		return err;
+> >>  
+> >> diff --git a/drivers/xen/grant-dma-ops.c b/drivers/xen/grant-dma-ops.c
+> >> index c2603e700178..1b7696b2d762 100644
+> >> --- a/drivers/xen/grant-dma-ops.c
+> >> +++ b/drivers/xen/grant-dma-ops.c
+> >> @@ -325,8 +325,7 @@ static int xen_dt_grant_init_backend_domid(struct device *dev,
+> >>  		struct pci_dev *pdev = to_pci_dev(dev);
+> >>  		u32 rid = PCI_DEVID(pdev->bus->number, pdev->devfn);
+> >>  
+> >> -		if (of_map_id(np, rid, "iommu-map", "iommu-map-mask", &iommu_spec.np,
+> >> -				iommu_spec.args)) {
+> >> +		if (of_map_iommu_id(np, rid, &iommu_spec.np, iommu_spec.args)) {
+> >>  			dev_dbg(dev, "Cannot translate ID\n");
+> >>  			return -ESRCH;
+> >>  		}
+> >> diff --git a/include/linux/of.h b/include/linux/of.h
+> >> index be6ec4916adf..824649867810 100644
+> >> --- a/include/linux/of.h
+> >> +++ b/include/linux/of.h
+> >> @@ -1457,6 +1457,20 @@ static inline int of_property_read_s32(const struct device_node *np,
+> >>  	return of_property_read_u32(np, propname, (u32*) out_value);
+> >>  }
+> >>  
+> >> +static inline int of_map_iommu_id(const struct device_node *np, u32 id,
+> >> +				  struct device_node **target, u32 *id_out)
+> >> +{
+> >> +	return of_map_id(np, id, "iommu-map", "iommu-map-mask",
+> >> +			 target, id_out);
+> >> +}
+> >> +
+> >> +static inline int of_map_msi_id(const struct device_node *np, u32 id,
+> >> +				struct device_node **target, u32 *id_out)
+> >> +{
+> >> +	return of_map_id(np, id, "msi-map", "msi-map-mask",
+> >> +			 target, id_out);
+> >> +}
+> >> +
+> > 
+> > Any particular reason why this is made inline instead of out of line
+> > in of/base.c? Also, some documentation would be helpful for the
+> > aspiring hackers dipping into this.
+> > 
+> > Other than that,
+> > 
+> > Acked-by: Marc Zyngier <maz@kernel.org>
+> > 
+> > 	M.
+> > 
+> 
+> Thanks Marc.
+> 
+> I made them static inline mainly because they’re just trivial wrappers
+> around of_map_id(), so keeping them in include/linux/of.h avoids adding
+> new global symbols/exports and keeps the callsites simple (similar to
+> the existing of_property_read_*() inline wrappers).
+> 
+> That said, I don’t have a strong preference—if you’d rather have
+> out-of-line helpers in drivers/of/base.c, I’m happy to respin accordingly.
 
-It is required - you are changing the ABI and possibly impacting other
-users without valid reason ("not required and can be removed" is not a
-reason).
+The downside is we get N copies of the string args for N callers 
+assuming the callers are in different compilation units. It's not 
+performance critical either.
 
-Best regards,
-Krzysztof
+Rob
