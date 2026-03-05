@@ -1,123 +1,420 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939581E5207;
-	Thu,  5 Mar 2026 13:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFDC3A6F05;
+	Thu,  5 Mar 2026 15:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772718335; cv=none; b=GFJRx1faC+tBKXjk25YVWzzY638L/Q4QXL6kEG3iAvpt0ib2jk8Rw05aoc23fqN+YwqujzsjW/FtbgmF6f87dHAy0aKJbNwigiUKSMKBQl7eRLglG9S3pQcQaKq1z3VGPg5+ngBtdO7sQ/uG9C1bZzQ0Twa+4e6bLxGnWvzWvF4=
+	t=1772723216; cv=none; b=hUJ0EoROlGS2LX4MhuQOyAVMoFN+dzhHWY5tFF7n+h6TlTjRngWZFcGhWU/vPnng/pS2I60blHvEg810YyS8iLIW4K3HqrnQrpoTmpuAnKmFPrYYjj/YpzGfYisRyxpBIC0scSFm8yQgjutd3+/J4INwIyX+j0QQppC/Sq2Gw2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772718335; c=relaxed/simple;
-	bh=P6ExQFp/Tc/ecOFRvOAWHjq+t3r4+sIOFgz/4Bn072g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KlrYetPnl7HaFEoU+jEXF/mfW84B2HNO1Lp6iwvAnl4oNk6EZvXWH47m0fZE1Dbhd1ysFNCPdwrIZ8XzUyeZ8+Pyko6wQHY4O6hbMTM2PYtSKPEYXgPYkaCFVUbBNyzM0v0KY5CdMJ4GZLtbiHWqQIV1FsE7Ar4Tp488+5ZSqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNyo6E6K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772723216; c=relaxed/simple;
+	bh=AGHLH22J3Pd/fgCOMvjI431iORaqKR7lUDD/wYadxYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NrtgjDS5Bc7FTsImfrxXR5fVaggkEae37LIi53UGvVN7k0zGkTJjO2M7OoZ2Xen1t8PaUmV1UYT1lN4mPJOzE1rcSETX7W9x9ZRMlNjuVqFkw2tzSNBSEZBY2HG4Sd8v0j+wi5apjZHuZS4R0uTFNPQmMNjsnMEatQ/zsYeoS1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LU4HGuZE; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNyo6E6K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA6C116C6;
-	Thu,  5 Mar 2026 13:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772718335;
-	bh=P6ExQFp/Tc/ecOFRvOAWHjq+t3r4+sIOFgz/4Bn072g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nNyo6E6KDTWgaWu6snruRbM+q3dureOxRVfed/CUytEEXhttINLcmI93tE23Xsm3a
-	 f6eEoPZUoyYuLhE2IMKiVm9bxSR2RbMHDaCBwxAv6sUhthHthSsnHh2k3YR2N1wQFt
-	 hSvvH9y0gAYRkZZd5ZhSYWVSYWJToLfLYNSz+T31z7s7d50NBi5YgQwYmhajDNzrnB
-	 +IRzvbFngKmIM60h+RIAJ00OxAndEfQL3iHOVEPYPm35xyBx3z3rx6RkBdvMFGkr4Q
-	 E7QG6U7YuLZarjnYsgQPsdtkuwwdUFER8EWRjaamoFU9XSiMVXrpp/LeyhqXaceVmq
-	 UQLdKEH6x4MeQ==
-Message-ID: <a8572f16-92c2-4e15-aa12-03c793e02ab8@kernel.org>
-Date: Thu, 5 Mar 2026 14:45:28 +0100
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LU4HGuZE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=jJYYjVaNri6uqi/hQTfzZ+kswxplzg5Gi2JWgEwj3V0=; b=LU4HGuZEghHpqwi/LqSv5SR2ck
+	X+kfuRkQhm+bwAJfjvhN7rkitJzjVs/fUpJYJ0JBw6X8TvT53LGDty/47sZ7y94+paa+0Hvh7cSR5
+	pf+MID3WzwGApKqOu6IUqqmaj37Okt6M11QMeEbC6Y2NtR2PKtjiDVDz7q1lC9cjTnuyUqC3JL5PQ
+	r3QRHv5NN7Bq1E4/oxK7FnfjREGu5umQLOjcMkgUzpW3+tAuyJHb1epe2lpLm0mRbRPQkyKJIqoWE
+	9Hdz0/+a+PszZeA286SjsWjRRqqWimICYM2zM/RCsTLBd/CTZtXwXj8EnsssvcEBG2Yrl1pTSgMKr
+	4XZmXdgw==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1vy9pp-000L7i-2O;
+	Thu, 05 Mar 2026 15:37:53 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1vy9po-000Flr-2V;
+	Thu, 05 Mar 2026 15:37:52 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ luca.ceresoli@bootlin.com, Frank Li <Frank.Li@nxp.com>,
+ dri-devel@lists.freedesktop.org, Marco Felsch <m.felsch@pengutronix.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
+ Marco Felsch <m.felsch@pengutronix.de>
+Subject:
+ Re: [PATCH v11 2/3] drm/bridge: imx: Add i.MX93 parallel display format
+ configuration support
+Date: Thu, 05 Mar 2026 15:37:51 +0100
+Message-ID: <7394538.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To:
+ <20260303-v6-18-topic-imx93-parallel-display-v11-2-1b03733c8461@pengutronix.de>
+References:
+ <20260303-v6-18-topic-imx93-parallel-display-v11-0-1b03733c8461@pengutronix.de>
+ <20260303-v6-18-topic-imx93-parallel-display-v11-2-1b03733c8461@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: interrupt-controller: fsl,irqsteer:
- add S32N79 support
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- Larisa Grigore <larisa.grigore@nxp.com>
-References: <20260225133858.8026-1-ciprianmarian.costea@oss.nxp.com>
- <20260225133858.8026-2-ciprianmarian.costea@oss.nxp.com>
- <20260226-ingenious-shiny-axolotl-e0e6d2@quoll>
- <e8e258fb-23c0-44d1-bf4d-e2fed92ad90d@oss.nxp.com>
- <6a481490-28dc-4b62-9782-95a32d0e2857@kernel.org>
- <aba2401e-e26c-44d1-b321-56cd18f11a37@oss.nxp.com>
- <e400bb73-3f80-4fcd-91a1-6b9b966c5e2d@kernel.org>
- <38289782-b49a-463b-be13-6cd70e0e25aa@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <38289782-b49a-463b-be13-6cd70e0e25aa@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart7029791.LvFx2qVVIh";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27931/Thu Mar  5 08:24:23 2026)
 
-On 05/03/2026 14:32, Ciprian Marian Costea wrote:
-> Sorry, the enum reference confused me.
-> 
-> Is the following in accordance with your suggestion?
-> 
-> oneOf:
->    - enum:
->        - fsl,imx-irqsteer
->        - nxp,s32n79-irqsteer
+--nextPart7029791.LvFx2qVVIh
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+Date: Thu, 05 Mar 2026 15:37:51 +0100
+Message-ID: <7394538.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+MIME-Version: 1.0
 
-Yes
+Am Dienstag, 3. M=E4rz 2026, 11:34:27 CET schrieb Marco Felsch:
+> From: Liu Ying <victor.liu@nxp.com>
+>=20
+> NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Add a DRM bridge driver to support the display format configuratio=
+n.
+>=20
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> [m.felsch@pengutronix.de: port to v7.0-rc1]
+> [m.felsch@pengutronix.de: add review feedback (Alexander)]
+> [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
+> [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
+> [m.felsch@pengutronix.de: add bus-width support]
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Best regards,
-Krzysztof
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+on TQMa93xxCA on MBa91xxCA
+
+> ---
+>  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
+>  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
+>  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 225 ++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 237 insertions(+)
+>=20
+> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/=
+imx/Kconfig
+> index b9028a5e5a065c3237b404111d8df57e8e017f9d..47829300a4486a090514ebe91=
+4b7667a703039a9 100644
+> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> @@ -99,4 +99,15 @@ config DRM_IMX93_MIPI_DSI
+>  	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
+>  	  processor.
+> =20
+> +config DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER
+> +	tristate "NXP i.MX91/i.MX93 parallel display format converter"
+> +	depends on OF
+> +	select DRM_KMS_HELPER
+> +	help
+> +	  On i.MX93 and i.MX91 SoCs the parallel display format output is
+> +	  controlled via the MEDIAMIX BLK-CTRL DISPLAY_MUX.
+> +
+> +	  Say 'Y' or 'M' if you use the parallel display output path on a
+> +	  i.MX93 or i.MX91 SoC.
+> +
+>  endif # ARCH_MXC || COMPILE_TEST
+> diff --git a/drivers/gpu/drm/bridge/imx/Makefile b/drivers/gpu/drm/bridge=
+/imx/Makefile
+> index 8d01fda25451aaa1bf51a068da18948094327116..da57fde2d813b88cdde89115c=
+a801b4cfc69afbd 100644
+> --- a/drivers/gpu/drm/bridge/imx/Makefile
+> +++ b/drivers/gpu/drm/bridge/imx/Makefile
+> @@ -9,3 +9,4 @@ obj-$(CONFIG_DRM_IMX8QXP_PIXEL_COMBINER) +=3D imx8qxp-pix=
+el-combiner.o
+>  obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK) +=3D imx8qxp-pixel-link.o
+>  obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK_TO_DPI) +=3D imx8qxp-pxl2dpi.o
+>  obj-$(CONFIG_DRM_IMX93_MIPI_DSI) +=3D imx93-mipi-dsi.o
+> +obj-$(CONFIG_DRM_IMX93_PARALLEL_DISP_FMT_CONVERTER) +=3D imx93-pdfc.o
+> diff --git a/drivers/gpu/drm/bridge/imx/imx93-pdfc.c b/drivers/gpu/drm/br=
+idge/imx/imx93-pdfc.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..27a54424319838517b206ab7d=
+7447538aa1489eb
+> --- /dev/null
+> +++ b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
+> @@ -0,0 +1,225 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * Copyright 2022-2025 NXP
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/media-bus-format.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_graph.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +
+> +#include <drm/drm_atomic_state_helper.h>
+> +#include <drm/drm_bridge.h>
+> +
+> +#define IMX93_DISPLAY_MUX_REG		0x60
+> +#define PARALLEL_DISP_FORMAT		GENMASK(10, 8)
+> +#define FORMAT_RGB888_TO_RGB888		FIELD_PREP(PARALLEL_DISP_FORMAT, 0)
+> +#define FORMAT_RGB888_TO_RGB666		FIELD_PREP(PARALLEL_DISP_FORMAT, 1)
+> +#define FORMAT_RGB565_TO_RGB565		FIELD_PREP(PARALLEL_DISP_FORMAT, 2)
+> +
+> +struct imx93_pdfc {
+> +	struct drm_bridge bridge;
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	u32 phy_bus_width;
+> +};
+> +
+> +static struct imx93_pdfc *bridge_to_imx93_pdfc(struct drm_bridge *bridge)
+> +{
+> +	return container_of(bridge, struct imx93_pdfc, bridge);
+> +}
+> +
+> +static int
+> +imx93_pdfc_bridge_attach(struct drm_bridge *bridge, struct drm_encoder *=
+encoder,
+> +			 enum drm_bridge_attach_flags flags)
+> +{
+> +	return drm_bridge_attach(bridge->encoder, bridge->next_bridge, bridge, =
+flags);
+> +}
+> +
+> +static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
+> +					    struct drm_atomic_state *state)
+> +{
+> +	struct imx93_pdfc *pdfc =3D bridge_to_imx93_pdfc(bridge);
+> +	const struct drm_bridge_state *bridge_state;
+> +	unsigned int mask =3D PARALLEL_DISP_FORMAT;
+> +	unsigned int val;
+> +
+> +	bridge_state =3D drm_atomic_get_new_bridge_state(state, bridge);
+> +
+> +	switch (bridge_state->output_bus_cfg.format) {
+> +	case MEDIA_BUS_FMT_RGB888_1X24:
+> +	case MEDIA_BUS_FMT_FIXED:
+> +		val =3D FORMAT_RGB888_TO_RGB888;
+> +		if (pdfc->phy_bus_width =3D=3D 18) {
+> +			/*
+> +			 * Can be valid if physical bus limitation exists,
+> +			 * therefore use dev_dbg().
+> +			 */
+> +			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
+> +			val =3D FORMAT_RGB888_TO_RGB666;
+> +		}
+> +		break;
+> +	case MEDIA_BUS_FMT_RGB666_1X18:
+> +		val =3D FORMAT_RGB888_TO_RGB666;
+> +		break;
+> +	case MEDIA_BUS_FMT_RGB565_1X16:
+> +		val =3D FORMAT_RGB565_TO_RGB565;
+> +		break;
+> +	}
+> +
+> +	regmap_update_bits(pdfc->regmap, IMX93_DISPLAY_MUX_REG, mask, val);
+> +}
+> +
+> +/* TODO: Add YUV formats */
+> +static const u32 imx93_pdfc_bus_output_fmts[] =3D {
+> +	MEDIA_BUS_FMT_FIXED,
+> +	MEDIA_BUS_FMT_RGB888_1X24,
+> +	MEDIA_BUS_FMT_RGB666_1X18,
+> +	MEDIA_BUS_FMT_RGB565_1X16,
+> +};
+> +
+> +static bool imx93_pdfc_bus_output_fmt_supported(u32 fmt)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
+> +		if (imx93_pdfc_bus_output_fmts[i] =3D=3D fmt)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static u32 *
+> +imx93_pdfc_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
+> +					    struct drm_bridge_state *bridge_state,
+> +					    struct drm_crtc_state *crtc_state,
+> +					    struct drm_connector_state *conn_state,
+> +					    u32 output_fmt,
+> +					    unsigned int *num_input_fmts)
+> +{
+> +	struct imx93_pdfc *pdfc =3D bridge_to_imx93_pdfc(bridge);
+> +	u32 *input_fmts;
+> +
+> +	*num_input_fmts =3D 0;
+> +
+> +	input_fmts =3D kmalloc_obj(*input_fmts);
+> +	if (!input_fmts)
+> +		return NULL;
+> +
+> +	*num_input_fmts =3D 1;
+> +
+> +	if (!imx93_pdfc_bus_output_fmt_supported(output_fmt)) {
+> +		dev_dbg(pdfc->dev, "No valid output bus-fmt detected, fallback to MEDI=
+A_BUS_FMT_RGB888_1X24\n");
+> +		input_fmts[0] =3D MEDIA_BUS_FMT_RGB888_1X24;
+> +		return input_fmts;
+> +	}
+> +
+> +	switch (output_fmt) {
+> +	case MEDIA_BUS_FMT_RGB888_1X24:
+> +	case MEDIA_BUS_FMT_RGB565_1X16:
+> +		input_fmts[0] =3D output_fmt;
+> +		break;
+> +	case MEDIA_BUS_FMT_RGB666_1X18:
+> +	case MEDIA_BUS_FMT_FIXED:
+> +		input_fmts[0] =3D MEDIA_BUS_FMT_RGB888_1X24;
+> +		break;
+> +	}
+> +
+> +	return input_fmts;
+> +}
+> +
+> +static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
+> +					  struct drm_bridge_state *bridge_state,
+> +					  struct drm_crtc_state *crtc_state,
+> +					  struct drm_connector_state *conn_state)
+> +{
+> +	struct imx93_pdfc *pdfc =3D bridge_to_imx93_pdfc(bridge);
+> +	u32 format =3D bridge_state->output_bus_cfg.format;
+> +
+> +	if (imx93_pdfc_bus_output_fmt_supported(format))
+> +		return 0;
+> +
+> +	dev_warn(pdfc->dev, "Unsupported output bus format: 0x%x\n", format);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static const struct drm_bridge_funcs funcs =3D {
+> +	.attach			=3D imx93_pdfc_bridge_attach,
+> +	.atomic_enable		=3D imx93_pdfc_bridge_atomic_enable,
+> +	.atomic_duplicate_state	=3D drm_atomic_helper_bridge_duplicate_state,
+> +	.atomic_destroy_state	=3D drm_atomic_helper_bridge_destroy_state,
+> +	.atomic_get_input_bus_fmts	=3D imx93_pdfc_bridge_atomic_get_input_bus_f=
+mts,
+> +	.atomic_check		=3D imx93_pdfc_bridge_atomic_check,
+> +	.atomic_reset		=3D drm_atomic_helper_bridge_reset,
+> +};
+> +
+> +static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev =3D &pdev->dev;
+> +	struct drm_bridge *next_bridge;
+> +	struct imx93_pdfc *pdfc;
+> +	struct device_node *ep;
+> +	int err;
+> +
+> +	pdfc =3D devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
+> +	if (IS_ERR(pdfc))
+> +		return PTR_ERR(pdfc);
+> +
+> +	pdfc->regmap =3D syscon_node_to_regmap(dev->of_node->parent);
+> +	if (IS_ERR(pdfc->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
+> +				     "failed to get regmap\n");
+> +
+> +	/* No limits per default */
+> +	pdfc->phy_bus_width =3D 24;
+> +
+> +	/* Get output ep (port1/endpoint) */
+> +	ep =3D of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
+> +	if (ep) {
+> +		err =3D of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
+> +		of_node_put(ep);
+> +
+> +		/* bus-width is optional but it must have valid data if present */
+> +		if (err && err !=3D -EINVAL)
+> +			return dev_err_probe(dev, err,
+> +					     "failed to query bus-width\n");
+> +	}
+> +
+> +	next_bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
+> +	if (IS_ERR(next_bridge))
+> +		return dev_err_probe(dev, PTR_ERR(next_bridge),
+> +				     "failed to get next bridge\n");
+> +	pdfc->dev =3D dev;
+> +	pdfc->bridge.of_node =3D dev->of_node;
+> +	pdfc->bridge.type =3D DRM_MODE_CONNECTOR_DPI;
+> +	pdfc->bridge.next_bridge =3D next_bridge;
+> +
+> +	return devm_drm_bridge_add(dev, &pdfc->bridge);
+> +}
+> +
+> +static const struct of_device_id imx93_pdfc_dt_ids[] =3D {
+> +	{ .compatible =3D "nxp,imx93-pdfc", },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, imx93_pdfc_dt_ids);
+> +
+> +static struct platform_driver imx93_pdfc_bridge_driver =3D {
+> +	.probe	=3D imx93_pdfc_bridge_probe,
+> +	.driver	=3D {
+> +		.of_match_table =3D imx93_pdfc_dt_ids,
+> +		.name =3D "imx93_pdfc",
+> +	},
+> +};
+> +module_platform_driver(imx93_pdfc_bridge_driver);
+> +
+> +MODULE_DESCRIPTION("NXP i.MX93 parallel display format configuration dri=
+ver");
+> +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
+> +MODULE_LICENSE("GPL");
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+--nextPart7029791.LvFx2qVVIh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmmplT8ACgkQaS+g2M0Z
+/iV9CQf9GbkFbECiKid6I+rC64yA+LJqh/LDST9e/Od7twCmc+YoVCt3R3pNndtQ
+thAqMQjaMG+eVzbSX5OfqthFZViLArJlc38Djn7DiQq077jRgBe1xFLLgw73SYCo
+q50o7b/ugu4nWYRSI/XfNzfRuGh0iIIXtUYuJkJlOmN5ZIar2tm5zSehH98jViOa
+PpAsXZMRrkHck0TQut17YXMHUtJGjoWW5EqSS0g/VodNVnQF5wfnJDtZmbyqiP6g
+yOTz2uSfZq6nH1cO2nj3Ohqo5DErryLE3z1sNtqDXvR89fbbyiQnd9tMqVv1kHnZ
+8+Z1XPYNVoNsoJudp3K25YWd0fYldg==
+=Leit
+-----END PGP SIGNATURE-----
+
+--nextPart7029791.LvFx2qVVIh--
+
+
+
