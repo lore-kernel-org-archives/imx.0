@@ -1,190 +1,114 @@
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974B1799F;
-	Thu,  5 Mar 2026 16:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAEF282F27;
+	Thu,  5 Mar 2026 16:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772726803; cv=none; b=aBqiQrJHkpoIR847XzFOfIsuRmqAauvhNKmWgXhJljFuVD8PPBavG+idmDucwdfCaM/50QM/e5pjpJjo9KLt1rVOVIg4pdJ4Lu7qqV3zpZxbvRdsq6fFppxnUNpqmziCO7jvA4ei2A90VNsZ8rSLtAau38cAK8K535UegFbexIc=
+	t=1772727028; cv=none; b=WHUAnXmfRDUx78N4Pc5OmK0TsU4Z9FaeNstckGC2GlHx//6GRbHJ0vR11DHTA1mW+vunRYzvf0xAkuqRJRcf2+KWBREU+6uxNDJdS7L56qyDqLYez3H6j7AKBhYdSHSgVU8z+0wb3ld/ZN3cvDtz65mOkQXBCLGtJ1USbfwPcZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772726803; c=relaxed/simple;
-	bh=e1CBqI+y/aXrYiG5MwBxKZj92vyniLerzJuuwmm71Ss=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=a8Olg1z/fc1t29sPWWl8xyVILbjLnzYi05e/xldaKNbzfO14kcmPzqYjSDZZIgd4/Aifz7VJi92DwzcQxHTZIfcGS4YpT0d++xpSTEAsMG3kkW8IKPS52YYhXlY73AAqFvkcpLPHakVrGdkDSA70yt9D6FL/C9+cj/YRfMWDiPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=HwXvKMDF; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+	s=arc-20240116; t=1772727028; c=relaxed/simple;
+	bh=XkVTGgjybgKXZp1qt304mUns/GTshs03+4QI6M7emKQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PkJNO9sqZA4bd8l48rMVTVhoQVexvWrekmCLarlQ+1jUnHjDHb5oqvH06iPQq3svBLvw/JHw1O0BjRO6YfeYkn2Legi61HHS34Jhi7BtN9JXyh0TZUcn+v4bzy16AoaMKQViY/rrJX0aPKW+ATrP50Ew6kqGsPlBto6fpawZz5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJfHnw1P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="HwXvKMDF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=VURAe1VBJ++jhd1qN9FU3U4sNtpuG6QDqgVP27ujLLQ=; b=HwXvKMDFPKFt/NwsiuXU2mlZnZ
-	QWDSk6365MrHNW3TYaw+6EPMeJVIjcF/pnvE2e7iBVGgBLCaJCI0hcokrMxvLp5olfn9x84uGbMy+
-	cuFWWWzl5J/mCqXEBx3DBK/EgStY7tVKBdr76PdWtiJahJi/3CGXl6UyeWmk+eyDXNEs=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:42578 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1vyBDD-0002QH-SQ; Thu, 05 Mar 2026 11:06:09 -0500
-Date: Thu, 5 Mar 2026 11:06:06 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: "Antonin Godard" <antonin.godard@bootlin.com>
-Cc: "Frank Li" <Frank.li@nxp.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <andrzej.hajda@intel.com>,
- <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
- <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
- <jernej.skrabec@gmail.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
- <tzimmermann@suse.de>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
- <festevam@gmail.com>, <shawnguo@kernel.org>,
- <laurent.pinchart+renesas@ideasonboard.com>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- "Hugo Villeneuve" <hvilleneuve@dimonoff.com>
-Message-Id: <20260305110606.f24f17ee4f96d7d2b9b08c2d@hugovil.com>
-In-Reply-To: <DGTU9887GHPO.2FUQ3QITRG7F8@bootlin.com>
-References: <20260302190953.669325-1-hugo@hugovil.com>
-	<20260302190953.669325-9-hugo@hugovil.com>
-	<aaX5E7-3xvkaVV-o@lizhi-Precision-Tower-5810>
-	<20260302161545.f6b76209400e8fbe35cd51a0@hugovil.com>
-	<DGTU9887GHPO.2FUQ3QITRG7F8@bootlin.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJfHnw1P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B15C116C6;
+	Thu,  5 Mar 2026 16:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772727028;
+	bh=XkVTGgjybgKXZp1qt304mUns/GTshs03+4QI6M7emKQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pJfHnw1PbGoVjYrwIafL+sqM5ACrKoPeYeM+WMHXQSNVzQkeLJdwDbcj1a5uBNNdJ
+	 BuvVGHLKoKDiG8WQVhoBATOs+JGvFpBk/FKjbhK6SEiykJYMR1bOlci0Iva/GwZj5E
+	 rHIWv4INmohx5G6E6T5ZRgKasDjDm+oyIbs00bFGtY0bg3IMG+3iQUGH12oQG3Fi0o
+	 Q+Ec5yC4V+59xLXVyIdoLCNtst33sLrQEdy2k+LR9+x3tld3vYSUsCkPmdroW1eQTp
+	 BI9/O0QCIXBz6comfzwNag2tq7+1nv+JuI9kyTWxsW+s/qS20r1YYF81VOoMGoe8Fo
+	 6wy8AMu24AZsg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE653808200;
+	Thu,  5 Mar 2026 16:10:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-	* -3.3 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH 08/14] ARM: dts: imx6ul-var-som: factor out SD card
- support
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v5 1/9] xdp: use modulo operation to calculate XDP
+ frag
+ tailroom
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177272702805.3188128.16309701518912320444.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Mar 2026 16:10:28 +0000
+References: <20260305111253.2317394-2-larysa.zaremba@intel.com>
+In-Reply-To: <20260305111253.2317394-2-larysa.zaremba@intel.com>
+To: Larysa Zaremba <larysa.zaremba@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, kuba@kernel.org,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, kpsingh@kernel.org, haoluo@google.com,
+ jolsa@kernel.org, horms@kernel.org, shuah@kernel.org,
+ aleksander.lobakin@intel.com, maciej.fijalkowski@intel.com,
+ bastien.curutchet@bootlin.com, tushar.vyavahare@intel.com,
+ kernelxing@tencent.com, rbm@suse.com, echaudro@redhat.com,
+ lorenzo@kernel.org, toke@redhat.com, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+ linux-kselftest@vger.kernel.org, aleksandr.loktionov@intel.com,
+ dtatulea@nvidia.com, magnus.karlsson@intel.com
 
-Hi Antonin,
+Hello:
 
-On Wed, 04 Mar 2026 09:01:20 +0100
-"Antonin Godard" <antonin.godard@bootlin.com> wrote:
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Hi,
+On Thu,  5 Mar 2026 12:12:42 +0100 you wrote:
+> The current formula for calculating XDP tailroom in mbuf packets works only
+> if each frag has its own page (if rxq->frag_size is PAGE_SIZE), this
+> defeats the purpose of the parameter overall and without any indication
+> leads to negative calculated tailroom on at least half of frags, if shared
+> pages are used.
 > 
-> On Mon Mar 2, 2026 at 10:15 PM CET, Hugo Villeneuve wrote:
-> > Hi Frank,
-> >
-> > On Mon, 2 Mar 2026 15:54:43 -0500
-> > Frank Li <Frank.li@nxp.com> wrote:
-> >
-> >> On Mon, Mar 02, 2026 at 02:03:44PM -0500, Hugo Villeneuve wrote:
-> >> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> >> >
-> >> > Move SD support to a separate include, since it cannot be used at the
-> >> 
-> >> s/include/dtsi/
-> >
-> > Ok. I will also change it in all the other commit messages.
-> >
-> >  
-> >> > same time as the Wifi/BT module.
-> >> 
-> >> what's relation ship between wifi/bt? you just move sd related part to a
-> >> dtsi file.
-> >
-> > As stated in commit message, the SD card interface cannot be used if
-> > the Wifi/BT module is in use.
-> >
-> > Sd card is not mandatory, for example on our board we do not have it,
-> > so we need to have it disabled.
+> There are not many drivers that set rxq->frag_size. Among them:
+> * i40e and enetc always split page uniformly between frags, use shared
+>   pages
+> * ice uses page_pool frags via libeth, those are power-of-2 and uniformly
+>   distributed across page
+> * idpf has variable frag_size with XDP on, so current API is not applicable
+> * mlx5, mtk and mvneta use PAGE_SIZE or 0 as frag_size for page_pool
 > 
-> My two cents: if SDCard and WiFi/Bt support are the only mutually exclusive
-> features for this SoM, then how about the following organization:
+> [...]
 
-They maybe are not. There are other peculiarities, for example using the
-touch panel configuration has some impacts on an oscillator used by the
-Wifi/Bt module. The Varisctite documentation is not entirely clear or
-evident about all these details.
+Here is the summary with links:
+  - [net,v5,1/9] xdp: use modulo operation to calculate XDP frag tailroom
+    https://git.kernel.org/netdev/net/c/88b6b7f7b216
+  - [net,v5,2/9] xsk: introduce helper to determine rxq->frag_size
+    https://git.kernel.org/netdev/net/c/16394d805399
+  - [net,v5,3/9] ice: fix rxq info registering in mbuf packets
+    https://git.kernel.org/netdev/net/c/02852b47c706
+  - [net,v5,4/9] ice: change XDP RxQ frag_size from DMA write length to xdp.frame_sz
+    https://git.kernel.org/netdev/net/c/e142dc4ef0f4
+  - [net,v5,5/9] i40e: fix registering XDP RxQ info
+    https://git.kernel.org/netdev/net/c/8f497dc8a614
+  - [net,v5,6/9] i40e: use xdp.frame_sz as XDP RxQ info frag_size
+    https://git.kernel.org/netdev/net/c/c69d22c6c46a
+  - [net,v5,7/9] libeth, idpf: use truesize as XDP RxQ info frag_size
+    https://git.kernel.org/netdev/net/c/75d9228982f2
+  - [net,v5,8/9] net: enetc: use truesize as XDP RxQ info frag_size
+    https://git.kernel.org/netdev/net/c/f8e18abf183d
+  - [net,v5,9/9] xdp: produce a warning when calculated tailroom is negative
+    https://git.kernel.org/netdev/net/c/8821e857759b
 
-
-> Three SoM dtsi files:
-
-This is already the case (apart from the -bt suffix)?
-
-> 
-> imx6ul-var-som-common.dtsi
-> 
->   imx6ul-var-som-wifi-bt.dtsi:
->     #include "imx6ul-var-som-common.dtsi"
-
-No need to include it, as it is already included by
-imx6ul-var-som-concerto.dts
-
-> 
->   imx6ul-var-som-sd.dtsi:
->     #include "imx6ul-var-som-common.dtsi"
-
-Same...
-
-> 
-> A common concerto dtsi file:
-> 
->   imx6ul-var-som-concerto-common.dtsi
-> 
-> Separate concerto dts files:
-> 
->   imx6ul-var-som-concerto-wifi-bt.dts:
->     #include "imx6ul-var-som-wifi-bt.dtsi"
->     #include "imx6ul-var-som-concerto-common.dtsi"
-> 
->   imx6ul-var-som-concerto-sd.dts
->     #include "imx6ul-var-som-sd.dtsi"
->     #include "imx6ul-var-som-concerto-common.dtsi"
-> 
-> And possibly the following one to avoid breaking compatibility:
-> 
->   imx6ul-var-som-concerto.dts
->     #include "imx6ul-var-som-sd.dtsi"
->     #include "imx6ul-var-som-concerto-common.dtsi"
-> 
-> In any case, the imx6ul-var-som-concerto-common.dtsi should be full-featured
-> (and thus avoid the imx6ull-var-som-concerto-full.dts file from patch 09/14), if
-> that's possible?
-
-I am not convinced that it needs to be full-featured. For our custom
-boards, we want to include only the relevant dtsis, because for example
-we do not use sd, or enet1 or enet2, or audio. Having these options in
-separate dtsi allows our custom boards to include/enable only the
-required features.
-
-The full dts is only there as a reference, and to make sure all dtsi
-are included and therefore compiled-checked. In it I have enabled
-enet1 and enet2, but some boards may use enet1, and not enet2, or
-vice-versa, or some boards (like our custom boards) we are not using
-either one.
-
-> But I don't know if this follows common practices, and if this is possible, but
-> I think it's clearer as a user to know if the DTS I will use will support
-> WiFi/BT _or_ support SDCard by looking at its name.
-> 
-> Of course this is based on the assumption that those two features are the only
-> mutually exclusive ones.
-> 
-> What do you think?
-
-Yes, but there is an exponential number of different
-combinations, and thus would require a lot of different DTS...
-
-If you look at the Variscite git repos, you will see a lot of different
-DTS to support only a subset of the possible combinations, and it
-already looks like a mess to me :) I would like to keep things simple if
-possible.
-
+You are awesome, thank you!
 -- 
-Hugo Villeneuve
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
