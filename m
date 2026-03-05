@@ -1,110 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-relay49-hz1.antispameurope.com (mx-relay49-hz1.antispameurope.com [94.100.132.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266DB30B53A;
-	Thu,  5 Mar 2026 11:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772708601; cv=none; b=jj7zpKXX/ZJbC9utGq/98ruM46x0Ntkr8jyXgxWd3QyQN+dT5qzdUJuI+396mNI4Ao85wJaACmbWE+jwv5jatkoY2ZSD2rgglYFsRwi/8PN4TgIKOmCwY6hGgY06hHLIjJdK1MLnnoiHUsNOLlFLVc9EWEIpChfEQm7Y+WPtz+8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772708601; c=relaxed/simple;
-	bh=XkhFu5R2j+knEY1vxGe51F80Ek3LROgWQvuDZnuGOxc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iNQHBAISM4k7GA2TbM0qq85bIxJHa/A+OYgGUyAH6l0WzOnNjIQOuJbxvdddv2OJ9whxkn41hzdl0NxkATGGGtrJYSn/uQkFu98nK5VpJnTQa8gtqlBeyzMmtUhflNN0rjI1dd/yljLrevbBzMcFjc+eZRrlV+uSjZUeQqeLeSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4jmbjm9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDB3345CC9
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 11:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.225
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772709126; cv=pass; b=iVmxUm0T/pgvKsx954rjeyL8gBRRzWbzUmgk86qxpTjy0W4oWX9FCMYONUgSxLS2zsf34Grh79DOp4yXdKadOxTDyUNGjk8tG/P48Let1J4Jf7xHn0mOYTQyWXoO7vZuCpPj3sxnho3YO2JGifaKSJCMSNk+67bY3jro5aQclu8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772709126; c=relaxed/simple;
+	bh=6fQku8EnYd0/h07xspz1Uq+De0vi8mFMzmdp11LwP1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lp0aej+QEVJ4GxDCA+kQhKyDLSqXoCWy2R2XicLoKDnpnM2s62f9F8L0KoUw/eW9/d5lYVyIbZcP4KsaR7fOdjI4CBOKe/HbWeE4nWjnXht9rrtmJOZFMyugTNaSJ6v94Ibj2d2C+BhIsatjxMWtBM6x+I//9K9cmUBPEOJqRUs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RWppIHy6; arc=pass smtp.client-ip=94.100.132.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4jmbjm9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B800EC116C6;
-	Thu,  5 Mar 2026 11:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772708600;
-	bh=XkhFu5R2j+knEY1vxGe51F80Ek3LROgWQvuDZnuGOxc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=m4jmbjm9//kg42GLG2DHrlf4HdVzDN0wdhmf9oJwoJ/uVazQXm4jHgL3GIdTnB4nX
-	 cYD7oyukkmFP2YPh6VjlxjPcuJGZPfFzOotMuP8NNek/onH2iqDGgH/m9SHha5bSCD
-	 GkLs4uhjFIpLJMKVJ3GaW3k6saBPcDn8sZxzd+WRieoGFvvc+f31LiE4vQJfCyS5UC
-	 7mQ+xQkqC5Q4jgtoykMnMFjCM+Mbxiulr1Uh0L9j6Dci5/82N/JU0wvyI8l7u2j2xq
-	 Fx2l5d9DCOJnPO8xJ4zfsH6vFRyPrOgmOTYlUbni6EsPPpP1+jjNpKHBu5TRFsnRF5
-	 081LWgCO+6G5Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vy6UA-0000000GPSf-1Z57;
-	Thu, 05 Mar 2026 11:03:18 +0000
-Date: Thu, 05 Mar 2026 11:03:17 +0000
-Message-ID: <86qzpy7d3e.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Kevin Hilman <khilman@baylibre.com>,	Jerome
- Brunet <jbrunet@baylibre.com>,	Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>,	Peter Griffin
- <peter.griffin@linaro.org>,	=?UTF-8?B?QW5kcsOp?= Draszik
- <andre.draszik@linaro.org>,	Tudor Ambarus <tudor.ambarus@linaro.org>,	Alim
- Akhtar <alim.akhtar@samsung.com>,	Frank Li <Frank.Li@nxp.com>,	Sascha Hauer
- <s.hauer@pengutronix.de>,	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,	Dinh Nguyen <dinguyen@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,	Konrad Dybcio
- <konradybcio@kernel.org>,	Thierry Reding <treding@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,	linux-amlogic@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,	imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,	linux-renesas-soc@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RWppIHy6"
+ARC-Authentication-Results: i=1; mx-gate49-hz1.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=N9XnppO8FMkdczsYyKMwQiqpcLf9DtxGsFU5Qaw3s9w=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772709053;
+ b=cv8O/1UIY98gV1jAY5c+uyCUQi95cDonwm0sJ2ECFLToHj6Ns3/ODR1FH3Mb/KpGQ+GzQMJP
+ ojzyff1REvhzJAXigzGfRiGx25rLfIg1Li64BTPI5X7ATl9fVJ+CycYwXuWahPKLMDyPCbFMFrr
+ tRJiiWfvQSqlHVFjWMlogRULjyRgVSQRW2mEWrnSujWhRoC3jTg5pqvWTyYuCxquWWdb3DB12PY
+ RUfi2mhTjBGUBF3olLQ5z3R2lraeH8x0a/nsKr1aZMVFQ9wchNpjFmqC1hDdsL3JOODTNhLVJZP
+ ljgdys8ru9DS3ETy7Mm/g0tYdcsavwbalIGfyw3vHPwTg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772709053;
+ b=oDnkG3qtS4/CPvFpRiBVPF/e2e+WVXWDjf2CsNNB1FxLCLlvPscuYXUHvmShpdTPC8lQf2+1
+ BN9rAqLvXSzGn726txGhkAIQ/xl0aZrKXdvKTeO+xdqsdm+gO/IAtSjk/eAQuRuIV+OD4kWaKb8
+ akXnzNeVDI6ojMa6mUG1R+bBHXsuAfot01Cv0WEWwfWYfN3wGJJnqXY+CQ+lHSF6wwlwxiGf/6X
+ U8GkUx2e8nfLrfeYzpq8bfqhA6AMBVmG6vVt1u1MeEzfOiRf6ouGf/JZDJpkiC7Gf3TRPvJ6TJh
+ lCLQSExqmMikro2ZgJfgkQzwYGcw/t/SzJs9d/HYbvF/w==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz1.antispameurope.com;
+ Thu, 05 Mar 2026 12:10:53 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 0EAABA40906;
+	Thu,  5 Mar 2026 12:10:44 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] arm64: dts: Drop CPU masks from GICv3 PPI interrupts
-In-Reply-To: <24685144-c1bb-4084-80de-40989efbf4a1@oss.qualcomm.com>
-References: <cover.1772643434.git.geert+renesas@glider.be>
-	<ee2980af-e37c-4b4d-86c2-32467d2af454@oss.qualcomm.com>
-	<CAMuHMdUCqozRx_WJesymXmP_PYo4Bf=oed=4fXycVOVk5g8D4Q@mail.gmail.com>
-	<24685144-c1bb-4084-80de-40989efbf4a1@oss.qualcomm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Subject: [PATCH 2/2] arm64: dts: tqma9352-mba91xxca: Fix Ethernet PHY IRQ support
+Date: Thu,  5 Mar 2026 12:10:37 +0100
+Message-ID: <20260305111040.1899965-2-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260305111040.1899965-1-alexander.stein@ew.tq-group.com>
+References: <20260305111040.1899965-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: konrad.dybcio@oss.qualcomm.com, geert@linux-m68k.org, neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, peter.griffin@linaro.org, andre.draszik@linaro.org, tudor.ambarus@linaro.org, alim.akhtar@samsung.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, dinguyen@kernel.org, andersson@kernel.org, konradybcio@kernel.org, treding@nvidia.com, linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz1.antispameurope.com with 4fRRfX5Cr3z28hdF
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:d2d564208654f80f3876e3d2097a5623
+X-cloud-security:scantime:1.415
+DKIM-Signature: a=rsa-sha256;
+ bh=N9XnppO8FMkdczsYyKMwQiqpcLf9DtxGsFU5Qaw3s9w=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772709052; v=1;
+ b=RWppIHy6CaGChIEF9+0h6fojvVvqbWsau8d2pMQshTpswqXlQtxmFvaCUEIUdnQRCK+n6TsD
+ Nh60FeZ/JOJ0s1nwXZhv7OsG74joybmKhdNyUffvHen9CKZSXGuL1yfse1kVaBWAMa7fM5jAaEe
+ FhSv5h3832VGzSiVZiuJvtUF7HZk//WeOArj5SbgGPN8GuBfY33AMFtYyBRvGW0rzKL1DVZ5uYD
+ CekWcfxGrqnavp4f53/+Kdu8S8C7R4r7rtBYYm7UB3C3TTrK191DgtnedVcKDeq+zxLs78uPA2k
+ qMov6nQp+iLxKKwkovY+pNzzVW3p1S2ROpbSYKakzL6IQ==
 
-On Thu, 05 Mar 2026 10:02:01 +0000,
-Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
-> 
-> On 3/5/26 10:55 AM, Geert Uytterhoeven wrote:
-> > Hi Konrad,
-> > 
-> > On Thu, 5 Mar 2026 at 10:33, Konrad Dybcio
-> > <konrad.dybcio@oss.qualcomm.com> wrote:
-> >> On 3/4/26 6:10 PM, Geert Uytterhoeven wrote:
-> >>> Unlike older GIC variants, the GICv3 DT bindings do not support
-> >>> specifying a CPU mask in PPI interrupt specifiers.  Hence this patch
-> >>> series drop all such masks where they are still present.
-> >>
-> >> I'm having trouble finding where that's used on pre-v3 even.. does
-> >> that actually get processed on the older iterations?
-> > 
-> > I had noticed the same, and had asked maz on IRC.
-> > His answer:
-> > 
-> >    "so far, we have never seen a GICv{1,2} system that didn't have all
-> > of its PPIs
-> >     connected to the same set of devices."
-> 
-> lol, that's fun!
+Ethernet PHY interrupt mode is level triggered. Adjust the mode
+accordingly.
 
-For some definition of fun. If you want to get a top-class headache,
-have a look at what that means to handle a single INTID being routed
-different drivers based on the *affinity* of the interrupt.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-HW people who come up with these contraptions should be spanked
-repeatedly and preferably asymmetrically.
-
-	N,
-
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts
+index 2673d9dccbf4b..737326ba1b2a7 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts
+@@ -232,7 +232,7 @@ ethphy_eqos: ethernet-phy@0 {
+ 			reset-assert-us = <500000>;
+ 			reset-deassert-us = <50000>;
+ 			interrupt-parent = <&gpio3>;
+-			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
+ 			enet-phy-lane-no-swap;
+ 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+@@ -265,7 +265,7 @@ ethphy_fec: ethernet-phy@0 {
+ 			reset-assert-us = <500000>;
+ 			reset-deassert-us = <50000>;
+ 			interrupt-parent = <&gpio3>;
+-			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+ 			enet-phy-lane-no-swap;
+ 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
 -- 
-Without deviation from the norm, progress is not possible.
+2.43.0
+
