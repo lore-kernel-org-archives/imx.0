@@ -1,31 +1,31 @@
 Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEE63C277A;
-	Thu,  5 Mar 2026 18:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EC3288C2C;
+	Thu,  5 Mar 2026 18:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772734120; cv=none; b=ewhKkI3jVIcAo3ZgZhTiZhG/FRmaABmvDzvxgQqpiMPyXQbbUF7S+0sP2lIs9uQCyFKXphsFcBsGUGILl3qj9RZdd0YS1Tz2VA/HnpQduwsltvM7Am37kY3uyzC+fSZsY+gZptKUGVrlLkctpaxQD68OyMELWC91L77cm/HrNMU=
+	t=1772734120; cv=none; b=tptDvaqKRcN74xnoJO1TtrjjDAnhXQOq1kHyF4pqA1fCqi+L+UrpoDUL2DftLjHZSV6Nxf8C2wvFrBlVsxk998B+dJ25PjkUetJ0I/NvHURzHoS+RGtuE1IS4jzvNXrWEZDeQTfwU9xt9NBlbgngl0bVfyqE9OMs5bjOeTz/NMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772734120; c=relaxed/simple;
-	bh=XM9t98xb89N1ZlhujZTmlv4c9tV1d43E3bTEhZWQM84=;
+	bh=ht78vGOgPyabcciBgG0XMEuT0626MSS4eZZXn74CEyc=;
 	h=From:To:Cc:Date:Message-ID:In-Reply-To:References:MIME-Version:
-	 Subject; b=bR5ebORiLrTd2FT471xqUpH7jU7jk+kWmWPofhdukwlvmKtN71NxgDsFSBWYGeWjsQK6w+QK98tmdttUMJ4JnC9Ld8bUownJTjd15m9mAonXzquvFtPp0D5wbkewrkdQp0gB7OYyQN4aTP6UBF6K36ahHrfKtT6Tk8FdvfnZVh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=qx7x5D3i; arc=none smtp.client-ip=162.243.120.170
+	 Subject; b=AUTuI3vO1FbsUSvvzUUCUWQfNJU/b+VctKwbsgPEHfavzZhZoVOOmY3TZlSL7Gbbte492HLrER5gSq1M7Hqr9WBqduHHu3p/fbb5tXpZtRZsKnDi/p3b2/RHBIYZIn7EtzKyAtKO/Xa0Dh5YuyYQeyo+LzfUgrLNSSRnToMABUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=uy0z1oIz; arc=none smtp.client-ip=162.243.120.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="qx7x5D3i"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="uy0z1oIz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
 	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Cc:To
 	:From:subject:date:message-id:reply-to;
-	bh=RXeuyAaTvwAMCt0q3PFB8EJk7uqdNN6rk4nzvIkVw+E=; b=qx7x5D3igLAYp4cJ0Rm8VkbeNg
-	5/fG2OumU8+uLx0mwbHoeZ8V8CadhDp5Of9lJB/0XlBn3gb/bRqNMFD8vY2oSDQRl2RsrMbyxb3OD
-	xbFKW+w9DSJ7EX6t85V4RfGhhEaPkH/HOESPMGwDb1cUipsN2QfhY3ZYBC0OyjVTTneU=;
+	bh=IHW6n2hUHxLvs0sr4FpK9XY9GiMrXVjYo3Lx7EQPaKU=; b=uy0z1oIzRapkLtTHutr81LzUzS
+	7GkEVkblCvTnPUGjWM82B0GkkvVkexOSvg661mVU9FuoP/HRJobgL2o/Zj305wb/zbXy42ODiewCo
+	73HRxt0zevM5Rpz1lZ61uAAVwM2UhFEKeZlF4NujLECv134SbX8VWYyXpW9g5sHIYTB8=;
 Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:37706 helo=pettiford.lan)
 	by mail.hugovil.com with esmtpa (Exim 4.92)
 	(envelope-from <hugo@hugovil.com>)
-	id 1vyD7X-0002aR-Nh; Thu, 05 Mar 2026 13:08:23 -0500
+	id 1vyD7a-0002aR-N6; Thu, 05 Mar 2026 13:08:27 -0500
 From: Hugo Villeneuve <hugo@hugovil.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -55,8 +55,8 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	hugo@hugovil.com,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Thu,  5 Mar 2026 13:06:17 -0500
-Message-ID: <20260305180651.1827087-3-hugo@hugovil.com>
+Date: Thu,  5 Mar 2026 13:06:19 -0500
+Message-ID: <20260305180651.1827087-5-hugo@hugovil.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260305180651.1827087-1-hugo@hugovil.com>
 References: <20260305180651.1827087-1-hugo@hugovil.com>
@@ -74,57 +74,38 @@ X-Spam-Report:
 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
 	* -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
 	*      [score: 0.0000]
-Subject: [PATCH v2 02/15] ARM: dts: imx6ul-var-som: fix warning for boolean property with a value
+Subject: [PATCH v2 04/15] dt-bindings: arm: fsl: change incorrect VAR-SOM-MX6UL references
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-dmesg warning:
+There is no Variscite module named VAR-SOM-MX6UL, but there is VAR-SOM-MX6
+and also VAR-SOM-6UL, so it is confusing at first to know to which one it
+refers to. The imx6ul-var-som* dts/dtsi supports only the VAR-SOM-6UL [1],
+not VAR-SOM-MX6 [2], so modify comments and model descriptions accordingly.
 
-  OF: /soc/bus@2000000/ethernet@20b4000/mdio/ethernet-phy@3: Read of
-      boolean property 'micrel,rmii-reference-clock-select-25-mhz' with a
-      value.
-
-Using of_property_read_bool() for non-boolean properties is deprecated and
-results in a warning during runtime since commit c141ecc3cecd
-("of: Warn when of_property_read_bool() is used on non-boolean properties")
-
-micrel,rmii-reference-clock-select-25-mhz is a boolean property and should
-not have a value, so remove it.
+Link  https://dev.variscite.com/var-som-6ul [1]
+Link: https://dev.variscite.com/var-som-mx6 [2]
 
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts | 2 +-
- arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/arm/fsl.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
-index 9ff3b374a2b31..085985356668f 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
-@@ -79,7 +79,7 @@ ethphy1: ethernet-phy@3 {
- 			reset-gpios = <&gpio5 5 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <100000>;
- 			micrel,led-mode = <0>;
--			micrel,rmii-reference-clock-select-25-mhz = <1>;
-+			micrel,rmii-reference-clock-select-25-mhz;
- 		};
- 	};
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-index 3fb5e2fb68777..30032be6fdd50 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-@@ -64,7 +64,7 @@ ethphy0: ethernet-phy@1 {
- 			reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <100000>;
- 			micrel,led-mode = <1>;
--			micrel,rmii-reference-clock-select-25-mhz = <1>;
-+			micrel,rmii-reference-clock-select-25-mhz;
- 		};
- 	};
- };
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 5716d701292cf..99dc1b3f1ba92 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -688,7 +688,7 @@ properties:
+           - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
+           - const: fsl,imx6ul
+ 
+-      - description: i.MX6UL Variscite VAR-SOM-MX6 Boards
++      - description: i.MX6UL Variscite VAR-SOM-6UL Boards
+         items:
+           - const: variscite,mx6ulconcerto
+           - const: variscite,var-som-imx6ul
 -- 
 2.47.3
 
