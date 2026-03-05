@@ -1,374 +1,268 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011007.outbound.protection.outlook.com [52.101.70.7])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010023.outbound.protection.outlook.com [52.101.84.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64112382F3F
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 15:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03403C6A46
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 15:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772725016; cv=fail; b=MPEDFu0G4MDHkjejy1onr1ULaax9ysiqtHuQCB2oz5f8cALs3dAZYbp0IPC0dQ2aJ/WzrZU+iNtJnStfBZ4XU6AYNZ2rgIl9kWmbVfAeXMVqn/4kXUTrIcs31Mr21bY6Y0At1VHII6cuMPdba7oLpjRDm/CicUZaAFy83wedC0g=
+	t=1772725348; cv=fail; b=I0S4RkIfH4ftdEYZU70uqfH3K8XhnZO71TPeMUMaAsozKZayxPssKbOwkFxjmZUGklFOAQ/afu4v/8aVaiOhM3Xw6AteCh5is7mQcgL5KTBGSFkzZQgu6EvjmckMtwe3IEhGzOpvNVDhoULyZTCpylcApfdxyZPICmpeOe3luHo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772725016; c=relaxed/simple;
-	bh=WOTZbMJjw1i7YGgJjxM0t/VVuCVVl2WWGMyYeuxGzG0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=H/U8Jy/bCm12hwS1adtyH0JtiOBKwy+c7SPJCtvF+5wnhmueg1DdM9/bB5zBvCK0vyRPAX5X8T4UtC3iQyDAvhf9kNOPtvdP5HywhOGQBbYYaZsN1k9v9niRz8yjx7FL47ZThZnRnE4hdt+frgVQgt/WaBBX6ZrUh5clTWbWyF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pvGfxYX7; arc=fail smtp.client-ip=52.101.70.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1772725348; c=relaxed/simple;
+	bh=mRsaxSDgfa0SHlrJexDjjK2yTeUNcaQmOOXJcc9dWnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZMxjSLoEsWkhlAHXzGXKlpys4rWxQ8zvU3f8J9RXlCcWB/Ww5R97g68ozUdKjpf69gS8ptifOOQB98JbMaPbn8tKgIaHoE1fP83NJU2KOinhEsU0wcehzCV+6mNOoTQc92PVaJR5D8YkkbKfaub7c554HL7b39u98eo9dBbcS4Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=j7xwELHC; arc=fail smtp.client-ip=52.101.84.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pvGfxYX7"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="j7xwELHC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jBwxKc4yVhw5XQCaDiBUoOAGWvU1jpSEegdBBoD0LmlYnsQfbCaam96lXVeQhVuMk/P2NLMEapFUKj+OajKgs+UFgMtSNEz9l649UfBCvGb2FGpdXcvYDjTsM84OrsAsA+sVXER6jNh2KVSBU+a4d0e080RolvfRVSIUPoyIr3zwuFvJYnHOiF3kxg2bbC0kTVhvNDf2HXutQVwi1tICSrjlBVvGKuZbGilARs5fmLqW1OExAmgmK5V3Pvrz/AjyI347oYYhQRvm9/s1qddeqgdVKSSn+R+tIx0khD8M5/MiIUyQhyR8Q4Voz/4Xm45oczRpFCWG64+uvFBij00RMw==
+ b=aD6osQQGYtkyrP5YXcsZmx4DaSh4WD5In9xANHuUMoIZA8F7qrOq2kK7rNPMQZGdVoLeLTrnuOasmv9vQcdUX675MbJJOvJQHFlfg8l66IYlOd/WViAJ7LYEBIYQL1vcmzDaHwMpNB/DmdWwoyiWYZX25TtYNL3o5AepapgoTFI4sVovpHYPr7q+avJGeKjKINBFDjDPS8I47vhj33QSlkX7QlL9tk7WlNN0GyOoZg0mxQXXzQUk6TWqqfJxECAEjrlh5mgcbwMis4FTpfgG7gRhBBh3JNtj16sA6iD0xltrgSWZZ8L5CdIFj112c54MHpVCpgrw5MAImToi3UhvlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7FLnrjtHtkTm3gDsK9QSPnZhS2xt8dN4MonrCmPC1yc=;
- b=N+9sFecMhaPlvT6f23NvaUZFLt4/TD1r6QLFmrtjAYG2iHlzOlY4GGrQKw7q7+YjKEk1w2XQmyLorwu9NJITR5HeXtibHpNLWTuD2EzYktxarsYljfsj61Lg/5Xgv9yxLfjhLDc34Nv73Q56nbftA4+aUEGghkjlsNWPookJjQHPcp04fSGr0hGn/LWVditLjA8DkW6znBxiTQW9bdPzS7OC3Gck6MGbDB1KLpcU/Gj9RLhQ/N04raYBu1j1QBQ/gtFNPO3snkyF8QDhzg0xCPAp9kQ4hGjmLfdLdRoC5OE7hcGbI97YeBBswIMbvSXGJ3z80RdeZBURcNCPa2q+uw==
+ bh=JhBL+uNCJn+PCrR4JmCAN0bMUELHeDdg11rc+UKOp1Y=;
+ b=X1NJMziVd30tSlH8qCaDd1Yy7u7j/xaIyPoSVJV604siENfctcgGygQSXNdO7NcEk1eb3pRuPG35Ou/hFu5MFZ5zUXJ37SHD0gdHCYWy86y6NN6PuOTQReyVV+BcLHxvjxcsOIMQ7NldEUkQkwuykMQaa50R1HBsVpWOjbWsbDi+7Z45if4g7hedm25l5kaStZbTV2vMto3H7yGyIsye0QiR5tvzIQVZfWekAsWexab1TzAqN7j+8PaeQI7Kv4A2G4sT2wafIAe7EL1DllH/vfz8CdF7ICbO09q25T2WG9lZerLqrGhG0Ejov8y850ZIR6jGkCO3kZNnWZbs4awzMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7FLnrjtHtkTm3gDsK9QSPnZhS2xt8dN4MonrCmPC1yc=;
- b=pvGfxYX7sdTwp5mmcRTnpeKQ5KjxBFPP6w/VAB7hZI7k1qGg3nI6a3ap+kmq0FZ6Kj016XqF3QUm9tw8ctSJtmTRnkEh4J/lsCT+8z6T/3KM4pEtoE3VIbC8WvJ8b/Lx9UixP5GVqlkkL7D5I+3XXrqquW5SDn73C2TtEhz4w5mzghv4ewwpvfoqzprTuj7nFM2/igIlgax1hYyU7xbksSter4DY2okbskO517af1+ewj0ekCC1c+L+di3q6bwEIXwu7RpIhb6i6rfqxeDPPBMKgNXzrEbj19dYD5of0wktFzF3CWrG4oe/ZyBIMMhn2j2gQt1NpYq+GfhX1tqPy4A==
+ bh=JhBL+uNCJn+PCrR4JmCAN0bMUELHeDdg11rc+UKOp1Y=;
+ b=j7xwELHCtyDpJufbI9AmDPznNepybPeNdKjFWCW15CRwsWn/mvdDfMHKHJfwYMFAiqA+X/TaLZ+MYuWEl33YogXkjARsyNdgE2l89TnIr3T6wt/eREBa9y8n1+8kV/O2ni3o+Zd0DJf8NABnxUVxzoWTmPcUv9kYwPV8JrwHjZsTFXO2Z0P0Hopx8LnIMexho83Tmy2ZHOIAAa8psK5+wLarqOzF53JndqT+Zda2/JBH7VS5VXeszHnUmYO3fAkcwlO3fftlqBuGqT/jIZzRdE0VSzPG6wu+3UIJnjK/RbDFcxtv6GPW/FGDqbPkL9B3hqPAZjpT2ypCbHi1SdjO5Q==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by DU4PR04MB10624.eurprd04.prod.outlook.com (2603:10a6:10:592::6) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PAXPR04MB8349.eurprd04.prod.outlook.com (2603:10a6:102:1bd::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 15:36:51 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
- 15:36:51 +0000
-Message-ID: <7f66aa76-394f-4478-88a0-f2dbf3a19d45@oss.nxp.com>
-Date: Thu, 5 Mar 2026 17:39:47 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/5] docs: driver-api: gpio: rpmsg gpio driver over
- rpmsg bus
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, arnaud.pouliquen@foss.st.com
-Cc: Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-References: <20260304211808.1437846-1-shenwei.wang@nxp.com>
- <20260304211808.1437846-2-shenwei.wang@nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260304211808.1437846-2-shenwei.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P195CA0003.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e2::9) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+ 2026 15:42:23 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Thu, 5 Mar 2026
+ 15:42:23 +0000
+Date: Thu, 5 Mar 2026 10:42:16 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	jun.li@nxp.com
+Subject: Re: [PATCH 2/2] arm64: dts: imx943-evk: add Type-C node and enable
+ USB node
+Message-ID: <aamkWBGOPDlc8Bxu@lizhi-Precision-Tower-5810>
+References: <20260305075527.1116943-1-xu.yang_2@nxp.com>
+ <20260305075527.1116943-2-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305075527.1116943-2-xu.yang_2@nxp.com>
+X-ClientProxiedBy: SA1PR04CA0022.namprd04.prod.outlook.com
+ (2603:10b6:806:2ce::17) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|DU4PR04MB10624:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3128f45-65d8-406c-4848-08de7acd03ec
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8349:EE_
+X-MS-Office365-Filtering-Correlation-Id: 848eff75-216f-406f-0fe5-08de7acdcb56
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|376014|366016|1800799024|921020;
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	tRWxib4ZZZrmDQ/WYK1Ev6MMoDDo512BbeE9FS5tP2l4GUFi1b0q1p4DcOjIEgoHL0iJqbRiUvCzBZ/CAEQD4Ca0he35nHx/mVXvcKf9jYpVy2PQ1b7JnrFRaBWPtE9Jp2/eUNYlF98m7S69yyUWZTyEec+CeN2ZWCbKnMvOfKN/Nng57O8sZxsTH/uxrKhxlUVl3c6jICkPj62LP69Z+3Yo+4ALmV8gu5MtWjKTS4GMQyq2Cl5TWsJ/PecR7jya2K+2jyDgbsisc7ro8Cb8fZ94+N1WqdH5ubhKAqT60viBfHmUcZCLIW77bpjxZjBkWR27EbO3a/xQPCfI15cOqxNTGDif7Qo1IrWd3o9D/U3OSrz17C1HxEJxh+BHzWC6wf1Ik/G1uzgfk5iubZLkyOLctyWAEwNzCvXs0LKF72QdJh9gsvkTP/md1jmiSyjAJyYetshntuV0qVlz4OEGai64K0/jK8T153mpxs+uEMaqQk7h+SUyldjMgn60yZhE5bSRUF//jlrnlUwKnR5ROqiXe9WmKCex9inZh+xvGMbjEGpM6ykjlUH3QD11YvxsAd252jSBjnX0Wmmi/VEB95R8RNupWBVGZ/0lLTerhNQ3OFvnUW7toYGr05AbJJ0HB6GExjT5fPqrFRl1eTCy+7iZH+YJaM1xX53c3V1bcpQFqv6vzDwVe6NU6//YYY9DEP9UjHoILWrYbfityXtzBy8U2faI2jp2Og0Eh0eHwD/lThm4Qk/4nDT7IMbnflvC8AlbJxTrWIDcMbIRLVri7g==
+	Z4hWe5ZE8VZWWpEwDAS5o7pewu5CwndLD8EOjQwfYfYYWLYtA1GdIts8xly+qvfBwny3J3AEzje16AIhrFVchocxK5VJl4++7KfpL/S1BrxVpxUUQ7oiQdhdCP/AFoiRUiog9fMSNayYV4Hd5/35CWShG9lAmkpF3cpgeXXWHvG1Av77RAuXzPa6c4W+I26cqk4VmtUDs1oo+2G+iQFVgEeqOqhInyvFsoCUaL9iP5A5ukzN7J5i50uBtVl88UtEomtw1+c4x+uiRgg+GVA4wqs8dXkxQo59buee6QZ+hXF/UN8iUwcaUBA8faj9ePGrG3/QD6gxp6rbX9XLSWPMgOhsHtuwaK5oyxHV9of2XeeCzZYLasxyWStyeVrpjwHSRxAbz4afJJXjLP2isO79atvyiBMmTRwrvea8Sq6pklglARgF2CkKOwmTQasvbSbDCGepxMoz7m6skEoDTIwboKAwUAyeZM3A0tsxmRlGfE3iqJIluLzMtXcjRTInJkdRy7pOcG/oakxvT43I5/OZwWkZbxuJ/1xXJTnu0B+EjDE8E8IpI8ppWEDt94GTeytrFzkrmhtYJ5c9ebvBgADeZMXfPD+yGYhZbxNzY59VgCye+eiYFTZxYVumj/rCVaibGtUnAfAT08x2FO2UIklBhFv/DpQxlccAzaxBF9rT1dRuwJEaBg+3Q3C8Bq3kSlnqt6/GI+dM5aJkacpuUSvt/WgTxEROkfO4aMjEEZY6sB3m6XN67mjOdvrcsVcJfH8gp1m2tEUWABYM1Y9wuCqBPILvQVnaedODWLiyDV0eQvk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(1800799024)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TVBqNHBzaUs1NFZWRDN5MHhHVEEvdGEvY1RBd3RnVkh6am9mNlVuSDRZcjh3?=
- =?utf-8?B?M0xBcFlCdW5pV0pOZGdQa1NHejJTcjdhamZZSXB5QlZSYnp3NEZkOUxjVVlQ?=
- =?utf-8?B?eXZuRUEzK09PbklkblN2ZWpHdXBqN0xZMlVxRjRsN1EvYnpHOWFmZnRnRFZE?=
- =?utf-8?B?V2ZhelR0QzJEWmJnK2d4MW9jUkNNcDJuRFZVMFVubHhNc01uZWtuZGNUbTda?=
- =?utf-8?B?RytoR3g0LzQxNUROeXhzK1VxNnc3K2hsazNqR3FKSGlZbDlLQTlCWTc0dmZ3?=
- =?utf-8?B?NVFvektVUTN2VzJob1BVeTkwZjIvMStXdnhReTJlZklqeEFhRk1rWVNkOXhS?=
- =?utf-8?B?QTJXZFRkTGRPcy92d0NGTmVwY3NMcVU0YWdGL2Y4OWkvUHoxc0xQd3Y2eS95?=
- =?utf-8?B?TDdiOU9iaGdISmZQZzdGbi9wNUtacjhvdWJBTzFsbkNCUlcvR3o4dzB4OTlX?=
- =?utf-8?B?aTJvM2lnQWU4UGNTQ0gvMk1oWDdBYXJZTzhVc3FhTzJOc0RWS3o5ZDB3M0Zo?=
- =?utf-8?B?ZzNvMVVpK3pydTByYVU2enBrZzRzek9FOWh4ZWJRbXZITlMwYVQrVmpqT1lB?=
- =?utf-8?B?V1N6d1VVeFJsVjd3bERPdWJ4TjFoQlVWcGRwV3lmaWl2aWcreXlabVlxbUZl?=
- =?utf-8?B?UzAyODRDZ2d4RU40QXpmOUNHOFZNT2NJQ1A4cWJlL2VXb3M4Ny9ranVCcTgr?=
- =?utf-8?B?dHMySUszakFSZy9OcWFjeHdFU0Q1aGlOQW90dWR0ZFE2ZWdCNGN4UE5yTmFk?=
- =?utf-8?B?elBJRmxxZmJUdXlPakFCY0Z5YzA4RXA5bmpyZ1lIYksweXZkQi9UbmQvdHZP?=
- =?utf-8?B?MUN6MENLcHBpRnp5dEJlaFBONU5zMGdGQlRuS1pUOTlCVytGcmg2YUhGU1Vj?=
- =?utf-8?B?QWRnRWlNNkR3cWFqWGpBMmJQVER4MWo2aTNHWTFjaGRhYjJxLytqc0JWcDBu?=
- =?utf-8?B?TjRkdjlYK1NOVkhSK1dFOEtWL2FMaUtQMU9rRlE2UVpNVTlPOWNoNGpvT0Jk?=
- =?utf-8?B?SXRqR3Z4bVByTnFWb0tOVHVzSm82czdxL2tZWjdLT0laRVRCVSs3VXdKdVBn?=
- =?utf-8?B?NS9qanlhZXViYmw2QTlLdGRzVHluTXI4VHo4QmFiZFdDVHRBZnNxditOYjhC?=
- =?utf-8?B?ZzJiMWVzd0xQK0dwaUVVYVk0TjlvdWxTTEdiYlc2UzJwQndtMFYyNUxSVXht?=
- =?utf-8?B?RWdqZ0hzTDQvSzJhSUFldEdwUVE2dk9lQ2FkMENrTVFxQ2JQYWxqSWZmUnVH?=
- =?utf-8?B?emdqOHlpTDdhNis4UG9EWWp2YUhTeng0cytTMzR1N1dXejdYcnlyeW5zWHNa?=
- =?utf-8?B?TDE5aGxITmQ2SFdwNlNtM2NZVWlhQTE5dlkwdHkyTG12ME1OMlp6aVVVelN3?=
- =?utf-8?B?akludXdIbVRTV1RGOW9ZTE1WL3V1QlB5czNJTFhhRWdKb0w0TjJBcUNMeUlq?=
- =?utf-8?B?aEI4clV5dFF4NjFBSW5LSzNtQ0JjS3RJeTBqSXhkTmdvanRjTWdEaUNoSXpr?=
- =?utf-8?B?b3Y1eDZUMTVjTlBOTksrT0NaZGovaFRKYzQ2SlJuYXhVSFVtRGpZWmc5S2Fs?=
- =?utf-8?B?dk0zaEprZHlvZWRVa0JpNnVlb1JUWk1NRWk0bDduZXp5MW5hckM4L1NONGRv?=
- =?utf-8?B?L2w2WVpYUy9YbFpYc01NSHYraVdQNU12Zmttb0lMZWRvd2V4NE5EQ2diTHdU?=
- =?utf-8?B?NXR4S0ZxSDhUTVljNUZYUmFWdzdLdnZzQk9MbWIrUlBPQm9MOVMzUmE2aWh5?=
- =?utf-8?B?NE1Wa0pqMFFYTmhVUzJKTkVWMzNXQ0xOOFdKZHBsQTFrWW1wNnl3eks5ZnVm?=
- =?utf-8?B?dWZGcXRDc2taeEZSL0x3Y2R0VGs0a0pLa1JmaUtuQk02OE1EbE91ekwyVGZL?=
- =?utf-8?B?a2RVOHJXaG5NMnpBcnViZHZjRlpXajdFSmFjT1A2ZTZuSkNvT0xPcERYeVo5?=
- =?utf-8?B?dFp0bVp4ODJja0dCSUhvaGNYMEo3OXp3YVJJM0lBeXpXMUM4T0luU2lCbjhQ?=
- =?utf-8?B?SncwNStIVU9UY0NZTXlhV3R5VFk3Q2hsZDIzRVFsUXk4RFo5NUNmcjZYaGQv?=
- =?utf-8?B?WGxZczJ1aHVFL0VBVFRscS9CVUI4R0s0Tkx5aTFSNFBPWVpxRFM4ZmNjVTA4?=
- =?utf-8?B?dys0Qy9XNEU4NjZhM2RMRFlwWWVPV1BsL1loUmwrRWVRb3l5cFpiUVQ1eXJ1?=
- =?utf-8?B?dlRDZ2hrUXpVZTdCTFRyYXZTTkZocDhzVGpYZm1BSzNQb0d4eHUwc3ZxZGI4?=
- =?utf-8?B?dG10aG1DL1ljbUQ1aE5GYTNETU1GSzcrbGo2SGhNL0pHSE5BbjB6ZDJaeUlU?=
- =?utf-8?B?eUx1QVJ3alhINzlzMmsyb2t4MFE5K0dJczZDanZGeDc5bWp1Zkt2QT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3128f45-65d8-406c-4848-08de7acd03ec
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+	=?us-ascii?Q?83E9xJfIJ4a2zHuCcsH2Hdzd4DfSOfTwnmgshSThSpJQlGU3LVkHST/KQrag?=
+ =?us-ascii?Q?HJr0amnLI8QOcmQL1nfngdm+F+7SWXtVzRLeAyKF1Cr+H4j4LD2Dice7m1yt?=
+ =?us-ascii?Q?T4rmGeWI4Gqxhu3envOPlltJ4NHwvC45UtH0UIrRiijI8DGef2LeCn8nCJek?=
+ =?us-ascii?Q?fqlleECytn/JkLkhEl9+I263mh0nsQH7ZpEhinEkAEPyt8TGnfFUI/qlwXo1?=
+ =?us-ascii?Q?U5n1i7FqtJD0fDVN/yP6bvf6iM36LZ3cMuzf63RIVIk9VlgkY0wVk8Tu5aW3?=
+ =?us-ascii?Q?DUYR4MfgS6e/ITU4mf14QGGn9TDO6mhAURaKDDWQ4heXdkuY8kODFgyOwHNX?=
+ =?us-ascii?Q?Vs51tLfo0Mi8d2G+XgWY2EoPAjlM2NwlOIHv5ipnc/qfGXFZkmHNQIA8ZXv6?=
+ =?us-ascii?Q?1WAiugb7G3REMGSmJGxbK1hHrzijb3x5mV93FYpufF1ItmnF2mA3Iu4SM3be?=
+ =?us-ascii?Q?zV2ZpKNAnInl+h7B6eGQA1ainvYMB7HbSLtuW0iNiKrMjoqFQpoXQMm4N5Dh?=
+ =?us-ascii?Q?Hn9hMlMhXgSgBZrnheJ2fQOlH+R53j8gE9qEHQA3vZrwU4k/wKNJU7Zxj2+V?=
+ =?us-ascii?Q?nDbxR7KRYqWPlbP3oW1fXZUk4WShLAI7wL04UvOEcoxYLgg4muh+Wcl3XKGN?=
+ =?us-ascii?Q?Cnej4//z5tp4BPTkSljxGUmoo6HJO2Il23G2P4x0Beo7YUU7fTGACezcfDW9?=
+ =?us-ascii?Q?fFbDeJGnavhGHSish69gbuZs+eIpbmQkVZLQNiR+XG5R2eTHyNjpWKVOewOy?=
+ =?us-ascii?Q?K9gq3Iku/k3hcU8hiM2TIrhGRuC2bXGOc/qxfyT/j8t+wF5TcHrBynU4zVTP?=
+ =?us-ascii?Q?sTtJ0p65iWmbz8KJs/5vEokFLpMjPdFY4rs+Jmtd79Tj1IrKqVF3Qe7wC1F6?=
+ =?us-ascii?Q?TahvH/4nOc0kvl6K5JLD6ozf5GyYJ3iiE1wz24Jp0zc6dyLjU6EEI73GRpLS?=
+ =?us-ascii?Q?3TW+0OH9d+9Bd4Zf6f8cNDCKJ+ysNhpa61joBSfZtFMdNREMl5XEmPB3caNf?=
+ =?us-ascii?Q?fJKH7pak107tUrJ6m0fNmbZBkt2zYscKNrs4NHbVYzl8vUNZ7w3pS7kM+Uzt?=
+ =?us-ascii?Q?hs74WbfSp6EeabjDW4GmAEMaORCU+dZOYqioNdFlyclaz1UxqGl7MG0Xv51G?=
+ =?us-ascii?Q?dfQ8yc5iKGiGm6sD1LiT70D3pfwHaP9j3uIxHa+f0VQ0ZMj1JiwaJgdUFoku?=
+ =?us-ascii?Q?EqAtBLKqaDlNBu9jVLFFAXooR8BEQJIOlODbIJSwqKaEcyy0rmOvCnM0hXn3?=
+ =?us-ascii?Q?myn71d9br59RPYif3X9Fn5W4wvj+t+cfVMVDP7ZfCGqLBisJHJajzhHPUz4I?=
+ =?us-ascii?Q?msxTImzMSlHifjSPCnT52IZ4qYV1AKtdWY/aUEi8AXJU1JWAcJNF9gIPa7bO?=
+ =?us-ascii?Q?bX79cM546PqnlY3EClKwy8ptyD0vlwZWyl9dJvcq8A9kY+CAJf5iPpJpsIlH?=
+ =?us-ascii?Q?igzOWfRAE0rnG7ZMS6RL1JS74gQ7AeE0mzJu0r4cU+XwTA1vsOQcfLoJVFQa?=
+ =?us-ascii?Q?6suiinJgg6oTZU0TsgBzv6xBk7wJ9EOdju2I+9TC+5w6gNz3Lalex4EU0Chp?=
+ =?us-ascii?Q?fuByNagVoVe3xUpGEBR3IpUW0o1QtiK9mNTsVc4QOuprKcnfwcTyLIX5Uag5?=
+ =?us-ascii?Q?t7kCFm7tfNQ3UrdeUgVDvrDH4dnCJ2//C03d4A4ybD8x7nX5b+/cVDIuWe+E?=
+ =?us-ascii?Q?x+9E8f3vIrzguniCBc4cnpbg0eH31cTvk5a8cvsq8JxStqWHNmQhBN1wGPgN?=
+ =?us-ascii?Q?kxh6PYeOxA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 848eff75-216f-406f-0fe5-08de7acdcb56
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 15:36:51.2931
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 15:42:23.4183
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q4Q87KxZHIw6hrUWApS9bAfxWthaLn5BelseZv+y2+XW+7bX763Jr3nc13RWEJlDB5f0KYvY+qTo3Ak2IbekPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10624
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2xAJQ6bHEYdgr+EtMjRey76SUW4xxHOJcgSGqJvTUIh/sYewQEp7ZMYsvglah6cYG+l66LnEpqXfqPq5U9cehg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8349
 
-On 3/4/26 23:18, Shenwei Wang wrote:
+On Thu, Mar 05, 2026 at 03:55:27PM +0800, Xu Yang wrote:
+> This board has 2 Type-C port, one has USB2 capability and another one
+> has USB3 capability. This will add Type-C node and enable USB nodes.
 
+last sentense change to:
 
-[...]
+arm64: dts: imx943-evk: add Type-C and USB related nodes.
 
-> +GPIO RPMSG Protocol
-> +===================
-> +
-> +The GPIO RPMSG transport protocol is used for communication and interaction
-> +with GPIO controllers located on remote cores on the RPMSG bus.
-> +
-> +Message Format
-> +--------------
-> +
-> +The RPMSG message consists of a 6-byte packet with the following layout:
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   |type |cmd  |port |line |  data    |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **Type (Message Type)**: The message type can be one of:
-> +
-> +  - 0: GPIO_RPMSG_SEND
-> +  - 1: GPIO_RPMSG_REPLY
-> +  - 2: GPIO_RPMSG_NOTIFY
+Add Type-C and USB related nodes. There are two Type-C ports, one is USB2
+only and another is USB3.
 
-I think would make sense to display the type in hexa.  e.g : 0x00, 0x01, etc.
-
-Also, would it make sense to display the byte index as follows outside of the boxes?
+Frank
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx943-evk.dts | 92 ++++++++++++++++++++
+>  1 file changed, 92 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> index c8ceabe3d923..fd67cc8e919b 100644
+> --- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> @@ -6,6 +6,7 @@
+>  /dts-v1/;
+>
+>  #include "imx943.dtsi"
+> +#include <dt-bindings/usb/pd.h>
+>
+>  / {
+>  	compatible = "fsl,imx943-evk", "fsl,imx94";
+> @@ -230,6 +231,48 @@ pca9670_i2c3: gpio@23 {
+>  		gpio-controller;
+>  	};
+>
+> +	ptn5110: tcpc@50 {
+> +		compatible = "nxp,ptn5110", "tcpci";
+> +		reg = <0x50>;
+> +		interrupt-parent = <&gpio3>;
+> +		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_typec>;
 > +
-> +- **Cmd**: Command code, used for GPIO_RPMSG_SEND messages.
-
-Are there any specific commands? Also please either use upper-case first 
-
-letter (e.g Type, Cmd) or lower-case letter (port, line) but do not mix them.
-
-
+> +		typec_con: connector {
+> +			compatible = "usb-c-connector";
+> +			label = "USB-C";
+> +			power-role = "dual";
+> +			data-role = "dual";
+> +			try-power-role = "sink";
+> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+> +			sink-pdos = <PDO_FIXED(5000, 0, PDO_FIXED_USB_COMM)>;
+> +			op-sink-microwatt = <0>;
+> +			self-powered;
 > +
-> +- **line**: The GPIO line(pin) index of the port.
-
-In message format line comes after port so switch the order here.
-
+> +			ports {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
 > +
-> +- **port**: The GPIO port(bank) index.
+> +				port@0 {
+> +					reg = <0>;
 > +
-> +- **data**: See details in the command description below.
+> +					typec_con_hs: endpoint {
+> +						remote-endpoint = <&usb3_data_hs>;
+> +					};
+> +				};
 > +
-> +- **reply err**: Error code from the remote core.
+> +				port@1 {
+> +					reg = <1>;
 > +
-> +  - 0: Success
-> +  - 1: General error (Early remote software only returns this unclassified error)
-> +  - 2: Not supported (A command is not supported by the remote firmware)
-> +  - 3: Resource not available (The resource is not allocated to Linux)
-> +  - 4: Resource busy (The resource is already in use)
-> +  - 5: Parameter error
-
-Is this part of the 6-byte packet? Are these standard errors or you defined them as is?
-
+> +					typec_con_ss: endpoint {
+> +						remote-endpoint = <&usb3_data_ss>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +	};
 > +
+>  	pca9548_i2c3: i2c-mux@77 {
+>  		compatible = "nxp,pca9548";
+>  		reg = <0x77>;
+> @@ -680,6 +723,12 @@ IMX94_PAD_GPIO_IO47__SAI3_TX_DATA0	0x31e
+>  		>;
+>  	};
+>
+> +	pinctrl_typec: typecgrp {
+> +		fsl,pins = <
+> +			IMX94_PAD_GPIO_IO44__GPIO3_IO12		0x30e
+> +		>;
+> +	};
 > +
-> +GPIO Commands
-> +-------------
+>  	pinctrl_uart1: uart1grp {
+>  		fsl,pins = <
+>  			IMX94_PAD_UART1_TXD__LPUART1_TX		0x31e
+> @@ -821,6 +870,49 @@ IMX94_PAD_XSPI1_DQS__XSPI1_A_DQS	0x3fe
+>  	};
+>  };
+>
+> +&usb2 {
+> +	dr_mode = "otg";
+> +	disable-over-current;
+> +	adp-disable;
+> +	hnp-disable;
+> +	srp-disable;
+> +	samsung,picophy-dc-vol-level-adjust = <10>;
+> +	status = "okay";
+> +};
 > +
-> +Commands are specified in the **Cmd** field for **GPIO_RPMSG_SEND** (Type=0) messages.
+> +&usb3 {
+> +	dr_mode = "otg";
+> +	adp-disable;
+> +	hnp-disable;
+> +	srp-disable;
+> +	usb-role-switch;
+> +	snps,dis-u1-entry-quirk;
+> +	snps,dis-u2-entry-quirk;
+> +	status = "okay";
 > +
-> +The SEND message is always sent from Linux to the remote firmware. Each
-> +SEND corresponds to a single REPLY message. The GPIO driver should
-
-Wouldn't be the other way around? Each REPLY corresponds to a single SEND msg?
-
-> +serialize messages and determine whether a REPLY message is required. If a
-> +REPLY message is expected but not received within the specified timeout
-> +period (currently 1 second in the Linux driver), the driver should return
-> +-ETIMEOUT.
+> +	port {
+> +		usb3_data_hs: endpoint {
+> +			remote-endpoint = <&typec_con_hs>;
+> +		};
+> +	};
+> +};
 > +
-> +GET_DIRECTION (Cmd=2)
-> +~~~~~~~~~~~~~~~~~~~~~
+> +&usb3_phy {
+> +	fsl,phy-pcs-tx-deemph-3p5db-attenuation-db = <17>;
+> +	fsl,phy-pcs-tx-swing-full-percent = <100>;
+> +	fsl,phy-tx-preemp-amp-tune-microamp = <600>;
+> +	fsl,phy-tx-vboost-level-microvolt = <1156>;
+> +	fsl,phy-tx-vref-tune-percent = <100>;
+> +	orientation-switch;
+> +	status = "okay";
 > +
-> +**Request:**
+> +	port {
+> +		usb3_data_ss: endpoint {
+> +			remote-endpoint = <&typec_con_ss>;
+> +		};
+> +	};
+> +};
 > +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 0   | 2   |port |line | 0   | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +**Reply:**
-> +
-> +.. code-block:: none
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 1   | 2   |port |line | err | dir|
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **err**: See above for definitions.
-> +
-> +- **dir**: Direction.
-> +
-> +  - 0: Output
-> +  - 1: Input
-> +
-> +SET_DIRECTION (Cmd=3)
-> +~~~~~~~~~~~~~~~~~~~~~
-> +
-> +**Request:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 0   | 3   |port |line | dir | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **dir**: Direction.
-> +
-> +  - 0: None
-> +  - 1: Output
-> +  - 2: Input
-> +
-> +**Reply:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 1   | 3   |port |line | err | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **err**: See above for definitions.
-> +
-> +
-> +GET_VALUE (Cmd=4)
-> +~~~~~~~~~~~~~~~~
-> +
-> +**Request:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 0   | 4   |port |line | 0   | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +**Reply:**
-> +
-> +.. code-block:: none
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 1   | 4   |port |line | err | val|
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **err**: See above for definitions.
-> +
-> +- **val**: Direction.
-Why is direction High or Low? Or I'm missing something.
-> +
-> +  - 0: High
-> +  - 1: Low
-> +
-> +SET_VALUE (Cmd=5)
-> +~~~~~~~~~~~~~~~~~
-> +
-> +**Request:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 0   | 5   |port |line | val | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-
-So when getting replies val is at index 5, but when sending requests val is at index 4. Wonder
-
-if we make this consistent? Or at least explain why did you choose this layout.
-
-> +
-> +- **val**: Output Level.
-> +
-> +  - 0: High
-> +  - 1: Low
-> +
-> +**Reply:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 1   | 5   |port |line | err | 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **err**: See above for definitions.
-> +
-> +SET_IRQ_TYPE (Cmd=6)
-
-Is there a cmd for gpio polarity?
-
-[...]
-> +
-> +NOTIFY_REPLY (Cmd=10)
-> +~~~~~~~~~~~~~~~~~~~~
-> +The reply message for the notification is optional. The remote firmware can
-> +implement it to simulate the interrupt acknowledgment behavior.
-> +
-> +**Request:**
-> +
-> +.. code-block:: none
-> +
-> +   +-----+-----+-----+-----+-----+----+
-> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
-> +   | 0   | 10  |port |line |level| 0  |
-> +   +-----+-----+-----+-----+-----+----+
-> +
-> +- **line**: The GPIO line(pin) index of the port.
-> +- **port**: The GPIO port(bank) index.
-> +- **level**: GPIO line status.
-> +
-> +Notification Message
-> +--------------------
-> +
-> +Notifications are sent with **Type=2 (GPIO_RPMSG_NOTIFY)**:
-
-Here you should clarify who sends the notification messages.
-
-... Notifications are messages sent by the remote core and they have Type=0x02...
-
-
-[..]
+>  &usdhc1 {
+>  	pinctrl-0 = <&pinctrl_usdhc1>;
+>  	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
+> --
+> 2.34.1
+>
