@@ -1,33 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3524342509;
-	Thu,  5 Mar 2026 20:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33FD33A712
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 21:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772743051; cv=none; b=KvXqoGp7MKAiwxdC9P9l498E83r+wZujoqj+KnpQ1whLJ4vRP+sweK8yE9ohBBQ1W1z/n17L+L6kPSLhw8k9H1nosnbqNVrozMc0rsmdTIsQiTL/twWrVKJWvt4eR404FODhRVmDL+LuKLqQX6ZsGCtQusXb1mp0okn8w9O62OY=
+	t=1772745517; cv=none; b=Sb5XgdF5j6SIQHaZtB85jZHeVrRWWslnsooIcfNWYMFCyjjp/1Aww5Q/BBfsamH93HF4mbUxe+e8l9hLo5xnMrJdppYN4jHp2OTLCBELTMHQQTGD87LlaJAyU4DM+IyqJYaYZMK897QmR+fKxPmofh/atIRzw1BrzERASyOoMww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772743051; c=relaxed/simple;
-	bh=rJdX5O217lkUZWEJmhxFt0SA5QUe4q3aekpnomdRpFE=;
+	s=arc-20240116; t=1772745517; c=relaxed/simple;
+	bh=6H2FBr+h/R7p6UFbOa1JlXKs8KnLDNSITprKGuUVwgk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IYt4Vp8z9+HDjv9uO7EVXZX9iUUG7Not/jywuiNfmLqoYdjYjJMj11cclKp6eVh0SzG0WoHFckSXFisHq4nnPmuEAyaQeVg2aXucLAOWdUf2M5GOUeIUY0eH1uGJsqrla+qt7j1vqA4DOz/M1RDOpCBRUwlnWT/+Js6oNOFlCXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuc/vu6C; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=hEyqf+X4Vva3nONPMFWYknelvLzeJ95aFqnmqx9TJlPkFZmURxuN2ZesgVRZETAQtzKDmePQe1w0Ge4oM1gLKM73+KSprexlIgWvwVMEd3tOVAULBgfe9YfIAdYZh5L8JYx57Z4XXUgcPf+qh3F0qhqwlWiONQd3t8L3UemDi00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQK+RLlK; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuc/vu6C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D420BC116C6;
-	Thu,  5 Mar 2026 20:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772743051;
-	bh=rJdX5O217lkUZWEJmhxFt0SA5QUe4q3aekpnomdRpFE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uuc/vu6CnzHzYDEfKuXj1/wsZUgPZrBRr9oIGVJLjem+FmBtPE63AfrMam1GYEotG
-	 P5wScuhptWXQdWOGU7EogQEZzlVxBfRekvnAGVDW4zO5JS7b7qumuV/qoK+6ZKIUD3
-	 bXFYnBTmwz4hOQ3Lj1nvZMvO9dyK+kUyf3Wzlo9cbqoRubRV/XjJjGNYxuSPC0vrPe
-	 rjckhY5SEkBDqUUu2gAFvnJdgRngEmuI4Eb8p8MNBQEjMNi3egBvUybnOGTUm8vKhl
-	 CJabOx4E4Ak8oNueqUiWw9GB9L/HJp6AtzyfNQBxLkI7EI1Gp4ud4tkYFOOLgTloJK
-	 +lyQ/OrLoQgVw==
-Message-ID: <39ef5c99-ba8e-40c1-bf93-359db7297d55@kernel.org>
-Date: Thu, 5 Mar 2026 21:37:26 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQK+RLlK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772745516; x=1804281516;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6H2FBr+h/R7p6UFbOa1JlXKs8KnLDNSITprKGuUVwgk=;
+  b=NQK+RLlKZh/uTXhOH1O2a3FpRQcrmb2zfqeCPdpDagW7dFHa0fbDyKrh
+   xAZTrIa5ROEYcNBkM1/KJRWwk55LCJB/lNpFAlBbu2tbZnftgcUt5CbkZ
+   Qwkpew1wbefUkHWK8T8jlczH2CorR27ZCENUxGfxFSRw3sZDC9L0uMrvv
+   VJQaXXsXz/Q3PKUIGlolP4yFGmshzbW5HhSCZHhcALqxN5ujVLm1OTAMc
+   HMmE7wVPgXj8KgqsxgyO4eZqeR8Z+D4mekD5IyzRWgJLmQWkra4a+QtzX
+   RArxInAVqjj2iKZgLdNvC93ZzRJSZSFvvppNWX3z/gKmQQRgqKwnHwzHd
+   g==;
+X-CSE-ConnectionGUID: zyP100EJTfKIJUL7cORA0w==
+X-CSE-MsgGUID: ovjRfUX1QTO6W+smxt7lmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73921731"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="73921731"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 13:18:35 -0800
+X-CSE-ConnectionGUID: Jpr2x9n2RTi0MZCT//8IMQ==
+X-CSE-MsgGUID: 4QmsBi6TSGeHgZbJNENP6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="223505518"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.244.90]) ([10.245.244.90])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 13:18:32 -0800
+Message-ID: <aad2d38e-a0ef-49b1-a82e-f3a9b4750612@linux.intel.com>
+Date: Thu, 5 Mar 2026 23:18:29 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,127 +52,49 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "ARM: dts: imx: move nand related property under
- nand@0"
-To: Frank Li <Frank.li@nxp.com>, max.krummenacher@gmx.de
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- Max Krummenacher <max.krummenacher@toradex.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <20260219151157.2549198-1-max.oss.09@gmail.com>
- <aZcz1vRg4KtAKUd_@lizhi-Precision-Tower-5810> <aZdDF6BObEu_C4KJ@toolbox>
- <aZdnhv2QC1szMCVl@lizhi-Precision-Tower-5810> <aZ80BWH6DRu8_W_S@toolbox>
- <aZ82pG3PO1HxD18B@lizhi-Precision-Tower-5810> <aaBA65_zLu8S6WMS@toolbox>
- <aaBi9lipWTG5l0hs@lizhi-Precision-Tower-5810>
- <bd0bd330d140f9d9d222c72c3797f79d08fcae1d.camel@active.ch>
- <aaWxiERQ4u6IhO7Q@lizhi-Precision-Tower-5810>
- <aaniGuauaieO3p36@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] usb: hcd: queue wakeup_work to system_freezable_wq
+ workqueue
+To: Alan Stern <stern@rowland.harvard.edu>, Xu Yang <xu.yang_2@nxp.com>
+Cc: Mathias Nyman <mathias.nyman@intel.com>, gregkh@linuxfoundation.org,
+ tglx@kernel.org, mingo@kernel.org, claudiu.beznea.uj@bp.renesas.com,
+ kees@kernel.org, bigeasy@linutronix.de, ulf.hansson@linaro.org,
+ rafael.j.wysocki@intel.com, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+References: <20260304115729.857136-1-xu.yang_2@nxp.com>
+ <c35d4aae-038f-428c-9b69-09230043dd60@rowland.harvard.edu>
+ <dia6g5nbekt6brmi73dovchyklugjnd6ok3tsifbd6nfcjnnvd@xus2sw5wodhe>
+ <b5a3d627-8cc5-41a9-848a-1e67c96bc191@rowland.harvard.edu>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aaniGuauaieO3p36@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <b5a3d627-8cc5-41a9-848a-1e67c96bc191@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05/03/2026 21:05, Frank Li wrote:
-> On Mon, Mar 02, 2026 at 10:49:28AM -0500, Frank Li wrote:
->> On Mon, Mar 02, 2026 at 11:53:00AM +0100, Max Krummenacher wrote:
->>> for our NAND-based modules, and our CI no longer produces any useful
->>> results as a consequence.
->>>
->>> I strongly believe that, as an immediate first step, the commit
->>> that moved the DT NAND chip configuration into its subnode should
->>> be reverted.
->>
->> As my previous said, can do partial revert? Just add back property under
->> gpmi and keep nand@0 node.
->>
->> For example
->>
->> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
->> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
->> @@ -260,14 +260,10 @@ fixed-link {
->> &gpmi {
->>   	pinctrl-names = "default";
->>   	pinctrl-0 = <&pinctrl_gpmi_nand>;
->> +	nand-on-flash-bbt;
->>   	#address-cells = <1>;
->>  	#size-cells = <0>;
->>   	status = "okay";
->>
->> Remove "- nand@0" part.  You can use "git add -p" to do that.
-> 
-> Do you plan rework this patch as what I said?
-
-Issue and revert were posted two weeks ago. That's maximum time to
-handle regression.
-
-Please apply the patch to fix the regression.
-
-#regzbot introduced: 8124b4a4a96b
+On 3/5/26 17:47, Alan Stern wrote:
 
 > 
-> Frank
+>>> A better question to ask would be: Why does xhci_resume() call
+>>> usb_hcd_resume_root_hub()?  That does not seem like the right thing to
+>>> do -- at least, not in this scenario.  The proper time to resume the
+>>> root hub after a system sleep is when the PM core calls its resume
+>>> routine.
+>>
+>> Good question, it seems like commit 79989bd4ab86 ("xhci: always resume
+>> roothubs if xHC was reset during resume") is added to fix some issues.
 > 
->>
->> Frank
->>
->>
+> The changelog for that commit says that it was meant to take care of
+> problems during runtime resume, but it also affects system resume.  This
+> appears to be an oversight.
 
-Please kindly trim the replies from unnecessary context. It makes it
-much easier to find new content.
+That is possible
 
-There is huge chunk of quotes below which no one should scroll through
-to look for your replies.
+We should probably limit the all the usb_hcd_resume_root_hub() calls in
+xhci_resume() to runtime resume cases only.
+
+There is a similar case further down in xhci_resume() where driver is looking
+for pending port events.
+
+Thanks
+Mathias
 
 
-Best regards,
-Krzysztof
