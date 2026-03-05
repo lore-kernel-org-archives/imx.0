@@ -1,401 +1,221 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010007.outbound.protection.outlook.com [52.101.69.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274273E5589
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 17:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772731507; cv=none; b=L+vLky25/ibbNK2UnuigpUNzqiH59Q7CiE/yZdgwycctRSozh7nmTipVCXJQ0+XKxBwvpaNTQ9qjTVGPGiBmOH3eacxa8PksfrxmJjm3/9WCIyhv67e3m8lSdH8tl5UEb9oxIPQUl1rM+BvFrQuzIvYfktzafx2ShGkf7EQ3Th4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772731507; c=relaxed/simple;
-	bh=wkoi1v2b0irRWpaxmJ+Uncv1RjSBVMfii+W5TgwM24U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z/jTvEhPZt9wzj2HujLPbJwN3qo0ZkwmNottl+mB0QHxlcLh6pmBxBCr4Viucx1ZGYjJ8xcMep9yQWyujTpZYsg24MxuEgA7cEGPm089iCH8NFJ3EslWyAYX+OPdp21nMLV9A8/6G3tEMTspyNUlJ59AtXMQdBB8Uv0OVGY3MAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koBF07dG; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991F93E51C5
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 17:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772732290; cv=fail; b=uvD0i139cRgSbGyh1VRyDf3jElQZTQRVfsSxai33GhVugPMJTzPkZpr2WwtQweaXmimxxMtRcsmcFvZ+X2I2QkK6/pKaMbuEI/nNf3hp8ZETBfHGW+5CroT9S4sOUY24F5paYafis7Tfn3xloQwQxouYyCExNWF6V4blRvQuS5Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772732290; c=relaxed/simple;
+	bh=633qBr/TRnAQv/ookIHFvtOZBMgyeRHu+swp3VxalLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S+ynX2iFSKm/hdniDCMpDdEKrZlvuR0QlBDSC/7fKsIHplEfeY481UL5PouMYfX+EYzhXfW4i9JaKGhAjtvdqgzGp1GkTwTBvGKzwknKgErDmreLqRdMfCIdwOQIul1xB1VK8cxMRds4uUf2ah312GKAC5Zlhsbq7Khaj2K4Q8E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fpLGP5Ou; arc=fail smtp.client-ip=52.101.69.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koBF07dG"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4806f3fc50bso90344925e9.0
-        for <imx@lists.linux.dev>; Thu, 05 Mar 2026 09:25:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772731502; x=1773336302; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FwXBW1bvnuKHtKAFJ+iQrOF7DvoRn1hnFgEXCS4/FD4=;
-        b=koBF07dG657JuAhE3346O3jFoipUd8+MPX9MlMJAuwRRWxi5kg/XMWcBVyDLfbwWR8
-         BQSpWRW8NECwRdyYYFatVpNm4JZ7HqGhbYpVGkibN46wFESeocmIXeIbkdx1p1wu3oKC
-         wJQafsAny1r2o1Q2okk+aupoDejdplWyf5VcUpkM40tp7Dzo0UFGHBz3n09Debocq/Ph
-         x4DexTmxrj00Px9PHwzQHeKb50t4B97cZmIyUDZ8dr6LT+yl3Mxg6jRsNHNUILGd0Ew6
-         jfUVW22uBhCAKKe/SYlhIp9Jw2Vudy/Je5dwitFI7GGC2g/o40g3Rw+WsIP+JLuEcUnv
-         6Kjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772731502; x=1773336302;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FwXBW1bvnuKHtKAFJ+iQrOF7DvoRn1hnFgEXCS4/FD4=;
-        b=TagT94m+MsD7RRqR4CjAllGHmUJFZw9M9BsDkEukTcdpfktoI28KyoKqhs673d1cTR
-         xccxCgJME6IvKJUis+/XUuecdBHlE6JiDHr9lgXM9P4ZGDmvJKSXSPFGK4odm6atZngy
-         3qbjF8eZOLJxrFGvwHV5wzFauqT5kjadSoK71oW8hudsLfjA62uvninYCcVISPNtaWz2
-         bAtb8XJZBIvhXXhZuDWkUOq9I1Gu/PZgxI3byi54YPu2BCzQUz7boKQsMjCddVzoOron
-         qkwZPsSNDha2d7qzEIaIdSMLRAQz3RSRPvZ939F7QvJ+H+C6uOJRESnMvjCQZ2VPSBqb
-         Pd3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkWFhRrwWd3QS9uZDD0cnCYKC5j2gyEiH5jb6Ws90wB59KkBCM7ap/rqcpcFxIVh3XuWc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRrLy6V3nPN9SXHkDVRyNj0dyPbsOiwbDJNU95V9c90JfCwd6f
-	hFaVqi9J07gG6yQx6hB4S2ajshk5XmeGFyHszahci7jOq8/VVCSPIwI9
-X-Gm-Gg: ATEYQzz8ulvREJxc3dx8aSA3FQBUd1prnO9yji0sfy9FHDc+fR1yZlnZuWHrPVhublf
-	vJD03JxDJQyJQOcPsrrXy3e+8zDujiVmuewy1HggL23NbH8DXAkt10WdNXaWKyLQnXk9ebQghr+
-	Ep8zlI602lRscBv27qBFBKrzB/Wc869V1GWYgCg9I0snj3u8ymyTiH1r2uAEPoxTsQSoABwxltH
-	FmSGnGarhV2JW2BahSegs5su5EqipA6L/JerTIMSJ/pZHpSbmXhGuiSyugrhQvYqZbIIKFnPrjq
-	xWj80pufoUE/0cLaSeHCOl6P/zaBuaYjmZvY6WoryIFNySf3SSFnfJY7v6g2YKvstxTVAmZclER
-	IZLu7v2n8Vaz9tihmik/JUW9qsFulapmjBNPLNOe3Y1GUt2TAW5PMv9XsSMu46tCDhXJuihsggK
-	EeJDySwpwEDPoML+KvJMfYSEORe6SNFrM7y2sb0bdiZ47702EltphgCYuOAK2dfqqDzLVpJKKJJ
-	3rQuHNzVpa7fcImFmFWAZHT4VE=
-X-Received: by 2002:a05:600c:34d6:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-4851983936cmr122599795e9.5.1772731502386;
-        Thu, 05 Mar 2026 09:25:02 -0800 (PST)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851fafe4c9sm67153495e9.15.2026.03.05.09.25.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 09:25:01 -0800 (PST)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Thu, 05 Mar 2026 18:24:34 +0100
-Subject: [PATCH 6/6] arm64: dts: freescale: imx95-verdin: Add Yavia carrier
- board
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fpLGP5Ou"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u/L+k7Cd+AzgffPgrAsgDQZAF5cETgVMusAhqNesX2b/WtnkkvqSqF6ZJ2wJxfIJhnYFz2RRkkgkbRE1pPz3ebMOudfUL+Xb4DVllj8H6BgXCc+SDylFy3N6f4lPnphvduWv69to0yUI85ndhSCxtskzUwX/msCXsgLhTSzrWQOvDnR2vrIagSxyJpUm9vwpNgh3UTHdLw5EOZ3z+IkRckzzzafykXb2ika8X1UAxNS92d7G4WiYcndKVc7FuG9rY+NjuZmaaMU2T4xhqiBRq6VPhhozBWYyniSbaYgOsh+UuvhTnXPyiAcOSYg98PURiF92cC/1vf8q2rftACW9Sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q0hqXPf4kTbOxJkOF4gql1YC4rmxr2neS6DmqcMuUNc=;
+ b=igSThpjwdR3j/huitz7B5Iqu/f6M917qtzUeLMGZYKz05Z34TXCk6ywpNndo3ttTmJ1ctZaI1Un7/ikSKX8l7ZMtWn1jJ7un3yLekMUfb+4XdwNajtbvzwbpoEB0iIkRyEJi65oyVB2d/OHV5CnVMXJN1tSb+fFfTflWMbYEvZp57nlQj1Tac9VtM9gj6Z5q5Mp688XID0HrlhCYDvze0GWwG09Z32vxGOiMiVFHgulcJXmVYkJdEzgxDiQFEulyClCIbbJP7KqHbLZOY2P2jLlLdzn3xhXZnnohOZSawyJ6miNslCzhZRR1NqaeTqcq5WBY01wwm7OSHV5xfXR6eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q0hqXPf4kTbOxJkOF4gql1YC4rmxr2neS6DmqcMuUNc=;
+ b=fpLGP5OuXlCfs3iG0WMXPDy5siWKRmEQjh6zGzA/B4iFPlEwfn3NwdXvz94y5fFkatk4+HX+ZlatrfODYqo0TZ0Xmn6v1WNaAHgbsUO8wY/RDeZD6WKu61mFur1720J5CYAZfND1or0PHIcOKhmAr6Yskp889bBCvEU1CU+Iz/piJ7Mr1vErR8WcJEw1rG/yPEvbCSt6NMXCdPsMB0CBJPzVxiknZkM8K9VxCMN3P+NqS7/u91ub9HkfRcfOkMpeZNSfvDqapNLiFq0rY+doNY7TM0rQys514cVAmQx6l5eBskCXdMgYH8dSe7rlIz26Q9bKl3/gv6k2FnBsbg5VLg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by GVXPR04MB11041.eurprd04.prod.outlook.com (2603:10a6:150:218::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
+ 2026 17:38:02 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Thu, 5 Mar 2026
+ 17:38:02 +0000
+Date: Thu, 5 Mar 2026 12:37:53 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Haibo Chen <haibo.chen@nxp.com>
+Subject: Re: [PATCH v2 4/6] pinctrl: add generic board-level pinctrl driver
+ using mux framework
+Message-ID: <aam_cZhlCSxu5WHS@lizhi-Precision-Tower-5810>
+References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com>
+ <20260225-pinctrl-mux-v2-4-1436a25fa454@nxp.com>
+ <CAD++jLkT83xz+PSzZZv_Mv+Mqx_+W30d_xk68EDG-sdmFF3x3A@mail.gmail.com>
+ <aaG2xQDnMVGGAOJE@lizhi-Precision-Tower-5810>
+ <CAD++jLm=6pTh7N5UAXFaaYWCs5DhfQdb+8TnM5XLcYC886=kLw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLm=6pTh7N5UAXFaaYWCs5DhfQdb+8TnM5XLcYC886=kLw@mail.gmail.com>
+X-ClientProxiedBy: PH0PR07CA0025.namprd07.prod.outlook.com
+ (2603:10b6:510:5::30) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260305-verdin-imx95-upstream-frank-li-base-v1-6-823fad02def9@toradex.com>
-References: <20260305-verdin-imx95-upstream-frank-li-base-v1-0-823fad02def9@toradex.com>
-In-Reply-To: <20260305-verdin-imx95-upstream-frank-li-base-v1-0-823fad02def9@toradex.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.13.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GVXPR04MB11041:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27f9533e-a0e5-43dc-8ce0-08de7addf34b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	ZX7tuqGEsHMu4ctHSqIpgqpad9c5l41h6tfon8mmcxDozCMJLv6B8zXsmcyN7nXfVptRbIz44ggrqr/kSuqSckfRzGZuMq4qFoWHmkvTcPGgnQFw/p8071tFPAvVZD+73CEkCOEqbKHK9GcUU7fNlBovEqtvk1lCqBZUIoRatSvrN1fNABBpGShL2341h5O01JCkObDmDVvqBElt1hIVwq0wlhrUXzJ5Vz5Fz9Qg9ic/ZvBpFcoQ+eet7X3X3jT0g+xZBMnjWnTdDnbL0bFR/LwwEShjM29xbURceQr3MdGMPRae5SrUpO/EbiID7ZCwabbCqZ90vUL1iq4BseCj+HnpV35MbhGeNGnZHmGH5OjUzNLaZOUMq5o0DUUBgBpNPe4OWbFPuEeKwP2Awph9AqI6oKH8ExFhNd3dYmaA9QJ3+Bbksb6jb9m7hrpf0fK2pyMOXtiFkjA6k07LYv2wNcujfyBwcLPTsncZfMTEHlTYUWg8ZRTj4mcEerzmUQCYCqxXD3sbu8tt5htRIaAh7M8qmtwUwd31eM4D18j4+liD5kBz2OURYMr2/uP5KQONk3naJWOhh43WZTR1snNQPYc7TkX3nUsy7DX216jQQqWAAWgYrrYg9f9Wi3fowHnzL2IYVqdnE7TsYiCZwcdJH+uf41SjCgENxvkCQNbMEMh9uyeb3+wMQypEMfHmV1Z+BZDQyk60wmlY4EcQYLb8iG7M2diZF0BVCXSdeRZSKZJ6B5lp+jblhslkO+EkBXmKkbPaWvnCUGvgI2p4MHZ+qmEqr1pDRYGFqa5+l02icpI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Yld3ZFZrTERYVnRIUTI0Ri9MOElKeW45RTdqQ2VlMEVnWG0vcWU1OEFmNWN3?=
+ =?utf-8?B?YlFwdzN0K3lqTERFeXFmWUw2YkEwdDQ3a1JRWlVvNG5URmFxcksrbndpT3lB?=
+ =?utf-8?B?eEFCakFyREFVZlJiSGZ0aG9pQTMzR3poNm5PdzJFMFltVjQ1NGFZdWQwV01l?=
+ =?utf-8?B?ZXdKMzhyelFQWUI0RkZKUUljbTdadTAwVDNmbzBtMmc5TElVaStLQ3g0ODJC?=
+ =?utf-8?B?a3Fja0dVbWNHdFdadDBXTkFpVjkvVWJOQTJzN3ZYdFN1TGtEMmJpNmVlVGVV?=
+ =?utf-8?B?RGR1MHQ5QzVYY2VlZmYxUHJyY0hYeUVRbjRRZFhTeURTOTVDdXg1NXU0N3ox?=
+ =?utf-8?B?Z3JTUURYNlJac1RScXlJY2o2c05FcmZtZS9od0g1WnkvZ0o2OUFKbk1OQ0tw?=
+ =?utf-8?B?SlFkZHdyaGVCdjFWSysxSmtIUFFzU0p0bTU3cUM4R0pnR3dMeXJUNDZLN2dG?=
+ =?utf-8?B?eGtwSDdrNDlOUEpkSXU0N2Z2NWNMQlNNUjI2ZHEzOGZ1dURlVjRNcThIdG5L?=
+ =?utf-8?B?SUwvWjNydkxvVjVDMUk0UjJPcWxtRGlYNHloMmF1WkVSMEh3YkJUOWdpVW5s?=
+ =?utf-8?B?aW1rL1I4di9lekZwSWdwNThwc1llQVNCTW51bjdRNjBuLzVTRzhIZWd2N0p3?=
+ =?utf-8?B?djlYUmhwaDUwQnllUDc4bXBvR1Z3cnJaVDd4SFk0YmxqVkt1c28yYURXSkpT?=
+ =?utf-8?B?UU92RGk2dllNVk1JRFdyeGdvb1pFZDRSN3RzUGNwYlZKQ3N2aW8zMFh4cERn?=
+ =?utf-8?B?VERqN1NrVkYzbHdGT2d0NTlRemxmb0lGNnkzOU44Mkh5ZndiK1kwc3ByTXVi?=
+ =?utf-8?B?ZVkyVDIzUkJ3UXkzM3JjRklNVmdPSFUzUWFBZDUzdHg2ZUpPZGJxc1hyVGZi?=
+ =?utf-8?B?VU5kMTBTT0RCZ0JsdHZJWGQ3RUtPZVhlbERBZVVEYysweHMxanRBMlJpb2Rh?=
+ =?utf-8?B?TzJzVFVSaDRNbHc4a21HQzRxYzlmRTZhY3JkdW9MalR2VGpOSkFTMjdNZkxY?=
+ =?utf-8?B?Q3JjVWRmU3ZLeHU2emk0WTB2YThHaXRpWk1WNEsrakNyL0JZaUJhMWgyaXd6?=
+ =?utf-8?B?QUNPQXplQmF1eCs3UlY0aHpIc2VWVm9SbWRsSlhrM3VNM2F3dUlEeEN6c0dq?=
+ =?utf-8?B?a2x2TTFnZThldkJNOS9PQjArZEthZUtuNUNhTHhBd1hrVkVsOFpuRngrOURD?=
+ =?utf-8?B?QXBRNzBVR1dZUS9Na2xzTWVyU3ZrWGhsUXVQYXVEd3JjcWVqaG5DZUlQaVNy?=
+ =?utf-8?B?VjBvdzRLUFoyNFJHWTJLU2FneXFzR3NnMjVkdm5KaFlVYWFJVFNwek4yalZx?=
+ =?utf-8?B?ZkUxMTFuVDlvOFk2Nll4TTRzL1E0R3cyRHcxT1BHbUVxNTlmOEh2ZGp2WDlZ?=
+ =?utf-8?B?dWpLMnpINDkwOG1NRE9Qd3BhU1hlYXF0bTlOQjMxOTN2eWwyeWhwazlGM0Ji?=
+ =?utf-8?B?K1dMcVZ6K05hK280TGZtSzFXYzhpeWhYbndjdWtZdzc3L1F4QSs3T0l4c3FS?=
+ =?utf-8?B?dHZVWDNvbjVrZ3ZEcjcyL3ZBWFgzN0JLVTNKRVJFK0l4d2hRT1FiUnl0Y0NF?=
+ =?utf-8?B?MUlIRHY2eXFxVHlhOU0zcjRhdXZCTUdmQjVWWUVlMjhldWJCWCtnakF0UHVM?=
+ =?utf-8?B?U0F1ZW9PZjQ2R29mM1pmRDdTWGhMWGYwY1RGcnlWUkd3SGZTeFVRN2NKM1ZJ?=
+ =?utf-8?B?M084bDZGNmF0SlZITURCZEowR09YbnFYZFBWUW4wc0VEZ2Q2QUdHVVJ0OUxP?=
+ =?utf-8?B?dTlKSndUamdHaTZudnVMVmw3bU5OV3QzdmVKNWwyUWlLa3ZUcHF6TW1qMkdn?=
+ =?utf-8?B?YUt6K0Z1d3VzVUlHUWpMbi92N0w2OFFONzJtM2hxbmNhOTY5OTluY1FEM0Q1?=
+ =?utf-8?B?ZG5qUWZFb2wwTVBmWStYOTZKQ2tuZDNaM0JuNm9pejVZK1FmUFMyQUpuRGdx?=
+ =?utf-8?B?YnBNby9wVHlMQ0ZmeWhSdE1QbUhlblA0ZThiRUQ2NG9qNG9wT2xTeWVsaGhO?=
+ =?utf-8?B?dUY4a04zNFRZSnRmT0l4QUo1VlVON1ZTMkJ6aWxLRWg1Z1dxTlJ4bm42R0ZZ?=
+ =?utf-8?B?OC9KTlhmSkR1N1hFYUZKWVphRTYzZVFidHhzdStvc2w5WWd6K3dVZ2tTV3Fr?=
+ =?utf-8?B?c2s0S00vUHZnT2NaWUxQNHVHTEJlb1pORHJtZXM0SUlaTVlERm1CZG5MTGlR?=
+ =?utf-8?B?bU5SbzdrU2xJd0ZJTkVsUVFCYjB0c1VEbmxMeHM5dk5mOG4rSEZtd1NLeVBF?=
+ =?utf-8?B?Mi8rMHJRUDlPeEpQQzhmcEREMGdCTU0ySXFrKy85ZkM5QjU0Q2NFS1ZiUFUr?=
+ =?utf-8?B?UURmMUVJNjE3N2pHVFhnVEpDVnFuZWx1VHZNU3Urd05qRzQybjh1UT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27f9533e-a0e5-43dc-8ce0-08de7addf34b
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 17:38:02.3181
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a71jUAoXHkJwwTwGcAZJDsLqaKjflV59lGlBMJ9hGPVSHPytXeL7Hnh3wrX/v88R5ozWG6lf//ZK9Z2X1BuXsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB11041
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+On Mon, Mar 02, 2026 at 11:11:00AM +0100, Linus Walleij wrote:
+> On Fri, Feb 27, 2026 at 4:23 PM Frank Li <Frank.li@nxp.com> wrote:
+> > On Fri, Feb 27, 2026 at 10:20:14AM +0100, Linus Walleij wrote:
+> > > On Thu, Feb 26, 2026 at 12:55 AM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> > > > +static void mux_pinmux_release_mux(struct pinctrl_dev *pctldev,
+> > > > +                                  unsigned int func_selector,
+> > > > +                                  unsigned int group_selector)
+> > > > +{
+> > > > +       struct mux_pinctrl *mpctl = pinctrl_dev_get_drvdata(pctldev);
+> > > > +       const struct function_desc *function;
+> > > > +       struct mux_pin_function *func;
+> > > > +
+> > > > +       guard(mutex)(&mpctl->lock);
+> > > > +
+> > > > +       function = pinmux_generic_get_function(pctldev, func_selector);
+> > > > +       func = function->data;
+> > > > +
+> > > > +       mux_state_deselect(func->mux_state);
+> > > > +
+> > > > +       mpctl->cur_select = -1;
+> > > > +}
+> > >
+> > > As mentioned I have my doubts about this, explain why this hardware
+> > > is so different that this is needed.
+> >
+> > As board mux (uart and flexcan) exist, for example, only one of UART and
+> > FlexCAN work.
+> >
+> > when modprobe uart.ko,  mux_state_select called.
+> >
+> > So flexcan driver can't get such mux as expected.
+> >
+> > when remmod uart.ko, we need release mux_state, so flexcan driver can
+> > get such resource.
+> >
+> > Genernally, DT may only enouble one of UART or flexcan.
+> >
+> > but insmod uart.ko
+> >     rmmod uart.ko
+> >
+> >     insmod uart.ko (here also need release previous's state at prevous rmmod).
+>
+> Can't you just enter the state "init"? This can be used
+> explicitly on the uart .remove() path using pinctrl_pm_select_init_state().
+>
+> Sure the device core does not do it automatically but this is a
+> special case.
+>
+> If you want a generic solution without having to change any drivers,
+> Add pinctrl_unbind_pins() to drivers/base/pinctrl.c and call on the
+> generic .remove path for all drivers to put the device into "init"
+> state during rmmod.
+>
+> This gives us better control of the actual hardware states I think?
 
-Add support for the Verdin i.MX95 SoM mated with the Yavia carrier
-board.
+init state is before probe if exist, which not fit this case because:
+- on board mux need be enabled before probe, some device need communicate
+with periphal at probe, such as SD card. SD data/cmd line must be ready
+to scan SD, similar case for all mtd devices.
 
-Link: https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-Link: https://www.toradex.com/products/carrier-board/yavia
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
----
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../dts/freescale/imx95-verdin-nonwifi-yavia.dts   |  21 ++
- .../boot/dts/freescale/imx95-verdin-wifi-yavia.dts |  21 ++
- .../boot/dts/freescale/imx95-verdin-yavia.dtsi     | 217 +++++++++++++++++++++
- 4 files changed, 261 insertions(+)
+if add new state "release",  when the pinctrl may switch between default,
+sleep, ... , "release" have to switch between switch state, such as default
+ -> sleep have to change to default->release->sleep.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index e3c34f8f40cd..48e5711526d6 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -456,10 +456,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-ivy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-mallow.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-yavia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-ivy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-mallow.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-yavia.dtb
- 
- imx95-15x15-evk-pcie0-ep-dtbs = imx95-15x15-evk.dtb imx-pcie0-ep.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk-pcie0-ep.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-yavia.dts b/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-yavia.dts
-new file mode 100644
-index 000000000000..4f7b4e3a518b
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-yavia.dts
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/yavia
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx95-verdin.dtsi"
-+#include "imx95-verdin-nonwifi.dtsi"
-+#include "imx95-verdin-yavia.dtsi"
-+
-+/ {
-+	model = "Toradex Verdin iMX95 on Yavia Board";
-+	compatible = "toradex,verdin-imx95-nonwifi-yavia",
-+		     "toradex,verdin-imx95-nonwifi",
-+		     "toradex,verdin-imx95",
-+		     "fsl,imx95";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-yavia.dts b/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-yavia.dts
-new file mode 100644
-index 000000000000..43d35b770db2
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-yavia.dts
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/yavia
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx95-verdin.dtsi"
-+#include "imx95-verdin-wifi.dtsi"
-+#include "imx95-verdin-yavia.dtsi"
-+
-+/ {
-+	model = "Toradex Verdin iMX95 WB on Yavia Board";
-+	compatible = "toradex,verdin-imx95-wifi-yavia",
-+		     "toradex,verdin-imx95-wifi",
-+		     "toradex,verdin-imx95",
-+		     "fsl,imx95";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx95-verdin-yavia.dtsi
-new file mode 100644
-index 000000000000..6403ae584e70
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-yavia.dtsi
-@@ -0,0 +1,217 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Common dtsi for Verdin iMX95 SoM on Yavia carrier board
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/yavia
-+ */
-+
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	aliases {
-+		eeprom1 = &carrier_eeprom;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_qspi1_clk_gpio>,
-+			    <&pinctrl_qspi1_cs_gpio>,
-+			    <&pinctrl_qspi1_io0_gpio>,
-+			    <&pinctrl_qspi1_io1_gpio>,
-+			    <&pinctrl_qspi1_io2_gpio>,
-+			    <&pinctrl_qspi1_io3_gpio>;
-+
-+		/* SODIMM 52 - LD1_RED */
-+		led-0 {
-+			color = <LED_COLOR_ID_RED>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <1>;
-+			gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>;
-+		};
-+		/* SODIMM 54 - LD1_GREEN */
-+		led-1 {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <1>;
-+			gpios = <&gpio5 10 GPIO_ACTIVE_HIGH>;
-+		};
-+		/* SODIMM 56 - LD1_BLUE */
-+		led-2 {
-+			color = <LED_COLOR_ID_BLUE>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <1>;
-+			gpios = <&gpio5 0 GPIO_ACTIVE_HIGH>;
-+		};
-+		/* SODIMM 58 - LD2_RED */
-+		led-3 {
-+			color = <LED_COLOR_ID_RED>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <2>;
-+			gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
-+		};
-+		/* SODIMM 60 - LD2_GREEN */
-+		led-4 {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <2>;
-+			gpios = <&gpio5 2 GPIO_ACTIVE_HIGH>;
-+		};
-+		/* SODIMM 62 - LD2_BLUE */
-+		led-5 {
-+			color = <LED_COLOR_ID_BLUE>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <2>;
-+			gpios = <&gpio5 3 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+};
-+
-+/* Verdin ADC_1, ADC_2, ADC_3 and ADC_4 */
-+&adc1 {
-+	status = "okay";
-+};
-+
-+/* Verdin ETH_1 (On-module PHY) */
-+&enetc_port0 {
-+	status = "okay";
-+};
-+
-+/* Verdin CAN_1 */
-+&flexcan1 {
-+	status = "okay";
-+};
-+
-+/* Verdin CAN_2 */
-+&flexcan2 {
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
-+};
-+
-+&gpio2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio1>,
-+		    <&pinctrl_gpio2>,
-+		    <&pinctrl_gpio3>;
-+};
-+
-+&gpio3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio6>;
-+};
-+
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio5>;
-+};
-+
-+&gpio5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio4>,
-+		    <&pinctrl_qspi1_cs2_gpio>,
-+		    <&pinctrl_qspi1_dqs_gpio>;
-+};
-+
-+/* Verdin I2C_3_HDMI */
-+&i3c2 {
-+	status = "okay";
-+};
-+
-+/* Verdin I2C_2_DSI */
-+&lpi2c3 {
-+	status = "okay";
-+};
-+
-+/* Verdin I2C_1 */
-+&lpi2c4 {
-+	status = "okay";
-+
-+	temperature-sensor@4f {
-+		compatible = "ti,tmp75c";
-+		reg = <0x4f>;
-+	};
-+
-+	carrier_eeprom: eeprom@57 {
-+		compatible = "st,24c02", "atmel,24c02";
-+		reg = <0x57>;
-+		pagesize = <16>;
-+	};
-+};
-+
-+/* Verdin I2C_4_CSI */
-+&lpi2c5 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_3, used as the Linux console */
-+&lpuart1 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_4 */
-+&lpuart2 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_1 */
-+&lpuart7 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_2 */
-+&lpuart8 {
-+	status = "okay";
-+};
-+
-+/* Verdin PCIE_1 */
-+&pcie0 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_1 */
-+&tpm4 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_2 */
-+&tpm5 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_3_DSI */
-+&tpm6 {
-+	status = "okay";
-+};
-+
-+/* Verdin USB_1 */
-+&usb2 {
-+	status = "okay";
-+};
-+
-+/* Verdin USB_2 */
-+&usb3 {
-+	fsl,permanently-attached;
-+
-+	status = "okay";
-+};
-+
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+/* Verdin SD_1 */
-+&usdhc2 {
-+	status = "okay";
-+};
-+
-+/* Verdin CTRL_WAKE1_MICO# */
-+&verdin_gpio_keys {
-+	status = "okay";
-+};
+mux device also have idle state, which map to pinctrl's "init" or "sleep"
+state.
 
--- 
-2.43.0
+The key difference should be
+- pinctrl can uncondtional switch state.
+- mux frame have to use pair mux_control_(de)select() to switch state.
 
+So, I think just need a hook in pinctrl system to call mux_control_deselect()
+when switch state and release resource.
+
+Frank
+
+>
+> Yours,
+> Linus Walleij
