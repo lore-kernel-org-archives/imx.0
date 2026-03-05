@@ -1,249 +1,231 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011030.outbound.protection.outlook.com [52.101.70.30])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011027.outbound.protection.outlook.com [52.101.65.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64BA24A04A
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 01:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090C03368A8
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 02:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772675737; cv=fail; b=RZApTPCfhlWBp2NqSzuj6uj6g8RUdIvhnYkW6RcEv2Z4yFnLLBF7ysBAPlVITkCnBrbr/IoOri9Xo/xpcTPYMcXw72gSNbuNwXlCLa+fJEZIQvf/xs/qWu3fdUTPa8AFjgcDf2ALSI2SayBHmZgRjXCl2sz2XBvdJs+vGVkE3c4=
+	t=1772676636; cv=fail; b=Za7C/MKFmdnl2anlwXMg8eExP9Y5vaZhxdYNuidGa3x1ydSd4d/VTNyVa6sJDXr128JCW/4XCA1Q4AyOK5zMqgmPZC4rXr9HFL7+BxaGXwWt3wbGwkdYcDk5wJdbHzN+iqdoVEuogw3j+VS9xfLnkvMx1cNXlR1TAlkL4hkubmI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772675737; c=relaxed/simple;
-	bh=m4x8PrlWBm3B2mZvl2LGw0GB1loSD/g0XkIXCT4mK0A=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=l8WQkCkDARX6u6Et+sdsFqXINCd4ypcGYyWTQ4hFzbS0sMstT9uqHVJ92xrcfLUdIK1p7GBcS7wm7EavgttR6o3k1Psbw1QKj9sBuZ9Ztg05PI7G/Lwd+J8VSORqxMd/wm1uo0spgF/KhE2PzCeqUwtBDJKzqv7mlVMyrc8BE8Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=hlVCcfJx; arc=fail smtp.client-ip=52.101.70.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1772676636; c=relaxed/simple;
+	bh=uauJIK9RFFthbrE96uwaBjGEctWCGyGegaFlS5xVDbo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mvijxb46xthCL/rqEZbAuEIyccej1ZZ7WPbUqV5BVJyydPc8fIU3bSQYPVzlnYucoA2Tpm0RPr0xyeJVC6uTWY7Cxno98Zb1FqfL+JxzGFXOsSMtRoOgE/gi9cDrV1ZBQ9b/lN7o95F9FzdKIx8Y7x+0IgV5Gx3P6KrZlUsM9aE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MYofXkQq; arc=fail smtp.client-ip=52.101.65.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="hlVCcfJx"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MYofXkQq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RfNs8tLcVBu4eo25pJoLlsSk2hY2TZj58w1gAi59J9A6ifiRUNXt+47/YjoY6zgsKhq6iawCB+1LeuZlkVeDEmdj2/lCu64cXy6m5VpOCHrssvRbA+zR7zFZdJKCiBj4TL1MVHwKnScIv69TvLesbG6Ho8HgtCTUzxV5TQMKOpfIIQlIA+ahupK7auXh/7frSF/RUl12kJjiSRe7aPWFVXYhLBXyJXCVojOyReJ13AQGdqTYMPHikksJdkB8w8NV+UMKqzxdmcUHT1kB1mwzz5737V3OQLeHhPK4Mh90AeffPWym1ZaSEhrGcX80b+49aWlmG5UTtr+S0Q8k9t8xLg==
+ b=eV5gB9e3jofkbG/ZMktwxgc6h+e7qokKLWUvnaS0VEzMX+ebNydKSV0zCSJn8Xz0/RDMcZKl+y4Kd5nRxi5Vtr2IebNYF5iEKMXsD3jfiA+NxGgT6n4679JedHQll0PDl/MZo3azk0Qb36GluFVWt1UIb1OXAaoao/qIAirLxDhEVkcMUY1TDWna1qBX49SFCZEI/68HNOqTNa902HZgNYZ3GGb12Dh1TGyGwYM9tDHR1dWJ7mI2/LWXAGl2S3A0gQrLXd5ZuuweOMnoKI2GzhdKiIO8towNDr/cWkSLg6HdEcT8s7+Ppb4Bd5r4B5G+bCSg7kAMxKk9U5hCclKOUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=shkOSYNpfObssNiDJyMlF3QCQk98ijp+qo20htP9ms4=;
- b=yBj89ovHTlJBEHS5albB50QjWO0jy7tXFMbjJJUzkdvWCgZOCfOKMT73qTcxH++K37KeNUfEFA3WG0z9NRzCKed6LWcXhx/juoDgNPVI1yT2zYLcfVen/++eHGgx5ho02mF0OLZe35DGLeOfSkFLvuZHnNKKNCRhUFQebiApgc5WuZPG5+FU/WWXqg98XIPM+wjURO72A/Z7qWIdq3vIsK6dYClmFRVl3dTqln+Ljd6xf7TEwHoD8jbJrGZF2a0jWhnAiH03lcBfqeblDDWmqYYbM/VPqrFsME62sDjzI07LRhAxj61YyREDLsNc/A5DINg9P3wKsMbKnKIEB9VoRw==
+ bh=DAj9SmtZVfwpgrpynd3kzzss0OV5lgP4qT7vYqkSsEQ=;
+ b=bjd3mWfmZMSGUgBqYlVbEH/Zoh8cbKNddf1VU+tGTCkuwYQLA3m+/3LWmEnCzIaZaabU7tPaXeiQXG9A0HBTlqSs/uBGLUnn7rCCXp2sjOY3U2DI2jS1Md4sAxPIobM0gTHBE1krCfhkU4BptjitnbCqQe1mYAds1sMkFG0+3GocDr68cXsQsXvoeQxpFNPEgmaDA9UVtrzWvz5mFFTZLeUA1iKU/WO733/KDZycc7jH09ijei2z3dVs/lVe6cwh1ldGikM0suzB7sgFW08qJI9Oa1xPWxHnOwg0VaSWPryCpop+tnMj0Qtt/Qf+h4za3deb+/AuJUnDTCwH10/K/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=shkOSYNpfObssNiDJyMlF3QCQk98ijp+qo20htP9ms4=;
- b=hlVCcfJxqcCWT8sHEqau9zEFgx9iXJHoffabYkNHlbStTU7DpROYiaB2JC8CF4j77vr748JSndjeQxvBWgottiGHbOD+g1jsDRVYRvzhTzJh/UeGQxW4jRGAKXaw3MoSZhjC2KZWQ0XPtv8s1Yd2aIWKtNbEL6DjYh5mkM/EZIuKVGKxS64JQ86nyozZdfB1FJYViGsA9uoK69PtWHAZqqzkmYJh23ZghLqJB3jaeBhJmcCFNhH25ldFYjPcp2/jQEUyJLl1d/ZW5MvcXJIAKr0OH51y/NvqCaJkBrrsNkaMYMeWm/vxlnyq6ww3IphiazpKeZHoiMTzNtjEe6Bw+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by PA4PR04MB7741.eurprd04.prod.outlook.com (2603:10a6:102:c6::24) with
+ bh=DAj9SmtZVfwpgrpynd3kzzss0OV5lgP4qT7vYqkSsEQ=;
+ b=MYofXkQqQlQv70naInRo54Z25lgQCyCUdIyAvTI6ylh133QfoHDcG9MuPTdJD/6RQN7Y+bcolvxi4Boi568ywiIIhyj982xW4WIF3IKkWTKS57zkDVSMlvL0OGpaTbd7XPM7ucAds5c+8ohlrBXn2azqOPqMgi/1lPYw2Mhy0t+f3tQq22zzR3O6X4JWh7okcxFGmvZfGES4+aCIndRkJbiHi/iIvxW7W+x+kbt3xCGdbsTFM+zsax0lGoNRzbXqaZzaiuhXmG4wEtilo+AsVEvRJCoyec5U1f9z7a5InEQfP/lQXTzhWtRjX0rDIYXu/KPHf40XNAbYnPsrPEMlsg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DB8PR04MB7002.eurprd04.prod.outlook.com (2603:10a6:10:119::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 01:55:32 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::21f6:947a:1f40:18af]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::21f6:947a:1f40:18af%4]) with mapi id 15.20.9654.022; Thu, 5 Mar 2026
- 01:55:32 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Thu, 05 Mar 2026 09:56:45 +0800
-Subject: [PATCH 2/2] firmware: imx: sm-misc: Print boot/shutdown reasons
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260305-scmi-imx-reset-v1-2-18de78978ba9@nxp.com>
-References: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com>
-In-Reply-To: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com>
-To: Sudeep Holla <sudeep.holla@kernel.org>, 
- Cristian Marussi <cristian.marussi@arm.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: arm-scmi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: MA1PR01CA0163.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:71::33) To AS8PR04MB8450.eurprd04.prod.outlook.com
- (2603:10a6:20b:346::5)
+ 2026 02:10:31 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
+ 02:10:31 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>, Aziz
+ Sellami <aziz.sellami@nxp.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: enetc: fix fallback PHY address handling and do
+ not skip setting for addr 0
+Thread-Topic: [PATCH net] net: enetc: fix fallback PHY address handling and do
+ not skip setting for addr 0
+Thread-Index: AQHcqviNV5i/rdtERUO7W2G6tFygxLWe37IAgABTFPA=
+Date: Thu, 5 Mar 2026 02:10:31 +0000
+Message-ID:
+ <PAXPR04MB85104438CBA862AA45288C7C887DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260303103047.228005-1-wei.fang@nxp.com>
+ <2746e5d8-b471-44c2-9625-b009e6f1581b@lunn.ch>
+In-Reply-To: <2746e5d8-b471-44c2-9625-b009e6f1581b@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB8PR04MB7002:EE_
+x-ms-office365-filtering-correlation-id: b2ba2dd0-6e1f-41f6-54a2-08de7a5c60e7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|19092799006|7416014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ gz3OfFBCTWL/5jmkXATHJzbdEwH/QLopbVl0kELQU7sc5HHfW34sGAEMY6ZH8G46goznbWHpv8Iuk6bX+0+9AZiZvx8RJrvKTqvZTAkcuQ3Dh/mQGObX5tfZ9vJ6+P06Z2eSenM0ALLSJOSRaKBz6NGD9YL6QPrrMEbbdDsji+XhnjAiGRi+d7LFK09usyl+3+v+9Bx6gzyss03FEc1DEQXGQ9T5JDtUuLZCr/zvEAmCj73no3VduuNwHw8Qc5qoSvr1gfR8VrDylxI4iry426X0TxlKTMWJuDiaowM5B7ruA/nLAZPeWW9jk9T6F74HfaCfMi76Ryd1Of3M2o3GI+PviYYoqm5HUdXIqN6sLojJ3wJAOGPkDRwF2THJxQkSnHhw3nxTyX33jZ/vKHUV8oRXgicRFWB2hfqhSJMlK2NdEALywbBsYz9O7sky0b2EPA2f10Zc5LjfMRiwR80aO/oGRhOnt3OUaJaqDziHkySkTRfS8kkj96EB+453L5xwTSLxGyc2/y2XdysoF1G45QZZiWOjiXVZAnseIwpLn/m3qGTFHSKwTh8PMeyUBXrP/A+mOqq65KfHOWJ6wE/7KdHigFncZkhl5CQn2NMXjCSWVejUQ7v+354RIKPmCo3UIIzqO5NthuJtAk/VodbmgeCv+VyXcVrcdT+6eD7UKZ/VzYhOcbLwd0hIOzLzisXaqij+h4SPLFJrh2BbyzM/9J2/CwhEmbacTWFxmT86dknqIWNa1oWiP0ZJNWafI9PKQJdpodZAiRx77S330WqMrMkVX1QtmFweNzWFeW7XVww=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(7416014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?BkeNeJfSzSYTtJlAjs1Crvanb06UXreH6hWmws9fcTv/o5X4sMG+B/KROOrD?=
+ =?us-ascii?Q?32v7FaxuE1Jfs8zDu8IeeQBZRoR1MUMDDs4KQAzwRKyArBgteVDhwFEbZE0A?=
+ =?us-ascii?Q?sP0NTuNRGimYF/9yZv09GksuQ3CeV4jil/M7/KgRgQFGrzKqHQqu2DvoFrmJ?=
+ =?us-ascii?Q?uH9+CVBMS6xdMY1JMCDpDaa7Ujjx77UeF8eJIRx12tdOESGjLbMiyATnVrfT?=
+ =?us-ascii?Q?cT9chCM/1UAjS2hETEFaVs2iAbzQpfHCZYukvsiSKlFbb4Q1cNKpFjfdZtiy?=
+ =?us-ascii?Q?8Fvx4q1qEgR8WNAWHvk5Yv8hALU61NgedqH9tQkVHFB39F1M7jWVeL/nvANn?=
+ =?us-ascii?Q?Ql7trzOmZRLxW1ln1r+UHPI7h4j4kMlGi/h34vlZO2lRYgJv061HjQ0iT8tc?=
+ =?us-ascii?Q?RAUR8tcCy0O2GZTj4XVqLaPJMiTA9ZAKCjD3YR2qjv4VvJmMZhdhi7RkEIJw?=
+ =?us-ascii?Q?wpMsjU46oE7v/T0cC8KvOKTE/jHRWwWCu+b99xAV9J8gAPLiOtqKQ8/9AY41?=
+ =?us-ascii?Q?6TnSRTk7Y93XjjRpFAD1PiOHmjhEw4445R79VDZnwxqWmZ/kwSY5w2+BtTks?=
+ =?us-ascii?Q?htKHgjms987e4z0A4XfGQdd2CwuCqVk8+gliANZds5IVEiktn6y8xohDTm5m?=
+ =?us-ascii?Q?0s47s4CnNsczwMo6dewNiSCGGZAE74hrvrlHWz/al8i4DORt+4q6FHfhkjaA?=
+ =?us-ascii?Q?GIiX+KrLJ5UlM4cNXO4ekopzJST0LJBtvVU1j1Aer2s5nnYyZ46YyMFoFZCc?=
+ =?us-ascii?Q?Uoh9OCsvk108IoTBTRYsrR7ZsAJOPqyMK4M//oRseXSpkEdomGsfWtmjkhqz?=
+ =?us-ascii?Q?eYYJuQNsOl6+15tNnc087cgGDu9FS04CR/CNuNnbWaRF0QgDS78xpP2dk4WB?=
+ =?us-ascii?Q?xX4L4TXOABOA0LUMs3tCqA06GCzLFAA8wykd8VqMWO/drsuyOl3qKsnyXmBC?=
+ =?us-ascii?Q?vdRcZ/BwN3QOUBhWshVfyGsl2RZZ/cenMnnRw4qYly8GIHaLgh6c3C1NRtlf?=
+ =?us-ascii?Q?iujiJm+PeFlDTqw5XAYy24kp/6xabVr9AdZwNlYrAvqwKCwQ97qUI+dBcffh?=
+ =?us-ascii?Q?XVan3/JbJuJ57ye5KR1np16sDlEGdfC1cBU5+8Af4xfiRUJcxfLnijQd7jiq?=
+ =?us-ascii?Q?DU8+1mbqMt9qeTx4cYPMEnpX24JD215qe1ApYztnJx34qVFCffnTx5ly8ImU?=
+ =?us-ascii?Q?PEqwA1ABXN+vVAr8pd/540DdmUBtab2p/KgTjAyWWmpATMSBkJ+dWhL9og0Y?=
+ =?us-ascii?Q?/pRYaEeeeAm+IZqTY50wJz6kxlQUwFoK4Oj2yr5h0Qq1mjU14ESkCISZ4lh4?=
+ =?us-ascii?Q?bZ0jnmQ8lYlF2IVsQmy0ir+qfzUZLP4xHV/QZ+7V9GqzJNVov6xENUP1Haes?=
+ =?us-ascii?Q?w7GIWswXOJt3Ugxl9VDCurSom/nxhnRVXG0yhshw0f4Lf9LqYGubN3CqqneC?=
+ =?us-ascii?Q?OSmuwZPbwVPwYkCgqLap9AiOpxF36YbwNpCtxHwrTzL1uI7wMfCOn60sF8Xb?=
+ =?us-ascii?Q?CJXVTWhsZc7IPz3TFQFvrI/jp0qEyRjTkXsIbMp/oSnVW9o7u5K0m5NJKygp?=
+ =?us-ascii?Q?vGNUHxJB3n6T/55dtLC9vcJtA1aGCc0+P4bIo3B5QxAJb1JeuPNbX7+ICA+8?=
+ =?us-ascii?Q?EB/cO/nfjIX1OC/K5EnbnDN7eku3ufd10Wn6LdbNTGauGGkGrmYOo7E9qCMD?=
+ =?us-ascii?Q?C73pqw1mPeDrxsgnxOW78WrZzH3wMhB62YMZzKy2t5ZLYf/w?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|PA4PR04MB7741:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74f1ca51-2615-41ba-8d9c-08de7a5a4914
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	bX2MEg9zLLy1U5Jqg82bxtM2EoRzfvyooVVP4NY+WTOJx1ZuelnuGhGwfAr56TZlnorRThZfQQaihXtVUuOAt8DeGnVJlyB4AQQ8R518g3EEf3Qhn2peomjItowduInKs05dkT5YsZ1LuYVWviFoiboIpYOFJlyvau8yrohRpi6hDahBCZqU5uFjZhQ5UeVIoU4H4l+36auk2lNrGn1i+oRUyvtTTlAGLbvNCSsfdQDPSQCnPEZOvvUSFEySIyrAGyObVk9q30w8y45e5UUA2X+KrjMgbDKfTNMtMTu7q0MeoDAW6UV3oO8HjuvVxSajejxwrXp+VdNrfdFwlCFKcZYWpkOruFNaP+OJYvxbIRcAkm5FF7Go5zQ+qjk1TzwE4VMEGcWAD/9Me3vk9ylpCWpHnkKt4hT/VoYmDdrLFtLAwU3BwRyfGNMFlcBBGjgARQQxKNVsRb9ZC9hchWgwhqdOQTXVI9y8i1+SRKBsY76qhXB586ad2/fmFU+G29eJodFMvAlmjFCCr3693D55K+/R8PNXQ0z8xxd/OcLaUQdUvB6GMvdtFC/1OnqIpFsGnm4bOcXzl5qHNfx0vY5Kzdcq/m4aB/Zu8VU3N6LYFxe76PCioVp0cEblX5ElLfV7CtbrsowI4E1iyELupSm6HD6/qWH71TIJoLIgpzl6srk1k9o9qitKzSehRWSrVAx/XhkF8nhRa+w0pwgiPzvkzcpXL2Oq+90n4ZL1feQvMDa7qNYe/zmJOqi0Pp8u9lPNYkyfvAJWZWlB4xXrMS+fAsBLnbsaFGQw0rKtkqnHN2k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2hpQWcxekhPVDQzNTEwdXd4V0dtWE5SWnNKUzZsUE9jL0RUbDFUVTJVVzJM?=
- =?utf-8?B?aTF5alpZQkEzTTd1YytQQmNFTlFYWU1mblNBelRVVXdHZytKeXRzVkpwR0ov?=
- =?utf-8?B?OEthYWlSRHNpN1ZJUTBNY0s2UGFjbFpEN09OblJhcG1CTzIwaWRLV1MxTUNC?=
- =?utf-8?B?OW83UFkwLzh4WmNpRGUyS0JDejA1N0U1eEwrSmcvZ0V3akZ2Z1d5TnZTTUEv?=
- =?utf-8?B?MC9YS1U5YlF1N3owZFVSTGNWT2w2QjVtODNVRExRcTFXYTdYRU9KM0VDUTJa?=
- =?utf-8?B?ZWFJaEg4Q3NJY0JWaFZHNnp1RDluZVdVZmkwTUdlQjhBNmFVMXBXNUVOeEJi?=
- =?utf-8?B?ZWZwQWJHeG1ONW5BU3MrN0lnMkFKbmFDbDJTZzhjN0VKRXA5ZGplRWY0c1lY?=
- =?utf-8?B?VUFEQ1p1OEQyeVlHK0ZpMnZvemQrVEhBVHdGREN5ZmQvVXliVHFpRVBMT3dJ?=
- =?utf-8?B?aVRQZnQxWUd2SWF4cG96UjlVd1ZUVVBjRUZLcW5RdEIvbWFmMytFemxLQ3dE?=
- =?utf-8?B?K0xsczdlc1RsWkkvWk5YdE9BSjQ5aVFxM1VkV1U1bGIwVFFPaTlhbWxKbHNq?=
- =?utf-8?B?enhEOW1ibVhOSzFVWW10ZTgvdldhM3VFVHpNblNjTTJXUlgvWENBNU1wSzNI?=
- =?utf-8?B?YVlOWERKeUFIdFI1Q2FWTVBuTUVoMVFLbDR0RGhVUk5HV0RETjh5UUVpMkhq?=
- =?utf-8?B?QlZITmFSbTdBM1hIYkJ6TVFZVUk0dlY5KzJGOWpUOWZrNHFueng5aUxMSUlY?=
- =?utf-8?B?Vkh3dUh3YnBKY21UM3BZOENJOHlhTm9renlTaHNWdzUwaDBoR0RlVVZiK3p3?=
- =?utf-8?B?dUFnOEd5NmUyY0tWcmc2OW9kQmZHTm03Zy96a0VLT0N0TjREZm1GWVB5VXc0?=
- =?utf-8?B?MWNvMkZXNlVPWmdVeS9Sc2o5SjFDQUIrazdxTyt1L29ydzVIVDBrMGIrSVdH?=
- =?utf-8?B?dDFvQ3Bqc3FVTjROWG91UXlDUWRoanZsS2l0L0NUbGpCaXN2QzAxZkxSVCtn?=
- =?utf-8?B?SEV5czdIYloxVS9Dd1lqNHZnNmdZZlZDL2tRaitHYmU4eEFuYkVDM3JxTVkr?=
- =?utf-8?B?VXF3cTdmYituRC96YWFjdWZweEJJYnlhTW1vMVQzd3BwZTJjVi9iTEErME5m?=
- =?utf-8?B?RnNCeDl6RWpNNFJQY1dwWEFuSEdlZ2U4OVJMcEFndENkcWlsRVR3Qk1EMERu?=
- =?utf-8?B?V0FPNFJFeURYalA5aFlRTGVmaFh4OXlTclNKUk04MzFRcHVnN0t5ZHZzd3d0?=
- =?utf-8?B?SUtma1JPQWsvby9sbTlRSi9ybkk1SW4zWVNzekU5NlQ0RGpMY1JoNnRHT2NL?=
- =?utf-8?B?T0h3dDJ6VnVlRi8reDcwc1poZXNGMlYwQ3g0TzVaKzNIWGZBSW9SWS9UN1VN?=
- =?utf-8?B?d0ZxblZRVUpNQ2hqSXFLQkNucFhvSm1UVUdWbERFTlFVZi8zL3hoTnFWWnpw?=
- =?utf-8?B?c2x4RVhOT3liNnFhSmozeVZXL2w2K29rTm9VVFBJKzdnekkrcmRLOGFEVDJ6?=
- =?utf-8?B?THpCclJITExnZTNqL0FPTjI3NWQwa3ZkVEVObm1idUF0L0lQeHY4cURQaXY3?=
- =?utf-8?B?UGdaRHZQdERhVjdpRkpyRGtVdkdrSW5POW1zYzI2d3UwSGVQeXBzaVFoUmxU?=
- =?utf-8?B?QU1nZDhZLzc4c2FzbzhjT3NuKzlIRi9FZUNpWlBQc05NMVF4ZXM4aGtHbW96?=
- =?utf-8?B?eUtFVG9hcTZmdCt4eGhuUFJVTnRiNC85Z0Q3dnprUXhHbnhnWk1PbjM1d3k1?=
- =?utf-8?B?NXJWTFZQaS9oZGdnRTVYYm5kVnI4UkdkNFNaT0xDbU14UVJvZHBpcUdxT0dy?=
- =?utf-8?B?WlZvVFQyQThRbmU4S2FDM2h4OFRETXZWUEZUNk5uM1hDYlJBNG50QTA3NDhx?=
- =?utf-8?B?TzB4K2QrbjdMV1hVYnJMMnlrbkE3N3h5bFlTSTlJa3lNNXdySldaRjJLTVhB?=
- =?utf-8?B?bEhLMmFDVTJJYUFscFpCYVhkci91c0t3d2RUeXdHKytyL2tFbk1kalRVcW5r?=
- =?utf-8?B?SE5yM2xuK3hkSWZaNWhkV2xpNHF1U2JkMmI4VWV1RDk1bnhhaGhzN2NEdmx4?=
- =?utf-8?B?OWlSUkJvY241ZVZndlRGOHgzMk0ydjB3K1AwcHY1cUU3dU9rbVdKd3lFUi93?=
- =?utf-8?B?QVQvc0xETWVheGVYem5NZElOMmpsa0RWRGVZd1BTekcwc1kzMjhkb2g1Y1RX?=
- =?utf-8?B?RjhJWS8zVVZ3VmxieXZRRGRSM2F1N3dJaExKaDlCbjdra2IvbzdBS29XRnVm?=
- =?utf-8?B?MktmZmpPUGJvWVYrVGxHa3hPZSt3eU13ZUFKaE15a3U2V1hZWWlNZ3Iwd2RQ?=
- =?utf-8?B?cVE2RnI3d2cvTnFiV2NMc3Q1djd5cldSbTR4czBQRTVlYTVhVTdlQT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74f1ca51-2615-41ba-8d9c-08de7a5a4914
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8450.eurprd04.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 01:55:32.8484
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2ba2dd0-6e1f-41f6-54a2-08de7a5c60e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2026 02:10:31.4442
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SsRgiQkynZUlvHCEIURdwVHVvLZLm2puwa7I6dCjuhyop4CgmRn2XvbBx9x8FuOZJHVhu+VetjkQ/+zHX5yn/w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7741
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3NEPzJgB8Zs/yczyj51UVwB9XRKdySqU6F0xZIfQ6KFPd5mQ3aswe4THqNK1BsT18t4Fnkh1IcLURvC0EsRD7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7002
 
-From: Peng Fan <peng.fan@nxp.com>
+> On Tue, Mar 03, 2026 at 06:30:47PM +0800, Wei Fang wrote:
+> > The current netc_get_phy_addr() implementation falls back to PHY addres=
+s
+> > 0 when the "mdio" node or any PHY child node is missing. On i.MX95, thi=
+s
+> > causes failures when a real PHY is actually assigned address 0 and is
+> > managed through the EMDIO interface, the bit 0 of phy_mask becomes set,
+> > leading imx95_enetc_mdio_phyaddr_config() to return an error, and the
+> > netc_blk_ctrl driver probe subsequently fails. Fix this by returning
+> > -ENODEV when neither an "mdio" node nor any PHY node is present.
+> >
+> > Given that some platforms may use PHY address 0 (I suppose the PHY may
+> > not treat address 0 as a broadcast address or default response address)=
+.
+> > It is possible for some boards to connect multiple PHYs to a single
+> > ENETC MAC, for example:
+> >
+> >   - a SGMII PHY with a non-zero address (selected via DTS_A)
+> >   - a RGMII PHY with address 0 (selected via DTS_B)
+> >
+> > For the case where the ENETC port MDIO is used to manage the PHY, when
+> > switching from DTS_A to DTS_B via soft reboot, LaBCR[MDIO_PHYAD_PRTAD]
+> > must be updated to 0 because the NETCMIX block is not reset during soft
+> > reboot. However, the current driver explicitly skips configuring addres=
+s
+> > 0, which leaves the hardware in an inconsistent state.
+> >
+> > Therefore, remove the special-case skip of PHY address 0 so that valid
+> > configurations using address 0 are properly supported.
+>=20
+> Please can you break this patch up. I've not looked at all the details, b=
+ut:
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> > index 7fd39f895290..92a0f824dae7 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> > @@ -333,11 +333,13 @@ static int netc_get_phy_addr(struct device_node
+> *np)
+> >
+> >  	mdio_node =3D of_get_child_by_name(np, "mdio");
+> >  	if (!mdio_node)
+> > -		return 0;
+> > +		return -ENODEV;
+> >
+> >  	phy_node =3D of_get_next_child(mdio_node, NULL);
+> > -	if (!phy_node)
+> > +	if (!phy_node) {
+> > +		err =3D -ENODEV;
+> >  		goto of_put_mdio_node;
+> > +	}
+>=20
+> This looks like it could be one patch.
+>=20
+> > @@ -423,6 +425,9 @@ static int imx95_enetc_mdio_phyaddr_config(struct
+> platform_device *pdev)
+> >
+> >  			addr =3D netc_get_phy_addr(gchild);
+> >  			if (addr < 0) {
+> > +				if (addr =3D=3D -ENODEV)
+> > +					continue;
+> > +
+>=20
+> This seems like a patch when combined with the if (addr < 0) hunk
+> below.
 
-Add reset reason string table for i.MX95 and introduce a helper
-(scmi_imx_misc_get_reason) to query and print both system and LM
-(Logical Machine) reset reasons via the SCMI MISC protocol.
+This change should be included in the same patch as the one mentioned above=
+.
+The change above changed the return value, so the call point also needs to =
+be
+modified.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/firmware/imx/sm-misc.c | 73 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+>=20
+> > @@ -433,12 +438,6 @@ static int imx95_enetc_mdio_phyaddr_config(struct
+> platform_device *pdev)
+> >  				return -EINVAL;
+> >  			}
+> >
+> > -			/* The default value of LaBCR[MDIO_PHYAD_PRTAD ] is
+> > -			 * 0, so no need to set the register.
+> > -			 */
+> > -			if (!addr)
+> > -				continue;
+> > -
+>=20
+> This can be a patch, along with the same delete in the last section of
+> this patch.
+>=20
+> The point of having lots of small patches is that it makes to find
+> regressions. If something does break, git bisect will quickly tell you
+> which patch is was. The less a patch does, the more git bisect is
+> useful.
+>
 
-diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
-index 0a8ada329c9de3c1627da241bf142fa91a8085d7..16b5ff833d21274403a4c55abe2fa1f49fce3e73 100644
---- a/drivers/firmware/imx/sm-misc.c
-+++ b/drivers/firmware/imx/sm-misc.c
-@@ -18,6 +18,29 @@ static const struct scmi_imx_misc_proto_ops *imx_misc_ctrl_ops;
- static struct scmi_protocol_handle *ph;
- struct notifier_block scmi_imx_misc_ctrl_nb;
- 
-+static const char * const rst_imx95[] = {
-+	"cm33_lockup", "cm33_swreq", "cm7_lockup", "cm7_swreq", "fccu",
-+	"jtag_sw", "ele", "tempsense", "wdog1", "wdog2", "wdog3", "wdog4",
-+	"wdog5", "jtag", "cm33_exc", "bbm", "sw", "sm_err", "fusa_sreco",
-+	"pmic", "unused", "unused", "unused", "unused", "unused", "unused",
-+	"unused", "unused", "unused", "unused", "unused", "por",
-+};
-+
-+static const char * const rst_imx94[] = {
-+	"cm33_lockup", "cm33_swreq", "cm70_lockup", "cm70_swreq", "fccu",
-+	"jtag_sw", "ele", "tempsense", "wdog1", "wdog2", "wdog3", "wdog4",
-+	"wdog5", "jtag", "wdog6", "wdog7", "wdog8", "wo_netc", "cm33s_lockup",
-+	"cm33s_swreq", "cm71_lockup", "cm71_swreq", "cm33_exc", "bbm", "sw",
-+	"sm_err", "fusa_sreco", "pmic", "unused", "unused", "unused", "por",
-+};
-+
-+static const struct of_device_id allowlist[] = {
-+	{ .compatible = "fsl,imx952", .data = rst_imx95 },
-+	{ .compatible = "fsl,imx95", .data = rst_imx95 },
-+	{ .compatible = "fsl,imx94", .data = rst_imx94 },
-+	{ /* Sentinel */ }
-+};
-+
- int scmi_imx_misc_ctrl_set(u32 id, u32 val)
- {
- 	if (!ph)
-@@ -75,6 +98,54 @@ static void scmi_imx_misc_put(void *p)
- 	debugfs_remove((struct dentry *)p);
- }
- 
-+static int scmi_imx_misc_get_reason(struct scmi_device *sdev)
-+{
-+	struct scmi_imx_misc_reset_reason boot, shutdown;
-+	const char **rst;
-+	bool system = true;
-+	int ret;
-+
-+	if (!of_machine_device_match(allowlist))
-+		return 0;
-+
-+	rst = (const char **)of_machine_get_match_data(allowlist);
-+
-+	ret = imx_misc_ctrl_ops->misc_reset_reason(ph, system, &boot, &shutdown, NULL);
-+	if (!ret) {
-+		if (boot.valid)
-+			dev_info(&sdev->dev, "%s Boot reason: %s, origin: %d, errid: %d\n",
-+				 system ? "SYS" : "LM", rst[boot.reason],
-+				 boot.orig_valid ? boot.origin : -1,
-+				 boot.err_valid ? boot.errid : -1);
-+		if (shutdown.valid)
-+			dev_info(&sdev->dev, "%s shutdown reason: %s, origin: %d, errid: %d\n",
-+				 system ? "SYS" : "LM", rst[shutdown.reason],
-+				 shutdown.orig_valid ? shutdown.origin : -1,
-+				 shutdown.err_valid ? shutdown.errid : -1);
-+	} else {
-+		dev_err(&sdev->dev, "Failed to get system reset reason: %d\n", ret);
-+	}
-+
-+	system = false;
-+	ret = imx_misc_ctrl_ops->misc_reset_reason(ph, system, &boot, &shutdown, NULL);
-+	if (!ret) {
-+		if (boot.valid)
-+			dev_info(&sdev->dev, "%s Boot reason: %s, origin: %d, errid: %d\n",
-+				 system ? "SYS" : "LM", rst[boot.reason],
-+				 boot.orig_valid ? boot.origin : -1,
-+				 boot.err_valid ? boot.errid : -1);
-+		if (shutdown.valid)
-+			dev_info(&sdev->dev, "%s shutdown reason: %s, origin: %d, errid: %d\n",
-+				 system ? "SYS" : "LM", rst[shutdown.reason],
-+				 shutdown.orig_valid ? shutdown.origin : -1,
-+				 shutdown.err_valid ? shutdown.errid : -1);
-+	} else {
-+		dev_err(&sdev->dev, "Failed to get lm reset reason: %d\n", ret);
-+	}
-+
-+	return 0;
-+}
-+
- static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- {
- 	const struct scmi_handle *handle = sdev->handle;
-@@ -133,6 +204,8 @@ static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- 	scmi_imx_dentry = debugfs_create_dir("scmi_imx", NULL);
- 	debugfs_create_file("syslog", 0444, scmi_imx_dentry, &sdev->dev, &syslog_fops);
- 
-+	scmi_imx_misc_get_reason(sdev);
-+
- 	return devm_add_action_or_reset(&sdev->dev, scmi_imx_misc_put, scmi_imx_dentry);
- }
- 
-
--- 
-2.37.1
-
+Sounds good, I will split this patch into two parts.
+=20
+>=20
+> ---
+> pw-bot: cr
