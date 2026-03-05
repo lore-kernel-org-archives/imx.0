@@ -1,193 +1,141 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013062.outbound.protection.outlook.com [52.101.72.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129B8332ED0
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 12:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772712167; cv=fail; b=pW5C5cGwcGCuGpzqCBsveSLghx5K6G2WWtYnGUaEoLwJ7nC9e3GB8CEhrkv48WFJg+AyfaW+k9wUOsBfKqEfImgMomNQfJ1goLXhAaSJhiBz1yQxS7UMiJn4iXfvq+UNdEpi4sP2YAkutPDlxxNrLrcI7Z5gK2Er9kFgg4VUMq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772712167; c=relaxed/simple;
-	bh=iMRXqwrWpClDoMck3sbFHtG/aH2uKx818C3bEDY7Xg8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PCKwwJ7yVhMdWEvUaaQjKwQzU5NrWB6rEe7YwKm29O0E717Er3xR7PSPb06XKn6fq0ccWpibta3j61KyeTu/ETiVp8SMBqiMItfsHa6McrJ4W6gubixcwuUhKdUBlwfyAYWM4dNoiATER05iX3UVxF2Fmv/cvgUGdVVsoMrrPyw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZlTAJwUK; arc=fail smtp.client-ip=52.101.72.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1118321ABC9;
+	Thu,  5 Mar 2026 12:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772712265; cv=none; b=KbliITki7uMtfzWXwgyrJFDt3kx5ym1kqU/oIa9DQURHhxfuejuF7U7GgMyuseSNhuJFx3NnBTntUfS75sws3sQjDCvJElrKkQhs+kPl/4VIGxKdnC0+9LMCD2PjHP2i/8lGoWDaM07JYQGIXfpFt3BzgRA/tMsIg5fqSbwXQpA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772712265; c=relaxed/simple;
+	bh=8lb0JikjFw000yfEY9T0tVhVJv64G4s9OgYKgvPLq7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n/mGD+1CdPmPqTQvxkFzU3oj7tTfUAU0xJxfOn7G1HZfIhltHO6iznkD6yowR/RUOWhghal1Rrx2MyjQXcGZb07p+40451O7cmKhhzkng/GJgC5P7BycnESYzNoT5/ykf/bcIgffrGSOPAMp2ulseUG8WW64NMKEVlG5eDdD31E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=paod7/ON; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZlTAJwUK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uEc0Zd9d9BdImqUwA5PBExE0RYLYrB3YAaNzyZEx9ZEXh2B4oo9iTHiF91nQc+q9oZm2xc8/sNLL1Qh57FJbnMxsP91IeWc6ViVb1ZUr43/ulnSpl/V95QxRjuUYIlxK5G7O1OGFgZBcPoX3Z6XCZbyfbS3Hk1RK3Oqw45M/b6FevQZ8SHuizYtkpOnMNUUzRDhErqvrv6Cgo9JsR0YpYpsOImJZxVsbvkKgWAoL/6DlDXax6nLTNnfPp2+27pzs91eHl8iAyav2mOnpo3hyG+jv69wTcYx9NbqLLOXGxNtQefiUXOb9195SGz+VD+Qeq7ZnmFX9KJtJtA8l0s2ClA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yG1TudeQk9ppmQbV1RGH2tlS+6/3G62RQhqqec+58GA=;
- b=LwoRDP+ebetu5EP9caIYubS0X5csR4USWnsza16bvFk1u7gw0YFPhj+O4d2LPKNRuLDGcZG0sKC1D+RxLPkmrzgqYTAdHDq2h1/K0uslIyC2e4pKm5yBCFke8xevn1uO6F9UTm67dwJvlJhtHmj+uM6sIG7vbEyIrpge7PnxpcGj8FDsRJXXmkC3njZonMmCPqfGBstS+USjNrIdTxM1XnREKgeYy3IDHJLIAhsiqstMaL2Nari5jn8MNphy/GT5ITeTMne9e9r5IjtRrTHU0RilUTNYECLoZI7r5MLOsKjD4SrZeRRpz/3k0n8YR3E7nvg2uEeI2BUyLHg6MEV2Mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yG1TudeQk9ppmQbV1RGH2tlS+6/3G62RQhqqec+58GA=;
- b=ZlTAJwUKuza0x9QsRGYBjcoOoGywROEAffhWqzDYlCRxwm+EtKCT7Vv0GDLrw+l22cV6WiQ4QEFZkwfHPB8x/ibhUrsMNMPMPuFpG1IdVcbi5FFsklUJtJ/w0Dmip8rsme/mWsvge1ZWCzKrH8KPgQAW33UUJp46m9t1xYkeBxKUn29FpuM+qC5Cfl9NNpTk3sY2PMZ8FI4fxcX6P5U2BXxiJ+8AZMXK9m/vKxLalGOTSx3xdch8udPETtXttmx7/rPfkxqK05xbCcKqZkR5/jSKhcZlz2TrYA/ivVGkf70W5l4XGihwbLg/Z66Ke5ILuVvU092MEPSz9s53FXaVNA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by OSMPR04MB11296.eurprd04.prod.outlook.com (2603:10a6:e10:93::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 12:02:40 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::5c3a:1a67:2e02:20d0]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::5c3a:1a67:2e02:20d0%5]) with mapi id 15.20.9654.022; Thu, 5 Mar 2026
- 12:02:40 +0000
-Message-ID: <e8e258fb-23c0-44d1-bf4d-e2fed92ad90d@oss.nxp.com>
-Date: Thu, 5 Mar 2026 14:02:35 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: interrupt-controller: fsl,irqsteer:
- add S32N79 support
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- Larisa Grigore <larisa.grigore@nxp.com>
-References: <20260225133858.8026-1-ciprianmarian.costea@oss.nxp.com>
- <20260225133858.8026-2-ciprianmarian.costea@oss.nxp.com>
- <20260226-ingenious-shiny-axolotl-e0e6d2@quoll>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <20260226-ingenious-shiny-axolotl-e0e6d2@quoll>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS9P250CA0017.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:20b:532::16) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="paod7/ON"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEF3C116C6;
+	Thu,  5 Mar 2026 12:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772712264;
+	bh=8lb0JikjFw000yfEY9T0tVhVJv64G4s9OgYKgvPLq7Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=paod7/ONRccNk2YBivmahOlJvWBcy+Yikb6NgV40ON5FCjsemhRmqO3FWLdW1kaqG
+	 FZ1pozwP9EKiNxixfjEJ7jTOFVjzDUKeOH6hth+oL67l5tdTo5MWMrk0xZLbV8WPSf
+	 MESJmCiwg0e3f8rDk354gFbOhviyK3EIr7yEcXWrQBeqrEwLk7/nD8so1vDH47+9E9
+	 mR5nzHr9Y+gdaC4eTtO/3lcRanrZodQ1inWqThNLtgbeYov7icTZ6U7LHj/1BciqIr
+	 SUb9Y12nyR5gSs1qWxBwikCGphbXU/wnxDvQUXEV1ybLaKpE0r9/UgV9QDyRGa5uoU
+	 qKURfu10cp4Bg==
+Message-ID: <4eaae784-3730-4a9b-a94d-d0343c6b31c7@kernel.org>
+Date: Thu, 5 Mar 2026 13:04:16 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|OSMPR04MB11296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d322077-a8d2-4984-503a-08de7aaf1970
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|19092799006;
-X-Microsoft-Antispam-Message-Info:
-	eo24E/hRUSN8pYRzX4JrRVkRYotwOR78QRHUeb/fVzimLCTh/7TSltALBxvxg7R1yC1ecb0INTfpLVA4lmF8gAc8fylwTiHcGRoEgrqCpau7u5aoPAwTq/DOydfLuKx7YF/DlhEFrtBDCoLf2XZMBGVNJ2aZHKDWHV3rOjbiogsy+cEk1NGk6+VSp+4Ze5DJHDgVHRPeuys7HjD7nY2pxZnlHSuDVCyf0IVYnIE2rskIT/pH1XEd5OC9uVbyVnjlBBQuKb+wH1vxTEq/avVUQ13KomKXLfyyewvBZOA3lEMCw+kwmyEyG+VLq0Zx5eLNVkKIzr6ZA3YMaSu1IDNZLvuG0OJZTC4gpxn0+CNj4Gm91kbwpqTLyp9o/uJYsfXBWHvRJ3R1TxqJvkmIW8gZ0+DTyr8L+ERl+RzkZmyvMDcf4wVXccQsj1y5Bmtam2BNa5gX+cjqAm5Gu9ImOb1tm4bQEA9iB/9mNme/ov2p1uXK6Oszc0GsxTStWe0iKUR3hNXivpX25+kbbwRiCBYSmARXJp94OJhoT/tsp94Rj68nsbLVDnpJUlAEt2iFzhZm9rj6cxQcjQCQB6V5643c+KxJFc0kZGLg8cKMVYs5b59HgKxqVZxnG+YwX5SVUtcKGqMbh7AA4PnS9jwI1aCnX3SU6HOYEYxnoRQx+ecmCrQh0d5ctX9HVqZDIShBeB4OElqHaFv4SS46V3GvtxfM2rjiq3vpKr7JcdYObIQOR80=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(19092799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEh6aHA5UEh2c3VWMVQvelpvekluSjgrUzQrbDgwYVpkVlBsZU8vdUwyeWNH?=
- =?utf-8?B?aUhmMTJKQmZtaVgzM0NqdnQzVGUrMDkrYjUwcmt6Wmc1ZnpWaE8zL3dGQXlr?=
- =?utf-8?B?K1N2MjRHcHZGMmhwTE43M25jbkgvK3NFL2ltcEQ3RlFyd0FZdm92ZHlHaGpJ?=
- =?utf-8?B?a0tWTzdwdjNrNmZ3Q3Ixa0pwbWhka2pyYmt0V2swbENqYjBoLy9NelZhNHVO?=
- =?utf-8?B?V2pRaFpMSlNYWGJleXlaV2tDSWZYRFdaOHNaMitLSXNOZGhEekxJSW1hN29U?=
- =?utf-8?B?dTdEaUU5SnI0WFcrMC9OMUpYVmhWLzZCbHFuNzdyQlJ5Vk0rZkRsbDcva2ph?=
- =?utf-8?B?UGZaamxIeTBjNzNKNEZtd1NQQ250VGV1TmdDSjQ5eUYraWE5K2Foalc1WGlx?=
- =?utf-8?B?L3k3YVpZSWZ4bTZqZmw5MXNiZ1Y0OTc3V3BpWk1iWlhqZEt4REcwdUlScURB?=
- =?utf-8?B?cUZCb3MrbUsxZk5iRlZZem9yaHZ4U1ZBZ3FER0QzWTk5OGJSbXBocmxOOE5q?=
- =?utf-8?B?bmZLM3pCZnhnQ09hblFQS2p3N3hIc3FxSStpdW0wcEYyZTVjbS8yMTRzUjh6?=
- =?utf-8?B?TjRjZU9nS3drWGc2aTJoeGpVdzNIc1IwclVoTEhRcHkwcCtLN3cyenA2RjJR?=
- =?utf-8?B?dWxIc1p4b3BNeG9aaVVUZGdUMTZ1RzUvVEdRemJOeit4OVQvaVh1ckRwdjVh?=
- =?utf-8?B?Q0x3N2tIMTRlVHc5OFo0WVh3dDJUQ01NdWEyWnczMjZzVER3R0lhRVQvcVJY?=
- =?utf-8?B?eUtGVjJvazBEZG1pZFluTlY2N0pKWk1sU2FBS1gwS3pveWs4U3dyazUrRHRy?=
- =?utf-8?B?dnB6LzBrS3FpdGVmVzVsdkF0TFJ5WGpMdlRvRUJ0UTdYeDlxZUVNajhWOVNK?=
- =?utf-8?B?YVJDRGJyWlRhcUtkeW1IMGdXK2ZIQ1JGd0NwQk9RcmIwVS9NTVBzemVqK2oy?=
- =?utf-8?B?bnpTUjYwR3ZPclo0a3J0dWlXSHRJZ2NUV1VTTGxDc2hTOFdVNkpMbm00a1Rj?=
- =?utf-8?B?bitNd0RlMm9yeE1ZeFhpRHpuSnptUUlIZ01XRUhzNHpBTWNtd1ZRdlhSbWRF?=
- =?utf-8?B?ZWc1UHl6VG1lSFZPNjU3ckEvdFV3dHM0Y1oyZFhUN0ZjOUJweUFrVERWVG53?=
- =?utf-8?B?SGtKbmJHZ2RCM29kcDNIZFZmNlB6RTFVaVVDRng2TS9DNW5XVzJhMERDSGMv?=
- =?utf-8?B?QjljL28vampVSWVRb0U2eGlCczhtSDQ0ZHM1TkcwTU1ZMHYwcUYxQ0RqLzYy?=
- =?utf-8?B?TFNPd2VuT2IyZUxwTnNTOTdkSUNUNEE2c1k5d0VsaGFmeEFKa2pWQXFiZWVW?=
- =?utf-8?B?RW16U3NPZE1pZnZmZHFzR01wSm40bnJ1a0RHSGJneE5CellNcGlnR09KRFB3?=
- =?utf-8?B?UnVNa2FOMFJyZDZLSk16Yklra0tkZjY0MkJwNTVRTnlnd1gyR1dzdGVPb0s1?=
- =?utf-8?B?bHJwckNIMXNSc0JwaS9wVzZPcWJqcERMa1E4YmZPb0NVNXZoU3ZFWUhGRG1L?=
- =?utf-8?B?NXRFSEFMdjZSZGpoQTlUdExEcnFUblNWSTllbHJXS1hZZ1V6VmRzTlpDdnFn?=
- =?utf-8?B?d21adlAyQlZoVlZuWU41eER3RWdEejdKL3J4SkI5ZkI4NWNJaWwzSGViY0F1?=
- =?utf-8?B?VklUVEJLM0JrRHdRSFBGaXZQQVc0NTdpdG9HZWd0NVdQSUhsOFRCK1VHbEU4?=
- =?utf-8?B?cGF5eGhwOHM2QzI5NHV6YUpOaUIrelpiSEY0MzJxREtzNm5wRGJoVUh3ellQ?=
- =?utf-8?B?emNKMDF2eE1tM0xJbGZMOHpuQlk5RlNDajVJWFA2NjNCai8zeVBycGc0S01p?=
- =?utf-8?B?ckJCRkowRVR6WFJSQStKck5odUNsdTBpd3VWZjhiWHM3eHF0Ui9HVlFEUmJD?=
- =?utf-8?B?bWI4cFc1M3VucHYvODloZlY2cGJlY3VMYW1UbGdmLzY2TW9lM2hOTG1ud3Rr?=
- =?utf-8?B?TUFlZm05c0Jxa1dVcjM3U3hDQTZkdm1mYnB4dzNKeWJ6Z0xyVXI0RWY0WnBy?=
- =?utf-8?B?VEpGTG1iSW1MdFdDeFFrVHNiUGFEWXRQQlBmSVFRdlZEQThWWTFBOFl5VTlU?=
- =?utf-8?B?K2lxNWlTTVpoMUh2WVd1OU5lbmFCQTRxTmo0L1RMdkovT2ZYbjF5eEVlTE9S?=
- =?utf-8?B?UlhLa1pwVmVxR1AzbmgrVzgycE4xeFhFVzdaUXZIVm1iRm1CaHdGUEladkw5?=
- =?utf-8?B?cHRVb29TSGdzcUR1Qlp6Z0xNdnpiamVsRSt6ZEF2VDI4TDRCYkdicTI2c2Zx?=
- =?utf-8?B?d0Z3Z0JkeVJQQnJ2R21IazdHTEpNcjNVV01PaTRIS0R0bHkxUDUwamt1VDdP?=
- =?utf-8?B?TUlkUmJrMVZKTXNQQVc5RkFycGtEcmEwdkFLYldYUmxqUzJiU2puNGJINHl0?=
- =?utf-8?Q?SO+lzogZCgks362s=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d322077-a8d2-4984-503a-08de7aaf1970
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 12:02:40.1199
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cvkYPac0qgXMS/CzvOr9sKDw5Y9kt6t1cG9gDrS49iTxdlDYswrRpSa6YINEy3Lm71sVTRGnvKekvRzBsYTU6R6Hc/Hq1+0HehhwZ+/VTgw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSMPR04MB11296
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] media: verisilicon: Fix kernel panic due to
+ __initconst misuse
+To: Marco Felsch <m.felsch@pengutronix.de>, ming.qian@oss.nxp.com
+Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+ benjamin.gaignard@collabora.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, p.zabel@pengutronix.de, sebastian.fricke@collabora.com,
+ shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, fra.schnyder@gmail.com,
+ linux-imx@nxp.com, l.stach@pengutronix.de, Frank.li@nxp.com,
+ peng.fan@nxp.com, eagle.zhou@nxp.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20260305100149.722-1-ming.qian@oss.nxp.com>
+ <azwbgxp4pl3m6klyvd5htmy7h7pc76nqvvgmi6pudvfl7zippl@svv7tiibyrci>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <azwbgxp4pl3m6klyvd5htmy7h7pc76nqvvgmi6pudvfl7zippl@svv7tiibyrci>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2/26/2026 9:31 AM, Krzysztof Kozlowski wrote:
-> On Wed, Feb 25, 2026 at 02:38:52PM +0100, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On 05/03/2026 11:32, Marco Felsch wrote:
+> On 26-03-05, ming.qian@oss.nxp.com wrote:
+>> From: Ming Qian <ming.qian@oss.nxp.com>
 >>
->> Add compatible string for the interrupt steering controller used in NXP
->> S32N79 SoC.
+>> Fix a kernel panic when probing the driver as a module:
 >>
->> The S32N79 SoC differs from the i.MX version by not implementing the
->> CHANCTRL register, but otherwise maintains the same programming model and
->> register layout.
+>>   Unable to handle kernel paging request at virtual address
+>>   ffffd9c18eb05000
+>>   of_find_matching_node_and_match+0x5c/0x1a0
+>>   hantro_probe+0x2f4/0x7d0 [hantro_vpu]
 >>
->> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
->> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> ---
->>   .../devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml   | 1 +
->>   1 file changed, 1 insertion(+)
+>> The imx8mq_vpu_shared_resources array is referenced by variant
+>> structures through their shared_devices field. When built as a
+>> module, __initconst causes this data to be freed after module
+>> init, but it's later accessed during probe, causing a page fault.
 >>
->> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
->> index 5c768c1e159c..caf3e4a1f26f 100644
->> --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
->> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
->> @@ -22,6 +22,7 @@ properties:
->>                 - fsl,imx94-irqsteer
->>                 - fsl,imx95-irqsteer
->>             - const: fsl,imx-irqsteer
->> +      - const: nxp,s32n79-irqsteer
+>> The imx8mq_vpu_shared_resources is referenced from non-init code,
+>> so keeping __initconst or __initconst_or_module here is wrong.
+>>
+>> Drop the __initconst annotation and let it live in the normal .rodata
+>> section.
+>>
+>> Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC")
+>> Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
+>> Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia23b42rj3wlmpl67@rvkbuirx7kkp/
+>> Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
 > 
-> So that should be part of enum with the first entry.
-> 
-> Best regards,
-> Krzysztof
-> 
+> This fix was suggested by Krzysztof :)
 
-Hello Krzysztof,
+Or at least a bug of __initconst called from regular non-init probe code
+leading to bugs during probe deferrals or during unbind-bind cycles...
 
-Thanks for your review. Regarding this change, I was thinking since 
-S32N79 irqsteer does not implement the 'CHANCTRL' register, it should 
-not fallback to 'fsl,imx-irqsteer'. If the driver were to match on the 
-fallback compatible, it would attempt to write to the non-existent 
-CHANCTRL register.
+Closes:
+https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e66@kernel.org/
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Am I wrong?
+?
 
 Best regards,
-Ciprian
-
+Krzysztof
