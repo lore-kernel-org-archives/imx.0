@@ -1,173 +1,257 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013041.outbound.protection.outlook.com [52.101.83.41])
+Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazolkn19010015.outbound.protection.outlook.com [52.103.67.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE5381ACA
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 00:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885701C84CB;
+	Thu,  5 Mar 2026 00:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.67.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772669617; cv=fail; b=lQ3FhQU5gMMxU5emeQdkOqIo7AA1GHx2F/oVujEVobUhQEnztaC5xMz6LUAhWCg8KH/Zl7BHt1YEX0SptLdw3d9ZB7EyfACMIU28XMHK3mRZmLbLbCTvGr5y+Ba+h7tavwFoiKI6TaXdvI16PMpDFvC00mbg16SX71K412Ko+zk=
+	t=1772670467; cv=fail; b=tR6PCIzmHLNOn5zRiJJIhlfqXkyF1bDs28V8HUQ06NDyKPwBYGKnQ+xT+XUkdV/q9EUfkb1Qol7GUxv2PsRAxm+VkNQnWsbw9dRFcFHv/iO1xN1sLNwIulQc7IjiAwiHlOc2MU9lRbpcNMEs1ChSDhbVl7ZJx/kmUz0n97EnFVA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772669617; c=relaxed/simple;
-	bh=O0jOgOYfgV5+pr7sTWb7SiYcM/GpH7e6C2up7MbRW6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ow4KVt9qITGPCu0GvOvQSgGOestJ7uTku2XdUDL45fzO37HW/qokkuXvSL9Zbzj/0ZmPt+/qmZqqkQqyCfN87I/2t/FQ3P2tBIorf/p9x4o6+CxWx0hKDmNv/+dalh6KgCq41pz4/npWEqLY7Y/Va21pIth8fm6t858gZ7e05e0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qjk79vVg; arc=fail smtp.client-ip=52.101.83.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1772670467; c=relaxed/simple;
+	bh=bNzWj+HhA2A95EusZJoSypHBLk2OYdlBd0UDJvdemWc=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lWd+fXEGuOElimd+155Vr+FRlZ1D3vJlPanDIwZxxpAtDBvh8INUUZ1jH5BusJZHo4oyAqXRYT0YKaNmPnDN9+wmpdxDxDab0ELH/6ziewZP51Lgds3IbVNWOlCAMV3s8twKr9wcJzlMXCv2tonKQVZVO58UR153+StsWTHik3o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=sahOjNw8; arc=fail smtp.client-ip=52.103.67.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qjk79vVg"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="sahOjNw8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qrG1r2flQcnbfzt8mPyfq1WEYHp1rdufFuT3y2GBiWHf8EhjZwHLH9+bXDpJOtagxCAJ1kIS2frQQasZcNToqOnEcWGvn0mkFrpPxzzY7ME7Ix2GBOzoxfboTT2Ghc/LIxBE9WgJcx8Qo6CnA63NmptnmoFBmYUlN2kJEfwB93SgP5rzT1fBDU94N+gHtbULvJjw7ret8Ktd2hczOBJNmd01Rwq0xHuTOya88iNrLUlHlZUNVpc9SNxKfDcXDZOZdigDOA8Zuvv8KwU1VdwmzbDYsNJB/uCadPFMwalW8fU5B4xUSXtE8p00vc7aYDIQu7T49nZfqlH3rcsOacad6Q==
+ b=UHbvkvq/xN1U/13Qmsacw8iS+jR/n5Cpz+PFL1GQcQ/rS9YY88uI8j8lQ1i42PrgD0QykFGksk4gubjhQTPWiuB7cFKcTTzBqSt5M6jbQ1jB4ltGhbArgkZIM68C4OHZactcc17UEUaOYWyJtEGeR6eQpdlPpcbNwYuaB2aqNuEnOYiYP8RpUI7lZbBTjb8UZt8Z0sW+PSDiIdPLvHUkNco/5L6lKMuwvv7RH6y3P36339w2WPC9vVxcZhZDxLvEwamg/tN4MZ24hMJXjjZ+8er9UHxnXF9CbmnCi1nVF81nCFmZCo8/QNcNBaoLSmnb/HxkTwfDG0JQ78WojcWmtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g3NNTUUJC+YU3zrT38m2zPMvb7AZzMF/QcK7WTvnEIQ=;
- b=QVOODwrKHpILtkOGzUc296Q/7fujiIiboCZSeIR4jxyPy8kFdSCIfOy1WynFfn0BV2bgA1IK0W04WgjOvWJ5cOuhQBNRxuZ8GKWJo8L8yeSZfUyuZIzHh2RatlVSh8M0qUAq2cu1kDTBWM9A8xyBgorCBjdUAfn2OZhYUkZp0VyvSHYPIN8TVWlloYj7Nx0o0Zk7V8Qb1HbwzBLvSZtN42ygyVXchgJZ2pqnqCfsDcIygC8xRmhW6VKIMB7U8IVa2szmu0FEaK4OUk52r4QJQj45JbLNrhhKBLve2nlv8ZgfTDwnbjvJcgXQjOhDAFhyAXnmhNfM1lCRk5xWGXA0YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=sdw/+VpM6iouSnsmX5ZjIJcyigPK/dF56hm7Xnv792U=;
+ b=zMntNX4w/51y+b8yeiuIeyEhGTsHNmZtsMBMjNLgepQ9iI0rY+hVROCIWwkyg5RCPfD/E4ceRWB2wu5cQi1gkq9OniYQ2o2EoU9xq9iYF4JN2yF/IYPaB5Udkaxt8NlZ/lfy4pwnkTSN84+lc5CJCiqIa8dRijyzJjMv+f6zNfnBQq58OtPrxXLI/oHMIgXZvIotgt/4OlyvrpTj9gTW8hTGe4SGrJ79iKq/7wVYjFHHcOZi3RKqiq4cjwWSKWitFja32dBNpmZLM+HGSGdWnScKf2S+XTZhrb0RFgMnJQFNRXAZGM8D8jkG+fzHACRpcF1+enzezMklmogI+af6LQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g3NNTUUJC+YU3zrT38m2zPMvb7AZzMF/QcK7WTvnEIQ=;
- b=Qjk79vVgaP03ANq3PJw/vwXPsz30YPQ88fYHr2KMM4QjAL/GM77S/vktzLgPlMJyvvZwhNmWtee+4bBLRUOuC3ZDZhMU36WrSxN0Wulu/qh96slODJeRuZw+D3kRY1SIL5zFeby+21BqxPRxTStjwYM9Tmf6EEo3sdLG8sjFDLUsG8pMuJ6vBCdtXx1BL9bIG/QTBFA+iuIlKQh4W/8dKRWlYczwtEMzqCDq/jBK243gzinGzjkOae6MCPzbuKHsfRtpWM6FhqarD8PHsjfmP0ImqmZEfTFirwN8ajgYPndrAx6T2SRJ3G4LzhDBL9cvJd86PrgVvuD9sOoS5VmidQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11)
- by VI0PR04MB10637.eurprd04.prod.outlook.com (2603:10a6:800:25f::7) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=sdw/+VpM6iouSnsmX5ZjIJcyigPK/dF56hm7Xnv792U=;
+ b=sahOjNw8Z4HusYGsweaJ56M8GwyEK+F8kQRHQx80tRK/8/NCFiLKiHY48Iv2lcQ3N8cj+Y6PXW4Ndq5KexR61114CV9SWLsD9rg/rSUYpXQjMcR6CMJPWGAKXCTOrj2xlgTas8pYmX7Awej81y28FztFvQwNrcYFohPA5ZUQwRK1BvYSiEsb/wbvx8ztu5ChfFsf03BU9HrEpkupaUa+XaRtg9n8Tn+u3a8gTr7Yu8n6YORTxHqMY8rU9z3aJ8KHrytv8QzmruodNOl3T1kXkocrO2FMiQnpoMg4vxVhqSvnGmiSTuLUIVH6EAgc3oV/WIG7VzRys9uNasz20Jf7Bg==
+Received: from MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1e9::18) by PN3PR01MB9936.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:171::10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
- 2026 00:13:32 +0000
-Received: from GV1PR04MB9071.eurprd04.prod.outlook.com
- ([fe80::7010:9f6:4361:43bf]) by GV1PR04MB9071.eurprd04.prod.outlook.com
- ([fe80::7010:9f6:4361:43bf%4]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 00:13:32 +0000
-Date: Wed, 4 Mar 2026 18:13:24 -0600
-From: Han Xu <han.xu@nxp.com>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Mark Brown <broonie@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] spi: nxp-xspi: Use reinit_completion() for
- repeated operations
-Message-ID: <20260305001324.fcsae6gafij6gjit@cozumel>
-References: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
- <20260304-spi-nxp-v2-1-cd7d7726a27e@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304-spi-nxp-v2-1-cd7d7726a27e@gmail.com>
-X-ClientProxiedBy: SJ0PR13CA0094.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::9) To GV1PR04MB9071.eurprd04.prod.outlook.com
- (2603:10a6:150:22::11)
+ 2026 00:27:26 +0000
+Received: from MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::8a6b:3853:1bc:67e4]) by MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::8a6b:3853:1bc:67e4%6]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
+ 00:27:26 +0000
+Message-ID:
+ <MA5PR01MB125008C876FC8461A80514DE8FE7DA@MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM>
+Date: Thu, 5 Mar 2026 08:27:12 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1 00/18] PCI: Enable async probe by default
+To: Anand Moon <linux.amoon@gmail.com>, Vignesh Raghavendra
+ <vigneshr@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Minghuan Lian <minghuan.Lian@nxp.com>,
+ Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+ Yue Wang <yue.wang@Amlogic.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jonathan Chocron <jonnyc@amazon.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>, Paul Walmsley <pjw@kernel.org>,
+ Greentime Hu <greentime.hu@sifive.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Chuanhua Lei <lchuanhua@maxlinear.com>,
+ Srikanth Thokala <srikanth.thokala@intel.com>,
+ Xiaowei Song <songxiaowei@hisilicon.com>,
+ Binghui Wang <wangbinghui@hisilicon.com>, Inochi Amaoto
+ <inochiama@gmail.com>, Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+ Niklas Cassel <cassel@kernel.org>, "Jiri Slaby (SUSE)"
+ <jirislaby@kernel.org>, Qianfeng Rong <rongqianfeng@vivo.com>,
+ Koichiro Den <den@valinux.co.jp>, Hans Zhang <18255117159@163.com>,
+ Sai Krishna Musham <sai.krishna.musham@amd.com>,
+ Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+ Vidya Sagar <vidyas@nvidia.com>,
+ "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-omap@vger.kernel.org>,
+ "open list:PCI DRIVER FOR TI DRA7XX/J721E" <linux-pci@vger.kernel.org>,
+ "moderated list:PCI DRIVER FOR TI DRA7XX/J721E"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:PCI DRIVER FOR SAMSUNG EXYNOS"
+ <linux-samsung-soc@vger.kernel.org>,
+ "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE"
+ <linuxppc-dev@lists.ozlabs.org>,
+ "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <imx@lists.linux.dev>,
+ "open list:PCIE DRIVER FOR AMLOGIC MESON"
+ <linux-amlogic@lists.infradead.org>,
+ "open list:PCIE DRIVER FOR AXIS ARTPEC" <linux-arm-kernel@axis.com>,
+ "open list:SOPHGO DEVICETREES and DRIVERS" <sophgo@lists.linux.dev>,
+ "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+ "open list:SIFIVE DRIVERS:Keyword:fu [57] 40"
+ <linux-riscv@lists.infradead.org>
+References: <20260304140329.7089-1-linux.amoon@gmail.com>
+From: Chen Wang <unicorn_wang@outlook.com>
+In-Reply-To: <20260304140329.7089-1-linux.amoon@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0019.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:5::13) To MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1e9::18)
+X-Microsoft-Original-Message-ID:
+ <be3e4319-e9ec-46ea-bcd9-42d7707c3646@outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV1PR04MB9071:EE_|VI0PR04MB10637:EE_
-X-MS-Office365-Filtering-Correlation-Id: eab92fb1-67f4-45d0-47ee-08de7a4c0930
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
+X-MS-TrafficTypeDiagnostic: MA5PR01MB12500:EE_|PN3PR01MB9936:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9ad4c95-ffeb-430f-2457-08de7a4df9c6
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|19092799006|366016|38350700014|7053199007;
+	BCL:0;ARA:14566002|39105399006|19110799012|5072599009|461199028|6090799003|23021999003|8060799015|15080799012|1602099012|40105399003|31055399003|3412199025|4302099013|440099028|10035399007;
 X-Microsoft-Antispam-Message-Info:
-	xhxQ/2QxfyKDQmjZ+leIdl/xk4WNi/uae4MYwXuaHGQ2qan1+FibEZy2BwFOjalrA/EkwZ33c7c4rruUx2fucgDo2RsSE3O7p/3CvdEHP0Mr5o5PO/QIzD8ZRBPafq/EErtkuijtyoP9//ErAKgcYzU+qyy4VTwtf4X0bO9MTrzJrI1PHs0tLUo9aoW49YbJNnC1RdtZmWXVwqBBCNu2We6inL4hlWouEoBGAOOqAA8KjhYoLS9HAEfFd54nX5qi3zcjCsvNtW3KCdO5bcZAgPIUMVXcoClBXZj261/Z0G2nDU3G98rhmCbtWOmSfkZ1rWDLLU6YLphYm4+MZerQbtDp/8F2EN6qabZ5T4Z58qoeRJ8WGCsTZSL7qlV7mdtDu7kjOwBYqE5AlxlLDqxM81mrqW6wzl1o6XmAT1C7ugT0RyH9tiCZ6HM1/xXvCm6LK0ixN/X46c2h5y/9Dh1/4kfBLHCbGsPDsVdfHHc1tNPTaZNzp7pVXwrKqBmjhpZfZ3MYeGo/YNK7ZYG0qDc0VjjDKa93QNcFyLe+Vz12OLRurdI0u7iahUTY7nnY2uM48RbPqR5H/Uuw3DYOmZ7p63wJgY+rzzzBAAK+3sUHvq07L8TSNzOAHE1okwqGvlzefmyB3c2qxlCce5a+2x3QeKaylu5/g/rHFl94E+cirIvLMIacuj7ZgcPcujeMRZ2dhsZguE7X5zRH8H+wbD0rdS5hRgNE6bIH/uemwTPblAGqpzqc9IUU2O+9sQpunawUuxpx4pVU+SH5abzE2oydOIkufgCe13tg1XXsmLZz0no=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9071.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(19092799006)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	=?utf-8?B?dzF4Q3NIZ3BualFaSDdld0w0RjU1aSswejZ2TFozTGhvOHhaRGtOd0tnZTA1?=
+ =?utf-8?B?NHl5OGhxb0IyRHpHS1R2TTloZ2dVQjRjRGtLU3FrK0UrUjhweUFvay9UVnh0?=
+ =?utf-8?B?bTNsZTh1NkFBTVNOREhWVEt0dlhDZVR2bVZlR2F4V3VxQXpPVFhDVFpMK1NO?=
+ =?utf-8?B?ekd5RytQanJhamVBZGRIZjF4ZS9TNTk1YVg2Q2w0YVRSNS9Hd09xNHQ2Mkpk?=
+ =?utf-8?B?emdCSFkraExIdlVvTE11bjl2alpTTnNGZUMxK281VWZOZWYzaWx6Sy9kNTl1?=
+ =?utf-8?B?V0NzWnAyWldWeHA1NjlUVGhvLy94V2tEK05mbFhXMGFGb0pneU9QMTdjNUlD?=
+ =?utf-8?B?KzZ2c28zQVNkSS9aTEdLdzR5Sk5xQzdaOGdyVkNra2JweG9qUUVZQkJaaW1v?=
+ =?utf-8?B?YUdIYnBlQjZMQjRHWkRPUWczK3FqSXRjeCttNWR1MDdLcnlOK0VrODUyN0E3?=
+ =?utf-8?B?YXlWcXo5RW5FRXZoNWtIUjZhZC9lZk1oVkc5dVFoeDMwakpuNjg1Yks2SGc4?=
+ =?utf-8?B?THJDVHEveFhaSmd5SkdUM01CdGVwNkJIV2gwcWxhdXdYUDBPd3pxd1lld0Rm?=
+ =?utf-8?B?RGtSUElvbTF0NzdqUU9jb3FGL1J6VGFGNlE5VVZMdHFtSDlabE5qZW1NMnYy?=
+ =?utf-8?B?ZmlEWm1uM0dESHBUdlo4WHVETlZiY20zLzVveDB3cVpsTGpBWWFWamhqVUR0?=
+ =?utf-8?B?Z2JyUFdFSXFYV3RpNGFRUytSL3lBdXVmZHA1cGVFWThxd25IdFJCU1ltdTZL?=
+ =?utf-8?B?TE9rSzFvQzlLSk1LY3V1aFFuM1Nra09paWoyd1JuNjBPMzlBVjBIK3dRV2xY?=
+ =?utf-8?B?SVRMSmZINXBrL2d1UFpReHVISTFXdTBTUHpMM0RuZ0FPSnZjanhHWksraEM4?=
+ =?utf-8?B?UDN6VXQ4ZHYxd1dVU1lSRGxvK0dvamIrQkFncUpMcS8wbjdVc2c0VFN3RmFH?=
+ =?utf-8?B?aGhIRUFVc0R6WTQ0MG9tQSt2ZVV5dXFVRjlIR0k0cThWYnVSOHBid1orUDFM?=
+ =?utf-8?B?Y0tDVWxwN0ppRkNxNkxOaHhjQXRUUk00YTVCcEE4T3p3cnM3UDg2TnFJL1ph?=
+ =?utf-8?B?Q25RZ2xLY21aUzRyWWYyR01SbU5RVWM1RXhmUHdLbncvWWJXZWVuYVBPZTFI?=
+ =?utf-8?B?S3hWK0FVUTRkWFdSTVE0bU8xaDk5Ry9laFBrNEliWFRqVDVXby9ZVjVubWdz?=
+ =?utf-8?B?NnJsM2h3LzgrZjYxNHZta1pqVDhOdUtaOFl1MGpPVzZycml3UWdNN2Y1NzNt?=
+ =?utf-8?B?cldxVEl2OHFQclNwVldTSmdHTHN2M01EaElwSkRJZWdzc21BVEYyTGpZZlJR?=
+ =?utf-8?B?Uk1Gc0lTRk9zV21hQWRHYjhvY24xcTAxQjdHSmlucHM1Ri9nTnYrREJQaGNn?=
+ =?utf-8?B?MlpaVkFNSkFWVHN5bWhWWElLR2Z4TlM5dnhHNCtCT3VyZWc3Q2JwUnArYndm?=
+ =?utf-8?B?Zm1XZm5KVVo2K2xuRkltK2dxK29oZ0ZUaGdta3ExT1hRSkZsYUFQU1dJVGgy?=
+ =?utf-8?Q?MrUkGw=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?F9Co7fluNJaNqpHajJVrueIDpBo8NoUwakIkvHNrJhek9Usc6bc7NmMfbwTo?=
- =?us-ascii?Q?d8R/PPzJcZMJJx194GMlGYUiEMIsDrnyiFUiF7c02N4pAQAIgZGFLQjuog7N?=
- =?us-ascii?Q?uB4Giwm3xR9aWCuXuow+EO83TVTBZpTxhYhswuvONn1MPk9uKjZmr7Hinzg1?=
- =?us-ascii?Q?Q20RIgkTF55xtTpNbc4ROCAAI8MEJDGjUgEvjM78ni06SBARyyZKxl3/pkky?=
- =?us-ascii?Q?kDuZO5q9vjcWw3Mg/b7/jpa0Sjt5LvGQJY1sDEimgObtHlnP0OyNJ2g4Wq7t?=
- =?us-ascii?Q?Yvzue/jEn6kpSC40xzUsuNP7VoOoalXByyaOteqhkQwBCp4XcZLnsuaMCfQG?=
- =?us-ascii?Q?KMEePR8WP2LzdfDy8NWpzSdMQK1cSOhmSsTAvK8FK75GGUV5hKk8r3/ExkjC?=
- =?us-ascii?Q?XI1oHyWSA5HuqMgGI/vAxmFxBY62MKwRsw6ftK6PxhYjqh5H6sJwjq0JTRy4?=
- =?us-ascii?Q?QrRRuK0YS9IKZ2ekNjJU1N3HzRjVFyRRDWBQ0EtbGznArL1O3CzXOWsQNUfx?=
- =?us-ascii?Q?PB6jX7XdEnwWTtf1fb1YgsQt7zdQjUh5ipVlg4gwpJTCB7GcFOgsIAekhjUI?=
- =?us-ascii?Q?CEQP+rCSdQpMC2myR24DDcaPt2K+PcLdcJ2HI5q2KRmhoo9x6elMEb18Xa8J?=
- =?us-ascii?Q?9OzhIJUYa/RL3aJa7vT9BOI7pzpyi3pVAZvVq8jqhVMzvwb+oOmewCSMIyoZ?=
- =?us-ascii?Q?TWP1YalKx0fiVBblb+xQTg7Y75KdHK7yTLv6zmy0rkQht2xCP3xF9e5JrE+J?=
- =?us-ascii?Q?v1fG3NcJn93aT82rR57b5kARtWhADPkPeAwPk4MSHIJh+xuhGkG4aCWU5yKX?=
- =?us-ascii?Q?Glst0/+HEg/d2avdF9QjGbXoC3HBLtQuGfM8CyWj8jzneCI32U70KL/x9Jl1?=
- =?us-ascii?Q?p7QctmXw2BlITbhyS7ug60MlMNUf8n5xY0+SNFii9oHQdk9HZWrpG+qNQIRc?=
- =?us-ascii?Q?RYL0KrVRfp8JVCwDie7JfPYNAzs1cJfJmymlo95apKTG0omzm4p/oV8ocNNA?=
- =?us-ascii?Q?EQUSfVvMvT0Cg3FpLRIhIMeLms7EMnr4xsfFL+QKOvPiuw+6a1rsZS+Cdorm?=
- =?us-ascii?Q?8BT5f3O76yoFiqMvZyw6EaLuVdnxJww9pGaReuARykDu6QW9f5Ticp3fONK3?=
- =?us-ascii?Q?fNZBpy+dkK8HNXmXbHgxLeqFbxA7v1tsGd8b5pWfAZ7dcPahSxsQ4LwFeKNv?=
- =?us-ascii?Q?jjkHt7KMkJWupiOq34o1Dnf/KNmpOFXmfj/penZHLXmY9FTS0GaUEpopaQP3?=
- =?us-ascii?Q?ukBv3/Lvr8D7ywLW0H4Vz1GFQQIYIU78zCeJdp2Y1recCMjnXlNFry3vN87Y?=
- =?us-ascii?Q?MBfWdPS1HRt8W8yTl0y/orJNPPGx67oOadCH8ucTkFw17r/Oe185WXXbI+3v?=
- =?us-ascii?Q?M6va93rgOVx6iWsG455CK/x9d9UqWS1wbq77bovU20n2kIdwkDgXl+yd5VJJ?=
- =?us-ascii?Q?H+rVwLytbU7QS0bnEIUZ/8gHme2Q8wWz0GzdTLxcA/mnGBjTsERwjqUMwGGO?=
- =?us-ascii?Q?NeFtBFvdN/Uwh1TPfxMAhR74wsY/4NgM4u42BUaXRtNLAA+XhJwmrtFebG4F?=
- =?us-ascii?Q?ubwD73DoG/bG8DuAJppebSNTSWfmooEgW5I9p7VmMJz+NGAQkuBSamTehprK?=
- =?us-ascii?Q?aigqxMed8Q7wAO74ZX2L2Iv/VxxiUCv9BOCjG/UPVkXXoCx7wTDjI9X7N53d?=
- =?us-ascii?Q?uQt1PmNCUo3qtE/UcLNhbB1zq2ClexX2lkQuL/oWESQbYpfu?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eab92fb1-67f4-45d0-47ee-08de7a4c0930
-X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9071.eurprd04.prod.outlook.com
+	=?utf-8?B?djZJMmpDaDY3NG5aSDlzU05WU1RtWjhuak5RT29scE1yUk16UldvcGxvaHA1?=
+ =?utf-8?B?eHFsYnE3aThvMEozckpOcEVJa2R1T2w4VHJwUHRxU3Y0bzFvYVBkbWRLK2F4?=
+ =?utf-8?B?SERRZFJHUkZYQjB2OXgyT2RWQzJ0WmkzdzMwQkYvVDBudk9KOFNWYWw2MU1a?=
+ =?utf-8?B?MWhOdG4rWXBlR2xSVHE3aVVHZm51bkpnSklpZ3pVeHhmblpYVUFOMU4zVUxH?=
+ =?utf-8?B?RTU2djBzNWRpTWZ2aFZIa3UvMzhIb0ZKc2RKVUxMMjljWm0xSjFhVkg4Q0hS?=
+ =?utf-8?B?cGJiYzFRZEV1aml0QmkrbzJGeDFwd1BaQXFsRHNOcmNEK0ZIMDA4VVBYcmJj?=
+ =?utf-8?B?NFdGTUtMUGpVL2pmWVFSbmVYb2dYUUkxS0hUZ3VpdDhvU3pzZ2RBT3N1TmJB?=
+ =?utf-8?B?NzFEMUtzWDN3clNTNjYxbEs2T1ZtSmJQVmllNWhaUDg2aUJTOFFMbGJkWTNu?=
+ =?utf-8?B?RVpwZUlmbzN6b3FqSHA5TThwSkErMTdOQ1Rrd2lKM01KRGRmUXR4VHFjRnhz?=
+ =?utf-8?B?MlR6enV6YlR0bit4U09DdFhOV3hNWTEza2FmWU8vMDdVc2NERnZreHBsOEh2?=
+ =?utf-8?B?M3p0d3UrYlBncVVtYjBzaytMc3VJSGhiS1NWSGpOd3E5TVJOZHllVGVlT0Uy?=
+ =?utf-8?B?dWpzQk93aHc4K044eXRURkRJdUtWRGhrcUNvcHVFMno2N2pwclVyRnhCRWRO?=
+ =?utf-8?B?eGtOREVxcStvOURnRStUcytITEdhbEpmNjVQUzY3b2xSNnBnNENKVys4YWw4?=
+ =?utf-8?B?Y1d4WXJtbEwzWDQ4L1ZyUnZuVDVJRDE3K2JDWnE5VWhDS3BJcmw2Z3pKckVB?=
+ =?utf-8?B?NGFqZzh0NjVjT1R6d3o2eC9XMnpZc0RaRnZvcjREWFdvU04vd3FsakViTU9x?=
+ =?utf-8?B?ZkQ0Mjl3YUwxOEdEK3pEQzh1SnZQbXBlcWlhQ1BoYjcweEs3NGYwMWFteXNr?=
+ =?utf-8?B?RFRvUmUrUW55S0ZZM0ZkSFFPYWlSS2ZFV2s2WHVDd2RXTkJpZ3pmUjFSQW5M?=
+ =?utf-8?B?QUU4Mks1ZUpaZGxGNitZUEEzdmxpLzloUlVMWWVvdlpJWlpaNTBTUnFNM0Zp?=
+ =?utf-8?B?UWQvN0tPZDZXSVExeGF3WXBoS2tWcnhsbVJ2Y0l6dm9vNUdBcC9VdElYd3d2?=
+ =?utf-8?B?aG1ZVllGZXI4R1JMckNvRXVpUU0xKzJkRWV4d1BrbWw1V3hPcGduMHZwd01w?=
+ =?utf-8?B?c0ZEZHVWK3Z3UjRRUnlSeFdFRVZlMDhoT01JRFJ1TmhsNGlXdm9aSmhuS1Vt?=
+ =?utf-8?B?Y1ZOcWIxNVFNV0gxeGRNRVlOOW9hZVRkd3lvbml6VGw1Z3JtNVZtRisxNHBq?=
+ =?utf-8?B?ZmlMTmlna0k4b2M4aTFjemxYSXBhQWM1RzVYeGZPeFVmSFBkRUNTOHAzRVNo?=
+ =?utf-8?B?akNSbXVmcC9JalpjdnBCZThQS2xQd3g2Nk12SUZqbjhyby95M3NmejBoVzVq?=
+ =?utf-8?B?QWpLaTNHcFhnY2Yxd2FNQnAxcEZ2aHlXZTZiWDJMV2EyQ3RRdjRBaE43Q3BM?=
+ =?utf-8?B?end5em9yR2szV0dRTkU4L1Q3NzJmbE9uUldoWmtCejlEVFdwMEJBTk1wcjNs?=
+ =?utf-8?B?M1BsRlBwMnl0T0xFOXM3QjZvN290TEk2MUFNR2hQWXZWemQrSmxQYllJQzF6?=
+ =?utf-8?B?eUQ0SjZEd1BtM21LSDlvWjBkcWEvUFlkRm1oM3BRaS9wcVpYZitMRmtMdDZO?=
+ =?utf-8?B?WVB0SDZYSU9zcXdBM0VNQVJSbmxmTnc2RTVUekhQWVIrR3lrYlRITEZVRDBH?=
+ =?utf-8?B?ZElzcjUxK1RGUzYvMXl6WHdYRmtHMXAzQnJiZEE3SGNqZGlyZFNlb2Y4NC9s?=
+ =?utf-8?B?bWJiVHVSOFRFc0pTRUQxcEZ6cUEzNFRycHhiTWpqektDT0hTNUl1UU9qeStP?=
+ =?utf-8?B?V1E0YVJ4cjhwZ0dIQ0lnYi9sSU9peFoyWnQ5OHZEaUgwZDhtbCt2N3J4UHFu?=
+ =?utf-8?Q?SGbUydehJYyqyFtYUlf3lTxMWyKwWDx9?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9ad4c95-ffeb-430f-2457-08de7a4df9c6
+X-MS-Exchange-CrossTenant-AuthSource: MA5PR01MB12500.INDPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 00:13:32.4949
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 00:27:25.8239
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ihROL+z6duesHy/xHuw+LgQNAhmFOWi5XCKbQmqub9Ujmmb8k4KQsKhVoGAXxRaG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10637
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3PR01MB9936
 
-On 26/03/04 08:47PM, Felix Gu wrote:
-> 
-> The driver currently calls init_completion() during every spi_mem_op.
-> Tchnically it may work, but it's not the recommended pattern.
+Hello Anand,
 
-Typo, Technically.
+On 3/4/2026 9:51 PM, Anand Moon wrote:
+> Following recent asynchronous probing updates to the Rockchip PCIe
+> controller, this change enables default async probe functionality for
+> all DesignWare Core (DWC) based controllers to optimize boot times [0].
+>
+> [0] https://lore.kernel.org/all/20260226101032.1042-1-linux.amoon@gmail.com/
+>
+> This PROBE_PREFER_ASYNCHRONOUS flag help to parallelize device initialization.
+>
+> Thanks
+> -Anand
+>
+> Anand Moon (18):
+>    PCI: al: Allow asynchronous probing for background link training
+>    PCI: amd-mdb: Allow asynchronous probing for background link training
+>    PCI: armada8x: Allow asynchronous probing for background link training
+>    PCI: artpec6: Allow asynchronous probing for background link training
+>    PCI: bt1: Allow asynchronous probing for background link training
+>    PCI: dra7xx: Allow asynchronous probing for background link training
+>    PCI: exynos: Allow asynchronous probing for background link training
+>    PCI: fu740: Allow asynchronous probing for background link training
+>    PCI: intel-gw: Allow asynchronous probing for background link training
+>    PCI: keystone: Allow asynchronous probing for background link training
+>    PCI: keembay: Allow asynchronous probing for background link training
+>    PCI: kirin: Allow asynchronous probing for background link training
+>    PCI: layerscape: Allow asynchronous probing for background link
+>      training
+>    PCI: meson: Allow asynchronous probing for background link training
+>    PCI: sophgo: Allow asynchronous probing for background link training
+>    PCI: tegra194: Allow asynchronous probing for background link training
+>    PCI: uniphier: Allow asynchronous probing for background link training
+>    PCI: visconti: Allow asynchronous probing for background link training
+>
+>   drivers/pci/controller/dwc/pci-dra7xx.c     | 1 +
+>   drivers/pci/controller/dwc/pci-exynos.c     | 1 +
+>   drivers/pci/controller/dwc/pci-keystone.c   | 1 +
+>   drivers/pci/controller/dwc/pci-layerscape.c | 1 +
+>   drivers/pci/controller/dwc/pci-meson.c      | 1 +
+>   drivers/pci/controller/dwc/pcie-al.c        | 1 +
+>   drivers/pci/controller/dwc/pcie-amd-mdb.c   | 1 +
+>   drivers/pci/controller/dwc/pcie-armada8k.c  | 1 +
+>   drivers/pci/controller/dwc/pcie-artpec6.c   | 1 +
+>   drivers/pci/controller/dwc/pcie-bt1.c       | 1 +
+>   drivers/pci/controller/dwc/pcie-fu740.c     | 7 ++++---
+>   drivers/pci/controller/dwc/pcie-intel-gw.c  | 1 +
+>   drivers/pci/controller/dwc/pcie-keembay.c   | 1 +
+>   drivers/pci/controller/dwc/pcie-kirin.c     | 1 +
+>   drivers/pci/controller/dwc/pcie-sophgo.c    | 1 +
+>   drivers/pci/controller/dwc/pcie-tegra194.c  | 1 +
+>   drivers/pci/controller/dwc/pcie-uniphier.c  | 1 +
+>   drivers/pci/controller/dwc/pcie-visconti.c  | 1 +
+>   18 files changed, 21 insertions(+), 3 deletions(-)
+>
+>
+> base-commit: 0031c06807cfa8aa51a759ff8aa09e1aa48149af
 
-> 
-> According to the kernel documentation: Calling init_completion() on
-> the same completion object twice is most likely a bug as it
-> re-initializes the queue to an empty queue and enqueued tasks
-> could get "lost" - use reinit_completion() in that case, but be
-> aware of other races.
-> 
-> So moves the initial initialization to probe function and uses
-> reinit_completion() for subsequent operations.
-> 
-> Fixes: 29c8c00d9f9d ("spi: add driver for NXP XSPI controller")
-> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> ---
->  drivers/spi/spi-nxp-xspi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
-> index 06fcdf22990b..385302a6e62f 100644
-> --- a/drivers/spi/spi-nxp-xspi.c
-> +++ b/drivers/spi/spi-nxp-xspi.c
-> @@ -958,7 +958,7 @@ static int nxp_xspi_do_op(struct nxp_xspi *xspi, const struct spi_mem_op *op)
->                 writel(reg, base + XSPI_RBCT);
->         }
-> 
-> -       init_completion(&xspi->c);
-> +       reinit_completion(&xspi->c);
-> 
->         /* Config the data address */
->         writel(op->addr.val + xspi->memmap_phy, base + XSPI_SFP_TG_SFAR);
-> @@ -1273,6 +1273,7 @@ static int nxp_xspi_probe(struct platform_device *pdev)
-> 
->         nxp_xspi_default_setup(xspi);
-> 
-> +       init_completion(&xspi->c);
->         ret = devm_request_irq(dev, irq,
->                         nxp_xspi_irq_handler, 0, pdev->name, xspi);
->         if (ret)
-> 
-> --
-> 2.43.0
-> 
+Suggest you indicate in the title of the cover letter for the next patch 
+that this patchset is only related to dwc.
+
+Thanks,
+
+Chen
+
+
