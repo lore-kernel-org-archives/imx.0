@@ -1,167 +1,117 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A13CA491
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 16:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772728572; cv=none; b=lTK2x08XXEFCWrxHXM7ygwh/WPwYHt9H0n1w5xGdVeHJ1FdSQWYtf+IOdQGvJkgH2AphUmpxSa/d0bun/qunYcD/bqmQ8C26qqBiZTYOIwQgZqNe8Zl44MAi/te5wK9kUF1Ghat4aO9ROwnd1/aBmwt520zLFVZdTMsaKDV4EPM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772728572; c=relaxed/simple;
-	bh=LrioH+NVjT6wjLUXCwMu8CzHUN71HgCZTz7Mtfe5/Mg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R0Ucw+vaJUHt+B8mdDcRB98eTKo1Zv9aUp2QeyWtqI1ZDusAJEFZpS3RJD47fDKZAb45hsSpCl6l7JmUt7UVt/k2nI+gSQS+ic4MsNT8PaD05amJ5sPdlTt3UgNAaXWPc4R+MXbnq7lfmmUqcHH0kAaSIgE3EWjNoq/cx6cDAA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WE38JidP; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD2F39E6C7
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 16:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772728974; cv=pass; b=RGL+sjpFxmN/OrohINfA/N8MIG1SHOc+YpZWredDkEHDMfDE+o4CozSolb7utPSApDokmCaX+vvSiYyyHdDvp5XwD4isRQrtqVAuk0WCnL/zFhPlQBGXBZBmYJOYFnB9jS+SrxKaUZGpgy59WPKlPveG1EfNXj9OKktUTVPVvag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772728974; c=relaxed/simple;
+	bh=tgBR+uaRfWNUR/xbu/5xWPdr0JhOP+oB90ltAZXz0F4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QMzbHA3SmEo6tdCrguhmy8WjoncHMTVVIu8rP5YHiTg1+2WYdPwW/RI5VgEtJ1Hs8MChD/9/0fG5hWpknrwRt2IlcOSV8oJ77CxTHwNohB2b1rdIC66JJbthrDKNl3F9LJgJm0om+ifIZZm0Dvc2YWKwnGXSKk7D1M16+xXkh9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oOI85PNo; arc=pass smtp.client-ip=94.100.134.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WE38JidP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1772728569;
-	bh=LrioH+NVjT6wjLUXCwMu8CzHUN71HgCZTz7Mtfe5/Mg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WE38JidPLeU1apAJ1ActP0DvHpZlRUaF06t2Le9Vo52/J0puHo+yuKMle/CGsL3Fs
-	 F2IjQcM19VI8Paxjm0YjNMeIx+rxA1OJnwbbTiPbnw/CBe1j30j9SmVn+05FsvdTEj
-	 ZfzPNDekrBHQK4cgZNQb6G/GBawrqBmoUg2rfVktyAaxDjjV9GZ7191t+Ux2vPqx2x
-	 n8Dls9fB7ZIsSIpTyAvJ0wNfyBABy5Pu6zLIr1DB1svqriTtgb1R/MNkMKA7ipbhIm
-	 oehPBY7e6i+hj43lfQukPmDuUo9REDNiD9J7Dag/btQtsgeP3nm+6gwpkGgblQX67P
-	 QJh6cn9XwZEag==
-Received: from [IPV6:2a01:e0a:212:79f0:be92:a52a:153f:7a60] (unknown [IPv6:2a01:e0a:212:79f0:be92:a52a:153f:7a60])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aferraris)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 18C3617E027A;
-	Thu,  5 Mar 2026 17:36:09 +0100 (CET)
-Message-ID: <cb73e1ac-649e-45cb-be5e-3fdd73dce7a0@collabora.com>
-Date: Thu, 5 Mar 2026 17:36:08 +0100
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oOI85PNo"
+ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=0bisfPLoTg2XqRMiZbY8naTl0HU//YMfolzvMIjdGgk=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1772728956;
+ b=Qd3arcETkJk1lFVjHnp+n4dVqU2F1UZQvQKjfn0nnvZ+PWdI5vq8xA0+2RYCnTzFtxGuOyA2
+ wTb53+x0jjlbQifO+WwKHfmt5PIRxsXcdmlO4QsLeOPrKhMr1gT4a0OzdHKAiPMDZn7a1XZt1Uw
+ f9O5dtliVkdNY/TyvZ+ajr4SwsckXUKBdeFGM6eAJ8C53Cnbky4xxHM1iginY4U2XW3Gu1SLWmc
+ Qfqxeue/k7eyf00DBuqcDcBanfJ0tMYwMEr7TBReNgVA9h7g4fj/+EYjJWf8nX+Ke9gIhEyh70L
+ PSWz1+fg3he82C8XT/lj3zCN92+Gg073GbBT4v7odDJVg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1772728956;
+ b=VZPM8M8NsfbfDJLVyKLVLz1I7zKHL5bcXxDeauUDQE65JMQtRuH3e5Rh51sTo95enLfsm9a6
+ gNzIrJ/vSKu+h5n8zJqS0egONzLaZD9doay7Zz5DXxRMncdajGxmkm86fd2tB+0QhDiurdA7akg
+ pmmP53uJKZ1meKHzNtTa5zuqXkJ5Y65clnoPC5h2s9toZdt6oi8eb8Ei0nadPKo7syt4fFHF0H5
+ KLO3Ig4YKdnNCKPQkpAlSbOVqL0UTMkaN8xbGAPUjM/DzZt+P5k+H+ISj3c/25eh7QpqBLiRvhy
+ XXe0RLMFOEDHfTfGq5Il/e0e6+d0PenMdYIHmRcY5Hf1w==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
+ Thu, 05 Mar 2026 17:42:36 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id ED36ACC0D36;
+	Thu,  5 Mar 2026 17:42:25 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] arm64: dts: imx91: Fix TMU reference
+Date: Thu,  5 Mar 2026 17:42:22 +0100
+Message-ID: <20260305164223.2650908-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "tcpm: allow looking for role_sw device in the
- main node"
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: badhri@google.com, heikki.krogerus@linux.intel.com,
- gregkh@linuxfoundation.org, dsimic@manjaro.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-References: <20260224110139.3812757-1-xu.yang_2@nxp.com>
- <30bc5aeb-382b-49e0-824a-303230110313@collabora.com>
- <im3nnajzv2hdu3kv2hknxi3jaz3oam5pujdoapva4hs5rzguky@t45ryche6n5k>
- <073cbeb3-04a8-4b26-a7b6-ef0b7654c34c@collabora.com>
- <xcfp6d2ma2j2xnsmifpvufofovqixwije7ld6332hg3zeeyxip@mocrjvsmjlqh>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Content-Language: en-US, fr
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- L9jD4jU=
-In-Reply-To: <xcfp6d2ma2j2xnsmifpvufofovqixwije7ld6332hg3zeeyxip@mocrjvsmjlqh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4fRb1G4hfBz3yX1h
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:571ca73a620effc4570f7a8b5f908bd5
+X-cloud-security:scantime:1.761
+DKIM-Signature: a=rsa-sha256;
+ bh=0bisfPLoTg2XqRMiZbY8naTl0HU//YMfolzvMIjdGgk=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1772728955; v=1;
+ b=oOI85PNoAENFr81NbWDyp67ScePspKWlPRxZRVMlKivi3VCuD5pgXpmLp+Je3fKvvfXkUQcM
+ fj0he6Gc6v5Ron2UtoAaAPAfW0AJbsJBfSY6yY7/MtKzJX4+qyH1gLg08cJjhLmfWAL6xUWlxYz
+ 9nPZqfdj6EwM/oE/F0JShPI1YqPBoxYreb8wbZ/QrcTYFUGoIqNShCEhaIjSUXblYB8QYovA6bl
+ hFskF4P7sf63j719YsKRRej0vKZVc+o3p9XPsUAaj4gzbsvljS1dEEWD1DMdfCLjQ4qWDaEQrE6
+ tFTjSUk4ZIeWhJlOCCXRN9bG9441ZEuLNgsZuGPBsW+Og==
 
-Hi Xu,
+Currently a sensor ID is added to the reference, but
+thermal-sensor@44482000 has #thermal-sensor-cells = <0>, so parsing fails.
+This also has the effect that other hwmon sensors (jc42) fail to probe.
+Fix this by removing the superfluous sensor ID.
 
-Le 05/03/2026 à 10:40, Xu Yang a écrit :
-> On Fri, Feb 27, 2026 at 04:45:30PM +0100, Arnaud Ferraris wrote:
->> Hi Xu,
->>
->> Le 25/02/2026 à 03:57, Xu Yang a écrit :
->>> Hi Arnaud,
->>>
->>> On Tue, Feb 24, 2026 at 12:33:33PM +0100, Arnaud Ferraris wrote:
->>>> Hi,
->>>>
->>>> Le 24/02/2026 à 12:01, Xu Yang a écrit :
->>>>> This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
->>>>
->>>> I believe a plain revert isn't the right solution here, as we'll get to the
->>>> same point as we were before 1366cd228b0c, where some devices stopped
->>>> working properly with newer kernels.
->>>
->>> I don't think 1366cd228b0c fix the real root problem because the description
->>> should be wrong in the commit message. If -EPROBE_DEFER is returned by
->>> fwnode_usb_role_switch_get(), the ports node should be in connector node
->>> instead of tcpc node. However, you get the error when ports in tcpc node.
->>>
->>> Could you double check the issue, so we can find a proper solution and avoid
->>> the further regression?
->>
->> Sure, I'll come up with more details asap, either tomorrow or early next
->> week.
-> 
-> Do you have any updates about this?
+Fixes: f0ed0e844452 ("arm64: dts: imx91: Add thermal-sensor and thermal-zone support")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx91.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I do, sorry it took so long...
-
-So fwnode_usb_role_switch_get() does indeed return -EPROBE_DEFER, then
-keeps doing so on later attempts if I revert my patch. However,
-usb_role_switch_get() succeeds on first try.
-
-Please note that:
-1. I don't understand much (if any) of the Linux typec stack, and only
-    noticed 2d8713f807 broke my device, hence my attempted fix
-2. said device is the PinePhone Pro, using an out-of-tree dts (and many
-    drivers) from https://codeberg.org/megi/linux
-
-The proper solution likely lies somewhere in the "get proper drivers
-and upstream dts for this device" land, although I definitely can't
-commit to this.
-
-I think saving the fwnode_usb_role_switch_get() return value and
-restoring it if usb_role_switch_get() fails would be a decent
-workaround, although I'm definitely open to suggestions.
-
-Feel free to let me know if there's any other test I could run, I'll do
-my best at replying promptly.
-
-Best regards,
-Arnaud
-
-> 
-> Thanks,
-> Xu Yang
+diff --git a/arch/arm64/boot/dts/freescale/imx91.dtsi b/arch/arm64/boot/dts/freescale/imx91.dtsi
+index f075592bfc01f..d63569b39bbc5 100644
+--- a/arch/arm64/boot/dts/freescale/imx91.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91.dtsi
+@@ -11,7 +11,7 @@ thermal-zones {
+ 		cpu-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 0>;
++			thermal-sensors = <&tmu>;
+ 
+ 			trips {
+ 				cpu_alert: cpu-alert {
+-- 
+2.43.0
 
