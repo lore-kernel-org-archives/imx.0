@@ -1,204 +1,156 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010070.outbound.protection.outlook.com [52.101.69.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAEB36654A
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 10:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772706023; cv=fail; b=i5lAdyXCp2OfQaucSsf9A6/D9nQygdIGw9T6sgQRm66ZH/15IGvDDVrPLzhwOQ1HXNlINbseR7SapoBR7Maz74MqrjiXpRFLddz3Z/pDYl0MRtM6rlCFqI/c1/pTELQMXzsVxjoiRhNICo3qMVelKQjqmZqbT1SppxN1j+Kp5Bg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772706023; c=relaxed/simple;
-	bh=NoGCaMoJc87Odic5Hm9Tqno2aFrWT9dd7QOZ/1RXdD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HgT/iIKm/Qjc8woJKX9Cs00vuqz7VSm2aMnGKEC+4lw62cR5qY+Sd4UOMov7WaWbaOgRZ1trIW/3cSe3ncpkelgBzvOZLagddhNESLOtGjDg2qyJmOxy9rBQm5hzwbYb7lhNmL4QwIm62NjTRDLQtRVmytJEv8ExameOCT/dghk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wGt3+TkD reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wGt3+TkD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bSvPK53ckNPg6504P54fGIOwcZP+P23xSAqj1gvRv9BQOXARs9LDYinLdaPeZ/6Mvz/xEt48Vkua6pS4dNHaxgUH2giaqyfMTrF6AMYraGyvG6adccBzN51NwFhYtP5zHxXh2Ln1EmL6Jx/V53sMTwYHF3uQUhvi6OnQSjdCBgy7lgo1vFoaoQWBW0Hu4KkA5TCbweWiEBtJ0y8htqsc5ChJkCYCAcDADCx4FdHV8+lJzIYlymRtCNzuZXZ9qScFSmF5tsXzvVatwRpHTNcV2WQF73mXXhVGrdsgD91636gHJ6S5tgXRZm8Yot5Ti48Ju5XhzuSTlUz2lTjb4C3CwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9spKMwsoH+hJJDfKeFGIuwFCX5Gyg96hyZSX5TXPCbw=;
- b=tWktjuuGNKyMqMLiECLw9rjd2Onu2COTUVpBnUspkk9DfusaQoY2BzpvWGFy3jQB4c5qkCt3oN/LVoKc4gQkYFMQQNr0PI5P36M/cApxTjnWzSnyOynR6pzsBvPUYFdCH0H5E4WJSIVtOpWzukBZINrDx9j1Taz1IrghDsuHKfkJZAxRuuCFg1geIO8iZW1uDR1i1mP9/gbTocbryGrodurhcorUcGfEopcSanhJeLWwkDExQHr2X9d7TJdejnG/QUT7aLQ6Dbs4M14ookT0JDpkBcdlfDNIy0LxcivnjhsmmFTLcX1N5iJHUUhoOVLR39o7lvSfcz7GZ+3y3Nw8RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9spKMwsoH+hJJDfKeFGIuwFCX5Gyg96hyZSX5TXPCbw=;
- b=wGt3+TkD1fWlBnTS3BJLR3ZmTq+poaecUuwynsI2ljOrqwzfrWLr/s3bfbc70cZw1humPmT6cMLPxnBe1NyXV9EsEJv5dAHpX7V0Ywsvaf+xtMlbciW20AhkxgfnHluT8rqJxW3goylDrE06wukpl3lE08ulkc7KQlNOuS0nPiawpLOs5N5SpHHAD8U7bcOPZG603Rtb3mXOSteT7RTw2lsujvbyeSqVHwZ1FQwpdSd957FXvVB9SXo/NdDwb7fNDi/1mIEoqDWjTfDJso22Ktr5rR7ZP6jQyE2BMwtjWvvlR8wIFCIYL9AjCmgbaYWrcqSdovK1IZOSkevyZYRL9A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by GV1PR04MB9215.eurprd04.prod.outlook.com (2603:10a6:150:2a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
- 2026 10:20:15 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%7]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
- 10:20:15 +0000
-Date: Thu, 5 Mar 2026 18:22:15 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] firmware: imx: sm-misc: Print boot/shutdown reasons
-Message-ID: <aalZV981HAneFWiC@shlinux89>
-References: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com>
- <20260305-scmi-imx-reset-v1-2-18de78978ba9@nxp.com>
- <24409695.EfDdHjke4D@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <24409695.EfDdHjke4D@steina-w>
-X-ClientProxiedBy: SI1PR02CA0010.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5642337F8B8
+	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 10:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772706581; cv=none; b=UtnCZhPmP0ubamqH/K4/qtX8eLE3cm8SZ3SLO3PIAiZxSbPKk+aVHPhop98EZnBpIvGPq28Ds3k74+Ra6VBDqr3G4yofHKi5jVA4g/khNibT1pfNugHxBid2sdNkSeArIHHqgaOo5qWMfiMQhtpt5s/u/r3c7FGulL0PI8XKqj8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772706581; c=relaxed/simple;
+	bh=hzR/DJPGKmySS9c+Pr6X+vQuNGBaidaL+cpT+F96Xks=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cO0rJ8glxVORCgP8aCbCF+HS+0oyBdf8WN3bdmvIJLeCezsvLF7He7o3AuhJW55An86LsiPlTedp59H9tfaSkPIwy7GmWJRfyLyInjLv15UCLHLl7QrNV5k0ZkPFVOLaYGHIfitxZ8Fx3fq3Qe/m1kHiXQSYXXxQAhus2Ve7iDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899fbf92bdbso61065306d6.0
+        for <imx@lists.linux.dev>; Thu, 05 Mar 2026 02:29:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772706579; x=1773311379;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n3yqJTxsIY1lPN4PgWxKVyykkH8+ipNK1w9pI9/GKdU=;
+        b=bpO0bhuMba400XYSMQeHTk3ubxcsn7u9LLDr6Ab9w6IRrUumoje/COJZn/MEZ6teh4
+         OLToRTZnbm4jQEOOYsyVCtG1+DQOTNUvOmuSLGHSANbaef1gn0kLNK2q4qCn0Ov26Mpy
+         bjf1goezVFsD6SugnfZ85tnxSbywHGcnrFn2bAE4BA7lZOWdhjMWyEN6iJeChBlORQm5
+         lwIdc+4PsSmlmXBGux9QjIPs1j2aRp4Ts8S5MTAMs/j4bdPmLVajza1koI04BMnqW37P
+         YigCpS/nrG/8KOXi5IzzhPuS+cmxzq0AyXF0OgZUycAh+faM867vZP1vltf5hWnE7sjn
+         A9Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0yNTE1bHpVhxWJGUjxO/zR720+pRIY5r3zvaVxUC4KkTOJq7oMZ4GvGhbkfVZvOe0SK0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyK/7YBAVDB+WpRTXcN7C/Vmlrgr1mEpXdaVbTz0nRxEPuy0eFq
+	QWlVunI8ou6+MhZOpbzwfftiAG51BjGdgZ6v9Kzc5JFnnrUvEy1DxxHCVYIB+ytR
+X-Gm-Gg: ATEYQzzlvc5r8pCftLdcqy3YvstH4e563kVCTW6aLGWrE/AQX96OcLbwpq4Aczbjaww
+	ENfPc5aXqzGis7beP/aDWE9bJeRu6a1QvPc9s1dUJvf6vOVQsBgG+ELk3U4eZwnBDsBmiVvfRyN
+	5/YkakEknfNxRQoRrTjlEu1ikuhoDYlsgRkJ8Q1OntWhcRhyUk1S1rEp5udONzr3Zcd+01O86Wt
+	nRa75pmsBstaNstairEXcI/1NydI8KLPGv/XwKc4rl7lsq+7ncP+EHP8FmLJ/IP6jmrHYxzlbh/
+	Z59bjUabSFIF/jcf+qQnZym3Bros9nyO3zWS+S5FIMorAH2hVyBTFetQltlq3phtdCVugtRxUmO
+	tz5MHfgZhoCLyeHhOFlCy2EU5O/1tcpZQ2CbJaYK/b7mBNArM1tmTQDv/17cpHNuQy+wqn/1vyy
+	n1BU+hTwqiObO7VARNhjX1nrGdpCO3kL5z6nNaRpgk5g4NHnUWeqws+4fOKija
+X-Received: by 2002:a05:6214:29c3:b0:89a:78c:7cf3 with SMTP id 6a1803df08f44-89a1997919dmr71828306d6.3.1772706579219;
+        Thu, 05 Mar 2026 02:29:39 -0800 (PST)
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com. [209.85.219.44])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899f8ad5b8asm114846556d6.0.2026.03.05.02.29.38
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 02:29:39 -0800 (PST)
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89a05955720so51287466d6.2
+        for <imx@lists.linux.dev>; Thu, 05 Mar 2026 02:29:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXakn2LBvmQCmeJLu6nLg0uMxVqMIl464G200vsTZ1nWaP9kgZGezrE1dLVSBfACxWGSB8=@lists.linux.dev
+X-Received: by 2002:a05:6102:3ed5:b0:5f5:320c:4d36 with SMTP id
+ ada2fe7eead31-5ffab240223mr2483807137.40.1772706274492; Thu, 05 Mar 2026
+ 02:24:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV1PR04MB9215:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73d90e51-f7c6-43f7-7812-08de7aa0cb1a
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	SK5dnfj7+K+4ibcaNzx8UvVOgcIdfOeaNioRUXC3OYAa/Q7VTvcQt1g2IA1tTtPQnci2iBKFztfPqicVp89uw+sHFejMKQJWcMsPX2S/wpFNtWbfnzo0lzf7iGUdSj6S3DWlqPcNeN7ISaInfOqsxI/4naCF6UcvsH3t5PTS6Ehsm4B36R+RYfYRzl5DFKVIJLMQDR3XlKmytsk0KRhONg55DpKO9TK8kx0TMuW0AUGFi5BvHTAh3S44wLsdUMz9ccMKsW6IPbm6JiVdU584I4ktnSSTO2Xq9tLdbH9lx4SBafBFLkVrQYvM8iSrCN/awB1gbEtGKhW+tYf7KMJ07b1x5yUoMFMDL4BwrUzq6i7P2RQiTji69glk+LaCWvy7V7YkbAD1wlrpUIsYy6X1J/EfRuIzmajEn3kFpzcSFS/MRyXTo3qHkfrl3QskNZgcIgA9TQlwV4MwGgXVST9ifJ5ZlICfnSe6LB6JlCsC6h2f4VkqzvE3DOQntiqZTzZBx3FKjfNJXOChZUJacdFkwzl/PGDY60LKba0TKWsfVasEpOide4K5FPVThLHa00Aa05k+fzFAoUxd6Fee3RX6JaNUO75CqCVmLCW7ZXYTTN/74Uo3cZczbzB8DZh2GN9p1ZLrfxw5KLNSAxAnMee+Jv3RkMWk7hZabHNMPv9Yx/ZFEZVWXYZOSA2EFc+T6xciPscM9DQV3Tj3SchiPqvYsXLZ2LdSZdM3WGOsii5VIvI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?EbdkwSy87ERUKef5yY26F5R1qqQEDKKaSSOHKxoTnObUGhv/+HpgfzxYST?=
- =?iso-8859-1?Q?9YSNL1QL1ByDwCtcr+qt087G+J20/cBr2K7tuc9crutRr71VUC+XbFdmqc?=
- =?iso-8859-1?Q?e2enf1yw9xAO9fx20qx65gkGPvSk84ISv/f4YcrxXRaDPU1K16MA6DsX5o?=
- =?iso-8859-1?Q?mk237mCcnuT5XnuekNELx0cqs+AXOQuoTLwoUqGt1LY56dtgLSvkHDT9IZ?=
- =?iso-8859-1?Q?S6IM8OhvSJszL8QqG5s8lGD39ZZKVm+ltRS6GeoyMGIN5gMBfmVqU19ETU?=
- =?iso-8859-1?Q?baXcjY4ScLN0oHJuIXgw/Mzq0P4NRgKiUzEfCl8gsNRbaZZluFo8YqF+MH?=
- =?iso-8859-1?Q?16uDbfbGpFzFKMn6zV9YGcObpOI5ozD9h81TOSE7A3z/c2p897LPvSrSsh?=
- =?iso-8859-1?Q?UTO2A+37TLAGPt7tzKOcC5Y5Nx0ff9/kvJwOIWYj3CpjVmiNgrAG9iDzS8?=
- =?iso-8859-1?Q?RsUY4Ma4DcxCJqiMHgADNw0D3opknnR7loRfWWeKEKjCi5/luMQVefazQi?=
- =?iso-8859-1?Q?WOPi1LWoAkydAIG0lCAs+45ntzY614IFGH8Crrq5xAqSON5gmFgQMIG57Y?=
- =?iso-8859-1?Q?CFYYVhK5WOFv+wH7MvXuVbVuyUdceaPv3Rc19Ta+jtwm3l3NzlZ6EodOKW?=
- =?iso-8859-1?Q?0OWiuxoZtyvDp/wuHSk82tdsJiBJhAp5aKmACOGDeh2zpgX9n/w79I6J7U?=
- =?iso-8859-1?Q?RaPSSghVPR4EfMUcsTXAxLVqMeFZL1faai98F6BCuOpJVRrHmltcvzJtEb?=
- =?iso-8859-1?Q?d9SL3RCqdTEP0AJKbTq0q/uZDWh1im/BQOIZa+CSSUF3unEgV5fbddRZv3?=
- =?iso-8859-1?Q?/P1VxKV4ZLLy318d9ins6SGdoIqVziYv8664iAucLEnwIyyBYfd/gJD+eA?=
- =?iso-8859-1?Q?fueoE9ED0DchzgfUYgzDi/pAu/IOBY9EZg6LR3T09b75QdqJC/5C4v9K9f?=
- =?iso-8859-1?Q?FYdd42zdowiQtv5xUZMkE59qqgIFzIDrgfKAsz8a1mntMvwMGl5nv3pUOm?=
- =?iso-8859-1?Q?peWu0O5svgEP3XpJgQnlQ9nAOp8CXPfID2wVBiYr47q8lp9LG73GbwOv2C?=
- =?iso-8859-1?Q?QkzJ8Wb1DW19lI4YZDdZgHt6gtlXWxndoHOq7OqI77gDu6vAp1sDiZyFoF?=
- =?iso-8859-1?Q?9U/QqUrfkNDe319OUZooQbf51jJ3rgdmyAhk6B6R4MB+lbCrm6mYFjhbfp?=
- =?iso-8859-1?Q?vS2hkQuLaJOoT6xu957L9/sPa3RDAFgrKk6l5JoiXvwjhBiZEhArRHl8pc?=
- =?iso-8859-1?Q?8hFaHSesqYL+2hjZu5BTlvBhxVqA8igs7w77gCxTfBFmCMiyZuK3UOkJFV?=
- =?iso-8859-1?Q?aNBUUYPjRlawEqjkadIzuineCar1ukFDGzT9YQqDSZXD+cwm4o5nqLqbBh?=
- =?iso-8859-1?Q?15dGxkKm+kIwUXD6AXZ8gUZRh917g/ihSJAN6sfgCi3p7gnuK7llFfRvHi?=
- =?iso-8859-1?Q?65+0Tc85BqdMy/1OBx2xQfFv+Ki8HDh4IWAOksbY1tT/CHrhmD6tzNnGil?=
- =?iso-8859-1?Q?UOINXSM/0ycjs85Dq+cdgDmilBv8GFmTbmeZ/PPNOsmhUoUtFVbI8qugQY?=
- =?iso-8859-1?Q?z0r8UE3m5thz/DbX+PCBtkeJL3u2wdvGIJhitg3BQmqqdFTDCxTIQ2zF9c?=
- =?iso-8859-1?Q?t2kYxTEkBgj6zCjEDUUvFNBRH+A5eiCzR09tB6/3Oy+4U7yZNinGIsgPvT?=
- =?iso-8859-1?Q?Q+RqlPIKZnj9Uggd2SEe8YdrM9QqtXjwTQZb4KIQ3WE18SmRkNzVk0/uhV?=
- =?iso-8859-1?Q?8s035mHi4kV2/RnCFOotdC10zC2hr6aK7ElEBYS4cPR7HAnLAHed7sLxcX?=
- =?iso-8859-1?Q?5XmJr47e5Q=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73d90e51-f7c6-43f7-7812-08de7aa0cb1a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 10:20:15.6906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MXIZJj7jQu2NOA+bwi60MrDEadxhtHxg2fxEoV4KEauMKTK8AXsMozSrtn+ZKbw+be1S356ndxPkOeOtw2PkuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9215
+References: <cover.1772644406.git.geert+renesas@glider.be> <d22488d128d39fcd90359f59559fac637bb4b04c.1772644406.git.geert+renesas@glider.be>
+ <86v7fa7fdq.wl-maz@kernel.org>
+In-Reply-To: <86v7fa7fdq.wl-maz@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 5 Mar 2026 11:24:23 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWWYNGThGYsj6Oakwx-1RKO_BrENiSSUi08ZzfE_b3EXA@mail.gmail.com>
+X-Gm-Features: AaiRm50s5nNMGcrhF9lpYz1D5nEmYHga723M3h1qHVdFckZiw7-IBT_v4J6wsk0
+Message-ID: <CAMuHMdWWYNGThGYsj6Oakwx-1RKO_BrENiSSUi08ZzfE_b3EXA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] irqchip/gic: Use GIC_* DT binding definitions
+To: Marc Zyngier <maz@kernel.org>
+Cc: Thomas Gleixner <tglx@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Antoine Tenart <atenart@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>, Daniel Palmer <daniel@thingy.jp>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Alexander,
+Hi Marc,
 
-Thanks for giving a look.
+On Thu, 5 Mar 2026 at 11:13, Marc Zyngier <maz@kernel.org> wrote:
+> On Wed, 04 Mar 2026 17:21:58 +0000,
+> Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+> > Replace magic numbers by symbolic DT binding definitions.  This improves
+> > readability, and makes it easier to find where the various GIC
+> > interrupts types are handled.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-On Thu, Mar 05, 2026 at 08:44:26AM +0100, Alexander Stein wrote:
->Hi,
+> > --- a/drivers/irqchip/irq-gic-v3.c
+> > +++ b/drivers/irqchip/irq-gic-v3.c
+> > @@ -35,6 +35,8 @@
+> >  #include <asm/smp_plat.h>
+> >  #include <asm/virt.h>
+> >
+> > +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> > +
+> >  #include "irq-gic-common.h"
+> >
+> >  static u8 dist_prio_irq __ro_after_init = GICV3_PRIO_IRQ;
+> > @@ -1602,25 +1604,25 @@ static int gic_irq_domain_translate(struct irq_domain *d,
+> >                       return -EINVAL;
+> >
+> >               switch (fwspec->param[0]) {
+> > -             case 0:                 /* SPI */
+> > +             case GIC_SPI:
 >
->Am Donnerstag, 5. März 2026, 02:56:45 CET schrieb Peng Fan (OSS):
->> From: Peng Fan <peng.fan@nxp.com>
->> 
->> Add reset reason string table for i.MX95 and introduce a helper
->> (scmi_imx_misc_get_reason) to query and print both system and LM
->> (Logical Machine) reset reasons via the SCMI MISC protocol.
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
-[...]
->> +		if (boot.valid)
->> +			dev_info(&sdev->dev, "%s Boot reason: %s, origin: %d, errid: %d\n",
->> +				 system ? "SYS" : "LM", rst[boot.reason],
->> +				 boot.orig_valid ? boot.origin : -1,
->> +				 boot.err_valid ? boot.errid : -1);
->> +		if (shutdown.valid)
->> +			dev_info(&sdev->dev, "%s shutdown reason: %s, origin: %d, errid: %d\n",
->> +				 system ? "SYS" : "LM", rst[shutdown.reason],
->> +				 shutdown.orig_valid ? shutdown.origin : -1,
->> +				 shutdown.err_valid ? shutdown.errid : -1);
+> I'd rather not do that. I use *numeric* values on purpose, because
+> that's what the DT *binding* describes, and I have no control over
+> what lives in that include file (it gets changed without me being even
+> Cc'd).
 >
->Is there a way to query this from userspace programs instead of printing into kernel log?
+> So I want to stick to the binding, and not to the interpretation of
+> it. If you want symbolic values to be used, describe them in the
+> binding, have a tool to generate the values from the binding, and use
+> that everywhere.
 
-I not add sysfs or debugfs to get the information in this patchset, since our
-customer only want the information could be shown in kernel boot log.
+This sounds more like a philosophical debate, so I'd like to defer
+to the DT maintainers...
 
-But I could add also sysfs interface to allow userspace get the information if
-you need this feature.
+About you not being notified: that can be fixed easily ;-)
 
-Regards,
-Peng
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2110,6 +2110,7 @@ F:        arch/arm64/include/asm/arch_gicv3.h
+ F:     drivers/irqchip/irq-gic*.[ch]
+ F:     include/linux/irqchip/arm-gic*.h
+ F:     include/linux/irqchip/arm-vgic-info.h
++F:     include/dt-bindings/interrupt-controller/arm-gic.h
 
->
->Best regards,
->Alexander
->
->> +	} else {
->> +		dev_err(&sdev->dev, "Failed to get lm reset reason: %d\n", ret);
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
->>  {
->>  	const struct scmi_handle *handle = sdev->handle;
->> @@ -133,6 +204,8 @@ static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
->>  	scmi_imx_dentry = debugfs_create_dir("scmi_imx", NULL);
->>  	debugfs_create_file("syslog", 0444, scmi_imx_dentry, &sdev->dev, &syslog_fops);
->>  
->> +	scmi_imx_misc_get_reason(sdev);
->> +
->>  	return devm_add_action_or_reset(&sdev->dev, scmi_imx_misc_put, scmi_imx_dentry);
->>  }
->>  
->> 
->> 
->
->
->-- 
->TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
->Amtsgericht München, HRB 105018
->Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
->http://www.tq-group.com/
->
->
+ ARM GENERIC INTERRUPT CONTROLLER V5 DRIVERS
+ M:     Lorenzo Pieralisi <lpieralisi@kernel.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
