@@ -1,116 +1,110 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CEF36B07F
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 10:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266DB30B53A;
+	Thu,  5 Mar 2026 11:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772707720; cv=none; b=Fvw8Mjrl+EfJs9Rf+DTr32kWTss+0L2zb2GTCD/VLNm28ZfCeKs8jvqyoIh8YzLWV0+fI6JzhUaKb/D2UfY9MmqC9Ngv2Mmnxa0L/v7aXRDNowF5mV4pj3eDxltXKqs8/joQLkMHpQG7U6HoTS2eNzwsp1coOBm6c0HZHYpyL0Q=
+	t=1772708601; cv=none; b=jj7zpKXX/ZJbC9utGq/98ruM46x0Ntkr8jyXgxWd3QyQN+dT5qzdUJuI+396mNI4Ao85wJaACmbWE+jwv5jatkoY2ZSD2rgglYFsRwi/8PN4TgIKOmCwY6hGgY06hHLIjJdK1MLnnoiHUsNOLlFLVc9EWEIpChfEQm7Y+WPtz+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772707720; c=relaxed/simple;
-	bh=FgjIUp7K7TwMgun3wRj1gl+S1an/wKR+ibx8DQAeqJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EA358JcQP98ndbocojDQDwArjrTyVg6qYguqkCG6PjRtL2841KXK93WC+KLs5uRTO1gspjzQ0r0wXNPQuinxCQpVus68pNkfB0sUbUp/LG9L1BsZ7pxc7BHh98m6nvXd9RQd10CMvvR5EfbjUA6HgR2XDegvZe44b1dMkCgjp6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy6Fs-0000TS-L0; Thu, 05 Mar 2026 11:48:32 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy6Fq-003rwV-20;
-	Thu, 05 Mar 2026 11:48:31 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy6Fr-00000001aVY-3j3z;
-	Thu, 05 Mar 2026 11:48:31 +0100
-Date: Thu, 5 Mar 2026 11:48:31 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] firmware: imx: sm-misc: Print boot/shutdown reasons
-Message-ID: <aalff2CtcIeln0NG@pengutronix.de>
-References: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com>
- <20260305-scmi-imx-reset-v1-2-18de78978ba9@nxp.com>
- <24409695.EfDdHjke4D@steina-w>
- <aalZV981HAneFWiC@shlinux89>
+	s=arc-20240116; t=1772708601; c=relaxed/simple;
+	bh=XkhFu5R2j+knEY1vxGe51F80Ek3LROgWQvuDZnuGOxc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iNQHBAISM4k7GA2TbM0qq85bIxJHa/A+OYgGUyAH6l0WzOnNjIQOuJbxvdddv2OJ9whxkn41hzdl0NxkATGGGtrJYSn/uQkFu98nK5VpJnTQa8gtqlBeyzMmtUhflNN0rjI1dd/yljLrevbBzMcFjc+eZRrlV+uSjZUeQqeLeSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4jmbjm9; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4jmbjm9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B800EC116C6;
+	Thu,  5 Mar 2026 11:03:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772708600;
+	bh=XkhFu5R2j+knEY1vxGe51F80Ek3LROgWQvuDZnuGOxc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=m4jmbjm9//kg42GLG2DHrlf4HdVzDN0wdhmf9oJwoJ/uVazQXm4jHgL3GIdTnB4nX
+	 cYD7oyukkmFP2YPh6VjlxjPcuJGZPfFzOotMuP8NNek/onH2iqDGgH/m9SHha5bSCD
+	 GkLs4uhjFIpLJMKVJ3GaW3k6saBPcDn8sZxzd+WRieoGFvvc+f31LiE4vQJfCyS5UC
+	 7mQ+xQkqC5Q4jgtoykMnMFjCM+Mbxiulr1Uh0L9j6Dci5/82N/JU0wvyI8l7u2j2xq
+	 Fx2l5d9DCOJnPO8xJ4zfsH6vFRyPrOgmOTYlUbni6EsPPpP1+jjNpKHBu5TRFsnRF5
+	 081LWgCO+6G5Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vy6UA-0000000GPSf-1Z57;
+	Thu, 05 Mar 2026 11:03:18 +0000
+Date: Thu, 05 Mar 2026 11:03:17 +0000
+Message-ID: <86qzpy7d3e.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,	Neil Armstrong
+ <neil.armstrong@linaro.org>,	Kevin Hilman <khilman@baylibre.com>,	Jerome
+ Brunet <jbrunet@baylibre.com>,	Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>,	Peter Griffin
+ <peter.griffin@linaro.org>,	=?UTF-8?B?QW5kcsOp?= Draszik
+ <andre.draszik@linaro.org>,	Tudor Ambarus <tudor.ambarus@linaro.org>,	Alim
+ Akhtar <alim.akhtar@samsung.com>,	Frank Li <Frank.Li@nxp.com>,	Sascha Hauer
+ <s.hauer@pengutronix.de>,	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,	Dinh Nguyen <dinguyen@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,	Konrad Dybcio
+ <konradybcio@kernel.org>,	Thierry Reding <treding@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,	linux-amlogic@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] arm64: dts: Drop CPU masks from GICv3 PPI interrupts
+In-Reply-To: <24685144-c1bb-4084-80de-40989efbf4a1@oss.qualcomm.com>
+References: <cover.1772643434.git.geert+renesas@glider.be>
+	<ee2980af-e37c-4b4d-86c2-32467d2af454@oss.qualcomm.com>
+	<CAMuHMdUCqozRx_WJesymXmP_PYo4Bf=oed=4fXycVOVk5g8D4Q@mail.gmail.com>
+	<24685144-c1bb-4084-80de-40989efbf4a1@oss.qualcomm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <aalZV981HAneFWiC@shlinux89>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: konrad.dybcio@oss.qualcomm.com, geert@linux-m68k.org, neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, peter.griffin@linaro.org, andre.draszik@linaro.org, tudor.ambarus@linaro.org, alim.akhtar@samsung.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, dinguyen@kernel.org, andersson@kernel.org, konradybcio@kernel.org, treding@nvidia.com, linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi all,
-
-On Thu, Mar 05, 2026 at 06:22:15PM +0800, Peng Fan wrote:
-> Hi Alexander,
->
-> Thanks for giving a look.
->
-> On Thu, Mar 05, 2026 at 08:44:26AM +0100, Alexander Stein wrote:
-> >Hi,
-> >
-> >Am Donnerstag, 5. M=C3=A4rz 2026, 02:56:45 CET schrieb Peng Fan (OSS):
-> >> From: Peng Fan <peng.fan@nxp.com>
+On Thu, 05 Mar 2026 10:02:01 +0000,
+Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> wrote:
+> 
+> On 3/5/26 10:55 AM, Geert Uytterhoeven wrote:
+> > Hi Konrad,
+> > 
+> > On Thu, 5 Mar 2026 at 10:33, Konrad Dybcio
+> > <konrad.dybcio@oss.qualcomm.com> wrote:
+> >> On 3/4/26 6:10 PM, Geert Uytterhoeven wrote:
+> >>> Unlike older GIC variants, the GICv3 DT bindings do not support
+> >>> specifying a CPU mask in PPI interrupt specifiers.  Hence this patch
+> >>> series drop all such masks where they are still present.
 > >>
-> >> Add reset reason string table for i.MX95 and introduce a helper
-> >> (scmi_imx_misc_get_reason) to query and print both system and LM
-> >> (Logical Machine) reset reasons via the SCMI MISC protocol.
-> >>
-> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >> ---
-> [...]
-> >> +		if (boot.valid)
-> >> +			dev_info(&sdev->dev, "%s Boot reason: %s, origin: %d, errid: %d\n",
-> >> +				 system ? "SYS" : "LM", rst[boot.reason],
-> >> +				 boot.orig_valid ? boot.origin : -1,
-> >> +				 boot.err_valid ? boot.errid : -1);
-> >> +		if (shutdown.valid)
-> >> +			dev_info(&sdev->dev, "%s shutdown reason: %s, origin: %d, errid: %=
-d\n",
-> >> +				 system ? "SYS" : "LM", rst[shutdown.reason],
-> >> +				 shutdown.orig_valid ? shutdown.origin : -1,
-> >> +				 shutdown.err_valid ? shutdown.errid : -1);
-> >
-> >Is there a way to query this from userspace programs instead of printing=
- into kernel log?
->
-> I not add sysfs or debugfs to get the information in this patchset, since=
- our
-> customer only want the information could be shown in kernel boot log.
->
-> But I could add also sysfs interface to allow userspace get the informati=
-on if
-> you need this feature.
+> >> I'm having trouble finding where that's used on pre-v3 even.. does
+> >> that actually get processed on the older iterations?
+> > 
+> > I had noticed the same, and had asked maz on IRC.
+> > His answer:
+> > 
+> >    "so far, we have never seen a GICv{1,2} system that didn't have all
+> > of its PPIs
+> >     connected to the same set of devices."
+> 
+> lol, that's fun!
 
-I started to working on corresponding framework:
-https://lore.kernel.org/all/20250618120255.3141862-1-o.rempel@pengutronix.d=
-e/
+For some definition of fun. If you want to get a top-class headache,
+have a look at what that means to handle a single INTID being routed
+different drivers based on the *affinity* of the interrupt.
 
-but it is stalled due to devicetree decisions. I wont to respin the
-discussion tomorrow
+HW people who come up with these contraptions should be spanked
+repeatedly and preferably asymmetrically.
 
-Best Regards,
-Oleksij
+	N,
+
+-- 
+Without deviation from the norm, progress is not possible.
