@@ -1,143 +1,190 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C003A9D85
-	for <imx@lists.linux.dev>; Thu,  5 Mar 2026 15:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974B1799F;
+	Thu,  5 Mar 2026 16:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772725680; cv=none; b=P+KAOQ/vyGvt53NGmTgY9bDiuvg156MLYYcR3v4lRCXryNcWXD/JoyBOPuqC3dvLEyr4z+zizseR9MDu4teiJ65g3ZpWd2pJDK12SOJqI4ZVH3IVvuphtt0SrmNA72s2sRoBICbAy/xqiUx8uMsyL4uJ0aSn3Pyvl0PI6y7V2xU=
+	t=1772726803; cv=none; b=aBqiQrJHkpoIR847XzFOfIsuRmqAauvhNKmWgXhJljFuVD8PPBavG+idmDucwdfCaM/50QM/e5pjpJjo9KLt1rVOVIg4pdJ4Lu7qqV3zpZxbvRdsq6fFppxnUNpqmziCO7jvA4ei2A90VNsZ8rSLtAau38cAK8K535UegFbexIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772725680; c=relaxed/simple;
-	bh=8cJHgdbKxrkm2+66tHARPeIMw4/HQWrbzP6RxeZN95Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plQgNbPmz0ss2PKpMuAtTeLsJhe9N+pyHVS+VjsKMH0UG3Js64VmVLS54ijs8kaLm3zrUX71kJiJkM7aFxuV2MFbpbiNjaPXvLa93S7CbylvKeMkbFHLZSa5KjPnK8XybR6OkTl0z+tcKF2WSSknXRkTLG1eC/iIP5aRl6ptQis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=KQC3gl3h; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	s=arc-20240116; t=1772726803; c=relaxed/simple;
+	bh=e1CBqI+y/aXrYiG5MwBxKZj92vyniLerzJuuwmm71Ss=;
+	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
+	 Content-Type:Subject; b=a8Olg1z/fc1t29sPWWl8xyVILbjLnzYi05e/xldaKNbzfO14kcmPzqYjSDZZIgd4/Aifz7VJi92DwzcQxHTZIfcGS4YpT0d++xpSTEAsMG3kkW8IKPS52YYhXlY73AAqFvkcpLPHakVrGdkDSA70yt9D6FL/C9+cj/YRfMWDiPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=HwXvKMDF; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="KQC3gl3h"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cb5c9ba82bso1311644585a.2
-        for <imx@lists.linux.dev>; Thu, 05 Mar 2026 07:47:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1772725678; x=1773330478; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+93b4rncmSMzYKKF9LRnkkK5vmWko9G930mePvUh1Z8=;
-        b=KQC3gl3hIB0a5Er8821EpMF4xQe7C5Z+DkEE2y74TNSiNfVIIUJWpHvQTAHY0irCVO
-         CL4hm7kESc4XhlfPPC9v+TMB8qr9yx1o9VkuMnJ0QCZ6bJYp+jNidoGNwqW0aJt1r6oq
-         U7eRhdryrUe/aQnu6TGil6H9WhJOSRXENwdJ5ZTm01F+k4WsRqRAtF6J8gXhLCJyx5t0
-         zQ21kIQkK0a8Rva95/gc/w9RR01K/nEumwhItHqHKEQMeaor6ShLR2i9/GUjktXzL3lb
-         8DhVjO1J605Mi1DK9ckbwR2StFmz+7d63XUb9uku2B5ozot8ireaq/6vBje+WaI12GyP
-         Q1tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772725678; x=1773330478;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+93b4rncmSMzYKKF9LRnkkK5vmWko9G930mePvUh1Z8=;
-        b=anyQwBJfgS/cGtC4/ApMb465QwJUOPHxi73hdcI2oY9GDiVKULTLW5OY8OWWTC8Vku
-         +CwJyy5dw4eHXsSVsjC8Yv4OlmUsYBrnvKWQMj0U79+ql9bdzn3ieBfkZ4M7/t15Mhd6
-         jbqFwoH+dbesH9JL+E/+EKlIfktKcrW2X5xipvEVLCUZd7xfy9ublaOk/U2dGmTt2KD3
-         GvKn6CaDR+/lu/0xo+OkPII/RnITrPCub2WaCDAJfMmLUl+to1NrGLyfgI86yOP8gLxU
-         tC+XPnv6nKjGU867o7umIRbuyOejpI7ZmciahTIrRaF/vFnSeNWdLnWLtmriL5aX3H6h
-         fwsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCBeqUX64aAxG76uT4ZUxjW70iV/VN9VZWZbjHbe1DOTg6X3JIjfQhjsbAosvKQ0yVNeY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyemuIGQoEf76kn1A/x/gQ5t4vcOTPaThD/6vPw1NUfPRPwi/xi
-	F83ZKgWUqZLuuFepjTAU0YEfj1jKS5QypN5RUjQ3RsXQJuTFS0uMfq8amWwoDNs7kw==
-X-Gm-Gg: ATEYQzxxlJkXu6qtXsuh9MQ1r305PNR2U4vN9dDePbsVMPipJBVbYh7qlYFKnLMIiEt
-	9Ko9cowoquOOVtxw5xTYCfqi9s0vcoQLwjonHnSYEGQqfoI65M5PJ01ByRqVX7nTug36CepPAdO
-	2IQzBeAdg8kio5Ra1EAsGDTjpNhCsdkkwyS6Clu0ts7LKZ4Pe4Qu/httCfTawbmwPD4X30Dky9o
-	u7H3wtMcBMmD/pqaKpxSt1fHk/LGRlXuCNycLIjLCpeIT4cBVzzxR9PPIP7uC6WGYExkDO1Fo6D
-	XbPVHSYpkxJxoeq1ro3hN3lqnaek2DxOJ7KwMtQtT5Ew6A11n3VSX07r4LD6rbdM2YfmYXjyzWo
-	i6QIVGE0mbsQ0zy0YwOqIIuVXomFgDA/hP3ayRgfJNXM5KF7lQk08j4bERjA8TBYjnxwq1m3ylS
-	U+CKwuLNd0MPOqMLj71v9IQ4hhWry2bV4ZS8bVdiR9aw==
-X-Received: by 2002:a05:620a:1922:b0:8c7:f79:bd70 with SMTP id af79cd13be357-8cd5af7589dmr797306385a.44.1772725678084;
-        Thu, 05 Mar 2026 07:47:58 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf72d3casm1937310085a.42.2026.03.05.07.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 07:47:57 -0800 (PST)
-Date: Thu, 5 Mar 2026 10:47:54 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Mathias Nyman <mathias.nyman@intel.com>, gregkh@linuxfoundation.org,
-	tglx@kernel.org, mingo@kernel.org, claudiu.beznea.uj@bp.renesas.com,
-	kees@kernel.org, bigeasy@linutronix.de, ulf.hansson@linaro.org,
-	rafael.j.wysocki@intel.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: hcd: queue wakeup_work to system_freezable_wq
- workqueue
-Message-ID: <b5a3d627-8cc5-41a9-848a-1e67c96bc191@rowland.harvard.edu>
-References: <20260304115729.857136-1-xu.yang_2@nxp.com>
- <c35d4aae-038f-428c-9b69-09230043dd60@rowland.harvard.edu>
- <dia6g5nbekt6brmi73dovchyklugjnd6ok3tsifbd6nfcjnnvd@xus2sw5wodhe>
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="HwXvKMDF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=VURAe1VBJ++jhd1qN9FU3U4sNtpuG6QDqgVP27ujLLQ=; b=HwXvKMDFPKFt/NwsiuXU2mlZnZ
+	QWDSk6365MrHNW3TYaw+6EPMeJVIjcF/pnvE2e7iBVGgBLCaJCI0hcokrMxvLp5olfn9x84uGbMy+
+	cuFWWWzl5J/mCqXEBx3DBK/EgStY7tVKBdr76PdWtiJahJi/3CGXl6UyeWmk+eyDXNEs=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:42578 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1vyBDD-0002QH-SQ; Thu, 05 Mar 2026 11:06:09 -0500
+Date: Thu, 5 Mar 2026 11:06:06 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: "Antonin Godard" <antonin.godard@bootlin.com>
+Cc: "Frank Li" <Frank.li@nxp.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <andrzej.hajda@intel.com>,
+ <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+ <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+ <tzimmermann@suse.de>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+ <festevam@gmail.com>, <shawnguo@kernel.org>,
+ <laurent.pinchart+renesas@ideasonboard.com>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ "Hugo Villeneuve" <hvilleneuve@dimonoff.com>
+Message-Id: <20260305110606.f24f17ee4f96d7d2b9b08c2d@hugovil.com>
+In-Reply-To: <DGTU9887GHPO.2FUQ3QITRG7F8@bootlin.com>
+References: <20260302190953.669325-1-hugo@hugovil.com>
+	<20260302190953.669325-9-hugo@hugovil.com>
+	<aaX5E7-3xvkaVV-o@lizhi-Precision-Tower-5810>
+	<20260302161545.f6b76209400e8fbe35cd51a0@hugovil.com>
+	<DGTU9887GHPO.2FUQ3QITRG7F8@bootlin.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dia6g5nbekt6brmi73dovchyklugjnd6ok3tsifbd6nfcjnnvd@xus2sw5wodhe>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+	*      [score: 0.0000]
+	* -3.3 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 08/14] ARM: dts: imx6ul-var-som: factor out SD card
+ support
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Thu, Mar 05, 2026 at 03:18:29PM +0800, Xu Yang wrote:
-> On Wed, Mar 04, 2026 at 10:24:09AM -0500, Alan Stern wrote:
-> > On Wed, Mar 04, 2026 at 07:57:29PM +0800, Xu Yang wrote:
-> > > After commit 4fb352df14de ("PM: sleep: Do not flag runtime PM workqueue
-> > > as freezable"), pm_wq workqueue will be unfreezable during system pm. This
-> > > brings issue as below:
-> > 
-> > ...
-> > 
-> > > The reason is if the host controller resume routine xhci_resume() call
-> > > usb_hcd_resume_root_hub(), wakeup_work will be queued and run immediately.
-> > > Then usb_autoresume_device() will be called and usb device will exit
-> > > runtime suspended state (if it was suspended before). For a hub device,
-> > > hub_resume()/hub_reset_resume() will be called accordingly.
-> > > 
-> > > After the host controller device system resume is finished, the root hub
-> > > usb device "usb1" will do system resume too. Then hub_resume() will be
-> > > called again.
-> > > 
-> > > Above sequence will cause hub->urb to be submitted twice. To avoid this
-> > > issue, restore the previous behavior by queuing wakeup_work to
-> > > system_freezable_wq workqueue.
-> > 
-> > I don't think this patch is an appropriate fix for the problem.  One 
-> > indication of this is the fact that you have not considered the reasons 
-> > for making the runtime PM workqueue freezable in the first place, as 
-> > described in the 4fb352df14de commit.
+Hi Antonin,
+
+On Wed, 04 Mar 2026 09:01:20 +0100
+"Antonin Godard" <antonin.godard@bootlin.com> wrote:
+
+> Hi,
 > 
-> Making runtime PM workqueue freezable is to prevent runtime PM tasks from
-> interfering with the system PM tasks. We also don't want usb wakeup work
-> to affect the root hub device system resume process, right?
-
-You're right.  My first reaction to the patch was too hasty; I 
-apologize.
-
-> > A better question to ask would be: Why does xhci_resume() call 
-> > usb_hcd_resume_root_hub()?  That does not seem like the right thing to 
-> > do -- at least, not in this scenario.  The proper time to resume the 
-> > root hub after a system sleep is when the PM core calls its resume 
-> > routine.
+> On Mon Mar 2, 2026 at 10:15 PM CET, Hugo Villeneuve wrote:
+> > Hi Frank,
+> >
+> > On Mon, 2 Mar 2026 15:54:43 -0500
+> > Frank Li <Frank.li@nxp.com> wrote:
+> >
+> >> On Mon, Mar 02, 2026 at 02:03:44PM -0500, Hugo Villeneuve wrote:
+> >> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> >> >
+> >> > Move SD support to a separate include, since it cannot be used at the
+> >> 
+> >> s/include/dtsi/
+> >
+> > Ok. I will also change it in all the other commit messages.
+> >
+> >  
+> >> > same time as the Wifi/BT module.
+> >> 
+> >> what's relation ship between wifi/bt? you just move sd related part to a
+> >> dtsi file.
+> >
+> > As stated in commit message, the SD card interface cannot be used if
+> > the Wifi/BT module is in use.
+> >
+> > Sd card is not mandatory, for example on our board we do not have it,
+> > so we need to have it disabled.
 > 
-> Good question, it seems like commit 79989bd4ab86 ("xhci: always resume
-> roothubs if xHC was reset during resume") is added to fix some issues.
+> My two cents: if SDCard and WiFi/Bt support are the only mutually exclusive
+> features for this SoM, then how about the following organization:
 
-The changelog for that commit says that it was meant to take care of 
-problems during runtime resume, but it also affects system resume.  This 
-appears to be an oversight.
+They maybe are not. There are other peculiarities, for example using the
+touch panel configuration has some impacts on an oscillator used by the
+Wifi/Bt module. The Varisctite documentation is not entirely clear or
+evident about all these details.
 
-> I also find ohci_resume will do the same thing: a8b43c00ef06 ("USB: Fix
-> runtime wakeup on OHCI")
+
+> Three SoM dtsi files:
+
+This is already the case (apart from the -bt suffix)?
+
 > 
-> Assume the above fixes are necessary, then switch to system_freezable_wq
-> should be a proper fix. Because this just restores it to a previous state.
-> Otherwise, the fixes need to be implemented in other ways.
+> imx6ul-var-som-common.dtsi
+> 
+>   imx6ul-var-som-wifi-bt.dtsi:
+>     #include "imx6ul-var-som-common.dtsi"
 
-Yes, okay, I withdraw my objections to this patch.
+No need to include it, as it is already included by
+imx6ul-var-som-concerto.dts
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+> 
+>   imx6ul-var-som-sd.dtsi:
+>     #include "imx6ul-var-som-common.dtsi"
 
-Alan Stern
+Same...
+
+> 
+> A common concerto dtsi file:
+> 
+>   imx6ul-var-som-concerto-common.dtsi
+> 
+> Separate concerto dts files:
+> 
+>   imx6ul-var-som-concerto-wifi-bt.dts:
+>     #include "imx6ul-var-som-wifi-bt.dtsi"
+>     #include "imx6ul-var-som-concerto-common.dtsi"
+> 
+>   imx6ul-var-som-concerto-sd.dts
+>     #include "imx6ul-var-som-sd.dtsi"
+>     #include "imx6ul-var-som-concerto-common.dtsi"
+> 
+> And possibly the following one to avoid breaking compatibility:
+> 
+>   imx6ul-var-som-concerto.dts
+>     #include "imx6ul-var-som-sd.dtsi"
+>     #include "imx6ul-var-som-concerto-common.dtsi"
+> 
+> In any case, the imx6ul-var-som-concerto-common.dtsi should be full-featured
+> (and thus avoid the imx6ull-var-som-concerto-full.dts file from patch 09/14), if
+> that's possible?
+
+I am not convinced that it needs to be full-featured. For our custom
+boards, we want to include only the relevant dtsis, because for example
+we do not use sd, or enet1 or enet2, or audio. Having these options in
+separate dtsi allows our custom boards to include/enable only the
+required features.
+
+The full dts is only there as a reference, and to make sure all dtsi
+are included and therefore compiled-checked. In it I have enabled
+enet1 and enet2, but some boards may use enet1, and not enet2, or
+vice-versa, or some boards (like our custom boards) we are not using
+either one.
+
+> But I don't know if this follows common practices, and if this is possible, but
+> I think it's clearer as a user to know if the DTS I will use will support
+> WiFi/BT _or_ support SDCard by looking at its name.
+> 
+> Of course this is based on the assumption that those two features are the only
+> mutually exclusive ones.
+> 
+> What do you think?
+
+Yes, but there is an exponential number of different
+combinations, and thus would require a lot of different DTS...
+
+If you look at the Variscite git repos, you will see a lot of different
+DTS to support only a subset of the possible combinations, and it
+already looks like a mess to me :) I would like to keep things simple if
+possible.
+
+-- 
+Hugo Villeneuve
