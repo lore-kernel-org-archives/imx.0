@@ -1,169 +1,218 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012010.outbound.protection.outlook.com [52.101.66.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DBE35C19A
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 10:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772791942; cv=none; b=S+AmBuadXex3ui+JrhFBx6ZjxeVrNxobjMMRFG1kbdKEcRWywwjzpIwlzd0QVm2nQF2US984miAzZNOnhsIk06Qd19N5IoTJ+rOp163c39bRhPMg5Uf/SokypxGL+3trkkFXB27suD9EJb/84XEwbjtLg8+f2tPW4Ll53gYXTL8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772791942; c=relaxed/simple;
-	bh=BzoNyfrEyJCPCGtVdG90MFhEGrkW+3rXdDVn4rAVtCQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XnmsXrmaYdJqeoZZHJxtMxeo66n6sHYPa0FN1qMWCVOBCtnNXwhjPqEuBX7Wwb/9xYTEnTN+z4YSyElXBy8OX9SzskLj/A8+nsug+JbwJiAhdYJpgk8B6raGSAbmHvLSsFzIHVXlJRW7Kh+uh139LHBqzBQDBPeaYvofBtpLsqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i2L2AoA1; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A1537BE69
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 10:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772792811; cv=fail; b=fNva4rGEByV4/UR0GsfiZh60Mvttxry58DP/SyGskVpMz17ww4g6++wTdS0+UUvKFL82pKMbJsmASgtJy7WXkKn0g6v8HjbhoIL5ZE9my3ud9KHj72JWxEhR511GrQKA6j7KzP1sBL4kngWZ3/do7s90mpvqKfFbmdBJyBHxNOE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772792811; c=relaxed/simple;
+	bh=rqfVMb8IASuCmpIzC963MMP30FuFYaiLw9o5Qfg8Jxw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=DHKSEoSduOppwUoqPQifDYdiJlTE+QIIPxA8SJD5D6JgfFjCudow8wWSIezfNgf6jZctjs0FxcPE7dOp9ocAp/MjegQpVaeEF1LfwgrahIAS/G0qqcl7T+uursFpy6gHIOC+M9hZ1ThfSEAPN1Om5wbumkyr+cdHKZXO1lJ/3kw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i/mkJvB2; arc=fail smtp.client-ip=52.101.66.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i2L2AoA1"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439a89b6fd0so5710167f8f.2
-        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 02:12:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772791940; x=1773396740; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Tv4dJ/4VMXcAmevXlUG/734DLVWUrC6bvT8eqbpexP4=;
-        b=i2L2AoA1t99OsPRiI667NfLrsyxjQSTB/+IZG4f8KMLc1dWlZUOnYG1eJXo22kVexo
-         +inla0eaH1fPOCFwS09uwKOFyiHA1TKTYMUQitBePgpWwXxXq9jkrzV9lQ3eWUchrjnr
-         /WYxapAkdvWori4dB6j5FLdt6QOu2e64YuXdsG1LLv3+Cwvx7dDT2bhecVMoY+Xj0sFa
-         sFtQHdMGYJFZrCXRS7GVsBf1iPxvUb8twMe36UFv14SD3UFcWyWNabt6xlLMscK4mvdq
-         Cf1LDOOBCYKo0scZpHq4S2VR3j9cmpUbc+/mPp2EssW97Z6mKVRG/8j4AHgqBQU0Qsyq
-         N6Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772791940; x=1773396740;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tv4dJ/4VMXcAmevXlUG/734DLVWUrC6bvT8eqbpexP4=;
-        b=ogJ57ng1tMDRUpBWUyAsv3CiF+CXfGz1xy6b83Es3g6Qwnf7yLfNEvcq/RFNM6FN77
-         3r0+IqPgTHTKYwuSEuavHkXg0TbPEu3iyBnE81GnrtS1i+laaxj0Sgdr3Apvd4BL/EqR
-         E7dlSlg9B/enhFAaOSDyxPkbneVAaKZoYCXh1nrUUWSR96tOGC1DMxpaqfBVvh2jS2F+
-         plRT/4xhO1uoS0p8qCE+PLB13afCX1kgT+qSmgKbq4/xhdfUXVSJCTnU1pEFzGizvfaS
-         tkVDeZ424C18M0K4iVFUBTi7bhTky6QLBf0Jqo9ZV/HEZmx74qz3wDuxCHTO4H1Jgi6H
-         lRDA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8DQ10tIGy/u2lk8TCtEP9CXX5cCd/11GSWseLgC9DOifiygntTn2H4FbUkNHtPssxK48=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxsf/MMp3xlmMGfnd4sC8Wy1dMH4cQ/nwd4QAoWraVeQ5s20B4O
-	eat6NL1urIbQl3+zEJa71JI99KC4MPRESUQVTlKf06JO238Q4zCdqdoXa8gapaKOUK8=
-X-Gm-Gg: ATEYQzyWsQ+KSuSf9IdkFHgtWW1r5+MPv1j9gXM14gN3kVN+hjoH//w/WhWRt4K5l87
-	lrqJmLwzAX+LdSjdVMqOBamiiIUgQTU6GlnepqRZkycW225/FDZXfmxBblOquzyxnwV95sDQq+a
-	HKbLFPp3FaJRRm6+13iNuOM+zTqFMtP5wmZAd4OiqGIaAq6Ehm6siFqhInHuxYfSqPiXJvrHkw5
-	OAA2f5bSK7QILRMoFkha8CXEQloy0dnFLC8hluPgH7X9zGB2PfGn6U0rRk8qQms1UfBROOeeete
-	IJInWRm+nTCmUxMqEo3ulN5KQkAPDCuY1h2YDBYojhcj3j+EVR/W7Jp5XTWnP75oWbKM62SmHzS
-	DuQLUzf1HS9W5BvcsPVkVPBZVPW4wIQqf/jxgnReNhmVbhttn2/Roh/kTm3/h+v/1lm6M+gQ4sT
-	xeVgO+aDFCo5YPRV8nrEz+WjuP0H0BdXKXrQ5vwFq8RMIh0AD+IQlH2EyNvf8IG6QLa5OIxxCss
-	eCB
-X-Received: by 2002:a05:6000:1acf:b0:439:d752:8bf9 with SMTP id ffacd0b85a97d-439da8a0219mr2636932f8f.58.1772791939641;
-        Fri, 06 Mar 2026 02:12:19 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:106d:1080:cbfe:649:7f17:8b95? ([2a01:e0a:106d:1080:cbfe:649:7f17:8b95])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad8d968sm2529820f8f.6.2026.03.06.02.12.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Mar 2026 02:12:19 -0800 (PST)
-Message-ID: <6b4ea910-1a73-421e-8a38-8827a506b937@linaro.org>
-Date: Fri, 6 Mar 2026 11:12:18 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i/mkJvB2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hiAGA+9YnvrPKREuAxuJH444EHQwJyTW3jXRcsgkaMA0irPBWBJ53qhNJVIzlpubZjYn6KrGS+AwZfOtx4spM7N43Yw4+TGg1tquNBybKBdJFYoXINDFUwWbg4WK6f39vYI9mENbxqnBMB44cxAf+x/DsP/pGc/gkvixbFPX2OK4jHEfwbz/6fSIyh3lZBV6wV6cTgoFHTMF3UEbwWzymH+VI8ifuf6yVW3BZqz+MvBvrmiXI55VWE+6ZhX4pMU6W0OZsOXgLWvFg24DXj+ZNYLlu6xXU57H+w69AEXP92TQnn+iPW0dKG8Cf26oUBal0iU2IcvHs3AsOh7ucXKfSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fWV1AqjPp4lGHeFI0/nxusrExkM8eRSvddenWn8eEzM=;
+ b=mOnXU00T2QoBjGmrTw17FmZ2s6XeFV+3pxyeKkVr8H+hokm86LcVqIuLnyD7a6Rsb81zrlSUd3wVDHlY5Ta7qFL7uIBLczLn6FPf7Q4m0gMAzhePwDegWbc3I6MKi/CRpb5w02jSg5rbfGSCJGfWCQ+mQr7HugDKaufilCPjYY9HtUFmguvtsZCBKqrhZT4cjrct9i/uON7hRG3ao8poZQVpmzUftj5Qe4mi9FzfQeE1VZKL59XHPE7pfXexOviP74jdI/S8mZFsc2aJ9u3UPHLgWo4z9N8hgnTmFl91bWrexfTtQmhsqcN/er+KoR7wm6xPaHn6aO2CiVj3zZEBMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fWV1AqjPp4lGHeFI0/nxusrExkM8eRSvddenWn8eEzM=;
+ b=i/mkJvB21NNIOKEiQ0bULas4UI4E+r7KRMkEhW99StE04ZydVvkjfHk4PLRfxy1kW2UXpJSaRYw0c/7dyBOKrZtJDGiZx0B9MP3IODTrNgRx+R2bA6P+g23V5a+eXuxm29RaJGMyOmry8f+IoioYWXxLTJVCL0pENNxkfM0jmbG3KTgmV1RG3nMebYP+B7dUs52YStyB4dp4aVIz6ilzRhJOwjYEG9arCc5vW7uAxpuGYqTB7QeJ0Tv5pnbepVlayUbkzAl68TSAhhLTvq7QxFZtBkzKou9WXegk/ESkjy+QWBJ5I0A6I8dgAV7YwwwhDNXMAMFCzMXgQLQ1VfaOYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
+ by GV4PR04MB11332.eurprd04.prod.outlook.com (2603:10a6:150:29a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.23; Fri, 6 Mar
+ 2026 10:26:47 +0000
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5]) by PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5%5]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
+ 10:26:47 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	jun.li@nxp.com
+Subject: [PATCH v2 1/2] arm64: dts: imx94: add USB nodes
+Date: Fri,  6 Mar 2026 18:28:36 +0800
+Message-Id: <20260306102837.2648955-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0014.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::17) To PAXPR04MB8829.eurprd04.prod.outlook.com
+ (2603:10a6:102:20c::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 1/7] arm64: dts: amlogic: s6: Drop CPU masks from GICv3
- PPI interrupts
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
- Marc Zyngier <marc.zyngier@arm.com>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Peter Griffin <peter.griffin@linaro.org>,
- =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Thierry Reding <treding@nvidia.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1772643434.git.geert+renesas@glider.be>
- <f9c6eddebebcd2e128edd2dbc51706e23589f9e8.1772643434.git.geert+renesas@glider.be>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <f9c6eddebebcd2e128edd2dbc51706e23589f9e8.1772643434.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|GV4PR04MB11332:EE_
+X-MS-Office365-Filtering-Correlation-Id: b57d22bc-7682-401e-03b0-08de7b6adeca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|7416014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	0ocCeFRAaUCqp3PExIVqnsWjP6Dx0HFundXCFJgpRGZhU0RiIeolMiqeAaG7Wk+RsKn2fXrpF8heVlY8trEezZHCmI3hkRl27zQOi92Z1tIfzOOsPerPiJyonHe0Sgioetcc0DX2+pbAg4bvkgRNPoVB3eDc+HIuPc4tgO/hWoKxd2NV8jqUafy4iRtf1Ev+ISwDX/gTuJRtDV4xu0/PlJZTl7xrHZVuZQ2qfSW6QlNbIEYM2GR2PK4B6N+1M/hPevQHe9ectUTpXP2oLw96q1d8/EdWBaATvuYSeA3aOnwohI1i+SvE5dOjvbgRRjYm7xHQSfgyBad43JeqMNz0zm4ut5evLs6aEl8KIqMjP9jPQ10hbcfHJgglzikc4pya3eIzf1YbfwLB+tBpAP6LCh3bLe+UyKaJHaAt4D0iZYkUMZW5ysB56KufLP3EEcVIQ9drnVnbK8MOIi7Tl/fzyc/zYSvSZwPVBPlZYLvsq7jTMOdw2Juc4ok095xwgw2ADDAzcEPnXLb9Qe9gLQW0tR4zybAUhk+mShZJMisycM2k7KMAnuDPU5fZZ2dxlcByf2LIl9Jfo3bB6oKyT4pxodIuG0ZLwT5XppOHGdzKSrWo0Uc8HLVDBVG0mKxGRgIgxTre5cT5Ad1E7r+6KxDe1aXT/j06xKkG16JhLRk+qp053IEWvwkc4zLm7kHtzuMC1ye3vME5gORQFJ37N1h9PE33Ir+hSCUb0q2xrnlw6ruwO7Bt0Ef2zK8Dk+O+u+pA3tCvqRVgC9vX82eS3x5nXZFzMRnkkPhDJh2XRA55sTE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vKnuz6MtcMnq7VBP9GxNgOP81jyhgG1vGXaRFic/K32Flf6GxgMv5vpQbkxG?=
+ =?us-ascii?Q?28nMznwcZMUUOU4DoFLm/Vt9Sm1w963njxAhVqJHoF/A/ZC/FyZTy5ZEme07?=
+ =?us-ascii?Q?DMM9pDLei/h/Wkmdt6+FLFwu8qtroKB/4rbl1eAMCopfebP/kmqmIDA+02WT?=
+ =?us-ascii?Q?t4w/cCRjCrUcbcF4vWtAQk/AUv6NlWAO0Rz8tHKeQlTMxFlNAgwhkvtwtw9L?=
+ =?us-ascii?Q?YGr6azXaTYAnzT+VmU8Qdaf4tLfFH8m3jpEM8GEgWDnxJfoa2dJ4AU45YBzJ?=
+ =?us-ascii?Q?PtTDLa2cAOw8pkLsIV7WUo0pHMqGzpg3XQ/TLHWGBa6CogVek84S9KFjD/hq?=
+ =?us-ascii?Q?vZf+C5p49UIZwFAIktkLH42ngOOm+2s/bIufOWQisiHljSL3hL13xCuuiGzP?=
+ =?us-ascii?Q?2MFRU4Hj4iQj1uSugFPnOpJ+RKFTHy4he7ESmmqBdG7KF3Aac73vXgkmko4t?=
+ =?us-ascii?Q?rUR9mWtmDXC9TeBvgSOMSrzNIk3en3vlb6GnmbXFR7A3max0/0aPrxVN6CtS?=
+ =?us-ascii?Q?QKUzq9Qub73C2CjxNqGZU1tEE85FOEhZtPPc31AIxd++SA8bYICpHIeRj2iL?=
+ =?us-ascii?Q?iA55uVqUV/9oHk3EUG2pF/sisGsJEyf2SR268yp/sZDk3llDNtkPGU1xZUeg?=
+ =?us-ascii?Q?Mmye01fVWBcHTlwFv89HXGW9YpqgYMKiz5/5t3QXM1/aCCMCqf5B1Fr5J/sI?=
+ =?us-ascii?Q?JQ5dG0xXVFQvikOuR4qwSw9M7n0+0HKnCuxU5to7wXc4cwDiFI65HZ+Z+Gw7?=
+ =?us-ascii?Q?7sLI8lSu08hOJZXdFtVyBy8C8+jA0OyR0yOIeucs/xuy+wo8Y5J1XVWcmlmZ?=
+ =?us-ascii?Q?cmWPU+Tzg9CwBhmezwAknp3ehOmjFR7MLkThGEjN1VqMVxok5+meQ71axwCn?=
+ =?us-ascii?Q?6QugyssmWo/6wXrCNGwwIZ6BmBiG62HzQun18ONErCBwwxTxMu0/fe9YD61u?=
+ =?us-ascii?Q?kf2/g1WIGRM1QUB69zeux1vVpnvc6nvTuMnYZFC1TnJ64YedqteCfcKaqWDj?=
+ =?us-ascii?Q?FQsSdFXQKg7urNFsT/1E73pCTxYnEGf7We5H9wBQ6TxcehI2KV5ijhjs5qmT?=
+ =?us-ascii?Q?m6JJkLpxpVCfMc8rFIqgsrNIEJWYb54tn5OxXq0U8WNv7sQAXXVYMNnyQ+g6?=
+ =?us-ascii?Q?USLU48W0TXnJEy0fH7d7Q31SQIYrIiux+MIEcT/yNV7Qws/QCJokuGskziKD?=
+ =?us-ascii?Q?YmqvNCdf0JRRaPZ8gx2q8KXvTQA8NRfRDEsEhFKX+t3E1TudH/iUv5ZWteo2?=
+ =?us-ascii?Q?4lShZEt/9Q2eaJLvYCEhUwBLlCsBzHIfzJR2HrzgRXIckaoyZhqyIxlL6dSS?=
+ =?us-ascii?Q?+8VOM9oYDzFHIZH3FS1aHMBlUj3r2REXcsbXORKBacZclx40NwH9LWwexXYU?=
+ =?us-ascii?Q?wqy9064jSaokAiAF8DlkqXR0TzBS8PJ3KsivqknNl35O00rtdg2fTj1rK5hZ?=
+ =?us-ascii?Q?OobnAdc7F4fjS7MtspAFDWoa/T1WkVMsMIJR1IvPnyB1Cjya9MpZkt/oMFvV?=
+ =?us-ascii?Q?KPvgJkTPA5ml6Xp9qEeTc1/2YBUkzFe1Zsxs6ftHjGeegTt7j5zBtR/48EJE?=
+ =?us-ascii?Q?esXJYZ2sKcHCKYkJmxzH4rAFt+5JQ/jrxDA2gQ1oA8d+lCzsjHk6Nmkkz52e?=
+ =?us-ascii?Q?NRpmoakbjswUhBYN+jtaIG2Lhy6ZdOUqgiEjUpW/GGak/HOzUu6f0LiyoPB/?=
+ =?us-ascii?Q?AIlth1cpRDOmjSgiS6zKIu0HvcTaq4ciGQVmxvnKQ/QAL7Sk0mznDqiCGhT2?=
+ =?us-ascii?Q?gfweGW4r2w=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b57d22bc-7682-401e-03b0-08de7b6adeca
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 10:26:47.0466
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ey1jCkQf/M0NH/DrjIoMc5RLdviJb3zko4JGxRID0e57sURuWvoTQ/3d+HKALvvFE38mFUT8en0TzLWiKAMAjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11332
 
-On 3/4/26 18:10, Geert Uytterhoeven wrote:
-> Unlike older GIC variants, the GICv3 DT bindings do not support
-> specifying a CPU mask in PPI interrupt specifiers.  Drop the masks.
-> While at it, replace the magic number for IRQ_TYPE_LEVEL_HIGH by its
-> symbolic definition.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
->   arch/arm64/boot/dts/amlogic/amlogic-s6.dtsi | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-s6.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-s6.dtsi
-> index 8ef6319390331fcf..ab3acef2b147e62c 100644
-> --- a/arch/arm64/boot/dts/amlogic/amlogic-s6.dtsi
-> +++ b/arch/arm64/boot/dts/amlogic/amlogic-s6.dtsi
-> @@ -53,10 +53,10 @@ pwrc: power-controller {
->   
->   	timer {
->   		compatible = "arm,armv8-timer";
-> -		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-> -			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-> -			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-> -			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
-> +		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
-> +			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
-> +			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
-> +			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
->   	};
->   
->   	psci {
-> @@ -84,7 +84,7 @@ gic: interrupt-controller@ff200000 {
->   			interrupt-controller;
->   			reg = <0x0 0xff200000 0 0x10000>,
->   			      <0x0 0xff240000 0 0x80000>;
-> -			interrupts = <GIC_PPI 9 0xf04>;
-> +			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
->   		};
->   
->   		apb: bus@fe000000 {
+add USB2.0, USB3.0 controller and USB phy nodes.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Thanks,
-Neil
+---
+Changes in v2:
+ - move usbphynop behind of clock-sai4-mclk1
+---
+ arch/arm64/boot/dts/freescale/imx94.dtsi | 61 ++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/dts/freescale/imx94.dtsi
+index d2f31c8caf6e..2a367764f7fe 100644
+--- a/arch/arm64/boot/dts/freescale/imx94.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
+@@ -66,6 +66,13 @@ sai4_mclk: clock-sai4-mclk1 {
+ 		clock-output-names = "sai4_mclk";
+ 	};
+ 
++	usbphynop: usbphynop {
++		compatible = "usb-nop-xceiv";
++		clocks = <&scmi_clk IMX94_CLK_HSIO>;
++		clock-names = "main_clk";
++		#phy-cells = <0>;
++	};
++
+ 	firmware {
+ 		scmi {
+ 			compatible = "arm,scmi";
+@@ -1223,6 +1230,60 @@ wdog3: watchdog@49220000 {
+ 			};
+ 		};
+ 
++		usb3: usb@4c100000 {
++			compatible = "nxp,imx94-dwc3", "nxp,imx8mp-dwc3";
++			reg = <0x0 0x4c100000 0x0 0x10000>,
++			      <0x0 0x4c010010 0x0 0x04>,
++			      <0x0 0x4c1f0000 0x0 0x20>;
++			reg-names = "core", "blkctl", "glue";
++			clocks = <&scmi_clk IMX94_CLK_HSIO>,
++				 <&scmi_clk IMX94_CLK_HSIO>,
++				 <&scmi_clk IMX94_CLK_24M>,
++				 <&scmi_clk IMX94_CLK_32K>;
++			clock-names = "hsio", "bus_early", "ref", "suspend";
++			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 386 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "dwc_usb3", "wakeup";
++			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
++			phys = <&usb3_phy>, <&usb3_phy>;
++			phy-names = "usb2-phy", "usb3-phy";
++			snps,gfladj-refclk-lpm-sel-quirk;
++			snps,parkmode-disable-ss-quirk;
++			status = "disabled";
++		};
++
++		usb3_phy: phy@4c1f0040 {
++			compatible = "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
++			reg = <0x0 0x4c1f0040 0x0 0x40>,
++			      <0x0 0x4c1fc000 0x0 0x100>;
++			clocks = <&scmi_clk IMX94_CLK_HSIO>;
++			clock-names = "phy";
++			#phy-cells = <0>;
++			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
++			status = "disabled";
++		};
++
++		usb2: usb@4c200000 {
++			compatible = "fsl,imx95-usb", "fsl,imx7d-usb", "fsl,imx27-usb";
++			reg = <0x0 0x4c200000 0x0 0x200>;
++			interrupts = <GIC_SPI 181 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 387 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&scmi_clk IMX94_CLK_HSIO>,
++				 <&scmi_clk IMX94_CLK_32K>;
++			clock-names = "usb_ctrl_root", "usb_wakeup";
++			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
++			phys = <&usbphynop>;
++			fsl,usbmisc = <&usbmisc 0>;
++			status = "disabled";
++		};
++
++		usbmisc: usbmisc@4c200200 {
++			compatible = "fsl,imx95-usbmisc", "fsl,imx7d-usbmisc", "fsl,imx6q-usbmisc";
++			reg = <0x0 0x4c200200 0x0 0x200>,
++			      <0x0 0x4c010014 0x0 0x04>;
++			#index-cells = <1>;
++		};
++
+ 		netc_blk_ctrl: system-controller@4ceb0000 {
+ 			compatible = "nxp,imx94-netc-blk-ctrl";
+ 			reg = <0x0 0x4ceb0000 0x0 0x10000>,
+-- 
+2.34.1
+
