@@ -1,69 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1717734B19A;
-	Thu,  5 Mar 2026 23:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AB02BD022;
+	Fri,  6 Mar 2026 00:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772754283; cv=none; b=LcWITbKYQvyjVGqyhXn9T968Cfywfejny63t6VIHFrsJXglp5vWZvkbwY9tJ7mvBOGEOrvtRnvk90+fI7wZGoWRyrBxYVZSqWWcIqQ1ogXhWOki92WUsEwAbk2R40x3lWadJpOPib1HB+BxDVG5Yvq6ag/jGXk0XTyhXDGooeEs=
+	t=1772758627; cv=none; b=AIN2Rvk8AxLBo9vjCT/rKdxMslFTUvS7DwGOTk5qozXYBEuRq2qV9Jo/kXl6Q5kMYbL+lrux/q4cQu7cO+wlLyye36lPOziCn2ejfk1NKsFStB3kl+rlBdsdwKBK84VA8Ri1Eosi1CaNgjKoZlFAtf8qpSXcvvwMTZCWOmQ4M9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772754283; c=relaxed/simple;
-	bh=8H5/ixWTCBmB68S6OPOuZGKRBwpz/tdQ/2Nru84zMW4=;
+	s=arc-20240116; t=1772758627; c=relaxed/simple;
+	bh=9QPHXsJibYdiI9qqEiSAHrmKf9tnT4G0DXCtKS89QIU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emna9HYlPes71XEKqndZ44WfhhfsJ9PPxwcGaBInWv3RRtCEy3C6Ax9G8E8+iCxySiwvgEq3aFSXjf8gxMMhLPT2zFZdvhC7JZD8k3QmX2QMKOw2fOQX5av/RZoV6McsSK84xsZOyiSddKU09hdZrUwBES6HiBQxUIqRON+P80E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0WoUXAX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tAf58FSqoUoepjXdZSEhu/Yb77CnAWKepHEAiKNTHCDuDWyj4y8DtepO4YtZLCBhbrNFrzI6LgOSEqTqMqXAYOyMUu2qfjNuckT2mgmgn6k1Ul9W1o0fGoA4JxgJLmIZDRwKWen3hVMGHKPqW92bsprPCAJO9wXSEIvjOz7Bv2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zg9h/R5d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0WoUXAX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E00EC116C6;
-	Thu,  5 Mar 2026 23:44:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zg9h/R5d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879C0C116C6;
+	Fri,  6 Mar 2026 00:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772754283;
-	bh=8H5/ixWTCBmB68S6OPOuZGKRBwpz/tdQ/2Nru84zMW4=;
+	s=k20201202; t=1772758626;
+	bh=9QPHXsJibYdiI9qqEiSAHrmKf9tnT4G0DXCtKS89QIU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T0WoUXAXtMYs6dfzoGfCw6Xqglu4yklsx2eBEEA/38nBLLGCfJRTEXpjy7V6tMK9k
-	 RrKkg7fhAWFWfwehR3EkD3nY27x6eG9Zm//jQjAc5kx8VEAcYeB+dEjD5A6aOwKh8H
-	 WEBNYLqfM1jrwJGlpcBL+6IlOQaeCxlE3IwZ9Yo5+eTfzuZg3mfVvnn4G+2DwCM9ys
-	 6S5hYyR5Rx95l5cNgUMzBnqyIU3XEsikD8UsG1P52PXFU8Ax1IEX8u86oAYa74domW
-	 8DrDJK7ZJMkb6mfBB4WK2QLWHbP944ejGLFWImN300md3cGDYrLO7k/uioldlw842X
-	 0OGb+U7yLH2DQ==
-Date: Thu, 5 Mar 2026 17:44:40 -0600
+	b=Zg9h/R5dfAalOU6ZrHNSdH4Kmx50xx+BKM/S1ZhLdPBFgNDbq/eNtVcRFFQPdnGFu
+	 6VBZ9uBGfVhIEBzJN9cGtMMXnrPgbNHEdFeXy4zfuwzKO7g5jnK2W04QFsLfwQQupC
+	 V5jaR5689kUMI/OjxLunX48h77KQxGVmjk6Xcrs7Ti4w4dGlWrrnE2XrROArfaHLpY
+	 icc3JmgjXwp/NLOGwgsYlbPhKvpaqhUXStZh9PqL6TEJEHSwsf+1IfMpDsYAa+DTRQ
+	 kkzb+uR+JgPtlK+b8CY+oW4WJCytU/bwUh3HEyeWb9OXbnMwqeEPIazYx8GMr+1TSb
+	 3+K++YazKbKng==
+Date: Thu, 5 Mar 2026 18:57:05 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, imx@lists.linux.dev,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Cc: Linus Walleij <linusw@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peter Rosin <peda@axentia.se>,
+	Conor Dooley <conor+dt@kernel.org>, Haibo Chen <haibo.chen@nxp.com>,
+	linux-kernel@vger.kernel.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH 2/3] dt-bindings: mfd: convert fsl-imx25-tsadc.txt to
- yaml format
-Message-ID: <177275427981.796382.9876886275408916713.robh@kernel.org>
-References: <20260211-yaml_mfd-v1-0-05cb48bc6f09@nxp.com>
- <20260211-yaml_mfd-v1-2-05cb48bc6f09@nxp.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] dt-bindings: pinctrl: Add generic pinctrl for
+ board-level mux chips
+Message-ID: <177275862503.886378.14653051699126465622.robh@kernel.org>
+References: <20260225-pinctrl-mux-v2-0-1436a25fa454@nxp.com>
+ <20260225-pinctrl-mux-v2-2-1436a25fa454@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260211-yaml_mfd-v1-2-05cb48bc6f09@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260225-pinctrl-mux-v2-2-1436a25fa454@nxp.com>
 
 
-On Wed, 11 Feb 2026 16:41:05 -0500, Frank Li wrote:
-> Convert fsl-imx25-tsadc.txt to yaml format.
+On Wed, 25 Feb 2026 18:55:06 -0500, Frank Li wrote:
+> Add a generic pinctrl binding for board-level pinmux chips that are
+> controlled through the multiplexer subsystem.
 > 
-> Addtional changes:
-> - Add ranges.
+> On some boards, especially development boards, external mux chips are used
+> to switch SoC signals between different peripherals (e.g. MMC and UART).
+> The mux select lines are often driven by a GPIO expander over I2C,
+> as illustrated below:
+> 
+> 	┌──────┐      ┌─────┐
+> 	│ SOC  │      │     │    ┌───────┐
+> 	│      │      │     │───►│ MMC   │
+> 	│      │      │ MUX │    └───────┘
+> 	│      ├─────►│     │    ┌───────┐
+> 	│      │      │     │───►│ UART  │
+> 	│      │      └─────┘    └───────┘
+> 	│      │         ▲
+> 	│      │    ┌────┴──────────────┐
+> 	│ I2C  ├───►│ GPIO Expander     │
+> 	└──────┘    └───────────────────┘
+> 
+> Traditionally, gpio-hog is used to configure the onboard mux at boot.
+> However, the GPIO expander may probe later than consumer devices such as
+> MMC. As a result, the MUX might not be configured when the peripheral
+> driver probes, leading to initialization failures or data transfer errors.
+> 
+> Introduce a generic pinctrl binding that models the board-level MUX as a
+> pin control provider and builds proper device links between the MUX, its
+> GPIO controller, and peripheral devices. This ensures correct probe
+> ordering and reliable mux configuration.
+> 
+> The implementation leverages the standard multiplexer subsystem, which
+> provides broad support for onboard mux controllers and avoids the need for
+> per-driver custom MUX handling.
+> 
+> Allow pinctrl-* pattern as node name because this pinctrl device have not
+> reg property.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/mfd/fsl,imx25-tsadc.yaml   | 97 ++++++++++++++++++++++
->  .../devicetree/bindings/mfd/fsl-imx25-tsadc.txt    | 47 -----------
->  2 files changed, 97 insertions(+), 47 deletions(-)
+> change in v2:
+>  - change descriptions for device, not for driver
+>  - add missed additionalProperties: false
+> ---
+>  .../bindings/pinctrl/pinctrl-multiplexer.yaml      | 57 ++++++++++++++++++++++
+>  .../devicetree/bindings/pinctrl/pinctrl.yaml       |  2 +-
+>  2 files changed, 58 insertions(+), 1 deletion(-)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
