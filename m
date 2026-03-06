@@ -1,32 +1,31 @@
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE71399019
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A612C39C648
 	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772803692; cv=none; b=pPy+2c94klsBcbodXt9C0fORlxuFIH58aI2XjbZQInwFQ67NEiDxAp0a5zYGVaZ/NO0+OvN1mavTaIO8d/rdzY49EFkFMaXye6gY6g5tesqlhWtINZMzuyqO7uu2kvqSqyNr4SP52TmZM+BfSPUEaYAsOw6NGdpMVebS5z2M+qY=
+	t=1772803693; cv=none; b=B/Qp2tcNDW8l8WnS1JVKtyLdfbN5bqCW9R4RCTPZThota9jDltc4ULeBO2X0CwPseiiH6+LIZOir06rclv6hcEOslW4IUZjelDFbhJRI5nNjiYQu/7wrovqO1N3Q/JFXUHXV9Nhi6FpbuHcpfizwci2fPzrUDP22ca7NlyHT02k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772803692; c=relaxed/simple;
-	bh=t5jOCwYs4a0qJx+g0j9jr/ql5g59uodTYfBmURX7TLI=;
+	s=arc-20240116; t=1772803693; c=relaxed/simple;
+	bh=Jty6B0ytRRom/v7JJudk9QB5erW8GFmasf1vl2KeMcs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tv5/oHunY2ZIbNJBia7z1uAr289ZXNqoxXKNK5CR9sArSog+E9dOE3BwWDC0hLhWTC36w1Q0D897nmNrZwuXwKWq0r7iVFOLMbXODbGQ64rwPVryG4Erx7FkEM+RB7bZ5CszeqsOnXEO0Sg5DL8lDPMXIIgKdjrohd/eiXCTnBI=
+	 In-Reply-To:To:Cc; b=gysN7mVRtN8AH4WFe/hdGhbFWlKu3Txafeu1Ly4Na1iy6norDcdjJSSvXg/DEbFg+FaEkLcE01zt7yO5xP6x6BCKXo/P94ysI2NO7PfQKGal+JT2N4xI3Nr/rXWi6ptO4zy/SooO14QmaKO7Eo6L2o/6dt91Tc1zrbCIQNHGLv0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 01DA11A0116;
-	Fri,  6 Mar 2026 14:28:04 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 53E291A011E;
+	Fri,  6 Mar 2026 14:28:10 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D4FA41A0117;
-	Fri,  6 Mar 2026 14:28:03 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3C2171A010F;
+	Fri,  6 Mar 2026 14:28:10 +0100 (CET)
 Received: from lsv15149.swis.ro-buh01.nxp.com (lsv15149.swis.ro-buh01.nxp.com [10.162.246.145])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 6712A20270;
-	Fri,  6 Mar 2026 14:28:02 +0100 (CET)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id C22D220270;
+	Fri,  6 Mar 2026 14:28:08 +0100 (CET)
 From: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Date: Fri, 06 Mar 2026 15:27:18 +0200
-Subject: [PATCH v2 1/9] drm/gem-dma: Add flag for bidirectional mapping of
- non-coherent GEM DMA buffers
+Date: Fri, 06 Mar 2026 15:27:23 +0200
+Subject: [PATCH v2 6/9] accel/neutron: Add mailbox support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +34,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-neutron-v2-1-3019bd8c91ef@nxp.com>
+Message-Id: <20260306-neutron-v2-6-3019bd8c91ef@nxp.com>
 References: <20260306-neutron-v2-0-3019bd8c91ef@nxp.com>
 In-Reply-To: <20260306-neutron-v2-0-3019bd8c91ef@nxp.com>
 To: Oded Gabbay <ogabbay@kernel.org>, 
@@ -55,82 +54,163 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  Daniel Baluta <daniel.baluta@nxp.com>, 
  Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772803680; l=2892;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772803681; l=4796;
  i=ruxandra.radulescu@nxp.com; s=20260204; h=from:subject:message-id;
- bh=t5jOCwYs4a0qJx+g0j9jr/ql5g59uodTYfBmURX7TLI=;
- b=vQgTdwiDpL6F1spFiQA3GmfumX6lRP1fSzi7wQIADz/lnvRiRmtcYpuVIW2l+I8j//iohgk08
- bbYob/MGbB1An73BLKydFFyr4LbLgEOah+seA7bcu0lYaLDWdKOz5n5
+ bh=Jty6B0ytRRom/v7JJudk9QB5erW8GFmasf1vl2KeMcs=;
+ b=PB4TlUF+leh2OekYOU7U0kWWmeLsSe45WOXmQtld7wmvZo/tOAUFlSuUQPelI+WGFFpp/b5/0
+ Oltg6BknDsUC+cHr3/UG2GXxESoitk7j2nv1rCbQ/LNaWketzH6710e
 X-Developer-Key: i=ruxandra.radulescu@nxp.com; a=ed25519;
  pk=zoq4b4OYR0c4faAH97xoTxdr6vfR8OvPbS+Cx0XhIBY=
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-Introduce a flag that allows a user to request non-coherent buffers
-allocated via the GEM DMA helper for bidirectional use.
+The driver communicates with the Neutron firmware via eight
+register-backed mailboxes. A subset of the mailbox registers are
+used to pass commands from driver to Neutron, while the rest are
+written by Neutron firmware with status/ack info.
 
-Keep current behaviour (DMA_TO_DEVICE mapping) as default, with no change
-required for existing GEM DMA users.
-
-While it hasn't been the case until now, some devices like NXP's Neutron
-Neural Processing Unit (NPU) require contiguous, non-coherent DMA buffers
-they can both read from and write to. Unlike traditional DRM devices,
-Neutron uses the same DMA buffer both for reading model data and for
-writing inference output.
-
-Neutron's usage scenario is a good match for the GEM DMA helpers, except
-for the fact that current implementation only considers the DMA_TO_DEVICE
-direction.
-
+Signed-off-by: Jiwei Fu <jiwei.fu@nxp.com>
 Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 ---
- drivers/gpu/drm/drm_gem_dma_helper.c | 6 ++++--
- include/drm/drm_gem_dma_helper.h     | 3 +++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/accel/neutron/Makefile          |  3 ++-
+ drivers/accel/neutron/neutron_device.c  |  4 +++
+ drivers/accel/neutron/neutron_mailbox.c | 47 +++++++++++++++++++++++++++++++++
+ drivers/accel/neutron/neutron_mailbox.h | 42 +++++++++++++++++++++++++++++
+ 4 files changed, 95 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
-index ecb9746f4da8..dbf5ad4426d3 100644
---- a/drivers/gpu/drm/drm_gem_dma_helper.c
-+++ b/drivers/gpu/drm/drm_gem_dma_helper.c
-@@ -148,7 +148,8 @@ struct drm_gem_dma_object *drm_gem_dma_create(struct drm_device *drm,
- 	if (dma_obj->map_noncoherent) {
- 		dma_obj->vaddr = dma_alloc_noncoherent(drm->dev, size,
- 						       &dma_obj->dma_addr,
--						       DMA_TO_DEVICE,
-+						       dma_obj->map_bidirectional ?
-+						       DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
- 						       GFP_KERNEL | __GFP_NOWARN);
- 	} else {
- 		dma_obj->vaddr = dma_alloc_wc(drm->dev, size,
-@@ -238,7 +239,8 @@ void drm_gem_dma_free(struct drm_gem_dma_object *dma_obj)
- 		if (dma_obj->map_noncoherent)
- 			dma_free_noncoherent(gem_obj->dev->dev, dma_obj->base.size,
- 					     dma_obj->vaddr, dma_obj->dma_addr,
--					     DMA_TO_DEVICE);
-+					     dma_obj->map_bidirectional ?
-+					     DMA_BIDIRECTIONAL : DMA_TO_DEVICE);
- 		else
- 			dma_free_wc(gem_obj->dev->dev, dma_obj->base.size,
- 				    dma_obj->vaddr, dma_obj->dma_addr);
-diff --git a/include/drm/drm_gem_dma_helper.h b/include/drm/drm_gem_dma_helper.h
-index f2678e7ecb98..e0022f2fdfef 100644
---- a/include/drm/drm_gem_dma_helper.h
-+++ b/include/drm/drm_gem_dma_helper.h
-@@ -17,6 +17,8 @@ struct drm_mode_create_dumb;
-  *       DMA addresses.
-  * @vaddr: kernel virtual address of the backing memory
-  * @map_noncoherent: if true, the GEM object is backed by non-coherent memory
-+ * @map_bidirectional: valid only if map_noncoherent flag is set. If true, allow
-+ *                     bidirectional use of the non-coherent memory buffer
-  */
- struct drm_gem_dma_object {
- 	struct drm_gem_object base;
-@@ -27,6 +29,7 @@ struct drm_gem_dma_object {
- 	void *vaddr;
+diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
+index d4298c7a8535..192ed896a9f9 100644
+--- a/drivers/accel/neutron/Makefile
++++ b/drivers/accel/neutron/Makefile
+@@ -5,4 +5,5 @@ obj-$(CONFIG_DRM_ACCEL_NXP_NEUTRON) := neutron.o
+ neutron-y := \
+ 	neutron_driver.o \
+ 	neutron_device.o \
+-	neutron_gem.o
++	neutron_gem.o \
++	neutron_mailbox.o
+diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
+index 61b3c96b4996..e5c09105be99 100644
+--- a/drivers/accel/neutron/neutron_device.c
++++ b/drivers/accel/neutron/neutron_device.c
+@@ -7,6 +7,7 @@
+ #include <linux/iopoll.h>
  
- 	bool map_noncoherent;
-+	bool map_bidirectional;
- };
+ #include "neutron_device.h"
++#include "neutron_mailbox.h"
  
- #define to_drm_gem_dma_obj(gem_obj) \
+ void neutron_enable_irq(struct neutron_device *ndev)
+ {
+@@ -148,6 +149,9 @@ int neutron_boot(struct neutron_device *ndev)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Prepare device to receive jobs */
++	neutron_mbox_reset_state(ndev);
++
+ 	ndev->flags |= NEUTRON_BOOTED;
+ 
+ 	return 0;
+diff --git a/drivers/accel/neutron/neutron_mailbox.c b/drivers/accel/neutron/neutron_mailbox.c
+new file mode 100644
+index 000000000000..327ef2e8081d
+--- /dev/null
++++ b/drivers/accel/neutron/neutron_mailbox.c
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* Copyright 2023, 2025-2026 NXP */
++
++#include <linux/iopoll.h>
++
++#include "neutron_device.h"
++#include "neutron_mailbox.h"
++
++#define NEUTRON_MBOX_FW_STATUS(dev)	NEUTRON_REG(dev, MBOX0)
++#define NEUTRON_MBOX_FW_ERRCODE(dev)	NEUTRON_REG(dev, MBOX1)
++#define NEUTRON_MBOX_CMD_ID(dev)	NEUTRON_REG(dev, MBOX3)
++#define NEUTRON_MBOX_CMD_ARG_BASE(dev)	NEUTRON_REG(dev, MBOX4)
++#define NEUTRON_MBOX_CMD_ARG(dev, i)	(NEUTRON_MBOX_CMD_ARG_BASE(dev) + (i) * 4)
++
++int neutron_mbox_send_cmd(struct neutron_device *ndev, struct neutron_mbox_cmd *cmd)
++{
++	u32 status;
++	int i;
++
++	/* Make sure Neutron is ready to receive commands */
++	status = readl_relaxed(NEUTRON_MBOX_FW_STATUS(ndev));
++	if (status != NEUTRON_FW_STATUS_RESET)
++		return -EBUSY;
++
++	for (i = 0; i < NEUTRON_MBOX_MAX_CMD_ARGS; i++)
++		writel_relaxed(cmd->args[i], NEUTRON_MBOX_CMD_ARG(ndev, i));
++	writel(cmd->id, NEUTRON_MBOX_CMD_ID(ndev));
++
++	return 0;
++}
++
++int neutron_mbox_reset_state(struct neutron_device *ndev)
++{
++	u32 status;
++
++	writel_relaxed(NEUTRON_CMD_RESET_STATE, NEUTRON_MBOX_CMD_ID(ndev));
++
++	return readl_poll_timeout(NEUTRON_MBOX_FW_STATUS(ndev), status,
++				  status == NEUTRON_FW_STATUS_RESET,
++				  100, 100 * USEC_PER_MSEC);
++}
++
++void neutron_mbox_read_state(struct neutron_device *ndev, struct neutron_mbox_state *state)
++{
++	state->status = readl_relaxed(NEUTRON_MBOX_FW_STATUS(ndev));
++	state->err_code = readl_relaxed(NEUTRON_MBOX_FW_ERRCODE(ndev));
++}
+diff --git a/drivers/accel/neutron/neutron_mailbox.h b/drivers/accel/neutron/neutron_mailbox.h
+new file mode 100644
+index 000000000000..4fe40a2f6a0c
+--- /dev/null
++++ b/drivers/accel/neutron/neutron_mailbox.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* Copyright 2023, 2025-2026 NXP */
++
++#ifndef __NEUTRON_MAILBOX_H__
++#define __NEUTRON_MAILBOX_H__
++
++#include <linux/types.h>
++
++struct neutron_device;
++
++/* Device (firmware) status magic values */
++enum neutron_mbox_fwstat {
++	NEUTRON_FW_STATUS_RESET		= 0,
++	NEUTRON_FW_STATUS_ACK		= 0xA3,
++	NEUTRON_FW_STATUS_DONE		= 0xAD0,
++};
++
++/* Firmware command opcodes */
++enum neutron_mbox_cmdid {
++	NEUTRON_CMD_INFERENCE		= 0x269,
++	NEUTRON_CMD_RESET_STATE		= 0x23637,
++};
++
++#define NEUTRON_MBOX_MAX_CMD_ARGS	4
++
++/* Firmware command */
++struct neutron_mbox_cmd {
++	enum neutron_mbox_cmdid id;
++	u32 args[NEUTRON_MBOX_MAX_CMD_ARGS];
++};
++
++/* Device state */
++struct neutron_mbox_state {
++	enum neutron_mbox_fwstat status;
++	u32 err_code;
++};
++
++int neutron_mbox_send_cmd(struct neutron_device *ndev, struct neutron_mbox_cmd *cmd);
++void neutron_mbox_read_state(struct neutron_device *ndev, struct neutron_mbox_state *state);
++int neutron_mbox_reset_state(struct neutron_device *ndev);
++
++#endif /* __NEUTRON_MAILBOX_H__ */
 
 -- 
 2.34.1
