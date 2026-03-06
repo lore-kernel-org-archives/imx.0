@@ -1,64 +1,64 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03A343C077
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 19:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7F43CEC2
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 19:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772827126; cv=none; b=ncZgUJh8AOyqmUoDWHcgqGX9b5dO+G6NOZIK6yO743Pvvaf3Id3CWueC+Y/hBasOYL/ndn5ZI+UCXioa52ThraR19aQ5tAZsLlVCUfPVcH8t+Hc4ReCOLKwdy4+dOK5/y88srBxpgIJDGMNwk09pRLkaW2cCYOwknl8OSrIrVZg=
+	t=1772827127; cv=none; b=e+MNM05dA6/2oIZPugvIf/yCmkyLV7G29qZ1r2BYAi3p7TlWZlPauQW4rwKyv+DcZ0uc6GKDzk6LNobkaMO73sqpG4YuPhlQ2ygjw1Hdx6Pmw1quc5L1JvMO5DpOz6k0Bseft8NZllXggLwxuEVXxMkjyJZnOB1dbNuPstKYj/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772827126; c=relaxed/simple;
-	bh=Bo6uHmKoCW74XA+zkV2qEgtT7A07fBiZFYjxTVWXfkE=;
+	s=arc-20240116; t=1772827127; c=relaxed/simple;
+	bh=zlCzFQV4Y1ccEM4u67hbvrmKWgTrQCbHVkFvjqcghM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrIlY4WBXhYKA7q9ePKIcwMR6vbejOfwDtD8f1Iqd36TAQFvjaoMI27D6Mm1IQWD1Te5f+E1dbYZO+PRI9kvJR+n0FAGudeLkR523hJnqyyoeQIh39YsX1i5UL6GGZzoqxDOqqR4YNLOcyoS3faIGfR8vi+nX0RQ0p/rc1bbUws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2J1NuQI; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=WuwP1nr2D3ua68EJAbmQfT8ZZB3QbBYnfH/+HdSmsDRiDStwS2Ru5Z3c6AZGohhqudZNUUhx4uCwyt9QVA5RBUY/0Hgq8K5OWMnykINQ0PhaYMq/K3Lqf6qEfV6tNvEpiHl1FofRj0Dnd3EJ63xsnFPy42Ulsm3mHJ+nEARu5NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhij8DEW; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2J1NuQI"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4837f27cf2dso89984575e9.2
-        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 11:58:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhij8DEW"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4807068eacbso80806865e9.2
+        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 11:58:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772827122; x=1773431922; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1772827124; x=1773431924; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MdG08ZWm+hlT9FVxwUh/CwAknI2CF8I/yIBQ6VyRzCY=;
-        b=L2J1NuQImRQeAjX2n4e4c/kwUMEEIYQ508dlDyIPeBvO/faVh6KiuK+gyoHQ5saJXH
-         K2TpqSiswaPi4WBCerlqBXY/S07tGYn9pzVdmlIgSlhMFKwLC5HQED6KqhsUTsJBgqQN
-         f6gyC3cu4xL2q5cx/wl3KrZ5kZbCWqkpU6tcAvpfII/HUoNXowyubwIbccOdxwwnzWHZ
-         S5WJe24sz5DpC88F6XQ0uUDrAAyOl4gDEH44PW0GEmFTsFwL7VOmvdi462GW2YGou3w2
-         bfcSdIY6XfRjVCCfld2G6k7RFyZsPLq4xCxqvfXaXMEXtTzesw7rScExuGjt0rdrrv7+
-         aBCw==
+        bh=nQRz3vom4i98v5hOr3xa41qzBpQfTuX5yERFzQc6reQ=;
+        b=hhij8DEWwcx9nUKK8xgHGyHJKAn+Vczh5dcSH4G7+ixI/He7rVJEaF+8rmZ0Ncv6EO
+         TzuJcO6FVFuBwQZ+9WZHO+KVeGGicNmHWSIx6pn7rIIggskkAFXtBesmCwIXUVKerJhN
+         GQMfZAjivAi1oRzHCbyfjbNT/i/yd3RrqKbkVGdbFd13csgmRMSHzxrifUZDypwBQXlw
+         iEBIj7l3gSswSS4+M9WM373khpeYhPhlJqDqyK4o6PWc57paVznJETYDB5Ha7Cn5iHOK
+         St9exB8tb8BAoaG5y8qFO1taS+u3GgTBNqt+V3qrTtX0W8RAOeZjN1Eiwo6PCotG7BQ0
+         hRTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772827122; x=1773431922;
+        d=1e100.net; s=20230601; t=1772827124; x=1773431924;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MdG08ZWm+hlT9FVxwUh/CwAknI2CF8I/yIBQ6VyRzCY=;
-        b=dZQiH5/Q0zPfERpaCxfFC2dh4N8n27uPjmHX86+0HHRXQWMS5Tx7AThM5umHqn5CfD
-         q9eCT86bybfxelNCslslFVPxNVDqOOm6pdWTQrx1bUSnPl8YWw/9KzkbNwjMsGMxWdKC
-         vAs6113KCzzfBYkJA7FCFEUM+SCNDmaKPOQKY3IWYTjN+xu/oSKAYUCBO6f668WHzfqS
-         iC65dhpDHUkaqm65NPsOowR07pJ5Gv5mPawiLJCP/7ru1u+eFAPVuxGIyaxDOXo/02ut
-         O+4T4mFH4475unYHc3V4T1ZcpJBk3kc48xtSnoxsRiXLogzp6/Tn775Gyfm5zX7BZyvm
-         N3YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0olIA7syYsyoFdKr3rZi5MLmNJPSBi//MPcqIfPamnM0urSL74fkFop9pk91jRfA4ldg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwNj7HyCXO1WJj6OL4cWw1Q9L7z4m40VCTVvNe45+h4IyNqPKs7
-	O/wlNfudWidEAcbrWmvLh+jxia3SycmhOFo6voKjFdr10Rzfd+Wq2+zO
-X-Gm-Gg: ATEYQzx9MzZ0Ue1Ti3NjLQqG8NPMVjrhdzY+t8XTRros7UuXLVS/PDsJkIVSuKX3NI1
-	quSd/is9B7lngklyDwSDK5KiV585ILu6zFqCO4Fch61dvWrEial4iTIhrolBhTewIhQMTm5PACm
-	8hRadN6mlalkUEL0OsCDohtfVEM69vyGTeHoRorBBMmfwBbdInxmMHL8MZKXsTbpDd19vP016k8
-	FbOVQ2xj/7AZcQRvkQCSKWrByz+xCshMp3SP8A1nsWpjp15t/+31SiWBqMcxnj4jgaXs0gNSRKF
-	O7RELa5ck1T9CSB3GsjLwkKhMcJzr+Yu9DITnsiF8bUdm/QKCR/U5y3wLWoKsfmpanEBty07w5e
-	BINfjRb3s+1Xqt44gQZJ6FT6UsdjrIl+BGK2z54wQCWho6OfU7HafgvyF7XX5mU9S7tce4p/KYW
-	3HSUByNnbZ9O+Q4CuFTOi1wGQm2ZfO2mV1AJqhIyAiM8q7drtoqE8PNY96lzfRe+mCRj06fQ7KN
-	X+Z98NH6m3xtnwD2Lxmwz/rKSv5b41yODanTCOvfcx73MvTyg==
-X-Received: by 2002:a05:600c:3596:b0:483:709e:f22d with SMTP id 5b1f17b1804b1-48526964c5bmr54934365e9.27.1772827122339;
-        Fri, 06 Mar 2026 11:58:42 -0800 (PST)
+        bh=nQRz3vom4i98v5hOr3xa41qzBpQfTuX5yERFzQc6reQ=;
+        b=AzoyHrkGfyhioFcb+eQA0SKQXGV9EC5Cs9bITahc4KdczgGz9ILJjZZR3S12sjNz3t
+         pEseWKsbyxJ6+JuRJyGK3kqz/TFbIhW2c+NSaPvgZnPYN5ijSpGtWke0K60wnm5Ux4av
+         4PPW6fftz4cO2lJK++ZrXSwSLhBkBqfLkh9ceE7PC8adE8TcBI1ERn6vqIkyaxhcsqtg
+         t//YjuFiYu2kCJFo0ndP5g4A7Fre9AjeXYh4R44RMn1qW9oD3dznWvl5wByDInIVgoPR
+         /ENO8N1NxP3oCxHzWaJ0fBdMe9S+JPsOLslH9jioNPTw9IYwHqjByBlAxRzsf4WHJNI5
+         isMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVy1nG5u9p2l3jTOcjKbC2BLThe8BFYTy7wg+e1uFCOZfffQSd8O5VO67ehWr7eHhwe6mI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxJ4Cf+A7NQiYWZ94j50tRilF8lxnCNzq0GKE4TZ6oU0OSNxN/Z
+	hbY2Xx/IhOHEaiaSprsgG+w5hMqjjbTgLV7tTo6Ox0OUnbTFM+eGzwP0
+X-Gm-Gg: ATEYQzw6BRZJluzVd0S0FSPx3/6yXuy0Ux6ZFnIZ+YwGVALyvbaFLg6JnuML6T4wB7F
+	z2fygAm3O/4IAsAEnKVHfwIBjwv56G49NP1ugZCZWIc5e2S0G0vbFAatm0efWoYMucxBmTWWBEj
+	fXypUBNAFPvGtSF9R3846zfF/fOco6fNgC3A7EbaGNpmH3WI6zfWkMgcBwgXvosOGKRajLTTKDd
+	SOkXgDn2JWfJJjjFelezWGqOjcK35zSqG3+TxG0gmAu0H8fLuwFKLWMT8ms3bkQZrqjZbQDZ5pN
+	wnaGZWlqCY+nD1rnEl0PvSCF9LsKltLZAlVcAqxdo63DYE2FhxwAqpUg7M2oU5WL+DYF0TyGTQA
+	N4mZUhgqnICltQmeRV/qoYy4hs7Rxgg0SZPd1ion9HTjfFkSXDxAsd3yV8BWwLxTzpGqvNoGk00
+	v1JBqiC5bKcCOXXlvDMkpipGQMPaq2m2fu7XdcxqSelz+SIPNdFuR8HAkQYI9UTeOR2hoy9Xbh3
+	paXH/wzE44OSB8zTlJZ8VRRZY97/We9SfxGLvI=
+X-Received: by 2002:a05:600c:3b17:b0:483:64b4:79da with SMTP id 5b1f17b1804b1-4852695d236mr59709085e9.26.1772827124293;
+        Fri, 06 Mar 2026 11:58:44 -0800 (PST)
 Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48523803b5fsm25167265e9.7.2026.03.06.11.58.41
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48523803b5fsm25167265e9.7.2026.03.06.11.58.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:58:42 -0800 (PST)
+        Fri, 06 Mar 2026 11:58:43 -0800 (PST)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: pierluigi.p@variscite.com,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2 03/11] arm64: dts: freescale: imx8mm-var-som: Update FEC support with MaxLinear PHY
-Date: Fri,  6 Mar 2026 20:58:22 +0100
-Message-ID: <24d31e0ca71c9b2dcb64d39117a8501d85cf945f.1772826534.git.stefano.r@variscite.com>
+Subject: [PATCH v2 05/11] arm64: dts: freescale: imx8mm-var-som: Add MCP251xFD CAN controller
+Date: Fri,  6 Mar 2026 20:58:24 +0100
+Message-ID: <d007d05d5927820aa06389c07dad55357d5f8d4e.1772826534.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1772826534.git.stefano.r@variscite.com>
 References: <cover.1772826534.git.stefano.r@variscite.com>
@@ -90,162 +90,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Update the FEC Ethernet controller on the i.MX8MM VAR-SOM to match the
-latest SOM hardware revision using the integrated MaxLinear MXL86110 PHY.
+Add support for the Microchip MCP251xFD CAN-FD controller connected
+to the SPI bus on the i.MX8MM VAR-SOM.
 
-Add the PHY VDDIO supply regulator, adjust reset timings and add a
-pinctrl sleep state for low-power operation.
+The controller uses a 40 MHz external oscillator and requires an
+interrupt line and a dedicated RX interrupt GPIO.
 
-The PHY LED signals originate on the SOM, but the actual LEDs are part
-of the carrier implementation (RJ45 connector). Move the LED
-configuration to the Symphony carrier device tree, matching the
-evaluation board LED wiring.
-
-The enet_rst GPIO hog on the carrier is kept to ensure a defined
-board-level reset line state during boot.
-
-Wake-on-LAN via magic packet is not supported at the VAR-SOM level and
-is therefore not enabled in the SOM device tree nor in the official
-evaluation carrier board configuration (symphony).
-Designs requiring WoL support may enable it in their own carrier-specific
-device trees if properly integrated at the hardware level.
+This patch adds the fixed clock, the MCP251xFD device node with the
+required properties, and the corresponding pinctrl configuration.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
 v1->v2:
- - Moved phy LED configurations to symphony dts
+ - 
 
- .../dts/freescale/imx8mm-var-som-symphony.dts | 27 ++++++++++++-
- .../boot/dts/freescale/imx8mm-var-som.dtsi    | 39 +++++++++++++++++--
- 2 files changed, 62 insertions(+), 4 deletions(-)
+ .../boot/dts/freescale/imx8mm-var-som.dtsi    | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-index 819707e6f3bf..712892edba8f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-@@ -5,6 +5,7 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/leds/common.h>
- #include "imx8mm-var-som.dtsi"
- 
- / {
-@@ -71,7 +72,24 @@ led {
- };
- 
- &ethphy {
--	reset-gpios = <&pca9534 5 GPIO_ACTIVE_HIGH>;
-+	leds {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			linux,default-trigger = "netdev";
-+		};
-+	};
- };
- 
- &i2c2 {
-@@ -99,6 +117,13 @@ usb3-sata-sel-hog {
- 			line-name = "usb3_sata_sel";
- 		};
- 
-+		enet-rst-hog {
-+			gpio-hog;
-+			gpios = <5 GPIO_ACTIVE_HIGH>;
-+			output-low;
-+			line-name = "enet_rst";
-+		};
-+
- 		som-vselect-hog {
- 			gpio-hog;
- 			gpios = <6 GPIO_ACTIVE_HIGH>;
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
-index da3c7332ec34..24924ee1e8c7 100644
+index 7cedef8add32..21a4d87c0e26 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
-@@ -24,6 +24,13 @@ reg_eth_phy: regulator-eth-phy {
- 		gpio = <&gpio2 9 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
+@@ -14,6 +14,13 @@ memory@40000000 {
+ 		reg = <0x0 0x40000000 0 0x80000000>;
+ 	};
+ 
++	clk40m: oscillator {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <40000000>;
++		clock-output-names = "can_osc";
++	};
++
+ 	reg_audio_supply: regulator-3p3v {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "wm8904-supply";
+@@ -139,6 +146,19 @@ touchscreen@0 {
+ 		ti,keep-vref-on;
+ 		wakeup-source;
  	};
 +
-+	reg_phy_vddio: regulator-phy-vddio {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vddio-1v8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
++	/* CAN controller */
++	can0: can@1 {
++		compatible = "microchip,mcp251xfd";
++		reg = <1>;
++		clocks = <&clk40m>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_can>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
++		microchip,rx-int-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++		spi-max-frequency = <20000000>;
 +	};
- };
- 
- &A53_0 {
-@@ -99,12 +106,17 @@ touchscreen@0 {
  };
  
  &fec1 {
--	pinctrl-names = "default";
-+	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&pinctrl_fec1>;
-+	pinctrl-1 = <&pinctrl_fec1_sleep>;
-+	/*
-+	 * The required RGMII TX and RX 2ns delays are implemented directly
-+	 * in hardware via passive delay elements on the SOM PCB.
-+	 * No delay configuration is needed in software via PHY driver.
-+	 */
- 	phy-mode = "rgmii";
- 	phy-handle = <&ethphy>;
- 	phy-supply = <&reg_eth_phy>;
--	fsl,magic-packet;
- 	status = "okay";
- 
- 	mdio {
-@@ -116,7 +128,8 @@ ethphy: ethernet-phy@4 {
- 			reg = <4>;
- 			reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <10000>;
--			reset-deassert-us = <10000>;
-+			reset-deassert-us = <100000>;
-+			vddio-supply = <&reg_phy_vddio>;
- 		};
- 	};
+@@ -424,6 +444,13 @@ &wdog1 {
  };
-@@ -366,6 +379,26 @@ MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x19
- 		>;
- 	};
  
-+	pinctrl_fec1_sleep: fec1sleepgrp {
+ &iomuxc {
++	pinctrl_can: cangrp {
 +		fsl,pins = <
-+			MX8MM_IOMUXC_ENET_MDC_GPIO1_IO16		0x120
-+			MX8MM_IOMUXC_ENET_MDIO_GPIO1_IO17		0x120
-+			MX8MM_IOMUXC_ENET_TD3_GPIO1_IO18		0x120
-+			MX8MM_IOMUXC_ENET_TD2_GPIO1_IO19		0x120
-+			MX8MM_IOMUXC_ENET_TD1_GPIO1_IO20		0x120
-+			MX8MM_IOMUXC_ENET_TD0_GPIO1_IO21		0x120
-+			MX8MM_IOMUXC_ENET_RD3_GPIO1_IO29		0x120
-+			MX8MM_IOMUXC_ENET_RD2_GPIO1_IO28		0x120
-+			MX8MM_IOMUXC_ENET_RD1_GPIO1_IO27		0x120
-+			MX8MM_IOMUXC_ENET_RD0_GPIO1_IO26		0x120
-+			MX8MM_IOMUXC_ENET_TXC_GPIO1_IO23		0x120
-+			MX8MM_IOMUXC_ENET_RXC_GPIO1_IO25		0x120
-+			MX8MM_IOMUXC_ENET_RX_CTL_GPIO1_IO24		0x120
-+			MX8MM_IOMUXC_ENET_TX_CTL_GPIO1_IO22		0x120
-+			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x100
++			MX8MM_IOMUXC_GPIO1_IO05_GPIO1_IO5		0x16
++			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x16
 +		>;
 +	};
 +
- 	pinctrl_i2c1: i2c1grp {
+ 	pinctrl_ecspi1: ecspi1grp {
  		fsl,pins = <
- 			MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL			0x400001c3
+ 			MX8MM_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x13
 -- 
 2.47.3
 
