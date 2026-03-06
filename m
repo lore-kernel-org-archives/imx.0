@@ -1,48 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA26248176;
-	Fri,  6 Mar 2026 01:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C8F2FD1D0;
+	Fri,  6 Mar 2026 01:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772759166; cv=none; b=XGLpOXndCn95EJJWdaP7JrrT5fS0ZNUM+GV8AMPYW0ckpQejXiIN+xBRNw6INU+/L/dVXUffDMfWVr6pMeVayheoaV67V4o5RbXv6PVxHCNLNScWeV2/I6+AprXHJnyEVOK9X//k2bhZ3jhVfUe808vnj749wDf8WVCIMjKE594=
+	t=1772759244; cv=none; b=qCSeEj9793OW1cbhK/G4e4iiXZ6QKCGANk/on5I6mI9OJ/SaLmwQzKhYBg0htML3W9BPVG5yneknoVzj2LfzCe7hIWk5+El929RHpkuwi/t9yblzDgdKgJyojY7RglBtP/Ue+qBWh7NhGohTnPt52laLTVzxBASoDid5EOTfvLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772759166; c=relaxed/simple;
-	bh=TXhsUtQ1T1eFHHTBTR54dHAz6m+/NdLJN2sBSGnqWdY=;
+	s=arc-20240116; t=1772759244; c=relaxed/simple;
+	bh=GFw22hv0nK5LumC6KM0cU1KesUX8U5Cyli/4f2X+e8A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SqyJLLf2AdexTXz30nBK94gHOvRxipgL/IAK67NH7oaBU+3fXqNSPVeXTsm4us3qEroU2PFL+NdEXXUZx4nwS6ezSY8RG74VOhjaYzx1qKI/tkPImsrOOHJz9m+NJfn4Nx9GSjhHyOTTPpZ8Teju4nyYE89FSq+PUUb3Vj0+lPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J38lCU0a; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=fahG9K9Wn/FqDZx1lMRoIJqlfaQal8f/vYIHFWDoORet4iRWlGdwHPdIVsVAa5VbB1g4W71mxkVHIhbgcdleB3DBZfvjIjKe0HeJDUOgoRQXZnxZDOIf/kdL5yVf7FF0BlK72EluJcWOMv0PMOjCu6EGEHUCsLg7vdR5Uu4BLdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFVKmoED; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J38lCU0a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2ACC116C6;
-	Fri,  6 Mar 2026 01:06:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFVKmoED"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B926CC116C6;
+	Fri,  6 Mar 2026 01:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772759166;
-	bh=TXhsUtQ1T1eFHHTBTR54dHAz6m+/NdLJN2sBSGnqWdY=;
+	s=k20201202; t=1772759243;
+	bh=GFw22hv0nK5LumC6KM0cU1KesUX8U5Cyli/4f2X+e8A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J38lCU0aKRQiDELTdbhsaaGpPT3Jx448LT6fqF7qFCS5hxROoC6tSb/44TyFit4nn
-	 O4fAapca7bHIFm19JgksNJm6q6HY+lYMonqjOix2bPg7m1L7mbWYZmYRCni6lCR5dC
-	 0bzq/M0gEt0YYEWo+1NT8gnTdkx+Ql2K9yBFYGyJU2MUiaG7BFoZunekJHTldDpq+9
-	 O4b65fu/u/Q/zndvSF7WMo37k0YPpMuOCzcUEKpcn/SzXoAVrgKmYIWNROJZw3K57v
-	 CysiPIxs+sqBKV3hPD4qeyOGRlIAd+dsmS5tXsncmGm4EgyShbLnsAcw+pRTO3U8F7
-	 Wtv7Yrrc+WXOw==
-Date: Thu, 5 Mar 2026 19:06:04 -0600
+	b=ZFVKmoEDXMlQiSE7CY6ctT+R8lhUh3C+cE3vW+Z6rLnXG6lRpMFsWeyLrilcHvzqe
+	 vp8WwzQBj5Q32SfkiUVUZ1O87LktV+KKWey+pCa5SMjUF6DW59i4amWL33VqnBcWZm
+	 oXSTpWwdKo/+yzX9PuTCcoIDnTw4WYvb/E84iY2zWEUCDXAxd6UpETi1HEeD/XSMP+
+	 OdirSdNaMeGAX1pAaIl1L4BhnoA2yPQGIT0OcC3DOa7eff05koadjlGo9y/4tjQR1B
+	 Gjhy6Wp2Kq5BSyuU1BW9D9raGjD/GOUKVJYOvGTS0/YNR3X6LzGtYVbKsaLf0UNUxG
+	 B3lM/qEkz6QgA==
+Date: Thu, 5 Mar 2026 19:07:22 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>,
-	Vladimir Zapolskiy <vz@mleia.com>, Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v5 1/4] dt-bindings: media: ti,ds90ub953: Add new range
- for remote GPIO data
-Message-ID: <177275916426.903680.16610695491601049297.robh@kernel.org>
-References: <20260228-ds90ub953-v5-0-056cf07cc8f1@nxp.com>
- <20260228-ds90ub953-v5-1-056cf07cc8f1@nxp.com>
+To: James Calligeros <jcalligeros99@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Shenghao Ding <shenghao-ding@ti.com>,
+	Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Baojun Xu <baojun.xu@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Shawn Guo <shawnguo@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+	devicetree@vger.kernel.org, asahi@lists.linux.dev,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Kevin Lu <kevin-lu@ti.com>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 1/7] ASoC: dt-bindings: convert tdm-slot to YAML
+Message-ID: <177275924228.907103.4367357392721304661.robh@kernel.org>
+References: <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
+ <20260301-tdm-idle-slots-v3-1-c6ac5351489a@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,37 +55,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260228-ds90ub953-v5-1-056cf07cc8f1@nxp.com>
+In-Reply-To: <20260301-tdm-idle-slots-v3-1-c6ac5351489a@gmail.com>
 
 
-On Sat, 28 Feb 2026 14:18:19 +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+On Sun, 01 Mar 2026 18:05:20 +1000, James Calligeros wrote:
+> This schema was still in plaintext form. Convert to YAML format.
 > 
-> The DS90UB953 supports four pins, GPIO0 through GPIO3. When enabled as an
-> output, it can be programed to output local data or remote data coming
-> from the remote compatible deserializer.
-> 
-> Make a different GPIO range for remote ones.
-> 
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
 > ---
-> Changes in v5:
-> - Improve the description for "#gpio-cells" as commented by Conor.
-> 
-> Changes in v4:
-> - Use folder block instead of literal block for #gpio-cell property description.
-> 
-> Changes in v3:
-> - Make GPIO range from 0-3 to 0-7 to support GPIO data from remote
->   compatible deserializer suggested by Rob instead of adding third
->   cell for GPIO controller.
-> 
-> Changes in v2:
-> - Remove new property ti,gpio-data
-> - Add third cell for GPIO controller to select GPIO output source.
-> ---
->  Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  .../bindings/sound/tdm-slot.txt          | 29 ----------------------
+>  .../bindings/sound/tdm-slot.yaml         | 33 +++++++++++++++++++++++++
+>  2 files changed, 33 insertions(+), 29 deletions(-)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
