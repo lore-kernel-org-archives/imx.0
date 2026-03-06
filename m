@@ -1,179 +1,167 @@
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013031.outbound.protection.outlook.com [52.101.72.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C2B3EB7F8
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 15:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772812548; cv=none; b=tjN+KcmcW0Hg47D9UOikJKh0bXYoCuExT4DL7TNoZRclt8p1grou+5vklKRLL8KtcZTDw2dBl7FwFU62947n/a63kbUhLblqcrzp7w3nf4QmwR7theaRWwQ3za6vtCxCJ9K7fn/anE/1uwG6ftjo7HrJrHiOBMru7wbzaN803VY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772812548; c=relaxed/simple;
-	bh=lFgjW46ILrKHSoXB9q3w7P43GTXK8kj8mXndX9HX1/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BLuZq9G+wimRJj71tLTKlSP8cytsQf0zVRGO2wXF2NFXn1g2jY9+g51myUaM0j98mnLLQVSYiROq0JZ+1/kmsplo+BQD36Yd5f0dGIw8qxeRsMZohShMqKQR4aHVnk9cTNCFa78IrSomeJLiVEIzMZO6Af0thkrRd/Rb8FGOlnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=niQBQI6h; arc=none smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D05936C0B2
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 16:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772812974; cv=fail; b=lPq5xqj6wN5Zyy0zmoZGzOCPk1+pmMkYPIw6klWzW1b+k/5KNMF9JbYPWuKsoXSPQMrgSRFEOmlEB0fIyM0sdQrarPlQjowFzaebg1wCftDdIU0VZuFeRvhQGeR4JssGNu/YmCfiveHcr3ESOLeZMAG3pSWviNKXBomts9Ez2GU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772812974; c=relaxed/simple;
+	bh=+7oKznU3GFo4N19uHe7ch0yDCrK2F5rV+2igjox4oQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G12KYszCb/lGtxLAs5ZlraPWxHlgi0VpXWNxBotw9G/f36I7o6pKtrVv271WCHeHZ74T/qDAWL4MHaN6BKzxx4M2cpLVQb/KRRkmo6xOJdLIFWjDTYsYAlmVF5JdGGJYG/vW2ZBVtSdMAmRkhd4SSVrFt4Kv/ze1MjGRRgTkhck=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XqS2W7n8; arc=fail smtp.client-ip=52.101.72.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="niQBQI6h"
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2be1ab1fa7dso506705eec.0
-        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 07:55:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772812545; x=1773417345; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=flU13GMtw/+0UhfCUKIM3vLWYjN35HhW1mCsxDikv80=;
-        b=niQBQI6hIHEvCNRxGg60xbucCv247rVTz9wPXRi7Ohb7+BH+8SDJ4fkh5vqJ4tJoBl
-         gnzC5t30UD1/vS38h4kZu0XUTMgMcuVQEJIRQ1c0kZYrKFCaKGNt+xnd415kjaFCxVhg
-         u2jaL2CntFFLEbhlzsQgsGOvB7aZHEP5Aj0Ioe+rGsiT73h/m+6FfqkBDhnXU1hM7xXc
-         yObVdLRDdam292vblbipi/muegshg9E4d0+LrmGUEdfE58oHXH7UabouzMdz7cA1UGeV
-         ZPF98jdFCRhxNsbvIW51j9MzV38l9I9v9d3hz+zQHX84z3YxiWY6uZlnkmGSbwRtkPJU
-         tE0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772812545; x=1773417345;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=flU13GMtw/+0UhfCUKIM3vLWYjN35HhW1mCsxDikv80=;
-        b=Me8t9BP/u12/wYRo51NXn+CmmhvSP+WEduBfeuMBSRuGqoNNt+lrZALrQaphaksyKk
-         82OnasqNxezMcFQ7avtRE2drtYvHc9CgvpvFSLV/m5lRNLh5Dh8aR4fFX9pfQ5tYEnQm
-         M8kLVM7WWNH0TneIRluVGDbjKFlCt/UWW4E3KoLEi2Bp7XwALB4Pw6s/r9qfo9v/sTZ5
-         z0hYz3G55F3M9uxHk2TvLd+6CDW35vdFiCcc8+kpFLE07HL6XjD/pbONGt4PbMBlL8gm
-         jvvP6+cVb0/QlPbonWdklytmZx3xYXkt7MkM0jD1kaS86P4+JPjtoIs0TxZJ0jiYYuXE
-         9c6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW+rcX4PZpX1E4EDrRB7ThQB3ZjRMWPeu5dM9VGBT6RivV17wdO8zN+yawyMX2UgQB9yt0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwOTG00ZuUIVMsu2syM4rg7nFzubjfU6l3PFnLQwHBlIqWB9j6l
-	/G95P8QsntmACsZnVJAucjbM1laWFDDaFo2tBYlxaq923uARPyrPoafd
-X-Gm-Gg: ATEYQzw3Lwqi6U3mh9jPNPdhHtGCJNT+MRGwBMj+j/RUa68Ptb1wVtNkm93F3/qbosH
-	dwro1w8AGz74HB5hYDwuZ5A7P8nBKP7T/ii0s37OgUei5s+M1KEmkdoaa8Lo6kUjYKvrVIZts05
-	gmCPdHB4DZKJtZa63y0hUzpDA6MQVg48dTndIF6Dv1lF3ch7kOdNMteleYeW2yJRrBiZ6dVtWU+
-	jLQe0pFLPZokNkxjwxsGdsetfCemir4AhyuX2mnQ83f1O4mLBJP7IzYteJxHU/DH/ktaoV6I6Vy
-	WwYdGcf3EGzBzd/zn4NQaDY28QYKu75O8xY5bJV9oMSsDkPN9EwfSQBgeaXDBNnYG9/p2+6whpq
-	utJ4VJ+Bb3J+hLh3cri2pVoWSJLtJQLmCCxO0rJLAruih16bpBpXxSdEnX4903d74cP2qjYp9l4
-	H/LN1V31sR9StzgOX2uDQstI+OynAl8bBTN8ENmHITunZOLQ6No3/UjgyP0PDY+NPpPWlZuhe1Y
-	5xj7HhGF4A=
-X-Received: by 2002:a05:7301:128d:b0:2be:c4a:d31b with SMTP id 5a478bee46e88-2be4e02c09dmr1176487eec.18.1772812544584;
-        Fri, 06 Mar 2026 07:55:44 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f948411sm1369071eec.21.2026.03.06.07.55.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Mar 2026 07:55:43 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <0aaa530c-ff61-4e49-81ca-fd3c98a29f58@roeck-us.net>
-Date: Fri, 6 Mar 2026 07:55:42 -0800
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XqS2W7n8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BrgqZiZIHMjOozJkJ5j1aOmBcR2IvQIxLPYbxWyJpHzHImY4w+jh7c0t9AlCuq29sE4NpLMZjKUFZeGGqGa+Y6+O5XRcoWrAI/nph5KQKgTSgDaMmGLwBVLPaIXhDjsw1EJZRbO0dVpz79BYXBtcnIHjfb6pHf0drciUrW+y6BWcrjG6Lm9VTKVuTxieE+7ma+K04eKM6oOUWRONoiT9pRTPd6Fi3P7JqqC91xyZbILP6oNUOpwBl7JtpPpmyNG5h/Ue8BT6xt9u1fbbPSzkWvHLCGEnLIsjU35Pl7/SXzkUgAiTB/73o/+kyOL0pVLXsPfsTqJ4+YqrYUq8oGfQ8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W2LzxIp2q424U9poxyTaIojWjRzefZQfJ+XF7mvx+pY=;
+ b=edzXOt3y7tSvuZcm+V8DiY2Xy5cxlYatEHCtLxBSzOVk08oHViHsKeomedmZ4tgAIO9r0cr5bM7qKRxs+iE0qe08mao2P+6IARi/jLjvmlKZ0PhJRFN36TByYM65Vjn0hjygpqZLs3AGK1GYn9rfxZbqq29r9ohWpCiiW+aHg8WFrpxicjMEsvyO/0Jps5B+2Ms/Un9x222mcttRipU1eEUMEfp7ihmHPkst9uvVQxrG662oPA17NpFySi2+YEUJRz5DsmGJyypk6B03ge4qJHVr3Lf0ewrYv+QAkD/cRFgtsFzQ7QyojZay3xP/H3L2MaR2k7X1VEvjcm/R/DdLEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W2LzxIp2q424U9poxyTaIojWjRzefZQfJ+XF7mvx+pY=;
+ b=XqS2W7n8I5uCJJzBYYrH3A6jyg21AjDSDCsPXGl/VUq/s5hXaQwoChas9tzcRvGgUyftyJTJR0Z6mG0O2hGUP2bKDeGb5G69/r9RTBmtTLHgOxo6JMcTQ6Rts2kZ1/eARRhjdreBtpP4LWZuDWaUmQhnfNu6mBhxftWiPwxrA/a9TB4Kw5C+A7B4QD+brfFHGIgFtoanpndPWF0lsF32Izac2nDjHhq7W1MEUAr57oq1LqrMA0guX8+NNjm5aHzFAYo/19beroZOkHscA0nkwQJOemd4cqRsmBeQHcBuPWWUeW3oRbuB00FR/iq0MARvMDi9od7X2zfdg1ZdRK5bQg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PA4PR04MB7678.eurprd04.prod.outlook.com (2603:10a6:102:ec::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
+ 2026 16:02:50 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Fri, 6 Mar 2026
+ 16:02:49 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Frieder Schrempf <frieder@fris.de>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v2 0/4] Kontron i.MX8MP OSM Devicetree Fixups
+Date: Fri,  6 Mar 2026 11:02:30 -0500
+Message-ID: <177281293090.267666.2279739168174022521.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260220103636.9697-1-frieder@fris.de>
+References: <20260220103636.9697-1-frieder@fris.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0181.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::6) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/1] hwmon: emc2305: Set max PWM state during shutdown
-To: florin.leotescu@oss.nxp.com, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, festevam@gmail.com,
- Florin Leotescu <florin.leotescu@nxp.com>
-References: <20260306133439.564033-1-florin.leotescu@oss.nxp.com>
- <20260306133439.564033-2-florin.leotescu@oss.nxp.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260306133439.564033-2-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA4PR04MB7678:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1bf4b38-8a86-4782-624c-08de7b99d0b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	E887sVfowvccK62vh8YIZs1F0LAWMHJNM8mJT1zW1Ebqy9v18tgJKYylqIY7vj6w/VnBNc+BQeQDwcrYUIMh6C3oihQ/HumykCkQ3tBS5bed4+NrRyd9BnnH9fVCxH7Wfh0axpWgLjMP9nNsl2wFVAUUSabKODgH28YruFfZbKxDwrb6M034JxX1rrVufZU/kz0bZWSYwu0jti6e4ypwBLZMdrGiZWJTpOqQNYBqmgG2S9nC9Zy7G+/WQ1Wan8VKb574DRfNcEVNBs4NqZEJW9CxTkXTzYjo1sLCZe9d2wAG+QBQee2i5KPDU9feJWBlcoAz8nV1yMqaioqVpCn1HraRgbFLHFAw67YLEoWA6uFjo/Bwn0F1/wo2vOKrmKLieHNbPAyc8elWbjz8Omyj4PJb/Z+0DQWJgW646OUtBOqLObjrR6PGJDyqFe9hB3sUaJ5xwtlBBBRraJhWPbu7VQRBWNjd+OYQPutobUTvRY4/ID+f3U2kWHS/XxieZZuBh+QkVVyV00FPNtHWOnZUstS0BPxYSkqIEqYDqh5HbYm/mTBvGXZNfw9vLFjQQQ9gcTiTuFdLYheP7gg7ZC1Ghk0vdCbE7UYV2FpqcBLVhEME4V+1sevRAgIwFJCUOES1Ni76Z9hoOViv9frXsdUXAJ+O4ZPjSUy5wjA3krFw+56Ffcw2u4Nc5CMy2qOZARxxM3LUPx1Tb3DL7tJjciB/Zez9DfuQDEtW7iI1hdsvj56I4b6FAd+brIBsrCPrTjwzcLGiDcG5be8VS67934mUcBPLbk8LAfN72m/rEBrOBjmqGtq5JUmCdzb15IUQmGFz
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R0x0NWFTcEs5YkdKOWMwWmlwQTRqbm53M1krbXU3dDE4Z0RNQ29HcVNOZ2Er?=
+ =?utf-8?B?S0wxZXhzOG52Zys1RmVSVVZQdnptdE9zQm5lNVJ4cDVxVVdLNjVkM3pIeVZh?=
+ =?utf-8?B?UFBqS3NaWDVpd2trR01hcW1BRjNGSTFiODRNamtFMGJ3Mk9pRVRnVWxSSVJw?=
+ =?utf-8?B?MjdyY1RmWmFHaGo0ZUNmeHVqaUFaUFg3UEM2bUxsRGNYMWx5OWpNWW4zQzE1?=
+ =?utf-8?B?S0xQTERHc2tsNGR4MXVBbFVrQnRZcVlhdzdnUzRKQXFwQ0gycEZ1VU4vem1m?=
+ =?utf-8?B?MWdXekVlUU1jeXJucUpTUmZXd1RrWDVHMnQ3dSszRU5PVFFSVWJFcjhCTmZh?=
+ =?utf-8?B?ZGhOU2R4K1lIOWNUak1TUk9oR2VUcGRUdGRLWjJPVGhOWE93M2RVQnZpWTNG?=
+ =?utf-8?B?UEVvN0t0clgvaHpMNkpQMzVHaVVyYUdESWJpOExJL3hKRGczVHBRQTd6RHE0?=
+ =?utf-8?B?bGtMOFIrbjNoYU13Tzd2SFgyNXdhaThFM2l0b1pyWWdTRWFBNmhHOW53bS9V?=
+ =?utf-8?B?dVVFZmFaV24xTWR2MWFGNVIxQlJPNlk0Nk1tamc3WDdIV0NjSlE2VFVRUThR?=
+ =?utf-8?B?UTB1R3BhTDh0WU1acjV0cHRMYkZsTm1uanoyMDJ3RkZUL21tbERrK1d5UWFV?=
+ =?utf-8?B?YVZkQy9nK0tRUGhUL25IczlVUkpOZ1htWTdqdE9kWHFhZk9SR3JIdmtQdng2?=
+ =?utf-8?B?ZkFQLzBlYnlYZCtyZng0T1EvT1krZE9UcHNvUUxBTmZ6SDI4KytHQWowNEVN?=
+ =?utf-8?B?VjM0T3AvQ1EzR0MrT1hPNGRzaVRNbFlmckJSRXBlV0VsWndFb2NCOWN1TnNZ?=
+ =?utf-8?B?eVF5cVBUdi9wZXp3MENmV1F6VWlvWFIvVEQ0ZFRLWG9ZckswaFp2a05XZnVw?=
+ =?utf-8?B?NjVVU1I3UUxSK0I4ellhbkM2STY1SzVYRTBXanZ0OEVLNENCRjBqellEdXMr?=
+ =?utf-8?B?N1RvdVdMQ080bUtQQkNtMytqcGZ1R0tEUGEzaEdBWFN3eitnUXFSdnRTU0k2?=
+ =?utf-8?B?cE03bDF5STZUZ1JUSFpqZTJTVEtKTWZ3RGRIcVR5MXBtOGVxZDBOTEZlbzRD?=
+ =?utf-8?B?U244NE1OZlp1aDlNUCt2WHpwSjVmMXE0bGc2dkZFZnc1YW82eTNTc1Z6allz?=
+ =?utf-8?B?b2hMMVp0N2VOenVrSVBPdXNjVFlqeWlLekN4QldheW1Td3IydUx2bjlyQ0dh?=
+ =?utf-8?B?OTBjd0RkYkVPUmNWQm9uOWl6VzJsTjd1ZkNnd2dhTUN4Y0FHeGxRVkZSbS9k?=
+ =?utf-8?B?RUNESmNRS2Y3Tm90eDAvT1cxeHRRd0tVVXNWdE5lVzR2YXBaQmtmM09UY1BU?=
+ =?utf-8?B?Q0hzVVdUL0RScGU1VzlNc1RBeXhpcDQ3eHVNeDA3ZXk4SGEvWk95NnppSlUr?=
+ =?utf-8?B?ZVJ4aThXdmlWQmI3OS9YOGlaZCs0U0N1ZkhmSmVMRmtHbkJtaWt0VC9hWVZU?=
+ =?utf-8?B?ems1MnRjTXVZcld0L2Zyd1M2OXJlcTZxT2dxcEQvaEhKRk1MMjFlYjhjVy9E?=
+ =?utf-8?B?L0xnaUZKRjg2TlR0aWM2V0tIQ09Ka1dPaVFFTDkzOWIxTi9CWTB3Vk43eVNz?=
+ =?utf-8?B?OWtSelR3WU9pSW5rVVZKZWFGK2xmU3VsYyt4dUFDd3hVTFE4TEh4KzlhL2JP?=
+ =?utf-8?B?ZVlSWXpBSzJXNURFWnZtNmxhcnZYTG1ycVBSQTR3dE1qcHhaNkdIVkNCaVc3?=
+ =?utf-8?B?c2NHZDFYZzJmVVFoNjl6OHA2K05kRE9uazZJcVVKejM5R2xESEJjQUpaSklB?=
+ =?utf-8?B?UE9zdTBtQ3BpYWFkVlZ6Yk5yd0F5QXhiR3MvVDdCekNQK2tuZk11dnUyemFi?=
+ =?utf-8?B?QThocEpNNDd2MXJTV3BuTWw4TkVpaTlmM2tPdlVNOXJmbW8xbWZXblFhUk9Z?=
+ =?utf-8?B?QXJUYmFFMkRjSTBlQyt6V2c2b0JHZjBLM0o3V1RXem1KVFVQVlNwWXZseXJ1?=
+ =?utf-8?B?KzBMaTJrQThOaVFFTzNGc3l3L3BwaWRFdWNPMWxFcWRqNVpvQ2tsSXUvOTdi?=
+ =?utf-8?B?eDJWT24yT05KVVVKa3VabnFSZXRjcUVLYWhFOE94TWFrSjBQRkg5SXRuL2hJ?=
+ =?utf-8?B?Yi9BS1R0WVFjN2NJT0dEbHRHVXZtVU9pUjN3Y2wyNzlocUJVNTZFNVhYVERP?=
+ =?utf-8?B?WlpyTWpXOUN1c0dUNHpXcFMyWTViQ1ZXbGxPN2swVTFMZVQwY2NUS0wvQ1VI?=
+ =?utf-8?B?cUFoUGw0dDkyclVrT0FqdlBSQndSLzl2ZG8ySnpXRlhHU2psdTJaamw1SUdk?=
+ =?utf-8?B?eFR2dnpMSEhxaTJXVURIKzVYWUZyR3lGOHRZYWtJRGpydGVQQ1EzNU5abzZj?=
+ =?utf-8?B?T2tTakFHUDM3L1QrV1JJeW0vazJtdUVnVXFld2FBMlZGT2lUVGlvZz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1bf4b38-8a86-4782-624c-08de7b99d0b0
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 16:02:49.8639
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: caVIPxhCclDy0f4ERduQn2Yjg9bLmh7CA7OVhnl31c14ULMMnKjCt67tScwGIAp77GT+AgM2ehEzkuyaYFkWow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7678
 
-On 3/6/26 05:34, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
+
+On Fri, 20 Feb 2026 11:36:15 +0100, Frieder Schrempf wrote:
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
 > 
-> Some platforms rely on Linux to leave the EMC2305 fan controller in a
-> safe fan state before the system restart handoff.
+> This contains three fixes and one cosmetic change for
+> the Kontron i.MX8MP OSM devices.
 > 
-> If a soft reboot is initiated, the controller may retain the last PWM
-> duty cycle written by the kernel until another software stage
-> reconfigures it. On systems where no later stage immediately takes over
-> fan control, this may leave the fans running below a desired fail-safe
-> level.
+> Changes for v2:
+> * Add Frank's R-b tags (thanks)
+> * Enhance commit message of patch 2
 > 
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> ---
->   drivers/hwmon/emc2305.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-> index 64b213e1451e..d631d972c40e 100644
-> --- a/drivers/hwmon/emc2305.c
-> +++ b/drivers/hwmon/emc2305.c
-> @@ -714,6 +714,20 @@ static int emc2305_probe(struct i2c_client *client)
->   	return 0;
->   }
->   
-> +static void emc2305_shutdown(struct i2c_client *client)
-> +{
-> +	int i;
-> +	int ret;
-> +	struct emc2305_data *data = i2c_get_clientdata(client);
-> +
-> +	for (i = 0; i < data->pwm_num; i++) {
-> +		ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i), EMC2305_FAN_MAX);
-> +		if (ret < 0)
-> +			dev_warn(&client->dev,
-> +				 "Failed to set max PWM on for ch %d during shudown", i);
+> [...]
 
-s/shudown/shutdown, and newline missing
+Applied, thanks!
 
-> +	}
-> +}
-> +
+[1/4] arm64: dts: imx8mp-kontron: Fix touch reset configuration on DL devices
+      commit: ed35f6162eb43e5dc232b91e903e6a76ee5f5601
+[2/4] arm64: dts: imx8mp-kontron: Drop vmmc-supply to fix SD card on SMARC eval carrier
+      commit: 02ef82e09f96a0f5c996cdd4d62e66cb80df9f0f
+[3/4] arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
+      commit: 0ab1f5f3652424de16b464488c3d3db3d88b1bd5
+[4/4] arm64: dts: imx8mp-kontron: Use GPIO/IRQ defines in DL devicetree
+      commit: f7bbf27af999ed3f6568f0266e112eded96f225b
 
-We can not do this unconditionally. This would have to be configurable.
-The driver could use the optional fan-shutdown-percent devicetree
-property for that purpose.
-
-Thanks,
-Guenter
-
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
