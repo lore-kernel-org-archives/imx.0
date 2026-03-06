@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5C8EEBA;
-	Fri,  6 Mar 2026 07:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95294EEBA;
+	Fri,  6 Mar 2026 07:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772781175; cv=none; b=ZIOvAiylrhudkoUHPQ09Hw7AdWsjVufX1TAAZ/iXQiqzW/kEHScfFc3UK3cqobWP//e7ZzH23fwylVhRzR5GvEqc/V2eAUzsZu41psaTUOfos6kxcn7c8nBYRv8hbeT1RQGfgXnkU68No7Ox7P8YIFMZ9n3QOac70Vs8E5UKnTI=
+	t=1772781401; cv=none; b=cVeiuxB0rsiS09WlwO5X7S8Gg76r2eryLn1krtcnn5ERtU3AQ23XGVwGV0SDyVBw/XfVeOX1kUbhbdpSPWYvoEv27FYOsqsn+BxgOnMurBmggYcPSFUUXC/r2g3aGPfJI4uAvbBKM/brejgdlq9j9LeWUb7MXZOfbhO6EuVRB5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772781175; c=relaxed/simple;
-	bh=XT0AA5uqBKfCW2YCMSUndSquZ6L/D2yShFNdlBVDBOg=;
+	s=arc-20240116; t=1772781401; c=relaxed/simple;
+	bh=+CSZ/lxHhezXtn9zq2t5/nDJXac/JaET+DDAkLJYycM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nBiKiiVsxb8i0iEal5QB20o/dKYBQyy0f9xbzC7nSBnHB+VPSmCrQrUevpboTdkDg+abc8JYbauNjt6p8+Su8Dnh3TmcEmKsoiehajQuVU2ZpbG04/UDRrXrqxzoIVqqyLHXVOFLW7ID6UoQSQ9HJljmKPhJqORyG7s1B0cGmRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdAqwqLv; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=P/7NTWDuJGY6Efodfi70O9kROcxgIumsM3IyDYJMcf4AUnODp/72Fw9Xxq6p7l3jxupK2OBl79LobNR12HIth64fefy58h7hE6e/vnzLM/aIswRNuWOUFfY5TbdjFpLFdsaE6GGClA7alXpfx/zd/jDl0ucLWWmy5TJVwPUbseA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sjbtmlt5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdAqwqLv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA69C4CEF7;
-	Fri,  6 Mar 2026 07:12:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sjbtmlt5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2B6C19422;
+	Fri,  6 Mar 2026 07:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772781174;
-	bh=XT0AA5uqBKfCW2YCMSUndSquZ6L/D2yShFNdlBVDBOg=;
+	s=k20201202; t=1772781401;
+	bh=+CSZ/lxHhezXtn9zq2t5/nDJXac/JaET+DDAkLJYycM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tdAqwqLvr+LgBLcGS/59UrDUb0xfPQE6x2hXuTyIYBTK9iJ3xlPmHcYwjIe2UliWq
-	 pg8qca/NOkP8TF6MgSSIfi8+/uY/Ld4WITcOSC0mp/QcLQ6QyIAOkO0Z5PJIUeoqLF
-	 7i7aY65yYrZdCsNHzrJVBizopzC9orZUQpwIYQkv05OyL7pviv5Qs5/u91dfqvpgGx
-	 eaYSWZh+B8ffBozsASa5PrJvwgcZsbVpppfls+r2B6HaCNJ6p59H5YFSZ5UPaRK9xm
-	 0nIf8ls/GtEwaTX0J4gnxH2wXLn2LPh8i+NiQHkbDG0mMPSufzzf1kL9b/mEHbbpea
-	 3B6MUIfkGJ7kQ==
-Message-ID: <502e876d-3627-4d9b-a02b-d2a708ae67e8@kernel.org>
-Date: Fri, 6 Mar 2026 08:12:48 +0100
+	b=Sjbtmlt5YVdHFOSshJZ5HUZpMCqZtEGBKB2AkNyder91svEkNhhdFoKhyqyT80TSr
+	 6OTFazsF+J5SNAsWos1xgowhROzVYR9QWgeT8QvhB5IgFCYArQEfzWi6BPQZwaRfGP
+	 2To+qJgVm/slYjcJv1Vsm6O3DemMy8sauAoCzWoJt3pVHk1h+lXBIqSdyYedL7bxOc
+	 H3bPT+3EFocULYjL6D3KT9zyr6UBRzM6mFsZIxo1g5x9SrKvsTRezrEaYiJ2CLgHjZ
+	 zo1BKzp6HT6QTfJXzdvEcxC2n3TVytdKUysP6j8Ucs8NmaIvmmjyrRX3J33/oqzbmS
+	 o3LeLmyze2cFg==
+Message-ID: <20d37ab7-308e-4f07-96dc-7ae011af76d0@kernel.org>
+Date: Fri, 6 Mar 2026 08:16:37 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,29 +35,22 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "ARM: dts: imx: move nand related property under
- nand@0"
+Subject: Re: [PATCH 1/1] ARM: dts: imx6sx: remove fallback compatible string
+ fsl,imx28-lcdif
 To: Frank Li <Frank.li@nxp.com>
-Cc: max.krummenacher@gmx.de, Francesco Dolcini
- <francesco.dolcini@toradex.com>,
- Max Krummenacher <max.krummenacher@toradex.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <aZdDF6BObEu_C4KJ@toolbox>
- <aZdnhv2QC1szMCVl@lizhi-Precision-Tower-5810> <aZ80BWH6DRu8_W_S@toolbox>
- <aZ82pG3PO1HxD18B@lizhi-Precision-Tower-5810> <aaBA65_zLu8S6WMS@toolbox>
- <aaBi9lipWTG5l0hs@lizhi-Precision-Tower-5810>
- <bd0bd330d140f9d9d222c72c3797f79d08fcae1d.camel@active.ch>
- <aaWxiERQ4u6IhO7Q@lizhi-Precision-Tower-5810>
- <aaniGuauaieO3p36@lizhi-Precision-Tower-5810>
- <39ef5c99-ba8e-40c1-bf93-359db7297d55@kernel.org>
- <aaoI7TqtClwSKTLg@lizhi-Precision-Tower-5810>
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>, Liu Ying <victor.liu@nxp.com>
+References: <20260305212312.4053922-1-Frank.Li@nxp.com>
+ <c64ee6d6-d948-4146-8463-0e68ba542404@kernel.org>
+ <aaoIKmhcgIZdFvbz@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,55 +96,34 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aaoI7TqtClwSKTLg@lizhi-Precision-Tower-5810>
+In-Reply-To: <aaoIKmhcgIZdFvbz@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 05/03/2026 23:51, Frank Li wrote:
-> On Thu, Mar 05, 2026 at 09:37:26PM +0100, Krzysztof Kozlowski wrote:
->> On 05/03/2026 21:05, Frank Li wrote:
->>> On Mon, Mar 02, 2026 at 10:49:28AM -0500, Frank Li wrote:
->>>> On Mon, Mar 02, 2026 at 11:53:00AM +0100, Max Krummenacher wrote:
->>>>> for our NAND-based modules, and our CI no longer produces any useful
->>>>> results as a consequence.
->>>>>
->>>>> I strongly believe that, as an immediate first step, the commit
->>>>> that moved the DT NAND chip configuration into its subnode should
->>>>> be reverted.
->>>>
->>>> As my previous said, can do partial revert? Just add back property under
->>>> gpmi and keep nand@0 node.
->>>>
->>>> For example
->>>>
->>>> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
->>>> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi
->>>> @@ -260,14 +260,10 @@ fixed-link {
->>>> &gpmi {
->>>>   	pinctrl-names = "default";
->>>>   	pinctrl-0 = <&pinctrl_gpmi_nand>;
->>>> +	nand-on-flash-bbt;
->>>>   	#address-cells = <1>;
->>>>  	#size-cells = <0>;
->>>>   	status = "okay";
->>>>
->>>> Remove "- nand@0" part.  You can use "git add -p" to do that.
+On 05/03/2026 23:48, Frank Li wrote:
+> On Thu, Mar 05, 2026 at 10:34:18PM +0100, Krzysztof Kozlowski wrote:
+>> On 05/03/2026 22:23, Frank Li wrote:
+>>> i.MX6SX uses the v6 LCDIF controller, while i.MX28 uses the older v4
+>>> version. The driver has supported the "fsl,imx6sx-lcdif" compatible string
+>>> since the initial commit:
 >>>
->>> Do you plan rework this patch as what I said?
+>>>    commit 45d59d704080 ("drm: Add new driver for MXSFB controller")
+>>>
+>>> Therefore the fallback compatible string "fsl,imx28-lcdif" is not required
+>>> and can be removed.
 >>
->> Issue and revert were posted two weeks ago. That's maximum time to
->> handle regression.
+>> It is required - you are changing the ABI and possibly impacting other
+>> users without valid reason ("not required and can be removed" is not a
+>> reason).
 > 
-> Any docuement said these maxium times, I also want to know other maximum
+> In https://lore.kernel.org/imx/42eb2d42-47b0-46b6-92e9-c59473113c2d@nxp.com/
+> 
+> other known user barebox/uboot already fix it.
+> 
+> https://lore.barebox.org/barebox/20251107210033.2229781-3-a.fatoum@barebox.org/T/#u
+> https://git.pengutronix.de/cgit/barebox/commit/?id=c99b937f3a31
 
-Just read the regression and bug handling docs in the kernel.
-
-> time, such as
-> 	what's max time maintainer need reply? Many patch is not any
-> reponse for long time.
-
-
-
+And you have entire commit msg to explain the ABI impact...
 
 Best regards,
 Krzysztof
