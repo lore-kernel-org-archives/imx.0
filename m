@@ -1,126 +1,99 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EB536F407
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 06:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772777980; cv=pass; b=DYWICrIgyvZfg39ZwodUbm5Rfyf1J6wHPk8Wfp57o7Hu6rFOHULbOxuMhyF1WBsiMo7sd0GMJtflEwoNRcrHj9lxphOyxbUVYrocglJcvg8Y/p2CdPOznFyWMWJct0ej6dt914zzaQCiNzRMovskQdwQXTI4dOUvWJRPuzQ0SVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772777980; c=relaxed/simple;
-	bh=P0VGWiHF08Hb/LHLPzScyeOvbLZVakbt6uUzSBkPJkk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VkgyJ0GrCnD1DyBpFcD0oSLmvGe7w4Fbi0cywlPQaq6+/ElArzYAAg+q4cClh/Yk12iReuyA9YmAj7n3kQSmEJ5pNGB8ujHxuZYNHpVwERmjt8iX+vuFvVm1DtGs3ULybkJf3MJBj/KdxU4ZB8kvtMT+lzNDpgC83QdV/gOgF98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHXQFe0N; arc=pass smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHXQFe0N"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b935b8dcab7so1396994466b.1
-        for <imx@lists.linux.dev>; Thu, 05 Mar 2026 22:19:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772777978; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jgjrD01QYZ3e6Xn4WX1KduNU213Cc9uLx1YQTuS4T74tnorPSCn2B+Vvi1HfuACcJZ
-         Wa7x+3qBnhJypxEcFcy0hWNtU4lj6ouA80xc+c8I77kXg//Wv4EwzCZN5s9LsAua02RR
-         BpwS5pCgffzhiH52UJ1tHZEBUipI8eb5GIMptmJSKqEz2ZF79QkqQ1RdWaHfAtr16KIN
-         xjFR0XK4z4Nn4bDaISBw4ERM6Uqs5s7sR9b7r7E4i4L89fQezbxgBNzdQ8I+p/Kr/aPo
-         ziU04nQmiBa6H7NH/uWzh2QUkIcL4KweYUW+YdxBNDcu3lI4n04Tpgtx67IdtPgAv/JP
-         GkNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P0VGWiHF08Hb/LHLPzScyeOvbLZVakbt6uUzSBkPJkk=;
-        fh=bPTN197ZULmXPz55HyoOzNIp9H94lMzTaAV55mrGXUw=;
-        b=D3QiC0ZSr2CNZZ3UvjFXUSonc7cEhf3c+trjHdVSTOyadw3CMPNWZLr+eQJjMK9oBK
-         6aM27ZC9s4ZOYS6K7I0TTEO6fY2Vjqg2RXXkv82/EM/Oiqte/wHV4jkI0y/LGtSISa/g
-         9i79VWFZWcoLd9o+TZBh/y6t3JISBjU3vPVmbcNVkipS3gKrAoda7UD2+xpk/NaAz6yg
-         nrpzxCMGI6yC9RS0k1fp30HqkC/EV9iBv7LF8/mP+TIri9gdlb/QIApFUC0yEtYHguIt
-         ZjTexhOysZXXe4PZ3iAbx/NPduRUreU3Et6o2EepbsuNbYVB+1WwduKiV5OClCeRXf4i
-         aJ/A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772777978; x=1773382778; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P0VGWiHF08Hb/LHLPzScyeOvbLZVakbt6uUzSBkPJkk=;
-        b=ZHXQFe0NfcXsRzBAsq5GmZemvVmMDhVlIphJIH1gwzFXkcRx7DtW9tKrlrRR7vBxlM
-         T67AVc4ngqxqOR4suG40aDI/fr7SUizPcylWg0LqszyQ59K6Z7C0nNCmM09I9Xa5p298
-         jZSgR4vRbTXAAfE7kJhRc6so+Uc7vU+L3ma9wckp2/oqrOiSy6h4u8uDn8Ja5/pdLn8b
-         t+BM8FuIBhoWIA6Jb+NIE7ExV/fcA8O1YOYr5jIp771RGMO0e+bdugWbBD3R0oFqw2dM
-         E2c4HEpo86qpOjtm0Mw3TvNFAXwvAiQmAlILlItezOHjvEslcNwV6stUZYBpLiAVnlHp
-         KP2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772777978; x=1773382778;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P0VGWiHF08Hb/LHLPzScyeOvbLZVakbt6uUzSBkPJkk=;
-        b=Pq5Ts+fvscr7L2XwzlWnwSXygsjnCJ6L3Wa321qKHeyAqE3PZMGLZIK7yo4TzCUV5c
-         D54F0Zgae0bcPAQYZBZBhxcJXjfr1nHeeGQu2wKfmQp46oQfCWKOzAVSRaXdX4q07L66
-         eof2N/V57swl+U2rC687j4JOSyp8IDBgW0s9ShUGIBFUFqDu2p7bnwJswTXcFOB5BXCa
-         QUHCAKN+X9YIPeJvMQYEtf2/aB8g2bhcYM8SdPL0C1IwMZv+ctWObahDymo94PNe+yIH
-         +JgcZWEX3giMbR57t1Oxq8ljpUNkMcJztsmq4PZ3+2wezp1l3RLoCeY0OyOCFr3/ZqbN
-         nnTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKyiL18fhReJodJs4H0Of+9hJSheEhYosL2wSYyDxiwtkyMvB7FFwzafEqow2oZi7Sgvw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtrypHa76w/a/IikNB9WINaaT54E+4+ttof0sqSEVQcVEwzuR+
-	OCBpxNt4OQedGlsEFF8sXoaWvL8ZBF1FZfD+YbdXugOC+gt8Bs1TI5bkVJQNKpWX5/5mKOKsNHD
-	qcS7HWFeu9yEb5ufuupt2P3oeqmQWyZ4=
-X-Gm-Gg: ATEYQzzO1KKXrzQGeeXNPTVsnnYh1JgJFZ+8i8tBVMgppOjgsFWXgZSbLDLvCBOTNrs
-	v3gSDSSL2iR0oO5oA7k4W/qiV9jFF/lJk2RIdKda/UIMYTGUieOnGpZrj7oHju4hAzC6VtzZX/B
-	uxv6y53zmFZQuWy/UiGV4RsxwkTPchRLonbsfEPP9OIMfxq7sbaFr3kzSE9uIN6edd/7+WPbfB3
-	NcRiZI9ONFS1VImXi1EGbrmHCL4A1FAJEHU6jlDDleueeIzo67qpQ9lYJ5r5wuEmB02NygQ05B5
-	6F2btq4s48r4J866A6F+BvBL10/BQFxvU0FBLfsFcASCOO/ThwK3ZKuojY3dqfoyVkwElveyKnc
-	juEHTfA==
-X-Received: by 2002:a17:906:f5a5:b0:b94:244b:2ba8 with SMTP id
- a640c23a62f3a-b942df74e45mr44939766b.29.1772777977596; Thu, 05 Mar 2026
- 22:19:37 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B71371D1A
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 06:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772780189; cv=none; b=XKrXz6Zh9q1CYyFITso9DJB0W+0YKLiME4l+f0tfhKFOtqnoH7ivsF1ytmS2v3X68tlscCeAvwZRAgX5t1zHBBqQisS88r7vk19PWcUMF/tHbN6aHGntq4XOrkdOIBU6nbfIU4FOFBv2ZDbIlYvKx8IaYfeVGRBGaxuC+Xi88Ec=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772780189; c=relaxed/simple;
+	bh=lZi/wMM/ciY0PifjHsWxYMySZzBSA++aFXRYYRu1dVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=txDfdQU1eZfYasnhU/49I8J2vAcWaAJrh65XYrWPAbjcSUUJZbeA9kJBNwi7gt3LhwzkK8onq1XgfH/FpFXFJCwxAKSTuTrCL3Qb6rhEMPvJ29PAdJqJ9uVqllSa6+71XEHXIQjNOg6HkK3ZccGrtfYsSIy9hlPmzA56GMUuglc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vyP6e-0008Cg-FH; Fri, 06 Mar 2026 07:56:16 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vyP6c-0040ah-0f;
+	Fri, 06 Mar 2026 07:56:15 +0100
+Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B80D84F9166;
+	Fri, 06 Mar 2026 06:56:13 +0000 (UTC)
+Date: Fri, 6 Mar 2026 07:56:12 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-media@vger.kernel.org, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Frank Li <Frank.Li@nxp.com>, gustavoars@kernel.org, open list <linux-kernel@vger.kernel.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] media: nxp: imx8-isi: remove kzalloc_objs
+Message-ID: <20260306-handsome-quixotic-catfish-705bde-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260306044536.149204-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260306044536.149204-1-rosenp@gmail.com> <aapiBcnPHa3eDLN5@lizhi-Precision-Tower-5810>
-In-Reply-To: <aapiBcnPHa3eDLN5@lizhi-Precision-Tower-5810>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Thu, 5 Mar 2026 22:19:26 -0800
-X-Gm-Features: AaiRm50x7YMCKK1F6zYGE3uuqGNee--50j1jpnmhfHu0gWe_LApncHVHg97bcLc
-Message-ID: <CAKxU2N9TyRe_o6zj5pNRdTR65BgZZ6brsgRuq0Oi1EFvQSCiVQ@mail.gmail.com>
-Subject: Re: [PATCH] media: nxp: imx8-isi: remove kzalloc_objs
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-hardening@vger.kernel.org, 
-	gustavoars@kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qt6jm373d6epfxbc"
+Content-Disposition: inline
+In-Reply-To: <20260306044536.149204-1-rosenp@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--qt6jm373d6epfxbc
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] media: nxp: imx8-isi: remove kzalloc_objs
+MIME-Version: 1.0
 
-On Thu, Mar 5, 2026 at 9:11=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+On 05.03.2026 20:45:36, Rosen Penev wrote:
+> Use a flexible arraay member to combine allocations.
 >
-> On Thu, Mar 05, 2026 at 08:45:36PM -0800, Rosen Penev wrote:
->
-> Subjest: use flexible array to fix memory leak
->
-> > Use a flexible arraay member to combine allocations.
->
-> typo array
-Will fix.
-> >
-> > It looks like pipes never gets freed anywhere. Meaning this effectively
-> > fixes a memory leak.
->
-> Remove "It looks like". The pipes never ...
->
-> Because fix memory leak, need fixes tag here.
-Since its inception. Lovely.
+> It looks like pipes never gets freed anywhere. Meaning this effectively
+> fixes a memory leak.
 
-That had no struct_size AFAIK.
->
-> Frank
-> >
+It's a devm_kzalloc(), which means it's automatically free()ed after the
+remove callback.
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--qt6jm373d6epfxbc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaap6igAKCRDMOmT6rpmt
+0h0YAP9FYFN9bll7jzuGDpQaPy24yBisGMPapjkkoLpoXI0gFgEA15p+v6RhEWUS
+2+WhjuDG94zUDEWMa2eNHkHVZONmfgU=
+=Afub
+-----END PGP SIGNATURE-----
+
+--qt6jm373d6epfxbc--
