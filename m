@@ -1,31 +1,31 @@
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A612C39C648
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 13:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35F3A254F
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 13:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772803693; cv=none; b=B/Qp2tcNDW8l8WnS1JVKtyLdfbN5bqCW9R4RCTPZThota9jDltc4ULeBO2X0CwPseiiH6+LIZOir06rclv6hcEOslW4IUZjelDFbhJRI5nNjiYQu/7wrovqO1N3Q/JFXUHXV9Nhi6FpbuHcpfizwci2fPzrUDP22ca7NlyHT02k=
+	t=1772803694; cv=none; b=d7BOv0Go9x0TYnQcpJ8wIlt57wn0f9IeZguwlJv9yQkpF7GsGnQRj/eacw6CuLfy3L3mTJK7vryAeEXL2FXdVNGxOyMuwIo12uOORPuji82fT2RPoGnRwmXZt6PN58EN4QhBmNGP7swzkxGP87pth9nX4BuQbPqw8ICkv612FA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772803693; c=relaxed/simple;
-	bh=Jty6B0ytRRom/v7JJudk9QB5erW8GFmasf1vl2KeMcs=;
+	s=arc-20240116; t=1772803694; c=relaxed/simple;
+	bh=DrUlgsCcuIzne0wmXxYAn68dCYFpp2rPkNSax62ZhRQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gysN7mVRtN8AH4WFe/hdGhbFWlKu3Txafeu1Ly4Na1iy6norDcdjJSSvXg/DEbFg+FaEkLcE01zt7yO5xP6x6BCKXo/P94ysI2NO7PfQKGal+JT2N4xI3Nr/rXWi6ptO4zy/SooO14QmaKO7Eo6L2o/6dt91Tc1zrbCIQNHGLv0=
+	 In-Reply-To:To:Cc; b=rvcNFR5kKTuhcQCH3I/La+1MU7BJTRXQk4VYWrYrCtH+OFxDxnuswzwbeBjUp7EcZkR8qbRCfuIVvwUbbCL/zlttolbUlbaxMnIxPilITnR7jSg9FMujbuBRJoU+fEQW35/aLimMjHGJOJqh5Imh6JJAzOjt/+xW0PQOsLVCjUo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 53E291A011E;
-	Fri,  6 Mar 2026 14:28:10 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 800BA1A0112;
+	Fri,  6 Mar 2026 14:28:06 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3C2171A010F;
-	Fri,  6 Mar 2026 14:28:10 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5FB421A0110;
+	Fri,  6 Mar 2026 14:28:06 +0100 (CET)
 Received: from lsv15149.swis.ro-buh01.nxp.com (lsv15149.swis.ro-buh01.nxp.com [10.162.246.145])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id C22D220270;
-	Fri,  6 Mar 2026 14:28:08 +0100 (CET)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id E770020270;
+	Fri,  6 Mar 2026 14:28:04 +0100 (CET)
 From: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
-Date: Fri, 06 Mar 2026 15:27:23 +0200
-Subject: [PATCH v2 6/9] accel/neutron: Add mailbox support
+Date: Fri, 06 Mar 2026 15:27:20 +0200
+Subject: [PATCH v2 3/9] dt-bindings: npu: Add NXP Neutron
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -34,7 +34,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-neutron-v2-6-3019bd8c91ef@nxp.com>
+Message-Id: <20260306-neutron-v2-3-3019bd8c91ef@nxp.com>
 References: <20260306-neutron-v2-0-3019bd8c91ef@nxp.com>
 In-Reply-To: <20260306-neutron-v2-0-3019bd8c91ef@nxp.com>
 To: Oded Gabbay <ogabbay@kernel.org>, 
@@ -54,163 +54,130 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  Daniel Baluta <daniel.baluta@nxp.com>, 
  Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772803681; l=4796;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772803681; l=3102;
  i=ruxandra.radulescu@nxp.com; s=20260204; h=from:subject:message-id;
- bh=Jty6B0ytRRom/v7JJudk9QB5erW8GFmasf1vl2KeMcs=;
- b=PB4TlUF+leh2OekYOU7U0kWWmeLsSe45WOXmQtld7wmvZo/tOAUFlSuUQPelI+WGFFpp/b5/0
- Oltg6BknDsUC+cHr3/UG2GXxESoitk7j2nv1rCbQ/LNaWketzH6710e
+ bh=DrUlgsCcuIzne0wmXxYAn68dCYFpp2rPkNSax62ZhRQ=;
+ b=BO70YCNryjAZnV+gMp/78Lh52PzsT2aSmzOg3CR0pE7xWnE2r5xWyrPJ02ulSQuaY9obCoOLt
+ CO2BIfczV6/D+WT66IWwKh51zmsZ40KkvlaFjRc0g5/6GkIKHWye+rd
 X-Developer-Key: i=ruxandra.radulescu@nxp.com; a=ed25519;
  pk=zoq4b4OYR0c4faAH97xoTxdr6vfR8OvPbS+Cx0XhIBY=
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-The driver communicates with the Neutron firmware via eight
-register-backed mailboxes. A subset of the mailbox registers are
-used to pass commands from driver to Neutron, while the rest are
-written by Neutron firmware with status/ack info.
+Add the bindings for Neutron, a Neural Processing Unit from NXP.
 
 Signed-off-by: Jiwei Fu <jiwei.fu@nxp.com>
 Signed-off-by: Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
 ---
- drivers/accel/neutron/Makefile          |  3 ++-
- drivers/accel/neutron/neutron_device.c  |  4 +++
- drivers/accel/neutron/neutron_mailbox.c | 47 +++++++++++++++++++++++++++++++++
- drivers/accel/neutron/neutron_mailbox.h | 42 +++++++++++++++++++++++++++++
- 4 files changed, 95 insertions(+), 1 deletion(-)
+v2:
+- clock fixes: add description, rename, make clocks mandatory
+- rename node from neutron to npu
+- fix indentation
+---
+ .../devicetree/bindings/npu/nxp,imx95-neutron.yaml | 96 ++++++++++++++++++++++
+ 1 file changed, 96 insertions(+)
 
-diff --git a/drivers/accel/neutron/Makefile b/drivers/accel/neutron/Makefile
-index d4298c7a8535..192ed896a9f9 100644
---- a/drivers/accel/neutron/Makefile
-+++ b/drivers/accel/neutron/Makefile
-@@ -5,4 +5,5 @@ obj-$(CONFIG_DRM_ACCEL_NXP_NEUTRON) := neutron.o
- neutron-y := \
- 	neutron_driver.o \
- 	neutron_device.o \
--	neutron_gem.o
-+	neutron_gem.o \
-+	neutron_mailbox.o
-diff --git a/drivers/accel/neutron/neutron_device.c b/drivers/accel/neutron/neutron_device.c
-index 61b3c96b4996..e5c09105be99 100644
---- a/drivers/accel/neutron/neutron_device.c
-+++ b/drivers/accel/neutron/neutron_device.c
-@@ -7,6 +7,7 @@
- #include <linux/iopoll.h>
- 
- #include "neutron_device.h"
-+#include "neutron_mailbox.h"
- 
- void neutron_enable_irq(struct neutron_device *ndev)
- {
-@@ -148,6 +149,9 @@ int neutron_boot(struct neutron_device *ndev)
- 	if (ret)
- 		return ret;
- 
-+	/* Prepare device to receive jobs */
-+	neutron_mbox_reset_state(ndev);
-+
- 	ndev->flags |= NEUTRON_BOOTED;
- 
- 	return 0;
-diff --git a/drivers/accel/neutron/neutron_mailbox.c b/drivers/accel/neutron/neutron_mailbox.c
+diff --git a/Documentation/devicetree/bindings/npu/nxp,imx95-neutron.yaml b/Documentation/devicetree/bindings/npu/nxp,imx95-neutron.yaml
 new file mode 100644
-index 000000000000..327ef2e8081d
+index 000000000000..a06de4bc3f0a
 --- /dev/null
-+++ b/drivers/accel/neutron/neutron_mailbox.c
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright 2023, 2025-2026 NXP */
++++ b/Documentation/devicetree/bindings/npu/nxp,imx95-neutron.yaml
+@@ -0,0 +1,96 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/npu/nxp,imx95-neutron.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#include <linux/iopoll.h>
++title: NXP Neutron NPU
 +
-+#include "neutron_device.h"
-+#include "neutron_mailbox.h"
++maintainers:
++  - Ioana Ciocoi-Radulescu <ruxandra.radulescu@nxp.com>
++  - Jiwei Fu <jiwei.fu@nxp.com>
 +
-+#define NEUTRON_MBOX_FW_STATUS(dev)	NEUTRON_REG(dev, MBOX0)
-+#define NEUTRON_MBOX_FW_ERRCODE(dev)	NEUTRON_REG(dev, MBOX1)
-+#define NEUTRON_MBOX_CMD_ID(dev)	NEUTRON_REG(dev, MBOX3)
-+#define NEUTRON_MBOX_CMD_ARG_BASE(dev)	NEUTRON_REG(dev, MBOX4)
-+#define NEUTRON_MBOX_CMD_ARG(dev, i)	(NEUTRON_MBOX_CMD_ARG_BASE(dev) + (i) * 4)
++description:
++  Neutron is an NPU from NXP targeting edge AI inference applications.
++  Initially supported on i.MX95 SoCs.
 +
-+int neutron_mbox_send_cmd(struct neutron_device *ndev, struct neutron_mbox_cmd *cmd)
-+{
-+	u32 status;
-+	int i;
++properties:
++  compatible:
++    enum:
++      - nxp,imx95-neutron
 +
-+	/* Make sure Neutron is ready to receive commands */
-+	status = readl_relaxed(NEUTRON_MBOX_FW_STATUS(ndev));
-+	if (status != NEUTRON_FW_STATUS_RESET)
-+		return -EBUSY;
++  reg:
++    items:
++      - description: Register space
++      - description: Instruction area of the TCM space
++      - description: Data area of the TCM space
 +
-+	for (i = 0; i < NEUTRON_MBOX_MAX_CMD_ARGS; i++)
-+		writel_relaxed(cmd->args[i], NEUTRON_MBOX_CMD_ARG(ndev, i));
-+	writel(cmd->id, NEUTRON_MBOX_CMD_ID(ndev));
++  reg-names:
++    items:
++      - const: regs
++      - const: itcm
++      - const: dtcm
 +
-+	return 0;
-+}
++  memory-region:
++    description:
++      Phandle referencing a "shared-dma-pool" to be used for Neutron
++      inference buffers, which need to be 1MB aligned.
 +
-+int neutron_mbox_reset_state(struct neutron_device *ndev)
-+{
-+	u32 status;
++      The memory region must be defined with alignment of 1MB and size
++      should be large enough to accommodate the targeted ML models. It
++      should be marked as reusable.
++    maxItems: 1
 +
-+	writel_relaxed(NEUTRON_CMD_RESET_STATE, NEUTRON_MBOX_CMD_ID(ndev));
++  interrupts:
++    maxItems: 1
 +
-+	return readl_poll_timeout(NEUTRON_MBOX_FW_STATUS(ndev), status,
-+				  status == NEUTRON_FW_STATUS_RESET,
-+				  100, 100 * USEC_PER_MSEC);
-+}
++  clocks:
++    items:
++      - description: Core clock
++      - description: APB bus clock
 +
-+void neutron_mbox_read_state(struct neutron_device *ndev, struct neutron_mbox_state *state)
-+{
-+	state->status = readl_relaxed(NEUTRON_MBOX_FW_STATUS(ndev));
-+	state->err_code = readl_relaxed(NEUTRON_MBOX_FW_ERRCODE(ndev));
-+}
-diff --git a/drivers/accel/neutron/neutron_mailbox.h b/drivers/accel/neutron/neutron_mailbox.h
-new file mode 100644
-index 000000000000..4fe40a2f6a0c
---- /dev/null
-+++ b/drivers/accel/neutron/neutron_mailbox.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright 2023, 2025-2026 NXP */
++  clock-names:
++    items:
++      - const: core
++      - const: apb
 +
-+#ifndef __NEUTRON_MAILBOX_H__
-+#define __NEUTRON_MAILBOX_H__
++  iommus:
++    maxItems: 1
 +
-+#include <linux/types.h>
++  power-domains:
++    maxItems: 1
 +
-+struct neutron_device;
++required:
++  - compatible
++  - reg
++  - reg-names
++  - memory-region
++  - interrupts
++  - clocks
++  - clock-names
 +
-+/* Device (firmware) status magic values */
-+enum neutron_mbox_fwstat {
-+	NEUTRON_FW_STATUS_RESET		= 0,
-+	NEUTRON_FW_STATUS_ACK		= 0xA3,
-+	NEUTRON_FW_STATUS_DONE		= 0xAD0,
-+};
++additionalProperties: false
 +
-+/* Firmware command opcodes */
-+enum neutron_mbox_cmdid {
-+	NEUTRON_CMD_INFERENCE		= 0x269,
-+	NEUTRON_CMD_RESET_STATE		= 0x23637,
-+};
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
 +
-+#define NEUTRON_MBOX_MAX_CMD_ARGS	4
++    bus {
++      #address-cells = <2>;
++      #size-cells = <2>;
 +
-+/* Firmware command */
-+struct neutron_mbox_cmd {
-+	enum neutron_mbox_cmdid id;
-+	u32 args[NEUTRON_MBOX_MAX_CMD_ARGS];
-+};
-+
-+/* Device state */
-+struct neutron_mbox_state {
-+	enum neutron_mbox_fwstat status;
-+	u32 err_code;
-+};
-+
-+int neutron_mbox_send_cmd(struct neutron_device *ndev, struct neutron_mbox_cmd *cmd);
-+void neutron_mbox_read_state(struct neutron_device *ndev, struct neutron_mbox_state *state);
-+int neutron_mbox_reset_state(struct neutron_device *ndev);
-+
-+#endif /* __NEUTRON_MAILBOX_H__ */
++      npu@4ab00000 {
++        compatible = "nxp,imx95-neutron";
++        reg = <0x0 0x4ab00000 0x0 0x00000400>,
++              <0x0 0x4AB10000 0x0 0x00010000>,
++              <0x0 0x4AB08000 0x0 0x00008000>;
++        reg-names = "regs", "itcm", "dtcm";
++        memory-region = <&neutron_pool>;
++        interrupts = <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&scmi_clk 68>, <&scmi_clk 67>;
++        clock-names = "core", "apb";
++        power-domains = <&scmi_devpd 20>;
++      };
++    };
++...
 
 -- 
 2.34.1
