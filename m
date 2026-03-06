@@ -1,230 +1,204 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013054.outbound.protection.outlook.com [52.101.72.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094A536A034
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 16:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772814287; cv=none; b=o+kuCoDedEHQVmZQd6F80EUGOl9OFQDY6BU17U5qBsSnFHLwAV5kKnreIVXWiI2sC8h/WJYmxTZGMA/gQ88ZziToLxNII4PRUFrT4C1Rs8ST4WOYA0lLiTINdhYSeq57HeqCEWtvi2A4kIREjEcns1tkfn2zMzxChWaX5obUFus=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772814287; c=relaxed/simple;
-	bh=mVUOZgbOS6DXJitOQxj/krcy0RsEcW4DOajHXSahOI4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZP9NV+4uD3dAers6rn49Hf26ZUB06pZsGrMedmGrglpIora22YyXU5NcQ8tN38NAkpcgkqSJsufxoQCHl8H0eL4A+Nmoa5PJGf/Db0KShMrj7tUu5526MJcSITEMfdzHap1g8uggII7/jpcy/bsvbdDk0J7pItRfasul3eFIFP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=oS8FfrAG; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CECE37883C
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 16:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772814885; cv=fail; b=sjCGUmFiwMg+hzeVnJNf/g864dZmTOLos/j8uOK8wz/mU+y154+KFGHBn/MNEMVSo/WgUOzz5vQjP9Tgn7ivgglFM1MNtP7YW6MBHhHEXqfG5u6mUh2T5ZfM+GP7oltAAUfjOXs9k++ESNZQHGuX1lnMcEzu5Ea+Vc5iJzGBsko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772814885; c=relaxed/simple;
+	bh=GFlGFFoOnw94WuX4liWMoKdgO6VHpBlSlgkvZsasFN4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Zw0qZd9BoYh2GDI2/dmzeYjN89es7UFW1u/AachiXjUMO5oWRDnpKLuULPne6pPWNTgeGpek3Awz12rkR1OZcW96NsY4WI6b6d+jjhjwPwDa9C22C31NLyBnAJICcXE3s18mq3O7CzGDM97yPOb+nFsX1VZVMH+YacHVAsy2kzs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oBW4/aAm; arc=fail smtp.client-ip=52.101.72.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="oS8FfrAG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1772814284;
-	bh=mVUOZgbOS6DXJitOQxj/krcy0RsEcW4DOajHXSahOI4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oS8FfrAG3CtxyX5R8gOSkNaq42QIwQgNT1EOA8DQ4gmIi0draP1YVLYybBuE711i2
-	 gARIKjTE/OdfbTlyVWcobOFYLhAIwWNMzOY/Un1+K8fFynaIxqmWQV4yDaNwzvhZ8d
-	 cJsLJAT+OkxIRWO/5FjVhD8dJunjx1lyZbL/SRLImRqRKtS5u1i8xMyfb8gWcxER8u
-	 oGA+g46pZra/RTSCw9QSELKAt56yb5UCTQ3a9iVJ26D8MldGikauTcMld4lrH1tq2b
-	 ddtzdVOtj1sE9zHOokumlZC6zrVUBvp6RD3XfEzPhGJEguUiQbVO1VzbBKUFod+RXT
-	 dIfjpF1Lsy1HA==
-Received: from [IPV6:2a01:e0a:212:79f0:be92:a52a:153f:7a60] (unknown [IPv6:2a01:e0a:212:79f0:be92:a52a:153f:7a60])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aferraris)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DFF8117E0EAC;
-	Fri,  6 Mar 2026 17:24:43 +0100 (CET)
-Message-ID: <736aabca-e39b-4cef-b914-a894e0867bba@collabora.com>
-Date: Fri, 6 Mar 2026 17:24:43 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oBW4/aAm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A3qeUZOhicAqzUvPsZmdPnnOItkCpVHpcui39ekjbFpl9LiUU9nLG8t83nBqZR+3Am1ynQvFGVnhEUo86YUdl+NxDpZqua9Uv5FyQeN7fFHqxnvFoVpUvkZW/4+8gP8URAd+kFb1DVqlH55WRKN31oYc9yPY/OliAte+X0YD9D+S89sgtiOLEH0EcjhxFbvE9Bw9TBhPscp8O28Ft8MSVUCwggmLNZVZ/Wy4P/75pfgQXrz4UeBgQ2VAbcbBqXK2I7188dKyGIsh4evZCW/u8wmf5PhJxBMOMUdMBXuc/V+myg8m9SiYr55YhdAVzv30fiJq+2taXiu2t4N8uBuVGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ive13fU4bsh991OKdBdKDqis1gMSDNDM9HiX6C9CNdk=;
+ b=D4pYRfFpTJNXebrDg49I6NIl9A8VZDzhwZwbKm4UEK5ltor6l4ZIjo2/oOQk7HXGLKOhTA7F4AGY3IkxpbuFGcU38/G26LmiQ2aOiPtFc6l65DOiouEQjeXymXLnQJPgxLHCVNx7gGS5F/kIxBmGGW6YAvOsPs+W5roCoBzhpdoHAq+1wBTxMx8Bz7PzDAB6VMp3Ve3mQtQu/UR/FMoc/TqkePytdxL6/tp+06rlVHAxwOZWEGFavNYgTUaSeyoTAu24mIOscqTl3Yt9x7zDrBW0SDDo2eM8mAEORVcuwon810js4vsK/Jt2AsjN8lO57tbZMybI1trJgzRZtbHgHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ive13fU4bsh991OKdBdKDqis1gMSDNDM9HiX6C9CNdk=;
+ b=oBW4/aAmFemRbkjQ9pIWdQTI2aGc5WcYfKnwb79xoe/Om9pWJWdaD4HFqVE4wtfEoRoJXbYPMVeM3otDeQkKrCp9OEJ/0i5ur1Gml+nF5Rs/L5lMC16J2p1CAb/XXXZOLXoSWskpuw0Q4oEokRpOnNJ41GcLFvkdagmw/YLMZnJt3jB9O02oBv/WTJFY77vkjfJSrck3bGV1xDckZwFWWtGvoxQ+fzTYWYYbjSLMzg+1/I183Sc0wTelFFDO630Z6/Y2225qT3wCl5cgx0ucVRz5H1OnoiWlqRu8AbINq6k3UIfhQ7gateo5DXwFxOK+EB/KSg+AK9k2kd3nEjUFoQ==
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com (2603:10a6:20b:44b::7)
+ by AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
+ 2026 16:34:40 +0000
+Received: from AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::ba87:1cd1:53d9:fcd7]) by AS8PR04MB9176.eurprd04.prod.outlook.com
+ ([fe80::ba87:1cd1:53d9:fcd7%6]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
+ 16:34:40 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, "arnaud.pouliquen@foss.st.com"
+	<arnaud.pouliquen@foss.st.com>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
+ Fan <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v9 4/5] gpio: rpmsg: add support for NXP legacy firmware
+ protocol
+Thread-Topic: [PATCH v9 4/5] gpio: rpmsg: add support for NXP legacy firmware
+ protocol
+Thread-Index: AQHcrYch+02YpNJ5iUqOCF/Z++jYfQ==
+Date: Fri, 6 Mar 2026 16:34:40 +0000
+Message-ID:
+ <AS8PR04MB91764DFDA8D3BEF64F583969897AA@AS8PR04MB9176.eurprd04.prod.outlook.com>
+References: <20260304211808.1437846-1-shenwei.wang@nxp.com>
+ <20260304211808.1437846-5-shenwei.wang@nxp.com>
+ <676cee35-b5ba-4a3c-a6d4-b9e06e0886dc@lunn.ch>
+In-Reply-To: <676cee35-b5ba-4a3c-a6d4-b9e06e0886dc@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9176:EE_|AM7PR04MB7046:EE_
+x-ms-office365-filtering-correlation-id: 6aeec7ba-facf-4584-cdd0-08de7b9e43cf
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|19092799006|7416014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ oi7Mp/fWHwK1EF1q1XAvlJSCP694FdJCoj8ARGWm8gjzIid78A9j2aZdryRR0G2pvJXnMOo9xh6eZocm+W4c7+C1H6n6iG6JB54px3wXE0p6Dj+t2SUex7WgSU2K7f9gV6FJbiVCEsILYgedgBeVNeAm3AJwZy1oNzILnWWok3PCUri9v2oMd6Q/0nHYqP7QQU1fp49GIm6AQQxiEHCUQ4yiuEX89vUfMs0KcN2b5Q7kAcibidz5TzRL3UafJy0I2/eBWYwcXpY/9qP4sRn58iyzSJLxZTYEnp1tyBwiJ1B7Rb6frk68e0pE/ORA4aOmFe9WX+ElJRaH3lKRYCMX5vX+NdmgMquT887wDD1S1n36EmGsjVHOwMjseiB7JlSSYtqHnNYicNRfuKqjLQK4w68ga2oXnTvSPbV86y5+OO9vcb/GKKsR+02igoDGZX0nxV4wAAQfvICuC8yXi9i+G1qLoaML8gqzLaBZxJfL4KzFwT6ToBNhl1U4dIhSXkyQFqNXwrDtCoODSIUm4yeGS0dXQ2K7GODCCQYV9J/eu8GnKBkQC/yFm35fbQkxqZyW398P4ixjTEzyn4db9WiBJaprWHx1Hjvo/XLmZyNOULKMxnBjNRHJmMZ9lnBhrlGtjC8HrMimvqNicf/4IKFmCj3kK0ZNJ5GDer6p1FkhTYposEH6HuvOxib2y3vg8LYgE8Ahi3h/JRgLwm/9K5x/wWc+v8jcx5w7hbVm+WqffHbl1l32oZq24eVR6evejVjWygpVPlrwWu3tP1yqZsldp4ZlMp/MQ5w/ef22xS+JP2s=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9176.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(7416014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?xsGgMq3Bho6TzS0MXX51VLWL6qqWnOPfsqwu7pfznyYN31T3fMq7I86+Ug+H?=
+ =?us-ascii?Q?dQrhDZ3vJnDQQnXV9HcBu2za6f8L3Z2DF1q3MxH+WI0I2hPZ4gNFnZnglI1j?=
+ =?us-ascii?Q?y6Xyp744uxZBfQyZwBHNS+2TphKvdmJUXzHj8et0b5qwoanjvi36WUcuYzPc?=
+ =?us-ascii?Q?8QVC6cpc6k/dDXyg5415QNhf9B1OdBoHYydKgCq00cKQjJ1AvpsE43JA1WZ/?=
+ =?us-ascii?Q?o9Y2Ne2BWE6NVD3eZFpVBQKwOCc0HsmwmNZIS9EkqCPm8IuOX2vhmJEvI/KQ?=
+ =?us-ascii?Q?S/9N/ELAPBHsmn92rvNJTKY+GsPE1fpYq2Dim9ent58vdFK9XLrwLemnsQZT?=
+ =?us-ascii?Q?uHlUC1r4fB41QPo57EoZBcL0WI2Vtzozi1InhwACYNS4rnehrgn8UFcxWI2F?=
+ =?us-ascii?Q?vu75zht2iTbwM+a7wGWDXs5MVVBCY5a7uSwlD1Av7ReicW9Ao4JgyRfX+bWU?=
+ =?us-ascii?Q?2DDMDRyfaarVHTPd//WA45Az6lJciLu5Ryxw1sayInYhV9VN20GsTx6T6t0h?=
+ =?us-ascii?Q?qF1cB+aC3+XyYjbdG6wCFEMdApuS24Asy0dz8sINVrq5Bnc7bpfWTmn8hnOd?=
+ =?us-ascii?Q?1DYH31v1177yOSrhOCDqxyjihB9AThnInyCzl8SvHLimxbXl0DBCMyrksamZ?=
+ =?us-ascii?Q?xUMJSP68SAX8aaT8s6mitembxcr8UAca7g7PkbI6BnvTDrZ263N3KLI9+JOF?=
+ =?us-ascii?Q?YtSRokuIVbRWZxzfYW5tOh3gdN8nvCeZIKhYkCM6moTVR/yKoHjcEb4o4zI7?=
+ =?us-ascii?Q?OeKPD7aFsRYSWiwYqKmAWA3E3wXvxTB2+U+htPoQQVbE8ljpbltDxvpabo/m?=
+ =?us-ascii?Q?MXZCYgbQulbbtC3fAeUQMYDANqkiSRPZU/JKeHXGADsgJ46RjNdX3/2P6MF5?=
+ =?us-ascii?Q?8vEMkqh8xkbndCVTLyYxH2hYLkRGoLguhTHstY9qPRrNxiSPTESRvYAwCelk?=
+ =?us-ascii?Q?ckjEiCMuCOyNyEI82ACpGnZKtOyXTkBBoVsXFPqkzt4iy2dV/fngkt0mnUJb?=
+ =?us-ascii?Q?2xWfh7WUikY2xTbOEVMUf9Jfh3Z4r05akWWmqYp+SIUlUSohjccmkFP2hIkH?=
+ =?us-ascii?Q?YzFqUwEkB+UqMIy34eFFOsmHlL+9rGBVV3w1w8vfq1Dn6ghdMTlZGtKzXr2h?=
+ =?us-ascii?Q?KEtWddFhviJ04ZZ5WoSGaB0l878FSajb9B4r4rEuNJpIs0sm0U3Cxk9/Qe69?=
+ =?us-ascii?Q?NLhhz6bILkHFAD/hVM2YHJxs1SU4Uz4ENvBYdDCkZagcvTcG1+i2IBWDqHUn?=
+ =?us-ascii?Q?uKvU5OpKTKD7cftPJ5jQzVxaC3P3YTXjcP26VK2QirQ2qvNTfwTP5o6BaSWM?=
+ =?us-ascii?Q?tcuM3VOyzbsO1Ds3/hbDh9qlY2VATfjdckfJVN1bJov9n5EqtbCknDcTWQoV?=
+ =?us-ascii?Q?kGf31CEM6aInvgZdChKdHJjhXNIJxRYPDIyFR3/Zy5fsoXkTybrfB3etaMHf?=
+ =?us-ascii?Q?VS+IUb0/AdmnNQ/QbgYB3Vjz7SU3MU3dn+qPefweCFOoSzQUVv+VE6bHGHL1?=
+ =?us-ascii?Q?JTJiwag5BpDKRJDUZ5W+lp19CC3fMYgWvRbC/PYXv87T4PBoIjJAeNOp8DUc?=
+ =?us-ascii?Q?9mWABG3p3tanH2an1WpQoTducmwmxd7LhEU0SStwUQ6GUTRfaVjr60GADa2q?=
+ =?us-ascii?Q?PAtqCg/lNodfP3dGmo7kpXE3MJyYI3oSKp0h4yUdsYpEnYqv3wc0vCYiqJut?=
+ =?us-ascii?Q?A3gn7d/55e5LlHtc+K8K/y0AqVvnmueIJ8741JQXEi8rG+qB?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "tcpm: allow looking for role_sw device in the
- main node"
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: badhri@google.com, heikki.krogerus@linux.intel.com,
- gregkh@linuxfoundation.org, dsimic@manjaro.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-References: <20260224110139.3812757-1-xu.yang_2@nxp.com>
- <30bc5aeb-382b-49e0-824a-303230110313@collabora.com>
- <im3nnajzv2hdu3kv2hknxi3jaz3oam5pujdoapva4hs5rzguky@t45ryche6n5k>
- <073cbeb3-04a8-4b26-a7b6-ef0b7654c34c@collabora.com>
- <xcfp6d2ma2j2xnsmifpvufofovqixwije7ld6332hg3zeeyxip@mocrjvsmjlqh>
- <cb73e1ac-649e-45cb-be5e-3fdd73dce7a0@collabora.com>
- <46zvnvkhnoa5w27o72tkex2rw6ha3fuisyeomhmsl5s5453x7b@fib4tezyywke>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Content-Language: en-US, fr
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- L9jD4jU=
-In-Reply-To: <46zvnvkhnoa5w27o72tkex2rw6ha3fuisyeomhmsl5s5453x7b@fib4tezyywke>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9176.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aeec7ba-facf-4584-cdd0-08de7b9e43cf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2026 16:34:40.5608
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: GnPFxSXuTWA4/hIxBU853mrSHybyxcWQG8hDlFNcaCrX+Jn2OStamHqa9KY7aNBuQhuoWOM5wsW9sycfxMdMhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7046
 
-Hi Xu,
 
-Le 06/03/2026 à 10:52, Xu Yang a écrit :
-> Hi Arnaud,
-> 
-> On Thu, Mar 05, 2026 at 05:36:08PM +0100, Arnaud Ferraris wrote:
->> Hi Xu,
->>
->> Le 05/03/2026 à 10:40, Xu Yang a écrit :
->>> On Fri, Feb 27, 2026 at 04:45:30PM +0100, Arnaud Ferraris wrote:
->>>> Hi Xu,
->>>>
->>>> Le 25/02/2026 à 03:57, Xu Yang a écrit :
->>>>> Hi Arnaud,
->>>>>
->>>>> On Tue, Feb 24, 2026 at 12:33:33PM +0100, Arnaud Ferraris wrote:
->>>>>> Hi,
->>>>>>
->>>>>> Le 24/02/2026 à 12:01, Xu Yang a écrit :
->>>>>>> This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
->>>>>>
->>>>>> I believe a plain revert isn't the right solution here, as we'll get to the
->>>>>> same point as we were before 1366cd228b0c, where some devices stopped
->>>>>> working properly with newer kernels.
->>>>>
->>>>> I don't think 1366cd228b0c fix the real root problem because the description
->>>>> should be wrong in the commit message. If -EPROBE_DEFER is returned by
->>>>> fwnode_usb_role_switch_get(), the ports node should be in connector node
->>>>> instead of tcpc node. However, you get the error when ports in tcpc node.
->>>>>
->>>>> Could you double check the issue, so we can find a proper solution and avoid
->>>>> the further regression?
->>>>
->>>> Sure, I'll come up with more details asap, either tomorrow or early next
->>>> week.
->>>
->>> Do you have any updates about this?
->>
->> I do, sorry it took so long...
->>
->> So fwnode_usb_role_switch_get() does indeed return -EPROBE_DEFER, then
->> keeps doing so on later attempts if I revert my patch. However,
->> usb_role_switch_get() succeeds on first try.
->>
->> Please note that:
->> 1. I don't understand much (if any) of the Linux typec stack, and only
->>     noticed 2d8713f807 broke my device, hence my attempted fix
->> 2. said device is the PinePhone Pro, using an out-of-tree dts (and many
->>     drivers) from https://codeberg.org/megi/linux
->>
->> The proper solution likely lies somewhere in the "get proper drivers
->> and upstream dts for this device" land, although I definitely can't
->> commit to this.
->>
->> I think saving the fwnode_usb_role_switch_get() return value and
->> restoring it if usb_role_switch_get() fails would be a decent
->> workaround, although I'm definitely open to suggestions.
->>
->> Feel free to let me know if there's any other test I could run, I'll do
->> my best at replying promptly.
-> 
-> Thanks for your update!
-> 
-> After review the dts file, I finally find you meet the issue with:
-> 
-> 	usb-role-switch = <&typec_extcon_bridge>;
-> 
-> instead of using below device graph port node.
-> 
-> 	fusb0: typec-portc@22 {
-> 		compatible = "fcs,fusb302";
-> 		...
-> 
-> 		port {
-> 			remote-endpoint = <&typec_extcon_bridge>;
-> 		};
-> 
-> 		connector {
-> 			...
-> 		};
-> 	};
-> 
-> The commit 1366cd228b0 message "If ports are defined in the tcpc main node"
-> has confused me at the beginning.
 
-Right, that's where my lack of understanding played its part, sorry for 
-the confusion...
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Friday, March 6, 2026 8:24 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.o=
+rg>;
+> Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzyszto=
+f
+> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
+> Andersson <andersson@kernel.org>; Mathieu Poirier
+> <mathieu.poirier@linaro.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
+> <s.hauer@pengutronix.de>; arnaud.pouliquen@foss.st.com; Shuah Khan
+> <skhan@linuxfoundation.org>; linux-gpio@vger.kernel.org; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix Kernel Tea=
+m
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Peng Fan
+> <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
+> remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH v9 4/5] gpio: rpmsg: add support for NXP legacy
+> firmware protocol
+> > +static struct rpmsg_gpio_fixed_up imx_fixed_up_data =3D {
+> > +     .recv_fixed_up =3D rpmsg_gpio_imx_recv_fixed_up,
+> > +     .send_fixed_up =3D rpmsg_gpio_imx_send_fixed_up, };
+> > +
+> >  static int rpmsg_gpio_send_message(struct rpmsg_gpio_port *port,
+> >                                  struct rpmsg_gpio_packet *msg,
+> >                                  bool sync) @@ -572,6 +711,10 @@
+> > static const struct of_device_id rpmsg_gpio_dt_ids[] =3D {
+> >
+> >  static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] =3D {
+> >       { .name =3D "rpmsg-io" },
+> > +     {
+> > +             .name   =3D "rpmsg-io-channel",
+> > +             .driver_data =3D (kernel_ulong_t)(uintptr_t)&imx_fixed_up=
+_data
+> > +     },
+>=20
+> Its not clear to me how this gets applied. Don't you need a different com=
+patible?
+> fsl,rpmsg-gpio-legacy or something?
+>=20
 
-> 
-> Anyway, it should be another potential issue. Can you test whether below
-> patch fix your issue?
-> 
-> diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-> index b8e28ceca51e..edec139b68b5 100644
-> --- a/drivers/usb/roles/class.c
-> +++ b/drivers/usb/roles/class.c
-> @@ -139,9 +139,14 @@ static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const cha
->   static struct usb_role_switch *
->   usb_role_switch_is_parent(struct fwnode_handle *fwnode)
->   {
-> -       struct fwnode_handle *parent = fwnode_get_parent(fwnode);
-> +       struct fwnode_handle *parent;
->          struct device *dev;
-> 
-> +       if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
-> +               return NULL;
-> +
-> +       parent = fwnode_get_parent(fwnode);
-> +
->          if (!fwnode_property_present(parent, "usb-role-switch")) {
->                  fwnode_handle_put(parent);
->                  return NULL;
+This is not a compatible. It is the RPMSG channel name advertised by the re=
+mote processor.=20
+The generic implementation uses "rpmsg-io" as the channel name, and "rpmsg-=
+io-channel" is=20
+used by NXP's existing firmware.
 
-I can confirm that reverting 1366cd228b0 and applying the above works on 
-this device.
+> I would also put it behind a CONFIG_ option, and in a different module. N=
+obody
+> needs this code other than your legacy products. You don't need the bloat=
+ for
+> your new devices and other vendors don't need it.
+>=20
+
+Other vendors may add fixed up handlers in the same way to support their ex=
+isting products.
 
 Thanks,
-Arnaud
+Shenwei
 
-> 
-> Thanks,
-> Xu Yang
-
+>     Andrew
