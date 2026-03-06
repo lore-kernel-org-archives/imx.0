@@ -1,188 +1,179 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010066.outbound.protection.outlook.com [52.101.84.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A8936BCFE
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 15:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772812531; cv=fail; b=PxM/bcblU05P7OWEqRWCOp/e4b0Nk4/35dUEzSLR+MkhaqgpASvMZEHv+RS3lA/E26g/kGQeHEZcJSV32lnGtQjbmIX2CFh2BR5oNVsaLBb0PR087ESmKQX7SdIu/JUO2LeUelr9lGA/G3sVgvH/DynHeuSIHF8/CeD/ZYFVxME=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772812531; c=relaxed/simple;
-	bh=IpOcjcyxbF50m4nwVr4t6EMHFWXFYsNgxBXjtBJqFw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f8MzkOjwCSTe8lTVcZA3e7UUGnwA793f32Vhabj/vZhCLJHFkkqxzNT6bggykZadXtQS5cH2FsSmYBfJ6Ftxr9JSEFIVkbYtigHxgiqzLNKXVKkgGiR/LH29qs5fkmVVARgauI5h2eJQY58cTqZd7PRd90LlU+Jgrch4X/6vSwE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hYJvcoyH; arc=fail smtp.client-ip=52.101.84.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C2B3EB7F8
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 15:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772812548; cv=none; b=tjN+KcmcW0Hg47D9UOikJKh0bXYoCuExT4DL7TNoZRclt8p1grou+5vklKRLL8KtcZTDw2dBl7FwFU62947n/a63kbUhLblqcrzp7w3nf4QmwR7theaRWwQ3za6vtCxCJ9K7fn/anE/1uwG6ftjo7HrJrHiOBMru7wbzaN803VY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772812548; c=relaxed/simple;
+	bh=lFgjW46ILrKHSoXB9q3w7P43GTXK8kj8mXndX9HX1/k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BLuZq9G+wimRJj71tLTKlSP8cytsQf0zVRGO2wXF2NFXn1g2jY9+g51myUaM0j98mnLLQVSYiROq0JZ+1/kmsplo+BQD36Yd5f0dGIw8qxeRsMZohShMqKQR4aHVnk9cTNCFa78IrSomeJLiVEIzMZO6Af0thkrRd/Rb8FGOlnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=niQBQI6h; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hYJvcoyH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=COQNWWfRVaL0oJW7OhI2DpQS+K5UKF3Y2cnvuPRiv/r/6gs0l3U3udW1iLvZ1h8xMaDwAXYszvpQli3zM5UVbxknTMia3mtOCq+MOUOBKAhE0GMjyecKAXYerd47m/K8kHVC3Y6Oj7ojJ6VWOgf0EFqo49iJaMo93aVJa0RNFXZtIcbsMyZGs4aB1RFH/FTKh1QFqrLHr/9dD/jLAj3+CtlUM/LmQcXQHUaU8/MzsJG0NN7H0soOxJLI0+b6Q4hsC5WYgachUbIzZBNpaiVrAcZqCGvvGHfWQOwfA2huKxFVJU/fldy/kAbZYCi/0Q88sWOfz3lm+QjPs3lMV+xFJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZDC1bvv766jK85yPMeIbrjQkPNPu9yUqHXpCfrBNPIc=;
- b=tQh1VYmOXwZ0VjQrmZkPX6EjdQ6HOoGuN7rTUmjUU+CPHenXXtFDL9Pa+Dd27B7JFlzaPruTSiq+WzP2oMtvZ2x0wWgvc3dcDoNfiEpVSNQ6pg/EQzKexu8XS5hd8kd7DTT7+8yfpKmO72L+YBdAxAMIo76WIlRO6LeLZEs4mM968pGFLspViF8mHjZOwhtJjpQUCAVYa0NXTstZczrtILBpEdon7TKPhJt/VhE8dyC3w0+aya/lGm0+PdS03YCsw8q1lJERP+lzYXyr2GKSysAzqLCdWl8lklnUGALlSR1jMCbEnc8+7GKxr79hwXrcOR/K7Rd8COwCQKMmjfF/Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZDC1bvv766jK85yPMeIbrjQkPNPu9yUqHXpCfrBNPIc=;
- b=hYJvcoyHwYnjRD/cEfGTKF+OdWgKTKkeEufM1upoxztObSuDW4yl+3cvkXuIkMmILJXiqPnrMpjBqBaPm5bLPISG28vYlHTYKa+PS+jQzb9vQ39ysMsxBWBUMKyS4nKbhVXH1SZ5tficGt3CqxGThQnhsLD9jZGHWd+3SM4473Fe3KFTpkDyZb7fvMiPf+A886lhtxA4p0pg63jzeBzM9U91FJIxNjTS5TDcSHSt6nqo/nnUnfPlY9m7Vc0U4gHRp3dQhhRnluoXWL9a9EA0E6j1kthXUE5IBwO2WKDJ2l+5mrLJ8p4XtyMkpYL0HjSPDaiOqc5T4YF6yJ7P36RVvQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DU4PR04MB10720.eurprd04.prod.outlook.com (2603:10a6:10:58c::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
- 2026 15:55:27 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Fri, 6 Mar 2026
- 15:55:27 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ian Ray <ian.ray@gehealthcare.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 0/5] ARM: dts: imx: {bx50v3,b850v3}: Update device trees
-Date: Fri,  6 Mar 2026 10:55:07 -0500
-Message-ID: <177281203001.262555.3373988433657530450.b4-ty@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260217135521.65742-1-ian.ray@gehealthcare.com>
-References: <20260217135521.65742-1-ian.ray@gehealthcare.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0192.namprd05.prod.outlook.com
- (2603:10b6:a03:330::17) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="niQBQI6h"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2be1ab1fa7dso506705eec.0
+        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 07:55:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772812545; x=1773417345; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=flU13GMtw/+0UhfCUKIM3vLWYjN35HhW1mCsxDikv80=;
+        b=niQBQI6hIHEvCNRxGg60xbucCv247rVTz9wPXRi7Ohb7+BH+8SDJ4fkh5vqJ4tJoBl
+         gnzC5t30UD1/vS38h4kZu0XUTMgMcuVQEJIRQ1c0kZYrKFCaKGNt+xnd415kjaFCxVhg
+         u2jaL2CntFFLEbhlzsQgsGOvB7aZHEP5Aj0Ioe+rGsiT73h/m+6FfqkBDhnXU1hM7xXc
+         yObVdLRDdam292vblbipi/muegshg9E4d0+LrmGUEdfE58oHXH7UabouzMdz7cA1UGeV
+         ZPF98jdFCRhxNsbvIW51j9MzV38l9I9v9d3hz+zQHX84z3YxiWY6uZlnkmGSbwRtkPJU
+         tE0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772812545; x=1773417345;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=flU13GMtw/+0UhfCUKIM3vLWYjN35HhW1mCsxDikv80=;
+        b=Me8t9BP/u12/wYRo51NXn+CmmhvSP+WEduBfeuMBSRuGqoNNt+lrZALrQaphaksyKk
+         82OnasqNxezMcFQ7avtRE2drtYvHc9CgvpvFSLV/m5lRNLh5Dh8aR4fFX9pfQ5tYEnQm
+         M8kLVM7WWNH0TneIRluVGDbjKFlCt/UWW4E3KoLEi2Bp7XwALB4Pw6s/r9qfo9v/sTZ5
+         z0hYz3G55F3M9uxHk2TvLd+6CDW35vdFiCcc8+kpFLE07HL6XjD/pbONGt4PbMBlL8gm
+         jvvP6+cVb0/QlPbonWdklytmZx3xYXkt7MkM0jD1kaS86P4+JPjtoIs0TxZJ0jiYYuXE
+         9c6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW+rcX4PZpX1E4EDrRB7ThQB3ZjRMWPeu5dM9VGBT6RivV17wdO8zN+yawyMX2UgQB9yt0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwOTG00ZuUIVMsu2syM4rg7nFzubjfU6l3PFnLQwHBlIqWB9j6l
+	/G95P8QsntmACsZnVJAucjbM1laWFDDaFo2tBYlxaq923uARPyrPoafd
+X-Gm-Gg: ATEYQzw3Lwqi6U3mh9jPNPdhHtGCJNT+MRGwBMj+j/RUa68Ptb1wVtNkm93F3/qbosH
+	dwro1w8AGz74HB5hYDwuZ5A7P8nBKP7T/ii0s37OgUei5s+M1KEmkdoaa8Lo6kUjYKvrVIZts05
+	gmCPdHB4DZKJtZa63y0hUzpDA6MQVg48dTndIF6Dv1lF3ch7kOdNMteleYeW2yJRrBiZ6dVtWU+
+	jLQe0pFLPZokNkxjwxsGdsetfCemir4AhyuX2mnQ83f1O4mLBJP7IzYteJxHU/DH/ktaoV6I6Vy
+	WwYdGcf3EGzBzd/zn4NQaDY28QYKu75O8xY5bJV9oMSsDkPN9EwfSQBgeaXDBNnYG9/p2+6whpq
+	utJ4VJ+Bb3J+hLh3cri2pVoWSJLtJQLmCCxO0rJLAruih16bpBpXxSdEnX4903d74cP2qjYp9l4
+	H/LN1V31sR9StzgOX2uDQstI+OynAl8bBTN8ENmHITunZOLQ6No3/UjgyP0PDY+NPpPWlZuhe1Y
+	5xj7HhGF4A=
+X-Received: by 2002:a05:7301:128d:b0:2be:c4a:d31b with SMTP id 5a478bee46e88-2be4e02c09dmr1176487eec.18.1772812544584;
+        Fri, 06 Mar 2026 07:55:44 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f948411sm1369071eec.21.2026.03.06.07.55.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2026 07:55:43 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <0aaa530c-ff61-4e49-81ca-fd3c98a29f58@roeck-us.net>
+Date: Fri, 6 Mar 2026 07:55:42 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU4PR04MB10720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 273ff0ae-59f4-434a-38ae-08de7b98c937
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	lEwFNpY2Ja5v4mznHDJXc/Yc9XDPYIgJQi1lhPXig+blPYGp8+YBQJ5O8rfa8UW1EuvrHZg9v0oCwcuae2qHaeEQojhVGbMCZ42C+EE2DoHTW/Ukq07OE3RCKjxdXMlmqCtPj76D3R2NYE8ZjcDKsu567HlFC36iRgLYAYg7l3XVwN39gBkOddCq7rMPOuzWcLKK6u2AKXKm+t86YJJMSKU3XiX2f6/BNmh+vfyFYWQMpevJKOCLetmKRxybtPsQOIHG/351o0MLea84wD2XW72EaTHoLYyY71ds2EesyewX5VDaym0Lfa3dlgMHuvnGwzooaX305tYwTeYQp2/PuxGcfu/bN18q4MijUYAYEeNJGibvTMV/3EcspQguCHN1FhUttdg83sw7crzni9Y9XLyf45aHDsBB2ftUQxATSIa26ZO++IF9tQRdGXfU4KLhmeh02gD22v7Y9AWXvQB8UkVAGRJTHpn5+xI46T4rG0HEIdQJLVMyEAW6prLWZpVmUgdPkcpollcxXRXz66uvFtibnZBwd1ukwISts3EzGDyX/pPvwl9Nc6ujW4NrtpTkcG6KaMJ/3lgDxUeno15L0PeaZkrdtbBb+hZfJF6RgotKxnPClDKNojHpE8O6yfaXjy9/9q3DNhv/7vd9ITK4Odv/wr3KsrQbBParjhV/wwIZLc94FBhD25YOpa0ig3YnnSl9NpHoeN1i27MP6CVY3QEG0+ELlr9xSCs/3EMwwC8rRuUw6PLKrQmRINafmj7WHan9JgqbgpCgNzlsh58LXNr6e564816zmvUdqHww7oA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dlMyZ3hHeWQ4K3ZucCtZQ0FBRUJWYkpoL1QvZkh3ckpBbEhLd01Ub3BtUzFZ?=
- =?utf-8?B?WWE0cGpOdzR0U2ZPaXlURGR5NU5ORnRSOXhDU2tkMFZFWllENmRaNDdHeUFi?=
- =?utf-8?B?UU5sM0kydk1ER2RtMXFYMXBOekhnN3BITHgvZHZWeDluNXZJdTJDQVVBU2Jy?=
- =?utf-8?B?NENDVEhjY0ZsVnN2NXZOc2s0ajl1NnlyMVY2S2ZwVTNNVDJ5TllHUERueEc4?=
- =?utf-8?B?Q0ZDSlRVcEQ2YlhGZlRDRTl5RVMzSGFSZDlUL2xEWElObVRDQ1VRN3NhQ1Z0?=
- =?utf-8?B?Y0x1L25zenRmWkdjbWxVZW9Eemg1Vjk4bnpyM1BnSzM3MUFUZm4vZWJnRzBj?=
- =?utf-8?B?bVhhZjZFUHJFelpmYjNwT0NVem50TWFDWlJCYXllZ01DRXNxak44TVVkVjRW?=
- =?utf-8?B?bktZdHRlbTBjVDVTQmZBdEd3TWE5SitkbmV4UWlQMG5jaEFubm9rVnhsV2Js?=
- =?utf-8?B?VWN5Z1cydGpwakI3YWYyTlVWVThTRXpjU1poUHVaR3N0Wi9wWHBpcDljb2pO?=
- =?utf-8?B?aC8xRE1wK3JOblYrZU0vWUVNRHIyaHh1YUNqTWc1OFFNTEwxTG13Vzc5UGE3?=
- =?utf-8?B?bCtmWG4zL1BqRnpqUFcrUlB3ZlN1NndFeHpQRjZqRENzSmpmbXZoT0NvV1pl?=
- =?utf-8?B?bG1jcWExcVlUcXlFK2k2QmNkZGdHYk9ZUTdSbFliMjRVb0dDaTVQZzI4MXRX?=
- =?utf-8?B?S0wxY3JVK29yWHRSZkwwcjJTbzlRVUsyQkUwc29mQk9aS09NckpxWlA4VFJN?=
- =?utf-8?B?VnlpeXYxNUdZbnUzSHpHZWM4WXV4c0paWHVGVnkxREM4Qjh2UmdOTHIyRitv?=
- =?utf-8?B?a2hoQmk0aysvYzhkaTNiZitLVE5udlBUQmlMOUtJbzBlY0NiUU5NbzJXYXNh?=
- =?utf-8?B?NXJITkJqankwcjBpY29vckV2YUFFckhCU2xSU3B6M3k3UytzaHZyNU5BdW52?=
- =?utf-8?B?Ym56RW93S1Z3TXZBUklYdzFvY2hpaFFJWkltbThlTkg2TTdGYVJqYmJxejRx?=
- =?utf-8?B?cGVVUXh2K2RSamYvNzVKY0FNWlZjNUgydkJ3NlZlTU5sazNKT2c3SXV0SlUw?=
- =?utf-8?B?dld3QUVpUjBFWUJQWGVvdk00QXRVMFNaV2xZN01PVW50aDVyR0RWMS9UWEFP?=
- =?utf-8?B?MCtYc0RHNVcrT3kvb0JSbWxPUEc2NzhUbUU4eWFENlcySmVRTWI0UlNheEdv?=
- =?utf-8?B?dytTM1o3cTIvZU4rV3R5L3JrYnZncmhXeE13RFlIMlQ0M2hKdlgwSVordndE?=
- =?utf-8?B?YUhjT2tDYllBcGErZ0lqd016NjRlSy9JRXFzUjFkT1lEQjNCcmFFWXhQUmhV?=
- =?utf-8?B?RG1uT0pPL3poWHQxY29XTE9XSXpvR0tiRjFCNzNERkswdUpucG5jRGNvYjg3?=
- =?utf-8?B?WlZoSkpZQ3lmeXJkc293bkxJVlQ2bG5aWVRFbFFNazR5M2JtZzM0Ui80dito?=
- =?utf-8?B?aTZnekZqeGhHV3BhRVdiTkc5VWx6NG9NQXF5TkhvYlNRZitrdGkra0xpejRu?=
- =?utf-8?B?SUxsbFpiQXo3UllVKzIvS2lJSHhsMXZMSUhjaUhLUHZxQ3hmZ2NlOG8wZHZ4?=
- =?utf-8?B?MGlhTFlUb1QxamdTUXgvSmpFVlc5bllnbXh5RGdOa0FGM3JJZEhiVnZna2Iy?=
- =?utf-8?B?TG5lVjdtQVdMRGlrSS81VXdjd0E5c3ZuQlU5TDRQZG8zd3luajZPdy9XcDZU?=
- =?utf-8?B?Si9sUlZ6cGI2K1ExeWZzb2p2aU5xYkVKd3AwOWZ2c2tXM0crNFBSa1dWMFBF?=
- =?utf-8?B?RkNieFZkTGRvdHhFY0hqcVZJbTZHQ0FISWx6NThqQ211Uzdzc0xJYVB6bS9i?=
- =?utf-8?B?b2FkZkdkTlNhM0EzLzNuTWV6MDZXZ1FhdkFpZWNuaUx0NkcxblIzTVJLMFh5?=
- =?utf-8?B?OTUwcG15a1MwOWhqS2Q1bXA0TE1tMEV2RS82L2tENHNXQVQ1NGdEVGNCd0Z2?=
- =?utf-8?B?MHg5dXlRRXE4M2lQNUU5SzBIcTgxR0p6UHNUdVVuQ1FEMWhvWWJTaXA4eTF5?=
- =?utf-8?B?aXVaVmtrV01rM00zd1NBZXg5YXJZVUVabVBmWXNmcDY4ZHdNRTdUVWxRWWxH?=
- =?utf-8?B?M2hFZzhIeWtMclgwT3VyaWFhUTBuL0xqTVhZNUVKNVdhUDdjajJZZDRjMHhK?=
- =?utf-8?B?YVZlT0dBQkJPL25nYTJWMjFaMUI5R2dpN2svNlZXN240K2MycExGYlV1V2ND?=
- =?utf-8?B?NXlvVGdCcjN6UTF6SmwwU1IvaHB1WHkvcjJ4WXFMQUtJWTh0NEJ3R0NJMEQy?=
- =?utf-8?B?OXlmL1NZZjM3MWxiZThMNFh1bWZjUU5GNlIvWllqenUvSVc2NFVEWW8rOUh6?=
- =?utf-8?Q?4wfynPW8VmHRyVh7HS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 273ff0ae-59f4-434a-38ae-08de7b98c937
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 15:55:27.6897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oQdbtBohf/SuvCNjW9Q5SxoDg2rGStz82hA/8B1iBO3leEkTu3wC9/UR/+o/0jFPZzPDaNE6Gugx2T0muRMJ8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10720
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/1] hwmon: emc2305: Set max PWM state during shutdown
+To: florin.leotescu@oss.nxp.com, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, festevam@gmail.com,
+ Florin Leotescu <florin.leotescu@nxp.com>
+References: <20260306133439.564033-1-florin.leotescu@oss.nxp.com>
+ <20260306133439.564033-2-florin.leotescu@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260306133439.564033-2-florin.leotescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 3/6/26 05:34, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+> 
+> Some platforms rely on Linux to leave the EMC2305 fan controller in a
+> safe fan state before the system restart handoff.
+> 
+> If a soft reboot is initiated, the controller may retain the last PWM
+> duty cycle written by the kernel until another software stage
+> reconfigures it. On systems where no later stage immediately takes over
+> fan control, this may leave the fans running below a desired fail-safe
+> level.
+> 
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> ---
+>   drivers/hwmon/emc2305.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+> index 64b213e1451e..d631d972c40e 100644
+> --- a/drivers/hwmon/emc2305.c
+> +++ b/drivers/hwmon/emc2305.c
+> @@ -714,6 +714,20 @@ static int emc2305_probe(struct i2c_client *client)
+>   	return 0;
+>   }
+>   
+> +static void emc2305_shutdown(struct i2c_client *client)
+> +{
+> +	int i;
+> +	int ret;
+> +	struct emc2305_data *data = i2c_get_clientdata(client);
+> +
+> +	for (i = 0; i < data->pwm_num; i++) {
+> +		ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i), EMC2305_FAN_MAX);
+> +		if (ret < 0)
+> +			dev_warn(&client->dev,
+> +				 "Failed to set max PWM on for ch %d during shudown", i);
 
-On Tue, 17 Feb 2026 15:55:15 +0200, Ian Ray wrote:
-> Configure PHY speed and mode.
-> Configure b850v3 gpio4 line name.
-> Disable b850v3 usdhc4 interface.
->
-> Changes since v1:
-> - Clarify the exact warning message in patch 2
-> - Add patch 3 to order reference modififcations correctly
-> - Correct the ordering of reference modification in patch 4
->
-> [...]
+s/shudown/shutdown, and newline missing
 
-Applied, thanks!
+> +	}
+> +}
+> +
 
-[1/5] ARM: dts: imx: bx50v3: Configure switch PHY max-speed
-      (no commit info)
+We can not do this unconditionally. This would have to be configurable.
+The driver could use the optional fan-shutdown-percent devicetree
+property for that purpose.
 
-    ARM: dts: imx: bx50v3: Configure switch PHY max-speed to 100Mbps
+Thanks,
+Guenter
 
-    Configure maximum speed for the switch PHYs according to the electrical
-    connections from PHY to RJ45 connector.
-
-Update commit message by Frank
-
-[2/5] ARM: dts: imx: bx50v3: Configure phy-mode
-
-    ARM: dts: imx: bx50v3: Configure phy-mode to eliminate a warning
-
-    Set `phy-mode' on network switch CPU ports to eliminate a warning:
-      mv88e6085 gpio-0:00: OF node /mdio-gpio/switch@0/ports/port@4 of CPU port 4 lacks the required "phy-mode" property
-
-Update commit message by Frank
-
-[3/5] ARM: dts: imx: b850v3: Use alphabetical sorting
-      commit: be700cabe4c485ef629f8087c43183cf106f7e5b
-[4/5] ARM: dts: imx: b850v3: Define GPIO line names
-      commit: 26ad38fce6d8ef50316ea59f1ba3f2811b11a16a
-
-[5/5] ARM: dts: imx: b850v3: Disable usdhc4
-
-    ARM: dts: imx: b850v3: Disable unused usdhc4
-
-    Disable the unused interface, to fix print an error message during boot:
-      mmc3: Failed to initialize a non-removable card
-
-Update commit message by Frank
-
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
