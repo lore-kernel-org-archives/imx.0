@@ -1,64 +1,64 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA7F43C06B
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 19:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92873128C9
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 19:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772827133; cv=none; b=J4C4OezXkZx9shBv3vn2XlTSb7uASSmycBKJdY8kjgy/FVOCQKZIOLE/fG/L1NPRSbnDbVmoDa+sotoCQMgUTnTQOmKwYOz6kV4E36Hzcf6Gv2hH8nFi1uYJ/1IrRJE80G6VjcXVYgvJK0zei2Glr8WYVF7j87viqYZfmQlzwAQ=
+	t=1772827135; cv=none; b=c2V1+wgT3keVQ3qLVlCTrPBkSphK+Ffz3MTfdasRWWbLzBtGtYiE8gG0JGRtuY5BW4b6o335aqckvFpAHFVv7+TI0sDpbBXjYqi4vyRb64LjOzRBlxhuo1SawtgM9TqAB4uA7j2920mpmdSECFV4MrDtqP2+DOZ00UrhoAUOZ4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772827133; c=relaxed/simple;
-	bh=BA9cogNYcNoWcdmou1Wz18kgD+Qk/UIO8+CaouQp908=;
+	s=arc-20240116; t=1772827135; c=relaxed/simple;
+	bh=3tics7Sp+ACzJ3fwwu/k4s5EkZCHDCq4yzTDw8EoxK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNnxvAtuqzdHJCuOA2Knw7kW1xiCZ817VIjHHg1EET34ih2ls93vfsADaKwfDOIN0JRecC8wYJweSEwdNCQ6zU6On9I7+qJZ7ruPPvMXeCzxRCQujetm1EBpLIirUCJa4au7mX+tQ13RybmJLlBNYldyZE4ekI0Wif9E4pOHj2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4hYoMTs; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version; b=qrate9Gsw4giE9sIhoUoxF3Zs5blhV+sFEDnp/BRYS8acAYgrtggxt9csDY4ShnTLgxmbzCZcbm2hneEOAr5ktsedyEG054fZgVi7RxMSNnAd1RgaPAf/Js4SsXjl28CkepJhYi5g/IV/808jYHt2UTSBVV5E4+xOxuYJu8QYX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k1YpZkSk; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4hYoMTs"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4852e09e23dso115285e9.0
-        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 11:58:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k1YpZkSk"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48370174e18so58720935e9.2
+        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 11:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772827130; x=1773431930; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1772827131; x=1773431931; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=opNBN+DL1CwCTEmCmfQVU04W6S+7jcXxdGJnG1le+IA=;
-        b=I4hYoMTsc0d6COFm5F0t5CceC31CPj8+fv5mo0wxvdlAS7LQejf8zWRDRKMvllUd6P
-         zlMt0QZZ3US9y/VpDdI8zAaAlrn+06ZcytIGkbGCl5jZA2wkERkhGvUnoTJQMDrrUjrh
-         jiE7s8Jp40kNeJQzhtm18Ikp85CZhUWvFxpzhCVy61XA9AfDb7b5YZwImqz6+7fL4bGa
-         H9Ibo3Bb7k2vLV973d5bIRhXPy2ksiPM4UJJm896pYts6nSg5TvQWrEjo1PyBM7VwyAg
-         M2ZrJhYIot0j6vTe4jSpOkQhdUpTOvuyYtxLzd150WtLxIWJJjaiDrDVRwg/MaqbArC7
-         2TWg==
+        bh=TSGdR/fONreoDaJVUI/JFgQUgIkT771I117jJn+3wes=;
+        b=k1YpZkSka+7ABtR4ShhCaE+O11BRpsttBVGs7DTZd38Snc5GxjpKthENxBwHWFbZRj
+         BrKzzfw1uTZwTlWDjsF8ORCaDpKOrGJk/M6UUJK9YNP5uB290MOM+NSiDc+TRm3h6Ehj
+         d2Yb+wbl95cCXzEgvlErKYEQ6Jxsn9iLq5E0hP6BfwyF+/oTGLGiKmWPPX8Lpcjk47WL
+         6ILu4a1pczLA7uIrON2NVXQXjyIrVaSBkBfocvxoKF8z+BQRpiJeN6b4/4aLFhMIVoc7
+         EPC52uMH0WsSp/+zo1/wnohw48gYAgcwQeZDBluq9KvLHfQkdDTUt7XsuomjCt0+U/Yz
+         fA7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772827130; x=1773431930;
+        d=1e100.net; s=20230601; t=1772827131; x=1773431931;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=opNBN+DL1CwCTEmCmfQVU04W6S+7jcXxdGJnG1le+IA=;
-        b=QAgSzuwrn3VvitQf0QRNKU9acM7X8UkoYACLdsQC/1YEmDBHLYtGk3tJemSw/mlSnT
-         krAo9UhZgQ7UyQpocyRH12B7E7v6nzFh/Zm7f36+x3cu2JS/P1Vu2EWWEME8mBlXf97j
-         r6wkaOHCBT7C1mhJEMpiFzCsoOsGhNDbTkmYKDkbbPjWXmWdELedFVmP8TzJfmfpO8JI
-         jG0Z+JClJfTyqW1HFdKy0j0qH25R4JnlorE5fb8vxbjlku3/ZI9xN95HBjrX4DoZmIcb
-         msddI9sjdyDsyJHJCJ8MtE2DUYgOfhXCTavmdpaNQ7MR31xi88u1PohQguslUYPKJl4z
-         n8CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSIyNsbFUtsEBUZRbrKChZAaIPyc1a3Jw7Z30cQWaYpUL+aySYBVWTCLXi5nZ/tMfMW1k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPSDeKXWjMqQB/xK5MlTQNdxCTGBrWGjsFv7t5AMrFKDdzhJQg
-	c9fD9Ah1oYUzsS4ecYcoZ3vjJZ9PsweX84d6ls1s604YUCkaetcz8LND
-X-Gm-Gg: ATEYQzy3oImU7bzqgRO4Q1e44AlT/E0CCyoSM/35iPWYruTMzsoClGU/w2F50URFT9w
-	nz0llmMpge8ieCtvOohGEKFkpBEb5jV0KIcFsgovBkTe0cDu7sITH6B0ebbjEAO452FO7RKvHCp
-	2Y1AKkiQDv5EtliXGxNQqo4bkIOsNv4Opbe2Zto3ZLBiATsfpvBElA1w1k5ms9jwTNfw2bByOFe
-	7LrufifV6Z4aqiyAeRbjCpyolDi6JKPbVt6NH04kupzlnWO95mNf6hJ2wZE+hwM6S3y43icf9mK
-	RYRBVST04J79Vxb5SsOdx9J6hX2snlJ0aJqy3w40bl8is4UcF6zl2gp51iU+MwhnzR9n4EzbY02
-	VQTauDmNv8txUpjG+sjoWtUBzB0ZBLfQ78BVn2omRfZNKleLxQ3rPnDJShoYS9X6bmfL92PzN3T
-	6p86uX4VthrSBGpDipmgfFre6EosAs4/5079noxtC13bSFj+e9xLJerlGCQ03yZEkFwXz6cWmMZ
-	CM8GVeTJauiUMLheWGND/Xq8LtwMH2GXJRyLis=
-X-Received: by 2002:a05:600c:4f0d:b0:483:5a29:9678 with SMTP id 5b1f17b1804b1-4852691967bmr59464725e9.2.1772827130125;
-        Fri, 06 Mar 2026 11:58:50 -0800 (PST)
+        bh=TSGdR/fONreoDaJVUI/JFgQUgIkT771I117jJn+3wes=;
+        b=dtpjs0r7+n/Zy1cn2Gm8odaR/VNN34pllQrUP2QpN6bguBQ44hzG7toKwfo+OysBeU
+         hX6eMODhpsL9QpRzhFAp4nyyxILmvjnqkiSzlpoi7BqM7oG/kfucRX9II/498EY3y1As
+         HVi9AWFxYGHZOfGMjHHQjgPC68BZTIXtoUK6bYSUOhcfHjCFptaUCmaSurVw6TYXm2ra
+         DAoPZn8PseQakdqDh7YIlNFUTrnOUJjrR9XeOg0IDkBf6CG67OB7l1Eg75q/OWqhO7uR
+         hoBnW0Yh+lsHgbOehUbk6DDX3z8VaZsQHTthBrTul8A7vlKB7d6/Y5HgiMEY9oh7JjU5
+         mSUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLtRdOwWwgWCtZXsRYWhP7/uE673WpH0O2PUtgQaeujYIxB/9/ka0rvKV1L0jWUmELqt8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/ELpRUxmi6JFpK4s3BxWBIu/kGUNzXkcK/mogldA91gBYbXV0
+	XE7JnZedpAi8I9+7eEOGmPmuP8zP06qdfJrk/RCLPE7xsb5jcP1rb7aG
+X-Gm-Gg: ATEYQzx9qCts/Si2mMYAVe6FCAoSqJOPwBoEbIRahv3yBiwV6CwIWkuFz1A9bBapno9
+	S4y3Viee6ZjdTYYN82VHmWslHFEoS0F9lFHIpbN8TszDosiVtR46nARZTsczuBgZUF6GCTBXly9
+	EGcPiRyHylwBjSAwb8JBANABzVdhOMKI01b9B72GbaZHXL8+/ZirwpGvBj4fg/UQKJ3o+9XOLn4
+	x5172qx74qf4qsDCDPO352GOz5B9mxoVEUhulRmftUIMaVwrykzuSaftUDFT6k7998AZVvWmRVS
+	G8GSexPewwHUir5FuzmNuhL/84xDW/ItBUcuGqf6U8OheUANSf0luZtdy2kO3A+Ye2xPDwOpOnU
+	kwuOqXSkw9UqUjnlGqXSuh6wGBQmQNxHBGNT6QWkdynLHClMqM9NHsozta9L3JlE2/lTzxpwEEi
+	BPIZw7KZCXX21XNXRRWwg4lMEQnG+z6DViSYfmSlRRdMQh5aRTk5fytg5ZZhxQQoHKAZi24qkm9
+	rVH7NNj/XcuAO20JVrdtgmA+u9Fhu7Gbgq6VAI=
+X-Received: by 2002:a05:600c:a12:b0:483:badb:618f with SMTP id 5b1f17b1804b1-48526966b07mr53084435e9.25.1772827131139;
+        Fri, 06 Mar 2026 11:58:51 -0800 (PST)
 Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48523803b5fsm25167265e9.7.2026.03.06.11.58.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48523803b5fsm25167265e9.7.2026.03.06.11.58.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:58:49 -0800 (PST)
+        Fri, 06 Mar 2026 11:58:50 -0800 (PST)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: pierluigi.p@variscite.com,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2 10/11] arm64: dts: imx8mm-var-som-symphony: Enable I2C4
-Date: Fri,  6 Mar 2026 20:58:29 +0100
-Message-ID: <02dcc47d59674a9945ade8a6f2c42f4c0908942d.1772826534.git.stefano.r@variscite.com>
+Subject: [PATCH v2 11/11] arm64: dts: imx8mm-var-som-symphony: Enable PCIe
+Date: Fri,  6 Mar 2026 20:58:30 +0100
+Message-ID: <a029d4f029274a368af0e9c58e9b41106857e436.1772826534.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1772826534.git.stefano.r@variscite.com>
 References: <cover.1772826534.git.stefano.r@variscite.com>
@@ -90,59 +90,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Enable I2C4 on the Symphony carrier and add pinctrl configuration,
-including GPIO-based bus recovery support.
+Enable PCIe support on the VAR-SOM Symphony carrier board by adding the
+external reference clock, configuring the PHY and providing the required
+clock and reset properties.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
 v1->v2:
  - 
 
- .../dts/freescale/imx8mm-var-som-symphony.dts | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ .../dts/freescale/imx8mm-var-som-symphony.dts | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-index a77085b264e5..9a29c81b06eb 100644
+index 9a29c81b06eb..0aa288af6c5e 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
-@@ -195,6 +195,16 @@ rtc@68 {
+@@ -6,6 +6,7 @@
+ /dts-v1/;
+ 
+ #include <dt-bindings/leds/common.h>
++#include <dt-bindings/phy/phy-imx8-pcie.h>
+ #include "imx8mm-var-som.dtsi"
+ #include "imx8mm-var-som-wifi-bt-iw61x.dtsi"
+ 
+@@ -17,6 +18,12 @@ chosen {
+ 		stdout-path = &uart4;
  	};
+ 
++	pcie0_refclk: pcie0-refclk {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <100000000>;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -205,6 +212,27 @@ &i2c4 {
+ 	status = "okay";
  };
  
-+&i2c4 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c4>;
-+	pinctrl-1 = <&pinctrl_i2c4_gpio>;
-+	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++&pcie_phy {
++	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
++	fsl,tx-deemph-gen1 = <0x2d>;
++	fsl,tx-deemph-gen2 = <0xf>;
++	fsl,clkreq-unsupported;
++	clocks = <&pcie0_refclk>;
++	status = "okay";
++};
++
++&pcie0 {
++	reset-gpio = <&pca6408 1 GPIO_ACTIVE_LOW>;
++	clocks = <&clk IMX8MM_CLK_PCIE1_ROOT>, <&pcie0_refclk>,
++		 <&clk IMX8MM_CLK_PCIE1_AUX>;
++	assigned-clocks = <&clk IMX8MM_CLK_PCIE1_AUX>,
++			  <&clk IMX8MM_CLK_PCIE1_CTRL>;
++	assigned-clock-rates = <10000000>, <250000000>;
++	assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_50M>,
++				 <&clk IMX8MM_SYS_PLL2_250M>;
 +	status = "okay";
 +};
 +
  /* Header */
  &uart1 {
  	pinctrl-names = "default";
-@@ -288,6 +298,20 @@ MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA		0x400001c3
- 		>;
- 	};
- 
-+	pinctrl_i2c4: i2c4grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL		0x400001c3
-+			MX8MM_IOMUXC_I2C4_SDA_I2C4_SDA		0x400001c3
-+		>;
-+	};
-+
-+	pinctrl_i2c4_gpio: i2c4gpiogrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C4_SCL_GPIO5_IO20	0x1c3
-+			MX8MM_IOMUXC_I2C4_SDA_GPIO5_IO21	0x1c3
-+		>;
-+	};
-+
- 	pinctrl_pca9534: pca9534grp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7	0x16
 -- 
 2.47.3
 
