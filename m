@@ -1,183 +1,154 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010019.outbound.protection.outlook.com [52.101.69.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232D32572E
-	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 10:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772793566; cv=none; b=tGkIjedpamHG/45HO6ro0j/dmq0OHdIn5s+CCahnHSpoNHsHB7pkOnsWqFlYPzJ29EPeC0whpz46Q48cR1WG2FuVTqHz3NoBzk3QvYnMEtWXxQOxirLEokJfufRq6ujomM85j0Y16YVfqLIHXu8n/PhqsTv8tujcG/o5GNQdXx0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772793566; c=relaxed/simple;
-	bh=eKv+7GRonV7zR5Aydbl9iRFy2PXWUwHoX584wZSFUY8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tLJLdn5aW3+7OxnJvouf4yG7U+t/eZNWdbEa7dTaSAGyR7a3X77C3gGva+NLp2HkBPe+Covc11tCTbess9ncZRlaDwGV5IRmrgbZZXH1FAkYpPKeZlHvJDrJ0uRngDRLMflMozMk3/A4kqt/WSa6DAb3NX+LbhikamxL+8r2698=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RYS1K6bj; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE3838F951
+	for <imx@lists.linux.dev>; Fri,  6 Mar 2026 13:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772803245; cv=fail; b=sivTpZUk2Lnyq5QYaMTChUXDIwaqtFkyITvA4MrndMaprbuCRkcMTqRiD5zvm2hGUYr9HXIQCH4KB5uzzfaAAJTOZ76W/bIeVkWTrZw2bDSaGfD0KtO3ai0l105voa2QQ6cvgeaw2sQwTS2C2qoTeGOUVpewuXVNwHiwGfqLQHA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772803245; c=relaxed/simple;
+	bh=EQXYwEznDbqpY/ENN6xp4SYW4U/Z8pWtxAGHNtm1WWk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fSmUXtIbfLGzUPy1/cHCesiX9Hf1MEifFLb98k9Evu7GjbyJxeMFCWjpvXj2FMDQ+dbyEr3oop5j+dABp9jMxYOJeOVdMAnlJhdMRUAPIVE8Me/7gMP9XLmXMzxQA0/u3FCbpRnyjyn6CwtOMl3RFYxqIhC+wCWxrvT96GH4zRI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dHqFllSC; arc=fail smtp.client-ip=52.101.69.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RYS1K6bj"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439a89b6fd0so5737774f8f.2
-        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 02:39:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772793563; x=1773398363; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7b/j6Onzsjic24fOqjJouNjRnjy2n5wYSg/eGj1+zfI=;
-        b=RYS1K6bjhwqrjuZL4pVSMv9/1smFw9a+OVtar311y++ymMTv6HBpXur2X5cRzVKdI0
-         xX3mv+rEmQDPILeXGA2a3/G9hUuzaZRSYRGpEI3wLHg1S5B4KvY/q35vS9lITNo0JBoq
-         OIfUwbPUNgeOBr8x8LgE71JXGilGhIu6xC1AiPr/SF66wBLlx/1am4xL18aTEM863lCn
-         oUlh0cFwwTFEi+ps3BN7VLzFd/T4/zhn92IKYBls2aXx2Pqbxbqg+W+UzisDfUQkPj0A
-         2loAoGL2w3p8KoJcL4FNzK5DsJ0qkqQhqvUCHgIH19KjPBxDZUoeogN/ce2e3inoycoT
-         8KQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772793563; x=1773398363;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7b/j6Onzsjic24fOqjJouNjRnjy2n5wYSg/eGj1+zfI=;
-        b=hFp5Ut2odAsAhN3HPaLKn8tIbAG0s3p8LWisUOgVpCMNbcfxNFtxzNe5jD0iFVyAfo
-         Yf9RVXioiHygK1OrK3kfRBc6w97Wz1GZIJu/9H9pSor4RMqyfp2jDZn9VRFxPuJDDzvf
-         h5uXsuzK9hN38q3p75kHeRG4sIrD7MtCKBw6PtrDrdcsaMfapjvl8WDwk30haHw5DIWY
-         fRon5gAtARa2S+EQZfllt8RRD0AcIQqv4S5WLCuaH8NpnDdL+KjOtERaFBu2wHVqta+3
-         PWjDbHIQgr2FNkrJrWVeed28M5NNWr7pjseAx1nDeAa/5/LOubOxQnP9ABMc1rYSyxZm
-         l/Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXtk7h5PqGO4/n9HIVbKRERA5sUfuEdikOQXSTD9ypE0w+MIPBVRCt1Dw7+YsLlmS0FbsU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy1xVu17gHp1++g1xOlO/TSAMw1gAJZLhrNJK218IkcJntlugQX
-	5gwWpRYJS1Ee9WAlkpupBLdJWgm0R4QWY8aztXZmLwi19lcyWV4JLEvUbxWQwOsjCwk=
-X-Gm-Gg: ATEYQzwFEPJfLNIgeJZwqr5N9srEH7UhOyTdQfkwcpNiL6goBGRzl9BHxL53Khj4O4s
-	fYA3AwylAsZnAShUKKRd/bX8s2W2TmaG8sZIeL+rN50vqzl4edoVyH2a/Bac1oOku2Rx/8TQKpW
-	G6Yjt/9kBJXlf/rJOfMNeN7+HUjowz20q6VoipVMTdIHG7UDhILFi48jFrN9X2Y6L1eRYJnLkgZ
-	PEPMxzjLLKg8Ckg2uI2vZEEv6cZcNjm9lVR/2p8KkaFXSDC7VmGNsWyCVjr6sN9t1Qif5+6GuKu
-	g56AF4ta09qoqFZnL08tp5cnMytZF0LXICXXbfZ5y4JaLVaeJp3Z6v114zrTcHoHbmWWq+0044c
-	lJYNavpt3kT6ILo2OzwaEArfw7WiX2HON5H+Yklq1X+U4maxq0GhKgCvFOeEGTI/2lXZ/Tcr72Q
-	pNUHY8q8Ksi14nNQlwn3Kt52Jk9uSe6VedpCZUbTEEkPfEkLqUm8BKLwKO5BK26lR76sodUPw/l
-	say
-X-Received: by 2002:a05:6000:40dc:b0:439:ba4d:bf40 with SMTP id ffacd0b85a97d-439da891a22mr2826807f8f.43.1772793563121;
-        Fri, 06 Mar 2026 02:39:23 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:106d:1080:cbfe:649:7f17:8b95? ([2a01:e0a:106d:1080:cbfe:649:7f17:8b95])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae3a20fsm3184894f8f.28.2026.03.06.02.39.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Mar 2026 02:39:22 -0800 (PST)
-Message-ID: <7710959a-5941-4094-a7a9-6c745ca73787@linaro.org>
-Date: Fri, 6 Mar 2026 11:39:22 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dHqFllSC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eTC+uJimHQFqWbcYLYmsVfTsTwy/ljNcoCzQ5aINGW31Jh5a9FFOgeQ/VlX63wxUjqEAjfGqzKAfjvKgrCZlOLmF+zauT8vv2MeGp+D5HHQI7RHwBYEh9M3dXXdunlpiewELzGQ78evesSCTpjINMPQtpgtYp1DDcCdYMBMz0Be3uFsH5KLi2PZVrMDjxO+v0yek/66f2jWfnS7xQNKIUP/5WT3J60e33nnuITl/jwdfBzHuuLdF8wFHZTEGqk8x22b1IGrgp1r3ezoj+lIybkKrRjr5u6vAe9OxeNHXGjKfbaRsfPhN6hbOxuljUSGbfW9BD4lnM+VIdOOcpOwoJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wcXckjGNR/qk5SOvARJInWIOjt11JYqtcIYAa6tEiRM=;
+ b=Zv2HwecfBxLJQm+iocL0E9WepZIc/n0TDAVBoyohs4h2sLzpcnB580NZISTcXXDG5w60SImK4qM97bjABRl9gwsYGI61fccF9Dt0NtCmdrb7f6fR6JK8a+buOg8CjtuLpg+Ex2Fpt+kwPvrvYxk3/ARygXeKyuMkcj+44gcL3N+KM4W7UIAzYyJq2bHxHetHHDVHzWXjKIvbCvCFDKjuDbf75XLSEv0WJnfiJKLiDxkOF+A38rmqgCFxcLiuNF3Kleus3UA5Dr5UBBNXxhHg3tKOZxrqqNMo+HuClssPxEFmY3fkU272mt/KFk7TQXAcr8JdkP20z3/zNKGYD7xKrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wcXckjGNR/qk5SOvARJInWIOjt11JYqtcIYAa6tEiRM=;
+ b=dHqFllSCYGisCXBtNG7zTgbg3wYM3q0asOQY5V2rOyddKeDWtfjWueYLg6S3xnDChvNEBnZAf+dz4Zz53CSM8wRpaiR5GyNUrzUs5lHWxjCUedXiY3zX/ns5H5eEL0LpbW0h3gHSF6SFMluAcXQIsWcN5vp9GeeJuXMaN7NWwDMafN0EcN3bmma61odFq92GXJ7YteSwb0nSJUiYQ5amkQwVKCreQq0JCxx42NCpN162Z97w152JkGdrryDIPjJoZ4PkCs0AcPuRVN+YgcqvqiTliV9mHU9hva+Cl0j9nnqaV5qDfNPq1GgDA0nZCspl1BfOg6dRMKQz3GkMtnw2FQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
+ by AS8PR04MB8387.eurprd04.prod.outlook.com (2603:10a6:20b:3f7::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Fri, 6 Mar
+ 2026 13:20:40 +0000
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
+ 13:20:40 +0000
+From: florin.leotescu@oss.nxp.com
+To: Guenter Roeck <linux@roeck-us.net>,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	festevam@gmail.com,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: [RFC PATCH 0/1] Ensure safe fan state during restart
+Date: Fri,  6 Mar 2026 15:34:38 +0200
+Message-Id: <20260306133439.564033-1-florin.leotescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P191CA0008.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d5::19) To DU7PR04MB11163.eurprd04.prod.outlook.com
+ (2603:10a6:10:5b3::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [RESEND 1/1] phy: freescale: imx8qm-hsio: provide regmap names
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260211144949.1128122-1-alexander.stein@ew.tq-group.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20260211144949.1128122-1-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|AS8PR04MB8387:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2152373a-1a0e-4e08-1127-08de7b8329d1
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|19092799006|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	C69Q3Q+uURKJWl0JK/9lDafrIzASUQSlLfn61ow4q3YVUBcp5wgbyB2+O+gE+SSH2pdgIu2pELlbDQurmHEjrw+bz9uD9EsUBooQFa0jobwa43d3ux3UtK0r4V5ExqfNuZQ2fWfJCfbiZGTaFn8N2pnOWDDJzqIqS6j4oAXp4bKJR5wMkhpkRSa9ikr6wnlRNssKs1x+4UGtyYXldQbGDn39NRHV8so/0NiKbtzovpC2wb93QqwmmPwq+h/+uM5IjEzbuVnyxHAl1DJAP+h+G5DOpLGaiAe+OCh64LdXl94bZUnnxNFLBYrTSJQDXylkjzJp70u2loQyuIz62w+4vmjI5aZgTZucwzvbfgU0ih7kDiCNEP9B+S41JUG/WTdbFKJVMk8YusUVXBpC+GN074fOGV2pnGCb/1np7yFa/hoPqRIYROGXOhnZYEpWugQvjZgurcICmfi4Wgvasm5mtelJJmDcuA6PWeKJXI2S26PDqOBj2mki6BuDhUU/vy0b6KdYmIFQu9fVRx/rs28XtCBOYOvI739uMVyzyM0IZmG9+76Sx3UWithB8kRx67ct/hLyouPyt/RDL+NHh7eqpiPl2RFQQ/LQjU64AgrDtiG3UcP5QL9MM2hTfU4QFA1xIPMYZWoUUHCEil2yRl1W7hFCceJTinZLw/283Z4DLFMezwsDG+/0dbaaXaQf76z7ldILYPJVyQwnxMVAJsoE4KjYc0MIBmXOND1sSD33fy8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?Wbm3/kFwHfodtfP+9379ikoCLtSiKLb6nrLiCuA+c9T9w598cajAiOtgCb?=
+ =?iso-8859-1?Q?prORt+fbQ9TUMTkkc49EVP6RnHNuOuTneeBD3kocfOaRbrttCzTGpxrsnX?=
+ =?iso-8859-1?Q?lr3cAaTAht5/zfRNcE8Cq7pnZyLsq8HBkGzh14QPb0QejsFl1e4NNhEr7F?=
+ =?iso-8859-1?Q?vhpq0c+saS3MxFkjVMx1zi8UMqHrmAI2mUwpNEWj6Si3bRb4+S1epTiysh?=
+ =?iso-8859-1?Q?OQnO7A5XEbkIDdgj45Y0YOZC6lw+tM3ijN14QuParPoWbCieXKc3ew2wup?=
+ =?iso-8859-1?Q?f8c0Rh683kagicCmOdRstOg6Tpku46dknQkwK5o5OghpOyeQD+uKPqvTID?=
+ =?iso-8859-1?Q?3+JPnU6tcoHNXuLxL6KybKBqMVUQg3lWbWReH/whSZsb6tHq/ATtg1ZIqi?=
+ =?iso-8859-1?Q?1GP8LHsT4SDuDy821To8dC0kLNvnfkfj82gPMwgznLoveC/Q/67CgwpENw?=
+ =?iso-8859-1?Q?G3dbvd+9MhFmv5oUtOfppdqyD399JQiRhvUn28rpbXZzvqHo5cpf1PRcHA?=
+ =?iso-8859-1?Q?OVTyhOI5hk9jcyccgimvX0ESro8MuPQOM/64fhsSOUqUi5I7/Qd7LgHOtz?=
+ =?iso-8859-1?Q?BxNZIwcCMydKzx8eyo96qPylVffZ0e+vXvPc/bbn2JvufqpyjcDVrZYBiO?=
+ =?iso-8859-1?Q?0oDD5bV4/H0hahFlKb08QXMLwPcMUdZZv3BDQ3fly2yenvPgw4w48vVkfY?=
+ =?iso-8859-1?Q?8CjxTLNuqHQpKLvY4rSnzVinJc5JaD0DGfdfU6WEx+Mc4AN/UW7ec2u9Fq?=
+ =?iso-8859-1?Q?2/Cob5xX/6ZTaQmuw5AY6aAvNexa7I9EHL5+9tAy+9HGFsSZu1V1T4v+Q1?=
+ =?iso-8859-1?Q?AlICABDoO1hXtXrfmuZ6pjShS95lqlVCpAsgz4HuioAlwMEn18V4E6LPbh?=
+ =?iso-8859-1?Q?C82k+nS4A7Vbm5gCv7E5vlXyMXaVpqlCR4OHaa9ycN+2PHdQYHcx0oK/VI?=
+ =?iso-8859-1?Q?IJm38WvXlxmKwC9ULN+ODWA5Y+lb233mLbVbP3MBjH+DuCxTWHQJN2SAn5?=
+ =?iso-8859-1?Q?6Fq5kIw8UqgUlt3+6RI55SxdGMvZAWEuAzZHl9A4ZBxwK9Sd2MPdTMa2zm?=
+ =?iso-8859-1?Q?g9ba3QsjzcqBEq28UtzDiAyXRDp+U0I+L63FZyRNbIOu0mqgWrVKDCAcJc?=
+ =?iso-8859-1?Q?dOZUAUCedWwNjb/LsmimmvvbvbgNzHUECwcR/lkqQSYYoXiuj+QMqsb5TW?=
+ =?iso-8859-1?Q?DV3GRrBT1YGGXuZ94DMR+ns9pX7Bd8AvF92zHWGYiAkymg1RaM3i/qjX1Z?=
+ =?iso-8859-1?Q?UAAyoE8+CJWBlV+A56TAu2TqDQkurAvVMLW+jylru0KaeM/kquaC8CjM3G?=
+ =?iso-8859-1?Q?2GK7MofRCMprL+8mMWxVyXqd/8lB5NKPXudzZCyH3W5xpfTgKxijnCu6Hf?=
+ =?iso-8859-1?Q?sEYmuS+zsYK3MeinOqhhgOkCWqjcfJaHwDM/JGc4ObMwL6lwzzpxhRNuH/?=
+ =?iso-8859-1?Q?Hhy5IFifeUVtCFu0vYtsOBPiie4jNTuxn/Ro4+CdwbqUD3zCIINd5MBlCO?=
+ =?iso-8859-1?Q?Wia7kkAUxZGEqWJ4xdasuvUJqRCICiNCrlGZeYpMsoFOuaVx3P8/fPKKQ6?=
+ =?iso-8859-1?Q?Ur03plODqoiXI4JJOGGhODLYK7p5IN2ClFxBVA9k10Ek7j3RzwsNO5Adlo?=
+ =?iso-8859-1?Q?OucsF2Bb62dbLX7ZXj8OJWn2Ao15JEf1LRM7Ktyr/2P6SL3W7H8LzQfi/R?=
+ =?iso-8859-1?Q?47DjFYdOTJu7gmeGXRdApTEkgLhTi/OhQ6tbGSNuy/q/Dnaqj0yFOi3uU/?=
+ =?iso-8859-1?Q?gnTN5E/SJSiMb5oq/K42jZXVJWNwg9AF32CYyVtjVFBo9Gf8McWHLQMXTI?=
+ =?iso-8859-1?Q?xnpi8YnElw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2152373a-1a0e-4e08-1127-08de7b8329d1
+X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 13:20:40.7600
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x0oOXhiXs3yNdZ8Hwv9gznfMsagQWNX9lbx7GsL0Iik/Vy6piQg2Rm0OgT/5hKSIf6sj+hbKNlSeqz9ok2aYuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8387
 
-On 2/11/26 15:49, Alexander Stein wrote:
-> This driver uses multiple regmaps, which will causes name conflicts
-> in debugfs like:
->    debugfs: '5f1a0000.phy' already exists in 'regmap'
-> Fix this by using a dedicated regmap config for each resource, each
-> having a dedicated regmap name.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Same as the one sent in December but with an updated CC list.
-> 
->   drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 23 +++++++++++++++++----
->   1 file changed, 19 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> index 279b8ac7822df..4ab45c9f53dff 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-> @@ -107,7 +107,22 @@ static const char * const lan2_pcieb_clks[] = {"apb_pclk2", "pclk2", "ctl1_crr",
->   static const char * const lan2_sata_clks[] = {"pclk2", "epcs_tx", "epcs_rx",
->   					      "phy1_crr", "misc_crr"};
->   
-> -static const struct regmap_config regmap_config = {
-> +static const struct regmap_config regmap_phy_config = {
-> +	.name = "phy",
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +};
-> +
-> +static const struct regmap_config regmap_ctrl_config = {
-> +	.name = "ctrl",
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +};
-> +
-> +static const struct regmap_config regmap_misc_config = {
-> +	.name = "misc",
->   	.reg_bits = 32,
->   	.val_bits = 32,
->   	.reg_stride = 4,
-> @@ -562,19 +577,19 @@ static int imx_hsio_probe(struct platform_device *pdev)
->   		return PTR_ERR(priv->base);
->   
->   	off = devm_platform_ioremap_resource_byname(pdev, "phy");
-> -	priv->phy = devm_regmap_init_mmio(dev, off, &regmap_config);
-> +	priv->phy = devm_regmap_init_mmio(dev, off, &regmap_phy_config);
->   	if (IS_ERR(priv->phy))
->   		return dev_err_probe(dev, PTR_ERR(priv->phy),
->   				     "unable to find phy csr registers\n");
->   
->   	off = devm_platform_ioremap_resource_byname(pdev, "ctrl");
-> -	priv->ctrl = devm_regmap_init_mmio(dev, off, &regmap_config);
-> +	priv->ctrl = devm_regmap_init_mmio(dev, off, &regmap_ctrl_config);
->   	if (IS_ERR(priv->ctrl))
->   		return dev_err_probe(dev, PTR_ERR(priv->ctrl),
->   				     "unable to find ctrl csr registers\n");
->   
->   	off = devm_platform_ioremap_resource_byname(pdev, "misc");
-> -	priv->misc = devm_regmap_init_mmio(dev, off, &regmap_config);
-> +	priv->misc = devm_regmap_init_mmio(dev, off, &regmap_misc_config);
->   	if (IS_ERR(priv->misc))
->   		return dev_err_probe(dev, PTR_ERR(priv->misc),
->   				     "unable to find misc csr registers\n");
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Hi,
 
-Thanks,
-Neil
+The EMC2305 fan controller retains the last PWM duty cycle programmed
+by the kernel until it is reconfigured by another software stage.
+
+During a soft reboot, if the system remains powered while the restart
+handoff occurs, the controller may continue driving the fans with the
+previously programmed duty cycle. On systems where no later stage
+reconfigures the controller promptly, this may leave the fans running
+below a desired fail-safe level.
+
+This RFC proposes setting all fan channels to maximum PWM duty cycle
+during the driver's shutdown callback so that the controller is left in
+a safe cooling state before the restart handoff.
+
+Feedback is welcome on whether this behaviour is appropriate for the
+driver or if it should instead be controlled through a platform-specific
+mechanism.
+
+Florin Leotescu (1):
+  hwmon: emc2305: Set max PWM state during shutdown
+
+ drivers/hwmon/emc2305.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+-- 
+2.34.1
+
