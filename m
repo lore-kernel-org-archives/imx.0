@@ -1,148 +1,133 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B2223D7FB
-	for <imx@lists.linux.dev>; Sat,  7 Mar 2026 11:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDCB1EB5FD
+	for <imx@lists.linux.dev>; Sat,  7 Mar 2026 15:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772881420; cv=none; b=eRxixlL7BiNwRXXzL6fTNLD0PJZFwCvGDJMVLmSkVdy4kh0lMq8nfV8nTYBymxSAHiyRFNxOJtw4PXZ4ckGqSPQtnJYFChZKvtldOUoGIoI6+h4Lphspotb/TyG6hVurnrWmrQAcdsH/ZWhJS32pqktIqsGTFwaJ49SSIBEs2UY=
+	t=1772898914; cv=none; b=qMdtMNt73EglvFoKSq/TN6G/SuQU/+0bx+XR7LRWcnIdJCUusLGBd3htkkU+n9o8a1HnHRiCex1qq4FgnvudnBnyjcp0gCzgFdVsjiA7kCjP/oKShWDHnziRuvCvG26xYhxAZgExVVec1ie2dC/Oo1pLtEXy5vchgFLvDg24BGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772881420; c=relaxed/simple;
-	bh=sVNzSxlK1PzuAr8F/B4Bf+nuIbGcCC+LacFY6MERQig=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=CqiuI/Fydnsh+fiuSeRMp1VSJz+xn085pODqD57roLxz/SlCW5YyOPMPOJR4npMlHck7d0O/N+aiNJCbPMXOIdCLnDDsgEeOcPZGC1iCvYWS1CPnrgsKPNpW1fDRfInpIFforP3F8gTT2WaRJD942u8eZeuddMbTzPREzWwaGOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KfYWPFr2; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772898914; c=relaxed/simple;
+	bh=bh971L15rJ6CI+8b9I7ulSU8l63UC4yuq5IwC4BKYYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mmLGis0pFYIRmwJnvxHj5T4aye3+wiX0oFZAhaY2SifQysqPBvbXGcFu8do4uw3bh8PYiKXeXa43+XtrrVBlVH+QZdO2+s6NvMyYeGfB295a6x1UcOXzA1vYaQf5nGKDxA5KEVbl6TnP+x9/tnXPwcDUqgXevPcughrO5bEo7fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bitfnUol; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KfYWPFr2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gKq7Ur0o7o0fnfG6VoXbzm/WfSG13rcROPhghnkiHuY=; b=KfYWPFr2YVcrUXRrfluFTGbIdz
-	zfP6GrfPdxzliFEeNl0EUGmWfcyryLQacMv+YTvtqKM+3Q+OmiV3uNxunJFspWh1m+t5LJSKdtHKa
-	5SSGGFOgivZjhIs8Oz7PdmUD+OHCk7OBIipXu1cJyvlr0wg/KdAKgl0GOyE+LTB/RTYdRVSQWbnRa
-	kKbyPGq4M4yQAfjH19uHnoof+jyOD6Ac6/x7xUeO3omUaSgO3oLcQKAkPv82lpBdTfHGM091t6YwL
-	ajg8IJI6neZctZHkKSkCWx5qLsSNAfLWjb8Cw+Bv7tP4Wr+qBbecwLWjZey17tioABP4T/hLw+f9L
-	iR9IRxfg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:59388 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vypRE-00000000298-28R9;
-	Sat, 07 Mar 2026 11:03:18 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vypR8-0000000CSwb-3P3f;
-	Sat, 07 Mar 2026 11:03:10 +0000
-In-Reply-To: <aawFuXTVAgVOrw4k@shell.armlinux.org.uk>
-References: <aawFuXTVAgVOrw4k@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bitfnUol"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48375f1defeso76965095e9.0
+        for <imx@lists.linux.dev>; Sat, 07 Mar 2026 07:55:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772898911; x=1773503711; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W9oa0AHQoPurBACCzWUh4c9uWAceyEmwnMnCZmzmFq8=;
+        b=bitfnUoljGuZQ6rRRL2blrDONmbhDvMGEBh0TN2/k3BjvvjOJixL/pYD6kBXevAWG4
+         BqdDlGPgikFAqySGTamUlgv/frNP5ASUSo5VRichW18s+LyqDP5Jh1yOIsbSBDwLD/xw
+         jLiiqnfD5/ohUvDs7dhsWvX+Qy7gpQtnbMUz5LqH9KeqbmkTHrkyP4OGxD8qrDlbJlBI
+         ros0I9uY6Lew1zT5ET4SiKJ8wlzvXQMvn33huZJtEJdzjNkivRvYEh1VKxKvMzANokKl
+         yD3gc0Y4gDvm2+HLf71Xe+zFnr/4HnzBjN5Uguxo94SKW2FcSikgGMQkfwbgZ3si+eiE
+         L9ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772898911; x=1773503711;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W9oa0AHQoPurBACCzWUh4c9uWAceyEmwnMnCZmzmFq8=;
+        b=dTmbmIP/D6PuQK/AsnC4ghNB4dcHf2oDqRVrcXJYm5TJcMYuAHyiIaomXYxNIs9qwX
+         Z9JftUc0m14kB8g9k0r91OEPP4tT3HbLl+gxkqofMCXfWHXyi2JodwPw3cwClno6RQ7p
+         oObLzVTNMq3sxYZl9deaCCCXDx+pJizplKhuKilyTDJcMnLCYp1xGZYTmaVAxhR3lzb4
+         PhyGT3gnPx0MfO/K+Pl+pp2gUv1PYOOH+4Wo6PKywN1jSqPxOn9LnYy2ICNcIBcutU56
+         cEIXMf+i0AoRb6Bo83iihwEERvZ3LCE8GUdiNWVUVcCFf3a8XnQHp8LSWSD2JwyZp4pN
+         Mfyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXE/SO/XDlirydTuKBYgkADUFL2jtsXsbBqvW9jwhxaviWjwS2JbpQe7TyewZf2mcKZYPM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyM07HaVKW5vmFFabjP35Zqvd7oEQOqY1oQji2kUF3nymAclg51
+	dRqggFhsMt3+x+cSl6woG+u8GTeXmcX60EeT4sI5uOk+G0fxcjmG2KpW
+X-Gm-Gg: ATEYQzxsv/jdVTd7yVszkLxu8a9ITc6tTkDguEZ51P2UImo/LimpyfMYF2CQ+mZw3W/
+	alab5hx4SjxiQAcaU4tmzlg9SnSSNkMzT4mX0SrTu/4d/WVHlm0DqnIsL8iWtY36cnjAW1JaFPI
+	HHqmn17MVSi8m/9dhauOzN1wbOj7WAvSNxNFcQdap5F4mtAttJgmeIJYGn8Gwk5/rdEwgE5iWUt
+	yYapUypINURRfh0ucJiy2JZYRdv3XUeuc4hKz64XwieCu3puClcpqaUeJjqSgD9e2Dmk1uSc7In
+	ltqB4Gl9DX1nHle2iakPFE+Cre21F/BvL3Evjl6vbS/GmSg72aFmyVPqWWoT6BmNoVQcsIVUuOp
+	lduWhAWmB/61/MEW6ttAPz//SJKU+EdRGMBZ0s0DrtP/0fQ27duEbQJfrao6fh9DkXh/6xVW7JO
+	PHCpFaUFm03oAIm2CRShYAQeqbD4k0g3w7k7sZIlQZfq6D7h/donuRB6d61f6u/m/g7lNuPvg3f
+	lc6oQ7bpTsptUmDAz6k9jrpuw==
+X-Received: by 2002:a05:600c:c4a3:b0:483:9139:4c1d with SMTP id 5b1f17b1804b1-4852692c943mr101324685e9.14.1772898910962;
+        Sat, 07 Mar 2026 07:55:10 -0800 (PST)
+Received: from GLaDOS.lan (93-35-179-236.ip56.fastwebnet.it. [93.35.179.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48527681a3esm261097785e9.4.2026.03.07.07.55.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 07:55:10 -0800 (PST)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	s32@nxp.com,
-	Samuel Holland <samuel@sholland.org>,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Yao Zi <me@ziyao.cc>
-Subject: [PATCH net-next 7/7] net: stmmac: add documentation for clocks
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v3 00/11] arm64: dts: freescale: imx8mm-var-som: Align SOM and Symphony DTSs
+Date: Sat,  7 Mar 2026 16:54:36 +0100
+Message-ID: <cover.1772898346.git.stefano.radaelli21@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vypR8-0000000CSwb-3P3f@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sat, 07 Mar 2026 11:03:10 +0000
 
-Add documentation covering stmmac_clk, pclk, clk_ptp_ref and clk_tx_i
-in the hope that this will help understand what each of these clocks
-are for.
+This series aligns the i.MX8MM VAR-SOM and VAR-SOM Symphony device
+trees with the latest hardware revisions.
 
-There is confusion around stmmac_clk and pclk which can't be easily
-resolved today as the Imagination Technologies Pistachio board that
-pclk was introduced for has no public documentation and is likely now
-obsolete. So the origins of pclk are lost to the winds of time.
+The update consolidates the device tree descriptions to better reflect
+the actual hardware partitioning between the SOM and the carrier board.
+Nodes describing peripherals physically present on the SOM are kept in
+the SOM dtsi, while carrier-specific components are described in the
+corresponding carrier dts.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- include/linux/stmmac.h | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+The changes were tested on the latest VAR-SOM and Symphony hardware
+revision.
 
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 3521b88aa345..a9c0cb61dd50 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -300,10 +300,41 @@ struct plat_stmmacenet_data {
- 	struct phylink_pcs *(*select_pcs)(struct stmmac_priv *priv,
- 					  phy_interface_t interface);
- 	void *bsp_priv;
-+
-+	/* stmmac clocks:
-+	 *  stmmac_clk: CSR clock (which can be hclk_i, clk_csr_i, aclk_i,
-+	 *    or clk_app_i depending on GMAC configuration). This clock
-+	 *    generates the MDC clock.
-+	 *
-+	 *  pclk: introduced for Imagination Technologies Pistachio board -
-+	 *    see 5f9755d26fbf ("stmmac: Add an optional register interface
-+	 *    clock"). This is probably used for cases where separate clocks
-+	 *    are provided for the host interface and register interface. In
-+	 *    this case, as the MDC clock is derived from stmmac_clk, pclk
-+	 *    can only really be the "application clock" for the "host
-+	 *    interface" and not the "register interface" aka CSR clock as
-+	 *    it is never used when determining the divider for the MDC
-+	 *    clock.
-+	 *
-+	 *  clk_ptp_ref: optional PTP reference clock (clk_ptp_ref_i). When
-+	 *    present, this clock increments the timestamp value. Otherwise,
-+	 *    the rate of stmmac_clk will be used.
-+	 *
-+	 *  clk_tx_i: MAC transmit clock, which will be 2.5MHz for 10M,
-+	 *    25MHz for 100M, or 125MHz for 1G irrespective of the interface
-+	 *    mode. For the DWMAC PHY interface modes:
-+	 *
-+	 *    GMII/MII	PHY's transmit clock for 10M (2.5MHz) or 100M (25MHz),
-+	 *		or 125MHz local clock for 1G mode
-+	 *    RMII	50MHz RMII clock divided by 2 or 20.
-+	 *    RGMII	125MHz local clock divided by 1, 5, or 50.
-+	 *    SGMII	125MHz SerDes clock divided by 1, 5, or 50.
-+	 *    TBI/RTBI	125MHz SerDes clock
-+	 */
- 	struct clk *stmmac_clk;
- 	struct clk *pclk;
- 	struct clk *clk_ptp_ref;
--	struct clk *clk_tx_i;		/* clk_tx_i to MAC core */
-+	struct clk *clk_tx_i;
- 	unsigned long clk_ptp_rate;
- 	unsigned long clk_ref_rate;
- 	struct clk_bulk_data *clks;
+v2->v3:
+ - Add clock-names porperty along with clocks
+
+v1->v2:
+ - Moved phy LED configurations to symphony dts
+ - Added Wifi/BT dtsi variants for both iw61x and brcm legacy modules
+
+Stefano Radaelli (11):
+  arm64: dts: freescale: imx8mm-var-som: Move UART4 description to
+    Symphony
+  arm64: dts: freescale: imx8mm-var-som: Align fsl,pins tables
+  arm64: dts: freescale: imx8mm-var-som: Update FEC support with
+    MaxLinear PHY
+  arm64: dts: freescale: imx8mm-var-som: Add support for WM8904 audio
+    codec
+  arm64: dts: freescale: imx8mm-var-som: Add MCP251xFD CAN controller
+  arm64: dts: freescale: imx8mm-var-som: Update WiFi/BT with variants
+  arm64: dts: imx8mm-var-som-symphony: Move USB configuration from SOM
+  arm64: dts: imx8mm-var-som-symphony: Enable uSD on USDHC2
+  arm64: dts: imx8mm-var-som-symphony: Add TPM2 support
+  arm64: dts: imx8mm-var-som-symphony: Enable I2C4
+  arm64: dts: imx8mm-var-som-symphony: Enable PCIe
+
+ .../dts/freescale/imx8mm-var-som-symphony.dts | 225 ++++++++++-
+ .../imx8mm-var-som-wifi-brcm-legacy.dtsi      |  12 +
+ .../imx8mm-var-som-wifi-bt-iw61x.dtsi         |  45 +++
+ .../boot/dts/freescale/imx8mm-var-som.dtsi    | 366 ++++++++++++------
+ 4 files changed, 503 insertions(+), 145 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-som-wifi-brcm-legacy.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-var-som-wifi-bt-iw61x.dtsi
+
+
+base-commit: 37a93dd5c49b5fda807fd204edf2547c3493319c
 -- 
 2.47.3
 
