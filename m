@@ -1,77 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BC82066DE;
-	Sat,  7 Mar 2026 10:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC0318ECF
+	for <imx@lists.linux.dev>; Sat,  7 Mar 2026 11:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772881121; cv=none; b=XWSWwCMbLn7O5UFTl1YuOCJ8mb+FaAB91Qb+WQBw9ACm8ZHjONFzRT0gr9x28L/Mqc1Qetkrn71qXFv/Gbali46UlMsKP8s6TYbp8bQqUSsJ6kBGuZhP5ndNsVe5cFzE4NbHuY7DE2Gbz5ONqZzWN22Ps74wuj+RtbsE3ukQJOE=
+	t=1772881352; cv=none; b=qvG54qsd66EMsoNuzacS58FLfOSr/xPZuAY4lo7jZEPQIGFJP4kFDziAsC1tCPf0FPQzF1sCuOx6brkPvTYpmXB8fNPVWSiIntUn0Iw71QjiWPVGSNI2Dh2B9DxZm+mFjY/MkXRHAmR8ZBu8B3U638tZDwUcCEPr/yR+Jtazer8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772881121; c=relaxed/simple;
-	bh=Ionuc70jSLfmmprV1aKJDSZDnPZ8MojStxxeRXicepU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XtlTPi3n5PpDyD0a+NAIcX+5g3xBA+bxnTpZ/9gnB/19yHXlCjr5gV+AdWaRMAnvHXw1ey894+P2JIrn1CfWhAC8uqsZ6kb6gBOscp55EGngPYA2qoFKYEMYsbh5smiB8u55iGEriP0wfEuCBPeVNVcBmmOUZstEUyEdnRzL3RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEtEiiKp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772881352; c=relaxed/simple;
+	bh=53XapX2SdQM0kzJ82St/Nd+Klw4hiJZtqYA60YbvNdk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ROJW495hWByJa+l9AiB5gd8oF38SqdF77iPCT1siWUiJEvsHoqvk6cWlMk3e2u1pmetiSS3Ev0PD3k2hZBPemcF/DMlQaC5SorVDrHiOcogvE8T3OlByq8ipzhXCRyafbWs+O6kwkuDKQuwKUWg5sc72Y0pSI1kLh6THer0i2EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=SdgJq7HZ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEtEiiKp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D1EC19425;
-	Sat,  7 Mar 2026 10:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772881120;
-	bh=Ionuc70jSLfmmprV1aKJDSZDnPZ8MojStxxeRXicepU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dEtEiiKpAEb+n96mbEzQTIiREcREP+9eTE0PJRTbtZ2MiUPTEuJWT9is67QzMC/Se
-	 pobTAeI3jvSQ9zwppaiEEujN2WC0sMxtEDbDlo1ReLnZuF3bkz0Gi3q+cQyCHDTmBC
-	 lDY4MWZv6Ghwl3zUqxeQQskJRsakr4Xqq8ctanRTVBcEzKJ2j1ba+1FH5w4F2id2kg
-	 rdlCyQCoZUmwSn0iCC3tHZjijmyOoITEyQbYfTbP7Uuehk4LAwMYs9+kQvmvDg2b3X
-	 VDlDHcz6RNHQvk+a47trCID2LP3bqYeR+YZPklZanCVAbkTqwawGNaoxEj31Qv5L3e
-	 IxW6QLlzm6/Tg==
-Date: Sat, 7 Mar 2026 11:58:38 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Lucas Stach <l.stach@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com, 
-	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
-	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, 
-	Larisa Grigore <larisa.grigore@nxp.com>
-Subject: Re: [PATCH v4 3/8] dt-bindings: arm: fsl: Add NXP S32N79 SoC and RDB
- board
-Message-ID: <20260307-tentacled-antique-agama-e8a80b@quoll>
-References: <20260306161555.9000-1-ciprianmarian.costea@oss.nxp.com>
- <20260306161555.9000-4-ciprianmarian.costea@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="SdgJq7HZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=142mbsECCtXmYpR3GC+jVCceuUhe350k8xSDlqgPjOw=; b=SdgJq7HZDkthwcLffkabiqe7/L
+	sVRi0TWbOnfG4FDOdk9YshJkajdUpAuuaBVgEGoVXAkcGqZP9nWrJdUi4ElpaBfBaLYqh568xKrHK
+	dAyyfwXh4pXUJHcXZ5+WJ+BqL0QC8AnBGTxtJknaOpbZKPFt+Rgr4nnS0GEZ/x1s+R+OHeZK55PjP
+	OoHQvHcCCm9m3LQls+55nAc406l/5NFbNKqAxkYmo9WlNHs0b1jBfDS8vFCKIhhjY0o+fNop32W7I
+	yGSGolQz0MYaC7DYfbAdDyv77h00yLcnuGczzIVAhxpiXaSi9UB6KwamL1kDmPLUHXMUOWf0z0KAZ
+	jnXoCHPw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57216)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vypQM-00000000279-187T;
+	Sat, 07 Mar 2026 11:02:22 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vypQI-000000002KG-0k1L;
+	Sat, 07 Mar 2026 11:02:18 +0000
+Date: Sat, 7 Mar 2026 11:02:17 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
+	Samuel Holland <samuel@sholland.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Yao Zi <me@ziyao.cc>
+Subject: [PATCH net-next 0/7] net: stmmac: start to shrink memory usage
+Message-ID: <aawFuXTVAgVOrw4k@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306161555.9000-4-ciprianmarian.costea@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Fri, Mar 06, 2026 at 05:15:50PM +0100, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> 
-> Add device tree binding documentation for the NXP S32N79 automotive SoC
-> and the S32N79 Reference Design Board (S32N79-RDB).
-> 
-> The S32N79 is an automotive-grade SoC featuring eight ARM Cortex-A78AE
-> cores organized for high-performance networking and gateway applications
-> in vehicles.
-> 
-> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Hi,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Start shrinking stmmac's memory usage by avoiding using "int" for
+members that are only used for 0/1 (boolean) values, or values that
+can't be larger than 255.
 
-Best regards,
-Krzysztof
+In addition, as struct stmmac_dma_cfg is approximately a cache line,
+shrinks below a cache line as a result of this patch set, and is
+required, there is no point separately allocating this from
+struct plat_stmmacenet_data. Embed it into the end of this struct
+and set the existing pointer to avoid large wide-spread changes.
 
+Lastly, add documentation for struct stmmac_dma_cfg, and document
+the stmmac clocks as best we can given the driver history.
+
+ drivers/net/ethernet/stmicro/stmmac/common.h       |   4 +-
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c  |   7 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   |   6 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-mediatek.c   |   8 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-motorcomm.c  |   4 -
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |   4 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    |   2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  |   4 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c  |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c  |   2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |   2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac100_core.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   4 +-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |   4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 227 +++++++++++----------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c   |  11 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |  43 ++--
+ include/linux/stmmac.h                             |  93 +++++++--
+ 23 files changed, 239 insertions(+), 200 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
