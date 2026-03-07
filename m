@@ -1,74 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD0336892;
-	Sat,  7 Mar 2026 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0918327204;
+	Sat,  7 Mar 2026 10:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772879158; cv=none; b=eIqvG7XgdOaMvOoLt0j5ezgWsDwIp2EdZbEjHua3zv1ZGV8MIatPEM/8be0gw/kgzHaB6pcNZE8zsL1murKQrivOr9T90nUl4WxujxO/l/pJsujAC38GS+7v1NmVCg0vwsRWnep4ll1m3sPNRuSRckxAzGoi8+XEOx+XMOvaElg=
+	t=1772881029; cv=none; b=MT4kJemsM8BD6+N6YSqd5rC1BHB6p0WHbfP6VBZ2ExSGP6NFf7Fs6RgPqP2bWUo35U1R1o/Zpu/lfcJVea99giL7lp16ma8b3sxWxWI2fYu+W/m7aUeYhVD2Mx6cbuEBwqMx5k4Gf8tXkkT4S8lmw9I9fAj4s/Acyy3gMtezALo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772879158; c=relaxed/simple;
-	bh=gK0pRUM/Slfh1oiPmyu3lYsDR18Y7TIzAYUu4D4ldj0=;
+	s=arc-20240116; t=1772881029; c=relaxed/simple;
+	bh=DovIk0OvW87b8a1GeeXSGXxoenbkGtrgVNP6Cd7cLAE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aE/+tWDxXPBEy/HjsmJhOeR0aJCPyYO3Sc/GSuaYEQnAsFf4kB72xMMzVV1lzmZ7gIoD1iKTHNw3uV5Yu3z6VNj9YwkpeqJWgxX7ntKLYBBulUatj4K62oCVinEWrq1xcklAGx/K5Ypdk30fwnHSrTBHNfvJgF5J68KJpWzTc+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0Cac6S7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ms1AxEofEOOgRFUOUYpnCpYWTP1bKiAfl/KvATV6LoQjeyVNqT7kuMimFNmZL2J0iOtFZ3qvdN+oIAx4XP+uAP4jgnkJGrwicfiIbbGhH8TI2d1JqROXdjszvH9NzyHS6To9DXYtqJf8GoMsNZehyUB7rHYRQIqoiCI+jJkT8UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sFO/GhYi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0Cac6S7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DAFC19422;
-	Sat,  7 Mar 2026 10:25:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sFO/GhYi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C764AC19422;
+	Sat,  7 Mar 2026 10:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772879158;
-	bh=gK0pRUM/Slfh1oiPmyu3lYsDR18Y7TIzAYUu4D4ldj0=;
+	s=k20201202; t=1772881029;
+	bh=DovIk0OvW87b8a1GeeXSGXxoenbkGtrgVNP6Cd7cLAE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j0Cac6S7TyQb+E6Y2hSbXhG5N5uDfVrssvtttU324wBvcszTcCtHvLTTG6vhZAYq7
-	 wskyH5zr18JuTUiOMKGCzxZJNC30mVQa9uzgNH+81iLrwuTOS7AF+F1rg+Qcw90+J4
-	 Hup3d6KGjEoFHVj4LT2aRD+9kmz3xe5CPxlWzaTUcLe+k82X84Bj76ifbo8W1lksUv
-	 nSTMoq1tSEPXIuSTcFIfIHv5bK2Xol6mUMEI2LMojWPdFCTWxH27UDeFaF40KZilXu
-	 Et7B4BVoQTlXRPP6S6sInBPHaCZQhjZcsKbaAYTa3jYkRERSa3gTQIQbkmerjXe7ml
-	 UpoHRIhMOPjCw==
-Date: Sat, 7 Mar 2026 11:25:56 +0100
+	b=sFO/GhYiB3zwCdTMYkhDR0OMOKq0X95Kmkch+SCzSXhuP8qQlYvkupLYQgMumW7Ui
+	 s2dD7D/Qo+ILK0qaCWmI/9Ur0Mx+Bj7LDRkRmFZY/LMSXyI5ynMXXxrrZWSDPAOZ1e
+	 hKQbOk8QMTxYo+kn6p1KPqKrw/CxCdZQasvB9E5rFwPIon8bregOIztgabiPtf9G+o
+	 Rgxin8sHstUFmk2YSjc25cX9DPPCPXmpZZdBZlDVy3yPAZeozXNNARwOyysyMICs30
+	 S7Jxu8v1+xDbLpL0JxpCJxyZ4EAB5qVzRxtPhbCIUXpicVP8h03gDwcgk1itmmRIn2
+	 wn/mmOTMAbHEw==
+Date: Sat, 7 Mar 2026 11:57:06 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Keguang Zhang <keguang.zhang@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Shuang Liang <liangshuang@eswincomputing.com>, Zhi Li <lizhi2@eswincomputing.com>, 
-	Shangjuan Wei <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	David Wu <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v7 1/7] dt-bindings: net: qcom: document the
- ethqos device for SCMI-based systems
-Message-ID: <20260307-boisterous-tuscan-rat-1eb9bb@quoll>
-References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
- <20260306-qcom-sa8255p-emac-v7-1-d6a3013094b7@oss.qualcomm.com>
+	Thomas Gleixner <tglx@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Lucas Stach <l.stach@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com, 
+	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
+	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, 
+	Larisa Grigore <larisa.grigore@nxp.com>
+Subject: Re: [PATCH v4 1/8] dt-bindings: interrupt-controller: fsl,irqsteer:
+ add S32N79 support
+Message-ID: <20260307-stimulating-parakeet-of-science-ef1b78@quoll>
+References: <20260306161555.9000-1-ciprianmarian.costea@oss.nxp.com>
+ <20260306161555.9000-2-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,30 +54,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260306-qcom-sa8255p-emac-v7-1-d6a3013094b7@oss.qualcomm.com>
+In-Reply-To: <20260306161555.9000-2-ciprianmarian.costea@oss.nxp.com>
 
-On Fri, Mar 06, 2026 at 04:46:39PM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Fri, Mar 06, 2026 at 05:15:48PM +0100, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> Describe the firmware-managed variant of the QCom DesignWare MAC. As the
-> properties here differ a lot from the HLOS-managed variant, lets put it
-> in a separate file. Since we need to update the maximum number of power
-> domains, let's update existing bindings referencing the top-level
-> snps,dwmac.yaml and limit their maxItems for power-domains to 1.
+> Add compatible string for the interrupt steering controller used in NXP
+> S32N79 SoC.
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Reviewed-by: Romain Gantois <romain.gantois@bootlin.com> # For RZ/N1
+> The S32N79 SoC differs from the i.MX version by not implementing the
+> CHANCTRL register, but otherwise maintains the same programming model and
+> register layout.
+> 
+> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
 
-Can we drop half-baked reviews? Reviewing only that piece is not even
-possible, because it makes no sense outside of main change context. IOW,
-it's pointless review of nothing, if you do not actually review the main
-change impacting RZ/N1.
+Co-developed for adding one compatible string is a bit stretch, but what
+do I know...
 
-Also submitting patches do not really allow to apply reviewer's
-statement of oversight to inly part of the patch.
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
+>  .../bindings/interrupt-controller/fsl,irqsteer.yaml           | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-It's called Ack then. Use proper tags if one does not actually review
-the patch.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
