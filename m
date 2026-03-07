@@ -1,118 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312E5CDF1;
-	Sat,  7 Mar 2026 03:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0485E7DA66
+	for <imx@lists.linux.dev>; Sat,  7 Mar 2026 06:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772855013; cv=none; b=j3mpEWdUyoZxyR88NLSlIDRZ6OX2GMRebt4knPBITJnhlWgiFsWH0D6EndFsa6nUrfGHnaMZ2y37Zw86GJjDtpUqYTYVu4M7YVgGFP6BbKGRiqaueg3RLvQPPQcZZnuzDvu4ab8tCGKyr8g/O5ELuykESjVtFbCPJON1N1MPZp4=
+	t=1772864737; cv=none; b=IPJr78YLIL5AJaWw5PocoJ024cuDKdysqgw0AZk/gjj+ddmL8knT1V6fQh47gyA1zWlhnw51GnyB/4ZEUo6Z9mdw/JM2FD1ximLQeYBrY7ZyBUzRm6Fwwtlshhgr5peGD6h7UUAL2auivMjR4XgNmyXSABL+gPHgKdLiJcACKOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772855013; c=relaxed/simple;
-	bh=Npi1ivSwi9obv8U3L34yLEE92R/UJPUFNgtE+UQvMxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=alyaLMcqJ0JfYT1RYdJQQ3uJcFlxFUU1dZL7Me6SWNlxMhq5N3jn8DAeTHJTsH1HVrYVtgrfokJfSRHMZB2QIpNl5uAlW2APJb41KjI4451EHwnruE43CUpjZQy3/PGhzqXdNzPmjQ00rS/UO+H08zA3B6xYf9sIGELXQaZ4oEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eEu0t4Kq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772864737; c=relaxed/simple;
+	bh=7GXPB5tPIENL1r010383M94Fh8cc+1SaXwJPoDMp1a0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UYdZx6xwKvUzUKaerMCKUPbX6QFNYFBiOcLYC+bVJ9Mhe+xEDjko8U14kFYmSqyuXjEG82pfQjCHSepYpTlCT69fDVGrZLwgFEO4sjSIDqP9sxmpsJmtkadbkhVzwig+ZaUyBzLdp7V5HvRjhmHNQhhKqR9E9yrLw2xmunB6zw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZ7buHQj; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eEu0t4Kq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B574C19422;
-	Sat,  7 Mar 2026 03:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772855012;
-	bh=Npi1ivSwi9obv8U3L34yLEE92R/UJPUFNgtE+UQvMxI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eEu0t4KqV0RXFs7ptg/3zuFhP8YGOnn/jnZa56ETLQ7fgpNICTk8CQhJZpG4tICj5
-	 9RlrKYLlJyDOyDPNeBLR9i/IjqdNks26GRcxcCKRkytQCHcQ6FoDX/kaYfzkVD4I29
-	 VM9fiopVVkrFjgAsAsP4yJKaVHQNAk5h1pWtGezpWDjiDE/LERIK9Eu1Hdtj4vsLVN
-	 H0PIpltzVprS8RunFG2e2J+vtV+FW1P/lak0nG4JwecP2NkAj4/C1wWxjJb+/LP9AH
-	 GyW7ZvTZlWI7b0Tg++YRXjC6U4V+brYhXf+KEuvVmI7jGUkI3lB5LBJNCK9YPVYeb/
-	 PrBzkjLXUw4jA==
-Date: Fri, 6 Mar 2026 19:43:28 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
- <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Richard
- Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, Giuseppe
- Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Matthew Gerlach
- <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Keguang Zhang
- <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
- s32@nxp.com, Romain Gantois <romain.gantois@bootlin.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner
- <heiko@sntech.de>, Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
- <inochiama@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, Minda Chen
- <minda.chen@starfivetech.com>, Drew Fustini <fustini@kernel.org>, Guo Ren
- <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Nobuhiro Iwamatsu
- <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Maxime
- Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>,
- Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei
- <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran"
- <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu
- <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>,
- Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S
- <swathi.ks@samsung.com>, Bartosz Golaszewski <brgl@kernel.org>, Mohd Ayaan
- Anwar <mohd.anwar@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Drew Fustini
- <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
- linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
- imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
- linux-riscv@lists.infradead.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@oss.qualcomm.com>, Konrad Dybcio
- <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v7 0/7] net: stmmac: qcom-ethqos: add support
- for SCMI power domains
-Message-ID: <20260306194328.238d89ff@kernel.org>
-In-Reply-To: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
-References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZ7buHQj"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82989744ee0so2170241b3a.2
+        for <imx@lists.linux.dev>; Fri, 06 Mar 2026 22:25:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772864735; x=1773469535; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hV+qom7OsL2lmYdSGEPwQnrfWB7wQ9siJwxTvLW3avw=;
+        b=mZ7buHQjoV74aNVwHuASjR+kY9V1DtUP7rxaNCKpSuVydohZZttt5BSRTCDMNPUFDx
+         iyufwB5VoJgQVhy/UbRfxUoLgiFOEbhdGk+dTY9TJ2wS9cTPKNv9knJZKX7KM1Wb662E
+         lMf2h4Pod92pzCD2iMkjT37Y7H8BUt37kvvxxVERngjjbDpJdjClDSWlDq5daJ9XpPTa
+         4A4zG0cQzny/xtonwZbez0x1ICvXZ5WrsZgz7sOiYyYlgK/48z/MNHWL2ytAUbSlmcsV
+         hda1hPbyuPIljgMjfuaK0bMHZbxwoPJzPbWyBpm/BA2glYdMVxxQZ37Mc6nhJxynBYlz
+         UTRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772864735; x=1773469535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hV+qom7OsL2lmYdSGEPwQnrfWB7wQ9siJwxTvLW3avw=;
+        b=gdUfm2zoheM2+tTvZEdntkDaSr1fekzhEdlq3+9Ind+z2MBgWimMWQMgXLE29mjKRK
+         h1Z3Lcc5NfP8jirlfyatVXKFf91hzMVQ9127JqG5Ut9acnGEq8c8rLnznIJYHWDHH/YK
+         vmbRxdHUAX2Xb7WmOWO7CbTazQEKdzp8rxfLwwm7n23O0CVkZ81T9ORhACDntmcG6qp+
+         RY8o2+zqbbHQbsvnw3GlkPbZr/lzi0I4i/uedBU/RVMysLD27AC/EsRqT2rq+YRuxJwq
+         7pqpdxcwqFoMAekc1CT99K9BYYgayeriEWxkLseWoQv5q1EVhMDl7qXUHIu+mJvLdFTi
+         EdcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpFYYxXfD+Op8tlh450mpHNj6tfRcox2D8GQ5dSIhcL6U+HUmYs5aFufgDh/hJfN3CusY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwQN1pcNLtJaxFQsp0Da0OpkluaAyVYn2uEXmVbYUGlDK02bb8
+	8A+WrW+6U45R1/bE/oTUqGDxTBDAIR4x89vp7+GazkOQmQ8v//OkTjKS
+X-Gm-Gg: ATEYQzzENwVLceq3in2D8MQFm1/C6cq/tLC1qTXWvUzVwboyOrY5hQuJVIG9uKh677D
+	xR0OYjcvM9VNwyBPVV79hTg+csBF4Q2TOQCY0VU3tlzQN8DmKjJsRUVtr95Ykw+ktM9wONBaEe/
+	zJNUKAorsaMwrwV4s3livSufohlHJT+qCiHgWPZjk9NeD2n/jJqjYWQgZVnbReinEMvWcXT4vth
+	EWpcR8dfglCNI1fWGEawIehIiHvTCx2ItcfC2wfJ+BmZ00b9pC8rDHG6eYQIfSSQiblcD3IaRP4
+	EjlXHa1ukG3rJeanWHZgNi94sw3cZq7azuNgLsuGIS+s/J+QC30lkxZE+6CxKOvts6V99FQtqNS
+	3UOWHz8OqEG0wOU55rCI0L79MX/HWoV4vS5hhjbe5fpgYQaUEKeONNz1uvyd3ZMXVgCHNKhI0j1
+	87Ol7roRR2CxPzCckmz+E2uXREOZDKs9YXBWur+HxVIdjp+4AFwcviZW/sb4qocsDKzBv5dS4My
+	cfXiCvSbMH2Rz0y
+X-Received: by 2002:a05:6a00:c95:b0:823:edd:20b9 with SMTP id d2e1a72fcca58-829a2fa9676mr4591649b3a.61.1772864735289;
+        Fri, 06 Mar 2026 22:25:35 -0800 (PST)
+Received: from tower (c-73-37-64-97.hsd1.or.comcast.net. [73.37.64.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a4866a72sm3451754b3a.36.2026.03.06.22.25.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 22:25:34 -0800 (PST)
+From: Mark Adamenko <marusik.adamenko@gmail.com>
+To: linux-staging@lists.linux.dev
+Cc: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	gregkh@linuxfoundation.org,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Adamenko <marusik.adamenko@gmail.com>
+Subject: [PATCH] staging: media: imx: fix parenthesis ending checks
+Date: Fri,  6 Mar 2026 22:23:53 -0800
+Message-ID: <20260307062353.22069-1-marusik.adamenko@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 06 Mar 2026 16:46:38 +0100 Bartosz Golaszewski wrote:
-> Add support for the firmware-managed variant of the DesignWare MAC on
-> the sa8255p platform. This series contains new DT bindings and driver
-> changes required to support the MAC in the STMMAC driver.
-> 
-> It also reorganizes the ethqos code quite a bit to make the introduction
-> of power domains into the driver a bit easier on the eye.
-> 
-> The DTS changes will go in separately.
+Remove 4 checks for ending with a parenthesis by removing
+unnecessary line breaks, and forward declare a variable for a function
+call that would otherwise remain over 80 columns.
 
-Looks like it conflicts with patches merged last night, please rebase
+Signed-off-by: Mark Adamenko <marusik.adamenko@gmail.com>
+---
+v2: remove empty line
+---
+---
+ drivers/staging/media/imx/imx-ic-prpencvf.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-Applying: dt-bindings: net: qcom: document the ethqos device for SCMI-based systems
-Applying: net: stmmac: qcom-ethqos: use generic device properties
-Using index info to reconstruct a base tree...
-M	drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-CONFLICT (content): Merge conflict in drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-Recorded preimage for 'drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c'
-error: Failed to merge in the changes.
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-Patch failed at 0002 net: stmmac: qcom-ethqos: use generic device properties
+diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/staging/media/imx/imx-ic-prpencvf.c
+index 77360bfe081a..2339b59af7b0 100644
+--- a/drivers/staging/media/imx/imx-ic-prpencvf.c
++++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
+@@ -315,8 +315,7 @@ static void prp_setup_vb2_buf(struct prp_priv *priv, dma_addr_t *phys)
+ 		buf = imx_media_capture_device_next_buf(vdev);
+ 		if (buf) {
+ 			priv->active_vb2_buf[i] = buf;
+-			phys[i] = vb2_dma_contig_plane_dma_addr(
+-				&buf->vbuf.vb2_buf, 0);
++			phys[i] = vb2_dma_contig_plane_dma_addr(&buf->vbuf.vb2_buf, 0);
+ 		} else {
+ 			priv->active_vb2_buf[i] = NULL;
+ 			phys[i] = priv->underrun_buf.phys;
+@@ -704,11 +703,9 @@ static int prp_start(struct prp_priv *priv)
+ 	}
+ 
+ 	if (ipu_rot_mode_is_irt(priv->rot_mode))
+-		priv->eof_irq = ipu_idmac_channel_irq(
+-			ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
++		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
+ 	else
+-		priv->eof_irq = ipu_idmac_channel_irq(
+-			ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
++		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
+ 
+ 	ret = devm_request_irq(ic_priv->ipu_dev, priv->eof_irq,
+ 			       prp_eof_interrupt, 0,
+@@ -750,7 +747,7 @@ static int prp_start(struct prp_priv *priv)
+ static void prp_stop(struct prp_priv *priv)
+ {
+ 	struct imx_ic_priv *ic_priv = priv->ic_priv;
+-	unsigned long flags;
++	unsigned long flags, timeout_in_jiffies;
+ 	int ret;
+ 
+ 	/* mark next EOF interrupt as the last before stream off */
+@@ -761,9 +758,8 @@ static void prp_stop(struct prp_priv *priv)
+ 	/*
+ 	 * and then wait for interrupt handler to mark completion.
+ 	 */
+-	ret = wait_for_completion_timeout(
+-		&priv->last_eof_comp,
+-		msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
++	timeout_in_jiffies = msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT);
++	ret = wait_for_completion_timeout(&priv->last_eof_comp, timeout_in_jiffies);
+ 	if (ret == 0)
+ 		v4l2_warn(&ic_priv->sd, "wait last EOF timeout\n");
+ 
+-- 
+2.53.0
 
