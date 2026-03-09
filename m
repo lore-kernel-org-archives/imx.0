@@ -1,65 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3829364024
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 08:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892B92EE608
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 08:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773043778; cv=none; b=mdW65dh8n6UBjDyZP75HAM60zqHSnih0Bi3DWOm4LXcFa1vLtk0S3Zf9kqArPZOD+nKYCX3TDFsM4xmT6Ge9rjEFBp9paHvmd7lW7ujjxupzG3jlbV05Zg2ZFdlUJe/QPph/sc2m8/TCXWS9vegwPR39tRza3wyHGBckusfrqJo=
+	t=1773045564; cv=none; b=G9mBN9nQElxTFBC+uOU757+W5qfutv2uEeBaJtb4rO8127XJmRywo+Ly/zlL56glVR/SOyxpHYSYPTbbrJOwR7vNne61BnTsYf464R+9E92o5FKcyMda6msk/cfFI0ujD9iMGdR6uYzVnvEWhMtFmpVsUIw7GW7MckdhxqlQncg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773043778; c=relaxed/simple;
-	bh=WTBs7NOH3cvbVsDdAXXgD8yqzjMwmfcGEXYOhY1BLQ0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=okh5kLL5lPE2KnslYMpwLeEYPtGi99L9seah44sXdtqzUTW4w+WSgeZLIJiUXGmLMWuTKM/4opRrhhP/rh9MhBf0ASSRCrQGMzv79jNODTw5tsZ6f+QDe4aXgpc3Uots2N04A4C3gVvH53s0oL94purZ0gfesbLc0W5aYMeaSZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vzVgE-0001rh-A0; Mon, 09 Mar 2026 09:09:34 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vzVgC-004Uqx-2H;
-	Mon, 09 Mar 2026 09:09:34 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vzVgE-000000002Xj-08Zg;
-	Mon, 09 Mar 2026 09:09:34 +0100
-Message-ID: <40a03c2851678fc12fcb0e57f4048d6062e124aa.camel@pengutronix.de>
-Subject: Re: [PATCH] staging: media: imx: fix parenthesis ending checks
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Mark Adamenko <marusik.adamenko@gmail.com>, linux-staging@lists.linux.dev
-Cc: slongerbeam@gmail.com, gregkh@linuxfoundation.org, imx@lists.linux.dev, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 09 Mar 2026 09:09:33 +0100
-In-Reply-To: <20260307062353.22069-1-marusik.adamenko@gmail.com>
-References: <20260307062353.22069-1-marusik.adamenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1773045564; c=relaxed/simple;
+	bh=lmhRRii9BO7pCks+UXBWncpJDHHvOFHDr/1FU5tS2Dc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dTl/tKabmi3IaCKDcMfWc/YrZhqEdoWk5zDI2t6CokxfsTFgKMwJdah4eZbuMpLULMvjtHv7Qd/ivMdbWuUT3vM4v2C3aWrqvMCQgRFi3lizYjpm7cp78o8uI8rFDZ6LOiPlJylwUzQWNK4JSrsPh+0JgU4VQ+pI+2WOyp7x3Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q76Colmk; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q76Colmk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B0EC2BCB4
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 08:39:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773045564;
+	bh=lmhRRii9BO7pCks+UXBWncpJDHHvOFHDr/1FU5tS2Dc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Q76ColmkRyDJvbq8gxyZoJGgf3AxHslBV45kyyn65Qq5cBxmbhJe86SXjizD2cyIh
+	 Xgq7M+lMnWtNQ1vJnYb1nPh35Q/BMP2danCElMzBtdZaop97cbNOzrgMRYUTNt3CY7
+	 ghyNh0MZLpNOh5FADHh21tK0Royny/naY6EPSPXDwMnhW2fN448wI29I+ZZcpKC1dL
+	 ElNj6Foxoszn//lDzPUdappb00Svjk5EhCnYmYXsbBmeEGw6IYdIIF3v8iePl0jXdj
+	 dqhAQoAxOOBrkTX7+jiEQ48ZdretEjEsBWIPhzFJ2UP6V/fO86n3oLXVcTenb75TLV
+	 KpRqLgYMTCSmA==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3870778358aso114489581fa.1
+        for <imx@lists.linux.dev>; Mon, 09 Mar 2026 01:39:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVuYPZQ1pymB/QJxdDeQRqu0xQWaPatJEeqlpMNjcAI3jtmn3tSqZNKL0Tp1PV2CsOUfr4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwL9k9o37iHDOoB/63tvn8rM1VeekueFwMNR0Uv3rdTcxHv9cDE
+	s8MF8wLMdcakWs11/pPbs+7USiRpuKw0QBiOpvYWJMCNAjsxoetLOGcHIAy+zg82wOsRaBcMah3
+	5TBukUdLAyeARI17XnmM0z64DmzK91zLVOFqtoWR7zQ==
+X-Received: by 2002:a05:651c:892:b0:38a:b18:f41e with SMTP id
+ 38308e7fff4ca-38a40b4bca5mr35053151fa.6.1773045562416; Mon, 09 Mar 2026
+ 01:39:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+ <20260306-qcom-sa8255p-emac-v7-1-d6a3013094b7@oss.qualcomm.com> <20260307-boisterous-tuscan-rat-1eb9bb@quoll>
+In-Reply-To: <20260307-boisterous-tuscan-rat-1eb9bb@quoll>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 9 Mar 2026 09:39:10 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MeeHP_ZjhOHu5NNLCU6Cg59EAWQAS0JngEHDQkmcDH3HQ@mail.gmail.com>
+X-Gm-Features: AaiRm50wcU1Efh35HOluVCqu3-5afwUUXiIKPiOPr6mPL4PpMSQ1J-X9POGllS8
+Message-ID: <CAMRc=MeeHP_ZjhOHu5NNLCU6Cg59EAWQAS0JngEHDQkmcDH3HQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 1/7] dt-bindings: net: qcom: document the
+ ethqos device for SCMI-based systems
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Romain Gantois <romain.gantois@bootlin.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
+	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
+	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
+	Samin Guo <samin.guo@starfivetech.com>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fr, 2026-03-06 at 22:23 -0800, Mark Adamenko wrote:
-> Remove 4 checks for ending with a parenthesis by removing
-> unnecessary line breaks, and forward declare a variable for a function
-> call that would otherwise remain over 80 columns.
->=20
-> Signed-off-by: Mark Adamenko <marusik.adamenko@gmail.com>
+On Sat, Mar 7, 2026 at 11:25=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On Fri, Mar 06, 2026 at 04:46:39PM +0100, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > Describe the firmware-managed variant of the QCom DesignWare MAC. As th=
+e
+> > properties here differ a lot from the HLOS-managed variant, lets put it
+> > in a separate file. Since we need to update the maximum number of power
+> > domains, let's update existing bindings referencing the top-level
+> > snps,dwmac.yaml and limit their maxItems for power-domains to 1.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > Reviewed-by: Romain Gantois <romain.gantois@bootlin.com> # For RZ/N1
+>
+> Can we drop half-baked reviews? Reviewing only that piece is not even
+> possible, because it makes no sense outside of main change context. IOW,
+> it's pointless review of nothing, if you do not actually review the main
+> change impacting RZ/N1.
+>
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+This is the first time I'm hearing we can't review individual parts of
+changesets? I see your point about this particular patch and the fact
+it only makes sense as a whole but is this the official policy for
+parts of larger DTS patches?
 
-regards
-Philipp
+Bart
+
+> Also submitting patches do not really allow to apply reviewer's
+> statement of oversight to inly part of the patch.
+>
+> It's called Ack then. Use proper tags if one does not actually review
+> the patch.
+>
+
+I need to resend anyway so I'll drop it. I may also drop the two
+hundred addresses from Cc b4 added. :)
+
+Bart
