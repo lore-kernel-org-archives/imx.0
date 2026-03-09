@@ -1,158 +1,120 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18F2376BE1
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 09:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394D361664;
+	Mon,  9 Mar 2026 09:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773047576; cv=none; b=uXG9MqJZFJQJ1gkIDvtkRJnb3R1wDhhu+OhiKOKWvPR1aZJ0eyuT75vJWDG8ThuZdW2Rs9m7avL00uMhAQyHFysrInb75XwbU/C5QTB66Ja+1046JMMMDDNFQHsYug4bbBFwcKG0OAGSRfdgb3Fe4MxT/eUdNybvnudR+NnsZAk=
+	t=1773048215; cv=none; b=P85i06L0iygibaqPT/fgZ6HtrEzB0r1FOQPVHfDm4z5uEB4OX8hd8TCL/6FJX+8Zfd0GWAil/dTo8kjSZyKuZIAvMSuiJjdLU0xJF/F3s928108gkgvpx6SAlHqfFDbysTfuXkDGxPbftk+M5PHQ/EezNaEN6+PulD0aqL7R7Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773047576; c=relaxed/simple;
-	bh=XU/OZsnAkXJsAREhmH0zo/e2f3R9pWNOu/At/zSzQSU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=taoh1fG1oO603wkUrBw7leR8jPDioHckXwfiCutq3aBkBAR11uN3gWUTzKcCzwIbpN/NUcV4bZ3WKEFcL26PvL2sN9+LdfTtgCMrnzL0tQJudXIvgGF8fkbwz7bhIuK43ewB3e2DcPmYn1wX5EW6jqvzFHRP9tLAFHxcFWXkwyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=cVZaBhmg; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1773048215; c=relaxed/simple;
+	bh=HdpYv+AK/YGT3wtX9pT1P3XlHW6w2YeAT+IqCsoGv0s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jxhjeZLhkJnno7x0LZTAnOopmEjI6ExDTm7BdXSu+QgCNfUsfmK9icocHMpJ7I2X919u8oinOYUtg5PElruKICjIc42kbAxInjlWRzMIlfCuF9X+F12I9xOH9l8YT0limSHiOX9BXLTkYe9YPoGlm+TJJb05gj7spAHGW2zITzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVoNSA6V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="cVZaBhmg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1773047573;
-	bh=XU/OZsnAkXJsAREhmH0zo/e2f3R9pWNOu/At/zSzQSU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cVZaBhmgCJEZXkbimKfFG584G5rKotRs3MKd0Ejg91SDHArdz4fp+TqxhGWXvvGGi
-	 Mn5a3f62I9ybOGiAjEmUU92MSBK1/ywM6tt/Oat3z+Ojp0tdMnqLcYgOwj30cAfVn5
-	 hP0+UVMjULwU5/cfF6+6fT2hLn99ANuKNDm0qMTBnn9MRPaAFTUHP5cNmrYi5xLbki
-	 bYgEr1yLrjhByTwlYAvLXKv8aWRLicyPMUVF4EFQPVcCeCxwih8zKoOVb0k8RPo4AE
-	 SKPcXqlaXs2nvcyChFwtvJs/FqMyz77EsJAk4M9vfi1GIRNMTLNrgqQ0YpytRmUhew
-	 8khXgb1tqisVA==
-Received: from [192.168.1.39] (82-65-172-229.subs.proxad.net [82.65.172.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: aferraris)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D94EC17E01B1;
-	Mon,  9 Mar 2026 10:12:52 +0100 (CET)
-Message-ID: <0b3b80ac-5cc2-4c19-a8f1-b8b44992eec4@collabora.com>
-Date: Mon, 9 Mar 2026 10:12:52 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVoNSA6V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC431C4CEF7;
+	Mon,  9 Mar 2026 09:23:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773048214;
+	bh=HdpYv+AK/YGT3wtX9pT1P3XlHW6w2YeAT+IqCsoGv0s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=hVoNSA6VbeUuOvEG/YRgGoQiIZ14lpU77V6B1mvJhk/nFVFKx9hcsVlGxBF2N/gwf
+	 xc2YpBcFA0BeItIW0YP1PQano5iDKE84YGZ8/Ki+izwCfu98+Pnqrolkv4SjPKT15v
+	 mXIv6Nf4GrhBbpMA/3JHI81W+mDbkShlX0ApQaoI+i1P/QpU4W3JwzBVToVDPOb5Cd
+	 CrF1FcH3OGqlAleb8yIczwiMoM8y9nDA05Si4T9Qz65xRwWIVe6E+k1itqqzUm+KEZ
+	 tychkPaNiQlcquXMPOY0uANFx5DKElbbLnh92GcRPqy98Dr/rZhkzK+E2j1javF4Ry
+	 w+UNDjKzdUAfg==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Frank Li
+ <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter
+ <adrian.hunter@intel.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach
+ <l.stach@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mmc@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, s32@nxp.com, Christophe Lizzi
+ <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo
+ <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, Ciprian Marian
+ Costea <ciprianmarian.costea@oss.nxp.com>, Larisa Grigore
+ <larisa.grigore@nxp.com>
+Subject: Re: [PATCH v4 5/8] irqchip/imx-irqsteer: add NXP S32N79 support
+In-Reply-To: <20260306161555.9000-6-ciprianmarian.costea@oss.nxp.com>
+References: <20260306161555.9000-1-ciprianmarian.costea@oss.nxp.com>
+ <20260306161555.9000-6-ciprianmarian.costea@oss.nxp.com>
+Date: Mon, 09 Mar 2026 10:23:31 +0100
+Message-ID: <87jyvls6ek.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] usb: roles: get usb role switch from parent only
- for usb-b-connector
-To: Xu Yang <xu.yang_2@nxp.com>, badhri@google.com,
- heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
- dsimic@manjaro.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, jun.li@nxp.com
-References: <20260309074313.2809867-1-xu.yang_2@nxp.com>
- <20260309074313.2809867-3-xu.yang_2@nxp.com>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Content-Language: en-US, fr
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- L9jD4jU=
-In-Reply-To: <20260309074313.2809867-3-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-
-
-Le 09/03/2026 à 08:43, Xu Yang a écrit :
-> usb_role_switch_is_parent() was walking up to the parent node and checking
-> for the "usb-role-switch" property regardless of the type of the passed
-> fwnode. This could cause unrelated device nodes to be probed as potential
-> role switch parent, leading to spurious matches and "-EPROBE_DEFER" being
-> returned infinitely.
-> 
-> Till now only Type-B connector node will have a parent node which may
-> present "usb-role-switch" property and register the role switch device.
-> For Type-C connector node, its parent node will always be a Type-C chip
-> device which will never register the role switch device. However, it may
-> still present a non-boolean "usb-role-switch = <&usb_controller>" property
-> for historical compatibility.
-> 
-> So restrict the helper to only operate on Type-B connector when attempting
-> to get the role switch from parent node.
-> 
-> Fixes: 6fadd72943b8 ("usb: roles: get usb-role-switch from parent")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Changes in v2:
->   - new patch
-> ---
->   drivers/usb/roles/class.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-> index b8e28ceca51e..edec139b68b5 100644
-> --- a/drivers/usb/roles/class.c
-> +++ b/drivers/usb/roles/class.c
-> @@ -139,9 +139,14 @@ static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const cha
->   static struct usb_role_switch *
->   usb_role_switch_is_parent(struct fwnode_handle *fwnode)
->   {
-> -	struct fwnode_handle *parent = fwnode_get_parent(fwnode);
-> +	struct fwnode_handle *parent;
->   	struct device *dev;
->   
-> +	if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
-> +		return NULL;
+On Fri, Mar 06 2026 at 17:15, Ciprian Costea wrote:
+> +/* SoC does not implement the CHANCTRL register */
+> +#define IRQSTEER_QUIRK_NO_CHANCTRL	BIT(0)
 > +
-> +	parent = fwnode_get_parent(fwnode);
+> +struct irqsteer_devtype_data {
+> +	u32 quirks;
+> +};
 > +
->   	if (!fwnode_property_present(parent, "usb-role-switch")) {
->   		fwnode_handle_put(parent);
->   		return NULL;
+>  struct irqsteer_data {
+>  	void __iomem		*regs;
+>  	struct clk		*ipg_clk;
+> @@ -37,8 +44,22 @@ struct irqsteer_data {
+>  	struct irq_domain	*domain;
+>  	u32			*saved_reg;
+>  	struct device		*dev;
+> +	const struct irqsteer_devtype_data *devtype_data;
 
-Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+The struct was perfectly tabular formatted before....
 
-Cheers,
-Arnaud
+https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#struct-declarations-and-initializers
+
+>  };
+>  
+> +static const struct irqsteer_devtype_data imx_data = {
+> +	.quirks = 0,
+> +};
+> +
+> +static const struct irqsteer_devtype_data s32n79_data = {
+> +	.quirks = IRQSTEER_QUIRK_NO_CHANCTRL,
+> +};
+> +
+> +static bool irqsteer_has_chanctrl(const struct irqsteer_devtype_data *data)
+> +{
+> +	return !(data->quirks & IRQSTEER_QUIRK_NO_CHANCTRL);
+> +}
+> +
+>  static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+>  				      unsigned long irqnum)
+>  {
+> @@ -188,6 +209,10 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
+>  
+> +	data->devtype_data = device_get_match_data(&pdev->dev);
+> +	if (!data->devtype_data)
+> +		return dev_err_probe(&pdev->dev, -ENODEV,
+> +				"failed to match device data\n");
+
+No point for this line break. You have 100 characters. If you have the
+line break, then this needs curly brackets. See the bracket rules in the
+above linked document.
+
+>  static const struct of_device_id imx_irqsteer_dt_ids[] = {
+> -	{ .compatible = "fsl,imx-irqsteer", },
+> +	{ .compatible = "fsl,imx-irqsteer", .data = &imx_data },
+> +	{ .compatible = "nxp,s32n79-irqsteer", .data = &s32n79_data },
+
+Tabular layout please for readability sake.
+
+Thanks,
+
+        tglx
