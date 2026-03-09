@@ -1,191 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74583D3D0F
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 14:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773067181; cv=none; b=FFo1sBdfyNtrj2TQ9K+mcn/PRQuKSC1Wq15+q/wYLyveSRAxR5q1rZnCxIY45yXbxbdvjY6UdKMwA+AQqk+nPxS3DdBkvM+fBgI5FYHgodCM5yH9Lmz1BDdR3HOWr0tk5AeDFi7xyCnNKEeKat/gZkXA31Zr1GpNElChaJ5wc5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773067181; c=relaxed/simple;
-	bh=GIQeCWpXzFUtNJp/mJUZgo1pJ+8bxueWsKYYeUgP+vk=;
-	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=AkzNc98a55bL3cG+vgTXEbvbYOt7yQ3hD4W57Xd6g9MIXO5mZgZdQ1ODfcJyLWizhrrpTE9AEQmOSjV1hkTkdfR7zD0lNioOUWzxOm7wLI06QjpctjDwI3hPQtmW+B6qSFcL+UfM6b6lYtqDJnD7PcrJuMlpMYiRdyA+knmqYQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BUQ8cjP0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363FA346E55;
+	Mon,  9 Mar 2026 14:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773067385; cv=fail; b=gUbU3C+Mn0CgDwZA+wyY+1RN+1Qyxr0HchM7jjzzCxEUu7I9fhuXNQo4+5UmtAb4zr9dg0y6+16YDpISdtGtoLVrubHatJ1RS4z/CHVvhIzDgU4cgfftWzL9WKrm5w9ImVQo6JWrVinzdNVfIMZg8GfMGrw6S9s735ui+TGecCA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773067385; c=relaxed/simple;
+	bh=XYbpFbfmsnRwiKWE+vHOm1ux5YGidMg50oGQHJh63ZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ovqPawtpd2ktZV304VfJGFtSOGyvTaV0HpX9Qc57voq8zw00HG+ZWRBVW16FMHjrQCxzJT7iqFazZ+xiikgPzhVlLe9g7xqQc07bZGNkbMDB8K7JpCYLzh1T2B9HZfDmfNpmJCeQCEH8AoI2pqBzuEDnRB6GZwi2hKCE8lOdc+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nbnXOE5/; arc=fail smtp.client-ip=52.101.72.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BUQ8cjP0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773067175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FJJogOm7mAlsex83R1hkauB1mXrgfQo2P5H45OLn0pU=;
-	b=BUQ8cjP0OtevqaMKjUy13bCjoVIgCbAytsjJ5QOOMLK1amz0NnKCcwFzZEdIwGkyryT+yV
-	UA6m2QkCrDoXGkC7j4xYhA+ln8tTtL7uv8zKOe1Cue6h2kPJZw95tbKAa5ffYo4jrHUy72
-	vCBJG2HW+6EkKmsc2avGEPzfJgrJFgc=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-DIU4An9hOg28CSzrCFF5xQ-1; Mon, 09 Mar 2026 10:39:34 -0400
-X-MC-Unique: DIU4An9hOg28CSzrCFF5xQ-1
-X-Mimecast-MFC-AGG-ID: DIU4An9hOg28CSzrCFF5xQ_1773067174
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd7fc27cf7so851781985a.1
-        for <imx@lists.linux.dev>; Mon, 09 Mar 2026 07:39:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773067174; x=1773671974;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FJJogOm7mAlsex83R1hkauB1mXrgfQo2P5H45OLn0pU=;
-        b=QntnjvDWnkmFOTo0+vLAGxkV09BSIUL5ziKKmKmHKmGzdVfvajJNEOGlSx97LxLvUs
-         u8L8gWmkPU1psRkkseq2louC/X94nbZ49FxAB/eNJ5HlLs1nJP9/BDRqO+5dIkEl+3ZO
-         xh6XwCXWodV0bewX+2EoGyfaoFnqv8nLLXNBt3BZ5OORynvaGRt23dW6XDxvkc4fDxmM
-         xaA2XeSOOzAQlQcHMNjbxb2GoDSgqV8XeZkQxKRDAczMnpUstwgBcet86BhvHcfv7yhu
-         1oAZYryEWLg3G9d4l8fHkZSBBtMvoHF/O9Emw3WJtn6ZPndMLZfBHaElpcP0SBl7fQ6X
-         u6Yg==
-X-Forwarded-Encrypted: i=1; AJvYcCXG1wJoMAfH+l6Eb8PapAp+C8frZc2DtSO9/3I0H9Lgh+gdIR5x8Xw9aUIlaTUG25Xg5d4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzer6M+tgFuOc1UFsS+z1pfVt52IbGmCIvQL6hdLKg7sZjuVYzU
-	aXsQtNeoE8y4d8lYBQXxWcZgXQPqms3zVNlHdZ0RH4+fNR+lYB/ds3OtG+kMuyIrjikoQ+9LBpF
-	7VXh6dNw9c9KBjxrEvm5oD0K+3xSdwS1H9IjujkhUnFyX0Z7HChegTg==
-X-Gm-Gg: ATEYQzx2aDy4oYPRoAG63WxAoTKGWifaMOBrVaOjSAsZR0fLk/Fjav+lamcPKvLxhdk
-	e51JL/zSkNGlSXVJKGsDLSwfUyvp/Cr52+Yw/voyXJqvs7fjS4SyZQjsQUp6mjfJs34hns8nqAd
-	moDMsGQwviTbBZdv6XJfA4ytuxSBh94DUj0MZSw42IGhUKLL3FBtrY45sxspEU4THutY6jNtTyO
-	9cI2+jYglP34lAVf1VLhHpGXI0EMER5/n8xc5giG1ZvReVg4kLwi5emlpYMyVgphQZ0FrxCbA9L
-	ZJaF6wyWzxJTdrfBCwOzsOQXK/AgTo21cAZ6jVmHa/4bEXd9FlEl4NwZPjm4iZT3ixwSlX2JuTq
-	5zpyhiVgr1Bw3Ra+Rw9rhrC5vhdGoad3aqE8/0nYduDr7cHZ7l6XqwmRUOL8C4Q==
-X-Received: by 2002:a05:620a:bcd:b0:8c9:ebf3:7623 with SMTP id af79cd13be357-8cd6d3847f8mr1387163685a.20.1773067174183;
-        Mon, 09 Mar 2026 07:39:34 -0700 (PDT)
-X-Received: by 2002:a05:620a:bcd:b0:8c9:ebf3:7623 with SMTP id af79cd13be357-8cd6d3847f8mr1387160185a.20.1773067173790;
-        Mon, 09 Mar 2026 07:39:33 -0700 (PDT)
-Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd6f49fcafsm756064985a.16.2026.03.09.07.39.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 07:39:33 -0700 (PDT)
-From: Brian Masney <bmasney@redhat.com>
-Date: Mon, 09 Mar 2026 10:38:46 -0400
-Subject: [PATCH v2 07/12] clk: imx: scu: drop determine_rate op and use
- CLK_ROUNDING_NOOP flag
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nbnXOE5/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tYm5HTL2NuBEYs88TDtzIYw8P7DH3KufdD5BXu/y5ddHW+uA8TGlezwf45h++sN3cCQWS4/xCvw1kt9Q9Uz5RzKWy3jqJHBbD9YhavMUHjAutL1tUoG0WnnuNZdus2ZfjhWlNAHAWJsqxyeXBerQCni30JT341cwMNwBhqIMsd4PYCB91rFg4bWKmC3PBT54Sbyf/MjTLLVN1bUlhfMRYxUuyEvztsmAfjMzH0P0HVib652niyStZGwZuUZtq8C9W6/f9mcGSsJrUEysXRGJKb3KxiMZNogLlXajOodAZ2NslEwbpa+WKLdwcDRXsZmpYLKVj5VA3Yngn5eyMsWDeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KWVo1TJT3MQBKOWl7Pad2WNZ0erW4Q2tJQx83FA9H48=;
+ b=tXkJAt9A1yA28uYEVbcATrfh6LhyBccQqbhMhA1cWeFbmXkrO3Rj4Qs/c7KtfnFvhHPu92/exkwyKIotEs+3RUu18iQNxhz0kpdEXhZ68D/vMGWt7wMGj+p9rzLyLBdXospS4Txvt/3FW7bCrxXjVrYnYybSCasDi1y0FXpcHV5k/8Wd3LxoEK4alUFYv1bfPOrkFkXWPp//GAEWd/I4cmJc44Kv/mTWzvTUccnJnuU9dzPomogGid8Cjcl6aUS60YNGmT8IMI6gSV985S7l8a19OWUCbz7KhRY/4MVauk7ky3YzaBgANzuGcstFwzuaTQHlexR4lf+defL6NTRtaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KWVo1TJT3MQBKOWl7Pad2WNZ0erW4Q2tJQx83FA9H48=;
+ b=nbnXOE5//q3a92bTity49kCPTAiX5PE7MFoypZNgaILYdeM4jfXourHVpUEI6neQeFXCrot62XJBt1UHc0knV8B/+hvUDi98vnPN4tMVAx8W5M876SicpIXOLldGfpVFpi9+F9O9WqbmWb+vuncGLJHZGziiMr0vZnLFKiOlfu/R4uyvnxMa9Qi4u9hsd1D4tM2uTyBpLLITjGjj51Jfs6PymyTHnK+jdcaCE0956411M7a7BrnFE+3fiGcgSyX2cpCk1jxD1aBqlTBoEj+cHEgyieOjjyUJOXyk8MtiQvsLGV+CO4NH7HFDDhRMTZloOFefZZLdIb52yn2rs2G8Jw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PAXPR04MB8224.eurprd04.prod.outlook.com (2603:10a6:102:1cb::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Mon, 9 Mar
+ 2026 14:43:00 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Mon, 9 Mar 2026
+ 14:43:00 +0000
+Date: Mon, 9 Mar 2026 10:42:52 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/8] dmaengine: Add API to combine configuration and
+ preparation (sg and single)
+Message-ID: <aa7cbL-B5sbjZr_l@lizhi-Precision-Tower-5810>
+References: <20251218-dma_prep_config-v2-0-c07079836128@nxp.com>
+ <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
+ <aa6pW-zpxnrZnfPn@vaman>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa6pW-zpxnrZnfPn@vaman>
+X-ClientProxiedBy: SA1P222CA0198.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c4::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20260309-clk-det-rate-fw-managed-v2-7-c48ef5a3100a@redhat.com>
-References: <20260309-clk-det-rate-fw-managed-v2-0-c48ef5a3100a@redhat.com>
-In-Reply-To: <20260309-clk-det-rate-fw-managed-v2-0-c48ef5a3100a@redhat.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Brian Masney <bmasney@redhat.com>, Peng Fan <peng.fan@nxp.com>, 
- Abel Vesa <abelvesa@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2909; i=bmasney@redhat.com;
- s=20250903; h=from:subject:message-id;
- bh=GIQeCWpXzFUtNJp/mJUZgo1pJ+8bxueWsKYYeUgP+vk=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGDLX3Z4oJ3R3zSTjPU8qrm2YlCE1aVbV7+2GsQknTcoOH
- u/9VXNgX0cpC4MYF4OsmCLLklyjgojUVbb37miywMxhZQIZwsDFKQATydvN8JttUR6/67KHqj2N
- jU02NcpW0pUXDouve7JATG36Du4NTmEM/wz5HP7ZnliZvbBZeUPmgSXZZuwM3VuKa/ydc/JZFjP
- p8gIA
-X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wicm5_CnzwLT8gS5JigEb4_E-HSmU_Ns57Zh5E1_J6c_1773067174
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8224:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e6767a0-972c-4821-8eff-08de7dea299d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	V1l9+RLgAt4QNl9Zr7CUsnJca0tKXBRkHdPDxpCVmlz89obACBzBJDYu6wk8pPp7diSOrsQZY1ZcW5dHsdFbLKV6r5XVQ7wjkvR42OHJ0FdhbMc6jzeuqNN9paAFp+7oKNWY9XHhmiJM66K/ODHRZkQmOUY4VVkuP7tOFICJb5Gy6Eog5RKy7tT2UHCFwQUZLvNP4BMStMSuU/mzQYpLKcdCd8MxGjyJ8b5Ja+I8Fg2DgPuJPkeydmdLGAoecLIkXf6QIPu7CNoNqv+d+RIL9jJepXk1HZn0VO7afEjwFO4HBt8YCHZoH0S5gdvDgj2sPUe7Tsx6duaJ5O7JnbckMd4pMh2rRZTYdw5ovCzxEY0H/W5bcYYtLaWYuWUk/OyO1O8bYDgw9HfJ8Xth6Whf8PptC5VJBn1YFnrGS4RqXBALyzfcsOjuSEe1WjtTS3RRDFpsGh+BYEowj74azk8kcfl0u4JmwVMCqy/lxeU0CzEbDxERPGqm3Lr70CNcLF3e99g4+yQFKad8r9XdJ6Cne03MyK72JxTaPd3G1qQ/H01WcOTGaGv6faxQASzK7V4JRJE7WXV12ftGhVxdJ/jEisx+djBh8jn+bXDtRHOrMkvttbCcwgnugrZ2uxHhou3U55q820EpE8qBVj2CFvcuXbgBKpk4LkgaLKKwSQSMPGXVK45abczIrI/JoOUW+nTfBCruwonaT4buE7lb1XVUTf8hsETzbAEmrRpM+FIuoiMfqgMRwGiUwKhBUkCgL6jTo4xEEvKrec35eBINWIENDkeSX7huetH0WPVYQFaOVN8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iRqe6L41q7/vDif2IY/UuKhjxPa/xZv6FCNtekgGGxeei007XYHQ9F3u8zFI?=
+ =?us-ascii?Q?fzMF37kcttjy8nOYWk4n3OpdzCoIsqxePhBRvjsz33drinQJMMo29H0pLn5T?=
+ =?us-ascii?Q?BxrmycaLs4J6BlourMaqY3TTUu7B5bUoHkwQYH3oyDyEExSRGzlkO14x18CZ?=
+ =?us-ascii?Q?VR/0nkmZxiR6J+Q9FTAyRxwpEwibqJljG3La7KP1rBxSKNS/tswhurUllHmw?=
+ =?us-ascii?Q?UIm4EFHzLvtGxmJ49sbMlk3TZy5YezXeTQ3pBIu041CEtkW8GRmwvwRMt+vN?=
+ =?us-ascii?Q?lHAiwABr4lbH8Mf3i1HZOFSSnoHBf+kXdgIECalT0SHkby5BcgpmxhSaPlVK?=
+ =?us-ascii?Q?bPQG2ETLd5JMjXImCUaG5WNUSIhD9vstTzrYuLnui1UPtSYHzrIksbIeyUvx?=
+ =?us-ascii?Q?VqFXNYnroOXkkTm2GEl7xIo7v8Jut4ByBArEKTES+llRyhUrCXxaCP4IH4r+?=
+ =?us-ascii?Q?Xqo3ZvB3SFyQn6W5F9AZFeFl/Q9hqG06uU7gEBqE3fQAgnBM8IRhzDTnZDen?=
+ =?us-ascii?Q?VJ+UypV3hz8bJ2BinVDEWnCiwn2vc3zr1I6n+KoJvAeK1tbaI3dsV4O5n4WK?=
+ =?us-ascii?Q?Vm2KzUXnIj3BS5KiVZmKCr4NgXQDoGo8M2Hw2dhxb6s/424mNmZHw5PUAoUh?=
+ =?us-ascii?Q?m/ARYGSqHohV6anRy0ymAntkXaA9nEVVi1cXZroumC+6TEywpf7n7i0+MpRD?=
+ =?us-ascii?Q?n3+3AFFxx8oeKi9d3HTZHHEB7g8Ihn1svwn8IPA631cu7y48sXoJf3MVWwSS?=
+ =?us-ascii?Q?kwwCLCU4Hv2WqnHbuRJCUq7Cl0lOG2FNQYK4OwihNbEK7O9WtdvUyLG6O5ay?=
+ =?us-ascii?Q?rAyBkTpETb/U/aL8udQuhz1hYRRi0bp5G88N4GdNSRieeQpE2hW1hLMqQf/M?=
+ =?us-ascii?Q?YWVQ69c9SUedGhBZwpKcH5xf40jNEjXmoGpUMQt235K3a2KTZ2oRVdOVqIiT?=
+ =?us-ascii?Q?lyfVe7QuqHRJkVZlvMzoinCO70237H+Av6B07g7f1tY+IeN7wdcQjicpVrCr?=
+ =?us-ascii?Q?hJkXw98oUAWJ9CCrhzhPnQKzRWfMBBGpIAKAKipqZL3V8CW55PpnzZBgGsfm?=
+ =?us-ascii?Q?11ljrPs5rwa+j64EBBvrx0f5vljpD42fBGLQO1ZQ1WM62qakJ27D/EgS8sP+?=
+ =?us-ascii?Q?9rdyxug/yuzs/Gf8ZH4bp1leRhN9Mn7pVarFmHdAP2vwRbOtqM3t/hg9+qot?=
+ =?us-ascii?Q?GtLWg8nPvb2tKZqNWH3H/qmGyJ+LQNthOm8w7oIlz5GV7kEUg3V7jF7rI3Hz?=
+ =?us-ascii?Q?L0J2FbB8f7fmPGsFZ+FvlchAZT1FPYQuTNHnDYNFcNhizS8affWoDbuQKKXj?=
+ =?us-ascii?Q?SXeQ4I0kEkhRMOHEveoroAuCT/zUDk4yOLvuvNWbBdPH4UVGD3Vj+jrYyd/W?=
+ =?us-ascii?Q?XiEVbCTtGlFbYmKNngetnZeSved1uWSiy+AiewGLrcOAEfxo0XXlLYWA2UwW?=
+ =?us-ascii?Q?U6vYwcCtQc9eJloGhsRIH4pKgdx131y+yR8I2w7NrtXij7rBgwCmbqVoVH5s?=
+ =?us-ascii?Q?nyY+AirguVh4bZP4d+eXOCaIRFH00P+a95KmPfEsDqr396KB/bE2q98pVXwD?=
+ =?us-ascii?Q?ricUyWBpn/qih5VgRy3EUnlilyUUpHHZUdayGmAMieop3Nc7UgMR2mqbwErX?=
+ =?us-ascii?Q?L+exHN0/V9OVnNy+YSxL4S71rBYfYVRATKFy3l0mEZNq49opt70Dix1Y0TwX?=
+ =?us-ascii?Q?OKXUSfjezOAcKIY3alx4MSY+PXexrhtQVqP2F1Xo/5ANyJMr?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e6767a0-972c-4821-8eff-08de7dea299d
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 14:43:00.8722
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HjcwjvZBgxJ0sKInHt1n4heS9jEHl1MPWd51WcjppvW3QtL2H4iXCkGjdfm0rqSns8usOovErA/lT63f5HS0sQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8224
 
-This clk driver has a noop determine_rate clk op. Drop this empty
-function, and enable the CLK_ROUNDING_NOOP flag.
+On Mon, Mar 09, 2026 at 12:04:59PM +0100, Vinod Koul wrote:
+> On 18-12-25, 10:56, Frank Li wrote:
+> > Previously, configuration and preparation required two separate calls. This
+> > works well when configuration is done only once during initialization.
+> >
+> > However, in cases where the burst length or source/destination address must
+> > be adjusted for each transfer, calling two functions is verbose and
+> > requires additional locking to ensure both steps complete atomically.
+> >
+> > Add a new API dmaengine_prep_config_single() and dmaengine_prep_config_sg()
+> > and callback device_prep_config_sg() that combines configuration and
+> > preparation into a single operation. If the configuration argument is
+> > passed as NULL, fall back to the existing implementation.
+> >
+> > Add a new API dmaengine_prep_config_single_safe() and
+> > dmaengine_prep_config_sg_safe() for re-entrancy, which require driver
+> > implement callback device_prep_config_sg().
+>
+> Okay to add API
+>
+> > +	struct dma_async_tx_descriptor *(*device_prep_config_sg)(
+> > +		struct dma_chan *chan, struct scatterlist *sgl,
+> > +		unsigned int sg_len, enum dma_transfer_direction direction,
+> > +		unsigned long flags, struct dma_slave_config *config,
+> > +		void *context);
+>
+> Do we want to have drivers implement one more callback. It does not make
+> sense to me. Why not handle this in framework and have it call the
+> respective lower level APIs.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
----
-To: Abel Vesa <abelvesa@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>
-To: Stephen Boyd <sboyd@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Peng Fan <peng.fan@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: linux-clk@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/clk/imx/clk-scu.c | 22 +---------------------
- 1 file changed, 1 insertion(+), 21 deletions(-)
+To avoid use addtional lock! suppose each API is re-entriable.
 
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index a39c68d664655537e81df55c7e6d32304de9338a..13fb77562b031bb82d6fa2d19f9092ed33966aa4 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -262,23 +262,6 @@ static unsigned long clk_scu_recalc_rate(struct clk_hw *hw,
- 	return le32_to_cpu(msg.data.resp.rate);
- }
- 
--/*
-- * clk_scu_determine_rate - Returns the closest rate for a SCU clock
-- * @hw: clock to round rate for
-- * @req: clock rate request
-- *
-- * Returns 0 on success, a negative error on failure
-- */
--static int clk_scu_determine_rate(struct clk_hw *hw,
--				  struct clk_rate_request *req)
--{
--	/*
--	 * Assume we support all the requested rate and let the SCU firmware
--	 * to handle the left work
--	 */
--	return 0;
--}
--
- static int clk_scu_atf_set_cpu_rate(struct clk_hw *hw, unsigned long rate,
- 				    unsigned long parent_rate)
- {
-@@ -436,7 +419,6 @@ static void clk_scu_unprepare(struct clk_hw *hw)
- 
- static const struct clk_ops clk_scu_ops = {
- 	.recalc_rate = clk_scu_recalc_rate,
--	.determine_rate = clk_scu_determine_rate,
- 	.set_rate = clk_scu_set_rate,
- 	.get_parent = clk_scu_get_parent,
- 	.set_parent = clk_scu_set_parent,
-@@ -446,7 +428,6 @@ static const struct clk_ops clk_scu_ops = {
- 
- static const struct clk_ops clk_scu_cpu_ops = {
- 	.recalc_rate = clk_scu_recalc_rate,
--	.determine_rate = clk_scu_determine_rate,
- 	.set_rate = clk_scu_atf_set_cpu_rate,
- 	.prepare = clk_scu_prepare,
- 	.unprepare = clk_scu_unprepare,
-@@ -454,7 +435,6 @@ static const struct clk_ops clk_scu_cpu_ops = {
- 
- static const struct clk_ops clk_scu_pi_ops = {
- 	.recalc_rate = clk_scu_recalc_rate,
--	.determine_rate = clk_scu_determine_rate,
- 	.set_rate    = clk_scu_set_rate,
- };
- 
-@@ -491,7 +471,7 @@ struct clk_hw *__imx_clk_scu(struct device *dev, const char *name,
- 	 * clock status from HW instead of using the possible invalid
- 	 * cached rate.
- 	 */
--	init.flags = CLK_GET_RATE_NOCACHE;
-+	init.flags = CLK_GET_RATE_NOCACHE | CLK_ROUNDING_NOOP;
- 	clk->hw.init = &init;
- 
- 	hw = &clk->hw;
+thread 1:  call dmaengine_prep_config_sg_safe()
+thread 2:  call dmaengine_prep_config_sg_safe()
 
--- 
-2.53.0
+If DMA engine driver implement device_prep_config_sg, thread 1 and thread 2
+can run parallel.
 
+If driver have not implement this callback, it have to use mutex make sure
+config and prep atomic.
+
+https://lore.kernel.org/dmaengine/20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com/
+show finial opitimziation result, which depend on this. If can't call
+prep() function parallel, which will kill performace.
+
+>
+> Drivers should implement simple apis and collectively the functionality
+> can come from the framework.
+>
+> Would you consider revising as such. Bonus all existing drivers can
+> start using this API, no change required for drivers in that case'
+
+Not that simple, some devices just call config at probe, especial fix
+FIFO address and burst length.
+
+Call config and prep only need for the case, which need adjust src/dst
+address, burst length or other parameter for each transfer.
+
+Frank
+
+>
+>
+> --
+> ~Vinod
