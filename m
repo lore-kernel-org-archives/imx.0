@@ -1,156 +1,185 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011047.outbound.protection.outlook.com [52.101.65.47])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F783E714C
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 17:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773076152; cv=fail; b=Dmvtw2Y6lLulhSOUwvtcDq2zqwQP1YaNmCfLopTbwDfL29bnV+xQtDJfyb1oQWABA1r3cBAdbNw2nKtR3rWzW9U4cZallgTkqgn76ubivC/DNg5YXMuILZ7dk7LPC2MeCf2TjusD1Mpcx3DZcr/BSFeX1s3zpbIyDPkUGUKHc+I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773076152; c=relaxed/simple;
-	bh=rt5q7dpWXMK9HuGt6xEbeLnCiMkzrQA3K9dKfZ6ih58=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 Content-Type:MIME-Version; b=c7RtCyYZWKV+fvguF1KLz/Iv7w2kqDe740TjQ0lGAhr2GDpTJAsRmaRH62P5H8Emq8uomclDVOwiSbkWn/7lB8rbmdRkqLAco79+3U8GEKcAttvgaiwjgYeHTQmoKDVocmpiYn/8VcMspw3vPnBQddhxClg34mf1A9lk//h3qhU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WSlEbfL6; arc=fail smtp.client-ip=52.101.65.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE883E95A5;
+	Mon,  9 Mar 2026 17:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773078936; cv=none; b=KwNvHFSVU6tOp5gG6VGxxIiU/2GB4aZxq088zgGL6mnjq+nVi5lEuJlTFk6M2k74QxkIAkIy89dKG7grw/nuk3GtKNAiYDTxhRQ7HqW+W55Y5KdxL7z/jaLTpyzcSAbxsNlRkGHoZGvkqSvjaT4/uZ6AArIAZCFECqfacrsFidI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773078936; c=relaxed/simple;
+	bh=sO07tyz0BnpKMjr6r5zLC5D/8i7eRB8tzHj5WeTMKes=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HpBBpCLR1bZZrhyqVaujF4NEJHXKq7U2iAFChKeEjbiU9Fqa2klUPVRnFKKO1/1jQqM9ZhXY60MyBqUxlKtZvwwK9hdg1VasVrB6S95I5IbSYDD9Nh4tAMoLDZuVpwgplcaQ/B6GG345H27XqFZ5Fo9Dkfdbud1V7cPz3eqyBpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mSaTti9D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WSlEbfL6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DrSaCLLo3oDX4iaTNklFBW02L8VWSdugo5RUfeHEHZvA+fmdHrmFnQRM6RKQ80n9gD/Fe5nxBOlFPvWCE8Wuk+oa6Uz2eF1mMmSXoEuyZnMcgprd8o5VgdnHsbGWYYwA9Et0kD18SwMAt7cg/1hBkSkodKcEbqvoqQ4OR/qaU433d1DG3wBLQb1KzBsBrNNvPx+jCoKZhOh9AVM1YAu/IytIz1niM1ISie6PU66GX5PG4t9Ry0hCqWzrYbN2MggbVeVH6S81ZUUmr71CsJbFt3+I9r9lZHXGT6LB0XWbiR7W4cOTnvBz4N9f82JR2A3963zo94Zw5sDqOwheotIzVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VQ+0bpz/YDu4GaCL2jeZChX00G3ZPBlATmrSuQYZlX4=;
- b=Dw68iLveP75qGP6Kx4emdNa2e1HNUpiWBrS4rFoIY0tcgWfncfYi2SRC6l9dB7m+O9YH7p9AuL5hLbSTnsdNbLJRyYdsmVXoj3AhbNzN4UyNnYXPmPQJPwcR5VKVxgXhlw5yTvxP16uqm6EqraThh1Wn3GbSro094BdKw6LZJsq/OYQ6XQ9jKxxfbsuoXEfK3JT4cRFeTbcP/aOVjBZlla7XJD0qfSFfPwY6Xa90FjR9/AuDLRuJ0axRyJ8F539A7az7j2jbc2yhNR3RRA8RD74x2QGeBRkx6tunxowvT1SoMZRJax7zRQQEqKGlnqsQB6NLdHOWwRW7+9OG3r9nWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VQ+0bpz/YDu4GaCL2jeZChX00G3ZPBlATmrSuQYZlX4=;
- b=WSlEbfL6pk2xQUKPe7vT4Xf2X5e/xOW4MONpzTYldTWihlcnPZ8BegWs6kv52i0yM3S7tbstEA2TB6CxXBps/kK8TcHp6D+6JNG1VfX6SBgYMspzJDM06GXJCcsPtrJwWEqGflXo1/xqZJKxpHcmxB0Tv+qKm0rGzLFCViLdGeb12tl3Lc9x/1EY3WrCY6WyzyaTRaEc2pm7ykSGrtmU6Fv1vtrsOcrDH7bNveZ3Rgjamv/RqaodYwK/PWC0mnqKK+7vurpd3x36OYxQYS6VoqJoNYiJ4sFXOPAwlxVr+1pcpRHxxq6pOLsjpIoB9iI3pbONP/i4gHgmeW8ZMzLN2g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AS8PR04MB9009.eurprd04.prod.outlook.com (2603:10a6:20b:42d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Mon, 9 Mar
- 2026 17:09:07 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Mon, 9 Mar 2026
- 17:09:06 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Josua Mayer <josua@solid-run.com>
-Cc: Mikhail Anikin <mikhail.anikin@solid-run.com>, 
- Yazan Shhady <yazan.shhady@solid-run.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20260226-imx8mp-hb-iiot-v9-0-4533235eeb34@solid-run.com>
-References: <20260226-imx8mp-hb-iiot-v9-0-4533235eeb34@solid-run.com>
-Subject: Re: (subset) [PATCH v9 0/8] arm64: dts: add description for
- solidrun imx8mp hummingboard-iiot
-Message-Id: <177307614287.1728171.4061310705822425254.b4-ty@nxp.com>
-Date: Mon, 09 Mar 2026 13:09:02 -0400
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: BY1P220CA0023.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:5c3::11) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mSaTti9D"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 00BB6C2BC9E;
+	Mon,  9 Mar 2026 17:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773078936;
+	bh=sO07tyz0BnpKMjr6r5zLC5D/8i7eRB8tzHj5WeTMKes=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mSaTti9DdfYPRAXvf8vagmZmgb+Ob1Hf+VqYsCM5wHZQ4GDCtcC1yjuSW0860ze5r
+	 6Vm2XzuZ0hAqaBHYkVA0X9TQtAD8DSgHsLdQ9Gc9NkP5XWpk+7TH92tWVwaKKR2Ji2
+	 V/F8WafuMQqBmQyte+55MvwJvDNPXh8g0cJVGgi5kSHObhZIFzcS3hX9rswAmC3nHO
+	 bqcntQFMBRMTFHp7Ittv6IKE9ptspE/T1cM0oUJCPTG2DvAE2jMR2R6TwHLS7DBzFd
+	 kY5iuvnw53Q4FMFhf/WCGHQ3KcyU4N2ozX5GBrw4EIPlPO1ADATb5vTuZUuIkaK8io
+	 2SAtLS9aSbpug==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8E2BFCA16F;
+	Mon,  9 Mar 2026 17:55:35 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH v8 0/5] Support multi-channel IRQs in stmmac platform
+ drivers
+Date: Mon, 09 Mar 2026 18:55:19 +0100
+Message-Id: <20260309-dwmac_multi_irq-v8-0-f0cc5bc811a7@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS8PR04MB9009:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c8020b2-843d-4062-98a5-08de7dfe9284
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
- PsWUcsOBMjmEYCRqyH1Ns3XtDTPRG1ggKWxFhmYhZKkXA1LwtvRWfbUWFA6BTL+VHd5sFKr6eI73BT3qHuQr+Yu8Jfl/a5MB3P9g3LBW2V+cPC0soq8ewllAvpdNEoIv6vjOboEZEawnzG+s5LR6mbp3zF0cV72OoFJIzmvQOOHEXwMpy6eyYO+/Hrj+recN07QnBPMB8G768eoYewgIE2XLZ4Ud0RzSGdNZqoSizVUS6gOr/rJ7RquaWzyODhNtqgkPUI8ZhkyHgyUYP42dFyE+f1MAmvPWhRK5KDSy1B/MMkGVv1ZbfOEGaFd1YYPsvrviBustFDjs96nw5R6SEC0IgkPNus47TDF0QFlhx/nB//rDI6kV5fn3H2YFqFUwO0IRKkWH1gCU1J9/7DNVI58kQR4LxaYYxC9J4DrMt9RHgxcVxWo1YIEw5+AXAetpG8ln/GgKlVol7Rjh/+rveSBFcpswG6IJMi8bxgdyBalEDx9N95vzYgFsBM4XHILfKpP7UcY07KnIKyUL3PMoDQXBw7W1mynVhw5kTc45CI7CeyrrosWH8n7h4hzR2bZ+fjgmONoTaADUt6mD0iHN7rmsDZykzy9CoQenZp7e48LrBPOLDkCdD+L/tpg+yslzLKpLzSrw/uuejUMKOLXUC+ybXhD6VhnvO9E0msrvDMEj8VCGLV20TeJ40rMdwjZ8tmL8NQKiQ2PIS0aYmGQHosXwJlVbfbdogfIkgZQlvQufey1qXUsS95o5vWM+1FsqvROmvMr6jU00TsgABc9znyyWSphj4ltmSh+THHC9oN4=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?eW1hd1VzUXFnV2tUc1lJREtyRzVyVjJOcVN5VXNvYjE3OXd6Q3ozUnRiL0Vm?=
- =?utf-8?B?c0p2bk9ta21QL0xKU3lxVDExL2FGcHlTNXpXVzI0bWFmMi9Jb1hLS1hSTTly?=
- =?utf-8?B?N3R4cjJDSi83QlliMXJUYU5SRG5lQWt1K2FNTGtjOGN1RDRJQ1FTOWl4RkZt?=
- =?utf-8?B?ZnI0eWhsNlNLUHZGclhTaVA3SU1lTktMOXhaYnlSRmt0TVp0OG9xQ0F5Q3VB?=
- =?utf-8?B?VEN0dFpNcCtpdjBCejJLZkx6YXBQaTN0R29aV1FtSUIvUEh5d0ErUWl4ak1R?=
- =?utf-8?B?dmFDVGJuZ25ydTA3UzVaUjQyY2tzYmxOT3BzeGgxQ0dHSk9WVERUSUdFMFpu?=
- =?utf-8?B?ZCtQanlOYk1Na3hCdEJLZnE0cU9BbDlpSHRtR3hJMTJneVQrNWNGNm5WM0tK?=
- =?utf-8?B?cXFWaURDZmRRMHczSWJ0QlZSK2hPMW1iSzJHeVU1K3ZzN2pmazI0bi85YTR1?=
- =?utf-8?B?SFV6dWhST2lTN3ZkbTFUdTI0Ulh5VHNRVE5sbk04Wk45ZTl6WWJHSkgyVTh1?=
- =?utf-8?B?bm94WStMUGF6YllXMERtVTM5K0g3anBMT2RWa05hUmpmRGlLZWF2K3ZLM0dn?=
- =?utf-8?B?Ny9TUjBiNTNyd1ZxTTF2ZjVzVDBCMlU3SFVtakxyL0JtYnlTcW1acFg4WEdZ?=
- =?utf-8?B?T3RnTG83RFVEUTFjc3FEY0IyQzB2NXQzclBQeWl5OGV6WEQ4RHhxdng2bTRt?=
- =?utf-8?B?Q3Q5Q2pMdU1DNkFJVHAxRlloQnFoMzZDV3lXMGNyblZIUDBSUlM4clBldzhq?=
- =?utf-8?B?d0FST1lFbG9xMUF2NXF6bGZUY3ZGLytraHA2d2w2VWxvY1kxblZKYURGcUMz?=
- =?utf-8?B?TjVxVFBpNzQvVGlXM3hiSFFpb3RlTWhPOVdsa2xOZ2FCL29TRlg2YlRrQm9m?=
- =?utf-8?B?SXZtdmpGR3ZGMmtVL0VkakpMK0VTdGdKMFR5cTJYZ2NIT0lXVWY5eGxlZkxD?=
- =?utf-8?B?L2d2aEdvYmVuclFmVGtkNWFHVWcrMXA1bXdzeDJyMmZISlJqc3hKdG5ocWhh?=
- =?utf-8?B?Q29wbjg4UGZYNTExb2RsQ1IvcU9xell1VnplcTNTdFc5NWd2WlNGcHh1Mld6?=
- =?utf-8?B?M3hTTjRnYUk3eGNjOWVlbGRwcWNoaGRidGRvWTk0MXgycXZBR2c2WmZOSHpH?=
- =?utf-8?B?MGIzeEhxcTRzMEdRdTBzTVI1UWx2eEM4dkMwN0JScTZKNjR6dW8vYyttNHE2?=
- =?utf-8?B?eFRzbEZRL0JVSjFJbmVyL0dtVVVjNTRka3NjcXlJdEJzUC9vRlZQQ1BIK3pz?=
- =?utf-8?B?SUIzQ0Z1UzNlbHpVYWJ4VU11Q2pHajJWSmFLSHVEaHBlOUZ3RTVwTFEzODl6?=
- =?utf-8?B?c2xRc0dLeVFGRTR1WVpLYkxncXNSY0xJNFYxRWxzYkNoeHNnL01vVjJNOHl3?=
- =?utf-8?B?b25rbStuZWs2NlpUczJ4UGh2Sjl6RW1peHJ2dlEzdUM2NlRUTmg0d0x1aHhL?=
- =?utf-8?B?N2Zab1NhRW50UzRWTWIwQ1FmZUtSTkR3eGFvc2c0MTl3ay9JK0dsL1VGUmhh?=
- =?utf-8?B?Ymx2bTE3RDJRa3prdmtXc2pqSzVKZzVnQWFHSzZzSmFFTG9jZWN3djhZdkl4?=
- =?utf-8?B?THRxZk5jeW1oTXlrOXR0UjlZVDBjZko1KzAzd1JwL0ZBRW55eWJyTnNLTnFm?=
- =?utf-8?B?NGtCNkVJOURnZnVEeTBRWGlnSWEyR3QvYUlabXRtL2R4RHRSOW9maXVyWTZC?=
- =?utf-8?B?YUpxME84M0NZY05zTkdyYXpFRFNxZ1pVdkhNdG1OQ0RMNFJnM3ZDZHBVVjBm?=
- =?utf-8?B?bE5TMVVxT2VVSjJwRGZBaWx0TFBjY2JEU2RDL0w5aVVMR1kvMGRIZ0wzbENO?=
- =?utf-8?B?ei9mY2hxVmovK2ZUZkp2K21sbFBDM0cyeW4vTkp5dGV2YzdhRHV3U3d0Y2xi?=
- =?utf-8?B?NVRHclBJL3l6eVRjaHg0Z3BBcEprUTNpaHdmZGgvaURNVlFWZlNIdVRBNGFT?=
- =?utf-8?B?Q3ppMUUwbzEyeE9qVXBJdTRZdHZGZ0ptK1A0YUlnS3ZBRXBnb0JaS2s4ZS9I?=
- =?utf-8?B?cm91SVVrRmJFZE8rRjdzUW9EWGF4NkhoN3haa3ZXUXBjV09qQUpmUFBld0Nk?=
- =?utf-8?B?cEdJeFViVGQxUE9qZnNDejdKTTdMUUFYVHBNRDhLYkpsYytWWm9Qb1RhQW9n?=
- =?utf-8?B?VnZCN1ZBWHJQanMrbEI0RVZVU1N2WVE1aGlLa2tSYTdkMlJMenRNaGpLQmk4?=
- =?utf-8?B?Q2ZPR2hnRldmOFVIdUQ0VlFQbWk0cnIxckZIVmlKbGZod3hFUUliVUtnNTIy?=
- =?utf-8?B?cGwrK0duZmd2K0xIK1VKL3g1Rys0eHNBVHVOUjI1Zjc1djlNMWtPZDBGb3Fm?=
- =?utf-8?Q?hddBgFWbp59zGso2/T?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c8020b2-843d-4062-98a5-08de7dfe9284
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 17:09:06.8881
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VMD7DvKzfuZmx7sRiYtPOvmievkxTjuecds7n/9GZPSlmwxbUhuwCtRPtvqUWvDZgcaRMtCarvqpmL44mKsCFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9009
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIcJr2kC/23OTU7DMBAF4KtUXpPKHv/EZsU9EKrsiYdaIkmJS
+ yiqcnecCkSEu3wjzffeleU4pZjZ4+7KpjinnMahBPuwY3j0w2tsUlcyAw5aAHdN99l7PPQfb+d
+ 0SNN74zpLhisDiIKVr9MUKV1u4vNLyceUz+P0dSuYxXr9sYSqrFk0vJFGG/CBR0ft05jzfric9
+ jj2bNVm+BUML0QtwCoECw4k73grakFuBVkLsgiIWhKEaJ25I6itYGtBFcECeakICQhqQf8JcG+
+ DXgVC45zX5FHVgtkKuhZMEUDpQKJrheBYC+1WMLXQFoEsRRlcccK/DcuyfAPZFtL2PAIAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773078934; l=4408;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=sO07tyz0BnpKMjr6r5zLC5D/8i7eRB8tzHj5WeTMKes=;
+ b=NURN8/QYSkqZZLXj1aloeoq7dAWoFo23M83WY9RoJyTaWJ1j7RSIIEnqdCkP3VT93JzWQx/Gc
+ Gv1qF9SmuskDN1y66NyEVStxKrIORy85uaDpHu98clRdx7RAg2WBBhF
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
+The stmmac core supports two interrupt modes, controlled by the
+flag STMMAC_FLAG_MULTI_MSI_EN:
 
-On Thu, 26 Feb 2026 18:36:29 +0200, Josua Mayer wrote:
-> This patchset mainly adds description for 3 SolidRun boards:
-> - i.MX8MP Hummingboard IIoT
-> - SolidSense N8 Compact
-> - i.MX8MM Hummingboard Ripple
-> 
-> This includes dt bindings and a range of bug-fixes:
-> 
-> [...]
+- When the flag is set, the driver uses multi-channel IRQ mode (Multi-IRQ).
+- Otherwise, a single IRQ line is requested (aka MAC-IRQ):
 
-Applied, thanks!
+static int stmmac_request_irq(struct net_device *dev)
+{
+        /* Request the IRQ lines */
+        if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN)
+                ret = stmmac_request_irq_multi_msi(dev);
+        else
+                ret = stmmac_request_irq_single(dev);
+}
 
-[1/8] dt-bindings: arm: fsl: Add various solidrun i.mx8m boards
-      commit: 5fbd0f7d7607fe1062db9f10dad18d321f76b1cc
+At present, only PCI drivers (Intel and Loongson) make use of the Multi-IRQ
+mode. This concept can be extended to DT-based embedded glue drivers
+(dwmac-xxx.c).
+
+This series adds support for reading per-channel IRQs from the DT node and
+reuses the existing STMMAC_FLAG_MULTI_MSI_EN flag to enable multi-IRQ
+operation in platform drivers.
+
+The final decision if Multi-IRQ gets enabled remains on glue driver
+to allow implementing any reguirements/limitions the focused platform
+needs.
+
+NXP S32G2/S32G3/S32R SoCs integrate the DWMAC IP with multi-channel
+interrupt support. The dwmac-s32.c driver change is provided as an example of
+enabling multi-IRQ mode for non-PCI drivers.
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+Changes in v8:
+- Rewritten queue irq getter, based on Russell's (ready-to-use) hint
+- Renamed s32_gmac_validate_multi_irq() to s32_gmac_setup_multi_irq() to
+  better describe the functionality
+- Fixed typo in commit message for patch 5
+- Renamed label in patch 5 to make it more descriptive
+- Link to v7: https://lore.kernel.org/r/20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com
+
+Changes in v7:
+- Optimized 2 similar loops on queue rx/tx irq reading
+- Swap the yaml and dts patches with hope it fix dt_binding_check failing
+- Link to v6: https://lore.kernel.org/r/20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com
+
+Changes in v6:
+- Added 2 mintainers which were not covered by 'b4 prep --auto-to-cc'
+  but complained on patchwork check
+- Added helper macro for loop over queue-based arrays (inspired by AI
+  review)
+- Added full validation on all channel IRQs
+- Link to v5: https://lore.kernel.org/r/20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com
+
+Changes in v5:
+- fixed typo in "symetrical"
+- cleaned negative return value on platform_get_irq_byname_optional()
+  in stmmac_get_platform_resources()
+- rebased on v7.0-rc1
+- Link to v4: https://lore.kernel.org/r/20260128-dwmac_multi_irq-v4-0-82fa34fcf2f2@oss.nxp.com
+
+Changes in v4:
+- Fixed IRQ reading check
+- Made cleaner the IRQ validity (to get AI reviewer happy)
+- Fixed minItems of interrupts property in yaml
+- Link to v3: https://lore.kernel.org/r/20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com
+
+Changes in v3:
+- removed RFC prefix
+- rebased on v6.19-rc6
+- fixed forgotten extra line setting to Multi-IRQ unconditionally
+- fixed yaml
+- Link to v2: https://lore.kernel.org/r/20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com
+
+Changes in v2:
+- Fixed incorrect buffer len for 'rx-queue-%d' property check
+- Added backward compatibility to not break old settings
+- Fixed DT example in yaml
+- Link to v1: https://lore.kernel.org/r/20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com
+
+---
+Jan Petrous (OSS) (5):
+      net: stmmac: Use helper macro for loop over queue-based arrays
+      net: stmmac: platform: read channels irq
+      arm64: dts: s32: set Ethernet channel irqs
+      dt-bindings: net: nxp,s32-dwmac: Declare per-queue interrupts
+      stmmac: s32: enable support for Multi-IRQ mode
+
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++--
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           | 26 ++++++++--
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           | 26 ++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 36 +++++++++++++-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |  3 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 16 +++---
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 57 +++++++++++++++++++++-
+ 8 files changed, 188 insertions(+), 22 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20251209-dwmac_multi_irq-9d8f60462cc1
 
 Best regards,
 -- 
-Frank Li <Frank.Li@nxp.com>
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
 
