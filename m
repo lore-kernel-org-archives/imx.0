@@ -1,159 +1,186 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011060.outbound.protection.outlook.com [52.101.70.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E2A3D6475
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 14:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11A63D75BA
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 15:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773068364; cv=fail; b=EUhTWQheEdxTahjyvkg2kFXh+KUzF1O6fCBm13zZ6pxSByERfUPkUMbwWz+1Vee9Uk3eyeU9Tmi/xTk3zSylfNyHmAt+5IJWXXGAmDloMH5/GBnKR0MLLtVimEKq4eSMG8lf1ii0CZI7/7i320HL3hkGFWOEO9d9wYKyQDioT9A=
+	t=1773068850; cv=pass; b=NjDWoXuxQDJ3DoTJlLzdpsjcgMvaYKkgUIrYFP2ZDO22NDYZ9IMgHoNfuOQOwL9Lus8B6b8eENlqUMu/sej/L76eqVK6TmRsQbbK3H9andZHbCTSib4nObyE2F5nDZYhR26iaxDtXxSZYJz3nHN78oT9gqAdmEIDSec2maO8Xp4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773068364; c=relaxed/simple;
-	bh=qQ8rFQj0CjaYrdouNQMjx5N9pPVg9O7Do5RcAwFVV+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nch7kPrVS2THy0YDOyThgRR5bHsYDSPeZUWAYzmwb0ZoOZx/RE9F1swTw7WjT7IpfCFvi8eUUMSECGGVj+ThS1b0qOrDiJm9WuvrqGyS7EnHTdEiv27Y0HILndFOpP3KSdug8Pqgv42rUDGW9NgQaRm8Jf9dGGbdRGW/3hPE1rk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YScFFGAp; arc=fail smtp.client-ip=52.101.70.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1773068850; c=relaxed/simple;
+	bh=cmRiodC9r+mRuSIKrsDa+1SgJTeHck5hhqgmz3f7sjQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eC+C59su1ZOKQKk2QE5I34gQimBDHPPC72qlDqTnKlEIoukZXIYgWvB8JUqaPdkkJ3tUg6CqHobPzK28+TSVzBxODSbTEGTozw4vyGSsPeJHT+JfnEo5w4XP5o23xIm28kNdi8SFgHXEM3i9z5YnwHw2M/AZ+9iQF3h+3skOYFM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OgUDo58y; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YScFFGAp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hkDCg7uLWa11h3QXNyQLg8g0VoAUySjTLhBm2E+wigNmL+ZTmOd1gzvgy5DhAaeJ4iY0dDEGa4AhtFqmDwJfyosqCE5ln6jR7riRKriaLfzddgq0+zQu0pelqbD8oxW+QlocXjOLSybz2VrkaOrz2s+BLqyFRi/4yg7ff5GKKRHg/vNXmvvQ9YCcblmBK99woFH75y0aotq52KW1AC146a/m2WEmB3dx0zPFtAKaaV3RubUSnVXRt53psgrXc7bdng6Mqyv99UnSI5I0p/Vx8mHu7v6Rn25AGVmny8IYpBwg9xd8D2an9fbLDK/ZGAJL+ateBVc+BV1b4Fkhb1pTwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2hZT8pR92P8g7ZnylyNPTw2wPDME6AW8Pn5A70MWxv0=;
- b=vMubR82bdrSYKAiWVn71W0gS/hmJQaaqypbZfg2YPDs96Yo3PcBXOJizJ2Gxj28G95MLuGHf9Qo1n1/6gxltSg7sRM473OhBfrvku5ovTmbwL7K//fbsIW754Gh75RseCnKpYMa/S7aP/BnJtqfsqOdlOTlPK8wT+2UlOQM+BD85vf+/LkJD4HDZNeJlGJgPfBgFanomNuzS38Xs5asBrHronyofbxsf8uP0RZ0sBSBHOnH1caqrmQot/ywbk+bWsttzsXRLbnl3XPkRihUXqUezehKJcfZnoQxXMDXD901CLzlMhBe7YrMPs8keOSWxoXT+PjLawgmP5fqRM0i8DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2hZT8pR92P8g7ZnylyNPTw2wPDME6AW8Pn5A70MWxv0=;
- b=YScFFGApVGvFrAi9w/8pbVYj0266lvopx/HO7HmXA12kusQttxB4KO9gkRR69RD2lv34PgszSHNJPFnJjbu5TPpVWOuMcsvO+C57pHBmxynKhHAHcsgN53OFAjKRwrOHW2RVJLTzUXcb61k8NUMPTzdFMqQp7VSs8n2RZ0V1H9Uh8rO8U2m3kLY5D8pSIs0p8sUhnwxIkwNoOycsDIOdTXUClECypfij/jg4Sl27Jjs8STd5wBja4HZO2YD4S3pXSFVcPLd2bT40LA6skAsxxJx5rmWrwN+Gqk84IlNtlTFHDQ+nUqHsyqRSEFOXhNOKhMf+plQnWPxXmBn55bhZ+A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI2PR04MB10595.eurprd04.prod.outlook.com (2603:10a6:800:273::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.23; Mon, 9 Mar
- 2026 14:59:08 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Mon, 9 Mar 2026
- 14:59:16 +0000
-Date: Mon, 9 Mar 2026 10:59:09 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Frieder Schrempf <frieder@fris.de>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Frieder Schrempf <frieder.schrempf@kontron.de>, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-rtc@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 0/2] Kontron i.MX8MP OSM Devicetree Fixups
-Message-ID: <aa7gPTBL1BuwdQ4B@lizhi-Precision-Tower-5810>
-References: <20260309085749.25747-1-frieder@fris.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309085749.25747-1-frieder@fris.de>
-X-ClientProxiedBy: SN6PR05CA0006.namprd05.prod.outlook.com
- (2603:10b6:805:de::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OgUDo58y"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59e4989dacdso6180201e87.1
+        for <imx@lists.linux.dev>; Mon, 09 Mar 2026 08:07:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773068846; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GhrIH6AsRhrFU6XDr/Z80lHGiTJo5Yz6FYhbwNOmKXhU/SYtDMODjRVkohFYaYnht+
+         YfXDtVqcZ2KjKL8zS3wQTw2mVfmMjX5tCdHTcOnnXy8ldB5kLgVR9KMfh/Qvijt5ApeJ
+         dusKck6DvkuOLKRezsuoYg5XWOQ6xA203jFhvXe+jGvRqs/wycdaN3tkfGAGm916WKF3
+         mCKkrQrOsdENQSgaUBzsufV6AD3ZSPhKkpZampQEeZ4IqzD0ZNub4R78B6/4Q5VFHxYg
+         X7IjLq5R2DdOa+eew1RmGT10m6JNy+vKBYsTZNefqBhnwbwB2jV9GumQF1QIfzwvdNnD
+         gsSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TdH8bvkNIpDog/K3q0ZzGRX8OtZ/OKv1fjCXdvgPWAI=;
+        fh=jBoclrl4Q+T9rz7JxDisokU6FTg3xyL+sFUhZl16NGI=;
+        b=LWt0Q5N1J0034FaQC1/cmH1364tXT4MZh6rhkgptRWaSkQNIMNFzbrixKCamCak3/f
+         EYkGIRSyQBPDQBhGLWups4lUadhLO9HmPoBqRcF4FfypEjsBTdO4MLGRk6UTZR45M/mn
+         S8vocMobBPEYZENf3o5feSNucQjXwW3vUJMOg9GYFitHjtXnqjVXFVQIVrzqsKRAYwUB
+         cE10BSZHiT+OqyFbS2tomQnjdVsfcYQO9euQcrwlYjt1QbP4TJ4clC9KN7iPud9ouRqP
+         Tbk7oNgSIaFsBF0pRnW0wvMuTWd6OnGno4yXOKdB14hQSiNZxqjgR9Jhiz1TTLFFeEiY
+         JJ7w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1773068846; x=1773673646; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TdH8bvkNIpDog/K3q0ZzGRX8OtZ/OKv1fjCXdvgPWAI=;
+        b=OgUDo58yit0bCxsOz6w8Xf/VzIvUUwqNYz5523zTx0NJzXQCS657Pq5mN1SphXfElw
+         IZGgSZOnVdvo2kS57U7ZZHWd9fH5FY0IlCzZz23AUrBhrsoPiv/x9yGeaEJ7KI676MTE
+         DI/8EQKrU2b5exJfd+pyBeBfsQI0PmnSmxfkOj3A3QTc1dQcJzc7+sOyUt8zFfUA5sR5
+         2tLR5GPO9FRWGL449q/byJ6WvRwNa41IZqw6M4dEmdjnmWKH9VNk/I2MlHE2Gj1scqHB
+         64kZIENdT6C6A7oSyaq2TPwltkOTIz+TXzykQs2cugvPkfVS2HrjoIC7bePGt5zxbTJ8
+         tC0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773068846; x=1773673646;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TdH8bvkNIpDog/K3q0ZzGRX8OtZ/OKv1fjCXdvgPWAI=;
+        b=Kyv3EvIEvnBjMBznPXAkAyC/iamWChJcFusxyS2KmTpCHSc1WwiBXmQ0VCGpbuPfgV
+         hyFDQKKFtQkK9KUe/lyVep4lvMlHIEc7QYJXTQuMOhBrAaBzSicTqTYTeNbn01tWrfwh
+         az/wYKW6EuMkz+9ddLx+DSz8gTL8RD/NEtqlpaOqmpwX+ZQg1HjC4Tf6VWn++mYBq4Op
+         zV5/ZrEUnuwdypkzcMcVe0aifmQmSGIR4JPjxrfA6+KlMG1Yf1x37s/1eshAVpkS8OKt
+         T8IPFpN+sPNlHImfNAUDvMOyfWlxvSwmjfZJt2uNwZuXmPuQe/LmLxmBcnpOS/RcyxgP
+         q/Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCVME+gKAqqgechphfRUTKdBxS2THDbRyq8Tp9oBBhtX5NzfVc6JIHQ+t0ozn0MmIsB43Lc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMVpkY559SfhqSk5h8NY6lgP+XimIjQGP2SeeIKbIAqc5tUSbQ
+	4OgluOtAHkhjPWMOVgv7pmZUwygvdu4vD/1icYDqlK8zYpLRKL1ToOoJmDj+QgpFFRutq2JqoXZ
+	YtFNRAo6+hCHUO5Ix8sM0cExVtxq5jZfWMoAMRA/sLw==
+X-Gm-Gg: ATEYQzwfTlTUKf4uZqqkArRhzL0oKsv9xsCyGej0ZqlWz4zcDKXR3eF5w/8qmrcu74u
+	bIz8BnLLUotWYRE2je0AWYnIIHv7GO4Y4MqVhuVwy4jJI+3Lq4wrRLQIjkBgcIcf80iSomgcEj9
+	twuP28ztYeJFvmLep7vokdx5rFizX/mpxL5xLtFZ3RGY0dhl4Q3j7DcGMp4qFhsp9KYZ6FRgZZ7
+	VXXMe9EVq8MzifHRfdXgbD4Sd+iNbLQI2Ai3Y3eVFljqbimDHcOJFPmaUyJzo/PDXs0YqN0sN6m
+	stBQNG36
+X-Received: by 2002:a05:6512:3409:b0:5a1:2a71:cc3b with SMTP id
+ 2adb3069b0e04-5a13ccb1aeemr3618408e87.18.1773068845876; Mon, 09 Mar 2026
+ 08:07:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI2PR04MB10595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 749d0f0f-63cb-447f-384c-08de7dec6f1b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|52116014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	ZcRQIzm4grBhaJjfBaP4RMF2j09rw37WFG2HB7aHdTkSpS0w5dcn5iMoBPZ/LiutHJ6m8JDjiuW39elQdVXUoGbctONQnOf/h/WmRhUQzfga0ijTF5bg0UhenXPkRPd2DL5bPJeufi8mMHNgX5gy5NkYsmMmEnf1NxVv8SBWIGRdYmCl5l8/wEdBJ+Ikm/o6xEl/ayZGibIypuLJ+latBbv9/EY/TNLkJJ0NcZng7GtWm4Nvu65uLNg8SvFG2708vtG0NjnLteZtoiK1f/KRryC+UqrlvAwFLo8XfCMrF+aGsfOWT5mPeaIe0jcimgvc+aD068WhoeoRzsqssdHmLMettDXU/cVFSpL5cshBmKplr6nD+obkqarV99pjfc7fL6Ja55aAAP+4zAjCgKNjiwGPoyATj4LhPJv0X0P9gbiT7HuRJoRNBe/0RbORYl061R4MLNjeATvuObSEAGt9iauB4O3xEKq4q6t0t6ovsoEl6b4Ejz5FPW34UJrPY0Bbe4hkfO5PTMvNh9RG7jp4ckqu2kNI33uSTzEFxxwyiA6g+rXD0raY24qvRDFxrH951uKrYqgIGOqzgCr9NVb5pymKEf2XGsTA5yhlL0/SM5bC0D8VkYfDGcXx13jB1/lMpFiSAiM4Xu2CcxuOn1HKa7QI8G9z0kPfdr+oVfVekJNKXhdglgJaK3b5Tfsw4GpkS+kSvXyW4vt00uB3f0Sq7n0+D8lUK2yqpwYBmTx3Q8GMuM6fkLjrsf0pyjfkkAnMkEEBlPvAAyCRvpycGDFagAg5W9y9cYLRkegi32VXXAM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PFPV+Vu35Gn1Dnc36U+Q90SvMCGyhjAwOONcOzz5D5pP5RQNxgfSlGuVo6nY?=
- =?us-ascii?Q?nt9zNMGqaJrS9gEW0pyH5cqlbCkalgdUxtJd/3px+XQ/xxuhqs+bD9yzPjBY?=
- =?us-ascii?Q?yU0XnoBiJwqFt4ySdfhqYhSkUPeSQt6DQ6vIlyPf+FOh6VkZQd1LDeIgizq/?=
- =?us-ascii?Q?bHcQU7dhSGVewjZgUDdNxxqS9yHLrAzQObPN8KYqX/k7xhRVf+FW/R695gXA?=
- =?us-ascii?Q?/GLF8d9fsJQNM7ZmVvoHD11spda37207+DlA81tYAMWMlBaqj3cS9sSSoZ1X?=
- =?us-ascii?Q?PPn8vbpdd+jO7vtypYn+YagPEowPKVCVDIOZeChev/Kyx7IBuMXi/ljmTUK4?=
- =?us-ascii?Q?Ec3JcnYuOffdBBLOWny1GF/WIoStMdee7eVwsD7/7POJLs6CdW/wZc5tzFyU?=
- =?us-ascii?Q?n7xjpBpc/chS1EuWRkimUFzquxGt8va5wurFWvKvtf+IfRSLNnsoWVpGtZoc?=
- =?us-ascii?Q?gOAyqPsEWptJGitwBVDuq1zPw4xMXC7QSZ383PLnCigbqnFYFbtgcRO1sONa?=
- =?us-ascii?Q?c/S0kJNm0Yhbpjnf4iJKcm4w/Hu/RjtvVejH0vA06WeSODUQO5rQy/7JEXs4?=
- =?us-ascii?Q?dsgNCHYUPjvHRE6+WkUDIPvQwDnTkjQ/GUQzj3Jciwonxfq2/LKrp4ruMnyR?=
- =?us-ascii?Q?pKkusGAfUGqwm0Vd+DX5gz2I/rBAwakS4UE3R54vMDQ+rSDUcu9PzzekhbaP?=
- =?us-ascii?Q?uVjdeThIwSXGIY59q90NMcdtWGADGeVfNVJv8/nBCcG+2siszODB8+5jWUE9?=
- =?us-ascii?Q?ohGdDdbNEBmFEcnWOASAkDtJTr9S+Quq3C7G9BOmiOO8BJV2IgU3m1wNSrLs?=
- =?us-ascii?Q?ctkhgBl+ceQchipX26AtVN9ji6LH57lvt4MZsJ9azDBYwX42QT5o3BmudBYJ?=
- =?us-ascii?Q?fWT5faxoh67djJFHlL4OBhfVtIVLOuERjE7fbSLjKE4LNrqHIX75yj9wBBk2?=
- =?us-ascii?Q?ppCqJHGYVVcgMuggozIXGSGwNRH6XlIfLGocH72GQ+K2F+EcFVEtbArUKpYt?=
- =?us-ascii?Q?BLkIt2YXKe4Klu4KDsQwn06yHGGmtcbQlcSfToLFLKrecq3GWsdL7J229d3k?=
- =?us-ascii?Q?V3IkDbLIWf0w4XnC6EsYis7CFmV9OJWfD6vsmZeRs/5FLIJ5ZzuS8mXprZcf?=
- =?us-ascii?Q?2bRxbqTJhU4YFKWFBBIjkODan+z2Dik+mlT+MrdLACpY0R5SiNOfmp+RNkd3?=
- =?us-ascii?Q?ASCmH0wTxvgs9Dy0NbFQ8KRIlyTRElspfWJsG0uaQRyhW/b7LYViH+KpnkQu?=
- =?us-ascii?Q?efU0vGO1jEHHMINry8RPDWfqTluegjeV3p8V8Vm/RhBuMZNQH8VEAxT4Zjnm?=
- =?us-ascii?Q?3jX0NIqupFNsn0KEala7n9fSGKBZVC+PHvTS6IfXcrJU8/k6g2ZZVdHl8Ii8?=
- =?us-ascii?Q?AzZ4U29LLBwtDUKt9/FwPekAeNkbYesnJldstEpkDpuyWtbXj0wyUPJWHWmu?=
- =?us-ascii?Q?DTTzuqgEWNpWbXcfhTMl1DwJ6IK5gPmLe9C3wucmHZvfPNPferLzqgNVu8ZV?=
- =?us-ascii?Q?I3ncHaiKLiMK2JPOJdE0wz6B/zJxAenj3xOfRh4pOuHw0lGyeA9YPngh2wDh?=
- =?us-ascii?Q?gt5LhnFbiySpbUCtL2mz0wSDd39Cb/4xbigWGSYXgbp4LhjZ/UwMzKH9hX6E?=
- =?us-ascii?Q?TpFlD3U+NkpBGzX7PbdIjKJtyflOsDQFh7+hxYtbKsIbVyqdneqoL7R7t8FV?=
- =?us-ascii?Q?zXxwaskdXoaZe9cO2+yB+S3EpHxUltx+T71OqYo7j5wmUK4c?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 749d0f0f-63cb-447f-384c-08de7dec6f1b
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 14:59:16.4817
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p0ULpOPLi1w8EWE+iuFySqvRVs2AowrNnmwpClX84+h+gOAivY6dzUZ26NqvDbjbYd+2aw2LZFGtlvd/KilPAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10595
+References: <20260309143411.8231-1-ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20260309143411.8231-1-ciprianmarian.costea@oss.nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 9 Mar 2026 16:06:49 +0100
+X-Gm-Features: AaiRm53zSNZD-rgavB1hXZqnC71GE3J4BBqG9ZBYLAtj9oAS6JeEy0pPrIt0G5A
+Message-ID: <CAPDyKFof23uOBe7duOLuFJ=qd8bv8f6ryFWbrPcTFB-Jg4ZQTA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] arm64: Add initial support for NXP S32N79 SoC
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, s32@nxp.com, 
+	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
+	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 09, 2026 at 09:57:41AM +0100, Frieder Schrempf wrote:
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+On Mon, 9 Mar 2026 at 15:34, Ciprian Costea
+<ciprianmarian.costea@oss.nxp.com> wrote:
 >
-> This contains three fixes and one cosmetic change for
-> the Kontron i.MX8MP OSM devices.
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 >
-> Changes for v3:
-> * Drop applied patches
-> * Add missing bindings patch for RV3028 RTC
+> This series introduces initial device tree support for the NXP S32N79
+> automotive SoC and its Reference Design Board (RDB).
 >
-> Changes for v2:
-> * Add Frank's R-b tags (thanks)
-> * Enhance commit message of patch 2
+> The S32N79 is an automotive-grade system-on-chip featuring eight Arm
+> Cortex-A78AE cores organized in four dual-core clusters. It is designed
+> for high-performance networking and gateway applications vehicle
+> architectures [1]
 >
-> Annette Kobou (1):
->   arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
+> Hardware features included in this initial support:
+> - 8x Arm Cortex-A78AE cores (4 clusters of 2 cores each)
+> - 32GB DRAM Memory. 28GB are usable and 4GB are reserved for ECC logic
+> - Three-level cache hierarchy (L1/L2 per core, L3 per cluster)
+> - GICv3 interrupt controller with ITS
+> - SMMUv3 for IOMMU support
+> - Generic Timer
+> - IRQ steering controller
+> - PL011 UART controllers
+> - uSDHC controller
 >
-> Frieder Schrempf (1):
->   dt-bindings: rtc: microcrystal,rv3028: Allow to specify vdd-supply
-
-Please include this patch in imx@lists.linux.dev next time. I will not
-track this patches status. If it Acked or applied, let me know.
-
-Frank
-
+> This series also includes the necessary driver updates:
+> - sdhci-esdhc-imx: Add S32N79 uSDHC controller support
+> - irq-imx-irqsteer: Add S32N79 IRQ steering support
+> - irqchip Kconfig: Add ARCH_S32 dependency for IMX_IRQSTEER
 >
->  .../devicetree/bindings/rtc/microcrystal,rv3028.yaml        | 2 ++
->  arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi     | 6 ++++++
->  2 files changed, 8 insertions(+)
+> Future patches will add support for additional peripherals such as
+> networking controllers, PCIe, and other IP blocks.
+>
+> [1] https://www.nxp.com/products/processors-and-microcontrollers/s32-automotive-platform/s32n-vehicle-super-integration-processors:S32N
+>
+> v5 -> v4
+> - Squashed irqsteer 'Kconfig' changes with the actual driver updates.
+> - Fixed tabular layout in the irq-imx-irqsteer driver
+> - Added received 'Reviewed-by' and 'Acked-by' tags from V4.
+>
+> v4 -> v3
+> - Added missing Signed-of-by's from one commit removed in v3 by mistake
+>
+> v3 -> v2
+> - Split S32N79 SoC dtsi into separate standalone commit
+> - Renamed a memory node in the S32N79 board dts
+> - Fixed IRQ STEER DT-Bindings support for S32N79 addition
+> - Updated S32N79 usdhc driver support commit message
+>
+> v2 -> v1
+> - added driver changes required for S32N79 uSDHC support
+> - added driver changes required for S32N79 IRQ_STEER support
+> - updated commit message for uSDHC dt-bindings
+> - implemented fixes for 'dt-format' tool findings on newly added S32N79 dts files
+>
+> Ciprian Marian Costea (7):
+>   dt-bindings: interrupt-controller: fsl,irqsteer: add S32N79 support
+>   dt-bindings: mmc: fsl-imx-esdhc: add S32N79 support
+>   dt-bindings: arm: fsl: Add NXP S32N79 SoC and RDB board
+>   mmc: sdhci-esdhc-imx: add NXP S32N79 support
+>   irqchip/imx-irqsteer: add NXP S32N79 support
+>   arm64: dts: freescale: Add NXP S32N79 SoC support
+>   arm64: dts: freescale: Add NXP S32N79-RDB board support
+>
+>  .../devicetree/bindings/arm/fsl.yaml          |   6 +
+>  .../interrupt-controller/fsl,irqsteer.yaml    |   4 +-
+>  .../bindings/mmc/fsl-imx-esdhc.yaml           |   1 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  arch/arm64/boot/dts/freescale/s32n79-rdb.dts  |  70 ++++
+>  arch/arm64/boot/dts/freescale/s32n79.dtsi     | 362 ++++++++++++++++++
+>  drivers/irqchip/Kconfig                       |   6 +-
+>  drivers/irqchip/irq-imx-irqsteer.c            |  55 ++-
+>  drivers/mmc/host/sdhci-esdhc-imx.c            |   9 +
+>  9 files changed, 497 insertions(+), 17 deletions(-)
+>  create mode 100644 arch/arm64/boot/dts/freescale/s32n79-rdb.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/s32n79.dtsi
 >
 > --
-> 2.53.0
+> 2.43.0
 >
+
+Patch2 and patch4 applied for next, thanks!
+
+Kind regards
+Uffe
