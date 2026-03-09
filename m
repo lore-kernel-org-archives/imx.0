@@ -1,149 +1,96 @@
-Received: from mail-m32107.qiye.163.com (mail-m32107.qiye.163.com [220.197.32.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB753A8753
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 11:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A21F3A4525;
+	Mon,  9 Mar 2026 11:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773056444; cv=none; b=E5q/cfWwfL3i7Yb0Ql+yDxOewnO0wnl6jq/CKCRdfpYWkXAoknIq0qQ/NEysGvqF7cPLklypL7V3f2IfkjaYR1Wtq9OEh8YFcIgmf6OVzPUKH8USloU80hi7+5Ht+H7dPnTCnrFssCxn3kNW+g2da7N0C/uwpncNjL3ZNTnxYvY=
+	t=1773056763; cv=none; b=Zq1rvIgZLQDbMXjs5ehsItxWO7FSwZ2GZVJzZvyZGiLO0kGK7gBH1P2U1U3sw4kCCZbAaebMxkxTNO93OGCEEs1UQh9FsARA0tZnStCQlC5WnnHj9AT2QKX2rR2a408YGiWXrKf0OM+ty2DR64JaeVEMOCiq7wf1F7bW61xUD0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773056444; c=relaxed/simple;
-	bh=Xpl/fpMpjUUVpfSnqfPkuT0H6Yqcz7PD/V6biWWfXc8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LFmO56FEqANeYe6kjFVI2wSL5fNC2Dl/1ya0LMB3yxDDdTl+pJY9DRkA4a/QESrMhJFZRpHxJ3OMs6TygCw02FYA6JQIK2oCpt3p9ZeXYnAHTCf2EuIQM2hBwRfEwDcFUyRrNDQ3msBwJ6oKuZbCrTfVY0xImS4YzXb30rmA3Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Qc0YmiyB; arc=none smtp.client-ip=220.197.32.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1773056763; c=relaxed/simple;
+	bh=4GHo3rpAhoh7Ez68qCniCSzBJN6YciwSNLek4y7NmYA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WrluL0cUpewtxz5uqHD/AFCZZwvoKF2x4wlzrAyTsRGBP7uk0gVO20ielvP4U870RaQ8cmDBbnTq/QDS3ICEY9ge4xym2s6pUWlksVINfXD0s5R+WVsk6f95Z+8Bmc2s8AL/EsAL050YtkUGIHEngzUfNuty2x+QA1SLMWigEmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W36W4/zC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Qc0YmiyB"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3642c56b9;
-	Mon, 9 Mar 2026 19:25:13 +0800 (GMT+08:00)
-Message-ID: <b08028a2-a721-404f-aa37-2d5460b42f94@rock-chips.com>
-Date: Mon, 9 Mar 2026 19:25:14 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W36W4/zC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECDCC4CEF7;
+	Mon,  9 Mar 2026 11:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773056762;
+	bh=4GHo3rpAhoh7Ez68qCniCSzBJN6YciwSNLek4y7NmYA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=W36W4/zCIY1OQLpUddYgQSvcv7rfjtlmRVHyJWDp1qi5vJ8n96Owl8g6LzSuwZmv3
+	 k52gqUlkRvZUAu4nUfC0r1UID4i87J/PMR49y7ivSYsBB1e6g/VADx63uaCGWE0KtO
+	 Sa3ZGFnXiAMFTj/m5/UI9sjUs7uWanwN7NQ9JIOj+BLMVePRpwUfjHxKMuDr3sWORO
+	 6+CUY6XP2qt2372Oe3MKYdbXJASTo0PbmoXI4v0NSGIzN1M/2FIqEeHc+JmPHkygeO
+	 YAyApKuiWuDCXiWEeVEiPN/75ySCyF40zTrBDcSG/1kr20/u2AsE71oUvWhn02XKCF
+	 Autm9PxLwOCxA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Saravana Kannan <saravanak@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Shawn Guo <shawn.guo@freescale.com>, 
+ Jindong Yue <jindong.yue@nxp.com>
+In-Reply-To: <20260225-mxsdma-module-v3-0-8f798b13baa6@nxp.com>
+References: <20260225-mxsdma-module-v3-0-8f798b13baa6@nxp.com>
+Subject: Re: [PATCH v3 00/13] dmaegnine: freescale-dmas: small improvement
+Message-Id: <177305675929.117444.10373471649910063885.b4-ty@kernel.org>
+Date: Mon, 09 Mar 2026 12:45:59 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/15] drm/bridge: analogix_dp: Apply
- drm_bridge_connector helper
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
- dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
- <20260210071225.2566099-10-damon.ding@rock-chips.com>
- <DGT1S368J0BK.3UA75JNEA1AB8@bootlin.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <DGT1S368J0BK.3UA75JNEA1AB8@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9cd25814c503a3kunmc0cb66ec2d5790
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQhpIHVZMShlCQxlDHx5JTx5WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=Qc0YmiyBZee1Hk/fjhMP8HZRU/TFbXqGI15R8Nhb//1EjA0Vul81HEuf9DHIcX4+WMbFCJhaxhBQ0j4oiM5ISbiA7Za0bqazftO58tnWo3jv3QUmPQugIxhXN8V6z++BD9Sl0ShB06AP3Q4K/+O+oYpdJQ8n1KH9J/gJ61nTHAA=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=eKAr0WWTEFr13YAjpGH8NXZDOYNtjsEXrTQWXZpSIFg=;
-	h=date:mime-version:subject:message-id:from;
+X-Mailer: b4 0.13.0
 
-Hi Luca,
 
-On 3/3/2026 5:42 PM, Luca Ceresoli wrote:
-> Hello Damon,
+On Wed, 25 Feb 2026 16:41:36 -0500, Frank Li wrote:
+> Add managed API devm_of_dma_controller_register().
 > 
-> On Tue Feb 10, 2026 at 8:12 AM CET, Damon Ding wrote:
->> Apply drm_bridge_connector helper for Analogix DP driver.
->>
->> The following changes have been made:
->> - Apply drm_bridge_connector helper to get rid of &drm_connector_funcs
->>    and &drm_connector_helper_funcs.
->> - Remove unnecessary parameter struct drm_connector* for callback
->>    &analogix_dp_plat_data.attach.
->> - Remove &analogix_dp_device.connector.
->> - Convert analogix_dp_atomic_check()/analogix_dp_detect() to
->>    &drm_bridge_funcs.atomic_check()/&drm_bridge_funcs.detect().
->> - Split analogix_dp_get_modes() into &drm_bridge_funcs.get_modes() and
->>    &drm_bridge_funcs.edid_read().
->> - Set flag DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment while
->>    binding. Meanwhile, make DRM_BRIDGE_ATTACH_NO_CONNECTOR unsuppported
->                               ^
+> simple mxs-dma code and add build as module support.
+> Use dev_err_probe() simple freescale dmaengines.
 > 
-> Do you mean "!DRM_BRIDGE_ATTACH_NO_CONNECTOR" here (i.e. missing '!')?
-> 
-> Also, unsuppported -> unsupported (typo)
 > 
 
-Will fix in v10.
+Applied, thanks!
 
->>    in analogix_dp_bridge_attach().
->> - Set &drm_bridge.ops according to different cases.
->>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
-> 
-> I had a quick look, looks good overall, for the moment I have only a
-> question, see below.
-> 
-> I aim at reviewing this patch in depth, but it's not an easy one to
-> digest. Would it be feasible to split it in smaller logical steps? If it
-> is, please do, it would be very helpful for reviewing.
-
-Yes, this commit will be split into several smaller ones in v10.
-
-> 
->> @@ -1532,6 +1481,7 @@ EXPORT_SYMBOL_GPL(analogix_dp_resume);
->>
->>   int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
->>   {
->> +	struct drm_bridge *bridge = &dp->bridge;
->>   	int ret;
->>
->>   	dp->drm_dev = drm_dev;
->> @@ -1545,7 +1495,18 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
->>   		return ret;
->>   	}
->>
->> -	ret = drm_bridge_attach(dp->encoder, &dp->bridge, NULL, 0);
->> +	if (dp->plat_data->panel)
->> +		bridge->ops = DRM_BRIDGE_OP_MODES | DRM_BRIDGE_OP_DETECT;
->> +	else
->> +		bridge->ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
->> +
->> +	bridge->of_node = dp->dev->of_node;
->> +	bridge->type = DRM_MODE_CONNECTOR_eDP;
->> +	ret = devm_drm_bridge_add(dp->dev, &dp->bridge);
-> 
-> Can devm_drm_bridge_add() be added to analogix_dp_probe() instead?
-
-Will do in v10.
-
-> 
->> +	if (ret)
->> +		goto err_unregister_aux;
->> +
->> +	ret = drm_bridge_attach(dp->encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->>   	if (ret) {
->>   		DRM_ERROR("failed to create bridge (%d)\n", ret);
->>   		goto err_unregister_aux;
+[01/13] dmaengine: of_dma: Add devm_of_dma_controller_register()
+        commit: 3a005126c9d7f30093627a6f329656c358e16b3a
+[02/13] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
+        commit: ab2bf6d4c0a0152907b18d25c1b118ea5ea779df
+[03/13] dmaengine: mxs-dma: Use local dev variable in probe()
+        commit: 96857a90982c2a461520fadc55dda3b8051e8d96
+[04/13] dmaengine: mxs-dma: Use dev_err_probe() to simplify code
+        commit: 4a5b0a728d665b3b7b08fb5bf6b2f69c995e30ec
+[05/13] dmaengine: mxs-dma: Use managed API devm_of_dma_controller_register()
+        commit: d11544c674b64beb9948724ba27187238c52b079
+[06/13] dmaengine: mxs-dma: Add module license and description
+        commit: e1b712c9352cf74285973462ced8d60ed7a9183c
+[07/13] dmaengine: mxs-dma: Turn MXS_DMA as tristate
+        commit: 67adf1f6643d75e33509900a2cb35db3a31f0410
+[08/13] dmaengine: imx-sdma: Use devm_clk_get_prepared() to simplify code
+        commit: 5daee52d7cc87415367fa0051a80998cccbab920
+[09/13] dmaengine: imx-sdma: Use managed API to simplify code
+        commit: 8982cb214a7f29db7d28058a3b4697f436af34d2
+[10/13] dmaengine: imx-sdma: Use dev_err_probe() to simplify code
+        commit: 917edfa57783352cd491cd5759a04d7b60de1714
+[11/13] dmaengine: fsl-edma: Use managed API dmaenginem_async_device_register()
+        commit: 4035726a6b724ff0f04b4f1429c7b1a935fc2e76
+[12/13] dmaengine: fsl-edma: Use dev_err_probe() to simplify code
+        commit: 804e18f7da6d29cff7ed4e004bcc05658f51d737
+[13/13] dmaengine: fsl-qdma: Use dev_err_probe() to simplify code
+        commit: 2438deea9ff82940ebfce67e232d558199ab8a6e
 
 Best regards,
-Damon
+-- 
+~Vinod
+
 
