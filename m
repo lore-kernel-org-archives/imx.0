@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1003D668A
-	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 15:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCE32472A5
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 15:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773068983; cv=none; b=ZUrz1XiD2bSs9f3CryV/KP4oeJ7tPBb1SrIEzMHnEyWJ+Lv5lOzMlpUFn9g2Ow0KgdOBZSSGb5Ww6NdhOA05v+C7x92fmmENsaqwl8NXjEtpBOl4/YrTZTLoNdQ6Zvb0/2F+XNbKrUJv9xhs3Yk5r82Je4D9q9PisvhuAwyTeFU=
+	t=1773069103; cv=none; b=N25B8dnq9Ez87NI+5dxrb/xmqFa/Vw5BQMOiiBW9Fs/k39ed3bitv5am/Os7ycaG1UDGxbhej0fTDCK7rB4QJ6p+5gCw9NspHoYp1FgjNOt4vmMhy5OZ06+Ryc3Zbx+ElZizma69iqwz7ysCzFViN6HAMiDjsxn6u/A9Wd0eCo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773068983; c=relaxed/simple;
-	bh=tbgwiF7SQ0yJqQDNrmdnVuN0QKIUVZ8LG5892E/0JxM=;
+	s=arc-20240116; t=1773069103; c=relaxed/simple;
+	bh=9HBDxuMmv5skzQl4UT7wyOdZmkNQerDRJWVbJNp1mqM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=o/VO0ownyxLV5TX7wGZQjXUZvEnjzP7Pl2XNlw64InVDPlRSzRx4BE7VAb1fNQ3XzwPSmWM7d/0enYhoKFonGgWiPAMyJRcj1N8/j/63tfEUQ7KlokSLWrlvJ1y3vnOfSPU7Gz+oL/DroFg0x/PlcuZwAXN+Pr7HfZGDugpdI04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=t4p/zCDl; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=Ff3lluskjO1jgKaunFIeAJH0F2P+pqt5ZKYIHLJbU6rU3AvSNbJwdTAfRH4P2girSEnST99QJBiz4/55SFFCJeMoAUSxn5I7vsHqhffgbTTy5SuAYKKWSGWfLuJ8f3CR7TSOQ4kGpr5GOCFt4OaeTuP7dRyfehNOfydlZhZbQSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sAI0/V2f; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="t4p/zCDl"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sAI0/V2f"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6ECC6C4287A;
-	Mon,  9 Mar 2026 15:09:59 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 8EEBC1A2D55;
+	Mon,  9 Mar 2026 15:11:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C62235FFB8;
-	Mon,  9 Mar 2026 15:09:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF20210369BEB;
-	Mon,  9 Mar 2026 16:09:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 64BDD5FFB8;
+	Mon,  9 Mar 2026 15:11:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6452110369C05;
+	Mon,  9 Mar 2026 16:11:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773068977; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1773069099; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=FG158/EGLhvDrEBET0uUhkr+ZO0S5F0PmANWPFGizsc=;
-	b=t4p/zCDlMFLItGdvjJ9LmtxrzqYp5G0961EWkTkCQ1SM4rc1m2qiB3rc2DNYjQIFP1/pvl
-	cl+VGECcrRL0qGrHE+5fgReQci+ZYDJ2tAKs2GUZlgbbFm/8xKS6htxbVFU4c0LWfh/UzF
-	1HW+276a2wckS8E3q1dEAOD+eriyUFIw02l04f3HXYkmz4GYFuBqTVhu/Y2zr7Q/7IdKsE
-	NyP/niJ9uud7IArG5WfOM3nllieq0xw0TqHAVxhThVcztrx21U7ULQNB+kv/aBThwvk5YP
-	jusabS4SZmvddMlnCBoULgmKmklq3UyJBGkoIo7CkgMVh6O9Sbn1JEJAFiv4sQ==
+	bh=7JXs9JPlH1EFUBa4y7Zu+UQwHDwDOw9hKMguqAinxxA=;
+	b=sAI0/V2fOKDCAIIu17PDW7TyNOOytaasThnsBQdJvP2Z+5QKV9ZlcnDHfoTeOCzVwIQXF+
+	Sjub3GxEYFtFVeyH9vP0RM5Hn/sTu6ozGfJPlJg+1SUccVT5gmi1YXeVNNzSe7dXQKxbzj
+	ihtr82t+oXpMCCLvPwmr5FDauPfpzjd5Y0YlnR1ERqHL4G+0+vQoHGW1ruLO5vCJec7NUr
+	ue3yLaoPx8OA9IUfmVUZVGrHThnaZOtrQjkl1K8v6e0GvNbXd7oUjjcmc2KDXn1e7I96Ge
+	zZT5ZeqLZulMiXPe07lR45GLHTl7mB5NhY1uf1SfTD3fFczCLKv5ox+ICwFRAg==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frieder Schrempf <frieder@fris.de>
 Cc: Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
@@ -42,15 +42,15 @@ Cc: Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
   Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
   linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
   linux-mtd@lists.infradead.org,  imx@lists.linux.dev
-Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
- for each op
-In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
-	(Frieder Schrempf's message of "Tue, 03 Mar 2026 17:29:27 +0100")
+Subject: Re: [PATCH RFC 2/7] mtd: spinand: Add support for clock to RX delay
+ setting
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-2-9326bbc492d6@kontron.de>
+	(Frieder Schrempf's message of "Tue, 03 Mar 2026 17:29:23 +0100")
 References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
-	<20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+	<20260303-fsl-qspi-rx-sampling-delay-v1-2-9326bbc492d6@kontron.de>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Mon, 09 Mar 2026 16:09:34 +0100
-Message-ID: <87wlzlnioh.fsf@bootlin.com>
+Date: Mon, 09 Mar 2026 16:11:34 +0100
+Message-ID: <87qzptnil5.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,40 +61,11 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frieder,
 
-First, thanks for the series! I believe it will conflict with the SPI
-tuning series as you mentioned, but we should be able to make them live
-side by side.
+> +#define SPINAND_RX_SAMPLING_DELAY(__delay)				\
+> +	.rx_sampling_delay_ns =3D __delay
 
-On 03/03/2026 at 17:29:27 +01, Frieder Schrempf <frieder@fris.de> wrote:
+For this macro I would be in favour of suffixing it with the unit,
+ie: _NS.
 
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
->
-> With clock rates changing on a per-op basis, we need to make sure
-> that we meet the RX sampling point delay constraint of the underlying
-> SPI chip.
->
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-> ---
->  drivers/spi/spi-mem.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-> index a09371a075d2e..6b8bee7d6f5e3 100644
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -589,6 +589,8 @@ void spi_mem_adjust_op_freq(struct spi_mem *mem, stru=
-ct spi_mem_op *op)
->  {
->  	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
->  		op->max_freq =3D mem->spi->max_speed_hz;
-> +
-> +	op->max_freq =3D spi_set_rx_sampling_point(mem->spi,
-> op->max_freq);
-
-How can this work with the above 2 lines? Maybe there will be the need
-to use a "min of the max" frequencies?
-
-Thanks,
 Miqu=C3=A8l
