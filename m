@@ -1,190 +1,215 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013036.outbound.protection.outlook.com [40.107.159.36])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4D23D9056;
-	Mon,  9 Mar 2026 15:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069704; cv=fail; b=WPwqiKXoVWGE9PJwkCI2qeffQcPa5cuVC5EKbJryVLrjemQlUgIKitc4Ub42nNBb5EScFqs9ZETn0O5l3lXUS3PJ8h34OJvYUAe6eoKbOj8OZ+5iB/LdJZmtsxjJb06OiiJaTHgF/ZLpwdau9QEqEoUzchFzIPtjzbgFgm6j90g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069704; c=relaxed/simple;
-	bh=ijelWzcKU4eYNy+sFKz+PRbT3zVfQCn3sCZcl4wwfsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KB0NrP0yc0fcxifNxd2IdsiNj6rkDNOSkIUxbeXDOwv3TBRxxEt/SF3fr4zXJq232io0SovPpUtPtW2iAmsC/9RqUl+6XGa+G6s+9W7aWfOnnCW0uIVj2lFTn9cq2y3i1MJ7M4ZsUyLcf/SqdEZL4n5448ze1+7Wj60acoAuitw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XcddRMTL; arc=fail smtp.client-ip=40.107.159.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890293E0C69
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 15:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773069944; cv=none; b=etg43xuV3o1vSWJTrDmK68TJ3gA8RC6E4kkx/fV9ZnX8mT74FlQSD4es6f4T2Lo+ZcIy8wftqlCgkzf7ONDyUv9eSwh02aEnVWEdsxSxXZlb6qvX5RmcC29ueMiF2AHOMeVML3TQS0zPLuLJxGf7IPyLkRPeZcWujm/kxMKxIBY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773069944; c=relaxed/simple;
+	bh=71UfLNvBJo5oEjJuFzP+LnOwtwqhZfxiR6bEOecHXDs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eHCqYdZMRIkasMlv/UJ8WhGFY/TngjKZy/uFLGvmxxua02pTBffdvEUlzZc/y0xsQYhb9abTJ3FnQHFYkhqzOc+gwp1j0fTGqPGmw702QmFLE6+vzsbts2PXEjRZrKYSlUrW5MFEWqkVl61PC0A8/9HTl/Z2uRIjTbb0HJdAZw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OI7u5PZt; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XcddRMTL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Frz32FEBxUf5BdVvLjxVF5vlG+7NCw7clHNEvUsR/2roBhI1lkxU5xEhRAid669PXQYazR9NiH1sjYstvc5CJ6Wxg6jxKpwp3/rvnkW67HJydLFjyarUEWWPdJMcN7pm3c+cpWhXsx0y7rQIhjUkHA6Hqds+KsMLmA01nkFjC9TDIHxicn50fYHro9rvS4aSKbXCuWuEMBuLpeSbXauchiY1N2pR+Q6o9Rv+BjtFMyHMdWUi7dndCwrHfWdofAdONBEstEytKoAEXAg45Etbo9IDWkfG1roUPvj7k15QUk7MO3VaNdQfpMlE3ahh9cS7NcuoOGzB0dXV5jjr3jbN2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wlNwTnVwP+CAHehwT/vmu0sHW2BB8lz+9NDJS2tYKig=;
- b=omIKZDwQE6mMbRMDU3Kbz1RPXVlAZX3hX1fSG33XOSzAjZSypCsaTpWyp6XJlS5WQYKd761vJbDsBu6SqOojKzeEDSTRwScSn2Q1Qdw7C0BK6PCozbr5zNMrOnOTZCuVrD5XLsrwN3fDBNB1sS6MHYCfs/9TH0cq0r+2kbPW9945sKzb9JJOxYfoLSgDt/ijhl3pwTAsWPsPW+lRf77QJAfM2YS9jr+HF0XVV9UtsLaIvLWy/0oe4uJtFsrVWa0HiJ1N9kyW9oGm5jWkJ+zAFK1XVsx8SPtx160KwJ1BwbQjoQMB7lHoDPPcH5qaiEoznPXctiCri0nyMLP6nTflLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wlNwTnVwP+CAHehwT/vmu0sHW2BB8lz+9NDJS2tYKig=;
- b=XcddRMTL70gu9cKGesEr6H/qIkLRpsN6BprCHl6b3w0PQj4hzAQn+dWegfgpsEYIGt0ItD9dGVfb5hKavUAmye88wmP0OGvrwUeIEkF6XXAlvt6ItPIhPZykBj4vWKS3tWVCVG/9Tciu4MDzA1W16IUV3pGNKdymnTaeXyTXFlo4ixI4mFTwPcETa8F5piVXurVRTYb7u14ErcnZNPW6il25Kh3wshoPb8dT3zeAP48JjLAYE8q4dFgm8WMKzV03TYRxeTlzePbOKfSAmZcYUYn54ZjYaZBsJ/oqCBJbNHxu4GOwIT+3HHp73pzgfIcI2FVUx918nxGfaWPXc7ds4g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AM0PR04MB6769.eurprd04.prod.outlook.com (2603:10a6:208:17f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.23; Mon, 9 Mar
- 2026 15:21:39 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Mon, 9 Mar 2026
- 15:21:39 +0000
-Date: Mon, 9 Mar 2026 11:21:30 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Mark Adamenko <marusik.adamenko@gmail.com>
-Cc: linux-staging@lists.linux.dev, slongerbeam@gmail.com,
-	p.zabel@pengutronix.de, gregkh@linuxfoundation.org,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: media: imx: fix parenthesis ending checks
-Message-ID: <aa7legZ_VRXscGus@lizhi-Precision-Tower-5810>
-References: <20260307062353.22069-1-marusik.adamenko@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260307062353.22069-1-marusik.adamenko@gmail.com>
-X-ClientProxiedBy: SA9PR13CA0012.namprd13.prod.outlook.com
- (2603:10b6:806:21::17) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OI7u5PZt"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 07D711A2C79;
+	Mon,  9 Mar 2026 15:25:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CF96A5FFB8;
+	Mon,  9 Mar 2026 15:25:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2370E10369A1E;
+	Mon,  9 Mar 2026 16:25:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773069939; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=uODB/LZsYADvm7F3kzuesCoyLdm5GvhcYmJKOvIxhy4=;
+	b=OI7u5PZth1aX/JdL6KTWo+3XI6LDY6V8PpSBTHuxC3bmYapyjnX+hewcruBKlsajwY9jNs
+	ee7ZW94OEis+b13BgeApI4/WUCdk1Cg0FW4OB5Zna7jIvhaSwEy56WNb1e2U/6shc5shHZ
+	qPNz1Jmmtf2KAoG9UFy9vge7DtZTZ4H3Y4Cs2xigIUSA38aVcgeMf23AIt0TNWi9y11j4S
+	OwvqPm4NKQoyt3/CvngfMQSgqUndMEHev4pfqnPWiMproJJ08OJyIONyJ/kJF8Q2WlZdKE
+	WaqQmyfqye/WEdSkoM7tSZ3s6zVQp9a4PNaOBKheiS7aFozQ/6AsMG98+uIFOg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  Han Xu <han.xu@nxp.com>,
+  Eberhard Stoll <eberhard.stoll@kontron.de>,  Frieder Schrempf
+ <frieder.schrempf@kontron.de>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
+  Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  imx@lists.linux.dev, Santhosh Kumar K
+ <s-k6@ti.com>
+Subject: Re: [PATCH RFC 5/7] spi: Add RX sampling point adjustment
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-5-9326bbc492d6@kontron.de>
+	(Frieder Schrempf's message of "Tue, 03 Mar 2026 17:29:26 +0100")
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	<20260303-fsl-qspi-rx-sampling-delay-v1-5-9326bbc492d6@kontron.de>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 09 Mar 2026 16:25:35 +0100
+Message-ID: <87fr69nhxs.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM0PR04MB6769:EE_
-X-MS-Office365-Filtering-Correlation-Id: db1b0d31-77c2-439d-13bc-08de7def8f36
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	zGMYnRs4jihAQZJzX9qV1e5FXiYJeokhMF76u+j2u/yABE7CbGGoycMsBy9mY+YNJrYVDlwl+QGLr+zcJcL3DeU9VoqlvqLxJCfvQXcrZjfwDZKoPtApaXcC+rFsAl7RcfWe4LgP5DeVANX4s0Uc1s/45/NWhXn48zUJkigt/Ge/wHHUc0+stUIAzAnvk7y++iUBIdc9A/j7zpIuEeMZ3q6pvUGDEp9+oDwwR89CU5xB56w4L2wXrTfwenv9M2T9ANXzMW0fcpy4cKZJQALhicbm75B5wJyOp2X/Om4nm3ItBkEx0EAquayL6Wn319NyN5Vmsmgmd1iS02K8vFk5vDzpuDpA6GGIOmOIdDwd8r3wxhZ1HyvqtNiqGU08ept4sZlbXMwCXZiBAMtls4i3EDAwkV/INUiz9TibCeQa0Gj5WtuALqKerPdYiGUSacr0trvQq2lt97pwA9B8xjk4ztqbH6FHLG9sy7U1TeLMfOxaO/kPfdYUri8W/JaVUDOnVwypYqyD4QFy7UiE5/UTB/yo5gVtjbWtyCH/oiWl4Jf0JbGPju5K7RtVixrjl6vougIXz56I38IdkrVHmFYF8iH6xTn62kD4/fCR5BngzNP85JlYuaCwXCjA9e6soEa7d1Paev2fp457+w7fibQTQklDgULNlQme8GyVvRuT+VSRdultOtppjsay5YzVIwwrOCP++pqb7PjzOTOw2f6ENHxAZnUvmHpASYk4Ds46DlEDLwdIjsC1AtR8b2/qbM5GcwtFbd1LYAUmBv3wUVGLY98ChKu5RI0afrDajXqriQY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Z97up79AYzhpc8Q5MSvYFoTSclqAAOZdgNI++xBJ6Iggtsetc6ofqEkTy3Mi?=
- =?us-ascii?Q?zuddA72yY7dHqpjEopZZuuarTFuTKu1KXdSJ67cCn6htbV9hCTZurnvHCcwG?=
- =?us-ascii?Q?QmFaw0J7tHTgwI74Bl2vXrgUOimSwhikuI88WfgSZJYd+ansIpEK46DAfZxN?=
- =?us-ascii?Q?+h6JD93rUKfXyL7GGtiafL0vZdK+cEctGvR2ZE82sd134Du/EyYP+1wyezTC?=
- =?us-ascii?Q?/dvdtewqB0t454Btyr5lJSrRWvmd9oAWa8MOfxtA+jTACus9g25DBPY+hsvC?=
- =?us-ascii?Q?p0x0wQk9+7tDWREN9mPMuWP290vvvx0+h2KDkVH1SOvNj1bJxqvFftCzBC7T?=
- =?us-ascii?Q?/TjlQrSrOmnkhvm39legbn3ABQf1blXswo4lq/g5/ZmuiG0482KP8E6xtCm+?=
- =?us-ascii?Q?no/7Z9P01E4+DNJKNiTPbaY+hd94zFycDdc8Oz7kmzIq4SyKRqoFFwZWNhEK?=
- =?us-ascii?Q?po1LDIFuyEnz9c6PQxgxa5/0Qt1guFHIFczTe+43HX098k92VRHg5b9TCzv6?=
- =?us-ascii?Q?g8b1HnLMk7B4bgcuNiSpAU6sytu3X8UukT7mb1f6eBKY5QzJb7A7jkx7ac+x?=
- =?us-ascii?Q?fTj2x67M5lL1UVCQCUJjFN2A9N0RCIaX/kF05D3nGrFLLOC/12kEuQgg2cSL?=
- =?us-ascii?Q?aixVq0aHQNcJ5ESyKlGhqHC2BMw8Shwj3X5TB6kQSeQuAuDFY5VfjMr53pAW?=
- =?us-ascii?Q?yZdeCN9wRmR0bSmlkNG0EQ8sIsKN0w15D/a92YoA7IQ+RRqmE12Ebrct9Dz9?=
- =?us-ascii?Q?/ubBDw5vDvkecQ20eTcs1YQd62Z0rWaWYwOduzTHSMf0YaccWSmPLCOEUl3a?=
- =?us-ascii?Q?NzccUa/JhNzWrDu8cNdWPSj+PPWibFer7762hqoSXrS80QrcM/DyfZw9LsFw?=
- =?us-ascii?Q?SHDUOPUShJZwwKlxoNAculXJ1u8LXJ71O8H3XiaJae/AwRg3vF8/2fsHC3Km?=
- =?us-ascii?Q?CCP8pL0SD3UeO223awSZbcpebwW7hXY35tPMlUZ3fkpYd9QfJyZsZS36xSoY?=
- =?us-ascii?Q?+GIUAy+FUUY1cl47eTX93jWfXoU/tMI+rlcb+CW9IPS/vgRDjQoOvRmDBqAW?=
- =?us-ascii?Q?5RvayXArDpeb2wWCqS+dp6hsLXiaxUmU0EWYRTVGHHYTnLUPxHclsRp21ALB?=
- =?us-ascii?Q?XjVyirh63II8NViyuZAXr1Y8Owrg3onP4IDocMAgdTnqfX3WiQ0hRgOKxT6w?=
- =?us-ascii?Q?4AgQnWr7x6IGhykwnGV8xYzQvZcze1Us+8JadoVl2QZyyVuJN/ODK7kWVIpO?=
- =?us-ascii?Q?DtChXScl6gROmj31T5d7RNrP7Y4uxTKDf+SqzOodcQ0q5FXbfUQS9kJzcv4A?=
- =?us-ascii?Q?22repqg6tqVCrajkE4XRWZIoQk008/gD/LNaIxg9K5z12BbV7TEHLyLmue2H?=
- =?us-ascii?Q?sPV6hreIRmdRGdvoO+yzKoSRSAq4kRhLMgMft+ebdWuHSTRGCxi3qwwb/GGT?=
- =?us-ascii?Q?fsZtMNgXWgaH8Yt3H0kgdZ8K1Oi+EWFhHRzZF7CWxNbtzKmijaftqa4MHADc?=
- =?us-ascii?Q?HF/zLS8K3LtU6hGN5XRVypz7GgFVhr4ElNPSWz0/2+R482kWHEOYpqVGdW3B?=
- =?us-ascii?Q?WdcIcMNX/v5BFlgLDCdfeFJhzDDb209rdiXSnQeWt8f1d4w53Z4GTZxNLaXw?=
- =?us-ascii?Q?jIqwj9mD5YRWEv9IBSUPypCD7iJ2En20AP0eMg5dvObbHcudE2DhaSUsWIxd?=
- =?us-ascii?Q?LnJ3HxygM4ZdQz5RRWRTyeXpQQ2+SFUIDM8VDKF++2fO5CYNEdNWMm6D/s/v?=
- =?us-ascii?Q?B/nbvimQIQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db1b0d31-77c2-439d-13bc-08de7def8f36
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 15:21:38.9090
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EvGNnPUspPSwb3+zUgDQ6Bebm65c7o2uBs+OQI256KOmYjT2mzmcQR3EaFXwn9bnJtPd+X1/bJEgRoGJc9E3kQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6769
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Mar 06, 2026 at 10:23:53PM -0800, Mark Adamenko wrote:
-> Remove 4 checks for ending with a parenthesis by removing
-> unnecessary line breaks, and forward declare a variable for a function
+Hello,
 
-nit: move 'unnecessary' to previous line, wrap at 75 col for commit
-message.
++ Santhosh
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> call that would otherwise remain over 80 columns.
+On 03/03/2026 at 17:29:26 +01, Frieder Schrempf <frieder@fris.de> wrote:
+
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
 >
-> Signed-off-by: Mark Adamenko <marusik.adamenko@gmail.com>
-> ---
-> v2: remove empty line
-> ---
-> ---
->  drivers/staging/media/imx/imx-ic-prpencvf.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
+> Some SPI devices such as SPI NAND chips specify a clock-to-RX-sampling
+> delay constraint, which means that for the data read from the device
+> at a certain clock rate, we need to make sure that the point at
+> which the data is sampled is correct.
 >
-> diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/staging/media/imx/imx-ic-prpencvf.c
-> index 77360bfe081a..2339b59af7b0 100644
-> --- a/drivers/staging/media/imx/imx-ic-prpencvf.c
-> +++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
-> @@ -315,8 +315,7 @@ static void prp_setup_vb2_buf(struct prp_priv *priv, dma_addr_t *phys)
->  		buf = imx_media_capture_device_next_buf(vdev);
->  		if (buf) {
->  			priv->active_vb2_buf[i] = buf;
-> -			phys[i] = vb2_dma_contig_plane_dma_addr(
-> -				&buf->vbuf.vb2_buf, 0);
-> +			phys[i] = vb2_dma_contig_plane_dma_addr(&buf->vbuf.vb2_buf, 0);
->  		} else {
->  			priv->active_vb2_buf[i] = NULL;
->  			phys[i] = priv->underrun_buf.phys;
-> @@ -704,11 +703,9 @@ static int prp_start(struct prp_priv *priv)
+> The default is to assume that the data can be sampled one half clock
+> cycle after the triggering clock edge. For high clock rates, this
+> can be too early.
+>
+> To check this we introduce a new core function spi_set_rx_sampling_point()
+> and a handler set_rx_sampling_point() in the SPI controller.
+>
+> Controllers implementing set_rx_sampling_point() can calculate the
+> sampling point delay using the helper spi_calc_rx_sampling_point()
+> and store the value to set the appropriate registers during transfer.
+>
+> In case the controller capabilities are not sufficient to compensate
+> the RX delay, spi_set_rx_sampling_point() returns a reduced clock
+> rate value that is safe to use.
+>
+> This commit does not introduce generic logic for controllers that
+> don't implement set_rx_sampling_point() in order to reduce the clock
+> rate if the RX sampling delay requirement can not be met.
+>
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+> ---
+>  drivers/spi/spi.c       | 73 +++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  include/linux/spi/spi.h |  8 ++++++
+>  2 files changed, 81 insertions(+)
+>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 61f7bde8c7fbb..b039007ed430f 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -3988,6 +3988,77 @@ static int spi_set_cs_timing(struct spi_device *sp=
+i)
+>  	return status;
+>  }
+>=20=20
+> +/**
+> + * spi_calc_rx_sampling_point - calculate RX sampling delay cycles
+> + * @spi: the device that requires specific a RX sampling delay
+> + * @freq: pointer to the clock frequency setpoint for the calculation. T=
+his gets
+> + *        altered to a reduced value if required.
+> + * @max_delay_cycles: the upper limit of supported delay cycles
+> + * @delay_cycles_per_clock_cycle: the ratio between delay cycles and
+> + *				  master clock cycles
+> + *
+> + * This function takes in the rx_sampling_delay_ns value from the SPI de=
+vice
+> + * and the given clock frequency setpoint and calculates the required sa=
+mpling
+> + * delay cycles to meet the device's spec. It uses the given controller
+> + * constraints and if those are exceeded, it adjusts the clock frequency
+> + * setpoint to a lower value that is safe to be used.
+> + *
+> + * Return: calculated number of delay cycles
+> + */
+> +unsigned int spi_calc_rx_sampling_point(struct spi_device *spi, unsigned=
+ int *freq,
+> +					u16 max_delay_cycles,
+> +					u16 delay_cycles_per_clock_cycle)
+> +{
+> +	unsigned long long temp;
+> +	u16 delay_cycles;
+> +
+> +	/* if sampling delay is zero, we assume the default sampling point can =
+be used */
+> +	if (!spi->rx_sampling_delay_ns)
+> +		return 0;
+> +
+> +	temp =3D *freq * delay_cycles_per_clock_cycle * spi->rx_sampling_delay_=
+ns;
+> +	do_div(temp, 1000000000UL);
+> +	delay_cycles =3D temp;
+> +
+> +	if (delay_cycles > max_delay_cycles) {
+> +		/*
+> +		 * Reduce the clock to the point where the sampling delay requirement
+> +		 * can be met.
+> +		 */
+> +		delay_cycles =3D max_delay_cycles;
+> +		temp =3D (1000000000UL * delay_cycles);
+> +		do_div(temp, spi->rx_sampling_delay_ns * delay_cycles_per_clock_cycle);
+> +		*freq =3D temp;
+
+This is silently modifying the spi_device structure, I don't like this much.
+
+> +	}
+> +
+> +	dev_dbg(&spi->controller->dev, "calculated RX sampling point delay: %u =
+cycle(s) at %lu KHz", delay_cycles, *freq / 1000);
+> +
+> +	return delay_cycles;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_calc_rx_sampling_point);
+> +
+> +/**
+> + * spi_set_rx_sampling_point - set the RX sampling delay in the controll=
+er driver
+> + * @spi: the device that requires specific a RX sampling delay
+> + * @freq: the clock frequency setpoint for the RX sampling delay calcula=
+tion
+> + *
+> + * This function calls the set_rx_sampling_point() handle in the control=
+ler
+> + * driver it is available. This makes sure that the controller uses the =
+proper
+> + * RX sampling point adjustment. This function should be called whenever
+> + * the devices rx_sampling_delay_ns or the currently used clock frequency
+> + * changes.
+> + *
+> + * Return: adjusted clock frequency
+> + */
+> +unsigned int spi_set_rx_sampling_point(struct spi_device *spi, unsigned =
+int freq)
+> +{
+> +	if (spi->controller->set_rx_sampling_point)
+> +		return spi->controller->set_rx_sampling_point(spi, spi->max_speed_hz);
+> +
+> +	return freq;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_set_rx_sampling_point);
+> +
+>  /**
+>   * spi_setup - setup SPI mode and clock rate
+>   * @spi: the device whose settings are being modified
+> @@ -4090,6 +4161,8 @@ int spi_setup(struct spi_device *spi)
+>  		}
 >  	}
->
->  	if (ipu_rot_mode_is_irt(priv->rot_mode))
-> -		priv->eof_irq = ipu_idmac_channel_irq(
-> -			ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
-> +		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
->  	else
-> -		priv->eof_irq = ipu_idmac_channel_irq(
-> -			ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
-> +		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
->
->  	ret = devm_request_irq(ic_priv->ipu_dev, priv->eof_irq,
->  			       prp_eof_interrupt, 0,
-> @@ -750,7 +747,7 @@ static int prp_start(struct prp_priv *priv)
->  static void prp_stop(struct prp_priv *priv)
->  {
->  	struct imx_ic_priv *ic_priv = priv->ic_priv;
-> -	unsigned long flags;
-> +	unsigned long flags, timeout_in_jiffies;
->  	int ret;
->
->  	/* mark next EOF interrupt as the last before stream off */
-> @@ -761,9 +758,8 @@ static void prp_stop(struct prp_priv *priv)
->  	/*
->  	 * and then wait for interrupt handler to mark completion.
->  	 */
-> -	ret = wait_for_completion_timeout(
-> -		&priv->last_eof_comp,
-> -		msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
-> +	timeout_in_jiffies = msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT);
-> +	ret = wait_for_completion_timeout(&priv->last_eof_comp, timeout_in_jiffies);
->  	if (ret == 0)
->  		v4l2_warn(&ic_priv->sd, "wait last EOF timeout\n");
->
-> --
-> 2.53.0
->
+>=20=20
+> +	spi->max_speed_hz =3D spi_set_rx_sampling_point(spi, spi->max_speed_hz);
+
+I believe we need a clearer yet stronger logic around the setting of
+max_speed_hz.
+
+The "maximum speed" parameter is reaching its limit. This is clearly
+what needs to be discussed with Santhosh. The SPI tuning series is
+playing with this value as well.
+
+Cheers,
+Miqu=C3=A8l
