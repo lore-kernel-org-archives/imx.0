@@ -1,96 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m3280.qiye.163.com (mail-m3280.qiye.163.com [220.197.32.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A21F3A4525;
-	Mon,  9 Mar 2026 11:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0AA396B91
+	for <imx@lists.linux.dev>; Mon,  9 Mar 2026 11:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773056763; cv=none; b=Zq1rvIgZLQDbMXjs5ehsItxWO7FSwZ2GZVJzZvyZGiLO0kGK7gBH1P2U1U3sw4kCCZbAaebMxkxTNO93OGCEEs1UQh9FsARA0tZnStCQlC5WnnHj9AT2QKX2rR2a408YGiWXrKf0OM+ty2DR64JaeVEMOCiq7wf1F7bW61xUD0w=
+	t=1773057097; cv=none; b=og6EuSwa+pwBalqL3E1LAHE1Zs/gu0cBb3X+8V4kPtFXdjwUgXOJA/48d9dJrTJmizr9T8mYSzNMghF1WljmhZFUna5RSzmZZcq3HXipePoPZdBBLv/Tnn6pDJCJi3FrCO0wpJOPoKLErr9QWYFe6z9BtMVVECs2sAmTK1MGGaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773056763; c=relaxed/simple;
-	bh=4GHo3rpAhoh7Ez68qCniCSzBJN6YciwSNLek4y7NmYA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=WrluL0cUpewtxz5uqHD/AFCZZwvoKF2x4wlzrAyTsRGBP7uk0gVO20ielvP4U870RaQ8cmDBbnTq/QDS3ICEY9ge4xym2s6pUWlksVINfXD0s5R+WVsk6f95Z+8Bmc2s8AL/EsAL050YtkUGIHEngzUfNuty2x+QA1SLMWigEmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W36W4/zC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773057097; c=relaxed/simple;
+	bh=DrtqFIO9YTumjBvEsVazx3/j4LOrIzkP53sXGMxlajM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QAdxBBUC1Blo0W4rp9DZJDpklevhJu304LNlxg4dj+JPNCCNQOw9zrpbFv6zkTS832UHUI0XbQfouYdwAIgpEW2RCghvjuXcdzcNeXiuX/cPSidTKUz8MS+pLo/Zngb8F0hgYCrBe/P98lLWm0t7SyRrz21Nete8BipEN5Opcck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=C4os9YqN; arc=none smtp.client-ip=220.197.32.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W36W4/zC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECDCC4CEF7;
-	Mon,  9 Mar 2026 11:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773056762;
-	bh=4GHo3rpAhoh7Ez68qCniCSzBJN6YciwSNLek4y7NmYA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=W36W4/zCIY1OQLpUddYgQSvcv7rfjtlmRVHyJWDp1qi5vJ8n96Owl8g6LzSuwZmv3
-	 k52gqUlkRvZUAu4nUfC0r1UID4i87J/PMR49y7ivSYsBB1e6g/VADx63uaCGWE0KtO
-	 Sa3ZGFnXiAMFTj/m5/UI9sjUs7uWanwN7NQ9JIOj+BLMVePRpwUfjHxKMuDr3sWORO
-	 6+CUY6XP2qt2372Oe3MKYdbXJASTo0PbmoXI4v0NSGIzN1M/2FIqEeHc+JmPHkygeO
-	 YAyApKuiWuDCXiWEeVEiPN/75ySCyF40zTrBDcSG/1kr20/u2AsE71oUvWhn02XKCF
-	 Autm9PxLwOCxA==
-From: Vinod Koul <vkoul@kernel.org>
-To: Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Saravana Kannan <saravanak@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>
-Cc: dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Shawn Guo <shawn.guo@freescale.com>, 
- Jindong Yue <jindong.yue@nxp.com>
-In-Reply-To: <20260225-mxsdma-module-v3-0-8f798b13baa6@nxp.com>
-References: <20260225-mxsdma-module-v3-0-8f798b13baa6@nxp.com>
-Subject: Re: [PATCH v3 00/13] dmaegnine: freescale-dmas: small improvement
-Message-Id: <177305675929.117444.10373471649910063885.b4-ty@kernel.org>
-Date: Mon, 09 Mar 2026 12:45:59 +0100
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="C4os9YqN"
+Received: from [172.16.12.43] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 36434b970;
+	Mon, 9 Mar 2026 19:51:23 +0800 (GMT+08:00)
+Message-ID: <01983e92-dabb-47f7-ba01-988ea41641db@rock-chips.com>
+Date: Mon, 9 Mar 2026 19:51:24 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 10/15] drm/bridge: analogix_dp: Add new API
+ analogix_dp_finish_probe()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
+ <20260210071225.2566099-11-damon.ding@rock-chips.com>
+ <DGT20ZJ3Q4WP.3OTQJYWGSYGUD@bootlin.com>
+Content-Language: en-US
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <DGT20ZJ3Q4WP.3OTQJYWGSYGUD@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+X-HM-Tid: 0a9cd270098c03a3kunm26e3dc7b2d81c9
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ05OS1YeHkxLSkgYQkNDTE9WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=C4os9YqNIUC3dEyjyzM/hCxvk1F4fWa1S7B31zMJjMRFJW7ZEsZL+m85ptIf9IWCeuLLhar9IN001x4s5PBLTMGuQlDb+GzAX3aXtbXJrDmPNAb2GPzyOvS/jIXmdi0MK0cJdB+IiAiLNeWa/7D2wdMUSjFWtZYZZb4qvAyF1AM=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=hduUfmGwgnKMskaDKeGcgwJWohiGVW+qVStYTESGB2U=;
+	h=date:mime-version:subject:message-id:from;
 
+Hi Luca,
 
-On Wed, 25 Feb 2026 16:41:36 -0500, Frank Li wrote:
-> Add managed API devm_of_dma_controller_register().
+On 3/3/2026 5:54 PM, Luca Ceresoli wrote:
+> Hello Damon,
 > 
-> simple mxs-dma code and add build as module support.
-> Use dev_err_probe() simple freescale dmaengines.
+> On Tue Feb 10, 2026 at 8:12 AM CET, Damon Ding wrote:
+>> Since the panel/bridge should logically be positioned behind the
+>> Analogix bridge in the display pipeline, it makes sense to handle
+>> the panel/bridge parsing on the Analogix side. Therefore, we add
+>> a new API analogix_dp_finish_probe(), which combines the panel/bridge
+>> parsing with component addition, to do it.
+>>
+>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>> Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
 > 
+> ...
+> 
+>> @@ -1581,6 +1583,52 @@ struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp)
+>>   }
+>>   EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
+>>
+>> +static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
+>> +{
+>> +	struct analogix_dp_device *dp = to_dp(aux);
+>> +	struct analogix_dp_plat_data *plat_data = dp->plat_data;
+>> +	int port = plat_data->dev_type == EXYNOS_DP ? 0 : 1;
+>> +	int ret;
+>> +
+>> +	/*
+>> +	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no valid panel
+>> +	 * or bridge nodes. The driver should go on for the driver-free bridge or the DP
+>> +	 * mode applications.
+>> +	 */
+>> +	ret = drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
+>> +					  &plat_data->panel, &plat_data->next_bridge);
+>> +	if (ret && ret != -ENODEV)
+>> +		return ret;
+>> +
+>> +	return component_add(dp->dev, plat_data->ops);
+>> +}
+>> +
+>> +int analogix_dp_finish_probe(struct analogix_dp_device *dp)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = devm_of_dp_aux_populate_bus(&dp->aux, analogix_dp_aux_done_probing);
+>> +	if (ret) {
+>> +		/*
+>> +		 * If devm_of_dp_aux_populate_bus() returns -ENODEV, the done_probing() will
+>> +		 * not be called because there are no EP devices. Then the callback function
+>> +		 * analogix_dp_aux_done_probing() will be called directly in order to support
+>> +		 * the other valid DT configurations.
+>> +		 *
+>> +		 * NOTE: The devm_of_dp_aux_populate_bus() is allowed to return -EPROBE_DEFER.
+> 
+> Uhm, if it is allowed to return -EPROBE_DEFER...
+> 
+>> +		 */
+>> +		if (ret != -ENODEV) {
+>> +			dev_err(dp->dev, "failed to populate aux bus\n");
+>> +			return ret;
+>> +		}
+> 
+> ...then you shouldn't dev_err() when -EPROBE_DEFER is returned.
+> 
+> Either use dev_err_probe() (which would also simplify your code) or check
+> for if (ret != -ENODEV && ret != -EPROBE_DEFER).
+
+Will fix in v10.
+
+> 
+>> +
+>> +		return analogix_dp_aux_done_probing(&dp->aux);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(analogix_dp_finish_probe);
+>> +
+>>   MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
+>>   MODULE_DESCRIPTION("Analogix DP Core Driver");
+>>   MODULE_LICENSE("GPL v2");
+>> diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
+>> index 3428ffff24c5..bae969dec63a 100644
+>> --- a/include/drm/bridge/analogix_dp.h
+>> +++ b/include/drm/bridge/analogix_dp.h
+>> @@ -30,6 +30,7 @@ struct analogix_dp_plat_data {
+>>   	struct drm_bridge *next_bridge;
+>>   	struct drm_encoder *encoder;
+>>   	struct drm_connector *connector;
+>> +	const struct component_ops *ops;
+> 
+> Is adding a new stored field a good idea? Can it be instead passed as an
+> argument to analogix_dp_finish_probe()?
+> 
+> Note I don't have a strong opinion here, just the added struct field seems
+> overkill for being used just once.
 > 
 
-Applied, thanks!
+I agree this is a better approach, since the &component_ops is only used 
+during probing.
 
-[01/13] dmaengine: of_dma: Add devm_of_dma_controller_register()
-        commit: 3a005126c9d7f30093627a6f329656c358e16b3a
-[02/13] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
-        commit: ab2bf6d4c0a0152907b18d25c1b118ea5ea779df
-[03/13] dmaengine: mxs-dma: Use local dev variable in probe()
-        commit: 96857a90982c2a461520fadc55dda3b8051e8d96
-[04/13] dmaengine: mxs-dma: Use dev_err_probe() to simplify code
-        commit: 4a5b0a728d665b3b7b08fb5bf6b2f69c995e30ec
-[05/13] dmaengine: mxs-dma: Use managed API devm_of_dma_controller_register()
-        commit: d11544c674b64beb9948724ba27187238c52b079
-[06/13] dmaengine: mxs-dma: Add module license and description
-        commit: e1b712c9352cf74285973462ced8d60ed7a9183c
-[07/13] dmaengine: mxs-dma: Turn MXS_DMA as tristate
-        commit: 67adf1f6643d75e33509900a2cb35db3a31f0410
-[08/13] dmaengine: imx-sdma: Use devm_clk_get_prepared() to simplify code
-        commit: 5daee52d7cc87415367fa0051a80998cccbab920
-[09/13] dmaengine: imx-sdma: Use managed API to simplify code
-        commit: 8982cb214a7f29db7d28058a3b4697f436af34d2
-[10/13] dmaengine: imx-sdma: Use dev_err_probe() to simplify code
-        commit: 917edfa57783352cd491cd5759a04d7b60de1714
-[11/13] dmaengine: fsl-edma: Use managed API dmaenginem_async_device_register()
-        commit: 4035726a6b724ff0f04b4f1429c7b1a935fc2e76
-[12/13] dmaengine: fsl-edma: Use dev_err_probe() to simplify code
-        commit: 804e18f7da6d29cff7ed4e004bcc05658f51d737
-[13/13] dmaengine: fsl-qdma: Use dev_err_probe() to simplify code
-        commit: 2438deea9ff82940ebfce67e232d558199ab8a6e
+>> @@ -49,5 +50,6 @@ int analogix_dp_stop_crc(struct drm_connector *connector);
+>>
+>>   struct analogix_dp_plat_data *analogix_dp_aux_to_plat_data(struct drm_dp_aux *aux);
+>>   struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp);
+>> +int analogix_dp_finish_probe(struct analogix_dp_device *dp);
+>>
+>>   #endif /* _ANALOGIX_DP_H_ */
+> 
 
 Best regards,
--- 
-~Vinod
-
+Damon
 
