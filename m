@@ -1,152 +1,149 @@
-Received: from mail-m15578.qiye.163.com (mail-m15578.qiye.163.com [101.71.155.78])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010038.outbound.protection.outlook.com [52.101.69.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD153A63EE
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 02:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773110480; cv=none; b=vFTtwDw7yKtv4jthX42jk4jBDj2pXcIrvH12N1wfUF8hxMxbYIBz+KJqCSNiO3nnfF6IYOaLVHkcWCiiKz8KQzLv2tHZPGqXmlhYm129RwYq3nPl1I2Wjdt1eRySCtfpzfSOvj2ceqFYwl0VBvJSDt2mZVV3xW47v66KUpj7v94=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773110480; c=relaxed/simple;
-	bh=pDXwxWagWY8PFSsOqTb5CCgQ3O22LqwcvmpvzpfLccI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hT34HssYi3w9s7OGrGdXO1tFsaUC2Si4Ry6AHTnJUn5HAWJgXbrUIqcrQZYLNUxbo51WII1LkC4jYzRRKPWy0+nLJbd6GlNRX3Q9+pgWxdtuwXnnpQtBjbFVDkl0p+DilDpuZaNWm0OqAujuv0bvEpWp9os0rRw5VLn/RfgBNEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=UjaASurj; arc=none smtp.client-ip=101.71.155.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2813B5303
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 02:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773111340; cv=fail; b=UBD9wcIBl/a5rea5P+xOeHaJY/h+UqnhJY9PhPn2t4PPDbJarnvBCSHr4mJb0S0kxYvvXkvOAC7weDdzMHhYcYazFwbemyhfkOBlwJg0CmihPvnK/pqDRJTBlEFq7Rz4N6UZqHj5mwPeosFw46+8XwmfIbKb0AKH3RcE65IlQxs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773111340; c=relaxed/simple;
+	bh=qWMI+HIET51qc9Gau7yFEvJZBfCUkG1CWuMKP9QPLJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FrpRMNQntE1Kfag8F1YQf4gwuWzH3W+D2zE1wUxfPWq4u1RhWApej87ga6Z1xpiyjaPY6ES4IZHHXjvEUQt50tUF8rdn8sxAIMiZGArUapwuWqvVhK6RINumTYtKaaJmshIHHQCwiEoyvwiHildPIR6H+5YZLh5CzPruTWHLAOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JZBZ+gAa; arc=fail smtp.client-ip=52.101.69.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="UjaASurj"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3653ae7eb;
-	Tue, 10 Mar 2026 09:25:35 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v10 06/18] drm/bridge: analogix_dp: Remove redundant &analogix_dp_plat_data.skip_connector
-Date: Tue, 10 Mar 2026 09:24:46 +0800
-Message-Id: <20260310012458.169272-7-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260310012458.169272-1-damon.ding@rock-chips.com>
-References: <20260310012458.169272-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JZBZ+gAa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iVdJunJc26OFGVMJRQqY2ny9y6B0garylXHwj47UvtyJZGhinV8hfzutM7ZvIiHGCBw7SSNQHr0eHKEK4kMJRRrBGPvy0PvIKF7ZEFCYxe3AkKR8mJjUrBX34ITNvC/ouPY8j5Rour2f8kggEi4sSV/KQXwk/dGyFZDypmAlwydiJCZk3QIFmXDGBW/8ie5RB2poqVwAEd7DWkm36UAGKPXWWBGV9H0v80zT3BbJ4/qglBD7PNsoLKUMiW9cxhOlX5IlskjDfIsb4FF1PUfMdh7iydU98jQhe5qPx/8c8GZtdPjyEngBco5ajEVpJ+hQN845Ki+dNplcSgAw6iyloQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xBZyKZshpInKXhw/hKhGkoRx2G15wuPBm48FS1He7SY=;
+ b=abP+AEQIvhm1sT1pDvESTB/LpXa2HuoOLwMKoPFaQFDjCWcRwlXBY382WzifSpZkAezuFT6rnDmxo6Qwze5WMHyqHW1BDEvUITN/r3TPJn54APWoCvSwvXp69AI6OzbyBo7wKsS9jlrKjIdU1UtDqoZM7srOiM40Q+IpIkmBD0iWs3/aFzjNcb95iphW5i/FKNgkcDHcD81HamZosfhUHjlyhiZeJosYFWDHYN0zs+RgQ03BNpztCqizW3xnZmLfHMEV1wu3XAaQF8Bua3GBpv9yWd+e8H1FKsCmPkHfE9kgni+3DlbCa29RHOmK2SYmtv8SkZ6PfO3wF8elC3b20Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xBZyKZshpInKXhw/hKhGkoRx2G15wuPBm48FS1He7SY=;
+ b=JZBZ+gAah4DGknif6nGIjp3vQHp6WXkRBpKfh0dCeJv+2MljDZh4RCpwKdZdXpcR6DZuBO4ZnvKZL3o49Y6pf7Tf0DXbnASCPienkzeUz1wiP/tERbuqc/N4GpgiGxPsE/As0mgezGhte/k7ntq3GH6JUvAAzAn0DJA8ppv7lYUWc20opZEFGuekUViNzl+oDq7t5+A9rGrz9H4uKj1nd2H4v0CHl+ebrjXnUUGeKwb5gFqbACGy0ZszG2ExoN/ayXeIRjO2+to2g+f460Yb9qEKh3vB+joovEQiTP3L44RY7oBSkH0wTgJSl4uZmW/swRNjYx6cQdqlfIY5xi0Rzg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
+ by GVXPR04MB12265.eurprd04.prod.outlook.com (2603:10a6:150:30f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
+ 2026 02:55:35 +0000
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5]) by PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5%5]) with mapi id 15.20.9678.023; Tue, 10 Mar 2026
+ 02:55:35 +0000
+Date: Tue, 10 Mar 2026 10:47:51 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: badhri@google.com, heikki.krogerus@linux.intel.com, 
+	gregkh@linuxfoundation.org, arnaud.ferraris@collabora.com, dsimic@manjaro.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	jun.li@nxp.com
+Subject: Re: [PATCH v2 2/2] usb: roles: get usb role switch from parent only
+ for usb-b-connector
+Message-ID: <oep5avs66onfozfbffb2z7l5jkrrtw5j5fq5z2dejgowapobk2@7vjajlqfg2uo>
+References: <20260309074313.2809867-3-xu.yang_2@nxp.com>
+ <20260309194902.1785552-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309194902.1785552-1-Frank.Li@nxp.com>
+X-ClientProxiedBy: AM0PR05CA0096.eurprd05.prod.outlook.com
+ (2603:10a6:208:136::36) To PAXPR04MB8829.eurprd04.prod.outlook.com
+ (2603:10a6:102:20c::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9cd559764503a3kunm2771af5030df70
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGh0eTFYaT0xNH00aTEIaShpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=UjaASurjB7qqdJjDT3zmqkppiZa0zc/FNaBneB9AMMWkCz6BZcaB6ICaPlUaRr6uy9IbnQJLJZMV/WNJSzwRgu386ryHMTa9xF9sNRGv1jVONDeTCxjz5LNuP9VdCYMAx7Zj+Ea5thlN2c7Nncmjb25SOAEdYWAYm0e2yGBL2uY=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=3nkXOtBYCoKZ8DUEewtXlIs54JzYHKoIvjjx04fnf4U=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|GVXPR04MB12265:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57e3dcd7-0270-4968-9f17-08de7e508052
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	6ZI1s3QD5wPCCJVgcoqPgpJnC2vZ21WftP1Yanpbqs5UO8BqfDdU047z9wVn8Je9sDGvpgSDBBMuWlRq5l0/0Lc6QRpDrLN+BLpGHf/8Muv5pcKhbsXrnpxurpdBjIbRZZpoh8lB604VnGPfNSDW/ih2kN8chORt7VOSLvs8Oqm50HQyqlR+cA97zS+BfEbyNVnvtuh1wvHG6Bnjluza+CPL9wABBpHRPRJPdXtxaNOVW1NLNJ6b/6SDsJcK9Ea0Y/hkU4jqocIvAKgx/U8LJRR4bYvdE5XaJZRq1gojDdZVgzi2jiA4OB4uBXqqv3JYW1eR3mM5OR9fVQJjdSWmmgCVEfjkGbtHJfZuF6fBFDKg3iKWInVToaAfdBoggRDJXX1F5X9LpiSfhGxzNFMcbIvz+kUDBG5knuYrszJPsU1Rkwv5xlsfGRqDyTflOMCXFRAoEmwKnqZSxPgIiE892vLXzRz3X3Z4zVRXjcLhnI0jt1qGBTXSR7zNXeSwZPwtnhaX5x/Fj+BeObpLfSA+hyWdzbWKOEGI9e9dBUICT16SNGp+OQRe+STaSDBCFe1bLj8YkEAizE9mYsVvmTk4g9Afj1tBTDzaAz5YrD7V/yuCHhN1JQ8vrd89lPdUSyBrMa6KP+jzRVqOQEwKVPLxCUmWhlXfW2ge47zVX+0CHI9HyMgKRKzniA8rbOvvdm1YamwZrpmp+8kLVu/eaAI3rlIAYjOk6XGxtEjcaHFGEnwE2iMtByEVugJMWhdGoa+UrRacyniGWbxwmqScsJEhpGIXE1fQog+cTd5K2bOoLZs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4WXxUUsdYrNeOCdK6hPw7dIuNCdbK0MSxgft/vF+kO/0PWD2NMu5K5y9Mg7z?=
+ =?us-ascii?Q?9Ey6ZYadgJLQAuGsNA3xLwR47daTJs4lYM+dUW9ylpDAipjHcTHp5QxWM/AT?=
+ =?us-ascii?Q?Tc1ZZB4lDJMkGQzCi0Qwwrigwe3aow2zsibSTl9xEJTWGPmkjqYZKbLEqXMU?=
+ =?us-ascii?Q?mB8u66s+WdMG9v3OkPFmXShmzrF1wlY6O5pwJ0j4Qvc/TVdjL6rODSOno9BX?=
+ =?us-ascii?Q?44ofmwx89f/QdbJh6mvVSVQuhZ7L0C93iEnKM8E5Q2OGt5Ao1839adDb5LTB?=
+ =?us-ascii?Q?rOn5pPUvpMAx+J7ekBE602+uNnKWm5h/k42t4UD3Um+1bHiMMM+xacC5Jzeh?=
+ =?us-ascii?Q?G6wpxIHMjVsrSz+OhVLig8+3SfTbOsOACRzSjkrXNZp58ANMBkc0YLj/oJPB?=
+ =?us-ascii?Q?0pvt1gGH1A74beru9jK3QbDwfetkiASmRa6f8R9QB8vdsCPE14A4iUpgm/9P?=
+ =?us-ascii?Q?QTGo12+UNFdEGehRuPt0Wwy2lK36B9djsBzwqCbd27lBdx/EpO7ODtJvPkiR?=
+ =?us-ascii?Q?IKWU1pJILlzuHUorrXAYZ3MWY9lmT4TTAXAr4vrnKEwOF91ddiAMDnUSirjw?=
+ =?us-ascii?Q?3zTfWUD+YG6UqksnPwEXhd/A0T6GoBk0qRA3Czs40rC9tSU11QnmVZlalVZP?=
+ =?us-ascii?Q?lThqFYxymA0LI6EVCprdmWo2kyXPnKywWCEUA2fusaueLAbl47d5U9jtKtn9?=
+ =?us-ascii?Q?4KsAEbOyN+0zAr0ty+IYffTpRIGQkyzWIfyt4CT4yQZBQ+/bxQlXynEFaUmP?=
+ =?us-ascii?Q?NFo0/w4Ig44yTiwADc0wta/YgOvsQOXLQnQqnmlYCL8+9tgiR0gVoghOAEx2?=
+ =?us-ascii?Q?7iz7QDsiy0ClTZC+fn09fpR+5gFJJGNKuHUddNKqP6A7rJJsQiV/MTZ78ls7?=
+ =?us-ascii?Q?KIi+robSEplz2MOnF/bmR4fg5PHX7G/2v8lHJxEH+anhpQHznQTnGhz+1nbm?=
+ =?us-ascii?Q?hTx9gef7yitjXAP4xta4Y6RysBt3/9jVHcC6Ptr1WoWvn30FDbsdyM9I6oil?=
+ =?us-ascii?Q?UIOHhnU29TkyzUujhbKzOX0NKo+U1orwr0IBH/KnXzu+5n1KT8n9kEw85lXc?=
+ =?us-ascii?Q?Db2xe8huXN37ZdFuxmADwFiKK3dggtXBDcwCvJxPGQmgoiJySH8UiFGQLpZy?=
+ =?us-ascii?Q?xfiuMRDHUYOo2ooZi8jM26D8s1R5RlYhDtH0t8G+T+TMNUQcKltcPvj4uRah?=
+ =?us-ascii?Q?DErJvqMMnBYCjv15yjhA6xATijVDFPgAQo2jh/+FMiccu+as162G+h2UGwGy?=
+ =?us-ascii?Q?BVhJQoWXsB34nukuD8e9RmZUoUUwgVoIeZ3N2d89ALmAUTIf4AfENLjomWMj?=
+ =?us-ascii?Q?iBs3sIKlDGch2YXyY6WV/qF9mP6N4vWwDfEBU9jvuAjxIQh9Zbq+0awm1S34?=
+ =?us-ascii?Q?jjXcH+WPzlkpa0+GSrrc17oq7QgQRVF1c+uwenW/0P1yOLzNJoqgHX5f0qFI?=
+ =?us-ascii?Q?INvk6oJA8rTRfBzse1xlP/NVmtY+d6T3ak7V/vHzmzwPsTc7OWId7RlNW25i?=
+ =?us-ascii?Q?Zz+RZxca3bggHLb95uF5ACds2upGGlBTyyYKVyjqQv4t7cfkSaJD5FhXnHXu?=
+ =?us-ascii?Q?W2ZJBZncqV55vyBUDip2gCJkdFBcOxxpDsWZAM+MRXrYg6bVmuX9uepeopCg?=
+ =?us-ascii?Q?ePpQpt7e9kb7hAQTxkm66KCbIlZcqYFQ65SDIqZ94R6Yu4tk9PF1TYkvZal2?=
+ =?us-ascii?Q?zFHNenUA4pS9fe4oS/1JKnLpoyP3kE1GrSMDQN8knzmHIQAh+ei2wO+MbM1V?=
+ =?us-ascii?Q?BmyKBBcwvQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57e3dcd7-0270-4968-9f17-08de7e508052
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 02:55:35.0127
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aQuEStTPVtSHEs2BpDftFp2+yH4cBoAu8PnhOokJrfje1xOSJ6b3p9jy1JF6lGtTR6dw7C8ObJUMoBRUCk9vrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB12265
 
-The &analogix_dp_plat_data.skip_connector related check can be replaced
-by &analogix_dp_plat_data.bridge.
+Hi Frank,
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+On Mon, Mar 09, 2026 at 03:48:59PM -0400, Frank Li wrote:
+> From: Frank Li (AI-BOT) <frank.li@nxp.com>
+> 
+> > if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
+> > 		return NULL;
+> 
+> AI: Nit: inconsistent indentation. Should use a single tab, not two spaces.
+> Use '\t' for the return statement to match kernel style.
+> 
+> > 	parent = fwnode_get_parent(fwnode);
+> >
+> > 	if (!fwnode_property_present(parent, "usb-role-switch")) {
+> 
+> AI: Missing NULL check on parent before passing to fwnode_property_present().
+> If fwnode_get_parent() returns NULL, the next call will dereference it.
+> Add: if (!parent) return NULL;
 
-------
+Ignore this!
 
-Changes in v3:
-- Squash the Exynos side commit and the Analogix side commit together.
+Both above AI reported issues are false-alarm. Please refine the AI-BOT.
+And the message he sent didn't reach to me (I'm not in --to list). So the
+issue may not be resolved timely.
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-
-Changes in v9:
-- Add Tested-by tag.
-
-Changes in v10:
-- Add Reviewed-by tag.
----
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 2 +-
- drivers/gpu/drm/exynos/exynos_dp.c                 | 1 -
- include/drm/bridge/analogix_dp.h                   | 1 -
- 3 files changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 3caa47d31649..4606ecc3f480 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -959,7 +959,7 @@ static int analogix_dp_bridge_attach(struct drm_bridge *bridge,
- 		return -EINVAL;
- 	}
- 
--	if (!dp->plat_data->skip_connector) {
-+	if (!dp->plat_data->next_bridge) {
- 		connector = &dp->connector;
- 		connector->polled = DRM_CONNECTOR_POLL_HPD;
- 
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index ac16138a22fe..1eeb0b15f99a 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -200,7 +200,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	dp->plat_data.power_on = exynos_dp_poweron;
- 	dp->plat_data.power_off = exynos_dp_poweroff;
- 	dp->plat_data.attach = exynos_dp_bridge_attach;
--	dp->plat_data.skip_connector = !!bridge;
- 
- out:
- 	dp->adp = analogix_dp_probe(dev, &dp->plat_data);
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index 582357c20640..f06da105d8f2 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -30,7 +30,6 @@ struct analogix_dp_plat_data {
- 	struct drm_bridge *next_bridge;
- 	struct drm_encoder *encoder;
- 	struct drm_connector *connector;
--	bool skip_connector;
- 
- 	int (*power_on)(struct analogix_dp_plat_data *);
- 	int (*power_off)(struct analogix_dp_plat_data *);
--- 
-2.34.1
-
+Thanks,
+Xu Yang
