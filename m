@@ -1,128 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA27D36827B
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 08:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8702343CEED
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 09:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773133098; cv=none; b=ndPWl5Wa/PsewyXs+9AGWPxkdJYYlFEksdG9PAveb7oAP4edcd9hASP4grwXUVOzBVookeOqWgl+QjHpd4WAxuDnuOf73foQdg+oaDpkLZRMrOmlZQrrm5peGf/dwI6Aj7I8eIBVjTNoKGdRbfWlL11vurXwJ34FulnzhNb3ABc=
+	t=1773133920; cv=none; b=E1Y0h47Tf28NUjjeoQf4Ae5bwLahjOoNJ6bnozM5Tg7yNlS+0pOog/Wa2GC7vx46+/7DZjHiLbllV6vDypGpKbVoitaiwW/pMdfT/O+gdXOlQ5KlE9BSfWz4sttjHZpvBwYyS+THDWZyQcVEYOTbQbFqwUTJ6hSPRNatwzfRrd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773133098; c=relaxed/simple;
-	bh=M6JPfbr9d5IciKIoqHHW920nfQtcVt9K8aP07ynrnlo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q3LrorFmDnib+CDTO9mJmXiUj77jibs0csSwjlSCFTaAkwY0xFLypUpnNuZqVW8wNPZeT+N2XmnSoDs/7LH8AJhV3LsWcnQ2pGLUqY85Vvm92CfLc31xFNGLirPGpuBLmLXJWV+e22TtubiunIPt02v6z7ScFUrAzaUtvQni8hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZDQM11q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773133920; c=relaxed/simple;
+	bh=FhXJrZ7uVPaK65xiFPjnwZL9cmC25AwFyvS/ow5KGiY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=X/D6IkKUEOaXBUZS4DofIW0mOwLqlmh6dj4Ecys74Hsw5NuBGuJuywPBKKMS22kmeSvByo5SmjAvDwwBpgwPb2RHfJ0CsBjsn9wn0VWydATKUui7ddaZTBS0XMevYHkMfYtMdtobU8nd7/eFd2rRVjnrunQ5xywI2SYJ+IbJJMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddTrG8jo; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZDQM11q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF9FC2BCB4
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 08:58:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773133098;
-	bh=M6JPfbr9d5IciKIoqHHW920nfQtcVt9K8aP07ynrnlo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tZDQM11qneSYqNndJJ+rDgCWCXaubztC0EU2cNYNl/DrHnKZ5Laa4TpxPCIr1Tr6A
-	 PCrDcHv6Dr+xwk0QDncYwcPtzLnCmHNdMwjuU0NrvakPKmAKW7k+3L6nvvlJD0ih2/
-	 PgVHQ6tQTtVwn6bAzDrJCbfg2qQHfwElUiTysHN8dwnn/Q2Rskunb3ViyCzBvLDBOB
-	 +gh0Ubvtbj7EF+ns8yNPoWO6SsLO0Wg79q7JFUVqTg9W/ek+Cjtdwq3h7GxILDIGiS
-	 vgWjY4s7SNRl8FPprWwQ3ndAPjFXStqqRlON74Ufj5u74XwPToW4LvPUfh5TVENmZb
-	 iWWiL4NaGQI4A==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38a32d36396so42118431fa.0
-        for <imx@lists.linux.dev>; Tue, 10 Mar 2026 01:58:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWioPxUybS2CwYQbCVm6IsyOJ+qag0nkP4LZuHanDc0WgBm2zvjWs+JGF4/RYq0x/ODYLg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyWS0+c5wseo9AurHoCz1r6fhy3E4Czj9Nyt71SU00KpHs3pzGY
-	ecuL6miX0+sB+UKK1Rx+ObxDJM79bFliNo9KiMqwuehZMvRAmfl7GsygKWYeGiSPRN4LdriLrmE
-	Pte2vSGKfWr4zcxROpY5MdOf29/EmIMkKUtaBM+54Pw==
-X-Received: by 2002:a2e:b012:0:b0:389:e2e8:4f4c with SMTP id
- 38308e7fff4ca-38a5d05131dmr6527231fa.21.1773133095795; Tue, 10 Mar 2026
- 01:58:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddTrG8jo"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-485345e1013so17504065e9.1
+        for <imx@lists.linux.dev>; Tue, 10 Mar 2026 02:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773133917; x=1773738717; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8byY2pi6aZMASU/wIMl2Z52enhJy2O8vbvW26gwVodc=;
+        b=ddTrG8joqqqDyPyTijhXEHti5h/v//aqp4U1cBQBStBDJiCb3JeEO41P/FxBD9ufTo
+         X+AXd1vbNlSPfjiTpvbAmb3FAF5Ygl3R1lmoe/zWPQAcn9p1o3wiPyfuIxknPlAT+hCq
+         GCXZTA7YIs332dMPgIE8tJVT8Mz8xeXZ0yXscK32QBn+OBY0PGthtk5jc7ORZXmXNwJ2
+         BCIMZ4xtXvli7WIZb59xI6agO6l4AdvdtAFRIL2JyQtIbjNz0Co7y9rvW1+FO7kv2EgY
+         SJkLp2JMeBAgDVoJrZTHlFtvoG2MnLDi5nZ5onVL0uVUuDgRTFsjydb5ELsf0uVj+3Xl
+         IZPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773133917; x=1773738717;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8byY2pi6aZMASU/wIMl2Z52enhJy2O8vbvW26gwVodc=;
+        b=a3NpyGPCz4IXJ4MerrYqkZwaws4FAggUfhUTkVpH7yTo6+H90Cp2os+HluVdtLC80J
+         /cTvsdIYxeN6f4NxdATNT/unr/6PuHmFxZaQ7ovuebwjJsOk7Kkn1C0xEJXzffuud9Oj
+         Bayrw8xsUHPzt2LTu38WvvFFVEzJhI2EUQjOLQU5T4T+Jh1XPln9BGccwKESCPYxCWDF
+         DVIsDeZA+Pe7CVNNjKRw+2vPXdz29UrAJLrfk0Y0eKsZIcQNXY/xM3ziOM0S/gYkPdsj
+         c0AbtDdJhZryZ+TahEbkeQZEsrHJ3M2CrHVRHhUAlqpJtYd/37136ueiR0m4W8d2oA3v
+         BY0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXiBpfcFT0Ozlc4qJtw4sUa63Ei9quV6bLfAdwv5122zXpqJ1WDUR2Xtg7ELueEAksUIb8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMg+tIN1UEhKFt9Oad2tj94r1zd1j1N8kori86A0bg7UeELxQo
+	7Tmuyt5fNLNpC+BRoXt1BDnFePmdlERTxLSrboeCwLCGC/2NUtcMOcsTwmIxnzRLRxk=
+X-Gm-Gg: ATEYQzyw90dvsw+3NsJRb1NcNDGjzosShGxkrRHM8MlvH+gGqBhDI2TQGeRJrEqL1th
+	2HGAPBIg5utQ/8rqAL82zR7VbeORFnnSYTa68TKD23buIv4itetndCnOkyPITX9NvYkF9Wi/+e9
+	f2cnG9l+hH4gdlPqwazFqPx4+7QfEXn+spbG6Zvqw30A4ANKtbWbXlxJZv6MfT0Vw/2ppaOrIwe
+	G89sqAB3V8JL/A3DGtCeBswqyuGQeVC4Y8K6H+zdJHNcg7iMFZqg4P3igorW6iJmVKriY048uY+
+	bEXQicXQU/tv3b+vGg6PiTvz9UGPFAMIxd7qV5325Bk4NhDlesKQNB2C2daDYETyiPDVxbBP34G
+	ksdtSIGTc9NHepP2DJafdQQ8v5UDf2yFZuspORU3efyJydmILnWozT523hDDxMyJCLQDRnsyMjw
+	yxbHAvDBGDVox61xlI3+HzUvrgPBp9kYsBSv0rWknhfg==
+X-Received: by 2002:a05:600c:8b4b:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-485419f1614mr41410525e9.11.1773133916565;
+        Tue, 10 Mar 2026 02:11:56 -0700 (PDT)
+Received: from homeserver.tail6d6c39.ts.net ([82.137.32.29])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48541a6bb86sm56808345e9.1.2026.03.10.02.11.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 02:11:56 -0700 (PDT)
+From: Eduard Bostina <egbostina@gmail.com>
+To: daniel.baluta@nxp.com,
+	simona.toaca@nxp.com,
+	egbostina@gmail.com,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH] arm64: dts: imx8mp-edm-g-wb: Use 0 for reserved bit
+Date: Tue, 10 Mar 2026 09:10:53 +0000
+Message-ID: <20260310091054.2029912-1-egbostina@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com> <4728554b256f016d9a5f3e019ed831387b0f059b.camel@redhat.com>
-In-Reply-To: <4728554b256f016d9a5f3e019ed831387b0f059b.camel@redhat.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 10 Mar 2026 09:58:03 +0100
-X-Gmail-Original-Message-ID: <CAMRc=Me8pw5ROaopJ8bcon_NGR5TEZdkJL-F4H1-8b-U2FU9GQ@mail.gmail.com>
-X-Gm-Features: AaiRm50drSEJRzFk2cE1mtMmfBxUomqwHAi_2o4urYZsnhjuUaH2OaO1HdaVg_g
-Message-ID: <CAMRc=Me8pw5ROaopJ8bcon_NGR5TEZdkJL-F4H1-8b-U2FU9GQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 0/7] net: stmmac: qcom-ethqos: add support for
- SCMI power domains
-To: Radu Rendec <rrendec@redhat.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
-	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
-	Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 10, 2026 at 2:10=E2=80=AFAM Radu Rendec <rrendec@redhat.com> wr=
-ote:
->
-> On Fri, 2026-03-06 at 16:46 +0100, Bartosz Golaszewski wrote:
-> > Add support for the firmware-managed variant of the DesignWare MAC on
-> > the sa8255p platform. This series contains new DT bindings and driver
-> > changes required to support the MAC in the STMMAC driver.
-> >
-> > It also reorganizes the ethqos code quite a bit to make the introductio=
-n
-> > of power domains into the driver a bit easier on the eye.
-> >
-> > The DTS changes will go in separately.
->
-> As Jakub pointed out, it conflicts with the latest net-next, but does
-> apply cleanly on the latest mainline, so I tested there (on a SA8775P
-> board running the SCMI firmware).
->
-> The two NICs come up as expected. Basic iperf3 throughput and jitter
-> tests look good. I would offer a Tested-by tag and a summary of the
-> test results, but I think it's a moot point because you'll have to
-> submit a new version anyway.
->
-> I will wait for you to rebase, then test again and come back with the
-> results.
->
+The i.MX8MP Reference Manual documents bit 0 of the
+IOMUXC_SW_PAD_CTL_PAD registers as reserved. The hd3ss3220
+IRQ pin (SAI1_RXD6/GPIO4_IO08) currently uses pad config
+value 0x41 which sets this reserved bit.
 
-Thank you for the tests. The rework after the changes turned out to be
-quite extensive. I should have it ready by the end of the week. I will
-appreciate if you could retest it again by then and leave your tag.
+Change 0x41 to 0x40 to leave the reserved bit cleared, as
+recommended by the reference manual. This also allows for
+easier conversion to symbolic macros.
 
-Bart
+Signed-off-by: Eduard Bostina <egbostina@gmail.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
+index 242fa930b..a78401d11 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
+@@ -345,7 +345,7 @@ MX8MP_IOMUXC_SAI1_TXD5__GPIO4_IO17		0x16 /* DSI_VDDEN */
+ 
+ 	pinctrl_hd3ss3220_irq: hd3ss3220-irqgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_SAI1_RXD6__GPIO4_IO08		0x41 /* GPIO_P253 */
++			MX8MP_IOMUXC_SAI1_RXD6__GPIO4_IO08		0x40 /* GPIO_P253 */
+ 		>;
+ 	};
+ 
+-- 
+2.43.0
+
