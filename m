@@ -1,196 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013031.outbound.protection.outlook.com [52.101.83.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DEE32ED39;
-	Tue, 10 Mar 2026 17:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773162477; cv=none; b=s4VeqmLAW4jUDrWSYaZvmmNwFstX4yPCOX7ZCKUcs0h0wNThhE49W9nW+gpHmQkWBPPnVlrGV5SY+ItVTyV7RwsLticaRlpFBV4jbgaev1VB45XHfAKingceis1AXj1n60lRgSC6jKAEdqysq1JQb9wRQyngiXx3/60duwmaEq0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773162477; c=relaxed/simple;
-	bh=+g1/ElvErcOafWKoSRaH2lOSraOgCa+U5fAhEL5DSzA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r3JV07a1ah6DtMY3j8auSEmaS+cYbmATD4Ftn1IUj4j1Nvje/QFqrkG0SwAenxSqm1duzb3tFLV0VC3bLcNuUKkOQGK1wkHhLV/HIb9kRIkQQbdkAxRvW1HAnJ1A8Tei3D6mnYQK58kFD2Qt8ELv1frDW0JWkGQ1VfdNgOD6vD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+Hx265b; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D12E11D2
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 18:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773167360; cv=fail; b=f3tlsnbA01WsyBuYwd6R0LgY0jDMI6kJS5ov91rDt3cngjp5t5GdO0U9oGQae+/L4LKNSOZ1QSHTXfW18WE0xTTpIVqJ9R7Mhf6LtK1iH0Ll7FZo1N3R71xHLTbQFDbBU5vjElPK/fmyu5qCHzQzkQRRAuOH6et376BG4P8PFfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773167360; c=relaxed/simple;
+	bh=2iT6nbxXqh9Jj09ppsCOAUW8gcnsVozyQiQDqG87cRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oDs0uqQ0MrPfmfWYeOsIeeKmP7T/JxCjRwruH30UUHf8BVj+64/Qc3mjaP5qgBb5ZLpNQAw98irPFSfPTnf0iW4yQCLmPAMFf2EWx3S66ab+u1D0AB5znHtcHLZZ5R84AdqSyjO4j/HH3bXaq3wcQqIZ5NcQd326Pt+YZYpgV6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UXucI1Lh; arc=fail smtp.client-ip=52.101.83.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+Hx265b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21FCC19423;
-	Tue, 10 Mar 2026 17:07:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773162477;
-	bh=+g1/ElvErcOafWKoSRaH2lOSraOgCa+U5fAhEL5DSzA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V+Hx265bZ1gpSbNsKmQPNa4fMVqozvDcjAVcR+E8dC3IyBSG9vrT0HVvrVE5fxwk1
-	 gH+ime8g4QHk9iUZijQAX1k8p6iPmYjKH3K6Y3I7UlpyuN7TAsBCFe93iPefxz2oUB
-	 xjn9cMVB+o9vgeA4n8WX5GglrJjGLbztqQ/V5RuaiZxZvtFKLOnzCLf9SCzcBYHh4t
-	 VuD+PWG1u9Vzo6B5Hk9rDnI3efwktqB9Z1B+Q9gqMb0A3TyjA1usndjxOpfI+BqRtF
-	 N14WWcmlFzuDiLyLmMRCo17WdY0mSZgMmN2inJ/f1WTty39SCVpR88P/Wq4SiJYbeP
-	 tjdw7BKUbm4JA==
-Date: Tue, 10 Mar 2026 17:07:52 +0000
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-	Frank.Li@nxp.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 net] net: enetc: safely reinitialize TX BD ring when
- it has unsent frames
-Message-ID: <20260310170752.GL461701@kernel.org>
-References: <20260309030412.2716984-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UXucI1Lh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rodW3joy5j8jyyCeEkqGh2jDs/tHGxldEXMWaoospiNptoZSx/bdeGVAE5GYz6FKRgT+LAt9bOiZzrtoV/b1Bqb8QUYIjNOQ41R6/6GAzHPNL78mYpPm1RQ8p+ixIkwECYBDMx+JDKcV8/+qKZ3Z8HXGTqWa+6B/urfZQqZQhN85NW5Tl2iI0L9znuM1Z9GsehEz7gbwOk8P6DvveiUsKUKdTXlOnwcJd/c/fCyxu5bvz5avQqmaxf+PEolFopFrjuIbN7a4qnnnn4KxBng3l/h9x2WJnTtCKLj4i9pzaVrylB8V6c10TQZV+fMRyMutOwm69rt87dubVewNiHPVtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vpqc9LFbKEFKY/ggZV6nVrbLGMlneCVAvM3TxdYW01I=;
+ b=QL0nreO0CXJ4cpx3KefMUHgs6kstyeNuMndZiiYN1OgyCpg9uAoQTW3NSnZg0cEoxfzRjMnoiUjeapZOHJ/aGI3sYtCyrNfhdZS4rGoJk9n70x/z/6/DWA7bKA3iLfY2I4XvAJVjFMu5ET2SP63y2QD2nF/8gkzaSgM0J2XNdqEPmOpqq3fFzNOKlABfcu5OjHvdqPrp1KdxTRQrPc6jzzZfEPlanhKt/cjiSmBAGJydZpry+098af5Fjdu0f4NQtZbuDlAo+eVti6f8NfsR1KabTyf5ogEda4kBTisdjCc+l7Hc/ADMk6wHhwxdx1BT8UTIhQlCQgPB0FfN50Wygw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vpqc9LFbKEFKY/ggZV6nVrbLGMlneCVAvM3TxdYW01I=;
+ b=UXucI1LhkBO3iWONGjTTBZan4EDR50Rn3zNerHuR9B80BlNzK11sMDxhR8qxONowr2myobObl5VI5XG1xLZxSjm2P9j5tADy4EP5nJ1/D+3gDeE6LHb5M+dlIf1wyuhi5aITj17UuAvIacjhs5yLea+cU2FVTPfCujAbyGm0c1AZFM78BoXmKT+o0jVxPjNzB240iG7GAFFwyHBDQcN5rd5Z8f82GSh5PZylJJ3lvj9yIhWmMla7C/yEChUXlCdIScg5WPMCZte2C41Oz7f5XdmA5zKuLk/Huz7ku7UA20pcwZHNA4hqdTP5TXrt3SkJVEJ1kaIY+X6STdUwDpNADw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM0PR04MB6929.eurprd04.prod.outlook.com (2603:10a6:208:181::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
+ 2026 18:29:16 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Tue, 10 Mar 2026
+ 18:29:16 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	Frank.Li@nxp.com,
+	bhelgaas@google.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: Frank Li <frank.li@nxp.com>,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V7 02/13] PCI: host-generic: Add common helpers for parsing Root Port properties
+Date: Tue, 10 Mar 2026 14:28:53 -0400
+Message-ID: <20260310182854.2226939-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260310015426.365675-3-sherry.sun@nxp.com>
+References: <20260310015426.365675-3-sherry.sun@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0044.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309030412.2716984-1-wei.fang@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM0PR04MB6929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c7e284b-016e-4f19-c8ba-08de7ed2ef9b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|52116014|366016|7416014|1800799024|18002099003|22082099003|56012099003|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	4SZn8aq5yJf01JXJ2sJdkhJ0nZJyuTmxc+gifGVtl2rD2fgB9ZCFhHmiok7Zf67zobcB4cJC21vBAB2+4Frp5ZPj/boxG39EMxBAXhNmXoZRyboOfDl9ZrYJEDpa9WxPPVo/taglzRdUj9RyvhhCBiRfrJNIydQIjZ3/8etWDirxmCRpkZlGGF0NTrcNl1BKy8YpXRSL9TRWbn6DY4yUG70W3wYgdYAFJxBMIyjLkllPZJDpO7aVqr6MuA79Hpzwhq1tP3HeiLVzk3yUJN8Z2OYMCXrEaon6D2mMNJl/QhLFi/padmUhOEUUDT4qCeg7CKeo+QblQt8QHw6BuA+5WjhePrsKy5/xGD+RM8UkSUbuYOPMjBUYh6IfqTOVq6jholf6+cjnQVIXbAnww0q0gnQn6GYNLS8F7m58xYv7a12Ft54+euM+3PUZgsWZTfVvcSksxmNgXQbvPIdxxF3p8FSjGq9l5/yk1SmHjmfOYn2skPmCdmP9O2SmbxM2KXkflQq2tXLQnipmi+CaC7URt0mSXQcMH3HyGJnKU8HEbzDD7P9gpGOTe0LoAI9khLIUyfm6swaTLX0wnGjb2Ke0qXpztfc0VNs0YfZ39ptGXp/uwMvfntExk/q9sWs+5xCZJISmK39jS3wCD0UELHuYr3otw1BRXg62n1dSnaRt8oGBAOnNhJIsIY/Kj8iK9PtzHMMXeFYJiV1zd6g2AGFE6aQiBAPLEBvtkRRyueHNZGekUE7xSNqJHFvFXU8anuCOiQ4Yv2k8YqTmSe4OB0m+f11ofjbKYZ0tywZjOP3KzngaTQ5sv14ZqAusimSQvn+E
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(52116014)(366016)(7416014)(1800799024)(18002099003)(22082099003)(56012099003)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1nCP/AI2w2JjTGpDGKmSygH+8NmebOuy3AIiEzooueEziwhLlDb3ez9yS4UU?=
+ =?us-ascii?Q?bganJAtqBOB0Jt/LriWkFN709VA27t55UKc6faazUcC1bboPbCdy26dRIJ5H?=
+ =?us-ascii?Q?unEuhb4TCdihAPbe19jvMlM3nDNtu8ZOxPBVjOWRBYOvBcGHvvDRQ1nO+/Nc?=
+ =?us-ascii?Q?BVeE+C2ZKEptRT5Hz+Lr7uKdzV0dPeg1RZepMO1Ad+tDd12+tBeWcqoWx+DY?=
+ =?us-ascii?Q?YrnS2t+ToFaWisEYCuZ2kH0nVelb+zW5wegR1lBm4o31ceRfpN1bOsXX0u0k?=
+ =?us-ascii?Q?rvI+eUvQtVpx5SaAmVzzZGsO+QcnhV4ZvhYmPoTNDExee8YxmgDJZ9yRxcKS?=
+ =?us-ascii?Q?m/bN7fvBQPCImEWBnXLWbIk6lx7hZBuuECFLYHP+luPxct1Ewjx6BI28Eq91?=
+ =?us-ascii?Q?lbUSpNCC3RM7ce1JcUf0NaiBVGGEMRzqPUU90ZaO2iJ3FraAnvyQfjUO0TOj?=
+ =?us-ascii?Q?scIvi/VQ5bwr5nfvL7Tpe4QgstAWbWUSWNR2l1j1Y/Sz7xrexoQx7+HeAAgY?=
+ =?us-ascii?Q?jWEVMe/0KtbvPS2d+7KSdBJjXaFMa4tSCLz8brhxUz2X9obbwrmg4p9FgEcx?=
+ =?us-ascii?Q?TF+hbrBnoAWKz1vQ0LCY8gpFW2JQUh2LDFpBsgDzc9PuKWe+xVYAqGsPibdl?=
+ =?us-ascii?Q?FivaEppbRyTHwHYzdl+nuxrt0H5E44dBS5WDGYC1DP2CEZI55QNPIHeivG/F?=
+ =?us-ascii?Q?GK1V2cQI3x2ib4eFYBqyFTEFdErSl0PyopEHkDgNb3iBbR3rCw1T47tDmLsD?=
+ =?us-ascii?Q?f1Eb5DfNv3TtJvGdBUxeDqBeUVdOx9fC9W8Mg7aIXM55HvSjC9fo5xrIdELQ?=
+ =?us-ascii?Q?gMvZcW4zO3v/2ezXSv01GaOYcol4P7lk/Nm0fAgiZtxa7gBVJGPo8F2kIdD+?=
+ =?us-ascii?Q?W8Qfr1AxyKCB+fNvOjLQ7OVekvpLPJbzzXLFGdbajPdhKs4gtVMZcqS2lsBA?=
+ =?us-ascii?Q?0xa3OsUBE8dkGCqkZQvdkxw/qXuHsVE0TiFOXlucvbt0LmsxqPYVoykBPCBW?=
+ =?us-ascii?Q?WiO3V7uVYkE2d4abE0jOkdeVceg198wbsU59z3s7vTXGU+BR3G7gOAVzs1nl?=
+ =?us-ascii?Q?7E6k+UT3TFMX6cou5FVKWxY0jAhS88UtHEue/eFwKj+RzevK9FRPLewy7QeC?=
+ =?us-ascii?Q?NyZORPjDCbyhbIfxBrfCpaDLQBkCeN709UIVB+tJc2O2WDVzLdq2gvDl5GMP?=
+ =?us-ascii?Q?aDKao0hX6+p9+LWyZc2aRiNit5gjzE/SWTqPfGp0wV+lMz63riOcHEgiaevf?=
+ =?us-ascii?Q?PsQzpMU+IFJ8KaCzkvho6TK6tw+1C5GNRdRYja9qmHAfXyF1ccY0vSPFg3gZ?=
+ =?us-ascii?Q?6f2AfuxjeYIJWLbmpbuYcCh3ckP86rtZ1DPYmHfdBF+5EO5R6tsgu/R4MSXE?=
+ =?us-ascii?Q?/9EMoUD43iX2j8LxCirSZOrYefOAmIIXRG015BBR1zX0I68gNU3B1IRmt+md?=
+ =?us-ascii?Q?w2ru7EkOD5+otx4IQD/1ojYdwm9IQLe+/QX53gz/TT39wGVSSIi2yS8BQpJS?=
+ =?us-ascii?Q?gDS2FJFNi0AgkTpo84s8LlYj4jTeV1KCHJHl/cTdlrzXqukuSCiRoqYdtknm?=
+ =?us-ascii?Q?PFHX1qtmfY4Wx7QNTZfwrUzURfE0jiJSFWL3vI4XEaenHuAMzRi3ETsL4K41?=
+ =?us-ascii?Q?BE7EpTKWySYqg7Dm2rnmriVqzTEnVUwC0K+kWVxw5vRwPj3NKDpJrnYpU1wl?=
+ =?us-ascii?Q?d4JYqqSrhrU+FAXFPr5pPyH0Jl3LmFz4ZA7GeQ9K3E0fL7RQCqHFTV2VUnQb?=
+ =?us-ascii?Q?MSvJrhB8bw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c7e284b-016e-4f19-c8ba-08de7ed2ef9b
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 18:29:16.4619
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D7HRAJzPjkfu14dsyolKfPbtX/CP/sFtA607jtFA0M9PxR9aWMK8hyXWdkmMSAtT+IjpgQxq1f58+5bDLUD3Kg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6929
 
-On Mon, Mar 09, 2026 at 11:04:12AM +0800, Wei Fang wrote:
-> Currently the driver does not reset the producer index register (PIR) and
-> consumer index register (CIR) when initializing a TX BD ring. The driver
-> only reads the PIR and CIR and initializes the software indexes. If the
-> TX BD ring is reinitialized when it still contains unsent frames, its PIR
-> and CIR will not be equal after the reinitialization. However, the BDs
-> between CIR and PIR have been freed and become invalid and this can lead
-> to a hardware malfunction, causing the TX BD ring will not work perperly.
-> 
-> Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
-> the driver must reset them if they are not equal when reinitializing
-> the TX BD ring.
-> 
-> However, resetting the PIR and CIR alone is insufficient, it cannot
-> completely solve the problem. When a link-down event occurs while the
-> the TX BD ring is transmitting frames, subsequent reinitialization of
-> the TX BD ring may cause it to malfunction. For example, the following
-> steps may reproduce the problem (not 100% reproducible).
-> 
-> 1. Unplug the cable when the TX BD ring is busy transmitting frames.
-> 2. Disable the network interface (ifconfig eth0 down).
-> 3. Re-enable the network interface (ifconfig eth0 up).
-> 4. Plug in the cable, the TX BD ring may fail to transmit packets.
-> 
-> When the link-down event occurs, enetc4_pl_mac_link_down() only clears
-> PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It doesn't
-> set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, reinitializing
-> the TX BD ring at this point is unsafe. To safely reinitialize the TX BD
-> ring after a link-down event, we checked with the NETC IP team, a proper
-> Ethernet MAC graceful stop is necessary. Therefore, add the Ethernet MAC
-> graceful stop to the link-down event handler enetc4_pl_mac_link_down().
-> 
-> Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2:
-> 1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
-> 2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c  |   9 ++
->  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
->  .../net/ethernet/freescale/enetc/enetc4_pf.c  | 126 ++++++++++++++++--
->  3 files changed, 132 insertions(+), 14 deletions(-)
+From: Frank Li (AI-BOT) <frank.li@nxp.com>
 
-Hi,
-
-This is a not a small patch for a fix.
-Could you consider splitting it up a bit?
-Say one patch for the ENETC_TBPIR/ENETC_TBCIR
-portion and another for the graceful stop?
-
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 70768392912c..825a5d1f2965 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -2578,6 +2578,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
->  
->  static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
->  {
-> +	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
->  	int idx = tx_ring->index;
->  	u32 tbmr;
->  
-> @@ -2595,6 +2596,14 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
-
-The line above this hunk is:
-
-	/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
-
-And the AI generated review reports:
-
-  This isn't a bug, but the comment now contradicts the code. The comment
-  says "clearing PI/CI registers for Tx not supported" but the code
-  immediately below clears TBPIR and TBCIR for ENETC v4 hardware.
-
-  Should the comment be updated to clarify that clearing is only
-  unsupported on ENETC rev1?
-
->  	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
->  	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
->  
-> +	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
-> +	    !is_enetc_rev1(si)) {
-> +		tx_ring->next_to_use = 0;
-> +		tx_ring->next_to_clean = 0;
-> +		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
-> +		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
-> +	}
-> +
->  	/* enable Tx ints by setting pkt thr to 1 */
->  	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
->  
-
-...
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-
-...
-
-> @@ -801,15 +792,120 @@ static void enetc4_set_tx_pause(struct enetc_pf *pf, int num_rxbdr, bool tx_paus
->  	enetc_port_wr(hw, ENETC4_PPAUOFFTR, pause_off_thresh);
->  }
->  
-> -static void enetc4_enable_mac(struct enetc_pf *pf, bool en)
-> +static void enetc4_mac_wait_tx_empty(struct enetc_si *si, int mac)
+> +int pci_host_common_parse_ports(struct device *dev, struct pci_host_bridge *bridge)
 > +{
-> +	u32 timeout = 0;
+> +	int ret = -ENOENT;
 > +
-> +	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
-> +		 PM_IEVENT_TX_EMPTY)) {
-> +		if (timeout >= 100) {
-> +			dev_warn(&si->pdev->dev,
-> +				 "MAC %d TX is not empty\n", mac);
-> +			break;
-> +		}
-> +
-> +		usleep_range(100, 110);
-> +		timeout++;
+> +	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+> +		if (!of_node_is_type(of_port, "pci"))
+> +			continue;
+> +		ret = pci_host_common_parse_port(dev, bridge, of_port);
+> +		if (ret)
+> +			return ret;
 > +	}
+> +
+> +	return ret;
 > +}
 
-Can this be implemented using poll_timeout_us() ?
+AI: Returning -ENOENT when no ports are found may be unexpected by callers.
+Consider whether this should return 0 (success, zero ports parsed) or if
+callers must explicitly handle -ENOENT. Document the semantics clearly.
 
-...
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index bccc7a4bdd79..9cc3f4ebb370 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -647,6 +647,7 @@ static void pci_release_host_bridge_dev(struct device *dev)
+>
+>  	pci_free_resource_list(&bridge->windows);
+>  	pci_free_resource_list(&bridge->dma_ranges);
+> +	pci_free_resource_list(&bridge->ports);
 
-> +static void enetc4_mac_wait_rx_empty(struct enetc_si *si, int mac)
-> +{
-> +	u32 timeout = 0;
-> +
-> +	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
-> +		 PM_IEVENT_RX_EMPTY)) {
-> +		if (timeout >= 100) {
-> +			dev_warn(&si->pdev->dev,
-> +				 "MAC %d RX is not empty\n", mac);
-> +			break;
-> +		}
-> +
-> +		usleep_range(100, 110);
-> +		timeout++;
-> +	}
-> +}
+AI: pci_free_resource_list() expects struct resource_entry nodes. The ports
+list contains struct pci_host_port nodes. This will corrupt memory or
+crash. Use list_for_each_entry_safe() with proper cleanup, or define a
+dedicated pci_free_host_ports() function.
 
-Likewise, here.
 
-...
+Frank
