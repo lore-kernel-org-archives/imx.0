@@ -1,141 +1,196 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53703BED08
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 16:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773158611; cv=pass; b=VMbTmqzTeifVYEC/1Pw/alfu3/p55V5Itq4ZCAELYhQ4ycAGD2qhAK0xzBQOZbU6odcqyAmyY+TivfOXP3/QviCQ/5CRWPvPhoS9jAs9MQ12WBOh5H4vhEZOFoZ98hmb+9GbUVX7tWDKlTcBxfrBCCjXzMQOEAPpM9yNImBVbMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773158611; c=relaxed/simple;
-	bh=K58+q75J3LD3mDRig06x+UazutdjEE7vGtq+vglIB7g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rQsTT079U5IZw3c0o1h5Xo7uY2ZlcQZ0ypZ1emfISEL4RU5K4Z+HEmbAsb+s+jKnpS8gK5gIaQmMOuneoTidS1T9dXD6f/tJj/gnqj8VZw08rPYhJu+PqXVSJyZz8aktIBPZMk9AYzxL8lomEapKfbIL3TL1ZsGF4dCxG1RF1bg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j7yIkI5f; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DEE32ED39;
+	Tue, 10 Mar 2026 17:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773162477; cv=none; b=s4VeqmLAW4jUDrWSYaZvmmNwFstX4yPCOX7ZCKUcs0h0wNThhE49W9nW+gpHmQkWBPPnVlrGV5SY+ItVTyV7RwsLticaRlpFBV4jbgaev1VB45XHfAKingceis1AXj1n60lRgSC6jKAEdqysq1JQb9wRQyngiXx3/60duwmaEq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773162477; c=relaxed/simple;
+	bh=+g1/ElvErcOafWKoSRaH2lOSraOgCa+U5fAhEL5DSzA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r3JV07a1ah6DtMY3j8auSEmaS+cYbmATD4Ftn1IUj4j1Nvje/QFqrkG0SwAenxSqm1duzb3tFLV0VC3bLcNuUKkOQGK1wkHhLV/HIb9kRIkQQbdkAxRvW1HAnJ1A8Tei3D6mnYQK58kFD2Qt8ELv1frDW0JWkGQ1VfdNgOD6vD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+Hx265b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7yIkI5f"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a12c310e8aso6165733e87.3
-        for <imx@lists.linux.dev>; Tue, 10 Mar 2026 09:03:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773158608; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gtdLPaJvwkLO4VoFHSxh7a28YYah77M2N7Z8CWqfIbr6HC57Djc2O/aODrJtYLgMnh
-         osp0x0ma9fciZ2MgaXOOqTfNK5ghIVU8Zlbq9CFB+AOPkn29F1ZcMAHdpNWiwQigsOzS
-         1tifyOcZ3QFGSeEB5C0CPHMWr+rSzj53F8dcDvHx5b1jNi8cfPsaWyaf978PCog06GP8
-         wEQDJCv3qgbPHrKFQCO+ehQY8fuStLlvQjDDCq0eV9l1ncYUbH0mbXSLpxAg7Is8ymEC
-         EiCS3b7/Txpf0XuHYDsICjniI535WqpGrDdbi1JBILIGXvya3TXdfvLzsogQEukjrYN5
-         YR3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K58+q75J3LD3mDRig06x+UazutdjEE7vGtq+vglIB7g=;
-        fh=yWoDB8KH5txw76G9p7rFQUNEKGQtF8TMnsH6fW4nKZE=;
-        b=JhvjXEM2GD90g9DUlUUl+++K+SMGG4H+Sm+oHkRHKtUBCMTovwAHolh36Z5B8AKcrl
-         nb5/V2l2xcWqz+66P2bMs80neY1+GfH35cEZKAKkCR1AHxrOymcgGWXTOV8FANt+zmq1
-         GdK1ghEk45uRdkz70lTxVPK+2YrJVHbdAGM5Xrom5yd6AQNO0n9rSL7QPuT7m4CzN+YR
-         4pqrPUwPCVlAwikzY8HR+1SvRI0BGjIQa1g1iOhIg6uG2OqgHu4lzTBVYA8ClzvaS5kK
-         APMAuTc58RbKJM6xUetwnhsfAOTS6G+jMdV3ZJFlqMI7a7OG1EVeUMzzkqcBbUOuMffD
-         LlCw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773158608; x=1773763408; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K58+q75J3LD3mDRig06x+UazutdjEE7vGtq+vglIB7g=;
-        b=j7yIkI5fkxoai/S7nvpKCQtRnp70XhCtv5S1qJ/nMaO2TNOJG/JJkn2wBk526/u4Al
-         2zzwWH60Uk2qKeEU9I9RC8qtd3RmjB1JGSE0vmeKv4oHaEWpjbsF3nBo9e6aobDMuQHk
-         hb54UIRSMQaQ+1ecie7Y0fXi7wSYXlxD3ISsX7nBWXc+TS2t1lWkBvQ2SBUGM22dU3hZ
-         eYCNxw/DYrCSbOW7nIqFg5yeaVETz4qugcSXtcm/Q6/tZw00fa2NSL2qeT6xvTZbzYpo
-         mVmNup82+utlqDwSzbhzq43c8X13YFR+i+JGp0RqdebDcLrCspdSRiCV1c8L8ussoqf/
-         bgcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773158608; x=1773763408;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K58+q75J3LD3mDRig06x+UazutdjEE7vGtq+vglIB7g=;
-        b=J0Me9pKfc2MoXC2/t0oIg023AV0STNoM3qwYnF4D//qwos4rp1ysCWNIIvSM3Uf3eb
-         Sq6BHZHVzCovBD8+MPr8WcWPVYgXjs3ya93D69o5ssLzZyHAKGLSZCt/h5K0x7K70Hm2
-         r1DzF7agQgQSiGWE1cp/f27kEYMRog11kX5nubalIITlXLWJX46L3wA1PBSqKLhnv3Ew
-         WMgMc17Mstcw8Ui90dpw9qnMUApJEVBxffOoM3Tdk5yOEZPHiMHQ50LM9B2SPJkTz/R8
-         l7COQHb9j5PQw/+SE0aYyO+MwBgfbN+r7YI8bjhW1vriyDULpNHzhQssKdhVM/jYiTxe
-         Ueag==
-X-Forwarded-Encrypted: i=1; AJvYcCWfTKLe08HnTLEdG6aKJ7LIuXYIrPOxiRMRvYSfsClWWePNCW6zKZ51j2C8ZgqX9FIk+4A=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjxSgkXCSX/PBPxY3yH+f8sCLZgBUtVz2PIObfHRLBk5a7tbEM
-	pH7ar8H/y1a0wCv9GWVfztd/cBDAVV4z6t2bL55v5ZQqNhyCeutAtfNtiMQXNStlt66J6MKtx2I
-	ZrB9ZA4PRHCUbzx1mP2giGHF+yX/p/7I=
-X-Gm-Gg: ATEYQzyUTN4c+hhJcLF6mfaPTlkSbAQ5aawYt5wD+hQIktFXJvA6MpgdBSliNRkFGlp
-	ssSoQ5YRwzL/nJusKwT+RojyFmIUMPGBvBf4Qv98NSvb1rwaLgWkdgNMj0vvuWEQ7iRQJ8Uc0A4
-	bmH0+KJ2IOJ41jAyZxSZMR/d26rOw1whvwSEE8iR2Xaa9CzcOXAt4thC3/QyQSqUqmlvpzVy+8A
-	VP4pbdld8tFMF3KVh8IcVSircLuSWUVvCaXTSXYUmVuB5lh2Xbq1Xna69D9J5ZUkYGq7FC6Ii7m
-	W4sFIKKbtVj+GSZtn09gV8YfkxrjM/nipTTw7lo/ts6m7l9x2Hwi6WeF0Uygzp0TprXGmoM=
-X-Received: by 2002:ac2:4e99:0:b0:5a1:2f5a:cb61 with SMTP id
- 2adb3069b0e04-5a13caaeba8mr3635889e87.2.1773158607681; Tue, 10 Mar 2026
- 09:03:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+Hx265b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21FCC19423;
+	Tue, 10 Mar 2026 17:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773162477;
+	bh=+g1/ElvErcOafWKoSRaH2lOSraOgCa+U5fAhEL5DSzA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V+Hx265bZ1gpSbNsKmQPNa4fMVqozvDcjAVcR+E8dC3IyBSG9vrT0HVvrVE5fxwk1
+	 gH+ime8g4QHk9iUZijQAX1k8p6iPmYjKH3K6Y3I7UlpyuN7TAsBCFe93iPefxz2oUB
+	 xjn9cMVB+o9vgeA4n8WX5GglrJjGLbztqQ/V5RuaiZxZvtFKLOnzCLf9SCzcBYHh4t
+	 VuD+PWG1u9Vzo6B5Hk9rDnI3efwktqB9Z1B+Q9gqMb0A3TyjA1usndjxOpfI+BqRtF
+	 N14WWcmlFzuDiLyLmMRCo17WdY0mSZgMmN2inJ/f1WTty39SCVpR88P/Wq4SiJYbeP
+	 tjdw7BKUbm4JA==
+Date: Tue, 10 Mar 2026 17:07:52 +0000
+From: Simon Horman <horms@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+	Frank.Li@nxp.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net] net: enetc: safely reinitialize TX BD ring when
+ it has unsent frames
+Message-ID: <20260310170752.GL461701@kernel.org>
+References: <20260309030412.2716984-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260310124950.1345117-1-andrei.botila@oss.nxp.com>
- <CAOMZO5BVtRHW1+qtMEH9akO7ULS3LppzGXMB2_M-JJVwjbv1oQ@mail.gmail.com>
- <67e082c5-2b34-4960-8fd1-6cd007e0584c@oss.nxp.com> <CAOMZO5CHGssc3Tuf6fJg2_P=bp7=itfDVRANqQOiK2b-2ooeFA@mail.gmail.com>
- <d5bb01c1-17c9-4d76-8a49-00ffd85c7580@oss.nxp.com>
-In-Reply-To: <d5bb01c1-17c9-4d76-8a49-00ffd85c7580@oss.nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 10 Mar 2026 13:03:16 -0300
-X-Gm-Features: AaiRm50hQtki5ODEQm6WBm-CMqmZXFNtS_jtFUq9YGrHeYsH6rVUj6xnzW50JoM
-Message-ID: <CAOMZO5A2qG8_d=5S9xdackhUt+DS-YtrvRvNeqA40X4TiVcyaA@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: s32g: force S32G RTC as rtc0
-To: Andrei Botila <andrei.botila@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
-	NXP S32 Linux Team <s32@nxp.com>, Chester Lin <chester62515@gmail.com>, 
-	Matthias Brugger <mbrugger@suse.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309030412.2716984-1-wei.fang@nxp.com>
 
-On Tue, Mar 10, 2026 at 12:21=E2=80=AFPM Andrei Botila
-<andrei.botila@oss.nxp.com> wrote:
+On Mon, Mar 09, 2026 at 11:04:12AM +0800, Wei Fang wrote:
+> Currently the driver does not reset the producer index register (PIR) and
+> consumer index register (CIR) when initializing a TX BD ring. The driver
+> only reads the PIR and CIR and initializes the software indexes. If the
+> TX BD ring is reinitialized when it still contains unsent frames, its PIR
+> and CIR will not be equal after the reinitialization. However, the BDs
+> between CIR and PIR have been freed and become invalid and this can lead
+> to a hardware malfunction, causing the TX BD ring will not work perperly.
+> 
+> Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
+> the driver must reset them if they are not equal when reinitializing
+> the TX BD ring.
+> 
+> However, resetting the PIR and CIR alone is insufficient, it cannot
+> completely solve the problem. When a link-down event occurs while the
+> the TX BD ring is transmitting frames, subsequent reinitialization of
+> the TX BD ring may cause it to malfunction. For example, the following
+> steps may reproduce the problem (not 100% reproducible).
+> 
+> 1. Unplug the cable when the TX BD ring is busy transmitting frames.
+> 2. Disable the network interface (ifconfig eth0 down).
+> 3. Re-enable the network interface (ifconfig eth0 up).
+> 4. Plug in the cable, the TX BD ring may fail to transmit packets.
+> 
+> When the link-down event occurs, enetc4_pl_mac_link_down() only clears
+> PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It doesn't
+> set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, reinitializing
+> the TX BD ring at this point is unsafe. To safely reinitialize the TX BD
+> ring after a link-down event, we checked with the NETC IP team, a proper
+> Ethernet MAC graceful stop is necessary. Therefore, add the Ethernet MAC
+> graceful stop to the link-down event handler enetc4_pl_mac_link_down().
+> 
+> Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+> v2:
+> 1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
+> 2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c  |   9 ++
+>  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
+>  .../net/ethernet/freescale/enetc/enetc4_pf.c  | 126 ++++++++++++++++--
+>  3 files changed, 132 insertions(+), 14 deletions(-)
 
-> rtcwake -s 10 -m mem
->
-> rtcwake: cannot open /sys/class/rtc/rtc0/device/power/wakeup: No such fil=
-e or directory
-> rtcwake: /dev/rtc0 not enabled for wakeup events
+Hi,
 
-You're missing the 'wakeup-source' property for the I2C RTC.
+This is a not a small patch for a fix.
+Could you consider splitting it up a bit?
+Say one patch for the ENETC_TBPIR/ENETC_TBCIR
+portion and another for the graceful stop?
 
-> > date -s "2026-03-10 11:00:00"
-> > hwclock -w
-> >
-> > Power-cycle the board. Does the "date" command retain the correct time?
->
-> date -> Tue Mar 10 11:12:43 UTC 2026
->
-> date -s "2026-03-10 11:00:00" -> Tue Mar 10 11:00:00 UTC 2026
->
-> hwclock -w
->
-> date -> Tue Mar 10 11:00:06 UTC 2026
->
-> <Power cycle>
->
-> hwclock -r -> 2026-03-10 11:00:31.104653+00:00
->
-> So looks like it does retain the date between power cycles.
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 70768392912c..825a5d1f2965 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -2578,6 +2578,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
+>  
+>  static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+>  {
+> +	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
+>  	int idx = tx_ring->index;
+>  	u32 tbmr;
+>  
+> @@ -2595,6 +2596,14 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
 
-Yes, the I2C RTC is working as expected and is battery-backed.
+The line above this hunk is:
 
-You should use it as rtc0. Instead of relying on random probe order,
-it is OK to pass an aliases inthe board devicetree to force the I2C
-RTC to be rtc0.
+	/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
 
-If you use the SoC RTC as rtc0, the time will not be retained.
+And the AI generated review reports:
+
+  This isn't a bug, but the comment now contradicts the code. The comment
+  says "clearing PI/CI registers for Tx not supported" but the code
+  immediately below clears TBPIR and TBCIR for ENETC v4 hardware.
+
+  Should the comment be updated to clarify that clearing is only
+  unsupported on ENETC rev1?
+
+>  	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
+>  	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
+>  
+> +	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
+> +	    !is_enetc_rev1(si)) {
+> +		tx_ring->next_to_use = 0;
+> +		tx_ring->next_to_clean = 0;
+> +		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
+> +		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
+> +	}
+> +
+>  	/* enable Tx ints by setting pkt thr to 1 */
+>  	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
+>  
+
+...
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+
+...
+
+> @@ -801,15 +792,120 @@ static void enetc4_set_tx_pause(struct enetc_pf *pf, int num_rxbdr, bool tx_paus
+>  	enetc_port_wr(hw, ENETC4_PPAUOFFTR, pause_off_thresh);
+>  }
+>  
+> -static void enetc4_enable_mac(struct enetc_pf *pf, bool en)
+> +static void enetc4_mac_wait_tx_empty(struct enetc_si *si, int mac)
+> +{
+> +	u32 timeout = 0;
+> +
+> +	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
+> +		 PM_IEVENT_TX_EMPTY)) {
+> +		if (timeout >= 100) {
+> +			dev_warn(&si->pdev->dev,
+> +				 "MAC %d TX is not empty\n", mac);
+> +			break;
+> +		}
+> +
+> +		usleep_range(100, 110);
+> +		timeout++;
+> +	}
+> +}
+
+Can this be implemented using poll_timeout_us() ?
+
+...
+
+> +static void enetc4_mac_wait_rx_empty(struct enetc_si *si, int mac)
+> +{
+> +	u32 timeout = 0;
+> +
+> +	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
+> +		 PM_IEVENT_RX_EMPTY)) {
+> +		if (timeout >= 100) {
+> +			dev_warn(&si->pdev->dev,
+> +				 "MAC %d RX is not empty\n", mac);
+> +			break;
+> +		}
+> +
+> +		usleep_range(100, 110);
+> +		timeout++;
+> +	}
+> +}
+
+Likewise, here.
+
+...
