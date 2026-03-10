@@ -1,244 +1,166 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010034.outbound.protection.outlook.com [52.101.84.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB5530CD81
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 15:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155275; cv=fail; b=h/saq2i4O8d6km4UMKMV/FSDQgzOBpQDxw53qOlPhGxhwnwiZYS2sbuGZQ92ztybIsMvtA3F1pQRWEn8B7zYTVbWstWtJICWlRshGQUECx0f7B84P+ohNjX8MAs5aSXDe68zB/+nQoy5Wi9un1bThbmxT9Y9eufMA0gC1bWaQM8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155275; c=relaxed/simple;
-	bh=2b6wklAND5DNLttxdM1ASuYRQaP3FRkSkCLtY3OS7AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=leu5VO2OBXAnSNKIYGOdVtlEb+jli5/XiMRbxJXK9cXDE4tLhtzsqd34GZQ3hHKDtI956981+t/KzvQfPkrrQsdX/AXgbjZ6zEkKNTfHRB6yzkxguv3V4v7jq5GoBkk9TFKhFz/bGGSQLTsHCQVHkwT+HVc/2smgquB3Z9DW6rk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d5UNwUrZ; arc=fail smtp.client-ip=52.101.84.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8376313277
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 15:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773155336; cv=none; b=T+HFZA0KVzRmSOZIDD14BLydksKMUQkKK5SzL0Y8gJt/dyt81odZNzuKGiFUq99BAgz0/vLVv4b3E2b3BIZpN8xSwvCiKjvJTTO1x695G7+dVWRMjxlyHrUV9QOo+uqkXol4jYM+WpZU5i9ExkD+AnlcBzqv4hgGKBqML/HTkGQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773155336; c=relaxed/simple;
+	bh=l66roiogcZuRuWdg/BN7GAGFpuk8qIZkWg5A5bU5kEI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ma/+SRuXcJCcvBaBPbxhbAedxQL84Zczru6xvxgZP/MWYSiYqXanN7jeVGsfV162KRxtvbgwtNJcPGIQ5lNBcYOZhogUp1k0yIC784SMPpP2zWaxFQO5fFwkfOu1119ol7h0Vz2NRBvtq9iIeDjxiHXff+lNqcmE9ZalzeidRlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mBd7LwoE; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d5UNwUrZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ctjlleoA4lGJonygfb4hbzkBu2nW1pLpuI1fy7c5fzYFEq7OdMFk06JHDe+2Q1RZctFbA/gALKLAl7PdE2LXi/n6vUAMPg9R58DODALiOLbQBMdQuTcRBts0FwJPckQeX0vQcGsH5Kc81njRze9KySr6UHPY9KWPGYJomeXU68ywbaLyHzw4Jv2xL6Fjq45Txp0VEfXQfIr2/UH8zEZR2nkF0EWf67Bnl7ittuu3elmsX8Ng4wcGkCeUU6Jn+48KJ0BIYiV90yRi59okJxPixhHAwXcNOQtKF2nmTRjK268oh8vNHF/PI7v1fpL+3PbQQ9aiAGF7YQJBhF/dS59p/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=57jD5b+L+KglmUXBSQUHy8FGTr6sBtTg2KtYjN6cA+I=;
- b=jF5hVKchSM1iKtMa3+DjsQ6mhYZqV9bUWGDH85WCyFT4ZsXAkZzIDgnjr5GEx9sXCguC72u62o9Vul6KSTnxSgAqCXW8rtEVinCbG8SrTLPUf1bMvx6A+++X3fCjDiDUeXqWEcug3wg+ugr8dTLjfQSaCVSN/gTbgpWx93k7kjzYokatAsyUx+7D7HfX7ufzQBYwRNl3k0QBSaLYnzgQ2+q5KhOCf2tn7XnU55X/eXFTVDE1BSpj6a3y/IQBphnY+AAGpNkCo812DugT9onsRzW245niggF7OyOuKNmid+jiqcv7UcKsktUOE0i+E7cU9Rywz0rn1zzhoRRjaTDAjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=57jD5b+L+KglmUXBSQUHy8FGTr6sBtTg2KtYjN6cA+I=;
- b=d5UNwUrZJLBUcuk0Lwt3aHMgsOCEbpiQj6FXNIjGj12gl5sjGvAIpUaSHMK6INoquBM4tbrfQ9tZJFVPNrIZhp5zM4jms2UYE2mpNthtW3xMPPLpIMpsZ1RSrdLpn1NhC6oE1xP3RJRPUKn6toTU5mRYLKSCRqgeYvFsY+eYg4nM0i3vIYkjypLsP/1nvR4e3vKl8A7kS0iyk67kQ0FR+dk3XoFNmfV3U7StV8QBiQqH1DN/dLXzRMWTFmQLDgVflbf3mA54dR6UYJFaxmTW6ktRvsgogL31gy7oKQ3npfjOfvvAIEPkKmXT3zZwxQsEGer67HFI6AVPRlH76AkzkQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DU4PR04MB11053.eurprd04.prod.outlook.com (2603:10a6:10:589::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
- 2026 15:07:50 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9678.017; Tue, 10 Mar 2026
- 15:07:49 +0000
-Date: Tue, 10 Mar 2026 11:07:41 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	bhelgaas@google.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] arm64: dts: imx94: add pcie0 and pcie0-ep supports
-Message-ID: <abAzvSGioHN1AOQt@lizhi-Precision-Tower-5810>
-References: <20260310075459.726495-1-hongxing.zhu@nxp.com>
- <20260310075459.726495-3-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310075459.726495-3-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: PH7P220CA0142.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mBd7LwoE"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-660dcafc85aso11979388a12.0
+        for <imx@lists.linux.dev>; Tue, 10 Mar 2026 08:08:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773155332; x=1773760132; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZrhwHJgKfQunIbqKLgGEw/Kos9vy+e6R49GEIQjjeck=;
+        b=mBd7LwoEF4snhyvKh1ExDjCiOa9eoZG6OaC2Q70kU5d+8XaSpWcbAiwS2RLrEj5Acp
+         Qy+E7GBQSJgOnLinN5FsbcExzrXBOp7DtGrqixkkn6wlHM2poDrmrNFCij9IxKVYuA84
+         oxP/2w6+5ShlXGwzIn24+HBd7i62IkQ6scZdc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773155332; x=1773760132;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZrhwHJgKfQunIbqKLgGEw/Kos9vy+e6R49GEIQjjeck=;
+        b=J2yOCKAYfs5GyLJorOfxmVDuUG8Phw2QaY6Kb0EQIq9jDZKlr6eeS66BxjCJWKgGNn
+         J+igcQw+CVcIoqKlceR/2gpidVzcTbeDYyO8UGG6hQjjpXFLIjyIoK+hAUArwEKp2hP/
+         fwbrSPNOwpxSIx/pIC4EdYet7n9cwG3/48wbWKLH4pxhY9rVTq/9zVKQifsS8qt5g84F
+         Yw+KMYLbkRW1gtnXX7Qx7f2rpag0/vIORpa3VGJf9rD6kGeFTpV3mdAn1X3my8s7pjX6
+         0feKZ/aUUoK3VPcXLLGoY1qlc6AuWLA9i3BbrnbkZggXoLqmLQ/EbwaYZebeqgpQwijv
+         03SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+CkOWChxQYcH/1lsIAwepE5a7M9rCJw2YYw2o+nwbHuGej5/DutZcEdGB2Kpa7w3nDUI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YysTZCPH4JAApem6ClH5JeCpgg4BYLgiIbF0bDH04nTLovqQ1yz
+	C/hLlC5ajqcEvpg+PddFx7r6k6mNRb13xx0VtupUU2vFnRKO2dEycPtEyPC69WXBtxVs9OCJtEP
+	Y2iJO3xFi
+X-Gm-Gg: ATEYQzyC8V4wtxoRdAS+QJz3o6MD+WSaYgF8I2TEP5JM9njjrce2AhFhdFc2RH81L6V
+	Od2bWtwbc9xyYUFlUXF+7Q5dKsGihpYfpjJ6Wyq5PNGFuna2tDqQV4FooNKaLiYmT10ki3cyW/P
+	OezXO2OY5FmDrQSDYXLpyDd+Sqa0m0I8hLdWLIKKjjvkYmfyRoNYazUaOwM8irUl0cSuG+jYiby
+	guU0Ue76rLgp3cuP5ulJanSoND6xoewjEkdXIDkTsR28UBQxM3To7ZD4450M6kGfC48tp+4tIjy
+	N68pSk89Od8fHvdLzF/xXpOfhWYpn2M/4JPI1yW94wcrIn2RxYtuP9Ju9r6bV68V2W7qiHcvDch
+	uFRawfZDdhdXjLCrx371uNLuezsCUuMF6MT1+RAMb+MK4vNbXRvPzKIQCjVNCmutyTxp/0xBpF0
+	yQ4YJX4EF4riz9D546htZtcuecH0HeTNJVxSamOiIISjQhG2KHrW6wBJumsjWfEpl1HqK3Ah6n
+X-Received: by 2002:a05:6402:27d3:b0:64b:5562:c8f4 with SMTP id 4fb4d7f45d1cf-6619d49a0e9mr8316020a12.7.1773155331774;
+        Tue, 10 Mar 2026 08:08:51 -0700 (PDT)
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com. [209.85.128.50])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-662a07022ebsm1575701a12.3.2026.03.10.08.08.50
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 08:08:50 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4853c3c2fe7so14292325e9.0
+        for <imx@lists.linux.dev>; Tue, 10 Mar 2026 08:08:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUDiXgtfy67Wq4rmLiQSmraHCu2iRbim+0Y7VPmrdOjQE9qut1JM21OidpwmYnDO6q5yvQ=@lists.linux.dev
+X-Received: by 2002:a05:600c:1d04:b0:47e:e7e5:ff32 with SMTP id
+ 5b1f17b1804b1-48526983292mr236479455e9.34.1773155329681; Tue, 10 Mar 2026
+ 08:08:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU4PR04MB11053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 154b6cc8-cae4-4d04-f616-08de7eb6cb55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|19092799006|1800799024|38350700014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	shdRYw7N6UzVH9fNztxaDOJCsQlSQyDL85eDtBrOwfLdm3X72X+wM5Gi69P+/YWsCHeL0TGcW6Q3YcT3GILLN6EY6OQACUEpR1fjJdhjMXdLcMsLiNOUjp68Qx1s4MMW5zkYk4bEfmbU+0z9jdzRIaTgRdkrQMOQOgbtbjuyhFd5e5kaGNloqryAMOzniNtsPCqMtJtrWjuB2vsMJjr6lx3Y8UCcpBKhlbugQofFCPLrQkb+EfZTjcbGHSKErpcbe5LrABUIrG6Zr625JpCCjTeT9b1RBbr5MrV7jMUKARqON+FrC7ZDbn4d/JJ3CxosQYf+2ahNbNjXhJSKRoUUGmMLEdmhPAjek+JNCbBmeIwB+0LLoqyCoqMzPaK98yJBQCu5RwDkFsd3EgaRutTm8MWMPFd6Q6Ujawz76rS40WUBXcLUuwL/uHhtkXANtGVVawx0jNmCIbiXQYYLelGAHwfG22Z+dJMHqrQS+TnwQIuWOtdcGhpnLyH7D4mgNX1/13Eb86E1FZYIpuDyNuPM/ymnMRRAbZXwjjcADNvycDYyHSuMk8Yfn7RYHd3tmPcLA2ip1o9NiBKY5xJODnFJHAhyDgKmTlKvjhPnJ9T4ApsgZxoaQC8Ug7iFO0/fj9C8dPXcMjK2iuoig3tPoWFuot1iDGMICpQUCsPxF9rdGhruF/7P0N9ErLcCRk4MQIP1dYmvzCQYnfKRbEnNyjPCOSRBhCFOOjTGysLA2pTP7asDfE79ruNM1+UlzXLkCxHMOeApzshzRimR4N261TJVrcq7XFX2eZb5+eaOMaMst+Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(19092799006)(1800799024)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Q13EuIf6Q7B400crXisE1whu8N+sVKUcllA0w8lnbsawZ7e3/BZhIkxJmcWN?=
- =?us-ascii?Q?Ktbm7wqJBtWhQtCtHpZuq4RkHjOtU2868fVIDdb5U1VokWqTyfPg6R6tg8GD?=
- =?us-ascii?Q?sChXhGpVE0LC9KLMLoEPBWuNg78PR7EXAt9w4Mbwe53bI7e1TSGRc4+eYSzV?=
- =?us-ascii?Q?T1TmbTMBVdNM124x42RNJfrD7j9ASZmzqy5kpToRV2gCwAI2K0oSSqDV3F/w?=
- =?us-ascii?Q?n23RP8aHYVpmfNHNsgAQULn0rAikN8lAd2Ut888IkoZNKLZ7IBSN3TOTsvrb?=
- =?us-ascii?Q?zf1xzZ1DmMQHPloYVVJ7WNJGtxim84+Nar5SNaqrTGwpFxeGcp7YIo5PPZaM?=
- =?us-ascii?Q?VUoaGD3fl79I7hzX8hftkKvHkdt2+T0fPdr7iIabT3iiCXED1gf7Cbp6t3+R?=
- =?us-ascii?Q?O2Cim/h8BqMeEjWE59rgH22NKjUa4bc8aUMdOQH2p35ZiaV2BrU2j6VCoHjw?=
- =?us-ascii?Q?kC7iRW5Mwe0NHg5g8qyulOwtsR264u7YB1Slt/ZG/Sw4pfrwUWPeStpP10Hu?=
- =?us-ascii?Q?MzqyQWpg5E8+Tf8k3HhXM+5XchWm9i7B/wDT5tqeFShaas8MjPk+pC3QdhwV?=
- =?us-ascii?Q?gmzUkmb8nsRqESfsSjIZVrkSQ1zoJEuBZrVyS0SFPRF7Ua0sQIYGrmurts8C?=
- =?us-ascii?Q?2Dyu51iDZrpm4k3ZI+FhTwDTsO4uFhFRlFQgFdbreP1R2RFe8ZJUC4CdK4Cf?=
- =?us-ascii?Q?tzF3fj4crUweNV8h0MigXJhYsfUCXpa3mSgKE9iUwUWhkVCYMjL7OcNpRNfJ?=
- =?us-ascii?Q?lIqjPhhpt4R4KKx8IsPTyN8BlBaBHKdWG910ZYJ8I31bF3fDD0sxa+jmF6ca?=
- =?us-ascii?Q?BdE5Pgas9HdjIGxW52dXTfAOpsEHlTXymuJ5AjebtJO8PyC1kelq8Gn+tb11?=
- =?us-ascii?Q?bvwD3BP3sZWNjwziALb1TwVLXDZt1PN2DtzhxHCyBO3OGmWeIs/mEzygNZfN?=
- =?us-ascii?Q?/56ELRsYqJDGAiGVry/++KL49cNtvMfXR2Z5Vi3kY7QCM3g2hFa2+FxD8vRl?=
- =?us-ascii?Q?rwHQREt3e0Sko7CkIQSETVeYObqTNIOuNPSH8MJjTUBQOKRmNlc4KTmntbZG?=
- =?us-ascii?Q?ymrfYAaxAA3Lp34tid57z9iBjGL4U/XbdmmE9yaN7RRSYw7giFzHKZ4OGgW1?=
- =?us-ascii?Q?E9cRWCGIJH4tDhh62m9inIi/716d9jLDPZ1d+LW6qk8avxuNoto0bO1GpEcy?=
- =?us-ascii?Q?OOhgohFd8kecTSnW8aSjzGgDh8OMSepSFZVhZm/8uEP9cXWJMEKTxoXqr7j7?=
- =?us-ascii?Q?w291HApDdwDjpN73241C5ES4x3+691jcRL1GeA3xGPZT5xDXAdIMb1+Jk+Ic?=
- =?us-ascii?Q?+lZr2KFfGwwvafybozg/Js8+w8C2PfnDab4Q+UuqHdX8xdvlgSWqt5e7Co0e?=
- =?us-ascii?Q?Bu9O0+sy7xP79zTtX8w1E4DW0yLqHl9HxNPhywfLoN8pv4RmSi6BVV7zqfSd?=
- =?us-ascii?Q?Xim6U6E8hBK/waj/JlhY2utbXMNwMkq26/d5gt/ebpDOsn4tWMu8BI1PcTYQ?=
- =?us-ascii?Q?FnWfs+F/NZwEC9MVDpg2FFeXhNXXy4V9EV2qBH6LgL9oyCB8semY8E7fFBZU?=
- =?us-ascii?Q?6N8lGvgy1qyhK94MHK6fpIPZUvMqdbCUL/3J7W1Yzd+msWGVo+aCbQIligWB?=
- =?us-ascii?Q?iWyMdmaZM5PSI3f1RfgQdc9cmmGQLIKsfBJ67ialXMPbVoDwgVU7u49wi3Pg?=
- =?us-ascii?Q?wq+3/jp2lIody/UB5ahAMXKsdoBS+6oHIxzBczEn/arfPK9SVFt/3P3PD7X9?=
- =?us-ascii?Q?J2dUepIP0Q=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 154b6cc8-cae4-4d04-f616-08de7eb6cb55
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 15:07:49.5676
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9Z/4I2D46iDZ3LJdSrbHFKivDqz1uHe/jyy5rlx7odHQnFks1cgzyhgj4xuLT6k+dX1ejbR5y7S1XIuv0M4R7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11053
+References: <20260216181002.3475421-1-dianders@chromium.org>
+ <20260216100943.v3.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid> <CABb+yY2RKJgyNQ6789ua6s8C4tuOvhWqdcS16_4yU3AHjAiv_A@mail.gmail.com>
+In-Reply-To: <CABb+yY2RKJgyNQ6789ua6s8C4tuOvhWqdcS16_4yU3AHjAiv_A@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 10 Mar 2026 08:08:38 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U4te2V7MaOrQ8kSibLazqUy_Kv3ZcJyAAaCAiGWOY1Gw@mail.gmail.com>
+X-Gm-Features: AaiRm51YHmAMmjPRIWQTSvpfsMBkAMaTT684zHe2XNjk21TEkEMaZPx6RHcKG9o
+Message-ID: <CAD=FV=U4te2V7MaOrQ8kSibLazqUy_Kv3ZcJyAAaCAiGWOY1Gw@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Frank.Li@nxp.com, arm-scmi@vger.kernel.org, 
+	cristian.marussi@arm.com, festevam@gmail.com, imx@lists.linux.dev, 
+	jay.buddhabhatti@amd.com, jonathanh@nvidia.com, kernel@pengutronix.de, 
+	konradybcio@kernel.org, krzk@kernel.org, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	lucaswei@google.com, mathieu.poirier@linaro.org, michal.simek@amd.com, 
+	nm@ti.com, rafael@kernel.org, robh@kernel.org, s.hauer@pengutronix.de, 
+	shawn.guo@linaro.org, ssantosh@kernel.org, sudeep.holla@kernel.org, 
+	tglx@kernel.org, thierry.reding@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 03:54:57PM +0800, Richard Zhu wrote:
-> Add pcie0 and pcie0-ep supports.
->
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx94.dtsi | 86 ++++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> index d2f31c8caf6e..2f75e8762b4e 100644
-> --- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> @@ -66,6 +66,13 @@ sai4_mclk: clock-sai4-mclk1 {
->  		clock-output-names = "sai4_mclk";
->  	};
->
-> +	clk_sys100m: clock-sys100m {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <100000000>;
-> +		clock-output-names = "clk_sys100m";
-> +	};
-> +
->  	firmware {
->  		scmi {
->  			compatible = "arm,scmi";
-> @@ -1223,6 +1230,85 @@ wdog3: watchdog@49220000 {
->  			};
->  		};
->
-> +		hsio_blk_ctl: syscon@4c0100c0 {
-> +			compatible = "nxp,imx95-hsio-blk-ctl", "syscon";
-> +			reg = <0x0 0x4c0100c0 0x0 0x1>;
-> +			#clock-cells = <1>;
-> +			clocks = <&clk_sys100m>;
-> +			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
-> +		};
-> +
-> +		pcie0: pcie@4c300000 {
-> +			compatible = "fsl,imx95-pcie";
+Hi,
 
-You change binding, add fsl,imx94-pcie and fsl,imx943-pcie compatible string
-and fallback to fsl,imx95-pcie
-
-Frank
-> +			reg = <0 0x4c300000 0 0x10000>,
-> +			      <0 0x60100000 0 0xfe00000>,
-> +			      <0 0x4c360000 0 0x10000>,
-> +			      <0 0x4c340000 0 0x4000>;
-> +			reg-names = "dbi", "config", "atu", "app";
-> +			ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
-> +				 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x80000000>;
-> +			#address-cells = <3>;
-> +			#size-cells = <2>;
-> +			device_type = "pci";
-> +			linux,pci-domain = <2>;
-> +			msi-map = <0x0 &its 0x10 0x1>,
-> +				  <0x100 &its 0x11 0x7>;
-> +			msi-map-mask = <0x1ff>;
-> +			bus-range = <0x00 0xff>;
-> +			num-lanes = <1>;
-> +			num-viewport = <8>;
-> +			interrupts = <GIC_SPI 364 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "msi";
-> +			#interrupt-cells = <1>;
-> +			interrupt-map-mask = <0 0 0 0x7>;
-> +			interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 360 IRQ_TYPE_LEVEL_HIGH>,
-> +					<0 0 0 2 &gic 0 0 GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH>,
-> +					<0 0 0 3 &gic 0 0 GIC_SPI 362 IRQ_TYPE_LEVEL_HIGH>,
-> +					<0 0 0 4 &gic 0 0 GIC_SPI 363 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&scmi_clk IMX94_CLK_HSIO>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPLL>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPLL_VCO>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPCIEAUX>,
-> +				 <&hsio_blk_ctl 0>;
-> +			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
-> +			assigned-clocks = <&scmi_clk IMX94_CLK_HSIOPLL_VCO>,
-> +					  <&scmi_clk IMX94_CLK_HSIOPLL>,
-> +					  <&scmi_clk IMX94_CLK_HSIOPCIEAUX>;
-> +			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
-> +			assigned-clock-parents = <0>, <0>,
-> +						 <&scmi_clk IMX94_CLK_SYSPLL1_PFD1_DIV2>;
-> +			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
-> +			status = "disabled";
-> +		};
-> +
-> +		pcie0_ep: pcie-ep@4c300000 {
-> +			compatible = "fsl,imx95-pcie-ep";
-> +			reg = <0 0x4c300000 0 0x10000>,
-> +			      <0 0x4c360000 0 0x1000>,
-> +			      <0 0x4c320000 0 0x1000>,
-> +			      <0 0x4c340000 0 0x4000>,
-> +			      <0 0x4c370000 0 0x10000>,
-> +			      <0x9 0 1 0>;
-> +			reg-names = "dbi", "atu", "dbi2", "app", "dma", "addr_space";
-> +			num-lanes = <1>;
-> +			interrupts = <GIC_SPI 365 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "dma";
-> +			clocks = <&scmi_clk IMX94_CLK_HSIO>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPLL>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPLL_VCO>,
-> +				 <&scmi_clk IMX94_CLK_HSIOPCIEAUX>;
-> +			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
-> +			assigned-clocks =<&scmi_clk IMX94_CLK_HSIOPLL_VCO>,
-> +					 <&scmi_clk IMX94_CLK_HSIOPLL>,
-> +					 <&scmi_clk IMX94_CLK_HSIOPCIEAUX>;
-> +			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
-> +			assigned-clock-parents = <0>, <0>,
-> +						 <&scmi_clk IMX94_CLK_SYSPLL1_PFD1_DIV2>;
-> +			msi-map = <0x0 &its 0x10 0x1>;
-> +			power-domains = <&scmi_devpd IMX94_PD_HSIO_TOP>;
-> +			status = "disabled";
-> +		};
-> +
->  		netc_blk_ctrl: system-controller@4ceb0000 {
->  			compatible = "nxp,imx94-netc-blk-ctrl";
->  			reg = <0x0 0x4ceb0000 0x0 0x10000>,
-> --
-> 2.37.1
+On Mon, Mar 9, 2026 at 8:24=E2=80=AFPM Jassi Brar <jassisinghbrar@gmail.com=
+> wrote:
 >
+> Hi Doug,
+>
+> On Mon, Feb 16, 2026 at 12:11=E2=80=AFPM Douglas Anderson <dianders@chrom=
+ium.org> wrote:
+> > @@ -249,6 +255,28 @@ int mbox_send_message(struct mbox_chan *chan, void=
+ *mssg)
+> >         if (!chan || !chan->cl)
+> >                 return -EINVAL;
+> >
+> > +       /*
+> > +        * The mailbox core gets confused when mbox_send_message() is c=
+alled
+> > +        * with NULL messages since the code directly stores messages i=
+n
+> > +        * `active_req` and assumes that a NULL `active_req` means no r=
+equest
+> > +        * is active. This causes the core to call the mailbox controll=
+er a
+> > +        * second time even if the previous message hasn't finished and=
+ also
+> > +        * means the client's tx_done() callback will never be called. =
+However,
+> > +        * clients historically passed NULL anyway. Deprecate passing N=
+ULL
+> > +        * here by adding a warning.
+> > +        *
+> > +        * Clients who don't have a message should switch to using
+> > +        * mbox_ring_doorbell(), which explicitly documents the immedia=
+te
+> > +        * sending of doorbells, the lack of txdone, and what happens i=
+f you
+> > +        * mix doorbells and normal messages.
+> > +        *
+> > +        * TODO: when it's certain that all clients have transitioned, =
+consider
+> > +        * changing this to return -EINVAL.
+> > +        */
+> > +       if (!mssg)
+> > +               dev_warn_once(chan->mbox->dev,
+> > +                             "NULL mbox messages are deprecated; use m=
+box_ring_doorbell\n");
+> > +
+> Does this patchset leave some such clients out?  If not, should we
+> drop this block and return -EINVAL already?
+
+This patchset series got all the clients that were in mainline at the
+time I last checked. However, it was unclear to me if all the patches
+would all go through your tree or not, since they don't touch mailbox
+drivers but the somewhat widespread places that were clients of
+mailbox.
+
+If all the patches aren't going through your tree, we'll need to keep
+it like this until we can confirm all of the clients have been
+updated. If all the patcheds are going through your tree, then we
+could make it return -EINVAL right away, but it we'd have to do that
+as a last patch in the series. I think it would still make sense for
+the first patch (which adds the mbox_ring_doorbell() call) to have a
+warning like this and then a final patch to switch to -EINVAL. That
+keeps things bisectable.
+
+What do you think?
+
+I'm happy to post a patch atop my series that switches it to -EINVAL
+and you can land it whenever you see fit. Would that work?
+
+-Doug
