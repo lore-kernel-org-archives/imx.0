@@ -1,24 +1,24 @@
-Received: from mail-m49212.qiye.163.com (mail-m49212.qiye.163.com [45.254.49.212])
+Received: from mail-m82164.xmail.ntesmail.com (mail-m82164.xmail.ntesmail.com [156.224.82.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F020B2D94BA
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 01:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835802D877A
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 01:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.82.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773106273; cv=none; b=RQDAvNZe06rdhz2XiPPBMMt8PzVZOPv/p6rHruHzSQif30YxQe5zwwuhnwrzQgcZLsDy/IkFbR+f2yM7Sd/9MqOgQMxZKKTaN5UGG6fuscrvjI2NzDvOgjxQnLQxIv6j7XhUWnXMPijJtrCNtWndLbVY2qxk3GC80VNSOQK4pKw=
+	t=1773106867; cv=none; b=J8U2jIKT6kwz86grUcEcMMo9/0I6UyfBw82EnRW8UQf/Dv0vunbDbdkp7eQIxJOvDy8O1QDG9y38vzdK0YuKydsz56yJo0lzzBOXfraQQDy9ueEMHovlld3lN85/ojjfI3bhIKpO6UoSPlybBqMZaswYa7wHww9qSeGhc0BlZ38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773106273; c=relaxed/simple;
-	bh=x2yu7UY6Yola+1bq0Oh1KpCr9cE9t0DIXdTggUxeBMo=;
+	s=arc-20240116; t=1773106867; c=relaxed/simple;
+	bh=fYiL5xAaF9o6BilI2+Y05gJkjFe/8LqCeJiRie4+l8c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cCgCphW8qEpYCFXDSVz9PFxzhvmYoLK//Gu12qLeEmj1qsAbKmHPRSlcu2SlEIU0E22q4nx4vTxzZGEO2fTUOjGDr07hVQhkmvhBKMK6H2AZBRMznSsz4G1L9TDQljw3ieE5WXHyZ5MRO4CsmBBdtoMyQakoyFbfTN1GMgqbuls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=GIDVY3lS; arc=none smtp.client-ip=45.254.49.212
+	 MIME-Version; b=eEePO53tFUC339NoLvxp30+Rcyw3426VwQuljR6TAWW9sNqJ6J1uxiJ0HgNNEIYsxIshRA/ezXlPfTB3zLRXm9amtXeDul6cJnxdTiA1Ld9Tb5vPCG/WDFhKK5A3qVcm3DGDQv4YrOpHCL9ZZ787hFpikOwGUVsdZ1H6sHui6AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=RkVLxzJx; arc=none smtp.client-ip=156.224.82.164
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="GIDVY3lS"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="RkVLxzJx"
 Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3653ae861;
-	Tue, 10 Mar 2026 09:25:55 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3653ae7fa;
+	Tue, 10 Mar 2026 09:25:38 +0800 (GMT+08:00)
 From: Damon Ding <damon.ding@rock-chips.com>
 To: andrzej.hajda@intel.com,
 	neil.armstrong@linaro.org,
@@ -57,9 +57,9 @@ Cc: Laurent.pinchart@ideasonboard.com,
 	linux-samsung-soc@vger.kernel.org,
 	linux-rockchip@lists.infradead.org,
 	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v10 13/18] drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
-Date: Tue, 10 Mar 2026 09:24:53 +0800
-Message-Id: <20260310012458.169272-14-damon.ding@rock-chips.com>
+Subject: [PATCH v10 07/18] drm/bridge: analogix_dp: Move the color format check to .atomic_check() for Rockchip platforms
+Date: Tue, 10 Mar 2026 09:24:47 +0800
+Message-Id: <20260310012458.169272-8-damon.ding@rock-chips.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260310012458.169272-1-damon.ding@rock-chips.com>
 References: <20260310012458.169272-1-damon.ding@rock-chips.com>
@@ -70,27 +70,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9cd559c19403a3kunm2771af5030e07d
+X-HM-Tid: 0a9cd5597fb903a3kunm2771af5030df94
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ04aT1ZDTk0ZHk8eSBhJH0NWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUJLTlYfGh5NSx4YTEhOSE1WFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
 	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=GIDVY3lS6aiM199KWVZP6jXtM/cDc3oNGnvNjf03AnlcyQ+MhvCgw6x368SIi8sHk7TPUGepNS0SMS1EnztxJ40umbf+1SmBf+wInfJ424fgTo4JZhBp58VfxYk5ZIUE/KszcA9DETB9hhPHtaPEJs9P1xoeIc2IbJFgvYlRFRQ=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=SjS5hoz5lALYwIBYUHhAR12nD30o7Vp6mbmnlUx69mY=;
+	b=RkVLxzJxj4fSc0Nwe5sC1m/5VeB8P2vpNem6SD9L/G2L5cvtSfjRtv7m/4bTFldNaOthk62nJhGtRjaOrt0Tfb10RPiPXGsyt9Sfk2R9IYCjmogFT3LInOOSWrvLh5tWqoTN3RCPC+fSw8HONyYzIq3Nbsspi5O3cZGGzAvIb7c=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=3rkQ8jPKQUXQ5Fcb5jzjcMRfHXjYelN4FuQCG5UEL4g=;
 	h=date:mime-version:subject:message-id:from;
 
-Since the panel/bridge should logically be positioned behind the
-Analogix bridge in the display pipeline, it makes sense to handle
-the panel/bridge parsing on the Analogix side. Therefore, we add
-a new API analogix_dp_finish_probe(), which combines the panel/bridge
-parsing with component addition, to do it.
+For Rockchip platforms, the YUV color formats are currently unsupported.
+This compatibility check was previously implemented in
+&analogix_dp_plat_data.get_modes().
 
-In order to process component binding right after the probe completes,
-the &analogix_dp_plat_data.ops is newly added to pass &component_ops,
-for which the &dp_aux_ep_device_with_data.done_probing() of DP AUX bus
-only supports passing &drm_dp_aux.
+Moving color format check to &drm_connector_helper_funcs.atomic_check()
+would get rid of &analogix_dp_plat_data.get_modes() and be more
+reasonable than before.
 
 Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
@@ -99,128 +96,73 @@ Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
 
 ---
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-- Remame API analogix_dp_find_panel_or_bridge() to
-  analogix_dp_finish_probe().
-
-Changes in v5:
-- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP.
-
 Changes in v9:
 - Add Tested-by tag.
-
-Changes in v10:
-- Fix to use dev_err_probe() in analogix_dp_finish_probe().
-- Expand the commit message.
 ---
- drivers/gpu/drm/bridge/analogix/Kconfig       |  1 +
- .../drm/bridge/analogix/analogix_dp_core.c    | 46 +++++++++++++++++++
- include/drm/bridge/analogix_dp.h              |  2 +
- 3 files changed, 49 insertions(+)
+ .../gpu/drm/bridge/analogix/analogix_dp_core.c | 11 +++++++++++
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c    | 18 ------------------
+ 2 files changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/Kconfig b/drivers/gpu/drm/bridge/analogix/Kconfig
-index 4846b2e9be7c..964122b5bd39 100644
---- a/drivers/gpu/drm/bridge/analogix/Kconfig
-+++ b/drivers/gpu/drm/bridge/analogix/Kconfig
-@@ -29,6 +29,7 @@ config DRM_ANALOGIX_ANX78XX
- config DRM_ANALOGIX_DP
- 	tristate
- 	depends on DRM
-+	select DRM_DISPLAY_DP_AUX_BUS
- 
- config DRM_ANALOGIX_ANX7625
- 	tristate "Analogix Anx7625 MIPI to DP interface support"
 diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 81c6e81dd352..b112df52cabf 100644
+index 4606ecc3f480..5bf41b364aba 100644
 --- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
 +++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -20,12 +20,14 @@
- #include <linux/platform_device.h>
- 
- #include <drm/bridge/analogix_dp.h>
-+#include <drm/display/drm_dp_aux_bus.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_device.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
-@@ -1581,6 +1583,50 @@ struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp)
- }
- EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
- 
-+static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
-+{
-+	struct analogix_dp_device *dp = to_dp(aux);
-+	struct analogix_dp_plat_data *plat_data = dp->plat_data;
-+	int port = plat_data->dev_type == EXYNOS_DP ? 0 : 1;
-+	int ret;
+@@ -894,8 +894,19 @@ static int analogix_dp_atomic_check(struct drm_connector *connector,
+ 				    struct drm_atomic_state *state)
+ {
+ 	struct analogix_dp_device *dp = to_dp(connector);
++	struct drm_display_info *di = &connector->display_info;
+ 	struct drm_connector_state *conn_state;
+ 	struct drm_crtc_state *crtc_state;
++	u32 mask = DRM_COLOR_FORMAT_YCBCR444 | DRM_COLOR_FORMAT_YCBCR422;
 +
-+	/*
-+	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no valid panel
-+	 * or bridge nodes. The driver should go on for the driver-free bridge or the DP
-+	 * mode applications.
-+	 */
-+	ret = drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
-+					  &plat_data->panel, &plat_data->next_bridge);
-+	if (ret && ret != -ENODEV)
-+		return ret;
-+
-+	return component_add(dp->dev, plat_data->ops);
-+}
-+
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp)
-+{
-+	int ret;
-+
-+	ret = devm_of_dp_aux_populate_bus(&dp->aux, analogix_dp_aux_done_probing);
-+	if (ret) {
-+		/*
-+		 * If devm_of_dp_aux_populate_bus() returns -ENODEV, the done_probing() will
-+		 * not be called because there are no EP devices. Then the callback function
-+		 * analogix_dp_aux_done_probing() will be called directly in order to support
-+		 * the other valid DT configurations.
-+		 *
-+		 * NOTE: The devm_of_dp_aux_populate_bus() is allowed to return -EPROBE_DEFER.
-+		 */
-+		if (ret != -ENODEV)
-+			return dev_err_probe(dp->dev, ret, "failed to populate aux bus\n");
-+
-+		return analogix_dp_aux_done_probing(&dp->aux);
++	if (is_rockchip(dp->plat_data->dev_type)) {
++		if ((di->color_formats & mask)) {
++			DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
++			di->color_formats &= ~mask;
++			di->color_formats |= DRM_COLOR_FORMAT_RGB444;
++			di->bpc = 8;
++		}
 +	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(analogix_dp_finish_probe);
-+
- MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
- MODULE_DESCRIPTION("Analogix DP Core Driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index 3428ffff24c5..bae969dec63a 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -30,6 +30,7 @@ struct analogix_dp_plat_data {
- 	struct drm_bridge *next_bridge;
- 	struct drm_encoder *encoder;
- 	struct drm_connector *connector;
-+	const struct component_ops *ops;
  
- 	int (*power_on)(struct analogix_dp_plat_data *);
- 	int (*power_off)(struct analogix_dp_plat_data *);
-@@ -49,5 +50,6 @@ int analogix_dp_stop_crc(struct drm_connector *connector);
+ 	conn_state = drm_atomic_get_new_connector_state(state, connector);
+ 	if (WARN_ON(!conn_state))
+diff --git a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+index fdab71d51e2a..70fe5ae69e2e 100644
+--- a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
++++ b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+@@ -166,23 +166,6 @@ static int rockchip_dp_powerdown(struct analogix_dp_plat_data *plat_data)
+ 	return 0;
+ }
  
- struct analogix_dp_plat_data *analogix_dp_aux_to_plat_data(struct drm_dp_aux *aux);
- struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp);
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp);
+-static int rockchip_dp_get_modes(struct analogix_dp_plat_data *plat_data,
+-				 struct drm_connector *connector)
+-{
+-	struct drm_display_info *di = &connector->display_info;
+-	/* VOP couldn't output YUV video format for eDP rightly */
+-	u32 mask = DRM_COLOR_FORMAT_YCBCR444 | DRM_COLOR_FORMAT_YCBCR422;
+-
+-	if ((di->color_formats & mask)) {
+-		DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
+-		di->color_formats &= ~mask;
+-		di->color_formats |= DRM_COLOR_FORMAT_RGB444;
+-		di->bpc = 8;
+-	}
+-
+-	return 0;
+-}
+-
+ static bool
+ rockchip_dp_drm_encoder_mode_fixup(struct drm_encoder *encoder,
+ 				   const struct drm_display_mode *mode,
+@@ -481,7 +464,6 @@ static int rockchip_dp_probe(struct platform_device *pdev)
+ 	dp->plat_data.dev_type = dp->data->chip_type;
+ 	dp->plat_data.power_on = rockchip_dp_poweron;
+ 	dp->plat_data.power_off = rockchip_dp_powerdown;
+-	dp->plat_data.get_modes = rockchip_dp_get_modes;
  
- #endif /* _ANALOGIX_DP_H_ */
+ 	ret = rockchip_dp_of_probe(dp);
+ 	if (ret < 0)
 -- 
 2.34.1
 
