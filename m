@@ -1,144 +1,160 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C8718DB1A
-	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 00:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AE3261B80
+	for <imx@lists.linux.dev>; Tue, 10 Mar 2026 01:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773102436; cv=none; b=iIvktV5yTo6tQ1u5ew05YbAnRgtCwzcgJXJUlPoCj4+M5Xds9aJifzHN5ywU3DFcol4KNT/7iYzy3K7p1uBDwbcWLnQJF11Esbh0ZURIXX/b8Mv8T89/aKkUtC9skfX84+BMDZanXT5+54BgoUQarrxha4EMsJwyZlTE3+7pRSs=
+	t=1773105051; cv=none; b=j/ESGRE+R72A9GDwXJ46M4c1S9O1yDvSYgJAalRfKeQjwfy3sTPAjFp+EjAmvvuv8Lj1AVi9ojUxmFnlk1/dpVlAyChZm8mfwtc540ikctFxbDME5BREXhrp4Zv1YsCejbJClrMYgfAee5d6H6DHFOyd6tJ0AZ2AzXuWyF/K4tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773102436; c=relaxed/simple;
-	bh=XJlz7TAx+3J7IJ76cfvjfM28sjsC5jwU+vA9iaG8HY8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9PBotMeW5kIlX6TM4UWV+66E/H/hNCETvaCTfsJSmFmku3SEfafVUVT1H35F6/JX8fbOeDLAOHCSOtCm9s+UtjWV2qSuoFJeZLTF/gXp/9Ro/HhdOaobujp50fic63LDtopngeMFOsmkWrZ1IYraEXP2l6e1l8zp7XT6sI5/KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zlujzl6Q; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773105051; c=relaxed/simple;
+	bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W4MfzwgFZXq4ULjqLqyuF2SRpdym5NBOaU7OXimKLTyHRHA9XFoy4cLQafPri2+H6LziAXlZQbqwM4j6v91qA1qMH1ElxwSiPWNkB+0lg1rfgH9p6EMWFyVzIhMBp9m722ZRjJkiPNPFiEezHa2dU3J/oXCJON8Tznf97vJSzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cqifN+fw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zlujzl6Q"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3599126be32so5184421a91.1
-        for <imx@lists.linux.dev>; Mon, 09 Mar 2026 17:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773102434; x=1773707234; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kBSFBJjMJpbjZ3yrhCcXTD3ypyojE/o7DNoxI6+C6lg=;
-        b=Zlujzl6QEW6uMZaLUHb0svIICPEaNfi90aOjb+4EmIxn7IOrrMeUVXPl6yBn/vKlzk
-         g8nYwE5mgYh5mZnOfrz73AnsjiQDcTtRl++ds0i30uClc7aCpH/MvG/tphAJSQK6NQDZ
-         /th5A9f+zmMSgDIedhMXF6yOP6lFhMTiGRpAS37Ivon3E36mna0qxptgpdoyLRhLDoJW
-         Y/K+ECVIq5YWaUqg4qK257f6N/hvCx4FlkuGG+eGSkA37OML2xVINsQHP39+x75bUtLO
-         zOGaTPGNLUpV0ttj8wq1+zef1yFQFqV3UrYrwPH3OCWrG2zka9UHgjvf/ioM7DUxPFI+
-         eGQA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cqifN+fw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773105048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+	b=cqifN+fwey2uuNWJKbAsGYioMmWLpfgqH57gQOr1PYOkFE6fvblDYnVtz2nA7OVLf1W5TS
+	5pnW1Z3YgQuM3ev3hHmotlAOQD0KB6EBjEz6R/FzU7qYJ9QbgfKpGOIpLLDEWZBdlN8365
+	Dn+ceKEbOO7qeSVvEZKcY0r5oYDHTSI=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-gtn7gSDwMyi0OkHyYRwI9g-1; Mon, 09 Mar 2026 21:10:47 -0400
+X-MC-Unique: gtn7gSDwMyi0OkHyYRwI9g-1
+X-Mimecast-MFC-AGG-ID: gtn7gSDwMyi0OkHyYRwI9g_1773105047
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-89a304f24a2so263085806d6.0
+        for <imx@lists.linux.dev>; Mon, 09 Mar 2026 18:10:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773102434; x=1773707234;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kBSFBJjMJpbjZ3yrhCcXTD3ypyojE/o7DNoxI6+C6lg=;
-        b=w53arJv9+Hi51tnWVBCsQ/gYUgyYgUdYNVxTAwFTpW6m45qCJ7BXY/EyzuMTz6V+FX
-         JIEKsLvUms+E+GZl3pkFvtPGnBItQNoUiSo4iGk77oWedOQDou4G6PlhOtK+EPpbg/X8
-         wuTtd/kD1DPGDyGTyGND5AzHej3yyCmX5hiQ8ncsykbDjVvwmfOUR7ZLHaqZF4oRc5nL
-         wmB1VW5FzoYZApeas4af6L9IEnBIuUTMgNSeI7pVCqpGHNQWfZucs34zL83aIkKFGjjS
-         wXJyf0RXaMuh+yQ8o3+510qKfrqrAMJe1kcZSVAmO8PxfOw28fDm693/VRvCRSfe1sU4
-         CrLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUhW/+RDoLO2d0ItSQY3bIa2AC8OiLj4SzKqQrVhel320TqKo7xJK9o1593LjGUTkAIijE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPDN7hpZKM7MdQjyzjwvqiRYp1/HpObC2ylCjbuoN9yusEebfT
-	QK1TPGqoVrRicjMsMnv/SM8zSjomVevSy6Q2J10LmK3Ryi8xJRFdXvWx
-X-Gm-Gg: ATEYQzzHwpgedS1uWuB9KlaSZoeAHuNSCc1MteK9D+ShXCtk0drG5fRO2oxaCLaMYNi
-	WNGXfXwGfxJGO33/EnTfinNKvIrAcUoXeJCkyEcAKXckgZHK7FUQ4OOX1vlP74B+1O2finTexBV
-	8TRBm6poPJdHZMqlASBhGSZeIss7ghfBjm6UzOoD31Ynh54T9PFCOb2XEXZY5cvMDbgpDqRkrW7
-	9lrTZ8Zc5H/4o+tWvWt1bBWZiWztnSbEHThHowhg9ZqlGIs4YUDBJT43OUyFeCNvpYHaSs/oTtd
-	eTcFACDjzJjpc4lgiS4p8jYsYt8GnNthBwB9pVpZZqbZf8LHH46UOc0x4iutBi05vQrU3zKBUai
-	ikecKwYeqzlnF8/IQu7NvSksz24HQh7BzDZ6XtpI425qUohq0rV9TNuSfxV7Bhdn6IWfwSrFIKm
-	L/+GXN3IxukIF4YomY8XsYogR7T8idRznWabDY19KUMnbU67RUS6vwhdSHZ6VE/L3/CpvHAJuVn
-	aqSAViJutspq3ec
-X-Received: by 2002:a05:6a21:8885:b0:398:7fd2:5941 with SMTP id adf61e73a8af0-3987fd25c81mr5602489637.44.1773102434555;
-        Mon, 09 Mar 2026 17:27:14 -0700 (PDT)
-Received: from tower (c-73-37-64-97.hsd1.or.comcast.net. [73.37.64.97])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e183596sm10245803a12.27.2026.03.09.17.27.13
+        d=1e100.net; s=20230601; t=1773105047; x=1773709847;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+        b=DxBwTEPQWZ4txWttt0W4pQJD1S0uUtiqww5gD0CvvLMswr/aufx/yLp9FTK9qjPFXH
+         9gYpTkxV5NMrJ3i6JAXiLQF4DysfKP/5y4epXaQ4vbAepTjLv2fYfjDL3Ow0ImSBEgDh
+         7Nl1DqA03mjhBZ8Vf1Zj9AZI9HKkxJdixAzJHyRPVoR/UErYaKI0r2+PWT0Jzt1wZ8vO
+         fV3wfGUiKLhWQLYUxYM28JVSZzmslLHgWHeAIrVQWHpMkYri534uayPNwZsvveB329PI
+         4ozHYaymbfTc11S1o5ltYOXlNi5jMuKPNQMI6LyV39OFeLSOHydvVcjfpMhqSL0F4Wni
+         BnZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLvKc+SgbBQ2iK+CxTRwj2A+6TqM9XEaHjb+3Am6iEIVyiS6LiAydcRC5oe96PHtVQ6Ts=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0GcgeA8MK74hNXnL4xQHuNzLFBikN3QbLUJbvKfE8YhsQMFZ7
+	81RF7o5YKFCv9xiqB4iSwaDvruPCVWFy2g0U1lCYsIYvoVP4kav20I2BnIGO0KmrDvvruUWgLrs
+	7cjStea68cn6ib09p7GHHQpJ3/q1Cf6BFr0FkPZZnHkXo6j2q9FdYCA==
+X-Gm-Gg: ATEYQzzBdGI/NuRZ50/MG9cFdrpm4V9XLwyfaHBuDU/MSGwO5ZMyjlNlXNP0h/d3X6X
+	naMMf8HhpLgg9Jt82AvolSZU2DVp9Pf1uT+o/wSgJw7/QHBMtsX11ohOZboT5Eo0k4bF6vDrMrL
+	MJ6i9J2rGE2/HgZhvTJeONPvco5l4LGplnzB/lXEuEYe+Or6gQ4maynd2f3mqsrTENACC/y2TM3
+	Zfx/MCKjSZYUK+PBRJp0s+S9TF6LVg5b6/3TzrW6aak6izhPbM7NbMbVWzp4O549Xxv5Yx5q5wm
+	NxPWz5LethRto/LtYNS2rOk35bE96mhIadIIAmmzb/NJqNxqWgdySTSOo+ZX4rwn0dDAdTjOhR4
+	UiFNO9lln5TTuyaki6nwcZBJouAty3YWdMNZPd6PVmAMG1D6nXAAWSY4h8bA2iHPHUnw9fGBrMO
+	Mu5Mq3Mk5W34jkfQ==
+X-Received: by 2002:a05:6214:d8b:b0:89a:258:c1d1 with SMTP id 6a1803df08f44-89a30ad1c78mr197365226d6.42.1773105047118;
+        Mon, 09 Mar 2026 18:10:47 -0700 (PDT)
+X-Received: by 2002:a05:6214:d8b:b0:89a:258:c1d1 with SMTP id 6a1803df08f44-89a30ad1c78mr197364236d6.42.1773105046575;
+        Mon, 09 Mar 2026 18:10:46 -0700 (PDT)
+Received: from thinkpad-p1.localdomain (pool-174-112-193-187.cpe.net.cable.rogers.com. [174.112.193.187])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a57a18252sm10681656d6.10.2026.03.09.18.10.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 17:27:14 -0700 (PDT)
-From: Mark Adamenko <marusik.adamenko@gmail.com>
-To: linux-staging@lists.linux.dev
-Cc: slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	gregkh@linuxfoundation.org,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Adamenko <marusik.adamenko@gmail.com>
-Subject: [PATCH v3] staging: media: imx: fix parenthesis ending checks
-Date: Mon,  9 Mar 2026 17:26:43 -0700
-Message-ID: <20260310002643.27465-1-marusik.adamenko@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Mon, 09 Mar 2026 18:10:45 -0700 (PDT)
+Message-ID: <4728554b256f016d9a5f3e019ed831387b0f059b.camel@redhat.com>
+Subject: Re: [PATCH net-next v7 0/7] net: stmmac: qcom-ethqos: add support
+ for SCMI power domains
+From: Radu Rendec <rrendec@redhat.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Richard Cochran	
+ <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue	
+ <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, Giuseppe
+ Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>,
+ Chen-Yu Tsai <wens@kernel.org>,  Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Matthew Gerlach	
+ <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl	 <martin.blumenstingl@googlemail.com>, Keguang Zhang
+ <keguang.zhang@gmail.com>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jan Petrous	 <jan.petrous@oss.nxp.com>,
+ s32@nxp.com, Romain Gantois	 <romain.gantois@bootlin.com>, Lad Prabhakar	
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner
+ <heiko@sntech.de>,  Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
+ <inochiama@gmail.com>, Emil Renner Berthing	 <kernel@esmil.dk>, Minda Chen
+ <minda.chen@starfivetech.com>, Drew Fustini	 <fustini@kernel.org>, Guo Ren
+ <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,  Nobuhiro Iwamatsu
+ <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Magnus Damm	 <magnus.damm@gmail.com>, Maxime
+ Ripard <mripard@kernel.org>, Shuang Liang	
+ <liangshuang@eswincomputing.com>, Zhi Li <lizhi2@eswincomputing.com>, 
+ Shangjuan Wei <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran"
+ <vineetha.g.jaya.kumaran@intel.com>,  Clark Wang <xiaoning.wang@nxp.com>,
+ Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu	
+ <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>, 
+ Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S
+ <swathi.ks@samsung.com>, Bartosz Golaszewski	 <brgl@kernel.org>, Mohd Ayaan
+ Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,  Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, 	linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, 	linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, 	sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org, Bartosz Golaszewski	
+ <bartosz.golaszewski@linaro.org>, Krzysztof Kozlowski	
+ <krzysztof.kozlowski@oss.qualcomm.com>, Konrad Dybcio	
+ <konrad.dybcio@oss.qualcomm.com>
+Date: Mon, 09 Mar 2026 21:10:41 -0400
+In-Reply-To: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: HBi58bPO4dblFZ1yP3Z6WhQA4HQRsTWTPIqZVU6JWhs_1773105047
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Remove 4 checks for ending with a parenthesis by removing unnecessary
-line breaks, and forward declare a variable for a function call that
-would otherwise remain over 80 columns.
+On Fri, 2026-03-06 at 16:46 +0100, Bartosz Golaszewski wrote:
+> Add support for the firmware-managed variant of the DesignWare MAC on
+> the sa8255p platform. This series contains new DT bindings and driver
+> changes required to support the MAC in the STMMAC driver.
+>=20
+> It also reorganizes the ethqos code quite a bit to make the introduction
+> of power domains into the driver a bit easier on the eye.
+>=20
+> The DTS changes will go in separately.
 
-Signed-off-by: Mark Adamenko <marusik.adamenko@gmail.com>
----
-v3: fix commit message
----
----
- drivers/staging/media/imx/imx-ic-prpencvf.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+As Jakub pointed out, it conflicts with the latest net-next, but does
+apply cleanly on the latest mainline, so I tested there (on a SA8775P
+board running the SCMI firmware).
 
-diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/staging/media/imx/imx-ic-prpencvf.c
-index 77360bfe081a..2339b59af7b0 100644
---- a/drivers/staging/media/imx/imx-ic-prpencvf.c
-+++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
-@@ -315,8 +315,7 @@ static void prp_setup_vb2_buf(struct prp_priv *priv, dma_addr_t *phys)
- 		buf = imx_media_capture_device_next_buf(vdev);
- 		if (buf) {
- 			priv->active_vb2_buf[i] = buf;
--			phys[i] = vb2_dma_contig_plane_dma_addr(
--				&buf->vbuf.vb2_buf, 0);
-+			phys[i] = vb2_dma_contig_plane_dma_addr(&buf->vbuf.vb2_buf, 0);
- 		} else {
- 			priv->active_vb2_buf[i] = NULL;
- 			phys[i] = priv->underrun_buf.phys;
-@@ -704,11 +703,9 @@ static int prp_start(struct prp_priv *priv)
- 	}
- 
- 	if (ipu_rot_mode_is_irt(priv->rot_mode))
--		priv->eof_irq = ipu_idmac_channel_irq(
--			ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
-+		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->rot_out_ch, IPU_IRQ_EOF);
- 	else
--		priv->eof_irq = ipu_idmac_channel_irq(
--			ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
-+		priv->eof_irq = ipu_idmac_channel_irq(ic_priv->ipu, priv->out_ch, IPU_IRQ_EOF);
- 
- 	ret = devm_request_irq(ic_priv->ipu_dev, priv->eof_irq,
- 			       prp_eof_interrupt, 0,
-@@ -750,7 +747,7 @@ static int prp_start(struct prp_priv *priv)
- static void prp_stop(struct prp_priv *priv)
- {
- 	struct imx_ic_priv *ic_priv = priv->ic_priv;
--	unsigned long flags;
-+	unsigned long flags, timeout_in_jiffies;
- 	int ret;
- 
- 	/* mark next EOF interrupt as the last before stream off */
-@@ -761,9 +758,8 @@ static void prp_stop(struct prp_priv *priv)
- 	/*
- 	 * and then wait for interrupt handler to mark completion.
- 	 */
--	ret = wait_for_completion_timeout(
--		&priv->last_eof_comp,
--		msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT));
-+	timeout_in_jiffies = msecs_to_jiffies(IMX_MEDIA_EOF_TIMEOUT);
-+	ret = wait_for_completion_timeout(&priv->last_eof_comp, timeout_in_jiffies);
- 	if (ret == 0)
- 		v4l2_warn(&ic_priv->sd, "wait last EOF timeout\n");
- 
--- 
-2.53.0
+The two NICs come up as expected. Basic iperf3 throughput and jitter
+tests look good. I would offer a Tested-by tag and a summary of the
+test results, but I think it's a moot point because you'll have to
+submit a new version anyway.
+
+I will wait for you to rebase, then test again and come back with the
+results.
+
+--=20
+Best regards,
+Radu
 
