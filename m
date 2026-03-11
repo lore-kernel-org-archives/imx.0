@@ -1,175 +1,160 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013046.outbound.protection.outlook.com [40.107.159.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3086A3CFF6A;
-	Wed, 11 Mar 2026 14:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773239575; cv=none; b=lwvRmhOHCSqwcX3TXGGO/04xIdibnhTb9cJm2dF8Gc6pTTPMBfem1cqfSm6yKuEQz9D74WM+2SkllWIhVzzsGw0sTejV4EPDaK/1iftdr2uh65gJyPGKB7mHJ5iJ70Qu0KhetlTwIh/2iHVT3eGL6yOA1Y46OGMKMpko9AZrIGs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773239575; c=relaxed/simple;
-	bh=6hyp8oj+8eGEQZsZT+muICxP3fnBYc1R1z5sgHbCrIE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkztwhmuZmlRSMzPLowZ71CsNlAg5CV2Eu2TcBull20GiF2g8IJsGjko138BdKY5lgbWEDbIOZioV+scgNq4nYj3Zei4i7Rd1OHwXhejHJreO7sv/vLMSQoN1NYJIgVK0xWeTEGGDrXUoYkfLFCi34MKsEKEiY9oGBDKt7VDZQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W1OP0JSp; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681E936C9C3
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 14:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773240307; cv=fail; b=YtuXryoJk/Qy2kI1wMbkiQLM0+E75c+FpznyXvOtdgF1aps8CPmFYj0mhgkr9CKFff4bD1y1KNAGItcBz6z2Kbw9Zq9UYstfgoEbHMW1jGgLUMJEcYJKsDjW16DKwLosI/TOTVyeLOjrXLOtQX++KwcTpPhAVp9wgPEvHZ9aleA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773240307; c=relaxed/simple;
+	bh=ZjVBL5nIN7UdXXBaPxxyuIV8cLgpZVt0fJB03difWM8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=h4ZH0RhZQQLtN+NbxpJ/I4In7f1+VeweOAvIZnAZlsE9E1xPRz2UfRvz0aLmoeRbL158N0vgGk2QvLQx2WAfc3q7YU6mKUiqayEw8CptF9BBcnJlbmGdHwiNzZMI/vMAf6mLMGRLqgCLo1sGFk5Ga9xjfp0idOLk9e1hh65xwJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sEjENxJK; arc=fail smtp.client-ip=40.107.159.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W1OP0JSp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=YNQjtMPSmOm9g6D99IkzdDeFXjyoDQDJ/3H8oMxooVE=; b=W1OP0JSpeiJWNMJva4YOQ0v1P3
-	PP7jnzae3BYl/WD5ttFv6xjAgkAss1nxMsZeSd7um+x6d8rZMvbLL4r/fu3u4+ti3NAGLXcWbhrtq
-	61wlCEePT1cLEOfkqANTzyd2hHtKtOYNRjh8tJWK3Nc2ZZKuKDubiUv1DqnHHx2VaU8ncx3d2dek5
-	NB2z5gwht1dicAkqKhCFQvkTy9RtmPoYiuoYl3k+jdEodTihnhocsE/DExSonLiFUR6hbg8u0ay3U
-	EfMOeOh6mcDKOFSDY/ax9i1i2V4BXY7z4gwF6f3mFvDOngyqlJrkygyfoeamDZiDE2EPS4KqwJ5Qw
-	rs57kVSA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0KcA-000OtS-0u;
-	Wed, 11 Mar 2026 15:32:46 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0Kc9-000GoI-25;
-	Wed, 11 Mar 2026 15:32:45 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com,
-	linux-clk@vger.kernel.org
-Subject: [PATCH 3/6] arm64: dts: imx93-tqma9352-mba91xxca: Add parallel display overlay
-Date: Wed, 11 Mar 2026 15:32:06 +0100
-Message-ID: <20260311143217.1700704-4-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260311143217.1700704-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sEjENxJK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pHv65D2pIYUFeYaKSBVdUelpC603bDouTPP6BdbF6oo/QId8xq1RpVC4cRyZsfdlYPRu/O5jNFhff0ay/T67rNBp39DovP0aCkzQMayU0ybmXkp80cFBDYihCVbx2kcKpPdvEruBataex58v8MJpHv+00uMNawypYkez7aoVq6fAfrvyk5+Nh+O2aUWGJ/INxHcI6yFgEQfH1M8N1g1oo1qJkak+NZm5L9avhRzCELibaEG1AaFHc6mibM6PXIJ51hUajGf7YqmhCMgUoPO+nBrxV24IkvOF0YKgJFKv1X/gCcByD5sIIV5xeiVpIpi+MgQH4VK1v9kM11u5fxXRMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/G5Y6rDKOuxF2tIQs56Clpl9B0ggAhnuqMINHbABTXI=;
+ b=ewYGnbbKuJGVFjxBb6zJUoOBVgc923gmAqVyZ+BW0x0yQ3tJveMKJLEIdRAwH2gRziE+S+goWRkvtSeIcGPJinoD2HVrnrrIaNHOrg7mFj2QF5U7FHfHAXylCZfItsWYkVibfcEIkD5pWyqvvUoO0TivWhAFZMLnayryDzMFmPSESjKhNhfLbHYIGVF2Od59vUky1PcL1NVCzNt7b4MQ2Mq4h72PQ+eExnebqkADQn2CLYZSWo/ddFaRzZoIap7xRnm8N3XzX+MGYehhvIMSnNdBS8Y3L/vfZXikzcm8pGXeXmEzKql3pX/FV1NhFilcojEPRJvYkYMROgerl9EBJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/G5Y6rDKOuxF2tIQs56Clpl9B0ggAhnuqMINHbABTXI=;
+ b=sEjENxJKtNLuHm6jDPJjSiSbgbnBR4eXhO1jYH8PLvuPsA8g62tTFwkLTlbDxgAXONGoRvNTxMiYc7Bfm26iUhYigNFSVMEf/CtD05Be9LwG+nl+r8iagYt9aDOmDQpm/zXu4pLjTlEtKHBQLaVLkmVR9LvvkC81PE4AHIHoBmZY1wLFSbQkBxszdkmkhG/bVipbgHhf/cyaVDJ0IjnXG7oZz0uoFBMhaQk7I8fQcmAwmMjIX1D6rzTF3Y77Lqe6okTYLk3CSpCxUF6neaqlQsfgidoF1YQAPHQjvd2s+UZgZ294b5f/7iMvWTuqe1zwzLiEHOCCGeio0orD1Dit8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
+ by DBAPR04MB7432.eurprd04.prod.outlook.com (2603:10a6:10:1a9::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 14:45:02 +0000
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 14:45:02 +0000
+Message-ID: <1ba940f3-6ff8-43b4-98c3-a8ce23e2b0fa@oss.nxp.com>
+Date: Wed, 11 Mar 2026 16:48:04 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/6] arm64: dts: imx93-tqma9352-mba91xxca: Add LVDS
+ display overlay
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com, linux-clk@vger.kernel.org
 References: <20260311143217.1700704-1-alexander.stein@ew.tq-group.com>
+ <20260311143217.1700704-5-alexander.stein@ew.tq-group.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260311143217.1700704-5-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0355.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f4::8) To AS8PR04MB8247.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f2::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27937/Wed Mar 11 07:24:53 2026)
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|DBAPR04MB7432:EE_
+X-MS-Office365-Filtering-Correlation-Id: daf8a958-9748-4db6-7ef2-08de7f7cc69b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|19092799006|1800799024|56012099003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	b6fjf4QmOx3weXBa7ss3JrAIPpqNXb3plVcaPhiSedAnc9k/KZplvB2rPGzMSFP82CCMOQ4ldrbOXvc4kMiSGPfIu196/6n2yuq7ouOJos2LqWEqeGUrbL6jFKzjzWuvVRdu3rxTbR1FSyY1yXU+dAnyWWVnfw+6W10Q2guW/eHKDcZlfoCxWTBsgWTeOZ3peCtdNapqQUJUkWdX2kWKH5batfNzPD/CB8stGpfhFFVOyNvoUSo5Ap+9Eq3bcUk3HOeSlFnaARQvCP2n7g3OQiG8T0q4HRl6ghIrVoWOYxKH9YQqJLaIMUhzTDSaMmBA9iuT48UywBZFBst9h6GyrH+RMUe22GtumbbYwL4c2+dk2LzbsFzA8kWz8foYugZW0QiBRyC4pHkPFC3nBKkuJC9cuExSuGO/ahX9eE/JibvqTl94K4j4ZhJENs9b6j6gTMDvI+Bqr1QUqgSSxweL3VdX3418BtTm+bjL3HtMcIda3FhSsJzqmDyQ3bgb2kUYMbiYKLu7W5cSgJchZC8uICOSYrW1ZMCwquiylIm7jA1daE3T/77KeRB4AnNc6po28Pc+GofYlRFVoW2U/fOq/+JJov1HEeQ+KFF5/3Lp6LCmICKdEfsweWqls+nTzCwAKA78Ur5Z9AT+GUuP6FCEVBLQwaiswZvoQaAc4z5X+2ZZTF2NY1CwUkI4pKTteJBM0YuyNtmXGWu9iks5+iyHxFIDsLsG5zoYluiKVOz6i68ub8tQJcK/VPI81XK4f0cPmN2aewRcfCZ1h1ArcvLD6w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(19092799006)(1800799024)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXNkWDJhM0g0Y3NhbUdTczhMNUxSeUZGbUhsSUdEeG5lVDhKR1dTM0dZOTcx?=
+ =?utf-8?B?czk3TVZEYTlTbGJJZUNjd3Y3aXNzRXo4aGlkVWxHQ0JpbUdFLzdSdytxdzJY?=
+ =?utf-8?B?WGNtQ0FHVDIvYS9JL2lZUWxEK2p4V0dWSlh5Lytza29XQnVoeHk2dU9VWUNv?=
+ =?utf-8?B?YmE4dExDUmdWSEU5YTJSYXJva1FsWSs1L2srT01BQzRUTEsvSDhkMm42YktZ?=
+ =?utf-8?B?bFRIZjE5bFJlQURSbHNZd0w2TFBFTWh3cnRUTnB4dEdzS2VqaGlCb2NPcm9i?=
+ =?utf-8?B?YktvRzdiSnJzaDZQSyszeFA4cCtDK0c4M0xaWTJVRVRaM2R1anNSTktCUmtG?=
+ =?utf-8?B?VEtsNk5xcHlYd3ArU1VQYi9GaEZ2aTNteW4xZG5wL0toYlVLZXJFUDMyRmFV?=
+ =?utf-8?B?ZlNSeU9jcTlVNXNDM3dFVS9MVU40djlPTktWY2t1a1ZyTG9LNTZZZE9uUlJP?=
+ =?utf-8?B?MWozQ2I2cDZYN1FiMXhnMS9kTFcweEFDSWtUQTQ3ZkVYMGM3QWFuKy9obEVZ?=
+ =?utf-8?B?Wkx0dkRzU0kxaWpCTjh0d2RyeXdvYmFZMUtIdUtXalA2ZFVIYW5LcVdVMTQz?=
+ =?utf-8?B?MU9aWjkrMG9kTUlsdW14RHJvL2s4RGNHQy8vcER0d2hOdjlIalE3TWZGVStB?=
+ =?utf-8?B?UDFXYTJHL2tURDh4cnJUYkUvT1RTZXVmTWhRY3V4bjFOREVBTzg0MHIrUTZL?=
+ =?utf-8?B?QlZzWDA3RUVNeXg5dFJwdG9LT2RUTTlWcWt3TXgwZ2RCNGtDVFc4aERydkxI?=
+ =?utf-8?B?MC91NDI4U1UxVHpUUGt2UjdCRkd4bDVNMmFpNitZempaTi9zSmZJQUFoQnRj?=
+ =?utf-8?B?UGRJTG03RDgrV2J5amZZZHE0NE04emQ3a1VQTlIwRUhyT1pKdFVBUjBDNnlu?=
+ =?utf-8?B?TkkyZzdKamJPcDlJajg0WFRhQWEzVzJwdlh3SkNJVlVDVGUwMVBIK1lpQVNx?=
+ =?utf-8?B?ejZQNVVVcjhUMm9qVDllNndESGNud0dFTG1kS2FQU3F3UkVxWTRjY041U1l5?=
+ =?utf-8?B?MDFENS9RUWNrWlBLVGFSUCtuU3JvRnNlT2EwZEl3TzlTVXRVZVNaRDgrMkYw?=
+ =?utf-8?B?MllGZ2FKMGhKQTJjTkpiVnh4TURhOFVwUDZHMGhVenVudHYwOVJTVHplb2o5?=
+ =?utf-8?B?RWV1NjVjeVBwRXBRYTFnZklLb1AyaTFqYVpHUTVXeEpwVFhzdW5BTEVEL0pH?=
+ =?utf-8?B?bkpmbm1PSEUwdTUwcE9PZUVTS2xQOUNNQ0JxQUxJZ2RlNnpGRnlmZmc3VDU0?=
+ =?utf-8?B?NndyUmIva0lIZCs0ZVVDUmhIbnJsa3NrVERnYzYyNkZCWVZZZ3p6STZGTXVU?=
+ =?utf-8?B?Ny9PTWZ6Ri9uUStQR1JYUEZJWXlOMEo3OTcwNUdhS3BRRHVhelVBbnowUTRK?=
+ =?utf-8?B?VW5keUd1L2NZVlBtREd3UWx4bXlOZmVlQ2FXVVhyK2lPdy9nV3VXTlg0bmM2?=
+ =?utf-8?B?K2hsWm5sRGQ5c2dpUkhFU2FiUlkxWUw4SVFLLzNpK3ZCZEVpQ0kvTkxsbGh2?=
+ =?utf-8?B?K2djc3NlNWp6aHAzbXpNSStkMEM1eUNUY3BmK3YyV3FTSE5kYm1YanlIQW45?=
+ =?utf-8?B?cis5RmNnUlo0N0ZNSDhlWXZhT2lSY3hkRGtOOGg3ckNNa0N6d1pOOG11NzNy?=
+ =?utf-8?B?NXF5SEl1cnZBQWFwMzdqUzBXNFovRjlCNHQwTGFJQUY2WG5GangyaE4rVHJZ?=
+ =?utf-8?B?SDZyaFYxMGVwSGFwcStYRExEUkJVSkVKNUxBUVRJSUZpTzZwSHB5SWJKOTNo?=
+ =?utf-8?B?anVEL0Q3bjk5Ny9aQi9YNkpmZURrMUdrNTduRy9BMDZzd1IwZUczdExqdkhh?=
+ =?utf-8?B?WGhaREZNdXdDb29VOSt6WlNCY29SS0VKeTVPNlcvTWFidE4vL1VSc01MSUs5?=
+ =?utf-8?B?ZmFZcEZEUXRrSTJjalU5R3NsNHNPT2xNeDlTL2NJai9kZWRvdHhCU0IxSDNJ?=
+ =?utf-8?B?Y21NcHhRV0gzTlFLekozeHdOQWpVQUFCSDNqdWRlaUNWY05ZVWxLUjIyYi80?=
+ =?utf-8?B?V2wwZ2x1ZzJwL3RLSTlweWpoeVJPd2NBSUQ5ZzZQRlJHWFQxV09ZMG9rWVl4?=
+ =?utf-8?B?ZkZBcG9Zd0ZVUGNKZGNwa01XVUZxQkhkRld6Y2lmWmFKYTNwclJXTkJTM3BE?=
+ =?utf-8?B?MnFibjZPZktTbGFJYko5WnZVYVNwdjBRcFY3Qkoyb0s0NW1sUmpqTC9nY2Z4?=
+ =?utf-8?B?Rk5hT1AwbmlNMTQwdFdVa2J5aGdmUFZKeFNuMjhaYUl1SlRaQnVKMllFWjU4?=
+ =?utf-8?B?aE1NY3VqYjB2aE5icEcrQ3VrSjVza3NON0J3Y0hOOTQ5dUZJWTFIaGxHZ2ZN?=
+ =?utf-8?B?WkRaOExWSUlyV3JuU0xxK29ML2RqZTBzcm94aCtSV20zK2FkTjBWQT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: daf8a958-9748-4db6-7ef2-08de7f7cc69b
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 14:45:01.9835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yRP3R1TUnfH3o+QJUvUBT4WjJGiIweG00VQbrUhhTvoukJ+RzZpi1LEXfWT4TTS2yNLeJjj/Mn4cBhBCBO57Sw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7432
 
-This adds support for CDTech S070SWV29HG-DC44 display on parallel
-interface X3 on MBa91xxCA.
+On 3/11/26 16:32, Alexander Stein wrote:
+> +
+> +&panel_in {
+> +	remote-endpoint = <&lvds_encoder_output>;
+> +};
+> +
+> +&dpi_bridge {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_rgbdisp>;
+> +	status = "okay";
+> +};
+> -- 
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  4 ++
- ...93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtso | 66 +++++++++++++++++++
- 2 files changed, 70 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtso
+Hi Alexander,
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index a6fe56bb93aa1..3547f1dd84467 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -455,6 +455,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
-+
-+imx93-tqma9352-mba91xxca-rgb-cdtech-dc44-dtbs := imx93-tqma9352-mba91xxca.dtb imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtso b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtso
-new file mode 100644
-index 0000000000000..ebf7fb13a46ef
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtso
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2023-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-+ */
-+
-+#include <dt-bindings/clock/imx93-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&backlight {
-+	status = "okay";
-+};
-+
-+&display {
-+	compatible = "cdtech,s070swv29hg-dc44";
-+	status = "okay";
-+};
-+
-+&dpi_to_panel {
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+&lcdif {
-+	assigned-clocks = <&clk IMX93_CLK_VIDEO_PLL>;
-+	assigned-clock-rates = <333333333>;
-+	status = "okay";
-+};
-+
-+&lpi2c3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	polytouch: touchscreen@38 {
-+		compatible = "edt,edt-ft5406";
-+		reg = <0x38>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touch>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&expander2 0 GPIO_ACTIVE_LOW>;
-+		iovcc-supply = <&reg_3v3>;
-+		vcc-supply = <&reg_3v3>;
-+		gain = <20>;
-+		touchscreen-size-x = <800>;
-+		touchscreen-size-y = <480>;
-+	};
-+};
-+
-+&media_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&panel_in {
-+	remote-endpoint = <&dpi_to_panel>;
-+};
-+
-+&dpi_bridge {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_rgbdisp>;
-+	status = "okay";
-+};
--- 
-2.43.0
+Any reason for dpi_bridge breaking the alphabetical order?
+
 
