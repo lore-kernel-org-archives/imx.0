@@ -1,167 +1,80 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010041.outbound.protection.outlook.com [52.101.69.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEF1357737
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 06:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773209300; cv=fail; b=h6PkOvHmjSLHYVe0xY/B0ZD8KYP/6q9rgF9IVX/w/i26pD/nVtsuYlwfXB0Kj6RmFDNfQONXr/PPFUB0J5kTyINvipIAbVlwhp2uVScHoveJ8/moJoQgN3p29uPxlcnNxVEISA+nG5TOY8zjEtOgSWQGXah9ihQGlPnQ36zbFWM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773209300; c=relaxed/simple;
-	bh=Nbws6IhMyTxPJtAEuEmrlYHp3pes7NrCHjVDAUWSZ7A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=W4gyKwLC8xD373l3Hl9C/Z3nITkX0WTTvtPI09q+VsUQ35NOlahWDy+gzmKgSJTUcuyJXpldfCb4dVbKBBWWglHISlgbYSx1y1YB1wy7gY03YtYmwNS/EIKBABufvWzgE4W0trDN3Ai9cLYTrB7KGu6eS6yflTZmEiCET5JJJJY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kll2OrZV; arc=fail smtp.client-ip=52.101.69.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC4D1A6805;
+	Wed, 11 Mar 2026 06:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773209886; cv=none; b=AX069WWaB1rk/WtUUSTPJtv9OXdAY44F1s5yQIfO0big/F7eYzFm9DowHM53QAWbkU0J6bhDxK6NbcuY/esSQtrgfJF9ZrRs/85DxmrYudKRCnXzNoh/ZCCfuikh/eY96zKCB1jDdFrsnTSRoxnQYQSdGxSdGfemnY//f59Ufv4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773209886; c=relaxed/simple;
+	bh=+TnpEu3N3Wg7VpR+WRJAYIJe62zec1Zk48SN+3Vy2Uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OX4uSBOOjrBA2ojmph+dfvTF9KcjZmUDM32JiJZSy93qEVpxor4nDewFZdzWkC525x2ibGfDs6c3rgwxj+l4s8lbfXvdA/IPFiGQzLJ30p7DhdeyH6EmMbKKPiBd8PXFSAB0TSft5XXzFwmLTcz5wCe1uAX8S5Q7gYDMpCspmQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ER78y/T4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kll2OrZV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LpqqOXJ68UUFRSNdW9LPiyXFNowYy/wBLrVK9gspXK8VxBaS2XSflSb6M3IS4iq2OGBvrbynqO8BCWhwdw7F64aUdDgiaVSwEYqvKF98D/YU/bcrd3I5ztEUgI32jTGAdPBNCwz8dJvFRs89MKbJPwERgC3doo0QBN/uMZQHQWWaXmgjxoMevPXRStVPQAGEE7IQwMPbFzr5JXRH0JHFnG6Cw9lr+Coe97Et35rUakA7cHlPMASu02el7Zyx7/vpBfY15uPx+yrwLfS8hQByTB7pNk0PepCWhZq4RAUoA2kFkUm4GiJZgv/IVdLfFFW0VpJajAiQWIJZS8utRha+Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Nbws6IhMyTxPJtAEuEmrlYHp3pes7NrCHjVDAUWSZ7A=;
- b=X9I+GYybffME4RQXx8/sUZFlbYUkpE2Tt432tad5t6/WU8p6FIwp89dns6BUGzNON1T/x1rcPbdB4vEfVZHmpoVd+vFTgdKDu3UUEsSdpvoktHI3vmki7nzS/mSdYC8ZfFMsNaxhQ7MQX1BNDudJ/U9Kd5MhJzMNl1uJKoWkEKkcjRrBZLJkmMrLpSrV9cDmklfSl2CsnQ5ONId1yjOnV3Up21FVzpElqkLYMNdGSPKW0hF1i39m1V5ToG/mlI9vP2OLOc6EmoMB+7c0qf2ueBJsGgdv9Lkn8azmOPu7S0pwE8EFxuxQNiyeNejV9r/yn8KtCgSdH/9CQom/Lyy9eQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Nbws6IhMyTxPJtAEuEmrlYHp3pes7NrCHjVDAUWSZ7A=;
- b=kll2OrZV51sIwQejBXyi8P2VBvpJCNhNeyYBEMfuau8R+TWfCpwbj9hZJmJruRJsNVZePc1iD+iCn/k//NWdeq3juXnNmj9gW4SkqBPePjlSzzwlWSqfnWxFn1tXZuf3t58Kec6FVmeoWQk7CcEypNGXvDo1X4hIvy+Pcvu+p0c695TY3VQ8S8SLX8Mbrt4NbJmw4fJCpfndTmn4vHWgqzxM2+TdrlRzMufCU3ZRd4QYmzNS2HMbG72QPFsfciWnxp5Knj0j4t3+vAhlJEqQzKGlFuhwWgjyXTpe3G2PT43BebG8fkD5uGgV+OgLYAfyvKDtI6epZ3kdgJwWsbAApA==
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
- by VI0PR04MB11616.eurprd04.prod.outlook.com (2603:10a6:800:302::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
- 2026 06:08:15 +0000
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86%3]) with mapi id 15.20.9678.024; Wed, 11 Mar 2026
- 06:08:15 +0000
-From: Hongxing Zhu <hongxing.zhu@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "l.stach@pengutronix.de"
-	<l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "mani@kernel.org"
-	<mani@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v4 2/4] arm64: dts: imx94: add pcie0 and pcie0-ep supports
-Thread-Topic: [PATCH v4 2/4] arm64: dts: imx94: add pcie0 and pcie0-ep
- supports
-Thread-Index: AQHcsGMInlhricerAUWaVPGnkRznNbWn3huAgAD7sNA=
-Date: Wed, 11 Mar 2026 06:08:15 +0000
-Message-ID:
- <AS8PR04MB88333BA891E5C4F3E0A846708C47A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ER78y/T4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990ACC4CEF7;
+	Wed, 11 Mar 2026 06:18:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773209886;
+	bh=+TnpEu3N3Wg7VpR+WRJAYIJe62zec1Zk48SN+3Vy2Uk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ER78y/T4wbCKahMJTXQyD37d1K5V2ARZEJ6uQtzLepoASt3iZ2FpZz1Kj8CRD0qlS
+	 1G1t8oOECb23RA2UsV3ZyVToUesKNao5w0SOSU4UrJLtGbgFGbCYrNMTF0cVIs7/1U
+	 35qE4faGd2RnFiQjlS3zrCxIy4jokHlx5A99hGs/G99qvu02NPEiv2Fz2oeq0sVX+O
+	 lX3KDU8sqCnvRQnvqzTsi0e9STWbomld1dVkx4nAnQRBl4t0ZGfojzZCxCZd0Gh6Ps
+	 7Y0jFwqc9SAd0s+3WoLEgSKQ+Zg3ptCsVxMkI2JlWZjPHggN0pzVaUtiguZHTNRH1l
+	 2Ef+hIpMklArg==
+Date: Wed, 11 Mar 2026 07:18:03 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	bhelgaas@google.com, frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] dt-bindings: PCI: pci-imx6: Change maxItems of
+ clocks and clock-names to 6
+Message-ID: <20260311-invaluable-nondescript-manatee-a3c4cc@quoll>
 References: <20260310075459.726495-1-hongxing.zhu@nxp.com>
- <20260310075459.726495-3-hongxing.zhu@nxp.com>
- <abAzZ-7AQQNNmHLz@lizhi-Precision-Tower-5810>
-In-Reply-To: <abAzZ-7AQQNNmHLz@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8833:EE_|VI0PR04MB11616:EE_
-x-ms-office365-filtering-correlation-id: 8d18ff68-e881-46a1-864b-08de7f34954c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|19092799006|38070700021|18002099003|22082099003|56012099003|7053199007;
-x-microsoft-antispam-message-info:
- JwFjv+mdIfQ+w+xP6qQioeXGeqWCpOB2+CD0PgS+wEv0zruCPuW3e2aPd84CJc5RErRusmoylsIT/J3X8sGT7MjDik+qWLViBWVr8qQWZuRXa3de1GSF8wXQ6I5aQoIamSR34IisKsFcOKXrhPCvLclP41pF86nj0zF1dg5KHnVugOMGVUHZiQSC1Wnh+5wZ9idovEiAwlQ7X2tikurrbaO6/5qMGQhggtuZlXg9dSJma7fmQTSTg1NUVnBHtLiY7cTTi08XPHxyWFhPuZV/sXBt+IJVixdJ+/JG0PtgjLU+0nQn1Kd7RG5I0Rsp1lCEBGPJjVk/gRnS/E1bvCpVCczw7wNyOigKgNMp53YiuE76bRblv75JyAcc9BCgH4JkiTKaSsP4qx2uP5a5haexYQCTs70v5fOZI/NYKwgYoMzUvDG1bWwWHiEbgr4zz2eDqvyCUlg8P56gqLCJGthuA3acdflYcnOfIiXMYqTnu5L/sdMwfiGQQnUPGznvu+gzYsStT9Oimup6nCofFi0iC0c13N+yMVMmvYA091td3Ula2ve/AdLdho9qTwp0Ami1MiE/zKr/L9ONfCn5hxEp0cjC8/MgzgxyQYMeFvqn8vWpfcRtpjso7glTL/m87KCkY2uK/p/OzQSWF9Hu85oTe4B1wjvvZ+JxCxRY0APVat900FLSNn43ztINjxrLxRx8RpxeNqmPKbhfjaMT85udZ+uK50pFotIiqIeB/5lNGvH4zehK5Xa10yN9rCIfsGuf6smzSfiRZInDqFJo0TLxFJA/uH/PPaVMFKyCffAPmOg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(19092799006)(38070700021)(18002099003)(22082099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?bFY3N0cvZkJ3ZkcwRExLSm1tT3NEaThoZUZJRUx2UlJ1ZCtUaXRQbzVVVmV6?=
- =?gb2312?B?VU1XYzM4OTIwR1NxSTJseDQ4SnFJazlSbm81N2Jxb28rWUw4L2FoS2RORjBL?=
- =?gb2312?B?NksvQXpLYXR0TEcyL2JqdTcxYVBaenBFU0NlTzJnbVNUM2txankxUmZPNitu?=
- =?gb2312?B?SjBnSkNlYUtUY2NqQ0JIQmhtdyswdzVRM1JHbUYxdGdteGVlcnl3NHpXQ05r?=
- =?gb2312?B?QVZFdllhcVVTZ2xQcDhLRXBDU09QUXBnQkpSQU02eHVnMDJmMG81NEhMNE5Q?=
- =?gb2312?B?OUJWWm5KNVBLMDNaRHRTeTdwYkJITFBJYndkU1RUVGVlSHU3UjREcWorTWtk?=
- =?gb2312?B?cEpjQWNqQVI5ejhMOWJzQUdyd2FoVnJxdWF6ZXVCYklFaVN1ZGxQZVNFYUp2?=
- =?gb2312?B?b1FhZUJUYjdoaGZlZTFIQ3VhYVRIRjJ6WmIwSHBkb05sdUNzaWtFUHc3aXB4?=
- =?gb2312?B?ZEVkbzRuTTBVT0hncmJtM1UyTHYzU0MrUmo3a05VVXltc3JxSW5FaXZKZzBK?=
- =?gb2312?B?b3pTeGJwOFhXeTNSR29yZ3YxNUI3OFRqRVArYWVSTDBvd3poSjJuUjNEclgv?=
- =?gb2312?B?NGtDdFBPeEIxWkRQVTl3WnZwNjJQTHlMVy9qK3o1aHk3OHA2OThnSnp1NEN6?=
- =?gb2312?B?YW9lVEVXWDVheVc5ZGhkVi9pRGZxcG80OEhqWkNrYkgwbmdMcFJuOXdreDFy?=
- =?gb2312?B?cWl3SW5Db2t3NTVncU9TYURkUVliYzZqd1VKa2hwVzg4ZFI5WjJ5empWZ2dt?=
- =?gb2312?B?OEpPMVo1SytGVE4vL3hDNTZuaWdydWdRWjRFd3JFczJmVktpSHpwZktIQXQ5?=
- =?gb2312?B?bHBXcHFoREY3T1lTQnJUOXRmSnRTcS9WR0ZvZmZOSUtONGdZaXVzU0xuY1JK?=
- =?gb2312?B?UWovZTIrRjU4NVZuQ0E4NGt5dXRFR2hnMXpONklFRURFSGFLSnlyMW9rSks1?=
- =?gb2312?B?bjloN3VBQ0FqMWl2elNCUnMrdXQ3U2JLMW52VTVSVkgvMjdQWG5lcE5JcFVT?=
- =?gb2312?B?eGRUcHFWNXAzK091R2U2Z1BmQ1A0b2pMWVlLRkxNV3k1bzhtVFNyamFWQzJ0?=
- =?gb2312?B?MjQwSXBuV1h2WDcrVDc1czNHWXlJTlRaa1I5R2tJSXAzRGRIRk1CaFNsV0hK?=
- =?gb2312?B?aTdFMm9FaGV4RUlrTi9ZM3ZaWDdIS3IyMDdGMjJSV2hDdjNWdWszYU5rY0pP?=
- =?gb2312?B?STFVQjNPbDhEVGNNdEdTNGh0eHFOOEl5eVRYU2phd0E0ZlZSaU9pTkJneGo3?=
- =?gb2312?B?Zzlad1c1Zi9KaDR0ZUVWc3ovaXBOZlJQSG5Qd3RQWU1QNnFmdlZLaFh3ZUgy?=
- =?gb2312?B?U3NJdlVkNlE1dms2MFBCR251bkd3a0JPSDBZbU1wYys4dnU0ZWx0MmVpM1Js?=
- =?gb2312?B?TFl2cjVzeUJTaDZJNkdxTnAwWFlKRDdmTk5PSHN1amlPbDJFa2FrYkE0dGxT?=
- =?gb2312?B?V1U4REZsOUszMWgrT1RjTU9iVzNaWWVSdXZxSEhmYjZZSjFvWGZHZzZqbnpC?=
- =?gb2312?B?emJkRVlEazVFN1JwUll4SWd1MDNUYVpxUHFSTGx2L3RWUzhpcnlINXA4b2l2?=
- =?gb2312?B?bldCSzNKMzRWTHV4U2RnNXBTMFFqS2Myck1vQjI4QnM1SnA0a003eml5YWVy?=
- =?gb2312?B?Tk5VNGVXYkUvb1MzOVhKVDc0T1FBNUJqTDNBczV3MlpQR3N1YWNiRzJ3enhJ?=
- =?gb2312?B?d1pwUC9VZTQ3NEo1QnVBVWVUL2trTXcwelBzK0lZUG1HTlYra2Y0YlRvQXI4?=
- =?gb2312?B?MXpqQ3BCOWM3cGg4c283TkxHRVdmV3BDbFZUOXlzNXg3Z2k2cEw2QmY5ZUdZ?=
- =?gb2312?B?YzNNeUlYRGs2N3BCZXljRmJzNWRnQTdpRUVvb0V6OUhRQnYzVUN1MkJRbTk1?=
- =?gb2312?B?dDVLT0dROEoxYWNNMTBIbHNqVjZsT2JqSDR5RlFmbFB5eElZN29wYVNIdkRa?=
- =?gb2312?B?NGFkZTFGTFpmd2toaUMyNDZJdUF4Z2Y4RU9JUk55a2w0dGVSUXZDYWVvMFps?=
- =?gb2312?B?QmkrV245QStSWDJIdGR3alVMZmRqSjRmWHJCTmZBSlMxaVJWd3JDMk5hdVBH?=
- =?gb2312?B?Z2hXdGNOYVJGTERlYlB5ZWlWWGFzSDgzRHhNMXJ0bW02UWp6bkxHcTVEaEZu?=
- =?gb2312?B?SHpyczdKUkFldW5Oby9GRVpmdk1yQ214MEhmQ09CajYrelA4UUVRckVlWjVk?=
- =?gb2312?B?WFdGVWVacWZodkVJK3JLMEI4eC9pNGdYaXBrRndaa2JsMldvRStBcmFmUWlu?=
- =?gb2312?B?SW9uUmpMUmpoMFFLa1RTbWNJUUlTaFdYN3lDT2lLcitFL2t4VXprR29VaGhp?=
- =?gb2312?Q?2QCUqYMnyMOMxSWbpA?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+ <20260310075459.726495-2-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d18ff68-e881-46a1-864b-08de7f34954c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2026 06:08:15.2787
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0XHjtyl4PbjZH6iK0ijMTUtwx8pa+6gjnjixg/C2WtAu5qAEdLb6mG7qb3hFGHSv4IXfGNRroxvvblpuFrrJZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11616
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260310075459.726495-2-hongxing.zhu@nxp.com>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBGcmFuayBMaSA8ZnJhbmsubGlA
-bnhwLmNvbT4NCj4gU2VudDogMjAyNsTqM9TCMTDI1SAyMzowNg0KPiBUbzogSG9uZ3hpbmcgWmh1
-IDxob25neGluZy56aHVAbnhwLmNvbT4NCj4gQ2M6IHJvYmhAa2VybmVsLm9yZzsga3J6aytkdEBr
-ZXJuZWwub3JnOyBjb25vcitkdEBrZXJuZWwub3JnOw0KPiBiaGVsZ2Fhc0Bnb29nbGUuY29tOyBs
-LnN0YWNoQHBlbmd1dHJvbml4LmRlOyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IGt3aWxjenlu
-c2tpQGtlcm5lbC5vcmc7IG1hbmlAa2VybmVsLm9yZzsgcy5oYXVlckBwZW5ndXRyb25peC5kZTsN
-Cj4ga2VybmVsQHBlbmd1dHJvbml4LmRlOyBmZXN0ZXZhbUBnbWFpbC5jb207IGxpbnV4LXBjaUB2
-Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsg
-ZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlteEBsaXN0cy5saW51eC5kZXY7IGxpbnV4
-LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NCAyLzRdIGFy
-bTY0OiBkdHM6IGlteDk0OiBhZGQgcGNpZTAgYW5kIHBjaWUwLWVwDQo+IHN1cHBvcnRzDQo+IA0K
-PiBPbiBUdWUsIE1hciAxMCwgMjAyNiBhdCAwMzo1NDo1N1BNICswODAwLCBSaWNoYXJkIFpodSB3
-cm90ZToNCj4gPiBBZGQgcGNpZTAgYW5kIHBjaWUwLWVwIHN1cHBvcnRzLg0KPiA+DQo+ID4gU2ln
-bmVkLW9mZi1ieTogUmljaGFyZCBaaHUgPGhvbmd4aW5nLnpodUBueHAuY29tPg0KPiA+IC0tLQ0K
-PiAuLi4NCj4gPiArCQkJCSAgPDB4MTAwICZpdHMgMHgxMSAweDc+Ow0KPiA+ICsJCQltc2ktbWFw
-LW1hc2sgPSA8MHgxZmY+Ow0KPiA+ICsJCQlidXMtcmFuZ2UgPSA8MHgwMCAweGZmPjsNCj4gPiAr
-CQkJbnVtLWxhbmVzID0gPDE+Ow0KPiA+ICsJCQludW0tdmlld3BvcnQgPSA8OD47DQo+ID4gKwkJ
-CWludGVycnVwdHMgPSA8R0lDX1NQSSAzNjQgSVJRX1RZUEVfTEVWRUxfSElHSD47DQo+ID4gKwkJ
-CWludGVycnVwdC1uYW1lcyA9ICJtc2kiOw0KPiANCj4gYWxleCBhZGQgImRtYSIgaXJxIGZvciBv
-dGhlciBzb2MuDQo+IA0KT2theSwgSSBzZWUgQWxleCBpcyBhZGRpbmcgImRtYSIgZm9yIGkuTVg4
-UU0gUENJZS4NCg0KV291bGQgYWRkIGl0IGZvciBpLk1YOTQgUENJZSB0b28uDQpUaGFua3MuDQoN
-CkJlc3QgUmVnYXJkcw0KUmljaGFyZCBaaHUNCg0KPiBGcmFuaw0KPiA+ICsJCQkjaW50ZXJydXB0
-LWNlbGxzID0gPDE+Ow0KPiA+IC0tDQo+ID4gMi4zNy4xDQo+ID4NCg==
+On Tue, Mar 10, 2026 at 03:54:56PM +0800, Richard Zhu wrote:
+> Previous commit 1352f58d7c8d ("dt-bindings: PCI: pci-imx6: Add external reference clock input")
+
+Please run scripts/checkpatch.pl on the patches and fix reported
+warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
+patches and (probably) fix more warnings. Some warnings can be ignored,
+especially from --strict run, but the code here looks like it needs a
+fix. Feel free to get in touch if the warning is not clear.
+
+<form letter>
+This is a friendly reminder during the review process.
+
+It looks like you received a tag and forgot to add it.
+
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here. However, there's no
+need to repost patches *only* to add the tags. The upstream maintainer
+will do that for tags received on the version they apply.
+
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
+
