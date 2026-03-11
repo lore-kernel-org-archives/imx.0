@@ -1,343 +1,239 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011070.outbound.protection.outlook.com [52.101.70.70])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6154D3BF661
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773218371; cv=fail; b=NjH2kLfeoYu1O1T3yXJNslXcl4dWzF2pdJKlPgExcGwT0RNAkaNWPWvIwLzUzr0fbJPsutbQGzQirJyIUbK1gkrCGFSChHuQWpm5g2K1nITjQ7nzRmy4taUbjpKToBGFQ3vGKarBeWI1RLwGU5lPb5phaVS7v+V/IAXO56Gh8cM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773218371; c=relaxed/simple;
-	bh=kvVrgkrqmgpJp7B6jmQcPoSevHHmLAbGNfnH6BuNBxM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AaqPgESmoLZTwCfY7wt7Ge2RYUeV9nffkVANzEgnz4kY8VSIUvNi37TKl2dzKwfFBtW8cx+1MPyTCoVf6jno0bh6i9IKN2uQLgSsZ5UXvyPSFmeShfjtsTZ+nDrp4IbNr6J0slOYFvI/miD32vU8fsWVC/BqpTIKljFRwi9PnRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bPyzi2Lm; arc=fail smtp.client-ip=52.101.70.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0793B8BD3
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773218679; cv=none; b=n+MUdeEiEyGXwREyQNZ92RhHif/W6vKf8TK2YP6iwWg4vLTbwdfrk5Y5BdBjkxFAKmDiLdVVp2sodGNYPyN7JizUY/sFXbWWGQN0tvoVWyIFA6HuJfcjPaDC48iAgz76EwB4iA5JnQ9WYHbqHX2Sjw579l94Pqz8fREcD0iSHn8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773218679; c=relaxed/simple;
+	bh=TP2d5VmbgQKHMNAN1qBxmyAqIrxEMKtwQxW3ILNZVCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VzDhWoONRhHd5zYzyKjk+XAHWh0S5o/do2nweM+s3uMPR/ynCdgQzk2t5PYNXPuYKBBHe1xn9QH8YqCJl+F4QGGBjTpm1blLwO7hEQh3M6jocXcYiav+paLnl5hTkM7jl3qj37bBn0B3AmcpVuVhx2ll/IqMxCEzW6yMve4lTxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DVMohaJf; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bPyzi2Lm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AHRkn8HEkg4P6hUWnvZisuzkhCi/I4yyGybJHcbDsc4s44MUwdCTG6DAfsOo2UVfAJJihEyLbo0d/C7q6eq51rOjyZ4jCFBWAEGTBSAY4llbtjqi5Jzp3ppSb8Ikyzn9S8pb64wCj+R3PY8cm9O6GA4dvZrWh/Q7yOT1941jhjlKo0aU5bfJXoP3PWNcU3snfIQSg96FtbJ2jcG02O4TQpWxFwGRZaCTtLpsFTZyHNjIBsU+yPg5CdirklUHBqbJ3zNKRFuP+62AiJisaApgbZ45U984Sd2jvL0EqwfzJTuoLje65+Qh/0MpInaD7ww5Z5U3jlDv7ENR9Qpijmxvjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W9oNeckVLv2zH5up/1hRGOOeozG++6U5y8YUzFpoUpw=;
- b=jdPBVGVl8ph4pKud05ScmHnyYJkGzjRk/rmQX6paDBEnWACZCnUuLiGDRaO0BLPdUCsjSs8DqNCNaV1OglWr0iKbJVhd3MUjmqa7YMscmaFvV9WtQXCSyhZH08FogHeXT0R7potJpaK9TexqIxlDFKaeVkW++MrGPHOwb8NUmhMX8zTc8XSlR8sNDQIPJJl6Wx9sf5/1o/OcJXacSN5AqpImkN7jOrwuabJyXLAlL9XOp6d5M8As+5SZmhwWwolUDqsJMRtI/PwA75p1tPCIatOR+tBrCwyUWLYUDHs8RnYtxu24AIlp7ZZoWrwMxcneovfs74F5QQkqAYU3J/Ot7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W9oNeckVLv2zH5up/1hRGOOeozG++6U5y8YUzFpoUpw=;
- b=bPyzi2LmcS5D+Xrtj1X1UKqY3tr6L06jN6YprejtoRvFJiS1b6ArJrz4/v+uGQKXwXauUlbPjTtA7xY00NiWBN8naam1xapFJgUhSJjKtEcMefZoYDb3tXQrtHUe2ZhMnH0FoYRXQnWcF9juTBXksqhMZEyKMWlsEO+MaxfqeDSEuPv6x4S1KvwOCsyZErLOg5OfYkUVE1UYRyWg9ZE+wsJaWGWABN/1iEQtoGC2fgawVEvNg6bAcGnfprUzszFoMiTjVECoUAvPI0/vdSUloDL5eMIsyBjUZq5HRiGby/iKQYLiFUEbYS1K21TzfBWJJyNqGEg4HVTFRS1W1mT/NA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAWPR04MB11624.eurprd04.prod.outlook.com (2603:10a6:102:50a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
- 2026 08:39:26 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
- 08:39:26 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	Frank.Li@nxp.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 net 2/2] net: enetc: add graceful stop to safely reinitialize the TX Ring
-Date: Wed, 11 Mar 2026 16:41:05 +0800
-Message-Id: <20260311084105.3982037-3-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260311084105.3982037-1-wei.fang@nxp.com>
-References: <20260311084105.3982037-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0047.apcprd02.prod.outlook.com
- (2603:1096:4:196::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DVMohaJf"
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5252A5A5;
+	Wed, 11 Mar 2026 09:43:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773218609;
+	bh=TP2d5VmbgQKHMNAN1qBxmyAqIrxEMKtwQxW3ILNZVCc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DVMohaJf1cXHCfKpQAPLZqMgqGLEjUtzlrvFBwR2WUvhwsaitJ/7E2ZQ72vfW3zrs
+	 6u5CDh7U9hiUMzZAgqHknpHqnoQc9YmmWgIEdDpxql9OZJL+o9ojn9jIWgol3+lD82
+	 C0ou9dhM7ben8qAotGk5i8rycahrh0f15ttWzK2I=
+Message-ID: <c28d81c5-ba11-4a88-a57c-9d4da74c4006@ideasonboard.com>
+Date: Wed, 11 Mar 2026 10:44:32 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAWPR04MB11624:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34ac1e06-a631-4a36-8d96-08de7f49b3f6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|52116014|19092799006|38350700014|921020|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	LlGA1FPxPU+7vHcC9WH0vrKIE2JdGn7sjlZlOAmcsksEBiT7ZIGF2okZluGQjBkIsrYj8VJQmDyZ9wBzXb2H/ELQ7b0dSDwJKr2Z7l7VuuIAT0dMSJnZkgB+g9nq5vwW6uzuUBVyCiE9Y40r9LUTHB1ovqK7LB0L4ZjujLgDZ6q+7PfCQz9/xZQm5naAbHedQiDa1/CWp+L35rcJ2QLqpyhxlNlYDOyfFpMnaJz6NVGDVY9uWEp5OjMhd64QmHhAdjsCtdKu/icXdgHEvb6B/7PzYrTyEDWMatKW0C+y99rSrub0ahm2gmp04Tv9NAlRnXum2iB4yrK7V6zrZMB/LnEqSccTzbzYPFSsZ0CET62XXhlBirkfWdYDV2pDEW3wahBocnzkSL9qHY4x0e6gkG2r1dBbLzsn7ESU32k80s5BT1VWRAj/xNi2jOEwTl9djOPsPwrPOhFOpUENEOlxf9GdgFQEZJhGJpOFNzruOkhF7qRnkrCueHPSBrbWmm3yDGfLqAUg1lM094LeIYq+IHkth7f7e5E6BWtJf8WjB3m4mC2Kyov9ndPyWR6YqKmUDQsy942vXkbbxJLFlz0bBTBTAoJ7ktSA+eF1362fe1W21MnL/FDKe3UNNUL/Ft0U5Rabgd9BwmNuv2lctxBwyQe7+VMonSNlqKdRyjYGVv1VT0uP6AWOFz7ZogHPmmDRCHMcLwcfjAIb3It1euuOsi5/0h19zOK5ddyN9hiTB8Tyafk4bDSJSxfbOJIM+RndP3P4d/cSuYZczq8jEiWA7KtA2XSQEWU62/Nhf5DCkzR0pmacksMT7Ttm6uJXhgx1
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(52116014)(19092799006)(38350700014)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XW55lQWQMRICUS70ZSKEfRIbWBJiAjGMhTvKUbJOHfc4eSxuRtNPapKafuF0?=
- =?us-ascii?Q?ahA25dCviaRZDokHtfMKHPvXmscPOYg662iS7OP/xqePTMczS0gYsUr0sto5?=
- =?us-ascii?Q?Lt9YUXEk5kHLFIyGouSKS4FlyEpj9pVSG68mfv/gRO9PGFsMftuAmJTwLj5M?=
- =?us-ascii?Q?e+RB0PEGqTkjoJpgum5EtTB3LHAdBfvE1aybZ2YZj9qj269y5c+7Y9rrqkhV?=
- =?us-ascii?Q?8RHU+BxLwawowyquc2aGICT5wYygZREDh9Xa1Jc9J/wTSN4eSO/qAQyWxwAF?=
- =?us-ascii?Q?SJbFgXENJoCawgIdBDbgB+SZpzZNSX5dkn+72VSINC1Yr5hN87VkWTnBOU4h?=
- =?us-ascii?Q?fG4N6KqI3P1UBuOAt07doYzCNjW+PMvHrwOZPHV6RrI16NfLUWz1A7Obxrmk?=
- =?us-ascii?Q?n4XBJ+NjFd6avJz5n2DOJ/G6cd1w4VEOEuQ5zEOol5nj4jWTvUqo582p9wtu?=
- =?us-ascii?Q?tefpIBPLnkE1CFubaMdTg/8AL7BCe1GIgKwYY80hgGKuHRVMIdaoRNlsIcth?=
- =?us-ascii?Q?hzeIlL9JcqBUDQbBW6wn7YUkkyeYVh2iRj9I/xws57QTtKr7+1wJfLdOm+Od?=
- =?us-ascii?Q?9WpU2X6SkRqa5u20uFdzzJe6aL39UMOCzG8+ZuimoeAtX/KfwtAUA4NZwFb1?=
- =?us-ascii?Q?6xqa3os5/Ap3cGS+ves+rrc4vzymOn3ch5FNSGDIVZ4c73hbi6Q47XTbY8jW?=
- =?us-ascii?Q?Z8I1I9/ygXv+ZVv+gwPlrn7UdA47FtTjoQ7/k0d5cvUNgD8zRvnp8VhRyH3d?=
- =?us-ascii?Q?1Q7UCb7T1rfiz4r9DpboeY2nvyXFk7MnyAu0Q8cLk8M5lN2OK8kvWh9lfPmg?=
- =?us-ascii?Q?fuKiy5ZE4NnoR9KUVSrQjI5T6q4dCf1mmyN3jS3Q+kTii0W+31G8D6p47qaK?=
- =?us-ascii?Q?wHDPvnFuAJzNCNyB90oNCE+M3W1wL91Wd5byRrjTlRV8Tzf2bjXvc+iUpoqz?=
- =?us-ascii?Q?jjYmlBHGzTFyLMnsCnr9Qscib5tIjYQKDGvZirLNQVC8HUyt5GynaBrwKSUX?=
- =?us-ascii?Q?uACWcU2bYc1ZztnimsFplZv+rbD+mI2J4ejKXT3OOM4NKLJtIcNMBrZbVp53?=
- =?us-ascii?Q?N7SQygklpRtfeCFPAVsrOqj+zcrSJ0pm62FUub0ROtmqCHtiYTVI35O+7Chv?=
- =?us-ascii?Q?QcrWgB3YZubKiOrxhn2i2rRuKQ04u4BTVJrm3X21oEJBAiOJfitqOLgTA8o+?=
- =?us-ascii?Q?9ynI1XYClz2sqIObQZU0a8e4UiRfJ8tHKvQtqVMGhfBqMWPBuefXFjR7nyOf?=
- =?us-ascii?Q?t5Ka6kOddQ2KBMedu66ZsMtQW2w0vN24HAdOF3sbOpvIVyNqLXAywrszKPSW?=
- =?us-ascii?Q?lpDihgAA3ZA4hwkVBrhlf45CT6X6LbEwirWVY4oNfEzjJfWxeoneUkDx66Br?=
- =?us-ascii?Q?5xpVhhAa50lI4RXLc4CCK2LxxDFgBPzUh/TomjUti6De+f+MfnhV411beRo0?=
- =?us-ascii?Q?ca8ZEADJbaIfhrhjIhM8TqhSeOOiqkYrlf4BaWIR7sDxcKzQ5t8pYnny7Y12?=
- =?us-ascii?Q?KqLdrLjiuCt0bdxcGFTh6+knlhbgCMcxyC5CFiQoYMsrCYwJcTdHIUmhGL34?=
- =?us-ascii?Q?/Lmewn4NauxwWiV9tYK/51J5TMR9MYjRjKpbYGLg0TrzSwzHtBB9wnnjx+Yd?=
- =?us-ascii?Q?LddMOBMp2qbev4urXAkexiUKAHIMKsxhdTqgSMeaO48oY9qkpTBN9ZndAIuy?=
- =?us-ascii?Q?JAgaEJfWPrdXDEdCbXVulKj/QAM1dQ/izoqTdHDivPOk5BryDlt55enGKSLa?=
- =?us-ascii?Q?4ovxg8AVtA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34ac1e06-a631-4a36-8d96-08de7f49b3f6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 08:39:26.3645
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KHfiWoERonhL/faXDgDFZKc6lOtAxcf1VslV/bQHSW7JgpinWiOVGtUu8RfG+pHsZg6t3T4ZAQRZ00tngkk7nw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11624
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/4] media: i2c: ds90ub953: use guard() to simplify
+ code
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Vladimir Zapolskiy <vz@mleia.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ Guoniu Zhou <guoniu.zhou@nxp.com>
+References: <20260228-ds90ub953-v5-0-056cf07cc8f1@nxp.com>
+ <20260228-ds90ub953-v5-4-056cf07cc8f1@nxp.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Language: en-US
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20260228-ds90ub953-v5-4-056cf07cc8f1@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For ENETC v4, the PIR and CIR will be reset if they are not equal when
-reinitializing the TX BD ring. However, resetting the PIR and CIR alone
-is insufficient. When a link-down event occurs while the TX BD ring is
-transmitting frames, subsequent reinitialization of the TX BD ring may
-cause it to malfunction. For example, the below steps can reproduce the
-problem.
+Hi,
 
-1. Unplug the cable when the TX BD ring is busy transmitting frames.
-2. Disable the network interface (ifconfig eth0 down).
-3. Re-enable the network interface (ifconfig eth0 up).
-4. Plug in the cable, the TX BD ring may fail to transmit packets.
+On 28/02/2026 08:18, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+> 
+> Use guard() to simplify mutex locking. No functional change.
 
-When the link-down event occurs, enetc4_pl_mac_link_down() only clears
-PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It doesn't
-set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, reinitializing
-the TX BD ring at this point is unsafe. To safely reinitialize the TX BD
-ring after a link-down event, we checked with the NETC IP team, a proper
-Ethernet MAC graceful stop is necessary. Therefore, add the Ethernet MAC
-graceful stop to the link-down event handler enetc4_pl_mac_link_down().
+That's not strictly true, as the unlock will happen later with this
+patch. Still, this cleanup makes sense.
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
- .../net/ethernet/freescale/enetc/enetc4_pf.c  | 111 +++++++++++++++---
- 2 files changed, 108 insertions(+), 14 deletions(-)
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  drivers/media/i2c/ds90ub953.c | 34 +++++++++++++---------------------
+>  1 file changed, 13 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
+> index a85c6a9b64070491db161ca1586179dba9c69cb0..3a459687aefce05ac025a517c8d4cc6d76cd7293 100644
+> --- a/drivers/media/i2c/ds90ub953.c
+> +++ b/drivers/media/i2c/ds90ub953.c
+> @@ -113,20 +113,18 @@ static int ub953_read(struct ub953_data *priv, u8 reg, u8 *val, int *err)
+>  	if (err && *err)
+>  		return *err;
+>  
+> -	mutex_lock(&priv->reg_lock);
+> +	guard(mutex)(&priv->reg_lock);
+>  
+>  	ret = regmap_read(priv->regmap, reg, &v);
+>  	if (ret) {
+>  		dev_err(&priv->client->dev, "Cannot read register 0x%02x: %d\n",
+>  			reg, ret);
+> -		goto out_unlock;
+> +		goto err;
+>  	}
+>  
+>  	*val = v;
+>  
+> -out_unlock:
+> -	mutex_unlock(&priv->reg_lock);
+> -
+> +err:
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-index 3ed0f7a02767..1ce6551e186c 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-@@ -134,6 +134,12 @@
- 
- /* Port operational register */
- #define ENETC4_POR			0x4100
-+#define  POR_TXDIS			BIT(0)
-+#define  POR_RXDIS			BIT(1)
-+
-+/* Port status register */
-+#define ENETC4_PSR			0x4100
-+#define  PSR_RX_BUSY			BIT(1)
- 
- /* Port traffic class a transmit maximum SDU register */
- #define ENETC4_PTCTMSDUR(a)		((a) * 0x20 + 0x4208)
-@@ -173,6 +179,11 @@
- /* Port internal MDIO base address, use to access PCS */
- #define ENETC4_PM_IMDIO_BASE		0x5030
- 
-+/* Port MAC 0/1 Interrupt Event Register */
-+#define ENETC4_PM_IEVENT(mac)		(0x5040 + (mac) * 0x400)
-+#define  PM_IEVENT_TX_EMPTY		BIT(5)
-+#define  PM_IEVENT_RX_EMPTY		BIT(6)
-+
- /* Port MAC 0/1 Pause Quanta Register */
- #define ENETC4_PM_PAUSE_QUANTA(mac)	(0x5054 + (mac) * 0x400)
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 689b9f13c5eb..53cecbb23a97 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -444,20 +444,11 @@ static void enetc4_set_trx_frame_size(struct enetc_pf *pf)
- 	enetc4_pf_reset_tc_msdu(&si->hw);
- }
- 
--static void enetc4_enable_trx(struct enetc_pf *pf)
--{
--	struct enetc_hw *hw = &pf->si->hw;
--
--	/* Enable port transmit/receive */
--	enetc_port_wr(hw, ENETC4_POR, 0);
--}
--
- static void enetc4_configure_port(struct enetc_pf *pf)
- {
- 	enetc4_configure_port_si(pf);
- 	enetc4_set_trx_frame_size(pf);
- 	enetc_set_default_rss_key(pf);
--	enetc4_enable_trx(pf);
- }
- 
- static int enetc4_init_ntmp_user(struct enetc_si *si)
-@@ -801,15 +792,105 @@ static void enetc4_set_tx_pause(struct enetc_pf *pf, int num_rxbdr, bool tx_paus
- 	enetc_port_wr(hw, ENETC4_PPAUOFFTR, pause_off_thresh);
- }
- 
--static void enetc4_enable_mac(struct enetc_pf *pf, bool en)
-+static void enetc4_mac_wait_tx_empty(struct enetc_si *si, int mac)
-+{
-+	u32 val;
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      val & PM_IEVENT_TX_EMPTY,
-+			      100, 10000, false, &si->hw,
-+			      ENETC4_PM_IEVENT(mac)))
-+		dev_warn(&si->pdev->dev,
-+			 "MAC %d TX is not empty\n", mac);
-+}
-+
-+static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val |= POR_TXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+
-+	enetc4_mac_wait_tx_empty(si, 0);
-+	if (si->hw_features & ENETC_SI_F_QBU)
-+		enetc4_mac_wait_tx_empty(si, 1);
-+
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val &= ~PM_CMD_CFG_TX_EN;
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+}
-+
-+static void enetc4_mac_tx_enable(struct enetc_pf *pf)
- {
-+	struct enetc_hw *hw = &pf->si->hw;
- 	struct enetc_si *si = pf->si;
- 	u32 val;
- 
- 	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
--	val &= ~(PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN);
--	val |= en ? (PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN) : 0;
-+	val |= PM_CMD_CFG_TX_EN;
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val &= ~POR_TXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+}
-+
-+static void enetc4_mac_wait_rx_empty(struct enetc_si *si, int mac)
-+{
-+	u32 val;
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      val & PM_IEVENT_RX_EMPTY,
-+			      100, 10000, false, &si->hw,
-+			      ENETC4_PM_IEVENT(mac)))
-+		dev_warn(&si->pdev->dev,
-+			 "MAC %d RX is not empty\n", mac);
-+}
-+
-+static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	if (si->hw_features & ENETC_SI_F_QBU) {
-+		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
-+		val &= ~PM_CMD_CFG_RX_EN;
-+		enetc_port_wr(hw, ENETC4_PM_CMD_CFG(1), val);
-+		enetc4_mac_wait_rx_empty(si, 1);
-+	}
-+
-+	val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(0));
-+	val &= ~PM_CMD_CFG_RX_EN;
-+	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
-+	enetc4_mac_wait_rx_empty(si, 0);
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      !(val & PSR_RX_BUSY),
-+			      100, 10000, false, hw,
-+			      ENETC4_PSR))
-+		dev_warn(&si->pdev->dev, "Port RX busy\n");
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val |= POR_RXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+}
-+
-+static void enetc4_mac_rx_enable(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val &= ~POR_RXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
- 
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val |= PM_CMD_CFG_RX_EN;
- 	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
- }
- 
-@@ -853,7 +934,8 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
- 	enetc4_set_hd_flow_control(pf, hd_fc);
- 	enetc4_set_tx_pause(pf, priv->num_rx_rings, tx_pause);
- 	enetc4_set_rx_pause(pf, rx_pause);
--	enetc4_enable_mac(pf, true);
-+	enetc4_mac_tx_enable(pf);
-+	enetc4_mac_rx_enable(pf);
- }
- 
- static void enetc4_pl_mac_link_down(struct phylink_config *config,
-@@ -862,7 +944,8 @@ static void enetc4_pl_mac_link_down(struct phylink_config *config,
- {
- 	struct enetc_pf *pf = phylink_to_enetc_pf(config);
- 
--	enetc4_enable_mac(pf, false);
-+	enetc4_mac_rx_graceful_stop(pf);
-+	enetc4_mac_tx_graceful_stop(pf);
- }
- 
- static const struct phylink_mac_ops enetc_pl_mac_ops = {
--- 
-2.34.1
+I think the label should be just "out", as this is not an error path
+(even if we jump to the label when handling an error). Similar comment
+to the below cases.
+
+>  	if (ret && err)
+>  		*err = ret;
+>  
+> @@ -140,15 +138,13 @@ static int ub953_write(struct ub953_data *priv, u8 reg, u8 val, int *err)
+>  	if (err && *err)
+>  		return *err;
+>  
+> -	mutex_lock(&priv->reg_lock);
+> +	guard(mutex)(&priv->reg_lock);
+>  
+>  	ret = regmap_write(priv->regmap, reg, val);
+>  	if (ret)
+>  		dev_err(&priv->client->dev,
+>  			"Cannot write register 0x%02x: %d\n", reg, ret);
+>  
+> -	mutex_unlock(&priv->reg_lock);
+> -
+>  	if (ret && err)
+>  		*err = ret;
+>  
+> @@ -185,18 +181,18 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
+>  	if (err && *err)
+>  		return *err;
+>  
+> -	mutex_lock(&priv->reg_lock);
+> +	guard(mutex)(&priv->reg_lock);
+>  
+>  	ret = ub953_select_ind_reg_block(priv, block);
+>  	if (ret)
+> -		goto out_unlock;
+> +		goto err;
+>  
+>  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
+>  	if (ret) {
+>  		dev_err(&priv->client->dev,
+>  			"Write to IND_ACC_ADDR failed when reading %u:0x%02x: %d\n",
+>  			block, reg, ret);
+> -		goto out_unlock;
+> +		goto err;
+>  	}
+>  
+>  	ret = regmap_read(priv->regmap, UB953_REG_IND_ACC_DATA, &v);
+> @@ -204,14 +200,12 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
+>  		dev_err(&priv->client->dev,
+>  			"Write to IND_ACC_DATA failed when reading %u:0x%02x: %d\n",
+>  			block, reg, ret);
+> -		goto out_unlock;
+> +		goto err;
+>  	}
+>  
+>  	*val = v;
+>  
+> -out_unlock:
+> -	mutex_unlock(&priv->reg_lock);
+> -
+> +err:
+>  	if (ret && err)
+>  		*err = ret;
+>  
+> @@ -227,18 +221,18 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
+>  	if (err && *err)
+>  		return *err;
+>  
+> -	mutex_lock(&priv->reg_lock);
+> +	guard(mutex)(&priv->reg_lock);
+>  
+>  	ret = ub953_select_ind_reg_block(priv, block);
+>  	if (ret)
+> -		goto out_unlock;
+> +		goto err;
+>  
+>  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
+>  	if (ret) {
+>  		dev_err(&priv->client->dev,
+>  			"Write to IND_ACC_ADDR failed when writing %u:0x%02x: %d\n",
+>  			block, reg, ret);
+> -		goto out_unlock;
+> +		goto err;
+>  	}
+>  
+>  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_DATA, val);
+> @@ -248,9 +242,7 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
+>  			block, reg, ret);
+>  	}
+>  
+> -out_unlock:
+> -	mutex_unlock(&priv->reg_lock);
+> -
+> +err:
+>  	if (ret && err)
+>  		*err = ret;
+>  
+> 
 
