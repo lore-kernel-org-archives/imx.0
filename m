@@ -1,175 +1,94 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010040.outbound.protection.outlook.com [52.101.84.40])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95659282F2D
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 12:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773232422; cv=fail; b=bWmqItx5yu+Teh0UmjL163IR8M5kIPDZuRTHQNQ5es+mNzkzqsWspniTrs1vYZwsglHkRw7J6qwyV08J9lrf94WGEqdHe9U7+65ik1R5sBZKHeWW9aFbd8dMjzqOztQZHSKp7l8R5XYPyEK6v6Nl/W0lvIzaHU3sPocTR54VVkw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773232422; c=relaxed/simple;
-	bh=2camquN2CtomRoDxmzFGSCkYhO1tnvQUVsoPWhwsAZo=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iU3h6NYV5UWZNBZZUTTFow4gT8VEyUqSKkbwF0mJO32i+UbS+LBEmxJx17F8MRnqTS/UtP6ksERBobKtIY7QTwwvbZzyTi2OUccCyu77nBXbs/O+aWF6bbvoQzDaFv2SAPTXtJMQr/y0TYw4FV9rCOKAWy9CDMBgEq3zR9yFxyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=e7EceduZ; arc=fail smtp.client-ip=52.101.84.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D136C23E334
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 12:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773233453; cv=none; b=HvX+/PvL/yEeXuBEhYjAEsiGC8W5UDmhstWhptQbvm91eXllwbDE3zGO6gfGU9FFaqtNkCVvXuFYguaQCbeU+5LIvQaimR0Hlruj931F+rH0TXkkNEsu+Zf9yWMiWMEpi+RT92DlObfT7OQeZx0ku6Ga/v8Jtb/W/XAKpsVIBVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773233453; c=relaxed/simple;
+	bh=3hhQtJuyqLfFjdpmAoRFR4RP69ILCV1ozU6Cm359k30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g7o1NYj7Ej1SRACPcnXtgxZ8Xv+OyZhf9L103klZrMK/+KmLcIkqlXYoS/UMik32PKZcncgaemkxbZyG2hEeRIJ9DQdS5oQJ9mAmq5XDYeWMpfenjtQYwqrAvNsnjYNpDgo9q4rszAcInQrmQDx1eeW1oZECsu8wV0BlAIZjtQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=EHrIy0CR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="e7EceduZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XK3DPeHqWwsYbC0Dl7i43SsVaAwqJylKkD0hEVFPQV864YkeXK4raQ+uIdc9jwtegby8ST35EgG0CNKWsidkideLhzQitQmEfYQelHMPBf7FwCWCy9hb1VeGKXgFdj6/IpUuiHuoh8IanPii4dvZy2SPNgLSbXidCI0YF3tYCYbkrWA/xfK7plxKvCyAtsD+MQPNpgb+A5qoA9TZwgHR3ZvkeBqOgHUZLtobjIfeM31v4WPAOrtpr1U9FdcIfio0iFnG37Kv7ESXIiVMv+wiStTVAB0Q96oori1R52vO0WuPUkpWn6H/AWiGGnegdhKkEQeex6xaKyb6kmp10cpnnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E09FmmKj8xnRMQXs0bbuEBu3BYrHWvN/8FuPIekKz+k=;
- b=iVOQbefYktqks4E6u9kaylbBSV0HmDe0R3Oi4ULafHdm4vl9gi5pGWR+nQUC9r7Jjmt62anS8zyQ/w1G0rk1r1x0MXEglwZPQO7vKLmmKjArC+5Oc7dYM69Mjh6Tvi2TcLxqVfgBEOHWEudgPy2iGGIcnKOzqkIjq+6KTZjBAzLICAKSN7j3k+GW2RgGqQR9tl3n8UPxmXCH5ytHClGJ6xYhoK83Zzod4MqUUD75u+L31AQVlld+YnaggnJokNJAuatTMPr+Lvsw+jBkb/fZuTJSCGFIIFNBsr+E7+JDWJlEFccpBHOJkOp7EEN55f62IWVrUGvaeMhEQdq+D9NX9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E09FmmKj8xnRMQXs0bbuEBu3BYrHWvN/8FuPIekKz+k=;
- b=e7EceduZANUItOGoq9x90J8dNpKSj0tXVMXdPnsjnI4lWR4wLVlZV8XkiDhhOkjRxB+N0smWqGmIfgL00cv9jZ74VPv04GPwdCRZKf74uQYI6e694JPTtUtY7usSip3YVxYY30YdUuQHOuY1vnABPV4C/MgCpDBTYXCDZvcpGYvtbWErc8nm3ADiNbWsfaEdi6Z/G2yjgabVkpONzht2V+3/pZERXQXw7XZ1GFUyasZgwmiqGY1meZHpOxLUst23OoodScER4tJSnQZWNkQqVFDMw2QnkBGjbhC5LtopayPNAzDkgp0QkiFFaXE1ApsB44r37eLWYsuMDOWn+1l9Wg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8249.eurprd04.prod.outlook.com (2603:10a6:10:25c::14)
- by AM8PR04MB8051.eurprd04.prod.outlook.com (2603:10a6:20b:241::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
- 2026 12:33:36 +0000
-Received: from DB9PR04MB8249.eurprd04.prod.outlook.com
- ([fe80::7703:f0e8:aa60:ac2e]) by DB9PR04MB8249.eurprd04.prod.outlook.com
- ([fe80::7703:f0e8:aa60:ac2e%5]) with mapi id 15.20.9678.024; Wed, 11 Mar 2026
- 12:33:37 +0000
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-pwm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Viorel Suman <viorel.suman@oss.nxp.com>
-Subject: [PATCH v3] pwm: imx-tpm: count the number of enabled channels in probe
-Date: Wed, 11 Mar 2026 14:33:09 +0200
-Message-Id: <20260311123309.348904-1-viorel.suman@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P191CA0014.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d5::20) To DB9PR04MB8249.eurprd04.prod.outlook.com
- (2603:10a6:10:25c::14)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="EHrIy0CR"
+Received: from ideasonboard.com (static.170.20.224.46.clients.your-server.de [46.224.20.170])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7DFB42D9;
+	Wed, 11 Mar 2026 13:49:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773233382;
+	bh=3hhQtJuyqLfFjdpmAoRFR4RP69ILCV1ozU6Cm359k30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EHrIy0CR45EZlV1l5rTU+qJAHjLkLLzxBHX1/7bdAfKSMdurCcsSdm8exKTB5Cg7g
+	 4T8bf5ab/el19dB+y+0N2VZtjdjoQlWvn+2qTg4rClIbcRw9AFOPKUSn9pFIMQtvtE
+	 sYM8cBikFR0glniq+jgSZhqJUueoZYOqy8WeAGQI=
+Date: Wed, 11 Mar 2026 13:50:46 +0100
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Alexi Birlinger <alexi.birlinger@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH 1/2] media: nxp: imx8-isi: Reduce minimum queued buffers
+ from 2 to 1
+Message-ID: <abFeguTCJQmoCLPK@zed>
+References: <20260311-isi_min_buffers-v1-0-c9299d6e8ae6@nxp.com>
+ <20260311-isi_min_buffers-v1-1-c9299d6e8ae6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8249:EE_|AM8PR04MB8051:EE_
-X-MS-Office365-Filtering-Correlation-Id: d919d13a-c38a-489c-6722-08de7f6a6a8c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|52116014|38350700014|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	CP0cHF1fLi3zBnMWgHUPybuB9tCLShtiKgO868cHLkjywjs5Gcx+NX31Mo9zawvOgw3Z+Xwk4uLhsXlwyuqTJFN9HUNHKWULg06MIzIWP7TU9+rVwZZ0Nc7x0YH9VOKxMLmUXIxSRzSOTq1oyGpKdAYSN3bJiD8vqvGs1aLINahxILhQOzmk1j0KZ4cUsEn/eXDYQkdsGnUKE9rlQ7BomcOtR2d9DDWNDbsyvn609OqlcBXhiNKEhUB7yy1CHoYEmDzIu9OAMSPL1YEaZnB86fQk0qUfN42cxr2R+EFCo0Cpa0i49X1zNNEmIgsYB+AXmV8RkQK/gCl0vJvX21DANg0rLoYaoemuXLtg9/81cehqNu3RXHSPtfsQFtmZzdtlQIeh6u18NB8a096lOxU63uzkTfgng0NcXCCCZFe4ihVZ+cJ/y2KuGUdJ1NfMYBeIUZVVLiGIs46kU1+7L3QlPxc88WDGHBuJ1J/JgjXhJgqWCvAxGZVK6vAD5J0jEC7sC7FVOQcXjjaiOzEl9gLO8l6d0T8VuSEh3GtYMvDV5XZPuyplXtEX0EpG4rhzJ1DGt9ZSMm9dizbS07/t8dxLfRduCagDWprcOkKfBDtVq4Mgf6A2jcpnoAbukO2rkXNbgLy7XDzzPcVxYOVZSxULlh8FTb4RP1ofQ2hHZY7IDjRGvNInWDEaRTzj9IPdNIEiEu9QXU07WBO/DpMUvzUVyH/p0gM9Je1DXjnUlMY1bCuW9IM4juzoE1fEBnKcSudqSRjGscDLimBKEQe15HKL3ay0GYsEzV5nR+x8xFyQnh0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8249.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(52116014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?UlG7ALhmb0o7W1jcrRJEK/iyLxTD13d5fISzLxhQV16ZuG+Olsl7zd1yYF?=
- =?iso-8859-1?Q?X53onyyI2+yLAwGLCFuyZbjKMIOhk52jsjZVOd9y24JmE+kmKeU0jco6By?=
- =?iso-8859-1?Q?Hw7j0JfUi5kveBWhz8bKA5ZiPwncfJp5y7UXEH0FTq8hfbL1EvVpPaIjtV?=
- =?iso-8859-1?Q?LTPUPcPwMsW9lbz1Qk/xyL9bKBHDqufzRvMfTog9UpfnLUkdCQpenYZxzH?=
- =?iso-8859-1?Q?F1fj1jXP5bUkaXs8UXCDcyLZJie5QQ+cH0/utrwO4AAmsmODVK6Qp9Z+VU?=
- =?iso-8859-1?Q?ADltBs2M8SoYuqa1jwHOJsKJBgZOsFLa2pxfo/n51MNqGnRfwaqLTxrlcr?=
- =?iso-8859-1?Q?38Y0/Z+kmOQVbPmwXwdc2khe5oEVCx81jOF1pS5BV0hKT1isLOoxCPSCbh?=
- =?iso-8859-1?Q?tz3Yy8msWtTJmygsI8h7ez5UWDP0lut8fRofzWN0kZvzTReY6L/FKsqVa+?=
- =?iso-8859-1?Q?bW30we3YuLexiUk0lGOEt077AFgaTw2FNCKPukfnC+Y7AtkgX/nrQtqOH1?=
- =?iso-8859-1?Q?x824oPUXiLVjZFlwqxnks2v20Syw0gIkWeQ0x2rAnqOO+IkI9yC+TQxMBG?=
- =?iso-8859-1?Q?4F9FfFPL8LsSK1KfBmbpPvyjEnzPKg1+uGhNpcl4vsh0BP1CMwDBuEsxRQ?=
- =?iso-8859-1?Q?OUBUw1LfLLzKkjwVHTnvtKBbRWjyU+pOPj2/Z9pyIb95iYZZ//8zqg/Q9+?=
- =?iso-8859-1?Q?S4KmPsiS2p5RjaxiQtZCLrfQNriQGn2E17oooNbjokLpoZwsHNFsxWQmh/?=
- =?iso-8859-1?Q?Avg595XK/THUgslClAaGaowRRpYMx/H+hSQaNAaUvnY1+qX5mGjRX7eYvh?=
- =?iso-8859-1?Q?rPd46FbDrhs+PaX2O37JbA4iivvVaEoa/illSdm2IpVzcF1U8I7Lvt/gEe?=
- =?iso-8859-1?Q?RcduOC35vqwprpISqEWCjkrmTBxJ5IvTNOwdwEEWnJt62I9DJkooaM7OEg?=
- =?iso-8859-1?Q?ZNBpEVltikpyJi4LD2dEAgfZ0bpASPQj5dOIpvCtjnfjUnCv08rz/oDNXb?=
- =?iso-8859-1?Q?7KPJ8wDffNTJgFTXUQ0RWqZZ0pIlJlmR57hP9d2Owanhi35FuZQ4jH64+B?=
- =?iso-8859-1?Q?j2ovjmQfv6uO8XodkVpjAy5NcO3nKBlWU0QljC6V9yec1hwfxb4KoxsfBj?=
- =?iso-8859-1?Q?LZP/uFuq5wG5YQMvILCc4gaUdg5JYtW2yrwc33pO/2vsNoZldWplpMH3/i?=
- =?iso-8859-1?Q?dSBo4N6c5LKzLoeY05SUQrkHtpGUEjNVIaaFd/ZI7rS7rvheF+dIAx9SvW?=
- =?iso-8859-1?Q?XAsDT/CGyl0GThCr8OvHHG6RwSR22nR6nB9SAJ71A3yKtQGExlpOyYkt+E?=
- =?iso-8859-1?Q?U4ZIP/8cjeLNi+KYVOEa4P0hZwjIY78LTl8igpyj2pXg/DkyZk5D/4z/JX?=
- =?iso-8859-1?Q?LyV+TQ0Rscfbzoq7pqlE5s0EyY8uMXALNvrZnMrGkqpZb5mPybglAua5VV?=
- =?iso-8859-1?Q?47+KWqASrtUDzzaM6lqsKNFxt8pHL1AHd+zO2xMrP49FY2SQvw/P7LTWXO?=
- =?iso-8859-1?Q?A4WqxmXJD2YE2rsmNveq45mzmHNdcnoRXS7Uq4LqeztWsM8G3wuXv56v45?=
- =?iso-8859-1?Q?YejeZwHxk4zpBpy6jOgnf99hh47uKiffKXgYOYhI64/pkjME8ONjWhehwQ?=
- =?iso-8859-1?Q?5yVppQWeea67j6/bYlK9vQRomuFV8XZFYdoUASYk/E50QcOFTwSUQhfEws?=
- =?iso-8859-1?Q?IDP7XFxrqAUyvW08/kqYEHkF8EfbBNrcYgqaBQM7HQbferWgIUjU/LbPv7?=
- =?iso-8859-1?Q?Ip74qMXu78X+M/ESVQtB/NaILvGS9NXekCeP7TMVfuJEVf2MMD38xD9oY0?=
- =?iso-8859-1?Q?W85J/EAXyw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d919d13a-c38a-489c-6722-08de7f6a6a8c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8249.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 12:33:36.9662
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Enea4Av84Ua42bJOTdVbf1Z4FZbHRCVI1x5nmmXRXBPyhASWd5iuHsHpgOVWn+A5pm12LBI9ERwyQDpvE07P8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8051
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260311-isi_min_buffers-v1-1-c9299d6e8ae6@nxp.com>
 
-On a soft reset TPM PWM IP may preserve its internal state from
-previous runtime, therefore on a subsequent OS boot and driver
-probe "enable_count" value and TPM PWM IP internal channels
-"enabled" states may get unaligned. In consequence on a suspend/resume
-cycle the call "if (--tpm->enable_count == 0)" may lead to
-"enable_count" overflow the system being blocked from entering
-suspend due to:
+Hello Guoniu
 
-   if (tpm->enable_count > 0)
-       return -EBUSY;
+On Wed, Mar 11, 2026 at 04:02:58PM +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+>
+> Fix a hang issue when capturing a single frame with applications like cam
+> in libcamera. It would hang waiting for the driver to complete the buffer,
+> but streaming never starts because min_queued_buffers was set to 2.
+>
+> The ISI module uses a ping-pong buffer mechanism that requires two buffers
+> to be programmed at all times. However, when fewer than 2 user buffers are
+> available, the driver use internal discard buffers to fill the remaining
+> slot(s). Reduce minimum queued buffers from 2 to 1 allows streaming to
 
-Fix the problem by counting the enabled channels in probe function.
+Does it mean the ISI can use internal buffer discard for both buffer
+slots ? Can we make min_queued_buffers == 0 ?
 
-Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
----
- drivers/pwm/pwm-imx-tpm.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index 5b399de16d60..80fdb3303400 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -352,7 +352,7 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 	void __iomem *base;
- 	int ret;
--	unsigned int npwm;
-+	unsigned int i, npwm;
- 	u32 val;
- 
- 	base = devm_platform_ioremap_resource(pdev, 0);
-@@ -382,6 +382,13 @@ static int pwm_imx_tpm_probe(struct platform_device *pdev)
- 
- 	mutex_init(&tpm->lock);
- 
-+	/* count the enabled channels */
-+	for (i = 0; i < npwm; ++i) {
-+		val = readl(base + PWM_IMX_TPM_CnSC(i));
-+		if (FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val))
-+			++tpm->enable_count;
-+	}
-+
- 	ret = devm_pwmchip_add(&pdev->dev, chip);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "failed to add PWM chip\n");
--- 
-2.34.1
-
+> start with a single buffer providing more flexibility for applications.
+>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> index 13682bf6e9f8895bb9eb1f92d5f74b0d5968544e..2405baf21594cd18cf2b349234313c5e103b7802 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+> @@ -1410,7 +1410,7 @@ int mxc_isi_video_register(struct mxc_isi_pipe *pipe,
+>  	q->mem_ops = &vb2_dma_contig_memops;
+>  	q->buf_struct_size = sizeof(struct mxc_isi_buffer);
+>  	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
+> -	q->min_queued_buffers = 2;
+> +	q->min_queued_buffers = 1;
+>  	q->lock = &video->lock;
+>  	q->dev = pipe->isi->dev;
+>
+>
+> --
+> 2.34.1
+>
+>
