@@ -1,33 +1,33 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48373B7761
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF15E363C5F
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773218226; cv=none; b=O080tK789JAYHYVBVi+O7MmblkfVdIe1P3BDj/I2bO7o+5w1rNfGRQzGFnG40p/sXpKSoJnhCvu9qCbSpuST0AIoZ2cwtcTHAa+9nkX+gCd+lim+S6cce6ZR5ll4ctebDLe2H4+Dncrusratm8Ns9a0LMZjukjE1Y/BHXcQDMw8=
+	t=1773218299; cv=none; b=ggshZmSxRP2SNFuaI3w0hW2zZaaXAYcxtYJNPdyPloa2k7GrL1Qqa9v696xkQpgxFDEBs2RqwGfEgb0mGj6XWepKfpkz7+oNFuWSq7PL+Lw7S+s883JXY4UdlT/pULeaYFt7dOsdZ1+QsZR2akZoxsMaI/S9Plrdufhit5v7kao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773218226; c=relaxed/simple;
-	bh=ir+CZXpToZvGxH68/navKDxPcNjPRXWQuWVbyGDATnk=;
+	s=arc-20240116; t=1773218299; c=relaxed/simple;
+	bh=TvjWgEQ33XAHtp8n95zDJy1h0F9L4/7iW66+tpVk9S0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pr7HJ4UT12n3mFNYGVcs7GJyc9bb8SDlFXz+O22MwpaGTgqa6cqwW/LynKo7wooteOwWoK++yZuvEphZvPlIkT1dM7J8275Km1Fn1NtT9RzpHo2Vvht4tEZ7pLGuH/vvIThGXeITKe2OJ4VE0ghOaSCMJlCk0u/C2i0cmVfjbBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ONi5nhDC; arc=none smtp.client-ip=213.167.242.64
+	 In-Reply-To:Content-Type; b=FrCkykRPYkGEXujAEoiKEmsmc4fWag2PP4ui6iVusJaI8T7vB9gvrmgzFqLxJsKEMEGd9NlACC1ayU80EEt0FTGKO70MdE5fmXmDdF/sLEAj7r4vg98jJtbPQH7rH1hueOn0S4yRa+6VK9HW4bizSMz1rwrDEuQl5h4sIgXJMjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=U8ix46TS; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ONi5nhDC"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="U8ix46TS"
 Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B9EAE5A5;
-	Wed, 11 Mar 2026 09:35:53 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 62CED5A5;
+	Wed, 11 Mar 2026 09:37:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773218154;
-	bh=ir+CZXpToZvGxH68/navKDxPcNjPRXWQuWVbyGDATnk=;
+	s=mail; t=1773218229;
+	bh=TvjWgEQ33XAHtp8n95zDJy1h0F9L4/7iW66+tpVk9S0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ONi5nhDC7lXhAAEmJZIgLywPZG3tFocTtK0FMRplMnkwlJ5mwom5PjxZgFtBiuxix
-	 kp1/1qS+4QUX6Zr32Foy1GF+5ATtT92tKZXOPNdmEkUI8gQKUVI1auYtww3m2H5v78
-	 mXCX989C5sxrjvsO1W/XjsVhy1xqBikd+66HltWg=
-Message-ID: <d63bff5a-1a37-4162-8b75-bf62787a0782@ideasonboard.com>
-Date: Wed, 11 Mar 2026 10:36:57 +0200
+	b=U8ix46TS06G6FIFu3ndCQTccxAl3ln9MvVBgp/G29x0kD0+sxTnWLS6hnbFKkvct8
+	 IAiImFF9uF5VaKMemytDjwkBdqUmEKFBgN2fmN1lJr21ezatYkm2V8qjpiL7pU1ZEj
+	 3no71DLoHnFW/8zxHYQZJC40ySSaka1YA8RoGjsk=
+Message-ID: <f710352f-5a62-4899-86f0-7a284fbe8ce0@ideasonboard.com>
+Date: Wed, 11 Mar 2026 10:38:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] dt-bindings: media: ti,ds90ub953: Add new range
- for remote GPIO data
+Subject: Re: [PATCH v5 3/4] media: i2c: ds90ub953: use devm_mutex_init() to
+ simplify code
 To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -46,7 +46,7 @@ Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  Guoniu Zhou <guoniu.zhou@nxp.com>
 References: <20260228-ds90ub953-v5-0-056cf07cc8f1@nxp.com>
- <20260228-ds90ub953-v5-1-056cf07cc8f1@nxp.com>
+ <20260228-ds90ub953-v5-3-056cf07cc8f1@nxp.com>
 From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Content-Language: en-US
 Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
@@ -92,66 +92,105 @@ Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
  yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
  3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-In-Reply-To: <20260228-ds90ub953-v5-1-056cf07cc8f1@nxp.com>
+In-Reply-To: <20260228-ds90ub953-v5-3-056cf07cc8f1@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Jo,
+Hi,
 
 On 28/02/2026 08:18, Guoniu Zhou wrote:
 > From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > 
-> The DS90UB953 supports four pins, GPIO0 through GPIO3. When enabled as an
-> output, it can be programed to output local data or remote data coming
-> from the remote compatible deserializer.
+> Use devm_mutex_init() to simplify the code. No functional change.
 > 
-> Make a different GPIO range for remote ones.
-> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 > ---
-> Changes in v5:
-> - Improve the description for "#gpio-cells" as commented by Conor.
-> 
-> Changes in v4:
-> - Use folder block instead of literal block for #gpio-cell property description.
-> 
-> Changes in v3:
-> - Make GPIO range from 0-3 to 0-7 to support GPIO data from remote
->   compatible deserializer suggested by Rob instead of adding third
->   cell for GPIO controller.
-> 
 > Changes in v2:
-> - Remove new property ti,gpio-data
-> - Add third cell for GPIO controller to select GPIO output source.
+> - Move PTR_ERR() in dev_err_probe();
 > ---
->  Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
-> index 2e129bf573b79e0ca8f25b4ec5fc6ea76c50abd7..143d546ecb482d2eb78a113b1a57afcbff9cca01 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
-> @@ -20,9 +20,13 @@ properties:
->  
->    '#gpio-cells':
->      const: 2
-> -    description:
-> +    description: >
->        First cell is the GPIO pin number, second cell is the flags. The GPIO pin
-> -      number must be in range of [0, 3].
-> +      number must be in range of [0, 3] when enabled as an input.
-> +
-> +      If enabled as an output, the GPIO pin number must be in range of [0, 7].
-> +      [0, 3] are for local GPIO data and [4, 7] for GPIO data coming from
-> +      remote compatible deserializer.
-I see there has been some discussions about this in the earlier
-versions. I guess this works, but feels a bit hacky, makes the driver a
-bit odd, and assumes that no consumer ever uses the same gpio from the
-0-3 range and 4-7 range.
 
-Did you try the approach where a new flag would be used to indicate the
-remote gpio functionality? Any problems there? I'm not sure what's the
-policy for adding custom gpio flags, though.
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
  Tomi
+
+>  drivers/media/i2c/ds90ub953.c | 33 +++++++++++++--------------------
+>  1 file changed, 13 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
+> index 14dd0aa4cc6ceba66a8c3545c7d7d19694007431..a85c6a9b64070491db161ca1586179dba9c69cb0 100644
+> --- a/drivers/media/i2c/ds90ub953.c
+> +++ b/drivers/media/i2c/ds90ub953.c
+> @@ -1345,7 +1345,9 @@ static int ub953_probe(struct i2c_client *client)
+>  	if (!priv->plat_data)
+>  		return dev_err_probe(dev, -ENODEV, "Platform data missing\n");
+>  
+> -	mutex_init(&priv->reg_lock);
+> +	ret = devm_mutex_init(dev, &priv->reg_lock);
+> +	if (ret)
+> +		return ret;
+>  
+>  	/*
+>  	 * Initialize to invalid values so that the first reg writes will
+> @@ -1354,32 +1356,26 @@ static int ub953_probe(struct i2c_client *client)
+>  	priv->current_indirect_target = 0xff;
+>  
+>  	priv->regmap = devm_regmap_init_i2c(client, &ub953_regmap_config);
+> -	if (IS_ERR(priv->regmap)) {
+> -		ret = PTR_ERR(priv->regmap);
+> -		dev_err_probe(dev, ret, "Failed to init regmap\n");
+> -		goto err_mutex_destroy;
+> -	}
+> +	if (IS_ERR(priv->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
+> +				     "Failed to init regmap\n");
+>  
+>  	priv->clkin = devm_clk_get_optional(dev, "clkin");
+> -	if (IS_ERR(priv->clkin)) {
+> -		ret = PTR_ERR(priv->clkin);
+> -		dev_err_probe(dev, ret, "failed to parse 'clkin'\n");
+> -		goto err_mutex_destroy;
+> -	}
+> +	if (IS_ERR(priv->clkin))
+> +		return dev_err_probe(dev, PTR_ERR(priv->clkin),
+> +				     "Failed to parse 'clkin'\n");
+>  
+>  	ret = ub953_parse_dt(priv);
+>  	if (ret)
+> -		goto err_mutex_destroy;
+> +		return ret;
+>  
+>  	ret = ub953_hw_init(priv);
+>  	if (ret)
+> -		goto err_mutex_destroy;
+> +		return ret;
+>  
+>  	ret = ub953_gpiochip_probe(priv);
+> -	if (ret) {
+> -		dev_err_probe(dev, ret, "Failed to init gpiochip\n");
+> -		goto err_mutex_destroy;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to init gpiochip\n");
+>  
+>  	ret = ub953_register_clkout(priv);
+>  	if (ret) {
+> @@ -1403,8 +1399,6 @@ static int ub953_probe(struct i2c_client *client)
+>  	ub953_subdev_uninit(priv);
+>  err_gpiochip_remove:
+>  	ub953_gpiochip_remove(priv);
+> -err_mutex_destroy:
+> -	mutex_destroy(&priv->reg_lock);
+>  
+>  	return ret;
+>  }
+> @@ -1419,7 +1413,6 @@ static void ub953_remove(struct i2c_client *client)
+>  	ub953_subdev_uninit(priv);
+>  
+>  	ub953_gpiochip_remove(priv);
+> -	mutex_destroy(&priv->reg_lock);
+>  }
+>  
+>  static const struct ub953_hw_data ds90ub953_hw = {
+> 
 
