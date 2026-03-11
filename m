@@ -1,239 +1,218 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0793B8BD3
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773218679; cv=none; b=n+MUdeEiEyGXwREyQNZ92RhHif/W6vKf8TK2YP6iwWg4vLTbwdfrk5Y5BdBjkxFAKmDiLdVVp2sodGNYPyN7JizUY/sFXbWWGQN0tvoVWyIFA6HuJfcjPaDC48iAgz76EwB4iA5JnQ9WYHbqHX2Sjw579l94Pqz8fREcD0iSHn8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773218679; c=relaxed/simple;
-	bh=TP2d5VmbgQKHMNAN1qBxmyAqIrxEMKtwQxW3ILNZVCc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VzDhWoONRhHd5zYzyKjk+XAHWh0S5o/do2nweM+s3uMPR/ynCdgQzk2t5PYNXPuYKBBHe1xn9QH8YqCJl+F4QGGBjTpm1blLwO7hEQh3M6jocXcYiav+paLnl5hTkM7jl3qj37bBn0B3AmcpVuVhx2ll/IqMxCEzW6yMve4lTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DVMohaJf; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA36027707
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 09:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773219927; cv=fail; b=SXGQxoIZNW557t5XXDu4benN+aWXvn1QQNX8yAb6PYj0kaE7yTE8mULyMtcOkPoTOv8xKiXuDGUScPIopNAZd9VJK3IneNurQ1H+l7eRpjkvgRU90un60pSQsrzKHzPOmyu6hb1wwJ6TmxRbCtkwqlNF9QTEACJyXo3vs0HfWjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773219927; c=relaxed/simple;
+	bh=fNzMK9QgACYZeZejdwDIl9ujGdIAcZlAGZ3pinazGmI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AMeiAtFp1Lojc6JyS5H/gXWAiu1ER5KiGwgOctS0E/cBLiDz0ldkRSBiJR5UYTayPWR95oj9W/YsaidZiYnboZXMTN5k8FUfsbzjbVJrTY3o4K2HepDPns2QapcV+J13WUpGtLoqRUcxd8dBpirKMy/D0XUH3Cixgn5LQzXxqaA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dSpg04me; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DVMohaJf"
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5252A5A5;
-	Wed, 11 Mar 2026 09:43:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773218609;
-	bh=TP2d5VmbgQKHMNAN1qBxmyAqIrxEMKtwQxW3ILNZVCc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DVMohaJf1cXHCfKpQAPLZqMgqGLEjUtzlrvFBwR2WUvhwsaitJ/7E2ZQ72vfW3zrs
-	 6u5CDh7U9hiUMzZAgqHknpHqnoQc9YmmWgIEdDpxql9OZJL+o9ojn9jIWgol3+lD82
-	 C0ou9dhM7ben8qAotGk5i8rycahrh0f15ttWzK2I=
-Message-ID: <c28d81c5-ba11-4a88-a57c-9d4da74c4006@ideasonboard.com>
-Date: Wed, 11 Mar 2026 10:44:32 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dSpg04me"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773219922; x=1804755922;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=fNzMK9QgACYZeZejdwDIl9ujGdIAcZlAGZ3pinazGmI=;
+  b=dSpg04mefKYHDlYeeMDx0KpKu6Ud2XHGVz4Aa+uYMoGpUopE8HakNu1h
+   20fXmqfugYC8QSrRQfQxgzuomWY5ATugUIsNmhkVRqrIe9IKYRdUS9xiG
+   j54ZSO8Im2LqS92ekkAFORvAF0GguCNo6tcxNXF2XyA0BtREoAO1iD60n
+   fGmpFko2R9g9g9BJ0mTk2NmyLdB0CyWDxHU6rGBvDByaDySHXSYV3857p
+   Z45xZbmKGrUECZTmTfXxvHiT4LzjRcFFHrf/oRnKgv0SNoLZbsoXPPgBA
+   odCslep0T3NCuKaNXuXsOkwNOg5cpZ1QfMHL0kbTK0W858bHtk8PhXeTb
+   A==;
+X-CSE-ConnectionGUID: ULceaQC7QEKuI4CT2bdcLQ==
+X-CSE-MsgGUID: 8zVkgjarS8K5zI5xSkEB2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="76891348"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="76891348"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:05:21 -0700
+X-CSE-ConnectionGUID: Xv4FT6D4R5qzkmwj5bkTuw==
+X-CSE-MsgGUID: oYMm4DslR6aKCsyjl45BPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="220580374"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 02:05:20 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 02:05:19 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 02:05:19 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.41) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 02:05:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WnRFTKZ5/CkblW8sTMWEdKpJU1mxni4gMxjqoBWvpLFv/IfYBscFMtp9OtYaE+Cz4hoQAsZ+RgPXiW2m5bnliU8Ii6/Gjv1pptz3pySqYGKHmo/gpJoiXGqDk0TL1U0n3p92bI7BhPkjIS5uX05bE/gKLyWv22VXcnijqsP3vQPHbRd0eoeUlhgz/lB+/rjb/cqk2ZYnsNHoF4dchs7e9QikylT6/rAaW9bL/iaj3wrdtLN6ZOLFlW/57Cgj5IZ/CxD0eM6TI7udcFAQ79de2ESlTTjAB1ueH9cBVSM12MBzPkzaP3O3DoG5NEUVH2WsCSESUfRDvVDowz7mkBMe1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0lqHTaE70pU3JXqm77/EyCtSqItJhA0Te9d9zri6wGE=;
+ b=rHtmTEJKV77aS2exHksvJrvGc2riyHBZSdoZBb3BqQZR61CuUBpXZq4DmXqyE0hljSVbU4zOqx00XQR7OsjkqYoBRuCJwWMgCFPSgzbbrdjHeE5HiyTyyBDsdwWvrQGoSUhtzI8X3sV0jdjxMUfdFZhT7CgGQvAEf5YwgFIdwUUgmAzjDFMBVGTZ/IHjL+LabI7VBc7qAln1NYibUti0WmunPEmeIXc5DI3AyE+vwVfG/cZBqpQXiAAmWO8N8gjpCeuBBRKHZUGG4hAY2OEk3W4HEwpKHZ74UfOyX9NWIvCYhrcVQtyK9pnAbtbHh3L/5yR824aWzmBfL65lGb2W7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
+ by PH0PR11MB5189.namprd11.prod.outlook.com (2603:10b6:510:3d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.8; Wed, 11 Mar
+ 2026 09:05:16 +0000
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456%6]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 09:05:16 +0000
+Message-ID: <4ff711d8-cb4f-4ef9-b357-3fbfea5124a4@intel.com>
+Date: Wed, 11 Mar 2026 11:05:10 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] mmc: sdhci: fix timing selection for 1-bit bus
+ width
+To: <ziniu.wang_1@nxp.com>, <ulf.hansson@linaro.org>, <haibo.chen@nxp.com>
+CC: <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+	<festevam@gmail.com>, <imx@lists.linux.dev>, <linux-mmc@vger.kernel.org>,
+	<s32@nxp.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260303105006.989339-1-ziniu.wang_1@nxp.com>
+ <20260303105006.989339-2-ziniu.wang_1@nxp.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
+ 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
+ 4, Domiciled in Helsinki
+In-Reply-To: <20260303105006.989339-2-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DB8PR04CA0021.eurprd04.prod.outlook.com
+ (2603:10a6:10:110::31) To IA1PR11MB7198.namprd11.prod.outlook.com
+ (2603:10b6:208:419::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/4] media: i2c: ds90ub953: use guard() to simplify
- code
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Vladimir Zapolskiy <vz@mleia.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Guoniu Zhou <guoniu.zhou@nxp.com>
-References: <20260228-ds90ub953-v5-0-056cf07cc8f1@nxp.com>
- <20260228-ds90ub953-v5-4-056cf07cc8f1@nxp.com>
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Content-Language: en-US
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20260228-ds90ub953-v5-4-056cf07cc8f1@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|PH0PR11MB5189:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f514c16-c539-4d85-8c66-08de7f4d4fda
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: L5fwWRHw4uAmZkRCo6O+UWsP6FBOsY+i6LMXpVuwQWTwbW1qvujDVhdxuypxJ5QglSn1DUw19sUSouWp9CIdrgiNJS+FF2vj5UGFhwWufAH16Tn9MYNTZqtACR+EvbtN/iRpYXh8humLRbtPcURgNE6jyAaN463foB85WzyRnUEDWPvqntE3HdwC2FHBv84nOv4WOp5seEK/OfS4NUzDoAI4OeNu//FGfr1q2+b/7KsOOQOrIjB3D1ZOh6CLL/PJfT0XqXoJTA8ex9Z6G67kFtJR60caphRbI5aSkwqxhDsAALylb2EG9S8m1LyD49t9syi6KmAb0gL2BSo3x3T6Pbkr8euKiiAg3CwpAM0h7w4r+RMu66nAy2vwNi6fjDhzGKWNK6clDnSfd+QS+MLSz5dLpI71Q23pZATufn/dfo4e09jOfsLAsnhRKJO66ysAtChGz3w47Tjt/ztG3VfqpR+7QlABJ5Bj1wM4cGOO/pnPXR+deVwaW3Ss5wa2vQOcWgtwM2wdUFTTGgKegqrk8Z8SbxGriY1EmMFRLtDjFwLJYvpJD4Fn0qHjXjJ/Tj6qcr+YYCgDthtik+9hnG/dju7uMTlqs0h+sRhy1l5kRQNh3Q4+ViVEEhiLEIk1PQJTO+epfiiYeCWO7nAMfjo3lxnqlVnI5jXyj6ENFWPw2/QTFFjKODuG8dFYWYQ7R6HHsYn7CoNel67sYFIRSMHPLPMQzax4BweOjxTuU8m3DHw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bmc0NlIyK1UyU3l1c29xVU1LK2RNekluMmJKWklaRFVFZ2hEdDJSSzR0ekFT?=
+ =?utf-8?B?Z2xacjRsZHVuTHl0UC9jbUxIRjJaWDM1MHVGZjZPSzBUdlBTQkp0em8wdzln?=
+ =?utf-8?B?d1JLWXRVVUdvcy9QdTMwUnRLWGZGS0lrcDdlbml4VG1wdjRLaElBVFZkbVk2?=
+ =?utf-8?B?Zi9xUjhPVVI2ZVZmQW9HSHNiZGVoU3VyeVo2ZlVNamVKQ21DaUNiM3FMRTB4?=
+ =?utf-8?B?azBxYXU0WUhyTVNHMVpwckxlcEFZdzFOa2F6MS9iRWMwZDlnQlZkN0NRK3g4?=
+ =?utf-8?B?M1I5NElDMVVWRHNMbFIrQy9yMkpqMDJYcjBmMFFpWUQzTnJRejlvQXcwOGZY?=
+ =?utf-8?B?eVRFdkRYOXV3b3hkanptSlByWWFpZ2pLQVJzQk91RzVkWEpxTUNtMzczWW5r?=
+ =?utf-8?B?QW92LzZudzBhYlIrUlFRR0pBMjMxOXg3bDExc0NuSGVrdVJDalJBMml1VGNQ?=
+ =?utf-8?B?elcwTTZmZ0VZVXJUUmRxZmtXamMyK1F2a1g3aXZrUEhFT3NUd2xoQlNRTlFy?=
+ =?utf-8?B?cXRBbHRGbmp5NE5jTGg1M1gxRkUwdlVydnRGalltWU03c056SVJ6eXdRK3dt?=
+ =?utf-8?B?dWNkSWNCbStYMmJlN0dxZjRTdjJ1S1ZFckxjdzBMQVE3cmYvUWdEZzQ2eUpH?=
+ =?utf-8?B?RlM0Yy9nV0xnMGp3MFdrQTZpeDFJRVdyOGRIZGVpUzJiS1RDNElJUDJ6M2pt?=
+ =?utf-8?B?a1hsSmZITERPL2xuT3hiQThJa0FFV0l1aUF6Yy9NYU1rNTVSTnFLOFk4NEt6?=
+ =?utf-8?B?TkZLQnZlYjh5R1gyWGZyREVFbVVMZXBMS1RMOG4vOWpZRWttd1RDVnVmL2N5?=
+ =?utf-8?B?M2xlSllPak5hVnMxMkpBcnZGMG1CY0JtcjlJQWllNU8zaXJsdkk0YktvVS8v?=
+ =?utf-8?B?ZENrWnlQU1BHOEJjVXFGbDZpQU1Tb3FJVEZMd05XWmRYUE1VOW8wbGpWS2E2?=
+ =?utf-8?B?MDZ0NnZVcEc3c0h3aWdqMll4VUZMMzNUQjVZaktSYldHYURyNjVVVlMvb2J0?=
+ =?utf-8?B?Q2lWTUdIQUZXOGVlZTkxWWlQeDFxdDRwdEtzazgrbFd6cDljeW1KYlU2eTJv?=
+ =?utf-8?B?Ny90enpNczNvcGtpYW5wREs2eDloeGVudUJEcUxkYmpIQmNHbGV5Wm8wZnNy?=
+ =?utf-8?B?akZiYmorblJ1c0lpajg0Tjhvbmd6VS81M3YwdlFRUjg4RzF0bCtFcENiTENG?=
+ =?utf-8?B?V0VBRi9uYmhBb1RERllwN2NPRVN1MnE5S0x5d3VBSS9oTkk4alpKNkJreDQ5?=
+ =?utf-8?B?TCtJWTM4T1doaVJ2dGpJVDNLeENTQWpWS0loMDdsMlZiaWo3QnBlSVl2YndH?=
+ =?utf-8?B?Z0k3SnBLemFDeUJPRHdIdUNPT2N0dGFuWE11RFpzb2h5OU0wUnhGTmdpZWk4?=
+ =?utf-8?B?NGx0NjFiT0w5QkpEY3JQcGxpREMzOFUzMFkwVkluL2dLV1ljYXNQRCszVi9t?=
+ =?utf-8?B?S1UzSmNUY3pUeGNYU3NlWWQ2cWMvRTQyYXZRSjhlQzJhN0pwOXhFSWJEQlA3?=
+ =?utf-8?B?dlpWTE1TZzdPc0VFWDV6eTk4Qk9mVFM0K09FZ1lCMWlxQjJ4cjY1S09sek80?=
+ =?utf-8?B?dTQ1TzUxb0F4TmFrdkRTOE5BVUtDajlRbU9EeVdCNzlsRTJDYTAwWEVYb2Jj?=
+ =?utf-8?B?RzljOTVURTZEcmQyUmljTFgyUjluWExlb0FSRFU1SFV0UkxTSEhHUXhtWEZz?=
+ =?utf-8?B?SFVUKys3ZGE0MEFKbC84SjZlWmYzVXRoL3c0a09iLzNBd3NhWjJ3dUd6YWxP?=
+ =?utf-8?B?YTdDUHkzSFZ1TG82Z1dhc3JvOHBkRzZLa29TUVQwVXRCS29IRDdUZ0pQS0Zt?=
+ =?utf-8?B?U042WEplaWwvS1FDNjNpNTRGRjBSdm5WYnFYbWVFcVBteno0TS9pSzVVcENv?=
+ =?utf-8?B?eVQzU2I4VGRpRmI1V1hncERmczlEQXZnT3hHamJ0L3hub254aDZZUTY0ZWpQ?=
+ =?utf-8?B?clEwTW9FL0dJRkZzSEY1NDQyZEx4ZTVMVDQydGhIYWNLY1pkOHQ1YURMUnpH?=
+ =?utf-8?B?cDJmZWN2VkxKVWFuRzgzOUVKbzJocjRYMDR6MTNoRjdWTFhoOWN0N21kcy9E?=
+ =?utf-8?B?THZOQmZRZDV0a2R6YmJQRGM4WGl6L1g5bGhMc1U0Q2g3M0FpZWRWdlRKSWo5?=
+ =?utf-8?B?ZlI1TmpoOGRpSDluMDdnSGhyTmxPWkMrbG9FV0xpbHhVUlgzZnlrdFZodG5H?=
+ =?utf-8?B?VXRtWDZMelFKazUrRitzQnV0Y01CRGwyVndrQVFmZkNTYldham5McjBDUDMx?=
+ =?utf-8?B?dzY4VExtWkNGL05RN3ZRd1ZjRmlsSXRkbGxVT2h4dFN0ZkJRd1RqQmlxR09B?=
+ =?utf-8?B?Vzc4ZGc1NGRHSlByTVJHaDVRWUNqNmVmZ25HaGNtVmF4V3BaWnNVbVMzSy9v?=
+ =?utf-8?Q?rm1Ve/hEb7rIFzIc=3D?=
+X-Exchange-RoutingPolicyChecked: Y206fcUAtrmnIdGIQK4Ols6U/R2+ZVtGhHIPmWXnjhUP/XFcwdYd71yC1AfxgK/G7G+R/RQbWjPhwPXBUwsMZownLv4EQ+gXvJCYTZHd1Zs22OuZ4owbhSQt9wlNZTZ7dDqBqz+PNJxOscyal8K8GOlT4pR7zczPDTWaJdon6qG7uonACxC9HEuQMI5g8+n8CHgvlhoyhRXrLpx/VN+rYlBMcXP7yZ9qN7oavQLCcr39yrSXdlzQAz3/ZTqG0kHbbMRTTp6L3KMx/hl3gwghj7LJ+cnQKI48Dj4KOQFAWIszMbbLQFjd73JNtLO4be4a7KBWNxy0OxRHt/wzYcY3qA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f514c16-c539-4d85-8c66-08de7f4d4fda
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 09:05:16.5421
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z7qregIbiAArMtOYQnBm+meYXcAojapj/aKtHn+BJKJAfC+JMQfpJ8zJl4EICFRfeq3CM2K8/hefZhtzns1GLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5189
+X-OriginatorOrg: intel.com
 
-Hi,
-
-On 28/02/2026 08:18, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+On 03/03/2026 12:50, ziniu.wang_1@nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
 > 
-> Use guard() to simplify mutex locking. No functional change.
-
-That's not strictly true, as the unlock will happen later with this
-patch. Still, this cleanup makes sense.
-
+> When 1-bit bus width is used with HS200/HS400 capabilities set,
+> mmc_select_hs200() returns 0 without actually switching. This
+> causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
+> in legacy mode (26MHz) instead of High Speed SDR (52MHz).
 > 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
+> SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
+> selection falls through to mmc_select_hs() correctly.
+> 
+
+Fixes: f2119df6b7646 ("mmc: sd: add support for signal voltage switch procedure")
+
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
 > ---
->  drivers/media/i2c/ds90ub953.c | 34 +++++++++++++---------------------
->  1 file changed, 13 insertions(+), 21 deletions(-)
+>  drivers/mmc/host/sdhci.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
-> index a85c6a9b64070491db161ca1586179dba9c69cb0..3a459687aefce05ac025a517c8d4cc6d76cd7293 100644
-> --- a/drivers/media/i2c/ds90ub953.c
-> +++ b/drivers/media/i2c/ds90ub953.c
-> @@ -113,20 +113,18 @@ static int ub953_read(struct ub953_data *priv, u8 reg, u8 *val, int *err)
->  	if (err && *err)
->  		return *err;
->  
-> -	mutex_lock(&priv->reg_lock);
-> +	guard(mutex)(&priv->reg_lock);
->  
->  	ret = regmap_read(priv->regmap, reg, &v);
->  	if (ret) {
->  		dev_err(&priv->client->dev, "Cannot read register 0x%02x: %d\n",
->  			reg, ret);
-> -		goto out_unlock;
-> +		goto err;
->  	}
->  
->  	*val = v;
->  
-> -out_unlock:
-> -	mutex_unlock(&priv->reg_lock);
-> -
-> +err:
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index b1a3cd574c84..3e163f14a640 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -4539,8 +4539,14 @@ int sdhci_setup_host(struct sdhci_host *host)
+>  	 * their platform code before calling sdhci_add_host(), and we
+>  	 * won't assume 8-bit width for hosts without that CAP.
+>  	 */
+> -	if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
+> +	if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
+> +		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 |
+> +				 SDHCI_SUPPORT_DDR50 | SDHCI_SUPPORT_HS400);
 
-I think the label should be just "out", as this is not an error path
-(even if we jump to the label when handling an error). Similar comment
-to the below cases.
+SDHCI_SUPPORT_HS400 is non-standard.  Hence the check for
+SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400 is needed:
 
->  	if (ret && err)
->  		*err = ret;
+		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
+		if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
+			host->caps1 &= ~SDHCI_SUPPORT_HS400;
+
+> +		mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
+> +		mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
+> +	} else {
+>  		mmc->caps |= MMC_CAP_4_BIT_DATA;
+> +	}
 >  
-> @@ -140,15 +138,13 @@ static int ub953_write(struct ub953_data *priv, u8 reg, u8 val, int *err)
->  	if (err && *err)
->  		return *err;
->  
-> -	mutex_lock(&priv->reg_lock);
-> +	guard(mutex)(&priv->reg_lock);
->  
->  	ret = regmap_write(priv->regmap, reg, val);
->  	if (ret)
->  		dev_err(&priv->client->dev,
->  			"Cannot write register 0x%02x: %d\n", reg, ret);
->  
-> -	mutex_unlock(&priv->reg_lock);
-> -
->  	if (ret && err)
->  		*err = ret;
->  
-> @@ -185,18 +181,18 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
->  	if (err && *err)
->  		return *err;
->  
-> -	mutex_lock(&priv->reg_lock);
-> +	guard(mutex)(&priv->reg_lock);
->  
->  	ret = ub953_select_ind_reg_block(priv, block);
->  	if (ret)
-> -		goto out_unlock;
-> +		goto err;
->  
->  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
->  	if (ret) {
->  		dev_err(&priv->client->dev,
->  			"Write to IND_ACC_ADDR failed when reading %u:0x%02x: %d\n",
->  			block, reg, ret);
-> -		goto out_unlock;
-> +		goto err;
->  	}
->  
->  	ret = regmap_read(priv->regmap, UB953_REG_IND_ACC_DATA, &v);
-> @@ -204,14 +200,12 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
->  		dev_err(&priv->client->dev,
->  			"Write to IND_ACC_DATA failed when reading %u:0x%02x: %d\n",
->  			block, reg, ret);
-> -		goto out_unlock;
-> +		goto err;
->  	}
->  
->  	*val = v;
->  
-> -out_unlock:
-> -	mutex_unlock(&priv->reg_lock);
-> -
-> +err:
->  	if (ret && err)
->  		*err = ret;
->  
-> @@ -227,18 +221,18 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
->  	if (err && *err)
->  		return *err;
->  
-> -	mutex_lock(&priv->reg_lock);
-> +	guard(mutex)(&priv->reg_lock);
->  
->  	ret = ub953_select_ind_reg_block(priv, block);
->  	if (ret)
-> -		goto out_unlock;
-> +		goto err;
->  
->  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
->  	if (ret) {
->  		dev_err(&priv->client->dev,
->  			"Write to IND_ACC_ADDR failed when writing %u:0x%02x: %d\n",
->  			block, reg, ret);
-> -		goto out_unlock;
-> +		goto err;
->  	}
->  
->  	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_DATA, val);
-> @@ -248,9 +242,7 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
->  			block, reg, ret);
->  	}
->  
-> -out_unlock:
-> -	mutex_unlock(&priv->reg_lock);
-> -
-> +err:
->  	if (ret && err)
->  		*err = ret;
->  
-> 
+>  	if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
+>  		mmc->caps &= ~MMC_CAP_CMD23;
 
