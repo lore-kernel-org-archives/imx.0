@@ -1,69 +1,64 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EAB3E0240;
-	Wed, 11 Mar 2026 15:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11F42FDC3C;
+	Wed, 11 Mar 2026 15:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773242588; cv=none; b=tKkZFXlE57Q/p14AipCoJ2pN/KT5Ar5MWRUaQx4HS1zQJp961ZgAWFHXdRWCiatjj9zdnU0RWGcThzFTerRgJqZp14U/hMpJHVTIzLykJv+wOePuuhMX8EJFpb4D4Ct9JW2Elt08PaqX+ras4tYHAd80/8EeYQDYO056VaP+PFw=
+	t=1773242596; cv=none; b=TpHfNgmkBAtmpWP1kMIUbHAAdJTfGPxN5kCtMPUom1vuS5PBazwjsp1EDO7eQh2yDD4mnA+E889y6DgRtMH8Jc5btEXEJ15kMMDivywuVsbJGfvbsSQM6Wjer/6fpgMDRSe9rOkoBHDRq8PYitT87353biQqZ0gPOvop0MpIK9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773242588; c=relaxed/simple;
-	bh=5k3j6TyOgnw+p/MGx+/JP6KVxppwh0ZoXJqEFM9+zCQ=;
+	s=arc-20240116; t=1773242596; c=relaxed/simple;
+	bh=2o353IWV/ZxBTHaJFJxdQxLFmsHwm+YzRoABm6MDW9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq/USJ2XItxBF+pE+8773Nnt7vaJnJG+3Hs/4c0pualS77acAaQxYnJyqqQr6RmoQ1kMmhm6JJ1L/W+QvGHHvisb4IbKClOqEa8z/4J+4ql4b4uJTVPei82U7x1ewdXXqh1SQbZoYfZKrfYB8aY+xNKdX12XZ6pKTy+SuS/fQkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=TnJU3aOa; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version; b=VRGCIvtt0JmwjDeQ37HnlC85aa67eJnUeHyM13kuXWML0YSA8DqpIkXUqzG/DEesGYwyQw6C6k3G3wr/x75qXWTd+5XWREWAU/6n1/Gcrehp7iyKujRRR65pLQJAGY7yl34CSio/OoLg7hFciw87sqneydxl6DU0Lil52k3esJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=paFYjJYe; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="TnJU3aOa"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="paFYjJYe"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=6PdZxm8Bv5Fbg4zOWMT2q2pQephq0yrmqiozPXOooSw=; b=TnJU3aOaDzTQbRqTIc/3sVVzbw
-	hXTk6/n32tokMzvWOWBANcM4aG4BGT5+N4P38vjhHg/61+9kJQKlEZYfts1wPwZDqvxinXzngtRuk
-	0AN9ZmWaPZqF+aieSGOQKgjtnhbOJvWaKNu0j4uxphorN2ptplJ8ncxveNJv6CPDyj1gXAS+CnhNB
-	aTG9k7vQV61fkxjHiMMxGmU/8br25DD7MYaRnpt/FnaGuWkbeptnS6YySmIySWRpbcezIv7lMyduR
-	KKPwPIkx5KEf7EDV3qKMQV3iwz5VrU2Q7LGIQyh3BljCgNV2T4B3bVf/m5667smnzKf6GgxBDkGq4
-	Fz7fWwgg==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
+	bh=Tq+YN3xtdHuMsT+Fgr0ntFY2wnr6dpo8yyZAz0TE9oc=; b=paFYjJYe69qHVlLVObzMwYUDM5
+	VD0e6wDZ6lCObaramP/4T/RYgChO8JfQwHRvBrg8kJZIMyhh8R9OrJ/xXMAdDp7PXzJYzTXjr3Tv/
+	+SYdK9Vvy38Sj9vY1LNMMibekcUJfsEBJJOO+Dkgaek3dZm+zVFHkodk79N9K0ef3G6QcV/5W6kiu
+	JZJ2lq+vaUp1b4gTeeEewL3N22WAdFBYTDXlbx95aolxfk9gTzmFLz4PKCkcXTCMHdzsag56zw7+o
+	hCsM5koXjMKwznWcvXgIk7+yJvBTyVV+mm+NsuFL1hf25hKlT1rtExGIjl/tab521m1/MQMbXMFVw
+	IfuPEN+A==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0KcG-000OwS-32;
-	Wed, 11 Mar 2026 15:32:52 +0100
+	id 1w0KvG-0002If-1I;
+	Wed, 11 Mar 2026 15:52:30 +0100
 Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0KcG-000GoI-0y;
-	Wed, 11 Mar 2026 15:32:52 +0100
+	id 1w0KvF-0005cY-2m;
+	Wed, 11 Mar 2026 15:52:29 +0100
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
 Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com,
-	linux-clk@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: imx93-tqma9131-mba91xxca: Add LVDS display overlay
-Date: Wed, 11 Mar 2026 15:32:10 +0100
-Message-ID: <20260311143217.1700704-8-alexander.stein@ew.tq-group.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 3/5] arm64: dts: imx8mq-tqma8mq-mba8mx-tm070jvhg33: Remove compatible from overlay
+Date: Wed, 11 Mar 2026 15:52:17 +0100
+Message-ID: <20260311145222.1749655-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260311143217.1700704-1-alexander.stein@ew.tq-group.com>
-References: <20260311143217.1700704-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20260311145222.1749655-1-alexander.stein@ew.tq-group.com>
+References: <20260311145222.1749655-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,28 +68,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27937/Wed Mar 11 07:24:53 2026)
 
-This adds support for Tianma TM070JVHG33 LVDS display on interface X11/X12
-on MBa91xxCA.
+There is no reason to override the board compatible in a an overlay,
+remove it. While at it, update the copyright year.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ .../freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtso   | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 64fe9487b1003..60aafadce0725 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -418,7 +418,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx91-11x11-frdm-s.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx91-phyboard-segin.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx91-tqma9131-mba91xxca.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtso b/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtso
+index 306977d6ba0cb..78f24f72cc690 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtso
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+ /*
+- * Copyright (c) 2019-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * Copyright (c) 2019-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+  * D-82229 Seefeld, Germany.
+  * Author: Alexander Stein
+  */
+@@ -10,10 +10,6 @@
  
-+imx91-tqma9131-mba91xxca-lvds-tm070jvhg33-dtbs := imx91-tqma9131-mba91xxca.dtb imx93-tqma9352-mba91xxca-lvds-tm070jvhg33.dtbo
- imx91-tqma9131-mba91xxca-rgb-cdtech-dc44-dtbs := imx91-tqma9131-mba91xxca.dtb imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx91-tqma9131-mba91xxca-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx91-tqma9131-mba91xxca-rgb-cdtech-dc44.dtb
+ #include <dt-bindings/gpio/gpio.h>
  
- dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb
+-&{/} {
+-	compatible = "tq,imx8mq-tqma8mq-mba8mx", "tq,imx8mq-tqma8mq", "fsl,imx8mq";
+-};
+-
+ &backlight_lvds {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
