@@ -1,115 +1,391 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFEE27CCF0
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 13:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C525A31E838
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 13:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773234083; cv=none; b=fR2RepY/9IxDirDQ+nwEYuuvjv1pa+T2mhmnKb1InpMmFYo/6zMnDzUEi60TXn3zOAKx/edQgG6AZPH9OpQd1xf2Tp+gOveTdRtY6fGI31Zavp10LIdDjTfYpLz1o4K5wzUQD/jHFsezKXeY0CKNjVApxoY2EOjcOFVwlSWWez8=
+	t=1773235959; cv=none; b=Ak60tTGOGmlmPnTe0PqsCSSnAJ+w+6Sd3UbWU3OJyMeLlKBHD8SGhIlX3GWj9A0FwMWtiypzpMc9By1gzCAr53TYOibPSdVz/KQ7UOXUqSaD78H9NrsbboJdqwJJzDuNc/ghk1ezvsCmqnfEfXdeluxnNQ/oq4ackfQ3XOStUV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773234083; c=relaxed/simple;
-	bh=5omYf3UBejq4qWG7tPFgWTcjtBLBdAAToujIJ2lCAvg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s1bB6QMOEJ8tSTewbPx/0BlwsdbcZXWKb5i1c8T8EkYN7/Rh8Rj7T6M4lcmgMGArVmSW50+GYeVWiJQdyfaYIxPcqTDmYZfTgm5WJdCFZRahjbpQWtO/OKBhT2JP1KaSmxOH2OzQxH9w5A94fCZocpYnaoaIRPXVzzyYWwiHdwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XHkvyqmE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773235959; c=relaxed/simple;
+	bh=5KWIx2eeor4DGBAJ65f034JdfkvDOFh6g4Jbum576uE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rqrLStoFuMgu+H60kjEiotD3Hl/V7Imr0p67oGLhzwN3DXlGYiKs1W+S0TR0vFTZTq+XDDn/RiUS/0YwYpIWn8yyi3DK9p1Mbv96VDpSeJFqxP/3UOH4lSd0m3TekxupH3YEFONG3n9oOvHD4JgYE3Q/d0HTLpEK9gj83Pi7PVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mp4OmuID; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XHkvyqmE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773234081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5omYf3UBejq4qWG7tPFgWTcjtBLBdAAToujIJ2lCAvg=;
-	b=XHkvyqmELEw+fCQ3ak49pu/VkoANmVmwFR/5arG/JzO8JenFbjr8g6/UXvnIuefiEuQePI
-	4sCIgCM95DH81zU16rF1yex1oQCEYMcA6bOC2+nzj3EF/DSj0ayeE8cqqAzf/MUeTyS4dF
-	t8wl21REFbo3N1LASnqzNZe3p6V0Z4k=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-3b0BqnwcOg6HSlXcnR1vZg-1; Wed, 11 Mar 2026 09:01:18 -0400
-X-MC-Unique: 3b0BqnwcOg6HSlXcnR1vZg-1
-X-Mimecast-MFC-AGG-ID: 3b0BqnwcOg6HSlXcnR1vZg_1773234077
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b8f5bce308dso1235490666b.1
-        for <imx@lists.linux.dev>; Wed, 11 Mar 2026 06:01:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773234076; x=1773838876;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5omYf3UBejq4qWG7tPFgWTcjtBLBdAAToujIJ2lCAvg=;
-        b=WIkExJ2TGUZgJYMOTWisDr3oDSGbtPtYYAfhNkzANTXsncG0SlTwFK/Aya7qZovEBp
-         DMo+Wwo90h4YCt/hBNQllThRAB/KKNEHGudXrzhjXb/G0efP+Nhh6rR5lMcppGiDU7V6
-         ZMtJg6ve5/ynTQsUszO+YkRRBr4ngUzg7ePY910C7Y5BWnMjCMdXE1vIVkH1HLj6IWUL
-         DpAKDpfQKdJZR7+Lfya669KEm6CvbNx42Os+DfLgmnqz5/0e2sd2qciWfHX5jZFeCgBi
-         P8GYAFHHvV+qFu6Dy0ekk1S7e5C2GF0ced4/U+rJ30kTldl/rS4VL7wOLKET6DWA+dK9
-         MvvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9lgU8ikJhFdO/wStvmkjGFim0PT82D9s7b4t8+BzlDnGSXJIDla8p6fWQ1ew4FcxPGFI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxaa+iIbvqp35zT/UFQDSPT523nN7EoLFxZeizsZrjiM5BAHMuN
-	bst6SEai/25cglvwg5so2AN2PsyiTR/3SgbqrKUtwMkcs2k66cEhIwKX+EsTVomnlVsyF4N1RRs
-	4u8oVWiS8gEv2+CXjjFYx74pfAl3/emezVyXuCNVjvSwXtcKOvl8boUiHxZN/NeqiYtJooXauvw
-	+hBG/sBfCZmUFwIw2xHnNCpFOufk7m
-X-Gm-Gg: ATEYQzyvoz7HYvmG8Per8laCckbCbFs9bBkd07m47Mp/6o85VKoieJmm4jq4s6wuyCq
-	CLvjSGTDRoYVwKm4epCLn6hLk758/TIfj5NaOlDVaWH8oV5sBCppc7cw7+uCr/1QB42W9JPmrl9
-	Ww04Libibv4lEqzFpYFuqG4uYBQTp0hCVqU/RlXyX2GUvwsFBJiVz35VBlOYVn1+k7GE9qqiX6w
-	Z95lw==
-X-Received: by 2002:a17:906:7314:b0:b93:edc0:e2e8 with SMTP id a640c23a62f3a-b972e6069a2mr143085566b.48.1773234075178;
-        Wed, 11 Mar 2026 06:01:15 -0700 (PDT)
-X-Received: by 2002:a17:906:7314:b0:b93:edc0:e2e8 with SMTP id
- a640c23a62f3a-b972e6069a2mr143080266b.48.1773234074508; Wed, 11 Mar 2026
- 06:01:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mp4OmuID"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QEQFs0TTz6kOM3BeAm8PTLPbfl1GfhDYDZcp/vmbBkA=; b=mp4OmuID3KEVA4dSypFUZlxxwh
+	PAJElXVaYdgvUKICIGCVgu4y+h7c6ivLTCwynjeF3P/eA+mS0SeVnoF1lm07xMTELYda5HoN7Rsm4
+	qm0R0nX6twAj6I77L2mFROfBjVy73KU0vT29j1Knamm7lDJGOHFRakNzLCRLfsyW3SJwbA6rUoWUL
+	3ROm3bD7HDSqo+4U4AAUTCtJqUJW+EB1qV3fhzFQqjCzkHPvJcyzuUxhYGeQ5Ta6VGlo5Ji4+0ja+
+	dvtIXFI/F+SkPP6Z1YqCU0pV/yB/0qZ5pYrNHSL0jNLO1YUOG1x++miftWPtspOD/2QODLiUutEX9
+	t6/+/BUg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50500)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w0Jff-000000006R7-0pos;
+	Wed, 11 Mar 2026 13:32:19 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w0Jfb-000000006Gm-0FRS;
+	Wed, 11 Mar 2026 13:32:15 +0000
+Date: Wed, 11 Mar 2026 13:32:14 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: jan.petrous@oss.nxp.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	vladimir.oltean@nxp.com, boon.khai.ng@altera.com
+Subject: Re: [PATCH v10 0/5] Support multi-channel IRQs in stmmac platform
+ drivers
+Message-ID: <abFu3mJP0Y6Ra1BR@shell.armlinux.org.uk>
+References: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260309-clk-det-rate-fw-managed-v2-0-c48ef5a3100a@redhat.com> <c7d47b6d-caf7-426b-944e-7debb7d69045@linaro.org>
-In-Reply-To: <c7d47b6d-caf7-426b-944e-7debb7d69045@linaro.org>
-From: Brian Masney <bmasney@redhat.com>
-Date: Wed, 11 Mar 2026 09:01:02 -0400
-X-Gm-Features: AaiRm52EdqmkwN8CGi7SEvZrCO9M1f6Y7hYTKKNfjOzM3D3aXhP9MAnWBZaRjqI
-Message-ID: <CABx5tqKC_KocCp+_uJ-t7AhJNa9MZOG=5Dry4UoZXzUvSryiFQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/12] clk: add new flag CLK_ROUNDING_NOOP
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Andrea della Porta <andrea.porta@suse.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Frank Li <Frank.Li@nxp.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Orson Zhai <orsonzhai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	arm-scmi@vger.kernel.org, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WMjZKhau6WscYMlUmfeQTmiBqvAF6kbGKRMy_8nqCdE_1773234077
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Mar 11, 2026 at 7:51=E2=80=AFAM Tudor Ambarus <tudor.ambarus@linaro=
-.org> wrote:
-> On 3/9/26 4:38 PM, Brian Masney wrote:
-> > Note this series depends on 3 previously-posted patches in this git pul=
-l
-> > to Stephen for v7.1.
-> > https://lore.kernel.org/linux-clk/aZuK4-QJCXUeSxtL@redhat.com/
->
-> There's no tags/clk-remove-deprecated-apis-v7.1 on
-> https://github.com/masneyb/linux
+On Wed, Mar 11, 2026 at 11:17:57AM +0100, Jan Petrous via B4 Relay wrote:
+> The stmmac core supports two interrupt modes, controlled by the
+> flag STMMAC_FLAG_MULTI_MSI_EN:
+> 
+> - When the flag is set, the driver uses multi-channel IRQ mode (Multi-IRQ).
+> - Otherwise, a single IRQ line is requested (aka MAC-IRQ):
 
-It is here, unless I am missing something?
+Please can you test with this patch included - it's bubbled up near to
+the top of my patch queue for net-next.
 
-https://github.com/masneyb/linux/releases/tag/clk-remove-deprecated-apis-v7=
-.1
+8<===
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH net-next] net: stmmac: move MSI data out of struct stmmac_priv
 
-Brian
+Only three platforms supprt MSIs, which means having all the strings
+and interrupt arrays always allocated wastes space. None of this data
+is performance critical - this data is only used when requesting and
+releasing the MSI interrupts.
 
+Move the MSI data out of struct stmmac_priv into its own separately
+allocated structure, and move its initialisation to a separate
+function.
+
+This removes 768 bytes from struct stmmac_priv.
+
+Link: https://lore.kernel.org/r/aYtq4ypxXTvn_Is6@shell.armlinux.org.uk
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  | 31 +++---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 96 ++++++++++++-------
+ 2 files changed, 77 insertions(+), 50 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index bba9bb9c95bf..7a66edba8f66 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -243,6 +243,23 @@ struct stmmac_est {
+ 	u32 max_sdu[MTL_MAX_TX_QUEUES];
+ };
+ 
++struct stmmac_msi {
++	int sfty_ce_irq;
++	int sfty_ue_irq;
++	int rx_irq[MTL_MAX_RX_QUEUES];
++	int tx_irq[MTL_MAX_TX_QUEUES];
++
++	/*irq name */
++	char int_name_mac[IFNAMSIZ + 9];
++	char int_name_wol[IFNAMSIZ + 9];
++	char int_name_lpi[IFNAMSIZ + 9];
++	char int_name_sfty[IFNAMSIZ + 10];
++	char int_name_sfty_ce[IFNAMSIZ + 10];
++	char int_name_sfty_ue[IFNAMSIZ + 10];
++	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
++	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
++};
++
+ struct stmmac_priv {
+ 	/* Frequently used values are kept adjacent for cache effect */
+ 	u32 tx_coal_frames[MTL_MAX_TX_QUEUES];
+@@ -329,19 +346,7 @@ struct stmmac_priv {
+ 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
+ 	unsigned int num_double_vlans;
+ 	int sfty_irq;
+-	int sfty_ce_irq;
+-	int sfty_ue_irq;
+-	int rx_irq[MTL_MAX_RX_QUEUES];
+-	int tx_irq[MTL_MAX_TX_QUEUES];
+-	/*irq name */
+-	char int_name_mac[IFNAMSIZ + 9];
+-	char int_name_wol[IFNAMSIZ + 9];
+-	char int_name_lpi[IFNAMSIZ + 9];
+-	char int_name_sfty[IFNAMSIZ + 10];
+-	char int_name_sfty_ce[IFNAMSIZ + 10];
+-	char int_name_sfty_ue[IFNAMSIZ + 10];
+-	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
+-	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
++	struct stmmac_msi *msi;
+ 
+ #ifdef CONFIG_DEBUG_FS
+ 	struct dentry *dbgfs_dir;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 11150bddd872..24de4033c886 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3725,6 +3725,7 @@ static void stmmac_free_irq(struct net_device *dev,
+ 			    enum request_irq_err irq_err, int irq_idx)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
++	struct stmmac_msi *msi = priv->msi;
+ 	int j;
+ 
+ 	switch (irq_err) {
+@@ -3733,27 +3734,27 @@ static void stmmac_free_irq(struct net_device *dev,
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_TX:
+ 		for (j = irq_idx - 1; j >= 0; j--) {
+-			if (priv->tx_irq[j] > 0) {
+-				irq_set_affinity_hint(priv->tx_irq[j], NULL);
+-				free_irq(priv->tx_irq[j], &priv->dma_conf.tx_queue[j]);
++			if (msi->tx_irq[j] > 0) {
++				irq_set_affinity_hint(msi->tx_irq[j], NULL);
++				free_irq(msi->tx_irq[j], &priv->dma_conf.tx_queue[j]);
+ 			}
+ 		}
+ 		irq_idx = priv->plat->rx_queues_to_use;
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_RX:
+ 		for (j = irq_idx - 1; j >= 0; j--) {
+-			if (priv->rx_irq[j] > 0) {
+-				irq_set_affinity_hint(priv->rx_irq[j], NULL);
+-				free_irq(priv->rx_irq[j], &priv->dma_conf.rx_queue[j]);
++			if (msi->rx_irq[j] > 0) {
++				irq_set_affinity_hint(msi->rx_irq[j], NULL);
++				free_irq(msi->rx_irq[j], &priv->dma_conf.rx_queue[j]);
+ 			}
+ 		}
+ 
+-		if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq)
+-			free_irq(priv->sfty_ue_irq, dev);
++		if (msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq)
++			free_irq(msi->sfty_ue_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_UE:
+-		if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq)
+-			free_irq(priv->sfty_ce_irq, dev);
++		if (msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq)
++			free_irq(msi->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+ 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+@@ -3773,9 +3774,30 @@ static void stmmac_free_irq(struct net_device *dev,
+ 	}
+ }
+ 
++static int stmmac_msi_init(struct stmmac_priv *priv,
++			   struct stmmac_resources *res)
++{
++	int i;
++
++	priv->msi = devm_kmalloc(priv->device, sizeof(*priv->msi), GFP_KERNEL);
++	if (!priv->msi)
++		return -ENOMEM;
++
++	priv->msi->sfty_ce_irq = res->sfty_ce_irq;
++	priv->msi->sfty_ue_irq = res->sfty_ue_irq;
++
++	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
++		priv->msi->rx_irq[i] = res->rx_irq[i];
++	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
++		priv->msi->tx_irq[i] = res->tx_irq[i];
++
++	return 0;
++}
++
+ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
++	struct stmmac_msi *msi = priv->msi;
+ 	enum request_irq_err irq_err;
+ 	int irq_idx = 0;
+ 	char *int_name;
+@@ -3783,7 +3805,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	int i;
+ 
+ 	/* For common interrupt */
+-	int_name = priv->int_name_mac;
++	int_name = msi->int_name_mac;
+ 	sprintf(int_name, "%s:%s", dev->name, "mac");
+ 	ret = request_irq(dev->irq, stmmac_mac_interrupt,
+ 			  0, int_name, dev);
+@@ -3799,7 +3821,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	 * is used for WoL
+ 	 */
+ 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+-		int_name = priv->int_name_wol;
++		int_name = msi->int_name_wol;
+ 		sprintf(int_name, "%s:%s", dev->name, "wol");
+ 		ret = request_irq(priv->wol_irq,
+ 				  stmmac_mac_interrupt,
+@@ -3817,7 +3839,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	 * Error line in case of another line is used
+ 	 */
+ 	if (priv->sfty_irq > 0 && priv->sfty_irq != dev->irq) {
+-		int_name = priv->int_name_sfty;
++		int_name = msi->int_name_sfty;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety");
+ 		ret = request_irq(priv->sfty_irq, stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+@@ -3833,16 +3855,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Safety Feature Correctible Error line in
+ 	 * case of another line is used
+ 	 */
+-	if (priv->sfty_ce_irq > 0 && priv->sfty_ce_irq != dev->irq) {
+-		int_name = priv->int_name_sfty_ce;
++	if (msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq) {
++		int_name = msi->int_name_sfty_ce;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety-ce");
+-		ret = request_irq(priv->sfty_ce_irq,
++		ret = request_irq(msi->sfty_ce_irq,
+ 				  stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc sfty ce MSI %d (error: %d)\n",
+-				   __func__, priv->sfty_ce_irq, ret);
++				   __func__, msi->sfty_ce_irq, ret);
+ 			irq_err = REQ_IRQ_ERR_SFTY_CE;
+ 			goto irq_error;
+ 		}
+@@ -3851,16 +3873,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Safety Feature Uncorrectible Error line in
+ 	 * case of another line is used
+ 	 */
+-	if (priv->sfty_ue_irq > 0 && priv->sfty_ue_irq != dev->irq) {
+-		int_name = priv->int_name_sfty_ue;
++	if (msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq) {
++		int_name = msi->int_name_sfty_ue;
+ 		sprintf(int_name, "%s:%s", dev->name, "safety-ue");
+-		ret = request_irq(priv->sfty_ue_irq,
++		ret = request_irq(msi->sfty_ue_irq,
+ 				  stmmac_safety_interrupt,
+ 				  0, int_name, dev);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc sfty ue MSI %d (error: %d)\n",
+-				   __func__, priv->sfty_ue_irq, ret);
++				   __func__, msi->sfty_ue_irq, ret);
+ 			irq_err = REQ_IRQ_ERR_SFTY_UE;
+ 			goto irq_error;
+ 		}
+@@ -3870,23 +3892,23 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
+ 		if (i >= MTL_MAX_RX_QUEUES)
+ 			break;
+-		if (priv->rx_irq[i] == 0)
++		if (msi->rx_irq[i] == 0)
+ 			continue;
+ 
+-		int_name = priv->int_name_rx_irq[i];
++		int_name = msi->int_name_rx_irq[i];
+ 		sprintf(int_name, "%s:%s-%d", dev->name, "rx", i);
+-		ret = request_irq(priv->rx_irq[i],
++		ret = request_irq(msi->rx_irq[i],
+ 				  stmmac_msi_intr_rx,
+ 				  0, int_name, &priv->dma_conf.rx_queue[i]);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc rx-%d  MSI %d (error: %d)\n",
+-				   __func__, i, priv->rx_irq[i], ret);
++				   __func__, i, msi->rx_irq[i], ret);
+ 			irq_err = REQ_IRQ_ERR_RX;
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(priv->rx_irq[i],
++		irq_set_affinity_hint(msi->rx_irq[i],
+ 				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+@@ -3894,23 +3916,23 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
+ 		if (i >= MTL_MAX_TX_QUEUES)
+ 			break;
+-		if (priv->tx_irq[i] == 0)
++		if (msi->tx_irq[i] == 0)
+ 			continue;
+ 
+-		int_name = priv->int_name_tx_irq[i];
++		int_name = msi->int_name_tx_irq[i];
+ 		sprintf(int_name, "%s:%s-%d", dev->name, "tx", i);
+-		ret = request_irq(priv->tx_irq[i],
++		ret = request_irq(msi->tx_irq[i],
+ 				  stmmac_msi_intr_tx,
+ 				  0, int_name, &priv->dma_conf.tx_queue[i]);
+ 		if (unlikely(ret < 0)) {
+ 			netdev_err(priv->dev,
+ 				   "%s: alloc tx-%d  MSI %d (error: %d)\n",
+-				   __func__, i, priv->tx_irq[i], ret);
++				   __func__, i, msi->tx_irq[i], ret);
+ 			irq_err = REQ_IRQ_ERR_TX;
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(priv->tx_irq[i],
++		irq_set_affinity_hint(msi->tx_irq[i],
+ 				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+@@ -7806,12 +7828,12 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	priv->dev->irq = res->irq;
+ 	priv->wol_irq = res->wol_irq;
+ 	priv->sfty_irq = res->sfty_irq;
+-	priv->sfty_ce_irq = res->sfty_ce_irq;
+-	priv->sfty_ue_irq = res->sfty_ue_irq;
+-	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
+-		priv->rx_irq[i] = res->rx_irq[i];
+-	for (i = 0; i < MTL_MAX_TX_QUEUES; i++)
+-		priv->tx_irq[i] = res->tx_irq[i];
++
++	if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN) {
++		ret = stmmac_msi_init(priv, res);
++		if (ret)
++			return ret;
++	}
+ 
+ 	if (!is_zero_ether_addr(res->mac))
+ 		eth_hw_addr_set(priv->dev, res->mac);
+-- 
+2.47.3
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
