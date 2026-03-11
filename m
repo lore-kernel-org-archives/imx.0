@@ -1,196 +1,177 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF15E363C5F
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773218299; cv=none; b=ggshZmSxRP2SNFuaI3w0hW2zZaaXAYcxtYJNPdyPloa2k7GrL1Qqa9v696xkQpgxFDEBs2RqwGfEgb0mGj6XWepKfpkz7+oNFuWSq7PL+Lw7S+s883JXY4UdlT/pULeaYFt7dOsdZ1+QsZR2akZoxsMaI/S9Plrdufhit5v7kao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773218299; c=relaxed/simple;
-	bh=TvjWgEQ33XAHtp8n95zDJy1h0F9L4/7iW66+tpVk9S0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FrCkykRPYkGEXujAEoiKEmsmc4fWag2PP4ui6iVusJaI8T7vB9gvrmgzFqLxJsKEMEGd9NlACC1ayU80EEt0FTGKO70MdE5fmXmDdF/sLEAj7r4vg98jJtbPQH7rH1hueOn0S4yRa+6VK9HW4bizSMz1rwrDEuQl5h4sIgXJMjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=U8ix46TS; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17751B4F2C
+	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 08:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773218362; cv=fail; b=npVa0pStDDlj0WZ3jBkqaIBzhULjYVCLXzAiWrhjt2ngMnDakktP7DrlkCw/TZRLEea6j30p9bh1tJSLBdIejRx8TuB8sL3Uz2cebtCiR7K3zkEUXIt1ux669OlivJwA/CQQ+xuk9vv6POxHKs9seW1oki83OvqhGyW3AGKgfis=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773218362; c=relaxed/simple;
+	bh=B6qzTPC1OaEFnXUm6ZBCoFu+VgqvyQaFJyKdGQI/rKo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RKOk8ZeboItvvrb/dTYerHrhz213cTw4yqAv8K4okxV/lGT1lfiI0DytyuU+gAW0ByZ2D7hIFy2d7yljY/SxZNVXs5EKBkNTIxAS9JqBJ2v+exeBq1SglYJ4yaoOyd5im7HSXbY5MoCPo+vWGx9Tpc8RUOefk4R6Hv4jIkrErm8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lGFG922z; arc=fail smtp.client-ip=52.101.70.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="U8ix46TS"
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 62CED5A5;
-	Wed, 11 Mar 2026 09:37:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773218229;
-	bh=TvjWgEQ33XAHtp8n95zDJy1h0F9L4/7iW66+tpVk9S0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U8ix46TS06G6FIFu3ndCQTccxAl3ln9MvVBgp/G29x0kD0+sxTnWLS6hnbFKkvct8
-	 IAiImFF9uF5VaKMemytDjwkBdqUmEKFBgN2fmN1lJr21ezatYkm2V8qjpiL7pU1ZEj
-	 3no71DLoHnFW/8zxHYQZJC40ySSaka1YA8RoGjsk=
-Message-ID: <f710352f-5a62-4899-86f0-7a284fbe8ce0@ideasonboard.com>
-Date: Wed, 11 Mar 2026 10:38:12 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lGFG922z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sMr8y+XJalULOfuB2ZXK8uv9hwpPdoTLLAmcHnPLuH6AkvXFDkZbDjpE1fdXLZssQHnwd/QV5SGalbrmO72uLL5tjh4CGqcOAH6SEsunQFANjGG59yjabBVLCcg908cF5ajvgEw2QxI1fMP85m7F/KKaAXPWPFqOoPMil4mvBpt0yt9embe/JgtbQ0afflPM0ykWKvuOYMDnkqClBDHjFVZVYEu1AyIT3fOqc7iOvf3i+w2FUXVa7GZRuRlbxSw4dITCmjQvHM1vhdyEXjrJbE7YYlabq5wjkoklbwn/h1OCx4X8P3WERlm0lz+ZP7cEqqJz9uxj+bTGZRNAT88FHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=20Zo19qZU/I1ZbzM+hYjoOAF6CchBhlS+fXhvcs3BXs=;
+ b=nwMWGiBKxz0Qw25MgaFLSe0FMUH1s2+USpZi/ixpta2H3btac5EbQVhfarsIrg4H795cLAV+Hvkr1Fn9GlPkdLa3GG+UAAJ6zYjIEtn+Pw5NqUcKah+9CWEmde6/nIAWFlQg1i/tw0KF2Q93vi5Mms0dzBsVpiFk83ExLe2PLyJbdsqnm6gjND5J1z/gbeU9zBGtgEdlrVS/bU0bxUwvi9S9n5uVo8WmCEogmcr5AELa1mNnYxhQm1/uGJYoh537k3eZqq37WJPV2/FR1jnKKB+vXIheAKLQSmI7KzDGTxlCLb53KlKmT4vWbgMmc/CozIkyUooFF2AGJ5YbSk+22A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=20Zo19qZU/I1ZbzM+hYjoOAF6CchBhlS+fXhvcs3BXs=;
+ b=lGFG922zS9ElvYmq+/IqAG5FvSec3medNcDsCBKHBOpJEGrGuLhDtPo8N+jlInHuF3raTPxq+yUYSJW0Xp1B/awBijv4tb1aDCqbYA0QxzvEAbCzopvzLQY4Wvlf6Z8jebm1ugOHJQL5vVlE0NB52Oko3D3EQc+VDdxKZ9jnR21snMBjeP/unDS75KT8ELjG88ZCpH6Ik2gVMAwCRRQIjM3IrYiAWd5bwEgFkAkmyrJHo91g7WomnwUUenILDlN+ShHyq40YH8v419mh9f2MT6o1D8FLFLupGPkbxCcbQQJQZBu6rCLVveFoX3CS2J8/uGvz1rsZHQA2fNpQeOVmxA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAWPR04MB11624.eurprd04.prod.outlook.com (2603:10a6:102:50a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 08:39:16 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 08:39:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	Frank.Li@nxp.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v3 net 0/2] net: enetc: safely reinitialize TX BD ring when it has unsent frames
+Date: Wed, 11 Mar 2026 16:41:03 +0800
+Message-Id: <20260311084105.3982037-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0047.apcprd02.prod.outlook.com
+ (2603:1096:4:196::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] media: i2c: ds90ub953: use devm_mutex_init() to
- simplify code
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Vladimir Zapolskiy <vz@mleia.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Guoniu Zhou <guoniu.zhou@nxp.com>
-References: <20260228-ds90ub953-v5-0-056cf07cc8f1@nxp.com>
- <20260228-ds90ub953-v5-3-056cf07cc8f1@nxp.com>
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Content-Language: en-US
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20260228-ds90ub953-v5-3-056cf07cc8f1@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAWPR04MB11624:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9506c3e-31dd-495a-eea1-08de7f49adca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|52116014|19092799006|38350700014|921020|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	yuPDpAg4bO3iKzH4hch7Okpt2pKFbU/XmQfhvqUuWkT20Ypw0PbHEHyKaI3niXPCnKlxzNJFvN/iNaFiTIPScHEf56HfrWPVVYAmWSPQW/gMOmq/f7ppu21lx0JV+4z8lzb5YVTSrbWVMzWHJeFuFNXwVNot9m8aWeYBj98xrQlLX3rItmETWUf3fkrIvk16OclbQFyGlHmd4xklJoQ9wDtLyEnz5B7jwn8HpB8DxrjPjpGEnAjgXBn20VGXAuxnKdqQhxuvK0yOb+s8qsDRuN0CTcmD5b2QRu4TMQ34pggEvvEQREw4tvd50daOhI8ZJSgBY/8lxeM0xxWnRWSlT7bIacI8AbLN9xE9tYc5fb4XNFp2HTdPeSvyri0HVnAPhV2dSn8tq1qOKJ1zgRZlLnaUxr4dOaMX9FDWxHoGub6eM/lpGp1xvO0hFSuAZw98iOtafXvf0ooVujCaNM6v64AnHyM5YCesoNFRIXHx9C4ZmJg2I3+RacHlF6xm5VYloEfQ9Yi7mYwHH+Rk9bVa/BsxY8bxPYGbeRI7HSvaDyivgSf9OVPvr4yENYz1g32a0wLBqDNdR2TWiIrP9/VwAkfYCQTSroMogWfH1mrKfPrvnxE92WkPwvYsqFfGa3hmcyBOx80LqRekzxpTXq9vqYTQvAFKjJ2GBHo0r4rXZYbnrivSVlB+BBnsyTn+1OaRoL/D0+LP5KY+Q2EQA9eTL00pETR88k7U2XZooTvrMOhPbj0N70xwqfL9juogEUg8Q9BfLjnDI8OK7q6EWeURm7dYqobe6OJ/Ap2cXcpO5p5zY54IbZrdtZ4zYrlX4lnP
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(52116014)(19092799006)(38350700014)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4SVNFccIX1VatPcO3rwotFXG3Qx+9hrn9zkfrBrz8R1wKoM8nQSFIHpoFlgC?=
+ =?us-ascii?Q?2Dmn1I0ERWjllGWaPOvAbU6OJxReq/XFZ3AK1Mkr8YbsIc8Makp+rxCw9+Ka?=
+ =?us-ascii?Q?AxEfsJuDT9EqASvRFTG2bLpf/KkcCZZTwKddHrDhrtaCRxKM8q/zBGfGa8UN?=
+ =?us-ascii?Q?e2ZqLnUXyplbB2sv7+rkETFXZBQSsBv3QPdbp0DqO6kYbHnIzUAv/4wUpeH6?=
+ =?us-ascii?Q?vSp8xkSHY89VnCeUoJ4qevONeWQ72ojPcYudovbWEPHDSOXyjsuaE/k4UsJ3?=
+ =?us-ascii?Q?AmkSV5XhAUG9NorlXJl8325/bZn5/fLtKtrf+Jw9VHNGtZloL0FbBGvMuZoK?=
+ =?us-ascii?Q?ftFR8Lj5fAVsnDckdi1MP5e36M4TVnvVCvwYTZQJKvjMwjV0VV2Q2oD9nDMe?=
+ =?us-ascii?Q?syOQgiDuA80PEXvh5bgvGIZb5G379A/mKbrDcB0jCcOWalJrDa40VAnII2+Q?=
+ =?us-ascii?Q?ou4IajJidgDlHiQkARllRScU6ZypxRJjU2R3hmNFLxhOgaVIWjV1/IJ77c/i?=
+ =?us-ascii?Q?OCYkWJACYzIdIzmmTC/GZJem/zMJyIrOFSXM7KwSGRTPFfFH7SRvZ259xtEi?=
+ =?us-ascii?Q?Z6opF0i9w6Y6LHkR9GgkWRgorX3IOjw8WjGMK8dlAzxQ7mmDeZLvV5WIrhcP?=
+ =?us-ascii?Q?anBO04Hya7kpWVpTWD1k3nFDx2amsxTIrf4IjX9KJu3HTgEUIbkA2LRxc734?=
+ =?us-ascii?Q?A3Eff81oNJJlTnW3zOLVsq5jerw++6HBeYki/Wzjsg5CunShlBW1U++4Gq1a?=
+ =?us-ascii?Q?/nSMDVcR1pg6MBi7KVd7Y0DLAehQO/3OaMueg7eAwfKEcM2JL+PwQ0gIpqNR?=
+ =?us-ascii?Q?QnKWiIIoO0hnk63cDIeTxGd6vPnTcIf1w/6rlTizMQh339HSrSXhHutyFKjx?=
+ =?us-ascii?Q?Tk/KlSekQKRqEci9IpxoZOwfEMHfpqusyGnU5X4eqi7mxF/BvdadFggBYC5o?=
+ =?us-ascii?Q?k3HUyZ8QCvInLJ662z9XApl/VBulTNMLUL4r23RpsHfu9EkZAJFTfMPFMrK8?=
+ =?us-ascii?Q?R7dZGifbFQSopSVc1PEsu0fzV+6q6r6CzhbyGwuaR76q3hB8R1Jfahk0PfvD?=
+ =?us-ascii?Q?crb9bIquLfGljh8SZGj91jCuCMp3jULM2LrqkBqw+NAQvxhAxJTVVEDLvtZp?=
+ =?us-ascii?Q?YIJFislkJszW1E10W4/CsOkrmB0Df9T6I9Gmv+Exnc0CM+rk71XPexfj7DPn?=
+ =?us-ascii?Q?NovjAE0vPbxB0du9pIbVt5640qbB059E4hUDBp1qoe2CUASL2Y+8PMNRmH/E?=
+ =?us-ascii?Q?AiKJPQKxfCrB8DNM6XZCm1CK/3Uwko2nlVK5gC9O7DFa7CGYqJRDbgaNSfp/?=
+ =?us-ascii?Q?lUcz0Ygkb+Nzqpepeyfz/Vgxi24uAHfhj4A5APcWupDrgotWsaGqK9GKQ4mn?=
+ =?us-ascii?Q?DZhVdzrtqgc3E5QK6SLcqMni6aDuSo7hPtPJ86rmvCJ92qNj+q1YhKnn4MEo?=
+ =?us-ascii?Q?iW/zHcb5CHL9CBborHrXVROfPtT3idWI9M59kuOiocSiYVOlJSQTDDD4TbWS?=
+ =?us-ascii?Q?YIq5BHxZ7WLuJxIfgnYsGwECGCMFTeFWXiegrpRYcTGqVrtUHuJNPtye3WLT?=
+ =?us-ascii?Q?2x6yYRAw4yAUT6XHMzveSy6zflu3ydD2jr3dL7vkblQq3nBGW9/XTji9fuCD?=
+ =?us-ascii?Q?l1lmrVf2nkB/R3k8Pcmf7Hn2CTpe+P3pdEpHIjz36e2qmS934lKo7ldohLd7?=
+ =?us-ascii?Q?D5aAp+99OXmkKQCHRt7MFQM1gV4RpqDxfvHM8kTLszVK0LJP98AKOLN2VAg3?=
+ =?us-ascii?Q?GIKOEOFpxw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9506c3e-31dd-495a-eea1-08de7f49adca
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 08:39:16.2138
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yPiK4Xih9iPIt/ZnVEkhLGvwvQXtC1AdjnjX6E+k+JNE6YhAO92rJE74EaqJu40IcWGDRLhXAwCaesQAUVntBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11624
 
-Hi,
+Currently the driver does not reset the producer index register (PIR) and
+consumer index register (CIR) when initializing a TX BD ring. The driver
+only reads the PIR and CIR and initializes the software indexes. If the
+TX BD ring is reinitialized when it still contains unsent frames, its PIR
+and CIR will not be equal after the reinitialization. However, the BDs
+between CIR and PIR have been freed and become invalid and this can lead
+to a hardware malfunction, causing the TX BD ring will not work perperly.
 
-On 28/02/2026 08:18, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> 
-> Use devm_mutex_init() to simplify the code. No functional change.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> ---
-> Changes in v2:
-> - Move PTR_ERR() in dev_err_probe();
-> ---
+Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
+the driver must reset them if they are not equal when reinitializing
+the TX BD ring.
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+However, resetting the PIR and CIR alone is insufficient, it cannot
+completely solve the problem. When a link-down event occurs while the TX
+BD ring is transmitting frames, subsequent reinitialization of the TX BD
+ring may cause it to malfunction. Because enetc4_pl_mac_link_down() only
+clears PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It
+doesn't set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, it is
+not safe to reinitialize the TX BD ring at this point.
 
- Tomi
+To safely reinitialize the TX BD ring after a link-down event, we checked
+with the NETC IP team, a proper Ethernet MAC graceful stop is necessary.
+Therefore, add the Ethernet MAC graceful stop to the link-down event
+handler enetc4_pl_mac_link_down(). Note that this patch set is not
+applicable to ENETC v1 (LS1028A).
 
->  drivers/media/i2c/ds90ub953.c | 33 +++++++++++++--------------------
->  1 file changed, 13 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
-> index 14dd0aa4cc6ceba66a8c3545c7d7d19694007431..a85c6a9b64070491db161ca1586179dba9c69cb0 100644
-> --- a/drivers/media/i2c/ds90ub953.c
-> +++ b/drivers/media/i2c/ds90ub953.c
-> @@ -1345,7 +1345,9 @@ static int ub953_probe(struct i2c_client *client)
->  	if (!priv->plat_data)
->  		return dev_err_probe(dev, -ENODEV, "Platform data missing\n");
->  
-> -	mutex_init(&priv->reg_lock);
-> +	ret = devm_mutex_init(dev, &priv->reg_lock);
-> +	if (ret)
-> +		return ret;
->  
->  	/*
->  	 * Initialize to invalid values so that the first reg writes will
-> @@ -1354,32 +1356,26 @@ static int ub953_probe(struct i2c_client *client)
->  	priv->current_indirect_target = 0xff;
->  
->  	priv->regmap = devm_regmap_init_i2c(client, &ub953_regmap_config);
-> -	if (IS_ERR(priv->regmap)) {
-> -		ret = PTR_ERR(priv->regmap);
-> -		dev_err_probe(dev, ret, "Failed to init regmap\n");
-> -		goto err_mutex_destroy;
-> -	}
-> +	if (IS_ERR(priv->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
-> +				     "Failed to init regmap\n");
->  
->  	priv->clkin = devm_clk_get_optional(dev, "clkin");
-> -	if (IS_ERR(priv->clkin)) {
-> -		ret = PTR_ERR(priv->clkin);
-> -		dev_err_probe(dev, ret, "failed to parse 'clkin'\n");
-> -		goto err_mutex_destroy;
-> -	}
-> +	if (IS_ERR(priv->clkin))
-> +		return dev_err_probe(dev, PTR_ERR(priv->clkin),
-> +				     "Failed to parse 'clkin'\n");
->  
->  	ret = ub953_parse_dt(priv);
->  	if (ret)
-> -		goto err_mutex_destroy;
-> +		return ret;
->  
->  	ret = ub953_hw_init(priv);
->  	if (ret)
-> -		goto err_mutex_destroy;
-> +		return ret;
->  
->  	ret = ub953_gpiochip_probe(priv);
-> -	if (ret) {
-> -		dev_err_probe(dev, ret, "Failed to init gpiochip\n");
-> -		goto err_mutex_destroy;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to init gpiochip\n");
->  
->  	ret = ub953_register_clkout(priv);
->  	if (ret) {
-> @@ -1403,8 +1399,6 @@ static int ub953_probe(struct i2c_client *client)
->  	ub953_subdev_uninit(priv);
->  err_gpiochip_remove:
->  	ub953_gpiochip_remove(priv);
-> -err_mutex_destroy:
-> -	mutex_destroy(&priv->reg_lock);
->  
->  	return ret;
->  }
-> @@ -1419,7 +1413,6 @@ static void ub953_remove(struct i2c_client *client)
->  	ub953_subdev_uninit(priv);
->  
->  	ub953_gpiochip_remove(priv);
-> -	mutex_destroy(&priv->reg_lock);
->  }
->  
->  static const struct ub953_hw_data ds90ub953_hw = {
-> 
+---
+v3:
+1. Split the v2 patch into two parts
+2. Update the comments regarding PIR and CIR in enetc_setup_txbdr()
+3. Use read_poll_timeout() instead of the while loop
+v2 link: https://lore.kernel.org/imx/20260309030412.2716984-1-wei.fang@nxp.com/
+v2:
+1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
+2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
+---
+
+Wei Fang (2):
+  net: enetc: reset PIR and CIR if they are not equal when initializing
+    TX ring
+  net: enetc: add graceful stop to safely reinitialize the TX Ring
+
+ drivers/net/ethernet/freescale/enetc/enetc.c  |  13 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 111 +++++++++++++++---
+ 3 files changed, 120 insertions(+), 15 deletions(-)
+
+-- 
+2.34.1
 
