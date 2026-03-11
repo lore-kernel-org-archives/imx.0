@@ -1,45 +1,56 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7A831F984
-	for <imx@lists.linux.dev>; Wed, 11 Mar 2026 22:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C97839098B;
+	Wed, 11 Mar 2026 22:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773266780; cv=none; b=ZzhQ9noo0vmIsdwFAYg9kI74A8rrMngKvmfcfXzLYpfg4Q8kkhcwpqG9qiHRhyhJ86LNIbmZNVWFoNYR+F3i8G3nTgRRAIFo8NzBFh89tgDpQNx4iUdoqjVo2ok7kod4mzOZpGLOH+XixcMwHa6Y/FetWwTjMJUrf7svQOrA2EI=
+	t=1773267709; cv=none; b=Mnw35QPCi216gl2zR38E35F7ykNJAYdmZVo4c6g3oHd6p3AAsD9o0AAKC7zs2rCxVfE3h7fFmWH8dqEUBWj3B5y4oR7ApdYUmyTpnNT5o2VTpOba6NhAXRYOYQUoan9y5Fuyjs7UGiwztTYwHfzKqQZpgWHrQy7YHNrAlCk1hjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773266780; c=relaxed/simple;
-	bh=3zNGKPTR7lMaqiJLXqiTCNcHkv2JKhS4tfMgYMU6dXI=;
+	s=arc-20240116; t=1773267709; c=relaxed/simple;
+	bh=WK3QT8rOLHjpCFW78jHwvfMiwloIaFd16wfM+ic7+OQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EBYHLib8zCAALFdlKGamy5dGTflySjSvD6Mv1zTeLqzzuw+otApY+Mw0NTbiJ4KlucY2nJoEdc5D5/2mG3LNqj183uKz0wp86Iz4sou3LK1L22ViegHnpMyj8JPnAyuMVCHumP8/3Jpd2IYuoATypaSf/MeMSKObyekZ53ezDu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TKH/wyx8; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KgM6cYHk5pZRD1PAntYHMkOnaM2aQl4t53scsrsT6fi0P7+DYY9IfFl2IpY5mhwMY1/m0OLKbBBrNWqzzZ/HU92MQWzEf8zUQ1Aqs4v01AJy8QycpJXr/4bU6dNnZrInjN5Fvfz38sifop5Lj/DOYFooOZHfoJUEIFPnKMMplsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tkrD9TeA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TKH/wyx8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4B061C41590;
-	Wed, 11 Mar 2026 22:06:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AB94460004;
-	Wed, 11 Mar 2026 22:06:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A0B510369BAF;
-	Wed, 11 Mar 2026 23:06:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773266775; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=8I/cBM2paZR5qxCHtc+Yf5SzrN3xCWu16o5R1WNwpBY=;
-	b=TKH/wyx89U42BCdv3OBj9m1984RIfhyFEZyTnpKB865t/x0waHjxfbWXsVRyDKCE1ovizp
-	S2pKYlU82zJ2J0K+R3LjrOLe17W3B2HMWN8aN5iPCN0oDp9p+Wz2wuGW0SQYyH8GYY8gvm
-	G95Zx62cpFGSXodgVLmQOkMyXgzpOZKyO8iZopYI50ntLxbxbT7yoRX4nfpNH7UkUJu8Wu
-	UDr9Z2RfhlnlP7chbP5p4fJ4KETtMxGGvXlBRDEkcSKi5mjKVgq7iGvy5cGuSdTD3YYngI
-	8m8U6VcsRuYjNYOKpvFwmuZGiCpMg7ToDwk6MAPw2sGMLP+A7fx6fwu718Ozzg==
-Date: Wed, 11 Mar 2026 23:06:14 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
-	linux-i3c@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH] i3c: master: svc: spelling corrections
-Message-ID: <177326636988.2391121.8519981227347109446.b4-ty@bootlin.com>
-References: <20260216061755.2801697-1-rdunlap@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tkrD9TeA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B426C4CEF7;
+	Wed, 11 Mar 2026 22:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773267709;
+	bh=WK3QT8rOLHjpCFW78jHwvfMiwloIaFd16wfM+ic7+OQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tkrD9TeAacpCbTlpV9TAeDLGkfF4fHWFTj6DRcwOFitcdOtMln7oUjJAHTm9qjYOF
+	 NibmVmwv0tyKrc+UJjv5ebCCpVPdo7u5/pQ4FxH+91sJpsWvYzxgw9qHC0vMUEOZ5t
+	 P9zkLDW8P0VXMwVzN1uUFnzcg58I9R0iHs7vPoMGgNyjQRfRS2M9tItEFXQjqByvtN
+	 qNg3rRYp8kvXbsI9ZXcCWK9v/GiYVc4KwtDQdaogZTbZ9luZmn+H9lhwjsfASmmR+1
+	 IPBYotdafQoHWzPEtjkgzQ7wdr8aXm5UXob7ENNIrQNwfgbW9i5A85yMEoIj07x4aR
+	 qY65/2dBPq/5Q==
+Date: Wed, 11 Mar 2026 17:21:48 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>
+Subject: Re: [PATCH v6 3/5] irqchip/imx-irqsteer: add NXP S32N79 support
+Message-ID: <20260311222148.GA875265-robh@kernel.org>
+References: <20260311081154.381881-1-ciprianmarian.costea@oss.nxp.com>
+ <20260311081154.381881-4-ciprianmarian.costea@oss.nxp.com>
+ <87h5qmraum.ffs@tglx>
+ <abGPVJpvXCOtMcCs@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,27 +59,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216061755.2801697-1-rdunlap@infradead.org>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <abGPVJpvXCOtMcCs@lizhi-Precision-Tower-5810>
 
-On Sun, 15 Feb 2026 22:17:55 -0800, Randy Dunlap wrote:
-> Correct spelling for 3 words as identified by codespell:
+On Wed, Mar 11, 2026 at 11:50:44AM -0400, Frank Li wrote:
+> On Wed, Mar 11, 2026 at 10:09:37AM +0100, Thomas Gleixner wrote:
+> > On Wed, Mar 11 2026 at 09:11, Ciprian Costea wrote:
+> > > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> > >
+> > > Add support for the interrupt steering controller found in NXP S32N79
+> > > series automotive SoCs.
+> > >
+> > > The S32N79 IRQ_STEER variant differs from the i.MX version by not
+> > > implementing the CHANCTRL register. To handle this hardware difference,
+> > > introduce a device type data structure with quirks field. The
+> > > IRQSTEER_QUIRK_NO_CHANCTRL quirk skips CHANCTRL register access for S32N79
+> > > variants.
+> > >
+> > > The interrupt routing functionality and register layout are otherwise
+> > > identical between the two variants.
+> > >
+> > > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> >
+> > I've picked up this one. Can the ARM64 folks please pick up the DT muck
+> > as that really has close to zero relevance to irqchips.
 > 
-> svc-i3c-master.c:340: tigger ==> trigger
-> svc-i3c-master.c:532: reamins ==> remains
-> svc-i3c-master.c:734: filetered ==> filtered
+> Did you pick binding one?
+
+The replies to the thread clearly say what was applied.
+
+> PATCH v6 1/5] dt-bindings: interrupt-controller: fsl,irqsteer: add S32N79 support
 > 
-> 
-> [...]
+> I have not founnd at linux-next yet.
 
-Applied, thanks!
+Please take the binding with the .dts file changes.
 
-[1/1] i3c: master: svc: spelling corrections
-      https://git.kernel.org/i3c/c/5912baff068a
-
-Best regards,
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Rob
