@@ -1,103 +1,104 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B585E1F5834;
-	Wed, 11 Mar 2026 15:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE823E0231;
+	Wed, 11 Mar 2026 15:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773242561; cv=none; b=KS00jYx91xXYJIUTPVwX6k4Sxeh0VZQfJ0/9gjPp94nW8RO+zMVMFCzYsnQ6aCZUQNIuxg5ZoMmUgT26R/xNISPVUF+QCD+UmcyNzfpOSKaZn2BP98JznDmoxTvk2p+YePaZkuCipK5lxopRL7VXVQtJ80ZZVkcSx8xTxeeLdxU=
+	t=1773242570; cv=none; b=I0BA2NRRF44M1nLUgBnvMOq+FMxe1fcmQ6zBsmnCDgNHnHEx5kwJIvxfaN0OQs+iy2e6pmKyQ2AqpA8kqZzlwIOwPSwSsBiovRPsNrkuv6M31OCqRv6Jf924XOJ8ghYFqcPJ3U9L+UVw1/HOPJg1uKd4oT1R48pLm6B/WkEUOa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773242561; c=relaxed/simple;
-	bh=XKGVKkkA1YFEQ28eofaP/YMo52x1WcSFJFUYOku2rV8=;
+	s=arc-20240116; t=1773242570; c=relaxed/simple;
+	bh=F+055il/OvN4uacNlBTxk0d8KhqQCg5t4xFZ1mkewI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+ys9Jwd4IAm+xHE4HG3ebveTHe6YD8lRMSGkzi8gWPQPDEre3zdti4ZKuYCKXB/Wnn9dz/ZSiTciNo+ro2mbZZEuThKcYSPrQgPOw8p5Fmb/gugsgF00DmsvTwQnXY4h3wJqN7/F6tke2zk2UtNXXDEM24pABdBDrZCPel8nO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Iuupisj3; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version; b=pYiRCUYiO7bklvq78EfzSqAWtn/JbLCx8oFyYL7fd+v7QjVXOAspQCk3CJWpppDSbwMQ+9Zz16TAWIcqDwzQGDRox4BJjw2MA8tHcrFR1Y7qbMPDlbUau+M1TROmqh+A/Tkt/X3Q6moBwTPIbPr98CITyyyeZvrzuqLojB0rPps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=BPss/Iye; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Iuupisj3"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="BPss/Iye"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=NHcXA4Vo5uDe7HPajpC5VBv8LgcG6irSL2nhHCrAnTE=; b=Iuupisj3Zuhf6ZYUv+SXKfxkRn
-	jiWeCXQ3kAySgP18jGwfTLUhs9mFqMYGEOAFxq2l0Z9lWgRX7+pxzHDoF0v42r5+EN1L+OFGzn32p
-	aotu/q3DhTlY9b/H6N1JnNqc4vzPMJ3Z7NhyI+anji1mIOrT/SIL0SLjjO5SFJpdGj+lX0ZjvUy8X
-	4IDiKMQkkI368WAOO3CH5Q0NzBvVQm7DHv4IFgDiuRgT3YHuQEByjbFGeowge2v2iNJu+FEnJTVcP
-	RIsXKZZ2W93C/d617uAo1GfVelOWT6hX8Mzl0BycC/jxf8Lzrf4OvkscDraezo02iEbwtZIu8R2mG
-	/rgxEOMg==;
+	bh=eWuktYYGFGWr7pyAiFwlIyxHt8j0hyF1IdPTFcAhi1g=; b=BPss/Iye/rk5X2qCDpusgy915Z
+	EVpIePQgFbAicAZOP/BFmkvYp7ZQwGG1EInNl+6HIyVog8pwa6ioha1LyP0RPALDruYAyv13bg8h3
+	26t6EUeIrWAnYX0E3Hy5Er9NTzW72vu8OMNzSDyNd2UU2MzZ3ke7kSQlOk4IRptEh31GJaB7zWIFp
+	jEA/WXcH7HI8IhMYDvl13rTf1XhGDdY0x9FfjdOdJIAf8zkFQncBBr6eUlt4ReqtnuIkSXteIeKTc
+	YJbQUIeWhdmHEibzwTX4Kb9gELlHrBebqsCqB1UMR8PS7ST8iRVP0Jh17r384Ts1ydNO3Io/94s6y
+	OQTa/rVg==;
 Received: from sslproxy02.your-server.de ([78.47.166.47])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0Ktb-0001sr-0G;
-	Wed, 11 Mar 2026 15:50:47 +0100
+	id 1w0KvH-0002J6-0Y;
+	Wed, 11 Mar 2026 15:52:31 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0Kta-000FGI-1O;
-	Wed, 11 Mar 2026 15:50:46 +0100
+	id 1w0KvG-0005cY-2D;
+	Wed, 11 Mar 2026 15:52:30 +0100
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- Daniel Baluta <daniel.baluta@oss.nxp.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com, linux-clk@vger.kernel.org
-Subject:
- Re: [PATCH 4/6] arm64: dts: imx93-tqma9352-mba91xxca: Add LVDS display
- overlay
-Date: Wed, 11 Mar 2026 15:50:45 +0100
-Message-ID: <7489551.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <1ba940f3-6ff8-43b4-98c3-a8ce23e2b0fa@oss.nxp.com>
-References:
- <20260311143217.1700704-1-alexander.stein@ew.tq-group.com>
- <20260311143217.1700704-5-alexander.stein@ew.tq-group.com>
- <1ba940f3-6ff8-43b4-98c3-a8ce23e2b0fa@oss.nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 4/5] arm64: dts: imx8mn-tqma8mqnl-mba8mx-tm070jvhg33: Remove compatible from overlay
+Date: Wed, 11 Mar 2026 15:52:18 +0100
+Message-ID: <20260311145222.1749655-4-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260311145222.1749655-1-alexander.stein@ew.tq-group.com>
+References: <20260311145222.1749655-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27937/Wed Mar 11 07:24:53 2026)
 
-Hi Daniel,
+There is no reason to override the board compatible in a an overlay,
+remove it. While at it, update the copyright year.
 
-Am Mittwoch, 11. M=E4rz 2026, 15:48:04 CET schrieb Daniel Baluta:
-> On 3/11/26 16:32, Alexander Stein wrote:
-> > +
-> > +&panel_in {
-> > +	remote-endpoint =3D <&lvds_encoder_output>;
-> > +};
-> > +
-> > +&dpi_bridge {
-> > +	pinctrl-names =3D "default";
-> > +	pinctrl-0 =3D <&pinctrl_rgbdisp>;
-> > +	status =3D "okay";
-> > +};
->=20
-> Hi Alexander,
->=20
-> Any reason for dpi_bridge breaking the alphabetical order?
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ .../freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Nice catch. Thanks. I'll update in v2, same for PATCH 3.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
+index 29235e390a5d7..0f4cf1855bf3a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+ /*
+- * Copyright (c) 2022-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * Copyright (c) 2022-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+  * D-82229 Seefeld, Germany.
+  * Author: Alexander Stein
+  */
+@@ -10,10 +10,6 @@
+ 
+ #include <dt-bindings/gpio/gpio.h>
+ 
+-&{/} {
+-	compatible = "tq,imx8mn-tqma8mqnl-mba8mx", "tq,imx8mn-tqma8mqnl", "fsl,imx8mn";
+-};
+-
+ &backlight_lvds {
+ 	status = "okay";
+ };
+-- 
+2.43.0
 
