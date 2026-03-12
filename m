@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F51A3B8BA9
-	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42D13B52F7
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307775; cv=none; b=rHXf7ujyLPM9P/yiAYxSdb9oxICaXl0TxbLij8sTWGwYKw5frg03gvLhheg2ER2zwTW5cr1LSgl0HEtfRKM5MCgBtf2BxhvI4nFLAO4l5S5/keSDOxVJ+VRD4fl+QE/Zh9OUplnVaUgCNiBLcMYKGwflDaLOtoGHMHMqiCbM234=
+	t=1773307775; cv=none; b=rgVct9fjFtp/qQAL1J+pP1/jLjJmdf8GfhX78sGOIF5C470kO22k+pLi/J7b14j3kBuRpMscAouSJbZmGjw388NCZDQAZVideauE5USjcHvakhEh1Q7ArhCffojjc160A+E1XHJHNBABubotX2HQzyTJWaBROoyAgbs4TFrWqg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773307775; c=relaxed/simple;
-	bh=glXnnLq+H0IQeUDKGYfZeG9/mHtAWfFZpMbDvF6QREo=;
+	bh=LyKS2UfKEPAlA7qoBJVDK8YAcSdArV81Ct/JwFiFDUU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CY0RLllDyDmEyZ9+9DEVLq1nnxVOO7jhG0CqxpbkXDJoc7Gl6kFna0b31xMmX6QN/+L8YEfRgaTNGvDUakeahqO72zue14aOPKgaB4KXNpBBb5hBAC5ckmM9iNMHSUwnpIeoV4Ag2Sn38qvTIQWgpScUkyt6IIHf8EIkeTOlzMQ=
+	 MIME-Version; b=ry0Z37eUOHTDxD8dlHuv8HPyh8y1DTi7XqN98SOlJMAQU6aLe2BESCVkbkd7nX6ol1mOt/VFH1uCwDbyVxg0eYS7Nd9e6/Ytn/Q2DUPfsZJk29H9/qjCUXEqRh1URzcGcVEEjZnWwwO9juNFefA++voUU9kTITW017JgwTOZF9c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f58eb88a1df511f1a21c59e7364eecb8-20260312
+X-UUID: f55219a21df511f1a21c59e7364eecb8-20260312
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:62a21c0e-b7f8-47da-bd51-ef8e06fb52a3,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:514faac31fe6ac7ef71777732f79c088,BulkI
+X-CID-O-INFO: VERSION:1.3.11,REQID:c2c43a03-6447-42b8-b072-71d50f7845ae,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:89c9d04,CLOUDID:67f1a4f02718a90d4aececef4621e56a,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f58eb88a1df511f1a21c59e7364eecb8-20260312
+X-UUID: f55219a21df511f1a21c59e7364eecb8-20260312
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 702058777; Thu, 12 Mar 2026 17:29:24 +0800
+	with ESMTP id 99332158; Thu, 12 Mar 2026 17:29:24 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 11/17] spi: st: Use helper function devm_clk_get_enabled()
-Date: Thu, 12 Mar 2026 17:29:03 +0800
-Message-Id: <3c7a2fde331aa2653bf1a5876d4bd72771709349.1773306858.git.xiaopei01@kylinos.cn>
+Subject: [PATCH 10/17] spi: slave-mt27xx: Use helper function devm_clk_get_enabled()
+Date: Thu, 12 Mar 2026 17:29:02 +0800
+Message-Id: <24ac0d6d499559f6cfe8b35e048ccb9be8bc73ee.1773306858.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773306858.git.xiaopei01@kylinos.cn>
 References: <cover.1773306858.git.xiaopei01@kylinos.cn>
@@ -66,66 +66,34 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-st-ssc4.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/spi/spi-slave-mt27xx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index b173ef70d77e..e7237082abbc 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -293,24 +293,20 @@ static int spi_st_probe(struct platform_device *pdev)
- 	host->use_gpio_descriptors	= true;
- 	spi_st				= spi_controller_get_devdata(host);
- 
--	spi_st->clk = devm_clk_get(&pdev->dev, "ssc");
-+	spi_st->clk = devm_clk_get_enabled(&pdev->dev, "ssc");
- 	if (IS_ERR(spi_st->clk)) {
- 		dev_err(&pdev->dev, "Unable to request clock\n");
- 		ret = PTR_ERR(spi_st->clk);
- 		goto put_host;
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
+index ce889cb33228..8ec886918165 100644
+--- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -438,19 +438,13 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ 		goto err_put_ctlr;
  	}
  
--	ret = clk_prepare_enable(spi_st->clk);
--	if (ret)
--		goto put_host;
+-	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi");
++	mdata->spi_clk = devm_clk_get_enabled(&pdev->dev, "spi");
+ 	if (IS_ERR(mdata->spi_clk)) {
+ 		ret = PTR_ERR(mdata->spi_clk);
+ 		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
+ 		goto err_put_ctlr;
+ 	}
+ 
+-	ret = clk_prepare_enable(mdata->spi_clk);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed to enable spi_clk (%d)\n", ret);
+-		goto err_put_ctlr;
+-	}
 -
- 	init_completion(&spi_st->done);
+ 	pm_runtime_enable(&pdev->dev);
  
- 	/* Get resources */
- 	spi_st->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi_st->base)) {
- 		ret = PTR_ERR(spi_st->base);
--		goto clk_disable;
-+		goto put_host;
- 	}
- 
- 	/* Disable I2C and Reset SSC */
-@@ -333,14 +329,14 @@ static int spi_st_probe(struct platform_device *pdev)
- 	if (!irq) {
- 		dev_err(&pdev->dev, "IRQ missing or invalid\n");
- 		ret = -EINVAL;
--		goto clk_disable;
-+		goto put_host;
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, spi_st_irq, 0,
- 			       pdev->name, spi_st);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to request irq %d\n", irq);
--		goto clk_disable;
-+		goto put_host;
- 	}
- 
- 	/* by default the device is on */
-@@ -359,8 +355,6 @@ static int spi_st_probe(struct platform_device *pdev)
- 
- rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
--clk_disable:
--	clk_disable_unprepare(spi_st->clk);
- put_host:
- 	spi_controller_put(host);
- 	return ret;
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
 -- 
 2.25.1
 
