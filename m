@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE803FE646;
-	Thu, 12 Mar 2026 17:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9BB285CAE;
+	Thu, 12 Mar 2026 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337076; cv=none; b=r4E+YYct6ET42FBe7YwBs8iZxsxL9HZOoTic86qXiEnA/WoIkFQ/fjuNJ6tIZZEf4QN6NpKTWSWqtXgbZYdAKB96WMnfggW9Sgh0k5o6ubhSkeY8Fyl4Q4QooQXFOFThzklPfeoymTpB50PU46Wcik5tp5ntjigs10EP0HM07Kk=
+	t=1773337657; cv=none; b=eFzBHmqBPAkoDwL+4fU1ajv5ym9m8f9zSd9J7S2txQg4yNFcalA1pJG2QrJONJwA0/ZXYk3IXX4dhASuWxQfu4QvZW9LYKOnR+4EojrqSHxSndRFvWMje5lpZSj12bqlz4hqXC8wOlJR3FzezemaI5gGdpQPzRb155laOBgE6s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337076; c=relaxed/simple;
-	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
+	s=arc-20240116; t=1773337657; c=relaxed/simple;
+	bh=wMvtMWbR5Rj73AQJqGHUhW527Tb27PV6JT2/uOlrqcc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LbNXwss0sM1Pm7epOEarWnYCaAYCAQV9tnH/PInodP/Oaq/xVfO2hoji/3+7V9wmX7Etbyli0USO+wy3kcNsV1V87eJrvzVsX8zsaxUo2pDEBgVYjTIEeJWFqRGxC9unkPqXYG3gvLviFUUmpDkn4+WFxQY0DRQLOFW22L+nT/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff4qP7P0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tzlS6TGuMXHJYKzCmISscmwB7qD2iX0zWpKIAuIkCbw5krq/WZwEKUJRe9Eb++39AiJ8ud2sz/EK9vAbSfteAVi4QXn76hYc6CLKE7l10/8B/VSCKtax6uYLaqFT5HJ8MYgtq9JrXdDPTscbSCw4cVS6AUlbP5LSctDy8Hwm3Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeM3E+nJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff4qP7P0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1704C4CEF7;
-	Thu, 12 Mar 2026 17:37:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeM3E+nJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13C9C4CEF7;
+	Thu, 12 Mar 2026 17:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773337076;
-	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
+	s=k20201202; t=1773337657;
+	bh=wMvtMWbR5Rj73AQJqGHUhW527Tb27PV6JT2/uOlrqcc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ff4qP7P0InVUnBUhM3Vtq96wZ0ILUUgkGrxZYHaddnDcFs6PP+8gyhTAdIIQHPk2Y
-	 bOfSGdMdcc2cBbuQ1gxKzvzr5buWAShjm7rNFD+OvKTMrfvtiTh58eoQjFMc6UksGQ
-	 6zzbiroo7h6rEQLex6MVQrAvRvw10XGGSbYCdRFNCe5ixJdrzrfagC7rKEuIvs9Umd
-	 g/k72i7MWJ+/ClO8ORAOF7wiAw9nYo+oC9RiMeYljmAL/vq+NvPZzSSyBDxHdAFgKE
-	 l31FhuKTIMQ1Yw6UGKNFZfHhTNYdEkMlfRmpiagxyWcWqUt28APqTDRU5v/lENzIFo
-	 se6GtOW65l5aQ==
-Date: Thu, 12 Mar 2026 17:37:51 +0000
+	b=GeM3E+nJRDYrZQpRJ87vLFXFSyxyG/EAVXgwfF3EJGdwNfH1RCSsUSSIwbd+TiIcU
+	 QbeY77pSfxF49LYTwJtaUs+ycd7DwArmo6+wxfeuO3799jx0i1clQXJP2VcBdhfMQx
+	 G6modkOreHw4npBGs1w9WDOvcw+O1T02bj2oKCIMd9gSAx3554t8wjnapozKzYxmrB
+	 W/e9uv6/Nw9WdARJsjF2MNYlYXcAa+quTQyIxK9hipKKNL+bx6Wjy9wPMS5CMLXcoc
+	 0J8rTRg6OrGrIQN54n/hmwRS5/4bDP3m+OhI2fHHyVrzzxWksAPmlfS79rK1OTIx40
+	 B2f+f5f33tD4Q==
+Date: Thu, 12 Mar 2026 17:47:32 +0000
 From: Conor Dooley <conor@kernel.org>
-To: florin.leotescu@oss.nxp.com
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-Message-ID: <20260312-triage-shallot-1b3d9f07d250@spud>
-References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
- <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, amitsd@google.com, gregkh@linuxfoundation.org,
+	kyletso@google.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: connector: add pd-disable dependency
+Message-ID: <20260312-facial-backshift-7e810ca5f996@spud>
+References: <20260312071609.388047-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,82 +45,58 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oDbvumbCQdRDhubR"
+	protocol="application/pgp-signature"; boundary="wr13SwXvugaUCQW1"
 Content-Disposition: inline
-In-Reply-To: <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
+In-Reply-To: <20260312071609.388047-1-xu.yang_2@nxp.com>
 
 
---oDbvumbCQdRDhubR
+--wr13SwXvugaUCQW1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
+On Thu, Mar 12, 2026 at 03:16:08PM +0800, Xu Yang wrote:
+> When Power Delivery is not supported, the source is unable to obtain the
+> current capability from the Source PDO. As a result, typec-power-opmode
+> needs to be added to advertise such capability.
+
+What's the impact on any users of making this a dependency?
+I assume nothing negative, since this will only impact systems that
+don't work properly at present?
+
 >=20
-> The EMC2305 fan controller supports multiple independent PWM fan
-> outputs. Some systems require fans to enter a defined safe state
-> during system shutdown or reboot handoff, until firmware or the next
-> boot stage reconfigures the controller.
->=20
-> Add an optional "fan-shutdown-percent" property to fan child nodes
-> allowing the shutdown fan speed to be configured per fan output.
->=20
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> Fixes: 7a4440bc0d86 ("dt-bindings: connector: Add pd-disable property")
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > ---
->  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  Documentation/devicetree/bindings/connector/usb-connector.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >=20
-> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.ya=
-ml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> index d3f06ebc19fa..7bcadfab9fc4 100644
-> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> @@ -54,6 +54,12 @@ patternProperties:
->            The fan number used to determine the associated PWM channel.
->          maxItems: 1
+> diff --git a/Documentation/devicetree/bindings/connector/usb-connector.ya=
+ml b/Documentation/devicetree/bindings/connector/usb-connector.yaml
+> index 901986de3e2b..671d7775b635 100644
+> --- a/Documentation/devicetree/bindings/connector/usb-connector.yaml
+> +++ b/Documentation/devicetree/bindings/connector/usb-connector.yaml
+> @@ -335,6 +335,7 @@ properties:
+>      maximum: 100000
 > =20
-> +      fan-shutdown-percent:
-> +        description:
-> +          Fan RPM in percent set during shutdown.
-
-This sounds like something generic, that other devices might need and
-should be in fan-common.yaml?
-
-> +        minimum: 0
-> +        maximum: 100
-> +
->      required:
->        - reg
-> =20
-> @@ -80,12 +86,14 @@ examples:
->              fan@0 {
->                  reg =3D <0x0>;
->                  pwms =3D <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
-> +                fan-shutdown-percent =3D <100>;
->                  #cooling-cells =3D <2>;
->              };
-> =20
->              fan@1 {
->                  reg =3D <0x1>;
->                  pwms =3D <&fan_controller 26000 0 1>;
-> +                fan-shutdown-percent =3D <50>;
->                  #cooling-cells =3D <2>;
->              };
+>  dependencies:
+> +  pd-disable: [typec-power-opmode]
+>    sink-vdos-v1: [ sink-vdos ]
+>    sink-vdos: [ sink-vdos-v1 ]
 > =20
 > --=20
 > 2.34.1
 >=20
 
---oDbvumbCQdRDhubR
+--wr13SwXvugaUCQW1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabL57wAKCRB4tDGHoIJi
-0noHAP9z/fCiq8hV4ZCCK6xJrtd6hvHbeRv80Hgr1bMapjuwoAD/QTtp9v/Ab3J9
-3q1keEgHBJviuIq0kTxW0wHKYbkL+g0=
-=Y6RW
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabL8NAAKCRB4tDGHoIJi
+0nwiAQDQ56ujTvFrDP3c0yVVvsagFKg0Z0+t5X7xitqXTKLfjQD/exOakRzb+SJA
+CPWE9IyUVD27QdG5+TIUbF3XRVvcAg0=
+=Jyu8
 -----END PGP SIGNATURE-----
 
---oDbvumbCQdRDhubR--
+--wr13SwXvugaUCQW1--
