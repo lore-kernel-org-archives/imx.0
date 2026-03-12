@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067F03B894F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC383B4EB5
 	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307777; cv=none; b=bYa/oQKtZRmCoGzF0KBPNNm9a70ULz7aaApxKMSTB386gJkFlJRBWJj58DVMTjSBmf2KN4DlU6KpCr8I/e6dPH1qMp8jLjrCKj1sc+AFbrFN1mJHl5E9MF8O5ZdXi4fm1VWL8RmpsLPiLTcfNeSm3X3c00h03e21TD11DwznWEM=
+	t=1773307778; cv=none; b=a6V8F+SoyvDYkhcGcL2pufPaodhROalwiewZyKkbrust0iLKz3ZRgQGlyKGiypyj2gi9YltcUWn6Cls2Np+/ypPlR7DeS/wkaqGjp/tSA1VYpbv9jG3iVsFvTTVE6918pR4MBZAZiR5ld8xorVa05tKXe7S6iZRGga9Wtck8PtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773307777; c=relaxed/simple;
-	bh=VCB4M+lEmfXyT9206dMOaN6u6sF7wUrvWJCpVj+1YI8=;
+	s=arc-20240116; t=1773307778; c=relaxed/simple;
+	bh=4ZfcPFPmwj9wKHiRm5M5YahNf/Uq/EKO9Ai3geWy5YQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CbaMjncij2I4OU0OL/XLQJ9BE5VOAOlTC144n8I2jMJvXXEW/lvAxs6p0UbN1lDg27WdmjUEdYNPEbyB8PQCre9T7yOrpOktZ4vpj+Nd6ci+ZiI6N2VGViK/syiqGn5Zf8eqlJqATQeLGIBB1Ij7C8RSHu1a7KZ0tJI1ouqjvxA=
+	 MIME-Version; b=JK+GhXuddXUcfuUJtJ7tRa61BRGKaBZHjkDNpXBvGQA96QidmpHFE6Wgar1oMyk/YcHyhvYSh1oR4A3Door9yIXtxoTcOa5aRP5Czxk2KqdhV2VPWD+ai/ILpfp1DrP+TyATv+EXT2QV3K+kg6y8JzhHf8FJ/rErSy6UX3l2ER4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f60949f61df511f1a21c59e7364eecb8-20260312
+X-UUID: f6c02f041df511f1a21c59e7364eecb8-20260312
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:24b8e357-a0f3-444f-95de-e2dd910a74f7,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:aa9186fe-918c-4095-b1a9-f73090c4aba9,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:77fcc3ae681b67b7ce53c0dd2c43748c,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:905e193f2a52aa067c591bf3481a3226,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f60949f61df511f1a21c59e7364eecb8-20260312
+X-UUID: f6c02f041df511f1a21c59e7364eecb8-20260312
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 59810514; Thu, 12 Mar 2026 17:29:25 +0800
+	with ESMTP id 1179182386; Thu, 12 Mar 2026 17:29:26 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 13/17] spi: stm32: Use helper function devm_clk_get_enabled()
-Date: Thu, 12 Mar 2026 17:29:05 +0800
-Message-Id: <d239cda51bb3dcc84da4a7194a30f3be82422f70.1773306858.git.xiaopei01@kylinos.cn>
+Subject: [PATCH 16/17] spi: zynq-qspi: Use helper function devm_clk_get_enabled()
+Date: Thu, 12 Mar 2026 17:29:08 +0800
+Message-Id: <62624949916c28ebfa09d637937629fb656f4f97.1773306858.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773306858.git.xiaopei01@kylinos.cn>
 References: <cover.1773306858.git.xiaopei01@kylinos.cn>
@@ -66,121 +66,88 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-stm32.c | 59 +++++++++++++----------------------------
- 1 file changed, 19 insertions(+), 40 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 28 ++++++----------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8a7f5a10d4af..b347caeee0dc 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2360,25 +2360,22 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	int ret;
- 
- 	cfg = of_device_get_match_data(&pdev->dev);
--	if (!cfg) {
--		dev_err(&pdev->dev, "Failed to get match data for platform\n");
--		return -ENODEV;
--	}
-+	if (!cfg)
-+		return dev_err_probe(&pdev->dev, -ENODEV, "Failed to get
-+				     match data for platform\n");
- 
- 	device_mode = of_property_read_bool(np, "spi-slave");
--	if (!cfg->has_device_mode && device_mode) {
--		dev_err(&pdev->dev, "spi-slave not supported\n");
--		return -EPERM;
--	}
-+	if (!cfg->has_device_mode && device_mode)
-+		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not
-+				     supported\n");
- 
- 	if (device_mode)
- 		ctrl = devm_spi_alloc_target(&pdev->dev, sizeof(struct stm32_spi));
- 	else
- 		ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(struct stm32_spi));
--	if (!ctrl) {
--		dev_err(&pdev->dev, "spi controller allocation failed\n");
--		return -ENOMEM;
--	}
-+	if (!ctrl)
-+		return dev_err_probe(&pdev->dev, -ENOMEM, "spi controller
-+				     allocation failed\n");
- 	platform_set_drvdata(pdev, ctrl);
- 
- 	spi = spi_controller_get_devdata(ctrl);
-@@ -2409,32 +2406,19 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index 5232483c4a3a..f887c55337ae 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -661,7 +661,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 		goto remove_ctlr;
  	}
  
--	spi->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(spi->clk)) {
--		ret = PTR_ERR(spi->clk);
--		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
--		return ret;
--	}
-+	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
-+	if (IS_ERR(spi->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(spi->clk), "clk get failed: %d\n", ret);
+-	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
++	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
+ 	if (IS_ERR(xqspi->pclk)) {
+ 		dev_err(&pdev->dev, "pclk clock not found.\n");
+ 		ret = PTR_ERR(xqspi->pclk);
+@@ -670,36 +670,24 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  
--	ret = clk_prepare_enable(spi->clk);
+ 	init_completion(&xqspi->data_completion);
+ 
+-	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
++	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
+ 	if (IS_ERR(xqspi->refclk)) {
+ 		dev_err(&pdev->dev, "ref_clk clock not found.\n");
+ 		ret = PTR_ERR(xqspi->refclk);
+ 		goto remove_ctlr;
+ 	}
+ 
+-	ret = clk_prepare_enable(xqspi->pclk);
 -	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed: %d\n", ret);
--		return ret;
+-		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
+-		goto remove_ctlr;
 -	}
- 	spi->clk_rate = clk_get_rate(spi->clk);
--	if (!spi->clk_rate) {
--		dev_err(&pdev->dev, "clk rate = 0\n");
--		ret = -EINVAL;
--		goto err_clk_disable;
--	}
-+	if (!spi->clk_rate)
-+		return dev_err_probe(&pdev->dev, -EINVAL, "clk rate = 0\n");
- 
- 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
- 	if (rst) {
--		if (IS_ERR(rst)) {
-+		if (IS_ERR(rst))
- 			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
- 					    "failed to get reset\n");
--			goto err_clk_disable;
--		}
- 
- 		reset_control_assert(rst);
- 		udelay(2);
-@@ -2461,11 +2445,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	dev_dbg(spi->dev, "one message max size %d\n", spi->t_size_max);
- 
- 	ret = spi->cfg->config(spi);
+-
+-	ret = clk_prepare_enable(xqspi->refclk);
 -	if (ret) {
--		dev_err(&pdev->dev, "controller configuration failed: %d\n",
--			ret);
--		goto err_clk_disable;
+-		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+-		goto clk_dis_pclk;
 -	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, "controller configuration
-+				     failed: %d\n", ret);
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq < 0) {
+ 		ret = xqspi->irq;
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
+ 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
+ 			       0, pdev->name, xqspi);
+ 	if (ret != 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
  
- 	ctrl->auto_runtime_pm = true;
- 	ctrl->bus_num = pdev->id;
-@@ -2490,8 +2472,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 			dev_info(&pdev->dev, "tx dma disabled\n");
- 			spi->dma_tx = NULL;
- 		} else {
--			dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
--			goto err_clk_disable;
-+			return dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
- 		}
+ 	ret = of_property_read_u32(np, "num-cs",
+@@ -709,7 +697,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
+ 		ret = -EINVAL;
+ 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
  	} else {
- 		ctrl->dma_tx = spi->dma_tx;
-@@ -2579,8 +2560,6 @@ static int stm32_spi_probe(struct platform_device *pdev)
- err_dma_tx_release:
- 	if (spi->dma_tx)
- 		dma_release_channel(spi->dma_tx);
--err_clk_disable:
--	clk_disable_unprepare(spi->clk);
+ 		ctlr->num_chipselect = num_cs;
+ 	}
+@@ -728,15 +716,11 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
  
  	return ret;
- }
+ 
+-clk_dis_all:
+-	clk_disable_unprepare(xqspi->refclk);
+-clk_dis_pclk:
+-	clk_disable_unprepare(xqspi->pclk);
+ remove_ctlr:
+ 	spi_controller_put(ctlr);
+ 
 -- 
 2.25.1
 
