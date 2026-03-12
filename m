@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869D03B7B93
-	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955863B7766
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307775; cv=none; b=u3DdGLkpQDbKup+2BmZpjyeyuEyu+iIoLvoqCyewL2WR4AZ85NOX1OtGq+AxJzt3xbH8DWa7BadOBRV7sfuqeiKS6EryzzIeNelpEbLI8O2pEaGMhPZMDpmTmbwlNePTITcEfSLQkjzQLvq/0nFE9wAiTJL13DzFKByv5aHgBUU=
+	t=1773307775; cv=none; b=Cr4wvLt7lZklAJm+MC2R89mAEHd+SX7pDre/UYw8gMGk131TVv6Z0Ar7Io/BMFXnmQZ7N5EdLLmvAJakVF+4MAo3R6u7J4vv4xIXf/saFlUJxEEwElj+zLp+xLeDCnnKrunkKPpU2LpVKt7z9KEdlRm66pYWBcH4VaHOy6Xpj34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773307775; c=relaxed/simple;
-	bh=dKBnh8sJQftJQFNU1M/dsyI1ASCji+nDI1LiBDmOXwg=;
+	bh=NUdzNnYut2dDDsf2VtQ8bEwkhmYI/mv6zl1cDkP+ugI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K5via28ZrMpmu/tGv5ghGjsU0zBUNJfDkjrvyDP2n3zwxYBvR6jrKjQNoVwe6S/f7cDTzTXNIgawZy+WHwKe66uBta4kTlBkx+kO9kkIhJNpoIQ78jpDJQEWT6pFqIut/NO2UgdlbTGBK08t16VxUBy32swy8nMqDEgxPa3idKk=
+	 MIME-Version; b=hsTigy+uqgSpDV4C3gt44S5BB6u48c8wsu2RGLJBEB5k0zmL88+zYW7y2V/gBlJFWtVbIwIHubccy03U/owH4KR+zK5/+k0xWbLMOirZfZ++cvpsFLNNgDTjDNiCnAMmjh9yzCif67oPPbHu6rb67jTfKxSuFz4L3lI1CzJYaGU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f5cc12a21df511f1a21c59e7364eecb8-20260312
+X-UUID: f646be621df511f1a21c59e7364eecb8-20260312
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:a2b8a1a1-cefa-402b-b829-8dd8840d76ed,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:f4d7e341-bd61-4127-ba7c-e946e958d0c3,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:93f75e2a15091fd5248aa60a82459e3d,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:171f10e37180db0ce32dd69488f4bca1,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f5cc12a21df511f1a21c59e7364eecb8-20260312
+X-UUID: f646be621df511f1a21c59e7364eecb8-20260312
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 306095963; Thu, 12 Mar 2026 17:29:25 +0800
+	with ESMTP id 480705546; Thu, 12 Mar 2026 17:29:26 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
-Date: Thu, 12 Mar 2026 17:29:04 +0800
-Message-Id: <e0eda5a2e18031aa9a73c43cee35b02bc622e989.1773306858.git.xiaopei01@kylinos.cn>
+Subject: [PATCH 14/17] spi: sunplus-sp7021: Use helper function devm_clk_get_enabled()
+Date: Thu, 12 Mar 2026 17:29:06 +0800
+Message-Id: <27c512cbd32d6a9ee083e36bbcd971dd242144a3.1773306858.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773306858.git.xiaopei01@kylinos.cn>
 References: <cover.1773306858.git.xiaopei01@kylinos.cn>
@@ -66,53 +66,49 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-stm32-qspi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/spi/spi-sunplus-sp7021.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..9ff9975edef4 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -819,25 +819,19 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 
- 	init_completion(&qspi->match_completion);
- 
--	qspi->clk = devm_clk_get(dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(qspi->clk))
--		return PTR_ERR(qspi->clk);
--
-+		return dev_err_probe(dev, PTR_ERR(qspi->clk),
-+				     "can not enable the clock\n");
- 	qspi->clk_rate = clk_get_rate(qspi->clk);
- 	if (!qspi->clk_rate)
- 		return -EINVAL;
- 
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
--		return ret;
--	}
--
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		if (ret == -EPROBE_DEFER)
--			goto err_clk_disable;
-+			goto err_defer;
- 	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
-@@ -886,8 +880,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
- err_dma_free:
- 	stm32_qspi_dma_free(qspi);
--err_clk_disable:
--	clk_disable_unprepare(qspi->clk);
-+err_defer:
- 
+diff --git a/drivers/spi/spi-sunplus-sp7021.c b/drivers/spi/spi-sunplus-sp7021.c
+index 789b092fe8c0..35601212fb78 100644
+--- a/drivers/spi/spi-sunplus-sp7021.c
++++ b/drivers/spi/spi-sunplus-sp7021.c
+@@ -389,11 +389,6 @@ static int sp7021_spi_target_transfer_one(struct spi_controller *ctlr, struct sp
  	return ret;
  }
+ 
+-static void sp7021_spi_disable_unprepare(void *data)
+-{
+-	clk_disable_unprepare(data);
+-}
+-
+ static void sp7021_spi_reset_control_assert(void *data)
+ {
+ 	reset_control_assert(data);
+@@ -460,7 +455,7 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	if (pspim->s_irq < 0)
+ 		return pspim->s_irq;
+ 
+-	pspim->spi_clk = devm_clk_get(dev, NULL);
++	pspim->spi_clk = devm_clk_get_enabled(dev, NULL);
+ 	if (IS_ERR(pspim->spi_clk))
+ 		return dev_err_probe(dev, PTR_ERR(pspim->spi_clk), "clk get fail\n");
+ 
+@@ -468,14 +463,6 @@ static int sp7021_spi_controller_probe(struct platform_device *pdev)
+ 	if (IS_ERR(pspim->rstc))
+ 		return dev_err_probe(dev, PTR_ERR(pspim->rstc), "rst get fail\n");
+ 
+-	ret = clk_prepare_enable(pspim->spi_clk);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "failed to enable clk\n");
+-
+-	ret = devm_add_action_or_reset(dev, sp7021_spi_disable_unprepare, pspim->spi_clk);
+-	if (ret)
+-		return ret;
+-
+ 	ret = reset_control_deassert(pspim->rstc);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to deassert reset\n");
 -- 
 2.25.1
 
