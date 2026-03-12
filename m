@@ -1,81 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF643FE35E;
-	Thu, 12 Mar 2026 17:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE803FE646;
+	Thu, 12 Mar 2026 17:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773336898; cv=none; b=arcwq61upK6N+HwDWlJsKCwEkA09JFivbpfQNZXrV3ABKzwJW7OjMrUWaAiVo5gyngZWFaKI4pfNarJTj3J3DrvQtejvcAX3ewSz79EoJuzjqcom6xjGPZEqCbrSG/QKu6X9vjUzNFsiiU6u8A8Y1PPUwTaRHQiLpKyb3DDpiy8=
+	t=1773337076; cv=none; b=r4E+YYct6ET42FBe7YwBs8iZxsxL9HZOoTic86qXiEnA/WoIkFQ/fjuNJ6tIZZEf4QN6NpKTWSWqtXgbZYdAKB96WMnfggW9Sgh0k5o6ubhSkeY8Fyl4Q4QooQXFOFThzklPfeoymTpB50PU46Wcik5tp5ntjigs10EP0HM07Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773336898; c=relaxed/simple;
-	bh=0P/dqyhL6ojvP4AGUBfJlJt1KT2+Rv4AtgcInH/FTE4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sq5EOeGZqZw+R7uE6PByAOsvh6zY0FkO1pXGg/1gXtJUtcnmUVEHTpFQ1SO7aqCrmXlgfAIC7KQXjt3Ql5rfWFXu0UACL/1pIR6Dx/IqyEmgysIVseaJOX0F1pVQaihF6iisFvrurLfuRfugr81J84+Gnkfw5Y6LCpSZiEklHaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=too9r9y/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773337076; c=relaxed/simple;
+	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbNXwss0sM1Pm7epOEarWnYCaAYCAQV9tnH/PInodP/Oaq/xVfO2hoji/3+7V9wmX7Etbyli0USO+wy3kcNsV1V87eJrvzVsX8zsaxUo2pDEBgVYjTIEeJWFqRGxC9unkPqXYG3gvLviFUUmpDkn4+WFxQY0DRQLOFW22L+nT/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff4qP7P0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="too9r9y/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF17C4CEF7;
-	Thu, 12 Mar 2026 17:34:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff4qP7P0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1704C4CEF7;
+	Thu, 12 Mar 2026 17:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773336898;
-	bh=0P/dqyhL6ojvP4AGUBfJlJt1KT2+Rv4AtgcInH/FTE4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=too9r9y/esGwSbmtchRIR+yZ0TyQCowQ1j1H0Zm5zjtBwfPCwilks245dcGTRn5dX
-	 3FCq01xfhAn8z25mWd8PIprzQwQuTYRQmuSHfrtb+8GvyGRGMfIKJTi2hnPpXsJ7lS
-	 NHP9WWed11BulIMeClHNcRw3JiD3MktP0yCESYWTd/xpO8dvjpI0qQgSc8htdam5zl
-	 EVfQLuc1/VM5s/bEGgWS3gD6gbUj3GXHWe4irnfvikIHFVWmXprQiz7igd+TK0ab1Z
-	 jKl1fPDgnWl40ri9TdFpakhtaz46JnT7TVcXshwZr6ynXP7uzWeNTBMkaG5cxTeC7c
-	 K2bD9bAjVJY4w==
-From: Mark Brown <broonie@kernel.org>
-To: Samuel Kayode <samkay014@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Lee Jones <lee@kernel.org>, Felix Gu <ustc.gu@gmail.com>
-Cc: imx@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20260312-1550-v1-1-5a84b886ccfe@gmail.com>
-References: <20260312-1550-v1-1-5a84b886ccfe@gmail.com>
-Subject: Re: [PATCH] regulator: pf1550: Remove redundant regmap assignment
-Message-Id: <177333689659.303201.6390758880128162232.b4-ty@kernel.org>
-Date: Thu, 12 Mar 2026 17:34:56 +0000
+	s=k20201202; t=1773337076;
+	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ff4qP7P0InVUnBUhM3Vtq96wZ0ILUUgkGrxZYHaddnDcFs6PP+8gyhTAdIIQHPk2Y
+	 bOfSGdMdcc2cBbuQ1gxKzvzr5buWAShjm7rNFD+OvKTMrfvtiTh58eoQjFMc6UksGQ
+	 6zzbiroo7h6rEQLex6MVQrAvRvw10XGGSbYCdRFNCe5ixJdrzrfagC7rKEuIvs9Umd
+	 g/k72i7MWJ+/ClO8ORAOF7wiAw9nYo+oC9RiMeYljmAL/vq+NvPZzSSyBDxHdAFgKE
+	 l31FhuKTIMQ1Yw6UGKNFZfHhTNYdEkMlfRmpiagxyWcWqUt28APqTDRU5v/lENzIFo
+	 se6GtOW65l5aQ==
+Date: Thu, 12 Mar 2026 17:37:51 +0000
+From: Conor Dooley <conor@kernel.org>
+To: florin.leotescu@oss.nxp.com
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, viorel.suman@nxp.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
+ fan-shutdown-percent property
+Message-ID: <20260312-triage-shallot-1b3d9f07d250@spud>
+References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
+ <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-68380
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oDbvumbCQdRDhubR"
+Content-Disposition: inline
+In-Reply-To: <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
 
-On Thu, 12 Mar 2026 22:30:31 +0800, Felix Gu wrote:
-> The config.regmap is already correctly initialized using dev_get_regmap()
-> on the parent device. Remove the redundant second assignment that was
-> overwriting it with pf1550->regmap.
 
-Applied to
+--oDbvumbCQdRDhubR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+>=20
+> The EMC2305 fan controller supports multiple independent PWM fan
+> outputs. Some systems require fans to enter a defined safe state
+> during system shutdown or reboot handoff, until firmware or the next
+> boot stage reconfigures the controller.
+>=20
+> Add an optional "fan-shutdown-percent" property to fan child nodes
+> allowing the shutdown fan speed to be configured per fan output.
+>=20
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> ---
+>  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.ya=
+ml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> index d3f06ebc19fa..7bcadfab9fc4 100644
+> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> @@ -54,6 +54,12 @@ patternProperties:
+>            The fan number used to determine the associated PWM channel.
+>          maxItems: 1
+> =20
+> +      fan-shutdown-percent:
+> +        description:
+> +          Fan RPM in percent set during shutdown.
 
-Thanks!
+This sounds like something generic, that other devices might need and
+should be in fan-common.yaml?
 
-[1/1] regulator: pf1550: Remove redundant regmap assignment
-      commit: e80c626ae06ed9c502ebda4a7e0b390af9ccf6b0
+> +        minimum: 0
+> +        maximum: 100
+> +
+>      required:
+>        - reg
+> =20
+> @@ -80,12 +86,14 @@ examples:
+>              fan@0 {
+>                  reg =3D <0x0>;
+>                  pwms =3D <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
+> +                fan-shutdown-percent =3D <100>;
+>                  #cooling-cells =3D <2>;
+>              };
+> =20
+>              fan@1 {
+>                  reg =3D <0x1>;
+>                  pwms =3D <&fan_controller 26000 0 1>;
+> +                fan-shutdown-percent =3D <50>;
+>                  #cooling-cells =3D <2>;
+>              };
+> =20
+> --=20
+> 2.34.1
+>=20
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--oDbvumbCQdRDhubR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabL57wAKCRB4tDGHoIJi
+0noHAP9z/fCiq8hV4ZCCK6xJrtd6hvHbeRv80Hgr1bMapjuwoAD/QTtp9v/Ab3J9
+3q1keEgHBJviuIq0kTxW0wHKYbkL+g0=
+=Y6RW
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--oDbvumbCQdRDhubR--
