@@ -1,344 +1,200 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011027.outbound.protection.outlook.com [40.107.130.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A63BAD91
-	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C084D3BAD8D
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 09:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773309176; cv=fail; b=t3PTMBCJyQ8Y9p7RRw7CCHvoFXDyv79tsE2wqdcdJbw6AxI8gWw7qnH7Sw5jK/v/6ahiHpqIJudhxUwu6qmBC9yqyuGhVkqSrKpFbLAWcIoIL95o0YZq6AAtJY4yqsNb/+SmZKWRdIbiPLi5yAE9odDvqRTAqZIGhAYwxHbN8Ls=
+	t=1773309243; cv=pass; b=lWDuo4NpB4YngGZDb0vthMjytwqkH0cSZ0oT08/l23JNGA9TkA/SpZ7Qj1euJwslmlcxayCDvPxtv76pxoIuNvhDBqEorsJ+URLbEmL6GqqNEPjRwq7cwGWkOj3IHby0rHXlygTobd1gW4B9xOtsTeGiZoGuzR/0h0UJ39IELSg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773309176; c=relaxed/simple;
-	bh=0/ekdzRzk1T+/HnfbkxTCWRunLsCKyaKvGhCBlCnq1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JU5V0MLXloUqZkwhyCUXtvlsFWBamJvXrt38NDe4XV55GkcHfTD3909ePt0vGHwtwhfOuneHNU6ZSuLoqryfme1ss8gDwLFbdzG71mSpsEQd06S6pCaPdzKHQUH6+a8ZOjGzPdFrEcM6mSzoRaRrY3YyT2O4w+qZFkuYdw4B6S0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fQ1mrKFL; arc=fail smtp.client-ip=40.107.130.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1773309243; c=relaxed/simple;
+	bh=KrV1H2NLInpKlc/gmuUp2Q3dWu4kreAEUmzL94kC14k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CuwoaeNVKl4Ik0gGmfgikr7Zt3X2tFxPTBUiNoRurPDMgVa3kIQ7kZTbrIeXdzHys5nXIShaCzAey17P/rGKEiwnwb2NHZmCoX2sKzDhXmHI3ASRRDAbPF3YU5YKGWXkqQGMEaZNN2Iuhkg7zjgQjKo5460MoJQ0tejErIAjXgg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RJx+P633; arc=pass smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fQ1mrKFL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n/cFs9m5OBl3NsaesmgVqp3RfSpBQw4coQ582iLLWIT6QQgSAwLpiRSqzexI9oVN9y9XFqKVX8n77GcKgTKVnOEfysGu0Ihqku+BptV1Av4mWqnIKKXKgKc6GNmQ7Zfua2Ledf2jPbhFuuUvOIynaa9ZjcVFUIwc4INgafbziqocSn7VRHL4NYtmsMIVdGjqmRjkW8x+VazWkcnxeW/VBGLNZjXIA7g9Q80PquGI0hAnNGRlmdwmStj5PySxIeQhim3j5kMY84+9CYC4TZh+MYh1q3cSe/qNnix5ClRA5Uwu5ewR3YZ0Tl8o1JWwjxUEAexu/ojxSoDP+t06o+5IHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DhEuOM20/pR0ei9IIlTgglND7MbNzWFbTQu4N38DIgs=;
- b=uHRXMDeF7Gi6uA5EFbtlRL5smZD4JG6TJ2CiNZzUyG/x4z8kLE+MwqfJs+bZMzMyLOnyK4h9PDHdMloS1BVhbrXgCB1gvNn+GYFy+FGXcgYUYZFxoSFti2YyqcHmS/FehOcqcQ0CeOX/dzpw4mkm6zV3vosdGR406lPV+E+SENcEz5rNARC1Kw4EzpsOBvyPwC7zCmVzKixN9SamTGOl19UXj29nIXNfbwJSxjQTzGtihtuPeQRtPBdMZS1F5KonKDA1JLV2ijF9oLSt1ThvdmlhXh5Pc3W2L4NtKN6LwMb2iC/fPBApCu9LVNHifaV8XpZwUTDWfqZYAqarXvbBIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DhEuOM20/pR0ei9IIlTgglND7MbNzWFbTQu4N38DIgs=;
- b=fQ1mrKFLj1TyYYbm2p1/LHHq5MTVY4sfJYtU7jVIyHmg6VEwULLL9KB/c6MsPApB+zNL78gdmh4OYnCfsetzm8W+GDELWLt6/u52Mc0kE7o9eqZeESqTqShRVLv33Fe2ZVCJdN4bgdWQMMDbRycSGQEX3O1qhhi33K1a7+wmPyzdgQPbwtOXiA4mPgiHdZ9Ga0zDuRyDiGk3WwdrPgBQkAbOidvEYoGzlMqSNv0UoCsOGSJFkZQ4pJfWYQa5AfKMZ33+T6VuIHGbbh4lLT/S8P6iCjPKskeQvQ9dPWnUtoIe+LsFK95Xg0zh2ZBi28C7I/7Q7yEVhs/EK4ui2ZFE0w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
- by AM9PR04MB9014.eurprd04.prod.outlook.com (2603:10a6:20b:430::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
- 2026 09:52:41 +0000
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e]) by AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e%6]) with mapi id 15.20.9700.013; Thu, 12 Mar 2026
- 09:52:49 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	Frank.Li@nxp.com,
-	horms@kernel.org,
-	saikrishnag@marvell.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v4 net 2/2] net: enetc: add graceful stop to safely reinitialize the TX Ring
-Date: Thu, 12 Mar 2026 17:54:15 +0800
-Message-Id: <20260312095415.669128-3-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260312095415.669128-1-wei.fang@nxp.com>
-References: <20260312095415.669128-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0043.apcprd02.prod.outlook.com
- (2603:1096:3:18::31) To AM9PR04MB8505.eurprd04.prod.outlook.com
- (2603:10a6:20b:40a::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RJx+P633"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c737d3a51bdso319356a12.3
+        for <imx@lists.linux.dev>; Thu, 12 Mar 2026 02:54:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773309240; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KDqi/tT9o+4ryP12hEl/ihtHTz7rN0z+SL+KGqzhvQVxrYrOkrx1+oAT/lB3ch+eV/
+         HJ4L5zMUuY1V70y7sx+T8ZYQAafB1vVfUD8AW8t+F5jeIfFvqLrB0Jom791/XQRBD0O6
+         +uThfe8sSC/VmUCij+yq+fOwruziES6pZutJhLiwPvt2qtgrNF0UZOafryaFLfQaRnpX
+         mBHgh3pwM9RgJ7KWWgfkbiDgD+uXpajFZiwXsqiYTclWp1zvuQnXExiOIOW9djfmZ/Vj
+         uaygeEO0Kh+LwgexcyXr1fsb0JRBKFjX/FH+vVV8LkZzADj42z90/WP6wheN+ScmPreB
+         9qeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Pu5XIQSGCkSF/OV0YlHjxKCm6okhTIDdYRaAvJzmT7M=;
+        fh=+/oof5YWLsae4hW1ObSl3K48fyBif0gGOk96jhwyPtI=;
+        b=Tr12qILf1Hp6c+Y0jKU7s6+KJpwYgiGd80+gsPjaO3907zAfASi/qnR7q99ENDJnVK
+         fvJH17KmePWz8VpHbf+hWGRok2zkXqyhXdyHA6WKgbJrs1uFa754V0dBQv+r1WaNLJF+
+         XKKo4fb6XlFsvG12nljBAOTT8Ts5cj1gvvuPegfvLrQFNrkJMxTPXAeimPETcursmbPp
+         Id+y3LC7GNcbo+1JcLEr8GmBsrBhnSVHX1fdwWFIbhLnh/qonFOPAiM7JwHGOtrHNRwK
+         ARdAm8BrXQsMEj/tFYX3drNSW8/AZBCb0Yt6hj2LA1F7lmeTrhC24NuZ+n7ETbeKXBu+
+         faRg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773309240; x=1773914040; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pu5XIQSGCkSF/OV0YlHjxKCm6okhTIDdYRaAvJzmT7M=;
+        b=RJx+P6335ngxX+jdH61riJYfIT5HtB3Bur3WvRmVeGEGAI7KPsxMziQABMI9wTBWSU
+         1hJwXUAWqCAHc0d/tbN4lhC6uMRO3nGT5PNISx/e/Nxp0rfxDH0EbiIEMUHdQesxCYO0
+         uAy6a3mPmV/aTDDGqxtlvFSyHP8GB3Syw0bw07AB+PLyjqqIbilm0HKPMcfLNWP+ZfMl
+         7H+zXEotHg6cZxnFchygVYEU9vkW+uazkFiHe/JJlm7HmmRKFTpTCvYsjaiTnhPYZhXe
+         rYKf2OhhvKKRuJt+ngPPErGcK2OnjzkxI9Fdia1oG/c4uGrrw2PIdy+1XJLCh3NiyypJ
+         HjyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773309240; x=1773914040;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Pu5XIQSGCkSF/OV0YlHjxKCm6okhTIDdYRaAvJzmT7M=;
+        b=LG9EIDoZgQD9bZQ/UsZntsquqaASCGSCMVr4F1PZ8h2rXBKHLjS/3XM+GtT//Q4q3O
+         9Orp++i0hq4y30/izs4VbP+jIS/Yj7d06WdV4TlcqXjCsrqr4k+70P5HcHSOCKiz0YlZ
+         yAWWe4bMRXVYlvNokGuf59VJb6MorEeU6xnjW7y40YnfppR0JM8UNg8oByDRWTElOjn8
+         Teqilo3sP1rogRx8jtxY+gRVsF4KRdmzSAgemwtMZ88rz+hT5CG8d5MLWwL+hTbgoftE
+         GetU1ml4Kpl+0g34x2Qt0F8QnKvXfKGgOUSEBv3H49th4u4mANjAl6Q7gx1Mp/9mgmbp
+         1Fdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWcjgqoHzv4iX5Tx7sWj3d929hl0NY+BoWU+ugBRJT7Y68R3GCY3k+MOdE6DsgLUYxBaM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzpX/kBOMqD+e/Zy9y1yFazSAVApDJeIjRF9IQAc0lHK/SaJzip
+	Ck/hmRSoRX4QAk0xTDWRtoJoeI8ILthVY9t3EX3ZrxAbxq47zbj476g+L00J7c0e0DXoCKU5ha+
+	NErUlGwfBriCFDPLbOt7m7ZwSt9MyxcE=
+X-Gm-Gg: ATEYQzwJqPvMLU0np3s8mimT+ceGhGsEXO0tUOFWQUVDZqPojayxEK9cowmZAbrpg3Y
+	9rfBylLbdBN0WSB3gFaM7xtgZeEi0gRGfcbQWrx7cGxJvsFUEybjE+uCr49358aAt2E1TZi48wH
+	e6vdbGlDl92B6NgAPmVVx0PJmALvDzmRizmcjWDG5BTUxw1MpiWBeeFpihIOq4NQXwIX3K28i48
+	kyWfPlQISm3BdAe5FWyi88+QZpQDCYP75ntNlPULFd3JC7diFU+W0NtpUqG/gSuK/DvXBKS7jFf
+	ZFKdEnWOw8eKI8em1g==
+X-Received: by 2002:a17:902:e950:b0:2aa:d506:d189 with SMTP id
+ d9443c01a7336-2aeae89463fmr59366865ad.34.1773309239948; Thu, 12 Mar 2026
+ 02:53:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8505:EE_|AM9PR04MB9014:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a4ecdb2-fbaa-4ad8-e754-08de801d1e06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|52116014|7416014|376014|38350700014|921020|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	8+q+Qdx1VGydFiR2RQQXSB2k8q7iN4prg6KFzgEan6TdlcTsDAKSHS07lF6Xuwz64RwxSgE6Tpu0yrSX3lGadRQaVreUjHb8K+4vF4X93TX1zAlEOXAhk4wAviHfnZZS7KaJCbKVT1HNPcPuXXVwnalKou1sd8ZGQKsNNhAvPB82uZjuEGsb01Ke3evxvOt5meCbaYTPSGCU4VdYk5Pp60Ba/IyPvFVIOicPw8VDdvYNvPDRujiUsGpRnTOB1nUIIK4HM/OmQQahWDCqQMWi50nspejsX76sKvApQ0OWHzNdF6pWm0dRsD38uyv+7MK0jnJGIrl8gbFenk281p+x9vG7JvOGZZS1FxU5aVZpwQDtZ44tDZMSbEj4kNquURF031BjN8LhGcupbiUrvBqReID8rD5HCQqMISYESVYPcCJrym3+I3+Wv7x57a7teF77VAMzGEruZn4ErE1YhsS89zPz2OXVneYYm6iiG3Y0gERhRqCXcp/VS/TlKmaN3qFgOjJ5fUKXtoSAgeXEBtWwSAqIYSDHLQj2LIhDOK40nrtMaIqR8TKY+Hy9AbZ5YrEv5YrHih/eE3tpPgrj3QbYUK5nqOatEY8OgVNIjGAk2BxENDTv7Fh1NyE0GKcY8HvEh73qbWoBNfKspNg1coZKka1NwVeS7hRSq7Pn0cK0tWAznsNHEqqB0ZO2VW5c3aCX4fP/d+J6YlaZpKolU/irHL8nTO9M58CTethkAdXCjn7cgFyUBl8tu+fXUSc305avWLNqdTIMa6ZHN6m9+DYV5vjEZmc9U5f+efaZiYJV1N4a3UHZR/V7byYXpS2CgzRZ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Z5U3eeXXyWkqOnzpq/8H2RLN++EspkJGqCePHDXOGoKt5LFqVkYTWNW6Eq9J?=
- =?us-ascii?Q?n4KBbxGeaxFv9ZFIct59P4be4Vd/2KAbReboSFHsXtzTjviYLlQou0gFSRHB?=
- =?us-ascii?Q?qwhFEoUk1tupKd3OO9JBV8jLo3AB+cQivYL97DUjvrjn7qLxka2disKunbmD?=
- =?us-ascii?Q?CZl6gWZH5iOewIaWjXWgW39t5nMZOLWtaWEMz+bmdQbrGG68VqK/sMRBIu7Z?=
- =?us-ascii?Q?Pl8IAcDi97w6WkwKIwsqDDHCXtbarziCitCCGGmBQZmdYtug8Do6ZD7cTAUi?=
- =?us-ascii?Q?F7aaaML6ulKq7UUDt0CJW1Go5Ii5KWAorKRPVNAsUNiebXG6KIRcrstmptPv?=
- =?us-ascii?Q?mk+jwdsNhBC1H8Nn1bJ6jaDT2Hwqm/O6ELzIgohS0sRGnNxSyqWu/Mfn4b1h?=
- =?us-ascii?Q?MjJT13UB/9AnMUAgIqBf83arkh/cr1qBKU/TGv4em9Pc1WrfkP1nD4FcdJBu?=
- =?us-ascii?Q?RvVE5o2bBa1x7onC1CdicRiDPkxjPKB2JYDrsuLZuo80Gktf9vkVYj9Bcrv4?=
- =?us-ascii?Q?o7TIKbKI4AYL9qnzxRstxmV5Lk7rnjSFXHVBUTBun07HXnpuEZ8tPj1aC3+L?=
- =?us-ascii?Q?NITQ2HP6U+dAGHEWt2w56JB27PyYZYC/xDQJV9uorcDLrh92rMql2DqupqEh?=
- =?us-ascii?Q?rFAjsuPa8jRO6efyWxvIlQM9iNyu4J7J/cWN7Mr3iQGzYKkf+U/F1vJefPmg?=
- =?us-ascii?Q?K5BvJ9EMUwfhON8XQ9zjwGYRAsWxdcLv+KzUEh/IDbQ+p9e4pt4e9g52asAm?=
- =?us-ascii?Q?pfNDa2tOgpTUSDb9AougS0Z1eojXio3qj1jg856bLPOMP/IjM/F2bQTbV0lc?=
- =?us-ascii?Q?ygt8qFtnvOUqQKmwAtrycwb1Zy/vWd5TT01R7glYyLpAEE3Z7z4/9cuMC8mF?=
- =?us-ascii?Q?WcCAS+XiI0v8xxjlgOu+Kl3T/kymL7U04RSUkZnjqtXWDx1MEneLK77Gk9Ok?=
- =?us-ascii?Q?OXCRniL04Ouy/XhluEPUxjtSaSIwikfUe41XExc0237meMwV6ZjBkwyrIhB6?=
- =?us-ascii?Q?gRM8Jg1/5cxpm2n67ZIbeJFE55bnCBmzSn28vgzlppjokbRvvkbYf6sui4Tu?=
- =?us-ascii?Q?xngyubc+Q7ZOZV8Rb10VLnaL/32rxdqKi5joCVipT5gHogFjCxF1y1S0Z5XI?=
- =?us-ascii?Q?tDPKC5U1avmjyfff8qjT6XE0NhEHS1fs8fSe5N3EbZ4dsccIqi8rW8MY2muV?=
- =?us-ascii?Q?g4MPw3VtxYoN6spVDw+XdYFS0Nxt/NulFzZlS61EprvHShTV18cYrDfbncNr?=
- =?us-ascii?Q?pKoQvWIKerxeMm4LwmD+a+I9WXcQZOVVEqA4pUTXr9L4Q/2hYq3SVuKj1mj9?=
- =?us-ascii?Q?vSBaR2IzPHkBeiFIz6eAtkhx2fBBqaZTWCOAnHgUKRI/ZrWw4UcWillk6nSD?=
- =?us-ascii?Q?FRORtAd1eghISsMRGOzbZbcuZ6TA11N66mt1H2w8fEX7BJVOG+PJ9jQrxA/X?=
- =?us-ascii?Q?0mvJlaUNoAeMy2M8JnANKOLtASM5JlK6+xAMldglbxnA0Rv4R8fPBYIHs54/?=
- =?us-ascii?Q?KFbiENiXZlKWs13zH1uCCx8w6ioQx8aKmBZG5lzACwXR2ubvwdWmIMCYeXO2?=
- =?us-ascii?Q?VF5P7x/uS+q8BN5T81Ay48QSRIfkp+NFU6asJRCYQolL4YvdaJ3oBamD3lca?=
- =?us-ascii?Q?UGmfXidQqnZFElHwnqHB/DBKeWNjbEZxz3Uq00pb2eS4asXY6fRQ0pDz/I+V?=
- =?us-ascii?Q?YWnEfTWW6Yhkdfu79FeqB19LMQU/4UD+DsTyrUVya6kBlcRlvyw/tMVz0c7o?=
- =?us-ascii?Q?w6Quudtkow=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4ecdb2-fbaa-4ad8-e754-08de801d1e06
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 09:52:49.0284
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sQ6an/w87nhKoqhMLexWjZ9Ns8+fL0TRaZN1aXtXRrvxQsHm/Ie+BGT0RYue0nFZ/AWhyE8NkoxfijXNWOrfog==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9014
+References: <20260312034912.4007057-1-shengjiu.wang@nxp.com>
+ <20260312034912.4007057-2-shengjiu.wang@nxp.com> <af948fb4-4f63-4276-9368-9d41e80c3e7c@oss.nxp.com>
+ <CAA+D8AO2-C8kRiF3ymYd7fvAL_Op5ohwk=m8ZbfjHUWXCSn_3g@mail.gmail.com> <8b4f6c08-9d4a-4af6-80a3-9e3a351ce451@oss.nxp.com>
+In-Reply-To: <8b4f6c08-9d4a-4af6-80a3-9e3a351ce451@oss.nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 12 Mar 2026 17:53:42 +0800
+X-Gm-Features: AaiRm52mG1WKwAEkIuooQ_iRETrNiaYWjlFWELMoCo_5r-yCY-ygySmvazvcFFw
+Message-ID: <CAA+D8APVjeyPEypiJYXJLWEf6ye6c3EPb=DKBfLnBxOYoNGUOg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] arm64: dts: imx952: Add audio device nodes
+To: Daniel Baluta <daniel.baluta@oss.nxp.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For ENETC v4, the PIR and CIR will be reset if they are not equal when
-reinitializing the TX BD ring. However, resetting the PIR and CIR alone
-is insufficient. When a link-down event occurs while the TX BD ring is
-transmitting frames, subsequent reinitialization of the TX BD ring may
-cause it to malfunction. For example, the below steps can reproduce the
-problem.
+On Thu, Mar 12, 2026 at 3:10=E2=80=AFPM Daniel Baluta <daniel.baluta@oss.nx=
+p.com> wrote:
+>
+> On 3/12/26 08:54, Shengjiu Wang wrote:
+> >> On 3/12/26 05:49, Shengjiu Wang wrote:
+> >>> Add audio device nodes, include SAI, MICFIL, ASRC, Audio Mixer.
+> >>>
+> >>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> >>> ---
+> >>>  arch/arm64/boot/dts/freescale/imx952.dtsi | 199 ++++++++++++++++++++=
+++
+> >>>  1 file changed, 199 insertions(+)
+> >>>
+> >>> diff --git a/arch/arm64/boot/dts/freescale/imx952.dtsi b/arch/arm64/b=
+oot/dts/freescale/imx952.dtsi
+> >>> index 0f86b5626cdd..5787c12e788f 100644
+> >>> --- a/arch/arm64/boot/dts/freescale/imx952.dtsi
+> >>> +++ b/arch/arm64/boot/dts/freescale/imx952.dtsi
+> >>> @@ -823,6 +823,156 @@ usdhc3: mmc@42c40000 {
+> >>>                       };
+> >>>               };
+> >>>
+> >>> +             aips5: bus@43000000 {
+> >>> +                     compatible =3D "fsl,aips-bus", "simple-bus";
+> >>> +                     reg =3D <0 0x43000000 0 0x800000>;
+> >>> +                     #address-cells =3D <1>;
+> >>> +                     #size-cells =3D <1>;
+> >>> +                     ranges =3D <0x43000000 0x0 0x43000000 0x800000>=
+;
+> >>> +
+> >>> +                     asrc1: asrc@43000000 {
+> >>> +                             compatible =3D "fsl,imx952-asrc";
+> >>> +                             reg =3D <0x43000000 0x10000>;
+> >>> +                             interrupts =3D <GIC_SPI 376 IRQ_TYPE_LE=
+VEL_HIGH>;
+> >>> +                             clocks =3D <&scmi_clk IMX952_CLK_BUSWAK=
+EUP>,
+> >>> +                                      <&scmi_clk IMX952_CLK_BUSWAKEU=
+P>,
+> >>> +                                      <&scmi_clk IMX952_CLK_ASRC1>,
+> >>> +                                      <&scmi_clk IMX952_CLK_ASRC2>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>,
+> >>> +                                      <&clk_dummy>;
+> >>> +                             clock-names =3D "mem", "ipg",
+> >>> +                                           "asrck_0", "asrck_1", "as=
+rck_2", "asrck_3",
+> >>> +                                           "asrck_4", "asrck_5", "as=
+rck_6", "asrck_7",
+> >>> +                                           "asrck_8", "asrck_9", "as=
+rck_a", "asrck_b",
+> >>> +                                           "asrck_c", "asrck_d", "as=
+rck_e", "asrck_f",
+> >>> +                                           "spba";
+> >>> +                             dmas =3D <&edma2 97 0 0>, <&edma2 98 0 =
+0>, <&edma2 99 0 0>,
+> >>> +                                    <&edma2 100 0 1>, <&edma2 101 0 =
+1>, <&edma2 102 0 1>;
+> >> For consistency we should use symbolic macros for directions like you =
+did below.
+> >> Use FSL_EDMA_RX for rx direction and also introduce FSL_EDMA_TX for tx=
+ direction.
+> > Yes, should use FSL_EDMA_RX.
+> >
+> > But introduce FSL_EDMA_TX, it should be zero,  FSL_EDMA_TX =3D 0.
+> > is it necessary to add it in include/dt-bindings/dma/fsl-edma.h?
+>
+> I would say yes. For consistency with FSL_EDMA_RX and also for
+>
+> code readability.
+>
+> A user doesn't know that 0 means TX.
+>
+> We could go on and merge this patch as is right now, no problems. And com=
+e back later
+>
+> with a set of cleanup patches that do this for all dtses.
 
-1. Unplug the cable when the TX BD ring is busy transmitting frames.
-2. Disable the network interface (ifconfig eth0 down).
-3. Re-enable the network interface (ifconfig eth0 up).
-4. Plug in the cable, the TX BD ring may fail to transmit packets.
+I think it is better to have another patch set to introduce
+FSL_EDMA_TX for all dtses.
 
-When the link-down event occurs, enetc4_pl_mac_link_down() only clears
-PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It doesn't
-set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, reinitializing
-the TX BD ring at this point is unsafe. To safely reinitialize the TX BD
-ring after a link-down event, we checked with the NETC IP team, a proper
-Ethernet MAC graceful stop is necessary. Therefore, add the Ethernet MAC
-graceful stop to the link-down event handler enetc4_pl_mac_link_down().
+I will add FSL_EDMA_RX in the next version.
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
- .../net/ethernet/freescale/enetc/enetc4_pf.c  | 111 +++++++++++++++---
- 2 files changed, 108 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-index 3ed0f7a02767..719c88ceb801 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-@@ -134,6 +134,12 @@
- 
- /* Port operational register */
- #define ENETC4_POR			0x4100
-+#define  POR_TXDIS			BIT(0)
-+#define  POR_RXDIS			BIT(1)
-+
-+/* Port status register */
-+#define ENETC4_PSR			0x4104
-+#define  PSR_RX_BUSY			BIT(1)
- 
- /* Port traffic class a transmit maximum SDU register */
- #define ENETC4_PTCTMSDUR(a)		((a) * 0x20 + 0x4208)
-@@ -173,6 +179,11 @@
- /* Port internal MDIO base address, use to access PCS */
- #define ENETC4_PM_IMDIO_BASE		0x5030
- 
-+/* Port MAC 0/1 Interrupt Event Register */
-+#define ENETC4_PM_IEVENT(mac)		(0x5040 + (mac) * 0x400)
-+#define  PM_IEVENT_TX_EMPTY		BIT(5)
-+#define  PM_IEVENT_RX_EMPTY		BIT(6)
-+
- /* Port MAC 0/1 Pause Quanta Register */
- #define ENETC4_PM_PAUSE_QUANTA(mac)	(0x5054 + (mac) * 0x400)
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 689b9f13c5eb..53cecbb23a97 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -444,20 +444,11 @@ static void enetc4_set_trx_frame_size(struct enetc_pf *pf)
- 	enetc4_pf_reset_tc_msdu(&si->hw);
- }
- 
--static void enetc4_enable_trx(struct enetc_pf *pf)
--{
--	struct enetc_hw *hw = &pf->si->hw;
--
--	/* Enable port transmit/receive */
--	enetc_port_wr(hw, ENETC4_POR, 0);
--}
--
- static void enetc4_configure_port(struct enetc_pf *pf)
- {
- 	enetc4_configure_port_si(pf);
- 	enetc4_set_trx_frame_size(pf);
- 	enetc_set_default_rss_key(pf);
--	enetc4_enable_trx(pf);
- }
- 
- static int enetc4_init_ntmp_user(struct enetc_si *si)
-@@ -801,15 +792,105 @@ static void enetc4_set_tx_pause(struct enetc_pf *pf, int num_rxbdr, bool tx_paus
- 	enetc_port_wr(hw, ENETC4_PPAUOFFTR, pause_off_thresh);
- }
- 
--static void enetc4_enable_mac(struct enetc_pf *pf, bool en)
-+static void enetc4_mac_wait_tx_empty(struct enetc_si *si, int mac)
-+{
-+	u32 val;
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      val & PM_IEVENT_TX_EMPTY,
-+			      100, 10000, false, &si->hw,
-+			      ENETC4_PM_IEVENT(mac)))
-+		dev_warn(&si->pdev->dev,
-+			 "MAC %d TX is not empty\n", mac);
-+}
-+
-+static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val |= POR_TXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+
-+	enetc4_mac_wait_tx_empty(si, 0);
-+	if (si->hw_features & ENETC_SI_F_QBU)
-+		enetc4_mac_wait_tx_empty(si, 1);
-+
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val &= ~PM_CMD_CFG_TX_EN;
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+}
-+
-+static void enetc4_mac_tx_enable(struct enetc_pf *pf)
- {
-+	struct enetc_hw *hw = &pf->si->hw;
- 	struct enetc_si *si = pf->si;
- 	u32 val;
- 
- 	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
--	val &= ~(PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN);
--	val |= en ? (PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN) : 0;
-+	val |= PM_CMD_CFG_TX_EN;
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val &= ~POR_TXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+}
-+
-+static void enetc4_mac_wait_rx_empty(struct enetc_si *si, int mac)
-+{
-+	u32 val;
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      val & PM_IEVENT_RX_EMPTY,
-+			      100, 10000, false, &si->hw,
-+			      ENETC4_PM_IEVENT(mac)))
-+		dev_warn(&si->pdev->dev,
-+			 "MAC %d RX is not empty\n", mac);
-+}
-+
-+static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	if (si->hw_features & ENETC_SI_F_QBU) {
-+		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
-+		val &= ~PM_CMD_CFG_RX_EN;
-+		enetc_port_wr(hw, ENETC4_PM_CMD_CFG(1), val);
-+		enetc4_mac_wait_rx_empty(si, 1);
-+	}
-+
-+	val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(0));
-+	val &= ~PM_CMD_CFG_RX_EN;
-+	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
-+	enetc4_mac_wait_rx_empty(si, 0);
-+
-+	if (read_poll_timeout(enetc_port_rd, val,
-+			      !(val & PSR_RX_BUSY),
-+			      100, 10000, false, hw,
-+			      ENETC4_PSR))
-+		dev_warn(&si->pdev->dev, "Port RX busy\n");
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val |= POR_RXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
-+}
-+
-+static void enetc4_mac_rx_enable(struct enetc_pf *pf)
-+{
-+	struct enetc_hw *hw = &pf->si->hw;
-+	struct enetc_si *si = pf->si;
-+	u32 val;
-+
-+	val = enetc_port_rd(hw, ENETC4_POR);
-+	val &= ~POR_RXDIS;
-+	enetc_port_wr(hw, ENETC4_POR, val);
- 
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val |= PM_CMD_CFG_RX_EN;
- 	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
- }
- 
-@@ -853,7 +934,8 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
- 	enetc4_set_hd_flow_control(pf, hd_fc);
- 	enetc4_set_tx_pause(pf, priv->num_rx_rings, tx_pause);
- 	enetc4_set_rx_pause(pf, rx_pause);
--	enetc4_enable_mac(pf, true);
-+	enetc4_mac_tx_enable(pf);
-+	enetc4_mac_rx_enable(pf);
- }
- 
- static void enetc4_pl_mac_link_down(struct phylink_config *config,
-@@ -862,7 +944,8 @@ static void enetc4_pl_mac_link_down(struct phylink_config *config,
- {
- 	struct enetc_pf *pf = phylink_to_enetc_pf(config);
- 
--	enetc4_enable_mac(pf, false);
-+	enetc4_mac_rx_graceful_stop(pf);
-+	enetc4_mac_tx_graceful_stop(pf);
- }
- 
- static const struct phylink_mac_ops enetc_pl_mac_ops = {
--- 
-2.34.1
-
+Best regards
+shengjiu Wang
+>
+>
