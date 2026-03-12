@@ -1,82 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A30D3C5527;
-	Thu, 12 Mar 2026 13:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A03377ECC;
+	Thu, 12 Mar 2026 13:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773320546; cv=none; b=oHNw1fDImWr1HXpYjFPpoZ79cQyyNHvQjlYP+jl0g+4bLimaJRVkWUDEKb2m6qeSXizs6jq74t5nZHHKzO4lsx6fiI8DsYSVUi+d5z/R2daWO9QAT4T+uUMHa3ZBw5UqRAIHiBn1XBlU7qgTXAzIRiLn0cXWyGYRoJOgMfh5fVY=
+	t=1773320576; cv=none; b=lRlznHGw4aUMA9kRRQWnyhZB662HD8HwDjVhs0DqqsFieSHTe6Gq9qa/xKAl2DJmxJFhAFEpAE5wDGFYYEiKT4NOlybPDpgfvy1AMRiijKsUnu8mDY+ELN2n9ISR8eNfvt5RoemCzjUluoIniMAme7DUuNb+Tzq174PbA35xGws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773320546; c=relaxed/simple;
-	bh=6JGSpqVxm5Xk2m9ccSi9/f5mq6saFDm1oVr7MCpFyr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OjfzWGF4ycE2MP7q2Yr+5IOzVjqpM7f6FX7RPDx9bTGdqnMdR+9b44Q2lUzAHIuZ1dy0rdAjyF9ka/RgI8Mu2u9+R1p+qZHIF5TBcBEaH7adyVh+I3PhgMzDKoZlzAJB2S3ogO9q6QdgD1XFx8gjhjegK33DSI617LOiyIiczTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijzuRMZa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773320576; c=relaxed/simple;
+	bh=TgSk+4s2logLCJYw1/1V/0WBGOGe8vlm4vuaxQUrDRo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bYRuPA+V6rXKfyCSQ+gVF39F26Ec3n3UpEZpBlbHInyPCh5S7tVkMOLPGuW98kqrFMWrV3WCnGr1LGR+bG23Sz4GJLplVlI8kp/utXiJEdaASqhkREOEVKZ8kjPtMttWNaYEGZHJ/GoMvMQkNy5hYga6jPSK4mqMWDbyQcSezes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9mus12T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijzuRMZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75297C19424;
-	Thu, 12 Mar 2026 13:02:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9mus12T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB65C4CEF7;
+	Thu, 12 Mar 2026 13:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773320545;
-	bh=6JGSpqVxm5Xk2m9ccSi9/f5mq6saFDm1oVr7MCpFyr4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ijzuRMZaAG0cxBMl7gDHrSzew3fvUz+nBqTiXPU+NIp69zqt1wfJfesyFC/fVZS3+
-	 fpJQfT7RAlMy6CdCes95jyDBXqJ9b0oy2+/mIhMf1FRNGI13AM1NqmAm86j3/A/552
-	 5kQ9+UXYzpoZsbEKqCumRSSwg+UQG2vj14Bds3PbgErv5h43Bs/xRG8wi00G2nRngr
-	 EIIwDGkg6bJW4vTpgIQrRiJEabuw4Tb1FNbFO22KU/UjrislDHxxzWqcPdnp2DTFq5
-	 sey6Gzv43mUHHEgvpwlNQvy8QnAR90ilRc2oUbTs2Xh0giY+jhiCjSVqkQ2SFWQMPl
-	 im56x+2su4L1w==
-Date: Thu, 12 Mar 2026 13:02:20 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 13/17] spi: stm32: Use helper function
- devm_clk_get_enabled()
-Message-ID: <8fe16029-2830-44c3-bf32-5aea31f72c62@sirena.org.uk>
-References: <cover.1773306858.git.xiaopei01@kylinos.cn>
- <d239cda51bb3dcc84da4a7194a30f3be82422f70.1773306858.git.xiaopei01@kylinos.cn>
+	s=k20201202; t=1773320576;
+	bh=TgSk+4s2logLCJYw1/1V/0WBGOGe8vlm4vuaxQUrDRo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=l9mus12TCdN4ONMZHKmRMj7JZrcmLc6V/uu15lWYvKQwiyXIeEccIOyh9QWblL840
+	 XKM9Xj20k3BUXAaQOUbsjssa36sXddRoOn+uRISawFuV/ynuA8loLqmzVY9HKBy8Bo
+	 OjxdKGCE0Bfv/BXS+gzNCxBUQFPqi9bwEC9IWLa50KFU/wHaTQiY0fQ+Fnyb1zQd+j
+	 qMeTgvH6J3q+E9LZyxMAdMjNGGxOVx0WqEKl4wo6QB3VrnwudN4kwgt/eKKj1CqQJ5
+	 p7QaIEBtR82xTJJxeiMar/y7cMH4nNfKM+k8CkFlOsZ2HuDTwU4gBQ2ce0bX39jILm
+	 3gn4Z9eMAEnSw==
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	linux-pci@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v4 00/10] PCI: endpoint: Differentiate between disabled and reserved BARs
+Date: Thu, 12 Mar 2026 14:02:28 +0100
+Message-ID: <20260312130229.2282001-12-cassel@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9knHiRnV8mpI+WJ7"
-Content-Disposition: inline
-In-Reply-To: <d239cda51bb3dcc84da4a7194a30f3be82422f70.1773306858.git.xiaopei01@kylinos.cn>
-X-Cookie: I feel better about world problems now!
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2686; i=cassel@kernel.org; h=from:subject; bh=TgSk+4s2logLCJYw1/1V/0WBGOGe8vlm4vuaxQUrDRo=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDI37UzN2dLNHDzr3bFkpbmbuvLOSQax7F/j874n3+aSi KahfSdLRykLgxgXg6yYIovvD5f9xd3uU44r3rGBmcPKBDKEgYtTACbydSYjw1PmY1NLXJUtzn+R 6X1joBrv12+ZfCb7h5VwRsB0F9bjFxkZVoT+ns4Zd255TqnKJrPrnfdf5v57cd3wNjOP3VTX8r9 LGAA=
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
+
+Hello all,
+
+This series was originally written in response to the patch series from
+Manikanta Maddireddy that was posted here:
+https://lore.kernel.org/linux-pci/291dab65-3fa6-4fc8-90a2-4ad608ca015c@nvidia.com/T/#t
+
+Manikanta has reviewed this series and will send a small series on top of
+this one.
 
 
---9knHiRnV8mpI+WJ7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Changes since v3:
+-Modified patch 1 to simply drop BAR_RESERVED for a BAR following an
+ only_64bit BAR (Manivannan).
+-Added a patch from Manikanta, to make his follow-up series smaller,
+ since this series touches the same lines anyway.
 
-On Thu, Mar 12, 2026 at 05:29:05PM +0800, Pei Xiao wrote:
+Link to v3:
+https://lore.kernel.org/linux-pci/20260302095913.48155-11-cassel@kernel.org/
 
-> +	if (!cfg->has_device_mode && device_mode)
-> +		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not
-> +				     supported\n");
 
-Similar thing in this driver here.
+Koichiro Den (2):
+  PCI: endpoint: Describe reserved subregions within BARs
+  PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window
 
---9knHiRnV8mpI+WJ7
-Content-Type: application/pgp-signature; name="signature.asc"
+Manikanta Maddireddy (1):
+  PCI: endpoint: Allow only_64bit on BAR_RESERVED
 
------BEGIN PGP SIGNATURE-----
+Niklas Cassel (7):
+  PCI: endpoint: Do not mark the BAR succeeding a 64-bit BAR as
+    BAR_RESERVED
+  PCI: endpoint: Introduce pci_epc_bar_type BAR_DISABLED
+  PCI: dwc: Replace certain BAR_RESERVED with BAR_DISABLED in glue
+    drivers
+  PCI: dwc: Disable BARs in common code instead of in each glue driver
+  PCI: endpoint: pci-epf-test: Advertise reserved BARs
+  misc: pci_endpoint_test: Give reserved BARs a distinct error code
+  selftests: pci_endpoint: Skip reserved BARs
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyuVsACgkQJNaLcl1U
-h9CkwggAg24YBsU71i5Djghu/lHhxeErxA+7HBjAV3TstCzfospFBacxZTrIypgS
-mWtgo+SwmXbDn6WiyjDlwpIMTI6PFDzzMn6x6sxwj5/OD1osR2cJ2SYzYSbwFxbQ
-uoJphNgSht3FEaDioOtHfdrgiLIkMm+/TYlf1u7+ZzrgI4ueyhtCfs0dN8EfdB+q
-pAJUva6gft4S6N3uS4kagfQP8e+IwxXr5fekxL3p7Y9XYpa30rHE56Oc7sbGWGma
-+WP0OfGjImbuvKtGxAPKoGBte/kLIrsSHoAFhTLSytjUxs4uuftK3Y5g3d7zq1fh
-+TRESnlE15ixsifgA+1umZAfcpBjfA==
-=ouCy
------END PGP SIGNATURE-----
+ drivers/misc/pci_endpoint_test.c              | 21 ++++++++-
+ drivers/pci/controller/dwc/pci-dra7xx.c       |  4 --
+ drivers/pci/controller/dwc/pci-imx6.c         | 22 +++------
+ drivers/pci/controller/dwc/pci-keystone.c     | 12 +++++
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  6 ---
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  4 --
+ .../pci/controller/dwc/pcie-designware-ep.c   | 24 ++++++++++
+ .../pci/controller/dwc/pcie-designware-plat.c | 10 ----
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 23 ++++++----
+ drivers/pci/controller/dwc/pcie-keembay.c     |  3 --
+ drivers/pci/controller/dwc/pcie-qcom-ep.c     | 12 -----
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   | 16 ++-----
+ drivers/pci/controller/dwc/pcie-stm32-ep.c    | 10 ----
+ drivers/pci/controller/dwc/pcie-tegra194.c    | 19 ++------
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c | 19 +-------
+ drivers/pci/controller/pcie-rcar-ep.c         |  3 --
+ drivers/pci/endpoint/functions/pci-epf-test.c | 24 ++++++++++
+ drivers/pci/endpoint/pci-epc-core.c           |  5 +-
+ include/linux/pci-epc.h                       | 46 +++++++++++++++----
+ .../pci_endpoint/pci_endpoint_test.c          |  4 ++
+ 20 files changed, 154 insertions(+), 133 deletions(-)
 
---9knHiRnV8mpI+WJ7--
+
+base-commit: 0b74f7d72399d4c4422ed3d68ef28b3612f71e74
+-- 
+2.53.0
+
