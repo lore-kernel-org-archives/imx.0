@@ -1,163 +1,156 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013010.outbound.protection.outlook.com [40.107.159.10])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743FD282F37
-	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 14:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773326903; cv=fail; b=uuBLP8yw0HdZC8sq4E5BBDDWvv8dckE1uMlxqIWDm8lWULkPsu1KfB446Mmb2+hkjpoyv6xvkZ6sL3u+oCYImN1K6n69ZYJWAddI76X0yNaEq/20CH4SHWxP+ONocculuNgYuDrpJz/4XBMmP6Xd6piOBtVFgJsNKmGwTdKzWOg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773326903; c=relaxed/simple;
-	bh=Kl/xmUHZZE3vrGCReVaA5y9E7kDQPhqS8c0Njh8L6wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pFPqBxdNy3x+isWL/hbbmBzwDO/zAcB51h1tPDG8zNwbFeXe8ZRrR/jJ/xcHKbFnWq9sdSTiXOfUrc+EBHlU4rjBSHPPSPVTLD27cQqETlgnJnHTz0woKQH5VY08f/kf9mOsrqzmLzV861avRedIMaTt/T3Xl5ljh6UPQNeQkLs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RH1CwG76; arc=fail smtp.client-ip=40.107.159.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5403C35AC34;
+	Thu, 12 Mar 2026 14:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773326963; cv=none; b=uAchi5FR6QypJfe/aFaIVAxfpTViamdINpBaePnmX8o+PmLdbUNCf1aguZrb/Cnby/j7L/vG8eOvqiqnOFMyKeNLxt8tA+ryFDC3ozQiKOh2KvN+RNiYdJt0mT+S/IUU+fNJTOXhW/Ddeww/ixnjBxuc32/ndHW1owQ3K98cCCI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773326963; c=relaxed/simple;
+	bh=cvc4REJqY8JM4iCJO7gHFafUYHigspWMdmkTZL9vhps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lfHRtx+yUuUALlgKC4Wq47113fXTYmbioDbnzm49EpY/OLb8IHV765IWAYpMaPWrNaTGQt4UBAjlIRy+2uiSzVXYjN/yasi9GxtX7i4X7SXfonp8y68gEJ7sRe8CW+unmG74HoNVgCHCYo2Gk/esd+6zH/LzuvoZpySJNLKQ3as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DTuMplg/; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RH1CwG76"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VaW7Cx+DHab72DyXvnLNMO7WhRLBr8VKZvBnTc0dDqBHrSXlTMVqv9qd8tFbu4woSKKXSijuBw0CVnC3j9hsBwbB8RZImrGw5brn841v15c8XUMuY8vf2laTxkxFHTSfoLlOJlIWtDIoNDOUz+d38OmKj3626NbvFNZT53VAqcM0p+uNH8nPK5I3QQYYtp57ajFKig/lhbRtlyEaLYnLQbgv/LCSYK0BI7IKok9U8NkgONPRgPdI5JHlJ2qouvARHw5a9378FRRd0sl5NCFycqsa9MPvu+dUEfLGAKBx2cDceA+MQjco9f2Hg+jFIHtbTEf2ItxDclrEDiSaS4/Ztw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8rYUCaTVbhrASmUWxl8M6zHKkkCW0DzqAk+MmAh/AU4=;
- b=HzapHKX85GN7o1jZvANwpUObiT9lQf+kIfso57cwetJw2YObyvGtnAd6ktMsAV6aLmabM1ljvXu3P8sgpD63JQG+J8MLv6GE/aErtVC+HPMrOqszkcR0I0hrtBghygOCWbJbu19SN+7fwoGQJysRUIqslDTp51m+dJAaoD27LtYkhFTkOOjRNY58SeQBk39nyuY0AIxv09sHH8SPEjceJ2p9Y18jucmGuKzgWv2gSllhLMnYbwFDM/1he3TEMjO/aUD8/fm6NI+dN+SE+DVFZN7J86An0n06mqPm+0Kl2m2KIW39Au1Ynhjj+1x8kHvpJUQOETMCIKOs84AVZr3l+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8rYUCaTVbhrASmUWxl8M6zHKkkCW0DzqAk+MmAh/AU4=;
- b=RH1CwG76bhc/KkY6kvaJf7JeqcTvPbUyX2CFOquNkbF18taOfdMgD5Y5i3d2KpgUJEWMRc3QHDTz2EaKBQM/Am8nDg6w/9B7xUuSce//2K7AZwXCoo5xyVjfP3jIoAMj0oWWANTiO7QzZIFH3/YAsUc2BxgwWVK+yKWYxlQ6hXHTF8WKIXq95srDqDm81n9u1KLeX7R1kGFUS/s2U9vlA2BiAR/i2oDAXdIpyYwhDUnrUELDuxFFw5PiE1keQl+1/x8AyYXF8jQ8E2kPPyB7lJSu7CgbvhfpN7DJECd+QpQykBcUlarjbs0IchRdA4WTMas70vOBRVMo+KgNOwdzWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by OSKPR04MB11461.eurprd04.prod.outlook.com (2603:10a6:e10:97::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Thu, 12 Mar
- 2026 14:48:10 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
- 14:48:16 +0000
-Date: Thu, 12 Mar 2026 10:48:09 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/4] dt-bindings: remoteproc: imx-rproc: Support i.MX94
-Message-ID: <abLSKVyYP3WPIHHu@lizhi-Precision-Tower-5810>
-References: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
- <20260312-imx943-rproc-v1-2-3e66596592a8@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312-imx943-rproc-v1-2-3e66596592a8@nxp.com>
-X-ClientProxiedBy: SA9PR11CA0016.namprd11.prod.outlook.com
- (2603:10b6:806:6e::21) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DTuMplg/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=c5QsAZcxYXRQp5npZY097jPPuoS8V9KMbg0r8WNaSLE=; b=DTuMplg/qSpQbz2bJ1ocK3S24w
+	XAiZ8sGu6lVSatTTeXDNBaLt6sl79+p+RLCsUN3pf55oSIDXbOrFEtU7gUhgmUp1fAmaF2dEFNg47
+	ngcb8tlkLczAx3UeAr8QQgzIxyfKxKu1S/ymrLl4jZELuCaxHioT8Lt9vbDxMeuWW5MrIgp/PlvYP
+	7kinJL/6qX6jt8eI1YNUwJ0rce4X+GdMCXx3SXNXO8Yg/NPb0T4TCpNIrYym2XrVw853HydlkgxfW
+	mNX29BdFfPgZAjavYHVRVaiEXfZcpIxSeUEN9iZdwhELIhKQG/vMLpTzd55u9Ulo3UrrcL9Bp8csX
+	RyBPfUqQ==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <max.merchel@ew.tq-group.com>)
+	id 1w0hLc-000JBc-1m;
+	Thu, 12 Mar 2026 15:49:12 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <max.merchel@ew.tq-group.com>)
+	id 1w0hLb-0003qq-34;
+	Thu, 12 Mar 2026 15:49:11 +0100
+Message-ID: <82977bbb-6363-42bd-9739-20f57eb00c61@ew.tq-group.com>
+Date: Thu, 12 Mar 2026 15:49:11 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|OSKPR04MB11461:EE_
-X-MS-Office365-Filtering-Correlation-Id: df500a2e-90e7-4467-4a02-08de804664d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|19092799006|1800799024|18002099003|56012099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	RlsZXPpmJt1Das379BO0n9Ei20sdnYiToHsnlxxSoY7cV7xvFCgYGq04g9/1gsRuCaPh2VbewAKTiILsR75MvDK1psX9TH+xOOyiGHNIAtFyQXZxh4z0/pOALROcyeKXwd3S/W2YZklIp2/9MqvkaUXCdxElNyI6nOSsCTPQwkPHMANiWK+bqsbFFqE+Skz8u+2MugUTnoRuFaCFXjvmM9RjP+76wDX58TUiVesvwRVkSxbTsi5aMf989BbH8uvKueAwm2uXMhXEu5Y6B7EdcDXzkNUEG/L8ucCEhfLSdGNdpAUgWtV/HJ7dQIIFNYuXdYIvyOeLf2VYk5+eSFO0plg+KcekEQtzo0OlS43K79yOrL1SRV3CCQkqI7cylZ4y8G/iJlHmq/usz5f88VQK6BB97w42sA2SNbqEDqtYpESFM/Vd3l8jsh86l5N1YKQNK6Mv4mas3xzraEyBqMSUqT4J0UNCg/cnum/5aNFvUJiAKNQc5Pom/xvU1CUpa96AAyQsenWhYpsnkWA/OQ5s5ip72+6MNkZdYlMS0KcPAqCZAtOG7hC+cdRaJanaaHzNZuMmZ/9y8wlDn3aHr23SqC0ch3l92pYZA+vu7btRx1yDVtuRE5Wgkf0JyqSUYUo7x2H9sVKKLXYwcGIoaKH7MqWahxTQKx8VoV9Xe7tKvzFFeQ6y51rnc2QaVTemS6Rq4/88xYBLL1xK7mLhC7CPttsiRAiFjcQysEp7RuKnS46A17VUKybSDV6dNN1QkwCV9YmoHOj2DoSMHeglFncWGn5tfelJe6R/fB4+BnaVjgk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(19092799006)(1800799024)(18002099003)(56012099003)(22082099003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ud2vVq7u3D8wS88mqwTccS3xZ455hf1hWhT0stRmhh53Wx01WYsFPu/b2L10?=
- =?us-ascii?Q?AzpX3YRIwh/D4RT00yREbvaFeCfxXRoi8yR0n0eDZMjy3TNHgSMrtPvgvfQM?=
- =?us-ascii?Q?TKLNw7k9kwsamEJ+9rBuptj4b88kFDjCR3W3Eby2IIabl3uF7NT1+avidBpE?=
- =?us-ascii?Q?v9gg8rpHletjzcu6ser25WMIeD99J1sLzfNLfe5s933Fk6w7CYTDYpxKvOZ3?=
- =?us-ascii?Q?ovVXHIr8XRO7gwIYTpgz50e1sjbnogvZIxwXuyURws/IZ4XPm8J2BORClLxi?=
- =?us-ascii?Q?52k+HFedGpbV2O4lTlRjOIkmMygqR4xyyU5uJIJaquWRq/3rKpVdN4EgFCAA?=
- =?us-ascii?Q?W2zAiKLocqnLaTKgEgvk5y3iObRU08vSNl5j+5ER72xVhwLgIbawNZXDNNvT?=
- =?us-ascii?Q?vkEXsQXny3F1lENO4gPIhbj4PYHNhbiXimUxBAa/ZAOTxV32Bm+7xn76K5ib?=
- =?us-ascii?Q?4kns5Y8PcTxU4+eGdWrAtGfXo0XSnkCuIHlAPIJg6P1stlsz4tEeygfxao7x?=
- =?us-ascii?Q?QPLqxDnmGPmhBUuOPAXd9oBloGDfb8BYtukxDHY3E8GGz2n829oNWSmlCF8c?=
- =?us-ascii?Q?kwKiC8tnpvvWRtxkoiZVLCGxgCLok6iKrUBGbMzY6odjJSNf7cqlhvdZny/D?=
- =?us-ascii?Q?/N02HzQA9u9SawKTazsx6UgBsoSSUrpzRmfbpt1To7CfHiZN2dyLEk2G6b4X?=
- =?us-ascii?Q?TNZaRC3pO/OQZ1lyWyF9tjfTjDjQ09ld5Ct++nskwT7qmNLZ+cS4uCkIi3JM?=
- =?us-ascii?Q?RhWePCmO/3+CT0FZPz/kp+EmGUmwlvjAy+smrZTZd6y8JobkMglwZBjkz3Ec?=
- =?us-ascii?Q?/zx1VnzVdnRbhTpM1tk4etHiZjN8MWZ7OPBuHMd5wc2dU2Sc7PgZ6yuH07Tv?=
- =?us-ascii?Q?9gBG8uLlO+Z47KJY3S7OFEGotiPYa6DtqVJEgotPn8qWTRm0LMpBo9LIF0n/?=
- =?us-ascii?Q?mCJ05bKhfgkYnmOi1FlPXjs+0s93a/RAcXm0a0Gn4jI486vXyCUgWfSy+g5T?=
- =?us-ascii?Q?w9CGgYC7niiTBOELNjA9scpQIoBZ4KApYQcUOiBjVKTlud2kGQDCMpmezRQd?=
- =?us-ascii?Q?dl8xTW1XxV0rbieWOF/4b8ZUCTYrsHQyFt2Eobi5IYFOZImRPYc1mFzubrTB?=
- =?us-ascii?Q?ZwWPTgBUeFGFNmk+71qI9JC0gBArEd1WpD8evrMQR86VogXM61RX37OT5eNy?=
- =?us-ascii?Q?fQshfiebmQ/H50L8EM3g7/tGzzsdmH3s4ecs1crVVpRENTi2EvfWgN38EAwS?=
- =?us-ascii?Q?KnQ0ubx6LR5crDNgHvU2qJEF+lUfVoIZx0D6iLOpNHoY1q0oebrPVBS+ZGOo?=
- =?us-ascii?Q?03Zus7KB5A3Q/e/uk63OwVnmkyX2gUYvTfLY2aZ1UHADmTpnsYCrUMjeW7Bu?=
- =?us-ascii?Q?QyDDJ7b40vLO/HjlBrEb7ZL5deRUQrLqedXeHcgcOvF8NjJ0RRN67lkYDq43?=
- =?us-ascii?Q?jujq3oLY8vlTxEUdS6s1L+ON7RDlEe568qgEpt/gFYulr28UY59kJh+GJXEx?=
- =?us-ascii?Q?TAvHW4khytmhgrwVpcAw5jPnUYU27v2ij3/0GTQ2neJ0j7Q3/kR96qCmBUh7?=
- =?us-ascii?Q?9jTyQGFXegYnUq2M3af+/VGG65oLFYK/AjIYXeVKxP7wtJN4c8Kr7UT1Zyh3?=
- =?us-ascii?Q?SHqhExe9Uqk59uywv89oVIAwqM7nWaqD2qyPCwVdII7V8wDcgatVIKQyQuz6?=
- =?us-ascii?Q?LOafchBjSQIkkvW73LOBV4p/TRA6MUu9bv/rW3i0fdaQE5hvN5HOjsKzij/G?=
- =?us-ascii?Q?q3pnJSY7GQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df500a2e-90e7-4467-4a02-08de804664d8
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 14:48:16.3192
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OYUK5mPGWa/XsbA3YGk6mudcT0xGUg4nIl9zal+o45D70iQNZjEUHRq5SSq2YUL4Yh2RB51GpIdzFbEwnG0WrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSKPR04MB11461
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/12] arm64: dts: imx8: Use undeprecated reset-gpios
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Marek Vasut <marex@denx.de>, Russell King <linux@armlinux.org.uk>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kernel@dh-electronics.com, linux@ew.tq-group.com
+References: <20260311-dts-snps-reset-gpios-v1-0-ea1cc09fba84@oss.qualcomm.com>
+ <20260311-dts-snps-reset-gpios-v1-7-ea1cc09fba84@oss.qualcomm.com>
+Content-Language: en-US
+From: Max Merchel <max.merchel@ew.tq-group.com>
+In-Reply-To: <20260311-dts-snps-reset-gpios-v1-7-ea1cc09fba84@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27938/Thu Mar 12 07:24:01 2026)
 
-On Thu, Mar 12, 2026 at 08:36:57PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+
+On 3/11/26 17:08, Krzysztof Kozlowski wrote:
+> Freescale i.MX6 PCIe host controller bindings through referenced
+
+I think you mean i.MX8
+
+> snps,dw-pcie-common.yaml schema already document "reset-gpios", just
+> like Linux kernel did for a long time.  Use the preferred form over
+> "reset-gpio" deprecated since commit 42694f9f6407 ("dt-bindings: PCI:
+> add snps,dw-pcie.yaml") in 2021.
 >
-> Add compatible string for:
->  Cortex-M7 core[0,1] in i.MX94
->  Cortex-M33 Sync core in i.MX94
->
-> To i.MX94, Cortex-M7 core0 and core1 have different memory view from
-> Cortex-A55 core, so different compatible string is used.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 > ---
+>   arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 4 ++--
+>   arch/arm64/boot/dts/freescale/imx8dxl-evk.dts       | 4 ++--
+>   arch/arm64/boot/dts/freescale/tqma8xxs.dtsi         | 2 +-
+>   3 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+> index 6fc82b5eb58c..6d8a57ff56c2 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+> @@ -806,7 +806,7 @@ &pciea {
+>   	pinctrl-0 = <&pinctrl_reset_moci>;
+>   	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
+>   	phy-names = "pcie-phy";
+> -	reset-gpio = <&lsio_gpio0 30 GPIO_ACTIVE_LOW>;
+> +	reset-gpios = <&lsio_gpio0 30 GPIO_ACTIVE_LOW>;
+>   	vpcie-supply = <&reg_pcie_switch>;
+>   };
+>   
+> @@ -816,7 +816,7 @@ &pcieb {
+>   	pinctrl-0 = <&pinctrl_pcieb>, <&pinctrl_wifi>;
+>   	phys = <&hsio_phy 1 PHY_TYPE_PCIE 1>;
+>   	phy-names = "pcie-phy";
+> -	reset-gpio = <&lsio_gpio5 0 GPIO_ACTIVE_LOW>;
+> +	reset-gpios = <&lsio_gpio5 0 GPIO_ACTIVE_LOW>;
+>   	status = "okay";
+>   };
+>   
+> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> index 5c68d33e19f2..bdd1dbc6b322 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> @@ -651,7 +651,7 @@ &pcie0 {
+>   	phy-names = "pcie-phy";
+>   	pinctrl-0 = <&pinctrl_pcieb>;
+>   	pinctrl-names = "default";
+> -	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+> +	reset-gpios = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+>   	vpcie-supply = <&reg_pcieb>;
+>   	vpcie3v3aux-supply = <&reg_pcieb>;
+>   	status = "okay";
+> @@ -662,7 +662,7 @@ &pcie0_ep {
+>   	phy-names = "pcie-phy";
+>   	pinctrl-0 = <&pinctrl_pcieb>;
+>   	pinctrl-names = "default";
+> -	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+> +	reset-gpios = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+>   	vpcie-supply = <&reg_pcieb>;
+>   	status = "disabled";
+>   };
+> diff --git a/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi b/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
+> index bfc918f18d01..677a05b38391 100644
+> --- a/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
+> @@ -407,7 +407,7 @@ &pcieb {
+>   	phy-names = "pcie-phy";
+>   	pinctrl-names = "default";
+>   	pinctrl-0 = <&pinctrl_pcieb>;
+> -	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+> +	reset-gpios = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
+>   };
+>   
+>   &sai1 {
+>
+-- 
+Best regards,
+Max
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
->  Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index 683f0c36293c08616621daa79c0b8914b0f48bba..b136b3c3ca3ce9ff92d91f4b8ffc29c614edb66a 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -28,6 +28,9 @@ properties:
->        - fsl,imx8qxp-cm4
->        - fsl,imx8ulp-cm33
->        - fsl,imx93-cm33
-> +      - fsl,imx94-cm33s
-> +      - fsl,imx94-cm70
-> +      - fsl,imx94-cm71
->        - fsl,imx95-cm7
->
->    clocks:
->
-> --
-> 2.37.1
->
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
