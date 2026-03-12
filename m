@@ -1,85 +1,255 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FB13FB7D2
-	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 18:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A344D3FFAAC
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 18:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773340566; cv=none; b=IczijsCVHfiF8iMtsCQQFMa32/esC/5qPMjcAuCnmxN7ukzrOFE6FZQnBiCacUEe2LcT7ddvSHIrbX8nzFkYkfNrFf+j8zuJjl7dNg8EefkP+jkP81m4gGtiTWukCzlyihukx4J7z2k2C3oHlqlcKIJWin0EPhfymXn34w909WQ=
+	t=1773341017; cv=none; b=EWFRSkLlMhpJSW6UadX+o3YjT9KZnuvZa0EZAGej3miBtGKSsaMEDzwZEj9fkcISYh/evHz7EjrVG3bju4ROaqg5wMxHR/tBRgKr3x1Jtt9r3YkMfk3WtYRTyqKavT45aDXTBfs8BvVkmfhf62yamGAI2BWLNK3jTvA4yiwS4nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773340566; c=relaxed/simple;
-	bh=yBqKKMqeIBu59iWlGfEU+INdGteO/IZPziJ8BAbkLSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QqCHf2h9P5AV7jHcRvlS/e/zscmuGakMpQNJvqDA9/7jsIB/2jzhbCGAHc00jb7WVp4DYYTeOLDawL6FS5SqblDkZjt+JOXVfO8DaG1BXDAs9r12ppAQzxz+wzcDimrep0iZeCaKjlKYjkaETLFfZeLJXy3R5+WrBf7gBn21mo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Ic9kF2wi; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1773341017; c=relaxed/simple;
+	bh=UZd+Geb8yG5u7UAC+xwI5W/xwTRghe55WnSVbIOTPaI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=CjT+doi6Ls9C4ikBHgcbFrHpUF1YFC+7aN3jeJX3b3EFftYka3GTe0G6y7t7DO+eJx1FxCnXzb19JB89h1n1RwTNsPEXscwkcwclvnpIShyHMPty8jxh62G9HBiYXx4XSLp64hK4fiLFkuXHQ9E5E5esU38byNXP21x7elTLlhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F1V66zlC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fNc7Lipq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Ic9kF2wi"
-Received: from mail.andi.de1.cc ([178.238.236.174])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1w0kLS-0000000B0Ta-0ZYM
-	for imx@lists.linux.dev;
-	Thu, 12 Mar 2026 19:01:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Nbwsy40PmXOadyRc7MITbgYnEQv+lI4eQWK0od+1Taw=; b=Ic9kF2wiCpYjiNtwbkAr6hbfv0
-	FRAEMDyuOe5lRiMBmUmX/cyCXepgPBO5xl3AAUH9fFqd+Di8v+Wpc4pwXQM70kPGyei/Ep+wN/CF8
-	y1bLfiKuJxA1eQhpHlnHoN19PWddvXzrlXtXv7UgHEFil3q7cW2RwF2HU3ZsmR/WZJICkGgMSbiKJ
-	Kb/YxMCN65cbtvZdK/+hvc2vv6ZqCo2c/T7XLjPk0djyAwr4C/w+nApx6InwcLyZm8YwCjt/9fe6X
-	G+yCDSgX40WeNxUxuGXSjLjQN1yHvT9BThdabVYiHuc8TGkGrvoiakV8VQKLvb71omQg5set+twZo
-	f1LHFGtw==;
-Date: Thu, 12 Mar 2026 18:58:54 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Robby Cai <robby.cai@nxp.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] regulator: fp9931: Fix error handling for optional
- regulator
-Message-ID: <20260312185854.75e7a7be@kemnade.info>
-In-Reply-To: <20260312040148.GA4007088@shlinux88>
-References: <20260312040148.GA4007088@shlinux88>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F1V66zlC";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fNc7Lipq"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62CAetVB3667218
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 18:43:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5Zc01U8xwFgE7zVY6+zc3nHFgkyKZtRvurVNrgmn4qM=; b=F1V66zlCPKRa6yhx
+	e7Pc8eTmX0CuyIUC8aAypkjsBzrm7ia2GTrH8ohrl+uG2jLbRp0/Chn/yYgzeKdu
+	e3QtrAwCMFhoV0BRtYRm2dxmyl8ungfySC5cxXCs9fFz2cDoJna86KZuR9vfLcz7
+	roXIRquXWl5xV1wKExCgq2UUrfvl6hPNx21GL0velcnbb6puTE5rR2ECXGShmDvc
+	qeauZzgaGgipOFWY5Jm754jcB52+D97dHVFdDTB01vCXrtGx74pJo/P+PW3Zsaoj
+	eAGafmiZ4mgxUK/GuR/0yFEGBoz1snCoJPYeEsgTb8HRl46oCvoOdVgSjx6pjAmv
+	oBNfhA==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cuh60k8k1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 12 Mar 2026 18:43:34 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cd85e08fddso1276624185a.1
+        for <imx@lists.linux.dev>; Thu, 12 Mar 2026 11:43:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773341014; x=1773945814; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5Zc01U8xwFgE7zVY6+zc3nHFgkyKZtRvurVNrgmn4qM=;
+        b=fNc7LipqtguGhsshBFZEQ28kzSIuuUhXHjIj50JoiJrSZRrsOEj5Dgb/2jvbguWYpJ
+         otStaR0cELn2GwOhnC6QCBdhYpOQ6dLU/QQLemYzuTdIewiEudN+WtJ7jXoznASbaVbP
+         8VawYQBkJDr2MoKyAr5j3EjY3iNjRfP3Xw7x3uUO5G/X9tbAX4ZhWYFUchjyBSCGcGsK
+         M0xAg97H0FriG2IWdFiXbMVMKeTpfkXx/8l36Bv06g1iQQmmYUyPuWCPeEVcrGxtwp+e
+         AOEVXIdOPoSKvntXBFB45YKCudlTaxhhjRDBlhA03I6FIAsfTeNunRnXHYePqRMB9do6
+         blew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773341014; x=1773945814;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5Zc01U8xwFgE7zVY6+zc3nHFgkyKZtRvurVNrgmn4qM=;
+        b=prTRGD94iNnKAjRX84/Zlb3xSJKAvUILgcM1IBvl3MH8O7VC9pgAm6vX+JPRALpX6g
+         dxDheAD5hbnPSHprciP+Uwa5X4YOkalUyvQBPZZ+/wzMSb5melq7+IG1uuIWsppPdPEk
+         cMyWgbGycX0N+/iltOCapiL81t1BPwALwqYqoLTPTz3RlEZ4enyyia5bY+HzKf7YXr40
+         RWv/C902d25tQ3r2IYA17WviT3IvM+tfH8FG7eXrbMmOw/G8JGuUzyfKL46uNuz5ydGC
+         Xg68Egb9zNJwDSHnunYT8tS5njtOuZpI4bkNSxEMIRpqMjyZ6JtGO1uGxbNCDOHJUHXv
+         YRYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWLJxHT12/uO/+u0pbK1//R8+YrjXCR/sCtIk3h9hM2BLRe/pTU6vpbKfz9j1Re56dhXIk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxqleOEECJbKrNZg0ab2bLwOb/Zg5rBgAvZ4WC+MYQc6esVco6c
+	rFhs0EYZLX1AV259Ia/N9/VCkEYsWq7WvCwYZ8wz0kYn1u7TLpjT4Ig2+YmCkmzchh1b18QCJBT
+	sb+/tdlZ98SluAADd6WREq/pYM7s/67ttznzSfOQ2h53yp5nFVvDhpfU=
+X-Gm-Gg: ATEYQzynKfmiTfIhiT5jLASYJ20hhWLggmFVA/TStGjNzR1BPFUJAk6vUK9rhO51zs8
+	P0i8wZMKaaaHEBD6Z54OogtFQxrDV1WV119v0E8JHrygUFjeQjivKm6fvojgS5l4F2uqGMP9krf
+	AGfO0vjB/Hduh91Cb4yAGp5H2uedCaApDx4w8K2GrlZ1qGiwB4tTVcmu6/47ZkJfXwWKg1AwrBW
+	mYPWfT3Rdy0ppROLULoa9TdWOATj8701paipUv5i0bvNLqyflUaSQhZITLNv69HBo/gZ3v5OXqn
+	E6/jLyiSuMhapAjVvH4OW2ji/+ARCTHlXsGpfAqw/EV3WGacWcnAreVVgODZFdXJsifdU10X/gW
+	mZ0OSjuhLQabPZKgTt7s149E/b7x05t/Ya628z3N2d0pPHdhI
+X-Received: by 2002:a05:620a:3195:b0:8c6:b247:4c with SMTP id af79cd13be357-8cdb59ff4aemr119414385a.2.1773341013755;
+        Thu, 12 Mar 2026 11:43:33 -0700 (PDT)
+X-Received: by 2002:a05:620a:3195:b0:8c6:b247:4c with SMTP id af79cd13be357-8cdb59ff4aemr119409585a.2.1773341013241;
+        Thu, 12 Mar 2026 11:43:33 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.94])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485419c2930sm412755315e9.0.2026.03.12.11.43.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2026 11:43:31 -0700 (PDT)
+Message-ID: <2ee77136-0bdd-4661-a5d7-83869e63273c@oss.qualcomm.com>
+Date: Thu, 12 Mar 2026 19:43:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: PCI: fsl,imx6q-pcie: Switch to
+ undeprecated reset-gpios
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Sherry Sun <sherry.sun@nxp.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "bartosz.golaszewski@linaro.org" <bartosz.golaszewski@linaro.org>
+References: <20260311154955.145120-3-krzysztof.kozlowski@oss.qualcomm.com>
+ <VI0PR04MB12114361EE728C74CEE500FED9244A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <800fc82c-1b2f-4330-9a25-e1d067dc83ac@oss.qualcomm.com>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@oss.qualcomm.com; keydata=
+ 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
+ cwzYbmi/Et7T2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <800fc82c-1b2f-4330-9a25-e1d067dc83ac@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: -TquZ9goFSe5BwN49pI5yCqhfdUQLQWe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDE1MSBTYWx0ZWRfXxAhHKHmNLSL3
+ 9sXQu5TCpejhvpaSOguTeLeIIzajO5C2tpb45E1eOJAlxyVNlAtAZ5zk5rHn/LSUWXDTNOJ6iZX
+ LGTyUEV1LJCCQoO7Wl13jtku+yPDqhGDsUrPKu508g0VoebK01JNPNd3su5zuye0chDnYPPQsMC
+ Kac1VH1xJliXIm5/WJxLGZJ7U50iMaU4WxmLmUA2GLvZ+YsWOJBJ7PHrLEWESLjrFMqpSi3c+Fg
+ eCrdqNmYAoLWggIFDljER8sbw15R4iwng8xOSAl9mXCxBOSB2t2kgNuOQLEckWPCDXtpVs9ExQR
+ jd5yiS75TyNydmGpaUF1BWmdzIDqLt/e/FxEGKKYBBQvBDzgBUcbEwpoLB9mI5g8hIJfJ02r7it
+ WrJZ1o0BGpDN0/kwS31Lv41M1TwV/PCx1kilBLnq9DuWb0JpRuqcW+GAqmPsqw2QqOQ3y8kh69B
+ Ir1ElVgmPXdevjWI3Pw==
+X-Authority-Analysis: v=2.4 cv=DsRbOW/+ c=1 sm=1 tr=0 ts=69b30956 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=gOEeR9iKwsj33Yj5oN/cWg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=EUspDBNiAAAA:8 a=T0qWzi58jBV6o7NOTdEA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-GUID: -TquZ9goFSe5BwN49pI5yCqhfdUQLQWe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-12_02,2026-03-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0 adultscore=0
+ clxscore=1015 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603120151
 
-On Thu, 12 Mar 2026 12:01:48 +0800
-Robby Cai <robby.cai@nxp.com> wrote:
-
-> If "vin" reg does not exist in the device tree, the regulator framework
-> returns -ENODEV, which is normal for an optional supply. But the current
-> code treats -ENODEV as a fatal error, causing the driver probe to fail.
-> This patch fixes that by handling -ENODEV correctly for optional regulator.
+On 12/03/2026 17:29, Krzysztof Kozlowski wrote:
+> On 12/03/2026 10:18, Sherry Sun wrote:
+>>> Subject: [PATCH 1/2] dt-bindings: PCI: fsl,imx6q-pcie: Switch to undeprecated
+>>> reset-gpios
+>>>
+>>> GPIOs with "gpio" suffix were long time ago deprecated, thus "reset-gpios" should
+>>> be used.  Linux kernel supports both, referenced schema snps,dw-pcie-
+>>> common.yaml lists both as well and this schema uses
+>>> unevaluatedProperties:false, thus change has no impact except code readability
+>>> and removing deprecated patterns.
+>>>
+>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 5 -----
+>>>  1 file changed, 5 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+>>> b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+>>> index 12a01f7a5744..b9ba938c6239 100644
+>>> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+>>> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+>>> @@ -58,11 +58,6 @@ properties:
+>>>        - const: msi
+>>>        - const: dma
+>>>
+>>> -  reset-gpio:
+>>> -    description: Should specify the GPIO for controlling the PCI bus device
+>>> -      reset signal. It's not polarity aware and defaults to active-low reset
+>>> -      sequence (L=reset state, H=operation state) (optional required).
+>>> -
+>>
+>> Add Dmitry and Bartosz.
+>>
+>> Hi Krzysztof,
+>> Seems this property is still handled in gpiolib-of.c, see commit b8b80348c57b
+>> ("gpiolib: of: add polarity quirk for Freescale PCIe controller").
+>> Maybe need to change the quirk gpio_propname here too.
 > 
-> Fixes: 12d821bd13d4 ("regulator: Add FP9931/JD9930 driver")
-> Signed-off-by: Robby Cai <robby.cai@nxp.com>
-> ---
->  drivers/regulator/fp9931.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> Oh, I missed that completely. Thanks for mentioning it.
 > 
-> diff --git a/drivers/regulator/fp9931.c b/drivers/regulator/fp9931.c
-> index 7fbcc6327cc63..fa7f32adfb666 100644
-> --- a/drivers/regulator/fp9931.c
-> +++ b/drivers/regulator/fp9931.c
-> @@ -448,9 +448,13 @@ static int fp9931_probe(struct i2c_client *client)
->  				     "failed to allocate regmap!\n");
->  
->  	data->vin_reg = devm_regulator_get_optional(&client->dev, "vin");
+> 1. Having this property in drivers/gpio/gpiolib-of.c means we should
+> keep it in the schema as deprecated, because each ABI should be documented.
+> 
+> 2. I can drop reset-gpio-active-high from DTS as well, because
+> reset-gpios have proper flag.
+> 
+> 3. We don't need to update gpiolib-of.c, because standard flag from
+> reset-gpios will be used.
+> 
+>>
+>>
+>>>    reset-gpio-active-high:
+>>>      description: If present then the reset sequence using the GPIO
+>>>        specified in the "reset-gpio" property is reversed (H=reset state,
+>>
+>>  Also change the "reset-gpio" to "reset-gpios" in this description.
+>>
+> 
+> Also here - no need to update, because this will be used only for
+> reset-gpio.
 
-looking at that thing again. I think I have abused the optional api.
-Of course this chip needs a supply. It may be hardwired so something
-not switchable. But that needs to be wired to something... So I think
-rather the _optional is wrong here.
+I will send a v2.
 
-Regards,
-Andreas
+Best regards,
+Krzysztof
