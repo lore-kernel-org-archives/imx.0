@@ -1,122 +1,98 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5241400C;
-	Thu, 12 Mar 2026 15:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173D2363088;
+	Thu, 12 Mar 2026 15:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773328017; cv=none; b=pGMnFyCM+axuHOrEWXIcXOzCffDMK5sxl2v9f0hnc3UsNTY7RcCeyN5P3gjT9aIfnzu6ASHkCKfFFlmq7daut8mBJfhl6+MFlv74tH/PmHYzLfLb9yuiP7yVOBR0D74oaT/alKMKQKzAfmuzDPGm/18d+1YYmHhEXTSdiYQvmfA=
+	t=1773328723; cv=none; b=hscOv1aAVX5Hsjr+7PLoQGT6Iv8IN795lJSP4kZTP6e/EPy12FO2nLKhQWeblhRae2bj7oHGdjtj9/MtHkMgzCAUKVF5IonFQVtI4df/JdKJ1cAyRb3ZdoRz14O/EKlX7HBp3RH+XMC0nbaLqAwjFqtatYOg2ItxySwdGC3T2W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773328017; c=relaxed/simple;
-	bh=R8Q3WvA5Ic7yjTt+iAM2be7pTSy6TJQu1++F2S4PhYM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lIz9ikVQgXhIM4g1VGk8H73PQsMOz8+sHTjW90HRWIXe+rhcW+gbrRJ04MhUHPGH3yFVzR/O+zVNupqZIhNsFCjvW/nGciauXkmxSN0bfOO0qM4JXgiG8ampZj1SqtItSXXXBbMJzYtdoYlbwEG3uhZL/nYUZyc2N0YVphAAKLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=c/D2t2/V; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1773328723; c=relaxed/simple;
+	bh=RU7mCgn4p4aFt4z17AtB/HzQEKVXpAiuBbfZS5Sysa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J6Pz9ldXGaFeAirnQIwbKpBfBd1razHO6XJetOK+JCggvFm9WjFzjQC1MATtbBRiCO24Iky1foHzMoxBieA+NokMMueFCJd/K6dWeBIh1+Xz1Bm8lce59qqcTPgW8oKz/j3pdhSPRi+GX7x2fxGD/b0rp7WaPM+hm4uISw7l2dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1k65cmJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="c/D2t2/V"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=0jWlLUSeN29Pq02QcM+6J989J3yKVwQy0x52kUrHLWk=; b=c/D2t2/VpkFqdXBjHh3Pe4TtEP
-	lxbnyWJAJ4/jjMZ6vl2/qlH+G+HkKTgsVbREd8BEzHTPWqEYU2GJ1M8nK2RIhyGXXdQgmE3pmpe9M
-	ayL5NlNrX10feY2yxK0ptjPT1yNnzqUNwTPLMn/eL3q91uNWpPLFq9aVEd2iQ4ub6ymTJoTdsNLKF
-	/pg5QgHwaLpniRJjcCrW/HDIbxIzz3/dA4EourHP97dOZWEXbng1vKd3ZAalt21rb4gXYrfAkdMqJ
-	IP3Ig/SQW2KeK2YHQx1Es5Pj053TC6tSohzFWr5YUmx3WmRdJUGswr62ri3GHcrthfmFzAKoBVXu1
-	W4d+K4Eg==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <max.merchel@ew.tq-group.com>)
-	id 1w0hMP-000JL7-2a;
-	Thu, 12 Mar 2026 15:50:01 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <max.merchel@ew.tq-group.com>)
-	id 1w0hMP-000AiT-0Z;
-	Thu, 12 Mar 2026 15:50:01 +0100
-Message-ID: <e9c0606c-82e7-4979-a6a4-efea6a570009@ew.tq-group.com>
-Date: Thu, 12 Mar 2026 15:50:00 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1k65cmJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24701C4CEF7;
+	Thu, 12 Mar 2026 15:18:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773328722;
+	bh=RU7mCgn4p4aFt4z17AtB/HzQEKVXpAiuBbfZS5Sysa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V1k65cmJmmo+ZdpjbsNZv8nsCPVPi61VKALCKXZeOdH3/KVdSz+l5mdTs2j4pTFLz
+	 TjGA79gCGU23W5C90XwC6e0xdRba2zTRj0weRhQoxKvJs12V/HeNxVa41VKe9AjWPv
+	 fXDGMebsWeyd/6rYWviq9pQAuQImG1jFn3xPJpkk=
+Date: Thu, 12 Mar 2026 16:18:38 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 0/9] soc: remove direct accesses to of_root from
+ drivers/soc/
+Message-ID: <2026031231-whiff-speculate-805a@gregkh>
+References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
+ <20260224183832.GB3239922-robh@kernel.org>
+ <CAMRc=Mft5vc-C8miKVdw6C-qRdYsqfgm-UgLZJOctFwagMF0iA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/12] ARM: dts: imx7d: Use undeprecated reset-gpios
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- Marek Vasut <marex@denx.de>, Russell King <linux@armlinux.org.uk>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- kernel@dh-electronics.com, linux@ew.tq-group.com
-References: <20260311-dts-snps-reset-gpios-v1-0-ea1cc09fba84@oss.qualcomm.com>
- <20260311-dts-snps-reset-gpios-v1-6-ea1cc09fba84@oss.qualcomm.com>
-Content-Language: en-US
-From: Max Merchel <max.merchel@ew.tq-group.com>
-In-Reply-To: <20260311-dts-snps-reset-gpios-v1-6-ea1cc09fba84@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27938/Thu Mar 12 07:24:01 2026)
+In-Reply-To: <CAMRc=Mft5vc-C8miKVdw6C-qRdYsqfgm-UgLZJOctFwagMF0iA@mail.gmail.com>
 
+On Thu, Feb 26, 2026 at 10:28:26AM +0100, Bartosz Golaszewski wrote:
+> On Tue, Feb 24, 2026 at 7:38 PM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Mon, Feb 23, 2026 at 02:37:15PM +0100, Bartosz Golaszewski wrote:
+> > > linux/of.h declares a set of variables providing addresses of certain
+> > > key OF nodes. The pointers being variables can't profit from stubs
+> > > provided for when CONFIG_OF is disabled which means that drivers
+> > > accessing these variables can't profit from CONFIG_COMPILE_TEST=y
+> > > coverage.
+> > >
+> > > There are drivers under drivers/soc/ that access the of_root node. This
+> > > series introduces new OF helpers for reading the machine compatible and
+> > > model strings, exports an existing SoC helper that reads the machine
+> > > string from the root node and finally replaces all direct accesses to
+> > > of_root with new or already existing helper functions.
+> > >
+> > > Merging strategy: first two patches should be either acked by Rob or
+> > > picked up into an immutable branch based on v7.0-rc1, the rest can go
+> > > through the SoC tree.
+> >
+> > SoC tree is good.
+> >
+> > For all but patch 8,
+> >
+> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> >
+> 
+> FYI Rob also reviewed patch 8 now. Who would pick the patches up? Greg
+> KH? There does not seem to be a centralized SoC maintainer in
+> MAINTAINERS?
 
-On 3/11/26 17:08, Krzysztof Kozlowski wrote:
-> Freescale i.MX6 PCIe host controller bindings through referenced
-should be i.MX7
-> snps,dw-pcie-common.yaml schema already document "reset-gpios", just
-> like Linux kernel did for a long time.  Use the preferred form over
-> "reset-gpio" deprecated since commit 42694f9f6407 ("dt-bindings: PCI:
-> add snps,dw-pcie.yaml") in 2021.
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->   arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts | 2 +-
->   arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts  | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts b/arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts
-> index e3ee16f1aaa9..a5fc7f80f651 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts
-> @@ -122,7 +122,7 @@ &pcie {
->   	/* 1.5V logically from 3.3V */
->   	/* probe deferral not supported */
->   	/* pcie-bus-supply = <&reg_mpcie_1v5>; */
-> -	reset-gpio = <&gpio5 12 GPIO_ACTIVE_LOW>;
-> +	reset-gpios = <&gpio5 12 GPIO_ACTIVE_LOW>;
->   	status = "disabled";
->   };
->   
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts b/arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts
-> index a370e868cafe..ab7cabe5552d 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts
-> @@ -456,7 +456,7 @@ display_out: endpoint {
->   };
->   
->   &pcie {
-> -	reset-gpio = <&extended_io 1 GPIO_ACTIVE_LOW>;
-> +	reset-gpios = <&extended_io 1 GPIO_ACTIVE_LOW>;
->   	status = "okay";
->   };
->   
->
--- 
-Best regards,
-Max
+Sure, let me take them now, thanks.
 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+greg k-h
