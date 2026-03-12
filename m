@@ -1,103 +1,82 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C743F99DB;
-	Thu, 12 Mar 2026 17:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0FA3FE355;
+	Thu, 12 Mar 2026 17:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773336874; cv=none; b=nYtbHoNnpb2HoAfAsVVaiEV/ZeDuijoDMTAv90gYnxdnJYizBP5pSS4MMhfuTQb+KH1nvkRilcWPG/Lru5mDBWnmdVF8lybwSPlLbmA1el5mk9pcTmSg7VpFRHbe5R1aZ9PC/dwd42YoD1pm/iUdvwiUS8n+6FHg4vWRIQwdbe8=
+	t=1773336896; cv=none; b=WTU2okTxzMQDR1C8WKbtF7BixI5Wa76aaJAH8annHgd/J9EJHm6AnQvtroRqjm2pyuULbfwl9fJH8KaUSMmfRUodMGsnZwUY1NChpLy0EeIBex3XJtkodilkKQkkTJ3IjBZ892Mg7w6qOx2VunO49bnHOYXlkAVBxX38WMQPC6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773336874; c=relaxed/simple;
-	bh=VGtXHilX3UlaPfPfilvV8r1wHZFmWNithjQkgVtRITw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qBWxEzMk6kmL3O8NutDnpxHT850hxQSmqfdwktgG4ZsIOKRgeoBsp+/259CafNSMYV08WysszY49P6lpiamCVVZnx0UsjTPgkz09pq8L8hAaOlXCLGPsM7E77X8F5h8fByEJF/rn+WGKFwnmJWJEOIAGQOoKUuKs9oJ09WVIO0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Z+0B417l; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1773336896; c=relaxed/simple;
+	bh=1P/4LEDixaG5795fXNa+imLmGsUhYup/VzfnVGfW448=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Vu9pKRTV6KmTzmYYURVrUDjD3yY5MoxSdbMmuRPeu/wNOsSICYKrORr6gFgZEBq7x2dD/cVS3u7tsVLmbKWZ2WVTvtg+MyVwYReW4AS2/Jz6iJPD42W4JLDLL5acuc8xKjzVmRNQlGmYfiMbqTuPnel2IfYmhwYmqf8KB5G9k0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAgbn5AM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Z+0B417l"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5909322831;
-	Thu, 12 Mar 2026 18:34:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1773336863;
-	bh=fmtlnhSTjgOoQaF3XdzpaQYVg6I7U+e/byYCHILShjg=; h=From:To:Subject;
-	b=Z+0B417l9p71c9g2467dWy9UgcuD70ES35DaANtN0imwURTZU/GPr25LH+b5eQ6ym
-	 0hVsZhSnAJUU+RVHvGSUx+CMOWrr9b2F4DVMWTVphdX0DP/GRwUn61FTHAp9jUl6tC
-	 oCNGIxNG1N0CODjGoX0qFYW4Q+SeYau8/Ta3jzwoE9eiOyI0Ggn54oBoF9nA2/5qCQ
-	 zyNIj16+riOjZYIm70/XvM2xZAF6ZIW67O49FwbCDgCphk2melEEoB9awSAIKjGRIM
-	 yMc9HpZiPhvaMcw5R9TguGnDUDO2I3fUxmwPrQil1l7fnVLrsiN7+2OySDqguMHfTM
-	 zACt1/KiYryLg==
-Date: Thu, 12 Mar 2026 18:34:18 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
-	benjamin.gaignard@collabora.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
-	sebastian.fricke@collabora.com, shawnguo@kernel.org,
-	ulf.hansson@linaro.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, m.felsch@pengutronix.de,
-	fra.schnyder@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de,
-	Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
-Subject: Re: [PATCH v4] media: verisilicon: Fix kernel panic due to
- __initconst misuse
-Message-ID: <20260312173349.GA137045@francesco-nb>
-References: <20260306031059.801-1-ming.qian@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAgbn5AM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670C4C116C6;
+	Thu, 12 Mar 2026 17:34:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773336896;
+	bh=1P/4LEDixaG5795fXNa+imLmGsUhYup/VzfnVGfW448=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MAgbn5AMI88SjayIfMB2INHSkO8tWC3oAuUJnsbnpD8esZko25GroRBu0rr7pxGXA
+	 oMFAErOunk1D1pzpfqBokhKGZ+yHzEJGL28ibFyw2GPI9XjakegjPRypTibjY1z5MA
+	 moC5bsihWNy/UvwRpBiG5LTlQuR9sf/cSFxGPtYoc+rQnFoc26V3VQMZ+TMaYSgL/Z
+	 Y1PkdrI16DZZHys4UuouOLcEwTRbXPXPVkkY/hl7vc52u4WxcHXB3tpI7SU7Ji8nmI
+	 HV99sH0XeNvOIa/56BmAL2vIRBLSPiwARMyll966xTP6sOWeXzrgJMio/w8PVACNXc
+	 7Uf49FUP3G5GQ==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, andreas@kemnade.info, 
+ Robby Cai <robby.cai@nxp.com>
+Cc: imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260312040148.GA4007088@shlinux88>
+References: <20260312040148.GA4007088@shlinux88>
+Subject: Re: [PATCH] regulator: fp9931: Fix error handling for optional
+ regulator
+Message-Id: <177333689516.303201.7873451488433406012.b4-ty@kernel.org>
+Date: Thu, 12 Mar 2026 17:34:55 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306031059.801-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-68380
 
-Hello,
+On Thu, 12 Mar 2026 12:01:48 +0800, Robby Cai wrote:
+> If "vin" reg does not exist in the device tree, the regulator framework
+> returns -ENODEV, which is normal for an optional supply. But the current
+> code treats -ENODEV as a fatal error, causing the driver probe to fail.
+> This patch fixes that by handling -ENODEV correctly for optional regulator.
 
-On Fri, Mar 06, 2026 at 11:10:57AM +0800, ming.qian@oss.nxp.com wrote:
-> From: Ming Qian <ming.qian@oss.nxp.com>
-> 
-> Fix a kernel panic when probing the driver as a module:
-> 
->   Unable to handle kernel paging request at virtual address
->   ffffd9c18eb05000
->   of_find_matching_node_and_match+0x5c/0x1a0
->   hantro_probe+0x2f4/0x7d0 [hantro_vpu]
-> 
-> The imx8mq_vpu_shared_resources array is referenced by variant
-> structures through their shared_devices field. When built as a
-> module, __initconst causes this data to be freed after module
-> init, but it's later accessed during probe, causing a page fault.
-> 
-> The imx8mq_vpu_shared_resources is referenced from non-init code,
-> so keeping __initconst or __initconst_or_module here is wrong.
-> 
-> Drop the __initconst annotation and let it live in the normal .rodata
-> section.
-> 
-> A bug of __initconst called from regular non-init probe code
-> leading to bugs during probe deferrals or during unbind-bind cycles.
-> 
-> Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Closes: https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e66@kernel.org/
-> Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
-> Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia23b42rj3wlmpl67@rvkbuirx7kkp/
-> Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC")
-> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Applied to
 
-What's the plan to merge this? It fixes a quite severe regression,
-a boot failure.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-#regzbot introduced: e0203ddf9af7
+Thanks!
+
+[1/1] regulator: fp9931: Fix error handling for optional regulator
+      commit: 8066a5855ed986f822df4d8b1fa8017b88a43e76
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Francesco
+Mark
 
