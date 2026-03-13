@@ -1,233 +1,114 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EF53D6496
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 18:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B753537D0;
+	Fri, 13 Mar 2026 18:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773425552; cv=none; b=jg8iIbPJTE1DlDCfpupnQ5eWUrev5uWa2N0WPSKGMTGFk7brml37824wWCsNncBeXlnwBClhgTZj5JOc71lcgqTw00b7xirR23XlH8O+TajLbcTIznZx5g+zJoOvLCaNVafqBstr30RHBXP/0WqROXDgXioxFGGpIWFnO8CfbTc=
+	t=1773425939; cv=none; b=u2eRhWdZ3ljPwVyhhIzLNbd6MrCCzMlsHM0RrIFBaCyuKJKTNSutS1lUDYiHjS9Kfc3UbZ8O1+0QoELj6t2SdkELV8urmUAaid5ne/w6kyAREdmVEXRn2BpVXQEhBZKD82q7e9IrwyQVlEf4SLP763SJ20tzXSeFIEHl5uQ3p4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773425552; c=relaxed/simple;
-	bh=RmdOmrssaFa2NY+5lSy5ZaT+O8gr+fKg8x7V06Y8by8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ue7l/df0fEPes2nY8MJ4M2jCboQMMjyxEc4mZUfZxGoeNIk+zdOI71/5j34LsjsZP+vYKWORbF0AAF+yr2yn9ccukWvU8Kxj5+98ZC+xuZRTtIZcRQupo236USsxOeJJphtJj7bfkplun+YNXsgUjd701Uo2Uc7UnrocK0tbSPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZvScPIp; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773425939; c=relaxed/simple;
+	bh=2NXO+yF+55T7F+hpfAb0nuG4E5nybIth2x/Lfeit0v0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=XdwrgaZZAJv4G6I2UYoHtplsnchdY864Qi/qvJk+Xqy+XDc4jRVhZloSebu+7pIWdk1cSgcI6A4W80mmNYDf2T47G4VdFANHSMLbCOn4Yf0mcZ9nprQJpDyw3AV55v3l/uRPUJh6/jwUAqjKgtgvcIRDDlihMozx6u9HKWkkcnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkuBmUY5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZvScPIp"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8299f1ca894so1283000b3a.2
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 11:12:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773425549; x=1774030349; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvpzVosN3fzG6HUFZ5xf0+PeJenGWuukw2/bPevXNSU=;
-        b=YZvScPIpAyhpTkeRM0W/Aq6ej6Peek6kIUGynWiJKRSrmFoeenXtU98qjQ8Ffhw2pi
-         bId2qVqDNtlGlFNM1H9UDUF7hgGGJDzOkSBbE+JuWEpGqbNj8dMkr5t1Vnb9++7COuzC
-         qyfLooCsPHM9iR6bCPwY8unGz9pR7f/ADQG66sTomcProZ9Q+imCFvRbK7F44lfCspUb
-         ud7Auj5LetwiiDOg/A1PAidUedGASCiASqu7cGIBtJOmI8hlMR7dJvENd3F86Io8vWIN
-         YSgwlMkewR0jDGT+VCpEYQUhQv/N5NlDbbwe2hPivpvVqydL0JxRj1rmJfHn3oI5I4lQ
-         aZyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773425549; x=1774030349;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EvpzVosN3fzG6HUFZ5xf0+PeJenGWuukw2/bPevXNSU=;
-        b=qIVrIgy2CfhEIyyB7rmmBTgk0bnHGTVjJN/RTnIZVk2nHlRbR787eUzC5DuxxDlwZM
-         ao9S0E6x7z62pm09comSBjS7Wl1/00cJuCPNAIVeJRG4+K0S2mgFOHkPpajrehdilByf
-         nNu8XEyKbE9Qq8PoxwJJPtXmdcUDpA7UYWC4DW+rjPoj0tjD/zEGwViznu5d3xC4jP9x
-         0SFPMQZL4DMjAWvIhGyM0uVZv4BIWsAxcWCfe/elg8UIu760STCPNHEoVd154gfPtRKf
-         b1xucNea4E0M1oYeQVGf188m0F0Qm2IKSN5AaMQ5ULnn8NSuyr7rVp7qETlcj4qb+sD9
-         rq4A==
-X-Forwarded-Encrypted: i=1; AJvYcCX0HA3Fi+5slzeEVgEZU/uOD3xO85TPAqTF3cspT8/X4BP17IxubYLzcd7BEn4cjYo3GVE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqMgrsVscyBB6xPxbwToF70Y2+TsTGpJkoNufEu3n0sjI0IDV2
-	gsfGE9116gjElkhMKKXMl4BA/q1ziiFsXH0NaD8Uv6ZGAL9kpgLgMfqZ
-X-Gm-Gg: ATEYQzzvAaZdky3ap4wIuJfY6gthMrD4mDjsQFbWPAILnAqLzSs/UNpATRbqDd8X3FP
-	w0MPO1Q5zM0Aeznf7fnuMvvw8GKxeg+A5tg2nDL762JqAwIOmjlhMaACEPqWM2yoIifk8T9LEdl
-	+vP+6Y9s+0V+WUY3qLgCfKwTzIbGS9Df54E5dTfqUNQCnTcNMK3vCaoXcMmpaN5rosxSzEOQKV1
-	HPJsvcD7rkrZwZx9reDk51WliyESVR4BxUJxjvx8tRgEcYsbZYTItF9pBCs42/14gcuatFrHIV+
-	WkW7tLVCiMCRLC6uasrE3n44GvPDk+ldIs1iApnNNqWzAVrRnr0vEBMaEkw3M/qyKzGPoVmqdtb
-	ss7/JGPt+j/lslWFf7jrLw0TSMv5oKvZn3dnfRY8i3j8mljYPhPYL0RSaDZCq60r4zqjPodnthL
-	klVz9Z5LU3gfl2enJbxqHuh0kY7Z8vcYbJlvBWinLDhDH1sPVUa3o9Kpgzz3vfyIivhtKWwwKa
-X-Received: by 2002:aa7:88c2:0:b0:81e:c67a:1a79 with SMTP id d2e1a72fcca58-82a198661cemr3988947b3a.25.1773425549120;
-        Fri, 13 Mar 2026 11:12:29 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07240f25sm6667100b3a.5.2026.03.13.11.12.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Mar 2026 11:12:28 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cbc1d09e-25b1-4b94-a59c-6b5e54af01f9@roeck-us.net>
-Date: Fri, 13 Mar 2026 11:12:26 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkuBmUY5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49944C19421;
+	Fri, 13 Mar 2026 18:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773425939;
+	bh=2NXO+yF+55T7F+hpfAb0nuG4E5nybIth2x/Lfeit0v0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=WkuBmUY5zECY4w8HigOp4c5Dc0Y7y2nfHD6yuEYwFaBxRHSoHOnEVTjF7hkT0eQkA
+	 AFvQ0/U9ShmNbMyzF+0wQhrhDsQwyNxKjC32q2tl+0EsRInNZqjgNxUjA0SajeBrn6
+	 kHFj31oHvk4O5GY8i8NmF5RD6dgQrjiCuW1ZNS0TlFAoxlpUagAwvkYpFuqyVtZphY
+	 QVlHtHnRkgjRr9/4FntuZCDQbU9JYgsYDVeDARhaRlMuvQRsZqk8X1fkK1i1jrac4k
+	 8sYPWv4uyylodoV2LcLxP/nDTVvuq2bcgK0cxCWY0hcOSstFpl3VMDzH3SGAkgADCP
+	 f+nDIUI0cgl7Q==
+Date: Fri, 13 Mar 2026 13:18:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Christian Bruel <christian.bruel@foss.st.com>
+Cc: Koichiro Den <den@valinux.co.jp>, jingoohan1@gmail.com, mani@kernel.org,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org,
+	bhelgaas@google.com, cassel@kernel.org, Frank.Li@nxp.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	thierry.reding@gmail.com, jonathanh@nvidia.com,
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+	kishon@kernel.org, jirislaby@kernel.org, rongqianfeng@vivo.com,
+	18255117159@163.com, shawn.lin@rock-chips.com,
+	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com,
+	vidyas@nvidia.com, shuah@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v10 3/8] PCI: dwc: Advertise dynamic inbound mapping
+ support
+Message-ID: <20260313181858.GA1427542@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-To: Conor Dooley <conor@kernel.org>,
- Florin Leotescu <florin.leotescu@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel.baluta@nxp.com, viorel.suman@nxp.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
- <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
- <20260312-triage-shallot-1b3d9f07d250@spud>
- <abRF+TPKuXFDJc55@ro-kernel-workstation>
- <20260313-mulberry-glamorous-6afbfc52e42f@spud>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260313-mulberry-glamorous-6afbfc52e42f@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2b03ebe-9482-4a13-b22f-7b44da096eed@foss.st.com>
 
-On 3/13/26 10:38, Conor Dooley wrote:
-> On Fri, Mar 13, 2026 at 07:14:33PM +0200, Florin Leotescu wrote:
->> On Thu, Mar 12, 2026 at 05:37:51PM +0000, Conor Dooley wrote:
->>> On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
->>>> From: Florin Leotescu <florin.leotescu@nxp.com>
->>>>
->>>> The EMC2305 fan controller supports multiple independent PWM fan
->>>> outputs. Some systems require fans to enter a defined safe state
->>>> during system shutdown or reboot handoff, until firmware or the next
->>>> boot stage reconfigures the controller.
->>>>
->>>> Add an optional "fan-shutdown-percent" property to fan child nodes
->>>> allowing the shutdown fan speed to be configured per fan output.
->>>>
->>>> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
->>>> ---
->>>>   .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
->>>>   1 file changed, 8 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->>>> index d3f06ebc19fa..7bcadfab9fc4 100644
->>>> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->>>> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->>>> @@ -54,6 +54,12 @@ patternProperties:
->>>>             The fan number used to determine the associated PWM channel.
->>>>           maxItems: 1
->>>>   
->>>> +      fan-shutdown-percent:
->>>> +        description:
->>>> +          Fan RPM in percent set during shutdown.
->>>
->>> This sounds like something generic, that other devices might need and
->>> should be in fan-common.yaml?
->>>
->> Thanks for the feedback.
->>
->> The property name was reused from pwm-fan.yaml where it already exists
->> with the same meaning. I kept it local to minimize the scope of the change.
->>
->> However, if you prefer it to be modelled as a common property, I can adjust it in the next revision.
+On Fri, Mar 13, 2026 at 04:59:26PM +0100, Christian Bruel wrote:
+> Hello,
 > 
-> I see. Makes me wonder why half the properties in pwm-fan aren't also in
-> fan-common.
+> While testing after this series, I encountered regressions on the STM32MP2,
+> which I am unsure how to fix. The failures depend on the order in which the
+> tests are run.
+
+c0f1506f6354 ("PCI: dwc: Advertise dynamic inbound mapping support")
+appeared in v7.0-rc1, so apparently we added a regression in v7.0?  Do
+we need to revert this?
+
+> The STM32 ATU has 4 inbound entries. After enumeration, the first 4 ATU
+> entries are allocated within ib_window_map.
 > 
-> I suppose there's a reason for it, carry on I guess.. Can be lifted if
-> there are more users other than you and pwm-fan.
+> On the first run of ./pci_endpoint_test -v BAR3(for example),
+> SUBRRANGE_SETUP calls dw_pcie_ep_ib_atu_addr(), which frees only one ATU
+> entry (BAR3), because we were in the bar_to_atu case, for the first submap
+> but fails to allocate the second submap. So the test FAILs.
 > 
->>>> +        minimum: 0
->>>> +        maximum: 100
->>>> +
->>>>       required:
->>>>         - reg
->>>>   
->>>> @@ -80,12 +86,14 @@ examples:
->>>>               fan@0 {
->>>>                   reg = <0x0>;
->>>>                   pwms = <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
->>>> +                fan-shutdown-percent = <100>;
+> On the second run with a different BAR, SUBRRANGE_SETUP test calls
+> dw_pcie_ep_ib_atu_addr() again, freeing the required ATU entry (BAR1) and
+> successfully using the second ATU entry (3), which was left unallocated by
+> the first test. then now the test PASSes
 > 
-> Also leads to the question of why these devices aren't pwm-fans. Too
-> late now to change anything, I just wanna understand why.
+> Therefore, the first invocation of ./pci_endpoint_test on any BAR always
+> fails. Other invocations are fine because the first one has left the missing
+> necessary ATU entry free. Whatever initial BAR number is used
 > 
-
-They are dedicated fan controllers, with an internal tach -> pwm feedback
-loop. I don't mind modeling them as pwm controllers if there is a use case
-(such as someone using a PWM output to control a LED), but I don't even know
-how modeling them as pwm fans using the pwm-fan compatible would even be
-possible since that would exclude the tach -> pwm feedback loop.
-
-Also, if that were to be done, we might end up with two hwmon drivers
-for one chip: one to report the fan speed, and one to report pwm values.
-On top of that, even if it is not currently supported by the driver,
-controlling the tach -> pwm feedback loop would become awkward.
-
-Yes, I understand, there is a strong push to model everything with
-a pwm output as pwm controller, but si far no one was able to describe
-to me how to model a fan controller, and especially its feedback loop,
-in such a scenario. That becomes even more complicated if temperatures
-are used to control the feedback loop.
-
-Guenter
-
->>>>                   #cooling-cells = <2>;
->>>>               };
->>>>   
->>>>               fan@1 {
->>>>                   reg = <0x1>;
->>>>                   pwms = <&fan_controller 26000 0 1>;
->>>> +                fan-shutdown-percent = <50>;
->>>>                   #cooling-cells = <2>;
->>>>               };
->>>>   
->>>> -- 
->>>> 2.34.1
->>>>
->>
->>
-
+> I am unsure how to fix this. Always freeing all BARs before calling
+> set_bar() in the epf-test seems overkill, but safe.
+> I am also considering modifying dw_pcie_ep_clear_ib_maps() to clear N
+> num_submap entries even if ib_atu_indexes was not used yet, since only the
+> full BAR is used during the first invocation from bar_to_atu. But the
+> question is which ATU entry to select ? BAR+1 ?. This seems empirical.
+> 
+> I am not bothered by test failures due to an insufficient number of BARs
+> (this is already the case for BAR5,6), but the fact that the failures depend
+> on the test order is frustrating and show a regression.
+> 
+> But I'm not satisfied with either of the 2 possible fixes mentioned above.
+> 
+> Do you have any other thought ?
+> 
+> thank you
+> 
+> Christian
