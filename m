@@ -1,92 +1,96 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681FE388E7B
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E2A375F98
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773393915; cv=none; b=AqOtaxINucSUnDsOybsGBpP8Jog9hsbXbJc9+0V5c5+yS+Eyzi5PZWrHBVYVES1ebUvNVHwsYl2aJPXVy4FxHyAgT4jLZ2JvQH1tadkgnzFUqpIn0J9IG5kKxuo1LR+S2CFi3I1WYcxQq0Gjm8nP2o0IKz5xfN2mCMB+3SbGkj8=
+	t=1773394141; cv=none; b=I+1K3/iQZO+vq8GpkS19Zfn6bcfTHSCotPiBHantg+sYQ+FWzpGuxi5i06vqLa21ky00HVPXaaesMmFOOxeuUlPL8xG0w/NAwhAeJKsLZ6VLy2Y0BCYBQqnM52onKqnOyccWYTVeIu35wvLKOwMO3WRl0ohQ2/myY0sjVVAGYoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773393915; c=relaxed/simple;
-	bh=u7PHLQzEyh0y8EnqzZnd5xv6yY/Iw0TdZ7FpjnU0KQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ha6wnkIWyRHskUT5zcBn0H1OxuELwAEKwF2rhM8OmUp2MXHSGoXX7qHVsCHxHrC8sT/ovwRbSA+iXqqK7dyyK0ahWn8jfgYF9lxem695f89TVZ7NQjxK1m2w9Lie1no+hj+C8JPxkLmUQb5jeO4LgHHuJER8s5AhAPJQcRGkshU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=rtK4yurW; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773394141; c=relaxed/simple;
+	bh=nYRFnLPrTONi7U7O1Enq4WB5OEJpZYPZGRPBstu1j9I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ty0wYWtjEri975rRY9Fhq48n2FJKndJaWKmAi19A/hM+dWcVoUKktDH9BwLEy+Lfv1vSz7IKBQGs671D2T1HTZY56es4r7X9UVoAY9kc+JmeFmhO9NXdI7Lr9Zhg70m1cvxGCm6w9jrx0SD+nz+xzXazVqNYjgqEjjCfTHTYz0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EDn0BA/N; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rtK4yurW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=umrsSGTwb1y3zhmlEYx9qju8b83JtHbMLtH0KKSuGXg=; b=rtK4yurWV0aQ/kXCppIokAjzI4
-	hSCwsz7v4XM1kswZv9CTB+lWBzibTnizExy74DUJXphgcZyz6Lb55rmTdiTubkkUL5JD0BDZ6zBLc
-	8pw0w9a8+UGZq9i5nnPHEkK1e184FA5Hnn9kWc/EuR2FgKx3sE1B0E7ItmYDlFehM9J9HAK1JvwWh
-	mnGrZUb6McZ0vahQ2EUgs1X+RT1syOuaOHAA6qP+G4i+bCvQK4mjcaeXiUBnzRgbX0X4qFqUNIHee
-	xs6iPObU6qG8rS+Obs4q/2KcDLhe/GK0CKWPLLi8tntr3H9MKeGZcbjHhjyX4P4qyE/T0FmQA0+lu
-	bmgCTHZA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48998)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w0ylE-000000000Yg-0JZT;
-	Fri, 13 Mar 2026 09:24:48 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w0ylA-0000000086N-1vZP;
-	Fri, 13 Mar 2026 09:24:44 +0000
-Date: Fri, 13 Mar 2026 09:24:44 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: jan.petrous@oss.nxp.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	vladimir.oltean@nxp.com, boon.khai.ng@altera.com
-Subject: Re: [PATCH net-next v12 1/4] net: stmmac: platform: read channels irq
-Message-ID: <abPX3C1CWZb3k_V8@shell.armlinux.org.uk>
-References: <20260313-dwmac_multi_irq-v12-0-b5c9d0aa13d6@oss.nxp.com>
- <20260313-dwmac_multi_irq-v12-1-b5c9d0aa13d6@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EDn0BA/N"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 542A61A2DF0;
+	Fri, 13 Mar 2026 09:28:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 24B3960027;
+	Fri, 13 Mar 2026 09:28:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B88510369555;
+	Fri, 13 Mar 2026 10:28:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773394138; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=MeXmCnU6DkpJjDmOkF4Kl8YHcZPKKCKszdRslHD03ME=;
+	b=EDn0BA/Np4DWs10goVewjq2nRwiiWAdgjN1OO52/TU46cKug/fB4LXKFTooud2iCJ7WFAM
+	yIAqT5YepKsqHa3lrxEd2DYfzm88Ky+XC84kZzE9B4R3bS6R56Sv7e1wj5kDnUseMs9IMw
+	bMD4qaRz3DmyYibHFl4Av5D6gVIKWihqomEPUaQboC2wXM6LGTD5GTr2czSHmtcboZ60iT
+	qkNfahVXekJOPEc3EdTw4x8WOzD5nghJWlItGidksZkOhgDvHzAjqQXjpumqlGJODE54AU
+	VnuUg8GSyjAjb/C6lVv1uwlwKe/lLeOVbZkKqXjuwLgK8CNsfPaz8ZcogAFaUw==
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>, Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-rtc@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Frieder Schrempf <frieder@fris.de>
+Cc: Annette Kobou <annette.kobou@kontron.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+In-Reply-To: <20260309085749.25747-1-frieder@fris.de>
+References: <20260309085749.25747-1-frieder@fris.de>
+Subject: Re: (subset) [PATCH v3 0/2] Kontron i.MX8MP OSM Devicetree Fixups
+Message-Id: <177339410764.2782875.6884612032294375531.b4-ty@bootlin.com>
+Date: Fri, 13 Mar 2026 10:28:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313-dwmac_multi_irq-v12-1-b5c9d0aa13d6@oss.nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=439;
+ i=alexandre.belloni@bootlin.com; h=from:subject:message-id;
+ bh=nYRFnLPrTONi7U7O1Enq4WB5OEJpZYPZGRPBstu1j9I=;
+ b=owEBbQKS/ZANAwAKAWOk3DBscDoyAcsmYgBps9jI1uZM7eWpDS8rTcWpBXfEtGRKFhN+YxZMF
+ yZmooD0hC+JAjMEAAEKAB0WIQQGqwVVleHyz/Q7kmJjpNwwbHA6MgUCabPYyAAKCRBjpNwwbHA6
+ MlhnD/4+HCdR7zX8Z+uBkvQwNxwW1gwSrniKNKkxjYztDiGeFGH7NWiLecjKwfqw/TYsvqY1Fz8
+ y4GeFdusQtmplFJ90uqQ/2Oq7u+bgsM2p8O8LtEfdToqpnnm+lEiWfEOLG1J8cq63h5yhFeJdM4
+ tvh97+PxquzdrOD3xSCTy8oUKUssqKPMzLpgifgYSysrdvvY6+vxv8lqD1fBeGEDFf4R80bH47G
+ HX9suO2A1Jhjlf/n/3/c/LiHS2/lqfFpWpdiQ74xBIwMgXgNiqlJFm795Qr6OkWZ3ljxqrU+tUA
+ maQ6I5l+B1Ep1IuGmNO6xLVAd+Gwza2isxomF4Ik05JhNufWiajlw0CDO1TepHh+8jRFqr5EtMo
+ yK3f2PrXfqo0VZDf6E9TFtrtXc6WjGj5ARogE5EzKBaRltlsNKotm0YxiI95ioS50GQ/gTYaCr3
+ 1841EXYY3o8BX0vun2h93YRkVvxE8T678hc5olnnHMietCfNg+MhPGaEo1g5x4oP2cptZKdL/o3
+ dg2nKsnazMcGYv4dDgknywEWYT/cHIT/eoj/DBom5Np0Xm2pghaYqDWBgoOtWrqeWFO7pLM95Nl
+ wS75hU/bnsNrEi1Oua69YS1072MxINGSSadX0s/HOL8xm9+VDFB2fVJF1QsV7KSaJRn1Iv9x8IU
+ pQNUThWh9LI9KRQ==
+X-Developer-Key: i=alexandre.belloni@bootlin.com; a=openpgp;
+ fpr=D42657F65BEB9D45A004FCFAA6CD9F096F642CB3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Mar 13, 2026 at 08:13:32AM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Mon, 09 Mar 2026 09:57:41 +0100, Frieder Schrempf wrote:
+> Kontron i.MX8MP OSM Devicetree Fixups
 > 
-> Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
-> for platform glue drivers.
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
 > 
-> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> This contains three fixes and one cosmetic change for
+> the Kontron i.MX8MP OSM devices.
+> 
+> [...]
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Applied, thanks!
 
-Thanks!
+[1/2] dt-bindings: rtc: microcrystal,rv3028: Allow to specify vdd-supply
+      https://git.kernel.org/abelloni/c/10663044bee5
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Best regards,
+
