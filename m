@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE624331215
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B5A344025
 	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382153; cv=none; b=VT6Oq/2AySVCW5nlTEYsdm90s41uTCIJ+apzA0Q/61dmUy4raf4+DhbWbNMLNlraQ/zK9TrNdnQ9yAQx9svvLbckhy/goQYJg9RzrLhO0G0jCKfINhcF86PRZTrVGnMIXkOwuAYwcHAt/XkeyeY605gbRknONTnty7CdXGT5Kug=
+	t=1773382153; cv=none; b=kBs5r2cmg2duxnYDsAi957tKbZV7iJP8iNYLj12h6UHrzY0XMH44ynC4r7PwxanDRe/2rTag+0+ndwFCtIH0X1+qCdLYaP0VhJ7X2jOKCNgE6zLVLCuhtG8xd/vllcFfJQ8b5lDT31TTuQreypmQ5O+4fDE3I160sHCiPDHpj+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773382153; c=relaxed/simple;
-	bh=dKBnh8sJQftJQFNU1M/dsyI1ASCji+nDI1LiBDmOXwg=;
+	bh=Y5piE1nBnd7tD4C3JSkJbXg8bUIcLfzWqCneIBW2R2c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bPj0lJfdfQv6aROQEg9tLDeE2CexJiuYPIl/ACBWu+QC00xgucpfuoI88GSQ8DR4s4Y4C4InGY+YjRTzeZgMOatnbkHKzMCb0/7tkVcwWgsBXsKY5fbBytGIjXVyLDIgBpcyonv5ZD3+3Q48vdn+jRfOBL82mC97H2w/527m2ZE=
+	 MIME-Version; b=CanVeBSak6rNqcZLLixVEQdivy2FxuIQBn5LhJIQn78knqXwuYQ8w2T5+9Q8rT1dGD8RjGvA+LjJcxejaJkSdilIiNyKw31ota1n9UpsCQ5ypsjg7NcTKtOanzDe8WRUdfzawMKsq6IEC1X3Avgsn0l/1EYT6cUPo+GqqVnSV78=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 2250e20a1ea311f1a21c59e7364eecb8-20260313
+X-UUID: 206223be1ea311f1a21c59e7364eecb8-20260313
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:be500e60-1ecc-4643-8493-a33481b3c948,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:c3a3e7e624be805ff82687162505ea97,BulkI
+X-CID-O-INFO: VERSION:1.3.11,REQID:d641a8e1-4d46-4a38-b51e-095e6e7e6688,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:89c9d04,CLOUDID:30c7a324fc08eca76d7b7e49697a0fd7,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 2250e20a1ea311f1a21c59e7364eecb8-20260313
+X-UUID: 206223be1ea311f1a21c59e7364eecb8-20260313
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1722470595; Fri, 13 Mar 2026 14:09:02 +0800
+	with ESMTP id 806233997; Fri, 13 Mar 2026 14:08:59 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: broonie@kernel.org,
 	linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ To: broonie@kernel.org,
 	linux-mediatek@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
-Date: Fri, 13 Mar 2026 14:08:28 +0800
-Message-Id: <74030eaa592b4a27ec75a4dffe49a5029c5dc6b8.1773381582.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v2 05/17] spi: imx: Use helper function devm_clk_get_enabled()
+Date: Fri, 13 Mar 2026 14:08:21 +0800
+Message-Id: <1e68b5b54a9ba46c307f18c1f0cbf0d34b9af06a.1773381582.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773381582.git.xiaopei01@kylinos.cn>
 References: <cover.1773381582.git.xiaopei01@kylinos.cn>
@@ -66,53 +66,52 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-stm32-qspi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..9ff9975edef4 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -819,25 +819,19 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 64c6c09e1e7b..a01c466818de 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -2323,26 +2323,18 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_controller_put;
+ 	}
  
- 	init_completion(&qspi->match_completion);
+-	spi_imx->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
++	spi_imx->clk_ipg = devm_clk_get_enabled(&pdev->dev, "ipg");
+ 	if (IS_ERR(spi_imx->clk_ipg)) {
+ 		ret = PTR_ERR(spi_imx->clk_ipg);
+ 		goto out_controller_put;
+ 	}
  
--	qspi->clk = devm_clk_get(dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(qspi->clk))
--		return PTR_ERR(qspi->clk);
+-	spi_imx->clk_per = devm_clk_get(&pdev->dev, "per");
++	spi_imx->clk_per = devm_clk_get_enabled(&pdev->dev, "per");
+ 	if (IS_ERR(spi_imx->clk_per)) {
+ 		ret = PTR_ERR(spi_imx->clk_per);
+ 		goto out_controller_put;
+ 	}
+ 
+-	ret = clk_prepare_enable(spi_imx->clk_per);
+-	if (ret)
+-		goto out_controller_put;
 -
-+		return dev_err_probe(dev, PTR_ERR(qspi->clk),
-+				     "can not enable the clock\n");
- 	qspi->clk_rate = clk_get_rate(qspi->clk);
- 	if (!qspi->clk_rate)
- 		return -EINVAL;
- 
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
--		return ret;
--	}
+-	ret = clk_prepare_enable(spi_imx->clk_ipg);
+-	if (ret)
+-		goto out_put_per;
 -
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		if (ret == -EPROBE_DEFER)
--			goto err_clk_disable;
-+			goto err_defer;
- 	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
-@@ -886,8 +880,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
- err_dma_free:
- 	stm32_qspi_dma_free(qspi);
--err_clk_disable:
--	clk_disable_unprepare(qspi->clk);
-+err_defer:
+ 	pm_runtime_set_autosuspend_delay(spi_imx->dev, MXC_RPM_TIMEOUT);
+ 	pm_runtime_use_autosuspend(spi_imx->dev);
+ 	pm_runtime_get_noresume(spi_imx->dev);
+@@ -2386,9 +2378,6 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(spi_imx->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
  
- 	return ret;
- }
+-	clk_disable_unprepare(spi_imx->clk_ipg);
+-out_put_per:
+-	clk_disable_unprepare(spi_imx->clk_per);
+ out_controller_put:
+ 	spi_controller_put(controller);
+ 
 -- 
 2.25.1
 
