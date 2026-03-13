@@ -1,111 +1,201 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698443659F1;
-	Fri, 13 Mar 2026 07:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5819366836;
+	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773385834; cv=none; b=BIHDTJ1IOqP1ihB6Rz3OpyDcWAIQUH24QjEYHzMYaBykDkUMDmByD4zxwXtit1/8Bxka2aDIboo9rcVH4lW+alHCbfl60LLmkysJiYQINKBGSMjX5ETw80wICMqlxMdILpvYoaKdOK0YmKxBDT4bvUhfLh526drVbuWxDjBIWpU=
+	t=1773386023; cv=none; b=Adt/IgJv1PsV+YE9nhp6FzXn5NTF1UtG9fsXC9Hf9ScHpTe7ErSEeH9tYs0iY3OnMycWhuUhZJvH5fzrkpzNCG95qlf0w/JexTvyibprmSwr3KkW1vo0PIYV6Cbf321XrPXIftbbDZUzRe63P83N6SQeL3I0hhJHIcEWGM4Zin4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773385834; c=relaxed/simple;
-	bh=SRd47l4+Y6Ms8cBYqEgtyvie9tgfa7VWiEtFKcLHORc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLeprKZGhveyZ/KAsTlRVMXyezPaUrPgBVv0lLNZmZyO8Ty6c7hCC/l+3Ub3XVZjdwqUIcs7xvJRskieDkexmQ1u2BjleBDV4oNS9b0ZWjkwXdnmmHUOuprzh1oXSzg21CRhA0Xgxq4qC2VqW0zSiem3NvbPQDLAIppTYoFJ1ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NYOlbBWY; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1773386023; c=relaxed/simple;
+	bh=bwdkh3U0py07YJ4k5KES5ZDIHas3hmYsAk9jQ0VOEvQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CbuE0fT8R6PY93vM8U+MVxfmSdzBB3SlYIJmZkKlL45j1T3UkXMSVJ+9iobio+QN0v8yVIhKk2Tohwvsfqu/gFzunep8RZMZ/UWBLtHiIqlgJzDb1J8WfEDBbJ/vo/m+Dab39zmzpJoIqbgvKQ/hhezGyjCMpclm4Pj0WzgCF/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XW22/AjN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NYOlbBWY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=7M94y6ilQsc8nLgZ5GB5cv6AO62Bh3J+z1BgOUeMqnI=; b=NYOlbBWYGx3P2OykMDnYF9KrhF
-	Hjg298j+nAt8JKwoGfm86xCqFwCgR9NGHLVZzovikXB46phEN7SQ965Uy/4O6m1D/W48KU5XfhZdq
-	plSfYUjAzkHqoxoTiuMkuUi0w28X39RcjyrlEhQaesgLL3VCkFDwvWTLOZTesbtCr/dAN6Js6J/3U
-	fFpFSZnKd0B1cjOJVRYv/VKBAqyO2jBivmDniSZSURViaBoYANtezIo2l4B3lKLqUNCVNbBuNkLas
-	KKQWjzsyvWmX7cBbFDfCbkRJUhf3chtyv+rSDqsOiIomxb+UC6e3c+YiKwwLz5EOdNligZpPoHbms
-	ssioTG8g==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0wfH-000D1H-2y;
-	Fri, 13 Mar 2026 08:10:31 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w0wfH-000Eou-1L;
-	Fri, 13 Mar 2026 08:10:31 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: dts: imx8mn-tqma8mqnl-mba8mx: LVDS overlay: LVDS overlay: Reduce DSI burst clock to 600Mhz
-Date: Fri, 13 Mar 2026 08:10:25 +0100
-Message-ID: <20260313071027.587992-3-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260313071027.587992-1-alexander.stein@ew.tq-group.com>
-References: <20260313071027.587992-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XW22/AjN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A1454C2BC86;
+	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773386022;
+	bh=bwdkh3U0py07YJ4k5KES5ZDIHas3hmYsAk9jQ0VOEvQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=XW22/AjNOQTg0WU8O6FmvLXcaZ+ZQl5KcGpIg5hIeRoP5J3hRQlzbTD9KsA+cMdg/
+	 1y4J1LEVL+2wl6vLHRBfzkCr/zIGeFKBtzPTaH9e+qXAInaOfZo1sw7ylm23Nb3LLB
+	 IbTD8+gW+wzRdXvtCRzsFZRrcySCLFoMpE8cMviliyHqVQikZ3WnNKIkijsAMJfpCk
+	 uWUVLYf1pp3dCarCg24T39xXpL20SiAKv0puEKi03G6z4Fde1LuswRTU01fzqYNnPF
+	 FQoKjkR/2DWP75sVWrrrjWkIWGbhMBKPdBzIUbOW1Mx8ih6mWJWnvTAma7cUUQZB4G
+	 5hCTO7jnQ1mbA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F9F7106FD8A;
+	Fri, 13 Mar 2026 07:13:42 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH net-next v12 0/4] Support multi-channel IRQs in stmmac
+ platform drivers
+Date: Fri, 13 Mar 2026 08:13:31 +0100
+Message-Id: <20260313-dwmac_multi_irq-v12-0-b5c9d0aa13d6@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27938/Thu Mar 12 07:24:01 2026)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABu5s2kC/4XSzWrDMAwA4FcZPi9Fkn9i77T3GKPYjr0G1qRLs
+ qyj9N3npIxm2LCjJfRZSLqwMQxtGNnTw4UNYW7Htu/SA+nxgfmD7d5C1TYpwAhIIoGpmq+j9fv
+ j5/vU7tvhozKNjgqEIu+RparTEGJ7XskX1oWp6sJ5Yq8pc2jHqR++179mXPM3FUWmzlhBxZVUZ
+ B0EE+vnfhx33fm08/1x1Wb6FRQkIhdoEZwmQxwaqDEX+FbgucCT4L3kkVzQRhUEsRV0LogkaIq
+ Wi+gjRcoFeReo1INchOiVMVZG60UuqK0gc0ElgYR0EZsaEXwu1FtB5UKdhKhj4M4kxxV60HeBF
+ 25k1osAaZbOa0Rb2KbZCFjYprkJwEPUDWDMBYR/CIRk1NahUqaWxsmCgVuDCsZyl2AUofcOBLi
+ /xvV6/QG0geHqUwMAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773386021; l=4854;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=bwdkh3U0py07YJ4k5KES5ZDIHas3hmYsAk9jQ0VOEvQ=;
+ b=Xl5KhIZlc2NvKM83WjmJFwyvvTSHkTlOobMAL1xT1rbl/rG54SSFepNHWjPbHu5LNHf0SOalY
+ bzxOl5qriZbALKutEULmlw2evjRFW1jCKio9HACkGYHZahf9SFDOOJ+
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-The DSI burst clock frequency is too high resulting in flickering. Reduce
-the frequency.
-While at it, remove the burst clock from board configuration as it is
-display specific.
+The stmmac core supports two interrupt modes, controlled by the
+flag STMMAC_FLAG_MULTI_MSI_EN:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+- When the flag is set, the driver uses multi-channel IRQ mode (Multi-IRQ).
+- Otherwise, a single IRQ line is requested (aka MAC-IRQ):
+
+static int stmmac_request_irq(struct net_device *dev)
+{
+        /* Request the IRQ lines */
+        if (priv->plat->flags & STMMAC_FLAG_MULTI_MSI_EN)
+                ret = stmmac_request_irq_multi_msi(dev);
+        else
+                ret = stmmac_request_irq_single(dev);
+}
+
+At present, only PCI drivers (Intel and Loongson) make use of the Multi-IRQ
+mode. This concept can be extended to DT-based embedded glue drivers
+(dwmac-xxx.c).
+
+This series adds support for reading per-channel IRQs from the DT node and
+reuses the existing STMMAC_FLAG_MULTI_MSI_EN flag to enable multi-IRQ
+operation in platform drivers.
+
+The final decision if Multi-IRQ gets enabled remains on glue driver
+to allow implementing any reguirements/limitions the focused platform
+needs.
+
+NXP S32G2/S32G3/S32R SoCs integrate the DWMAC IP with multi-channel
+interrupt support. The dwmac-s32.c driver change is provided as an example of
+enabling multi-IRQ mode for non-PCI drivers.
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
+Changes in v12:
+- rebased on net-next
+- Link to v11: https://lore.kernel.org/r/20260312-dwmac_multi_irq-v11-0-09621ccb040b@oss.nxp.com
+
+Changes in v11:
+- Dropped not benefical patch 1 with FOREACH_MTL_QUEUE macro
+- Link to v10: https://lore.kernel.org/r/20260311-dwmac_multi_irq-v10-0-7ab1669759b5@oss.nxp.com
+
+Changes in v10:
+- Fixed yaml issue
+- Link to v9: https://lore.kernel.org/r/20260311-dwmac_multi_irq-v9-0-f0c03ef8d01f@oss.nxp.com
+
+Changes in v9:
+- Changed interrupt minItems from 11 to 1 to support backward compatibility
+  and removed the 'Reviewed-by' accordingly for patch 4
+- Link to v8: https://lore.kernel.org/r/20260309-dwmac_multi_irq-v8-0-f0cc5bc811a7@oss.nxp.com
+
+Changes in v8:
+- Rewritten queue irq getter, based on Russell's (ready-to-use) hint
+- Renamed s32_gmac_validate_multi_irq() to s32_gmac_setup_multi_irq() to
+  better describe the functionality
+- Fixed typo in commit message for patch 5
+- Renamed label in patch 5 to make it more descriptive
+- Link to v7: https://lore.kernel.org/r/20260226-dwmac_multi_irq-v7-0-f8fe3b945bb4@oss.nxp.com
+
+Changes in v7:
+- Optimized 2 similar loops on queue rx/tx irq reading
+- Swap the yaml and dts patches with hope it fix dt_binding_check failing
+- Link to v6: https://lore.kernel.org/r/20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com
+
+Changes in v6:
+- Added 2 mintainers which were not covered by 'b4 prep --auto-to-cc'
+  but complained on patchwork check
+- Added helper macro for loop over queue-based arrays (inspired by AI
+  review)
+- Added full validation on all channel IRQs
+- Link to v5: https://lore.kernel.org/r/20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com
+
+Changes in v5:
+- fixed typo in "symetrical"
+- cleaned negative return value on platform_get_irq_byname_optional()
+  in stmmac_get_platform_resources()
+- rebased on v7.0-rc1
+- Link to v4: https://lore.kernel.org/r/20260128-dwmac_multi_irq-v4-0-82fa34fcf2f2@oss.nxp.com
+
+Changes in v4:
+- Fixed IRQ reading check
+- Made cleaner the IRQ validity (to get AI reviewer happy)
+- Fixed minItems of interrupts property in yaml
+- Link to v3: https://lore.kernel.org/r/20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com
+
+Changes in v3:
+- removed RFC prefix
+- rebased on v6.19-rc6
+- fixed forgotten extra line setting to Multi-IRQ unconditionally
+- fixed yaml
+- Link to v2: https://lore.kernel.org/r/20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com
+
 Changes in v2:
-* Improve commit message and fix typo
+- Fixed incorrect buffer len for 'rx-queue-%d' property check
+- Added backward compatibility to not break old settings
+- Fixed DT example in yaml
+- Link to v1: https://lore.kernel.org/r/20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com
 
- .../dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso  | 1 +
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts        | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+---
+Jan Petrous (OSS) (4):
+      net: stmmac: platform: read channels irq
+      arm64: dts: s32: set Ethernet channel irqs
+      dt-bindings: net: nxp,s32-dwmac: Declare per-queue interrupts
+      stmmac: s32: enable support for Multi-IRQ mode
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
-index 0f4cf1855bf3a..046399a455ba1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtso
-@@ -32,6 +32,7 @@ &lcdif {
- };
- 
- &mipi_dsi {
-+	samsung,burst-clock-frequency = <600000000>;
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-index 664f4a6950a82..01d565cdbfea0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-@@ -65,7 +65,6 @@ expander2: gpio@27 {
- };
- 
- &mipi_dsi {
--	samsung,burst-clock-frequency = <891000000>;
- 	samsung,esc-clock-frequency = <20000000>;
- };
- 
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 47 ++++++++++++++++--
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           | 26 ++++++++--
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           | 26 ++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 36 +++++++++++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 57 +++++++++++++++++++++-
+ 5 files changed, 179 insertions(+), 13 deletions(-)
+---
+base-commit: 8f921f61005450589c0bc1a941a5ddde21d9aed9
+change-id: 20251209-dwmac_multi_irq-9d8f60462cc1
+
+Best regards,
 -- 
-2.43.0
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
 
