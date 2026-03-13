@@ -1,124 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72655383C87
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 08:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF763793A0
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 08:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773391012; cv=none; b=fNQ5qsjXTxBC3DdWfsl1hbSNPqe58fFRapkrxuc7SX6e9Btsq9Gv81g5DUeOnMHX5334SSQo0NQMkhsAUpx2w505WzHdo+bXBJrecoUNu5UCWHP9GzpgASb0k4nwJsghRjqYpMNQoPrIOGEAabayhlAMXgu0UQxOjlLBiiDngtk=
+	t=1773392158; cv=none; b=QtCYTXKk1zgt0ieyA8tpxRQsg7sh4uy6WjvU7T1yODz2sOU5QWre+TU5V7dpOWPvxPqy1uGD7SYoXiVAo4v27d9Q4oMtVtzD+/zedHT/BOIgGDYrPVtBY4fq2nyYko2VYwM5paefx9OsAoGXjfrYz6JNJ3+xz9UKUOZVWMxDyGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773391012; c=relaxed/simple;
-	bh=2nRDxZu+d9TWrj4WVetOFAoz7B787w6aylEKVWKeURU=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X+ALvatd/mZJwhP2cKaWUFIpJNa4qEYODtUZqXwEd46UFZJk7l0OdPindVfjRBjvettH2dZIvSzhEOwcC7kxke805Yg45oITQyT4Li+dtmPgkM3p0ouvbBSTqMI63pSPYoYDV3HGrgSEZHY7RtkzOEv/yPjmJnzni4RWgTY67Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEVHVxmx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773392158; c=relaxed/simple;
+	bh=dIPXg2emkEHtVSMn/uiweeN0mkAf0sj6N0jCu1Xxr2I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ou7DlXi7rWTHgt/fyvU9xPwR2lud6M8ZK1ZDp8QkbEVnQ7W2Esl9h1rf/tNNApO6IgawGDcg8acas0tGk+E2G9wtdhmpOe5SQFqI3AHJbQJIurvLiaUMby0gYHXEj0UACwHwAcVsYDJ3UNZNd8o3AnUhwvmLZ1nWtXYmpC93Gto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuNN/sds; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEVHVxmx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F07DC2BCB2
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 08:36:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuNN/sds"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF4CC2BCB5
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 08:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773391012;
-	bh=2nRDxZu+d9TWrj4WVetOFAoz7B787w6aylEKVWKeURU=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=pEVHVxmxlyR1AQS1tR8C2csZ0Qi99RNivHqgeYILFINvq+UgxBXoaqmb2GYX/Ld4+
-	 Ggrfr8od449FzPXaxUdGgWt9/wtQ+twSFhI5ShnQhf+y7mcdjLtdJ57IX6OVMgv3Jt
-	 xOfteiTDFayLyYkGt8Nn+e+3/sQZlOyOpu4k3d0cYbILyJZ19z4aLF5ss3oSCP/ncp
-	 zA7ewy+LaQATTSk1EFJSIoXRBQdGPWQp+wlgdKu9Q4NxiAihO/U3kiiejZdFS5vghm
-	 /+oIxRgcMibWkmCXvDtAKs8WeeBa7Hj0DtuJLWDonFuHitIlNZDOZIIG4fL0NK1iRe
-	 KnIZQzvHZyJJg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38a41026318so16517421fa.0
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 01:36:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVdCIgPIHZRffLcWaOvP+4MWoN9VUeH8Yt/jppCF3SShm5IerOb0gFxJ6VkCQExdKhCb1c=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy2mGVbJm2is0UiTXNHlJMCvab7KH64l6w/zxGrxZ7S6m0ymM3v
-	CnNOXopm9awFtaSnCSWaKL4kho/kjXTuPnsr5lDVza6s/80Fpoe/zfAax7JaWnUIj84jFOCbdqH
-	JtsAtr91kPEuzxQ1ttPLt+nL/LOwv9Q4COQGGqrFelA==
-X-Received: by 2002:a05:651c:515:b0:383:20cd:52fe with SMTP id
- 38308e7fff4ca-38a896b6407mr7399191fa.17.1773391010614; Fri, 13 Mar 2026
- 01:36:50 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 13 Mar 2026 01:36:49 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 13 Mar 2026 01:36:49 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <2026031231-whiff-speculate-805a@gregkh>
+	s=k20201202; t=1773392158;
+	bh=dIPXg2emkEHtVSMn/uiweeN0mkAf0sj6N0jCu1Xxr2I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TuNN/sdsSHwP/VHRKKsG1F4YTUS5ZhzO3eF6ZjflRECLSxm52GZn0O+a6DYtw8s9w
+	 AztRsZ6hwk6mFH9QjMLP6ul2unGjmpkpIqrGCVRM7XJ91lE5qjYrRo421vuqGU+Ips
+	 dUTvUP2lPwGo6cUpGRPiarN2csB7JvMb0jI/Ci+wBxM0t4CvddwnzhqGPCkq7OZ2uz
+	 q1FLHibPBhnYDoXHHAzK4gd8xjmC/HbpS/GJkB9AsODxRC/oP9dyHczV035sr3rZQ7
+	 zhugJAyuq9iyE0d58vLAu0TaPaxVAVMP78UrAtKR75moc4u0qVEPZakARFdazt8gZI
+	 bL3wWDwmcIB/Q==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3878de20527so17587401fa.3
+        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 01:55:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXB2wwy9SzIK/iXzziYQAjoebamPp2XnwKtypclqE0kvbxrOAEAxXuX8QSsZKRkS52ziso=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxek4RWKw7UV3IoF/wd723RkmWx5y2vNyycnFh+25ocy4PeEre7
+	mapex4ldsmUDNLMCTylm7kA8U/BkwINnZFfBXHTLw53IDciPGGoN085mC/HxwDqor03UspcIvEQ
+	7rHZLh0VpsXxd5c+J4yvESz9QrUnIeS4GCXPggTeFxQ==
+X-Received: by 2002:a2e:350d:0:b0:38a:878b:b567 with SMTP id
+ 38308e7fff4ca-38a897de73cmr6682211fa.36.1773392156502; Fri, 13 Mar 2026
+ 01:55:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260224183832.GB3239922-robh@kernel.org> <CAMRc=Mft5vc-C8miKVdw6C-qRdYsqfgm-UgLZJOctFwagMF0iA@mail.gmail.com>
- <2026031231-whiff-speculate-805a@gregkh>
-Date: Fri, 13 Mar 2026 01:36:49 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MdhhEMJn5JTB3wn_ScmV=a0o6fTnaUDSDjOLN5WH5rOFQ@mail.gmail.com>
-X-Gm-Features: AaiRm50bkC2plkyLpch8sSUugz619L6Cf_EZYcxggWcjYtxkwiUVoHYnqPIvC6o
-Message-ID: <CAMRc=MdhhEMJn5JTB3wn_ScmV=a0o6fTnaUDSDjOLN5WH5rOFQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] soc: remove direct accesses to of_root from drivers/soc/
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Saravana Kannan <saravanak@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev, 
-	Peng Fan <peng.fan@nxp.com>, Bartosz Golaszewski <brgl@kernel.org>
+References: <20260311-qcom-sa8255p-emac-v8-0-58227bcf1018@oss.qualcomm.com> <20260312181654.2d9ba69c@kernel.org>
+In-Reply-To: <20260312181654.2d9ba69c@kernel.org>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Fri, 13 Mar 2026 09:55:43 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Md8i6oCAqOBB_3q9PkkbaUxrCftum+WBjvac2O+Hk8kTg@mail.gmail.com>
+X-Gm-Features: AaiRm5311s8a1dkokfIWdxBu9dTaoHy4sXAtnoSYnP4jjneoiOLY-XItyfiRHlE
+Message-ID: <CAMRc=Md8i6oCAqOBB_3q9PkkbaUxrCftum+WBjvac2O+Hk8kTg@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 0/6] net: stmmac: qcom-ethqos: add support for
+ SCMI power domains
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Romain Gantois <romain.gantois@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 12 Mar 2026 16:18:38 +0100, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> said:
-> On Thu, Feb 26, 2026 at 10:28:26AM +0100, Bartosz Golaszewski wrote:
->> On Tue, Feb 24, 2026 at 7:38=E2=80=AFPM Rob Herring <robh@kernel.org> wr=
+On Fri, Mar 13, 2026 at 2:16=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
 ote:
->> >
->> > On Mon, Feb 23, 2026 at 02:37:15PM +0100, Bartosz Golaszewski wrote:
->> > > linux/of.h declares a set of variables providing addresses of certai=
+>
+> On Wed, 11 Mar 2026 18:03:35 +0100 Bartosz Golaszewski wrote:
+> > Add support for the firmware-managed variant of the DesignWare MAC on
+> > the sa8255p platform. This series contains new DT bindings and driver
+> > changes required to support the MAC in the STMMAC driver.
+> >
+> > It also reorganizes the ethqos code quite a bit to make the introductio=
 n
->> > > key OF nodes. The pointers being variables can't profit from stubs
->> > > provided for when CONFIG_OF is disabled which means that drivers
->> > > accessing these variables can't profit from CONFIG_COMPILE_TEST=3Dy
->> > > coverage.
->> > >
->> > > There are drivers under drivers/soc/ that access the of_root node. T=
-his
->> > > series introduces new OF helpers for reading the machine compatible =
-and
->> > > model strings, exports an existing SoC helper that reads the machine
->> > > string from the root node and finally replaces all direct accesses t=
-o
->> > > of_root with new or already existing helper functions.
->> > >
->> > > Merging strategy: first two patches should be either acked by Rob or
->> > > picked up into an immutable branch based on v7.0-rc1, the rest can g=
-o
->> > > through the SoC tree.
->> >
->> > SoC tree is good.
->> >
->> > For all but patch 8,
->> >
->> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
->> >
->>
->> FYI Rob also reviewed patch 8 now. Who would pick the patches up? Greg
->> KH? There does not seem to be a centralized SoC maintainer in
->> MAINTAINERS?
+> > of power domains into the driver a bit easier on the eye.
 >
-> Sure, let me take them now, thanks.
->
-> greg k-h
->
+> Not entirely sure what the conclusion was in the sub-thread with Russell
+> but FWIW this doesn't apply to net-next as posted so respin will be
+> needed either way.
 
-In the meantime Geert sent an alternative to patch 8/9 so this single one c=
-an
-be dropped from the series.
+net-next is quite the moving target, isn't it? I did just that between
+v7 and v8. :)
 
-Thanks,
+As for Russell's response: I think this is the third time we're doing
+this for this driver. :( This series is not touching the existing
+functionality and rebasing of Russell's changes on top of this should
+for most part be trivial. The core of the changeset is to add support
+for power domains to enable ethernet on SCMI driven SoCs. I would
+really appreciate it if we could get it upstream and then any
+subsequent rework can take into account the two types of systems we
+support.
+
+Russell: I see your point and didn't mind the first two times but it's
+been way too long since I posted v1.
+
 Bartosz
