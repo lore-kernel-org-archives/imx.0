@@ -1,135 +1,228 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2283B6342
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7682C3148A6;
+	Fri, 13 Mar 2026 17:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773421516; cv=none; b=OMX+liWE980gC+dGWTCT3An73tjfTRGS7LNIGtcBIvflP4+i4U24kb9Y/Nr3wSeQCsozgdujEsIQZlBEq91scXQVLJhotsVht2/WTNmG4jMRz+VhIUKfrLKqJnM4dcokpE8kIul5FgJCK7Z8+lIERPfHmxuTsW0bXJpE+YYXPPw=
+	t=1773421822; cv=none; b=UiOqD6VPsmDz1qNKgNf5kFb1c46FcMegmp9LlbnHyX0q2pBHuXp1ndS4bItpL9D8EKdtlNB5sR0to5cKqNvfmqHl8dNXavEWCyJlAETsUwoTWWC7hfSlZclCwMhGjTYW9bShZOBbUQkb/4SFPG0R6eEcfSP6T6qqqqxwytqAIM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773421516; c=relaxed/simple;
-	bh=0l1WReIp+IXtP5rjc92yCromqx8LCGpVTHfRGoor7Ho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZ5RfyHcHA5XtWW5qoJmAM3eeXqD+6aG08OLTvydylZwOXd6jA3I1C5vp7CMArsX0f0g2zAsxWUY2juyLX0tspI7b+Kvwz4f9xpe9obLc/3vj+CBBlmKfDx+MdIPZiNHWKlG8MvUoFZGWQOXnlwiX3vmchr0DSWLaNPLJp10HOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OO0VT+Oj; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773421822; c=relaxed/simple;
+	bh=v2vK+UcagkF2ySsZwbLEP8QRzHCoZx+uyEcEB79nZ+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eK05d9UPtBIrv8nnLliMj1BIWHeABiLSOWZu4X/+mnXjkPxeGx9MtCC5VRpFnUon/gNGPxKBCI21sTFedN1Fb+Z6kATk+jRyj62E6dyJdubD423Nylfl/KUvXe3fBJQnW0wIe4EuelcY5jmCGOO8o+mhfz7IInJFxpvMxJPUzI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+RHGF+e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OO0VT+Oj"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439cb5af25bso2656018f8f.1
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 10:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773421513; x=1774026313; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SqK4MWNrO8rqxWDIz9KeUr6nx3Y9Q/ulNkMGXJyHS+4=;
-        b=OO0VT+Ojmkq7oXoR90ef7MRycctVRCF8rCgFYrEDkMGz23VWwC+qooiEL+WjON73KW
-         gMUkj0c/7kKkCyp+k5ZE4oPIxv2X2ZBHsO4PVtXdcR3Oz/yua11yU5cmy1D80DY3PM/L
-         kQWBJmCws/sZelgSo7jOwkFmJEacDDwg1eRnqITB6TTwwxZmwpawoKp6HNAAHiknTjwU
-         YtS/cd1k79jgU+GwdOQCB+bXZ+kdgaleQ/uim0OAXLEe61yE0X1/OzVPtL2ROZefptIG
-         WPV/loj/Uhwj6Pz5sfkeA4lphE2eH0ShIm8pjZh/2cJMr+8RJyy9XkqyRUtV7uaj0YNm
-         Kf3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773421513; x=1774026313;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SqK4MWNrO8rqxWDIz9KeUr6nx3Y9Q/ulNkMGXJyHS+4=;
-        b=XM1NQ5ARpQzrMNkGAJd60BOq8+FINY7sbBRMMnq88528fIACMW9DNcNk48K3n6zKiY
-         6/irE86EMX0xHD6D3ivxssTh8F5KsxIog9skDcUGiJ54jGObyKd6dPXaIuKr5MOuBFba
-         ZpJCOEtrpafSfx4/HuAuME5jw73O/5Irgxu4l9Aew/7GKjIxYdcvpkIIrg+Y+3ZEeLjx
-         06gcrVri+aedvJ+uAXUUx/UTdPmXjM8L/7RG+XogEGxuxmySzq8b9MUownUt4SZaQg4J
-         9CQAkdV2Nmkwbt2JaDL2wetJmOIF+2h6UWlxAHPdONKU+qO4f+KytNE2OF/2gqsHXolJ
-         EfZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdHerh7guBm5mHD1KAyJnNoFwE6LXUE8Tt/5RJjB5CZwIxo6J0fie3MqQJpAyjeQtWxNE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywjwa10q7H/hiU3g+CsySmTfoNdH9s0G/us0jMg0SGcbgjOFMBn
-	qnxsBpbQrgFQqSv1l1thyqfWCE9SfBpzVrH+LxophlONd8OwbUcGJ39U
-X-Gm-Gg: ATEYQzx/IlQhJntwfrNCbzQFpleK/4mW6qG3oVD6xOs+L67LvhXhzksTO60TMqK32cM
-	mnfvJE7aE/lna+D52KhAwUFyj4f3AlESX7sSTJTqB7swFym42a04nijfRBk0ASw7emQCr3PiNq4
-	0dfjrFhJf0iBCJaf+d7J+nYOGq7gGl36S9BCDMEI9owXobkgh0bcY8+CKSIwTycTVbY/QU2VhZf
-	yFsNmIjLTiu3VTReisfX4iu/nEfBTM5Czdia4wEpZ/vZeFKHCORZmPQLwQRgAMnn2foA8+D8uQZ
-	HzwZlKssoOnObxsqMuTNg8iwpiCbb8+DfmGzjDJtCqObLrC/gQ51YBfQkTb4WDaw/VfR563Fe92
-	HDmppCD2ccR/cnTOK7xo/9sqR5GCmU2yEOYMJ+BRmsr7bl/5/3wS+vTAnNPF0A5a1EYBwZVb5NH
-	l1z/YjGLmZpDtxt/rx4botgR8Kvpc3P1VTzca4gjAObDYdYaZXkEDS0g+BCvNm6NQY4yJw/bRnd
-	7mEHwZkaVDmaIiN1TsAgPPFHqmVpCbmq2wM2ffZJS/ijw==
-X-Received: by 2002:a05:6000:1866:b0:439:ba69:101d with SMTP id ffacd0b85a97d-43a04d79003mr8013170f8f.1.1773421513225;
-        Fri, 13 Mar 2026 10:05:13 -0700 (PDT)
-Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43a03cfd18fsm10531876f8f.36.2026.03.13.10.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 10:05:12 -0700 (PDT)
-Date: Fri, 13 Mar 2026 18:05:09 +0100
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 06/11] arm64: dts: freescale: imx8mm-var-som: Update
- WiFi/BT with variants
-Message-ID: <abRDxRK_GFYwmAGE@Lord-Beerus.station>
-References: <cover.1772898346.git.stefano.radaelli21@gmail.com>
- <7c84625f82c562bb9cd2b455465d63a1a25bf19e.1772898346.git.stefano.radaelli21@gmail.com>
- <CAOMZO5C+USp34WQ9ap+N9ha6EgU7JgsYkRsLEW=ZdizbkMQvPA@mail.gmail.com>
- <abQ_d9fGarNobYdo@Lord-Beerus.station>
- <CAOMZO5BnuGc8sddmfhKJhFgWa+K2gExeRN5097794j48+Dw-AQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+RHGF+e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E78C19421;
+	Fri, 13 Mar 2026 17:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773421822;
+	bh=v2vK+UcagkF2ySsZwbLEP8QRzHCoZx+uyEcEB79nZ+Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E+RHGF+euMGxrwG6J1jkUGHURKrEnFD9MUEjrZZBCnXnLvZnwa1a8S3fjAORSoYTV
+	 Wfmy6gBXGO0/OmmwAazHL8QplK0ooZ9zPU7i84FzfJ1weVLvK6QM0Zgrj5tTLCPJrG
+	 3IONROHy1gqRPFklxShZ9S4vxExjCoWl6L4Uubu11Wh798trpMb8sZvHQ1uaG1f6J9
+	 jvqsnVtU7BCskx0Ac5r5r2Fv3q3sBx1e72fCr8Pl02o0/DWlNz7qnD+UNREHgVlgE9
+	 xhzpsvj43ZFxDMuAd5IdflXXfpshc96U2IBaFM9J233FB0mZJNu+DWkAiHH6PK572Y
+	 645KQU5ScG2OA==
+Message-ID: <c7a59716-3d53-4787-b4ef-9674c2a4a9b5@kernel.org>
+Date: Fri, 13 Mar 2026 18:10:14 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+ Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>,
+ Arnd Bergmann <arnd@arndb.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "Vincent Guittot devicetree @ vger . kernel . org"
+ <vincent.guittot@linaro.org>, Rob Herring <robh@kernel.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+ <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+ <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
+ <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
+ <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
+ <fe755e85-1558-4272-bdd4-af7a2038ab1f@kernel.org>
+ <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5BnuGc8sddmfhKJhFgWa+K2gExeRN5097794j48+Dw-AQ@mail.gmail.com>
 
-Hi Fabio,
-
-On Fri, Mar 13, 2026 at 01:52:31PM -0300, Fabio Estevam wrote:
-> On Fri, Mar 13, 2026 at 1:46 PM Stefano Radaelli
-> <stefano.radaelli21@gmail.com> wrote:
+On 25/02/2026 10:40, Ghennadi Procopciuc wrote:
+> On 2/23/2026 3:14 PM, Krzysztof Kozlowski wrote:
+>> On 23/02/2026 12:51, Khristine Andreea Barbulescu wrote:
+>>> On 2/20/2026 4:41 PM, Krzysztof Kozlowski wrote:
+>>>> On 20/02/2026 15:36, Khristine Andreea Barbulescu wrote:
+>>>>> Hello Krzysztof,
+>>>>>
+>>>>> On 2/20/2026 12:16 PM, Krzysztof Kozlowski wrote:
+>>>>>> [You don't often get email from krzk@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>>>>>
+>>>>>> On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
+>>>>>>>>
+>>>>>>>>> +      reg:
+>>>>>>>>> +        maxItems: 1
+>>>>>>>>
+>>>>>>>> You have 'reg' so the node name should have unit-address.
+>>>>>>>>
+>>>>>>>> However, there's not any real DT resources in this child node, so you
+>>>>>>>> should just drop it.
+>>>>>>>>
+>>>>>>>
+>>>>>>> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
+>>>>>>>
+>>>>>>> Hence, my proposal is to keep the two 'syscon' child nodes.
+>>>>>>
+>>>>>> Please wrap your replies correctly, so this will be easily parseable.
+>>>>>>
+>>>>>> I do not understand the reasoning. If you have two register ranges, you
+>>>>>> have two <reg> entries and having a child node has nothing to do with it.
+>>>>>>
+>>>>>
+>>>>> I’ve reorganized the SIUL2 node with two syscon subnodes for the two
+>>>>> register regions used to read system info, and a separate
+>>>>> pinctrl/GPIO child (as discussed in the v8 06/10 thread [0]). The parent
+>>>>> SIUL2 node now carries the bus addressing and ranges:
+>>>>
+>>>> That's not the answer to the comment. Read again:
+>>>>
+>>>> 1. Reviewer: No resources, so no separate node.
+>>>> 2. Your answer: some soc capability and two address spaces
+>>>> 3. Reviewer: Does not matter, address spaces can go again to original place
+>>>> 4. Irrelevant reply.
+>>>>
+>>>> So again, read the first comment - do you have dedicated resources in
+>>>> children?
+>>>>
+>>>>>  
+>>>>>     siul2: siul2@4009c000 {
+>>>>>         compatible = "nxp,s32g3-siul2", "nxp,s32g2-siul2";
+>>>>>         #address-cells = <1>;
+>>>>>         #size-cells = <1>;
+>>>>>         ranges = <0x4009c000 0x4009c000 0x179c>,
+>>>>> 		 <0x44010000 0x44010000 0x17b0>;
+>>>>>  
+>>>>>         siul20: siul20@4009c000 {
+>>>>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+>>>>>             reg = <0x4009c000 0x179c>;
+>>>>
+>>>> 0x179c is odd size. Looks fake.
+>>>>
+>>>>
+>>>>>         };
+>>>>>  
+>>>>>         siul21: siul21@44010000 {
+>>>>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+>>>>
+>>>> And two same devices with same compatible proof it.
+>>>>
+>>>> Best regards,
+>>>> Krzysztof
+>>>
+>>> We don’t have dedicated resources for children. In particular,
+>>
+>> Then previous comments/review stay.
+>>
+>>> there are no resources allocated specifically for nodes like
+>>> "nxp,s32g-siul2-syscfg". Their consumers are the pinctrl/gpio
+>>> driver and other drivers that read SoC‑specific information from
+>>> those shared registers.
+>>>  
+>>> My alternative is to keep two separate syscon providers for the
+>>
+>> You got review already.
+>>
+>> Best regards,
+>> Krzysztof
 > 
-> > Correct. It is not included anywhere at the moment.
-> > The Symphony evaluation board uses the IW61x configuration.
-> > The imx8mm-var-som-wifi-brcm-legacy.dtsi file is kept as a separate include
-> > so that carrier boards using the legacy Broadcom-based SOM revision can
-> > include it if needed.
+> Hi Krzysztof & Arnd,
 > 
-> Then imx8mm-var-som-wifi-brcm-legacy.dtsi is dead code. Nothing includes it.
+> I still believe that nvmem is a suitable and accurate mechanism for
+> describing SoC‑specific identification information, as originally
+> proposed in [0], assuming the necessary adjustments are made.
 > 
-> I don't think we want a dead dts in the tree.
-> 
-> IW612 has not been upstreamed, right?
-> 
-> People using the Broadcom Wi-Fi on the old board may still want to
-> continue using it.
-> 
-> Please don't break it.
+> More specifically, instead of modeling software-defined cells, the nvmem
+> layout would describe the actual hardware registers backing this
+> information. One advantage of this approach is that consumer nodes (for
+> example PCIe, Ethernet, or other IPs that need SoC identification data)
+> can reference these registers using the standard nvmem-cells /
+> nvmem-cell-names mechanism, without introducing custom, per-subsystem
+> bindings.
 
+nvmem is applicable only if this is NVMEM. Information about the soc is
+not NVMEM, unless this are blow out fuses / efuse. Does not look like,
+because SoC information is set probably during design phase, not board
+assembly.
 
-Thanks for the feedback!
-
-I might have misunderstood the best approach here. The reason I split the
-WiFi/BT configuration into separate dtsi files was to follow the direction
-discussed in the previous revision, where we decided to keep support for the
-legacy Broadcom-based SOM while moving the configuration out of the
-device tree, giving the support for both modules revisions.
-
-However, I see your point that if it is not referenced anywhere it becomes
-dead code:
-Would it make sense to add a legacy Symphony DTS that includes the Broadcom
-configuration, in addition to the current Symphony DTS that uses the IW61x?
-This way the existing boards would keep working while the default board
-description reflects the currently produced hardware.
-
-Or if you have any other suggestion, I'd be happy to follow it!
 
 Best regards,
-Stefano
+Krzysztof
