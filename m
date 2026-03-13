@@ -1,175 +1,186 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013026.outbound.protection.outlook.com [52.101.83.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59453659FF
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1455326A1CF
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773395055; cv=pass; b=bOb/KrV/gFp12NvXXZ60ZlObw2XLkcYgy3okVhJAmAeya3JX3Gisvt5nAoE8vfa0DA+Vy8H7FrDw3g/BJzIBx1H1P6nYel/0ko4cpfO4rZPqChwzgOpi3oslTSNaq6BM3BemlW6f9cgwSjGs/EiIPgSdBNeHJ3DOhQinZDTHyBU=
+	t=1773395096; cv=fail; b=buMgiW/C5Sb6w+AYDD4nTMoTWyhVXqrE0MPTGKWMd+NAJPZ/MiSoZipBwH/MrL7EMnm4CQLEmYl/fI8Y8RoE6SfdV4dCdPk/4nvgr/mEOXlKXk33GShvYChYFGLRgT7MGO1Va3HtbYVRvITL1SsHX5mXhruiAX693yfy/Nwqq9Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773395055; c=relaxed/simple;
-	bh=a4PkyDJIX7KyCPscZwhkhXLXTwGONJMI97/AnswuOLU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uNhCfYu0te5rT3smnSILya2p9pwPy3GU5pH4Ig+dcchzUVoe3+9YFF0n5bnpzrX9fdLLTbhhZwUCxU3LowfDL4288M9pgNkk/E7BsS1yptsPn8gqra6kmYKFKvqtFiGdqrLLXc8wBOQzqvBkb10ETtKPAl2wl+BeLe2xNH/xEFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MPrH9R0r; arc=pass smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1773395096; c=relaxed/simple;
+	bh=AiI06e6o3tExuyvKphyLMkoeSdgbtwOSUzKXHncuVjo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JjyT91KD0q4W+P6WfC9Aonda1fbOEmIR2L2oVJnHffQEThbKDiYDbjLZMPcMm74H1mcEDIA3c1A7ziuynYJ29/ppjCR52vy813bkHbEHS/jyKSWqHKaI38S8jWvj23SU1M0DuD4rkIfKbuSIFbXgA+c1JXJ+3O9es9miHKhQ3y8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bmdxAgpk; arc=fail smtp.client-ip=52.101.83.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MPrH9R0r"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a107b387a5so2608502e87.2
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 02:44:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773395051; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Fn7btlXu14Q1lM/4mm+kmhIwkUwEbbhivMLXoefx7OfNevUaYj8ohC4gh+D8YlJrEF
-         PMhTOEJgqFFdGbdWSb5rdv0aK9YTpV+52T5AahtaOeB3s/gpEgdw0W3t/WZi5Bwc3Yri
-         07Atab93lbfjs4U4iRPxDS+3JmYhAZQyn7rY8NDwydH83cfLoKJMCP4XiTFi0IqJ9DEh
-         3tGUWdtJO0B8TH4yiywXyzi3dBCTnbSobxj2INpC7kygPvoXw9BF6coBhu4ixP18RaCN
-         lqsfp2CzFQPriHsEMDlmpglFsiPnn41HitpxoccylRRwIZx7b7vurRsRuZIIVYh8aK+W
-         zhEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        fh=UnggbH+tqInrTZoaA2GankQy/2OHZ/WSfIB0YJ4o4o4=;
-        b=YsfWzy9hg4c9keQtLggjyWyHH4il3P1cWDCUI8EwoIqyKg+tl73I/DrQKMUkbioX2s
-         WvOJn+leIsCeGbR5iWvAhrdROdcOFr9XTLBCa1PSSpSwmIKNUBN7JRHORWzQxxzL8/sU
-         XDs4D1wM0qEAAdXW3haRgacuVI70E9o+YcrfiBUnjjucsX/9ziZpp+h0GS6um0wDNjaq
-         6dBTMZ5CyB2VMmrbgvREON/T9quVi/5j7IECtKOTXKpWacSnQitmOxj+IgF3E50hJXA7
-         rqilj2SYfpz5v7XWVUQN5A2o2vYE1KDvysCpX8hm5ME2CPTDlpz6S53qywvFWNM9BSo+
-         BZ+Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773395051; x=1773999851; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        b=MPrH9R0rTarkeTS41hDrvBBOBlUOe+MSFkk0SFfGac7+ipvlf2XImMBgHsDaDVMyuP
-         S43GdnwIVndq/Mo7pTC0LmNnmrXIzyYjTgIGy78gtSH51DYfA0kdVWBGHXMEZmy5TTU2
-         CwJ1GMvR7mSM7jnXmikkU6xkZ26oq+WyeqTre/A6xZC9q5Ubixbk+Bw5j9XxiefhlYFX
-         2QRU5rg5qa3dKowp53N/G7ezxFYbzWO1BHwlxhh4K/ie/E+uMXF88SpG2mYTivHyHoZn
-         sd+AsY95/ZaluaSRECbHHowGZdCSZB3m3futyK95DiiHcNMb1B+o9UNqhHCm/tTmWZ9y
-         u+xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773395051; x=1773999851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        b=cOaEzivwe5w5z/i5RNuAhyckXaVs97z4blYpIOn8MQggZbevp+qGeAMFue/ye6R/ye
-         41Cj81uoYrTRiJdghymTFbuGVZC+cOlPwZFgr5jg9lY0t+2u6IeuMLPaSaS0N2PJ0p7k
-         1wxt7Dl7zlj2kO7YOJf1M3Vv51N+FfiWwHV1ioIz0chjIE23BmmhHUnFO2F3yCedQn9Q
-         ft8IEdIBXdwWDS1tyxdygvh9p/t7caRfbeLri0dk/QvITdWx+I2lGWRy2f/W3d6TBO5y
-         t/mc1BzYZhqyyH95oF101inLPmu47M3MAeHf0ASoBqekj/BD8652Rs6n0ggGbiHUpueu
-         Ks2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW6pc6W+pjVZKzPmW2X6ubBuA1ZlrIaNfdGuAjD75SqGWqqvSbYfrgw0wMFH7uMzFHmIkA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxrc4T2JgVrteIZ9RHHerF7PEVJXzzdRD7sJAUKAB0rs1jz6TbQ
-	RkYeGUkcXQ+ck0EoP6T65Z6vZQW3hb853NWZCYEGMIpSnHzJCORC3cRHkKLVbax26cj1hyTFQoI
-	U62uOhbdUOFWUP3MSdfzZ2JolBOseDMTlEs4sl7qznA==
-X-Gm-Gg: ATEYQzznSA/UpKGFPPA1yfiIr6Z7GHBXKjTpN5zexhnqNiZtnidL3aUSAWpTJaALKHj
-	tcLlRAUzoSeC8CAThgjWyfJayfCfzjViHo4/VXz3qWbX1nboouWIWWZtswo4/4XXkSz7eDxTpBR
-	DL23QGw+hnEMHPlarPX+AR+DX2fY8B66ZSQorN9uJ3mHu9Bf8oeG8hj6cIjkBF5v0y/X3yS2kUD
-	p/pmZyf2xEO8iYLNA44j/wZPN03JozcO2786IPh3HvS1drKj1Dom6VPcvZJePRHUqawytuqVZsf
-	G4yRo0f9
-X-Received: by 2002:a05:6512:1589:b0:5a1:381b:fae2 with SMTP id
- 2adb3069b0e04-5a162b0d32fmr863539e87.33.1773395050576; Fri, 13 Mar 2026
- 02:44:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bmdxAgpk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RxHD/DZJ5+ITgacWh8vGZ7bE7KV5suQdvQ5/CWcSbmzf5d5iovMKtk5wqN69ixYvOeI8o/uwUGZtPcZwGhT7ufL9MIe+8EtXZw8cpmhrzwIu8DSSfHGVUlKOs5PCTgmVqMsPcMolDMMUN7d4+03iJD1t2hzl68Eki4eLpHU7N1lqoI4f0/oIIIxopiy+stJV3hZ1trWrN/mcKh5qrbyaotWK1MmG/f+5xPEqQ8uNuYY5vIE0Ie3WSlySuFnAdrulT7sXaHltrAvXLZSi5tBc5OG54QkrtpyeZCstqt7Ekav8axRJ8cgsDgEvQae/L2drvtQnVFatyezM+Me3rVpm6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eLcSzPPneqHAn12m3EsuUTumkxmm9sEe5wz/AusRs7g=;
+ b=WKKVVsZNZ0ci3UHS+8KIsYaeGckxdlADxSuyIAP+bh2Bn3bj5NiRUN5+uvZUO8/8OLXK2om9Q7pMQu3EDf0hlmfu0Y2JLyn3pToxTqJces4sY2ya9gLKv87dABnYzhkH4UzzJ7Bxum10lbKxD2XiKeXU8o16pkcQ5sQahT/1lrxVCxOza2au9auxYg0aOWKtgXzDwzAswyFAaHeaaHKJMucIIJwARNTn/KlYZAOIG0olsEa5YZSXEaXkwP4NWwQABqzZEnX5Wgfd03DaTcWazJU2W6VisPqFDPIAXiMY45dabbVRCsPEWjFepHnWHKFHRUv2o9868yw9j6X3AUjBUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eLcSzPPneqHAn12m3EsuUTumkxmm9sEe5wz/AusRs7g=;
+ b=bmdxAgpkngk9qhPHBhaJWFXXiXnmAQ33eLL05Mu9gRdQ7hKrdcANtxyOVLe2fmoviptXDCwtgMRxZF1t2+aB2nGasR2XRsa0F9RsajSzw9PIPh3k3X+b7M/TnpnMEA8ZJrE0hLLbfhSaVvgKruggo0kfX1ICOX4Ef8Neqk+vIi0NopKh9rrMMjVxOq//xzJDUIad9qab6aBe6vgiK68K/YR5aAT4rqeuduxNXnmOTPX3l7jexiY2Ube15nF6M/rqErGCGIYB1ipA8353HezBkDFZSXXbbn7gZEQyxKnJo/fIlaZaYk1zxj+HjLd7mA9SX/QJeyTvMO+MTBGQvw3IIg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU2PR04MB9100.eurprd04.prod.outlook.com (2603:10a6:10:2f3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.22; Fri, 13 Mar
+ 2026 09:44:51 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Fri, 13 Mar 2026
+ 09:44:51 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	Frank.Li@nxp.com,
+	horms@kernel.org,
+	saikrishnag@marvell.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v5 net 0/3] net: enetc: safely reinitialize TX BD ring when it has unsent frames
+Date: Fri, 13 Mar 2026 17:46:41 +0800
+Message-Id: <20260313094644.1132411-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0078.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ad::11) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
- <20260227135428.783983-3-herve.codina@bootlin.com> <CAMuHMdVVsEB-xb8Jz4ujBam2NxtxAOb7byYa3VR_eHsbTD5rXw@mail.gmail.com>
- <2026031242-debug-aviation-19b8@gregkh>
-In-Reply-To: <2026031242-debug-aviation-19b8@gregkh>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 13 Mar 2026 10:43:33 +0100
-X-Gm-Features: AaiRm535RzzFrlMRqNsLHd1XM8yzn674dd-38MKB2CsmserIvJfHsK0fUYGtRYw
-Message-ID: <CAPDyKFpX3A3r4s72PNjBz5QaZUsq1xaGhn5vXwegue7Tyh_Zew@mail.gmail.com>
-Subject: Re: [PATCH v5 02/28] driver core: Rename get_dev_from_fwnode()
- wrapper to get_device_from_fwnode()
-To: Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linusw@kernel.org>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU2PR04MB9100:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01ec08e6-fe73-4799-ac29-08de80e52c82
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|19092799006|366016|38350700014|921020|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	vPr8E83cbHN2PLwxmMfGS0gp+93eLtSUz4MjzaFI0tVDzei6fu0Ly8Ojs7iNxDn+7opHOLiJ3Ps65jAasJMCsVpNBZtYtQ8SfnAr5ONnipULj8ImQ67YmF4H15QTOhh6ZdA0UCmzf5RCMmxWqdm4/Zvp8xwOSLckz85cKymdQXIUlwC9jtVMrmipNa86hwuFVdnIOrqaeyiwAf8C5bsZ9rRUy+Df/2KRc79orVB81JhoBJ9cni5LTvfttvnazuvOB2Oh+rW3wl4UWEr5oLp5uT+10OMs16avgZwjBBOm8+I2yZSzg3CSlwqRm9mccIZG6SZ/nfqcI0a0/fqIk73evN7xZFxVXHDSFkmOMHjdNUwD52RV76gslNA/JQ+a7XWlqwP/yf38fksSYxIzyhzEZ87zyG89ZYycf1fHdhAxGic505eraA7D5IYetXaxvvyRA2gbE5lhq7g1o2Qk8XD134MGPW6U3OEm7lR7g+PIFRgFB9V73p1QkPdPTvJRyumi6ce5eoQRHAexpDK/WBDk/s9dqqu69giGD+Ix0rFDmIY6oOjkx/s78R1886UFo81Imhdh95WFwa5zJcZb0Ab6XlSHVRnTgean63fsImUIzcQY15YJmMsIZR7+0B9V92UwX9POW1CgpUnpJsWHPmh6p6v5Qzhh2Lu9gMHRXhOZ40/RJ9/D72LAf+3xM3U4GrvmB9zRMIzqWDaBrrLJUAqviwueS4rbGDDejqcHbPFfaqxRF9ofqMSA54drz+66MrZ7pyIQDAgRvgeP4e5ZXFALohsjL7+oner7xKgYkqRtRMJTWId+cLY8YSZAUC3/TRW7
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(19092799006)(366016)(38350700014)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KDQljse6cV5gaxDA9Hfp23j9Ci8l6EIx4HQPtW9eh8C7WQIftg3nRz3Rj/xA?=
+ =?us-ascii?Q?SHoKXyFiYJ/odI1bGLiGmHGteiaLGv+8BOl92wlT4w32JarRDqGDoTfmSzZO?=
+ =?us-ascii?Q?lY/a+sM7By3onwJqI+t0cdS8mnjp426a5PDrKuxD755rUgDhka5Hi1cDWV6X?=
+ =?us-ascii?Q?G4qS+PjKlN78DZF5RNQIXjJhg3FLmg9mHHzwCSdE9NnJy/Q5zmYox71zZnE7?=
+ =?us-ascii?Q?ZoNrwD7ClnAMf0C1CeotSVEhb8/fxG8O15zJIFiWSABLhVX9OOu2rjM+uzu+?=
+ =?us-ascii?Q?e8cwSDAnA/wfKN4RVB9b61usSg+BrCWfhmPAlMVZCcSFsJQpS3dE7b5M6FT0?=
+ =?us-ascii?Q?337T+JCStUrFhoYPLIJ5WgSjVJ+Fc1rjl2xbR5V1mhN/LhMiNf4fuZW2Ffmm?=
+ =?us-ascii?Q?HpXvcEEbqlV+uSbPFM+O9/P3JoM40SFBTfWJTMcudRlRcJkAdIdSU38oBQXe?=
+ =?us-ascii?Q?zJ2P3U4Qfl7335K4WciodIp8Jh2jyhaftqJFbPaT9R00Lb8tSo8BVma9bPN2?=
+ =?us-ascii?Q?12LvUoWV/wb8Yg4eo1AD6mIG4OT6uOJkqjq3XrAFLURKCEdSKqpO2pWzieOD?=
+ =?us-ascii?Q?c0nO3TwveRQixTYDPj5/39RxZ/tza8LEsPCXCRbGZ8MCo9f4oGJD/jHzwWmI?=
+ =?us-ascii?Q?PJIz1BKowFAC433nMovcC1bdvLjkZk+3yJM0mEHZf68JccVjMWr5MKJByvrO?=
+ =?us-ascii?Q?42TFpO2hl8Knyg8cnclQHmnVMB5fgPLKSa4Ohd/U0s0CRERpWBd7WnqJt6TH?=
+ =?us-ascii?Q?vCtFlwiEPJ1zzPD4nnuUE9OrCErjPSTuvGHmlJK6xHJr+35zr6iW8DZZUA0l?=
+ =?us-ascii?Q?M9ZJiuLO1F7yjm6cmNsqCTy7nxx25rD2cTwh97D3lW3a59p/HhjPn8hSk9Bd?=
+ =?us-ascii?Q?dH/LNQN4uPBRWQ2oa3ymA8gbmyjQFncGwcemHerPnazpFMbeQ2lUlNJmn5CG?=
+ =?us-ascii?Q?4SYTscl9uyciUFRnaEl4Q4KzTzNZsJUlebKcQM1ikXtRR1SGYVTAhzEf0Ybs?=
+ =?us-ascii?Q?guVj6J4xzKdiC/MMl/7S4Nf5a4imgasE7bTX9U3ya2Sxg36pWQ9F8lPSkAzE?=
+ =?us-ascii?Q?RPrU+DLS1u7VapcuElPj3llO1wFBaBVpRBxk/s9XGBMlZYWXF7WA3xn8su0c?=
+ =?us-ascii?Q?73D2YVCUPEWo+VLyS7ILcVnpE4YoWXsCNjSDZ6IgQsM7jLwvOqRU2aDGvaKE?=
+ =?us-ascii?Q?HTuDJDpGmxXwk1FAldWJLYkqlcNy0P8NhSlZT3jmyKZ58bvuib90cOXkjf6w?=
+ =?us-ascii?Q?ISIb5VKMxOzYEEsOdt+fG7NOOnmn4izO9Fx8h8yjVuOT90QtCcWOIaRqYNj/?=
+ =?us-ascii?Q?9v/L3Cb3IiVtDwP/bYWVo0fD3h3xEoYRg6HE6Rlf8RRXZSSdWi0Z0JgPQRmg?=
+ =?us-ascii?Q?D6ovb1DzuMaMJCWtpPIesb2Y3V1ccVtFI1XNEd/0S6MWzRdbe96Wbdsw9tBh?=
+ =?us-ascii?Q?ljRZQIpFRnGPkhqALdwI+E95yyJIPPoOtNTFvEqfRXOZDoOnsIjcvuQy/P2H?=
+ =?us-ascii?Q?f8tdObDa50qLDauT6nDRLhQrCmsT3KLXHdzbWj0YB1AXjtNfVxNZMgBPFP3/?=
+ =?us-ascii?Q?+a3WpzwDGC8dT3UF7qL1nsFV2y32n+QgW9Sc18HdbF0I8vA+ozMEbIt0FdDx?=
+ =?us-ascii?Q?YrdvxojjhE+3vaZEiMXw5UPbKtFYPpaB9T9w45UnyTHZsVHOIxcYDeuVDpTb?=
+ =?us-ascii?Q?QR63NVnjrjj0yfCwX9w/j+2PlW1w885q4SWoqsMNsorSTxmWnsK/FMUVLpHp?=
+ =?us-ascii?Q?bvavl3NUvQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01ec08e6-fe73-4799-ac29-08de80e52c82
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 09:44:51.7926
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z+vgosCxCxmMD0cP+SJjqIHiBfcz4sKyubXxab5rUpLCwjX0c5AXkEs89wyKHnn5nfkOGe1tq2gEXLOwiKFsKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9100
 
-On Thu, 12 Mar 2026 at 16:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Mar 10, 2026 at 04:03:42PM +0100, Geert Uytterhoeven wrote:
-> > Hi Herv=C3=A9,
-> >
-> > On Fri, 27 Feb 2026 at 14:55, Herve Codina <herve.codina@bootlin.com> w=
-rote:
-> > > get_dev_from_fwnode() calls get_device() and so it acquires a referen=
-ce
-> > > on the device returned.
-> > >
-> > > In order to be more obvious that this wrapper is a get_device() varia=
-nt,
-> > > rename it to get_device_from_fwnode().
-> > >
-> > > Suggested-by: Mark Brown <broonie@kernel.org>
-> > > Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aY=
-SV=3DiEkKPNbNOccYmA@mail.gmail.com/
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Reviewed-by: Saravana Kannan <saravanak@google.com>
-> > > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > > Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-> >
-> > FTR, one more user of get_dev_from_fwnode() appeared in commit
-> > 9035073d0ef1de81 ("reset: convert reset core to using firmware nodes")
-> > in reset/next.
->
-> Ick, that's going to make this hard to land anywhere.  This is a rough
-> series, perhaps it should be split up to make it easier somehow?
->
-> thanks,
->
-> greg k-h
+Currently the driver does not reset the producer index register (PIR) and
+consumer index register (CIR) when initializing a TX BD ring. The driver
+only reads the PIR and CIR and initializes the software indexes. If the
+TX BD ring is reinitialized when it still contains unsent frames, its PIR
+and CIR will not be equal after the reinitialization. However, the BDs
+between CIR and PIR have been freed and become invalid and this can lead
+to a hardware malfunction, causing the TX BD ring will not work properly.
 
-I fully agree with the above. Renaming the function isn't necessary
-for the $subject series.
+Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
+the driver must reset them if they are not equal when reinitializing
+the TX BD ring.
 
-I suggest we simply drop this patch from the series - and if the
-renaming really makes sense in the end, we can deal with that
-separately later on.
+However, resetting the PIR and CIR alone is insufficient, it cannot
+completely solve the problem. When a link-down event occurs while the TX
+BD ring is transmitting frames, subsequent reinitialization of the TX BD
+ring may cause it to malfunction. Because enetc4_pl_mac_link_down() only
+clears PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It
+doesn't set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, it is
+not safe to reinitialize the TX BD ring at this point.
 
-So withdrawing my ack from this one.
+To safely reinitialize the TX BD ring after a link-down event, we checked
+with the NETC IP team, a proper Ethernet MAC graceful stop is necessary.
+Therefore, add the Ethernet MAC graceful stop to the link-down event
+handler enetc4_pl_mac_link_down(). Note that this patch set is not
+applicable to ENETC v1 (LS1028A).
 
-Kind regards
-Uffe
+---
+v5:
+1. Add patch 3
+2. Correct the typo in commit message of patch 1
+v4 link: https://lore.kernel.org/imx/20260312095415.669128-1-wei.fang@nxp.com/
+v4:
+Correct the offset of ENETC4_PSR
+v3 link: https://lore.kernel.org/imx/20260311084105.3982037-1-wei.fang@nxp.com/
+v3:
+1. Split the v2 patch into two parts
+2. Update the comments regarding PIR and CIR in enetc_setup_txbdr()
+3. Use read_poll_timeout() instead of the while loop
+v2 link: https://lore.kernel.org/imx/20260309030412.2716984-1-wei.fang@nxp.com/
+v2:
+1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
+2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
+---
+
+Wei Fang (3):
+  net: enetc: reset PIR and CIR if they are not equal when initializing
+    TX ring
+  net: enetc: add graceful stop to safely reinitialize the TX Ring
+  net: enetc: do not access non-existent registers on pseudo MAC
+
+ drivers/net/ethernet/freescale/enetc/enetc.c  |  13 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 118 +++++++++++++++---
+ 3 files changed, 127 insertions(+), 15 deletions(-)
+
+-- 
+2.34.1
+
