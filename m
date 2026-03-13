@@ -1,96 +1,104 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E2A375F98
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFA122A4E9;
+	Fri, 13 Mar 2026 09:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773394141; cv=none; b=I+1K3/iQZO+vq8GpkS19Zfn6bcfTHSCotPiBHantg+sYQ+FWzpGuxi5i06vqLa21ky00HVPXaaesMmFOOxeuUlPL8xG0w/NAwhAeJKsLZ6VLy2Y0BCYBQqnM52onKqnOyccWYTVeIu35wvLKOwMO3WRl0ohQ2/myY0sjVVAGYoM=
+	t=1773394352; cv=none; b=E+FJv5/myRejAfBE13wK/v62AO+irW413CX1aaTASYN0KHFi/wAW7gGxL3ucyxb4dXjkoa557uUoIgnRqWLfGpfc8T1XtJSlhgk3Uvb064G8ZnPXGox5JLaar41vtvt4YLP2OBopJ+9Ym4ryf9JQ6xTSTQVUUC4B1QGN5GqdGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773394141; c=relaxed/simple;
-	bh=nYRFnLPrTONi7U7O1Enq4WB5OEJpZYPZGRPBstu1j9I=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ty0wYWtjEri975rRY9Fhq48n2FJKndJaWKmAi19A/hM+dWcVoUKktDH9BwLEy+Lfv1vSz7IKBQGs671D2T1HTZY56es4r7X9UVoAY9kc+JmeFmhO9NXdI7Lr9Zhg70m1cvxGCm6w9jrx0SD+nz+xzXazVqNYjgqEjjCfTHTYz0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EDn0BA/N; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773394352; c=relaxed/simple;
+	bh=+MT2bK5lK4b/U+CKVnI5iPZjRVFFSU1WWNQo7BSEpGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CTt9F/NAYlYzbvPPX7ZFNFIcRhrfEpd/7uGV8bCEzeRXF2QDSxRRUI9FwjboAuSPnaaDPxNgm20fscR57fmyCMUs2miidnoCpFVE0DV6hOiI/KMZAAPzaY83dOExj2tC96U0bbFpX2IyLEiagKccWue9qQoe63pmwmJFF+JU+FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YsZ/zOSC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EDn0BA/N"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 542A61A2DF0;
-	Fri, 13 Mar 2026 09:28:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 24B3960027;
-	Fri, 13 Mar 2026 09:28:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B88510369555;
-	Fri, 13 Mar 2026 10:28:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773394138; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=MeXmCnU6DkpJjDmOkF4Kl8YHcZPKKCKszdRslHD03ME=;
-	b=EDn0BA/Np4DWs10goVewjq2nRwiiWAdgjN1OO52/TU46cKug/fB4LXKFTooud2iCJ7WFAM
-	yIAqT5YepKsqHa3lrxEd2DYfzm88Ky+XC84kZzE9B4R3bS6R56Sv7e1wj5kDnUseMs9IMw
-	bMD4qaRz3DmyYibHFl4Av5D6gVIKWihqomEPUaQboC2wXM6LGTD5GTr2czSHmtcboZ60iT
-	qkNfahVXekJOPEc3EdTw4x8WOzD5nghJWlItGidksZkOhgDvHzAjqQXjpumqlGJODE54AU
-	VnuUg8GSyjAjb/C6lVv1uwlwKe/lLeOVbZkKqXjuwLgK8CNsfPaz8ZcogAFaUw==
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>, Frieder Schrempf <frieder.schrempf@kontron.de>, 
- imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-rtc@vger.kernel.org, Rob Herring <robh@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Frieder Schrempf <frieder@fris.de>
-Cc: Annette Kobou <annette.kobou@kontron.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-In-Reply-To: <20260309085749.25747-1-frieder@fris.de>
-References: <20260309085749.25747-1-frieder@fris.de>
-Subject: Re: (subset) [PATCH v3 0/2] Kontron i.MX8MP OSM Devicetree Fixups
-Message-Id: <177339410764.2782875.6884612032294375531.b4-ty@bootlin.com>
-Date: Fri, 13 Mar 2026 10:28:27 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YsZ/zOSC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4DFC19421;
+	Fri, 13 Mar 2026 09:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773394351;
+	bh=+MT2bK5lK4b/U+CKVnI5iPZjRVFFSU1WWNQo7BSEpGs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YsZ/zOSCWdZPU3Jciw6dOovFXjZi7JCTqvB4ZleCf9pN1Lc36FvPXKrL4tdL922dN
+	 sRqJU99AhErIhg7m6B/SOxyT3V90rEgg9leEwg9eVgkRWQWYBMhlRiadFecyNDk0+4
+	 AUJwEboXm7Wa2KN1udBilplTwMPfG6nsTEv1EHe2EEhw1yeB9n/3kZHI4Mkrfnf834
+	 oq8qjvyBxiy0fyiepery/b1A8UkjvGUOKnEN7yQzlC0wV9qQSVxcuGDqBgDgi/a+E2
+	 Fsr0D0hTrr3p3XwCCVY6JT8/Y6+eloYdDsCY8I6NyMzoqmSJMbCWwY6TsBLJXyg1Z5
+	 gXshwXUd1oPCA==
+Date: Fri, 13 Mar 2026 10:32:28 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pwm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] pwm: imx-tpm: count the number of enabled channels in
+ probe
+Message-ID: <abPZBUvzHi_yqkkU@monoceros>
+References: <20260311123309.348904-1-viorel.suman@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=439;
- i=alexandre.belloni@bootlin.com; h=from:subject:message-id;
- bh=nYRFnLPrTONi7U7O1Enq4WB5OEJpZYPZGRPBstu1j9I=;
- b=owEBbQKS/ZANAwAKAWOk3DBscDoyAcsmYgBps9jI1uZM7eWpDS8rTcWpBXfEtGRKFhN+YxZMF
- yZmooD0hC+JAjMEAAEKAB0WIQQGqwVVleHyz/Q7kmJjpNwwbHA6MgUCabPYyAAKCRBjpNwwbHA6
- MlhnD/4+HCdR7zX8Z+uBkvQwNxwW1gwSrniKNKkxjYztDiGeFGH7NWiLecjKwfqw/TYsvqY1Fz8
- y4GeFdusQtmplFJ90uqQ/2Oq7u+bgsM2p8O8LtEfdToqpnnm+lEiWfEOLG1J8cq63h5yhFeJdM4
- tvh97+PxquzdrOD3xSCTy8oUKUssqKPMzLpgifgYSysrdvvY6+vxv8lqD1fBeGEDFf4R80bH47G
- HX9suO2A1Jhjlf/n/3/c/LiHS2/lqfFpWpdiQ74xBIwMgXgNiqlJFm795Qr6OkWZ3ljxqrU+tUA
- maQ6I5l+B1Ep1IuGmNO6xLVAd+Gwza2isxomF4Ik05JhNufWiajlw0CDO1TepHh+8jRFqr5EtMo
- yK3f2PrXfqo0VZDf6E9TFtrtXc6WjGj5ARogE5EzKBaRltlsNKotm0YxiI95ioS50GQ/gTYaCr3
- 1841EXYY3o8BX0vun2h93YRkVvxE8T678hc5olnnHMietCfNg+MhPGaEo1g5x4oP2cptZKdL/o3
- dg2nKsnazMcGYv4dDgknywEWYT/cHIT/eoj/DBom5Np0Xm2pghaYqDWBgoOtWrqeWFO7pLM95Nl
- wS75hU/bnsNrEi1Oua69YS1072MxINGSSadX0s/HOL8xm9+VDFB2fVJF1QsV7KSaJRn1Iv9x8IU
- pQNUThWh9LI9KRQ==
-X-Developer-Key: i=alexandre.belloni@bootlin.com; a=openpgp;
- fpr=D42657F65BEB9D45A004FCFAA6CD9F096F642CB3
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3x3zrpgo2kxgdoay"
+Content-Disposition: inline
+In-Reply-To: <20260311123309.348904-1-viorel.suman@oss.nxp.com>
 
-On Mon, 09 Mar 2026 09:57:41 +0100, Frieder Schrempf wrote:
-> Kontron i.MX8MP OSM Devicetree Fixups
-> 
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
-> 
-> This contains three fixes and one cosmetic change for
-> the Kontron i.MX8MP OSM devices.
-> 
-> [...]
 
-Applied, thanks!
+--3x3zrpgo2kxgdoay
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] pwm: imx-tpm: count the number of enabled channels in
+ probe
+MIME-Version: 1.0
 
-[1/2] dt-bindings: rtc: microcrystal,rv3028: Allow to specify vdd-supply
-      https://git.kernel.org/abelloni/c/10663044bee5
+Hello,
 
-Best regards,
+On Wed, Mar 11, 2026 at 02:33:09PM +0200, Viorel Suman (OSS) wrote:
+> On a soft reset TPM PWM IP may preserve its internal state from
+> previous runtime, therefore on a subsequent OS boot and driver
+> probe "enable_count" value and TPM PWM IP internal channels
+> "enabled" states may get unaligned. In consequence on a suspend/resume
+> cycle the call "if (--tpm->enable_count =3D=3D 0)" may lead to
+> "enable_count" overflow the system being blocked from entering
+> suspend due to:
+>=20
+>    if (tpm->enable_count > 0)
+>        return -EBUSY;
+>=20
+> Fix the problem by counting the enabled channels in probe function.
+>=20
+> Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
 
+Applied to
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
+next
+
+with Cc: stable. Given that the issue is already old (May 2019 in
+5.2-rc1) I tend to not send it for inclusion into v7.0, but if something
+more urgent pops up I'll probably send it along.
+
+Best regards
+Uwe
+
+--3x3zrpgo2kxgdoay
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmmz2akACgkQj4D7WH0S
+/k5F4wgAr+r7n0wf0qQGC7PzYyABJ2R++TrHH11Mj3ayf4RwH12e/AZdB4BexERN
+YXRiq7MFz/NjHQyvSaEBOSe0bzSLRCz+IEgq+5YtrJzA9niDlBWAKQtZus93TBWV
+J75sVS/gh5rTf5ykCqm7GgZQ/3QWd6DfZ7GvNRnnTgtby4ePVgtax7xwjISMYh5O
+5aOrRuHTacEBbC/7PFdwJ4hngibB4/mJBMVZSQcV5199q0zUzecUYPag4xCYpGM4
+xe1Hj/waykSIvY8QMKjJSUYZXqBo+fFEpsoTvw08ZMiA+tp162x+walf8VAzGWuT
+/oj2t6W5PtRfjVq7dwPFvD0+cMIKBg==
+=vRAD
+-----END PGP SIGNATURE-----
+
+--3x3zrpgo2kxgdoay--
