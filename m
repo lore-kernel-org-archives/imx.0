@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F9B3CBE9A
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E3E3CBE9C
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773422448; cv=none; b=lajvfj/4SiEGs/MudZeyW3YsuSKbbgA+mNVlbaDdt0H5y8HWnZkqgW0AwwUSaxWIBFv4Nlxn9HYacCbBjSEzvKfqp0tG8C/NUzCSNSVWLQx/cAx7UNXewXeWSVvL0unziTzwi7oF9YXoQb59vouxCdPvGEfAiTZGoENympxIKr0=
+	t=1773422452; cv=none; b=OtJJbeXUitDneEWN9Lyj0tSHlrX5PdQn8eS1gPP/4aIUD5mfF2uSLR6P8q5+hNzvXk6wW5DxPGEoOZ5j9A517yIyrKfYBqEcKrEnIrTHwq/H39pFV48788AC/nF4Kh1958CvAql7cYbriEK/ghlTCveHWPGiRXO4l59yW5FoSI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773422448; c=relaxed/simple;
-	bh=vzP2F8ldfzZldEuB0zwnw7nG2Tv4Qz+d5X+msxEr7kw=;
+	s=arc-20240116; t=1773422452; c=relaxed/simple;
+	bh=hMMoQA66viiMTD/Ovtk1W0/akiFawo/AdgTfBlijbbQ=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=FiCXTSQ3n6f5qomDfS7PkLWh4KJlcTXxDOjL4TTBVqWNZoctQgJhBry3Zq6bmzbdoqyBFd2OfaDLff05dTYH7dVSxpYwOcGhqlCNoAH86HAv2c4qFaNCSphlRe6oxbn5RMQOJPdLb468RIrgIU8RMXcGo/G8i26vfr6rcdsLSiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FQwm0oHl; arc=none smtp.client-ip=185.246.85.4
+	 References:In-Reply-To; b=hUYdaxPFoV0k1rhZdPhn/e3O7VMcwYBiDFGSgw4sSWo+ZMiBhbZJiZe+yCAoqLByiwkYnV2BRz3wYVr/FW1U2h0z+WidZ5hw2lgZli0RqJgEhx6csfpeBgCBUUh1ggH9X7hoHFGODGRxUMJ9ON3uGDKpMf6AojzlhzPbmiCtVJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1BZMeake; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FQwm0oHl"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1BZMeake"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3134B4E42644;
-	Fri, 13 Mar 2026 17:20:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 278E01A2E20;
+	Fri, 13 Mar 2026 17:20:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D338F60027;
-	Fri, 13 Mar 2026 17:20:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 981B410368614;
-	Fri, 13 Mar 2026 18:20:32 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EC94460027;
+	Fri, 13 Mar 2026 17:20:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ECB7010369F56;
+	Fri, 13 Mar 2026 18:20:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773422442; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1773422448; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=vzP2F8ldfzZldEuB0zwnw7nG2Tv4Qz+d5X+msxEr7kw=;
-	b=FQwm0oHlMEBGzEMCKMoMgbPWC9aQXWU0IQHzja3zCZvBOQseFndRbL1FYs5+RZuq9rAizx
-	//+bQ4vUk+VzZ9SWkP7XJo02seGVxZL9jR2r/AR1tIiNRI1W5dODW7y+5aQiIZUncv6Pn3
-	2EW3aaC2pLxqFIVeJ9W/yfPZphwqkwRzCN+JXWimvguIHFxbwOKjwSC5FTJhxh575mjxV5
-	VP0OqEIBeGo1mvsT0ledGpg1JAnHL87zndYiA0RcsdiuoukHIGePL0hmUgPdZ3CF+y1pKC
-	Gv9xiluP18x+AcY2pEbCxLuZbmOJ3STtfv71g0Ju5SQAeLMdb+tsn65cW5R5Iw==
+	bh=hMMoQA66viiMTD/Ovtk1W0/akiFawo/AdgTfBlijbbQ=;
+	b=1BZMeakeLYFbyq8IgpHQNmMY6Ho0sTjFjzEYhohY7X4Xbp70aU58n6j0PYpEj6ZUv8uHrq
+	osDAcp6Q2HhOAKfV+URHAMo6t4ETkhkAW4/OvCBko+chKV2PxFrKo07SqyRgX9CF3/jnr/
+	2IpEhi9JfH33HMm0sXSzVIst2R1OEzbSPMDXL/J51afgUbFUqT3scqr6pryIzxrcaSmieT
+	VsGtOXLnf7e/f5Z5y7p1WkcEHqtBo1UwG17acAqeRYI7mEWTTxOxwv2nZ/EFIPnJP0GNRl
+	gwRVJivxZUw+f/Z6TayPmbThHnxm3J/tLlIfjPGTYPL7MSKi9jABfHcWS5Vv1A==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,10 +41,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Mar 2026 18:20:31 +0100
-Message-Id: <DH1TSA7A427M.359T6C2RFKRNY@bootlin.com>
-Subject: Re: [PATCH v10 17/18] drm/bridge: analogix_dp: Remove bridge
- disabing and panel unpreparing in analogix_dp_unbind()
+Date: Fri, 13 Mar 2026 18:20:41 +0100
+Message-Id: <DH1TSEK77H04.132NXEK42GLSR@bootlin.com>
+Subject: Re: [PATCH v10 16/18] drm/bridge: analogix_dp: Attach the next
+ bridge in analogix_dp_bridge_attach()
 Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
  <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
  <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
@@ -65,15 +65,15 @@ From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20260310012458.169272-1-damon.ding@rock-chips.com>
  <20260310020029.178314-1-damon.ding@rock-chips.com>
- <20260310020029.178314-4-damon.ding@rock-chips.com>
-In-Reply-To: <20260310020029.178314-4-damon.ding@rock-chips.com>
+ <20260310020029.178314-3-damon.ding@rock-chips.com>
+In-Reply-To: <20260310020029.178314-3-damon.ding@rock-chips.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Tue Mar 10, 2026 at 3:00 AM CET, Damon Ding wrote:
-> The analogix_dp_unbind() should be balanced with analogix_dp_bind().
-> There are no bridge enabling and panel preparing in analogix_dp_bind(),
-> so it should be reasonable to remove the bridge disabing and panel
-> unpreparing in analogix_dp_unbind().
+> Uniformly, move the next bridge attachment to the Analogix side
+> rather than scattered on Rockchip and Exynos sides. It can also
+> help get rid of the callback &analogix_dp_plat_data.attach() and
+> make codes more concise.
 >
 > Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
 > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
