@@ -1,195 +1,135 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013009.outbound.protection.outlook.com [52.101.72.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7D83CA498
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 16:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773421124; cv=fail; b=LQBjKNGHB/0q50YTcK0yCyLy0NF0sqPaOlkU/te/Rg3Dr7R2V+TzHNIxX8ZFGMzozwly3XzzZaslNTdD2q/lnGFI4uIjG8IAtXg4rCpqBbZIETcvYvrZDB1k6p/t17Pf2oaiVLyH6hV+ZEzAeI9lgFPvV7A3m/uwljIKacEbJQM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773421124; c=relaxed/simple;
-	bh=oXX3Rol6lsaoDb2asClpdVXuKJf3chUVszIsFfFcdbs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=utSm9zyd3jceIm+MkpSzeqIeR6ozVDNSS4BnA4+Kuy2VQfN3JWnfaBa8UiovEH9iw2Z1ePrCaeu1aE/w0m1UoUFyuOhQUytxqu4X2DOGSxDW/Rr191Dy13B2VPu7/deTvIi6kuo4Sb4XgyXHH3eeqhiPJ9PjKVe5V1DXVGsvxbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Nqy1qcKA; arc=fail smtp.client-ip=52.101.72.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2283B6342
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773421516; cv=none; b=OMX+liWE980gC+dGWTCT3An73tjfTRGS7LNIGtcBIvflP4+i4U24kb9Y/Nr3wSeQCsozgdujEsIQZlBEq91scXQVLJhotsVht2/WTNmG4jMRz+VhIUKfrLKqJnM4dcokpE8kIul5FgJCK7Z8+lIERPfHmxuTsW0bXJpE+YYXPPw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773421516; c=relaxed/simple;
+	bh=0l1WReIp+IXtP5rjc92yCromqx8LCGpVTHfRGoor7Ho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pZ5RfyHcHA5XtWW5qoJmAM3eeXqD+6aG08OLTvydylZwOXd6jA3I1C5vp7CMArsX0f0g2zAsxWUY2juyLX0tspI7b+Kvwz4f9xpe9obLc/3vj+CBBlmKfDx+MdIPZiNHWKlG8MvUoFZGWQOXnlwiX3vmchr0DSWLaNPLJp10HOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OO0VT+Oj; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Nqy1qcKA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=elOujBJtEleTJFfDWsQtGWiwXkmuGavuDa81yl/47PSzXo7AyrC/L5VxjfBO1hRNnfOYToLvJ6hTi5m/uw9d8p8/PGub0jeQYeOfcODmH2+QwfqR3JCShQ0e5olCpJVwV59I0M2QMhdGxyM95pVaheV2o1p70e5XFzFNASlojuj6x9+QM6o7cxTDs6PzzipqNQ/psByD4lPAWm28PtWn6mjx5F2nxNev/srywYfm7BRmL0Fkrbla+LLqBE8su7LYn52NXYNNEhGPDrIoXkKXT2lGCtOyfT4paRdhArFqSHDbuVWPMWLvvdkZyCRgNDv/bGVBT54L93fHucoKBeY7yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DQuU6FlFdBBlOUdgBP0iK/pkfsCErqdikP44QAvSWEQ=;
- b=Sx9/LmtxJ95bBLOAWK7xJwN/5t3X/wI5FoycxpvJb8BNIc0zGdpgHePShbC3ETkWI7pEZCefOG4Mo8NKagSeigXopEbN5OC/CflOXY/wVoCX7k2L/qNVIrfb8fhpUh1gDadFUY7jTRwe1tP+V0Tat5chQglp79g/f+/ChEaCk3ApzbEtBabhWm3ElDvnf53/zt3Hiu8qqsAauMbLQOJ6sjKBHm9rgjhB1aj1IqeMrSwOHAOfyWp5/LPLQDWbhYCDMU3qoOy/cRyGEPx4/B1H6EGHuWhkKjZQ3iyUIixvWkXH4OdD4s58lfWxKewfjeSwJianTQidPgVzj9S4ND/CQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DQuU6FlFdBBlOUdgBP0iK/pkfsCErqdikP44QAvSWEQ=;
- b=Nqy1qcKAu37OdSIKKhC4dN3wMBeADatrgYln9lO5p7zbMXUY9qQHvzJ0wMR1O/EAtZ1KTuUQ73lBet08NV8AcpjumU83tQRqS+SzGqHpfnByJ0jUPfi4ZXRolJKO5Z8jgeu5pRahO4VcZjfD7yCFn07fBJXSlxbW3qsB0dPbO9OUq735whJ7JsD8mtwNq7ZPZI0vfOCts13+AKydIBSg+cjXsKu3kGeEP0352uRSaXOhbb9rW9B4fDpg3ODbCcJGCtaH+sR4FPYleNcYgy3chaRw1dClpmalldGDMSB/UoJkoNaMk5/Q/udiMtJl7UpG6JjKODksHenMIcPT2JS+Aw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
- by PA4PR04MB7584.eurprd04.prod.outlook.com (2603:10a6:102:ed::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Fri, 13 Mar
- 2026 16:58:29 +0000
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9700.010; Fri, 13 Mar 2026
- 16:58:28 +0000
-Date: Fri, 13 Mar 2026 19:14:33 +0200
-From: Florin Leotescu <florin.leotescu@oss.nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OO0VT+Oj"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439cb5af25bso2656018f8f.1
+        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 10:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773421513; x=1774026313; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SqK4MWNrO8rqxWDIz9KeUr6nx3Y9Q/ulNkMGXJyHS+4=;
+        b=OO0VT+Ojmkq7oXoR90ef7MRycctVRCF8rCgFYrEDkMGz23VWwC+qooiEL+WjON73KW
+         gMUkj0c/7kKkCyp+k5ZE4oPIxv2X2ZBHsO4PVtXdcR3Oz/yua11yU5cmy1D80DY3PM/L
+         kQWBJmCws/sZelgSo7jOwkFmJEacDDwg1eRnqITB6TTwwxZmwpawoKp6HNAAHiknTjwU
+         YtS/cd1k79jgU+GwdOQCB+bXZ+kdgaleQ/uim0OAXLEe61yE0X1/OzVPtL2ROZefptIG
+         WPV/loj/Uhwj6Pz5sfkeA4lphE2eH0ShIm8pjZh/2cJMr+8RJyy9XkqyRUtV7uaj0YNm
+         Kf3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773421513; x=1774026313;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SqK4MWNrO8rqxWDIz9KeUr6nx3Y9Q/ulNkMGXJyHS+4=;
+        b=XM1NQ5ARpQzrMNkGAJd60BOq8+FINY7sbBRMMnq88528fIACMW9DNcNk48K3n6zKiY
+         6/irE86EMX0xHD6D3ivxssTh8F5KsxIog9skDcUGiJ54jGObyKd6dPXaIuKr5MOuBFba
+         ZpJCOEtrpafSfx4/HuAuME5jw73O/5Irgxu4l9Aew/7GKjIxYdcvpkIIrg+Y+3ZEeLjx
+         06gcrVri+aedvJ+uAXUUx/UTdPmXjM8L/7RG+XogEGxuxmySzq8b9MUownUt4SZaQg4J
+         9CQAkdV2Nmkwbt2JaDL2wetJmOIF+2h6UWlxAHPdONKU+qO4f+KytNE2OF/2gqsHXolJ
+         EfZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdHerh7guBm5mHD1KAyJnNoFwE6LXUE8Tt/5RJjB5CZwIxo6J0fie3MqQJpAyjeQtWxNE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywjwa10q7H/hiU3g+CsySmTfoNdH9s0G/us0jMg0SGcbgjOFMBn
+	qnxsBpbQrgFQqSv1l1thyqfWCE9SfBpzVrH+LxophlONd8OwbUcGJ39U
+X-Gm-Gg: ATEYQzx/IlQhJntwfrNCbzQFpleK/4mW6qG3oVD6xOs+L67LvhXhzksTO60TMqK32cM
+	mnfvJE7aE/lna+D52KhAwUFyj4f3AlESX7sSTJTqB7swFym42a04nijfRBk0ASw7emQCr3PiNq4
+	0dfjrFhJf0iBCJaf+d7J+nYOGq7gGl36S9BCDMEI9owXobkgh0bcY8+CKSIwTycTVbY/QU2VhZf
+	yFsNmIjLTiu3VTReisfX4iu/nEfBTM5Czdia4wEpZ/vZeFKHCORZmPQLwQRgAMnn2foA8+D8uQZ
+	HzwZlKssoOnObxsqMuTNg8iwpiCbb8+DfmGzjDJtCqObLrC/gQ51YBfQkTb4WDaw/VfR563Fe92
+	HDmppCD2ccR/cnTOK7xo/9sqR5GCmU2yEOYMJ+BRmsr7bl/5/3wS+vTAnNPF0A5a1EYBwZVb5NH
+	l1z/YjGLmZpDtxt/rx4botgR8Kvpc3P1VTzca4gjAObDYdYaZXkEDS0g+BCvNm6NQY4yJw/bRnd
+	7mEHwZkaVDmaIiN1TsAgPPFHqmVpCbmq2wM2ffZJS/ijw==
+X-Received: by 2002:a05:6000:1866:b0:439:ba69:101d with SMTP id ffacd0b85a97d-43a04d79003mr8013170f8f.1.1773421513225;
+        Fri, 13 Mar 2026 10:05:13 -0700 (PDT)
+Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43a03cfd18fsm10531876f8f.36.2026.03.13.10.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 10:05:12 -0700 (PDT)
+Date: Fri, 13 Mar 2026 18:05:09 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-Message-ID: <abRF+TPKuXFDJc55@ro-kernel-workstation>
-References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
- <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
- <20260312-triage-shallot-1b3d9f07d250@spud>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312-triage-shallot-1b3d9f07d250@spud>
-X-ClientProxiedBy: FR2P281CA0048.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::19) To DU7PR04MB11163.eurprd04.prod.outlook.com
- (2603:10a6:10:5b3::14)
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v3 06/11] arm64: dts: freescale: imx8mm-var-som: Update
+ WiFi/BT with variants
+Message-ID: <abRDxRK_GFYwmAGE@Lord-Beerus.station>
+References: <cover.1772898346.git.stefano.radaelli21@gmail.com>
+ <7c84625f82c562bb9cd2b455465d63a1a25bf19e.1772898346.git.stefano.radaelli21@gmail.com>
+ <CAOMZO5C+USp34WQ9ap+N9ha6EgU7JgsYkRsLEW=ZdizbkMQvPA@mail.gmail.com>
+ <abQ_d9fGarNobYdo@Lord-Beerus.station>
+ <CAOMZO5BnuGc8sddmfhKJhFgWa+K2gExeRN5097794j48+Dw-AQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|PA4PR04MB7584:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8cb421e-c284-4033-c502-08de8121bfa6
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|19092799006|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	EFLgMCAFgK514/1GHjXUmAcC5JnYz3CtAJ/HdMalOPANNLXsJM3JmKWv87JV/Ckop2tpZDP0PNdz2cIAnc5Eiag0KBFBD8LcjYRT5xrAwiX6gHvED/hj1CWio8xwLxo0nygynrXNryjYDItaKL0n5Hr5E1hdUP+YM8rKn8rAKNPOwIuJrHKFEszI7AM5SBi/Wet9dbb6d9gazi1uiIaJ/eJ1dxY+XDpVrRn6MXI+ghmTNZKbG/tVebTjG3TQLeaUGdgLXMzgOqzq9npcgcRlTArQ+QukcIDs6JFb3RkwxA3RKY00/Zgs61Ix2FNMllvzMLgzjZz64IsFMz8VEFdxtXAiolFNuu5FFPX/0NmzpiW0KjIKKBnyU81SN18mLMfmpm3VeShcCD+uR/lKv3GGjONckYNwVpHI89S0xCUL/LYAXjWsOgI9qdq1xyBgZQHY4jq6Qf41AsM1ksnJOxfhFDyahQduqBJm4Mzkhm26EwmCBJJb9BUzUgdN48gFntU4lQWjRFKOkVahGxBBKbmtNWDplwbDfqtoJc5AX3aFD+J2zYCBIt0cfjr5RXFkkG8kztJIBqxIx2K7xjVzrDcDHdfeBkwlNDRRycUwqIBTQonDQ0klI/j2JPYNdNZ/cPFz8xz5yuyFh9luHT4yX0DQSGM4+XqZDqLhmUC6qL5h66VHoseQJ3njt52BsjldlUPjbInbrm/PxxlChvh6ycA45cVnPNX6G4dXsRKQyyVDxjE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(19092799006)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Gpc152Vfszb5uUlr61Aw0hMKLN57+WNFUFmolafZwqzWMFq5PC4OyonAS1aj?=
- =?us-ascii?Q?6uhv5wO078DyNOYBwajQGcsjTa4tJoZ4L23IuizlpwAbnOJW1OVpSivAJVZv?=
- =?us-ascii?Q?gsOSDQ1D5WTK7lY7SyvNz/2p9qFJbOMhmsp28t32IGs/kXbZ8Cthko1lXLil?=
- =?us-ascii?Q?FfPHuXMk6NuDvIZhUZvqq0p3VJnbo9ERxXOBk/oZJUagQMxq6p46ke5FS4WK?=
- =?us-ascii?Q?ofmlpeKwSuAJPCV7yR/w1PW5a8aW0hVKSdqprdR57GA/g3dEs+QgEJFcTepz?=
- =?us-ascii?Q?EKOjEAoBp0V30TmIi3aJtQwLSLCJaKox/pS7JdQEjSb3xmFzlp0dhGJF5rof?=
- =?us-ascii?Q?Lhz1hs9riZ6UMMsjqbK7ZKktJ5HXUaBegEc39xp4SJdcrg91XMXEmdzlwGgR?=
- =?us-ascii?Q?8xHHoMH/+CBk5FRnaNwaPVmAkRWpKzVEsMLSEUdTYfYH+rcmy8K4m/hmONB4?=
- =?us-ascii?Q?+4DqkzZ7p3YfPC1VLRLIBOo1HWEajJwMcc91cp8D8sokVZHX11iJZLf2YByq?=
- =?us-ascii?Q?zVnI6ea2om/UCSt0AfQ1PzHQHSQa8haIhBTf58fL3USKt0gbwtZXNgk4EFMp?=
- =?us-ascii?Q?j1VpFdOj38+f87RgUcNN+ffcWITbces9aXwYs3byKXd0Pal/AmwTDZhW8Ype?=
- =?us-ascii?Q?E8cflknrPIhW246ThSU2xjLPB9RAKz+J8IBAHeQVZMlOvQmECGwsyjqy0JV6?=
- =?us-ascii?Q?nD3jtiI+B9aXHBSjnaCHTvqg8l8XMv7M7d4D0Rl9AGXuPZS1aC9cek0doQRt?=
- =?us-ascii?Q?pjUQl/23l9hc78LksxBSg34WurpwxjUY7j0TR7OwnE+rnZAoQOWfcyLRjEpG?=
- =?us-ascii?Q?ixcf9hBC0g5XHdfi+KIEmvzPiM9MHqBEiIalw2lzNetjbo0cxHqbUx7kGv1q?=
- =?us-ascii?Q?XIFIvOgRD+i+fSrtHf82uDnXV9HRyAUo3dxuCN2h0jZK36C4UjJ7gCDXpW5A?=
- =?us-ascii?Q?x28Ccg8LxD0x40jt4IvzBdWOTSp6q9T6+k8o9O36rjgQTsO+lJDtK6d03muq?=
- =?us-ascii?Q?FpRSQIBYQ6b4PeaOLJQqp6RnzIm3bnKkjnzrGm2LOzuw0zx5bHMzRw2mS2A1?=
- =?us-ascii?Q?zLVfMSm/+dumgM7vwtsGKMkjGvhK1e4MQTxQjWcwtQtwaIpvLUqfIK5+L5wm?=
- =?us-ascii?Q?sQMIaNRs5UIWrMGEn8gTpZA0wEowYtv/2/wq53hr4vV86GEwrtFkldga9wTu?=
- =?us-ascii?Q?UHugCbC4oJGwimvMsh10wKiT/lD9g0rhLv57kcd0JXFVyORDNfjvG8JfkPav?=
- =?us-ascii?Q?GgRgeYcmBP9Cs6EE27b1bNaBBEqBN4YLr432XOTnK48KsdKD5/i0fERZ9l0X?=
- =?us-ascii?Q?ouihuIWtixNa4iTv4FUtjLtd0Vz3QOxIAiIFTKUuUjajZOe2iwmYXSkD45wL?=
- =?us-ascii?Q?RwEGZcfHMSz/C0Th2zXpci2/3LhnaK989HCK9OCf13A1s5PVdJJw4nvqzTqC?=
- =?us-ascii?Q?6gTDjqBX9iwd81ylx3p8BUTj2q50CWsk/4SyJt4gmOD8kEVW/qFH24F7tyxz?=
- =?us-ascii?Q?R7E0gGuSdKYuFCZNX4a1hPOYXn+/wJ0ePvjnQDpn8IeX4A28rxTacM2nhI/J?=
- =?us-ascii?Q?C+4mZfUPsFGAe7hXKmwH7vyqpBcME6r4LCub6BBwlpn94UOn/MnEaEx4tP6u?=
- =?us-ascii?Q?DYoG7F7uyolMwWMLdg6n77v4rO7aqWLcdz5sBdcMjfpCdWN4iDwUoSbIZ7qc?=
- =?us-ascii?Q?koBzatEzW1jga3CzETD3dQZV9JYUD25fs6MRWBNIu5So8HdQ++FFHoKYkeor?=
- =?us-ascii?Q?lkGMrnymHQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8cb421e-c284-4033-c502-08de8121bfa6
-X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 16:58:28.4265
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KSn0Uj2kUOx6OKsEnlmvIPEi4TYr6WlyuMps64PRIOl13OUPVePonNG+5yW9JtlWuTeGY8XMspQvs1BdA+eI/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7584
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5BnuGc8sddmfhKJhFgWa+K2gExeRN5097794j48+Dw-AQ@mail.gmail.com>
 
-On Thu, Mar 12, 2026 at 05:37:51PM +0000, Conor Dooley wrote:
-> On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
-> > From: Florin Leotescu <florin.leotescu@nxp.com>
-> > 
-> > The EMC2305 fan controller supports multiple independent PWM fan
-> > outputs. Some systems require fans to enter a defined safe state
-> > during system shutdown or reboot handoff, until firmware or the next
-> > boot stage reconfigures the controller.
-> > 
-> > Add an optional "fan-shutdown-percent" property to fan child nodes
-> > allowing the shutdown fan speed to be configured per fan output.
-> > 
-> > Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> > ---
-> >  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > index d3f06ebc19fa..7bcadfab9fc4 100644
-> > --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > @@ -54,6 +54,12 @@ patternProperties:
-> >            The fan number used to determine the associated PWM channel.
-> >          maxItems: 1
-> >  
-> > +      fan-shutdown-percent:
-> > +        description:
-> > +          Fan RPM in percent set during shutdown.
+Hi Fabio,
+
+On Fri, Mar 13, 2026 at 01:52:31PM -0300, Fabio Estevam wrote:
+> On Fri, Mar 13, 2026 at 1:46 PM Stefano Radaelli
+> <stefano.radaelli21@gmail.com> wrote:
 > 
-> This sounds like something generic, that other devices might need and
-> should be in fan-common.yaml?
->
-Thanks for the feedback.
-
-The property name was reused from pwm-fan.yaml where it already exists
-with the same meaning. I kept it local to minimize the scope of the change.
-
-However, if you prefer it to be modelled as a common property, I can adjust it in the next revision.
-
-> > +        minimum: 0
-> > +        maximum: 100
-> > +
-> >      required:
-> >        - reg
-> >  
-> > @@ -80,12 +86,14 @@ examples:
-> >              fan@0 {
-> >                  reg = <0x0>;
-> >                  pwms = <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
-> > +                fan-shutdown-percent = <100>;
-> >                  #cooling-cells = <2>;
-> >              };
-> >  
-> >              fan@1 {
-> >                  reg = <0x1>;
-> >                  pwms = <&fan_controller 26000 0 1>;
-> > +                fan-shutdown-percent = <50>;
-> >                  #cooling-cells = <2>;
-> >              };
-> >  
-> > -- 
-> > 2.34.1
-> > 
+> > Correct. It is not included anywhere at the moment.
+> > The Symphony evaluation board uses the IW61x configuration.
+> > The imx8mm-var-som-wifi-brcm-legacy.dtsi file is kept as a separate include
+> > so that carrier boards using the legacy Broadcom-based SOM revision can
+> > include it if needed.
+> 
+> Then imx8mm-var-som-wifi-brcm-legacy.dtsi is dead code. Nothing includes it.
+> 
+> I don't think we want a dead dts in the tree.
+> 
+> IW612 has not been upstreamed, right?
+> 
+> People using the Broadcom Wi-Fi on the old board may still want to
+> continue using it.
+> 
+> Please don't break it.
 
 
+Thanks for the feedback!
+
+I might have misunderstood the best approach here. The reason I split the
+WiFi/BT configuration into separate dtsi files was to follow the direction
+discussed in the previous revision, where we decided to keep support for the
+legacy Broadcom-based SOM while moving the configuration out of the
+device tree, giving the support for both modules revisions.
+
+However, I see your point that if it is not referenced anywhere it becomes
+dead code:
+Would it make sense to add a legacy Symphony DTS that includes the Broadcom
+configuration, in addition to the current Symphony DTS that uses the IW61x?
+This way the existing boards would keep working while the default board
+description reflects the currently produced hardware.
+
+Or if you have any other suggestion, I'd be happy to follow it!
+
+Best regards,
+Stefano
