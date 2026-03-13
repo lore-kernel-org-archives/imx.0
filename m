@@ -1,76 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D42311C35;
-	Fri, 13 Mar 2026 11:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F81D38D006;
+	Fri, 13 Mar 2026 11:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773399861; cv=none; b=cljVQGBSu+OLT/xiV2JaPFU9wnpMiNxLddSB7+Bs/Pkjra2gl76lwp02+QVsdl4WnLzIdh3Qh5z7jclSCrIQPVXt5IDcQ0qKg1ysrq2B8vos76yda6kijMbo87ucjG2uUvotyms3U5/TJQe8ELQinQZjsSugaK+hgobmPEoW8I8=
+	t=1773400867; cv=none; b=l180lgtodE+8+4INPYVSPy1Ggp0ye/37edzMWpK/VuHxKtKHJq1WFjimqmxmauYuSRiKj9/aSzJx4Sg/qVMINKenFD5ZclpRIdrra0TOUpJL1dSjTsEppe5p1egNOR08tea3ygGJIcv2JSSTk66xGlXATAcGLePPhm9vjgUclaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773399861; c=relaxed/simple;
-	bh=aDY7aDvju9S0EycKm7uyON4BJEJMwtI97NvuRv3BhK8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DTaeOVNgbSt2iDypNY8CeH+U7627VQuQUoC/5BD+1GGADhCLQNUP1GVFx2UuOz/t/3QBR4FpEbtjAbr31EXlyO6B8QlBKqAGckyRcaJoGmuOcStgz7PYwWa34gc/2yjb55Louxmx+fkHrxL4I74L3uBptHN3MJ8e1BveJvnXDQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdaxiyrt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773400867; c=relaxed/simple;
+	bh=iThDtlWFRXyqELPZgOTDTFG9GPUgz6TLe2DwswpTBng=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=leuDkaTHsIo9GHbKLg1E+cVcplyidfmDRfj9aXamVuU8wHr8WaFe6UlbjRppsnWK/d7oFMBAqF15YGLM4RlbmTkux/f0jXkQH8fzD/dWfzNOWGbAUrD9yaFBtlgtf8vyfCW9SXUqxmI+4WiVwH+Evm2NMUjJce5l7n6TczalvJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Do+K6n/K; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdaxiyrt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EC0C19421;
-	Fri, 13 Mar 2026 11:04:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773399861;
-	bh=aDY7aDvju9S0EycKm7uyON4BJEJMwtI97NvuRv3BhK8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tdaxiyrtxhzO4ftXor8cTENoD/FIZTK68iKKFalpNdkeHI1FSjWQgh1SPwgua8p7D
-	 rPdyXyu30pSK1YBAFK8tE9J0oIRLBQNZhAbJ0f1zcb5fAIBMFrpGHHmKs2pYmP/l/e
-	 B4GRER4/pwo1Lt5EW52R33Qqx2RkQEkoEXB9TAHSxdfMLnu0XOYlEdKGUUpt3Elv4D
-	 zPb15B3TEiD161LQ9MBn6bZ8FHWfB/8VvX31WVREFID/zrIR4kC74emWcKY53UD6z/
-	 r6LzM2sR7qPMjm7XfzBfFYVhVHcYV73HtFXdAYLWQTVC7hUlcAJLgMTMFboYxDlttC
-	 OkF+sTFjUHrkA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush Yadav
- <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Miquel Raynal
- <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev,  han.xu@nxp.com
-Subject: Re: [PATCH v3] mtd: spi-nor: micron-st: add SNOR_CMD_PP_8_8_8_DTR
- sfdp fixup for mt35xu512aba
-In-Reply-To: <20251223-nor-v3-1-09e26797a8b5@nxp.com> (Haibo Chen's message of
-	"Tue, 23 Dec 2025 11:01:02 +0800")
-References: <20251223-nor-v3-1-09e26797a8b5@nxp.com>
-Date: Fri, 13 Mar 2026 11:04:17 +0000
-Message-ID: <2vxz8qbwf0su.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Do+K6n/K"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AE4201A2E1B;
+	Fri, 13 Mar 2026 11:20:58 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 700BC60027;
+	Fri, 13 Mar 2026 11:20:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0812210369E37;
+	Fri, 13 Mar 2026 12:20:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773400854; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=TViEBJxH/6t08moT1Cupd+GoZoxMid++9M6KSZfI+c8=;
+	b=Do+K6n/KnMT6sRzJjxkeDTXj5gTe6Hx27Z4GI42adJKl10t0UbUB71h1hkyXitEwWH6T2i
+	ltPrtpPGlMRvMhlKdD86qjGAeIZiwe4BSbPsxfLCAtDLLn+QW5HhBnSacBq7w+rkUIZ0J1
+	BNvT7C0jWhklauOjM3AmXTLanlZcFUFy0LLfL80GGk3rI4FrO46yzHOgH6gOlCPWimIWuu
+	bnfxU3ILpTwq5ezxehZ4D3Vzr3CkDosx+2OTafb29osULMFwoJZ2G901V6rpsJr7Jh4Xeb
+	Bvtu0CHib7D6D9nhSPgx5/0hloz3s/0DI814tsG5pLaTxNMnMFKKCQ+0Ohk+mg==
+Date: Fri, 13 Mar 2026 12:20:27 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
+ Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi Shyti
+ <andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>, Saravana
+ Kannan <saravanak@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linusw@kernel.org>, Mark Brown <broonie@kernel.org>, Len Brown
+ <lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang
+ <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Shawn Guo <shawnguo@kernel.org>,
+ Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan
+ <saravanak@google.com>, Bartosz Golaszewski
+ <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH v5 02/28] driver core: Rename get_dev_from_fwnode()
+ wrapper to get_device_from_fwnode()
+Message-ID: <20260313122027.498ff15f@bootlin.com>
+In-Reply-To: <CAPDyKFpX3A3r4s72PNjBz5QaZUsq1xaGhn5vXwegue7Tyh_Zew@mail.gmail.com>
+References: <20260227135428.783983-1-herve.codina@bootlin.com>
+	<20260227135428.783983-3-herve.codina@bootlin.com>
+	<CAMuHMdVVsEB-xb8Jz4ujBam2NxtxAOb7byYa3VR_eHsbTD5rXw@mail.gmail.com>
+	<2026031242-debug-aviation-19b8@gregkh>
+	<CAPDyKFpX3A3r4s72PNjBz5QaZUsq1xaGhn5vXwegue7Tyh_Zew@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Dec 23 2025, Haibo Chen wrote:
+Hi Greg, Ulf,
 
-> Find two batches mt35xu512aba has different SFDP but with same
-> jedec ID. The batch which use the new version of SFDP contain
-> all the necessary information to support OCT DTR mode. The batch
-> with old version do not contain the OCT DTR command information,
-> but in fact it did support OCT DTR mode.
->
-> Current mt35xu512aba_post_sfdp_fixup() add some setting including
-> SNOR_CMD_READ_8_8_8_DTR, but still lack SNOR_CMD_PP_8_8_8_DTR. Meet
-> issue on the batch mt35xu512aba with old SFDP version. Because no
-> SNOR_CMD_PP_8_8_8_DTR, micron_st_nor_octal_dtr_en() will not be
-> called, then use SNOR_CMD_READ_8_8_8_DTR will meet issue.
->
-> Fixes: 44dd635cd632 ("mtd: spi-nor: micron-st: use SFDP of mt35xu512aba")
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+On Fri, 13 Mar 2026 10:43:33 +0100
+Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
-Applied to spi-nor/next. Thanks!
+> On Thu, 12 Mar 2026 at 16:27, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Mar 10, 2026 at 04:03:42PM +0100, Geert Uytterhoeven wrote:  
+> > > Hi Hervé,
+> > >
+> > > On Fri, 27 Feb 2026 at 14:55, Herve Codina <herve.codina@bootlin.com> wrote:  
+> > > > get_dev_from_fwnode() calls get_device() and so it acquires a reference
+> > > > on the device returned.
+> > > >
+> > > > In order to be more obvious that this wrapper is a get_device() variant,
+> > > > rename it to get_device_from_fwnode().
+> > > >
+> > > > Suggested-by: Mark Brown <broonie@kernel.org>
+> > > > Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
+> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > Reviewed-by: Saravana Kannan <saravanak@google.com>
+> > > > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > > > Acked-by: Ulf Hansson <ulf.hansson@linaro.org>  
+> > >
+> > > FTR, one more user of get_dev_from_fwnode() appeared in commit
+> > > 9035073d0ef1de81 ("reset: convert reset core to using firmware nodes")
+> > > in reset/next.  
+> >
+> > Ick, that's going to make this hard to land anywhere.  This is a rough
+> > series, perhaps it should be split up to make it easier somehow?
+> >
+> > thanks,
+> >
+> > greg k-h  
+> 
+> I fully agree with the above. Renaming the function isn't necessary
+> for the $subject series.
+> 
+> I suggest we simply drop this patch from the series - and if the
+> renaming really makes sense in the end, we can deal with that
+> separately later on.
+> 
+> So withdrawing my ack from this one.
+> 
+> Kind regards
+> Uffe
 
-[...]
+Also agree on my side. I will fully remove this function renaming part from
+this series in its next iteration.
 
--- 
-Regards,
-Pratyush Yadav
+Best regards,
+Hervé
+
