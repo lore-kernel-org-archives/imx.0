@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ADA33F59A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D17B331215
 	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382156; cv=none; b=X2s+17KXxCGsQGxnA2O4tmPWfMqfOPkSLZyRX8NGAQbuhhI+IqG8c+UgZNrFjMwiOZbIbDGkO+2agJhToMmZZytwEmtdh5wL9PscKcG7XD0QfiDfQ3Zx9JibQydtfjPtaF/UWLHpDfrXpGKq44d49kZiqm5lZVdZdDs6G3sUU2A=
+	t=1773382157; cv=none; b=J7K2zVB1RryXhR04eYOymF9fNw5lTvtudNlPI2dH3GlseJ87rDPZiKhWry3OP38otyT4L0BfHYRU6wTC6DWBDuskRI7Gf8JA0Hi1Ksd6TU49XUf7zFqCjaTFO26yzQ7Xdl5ticqqIvm1TaN15hPN3VK3E4+BIuKqL4yjqUgvln8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382156; c=relaxed/simple;
-	bh=0PtoNufzs2+5WkV5SymyU+xEyvCMfXYRJZb9UpGBNlk=;
+	s=arc-20240116; t=1773382157; c=relaxed/simple;
+	bh=joUDKgsgK5kDH7ag5+arjm/WCbXOAhOSPE2AcUgjp8M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DDi/zvbNVZkcQ4pNZaDskQ9szNT4KUyPEeulpNG1+KqKhzLTmd45P9VGhaiRLp14kBS+u7INM0TlZM67jcTkkBaE+dqWQkAfu2snBpxUaWCyYF9nfKgV23YQmXoDEFpUMyflhUvF5MT5bcSKWT4PCEyVKNoac/DHtm7ysT3hTNY=
+	 MIME-Version; b=DOA9Gw6NFEhmUEvJYmQ5y0o9OoEfJCEo//i7vCgmYsOQiBLtUHVNDIyrnTXEU14iN92sHZI4GNusMvXwNyir8qnIxucbpSsIWP9Y6bipR1/35Tu9QRAEYGA6qSEaPwEZCB8oY7kkTMoWrS06DDfs81wxRHLZahcxhlwP81js8IY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 2153ff861ea311f1a21c59e7364eecb8-20260313
+X-UUID: 232b65a61ea311f1a21c59e7364eecb8-20260313
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:1e88ab2e-8ab0-4d31-b1f4-bce00a1dcc05,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:c8a9d279-432f-492d-9f48-25c0337194fd,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:0cf5d1f34091593f18efacf21598dcd7,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:f1052d52361289b7187d9926712f3283,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 2153ff861ea311f1a21c59e7364eecb8-20260313
+X-UUID: 232b65a61ea311f1a21c59e7364eecb8-20260313
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2127724665; Fri, 13 Mar 2026 14:09:01 +0800
+	with ESMTP id 149379704; Fri, 13 Mar 2026 14:09:04 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: broonie@kernel.org,
 	linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ To: broonie@kernel.org,
 	linux-mediatek@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 09/17] spi: sifive: Use helper function devm_clk_get_enabled()
-Date: Fri, 13 Mar 2026 14:08:25 +0800
-Message-Id: <10f23e10d8cb481f9ede02bbd6f73b8866ebd81d.1773381582.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v2 15/17] spi: uniphier: Use helper function devm_clk_get_enabled()
+Date: Fri, 13 Mar 2026 14:08:31 +0800
+Message-Id: <4ac33e258a01b52641e9a40577614d5f71cec985.1773381582.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773381582.git.xiaopei01@kylinos.cn>
 References: <cover.1773381582.git.xiaopei01@kylinos.cn>
@@ -66,78 +66,64 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-sifive.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/spi/spi-uniphier.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index 6c7aba8befa0..3d45105f2e41 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 		goto put_host;
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 9e1d364a6198..f6fe5ab9f893 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	}
+ 	priv->base_dma_addr = res->start;
+ 
+-	priv->clk = devm_clk_get(&pdev->dev, NULL);
++	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+ 		ret = PTR_ERR(priv->clk);
+ 		goto out_host_put;
  	}
  
--	spi->clk = devm_clk_get(&pdev->dev, NULL);
-+	/* Spin up the bus clock before hitting registers */
-+	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		dev_err(&pdev->dev, "Unable to find bus clock\n");
- 		ret = PTR_ERR(spi->clk);
-@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 		goto put_host;
- 	}
- 
--	/* Spin up the bus clock before hitting registers */
--	ret = clk_prepare_enable(spi->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable bus clock\n");
--		goto put_host;
--	}
+-	ret = clk_prepare_enable(priv->clk);
+-	if (ret)
+-		goto out_host_put;
 -
- 	/* probe the number of CS lines */
- 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
-@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	if (!cs_bits) {
- 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto out_disable_clk;
++		goto out_host_put;
  	}
  
- 	num_cs = ilog2(cs_bits) + 1;
- 	if (num_cs > SIFIVE_SPI_MAX_CS) {
- 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	/* Define our host */
-@@ -392,7 +386,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 			       dev_name(&pdev->dev), spi);
+ 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
+ 			       0, "uniphier-spi", priv);
  	if (ret) {
- 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
--		goto disable_clk;
-+		goto put_host;
+ 		dev_err(&pdev->dev, "failed to request IRQ\n");
+-		goto out_disable_clk;
++		goto out_host_put;
  	}
  
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
-@@ -401,13 +395,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_host failed\n");
--		goto disable_clk;
-+		goto put_host;
+ 	init_completion(&priv->xfer_done);
+@@ -716,7 +712,7 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR_OR_NULL(host->dma_tx)) {
+ 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto out_disable_clk;
++			goto out_host_put;
+ 		}
+ 		host->dma_tx = NULL;
+ 		dma_tx_burst = INT_MAX;
+@@ -766,9 +762,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 		host->dma_tx = NULL;
  	}
  
- 	return 0;
- 
--disable_clk:
--	clk_disable_unprepare(spi->clk);
- put_host:
+-out_disable_clk:
+-	clk_disable_unprepare(priv->clk);
+-
+ out_host_put:
  	spi_controller_put(host);
- 
+ 	return ret;
 -- 
 2.25.1
 
