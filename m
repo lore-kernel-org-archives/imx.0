@@ -1,409 +1,196 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011027.outbound.protection.outlook.com [52.101.65.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70597388384
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 08:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773392295; cv=none; b=WB7TVaK6AGa66giiLEqO3K/CEpKhRGmnxzv+GeY8RJEXrLzSLFQk+fOY0xkkTWXzLWt3MpidwmvMNPOEh284+uIwtSZweOur+BOzbtnDmeFciqBB4O7v9JzdAHEUDoUlvx90na9JmOzPBxeo8eNqwOMCwcmYvcTSKispfvm+Rpc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773392295; c=relaxed/simple;
-	bh=EPZn1W5hZeQNHYB/Ftln3HHD72HbRZouba5nrusOMig=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aQ1fOLg/gsJngmzuO1GYPypvjRr6MuyR71wI37hfm1lZgE6LE1nz5alNXL8sdI0FjzM0cduwLDgqM/Upx1KlvZ3nLSw9rSBUZMI6n1pKIhlGzwxTMz1FGpz6rvWYHLgO2uHv0qFnaYqeJX87xrzPULWEhW94gDvXEAU+J7njM6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbPgsV3k; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ABE381AE8
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 09:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773393225; cv=fail; b=hQaH9HXkrxlM4xDLUC58mTk+l1COAC+WDsyB01nrB95Mn8UzYRdDrH/FBH+GcoUacVaOpoCvDHJkgvD1RD2cPbh31NsIp9nGRXgSwlbiEG93axP5dw5IpCKJ8+jcED7UcFFL+sHdk03l3UE7ojeu8iVKruini89wZxySyhreNmc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773393225; c=relaxed/simple;
+	bh=DPP1QrLGDCTjTJfBRSJcFHgA9IomkUXS+kALyGNB/TM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ts2InS3DJWCuZD+hQdgysEWYFtuxpzyEr6jnF/Omqn5xRFhgp40DP6QSHUlQsQ/IQlDX6aOq4p2SEJQEpiAT6b7jrdPauUEt2dvj3mywpMubvpCP1dCG6jc7vYfJ90rY8Hu6yphTlAIcjzZp7ME18m3D/Sl4vYVBzKLhMXcbZKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SK6aQ1HR; arc=fail smtp.client-ip=52.101.65.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbPgsV3k"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so15372245e9.0
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 01:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773392288; x=1773997088; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zMXiZZ3HH6dJoAhlgKlj3UsaxgGuuhGNtyMC3OWYCtw=;
-        b=ZbPgsV3kuXMBtb9hpRQLrA/tYQF1wpZKoVoMGDlpzont84fLwXOi1m+mlfyBnQXMzi
-         7jRXuLuSB2/+GkBnWWTF9XZG8cEJnOmsBo8E6XVGIV0BSprmiWuYd/1K618eJjTYhCUb
-         dKsfUEs75ozGcaghp6qfp99AGBW0oRIwGjX1elguxwbjCvx/SpOMcJ+ulbdzlXCR5dP6
-         o4dE7ZsaiI93+82cOTwR/JwBQNxAN0UgMb57NlEcnqq4vyHmZHMACj4lsrL+t6MseN2t
-         1OA0P4ipFhbzv09O63BfGhCLhlGOhO3mqO3gCDH7eIaQ4bxulYswQc5YL7Y++S2qrKDM
-         4W5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773392288; x=1773997088;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zMXiZZ3HH6dJoAhlgKlj3UsaxgGuuhGNtyMC3OWYCtw=;
-        b=EpSQyIKDyiDQmzNCBUm8hEGKrCCzaf1gnh2ap5iJD6gQsKMfi9hKWUasBJaUL5ljG+
-         PEVmD2eX//2EecNbq1Jzu43hs4lF71A8VSr+zHdGMEsmo7qDCx45OwMH7AXeAuVDduLq
-         Tf0lqQDRIv16i9p+mjE06GW54R31fPeFWByBI7AjJdU3EJAKy672d0IcOyMb8xYeZf/x
-         tZz0uFGy69BfyWMK4qzzUj8URncG8wuOuI1Tiwz+AaeSb/L/+xYXbqOK8QTMl6nbvLIm
-         OxYsFEDRKqpbB6KDVU5ofxnRWIMz4be8Agl4v7/n532rhQz7YzDau3p2w4pJpRi17db9
-         ypmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUTdmib+xdmTVVy4+g/bMo94+rU0pwng4QsPL7kgOPXwcGA8jipyCIm88TI51/k2WNoC0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOrqECuqcBsSYEkOUKfqTlVLmtokDIuN41356zQfI1YvHrMQVw
-	SYUJf+mOE7/o7tFsenSAKEvzQ4yyN2re/eD/tddV5JS3tStTb/UuskLD
-X-Gm-Gg: ATEYQzzawO0DApcHEmIu9fAkXalAicn1IOB2RTPcgroW122IMRoyJV1ZoPRPalft16A
-	eNNrjRJBP7Gne5lP3QhHlSpU/uzKIBE+JNSFS600DMGS2zic3pAcXFfKqCynZnsaTdjE3HR8+bJ
-	8lCfgU6JYwE1TIPtiRKW7RW4AU9V74tQCPzOvfxemPyvCcP5EnV2J3Bp37nXheVROij512GVter
-	s26P+UaCCrHnr14YMrxyS+jxpQgjk19CqbjFHxInITa7C3CW+gWKZeMOa19yQts9R+Ydm9vL5bT
-	bEvAmmUUkkeulxvZ4/l1a1wd38RXA0xxUq2FZweKf6uTtlOUShNvuTModnyiOtK4XrrVLq0N10F
-	ffbeX3QZU+ZyME4VEkZtiDMqW9KeDaNutjLwndhshSBgZc0yD+ntQ4wjbY2gtJYYNH4WtMh3AOp
-	W+54zva1JlOqr23iUroUPGEclib4zLvcuxtVlkYVBb9la6uOsg8gt4JV3OalYXLWxWl9YZ19jyY
-	Uu8jqE9bEHgj+qcd1g9ZVI0gVI=
-X-Received: by 2002:a05:600c:c0d1:20b0:485:3abe:ab86 with SMTP id 5b1f17b1804b1-485570ce1cfmr23520155e9.4.1773392287655;
-        Fri, 13 Mar 2026 01:58:07 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43a03cfd18fsm7663718f8f.36.2026.03.13.01.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 01:58:07 -0700 (PDT)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-Date: Fri, 13 Mar 2026 09:57:46 +0100
-Subject: [PATCH v2 5/6] arm64: dts: freescale: imx95-verdin: Add Mallow
- carrier board
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SK6aQ1HR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ap0adxVqvm3zWvuSgwWU8Z0XKVfqmrapUth5KiyvSzLUHrIz6kNDFV6kDRGwUWulZZtqJUj6O/1vNtuQwGMU2GliwEtHrlSRTjkSKWb79B8DNmnKcPmPQEkScGNAFuycZdYZIFyJFKB4s7BPMmrjWKrTN3dtUmT3WVOkrsbZmKFCkidzZXW7AcUHAefEV7mKjmammQ5Hn0h279olx6CmiBnHHlUPczYVnLqVawyQFg38fqufNwNRn4pWpmw2zzz0AGRkGfVqA/EZ+RwR58MzuQTf+PbDxR7G8O80eIQYRxSwPcLegDI9P+bKNKy2+c5l3FJqElFo7fszX8yhDxeD8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8qH8P/0D6nMTSu3VXWuXvcX59r3WgoOz5b0pPjkQt6A=;
+ b=jaMoqmV1STZ/ZPNbyKHZzvLYPgwavEkMgro4Oz3wR1Kklr8T8e4hsRrdxTar2i8MSMNhdZPfmLdJjynWN7kxPSsNBUJ1zVFvNBRx7YShQL3/TZ4sOLgNU0D3NWzqZkoj0XJyEmgrTMRUDYQajvJHV8+3Wz5cdg0GNm6Z0H1TC6MnQASPbFLpd5rcmXjxml3OnGMLHaTXSlPT5Ur/PnOZnGqy/MLllwfHTn2i29ZAeh5x3RofTCj5/xKQ2XlJ/1qmiKcxMtyCkVuTsej7GsYAnZGAAY4RrC1GpTFU3jh0PYi2pyEMM9xDBBMuhiP96nENSiqPX2K+yL87dkLS/Z+46A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8qH8P/0D6nMTSu3VXWuXvcX59r3WgoOz5b0pPjkQt6A=;
+ b=SK6aQ1HRusCkoDoIOJNvY0bY6k3XXMTQcGcf19t6SeCqOkXsVAPyundX/unpAUbKzDRxhruQuTcafK0gY7j8ee3QW1cpBvw9784d31+vS/5V9zPbe66rBJo+8aIDajD+YFQzy+Z1O8KpW9EQsavQQHOhVqqnPTxu/w4gyAoKVMPBPKLYnU7B0WN1Uudw0DQHOzBmH4Vq/ZCfSCzxaB1P0AfHKqvvCS6upPGiyS0HLVwCGtw6GYY6FiiGhp2f8t3oTyOGZA/GlD4AwJX2AJhbGq0KqaUL7A1/J2fNfxzTfeHR5IioDXcCmrmYstFp/N790euw2nPTqZYald/pJ5xDKQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU0PR04MB9297.eurprd04.prod.outlook.com (2603:10a6:10:354::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.16; Fri, 13 Mar
+ 2026 09:13:37 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Fri, 13 Mar 2026
+ 09:13:40 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, Frank Li <frank.li@nxp.com>,
+	"horms@kernel.org" <horms@kernel.org>, "saikrishnag@marvell.com"
+	<saikrishnag@marvell.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v4 net 0/2] net: enetc: safely reinitialize TX BD ring
+ when it has unsent frames
+Thread-Topic: [PATCH v4 net 0/2] net: enetc: safely reinitialize TX BD ring
+ when it has unsent frames
+Thread-Index: AQHcsgXxRYYgAgAH30KDTOe/pvgWRbWsK9Cw
+Date: Fri, 13 Mar 2026 09:13:40 +0000
+Message-ID:
+ <PAXPR04MB85100C55BE23D80ED6C5D5028845A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260312095415.669128-1-wei.fang@nxp.com>
+In-Reply-To: <20260312095415.669128-1-wei.fang@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DU0PR04MB9297:EE_
+x-ms-office365-filtering-correlation-id: b588fa65-adef-4a79-aad0-08de80e0d11f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016|921020|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info:
+ T29swRVvFKTDGEMM8HA6Hubp3MZbFnoAS5KSZDEDa9qC0wz31iy+6XymY+BBWqGg31nGE/1qRM4mgTnk1Yq0zIZvlzCBZUKaPMHAc1QBBFWChTOkb3eZKPlxhl0a/G6e+e+c6/AsP8Gn9bFbL1sYwH9lW+8hculPwyARTFFPJZkbb4N2RggcRpAG5iA0wlMxxaZH9/V0+SB6HIeoX9bzkCaP1f8N1mcu3OBxTOYazoqveGWcTjJ/B3An3uI5LDfAZ7jzy+kU7cvYyO0Tn7XH1GNPbFzD5nHeXxs405gXzr+syEzDh3g8iOzuZZhrpMunvmFSXHAj99iDqEF/qravcOzGCIA8Ps6ozxunD9vUWQVtAiM/4rQXyD8HlhMtDVYFC9wfI56ixvmijqLQNanBnZiuQimO4bWhwWqyLLzcUMW/pVy7dm0BWjJS860eOZa6hi2cd/+/hHKIJemWeOGY+yJkQMnZJJbtXzHbX1xJ5X37JDnGHUk4OSlWGWJ7EjuOEj9PrakXJkQ3ix4xxjDdvggLPo5qGSLHuGAnpMm3eu5Ab7eHQb7xhGWIAggpzIWwCLfAfJrwbQGLBeUU4s0TGZhLwNZANR3Hlj+TPNpDISu5ih6ZBTMcYdciZ4Ub3C5tftllQJBv61yxU1MEwQoglRVaTZAudx/vRfeOSoiAoL0Upl0ChM1SozFi0GGl9LR4/dJV6p19+w5xj4g6reaD8xZ7sE55MmtIfI+RExUmq/aiB8Yt1+4ssjZIa1GedTLEdJBq+e2DCnFMK3mTNVdvmrQeKovuOqkNQnuGQeoDoyeaDm7GRtFSuir3m+Z+msFa
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016)(921020)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Xc9f5Yd01W2LoIZdhEbtO2c6rXmKG4N2hze/HntIGdLpGCxvZwKfGjkJ+GiC?=
+ =?us-ascii?Q?N5O3NGjUtPpLRd/zw1hOlGH2KNivv0w1zxZQGdnolubdGyX/mfIcGvjNloHM?=
+ =?us-ascii?Q?52cI+lbSqT9rQGLg1en6hPWZaVkqxWtltgEJZYCDZurfs75XBRQ9ZwsbF33z?=
+ =?us-ascii?Q?Hph8jQ9JYDTrKGRzP1vSp5wzeh9eo+ot+KllcLtHAqIkE3KQeRmFSLpZS3t1?=
+ =?us-ascii?Q?KlJoU93FffCKpxqR3q2T5gMF2vIs0QuniVW/TJz2p+OeW28TW33dw9q/4g82?=
+ =?us-ascii?Q?izReJLc2vdBCyNrhdXtUSHQeiOOPYqWlhqzW2S0zMjyUGRaZPGyAm2G26CPB?=
+ =?us-ascii?Q?ae5tm0Y7GiPbiF66RHGHryMOM54G0PEaAaHRk4YBacWD3zjm5VHUNSXUIddQ?=
+ =?us-ascii?Q?2Il/b9JkRUolZFdWLPVBjffzD7/Y2NGySkW5jW6yahmc1ty1oxAlSuyOP9G4?=
+ =?us-ascii?Q?/3QX+WVZEGiOnwI8wm+qQOkSRPv8XGZqyyNvCQsPrMAdEdb1lS/Zjaye2XRC?=
+ =?us-ascii?Q?KtLIMIXkSXe61NI0/9J4aa7GGx4PoSx4RmoKYwYH0FaSyzhTi9ykytAmCPw3?=
+ =?us-ascii?Q?M9gG/uGtgPzWaHf3qLy+p2ac1GNvF6SOIfclOnOqiHKwnomDmvagY8T5u62p?=
+ =?us-ascii?Q?5GXzV7wGVabqN3EAqR3ILM/5SL+f2exyG7OnZb3R4RdE962ZVk1ZYYK8vGW/?=
+ =?us-ascii?Q?7UlbSvW3Xp3v8VPJprLmp33LxGfzhC/2BzNN09M/xxDIg+mYeep6ux6a0zYM?=
+ =?us-ascii?Q?u6mL+hK9vdSQ5IasmUjmiXGgJygQ/mhTY8JAtU2GdruBCG6vOyRk0kGk7xaY?=
+ =?us-ascii?Q?ux/ln64r1Whq8NRfY6ufIW4poSEbEPI1C4DQ8k2ADnpJflBD/zLbJK5QUs2x?=
+ =?us-ascii?Q?Qvu20Ao7IB15RepAGODRgEljY+DAzki10uuTCP0Ocghb6J5P5G81uLC75hgH?=
+ =?us-ascii?Q?V2wk8Ff4pJYVkYzegIEpD0zPJQ1s3YHPBOZWyVVFMqiiMcW55N4Ff2uAVySz?=
+ =?us-ascii?Q?F7hmTdtOd7LMKLL8yFk8QLccgaYghBNNZioNShrZ88SmemyJPcyvlaPHIGS3?=
+ =?us-ascii?Q?wllFvQJVm9Eps70ye2imtw+14pSvIGX92vA6rVWf7QY9ScAc59v7NL5uD88b?=
+ =?us-ascii?Q?e3oQYJtCZctZT6ohRi2MJnm9JfZ0e/aAuYb8pTsVRa3otFjyEf6T76Maw9LG?=
+ =?us-ascii?Q?YN6XCPiw1sdHAU839T5e4ZsCSqzexXwfbA7/Nawk0F3kLHrqFC4oqOd5Gi0X?=
+ =?us-ascii?Q?9jMmAz1/h/M6Fru1QFsoee7JZWKKdIEWHmTlkdOuhzn+RSgB5YmhDr9uoxiB?=
+ =?us-ascii?Q?Oy9+IYtodXFav3/pymITF0PbBSpPEvJYSyjtO/iednRykZkhzXdEY7E3Rc/P?=
+ =?us-ascii?Q?eA3ID5JM1D36vB8qWPJxvSpDxXomPhQdSYQrDe/FMDnVOPRjpd6Ed/2nW1V9?=
+ =?us-ascii?Q?AEvfpufRrwgpkbtr6lH0ybxXo8/WQbUhKWmmoIOx14Xum1cZ8M9OiVDAqMIU?=
+ =?us-ascii?Q?/ppOTxgQiK9dgvH0iKjkYhUyFE20LZih2WrgdVY8/0/gyTUhV7rmSBMlxIZ9?=
+ =?us-ascii?Q?N0JWAVdDlu3v4m6q8CJWkdrxJDtpOHztrU8xtuNUgyh5bSRBbEpplbHUmNyu?=
+ =?us-ascii?Q?cVuujIqjrlTp2q/OF+ChEpCRfPpTOhcCgGNbhTx5OrTbqzAVTYZNo1HXZglu?=
+ =?us-ascii?Q?J7I0TxvmbncPK+4BR3m8qFGEE1+WUXgoa+yRJguI/GtBh+HR?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-verdin-imx95-upstream-frank-li-base-v2-5-bd488be7c699@toradex.com>
-References: <20260313-verdin-imx95-upstream-frank-li-base-v2-0-bd488be7c699@toradex.com>
-In-Reply-To: <20260313-verdin-imx95-upstream-frank-li-base-v2-0-bd488be7c699@toradex.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.13.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b588fa65-adef-4a79-aad0-08de80e0d11f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Mar 2026 09:13:40.2025
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bxeGqkf3O5th1hnwxBkY+KFJACIUwrxkP8kukqDO35RS2axl58WEv8pxquTRvTv5sLv2h2qqJTfQC2e6P1fyDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9297
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> Currently the driver does not reset the producer index register (PIR) and
+> consumer index register (CIR) when initializing a TX BD ring. The driver
+> only reads the PIR and CIR and initializes the software indexes. If the
+> TX BD ring is reinitialized when it still contains unsent frames, its PIR
+> and CIR will not be equal after the reinitialization. However, the BDs
+> between CIR and PIR have been freed and become invalid and this can lead
+> to a hardware malfunction, causing the TX BD ring will not work perperly.
+>=20
+> Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
+> the driver must reset them if they are not equal when reinitializing
+> the TX BD ring.
+>=20
+> However, resetting the PIR and CIR alone is insufficient, it cannot
+> completely solve the problem. When a link-down event occurs while the TX
+> BD ring is transmitting frames, subsequent reinitialization of the TX BD
+> ring may cause it to malfunction. Because enetc4_pl_mac_link_down() only
+> clears PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It
+> doesn't set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, it is
+> not safe to reinitialize the TX BD ring at this point.
+>=20
+> To safely reinitialize the TX BD ring after a link-down event, we checked
+> with the NETC IP team, a proper Ethernet MAC graceful stop is necessary.
+> Therefore, add the Ethernet MAC graceful stop to the link-down event
+> handler enetc4_pl_mac_link_down(). Note that this patch set is not
+> applicable to ENETC v1 (LS1028A).
+>=20
+> ---
+> v4:
+> Correct the offset of ENETC4_PSR
+> v3 link:
+> https://lore.kernel.org/imx/20260311084105.3982037-1-wei.fang@nxp.com/
+> v3:
+> 1. Split the v2 patch into two parts
+> 2. Update the comments regarding PIR and CIR in enetc_setup_txbdr()
+> 3. Use read_poll_timeout() instead of the while loop
+> v2 link:
+> https://lore.kernel.org/imx/20260309030412.2716984-1-wei.fang@nxp.com/
+> v2:
+> 1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
+> 2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
+> ---
+>=20
+> Wei Fang (2):
+>   net: enetc: reset PIR and CIR if they are not equal when initializing
+>     TX ring
+>   net: enetc: add graceful stop to safely reinitialize the TX Ring
+>=20
+>  drivers/net/ethernet/freescale/enetc/enetc.c  |  13 +-
+>  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
+>  .../net/ethernet/freescale/enetc/enetc4_pf.c  | 111 +++++++++++++++---
+>  3 files changed, 120 insertions(+), 15 deletions(-)
+>=20
+> --
+> 2.34.1
 
-Add support for the Verdin i.MX95 SoM mated with the Mallow carrier
-board.
+After communicating with Claudiu, the patch still has a minor flaw: some re=
+gisters
+do not exist on pseudo MAC, and the driver does not prevent access, althoug=
+h it
+does not cause any problems.
 
-Link: https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-Link: https://www.toradex.com/products/carrier-board/mallow-carrier-board
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
----
-v2: no changes
-v1: https://lore.kernel.org/all/20260305-verdin-imx95-upstream-frank-li-base-v1-5-823fad02def9@toradex.com/
----
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../boot/dts/freescale/imx95-verdin-mallow.dtsi    | 223 +++++++++++++++++++++
- .../dts/freescale/imx95-verdin-nonwifi-mallow.dts  |  21 ++
- .../dts/freescale/imx95-verdin-wifi-mallow.dts     |  21 ++
- 4 files changed, 267 insertions(+)
+I will add a new patch to this patch set to fix the issue.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 34af11b1ef6b..e3c34f8f40cd 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -455,9 +455,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596sa-mb-smarc-2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-ivy.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-mallow.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-ivy.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-wifi-mallow.dtb
- 
- imx95-15x15-evk-pcie0-ep-dtbs = imx95-15x15-evk.dtb imx-pcie0-ep.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk-pcie0-ep.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx95-verdin-mallow.dtsi
-new file mode 100644
-index 000000000000..53506b7550f5
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-mallow.dtsi
-@@ -0,0 +1,223 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * Common dtsi for Verdin iMX95 SoM on Mallow carrier board
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/mallow-carrier-board
-+ */
-+
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	aliases {
-+		eeprom1 = &carrier_eeprom;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_qspi1_clk_gpio>,
-+			    <&pinctrl_qspi1_cs_gpio>,
-+			    <&pinctrl_qspi1_io0_gpio>,
-+			    <&pinctrl_qspi1_io1_gpio>;
-+
-+		/* SODIMM 52 - USER_LED_1_RED */
-+		led-0 {
-+			color = <LED_COLOR_ID_RED>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <1>;
-+			gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		/* SODIMM 54 - USER_LED_1_GREEN */
-+		led-1 {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <1>;
-+			gpios = <&gpio5 10 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		/* SODIMM 56 - USER_LED_2_RED */
-+		led-2 {
-+			color = <LED_COLOR_ID_RED>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <2>;
-+			gpios = <&gpio5 0 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		/* SODIMM 58 - USER_LED_2_GREEN */
-+		led-3 {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_DEBUG;
-+			function-enumerator = <2>;
-+			gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+};
-+
-+/* Verdin ADC_1, ADC_2, ADC_3 and ADC_4 */
-+&adc1 {
-+	status = "okay";
-+};
-+
-+/* Verdin ETH_1 (On-module PHY) */
-+&enetc_port0 {
-+	status = "okay";
-+};
-+
-+/* Verdin CAN_1 */
-+&flexcan1 {
-+	status = "okay";
-+};
-+
-+/* Verdin CAN_2 */
-+&flexcan2 {
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
-+};
-+
-+&gpio2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio1>,
-+		    <&pinctrl_gpio2>,
-+		    <&pinctrl_gpio3>;
-+};
-+
-+&gpio3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio6>;
-+};
-+
-+&gpio4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio5>;
-+};
-+
-+&gpio5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio4>;
-+};
-+
-+/* Verdin I2C_3_HDMI */
-+&i3c2 {
-+	status = "okay";
-+};
-+
-+/* Verdin I2C_2_DSI */
-+&lpi2c3 {
-+	status = "okay";
-+};
-+
-+/* Verdin I2C_1 */
-+&lpi2c4 {
-+	status = "okay";
-+
-+	temperature-sensor@4f {
-+		compatible = "ti,tmp1075";
-+		reg = <0x4f>;
-+	};
-+
-+	carrier_eeprom: eeprom@57 {
-+		compatible = "st,24c02", "atmel,24c02";
-+		reg = <0x57>;
-+		pagesize = <16>;
-+	};
-+};
-+
-+/* Verdin I2C_4_CSI */
-+&lpi2c5 {
-+	status = "okay";
-+};
-+
-+/* Verdin SPI_1 */
-+&lpspi6 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpspi6>,
-+		    <&pinctrl_spi1_cs>,
-+		    <&pinctrl_qspi1_cs2_gpio>;
-+	cs-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>,
-+		   <&som_gpio_expander 13 GPIO_ACTIVE_LOW>,
-+		   <&gpio5 11 GPIO_ACTIVE_LOW>;
-+
-+	tpm@2 {
-+		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
-+		reg = <2>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_qspi1_dqs_gpio>;
-+		interrupt-parent = <&gpio5>;
-+		interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <18500000>;
-+	};
-+};
-+
-+/* Verdin UART_3, used as the Linux console */
-+&lpuart1 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_4 */
-+&lpuart2 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_1 */
-+&lpuart7 {
-+	status = "okay";
-+};
-+
-+/* Verdin UART_2 */
-+&lpuart8 {
-+	status = "okay";
-+};
-+
-+/* Verdin PCIE_1 */
-+&pcie0 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_1 */
-+&tpm4 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_2 */
-+&tpm5 {
-+	status = "okay";
-+};
-+
-+/* Verdin PWM_3_DSI */
-+&tpm6 {
-+	status = "okay";
-+};
-+
-+/* Verdin USB_1 */
-+&usb2 {
-+	status = "okay";
-+};
-+
-+/* Verdin USB_2 */
-+&usb3 {
-+	fsl,permanently-attached;
-+
-+	status = "okay";
-+};
-+
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+/* Verdin SD_1 */
-+&usdhc2 {
-+	status = "okay";
-+};
-+
-+/* Verdin CTRL_WAKE1_MICO# */
-+&verdin_gpio_keys {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-mallow.dts b/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-mallow.dts
-new file mode 100644
-index 000000000000..5a9c0e4a79c9
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-nonwifi-mallow.dts
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/mallow-carrier-board
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx95-verdin.dtsi"
-+#include "imx95-verdin-nonwifi.dtsi"
-+#include "imx95-verdin-mallow.dtsi"
-+
-+/ {
-+	model = "Toradex Verdin iMX95 on Mallow Board";
-+	compatible = "toradex,verdin-imx95-nonwifi-mallow",
-+		     "toradex,verdin-imx95-nonwifi",
-+		     "toradex,verdin-imx95",
-+		     "fsl,imx95";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-mallow.dts b/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-mallow.dts
-new file mode 100644
-index 000000000000..eaa67a39be1c
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx95-verdin-wifi-mallow.dts
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (c) Toradex
-+ *
-+ * https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
-+ * https://www.toradex.com/products/carrier-board/mallow-carrier-board
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx95-verdin.dtsi"
-+#include "imx95-verdin-wifi.dtsi"
-+#include "imx95-verdin-mallow.dtsi"
-+
-+/ {
-+	model = "Toradex Verdin iMX95 WB on Mallow Board";
-+	compatible = "toradex,verdin-imx95-wifi-mallow",
-+		     "toradex,verdin-imx95-wifi",
-+		     "toradex,verdin-imx95",
-+		     "fsl,imx95";
-+};
-
--- 
-2.43.0
-
+--=20
+pw-bot: cr
