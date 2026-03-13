@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8942B343D91
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCE73382E8
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382152; cv=none; b=tL20R6/w/lISURhzjABQ/b7tFEdAEx76HsstClyL4IuqUwx0mGBCcMSRNf2FRlkuz4WQ5/4V8AZlvYELU68tjuprkdDE1kDiD4GIMWPTgE2Pb0tZsQf0Wcxnjo40wggyZQSEUyrUzc6nIpvO2HyBAvr4C6NZn+em7MBmI84Efo0=
+	t=1773382152; cv=none; b=BMv31AGiNLDHU3iArCNrTbTO0SYUl7KTuSTlwnWpnvJJiYeaPRHvjF0ZV93peBXIm4jaksdTt4A2YEB3yaDUt3ZUOdFUojZRsd7Sa244XyOwQelYV+vo1cJMupzkzXvH0waRcCOliN8eI9VjLhYLJK2SbRek62WD3PKEPX3MUNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773382152; c=relaxed/simple;
-	bh=/AYtCTbCOSs0CKnw2tCfiQ60eHW0K8Jql3MaFp1/U0U=;
+	bh=OUjezu6YIiYoeJsh6lGMQhqkVSHLx345coLnThmoBTo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XXPAUSS0rLqt9qvShNF+0voi/WtmK6WQ1p9o5oGCixr40XOU5AlVMtFiArfvuuVjnFZNY4pKUmvwQVCl1ItzQJlqBlzqbm3JyQNWIeR2STJ2vIOwtf/EkkCdBBVSXkvzHi6GZAAbMVNJmoCaDZNYvb7vjxXlNtH8e0WGUDVdmsg=
+	 MIME-Version; b=Z86akGYQSXVtajFSXFSoXOcMhFE4OPZaK3H/LxGYLZvf+u5tHu8R34Ut7QF933OY9iHMTein2mlssjR9GQzq0Z4namWhW330aq4XTEzXbpY+c4cIMWFJYlXcAdKFAcfa4Q09Jdn27dNAOCUYCZAeKVTxVr1XRx2VlRXzFDw29Jw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 23a4b17c1ea311f1a21c59e7364eecb8-20260313
+X-UUID: 1f6f576a1ea311f1a21c59e7364eecb8-20260313
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:41213b50-5fad-4287-9a3d-985e8d8526bd,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:d924d88b-6d92-4710-8b82-f846aa88b5c4,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:3f41b8fc19ffd5ee287bcea0c95ffcde,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:50d3ec3722ca2b74d45ddffcdd97a9b1,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 23a4b17c1ea311f1a21c59e7364eecb8-20260313
+X-UUID: 1f6f576a1ea311f1a21c59e7364eecb8-20260313
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 568887747; Fri, 13 Mar 2026 14:09:05 +0800
+	with ESMTP id 890783493; Fri, 13 Mar 2026 14:08:58 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: broonie@kernel.org,
 	linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ To: broonie@kernel.org,
 	linux-mediatek@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 17/17] spi: zynqmp-gqspi: Use helper function devm_clk_get_enabled()
-Date: Fri, 13 Mar 2026 14:08:33 +0800
-Message-Id: <aff326978cb080cb8671e5f7581fee4aa3e90e05.1773381582.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v2 01/17] spi: axiado: Use helper function devm_clk_get_enabled()
+Date: Fri, 13 Mar 2026 14:08:17 +0800
+Message-Id: <d78ba5faa6ed3f5e009b41fc1ee1c2bcdaff882b.1773381582.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773381582.git.xiaopei01@kylinos.cn>
 References: <cover.1773381582.git.xiaopei01@kylinos.cn>
@@ -66,52 +66,60 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ drivers/spi/spi-axiado.c | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 502fd5eccc83..a88b07956c33 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1244,26 +1244,16 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(xqspi->regs))
- 		return PTR_ERR(xqspi->regs);
+diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
+index 8cea81432c5b..4ba8f0e6909f 100644
+--- a/drivers/spi/spi-axiado.c
++++ b/drivers/spi/spi-axiado.c
+@@ -770,32 +770,20 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 		goto remove_ctlr;
+ 	}
  
--	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
-+	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(xqspi->pclk))
- 		return dev_err_probe(dev, PTR_ERR(xqspi->pclk),
- 				     "pclk clock not found.\n");
+-	xspi->pclk = devm_clk_get(&pdev->dev, "pclk");
++	xspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
+ 	if (IS_ERR(xspi->pclk)) {
+-		dev_err(&pdev->dev, "pclk clock not found.\n");
++		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
+ 		ret = PTR_ERR(xspi->pclk);
+ 		goto remove_ctlr;
+ 	}
  
--	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
-+	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
- 	if (IS_ERR(xqspi->refclk))
- 		return dev_err_probe(dev, PTR_ERR(xqspi->refclk),
- 				     "ref_clk clock not found.\n");
+-	xspi->ref_clk = devm_clk_get(&pdev->dev, "ref");
++	xspi->ref_clk = devm_clk_get_enabled(&pdev->dev, "ref");
+ 	if (IS_ERR(xspi->ref_clk)) {
+-		dev_err(&pdev->dev, "ref clock not found.\n");
++		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+ 		ret = PTR_ERR(xspi->ref_clk);
+ 		goto remove_ctlr;
+ 	}
  
--	ret = clk_prepare_enable(xqspi->pclk);
--	if (ret)
--		return dev_err_probe(dev, ret, "Unable to enable APB clock.\n");
--
--	ret = clk_prepare_enable(xqspi->refclk);
+-	ret = clk_prepare_enable(xspi->pclk);
 -	if (ret) {
--		dev_err(dev, "Unable to enable device clock.\n");
--		goto clk_dis_pclk;
+-		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
+-		goto remove_ctlr;
 -	}
 -
- 	init_completion(&xqspi->data_completion);
- 
- 	mutex_init(&xqspi->op_lock);
-@@ -1339,9 +1329,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
+-	ret = clk_prepare_enable(xspi->ref_clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+-		goto clk_dis_apb;
+-	}
+-
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_get_noresume(&pdev->dev);
+@@ -866,9 +854,6 @@ static int ax_spi_probe(struct platform_device *pdev)
+ clk_dis_all:
  	pm_runtime_set_suspended(&pdev->dev);
--	clk_disable_unprepare(xqspi->refclk);
--clk_dis_pclk:
--	clk_disable_unprepare(xqspi->pclk);
- 
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_disable_unprepare(xspi->ref_clk);
+-clk_dis_apb:
+-	clk_disable_unprepare(xspi->pclk);
+ remove_ctlr:
+ 	spi_controller_put(ctlr);
  	return ret;
- }
 -- 
 2.25.1
 
