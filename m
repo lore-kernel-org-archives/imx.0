@@ -1,161 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B37732A3FF
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A011D90DD
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382101; cv=none; b=f3h8nmySDafbPt+q1mcxDxWrCz/2NavyU42wSULAkHLy31Xni4YkEbJ9AjTGYhhEn2tlLcrx2Nb5t7NpECGhpxdGmLwdwhjE18nwaHcfROHC/WeGsQIG2AFawvgCKROP0GFSpV8XSMfM2lOSS6pkjTUbfHuThIKyVzro7ulz5Cg=
+	t=1773382147; cv=none; b=SBpguhZXJyBQfpCBDqI9TdBN/IYsynZzbvK3Z0zUOtj5bGzKoTE/tQFSOtjEJHZpRV5sBLLPJ9tzrrK/3VornLbmuBiBRQX5A5kI1vDk4cPKnY3xSITyR7Uxj70q5jqj/CO2yiAX4wo9cZj5NDP8GwlZxza25PdOnvuc/gYxuoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382101; c=relaxed/simple;
-	bh=orM5K8/7CHqa8T7Py1fyX7mMHWEfOFajrWwcTwGiGbo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kj5lbgdvgsi9ou1Y7PLX4I1moPHDU6p0HP06NzKpYVYSr70M221OgO2h+MMUz0Do+EiDKZFH0LuAWOnnNr20dKUUn4IbZ4+gXoB+2ja/3THssQ8UWLPb4k3MCPzOX+UBCNlGlMYpG8nAkty6d1xROWY7QHFtheg+vO6piZEwsEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WM97ZEW/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WM97ZEW/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C23CC2BCB5
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:08:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773382101;
-	bh=orM5K8/7CHqa8T7Py1fyX7mMHWEfOFajrWwcTwGiGbo=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=WM97ZEW/dU787GDBAOVCbEUV7wIXAuxHkjisG6RX7bDJmWx6rJpXUeZsZ33EmzATW
-	 GbKfoc7u6z/r0qPatxS8Jx2MQiXxb96emzM1g1pK0uAF8Bh6K26vSbEr4zjwr8xyKN
-	 k36RRr3eqMv+WDbgSo0JdvBOM89Take9aeHKfMy68XNIX7YWQv0G9OeK/o8J9GY8al
-	 nRwbMDmMJ/MvKVrRe1WIKtCs9obZGJXh2UY0RjvxohbXiMwnI3w0XHHIsunscDjh4I
-	 k7bew+KDGLN6/57RMIc0cnvDds+b35s2LNrHRHqzhtZJaCAh5YN/bMeWay17j14dGR
-	 a+t3bK/seWkCQ==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a46657a9fso18462781fa.1
-        for <imx@lists.linux.dev>; Thu, 12 Mar 2026 23:08:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWUfG2Bz54bIBAQynAJ3R7nvQsuUGuO82UtZ9TH3BxfH6FNIsQNVfpS5R0Ea4dqY0hlXKA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy07b2KErl61pEenJd2Qzux9tw8+YbPUT0PzLEkHA+7hota/HlF
-	rwwJERvFVjiy8ctMX9RFEEVNMtLx1frW+XL+fu0qhuDMY/3uGEev7nCDX7hL8Hf9BwZ5izMH9rV
-	Lc8whOSQZP3tV6ygo/cUNayxfnxbM+eQ=
-X-Received: by 2002:a2e:8a86:0:b0:387:2df:f3ee with SMTP id
- 38308e7fff4ca-38a8978752fmr6557441fa.33.1773382099086; Thu, 12 Mar 2026
- 23:08:19 -0700 (PDT)
+	s=arc-20240116; t=1773382147; c=relaxed/simple;
+	bh=QGlDt/8kIZtI3dPN5sXz7Vr0UcAmuiIxwJr14x14ymE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nuzh3UU0yhwUPKZx0ElwU3BOl0gPLZTeHx9OoBVXOOvBHL6trtcLZav0ATa9gB1XFiHmTGiDxmzWnPCcgCg/ckekeA91E37LmlVosdDOSXy0Rw2yrEfALRrWdDbPVurpk4d5+2c7fVHzWF+zdPCOXOeG1nC5qKwZFfwxOUBGIXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1f3293ac1ea311f1a21c59e7364eecb8-20260313
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:7bc6b968-39e1-4f72-bcff-73ca10c27e16,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:89c9d04,CLOUDID:c109a704f89f73548902f755b0defa24,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 1f3293ac1ea311f1a21c59e7364eecb8-20260313
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 288646284; Fri, 13 Mar 2026 14:08:57 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: broonie@kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	openbmc@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH v2 00/17] cleanup in spi by use devm_clk_get_enabled
+Date: Fri, 13 Mar 2026 14:08:16 +0800
+Message-Id: <cover.1773381582.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260313020823.1592389-1-sherry.sun@nxp.com> <20260313020823.1592389-7-sherry.sun@nxp.com>
-In-Reply-To: <20260313020823.1592389-7-sherry.sun@nxp.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Fri, 13 Mar 2026 14:08:05 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65dvWRqugwBAORB_dD+3Part+OieCe9hnSR781g-6NgZA@mail.gmail.com>
-X-Gm-Features: AaiRm52-YD_vTip-QztGRiYxgL7k6zRpm-Clb44P3TJreIxPFicxmd8vkCMHT1k
-Message-ID: <CAGb2v65dvWRqugwBAORB_dD+3Part+OieCe9hnSR781g-6NgZA@mail.gmail.com>
-Subject: Re: [PATCH V8 06/13] arm: dts: imx6qdl: Add Root Port node and PERST property
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, Frank.Li@nxp.com, 
-	bhelgaas@google.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
-	mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	kernel@pengutronix.de, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 13, 2026 at 10:08=E2=80=AFAM Sherry Sun <sherry.sun@nxp.com> wr=
-ote:
->
-> Since describing the PCIe PERST# property under Host Bridge node is now
-> deprecated, it is recommended to add it to the Root Port node, so
-> creating the Root Port node and add the reset-gpios property in Root
-> Port.
->
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  5 +++++
->  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi         | 11 +++++++++++
->  arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |  5 +++++
->  3 files changed, 21 insertions(+)
->
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi b/arch/arm/bo=
-ot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> index ba29720e3f72..fe9046c03ddd 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> @@ -754,11 +754,16 @@ lvds0_out: endpoint {
->  &pcie {
->         pinctrl-names =3D "default";
->         pinctrl-0 =3D <&pinctrl_pcie>;
-> +       /* This property is deprecated, use reset-gpios from the Root Por=
-t node. */
->         reset-gpio =3D <&gpio7 12 GPIO_ACTIVE_LOW>;
+I know that many old SPI drivers should not be modified for hardware
+stability and to reduce maintenance effort. But I can't help cleaning them
+up. To minimize the introduction of issues, I tried not to modify the
+timing of those hardware clock enables.
+---
+changes in v2: fix error message but having a line break
+Missing error code argument to dev_err_probe()
+---
+Pei Xiao (17):
+  spi: axiado: Use helper function devm_clk_get_enabled()
+  spi: bcm63xx-hsspi: Use helper function devm_clk_get_enabled()
+  spi: bcmbca-hsspi: Use helper function devm_clk_get_enabled()
+  spi: img-spfi: Use helper function devm_clk_get_enabled()
+  spi: imx: Use helper function devm_clk_get_enabled()
+  spi: npcm-pspi: Use helper function devm_clk_get_enabled()
+  spi: orion: Use helper function devm_clk_get_enabled()
+  spi: rockchip-sfc: Use helper function devm_clk_get_enabled()
+  spi: sifive: Use helper function devm_clk_get_enabled()
+  spi: slave-mt27xx: Use helper function devm_clk_get_enabled()
+  spi: st: Use helper function devm_clk_get_enabled()
+  spi: stm32-qspi: Use helper function devm_clk_get_enabled()
+  spi: stm32: Use helper function devm_clk_get_enabled()
+  spi: sunplus-sp7021: Use helper function devm_clk_get_enabled()
+  spi: uniphier: Use helper function devm_clk_get_enabled()
+  spi: zynq-qspi: Use helper function devm_clk_get_enabled()
+  spi: zynqmp-gqspi: Use helper function devm_clk_get_enabled()
 
-I'd say just remove the old description.
+ drivers/spi/spi-axiado.c         | 23 +++----------
+ drivers/spi/spi-bcm63xx-hsspi.c  | 44 +++++++-----------------
+ drivers/spi/spi-bcmbca-hsspi.c   | 47 +++++++++-----------------
+ drivers/spi/spi-img-spfi.c       | 14 ++------
+ drivers/spi/spi-imx.c            | 15 ++-------
+ drivers/spi/spi-npcm-pspi.c      | 19 ++++-------
+ drivers/spi/spi-orion.c          | 10 ++----
+ drivers/spi/spi-rockchip-sfc.c   | 20 ++---------
+ drivers/spi/spi-sifive.c         | 20 ++++-------
+ drivers/spi/spi-slave-mt27xx.c   |  8 +----
+ drivers/spi/spi-st-ssc4.c        | 14 +++-----
+ drivers/spi/spi-stm32-qspi.c     | 17 +++-------
+ drivers/spi/spi-stm32.c          | 58 ++++++++++----------------------
+ drivers/spi/spi-sunplus-sp7021.c | 15 +--------
+ drivers/spi/spi-uniphier.c       | 15 +++------
+ drivers/spi/spi-zynq-qspi.c      | 28 ++++-----------
+ drivers/spi/spi-zynqmp-gqspi.c   | 17 ++--------
+ 17 files changed, 94 insertions(+), 290 deletions(-)
 
-You're asking for trouble by describing the same thing in two different pla=
-ces.
+-- 
+2.25.1
 
->         vpcie-supply =3D <&reg_pcie>;
-
-I would probably also take this chance to just convert to the proper PCI
-slot supply, and just add pwrctrl support into your PCIe driver.
-
-
->         status =3D "okay";
->  };
->
-> +&pcie_port0 {
-> +       reset-gpios =3D <&gpio7 12 GPIO_ACTIVE_LOW>;
-> +};
-> +
->  &pwm1 {
->         pinctrl-names =3D "default";
->         pinctrl-0 =3D <&pinctrl_pwm1>;
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/n=
-xp/imx/imx6qdl.dtsi
-> index 4dc2c410cf61..9438862b9927 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> @@ -302,6 +302,17 @@ pcie: pcie@1ffc000 {
->                                  <&clks IMX6QDL_CLK_PCIE_REF_125M>;
->                         clock-names =3D "pcie", "pcie_bus", "pcie_phy";
->                         status =3D "disabled";
-> +
-> +                       pcie_port0: pcie@0 {
-> +                               compatible =3D "pciclass,0604";
-> +                               device_type =3D "pci";
-> +                               reg =3D <0x0 0x0 0x0 0x0 0x0>;
-> +                               bus-range =3D <0x01 0xff>;
-> +
-> +                               #address-cells =3D <3>;
-> +                               #size-cells =3D <2>;
-> +                               ranges;
-> +                       };
->                 };
->
->                 aips1: bus@2000000 { /* AIPS1 */
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts b/arch/arm/bo=
-ot/dts/nxp/imx/imx6qp-sabreauto.dts
-> index c5b220aeaefd..6b12cab7175f 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> @@ -45,10 +45,15 @@ MX6QDL_PAD_GPIO_6__ENET_IRQ         0x000b1
->  };
->
->  &pcie {
-> +       /* This property is deprecated, use reset-gpios from the Root Por=
-t node. */
->         reset-gpio =3D <&max7310_c 5 GPIO_ACTIVE_LOW>;
->         status =3D "okay";
->  };
->
-> +&pcie_port0 {
-> +       reset-gpios =3D <&max7310_c 5 GPIO_ACTIVE_LOW>;
-> +};
-> +
->  &sata {
->         status =3D "okay";
->  };
-> --
-> 2.37.1
->
->
