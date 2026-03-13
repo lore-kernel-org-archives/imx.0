@@ -1,185 +1,217 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011069.outbound.protection.outlook.com [52.101.70.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BC435CB7C
-	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382159; cv=none; b=aV6FTr9msbV5eaVSuMPXxTMbKPEDwF2pVhxN2x7ECuGMronXuc6IHyJRXNCT2kPDEuHdlPG8CbjWTnCsyjxJIs+wBGPBDWH7//BOXp20O8xjuW4T8YA/AwuGklOCsllKf5AYdhQfxSpjKxrjZkmFf+VbEjyUxprmTjOVhQoifeg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382159; c=relaxed/simple;
-	bh=syMl89U/VOtX46W15gQB3Kk1cxli0i/sXw5iif4T+hc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eep9eoRyN8X3ARgyPQYS0OifveaLEXbDIPyDz/Mx5NRKKDUhSkaELVbfPylUZ6z2VQF/aBHdhyanCmdky6/ZfCP6JkfVVla6C6eRIPXzEKY9iNz+Jq5lRMPBIEAnx2FFT4kbsZvNBZNdCTWS9WuubqBd9VUshyA7oxaTfpW0Fvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 22b22a4c1ea311f1a21c59e7364eecb8-20260313
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:827087d2-ade9-479e-8493-7e361b886a57,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:664ae7357f27d91fc3eac90dfa8f844d,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
-	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 22b22a4c1ea311f1a21c59e7364eecb8-20260313
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 718982642; Fri, 13 Mar 2026 14:09:03 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: broonie@kernel.org,
-	linux-spi@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E902D8DDB
+	for <imx@lists.linux.dev>; Fri, 13 Mar 2026 06:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773384494; cv=fail; b=lh4L9hPsUmJhNnT7i2PW1S/DIjHsc2rSbdfHSTMPePN8pcN07UVlPO5gbAxZ4a4iypLCjqYIlVgXE9zCrjE6vdzoC3Q5TeXafmL8V4pHjFd1iE6tm1Er+mgi9AQ4PAsaBak2zqZbs9SWYFguEDcFjrWe+mbyrbKeHxgcMBXRvFw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773384494; c=relaxed/simple;
+	bh=TgvKxn0fDRr+riyjNDKEotOCxxqiy3edcVMIE3jIQgU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=BjuddjdD8hWFRdMWv05U6UUFqk9gdj5bshvrtp338Tfv6E6EYywqHw0yUrg+AafHVt6UJl9GbMCK5rUFOJC3vpxEKaNSrA9zT4V+uOFHzxupgANVj4Yub1przqMQ2iRMBhUMEXyWdqvS/FImMQY1TZhqovXcGAmyNXn8KrzGvME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BfKWCG9Z; arc=fail smtp.client-ip=52.101.70.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BfKWCG9Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pW6ipnZ3rPOVrS0A82h1ECYkXawcjzzKnIXxUjrCa0E8D2vFeFvJL3h1pHj82KvPWT2NEkII7nc6eqWYHfYZvPxPZg2IRwdRDHGJidGaZ3zpdSO7JENlHd5Tqrj2EuAy8TktTZL72weR6S5knUwTsHCjUS9vqqb2Dnxt/rNTob1zprBg0MzWaaY8yzIjCgxvXswLY9n6MgvDyv01WU2lWvqj52W2HcYHUI/p4b4d8qmMfnlDtfceWtB6ZdW6d1V5fK54936E8qsSXLDObhpDfGyqjkPKpJE6tfTxjjCsOIUrHCiP8byDb6m/v25yefcTUa+urPZfPw4OhkVkf+Mbyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=90fNp47ognxeUGeFye4NvjKTcsTUL1RSo4zhTe/DsRg=;
+ b=o/Ae+TgcvAIca3lDeAPttFc+1CKMSuhQIHyEqWHn/Uho99lmedTAJJB9TAwMjkNsyVYTnwmu6MbmvyNyGu8HPqjrfnBTI4XSbu6e4amYZbYz+Jza674IS8SyZpKaqw6lvXZloPJBwg4gIc0KGW8az4D6uFx+pSyGPjWVOMQB8ZoEVUIu1kk05ahB0rN8MhujtJiwCcoSNX9Wyj//D2HTYvybJY2p8ELetYZkQspIxTw0qLb/DYE9yr/L53paGqGHLRkeKRmti3d1Q0Nch2ywifH045LguppwN4iiqXrFDDRYSQ7XoTrMUh6LC07ZagP6Te/WAlaj9KEITHr2KXl4BA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=90fNp47ognxeUGeFye4NvjKTcsTUL1RSo4zhTe/DsRg=;
+ b=BfKWCG9ZgqaiEpKcwNuMZ9SG/2ITxVguJ0wdFf4EoLDYh8muAWhVyP2AL0jE4XVZ+dvFWE9HP49RfxjdaKKil0Hx1BMaYR60ECMqOxc+WbUo3+60YpwxlAKNnx+76AF8f+C3G/RHmUvy4xCrnXvJSwdAXzVPKZnNDA+FPY0DYuqJT0auUoQ7MgdEL7MEK6tiRCG472mCVhVG8zUvCZQyMfvmma2foBs0S7t5uino+7FdWXIjdiwtdSQRHszXqcZDKBfPtyMgwCx02x6UYNVIBkR89dlpz6Sb2VD78r4xWIWTxgATslLVcbGZ+JVmKs9DXOzFVtfcNCglAmKeF7/VCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com (2603:10a6:10:2e3::6)
+ by GV4PR04MB11377.eurprd04.prod.outlook.com (2603:10a6:150:29c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.17; Fri, 13 Mar
+ 2026 06:47:56 +0000
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::7c5d:60c1:2432:86a1]) by DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::7c5d:60c1:2432:86a1%6]) with mapi id 15.20.9700.010; Fri, 13 Mar 2026
+ 06:47:57 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	openbmc@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 13/17] spi: stm32: Use helper function devm_clk_get_enabled()
-Date: Fri, 13 Mar 2026 14:08:29 +0800
-Message-Id: <d0d46f906c5a70bdf4ca2de6f9036ddbb43897b8.1773381582.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1773381582.git.xiaopei01@kylinos.cn>
-References: <cover.1773381582.git.xiaopei01@kylinos.cn>
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v1] PCI: imx6: Don't remove MSI capability For i.MX7D/i.MX8M
+Date: Fri, 13 Mar 2026 14:49:27 +0800
+Message-Id: <20260313064927.2092800-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0060.apcprd02.prod.outlook.com
+ (2603:1096:4:54::24) To DU2PR04MB8840.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e3::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8840:EE_|GV4PR04MB11377:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68429082-df3e-4436-6871-08de80cc75ff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|366016|19092799006|1800799024|376014|18002099003|56012099003|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	eSbaVKPwoXlMgufqPCzsncmrpxVrxYKfuWlYRlwwsWxvcR7MTTbmywiXPWXAnFumYgffrJs6PEPRZclPZET+TQqVUsc5okhvRYdcUdZK1vnKljAMSlTn3zJN6Pl6/rJqgjw/lJSysPMEfo7zkPc+ozGKHgPXMB51+JayUGLKNMNE8brCL+rnKf1+ObMlO9qU446lkVmNSBRG4C+z0d/gqlZNAIJGwZMIGPaDiWmJMjGx2oyLLZYQ/twvx1adSrySRjnbqv0yKNmjd5huX0KbgAsvzoQrsO+gaIp7dEk+6aRLdyf5/LAYYZTwny7adk7Xt9rugUl/DgKHj5dQOYjZrOs59pXc2d8nV1fytidNfBRDkZrlcX7ag44sm8GT9sW9CRgOwqgz+x2c61EaCppC0GGljulQu2sCdfgo/xwJUt/8jg1qV72AtMgrJxAOZRnS+7y67qfIsBPOWCRBEEnAPZRsvxtuQUStV9YJkvZGoaBp0Q1t2g0fOnf0bFw0b0GiSmaVnoRvjeL/A3di8AePK1MF3RP9WtIAzrtGtqU31eRoFJRPbt5+g0orXZEZKCQBXcKRK62TuxSNSG9X0rraebtgmNkwM45DYEiIk/NNrUTCeGrwaxmTq/L6GVqU7kx32luoiww0uO9R1wldBV9frDAdFhK5+bSY/t1Zy7OSDbYxv5GXm3FyWR2QMUihiouPMdE3tpkXxGpfbW+ojbX4vvu5VJy70kbQzC+AV8/MgHCU7tGv5+sFXuSSdNyQFunQ19DLfKmNxoqsYtPdt/Bb/TixZxuOEiTxwdP50PGOjNOUWekcrJ8OyqQVymw+wT3Y
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8840.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(366016)(19092799006)(1800799024)(376014)(18002099003)(56012099003)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2t67TA+LKqziKhrKLeZjclGy1v3U3c9IfDewTgDjOuPjwR5KjX2JTXYfBvoy?=
+ =?us-ascii?Q?x/Q3CFkgTXRNfyf72nbKDofntln5s5PWwrW+KX1wBusx0pRdWAoijAw9x3Xn?=
+ =?us-ascii?Q?KHASe7xffLmb1ieGveMY4sp4iF7OXM8NNAcJc+GUhcPjS/7BPSItrKZUSLNM?=
+ =?us-ascii?Q?zF5NzAoAfcCwPSptn+2L9eVvzww6ffZcAt0KFL2scR9/HxhYfqOg6RY+vpu7?=
+ =?us-ascii?Q?NPLDuGfrTjnX1o4qgfQAzEXzummn+1R053Dy4DGHrqpG9Bum1vDxuiNpMv3Z?=
+ =?us-ascii?Q?t8Ez02VRiughGKkISkKRt3HVfU+MwAcV3U85OEd+cVq/+7SQfMNGy4s6P39J?=
+ =?us-ascii?Q?zoajUoz+3ZLDOUbd5QvUhXrOTBAZmCv2TbbKZ08NGKqzfHgvUxaqoitYTKC9?=
+ =?us-ascii?Q?7JMUEQErTqrTI763SB5bWS090+FlyheQvbG/yRBoj/n7RIk/YnfokKJnqSw/?=
+ =?us-ascii?Q?g0OQumJ3sUvp4pdXNBsrEFeVtMlTIcym2HNEzvWZhr0xOwbzcD3zxhQw/nmf?=
+ =?us-ascii?Q?VC9SY8PXaBwT3N57dQkeG9vmtgYc++m2gRLIRec6uPLnjydRXfvh0Kj2wP9i?=
+ =?us-ascii?Q?yHmZ2s7Nrw7oe7j7aAcKDA0RbNFcxZDv5yTaczKGZf3WFZzHQv41+Ij51rJj?=
+ =?us-ascii?Q?J0frQablLmFbQm9+cbb/1bQAI4JvtnfkNbzIyOW0EVJKfDqYPJe8H55a5BOi?=
+ =?us-ascii?Q?FDZwC67MdMcS4pXmZaO6K/dxBEJYv91UvH76vt3nTGOdJVQj0SEYdIS9VIuU?=
+ =?us-ascii?Q?G4ojPEhrci6hWbYYaLxEI+oKh8b91x2jJfd6KcpVkwCJVcelksDx4RP5YjxX?=
+ =?us-ascii?Q?msG2J4XHPSLJmZqNd0WidGLeWztx8/PYje6Q5sfInnWkSJE1ud4qw4lGNOgl?=
+ =?us-ascii?Q?HeO4mrCejDk9gHrdVxWy4CKLVcDPRIerpTyr10uM2Vz6nSKhHFKSymsJtH6I?=
+ =?us-ascii?Q?mbkkZ5k1SPxQctrGCTK8CcECbXE2TkzVqqvBBZChSg6fEVBfYaMEXryNscE8?=
+ =?us-ascii?Q?yMs3uTos+eXulvRbNNwOlf+x6H9vOdNRg2ennNkOnwDSk6bh709rZtapQX+D?=
+ =?us-ascii?Q?WH+1rAZ+7JkJzGaEkFktnFkRee3Y8d088u/eQ0iLxkRRN8Nr2tL/tKOw9Y6P?=
+ =?us-ascii?Q?/y92UmuUFtpV5g+VO5Xx4rUvMJjEJtX6rHLku6qS8HvSrVdT5TvEk+AmKTcq?=
+ =?us-ascii?Q?Jf8S/7mHrmPPcf3vFwu3ndTdR4+OgEk6JnhPG5ZkZGZWpWEvuAyvDwcfdmNO?=
+ =?us-ascii?Q?8e3mrGATJWs/m//dXySdPTDAiuULhEevBuckwVq1nSXW+u2bo9sWTQ8wertH?=
+ =?us-ascii?Q?gv+n2vkRVvdcyb+5RUFpTD5HYswU+7+QB4XcmwBW++Bgcqb7juY0W67CxKfD?=
+ =?us-ascii?Q?tOA3I8BGcljdpW71Rk0V5hv8k1+ZaCqmueJ77bfgUDgw/sV0AFgZfb6IPjgL?=
+ =?us-ascii?Q?XTot7FCyVf216lfS1LtANyl5jrGCaUUqXetGRGZoz0ZjsLrCaY/At2RNOBPR?=
+ =?us-ascii?Q?TJTH0pcXuRmNX6mcc3vCPxI6EJiWlQEi4QnnMED85bJtfumRjumCNqvjgUYy?=
+ =?us-ascii?Q?bcP8PWod1zY4nmbn7cXKsQDbv24at4pxUleTpxchz3ubn3VWM9o50W2B+Pi/?=
+ =?us-ascii?Q?GrFccE0JfzCmMB0OW8uMM0euhteAgRi8bRRjZY51yLYVqZup2TEGTb8ChvkJ?=
+ =?us-ascii?Q?I9xjPMqCJX73v/isIZoIQG9I1EMYGmF03NVytgsRIpR2LAYgRRZ2+ELVTbOB?=
+ =?us-ascii?Q?hH7H0jVRuQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68429082-df3e-4436-6871-08de80cc75ff
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8840.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 06:47:57.6803
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8MI6p7LQtmHBhZjC7swQ3X6zSIBByIFgc348PMihoXq0WzpWLmhikmWApM7w2um4FjVP4jxkt0L5NPqNSRao8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11377
 
-devm_clk_get() and clk_prepare_enable() can now be replaced by
-devm_clk_get_enabled() when driver enables the clocks. Moreover, it is no
-longer necessary to unprepare and disable the clocks explicitly.
-Simplify code.
+The MSI trigger mechanism for endpoint devices connected to i.MX7D,
+i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
+capability register settings in the root complex. Removing the MSI
+capability breaks MSI functionality for these endpoints.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Preserve the MSI capability for i.MX7D/i.MX8M PCIe root complex to
+maintain MSI functionality.
+
+Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 ---
- drivers/spi/spi-stm32.c | 58 +++++++++++++----------------------------
- 1 file changed, 18 insertions(+), 40 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8a7f5a10d4af..9f82540a582c 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2360,25 +2360,21 @@ static int stm32_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 81a7093494c8..b86d22db4a13 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -41,6 +41,7 @@
+ #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+ #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+ #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
++#define IMX8MM_PCIE_MSI_CAP_OFFSET		0x50
+ 
+ #define IMX95_PCIE_PHY_GEN_CTRL			0x0
+ #define IMX95_PCIE_REF_USE_PAD			BIT(17)
+@@ -117,6 +118,7 @@ enum imx_pcie_variants {
+ #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
+ #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
+ #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
++#define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
+ 
+ #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+ 
+@@ -976,10 +978,17 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+ {
+ 	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
+ 	struct device *dev = pci->dev;
+-	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	u8 offset;
+ 	u32 tmp;
  	int ret;
  
- 	cfg = of_device_get_match_data(&pdev->dev);
--	if (!cfg) {
--		dev_err(&pdev->dev, "Failed to get match data for platform\n");
--		return -ENODEV;
--	}
-+	if (!cfg)
-+		return dev_err_probe(&pdev->dev, -ENODEV,
-+				     "Failed to get match data for platform\n");
- 
- 	device_mode = of_property_read_bool(np, "spi-slave");
--	if (!cfg->has_device_mode && device_mode) {
--		dev_err(&pdev->dev, "spi-slave not supported\n");
--		return -EPERM;
--	}
-+	if (!cfg->has_device_mode && device_mode)
-+		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not supported\n");
- 
- 	if (device_mode)
- 		ctrl = devm_spi_alloc_target(&pdev->dev, sizeof(struct stm32_spi));
- 	else
- 		ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(struct stm32_spi));
--	if (!ctrl) {
--		dev_err(&pdev->dev, "spi controller allocation failed\n");
--		return -ENOMEM;
--	}
-+	if (!ctrl)
-+		return dev_err_probe(&pdev->dev, -ENOMEM,
-+				     "spi controller allocation failed\n");
- 	platform_set_drvdata(pdev, ctrl);
- 
- 	spi = spi_controller_get_devdata(ctrl);
-@@ -2409,32 +2405,19 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	spi->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(spi->clk)) {
--		ret = PTR_ERR(spi->clk);
--		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
--		return ret;
--	}
-+	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
-+	if (IS_ERR(spi->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(spi->clk), "clk enabled failed\n");
- 
--	ret = clk_prepare_enable(spi->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed: %d\n", ret);
--		return ret;
--	}
- 	spi->clk_rate = clk_get_rate(spi->clk);
--	if (!spi->clk_rate) {
--		dev_err(&pdev->dev, "clk rate = 0\n");
--		ret = -EINVAL;
--		goto err_clk_disable;
--	}
-+	if (!spi->clk_rate)
-+		return dev_err_probe(&pdev->dev, -EINVAL, "clk rate = 0\n");
- 
- 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
- 	if (rst) {
--		if (IS_ERR(rst)) {
-+		if (IS_ERR(rst))
- 			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
- 					    "failed to get reset\n");
--			goto err_clk_disable;
--		}
- 
- 		reset_control_assert(rst);
- 		udelay(2);
-@@ -2461,11 +2444,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	dev_dbg(spi->dev, "one message max size %d\n", spi->t_size_max);
- 
- 	ret = spi->cfg->config(spi);
--	if (ret) {
--		dev_err(&pdev->dev, "controller configuration failed: %d\n",
--			ret);
--		goto err_clk_disable;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "controller configuration failed: %d\n", ret);
- 
- 	ctrl->auto_runtime_pm = true;
- 	ctrl->bus_num = pdev->id;
-@@ -2490,8 +2471,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 			dev_info(&pdev->dev, "tx dma disabled\n");
- 			spi->dma_tx = NULL;
- 		} else {
--			dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
--			goto err_clk_disable;
-+			return dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
- 		}
- 	} else {
- 		ctrl->dma_tx = spi->dma_tx;
-@@ -2579,8 +2559,6 @@ static int stm32_spi_probe(struct platform_device *pdev)
- err_dma_tx_release:
- 	if (spi->dma_tx)
- 		dma_release_channel(spi->dma_tx);
--err_clk_disable:
--	clk_disable_unprepare(spi->clk);
- 
- 	return ret;
- }
++	if (imx_pcie->drvdata->flags & IMX_PCIE_FLAG_KEEP_MSI_CAP) {
++		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_PM);
++		dw_pcie_dbi_ro_wr_en(pci);
++		dw_pcie_writeb_dbi(pci, offset + 1, IMX8MM_PCIE_MSI_CAP_OFFSET);
++		dw_pcie_dbi_ro_wr_dis(pci);
++	}
++
+ 	if (!(imx_pcie->drvdata->flags &
+ 	    IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND)) {
+ 		imx_pcie_ltssm_enable(dev);
+@@ -991,6 +1000,7 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+ 	 * started in Gen2 mode, there is a possibility the devices on the
+ 	 * bus will not be detected at all.  This happens with PCIe switches.
+ 	 */
++	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 	tmp = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+ 	tmp &= ~PCI_EXP_LNKCAP_SLS;
+@@ -1907,6 +1917,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX7D] = {
+ 		.variant = IMX7D,
+ 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_APP_RESET |
+ 			 IMX_PCIE_FLAG_SKIP_L23_READY |
+ 			 IMX_PCIE_FLAG_HAS_PHY_RESET,
+@@ -1919,6 +1930,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX8MQ] = {
+ 		.variant = IMX8MQ,
+ 		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_PHY_RESET |
+ 			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+ 		.gpr = "fsl,imx8mq-iomuxc-gpr",
+@@ -1933,6 +1945,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX8MM] = {
+ 		.variant = IMX8MM,
+ 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_PHYDRV |
+ 			 IMX_PCIE_FLAG_HAS_APP_RESET,
+ 		.gpr = "fsl,imx8mm-iomuxc-gpr",
 -- 
-2.25.1
+2.37.1
 
