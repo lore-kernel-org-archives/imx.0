@@ -1,141 +1,252 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021101.outbound.protection.outlook.com [40.107.74.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029201EA7CE
-	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 02:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773455564; cv=none; b=Z45skk2eKv1Dmv5SxoqwM1j16VyT4v06IlmjD13opw0v0yNSJXrzVIYcBrW6OgYiUV6JaBXYtcyiO7QL/2LbjWjxQSjVVj8WSxWpqgkah0/wJxHnk5ZcIqvhRxSp70d2cWt3brvNMB5bCBldrpPdA1DnbJVPQHTzmKlc/higBxE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773455564; c=relaxed/simple;
-	bh=VoXeC9IHasi/UAtluQskzXJbdOFysDaXJJx65ggrMMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IceeQ/PKyHnkeq+4S5fcFMLnmVzVyNOO4v1eogYzIimrbDyDBYxUdjjOldCR3AcADdgRA1XNiw2blEd09rU63t5Sa8I9ZRvvAcvDjMaiq3dxxsAUVn7rg7JxIKspE4wOVCs2Kid9B0qmZdlNOm4La8TmlB9N9UmKcmw3d+yBV2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HylEy45d; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7469E262808
+	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 04:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.101
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773462802; cv=fail; b=tft8+kzJ/wL1JTfvnBP6VTXBnk3Kg2VprOcADds0z0+6/Yx3B8S+uzEAm3KrpAIhmTJAt2Ty3jmi0plxeQePCN/wsrqW1gyr2vL7znqtLkQfFZW8v2lKSetstE+ahePYrBWJkRhaNgj+2E4JWTAqvUI/4mM/7yuPdN9z/gXlxHw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773462802; c=relaxed/simple;
+	bh=ndh5O1OQu31sIRBaL8vq7fgfGi4OqxoFZ7lxcMVrWjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NFUkpeX0J5raDbnKqqhxFiwwvdSQ2Ee+gL+Wy482aCrFEdARP9WyRNg6VFSeeCLWZsXzOIf7fbvB5KCPETY23+gksyjBJo/aPvlVvJ6o0TXyw/0JfUlbIJSbNOqSkKVJzDAKaEruvbSMM7J3AXCC2ylVGWaXWa5jxQfczhbKPe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=iXdgjwwa; arc=fail smtp.client-ip=40.107.74.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HylEy45d"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ab232cc803so13610905ad.3
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 19:32:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773455562; x=1774060362; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QXws6LkfRc01I28IbH0KBFSnQLO6Cva5ehRLzaS0ijo=;
-        b=HylEy45d7aMJ/juoHicCd8WBueNS9748F8SOU5nQdFW2ofXHYtTr/JClS5zuq56JUv
-         28bHMVfV19Qx0aUlKYssfK8NZTkFYAzYfshRZMq/N6ezcFcK4wG3EDg+5pSj2iqYvbb4
-         kzhZf/HtWbAUze/xt/xqYG3hIfDJ3U+A7eMrqxs50Qybd3u5ASSIj8Jf0GBJl7N1hTrb
-         o7R6ZcwVl82f7DQh3ntgKd1FwIaAYwDIXvoeLJa1TrLYcbq4kidOohpXgA0/vGBeYvCU
-         qKZgC2AVk/xgNAQ1lduz2sJz3KaseVzmwlDrrDwFPXGd6fD563quhAKe/gwCAPj/NWpk
-         nBkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773455562; x=1774060362;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QXws6LkfRc01I28IbH0KBFSnQLO6Cva5ehRLzaS0ijo=;
-        b=PV2ksIkxp61hiOYGjKOZkpv8p8vm87ppmEPUC6bFmWCWgIF3mwGS9WChdvkyL0OxGp
-         tVU+0Mgz3eEIkyl+8sTilNSt8qa7D8g0xPTr23PmrRnGfsys/U/nVlXT7cdgfmcVoBLs
-         Gx2+bNZYPwzd7NmeYQLASasj29cnoqzqXDFBruBhF2IThPGXMPj9H3+3pEpJ4s8beW+g
-         Zu2odvFg0HB2+07Av0wgHKrSaUMIcc+iJdkYIozrmF5gvxbvAM0wCmZCUNV1aGq4FtAf
-         urDLbr0xHgaShu564HjZS3BOZkBrUSADmtGitzjlxwr5syLYt7cE1kJCqJYFstzbpm5R
-         J6Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCCSKvRDZ4aDK2dGPH5hxt741q0sTNVlJ313h+O6678XzUgc0ItWcPgZh21NYyAs4UG68=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxTTTfVStN0j3LZBAXB5MwM+fQBp7cHup0EBqIjR2M0aIcm5KBM
-	PuXEidruXYxBzYUyhSuSS6KcjTyjaHAX5RtfaHDRbW0cVFOQuTnRdRTe
-X-Gm-Gg: ATEYQzx16JU043x/Rdb7z2SUfDkvX2ZsQq1gbFAXXCBy5Rp4mJJvcwiyMBaEAufjtYu
-	L64u9S/4hC1fDIOvG8x/9u3H+E2LyZApXQlhH09KluS9tb+RAZPLthXs1pK5Z0UkIF7j9GXE8yi
-	qwLHp9nP+DnLt27l20CzSukP7EYKXfFNsaGBKqaBaN7LrN3fBKm5vw/DYdQ4THu27SVvhMrL4zG
-	GWBFfBZReln26qKI6H/AC/orQgnEGX5H93MaJLSzsAuH34MVY6CgFqZkACY3PrLUN7qQDUY9A0z
-	HKMWXPwqgTgbFBrmiUE0V7/haesreskb0N7SPGph2ItEqSn2EalnN8JJPGRXInciCZET+DsI9Bx
-	652bu6BruGlPFJiL0vo9oWoPSXTkDdyhpwRU24WyyYtk+dUNXzqyDFhDG8SYkJNC/veno70AV50
-	8yZHkFFPVCfXXAuAGHbRtjs2oH+Utj4Cxi7Lra2sBQLitddo3B2QZRsELjShzWNg+8jr55se/5k
-	pCQL3cLuh3cLa7rKP3Jh8VlxJJ3wmPFv+oZ/r2QcPPge82iFiZBiS3z9eP9S1wBR/ACEMoF3InR
-	kxKL8TzytLhunQ==
-X-Received: by 2002:a17:903:28f:b0:2ad:edc4:1796 with SMTP id d9443c01a7336-2aecaa4d681mr54393645ad.39.1773455562268;
-        Fri, 13 Mar 2026 19:32:42 -0700 (PDT)
-Received: from setsuna.localnet ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece8093casm35373165ad.61.2026.03.13.19.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 19:32:41 -0700 (PDT)
-From: James Calligeros <jcalligeros99@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>,
- Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
- Frank Li <Frank.Li@nxp.com>, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev
-Subject:
- Re: [PATCH v3 7/7] ASoC: tas2770: expose SDOUT bus keeper via set_tdm_idle
-Date: Sat, 14 Mar 2026 12:32:26 +1000
-Message-ID: <5796105.LvFx2qVVIh@setsuna>
-In-Reply-To: <6a3cc78a-77bc-473e-bfbf-caffbe8f25bb@sirena.org.uk>
-References:
- <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
- <20260301-tdm-idle-slots-v3-7-c6ac5351489a@gmail.com>
- <6a3cc78a-77bc-473e-bfbf-caffbe8f25bb@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="iXdgjwwa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lbGy4t/XKTq7k9GazfZnjB2a0UTQy4Mh2N0jfTEBLpnEUQ4af/qSMlNfsu+t61poW7GFWe9lLfOVGmIpOnfvpkE7wJhRX3qWqRetgQyeXLbmR6oj6FqhtoSmM6kPtWZ7viOnM+YkrfAhlt8OwnPU2JyYWfE9EfVXv5VBtTeXo6fIQolDWdIRW58fPnRkIM+g18IA6IO59ZRAjPqN0XUVlTATpl5fR0q0LlD1p3R0BGXdCV1xENT+k5/eg9kymxU0AYJbZhyOkJLW779a0zzWU1SHtpIigv/S2y6PNfyFMjPcdQA7sA/Hcb6J5NV4vEBQ661gDNfbD8vaau3/HuiVcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Lt6l5l5f8bedU3Nd+YRqBu7yp+ZT/u5xRLV9E/MiwpY=;
+ b=zJyV0BBwkU0kp71ooCUeDTAIyZ7/3sG4ygnopVSsT0FgsZL8niSlldjQlKN/8V276Jog8V6n3f1qVaqEnBa/rAF58hx9U+TjMUtV6Juz3/Rc1WdNJkxPOXhZ1Ghj2MEcCbQ1OJmiw7dMYomnrNdGyazTI/VgbKZrahocS7cpJuWH7+D4VBdSQJ31VOY1l7tw+qTA6asAdWIPZiYHqL5zFCYSJiepsbA0VCQTQufdWOYD30N6WUanXCCOZSjnAb/NxTZtMsf7sEe7aoTavtCZO8+T07VQqB9QYCYoVnyErf4Z9Ec7b99n0h9WYkwxpCI3g608KrC29TunBWBemugyPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Lt6l5l5f8bedU3Nd+YRqBu7yp+ZT/u5xRLV9E/MiwpY=;
+ b=iXdgjwwaQxYgiw7B8FmgKaVrug7Qn+C5ZL/r7BTbeHM4LXA0LvjCwWT3saegToCRnIaLIrqDJHF987FKgvIDbK3iI+IzZswhxEAaQj2Oh8jeVXeLTXjwtFtILhV8xNyVzFK7aOfZFTeZp6jw/m4acRyX+tns5j+UTq15C8sRlPU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYRP286MB5686.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:2d8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.17; Sat, 14 Mar
+ 2026 04:33:17 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9700.015; Sat, 14 Mar 2026
+ 04:33:16 +0000
+Date: Sat, 14 Mar 2026 13:33:14 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Christian Bruel <christian.bruel@foss.st.com>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, cassel@kernel.org, 
+	Frank.Li@nxp.com, vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com, 
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, 
+	roy.zang@nxp.com, jesper.nilsson@axis.com, heiko@sntech.de, 
+	srikanth.thokala@intel.com, marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, 
+	geert+renesas@glider.be, magnus.damm@gmail.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
+	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
+	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, shuah@kernel.org, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v10 3/8] PCI: dwc: Advertise dynamic inbound mapping
+ support
+Message-ID: <tkfhaovpmaoodo35attvmbnpukcqgmwyrxmfgiwjy2dga65cgl@hmj4mx2n44ki>
+References: <20260124145012.2794108-1-den@valinux.co.jp>
+ <20260124145012.2794108-4-den@valinux.co.jp>
+ <b2b03ebe-9482-4a13-b22f-7b44da096eed@foss.st.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2b03ebe-9482-4a13-b22f-7b44da096eed@foss.st.com>
+X-ClientProxiedBy: TYCPR01CA0060.jpnprd01.prod.outlook.com
+ (2603:1096:405:2::24) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYRP286MB5686:EE_
+X-MS-Office365-Filtering-Correlation-Id: 117befd6-b300-496f-07bb-08de8182cf76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wBhPz6v9XhyEg9APV0PbwPu0Hgog0VsuiwLQJvjWIFZlkmy8jdUpH5CoaX9ALIQWZQXrtAC47Wh8LS4OJ2a8JF6nGjMATddFqdiq+fDLHGSaKqTvUPd7JKHZlzeH8Vg//PP6vsDDGYxB/AWBpChjrgmO/GAWXKu9mP2a+TyHN3eDRrYWkjHLq3oXJzhL4thb967G77n7++B9R4per46UL0XvGamr/eAH+R6/guzguriIkZ6Yyl4/ktJunClecqm0Z+fz16/lRL5CplTjNGeqg7svT6ujYgNrsYNr1lyb95Rz1QN6vYCbFss8Fe+m2IlPtCJ9tcdEq1WeghmFLUzA34Q30WU9UQH2W7EAJyDvV0exZa66EsQGX7axEDdDh3WacfnwgM/Y9ZR9PtclRZ+Ytv/UdGjJ852H7Ba3MLqjuvug0rmmch33d6wFbT4b61C3b2C9vPaDW/4FesgPK5163asmjLBBBrm5PPD7i6wq3suz3EyMWiowiaoTHAL5S9RQlwKDtF2xIbe+EqvXUMbuh7ibKhG/QQdkgDSWRRA9O89hQ6QqHKp7nl0M2smNZOYJW4dT03NK7hMcmd9Uv6fS3rdCFwbUS0mOlK06Jq7953rmgenkxm4jwTkyo0HzstCIRzM91UnFw5orba0oQeGfJxULRLhhAtABfPNdTXtpylpnEUkzPIVuw+T4Uxh0tJVYu3geme6lbDkvuFU9h0s64KgyEi+vyJk/Z03fFE40QxY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GYzknUcMI1HL8nkg4o4Wlt4IQY6UJoMR3ZeGWhwbR97UwKpkRmnc35ILuvK2?=
+ =?us-ascii?Q?jDVuYk3cxfeemXG7VNgwtGUljrEkd/IV6v/cZusdAEuUQb59l74/gCTmhvhZ?=
+ =?us-ascii?Q?SAf+bxVoORnBPLNB5NLM0/rxIqfxi4wgxX2zr4yJdlEjsYlr5oQmMeL5DhVq?=
+ =?us-ascii?Q?pLMoNgX7kJO6geo+h12+AFTM2/XgUXEqNN6gNS2Qk1LbxDhRJaiD1lmCEOwT?=
+ =?us-ascii?Q?FjZwvBJTF76md6CsIrfqNyTh81L0LdXpwpMwSoxQry/yR+jks9iWq8xtDFc9?=
+ =?us-ascii?Q?/aBjX1E5t+Sy0+k1/OLXU2xF68UusQypd8kjUSIRdCbBcM6GaTcKzDVwWxuW?=
+ =?us-ascii?Q?R/+eRhr6ttPBzXj4ORmOqNaf3YapI+zXnlF/NE7M0x5brkK+9uq6L/PBGx+6?=
+ =?us-ascii?Q?3xEhJS+LOwUdiPIAqz6nJZGQ0PeMP6vEtA2wtUP1cBqoPMwWysVk4Hg6yRFh?=
+ =?us-ascii?Q?/Wa1KRS6oGrBpptqM/w/u5ZImTh/RBRWFRyK0fKrfMKbvTnHhhiv3maKROib?=
+ =?us-ascii?Q?h7b1/8J+1/8DERi3y9J+VKMtrpqUN/YSKCOXjwSlxJg59pvNTB2UE30BXerU?=
+ =?us-ascii?Q?vdGSzPHts0J5P6u54HJrlWAG6Feitk3tmfoiFSLM73/A1Xv0CViF2R4yzKcQ?=
+ =?us-ascii?Q?Y234+aOiR+bIQRp+7ina23iFvboweqP4ZyWJK/dRiQe7CODHz42e/4mD+K5F?=
+ =?us-ascii?Q?Dk9t8+nuNmRGHTtLvq0iNjCDHhM27Higj79NoP4pjU0UOhk0Sx6tc+LgfIIq?=
+ =?us-ascii?Q?Jfi6B8yo1d+4dEy8DSgpyhYCrXAozKLlx0O2DMASUXzQmKHbD8FlDaSykBld?=
+ =?us-ascii?Q?SJKGutO+CW9HoV0P4lUx/vbIyKcz6Mlztt7TUC885mTtKoNC9CFCUt+z3IYk?=
+ =?us-ascii?Q?q2kQhmVpto89s6iFApN3WbVTQDZeeoXHdoawUa7//pFDMyM3dje4XteB9bqd?=
+ =?us-ascii?Q?Baf+WeI+AnFdzqK2OLlt6YcET9uSgmizfzbo/jzQG1Z1HGrnOL+blWzEt5rC?=
+ =?us-ascii?Q?1JnZjGRfPGaE+MqoR654SSgsBS2D3qn2KU+wao9pELNze+8eXLMyHGl55hzu?=
+ =?us-ascii?Q?NNZP+/dpcgiSaLQb35ndfeReVUHDmWz5uoFPsKe+EhGhCMsxFYE8F/h0Ipim?=
+ =?us-ascii?Q?MJgobvmUCmRT/cIUb4VhyonBMLZh72UQtVLSpayhQX2FQuV3aP+n4r6lpEBn?=
+ =?us-ascii?Q?/762MVCcWTje/Su5w+4rnDa/DalMI9Bs7xoL+dVr3APoskwsV4PrZKPZEBfk?=
+ =?us-ascii?Q?LRjWqTb+xQcF2icLlLzEkrnNlqV8F1nNPt7MBSKPZEq8Y1A52z1zuZ8TmihA?=
+ =?us-ascii?Q?7+mvurcQgIEyj4c1lmFRDE44vs5nUL68ZoatZYQhJ2nrqU+V2dq9EEOx9Rpl?=
+ =?us-ascii?Q?pi5qq2dJV7Oa/L0F8apFSgREVgMF9h289MfmcFzS5AgG/CjA6TMVJ7J66Y0c?=
+ =?us-ascii?Q?Yq9nLgrc2IozKbJv7sdC3Qh9VW6dFID9rRDIT3VhkuH909b/CJYlIR6vHT9L?=
+ =?us-ascii?Q?q5fh0dQcGD+bE03zy2kNqy8dJULbLIQS5aiW+MvRap8gQZlNfmsQvt7hRX4M?=
+ =?us-ascii?Q?v9C/zafN5OB51nEp7JVWpAqlow1PqnNf24BHeqFpmMO4QWitItEfCgpCbVEH?=
+ =?us-ascii?Q?wZTMTrEi9g35PBI3p/eIGQcZvn1gjeaeeTtpaxENHzGPebrUlxdBdMzuldOB?=
+ =?us-ascii?Q?5qmbuKgoMUDdYbGIzUEGaN4RP/HbnQFmizrd72QlNGogqga2GsJ7M1SeqSHG?=
+ =?us-ascii?Q?6OqcOqjGtA5nfgipPeoeQDat8oox5VlCxItWhJVcMiU/8ouUFB7F?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 117befd6-b300-496f-07bb-08de8182cf76
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2026 04:33:16.0321
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qvIGl8wXaSAv8XF8Qn9pSc8/wVRucu58oFrKdRQsToXRou08snlwVJto8KmYMOjOpLKl0oEkyGJgGFgQSi+siw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRP286MB5686
 
-On Friday, 13 March 2026 12:33:05=E2=80=AFam Australian Eastern Standard Ti=
-me Mark Brown wrote:
-> On Sun, Mar 01, 2026 at 06:05:26PM +1000, James Calligeros wrote:
-> > +static int tas2770_set_dai_tdm_idle(struct snd_soc_dai *dai,
-> > +				    unsigned int tx_mask,
-> > +				    unsigned int rx_mask,
-> > +				    int tx_mode, int rx_mode)
-> > +{
-> >=20
-> > +	switch (tx_mode) {
-> > +	case SND_SOC_DAI_TDM_IDLE_PULLDOWN:
-> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_DIN_PD,
-> > +						    TAS2770_DIN_PD_SDOUT,
-> > +						    TAS2770_DIN_PD_SDOUT);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		break;
->=20
-> This and all the other cases only updates the bits it's specifically
-> setting for the mode, so _ZERO and _HIZ don't update the pull and this
-> doesn't update the _KEEP/_FILL settings.  Not sure how often anyone is
-> going to change this at runtime though.
+On Fri, Mar 13, 2026 at 04:59:26PM +0100, Christian Bruel wrote:
+> Hello,
+> 
+> While testing after this series, I encountered regressions on the STM32MP2,
+> which I am unsure how to fix. The failures depend on the order in which the
+> tests are run.
+> 
+> The STM32 ATU has 4 inbound entries. After enumeration, the first 4 ATU
+> entries are allocated within ib_window_map.
+> 
+> On the first run of ./pci_endpoint_test -v BAR3(for example),
+> SUBRRANGE_SETUP calls dw_pcie_ep_ib_atu_addr(), which frees only one ATU
+> entry (BAR3), because we were in the bar_to_atu case, for the first submap
+> but fails to allocate the second submap. So the test FAILs.
+> 
+> On the second run with a different BAR, SUBRRANGE_SETUP test calls
+> dw_pcie_ep_ib_atu_addr() again, freeing the required ATU entry (BAR1) and
+> successfully using the second ATU entry (3), which was left unallocated by
+> the first test. then now the test PASSes
+> 
+> Therefore, the first invocation of ./pci_endpoint_test on any BAR always
+> fails. Other invocations are fine because the first one has left the missing
+> necessary ATU entry free. Whatever initial BAR number is used
+> 
+> I am unsure how to fix this. Always freeing all BARs before calling
+> set_bar() in the epf-test seems overkill, but safe.
+> I am also considering modifying dw_pcie_ep_clear_ib_maps() to clear N
+> num_submap entries even if ib_atu_indexes was not used yet, since only the
+> full BAR is used during the first invocation from bar_to_atu. But the
+> question is which ATU entry to select ? BAR+1 ?. This seems empirical.
+> 
+> I am not bothered by test failures due to an insufficient number of BARs
+> (this is already the case for BAR5,6), but the fact that the failures depend
+> on the test order is frustrating and show a regression.
+> 
+> But I'm not satisfied with either of the 2 possible fixes mentioned above.
+> 
+> Do you have any other thought ?
 
-I didn't notice any side effects caused by not explicitly turning off
-the weak pulldown, but it makes sense to do if the consumer has asked
-for a mode that is not pulldown.
+Hi Christian,
 
-> > +	case SND_SOC_DAI_TDM_IDLE_OFF:
-> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_DIN_PD,
-> > +						    TAS2770_DIN_PD_SDOUT, 0);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG=
-4,
-> > +						    TAS2770_TDM_CFG_REG4_TX_KEEPER, 0);
->=20
-> Actually this does _KEEP but not _FILL.
+Thanks for the report/analysis and sorry for the inconvenience.
 
-_KEEPER is the important one. _FILL just controls the behaviour
-of the bus keeper (zero or Hi-Z) when _KEEPER is set. If _KEEPER is
-cleared, the bus keeper is turned off and the value of _FILL doesn't
-matter.
+If I understand it correctly, I think pci_epf_test_bar_subrange_setup() should
+simply roll back to the original BAR mapping when subrange setup fails.
 
+In other words, if there are not enough free inbound regions for the subrange
+test, the test should fail consistently and without leaving any side effect
+behind. At the moment, it seems the failed setup leaves the BAR in a different
+state (i.e. cleared), which then affects subsequent runs. That looks like a bug
+in pci_epf_test_bar_subrange_setup().
 
+If I understood the problem correctly, would something like the patch below
+address it? My expectation is that the subrange mapping test would then fail
+consistently on platforms that do not have enough free IB iATU regions.
+
+[---8<---]
+From 039548c87a5c7a038ac562272447c4620a4c1ad2 Mon Sep 17 00:00:00 2001
+From: Koichiro Den <den@valinux.co.jp>
+Date: Sat, 14 Mar 2026 12:58:04 +0900
+Subject: [PATCH] PCI: endpoint: pci-epf-test: Roll back BAR mapping when
+ subrange setup fails
+
+When the BAR subrange mapping test on DWC-based platforms fails due to
+insufficient free inbound iATU regions,
+pci_epf_test_bar_subrange_setup() returns an error (-ENOSPC) but does
+not restore the original BAR mapping. This causes subsequent test runs
+become confusing, since the failure leaves a room for the next subrange
+mapping test to pass.
+
+Fix this by restoring the original BAR mapping when preparation of the
+subrange mapping fails.
+
+Fixes: 6c5e6101423b ("PCI: endpoint: pci-epf-test: Add BAR subrange mapping test support")
+Reported-by: Christian Bruel <christian.bruel@foss.st.com>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+---
+ drivers/pci/endpoint/functions/pci-epf-test.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 582938b7b4f1..0e5958088b8f 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -891,12 +891,15 @@ static void pci_epf_test_bar_subrange_setup(struct pci_epf_test *epf_test,
+
+        ret = pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, bar);
+        if (ret) {
+                dev_err(&epf->dev, "pci_epc_set_bar() failed: %d\n", ret);
+                bar->submap = old_submap;
+                bar->num_submap = old_nsub;
++               if (pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, bar))
++                       dev_warn(&epf->dev, "failed to roll back\n");
++
+                kfree(submap);
+                goto err;
+        }
+        kfree(old_submap);
+
+        /*
+--
+2.51.0
+
+[---8<---]
+
+I'd appreciate it if you could test this. Or, if I'm still missing the point of
+your report, please let me know.
+
+Best regards,
+Koichiro
+
+> 
+> thank you
+> 
+> Christian
