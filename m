@@ -1,79 +1,46 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDA623817E
-	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 00:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44E119CC0C;
+	Sat, 14 Mar 2026 00:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773446992; cv=none; b=PbhOjzBGiZsRi4qdYZiu9BQ6MolDtBfHB4vhfjsRx6v0vfdI0k15uOERtmBu0TJgHODrBtfXZNoZ1VE7HrFUPzGR9cD+5RzgHvQix1mwCaXW6IIA+0RHRwZwM69+dwbS36tELqROO75v3HoUytGIaJoCVA+7DyNOEDWu/Pkn3HY=
+	t=1773447666; cv=none; b=cjc0mPrqaZyB1SPNqqLDgx0e3DdSzM+Ye3SsMJE3Xz7WIowE877PLvWKg6l133kb4XQ4xJxZcbMFAKVhxl/m/fVXZn/ajLyM+pRya79xva4fHipwP2+9sXL8ykYoG1jXSm0qljt8PoL6XwW76Wx4nBCShe2MeCjNaOOQV/ruOy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773446992; c=relaxed/simple;
-	bh=+dGmrcuiiuuV1a5p0Ly1Q66s4c6kjuU3qUogVTsRx/c=;
+	s=arc-20240116; t=1773447666; c=relaxed/simple;
+	bh=lDVm6BdGlnpwJG5TJL78+5HauKD1j66z/nxi24bhn/w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=btIgyj1rhMIO8HK10SnkbO8MUEboAJXwcdlP0/hsFqRAP+sCHiQ348STci6OC+1gtjAGUX+ThXM+QNiyW00subyxUXRRVKiBGDjQoin53BxyQvJo+kS3sqe+cUx0k9cjnZ94ein5ULYlCsSexpqecnKltwbuhfJ2VZ7JoGB3lVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=tXWLHgbi; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 Content-Type:Content-Disposition:In-Reply-To; b=GRPG1KuMP9x7hjRSG6JHV9BmHAsiWw1LtziFEwEXLSviPqQxoKHjMBD/mphXXKGrucLPvvWHXpucSirIuQFgNLx3e2tESegsCToHe0Rzvi6wrZHPR2vfY4fd/gN7HjsY1fjKIMQVBZpS/CTSYnaUyF3Wd9QnIQBtQ8jOMj4SVmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DBD8omVy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="tXWLHgbi"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35a1d4a095bso1167310a91.0
-        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773446988; x=1774051788; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O1K2wFHnPv60zEHnUhHNmA3kV7XBCekNFy/nqC8VtDo=;
-        b=tXWLHgbiBxCRn1vqO78uwZZxGjxCxPG7Jkg3LrbvW/IrzrPnzGq/Jt+V/D7bdLIaGM
-         TtiQOXqCbJrrQxbS5Y3r3/zghdDxmuXOlz13m8txxJlrOVeVT1KyTD25zWhi7YKZlH7Z
-         AWjkIHZujWJwyXJyh3x82sNZZVybBVCkzHgFjKPnJxMDakJc4xBXWxouEHmF2uiEnLVp
-         7STzNymQph7JRvfK7ojFb9JBu/fM210+CWrDvEEdPetqO0VyogCaNIenjbgB43T/R1rQ
-         y2mIFUM7r92GmULsMSJkcKp5fYq0sbAEoYZq5e14nGQ30vHM66avxSLMiCq/2DGIWJwU
-         kXrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773446988; x=1774051788;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O1K2wFHnPv60zEHnUhHNmA3kV7XBCekNFy/nqC8VtDo=;
-        b=Jcchx83Oxko4ZvVizJ9Ls4pKXoBdvOXMaJ8wa/xkQ3gapKUM6P3EI6+qtNpXkoSwRA
-         yf+CUbqQVNpmWGHOndKBijAyeGsiLTBS8YgyQbP9a/ST34mKi8CMyIXK2bVlc7SvXHbr
-         ZDd1vXOCem89VA1gaC0RckeX/uXfNOgMkESE+/Bv27JyqQQWCL+pqS8LSXnIAXqL4DDp
-         KXgbGzY0UGCu4gyNlLhuHH9oZFCo5dr0sF87yPgIndG8VHy+E+4osoIFhqbKENqG9NUv
-         ZYgqqA3MWhn9ukWt1ScDAywWfmeyITZg0MChBaSZ8aYTHpTA9RLL4tYSZwnxD2BIPLGZ
-         pZ1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWY/jYo3Ou6n9Y0wqZsrtFulkojxIcodeV4Daayr0fItqHvGIwuozk3F7UMpkJZCwXNsIg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwZOUspMKEgMNE/MuQl/a2PtegMTuuUNPCAFbIJNrlQ93vjLaVU
-	5N+UB6whYT1gCuimlCK/xNOWtsHMRFt5pSGWmhGW+6AxJTAcohVa1iT/ncrF4DuF8/0=
-X-Gm-Gg: ATEYQzw4gCOAXykGJZawp81DLGzwRJ40/HnjIPug1dgvHq171pVCsqmkREB4ulyg7rB
-	yRP9e+7CxyJotDe+KM/HV6Ro5kVbTA0L3Lp7ayWHQHYw0G0iD9gYbxxT3mphLbcwYZ5hWEb5K0a
-	qJTJwtwRlXjFRImlji++zt/fNFBry4yOfjAOwNopYteLDVYnIPxXkaov6d3BJ0Eaa/NoI9+gO4R
-	kn/UxHcaKTejwVf/V9mncQWe3ntVHdVWzQYB1zEGICHEpviKep32KeFrRbsCswfu6mxp82o1RPP
-	9dkqSCq5gOB7ptafxYLCnOzyiRkuESRDT5A4RUCWk4yFd4aEJzqogTS3i2Ea2EXkX+Rls6dMLG8
-	BYjgrJaeDD9BQVHMGLxc+dXz1inlcj8HTptAWqW7kYtZ2NKjgglHMi77fj6kGAob1+8iv5KBHby
-	JQTRh3
-X-Received: by 2002:a17:90b:4ace:b0:359:8ca0:308d with SMTP id 98e67ed59e1d1-35a22053554mr4077220a91.14.1773446988255;
-        Fri, 13 Mar 2026 17:09:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:72::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359fe40bed5sm10347528a91.5.2026.03.13.17.09.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 17:09:47 -0700 (PDT)
-Date: Fri, 13 Mar 2026 17:09:46 -0700
-From: Joe Damato <joe@dama.to>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH net-next] net: enetc: remove stray semicolon
-Message-ID: <abSnSjp7cIj/qWGG@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, Wei Fang <wei.fang@nxp.com>,
-	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-References: <20260313112454.427191-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DBD8omVy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26440C19421;
+	Sat, 14 Mar 2026 00:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773447665;
+	bh=lDVm6BdGlnpwJG5TJL78+5HauKD1j66z/nxi24bhn/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DBD8omVyZwVe6eWWZ2smI/WqOLcJwPixa6dhNwF8ualDBiooB0y+fscgzP7fi1ZH9
+	 EPqXFETIMQEU7p/QF1EoIVLd2iu30P/wbgB0LYxFQN3+QPDGqkudq3O5yiM3IDeC5X
+	 XvxBjT/e06Wk/I6KlolCh8vLTOX3yjskAan5ZMzvwhK+mgwNnQQrBNZ5fQuhJ10auj
+	 ijUHL9HPHlr6R5eLmi/aGTRxBk3TczceDJBmiQKhQ1TA6wNA1alzShRNgVgg9Aw2x3
+	 rBEL80W/nzSebe1op3UgdLVkOz3CD344sqn8skWSZriOIohQAdnwbZF417nI65OfWH
+	 J0BePkmYe4ruA==
+Date: Fri, 13 Mar 2026 19:21:04 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-usb@vger.kernel.org,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	devicetree@vger.kernel.org, Li Jun <jun.li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] dt-bindings: usb: nxp,ptn5110: add optional
+ orientation-gpios property
+Message-ID: <177344766351.3720394.7574014035146712126.robh@kernel.org>
+References: <20260312-support-setting-orientation-use-gpio-v2-0-59c523a09f12@nxp.com>
+ <20260312-support-setting-orientation-use-gpio-v2-1-59c523a09f12@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,18 +49,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260313112454.427191-1-wei.fang@nxp.com>
+In-Reply-To: <20260312-support-setting-orientation-use-gpio-v2-1-59c523a09f12@nxp.com>
 
-On Fri, Mar 13, 2026 at 07:24:54PM +0800, Wei Fang wrote:
-> Remove stray semicolon from ntmp_table_name().
+
+On Thu, 12 Mar 2026 16:07:24 +0800, Xu Yang wrote:
+> The Type-C chip know the cable orientation and then normally will set the
+> switch channel to correctly configure the data path. Some chips itself
+> support to output the control signal by indicating the capability in
+> bit[0] of STANDARD_OUTPUT_CAPABILITIES register and do it in
+> CONFIG_STANDARD_OUTPUT register. For PTN5110 which doesn't present this
+> capability currently there is no way to achieve the orientation setting.
+> Add an optional "orientation-gpios" property to achieve the same purpose.
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
 > ---
->  drivers/net/ethernet/freescale/enetc/ntmp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes in v2:
+>  - use property name "orientation-gpios"
+>  - remove the "if" condition and modify commit message
+> ---
+>  Documentation/devicetree/bindings/usb/nxp,ptn5110.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 
-Hm, I'm not sure, but I suspect this might be rejected due to the note about
-cleanup in the docs, which generally seems to discourage this sort of thing:
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean-up-patches
