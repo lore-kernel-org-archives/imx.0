@@ -1,147 +1,141 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011041.outbound.protection.outlook.com [52.101.70.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8216821A453
-	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 01:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773451709; cv=fail; b=bkJ/+Nnb4CWyJgOH093aisnl//Sbe84oSlT3DNmek3xzq1L770O5XTjh9BU61LpDj3fbk+Iccq5gLrg12z+I4RJzMnyU9LG3/JckHJnukqihs84U4gVLnV4xiJkBvy5fZXDAT3i6p+ufKqc50c/0md4ONsocEGH/ujQKTcgsAgQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773451709; c=relaxed/simple;
-	bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RchJDoVLdRAbF3/bxwPqzqTKrXhokIlAjE2/LauKYevGsWN/wlXtIZoZtA+mALNYurr29vmIkt5qtx0cXObeC9rqFQrywfgTO4m7th7ZoPojZNvBKCG1NLHQIC2c25eL6rZa1XXgcNhNVz006Q33QLnn9rzWqngYMe/e9wB9dCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZxUnfZra; arc=fail smtp.client-ip=52.101.70.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029201EA7CE
+	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 02:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773455564; cv=none; b=Z45skk2eKv1Dmv5SxoqwM1j16VyT4v06IlmjD13opw0v0yNSJXrzVIYcBrW6OgYiUV6JaBXYtcyiO7QL/2LbjWjxQSjVVj8WSxWpqgkah0/wJxHnk5ZcIqvhRxSp70d2cWt3brvNMB5bCBldrpPdA1DnbJVPQHTzmKlc/higBxE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773455564; c=relaxed/simple;
+	bh=VoXeC9IHasi/UAtluQskzXJbdOFysDaXJJx65ggrMMg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IceeQ/PKyHnkeq+4S5fcFMLnmVzVyNOO4v1eogYzIimrbDyDBYxUdjjOldCR3AcADdgRA1XNiw2blEd09rU63t5Sa8I9ZRvvAcvDjMaiq3dxxsAUVn7rg7JxIKspE4wOVCs2Kid9B0qmZdlNOm4La8TmlB9N9UmKcmw3d+yBV2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HylEy45d; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZxUnfZra"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=raMa4m2pAXtzjtgh0nLx+YmFWwAKEcf4k7JqwGIXHLr5juGDAAfdR/w6TThy4rA1K4MIWOgJ5BHY6pwT7ff+OJVzGNsNgETLn7ROg89P55Bn2iwh8wqUEbJKOeHupEd5qWCNABlH1M13al6OgNHdpIQmpcnZG/PMEHzR5V9jXG0oBlKg3KyfmhGrGF5Biry5RHjsPj5XHWdIE7QSGwHKVCNgBCwM2ygHLr0TNvd1MFFbGMXW/PgeAsipWdpuojsn5IW+sO5zNpOR/VwVvbj4dy2992H1mXim3K6X0ywjYgUpU52KtWggIAuAkU5yJHVgajT3k/jXx+5gFwrrBre2aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
- b=VNXjRgKkDPLWJIyFikH1PEOs/XdQXl4I1F+p+zG7M5XQjLwe1kPZagfGScItiT2/N5HJPPjqQyzq3nvXkb/ttPwJyA7hTi/AxULYK3F8ubBFFBtalPTB2quxOJDo7XeJfi8xD7cSxpUqpLLgQjsP77Ea8Oj4KO/jYEvytACqAimu7XE/IZ5wNJQCYC0FARqu8b0HyiyCVNKCesB37CzA6LsoMIiYfas4+nDHEMC+2p2r5gEF3d7c97b9LYDtgt6gfBvoRK2lfYJfRgMPWtudm4ycg9O7wxf0FlhB5qCy6niLiZHL7reQ1pEyDRVCvIWHVDq/bWhCd8mOZBWjJepxjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
- b=ZxUnfZraXs5Veh5Cogcnpq6wifeIdov/1r/N7Zk8uesalfhnrow+ITaK4QYW27nXdBbZjJ5QrhYk2fRCzHgofBAC4Twq/VBRACCouHHaijSE82H5zYSQ7irBhVB+7lgx0gTVhhXKEB59VUuuHecoHrxV1L4spY0+0XzcjOSymQczt34Qiitf1VuHTqBIVjfGREZc6O9ef5r8NgI78PpOjjfzOEuKgttsGGD8m9kjTpacHLqyA5LEUQ92ANrMJfIJIvxn8f9C0ZNLcHqZ57jbC6QbVVPyYyFD5nahvAr5Dc78BqmZP4MVq9MLcYDFA6lLc3+yb46i1NDDprZ/mDq8IQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV2PR04MB11093.eurprd04.prod.outlook.com (2603:10a6:150:278::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.18; Sat, 14 Mar
- 2026 01:28:07 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Sat, 14 Mar 2026
- 01:28:22 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, Joe Damato <joe@dama.to>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net-next] net: enetc: remove stray semicolon
-Thread-Topic: [PATCH net-next] net: enetc: remove stray semicolon
-Thread-Index: AQHcst9ywAzOlLQTjkS3WrmAXGqJQrWtJ/wAgAAECYCAABDvoA==
-Date: Sat, 14 Mar 2026 01:28:22 +0000
-Message-ID:
- <PAXPR04MB8510D3E374C64119CA2A584C8842A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260313112454.427191-1-wei.fang@nxp.com>
- <abSnSjp7cIj/qWGG@devvm20253.cco0.facebook.com>
- <20260314002413.i36jrsuih6j2lmtc@skbuf>
-In-Reply-To: <20260314002413.i36jrsuih6j2lmtc@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV2PR04MB11093:EE_
-x-ms-office365-filtering-correlation-id: 7c22eb5a-a4ec-49f2-3dca-08de8168fb36
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- zWLxUuSYkRJk9ip6qrzrE9elA99KK0vH+sFncIbrYX6s4UEZqzjHQOEnuyvWo3s/n7HY832BIIppo9onSlyBiCBL3/FUnddVQ5vUh6c7ZFlZ2RkyZ7Fvxil9VOHBzc0z2xviOcu3LbnE00lZ4wo1p0bMp+IOCanHMizOPuFOHupGSG9nA+Rna17U+LtGhh6RjbnL1UP2WDoUkg0oOSN4eeLkOUqWWsSmlxKabSaxuW6DnDmWh1pZWbHjafC7YHhpuk5R1XU3fIX7r8U6BuAxSPxdrP9qvtmBn/DIQyso4sEQNvFSRBARzs21t1YpnUwUF6v+5dSIyCYhDfqNtUmdCiQEJZullkrKxO8rHhHQtY+UZyiJxVLDir5ehyg2JjL8gpvQD6TaU0BKGxTRi7ljaSLXp+G7yhpgLIXEt6WJTB90XSUhGrpqS5rYwfsXygrDBHNm1Ezcjivz4AJRVt4Vic4Qfdw4esbbysS9sadVnpKIumeWOEXFey2UOfu+Jnk2sBO8d6iCWG/zF5+yoPdLei6ls5IdZ3HUvRrNWzhw+YPkbX+/6d3V2B/aX4IXfTDH/dmJCHmnzSBtuSZFPqDSmWP0dQRuYipHHDLvspQQsxV+gqitlARTbEwu7GQqN4LiyUJ53cblzByuUJmPLgcy2bZskg1y/8FRLL2wdIp4I07qvt3H7VtlBT8O6Zr7+FuzcslEyIGBfEu76Pn+ATQIxtUTaehGpAqqo/Nt9NC2gj3Qtr3EJ9yJfO8exjOmYobZuIRl15uWaTRdThnIr2hh40VkpIyqSWDj+cFjadfo2/0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?uLpmk7aM8UrV0NskBOCflya6zHBi2tYeWyEO2SKsInLN6Kf57sdbVXqhMBI2?=
- =?us-ascii?Q?s/6tFjPE4veMfTa6QWL932A4xzvjDtpz1EpKxk6TvbPzeXakvqI0dcPMIVje?=
- =?us-ascii?Q?YFZGnrxqqEJ0g/w+BphgRFnCNNkDWAZUHKBAIWuO9w2bG9JSpO5Z8eGwoBfm?=
- =?us-ascii?Q?wXDVJ1uFe/k9cRi/OuS5OWcvFOfmYSd0xhGSkBFbO2CHpdc5kIfbJXZwWU7N?=
- =?us-ascii?Q?1+F8UVNYuDxQ4Sxti0nknnV2PmRqJHVuW7QCHw5ElSqTaFAfYGhg0ZGSgaZn?=
- =?us-ascii?Q?xD9617W/se/931bvm+kBxGnBeplnyw6cZUNa4BjBqfnXDPjVh/7Ke4umWDA5?=
- =?us-ascii?Q?tAfHn0gWTuQKoPXBTRFnjUwtr5rKwV6d/8MxpYfU7hRXtkd8/mb+lPk2FMHS?=
- =?us-ascii?Q?su+k2LqDcR4/4Y96UU+8oyxpjx2MXEmRqJGzwoWUUH/DKlMhqY2ujEy3FJ3n?=
- =?us-ascii?Q?moqXcQJIHFfXMxjrh7he36KfvYlKIKQ2Om7mp1TksnijizESPvMqtj606qwV?=
- =?us-ascii?Q?h/dggtvxWivbDqg+Vlq1pcoIJEaJdWORxb97KrtNy0SXrjqCtyZ2Wr8KYdqv?=
- =?us-ascii?Q?xBo//UwIH1lMlITGpuOELDay44/mxIbpUl6rW+Id1dByjWQec3I0qf5WIG44?=
- =?us-ascii?Q?qQgma16NLdwYxtz9O3tFlcsZc3WgTJSuq+aMQE3oV3we7zR4qZEnCbjAR0Lp?=
- =?us-ascii?Q?3WMJz7vcxSTACeviRvFgMaa5Xa48mFnFRn9HgAu0G+l3cK0S6p2oVAQ/22sE?=
- =?us-ascii?Q?YHRifyCco6F2IibW9G1W3Bu2nnsr1DsatK9lX6NFd4L/AZOzs2Mg/Xcf//+E?=
- =?us-ascii?Q?Mp1r3B7K3Qri4QY8wLjtgWyEPQL6sRvgMSbmnsGFenUs5UaOgMFfvJevb9XL?=
- =?us-ascii?Q?LB8KYFUcGfEht5kttV9wQfkmXD7X0dQq8kt2IapJ/PaJuhX0VQjFhrBU66Rv?=
- =?us-ascii?Q?+jz68Np66QcxvNGe61TbG9ZaUajZkBe2Fj5wgjtWelrV/wryXS0VzZYkDH/3?=
- =?us-ascii?Q?icxic4dqRTqu7596hkHgJPbpQXVE4nReLnbK1aVJsGLClLMLUnE/u42Wsgqa?=
- =?us-ascii?Q?nGoXlIKil+T+oo3vUD8klCSdSDTDS3AfUMHT3qPbJGDRQJ7mO8pYQ/eFJIpd?=
- =?us-ascii?Q?Abmhs4cseIpNDpyeflbH2+NInys51q+b8mliI7H08vM6J+8eKBjYt1VPf4q1?=
- =?us-ascii?Q?2uSnc1BfF9m05nAcFQkxKi/JO1f48CU0SJOa/6AweJEi8yrdeNf4y7pmK3Hl?=
- =?us-ascii?Q?oaN+raJGkSP+hDxt2eXzihk6D6rQid4nfzprJbJEYGiaGjWqQ18JTL7yGsGn?=
- =?us-ascii?Q?Tz2gZIaOIVWeGBhSuSCdoywbRlA8l5v7jiaq32UtUQjs3gzGGP1Wx7hmpTAW?=
- =?us-ascii?Q?R6YF9kI+Wp67E5wBvKXFCR+TRWWQLv0UJFyUb2+qRCWpYQ+Gzs4uY15NGYLO?=
- =?us-ascii?Q?XUsuCli+YIrwO5skw+as/wgzDpFbMZa5cPgfuOiSw+ZKR18n6biWd/dWCK5u?=
- =?us-ascii?Q?w+rjyMbYLNAua0sqAeI2O/rIC+7FXUZXOsOp5HeRHk78nrac35v3TmvMjQfx?=
- =?us-ascii?Q?hCrkG7rsynzR/CVWhNC9bNK3Y+/kSMSRIDBigDwa44bYLXFpioEnhyOACIhQ?=
- =?us-ascii?Q?PFFyH11UcX5dDxKdYVxwTlMlc2UZBXtcaNn6H8HHfpzCrdGLhfY6Xg2qr83h?=
- =?us-ascii?Q?O0h672hVSgJnb4FRdmzI/EYNrvRlmYCOAZFKeD2c/JUqONHd?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HylEy45d"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ab232cc803so13610905ad.3
+        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 19:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773455562; x=1774060362; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QXws6LkfRc01I28IbH0KBFSnQLO6Cva5ehRLzaS0ijo=;
+        b=HylEy45d7aMJ/juoHicCd8WBueNS9748F8SOU5nQdFW2ofXHYtTr/JClS5zuq56JUv
+         28bHMVfV19Qx0aUlKYssfK8NZTkFYAzYfshRZMq/N6ezcFcK4wG3EDg+5pSj2iqYvbb4
+         kzhZf/HtWbAUze/xt/xqYG3hIfDJ3U+A7eMrqxs50Qybd3u5ASSIj8Jf0GBJl7N1hTrb
+         o7R6ZcwVl82f7DQh3ntgKd1FwIaAYwDIXvoeLJa1TrLYcbq4kidOohpXgA0/vGBeYvCU
+         qKZgC2AVk/xgNAQ1lduz2sJz3KaseVzmwlDrrDwFPXGd6fD563quhAKe/gwCAPj/NWpk
+         nBkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773455562; x=1774060362;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QXws6LkfRc01I28IbH0KBFSnQLO6Cva5ehRLzaS0ijo=;
+        b=PV2ksIkxp61hiOYGjKOZkpv8p8vm87ppmEPUC6bFmWCWgIF3mwGS9WChdvkyL0OxGp
+         tVU+0Mgz3eEIkyl+8sTilNSt8qa7D8g0xPTr23PmrRnGfsys/U/nVlXT7cdgfmcVoBLs
+         Gx2+bNZYPwzd7NmeYQLASasj29cnoqzqXDFBruBhF2IThPGXMPj9H3+3pEpJ4s8beW+g
+         Zu2odvFg0HB2+07Av0wgHKrSaUMIcc+iJdkYIozrmF5gvxbvAM0wCmZCUNV1aGq4FtAf
+         urDLbr0xHgaShu564HjZS3BOZkBrUSADmtGitzjlxwr5syLYt7cE1kJCqJYFstzbpm5R
+         J6Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCCSKvRDZ4aDK2dGPH5hxt741q0sTNVlJ313h+O6678XzUgc0ItWcPgZh21NYyAs4UG68=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTTTfVStN0j3LZBAXB5MwM+fQBp7cHup0EBqIjR2M0aIcm5KBM
+	PuXEidruXYxBzYUyhSuSS6KcjTyjaHAX5RtfaHDRbW0cVFOQuTnRdRTe
+X-Gm-Gg: ATEYQzx16JU043x/Rdb7z2SUfDkvX2ZsQq1gbFAXXCBy5Rp4mJJvcwiyMBaEAufjtYu
+	L64u9S/4hC1fDIOvG8x/9u3H+E2LyZApXQlhH09KluS9tb+RAZPLthXs1pK5Z0UkIF7j9GXE8yi
+	qwLHp9nP+DnLt27l20CzSukP7EYKXfFNsaGBKqaBaN7LrN3fBKm5vw/DYdQ4THu27SVvhMrL4zG
+	GWBFfBZReln26qKI6H/AC/orQgnEGX5H93MaJLSzsAuH34MVY6CgFqZkACY3PrLUN7qQDUY9A0z
+	HKMWXPwqgTgbFBrmiUE0V7/haesreskb0N7SPGph2ItEqSn2EalnN8JJPGRXInciCZET+DsI9Bx
+	652bu6BruGlPFJiL0vo9oWoPSXTkDdyhpwRU24WyyYtk+dUNXzqyDFhDG8SYkJNC/veno70AV50
+	8yZHkFFPVCfXXAuAGHbRtjs2oH+Utj4Cxi7Lra2sBQLitddo3B2QZRsELjShzWNg+8jr55se/5k
+	pCQL3cLuh3cLa7rKP3Jh8VlxJJ3wmPFv+oZ/r2QcPPge82iFiZBiS3z9eP9S1wBR/ACEMoF3InR
+	kxKL8TzytLhunQ==
+X-Received: by 2002:a17:903:28f:b0:2ad:edc4:1796 with SMTP id d9443c01a7336-2aecaa4d681mr54393645ad.39.1773455562268;
+        Fri, 13 Mar 2026 19:32:42 -0700 (PDT)
+Received: from setsuna.localnet ([2403:581e:d87e:0:fc2d:ed31:e80e:412d])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece8093casm35373165ad.61.2026.03.13.19.32.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 19:32:41 -0700 (PDT)
+From: James Calligeros <jcalligeros99@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>,
+ Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+ Frank Li <Frank.Li@nxp.com>, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev
+Subject:
+ Re: [PATCH v3 7/7] ASoC: tas2770: expose SDOUT bus keeper via set_tdm_idle
+Date: Sat, 14 Mar 2026 12:32:26 +1000
+Message-ID: <5796105.LvFx2qVVIh@setsuna>
+In-Reply-To: <6a3cc78a-77bc-473e-bfbf-caffbe8f25bb@sirena.org.uk>
+References:
+ <20260301-tdm-idle-slots-v3-0-c6ac5351489a@gmail.com>
+ <20260301-tdm-idle-slots-v3-7-c6ac5351489a@gmail.com>
+ <6a3cc78a-77bc-473e-bfbf-caffbe8f25bb@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c22eb5a-a4ec-49f2-3dca-08de8168fb36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2026 01:28:22.3820
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uYw5/yc/w/SIGNbO8XwodeQE/JZ5/spRfqnouaW80E0W2t1iK2Gu+4KI3OpkQJFoBCyJgXQsmFoMuAdY0cUoGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11093
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-> > Hm, I'm not sure, but I suspect this might be rejected due to the note =
-about
-> > cleanup in the docs, which generally seems to discourage this sort of t=
-hing:
-> >
-> >
-> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean
-> -up-patches
+On Friday, 13 March 2026 12:33:05=E2=80=AFam Australian Eastern Standard Ti=
+me Mark Brown wrote:
+> On Sun, Mar 01, 2026 at 06:05:26PM +1000, James Calligeros wrote:
+> > +static int tas2770_set_dai_tdm_idle(struct snd_soc_dai *dai,
+> > +				    unsigned int tx_mask,
+> > +				    unsigned int rx_mask,
+> > +				    int tx_mode, int rx_mode)
+> > +{
+> >=20
+> > +	switch (tx_mode) {
+> > +	case SND_SOC_DAI_TDM_IDLE_PULLDOWN:
+> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_DIN_PD,
+> > +						    TAS2770_DIN_PD_SDOUT,
+> > +						    TAS2770_DIN_PD_SDOUT);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		break;
 >=20
-> "simple clean-ups, which are not in the context of other work"
->=20
-> The ENETC NTMP code is under active development, and Wei is developing it=
-.
-> The semicolon was added in May last year and was found as part of other
-> review touching that area.
+> This and all the other cases only updates the bits it's specifically
+> setting for the mode, so _ZERO and _HIZ don't update the pull and this
+> doesn't update the _KEEP/_FILL settings.  Not sure how often anyone is
+> going to change this at runtime though.
 
-Yes, this cleanup is for the upcoming NETC switch patches, which has some
-changes to ntmp_table_name().
+I didn't notice any side effects caused by not explicitly turning off
+the weak pulldown, but it makes sense to do if the consumer has asked
+for a mode that is not pulldown.
+
+> > +	case SND_SOC_DAI_TDM_IDLE_OFF:
+> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_DIN_PD,
+> > +						    TAS2770_DIN_PD_SDOUT, 0);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		ret =3D snd_soc_component_update_bits(component, TAS2770_TDM_CFG_REG=
+4,
+> > +						    TAS2770_TDM_CFG_REG4_TX_KEEPER, 0);
+>=20
+> Actually this does _KEEP but not _FILL.
+
+_KEEPER is the important one. _FILL just controls the behaviour
+of the bus keeper (zero or Hi-Z) when _KEEPER is set. If _KEEPER is
+cleared, the bus keeper is turned off and the value of _FILL doesn't
+matter.
+
 
