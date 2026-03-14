@@ -1,49 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC96388E6F;
-	Fri, 13 Mar 2026 23:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDA623817E
+	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 00:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773444946; cv=none; b=g8CZBDI/DV5dFvlQq6vlvcprhnBji1HpylO0pFK7gQChCc16pEKUVcXIft1ZfZdBt20KSPkw3OzQFAzcu07DslKthTPDR0cbLEb7B9Hfm6sFXuu/86TwZ3nSYmZ8GIEYt7wLdRtp6JG/5K7CaH94ySVyn8EA8Pv+0Y47433lv7g=
+	t=1773446992; cv=none; b=PbhOjzBGiZsRi4qdYZiu9BQ6MolDtBfHB4vhfjsRx6v0vfdI0k15uOERtmBu0TJgHODrBtfXZNoZ1VE7HrFUPzGR9cD+5RzgHvQix1mwCaXW6IIA+0RHRwZwM69+dwbS36tELqROO75v3HoUytGIaJoCVA+7DyNOEDWu/Pkn3HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773444946; c=relaxed/simple;
-	bh=xc7MjIMAXeiLgrS2X6SSXxTUrNBTb/oD67k7f8URbr0=;
+	s=arc-20240116; t=1773446992; c=relaxed/simple;
+	bh=+dGmrcuiiuuV1a5p0Ly1Q66s4c6kjuU3qUogVTsRx/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Doz8AT8iJ9h988DLaFqsYdtD/M6a9U8o5u0MmEPm+81QofYmzBMY4NjdI/VyrLjOrumgsOJJeAJv7b9HmsABGAsK2XzCSUbGKBlSBxS8PXAN9UqlbseaslEJ+kQo8Prmrw4p6aBIj6lthFo3X71Zo43xIhIijYnvmOEJ3YbGLJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4qswcPA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=btIgyj1rhMIO8HK10SnkbO8MUEboAJXwcdlP0/hsFqRAP+sCHiQ348STci6OC+1gtjAGUX+ThXM+QNiyW00subyxUXRRVKiBGDjQoin53BxyQvJo+kS3sqe+cUx0k9cjnZ94ein5ULYlCsSexpqecnKltwbuhfJ2VZ7JoGB3lVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=tXWLHgbi; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4qswcPA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F0C19421;
-	Fri, 13 Mar 2026 23:35:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773444945;
-	bh=xc7MjIMAXeiLgrS2X6SSXxTUrNBTb/oD67k7f8URbr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H4qswcPAtRFmrMfn3/76nP5TwmCCLzz6coATiku1apP2xBcq0JVLP/kB+1TsNsa9I
-	 PDhTDidpmI6dwSCwBD7itqzlgroIR4iuvAR7Fkwvk5i13LqBT2MznlOVTFNcfqFTRA
-	 WxOWi+2HG2Lc4sbjauL2ohhfD/MXHGvRY6Z5LRJn3e0yNH0w8e2N0ZVmYL/Jk1f35a
-	 /wvrzCsTNcz937UrWrf9ImFi5+MLS4AHv+ym95eaTV0Iw6zXymzu/JnKumDDek7rXi
-	 mYAoT5Zo5xMPoZ3sI7zKOTScLJY6aR7oReDurCCbkoW3KnT+g2Sgt/SGtZGj/jLjBh
-	 8XHJAGf8oDwlA==
-Date: Fri, 13 Mar 2026 18:35:44 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-mtd@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	devicetree@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-	imx@lists.linux.dev, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v2 3/3] dt-bindings: mtd: mxc-nand: add missing
- compatible string and ref to nand-controller-legacy.yaml
-Message-ID: <177344494372.3644453.7349557296372406656.robh@kernel.org>
-References: <20260309200351.1791162-1-Frank.Li@nxp.com>
- <20260309200351.1791162-3-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="tXWLHgbi"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35a1d4a095bso1167310a91.0
+        for <imx@lists.linux.dev>; Fri, 13 Mar 2026 17:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773446988; x=1774051788; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O1K2wFHnPv60zEHnUhHNmA3kV7XBCekNFy/nqC8VtDo=;
+        b=tXWLHgbiBxCRn1vqO78uwZZxGjxCxPG7Jkg3LrbvW/IrzrPnzGq/Jt+V/D7bdLIaGM
+         TtiQOXqCbJrrQxbS5Y3r3/zghdDxmuXOlz13m8txxJlrOVeVT1KyTD25zWhi7YKZlH7Z
+         AWjkIHZujWJwyXJyh3x82sNZZVybBVCkzHgFjKPnJxMDakJc4xBXWxouEHmF2uiEnLVp
+         7STzNymQph7JRvfK7ojFb9JBu/fM210+CWrDvEEdPetqO0VyogCaNIenjbgB43T/R1rQ
+         y2mIFUM7r92GmULsMSJkcKp5fYq0sbAEoYZq5e14nGQ30vHM66avxSLMiCq/2DGIWJwU
+         kXrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773446988; x=1774051788;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O1K2wFHnPv60zEHnUhHNmA3kV7XBCekNFy/nqC8VtDo=;
+        b=Jcchx83Oxko4ZvVizJ9Ls4pKXoBdvOXMaJ8wa/xkQ3gapKUM6P3EI6+qtNpXkoSwRA
+         yf+CUbqQVNpmWGHOndKBijAyeGsiLTBS8YgyQbP9a/ST34mKi8CMyIXK2bVlc7SvXHbr
+         ZDd1vXOCem89VA1gaC0RckeX/uXfNOgMkESE+/Bv27JyqQQWCL+pqS8LSXnIAXqL4DDp
+         KXgbGzY0UGCu4gyNlLhuHH9oZFCo5dr0sF87yPgIndG8VHy+E+4osoIFhqbKENqG9NUv
+         ZYgqqA3MWhn9ukWt1ScDAywWfmeyITZg0MChBaSZ8aYTHpTA9RLL4tYSZwnxD2BIPLGZ
+         pZ1A==
+X-Forwarded-Encrypted: i=1; AJvYcCWY/jYo3Ou6n9Y0wqZsrtFulkojxIcodeV4Daayr0fItqHvGIwuozk3F7UMpkJZCwXNsIg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwZOUspMKEgMNE/MuQl/a2PtegMTuuUNPCAFbIJNrlQ93vjLaVU
+	5N+UB6whYT1gCuimlCK/xNOWtsHMRFt5pSGWmhGW+6AxJTAcohVa1iT/ncrF4DuF8/0=
+X-Gm-Gg: ATEYQzw4gCOAXykGJZawp81DLGzwRJ40/HnjIPug1dgvHq171pVCsqmkREB4ulyg7rB
+	yRP9e+7CxyJotDe+KM/HV6Ro5kVbTA0L3Lp7ayWHQHYw0G0iD9gYbxxT3mphLbcwYZ5hWEb5K0a
+	qJTJwtwRlXjFRImlji++zt/fNFBry4yOfjAOwNopYteLDVYnIPxXkaov6d3BJ0Eaa/NoI9+gO4R
+	kn/UxHcaKTejwVf/V9mncQWe3ntVHdVWzQYB1zEGICHEpviKep32KeFrRbsCswfu6mxp82o1RPP
+	9dkqSCq5gOB7ptafxYLCnOzyiRkuESRDT5A4RUCWk4yFd4aEJzqogTS3i2Ea2EXkX+Rls6dMLG8
+	BYjgrJaeDD9BQVHMGLxc+dXz1inlcj8HTptAWqW7kYtZ2NKjgglHMi77fj6kGAob1+8iv5KBHby
+	JQTRh3
+X-Received: by 2002:a17:90b:4ace:b0:359:8ca0:308d with SMTP id 98e67ed59e1d1-35a22053554mr4077220a91.14.1773446988255;
+        Fri, 13 Mar 2026 17:09:48 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:72::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359fe40bed5sm10347528a91.5.2026.03.13.17.09.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 17:09:47 -0700 (PDT)
+Date: Fri, 13 Mar 2026 17:09:46 -0700
+From: Joe Damato <joe@dama.to>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next] net: enetc: remove stray semicolon
+Message-ID: <abSnSjp7cIj/qWGG@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Wei Fang <wei.fang@nxp.com>,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+References: <20260313112454.427191-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,27 +82,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260309200351.1791162-3-Frank.Li@nxp.com>
+In-Reply-To: <20260313112454.427191-1-wei.fang@nxp.com>
 
-
-On Mon, 09 Mar 2026 16:03:44 -0400, Frank Li wrote:
-> Add compatible string fsl,imx51-nand, fsl,imx53-nand and fsl,imx35-nand.
+On Fri, Mar 13, 2026 at 07:24:54PM +0800, Wei Fang wrote:
+> Remove stray semicolon from ntmp_table_name().
 > 
-> Add missinge properties dmas and dma-names.
-> 
-> Change reg's maxItems to 2 because i.MX53 have addition NAND flash internal
-> buffer space.
-> 
-> Change ref to nand-controller-legacy.yaml allow legacy DT layout.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > ---
-> Changes in v2:
-> - use items for regs.
-> ---
->  .../devicetree/bindings/mtd/mxc-nand.yaml     | 20 +++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
+>  drivers/net/ethernet/freescale/enetc/ntmp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Hm, I'm not sure, but I suspect this might be rejected due to the note about
+cleanup in the docs, which generally seems to discourage this sort of thing:
 
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean-up-patches
