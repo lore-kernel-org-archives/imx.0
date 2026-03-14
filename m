@@ -1,85 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011041.outbound.protection.outlook.com [52.101.70.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB90056472;
-	Sat, 14 Mar 2026 00:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773448922; cv=none; b=D0EDXz57ITFYeb5YTVknFRzWmXN05P2y0PX5MVz91bZjeb4j/gxmEdDvSxl/ceEUFWD5G8OCzoWyaClqrbdvkAl2SwLY6e1ui2epBmUBa4wgqYz4foT44/EF5nCkYhrQZgbP02ozBKRpbgTa/Vr6CtBEMkPMySxZ+0hO7DRqqiY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773448922; c=relaxed/simple;
-	bh=NpIW6+avHUeuRL5rtNbePolkZmBWuaSfoHwrvmExauM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oxZmHXPnjy82FniUsjgeBEe7TeI25gyzObmSQziF8B7KHSZpOp4EXM9UMfJXl4FocoFEkp+OlF3OTBM73+lbDSQgX1KGya6xI8HOLvaR5VMOBwmCBILjYNM+ypiMC8/4SCO82IbdSWVK4S+IKutnmW5sR12Xd7RsHLBMIpiywd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9OTGxea; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8216821A453
+	for <imx@lists.linux.dev>; Sat, 14 Mar 2026 01:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773451709; cv=fail; b=bkJ/+Nnb4CWyJgOH093aisnl//Sbe84oSlT3DNmek3xzq1L770O5XTjh9BU61LpDj3fbk+Iccq5gLrg12z+I4RJzMnyU9LG3/JckHJnukqihs84U4gVLnV4xiJkBvy5fZXDAT3i6p+ufKqc50c/0md4ONsocEGH/ujQKTcgsAgQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773451709; c=relaxed/simple;
+	bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RchJDoVLdRAbF3/bxwPqzqTKrXhokIlAjE2/LauKYevGsWN/wlXtIZoZtA+mALNYurr29vmIkt5qtx0cXObeC9rqFQrywfgTO4m7th7ZoPojZNvBKCG1NLHQIC2c25eL6rZa1XXgcNhNVz006Q33QLnn9rzWqngYMe/e9wB9dCE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZxUnfZra; arc=fail smtp.client-ip=52.101.70.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9OTGxea"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB58C19421;
-	Sat, 14 Mar 2026 00:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773448922;
-	bh=NpIW6+avHUeuRL5rtNbePolkZmBWuaSfoHwrvmExauM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k9OTGxeaHohHVeSl/HI1G5pG9InJARTa6fLCnM+HvoclYVbY0ghCbKLDj5ekxBYZY
-	 Vl/c+R8DoIgII2TOasKBtXTERZ+yrZ+0oNSfSkWkRsDNTL0ZWtllbc89KL17swTP9E
-	 IGS4nDsGOALcPexQkh37T36NZQqO/KLmM8+6wJ+1f8UZSWzV6nTfwlSwxUvC09FdoM
-	 Lw6CRN1gOVQVJcUcK5bGHyywIYhRxY1U2fpqycrtOuk6R4p0PxFA5Xj/EtDCM64OxO
-	 incLpA+kBb9eMP2d+zhriTP8uUOzrOe8e/WQhzAqaicWnN4EPASDVWPv7WzCZf9cBb
-	 S6JOPOgC/NYGQ==
-Date: Fri, 13 Mar 2026 19:42:01 -0500
-From: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: PCI: snps,dw-pcie: Drop deprecated
- reset-gpio
-Message-ID: <20260314004201.GA3741015-robh@kernel.org>
-References: <20260312184344.42337-3-krzysztof.kozlowski@oss.qualcomm.com>
- <20260312184344.42337-4-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZxUnfZra"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=raMa4m2pAXtzjtgh0nLx+YmFWwAKEcf4k7JqwGIXHLr5juGDAAfdR/w6TThy4rA1K4MIWOgJ5BHY6pwT7ff+OJVzGNsNgETLn7ROg89P55Bn2iwh8wqUEbJKOeHupEd5qWCNABlH1M13al6OgNHdpIQmpcnZG/PMEHzR5V9jXG0oBlKg3KyfmhGrGF5Biry5RHjsPj5XHWdIE7QSGwHKVCNgBCwM2ygHLr0TNvd1MFFbGMXW/PgeAsipWdpuojsn5IW+sO5zNpOR/VwVvbj4dy2992H1mXim3K6X0ywjYgUpU52KtWggIAuAkU5yJHVgajT3k/jXx+5gFwrrBre2aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
+ b=VNXjRgKkDPLWJIyFikH1PEOs/XdQXl4I1F+p+zG7M5XQjLwe1kPZagfGScItiT2/N5HJPPjqQyzq3nvXkb/ttPwJyA7hTi/AxULYK3F8ubBFFBtalPTB2quxOJDo7XeJfi8xD7cSxpUqpLLgQjsP77Ea8Oj4KO/jYEvytACqAimu7XE/IZ5wNJQCYC0FARqu8b0HyiyCVNKCesB37CzA6LsoMIiYfas4+nDHEMC+2p2r5gEF3d7c97b9LYDtgt6gfBvoRK2lfYJfRgMPWtudm4ycg9O7wxf0FlhB5qCy6niLiZHL7reQ1pEyDRVCvIWHVDq/bWhCd8mOZBWjJepxjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c6YPbO5S4gYyhyarPh2QZwMWACXZqYdiI/h9Axw4nLQ=;
+ b=ZxUnfZraXs5Veh5Cogcnpq6wifeIdov/1r/N7Zk8uesalfhnrow+ITaK4QYW27nXdBbZjJ5QrhYk2fRCzHgofBAC4Twq/VBRACCouHHaijSE82H5zYSQ7irBhVB+7lgx0gTVhhXKEB59VUuuHecoHrxV1L4spY0+0XzcjOSymQczt34Qiitf1VuHTqBIVjfGREZc6O9ef5r8NgI78PpOjjfzOEuKgttsGGD8m9kjTpacHLqyA5LEUQ92ANrMJfIJIvxn8f9C0ZNLcHqZ57jbC6QbVVPyYyFD5nahvAr5Dc78BqmZP4MVq9MLcYDFA6lLc3+yb46i1NDDprZ/mDq8IQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GV2PR04MB11093.eurprd04.prod.outlook.com (2603:10a6:150:278::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.18; Sat, 14 Mar
+ 2026 01:28:07 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.013; Sat, 14 Mar 2026
+ 01:28:22 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Joe Damato <joe@dama.to>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net-next] net: enetc: remove stray semicolon
+Thread-Topic: [PATCH net-next] net: enetc: remove stray semicolon
+Thread-Index: AQHcst9ywAzOlLQTjkS3WrmAXGqJQrWtJ/wAgAAECYCAABDvoA==
+Date: Sat, 14 Mar 2026 01:28:22 +0000
+Message-ID:
+ <PAXPR04MB8510D3E374C64119CA2A584C8842A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260313112454.427191-1-wei.fang@nxp.com>
+ <abSnSjp7cIj/qWGG@devvm20253.cco0.facebook.com>
+ <20260314002413.i36jrsuih6j2lmtc@skbuf>
+In-Reply-To: <20260314002413.i36jrsuih6j2lmtc@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV2PR04MB11093:EE_
+x-ms-office365-filtering-correlation-id: 7c22eb5a-a4ec-49f2-3dca-08de8168fb36
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|38070700021|56012099003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ zWLxUuSYkRJk9ip6qrzrE9elA99KK0vH+sFncIbrYX6s4UEZqzjHQOEnuyvWo3s/n7HY832BIIppo9onSlyBiCBL3/FUnddVQ5vUh6c7ZFlZ2RkyZ7Fvxil9VOHBzc0z2xviOcu3LbnE00lZ4wo1p0bMp+IOCanHMizOPuFOHupGSG9nA+Rna17U+LtGhh6RjbnL1UP2WDoUkg0oOSN4eeLkOUqWWsSmlxKabSaxuW6DnDmWh1pZWbHjafC7YHhpuk5R1XU3fIX7r8U6BuAxSPxdrP9qvtmBn/DIQyso4sEQNvFSRBARzs21t1YpnUwUF6v+5dSIyCYhDfqNtUmdCiQEJZullkrKxO8rHhHQtY+UZyiJxVLDir5ehyg2JjL8gpvQD6TaU0BKGxTRi7ljaSLXp+G7yhpgLIXEt6WJTB90XSUhGrpqS5rYwfsXygrDBHNm1Ezcjivz4AJRVt4Vic4Qfdw4esbbysS9sadVnpKIumeWOEXFey2UOfu+Jnk2sBO8d6iCWG/zF5+yoPdLei6ls5IdZ3HUvRrNWzhw+YPkbX+/6d3V2B/aX4IXfTDH/dmJCHmnzSBtuSZFPqDSmWP0dQRuYipHHDLvspQQsxV+gqitlARTbEwu7GQqN4LiyUJ53cblzByuUJmPLgcy2bZskg1y/8FRLL2wdIp4I07qvt3H7VtlBT8O6Zr7+FuzcslEyIGBfEu76Pn+ATQIxtUTaehGpAqqo/Nt9NC2gj3Qtr3EJ9yJfO8exjOmYobZuIRl15uWaTRdThnIr2hh40VkpIyqSWDj+cFjadfo2/0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?uLpmk7aM8UrV0NskBOCflya6zHBi2tYeWyEO2SKsInLN6Kf57sdbVXqhMBI2?=
+ =?us-ascii?Q?s/6tFjPE4veMfTa6QWL932A4xzvjDtpz1EpKxk6TvbPzeXakvqI0dcPMIVje?=
+ =?us-ascii?Q?YFZGnrxqqEJ0g/w+BphgRFnCNNkDWAZUHKBAIWuO9w2bG9JSpO5Z8eGwoBfm?=
+ =?us-ascii?Q?wXDVJ1uFe/k9cRi/OuS5OWcvFOfmYSd0xhGSkBFbO2CHpdc5kIfbJXZwWU7N?=
+ =?us-ascii?Q?1+F8UVNYuDxQ4Sxti0nknnV2PmRqJHVuW7QCHw5ElSqTaFAfYGhg0ZGSgaZn?=
+ =?us-ascii?Q?xD9617W/se/931bvm+kBxGnBeplnyw6cZUNa4BjBqfnXDPjVh/7Ke4umWDA5?=
+ =?us-ascii?Q?tAfHn0gWTuQKoPXBTRFnjUwtr5rKwV6d/8MxpYfU7hRXtkd8/mb+lPk2FMHS?=
+ =?us-ascii?Q?su+k2LqDcR4/4Y96UU+8oyxpjx2MXEmRqJGzwoWUUH/DKlMhqY2ujEy3FJ3n?=
+ =?us-ascii?Q?moqXcQJIHFfXMxjrh7he36KfvYlKIKQ2Om7mp1TksnijizESPvMqtj606qwV?=
+ =?us-ascii?Q?h/dggtvxWivbDqg+Vlq1pcoIJEaJdWORxb97KrtNy0SXrjqCtyZ2Wr8KYdqv?=
+ =?us-ascii?Q?xBo//UwIH1lMlITGpuOELDay44/mxIbpUl6rW+Id1dByjWQec3I0qf5WIG44?=
+ =?us-ascii?Q?qQgma16NLdwYxtz9O3tFlcsZc3WgTJSuq+aMQE3oV3we7zR4qZEnCbjAR0Lp?=
+ =?us-ascii?Q?3WMJz7vcxSTACeviRvFgMaa5Xa48mFnFRn9HgAu0G+l3cK0S6p2oVAQ/22sE?=
+ =?us-ascii?Q?YHRifyCco6F2IibW9G1W3Bu2nnsr1DsatK9lX6NFd4L/AZOzs2Mg/Xcf//+E?=
+ =?us-ascii?Q?Mp1r3B7K3Qri4QY8wLjtgWyEPQL6sRvgMSbmnsGFenUs5UaOgMFfvJevb9XL?=
+ =?us-ascii?Q?LB8KYFUcGfEht5kttV9wQfkmXD7X0dQq8kt2IapJ/PaJuhX0VQjFhrBU66Rv?=
+ =?us-ascii?Q?+jz68Np66QcxvNGe61TbG9ZaUajZkBe2Fj5wgjtWelrV/wryXS0VzZYkDH/3?=
+ =?us-ascii?Q?icxic4dqRTqu7596hkHgJPbpQXVE4nReLnbK1aVJsGLClLMLUnE/u42Wsgqa?=
+ =?us-ascii?Q?nGoXlIKil+T+oo3vUD8klCSdSDTDS3AfUMHT3qPbJGDRQJ7mO8pYQ/eFJIpd?=
+ =?us-ascii?Q?Abmhs4cseIpNDpyeflbH2+NInys51q+b8mliI7H08vM6J+8eKBjYt1VPf4q1?=
+ =?us-ascii?Q?2uSnc1BfF9m05nAcFQkxKi/JO1f48CU0SJOa/6AweJEi8yrdeNf4y7pmK3Hl?=
+ =?us-ascii?Q?oaN+raJGkSP+hDxt2eXzihk6D6rQid4nfzprJbJEYGiaGjWqQ18JTL7yGsGn?=
+ =?us-ascii?Q?Tz2gZIaOIVWeGBhSuSCdoywbRlA8l5v7jiaq32UtUQjs3gzGGP1Wx7hmpTAW?=
+ =?us-ascii?Q?R6YF9kI+Wp67E5wBvKXFCR+TRWWQLv0UJFyUb2+qRCWpYQ+Gzs4uY15NGYLO?=
+ =?us-ascii?Q?XUsuCli+YIrwO5skw+as/wgzDpFbMZa5cPgfuOiSw+ZKR18n6biWd/dWCK5u?=
+ =?us-ascii?Q?w+rjyMbYLNAua0sqAeI2O/rIC+7FXUZXOsOp5HeRHk78nrac35v3TmvMjQfx?=
+ =?us-ascii?Q?hCrkG7rsynzR/CVWhNC9bNK3Y+/kSMSRIDBigDwa44bYLXFpioEnhyOACIhQ?=
+ =?us-ascii?Q?PFFyH11UcX5dDxKdYVxwTlMlc2UZBXtcaNn6H8HHfpzCrdGLhfY6Xg2qr83h?=
+ =?us-ascii?Q?O0h672hVSgJnb4FRdmzI/EYNrvRlmYCOAZFKeD2c/JUqONHd?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312184344.42337-4-krzysztof.kozlowski@oss.qualcomm.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c22eb5a-a4ec-49f2-3dca-08de8168fb36
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2026 01:28:22.3820
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uYw5/yc/w/SIGNbO8XwodeQE/JZ5/spRfqnouaW80E0W2t1iK2Gu+4KI3OpkQJFoBCyJgXQsmFoMuAdY0cUoGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11093
 
-On Thu, Mar 12, 2026 at 07:43:46PM +0100, Krzysztof Kozlowski wrote:
-> GPIOs with "gpio" suffix were long time ago deprecated in favor of
-> "gpios" and this particular property was documented explicitly as
-> deprecated since commit 42694f9f6407 ("dt-bindings: PCI: add
-> snps,dw-pcie.yaml") in 2021.
-> 
-> Linux kernel supports both variants for a long time, thus listing the
-> deprecated one is redundant and instead legacy DTS should be updated.
-> 
-> Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> 
-> ---
-> 
-> I will fix DTS separately, so after applying this patch there will be
-> bunch of dtbs_check warnings. That's expected and fine.
+> > Hm, I'm not sure, but I suspect this might be rejected due to the note =
+about
+> > cleanup in the docs, which generally seems to discourage this sort of t=
+hing:
+> >
+> >
+> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean
+> -up-patches
+>=20
+> "simple clean-ups, which are not in the context of other work"
+>=20
+> The ENETC NTMP code is under active development, and Wei is developing it=
+.
+> The semicolon was added in May last year and was found as part of other
+> review touching that area.
 
-Not fine. I only want to see warnings decreasing.
+Yes, this cleanup is for the upcoming NETC switch patches, which has some
+changes to ntmp_table_name().
 
-The justification for dropping deprecated properties should be "there 
-aren't any more known users (for some amount of time)".
-
-Rob
