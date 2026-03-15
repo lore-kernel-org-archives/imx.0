@@ -1,143 +1,431 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A972B9BA;
-	Sun, 15 Mar 2026 16:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203D4373C18
+	for <imx@lists.linux.dev>; Sun, 15 Mar 2026 17:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773592705; cv=none; b=EOS0JoSO64qvDMxhTdmbrhB8PpLJgqmI/ww6SIiVC2brXtI2or3hrO9QGF4DI3VtDm4VHAPiz5gRtgGeuMBNamRB7cKTpgvFIOzz75Ojz5stm2EA/OWcWW3hUhhZdtwK7HCsZmxVm/1UofPih+L1kHOdl7rMu+stcWXTG1mRLlQ=
+	t=1773594499; cv=none; b=axrp9vMVu5mtItjnIiBm20yiWNoyqyaL63MgNxkl3Y8gWX0vjdD4SrVRom/f9prdo1O5ldrwPFLRqeD8jtIVUp7nrJHI8NTUDGITaEXDjxjZwm847RHugMP36EZCxL7uTtmOvYQylnE5MHXF0qKsHHHFQfmw/0IjKfMqns7XsSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773592705; c=relaxed/simple;
-	bh=WrNeMYsAA03DHVECs98FC7knzVMNjLmWyKvwlzN4Krw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pHBmT8NL4pQcHhjEgl4wif5HRLz1rz23MlvfmD2CyOsax86i3au41AN+3WAcgkz/QzCkwAWXAktLTbyf3na7CePt0jcjXeLxILJ3+ucdZvt3pwfPl2vMrcEOUkk5fH7cYyLam550l6b5kLGqkRv9RdYF8KZ0a+dz8Pipu32RQ7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODlndx/l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773594499; c=relaxed/simple;
+	bh=SoPi6EZR36E7NYzW7ROn+VXlsuvtsMeKrxme0hCMUPk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oMccgPcj2XiPHhCiCSKt/B6ktIxkIajHt6pptrF/5e1/cvYPuoYtBE3DQCAbe43ZLlprPr+m03uQtQ4vAUWanYekjuEDUMSa+corTMRYRoPtK3H5hlJ+AyHk9i9AixiGZ3wy2O0Va3RKu5ALnQXKcM8Z5T9PmLSyRWX/hwwgsig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Amnfi7m0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YOrkv4OW; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODlndx/l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A308C4CEF7;
-	Sun, 15 Mar 2026 16:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773592705;
-	bh=WrNeMYsAA03DHVECs98FC7knzVMNjLmWyKvwlzN4Krw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ODlndx/l2BTSbPjRspV9GLT7+5T3/4XNm1uJzTAR5k+bHedYGFbm7JcgrzbAMgwWW
-	 h3t+0iwi22VFwi/vk45Kz2w9HYLdExgXOq8xBGIQKNkp/kZKGRqwYWpyQfSimyVgB7
-	 WrKPZMlYKJl6FxwhgiR9lK+Hi0KC8ofixzUzYoWcVFS2xLl6FqTtVBCdp6trj9wHFZ
-	 G1cjoMWJmWsNxRMB0F4r6FJFjTbPCymS+hka/0zDBbmt7PBcrnAvIG9To3of5IcfVp
-	 JWhdazvUhIMZ2QhFYQA0dxWVuzXyQyBnyelMGJ1ME9cZe/XmLRTuJJVXnFz+VDnPI7
-	 1D2bXfJj7EFFg==
-Date: Sun, 15 Mar 2026 22:08:06 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
-	Jesper Nilsson <jesper.nilsson@axis.com>, Jingoo Han <jingoohan1@gmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Srikanth Thokala <srikanth.thokala@intel.com>, 
-	Marek Vasut <marek.vasut+renesas@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Christian Bruel <christian.bruel@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>, Koichiro Den <den@valinux.co.jp>, 
-	Damien Le Moal <dlemoal@kernel.org>, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v4 00/10] PCI: endpoint: Differentiate between disabled
- and reserved BARs
-Message-ID: <skfqxnugt4t7eidfny5ojczq3wpu4u5yjfd6wdk3ikjmbgru7t@63nfqvrl5mvs>
-References: <20260312130229.2282001-12-cassel@kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Amnfi7m0";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YOrkv4OW"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62F6TFxv1106575
+	for <imx@lists.linux.dev>; Sun, 15 Mar 2026 17:08:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=thJzkvW9uOc7ANNbvpiJj/
+	JZWbmF086MfCsEV/kb1PM=; b=Amnfi7m0rPnXRh+qwWteFyKXFGRtWdWJPLHVgi
+	3X3StFtnBtdGAP3Vk7NREEwWfihYkgnwEA7QAWFi46mPrZp9eA2/lUA8HlJX9TxU
+	lq7Id5YO7BlZHa7YPPEqihviIVmDqJV8GytlpdfCGy41/Gfmd22lP3iZ0sd/ADBS
+	9uenNtpdCqDzntK2Ia1c0NA1NyblfMJ8+sTAvMGgpjkVDlvZv/IO76Wsgwo7NZRu
+	7bAm9wy+Qx/3iT8JyCoPTl3FkAvGAvMMQiVUlHw5/gomHywQN/V2INbXM5FWDeUC
+	eX4WYAy3dJqalyon/Ax8+4aiFxj2d6Bmr6g1IQfy3Kpvw6qg==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cw04235dx-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Sun, 15 Mar 2026 17:08:16 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ae4b96c259so53147125ad.1
+        for <imx@lists.linux.dev>; Sun, 15 Mar 2026 10:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773594495; x=1774199295; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=thJzkvW9uOc7ANNbvpiJj/JZWbmF086MfCsEV/kb1PM=;
+        b=YOrkv4OWyQHHvIdKF2vKE+JEIsTOmR46r+t5pG2Od8PXw2v1sRz1NEBVxiwXLxTMLd
+         EG57TnjWwwdTOa6oi99EPgJYRI90uNtWyYpcV0cG1UPybE3mxqhdqUwMkxdRjYJ5pjuV
+         qiyQzRWMLLregj7gQnaDgcEP7A6307g1f8MCUQ77WgCAEuJmQL84VEvOdFV1p2oqKGYM
+         /GMSB4P6I0oHjgC+KxFRZvE1enkhLmK/ZKMWUF7fRow50cqToxD4Ljr4VsS1JwzJsB16
+         8mkGmw3uJrQ44vwcuioBPZ4cNZ8wVj+yLA8QJTkCDdMDBmfjmU3LcQf6ZK6sX636bw5h
+         LUug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773594495; x=1774199295;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=thJzkvW9uOc7ANNbvpiJj/JZWbmF086MfCsEV/kb1PM=;
+        b=m3JFHnpXXCjeGoAv8y+znK2xp9DFwL5Q3kSUqpQNNJlvRlC0GX4zQVTzLcpCWhrVLc
+         R7uVcWwnlr3qPJk04gjkMd5V8m3vB75qiAqMJh2BvVlBb4+x0irrFu0NNKXoSm2YrCGu
+         ezPDWbZg0qAJaqbVTyqzsZICzN/hZ76AH8hPGrF/JN+pHnl3JJm0A72oD6rDcUEByW7D
+         /Ow1rZwrdax/h/VDdGHKtwC5JmEz4SpN0Woghr88+vJHGhexv/o07cRdRyQvUfO2aXCB
+         R6lBI7t5fOaIpSbHNGD488WduQBF9mR5kzO6La4BRmI57+/AVZzFwT7J8S0m4MFFaB1G
+         PqQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV0qUK9YwjXK7zGAY6SZLky/i4Dc3j9Oq3aav3m+Cg0Ru5OGqQfvw50aAwQieDOHMm1cZQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxPTXfly4jYJMlrWz4xJWGDYPopEB1qqfM/MLL8hQlnLaH0I60O
+	iLNZ/100e5kwmSpgA9FJsZp43rG+3kcHmzJLEOV4IiNB5fWhbqRBA9gmiRAXdiz1e7ZP0BA7b14
+	84mcTFeJvtG9Oh7u9qoRdugPVEipTv8MeeRDGdWq7R0wQl2xypvFI9GA=
+X-Gm-Gg: ATEYQzxqQyffe7sJ++ouyYy5OxAgGzOmT1ZF5PgQ8b52Htr6ZAqXsm5m/F0U9ZrC8se
+	eIUX7tdu1Iu9NyYAu1aRpLbloRD/OzjprGk6hF2EXRqvktJou1SIl8tIUk3f5aXqM1/vLk9G5YA
+	IEFq5mM18yMSCLNLKNnPeNVlYZrRtLA1oNDYGa8IG8SwY7Df5laMeUdsv4l8c0QyaXU/h+h9pJB
+	PlkUwzblu5BhKGMO7uMGcdJladfVcyP1oTYrNxk12igmnVJHAYbyVVT2Va/QRtrXBNCAbiDBwm9
+	ldkm8Jm8bwYJ+K3NEJaQo2hdkwvt3cFrQ1/PoxS3c/zxw4vJklHZ5vvIBRBckLmJiE8hCMUulLU
+	riZbpWKsOXB74wewvVIZbJKv5k2OQjMWlLavYu4YbeanfR5krY44Whxmi
+X-Received: by 2002:a17:903:1b68:b0:2b0:5306:5f20 with SMTP id d9443c01a7336-2b0530674cemr17093105ad.18.1773594494867;
+        Sun, 15 Mar 2026 10:08:14 -0700 (PDT)
+X-Received: by 2002:a17:903:1b68:b0:2b0:5306:5f20 with SMTP id d9443c01a7336-2b0530674cemr17092635ad.18.1773594494295;
+        Sun, 15 Mar 2026 10:08:14 -0700 (PDT)
+Received: from hu-vjitta-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece56c393sm78973035ad.17.2026.03.15.10.08.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Mar 2026 10:08:13 -0700 (PDT)
+From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+Date: Sun, 15 Mar 2026 22:37:43 +0530
+Subject: [PATCH v2] of/iommu: support multiple iommu-map entries per input
+ ID
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260312130229.2282001-12-cassel@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260315-iommu_multi_map-v2-1-51b98cb79331@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAF7ntmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDY0NT3cz83NzS+NzSnJLM+NzEAl2LZMskcwsTS4PE5FQloK6CotS0zAq
+ widGxtbUA+zWOvmEAAAA=
+To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Marc Zyngier <maz@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        imx@lists.linux.dev, xen-devel@lists.xenproject.org,
+        linux-arm-msm@vger.kernel.org,
+        Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773594484; l=11143;
+ i=vijayanand.jitta@oss.qualcomm.com; s=20260301; h=from:subject:message-id;
+ bh=SoPi6EZR36E7NYzW7ROn+VXlsuvtsMeKrxme0hCMUPk=;
+ b=xJyzCudAB+iilqpGW9jjZhvmYkMUYUWeUOH6tnG/x8TC/YIZ05rxJXUEds5TaDqR7UknSPvcR
+ OdGCrfnovcbBbST29yWlUwSy457WFOvR6FoxeZZsHPtfMKGP1PCqCGz
+X-Developer-Key: i=vijayanand.jitta@oss.qualcomm.com; a=ed25519;
+ pk=Lpi7Cs3wHe8KZtqvyci7FTOLzsKpEHKGCaPNZw+1zRI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE1MDEzNSBTYWx0ZWRfX+OxrUcJGNCkE
+ 9Hx2WniIYHDRRqqOgzvVAJAaFxwrYCriw+u4k4PQaZDUVl4jPpYDm/XPlpB3s/2ox2HGAOzzsHx
+ MFWcnqy/QfNX9dLCWqSXlU6xnzEJnpl3Oep645Ssxvj+SJz7XOM9YMeSgwBrBZDa7H/j6+7k68O
+ M0/PQp3THCLvI9NCqZ6FhBDoux80bZiU4BMfl3RyDcw/nT40vcXgiohWKaAlB+vvGq97HV3RWA+
+ gYBgPZ2MGj2UEb76nmYL+AuLfwhJaIa66AMur9nkKI7qgbL18odFb1KWGdxqiPL0T5lv49lLQnv
+ g4fAanc+7y/wIvPwfRhnb6JTQ2LCR7R+GrmCcb1YM4s/8UwqD2eQ/37/LsA2pbYiKsqehdYQpdP
+ JVx19Y/ckzQuBWEFwc4GwNk5eP3SKkUEZeHkpe8j76r2OLvKI9afa7hHtJvV86j5EYgsMtu6Bmn
+ 1EIe9XVVe8tuj9PDWFA==
+X-Proofpoint-GUID: _Mjn4fsgDXK7ATzgdO7rjHdwaTE7A9lJ
+X-Authority-Analysis: v=2.4 cv=SJJPlevH c=1 sm=1 tr=0 ts=69b6e780 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=kIQn9afXKFv-EtykHQIA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: _Mjn4fsgDXK7ATzgdO7rjHdwaTE7A9lJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-15_06,2026-03-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603150135
 
-On Thu, Mar 12, 2026 at 02:02:28PM +0100, Niklas Cassel wrote:
-> Hello all,
-> 
-> This series was originally written in response to the patch series from
-> Manikanta Maddireddy that was posted here:
-> https://lore.kernel.org/linux-pci/291dab65-3fa6-4fc8-90a2-4ad608ca015c@nvidia.com/T/#t
-> 
-> Manikanta has reviewed this series and will send a small series on top of
-> this one.
-> 
+When multiple mappings are present for an input ID, linux matches
+just the first one. There is a usecase [1] where all the mappings
+are to be maintained in parallel for an iommu-map entry of a same
+input id.
 
-Applied to pci/endpoint, thanks!
+Add a next_offset iterator parameter to of_map_iommu_id() and
+refactor of_map_id() internals into a static helper to carry it.
+Update of_iommu_configure_dev_id() to loop over all matching
+entries to support this case. All other callers pass NULL and
+are unaffected.
 
-- Mani
+[1] https://lore.kernel.org/all/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
 
-> 
-> Changes since v3:
-> -Modified patch 1 to simply drop BAR_RESERVED for a BAR following an
->  only_64bit BAR (Manivannan).
-> -Added a patch from Manikanta, to make his follow-up series smaller,
->  since this series touches the same lines anyway.
-> 
-> Link to v3:
-> https://lore.kernel.org/linux-pci/20260302095913.48155-11-cassel@kernel.org/
-> 
-> 
-> Koichiro Den (2):
->   PCI: endpoint: Describe reserved subregions within BARs
->   PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window
-> 
-> Manikanta Maddireddy (1):
->   PCI: endpoint: Allow only_64bit on BAR_RESERVED
-> 
-> Niklas Cassel (7):
->   PCI: endpoint: Do not mark the BAR succeeding a 64-bit BAR as
->     BAR_RESERVED
->   PCI: endpoint: Introduce pci_epc_bar_type BAR_DISABLED
->   PCI: dwc: Replace certain BAR_RESERVED with BAR_DISABLED in glue
->     drivers
->   PCI: dwc: Disable BARs in common code instead of in each glue driver
->   PCI: endpoint: pci-epf-test: Advertise reserved BARs
->   misc: pci_endpoint_test: Give reserved BARs a distinct error code
->   selftests: pci_endpoint: Skip reserved BARs
-> 
->  drivers/misc/pci_endpoint_test.c              | 21 ++++++++-
->  drivers/pci/controller/dwc/pci-dra7xx.c       |  4 --
->  drivers/pci/controller/dwc/pci-imx6.c         | 22 +++------
->  drivers/pci/controller/dwc/pci-keystone.c     | 12 +++++
->  .../pci/controller/dwc/pci-layerscape-ep.c    |  6 ---
->  drivers/pci/controller/dwc/pcie-artpec6.c     |  4 --
->  .../pci/controller/dwc/pcie-designware-ep.c   | 24 ++++++++++
->  .../pci/controller/dwc/pcie-designware-plat.c | 10 ----
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 23 ++++++----
->  drivers/pci/controller/dwc/pcie-keembay.c     |  3 --
->  drivers/pci/controller/dwc/pcie-qcom-ep.c     | 12 -----
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c   | 16 ++-----
->  drivers/pci/controller/dwc/pcie-stm32-ep.c    | 10 ----
->  drivers/pci/controller/dwc/pcie-tegra194.c    | 19 ++------
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 19 +-------
->  drivers/pci/controller/pcie-rcar-ep.c         |  3 --
->  drivers/pci/endpoint/functions/pci-epf-test.c | 24 ++++++++++
->  drivers/pci/endpoint/pci-epc-core.c           |  5 +-
->  include/linux/pci-epc.h                       | 46 +++++++++++++++----
->  .../pci_endpoint/pci_endpoint_test.c          |  4 ++
->  20 files changed, 154 insertions(+), 133 deletions(-)
-> 
-> 
-> base-commit: 0b74f7d72399d4c4422ed3d68ef28b3612f71e74
-> -- 
-> 2.53.0
-> 
+Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+---
+On Qualcomm kaanapali, the VPU hardware has multiple internal blocks
+that generate different stream IDs for the same input ID. The device
+tree encodes them as separate iommu-map entries sharing the same input
+ID:
 
+  iommu-map = <0x100 &apps_smmu 0x1940 0x1>,
+              <0x100 &apps_smmu 0x1a20 0x1>, ...
+
+This requires multiple iommu-map entries per device.
+of_iommu_configure_dev_id() currently stops at the first match,
+so only one stream ID gets registered with the IOMMU.
+
+The v1 series [1] addressed this with a callback threaded through
+of_map_id().
+
+This patch uses a next_offset iterator on of_map_iommu_id() instead,
+keeping of_map_id() unchanged, and updates of_iommu_configure_dev_id()
+to loop over all matching entries.
+
+This patch also depends on iommu-cells series [4].
+
+Changes since v1:
+      - Split patches 2/7 [2] and 3/7 [3] out into this standalone series.
+      - Dropped the callback (of_map_id_cb / of_map_id_arg) entirely.
+      - Replaced with a next_offset iterator on of_map_iommu_id()
+    	only; of_map_id() public API is unchanged.
+      - of_iommu_configure_dev_id() now loops explicitly; no
+        bus-type heuristic (dev_is_platform()) needed.
+
+[1] https://lore.kernel.org/all/20260126-kaanapali-iris-v1-0-e2646246bfc1@oss.qualcomm.com/
+[2] https://lore.kernel.org/all/20260126-kaanapali-iris-v1-2-e2646246bfc1@oss.qualcomm.com/
+[3] https://lore.kernel.org/all/20260126-kaanapali-iris-v1-3-e2646246bfc1@oss.qualcomm.com/
+[4] https://lore.kernel.org/all/ce25b963-0e8e-4411-a406-7b466eadb1f9@oss.qualcomm.com/
+
+Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+---
+ drivers/iommu/of_iommu.c              | 20 +++++++----
+ drivers/of/base.c                     | 65 ++++++++++++++++++++++++++++++-----
+ drivers/pci/controller/dwc/pci-imx6.c |  2 +-
+ drivers/pci/controller/pcie-apple.c   |  2 +-
+ drivers/xen/grant-dma-ops.c           |  2 +-
+ include/linux/of.h                    |  4 +--
+ 6 files changed, 75 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index a18bb60f6f3d..947eedd9a88b 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -46,14 +46,22 @@ static int of_iommu_configure_dev_id(struct device_node *master_np,
+ 				     const u32 *id)
+ {
+ 	struct of_phandle_args iommu_spec = {};
+-	int err;
++	int offset = 0, err;
++	bool found = false;
+ 
+-	err = of_map_iommu_id(master_np, *id, &iommu_spec);
+-	if (err)
+-		return err;
++	while (!(err = of_map_iommu_id(master_np, *id, &iommu_spec, &offset))) {
++		err = of_iommu_xlate(dev, &iommu_spec);
++		of_node_put(iommu_spec.np);
++		iommu_spec.np = NULL;
++		if (err)
++			return err;
++		found = true;
++	}
++
++	/* -ENODEV means all entries exhausted; success if at least one was processed */
++	if (err == -ENODEV && found)
++		return 0;
+ 
+-	err = of_iommu_xlate(dev, &iommu_spec);
+-	of_node_put(iommu_spec.np);
+ 	return err;
+ }
+ 
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 9c44eb6d445d..71175e670757 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2146,13 +2146,13 @@ static bool of_check_bad_map(const __be32 *map, int len)
+  *
+  * Return: 0 on success or a standard error code on failure.
+  */
+-int of_map_id(const struct device_node *np, u32 id,
+-	       const char *map_name, const char *cells_name,
+-	       const char *map_mask_name,
+-	       struct of_phandle_args *arg)
++static int of_map_id_next(const struct device_node *np, u32 id,
++			  const char *map_name, const char *cells_name,
++			  const char *map_mask_name,
++			  struct of_phandle_args *arg, int *next_offset)
+ {
+ 	u32 map_mask, masked_id;
+-	int map_bytes, map_len, offset = 0;
++	int map_bytes, map_len, offset = next_offset ? *next_offset : 0;
+ 	bool bad_map = false;
+ 	const __be32 *map = NULL;
+ 
+@@ -2161,7 +2161,7 @@ int of_map_id(const struct device_node *np, u32 id,
+ 
+ 	map = of_get_property(np, map_name, &map_bytes);
+ 	if (!map) {
+-		if (arg->np)
++		if (arg->np || next_offset)
+ 			return -ENODEV;
+ 		/* Otherwise, no map implies no translation */
+ 		arg->args[0] = id;
+@@ -2262,9 +2262,16 @@ int of_map_id(const struct device_node *np, u32 id,
+ 		pr_debug("%pOF: %s, using mask %08x, id-base: %08x, out-base: %08x, length: %08x, id: %08x -> %08x\n",
+ 			np, map_name, map_mask, id_base, be32_to_cpup(out_base),
+ 			id_len, id, id_off + be32_to_cpup(out_base));
++
++		if (next_offset)
++			*next_offset = offset;	/* caller resumes from here */
+ 		return 0;
+ 	}
+ 
++	/* no (more) matches found in the map */
++	if (next_offset)
++		return -ENODEV;
++
+ 	pr_info("%pOF: no %s translation for id 0x%x on %pOF\n", np, map_name,
+ 		id, arg->np);
+ 
+@@ -2276,6 +2283,38 @@ int of_map_id(const struct device_node *np, u32 id,
+ 	pr_err("%pOF: Error: Bad %s length: %d\n", np, map_name, map_bytes);
+ 	return -EINVAL;
+ }
++
++/**
++ * of_map_id - Translate an ID through a downstream mapping.
++ * @np: root complex device node.
++ * @id: device ID to map.
++ * @map_name: property name of the map to use.
++ * @cells_name: property name of target specifier cells.
++ * @map_mask_name: optional property name of the mask to use.
++ * @arg: pointer to a &struct of_phandle_args. On input, @arg->np may be
++ *	set to a target device node to match, or NULL to match any. On
++ *	success, @arg->np will be set to the matched target node (with a
++ *	reference held), @arg->args_count will be set to the number of
++ *	output specifier cells as defined by @cells_name in the target node,
++ *	and @arg->args[0..args_count-1] will contain the translated output
++ *	specifier values.
++ *
++ * Given a device ID, look up the appropriate implementation-defined
++ * platform ID and/or the target device which receives transactions on that
++ * ID, as per the "iommu-map" and "msi-map" bindings. If @arg->np points to
++ * a non-NULL device node, only entries targeting that node will be matched;
++ * if it is NULL, it will receive the device node of the first matching
++ * target phandle, with a reference held.
++ *
++ * Return: 0 on success or a standard error code on failure.
++ */
++int of_map_id(const struct device_node *np, u32 id,
++	      const char *map_name, const char *cells_name,
++	      const char *map_mask_name,
++	      struct of_phandle_args *arg)
++{
++	return of_map_id_next(np, id, map_name, cells_name, map_mask_name, arg, NULL);
++}
+ EXPORT_SYMBOL_GPL(of_map_id);
+ 
+ /**
+@@ -2285,15 +2324,23 @@ EXPORT_SYMBOL_GPL(of_map_id);
+  * @arg: pointer to a &struct of_phandle_args for the result. On success,
+  *	@arg->np holds a reference to the target node that the caller must
+  *	release with of_node_put().
++ * @next_offset: if non-NULL, on success it is set to the map offset just
++ *	past the matched entry. Pass this value back on the next call to
++ *	resume scanning from where the previous call left off, allowing all
++ *	matching entries for the same @id to be iterated. Pass NULL (or a
++ *	pointer to 0) to find only the first match.
+  *
+- * Convenience wrapper around of_map_id() using "iommu-map" and "iommu-map-mask".
++ * Wrapper around the internal iommu-map scanner using "iommu-map" and
++ * "iommu-map-mask". When @next_offset is non-NULL, returns -ENODEV once
++ * all matching entries have been exhausted.
+  *
+  * Return: 0 on success or a standard error code on failure.
+  */
+ int of_map_iommu_id(const struct device_node *np, u32 id,
+-		    struct of_phandle_args *arg)
++		    struct of_phandle_args *arg, int *next_offset)
+ {
+-	return of_map_id(np, id, "iommu-map", "#iommu-cells", "iommu-map-mask", arg);
++	return of_map_id_next(np, id, "iommu-map", "#iommu-cells",
++			      "iommu-map-mask", arg, next_offset);
+ }
+ EXPORT_SYMBOL_GPL(of_map_iommu_id);
+ 
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 5f8a11774eb5..0d7f5e6d037a 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1146,7 +1146,7 @@ static int imx_pcie_add_lut_by_rid(struct imx_pcie *imx_pcie, u32 rid)
+ 	u32 sid = 0;
+ 
+ 	target = NULL;
+-	err_i = of_map_iommu_id(dev->of_node, rid, &iommu_spec);
++	err_i = of_map_iommu_id(dev->of_node, rid, &iommu_spec, NULL);
+ 	if (!err_i) {
+ 		target = iommu_spec.np;
+ 		sid_i = iommu_spec.args[0];
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 2e86f8fd300b..c780e3f9d14d 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -765,7 +765,7 @@ static int apple_pcie_enable_device(struct pci_host_bridge *bridge, struct pci_d
+ 	dev_dbg(&pdev->dev, "added to bus %s, index %d\n",
+ 		pci_name(pdev->bus->self), port->idx);
+ 
+-	err = of_map_iommu_id(port->pcie->dev->of_node, rid, &iommu_spec);
++	err = of_map_iommu_id(port->pcie->dev->of_node, rid, &iommu_spec, NULL);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/drivers/xen/grant-dma-ops.c b/drivers/xen/grant-dma-ops.c
+index 36547d7cf1d6..062beb5825f5 100644
+--- a/drivers/xen/grant-dma-ops.c
++++ b/drivers/xen/grant-dma-ops.c
+@@ -325,7 +325,7 @@ static int xen_dt_grant_init_backend_domid(struct device *dev,
+ 		struct pci_dev *pdev = to_pci_dev(dev);
+ 		u32 rid = PCI_DEVID(pdev->bus->number, pdev->devfn);
+ 
+-		if (of_map_iommu_id(np, rid, &iommu_spec)) {
++		if (of_map_iommu_id(np, rid, &iommu_spec, NULL)) {
+ 			dev_dbg(dev, "Cannot translate ID\n");
+ 			return -ESRCH;
+ 		}
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 953f2dbe0e86..990849f00e74 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -467,7 +467,7 @@ int of_map_id(const struct device_node *np, u32 id,
+ 	       struct of_phandle_args *arg);
+ 
+ int of_map_iommu_id(const struct device_node *np, u32 id,
+-		    struct of_phandle_args *arg);
++		    struct of_phandle_args *arg, int *next_offset);
+ 
+ int of_map_msi_id(const struct device_node *np, u32 id,
+ 		  struct of_phandle_args *arg);
+@@ -943,7 +943,7 @@ static inline int of_map_id(const struct device_node *np, u32 id,
+ }
+ 
+ static inline int of_map_iommu_id(const struct device_node *np, u32 id,
+-				  struct of_phandle_args *arg)
++				  struct of_phandle_args *arg, int *next_offset)
+ {
+ 	return -EINVAL;
+ }
+
+---
+base-commit: 9e94742cffb7541f55fa904a40c1ca9d836d303d
+change-id: 20260315-iommu_multi_map-8c9b78490ace
+
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+
