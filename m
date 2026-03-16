@@ -1,92 +1,92 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C203A3E97
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A942D3A2565
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773674168; cv=pass; b=FJWHFu5U5ApFmkjRMXS2h0ICl+8HvDvDIlP8jLelFtx+vhPr0IMPA017H/C6Z/C85bU1j+62lpAmW7QTcSO4tkG3BLQ3/lYhIMbeNswQ+1adJnOnv14mH/HEbhTpomvZzawUjq02jDUiIOyCxJkiP6ZhWLrcJCz81Ws8jNtH8Ac=
+	t=1773674174; cv=pass; b=R2lFHqNZ2AbylHrSeELfMOlCliCSVkGyFW7JY4sh69b8Xw3cVkwRulfUv/WmgI8TiQ3qhDaNfMtHMM/crv9JGZZVmgliTGGajhCcC5xXjdt7ZwbTAKBGfITflYzEVmtM7KLkPlHpeiwkWV+H5pdX5ZApYFKWxHntChF9pwHg4x4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773674168; c=relaxed/simple;
-	bh=MlbPjgkbDjZzy97rL4tyaIWnLS+hi31RbU0SxYxTQpo=;
+	s=arc-20240116; t=1773674174; c=relaxed/simple;
+	bh=2FQCxSJ/4hTYflwKI5bvbcXdiLbSbgtV9c+hs2wiqNg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SjSoawNz1HvSLlg4lqCKqCPJsaWmidAOfsL6C89pKlHmK0Trrk3zqsw8LTRC3/jkpuynhmiv8tu6tD5MEc1fV/vYo2tKS4YZXfdqeRWazawlVFnrYBwOCCw7ZU66q9PsYRmQOHBugm15Z8GK7HVt/W7+KzxrpjGKUq4g9TXlVmk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OH+3iXtp; arc=pass smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=cryH7v9hgXC69n3mX3VEWL4tDK82lWYgZQ6TgFSO8FfsHA0wfK1JGzqJL/1dxjHkRGCqNsn8+3U5vA9rVAnRmls/akDc8eLqfWpp+znfOINW5QLX4dLk1PWwHyw9DYI8T3KzWUNLOWJGmZ6RjzHFW1CmL9T8CY8511RCD1R3J6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xItgklKk; arc=pass smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OH+3iXtp"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a1362c9a3cso4876772e87.2
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:16:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773674165; cv=none;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xItgklKk"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38a76ba6a78so32212621fa.0
+        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:16:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773674171; cv=none;
         d=google.com; s=arc-20240605;
-        b=fp5p7mHP4/Sh9vp176NOxkbqhCPz1IFU74z6xfmF/yaxzxsGmVfUXqOJS9pJUYqrcw
-         PjJ+LKfuWB5tuShahuh9UcFZVxwZQSFn/4QiicFSJ+aKROrQ86uRa62nFUDsz6oY7F3F
-         BL9mIifNbu/NB0TPa1NRrhU5sbo5VNXE8wNyDjSrm3Esm93WQg5j1IqxDk9u0znbpec4
-         B+L35Ux40ng3l8McVUQ9QnFs/0Yj7sWwajkOaL0JIs28vAljLxyX4O/AtdhCLu70VqkY
-         x4VQkZ5oHbthV8KNA/gNy7DKhsjOkFfLdNnJAnp748WwynKT1+4ttC01/nreqoc4lhTq
-         WBIA==
+        b=UEBDWyGCqwHEjr520JqyaNQ8NRJXLPU3bEKFIQTFF2QAzUue+kUjuZAsiPYYBTjjgO
+         2K+oypM2EKGUF/yaeT4ktPRtT4F/e3555rLrX+amKJ8Han3XH0GB6LPxChifk1qVPZl1
+         7ya9bNxOLVRTVg+1QyHz85fAiexgsc8LqQof3IOWnAmaKdyw0kUsPQleB7LWACEzEgyY
+         ohbTcRNmVBSXsRq4qIvWSCeOkCSOugesn1ZH/bgP/Od0LHdFvwYDAhWapoeHjoc79Y5N
+         j4UdaG9UgglJTtMa5i2E7q5uP6GL416JBJmIDL6VUDp0nu+ECtUl/w9pYzd/951A6ABL
+         nDcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=KlM6cFVmM/SaOx6burFPACi9y9V71qm4hfXUPER/Krk=;
-        fh=jnwsTdJDU95BpwGKfHerBQqAMD1tXwVUHfpVFCXme3c=;
-        b=LA0BUertEU9+dumraT2mAEbWVOkWBycxfmZba2RsXgOkod6HEnAfOrt+KyJsJi3444
-         ZMfDFoavevEsVl7imARA0bxrvPFw0h0+LR77GUGBzpFH2Vcsn4T5xePzYsqNCrB2vxAY
-         2k9Wq1F8sQtX9fQFuwnbn1HlQtG17j8BNItWZmIJRBXxn9Zf3hwIFB1TgN+LzHfjsb8e
-         wiA1WdbTXwIv+RkAbcXr4SdnExP0w/Wv/ylhrcJiCkXAPBA14FrHe26E1xKMRNlNIUAH
-         YCh4UiXqAB8OA0zbPS5oZLbJZA6Am9KtoOgJM3r3/92LeqP/V674IExs+wEQkdej19Gd
-         i0/g==;
+        bh=9Gq1eBaEcIEjNH/OfJcPwaRMPgUoxIYY1WJRFUp5FfU=;
+        fh=B8bb65L8ca+McSoZxzWsFh+iJsflwOMwi0hoXqbKBA0=;
+        b=dkk6cG8McPPCv7Q1jOnrEPvy7VsYqOK1418HG823sHcYcNP0EGesjdzQZbo39+hFzz
+         uslnWrEk418vvlCMbzRYFGVz/RtDdb4d44Zvd6E2ohXJr9pNyZK6rbPXVr26X7aC0p5n
+         zWhYlycTjswaO3X4eJA75mRzMJf/xEcyJm60rR5bDOCKbRChUEcr75Cb/Lu0XD4nJmbN
+         tuRRR5u12pdxlWrDkVvQiWfVINuN3Mg1CZ7BpYDya1r8Y7oaCqJCKL/M5CY8Ss8sbANR
+         BjOapbMdxEkVofy4D8o2YS8ZN5MkbNSwjJcP8wdW4naUNSMaPdPV1Vf1WOwCVsrkI7f/
+         Wp/Q==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773674165; x=1774278965; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1773674171; x=1774278971; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KlM6cFVmM/SaOx6burFPACi9y9V71qm4hfXUPER/Krk=;
-        b=OH+3iXtpRDd+n0iURStbT8NWz+bTiBreQAkV/gwxtAKRse98bzZ3IWUZK54QEqn7aB
-         zh+N0T396cnT+W1TpBw6OgpyXTs0qICeY3I9gEmLANfdK2Qfhlq6iZARo5yItu79ti6L
-         d//d+qwnrXz+UcVT1S5yhjlglU03Q7wuGjhF1Odf/bQIInOKHNZUf2e3xwoDmSxB+3fj
-         H09kXh4jWNFoWI9ZRW1bMtoNTJrzD9Dx0K9tLP6rVS3jJAsxvEm3t6otz70tD38SK17L
-         qNGRSFJfJsG6+QBtSN+ah1HuVm2kikNi8Hwq+WH4hjcioZiLfeYXZLhB68L3bQMeqemc
-         XhCQ==
+        bh=9Gq1eBaEcIEjNH/OfJcPwaRMPgUoxIYY1WJRFUp5FfU=;
+        b=xItgklKk6QDi/qAXdTWP+APldwbEtbppfM1WSXZ2xUvjZf7wNBe1gHhQ1HUIZHulqF
+         hii6lT2ZnGHsbbVS73Wjb2rEbH8ANjU1NqQ4QIFmUeItIxY7eBsCzGq9RvkuxBA6Auq6
+         eE8+lsxiqfbCHEov005THBdIlE771qZ1XbCcpJWc4HtWGNjeAGcBn/EpSmTNHFC+8ABo
+         pJBGXJl8LqOuXMQV8WqdrTUnEDOolWfueJZ+T0/qu/KVS65QOsKvl6gqKlxZ1NL7y1Xy
+         5unpMBsLLPjuu+lrVsLXoGuJf541W2uYk0V349WmoLJAxSiRq0WWh+QY/TCPGX0B48qv
+         UgQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773674165; x=1774278965;
+        d=1e100.net; s=20251104; t=1773674171; x=1774278971;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KlM6cFVmM/SaOx6burFPACi9y9V71qm4hfXUPER/Krk=;
-        b=hKkhiG4st9kjntPbTE+Ti0YkA7Ed2bLZGh8RjO8bwjZE4JtK0JDDS4L9UL5Quw/kT8
-         auXRtISEkOR3Z0PjQuIDzqgfDbAZDuMh3N/70ySrTmTPnnT9TbLV+bWo2BitEnatmXpq
-         unlQJ2a+SwxaJIbGEyUj9+6xK7IkPu64mR7FBFqzV54ytFLWYSABCa4M1ZWNxR9yIRMp
-         MX1T2Y3kvUwmvkezKoIImjrHAnNodiPRjq4251mfJeOLQ1aOOVywbtkr3nTU0dgnlIsr
-         KD5SLKINP1siI2IsSWS2YH9UW9kn7Vj5ib49qgN9T6TjD8Rx2+NrMU6xBew1Y/lCPywh
-         vThw==
-X-Forwarded-Encrypted: i=1; AJvYcCXqJJ6VahbtPjJmNdFmE8wvymwWI+zWWVDa8POHTgFCG3rtV2kz1/Kob1j0hYNnAtjpd6Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzM4LI1uu6ndYkpzNl0zuzrVxnqGApsvJy4iOAGG0L5h0L+lxju
-	phw3xKhDtAoUy02e1TgYpMSkfsl2vCRWCJvbp1ROR1zeDH/cz3aqOIuODWCu9+6Lu25NiDCzg31
-	Ck1GVEH4T1lqydc+Y+v2ddZaDXOQGVYV69+aJyMcyDA==
-X-Gm-Gg: ATEYQzyRKuPNnPiM2tH7UjlJjDN1w/YBWo4qO7+3FECeA359/t7VvcktNl2ohF/1f6B
-	U9A1P67/NasnLZcEl4YffhyCvk2IJ7X7NWXzFFTkAeBvRkdCS9Xj8tIv3XLuaW+KsAnq4xJ6zUF
-	AKaayKs+A0f28HjENhF1ntrNEGYvbvqfZsxpFftyKUMWiUsJnxJWkCisM8OvS5DW8N3XyATgm9f
-	u3ItYtSIgNwyMEHB1fvQFTBvo1N+A+HzTPR+eAvb5g+YzmApigWlCBVbc2aCRR/bsemf40zhME/
-	UYo6s5I/
-X-Received: by 2002:a05:6512:1558:b0:5a1:448b:317b with SMTP id
- 2adb3069b0e04-5a162b08ea8mr3109007e87.42.1773674165204; Mon, 16 Mar 2026
- 08:16:05 -0700 (PDT)
+        bh=9Gq1eBaEcIEjNH/OfJcPwaRMPgUoxIYY1WJRFUp5FfU=;
+        b=MbJmMjZ3eTCCln83+hfk/GZ7Do2MzBamckJ/NQrGhZP4qq886zcLosBTD/jz0GWH6r
+         aNSGOt3NcijWpTMeX80Hx4wL9EKM4XEpN9pCx4IjK1bTnsb0q+4NWXXnOT9PbgCl35Tm
+         aHmdebAKWvB03FGqHFadsqVfxx5IEZvLeIGTtsoYxXDoB72myWJMxZ0Wxf4KiGRaH0vx
+         fH/XstLHz1i/rOglbhFYfPxYKMAkeEsttpsR7gTm0PzsDKbKWRevdUVwt0rg5vJ323gF
+         bcEjsHUHOnb0FEJ+po8x6Qw+5LFJ4QChCSKx/KItVqH50p4Ps4YAvdSS62nGtz40OndK
+         Cd8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUd8E4i1JRdIZ/C/FjpkZLrWG/nIEAce0QSJC19HuXPMuu3P7qQQJ7e+6LnXeuVwMax4b4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwmeMimtLsogfPv4VOFn0sfd9CpPfYd4ZXxvzBfDM6hbiMoCyj1
+	oxE1Wgf66K8eA+FVGAHwdX2NIqNj0LWjLA0MStu65IjWWvju3b/0yY3kg4+jf1n5f8YjXD8XsC4
+	ev9QKvoikajpEVpWiE/GDQncftIIBhX+eKrh8F5XlZg==
+X-Gm-Gg: ATEYQzxj/aerFWMrCoo0P81bs2s1/cAmwLOD7QFPs9bjbGa8kbgXuvuQTlaiWOqPT5t
+	yjKcfbQCy5K/y+qgf+Ly6vbrFIbolBPeO9QR5GQ1jsbcV+MHeG5zfUIapAR2Qgl3wm7rNGxabK2
+	CYZU5N26iKCeFGx5uHQT9cqGdXfpmztCtNxyPnMQoKsQZbqTOPhQNXUZiAJdBAI/LqWu2r9JGM6
+	lEP2jIN+FtyuVpSNuhpsC4pWdEh95UL3TgBVu70aNIbapu/MshRra3thsmJ4msNPl5oJouALZtq
+	Ydq/Ujdt
+X-Received: by 2002:a05:651c:544:b0:38a:aba:9c0b with SMTP id
+ 38308e7fff4ca-38a897d365dmr43927571fa.27.1773674170737; Mon, 16 Mar 2026
+ 08:16:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260311095009.1254556-1-ziniu.wang_1@nxp.com> <20260311095009.1254556-2-ziniu.wang_1@nxp.com>
-In-Reply-To: <20260311095009.1254556-2-ziniu.wang_1@nxp.com>
+References: <20260311095009.1254556-1-ziniu.wang_1@nxp.com> <20260311095009.1254556-3-ziniu.wang_1@nxp.com>
+In-Reply-To: <20260311095009.1254556-3-ziniu.wang_1@nxp.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 16 Mar 2026 16:15:29 +0100
-X-Gm-Features: AaiRm50g4ixBgJVGHgml85tjVL8FL6K6omKlK_jwEmgNVXMLTx5qLAygbxIzv3g
-Message-ID: <CAPDyKFqbNj0vxNNRoZQ=xSijASA1eWCHfZVabPznQqJ-vrBUYw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] mmc: sdhci: fix timing selection for 1-bit bus width
+Date: Mon, 16 Mar 2026 16:15:33 +0100
+X-Gm-Features: AaiRm52yvrWjzyiC1WQIkEheabNUD7pScP7tLn4Y188s1jdcCNFrCPgRy13YRRo
+Message-ID: <CAPDyKFoU9hE_ZRbiK8m6Hso-xGQEdTpaTvJshTdSbpD-Kqra1A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] mmc: sdhci-esdhc-imx: add 1-bit bus width support
 To: ziniu.wang_1@nxp.com
 Cc: adrian.hunter@intel.com, haibo.chen@nxp.com, Frank.Li@nxp.com, 
 	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
@@ -98,49 +98,48 @@ On Wed, 11 Mar 2026 at 10:48, <ziniu.wang_1@nxp.com> wrote:
 >
 > From: Luke Wang <ziniu.wang_1@nxp.com>
 >
-> When 1-bit bus width is used with HS200/HS400 capabilities set,
-> mmc_select_hs200() returns 0 without actually switching. This
-> causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
-> in legacy mode (26MHz) instead of High Speed SDR (52MHz).
+> Add sdhci_get_property() call to parse common SDHCI DT properties,
+> including "bus-width = <1>" which sets SDHCI_QUIRK_FORCE_1_BIT_DATA
+> quirk for 1-bit data bus width configuration.
 >
-> Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
-> SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
-> selection falls through to mmc_select_hs() correctly.
+> Remove the duplicate "no-1-8-v" property parsing since
+> sdhci_get_property() already handles it.
 >
-> Fixes: f2119df6b7646 ("mmc: sd: add support for signal voltage switch procedure")
 > Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Applied for fixes and by adding a stable tag, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
 
 
 > ---
->  drivers/mmc/host/sdhci.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index b1a3cd574c84..605be55f8d2d 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -4539,8 +4539,15 @@ int sdhci_setup_host(struct sdhci_host *host)
->          * their platform code before calling sdhci_add_host(), and we
->          * won't assume 8-bit width for hosts without that CAP.
->          */
-> -       if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
-> +       if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
-> +               host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
-> +               if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
-> +                       host->caps1 &= ~SDHCI_SUPPORT_HS400;
-> +               mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
-> +               mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
-> +       } else {
->                 mmc->caps |= MMC_CAP_4_BIT_DATA;
-> +       }
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 97461e20425d..b607d4ffc562 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1813,8 +1813,6 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
 >
->         if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
->                 mmc->caps &= ~MMC_CAP_CMD23;
+>         of_property_read_u32(np, "fsl,strobe-dll-delay-target",
+>                                 &boarddata->strobe_dll_delay_target);
+> -       if (of_property_read_bool(np, "no-1-8-v"))
+> -               host->quirks2 |= SDHCI_QUIRK2_NO_1_8_V;
+>
+>         if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
+>                 boarddata->delay_line = 0;
+> @@ -1833,6 +1831,8 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+>         if (ret)
+>                 return ret;
+>
+> +       sdhci_get_property(pdev);
+> +
+>         /* HS400/HS400ES require 8 bit bus */
+>         if (!(host->mmc->caps & MMC_CAP_8_BIT_DATA))
+>                 host->mmc->caps2 &= ~(MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
 > --
 > 2.34.1
 >
