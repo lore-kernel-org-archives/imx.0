@@ -1,74 +1,77 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010063.outbound.protection.outlook.com [52.101.84.63])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010006.outbound.protection.outlook.com [52.101.69.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471F538A711
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A7238AC7A
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.6
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773654026; cv=fail; b=VaI6mWbsJv65S1Ub4+PgWULCESuNF+nijGwUKNAeL2GJqmNURgDDy/T/HOI9NheyZmajZhMC4wmPgoaeCgQN5yxgthw1uXWukmdU27CUSb+L1OJZCKVYfx6JIGBiwntb4FptNgP6+Y6d59tCpFR5wurAjpbMSxUbez5ee+0JPIE=
+	t=1773654028; cv=fail; b=qVzn0r4kJqpWnOSTPLlmm2qmtB1FNMZhxoZMrhjFhxczz/2SzpRGlBDVX182YOjzpCLBEwbbnqPsFaB4RugGnTs3ee9kGKppL2SXSS4oRgS06eEnQ/OFgdGoVuSh5R8J+XxdhshbUlLbJ7t80GgurU6+gqTcaZasLaOS7EyJR/w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773654026; c=relaxed/simple;
-	bh=21mEMT+QzqvXsBd3riVyfr3iqg+BwMSwP96eOo4izrA=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=QbQpxGgWS0+zwUnnNckkaiBM9jKEn59ZcR8jCt5sZxixG8RPz/RUlUWPJvIovAm5auX+Jrx+/VHJPZ3kY12FTTsFYxMcoqlN9ZNZUp6iHbBju85okApwrp4Gcn4pdYbFCCVsHKAku6jTIZacCAj6atf7ujLdaGPtzabdMHPOoVs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i3zWbz2L; arc=fail smtp.client-ip=52.101.84.63
+	s=arc-20240116; t=1773654028; c=relaxed/simple;
+	bh=SLHXG1EFzttL81mP36gUQEuiEaEzlYtdm5nmUyjkCz0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=r4mNXickL5v5tl87lBzpTcwQ4+oDB/VV64WEX7KKNcc/JJ9r9IHXLJWUwUkiR2cZRZKMvcruoaIFiOXrbxRsd2grjfZ6igjDETrmmOgTlCVD1+eik727ODaud3SYx2gW4qsHS9vlw3tWPAUsNXDQg+7KpO6GyF0Yhv1KLfL3x8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GAvVHJ1/; arc=fail smtp.client-ip=52.101.69.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i3zWbz2L"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GAvVHJ1/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cWpuDEwe+QEm6kaI7iKyNMydJEdZGarMpB/niNU3kjXrd5GtlkFNh6HEJz8h2CPHcyZWcMQeoJ2vt7lTjnr+neXJi7TygXZVRXS9BiqQRLGC/mLMZ8UF4lxR43V/Sp4WZknUQON2uhBIwh1z3LCiPkOnLxpSBam3ZaIpketFXenhBmZJvc+A3LpTAeoleQ3jfMKo8b6PHAVdIt+Z3m4+/XigTcMUk7kVB0opuI2vDie3GT0r+/NMBz2etHqd9SG7WHjohhG2SI/Cw2h1BUo4cMi7/JJcyEbzVTvn0Qr2gWRryeEXLeXOw404YTY9zQWgRZdgATYP8hAREQTglDa4dQ==
+ b=qhB7dKNnihH4iwBdHrhr6DA7ZA76rdHKSUrljw7D1z3K2i5YOfoNIBbMxIUOMWUx9GDgnbJbPlO00CTmI+wswQKTwPqBq5nch5jmuEX2Qs2/L/fy23mXihSccJp9xF0DU2rTs/BVXNkxoPk89qSjL1x204PHhYvCrO7VUlDlp+YdKCkNLtA3xJ7SR7lAbq3ZKxDjeqGNYMdqnsZf5afO8uWy46zKs8YiTpyoTfmKHBSLxSiHrRpT/eSGtNjK+YNFwjKxH6w4M2BrMNRUxd7NUtMYBJ4cB+qjayGySX265VpjtLzOJBDt6Jlyx6x3Gvn/FSMOV70Zv8uJ6585cifLqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FqxwVzft9vwLgDMkpadjFEy7c7CbYPaHAkMXRWP9qYI=;
- b=J42ZwRdgh9NIcvgwEd8E4sxsc3Ic3+a8dugBmm46RIz/rHyS8nJXhhLrjGMeJInvMhYFgPjoZyYiLDd0TzP3qIADwmn5b3Em6mt+J/Ztkr8jTG+rsh2d22rJPzlwZpPRrkfa3u/sc4582rUBhPwZcLlluqtSPuS4FD/bWAeW1DSvI7jzpqAA2MBeZS1tpEUKWqqV/sMKw7Q3wfT8PFwk7zgTzsOXMZ7Q2SpOjw6TJKxUodNt9gRNv4e6Jx/wuZ3ncUFfkACKVfjmyD4N093QSNX2uAGJK33EDs/0taACcd2ScwykbzMYiAMpzXIwZTXo50LcOeNfhS1nP4TxCzVJ+A==
+ bh=U7sxdXWUOuSTbxV4sO4U6MPtKzEPLu9f6ERux6/yywc=;
+ b=WXwiSsWSGbaWElOhT75vKzK16ZzHY650Fs8WnjiETdg+0IcW5qD/h6WRLC8AVyhMT0gzoB0wTS+AqDArtfiHdDimGxOfFDEwVOKfEpiOW2jh65HzBZS3U4QqUuUPtmCao+9c3rIa006/iDhLL8d4AskZv26z9wOmX+5Mh+XYcYvK2mV33Ff+uZ07NOM5EISjxwxSHOzmoGyKbfIKUpjKSUaBdlpRrMVHi4q9/S2QQ3zkQzrNFqfBFk0exv/7DsvKxXRFagzceZnRYyHx1X/gqceZUEISH8lcQ+vw3H7Zydlj7qqxn2ap0UBDdyeK1bpzPXMRczQpZEc2RIQ+kgRzWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FqxwVzft9vwLgDMkpadjFEy7c7CbYPaHAkMXRWP9qYI=;
- b=i3zWbz2LCYzKepTzXJUFr4WAfFqLXhT2Jbsy8mRD34Udk/Y6+XNR280hgKimEjvmjREqtp9o0abtJOHPrWizMYEF/fQaC58mg5nejiQW8W7wpRbkaq3QT3VrlHg/TYIrL6tnR3EpDUtaPJ8Rc1jjUFjbjKJ/zcTS3LAK0014gPYjkgIDyoIYwdR3nvfPosPQena36gem/Llofby+xQqHcRpFtRrSLjt2olyrdwT2yLIMqzwXZ6Uz+Phm0WC0JreT4pO8BdtA9ToyMrrzTRDU3FRwMSnemILRv7qLzE5Izteq5/pGGNPTScCtC+VjFP1EmtULPhoj/9qtonWF/kNPGw==
+ bh=U7sxdXWUOuSTbxV4sO4U6MPtKzEPLu9f6ERux6/yywc=;
+ b=GAvVHJ1/YXZqwSUBK4jc1sX5qfvdESmEevLqD6ihBgvSYLZgwuaO3O2pV39CH370gQLf2kv4Kyg4ZlpbfIEN3YDgCf8WeKTQ4odCbx7goWn4IY1nb6xTS1NdxjqG+Il4meGvVsREIVq/e7KgIwETj7Q1HBqfXI1VxuSRbVRxNC6DdDEDjC/bsQeV4cr84QmaJQXT/OAvd98n34zhcCfWp0Zbc7EcyMrMyr2DaXPg1Xsn8ZWefLFDtYaiG95uoUgrovYRxuBOz94Wgr7GtAtzXi39eVp+WkAxvxwyPkkFvyO99FA/zL28PKN96hMQjF/Oq4kl+1EiioJsxnZ9i7/GKw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AM9PR04MB8131.eurprd04.prod.outlook.com (2603:10a6:20b:3ed::21) with
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by MRWPR04MB12119.eurprd04.prod.outlook.com (2603:10a6:501:97::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.22; Mon, 16 Mar
- 2026 09:40:20 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9700.022; Mon, 16 Mar 2026
- 09:40:07 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-Date: Mon, 16 Mar 2026 17:41:56 +0800
-Subject: [PATCH v3 2/2] usb: typec: tcpci: support setting orientation via
- GPIO
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-support-setting-orientation-use-gpio-v3-2-0e6622b00dd9@nxp.com>
-References: <20260316-support-setting-orientation-use-gpio-v3-0-0e6622b00dd9@nxp.com>
-In-Reply-To: <20260316-support-setting-orientation-use-gpio-v3-0-0e6622b00dd9@nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Li Jun <jun.li@nxp.com>, 
- Badhri Jagan Sridharan <badhri@google.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773654143; l=2604;
- i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
- bh=21mEMT+QzqvXsBd3riVyfr3iqg+BwMSwP96eOo4izrA=;
- b=s0FrlCKSYhr9+2dNIKbhUSmWp0PFXz3Kjcsj0Quwmj1eGi6m4DRvopb1Avzvn8aJKg9H7Gc2Q
- XwnpsdysHtkDcXu1oW0nsxh2JTKXEO3txrAJ5aDSabXhzAGFi6/Q+mR
-X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
- pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
-X-ClientProxiedBy: SI2PR02CA0036.apcprd02.prod.outlook.com
- (2603:1096:4:195::15) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ 2026 09:40:15 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9700.022; Mon, 16 Mar 2026
+ 09:40:25 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH net-next 00/14] Add preliminary NETC switch support for i.MX94
+Date: Mon, 16 Mar 2026 17:41:38 +0800
+Message-Id: <20260316094152.1558671-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0019.apcprd02.prod.outlook.com
+ (2603:1096:4:195::13) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,150 +79,182 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AM9PR04MB8131:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dd9fd5b-7f19-4f2c-57d2-08de8340026d
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|MRWPR04MB12119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51f956e6-5cbb-4499-690e-08de83400cc6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|7416014|52116014|38350700014|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|19092799006|7416014|376014|52116014|1800799024|366016|38350700014|18002099003|921020|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	ulQseqNyuC1zSBRzwER5+bKY2+LPDXNzolGYqJXOMhZTqvm76a065eX4YAv0nsq6U4WkXA4Nh8FLCTjCPS0fb66VKtqSJYdI9WTwb6OGebbYJMgKnFnDaJrsraWzGWzrB32GpXKoTyDxAZG5UQXsor9+yUdl8OWDmG31y8rt4KkZ9FESy0Q5SBHPzTpJ8W5e3xAstx4CFe1zz8qV7UFIFCzQ2PR7Xm15JZULZwvzvizylj3TXirgtnujmW5UN44yAPwuLwyGQaq1amcq+OSc0DwiZ/PfFJFuP3sNaR4m5HbfAt2p4OrRbcmjosMFOsnKjMN1mHMmDIXwvwvX2XNJbnORxW0iYt/Cp3Ei4iVpS+cf88orHNtn8Yx7CcdU9ynoh3AH9aO52Hci9BnmXkjO6rN4/DwjcikE/NNSRMyoEL3zJkbhu6HW/PIlcNVIK2qpwN2OpDG9dWzX1oy/axfatiApTBBi4WK24vruspO+bS72Fb+L3v1Gh1E6C1Mt26zFSZncN+EVN4R+F0z2Ipbx/WBxcMrdoF7usv3WDLEC5w5c7P9uBOYwuUimJOdiuxWZE4vgNh0OELVPxNqjdsCoqsADRa00flM6BSDG8zmtsuKQSoGWfQJTJw9FSsIJ77Xb5Mw/4UgLpzkIzqJn8+h1dKfglbcgo/98Tj4wHmlCDOboS+oL4E2wdqhVDnHsQ8ScR/Oh8NYcq6DBuXc/gHDvT7YEv2guwj2wGqLweI+TWfoYBv3vpYccpBkX7Mdx7BfzE2haHAe+1f07hJEvug4tf5chBuvSRIpG4Fe4Ij1+dOQ=
+	6qCxbAQ4o2sI6LgwOIGqjcEHvIwT1u+7l6dqDogPbz/4vLPkeuls3veHsuXj2AvSUdzvWtRv5fkByz8XMyh8lrkLvifA/4tiu+MKVge3kht1858iwrOkGuoYatihXQ690J15sNUg55kCmnW05pOcdKKKcHcmJSts/Fg9NmOGlLdi08ILaLiK6yUVo7UpzgvrDBLQrbuk+jXLB8qpEpifeLRvkfMRihDDFx6cmYhSrJPBtFy4OaDuFurrFZDrtvru6rqaLAjP9DkD+fUpZo9ucz1KLVjPLpQxwHiOu+sT02warU1wuU+DuBkp1rQc1h8l28HZih+HSFd9364QpbMCuqqaV9BN6uXA3zkm9+kdeZi97eq/gKDo/Me1zhLqX1jRWs6aeX/tvO+BXDzEQmAwScocHpyZy/qDEX9XiZSqXGCnjfZZPPHeZpGG1P7whP76kyQi35KiN2KF+KCbXP/4KhZlykcRP/eXNACJL+aeeCllhrHmP6dgii2ClwLYnYIcliY8UqkH3OtDhIqEIaT5ZDj1o6V7/9iXkBu1dViRpx69QOjwEGmpmCRyVtNSvoGAYax8JdDieJA/wiZKaKVJDoWN0j69veNprsjh8iVWldho7qjwOBO0xwrHYLrCgn0ImrrOyuUpSV4uUxpnYw3ud/4ilVibo7koNVYdfAK3HPOS0q46kKHzUh9mvw1Bubdb0Ax9vtFS50mu7b+ojf+CyyG+MV7fTDnSk+M9LbeSeqAQzqyvNQfMFEudcedNuQ6KRJaPKFiT/+pWNtSS69496ahr0LIXNS8S8t5Hzvn39/uqyWJl3+8HzONZ+NW4v0jS
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014)(18002099003)(921020)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVZaU3gxWjVNVHZlSStkYUZ3YUFFalBlYnZxMHZoOTZVVHJ4TWkzU0Z6QnFu?=
- =?utf-8?B?MGRBRTZpRFJwUC9xMzZpREFvYzZpUkRIdzZPczlHVERzc1FWN3NyZ1kwRGw4?=
- =?utf-8?B?ZGJxamJrdjlOMzZPYk9OOVhDMlIyQWQwdXRZdzFxV2NQMUhGZkprcXgrRC9Y?=
- =?utf-8?B?QUxuWDRIUk16VnRGSElnb1p6VzdqRU9Hdk5Gd2wxNHdqZCtCUHlNUzNvR1Ru?=
- =?utf-8?B?ZURBTnkxUXRrdGV1V0hsNmpNc1JyWGNYVlJ5RDJDZ1ZOT2Ixd0swWFkyL2tU?=
- =?utf-8?B?aklNVFg5MGpQWXdmWFZFOHRFZmYvWHNUcjZMc1A0YTBSalpyL2laWFN1aXJ3?=
- =?utf-8?B?TDFmZjF6YWpQb3R3K1UzVzJUY0ltbVhQZkdYVy8vZnhCVWhFSExOWVVVSkNK?=
- =?utf-8?B?OUt6NndBR25sWFNkTjN2eVFLZEtod24wR09aTngzWGgyUnFhNXlZcDlvUGk0?=
- =?utf-8?B?NnVBQmhNTEhxc0VkbUJQV1ZxQlJ3SUgzRzhoWTlVa2ZXaTRvbU9IMjRTd0NF?=
- =?utf-8?B?NFZJaWhMZkxHRFdUeXFZQ2k3MjlBbXRRczdFa3N5dDlKdVVZZmN3S2hQVkZU?=
- =?utf-8?B?THFhTFhkUG8wZnRXanlWYXBINkp3NU1jTytPaGd1RGN6a3U2UHZsMiszQWdM?=
- =?utf-8?B?bFpQRTBrcDl5ZjNaU1NWanpYUFQzSjdOZ0NGbEJScGhLK0Y0V0p2SkJzTGlB?=
- =?utf-8?B?aDc2V0NhTVpWTXNRa1JvcklzaGhvbkpIUWdqcitGQi9zQUEzcEhWVFQwcVNG?=
- =?utf-8?B?bUlONjdUL2EwTUpjTzRVUUljQlVITCt5dWFEajZ2TTlETE5KcWRSeXpBUzVQ?=
- =?utf-8?B?U1ZTQ2VmdHdNRW0wYW1lQzgxVGpNTEh4VitsS1d3dEtJL0xaTVNHU3gyakNU?=
- =?utf-8?B?VnVwc1kyUXZNR25oNWxDTmpKWE9EKzBwVnhWY1JyTzBHSkFjcUoxaS9FOC9v?=
- =?utf-8?B?MUJ0cHRBYWV2bVA4Qnh3KzBLN1lYNE5ZVHRrWEtwTlJpUjJKc05ZdDNKa295?=
- =?utf-8?B?UUVPWXptTUtkRHBsSDA2WVVaVEhmUHJBZmh6RlpqSXpLLzJSMS9RS2xxQk5I?=
- =?utf-8?B?SFdTOXhQRDB4MXA1ZEU2dkpNWGduM3FmOU4vRThZN1RYMlROa0ttMWtSWHdO?=
- =?utf-8?B?ekxsZDlZMzk3V1pOV29rVXF3ZTVMREkzdk8rVFdKRVZCVEs1Q1o4eFJmcXdu?=
- =?utf-8?B?c29GNWNxVG0vZitEcE05ZmNnbHhWR2E2KzJTRmNSMHhFeEZ0dElEdm1pSlpK?=
- =?utf-8?B?UU9ETGp0Ylk4eGlpQWQvOWV6UzdvOG1Dd3ZXczlrZWJMWFp0YlFLbUpEQkhM?=
- =?utf-8?B?TnpFaVEvbnEvRWQ3OFd2NHA0QUEyWWJuWlRGQTVITFhacDhOazF3NGZJVGRH?=
- =?utf-8?B?bUZNWGEyT3dyL2MwMnJBVmlBbXVGekZxUFZiUjRNcjRpUkdFcjRXUjltR0dJ?=
- =?utf-8?B?Q0lXZVByZTVnWUErUWRqMUV5bW1WTU5SK0RvSWlZeUZBcUVJcUt2Q2g3Q012?=
- =?utf-8?B?TUtDNSs4cXNoRjZCSC83MzNsb3JCWjBIRXg4RWZndjFhOHNwNjZvbVowS1VE?=
- =?utf-8?B?WmhXYmJsQkJLdDFNNSsrb2JSaUFsVE52K3lUUnlpcjRKYk1nUW1kaW5mc2J6?=
- =?utf-8?B?eW1iL0tGdkw5cG14VHNsQTV1RDRqdGxqUW93Rzh1cXFUNUtaQ2FNMElod3Ar?=
- =?utf-8?B?R2x0bXBnOG5tS29mejVqdXMyWVU4RU5SemJVZWZqSm1neTBDWU9ndkRyMWwv?=
- =?utf-8?B?RTUvZ2ZWZHpDR3FGTTFjYzBQdGt5d2NtLyt1UXRyajF6cldIT1RvbFZMT1U3?=
- =?utf-8?B?UmlKSGhPSzg5bUZZK0IwZWU4R3M5cG1nTnlTNVQ0Q2NzVVpTQkl2RFBnMmI0?=
- =?utf-8?B?c1NIeDl0N0orZWx1ZjJkL3RwRVRjUzNKTzZtSlU3TEljWmV5Q2YraWZUb0Q2?=
- =?utf-8?B?Q3E1ZkxsQmMrMGJlcFJ0YURjMnVvK3BYV2QvMlJydHFpelNMNVc3T1FLbTly?=
- =?utf-8?B?STN2RHB5NTZnbHRHSisvWlplR25PdWh4MGVFbTBtd20yTFFxbXRDWmJZNUlC?=
- =?utf-8?B?bWg0cmpaMVFUUkxjbTZVMHozbXdKaGxtYVBQaDAreTdmODBEWjZUdyt0UG1k?=
- =?utf-8?B?dnNBZzIvYXNyZ2IvWjVEcHZ5OTRTWnAvQjNVNjlORmxBZlZrell6RlRCMmFE?=
- =?utf-8?B?b1FRODhMZ2g2eno3N2M4SWt1S2dMVHBJR3pZM3YwcVZmNWtTV0VaSUJjOVE4?=
- =?utf-8?B?N3dXK3Fpczh5RVVlZjZYK24zSGRNQTY4TlhzMDZQTm8wbFdPclJiQUk3Q0tX?=
- =?utf-8?B?R0t0TVJVd2gxUXpWaC9CSEdVWFozN0VjMm80dW90ZllXckJKK2pFUT09?=
+	=?us-ascii?Q?afnRSdjyP9aRbasr/3cfBTkLvGTvQcnYqqTBSS78RhsSkD1KXEje3Wd45IBo?=
+ =?us-ascii?Q?z9UWqobJRZ78qqrLw6gh92FSU5P5bFp14SZz2G5jQA9gQHascS7/Z7wH4xoj?=
+ =?us-ascii?Q?oUoyz83FTaqenDBh9gFTUGn1p1s9aJ04P2bfP4qSf05i+9Jp7s2Ds5a+qrt+?=
+ =?us-ascii?Q?jGQm1z18R/IAATR0MtKufHdvQGJBk4+TV2zNDjfLgVswIbUiGamKYLDAme8t?=
+ =?us-ascii?Q?J7eCSJtRREOCx9ApGzYx7Xyty4CIv06Y7AfcbsmBI9SCoskzFN1vpyR3uofT?=
+ =?us-ascii?Q?K24fCEU1i2dtQHTWwxL5s1IPRkQXzi724WF7NHT20N9wD1CcoRd+pTJk8QON?=
+ =?us-ascii?Q?8NDTS7Yt+KBxioRCPrCVi3dj+zDaO6y3Nn03WArZ4zIkMj0+HNbG/nvTAhIF?=
+ =?us-ascii?Q?a8tFRP4tyodxqpQfgp+5d8yEkzY+e45BIKtD1iMJ3cnprS4xABLjtS/aUK/o?=
+ =?us-ascii?Q?vOhiU5Hh2vb3Kz37AFX4LFIuh68nWXCwa085QboRjwZ0H8fvYmO1vSyZMVGo?=
+ =?us-ascii?Q?o4NvXeN5LfLkDMHZcwN2ltT2mWkIbE5Ja6+XNCBCXY424jZqOjO8K/xawMJy?=
+ =?us-ascii?Q?7sUwMY0V311x6JZYTr/cB6JDQV/Alzk3bue3w5nkvCa67bM2cjaY2OXT2V4h?=
+ =?us-ascii?Q?Fe/v766dFr8Gz2pghPOBHXzS9o55dUSDNBcdX3mIAqCNHN2TipBvPwlOWGAS?=
+ =?us-ascii?Q?REdEMOilqGZ1v4STaPhapN48X2luKnVXRMZck1/TLyxCBAcCVlPqpiIccSkg?=
+ =?us-ascii?Q?f/Irl1R0Oiojc9F6HpbF78FHuqLmmYUZaNS5KIyvoFe4V3dqhIwdOshZdHQ5?=
+ =?us-ascii?Q?RsYP7801QeIostpvKB5s1wx1dqo4MZv0M3fP+XQRs/mXnCdZ5WA3ObqrZCip?=
+ =?us-ascii?Q?el5XZ9rIbWvAjDklxe9toyrFlSIbP6Rx3gCNvWRpQRwy4JNE33l3z5uzaU3r?=
+ =?us-ascii?Q?EgnkATsHHNMZHUoDE5EMgSFgMIMeRdW7PRcdBNN5RhU/MkXwjUOq8Gl1nzk8?=
+ =?us-ascii?Q?/iwW4jTYdnaNDaASENS1Ja6pVFewhn4HeAG++Q6ZkSt5WtrKvC1XZg4hlLoL?=
+ =?us-ascii?Q?FEGKr23TW6BvSgG8Btqf63YCpnQQ/rxAV89l+VDnxQP+mtXaukCrAAdCz6wu?=
+ =?us-ascii?Q?arAcJ7szUVlkJImAv2OsNi5hzYnfDd/fC74IAMuMVAIZ5J8722mENZM8FcJl?=
+ =?us-ascii?Q?5QG+qwyGiQLSBrefnp2X3T5Dqcx04QiKVznNbBlwsKIuIiOu86cIZNFp8zer?=
+ =?us-ascii?Q?kMp3aMS2PnbPsoBC2kXNLfrd2s7vFjEhdXHfL7qPC4Q99nUre+23ZgZaF5gI?=
+ =?us-ascii?Q?2nMFfq+yCrjeZ/e6b03IKLuSoXHjKUuEQDScZRPleXMSJvXl9PIjuQy22qL/?=
+ =?us-ascii?Q?3JjJKejvgAF5geGqJvZbu/W5WQXJsHj3tE7RO9IpHIXwovrnYVJb0XdYwJIC?=
+ =?us-ascii?Q?V7+vATGOK/rd1ssPAepra1H8qXEFunnet7LwwyK0DYwLenv/0v4WQi0YXdl2?=
+ =?us-ascii?Q?mpOG9LSfDvSLT8FJ/Of16Tdkz4GCC6Cn24oKMO9cXXswxaQBvgiY5ZKdQa1G?=
+ =?us-ascii?Q?Q+xsGUJGKniSf0TdtZGiWu6UpLK9wuehicR8bfR7z89fxFah7KkIDt5wD+zK?=
+ =?us-ascii?Q?OYLkuB4iqdA/WcwZ3IdvoUNLccqob0qZTfd2SxoiITSCUeCWy2yHR50lYaaj?=
+ =?us-ascii?Q?YILLuOoBhbe//zAFsb5zC3bvPC0x2BkNrhTpweOa1E5zqoL6?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dd9fd5b-7f19-4f2c-57d2-08de8340026d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51f956e6-5cbb-4499-690e-08de83400cc6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 09:40:07.5951
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 09:40:25.4699
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tHmhTxaGj3gZOZY+Umvz8Kk/iTAS67G8HrJQEra64neZVe4/1zUoKZoMghx4hw2i1v9VOxdtTXMDBiG1FPRZcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8131
+X-MS-Exchange-CrossTenant-UserPrincipalName: RwfhmTLui1Ut65wEeOJDPp3RLfjsX2CK47sscmrQ1eFBZtq/6c1QPCQt6zX3hlpZTFS3sIhz95EmxJyuskhibg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12119
 
-If the chip indicates its "Connection Orientation" standard output control
-in STANDARD_OUTPUT_CAPABILITIES register, it can do the thing by
-programming CONFIG_STANDARD_OUTPUT register. Due to the optional feature,
-the chip which not present this capability currently doesn't have a way to
-correctly set the data path. This add the support to set orientation via
-a simple GPIO.
+i.MX94 NETC (v4.3) integrates 802.1Q Ethernet switch functionality, the
+switch provides advanced QoS with 8 traffic classes and a full range of
+TSN standards capabilities. It has 3 user ports and 1 CPU port, and the
+CPU port is connected to an internal ENETC through the pseduo link, so
+instead of a back-to-back MAC, the lightweight "pseudo MAC" is used at
+both ends of the pseudo link to transfer Ethernet frames. The pseudo
+link provides a zero-copy interface (no serialization delay) and lower
+power (less logic and memory).
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Like most Ethernet switches, the NETC switch also supports a proprietary
+switch tag, is used to carry in-band metadata information about frames.
+This in-band metadata information can include the source port from which
+the frame was received, what was the reason why this frame got forwarded
+to the entity, and for the entity to indicate the precise destination
+port of a frame. The NETC switch tag is added to frames after the source
+MAC address. There are three types of switch tags, and each type has 1
+to 4 subtypes, more details are as follows.
 
----
-Changes in v3:
- - use "err = !!orient_gpio"
-Changes in v2:
- - return early in tcpci_set_orientation() if using gpio method
----
- drivers/usb/typec/tcpm/tcpci.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Forward switch tag (Type = 0): Represents forwarded frames.
+  - SubType = 0 - Normal frame processing.
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 8b7e6eb92ca2..c3f478202fbf 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/bitfield.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
-@@ -42,6 +43,7 @@ struct tcpci {
- 
- 	struct tcpc_dev tcpc;
- 	struct tcpci_data *data;
-+	struct gpio_desc *orientation_gpio;
- };
- 
- struct tcpci_chip {
-@@ -316,6 +318,10 @@ static int tcpci_set_orientation(struct tcpc_dev *tcpc,
- 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
- 	unsigned int reg;
- 
-+	if (tcpci->orientation_gpio)
-+		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
-+						orientation == TYPEC_ORIENTATION_NORMAL ? 0 : 1);
-+
- 	switch (orientation) {
- 	case TYPEC_ORIENTATION_NONE:
- 		/* We can't put a single output into high impedance */
-@@ -903,6 +909,7 @@ EXPORT_SYMBOL_GPL(tcpci_unregister_port);
- static int tcpci_probe(struct i2c_client *client)
- {
- 	struct tcpci_chip *chip;
-+	struct gpio_desc *orient_gpio = NULL;
- 	int err;
- 	u16 val = 0;
- 
-@@ -931,12 +938,23 @@ static int tcpci_probe(struct i2c_client *client)
- 	if (err < 0)
- 		return err;
- 
-+	if (err == 0) {
-+		orient_gpio = devm_gpiod_get_optional(&client->dev, "orientation",
-+						      GPIOD_OUT_LOW);
-+		if (IS_ERR(orient_gpio))
-+			return dev_err_probe(&client->dev, PTR_ERR(orient_gpio),
-+					"unable to acquire orientation gpio\n");
-+		err = !!orient_gpio;
-+	}
-+
- 	chip->data.set_orientation = err;
- 
- 	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
- 	if (IS_ERR(chip->tcpci))
- 		return PTR_ERR(chip->tcpci);
- 
-+	chip->tcpci->orientation_gpio = orient_gpio;
-+
- 	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
- 					_tcpci_irq,
- 					IRQF_SHARED | IRQF_ONESHOT,
+To_Port switch tag (Type = 1): Represents frames that are to be sent to
+a specific switch port.
+  - SubType = 0. No request to perform timestamping.
+  - SubType = 1. Request to perform one-step timestamping.
+  - SubType = 2. Request to perform two-step timestamping.
+  - SubType = 3. Request to perform both one-step timestamping and
+    two-step timestamping.
+
+To_Host switch tag (Type = 2): Represents frames redirected or copied to
+the switch management port.
+  - SubType = 0. Received frames redirected or copied to the switch
+     management port.
+  - SubType = 1. Received frames redirected or copied to the switch
+    management port with captured timestamp at the switch port where
+    the frame was received.
+  - SubType = 2. Transmit timestamp response (two-step timestamping).
+
+Currently, this patch set supports Forward tag, SubType 0 of To_Port tag
+and SubType 0 of To_Host tag. More tags will be supported in the future.
+
+In addition, the switch supports NETC Table Management Protocol (NTMP),
+some switch functionality is controlled using control messages sent to
+the hardware using BD ring interface with 32B descriptors similar to the
+packet Transmit BD ring used on ENETC. This interface is referred to as
+the command BD ring. This is used to configure functionality where the
+underlying resources may be shared between different entities or being
+too large to configure using direct registers.
+
+For this patch set, we have supported the following tables through the
+command BD ring interface.
+
+FDB Table: It contains forwarding and/or filtering information about MAC
+addresses. The FDB table is used for MAC learning lookups and MAC
+forwarding lookups.
+
+VLAN Filter Table: It contains configuration and control information for
+each VLAN configured on the switch.
+
+Buffer Pool Table: It contains buffer pool configuration and operational
+information. Each entry corresponds to a buffer pool. Currently, we use
+this table to implement flow control feature on each port.
+
+Ingress Port Filter Table: It contains a set of filters each capable of
+classifying incoming traffic using a mix of L2, L3, and L4 parsed and
+arbitrary field data. We use this table to implement host flood support
+to the switch port.
+
+The switch also supports other tables, and we will add more advanced
+features through them in the future.
+
+Wei Fang (14):
+  dt-bindings: net: dsa: update the description of 'dsa,member' property
+  dt-bindings: net: dsa: add NETC switch
+  net: enetc: add pre-boot initialization for i.MX94 switch
+  net: enetc: add basic operations to the FDB table
+  net: enetc: add support for the "Add" operation to VLAN filter table
+  net: enetc: add support for the "Update" operation to buffer pool
+    table
+  net: enetc: add support for "Add" and "Delete" operations to IPFT
+  net: enetc: add multiple command BD rings support
+  net: dsa: add NETC switch tag support
+  net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+  net: dsa: netc: add phylink MAC operations
+  net: dsa: netc: add more basic functions support
+  net: dsa: netc: initialize buffer bool table and implement
+    flow-control
+  net: dsa: netc: add support for the standardized counters
+
+ .../devicetree/bindings/net/dsa/dsa.yaml      |    6 +-
+ .../bindings/net/dsa/nxp,netc-switch.yaml     |  127 ++
+ MAINTAINERS                                   |   11 +
+ drivers/net/dsa/Kconfig                       |    3 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/netc/Kconfig                  |   14 +
+ drivers/net/dsa/netc/Makefile                 |    3 +
+ drivers/net/dsa/netc/netc_ethtool.c           |  192 ++
+ drivers/net/dsa/netc/netc_main.c              | 1575 +++++++++++++++++
+ drivers/net/dsa/netc/netc_platform.c          |   89 +
+ drivers/net/dsa/netc/netc_switch.h            |  155 ++
+ drivers/net/dsa/netc/netc_switch_hw.h         |  356 ++++
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  |  188 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   |  391 +++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  120 ++
+ include/linux/dsa/tag_netc.h                  |   14 +
+ include/linux/fsl/netc_global.h               |    6 +
+ include/linux/fsl/ntmp.h                      |  233 +++
+ include/net/dsa.h                             |    2 +
+ include/uapi/linux/if_ether.h                 |    1 +
+ net/dsa/Kconfig                               |   10 +
+ net/dsa/Makefile                              |    1 +
+ net/dsa/tag_netc.c                            |  180 ++
+ 23 files changed, 3651 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
+ create mode 100644 drivers/net/dsa/netc/Kconfig
+ create mode 100644 drivers/net/dsa/netc/Makefile
+ create mode 100644 drivers/net/dsa/netc/netc_ethtool.c
+ create mode 100644 drivers/net/dsa/netc/netc_main.c
+ create mode 100644 drivers/net/dsa/netc/netc_platform.c
+ create mode 100644 drivers/net/dsa/netc/netc_switch.h
+ create mode 100644 drivers/net/dsa/netc/netc_switch_hw.h
+ create mode 100644 include/linux/dsa/tag_netc.h
+ create mode 100644 net/dsa/tag_netc.c
 
 -- 
 2.34.1
