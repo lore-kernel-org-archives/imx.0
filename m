@@ -1,86 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97342C11E9;
-	Mon, 16 Mar 2026 14:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68271287269;
+	Mon, 16 Mar 2026 15:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773671947; cv=none; b=I/ELnBuRrx2DabUQUUwWxhhVFffI71I6/DJmdY/TeiGxOi0hDmyL9L5CE3m3k8u/FqCnAjuAVsN8QQePgMcLn38RZTgeHAV9h9f6fjSz6kd97l5l09WklN+4ZW6/xBtjk4HEOm6Ud6hnKVIEJTzh/TkndYt/NEu7EUpQAZkMS3c=
+	t=1773673547; cv=none; b=BWU2p35DTdvHzHCvG1FSyQYYo7yKLwb4Rgt2lZ4dqXDKKDa4X8zr/WISzYygZPPZWhybaql6zqL0aWWgIWG3lglSKbOoNukTkNzpIuGO46SBNdfh802x6rXdwIJYZs3BLpD8f2cUL4gj2/1Ki3X1Y5YLhH3CDHs5YwNMQNZnxug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773671947; c=relaxed/simple;
-	bh=O6Vv1Y/ilr2DB0Dw913U6D3rlQM3SHtb+Ci1FW+MTV4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6uZ7R7zddPy4FoGQ1p1pRQh39TfrM6XVabgYb0udrqljaCiHeUebkdrMFd17E/nJr0/21+IAIsRsQMpKWgOx0H/CedcR2dulqNyOXjdThp9dBpASxWIMWLCFgqZQb18OfpFReaXkTRDLzCCimsaQL6Me6ARccLaj4i8FDzeZxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QK2lK3fp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773673547; c=relaxed/simple;
+	bh=8hTof5jN6DSzCuSyhEMauMQI+p0iC2X8rb+MKRGxgOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VHZ66Shb7bESNwgMa9PWqF3048Pe4fxbSTEIr6DACtFI+/FJbWENG9RFzDEHrfXz1YUOILZPmRa5KIaFFPmOiEyQhKj2jFNY0m1veAtJ6LLI9fxKlZ0PN4i73KKf3vkAOPhXWfI7iytqLFZzst8wE7JcdKdBzzvbAOS4VICHB2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qJOBzull; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QK2lK3fp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AF3C19421;
-	Mon, 16 Mar 2026 14:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773671947;
-	bh=O6Vv1Y/ilr2DB0Dw913U6D3rlQM3SHtb+Ci1FW+MTV4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QK2lK3fpDyhxLm+3dKfM70cf3DprbKSwXEnNXVnWRhOxXKDgnGF5DzFFnQ1VTuTa9
-	 xJSGgI8dMk2aPfmASN9j+5gCz+XjiLYnvGWnmDhCncwx8/WOCYubPijaCKF6ykgexf
-	 CJC5U9wqIG1+3ah6O/+fEGtT9M1IqtfRuXzzQMtb5Hw9EBeaDWky5UBRyRuRY9J5dB
-	 JodXbqu11xlLPo0nAzZOVkyug07nGrBR4A2mHCyBHIP/12294djMh8DDJ/KkCytAOx
-	 EC+AXGbat+dZ2pSRZVzhQNXPQQqTrJEm3rvJMMipv98hvqxvxC+EYiK8uzZtrXjslx
-	 D0Stt2KNbO+ew==
-Date: Mon, 16 Mar 2026 14:39:03 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-Message-ID: <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
-References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
- <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qJOBzull"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=9OU9GJ7hTS0RTZZlRjvrompDSYq9g4Wd7DryiX4nbMg=; b=qJOBzulltHEwDL4ghoZ1Ss4VLg
+	lXPWYJiMR83par5sIzq1BYZJ3sFA/IZMgbuqQmYcOqQ/lIeNrzH0CP73aIy0/GD8SMld9d1Cbdjx3
+	kJCIqDPUIAYh4SsXjR4KYLPBsSJcX5oqznaRVFIu+v1KSJPPTnG5WrAdQP3fDeTXbot4lLhWV1M51
+	IFsXKZvIE29PTA4S5dGsEKgy1OmW+ZcSWnJ1QmRtSSbu+8L4N1+R0pR+jmJkAHE0k9TvTgixilLHK
+	kO7OouK2mRa7vD30MmSWiybqU55CAiyDq2YqfKzNyWlddZmgSr/EUKScL3XE/X/3wkEjdyl1Uj0qb
+	O3iwbKlg==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w29Vm-0009Kp-1I;
+	Mon, 16 Mar 2026 16:05:42 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w29Vk-0003GC-37;
+	Mon, 16 Mar 2026 16:05:41 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	linux-renesas-soc@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 1/3] dt: bindings: arm: add bindings for TQMa95xxLA
+Date: Mon, 16 Mar 2026 16:04:51 +0100
+Message-ID: <20260316150535.786122-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Qw7mWSaiamtuB4oj"
-Content-Disposition: inline
-In-Reply-To: <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
-X-Cookie: Not a flying toy.
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27942/Mon Mar 16 07:24:14 2026)
 
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
---Qw7mWSaiamtuB4oj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+TQMa95xxLA is a SOM using NXP i.MX95 CPU. MBa95xxCA is a carrier
+reference design / starter kit board.
 
-On Mon, Mar 16, 2026 at 09:39:05AM +0100, Marc Kleine-Budde wrote:
+[1] https://www.tq-group.com/en/products/tq-embedded/arm-architecture/tqma95xxla/
 
-> +#define FCR_RXWATER	GENMASK(18, 16)
-> +#define FCR_TXWATER	GENMASK(2, 0)
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-The source of the watermark values appears to be
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 5a7a75ede0a87..1559ae22c10c9 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1614,6 +1614,17 @@ properties:
+           - const: kontron,imx93-osm-s    # Kontron OSM-S i.MX93 SoM
+           - const: fsl,imx93
+ 
++      - description:
++          TQMa95xxLA is a series of SOM featuring NXP i.MX95 SoC variants,
++          designed to be soldered on different carrier boards.
++          MBa95xxCA is a carrier reference design / starter kit that allows
++          to use TQMa95xxLA via an adaper board.
++        items:
++          - enum:
++              - tq,imx95-tqma9596la-mba95xxca  # TQ-Systems GmbH i.MX95 TQMa95xxLA SOM on MBa95xxCA
++          - const: tq,imx95-tqma9596la         # TQ-Systems GmbH i.MX95 TQMa95xxLA SOM
++          - const: fsl,imx95
++
+       - description:
+           TQMa95xxSA is a series of SOM featuring NXP i.MX95 SoC variants.
+           It has the SMARC form factor and is designed to be placed on
+-- 
+2.43.0
 
-	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
-	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
-	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
-
-which suggests 4 bits of watermark not 3?  Or at least that something
-isn't joined up somewhere.
-
---Qw7mWSaiamtuB4oj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm4FgYACgkQJNaLcl1U
-h9BvKAf/aXYN1HiqbPUpZ/Ju98fBbIDNMxKhogZU855O+yv/78ICBQwUuhPT1vrY
-PPqvjbLzbIuk4ul1DB/QFcq/jcdNbE7vVQyCGJWjr1Ge30SENWRAxn1SjjonVdCk
-4E0rM1bmaaSswjeXgfLPBLI/PkOLGUFwcDKmXn50J4DTcenTYWFGFXg1MzwTeeoV
-Gf1mrzGhUyf+WYBtlY/cI3TQgePetSWioHT58GmILO5Y9kpafDWWy9C9IEpps8YU
-m89lJlJzH5asLc5HrTq5i050nZY8titjxlzDk25WkYIN7T3i3zAjl4QTtb2yLCXr
-gtbyM1R9PBDCqfvBQpY60oday+Je7w==
-=kgcc
------END PGP SIGNATURE-----
-
---Qw7mWSaiamtuB4oj--
