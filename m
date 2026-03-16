@@ -1,204 +1,161 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013001.outbound.protection.outlook.com [40.107.159.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812B13932E4;
-	Mon, 16 Mar 2026 13:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669514; cv=none; b=JQNa7xWMWdd/8TnF1iky4FJ7DxS8YP7wUlSaNtlSXQy5591DVsWGcxBhsy27Jpg12GHCcQCkpHkzo7lGku+Ru/qQr59oixlKeS3nRahw3jVprUT8Zt29s0dunEky1QfpghHqhw7HUR8tSS7+ysVcW7CipPibNOVHvlroMWlWswY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669514; c=relaxed/simple;
-	bh=CVlQNzU0b44viEJZlAsnGAUFZ+BPYB4D+sIq30LUVvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C922kVsayWKgk395j34Sy21Q2rorsnro9GnNBrjKtOURMq7uJIkGbZ7jMk6C47/PFgXazihN9Ex2XHoO9LGzDsem97A396J5/Uyei/h6ZU0VtjJ+cYR6elcaRqYwhpot2zu/z5oQubY5eYj6QDIc1W5F8SEsIdV/4abvHQ0XkO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RAEYYRiV; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A013A1531E8
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 14:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773670382; cv=fail; b=rSr4EQqwSAVyfNxu7Rekozkv2uZJCKmBq7CZ+ZZKQ8A+iD3Td/E4R4xlkPnMmufhzqdXkDQzaaPdFkBsQq2dEKOmEeMOhMGz0K0MdGyIyTatyp0ym2PD4ZmwiIgLjH3OHar2WAPdDEPeESBtm+Xx6P7m7T1fcGYhUS4cYfeTq4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773670382; c=relaxed/simple;
+	bh=lnmEJaNTA8HhDrItQ06pSL9F9KAuBpAV61XIIuUeUjQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Gxb1xNH70O3RAI0tFhFwk1TvoXgVRlqbSdODZdeq2oy3gaId9qpzf9plMOR2ujcFB0TgTlOE1zAyVlW8CJpnw57uT/2dEEQf4v7VazOh9uFocENnn4V7VA8anpT8iwXC550cnxyQQRdq5JIsmOuQBLbxy0VH7Hq7gsl+KE8zez8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jQMhoE5R; arc=fail smtp.client-ip=40.107.159.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RAEYYRiV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mJpzIoG8vHCShHmOQrQ4HR4CTAI6WdcksZZ8V4h76OU=; b=RAEYYRiVyhflbHPdSPIW9gyJh8
-	YPuRF7K5pO7anE1hW0EugrRQxDi9RTC3vRh7/ONLsLP5RQRLRo2yIXFel4gPNx9KItu0fzGMlVE8Y
-	qimPMwMoF0y90t4zEGt+ZHu27gzKCOrVw3Gb6HKiXNRlmUsXgqDUP6UHo26d1kCJFBrGZJMHPsDZz
-	hcpm5qQ+BF4vfGb6eVx5+m5UOxJ23PCWGH6WM/VZBidVIQ24XgJej8rh9x2Nq5fjKDI/D+slbwi87
-	HA+Utg7oMf8wmlptqty4KGmIfu8asWRHiX58Zgz+lUpe8bkC28o3T5j+YVhDgoY3uWRkNzQFIv5O/
-	pjrthP/w==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w28Sf-000LlW-14;
-	Mon, 16 Mar 2026 14:58:25 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w28Sf-000LMt-1C;
-	Mon, 16 Mar 2026 14:58:24 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: [PATCH v2 2/2] arm64: dts: freescale: tqma8mqml/tqma8mxnl-mba8mx: Add dual-channel LVDS overlay
-Date: Mon, 16 Mar 2026 14:58:19 +0100
-Message-ID: <20260316135820.760073-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260316135820.760073-1-alexander.stein@ew.tq-group.com>
-References: <20260316135820.760073-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jQMhoE5R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZyYwJEGHdecdMOisNgM3AbWMeR24LPtC1GPsa9ssxxqhM1fsyRCKJhkJADbgggxW8ZYanTQvsXB30ZKOvSdGbV5KW57qAPp+rmn5yn4yOcN57XvdnGyljqT4UuRTRKy9O1hsZY5TnbJtjdq0Nu+T793njrv73pGt3oopq/mQLhwVfbG4ir07qLTMGuE8sPumnyODc3v8aFjT3pxnGUqmLZxicqBw97dKUJAXEyB+GHBeq52DDbtlPYWSkhemUdDC2MFPe0dJhsm6fe7vtAbdeqZAqN2TfRKy5m9NZKZfOSatYeo00wG9jSeqJH4ijmz1Z/iLu7npebYrPv6MTSdVKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lnmEJaNTA8HhDrItQ06pSL9F9KAuBpAV61XIIuUeUjQ=;
+ b=X6lM/lXIi8BSQn6+tG2qoGg+8jAPHyfBofaraPABuisDFNjT5/wrznD/ESQ96yiDNpGWw8UAKFFOWDoi2sT6UJEpQzyW8u+yQLpr9zmADYGXqXeZOLW4yx33UQkC78NNFSlXpLxnEFDZhDo8tv1qtBKskSVnu/O2N6+4a9B04w+ULxg1o4fI8XwrJi1KQUA2T2L5qNFr/mjpLD+N2y9ANzrBf/8b5dlbS3zF22voQWPcaMPeMcdM/rPUdB+gSP8HdKAH7EuhjCogCCHr1k7QnjPbDLR+iA4/JQx5SzhCG39OQIViypJRlsu42oCnJ/0ndV3qFqFqPrtd6KXembPadw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lnmEJaNTA8HhDrItQ06pSL9F9KAuBpAV61XIIuUeUjQ=;
+ b=jQMhoE5Rh48eN63vo9eHm7hRzbZm5Esj8W0LGK+0KrklToBM0Ut2yPaO65Vh+Z4YfVeRS59QWV4Ued6kT2+dIVVnt1N93xkQpfhw1oq0NTpNWQkewzKWB0IG+ti5bLqTlcXwf04C3zQ+HC82huxZTPrMhp4HEAddQRfSUsz/gOpyqhdccUIo3m4MdjuabcLNdkRfuDGvYxbCtKeb5xU447q/wdZezai5J71j8MtrsSeg1exe3vE/ebal885q13vhu1j0ZzhU9AIRU7BzHo071wtG/RB5rNLbI5Ros4phqMCNFiD6voiwJpgf97GzHjf+8kWOnNf8n/1YzB1f9xXmmQ==
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cd::13) by PAXPR04MB8670.eurprd04.prod.outlook.com
+ (2603:10a6:102:21d::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Mon, 16 Mar
+ 2026 14:12:55 +0000
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490]) by GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490%5]) with mapi id 15.20.9700.021; Mon, 16 Mar 2026
+ 14:12:31 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, Frank Li <frank.li@nxp.com>,
+	"horms@kernel.org" <horms@kernel.org>, "saikrishnag@marvell.com"
+	<saikrishnag@marvell.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v5 net 1/3] net: enetc: reset PIR and CIR if they are not
+ equal when initializing TX ring
+Thread-Topic: [PATCH v5 net 1/3] net: enetc: reset PIR and CIR if they are not
+ equal when initializing TX ring
+Thread-Index: AQHcss4IP29WaTU2QkqHZ0UO741VlbWxLk+A
+Date: Mon, 16 Mar 2026 14:12:30 +0000
+Message-ID:
+ <GV2PR04MB117404818E6A14DF662AA1CF89640A@GV2PR04MB11740.eurprd04.prod.outlook.com>
+References: <20260313094644.1132411-1-wei.fang@nxp.com>
+ <20260313094644.1132411-2-wei.fang@nxp.com>
+In-Reply-To: <20260313094644.1132411-2-wei.fang@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11740:EE_|PAXPR04MB8670:EE_
+x-ms-office365-filtering-correlation-id: c376138c-d4cd-4168-4323-08de83660fdb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|921020|18002099003|56012099003|22082099003|38070700021;
+x-microsoft-antispam-message-info:
+ TV4jNN29CVBODrUoPaYOaYmfDPnLZP3tsQTjXSzFjLljxaxe7LEUug8rJkXwSDjze7d49dlK+k1oypnD/dbNW7G4Pd2g4jdDVd77zpD/7VSurYTQgFCdIWXZtpBCJxwhEozuk+TtChK+qxWtDoy90EvYO/De67KS9pgIqdHt6DMK8n8tIto1UnVOD+FNBMvtL/S+6dJthE0mPMsaFpkOdP3j3mIuHUoTsX6YNJr1Y8r1ZoewewDJYZMAET1VInrXM+W/b2ISTf1eSrn+LRMHNyzGJOxIdhNAHw9JcR6nZA+Kta6KYBStbhvB+K4ZQsIuX+/ICCBLArcrfMnXVi4fyrVHEicj3SFw4t44BcrOzmCiYER++SzaLdR2LB/jJnYE4lS7Y6+nhTYzVyuUv2XHkdsdbm1SicPlSvEb3+5rgCxR0znGTGoOTLQ5/UZRwBIJm7bmZskPrtDBFrQiKiepsAmgXix2NCIiUrYGM8IPSqdw97wxUrBvZTYzrD7xu5grL3y7PuRwF6WlB/M/FGQaAYQSz5n5QJm51HAQoCSHIscDfJlbM96xUO/d6bRefC/ku2QXHTYgFel84M66SXFPPlRenWRBpF4FFanOow9oB5b6NqDR2gCeP8tzrcXOFbrh2xspJnMDpGMCz0mABMoCCxK+3kwT87dRIW/XITfEoQjGUyhko81FKJ1bUA+uS/WY8kv9XXStMh07JssUSiwKGc4/633afro3tnMVCzBs2RMPVaXWvZ3pE2l8LfYMCjnwpsW2zLNciQm3aQX2zlNNZW29Uh0rfsOXxvVVQGHTy7ZecMj8s+Qc7B6XTC4cqQcj
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11740.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(921020)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?RHmpvSBexsiz5jT6iyCLXm2OggeoeJz3XHR75tsDRmNIOD7b2yfBfBPOxteB?=
+ =?us-ascii?Q?u42Bks1CdZ3rDhNtYPmRu5TuRT6ItLTZEOkJcAfNWDrH3uQpdn1nxQfS0c/j?=
+ =?us-ascii?Q?byAohS2Cyg8wvFZH3Rcb5HmmHwqPWKKFKDIAazSgpi7g7jyc7nwpmeK042Wm?=
+ =?us-ascii?Q?BAAyfqj0ArzvMqIKxZ+z533JRxP8QWCJ3GuvNvPfmE4ZP2KYP+4el+g21xOd?=
+ =?us-ascii?Q?u2jfxlOtR8f4/q/Zns81I9OSO9K8UXiQByiB4XYhWQ2AryiIrUmphDrPGYZa?=
+ =?us-ascii?Q?Lm/d+lCb1q/kqQBE3S5ipdJJwBL7xlfbQcQ6s7u14yPqXUGZwg378gKS6Pdc?=
+ =?us-ascii?Q?W2SC8IA/tE6HQvjQnfKzeuKTri/CMcFaTLB21AkRKaPvIffABFMIDR2KAX4/?=
+ =?us-ascii?Q?Bc30TvWkrKaOiXGstcqixcTbVduj5oc2Re1BeWz+ZilopFoIh+9dqYL+Elzf?=
+ =?us-ascii?Q?cFMa1PYGEfdjQutv1RLg9HlwEQrhH6gshRxsYBD0NXGCP3ctNouu9H8rPoZu?=
+ =?us-ascii?Q?2n07aVTRyqCSCuiOHaXlguR8Hge2JatOW22gKSssiwFeOwXJx1+/A9B33lYD?=
+ =?us-ascii?Q?LZhvlCVBHhssWXV2GD1RfidQ2k2GHoqm/OST2o21dt65qsgBCHup4IUXn/JU?=
+ =?us-ascii?Q?K4VtgMyltkpxCmvr7pfudsyG1A5WTR3m2PJZGpa3K6SFr6oyo6hPrjVcR0nE?=
+ =?us-ascii?Q?QIq4wUVnkTbsi8UyGCdW6lSs9krw2zY24dGlLweKboX2MOqt7GW3UYvXdbRj?=
+ =?us-ascii?Q?05HJQRCzk9PZGI7rNpOLDkYY8N269dZDwBIhcALmtivAHhxcX1tdE9FckAfs?=
+ =?us-ascii?Q?T4G4TureP15ldSSb5zgqkl1KvhF/CbZ7CpJxfC90yN/DGZWydSBzIMN+U3Yo?=
+ =?us-ascii?Q?WHWooIzMn4yuUdrx0JFsoVZCZdELO71sbtOQRAKIorMUzya4uylHbOo8pbhF?=
+ =?us-ascii?Q?+FJ8I7d9eysQkDjHP5/aBZTEz2jDHfFS6JlHNyzKH1QXbUawMlXkAZffF2/O?=
+ =?us-ascii?Q?ZieWgFqVRfcNn1RYOJD4bWaeApUQef/A01mWOwN2VnRdqOOFlOdxofQ7ySgJ?=
+ =?us-ascii?Q?DReZ1uOAp0E401cGTWtx/yFF7OpN7M84uBFCXCrG2qT+TYLerYNaB1QZmUE3?=
+ =?us-ascii?Q?1/6RCmVc4JKwBPul5O7yjUaNw/N3zF+h4V1DyQOL/HZfju3+aadSu5xDr7QN?=
+ =?us-ascii?Q?sv62RxYTQEVDjxUB0kJ/MZS3+kA6kZdTB/7/j88DTZenjZEUtR384YasQEA8?=
+ =?us-ascii?Q?whMky41hidn0KwYozd6QTbNedeLlWf4cm3XSe2bE+bLtkdgomfW3gHuxFU2y?=
+ =?us-ascii?Q?5LPRI2VOYQTA0atqBv0Z9snJEH8fhCHQa1KOLvd9LWZMAMOdX1G4Cqxl0+8j?=
+ =?us-ascii?Q?CWbWTm+s+v+U3Y4AN/IgBQXKku/bzv0aQ+gQyLS9fU6n2vVrd7m0KVnE0RbH?=
+ =?us-ascii?Q?xySc8NHMTWoJLIPWX6BZfjJfA5lKjNLYjFZNUJlP0aRUUzzlFg/EUJA27dE8?=
+ =?us-ascii?Q?5wCeq9S25aj0QZ8a3JN19CmGFYUv8BTL1mWdu2o1NGvVNIwhzkILaFoqVJq6?=
+ =?us-ascii?Q?cYoD3OapqvE6pBpNsWoKsO44q5y8uzu2zIGlauOIlPqcO1/oQIj3CmLzTHd5?=
+ =?us-ascii?Q?PMS5FmMAy9dBtOkPR+Li79CQB27SNaS7ZJoAlct0UU2LVS0rbBuMszICSvMw?=
+ =?us-ascii?Q?EPiF5Tfz8wgi7DN4nQWEVMCr3CLpdDOi79FdB64iXRFOdMzOBEAYZc09LiyH?=
+ =?us-ascii?Q?pbXFR4ltzw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27942/Mon Mar 16 07:24:14 2026)
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11740.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c376138c-d4cd-4168-4323-08de83660fdb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2026 14:12:30.8541
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Dpb8n3CV8XlBQ2MSEB/kvxaAxeiK3Z6yvJYtAKwv+/w0Jpxoxi8BQ8CxWaCKQ1VWg20pM5GGNN/JJsN44fawMw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8670
 
-Add an overlay for the supported LVDS display AUO G133HAN01. Apply
-it for both TQMa8MxML and TQMa8MxNL.
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Friday, March 13, 2026 11:47 AM
+[...]
+> Subject: [PATCH v5 net 1/3] net: enetc: reset PIR and CIR if they are not=
+ equal
+> when initializing TX ring
+>=20
+> Currently the driver does not reset the producer index register (PIR) and
+> consumer index register (CIR) when initializing a TX BD ring. The driver
+> only reads the PIR and CIR and initializes the software indexes. If the
+> TX BD ring is reinitialized when it still contains unsent frames, its PIR
+> and CIR will not be equal after the reinitialization. However, the BDs
+> between CIR and PIR have been freed and become invalid and this can lead
+> to a hardware malfunction, causing the TX BD ring will not work properly.
+>=20
+> For ENETC v4, it supports software to set the PIR and CIR, so the driver
+> can reset these two registers if they are not equal when reinitializing
+> the TX BD ring. Therefore, add this solution for ENETC v4. Note that this
+> patch does not work for ENETC v1 because it does not support software to
+> set the PIR and CIR.
+>=20
+> Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENET=
+C
+> PF")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2:
-* Merge Patch 3 of v1
-* Adjust commit message
-
- arch/arm64/boot/dts/freescale/Makefile        |  4 +
- ...mx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtso | 86 +++++++++++++++++++
- 2 files changed, 90 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtso
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 8a85b5c39f3cc..18fe5134ff407 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -180,7 +180,9 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-ivy.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-mallow.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-wifi-yavia.dtb
- 
-+imx8mm-tqma8mqml-mba8mx-lvds-g133han01-dtbs += imx8mm-tqma8mqml-mba8mx.dtb imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtbo
- imx8mm-tqma8mqml-mba8mx-lvds-tm070jvhg33-dtbs += imx8mm-tqma8mqml-mba8mx.dtb imx8mm-tqma8mqml-mba8mx-lvds-tm070jvhg33.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-tqma8mqml-mba8mx-lvds-tm070jvhg33.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-beacon-kit.dtb
-@@ -214,8 +216,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
- 			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtb \
- 			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
- 
-+imx8mn-tqma8mqnl-mba8mx-lvds-g133han01-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtbo
- imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtbo
- imx8mn-tqma8mqnl-mba8mx-usbotg-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8mqnl-mba8mx-usbotg.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-lvds-g133han01.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-usbotg.dtb
- 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtso b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtso
-new file mode 100644
-index 0000000000000..ce12bc46553dc
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx-lvds-g133han01.dtso
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2019-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mq-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&backlight_lvds {
-+	status = "okay";
-+};
-+
-+&dsi_lvds_bridge {
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@2 {
-+			reg = <2>;
-+
-+			lvds_bridge_out0: endpoint {
-+				remote-endpoint = <&panel_in_lvds0>;
-+			};
-+		};
-+
-+		port@3 {
-+			reg = <3>;
-+
-+			lvds_bridge_out1: endpoint {
-+				remote-endpoint = <&panel_in_lvds1>;
-+			};
-+		};
-+	};
-+};
-+
-+&expander0 {
-+	dsi-mux-oe-hog {
-+		gpio-hog;
-+		gpios = <10 GPIO_ACTIVE_LOW>;
-+		output-high;
-+		line-name = "DSI_MUX_OE#";
-+	};
-+};
-+
-+&lcdif {
-+	status = "okay";
-+};
-+
-+&mipi_dsi {
-+	status = "okay";
-+};
-+
-+&panel {
-+	compatible = "auo,g133han01";
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@0 {
-+			reg = <0>;
-+			dual-lvds-odd-pixels;
-+
-+			panel_in_lvds0: endpoint {
-+				remote-endpoint = <&lvds_bridge_out0>;
-+			};
-+		};
-+
-+		port@1 {
-+			reg = <1>;
-+			dual-lvds-even-pixels;
-+
-+			panel_in_lvds1: endpoint {
-+				remote-endpoint = <&lvds_bridge_out1>;
-+			};
-+		};
-+	};
-+};
--- 
-2.43.0
-
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
