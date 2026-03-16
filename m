@@ -1,418 +1,205 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013059.outbound.protection.outlook.com [40.107.159.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7021E35CB73
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 22:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773701090; cv=none; b=j6fmx6BSi3fEiQwk43YxnkDTs2DuOq67G9wO232XkMQPPzAGd0Zfhjgv7UGSlFARjxVlQ8EbSBjXfJKNTjubWpvFNFbDMNZqgp3KxD4JfiJlOHbg/jGSLKx+zNFL5bwdwQB25xU+yVq0HiauB5HIqCMCUURAYL3vt+q7+m6gfRw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773701090; c=relaxed/simple;
-	bh=TbQNVQEsTIqifTBhmial/tJVeDIfLAcFVJyfGWKgSvw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cXWAijMszZS7kZua2aaAVJWPWMruFmw9KHo6D49gEFpLs/lAnWH55AVDpcEWOx4UZ3KJ3d6IWzNOo+Qz0Guf9riz2Ii6O7OUhEcKDvccEq6+yns2hkWn0zTO0+VtSOCz6Cvnf91rsjkn2ecTB7FOHqEZGCBAQyHQMmh40eFeU6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ah/dBr+z; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D081F872D
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 23:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773704847; cv=fail; b=O0AZNM6JY4h596+ojUvZjiyixmDsvqla78H63EfYuIwfRfezPGqqLLf9B2Rv1+0gTLnv6ku3YJgz8Aig+IYRhxp+xHjOn09jOEodIHZC38liBEguhHUEHO9MDLXjQpJV/ZSwAhMc7/XWHs2meWwHZrqvxvBcud0+by6swfr7WUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773704847; c=relaxed/simple;
+	bh=pTluQv7gn/aI5WNPLQtSjjHkH3ESkPbZ1ChTCa66pXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=krl99dPSHI84jOW3nVdPKLAb6IrRtYWIl9yWvrviV4sNuA9nbGheu5CIAaVY/vWgE6R7GsCBZaq1KRWXxA0W/GNGqjF4l5cX4lV0BkaEffcJyRNtTCILYtQxFU8SmqRQgNsGzV+Bo/CcxNvLkXFShHdrpBGWiWB3tnZtYlSHuf0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aqZ3u0RG; arc=fail smtp.client-ip=40.107.159.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ah/dBr+z"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271257ae53so6929421c88.1
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773701086; x=1774305886; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GO9eSvDa3+h2qEsV4y9v8xIrZRQkG5vgqMO5VOKMlms=;
-        b=ah/dBr+zbZ903STK8RaasBrbFW+muzTbYXqlz1VdpE0sntwyPpwa1YbMU2F9ry2b3R
-         T7ZVj3QYIhTlRjjcKWwLx0b43zv1NqE1ZUAMB3DjMN9pAqClT36IuxsMmmg5+QlOiaO9
-         XRkYEAQzhfuACHWPi8uQqlRg3K5oJwcIRIais=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773701086; x=1774305886;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GO9eSvDa3+h2qEsV4y9v8xIrZRQkG5vgqMO5VOKMlms=;
-        b=ngQaqBUM8L7uchVxJVOGuDaA12ho98+pePuCzM84c6Oj/Pb4qnr+hNfBUHglOYD2t4
-         2Z1dvbtsAmaJTyccdw866Y6gfHllXV5IfLZOZiR8uoCEWAq2ZTdkJyIrLf25mE2gsFyG
-         GGrGmPhLAVqFD0wkVI3UKO03s2ZIsCQc5LkOBRehwch+vuGbdnCLni5r91ooR5bKW0cq
-         ObZvgllpCvj3K0HSG+q8l069znPQlqtEtwFvfOlvgdVmNJUwCsA3OgDJH9UzyCvAkXwy
-         BtE8GXTW5dSFGpsh+cxcfzB5MamDHcWcRW2JZRL+YuWRY0eo8StHmxCXuKKXLSGjqfZZ
-         gZWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7ujepUQZ8SsR6XKeXH1WItqWIGQOw3fO2iLV1sPrwfjZ5G+t364px+NIxYvEaQnwK27w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXJyQ/rWSv3tJ8tmLrW1ihbeGdvhh0XMjn+AgyUokJE7zbrCfz
-	QNvcO4uCSB5/kRbNOohTBGbRUmPMF0L+w3jgDrR/uQb+MyULo8fHnjdTfCIGyXN6og==
-X-Gm-Gg: ATEYQzzGjm0baGLKj6CfiSSsQpoxsF+VMXD3AkI/fNPw6WBmIzdUBTpaBzpS1tjDy5k
-	utQoex7L6nwIm8PVp80kYwgcXtrHPD0F+o4z1co0WCSeE+B5wWhQ0ymtd4V7wtIuwZNA3QfbcxT
-	cMWQLptCtRLblzytBndRNbFWEnyQPhCLLs1nUCXFkmvz0UxddzPbtYftin5vew8ZbK9yGlo+Ta3
-	1iDfip3PZVBRrO7ZxeUMJTyhRCZXrUBnr3KywqBFjS88BHth6EAd6eaU126aSAkbRHpQUTOlFBE
-	ZK71dU8PVPXj+dzANA0Vb8vFrriO7g62Qw2Wuogjy0d7T9fWphg/GcJFqujC53oeDAp1hQzKpD9
-	cWBqCHxEbVxzoG9SeAy/b1t4aytIGtlo6AqZ5wg4Ek5ozhSqnTM57V64btPBmXUu/kPr2c5TG4h
-	HMo4WN8vWxECg1zzlrM3+bnGq1MpcBPXUahC+AGHoshw4wsaXOGow0UHWm4xTvLuFnNMTwKD5Tw
-	98A0yHiIJ4=
-X-Received: by 2002:a05:7022:b97:b0:128:ca90:32e2 with SMTP id a92af1059eb24-128f3d01194mr6948603c88.7.1773701086368;
-        Mon, 16 Mar 2026 15:44:46 -0700 (PDT)
-Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:3965:b4d0:9159:598b])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab3eec8fsm16536873eec.13.2026.03.16.15.44.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 15:44:45 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] device property: Make modifications of fwnode "flags" thread safe
-Date: Mon, 16 Mar 2026 15:42:06 -0700
-Message-ID: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-X-Mailer: git-send-email 2.53.0.851.ga537e3e6e9-goog
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aqZ3u0RG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ri7+kAEZt1hr3R0PaMJWSj07PUcuYXFOJckVRUNaKveWlFZdhtJYfNlbhhzMl3O8MQRoGUfE9uaJkkmk5qPqZwpzs8nycVIbYjRC+9fQ298xsmxYGL+XIkKIylMmsF0uKxlOoRMmbdZP7Vku0RN6mF2IqrlnpyodrkAIqMbpwtL9NWArA4XO/iA6evwYevpLIPrQqXnEowa0N4/P4ANytKE3QNQyQo/IZDZbFAuXDD/Lc5ojvBkl40GWpZfQ/huRuLAwcIH1NbKqWXM3f1PxwsW7QiSd3P/447tlsc2GKkrmlzoVI1IfXzFNru2tD/6C8IphzPpT7qyLjkMQf3WQHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2NGxHOMWIdeYaV123EjI/fNhq/BwqhYjzat1yd51p2Q=;
+ b=JTKEBCMmvvMT6rLoYvpMct3Z7imKZtUjhmxsYpeSu90AZtKAHqia9D1VncPD2fVXFfaauLedSQDm8SDulmriOId0gy4bXVcEYAXrigXZdil1xJtKF4lO50yWzfdS3FjANd2JoarIzQKflhWRiwNWnJIJWbyM5AvqipVpBRBaNmUZI3brS6Q9JhDO5fgXfyeoh9QkLwkPMhiI5QUvWuOZD7uXFUJCMAgS7G3mtxCJIBOsG9AriGmmpuXn6h3ounakvsKrM+LJAs09y9qT25yD/ZD9KmaJb6PNeYwdsjx06MIk3BXI4d+d4zcyFQDF/oYOod0P/7mh0pLC3fS3h7O4kw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2NGxHOMWIdeYaV123EjI/fNhq/BwqhYjzat1yd51p2Q=;
+ b=aqZ3u0RGl4IOW+/ay675wGL5xqTkKp5dSIv7S4LdaCHj3buvr7s6NOueSRKDuRiflMhxT67MeLDJID6VW6v2ORt5smt8KmyeSA+dLCHIX7mT7ei6si0FXbbvCZUgrwqNuFt3Aj819etL00MbuOCrQ39jfzbRnMUUbQjnrPp4I5iSdZ91L7wlnUitvL3T/+S2NFan9LfOSyLIJjKM2PwG581Uo4uO+SdpgMSu1Dcym9WDfyn+/b7TMPw+YNbufxlAV/LU81wRgDJDE+yuT+VbCVuWdBaQ6MQM6cFRc9c1+UGGBa4fm+FUqk6UO5t5GlSPpnBCjWIp2bjYTIpZh27dCw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by GVUPR04MB12421.eurprd04.prod.outlook.com (2603:10a6:150:346::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Mon, 16 Mar
+ 2026 23:47:18 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9700.010; Mon, 16 Mar 2026
+ 23:47:11 +0000
+Date: Mon, 16 Mar 2026 19:47:11 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:MEMORY TECHNOLOGY DEVICES (MTD)" <linux-mtd@lists.infradead.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/3] dt-bindings: mtd: refactor NAND bindings and add
+ nand-controller-legacy.yaml
+Message-ID: <abiWfytPEzbRAIcK@lizhi-Precision-Tower-5810>
+References: <20260309200351.1791162-1-Frank.Li@nxp.com>
+ <20260313233450.GA3632753-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260313233450.GA3632753-robh@kernel.org>
+X-ClientProxiedBy: PH0PR07CA0065.namprd07.prod.outlook.com
+ (2603:10b6:510:f::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GVUPR04MB12421:EE_
+X-MS-Office365-Filtering-Correlation-Id: d553ff19-6bdb-4f5e-b2bc-08de83b657e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|19092799006|366016|38350700014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	n4KbU68BQYSyCM2sz1ntSryMIL6G+wMVaoT8pVHhDHos9nU+rjLbjNPFDIDLNhB5xUH/SNmosYo9QGGz8GSXLNV6H+P51gR2cLw1tpHorb0lrZhRHImHLnQ84Omm6w31z+cv89t9PQ6Z5Bam46rtHmb46mkNv+9w4jJSHM6AZ2jLFA68aOuaH4H9hqYuLffePCSDk/8oYQWL7ULVgMpJzAL3Xt7Iobzb6GcQx8mfOK7nOYf05n20CKAogsXzSFWXLIa7yy3UbrFR42fPjxN10UsW4CvUyaMAJWImJFhxl2yVA5EoVHx5tttSAGfoN9r+g+NBzVSJao3CnXS0WKc0wdoJZrijSQvZV5x+FRdhPeNTjfjRsfR8s2189e9AEHkOpFdDSKJKAi0RGjBk9K55BERJ1TPREdwAA2OFwhLSGEo+ARe+sLXUda4Xkp83RjvIcmjiQLWbQuDTseWc3d6XJPMOk1R26z59gdj6JhDN8DWGq+0XSz+b9QAcr/ybW2GHBQJ4XTWEhb1Ym4olhUtIOPkOtUUqs5Q7X9CifauJSVoSq0hhlNTP6pQA9t6a9jMgW4GHPq5RkoQJZ4rkWAQOdrthSz4ynM6b1N8S6VA/ItWrcSsZ1ZgRZvwQtPqXgtJZIeXue18ctHcARn79+/0DWXI3LiL0QsgB3fCI62l7VEecLZ7gpsW4YhE8gbTX2ZxWAJT+/hfYyN7L+RB3m9pV74fPM3cNwsdHBcq0gA8cBhVvdqcZ0NYDzUfGKPQ6BSxK
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(19092799006)(366016)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iGFw2MY82oE+reGoPYX3jJIJzpfkoYhbj0s4129tMTRYsXTjFaegnEl0MVY2?=
+ =?us-ascii?Q?44ETpytUrn71feRH4S+xaPors48dIIZPKDuv5kSc6I5JPvONAcrEAt05ZDxS?=
+ =?us-ascii?Q?KmA5bRfuBH8J3lWmr0hgzLKHHj+WvhhhZkkR0ZRq6TyTDanV/iVCnTckDPRV?=
+ =?us-ascii?Q?/TL8XtC49lvYq/ekWsUkWD3Sip42FPquD4HBp9kGMp0sb/wapSThO/cG9UFp?=
+ =?us-ascii?Q?I9koAHT7+ngKVcIRSfRW/OVKtFpFjTyMfcS6n/uXC6FXO0Jk0KQpmDnZrO3W?=
+ =?us-ascii?Q?X0j1KXRUSpHpXnLE+0izLBvbbJKayi6aSn/NaqVhdnYHYErJIeVBYDDGG1Pz?=
+ =?us-ascii?Q?tDiyB+jw7sK8Kx2CzBYB01MO9xMpijCn4aLC13q/iGidwVfniFavK0bAlw7x?=
+ =?us-ascii?Q?5UoN2XDacX8ZEleJ9xWn2LeVIV1fe0Ltx11w6pi066bQ+wBXjTlXOj3E7bjZ?=
+ =?us-ascii?Q?TiEP75qM8TUtL5AqxpCq8Fc91UCXbHNife8QrWf1Cx9A2yshuq/1p6QvEMe0?=
+ =?us-ascii?Q?XXSCEWkJgtEBScSMrbiOcodIMCV+IHSp4HGn8Clk02J8d2GDuAhV9wWDBm/S?=
+ =?us-ascii?Q?dZ375/NsV3gfg0oHR0GxAVo8W0MtlPVNLkPcPoRFTntYe7quOtGwZ55+e2Bf?=
+ =?us-ascii?Q?J6mzQtaRuI9ES8xZNafn9w/RBvFa80YHn7+0+iywWHA4QnoOMRc8XEX7V+Uo?=
+ =?us-ascii?Q?Z5C2dccTGXAvfx349cqQc3PZgERpp8rgU6LR9OYJyVVsF+CD4b3Ll/62r6/R?=
+ =?us-ascii?Q?S0GycvuYEAOIntuDIutApR/k/U+LpstLsATzj7th691KmLvBPBiSZzjzdfr4?=
+ =?us-ascii?Q?/WSLtaVk8j4yLHvSB+b9V8xefRkVl177TmlUASx/W5UTMeAL3x+6hfyKJoe5?=
+ =?us-ascii?Q?WFrsXxmEBqiTbI0GyydDEOhnCiQtxvBf3RH+VSR01kag7fId6Y8hbtbdeN/T?=
+ =?us-ascii?Q?yD8EziDuW19cOvFTB6Chu7v8zM25qvatnVDLSrPpssP9+wpmQBPXI23isSPE?=
+ =?us-ascii?Q?s1zKASgxn50rSsiN0SaIzb6jowkzD9UZb/jjyr8rIR54Zt4sOnBppMRFS9xY?=
+ =?us-ascii?Q?bomVZInuOH6bJp61b0/vWMTqD1ArB01xUjt4K/iGHSfbegsqm2m+awA34gnF?=
+ =?us-ascii?Q?7CB07AUxsLODJ8yCLnVQvGmrMWY/7AHUZjH1+yZEGOVT/eIno1cChRBJ+FSE?=
+ =?us-ascii?Q?mUrNUxT5HgC9XFfi0vrfznwm0agPrwndayrNVumF+wtIVdzkq3dpl7gN/P5s?=
+ =?us-ascii?Q?//hrgsKJ+FiL8C14wooyqBmhjxibW1DTfkm/8Kd8dp043no35DX7n6p8zw5d?=
+ =?us-ascii?Q?GWp9lfQkeSAJcCxoMREhRXE53BEGhX7UurT+Z5Rssjpno8Gg8W+9lYig6B1Y?=
+ =?us-ascii?Q?xsub9p5s47p/XjXH8EBHKpoxTjx4iYMWQJkqbyGQvB9ckYB8M1N6MVMVbhH5?=
+ =?us-ascii?Q?FXOtjT/7FOBPHVws/R9+iwQ5TTv2tB03ODBhhuxrFwH5jI0ecjIpBQiXaIjN?=
+ =?us-ascii?Q?cJWiAdccS/epSR9mmAb1HGr8KSTjMuIFGcNnT0/ZWhr3V9yETD254asnj67K?=
+ =?us-ascii?Q?O+7scvn9z+feFmO9LJ3/NCDYZ/S1ZhhfOVYIKOcWVNCX1s1OU2o36ETRjKz1?=
+ =?us-ascii?Q?ih8Uu3tAoTns0Si9sLc03woeVCRGGSyDchpbHbRtDhccKfTWAt1q4fnhl9A5?=
+ =?us-ascii?Q?j/78L0YJmg0BXd1CKaXHKVgf3/jjySCWjWNsAjfJqypOM7BF?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d553ff19-6bdb-4f5e-b2bc-08de83b657e5
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2026 23:47:11.7547
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ANNS5Jxj1S02846+VGG+irPFSxA20SNxdrJ/k+G9rNbpkqmUQScOKBOyygf6v4i6nMXsD7pTXLUkAIerUQq7Dw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVUPR04MB12421
 
-In various places in the kernel, we modify the fwnode "flags" member
-by doing either:
-  fwnode->flags |= SOME_FLAG;
-  fwnode->flags &= ~SOME_FLAG;
+On Fri, Mar 13, 2026 at 06:34:50PM -0500, Rob Herring wrote:
+> > --- a/Documentation/devicetree/bindings/mtd/nand-controller.yaml
+> > +++ b/Documentation/devicetree/bindings/mtd/nand-controller-legacy.yaml
+> > @@ -1,7 +1,7 @@
+> >  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >  %YAML 1.2
+> >  ---
+> > -$id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+> > +$id: http://devicetree.org/schemas/mtd/nand-controller-legacy.yaml#
+> >  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> >
+> >  title: NAND Controller Common Properties
+> > @@ -10,21 +10,22 @@ maintainers:
+> >    - Miquel Raynal <miquel.raynal@bootlin.com>
+> >    - Richard Weinberger <richard@nod.at>
+> >
+> > -description: |
+> > +description: >
+> >    The NAND controller should be represented with its own DT node, and
+> >    all NAND chips attached to this controller should be defined as
+> >    children nodes of the NAND controller. This representation should be
+> >    enforced even for simple controllers supporting only one chip.
+> >
+> > +  This is only for legacy nand controller, new controller should use
+> > +  nand-controller.yaml
+> > +
+> >  properties:
+> > -  $nodename:
+> > -    pattern: "^nand-controller(@.*)?"
+> >
+> >    "#address-cells":
+> >      const: 1
+> >
+> >    "#size-cells":
+> > -    const: 0
+> > +    enum: [0, 1]
+> >
+> >    ranges: true
+> >
+> > @@ -39,33 +40,26 @@ properties:
+> >      minItems: 1
+> >      maxItems: 8
+> >
+> > +  partitions:
+> > +    type: object
+> > +
+> > +    required:
+> > +      - compatible
+> > +
+> >  patternProperties:
+> >    "^nand@[a-f0-9]$":
+> >      type: object
+> >      $ref: raw-nand-chip.yaml#
+>
+> Shouldn't this be removed? The main thing is legacy bindings don't have
+> these nand nodes.
 
-This type of modification is not thread-safe. If two threads are both
-mucking with the flags at the same time then one can clobber the
-other.
+Support both to provide migration path. Need support both to make existing
+boards migration to new layout.
 
-While flags are often modified while under the "fwnode_link_lock",
-this is not universally true.
+The i.MX8's old boards use old layer out. but new boards, we expect use new
+layout, but they use the same compatible string.
 
-Create some accessor functions for setting, clearing, and testing the
-FWNODE flags and move all users to these accessor functions. New
-accessor functions use set_bit() and clear_bit(), which are
-thread-safe.
 
-Cc: stable@vger.kernel.org
-Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-While this patch is not known for sure to fix any specific issues, it
-seems possible that it could fix some rare problems. I'm currently
-trying to track down a hard-to-reproduce heisenbug and one (currently
-unproven) theory I had was that the fwnode flags could be getting
-messed up like this. Even if turns out not to fix my heisenbug,
-though, this seems like a worthwhile change to take.
+>
+> >
+> > -required:
+> > -  - "#address-cells"
+> > -  - "#size-cells"
+> > +  "^partition@[0-9a-f]+$":
+> > +    type: object
+> > +    $ref: /schemas/mtd/partitions/partition.yaml#/$defs/partition-node
+> > +    deprecated: true
+>
+> Is there any .dts (in tree) with partition nodes not under 'partitions'
+> node. Maybe this can be omitted.
 
- drivers/base/core.c                 | 24 +++++++++----------
- drivers/bus/imx-weim.c              |  2 +-
- drivers/i2c/i2c-core-of.c           |  2 +-
- drivers/net/phy/mdio_bus_provider.c |  4 ++--
- drivers/of/base.c                   |  2 +-
- drivers/of/dynamic.c                |  2 +-
- drivers/of/platform.c               |  2 +-
- drivers/spi/spi.c                   |  2 +-
- include/linux/fwnode.h              | 37 ++++++++++++++++++++++-------
- 9 files changed, 48 insertions(+), 29 deletions(-)
+arch/arm/boot/dts/nxp/imx/imx27-apf27.dts
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 791f9e444df8..f65492a4afc8 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -182,7 +182,7 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode)
- 	if (fwnode->dev)
- 		return;
- 
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
- 	fwnode_links_purge_consumers(fwnode);
- 
- 	fwnode_for_each_available_child_node(fwnode, child)
-@@ -228,7 +228,7 @@ static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
- 	if (fwnode->dev && fwnode->dev->bus)
- 		return;
- 
--	fwnode->flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
- 	__fwnode_links_move_consumers(fwnode, new_sup);
- 
- 	fwnode_for_each_available_child_node(fwnode, child)
-@@ -1012,7 +1012,7 @@ static void device_links_missing_supplier(struct device *dev)
- static bool dev_is_best_effort(struct device *dev)
- {
- 	return (fw_devlink_best_effort && dev->can_match) ||
--		(dev->fwnode && (dev->fwnode->flags & FWNODE_FLAG_BEST_EFFORT));
-+		(dev->fwnode && (fwnode_test_flag(dev->fwnode, FWNODE_FLAG_BEST_EFFORT)));
- }
- 
- static struct fwnode_handle *fwnode_links_check_suppliers(
-@@ -1723,11 +1723,11 @@ bool fw_devlink_is_strict(void)
- 
- static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
- {
--	if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-+	if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
- 		return;
- 
- 	fwnode_call_int_op(fwnode, add_links);
--	fwnode->flags |= FWNODE_FLAG_LINKS_ADDED;
-+	fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
- }
- 
- static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-@@ -1885,7 +1885,7 @@ static bool fwnode_init_without_drv(struct fwnode_handle *fwnode)
- 	struct device *dev;
- 	bool ret;
- 
--	if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
-+	if (!(fwnode_test_flag(fwnode, FWNODE_FLAG_INITIALIZED)))
- 		return false;
- 
- 	dev = get_dev_from_fwnode(fwnode);
-@@ -2001,10 +2001,10 @@ static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
- 	 * We aren't trying to find all cycles. Just a cycle between con and
- 	 * sup_handle.
- 	 */
--	if (sup_handle->flags & FWNODE_FLAG_VISITED)
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_VISITED))
- 		return false;
- 
--	sup_handle->flags |= FWNODE_FLAG_VISITED;
-+	fwnode_set_flag(sup_handle, FWNODE_FLAG_VISITED);
- 
- 	/* Termination condition. */
- 	if (sup_handle == con_handle) {
-@@ -2074,7 +2074,7 @@ static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
- 	}
- 
- out:
--	sup_handle->flags &= ~FWNODE_FLAG_VISITED;
-+	fwnode_clear_flag(sup_handle, FWNODE_FLAG_VISITED);
- 	put_device(sup_dev);
- 	put_device(con_dev);
- 	put_device(par_dev);
-@@ -2127,7 +2127,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 	 * When such a flag is set, we can't create device links where P is the
- 	 * supplier of C as that would delay the probe of C.
- 	 */
--	if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD) &&
- 	    fwnode_is_ancestor_of(sup_handle, con->fwnode))
- 		return -EINVAL;
- 
-@@ -2150,7 +2150,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 	else
- 		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
- 
--	if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
-+	if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NOT_DEVICE))
- 		sup_dev = fwnode_get_next_parent_dev(sup_handle);
- 	else
- 		sup_dev = get_dev_from_fwnode(sup_handle);
-@@ -2162,7 +2162,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 		 * supplier device indefinitely.
- 		 */
- 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
--		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-+		    fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)) {
- 			dev_dbg(con,
- 				"Not linking %pfwf - dev might never probe\n",
- 				sup_handle);
-diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-index 83d623d97f5f..f735e0462c55 100644
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -332,7 +332,7 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
- 			 * fw_devlink doesn't skip adding consumers to this
- 			 * device.
- 			 */
--			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+			fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
- 				dev_err(&pdev->dev,
- 					"Failed to create child device '%pOF'\n",
-diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
-index eb7fb202355f..354a88d0599e 100644
---- a/drivers/i2c/i2c-core-of.c
-+++ b/drivers/i2c/i2c-core-of.c
-@@ -180,7 +180,7 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		client = of_i2c_register_device(adap, rd->dn);
- 		if (IS_ERR(client)) {
- 			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
-diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_bus_provider.c
-index 4b0637405740..fd691c5424ea 100644
---- a/drivers/net/phy/mdio_bus_provider.c
-+++ b/drivers/net/phy/mdio_bus_provider.c
-@@ -294,8 +294,8 @@ int __mdiobus_register(struct mii_bus *bus, struct module *owner)
- 		return -EINVAL;
- 
- 	if (bus->parent && bus->parent->of_node)
--		bus->parent->of_node->fwnode.flags |=
--					FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD;
-+		fwnode_set_flag(&bus->parent->of_node->fwnode,
-+				FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
- 
- 	WARN(bus->state != MDIOBUS_ALLOCATED &&
- 	     bus->state != MDIOBUS_UNREGISTERED,
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 57420806c1a2..8d1972e18161 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1915,7 +1915,7 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64 align))
- 		if (name)
- 			of_stdout = of_find_node_opts_by_path(name, &of_stdout_options);
- 		if (of_stdout)
--			of_stdout->fwnode.flags |= FWNODE_FLAG_BEST_EFFORT;
-+			fwnode_set_flag(&of_stdout->fwnode, FWNODE_FLAG_BEST_EFFORT);
- 	}
- 
- 	if (!of_aliases)
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 1a06175def37..ade288372101 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -225,7 +225,7 @@ static void __of_attach_node(struct device_node *np)
- 	np->sibling = np->parent->child;
- 	np->parent->child = np;
- 	of_node_clear_flag(np, OF_DETACHED);
--	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
-+	fwnode_set_flag(&np->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 
- 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
- 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index ba591fbceb56..7eeaf8e27b5b 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -742,7 +742,7 @@ static int of_platform_notify(struct notifier_block *nb,
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		/* pdev_parent may be NULL when no bus platform device */
- 		pdev_parent = of_find_device_by_node(parent);
- 		pdev = of_platform_device_create(rd->dn, NULL,
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 61f7bde8c7fb..ba8098f1a88c 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4938,7 +4938,7 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		 * Clear the flag before adding the device so that fw_devlink
- 		 * doesn't skip adding consumers to this device.
- 		 */
--		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
-+		fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE);
- 		spi = of_register_spi_device(ctlr, rd->dn);
- 		put_device(&ctlr->dev);
- 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 097be89487bf..4f7f80155f69 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -15,6 +15,7 @@
- #define _LINUX_FWNODE_H_
- 
- #include <linux/bits.h>
-+#include <linux/bitops.h>
- #include <linux/err.h>
- #include <linux/list.h>
- #include <linux/types.h>
-@@ -42,12 +43,12 @@ struct device;
-  *		suppliers. Only enforce ordering with suppliers that have
-  *		drivers.
-  */
--#define FWNODE_FLAG_LINKS_ADDED			BIT(0)
--#define FWNODE_FLAG_NOT_DEVICE			BIT(1)
--#define FWNODE_FLAG_INITIALIZED			BIT(2)
--#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	BIT(3)
--#define FWNODE_FLAG_BEST_EFFORT			BIT(4)
--#define FWNODE_FLAG_VISITED			BIT(5)
-+#define FWNODE_FLAG_LINKS_ADDED			0
-+#define FWNODE_FLAG_NOT_DEVICE			1
-+#define FWNODE_FLAG_INITIALIZED			2
-+#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD	3
-+#define FWNODE_FLAG_BEST_EFFORT			4
-+#define FWNODE_FLAG_VISITED			5
- 
- struct fwnode_handle {
- 	struct fwnode_handle *secondary;
-@@ -57,7 +58,7 @@ struct fwnode_handle {
- 	struct device *dev;
- 	struct list_head suppliers;
- 	struct list_head consumers;
--	u8 flags;
-+	unsigned long flags;
- };
- 
- /*
-@@ -212,6 +213,24 @@ static inline void fwnode_init(struct fwnode_handle *fwnode,
- 	INIT_LIST_HEAD(&fwnode->suppliers);
- }
- 
-+static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
-+				   unsigned int bit)
-+{
-+	set_bit(bit, &fwnode->flags);
-+}
-+
-+static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
-+				   unsigned int bit)
-+{
-+	clear_bit(bit, &fwnode->flags);
-+}
-+
-+static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
-+				    unsigned int bit)
-+{
-+	return test_bit(bit, &fwnode->flags);
-+}
-+
- static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
- 					  bool initialized)
- {
-@@ -219,9 +238,9 @@ static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
- 		return;
- 
- 	if (initialized)
--		fwnode->flags |= FWNODE_FLAG_INITIALIZED;
-+		fwnode_set_flag(fwnode, FWNODE_FLAG_INITIALIZED);
- 	else
--		fwnode->flags &= ~FWNODE_FLAG_INITIALIZED;
-+		fwnode_clear_flag(fwnode, FWNODE_FLAG_INITIALIZED);
- }
- 
- int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
--- 
-2.53.0.851.ga537e3e6e9-goog
-
+Frank
