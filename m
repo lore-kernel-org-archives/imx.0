@@ -1,131 +1,117 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965803B7B83;
-	Mon, 16 Mar 2026 15:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EC93B6BE3;
+	Mon, 16 Mar 2026 15:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773676632; cv=none; b=oBCEAYGl0vQDho7+hZzWZrpoXMxXDlvOLo3uDbsqrtMoyr4vf9tuVBZrLdJN1iR7Vlioub2/gV1VmpIG13T9yE//5WxFBky89Ro+AtvVVPy1uTY9TVmMaN1v2c9i2uZnMFSbLx2tWblM9jsSRRCmBws6A0yLunBrWF651poq9OU=
+	t=1773676657; cv=none; b=dXa1Y95KC8zJGLgvs2Sykdoz9uJEgATqeDOzLb72Vyl2JfhVP7CPmvby8egZoCR+7oEaSRwKympqcUVdrKInpKFGZr9Btro98L2C6Qe2U7bLYBhbyHyXLtPZgZu/L2IY6Na2w/XnAZPOQ+n1dCSIEjzy1hQqhJThUUhPQp0HXO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773676632; c=relaxed/simple;
-	bh=PbKrBXthjNGfFtArOSneEVU2S5ohT/HxHPM5k6fcTws=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QZ0r9IGhUYfyBDK5r32jSf6MRWhU/uMLS44GqR/g4gB2yT790vZpVokgcl1+dZ6VpqSa4nKn01WGqH1e7eH5V9EwZasOaM0kqevPfKleVLSqQJ3n+IhwRQ1w4THbbukVh0N2lfrG1GxsZ8rV4VtqW48XCEXhMq7dhcoDErh5aRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=F+wuM52t; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773676657; c=relaxed/simple;
+	bh=bauaN0rwvZ5ND9o7f7AFwAWfFGS+QIjNybGjmwWpuCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CaNXPVES4EHPbhU/nKZld5lN4z5WHZpvcKKlnvV1nVrhdEoYovwLx/0beAyoGl7w6Y/dNbLdhB+GXU1i8+Hmo7/gRtgbrS1AQIoai/oF/OkUoO1uIPm/KPr/69tcch6TiIv52HZtxHMq1O9m5vWPBVZfOPlMgmnJJE/lPs9q1gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CG/wOdvh; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="F+wuM52t"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A108BC55044;
-	Mon, 16 Mar 2026 15:57:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DD4A66004F;
-	Mon, 16 Mar 2026 15:57:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D680103721F0;
-	Mon, 16 Mar 2026 16:56:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773676624; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gPWg45628wXOGTSku2sZt3UN9TbvmDc1uinjnNPjXiQ=;
-	b=F+wuM52tfsJOst/pUkIjwdenzlZY0QftTQ/4NOcFwfqocdMH+NJh258BZnrMoKeqLFNMEN
-	bc/L1DGDGBOGFcp6+xGMrdsjDhxpeU3BPexd032tb2bOu45ca1ox4QhIawUCc6kJ+bA9VX
-	oPm7oNiLCUTiYQCqCHB3fegsu43UgYV3WkEKQGcGp0ATgB7Uei6Cs5z4mzzsVUCjPaNFO9
-	bKAx3EK1UM87DtIQX3KE3czU4JqXiKI0pEai0IcEfkeyeuv+wzPiiAq6ziT/0PdsYdWFbD
-	JdtYjZRq09Tc1bq2iZhxGh7dMNzhhgNtvzkx6mw29MT90ATt/4M2/hLnjYz6eA==
-Date: Mon, 16 Mar 2026 16:56:37 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: "Martin =?UTF-8?B?UG92acOFwqFlcg==?=" <povik+lin@cutebit.org>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Andrei Simion
- <andrei.simion@microchip.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Arnaud Pouliquen
- <arnaud.pouliquen@foss.st.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Bard Liao
- <yung-chuan.liao@linux.intel.com>, Benson Leung <bleung@chromium.org>, Biju
- Das <biju.das.jz@bp.renesas.com>, Cezary Rojewski
- <cezary.rojewski@intel.com>, Cheng-Yi Chiang <cychiang@chromium.org>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Cyril Chao <Cyril.Chao@mediatek.com>, Dan
- Carpenter <dan.carpenter@linaro.org>, Daniel Baluta
- <daniel.baluta@nxp.com>, Daniel Mack <daniel@zonque.org>, Fabio Estevam
- <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Guenter Roeck <groeck@chromium.org>, Haojian
- Zhuang <haojian.zhuang@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kai Vehmanen
- <kai.vehmanen@linux.intel.com>, Kunihiko Hayashi
- <hayashi.kunihiko@socionext.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Matthias
- Brugger <matthias.bgg@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Michal Simek <michal.simek@amd.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>, Nicolin Chen
- <nicoleotsuka@gmail.com>, Oder Chiou <oder_chiou@realtek.com>, Olivier
- Moysan <olivier.moysan@foss.st.com>, Orson Zhai <orsonzhai@gmail.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
- <pierre-louis.bossart@linux.dev>, Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>, Ray Jui <rjui@broadcom.com>, Robert
- Jarzmik <robert.jarzmik@free.fr>, Sascha Hauer <s.hauer@pengutronix.de>,
- Scott Branden <sbranden@broadcom.com>, Sheetal <sheetal@nvidia.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, Srinivas Kandagatla
- <srini@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi
- Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>, Tim Bird
- <tim.bird@sony.com>, Tzung-Bi Shih <tzungbi@kernel.org>, Venkata Prasad
- Potturu <venkataprasad.potturu@amd.com>, Vijendar Mukunda
- <Vijendar.Mukunda@amd.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, chrome-platform@lists.linux.dev,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 01/29] ASoC: soc-component: re-add
- pcm_new()/pcm_free()
-Message-ID: <20260316165637.7b09fa9b@bootlin.com>
-In-Reply-To: <87a4w8lde4.wl-kuninori.morimoto.gx@renesas.com>
-References: <87bjgoldf9.wl-kuninori.morimoto.gx@renesas.com>
-	<87a4w8lde4.wl-kuninori.morimoto.gx@renesas.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CG/wOdvh"
+Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id C1FF71FA6D;
+	Mon, 16 Mar 2026 16:57:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1773676652;
+	bh=zEuqXYLwdnr/h2zdw/7lA5Y0YBEZ5aLcF0pDLSnsKRA=; h=From:To:Subject;
+	b=CG/wOdvhkrI7VJK5Ltm22UKXsL1TWqPJGrEkmQM+OFCb5ErieX2h0GmDaGar7l/ze
+	 dgScDmFbeGnU9gikIGI01vX8r4e+g2W5/9T84gM9+q8M+mrV1FfH+imeEH4nnXXcux
+	 LrV3izZODDCLPPypcPFykWsZAJuI1caBi/1PnVJAhKqElkzp1GKzdxHXEiq7GphQ6D
+	 8t/g9xlSqhRsoikEwRnegUgGcOFSUZJIrR8quurrXVH8VwaOlBShvhp1VVn4zzBk8w
+	 5Uq2Ow60hu8UsLtkPE0RhPbdCfe08wV9+smZ8Vq03LZbtCOZv9qoSVdyJPcSGEjXq5
+	 2TY3p4bNKKzcA==
+Date: Mon, 16 Mar 2026 16:57:27 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Nicolas Dufresne <nicolas@ndufresne.ca>
+Cc: Francesco Dolcini <francesco@dolcini.it>, ming.qian@oss.nxp.com,
+	linux-media@vger.kernel.org, mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl, benjamin.gaignard@collabora.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	p.zabel@pengutronix.de, sebastian.fricke@collabora.com,
+	shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, m.felsch@pengutronix.de,
+	fra.schnyder@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de,
+	Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
+Subject: Re: [PATCH v4] media: verisilicon: Fix kernel panic due to
+ __initconst misuse
+Message-ID: <20260316155727.GA43134@francesco-nb>
+References: <20260306031059.801-1-ming.qian@oss.nxp.com>
+ <20260312173349.GA137045@francesco-nb>
+ <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
 
-Hi Kuninori,
-
-On Mon, 16 Mar 2026 02:24:43 +0000
-Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
-
-> Because old pcm_new()/pcm_free() didn't care about parameter component,
-> to avoid name collisions, we have added pcm_construct()/pcm_destruct() by
-> commit c64bfc9066007 ("ASoC: soc-core: add new pcm_construct/pcm_destruct")
+On Mon, Mar 16, 2026 at 11:25:53AM -0400, Nicolas Dufresne wrote:
+> Le jeudi 12 mars 2026 ‡ 18:34 +0100, Francesco Dolcini a Ècrit†:
+> > Hello,
+> > 
+> > On Fri, Mar 06, 2026 at 11:10:57AM +0800, ming.qian@oss.nxp.com†wrote:
+> > > From: Ming Qian <ming.qian@oss.nxp.com>
+> > > 
+> > > Fix a kernel panic when probing the driver as a module:
+> > > 
+> > > † Unable to handle kernel paging request at virtual address
+> > > † ffffd9c18eb05000
+> > > † of_find_matching_node_and_match+0x5c/0x1a0
+> > > † hantro_probe+0x2f4/0x7d0 [hantro_vpu]
+> > > 
+> > > The imx8mq_vpu_shared_resources array is referenced by variant
+> > > structures through their shared_devices field. When built as a
+> > > module, __initconst causes this data to be freed after module
+> > > init, but it's later accessed during probe, causing a page fault.
+> > > 
+> > > The imx8mq_vpu_shared_resources is referenced from non-init code,
+> > > so keeping __initconst or __initconst_or_module here is wrong.
+> > > 
+> > > Drop the __initconst annotation and let it live in the normal .rodata
+> > > section.
+> > > 
+> > > A bug of __initconst called from regular non-init probe code
+> > > leading to bugs during probe deferrals or during unbind-bind cycles.
+> > > 
+> > > Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> > > Closes: https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e66@kernel.org/
+> > > Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
+> > > Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia23b42rj3wlmpl67@rvkbuirx7kkp/
+> > > Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC")
+> > > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> > > Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > 
+> > What's the plan to merge this? It fixes a quite severe regression,
+> > a boot failure.
 > 
-> Because all driver switch to new pcm_construct()/pcm_destruct(), old
-> pcm_new()/pcm_free() were remoted by commit e9067bb502787 ("ASoC:
+> To be decided this week. The commit message does not say if it was released, or
+> came in RCs (and I didn't check myself yet). I'd say, if its the first one, it
+> will go through next and backports, otherwise its is really tight to get that
+> into the RC series, but serious enough. Please fill the gap if you have time,
+> and I'll handle it later, probably tomorrow.
 
-s/remoted/removed
+This fixes commit e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error
+while decoding H.264 and HEVC"), that was merged in 7.0-rc1.
 
-> soc-component: remove snd_pcm_ops from component driver")
-> 
-> But naming of pcm_construct()/pcm_destruct() are not goot. re-add
-> pcm_new()/pcm_free(), and switch to use it, again.
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> ---
->  include/sound/soc-component.h        |  4 ++++
->  sound/soc/generic/audio-graph-card.c |  1 +
->  sound/soc/soc-component.c            | 10 +++++++++-
->  3 files changed, 14 insertions(+), 1 deletion(-)
+As of now, because of that, 7.0-rc is not booting on affected platforms
+(i.MX8MP), to me this needs to get merged before 7.0 is released.
 
-Nothing more than the typo,
+Francesco
 
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-
-Best regards,
-Herv√©
