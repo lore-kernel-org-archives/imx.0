@@ -1,182 +1,205 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C2A3E9F68
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 19:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E7B15530C;
+	Mon, 16 Mar 2026 22:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773690176; cv=none; b=iWLGXEoxaMRNGcNZ5zYVaUC0E1ZFrIKKO8hwJpdfkctJUa6Gl2uR9QGO0l46KFBVrQ2xwCfpAdhZ8Ah/PL6j0Q2TFYGZEBrVYF9I2NJh9tNM8oz4pasRN/YtGVZZzTtfoKN3uOvAXrojIM79VTw88SC8cUyBibQQUiY7J8iYX74=
+	t=1773698423; cv=none; b=Kwv4BguednFAiTnzKN9VkQCXNMY8fb3atSXCNywqNtnfm1NG8UfWokT7z29LnUs7WxRvUfYwiJLNgvOOv3lBpUHmht+4R4qDraWhc4mfyEYakm1utkRpqcCdl6n+4LuqWa2JV6HAbi88lw/haYrvyTFjN1WGYZCGPsRb2x7M+yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773690176; c=relaxed/simple;
-	bh=8pKSoyetPXKpNKLPG0IjYbFaZYicC2/GSi26W65ckfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AKJz+kcNja1pXUYqxN1GiHjJvq9LQ9CmpZ/fsPJ6z4NhF0mE3keohNdSHUdUfPJMMApzw5/YUn9nXvjLSJYADeeufH/7rp8FMU6Cx2BlKN8AWol7SF6qFVFkHNf4bz36QiL6d+51mxq5jwR5cGaGmIlgDxD+/jZy+o+PhI3H5h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TZMBzrho; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ITvNcFzz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1773698423; c=relaxed/simple;
+	bh=xL6C4abJanh+hfi8o4mFZdvcfY8JVOwpGp3AtvrmmwU=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=J107GnwaPrCw5J0ji2oCfkGq6FlepLkIykyH3/loVrgTSTFPZEdfmGpItjgVEb/OqmXjOuOUgzCDSe3UHOW+y8bhLCpvb5F1URsgFBxKhquHKTTlXHCf7SWEe/yPhORgIXnTpeZ1TNH9qNb16rPu1VgZcIXGP0Vn2nMKXJtOCF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIRdWJXb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TZMBzrho";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ITvNcFzz"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GG70wP4023448
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 19:42:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=+cnQIkFDXwporw30NasLf4kS
-	q8rzFR+Uzt/PemH3SE8=; b=TZMBzrho1ZI9j3MecyDJMrQhyfYnbp7F+HbgPg7R
-	mqfG+xh/rvJqlW2mwKsCyVLwfzrC53QO8yBljjCYZZZjYabFv0bm9U5n4/bMcabq
-	YF91ns+etwVEXWpgUnVfpVioCHWVnw7Cx0EpIQWBBbaQQV+X0Z4FCLk/ECUB2gu9
-	IFz9s4XLYnswCOPX/A5G3JbjNPfwmH51uRI3xjMeiVaFLgWnjFPeSppW8kGt/5db
-	2TR/0eQePYHL75VvPioyDrfUy4lTd5GC02JHxagrRGm3bXDSnk3HmHyicFSh+ZvW
-	B756UKaOFmyJet8cUhVlEyPQtuuFGVvOCTwZLpwxvLTArw==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cxn3fgqtp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 19:42:54 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cd820c6a4fso4405549985a.2
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 12:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773690173; x=1774294973; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+cnQIkFDXwporw30NasLf4kSq8rzFR+Uzt/PemH3SE8=;
-        b=ITvNcFzz1Hy8oKLBV+DUeoBO70/Hdt3ASrKfc+vw0cZSwrDjFAN6sek3OaY8soITvS
-         RLcJLbbIABeOO2tAS/nnQaEJ/Y20BIh0SMWwkuI31S55SsSc76BMPUqFp6AsXfoGCUSm
-         lImaPpuaNcESNiuMzd5I8R/IcBp3f1Zu+zvEGPVmcplWGclhHc6zW8TNYFGjQ+JqWDbN
-         Abxjp/y7tA7WakB8p6IOgrJYWykAul6g5LJ2Jt6QHtd3TZYUPAat8FgqZKHkmWD+sECu
-         9HiRcvl7tRpP4E0LvVWTwJzzB7x4wCS+O7C4Ut9n8KF6vNOcawkeEq5mHttLnQcrG7cd
-         uXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773690173; x=1774294973;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+cnQIkFDXwporw30NasLf4kSq8rzFR+Uzt/PemH3SE8=;
-        b=XYRcS8in9Oz1mkLUFAWze1SvV17uzvEIbjuzsEYKZQNjmyEJcjw3mRG/PDQhkvWgNC
-         maK+DrUhhg9o1vqdY6W556hLiXcgq7LUlNJTyv56E//SHxk28ho8E0GKgtzl9tR/M9kY
-         5VQtdzaijntye0IgJqDTXXy8C042H9EfGMzfRwbT3UkcaNqJBQtEud1BP/BNMmMItgaN
-         3Cc9Xa3yvxPY3emKOxdzhqEENPf2QUPluRsnYyZK5qdTux4QZ/t8kKN7HAKw6pv7QgGN
-         SN2votYnkceujJ214bVu5K7PJuY4t43HPOeJjeERMLZ/GecHw94vvE35WAaiMb8XlonR
-         4ehQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxg577HO423Mt50i+uhKf5i1zoUVkUCnBIDuGqmbDidL/u7uueTn3Ha1pxBMlm2IVnjt0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwA4962nOQmgzRGql728Nb3Rd7St4sR9svAEQcIraiR8gZRmhv7
-	80WNXjsxHjuESGxVTfSGoNgFhomCBukHRqGYhDddBC/CeydNYiQR3/436eQNNIN6wdQ2pqfDY7e
-	SEGu58QzZDV6MbGUu9/WZeton0Y/Rs61z2b1xksp4/XNwkF4uxisGZU4=
-X-Gm-Gg: ATEYQzz0R2CNJknCrlk/yYYo/kJPq8786UxtlFiAySwtVkLv0GEVJMHhccZr9UdNmbf
-	RS++/VJmEKl6t4xgclLk1geFJ3kav54MNi3F6vbAtw1x63iF1p8ytSONglPZqmR+2TY9Jb8AgWf
-	LoYtEn6LMfzmcasHaHegB5ZS3BClWpjXDKTXKs002Z2z4UQBdk98C9K6xZpkfyqc1/ge2kfmkpK
-	JWo51YpleC5U1TKTGOAKxPT3M4tf5kSakkqF1RRDNcwM6JwGG75bV0WxVJlukpQbAzX18IchzsA
-	LqkK5I+l90k3ewm5eoV+aGpexEtiszWVWUUcjwF/Vs5vTPTDVgedkvk3IX5+qNV/vWa7b8u7h7y
-	dL1jkWrApDnq6YHO1ZYr5sFunqncCErJBMpV1c/JtKBT0mZH0JuO/v985esdjVeWz5lfxfxnxCo
-	JFZHYUDhzeXaIGrXbN9nlS3C9JFVFkkRInGHw=
-X-Received: by 2002:a05:620a:28cc:b0:8cb:72b2:2a14 with SMTP id af79cd13be357-8cdb5a4b8f1mr1825087485a.16.1773690173097;
-        Mon, 16 Mar 2026 12:42:53 -0700 (PDT)
-X-Received: by 2002:a05:620a:28cc:b0:8cb:72b2:2a14 with SMTP id af79cd13be357-8cdb5a4b8f1mr1825082085a.16.1773690172393;
-        Mon, 16 Mar 2026 12:42:52 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a155f33be6sm3676665e87.7.2026.03.16.12.42.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 12:42:51 -0700 (PDT)
-Date: Mon, 16 Mar 2026 21:42:49 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Marc Zyngier <maz@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        imx@lists.linux.dev, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2] of/iommu: support multiple iommu-map entries per
- input ID
-Message-ID: <z4eqsfnxiprfktxi5g7miqqukhjsqqbivs4jqmox6r75x6pbyd@hgtkiy3ltyzu>
-References: <20260315-iommu_multi_map-v2-1-51b98cb79331@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIRdWJXb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44837C19421;
+	Mon, 16 Mar 2026 22:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773698423;
+	bh=xL6C4abJanh+hfi8o4mFZdvcfY8JVOwpGp3AtvrmmwU=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=GIRdWJXbCPNC5aI/K8ATvHrqt/f9EBFULmJFXBLVPaJ06WIkzGYKy4zsT3C6Let7r
+	 3OoRTnlFRWJ9QtjS97xaiyf1myGdVmVbpB2ylpHqp341yJO21yVCbSjEpg+Xrm4XsM
+	 X7TguCXJd23WhZaWaWOPSTql6NwmjVUq3/qNN0asCYLiZqrQpwbYLdoEYnvVB4Ax5D
+	 3wgrqWdZZzpxauJ/bgM3aVgN4BqUxtuzBLtlLIFYDDBtSnLUEALE18oefqVuUmxKFA
+	 /QKTnOYSC00T7q3aox5ixr0IYO99/cmkFGw4tLV3uZqWgma0fA3+245s5J1TfVCE5u
+	 Fm8SiaAiSuTJg==
+From: Mark Brown <broonie@kernel.org>
+To: =?utf-8?q?Martin_Povi=C3=85=C2=A1er?= <povik+lin@cutebit.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Andrei Simion <andrei.simion@microchip.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Cezary Rojewski <cezary.rojewski@intel.com>, 
+ Cheng-Yi Chiang <cychiang@chromium.org>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Cyril Chao <Cyril.Chao@mediatek.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, Daniel Mack <daniel@zonque.org>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Guenter Roeck <groeck@chromium.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Herve Codina <herve.codina@bootlin.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Max Filippov <jcmvbkbc@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, Oder Chiou <oder_chiou@realtek.com>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Orson Zhai <orsonzhai@gmail.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
+ Ray Jui <rjui@broadcom.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Scott Branden <sbranden@broadcom.com>, Sheetal <sheetal@nvidia.com>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, 
+ Srinivas Kandagatla <srini@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, Tim Bird <tim.bird@sony.com>, 
+ Tzung-Bi Shih <tzungbi@kernel.org>, 
+ Venkata Prasad Potturu <venkataprasad.potturu@amd.com>, 
+ Vijendar Mukunda <Vijendar.Mukunda@amd.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Xiubo Li <Xiubo.Lee@gmail.com>, chrome-platform@lists.linux.dev, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-sound@vger.kernel.org, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87bjgoldf9.wl-kuninori.morimoto.gx@renesas.com>
+References: <87bjgoldf9.wl-kuninori.morimoto.gx@renesas.com>
+Subject: Re: [PATCH v2 00/29] ASoC: soc-component: re-add
+ pcm_new()/pcm_free()
+Message-Id: <177369837337.303905.11618232899340248621.b4-ty@kernel.org>
+Date: Mon, 16 Mar 2026 21:59:33 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260315-iommu_multi_map-v2-1-51b98cb79331@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=C5bkCAP+ c=1 sm=1 tr=0 ts=69b85d3e cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=b47Md4NF8ZsVKqcXDakA:9 a=CjuIK1q_8ugA:10
- a=PEH46H7Ffwr30OY-TuGO:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: gcTjL67j4k0M6kbh7ta3oYu-ewPLV33c
-X-Proofpoint-ORIG-GUID: gcTjL67j4k0M6kbh7ta3oYu-ewPLV33c
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDE1OCBTYWx0ZWRfX8dYcqHeQ6J54
- c8tfgoph2/2Q7c/V8CxGmQScwZUNOOrV5rAMKo5OXRhi1pNVzb7Nhb6WW322w7NMI2eOM7kY1zI
- VA8lynXNp4hnMElc/6Du2+cIO4OF94yD3HjQZdp30WCA7q5GH1exyMFJP2hKkI9skJTklEg0rOA
- w/OCn2DE0I0IQFw/hyyIllDqH7KUfhbtNfdvZm/8jxkegJJrwdLVfWacxJKh2i2L/SRXlrI1rI3
- G0FtOcpCLLqTrX9V2Smc1AVzJHQ3H1OzQ/DrPGXi1gCUlIaG36YcbXeQhs67bHtan9rLyvg/u7C
- qBWA9LSxT6vuIqGJwVlOBoMTdMMDyU3gW2NeG8CB32Aul1XmFr/jFG8Usi5WpA15ITubCxVZP9o
- 0xw70u3A/Zkpp4v9CVeKv98qTvCPiJjl6XdiwJTDllxn3TEYowZ4qrZxXweCSC3gEkpctzkbF2Z
- ezlyDQlFiZb2F4vocaw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_05,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160158
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-f420f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4727; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=xL6C4abJanh+hfi8o4mFZdvcfY8JVOwpGp3AtvrmmwU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpuH1r9Kn8pWQBjJQ8Y5RpE+swsy6zuOjsx/msy
+ y6SCK3/KtWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabh9awAKCRAk1otyXVSH
+ 0FIfB/0cRLGXje6cSJBA+IBPmVIwVkpFBMEk+YKZtf0XQjffrDz4g0tW0wTQXBOadYw6XK7KyTr
+ NZdJrNVBhWILSRhBWLKZa4sRnksZOKBOZJAs7tIhqDjnZx0xh5+JTv+d8utKWKUxZYp6a5VaGlG
+ XHQVEAwku0IFPaGMIg/CvpFG/qpqKjSExIiceM8gbZk1f8X+o24DupIHYfxr2BrMNJDDzz1OyWn
+ HqyWxhj/ZWkPzi5qPfvDSvWKDlcT93pluJ4sBnqM8rzQEvo5/9M7c1aL60ge4meVfhB8dOfzc+F
+ /OeClVJqWDCLdpKmdb+c/LYEwGmyuZKSJ759bbF4oYfrcsS4
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, Mar 15, 2026 at 10:37:43PM +0530, Vijayanand Jitta wrote:
-> When multiple mappings are present for an input ID, linux matches
-> just the first one. There is a usecase [1] where all the mappings
-> are to be maintained in parallel for an iommu-map entry of a same
-> input id.
+On Mon, 16 Mar 2026 02:24:02 +0000, Kuninori Morimoto wrote:
+> ASoC: soc-component: re-add pcm_new()/pcm_free()
 > 
-> Add a next_offset iterator parameter to of_map_iommu_id() and
-> refactor of_map_id() internals into a static helper to carry it.
-> Update of_iommu_configure_dev_id() to loop over all matching
-> entries to support this case. All other callers pass NULL and
-> are unaffected.
+> Hi Mark
 > 
-> [1] https://lore.kernel.org/all/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
+> Because old pcm_new()/pcm_free() didn't care about parameter component,
+> to avoid name collisions, we have added pcm_construct()/pcm_destruct() by
+> commit c64bfc9066007 ("ASoC: soc-core: add new pcm_construct/pcm_destruct")
 > 
-> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-> ---
-> On Qualcomm kaanapali, the VPU hardware has multiple internal blocks
-> that generate different stream IDs for the same input ID. The device
-> tree encodes them as separate iommu-map entries sharing the same input
-> ID:
+> [...]
 
-Vijayanand, even I would not understand what you mean here. What is the
-"input ID". Please describe the issue _exactly_, which blocks, what do
-they genrate and when.
+Applied to
 
-> 
->   iommu-map = <0x100 &apps_smmu 0x1940 0x1>,
->               <0x100 &apps_smmu 0x1a20 0x1>, ...
-> 
-> This requires multiple iommu-map entries per device.
-> of_iommu_configure_dev_id() currently stops at the first match,
-> so only one stream ID gets registered with the IOMMU.
-> 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.1
 
--- 
-With best wishes
-Dmitry
+Thanks!
+
+[01/29] ASoC: soc-component: re-add pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/68130eef1e0d
+[02/29] ASoC: amd: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/fe33a69681e3
+[03/29] ASoC: apple: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/d28e19350490
+[04/29] ASoC: atmel: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/83cce46863b0
+[05/29] ASoC: au1x: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/8ec624ef881c
+[06/29] ASoC: bcm: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/3859e15cc9d8
+[07/29] ASoC: codecs: cros_ec_codec: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/2a97dfda9e53
+[08/29] ASoC: codecs: rt5xxx-spi: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/a1f956d85199
+[09/29] ASoC: dwc: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/c42b65583773
+[10/29] ASoC: fsl: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/fe8112d6d2a6
+[11/29] ASoC: generic: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/2905b2266ac6
+[12/29] ASoC: google: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/71a559061006
+[13/29] ASoC: intel: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/6f2b7bd59882
+[14/29] ASoC: kirkwood: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/31447bd2149e
+[15/29] ASoC: loongson: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/7fce3691e131
+[16/29] ASoC: mediatek: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/6f3658d6ee73
+[17/29] ASoC: pxa: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/0828e050415f
+[18/29] ASoC: qcom: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/df202b5e6d3e
+[19/29] ASoC: renesas: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/2840266185be
+[20/29] ASoC: samsung: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/7ef8b7a10c4b
+[21/29] ASoC: soc-generic-dmaengine-pcm: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/7d803acf6181
+[22/29] ASoC: sof: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/e56decec6bae
+[23/29] ASoC: sprd: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/90a2dbecc20f
+[24/29] ASoC: stm: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/4e2f7ecb5db3
+[25/29] ASoC: tegra: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/1f7fc5f1f084
+[26/29] ASoC: uniphier: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/88e277ef789a
+[27/29] ASoC: xilinx: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/7649b2f1f8b2
+[28/29] ASoC: xtensa: name back to pcm_new()/pcm_free()
+        https://git.kernel.org/broonie/sound/c/667fb65f5164
+[29/29] ASoC: soc-component: remove pcm_construct()/pcm_destruct()
+        https://git.kernel.org/broonie/sound/c/175f733325ac
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
