@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC5735F16B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0286382285
 	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773650393; cv=none; b=AXcWqytnkjbWZPC6IvbT4isvDAaS8xrH7FKRtsatcMuOjGRYc1DJvlsW7NeP1tXeGPJ1mz1EIywnvnIqq/kGAXtJF4GiedFXBVbZdLzjmQCb7+tZ26GFVqSwBxaKeajiaWP5FSjCpkpY0v4kUrXZHAzUta61UGdmqBDbW5+CU5o=
+	t=1773650393; cv=none; b=R994IOH06Ckf2Whc567CVTSgpLs62P0k40eCk6uKIG80bEGlGf6BtMYIQOnc3m7U3htX4gRPUk8DDwwUk15OC34WxTF1aNDZ1sxfsNdBkTLFqHHV+7rkvXTsL0QuvJCVebLGzqIPf+KNKJdHOj6b10GLFG+9Xs+r3sd553qmj2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773650393; c=relaxed/simple;
-	bh=lXUNGUc3oMf6fcKTpcyTQn+I/dkgp7Q2clB33fEtKlA=;
+	bh=ZrkmyysVLpLzso4QTKvAnnm8NM+EluwdOKygUeYeVXg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s8812gCnIjk4+1PERz0eZK/x6VJ9GYynBQKCA606vb5IFzziCtyNgxAukA6Wu6O1E+27HHy4oGjggB5kU26fJpf5PscWKtClW3fkE3pxCzjDq1InBeD5w6Q2rsOg6MV6z3qdFjXZGuqG5h1kZHKvrMKsr12YxoDHCrMa903FalI=
+	 In-Reply-To:To:Cc; b=ZuemeoFnOM5tiOD1ZEHbrY2yn+LZ1yqH9f99KAynkQSW62U/mFiAecJRjDyi6LqvCQlvxQtnEu83fdyvUcRCrQAUsT3iH29hJ9hnHVbW60qWWcQU+HKYoiFCavArHmJPguUabLKuXwvuB3I8DAYfLwu3cJnbI2xt2FIh92sEjTY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,24 +18,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w23UG-0005S5-H8; Mon, 16 Mar 2026 09:39:44 +0100
+	id 1w23UG-0005S4-Gg; Mon, 16 Mar 2026 09:39:44 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w23UG-000XVR-06;
+	id 1w23UG-000XVQ-04;
 	Mon, 16 Mar 2026 09:39:44 +0100
 Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C060F5049C6;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B55E95049C5;
 	Mon, 16 Mar 2026 08:39:43 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 16 Mar 2026 09:39:10 +0100
-Subject: [PATCH spi-next 09/11] spi: spi-fsl-lpspi: make struct
- lpspi_config::mode u32
+Date: Mon, 16 Mar 2026 09:39:09 +0100
+Subject: [PATCH spi-next 08/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_write_tx_fifo(): simplify while() loop check
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-spi-fsl-lpspi-cleanups-v1-9-1b695607702d@pengutronix.de>
+Message-Id: <20260316-spi-fsl-lpspi-cleanups-v1-8-1b695607702d@pengutronix.de>
 References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
 In-Reply-To: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
 To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
@@ -52,12 +52,12 @@ Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev,
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>
 X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=794; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=lXUNGUc3oMf6fcKTpcyTQn+I/dkgp7Q2clB33fEtKlA=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcfvBY9X/VsvQyjk0aPaYpO3wj59bdnx87X/H7ogkWy
- yU9XI9XdJSyMIhxMciKKbIs/XFCUSDQobT3ZcIkmDmsTCBDGLg4BWAiESsZGVYtfZ11OPj19HVz
- Cha9E9daPJNbntXCI/a/zSZZtdYbkc8ZGVb+Ybn898Pdbvv3fCxua3guGQvN+XZnmmzSJ70V+tV
- dfcwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=837; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=ZrkmyysVLpLzso4QTKvAnnm8NM+EluwdOKygUeYeVXg=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcfvBo5Y6d17I3z9OJlkhYs+una2m8+q4bjg8nzVIol
+ 8z5HbZ/aUcpC4MYF4OsmCLL0h8nFAUCHUp7XyZMgpnDygQyhIGLUwAmcjGNkWG955+Wj50VEyab
+ au17OTHY5cCHLFt2f+1f/55pPErKNchh+GfJ9G+VaN9i5b8ei7sPVF6IOf7r4OUZszUvfFm0W27
+ fLgUWAA==
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -65,31 +65,29 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The struct lpspi_config::mode holds a copy of the mode of struct
-spi_device::mode. In commit 937e6d756422 ("spi: expand mode support") the
-struct spi_device::mode was increased from u16 to u32.
-
-Increase the struct lpspi_config::mode to u32 avoid truncating the mode
-variable.
+To simplify the loop check. Combine both conditions of the while() and the
+directly following if() into the while().
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index ae06bc06f626..9ec5554b4fc0 100644
+index 920748795314..ae06bc06f626 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -104,7 +104,7 @@ struct lpspi_config {
- 	u8 bpw;
- 	u8 chip_select;
- 	u8 prescale;
--	u16 mode;
-+	u32 mode;
- 	u32 speed_hz;
- 	u32 effective_speed_hz;
- };
+@@ -265,9 +265,7 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	txfifo_cnt = readl(fsl_lpspi->base + IMX7ULP_FSR) & 0xff;
+ 
+-	while (txfifo_cnt < fsl_lpspi->txfifosize) {
+-		if (!fsl_lpspi->remain)
+-			break;
++	while (txfifo_cnt < fsl_lpspi->txfifosize && fsl_lpspi->remain) {
+ 		fsl_lpspi->tx(fsl_lpspi);
+ 		txfifo_cnt++;
+ 	}
 
 -- 
 2.51.0
