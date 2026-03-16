@@ -1,54 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868C9382362
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCEE38947D
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773653860; cv=none; b=izzlDUx1TCXPaNRLCBaYhKaFR9VBsrbO37DUGJEFjSrmcGQ7uOutzAZ5zxAYESE6poBSMvcN+qXs3gjT31Zbqz+SvK69YVyFFBrKa67TV/00XxzqeBBeUSqcs6FDBTM8HmNk5uJRWXj4OJVxV5+QORzc7LQSE6x4aoXiUiB2ulg=
+	t=1773653965; cv=none; b=TsaaGT+/30JFqhI8g3mV+HBBEABjQ/rWbQy8Z7vOKc58K0vehWEKuMwlTmxS9jbL1oPBX5AYbOPO1/nzJfSLBR+8ZEtRWJbgpUocAeF8ougR76DiPlvPrI9F8M+R3JY1/CO8+jInjM48knR7uiKt/EEPMLQJzX2S9TvIlXOGybM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773653860; c=relaxed/simple;
-	bh=MzrE4iCp4oKa3wQ16nwKGJ1A0i+9mBfB7UKYhL7FvKM=;
+	s=arc-20240116; t=1773653965; c=relaxed/simple;
+	bh=RbqZslNxIIkzTluBmL/ed2uqFPa1E/cM4+gpAQj+klU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=is+MIncpYjOcFEZfC3BXbjksJL0er/HwEVIChkoqbwko4IAm0L/IwWiNZrJE6AlVzIPZRt1Iq4Pmd9q6ZmRFkVuW8miLsW0/s5dVQPMMk/7nsEeiOjogyAH52n48pbrrg/cIwyhNDJnxYu11p9WLsrVnX1oOSiM8vUwtNdl6ndQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+Xsb6y7; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=XCPy/y8y9+Y8pV33hop6dab0/+cV2QKvWJldfMdL2GgTIRu5S8FECsc1JdX2TK12l42s5zrb/zN52Rat/GWw0XRj9EslywjcdUgxJVneV7iIbrGO4lEPMHDMO5r4HevCsExwUmXWmn82JXeWBE2FXEv3K2Acp1xA3VlZcbnkHzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M89CEiZO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+Xsb6y7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD48C19425
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:37:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M89CEiZO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9440C2BCB2
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 09:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773653860;
-	bh=MzrE4iCp4oKa3wQ16nwKGJ1A0i+9mBfB7UKYhL7FvKM=;
+	s=k20201202; t=1773653964;
+	bh=RbqZslNxIIkzTluBmL/ed2uqFPa1E/cM4+gpAQj+klU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=V+Xsb6y7Yis06X23lLVRkqoI3qr7IUbx85V9BKULlwfbZ/+9usIfqBgCzW4Gr32hK
-	 MIKWfDFtGHbzi10xHSaXuDJJqZqIqtMWPbX7n+V1LFDu/kb0Y8FaqjODhnf/8ki5LG
-	 5UCfO5XxKlhhA3YGkvlusKl4IUcfwTzFu6V0gqP3zAfBkTsMTwp50/6/MjwqMCBdJ8
-	 5Sq6OfucN/xzwlPLDkyy+SzxdPOnAedxoBrCN7QgnWK3PHc6GAvTOKMV1jvECtyNkp
-	 zBp3Z04r/JGitEVqD7ys2GmhSa8WwjRABYXbzByj/VGM90dv0eU0BZ4LuBEiEedWah
-	 gaDXmuR1FLa5g==
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-64ad9fabd08so4605442d50.2
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 02:37:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX/pJm47PdULbnhASmyhPym2I92o/ezBx6S1/B5PTDZQzeyf25qNHBhJh9+/wzteKrhHxQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwW8ix0pdt+WRY2KalGCfrOR7XqLSoOPKIaXyRsF/mTkDl0PkMP
-	uWLhf5VuQZRcGE1TD+xaVdKh29TrIxxmrKjVZn7iOC/6r30lqzjM+pa+tuoasfL4RJDcldxEH6v
-	81lkpUbJ9engrnPjMLbigUVzaVb11rx4=
-X-Received: by 2002:a53:a087:0:b0:64c:f4f4:20ae with SMTP id
- 956f58d0204a3-64e630cd15fmr10231603d50.78.1773653859622; Mon, 16 Mar 2026
- 02:37:39 -0700 (PDT)
+	b=M89CEiZOnHW6l0rVxIAVYujeaAXXC4wcFEgK6RvQrRatF+GJGYQPCQzJqxY8+1VIA
+	 E7ZCdMygmp4NiT/9U0vyf51n5I+cO6swsADrHEdCOP1BbB+Kl6PKS3hjlfS8XRAbDI
+	 FqbHS3YpHzueVeZy1lUiGD6oOZPmUBwFBnVZR0YJK7ri5JSsOvqdQ8JXeBV1zvQ9Aj
+	 iZuHlJW52n1Dcc+QGXJDlCK+tgfX07jqK9IIBqCmihvHKJESa7f89hJqPcLevHPKze
+	 xRFRnqqAGAXyPwMBME8EPg2+xjOSKUqRn9bRAGb6Bph92medmVxRyhjXkG7MELJtr7
+	 uH4XTBPdAIpOg==
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79a46ebe2beso7178707b3.2
+        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 02:39:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUt/TFmmrzD7NvYFOOPfPdCBYuvASOIkY97o55hZHer6TuTDEf1yvA3AaxOd/9KxW+V51E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyIugJCL7VBI4mTsUPbpY5Fhrn1EMSBN7gY/4/qLEseOI7h78+R
+	GNQt4z14EQI0jFN4eSJJB/AW6VQ3p02UfoYX5+2ASn9/7zjsLPtfCQ8CQ6O+VknAmh/ufjByBdP
+	bZYt/XmcgPew0qiODHZH3FKwLfePlb04=
+X-Received: by 2002:a05:690c:6e87:b0:79a:3b28:a710 with SMTP id
+ 00721157ae682-79a3b2912f5mr61530517b3.27.1773653964110; Mon, 16 Mar 2026
+ 02:39:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260311-pinctrl-mux-v3-0-236b1c17bf9b@nxp.com> <20260311-pinctrl-mux-v3-3-236b1c17bf9b@nxp.com>
-In-Reply-To: <20260311-pinctrl-mux-v3-3-236b1c17bf9b@nxp.com>
+References: <20260311-pinctrl-mux-v3-0-236b1c17bf9b@nxp.com> <20260311-pinctrl-mux-v3-4-236b1c17bf9b@nxp.com>
+In-Reply-To: <20260311-pinctrl-mux-v3-4-236b1c17bf9b@nxp.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 16 Mar 2026 10:37:28 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=U2xNMMHk_LyH8CX+YpC5EGPVRasM11yesXSH4XLhqYw@mail.gmail.com>
-X-Gm-Features: AaiRm502_TKXc5AbWLkrvmd3tP0wuZLSF0MFm9-65pKX5TkH-46UxmauxcJGcog
-Message-ID: <CAD++jL=U2xNMMHk_LyH8CX+YpC5EGPVRasM11yesXSH4XLhqYw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] pinctrl: pinctrl-generic: add __pinctrl_generic_pins_function_dt_node_to_map()
+Date: Mon, 16 Mar 2026 10:39:12 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=8tqT=jEy+_W-WnPq=Az7GbsW7pdXHZNmu8m+tKoDMDQ@mail.gmail.com>
+X-Gm-Features: AaiRm53Q_0hsf1jplyh4XsHDGxCWDXM_lyumSvDs8oSWpLJERT4ci6Zqc30deP8
+Message-ID: <CAD++jL=8tqT=jEy+_W-WnPq=Az7GbsW7pdXHZNmu8m+tKoDMDQ@mail.gmail.com>
+Subject: Re: [PATCH v3 4/7] pinctrl: add optional .release_mux() callback
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -62,34 +62,34 @@ Content-Transfer-Encoding: quoted-printable
 
 On Wed, Mar 11, 2026 at 8:08=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
-> Introduce __pinctrl_generic_pins_function_dt_node_to_map() to allow
-> passing private data and skip_npins to pinmux_generic_add_function().
+> Add an optional .release_mux() callback to struct pinmux_ops.
 >
-> The 'skip_npins' to skip parse pins in dts because on boards MUX control
-> chip switch the whole group together, so needn't handle each pins.
+> Some drivers acquire additional resources in .set_mux(), such as software
+> locks. These resources may need to be released when the mux function is n=
+o
+> longer active. Introducing a dedicated .release_mux() callback allows
+> drivers to clean up such resources.
 >
-> Keep pinctrl_generic_pins_function_dt_node_to_map() as a wrapper
-> calling the new helper with a NULL argument to preserve backward
-> compatibility.
+> The callback is optional and does not affect existing drivers.
+>
+> Commit 2243a87d90b42 ("pinctrl: avoid duplicated calling
+> enable_pinmux_setting for a pin") removed the .disable() callback
+> to resolve two issues:
+>
+>   1. desc->mux_usecount increasing monotonically
+>   2. Hardware glitches caused by repeated .disable()/.enable() calls
+>
+> Adding .release_mux() does not reintroduce those problems. The callback i=
+s
+> intended only for releasing driver-side resources (e.g. locks) and must n=
+ot
+> modify hardware registers.
 >
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Ad attested by several reviews, the pinctrl subsystem maintainer
-strongly dislikes any use of __double_underscore_function_names().
-
-The reason I dislike it is because it is ambiguous.
-
-For example there are __compiler_intrinsics such as
-__iomem and all the stuff from <linux/compiler_types.h>.
-
-Then there are __non_atomics such as __set_bit().
-
-This means __inner_function() just adds to this mess and creates
-a big confusion for the mind.
-
-That said: in this case you're just adding a parameter, just add
-the parameter and change all of the in-tree users to pass false
-or whatever you need, these is just one (1) in-tree user anyway.
+OK fair enough, I think I'm convinced about this now, also it has
+a nice pairing with set_mux(). Let's see if someone else has comments,
+I might apply v4 after fixing the generic function issue in patch 2.
 
 Yours,
 Linus Walleij
