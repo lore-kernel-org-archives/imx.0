@@ -1,164 +1,150 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D072512C8
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 11:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312252609E3
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 11:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773659975; cv=none; b=G/OoBAEWu8DIWZs7fnEYMc88ESYL0JRW6AtcTmr8MMK/uegGy4XzTs02bGWjEeb0hjEHWf5reiYcL/bNkDynfOwmpBWa8guZPhGmPe3tJEpWbHt2y2x3ILWAp2IMoaMw9iXY3xeWuE781mD27UKFgkKtuhuGLrWdCKlwCtO2bl8=
+	t=1773661182; cv=none; b=QH9pgwX/nPd7n4ptvmEnoMpNlcdxQHVsC/Kn2xaG9CIGpCuMM39E8I1+ZOVesExtLInGG2RuypVZkYb//MLhFs5u7kY+8PbSMgutpmYg/hc4kxzMoJoXe9V2B/A2gq8ax7kwJvBX0jyphLanA/wcnhPbbop0YWlC3mHmyOSVZo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773659975; c=relaxed/simple;
-	bh=1S0wIl/YZHfjM0IJFm4NkG2mpieY9HdmV3sF4TYbkg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GtBfijTmUbSKC0DD53rcEXvKpg+Fb8A1p9SwBFDBbKHxoYzMywrcJ7+O5UL+kqY3Sj5vudARdqCJo/CSQScP/si88MHnjGzS+ELXjg2P3Ni7wtkdXOVS7oZo8cmbAA2Dl0S2xD+Shn7grKzK7W+BZninQDuheOowJa7DdsMmptk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w25yt-0004TT-Hc; Mon, 16 Mar 2026 12:19:31 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w25yt-000Yow-00;
-	Mon, 16 Mar 2026 12:19:31 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id AA22E504D79;
-	Mon, 16 Mar 2026 11:19:30 +0000 (UTC)
-Date: Mon, 16 Mar 2026 12:19:30 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: James Clark <james.clark@linaro.org>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de, Frank Li <Frank.Li@nxp.com>, 
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH spi-next 11/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_bitrate(): don't treat devtype_data->prescale_max == 0 as a
- special case
-Message-ID: <20260316-statuesque-effective-silkworm-011ed8-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
- <20260316-spi-fsl-lpspi-cleanups-v1-11-1b695607702d@pengutronix.de>
- <dbdd4655-1c6a-42b0-a6fe-8d14db1043f0@linaro.org>
+	s=arc-20240116; t=1773661182; c=relaxed/simple;
+	bh=AddVb/baHLx6v1m31dqQ10HQcGs1I2SXvvs0Bkdi6fM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=E3lb47yD8OObbdHWA+u+ua/zLc4MF6hboxbrBUDbBKIh7nIVDER+lheHO3i1WUwTMMAIwZDcEp+wyN5YPthwqnHxCTQ2732dc9nSrphhiAJNTdOfckPZhQpMh6A6pRxTubXsnzGjsT1Fir+KUluC4tL7PAizdsfoTg35zoPpGSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YrywEDwd; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YrywEDwd"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 8BF781A2E6A;
+	Mon, 16 Mar 2026 11:39:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4EB815FC4A;
+	Mon, 16 Mar 2026 11:39:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DF5310369E73;
+	Mon, 16 Mar 2026 12:39:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773661176; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9LLjJ8Qd6wNXbg06pYIRYcPmRb/RcOo68671SJw5PZI=;
+	b=YrywEDwd/DzMcHZz4wMx/qDUUpvovYoTrhVPGEOmyWw/GimO4aRGWgjfaRUp096SdfisEu
+	fL7fyiN9g5ShHiC0bJ1HLcSiRmmromhJMWEGykRppDiKWCfJyd8CE9upne8c7MS4veJl9C
+	F2567Jh16wPZp2rva8ZWs5sa/ktvOyV7GgKVD1l9lwwqvogkfchCWNn0uiaK9l1+o4CsY/
+	8XM9Y78ODDYhIPF3fR5xInhUpzGGiyzeH9/8xsONdMXOwnDHMCWJaUzPBNzQ9Pm/aZwkh+
+	4jh1gU77n4mMk8A8bpwAPpZU8p6RPatwWYKsvXQsYdR0qnmwUDqWFz4JFrOonQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vsgq432vw6vb7dzf"
-Content-Disposition: inline
-In-Reply-To: <dbdd4655-1c6a-42b0-a6fe-8d14db1043f0@linaro.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---vsgq432vw6vb7dzf
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH spi-next 11/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_bitrate(): don't treat devtype_data->prescale_max == 0 as a
- special case
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Mar 2026 12:39:24 +0100
+Message-Id: <DH46EQM1PED9.2BVW9DWVIMEJZ@bootlin.com>
+Subject: Re: [PATCH v10 11/18] drm/bridge: analogix_dp: Apply
+ drm_bridge_connector helper
+Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+ <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
+ <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
+ <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
+ <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
+ <andy.yan@rock-chips.com>, <dmitry.baryshkov@oss.qualcomm.com>,
+ <dianders@chromium.org>, <m.szyprowski@samsung.com>,
+ <jani.nikula@intel.com>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
+To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
+ <neil.armstrong@linaro.org>, <rfoss@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20260310012458.169272-1-damon.ding@rock-chips.com>
+ <20260310012458.169272-12-damon.ding@rock-chips.com>
+ <DH1TKWREZMFK.3BY4NY36BXLXG@bootlin.com>
+ <bebadd3b-2fd1-404e-bc64-205c8b44880c@rock-chips.com>
+In-Reply-To: <bebadd3b-2fd1-404e-bc64-205c8b44880c@rock-chips.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello James,
-
-I've no strong feelings about this patch, I can drop it in the v2.
-
-On 16.03.2026 09:57:15, James Clark wrote:
-> On 16/03/2026 8:39 am, Marc Kleine-Budde wrote:
-> > The i.MX93 is affected by erratum ERR051608, the maximum prescaler valu=
-e is
-> > 1 not 7 as in the original datasheet.
-> >
-> > On unaffected SoC the maximum prescaler is 7. Commit 783bf5d09f86 ("spi:
-> > spi-fsl-lpspi: limit PRESCALE bit in TCR register") added struct
-> > fsl_lpspi_devtype_data to hold the system dependent prescale_max value.
-> >
-> > Commit 9bbfb1ec959c ("spi: spi-fsl-lpspi: Treat prescale_max =3D=3D 0 a=
-s no
-> > erratum") introduced the special value 0 to signal the default and
-> > corresponding run-time check with a conditional operator.
-> >
-> > To simplify the code, set the prescale_max of imx7ulp_lpspi_devtype_data
+On Mon Mar 16, 2026 at 4:17 AM CET, Damon Ding wrote:
+> Hi Luca,
 >
-> The whole point of the original change was to not repeat the normal value
-> for every device in the config just because one device has an errata. This
-> new change is exactly the opposite of simplification IMO.
-
-Interesting point of view.
-
-My reasoning is: When I look at the fsl_lpspi_set_bitrate() function,
-there's the special case handling with the ternary for the "0".
-
-I asked myself directly special case, why? Why not directly use the
-value as it's provided by the devtype_data?
-
-> > and s32g_lpspi_devtype_data to 7 and in fsl_lpspi_set_bitrate() directly
-> > use the fsl_lpspi->devtype_data->prescale_max.
-> >
-> > On ARM64 this leads to a reduction of the code of 52 bytes:
-> >
-> > | add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-52 (-52)
-> > | Function                                     old     new   delta
-> > | fsl_lpspi_setup_transfer.isra                956     936     -20
-> > | $x                                          7144    7112     -32
-
-> On clang 15 this change makes it bigger by 220 bytes rather than
-> smaller.
-
-Quite interesting, with llvm-21 the size increases, too:
-
-| add/remove: 0/0 grow/shrink: 3/1 up/down: 432/-32 (400)
-| Function                                     old     new   delta
-| fsl_lpspi_setup_transfer                    1072    1216    +144
-| .Ltmp1                                      7116    7260    +144
-| $x                                          7196    7340    +144
-| $d                                          5659    5627     -32
-| Total: Before=3D28126, After=3D28526, chg +1.42%
-
-> I
-> checked because I was suspicious that removing a single ternary could save
-> 52 bytes, but it looks like the outcome after all the optimisations is ju=
-st
-> unpredictable so there isn't much point in making changes like this.
+> On 3/14/2026 1:10 AM, Luca Ceresoli wrote:
+>> Hello Damon,
+>>
+>> On Tue Mar 10, 2026 at 2:24 AM CET, Damon Ding wrote:
+>>> Initialize bridge_connector for both Rockchip and Exynos encoder sides.
+>>> Then, make DRM_BRIDGE_ATTACH_NO_CONNECTOR mandatory for Analogix bridge
+>>> side, as the private &drm_connector is no longer created.
+>>>
+>>> The previous &drm_connector_funcs and &drm_connector_helper_funcs APIs
+>>> are replaced by the corresponding &drm_bridge_funcs APIs:
+>>>
+>>> analogix_dp_atomic_check() -> analogix_dp_bridge_atomic_check()
+>>> analogix_dp_detect()       -> analogix_dp_bridge_detect()
+>>> analogix_dp_get_modes()    -> analogix_dp_bridge_get_modes()
+>>>                                analogix_dp_bridge_edid_read()
+>>>
+>>> Additionally, the compatibilities of Analogix DP bridge based on whethe=
+r
+>>> the next bridge is a 'panel'. If it is, OP_MODES and OP_DETECT are
+>>> supported; If not (the next bridge is a 'monitor' or a bridge chip),
+>>> OP_EDID and OP_DETECT are supported.
+>>>
+>>> The devm_drm_bridge_add() is placed in analogix_dp_bind() instead of
+>>> analogix_dp_probe(), because the type of next bridge (the panel, monito=
+r
+>>> or bridge chip) can only be determined after the probe process has full=
+y
+>>> completed.
+>>>
+>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>> Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+>>
+>> ...
+>>
+>>> @@ -73,15 +72,12 @@ static int exynos_dp_bridge_attach(struct analogix_=
+dp_plat_data *plat_data,
+>>>   				   struct drm_bridge *bridge)
+>>>   {
+>>>   	struct exynos_dp_device *dp =3D to_dp(plat_data);
+>>> -	enum drm_bridge_attach_flags flags =3D 0;
+>>>   	int ret;
+>>>
+>>>   	/* Pre-empt DP connector creation if there's a bridge */
+>>>   	if (plat_data->next_bridge) {
+>>> -		if (dp->has_of_bridge)
+>>> -			flags =3D DRM_BRIDGE_ATTACH_NO_CONNECTOR;
+>>> -
+>>> -		ret =3D drm_bridge_attach(&dp->encoder, plat_data->next_bridge, brid=
+ge, flags);
+>>> +		ret =3D drm_bridge_attach(&dp->encoder, plat_data->next_bridge, brid=
+ge,
+>>> +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>>
+>> Should this be 'flags | DRM_BRIDGE_ATTACH_NO_CONNECTOR' to be future-pro=
+of?
+>>
 >
-> You also didn't say _why_ we need to save 50 bytes, or what the performan=
-ce
-> impact is.
+> Aha, the exynos_dp_bridge_attach() and even
+> &analogix_dp_plat_data.attach() have been removed in [PATCH v10 16/18]
+> for consistency and simplification. Since the only bridge flag supported
+> right now is DRM_BRIDGE_ATTACH_NO_CONNECTOR, let=E2=80=99s leave this as =
+is for
+> now. ;-)
 
-I just checked the impact on the code size with gcc and was positively
-surprised. :) I don't need to save 50 bytes and there's probably no
-measurable performance impact.
+As you are going to send v11, I'd do that change. It is the right thing do
+to, it's cheap, and in case patches up to 11/18 but not (yet) up to 16/18
+we avoid ending up with unoptimal code until patch 16/18 is applied.
 
-regards,
-Marc
+Luca
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---vsgq432vw6vb7dzf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabfnPwAKCRDMOmT6rpmt
-0ij+AP4tA2ErscWkvZ3Fwu5met7pd8olcpb13CXAY9a8emhxJwD+LzZ9Jhj5g5m6
-fMD6ABKmdWb783qFOgVmBtIxqTSUUAk=
-=jjT5
------END PGP SIGNATURE-----
-
---vsgq432vw6vb7dzf--
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
