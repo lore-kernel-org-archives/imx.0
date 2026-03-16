@@ -1,178 +1,129 @@
-Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C96D3AA195
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A063B8BD8;
+	Mon, 16 Mar 2026 15:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773674779; cv=none; b=aOhCnw3WJzFE+tijEVB2n26W5ZqKUfERDIbKqpUUTQSmJKqhipixWGPL9yu5ehklvE4v/6Zlqzq2XvvC+negY+s22uzwD7MLLVO7okat2zUJBbSDdBe+qq2fTnUg6bdiySswLibsECQAIjUIKOKRBLCZZV9Gm5o63IfFv/5GJm0=
+	t=1773676370; cv=none; b=kMIWRR+3zyMCq8KXxIe7Ukbtp6g9qQI+L2S7xtjjsU3WDwuEEXgT45jBwSe5TPkj2GR1XZj9i/3wWNnz2d3lAIFOVeeA7UweJjIeeyCEK5yk70TkduH/RKGlX26JyvKfjwqymAioazWFWslkUkzWYN0WN9yg6dfwjQvCL5/YhFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773674779; c=relaxed/simple;
-	bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LMURgqfWoOoBn61hKGAWXfRnQboI8K5gXdnqbtrUgLC5/VDdZCGSVRSz/9WZgopVbnRmRpoYRNzBH0FEfvqiLmIawa0zG9l15ry9WmSs7P6wG1QmexmMCvfyC6k/JuHTX/SgNgGNTpXaRGbn3b5vYXlN6UoYMSaqiSm5d2pvrNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=kgd99GNs; arc=none smtp.client-ip=209.85.222.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1773676370; c=relaxed/simple;
+	bh=h540B9y5R36xQApSZ+k6e24S141YzbHY01zru+ZNj48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NhXKZjg2Ms7g4Ya65PvCug05PzySO73dE06sI/cpuqR3iNGqL8Emduqg5gA2NoOgJrysCNtWqkqLTK3xB2E7XB+qoXKg5VHL/3HpPVLv9nMMr0kCUiqoj1b7moOUOa7f8G2reM/fwpc2kCr7nOdgbUHqHhHZveQ1oZU0cK+/ZaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikpzjgNS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="kgd99GNs"
-Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8cd80bea5f3so295823385a.3
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:26:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1773674777; x=1774279577; darn=lists.linux.dev;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
-        b=kgd99GNslzsyP/vivkznoUReXOCrJZvdTG8sKoNwfNCLhX+4qK9Su3k9S6BvHxnSju
-         zADlAjb3fEEhSmJBPann+6D+1UCOhCzUajuSCYenzxV8qykHxPSAL45lEq7vMIAViii4
-         Tavoibbn/rYCe+TwjyvlyhQhPmB9CwtU8rJzglo/BknW+HsIM5SzdakhKHossMWfd2E4
-         PGENC5OvIak6z9KEnagHmZeDcVySFa8MjdoU8+Of32Q5qee1iJEyxbmfGR7ol1lZu+eu
-         LvRGO8jJxIMaRmk6Gz+ri2ACXpv/rbX7I+LnXjUlPoCO+NRNgyHtpBAe9FTgjMKqVn0Y
-         VibQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773674777; x=1774279577;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
-        b=GIUhUedXk+cLpy+PpWtoqIDD28dyXo2A0k5NsPuKWmrvexWGV4yAVDg9tALyDNbgrI
-         icw8Aea+fKKfH4GXx2J4hAtyXbQIVCh4DfKk1fDnogWOO/nGH8rrNz/60CMiv7Mi8mV9
-         3O/xADPSkRwF594dAcyiIDgsyjbPGPxKhYYQ6J6j6HPhTyNrZtxFVvlN9RagAx7KQiZO
-         0AdTxQ0TgPopBPv4iJS1AZAzqbpE/4uBj1C8p6bNznNLyDnZIZahMK2POmw5zbflG6la
-         VtCGKzEpa0P5WBIqgpL9+vWDMg1LIV6wk8Y4baa6S07sCFjUT38/uDUFT5Yz+kQ8C4BF
-         0rug==
-X-Forwarded-Encrypted: i=1; AJvYcCVnxfitf1DDsH+SmpTVdWbMubNxwMMxQwSPVt+QeAcuMKGwVpjR5som8OxNvwF7WXkNtT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVwbd3XxS+rFzp+Sk8LRuw5M3Q4oPxOpl1g2n9UZqhJfuTjLqa
-	15nEh6EajnAq4X+ZrZ4Kw/G+iORUW7T4n0J/A0zH9mgezIDdS92SgM7/HFXaQCVMtLA=
-X-Gm-Gg: ATEYQzy3nW0SmTcFIPG+MUTEa3s0Kz/LDkieoPSDWFSjj68jEZ8Y4/9guOXuBRdJZcr
-	wRJ5t2VsMRyVZVcZ8MZnE+66CBaUIluP19TYNCFk4msjdNeOVg3poOM5JBuvrXWMejz2Cm2ep9p
-	u6wwTyHK6vyUnQhrH9Z3XEXUidHbYMYkbFUKMc/uLnR636qqiNe9tf96i7Jj1KKxRvxy4hxGYgo
-	OKaFf+2hRFFi2Pqz2qh+A6dtI9OwCmfCe07qs+CkuidEgZR+BPzdrer/29bfs3YF1AS0olQE/zj
-	oqEI/ITHovZDuXlBbMZ71ywr2PjqHp3sFqlC15xjiFrYDst58wHQwHaTGdc0M/poOtLXkTJ+Dis
-	MhjYhojUFRc0f23pvTM7Iubj9XAmPqh5yRBpEIyH/PMQULitkNrjkMRkUUUgYY/h/18cTuoMi3i
-	BeM8v4kvfh6BzMDy1S2pQ5XKKFe+yN
-X-Received: by 2002:a05:620a:170f:b0:8c9:e989:9d97 with SMTP id af79cd13be357-8cdb5b56e2fmr1651069785a.68.1773674776906;
-        Mon, 16 Mar 2026 08:26:16 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:11:b76d::5ac? ([2606:6d00:11:b76d::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fddfe8sm1228675185a.12.2026.03.16.08.26.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 08:26:15 -0700 (PDT)
-Message-ID: <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
-Subject: Re: [PATCH v4] media: verisilicon: Fix kernel panic due to
- __initconst misuse
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Francesco Dolcini <francesco@dolcini.it>, ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl, 	benjamin.gaignard@collabora.com,
- robh@kernel.org, krzk+dt@kernel.org, 	conor+dt@kernel.org,
- p.zabel@pengutronix.de, sebastian.fricke@collabora.com, 
-	shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, m.felsch@pengutronix.de, 
-	fra.schnyder@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de, 
-	Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com,
- devicetree@vger.kernel.org, 	imx@lists.linux.dev, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
- regressions@lists.linux.dev
-Date: Mon, 16 Mar 2026 11:25:53 -0400
-In-Reply-To: <20260312173349.GA137045@francesco-nb>
-References: <20260306031059.801-1-ming.qian@oss.nxp.com>
-	 <20260312173349.GA137045@francesco-nb>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-6HvdHsM5JK0qWfzveRb3"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikpzjgNS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B669C19421;
+	Mon, 16 Mar 2026 15:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773676370;
+	bh=h540B9y5R36xQApSZ+k6e24S141YzbHY01zru+ZNj48=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ikpzjgNS9eBGMoNr6mLghiYpLqOKhd2t1iybP7lKzmevMliyqo39iiNfY0hXTNthQ
+	 3jMDPtoNqb+D7aL0wDsJd7NFUlKKk0yJyawXiNolJlYFX/YhQZJM/ndrdd9s25KLBq
+	 7IKEBIq63pNg5ZbyGsMWUaVoWREKp4lckhWu+nI9x/ndaj6U4R6zxZrZrZEwTs3Rwm
+	 h2Qe+FIqtzNIbSUQ8xBjM2PxqaCRVKZxEo29FstXS4JggNVJZUbdYF3AnMX2iMLbju
+	 oBRXhO5S+EaU76j/DdUEDUX+p/m92DZJk+LnX63+TCVzupzEjajqc3MYPA9W+Syv0Q
+	 7zsDeyu5cexKg==
+Message-ID: <05f294c3-ce68-4b9e-9d1d-b4bde4d5986f@kernel.org>
+Date: Mon, 16 Mar 2026 16:52:44 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] arm64: dts: add tqma9596la-mba95xxca
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux@ew.tq-group.com, linux-renesas-soc@vger.kernel.org
+References: <20260316150535.786122-1-alexander.stein@ew.tq-group.com>
+ <20260316150535.786122-2-alexander.stein@ew.tq-group.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260316150535.786122-2-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 16/03/2026 16:04, Alexander Stein wrote:
+> +
+> +	reg_3v3a_10g: regulator-3v3a-10g {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "3V3A_10G";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&expander2 15 GPIO_ACTIVE_HIGH>;
+> +		startup-delay-us = <2000>;
+> +		enable-active-high;
+> +		vin-supply = <&reg_5v0>;
+> +	};
+> +
+> +	reg_5v0: regulator-5v0 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "5V0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-always-on;
+> +	};
 
---=-6HvdHsM5JK0qWfzveRb3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is a pointless regulator, unused. Defining non-controlalble
+supplies for fixed regulators brings no benefits. It has only drawbacks:
+bigger DT, slower boot times. We do not define in DTS every transistor,
+every non-controllable IC on the board.
 
-Le jeudi 12 mars 2026 =C3=A0 18:34 +0100, Francesco Dolcini a =C3=A9crit=C2=
-=A0:
-> Hello,
->=20
-> On Fri, Mar 06, 2026 at 11:10:57AM +0800, ming.qian@oss.nxp.com=C2=A0wrot=
-e:
-> > From: Ming Qian <ming.qian@oss.nxp.com>
-> >=20
-> > Fix a kernel panic when probing the driver as a module:
-> >=20
-> > =C2=A0 Unable to handle kernel paging request at virtual address
-> > =C2=A0 ffffd9c18eb05000
-> > =C2=A0 of_find_matching_node_and_match+0x5c/0x1a0
-> > =C2=A0 hantro_probe+0x2f4/0x7d0 [hantro_vpu]
-> >=20
-> > The imx8mq_vpu_shared_resources array is referenced by variant
-> > structures through their shared_devices field. When built as a
-> > module, __initconst causes this data to be freed after module
-> > init, but it's later accessed during probe, causing a page fault.
-> >=20
-> > The imx8mq_vpu_shared_resources is referenced from non-init code,
-> > so keeping __initconst or __initconst_or_module here is wrong.
-> >=20
-> > Drop the __initconst annotation and let it live in the normal .rodata
-> > section.
-> >=20
-> > A bug of __initconst called from regular non-init probe code
-> > leading to bugs during probe deferrals or during unbind-bind cycles.
-> >=20
-> > Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> > Closes: https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e6=
-6@kernel.org/
-> > Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
-> > Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia=
-23b42rj3wlmpl67@rvkbuirx7kkp/
-> > Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while deco=
-ding H.264 and HEVC")
-> > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com=
->
-> > Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
-> > Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> What's the plan to merge this? It fixes a quite severe regression,
-> a boot failure.
-
-To be decided this week. The commit message does not say if it was released=
-, or
-came in RCs (and I didn't check myself yet). I'd say, if its the first one,=
- it
-will go through next and backports, otherwise its is really tight to get th=
-at
-into the RC series, but serious enough. Please fill the gap if you have tim=
-e,
-and I'll handle it later, probably tomorrow.
-
-Nicolas
-
---=-6HvdHsM5JK0qWfzveRb3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCabghAgAKCRDZQZRRKWBy
-9NFwAP9sVkqCaBiBRpXCvZHE5Oa05+dzKFdWC5+h1oxIeJJ4dQD/VD/qrH1k6wW/
-L9bxPFGmfGPNVwVSrJM7fk/6BwpNMg0=
-=TFXY
------END PGP SIGNATURE-----
-
---=-6HvdHsM5JK0qWfzveRb3--
+Best regards,
+Krzysztof
