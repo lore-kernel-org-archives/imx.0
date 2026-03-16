@@ -1,149 +1,131 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C22D8396;
-	Mon, 16 Mar 2026 15:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965803B7B83;
+	Mon, 16 Mar 2026 15:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773676593; cv=none; b=BI33oLkNEsOTfiAYbdkFvk51iRyXKdUZvjP9XE242IeDFyls8LIi5bcM6tMYgRxiRfx8YIQFjZiw/0gdCtM8qxvIPABySRKbvn031kWiQLPOOuWY/y72cRzhORn6DUdY3+jib17sovSLB+5PxboFB71W3lQw+RYvy4AyZeK6NpM=
+	t=1773676632; cv=none; b=oBCEAYGl0vQDho7+hZzWZrpoXMxXDlvOLo3uDbsqrtMoyr4vf9tuVBZrLdJN1iR7Vlioub2/gV1VmpIG13T9yE//5WxFBky89Ro+AtvVVPy1uTY9TVmMaN1v2c9i2uZnMFSbLx2tWblM9jsSRRCmBws6A0yLunBrWF651poq9OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773676593; c=relaxed/simple;
-	bh=WlSUsVAGD5bEWuxTDhZsT6Xf5db1wW9sFlbq69Me71s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GXEIwtuEukfGQYhuiH38ow5OXMAEawAGfmqXe4ToVdUkn74Xd+gykTJ8oD5vB1SFw4evEiIxKoM/BF72FIOiugRJdXY/SkwUalz9Fivj18gNAMM/Plg+fJ0BOB2YCpozy4bf7B0OMAy+EDGeb+Qd/fmpVEWZqx+f/iX1Kq/th+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=k8n3jmyb; arc=none smtp.client-ip=188.68.63.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1773676632; c=relaxed/simple;
+	bh=PbKrBXthjNGfFtArOSneEVU2S5ohT/HxHPM5k6fcTws=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QZ0r9IGhUYfyBDK5r32jSf6MRWhU/uMLS44GqR/g4gB2yT790vZpVokgcl1+dZ6VpqSa4nKn01WGqH1e7eH5V9EwZasOaM0kqevPfKleVLSqQJ3n+IhwRQ1w4THbbukVh0N2lfrG1GxsZ8rV4VtqW48XCEXhMq7dhcoDErh5aRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=F+wuM52t; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="k8n3jmyb"
-Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fZKSv1jJrz42Tr;
-	Mon, 16 Mar 2026 16:56:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1773676575;
-	bh=WlSUsVAGD5bEWuxTDhZsT6Xf5db1wW9sFlbq69Me71s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k8n3jmybFD7gXBaYrpK4yBXfYwwFLyUVnapTaQGgoaMQrxhSSZcXFg5U3XYna28KB
-	 3K6t7I9oVZIPWHFSIbqIwvAKFYIG6Rj8hfk7BNnH2Hh6cWIFdc+Mk0e5Q+rEfdvVws
-	 jHW2DlUHb0NmvXDYoPI2VPAHefdTWgsDYFKdVdefdGsPp6VqD3l/zp5UgLCRRo1rBx
-	 tFs2Nxvadf0yumXDv2t4uPQn1WAMFaChJMSdSm+bfHUzp2+ddQbMDdDKQvudeTKYgb
-	 uWA22wmoBXInOXv6nQQI1PppB2Sqr31JmlFMlfNw/MmvxpbHSmGAk40ba5eS3fN0hD
-	 g/br3glqXVCUg==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fZKSv0tb6z42HL;
-	Mon, 16 Mar 2026 16:56:15 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.899
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fZKSr6Ywwz8t3w;
-	Mon, 16 Mar 2026 16:56:12 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 81D35635AB;
-	Mon, 16 Mar 2026 16:56:11 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <3b30506f-f651-44c4-aca2-29e99ce60cba@leemhuis.info>
-Date: Mon, 16 Mar 2026 16:56:09 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="F+wuM52t"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A108BC55044;
+	Mon, 16 Mar 2026 15:57:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DD4A66004F;
+	Mon, 16 Mar 2026 15:57:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D680103721F0;
+	Mon, 16 Mar 2026 16:56:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773676624; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gPWg45628wXOGTSku2sZt3UN9TbvmDc1uinjnNPjXiQ=;
+	b=F+wuM52tfsJOst/pUkIjwdenzlZY0QftTQ/4NOcFwfqocdMH+NJh258BZnrMoKeqLFNMEN
+	bc/L1DGDGBOGFcp6+xGMrdsjDhxpeU3BPexd032tb2bOu45ca1ox4QhIawUCc6kJ+bA9VX
+	oPm7oNiLCUTiYQCqCHB3fegsu43UgYV3WkEKQGcGp0ATgB7Uei6Cs5z4mzzsVUCjPaNFO9
+	bKAx3EK1UM87DtIQX3KE3czU4JqXiKI0pEai0IcEfkeyeuv+wzPiiAq6ziT/0PdsYdWFbD
+	JdtYjZRq09Tc1bq2iZhxGh7dMNzhhgNtvzkx6mw29MT90ATt/4M2/hLnjYz6eA==
+Date: Mon, 16 Mar 2026 16:56:37 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: "Martin =?UTF-8?B?UG92acOFwqFlcg==?=" <povik+lin@cutebit.org>, Alexandre
+ Belloni <alexandre.belloni@bootlin.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andrei Simion
+ <andrei.simion@microchip.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Arnaud Pouliquen
+ <arnaud.pouliquen@foss.st.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Bard Liao
+ <yung-chuan.liao@linux.intel.com>, Benson Leung <bleung@chromium.org>, Biju
+ Das <biju.das.jz@bp.renesas.com>, Cezary Rojewski
+ <cezary.rojewski@intel.com>, Cheng-Yi Chiang <cychiang@chromium.org>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Cyril Chao <Cyril.Chao@mediatek.com>, Dan
+ Carpenter <dan.carpenter@linaro.org>, Daniel Baluta
+ <daniel.baluta@nxp.com>, Daniel Mack <daniel@zonque.org>, Fabio Estevam
+ <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Guenter Roeck <groeck@chromium.org>, Haojian
+ Zhuang <haojian.zhuang@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>, Kunihiko Hayashi
+ <hayashi.kunihiko@socionext.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Matthias
+ Brugger <matthias.bgg@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Michal Simek <michal.simek@amd.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Nicolin Chen
+ <nicoleotsuka@gmail.com>, Oder Chiou <oder_chiou@realtek.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Orson Zhai <orsonzhai@gmail.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Pierre-Louis Bossart
+ <pierre-louis.bossart@linux.dev>, Ranjani Sridharan
+ <ranjani.sridharan@linux.intel.com>, Ray Jui <rjui@broadcom.com>, Robert
+ Jarzmik <robert.jarzmik@free.fr>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Scott Branden <sbranden@broadcom.com>, Sheetal <sheetal@nvidia.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Srinivas Kandagatla
+ <srini@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi
+ Iwai <tiwai@suse.com>, Thierry Reding <thierry.reding@gmail.com>, Tim Bird
+ <tim.bird@sony.com>, Tzung-Bi Shih <tzungbi@kernel.org>, Venkata Prasad
+ Potturu <venkataprasad.potturu@amd.com>, Vijendar Mukunda
+ <Vijendar.Mukunda@amd.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, chrome-platform@lists.linux.dev,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 01/29] ASoC: soc-component: re-add
+ pcm_new()/pcm_free()
+Message-ID: <20260316165637.7b09fa9b@bootlin.com>
+In-Reply-To: <87a4w8lde4.wl-kuninori.morimoto.gx@renesas.com>
+References: <87bjgoldf9.wl-kuninori.morimoto.gx@renesas.com>
+	<87a4w8lde4.wl-kuninori.morimoto.gx@renesas.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] media: verisilicon: Fix kernel panic due to
- __initconst misuse
-To: Nicolas Dufresne <nicolas@ndufresne.ca>,
- Francesco Dolcini <francesco@dolcini.it>, ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl, benjamin.gaignard@collabora.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
- sebastian.fricke@collabora.com, shawnguo@kernel.org, ulf.hansson@linaro.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- m.felsch@pengutronix.de, fra.schnyder@gmail.com, linux-imx@nxp.com,
- l.stach@pengutronix.de, Frank.li@nxp.com, peng.fan@nxp.com,
- eagle.zhou@nxp.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
-References: <20260306031059.801-1-ming.qian@oss.nxp.com>
- <20260312173349.GA137045@francesco-nb>
- <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177367657238.2992055.3000395586816625353@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 81D35635AB
-X-NC-CID: r6HJUysEbzhA4YW/OY4xibuaKrLtu3kst56pC0zpvPNb0zaEbPQ=
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 3/16/26 16:25, Nicolas Dufresne wrote:
-> Le jeudi 12 mars 2026 à 18:34 +0100, Francesco Dolcini a écrit :
->> On Fri, Mar 06, 2026 at 11:10:57AM +0800, ming.qian@oss.nxp.com wrote:
->>> From: Ming Qian <ming.qian@oss.nxp.com>
->>>
->>> Fix a kernel panic when probing the driver as a module:
->>>
->>>   Unable to handle kernel paging request at virtual address
->>>   ffffd9c18eb05000
->>>   of_find_matching_node_and_match+0x5c/0x1a0
->>>   hantro_probe+0x2f4/0x7d0 [hantro_vpu]
->>>
->>> The imx8mq_vpu_shared_resources array is referenced by variant
->>> structures through their shared_devices field. When built as a
->>> module, __initconst causes this data to be freed after module
->>> init, but it's later accessed during probe, causing a page fault.
->>>
->>> The imx8mq_vpu_shared_resources is referenced from non-init code,
->>> so keeping __initconst or __initconst_or_module here is wrong.
->>>
->>> Drop the __initconst annotation and let it live in the normal .rodata
->>> section.
->>>
->>> A bug of __initconst called from regular non-init probe code
->>> leading to bugs during probe deferrals or during unbind-bind cycles.
->>>
->>> Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->>> Closes: https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e66@kernel.org/
->>> Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
->>> Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia23b42rj3wlmpl67@rvkbuirx7kkp/
->>> Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while decoding H.264 and HEVC")
->>> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->>> Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
->>> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
->>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->>
->> What's the plan to merge this? It fixes a quite severe regression,
->> a boot failure.
+Hi Kuninori,
+
+On Mon, 16 Mar 2026 02:24:43 +0000
+Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+
+> Because old pcm_new()/pcm_free() didn't care about parameter component,
+> to avoid name collisions, we have added pcm_construct()/pcm_destruct() by
+> commit c64bfc9066007 ("ASoC: soc-core: add new pcm_construct/pcm_destruct")
 > 
-> To be decided this week. The commit message does not say if it was released, or
-> came in RCs (and I didn't check myself yet). I'd say, if its the first one, it
-> will go through next and backports, otherwise its is really tight to get that
-> into the RC series, but serious enough. Please fill the gap if you have time,
-> and I'll handle it later, probably tomorrow.
+> Because all driver switch to new pcm_construct()/pcm_destruct(), old
+> pcm_new()/pcm_free() were remoted by commit e9067bb502787 ("ASoC:
 
-Well, FYI: the culprit according to the fixes tag quoted above is
-e0203ddf9af7c8 ("media: verisilicon: Avoid G2 bus error while decoding
-H.264 and HEVC") [v7.0-rc1, v6.19.6 (286d629d10640b)]. Given that this was
-* reported 11 days ago
-* reported at least two times
-* made it into a stable series
-it is something that Linus would like to see fixed by now in mainline
-afaics, as ""the rule of thumb should generally be "within a week",
-preferably before the next rc."":
-https://www.kernel.org/doc/html/next/process/handling-regressions.html#on-how-quickly-regressions-should-be-fixed
+s/remoted/removed
 
-If that fix is too dangerous a revert is of course an option, too.
+> soc-component: remove snd_pcm_ops from component driver")
+> 
+> But naming of pcm_construct()/pcm_destruct() are not goot. re-add
+> pcm_new()/pcm_free(), and switch to use it, again.
+> 
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+> ---
+>  include/sound/soc-component.h        |  4 ++++
+>  sound/soc/generic/audio-graph-card.c |  1 +
+>  sound/soc/soc-component.c            | 10 +++++++++-
+>  3 files changed, 14 insertions(+), 1 deletion(-)
 
-BTW, given that the culprit made it to a stable series, it would be a
-wise to add a stable tag to ensure it's backported (it otherweise might
-be silent dropped and/or applying might be deferred).
+Nothing more than the typo,
 
-Ciao, Thorsten
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+
+Best regards,
+Hervé
