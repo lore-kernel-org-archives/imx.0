@@ -1,127 +1,96 @@
-Received: from mail-m32106.qiye.163.com (mail-m32106.qiye.163.com [220.197.32.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE4E2248A0
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 03:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E203469F4;
+	Mon, 16 Mar 2026 05:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773631373; cv=none; b=d17ZlewS0ZHhDNh+Ge7Ny2xotGTF9aR7MPyGrQ8LOinlhmullUtx+r3MDLW7ZYVcsEKcILvp1w7KEXir+ySDzVHboUzwyUTaF0jpoujD3jVdZoK95Zn4AOi7XOtDZBk2AVQ78pSgHMgdZgIm1djTSjfSaXkRIM8xFMqAkU3XhlA=
+	t=1773639019; cv=none; b=pX5uwWwD30qQAmK1piKkmqDIuukFS9wYqLquy9mB5kzoXYstbaCGMaVg6GcEGDHvv2ML1sCaTKYM4LWzwiEcKPXyZSW7qvciHH1acKqKOb5jkugPIjdY/tMYIVLGQceT933UzA+I1ZSgKuL9/E19wazpnsqc72F8W5f/NU1S6rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773631373; c=relaxed/simple;
-	bh=4z8V0kOOv9muegthwBM7k/aG/oynOm9gpX8DPKIeMIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C/0+mNwLYhAoMQyPU2lGAZ0p2eaoi+uLJS3y8ot2MTThVxHznSYIKJvUAdpS6NZAAuVHdiztj5uVGsBJ1aM3Nat5YWQDv0W5kXJXqJ5OjnNEzsfVw8O/OTsgAi2zkxD69Enu+D4p3n7bQmSHcsKMOTCfFwDoifRHSp6grxj0jFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=BnqeoqLs; arc=none smtp.client-ip=220.197.32.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1773639019; c=relaxed/simple;
+	bh=8B9fuSdohsuu1CMnw79SUjkL9MjMlLUlCNTDA2w6noo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DBdTUIta0eOUHRvtLX00MdoWevG7CGYpFBo4Bjr6kGTNtTgs0w+0DWisrgEv+XHxD8sXcrpmO9z1MCChruceXBLY3MSkg5TvnzcWsDkEjdzON44yObJM7auYBIs74H/PGC88R5HEo6+eCZw/eC0gtU6n80rUoxp1opJ2TXEZckg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBtsWnDw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="BnqeoqLs"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 370ae76b1;
-	Mon, 16 Mar 2026 11:17:30 +0800 (GMT+08:00)
-Message-ID: <bebadd3b-2fd1-404e-bc64-205c8b44880c@rock-chips.com>
-Date: Mon, 16 Mar 2026 11:17:30 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBtsWnDw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461E6C19425;
+	Mon, 16 Mar 2026 05:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773639019;
+	bh=8B9fuSdohsuu1CMnw79SUjkL9MjMlLUlCNTDA2w6noo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kBtsWnDwe7n0y74F0kwuhppOL3Jf1ovoELahhJv2KmO48mrDBsUpOFr6UnwcdDaSD
+	 nS0n36nZvPz09OF8iIRxZSHpcJcHGcO2FblGqZsuTt0sUIK+D3ilx+EY5a7CP2fnj2
+	 JU1z/PXpSEEHoUzAiW05d/SEqGl8gzn/+idUucciuX8W8tN8p9iogB62tRi4WwQ9jt
+	 CyFDY7vdLq8Unov6pUmV/FxGfoYQNvV3rUtVD8GpgsdTLpQ1P/KEY6E3u2AmhyOzHd
+	 OqWinSAJ4pHKYAoS+QMXvJUMoMrpnIwsNZMzWafBI2EoejO4Rl0jL3rAe2V9lvHQ9H
+	 u+xNRn2dWbq+Q==
+Date: Mon, 16 Mar 2026 11:00:09 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Chen-Yu Tsai <wens@kernel.org>
+Cc: Sherry Sun <sherry.sun@nxp.com>, hongxing.zhu@nxp.com, 
+	l.stach@pengutronix.de, Frank.Li@nxp.com, bhelgaas@google.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V8 06/13] arm: dts: imx6qdl: Add Root Port node and PERST
+ property
+Message-ID: <wnbxqzsxq5v33rr4cweoz2inkxsq536bqxvtpdleboll76gx7k@rdhh4ntyydk4>
+References: <20260313020823.1592389-1-sherry.sun@nxp.com>
+ <20260313020823.1592389-7-sherry.sun@nxp.com>
+ <CAGb2v65dvWRqugwBAORB_dD+3Part+OieCe9hnSR781g-6NgZA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 11/18] drm/bridge: analogix_dp: Apply
- drm_bridge_connector helper
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
- dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20260310012458.169272-1-damon.ding@rock-chips.com>
- <20260310012458.169272-12-damon.ding@rock-chips.com>
- <DH1TKWREZMFK.3BY4NY36BXLXG@bootlin.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <DH1TKWREZMFK.3BY4NY36BXLXG@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9cf4a612fb03a3kunm3b3e64f61969b4
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkpLSFZMThlITR4aQx8eHh9WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=BnqeoqLsGb84BqtPqXiW77m3kBjYMloScvhA6p+8X+sHkdC6G2lBx0K6yTjyx2Pd+6UWnlkIoQZFCKdzbWmIIexPdLKAY2fA5Z0jwBTHiGasgpMISS4eqkCCCA+fPdJ/F+0mi5Gxidvpe/xNvUK/wY8tWC6CoTyvjZ0pFwGHc0A=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=euD4SQJWyl0XJtyrMHkwNbP+gc8j+sYgCcDACn9mPo4=;
-	h=date:mime-version:subject:message-id:from;
+In-Reply-To: <CAGb2v65dvWRqugwBAORB_dD+3Part+OieCe9hnSR781g-6NgZA@mail.gmail.com>
 
-Hi Luca,
-
-On 3/14/2026 1:10 AM, Luca Ceresoli wrote:
-> Hello Damon,
+On Fri, Mar 13, 2026 at 02:08:05PM +0800, Chen-Yu Tsai wrote:
+> On Fri, Mar 13, 2026 at 10:08 AM Sherry Sun <sherry.sun@nxp.com> wrote:
+> >
+> > Since describing the PCIe PERST# property under Host Bridge node is now
+> > deprecated, it is recommended to add it to the Root Port node, so
+> > creating the Root Port node and add the reset-gpios property in Root
+> > Port.
+> >
+> > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > ---
+> >  arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  5 +++++
+> >  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi         | 11 +++++++++++
+> >  arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |  5 +++++
+> >  3 files changed, 21 insertions(+)
+> >
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
+> > index ba29720e3f72..fe9046c03ddd 100644
+> > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
+> > @@ -754,11 +754,16 @@ lvds0_out: endpoint {
+> >  &pcie {
+> >         pinctrl-names = "default";
+> >         pinctrl-0 = <&pinctrl_pcie>;
+> > +       /* This property is deprecated, use reset-gpios from the Root Port node. */
+> >         reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
 > 
-> On Tue Mar 10, 2026 at 2:24 AM CET, Damon Ding wrote:
->> Initialize bridge_connector for both Rockchip and Exynos encoder sides.
->> Then, make DRM_BRIDGE_ATTACH_NO_CONNECTOR mandatory for Analogix bridge
->> side, as the private &drm_connector is no longer created.
->>
->> The previous &drm_connector_funcs and &drm_connector_helper_funcs APIs
->> are replaced by the corresponding &drm_bridge_funcs APIs:
->>
->> analogix_dp_atomic_check() -> analogix_dp_bridge_atomic_check()
->> analogix_dp_detect()       -> analogix_dp_bridge_detect()
->> analogix_dp_get_modes()    -> analogix_dp_bridge_get_modes()
->>                                analogix_dp_bridge_edid_read()
->>
->> Additionally, the compatibilities of Analogix DP bridge based on whether
->> the next bridge is a 'panel'. If it is, OP_MODES and OP_DETECT are
->> supported; If not (the next bridge is a 'monitor' or a bridge chip),
->> OP_EDID and OP_DETECT are supported.
->>
->> The devm_drm_bridge_add() is placed in analogix_dp_bind() instead of
->> analogix_dp_probe(), because the type of next bridge (the panel, monitor
->> or bridge chip) can only be determined after the probe process has fully
->> completed.
->>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+> I'd say just remove the old description.
 > 
-> ...
+> You're asking for trouble by describing the same thing in two different places.
 > 
->> @@ -73,15 +72,12 @@ static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
->>   				   struct drm_bridge *bridge)
->>   {
->>   	struct exynos_dp_device *dp = to_dp(plat_data);
->> -	enum drm_bridge_attach_flags flags = 0;
->>   	int ret;
->>
->>   	/* Pre-empt DP connector creation if there's a bridge */
->>   	if (plat_data->next_bridge) {
->> -		if (dp->has_of_bridge)
->> -			flags = DRM_BRIDGE_ATTACH_NO_CONNECTOR;
->> -
->> -		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge, flags);
->> +		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
->> +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+> >         vpcie-supply = <&reg_pcie>;
 > 
-> Should this be 'flags | DRM_BRIDGE_ATTACH_NO_CONNECTOR' to be future-proof?
+> I would probably also take this chance to just convert to the proper PCI
+> slot supply, and just add pwrctrl support into your PCIe driver.
 > 
 
-Aha, the exynos_dp_bridge_attach() and even 
-&analogix_dp_plat_data.attach() have been removed in [PATCH v10 16/18] 
-for consistency and simplification. Since the only bridge flag supported 
-right now is DRM_BRIDGE_ATTACH_NO_CONNECTOR, let’s leave this as is for 
-now. ;-)
++1
 
-Best regards,
-Damon
+- Mani
 
+-- 
+மணிவண்ணன் சதாசிவம்
