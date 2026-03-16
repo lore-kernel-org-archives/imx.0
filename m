@@ -1,140 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654113CEBBA;
-	Mon, 16 Mar 2026 17:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB038301004;
+	Mon, 16 Mar 2026 17:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773682179; cv=none; b=LCmI36OfbxmwBREnfER0vtSvUKNMItv2T5OgqArhMgjrN7Uzwz7GTHqWJN+Cn3IiwxRwlPb7dPwCf3kWwATX3BhTNrFQOEuxziy0RUSMSv8xuOIudySvkVJHx62lXacdf4GObb0Z3bCd9A1ZQkIwLcGFi7lU0NqOWuGDktkusYE=
+	t=1773682669; cv=none; b=hs1uG5eW+6zkN4sO2AKYFZQAbBs/7dPUJz6DnO4HSQ2ErhYEpTtk537I2jfY9JvpbXyPrjWtc8/aKIeDijqC/hifh58VbvQA4ZRUBNLh9SczySo2iXHe800aLw1DZ82R4vnFeFkoVWorMMo6wbhOs+vS064neJFq/0iwBnxxpNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773682179; c=relaxed/simple;
-	bh=Ysd3eBupfSljhrNmOpuGPKVMPzOcnIp/9ypCnnttjrY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gO8u7FmVtjzYSA+F/HQHi7I2z2LbiCl2Pts2wpagVfgIfgPnN99na+WstfE4h7cmCyfhPwlWTTCm7siCf7yBM7QEvRv+7xH+urRgyDgK0kLGBR4jj4ZFh3WjDRPdn0sVvU/EV+BZfqPNVPtHkz2GUR/CvE2ZUEgS0Nme0E+I/Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeG1bDmb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773682669; c=relaxed/simple;
+	bh=GZiWvtlfoEpiyqUodXUTMnsEGQG7ZSFGoC394LHJa6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qgxxaSiUsK95CRMs+qmRff5pDaap9lGDcoGJjGIgWKTTf63c7wxnpHP40ssnXbMsgqc4T39/ysP4JkX0a3erZ90gdTxEmuqFKlPNYih6Px/iK0X/l13Jm83+VA9U9T0KdGlT9N3Y1SKuCp/wcBxw3CGYuJKLTSPxxoR/Ye491qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcfLajl1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeG1bDmb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5089EC2BC87;
-	Mon, 16 Mar 2026 17:29:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcfLajl1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D21C19421;
+	Mon, 16 Mar 2026 17:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773682178;
-	bh=Ysd3eBupfSljhrNmOpuGPKVMPzOcnIp/9ypCnnttjrY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SeG1bDmb2FosihW0Q0vHpHDd6Vq9zHI/km9LM9pVc+W9ySVDXWNuYswxphJ768iy+
-	 rRTo4LFSUsqxFYgG+8R5d0PCs94v7ggs1ZV94QtxtKZemNboI/SB6zraswF7lRv/V0
-	 4dRzPiYhaMGMP5SoiQOyyHwGQgu4ORDieCfhRvo7rhFoRx8WGR5BN5Zduj9HcYol5y
-	 xigRuamu6mn78C8lcPsh5eNPMZw4UmXPzfzEmZKk8UyxEMqKXHMUVbtQQdAJZBIRKO
-	 fqFw06ytMbWL1ifvXu8nl9a+xt365ou5fLzGd/1kCY837nZwvVw1ifY2Dp/xBaICkO
-	 C+r3Fk7Yn1mQQ==
-Message-ID: <846c077d-f1ca-45bc-b3d4-52ba71c34909@kernel.org>
-Date: Mon, 16 Mar 2026 18:29:27 +0100
+	s=k20201202; t=1773682669;
+	bh=GZiWvtlfoEpiyqUodXUTMnsEGQG7ZSFGoC394LHJa6k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YcfLajl1wEPXI2tnwPpFQOdoGfbluMQwvj5NlZfvMCJuBypyHg0fEItwqWqq+8duf
+	 Z/w15pHwvL0pHTbkCGGb/Gqbk0c09CyLPl9tyh5qrYvxC8JAaTIVlQy/uwZUW6Yt74
+	 bWxhK4h3zICvs0hoaL77I4WR9WFtwN/KubfFpfNaAslfsQtuHq9FJkoaoJYjhj2Epc
+	 0wvXuhikOYjeT80sh8YdCpzPcp8dSjjS4ER+I/nfhl8578Zp4JwunA4tqZ6o2pqM1O
+	 XchNXbt/0YTnPC5gasykt8FEqtFIxSTQ7I+hIQ4ynykGxOeeydLg7poio+RveMAEpA
+	 QbIF99I7qzzTQ==
+Date: Mon, 16 Mar 2026 17:37:45 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+Message-ID: <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
+References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+ <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
+ <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
+ <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 1/6] dt-bindings: net: qcom: document the
- ethqos device for SCMI-based systems
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
- Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Christophe Roullier <christophe.roullier@foss.st.com>,
- Bartosz Golaszewski <brgl@kernel.org>, Radu Rendec <rrendec@redhat.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Drew Fustini
- <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
- linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
- imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
- linux-riscv@lists.infradead.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20260316-qcom-sa8255p-emac-v9-0-c58934e76ff2@oss.qualcomm.com>
- <20260316-qcom-sa8255p-emac-v9-1-c58934e76ff2@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260316-qcom-sa8255p-emac-v9-1-c58934e76ff2@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 16/03/2026 13:05, Bartosz Golaszewski wrote:
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    ethernet: ethernet@7a80000 {
-
-Wrong unit address.
-
-> +        compatible = "qcom,sa8255p-ethqos";
-> +        reg = <0x23040000 0x10000>,
-> +              <0x23056000 0x100>;
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Hq3acB37fdETqgwY"
+Content-Disposition: inline
+In-Reply-To: <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
+X-Cookie: Not a flying toy.
 
 
-Best regards,
-Krzysztof
+--Hq3acB37fdETqgwY
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Mar 16, 2026 at 05:49:48PM +0100, Marc Kleine-Budde wrote:
+> On 16.03.2026 14:39:03, Mark Brown wrote:
+> > On Mon, Mar 16, 2026 at 09:39:05AM +0100, Marc Kleine-Budde wrote:
+
+> > The source of the watermark values appears to be
+
+> > 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
+> > 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
+> > 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+
+> > which suggests 4 bits of watermark not 3?  Or at least that something
+> > isn't joined up somewhere.
+
+> The param register's default value on the i.MX93 is:
+
+> | LPSPI1=E2=80=93LPSPI3:  0002_0303h
+> | LPSPI4:         0003_0303h
+> | LPSPI5=E2=80=93LPSPI8:  0002_0303h
+
+> This means a RX/TX-FIFO size of 1 << 3 =3D=3D 8.
+
+Right, so the parsing code is using the wrong mask to extract the width
+here but with actual values it's fine.
+
+> We can increase the the FCR_RXWATER and FCR_TXWATER to be 8 bits wide,
+> the rest of the register is reserved.
+
+It seems safer to restrict the mask used to extract the FIFO sizes, that
+way we don't trample over any bits that get defined in future and people
+comparing with the datasheet aren't confused.
+
+--Hq3acB37fdETqgwY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm4P+gACgkQJNaLcl1U
+h9Ccagf/YkNQMjdBwpdcdtD1xQ947lHv3rr0/8dq/sZHiHafYYVauHvIhtlJCCOl
+KUMu4gBxuYzfd7n3zXKNkrDOtn+CVXd85kCkNJV573yag5iM4SlIoIMElXxr4jrJ
+j/amggv4Sr3/A+rGrTSYmtnainbk8iRweFnRls8qzSEUlyImYxPGYZLNzEsYrTHk
+ACADND35p99SCXY8t2cKSroUau3scEKsi/k/slAhvPHaFaxnbW7Qyl8p2WL8pmmU
+XLgtwYiKeulijenfIjzHI6kTqj4ntX7D/m+AErW7mEIvadyU02Hrmh7TzFnwmZrm
+tM+HQiseU2cL2ltswc6n0raEUia6gw==
+=knDT
+-----END PGP SIGNATURE-----
+
+--Hq3acB37fdETqgwY--
