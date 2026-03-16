@@ -1,140 +1,178 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF83A5E7C
-	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773674180; cv=pass; b=mi2rOAF6W71wxKBkeoiaVGpe6ngcUd6lDABRcCMkzo/QDnFgnIhyNyQeTWHSVCdDjAjhgxFaXsWeJkXVujTDjL8+kuRTXTz/F7oNY1xlHxxHE6MIfEPVAWOQCIW76+L2HMdGrLlA04H9Ai0qxz6o9f65ocWyz/mBgo/KZiXxek4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773674180; c=relaxed/simple;
-	bh=W3xI0co27+/OMb311suaehYAB5dKPN2jLUw6zN284vU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oa+XNQyZnnnFf5tiqYQ8/ahhEII7iDUCCgxPT7GhqX3KYWkGAavwMMH1ghrpliikpcmV6/dLOl8DaG1zTvZ3Z3FJrXYHUnmrMBL3yrTjrlI1NE64r6zU7qYMwDdJ3NtOZ/N+coJT7jU+X3y5D863sJvILhscddvR95nVLtDFJnI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZKNp6tjV; arc=pass smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C96D3AA195
+	for <imx@lists.linux.dev>; Mon, 16 Mar 2026 15:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.196
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773674779; cv=none; b=aOhCnw3WJzFE+tijEVB2n26W5ZqKUfERDIbKqpUUTQSmJKqhipixWGPL9yu5ehklvE4v/6Zlqzq2XvvC+negY+s22uzwD7MLLVO7okat2zUJBbSDdBe+qq2fTnUg6bdiySswLibsECQAIjUIKOKRBLCZZV9Gm5o63IfFv/5GJm0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773674779; c=relaxed/simple;
+	bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LMURgqfWoOoBn61hKGAWXfRnQboI8K5gXdnqbtrUgLC5/VDdZCGSVRSz/9WZgopVbnRmRpoYRNzBH0FEfvqiLmIawa0zG9l15ry9WmSs7P6wG1QmexmMCvfyC6k/JuHTX/SgNgGNTpXaRGbn3b5vYXlN6UoYMSaqiSm5d2pvrNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=kgd99GNs; arc=none smtp.client-ip=209.85.222.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZKNp6tjV"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a12fbbd9d2so7271968e87.3
-        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:16:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773674177; cv=none;
-        d=google.com; s=arc-20240605;
-        b=e2DLPBAVlDLOv5QqVWYRgqdLcGEKfhsTknzuhJNlFTmUmKNesTKPAvc+naBrd1Nx2D
-         02MDC99AOLdAakMDKTw+7mHwfzd0OrJBlRcj5uP2xV1zt1jDW+0lw3iUryZ+lEGbuxnl
-         vFEbmIztGchf86E7kqKheVGqFAcqNUTL+Z8Yt25zxxK5huL0zqQECmf1Up9Xk5Z6GGEL
-         CwcuWCffeSQBUAlIC8m+nBZscUMmjcfAIv21KQ8vucEEfpikM/k68DygTPu9ZIbHco62
-         wG9o5QxrOesH2638NcbcxDU+AMihX4hOQwSqgm/XHxZD5q7yEqtcWihieqcWCLVjRbi+
-         4J7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RfmS9UsPgTPMXyC6QLAQIz9yZtJBVekf+/MAtbCUFs4=;
-        fh=qrCQxaZUbyVYK8JLJUBTEWKazRHS/o279BeoenH/xmY=;
-        b=TQ/mNasQilN+MzNdjg2SBh0NyGs9UDmFh9YdAb8teM7PAhJXLmpKIXuCeiPN1NAJfl
-         x/wui+kz+wqI8wAkFZD89DaVjW+EcB1KpqWcmNV9LjwK4jbhbOKNELHps/dU67iHRKPV
-         awxX2lj4U7jSDmtksDUJv3kFuWxCcWGpAWJW5SPEHAbmOTodBGXfMoxhGiOhZ2WjycYd
-         ENm4KjeLjVHMHMvHY3rHhj1bjX7CR5KSI9ce3jAtnXJCNR9ACpNBMnTu2241hyMlFUrd
-         uR2/nZm/RfMIFzoG6Vu0u+6fQeIKDXmFhIqD7xy87lR5/YXh5mcqCisQgvsNVSWTJHV0
-         +u5g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="kgd99GNs"
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8cd80bea5f3so295823385a.3
+        for <imx@lists.linux.dev>; Mon, 16 Mar 2026 08:26:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773674177; x=1774278977; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RfmS9UsPgTPMXyC6QLAQIz9yZtJBVekf+/MAtbCUFs4=;
-        b=ZKNp6tjVkL4g7718BU6hzUn/0ff2/h449YV8h43KUjNFdo+9fjmZ+d89BTUh4PQQEk
-         k7fBR0tvuLPYR+4EtEUKdpuNVLWJ+2LnpGSG/pvC8ykrB4EIbSyUx/7ensuO9y/2qYfC
-         4nBrFqaCWbnzNs/at/jzMXNGaw4jmbcSw9Gu9hUJGbOkC2aBZXF3uu7RMj8JeuBhHFNo
-         wrFufXutuYUjwQ3xig0h+d87gosxtwpEs/yHiDdFHV9jbQzBeCyW49h6mySnuWb4NCeE
-         uV4G+lIfGyQiPYxc28Z0HXeLlXMc2BYoJohRdzMkod/+MnUqd508bgGcxmtwV99/guEi
-         9wgQ==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1773674777; x=1774279577; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
+        b=kgd99GNslzsyP/vivkznoUReXOCrJZvdTG8sKoNwfNCLhX+4qK9Su3k9S6BvHxnSju
+         zADlAjb3fEEhSmJBPann+6D+1UCOhCzUajuSCYenzxV8qykHxPSAL45lEq7vMIAViii4
+         Tavoibbn/rYCe+TwjyvlyhQhPmB9CwtU8rJzglo/BknW+HsIM5SzdakhKHossMWfd2E4
+         PGENC5OvIak6z9KEnagHmZeDcVySFa8MjdoU8+Of32Q5qee1iJEyxbmfGR7ol1lZu+eu
+         LvRGO8jJxIMaRmk6Gz+ri2ACXpv/rbX7I+LnXjUlPoCO+NRNgyHtpBAe9FTgjMKqVn0Y
+         VibQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773674177; x=1774278977;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RfmS9UsPgTPMXyC6QLAQIz9yZtJBVekf+/MAtbCUFs4=;
-        b=pitn80LAH7tCG3zLhPFD8UEaS1ayo/7niXKv9SmkfQFQ56nmvGQQD6s9AuRvAWnChU
-         xvW530Fi/YSS52KSvUf4RIEch0AWn3+eODn5jqQ9/+L5BLvHAUG6lzAWkP6CP3vCNrwA
-         lqNK8lkv0PbK03NG6DMI8tsdmlHdIJNDx0+Ih/bva4shsvL+WEKvAe/ggVfN8O1/Go5L
-         AWUuzPgvb4BogfmlK3oPRnJxCqS07t/BFBwQfQw5D1ip3cLb8VLCLrbvFSSESjYmopFq
-         757t1mDAIOG0qKKb8gPgqUCw5sIZOUbd76vGQ18ZlzBl6W/XK7MV7aEUhLdgFh838pTY
-         m+9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWBiS5tTOxGAnNcjUucl110qIEwAndrs8SSOOPZpW0Q+E0FkqOQLl9O+kDKTENOjqoybeU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyY9fuJJ9vRhiFKr+2ZaeLpi/LB5isD5kjv2AvCsoMHT0n9WztO
-	JWsvMm/Xzz70M+eqzu+3KPyD1j4tuOl7pOaFnE2e5toNpFEF2pmU2kZRhqoql68epZQfOJ/Mbg3
-	NrGLRG8hmP/klYxSyKvi7xFB0AvAoC+fsmNbh8HElVmb77+6cVId8oaM=
-X-Gm-Gg: ATEYQzzjgC+YBXwN2ZEeBek5PTISxtIDWDbjU8xse+8syWoQicv17Ny8lTeuv2YBITq
-	Vw8yBZbpTgp1huZM/cOxhsLGTakUsyAVtNzstc5zmVY2xy77+7n8ecW2zmvDXg5rRIEovh4zhOg
-	aywIVZxYErUxGRz8rFhOzbsN7nO2MVvMmcAW1YdWKrEdeLWOZ6uTmv07s9ZOz/GnMediiSxBvtl
-	j85bb9N59kl3kHAbRnHy+KsvMhNJ72v+QZxH/up2rykZ0751vCzCCVp6AYS0A8kAoMfde2n31Zn
-	/Vf2MOZs
-X-Received: by 2002:a05:6512:124b:b0:5a1:1e44:8682 with SMTP id
- 2adb3069b0e04-5a162b0d510mr4888825e87.34.1773674177264; Mon, 16 Mar 2026
- 08:16:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773674777; x=1774279577;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ChNwrvwut9AH8kQhXrPmezqcMvifV/XRrhrpWQpij9s=;
+        b=GIUhUedXk+cLpy+PpWtoqIDD28dyXo2A0k5NsPuKWmrvexWGV4yAVDg9tALyDNbgrI
+         icw8Aea+fKKfH4GXx2J4hAtyXbQIVCh4DfKk1fDnogWOO/nGH8rrNz/60CMiv7Mi8mV9
+         3O/xADPSkRwF594dAcyiIDgsyjbPGPxKhYYQ6J6j6HPhTyNrZtxFVvlN9RagAx7KQiZO
+         0AdTxQ0TgPopBPv4iJS1AZAzqbpE/4uBj1C8p6bNznNLyDnZIZahMK2POmw5zbflG6la
+         VtCGKzEpa0P5WBIqgpL9+vWDMg1LIV6wk8Y4baa6S07sCFjUT38/uDUFT5Yz+kQ8C4BF
+         0rug==
+X-Forwarded-Encrypted: i=1; AJvYcCVnxfitf1DDsH+SmpTVdWbMubNxwMMxQwSPVt+QeAcuMKGwVpjR5som8OxNvwF7WXkNtT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVwbd3XxS+rFzp+Sk8LRuw5M3Q4oPxOpl1g2n9UZqhJfuTjLqa
+	15nEh6EajnAq4X+ZrZ4Kw/G+iORUW7T4n0J/A0zH9mgezIDdS92SgM7/HFXaQCVMtLA=
+X-Gm-Gg: ATEYQzy3nW0SmTcFIPG+MUTEa3s0Kz/LDkieoPSDWFSjj68jEZ8Y4/9guOXuBRdJZcr
+	wRJ5t2VsMRyVZVcZ8MZnE+66CBaUIluP19TYNCFk4msjdNeOVg3poOM5JBuvrXWMejz2Cm2ep9p
+	u6wwTyHK6vyUnQhrH9Z3XEXUidHbYMYkbFUKMc/uLnR636qqiNe9tf96i7Jj1KKxRvxy4hxGYgo
+	OKaFf+2hRFFi2Pqz2qh+A6dtI9OwCmfCe07qs+CkuidEgZR+BPzdrer/29bfs3YF1AS0olQE/zj
+	oqEI/ITHovZDuXlBbMZ71ywr2PjqHp3sFqlC15xjiFrYDst58wHQwHaTGdc0M/poOtLXkTJ+Dis
+	MhjYhojUFRc0f23pvTM7Iubj9XAmPqh5yRBpEIyH/PMQULitkNrjkMRkUUUgYY/h/18cTuoMi3i
+	BeM8v4kvfh6BzMDy1S2pQ5XKKFe+yN
+X-Received: by 2002:a05:620a:170f:b0:8c9:e989:9d97 with SMTP id af79cd13be357-8cdb5b56e2fmr1651069785a.68.1773674776906;
+        Mon, 16 Mar 2026 08:26:16 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:11:b76d::5ac? ([2606:6d00:11:b76d::5ac])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1fddfe8sm1228675185a.12.2026.03.16.08.26.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 08:26:15 -0700 (PDT)
+Message-ID: <e559b822c5f4fc9167d40544172c6c450d88636a.camel@ndufresne.ca>
+Subject: Re: [PATCH v4] media: verisilicon: Fix kernel panic due to
+ __initconst misuse
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Francesco Dolcini <francesco@dolcini.it>, ming.qian@oss.nxp.com
+Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl, 	benjamin.gaignard@collabora.com,
+ robh@kernel.org, krzk+dt@kernel.org, 	conor+dt@kernel.org,
+ p.zabel@pengutronix.de, sebastian.fricke@collabora.com, 
+	shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, m.felsch@pengutronix.de, 
+	fra.schnyder@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de, 
+	Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com,
+ devicetree@vger.kernel.org, 	imx@lists.linux.dev, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ regressions@lists.linux.dev
+Date: Mon, 16 Mar 2026 11:25:53 -0400
+In-Reply-To: <20260312173349.GA137045@francesco-nb>
+References: <20260306031059.801-1-ming.qian@oss.nxp.com>
+	 <20260312173349.GA137045@francesco-nb>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-6HvdHsM5JK0qWfzveRb3"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260311095009.1254556-1-ziniu.wang_1@nxp.com> <20260311095009.1254556-5-ziniu.wang_1@nxp.com>
-In-Reply-To: <20260311095009.1254556-5-ziniu.wang_1@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 16 Mar 2026 16:15:40 +0100
-X-Gm-Features: AaiRm51cPffNhAKRkrzoz3tQeIb3HHrML_LJWGZPPVi46bwXGd0VkLN3oL3c85A
-Message-ID: <CAPDyKFpFoZZv7b9jGPpWAQxYiCdxVc4e6fYYj5=16UPFi7WzSA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] mmc: sdhci-pltfm: remove duplicate DTS property parsing
-To: ziniu.wang_1@nxp.com
-Cc: adrian.hunter@intel.com, haibo.chen@nxp.com, Frank.Li@nxp.com, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, linux-mmc@vger.kernel.org, s32@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+
+
+--=-6HvdHsM5JK0qWfzveRb3
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Mar 2026 at 10:48, <ziniu.wang_1@nxp.com> wrote:
+Le jeudi 12 mars 2026 =C3=A0 18:34 +0100, Francesco Dolcini a =C3=A9crit=C2=
+=A0:
+> Hello,
+>=20
+> On Fri, Mar 06, 2026 at 11:10:57AM +0800, ming.qian@oss.nxp.com=C2=A0wrot=
+e:
+> > From: Ming Qian <ming.qian@oss.nxp.com>
+> >=20
+> > Fix a kernel panic when probing the driver as a module:
+> >=20
+> > =C2=A0 Unable to handle kernel paging request at virtual address
+> > =C2=A0 ffffd9c18eb05000
+> > =C2=A0 of_find_matching_node_and_match+0x5c/0x1a0
+> > =C2=A0 hantro_probe+0x2f4/0x7d0 [hantro_vpu]
+> >=20
+> > The imx8mq_vpu_shared_resources array is referenced by variant
+> > structures through their shared_devices field. When built as a
+> > module, __initconst causes this data to be freed after module
+> > init, but it's later accessed during probe, causing a page fault.
+> >=20
+> > The imx8mq_vpu_shared_resources is referenced from non-init code,
+> > so keeping __initconst or __initconst_or_module here is wrong.
+> >=20
+> > Drop the __initconst annotation and let it live in the normal .rodata
+> > section.
+> >=20
+> > A bug of __initconst called from regular non-init probe code
+> > leading to bugs during probe deferrals or during unbind-bind cycles.
+> >=20
+> > Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> > Closes: https://lore.kernel.org/all/68ef934f-baa0-4bf6-93d8-834bbc441e6=
+6@kernel.org/
+> > Reported-by: Franz Schnyder <franz.schnyder@toradex.com>
+> > Closes: https://lore.kernel.org/all/n3qmcb62tepxltoskpf7ws6yiirc2so62ia=
+23b42rj3wlmpl67@rvkbuirx7kkp/
+> > Fixes: e0203ddf9af7 ("media: verisilicon: Avoid G2 bus error while deco=
+ding H.264 and HEVC")
+> > Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com=
 >
-> From: Luke Wang <ziniu.wang_1@nxp.com>
->
-> The "keep-power-in-suspend", "wakeup-source" and "enable-sdio-wakeup"
-> properties are already parsed in mmc_of_parse(). All sdhci drivers that
-> call sdhci_get_property() also call mmc_of_parse(). The only exception
-> is sdhci-of-hlwd, which does not call mmc_of_parse(), but its devicetree
-> does not use these properties anyway.
->
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> > Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
+> > Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> What's the plan to merge this? It fixes a quite severe regression,
+> a boot failure.
 
-Applied for next, thanks!
+To be decided this week. The commit message does not say if it was released=
+, or
+came in RCs (and I didn't check myself yet). I'd say, if its the first one,=
+ it
+will go through next and backports, otherwise its is really tight to get th=
+at
+into the RC series, but serious enough. Please fill the gap if you have tim=
+e,
+and I'll handle it later, probably tomorrow.
 
-Kind regards
-Uffe
+Nicolas
 
+--=-6HvdHsM5JK0qWfzveRb3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-> ---
->  drivers/mmc/host/sdhci-pltfm.c | 7 -------
->  1 file changed, 7 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
-> index d4fb60c1ef69..933fafe0a0ef 100644
-> --- a/drivers/mmc/host/sdhci-pltfm.c
-> +++ b/drivers/mmc/host/sdhci-pltfm.c
-> @@ -95,13 +95,6 @@ void sdhci_get_property(struct platform_device *pdev)
->         sdhci_get_compatibility(pdev);
->
->         device_property_read_u32(dev, "clock-frequency", &pltfm_host->clock);
-> -
-> -       if (device_property_present(dev, "keep-power-in-suspend"))
-> -               host->mmc->pm_caps |= MMC_PM_KEEP_POWER;
-> -
-> -       if (device_property_read_bool(dev, "wakeup-source") ||
-> -           device_property_read_bool(dev, "enable-sdio-wakeup")) /* legacy */
-> -               host->mmc->pm_caps |= MMC_PM_WAKE_SDIO_IRQ;
->  }
->  EXPORT_SYMBOL_GPL(sdhci_get_property);
->
-> --
-> 2.34.1
->
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCabghAgAKCRDZQZRRKWBy
+9NFwAP9sVkqCaBiBRpXCvZHE5Oa05+dzKFdWC5+h1oxIeJJ4dQD/VD/qrH1k6wW/
+L9bxPFGmfGPNVwVSrJM7fk/6BwpNMg0=
+=TFXY
+-----END PGP SIGNATURE-----
+
+--=-6HvdHsM5JK0qWfzveRb3--
