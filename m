@@ -1,109 +1,126 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D904376BF5;
-	Tue, 17 Mar 2026 09:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58124391E50
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773740047; cv=none; b=NCR4YIKtc4gi4FPKmUgFbn5yDbalTyWtYKFdYyR3uyDV8cNahf34KiYLZ9LZBQWoYuR3clWrEcVARAoweYz6sWlHz/671nJWgnshk6wCO3d0ckA2C6UMVROTjdVKJ5ATVQBh6syedOz7C//mLsNpnKL9F4+ZHaG1j4LtO3mwz7Y=
+	t=1773740695; cv=none; b=E2oYTCCvdZ25nurYqjPZnHfbDK8e84wXug1cxw9L10g93Hx4UmIardOVG9AnD1yHsiXt4mVrNDx+jj62fj5q1CDnCcajO4Dt79vkx6OCFluwpDcOZIb+KdnA1s/0/HAs3aHIfagr/d2V5mpULXM5GC3jcMxssmMhMnFxwB2mKFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773740047; c=relaxed/simple;
-	bh=/hQY7FQRMEUod/Z9kKa5yjJXczNVyEO04gbtWHGwqio=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y3m/dO2Gm7LJTRw0taxbiA8PWbV7wTpdKjJjM0d2dJTVsAHWF9FpIIHde0FJVV+5PaiqaW+kdFyyZpR9qTvhYQqLaIWtJ8OQO1djUsfauABpSQV6ym4o177j5zHdc+vBhZw+P0sWXEfx4X9Nbw8icxonftymjBAWnH5ynxGd7l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Y8/aI619; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Y8/aI619"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=CYr2lsML4xXn9xvpQyi5HYRXhtmTvzAd2XvtNHp+U5M=; b=Y8/aI619pp3W9x2HLpKbvqAs9B
-	p5p/G3+f1otQ5A+XIxcYtyS4jxQTFWupG1Ut59+s/EFnnROWZMHFC2CqNq00SdWUWIsDm8M05az11
-	GrD+/pvnBJ5B2U0ts+zHuvminwHybOqsPbNtKiPBR5/p6UIS2x13c5tQUo5ZA9Rh4tGd4eFD4Dpy2
-	FfbrKxYFNbzB6CkdjnAT4pwewLQFwy+vslAhdjLMSaI8jrKwI5tUWiDyLdIvGvsPjagQHx42Mzqkr
-	Zw4iBt5e1qYvaUai18rJC8wqlugpZkNvGovF8d52iRDbOvfAuRGG7Y1d3Z7mUTxiKVCnbnhp8nTYL
-	ZmBujQbQ==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2QoM-000EvY-2O;
-	Tue, 17 Mar 2026 10:34:02 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	s=arc-20240116; t=1773740695; c=relaxed/simple;
+	bh=rbkGXZUTbzl4wjQApSCgMFx0j1VLIx6SsyEX3z6TrXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bG9l7+2dl6wBBxEBuJGyiB6GOut6LbOUPKnueKfH5Rkw7X9pUvrow3HNqPY6lxoWOPmxfRF1Q4AEeeb7JlW4zmSwjuVu3qgXAP7Ykmplej7BvoKbTy11Z6dn/lHi7OOkLbk73gc34KHjhX0NuLoLrGMr+GUHS7NZYwWbcTuub0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w2Qyq-0002yP-8g; Tue, 17 Mar 2026 10:44:52 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2QoM-0004mK-1R;
-	Tue, 17 Mar 2026 10:34:02 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] clk: imx: pll14xx: Use unsigned format specifier
-Date: Tue, 17 Mar 2026 10:33:52 +0100
-Message-ID: <20260317093353.964097-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w2Qyp-000iXV-2z;
+	Tue, 17 Mar 2026 10:44:51 +0100
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A5B83505B19;
+	Tue, 17 Mar 2026 09:44:51 +0000 (UTC)
+Date: Tue, 17 Mar 2026 10:44:51 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+Message-ID: <20260317-beautiful-intrepid-chihuahua-6113b0-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+ <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
+ <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
+ <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
+ <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
+ <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
+ <b6787850-11cf-4b38-a5ea-da2c5d0811f4@sirena.org.uk>
+ <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
+ <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27943/Tue Mar 17 07:24:09 2026)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qdry5lnhogdwtgll"
+Content-Disposition: inline
+In-Reply-To: <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The debug outputs use %d for clock rates resulting in negative clock rate
-during rate calculation.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- drivers/clk/imx/clk-pll14xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+--qdry5lnhogdwtgll
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+MIME-Version: 1.0
 
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index 7552aaafc3395..701a7a02235cc 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -151,7 +151,7 @@ static void imx_pll14xx_calc_settings(struct clk_pll14xx *pll, unsigned long rat
- 	/* First try if we can get the desired rate from one of the static entries */
- 	tt = imx_get_pll_settings(pll, rate);
- 	if (tt) {
--		pr_debug("%s: in=%ld, want=%ld, Using PLL setting from table\n",
-+		pr_debug("%s: in=%lu, want=%lu, Using PLL setting from table\n",
- 			 clk_hw_get_name(&pll->hw), prate, rate);
- 		t->rate = tt->rate;
- 		t->mdiv = tt->mdiv;
-@@ -173,7 +173,7 @@ static void imx_pll14xx_calc_settings(struct clk_pll14xx *pll, unsigned long rat
- 
- 	if (rate >= rate_min && rate <= rate_max) {
- 		kdiv = pll1443x_calc_kdiv(mdiv, pdiv, sdiv, rate, prate);
--		pr_debug("%s: in=%ld, want=%ld Only adjust kdiv %ld -> %d\n",
-+		pr_debug("%s: in=%lu, want=%lu Only adjust kdiv %ld -> %d\n",
- 			 clk_hw_get_name(&pll->hw), prate, rate,
- 			 FIELD_GET(KDIV_MASK, pll_div_ctl1), kdiv);
- 		fout = pll14xx_calc_rate(pll, mdiv, pdiv, sdiv, kdiv, prate);
-@@ -211,7 +211,7 @@ static void imx_pll14xx_calc_settings(struct clk_pll14xx *pll, unsigned long rat
- 		}
- 	}
- found:
--	pr_debug("%s: in=%ld, want=%ld got=%d (pdiv=%d sdiv=%d mdiv=%d kdiv=%d)\n",
-+	pr_debug("%s: in=%ld, want=%lu got=%u (pdiv=%d sdiv=%d mdiv=%d kdiv=%d)\n",
- 		 clk_hw_get_name(&pll->hw), prate, rate, t->rate, t->pdiv, t->sdiv,
- 		 t->mdiv, t->kdiv);
- }
--- 
-2.43.0
+On 16.03.2026 18:49:15, Mark Brown wrote:
+> > > Oh, dear, so that's potentially going to go badly if there's a SoC wi=
+th
+> > > a bigger FIFO that didn't also increase the watermark field width.  We
+> > > should at least warn about that, and ideally do something sensible.
+>
+> > Good idea, I'll add a warning if the FIFO is bigger than the watermark
+> > field.
+>
+> > To handle this situation I see 2 options:
+> > - warning + limit the FIFO to the usable size due to the currently
+> >   hard-coded watermark width - this will result in reduced throughput
+> > - increase the watermark mask to 8 bits - which is basically how the
+> >   unpatched driver works.
+> >   As outlined in my previous mail, the other code in the driver takes
+> >   care that the watermark stays within the limits.
+>
+> I guess it depends how optimistic we are about hardware engineers
+> keeping the FIFO and watermark depths in sync.
 
+Right, we're talking about FSL/NXP hardware :D
+
+> The first option is more
+> defensive, but like you say it'll hit performance on future devices that
+> do expand the FIFO.  I guess I have a slight preference for that?
+
+Yes - I'll increase the watermark width to 8 bits and add a comment next
+to the GENMASK.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--qdry5lnhogdwtgll
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabkikAAKCRDMOmT6rpmt
+0uTHAP9DENCerrIPfeSLS2ISSv6ZjZ+tZ99q8JdjYRfKE3zwnwD/W+xi9wJnZykB
+CSsLfSxOtU+ClhZ4eC0ARhnCMQNb6A8=
+=OlS7
+-----END PGP SIGNATURE-----
+
+--qdry5lnhogdwtgll--
