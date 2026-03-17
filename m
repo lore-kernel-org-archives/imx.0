@@ -1,73 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E449346FD0
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 08:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593521531C1;
+	Tue, 17 Mar 2026 08:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734602; cv=none; b=VisbRFPl2pj9A2ZhGQEIOb1IRWVRnBXE7Sh5YM9D4b4hAUm2pD27t7OXkzltmOWL7Ym0lPf3bThKeIbADnAPTo/sHh5nYlZsi/XqkISywhz+DAXCQbjU1e24kW23/fpJM3NyNPY/GInd8bhSIXhxEbwZkKoo1dwKBRyYwU/aBhg=
+	t=1773734689; cv=none; b=Ru58mMLmZ9T4UVefwZmmqCKG85Nbzwb7mkVJWZ74QWAsVe+b7Igjk+5UWNiXMCY+AWZ1TfObRY8CSdm7yi2C9sO2A44Z/Oxnnbj3l4Y2Cc7kGTzV2uQdhqNfkJ8v5N2xsjVRt2ZyJQ3x9wx5b5sV6N+EurxcctxhleD1wqZFwcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734602; c=relaxed/simple;
-	bh=C2n3Bh4IMnS+Db8fN1VzLFfIHd2WnC9Bb8dscoV8+YM=;
+	s=arc-20240116; t=1773734689; c=relaxed/simple;
+	bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U9Ycw9ciOoTjOL3an6sq5/RKASXZ3+p3dLx8TnG4JSf5H+bFGKlEmpWSbXXIlGzURZnSf0eFgMM/6hlrSwxjYu1iVqSgPTnBhEuSZI1KkcBqY2vv7l8Y1ZjzcHGGqTpLm8qJC856F3OPt45fXdkUVHFsO4bj1yl5jkPNyxa8Rqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idjx2NFw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ksnGRuHM7Gu7cRkWb3Vxh46SeVQoE3uWDu8SKNVgQaJHWZpVX+G0QF3VVKvYkymDzhy/DlFl8W+r00c39cGDecKmXU86jEL61ACuOtfuMbsbS5x+SOnZOMx4lbQLVdApWDv7Kn47jSXOe6rilVRwvn7BY06vw/AmD+dw5VDXT/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TgoO7a9/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idjx2NFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63666C4CEF7;
-	Tue, 17 Mar 2026 08:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773734601;
-	bh=C2n3Bh4IMnS+Db8fN1VzLFfIHd2WnC9Bb8dscoV8+YM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=idjx2NFwSiLqX2HOhxAHnHgvc9dAM0s6kh/RGJTk6QtOqAn6dPXI458stw8Cyyqn/
-	 nF1r8IWBF6PlOtGf6R4Hv8V5uLgIGtrwM9KpSXICqmEo5eCnw6Ph3LQ4DjUfWK4yIZ
-	 t+/wePKghcIRf3gERl8EMEf/GUXqDpDkickBMwCd6UdE1bvXvu4X5+H+HwNUxeAOgv
-	 G4sSwX4blcJ1O8/dzZ7hnCB1Ix66CZdAHPaJxVGWyFzvdknIIzYNggyRG52b5roUFO
-	 AiwSSKCXZNxdaqbHNFprTDjPCmIiXu7uctdGHCaQznW0JpHYrmLdg+KvuvO4r1W8BU
-	 0tWU9or2O+NFA==
-Date: Tue, 17 Mar 2026 09:03:19 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: soc@kernel.org, arm@kernel.org, Fabio Estevam <festevam@gmail.com>, 
-	kernel@pengutronix.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [GIT PULL] i.MX fixes for 7.0
-Message-ID: <20260317-jumping-corgi-of-defense-038bcd@quoll>
-References: <20260312153557.3338430-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TgoO7a9/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773734688; x=1805270688;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
+  b=TgoO7a9/ZtqohlD5M0xeGtc3gBMWEyxFVTJO5/cmHgLU523yAw3rtxbM
+   9W0Kxw2iOdJYKVmHPdhErmw1fFWTIzvR+bG+bmsHMYxN2UUzQnroPfwuR
+   YlZ6Z8ZyX+S5tBEnEs9/fLIhKLkdc7+8U8NoXRoCVJ2aQezjLZ9mKs0zH
+   XSRbhQc+1g5NPMNU0P5iTmwcNaLU40FEBYd0ewV5ewwAJxkHfrWdIXmw9
+   BjZecKgENs0+hOaM2fl02yJ009g4LR5Z5Egv5LViBBpqj1i8X2xjmrmXm
+   3TWya89xm9/1mXJXMYVRPzQg+hBFs14iAuAdgwEQv35ePx7x6ToWZVKk1
+   A==;
+X-CSE-ConnectionGUID: ODKJuH5fRdG2FtGVoTsApA==
+X-CSE-MsgGUID: HCkbCCxbSYO1yXnbjUKlpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100214530"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="100214530"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:44 -0700
+X-CSE-ConnectionGUID: 2FRFFUu5ROiSZGHfQOS4eQ==
+X-CSE-MsgGUID: 6ilrKriWSSuart1nhUvBbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="222244723"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:37 -0700
+Date: Tue, 17 Mar 2026 10:04:34 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <abkLEgrZbdb03VWg@ashevche-desk.local>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312153557.3338430-1-Frank.Li@nxp.com>
+In-Reply-To: <abkF0GO01sMcOhvb@shikoro>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Mar 12, 2026 at 11:35:54AM -0400, Frank Li wrote:
-> From: Frank Li <Frank.li@nxp.com>
-> 
-> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
-> 
->   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.0
-> 
-> for you to fetch changes up to 04d00f57c168153758d2c6a2395d20aadc785e3e:
-> 
->   arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V (2026-03-06 11:19:41 -0500)
+On Tue, Mar 17, 2026 at 08:42:08AM +0100, Wolfram Sang wrote:
 
-Hooks fail.
+> > > ... this change costs some memory on every system. Maybe it can be
+> > > avoided?
+> > 
+> > How much memory does it cost? On most 64-bit architectures is +4 bytes,
+> > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
+> > +0 bytes. I expect that 64-bit machines will cope with this bump.
+> 
+> I am not opposing that the issue should be fixed. If it is not possible
+> to take the lock everywhere, this is a proper solution. But if we don't
+> have to use more memory, then we could save it. Our new SoC easily has
+> 'struct device' in the hundreds.
 
-Commit 587096ada520 ("Revert "ARM: dts: imx: move nand related property under nand@0"")
-	committer Signed-off-by missing
+What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
+(I assume it's 64-bit SoC.)
 
-Please implement basic checks from beginnners maintainer guide (LPC
-2023).
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Best regards,
-Krzysztof
 
