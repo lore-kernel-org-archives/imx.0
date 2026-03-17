@@ -1,102 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF19330B38;
-	Tue, 17 Mar 2026 19:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68518343D83
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 19:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773774072; cv=none; b=EmEL5g0NXlQogxysgGU0yXbKZ6/lt/C806qiwovv4lX/tetA4FAGY8gogccHSdc8sRTeCVuHM2EzmfEgou7tEt+dVKZf9qyld/9dep9OWIq8nKDe7XgWE0IG3JzzhfEqgONd7yW+beA5XCvQHCxvQ1rvQ0FzNvtjUUNDcT8Z72E=
+	t=1773775997; cv=none; b=SfVLzDv+SqnJlVRMc+rMDzrd2WSF+otWRt4F40z2xPUNhMCRpic36utqbp0u0rXrqz5pPXe/hdCXcwk5Quh/yh2JfjgyUirMFo4Veu9cMWcSoQ2UyrTnMhdNbrlsc2xwXmfpWgpYeot+JwDJed5YGt0ibADtTk0gMBBDgiAtmx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773774072; c=relaxed/simple;
-	bh=RVHqat69wzKS/6FEWyeTvRo4rPXKFMfiSDhSqmXZMAk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=gNj982psR95vNgn03+0i/ywqfcnApRZoKnoyOPvi4hbrfqbSBeBAccas6OXkZZV0qf67jLeIr8Tb8fy4peQG3d+07U5XbQbct/Riif1pASiD0V/2cehFUvRelkyxlJwCSZyJuWbbNUeEd9jUcbHAxH7EH2qW2FLgICBriDCBk1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgHPD8lu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773775997; c=relaxed/simple;
+	bh=0wrffe2ePvR9snVbGOn1yuDOZd87ewk/mhSsA9xTEEY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bu9IsF5uo0+JvoenNCVCaLNGUyJ9UhfU/EicI8GigY2K1z1WuIu8/NHK++UB1J3gKzMCcQ120AcRIQCglmRjkozFoP8BqXNQ+Ssm+6TupDosx+p67ptYKJb3m5i1GobqllSAVF9moc9XvsG1gLJJ+1NpF4HZHGbAUjO+xNIk57s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NG77m6we; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgHPD8lu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2475BC2BCAF;
-	Tue, 17 Mar 2026 19:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773774071;
-	bh=RVHqat69wzKS/6FEWyeTvRo4rPXKFMfiSDhSqmXZMAk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sgHPD8lu+6Q6TpBkccf5XI4Z9XaFoPJkKhxKSuAVT2TlCGQ0vlAPRb8YvWkPaTW1u
-	 V84PFsgdInLgBQTpalfk5AhYmzq8FNGAaR8GRgBRtQq5nvt/YxW6inJkheUTxQ70Qo
-	 +PIDNB7V1rACEKhMd2gA46kN1ck5Y6HjKA+pPqUn1nB9pxLr3y0VJbxwkH/598pReP
-	 8E2eBfw/NwZ0ve4QhRMdJKyPB0YI9UkGRM5HLfII7I+VtUbY5xexWKY6HJfuaV8Sr0
-	 nLG/AY4S8Kz+KD0i3YLcb+n4jjsmOQVeuIS9yvA1kNRibCyIXpgP5Oz3JC5OcADydW
-	 zOLIAIMXk9hIg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, andreas@kemnade.info, Robby Cai <robby.cai@nxp.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev
-In-Reply-To: <20260313133102.2749890-1-robby.cai@nxp.com>
-References: <20260313133102.2749890-1-robby.cai@nxp.com>
-Subject: Re: [PATCH v2 0/2] regulator: fp9931: Make vin-supply mandatory
-Message-Id: <177377089890.409229.768616051787626910.b4-ty@b4>
-Date: Tue, 17 Mar 2026 18:08:18 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NG77m6we"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48628ce9ab5so14988175e9.2
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 12:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773775995; x=1774380795; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=utwObQp63pBMb8wBU24YfUsTgXDwwHCc0NNvyQURJJU=;
+        b=NG77m6wexUwTBntKUTFNzVTr9Lg3Bm9cMtRa7F+G+KL/kXpKLxS2ABH+3tO/oRPlkM
+         2bNLAbSAQpKF+10Vtnmj28ugQfVg0iuVHkrVAlQ0V2rQbK7pLxsgomTbaSvJmREZw8Ex
+         n9Ql3X2AiVt0+G2XGRaP75Tw7NIXcIDOoZKShTWRGLhc5wmoDPCkXoHIB6siFarRMTZH
+         76cleMY19CdoyrqBMR4Zu8oqaPmJafIWfgNMT7OdBpXkIy3NxVjz+t/+OxV/f30LSiqF
+         ifeHfAuF922YpuTHmF+Ivaga4DexbxVd/kh5P0AiUkEMgUa4+XSxtndFzKfHThl4L4DR
+         Cd1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773775995; x=1774380795;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=utwObQp63pBMb8wBU24YfUsTgXDwwHCc0NNvyQURJJU=;
+        b=lFucc/kGKhLrBMP9OfKQV5AfhAPMI/oQZQwOXhfuCeE91FIoSwSKwQDR9lJVRvXz2k
+         cHLrjItqMqDuXoO7fPRM+1475VcWrl1rk04O0tIjEpiqN7nqW5AQAnba1fu/vjhEI8mx
+         FHOQ6QMAbZYkA31qLU5FnQmnEX9bE8afHk/zDXgZLuaZ1DY4HhPlZhKPA4kME8JYQciL
+         mzQBObTNM43ipolNqdvy2naM65Jg0NjyUKR2PD1yDTFYBBXU6ULsGiPqA1aHtAkD6H8m
+         pUowlR8FE9mSHcOsMUBsUzSDAKmu0Bjan7LA1QbFLhMsMQPVhh3OcKfU8lBu85mgCSTt
+         BmNA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0fhuk/MaI8Xnv1sO95TDrhPyYpbrEqkLh/tPBmkNtvusX1jKNuWXc4PRE6yHVC2vhNFM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwTLEwnjLHNHR5AWIpr+gB3xVuYM6CMJVdao4vSNRVE3ZUym/N7
+	ecDPSIGdKu8db+XOUSOhRwlrmqsiFiW8w4Wlx4lnfJokn+brApkYVp6l
+X-Gm-Gg: ATEYQzyEbxpAbBUK8ozJjIXicQ5S3ZLLL97qXPrQsb/yiq6tSDYrzTL//Dlx6bmSrYZ
+	Lz/lb8UxsvE850w6Ch9aR8P+3JHu2Ar+8xO+Px7v4DjC8EeShfpqi89RErmhYHKrCpVstaz5ASr
+	0PvvupB32z8Ey5tTFoRIC9MDQkDbNqsQ1gbn6W5XbkwXRFf6sea0hzyftcWMpnIDqhFcBErXEi4
+	+JPiygYTNX5tbcqp3PNt/3zmUi3gixH4mSEOcEcRhL2w7pp3KpaTe+Ws6pSPIB7DJtfT8r0Gb+M
+	V9MkG3A2e+LadTlc45woDqwo8Lerh1xVIdR83xVV45g9F2ZZ7jph2HmJF3I+weZ6w5Vw3nyB4lN
+	2nDClAjzmBCt1F7yxSS8vW1seSxUWvzkC6XAHFDfIGiXyO1ZwT3vhXeh8svw5GQG0NMvriiUc54
+	ii9e6B3cDXvHBj1TOtyEco4O6xP94ZTyoEaJicep987Ao0
+X-Received: by 2002:a05:600c:314c:b0:485:7f02:afd5 with SMTP id 5b1f17b1804b1-486f443845dmr15339245e9.13.1773775994499;
+        Tue, 17 Mar 2026 12:33:14 -0700 (PDT)
+Received: from debian.lan ([171.22.84.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f41d0c5bsm16762645e9.0.2026.03.17.12.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 12:33:14 -0700 (PDT)
+From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-mmc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+Subject: [PATCH v4] mmc: sdhci-esdhc-imx: consolidate imx25/35 data
+Date: Tue, 17 Mar 2026 20:33:09 +0100
+Message-ID: <20260317193309.14091-1-adriangarciacasado42@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-e1b5b
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1691; i=broonie@kernel.org;
- h=from:subject:message-id; bh=RVHqat69wzKS/6FEWyeTvRo4rPXKFMfiSDhSqmXZMAk=;
- b=kA0DAAoBJNaLcl1Uh9AByyZiAGm5pPWhVbK7StGPBrWqKDwctQPorOYqvp4inmw7uk15aqYq9
- 4kBMwQAAQoAHRYhBK3maKpnVxi1n+Kf6iTWi3JdVIfQBQJpuaT1AAoJECTWi3JdVIfQ32kH/3Uu
- 0T9zWRvtOZFgEPlWcAMP1FKfQ0dNbcJ96Kl6IDDvH/VbvCJnn8KiK5uAwWn1zipCgidjPvnTCiY
- muN763XJjer7CX/LbHHmUj7LsF6H2NefDqhxuC2RubUAnzsGs7EX2uR1XO058CUIPF5r2XozYCt
- AQFntnPLjWObA8dKcU0V/1FVVEZyjyI2aY9ziNC8KKZQk4Rk1+OY9Hh2RosjnHlTc38Qc0qoNpK
- aYseTxKNomsAFGAwEmqHFOKZZEk8Hqe+/sK+gbHvyxDskT6YDeJqjaK+Pz0ru2P4u52rJKpn5d6
- pYk3UmFKOpOjFdOMeiTwrec58FJR2cYXk0JaKuE=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 13 Mar 2026 21:31:00 +0800, Robby Cai wrote:
-> regulator: fp9931: Make vin-supply mandatory
-> 
-> The FP9931 regulator requires a valid "vin" supply to operate correctly.
-> Therefore, the driver should treat "vin" as a mandatory supply.
-> 
-> This patchset updates the binding documentation to mark vin-supply as a
-> required property, and modifies the driver accordingly. As suggested in
-> the reviews from Andreas and Mark, v2 switches to using
-> devm_regulator_get() since the supply is mandatory.
-> 
-> [...]
+Consolidate esdhc_imx25 and esdhc_imx35 soc data into a single shared struct since they share the same flags. This reduces redundancy and simplifies data management for i.MX25 and i.MX35 SoCs.
 
-Applied to
+Signed-off-by: Adrián García Casado <adriangarciacasado42@gmail.com>
+---
+ drivers/mmc/host/sdhci-esdhc-imx.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-7.1
-
-Thanks!
-
-[1/2] dt-bindings: regulator: fp9931: Make vin-supply property as required
-      https://git.kernel.org/broonie/regulator/c/d342f5e355aa
-[2/2] regulator: fp9931: Fix handling of mandatory "vin" supply
-      https://git.kernel.org/broonie/regulator/c/58068932402c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index a7a5df673..9cfa26722 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -256,11 +256,7 @@ struct esdhc_soc_data {
+ 	u32 quirks;
+ };
+ 
+-static const struct esdhc_soc_data esdhc_imx25_data = {
+-	.flags = ESDHC_FLAG_ERR004536,
+-};
+-
+-static const struct esdhc_soc_data esdhc_imx35_data = {
++static const struct esdhc_soc_data esdhc_imx25_35_data = {
+ 	.flags = ESDHC_FLAG_ERR004536,
+ };
+ 
+@@ -391,8 +387,8 @@ struct pltfm_imx_data {
+ };
+ 
+ static const struct of_device_id imx_esdhc_dt_ids[] = {
+-	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_data, },
+-	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx35_data, },
++	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_35_data, },
++	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx25_35_data, },
+ 	{ .compatible = "fsl,imx51-esdhc", .data = &esdhc_imx51_data, },
+ 	{ .compatible = "fsl,imx53-esdhc", .data = &esdhc_imx53_data, },
+ 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data, },
+@@ -414,7 +410,7 @@ MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
+ 
+ static inline int is_imx25_esdhc(struct pltfm_imx_data *data)
+ {
+-	return data->socdata == &esdhc_imx25_data;
++	return data->socdata == &esdhc_imx25_35_data;
+ }
+ 
+ static inline int is_imx53_esdhc(struct pltfm_imx_data *data)
+-- 
+2.47.3
 
