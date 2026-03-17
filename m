@@ -1,84 +1,79 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8BA3A6B7B
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 10:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC15A3A5424;
+	Tue, 17 Mar 2026 10:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743159; cv=none; b=BlWXDjcZcil+TgIWusiUUPaew9UkX1y/Aeq3QBlYoPK0WABPotDDooy+pbOokSxK/KqH1AYv4nEj8ASGBk5icIbgcOfOV2Y1hD7C52WF7ppyBYUEyqcJk3LmssnkcXS9rFX8tznNDjRhkN2GZJtLGELSr46YwTEOyFDRVBF9SYM=
+	t=1773743203; cv=none; b=MpbVerwFtURHKLz5h4TbDVUG+li/gfyCGBm3Txai3jPlfC4nBuMZckKdazf9GqoUCSnLFaw0m8lUWIob9D3//sTc4gIZQn3azMsSw8KJEu1TyzQFG8rD1muTW42DaZnzws+TxoNPAqI5214++689MBFF6fAnaBdVkpLYSFF4GKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743159; c=relaxed/simple;
-	bh=hjoBpHPC9Y8AEx3vQdQfREpdCz3NGob+FEFJLvpmPAs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UfYwxDT/elQ10eICjqDS2J+ejstYYcVLEwaQdUEZUyixH72NEXWNaOYdpfAUBdwst+o+QCAKBbbsZ1jX5cbhHf0ua/1hfSi9BXrOqg8cROmPDzTu+rqzftb7oUlHJCeiPJ36b0y1dfHR2q/3eG7lK+HMDzZ+q9LR5JlODdzfofs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 35B972000CA;
-	Tue, 17 Mar 2026 11:25:57 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2591820014B;
-	Tue, 17 Mar 2026 11:25:57 +0100 (CET)
-Received: from lsv15509.swis.ro-buh01.nxp.com (lsv15509.swis.ro-buh01.nxp.com [10.172.0.253])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 9020220354;
-	Tue, 17 Mar 2026 11:25:55 +0100 (CET)
-From: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: Paul Bunyan <pbunyan@redhat.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	linux-crypto@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	imx@lists.linux.dev
-Subject: [PATCH] crypto: caam - fix overflow on long hmac keys
-Date: Tue, 17 Mar 2026 12:25:14 +0200
-Message-Id: <20260317102514.3882809-2-horia.geanta@nxp.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260317102514.3882809-1-horia.geanta@nxp.com>
-References: <20260317102514.3882809-1-horia.geanta@nxp.com>
+	s=arc-20240116; t=1773743203; c=relaxed/simple;
+	bh=leILco6ESwbAPx5/ChEkDeGOl9TARpFn5FFt7fhV91M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JS/RbMrO0ucygMZzynQZdNEwZbu38/NZjYSZoL4ApW2LaDGKu5/fQeaJt1dpvUryWBKbtSMheAllPabTmAjpHhVeDW0Y4WCajxVcbPr6c7ZYIL6QCZFpnjUwx7pWZmhMqpuV31xrhKLT2UP1CL7ksliEsqmt8wAaTuMrGDn6Edg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EK+pGd/Q; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EK+pGd/Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C7C4CEF7;
+	Tue, 17 Mar 2026 10:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773743203;
+	bh=leILco6ESwbAPx5/ChEkDeGOl9TARpFn5FFt7fhV91M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EK+pGd/Qe+hHDmgY8MA52uxvkIPEOhyj8ZVsNmndCnSG5dr/RFkQ9EnPdTtgdc61H
+	 Cv1BQnZ3IDVErs0ElcARTaHFjSgtOIlIttxmykiFG8ScBTqIlcuYsDPneEBfXC7EYC
+	 Xkspxjnc6XfG8/+Gl8Htahhn2o+gOhHRob/jNy+0w4tkPw5+r5eNhsc1WethmBcvky
+	 xWXG2L5QQNS+FE1dYze7XpRzUc/frOLIjc4Nb3FErpzmNekXVc2Q/wMIWWsO/HxGE/
+	 VcqQcQuMnZ8Of7QoctvtautlGcfI4NcN1sQiB7KTCaig1mVy2DW5gr/cfnhvZYZf5/
+	 CxzWscbT1RSHQ==
+Date: Tue, 17 Mar 2026 15:56:40 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/6] dmaengine: Add common dma_slave_config and split it
+ into src and dst parts
+Message-ID: <abksYB2WQ0oNDSbS@vaman>
+References: <20260114-dma_common_config-v1-0-64feb836ff04@nxp.com>
+ <aa6t8QrrlearBOXI@vaman>
+ <aa7Y20I2_Hlp63gk@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa7Y20I2_Hlp63gk@lizhi-Precision-Tower-5810>
 
-When a key longer than block size is supplied, it is copied and then
-hashed into the real key.  The memory allocated for the copy needs to
-be rounded to DMA cache alignment, as otherwise the hashed key may
-corrupt neighbouring memory.
+On 09-03-26, 10:27, Frank Li wrote:
+> On Mon, Mar 09, 2026 at 12:24:33PM +0100, Vinod Koul wrote:
+> > On 14-01-26, 12:12, Frank Li wrote:
+> > > Many DMA engine drivers store a dma_slave_config per channel. Propagate
+> > > this configuration into struct dma_chan to avoid duplicating the same
+> > > code in each driver.
+> > >
+> > > Much of dma_slave_config is identical for source and destination. Split
+> > > the configuration into src and dst groups and use a union to preserve
+> > > backward compatibility. This reduces the need for drivers to repeatedly
+> > > check the DMA transfer direction.
+> >
+> > The reason why we had both the src/dstn sides was intended method to
+> > allow upport ofr device to device dma. Some interest was shown for that
+> > at that time.
+> > I dont think we have such a user even now...
+> 
+> My means is the field name is identical, not value identical although most
+> case is the identical. but it is possible, especial FIFO space windows,
+> 
+> sound/soc/fsl/fsl_asrc_dma.c use DEV_TO_DEV, at least src and addr use
+> differece address.
 
-The copying is performed using kmemdup, however this leads to an overflow:
-reading more bytes (aligned_len - keylen) from the keylen source buffer.
-Fix this by replacing kmemdup with kmalloc, followed by memcpy.
+Yeah so this would break if we go ahead. Thanks for looking this up
 
-Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
-Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
----
- drivers/crypto/caam/caamalg_qi2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index 167372936ca7..78964e1712e5 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3326,9 +3326,10 @@ static int ahash_setkey(struct crypto_ahash *ahash, const u8 *key,
- 		if (aligned_len < keylen)
- 			return -EOVERFLOW;
- 
--		hashed_key = kmemdup(key, aligned_len, GFP_KERNEL);
-+		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
- 		if (!hashed_key)
- 			return -ENOMEM;
-+		memcpy(hashed_key, key, keylen);
- 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
- 		if (ret)
- 			goto bad_free_key;
 -- 
-2.25.1
-
+~Vinod
