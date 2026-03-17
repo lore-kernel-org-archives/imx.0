@@ -1,139 +1,139 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49B73E3C44;
-	Tue, 17 Mar 2026 14:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E8A3E3DAF
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 14:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773756724; cv=none; b=Qovv4/4bOP8ZsWvmhdpF2wsorV1s6RvUe2eFHcThDs5pE7CV/IR2Af5Y81G8yidLlpcKRjfE1sTUfCG4jHrGZuRoT+BoDj0jvKVFskeOkwbKHr1nmUUNPsKPMcE+5Xf9D7zmLo8v4QJGPRCWoIwlIHo6jLUrbnBlD6zyo5QsjtY=
+	t=1773756787; cv=none; b=lqWqSwoSs1SCwsIBC4b+6zez/05cdIfwaQgC9+gomaFnnuIa5ZVMxRSohGujMCr1/atwsP/1J6lWZgcJefF09QNapwqLa42pGYqo4jaSCovVMvJSV2fgdjGhtghnJz1xQpY9Mcoy43nwjQUKetfDY2gBjQUIJ6qyw/4KhzVxRhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773756724; c=relaxed/simple;
-	bh=UcmRX+iIkZwytJqVNJodQzwRiiKSnbEQOAtWHuJEfn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DkyWJkKpKn9UllB2KF9Em0p/sZNem+5V/f1Pe+HCOBHrvOi/5lr5dzg6Z6nxdFJNgAJJkmdwaYCueM2xr8vfddXGG7McH4alLPUHeJHgz3Qk2VJv4JA+BCcaoXMDArcC+Aq5KZrpw/bdDDl07nySXxlauLssNPHpQBhfCNZzksk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=N+dDSJ2H; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1773756787; c=relaxed/simple;
+	bh=9QDalKJYBUEDUJPFs8n5F17T6oCLIOfRdQADKKa+dtg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qE8hUtlTn09ckTBbdjSEXFYV/AHbOXXKvpPVQQ24uryxHzQIZKFfS6zisP6roECbdk1Dn2OdUlRLOlzRvbDcIiDrHOTcuNufxX0Uj40YavQC98q5fjkK5uNHp3lbwxV7E8i6WKBSR8nN6SMf9EbE9Ih6xvryy50gyqCQWkQLYQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZAEscpa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="N+dDSJ2H"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=8I4GJ6VYY4sAkpPtIoMg3PlbM8gWrHzgVlQtnkD+cJ8=; b=N+dDSJ2HU0OM2CcLn4jv+usPjd
-	A9wdkncTUcJn9notW4QhMgME5kzWZfjThVZ2iXhKee3kFdfO9g3pq4hnExXaG/dDDz3gIj3W3JgL4
-	wXUtVec4QUwzHQP2wbKIu2ac3PcBp/nHnJnwaIruyb5KuldwzIx57kVDbrjp+jnghfHQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w2V98-00C2BR-78; Tue, 17 Mar 2026 15:11:46 +0100
-Date: Tue, 17 Mar 2026 15:11:46 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <104e9861-bfd4-4e0f-8967-a849edf7e6fb@lunn.ch>
-References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
- <20260313195801.2043306-4-shenwei.wang@nxp.com>
- <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZAEscpa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE51C2BCB3
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 14:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773756787;
+	bh=9QDalKJYBUEDUJPFs8n5F17T6oCLIOfRdQADKKa+dtg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tZAEscpa8SCC5cIZ2JquMfgXyJ2cYbjRRZovEZ4pp9iCwMtzoyZvoUvuYiYMbRTYC
+	 SnQwovSWExy1qzNu8gKN2Re3kiqbZF6sZmkIooWlWa9EIx1ERfsbgtRs5rZB0SAIxf
+	 3lPrGMQ4Ue2TuM4ia8nL9lBYQlDl9Z6+Gmi7Vne8vrfCzyTk9J2Ck3dsbBaTLAPSfD
+	 NPCO+IQ8fm5HTfq9yr/wXF7f1MJldHxMFhyKqH3oTfoTSoTC0Dh5v2G2YRcDRDQgL5
+	 ObXNTsitNLuKk+KvWrgZ9pPDroH39BoYVIyc5TZiwHYdHQ131NS6aY+w9jvXRnJOfo
+	 pYQYSw8TEnjrw==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38b13652c87so4371151fa.0
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 07:13:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWg96+MKJeQM9B46IdX5rt++/nCcYwak5RQiaCbQpduFR09R5CQGwwGVLeQwuJ5kpmEA+M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxY/b1E9PJiOLWj24M/9CSTDoDVqTLic+Rqyy8ttrVw9jLbFE91
+	fT6euvNJja6LuZpd78FEB7Tp6wHdLII9rF81KQDkFW8wjjZNCkpV8bSHp2fswbdGGmTHlOhjbaq
+	UDwRTjfVWayHaJdDM9mqmzHCT35eTDX9dSkLCuoibpA==
+X-Received: by 2002:a05:651c:2115:b0:37f:c5ca:a6d4 with SMTP id
+ 38308e7fff4ca-38a89666433mr58706271fa.6.1773756785569; Tue, 17 Mar 2026
+ 07:13:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+References: <20260316-qcom-sa8255p-emac-v9-0-c58934e76ff2@oss.qualcomm.com> <64d282fd94be1546df75d7df5b47eacc0479797a.camel@redhat.com>
+In-Reply-To: <64d282fd94be1546df75d7df5b47eacc0479797a.camel@redhat.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Tue, 17 Mar 2026 15:12:53 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MfNcK3MLndik1jy-yhHAph5=amnTGgn-MpXXG0Uv1ifpQ@mail.gmail.com>
+X-Gm-Features: AaiRm52mh793CgOH9S8BNXU-tBYi1I-pfEq9XQjt50faEkjR5xH42aEvJgG19dM
+Message-ID: <CAMRc=MfNcK3MLndik1jy-yhHAph5=amnTGgn-MpXXG0Uv1ifpQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 0/6] net: stmmac: qcom-ethqos: add support for
+ SCMI power domains
+To: Radu Rendec <rrendec@redhat.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Maxime Ripard <mripard@kernel.org>, Christophe Roullier <christophe.roullier@foss.st.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > +struct rpmsg_gpio_info {
-> > +	struct rpmsg_device *rpdev;
-> > +	struct rpmsg_gpio_packet *reply_msg;
-> > +	struct completion cmd_complete;
-> > +	struct mutex lock;
-> > +	void **port_store;
-> > +};
-> 
-> Except if I missunderstood Mathieu and Bjorn's request:
-> "reuse all the design-work done in the gpio-virtio"
-> We should find similar structures here to those defined
-> in virtio_gpio.h.
-> struct rpmsg_gpio_config {
-> 	__le16 ngpio;
-> 	__u8 padding[2];
-> 	__le32 gpio_names_size;
-> };
-> 
-> /* Virtio GPIO Request / Response */
-> struct virtio_gpio_request {
-> 	__le16 type;
-> 	__le16 gpio;
-> 	__le32 value;
-> };
+On Mon, Mar 16, 2026 at 7:31=E2=80=AFPM Radu Rendec <rrendec@redhat.com> wr=
+ote:
+>
+> On Mon, 2026-03-16 at 13:05 +0100, Bartosz Golaszewski wrote:
+> > Add support for the firmware-managed variant of the DesignWare MAC on
+> > the sa8255p platform. This series contains new DT bindings and driver
+> > changes required to support the MAC in the STMMAC driver.
+> >
+> > It also reorganizes the ethqos code quite a bit to make the introductio=
+n
+> > of power domains into the driver a bit easier on the eye.
+> >
+> > The DTS changes will go in separately.
+>
+> I'm seeing some weird behavior with this version. The probe part looks
+> good (but see below), but when I try to bring an interface up, it fails
+> with ETIMEDOUT. The relevant part of the stack trace leading to the
+> error is this:
+>
+> dwmac4_dma_reset+0x208/0x220 [stmmac]
+> stmmac_reset+0x2c/0x68 [stmmac]
+> stmmac_init_dma_engine+0x108/0x400 [stmmac]
+> stmmac_hw_setup+0x5c/0x538 [stmmac]
+> __stmmac_open+0xc8/0x2a0 [stmmac]
+> stmmac_open+0xcc/0x238 [stmmac]
+> __dev_open+0x138/0x2a8
+>
+> Now dwmac4_dma_reset() is very simple. It sets the soft reset bit in
+> the DMA_BUS_MODE register, then waits for the hardware to clear it, and
+> that never happens.
+>
+> Now, getting back to the probe part, there is one extra message
+> (compared to my previous successful test on v7), which I see at the
+> very end of the probing:
+>
+>   qcom-ethqos 23040000.ethernet: clk_csr value out of range (0xffffff00
+>   exceeds mask 0x00000f00), truncating
+>
+> This is a sa8775p ride board, so there are two stmmac devices. I only
+> see that message for the 2nd one, which is also the one I'm trying to
+> enable, and which fails.
+>
+> I realize this may or may not be related to your changes. But there is
+> no way to test on a SCMI-pd board without them. I'm not sure how
+> relevant it would be to test on the non-SCMI variant. I'm assuming the
+> DMA part should work the same way (regardless of SCMI-pd), so if I can
+> reproduce it there, and since I know it works on mainline Linux (that's
+> where I tested v7), I could bisect and see which commit in net-next
+> breaks it. If you don't have any better idea, let me know and I can
+> try. Meanwhile, I'll keep poking at v9.
+>
 
-The core of the issue is that Shenwei is stone walling any change
-which makes it hard to keep the legacy firmware. It is possible to use
-these structures, but it makes the extra code Shenwei needs to
-translate this protocol to the legacy protocol more difficult. It
-might need to keep state, etc. 
+Does current net-next on its own still work? Or is the second
+interface broken even without this series?
 
-Two points...
-
-The firmware implements more than GPIO. There is definitely I2C as
-well, the first version of the patch has bits of I2C code. Looking at:
-
-https://lwn.net/ml/all/20250922200413.309707-3-shenwei.wang@nxp.com/
-
-There is also RTC, and a few other things which don't directly map to
-Linux subsystems, but maybe do have Linux drivers?
-
-Give how much pushback there has been on the existing protocol for
-GPIO, it would be wise to assume that I2C, and RTC is going to get the
-same amount of pushback. If any of these three, GPIO, I2C, or RTC
-decide that only a new, clean protocol will be accepted, no legacy
-shims, the firmware has to change, breaking compatibility to legacy
-protocols, and the accepted shims become pointless Maintenance burden.
-
-Point two is that the customers who are pushing for these drivers to
-be added to Mainline probably know that nearly nothing gets into
-Mainline without some changes. There is some short term pain to
-swapping to Mainline because of these changes, in this case, firmware
-upgrades. But in the long run, it is worth the pain to be able to use
-Mainline. And those customers who don't want to upgrade the firmware
-can keep with the out of tree drives.
-
-So, what are our choices?
-
-1) We accept the code as it is now, with the shim?
-
-2) We keep pushing for the virtio protocol, with the shim?
-
-3) We keep pushing for the virtio protocol, no shim, firmware changes
-
-4) We pause GPIO where it is today, and restart all the arguments with
-   the I2C driver. We can come back to the GPIO driver in a few months
-   time once we have a better idea how I2C is going. And maybe we also
-   need to see the watchdog driver, and argue about its protocol.
-
-I also understand ST has a generic I2C driver nearly ready, if that
-gets merged first, that probably kills the NXP I2C protocol, and maybe
-the NXP GPIO and RTC protocols.
-
-My vote is for 3. If not 3, then 4.
-
-     Andrew
-
+Bart
