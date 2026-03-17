@@ -1,197 +1,311 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013025.outbound.protection.outlook.com [52.101.72.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D3C355F41
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738573; cv=fail; b=GKnR+aOq/kCsnHqZC5s6JEiIqmZNZNnZNGJP7xGGN13oXos/3mQAYp0jcqDzBTkZMgimU49VNJg7P5cIEWRtP72YxRO+6L7yJ3Wk2QVGZ75h+zMhN+kmo7a8I49lj0LsYefZRnCsH8fWTAnVBqyDGdoIgWSppcIgTMfaBiG8ghA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738573; c=relaxed/simple;
-	bh=j7j5mXxWkop+/UPmXqYIwdU2t8Md2YvK0mAP7732jGw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YY+aMLcwEAOKIJJsGVlb4tUJi0wMblEBiy8XPY+Fm0Tz6nDvuUMIdcQ7FwdWb4xqK4QIhryhP+x6WU0Wu+wsgEIhGpuub/t26KrOVZLaUVsWJeQvktRVGdJ84kNFSYIuMyzwbi/IRUZ9KlFs7mKvgn/44L/i+MwEGjiHr72QwKY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dUf97dUg; arc=fail smtp.client-ip=52.101.72.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A355634EF15;
+	Tue, 17 Mar 2026 09:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773738916; cv=none; b=f36ZJ9aj1HsqhMolci/y12iyjlXDmDQvPxe8s7kFswCIJo7HSTW/dMGE4BZWOkvXr7S+Og9ea5062Ox9tLUKgFRhgPf3dTm8TMb58sN6SH4jtEkGCycoch5spBlsiuZjfTUg2j9z3uhscVU6HlZ09B950eLruWuNo2ur18ohhV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773738916; c=relaxed/simple;
+	bh=QU6cedlzf40aFEFMHAi3oFEJtwf/R3OvK72FIzwtc/c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lx2GxE/IDBl+fpvhZauRfxkGC1U4RI41XJ7mt0ni7DBk5HwWupdCBh6qXsIO7uFNeN8G9NnP88sDs/LepIwted9MYl+JwtLwueeUl75Ql7AUHtsX5seh23kqU0kXE+VV/3akvz1T/MTZT8jkfaIT0qgNgd1Sxc3R8ou7ixgBR5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ4BnuZz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dUf97dUg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J7VXX7rvFTO8/DpFJqBaQNaymg5mRxFyS3FKPfFDJpGGN3IXkV1cKQ2UjSZGsyVrbKQzVE+qUa05AHkg+U9psaT3o18kpGZ0JYqMyuq6+f3EAMx/Gbcvo6EsrFHvCwQeD3dKlaP8hqJ+i3bCNFRc/HC3uMJVXO3xsSwP1qqSkuIPO9Xt6amsc/8l/uoxbXYkuLlC5NmiztBqzEhZRT0eqpxHz4MZAb4mKhJYzO65KEGAh+jaDilDgg8p0ZegZSsrKccDa3nUQywQb4fwOm+a2zpslFpgk2av2KAxpuw5eiVJ5tll90Rjz3KpaMlDM2/JOHFrrAUWHe1PVvYgeqGokw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j7j5mXxWkop+/UPmXqYIwdU2t8Md2YvK0mAP7732jGw=;
- b=cGgRxbn9a2Au+yXs+JSVvBUfT8Kb5iPQ3YbiBkv1xESWSSWEg7ru81+kW/2VqzFq0m1dT3aG997PRQgZvc+sKrAZk+QL13JKF5rdcrFFcYpC+CoHRbb4fCKDb70vC3xfbllKlvx/Og0urmFgc2Ft3IAgSDzky37UhGDsN/9ooYcVJS6NPoIW0w43moqstXgmw10rRMB76D7WzA+709erD7bfGgNg8ymX4EpDSRTwV+etU4cPZ51DhoJUILm0DhCpss8OsGbdGdF+YpNdp0XyP3lehEag2cFMvJEZilr2M+o24DL187WV+1VwPWJmnWC5gf2h0VoyytrnmA88nCZ7tQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j7j5mXxWkop+/UPmXqYIwdU2t8Md2YvK0mAP7732jGw=;
- b=dUf97dUgqKjkyqL3F38emwsr1UeGalVsc3U9ouK4hxSj9p/gllyo0M5IdcFuVK5rcW06k3mZzZZZmpJrB3z0wNJFjVKVph0UXUJUXd7diAVtIuaoxgYgAc8sPC+rcM+xGE1hmJvLExUjSuz0AQhAHDcZMbmLvNavrGnlbS8Rp5bmcGcmiTGWODz8EhzwnzEBbtvm+wWUTCQlYFwi/n3Fa/loRz0cPs0uWqpfPkgP9JCpA4bgZMmM/6I9VlbOAS3qTYavjY+NBFcNRn/a/kKttuW2xN7rRL1z8DObPnFPwH4uQx75OgyVnemsf5VDQmkP/seU2ZNKiJkciamFL5cx9w==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by VE1PR04MB7376.eurprd04.prod.outlook.com
- (2603:10a6:800:1a0::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Tue, 17 Mar
- 2026 09:09:25 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%5]) with mapi id 15.20.9700.021; Tue, 17 Mar 2026
- 09:09:26 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: Manivannan Sadhasivam <mani@kernel.org>
-CC: Hongxing Zhu <hongxing.zhu@nxp.com>, "l.stach@pengutronix.de"
-	<l.stach@pengutronix.de>, Frank Li <frank.li@nxp.com>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH V8 05/13] PCI: imx6: Add support for parsing the reset
- property in new Root Port binding
-Thread-Topic: [PATCH V8 05/13] PCI: imx6: Add support for parsing the reset
- property in new Root Port binding
-Thread-Index: AQHcso5AqTXRrltoYUyTA5LfBPcrrbWwsFgAgAHF0yA=
-Date: Tue, 17 Mar 2026 09:09:26 +0000
-Message-ID:
- <VI0PR04MB121148F11CDB5EB4ED89ACA949241A@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References: <20260313020823.1592389-1-sherry.sun@nxp.com>
- <20260313020823.1592389-6-sherry.sun@nxp.com>
- <tot7suhdkydo5er4zjcxkdvfalii7k72kqyw54o5frtoklkxif@l6x6ipaezlmq>
-In-Reply-To: <tot7suhdkydo5er4zjcxkdvfalii7k72kqyw54o5frtoklkxif@l6x6ipaezlmq>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|VE1PR04MB7376:EE_
-x-ms-office365-filtering-correlation-id: 40ccfe31-3814-40a0-27a8-08de8404e348
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|376014|1800799024|7416014|366016|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- oarCebov10ux+3Pr4tLXODpp+AJCmDj8XCpATuxDon2IVUjXDkYMyg4PI6U9ye/6qvEcZr90QUTqc7poHAuK8G90uAxtjR8MY2EdRbKgv32Z7KBiHpFO+EowIwBtnBf5spD4ApT4oULq7DSYRNa5f0sik+N9Lo3ED9L0KcWhMTYQgjzGraNzrRZ/aOX839ApuzpOp+WT+hxX41/TrkfIGGAY55dTDHrsKTjgQDJp8RYTpy0DYuBCkiz1/vnfRiQztBSLVUZeF18qszZdsWts27L+QZVJvxtaYLmMXqaXdlJCqP2uSQ/XHursE+FoxNSaZqjE8gw/DCKF0gLU27PjJKSaumU9j/gWgTS+rJqXDIAxNAiz0F4vIAxbJ872eCU6di9ZtBu3SdcgTHQ5ZeNh/MvxEcPOOTLkj/xhuiOsmBeF5RfwZft+Gr+PD2KLW38XvjTH+gwtlGn52q56UtQ2x9zweeYchh/zjCA4E9naMjfqChp0NhhMXaxxndP/gIinQMdqYPnHwXfhNvW1VH8ubwlosokL4wsjzyzemlUOXLMxZ6PsNbYddrOcvwCEzRRK78lUlERA+fXOsferQQMfzfKG4YwfABoSrPn6ueeEKhXeNqUbIgEPEvyA49Upnf77einjRfJqLNi8Mf7StATIrUAJGTSexwbx9/ADXImuoL5Xn7YXHp3KvzkxEpQp/wcwrDWCH3M4wSsJWldfLbdFpcLESLcev/uh2ys2sVdTJNnQiuWhslhX5T6mPb6+F5QUM+n10z6j+7RI3tAfGZmtUZLwow3jYlduUo9K0aKvbRs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(7416014)(366016)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YU5iZWZFZU5OV3RyWGpNSHY0a2ZnQWdUeU5qa1pleEdMVE96RnZEV2Y1U0I2?=
- =?utf-8?B?U2FETzFydXRkZDlyZFY3aUxINmJCWEtNRXMzcVRTWHVuM2lScjZaa091d1ZS?=
- =?utf-8?B?TVM3dzM1eXZKUnUyQ2NSdW1lQ01VU1JLenJlSzRjM1E2TkQ4TUZseVlCOUY1?=
- =?utf-8?B?SzN2NW1sbE8yMk5TWTBlbkcrdk5jRWpDazFxTHc5YlJrNERZOFJXTGdtQ2xy?=
- =?utf-8?B?UEtkTFgxVzlZNDhFWHZaT2xrTXdCbWEzMzQzR0VzZXU5RzNkQVRJd3F1L3l3?=
- =?utf-8?B?TWxPTWlyWkkwSlFXRjIxMVB2K2V6UFlWQTRTVHMzMzZ5MGZWUFFIK0dLakJa?=
- =?utf-8?B?Q2szTnk1QTR1UDZZRWIzNnhUenQ0Nmx3N0tqM3dEZUFBeHh1R3g4aWUwazBr?=
- =?utf-8?B?MFJMY1lUUjN3a2V3WFB5YnQvT0M0ckdYRnd6SnZKcURSZk1LNVNpOWpNeVF5?=
- =?utf-8?B?U0pGVnpXMElwRmxQREZHZ1RybnJkMHZtemlLSk1EaFVCRHRyek1ROHhac3pK?=
- =?utf-8?B?OU52WUoyL2dEWHhOb09OaXNMc05DaVlZL1ozT0loejhkeEx1dUlSVHRhTUlP?=
- =?utf-8?B?WXRKNmdwcWxlcFh4ZjJ4RU9GcVpCN0F3Vm0vRTVBTlliVWtzN3BuS3NETGZq?=
- =?utf-8?B?TCt2b0M5VUFoRnZKeWx4ZlAvNnErNzFYT0hBT3htaCtOcEFPMXU5Sy9Deldk?=
- =?utf-8?B?eTRCSkR1L0xCWStlR0ZZSGZoeENPUlFxSmVJYW41djJPTzZsRWFUVDEybk5r?=
- =?utf-8?B?dzE3OEJGSHpEbm9KYWhJOERQQ2dhL25wa3M4ZE5WWUMzVnFGZzVPNjREZU5p?=
- =?utf-8?B?SDZvcCtTOTl6MnRFc1ZPUXNGUVJuUW5DWGZFcUgwYTZneHZ4ZmI1aERRZUt1?=
- =?utf-8?B?dG9zaW52dG00aUpZRkJCc3JXSStkMDVaaHdFTzF0MjZYS2orSWJlQVhpamNp?=
- =?utf-8?B?c0RsekRQcVhaRUYyNTh0MGcwM2tuRG1BL1FpcFZCMnlVaWwwV3NhK1lSMVVP?=
- =?utf-8?B?NElPWllOeTJYSVJWVHR0RnJCTUFqWThnVUhYaE45cTNFT29CbW9tb3YrUG5l?=
- =?utf-8?B?K3UvMDJ4SFZXVjBhbXVZdHVOemtIdFprRi85VXNaVkwwMVdNcU54QmZnSE5U?=
- =?utf-8?B?OFNUTjFqTitVeGlmNndBTnd5SzNnUWZsSjNVQTBWblVsU3NLZklYUnEyR1ZW?=
- =?utf-8?B?WS9YaVBPMU5MSzJ4RmdOd1NLZnlKcGNWNmR0bUE1MklCRStuTkgyQVpGMmN4?=
- =?utf-8?B?UEtLV3dKZ3g4Myt5SDNDSktnRVoxWHJWWlZJalZVNXN3TmRrLzkyaE94QjhZ?=
- =?utf-8?B?UmIxWjYrMjFhck9rRlA5ZzZtRDkveUM4SGxEUmdZOGpwSGFIQnp1d2FxR1k5?=
- =?utf-8?B?d2RmMXNnM0RwYW9WMDFHMVpoU1Yrb29ZU0l5d3hvVndWTzd6QXBSQTRqcmZa?=
- =?utf-8?B?dmhWbDdZYzRBZzRKZTZ0d211RGhlTlhyV2tMdEFPb2dPeHJxaWhLdTZCaGRE?=
- =?utf-8?B?MlIyV3J5TEsxVWdkV0lmRmI4V1VySzBsWlRlY0wyNEkxV0dQakJsRW9ESGFa?=
- =?utf-8?B?bTNUQm1CbU5nUXZlTDl3ekEwL1RYdi90TW1vOFMvM2wrUkc4aWt5cWMweDBG?=
- =?utf-8?B?eXdtTnNIaXpMbWhzN2R2OFYyQ1RENFFZaXNNQllMRWNleFd2R3ZLeE1OVERF?=
- =?utf-8?B?NGcwODR1Y0puTmFzQlFBS3NPQ2NyUk5qcmhXY3EyZDdkbzloSXdSZkJvazJW?=
- =?utf-8?B?RDEzRDRBUWZXQVMzcHYwalNuNjROU3ZxWTllcjFDQnRad1hXVnFTeEZMcFNM?=
- =?utf-8?B?VHJzZUxXQ1RVWHNnekVkZkFFRG8vOUNFeFRma2k4eUFIOXJVdEdwSmo5TkFF?=
- =?utf-8?B?OVZqaC8zMWFKb1E3MitCekR6eHovcjhiL3RQWDZHQnVXMHUxTnpHQUc2VVlj?=
- =?utf-8?B?dytXbXJiWXJoUGZaNjBmVmJ2dW5iaGxZT2JSMVgzamthS1VBWVlKYXI0VC9T?=
- =?utf-8?B?VjZGd3F2d21KTFJWcUx2MmkzZjlhQ0J4b0ZvMGpBR2FsRVV6UWhFVktsN1Nm?=
- =?utf-8?B?SzBIMUNqdm1DTTdSVWVEenZuRjNtWnYrRmZQTTExcVhBc0EwamYyYTRJYXMy?=
- =?utf-8?B?djdtOHlxQWJ0UTBOMWNWamI5TTRTZXpicVh5cExvSDdPVlBQV3o0U1ZXa0ND?=
- =?utf-8?B?NkJiWlhHdFVKREpFMzE3dFZlRzJCYVdIQ0Q0am9rbjR0MDNHb0doYmp3Ylpi?=
- =?utf-8?B?eDBXaVJNL0lNUkFTcVFabkYyUWxnUlg5eG51Nll2QlBGL2FJOEZrQkN4Nm5C?=
- =?utf-8?Q?mxG+s8ufQnGPGP++ld?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQ4BnuZz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19933C19425;
+	Tue, 17 Mar 2026 09:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773738916;
+	bh=QU6cedlzf40aFEFMHAi3oFEJtwf/R3OvK72FIzwtc/c=;
+	h=From:Subject:Date:To:Cc:From;
+	b=VQ4BnuZzjGlyHuYCbl/mEKd7zh11jNZHM6YOmeZHshjwK7wAidut5bW59fUtAEXsF
+	 LPrDV/0BkMPGm+OJixWV70wz76CjI7ChsKDFhgNC2W34z47FQe0lHP3u0iv7QCx6TM
+	 h+pw5pDiAHiX9uP7B2DDiXpzrT6KYsbPR7UCv0w1HuTX65DzWGjkfmOONp++HBzeoI
+	 W35XeW99LW6pqjsde/3KUhI6qN9+5JT/76M2rqzs0qozQfuchLSotd/EnU+b43RHXh
+	 QYMfZORHioe+ZjSW10OOkakkBEnXg9s7kH9nnBEvUCCjLwnJvrcNHqItv+HuXbE3Da
+	 wb4xOWrkkkXlg==
+From: "Vincent Mailhol (Arm)" <mailhol@kernel.org>
+Subject: [PATCH 0/9] configs: cleanup obsolete or incorrect assignments
+Date: Tue, 17 Mar 2026 10:13:36 +0100
+Message-Id: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40ccfe31-3814-40a0-27a8-08de8404e348
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 09:09:26.0473
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7IQ6H8DAFJypHtEfAJfORgGcDOj5/Ac0Lh1s5WgVZDGfFy0Nti1Uj7rzD7u8M1ndFguMY4THug36UfWZes7ZLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7376
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEAbuWkC/x3MTQqAIBBA4avErBPUor+rRIjpWANloRSBdPek5
+ bd4L0HEQBhhKBIEvCnS4TNEWYBZtV+Qkc0GyWXDKyGZDruy6MzhnTIban+dzFjRunrWfddbyOU
+ Z0NHzX8fpfT8esQDDZQAAAA==
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Mikko Rapeli <mikko.rapeli@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Mark Brown <broonie@kernel.org>, Eric Biggers <ebiggers@kernel.org>, 
+ Ard Biesheuvel <ardb@kernel.org>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
+ "Rob Herring (Arm)" <robh@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Alexandre Gonzalo <alexandre.gonzalo@arm.com>, 
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-omap@vger.kernel.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linux-sh@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-renesas-soc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+ openbmc@lists.ozlabs.org, "Vincent Mailhol (Arm)" <mailhol@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8431; i=mailhol@kernel.org;
+ h=from:subject:message-id; bh=QU6cedlzf40aFEFMHAi3oFEJtwf/R3OvK72FIzwtc/c=;
+ b=owGbwMvMwCV2McXO4Xp97WbG02pJDJk7pVvaF++b0PNYl09G4rhpZ5/F95IzPF8ENlalen5lX
+ tdxvoyno5SFQYyLQVZMkWVZOSe3Qkehd9ihv5Ywc1iZQIYwcHEKwEQOCDMyvJL+9Nvo+385B4nm
+ Cy6lJuYqus3+jtGCa5OqhZc35J5iZGToaOwWd/8w895elfePn0w9IhU3K2dRZcenlrOWTzyUps3
+ jAQA=
+X-Developer-Key: i=mailhol@kernel.org; a=openpgp;
+ fpr=ED8F700574E67F20E574E8E2AB5FEB886DBB99C2
 
-PiBPbiBGcmksIE1hciAxMywgMjAyNiBhdCAxMDowODoxNUFNICswODAwLCBTaGVycnkgU3VuIHdy
-b3RlOg0KPiA+IFRoZSBjdXJyZW50IERUIGJpbmRpbmcgZm9yIHBjaS1pbXg2IHNwZWNpZmllcyB0
-aGUgJ3Jlc2V0LWdwaW9zJw0KPiA+IHByb3BlcnR5IGluIHRoZSBob3N0IGJyaWRnZSBub2RlLiBI
-b3dldmVyLCB0aGUgUEVSU1QjIHNpZ25hbCBsb2dpY2FsbHkNCj4gPiBiZWxvbmdzIHRvIGluZGl2
-aWR1YWwgUm9vdCBQb3J0cyByYXRoZXIgdGhhbiB0aGUgaG9zdCBicmlkZ2UgaXRzZWxmLg0KPiA+
-IFRoaXMgYmVjb21lcyBpbXBvcnRhbnQgd2hlbiBzdXBwb3J0aW5nIFBDSWUgS2V5RSBjb25uZWN0
-b3IgYW5kIFBDSQ0KPiA+IHBvd2VyIGNvbnRyb2wgZnJhbWV3b3JrIGZvciBwY2ktaW14NiBkcml2
-ZXIsIHdoaWNoIHJlcXVpcmVzIHByb3BlcnRpZXMNCj4gPiB0byBiZSBzcGVjaWZpZWQgaW4gUm9v
-dCBQb3J0IG5vZGVzLg0KPiA+DQo+ID4gV2l0aCB0aGUgY29tbW9uIFJvb3QgUG9ydCBwYXJzaW5n
-IG5vdyBoYW5kbGVkIGluIGR3X3BjaWVfaG9zdF9pbml0KCksDQo+ID4gdXBkYXRlIHRoZSByZXNl
-dCBHUElPIGhhbmRsaW5nIHRvIHVzZSB0aGUgcGFyc2VkIHBvcnQgbGlzdCBmcm9tDQo+ID4gYnJp
-ZGdlLT5wb3J0cy4gVG8gbWFpbnRhaW4gRFQgYmFja3dhcmRzIGNvbXBhdGliaWxpdHksIGZhbGxi
-YWNrIHRvIHRoZQ0KPiA+IGxlZ2FjeSBtZXRob2Qgb2YgcGFyc2luZyB0aGUgaG9zdCBicmlkZ2Ug
-bm9kZSBpZiB0aGUgcmVzZXQgcHJvcGVydHkgaXMNCj4gPiBub3QgcHJlc2VudCBpbiB0aGUgUm9v
-dCBQb3J0IG5vZGUgKGluZGljYXRlZCBieSBhbiBlbXB0eSBwb3J0cyBsaXN0KS4NCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IFNoZXJyeSBTdW4gPHNoZXJyeS5zdW5AbnhwLmNvbT4NCj4gPiAtLS0N
-Cj4gPiAgZHJpdmVycy9wY2kvY29udHJvbGxlci9kd2MvcGNpLWlteDYuYyB8IDc0DQo+ID4gKysr
-KysrKysrKysrKysrKysrKysrLS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1OSBpbnNlcnRp
-b25zKCspLCAxNSBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Bj
-aS9jb250cm9sbGVyL2R3Yy9wY2ktaW14Ni5jDQo+ID4gYi9kcml2ZXJzL3BjaS9jb250cm9sbGVy
-L2R3Yy9wY2ktaW14Ni5jDQo+ID4gaW5kZXggODNiZWNhNWExZmMyLi5jYjE4ZTE1Nzk3ODggMTAw
-NjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9wY2kvY29udHJvbGxlci9kd2MvcGNpLWlteDYuYw0KPiA+
-ICsrKyBiL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdjL3BjaS1pbXg2LmMNCj4gPiBAQCAtMzQs
-NiArMzQsNyBAQA0KPiA+ICAjaW5jbHVkZSA8bGludXgvcG1fcnVudGltZS5oPg0KPiA+DQo+ID4g
-ICNpbmNsdWRlICIuLi8uLi9wY2kuaCINCj4gPiArI2luY2x1ZGUgIi4uL3BjaS1ob3N0LWNvbW1v
-bi5oIg0KPiA+ICAjaW5jbHVkZSAicGNpZS1kZXNpZ253YXJlLmgiDQo+ID4NCj4gPiAgI2RlZmlu
-ZSBJTVg4TVFfR1BSX1BDSUVfUkVGX1VTRV9QQUQJCUJJVCg5KQ0KPiA+IEBAIC0xNTAsNyArMTUx
-LDYgQEAgc3RydWN0IGlteF9sdXRfZGF0YSB7DQo+ID4NCj4gPiAgc3RydWN0IGlteF9wY2llIHsN
-Cj4gPiAgCXN0cnVjdCBkd19wY2llCQkqcGNpOw0KPiA+IC0Jc3RydWN0IGdwaW9fZGVzYwkqcmVz
-ZXRfZ3Bpb2Q7DQo+ID4gIAlzdHJ1Y3QgY2xrX2J1bGtfZGF0YQkqY2xrczsNCj4gPiAgCWludAkJ
-CW51bV9jbGtzOw0KPiA+ICAJYm9vbAkJCXN1cHBvcnRzX2Nsa3JlcTsNCj4gPiBAQCAtMTIyMiw2
-ICsxMjIyLDQ0IEBAIHN0YXRpYyB2b2lkIGlteF9wY2llX2Rpc2FibGVfZGV2aWNlKHN0cnVjdA0K
-PiBwY2lfaG9zdF9icmlkZ2UgKmJyaWRnZSwNCj4gPiAgCWlteF9wY2llX3JlbW92ZV9sdXQoaW14
-X3BjaWUsIHBjaV9kZXZfaWQocGRldikpOyAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgaW14X3Bj
-aWVfcGFyc2VfbGVnYWN5X2JpbmRpbmcoc3RydWN0IGlteF9wY2llICpwY2llKSB7DQo+ID4gKwlz
-dHJ1Y3QgZGV2aWNlICpkZXYgPSBwY2llLT5wY2ktPmRldjsNCj4gPiArCXN0cnVjdCBwY2lfaG9z
-dF9icmlkZ2UgKmJyaWRnZSA9IHBjaWUtPnBjaS0+cHAuYnJpZGdlOw0KPiA+ICsJc3RydWN0IHBj
-aV9ob3N0X3BvcnQgKnBvcnQ7DQo+ID4gKwlzdHJ1Y3QgZ3Bpb19kZXNjICpyZXNldDsNCj4gPiAr
-DQo+ID4gKwlpZiAoIWJyaWRnZSkgew0KPiA+ICsJCWRldl9lcnIoZGV2LCAiQnJpZGdlIG5vdCBh
-bGxvY2F0ZWQgeWV0XG4iKTsNCj4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiArCX0NCj4gPiAr
-DQo+ID4gKwkvKg0KPiA+ICsJICogRm9yIERUIGJhY2t3YXJkIGNvbXBhdGliaWxpdHk6IGlmIG5v
-IFJvb3QgUG9ydCBub2RlcyB3ZXJlIHBhcnNlZA0KPiA+ICsJICogKGluZGljYXRlZCBieSBlbXB0
-eSBwb3J0cyBsaXN0KSwgcGFyc2UgcmVzZXQtZ3Bpb3MgZnJvbSB0aGUgaG9zdA0KPiA+ICsJICog
-YnJpZGdlIG5vZGUuDQo+ID4gKwkgKi8NCj4gPiArCWlmICghbGlzdF9lbXB0eSgmYnJpZGdlLT5w
-b3J0cykpDQo+IA0KPiBZb3Ugc2hvdWxkIG1vdmUgdGhpcyBjaGVjayBhbmQgdGhlIGNvbW1lbnQg
-dG8gaW14X3BjaWVfaG9zdF9pbml0KCkgYW5kIGNhbGwNCj4gaW14X3BjaWVfcGFyc2VfbGVnYWN5
-X2JpbmRpbmcoKSBjb25kaXRpb25hbGx5IHRvIG1ha2UgaXQgY2xlYXIgdGhhdCB0aGlzIGlzIGEN
-Cj4gZmFsbGJhY2suDQo+IA0KDQpPaywgdGhhbmtzIGZvciB0aGUgc3VnZ2VzdGlvbiwgd2lsbCBk
-byB0aGlzIGluIFY5Lg0KDQpCZXN0IFJlZ2FyZHMNClNoZXJyeQ0KDQo+IC0gTWFuaQ0KPiANCj4g
-LS0NCj4g4K6u4K6j4K6/4K614K6j4K+N4K6j4K6p4K+NIOCumuCupOCuvuCumuCuv+CuteCuruCv
-jQ0K
+The arm64 defconfig contains several inconsistencies, as shown by the
+following merge_config warnings:
+
+  $ ARCH=arm64 ./scripts/kconfig/merge_config.sh arch/arm64/configs/defconfig
+  Using arch/arm64/configs/defconfig as base
+  #
+  # configuration written to .config
+  #
+  WARNING: Value requested for CONFIG_NETFILTER_XT_TARGET_CHECKSUM not in final .config
+  Requested value: CONFIG_NETFILTER_XT_TARGET_CHECKSUM=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP_NF_FILTER not in final .config
+  Requested value: CONFIG_IP_NF_FILTER=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP_NF_TARGET_REJECT not in final .config
+  Requested value: CONFIG_IP_NF_TARGET_REJECT=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP_NF_NAT not in final .config
+  Requested value: CONFIG_IP_NF_NAT=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP_NF_TARGET_MASQUERADE not in final .config
+  Requested value: CONFIG_IP_NF_TARGET_MASQUERADE=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP_NF_MANGLE not in final .config
+  Requested value: CONFIG_IP_NF_MANGLE=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP6_NF_FILTER not in final .config
+  Requested value: CONFIG_IP6_NF_FILTER=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP6_NF_TARGET_REJECT not in final .config
+  Requested value: CONFIG_IP6_NF_TARGET_REJECT=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP6_NF_MANGLE not in final .config
+  Requested value: CONFIG_IP6_NF_MANGLE=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP6_NF_NAT not in final .config
+  Requested value: CONFIG_IP6_NF_NAT=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IP6_NF_TARGET_MASQUERADE not in final .config
+  Requested value: CONFIG_IP6_NF_TARGET_MASQUERADE=m
+  Actual value:
+  WARNING: Value requested for CONFIG_SENSORS_SA67MCU not in final .config
+  Requested value: CONFIG_SENSORS_SA67MCU=m
+  Actual value:
+  WARNING: Value requested for CONFIG_FB_MODE_HELPERS not in final .config
+  Requested value: CONFIG_FB_MODE_HELPERS=y
+  Actual value:
+  WARNING: Value requested for CONFIG_SND_SOC_ROCKCHIP not in final .config
+  Requested value: CONFIG_SND_SOC_ROCKCHIP=m
+  Actual value:
+  WARNING: Value requested for CONFIG_IPQ_APSS_5018 not in final .config
+  Requested value: CONFIG_IPQ_APSS_5018=y
+  Actual value:
+  WARNING: Value requested for CONFIG_SLIM_QCOM_CTRL not in final .config
+  Requested value: CONFIG_SLIM_QCOM_CTRL=m
+  Actual value:
+  WARNING: Value requested for CONFIG_NFS_V4_1 not in final .config
+  Requested value: CONFIG_NFS_V4_1=y
+  Actual value:
+  WARNING: CONFIG_CRYPTO_SHA3 differs:
+  Requested value: CONFIG_CRYPTO_SHA3=m
+  Actual value:    CONFIG_CRYPTO_SHA3=y
+  ./scripts/kconfig/merge_config.sh: 384: [: false: unexpected operator
+
+The issues fall into several categories:
+
+  - assignments to removed or renamed configuration symbols.
+
+  - assignments to symbols that became hidden or internal.
+
+  - assignments that are requested as module (=m) but which have a
+    built-in parent dependency (=y).
+
+This series cleans up all those issues. While the focus is the arm64
+defconfig, fixes that apply more broadly are extended treewide.
+
+After applying this series, merge_config.sh runs without warnings on
+the arm64 defconfig. Below script was used to confirm that no symbols
+got inadvertently removed:
+
+  #!/bin/sh
+
+  DIR=$(mktemp -d)
+
+  # Generate conf before this series
+  git checkout $(git merge-base HEAD @{upstream})
+  for arch in arch/*/; do
+      for conf in "$arch"configs/*defconfig; do
+        ARCH=$(basename $arch) \
+        KCONFIG_CONFIG="$DIR/$(basename $arch)_$(basename $conf)_before" \
+            ./scripts/kconfig/merge_config.sh $conf
+      done
+  done
+
+  # Generate conf after this series
+  git checkout -
+  for arch in arch/*/; do
+      for conf in "$arch"configs/*defconfig; do
+        ARCH=$(basename $arch) \
+        KCONFIG_CONFIG="$DIR/$(basename $arch)_$(basename $conf)_after" \
+            ./scripts/kconfig/merge_config.sh $conf
+      done
+  done
+
+  # Compare
+  for arch in arch/*/; do
+      for conf in "$arch"configs/*defconfig; do
+        if diff --unified \
+                "$DIR/$(basename $arch)_$(basename $conf)_before" \
+                "$DIR/$(basename $arch)_$(basename $conf)_after"; then
+            echo "$conf: OK"
+        else
+            echo "$conf: configuration changed"
+        fi
+      done
+  done
+
+Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
+---
+Vincent Mailhol (Arm) (9):
+      scripts: kconfig: merge_config.sh: use POSIX '=' in test
+      configs: remove orphan dependencies of NETFILTER_XTABLES_LEGACY
+      configs: remove obsolete assignments to CONFIG_NFS_V4_1
+      configs: remove implicit assignments to FB_MODE_HELPERS
+      arm: configs: remove obsolete assignments to SND_SOC_ROCKCHIP
+      arm64: defconfig: remove implicit assignment to CRYPTO_SHA3
+      arm64: defconfig: remove incorrect assignment to IPQ_APSS_5018
+      arm64: defconfig: remove obsolete assignment to SENSORS_SA67MCU
+      arm64: defconfig: remove obsolete assignment to SLIM_QCOM_CTRL
+
+ arch/alpha/configs/defconfig                |  1 -
+ arch/arm/configs/am200epdkit_defconfig      |  1 -
+ arch/arm/configs/collie_defconfig           |  1 -
+ arch/arm/configs/ep93xx_defconfig           |  1 -
+ arch/arm/configs/exynos_defconfig           |  1 -
+ arch/arm/configs/imx_v6_v7_defconfig        |  2 --
+ arch/arm/configs/ixp4xx_defconfig           |  3 ---
+ arch/arm/configs/keystone_defconfig         |  3 ---
+ arch/arm/configs/lpc18xx_defconfig          |  1 -
+ arch/arm/configs/lpc32xx_defconfig          |  2 --
+ arch/arm/configs/mps2_defconfig             |  1 -
+ arch/arm/configs/multi_v7_defconfig         |  2 --
+ arch/arm/configs/mxs_defconfig              |  1 -
+ arch/arm/configs/omap1_defconfig            |  1 -
+ arch/arm/configs/omap2plus_defconfig        |  1 -
+ arch/arm/configs/shmobile_defconfig         |  1 -
+ arch/arm/configs/spitz_defconfig            |  4 ----
+ arch/arm/configs/wpcm450_defconfig          |  1 -
+ arch/arm64/configs/defconfig                | 18 ------------------
+ arch/loongarch/configs/loongson32_defconfig |  1 -
+ arch/loongarch/configs/loongson64_defconfig |  1 -
+ arch/mips/configs/bmips_stb_defconfig       |  2 --
+ arch/mips/configs/cavium_octeon_defconfig   |  1 -
+ arch/mips/configs/db1xxx_defconfig          |  1 -
+ arch/mips/configs/eyeq5_defconfig           |  1 -
+ arch/mips/configs/eyeq6_defconfig           |  1 -
+ arch/mips/configs/fuloong2e_defconfig       |  3 ---
+ arch/mips/configs/generic_defconfig         |  1 -
+ arch/mips/configs/gpr_defconfig             |  3 ---
+ arch/mips/configs/ip22_defconfig            |  6 ------
+ arch/mips/configs/lemote2f_defconfig        |  1 -
+ arch/mips/configs/loongson2k_defconfig      |  3 ---
+ arch/mips/configs/loongson3_defconfig       | 11 -----------
+ arch/mips/configs/malta_defconfig           |  6 ------
+ arch/mips/configs/malta_kvm_defconfig       |  6 ------
+ arch/mips/configs/maltaup_xpa_defconfig     |  6 ------
+ arch/mips/configs/mtx1_defconfig            |  6 ------
+ arch/mips/configs/rb532_defconfig           |  3 ---
+ arch/mips/configs/rm200_defconfig           |  6 ------
+ arch/mips/configs/rt305x_defconfig          |  3 ---
+ arch/mips/configs/xway_defconfig            |  3 ---
+ arch/parisc/configs/generic-64bit_defconfig |  1 -
+ arch/powerpc/configs/85xx/stx_gp3_defconfig |  1 -
+ arch/powerpc/configs/cell_defconfig         |  3 ---
+ arch/powerpc/configs/linkstation_defconfig  |  3 ---
+ arch/powerpc/configs/mvme5100_defconfig     |  3 ---
+ arch/powerpc/configs/pmac32_defconfig       |  3 ---
+ arch/powerpc/configs/ppc6xx_defconfig       |  6 ------
+ arch/riscv/configs/defconfig                |  9 ---------
+ arch/sh/configs/titan_defconfig             |  6 ------
+ arch/x86/configs/i386_defconfig             |  7 -------
+ arch/x86/configs/x86_64_defconfig           |  7 -------
+ arch/xtensa/configs/virt_defconfig          |  1 -
+ scripts/kconfig/merge_config.sh             |  2 +-
+ 54 files changed, 1 insertion(+), 172 deletions(-)
+---
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+change-id: 20260312-arm_defconf_cleanup-cd17f4ba989d
+
+Best regards,
+-- 
+Vincent Mailhol (Arm) <mailhol@kernel.org>
+
