@@ -1,67 +1,33 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD7D2FB97B
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 16:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABCD246BC6;
+	Tue, 17 Mar 2026 16:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773764250; cv=none; b=MpP0YjKPcwSED4g7lODK9gC6pZiYtZk1BXQ28j8As2Gc2VSRgnO/R/6R7TH/POZvMRcr03vrkAntV6FlZJKGFkgbeq3vSm55Igjtk3S0tMxL/E7xq6WD8stJvfKt0BFaJVsdywcwWgLzIGGs81TMvmVQ72PJ3/t3Y2TEf7NKnBQ=
+	t=1773764459; cv=none; b=qX9kp40zmpemQqZW2PyQaT96F5T0eRXHgntyDLP9LY8n/kSMsdJuZ1VS7qyCjwqGjwYk6GUmr5bRTpPz6Czi6CTkNN+HcmH8lnFtv0w9fedg5VZHWcyLze8huwbYDMnHw8N1fXSmiG9o2Zg4GsmM3CdFMNiUeasJznRSb8z27Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773764250; c=relaxed/simple;
-	bh=nCvD6fcxeEXltoWuRIPe93LC0JA/CjYCn5ns11eB1AE=;
+	s=arc-20240116; t=1773764459; c=relaxed/simple;
+	bh=e0BPQ1p0UdfRCxCsTaN9DCxBuEgVgdYt0iMgNM1/M1A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RNqFbwkIIPp5fdC9shUaBp5H/5DQaqncnjoFMs13ewOl1yEpGjiXqz6N8PJbaVomy/mVqjralyT/EfNYoL8uLBOX7wmz/92SB+Edhr8Ia9+c//5rvBJiS+EVE/eF5ytf8Rc2V0ydHFdKEdZRr+yyICOcvVrzr5LzWjHT3VffS0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJOed03F; arc=none smtp.client-ip=74.125.82.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=lM6F9T6KjNSF8AEUBkVzYqrsemHZ1PxYuN2/jTdip5ent0NDgyWaIq37SNaIiHpdSf7APqytHVunhINr8GonVg6fIfGTEqHaOKSmWGBrBxwBi252MrMPTyj+ib7o3ZIikPeiFVCwlHFHDkyH543ZgYUl9IFMJ+KNd4sDfRgRS2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWwY5lgx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJOed03F"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1273349c56bso8953706c88.0
-        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773764245; x=1774369045; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=URvoLxPA0BeSlPTpYdBZgg88Tz7V0XCja4l2VDYBveU=;
-        b=IJOed03FH+IJTtpDWNCm+t6HfYqe3KUFPSY+3bAE6EYRxtm0Q8gPBGLWAMYSI+VQFb
-         vrqs02w0ETJmEf3QuTxjJRzm+UT5QJBi4bQGy7ldCLUcRGoqbKRcCPpLxVoX49nSfpQl
-         qhs0D8Fk4qSjUljWXwxuymzjUCAGDtWedmauZ6hrjhP/sVGms3HW+vkDRB7TIwII3Nis
-         cZ1slnOOs6EiF/eNhkU/JV77cJ++98kUZssSIheRWPHxduPg/aEbEK+52326e8rHd1Uw
-         bE7wi90+yMVO/zsU66KvN73P34is+Pt2m35MRKI8oSwAiCFmpUYFG1824w8G3131G6/y
-         sKKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773764245; x=1774369045;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=URvoLxPA0BeSlPTpYdBZgg88Tz7V0XCja4l2VDYBveU=;
-        b=WMTmdIYfe33lKUdxXM5dBNjziC1lDPvowJ9NyRUMf8YJAYrjqRZKiplw3aDe/Dh3Eh
-         Fm/VwaAh5q7YyGKW6SV4CZewQenBtrIOxrGqKE1FGjLEvCGGiWuP2bIzjuWVfBtIPKPb
-         jNxcMX7Kpcvb2CaIeuh9s89L/2rNg0/dX0UdEAuH5+igXeqX3eW3rQLkJbYPWWAkR2J2
-         bim1faqQKHns3jiuNJv9gxki7gV5OI3OK8+CgOoKo/pQlW4SdW1jxPGfo77QDCQ5pDGg
-         3iGsOtHnstCjpQLycmEa7kzHQWXqTbfTE5s6zHPIIsdw+M4FHE/MWQvK+2SAWvV9Q0zr
-         JUfg==
-X-Forwarded-Encrypted: i=1; AJvYcCW35NOQzJAyLJ0TP9xEC9lDBJ2YPKDZB1oGGP27IAwJYSN/Xlbgyr+47uBAdlv9zkwklB0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YznidKvhBwBjHMOofVLte2939nX3+9fevZxjsHn7caF9OLQKwzd
-	4oPj1xkA5InKaUM2xMshfyLWWiY3tZhsohBtq1RF+DNx4Y86JckvVSY0
-X-Gm-Gg: ATEYQzzAOAtUckdwRonGhyFvGFKL41JUlkge0dBtwJYPmrjbx65H1Ff+wROgf4EDTQd
-	y3023ksHAZctbYm+PJ3xCl9yNuUTYcKkDstBXVhg2R4J9Y6AzwQGDhTSBHJkY9lHt/3Hl0YEIGa
-	sGkP57hbYm14OZEZL7x4qaqy/taYopqnK9H1dEkILh+GlhfW+HxD6FNc5zyqwjAmEE52zyXZmvQ
-	z8vFdyveuwYCW+TKf5HcfWWfJHguwP+exRyCFbKQfsrNIqtaFUPQSg6zu6As9gSpjJFWJdc4ao9
-	OtFH5FuDCds/8AW20+i6S7JXUFGicDZnWYY5IGOBrfzx+jS7RXFyfBpBzDwsEdeMrdFc3GPJTBA
-	L6GwguCZVNUd+0hc/p6lK9lKLQcL19pDJ5xDQLHT0SJA0LEjW2OoOtqIkWOfA1EU5hw4nL8cRY1
-	Q8sZtwSX4jQxPAlFlPYsjDg0cKp3WhcgZz8BD8fI8/6PeAdUiyx9YMU8vX+xqBykH3LpgxTF7r
-X-Received: by 2002:a05:7301:4b03:b0:2bd:fe5a:b861 with SMTP id 5a478bee46e88-2c0e4efb874mr14500eec.0.1773764245469;
-        Tue, 17 Mar 2026 09:17:25 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab526db0sm24622438eec.20.2026.03.17.09.17.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 09:17:23 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <a3ec42e5-d151-4d54-9625-fffeb0399431@roeck-us.net>
-Date: Tue, 17 Mar 2026 09:17:21 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWwY5lgx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775A7C4CEF7;
+	Tue, 17 Mar 2026 16:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773764458;
+	bh=e0BPQ1p0UdfRCxCsTaN9DCxBuEgVgdYt0iMgNM1/M1A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWwY5lgxEUOSMGbdv+aQWxJp08HLMO7z3TQgBQ1a0RAkOkA+HhoC66RreUnEdoqVv
+	 f/Cj0g3xYmLRHrgQZGCWbPRlyy12meMkzl61LsRz54Zu073r6Ct7QpcsIhxHEwwEYd
+	 tpszZOw4aqVoCCSO8A1hDIi7Cx2lQ1cniaOFqORXExZjrvwcId9xfPi9od081znGp0
+	 j3AlD3Vxh84yMQGKBBsYSIgnfRb2FPxk0OmYjc2c+6MctKviHVjF5wfUby36SiQxnP
+	 zVQJz5jotHJhQosIBbAGv0xdxeJq969llKUbN+YrfDoOUB7H3IvqF6IK1UiyqIqhT+
+	 ThoDGXHmVugpA==
+Message-ID: <0f92ab73-5996-4977-9ada-e8a26957110c@kernel.org>
+Date: Tue, 17 Mar 2026 17:20:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,102 +35,64 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 0/2] hwmon: emc2305: Support configurable fan PWM
- at shutdown
-To: florin.leotescu@oss.nxp.com, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-References: <20260312144325.1311314-1-florin.leotescu@oss.nxp.com>
+Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
+ thread safe
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mark Brown <broonie@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn
+ <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Saravana Kannan <saravanak@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+ driver-core@lists.linux.dev, imx@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, netdev@vger.kernel.org
+References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260312144325.1311314-1-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 3/12/26 07:43, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
+On 3/17/2026 5:11 PM, Rafael J. Wysocki wrote:
+> On Tue, Mar 17, 2026 at 5:04 PM Douglas Anderson <dianders@chromium.org> wrote:
+>>
+>> In various places in the kernel, we modify the fwnode "flags" member
+>> by doing either:
+>>   fwnode->flags |= SOME_FLAG;
+>>   fwnode->flags &= ~SOME_FLAG;
+>>
+>> This type of modification is not thread-safe. If two threads are both
+>> mucking with the flags at the same time then one can clobber the
+>> other.
+>>
+>> While flags are often modified while under the "fwnode_link_lock",
+>> this is not universally true.
+>>
+>> Create some accessor functions for setting, clearing, and testing the
+>> FWNODE flags and move all users to these accessor functions. New
+>> accessor functions use set_bit() and clear_bit(), which are
+>> thread-safe.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>> Acked-by: Mark Brown <broonie@kernel.org>
+>> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+>> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 > 
-> This series adds support for configuring the fan PWM duty cycle applied
-> during system shutdown for the EMC2305 fan controller.
-> 
-> Some platforms require fans to transition to a predefined safe state
-> during shutdown or reboot handoff until firmware or the next boot stage
-> reconfigures the controller.
-> 
-> The new optional Device Tree property "fan-shutdown-percent" allows the
-> shutdown PWM duty cycle to be configured per fan output.
-> 
-> Changes in v3:
-> - Rebased on current upstream
-> - Dropped already upstreamed of_node_put(child) fix
-> Changes in v2:
-> - Address feedback from Guenter Roeck
-> - Make shutdown behavior configurable via Device Tree
-> - Add optional fan-shutdown-percent property
-> - Apply shutdown PWM only for channels defining the property
-> 
-> Florin Leotescu (2):
->    dt-bindings: hwmon: emc2305: Add fan-shutdown-percent property
->    hwmon: emc2305: Support configurable fan PWM at shutdown
-> 
->   .../bindings/hwmon/microchip,emc2305.yaml     |  8 +++++
->   drivers/hwmon/emc2305.c                       | 34 +++++++++++++++++++
->   2 files changed, 42 insertions(+)
-> 
-AI review of series is here:
+> Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-https://sashiko.dev/#/patchset/20260312144325.1311314-1-florin.leotescu%40oss.nxp.com
-
-Please take a look.
-
-Thanks,
-Guenter
-
+ACK or RB?
