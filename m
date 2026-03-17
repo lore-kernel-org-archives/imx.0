@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A53839281E
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 07:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DE3391E58
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 07:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733336; cv=none; b=sviyBEo9YCbf2eRgt7xLLSGwnCd4br/lp/ZuzrdGMEAHfijjfaJy4ucI19T2E64HRN4DXxIDmrXClUA+muyzAmjgtY0lPVcDWOZjGwORaebeby1CVRwknwtjklHB/PPTBEMHxZbWvOqXa9lsLgGbxNz0fE0j0gbzmYIVn90+Y90=
+	t=1773733336; cv=none; b=ddA88c6587s+Kna5k+mmzmYEyNgsyL2ExcMua0YImyjluTZgPEV4rEz9Bhj/0u+lnuIn1skodc0nQL1QJA8CXWXqdy6cJ1t31lsWLfX6xhFcWtou7ACV0YlBbISRY6JYc3FqJgLBSIeNpTnUlCeXsUNmgb5gXF7ZM2snsu3FDsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773733336; c=relaxed/simple;
-	bh=on+chjiezGpN39B42NGeUy4IidE1yhI1uZZBchCnSyA=;
+	bh=cLqOiOFBz9wYeaq2pwyeeUJsn06Y7K4jlsVr2tx3pIo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hL2A/YbpgyYbWmFgRi8zXHD6ThcsDZiqMvM5Dh0Sick1FqWOtskhmJOMuDe5H+M/NRTx+ev82cGMxe7u+hCwS72d8UVJWtO6ApfDE6X+GmT74C11ZXKfjH/urNh+iAdQzPUbqyE401gK7COqTpcYp8joDCkD/bgzPFJ1o94/FCo=
+	 MIME-Version; b=Da6dDMA6fBAU/QenvEIXOgI8wqjrCwRXL0CvNMr3wuOCbvGzO0JwcgP3PwwG147rtqNm9qrGXMf42zgAY6CgRzBloZI+X5tsqdvLudZ7ykuktnUSz6Iwrf3E2031GUHfiA3pUtMdaRVGUdpBNbtvMcMhV+k8WtXhXhHoS+vBHN4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: cb484aae21d411f1a21c59e7364eecb8-20260317
+X-UUID: cace313821d411f1a21c59e7364eecb8-20260317
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:1f22bc00-7df3-490a-80ca-18eebf4007e9,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:d2d62c2d-b471-4331-8435-b4acf2f12e91,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:8930ebb8831d9ba6b3689687f66dd749,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:f7636baae2e2008e5d60797e1b96b7d5,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: cb484aae21d411f1a21c59e7364eecb8-20260317
+X-UUID: cace313821d411f1a21c59e7364eecb8-20260317
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 460964528; Tue, 17 Mar 2026 15:42:05 +0800
+	with ESMTP id 735953558; Tue, 17 Mar 2026 15:42:04 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v3 03/17] spi: bcmbca-hsspi: Use helper function devm_clk_get_enabled()
-Date: Tue, 17 Mar 2026 15:41:45 +0800
-Message-Id: <729e01297d5d04aae823cddab97450dfad729232.1773733017.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v3 01/17] spi: axiado: Use helper function devm_clk_get_enabled()
+Date: Tue, 17 Mar 2026 15:41:43 +0800
+Message-Id: <a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773733017.git.xiaopei01@kylinos.cn>
 References: <cover.1773733017.git.xiaopei01@kylinos.cn>
@@ -66,108 +66,90 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 49 +++++++++++-----------------------
- 1 file changed, 16 insertions(+), 33 deletions(-)
+ drivers/spi/spi-axiado.c | 31 ++++++++-----------------------
+ 1 file changed, 8 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index ece22260f570..2e22345115fd 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -452,39 +452,30 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(spim_ctrl))
- 		return PTR_ERR(spim_ctrl);
+diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
+index dc55c55ae63c..b2d1011357f4 100644
+--- a/drivers/spi/spi-axiado.c
++++ b/drivers/spi/spi-axiado.c
+@@ -768,25 +768,15 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(xspi->regs))
+ 		return PTR_ERR(xspi->regs);
  
--	clk = devm_clk_get(dev, "hsspi");
-+	clk = devm_clk_get_enabled(dev, "hsspi");
- 	if (IS_ERR(clk))
--		return PTR_ERR(clk);
+-	xspi->pclk = devm_clk_get(&pdev->dev, "pclk");
++	xspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
+ 	if (IS_ERR(xspi->pclk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(xspi->pclk),
+-				     "pclk clock not found.\n");
++				     "Unable to enable APB clock.\n");
+ 
+-	xspi->ref_clk = devm_clk_get(&pdev->dev, "ref");
++	xspi->ref_clk = devm_clk_get_enabled(&pdev->dev, "ref");
+ 	if (IS_ERR(xspi->ref_clk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(xspi->ref_clk),
+-				     "ref clock not found.\n");
 -
--	ret = clk_prepare_enable(clk);
+-	ret = clk_prepare_enable(xspi->pclk);
 -	if (ret)
--		return ret;
-+		return dev_err_probe(dev, PTR_ERR(clk),
-+				     "Failed to get hsspi clock\n");
- 
- 	rate = clk_get_rate(clk);
- 	if (!rate) {
--		pll_clk = devm_clk_get(dev, "pll");
-+		pll_clk = devm_clk_get_enabled(dev, "pll");
- 
- 		if (IS_ERR(pll_clk)) {
--			ret = PTR_ERR(pll_clk);
--			goto out_disable_clk;
-+			return dev_err_probe(dev, PTR_ERR(pll_clk),
-+					     "Failed to get pll clock\n");
- 		}
- 
--		ret = clk_prepare_enable(pll_clk);
--		if (ret)
--			goto out_disable_clk;
+-		return dev_err_probe(&pdev->dev, ret, "Unable to enable APB clock.\n");
 -
- 		rate = clk_get_rate(pll_clk);
--		if (!rate) {
--			ret = -EINVAL;
--			goto out_disable_pll_clk;
--		}
-+		if (!rate)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "Failed to get pll clock rate\n");
- 	}
- 
- 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*bs));
--	if (!host) {
--		ret = -ENOMEM;
--		goto out_disable_pll_clk;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -ENOMEM,
-+				     "Failed alloc spi host\n");
- 
- 	bs = spi_controller_get_devdata(host);
- 	bs->pdev = pdev;
-@@ -535,18 +526,16 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 		ret = devm_request_irq(dev, irq, bcmbca_hsspi_interrupt, IRQF_SHARED,
- 			       pdev->name, bs);
- 		if (ret)
--			goto out_disable_pll_clk;
-+			return dev_err_probe(dev, ret, "Failed request irq\n");
- 	}
- 
- 	ret = devm_pm_runtime_enable(&pdev->dev);
- 	if (ret)
--		goto out_disable_pll_clk;
-+		return dev_err_probe(dev, ret, "Failed pm runtime enable\n");
- 
- 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+-	ret = clk_prepare_enable(xspi->ref_clk);
 -	if (ret) {
--		dev_err(&pdev->dev, "couldn't register sysfs group\n");
--		goto out_disable_pll_clk;
+-		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+-		goto clk_dis_apb;
 -	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "couldn't register sysfs group\n");
++				     "Unable to enable device clock.\n");
  
- 	/* register and we are done */
- 	ret = devm_spi_register_controller(dev, host);
-@@ -559,10 +548,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+@@ -815,7 +805,7 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq <= 0) {
+ 		ret = -ENXIO;
+-		goto clk_dis_all;
++		goto err_disable_pm_runtime;
+ 	}
  
- out_sysgroup_disable:
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
--out_disable_pll_clk:
--	clk_disable_unprepare(pll_clk);
--out_disable_clk:
--	clk_disable_unprepare(clk);
+ 	ret = devm_request_irq(&pdev->dev, irq, ax_spi_irq,
+@@ -823,7 +813,7 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 	if (ret != 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+-		goto clk_dis_all;
++		goto err_disable_pm_runtime;
+ 	}
+ 
+ 	ctlr->use_gpio_descriptors = true;
+@@ -849,17 +839,14 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_controller failed\n");
+-		goto clk_dis_all;
++		goto err_disable_pm_runtime;
+ 	}
+ 
+ 	return ret;
+ 
+-clk_dis_all:
++err_disable_pm_runtime:
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_disable_unprepare(xspi->ref_clk);
+-clk_dis_apb:
+-	clk_disable_unprepare(xspi->pclk);
+ 
  	return ret;
  }
+@@ -882,8 +869,6 @@ static void ax_spi_remove(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
  
-@@ -573,8 +558,6 @@ static void bcmbca_hsspi_remove(struct platform_device *pdev)
- 
- 	/* reset the hardware and block queue progress */
- 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
--	clk_disable_unprepare(bs->pll_clk);
--	clk_disable_unprepare(bs->clk);
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+-	clk_disable_unprepare(xspi->ref_clk);
+-	clk_disable_unprepare(xspi->pclk);
  }
  
+ /**
 -- 
 2.25.1
 
