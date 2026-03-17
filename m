@@ -1,87 +1,132 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E764F3E5569
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 14:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3E13C2788
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 14:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773757685; cv=none; b=lOyEadwmDUUXWaSWYW6ZxMsDeLRM6e/udkJj7v8H2OPlgBEgkHfgkmpNhZgrGQ4wJWUZ7Og3yn2xQ1Pl+yF8WUP2XIEEJjbm+8CEjdbpyW0k5UXBCLDbOA2ckD7T/i2ccZs0i8fDIPq6bIDn7iSJm/wdYpA6r0j1DSG9n0pjiFo=
+	t=1773758660; cv=none; b=bLAnaoV/Con016w3+TSaTPeyUm/L8TJdymV86X5Rv82earj9EEZxWiGa+0OJAfc0+Vvec+rTEIHJbBPgAJmDl4dFEYV7AOx19oXoBMX8uSin3nZgcI5jwEoL7VP8RV8swg2rlDl111h4xyX/6FRp0o2WTk/BMhJ6G2Czd6KHunQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773757685; c=relaxed/simple;
-	bh=XlJj6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HMAI6MYYWYkjoC9cFQteM1rT8A1QhTnpg2NXsgJUgpEhzPu1K4E4GpJGA3rcoJBETvZHS+megTldFBUj9ZFCz9P88KCv6+JuHMcf1u4FCyQi6/zppR4FGrWRgSwl4OF/fEBPyxVnfnA6/hg1VAOsUNyOLJ2RltvD1liBdCcog0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=bG2zxRXQ; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1773758660; c=relaxed/simple;
+	bh=YKYuoQhAaz21UC8LDNrC/aEvZgxB1oW+KNokbCxHZdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=klQUe1WuiI/kMU/wSZu0pp/dVZ6zizpAs0Ls3zwJH6AU+OtxEGDi7XanuQCkCfGqnKaAwLe+wDGjEN50BMFHgwtxZECrZOqe7hMNyV2TW5kSSiOZlvkPNCp6ukxE5u0d4ITotJfu4Qa0c4qO6ajqtpcOWWo93aiQOUDzo4v2uXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWBcY9A2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="bG2zxRXQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=XlJj
-	6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=; b=bG2zxRXQ9Fu9bCPjNpx3
-	P7wgiIDoMXLCFMRPPmDltjPAhFzrIRxLaSxIF85pzMhW3YyHuUmEPHx4tFc4UUho
-	Wo06erk7gncW5uU46/3R7WWSOx6aUij0lMRTitWmNhEITS6dBlW5FTJQJ9Lann3s
-	dlppwJoBzJT5UfzY5GRapN/vktmt/GFIZqfQ7PYY1fBvA6Tbh+0RN0wBNuR0C9Z/
-	Xyd1b5tVvedLvdm7mrVbuvLIWeLiCjAeTKnuo2FG1hjxzOQTRhAzR5B4ebBzP+t3
-	vgcwphcy28vVhUjbhXw+mZaFWm3+CISUtLErtDSyofA6mcDgcyIeFO1eGKVh/IO/
-	FQ==
-Received: (qmail 312797 invoked from network); 17 Mar 2026 15:27:57 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 15:27:57 +0100
-X-UD-Smtp-Session: l3s3148p1@LnJGJDlN/LM+XdJ7
-Date: Tue, 17 Mar 2026 15:27:52 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <ablk6O2XMUc1EKK0@shikoro>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
- <abkLY4AAQuFlTRC7@ashevche-desk.local>
- <abkT_jpjIki6pvX1@shikoro>
- <abkqEni3phP8dqqw@ashevche-desk.local>
- <abkuNpwmYGa6qJPZ@shikoro>
- <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWBcY9A2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B2CC4CEF7;
+	Tue, 17 Mar 2026 14:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773758660;
+	bh=YKYuoQhAaz21UC8LDNrC/aEvZgxB1oW+KNokbCxHZdo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AWBcY9A2j4P/s8vXgMVv2z4MDwxY9xZiPL5gx51m/iGpTOtBn0L2/RkZ379b5Encv
+	 scvms/YqkTK+YI08drNAqytNgcbUtCsAJv4bFnGq3B/p5aO1eZX6wZam8DG7nsghV3
+	 xKisBEyESObihxJ7RUl59GWWtrOLjNfb6yyvIPfM68F+6BPbOdL8MoDl6MazUXehSA
+	 PQCVdcHWCOhwMaW/DCH22YP6uP+zN9Y+jM7SS8w6E+6G1LgMW1MCBdfO3FjKTUxdrc
+	 xKqSSc5odRj8NsUa5JqxP61EQ2BiAUxOKLvTagNzQV3c9WUjlmVN5j8pfvK3yAt7pR
+	 JMYFZL4UzylLw==
+Message-ID: <67fc1526-c32a-4e74-ac37-8f8c2c0df46a@kernel.org>
+Date: Tue, 17 Mar 2026 15:44:16 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] i.MX fixes for 7.0
+To: Frank Li <Frank.li@nxp.com>
+Cc: soc@kernel.org, arm@kernel.org, Fabio Estevam <festevam@gmail.com>,
+ kernel@pengutronix.de, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>
+References: <20260312153557.3338430-1-Frank.Li@nxp.com>
+ <20260317-jumping-corgi-of-defense-038bcd@quoll>
+ <ablgRERiHQ1Tm2i6@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <ablgRERiHQ1Tm2i6@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 17/03/2026 15:08, Frank Li wrote:
+> On Tue, Mar 17, 2026 at 09:03:19AM +0100, Krzysztof Kozlowski wrote:
+>> On Thu, Mar 12, 2026 at 11:35:54AM -0400, Frank Li wrote:
+>>> From: Frank Li <Frank.li@nxp.com>
+>>>
+>>> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
+>>>
+>>>   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>>   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.0
+>>>
+>>> for you to fetch changes up to 04d00f57c168153758d2c6a2395d20aadc785e3e:
+>>>
+>>>   arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V (2026-03-06 11:19:41 -0500)
+>>
+>> Hooks fail.
+>>
+>> Commit 587096ada520 ("Revert "ARM: dts: imx: move nand related property under nand@0"")
+>> 	committer Signed-off-by missing
+>>
+> 
+> Sorry, I will update it.
+> 
+>> Please implement basic checks from beginnners maintainer guide (LPC
+>> 2023).
+> 
+> Suppose this one?
+> https://lpc.events/event/17/contributions/1498/attachments/1155/2452/Maintainer's%20toolbox%20-%20Linux%20Plumbers%202023%20-%20Krzysztof%20Kozlowski.pdf
+> 
 
-> I don't recall using any lock for this purpose.
+Yes, although I am moving hooks to soc-tools repo
 
-In that case:
+https://web.git.kernel.org/pub/scm/linux/kernel/git/soc/soc-tools.git
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-counts as an ack for i2c, too, of course.
-
+Best regards,
+Krzysztof
