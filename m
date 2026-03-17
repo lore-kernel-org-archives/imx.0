@@ -1,126 +1,71 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40DC39478B
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 07:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA56392C3C;
+	Tue, 17 Mar 2026 07:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733347; cv=none; b=d5md7QhYJdfE459Bd3VtSftmwpZ7MaJc/ty2WFwb+CXAbsIM2MSQEsqCov8w6rodky23uDLOxU45WkeljGyvQtmeZH3xDTMjChOqRiUQ6FEt+PT3mTfoT5VbSPOKO+am+XSPYxAY79Z+wcymsuW3nN0smnuNasVrHrI15GEI2bs=
+	t=1773733693; cv=none; b=aYT3zz8WTofHmtMx4X5Y2Py7SNZW3hZeDzdUalqDTcFQf2Tilu9HkBPDapIMMMkhRub+tmaZcP4xSwBSoq1MlQOd8PQClH9HPyLwbTZxyZVMfjbobZI6S23QpirahKzrGXonX+ZXxA0+dbOMZvgKNfjrqwlBBGRF5gKmMZ87pAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773733347; c=relaxed/simple;
-	bh=OaRtiyOySnH6Ou41aGIhVPIq7cpBzaqzzntgrCvl9vg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=at9QU5OnUwZ0Dhy2fbjuXE0c5CA9Z/44HfELTzoU0vrONTB3NmcNO85kDKXJDthsEYVvNoOrOfeFoL1fLyWs9Xaax9BhY37PZUgRXvEuAXqK/yatWFhoJXKE/TUVLHSMYyB26rkqPlbbD9kr5jjuw6nxQn0HFj6Qp5y3got1CX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: cd8ae63c21d411f1a21c59e7364eecb8-20260317
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:ba1c14cf-3890-41f9-9129-f2279b57a204,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:d042d1f9984bf1d3851bdf0c97f5e639,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
-	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: cd8ae63c21d411f1a21c59e7364eecb8-20260317
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 868909025; Tue, 17 Mar 2026 15:42:09 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	openbmc@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	broonie@kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v3 12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
-Date: Tue, 17 Mar 2026 15:41:54 +0800
-Message-Id: <b887a25df30f38e1339f94ae464929e4e9f75f03.1773733017.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1773733017.git.xiaopei01@kylinos.cn>
-References: <cover.1773733017.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1773733693; c=relaxed/simple;
+	bh=azG9yf+rqDVRcCgN41tgr864FUR7sxO4tFc1Tow86m0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jwElLGYTjAl49d+y9PYbMN5mXHsGbmtHhXajmdU3HWpNtfFLiV/k752PDP5vC5PHr9JJAVjY5FL+w4X1ldf6j/JRiDf5j8lHmz1fgoORgGkO0Mw4ZAiiIGY0gf1lnlTnDFGNina6vT7U41SkPZ3nJcP5XfYBcwbrAdacN/BSchE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGsDgrDh; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGsDgrDh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2159C19424;
+	Tue, 17 Mar 2026 07:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773733693;
+	bh=azG9yf+rqDVRcCgN41tgr864FUR7sxO4tFc1Tow86m0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZGsDgrDhfEU/tOIVK2bJzaX9vtMCDRASm14jgp30vStaRs4t9qV5Vumo8vq9K6u+m
+	 V44WzpMSV9iqkxHtMD3NoN3L6HhuvhxUQHJtwhkoKNJrDG0MTY++y5ro8t5bbmjHgt
+	 CrhOaRFUp9LbO+VwB4uV6bdZqJDwWx8xvoo5tio6zBP/tdlXGkUkWVgImeydLTRigP
+	 qcySAK4DVnPNO7g6G0RP9eVNjSZ0O6JZ8cgR9b1jQlVnve5K1Uh5fQk33XdOLG8Osc
+	 gaDRMvMtRP6SNboFjGi0egdczVxtFWPjryCutfmJ1VMenIsIcJHmgyMYp+IKYsKsgh
+	 liyf3DaauKgZA==
+Date: Tue, 17 Mar 2026 08:48:10 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com, 
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt: bindings: arm: add bindings for TQMa95xxLA
+Message-ID: <20260317-fair-cocky-centipede-aac1c7@quoll>
+References: <20260316150535.786122-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260316150535.786122-1-alexander.stein@ew.tq-group.com>
 
-devm_clk_get() and clk_prepare_enable() can now be replaced by
-devm_clk_get_enabled() when driver enables the clocks. Moreover, it is no
-longer necessary to unprepare and disable the clocks explicitly.
-Simplify code.
+On Mon, Mar 16, 2026 at 04:04:51PM +0100, Alexander Stein wrote:
+> From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> 
+> TQMa95xxLA is a SOM using NXP i.MX95 CPU. MBa95xxCA is a carrier
+> reference design / starter kit board.
+> 
+> [1] https://www.tq-group.com/en/products/tq-embedded/arm-architecture/tqma95xxla/
+> 
+> Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/spi/spi-stm32-qspi.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..a8436f70fdfd 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -819,25 +819,19 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 
- 	init_completion(&qspi->match_completion);
- 
--	qspi->clk = devm_clk_get(dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(qspi->clk))
--		return PTR_ERR(qspi->clk);
--
-+		return dev_err_probe(dev, PTR_ERR(qspi->clk),
-+				     "can not enable the clock\n");
- 	qspi->clk_rate = clk_get_rate(qspi->clk);
- 	if (!qspi->clk_rate)
- 		return -EINVAL;
- 
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
--		return ret;
--	}
--
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		if (ret == -EPROBE_DEFER)
--			goto err_clk_disable;
-+			goto err_defer;
- 	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
-@@ -886,8 +880,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
- err_dma_free:
- 	stm32_qspi_dma_free(qspi);
--err_clk_disable:
--	clk_disable_unprepare(qspi->clk);
-+err_defer:
- 
- 	return ret;
- }
-@@ -906,7 +899,6 @@ static void stm32_qspi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(qspi->dev);
- 	pm_runtime_set_suspended(qspi->dev);
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
--	clk_disable_unprepare(qspi->clk);
- }
- 
- static int stm32_qspi_runtime_suspend(struct device *dev)
--- 
-2.25.1
+Best regards,
+Krzysztof
 
