@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8DC34A3A2;
-	Tue, 17 Mar 2026 11:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C3C3B7B67;
+	Tue, 17 Mar 2026 12:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773747374; cv=none; b=sTkY30e/jVxTJB3P9xkRNktgr9GNdjHqZ5z1A9So+4tzeVrjqSkm7noCOWtGv8+dNLvwGyyrzfeFg66XhODeCdl8JA2q3yRfA4qlpSFgJjvtm18OdODcyhlEYhLrplzI1wbJP+p9W9D6gpBqcsAkrRzyGQ3CbX5boqebwMKCr3c=
+	t=1773749413; cv=none; b=Lso/Fg9T+TK0lBSin7yVFkJeNiKp86euNIWVDZsMgsgKH3BMlfUeNmhyPLAEHTTVR+nP0ZSAvLBraPOaOzFcAJcB6eqdrOx25uiG/Lm8dKWl3zaO5IwjbIVSAK5/Apl5HgzkICmQjqm8D0bu6EnBKhktzJ3cmBQRWWQ7OWJLuyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773747374; c=relaxed/simple;
-	bh=ndd3y2M1FJ5lkjT9Ky5c6ddZPhEl/7pYxCez3yb4Htk=;
+	s=arc-20240116; t=1773749413; c=relaxed/simple;
+	bh=HbTCHtEYVcNSksD4HHfb+VrniL0U4h4a8FM9RBtBeQY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=swGsQK4kve6s0upe8sqeTKqBd3Um1C1JuGXhzryiUn/gX4QgmDhDi0HbyDQuGncsuyP6iG8X6KzxGdpls8fCCSUZD3dp/uAZGF3eLtWawRD3cktNh168OKM+9RBYppvmsuFfAbG2tSHxNHZZ62WHmYygVsRjSFTW5hf/9O4srQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOFBaEL1; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=YZpRe7mhCzEaygOrZovJ+dGtKvO63rHC1o1OL/Al3uOr+tXZQrBCsTzvG0tqi/UWwplPYXnnY5on5lN0V17rr0Kw3CWqTRhUMcWLMzIS9G2XzT5k2hKC72/9ZXbp2EEmwnkDiatCHxoNZDG9HzgFWoo1cScl+ahnaXzdG237vi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZ6mojPh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOFBaEL1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA05C19425;
-	Tue, 17 Mar 2026 11:35:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZ6mojPh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB3FC19425;
+	Tue, 17 Mar 2026 12:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773747373;
-	bh=ndd3y2M1FJ5lkjT9Ky5c6ddZPhEl/7pYxCez3yb4Htk=;
+	s=k20201202; t=1773749412;
+	bh=HbTCHtEYVcNSksD4HHfb+VrniL0U4h4a8FM9RBtBeQY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZOFBaEL1peJFlZlM/IFUqQ9l81xhjfdKqgAosLx4awK4bfo0fKDor9WJNzMMBDocn
-	 bCJUqsONa+XxRSW/VG675tJtnjpLzIvjl8U5xcSP5dq4l0+F4wfMzSs3SvnkmISV3T
-	 /dpfjAFCqHeo5MJoPnwc2YNJ0R56WPE57Ycplr2CYd8v62sY03T21QQRfKAfIfJEge
-	 4FckdoLUJ9O7GHicLm1Va6ZOW0ITUFmBoS6mowFktaS+rKBmnkAR+8kkCjDpUk7rKi
-	 FMuwJzVU6K+RXnM+0Z0FPJgY9r8KepkwpGoqLUOAQO094ErkIZ1U93e07AWeqqq7Iv
-	 06jBxVQOIF/NQ==
-Message-ID: <9545b66c-f223-48a3-96fe-c906d2307654@kernel.org>
-Date: Tue, 17 Mar 2026 12:35:53 +0100
+	b=NZ6mojPhDrWk19uFtvMgI/+YM5Igiyue7CRpPuMAu4YTLAGw0y7iUhJKyloSMzoQB
+	 JzRTBiwuDn7ts7BrpQR+/wd+lxe5kmmqiaFwBQNp4RBRP3gUhEN+6od2kswNxQjcO0
+	 83ODbaLNJhfOkZm8Naa+DVCBYQ/YuncAYFV96mYoBlEbNaUFViAiQnohOZ97iL+fgN
+	 DTpMecnI4rzV45S6KHmcmoEoGBS2v0kN1Um8zEwQFy2OD0l712ArEu+6SDGa3gCzcj
+	 L/kKyxygt0UIprCWm+piG/0BQMxRvlnO96qWB05jRdOhQinlZKqpnkzHR0d5nxQBsM
+	 UJHNIqoNpoqpw==
+Message-ID: <30599533-91de-41fd-9420-3f8693ec92ac@kernel.org>
+Date: Tue, 17 Mar 2026 13:10:06 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,76 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] arm64: defconfig: remove obsolete assignment to
- SLIM_QCOM_CTRL
-To: "Vincent Mailhol (Arm)" <mailhol@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Mikko Rapeli <mikko.rapeli@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>,
+Subject: Re: [PATCH 2/3] arm64: dts: freescale: add initial device tree for
+ TQMa93xx/MBa93xxLA-MINI
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
- Gregory CLEMENT <gregory.clement@bootlin.com>,
- =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Heiko Stuebner <heiko@sntech.de>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Mark Brown <broonie@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>,
- Sricharan Ramabadhran <quic_srichara@quicinc.com>,
- Bjorn Andersson <andersson@kernel.org>, Michael Walle <mwalle@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>,
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
- "Rob Herring (Arm)" <robh@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Alexandre Gonzalo <alexandre.gonzalo@arm.com>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-parisc@vger.kernel.org,
- openbmc@lists.ozlabs.org
-References: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org>
- <20260317-arm_defconf_cleanup-v1-9-8eecb7fdd24d@kernel.org>
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux@ew.tq-group.com
+References: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
+ <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -150,28 +94,125 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260317-arm_defconf_cleanup-v1-9-8eecb7fdd24d@kernel.org>
+In-Reply-To: <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 17/03/2026 10:13, Vincent Mailhol (Arm) wrote:
-> The Qcom Slimbus controller driver is not in the kernel tree
-> anymore. Clean-up the leftover reference to CONFIG_SLIM_QCOM_CTRL
-> which was left in the defconfig.
+On 17/03/2026 12:17, Alexander Stein wrote:
+> From: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
 > 
-> Fixes: 7cbba32a2d62 ("slimbus: qcom: remove unused qcom controller driver")
-> Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
+> This adds support for TQMa93xx module attached to MBa93xxLA-MINI board.
+
+
+Please do not use "This commit/patch/change", but imperative mood. See
+longer explanation here:
+https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
+
+> TQMa93xx is a SOM series using i.MX93 SOC.
+> The MBa93xxLA-MINI has a small form factor and is designed with
+> WLAN, Bluetooth and WWAN applications in mind.
+> 
+> Signed-off-by: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > ---
->  arch/arm64/configs/defconfig | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../imx93-tqma9352-mba93xxla-mini.dts         | 637 ++++++++++++++++++
+>  2 files changed, 638 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 31bc80586c682..db536522600ac 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -461,6 +461,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini.dtb
+>  
+>  imx93-tqma9352-mba91xxca-lvds-tm070jvhg33-dtbs := imx93-tqma9352-mba91xxca.dtb imx93-tqma9352-mba91xxca-lvds-tm070jvhg33.dtbo
+>  imx93-tqma9352-mba91xxca-rgb-cdtech-dc44-dtbs := imx93-tqma9352-mba91xxca.dtb imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtbo
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
+> new file mode 100644
+> index 0000000000000..97693aa5e904d
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
+> @@ -0,0 +1,637 @@
+> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+> +/*
+> + * Copyright (c) 2025-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+> + * D-82229 Seefeld, Germany.
+> + * Author: Martin Schmiedel
+> + */
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/input/input.h>
+> +#include <dt-bindings/leds/common.h>
+> +#include <dt-bindings/net/ti-dp83867.h>
+> +#include <dt-bindings/pwm/pwm.h>
+> +#include <dt-bindings/usb/pd.h>
+> +#include "imx93-tqma9352.dtsi"
+> +
+> +/{
+> +	model = "TQ-Systems i.MX93 TQMa93xxLA on MBa93xxLA-MINI SBC";
+> +	compatible = "tq,imx93-tqma9352-mba93xxla-mini",
+> +		     "tq,imx93-tqma9352", "fsl,imx93";
+> +	chassis-type = "embedded";
+> +
+> +	chosen {
+> +		stdout-path = &lpuart1;
+> +	};
+> +
+> +	aliases {
+> +		eeprom0 = &eeprom0;
+> +		ethernet0 = &eqos;
+> +		ethernet1 = &fec;
+> +		gpio0 = &gpio1;
+> +		gpio1 = &gpio2;
+> +		gpio2 = &gpio3;
+> +		gpio3 = &gpio4;
+> +		i2c0 = &lpi2c1;
+> +		i2c1 = &lpi2c2;
+> +		i2c2 = &lpi2c3;
+> +		i2c3 = &lpi2c4;
+> +		i2c4 = &lpi2c5;
+> +		mmc0 = &usdhc1;
+> +		mmc1 = &usdhc2;
+> +		mmc2 = &usdhc3;
+> +		rtc0 = &pcf85063;
+> +		rtc1 = &bbnsm_rtc;
+> +		serial0 = &lpuart1;
+> +		serial1 = &lpuart2;
+> +		serial2 = &lpuart3;
+> +		serial3 = &lpuart4;
+> +		serial4 = &lpuart5;
+> +		serial5 = &lpuart6;
+> +		serial6 = &lpuart7;
+> +		serial7 = &lpuart8;
+> +		spi0 = &lpspi1;
+> +		spi1 = &lpspi2;
+> +		spi2 = &lpspi3;
+> +		spi3 = &lpspi4;
+> +		spi4 = &lpspi5;
+> +		spi5 = &lpspi6;
+> +	};
+> +
+> +	backlight_lvds: backlight {
+> +		compatible = "pwm-backlight";
+> +		pwms = <&tpm5 0 5000000 0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_backlight>;
+> +		brightness-levels = <0 4 8 16 32 64 128 255>;
+> +		default-brightness-level = <7>;
+> +		power-supply = <&reg_12v0>;
+> +		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
+> +		status = "disabled";
 
-https://lore.kernel.org/all/20251223140645.3545658-1-mikko.rapeli@linaro.org/
+Why do you add disabled nodes? If the display is not on the board, then
+the node should not be here.
 
-I even asked there to send it to qcom maintainers :/
+There is no user of that in patch 3/3, either.
 
-Exactly that case also encouraged me to document this, since we do not
-know how to fix get_maintainers. See commit
-6efe5322f060099c8bc51aaee83b857394e42dd5
 
 Best regards,
 Krzysztof
