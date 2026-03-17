@@ -1,210 +1,165 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010067.outbound.protection.outlook.com [52.101.69.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12AF2DAFDA
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 15:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773763199; cv=fail; b=ohH/zlejt90WofdjYBvwgDwxEO/7LaKlF1e8f1qiAU9ThHu4XSoe3hbWONKQrhasAnPbXfcRlXfzqobWOxNDkzQa6jpleYI9AvbQLxDbUN3IZiT2RStS47H6W88um15UTvI/s/gzkxxb9DdUsd/rKVVb7E3luBGzhXPEGuVJgfU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773763199; c=relaxed/simple;
-	bh=quCw7dXYQ/RYvoCplaEwouJzLwR/rsCzWBj/Nk5KARE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ImoHtzhNJ8DtR5GDYywTPVA1Mq03dczoTip5F1lI4ZbgzbH4UP8lncPX2eKutKTs+YXGhNNaQclCCoF0Tmckdi2bHg2AOUBZvezGF3qdOGI2MgbKlBFOaMRF3X8a4fRdsRs3sji+cvxyGVa1leB6eBiDKgUPafuaRazuw3opuJc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OrS8RoI0; arc=fail smtp.client-ip=52.101.69.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OrS8RoI0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QephiirQND5jH+Hik5hz8RrRPcGdQF8bTWGkWjJouo0zeXgX+SvB6F8coa0mASf5cpEVtaBZM9/hGs5sOwz+Np0nD4gl6FEokwEYgHTQvocLl28B9Z/J64cbzbd9gHYZqfFgGhUy0ggff6Ea+vfSV9TFE75fwMsRbyGKI2xY6qkFEBa2S5RC/ecWFeWzYp66odVOg806OJLLFKB18bZCSzKwazzR8NtwEspAMwnIBvuI7q6BYgVQdM9NmpPa1bSixsPVo/sdua8Mz4LT4ZxuxSn8Z0/am2+K14mW2sFFxEOOI+Hnr7Z7S2KFDvKFLZUk3Cq8ZmLaboxzplTJXbLokg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/EWI7RnyuPuquF2KVsHcMwLmJIQ4E4pGiDy+LO6tL9U=;
- b=pEmLNKxzEZD0bzLSoHAX+BLtO0qzq98y9N5fqx4ehD/M4TzKj6FkjRnTxYY75oob5UAGsO5XzYtnNxTAvtTjo8r4pk9/iCBkOri6fOea6WnF3ePGe4Ezaik3ubc/rtHFy3Ot8nzoep58wxoa0tWH/uT6FfMTbUymJPqcJNH/HUAqozYkEZFNc38lMO6lVVmwnhrWTPpEgmTuqhG5ikKCxy3Ed1PGZIpON8KLgAdjBLZlEkrliNX8lYQmnswKpUd1VJhJfO67NwpPei77qYGiDltv7gOFl5cHibMqOe/1XMv7nrMaW/DgRgiAkIe56FA8YG0BuaY8aeAlA3Ljyw1/3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/EWI7RnyuPuquF2KVsHcMwLmJIQ4E4pGiDy+LO6tL9U=;
- b=OrS8RoI0P83qN759tzMPmdbnL0RJJlWdqp5iyJYz5BQ0SsHiWH7atRhcCe0jMao/5xCUNkK9KSxS4E4b8pRcaW/gZ0q18PDsxyAqW3qFVsK2e6t/tsmuGtiGlkqlnf59Zg4/5OuD5kpLkJmNB/QU2dD0KhpB8sM7LOzHFRxoVYAR5iivJBnNrDpLESXlnFKYCjVEVXxypT00KMZxrMGxS+kbBix12HieM57upuwUaxkGz7fAIBLRZzzIMva3+7kXjrfpS6PAPWVEPlb++L6pZpWgNzGBmYhBAxG9M0X+9NecHJN7ifjGu9S4NGCprYT25HJNrrbh4w50kFPwaa5dgw==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA1PR04MB11264.eurprd04.prod.outlook.com (2603:10a6:102:4eb::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.22; Tue, 17 Mar
- 2026 15:59:52 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9700.021; Tue, 17 Mar 2026
- 15:59:50 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>, Arnaud POULIQUEN
-	<arnaud.pouliquen@foss.st.com>
-CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
- Andersson <andersson@kernel.org>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
- Fan <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
-Thread-Topic: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
-Thread-Index: AQHcticVXzvcQ2AusUOfPokHZf/vKg==
-Date: Tue, 17 Mar 2026 15:59:50 +0000
-Message-ID:
- <PAXPR04MB9185CD662F8DF859E5DCD5E68941A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
- <20260313195801.2043306-4-shenwei.wang@nxp.com>
- <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
- <0f880475-a850-4138-b79d-d3c88765b0e0@lunn.ch>
-In-Reply-To: <0f880475-a850-4138-b79d-d3c88765b0e0@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA1PR04MB11264:EE_
-x-ms-office365-filtering-correlation-id: 72115783-b529-45b8-1025-08de843e3888
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|7416014|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- qWEMdMiIhP5P8Vahjx9P2aGQ/XEa5gbkxzGnpaLLZCFTX9z100+68ZF1DQTdI1aMoQhROqRzTi+CtggaPHSfUB4eny21QLCLgIT/+2qq2VBNEhfpUJ0mQfQUBeLRmjYAZE3+CTUIRAzJvVOFQiHUFYxXOAeq+e9UWsg8/QAbWlf2x2ycP/1eFA/PBTWA8MOplo57NELkDWqDa7cKaX70A/MxgLJ1sDSzcBkKRH76s4mDqSzMPGG/cWwnldOPYov3O+LOeWMmclOIlJfSlNXTGIEgoXlD6+7VBipSGU1/3Rof5QSg9gg/6hlVDWNujSeYP69X772JGp9IHrliiFqU1zoU+OIegBo4a6w1ZWdFnEvBh6BfLd2dEJC0WKABCw8gnLKGnD4mKpdpxXchDrahhUg43mms3EXY4oy0ooS/opoZ7EaZpRGM8qhhSeToK1TMbOWLlilqQvv6TNaJYxiodrRJgj45uSM0hg72M5JK8UqMpN1VMWFYrnAG4HziLKm9Ikhk21NVifEo+/n005lDZuFKKohwdajYcHJe+IchzGRw/auTmHPFhfM7obZLtQeOasuhemTHnKPLIf/MGQ72LYMLqf7MaG1RI5BtxXZ7LY9zPZ0BVk9CMGh1k49OKxJNNcfM7O0a7MlnXt7oeSJiaI1qFDpfjE182LIiUivQ3xzZQPxQhWClJL4AoT/2oYA5v8ZnewO2qchn8ASJkjGA5eUNpzneKzRtn1+AGZGrNXpyy3nOogurilkBg+nwFKhoVcUpZ1IJMTCLRxs3eMwdqf+DKvsYrPgud5JJLQheiWY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(7416014)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?d5JOKwBYEhVROojYK/P+dj/mfZgh46ELRyuWbzCyaHExGbwJk5u/gxHuK94w?=
- =?us-ascii?Q?lx9iYOlQZkbSCijiBHWZh55+uf+Me4qa+oXGm6Fw4SAsXsLD6Y74lmh7dXKs?=
- =?us-ascii?Q?d5BJXrpWzs5/EPdcArOFX4nypj0TV/0ijjB//kzOWdK8J1OX9br0zhKu7ZkP?=
- =?us-ascii?Q?N8EVIdhHNK39qljIqz7DXomb0/Q0YgDMojEEZ5fDb1SYfd++L6mQwWBCrd7P?=
- =?us-ascii?Q?kNs10+CGP/2Fqm2OCFk0QQpsgCzWKebdk7LT4WhnAie/C40mhU4ZjimDTavb?=
- =?us-ascii?Q?Ea68qpEqy6A0IK9j9nYiMlc/96IP+67Chi5c2nxiwQWVRxL3aHDtER8PrfU+?=
- =?us-ascii?Q?emyURs4FIGiCc9bDC/tMgYqhH9EhK3kvYwHYahJ5eSKemyWibGJ34MG0qNSK?=
- =?us-ascii?Q?DOfckNlBh16dScUixJsT6XIKqM9+dT7nSk8ToyOwzLGMhau37U36nghIrXo4?=
- =?us-ascii?Q?Q/rF0bLspJDznZvM0L3IpayfanZOAeq6CCECcjiI7pipKCDCUux4ch1W1i3R?=
- =?us-ascii?Q?Sr+dhmRXKDRbeKWBjk3waRqIYtWAW44YIsfEqnrVm3LfgvI3wQuex9X8rTQe?=
- =?us-ascii?Q?YsCrO+0DV1nMH232WJ6PrYJKNdR3nWTpbchQP1Zw37Dulck3pbqv2vCrXkNg?=
- =?us-ascii?Q?yV17mvyNpw7mJS1SJslAUoUQRSDr6MWeUHPAU8EuF+Lsbddd0C3EWza7Cexk?=
- =?us-ascii?Q?RJVSQ/IwH0N9Rx/qnRJSloqHKJDlJz/+MqwPryJlcfWOsNZYaHXu2590rToB?=
- =?us-ascii?Q?kETZ1gM2xv4DuyPYOLYSV8OcDBSmq6ChfAWOlvgUHnj834MZHT8gaqEtnAMl?=
- =?us-ascii?Q?wP8lWd8NouRtT4POX1TiTFZ8o9zH3qzIx67GSYFW0emVfr95wuc3My3DJuDk?=
- =?us-ascii?Q?GDkyuEYVlyAVTfWVS4/MBN5J68xmC3jJZw0eIT3kkEw2748gNTSm+5c7BziH?=
- =?us-ascii?Q?iCZBIAHWfnALxZ8K0bUnuKkwPidhy32wTDFQj4MSE3u1cE4atn1WfKSzgmIq?=
- =?us-ascii?Q?FAAbyMlE67YLj8XOpfhmY0x4Gm1mWO0ybO23erq0RM9ODuTNAU2pkw8K083i?=
- =?us-ascii?Q?hpDyKJtzyxw4oyPmXxFk5MUUvvy7f63l5hZJJrCiRlxAAlei9D9QEMqTid7I?=
- =?us-ascii?Q?XZB0PgA7sUWBZY+vqZmZRj4apzxLb0PK41dWAdLFRYPFh94q5yH3UgdYJWwb?=
- =?us-ascii?Q?grtnzRUSgDO9grzBzB37uN2VLCVqUzJA6g7FbvXYVpgOxphwAgOb+i1Dc0yI?=
- =?us-ascii?Q?blZQlGM1Y9Xw26dKtWTaNjILy2R79LTH90VdscthKkRMAQrbCMGzfi6v/Am1?=
- =?us-ascii?Q?E6N35pD6HQJxh8jOC3z3TnFPCUEgGKItI1EDAGgv1s074OGbt8kyf0KA4YQ1?=
- =?us-ascii?Q?MTFAFbqVUz+L+e0R2gZcmlSOPXl11BUQVJKvNlPz3UpCbDZvdk7dEqgXCqKV?=
- =?us-ascii?Q?Y8kqxEssPmHqV6Pe8dLo9glY3+HDwJcwWq5t70C31hU2XIWsuNgnX5m5FwjQ?=
- =?us-ascii?Q?Xi4Xdm2TeIwImMarRgGxmiK2darC/PJ8ez3CJvePJR8eFGUWCiAxJKI75Bzw?=
- =?us-ascii?Q?aAFoH53zh7OardYKA5ag1tCl9vR3uBn+9fD2naF5rgei555dXmDBnh7YBltN?=
- =?us-ascii?Q?PgV5sU6odD/O+QSFLqOsAC9qq+NIbZJ7bmPnaPAMzjdiLrVmuS9JcGqljhr5?=
- =?us-ascii?Q?DaXFWBqx659+BPkZHuCZOOl+4evKExg9KbXDihUI/bEgYRMZ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495472F28EA
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 16:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773763238; cv=none; b=P8wH0sOrZm7X/Q9aCRpPpd9rlrAQgz8Fh3mCtr2bKrBJiWTqYUW/sGX1NS2v+tlIgUbIY9yXDsABhY10jlhOq03+h39AtbatO9o0FKXcJon/Zm3jackVb1b4cGya8SimHdtKqwKaoooyFAuBYFGlvryHabiG5kUoJOg7+caH9CY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773763238; c=relaxed/simple;
+	bh=sIXRyKcBB8QlxcJr7L52j/3CiZELN2iAHmA6Aw4pzm0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rnBbge9ELYbuGlr2dl+kz7ZRlATV5C2ChcVi11+sX4Y/17pEABrtX6W92IWI6j9A62lA0kHtUWu6ok5zaRQOyWhdTgDwVCqlBZnurw8O3FMFR3psfBWMkufprLMA2W580P9mmAm1SCYcYdPKu3QNCujQ9VNlQ7DRVpTGQT4k1JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38a23cf08e0so37640971fa.3
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:00:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773763235; x=1774368035;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=twLG+LiXs44QUcz9Iwy6OkpeTFkusmg+ejXI1TbxJ+E=;
+        b=TVKXEpK8UneNw8aEql8ExuJNCLDTg+AHzZV5QvAUb/fOhrLU2AAVgI15jhSjMvBqdK
+         omlKgGmYfhWsS+ii8MuC7PQcNaDhUfeOxva0pu3GLalivQTvTxkJaWCOSJpOILekvgGX
+         lxyrGK1xJ/qp1EnYpFqiDdEruSatx2v8JDewSnxM+2koI2f+77zWq+MD72cLt3uZ+mYZ
+         wy0Ty1KRNP56VWkeV+fnowHlVKF+rhgwSr6qNj+0WbGVfhQDA5GIN8GnA74IFAMWqxyO
+         kMa0lQQI2vaD2dXgrbmnpD1gUkloFIUXNHsKRU1Jm7wIKai8Ll9cgdcmqViAMvQBHAZH
+         ZbgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXw2XKgN4g4zxuvOSXoXOngToFomvNCPZhmaMHTl4Gpk9sSkaHJrRuALmbo1TsT6m9axnA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTOgqAxvs4898m9S2UKRy77ldGZXfiI8EgrK88bMhXYnqi6QE4
+	pxrMRh39cHLwRgYpEOuR9swOPjpIMfkiifWX526dwYHk9ERzOzMaQQRTa1dgHCEcIPE=
+X-Gm-Gg: ATEYQzw9xy62piEI9nqe37sILi+C6KLDD1x3VVjASEnwVO9uF3ELQpKBblF1feusyDc
+	8prQLBWnmDcsAlCl5pRAjBj4PEHkAfEU7QYggVlSBxcgcq1NaEZjkDe3hZKJG21gUF+B9QCkjV8
+	WshwL8vizP7nJCJ/Lggr//iFEyQx3jz5MvFcF5+ojLLi/8aF+QyiZfhNnLwH9niUnnykE5c4iWn
+	t0E3LcCv87GQKMg+XwN/vSOxKldj//aQ4FWNr9xnv80bqSVEd8/p82MX8oFWePTlDkmT+sSU2Xd
+	NjCRzpd8XAhKHImQ623g9YUW2KUhJbgTbAAb73ObZUuAhhxNOIzSv2LfWT2rzZebtMKyhjG8Wme
+	wFfThgZB5tyCVpqqtdcpBUCbKmY2oZ9rTWiWikDDfF2qgaIdibk/WrZAG2vbmmOdC0Jd2vOlIWz
+	wCdr2MCRqzq0/gzP5igpmelpJz2E5xXVWDUmXYfTujngRhg15mfRjNa96D3KgW
+X-Received: by 2002:a05:651c:c8:b0:38a:2917:8546 with SMTP id 38308e7fff4ca-38bd58aff0emr504711fa.30.1773763235267;
+        Tue, 17 Mar 2026 09:00:35 -0700 (PDT)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com. [209.85.167.52])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bd54fa6b8sm315961fa.42.2026.03.17.09.00.34
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 09:00:34 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a133b686f7so725804e87.0
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:00:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVR6rTq++OfbJFA98Y6v9AHg69RFV3eSO3B5cZddTej2HpLcZqpEZK5zOXjKJP0YpqOWmw=@lists.linux.dev
+X-Received: by 2002:a17:907:d1e:b0:b94:1d92:7eb with SMTP id
+ a640c23a62f3a-b976505a45fmr1113540866b.18.1773762847178; Tue, 17 Mar 2026
+ 08:54:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72115783-b529-45b8-1025-08de843e3888
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 15:59:50.3995
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: d1dhMsuKrdWr27XaU/ux2s1EZp0ldXaOmIP/0otGFBwUVdEy6Va1ZYaFZxd5N5nWk+jbP8teHqNgTowbTAFT7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11264
+References: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org> <20260317-arm_defconf_cleanup-v1-3-8eecb7fdd24d@kernel.org>
+In-Reply-To: <20260317-arm_defconf_cleanup-v1-3-8eecb7fdd24d@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 17 Mar 2026 16:53:54 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdV50nOT06wKfj_X5LU2z=1XZZGd6Gac0C41qWWNZHRLXg@mail.gmail.com>
+X-Gm-Features: AaiRm53kA4BcUnu8DzmJWc_bmCImw2GJpSjbqTP7vNJFqk2-PxsMkq0NOVh2FgU
+Message-ID: <CAMuHMdV50nOT06wKfj_X5LU2z=1XZZGd6Gac0C41qWWNZHRLXg@mail.gmail.com>
+Subject: Re: [PATCH 3/9] configs: remove obsolete assignments to CONFIG_NFS_V4_1
+To: "Vincent Mailhol (Arm)" <mailhol@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Mikko Rapeli <mikko.rapeli@linaro.org>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>, Heiko Stuebner <heiko@sntech.de>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Mark Brown <broonie@kernel.org>, 
+	Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Michael Walle <mwalle@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
+	"Rob Herring (Arm)" <robh@kernel.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Anna Schumaker <anna.schumaker@oracle.com>, 
+	Alexandre Gonzalo <alexandre.gonzalo@arm.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, linux-samsung-soc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, openbmc@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Vincent,
 
+On Tue, 17 Mar 2026 at 10:16, Vincent Mailhol (Arm) <mailhol@kernel.org> wrote:
+> CONFIG_NFS_V4_1 was revomed in commit 7537db24806f ("NFS: Merge
+> CONFIG_NFS_V4_1 with CONFIG_NFS_V4"). However, some defconfigs are
+> still referring the old configuration.
+>
+> Clean-up all the leftover references to CONFIG_NFS_V4_1.
+>
+> FYI, the suppressions were done using:
+>
+>   git grep -z -l '^CONFIG_NFS_V4=' -- 'arch/*/configs/*defconfig' |\
+>     xargs -0 sed -i -E '/^CONFIG_NFS_V4_1=/d'
+>
+> CONFIG_NFS_V4_1_IMPLEMENTATION_ID_DOMAIN and CONFIG_NFS_V4_1_MIGRATION
+> were not in scope of the renaming and still use V4_1 in their name, so
+> keep those two untouched.
+>
+> Fixes: 7537db24806f ("NFS: Merge CONFIG_NFS_V4_1 with CONFIG_NFS_V4")
+> Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
 
-> -----Original Message-----
-> From: Andrew Lunn <andrew@lunn.ch>
-> Sent: Tuesday, March 17, 2026 9:22 AM
-> To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-> Cc: Shenwei Wang <shenwei.wang@nxp.com>; Linus Walleij
-> <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>; Jonathan Corb=
-et
-> <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
-> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn Andersson
-> <andersson@kernel.org>; Mathieu Poirier <mathieu.poirier@linaro.org>; Fra=
-nk Li
-> <frank.li@nxp.com>; Sascha Hauer <s.hauer@pengutronix.de>; Shuah Khan
-> <skhan@linuxfoundation.org>; linux-gpio@vger.kernel.org; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix Kernel Tea=
-m
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Peng Fan
-> <peng.fan@nxp.com>; devicetree@vger.kernel.org; linux-
-> remoteproc@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>; Bartosz
-> Golaszewski <brgl@bgdev.pl>
-> Subject: [EXT] Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO dr=
-iver
->=20
-> > > +static int rpmsg_gpio_send_message(struct rpmsg_gpio_port *port,
-> > > +                              struct rpmsg_gpio_packet *msg,
-> > > +                              bool sync) {
-> > > +   struct rpmsg_gpio_info *info =3D &port->info;
-> > > +   struct rpdev_drvdata *drvdata;
-> > > +   int ret;
-> > > +
-> > > +   drvdata =3D dev_get_drvdata(&info->rpdev->dev);
-> > > +   reinit_completion(&info->cmd_complete);
-> > > +
-> > > +   if (drvdata->protocol_fixed_up)
-> > > +           ret =3D drvdata->protocol_fixed_up->send_fixed_up(info,
-> > > + msg);
-> >
-> > Seems not part of a generic implementation
->=20
-> Agreed. Lets have a clean generic implementation first, and then patches =
-on top
-> for legacy stuff.
->=20
+Thanks for your patch!
 
-Adding fixed_up hooks doesn't make the implementation non-generic-this patt=
-ern is=20
-widely used in Linux drivers.
+> --- a/arch/arm/configs/shmobile_defconfig
+> +++ b/arch/arm/configs/shmobile_defconfig
+> @@ -217,7 +217,6 @@ CONFIG_TMPFS=y
+>  CONFIG_NFS_FS=y
+>  CONFIG_NFS_V3_ACL=y
+>  CONFIG_NFS_V4=y
+> -CONFIG_NFS_V4_1=y
+>  CONFIG_ROOT_NFS=y
+>  CONFIG_NLS_CODEPAGE_437=y
+>  CONFIG_NLS_ISO8859_1=y
 
-Shenwei
+Already done, cfr. commit 8c6cccefb33e2022 ("ARM: shmobile: defconfig:
+Refresh for v7.0-rc1") in next-20260309 and later.
 
-> > > +   ret =3D of_property_read_u32(np, "ngpios", &port->ngpios);
-> >
-> > The number of GPIOs should be obtained from the remote side, as done
-> > in virtio_gpio. In virtio_gpio, this is retrieved via a get_config oper=
-ation.
-> > Here, you could implement a specific RPMsg to retrieve the remote topol=
-ogy.
->=20
-> The DT property ngpios is pretty standard, so i think it makes a lot of s=
-ense to
-> have. But i also agree that asking the other side makes sense. What is be=
-ing
-> implemented here with rpmsg is not that different to greybus, and the gre=
-ybus
-> GPIO driver also ask the other side how many GPIO lines it has. So yes, i=
-t should
-> be part of the protocol, but maybe optional?
->=20
->           Andrew
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
