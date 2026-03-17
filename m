@@ -1,55 +1,71 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E6D3E276C;
-	Tue, 17 Mar 2026 14:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E764F3E5569
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 14:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773757354; cv=none; b=kEs4r3Sp78cDxeb8Sa2nvUtwvprJHvVOdlBVYaAJYM6ZtewrTSUgQsC981ntszuvxniS/xLQPG4DTs5nmx6VljrRhoxhj8H7FqVCjsbOviARTmV9hiME9qEaE5BuSQkGxt78CyKnrxFieRwpzK13Dpu2j+h/I1qyIa/UQYel+OQ=
+	t=1773757685; cv=none; b=lOyEadwmDUUXWaSWYW6ZxMsDeLRM6e/udkJj7v8H2OPlgBEgkHfgkmpNhZgrGQ4wJWUZ7Og3yn2xQ1Pl+yF8WUP2XIEEJjbm+8CEjdbpyW0k5UXBCLDbOA2ckD7T/i2ccZs0i8fDIPq6bIDn7iSJm/wdYpA6r0j1DSG9n0pjiFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773757354; c=relaxed/simple;
-	bh=28yViGP6bassgTvap2oH91NclsVYHfgNoQlH2l9XYMY=;
+	s=arc-20240116; t=1773757685; c=relaxed/simple;
+	bh=XlJj6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vy44xWHbhy0AWnHuIGnYyXcCuO6Tjx7T6MDXatxzd4S7x0o/GhN5mltY6/4YXPZ2A4xU7uFGpFnNu6IekkCy04V5cavDbbDYo+kEictv3zFIqWypTtg8EZ6GEKCX4BcTCQqsSpNFLXm9MO/hPhbQbwn58b4nsN97V9mvfJXPeco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0KUmaox7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=HMAI6MYYWYkjoC9cFQteM1rT8A1QhTnpg2NXsgJUgpEhzPu1K4E4GpJGA3rcoJBETvZHS+megTldFBUj9ZFCz9P88KCv6+JuHMcf1u4FCyQi6/zppR4FGrWRgSwl4OF/fEBPyxVnfnA6/hg1VAOsUNyOLJ2RltvD1liBdCcog0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=bG2zxRXQ; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0KUmaox7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=I6Y4ZFhW4cSATcogRMbcAzq1BU+egoD9LUl6g+F51PA=; b=0KUmaox7WptcPUgpyYu6zf8gmx
-	OuQhHCtBY1RmDCddkr8WPd7/OqPtgIAqv3DZazZKjnYAtGsf7kv0jzozr0f6Nli51WdnXtTl1fNQE
-	5SN/WJghoZzlYvj4Htq9wxoxVWZoQw6jwhr4VF7p2KDhKgD67YTd14XUtDWt6KrkaJzQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w2VJQ-00C2Ig-J1; Tue, 17 Mar 2026 15:22:24 +0100
-Date: Tue, 17 Mar 2026 15:22:24 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="bG2zxRXQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=XlJj
+	6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=; b=bG2zxRXQ9Fu9bCPjNpx3
+	P7wgiIDoMXLCFMRPPmDltjPAhFzrIRxLaSxIF85pzMhW3YyHuUmEPHx4tFc4UUho
+	Wo06erk7gncW5uU46/3R7WWSOx6aUij0lMRTitWmNhEITS6dBlW5FTJQJ9Lann3s
+	dlppwJoBzJT5UfzY5GRapN/vktmt/GFIZqfQ7PYY1fBvA6Tbh+0RN0wBNuR0C9Z/
+	Xyd1b5tVvedLvdm7mrVbuvLIWeLiCjAeTKnuo2FG1hjxzOQTRhAzR5B4ebBzP+t3
+	vgcwphcy28vVhUjbhXw+mZaFWm3+CISUtLErtDSyofA6mcDgcyIeFO1eGKVh/IO/
+	FQ==
+Received: (qmail 312797 invoked from network); 17 Mar 2026 15:27:57 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 15:27:57 +0100
+X-UD-Smtp-Session: l3s3148p1@LnJGJDlN/LM+XdJ7
+Date: Tue, 17 Mar 2026 15:27:52 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-imx@nxp.com, Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <0f880475-a850-4138-b79d-d3c88765b0e0@lunn.ch>
-References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
- <20260313195801.2043306-4-shenwei.wang@nxp.com>
- <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <ablk6O2XMUc1EKK0@shikoro>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
+ <abkLEgrZbdb03VWg@ashevche-desk.local>
+ <abkLY4AAQuFlTRC7@ashevche-desk.local>
+ <abkT_jpjIki6pvX1@shikoro>
+ <abkqEni3phP8dqqw@ashevche-desk.local>
+ <abkuNpwmYGa6qJPZ@shikoro>
+ <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,38 +74,14 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+In-Reply-To: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
 
-> > +static int rpmsg_gpio_send_message(struct rpmsg_gpio_port *port,
-> > +				   struct rpmsg_gpio_packet *msg,
-> > +				   bool sync)
-> > +{
-> > +	struct rpmsg_gpio_info *info = &port->info;
-> > +	struct rpdev_drvdata *drvdata;
-> > +	int ret;
-> > +
-> > +	drvdata = dev_get_drvdata(&info->rpdev->dev);
-> > +	reinit_completion(&info->cmd_complete);
-> > +
-> > +	if (drvdata->protocol_fixed_up)
-> > +		ret = drvdata->protocol_fixed_up->send_fixed_up(info, msg);
-> 
-> Seems not part of a generic implementation
 
-Agreed. Lets have a clean generic implementation first, and then
-patches on top for legacy stuff.
+> I don't recall using any lock for this purpose.
 
-> > +	ret = of_property_read_u32(np, "ngpios", &port->ngpios);
-> 
-> The number of GPIOs should be obtained from the remote side, as done in
-> virtio_gpio. In virtio_gpio, this is retrieved via a get_config operation.
-> Here, you could implement a specific RPMsg to retrieve the remote topology.
+In that case:
 
-The DT property ngpios is pretty standard, so i think it makes a lot
-of sense to have. But i also agree that asking the other side makes
-sense. What is being implemented here with rpmsg is not that different
-to greybus, and the greybus GPIO driver also ask the other side how
-many GPIO lines it has. So yes, it should be part of the protocol, but
-maybe optional?
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-	  Andrew
+counts as an ack for i2c, too, of course.
+
