@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C00392C49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B698D392C34
 	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 07:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733342; cv=none; b=WDHdKnEA5KdzN9PpEYBEsdzOon5oN3lKJTzuaHsaK0nrETGlM5+CBzbaTZgYffJJdqwRAZbw4c+AptaXv3uUUtwrY90TFt7t4ipQ433xXB8sGiC7m4jrhCogpTx0+I4CIGk50bs0FA0+rW/TQ8zm5nOCuGq+X3n+9GLK1oqSlqg=
+	t=1773733343; cv=none; b=h2gdrdb5YL9/E5U3MlY8O0Y2ATWPjDMpjbC1givaBwedeKnv8PPKRfWDhPKijppm01KiQEZ86eic0M3qNOGazGnRp9NaCzF0puGeSwSzlSli8qdy4VyfdUx7KpbnvCZn4TArz4zHin2ZBWamJjIxTCJ75/uSbBCGUIeMMq91z0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773733342; c=relaxed/simple;
-	bh=VZUqm1bwUt0zJZmDbxUdQU+0/3Ih8Gu2ecjYfg7KfdY=;
+	s=arc-20240116; t=1773733343; c=relaxed/simple;
+	bh=GQ/+8DR0GvBxxklW1EnMg+Zsjm258yGUoNWk9C8N0bE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mgfroS+PyixNl43diV6TfdAKTAldOn2zu4zwSluxqOjCal3tNNJtzhIHha0uypI/TeOA5yerC/Obit0mQYImfefE5t9jR2ni7qffNTV/B1Q1/yT99U72W4tCZt9scWxIEd83lwpmusZXJV1K3iycxP/p2Xfo/9QQKw7cBaWLxPE=
+	 MIME-Version; b=fuV9IAlvbMj5iSkowFTZMjyj4D0LPcRRV0IqOCYbCkvMLrOf4DeFTkBNP8QRMah0o8PcGqAZX87DzEdIcSk5idC/BRVTIfK6Sa08YmBZhfcjZulMbTicBuIdMQcUv1fCX2VVShWcVby/sLB8Hu7jYCxbYHR2sb/MH79m44teIDc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: ce0a1df821d411f1a21c59e7364eecb8-20260317
+X-UUID: ccd555ba21d411f1a21c59e7364eecb8-20260317
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:d614da68-762f-4f7e-b095-7610947a431a,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:2353634c-bd9c-454e-bf68-c3439609b284,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:01be61a981189ef1a2ec29b5dd8f6ce4,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:87ef9ab8286604c6f2f3d0b3aae2297d,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ce0a1df821d411f1a21c59e7364eecb8-20260317
+X-UUID: ccd555ba21d411f1a21c59e7364eecb8-20260317
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1731831529; Tue, 17 Mar 2026 15:42:09 +0800
+	with ESMTP id 88395760; Tue, 17 Mar 2026 15:42:07 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v3 13/17] spi: stm32: Use helper function devm_clk_get_enabled()
-Date: Tue, 17 Mar 2026 15:41:55 +0800
-Message-Id: <67c9ada7b1f3b697c6fbc4eddd88efef8fa75ec6.1773733017.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v3 09/17] spi: sifive: Use helper function devm_clk_get_enabled()
+Date: Tue, 17 Mar 2026 15:41:51 +0800
+Message-Id: <e0d249f53fc99a84092f29859ace9a1f22aab573.1773733017.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773733017.git.xiaopei01@kylinos.cn>
 References: <cover.1773733017.git.xiaopei01@kylinos.cn>
@@ -66,130 +66,86 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-stm32.c | 61 ++++++++++++-----------------------------
- 1 file changed, 18 insertions(+), 43 deletions(-)
+ drivers/spi/spi-sifive.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8a7f5a10d4af..ee5092bc5956 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2360,25 +2360,21 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	int ret;
- 
- 	cfg = of_device_get_match_data(&pdev->dev);
--	if (!cfg) {
--		dev_err(&pdev->dev, "Failed to get match data for platform\n");
--		return -ENODEV;
--	}
-+	if (!cfg)
-+		return dev_err_probe(&pdev->dev, -ENODEV,
-+				     "Failed to get match data for platform\n");
- 
- 	device_mode = of_property_read_bool(np, "spi-slave");
--	if (!cfg->has_device_mode && device_mode) {
--		dev_err(&pdev->dev, "spi-slave not supported\n");
--		return -EPERM;
--	}
-+	if (!cfg->has_device_mode && device_mode)
-+		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not supported\n");
- 
- 	if (device_mode)
- 		ctrl = devm_spi_alloc_target(&pdev->dev, sizeof(struct stm32_spi));
- 	else
- 		ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(struct stm32_spi));
--	if (!ctrl) {
--		dev_err(&pdev->dev, "spi controller allocation failed\n");
--		return -ENOMEM;
--	}
-+	if (!ctrl)
-+		return dev_err_probe(&pdev->dev, -ENOMEM,
-+				     "spi controller allocation failed\n");
- 	platform_set_drvdata(pdev, ctrl);
- 
- 	spi = spi_controller_get_devdata(ctrl);
-@@ -2409,32 +2405,19 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 6c7aba8befa0..54adbc057af6 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
  	}
  
 -	spi->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(spi->clk)) {
--		ret = PTR_ERR(spi->clk);
--		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
--		return ret;
--	}
++	/* Spin up the bus clock before hitting registers */
 +	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
-+	if (IS_ERR(spi->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(spi->clk), "clk enabled failed\n");
+ 	if (IS_ERR(spi->clk)) {
+ 		dev_err(&pdev->dev, "Unable to find bus clock\n");
+ 		ret = PTR_ERR(spi->clk);
+@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
+ 	}
  
+-	/* Spin up the bus clock before hitting registers */
 -	ret = clk_prepare_enable(spi->clk);
 -	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed: %d\n", ret);
--		return ret;
+-		dev_err(&pdev->dev, "Unable to enable bus clock\n");
+-		goto put_host;
 -	}
- 	spi->clk_rate = clk_get_rate(spi->clk);
--	if (!spi->clk_rate) {
--		dev_err(&pdev->dev, "clk rate = 0\n");
--		ret = -EINVAL;
--		goto err_clk_disable;
--	}
-+	if (!spi->clk_rate)
-+		return dev_err_probe(&pdev->dev, -EINVAL, "clk rate = 0\n");
- 
- 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
- 	if (rst) {
--		if (IS_ERR(rst)) {
-+		if (IS_ERR(rst))
- 			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
- 					    "failed to get reset\n");
--			goto err_clk_disable;
--		}
- 
- 		reset_control_assert(rst);
- 		udelay(2);
-@@ -2461,11 +2444,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	dev_dbg(spi->dev, "one message max size %d\n", spi->t_size_max);
- 
- 	ret = spi->cfg->config(spi);
--	if (ret) {
--		dev_err(&pdev->dev, "controller configuration failed: %d\n",
--			ret);
--		goto err_clk_disable;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "controller configuration failed: %d\n", ret);
- 
- 	ctrl->auto_runtime_pm = true;
- 	ctrl->bus_num = pdev->id;
-@@ -2490,8 +2471,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 			dev_info(&pdev->dev, "tx dma disabled\n");
- 			spi->dma_tx = NULL;
- 		} else {
--			dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
--			goto err_clk_disable;
-+			return dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
- 		}
- 	} else {
- 		ctrl->dma_tx = spi->dma_tx;
-@@ -2579,8 +2559,6 @@ static int stm32_spi_probe(struct platform_device *pdev)
- err_dma_tx_release:
- 	if (spi->dma_tx)
- 		dma_release_channel(spi->dma_tx);
--err_clk_disable:
--	clk_disable_unprepare(spi->clk);
- 
- 	return ret;
- }
-@@ -2610,9 +2588,6 @@ static void stm32_spi_remove(struct platform_device *pdev)
- 		gen_pool_free(spi->sram_pool, (unsigned long)spi->sram_rx_buf,
- 			      spi->sram_rx_buf_size);
- 
--	clk_disable_unprepare(spi->clk);
 -
--
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
+ 	/* probe the number of CS lines */
+ 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
+@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	/* Define our host */
+@@ -392,7 +386,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -401,13 +395,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	return 0;
+ 
+-disable_clk:
+-	clk_disable_unprepare(spi->clk);
+ put_host:
+ 	spi_controller_put(host);
+ 
+@@ -421,7 +413,6 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+-	clk_disable_unprepare(spi->clk);
  }
  
+ static int sifive_spi_suspend(struct device *dev)
 -- 
 2.25.1
 
