@@ -1,88 +1,67 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F72396565
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 08:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585DB39DBC4
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 08:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773736965; cv=none; b=LhcBMr3xfnjw8HIqqV6u8LALlKWohCLnYLEPZ5hDynO7aUiFNWRwmz4l81LuVsC0+W2SfXobMdkth1jMo5I342mbOnMIpSS2lDUeqK6ESKEfq3XyYHTdDZs5uNd4gFuhALKlAm+aghx1KPcDGg+JcLEW4LodyYpEpw8NHvbnP9Y=
+	t=1773737614; cv=none; b=WpYcVUUrD8A3PhP6JxznHMgsRncUU85ebAyGHi9+MLdPUPYXiDNaVECQCJc+QBIvrTz+MObxIAjgKH/jFuXlivmOIYbhXeiz0oMBRRqcmPa6yOhq8er+F/jpfbkFC9oKTMOPhu3Vp9GzAQ9QLH46UKaZkXMnnTKGvMo/rtLXRus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773736965; c=relaxed/simple;
-	bh=We4kyAVpef1yVQMi+y0N9ah2Tt3KgAFYTyFZ0cU4WdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=giCyhVYrDhv5Gn/1GRaDueN2i+vcfvxnELe09LB3rlVxFtZiJimIukgYB7McaGuj6i9yhiKwlNtonAP7+uIM7CbMmTr2vsmf+qlfXJU55dDr8qODwH8xbezjdTJUjRTu0kxYUWV7d8GVnzB3JYN3xhed4rvm6mM0U9PnJ6UcBj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JkTPL8Qa; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1773737614; c=relaxed/simple;
+	bh=In8idt2yZweANMAepWHj54chzIEKvH54YasTehXIpzQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SroLww91JfoeiVeEHrMHuQq4vRPil9thqeC7+qs7nQxP7IW/rem87y4lIjMZgmJtLV1bAi6lGmilN/87J9ncHDM7zXruCKtfhWpURuGqQl5cRqZnCkccnKk41mAN9ovohQd1E+cRzQo+ZlOQSPH3QRjxVitPUyBDNzjnHUoTtUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VfXCGi8q; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JkTPL8Qa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=irzt
-	fqdefDjxQXcIA83sbW0ur9PPGeP0t0NSrtgsi4s=; b=JkTPL8Qa9lTezefnVa6i
-	PuYCxImKQCA7y+YErvUuovrsTDP4lQ8/PbcRoOO+H227ulh0TCzmz92MT4WGbqnm
-	gtzhzsyqq/usEM+njAVl6Ta70MEaZ99nvIxLnlXqsAmQwno9VfN3R6Gu8SqvG6zT
-	1+efsUaKoaaQKySH4J7r8j2pWizdLDHaXluauufhjIxnxU5B2wjQ+zeZ+4bfm6ND
-	Nfhf5jo5AWZbwlhYHEYbtJJ0jDxp/LSpcc1R2ia2HSyf37lZiJ0rS+7oS1HGjWKQ
-	MWVM2QCBt6kUATI0QRa2cnXhsD7zsgMr2oUr6HJLJ/rEFm8WZweSEjfIASNyHNtj
-	KA==
-Received: (qmail 187280 invoked from network); 17 Mar 2026 09:42:38 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 09:42:38 +0100
-X-UD-Smtp-Session: l3s3148p1@e79TUTRNPMFSwmvS
-Date: Tue, 17 Mar 2026 09:42:38 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abkT_jpjIki6pvX1@shikoro>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
- <abkLY4AAQuFlTRC7@ashevche-desk.local>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VfXCGi8q"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A6BE51A1107
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 08:53:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7DADA5FC9A;
+	Tue, 17 Mar 2026 08:53:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D105610450425;
+	Tue, 17 Mar 2026 09:53:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773737604; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=In8idt2yZweANMAepWHj54chzIEKvH54YasTehXIpzQ=;
+	b=VfXCGi8qmU3nCq3Gukypcit5ZVFlruwkaPJ15ozYvVPvdTISE6bbCPJBV9jYPT9MUjP/g2
+	NUQw2F7PQ1VHJEeBeLSJaRZvTb62wcUycIwRGHhWCrXsdN61z5nI5LetmpU5aUb0Wo0dxX
+	yDMxSeNXLoMZiJ828qRnMEVnLwNakdBBaYmYdQzcMwE1s4gkBOjxrMS0IHSDmCgFIbfBMf
+	nSeZWeoiRuUhfE2FZY7oGMDN8EXTzpu5+t7wpyjkFgsMrymINVwrLNy/sXHNIgtBAC6Vj+
+	9QIa0urILQ6XsECAr85kUH3sqqXGKAGsdGW16cZzmHzuP+zpkhZdL2T0EinQoA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Haoyu Lu <hechushiguitu666@gmail.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,  Frank Li
+ <Frank.Li@nxp.com>,  linux-i3c@lists.infradead.org,  imx@lists.linux.dev,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i3c: fix missing newline in dev_err messages
+In-Reply-To: <20260317034015.638-1-hechushiguitu666@gmail.com> (Haoyu Lu's
+	message of "Tue, 17 Mar 2026 11:40:15 +0800")
+References: <20260317034015.638-1-hechushiguitu666@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 17 Mar 2026 09:53:23 +0100
+Message-ID: <87a4w6g7lo.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abkLY4AAQuFlTRC7@ashevche-desk.local>
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 17/03/2026 at 11:40:15 +08, Haoyu Lu <hechushiguitu666@gmail.com> wrote:
 
-> > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
-> > (I assume it's 64-bit SoC.)
-> 
-> FWIW, with the given change it will be still inside 64-byte data structure
-> which most likely occupies a single cache line (before this patch and after
-> as well).
+> From: "haoyu.lu" <hechushiguitu666@gmail.com>
+>
+> Add missing newline to dev_err messages in:
+> - drivers/i3c/master.c
+> - drivers/i3c/master/svc-i3c-master.c
+>
+> Signed-off-by: haoyu.lu <hechushiguitu666@gmail.com>
+> ---
 
-I consider this directon of the discussion irrelevant. If the number is
-(maybe? That's to be discussed!) needlessly bigger than 0, then it
-doesn't matter how big the number is.
-
-Why don't you like the idea of taking the lock?
-
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
