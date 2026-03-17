@@ -1,115 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D99B39FCDE;
-	Tue, 17 Mar 2026 10:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C7B19D081
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 10:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773742622; cv=none; b=n5Gjd6NdyL5mpGybkvNitR6HBjQQcF2c42yhSh0GctfuU71bzSlLBJuVAOny6iOiPcemAJscxNyYtnNll/Mf067f9k69yW9bqK10qWuVDIJ+WCCQiTIi32ctYwP2E3JsgOWiwv2YbsUx2CUqy604VhkVHyFHDu86KNkuC62MB3c=
+	t=1773743157; cv=none; b=Hiwg5TVATvhcQZEb+AhZrfVblVf81a3bxtGOJwxB4QKQj7CQs7LownSPAaWsESgWhNRkNhHrnaGoGrxh0iw0xSVcdQ71uDEwyovEle0tp5IVgrC7UcuQeszLlJQeX7LjGv7sgzodfrbyELfbQxFKFjqHRrxX13eUtSp3V5pg+7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773742622; c=relaxed/simple;
-	bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rm299cs6U4o38mzIJnMJTgLpa1bTVUmGuM/1UAgALq5m2eBHDgyGEYjBloq5vyS4h1B9/YETXCP+v6V4pheIwOGr58fCCpR1d2ngmas7WfKVNGhUFVEksVsSufTmlcIWEzfIqDx+g6qkasvMKFOMJ8OUBRmM2cpg+PJa3W6To+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YYbI37Ve; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YYbI37Ve"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773742621; x=1805278621;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
-  b=YYbI37Ve1DwcnLOdyc1IFDHH/M5KC4JKjl3sYpf6RV2kN6nTpaFqulLS
-   f55dgdNA/OKDZKcGDoXDlA08roYg2y5CyRGExEIrgluXw9iM+FCZXOFUp
-   oKJsvlnBEgtwofH+AjsTFspkdmERgiM7vs1plt8oBQI06cVKebs5IFKYk
-   8yrqegNf41MCQq3saMo9k36PQr/dxfm+V+6uV8Ad6s88jJetq5hcZXzlg
-   anGxg9L9JauEmrl4o2ki/PX98Bv22CJKP/GVObaLC7ENVF4bxfR/g5qJj
-   wugOuO6soUYpp0U1hZv5wljAJlfMB1nfWqQvxt1VaAwVus1OSo0FvL2dE
-   A==;
-X-CSE-ConnectionGUID: euQq2TqDRi+k7pfgXuAbUg==
-X-CSE-MsgGUID: Vyv7HYu4RyycjTT9Ta9SQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74472224"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74472224"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:17:01 -0700
-X-CSE-ConnectionGUID: YWwwfd8QSr+Yegj693ADXA==
-X-CSE-MsgGUID: Bjwo4+7+Q/OCfHxBHIvODg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="260126206"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:16:53 -0700
-Date: Tue, 17 Mar 2026 12:16:50 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abkqEni3phP8dqqw@ashevche-desk.local>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
- <abkLY4AAQuFlTRC7@ashevche-desk.local>
- <abkT_jpjIki6pvX1@shikoro>
+	s=arc-20240116; t=1773743157; c=relaxed/simple;
+	bh=jkq2WjYCcQxDWTym4IfJ0pih1gzA3onTSTyIbhDl48k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hc3yWOHQDkCHt6jTHsNDjqL0j194Qk8DQI8tsu+rA33LBi4kqI2pjePqz07JUIjhSXvRrX/UftL9+nhNG0kCBWs6RjdKKIiO2nTLGxaC9qRqJQgBYNs5kMWvw8TZuz/WhhwtpwPrkk0QZbShLyOJGxyNE8QEVAx3JajCis66PhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 44A6320013E;
+	Tue, 17 Mar 2026 11:25:49 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 374012000CA;
+	Tue, 17 Mar 2026 11:25:49 +0100 (CET)
+Received: from lsv15509.swis.ro-buh01.nxp.com (lsv15509.swis.ro-buh01.nxp.com [10.172.0.253])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 8DF3620354;
+	Tue, 17 Mar 2026 11:25:47 +0100 (CET)
+From: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: Paul Bunyan <pbunyan@redhat.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	linux-crypto@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	imx@lists.linux.dev
+Subject: [PATCH v2] crypto: caam - fix DMA corruption on long hmac keys
+Date: Tue, 17 Mar 2026 12:25:13 +0200
+Message-Id: <20260317102514.3882809-1-horia.geanta@nxp.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abkT_jpjIki6pvX1@shikoro>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Mar 17, 2026 at 09:42:38AM +0100, Wolfram Sang wrote:
-> 
-> > > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
-> > > (I assume it's 64-bit SoC.)
-> > 
-> > FWIW, with the given change it will be still inside 64-byte data structure
-> > which most likely occupies a single cache line (before this patch and after
-> > as well).
-> 
-> I consider this directon of the discussion irrelevant. If the number is
-> (maybe? That's to be discussed!) needlessly bigger than 0, then it
-> doesn't matter how big the number is.
+When a key longer than block size is supplied, it is copied and then
+hashed into the real key.  The memory allocated for the copy needs to
+be rounded to DMA cache alignment, as otherwise the hashed key may
+corrupt neighbouring memory.
 
-That's why it was written 'FWIW', so it doesn't worth :-)
+The rounding was performed, but never actually used for the allocation.
+Fix this by replacing kmemdup with kmalloc for a larger buffer,
+followed by memcpy.
 
-> Why don't you like the idea of taking the lock?
+Fixes: 199354d7fb6e ("crypto: caam - Remove GFP_DMA and add DMA alignment padding")
+Reported-by: Paul Bunyan <pbunyan@redhat.com>
+Signed-off-by: Horia Geantă <horia.geanta@nxp.com>
+---
+ drivers/crypto/caam/caamhash.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Like Danilo I am also not sure what lock protects fwnode accesses.
-
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index 628c43a7efc4..44122208f70c 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -441,9 +441,10 @@ static int ahash_setkey(struct crypto_ahash *ahash,
+ 		if (aligned_len < keylen)
+ 			return -EOVERFLOW;
+ 
+-		hashed_key = kmemdup(key, keylen, GFP_KERNEL);
++		hashed_key = kmalloc(aligned_len, GFP_KERNEL);
+ 		if (!hashed_key)
+ 			return -ENOMEM;
++		memcpy(hashed_key, key, keylen);
+ 		ret = hash_digest_key(ctx, &keylen, hashed_key, digestsize);
+ 		if (ret)
+ 			goto bad_free_key;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 
