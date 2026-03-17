@@ -1,445 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013003.outbound.protection.outlook.com [40.107.159.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70753002AB
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 16:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773763894; cv=none; b=Comc8zR4kDYOkVC9qkNNvQA8MdfuJ+SvbQJD73vcLj7MSR/Sn/rahazacm59Y9LzruOtXyeEYMpLNUa4Y79owhGy4bTFzjNeVBjidB2jV+gcijDNY5jotCb68p4nfZDhIsJQT6g9zOcLYucdzEOf74R5XFXwm2zwt/7lmMsyK2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773763894; c=relaxed/simple;
-	bh=nzwxYOO80KWgQ1fy0XQWz9XWOSGbd2wGhl81ulNq+wo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ahQbgb/Nbr7RgOJjfNBQdClWJKwt2F8pPOG2aFE8lv6kTKmYbBA2+Tfc9/zamYIboSwrAV7mdCEGp7HSJCjoSyDCuka4/PGIOomFd4Utiugs0iPFp993Q4ZO1wUjNTrrc6o7pj0/+J6XessZrWu55NyedClJT82cs0e9Tt3ZI4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDeSP54l; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1378E2DEA61
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 16:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773764223; cv=fail; b=G6whC1XtnmZ2d7ATCmEme7JguEt5KIZxyEvS38BxU1Cmfx4AAS1XsTAmWPaZtw729m2r3TIHik0NhYgnJOynrGjqn0sMngNjWz6Dx68mWD3fXDezH2RT3h3FJEGYiRdrGfXdzrmCYAAyF2Qstgzw6bJiFUIZYJ6UIOJ9vFduLmw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773764223; c=relaxed/simple;
+	bh=qh455aihwojANRIvpf8L7XYDiY3BZSM/lbmhaOkNW7Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=X2Szrhx1KH+gX93oAt5+ONADd10wV4sz25qYB2oNBLpr4wHYEDRfNx/QGgsDgArCnJJDuDcsRRej29FNzrhTKmotnPT6ziY0GcaNoAekPDQ419dbmYby8j+FqwCMr87FeafTisreN7XUoVuLROO0k6NKNMCRv/ip2SCJAjRL1Mo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EElVw1yY; arc=fail smtp.client-ip=40.107.159.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDeSP54l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82475C2BCB9
-	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 16:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773763894;
-	bh=nzwxYOO80KWgQ1fy0XQWz9XWOSGbd2wGhl81ulNq+wo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tDeSP54lblgAe4gAPJpRs0FNLI3Hq+2zAu9PK93D8JFchCPHS6L5Iy63P/UIk4sLP
-	 RR6fhfmcXG5RD2s8U87B+Ut9+H+jTlMx0z0Ef+fp95sAK17IgLTUMqHZ547bvyg8FJ
-	 +4oCkvEiAhidJnjZrwUK5FZRLtzBaY8247n5et6eUDmkU/ywSfDxYvjVkJnIw3yWSu
-	 0gdcF6/nONqG/1fBiXoDmlom763VQyfY7Qb6Wi4VL+cLW5xfO8HlfVO6UHrWB3Y+gs
-	 vHjLrd342c4RHvHvkCFNIc7kLXdWyT/br2hVbdoXWH20J4SWGXSwogMnXtFAibi4bs
-	 e2sCKn3FG1TPg==
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-45f053b7b90so3900133b6e.0
-        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 09:11:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUmApWe3e9FpFUgA+Cz5TEKDzKbidLpLvjOZu3eL0mIorEhciXQnUDZwKN4z0Rov3H/KpQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxISmSu4YPmMkncMBYfsg5UuJrXFB0gyKfHVatSnjVJrpUi8fAE
-	oB1l9wIirf5dVle/xtebjO1KdkE5qwaIO9W3vDV1FYPqFhK6KNEGETK9A0P8JxQDNJQQuRzkvtz
-	8osbsPjIEJdAuMh0kk8wvR9WToQrv8Yw=
-X-Received: by 2002:a05:6808:1c0e:b0:466:f60b:19d5 with SMTP id
- 5614622812f47-46757095f03mr9065068b6e.8.1773763893289; Tue, 17 Mar 2026
- 09:11:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EElVw1yY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A5t2S65T3XuNzbV4HPkh+VTNxSP38DaB127tz2raNSVKufLhP5qU6Ea39miB5LU4UySz417GBZft/t8xYpWpjhFedS8OJNmEb9Wh9HoGmmx32LZpoLfzifOJAWFT6/apD8TLxH2mbgBu6wOHnc14vDha+7fo1uC5WESTnzU+bzsV5IosU7MmzPsQE0RbIhvMIsK02/aXCaY3Jf2xXmhpI1CMKTK3wXHGGlGsmTIKhySVzcSX/90KFbYAIOwOc2ZHhbI1iWquPiTOv5XaNOO9ZNXzl0oM76eWLBGACB1rpLD1SwwbIbx2uWc0fM+I2LOCgPF7oPlERj2RaJfvTwbovA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qh455aihwojANRIvpf8L7XYDiY3BZSM/lbmhaOkNW7Y=;
+ b=H5/iOg00mXsnlLlPLwTQVauUc70m8tpI73G1lwxJ5taNy101le5jB00C56KmuXnlyOznpEe6dCOlILVnkH+CFOGMuozr+SpKGe51AnSejKPbtcvBedf7j0l+PrrPnP8zec9qvFPc+wbAgiPyXzZmZBY6fO/kvyU59VzJtuBHyhBO3BWt4h0g7LmhwV/HlFX1kiPQjMWpGq9SyNnzMMaDT6ZvmWxxc+KC39uIWEo5Efl70n7fD4Je58mo/FkoJZ5VwfdccK73F6O3riZviZy02OBmBGKHqBkNgIshS0jN6aR0S/ZbIU8OWE9F2/NKNS2q5PWoq5xMwzfiUGxAeRSwDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qh455aihwojANRIvpf8L7XYDiY3BZSM/lbmhaOkNW7Y=;
+ b=EElVw1yYkeAMEf6HOIPfG4EOkan5kxc4YwHzzyNh6w7L/9KFtWICWFAGkaNWru+QOgAcf+g5/8z4G/KIQhRzBotcN8XtTpZXaGbiTQzNcyNcZ+zPM7PvEIgHBu2JPjcAxy8ZZPKrFB73gEBEoZjsqxKhbcunjT+yBk9+QYSdI9tPlYkRUrAYZY84qAo/hvTeSe03EibCaYGJepPLUSu4SvU10A1UYYoPGpeRzUH5fJ3HuDWhSLzXjKSJ3+wQNmRY9hnVsPqVzf0Hc3rG2ZcKmrVqFR492JUN7KAM2ba6GoZaG7wH3aZOZ4PspqpSt7xNwHf2S3LblcgFBo/n7kzIDg==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB9PR04MB9790.eurprd04.prod.outlook.com (2603:10a6:10:4c5::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Tue, 17 Mar
+ 2026 16:16:47 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9700.021; Tue, 17 Mar 2026
+ 16:16:54 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>, Arnaud POULIQUEN
+	<arnaud.pouliquen@foss.st.com>
+CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
+ Fan <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Topic: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Index: AQHctil4GHl+Jrxl9E+3SBsyPSC17A==
+Date: Tue, 17 Mar 2026 16:16:54 +0000
+Message-ID:
+ <PAXPR04MB918544CBA418DA709BBA0E808941A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
+ <20260313195801.2043306-4-shenwei.wang@nxp.com>
+ <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+ <104e9861-bfd4-4e0f-8967-a849edf7e6fb@lunn.ch>
+In-Reply-To: <104e9861-bfd4-4e0f-8967-a849edf7e6fb@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DB9PR04MB9790:EE_
+x-ms-office365-filtering-correlation-id: 4d44fc0f-6a16-4511-87be-08de84409b20
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|22082099003|56012099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ AAP+xolOa/AUKzIOa2637iIOsfy/CmK6Mp4C3qFQRJznO1S/lAVb+SvXOTkhY2yS7dSaT/Iz1MNqS/795skoV8IBnW8ZMf0ZvMDz+dVoBENhXrQZd6U7ivj8rk3l4pIuu2nvDLq2ZUVcnF8HSNooISZe8h9GlNunKrgXqDhmjNPWv0oPR8d5n7MbwtP4Za3RG90zpcTI5X+ITEyMKc9SRWqCcg/phSM7EBxzvCY2qEvyMAMvKNUfy/FFCH78ytvOvrpZ6O1wEwhDchtb4kpmFdo5kd8i4GUSoI5OalT8tifv6hDcuh2I6hRjxNUHPOvO8syEy1NZyKTou5p1thGKJB2daQ0d4Tdqenbf5Q4S1ld0W1JU27aUASt/ndhj252a2awVc6LIp1H5PGUnIUqI3bKqmxTIzW4xs8GOFYhgZsnJs2aXelbxD+ZGP6i8EvEYWllP+cSOmqxqqkxD1Ub4fTzRLEP7x9pSQFhtQeOAeH2q+6CFopQy9iwCdjJWJK9DZSG8ZpTRFhcl7A7gP55/gvkjUgH0oA3sUkV8L5EuHZvTg2lnTPJPly3Dhe4dpYtNBhvSbDAjz8H6bWU7ymv4hA8Zez3fHvB3BHIoGy7pr+fTGgPXjSecNGIAEvqFWGJ0jrig+IU3A7347yPRpKg8BARgis7DzYfdznAdolYa8cfInHNAJlnICC7U50Orm74IaZSp4wrkMs8I3SNA2syI5UbME8wvF2qqXdj3+/TJ+2WuKMnv0RYaLBl1+7S2pUle
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(22082099003)(56012099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?cUZGKy9FaW9WU3BndE1hRDVwY3hOelZzeXhvS3lDV00wc1dramhsUVd3WWtn?=
+ =?utf-8?B?YUkvRGhvc1J2UHcxOGo1NDNtQkI1L2NLREtXZDdqYXh1ZmYwZ1Fjemdxb0sw?=
+ =?utf-8?B?cndqZXdYUUk5N09IcXBERWpKSCs5S0c3anJYSncyTndMWFVEZENSeURvRzdv?=
+ =?utf-8?B?VVNQeHROdURNNlBuZysyWm10Y1ptNVlESm5GOWg4YkFRcVkySis0RWNkekx1?=
+ =?utf-8?B?d0FROC9QZEdjRE5uK3REbkhUQjNZclRZVHF6V0FUTUhPRVhhQWNSVDIyK3Iy?=
+ =?utf-8?B?QmZCR1FvbUc4WmZGTnRkTDBXTFd3aUtSTndJYW12ZDNVaE5uVTVXd0tPVzYv?=
+ =?utf-8?B?SUpabUFjSGpXbks5dXdUUnNFeS9lSElmQytBdGs4a3pZdGVqaStZVFBIQnE5?=
+ =?utf-8?B?Ri95M20yR3Y1WTVKYzhNazRSSS8weFFOVDFiN1hwTXhtMTN5UVhEV3J1aE1K?=
+ =?utf-8?B?eTc1RVFPRXZ1em1lQVk2Q3hjUS94M3l4emkrNkJLRlcycWxRZWExVUM5citz?=
+ =?utf-8?B?azl4djk2LytEdytib1FoWnNYRzVZMXAwUmc3M1VtVHh0YkxVWkxOVkU3T1dE?=
+ =?utf-8?B?a2M0S0g3cVhhT3AxcWFMb0t2cS9Rc3NvK2E5ZWlpd2hXbkRPeDNLblVhR1FD?=
+ =?utf-8?B?dzEzdnJNRFY4OE8vcWtYeHFtTlBsQWRqSlppUHdwam5KbkkzVnl6YTZvMVhu?=
+ =?utf-8?B?WWZPMjFLYmVWQ28xZE1sYXhMRlZqdTRKWHBqRVFNREhYMDNielNkOTBLK0cw?=
+ =?utf-8?B?Wm1qaEw3QUhxVm1oL1Y1cWpsYUdmRFo2SkR0QjlHMTRKVFF1YTlDTzlMSnFp?=
+ =?utf-8?B?Nzl5QjJ4L1hSbnJYK2hVb2laY1RDOGNWT2xMbHQ1UWgvM2dBTzJoOGZqRnNY?=
+ =?utf-8?B?bWFVTGVac1BaaExqd1NkRDlycHZIZ29OOFRzQ2NjWmJNcm9MZkdlZVpoc0t5?=
+ =?utf-8?B?Y1lqTVppVW1xaFVjdUtyS2dsaHJmZ1dWcUxONXVvSTZiUVJGaytjakwwMTlu?=
+ =?utf-8?B?VkIwRnErNkhQYlRsZHVRdExoMWpwVlJMYld4RHlDWHlZdEN5ZXh5ZmhXVHE0?=
+ =?utf-8?B?OXhKTkswa0Fid0lQSEtEZTBNOG1oc1lzaE94a04wdEtlbDhxVDBUenZ6MEcw?=
+ =?utf-8?B?ZVNUOGdFcE4xck0zTW9ONFhaUldWRXAxYTNtWllhMnRTeDhzUlAxclNEdEMy?=
+ =?utf-8?B?M0NhVGVkTXlzOGpDZkNES3BucjFsQzdMRnhwcnJOaWg3Ykd3bHloMGt5QUd6?=
+ =?utf-8?B?VDRlcTN1N0VydVFRZGhKenlUOTZpNVlheUN6SDN1OUFmSnB1OHRiaS9xa1Ix?=
+ =?utf-8?B?R3JpbEVNTTgxaXVQMmNSN3lyVFduYk9aVHFZK0N3Nm4xQ3ZWSnRRR3g0NmZs?=
+ =?utf-8?B?T3BhQjNOZk1jV2laQkpyL0xLZEYrd2ppVkllb2lzUFErVjFxdXpFY1NvQlZC?=
+ =?utf-8?B?SVhaWjQyem92VVZQL1V5SjllWTNjeisvVzJTdkpaN1QxREhkL0swNkVVdkhm?=
+ =?utf-8?B?QVcxTytHb0pIRDl1a09nVXUxYnNoS0JaTnpRMVc4MUdNUm1TMXQ0MTJKMFlp?=
+ =?utf-8?B?RTg1N29XRDlwNW1SK05JaWZGcHR5TGYxeThLdmg0V2FJcXNZc1ZFMEcycnp2?=
+ =?utf-8?B?WXRnZ0VhdFJyc1c5dXNQc1NvajU0bHMwWjQyZVlyYWJ2VHh5bGJwZzZHQjIz?=
+ =?utf-8?B?M3RiS2dOZTB4ZW1Sak9scUNwNWJpbjE4aFVJazdSeGdnMEt2LzErZm9uSThn?=
+ =?utf-8?B?NEpVbVJNYXBtc2NycVVhcnExTGphZVJrR25uV1lKVkVYNEZ1MW1MeVlKSE5k?=
+ =?utf-8?B?MnZCSDQyaGlJVGFnMXFxZnVPZGZsMklwdHE2UEZYNjFuaHllUW5EcWRpVE1z?=
+ =?utf-8?B?c0hqYitQbHE1enZ1U0JWZkpMMnpCcy9Mb29ORzlVNExFRjl0UStCbFBqZTJt?=
+ =?utf-8?B?cWlKL09JYUE5amdhOGlIZytncVcxZmI2RzJGTmU0T0xuUGpucWxyVHB0UGpw?=
+ =?utf-8?B?K054dU4vTHVjZnUrejJ5OWQ0UVMxcytoUURXMHNmRUc1ZUlhUVhVT1dvTnRa?=
+ =?utf-8?B?NXhQUCtOY2N0clR4MUVjN0duWWNSZW0xc0pzZU5qb2p2cnZBUXd5UnFTMnlK?=
+ =?utf-8?B?eTRnNUxPM1BBYnl5QTlXTmgvN1lXbHRaWHhFRjJtTGcyTDRHWGdFSUI1b2VN?=
+ =?utf-8?B?ZGVCcnJpbm5FTjBWS084ZmJ0L284T2pHZUZCY3VSckFJRXZ1ZUJBcWNFWEsw?=
+ =?utf-8?B?cVJOQXJuQTI5UFEzMnA1a1FsSXdRdTFxU0RSSXRMZXBQenJWSzgveElMTVNa?=
+ =?utf-8?Q?AQOQvA81h6dJ1Sb5P8?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 17 Mar 2026 17:11:21 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
-X-Gm-Features: AaiRm51lQf-iHD6frlt3I3LSvDXx3ABOuLoieA_7ZVlX8qAwmvP4Ouny8H-ujZo
-Message-ID: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
- thread safe
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Saravana Kannan <saravanak@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	devicetree@vger.kernel.org, driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d44fc0f-6a16-4511-87be-08de84409b20
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 16:16:54.8437
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SRZdLkj/Pxi7RQEpjBRORKNyH52AJMB4BlpP9zpSoi7ebv7OpgmSji/dZwJa+XmQefQuae2yQX484nzyiT2ErA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9790
 
-On Tue, Mar 17, 2026 at 5:04=E2=80=AFPM Douglas Anderson <dianders@chromium=
-.org> wrote:
->
-> In various places in the kernel, we modify the fwnode "flags" member
-> by doing either:
->   fwnode->flags |=3D SOME_FLAG;
->   fwnode->flags &=3D ~SOME_FLAG;
->
-> This type of modification is not thread-safe. If two threads are both
-> mucking with the flags at the same time then one can clobber the
-> other.
->
-> While flags are often modified while under the "fwnode_link_lock",
-> this is not universally true.
->
-> Create some accessor functions for setting, clearing, and testing the
-> FWNODE flags and move all users to these accessor functions. New
-> accessor functions use set_bit() and clear_bit(), which are
-> thread-safe.
->
-> Cc: stable@vger.kernel.org
-> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-
-Rafael J. Wysocki (Intel) <rafael@kernel.org>
-
-> ---
-> While this patch is not known for sure to fix any specific issues, it
-> seems possible that it could fix some rare problems. I'm currently
-> trying to track down a hard-to-reproduce heisenbug and one (currently
-> unproven) theory I had was that the fwnode flags could be getting
-> messed up like this. Even if turns out not to fix my heisenbug,
-> though, this seems like a worthwhile change to take.
->
-> Changes in v2:
-> - Add/use fwnode_assign_flag() (Andy).
->
->  drivers/base/core.c                 | 24 +++++++--------
->  drivers/bus/imx-weim.c              |  2 +-
->  drivers/i2c/i2c-core-of.c           |  2 +-
->  drivers/net/phy/mdio_bus_provider.c |  4 +--
->  drivers/of/base.c                   |  2 +-
->  drivers/of/dynamic.c                |  2 +-
->  drivers/of/platform.c               |  2 +-
->  drivers/spi/spi.c                   |  2 +-
->  include/linux/fwnode.h              | 45 +++++++++++++++++++++--------
->  9 files changed, 53 insertions(+), 32 deletions(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 791f9e444df8..f65492a4afc8 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -182,7 +182,7 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_=
-handle *fwnode)
->         if (fwnode->dev)
->                 return;
->
-> -       fwnode->flags |=3D FWNODE_FLAG_NOT_DEVICE;
-> +       fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
->         fwnode_links_purge_consumers(fwnode);
->
->         fwnode_for_each_available_child_node(fwnode, child)
-> @@ -228,7 +228,7 @@ static void __fw_devlink_pickup_dangling_consumers(st=
-ruct fwnode_handle *fwnode,
->         if (fwnode->dev && fwnode->dev->bus)
->                 return;
->
-> -       fwnode->flags |=3D FWNODE_FLAG_NOT_DEVICE;
-> +       fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
->         __fwnode_links_move_consumers(fwnode, new_sup);
->
->         fwnode_for_each_available_child_node(fwnode, child)
-> @@ -1012,7 +1012,7 @@ static void device_links_missing_supplier(struct de=
-vice *dev)
->  static bool dev_is_best_effort(struct device *dev)
->  {
->         return (fw_devlink_best_effort && dev->can_match) ||
-> -               (dev->fwnode && (dev->fwnode->flags & FWNODE_FLAG_BEST_EF=
-FORT));
-> +               (dev->fwnode && (fwnode_test_flag(dev->fwnode, FWNODE_FLA=
-G_BEST_EFFORT)));
->  }
->
->  static struct fwnode_handle *fwnode_links_check_suppliers(
-> @@ -1723,11 +1723,11 @@ bool fw_devlink_is_strict(void)
->
->  static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
->  {
-> -       if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
-> +       if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
->                 return;
->
->         fwnode_call_int_op(fwnode, add_links);
-> -       fwnode->flags |=3D FWNODE_FLAG_LINKS_ADDED;
-> +       fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
->  }
->
->  static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
-> @@ -1885,7 +1885,7 @@ static bool fwnode_init_without_drv(struct fwnode_h=
-andle *fwnode)
->         struct device *dev;
->         bool ret;
->
-> -       if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
-> +       if (!(fwnode_test_flag(fwnode, FWNODE_FLAG_INITIALIZED)))
->                 return false;
->
->         dev =3D get_dev_from_fwnode(fwnode);
-> @@ -2001,10 +2001,10 @@ static bool __fw_devlink_relax_cycles(struct fwno=
-de_handle *con_handle,
->          * We aren't trying to find all cycles. Just a cycle between con =
-and
->          * sup_handle.
->          */
-> -       if (sup_handle->flags & FWNODE_FLAG_VISITED)
-> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_VISITED))
->                 return false;
->
-> -       sup_handle->flags |=3D FWNODE_FLAG_VISITED;
-> +       fwnode_set_flag(sup_handle, FWNODE_FLAG_VISITED);
->
->         /* Termination condition. */
->         if (sup_handle =3D=3D con_handle) {
-> @@ -2074,7 +2074,7 @@ static bool __fw_devlink_relax_cycles(struct fwnode=
-_handle *con_handle,
->         }
->
->  out:
-> -       sup_handle->flags &=3D ~FWNODE_FLAG_VISITED;
-> +       fwnode_clear_flag(sup_handle, FWNODE_FLAG_VISITED);
->         put_device(sup_dev);
->         put_device(con_dev);
->         put_device(par_dev);
-> @@ -2127,7 +2127,7 @@ static int fw_devlink_create_devlink(struct device =
-*con,
->          * When such a flag is set, we can't create device links where P =
-is the
->          * supplier of C as that would delay the probe of C.
->          */
-> -       if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
-> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON=
-_ADD) &&
->             fwnode_is_ancestor_of(sup_handle, con->fwnode))
->                 return -EINVAL;
->
-> @@ -2150,7 +2150,7 @@ static int fw_devlink_create_devlink(struct device =
-*con,
->         else
->                 flags =3D FW_DEVLINK_FLAGS_PERMISSIVE;
->
-> -       if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
-> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NOT_DEVICE))
->                 sup_dev =3D fwnode_get_next_parent_dev(sup_handle);
->         else
->                 sup_dev =3D get_dev_from_fwnode(sup_handle);
-> @@ -2162,7 +2162,7 @@ static int fw_devlink_create_devlink(struct device =
-*con,
->                  * supplier device indefinitely.
->                  */
->                 if (sup_dev->links.status =3D=3D DL_DEV_NO_DRIVER &&
-> -                   sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-> +                   fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)=
-) {
->                         dev_dbg(con,
->                                 "Not linking %pfwf - dev might never prob=
-e\n",
->                                 sup_handle);
-> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-> index 83d623d97f5f..f735e0462c55 100644
-> --- a/drivers/bus/imx-weim.c
-> +++ b/drivers/bus/imx-weim.c
-> @@ -332,7 +332,7 @@ static int of_weim_notify(struct notifier_block *nb, =
-unsigned long action,
->                          * fw_devlink doesn't skip adding consumers to th=
-is
->                          * device.
->                          */
-> -                       rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE=
-;
-> +                       fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NO=
-T_DEVICE);
->                         if (!of_platform_device_create(rd->dn, NULL, &pde=
-v->dev)) {
->                                 dev_err(&pdev->dev,
->                                         "Failed to create child device '%=
-pOF'\n",
-> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
-> index eb7fb202355f..354a88d0599e 100644
-> --- a/drivers/i2c/i2c-core-of.c
-> +++ b/drivers/i2c/i2c-core-of.c
-> @@ -180,7 +180,7 @@ static int of_i2c_notify(struct notifier_block *nb, u=
-nsigned long action,
->                  * Clear the flag before adding the device so that fw_dev=
-link
->                  * doesn't skip adding consumers to this device.
->                  */
-> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
-);
->                 client =3D of_i2c_register_device(adap, rd->dn);
->                 if (IS_ERR(client)) {
->                         dev_err(&adap->dev, "failed to create client for =
-'%pOF'\n",
-> diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_b=
-us_provider.c
-> index 4b0637405740..fd691c5424ea 100644
-> --- a/drivers/net/phy/mdio_bus_provider.c
-> +++ b/drivers/net/phy/mdio_bus_provider.c
-> @@ -294,8 +294,8 @@ int __mdiobus_register(struct mii_bus *bus, struct mo=
-dule *owner)
->                 return -EINVAL;
->
->         if (bus->parent && bus->parent->of_node)
-> -               bus->parent->of_node->fwnode.flags |=3D
-> -                                       FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_=
-ADD;
-> +               fwnode_set_flag(&bus->parent->of_node->fwnode,
-> +                               FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
->
->         WARN(bus->state !=3D MDIOBUS_ALLOCATED &&
->              bus->state !=3D MDIOBUS_UNREGISTERED,
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 57420806c1a2..8d1972e18161 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1915,7 +1915,7 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64=
- align))
->                 if (name)
->                         of_stdout =3D of_find_node_opts_by_path(name, &of=
-_stdout_options);
->                 if (of_stdout)
-> -                       of_stdout->fwnode.flags |=3D FWNODE_FLAG_BEST_EFF=
-ORT;
-> +                       fwnode_set_flag(&of_stdout->fwnode, FWNODE_FLAG_B=
-EST_EFFORT);
->         }
->
->         if (!of_aliases)
-> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> index 1a06175def37..ade288372101 100644
-> --- a/drivers/of/dynamic.c
-> +++ b/drivers/of/dynamic.c
-> @@ -225,7 +225,7 @@ static void __of_attach_node(struct device_node *np)
->         np->sibling =3D np->parent->child;
->         np->parent->child =3D np;
->         of_node_clear_flag(np, OF_DETACHED);
-> -       np->fwnode.flags |=3D FWNODE_FLAG_NOT_DEVICE;
-> +       fwnode_set_flag(&np->fwnode, FWNODE_FLAG_NOT_DEVICE);
->
->         raw_spin_unlock_irqrestore(&devtree_lock, flags);
->
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index ba591fbceb56..7eeaf8e27b5b 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -742,7 +742,7 @@ static int of_platform_notify(struct notifier_block *=
-nb,
->                  * Clear the flag before adding the device so that fw_dev=
-link
->                  * doesn't skip adding consumers to this device.
->                  */
-> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
-);
->                 /* pdev_parent may be NULL when no bus platform device */
->                 pdev_parent =3D of_find_device_by_node(parent);
->                 pdev =3D of_platform_device_create(rd->dn, NULL,
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 61f7bde8c7fb..ba8098f1a88c 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -4938,7 +4938,7 @@ static int of_spi_notify(struct notifier_block *nb,=
- unsigned long action,
->                  * Clear the flag before adding the device so that fw_dev=
-link
->                  * doesn't skip adding consumers to this device.
->                  */
-> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
-> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
-);
->                 spi =3D of_register_spi_device(ctlr, rd->dn);
->                 put_device(&ctlr->dev);
->
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 097be89487bf..c1ebcc6fd896 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -15,6 +15,7 @@
->  #define _LINUX_FWNODE_H_
->
->  #include <linux/bits.h>
-> +#include <linux/bitops.h>
->  #include <linux/err.h>
->  #include <linux/list.h>
->  #include <linux/types.h>
-> @@ -42,12 +43,12 @@ struct device;
->   *             suppliers. Only enforce ordering with suppliers that have
->   *             drivers.
->   */
-> -#define FWNODE_FLAG_LINKS_ADDED                        BIT(0)
-> -#define FWNODE_FLAG_NOT_DEVICE                 BIT(1)
-> -#define FWNODE_FLAG_INITIALIZED                        BIT(2)
-> -#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD   BIT(3)
-> -#define FWNODE_FLAG_BEST_EFFORT                        BIT(4)
-> -#define FWNODE_FLAG_VISITED                    BIT(5)
-> +#define FWNODE_FLAG_LINKS_ADDED                        0
-> +#define FWNODE_FLAG_NOT_DEVICE                 1
-> +#define FWNODE_FLAG_INITIALIZED                        2
-> +#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD   3
-> +#define FWNODE_FLAG_BEST_EFFORT                        4
-> +#define FWNODE_FLAG_VISITED                    5
->
->  struct fwnode_handle {
->         struct fwnode_handle *secondary;
-> @@ -57,7 +58,7 @@ struct fwnode_handle {
->         struct device *dev;
->         struct list_head suppliers;
->         struct list_head consumers;
-> -       u8 flags;
-> +       unsigned long flags;
->  };
->
->  /*
-> @@ -212,16 +213,36 @@ static inline void fwnode_init(struct fwnode_handle=
- *fwnode,
->         INIT_LIST_HEAD(&fwnode->suppliers);
->  }
->
-> +static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
-> +                                  unsigned int bit)
-> +{
-> +       set_bit(bit, &fwnode->flags);
-> +}
-> +
-> +static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
-> +                                  unsigned int bit)
-> +{
-> +       clear_bit(bit, &fwnode->flags);
-> +}
-> +
-> +static inline void fwnode_assign_flag(struct fwnode_handle *fwnode,
-> +                                     unsigned int bit, bool value)
-> +{
-> +       assign_bit(bit, &fwnode->flags, value);
-> +}
-> +
-> +static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
-> +                                   unsigned int bit)
-> +{
-> +       return test_bit(bit, &fwnode->flags);
-> +}
-> +
->  static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
->                                           bool initialized)
->  {
->         if (IS_ERR_OR_NULL(fwnode))
->                 return;
-> -
-> -       if (initialized)
-> -               fwnode->flags |=3D FWNODE_FLAG_INITIALIZED;
-> -       else
-> -               fwnode->flags &=3D ~FWNODE_FLAG_INITIALIZED;
-> +       fwnode_assign_flag(fwnode, FWNODE_FLAG_INITIALIZED, initialized);
->  }
->
->  int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup=
-,
-> --
-> 2.53.0.851.ga537e3e6e9-goog
->
->
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5kcmV3IEx1bm4gPGFu
+ZHJld0BsdW5uLmNoPg0KPiBTZW50OiBUdWVzZGF5LCBNYXJjaCAxNywgMjAyNiA5OjEyIEFNDQo+
+IFRvOiBBcm5hdWQgUE9VTElRVUVOIDxhcm5hdWQucG91bGlxdWVuQGZvc3Muc3QuY29tPg0KPiBD
+YzogU2hlbndlaSBXYW5nIDxzaGVud2VpLndhbmdAbnhwLmNvbT47IExpbnVzIFdhbGxlaWoNCj4g
+PGxpbnVzd0BrZXJuZWwub3JnPjsgQmFydG9zeiBHb2xhc3pld3NraSA8YnJnbEBrZXJuZWwub3Jn
+PjsgSm9uYXRoYW4gQ29yYmV0DQo+IDxjb3JiZXRAbHduLm5ldD47IFJvYiBIZXJyaW5nIDxyb2Jo
+QGtlcm5lbC5vcmc+OyBLcnp5c3p0b2YgS296bG93c2tpDQo+IDxrcnprK2R0QGtlcm5lbC5vcmc+
+OyBDb25vciBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBCam9ybiBBbmRlcnNzb24NCj4g
+PGFuZGVyc3NvbkBrZXJuZWwub3JnPjsgTWF0aGlldSBQb2lyaWVyIDxtYXRoaWV1LnBvaXJpZXJA
+bGluYXJvLm9yZz47IEZyYW5rIExpDQo+IDxmcmFuay5saUBueHAuY29tPjsgU2FzY2hhIEhhdWVy
+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjsgU2h1YWggS2hhbg0KPiA8c2toYW5AbGludXhmb3Vu
+ZGF0aW9uLm9yZz47IGxpbnV4LWdwaW9Admdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4gZG9jQHZn
+ZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgUGVuZ3V0cm9uaXgg
+S2VybmVsIFRlYW0NCj4gPGtlcm5lbEBwZW5ndXRyb25peC5kZT47IEZhYmlvIEVzdGV2YW0gPGZl
+c3RldmFtQGdtYWlsLmNvbT47IFBlbmcgRmFuDQo+IDxwZW5nLmZhbkBueHAuY29tPjsgZGV2aWNl
+dHJlZUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiByZW1vdGVwcm9jQHZnZXIua2VybmVsLm9y
+ZzsgaW14QGxpc3RzLmxpbnV4LmRldjsgbGludXgtYXJtLQ0KPiBrZXJuZWxAbGlzdHMuaW5mcmFk
+ZWFkLm9yZzsgZGwtbGludXgtaW14IDxsaW51eC1pbXhAbnhwLmNvbT47IEJhcnRvc3oNCj4gR29s
+YXN6ZXdza2kgPGJyZ2xAYmdkZXYucGw+DQo+IFN1YmplY3Q6IFtFWFRdIFJlOiBbUEFUQ0ggdjEy
+IDMvNV0gZ3BpbzogcnBtc2c6IGFkZCBnZW5lcmljIHJwbXNnIEdQSU8gZHJpdmVyDQo+ID4gPiAr
+c3RydWN0IHJwbXNnX2dwaW9faW5mbyB7DQo+ID4gPiArICAgc3RydWN0IHJwbXNnX2RldmljZSAq
+cnBkZXY7DQo+ID4gPiArICAgc3RydWN0IHJwbXNnX2dwaW9fcGFja2V0ICpyZXBseV9tc2c7DQo+
+ID4gPiArICAgc3RydWN0IGNvbXBsZXRpb24gY21kX2NvbXBsZXRlOw0KPiA+ID4gKyAgIHN0cnVj
+dCBtdXRleCBsb2NrOw0KPiA+ID4gKyAgIHZvaWQgKipwb3J0X3N0b3JlOw0KPiA+ID4gK307DQo+
+ID4NCj4gPiBFeGNlcHQgaWYgSSBtaXNzdW5kZXJzdG9vZCBNYXRoaWV1IGFuZCBCam9ybidzIHJl
+cXVlc3Q6DQo+ID4gInJldXNlIGFsbCB0aGUgZGVzaWduLXdvcmsgZG9uZSBpbiB0aGUgZ3Bpby12
+aXJ0aW8iDQo+ID4gV2Ugc2hvdWxkIGZpbmQgc2ltaWxhciBzdHJ1Y3R1cmVzIGhlcmUgdG8gdGhv
+c2UgZGVmaW5lZCBpbg0KPiA+IHZpcnRpb19ncGlvLmguDQo+ID4gc3RydWN0IHJwbXNnX2dwaW9f
+Y29uZmlnIHsNCj4gPiAgICAgICBfX2xlMTYgbmdwaW87DQo+ID4gICAgICAgX191OCBwYWRkaW5n
+WzJdOw0KPiA+ICAgICAgIF9fbGUzMiBncGlvX25hbWVzX3NpemU7DQo+ID4gfTsNCj4gPg0KPiA+
+IC8qIFZpcnRpbyBHUElPIFJlcXVlc3QgLyBSZXNwb25zZSAqLw0KPiA+IHN0cnVjdCB2aXJ0aW9f
+Z3Bpb19yZXF1ZXN0IHsNCj4gPiAgICAgICBfX2xlMTYgdHlwZTsNCj4gPiAgICAgICBfX2xlMTYg
+Z3BpbzsNCj4gPiAgICAgICBfX2xlMzIgdmFsdWU7DQo+ID4gfTsNCj4gDQo+IFRoZSBjb3JlIG9m
+IHRoZSBpc3N1ZSBpcyB0aGF0IFNoZW53ZWkgaXMgc3RvbmUgd2FsbGluZyBhbnkgY2hhbmdlIHdo
+aWNoIG1ha2VzIGl0DQo+IGhhcmQgdG8ga2VlcCB0aGUgbGVnYWN5IGZpcm13YXJlLiBJdCBpcyBw
+b3NzaWJsZSB0byB1c2UgdGhlc2Ugc3RydWN0dXJlcywgYnV0IGl0DQo+IG1ha2VzIHRoZSBleHRy
+YSBjb2RlIFNoZW53ZWkgbmVlZHMgdG8gdHJhbnNsYXRlIHRoaXMgcHJvdG9jb2wgdG8gdGhlIGxl
+Z2FjeQ0KPiBwcm90b2NvbCBtb3JlIGRpZmZpY3VsdC4gSXQgbWlnaHQgbmVlZCB0byBrZWVwIHN0
+YXRlLCBldGMuDQo+IA0KDQpJ4oCZbSBmdWxseSBvcGVuIHRvIHJlYXNvbmFibGUgY2hhbmdlcywg
+YnV0IGR1cGxpY2F0aW5nIHRoZXNlIHN0cnVjdHVyZXMgaXMgbm90IGhlbHBmdWwuDQpUaGUgd2hv
+bGUgcG9pbnQgb2YgYWxpZ25pbmcgd2l0aCBncGlv4oCRdmlydGlvIGlzIHRvIGtlZXAgdGhlIGxv
+d+KAkWxldmVsIGNvbW1hbmQgYW5kIGluZm9ybWF0aW9uIA0KZXhjaGFuZ2UgaWRlbnRpY2FsLCBz
+byB0aGUgYmVoYXZpb3Igb24gYm90aCBzaWRlcyBjb3VsZCByZW1haW4gY29uc2lzdGVudC4gVGhp
+cyBtYWtlcyBpdCANCnBvc3NpYmxlIHRvIHJldXNlIHRoZSBiYWNrZW5kIGltcGxlbWVudGF0aW9u
+IG9uIHRoZSBvdGhlciBzaWRlIGVhc2lseS4NCg0KPiBUd28gcG9pbnRzLi4uDQo+IA0KPiBUaGUg
+ZmlybXdhcmUgaW1wbGVtZW50cyBtb3JlIHRoYW4gR1BJTy4gVGhlcmUgaXMgZGVmaW5pdGVseSBJ
+MkMgYXMgd2VsbCwgdGhlDQo+IGZpcnN0IHZlcnNpb24gb2YgdGhlIHBhdGNoIGhhcyBiaXRzIG9m
+IEkyQyBjb2RlLiBMb29raW5nIGF0Og0KPiANCg0KUGxlYXNlIGtlZXAgdGhlIGRpc2N1c3Npb24g
+Zm9jdXNlZCBvbiB0aGUgR1BJTyBpbnRlcmZhY2UuDQpJbiB0aGUgY3VycmVudCBpbXBsZW1lbnRh
+dGlvbiwgdGhlcmUgaXMgbm90aGluZyBiZXlvbmQgR1BJTywgYW5kIHlvdSB3aWxsIG5vdCBmaW5k
+IA0KYW55IGluZm9ybWF0aW9uIG9yIGluZGljYXRpb24gb2Ygb3RoZXIgaW50ZXJmYWNlcyBzdWNo
+IGFzIEkyQyBoZXJlLg0KDQpTaGVud2VpDQoNCj4gaHR0cHM6Ly9ldXIwMS5zYWZlbGlua3MucHJv
+dGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGbHduLm5ldCUyDQo+IEZtbCUy
+RmFsbCUyRjIwMjUwOTIyMjAwNDEzLjMwOTcwNy0zLQ0KPiBzaGVud2VpLndhbmclNDBueHAuY29t
+JTJGJmRhdGE9MDUlN0MwMiU3Q3NoZW53ZWkud2FuZyU0MG54cC5jb20NCj4gJTdDMjQ5MzQ1ZGIy
+Y2RhNGUzNWUwOWMwOGRlODQyZjJhYzIlN0M2ODZlYTFkM2JjMmI0YzZmYTkyY2Q5OWM1YzMwDQo+
+IDE2MzUlN0MwJTdDMCU3QzYzOTA5MzUzNTI4NTYyOTMwMSU3Q1Vua25vd24lN0NUV0ZwYkdac2Iz
+ZDhleUoNCj4gRmJYQjBlVTFoY0draU9uUnlkV1VzSWxZaU9pSXdMakF1TURBd01DSXNJbEFpT2lK
+WGFXNHpNaUlzSWtGT0lqb2lUV0YNCj4gcGJDSXNJbGRVSWpveWZRJTNEJTNEJTdDMCU3QyU3QyU3
+QyZzZGF0YT1ObG1Tb3dLWFhHcWRPdEFLRVdYUnoNCj4gQWRRWmFVMTl5SnR5SnlmSW0lMkI4WlEw
+JTNEJnJlc2VydmVkPTANCj4gDQo+IFRoZXJlIGlzIGFsc28gUlRDLCBhbmQgYSBmZXcgb3RoZXIg
+dGhpbmdzIHdoaWNoIGRvbid0IGRpcmVjdGx5IG1hcCB0byBMaW51eA0KPiBzdWJzeXN0ZW1zLCBi
+dXQgbWF5YmUgZG8gaGF2ZSBMaW51eCBkcml2ZXJzPw0KPiANCj4gR2l2ZSBob3cgbXVjaCBwdXNo
+YmFjayB0aGVyZSBoYXMgYmVlbiBvbiB0aGUgZXhpc3RpbmcgcHJvdG9jb2wgZm9yIEdQSU8sIGl0
+DQo+IHdvdWxkIGJlIHdpc2UgdG8gYXNzdW1lIHRoYXQgSTJDLCBhbmQgUlRDIGlzIGdvaW5nIHRv
+IGdldCB0aGUgc2FtZSBhbW91bnQgb2YNCj4gcHVzaGJhY2suIElmIGFueSBvZiB0aGVzZSB0aHJl
+ZSwgR1BJTywgSTJDLCBvciBSVEMgZGVjaWRlIHRoYXQgb25seSBhIG5ldywgY2xlYW4NCj4gcHJv
+dG9jb2wgd2lsbCBiZSBhY2NlcHRlZCwgbm8gbGVnYWN5IHNoaW1zLCB0aGUgZmlybXdhcmUgaGFz
+IHRvIGNoYW5nZSwgYnJlYWtpbmcNCj4gY29tcGF0aWJpbGl0eSB0byBsZWdhY3kgcHJvdG9jb2xz
+LCBhbmQgdGhlIGFjY2VwdGVkIHNoaW1zIGJlY29tZSBwb2ludGxlc3MNCj4gTWFpbnRlbmFuY2Ug
+YnVyZGVuLg0KPiANCj4gUG9pbnQgdHdvIGlzIHRoYXQgdGhlIGN1c3RvbWVycyB3aG8gYXJlIHB1
+c2hpbmcgZm9yIHRoZXNlIGRyaXZlcnMgdG8gYmUgYWRkZWQgdG8NCj4gTWFpbmxpbmUgcHJvYmFi
+bHkga25vdyB0aGF0IG5lYXJseSBub3RoaW5nIGdldHMgaW50byBNYWlubGluZSB3aXRob3V0IHNv
+bWUNCj4gY2hhbmdlcy4gVGhlcmUgaXMgc29tZSBzaG9ydCB0ZXJtIHBhaW4gdG8gc3dhcHBpbmcg
+dG8gTWFpbmxpbmUgYmVjYXVzZSBvZiB0aGVzZQ0KPiBjaGFuZ2VzLCBpbiB0aGlzIGNhc2UsIGZp
+cm13YXJlIHVwZ3JhZGVzLiBCdXQgaW4gdGhlIGxvbmcgcnVuLCBpdCBpcyB3b3J0aCB0aGUgcGFp
+bg0KPiB0byBiZSBhYmxlIHRvIHVzZSBNYWlubGluZS4gQW5kIHRob3NlIGN1c3RvbWVycyB3aG8g
+ZG9uJ3Qgd2FudCB0byB1cGdyYWRlIHRoZQ0KPiBmaXJtd2FyZSBjYW4ga2VlcCB3aXRoIHRoZSBv
+dXQgb2YgdHJlZSBkcml2ZXMuDQo+IA0KPiBTbywgd2hhdCBhcmUgb3VyIGNob2ljZXM/DQo+IA0K
+PiAxKSBXZSBhY2NlcHQgdGhlIGNvZGUgYXMgaXQgaXMgbm93LCB3aXRoIHRoZSBzaGltPw0KPiAN
+Cj4gMikgV2Uga2VlcCBwdXNoaW5nIGZvciB0aGUgdmlydGlvIHByb3RvY29sLCB3aXRoIHRoZSBz
+aGltPw0KPiANCj4gMykgV2Uga2VlcCBwdXNoaW5nIGZvciB0aGUgdmlydGlvIHByb3RvY29sLCBu
+byBzaGltLCBmaXJtd2FyZSBjaGFuZ2VzDQo+IA0KPiA0KSBXZSBwYXVzZSBHUElPIHdoZXJlIGl0
+IGlzIHRvZGF5LCBhbmQgcmVzdGFydCBhbGwgdGhlIGFyZ3VtZW50cyB3aXRoDQo+ICAgIHRoZSBJ
+MkMgZHJpdmVyLiBXZSBjYW4gY29tZSBiYWNrIHRvIHRoZSBHUElPIGRyaXZlciBpbiBhIGZldyBt
+b250aHMNCj4gICAgdGltZSBvbmNlIHdlIGhhdmUgYSBiZXR0ZXIgaWRlYSBob3cgSTJDIGlzIGdv
+aW5nLiBBbmQgbWF5YmUgd2UgYWxzbw0KPiAgICBuZWVkIHRvIHNlZSB0aGUgd2F0Y2hkb2cgZHJp
+dmVyLCBhbmQgYXJndWUgYWJvdXQgaXRzIHByb3RvY29sLg0KPiANCj4gSSBhbHNvIHVuZGVyc3Rh
+bmQgU1QgaGFzIGEgZ2VuZXJpYyBJMkMgZHJpdmVyIG5lYXJseSByZWFkeSwgaWYgdGhhdCBnZXRz
+IG1lcmdlZA0KPiBmaXJzdCwgdGhhdCBwcm9iYWJseSBraWxscyB0aGUgTlhQIEkyQyBwcm90b2Nv
+bCwgYW5kIG1heWJlIHRoZSBOWFAgR1BJTyBhbmQgUlRDDQo+IHByb3RvY29scy4NCj4gDQo+IE15
+IHZvdGUgaXMgZm9yIDMuIElmIG5vdCAzLCB0aGVuIDQuDQo+IA0KPiAgICAgIEFuZHJldw0KDQo=
