@@ -1,44 +1,44 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626763AC0CF;
-	Tue, 17 Mar 2026 11:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9F3AA510;
+	Tue, 17 Mar 2026 11:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773746246; cv=none; b=lqZih4Eb35TtAW3iQNB7bZ1E/mjMxp5VCNIajOadPvIpIBBbgLMWxYvTlU8iA/d3/klMJe+gOS3XBFXVTDuUECjZSHHw6HEzpJD3Li77vPJz+tpr9KniagrMKJ91EZlyYnk16iDXV1RyltOZ36UsJTUK8FFQiD+6QMdVzlsCVqE=
+	t=1773746247; cv=none; b=ohnblPWa6rxSVDQPb6SIFfR9fs9r5XXFetzJtoiKL1z/ubOOqci2XFLTGm1/EgbFeauGieVnuqhxDJLI0vhYaw3MYBDIVyfJqHbVNXE4+e9iWUbOX57SifOKrHb2sfbn+YKumKrb1emrYzwmRWv4UyIPl0DKwH07ZhkIneCXlNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773746246; c=relaxed/simple;
-	bh=IDcj1EAuUkUKE8B2PBpW7+blKr7sJUH0czn0erg4lcM=;
+	s=arc-20240116; t=1773746247; c=relaxed/simple;
+	bh=45n3aXdJUNFNR+PP0bhpymzTND5P7wAjsZTjlwPV5AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4mJ9rkQWMDLPkp7tb0K/70lRDzJHWIbxsLiqoLAS7Pgn7Jy34uwrYi3zRlLbT/wlQw/T+KCqJ5IFLGD40N3jJBGqVihEAe/mZROwmQoCyZQJI8fiCmolIXBxkaqJLS3iUFowkVNX1mzGZ0pFXUJqfCRXu23LpVIuX2HqSmLsps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=q6eiv5xA; arc=none smtp.client-ip=188.40.3.216
+	 MIME-Version; b=BpJhPDmhJSN25CRN0wRQn6hsRNN4yfVnSjTW+K/2lE27qfIEVJPI+I8hSIeJvqwEkH+rojUDD3OkEOMd83Q4w5yMo3zpKlpZ9Li6U8LW6gxqUQAzt8chf3cOJlc89XFy/LnQ/Fo/zw1BPMsqxtwshvz7HY0zKXIEVwPzmBgUcH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=C7WTSUzL; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="q6eiv5xA"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="C7WTSUzL"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=dMNnJ+xAbhL4LwxsgRluL0GNGS32DXB6PY0AmcmF+W4=; b=q6eiv5xAXRMF6SkhkAXPUAW/x8
-	onDKXptFXfbNgn9vcfdY9/3MARi1D95J0Fbgbi9cfhHnL+mM23wJB6S+uFjh35op1hTvyCNqtzerB
-	fYKUhqppx1RQgn2HRnhUyBTSLqO42+BZbKY9XGcw90rXjsODu+z3C5JP58vOQBXRzTXg8EZ201whn
-	TKy0Hbo9YvMrcoweEVgqdRkUQhtm6PuEU8GoA9QLeTeZPy9P1WtAn1o8BjLgoc6GjVkw1wyfi9An7
-	TX3gj/60MhwP1dantNgJ8315P5IwCt0BulAktECOYa9kDkqRrkr7yDSxgAMSI+lwobRp4bqtIJ65G
-	m+yjmsIA==;
+	bh=HXrZvWC9jVuGLV1VEWpGZj3zx6Z6cDi7mCwbgMcy9jc=; b=C7WTSUzLOr6nQzM8CanHZXN0rD
+	FkKfndfgIKEBCI2Y8IoRsjQg9otV/KrCrv+vvwjWVwtsEoVDIF3gUmcu5mo4vip2MAGDY3RdY0eOK
+	Ei9djzDU4qOZSoMuHc1+L6fD1knsvpOWq3aXljO+HS/YO96gycAoJfOyvYmM6OHhhJrSN97ni7x32
+	lSwA/PQfT5dx6ZAGs5UCGtT+WVtFLvDdj3qKoqxd7ksuA6t9QmFHwQdswiDkFS6cF2gTb78qSQw8C
+	jpSI3ge+Xsd83sTuBO1pSQeq5QV37XRXcX0hUP3cXQo3pZduOsV3UHz/mRvWY7EPgjmaCRqP0anYH
+	qKty9ncQ==;
 Received: from sslproxy04.your-server.de ([78.46.152.42])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SQN-00093Y-1y;
-	Tue, 17 Mar 2026 12:17:23 +0100
+	id 1w2SQM-00093D-1U;
+	Tue, 17 Mar 2026 12:17:22 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SQM-000MCw-2V;
-	Tue, 17 Mar 2026 12:17:23 +0100
+	id 1w2SQL-000MCw-1q;
+	Tue, 17 Mar 2026 12:17:21 +0100
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -55,9 +55,9 @@ Cc: Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux@ew.tq-group.com,
 	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 3/3] arm64: dts: freescale: imx93-tqma9352-mba93xxla-mini: Add WLAN/BT overlay
-Date: Tue, 17 Mar 2026 12:17:02 +0100
-Message-ID: <20260317111704.1075938-4-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 2/3] arm64: dts: freescale: add initial device tree for TQMa93xx/MBa93xxLA-MINI
+Date: Tue, 17 Mar 2026 12:17:01 +0100
+Message-ID: <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
 References: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
@@ -72,70 +72,672 @@ X-Virus-Scanned: Clear (ClamAV 1.4.3/27943/Tue Mar 17 07:24:09 2026)
 
 From: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
 
-This overlay enables the LWB5+ M.2 wlan module from ezurio.
+This adds support for TQMa93xx module attached to MBa93xxLA-MINI board.
+TQMa93xx is a SOM series using i.MX93 SOC.
+The MBa93xxLA-MINI has a small form factor and is designed with
+WLAN, Bluetooth and WWAN applications in mind.
 
 Signed-off-by: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile        |  4 +++
- ...3-tqma9352-mba93xxla-mini-ezurio-wlan.dtso | 35 +++++++++++++++++++
- 2 files changed, 39 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtso
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../imx93-tqma9352-mba93xxla-mini.dts         | 637 ++++++++++++++++++
+ 2 files changed, 638 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index db536522600ac..9a55a86ad385b 100644
+index 31bc80586c682..db536522600ac 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
 +++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -495,6 +495,10 @@ imx8mm-kontron-bl-lte-dtbs		:= imx8mm-kontron-bl.dtb imx8mm-kontron-bl-lte.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-kontron-dl.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-kontron-bl-lte.dtb
+@@ -461,6 +461,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini.dtb
  
-+imx93-tqma9352-mba93xxla-mini-ezurio-wlan-dtbs += imx93-tqma9352-mba93xxla-mini.dtb imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtbo
-+
-+dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtb
-+
- imx8mm-venice-gw72xx-0x-imx219-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-imx219.dtbo
- imx8mm-venice-gw72xx-0x-rpidsi-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rpidsi.dtbo
- imx8mm-venice-gw72xx-0x-rs232-rts-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rs232-rts.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtso b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtso
+ imx93-tqma9352-mba91xxca-lvds-tm070jvhg33-dtbs := imx93-tqma9352-mba91xxca.dtb imx93-tqma9352-mba91xxca-lvds-tm070jvhg33.dtbo
+ imx93-tqma9352-mba91xxca-rgb-cdtech-dc44-dtbs := imx93-tqma9352-mba91xxca.dtb imx93-tqma9352-mba91xxca-rgb-cdtech-dc44.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
 new file mode 100644
-index 0000000000000..12a14d8711035
+index 0000000000000..97693aa5e904d
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtso
-@@ -0,0 +1,35 @@
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
+@@ -0,0 +1,637 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 +/*
 + * Copyright (c) 2025-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
 + * D-82229 Seefeld, Germany.
 + * Author: Martin Schmiedel
 + */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
 +/dts-v1/;
-+/plugin/;
 +
-+&lpuart7 {
-+	status = "okay";
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++#include <dt-bindings/net/ti-dp83867.h>
++#include <dt-bindings/pwm/pwm.h>
++#include <dt-bindings/usb/pd.h>
++#include "imx93-tqma9352.dtsi"
 +
-+	bluetooth {
-+		compatible = "brcm,bcm4329-bt";
-+		vbat-supply = <&reg_3v3>;
-+		vddio-supply = <&reg_3v3>;
-+		shutdown-gpios = <&expander0 5 GPIO_ACTIVE_HIGH>;
++/{
++	model = "TQ-Systems i.MX93 TQMa93xxLA on MBa93xxLA-MINI SBC";
++	compatible = "tq,imx93-tqma9352-mba93xxla-mini",
++		     "tq,imx93-tqma9352", "fsl,imx93";
++	chassis-type = "embedded";
++
++	chosen {
++		stdout-path = &lpuart1;
++	};
++
++	aliases {
++		eeprom0 = &eeprom0;
++		ethernet0 = &eqos;
++		ethernet1 = &fec;
++		gpio0 = &gpio1;
++		gpio1 = &gpio2;
++		gpio2 = &gpio3;
++		gpio3 = &gpio4;
++		i2c0 = &lpi2c1;
++		i2c1 = &lpi2c2;
++		i2c2 = &lpi2c3;
++		i2c3 = &lpi2c4;
++		i2c4 = &lpi2c5;
++		mmc0 = &usdhc1;
++		mmc1 = &usdhc2;
++		mmc2 = &usdhc3;
++		rtc0 = &pcf85063;
++		rtc1 = &bbnsm_rtc;
++		serial0 = &lpuart1;
++		serial1 = &lpuart2;
++		serial2 = &lpuart3;
++		serial3 = &lpuart4;
++		serial4 = &lpuart5;
++		serial5 = &lpuart6;
++		serial6 = &lpuart7;
++		serial7 = &lpuart8;
++		spi0 = &lpspi1;
++		spi1 = &lpspi2;
++		spi2 = &lpspi3;
++		spi3 = &lpspi4;
++		spi4 = &lpspi5;
++		spi5 = &lpspi6;
++	};
++
++	backlight_lvds: backlight {
++		compatible = "pwm-backlight";
++		pwms = <&tpm5 0 5000000 0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_backlight>;
++		brightness-levels = <0 4 8 16 32 64 128 255>;
++		default-brightness-level = <7>;
++		power-supply = <&reg_12v0>;
++		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
++		status = "disabled";
++	};
++
++	display: display {
++		/*
++		 * Display is not fixed, so compatible has to be added from
++		 * DT overlay
++		 */
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_display>;
++		power-supply = <&reg_3v3>;
++		enable-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
++		backlight = <&backlight_lvds>;
++		status = "disabled";
++
++		port {
++			panel_in_lvds0: endpoint {
++			};
++		};
++	};
++
++	iio-hwmon {
++		compatible = "iio-hwmon";
++		io-channels = <&adc1 0>, <&adc1 1>, <&adc1 2>, <&adc1 3>;
++	};
++
++	reg_3v3: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_3V3_MB";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++
++	reg_5v0_usb: regulator-5v0-usb {
++		compatible = "regulator-fixed";
++		regulator-name = "V_5V0_HUB";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&expander1 0 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
++	reg_12v0: regulator-12v0 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_12V";
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		gpio = <&expander0 7 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
 +	};
 +};
 +
-+&usdhc3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
++&adc1 {
++	status = "okay";
++};
++
++&eqos {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_eqos>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy_eqos>;
 +	status = "okay";
 +
-+	brcmf_sdio: wifi@1 {
-+		compatible = "brcm,bcm4329-fmac";
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy_eqos: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_eqos_phy>;
++			interrupt-parent = <&gpio3>;
++			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
++			reset-gpios = <&expander0 0 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <500000>;
++			reset-deassert-us = <50000>;
++			enet-phy-lane-no-swap;
++			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++			ti,dp83867-rxctrl-strap-quirk;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy_fec>;
++	fsl,magic-packet;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clock-frequency = <5000000>;
++
++		ethphy_fec: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_fec_phy>;
++			interrupt-parent = <&gpio3>;
++			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
++			reset-gpios = <&expander0 1 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <500000>;
++			reset-deassert-us = <50000>;
++			enet-phy-lane-no-swap;
++			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++			ti,dp83867-rxctrl-strap-quirk;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++		};
++	};
++};
++
++&flexcan1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan1>;
++	status = "okay";
++};
++
++&flexcan2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan2>;
++	status = "okay";
++};
++
++/* deactivated because pins are used for SDIO */
++&flexspi1 {
++	status = "disabled";
++};
++
++&gpio1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_m2_key_b>, <&pinctrl_m2_key_e>;
++
++	gpio-line-names =
++		/* 00 */ "", "", "M2_KEYE_ALERT#", "",
++		/* 04 */ "", "", "M2_KEYE_UART_WAKE#", "BM1_M2_KEYE_SDIO_WAKE#",
++		/* 08 */ "", "", "", "BM2_M2_KEYE_SDIO_RST#",
++		/* 12 */ "M2_KEYB_WOWWAN#", "BM3_M2_KEYB_PEWAKE#", "", "",
++		/* 16 */ "", "", "", "",
++		/* 20 */ "", "", "", "",
++		/* 24 */ "", "", "", "",
++		/* 28 */ "", "", "", "";
++};
++
++&gpio2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio2>;
++
++	gpio-line-names =
++		/* 00 */ "", "", "", "",
++		/* 04 */ "LVDS_RESET#", "LVDS_BLT_EN", "", "LVDS_PWR_EN",
++		/* 08 */ "", "", "", "",
++		/* 12 */ "", "", "", "",
++		/* 16 */ "X1_9", "X1_19", "X1_15", "X1_11",
++		/* 20 */ "X1_13", "X1_7", "", "CAM_TRIGGER",
++		/* 24 */ "CAM_SYNC", "", "X1_5", "",
++		/* 28 */ "", "", "", "";
++};
++
++&gpio4 {
++	gpio-line-names =
++		/* 00 */ "", "", "", "",
++		/* 04 */ "", "", "", "",
++		/* 08 */ "", "", "", "",
++		/* 12 */ "", "", "", "",
++		/* 16 */ "", "", "", "",
++		/* 20 */ "", "", "", "",
++		/* 24 */ "", "", "", "",
++		/* 28 */ "", "DSI_GPIO", "", "";
++};
++
++&lpi2c3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <400000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_lpi2c3>;
++	pinctrl-1 = <&pinctrl_lpi2c3_gpio>;
++	scl-gpios = <&gpio2 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio2 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++
++	expander0: gpio@70 {
++		compatible = "nxp,pca9538";
++		reg = <0x70>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		vcc-supply = <&reg_3v3>;
++		gpio-line-names = "ENET1_RESET#", "ENET2_RESET#",
++				  "M2_KEYE_PERST#", "M2_KEYB_PERST#",
++				  "M2_KEYE_W_DISABLE1#", "M2_KEYE_W_DISABLE2#",
++				  "M2_KEYA_W_DISABLE1#", "12V_EN";
++	};
++
++	expander1: gpio@71 {
++		compatible = "nxp,pca9538";
++		reg = <0x71>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		vcc-supply = <&reg_3v3>;
++		gpio-line-names = "USB_HUB_PWR", "DSI_RST#",
++				  "CAM_PWR#", "CAMRST#",
++				  "M2_KEYB_FULL_CARD_PWR_OFF#", "M2_KEYB_W_DISABLE2#",
++				  "M2_KEYB_RST#", "M2_KEYB_DPR";
++
++		/*
++		 * Controls the LTE card FULL_CARD_PWR_OFF pin which is low active
++		 * as power down signal. The output-low states, the signal
++		 * is inactive, e.g. not power down
++		 */
++		full-card-power-off-hog {
++			gpio-hog;
++			gpios = <4 GPIO_ACTIVE_LOW>;
++			output-low;
++			line-name = "M2_KEYB_FULL_CARD_PWR_OFF#";
++		};
++
++		/*
++		 * Controls the LTE card reset pin which is low active
++		 * as reset signal. The output-low states, the signal
++		 * is inactive, e.g. not in reset
++		 */
++		wlan-perst-hog {
++			gpio-hog;
++			gpios = <6 GPIO_ACTIVE_LOW>;
++			output-low;
++			line-name = "M2_KEYB_RST#";
++		};
++	};
++};
++
++&lpspi6 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpspi6>, <&pinctrl_lpspi6_cs>;
++	cs-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
++	status = "okay";
++};
++
++&lpuart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++/* disabled per default, console for M33 */
++&lpuart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "disabled";
++};
++
++/* disabled per default, used for bluetooth on M.2 slot */
++&lpuart7 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart7>;
++	uart-has-rtscts;
++	status = "disabled";
++};
++
++&lpuart8 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart8>;
++	status = "okay";
++};
++
++&pcf85063 {
++	/* RTC_EVENT# from SoM is connected on mainboard */
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcf85063>;
++	interrupt-parent = <&gpio1>;
++	interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
++};
++
++&tpm5 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_tpm5>;
++};
++
++&usbotg1 {
++	disable-over-current;
++	dr_mode = "peripheral";
++	samsung,picophy-pre-emp-curr-control = <3>;
++	samsung,picophy-dc-vol-level-adjust = <7>;
++	status = "okay";
++};
++
++&usbotg2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbhub>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	disable-over-current;
++	dr_mode = "host";
++	vbus-supply = <&reg_5v0_usb>;
++	samsung,picophy-pre-emp-curr-control = <3>;
++	samsung,picophy-dc-vol-level-adjust = <7>;
++	status = "okay";
++
++	hub_2_0: usb-hub@1 {
++		compatible = "usb424,2517";
 +		reg = <1>;
-+		reset-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&gpio2 22 GPIO_ACTIVE_LOW>;
++		vdd-supply = <&reg_3v3>;
++	};
++};
++
++&usdhc2 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2_hs>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
++	bus-width = <4>;
++	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
++	disable-wp;
++	no-sdio;
++	no-mmc;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	status = "okay";
++};
++
++&usdhc3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	bus-width = <4>;
++	non-removable;
++	vmmc-supply = <&reg_3v3>;
++};
++
++&iomuxc {
++	pinctrl_backlight: backlightgrp {
++		fsl,pins = /* HYS | PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO05__GPIO2_IO05			0x011e>;
++	};
++
++	pinctrl_display: displaygrp {
++		fsl,pins = /* HYS | PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO07__GPIO2_IO07			0x011e>;
++	};
++
++	pinctrl_eqos: eqosgrp {
++		fsl,pins = /* PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_ENET1_MDC__ENET_QOS_MDC				0x51e>,
++			   /* SION | HYS | FSEL_2 | DSE X4 */
++			   <MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO				0x4000111e>,
++			   /* HYS | FSEL_0 | DSE no drive */
++			   <MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x1000>,
++			   <MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x1000>,
++			   <MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2			0x1000>,
++			   <MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3			0x1000>,
++			   <MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x1000>,
++			   /* HYS | PD | FSEL_0 | DSE no drive */
++			   <MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x1400>,
++			   /* PD | FSEL_2 | DSE X5 */
++			   <MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x53e>,
++			   <MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1			0x53e>,
++			   <MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2			0x53e>,
++			   <MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x53e>,
++			   <MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x53e>,
++			   /* PD | FSEL_3 | DSE X4 */
++			   <MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x59e>;
++	};
++
++	pinctrl_eqos_phy: eqosphygrp {
++		fsl,pins = /* HYS | FSEL_0 | DSE no drive */
++			   <MX93_PAD_CCM_CLKO1__GPIO3_IO26		0x1000>;
++	};
++
++	pinctrl_fec: fecgrp {
++		fsl,pins = /* PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_ENET2_MDC__ENET1_MDC		0x51e>,
++			   /* SION | HYS | FSEL_2 | DSE X4 */
++			   <MX93_PAD_ENET2_MDIO__ENET1_MDIO		0x4000111e>,
++			   /* HYS | FSEL_0 | DSE no drive */
++			   <MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x1000>,
++			   <MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x1000>,
++			   <MX93_PAD_ENET2_RD2__ENET1_RGMII_RD2		0x1000>,
++			   <MX93_PAD_ENET2_RD3__ENET1_RGMII_RD3		0x1000>,
++			   <MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL	0x1000>,
++			   /* HYS | PD | FSEL_0 | DSE no drive */
++			   <MX93_PAD_ENET2_RXC__ENET1_RGMII_RXC		0x1400>,
++			   /* PD | FSEL_2 | DSE X5 */
++			   <MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0		0x53e>,
++			   <MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1		0x53e>,
++			   <MX93_PAD_ENET2_TD2__ENET1_RGMII_TD2		0x53e>,
++			   <MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3		0x53e>,
++			   <MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x53e>,
++			   /* PD | FSEL_3 | DSE X4 */
++			   <MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC		0x59e>;
++	};
++
++	pinctrl_fec_phy: fecphygrp {
++		fsl,pins = /* HYS | FSEL_0 | DSE no drive */
++			   <MX93_PAD_CCM_CLKO2__GPIO3_IO27		0x1000>;
++	};
++
++	pinctrl_flexcan1: flexcan1grp {
++		fsl,pins = /* HYS | PU | FSEL_0 | DSE no drive */
++			   <MX93_PAD_PDM_BIT_STREAM0__CAN1_RX		0x1200>,
++			   /* PU | FSEL_3 | DSE X4 */
++			   <MX93_PAD_PDM_CLK__CAN1_TX			0x039e>;
++	};
++
++	pinctrl_flexcan2: flexcan2grp {
++		fsl,pins = /* HYS | PU | FSEL_0 | DSE no drive */
++			   <MX93_PAD_GPIO_IO27__CAN2_RX			0x1200>,
++			   /* PU | FSEL_3 | DSE X4 */
++			   <MX93_PAD_GPIO_IO25__CAN2_TX			0x039e>;
++	};
++
++	pinctrl_gpio2: gpio2grp {
++		fsl,pins = /* HYS | PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO16__GPIO2_IO16		0x151e>,
++			   <MX93_PAD_GPIO_IO17__GPIO2_IO17		0x151e>,
++			   <MX93_PAD_GPIO_IO18__GPIO2_IO18		0x151e>,
++			   <MX93_PAD_GPIO_IO19__GPIO2_IO19		0x151e>,
++			   <MX93_PAD_GPIO_IO20__GPIO2_IO20		0x151e>,
++			   <MX93_PAD_GPIO_IO21__GPIO2_IO21		0x151e>,
++			   <MX93_PAD_GPIO_IO26__GPIO2_IO26		0x151e>;
++	};
++
++	pinctrl_jtag: jtaggrp {
++		fsl,pins = <MX93_PAD_DAP_TCLK_SWCLK__JTAG_MUX_TCK	0x051e>,
++			   <MX93_PAD_DAP_TDI__JTAG_MUX_TDI		0x1200>,
++			   <MX93_PAD_DAP_TDO_TRACESWO__JTAG_MUX_TDO	0x031e>,
++			   <MX93_PAD_DAP_TMS_SWDIO__JTAG_MUX_TMS	0x1200>;
++	};
++
++	pinctrl_lpi2c3: lpi2c3grp {
++		fsl,pins = /* SION | HYS | OD | FSEL_3 | DSE X4 */
++			   <MX93_PAD_GPIO_IO28__LPI2C3_SDA		0x4000199e>,
++			   <MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x4000199e>;
++	};
++
++	pinctrl_lpi2c3_gpio: lpi2c3-gpiogrp {
++		fsl,pins = /* SION | HYS | OD | FSEL_3 | DSE X4 */
++			   <MX93_PAD_GPIO_IO28__GPIO2_IO28		0x4000199e>,
++			   <MX93_PAD_GPIO_IO29__GPIO2_IO29		0x4000199e>;
++	};
++
++	pinctrl_lpspi6: lpspi6grp {
++		fsl,pins = /* HYS | PD | FSEL_0 | DSE no drive */
++			   <MX93_PAD_GPIO_IO01__LPSPI6_SIN		0x1400>,
++			   /* PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO02__LPSPI6_SOUT		0x051e>,
++			   <MX93_PAD_GPIO_IO03__LPSPI6_SCK		0x051e>;
++	};
++
++	pinctrl_lpspi6_cs: lpspi6csgrp {
++		fsl,pins = /* FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO00__GPIO2_IO00		0x011e>;
++	};
++
++	pinctrl_m2_key_b: m2keybgrp {
++		fsl,pins = <MX93_PAD_SAI1_TXC__GPIO1_IO12		0x00001000>,
++			   <MX93_PAD_SAI1_TXD0__GPIO1_IO13		0x00001000>;
++	};
++
++	pinctrl_m2_key_e: m2keyegrp {
++		fsl,pins = <MX93_PAD_I2C2_SCL__GPIO1_IO02		0x00001000>,
++			   <MX93_PAD_UART2_RXD__GPIO1_IO06		0x00001000>,
++			   <MX93_PAD_UART2_TXD__GPIO1_IO07		0x00001000>,
++			   <MX93_PAD_SAI1_TXFS__GPIO1_IO11		0x00001000>;
++	};
++
++	/*CAM_MCLK, DSI_GPIO, CAM_TRIGGER, CAM_SYNC*/
++	pinctrl_mipi_csi_dsi: mipi_csi_dsigrp {
++		fsl,pins = <MX93_PAD_CCM_CLKO3__CCMSRCGPCMIX_CLKO3     0x0000011e>,
++			   <MX93_PAD_CCM_CLKO4__GPIO4_IO29             0x0000011e>,
++			   <MX93_PAD_GPIO_IO23__GPIO2_IO23             0x0000011e>,
++			   <MX93_PAD_GPIO_IO24__GPIO2_IO24             0x0000111e>;
++	};
++
++	pinctrl_pcf85063: pcf85063grp {
++		fsl,pins = /* HYS | FSEL_0 | No DSE */
++			   <MX93_PAD_SAI1_RXD0__GPIO1_IO14		0x1000>;
++	};
++
++	pinctrl_tpm5: tpm5grp {
++		fsl,pins = <MX93_PAD_GPIO_IO06__TPM5_CH0		0x57e>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = /* HYS | FSEL_0 | No DSE */
++			   <MX93_PAD_UART1_RXD__LPUART1_RX		0x1000>,
++			   /* FSEL_2 | DSE X4 */
++			   <MX93_PAD_UART1_TXD__LPUART1_TX		0x011e>;
++	};
++
++	pinctrl_uart3: uart3grp {
++		fsl,pins = /* HYS | FSEL_0 | No DSE */
++			   <MX93_PAD_GPIO_IO15__LPUART3_RX		0x1000>,
++			   /* FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO14__LPUART3_TX		0x011e>;
++	};
++
++	pinctrl_uart7: uart7grp {
++		fsl,pins = <MX93_PAD_GPIO_IO08__LPUART7_TX             0x031e>,
++			   <MX93_PAD_GPIO_IO09__LPUART7_RX             0x031e>,
++			   <MX93_PAD_GPIO_IO10__LPUART7_CTS_B          0x031e>,
++			   <MX93_PAD_GPIO_IO11__LPUART7_RTS_B          0x031e>;
++	};
++
++	pinctrl_uart8: uart8grp {
++		fsl,pins = /* HYS | FSEL_0 | No DSE */
++			   <MX93_PAD_GPIO_IO13__LPUART8_RX		0x1000>,
++			   /* FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO12__LPUART8_TX		0x011e>;
++	};
++
++	pinctrl_usbhub: usbhubgrp {
++		fsl,pins = /* HYS | PD | FSEL_2 | DSE X4 */
++			   <MX93_PAD_GPIO_IO22__GPIO2_IO22		0x151e>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
++		fsl,pins = /* HYS | FSEL_0 | No DSE */
++			   <MX93_PAD_SD2_CD_B__GPIO3_IO00		0x1000>;
++	};
++
++	/* enable SION for data and cmd pad due to ERR052021 */
++	pinctrl_usdhc2_hs: usdhc2hsgrp {
++		fsl,pins = /* PD | FSEL_3 | DSE X5 */
++			   <MX93_PAD_SD2_CLK__USDHC2_CLK		0x05be>,
++			   /* HYS | PU | FSEL_3 | DSE X4 */
++			   <MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e>,
++			   /* HYS | PU | FSEL_3 | DSE X3 */
++			   <MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000138e>,
++			   <MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000138e>,
++			   <MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000138e>,
++			   <MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000138e>,
++			   /* FSEL_2 | DSE X3 */
++			   <MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x010e>;
++	};
++
++	/* enable SION for data and cmd pad due to ERR052021 */
++	pinctrl_usdhc2_uhs: usdhc2uhsgrp {
++		fsl,pins = /* PD | FSEL_3 | DSE X6 */
++			   <MX93_PAD_SD2_CLK__USDHC2_CLK		0x05fe>,
++			   /* HYS | PU | FSEL_3 | DSE X4 */
++			   <MX93_PAD_SD2_CMD__USDHC2_CMD		0x4000139e>,
++			   <MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000139e>,
++			   <MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000139e>,
++			   <MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000139e>,
++			   <MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000139e>,
++			   /* FSEL_2 | DSE X3 */
++			   <MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x010e>;
++	};
++
++	/* enable SION for data and cmd pad due to ERR052021 */
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = /* PD | FSEL_3 | DSE X6 */
++			   <MX93_PAD_SD3_CLK__USDHC3_CLK		0x05fe>,
++			   /* HYS | PU | FSEL_3 | DSE X4 */
++			   <MX93_PAD_SD3_CMD__USDHC3_CMD		0x4000139e>,
++			   <MX93_PAD_SD3_DATA0__USDHC3_DATA0		0x4000139e>,
++			   <MX93_PAD_SD3_DATA1__USDHC3_DATA1		0x4000139e>,
++			   <MX93_PAD_SD3_DATA2__USDHC3_DATA2		0x4000139e>,
++			   <MX93_PAD_SD3_DATA3__USDHC3_DATA3		0x4000139e>;
 +	};
 +};
 -- 
