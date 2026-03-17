@@ -1,139 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98243A63F8;
-	Tue, 17 Mar 2026 10:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3592367F28
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 10:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743865; cv=none; b=DyjMhiTD1qbNZiR/wln+Qku1VqAruXwLvxFBSWbD5G0InGiQWE5RfnDp+GVgSpczpUUZRKf+sZY4Qo/38VNyHqZQGGPBdP4VpTWkoyoRNaDO3a+KYVorChYRbe1wHVN/7Ql7YCKPK3sB+Nj1qtIjOiPbDwMSkzFAeS8zfysSi1A=
+	t=1773744269; cv=none; b=UQz95l0KFX+xivlfoEucs8gzQif/32CrkeKESymgAaUHaW8FZA011ryx0/l/Zo3jsv9ZQnauzvMvOMF60A5jy1N4Gbq3NBM2gHPEjia3soctLUF+uyxbwiHKHuvPtgxcZDzeQ8ieF6KX8o7avAT7NX16qPnUEdvRP5YqCmPpg+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743865; c=relaxed/simple;
-	bh=bVEWdLxO6ioCtZnPQrdXen+JMCFn/KT/7+euMbV69tM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c0Qcjha6B+lmO1sD3axjOkAJYG+KIfEO5DiIqfq3TupFFdswYcpXCMqbHu8hwAOnYnmYir6Kzg4TT1x0ji1XlOZqwp8D1jyNTePQH9MRQArBMXST9LDY2fx4bL3XLMj9bzeK/jfh/6TxJHkb9ajslaM/UZaTb/2tlroN8a+eUHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOUr0clK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773744269; c=relaxed/simple;
+	bh=UQyonz/fROOd+E5ux5wnd2FwnDxCTcUUFUb5qdccPbk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jtk6hbxdtkOOBakW4ML7fbpsmgUy1Lt9wA0GLB9AjXQDzZA7V83HjnyfSmiUhyeo0lo/HDb/0R9IJ/QiMc7BhZmtm8nalkreujIjWw5VIrdca5ig5usVStT9+KCUTNVC7Bif1/oGtT3M90Z5SPa1uYQFbQcM+Xcdc/Nq4q+jJAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+mRoSiX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOUr0clK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BA2C2BC9E;
-	Tue, 17 Mar 2026 10:37:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+mRoSiX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91680C2BCB9
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 10:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773743865;
-	bh=bVEWdLxO6ioCtZnPQrdXen+JMCFn/KT/7+euMbV69tM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bOUr0clKofRpKlPQbpoGfbgW9oToJQusdYtrjFwC+xX+oDNSZytwUiA4CRIDQXhMT
-	 xdfBatwQU3l+u8MhtrvnIpgsESwkSLOQjt3qB/Xc59eOYZt41K7Yt5IQ6r+3wsvTNk
-	 RYvRm7XfIZmvxULvrr+bHWanoNOdZIoHkimQjH7QoO1I5DRxl+ZJOSbOWf2CfvfYxw
-	 o4Mt2aeShixX/CrnBsDtw+1tkhO2TN36FEwVR+VGjLGHhhYcVsFwy4vZ2PfCApJoEK
-	 k1zTCdZbe2/7yoHhavk0gUqPVYdHLfuZGEAMSXZvoUuG9ZVbrIy4t6izS5WAXy2E+p
-	 LE2sQDdblsyOg==
-Date: Tue, 17 Mar 2026 16:07:41 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/8] dmaengine: Add API to combine configuration and
- preparation (sg and single)
-Message-ID: <abku9bXxkZWUwOhE@vaman>
-References: <20251218-dma_prep_config-v2-0-c07079836128@nxp.com>
- <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
- <aa6pW-zpxnrZnfPn@vaman>
- <aa7cbL-B5sbjZr_l@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1773744269;
+	bh=UQyonz/fROOd+E5ux5wnd2FwnDxCTcUUFUb5qdccPbk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=A+mRoSiXRnP0rpmp94IIjRt+NqHylOr8sISWSQVsw6FsnP9W4Gy1oFyPwBK0+kEuq
+	 YfLXzK/+3b1dFclBnrbc2ImOIsXdkanWgEHrSTR11nomzEdwbZ2MsrKnz7L0qjTSVw
+	 PyQWSqVlidOEPJwz1i8qLiBH3MOkd1512mPLL7fdIyQ+0uombK85JScW2GEnHLEXq1
+	 ii/+gSwQ7AZdwIxfJaD2EebjNRUlYfVnUmrBr5fCQAGacIXTgVxS9TELk6L6l2pg6K
+	 F9OzwUfvdSlqSRKO0bcQ3m8PyQo3ZvX5dzdqs0+spfSqu35ViQI1qzscOxz9lkf0bc
+	 GWJmm9fFt5Qdw==
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-464bba3a9easo3532386b6e.0
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 03:44:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVpFLIHSorD9P1NPydufRgD0JgrhBhWpl85vHRP+/RYEupnne8LDCaENTVn5wRqTAXhF1I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMRFzTR5ex0CeSRjbYoRkBEnOcj/GA3s5vVZa0REpXPXfP1QIy
+	Dbg/znY3kZ4lUC/jFi5rciIcpum68gsBEIwVqcc7oLovOkRqx3Hvpc1iQW/2ZdW75r3UMB5TWSx
+	+kL9sj/9J2r21NdZ14ax+cfZU0d/AHMI=
+X-Received: by 2002:a05:6808:66c1:b0:464:a1ee:c412 with SMTP id
+ 5614622812f47-4675754332emr7723340b6e.31.1773744268614; Tue, 17 Mar 2026
+ 03:44:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa7cbL-B5sbjZr_l@lizhi-Precision-Tower-5810>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro> <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro> <abkLEgrZbdb03VWg@ashevche-desk.local>
+ <abkLY4AAQuFlTRC7@ashevche-desk.local> <abkT_jpjIki6pvX1@shikoro>
+ <abkqEni3phP8dqqw@ashevche-desk.local> <abkuNpwmYGa6qJPZ@shikoro>
+In-Reply-To: <abkuNpwmYGa6qJPZ@shikoro>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 17 Mar 2026 11:44:16 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+X-Gm-Features: AaiRm51cRor4ZZDDr_mxj0wmImR4wUCy3F3N-SYcdW3xJYMr5MLA4gbqvDIFXzk
+Message-ID: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Douglas Anderson <dianders@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	devicetree@vger.kernel.org, driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 09-03-26, 10:42, Frank Li wrote:
-> On Mon, Mar 09, 2026 at 12:04:59PM +0100, Vinod Koul wrote:
-> > On 18-12-25, 10:56, Frank Li wrote:
-> > > Previously, configuration and preparation required two separate calls. This
-> > > works well when configuration is done only once during initialization.
-> > >
-> > > However, in cases where the burst length or source/destination address must
-> > > be adjusted for each transfer, calling two functions is verbose and
-> > > requires additional locking to ensure both steps complete atomically.
-> > >
-> > > Add a new API dmaengine_prep_config_single() and dmaengine_prep_config_sg()
-> > > and callback device_prep_config_sg() that combines configuration and
-> > > preparation into a single operation. If the configuration argument is
-> > > passed as NULL, fall back to the existing implementation.
-> > >
-> > > Add a new API dmaengine_prep_config_single_safe() and
-> > > dmaengine_prep_config_sg_safe() for re-entrancy, which require driver
-> > > implement callback device_prep_config_sg().
-> >
-> > Okay to add API
-> >
-> > > +	struct dma_async_tx_descriptor *(*device_prep_config_sg)(
-> > > +		struct dma_chan *chan, struct scatterlist *sgl,
-> > > +		unsigned int sg_len, enum dma_transfer_direction direction,
-> > > +		unsigned long flags, struct dma_slave_config *config,
-> > > +		void *context);
-> >
-> > Do we want to have drivers implement one more callback. It does not make
-> > sense to me. Why not handle this in framework and have it call the
-> > respective lower level APIs.
-> 
-> To avoid use addtional lock! suppose each API is re-entriable.
-> 
-> thread 1:  call dmaengine_prep_config_sg_safe()
-> thread 2:  call dmaengine_prep_config_sg_safe()
-> 
-> If DMA engine driver implement device_prep_config_sg, thread 1 and thread 2
-> can run parallel.
-> 
-> If driver have not implement this callback, it have to use mutex make sure
-> config and prep atomic.
-> 
-> https://lore.kernel.org/dmaengine/20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com/
-> show finial opitimziation result, which depend on this. If can't call
-> prep() function parallel, which will kill performace.
+On Tue, Mar 17, 2026 at 11:34=E2=80=AFAM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+>
+> > Like Danilo I am also not sure what lock protects fwnode accesses.
+>
+> This is basically the question I asked to Doug. If he also don't see
+> one, let's take this patch as is.
 
-Which seems to be 10% in your case.
+I don't recall using any lock for this purpose.
 
-> > Drivers should implement simple apis and collectively the functionality
-> > can come from the framework.
-> >
-> > Would you consider revising as such. Bonus all existing drivers can
-> > start using this API, no change required for drivers in that case'
-> 
-> Not that simple, some devices just call config at probe, especial fix
-> FIFO address and burst length.
-> 
-> Call config and prep only need for the case, which need adjust src/dst
-> address, burst length or other parameter for each transfer.
-
-Correct. In the cases where config is done once they can invoke with
-NULL config. I would like the middle layer to handle complexities and
-drivers should be simpler
-
-> 
-> Frank
-> 
-> >
-> >
-> > --
-> > ~Vinod
-
--- 
-~Vinod
+IIRC, the original assumption was that device fwnodes wouldn't be
+updated once set.
