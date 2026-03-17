@@ -1,100 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78E22D592E;
-	Tue, 17 Mar 2026 13:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9DE30E84E
+	for <imx@lists.linux.dev>; Tue, 17 Mar 2026 13:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773754971; cv=none; b=KmvzHXMr5b+ChXiV7PmTvbGDO6E6hRfF4WoTIkos76IpaKk2Oe84ZMbD49x/1IyBPS0D+0eOu8+KoOf3xflnvsPctpJIxS6pvNQz24QColWtnbMagZUxryd1rKtUu62B/87qYw3bkwB859eMaBOJ4WP8Q38XZkiqESJUSBdc3sk=
+	t=1773755231; cv=none; b=k+kpvenuePIfxM7Bs2A9HSuXXtR4/41nLhG4/kp5JINTt4MqU1yAoJEauC3b+uwJaOleqv/DDwa2xLDkUqMdCzCDBpluF3S3MzuUgn/ONpLfgxhYVxPBpEhHAqkkUXtZ83Sa9gsJZxmxc9CQ8tVEu4+vjIS95rOnnLTMATw9oQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773754971; c=relaxed/simple;
-	bh=cvWFM54q957EernSWzHaK9Acqjw396q6QTQo5GDsp5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ShsouSxVeTlqZmV5yn4M8HKQaEZJ/s8m4zxE8C0Awnynqj5TO3kgHmVFhY58N1GaYx7wcyb0sXFU/tx5mRtID4AiAjJVR6JdHVHH217005vGPp310rWJdaeoPKPSfMQDsrILEbUPr32zxogHJP3cypCfV4gLqs36328SoEX12vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iy0TnZX5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773755231; c=relaxed/simple;
+	bh=/x9bu8KevwXQZUlu2VPi3Pigx2Icge0JmO4mg9haX+o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sO/w5JrfH2lIvVFhx9W5L90E6h8ZsyqJH2+cg0VCdh3fz5NMfx3u5xi2ry/M18BSS5KpdPIsFW4XENVpg1Fyu+Z+3/VrhxJFSwEJDKrRu0oFknlNahFU5+kRLZPsIaNYSd9/eJCA4Kt7OjD/1u7ptarUyHQENtaD9M444Ze2i2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jAwMv8Ax; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iy0TnZX5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDBEC4CEF7;
-	Tue, 17 Mar 2026 13:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773754971;
-	bh=cvWFM54q957EernSWzHaK9Acqjw396q6QTQo5GDsp5Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Iy0TnZX5T2xqw3wl38rgvtDR9JClrVeBVTwEjQZgZeUSC1mQWBqW/7QANTOB+ItEh
-	 ShMuJXNtUDliwfJuOm40uaMs7VLacYFs4/xaeXEHuP0wSrirTRQUbkPVUIy5LQqRBg
-	 5FqbbtdDB6HEelqWDfyEDYrGwjyJR0xK/vDSLyQP0VRdzNtsewmCWmBhZdxRCQKhwX
-	 UtjL/WYWVKM3oGNCuTfxvKwt4ApwDU0XE1YwK32qPu1CzE06K8OSKaNNjr+SM99ctm
-	 IwndBkfvV/zVMP64fw2nCwDX4++guZiEpwi6CnKsiGxnn9bHiy/g4fHTg6er0m7Tod
-	 qyBGCOjWy60qA==
-Date: Tue, 17 Mar 2026 13:42:42 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	devicetree@vger.kernel.org, driver-core@lists.linux.dev,
-	imx@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <94dcb275-4af0-4ca1-9b4a-5769bcc2c777@sirena.org.uk>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jAwMv8Ax"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-824c9da9928so3676678b3a.3
+        for <imx@lists.linux.dev>; Tue, 17 Mar 2026 06:47:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773755229; x=1774360029; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MK795KpPXyjO/YxzSnwJyz0MTRv/X9Db9MYpfOCj3BE=;
+        b=jAwMv8AxsdFcewFx0MvBuihTb+GasnMTVryoBQooLZU393LG+BvWDFoyFITPeEpHDV
+         0hzoBbb0yIxcpA9pKf8ZJAUcAl5EuvaQn8t8+PwA90pwdazgdZaliV+q7p/cBZ+ux7sN
+         OUfSPmCNKoRxNVOfWJi2LRIPoho5CN4DW406vuQbf37W/Zlp12o5HGzhMkIOTPlEbcP0
+         vtCMOg7ur2O6jNtPFP7jQmIAzTPUpu6jCYid2baH5CFC4GJZLOiti1rUW+7TiEQE5E3Y
+         HuH22BuQLPGtmWs91fkSuXUk+RLQznv6dMRnTSBKkn7f4F72qFJfhN/cs9VQXHWqTcDJ
+         uZfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773755229; x=1774360029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MK795KpPXyjO/YxzSnwJyz0MTRv/X9Db9MYpfOCj3BE=;
+        b=AYhYmfO0YYjlJDbGWrXsh+8uYdwBRnQDUBf0itRYyoV2wg77PCY6lXReQdvaAX7g+i
+         MzvzT5QhBOjS1yvbC58XEILP5Kld6oY529zenpYGzTOKxEH3Liegvq/VlZKldpdzSde1
+         ftdf1MNWHlpIuHuiKHKkDKZzcd/FPdwsBcT3Gt4akcDG6NMtS9Zifg3xCB0lb5YLL2Ae
+         r/J7CieC6cdBd8o5sBb3pA/X5FRo2rCZ/Dis2kweDxhp+QHyTZaOa07ML9jaJm/B/QGQ
+         xY8VdFaHI12xBIQ4Q8bs6LRNYB1tpX8/keX82NZz65tXs34Tr//PIhpCTiW27wpsD90o
+         TDSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQAOlTlO7xTeW0ExT3GEWCdsuHmtqdg2vEro4NpjQf/pLz1vVUjfalh4KQfxXa3Al0ihM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFGtYYHIBiCpV7j3xJ00ztRlWfKtqweu/yCPhlvqiGWbZcSk5x
+	o+JHDIfWIG+4kPfzVWhzBJ3rRMmGoOupRGOZk6TKnuNfNl9dPB8jYd4g
+X-Gm-Gg: ATEYQzzLbQqvJjdBrayJZLDzk/iSiMWimaFqQKjmghWRi8cDVZ4VrwT/fS0611kcXZh
+	AkqOoBBU2cfHUrx3EOhypWeTGyEhA6qd285OZQz3fwBU6Yj0R68zVB+ZMcXkTMLzWGmFLe20o1S
+	Ehi+v1TUUF9RxD/SpXGHauF+tgCFQrO4UQQV3J7tquXkJFlCeT4zzAh9MRMJCoxwxfeqwe46mWi
+	pLtHRNoCoaLqw7u1XBDe3belwnOqRM0Kkr8mVFt5UBvAliKgZns2q/8QeJjsUWPJ0NL2w4o5wOp
+	k6XsJNOdB9qG0edNlcSvRR5FjMi+Nc9WErEzNmfpfUJllIn7JN6g4vQ45BBt17iYcvFQei8UbGO
+	hjQLBZ0Y8p//Oo4BDbBPEaxO+K92FEm0tsIp3QTfg7EToX8NUeGXSIMiLrE/h2MZTGlV9kMSq+v
+	Pnyl0zTFdSUjw6ehzVAV7MexL0NNBHDZRSYe6CLA==
+X-Received: by 2002:a05:6a21:50a:b0:398:9f1d:8a03 with SMTP id adf61e73a8af0-398ecd9d561mr16769427637.61.1773755229144;
+        Tue, 17 Mar 2026 06:47:09 -0700 (PDT)
+Received: from padmashree.. ([2401:4900:91ee:4baa:27e8:65bd:dbc5:b65f])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73eba9e183sm11898643a12.14.2026.03.17.06.47.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 06:47:08 -0700 (PDT)
+From: Padmashree S S <padmashreess2006@gmail.com>
+To: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	Frank.Li@nxp.com,
+	mchehab@kernel.org,
+	s.hauer@pengutronix.de
+Cc: padmashreess2006@gmail.com,
+	festevam@gmail.com,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] staging: media: imx: fixed a brace coding style issue
+Date: Tue, 17 Mar 2026 19:14:47 +0530
+Message-ID: <20260317134448.389123-1-padmashreess2006@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CESacuQ0/LxRTmli"
-Content-Disposition: inline
-In-Reply-To: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-X-Cookie: Must be over 18.
+Content-Transfer-Encoding: 8bit
 
+Fixed a coding style issue.
 
---CESacuQ0/LxRTmli
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Padmashree S S <padmashreess2006@gmail.com>
+---
+ drivers/staging/media/imx/imx-media-of.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Mon, Mar 16, 2026 at 03:42:06PM -0700, Douglas Anderson wrote:
-> In various places in the kernel, we modify the fwnode "flags" member
-> by doing either:
->   fwnode->flags |= SOME_FLAG;
->   fwnode->flags &= ~SOME_FLAG;
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index bb28daa4d713..7413551052ae 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -57,9 +57,8 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 		of_node_put(csi_np);
+ 		if (ret) {
+ 			/* unavailable or already added is not an error */
+-			if (ret == -ENODEV || ret == -EEXIST) {
++			if (ret == -ENODEV || ret == -EEXIST)
+ 				continue;
+-			}
+ 
+ 			/* other error, can't continue */
+ 			return ret;
+-- 
+2.43.0
 
-Acked-by: Mark Brown <broonie@kernel.org>
-
---CESacuQ0/LxRTmli
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm5WlEACgkQJNaLcl1U
-h9DSgAf6Ap5hH7yRkuhE3ZUXEU9Sw0nRKEWLWHq9c0Jd+k0j/ZH4K6YAePaTKleT
-VU3Fsx4siP9rbVq9sWIZ4qtL2ChJw3LgqNNMe88HKsb5MLrcpbCzUEXe9mZHg9ke
-tucJZVfd79aIWfTHelxkhI1ZuW+JNDId0+0NrI427Jrhou3kPYT7+gJmYXuMbWik
-Pmc0B/+HNSZ5wx+ETM7Ki9+Yj+BY15QaBoNID1YqUpzKd6xrtRs/Ep414//xibo9
-92kpTPrKdt92+B4iMU/YWQvPyUelIpmWR7aJ9I823NnLKHA5yvoEy1ff5WloKA6Q
-MxtC9dhuaD1HfwqImmlLKtm0H6/ABQ==
-=PgWz
------END PGP SIGNATURE-----
-
---CESacuQ0/LxRTmli--
