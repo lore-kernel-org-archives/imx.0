@@ -1,42 +1,43 @@
 Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D192E372EE2;
-	Tue, 17 Mar 2026 11:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE57E3A7F5D;
+	Tue, 17 Mar 2026 11:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773746243; cv=none; b=dIZvH+VP8GT0DusjMFveaxEcjMB72MOwnC0in3PKcoOT/nsqsxn09eChdyviA9BafgOCPgXT1nu9ANWXgsoXWDdsV9jPy+y4RxYzoEardSfZgw2cdG8/J5kNmxnbWjvr7KXGSw+CKMQOfsmnsImX0uYklQ7Eo7H86mX4Yp1KKMc=
+	t=1773746244; cv=none; b=deuhVCRtpd5LbhW2V+v2xJG7p6fxaBRaD6D3IgZRBlPIv5CYrddcK5j72+TvCBx3zmtBAUIIo4S4bvJv9clkqWwESq78dhFdeREeyZLVPaZJ2wru/oHcXhIMFFI40pvTlnhYh8jBig25rXuj0xxcPFCygtAgovURjuKled9fHoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773746243; c=relaxed/simple;
-	bh=GZw8+B+r7XHcl1ZhynndIAqOtmGsttTADzy8NiQjyOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H5H3WGJwYyGADmxgMrAtRvvtDr3fP+1ezER9sv2L1BKnz40T/iXta5LKHq7Wf7F5yjN+5+z2SPLuQhqHpP8aSyZXJ6aw+KFwHgtjNVi/ZvEPWXvoqOxyt8jaFeOrGG/fBSpCoMrOByFdFnvHKYOAgUfR0FoU/PyUImNEHztftmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=q1G5tA1H; arc=none smtp.client-ip=188.40.3.216
+	s=arc-20240116; t=1773746244; c=relaxed/simple;
+	bh=MR3Be3SKppxFLM3itSoWf4FWGBYc4QWOkvkcVhbuM/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LrK5Ic5f9SzQrgV9qxYm23U721TFntybk3ilUJEflGCUMvh0+6IKisVBSTZvGB8ZQnEzBFqVQsE/EXd3M8aFUc2uTVWBfNgEs7nNSNKmtBRHuBicSy1nblxDnSf2kCiyQZPaBrLwilhHLzcSmDmLsM49DR4kIUM74Kn3tq/uCPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=IqaLJIht; arc=none smtp.client-ip=188.40.3.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="q1G5tA1H"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="IqaLJIht"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=avvawqzpw98eGlOgQgfT3HyYcAovbaWbFswynfXll9E=; b=q1G5tA1HN7SUP59QF3c0RomN0+
-	9UuDvzSVdYfhjzllYzitf+bi+v0ITmyDTlTFmtJJBVE6K9cMOwGGrUiJxkoTNgdC13gUB1cYp0aPj
-	a1eVtPNK4EVFJInhhuG2BnFZOsKDKq+kd3l/zb26vpwjFv9cjfBtl36z3K3AdWYf0jar79SKCbDBk
-	BQfGKxZ+Q1VjCn07wg6GsJa8tLMG6FMD0jHl9pOS8TdVPtYCV+LcYoTZbLU92mfB4Y5uwsr6ENfE2
-	pFK1GjUzPILWylPnpu5VNydXcneEatDA7Vul1Sdmjzkh2OUoARbWWknr0M/9ylp2ulEGIS5iR4KWJ
-	rDOmo5XA==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=QIcaDlgDtYpkew+vGB6X/JduwmTqv7gRZ0/o0A3l86c=; b=IqaLJIht0UCg7c4C2GVMY5qAZl
+	BTCDxaKljzm9hz6w6ua2W1JA7DVNZI72R4phxAGanm0nMlcJyDcYdyBeiBBanWMyQ4tyegVlaY8Un
+	x3cukG8cze+AWd1f+y+YOesTENefg5gOGvHJfMyIKP2UcXS6StaSs8KjnHrawEfrwBGkwGBX+nq7M
+	ZsIeVypJGi2PxswNpiRvMVuCKJ9SmcINv5A1ulOMQzbHWsr+PL/42HaK6XY1948B7Vvk69NlJ2UTj
+	N+ISUSWpPhqr7VLucl72EFzPOMhHrs6udKPTuqlpQHj87Zn/n8mFFyz/1gUIjiSmCnnUs5n9a5xSQ
+	xXwu1WZw==;
 Received: from sslproxy04.your-server.de ([78.46.152.42])
 	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SQJ-000923-1i;
-	Tue, 17 Mar 2026 12:17:19 +0100
+	id 1w2SQK-00092E-1S;
+	Tue, 17 Mar 2026 12:17:20 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SQI-000MCw-2H;
+	id 1w2SQJ-000MCw-1u;
 	Tue, 17 Mar 2026 12:17:19 +0100
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
@@ -47,16 +48,19 @@ To: Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+Cc: Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: [PATCH 0/3] TQMa93xx on MBa93xxLA-Mini support
-Date: Tue, 17 Mar 2026 12:16:59 +0100
-Message-ID: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
+	linux@ew.tq-group.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 1/3] dt-bindings: arm: fsl: add MBa93xxLA-MINI
+Date: Tue, 17 Mar 2026 12:17:00 +0100
+Message-ID: <20260317111704.1075938-2-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
+References: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,34 +70,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27943/Tue Mar 17 07:24:09 2026)
 
-Hi all,
+From: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
 
-this series adds support for TQMa93xxLA on MBa93xxLA-Mini [1],
-a single board computer board in small form factor.
-It has a reduced feature set compared to MBa93xxLA, with WiFi/Bluetooth and
-WWAN applicaitons in mind.
-An overlay for Ezurio WiFi module is added as well.
+Adds support for the MBa93xxLA-MINI SBC.
+https://www.tq-group.com/en/products/tq-embedded/arm-architecture/mba93xxla-mini/
 
-Best regards,
-Alexander
+Signed-off-by: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-[1] https://www.tq-group.com/en/products/tq-embedded/arm-architecture/mba93xxla-mini/
-
-Martin Schmiedel (3):
-  dt-bindings: arm: fsl: add MBa93xxLA-MINI
-  arm64: dts: freescale: add initial device tree for
-    TQMa93xx/MBa93xxLA-MINI
-  arm64: dts: freescale: imx93-tqma9352-mba93xxla-mini: Add WLAN/BT
-    overlay
-
- .../devicetree/bindings/arm/fsl.yaml          |   3 +
- arch/arm64/boot/dts/freescale/Makefile        |   5 +
- ...3-tqma9352-mba93xxla-mini-ezurio-wlan.dtso |  35 +
- .../imx93-tqma9352-mba93xxla-mini.dts         | 637 ++++++++++++++++++
- 4 files changed, 680 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini-ezurio-wlan.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla-mini.dts
-
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index da2be7114f641..2c86d2381d95a 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1558,11 +1558,14 @@ properties:
+           soldered on an adapter board or for the connector variant
+           MBa93xxLA mainboard is a single board computer using the solderable
+           SOM variant
++          MBa93xxLA-MINI mainboard is a single board computer using the solderable
++          SOM variant
+         items:
+           - enum:
+               - tq,imx93-tqma9352-mba91xxca # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM on MBa91xxCA
+               - tq,imx93-tqma9352-mba93xxca # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM on MBa93xxCA
+               - tq,imx93-tqma9352-mba93xxla # TQ-Systems GmbH i.MX93 TQMa93xxLA SOM on MBa93xxLA SBC
++              - tq,imx93-tqma9352-mba93xxla-mini # TQ-Systems GmbH i.MX93 TQMa93xxLA SOM on MBa93xxLA-MINI SBC
+           - const: tq,imx93-tqma9352        # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM
+           - const: fsl,imx93
+ 
 -- 
 2.43.0
 
