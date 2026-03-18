@@ -1,98 +1,235 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2649B3DCD8D;
-	Wed, 18 Mar 2026 14:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A569C3DEACF;
+	Wed, 18 Mar 2026 14:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845400; cv=none; b=g1hHzZnbLmyJEgzcfTtAnFHQmbRPVadzxQ+AcPn8mODaso5hrJZuZIo+icqodkqJBhVE72ZiuhQr2rugHquGi+l0WbDdGCrZuaEK3v1e1jojSVYpHU2H5sy2tJKLY1bBF/ii0IdY1evQv16n1K6AGzCdCemamKSD0I5oZkwSrmw=
+	t=1773845599; cv=none; b=KeZtGzjNJcVsYeS5Zv/hhlRwLmb/R9S5rn9ibkFEvxJSfMVFwKZfBpn5VgFzj36h1Lq97a0bxLlJ1BSH/4K+UTs7OS+DAOL+AMN5L8MklbDC7p1zhbUbhzHTGYSYt17XFDNycgK/muPUKt+45Lt2jJxvAZl+iY4UGrGn+COrDOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845400; c=relaxed/simple;
-	bh=9sp7ic2A4tYoabfs8cQthhVCsHAFRDscN5mF42RGDxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwsseKHH+hcgY7DQZiIp0T7LLuoQCFwFU5VXCi9zhS1Uraj6zTmMME739WhyTTeSNly0xngDJN9Y586lJo3dKNa0ijKuPy2I2u+gcbd1M8hAsEJcMvDPbRDqfzIlkEEcyWjOTW19wQMR/zIYXBBNb5sZvAc51wH7CY+QlVtEPUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fumxlMwK; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1773845599; c=relaxed/simple;
+	bh=felRz9HjKIpiMojzCYck9P/yFifvYQCbmR4et9IJMCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iBYimGBsam8lvF67je/JcTUbZvnapqfcrMbp+tZtUAx9qTZS+ygzWjfzAnrg22awR0wbC7Yt0We5prFYWlEB2MKzhycwzU3s4C5XrXyELMRwwXhyV5vhmSRnhUzcD325xhgkRUZQwzAoGZgttCZNWzz1itXzS8Zg+yPKFT7+Ekk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAtjlSky; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fumxlMwK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=l6sRWleBROSAIKjmZl8aqivYkkcoorUS3OENKywjR0g=; b=fumxlMwKTZeGe5Z+IvbQRQtvEl
-	xoSotIXCQ4wxrS95ciCdMMSz/J/6ydBs40tflbSLxCquvnRf56tAMyWF+IEOHVJKmlYahSTM6Mzy+
-	5iqUXF7hUb+td6Bzex9tPWeD8rgkSkej7EbGr1bCUZxwUfEtLpScGzUDxA2j8+5F4jp0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w2sDK-00CDdK-Fu; Wed, 18 Mar 2026 15:49:38 +0100
-Date: Wed, 18 Mar 2026 15:49:38 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: add initial device tree for
- TQMa93xx/MBa93xxLA-MINI
-Message-ID: <d67fafc1-4261-4818-8b58-7f3a874613e4@lunn.ch>
-References: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
- <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAtjlSky"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5C1C19421;
+	Wed, 18 Mar 2026 14:53:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773845599;
+	bh=felRz9HjKIpiMojzCYck9P/yFifvYQCbmR4et9IJMCE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fAtjlSkyrrMyzIBZ7N2NlRzPZBtw8remOkjH7r+8O59bkBW9qIQf+rzgbHGyeJBZK
+	 0+T4qwG8pBLnqm5DlGljHViPzqML4ExtKFxOgILq0kFmbQ4uvSAukqpPijCffZKz5k
+	 Y7SBwklP6pAK+QeUH6IaeFjQHqZO+bN3SRjdRExWC97ff3txc5AZ03kJMwY0a8UlDW
+	 Od9QgSz11fcD99EJ8ap1pH+Sv8ZBKcHDb5mms12ptgEjzCziEJPXor9Pn/4l4lV15A
+	 92QuVOu/VnAHsV+FpmWB25zl5ivwjGt0EdgLwJPp1oONsKUcmW0Oon4456rAUBshvk
+	 SdVMgMdIqIi2w==
+From: Simon Horman <horms@kernel.org>
+To: wei.fang@nxp.com
+Cc: Simon Horman <horms@kernel.org>,
+	robh@kernel.org,
+	pabeni@redhat.com,
+	claudiu.manoil@nxp.com,
+	devicetree@vger.kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	imx@lists.linux.dev,
+	krzk+dt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	edumazet@google.com,
+	xiaoning.wang@nxp.com,
+	davem@davemloft.net,
+	linux@armlinux.org.uk,
+	kuba@kernel.org,
+	chleroy@kernel.org,
+	conor+dt@kernel.org,
+	andrew+netdev@lunn.ch,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	vladimir.oltean@nxp.com,
+	netdev@vger.kernel.org
+Subject: Re: [net-next,12/14] net: dsa: netc: add more basic functions support
+Date: Wed, 18 Mar 2026 14:49:56 +0000
+Message-ID: <20260318144954.1893193-3-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260316094152.1558671-13-wei.fang@nxp.com>
+References: <20260316094152.1558671-13-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 17, 2026 at 12:17:01PM +0100, Alexander Stein wrote:
-> +	mdio {
-> +		compatible = "snps,dwmac-mdio";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: dsa: netc: add more basic functions support
+
+This patch expands the NETC switch driver with several foundational
+features, including FDB and MDB management, STP state handling, MTU
+configuration, port setup/teardown, and host flooding support.
+At this stage, the driver operates only in standalone port mode.
+
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+> index 884ee899fc89..fd952b507cbd 100644
+> --- a/drivers/net/dsa/netc/netc_main.c
+> +++ b/drivers/net/dsa/netc/netc_main.c
+
+[ ... ]
+
+> @@ -427,24 +658,57 @@ static int netc_setup(struct dsa_switch *ds)
+>  	if (err)
+>  		goto free_mdio_bus;
+>
+> +	INIT_HLIST_HEAD(&priv->fdb_list);
+> +	mutex_init(&priv->fdbt_lock);
 > +
-> +		ethphy_eqos: ethernet-phy@0 {
-> +			compatible = "ethernet-phy-ieee802.3-c22";
-> +			reg = <0>;
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&pinctrl_eqos_phy>;
-> +			interrupt-parent = <&gpio3>;
-> +			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
-
-Hi Alexander
-
-Haven't we been here before? EDGE interrupts are generally wrong for
-PHYs.
-
-> +			reset-gpios = <&expander0 0 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <500000>;
-> +			reset-deassert-us = <50000>;
-> +			enet-phy-lane-no-swap;
-> +			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
-> +			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
-> +			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-> +			ti,dp83867-rxctrl-strap-quirk;
-> +			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
-> +		};
-> +	};
-> +};
+>  	netc_switch_fixed_config(priv);
+>
+>  	/* default setting for ports */
+>  	dsa_switch_for_each_available_port(dp, ds)
+>  		netc_port_default_config(priv->ports[dp->index]);
+>
+> +	err = netc_add_standalone_vlan_entry(priv);
+> +	if (err)
+> +		goto free_ntmp_user;
 > +
-> +&fec {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_fec>;
-> +	phy-mode = "rgmii-id";
-> +	phy-handle = <&ethphy_fec>;
-> +	fsl,magic-packet;
+> +	err = netc_add_standalone_fdb_bcast_entry(priv);
+> +	if (err)
+> +		goto free_ntmp_user;
+> +
+>  	return 0;
+>
+> +free_ntmp_user:
+> +	netc_free_ntmp_user(priv);
+>  free_mdio_bus:
+>  	netc_free_mdio_bus(priv);
+>
+>  	return err;
+>  }
 
-Has WoL been tested?
+Does the error path handle the mutex properly?
 
-    Andrew
+In netc_setup(), the mutex is initialized with mutex_init(&priv->fdbt_lock).
+If netc_add_standalone_vlan_entry() or netc_add_standalone_fdb_bcast_entry()
+fails, the error path jumps to free_ntmp_user:
+
+drivers/net/dsa/netc/netc_main.c:netc_setup() {
+	...
+	INIT_HLIST_HEAD(&priv->fdb_list);
+	mutex_init(&priv->fdbt_lock);
+	...
+	err = netc_add_standalone_vlan_entry(priv);
+	if (err)
+		goto free_ntmp_user;
+
+	err = netc_add_standalone_fdb_bcast_entry(priv);
+	if (err)
+		goto free_ntmp_user;
+
+	return 0;
+
+free_ntmp_user:
+	netc_free_ntmp_user(priv);
+free_mdio_bus:
+	netc_free_mdio_bus(priv);
+
+	return err;
+}
+
+But netc_free_ntmp_user() and netc_free_mdio_bus() don't call
+mutex_destroy(&priv->fdbt_lock) to clean up the mutex.
+
+Looking at the normal teardown path in netc_teardown(), it calls
+netc_destroy_all_lists() which properly handles both the FDB list and
+mutex cleanup:
+
+drivers/net/dsa/netc/netc_main.c:netc_destroy_all_lists() {
+	netc_destroy_fdb_list(priv);
+	mutex_destroy(&priv->fdbt_lock);
+}
+
+drivers/net/dsa/netc/netc_main.c:netc_teardown() {
+	struct netc_switch *priv = ds->priv;
+
+	netc_destroy_all_lists(priv);
+	netc_free_host_flood_rules(priv);
+	netc_free_ntmp_user(priv);
+	netc_free_mdio_bus(priv);
+}
+
+Should the error path in netc_setup() call netc_destroy_all_lists() before
+calling netc_free_ntmp_user()?
+
+> @@ -595,6 +859,261 @@ static void netc_switch_get_ip_revision(struct netc_switch *priv)
+>  	priv->revision = val & IPBRR0_IP_REV;
+>  }
+>
+> +static void netc_destroy_all_lists(struct netc_switch *priv)
+> +{
+> +	netc_destroy_fdb_list(priv);
+> +	mutex_destroy(&priv->fdbt_lock);
+> +}
+> +
+> +static void netc_free_host_flood_rules(struct netc_switch *priv)
+> +{
+> +	struct dsa_port *dp;
+> +
+> +	dsa_switch_for_each_user_port(dp, priv->ds) {
+> +		struct netc_port *np = priv->ports[dp->index];
+> +
+> +		kfree(np->host_flood);
+> +		np->host_flood = NULL;
+> +	}
+> +}
+
+[Simon says: I think this is a false positive and the clean-up
+ suggestion is not needed in tear down]
+
+Does this properly clean up the hardware state?
+
+netc_free_host_flood_rules() just frees the host_flood memory and sets
+the pointer to NULL:
+
+drivers/net/dsa/netc/netc_main.c:netc_free_host_flood_rules() {
+	struct dsa_port *dp;
+
+	dsa_switch_for_each_user_port(dp, priv->ds) {
+		struct netc_port *np = priv->ports[dp->index];
+
+		kfree(np->host_flood);
+		np->host_flood = NULL;
+	}
+}
+
+But it doesn't delete the hardware IPFT entry or disable the PIPFCR register.
+
+Compare with netc_port_remove_host_flood() which performs complete cleanup:
+
+drivers/net/dsa/netc/netc_main.c:netc_port_remove_host_flood() {
+	struct netc_switch *priv = np->switch_priv;
+
+	if (!np->host_flood)
+		return;
+
+	ntmp_ipft_delete_entry(&priv->ntmp, np->host_flood->entry_id);
+	kfree(np->host_flood);
+	np->host_flood = NULL;
+	np->uc = false;
+	np->mc = false;
+	/* Disable ingress port filter table lookup */
+	netc_port_wr(np, NETC_PIPFCR, 0);
+}
+
+In netc_teardown(), netc_free_host_flood_rules() is called before
+netc_free_ntmp_user(), so the NTMP command infrastructure is still
+operational at that point.
+
+Should netc_free_host_flood_rules() call netc_port_remove_host_flood(np)
+for each user port instead of directly calling kfree()?
