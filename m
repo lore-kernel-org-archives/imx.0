@@ -1,111 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3403DA5A2;
-	Wed, 18 Mar 2026 14:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681933E3D9D;
+	Wed, 18 Mar 2026 15:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845806; cv=none; b=Z7CDxv82DT0XJE90LKxr17oum+kxO1OBu9zk4N+d+WCU0xjgVRIFGnmIBnVqMPVcCPQNUMWR4qJSYEEBBOZ9rulWD0Vg2oTxj1X4pnLgha9h7hTajMrRggXapwj9N4TS2/JnG9i4dPzwl9u5tCuKhBBL7HMcbfQQ/Bg2BwNNzPY=
+	t=1773846375; cv=none; b=e+cbBMR+me069Yxo5u/0PTCpV0cBY3B/FZ7JbXUdcYWE0EHxEe3B8mb3LNPL+nbk3w3Q6gvAxqX99mJPcd5neFg3PHkWLPoNQOXYu2PW67ygKaDslpSjzahY3eowkF2Zw8lm0B+Ugk6+5jLAPYlE3+1IrreM6K/gMKWOcy/xA3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845806; c=relaxed/simple;
-	bh=XJFQLq/GiXyuMjA3w1kEgYC6YFigPqjtZZvL3fxphvI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TeGvY50PHkeH7aq0dgLLWFysceRoEZsGaO0NWhdJdT7LtYIjwt1BKA2Gurdl9387WL8Ln4BqNmwe0O6Q1GM52SkxbI1ODAjfs/XC+1oRmbzLZopWt1pYqh1SPTzsF4TDlcRDCmWu8Po3VQScXAGy8d+bm7KkNMsUEFeUAWCKVfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZlh3NjI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773846375; c=relaxed/simple;
+	bh=4mKNZGsMnx96h+U53BOOHWYmauvrjAENdqFmFNmU85o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sRlhLsXe+FkeQ63C7W5tFNWPrmJFB+uJn66pBD6gWF7RmS2zstsIFXiBF2qQXaGrGLEtw0Wb/SVKi6eqe92Jmz+UiOBOVZm06NF7yl0AKhP29bh2n+YjBQUJQa+M8maWcqbyMeLtsNKQW/vUe0c1TWcczqpZcoWQ9AnBSWIcfj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LebXoTOk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZlh3NjI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8521AC19421;
-	Wed, 18 Mar 2026 14:56:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773845806;
-	bh=XJFQLq/GiXyuMjA3w1kEgYC6YFigPqjtZZvL3fxphvI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tZlh3NjIbWwcVa249UbCxfebZPqEXaaf9s+79Fk4vX7RgXxtBrXbn/dhjhPW1xvxK
-	 YsGvoFMNkP9sRqF847xesKrDxgFM1G5u0kMblZ06lEeEF4As7zWA91U6UifWkmPjD3
-	 WWD/6nKgg9nxiNGe+mA3+JtyjedGun5k2Ibc3KHdcYGhyODyftQgctopTfjVPorb1P
-	 J6hktdIjHV/f7jpkpgQRyBznkd//Iyknc2eAbLeWLVmuHLA3clWIc9LJqb0lHyDzhB
-	 TNzlNiwb8RtiHJ5lyL5oVolIQOqDBDJZAkZhCcHMfE0lEPiKycWeR1dAOSkUvChBqm
-	 CWJcmGRiuhabQ==
-Message-ID: <3dab3f5b-fb94-4c63-bcfd-aad4268e2ac3@kernel.org>
-Date: Wed, 18 Mar 2026 15:56:39 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LebXoTOk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773846373; x=1805382373;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4mKNZGsMnx96h+U53BOOHWYmauvrjAENdqFmFNmU85o=;
+  b=LebXoTOkU3k5eaXxR02elrSmRO8ZalyxL65st5SEKle86Csm8qwf0HEv
+   rqJljE96LGu3pwFcwyR7PpbK4/DEJe9MAkljyzVSR/HxCcADdJzn2ziMX
+   lKlUMDHE7B2RYZPb/DDrWUQ1VoTLpfZVLfn5g5ml6ncKZgmAHOrbeJvOl
+   acNylwC9zBIqsgIuUlS//XYnWkZY8k1CTyI6UKu7Sl4c+02N4ANBNMnoK
+   JhDu5PgZ3B55iC+ywEas2IYzaKzFiBUacaYwD7Z8bw1951NB2M66q8Lqq
+   Aq+78EKiOkniRziZsj0Oqi97NzPRCRV42aLM12efvtHhpTtiOd+BiTEmk
+   w==;
+X-CSE-ConnectionGUID: tD0uI4g/Tb24NQMKXosIvw==
+X-CSE-MsgGUID: B2pi9jeYRQqaR7Hk8gd9EA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="74601749"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="74601749"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 08:06:08 -0700
+X-CSE-ConnectionGUID: 45FZNnEETzigI3hiwWOn+w==
+X-CSE-MsgGUID: 9Lplwp4OTDGMa1328tMtMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="227341270"
+Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 18 Mar 2026 08:06:04 -0700
+Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w2sTC-0000000031t-0fMK;
+	Wed, 18 Mar 2026 15:06:02 +0000
+Date: Wed, 18 Mar 2026 23:05:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pei Xiao <xiaopei01@kylinos.cn>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, openbmc@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, broonie@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Pei Xiao <xiaopei01@kylinos.cn>
+Subject: Re: [PATCH v3 01/17] spi: axiado: Use helper function
+ devm_clk_get_enabled()
+Message-ID: <202603182309.Rj2JxGYZ-lkp@intel.com>
+References: <a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,13/14] net: dsa: netc: initialize buffer bool table and
- implement flow-control
-To: Simon Horman <horms@kernel.org>
-Cc: wei.fang@nxp.com, netdev@vger.kernel.org, xiaoning.wang@nxp.com,
- vladimir.oltean@nxp.com, kuba@kernel.org, davem@davemloft.net,
- linuxppc-dev@lists.ozlabs.org, krzk+dt@kernel.org, frank.li@nxp.com,
- claudiu.manoil@nxp.com, chleroy@kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, robh@kernel.org, imx@lists.linux.dev,
- pabeni@redhat.com, f.fainelli@gmail.com, linux@armlinux.org.uk,
- edumazet@google.com, conor+dt@kernel.org, andrew+netdev@lunn.ch,
- linux-arm-kernel@lists.infradead.org
-References: <20260316094152.1558671-14-wei.fang@nxp.com>
- <20260318145452.1898637-2-horms@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260318145452.1898637-2-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01@kylinos.cn>
 
-On 18/03/2026 15:54, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> 
+Hi Pei,
 
-Why are you removing the "PATCH" part in the email subject?
+kernel test robot noticed the following build warnings:
 
-This completely messes up with the filters and causes this email to pop
-up in places it should not.
+[auto build test WARNING on broonie-spi/for-next]
+[also build test WARNING on next-20260317]
+[cannot apply to atorgue-stm32/stm32-next rockchip/for-next xilinx-xlnx/master clk/clk-next shawnguo/for-next soc/for-next linus/master v7.0-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Best regards,
-Krzysztof
+url:    https://github.com/intel-lab-lkp/linux/commits/Pei-Xiao/spi-axiado-Use-helper-function-devm_clk_get_enabled/20260318-110300
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+patch link:    https://lore.kernel.org/r/a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01%40kylinos.cn
+patch subject: [PATCH v3 01/17] spi: axiado: Use helper function devm_clk_get_enabled()
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260318/202603182309.Rj2JxGYZ-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603182309.Rj2JxGYZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603182309.Rj2JxGYZ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/spi/spi-axiado.c: In function 'ax_spi_remove':
+>> drivers/spi/spi-axiado.c:865:24: warning: unused variable 'xspi' [-Wunused-variable]
+     865 |         struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+         |                        ^~~~
+
+
+vim +/xspi +865 drivers/spi/spi-axiado.c
+
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  853  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  854  /**
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  855   * ax_spi_remove - Remove method for the SPI driver
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  856   * @pdev:	Pointer to the platform_device structure
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  857   *
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  858   * This function is called if a device is physically removed from the system or
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  859   * if the driver module is being unloaded. It frees all resources allocated to
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  860   * the device.
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  861   */
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  862  static void ax_spi_remove(struct platform_device *pdev)
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  863  {
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  864  	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07 @865  	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  866  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  867  	spi_unregister_controller(ctlr);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  868  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  869  	pm_runtime_set_suspended(&pdev->dev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  870  	pm_runtime_disable(&pdev->dev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  871  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
