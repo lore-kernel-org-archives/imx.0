@@ -1,61 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FA63D9026;
-	Wed, 18 Mar 2026 14:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CA63CEBBA;
+	Wed, 18 Mar 2026 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844396; cv=none; b=a6cJo5J7+1Q6n6nhFoJqQHno6Z8mJWhLRLAmWDS6GzhHivUJPFajJMawOFoR40FJRLU02UFhvTuSRE6wtsJtnCf0hiN3XvuBMHoXPFfec91h1SizwoOBv9uR9oM9O1fj6pcesOJbn3RQebhR2EjnlDWgAFiWYP+OwN5a2TWH7oc=
+	t=1773844802; cv=none; b=E1yZRfY66hDUJ1bTIR9QfF3Gc88RaEEnyMvh5d1yzVBeh63zCq7A7IPF24o/v84IziFWaiuORRl707uhiE9b0Ms5eUCdwkQPAzeIAjF0n2L5E9+ynURQxq4Sz4BsNO373FwdhZ25rFBeZCj5kZ0idQ68SyBLnngcOKYPmat6qH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844396; c=relaxed/simple;
-	bh=zo3ppbbm5CmklykDDi884bR6RTstjwQ6rqH+FoHduP4=;
+	s=arc-20240116; t=1773844802; c=relaxed/simple;
+	bh=lTmvcD4MKOhdnWf0ncRKcsBRvwfwpCt6pbrFgMkwmEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxb3jAR5S4FNBXrL6oqrN9b1YcSzKN/ifp06HVnhZUUuEfi3CKiB2yeqre/pubBmFjsbP5fusm3sAOujHBpraByX4kzcNzwueNY9fGNyxUG/ItjtHSSWBiglNHNIEYK+SK0dVnGu8V2R9N5vMNCDK1OxwXDSgw/FndIP8ybNap0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lM08xmyS; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=XqNL4Ns+vBz+AoWyibJqGeEYxdD4g2aBCnHjcJBeBji8KKvYgwXPG8vQmwpunlkbtZyskkO/xWy14DoKONrsL9HqOmHv5V/xnFhSxz42qiTwLzDhqJnYI73GQSXDHrPxZd/DL2FWQNquQTdKq2dqRE2iYo4mDL4UHahGkFbgk9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppPerBNK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lM08xmyS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8659C19421;
-	Wed, 18 Mar 2026 14:33:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppPerBNK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A28C19421;
+	Wed, 18 Mar 2026 14:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773844395;
-	bh=zo3ppbbm5CmklykDDi884bR6RTstjwQ6rqH+FoHduP4=;
+	s=k20201202; t=1773844801;
+	bh=lTmvcD4MKOhdnWf0ncRKcsBRvwfwpCt6pbrFgMkwmEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lM08xmySH7oe0eBpsBAOY5KZgan8agd14IQH9AEUXTTlIjc++KVnE27u4klJ7exp6
-	 iSxgw0UgKZFjmuzvnq8pGmMnU7sYrV22yPxVZqvBP/3eOiQ06RkiiJZyTUVym12D/b
-	 qwjnXVnEFP+UlccWeJHv6dkR0KHBEXOdBPF7bQkprBv4s90mV8byr4pK0FePE6/xct
-	 ACvVieZuJk9YngFGZy29Ai+Rs6KXeQ24KjtsY9vxRSmhDTte1IrFeMyVgEZ6Ne8spX
-	 DjMbphLvIZ5D8ccyW3UVFHq2BbcezXkg8bmVUrKe273ekwz08eS7h33zQwnKgq/Jej
-	 ZMeh6QQOxhnFA==
+	b=ppPerBNKpDEGlFSD0eIGgFdqKHMmTNWGY3zGsy5tvajnPyn+rmcrcCvj5XUAyuQJt
+	 MnV4m8ZgUmFgFeW3iEPmNoFfDdc1T2Gd3zgUWQ7ZXpwS36lRQmvuinvtNyRhUvKnck
+	 ced/ZBisvBKL+YUxDrJDIur0GATS0eIAX/5JyWb2H2D6n2X3qOlWMrfem8eDJOeXqK
+	 B/scLD2UWCuoNVrkyDGUPRJnqqGxmHu6puDaqtoJ8dcuo1qZWefKiBe0HIiyXQ3JY9
+	 kr/foja6rZeHkdOqh8IPifayS5S+hZAHWlEqLLDOrd5degRj9o0qU5Fq2Wl9PBDPwa
+	 ysnACeo7yK53w==
 From: Simon Horman <horms@kernel.org>
 To: wei.fang@nxp.com
 Cc: Simon Horman <horms@kernel.org>,
-	conor+dt@kernel.org,
-	claudiu.manoil@nxp.com,
-	edumazet@google.com,
-	frank.li@nxp.com,
-	chleroy@kernel.org,
-	imx@lists.linux.dev,
-	f.fainelli@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
 	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux@armlinux.org.uk,
+	linux-arm-kernel@lists.infradead.org,
+	conor+dt@kernel.org,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org,
+	frank.li@nxp.com,
+	vladimir.oltean@nxp.com,
+	kuba@kernel.org,
+	f.fainelli@gmail.com,
+	krzk+dt@kernel.org,
+	claudiu.manoil@nxp.com,
+	robh@kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	xiaoning.wang@nxp.com,
-	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	linux@armlinux.org.uk,
+	chleroy@kernel.org,
+	devicetree@vger.kernel.org,
 	pabeni@redhat.com,
-	vladimir.oltean@nxp.com,
-	robh@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	krzk+dt@kernel.org,
-	kuba@kernel.org
-Subject: Re: [net-next,08/14] net: enetc: add multiple command BD rings support
-Date: Wed, 18 Mar 2026 14:32:01 +0000
-Message-ID: <20260318143201.1888252-1-horms@kernel.org>
+	imx@lists.linux.dev
+Subject: Re: [net-next,10/14] net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+Date: Wed, 18 Mar 2026 14:39:30 +0000
+Message-ID: <20260318143930.1890017-1-horms@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260316094152.1558671-9-wei.fang@nxp.com>
-References: <20260316094152.1558671-9-wei.fang@nxp.com>
+In-Reply-To: <20260316094152.1558671-11-wei.fang@nxp.com>
+References: <20260316094152.1558671-11-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,66 +69,192 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net: enetc: add multiple command BD rings support
+net: dsa: netc: introduce NXP NETC switch driver for i.MX94
 
-This commit adds support for multiple command BD rings in the NTMP
-driver. When the NETC switch has multiple command BD rings and one is
-busy, the driver can select an alternate ring to execute commands.
+This commit introduces the initial NETC switch driver for the i.MX94
+series. The driver provides basic probe and remove functionality for
+the NXP NETC Ethernet switch which has 3 user ports and 1 CPU port.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> index 9fc3422137fc..e23a32946762 100644
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> @@ -117,6 +117,25 @@ static void ntmp_clean_cbdr(struct netc_cbdr *cbdr)
->  	cbdr->next_to_clean = i;
->  }
->
-> +static struct netc_cbdr *netc_select_cbdr(struct ntmp_user *user)
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+> --- /dev/null
+> +++ b/drivers/net/dsa/netc/netc_main.c
+
+[ ... ]
+
+> @@ -0,0 +1,698 @@
+> +static int netc_port_create_emdio_bus(struct netc_port *np,
+> +				      struct device_node *node)
 > +{
-> +	int cpu, i;
+> +	struct netc_switch *priv = np->switch_priv;
+> +	struct enetc_mdio_priv *mdio_priv;
+> +	struct device *dev = priv->dev;
+> +	struct enetc_hw *hw;
+> +	struct mii_bus *bus;
+> +	int err;
 > +
-> +	for (i = 0; i < user->cbdr_num; i++) {
-> +		if (spin_is_locked(&user->ring[i].ring_lock))
-> +			continue;
+> +	hw = enetc_hw_alloc(dev, np->iobase);
+> +	if (IS_ERR(hw))
+> +		return dev_err_probe(dev, PTR_ERR(hw),
+> +				     "Failed to allocate enetc_hw\n");
 > +
-> +		return &user->ring[i];
-> +	}
+> +	bus = devm_mdiobus_alloc_size(dev, sizeof(*mdio_priv));
+> +	if (!bus)
+> +		return -ENOMEM;
 > +
-> +	/* If all the command BDRs are busy now, we select
-> +	 * one of them, but need to wait for a while to use.
-> +	 */
-> +	cpu = smp_processor_id();
+> +	bus->name = "NXP NETC switch external MDIO Bus";
+> +	bus->read = enetc_mdio_read_c22;
+> +	bus->write = enetc_mdio_write_c22;
+> +	bus->read_c45 = enetc_mdio_read_c45;
+> +	bus->write_c45 = enetc_mdio_write_c45;
+> +	bus->parent = dev;
+> +	mdio_priv = bus->priv;
+> +	mdio_priv->hw = hw;
+> +	mdio_priv->mdio_base = NETC_EMDIO_BASE;
+> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-p%d-emdio",
+> +		 dev_name(dev), np->dp->index);
 > +
-> +	return &user->ring[cpu % user->cbdr_num];
+> +	err = devm_of_mdiobus_register(dev, bus, node);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "Cannot register EMDIO bus\n");
+> +
+> +	np->emdio = bus;
+> +
+> +	return 0;
 > +}
 > +
+> +static int netc_port_create_mdio_bus(struct netc_port *np,
+> +				     struct device_node *node)
+> +{
+> +	struct device_node *mdio_node;
+> +	int err;
+> +
+> +	mdio_node = of_get_child_by_name(node, "mdio");
+> +	if (mdio_node) {
+> +		err = netc_port_create_emdio_bus(np, mdio_node);
+> +		of_node_put(mdio_node);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void netc_port_free_mdio_bus(struct netc_port *np)
+> +{
+> +	if (np->emdio)
+> +		mdiobus_unregister(np->emdio);
+                         ^^^^
 
-Can this trigger a preemption warning? netc_select_cbdr() is called from
-netc_xmit_ntmp_cmd() before spin_lock_bh() is acquired, and the callers
-(ntmp_maft_add_entry, ntmp_fdbt_add_entry, etc.) run in process context
-with preemption enabled.
+Does this cause a double unregister? The MDIO bus is registered with
+devm_of_mdiobus_register() in netc_port_create_emdio_bus(), which
+installs a devres action that automatically calls mdiobus_unregister()
+during device removal.
 
-Using smp_processor_id() in preemptible code triggers a
-"BUG: using smp_processor_id() in preemptible code" warning under
-CONFIG_DEBUG_PREEMPT.
+However, netc_port_free_mdio_bus() also explicitly calls
+mdiobus_unregister(np->emdio).
 
-Since the CPU value here is only used as a hint for ring selection and not
-for correctness, would raw_smp_processor_id() be more appropriate?
+During device removal:
 
->  static int netc_xmit_ntmp_cmd(struct ntmp_user *user, union netc_cbd *cbd)
->  {
->  	union netc_cbd *cur_cbd;
-> @@ -125,10 +144,10 @@ static int netc_xmit_ntmp_cmd(struct ntmp_user *user, union netc_cbd *cbd)
->  	u16 status;
->  	u32 val;
->
-> -	/* Currently only i.MX95 ENETC is supported, and it only has one
-> -	 * command BD ring
-> -	 */
-> -	cbdr = &user->ring[0];
-> +	if (user->cbdr_num == 1)
-> +		cbdr = &user->ring[0];
-> +	else
-> +		cbdr = netc_select_cbdr(user);
->
->  	spin_lock_bh(&cbdr->ring_lock);
+  netc_switch_remove()
+    -> dsa_unregister_switch()
+      -> dsa_switch_teardown()
+        -> netc_teardown()
+          -> netc_free_mdio_bus()
+            -> netc_port_free_mdio_bus()
+              -> mdiobus_unregister()  // first call
+
+Then devres cleanup fires:
+
+  devm_mdiobus_unregister()
+    -> mdiobus_unregister()  // second call
+      -> WARN_ON_ONCE(bus->state != MDIOBUS_REGISTERED)
+
+The second call triggers a warning at drivers/net/phy/mdio_bus_provider.c:675
+because the bus state is already MDIOBUS_UNREGISTERED. With
+panic_on_warn=1, this causes a kernel panic.
+
+The same double-unregister occurs on the error path of
+netc_init_all_ports(), where netc_free_mdio_bus() is called, but devres
+will also fire during device teardown.
+
+> +}
+
+[ ... ]
+
+> +static int netc_switch_pci_init(struct pci_dev *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct netc_switch_regs *regs;
+> +	struct netc_switch *priv;
+> +	int err;
+> +
+> +	pcie_flr(pdev);
+> +	err = pci_enable_device_mem(pdev);
+> +	if (err)
+> +		return dev_err_probe(dev, err, "Failed to enable device\n");
+> +
+> +	/* The command BD rings and NTMP tables need DMA */
+> +	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+                                       ^^^^
+
+Is the return value being checked? The comment states "command BD rings
+and NTMP tables need DMA", confirming DMA is essential for this driver.
+
+The function can fail with -EIO when dma_supported() returns false for
+the 64-bit mask (from dma_set_mask() in kernel/dma/mapping.c:902).
+
+The sibling enetc driver from the same NXP NETC subsystem checks this
+return value in enetc.c:
+
+  err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+  if (err) {
+      ...
+      goto err_dma;
+  }
+
+If the 64-bit DMA mask setup fails, the DMA mask remains at the default,
+and subsequent DMA operations for NTMP table management (added in later
+commits) may silently fail or produce incorrect results on systems with
+memory above 4GB.
+
+> +	err = pci_request_mem_regions(pdev, KBUILD_MODNAME);
+> +	if (err) {
+> +		dev_err(dev, "Failed to request memory regions, err: %pe\n",
+> +			ERR_PTR(err));
+> +		goto disable_pci_device;
+> +	}
+> +
+> +	pci_set_master(pdev);
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv) {
+> +		err = -ENOMEM;
+> +		goto release_mem_regions;
+> +	}
+> +
+> +	priv->pdev = pdev;
+> +	priv->dev = dev;
+> +
+> +	regs = &priv->regs;
+> +	regs->base = pci_ioremap_bar(pdev, NETC_REGS_BAR);
+> +	if (!regs->base) {
+> +		err = -ENXIO;
+> +		dev_err(dev, "pci_ioremap_bar() failed\n");
+> +		goto release_mem_regions;
+> +	}
+> +
+> +	regs->port = regs->base + NETC_REGS_PORT_BASE;
+> +	regs->global = regs->base + NETC_REGS_GLOBAL_BASE;
+> +	pci_set_drvdata(pdev, priv);
+> +
+> +	return 0;
+> +
+> +release_mem_regions:
+> +	pci_release_mem_regions(pdev);
+> +disable_pci_device:
+> +	pci_disable_device(pdev);
+> +
+> +	return err;
+> +}
+
+[ ... ]
