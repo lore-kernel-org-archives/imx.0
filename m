@@ -1,115 +1,152 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092AF3F9F22
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 16:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850010; cv=pass; b=fRz87yimH3clcZXop2B3XO5FMQMJC83EOVjLE2OAGLnP7/feWQbOX15Deun3XjyXmZst07hbQj21swUZ263kN4vjgWsfZnAd48K45wBOb9hZ9iE8gg6OKjpAzjTUknJi0gskaXdidDUNrr7wlwcZB4ZU6tDKlXugKLuW4rDN9YA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850010; c=relaxed/simple;
-	bh=aPJNEHqr9HCYGUb6/HYe7QV50yFPw4glgAjAlyGnrgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NWvMaTykIAA8HvwCgu21XVBpKFidM60GZcWWa9J9CLa0+25ravvPYFsZAfr64GGziajgAYge7N8Wm66fIrqSdhChq1G3jtsKdbPUZ3kiXk78qVMq9+Qdi0eRdAZ70k5wD0iMsNJhhZsRW2YilG5RXwN5y0avDfCp0p+pOAwPgko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAJDQ5Xg; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCD23EE1E3
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 16:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773851839; cv=none; b=jMuIuYf4Sht2g9NZ59RPONQgdVSI+aF/xibumWiFRAmVOELucbvWcXK9iOgG8YN9w0q+E7EVDi8ASUVyAUKKfMWl9GLxfic7QVFxQW3duFwaput2rpN5jTcZRI+TtHN4zZU9bB8xu9xx0fg0AxQk511MKM4AV8aBejYlEjTJTA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773851839; c=relaxed/simple;
+	bh=cNmiagvpItNjpR2jJijzr0scGysr1BHS9wTSy+mUF0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p5dHshnfsZkV1sK2MRoYMRyAM4gMxM9yEAlRsVLi7hNStTl2AmOpMWeWYntufEYuGlX3Z6JOrSApDkzgg2P8iWdX/rcF1Ig6bsbBLM7qkZa+2AAZe9Z3P6gcEyy5Jg+qsIu5Tnp74t20lw0AfR37cXnChUheFBf37k1SyeucmTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S+jKua1E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FdRbGMol; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAJDQ5Xg"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1279eced0b9so69914c88.0
-        for <imx@lists.linux.dev>; Wed, 18 Mar 2026 09:06:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773850004; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cO2eFN+EUd6e7H8Tjh04G1NHJU4yh4Jlxi81oK43ZJrT/gSpIxIumPrgmHkpcDVpqU
-         xCklpwB6EWNKsIXkolHtH4DkH4oB6aBCmPMWoek/bxUtZ+4PQE9XEnlW6boy0yKEL1Ux
-         VJwK7oPZRO2bxiHxdy5uxzTV+RNwOS54nV69VZzy8vHn/G1LixAZzKJbPoWSiKzsg11x
-         DDvTkBIF81vDCm5J38JiTr4UETEdFrDUpeo5b8ZXw/YpA/Coe17YcQGBuW1eUddsjB2j
-         VMnyyYmaqgPqNyDpc6KIOiOOptxwcvWAjibqJ41YIkfzizVAzPEBlZxPhBf7URpEI+M0
-         r5ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aPJNEHqr9HCYGUb6/HYe7QV50yFPw4glgAjAlyGnrgg=;
-        fh=akHVRwQBoGToc1MYhUw+QPzzcNi6cJmjjFumhSDuYCw=;
-        b=hb8kSQKcUsLcvwNx8oRyEMOPpaLCG3/gMN9/CcBbct982i/Gk4t2kPamN7Zc3AYJni
-         CvMXgY77z2jwTzSuRhKvozkuFQppUT2tE4o46s3EN+W9UNxZzBLNYERpTGDChdNW2tWl
-         CPQOMfFJFE97eQShtmWrdc/i0YSdMtNy40X94X2zY8NvuqA3HM+tXbeTxx8r0vSsNPpA
-         tcGuucyHLX/QvLhObKZ4dfVCat4eoSG9bJB9zjR3Diiyew38Kk/2pRwWGXO32NtPvsha
-         liv1besBBLUf07ZD/1wLfts5l5RiFrdZglHCdOrO8JYjbPJ//IVAW4W5I2yOjer/vfgy
-         8CLw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S+jKua1E";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FdRbGMol"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IG1TD54024047
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 16:37:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=qko/YRXofL0g7xK31fRPrNzf
+	jiKro7Z+in3JRlMOoE0=; b=S+jKua1ES82ossdgH1hPCw4HPR239ijv3WGXmk0p
+	iN18XhT4T+64frVMobCY/kpiwPx9t7/a+5D7FynGCL33iokELy26eHx8U36fh7q+
+	F6QKQYijdPZIcAyOAmqiGeZnwIOW96RO/YRVB4No6kPsg7c/RdxD/k9qOHaTQEku
+	Ud0m+Uhfk5g/i8P8c4oDWXWXbWAP74ORPa13QkJRG2jhw0Qsc3ttNT40MwYzSngT
+	4PLDmY+7RCPOm0e212i3Qv9D90S2hNah3VQg7TuhYOtw7UO1+8nRGDhCeJH3iOR7
+	DxcSf1eNEa+fqwW7KVoTwwR6Ly/fUDVbza21Y1fnby4JNg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cyy75r582-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 16:37:15 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-509159f57e0so159817351cf.3
+        for <imx@lists.linux.dev>; Wed, 18 Mar 2026 09:37:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773850004; x=1774454804; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aPJNEHqr9HCYGUb6/HYe7QV50yFPw4glgAjAlyGnrgg=;
-        b=JAJDQ5XgfxXXuhB18hLhOOrtD34gvKg+gi1C8vHdRNWtvOnjYqk65DxEgobZznsVH2
-         /HlibMlRWC86lTkpr7aCQ2Nzp3ijfkfSeSu5fhHcHAP/En60Vs2sh7ToHrRQhgYuutlf
-         4szsIJg4rnYaRrDLYW1Eoj4elxTjNfWoFT3cAfNa+m2S+AZ+3Qiml3tod2LS87J8UvzZ
-         p4yv3mqvJ6Q4sZT1g1V6PHeWLFb3XmcC6sDW+5GKcXhe0iUpp+l/8QEi2JRbXuj469Zh
-         rdCEuZC0644lg6/gtGhCBjLifc+nuTPgFYEMbfO5GoqB/3VG/A0MviZpow2RGUOxATcl
-         A9Ag==
+        d=oss.qualcomm.com; s=google; t=1773851835; x=1774456635; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qko/YRXofL0g7xK31fRPrNzfjiKro7Z+in3JRlMOoE0=;
+        b=FdRbGMolqu4eY/G5obDwFVz4B2LTcp03wFX91cB7gFB5BOLiXBFFHB/jBtCG6cove/
+         usFC7WK7OsqtUNUgnf9kRlp8wYsqe9C9pFfi5kRpCvb2b5uLLkZsGaugYQii3QdA0pj0
+         I2OR8K0k4D0uaw3OV2mNu84WrdxJArspVXcJ6S56rfcvNbwyZHk38eLwotoOpX1PWOfe
+         tZZPWIQs0x+cKi8rRf6lKSFpszh5YsiNZCQw1yGz67EnW6xMRzb7MFIPXyirygaspIZu
+         0iT+zoMgocPXobKZfyOYJ/Pd+PyRL+NW65MTtkSOEX0ODss0H6q89ucTGFl1RE4nO64D
+         y7Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773850004; x=1774454804;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aPJNEHqr9HCYGUb6/HYe7QV50yFPw4glgAjAlyGnrgg=;
-        b=kHTD5mS5i5V9CaJuSViU82/jjjJt+JL6UMuszG6bdpX0v67Sm3KwyIm4yCCFu0IEaZ
-         5XsHzCypBfjIKTPHMQpDoLG80IwJCIZaVDQL0CuW3wxP+bucxljwoq1yOu66HzAhdJTQ
-         rVSf1RYWjVMGWBah3ZX82HVyjI9jXQEusP+g5FXZJUfo1GGL1P+C3pIKFvmJj1H2XVFg
-         TwJgyqBMchUU7iXs6hQHQXfEM3pmB+Hb1lWCIeHQTLY5QV+7AABy18XR4ykOBW7opdbO
-         z+dawqn3klbrG+yYZoHeyQXq61heXv7vHyHdiT8S7GiJdUbvU2OnZDV450rfg0nm5tic
-         yjLg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXFf1Ey1m750UHxjUCfRnWc4omnuseRlWCfZIKEimRd4Q9rkdXUE3TZpHB78QQKYDvj0o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwzF9q8ifjVjIBURliXreB0E0ZP1EwZGxpzhJqXdt7oTrNGp+jl
-	b3mxbOqIlDLPkVAIomhv6LO1P/pRZHNxSc81xMfmlbcJHA89mgMsMRaESoRY94CwVmqT1pK073r
-	ZsfMv9kWfhqS1VsDBLL1w0pS+n8g+oQ8=
-X-Gm-Gg: ATEYQzyc3z89JwOWQSgdtw1MnedN68hjHbatm3ZtIXkgdWPoM/5JezyDCcmpT5mdHcj
-	JvUnDH3CGW5kveATvgv2p68VmyDx8aHF4n+rT+pKwZfkzLn9xGkRgXvkDCHFkuMZ2VynR7f0O/I
-	4eIJ8yDaMzffRwqxpKE4p+/n439YeGLB/H15yz+7BPkxSRoJuHHRdphEHjeie0OCCjIr0qq2znb
-	6LUAX++3g78jkYe6S8jeAM4q9OYcRSHGRTBEVGgVN8F6S8YqchyTF+Qfgl8nnFXU3D6iU2L8q7M
-	M9VHBlPSVUF+iFkkoFKVROjiJnJhbLZQXKfSSsY6QTk3VKJ4oPpEG2xNLVzPIpFyTKQO1stNc2D
-	PUZsgYbL9eIaxoua8GaILrg==
-X-Received: by 2002:a05:7022:421:b0:128:cc34:3617 with SMTP id
- a92af1059eb24-129a714811bmr1918564c88.21.1773850003615; Wed, 18 Mar 2026
- 09:06:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773851835; x=1774456635;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qko/YRXofL0g7xK31fRPrNzfjiKro7Z+in3JRlMOoE0=;
+        b=F+hnQ7vFStBFC9vPUb5XIU5hs1a6wvM6M04SkDTyUroQpmsvLo4wZFNkSoPFi733A6
+         vl+Na8EOSqVYa4d7HXhH/7kNAufUSdN8+oC0agYpyYaojRjAguwyg3c9PjdMt6xAAL8n
+         IYMjESyO9sKU0OVkNO/dhjSwWDIyoQCdNhmgYXTGzvFd+ksgPhWifRFmxZRYJSETCDvi
+         BEoLbzpVY1DXbeURQS3THbacAbl246KL+RC7PMu9n69pMtW1qQsevKfBl4i81RTOiAGP
+         lYCDIFrovCCDjdlJQxbopcFrUP8sqwWF4d4KqibH3mvNNrRS/8n9PkawU0odpSFJhd9C
+         c1rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX29ws4CdYe1Fn0FiTyhcuKLCXLaFMtckHGJ+0GoLFe6JNcw4Yo5LzaQOOEY0v2djN96+E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzasX0LINitCWrcSdnwrIu/ZYL0f9rDs9T8YbqIhKrvbJgFQ+CW
+	8rWmxs0vAEfEHZ6ek7WIDRu1sk9iiUVVTqNXRkz76tSeaAbFaL1VmBOHWYQB9a2TR5q80VBI2Px
+	Z+eRfI0nmzUUnmP5BTm1Cd75H4Dlq85WEjleJmbx0RzKqQ7wjkF7tPZQ=
+X-Gm-Gg: ATEYQzwSyOErXEbyuj4Q+Ay+NWo6sLf22NfHEc5rLlCmk50GtFWkgFj6D4BG8orHjNh
+	NkRsOgQcy+SLH0aanZ0bgsJEH0eXl95kyEXvTMI3s3OdIWEhGFctAlibzG1X1BUkaCNYhg5qYeT
+	MtZsP8DcPcHxbSQJz7tUkvE1ubNBOeJtMa/cgqhrk03ymTOXIlmbp9wfrBJo7l7wgoquXJnqEiC
+	98Y/VLyFUOs2HuPEcp13+Unuy/EtEQntBwip8nkLbdTP5CwhT9H9FmR6Qau+Zv5jmbgLnr45/6h
+	A0esD/NSdydLrNmPL3tF5gkbP0UyYL0FmvGaGhAapXppJZ8qNBrw5tgN5ht+VwFADce0YQ2fWTc
+	A2d0v9SIerZI7Q+NtLk6cECsaEx8Az0Gzcw==
+X-Received: by 2002:a05:622a:295:b0:509:2655:a95e with SMTP id d75a77b69052e-50b148b14e6mr50661701cf.62.1773851834669;
+        Wed, 18 Mar 2026 09:37:14 -0700 (PDT)
+X-Received: by 2002:a05:622a:295:b0:509:2655:a95e with SMTP id d75a77b69052e-50b148b14e6mr50661201cf.62.1773851834101;
+        Wed, 18 Mar 2026 09:37:14 -0700 (PDT)
+Received: from oss.qualcomm.com ([82.79.95.133])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c53153sm2136765e9.13.2026.03.18.09.37.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 09:37:12 -0700 (PDT)
+Date: Wed, 18 Mar 2026 18:37:11 +0200
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, daniel.baluta@oss.nxp.com,
+        mturquette@baylibre.com, sboyd@kernel.org, Frank.Li@nxp.com,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com,
+        driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH v2] clk: scu/imx8qxp: do not register driver in probe()
+Message-ID: <sfo2ib7segaqnpzd3u22k42od5cp4mrz72h3nwp2ihrds7l7uk@6xvkvonk2sg4>
+References: <20260212235842.85934-1-dakr@kernel.org>
+ <177384710701.3709943.608237959975537642.b4-ty@oss.qualcomm.com>
+ <DH60U76GPPWN.1UJJ89FKSXOWL@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com> <20260305-scmi-imx-reset-v1-1-18de78978ba9@nxp.com>
-In-Reply-To: <20260305-scmi-imx-reset-v1-1-18de78978ba9@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 18 Mar 2026 18:09:31 +0200
-X-Gm-Features: AaiRm5289taSx1eb7TjHchZuhRz0bSwV54-QwJD6-l7mMGU5Fnso3LBqXAa9jCw
-Message-ID: <CAEnQRZB6L7asKXq4rjPr+a1ai-jonBF_bTsT=Sk3ZJuNtUPS9w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] firmware: arm_scmi: imx: Support getting reset reason
- of MISC protocol
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>, Cristian Marussi <cristian.marussi@arm.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DH60U76GPPWN.1UJJ89FKSXOWL@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDE0MiBTYWx0ZWRfXzlZs7mxVjheG
+ 7jb+KcturJOBXOIWwehfVr+71mAzLEOLwj6v5I+VuBMRMEKgiZxM+fhHUXiGBGrs4j2Yf+omP8o
+ 3X5WJi6AY4zl8nzPStAEZFlnbCesZpzdGN+SpJdX9Nqs4h06E1KzRAF95WCaHDVFFW/vIZqRj7E
+ 0+Cqb6yTkzRmb+2IUuqNmGqo3AP2X5lfgJZRIWoNl3lkSNGP44tkgqaTeC+e/Z9GpDJ5Afj5uDx
+ aCdxAI0EHKAq8Hc66DD26NBGkvQzBvk3zu0A0lBI9kkxInLac2RLLu8oRz0cL83bZCJSGeFS2jC
+ ErLa0m3GoprbUXvRV74HrpW+cJixXS2mVjvlNxNKTqMHeMflNJi3cO67BN3XnnKEjRztC4JTqLy
+ aSk8gcSkUItLGDrAvx+jEqXeCEhwRdu36Tk6+pCcAp/eeN7gaVOwi0m82MfckZjA7ZZln8/WQDt
+ OIiK6s+pU60UyKyx6mw==
+X-Proofpoint-ORIG-GUID: p0Tw8DVX0xHRrdE10bMvZAEyRoA46Xjg
+X-Authority-Analysis: v=2.4 cv=A7hh/qWG c=1 sm=1 tr=0 ts=69bad4bb cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=iKs3dpp2RB4k51ZqCjcyjQ==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=CELFId4UG5F86OlxqCwA:9 a=CjuIK1q_8ugA:10 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-GUID: p0Tw8DVX0xHRrdE10bMvZAEyRoA46Xjg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 phishscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180142
 
-On Thu, Mar 5, 2026 at 3:55=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.com=
-> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> MISC protocol supports getting reset reason per Logical Machine or
-> System. Add the API for user to retrieve the information from System
-> Manager.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On 26-03-18 16:42:49, Danilo Krummrich wrote:
+> On Wed Mar 18, 2026 at 4:39 PM CET, Abel Vesa wrote:
+> >
+> > On Fri, 13 Feb 2026 00:58:11 +0100, Danilo Krummrich wrote:
+> >> imx_clk_scu_init() registers the imx_clk_scu_driver while commonly being
+> >> called from IMX driver's probe() callbacks.
+> >> 
+> >> However, it neither makes sense to register drivers from probe()
+> >> callbacks of other drivers, nor does the driver core allow registering
+> >> drivers with a device lock already being held.
+> >> 
+> >> [...]
+> >
+> > Applied, thanks!
+> >
+> > [1/1] clk: scu/imx8qxp: do not register driver in probe()
+> >       commit: 93a6d39e78bfa78b2160621aafbb490e063f12d9
+> 
+> This is already in Linus' tree, you gave your ACK in [1] for me to take it
+> through the driver-core tree.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Will drop from my tree then. Sorry about that.
 
-Thanks Peng for your explanations!
+Thanks for pointing this out.
