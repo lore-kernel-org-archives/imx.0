@@ -1,139 +1,93 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EDD2BB13
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 12:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BB736AB76
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 12:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773835275; cv=none; b=Q/jCYyjpy2yEctN3h+XatMQV0qAhU59sdrcqxDDSegqP/YzYwLOV/y1EDxbGjyJin6hRQViB0/cnSuKCnLH64H1LNoVTb8A7PX1AsCKAB/rlO2saULOeL5RWMq74zfNX768FAiXKLC9HwduRh6fA1o6FGolEDuA+uu6xjeCnBL4=
+	t=1773835853; cv=none; b=TnxSjV8oDfSI/3TqQsAqM6hLE1Pi3wjkV+OJl5QbLZs1Qux/O7bDOLmTF4WIn2B9sor2j+kg+TtK8PQl0cYRzuXWEGBPAKccMuHZIimPXA6JdSAQ+xIwzMnv5aouSdGoRpXL2JHQl7cw+IJGvdvLediibVxDlCD+BoMkt5MjhHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773835275; c=relaxed/simple;
-	bh=UcKPui/fl8U8QNFeN56BYzV8cyKms7/n3Z4Z0a/aVbA=;
+	s=arc-20240116; t=1773835853; c=relaxed/simple;
+	bh=uwGnVgjVF+WDR9bFHveUphn3+zSoGFtmkoZZy1nZcDA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nvoeaJR4QMB4PobTfp+0DCXEyu5xSJWpd/aLlXgT0a7ahDFHHTYAPd+gjviCyPUlsYQYAHDyEbrUwms8dfSzDqzZmwk8bJQksVUIb6iY0AKqlQWOkOTGqaeeNfO63rKMkWfHJ6f0WuVMLtRvv3fCuX++8ITeKJzufRBAUuc/yNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w2paC-0004ZJ-N1; Wed, 18 Mar 2026 13:01:04 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w2paC-000tur-1G;
-	Wed, 18 Mar 2026 13:01:04 +0100
-Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w2paC-000000099ZW-1872;
-	Wed, 18 Mar 2026 13:01:04 +0100
-Date: Wed, 18 Mar 2026 13:01:04 +0100
-From: Michael Tretter <m.tretter@pengutronix.de>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@kernel.org>
-Cc: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Michael Tretter <michael.tretter@pengutronix.de>,
-	Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH v2 0/2] media: staging: imx: fix multiple video input
-Message-ID: <abqUAKj83Xaz0RzM@pengutronix.de>
-Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Michael Tretter <michael.tretter@pengutronix.de>,
-	Frank Li <Frank.li@nxp.com>
-References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
- <aUPEs4wUHgAyMrPX@pengutronix.de>
- <aXOo0cc07cRi7-rF@pengutronix.de>
- <aXPNRbXBt2PRdFe4@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TLy34bsUCjWBTyzRbUAMa8meT/teEp5voW92iATxJJi+Xmsdn8iaF8Ogt6MGvNjGjBaRJk5frbxY4sySw7jTVESt5lYmIeXlGt6wdcCd1T9vd/gpq6QQakEeNAmca7uNlDbIVownkqcEUA3scg7vTjRUnuLsDZYAIdQNz5uXeVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m0XuDyf+; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m0XuDyf+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773835851; x=1805371851;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uwGnVgjVF+WDR9bFHveUphn3+zSoGFtmkoZZy1nZcDA=;
+  b=m0XuDyf+w7DVkuZpGl+XIo5dIUWdm3guvrXIMe7uxGIawDlVH34VcNlo
+   4ufAU7PSQJbGD0P8nf1g4fYkRSzIbumAP0aKyrU/kt9YbwZwMgdhyyWDe
+   YrkbpOWTFTFr4pqolZC71kcbeAvFSNZg1qzqY+ua6Eyiy7TSp4t0T0Hqn
+   pjBTLltRHGde+jH8T6RucGRWbuT2YWSOT9uHg97Vdxq9haMpOCCrjATiA
+   gbYe/VDKowWOWhftp03Yq8yxgcbDlICLai0rMVPm28YSdIUIGM8NTvFB5
+   wtSbj7u2/J6tT8PrpYDLfx/c3xqD6QGQQOdfv5pscJqYNLK/taHq1HK1Q
+   g==;
+X-CSE-ConnectionGUID: Wcx+PXKZR66ywrqrdQW6xA==
+X-CSE-MsgGUID: Bc4LTpbhT+Cmkbw9SO+JyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74800196"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="74800196"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 05:10:51 -0700
+X-CSE-ConnectionGUID: jLsN2SJlQQmCSB3ssd5hxA==
+X-CSE-MsgGUID: GReFG/SuSfaK9BPigQnOnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="222584933"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa009.jf.intel.com with ESMTP; 18 Mar 2026 05:10:47 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id D47D499; Wed, 18 Mar 2026 13:10:46 +0100 (CET)
+Date: Wed, 18 Mar 2026 14:10:01 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Li Jun <jun.li@nxp.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] usb: typec: tcpci: support setting orientation
+ via GPIO
+Message-ID: <abqWGW8vimyIq7hi@kuha>
+References: <20260316-support-setting-orientation-use-gpio-v3-0-0e6622b00dd9@nxp.com>
+ <20260316-support-setting-orientation-use-gpio-v3-2-0e6622b00dd9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXPNRbXBt2PRdFe4@lizhi-Precision-Tower-5810>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: m.tretter@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20260316-support-setting-orientation-use-gpio-v3-2-0e6622b00dd9@nxp.com>
 
-Hi Laurent, hi Hans,
+Hi,
 
-On Fri, 23 Jan 2026 14:34:29 -0500, Frank Li wrote:
-> On Fri, Jan 23, 2026 at 05:58:57PM +0100, Michael Tretter wrote:
-> > On Thu, 18 Dec 2025 10:09:07 +0100, Michael Tretter wrote:
-> > > On Fri, 07 Nov 2025 11:34:32 +0100, Michael Tretter wrote:
-> > > > If the IMX media pipeline is configured to receive multiple video
-> > > > inputs, the second input stream may be broken on start. This happens if
-> > > > the IMX CSI hardware has to be reconfigured for the second stream, while
-> > > > the first stream is already running.
-> > > >
-> > > > The IMX CSI driver configures the IMX CSI in the link_validate callback.
-> > > > The media pipeline is only validated on the first start. Thus, any later
-> > > > start of the media pipeline skips the validation and directly starts
-> > > > streaming. This may leave the hardware in an inconsistent state compared
-> > > > to the driver configuration. Moving the hardware configuration to the
-> > > > stream start to make sure that the hardware is configured correctly.
-> > > >
-> > > > Patch 1 removes the caching of the upstream mbus_config in
-> > > > csi_link_validate and explicitly request the mbus_config in csi_start,
-> > > > to get rid of this implicit dependency.
-> > > >
-> > > > Patch 2 actually moves the hardware register setting from
-> > > > csi_link_validate to csi_start to fix the skipped hardware
-> > > > reconfiguration.
-> > >
-> > > Gentle ping.
-> >
-> > Is there anything still missing to get these patches applied?
+Mon, Mar 16, 2026 at 05:41:56PM +0800, Xu Yang wrote:
+> @@ -316,6 +318,10 @@ static int tcpci_set_orientation(struct tcpc_dev *tcpc,
+>  	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
+>  	unsigned int reg;
+>  
+> +	if (tcpci->orientation_gpio)
+> +		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
+> +						orientation == TYPEC_ORIENTATION_NORMAL ? 0 : 1);
 
-I'm not entirely sure, who is responsible for applying patches for
-media-imx. You handled the last few patches for this driver. Maybe you
-could apply these patches, too?
+Sorry, I though this was covered in the last version. The condition
+looks unnecessary, so:
 
-I also sent another series [0] for media-imx. Can you handle this other
-series, as well?
+		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
+                                        	orientation != TYPEC_ORIENTATION_NORMAL);
 
-Michael
+thanks,
 
-[0] https://lore.kernel.org/linux-media/20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de/
-
-> > > >
-> > > > Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
-> > > > ---
-> > > > Changes in v2:
-> > > > - Document changed locking in commit message
-> > > > - Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
-> > > >
-> > > > ---
-> > > > Michael Tretter (2):
-> > > >       media: staging: imx: request mbus_config in csi_start
-> > > >       media: staging: imx: configure src_mux in csi_start
-> > > >
-> > > >  drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
-> > > >  1 file changed, 48 insertions(+), 36 deletions(-)
-> > > > ---
-> > > > base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
-> > > > change-id: 20251105-media-imx-fixes-acef77c7ba12
-> 
+-- 
+heikki
