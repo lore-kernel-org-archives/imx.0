@@ -1,61 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CA63CEBBA;
-	Wed, 18 Mar 2026 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F703E0244;
+	Wed, 18 Mar 2026 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844802; cv=none; b=E1yZRfY66hDUJ1bTIR9QfF3Gc88RaEEnyMvh5d1yzVBeh63zCq7A7IPF24o/v84IziFWaiuORRl707uhiE9b0Ms5eUCdwkQPAzeIAjF0n2L5E9+ynURQxq4Sz4BsNO373FwdhZ25rFBeZCj5kZ0idQ68SyBLnngcOKYPmat6qH0=
+	t=1773845231; cv=none; b=m15NT7Xs9l6ueOIe2taveL9ggq+SxfT90FtPO7g/6ThLHdHzRB30F2qeWI/SOpHkHIVg/M31n5Gu4XbMVVIrFT10YYR4UcBOBD4I+RNvcymZLsVC1buuwRGkvWXyUR9TbxQljs+OClDA7as3Qw7fFuGGo9NpSA7oTGpBtirLapI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844802; c=relaxed/simple;
-	bh=lTmvcD4MKOhdnWf0ncRKcsBRvwfwpCt6pbrFgMkwmEk=;
+	s=arc-20240116; t=1773845231; c=relaxed/simple;
+	bh=sOGhleK/nOFjGylRZPX91uK0mo+r2D9Kaglk5zGCV1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqNL4Ns+vBz+AoWyibJqGeEYxdD4g2aBCnHjcJBeBji8KKvYgwXPG8vQmwpunlkbtZyskkO/xWy14DoKONrsL9HqOmHv5V/xnFhSxz42qiTwLzDhqJnYI73GQSXDHrPxZd/DL2FWQNquQTdKq2dqRE2iYo4mDL4UHahGkFbgk9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppPerBNK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=GcIuTbDSTGG6VTb5DooQgxFEl/n6mZWaoNO8diLTGVqkdIjdnygfMaZbY7g4gjDH2INBaNswhnzUEjFxZAzUZKBnvIqRB19974hN7MCYkT1lyHWC0HZ3y1QNCnr3P3u4Hi0JLqLBoNtKEvIkOXpKPDOugDbtSo+1MtMC73TaKU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNEXEXFH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppPerBNK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A28C19421;
-	Wed, 18 Mar 2026 14:39:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNEXEXFH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CE2C19421;
+	Wed, 18 Mar 2026 14:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773844801;
-	bh=lTmvcD4MKOhdnWf0ncRKcsBRvwfwpCt6pbrFgMkwmEk=;
+	s=k20201202; t=1773845231;
+	bh=sOGhleK/nOFjGylRZPX91uK0mo+r2D9Kaglk5zGCV1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppPerBNKpDEGlFSD0eIGgFdqKHMmTNWGY3zGsy5tvajnPyn+rmcrcCvj5XUAyuQJt
-	 MnV4m8ZgUmFgFeW3iEPmNoFfDdc1T2Gd3zgUWQ7ZXpwS36lRQmvuinvtNyRhUvKnck
-	 ced/ZBisvBKL+YUxDrJDIur0GATS0eIAX/5JyWb2H2D6n2X3qOlWMrfem8eDJOeXqK
-	 B/scLD2UWCuoNVrkyDGUPRJnqqGxmHu6puDaqtoJ8dcuo1qZWefKiBe0HIiyXQ3JY9
-	 kr/foja6rZeHkdOqh8IPifayS5S+hZAHWlEqLLDOrd5degRj9o0qU5Fq2Wl9PBDPwa
-	 ysnACeo7yK53w==
+	b=lNEXEXFHtHqqr5+jSR8/WPIZ+t95wCNVVoFyFK6S3X5ngF1Z0hz/dGpE0/8EVWyzB
+	 7mFxzM+0bUnUaAhTlEuc+9AknVBfSI9p5RHBxJWrrAvHGw/j+0E6tA3hZYfaqyW8OI
+	 3qeaNgswbe4lvpsnrdMYYgKytxx1PEPv7MSrbOGaa3g8CmFStN9NXTdAjn8hQtLhjO
+	 8VQ1bPGUgw/WxjL8g9punuvgQVYnky6+kVtBTz+q+WuZUomr0+eYyGnze5a5zLO7rs
+	 Xul8ho2Ds77F5cnV2Odc+IaNBY2ZPyljYTpCY3FqWe/wRWhVHahuEr8FNWykrSONbu
+	 lV9haUJJi9Hxg==
 From: Simon Horman <horms@kernel.org>
 To: wei.fang@nxp.com
 Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	conor+dt@kernel.org,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	frank.li@nxp.com,
-	vladimir.oltean@nxp.com,
-	kuba@kernel.org,
 	f.fainelli@gmail.com,
 	krzk+dt@kernel.org,
-	claudiu.manoil@nxp.com,
-	robh@kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	xiaoning.wang@nxp.com,
-	davem@davemloft.net,
-	linux@armlinux.org.uk,
-	chleroy@kernel.org,
+	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	claudiu.manoil@nxp.com,
+	xiaoning.wang@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux@armlinux.org.uk,
 	pabeni@redhat.com,
-	imx@lists.linux.dev
-Subject: Re: [net-next,10/14] net: dsa: netc: introduce NXP NETC switch driver for i.MX94
-Date: Wed, 18 Mar 2026 14:39:30 +0000
-Message-ID: <20260318143930.1890017-1-horms@kernel.org>
+	conor+dt@kernel.org,
+	chleroy@kernel.org,
+	edumazet@google.com,
+	frank.li@nxp.com,
+	kuba@kernel.org,
+	vladimir.oltean@nxp.com,
+	linuxppc-dev@lists.ozlabs.org,
+	robh@kernel.org,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch
+Subject: Re: [net-next,11/14] net: dsa: netc: add phylink MAC operations
+Date: Wed, 18 Mar 2026 14:46:51 +0000
+Message-ID: <20260318144651.1891670-1-horms@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260316094152.1558671-11-wei.fang@nxp.com>
-References: <20260316094152.1558671-11-wei.fang@nxp.com>
+In-Reply-To: <20260316094152.1558671-12-wei.fang@nxp.com>
+References: <20260316094152.1558671-12-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,192 +69,205 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+net: dsa: netc: add phylink MAC operations
 
-This commit introduces the initial NETC switch driver for the i.MX94
-series. The driver provides basic probe and remove functionality for
-the NXP NETC Ethernet switch which has 3 user ports and 1 CPU port.
+This commit adds phylink MAC operations to the NETC DSA switch driver,
+including support for different PHY interface modes (RGMII, RMII, MII,
+REVMII, SGMII, 2500BASE-X).
 
 > diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-> --- /dev/null
+> index bc7d48b99610..884ee899fc89 100644
+> --- a/drivers/net/dsa/netc/netc_main.c
 > +++ b/drivers/net/dsa/netc/netc_main.c
 
 [ ... ]
 
-> @@ -0,0 +1,698 @@
-> +static int netc_port_create_emdio_bus(struct netc_port *np,
-> +				      struct device_node *node)
+> @@ -595,10 +595,221 @@ static void netc_switch_get_ip_revision(struct netc_switch *priv)
+>  	priv->revision = val & IPBRR0_IP_REV;
+>  }
+>
+> +static void netc_phylink_get_caps(struct dsa_switch *ds, int port,
+> +				  struct phylink_config *config)
 > +{
-> +	struct netc_switch *priv = np->switch_priv;
-> +	struct enetc_mdio_priv *mdio_priv;
-> +	struct device *dev = priv->dev;
-> +	struct enetc_hw *hw;
-> +	struct mii_bus *bus;
-> +	int err;
+> +	struct netc_switch *priv = ds->priv;
 > +
-> +	hw = enetc_hw_alloc(dev, np->iobase);
-> +	if (IS_ERR(hw))
-> +		return dev_err_probe(dev, PTR_ERR(hw),
-> +				     "Failed to allocate enetc_hw\n");
-> +
-> +	bus = devm_mdiobus_alloc_size(dev, sizeof(*mdio_priv));
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	bus->name = "NXP NETC switch external MDIO Bus";
-> +	bus->read = enetc_mdio_read_c22;
-> +	bus->write = enetc_mdio_write_c22;
-> +	bus->read_c45 = enetc_mdio_read_c45;
-> +	bus->write_c45 = enetc_mdio_write_c45;
-> +	bus->parent = dev;
-> +	mdio_priv = bus->priv;
-> +	mdio_priv->hw = hw;
-> +	mdio_priv->mdio_base = NETC_EMDIO_BASE;
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-p%d-emdio",
-> +		 dev_name(dev), np->dp->index);
-> +
-> +	err = devm_of_mdiobus_register(dev, bus, node);
-> +	if (err)
-> +		return dev_err_probe(dev, err,
-> +				     "Cannot register EMDIO bus\n");
-> +
-> +	np->emdio = bus;
-> +
-> +	return 0;
+> +	priv->info->phylink_get_caps(port, config);
 > +}
 > +
-> +static int netc_port_create_mdio_bus(struct netc_port *np,
-> +				     struct device_node *node)
+> +static void netc_port_set_mac_mode(struct netc_port *np,
+> +				   unsigned int mode,
+> +				   phy_interface_t phy_mode)
 > +{
-> +	struct device_node *mdio_node;
-> +	int err;
+> +	u32 mask = PM_IF_MODE_IFMODE | PM_IF_MODE_ENA;
+> +	u32 val = 0;
 > +
-> +	mdio_node = of_get_child_by_name(node, "mdio");
-> +	if (mdio_node) {
-> +		err = netc_port_create_emdio_bus(np, mdio_node);
-> +		of_node_put(mdio_node);
-> +		if (err)
-> +			return err;
+> +	switch (phy_mode) {
+> +	case PHY_INTERFACE_MODE_RGMII:
+> +	case PHY_INTERFACE_MODE_RGMII_ID:
+> +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		val |= IFMODE_RGMII;
+> +		/* Enable auto-negotiation for the MAC if its
+> +		 * RGMII interface supports In-Band status.
+> +		 */
+> +		if (phylink_autoneg_inband(mode))
+> +			val |= PM_IF_MODE_ENA;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RMII:
+> +		val |= IFMODE_RMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_REVMII:
+> +		val |= PM_IF_MODE_REVMII;
+> +		fallthrough;
+> +	case PHY_INTERFACE_MODE_MII:
+> +		val |= IFMODE_MII;
+> +		break;
+
+Does the mask need to include PM_IF_MODE_REVMII? Looking at
+netc_port_set_mac_mode(), the mask is set to:
+
+    u32 mask = PM_IF_MODE_IFMODE | PM_IF_MODE_ENA;
+
+which expands to GENMASK(2,0) | BIT(15) = 0x8007. When the REVMII
+case sets val |= PM_IF_MODE_REVMII (BIT(3)), this makes val = 0x9.
+
+In netc_mac_port_rmw(), there's a check:
+
+    WARN_ON((mask | val) != mask)
+
+This check would fire on every REVMII configuration since 0x800F != 0x8007.
+
+Additionally, REVMII is reachable because imx94_switch_phylink_get_caps()
+advertises PHY_INTERFACE_MODE_REVMII as supported for port 2. When
+transitioning FROM REVMII to another mode, PM_IF_MODE_REVMII (BIT(3))
+won't be cleared since it's not in the mask, leaving stale configuration.
+
+Should the mask be:
+
+    u32 mask = PM_IF_MODE_IFMODE | PM_IF_MODE_REVMII | PM_IF_MODE_ENA;
+
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +	case PHY_INTERFACE_MODE_2500BASEX:
+> +		val |= IFMODE_SGMII;
+> +		break;
+> +	default:
+> +		break;
 > +	}
 > +
-> +	return 0;
-> +}
-> +
-> +static void netc_port_free_mdio_bus(struct netc_port *np)
-> +{
-> +	if (np->emdio)
-> +		mdiobus_unregister(np->emdio);
-                         ^^^^
-
-Does this cause a double unregister? The MDIO bus is registered with
-devm_of_mdiobus_register() in netc_port_create_emdio_bus(), which
-installs a devres action that automatically calls mdiobus_unregister()
-during device removal.
-
-However, netc_port_free_mdio_bus() also explicitly calls
-mdiobus_unregister(np->emdio).
-
-During device removal:
-
-  netc_switch_remove()
-    -> dsa_unregister_switch()
-      -> dsa_switch_teardown()
-        -> netc_teardown()
-          -> netc_free_mdio_bus()
-            -> netc_port_free_mdio_bus()
-              -> mdiobus_unregister()  // first call
-
-Then devres cleanup fires:
-
-  devm_mdiobus_unregister()
-    -> mdiobus_unregister()  // second call
-      -> WARN_ON_ONCE(bus->state != MDIOBUS_REGISTERED)
-
-The second call triggers a warning at drivers/net/phy/mdio_bus_provider.c:675
-because the bus state is already MDIOBUS_UNREGISTERED. With
-panic_on_warn=1, this causes a kernel panic.
-
-The same double-unregister occurs on the error path of
-netc_init_all_ports(), where netc_free_mdio_bus() is called, but devres
-will also fire during device teardown.
-
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
 > +}
 
 [ ... ]
 
-> +static int netc_switch_pci_init(struct pci_dev *pdev)
+> +static void netc_port_force_set_rgmii_mac(struct netc_port *np,
+> +					  int speed, int duplex)
 > +{
-> +	struct device *dev = &pdev->dev;
-> +	struct netc_switch_regs *regs;
-> +	struct netc_switch *priv;
-> +	int err;
+> +	u32 mask, val;
 > +
-> +	pcie_flr(pdev);
-> +	err = pci_enable_device_mem(pdev);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to enable device\n");
+> +	mask = PM_IF_MODE_ENA | PM_IF_MODE_SSP | PM_IF_MODE_HD |
+> +	       PM_IF_MODE_M10 | PM_IF_MODE_REVMII;
 > +
-> +	/* The command BD rings and NTMP tables need DMA */
-> +	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-                                       ^^^^
-
-Is the return value being checked? The comment states "command BD rings
-and NTMP tables need DMA", confirming DMA is essential for this driver.
-
-The function can fail with -EIO when dma_supported() returns false for
-the 64-bit mask (from dma_set_mask() in kernel/dma/mapping.c:902).
-
-The sibling enetc driver from the same NXP NETC subsystem checks this
-return value in enetc.c:
-
-  err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-  if (err) {
-      ...
-      goto err_dma;
-  }
-
-If the 64-bit DMA mask setup fails, the DMA mask remains at the default,
-and subsequent DMA operations for NTMP table management (added in later
-commits) may silently fail or produce incorrect results on systems with
-memory above 4GB.
-
-> +	err = pci_request_mem_regions(pdev, KBUILD_MODNAME);
-> +	if (err) {
-> +		dev_err(dev, "Failed to request memory regions, err: %pe\n",
-> +			ERR_PTR(err));
-> +		goto disable_pci_device;
+> +	switch (speed) {
+> +	default:
+> +	case SPEED_1000:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_1G);
+> +		break;
+> +	case SPEED_100:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_100M);
+> +		break;
+> +	case SPEED_10:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_10M);
+> +		break;
 > +	}
 > +
-> +	pci_set_master(pdev);
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv) {
-> +		err = -ENOMEM;
-> +		goto release_mem_regions;
-> +	}
+> +	if (duplex != DUPLEX_FULL)
+> +		val |= PM_IF_MODE_HD;
 > +
-> +	priv->pdev = pdev;
-> +	priv->dev = dev;
-> +
-> +	regs = &priv->regs;
-> +	regs->base = pci_ioremap_bar(pdev, NETC_REGS_BAR);
-> +	if (!regs->base) {
-> +		err = -ENXIO;
-> +		dev_err(dev, "pci_ioremap_bar() failed\n");
-> +		goto release_mem_regions;
-> +	}
-> +
-> +	regs->port = regs->base + NETC_REGS_PORT_BASE;
-> +	regs->global = regs->base + NETC_REGS_GLOBAL_BASE;
-> +	pci_set_drvdata(pdev, priv);
-> +
-> +	return 0;
-> +
-> +release_mem_regions:
-> +	pci_release_mem_regions(pdev);
-> +disable_pci_device:
-> +	pci_disable_device(pdev);
-> +
-> +	return err;
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
 > +}
+> +
+> +static void net_port_set_rmii_mii_mac(struct netc_port *np,
+
+This isn't a bug, but should this function be named
+netc_port_set_rmii_mii_mac() instead of net_port_set_rmii_mii_mac()?
+All other functions in this driver use the netc_ prefix
+(netc_port_set_speed, netc_port_force_set_rgmii_mac,
+netc_port_set_mac_mode, etc.).
+
+> +				      int speed, int duplex)
+> +{
+> +	u32 mask, val = 0;
+> +
+> +	mask = PM_IF_MODE_ENA | PM_IF_MODE_SSP | PM_IF_MODE_HD |
+> +	       PM_IF_MODE_M10;
+> +
+> +	if (speed == SPEED_10)
+> +		val |= PM_IF_MODE_M10;
+> +
+> +	if (duplex != DUPLEX_FULL)
+> +		val |= PM_IF_MODE_HD;
+> +
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
+> +}
+
+[ ... ]
+
+> +static void netc_mac_link_up(struct phylink_config *config,
+> +			     struct phy_device *phy, unsigned int mode,
+> +			     phy_interface_t interface, int speed,
+> +			     int duplex, bool tx_pause, bool rx_pause)
+> +{
+> +	struct dsa_port *dp = dsa_phylink_to_port(config);
+> +	struct netc_port *np;
+> +
+> +	np = NETC_PORT(dp->ds, dp->index);
+> +	netc_port_set_speed(np, speed);
+> +
+> +	if (phy_interface_mode_is_rgmii(interface) &&
+> +	    !phylink_autoneg_inband(mode)) {
+> +		netc_port_force_set_rgmii_mac(np, speed, duplex);
+> +	}
+> +
+> +	if (interface == PHY_INTERFACE_MODE_RMII ||
+> +	    interface == PHY_INTERFACE_MODE_REVMII ||
+> +	    interface == PHY_INTERFACE_MODE_MII) {
+> +		net_port_set_rmii_mii_mac(np, speed, duplex);
+> +	}
+> +
+> +	netc_port_set_hd_flow_control(np, duplex == DUPLEX_HALF);
+> +	netc_port_mac_rx_enable(np);
+> +}
+> +
+> +static void netc_mac_link_down(struct phylink_config *config,
+> +			       unsigned int mode,
+> +			       phy_interface_t interface)
+> +{
+> +	struct dsa_port *dp = dsa_phylink_to_port(config);
+> +
+> +	netc_port_mac_rx_graceful_stop(NETC_PORT(dp->ds, dp->index));
+> +}
+> +
+> +static const struct phylink_mac_ops netc_phylink_mac_ops = {
+> +	.mac_config		= netc_mac_config,
+> +	.mac_link_up		= netc_mac_link_up,
+> +	.mac_link_down		= netc_mac_link_down,
+> +};
+> +
+>  static const struct dsa_switch_ops netc_switch_ops = {
+>  	.get_tag_protocol		= netc_get_tag_protocol,
+>  	.setup				= netc_setup,
+>  	.teardown			= netc_teardown,
+> +	.phylink_get_caps		= netc_phylink_get_caps,
+>  };
+>
+>  static int netc_switch_probe(struct pci_dev *pdev,
+> @@ -639,6 +850,7 @@ static int netc_switch_probe(struct pci_dev *pdev,
+>  	ds->num_ports = priv->info->num_ports;
+>  	ds->num_tx_queues = NETC_TC_NUM;
+>  	ds->ops = &netc_switch_ops;
+> +	ds->phylink_mac_ops = &netc_phylink_mac_ops;
+>  	ds->priv = priv;
+>
+>  	priv->ds = ds;
 
 [ ... ]
