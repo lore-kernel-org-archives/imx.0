@@ -1,100 +1,99 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A526A332608
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4613B8BD0
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773848400; cv=none; b=GSVoFwdlR7r1f05czgtExTIALUOfZEQRmwCZuq1r8moBarN7NUW1uY/3uV7skG1LzRhaepRkmPYCXJJi0OOik9VIWUUAL/5UD8R/eoeHEdMzuAHlrCl0o2J6tUVEGFTQWSJuOrmJ5Pw44DoM2Wf/9/aYmoL+FTSci0jMoJliOLw=
+	t=1773848403; cv=none; b=NdJfCDTq8ILbH+Mh7lAPesYWCPWDrKvMCe68r3EDxi5RvZhOu9TnmE0PV3nuheBtdKgXp96vUdhiySftY64eTa1Pqtsd/hrccYjXrOOV4d+/VPDcoyKnl7cvXljntmde4mrFC1KqEIFzajucYPG9EvRcmBpx8Tmhj4YJ2rcvFrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773848400; c=relaxed/simple;
-	bh=gw69tgcoLcSxsrdQYQcrD+/RXmEiNDvJrjL8mPOGUaw=;
+	s=arc-20240116; t=1773848403; c=relaxed/simple;
+	bh=fq8QMgxGO4I1bjwsFUxPjh0/fYBLSgr2n/oC9r9H/4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nF1qInMVszMe5TeVc7qbsdmqB51QYp6tdVxtcCvE30wC8S88dKtgRbt5zNgVyTaFzBs84boobzgt8BZL7MpKkt7fWvVkqxngrCIjalOoAFTRPPcucWQg1AZ3+hWE+8xSAFU5IQBgh5n0404OfV7PQzfdq1Ylc1e8Uh81oEJXwHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LRWNwILl; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=SZtRj2oS; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=KKgzvrpLV0Q9E5rqTD+cfwRbMyEPzwpxHLuW+bm0a5jx04W8wPMQ4KQx29jiz/Rejaei58Y7pa8V1eio8IWFLWoIh3tTIKfqrdFWqNC9RxXv8uf7j42Nt2VAfA6ReJb8Y1eajitoy9nsMcsI6+PN4xt/Yku8ECrhVCXwSEK/L84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g7Qc9Gzq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ao5fUbr8; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LRWNwILl";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="SZtRj2oS"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IFXCsf1768920
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:56 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="g7Qc9Gzq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ao5fUbr8"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62IFX7vS4088320
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	iXY6wf+7y63C26nOd5CZ2U3ebxiVslPLzrbxrFszJYY=; b=LRWNwILl3nqlah/m
-	28mzsgN8aYGvXAZI/X+/n7iVRTLkK7uE+FXL2VeLE5nC5/s7FrZXH+kX0KrlKI2f
-	q8ZNcnXd8VogylJ2AkTbyrvXGl6LmPVTWBh6k9BGooD94+PxG5ML9bwgT5LN/M8z
-	+3MogOSYUR/SvoHObh4CXl2gNTfla40fUkVmeQhcybYnvlYb2qJwYlLG28m82Va1
-	sF1P5f59JDfOBoPS4tWaZdwKYUJEvqM1479yj+i1QwZz4+1PX0ml/WDtx4wwQdcL
-	biELnU972j5PIujX7n5GaS1+VCnbEbGpnNqtbCHKXlbzxhtfmx+Eoj3tApWhEFpQ
-	zbXl0A==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cykqetx45-1
+	e7PSEs4PQLk/CUQtS2pu7HepYiSKsXDEHL/qILTq9dE=; b=g7Qc9Gzqv7FTuSVV
+	sx5RAE1TLnpBzhaV8WNbGJTH+G426L1AjdZhaiBTjFyHjYTVj3iof5a8Rbn+UsPr
+	1cLq69tAJB8S5os7xGHoAR26JGe6g7Fzg3fcoW2cF/ACthdf7BGy6O7QIoNp9dOh
+	rwuzw58pQX2PI4Fs0j2za/no/mXbJPf04h9BPRgpIf560jhzeV8ontGzssoqEKP6
+	ou6PRFqyJaqmyqNXVMP85bOrSxEvABpgSGlEBOstj4elQBd5yE3GO+M0aU4Em0df
+	aOZUwoxIIs/bYcz4PvxyOxI5EzhhzsVBh8NnD5rRAcmslFWWcxpDoZ2eOhVO1Wdn
+	wQ8vAw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cypwr25gs-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:55 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5090bc4823cso204464541cf.3
-        for <imx@lists.linux.dev>; Wed, 18 Mar 2026 08:39:55 -0700 (PDT)
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 15:39:58 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5092135f2e9so392969901cf.2
+        for <imx@lists.linux.dev>; Wed, 18 Mar 2026 08:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773848395; x=1774453195; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1773848397; x=1774453197; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iXY6wf+7y63C26nOd5CZ2U3ebxiVslPLzrbxrFszJYY=;
-        b=SZtRj2oS2PTQMnmvtYaxOyIHS6/oI9h5e1JWoLj+C/T2Y72IKBNO8KAuXSEwmxs8oZ
-         Ovbgo0RzwoptghY0I1vvBI+vZ/xZ8aaS9rYiVmo0C8gHyhQqGEISMwade7q+mJkCmbVQ
-         ZX5DW2orAYzfCqn3oMeZKnXZzNDGZ21q8lfwe/pviA7v+29pO5m0d0i+MjCMX/BYzYmw
-         +DgYMYY+CDTl3jp/uRlPEZKMNKJF28sB9mRB6Nm6aiitWNl9X4aVjmrUtw6ouKAtlvMe
-         13s/JpU46MZMrVxfOfwf2PtQW0HOWY9iUq8enpRCo8VUGzzqwrrq11BFK51Pyxj78X2I
-         p35w==
+        bh=e7PSEs4PQLk/CUQtS2pu7HepYiSKsXDEHL/qILTq9dE=;
+        b=ao5fUbr814l7w7zDg89TQ2+yhUX+OVjH+6mWbDmSMbxzNAahOIAug+V2w3BAvPjfvy
+         ub439zjl8DmUabLqPj9ff1HwrbV7WXZSIoP7kcCGZlfiOKe5kJYnZzG7qxujVLSJxHQ4
+         8rC0jKTV6WGYUmAStEUSHFybJo0e5Hlk+6wmp8bph06CZsbadkqU0rjnq81ZhpwXlp4P
+         79kr2yHqYJAFeUBNaLs4GtRNBa27nbB5LfwUp9wEp43w8UGUzveerynhbrYkPXMp52Gq
+         +wVoSchaOaLEHkaP5kbEWITeZAYicsfwgR791ZZnvOHD0sSlTVCXj/W6/VPZpEWj2KM3
+         A/yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773848395; x=1774453195;
+        d=1e100.net; s=20251104; t=1773848397; x=1774453197;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iXY6wf+7y63C26nOd5CZ2U3ebxiVslPLzrbxrFszJYY=;
-        b=EuyYdwoeGVXFC8YyRZSlCn7VGKjATpL2Dq+SJLn/SlBcnhwTPs8eFY8gcjzDHvGM12
-         ogdy2E6Qe6pF65b1Tbaq5qy2l4t/XuH3aGZf9VXaZICSLXdUq2Bf7qov7r3s47l7W9Uz
-         GPzkvFoK/U1h5bB+oFqCE4z+zouOuKTHNL7U+y9AnDF+9OpleYMzsPImOY2xz0ctBt+E
-         O+lECOmo1h34pHHtuGrEXbWhzHOJa6uMyRJoXPNx/TDgRxGKAc7UYbrt4Epom53BPnEu
-         XjYMcD+zyrR2KOgRc2h/lsT5bhygwu1RKlQm1myiATI9k2DYl/+856HfdlKnB4bdy6FC
-         CbSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjsRP1VoLaQbPvIw2estx0NkicNwBsacSP5YNgv8svTVHpru11ZNscRL6VIY5xE7MB3qM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxc2CcFy/eodjEqiBkh3pAR9YIbh+UE/ZpxxGflvuL0MBhqD4RB
-	cOjLvlfl9IboH74ErL9XDeJsFNiTG6eMgBTsNz9yVXo8uXFw08bPiHYUqUBS8Wz7VgSiAG5U5l7
-	lEUOfucl4cG/x0PyVWJvr14BZo9AuYhCU1f0UuhGN+/oqTJMH/qYm4J4=
-X-Gm-Gg: ATEYQzzngrXoycCJJ3DGzZRaeNIPqwJoBqCsXmLTbOVDQejZzYvJVIvPp1SbbIAIPiY
-	30qsgg+917Qx8eFkvuSbZZ4NNxbfHQATMkg/4mnO5jGF0SMxXa8EfE5la5lr+DmewpV3JASfFh9
-	uQH1hwAJBEWVOB1kaT+6N5ZUYIAS7ZFB0TL3eXh517Okkz8rmXyojIzd81FewJFPsmwDGYjLC7W
-	nAcpeq918p+VSKd4ONkljne1mLQYEjsHkkDP5h3hqbgxItd0NKBkdXJQjR8LWiw8l2cnIPtTj7h
-	744VLdAZlK2gUlg+JEvZJ8XohkQg4/mZukeQUSpcbVSvaU0VBdqMRWV5QB9B1viad6PtO/vpi34
-	DaR8wCMdXaAE3yQUsrTJvH688xLQ=
-X-Received: by 2002:a05:622a:344:b0:509:44c3:5ff9 with SMTP id d75a77b69052e-50b1485f448mr46464651cf.37.1773848394630;
-        Wed, 18 Mar 2026 08:39:54 -0700 (PDT)
-X-Received: by 2002:a05:622a:344:b0:509:44c3:5ff9 with SMTP id d75a77b69052e-50b1485f448mr46464071cf.37.1773848394077;
-        Wed, 18 Mar 2026 08:39:54 -0700 (PDT)
+        bh=e7PSEs4PQLk/CUQtS2pu7HepYiSKsXDEHL/qILTq9dE=;
+        b=qcuzTU5dieCBB84+WyB5r9OtREAsK5QQlCPGmBF6xXGiXlhr/CUgV0vOs+pkkOGNtG
+         uEApL7KFZjJT1PZ5zVTZRkCbKTMeROVSdCkqjnM7W3OTrx2D+HM4sVfp1WwtJV19kWJU
+         k74JRPQcOl5kkinZ1inw7buzqMcd4jcb07tITxgrTm9Mv02vYR33OC+ab7ZRgK0IIuzM
+         QD7BZ0z3szJllahAiPoFZbLbdYz99N37TeF1AJy8naRBQXjpaBdWA4igleklnOZQbatE
+         i/lbNM1CRosxqRIaRVipOmVf3MrtlIcUpGYH3tJoNYlpwh+5nX0XssGtyXGTZ3OgDuL0
+         rHTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGsN8y9MFvpZBYvgTj8SPfeqMe7qEVInrXD/w6chEdIx484uooCQHWlPxRn6N9qJ4A9t4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yypfv1QDsxaEvrw3N+HUmYo/SaM+rMRU2bnfr8Zij+K18R+mHH8
+	Vb7rhn+K+zax/nKPCOfRMsYhLT5CJd0Q0JuAsPsAIOEF8ZxYl8cbB/Xn46Mnh4EmPH/y0uz/3Pi
+	eOfhf9fHvULNS7b8dck4BXb++Gwcvnpq4yFYat85hZ/8gAL8BsKJM5kY=
+X-Gm-Gg: ATEYQzx3uM9QfAZ/wte6gShYFAXg/tb7DeQITR1gwnaIdjbkrr9faPT6gSe/boJjwDL
+	Gy8coZxWorzuD6b1ZaTK6rzqsOmduurWVrLtuRKF1tQFzUHW++pwHp7wtEdUnd28pyVn/c/BQWV
+	h/u9SVDUzgqFJWv3LYwhBlsApz9SqbW6WrEXzYupm0K459gKmQz/pIa80d5/yyC9YLIZjdDWtBL
+	tkmCtjIvMfV/99YNhIp4ajGGisUVepYn2+yiBQb5dQGIMcZgxCNp7liwmH3tswV+3H/eLffT0pa
+	1sBXVFFLHroaKgK2tO1pxSlv638Wf7kTxdRrowVP66OpWuYX7+PHOu6YzR302XPEWwQZpOHKpAX
+	FmDs4RpQj1FTf0WZBi4hbWBimVsI=
+X-Received: by 2002:ac8:7dc2:0:b0:509:473e:2a12 with SMTP id d75a77b69052e-50b148a2691mr46167451cf.48.1773848396943;
+        Wed, 18 Mar 2026 08:39:56 -0700 (PDT)
+X-Received: by 2002:ac8:7dc2:0:b0:509:473e:2a12 with SMTP id d75a77b69052e-50b148a2691mr46167001cf.48.1773848396367;
+        Wed, 18 Mar 2026 08:39:56 -0700 (PDT)
 Received: from hackbox.lan ([82.79.95.133])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51892161sm9227560f8f.21.2026.03.18.08.39.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51892161sm9227560f8f.21.2026.03.18.08.39.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 08:39:52 -0700 (PDT)
+        Wed, 18 Mar 2026 08:39:55 -0700 (PDT)
 From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
+To: abelvesa@kernel.org, peng.fan@nxp.com, daniel.baluta@oss.nxp.com,
+        mturquette@baylibre.com, sboyd@kernel.org, Frank.Li@nxp.com,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com,
+        Danilo Krummrich <dakr@kernel.org>
+Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
         Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Daniel Baluta <daniel.baluta@oss.nxp.com>
-Subject: Re: [PATCH v2 1/1] clk: imx: pll14xx: Use unsigned format specifier
-Date: Wed, 18 Mar 2026 17:39:31 +0200
-Message-ID: <177384710698.3709943.4935089017687987129.b4-ty@oss.qualcomm.com>
+Subject: Re: [PATCH v2] clk: scu/imx8qxp: do not register driver in probe()
+Date: Wed, 18 Mar 2026 17:39:32 +0200
+Message-ID: <177384710701.3709943.608237959975537642.b4-ty@oss.qualcomm.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260317121953.1100619-1-alexander.stein@ew.tq-group.com>
-References: <20260317121953.1100619-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20260212235842.85934-1-dakr@kernel.org>
+References: <20260212235842.85934-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -103,41 +102,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEzMiBTYWx0ZWRfX2wNNW9lesA05
- zM/EABvq32YAqiEGAxYKmrcpvISTsADT3Ez65ocYEqmeY0/jGMTVyUFy9lhMOTWhGT4ScdfoKCC
- aHZggndkXCu3qNzpLOgQvRqb+7oFfkx03kJwAlYp/rSuYcfxsDDw6Cjs31PnDIJPjHEz80mtFfm
- CErXbMQeX3BeWpvOnavIR/W5V/4Lpz5AJszqLoqYjjcjHOjZAh7PE/CgWRhaf1qXplHZLXHmiBt
- HgGpXkYr2J3RdWjeldRP6A6/WP1Tt+3q5BLG62bBKIcHHLuuPSaFlt4RdNozL5DL317zcYFJhan
- yIEzFtFEx6reutKb9OaBP2eqDiVaJrXlinSU9DtrZC8sNWAD8MAbskAmboJ7fUuHnF+mxTtZ1uF
- rtJYYWf+sD7jWDaeAYoFTV1rBKWCmqBjL3wwOZ5/GO6BGk24x+00ZJ4tGr5M+K6RgmubK89APX7
- 10V/78x95i/xZZ1JvmQ==
-X-Authority-Analysis: v=2.4 cv=Cd4FJbrl c=1 sm=1 tr=0 ts=69bac74b cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=iKs3dpp2RB4k51ZqCjcyjQ==:17
+X-Authority-Analysis: v=2.4 cv=bIcb4f+Z c=1 sm=1 tr=0 ts=69bac74e cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=iKs3dpp2RB4k51ZqCjcyjQ==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=r2wPyHcE3phNYcTLgkQA:9 a=QEXdDO2ut3YA:10
- a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-ORIG-GUID: 4KBJ_3mZDCohdX0Tu4s8Q0RGepPNAaj1
-X-Proofpoint-GUID: 4KBJ_3mZDCohdX0Tu4s8Q0RGepPNAaj1
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=bTwR5g6i7njH7xachKcA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: WCUp1dtUdv53LeBw_9GsL0_vxApb9n7D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEzMiBTYWx0ZWRfX5Usn4+I1O7TA
+ rnZLcJo+5+GmDR13hUj0JWYbDFGWj6WzCOcJanAe22/OwSQxFZJJM7nTxFUXziuZMESD5MRhtJT
+ F5UgTq+WIUdAyp0l+rmrNd2Ba9FBr1ypsTlYI/75OaaidnGN3/diQYQS1L14pmHJHDNwq2A0gz+
+ muq/kccxjll04QazauE8ur/AVutEkAe0E6ogRMf/vDOiFb1sUIyrGfTxRvHkdpyLAZIejk9Noxr
+ 78tIAvZRz/7pYnz+4tJ2bBH7Dp50qoswNW8suRZtYHBnPNz5uUoHTN4qcJjNiAIjN3KyZ0X2sL3
+ vIBCEoL5WzVKsq54l8He8isUPrtXMQs1QDlYXiHulWa8XozpOJMmkUOuBtMgaDF+x9wnb51yRCi
+ 7rSE76PnOrs+7KVQU52oLBPzCiB4svRHlxCZ+Ly3YDbqHFt/HjF3cACwmsh8pCxYxtPdCTj0ksP
+ yKftRjs1ycwNCO91y0w==
+X-Proofpoint-GUID: WCUp1dtUdv53LeBw_9GsL0_vxApb9n7D
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-18_01,2026-03-17_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603180132
+ spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180132
 
 
-On Tue, 17 Mar 2026 13:19:52 +0100, Alexander Stein wrote:
-> The debug outputs use %d for clock rates resulting in negative clock rate
-> during rate calculation.
+On Fri, 13 Feb 2026 00:58:11 +0100, Danilo Krummrich wrote:
+> imx_clk_scu_init() registers the imx_clk_scu_driver while commonly being
+> called from IMX driver's probe() callbacks.
+> 
+> However, it neither makes sense to register drivers from probe()
+> callbacks of other drivers, nor does the driver core allow registering
+> drivers with a device lock already being held.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] clk: imx: pll14xx: Use unsigned format specifier
-      commit: fca8688a6798f6fee6b86ce0bc39d1cd0b1c8b8a
+[1/1] clk: scu/imx8qxp: do not register driver in probe()
+      commit: 93a6d39e78bfa78b2160621aafbb490e063f12d9
 
 Best regards,
 -- 
