@@ -1,250 +1,219 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013005.outbound.protection.outlook.com [40.107.162.5])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BB036493A
-	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 06:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773815382; cv=fail; b=dYyL9lTagsoxACr6vLoNCyir3gmz9NYrftMERMXExljHeUN5QLqCTb/I5cIlS2sFVbDSqXUT0+Vtd/1J2AGmAbdxx2lLYl3ySwgiCT+BD//5w3qo0Cg0JKJcotiEPjLK/l/PlnbqFfjwcFVXdP7CJl/Ng85ij4zvorb372e/q/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773815382; c=relaxed/simple;
-	bh=4XVQPFVezRwaMGxR4zYguO5QEG314znWL4bv1JyYFpk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RQyMB5l8ShDfP4i7M9COTeCnTjRoR+FrDmYKhsGCjxwCQxgoL6J4yir0AVsuejXn/cKMHtfB2V+NGxspCVb50f4MtB5kLyNADRrjRlYriF+j5hQ1rr8KjkckM6NTEeEkvPQKioc6M1Qey7teK2BHa3/U/4omCeNl5Fy/QMgYWuE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DMCV7M3T; arc=fail smtp.client-ip=40.107.162.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40A62DCF41
+	for <imx@lists.linux.dev>; Wed, 18 Mar 2026 07:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773819218; cv=none; b=hYyOViTQrSd1/XyNZUxADKVIYKv35awC+9n+xAl2B4t5eWu4XvWOleZkOpxo7/NYP9dlAtRuysXngVBx2I86Ucz+l4c0mqRzJXg3upmEphMgXViDB+JUnmQcH7WzfMRXTdqlJ0KbJhjkgfbSgDbVivrq+TCIlMIRdEW+wWAmfD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773819218; c=relaxed/simple;
+	bh=t5F2TCGPw+OsdAgO3uUtYnUtl5l/McGQbP9PGs58Yyo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F4xJ+cc2gWIEEp7e3X+w/JvgsBMHZ3j1quSa3UrONZYH6ZyU1LWPWVNstv3PgnJu27/0XGI2xBX9Lm7Wcb1tFONlCNKQ2catF6BVl6jl6Z4BT1Rf0IepPJhUdowrpQsHLO6Zts3tW7sQLSab7vcZcwxqv5KBeX339fQHjaoIfW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GzziO0q2; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DMCV7M3T"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KOOVTu+rzdc/+e/jNb1pnnm1UycM/ZBR4UjMf5Q5i/TqhV4tb3EBe0tui1CCHcMM6uuL7eneJyIOQAWXu3IHUYQqt6WoVqbaPyrwPkwQTNpM58LAdP7l7l+OBpS4ptcxYwcG6Zf6y/qA44Lercm6j79KY4SVzfWwIfqw2zURQrVuSikug1yviwJ7VGzN7mZ7zS4c0R02iogI+tU1g0+QcqxOtQsBZxy3JE8LAKVkU4VMd/oYmGaRse1w554jRsf+w1HjIhKyk2AxAuETDgBxUVSYzrnNBLV4NPGARVA7z21leb8ErfPnvRJBeLsr4FF27vbLYpPYn54Qjr7Lm6Ajsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q4iyLqlRgiKMzIL8PVH23ogot3Rl48bpomnFAqYbI7I=;
- b=rzN8kO+IvHEDPtOPQCy1YaUaGAjDv5pwMfW3+sOH6JE7QHmVOAI73+5gFf2IYYIqV9/TDRP+lSApi/xHmHIldpbeMQMeax3DsTHHMhc7h34/viDUtQcXFk+RYl8wi8sxgUGIhMJiRHzMc3hr5TFkZdxoD9/msuuNkdYdYI/Lz5ztf99RJaFf12io79Oayb4f9s56Kx0NIoDuLaQL+Q5hyHEvtN5TxbzykNdpR8XIp6MPFKKqC62nDmtJmxTHmjwuViayv5AmA5iMVz/2vH7o9er1/dGL2L5tRPVrpKlLb3EMS8GY1vBW9/FDCTBx5yAC7sp3E+3CWOU7SALUrbODlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q4iyLqlRgiKMzIL8PVH23ogot3Rl48bpomnFAqYbI7I=;
- b=DMCV7M3ThgBlhwFZmZl6GBayPbCPNRsZmbJVYX5W6YtjBf/z2idLCfeCjBhKY2bvO5V0QKDoLHdQJJVNdksB1jgcvUzh94AklPduFSWeR6qP65l4A1lAII8UEL4NSZTuEzBwADxR3WkQjfNCdFAwwOUnAeGhKdgr3j45IuD87frZy8jZxi4E7vHLghvf4JNjRNdTzowNdiePQQGA5vIVlpfs4icGS3Fax79LU62uMAg2hFoPnIoHf4UdYR8xWwP8rLbVUZRiQ0Pxb5/zjXdjWzEzG/PJhzig2I+PhNhMBNqyiBRSYBsXN8nuR+SyhwW6fUTmjcvYhKgyXwtkUQDRdQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by GVXPR04MB10706.eurprd04.prod.outlook.com
- (2603:10a6:150:219::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 06:29:35 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%5]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
- 06:29:36 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de,
-	Frank.Li@nxp.com,
-	bhelgaas@google.com,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GzziO0q2"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773819213; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=iWphu+L5zUeNeeTpm0magbZ/yJ23C4KHG95YHYtp+NM=;
+	b=GzziO0q2DWiJWSjLe1i7IXuHgmoAJwH38yHsCKejVKlqFPrZB9PGrWCBA7R7e/lXzOspsmzJws24MEPCa3JLID5fGGxQLXAZyiIwnjeioI6KhGoZW4esDo/ZQeWx+Bztct575MkGoESCeZbwU0mvR/tGCAx6yjt64/myLqG0LWQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0X.DZlmH_1773819210;
+Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X.DZlmH_1773819210 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 18 Mar 2026 15:33:31 +0800
+From: Wen Gu <guwen@linux.alibaba.com>
+To: tglx@kernel.org,
+	tglx@linutronix.de,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	jstultz@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	daniel.lezcano@kernel.org,
+	sboyd@kernel.org
+Cc: vladimir.oltean@nxp.com,
+	wei.fang@nxp.com,
+	xiaoning.wang@nxp.com,
+	jonathan.lemon@gmail.com,
+	vadim.fedorenko@linux.dev,
+	yangbo.lu@nxp.com,
+	svens@linux.ibm.com,
+	dwmw2@infradead.org,
+	nick.shi@broadcom.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-fpga@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-s390@vger.kernel.org,
+	dust.li@linux.alibaba.com,
+	xuanzhuo@linux.alibaba.com,
 	mani@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V9 13/13] arm64: dts: imx95: Add Root Port node and PERST property
-Date: Wed, 18 Mar 2026 14:29:16 +0800
-Message-Id: <20260318062916.2747472-14-sherry.sun@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20260318062916.2747472-1-sherry.sun@nxp.com>
-References: <20260318062916.2747472-1-sherry.sun@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0011.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::19) To VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13)
+	imran.shaik@oss.qualcomm.com,
+	taniya.das@oss.qualcomm.com
+Subject: [PATCH 0/2] ptp: split non-NIC PHC drivers into the clock/timekeeping maintenance domain
+Date: Wed, 18 Mar 2026 15:33:28 +0800
+Message-Id: <20260318073330.115808-1-guwen@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR04MB12114:EE_|GVXPR04MB10706:EE_
-X-MS-Office365-Filtering-Correlation-Id: a81bec84-85fc-48f0-bcf0-08de84b7b99d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|52116014|1800799024|7416014|376014|921020|38350700014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	462w/5f7hn7j0t+34V8mbLU7qskoXpaZ+NOv1ZjhZRsOMHfJz+O4QISL9dy6Tj3vKKWtmoAPmVh7/0FSU80YHgp6vUEVzyukGjP48FsAcFrHtkMIa/p2lRAL/60XJtb3x6MMIyeYlL4oOa9HGtAo/s3iedf/dEg9Kt+z4QyNwo8cDP1yiejVmUq4ZgzklJAvVU+MMedj/gVFbiZK1TPU4MHrYtaA2n0SN1yP10SiRtcASWJQSSO67L5OacH4NdhbcgjWE6xw80g+utys6Rs+XArii+oB/gmd9NMPn1C431hEP7jUMuSvcpZXyCnSeG7oVQqMicuYg3NtZ7DIz4UiZS/m2l7u49UJKyB9Lm+EP0RYcbGepHFY5miQW+CFEF8MxV7jZcVukV6LMoykh2CjOsDkCfmpRwSuSX1A8346LRRH+135oNPzeTKSuKWVy6Kugeaq/XyezLNdRjUWRO9pLyg0XE5F0hnl9hFN6P6JcnoEktN8ACJk435i7IkMRwk5+xSvC87sAJKQHsLn3l9gVNdTMfmzfuUBaDH9OIn+M3e3rmld28tvGas10QnXpKSvS4jI7EE42lSLAA1AniM5rbIJQM5gOdLaIDY5RmVEK4RmZ9zsxaOLGl2FBr3WPwh4A6Ancy2UbeqVpfV5epQRg4b/fXJfFbiepJ2BTkH0hSU4evS+lRX9FCmVKBpubHkJiyAgGzPeYlZTvK1ulBq/rg4dRZSGfzn3x9W1gcmChRCq7kb0PmNKnfNeqaOVsaN4CHthd7Y8WX0PPV8aXAZ4Xe0wNAFhmLRX59mfvnihruX2ol4qOMCKhGfLKaTZLxvL
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(1800799024)(7416014)(376014)(921020)(38350700014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3+Ndwm/mN6PJiNQWqZTFaJzB2mVy6nkphMHoew3qR15ptF4yHCDfs5j9mNp4?=
- =?us-ascii?Q?vryW/UqD/u0tsXbakVFXFn2DwY8tHWkoG0QncD2ucop/O3hPdWcC87tMhsE+?=
- =?us-ascii?Q?1ZjMy4JwXSTuL5p/g9ZoE68a5VLkIWWFU05ut6+w7Uwtjb6NpxgE/GKgU8d3?=
- =?us-ascii?Q?C9zEq7Dx5Evcr1Z1xiFuOUab9ehKyI9dH9mA1OqA1/iK8n/PJGROC26I2D86?=
- =?us-ascii?Q?X+jPMQvQnk0dWJ7kvwphfp8AdU4oawuKWJ65yTWnbsMvUrp8RYoTEwuPhw6B?=
- =?us-ascii?Q?JHxu4sw62uB8MEIljPeLbw45oPRudvgQVJqIl7sm74RNFNJEf7+rxv2VS9p5?=
- =?us-ascii?Q?0FTR/7S0PS6ETfr7TT3t9LlNm7Xxv8P6OPysbPE3kpH69pXYK67t6NU1qEd1?=
- =?us-ascii?Q?5BfTUR2rIvwSewuSyGOxCFTQdlGpnffQjG1GSjAWUOUlnVkRoClHbiW1QXPh?=
- =?us-ascii?Q?iSU/IzO51e0PerKg0ZLCbxgVp/RRoZPA73I/yGc9DUnL7i0Ju6vvz3skShSo?=
- =?us-ascii?Q?nX3hF9YxyCrdw/RJz5Ekvp+4ITQ6884WkI7DZgp+hSz3pgD9mwvJnHeGPEEm?=
- =?us-ascii?Q?ggADMSkdB9pAWUs5DTBxLcaJRy6i2Or3qgvnJvxAjHymL+71cXkmXe4hCsWZ?=
- =?us-ascii?Q?iCRqh07A/AqNR5Rdb49hIC6029deYrM1cKYooM22aH0uCAlGnO6ZO/doGyqz?=
- =?us-ascii?Q?Wnk6h0nfjbkjAC/aULDelmdsRuiV3cxgZPIHDCWE786Q+YBWEbTtPMC0F7IE?=
- =?us-ascii?Q?MRIT3Xhq6iFyKZiQKlvATTd1OdPws6ditVofjxG3pmuww8CCzOFvanrkd1JL?=
- =?us-ascii?Q?yo7YAdonsqfpguNn+g8P3ZXUt0UwKZYIcBXfCrbeW9PNDdi2VB5VogufC9qD?=
- =?us-ascii?Q?36zTiIbna79QqBpbwwoKm4iaTZWBAI6lYVnS70XsONV5GuuM1lyTYWu1BArS?=
- =?us-ascii?Q?KCpdpVLleePI0wrdh6lRJgAFPvPq1UpAQ3DH3tghOHsZfugSo6NrDXJfbITg?=
- =?us-ascii?Q?knbF4fxeltbehlq6iT8mwaHjtTLVRpX0h2nwRHFCArhf/+KcSIkKscYrZ3Nu?=
- =?us-ascii?Q?6kmYEu584yUZACzkkhWA1QVxNZWpQzusWPglcSkaIM4pAQJ7AQYeAq75ZVGk?=
- =?us-ascii?Q?iTyp+uwuuj31ObJIPFDLUYWUs1wo3ta5d3YkP00m6sjdA+SKkbNOVxySjizt?=
- =?us-ascii?Q?DHZaL8OdPTndRh8Rs4D7gkIVO3/MLAgIjiweiGj3ZFSNLdt3aOx6+9WTCmt/?=
- =?us-ascii?Q?HdFhL/DebHW8V2erQ5elMqoDhxwlY4AlTgAKDD4DO/d8Q2JdzrSbNmjDkQdp?=
- =?us-ascii?Q?W7Uxz4hZpGkISXMeDqpG5uCxmFSMs1EHiH1/0G8iJDXupv0R9dLgIU72ZLuZ?=
- =?us-ascii?Q?NJK3seIdTOXiLFTKtp3duKY39lmSu6UXQo2FkslrDqUC6MfgmG3XHuahRa13?=
- =?us-ascii?Q?CldpsSxNqG4W9BZWxevMyYAVbt0s2YXXjhnAc6LHpMByPm8bKdF0sK9CRtUn?=
- =?us-ascii?Q?gK85vTAeqFuNaX9w4jqJ2uTWGvzWI3Mny6VFjp8gs+9i8VCf0nBZ3rmoLosq?=
- =?us-ascii?Q?K+UWz2nBVd/U0l8ybilJiE3SeR+6RH3tszz6IWntqjaSMXtHXApAieFe+nCp?=
- =?us-ascii?Q?FfPCbW0I3KrvPHLWvhnXuGsz6OAmO7jdu1SI5g0TUWDr7bG5+XFIIGWVPaoX?=
- =?us-ascii?Q?0Y62m/4ErAAXgiNw+D1midxzBi/IIhjIfGV6CTSoDFlhaLimKLKpCE2VulfY?=
- =?us-ascii?Q?YJeI1g7YCA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a81bec84-85fc-48f0-bcf0-08de84b7b99d
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 06:29:36.2549
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sTov6/ubk/vuEoSOp6M89Q27mALWAFBdvuFafct0kQNSQvZ5BrKMm4r6gG60T6oZ6p4pql0nYOPxiiTt+84X9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10706
+Content-Transfer-Encoding: 8bit
 
-Since describing the PCIe PERST# property under Host Bridge node is now
-deprecated, it is recommended to add it to the Root Port node, so
-creating the Root Port node and add the reset-gpios property in Root
-Port.
+Hi all,
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
----
- .../boot/dts/freescale/imx95-15x15-evk.dts    |  5 +++++
- .../boot/dts/freescale/imx95-19x19-evk.dts    | 10 +++++++++
- arch/arm64/boot/dts/freescale/imx95.dtsi      | 22 +++++++++++++++++++
- 3 files changed, 37 insertions(+)
+This series follows the discussion in RFC v1 and RFC v2 [1-2].
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-index afd89ce3cc5b..7ff758e25de8 100644
---- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
-@@ -553,6 +553,7 @@ &netcmix_blk_ctrl {
- &pcie0 {
- 	pinctrl-0 = <&pinctrl_pcie0>;
- 	pinctrl-names = "default";
-+	/* This property is deprecated, use reset-gpios from the Root Port node. */
- 	reset-gpio = <&gpio5 13 GPIO_ACTIVE_LOW>;
- 	vpcie-supply = <&reg_m2_pwr>;
- 	vpcie3v3aux-supply = <&reg_m2_pwr>;
-@@ -567,6 +568,10 @@ &pcie0_ep {
- 	status = "disabled";
- };
- 
-+&pcie0_port0 {
-+	reset-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
-+};
-+
- &sai1 {
- 	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
- 			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
-diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-index 041fd838fabb..6f193cf04119 100644
---- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-@@ -540,6 +540,7 @@ &netc_timer {
- &pcie0 {
- 	pinctrl-0 = <&pinctrl_pcie0>;
- 	pinctrl-names = "default";
-+	/* This property is deprecated, use reset-gpios from the Root Port node. */
- 	reset-gpio = <&i2c7_pcal6524 5 GPIO_ACTIVE_LOW>;
- 	vpcie-supply = <&reg_pcie0>;
- 	vpcie3v3aux-supply = <&reg_pcie0>;
-@@ -554,9 +555,14 @@ &pcie0_ep {
- 	status = "disabled";
- };
- 
-+&pcie0_port0 {
-+	reset-gpios = <&i2c7_pcal6524 5 GPIO_ACTIVE_LOW>;
-+};
-+
- &pcie1 {
- 	pinctrl-0 = <&pinctrl_pcie1>;
- 	pinctrl-names = "default";
-+	/* This property is deprecated, use reset-gpios from the Root Port node. */
- 	reset-gpio = <&i2c7_pcal6524 16 GPIO_ACTIVE_LOW>;
- 	vpcie-supply = <&reg_slot_pwr>;
- 	vpcie3v3aux-supply = <&reg_slot_pwr>;
-@@ -570,6 +576,10 @@ &pcie1_ep {
- 	status = "disabled";
- };
- 
-+&pcie1_port0 {
-+	reset-gpios = <&i2c7_pcal6524 16 GPIO_ACTIVE_LOW>;
-+};
-+
- &sai1 {
- 	#sound-dai-cells = <0>;
- 	pinctrl-names = "default";
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 5f61866e9df9..752236afce11 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1890,6 +1890,17 @@ pcie0: pcie@4c300000 {
- 			iommu-map-mask = <0x1ff>;
- 			fsl,max-link-speed = <3>;
- 			status = "disabled";
-+
-+			pcie0_port0: pcie@0 {
-+				compatible = "pciclass,0604";
-+				device_type = "pci";
-+				reg = <0x0 0x0 0x0 0x0 0x0>;
-+				bus-range = <0x01 0xff>;
-+
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				ranges;
-+			};
- 		};
- 
- 		pcie0_ep: pcie-ep@4c300000 {
-@@ -1967,6 +1978,17 @@ pcie1: pcie@4c380000 {
- 			iommu-map-mask = <0x1ff>;
- 			fsl,max-link-speed = <3>;
- 			status = "disabled";
-+
-+			pcie1_port0: pcie@0 {
-+				compatible = "pciclass,0604";
-+				device_type = "pci";
-+				reg = <0x0 0x0 0x0 0x0 0x0>;
-+				bus-range = <0x01 0xff>;
-+
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				ranges;
-+			};
- 		};
- 
- 		pcie1_ep: pcie-ep@4c380000 {
+
+# Background
+
+The PTP Hardware Clock (PHC) interface (/dev/ptpX and the standard PTP_*
+ioctls) was originally introduced for IEEE 1588 / network oriented clock
+drivers. Over time, it has also become a common userspace API for many non-NIC
+high-precision clock implementations (virtualization/platform/architecture
+provided clocks) [3-7], and more are expected to appear [8-9].
+
+During the review of these incoming non IEEE 1588 based PHC drivers, concerns
+were raised that such "non-NIC" clocks may not be a good fit for the netdev
+maintainership model [10], where PTP/PHC drivers are currently maintained.
+This leaves an unclear upstream home and maintainership model for this class
+of drivers.
+
+
+# Proposal
+
+This series proposes moving PHC drivers that expose a high-precision clock to
+userspace via the existing PTP interface (/dev/ptpX + standard PTP_* ioctls),
+but are not tied to the traditional NIC/IEEE 1588 packet timestamping
+pipeline, out of the netdev maintenance domain and into the clock/timekeeping
+maintenance domain.
+
+As discussed in [1-2], this series makes the separation explicit by splitting
+drivers/ptp/ into the following groups. This structure provides clearer
+ownership and long-term maintenance boundaries:
+
+  - drivers/ptp/          : PTP core infrastructure and userspace ABI
+                            (ptp_clock.c, ptp_chardev.c, ptp_sysfs.c,
+                             ptp_vclock.c, etc.) remain here.
+
+  - drivers/ptp/ieee1588/ : network / IEEE 1588 oriented PTP drivers.
+
+  - drivers/ptp/emulated/ : non IEEE 1588 PTP drivers. They are typically
+                            platform/architecture/virtualization/special
+                            hardware provided high-precision time sources.
+
+Patch 1 performs the refactor: move drivers and split Kconfig/Makefiles
+accordingly, without intended functional changes.
+
+Patch 2 updates MAINTAINERS to match the new layout and adds a dedicated entry
+for drivers/ptp/emulated/, moving review and ownership routing for this class
+of drivers away from the netdev maintainership.
+
+No userspace ABI changes are intended, this is a refactor and maintenance
+metadata update only.
+
+
+# Changes since RFC v2:
+
+- Keep ptp_ocp under the IEEE1588/network-oriented PTP drivers as suggested
+  by Jakub. 
+
+- Following the model used by NTP related code, this series lists tip.git
+  (timers/core) as the integration tree for emulated PTP clocks in the
+  MAINTAINERS entry. Guidance from clock/timekeeping maintainers
+  (Thomas Gleixner, John Stultz, Anna-Maria Behnsen, Frederic Weisbecker,
+  Daniel Lezcano, Stephen Boyd) on whether this is the appropriate workflow
+  for this class of drivers would be appreciated.
+
+- Continue listing ourselves as maintainers for now as a fallback contact
+  point. In the long term it would be preferable for this area to be
+  maintained by clock/timekeeping experts, and suggestions are welcome.
+
+
+Thanks for any input.
+
+Regards.
+
+[1] https://lore.kernel.org/all/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com/
+[2] https://lore.kernel.org/all/20260227081934.96865-1-guwen@linux.alibaba.com/
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a0e136d436ded817c0aade72efdefa56a00b4e5e
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7d10001e20e46ad6ad95622164686bc2cbfc9802
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2d7de7a3010d713fb89b7ba99e6fdc14475ad106
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3716a49a81ba19dda7202633a68b28564ba95eb5
+[7] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9a17125a18f9ae1e1233a8e2d919059445b9d6fd
+[8] https://lore.kernel.org/netdev/20251030121314.56729-1-guwen@linux.alibaba.com/
+[9] https://lore.kernel.org/mhi/20250818-tsc_time_sync-v1-0-2747710693ba@oss.qualcomm.com/
+[10] https://lore.kernel.org/netdev/20251127083610.6b66a728@kernel.org/
+
+Wen Gu (2):
+  ptp: split clock drivers into two subdirectories
+  MAINTAINERS: update PTP maintainer entries after directory split
+
+ MAINTAINERS                                  |  38 ++-
+ drivers/ptp/Kconfig                          | 255 ++-----------------
+ drivers/ptp/Makefile                         |  27 +-
+ drivers/ptp/emulated/Kconfig                 |  61 +++++
+ drivers/ptp/emulated/Makefile                |  11 +
+ drivers/ptp/{ => emulated}/ptp_kvm_arm.c     |   0
+ drivers/ptp/{ => emulated}/ptp_kvm_common.c  |   0
+ drivers/ptp/{ => emulated}/ptp_kvm_x86.c     |   0
+ drivers/ptp/{ => emulated}/ptp_s390.c        |   0
+ drivers/ptp/{ => emulated}/ptp_vmclock.c     |   0
+ drivers/ptp/{ => emulated}/ptp_vmw.c         |   0
+ drivers/ptp/ieee1588/Kconfig                 | 179 +++++++++++++
+ drivers/ptp/ieee1588/Makefile                |  16 ++
+ drivers/ptp/{ => ieee1588}/ptp_clockmatrix.c |   0
+ drivers/ptp/{ => ieee1588}/ptp_clockmatrix.h |   0
+ drivers/ptp/{ => ieee1588}/ptp_dfl_tod.c     |   0
+ drivers/ptp/{ => ieee1588}/ptp_dte.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_fc3.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_fc3.h         |   0
+ drivers/ptp/{ => ieee1588}/ptp_idt82p33.c    |   0
+ drivers/ptp/{ => ieee1588}/ptp_idt82p33.h    |   0
+ drivers/ptp/{ => ieee1588}/ptp_ines.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_mock.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_netc.c        |   0
+ drivers/ptp/{ => ieee1588}/ptp_ocp.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_pch.c         |   0
+ drivers/ptp/{ => ieee1588}/ptp_qoriq.c       |   0
+ 27 files changed, 322 insertions(+), 265 deletions(-)
+ create mode 100644 drivers/ptp/emulated/Kconfig
+ create mode 100644 drivers/ptp/emulated/Makefile
+ rename drivers/ptp/{ => emulated}/ptp_kvm_arm.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_common.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_x86.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_s390.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmclock.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmw.c (100%)
+ create mode 100644 drivers/ptp/ieee1588/Kconfig
+ create mode 100644 drivers/ptp/ieee1588/Makefile
+ rename drivers/ptp/{ => ieee1588}/ptp_clockmatrix.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_clockmatrix.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_dfl_tod.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_dte.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_fc3.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_fc3.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_idt82p33.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_idt82p33.h (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_ines.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_mock.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_netc.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_ocp.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_pch.c (100%)
+ rename drivers/ptp/{ => ieee1588}/ptp_qoriq.c (100%)
+
 -- 
-2.37.1
+2.43.5
 
