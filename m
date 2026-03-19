@@ -1,136 +1,71 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111822D0600
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 14:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A823DEADC;
+	Thu, 19 Mar 2026 14:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773931379; cv=none; b=cgLmWP5m0Mj/0r1cjeYAJrgBU9fRboYrOlb5ckqvlTOakqDY2tkw+xqsMR7DRKd2H7JyyuJDVeBhERVZn/njTjv7jl6vDFNQvlHOVsVcsxQgcuwEvBoQIWbj/AjFtIYTJ101JC8GnUd+882i3vFyCFOhFmEicBsB028ZKqFd3YI=
+	t=1773932373; cv=none; b=MWcRPM1X3tp2pQi55A389MgwQvl/2UcuU7H/oQqR6oJsscWE6HgoLRxg31t8AfhU2uz9MjyQXxEW4qRejfFevAFC3iT0A7bMFm+SbZucVIhOnDk7ZpGF5ZqspdXs5d44RFWo8lnpdymjZTHF38+5kAM1h6207hVuNRxBkg+aWJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773931379; c=relaxed/simple;
-	bh=Z6v+tojabDv9reJRrro6SYzGGsf5y9wNxSkAqWhGQVQ=;
+	s=arc-20240116; t=1773932373; c=relaxed/simple;
+	bh=wRKFuj1RBd5OZOCmeqHIDv8olqwZDaGYrjqF4N72VFY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ql3lR3tjTLzvJGA8sa5dbF8TTy07q9ql3QR9mu/Ww2bbCS3SfggyHm8KnGCekYjyHygbx/EkOKiesBBtym/FfUq2Av+1NJsYuMzuU4cjHDLbrSeQ6Eb9olpRGgC0wBfq6A9maizf0kzmfqStxC0SgLKxYqFkY+1+26qtFoyQlhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3EaB-0000ga-PD; Thu, 19 Mar 2026 15:42:43 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3EaB-0015no-0w;
-	Thu, 19 Mar 2026 15:42:43 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id DC6AB5085C9;
-	Thu, 19 Mar 2026 14:42:42 +0000 (UTC)
-Date: Thu, 19 Mar 2026 15:42:42 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>, 
-	Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v2 0/5] can: flexcan: Add NXP S32N79 SoC support
-Message-ID: <20260319-asparagus-taipan-of-sufficiency-fcf4de-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260319094032.427697-1-ciprianmarian.costea@oss.nxp.com>
- <20260319-orca-of-legal-science-88e67d-mkl@pengutronix.de>
- <742c748b-8096-49a3-b1a4-3a8507f6f55d@oss.nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RHlJ8dRZlQMbtveTVnNUfA2nqWwB5Z2gFpisORQWjILR4yQHFNG46SZfesnLqbu4Pn/XPv/1TyZZDg0IuxeLs1yvDh+rz+8GNGId+0tUOPvT9jzynvwCf1QWsoNeR+ev0A89r0MXgUfN3UDB8ZixlBWFSpl66I16PPygNa+J4h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW7rO0Qy; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW7rO0Qy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53334C19424;
+	Thu, 19 Mar 2026 14:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773932372;
+	bh=wRKFuj1RBd5OZOCmeqHIDv8olqwZDaGYrjqF4N72VFY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jW7rO0Qydnm24fZKKcNCk97+5Di3gMM+w16JSsYYW7tDtJp8J3pvi9WBBBzht7Zxh
+	 dNFCYlDNcdV+fZwaxhrxXOFxyAJhHxe+vHCiZdVszjUQ5eoOuoP9OmqFA0zGMVzliZ
+	 h3HPi7AKag3uiE8aF1QXJXkXLsNp0vgEZ+WH7Qmfw4+ljSIfnVFtuMu0/REh97DcxT
+	 7iR6kJkVmbQgIKxp3tA04eOS4QpiNxsJ9oUo+gVw6J6QA+5Mg3ZILbvmV+swM1MKj/
+	 XjUC87ffsuXDpc8EQPT37CLR67gh92yBtV1tpDAr22vxx6BSKO/Joi/klO/asPmBES
+	 zjxeZO8y0oMVw==
+Date: Thu, 19 Mar 2026 14:59:18 +0000
+From: Simon Horman <horms@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: wei.fang@nxp.com, netdev@vger.kernel.org, xiaoning.wang@nxp.com,
+	vladimir.oltean@nxp.com, kuba@kernel.org, davem@davemloft.net,
+	linuxppc-dev@lists.ozlabs.org, krzk+dt@kernel.org, frank.li@nxp.com,
+	claudiu.manoil@nxp.com, chleroy@kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	robh@kernel.org, imx@lists.linux.dev, pabeni@redhat.com,
+	f.fainelli@gmail.com, linux@armlinux.org.uk, edumazet@google.com,
+	conor+dt@kernel.org, andrew+netdev@lunn.ch,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [net-next,13/14] net: dsa: netc: initialize buffer bool table
+ and implement flow-control
+Message-ID: <20260319145918.GF1753385@horms.kernel.org>
+References: <20260316094152.1558671-14-wei.fang@nxp.com>
+ <20260318145452.1898637-2-horms@kernel.org>
+ <3dab3f5b-fb94-4c63-bcfd-aad4268e2ac3@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="x2iosansca2ri4jm"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <742c748b-8096-49a3-b1a4-3a8507f6f55d@oss.nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <3dab3f5b-fb94-4c63-bcfd-aad4268e2ac3@kernel.org>
 
+On Wed, Mar 18, 2026 at 03:56:39PM +0100, Krzysztof Kozlowski wrote:
+> On 18/03/2026 15:54, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > 
+> 
+> Why are you removing the "PATCH" part in the email subject?
+> 
+> This completely messes up with the filters and causes this email to pop
+> up in places it should not.
 
---x2iosansca2ri4jm
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 0/5] can: flexcan: Add NXP S32N79 SoC support
-MIME-Version: 1.0
+Thanks for pointing this out.
 
-On 19.03.2026 16:14:46, Ciprian Marian Costea wrote:
-> > Please also have a look at the AI review:
-> >
-> > https://sashiko.dev/#/patchset/20260318092215.23505-1-ciprianmarian.cos=
-tea%40oss.nxp.com
-> >
-> > Especially on patch#3.
-> >
-> > I think we should split the main IRQ handler into 3 parts, message buff,
-> > bus error and state change.
-
-> Thanks for pointing to the AI review.
->
-> It raises two concerns:
->
-> 1. Duplicate event processing (can be addressed by splitting the handler
-> as you've suggested).
->
-> This is a pre-existing issue affecting S32G2 (NR_IRQ_3 with 4 IRQ lines
-> to the same handler) and MCF5441X (3 IRQ lines on the same handler).
-> I'll include this as a preparatory patch in the next version of the serie=
-s.
-
-Thanks. Until the S32G2 was added multiple IRQ handlers was a niche
-problem. But now it's relevant.
-
-> 2. Concurrent skb_irq_queue access (pre-existing, separate scope)
->
-> The __skb_queue_add_sort() calls on offload->skb_irq_queue are lockless.
-> When the mb and esr handlers run concurrently on different CPUs, both
-> can manipulate the list simultaneously.
-> This is a valid concern, but it's also pre-existing.
->
-> The fix requires changes in CAN core's rx-offload.c rather than in
-> flexcan, so I think it would be better handled in a separate series.
->
-> Would you agree ?
-
-ACK
-
-One option is to make struct can_rx_offload::skb_irq_queue per CPU.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---x2iosansca2ri4jm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabwLYAAKCRDMOmT6rpmt
-0nL/AP4hauOOQHt8J4Raz4k3XL6AkFpJksPkVshPoYgYCYYbHwEA/m2fRk+vD+FQ
-N4xipgWJpMlSE+VrRksDVTDxb+1Acw4=
-=/RY/
------END PGP SIGNATURE-----
-
---x2iosansca2ri4jm--
+I sent this patch using some tooling.
+I'll look into why this happened.
