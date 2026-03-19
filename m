@@ -1,129 +1,84 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D493C945C;
-	Thu, 19 Mar 2026 11:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED093C3C19
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 11:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773919524; cv=none; b=faccmRKlxhwOV4UPKYFwYDInmyHw7RJ7nmpSGvctgwyIyyeys2EREAGJ8wqFPDAprvFvVCKnu+vr9ZH61TY/SpjDGPsK8YSqtGY73GKZTLnqry82bnwQQl0teVzv96kZQEF8O3D8fkBTVp2ODeYcxHm5d7c0ZWLcMyrenVvmOxw=
+	t=1773921255; cv=none; b=GmwJAJBu1WwIpDngTrsYQpBiWNw+eoGz6+/ZCQIK21BZSswEBjVU2fIV4FIDGet1YSdDYvEFf5MlEeqad51t+34Q4qIzv6HLbFVchSWgiiY1xUWfTtrKDksz0CBVfOtYWOXBpb9vY5DxsFIe1AlznBltrnCb3aYuvnD4etR3Kmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773919524; c=relaxed/simple;
-	bh=lERe9hyh2VwBwnC0cv2YVCQqVRdJSlb26qUXaTDhAUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LJMZ2BkeHDLK9w9MfzVk7pxuctS7ehEqVLCHIgPjaqXmUZfRom3CxJLH7TfaI0cJ0W5L1DJ0a5ojyMoSpfaQHb8RFzmds/KIyDAtOAHBCGMBRtaS/5UacHwuKcz+MYNXt7BNyZr22DE8KF8tz0FoYn+BxKc9h/sKb3VL4ZUlJLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=kxGhfK6N; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="kxGhfK6N"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=N+ZmKAtL2vNDqMHgfKrSPjoKgWsbPLWNzvOE/c/drNc=; b=kxGhfK6Nk6P+Z9QrDivEQE5w/v
-	LhHqdWrVYlsxQ7nbHpZCYc3WTKs+GBGGJIiPenyckKh4/AULwWTEEavfMsIOWWMjCMaAK61Hm+lY4
-	cjfqfDbXd01+sD1hox8dzddgsGx2VGOFkj4Y8ItOllUKFdPJAwXBsPu+A3EwoDRr5fkV2K//DKvqp
-	lCs+UW+/hVQjREPgZ1qw7gYEnNYWyM8z0kA4Dz9sdm0KEHdHNpcr7xRqv4oIARd7efjXkA2JpcJsK
-	K1PdxYDYn2VuatF0lFZT5d9z+1GgEknZ175Rc7NuE+uGa9978f5S08FjFhswIoDCZpqmmBJM6+NwC
-	8tPXQGiw==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w3BV2-000Jek-36;
-	Thu, 19 Mar 2026 12:25:13 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w3BV2-000Kr0-0N;
-	Thu, 19 Mar 2026 12:25:12 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- Martin Schmiedel <Martin.Schmiedel@tq-group.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject:
- Re: [PATCH 2/3] arm64: dts: freescale: add initial device tree for
- TQMa93xx/MBa93xxLA-MINI
-Date: Thu, 19 Mar 2026 12:25:11 +0100
-Message-ID: <2259293.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <d67fafc1-4261-4818-8b58-7f3a874613e4@lunn.ch>
-References:
- <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
- <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
- <d67fafc1-4261-4818-8b58-7f3a874613e4@lunn.ch>
+	s=arc-20240116; t=1773921255; c=relaxed/simple;
+	bh=xYK/Vxt+uVywhLIFh8m2CgSQfgWK8Ak/1VpZKfinR5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XDkfhtkVKOcNVreI+gD93HGX+aheS+Ms/zuj57lXXutZiQ9uHIapuD4sXr3JyuggyAAxZHG3StqBIRrowA/iTR8jktUUdIzzYRuMB4cne+oPmJJ8D5pDqXIhfVMPYwt5K4bMR4lg1w5KwDDAroxpWGbiuqoIdFQpvvwOCA2PDLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id 10210C3EEAC9;
+	Thu, 19 Mar 2026 12:45:41 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 10210C3EEAC9
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Frank Li
+ <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: i.MX8MP: Fix HDMI LCDIF FIFO underruns
+Sender: khalasa@piap.pl
+Date: Thu, 19 Mar 2026 12:45:40 +0100
+Message-ID: <m3ms04caaj.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27945/Thu Mar 19 07:24:38 2026)
 
-Hi Andrew,
+Running (and terminating) Weston on i.MX8MP sometimes produced black
+or grey screens. The LCDIF3 INT_STATUS_D0 register showed a FIFO underrun:
 
-Am Mittwoch, 18. M=E4rz 2026, 15:49:38 CET schrieb Andrew Lunn:
-> On Tue, Mar 17, 2026 at 12:17:01PM +0100, Alexander Stein wrote:
-> > +	mdio {
-> > +		compatible =3D "snps,dwmac-mdio";
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <0>;
-> > +
-> > +		ethphy_eqos: ethernet-phy@0 {
-> > +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> > +			reg =3D <0>;
-> > +			pinctrl-names =3D "default";
-> > +			pinctrl-0 =3D <&pinctrl_eqos_phy>;
-> > +			interrupt-parent =3D <&gpio3>;
-> > +			interrupts =3D <26 IRQ_TYPE_EDGE_FALLING>;
->=20
-> Hi Alexander
->=20
-> Haven't we been here before? EDGE interrupts are generally wrong for
-> PHYs.
+32FC6024: 1000002
 
-Whoops. Sorry, this slipped in from the downstream kernel. Will fix that.
+The PANIC0_THRES register was set to:
 
-> > +			reset-gpios =3D <&expander0 0 GPIO_ACTIVE_LOW>;
-> > +			reset-assert-us =3D <500000>;
-> > +			reset-deassert-us =3D <50000>;
-> > +			enet-phy-lane-no-swap;
-> > +			ti,rx-internal-delay =3D <DP83867_RGMIIDCTL_2_25_NS>;
-> > +			ti,tx-internal-delay =3D <DP83867_RGMIIDCTL_2_25_NS>;
-> > +			ti,fifo-depth =3D <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-> > +			ti,dp83867-rxctrl-strap-quirk;
-> > +			ti,clk-output-sel =3D <DP83867_CLK_O_SEL_OFF>;
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&fec {
-> > +	pinctrl-names =3D "default";
-> > +	pinctrl-0 =3D <&pinctrl_fec>;
-> > +	phy-mode =3D "rgmii-id";
-> > +	phy-handle =3D <&ethphy_fec>;
-> > +	fsl,magic-packet;
->=20
-> Has WoL been tested?
+32FC6238:  AA0154
 
-Yes, it works for both interfaces. &eqos doesn't need that property though.
+which apparently meant low =3D 2736 bytes (0xAA * 16 + 16), high =3D 5456 b=
+ytes
+(0x154 * 16 + 16).
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+With this patch (based on NXP's driver) the watermarks are only 16 bytes
+higher (register values increased by 1) and the underruns are gone.
 
+Tested on Solidrun Hummingboard Mate with a 1080p60 HDMI display.
 
+Signed-off-by: Krzysztof Ha=C5=82asa <khalasa@piap.pl>
+
+--- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+@@ -353,8 +353,8 @@ static void lcdif_enable_controller(struct lcdif_drm_pr=
+ivate *lcdif)
+ 	u32 reg;
+=20
+ 	/* Set FIFO Panic watermarks, low 1/3, high 2/3 . */
+-	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, 1 * PANIC0_THRES_MAX / 3) |
+-	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, 2 * PANIC0_THRES_MAX / 3),
++	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, DIV_ROUND_UP(1 * PANIC0_THRES_MA=
+X, 3)) |
++	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, DIV_ROUND_UP(2 * PANIC0_THRES_M=
+AX, 3)),
+ 	       lcdif->base + LCDC_V8_PANIC0_THRES);
+=20
+ 	/*
+
+--=20
+Krzysztof "Chris" Ha=C5=82asa
+
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa
