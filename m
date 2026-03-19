@@ -1,96 +1,105 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373533EAC67
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D463EB7FF
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773935988; cv=none; b=AD+X2AqjkfQvDNYH/jhUnmT77/y2tPa0Wzn4gVahRwABMYEjDmvvEdYkKmTLMtoR3IAlCKXqJGBUbVPHqofb+PoJIPKnvZNuZuu08iRaMHzJCDTsOqjbPfNOg4t850Mxgkx0sgjJhLg0pkTDaG6ETIk8f7SEkYmNAwPvfqRj2ZQ=
+	t=1773936046; cv=none; b=a4KWz8MB7BkBpLcWTkOTJSHoDug2U/zOddZ/UckwfFf1FG7EZNY7t1CXjmz2qo+3cuC5bRSvSDQq3D0R8/9cWC3Vakt51Esq8CadMLfRNltMcNXTI5RVtmDuNTL1ghirpMEEw/x1tUbRqXJf91XA0REFx8ZelMPrSgcqw+vCV7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773935988; c=relaxed/simple;
-	bh=ZIbL8O3aZl5ul6YYE2WhB6DNFvoF5FLE6NgalzEmeKE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iV8GFx4RSB8VNaXGAx9A33v/O9dO/3hEAvNYGsqP+LiPy2qV5KIS99sMO2UYsxAF/qNxgfmUTpQp4RHRx4o/BgWWq7Fjja2isW/WcjGGD8B28Z7A15dUZ5ThbLAM4vVywBmvke1ZrsLGS9cSQOSTWoQsV1tGTOxJ5Pwsar5B210=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=gdFgbrAo; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1773936046; c=relaxed/simple;
+	bh=YU4rvkgh97p9odQ7CVIxch+Qex3dGL72dN9hqAFelpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZYzc2oTcHtc2+W4MIPuQIUUAvU1rKaJoQSNYjt2POoXzCgHnw2k6RrghcrMFNsWjgqgHlDsy6KmMtRdv9GDdc7DJ34cdsPz+ic8xf/pA0XIUkPS9s3Kw34F53339E8KgjwwQXs69uva+S1e9FtyO1de4R9hvu+/eThtnpvVFmZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmZ3Mrzq; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="gdFgbrAo"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id AB7ADA1F50;
-	Thu, 19 Mar 2026 16:59:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=IIVPZ8hHZTMlGdVC1NhCotK5Ln5lWFWOjoay+zBfjxM=; b=
-	gdFgbrAoXJzIWTJ4zcwXiGK1MpldNHCafm5jGTfYjeOlXgYzrI8GB52esmqjoHG8
-	3ssWuOH1AZosk81LIUAknSneePV1rHZyjJdMGPk4wg8IXLAw+kVwQbE9nAGz20u/
-	CWzQSOrGUwdKQUuV6SJzUB38Zum8HXd/ZfJC52t8KMLQFOiG7Tn23PrCH2ZMCms5
-	7t33nsQe7H4vJixOqaNqoDr1JcavkPanf4Yx2HHkdsFMMkWYloDUGRKORQYJk5DU
-	Zv62pZm/liEbTiOPjuUmCRJunhnN6fgIXtexTqqA8p6zh5Wal9hI+kEi+dRU/EKA
-	nYVUkLsQOPer/fvJB0FKpYTbQoQ82v97dvUyAJFz636+hOe4ms4FY14JS+uFEsos
-	mCJSVMtbIIwXpK1rgXlnP2eotFvGkjHk74KhS/xmoMMhgfxkWcFMMYTHLe42tKJK
-	5DueDv8+N+BVXq8oACd4cqVKJ0L3uG6iYPYlIqBZPlStNsC6KKavmF25ctzv1Hue
-	n7aYsIDGXfwyHoxHG0DX47q/qGMvMp96OWYXsZm96WDMA99iP22HXPagCkUJDJPK
-	aHi/0VFkRvIE05nEnEjiuP1EYuomaYs+1F5c9J61G5La0NylRmoi/x+vf4IVIz01
-	TsduB3US2HBv3JqFpsF++ULb8EYQOseRNGYoLO+38xk=
-From: Buday Csaba <buday.csaba@prolan.hu>
-To: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>, =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?=
-	<bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Buday Csaba <buday.csaba@prolan.hu>
-Subject: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs interface
-Date: Thu, 19 Mar 2026 16:59:34 +0100
-Message-ID: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmZ3Mrzq"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43b4121c40aso753168f8f.0
+        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 09:00:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773936044; x=1774540844; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uks/f97JENhrvnsThvZhzUZdvgjh3JvnUSmJzAdelLo=;
+        b=CmZ3Mrzq652FYOcpgKAeClreU96gGLt3mcR1bs5rdv/xu2/MXedHd1CbYTQKNCYk0P
+         aL7KpQpu8HfvUmYR8tV6wi/TBI/k3xuz8Y57Dkc1PfslRKzRdPxhyKrSo6e5M+AKHe4y
+         RW6Flm020wIyWI1QHJZS802bj/y6eX9dMMj9AgfrnyDrUg/nqn9E1MjHawLkEDk9uEgu
+         N8I3H2frwnGh0SI0Mbzsv27/LBangTr3YwpX5UOd71mE5ZQzB1t2ZrZxfJgDSuHr55HE
+         wkfWmIjItQVttwp+gwdf0BruNC2f2j5Ly4Liw5y1uNe8XWfO8xq/71bLIoQkqsKYRwhF
+         joQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773936044; x=1774540844;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uks/f97JENhrvnsThvZhzUZdvgjh3JvnUSmJzAdelLo=;
+        b=d7T7HuTeQU5Bj5qla1BLEhOZQSP/i8LB5VWQxdtJ05pNxFBUb4ghMWWsc6lTs0Mxzb
+         M14sS4SOqMYu+fVG2GqFp/C11heQ8qX8E63Z9lj5DvqbtNCS1HYL6d1KNk3l95x195E1
+         HR8VapSl7PhrZRSB2+DNiSGKuLeT+UY0h2/liSq/KWLRXNV5pTVkx9jS4p4WrAJ9YH9z
+         656fJs9EjZ1fCoVY5SymOyfXMksw5JKNIiOn+gIfCQJWq/vJy9kMsBX6iJDvAPZgyMdK
+         sui8RKGgZbtq2P1hEkPygZwvPHOeZdaTY5ZTQbC/VOB0Md7AnZJCGFFwAbHhLs635yve
+         PCbA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3IxsJlVXISJmTuptfxqRjwMVga7W6r7UwYI9BVa2AJA7uu0SS9V13w99fhFfsMcFRMYs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyuYT9Vr5xqG7jK6JDAQ2wHDm8ECTvHaIHzCUV82zIduOxNHnnl
+	dIY3y+JjclLq42vTXZkdGcSDPLSbuZkl8B3RpqG7+bn/ueglWP/JH7xV
+X-Gm-Gg: ATEYQzxcIqKjphCqYGvqjVG43RcmT928Qq3O94jA3/GMTI8mkp+EEMQHCbQEMj9eRK2
+	lVkHLLJ8nqx3kGZ71/T/YY+DngEd07xyZAXpn5PpkHetkcq46Siycdfko51g7btWqjvPdKo5Hzd
+	yeYYPuCRHo6Vhi6BEJgviWTa4ttK1c/VL0cwTk2+c/hu9Godjx5lAtC+VZKCdivREs6iwCfQNQC
+	cb4I4gz+JrWYr/71NKoMmOdcGNPwXB30NfLlP6qX5ZtOueQ6i2/vhNLOA4npKx4Venb+WcyJHXk
+	GNyl1vjQDe/3g6F225r7yLUVnMZgLvXA2KWgxVmss8DzlrbHzegHZHSDqx1u2r9EuFHIX0sdnRx
+	v9ByIdTOPc5DafaMDaZN4GtZf2IVhOmjK410E9L0dVHr+zL5ZuFsnz7QqbcxoJ2QuTx15nL7Pdz
+	aG/5ab1rh7Jr+eJSz1J4/GDgxozVdBfh6zXq9DNeA/qEEEWUIF/7TdfX550OIhy5tlqGfmcj7XI
+	EfukgxHSbV82YXN1uEAlyV8AOkT3UqYrAKNdVsD7JIG5kQ=
+X-Received: by 2002:a5d:5f82:0:b0:43b:45d1:f44f with SMTP id ffacd0b85a97d-43b527c89fbmr14188968f8f.41.1773936043147;
+        Thu, 19 Mar 2026 09:00:43 -0700 (PDT)
+Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b5189964esm16332268f8f.29.2026.03.19.09.00.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 09:00:42 -0700 (PDT)
+Date: Thu, 19 Mar 2026 17:00:40 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v3 03/11] arm64: dts: freescale: imx8mm-var-som: Update
+ FEC support with MaxLinear PHY
+Message-ID: <abwdqN23q9Kx4V-D@Lord-Beerus.station>
+References: <cover.1772898346.git.stefano.radaelli21@gmail.com>
+ <24d31e0ca71c9b2dcb64d39117a8501d85cf945f.1772898346.git.stefano.radaelli21@gmail.com>
+ <abQzAM1cxsFJoTJ-@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1773935977;VERSION=8008;MC=505402051;ID=100136;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD5150627D6A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abQzAM1cxsFJoTJ-@lizhi-Precision-Tower-5810>
 
-When the PPS channel configuration was implemented, the number of
-supported periodic outputs (`n_per_out`) was left at 1.
+Hi Frank
 
-This prohibits using channels 1..3 from the sysfs interface, since
-period_store() rejects channel numbers greater than `n_per_out`.
+On Fri, Mar 13, 2026 at 11:53:36AM -0400, Frank Li wrote:
+> On Sat, Mar 07, 2026 at 04:54:39PM +0100, Stefano Radaelli wrote:
+> 
+> Any enet referent to this gpio node, otherwise can't guarantee device
+> probe order, maybe enet driver probe before gpio. rst is critcial signal.
+> 
 
-Fix by increasing `n_per_out` to the number of channels supported
-by the hardware.
+Thanks for pointing this out.
 
-Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That was just a leftover GPIO hog and not actually used on i.MX8MM.
+It will be removed in the next revision.
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 4b7bad9a485d..1a7aa280e7f6 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--	fep->ptp_caps.n_per_out = 1;
-+	fep->ptp_caps.n_per_out = 4;
- 	fep->ptp_caps.n_pins = 0;
- 	fep->ptp_caps.pps = 1;
- 	fep->ptp_caps.adjfine = fec_ptp_adjfine;
-
-base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
--- 
-2.39.5
-
-
+Best regards,
+Stefano
