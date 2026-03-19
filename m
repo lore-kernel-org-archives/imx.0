@@ -1,75 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5493ECBE3;
-	Thu, 19 Mar 2026 16:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20123EE1DB
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773938852; cv=none; b=M4emR2ItV7VBTOPaKt366hSUB4JktjqMGZ6Lf2FfejknAnf3VVHJMPY7QYgZ5QufjAdr0nn2oXJaX6/5R+yeWReeeQbmKQHn3cKKeX7ELSL2mzRmjpVAD4HGjmbzJQuu93o62Rv+8HEc8ozmgVh98qEwcpcdKETzx6ETTfYIghU=
+	t=1773939363; cv=none; b=fuDV4+4+QZrF5cguIYmS/YTYQLl0on2mDpV7ISbbNx/vzwnPmKo6xpalDtQN6AzydM1HSeyroVKfXgnCEbd2vLU0T/GYMH4r46QFbe99w91ef8xBHx44PB2RPlaxapoIfZvOTJQfZnQX753eju3Wueuzfzn5KlK8W4twVYzEr1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773938852; c=relaxed/simple;
-	bh=Q9bmMfFx9VaqawS+DAi/VMX7Ox1YGfZETdSY0ka144s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RzMUElKkciMtuOyG4M1cELaCLNTNgzhqLOQm2lwjB/etz9flLdnBOCmLjH5iB1PhZ2ZU40EuOrWJgtBfUzaPpTiqmsx3rNVd+WF3i5HBe4x+xkZjqDMl/TelMyobgeL0wSrvrmARCAkdhGBKIy3lGksr/z8oR4yrmMeKmdmxncY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6O09R++; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6O09R++"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548C6C19425;
-	Thu, 19 Mar 2026 16:47:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773938852;
-	bh=Q9bmMfFx9VaqawS+DAi/VMX7Ox1YGfZETdSY0ka144s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O6O09R++VeRZeBLvlRglepXSbWOnsIhuBkcGpNhTMB1/MxNyYTeJapekjDaW9ym/U
-	 g3WiEdfd8R7uBK2Xz+c723Mt4iJoIhcaf2D0KORmNFiAcBex9S3LDRiAatMQMSmEp6
-	 hxCeFN1P2frgIgp4rTTbaO08bJzT3s/ict3CmhuZ7Od9S9bnxl1tk3RYNwiYwtltlO
-	 BmL3gyQPevLioogcVVd92zpTvWC7r9ofVSUz2yQElRmOw+UfqSCYLuP3sXupZcEHPc
-	 D/laaMiHxUOPr3yX1/rh+tkLZh0/blr5EGrrm3OO7RF/31GDgPmVJKMZcumqeUrw2y
-	 q7Y2i0DjnTmwQ==
-Date: Thu, 19 Mar 2026 16:47:27 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com, Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2 1/3] dt-bindings: arm: fsl: add MBa93xxLA-MINI
-Message-ID: <20260319-theater-aspire-8500b91fbdaa@spud>
-References: <20260319125013.2421621-1-alexander.stein@ew.tq-group.com>
- <20260319125013.2421621-2-alexander.stein@ew.tq-group.com>
+	s=arc-20240116; t=1773939363; c=relaxed/simple;
+	bh=cewxigfhr8A62nFh2/tWGpwMAz9fbmcaksUZ7wDWT78=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gIYu/pjwqSngQixofzT2XUb6XvK/TYSGzsysiGV7AmXxGg2JX9QM/kHM9w8kB52TuEpBy7T6sFPR7TipLM8M36u+Dgym83a19FlBmEbT09Qr6OZcGUJe2x7e/cGDZHtnI9JGOp9nAI1+KQi2Fas9kNi/VoXVYiiWfFtkOcgtMkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w3Gf1-000547-Ad; Thu, 19 Mar 2026 17:55:51 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w3Gf0-0016i9-2v;
+	Thu, 19 Mar 2026 17:55:50 +0100
+Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 8AB2650877D;
+	Thu, 19 Mar 2026 16:55:50 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Thu, 19 Mar 2026 17:55:35 +0100
+Subject: [PATCH spi-next v2 01/11] spi: spi-fsl-lpspi: adapt to kernel
+ coding style
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/6QbIyqIGRlgMuc7"
-Content-Disposition: inline
-In-Reply-To: <20260319125013.2421621-2-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-1-02b56c5d44a8@pengutronix.de>
+References: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
+Cc: Marek Vasut <marex@nabladev.com>, linux-spi@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-5154a
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1415; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=cewxigfhr8A62nFh2/tWGpwMAz9fbmcaksUZ7wDWT78=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjco9V53zDzykF/+djlAikzU0/2ci2ONmlveRe7UWPrz
+ Zbue26iHaUsDGJcDLJiiixLf5xQFAh0KO19mTAJZg4rE8gQBi5OAZjIPyZGhp5z9YsMTwdYWDbk
+ K12epenaaMzHtUxC84PzdJt33689ecDwv3L5oYRD+ro6rjwnVweYnc6I/cR7jMvA5t7KtTXxeg7
+ 8LAA=
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
+Adapt the driver to current kernel coding style standards.
 
---/6QbIyqIGRlgMuc7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-fsl-lpspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index b361c1bb3e43..989d0ffddc25 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -112,8 +112,8 @@ struct fsl_lpspi_data {
+ 
+ 	void *rx_buf;
+ 	const void *tx_buf;
+-	void (*tx)(struct fsl_lpspi_data *);
+-	void (*rx)(struct fsl_lpspi_data *);
++	void (*tx)(struct fsl_lpspi_data *fsl_lpspi);
++	void (*rx)(struct fsl_lpspi_data *fsl_lpspi);
+ 
+ 	u32 remain;
+ 	u8 watermark;
+@@ -271,8 +271,9 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+ 		}
+ 
+ 		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
+-	} else
++	} else {
+ 		fsl_lpspi_intctrl(fsl_lpspi, IER_TDIE);
++	}
+ }
+ 
+ static void fsl_lpspi_read_rx_fifo(struct fsl_lpspi_data *fsl_lpspi)
+@@ -348,11 +349,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (config.speed_hz > perclk_rate / 2) {
++	if (config.speed_hz > perclk_rate / 2)
+ 		div = 2;
+-	} else {
++	else
+ 		div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
+-	}
+ 
+ 	for (prescale = 0; prescale <= prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
 
---/6QbIyqIGRlgMuc7
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.53.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabwongAKCRB4tDGHoIJi
-0uTNAPsEyayXseF02444xp1C/jh1jrMtTIiGUoPEhRjgH5ffcwEApfj3NtwQgBqm
-vlSCD93D6v9TigARn+e896cjCGUAoAU=
-=JafL
------END PGP SIGNATURE-----
-
---/6QbIyqIGRlgMuc7--
