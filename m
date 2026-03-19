@@ -1,228 +1,257 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010023.outbound.protection.outlook.com [52.101.84.23])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010063.outbound.protection.outlook.com [52.101.84.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94504376BD0
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 09:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930A63750AE
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 09:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773913630; cv=fail; b=Mi96/wvpEpBdSs+ejg5sHit8p1TtzFQSAk8UN4NfM+pz2y/f9Cz+rHA+dc8wRJCiLRTz+A8rHKLnA4E7JC1Om/PLOowhjhzv1Vw6iqsf0gc3pB2ex8tBdzs8M9u6K+CLsgUlFE26U75Udc+/yYg1cBecbiC96gD7QUnMKBy/gok=
+	t=1773913715; cv=fail; b=Ftph4otFvNjNg1xT1iAk5k8zk8OMrMpHDDmHeHCDHQ1C4SQMgxrmn9kfBvYBHpEc9ORlNRmq0qIcndbf38lerK58OZFLd8zcYyoVDtWMMavPgiuHlbuz1yMUR11gmEhSiuNhZyiW7VMUsx3AzgjJn9z+ai/PmubR5yph9WjSwSI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773913630; c=relaxed/simple;
-	bh=9O5536/fuDH6atmd0pDfBr7JMQaBdFHNOuF7WeroLCI=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=irSgt1yorX9x3+UZO34vh3atmK5rK7OL2yecSfk4ZBu6krqe44bLaLx6QLLJjE8vVqYu4fYlLaYk8fMx+kcdc5ObOL4tHXMuU39syY9sS/C6eXSiFaSwVfkelBpp+Y6ZTigigmXnnZ4lP8AFWdUul0zjdVYaKRCmujdXwWGLoQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kdjUtSaE; arc=fail smtp.client-ip=52.101.84.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1773913715; c=relaxed/simple;
+	bh=jZDdmqHlMQsEOzUwQWsBFwiZqmJ0KP46jOrwwp+3Aws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HeVVYlChz/lGP3AJ72s10bnwqCFOwnGaQwOn5OOV2lOzaQRnu71xegxPnjdKRdREfKPZ3uhfzXdL2UAb/5xVXqaaBs+kkKPbGDSDqNxaIe61xIcyUrlfHj1aBbJJKu/leeDRVFwSeppK5hzLsBEM/SEoa8rIpM6swyWs3DADt1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=hDBfhb92; arc=fail smtp.client-ip=52.101.84.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kdjUtSaE"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="hDBfhb92"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TmoKvRKqjeH8jFuqysRRTeFx7z8jXSa3e8t9yHPqkpuX2GJvUXnVz9WEm+4XUiRtV22jekUOxwD/Nf+Efofluy/EjsyuOEb1dy5c87AP2FfUnxHtMjU1MmOZfX3IJxqPCi8ODbYyD0dKfZRdVO6A1JkRubAX5OU7VBiHBs0v0T/Ei9japBEWZWIK3DKBS0xMDEGKYMFitNqbOOkBwDCVZ8wIQJG3N0toP0mQGlRnBuQLvRkxlFP28xxmwxtVkfaRVACpVVQW4Z56vhvmihXPPpBOMP1bDFzHURSVzTBHXXsgJ6DT+3mBZxxRrJMNMhcd4p2cMcg3wMGiNl99KxF17Q==
+ b=Tr3m8jPs3G3KNhyzj8m5wUlO30XvHAHNy71ZerOnOtm9EdJrZFjQzN5x7Mf8uCEtQm/CFbh8QA0jwZ7FsntiwR734ZdwCJHcP6G+kOraGgtWYYyKGuxLLl9iX3TOMCLjxBFazP4COIT5nuWVNYKub69vkZ04Pv+H+Cr2MfEfOsh0mJKPXFuIHwvbnVbIjTOIlHXY71V16hAcyMAVsy++H6uavAVZLKD/K2aEL6jAS1M97h3Wex4IE+gmKm2q23LK7YTffhIb9aJ1ReJKlYjg3LAGOnu8GD6qEoIuN8YIafWMOZrln4rilGUjAMfHhvmeQpHQNrwYeybK3Iep8yjtZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jNzCP2JxuB2mLh1lsWyKZJTH1zuprYCdaG9e2a/4C8s=;
- b=KNqljs7Y4Ycoayv2vwpJG8JHJ2iHKL9EMdDhFrPvrfKUxFmTt3zTt2VqjvAFSPyPTYCg1wnq/fhr/J/xk4Eww4eBGAKpnnDuTEPtAcUr0SPutzxLC+yYBKze1YvEqDMW/ildnVGqxoFLSebpTcwK89ldto0KpiZbSbP/U3NoOgklSthWgZSEiobh2gf2P6q/ItumyA6G9PSQhBO2xRDpqTje/Doz9HPiR1sG7ylRXUWHUkwuEZdLH1CMOevfErEg8+3tYbFaiWhnDm0Y8xS/golsQya82XkBOl6kqmDpRUGRJud4QK591GPavl9nKyVPY0P9sBI+72A8FBnxu75H+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=F8irBykowPt+uvQoGdqM/C5yPJ/WiG3eDnhOjMuzfnU=;
+ b=VQPOayFfVtzbkWmE1ZRqaZV/Ej3y2pVhGY0HyUYDhR9fP1yEaQwlkLVDEbuD+mIoi3hktlYMZyvI5alICDM6m8iJ/v/fYHeWZbPkrWUi7QO75AIzrJvNcmHuBRiMgSU3bXHtroQ185qfA9PDZqw+qtwq8dEQhcSg4AS4PKz8VTh9DMP7PX3e5iPF0UvlMMmRJvjwa4Us5NYj308wPpVAMprhxTDmJ8jDdava75FaAeiiuJUouKKPOFHAX+6KmqPYbFcO7zNcPSVS8mYeyF1bsLSyh3D5AvkhtgbJjjbGyT19OZ7T2hfWgorjT6r7XcnNmBL63lIlpFwRRgvH5nbwyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=kylinos.cn smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jNzCP2JxuB2mLh1lsWyKZJTH1zuprYCdaG9e2a/4C8s=;
- b=kdjUtSaEc0QzM9z7MCd6uPvyMq87STUNwe8U5cKEWroT+4WY5gMHrXhrXmfRW7zJhhEnKYWUfO5Mspgi7fFDhIMC9HQaviX6lcrwCEYOkjggsi269PdQCcH6Z5Uwj5xSS/b2fuOPD1aUvUEIDJarjPIrUHqts8VdSXdERaPAi9MVHQ1tN7ZKSipJcm4TiXTNS+Vj/q28juRexGVvnvH2An0GfiqWHf5kDmhtStsL8VIGzw7rGVLupogQRae/OWqpyuyxdVHuoYurncPSRWzmPWCLvVAqDwQaI4Y5Nbz8fO8JTaigErTOhyMSzpD3Rwzs7rDX9wEl9kU901G8ILU1Mw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by GV1PR04MB10453.eurprd04.prod.outlook.com (2603:10a6:150:1d2::17) with
+ bh=F8irBykowPt+uvQoGdqM/C5yPJ/WiG3eDnhOjMuzfnU=;
+ b=hDBfhb92AcbQH9dL47ruZVUQqjTu5mNw17TMz0ax31r3FW6OrJVUS7tx4lGYz7WzrgHyLDB3f40rtaHyQ8BWFvwf8bWTUTcnw7MgopGD7LVSTuCKS//fmsPp2uhD/NFxXZL/ELE8RjGHtGuw/4Mzvbs5GfvOAiOUbilaou0SGdAS/oNOkyMOeZEel5Wubi8PjBRIHfcbYpAy+JKHak64b7t3dxB2eRHRq2SQne384TVLADb4xvy6erqjOIDAEUDcIaoSermdKdOYWvSFR3TLFyzwih0rgN7Pg0ZbcFI7DoL6thVs4cMJpuvMRMGrdgVgsaN4KjnoYGaIyMfKuZC6Mg==
+Received: from AS9PR06CA0361.eurprd06.prod.outlook.com (2603:10a6:20b:460::13)
+ by VI0PR10MB9075.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:214::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Thu, 19 Mar
- 2026 09:47:03 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 09:46:55 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-Date: Thu, 19 Mar 2026 17:48:49 +0800
-Subject: [PATCH v4 2/2] usb: typec: tcpci: support setting orientation via
- GPIO
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-support-setting-orientation-use-gpio-v4-2-ab6dfa8610c2@nxp.com>
-References: <20260319-support-setting-orientation-use-gpio-v4-0-ab6dfa8610c2@nxp.com>
-In-Reply-To: <20260319-support-setting-orientation-use-gpio-v4-0-ab6dfa8610c2@nxp.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Li Jun <jun.li@nxp.com>, 
- Badhri Jagan Sridharan <badhri@google.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773913749; l=2652;
- i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
- bh=9O5536/fuDH6atmd0pDfBr7JMQaBdFHNOuF7WeroLCI=;
- b=XNmXWDRNddAVh3KArv39qpkpsUY4WDaxX8UzanMtHUTHeeC0CxRG/GCLb/8fyKkwmA1NV79Ne
- 4BmaYOT0jHXDwdjAO5pdg4uh0us54qEvtvK+OJC0KZEjft2ho2BEQCI
-X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
- pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
-X-ClientProxiedBy: MA5PR01CA0214.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1f3::10) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
+ 2026 09:48:25 +0000
+Received: from AM1PEPF000252DA.eurprd07.prod.outlook.com
+ (2603:10a6:20b:460:cafe::75) by AS9PR06CA0361.outlook.office365.com
+ (2603:10a6:20b:460::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19 via Frontend Transport; Thu,
+ 19 Mar 2026 09:48:25 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AM1PEPF000252DA.mail.protection.outlook.com (10.167.16.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9723.19 via Frontend Transport; Thu, 19 Mar 2026 09:48:23 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 19 Mar
+ 2026 10:50:42 +0100
+Received: from [10.252.1.11] (10.252.1.11) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 19 Mar
+ 2026 10:48:22 +0100
+Message-ID: <e0675843-19a1-42da-a784-c3364deac785@foss.st.com>
+Date: Thu, 19 Mar 2026 10:48:21 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 13/17] spi: stm32: Simplify clock handling with
+ devm_clk_get_enabled()
+To: Pei Xiao <xiaopei01@kylinos.cn>, <linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>, <openbmc@lists.ozlabs.org>,
+	<linux-rockchip@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>, <broonie@kernel.org>,
+	<Frank.Li@nxp.com>
+References: <cover.1773885292.git.xiaopei01@kylinos.cn>
+ <c8259f582596fd08541b94dce5dbb4cae513e295.1773885292.git.xiaopei01@kylinos.cn>
+Content-Language: en-US
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+In-Reply-To: <c8259f582596fd08541b94dce5dbb4cae513e295.1773885292.git.xiaopei01@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GV1PR04MB10453:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ffeb9bf-cfd3-43cd-49e0-08de859c74cb
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DA:EE_|VI0PR10MB9075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20481b7e-945b-46fc-10b8-08de859ca988
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|19092799006|366016|38350700014|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700016|1800799024|921020|22082099003|56012099003|18002099003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	DNIBaDXtOSvLOtHUK9xTZI9GybL60792Rv/pEbxseOKJWYDnf1S21V9f3f8wG5scWJ3hsciOfM0InaC6pKwUcVaMF/1Fh2baGsMKHqIQY5rIbR+EBQEkzccHR/36/8hqHhoIzcBrEgmRFDFiVPG97rSPGA1XnZgPcKa8JmCtqUsO6WBIuKXPeXjmvT5anBxelCp/s1WbSKMxHFhxuNh9dpeRZYYp2OWvuYMvEJC6xPHpIItyVSs1gDkRbR90oV9xmRa8nFpCbux5udjx5eIYarhouWvp+BvJslUT4Yqdj3y36zFud6dXQc3XS9r2LOcJ5UpJzAU5TR+i/wgofFsjSFlY4vYGsPg2ARhKhRHsiEkXvvSBz8mhF62uEy/ACj4esa96uJ+3ar9nSjEadpF9ApEUmIJdLTqqk+OWjj5Leg3fb5hEc4dxYcU7g9j0dFGD6Lj4BB//IDeU6v3F8Ph6ETGPxNMYiizh1Ono3TqDh1DXtfuxxCcOgvIhDvfh6VN5LwzXRi4Y1aJ5rJMzZCcSqDQcD/k1J+zOZqr90hsjBVvc4+rK9xfoyFSvT2urvF2hueoldW3pwqeDwTt9MtSitwEPOHIBf1xD3V5vB1Py+c0p1UcFk44Fp6diZvZEFnoIbW5qzjq3xeMoPJcVkjI+GV3Jv4fbyghgbE+8g4eTpAEaNbEO3ewkDDWDXAhbKAHmNqZOdSPYvkJndgdF7sL0/o2oIXtAPL+dikhECwe7eo7NnOLFQdg2FNHxBsV6VrUv2O05yWTrMzXEd6fkJ9FgUPsAiwZ643Y/epoNVpIZ+o4=
+	dXA8tdkTerByHge+1jzLn7mBEtACVp5VAwYVNtkOF/bCWL1Mp36dSDesSLfQ8XU/x2iORKECITkcCVB/l9TIc9WKkciAVdxhJb/xDjSm+X+WvFGg40fYKVxXK12p7+tPdW62FI09VKwt3JXHfHmRD+3O/A2GGgdJUOutlDWeRg1Kqa150tIYv4aP0mRwRxP03a3iLpTRlkJj1dSaKS2C8L7JHwmJOqbSibXMvRox7t56kxMrGzmEEA/q/zytFyHxcWZntCcKtvgtZkx2+Ji602A+Ds7PAz/YFFoNPZp77JUPGtVWPG+4n2n9U+/9N7yr6JaZ/D3hk5ai7FDbUQk2ATsI0DKSQVVMJkidNVIf512i7tuUkjI/6loQHfp8La8umcTwih1hfU9czc/3xA4XNRYwNzg7ZarpZfWpWPea1Ga9ZY+D+9bxY+cXyr7PPN4wsjvGFZYT4JDC3w9xyqlv+MIsM3+PSfQWbp1wMF0+2LaYhsRQ7tmuyloRiKnnCd1iCn2GM4S8rJJxjWyfFelAoR/QJ9JhceYzM67KjtZzF5YO1QZVB/CvbkpyKUaNsJLPclfuBlcmJPHeKHzqtGJPk/FQ4stXBdrqOPkCHLmBrnUV097arrwm6hlewWcl7vWF1VygqkVJ9tY9GYafh7fBM6ZToy/s6gLmUaLm/Jdk0oI5EyH3IKk7IeEpgYoFqOwJa5W/4OX/qALn9KOy/teQxqL3Cpb1OptGfARGg8WFaakTIY5MpYoQc+RT6lVgKhhghUYDggnX7HW4UhqgjiM/hYSyQwRI7uL2q7qWkTvVZPpga43oza27fG4WzFu/SR4y
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(19092799006)(366016)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700016)(1800799024)(921020)(22082099003)(56012099003)(18002099003)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TW04VGVmTzArdW0zNC9sNGM2NFhsQ1N0S2syQjZzcWkyb2RKamluTEd3NElq?=
- =?utf-8?B?SkN1ZnFNUmpYVFYxc3BoUWpuSnRueW5vc1JZMFNsS1YvUlNTU0Y1bEh3Z2NW?=
- =?utf-8?B?WEdwaGRqMUdzLzFYWXVLV1lWbitySkxTMGJMWmI5UVA5VkdlMzdLb2ZCTkFP?=
- =?utf-8?B?eVJkeHVWME5VbTlIclR3QWIyZllwMDR4UjFya1pMeWQyd0QvUStxcjZ2ajF4?=
- =?utf-8?B?MkI4QndpUHBKMVFLeFUwaHpxd2toQkRycnlDMUU2Z2xJR1VKVHBPQkFxdThp?=
- =?utf-8?B?Nzl4bmZYbEFSUDlpdWF5WXNhRHJqVC9rSjM5NlpuR2hZZlZnQVFiZHBUcGNM?=
- =?utf-8?B?U1RsaExtdmlRTTdzLzA5c0d0c3FFek0yNUhkNkJ2M3lWOW9tWkErdGZiYUhp?=
- =?utf-8?B?VXZ4WW14Nm5qWENqTDg3RGdlVG9NVFJic29sUmlMWmNQZ3AzSjhlcmZlZUlo?=
- =?utf-8?B?SzZ3WXhGaGkyMDQvYlpPTnZMVCtHVXZka3dDcXAwTnp2aE5JUXVIcXdyZDV5?=
- =?utf-8?B?NW1CRERCR2NnSmJzUjAwOGd5cVJOTWZ2RnVrSE5FZkdWa1Zacklpd0c3V2ls?=
- =?utf-8?B?SE13TWRBSHFDUmhGM0RSWk5oNDg3bmNaeXdKVzJ4WWxROVhUbnhMYVVrSGtj?=
- =?utf-8?B?bkpUY1ZJcWNVRG5Va2wrUjMwTWpSVWNjc0pYR3RhaTBLMHovRS9ldTdvVy85?=
- =?utf-8?B?aEZwdDV3ckliWWE5RGNGeURiWHNiNW9QMlVEWGNVMHhSbGduS2YxalNsODBj?=
- =?utf-8?B?clliaGtkaStTM2hEb0Nta0o2N1hrSTJibDRDQXlBL3dtU0xmMy9QOHZJYWc1?=
- =?utf-8?B?YnZxWkJydGZtUUU0MnhLWEFXNkcrbC80cy96RHJVTXo2OUV2aWJWUjZPYUth?=
- =?utf-8?B?Rk9ZVzM3V3VuL0ljangxU1dIVmk4SHZMSjRoYTNmb0V0SnY1THgxQ3p5dGx0?=
- =?utf-8?B?aFJEVXIybXZ0RUR2eU1ZKzhzeUVxcDJXRWlMV0Q5d2Vpd3J4ZjRxanRYQjVK?=
- =?utf-8?B?NlByMzBwWFo5cEZUK3IyM3hVTlViM0tzWWZDSVpMN2lxNWNhbjh2TFNUbURk?=
- =?utf-8?B?VHFLUjY2MzBuZndweGVLbzBOMlU4cTZhY0Y4aUdOMmhMOThGVDhQUDY1U3gr?=
- =?utf-8?B?MmJxZDhkN3V4R2E3czhJS3h1ZkpMU0J4QWllbjF5VEZ0Y1hPMEMwblJhUVZY?=
- =?utf-8?B?QTV4OVBHMUp6dmNCY3ROSWZ6ZERyMEF4TlFxT0lyRVRhcnNwdTBic2JYdWdE?=
- =?utf-8?B?RHh3NE80Q2dzRStjZW5MOVNpbWlWNzhlemQrZ3V6YzYxbEZac2Y0ejYrTHpm?=
- =?utf-8?B?Y3ZvRDk1Q0Z6N0VQYWVXTG45SWNDelpId1dxRlZNZU1WVUY1V0lQU0RiL1lG?=
- =?utf-8?B?M1U3dnZjb1pKdXdHZWZFSVN4bDhBeTJWaEhZc3krNUo3OFZJUTcySDRWTS9W?=
- =?utf-8?B?bGtva2hKYzJjWEdWc3VIcHNSUEFnaFFGL1RFTWFoV1p3VE52QWszaGJHNEVp?=
- =?utf-8?B?MTRtcDFRbDJKTHllYlgwUGpLL1Z0TnhzdGNxblpNZ20vR2N3dkZuRGordkgx?=
- =?utf-8?B?T0hITGpoaEs4MWI5aTBWNmJGWm9rV0I3VTNacXZZN3FnbmdXYkYxaElmVVY1?=
- =?utf-8?B?TEIvcjJuUVNCVzZ4NkZMTTI2TFZoK1kxQWZSSTZrbDFkcmtjenlDREE2dlc4?=
- =?utf-8?B?Y3d0ckt6UENIM0pUVXdWWkMxdUdjVnNXdGVKOG13MmxOTjEwUkliTW9ZRm5T?=
- =?utf-8?B?K1htRDNoUmk1VEJpNEhacU5qMlFpVHBSclIwS2gzdGNNSSt1ay9zWnJ2QmVK?=
- =?utf-8?B?WEhXc1FDNzRRR3ZmcENBS2YrVVRYdjcrSzh6bUdNRjkvL3VHSmJDUkJIbmdi?=
- =?utf-8?B?U3RTZEtIMzlkUlMwakRNQjF0YjRqVm5iMzFYSXVzeVBsSzJ0ZTYrc2c5aUQ3?=
- =?utf-8?B?TXZvaTc3L1Z6a3A1WGhVVlJZVXRjdXVCN3NWb1htdzFISWNnYVg5eHFncjVI?=
- =?utf-8?B?RzEzQ25nZnNDd3hPQUpGaDNWbm4yMGQ5WVB2VlFDQmRMaHN4ZEQ5OHRtZ3ZW?=
- =?utf-8?B?QVlScDhCeEZsY1d5NmJTNXBoSVNiem85YWdCNGFzSlZQdnVFelRQTkFCS0ht?=
- =?utf-8?B?OVFUbWtmQnNxRG9SN3VmV0hEUmNmUFdOd1lwbmRFWnYxQ3J0YmJHSDJrRXpu?=
- =?utf-8?B?L0svUTkvemtCRjdzTUJkVjdRMDJZU0l3MkcrM291OGwyWHBYOGROTXFKc2Vw?=
- =?utf-8?B?NkxRNTNDSDhZQTRrY1JuTUFxelZiUUM1RjBmNDNtZm9xMHI4dXczTFIvOEpp?=
- =?utf-8?B?MVVHaDdNL1pNSEdWdzJWSkNqcEI1TWx2WUVpb0RENGlxQkYrQUJUQT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ffeb9bf-cfd3-43cd-49e0-08de859c74cb
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 09:46:55.5425
+	iVPU4El0mriIi6rcadh4F+91RRV6u/zh1YZ+j/a4s82HKv8HXsUq3wQGPy+I5D7Vswet4sCVw3Uq9/AqCHA/BJDHepDqaCOhmceRdCUqun+VmGkB/JekN+fiK8g0bpIuPu3s0XvECKh14B8g9lrIDQeoZZBvKd2Bj3dUwTp90t3bFWyIqWTswDf4mBcSI7Tr14QfIhGxbH++gKGjkNnHQBH81yb1nfjx/EAETbxJ1KyiwejPLC3nnDQkFxu64EBU/idJWveyxOPTN0PPVsRsPhQ5qqxjK2Q9oPjhqeJLBdZycH6EZD/44S9ls2GVZEsUGtuXp1CHnXqTwE431Tg7M0bhgiOt5vPybKTd6FsjWkN47CPoT8HTOSApH8HNGyQridnMyIrDYZ/QszyRhJCAs2jjQvsFTeh/wTrHG0HOZM5PK75fi4Cr40u8NLR42/KR
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 09:48:23.8001
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DKETK+ifeb6heoTN8F5OHaUXLRmL1GrxKivlDZERPDmXOj2EkgjIZ9q/75hX4VM5weCcVEDTFThnI156nDK0hw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10453
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20481b7e-945b-46fc-10b8-08de859ca988
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252DA.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB9075
 
-If the chip indicates its "Connection Orientation" standard output control
-in STANDARD_OUTPUT_CAPABILITIES register, it can do the thing by
-programming CONFIG_STANDARD_OUTPUT register. Due to the optional feature,
-the chip which not present this capability currently doesn't have a way to
-correctly set the data path. This add the support to set orientation via
-a simple GPIO.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
----
-Changes in v4:
- - simplify gpiod_set_value_cansleep()
-Changes in v3:
- - use "err = !!orient_gpio"
-Changes in v2:
- - return early in tcpci_set_orientation() if using gpio method
----
- drivers/usb/typec/tcpm/tcpci.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+On 3/19/26 03:04, Pei Xiao wrote:
+> Replace devm_clk_get() followed by clk_prepare_enable() with
+> devm_clk_get_enabled() for the clock. This removes the need for
+> explicit clock enable and disable calls, as the managed API automatically
+> handles clock disabling on device removal or probe failure.
+> 
+> Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+> error paths and the remove callback. Also simplify error handling by
+> using dev_err_probe().
+> 
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 8b7e6eb92ca2..0148b8f50412 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/bitfield.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
-@@ -42,6 +43,7 @@ struct tcpci {
- 
- 	struct tcpc_dev tcpc;
- 	struct tcpci_data *data;
-+	struct gpio_desc *orientation_gpio;
- };
- 
- struct tcpci_chip {
-@@ -316,6 +318,10 @@ static int tcpci_set_orientation(struct tcpc_dev *tcpc,
- 	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
- 	unsigned int reg;
- 
-+	if (tcpci->orientation_gpio)
-+		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
-+						orientation != TYPEC_ORIENTATION_NORMAL);
-+
- 	switch (orientation) {
- 	case TYPEC_ORIENTATION_NONE:
- 		/* We can't put a single output into high impedance */
-@@ -903,6 +909,7 @@ EXPORT_SYMBOL_GPL(tcpci_unregister_port);
- static int tcpci_probe(struct i2c_client *client)
- {
- 	struct tcpci_chip *chip;
-+	struct gpio_desc *orient_gpio = NULL;
- 	int err;
- 	u16 val = 0;
- 
-@@ -931,12 +938,23 @@ static int tcpci_probe(struct i2c_client *client)
- 	if (err < 0)
- 		return err;
- 
-+	if (err == 0) {
-+		orient_gpio = devm_gpiod_get_optional(&client->dev, "orientation",
-+						      GPIOD_OUT_LOW);
-+		if (IS_ERR(orient_gpio))
-+			return dev_err_probe(&client->dev, PTR_ERR(orient_gpio),
-+					"unable to acquire orientation gpio\n");
-+		err = !!orient_gpio;
-+	}
-+
- 	chip->data.set_orientation = err;
- 
- 	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
- 	if (IS_ERR(chip->tcpci))
- 		return PTR_ERR(chip->tcpci);
- 
-+	chip->tcpci->orientation_gpio = orient_gpio;
-+
- 	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
- 					_tcpci_irq,
- 					IRQF_SHARED | IRQF_ONESHOT,
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
--- 
-2.34.1
+> ---
+>   drivers/spi/spi-stm32.c | 62 +++++++++++------------------------------
+>   1 file changed, 17 insertions(+), 45 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index 8a7f5a10d4af..be88e62075af 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -2360,25 +2360,20 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>   	int ret;
+>   
+>   	cfg = of_device_get_match_data(&pdev->dev);
+> -	if (!cfg) {
+> -		dev_err(&pdev->dev, "Failed to get match data for platform\n");
+> -		return -ENODEV;
+> -	}
+> +	if (!cfg)
+> +		return dev_err_probe(&pdev->dev, -ENODEV,
+> +				     "Failed to get match data for platform\n");
+>   
+>   	device_mode = of_property_read_bool(np, "spi-slave");
+> -	if (!cfg->has_device_mode && device_mode) {
+> -		dev_err(&pdev->dev, "spi-slave not supported\n");
+> -		return -EPERM;
+> -	}
+> +	if (!cfg->has_device_mode && device_mode)
+> +		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not supported\n");
+>   
+>   	if (device_mode)
+>   		ctrl = devm_spi_alloc_target(&pdev->dev, sizeof(struct stm32_spi));
+>   	else
+>   		ctrl = devm_spi_alloc_host(&pdev->dev, sizeof(struct stm32_spi));
+> -	if (!ctrl) {
+> -		dev_err(&pdev->dev, "spi controller allocation failed\n");
+> -		return -ENOMEM;
+> -	}
+> +	if (!ctrl)
+> +		return dev_err_probe(&pdev->dev, -ENOMEM, "spi controller allocation failed\n");
+>   	platform_set_drvdata(pdev, ctrl);
+>   
+>   	spi = spi_controller_get_devdata(ctrl);
+> @@ -2409,32 +2404,18 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>   		return ret;
+>   	}
+>   
+> -	spi->clk = devm_clk_get(&pdev->dev, NULL);
+> -	if (IS_ERR(spi->clk)) {
+> -		ret = PTR_ERR(spi->clk);
+> -		dev_err(&pdev->dev, "clk get failed: %d\n", ret);
+> -		return ret;
+> -	}
+> +	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+> +	if (IS_ERR(spi->clk))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(spi->clk), "clk enabled failed\n");
+>   
+> -	ret = clk_prepare_enable(spi->clk);
+> -	if (ret) {
+> -		dev_err(&pdev->dev, "clk enable failed: %d\n", ret);
+> -		return ret;
+> -	}
+>   	spi->clk_rate = clk_get_rate(spi->clk);
+> -	if (!spi->clk_rate) {
+> -		dev_err(&pdev->dev, "clk rate = 0\n");
+> -		ret = -EINVAL;
+> -		goto err_clk_disable;
+> -	}
+> +	if (!spi->clk_rate)
+> +		return dev_err_probe(&pdev->dev, -EINVAL, "clk rate = 0\n");
+>   
+>   	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+>   	if (rst) {
+> -		if (IS_ERR(rst)) {
+> -			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
+> -					    "failed to get reset\n");
+> -			goto err_clk_disable;
+> -		}
+> +		if (IS_ERR(rst))
+> +			return dev_err_probe(&pdev->dev, PTR_ERR(rst), "failed to get reset\n");
+>   
+>   		reset_control_assert(rst);
+>   		udelay(2);
+> @@ -2461,11 +2442,8 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>   	dev_dbg(spi->dev, "one message max size %d\n", spi->t_size_max);
+>   
+>   	ret = spi->cfg->config(spi);
+> -	if (ret) {
+> -		dev_err(&pdev->dev, "controller configuration failed: %d\n",
+> -			ret);
+> -		goto err_clk_disable;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret, "controller configuration failed: %d\n", ret);
+>   
+>   	ctrl->auto_runtime_pm = true;
+>   	ctrl->bus_num = pdev->id;
+> @@ -2490,8 +2468,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>   			dev_info(&pdev->dev, "tx dma disabled\n");
+>   			spi->dma_tx = NULL;
+>   		} else {
+> -			dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
+> -			goto err_clk_disable;
+> +			return dev_err_probe(&pdev->dev, ret, "failed to request tx dma channel\n");
+>   		}
+>   	} else {
+>   		ctrl->dma_tx = spi->dma_tx;
+> @@ -2579,8 +2556,6 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>   err_dma_tx_release:
+>   	if (spi->dma_tx)
+>   		dma_release_channel(spi->dma_tx);
+> -err_clk_disable:
+> -	clk_disable_unprepare(spi->clk);
+>   
+>   	return ret;
+>   }
+> @@ -2610,9 +2585,6 @@ static void stm32_spi_remove(struct platform_device *pdev)
+>   		gen_pool_free(spi->sram_pool, (unsigned long)spi->sram_rx_buf,
+>   			      spi->sram_rx_buf_size);
+>   
+> -	clk_disable_unprepare(spi->clk);
+> -
+> -
+>   	pinctrl_pm_select_sleep_state(&pdev->dev);
+>   }
+>   
 
