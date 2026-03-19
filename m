@@ -1,173 +1,119 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011065.outbound.protection.outlook.com [52.101.70.65])
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DADF175A7F
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 03:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773891320; cv=fail; b=T2P8J2xyz6BsSm4X9YgyF8/4uHG+CWc+Kgi7yi4UJAyieQ5AL2FNXFJIddqJXk5vtblNwBTY5w1poXjWEybCZuf5QWQ6UyMDGSeUHwGufT8sI3xLaw10bBTInYqyHuZNBVrJqeOah5bcYfY1LrKv9uLMnDKkpJ6ClGBH0b7vO84=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773891320; c=relaxed/simple;
-	bh=FF8+6fMjaQsprjBLXAxGFwfnpVlTKhxm50ku+eTDBWs=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cp21ECBFWV1V9eehY3qopG5VzsbeOpXd9ei/rdGKZtVvAQbutkeVzORriNUhBKLqRz3KdB/6MqgS+AsYlRymtNWKM2aVIh3DHe1/gztxcHFnwYZ29YvadroqVa2pY0eezqDFrqEQ0Gew+DlH+EDP/RIJKkIyZXRXtNEQHCG2q6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aLhwJ9mf; arc=fail smtp.client-ip=52.101.70.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F0326D4F7
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 05:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773899381; cv=none; b=Vp32++/4JYAIS4rytblNlmB8QKN9RtDW8DvNIvDr9a1G0iPocY0DxPsaBa85m3e/CFokUvLIS/O+C3PMmvzu/PFeN6C3Lt2iknWn30HzvT3mu/j4S86pqlmtjuILdiFho5ql19/3QNa1BfxR05Lfifg7PPxm3CztDv0dJjqoIhY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773899381; c=relaxed/simple;
+	bh=2430zI9n334JkBj/TpnuTxA+jHhEUJVfLFav+xDkV6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W4orMS+S+ze1Gu11VbPr2fzehaPpAplrLRcwkwM6XHsUjoeglTIpFjyJLktet4uYp4c1wF+Y639aHfvN4/7+GJQhc6HJ3usJKp+WLSmsNAkYubuGP0KLLMrjdNyALSQdXzfIOeH9wYMZPbWaHlmljm70r7RrihFIhpbq9DxEKdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TIxlZbm2; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aLhwJ9mf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f0GO6IoUi6OX5hIBpdmxenbEElLpgGsya/I3No8nGL+YCQ49kCDALyWRU/A/yLgK7D1larpCp9J7FL/HzrMt0RzxhOwLDOAdrmDAvdif4U2PzOWkuYI5BDmG0aVfIVElH4WBPn1UtrMt/y0dPlOENrL9mDYZpqINddtX3Qb4mKocs8sX9eBCbwxI1ouaZkzYDuY0F7cNKmfn8BD+ZmF9nqcSXvQu4u8QaMQW78meBTA9r6R9s60HdL8NDgDNFe0XW2qqIKvpIFWvZK0Mc38NsIVvECV1JHWFHxR1H7DICN5bDRLJ2Mh3Ghezj8SMAvHfHloIuFBjxRlHmsNfP7WR0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rIvkSZ3zA9s62jK0sjWWLOuYXLSPx67+u08zOC73/GA=;
- b=YIbeGrQKTYEmmyXIKsPmtkrgmtSoPsxMRU7YAtIo48GgQ9f/785ZIvrAz8ZyK1qtNo13R9mSkSG2JcxJCkh8ryBISuuIpj82b5WUbkAR3hz3p98FEmOYKph/s7GIi6wZe2WhWFK73M+GIMnBEX3J2Sy6sFoRl3rVTaPtA24/EByS6L/Xyc54cWHfI1V+Mgi7R9teOfoyNGJXD0dP2rqTNj3J1IDyvwIPH/1NpfwjltKrFSxmqA+TxFVeX2nizk1vSFot81fnrY9M2DAbJKH/57b15ZXPladDY7IQsPxWfrSBxRgihcmPDqV3VXmrwWA6SUb6zoBUAhZwYle7VL6Jpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rIvkSZ3zA9s62jK0sjWWLOuYXLSPx67+u08zOC73/GA=;
- b=aLhwJ9mfowONgaFbsOmdXjmyImRrsx4WzHIdvYqpSuMv7rUWO/6b8jEOpKsAlS6YULNXjDEhmT1pH0rucTFDmUrsyT61GNFwtKg6Jrpobf3a7TRShz8PhxlTxxAJCPm73uoFOsLvcMXJ9s5BsQ5v1BAUXTif9xAMJYRHI2r3Sbkxt24GEh15ayLfu/EsoGO0kGvYxl+eRvuqx3VLp7R7Zr7pht8EwWdKxBxwrXQJFSTxF0c7HOIGJZvh2l2otoFiEK/7oDi6v/NM1cZvupz9bdCwBkeTqJdx5e2IJS1guJfTP4ZB/GzDzDOSzINJq+lCvpJpu/KbOnVGon1mTm1mmw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB9PR04MB8140.eurprd04.prod.outlook.com (2603:10a6:10:249::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 03:35:14 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 03:35:12 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Buday Csaba <buday.csaba@prolan.hu>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard
- Cochran <richardcochran@gmail.com>, =?iso-8859-1?Q?Cs=F3k=E1s=2C_Bence?=
-	<csokas.bence@prolan.hu>, Frank Li <frank.li@nxp.com>, Francesco Dolcini
-	<francesco.dolcini@toradex.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
- interface
-Thread-Topic: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
- interface
-Thread-Index: AQHctu/GZE92suzIgk2+bQlhrX9NVLW1Lrng
-Date: Thu, 19 Mar 2026 03:35:12 +0000
-Message-ID:
- <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References:
- <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
-In-Reply-To:
- <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB9PR04MB8140:EE_
-x-ms-office365-filtering-correlation-id: 31618092-1e3d-4710-7ea7-08de85688719
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|38070700021|18002099003|921020|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- Llfm2OnOpoeIZEbUjZif/qiTix2ZXloK6RuXwjRWng3zu8EAlNS1hatA8l2EKWu3TfWc9xpvi7B+Y5LfG5wiRe42Y3z/YO5o7I/sv+US675+KlaPAd/9WdglWsXYLQPgy7DvtUWQsrmSKVVSFAtgtogZO5N/QwWF+cYQkai8kODjIXOcrew/dPGY0athmKVUm2F6c5tn6IDk3AoUfXPxen+TPdlMhEwnRSLHO2EAJmwn5rB17xbTGsyy8TGoSoBt18pKxiQpZbApElZ09KekSqxw4UWpdbpu8VItK5NPqNB/hW1TbSUF653xxekHw9ZUXRHSXQtTzkiRiVNh11l1LGPblLWMk8cwpIruol7HVAWZCJ29Lh7E+IG10ocZ6Ig4m3lmY70xgCYhfJAsChxaXsG5LHDtV4HeIseH4fVyuMQ95OYF/+UQNqaGdwCKt4EC5cyUHXczIpN8oigp36r/+OLIMwYxsVwKYRj01upT/l5TxJSHM3oAPsYOJlR3Q/HTqOYVEB1iYqKf+4bYI4O7+mIZQcMbhYOZeuV+NyUTwQF4gYM2Lz1WFfBKhnNrnxHdOq3wentTqhdqB9DB2FYKs7vWL/eszgWCHgV3UOi9xVRPLQbmqsL7OJ5+IzGCBuFPyjoB8zwLJkNEDVnZroQXt5r0eoa4Be/gfEop3G7BZxEWWYVOBuX3aSIJ8v8g4ie4O3UvTcxVaG8V8M8G+QIczmvstf6GjS6v5Dr2HVHFqI93vC9XBZUCTnEwA818O6CcUFDjLqGcqkIsv5lQpeAgwF48/59MxogasHEVev+XeF1GKRz4AlnVpzQsVzNVytTP
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(38070700021)(18002099003)(921020)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?vCclr0927FTIODHoVO+N25/yRpsH73WWspquuKv6iT9gdyhCv1KalUTPix?=
- =?iso-8859-1?Q?+g+PHtAJU9rrNGCLxlS9KXwy4I+ToHZIwWmHgFIhqoWcqgAQWM82SlnndE?=
- =?iso-8859-1?Q?BJYlScpb06pkYF79ItLfUpl7MkfbPOl9NF9RnGNKWtvnhKyUFnme4E5mv4?=
- =?iso-8859-1?Q?tb87umwk/oFrX2CPZMraZ3aAhaKg36WN7JJvJRZVwBhWo+HWb8dzeVpP2C?=
- =?iso-8859-1?Q?I1HQcSdgO6wbi7uYT63u9sZtRodNACUuFFa602zjOfbVJjAnnIwUJGhWJU?=
- =?iso-8859-1?Q?K+kOpwahk8145PPEHqrNV8IcchCyasgg+E9gVY2s+JRkwHFh+Y71yva9mH?=
- =?iso-8859-1?Q?HoRm09uk0x1uNboMNUA+qGLICDx5H00p+cqU1/JA7o+YHrhOwdN4QfHdpm?=
- =?iso-8859-1?Q?MMROVXTGgqhRjB4YFhkCT383Z+AMYMup7hTylKNnOAhTCEcWPvwzy8rtbB?=
- =?iso-8859-1?Q?UqCMQTQUFsdRi77HLpDV8jKWn85PdWR4/g6fUjsPf6oStGjlteVXWf3UUY?=
- =?iso-8859-1?Q?dKx4XWiEq+ahU1sbTRYVgU1dL0TG97RYaBrNQmeURBF+NmW9Gb7PEe6FHj?=
- =?iso-8859-1?Q?THOlQzXv4qRNV0ZrMoLqmMkNK8Ez4stjfEgtKuCqnj7mxf3Dnn079MgATF?=
- =?iso-8859-1?Q?nEarjvOmmYQqnbDiyFRXKtTa4yfvcmrZiMvWQ+q9QZBoCsk68H3XL8L5Te?=
- =?iso-8859-1?Q?wjA7EI5nheVbY9ADxgZvnpnZDwd6ZF/hZveMwURXelipSiIBGwrOcCCoUC?=
- =?iso-8859-1?Q?NIwrB32E8YB8ihjiox/pfCIhcMcFJOpf4gJOumyv7L1Sr+ot++2uwSZMJP?=
- =?iso-8859-1?Q?zmCBKOZCCcb5dFHCGQ98pJUiktmD3VAjIQX6yuBW0qgRnPfYMVCzYAtx4V?=
- =?iso-8859-1?Q?P4l7rJ5v+YKWQQTsiVkhdiulvUFyRnoRRg2utCAGmSalxx1e9IOQbKK2Hm?=
- =?iso-8859-1?Q?j/6GTsu6fMh/mBy4EEUtvRqkmAue/uoaL9ViPNVWoY1YRJl9RJhYUCjYF4?=
- =?iso-8859-1?Q?+uHWB1GLGjgKRZ2SEKi6Rf6AjDZ48WH6JAESqvumLB74r7B1weBbXze169?=
- =?iso-8859-1?Q?KtFMXnNRNCeQqR6tdrxqsHK/38vO+3c85R8J6oyxl1HqXV+HhmX/m8ClE6?=
- =?iso-8859-1?Q?lY+SIrFMwI7K7qcCywIsRhK0mOpBRj1SYxUHJXHcqMPE4KE8yMhdarbQyD?=
- =?iso-8859-1?Q?CmAUiWfUnU09ZGQsDLp7FDnDU/vShzscy0WT1pa+Ve2QRXFS+A63O0xTFK?=
- =?iso-8859-1?Q?IBmIw1evOmsRVTiJ8b9HutF5oyJMx106ugT4v3wIk6KuA8JqvnRPC9lgWI?=
- =?iso-8859-1?Q?glHMhh5avb0z953DgPvOwDL0BlSV/jE9bQU8TH6M1/sjs9LVg3g67vhnet?=
- =?iso-8859-1?Q?BpQuVg1FR604eo+gXk0VfzwuoNKHAaQYCGyJ07AxNIywFmUOHT8zMXSIoM?=
- =?iso-8859-1?Q?m8HoljQN95NrSfqyatJ1/iRizY7Vbr6NRLuyBVmX+fY2UNCMgTwXVKjHF8?=
- =?iso-8859-1?Q?7BMtRJhtaUCPj8izkaLEIZuBhNi+YGWQSEX9pI4YB1mDqZo8Z3eF6xTh1o?=
- =?iso-8859-1?Q?Sxd121Nile+qpT0QBxrtf09acAPL/47dXCvfkDsxJgVVMn+3+rgqjzZGYP?=
- =?iso-8859-1?Q?3LgRnCAdOvqwpTdfSdzbIHFLP2UmA3d0bgq7pCn2pT/O/dzzqEUlJ/IeQL?=
- =?iso-8859-1?Q?YSlpf3W90h/aBl/y5jB1qaDYNKDGT9OX7QYHHU7liXxc1UZeYw6oqWsq/O?=
- =?iso-8859-1?Q?7nL8QiETgIwlqS4h8Wo10JDXmeTi+WIPYky8/vFOf6Lbw2?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TIxlZbm2"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773899377; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Tj5vFVo8hvmkvdXB4Ef9ZyPku2Xx9xcDbTU8B8mwD7o=;
+	b=TIxlZbm2XUL3W/PLwNRLkLwES1mWe3KKgJHH8G5/muP6hh6ZmVnAdyd/x6LbVeyATiaOxIcJWdjmD/Y9H5V1Kt/mm14lhjIGX/kYGTAmSTEqGQsWRXBbG1kTcnvHkOZPrLhmRmq+KF0pYUGtII1uDR4dTunor1RzcG7xe1PN97w=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R511e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0X.HFnoa_1773899374;
+Received: from 30.221.130.238(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X.HFnoa_1773899374 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Mar 2026 13:49:35 +0800
+Message-ID: <1919ef7e-1cff-4f52-873a-61ffe0000728@linux.alibaba.com>
+Date: Thu, 19 Mar 2026 13:49:32 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31618092-1e3d-4710-7ea7-08de85688719
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 03:35:12.2513
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LZEdj0tZ08KP6fVEqtXW40nK6P4Z5TKCDtnPf9243Ejqi4KV/M0FSqmW8k//tOf8k9Y9tAxj0hIdAoZnc28I1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8140
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] ptp: split non-NIC PHC drivers into the
+ clock/timekeeping maintenance domain
+To: John Stultz <jstultz@google.com>
+Cc: tglx@kernel.org, tglx@linutronix.de, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, anna-maria@linutronix.de, frederic@kernel.org,
+ daniel.lezcano@kernel.org, sboyd@kernel.org, vladimir.oltean@nxp.com,
+ wei.fang@nxp.com, xiaoning.wang@nxp.com, jonathan.lemon@gmail.com,
+ vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, svens@linux.ibm.com,
+ dwmw2@infradead.org, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org,
+ dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org,
+ imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
+References: <20260318073330.115808-1-guwen@linux.alibaba.com>
+ <CANDhNCoFxsXdP7d6nbLTFLOrB_4GnDvhF4O6ZGyvGEVoqV4U2g@mail.gmail.com>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <CANDhNCoFxsXdP7d6nbLTFLOrB_4GnDvhF4O6ZGyvGEVoqV4U2g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> Fixes: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
->=20
-> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-> ---
->  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 7f6b574320716..c1af81002b8fa 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -534,7 +534,7 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
->  		if (rq->perout.flags)
->  			return -EOPNOTSUPP;
->=20
-> -		if (rq->perout.index !=3D fep->pps_channel)
-> +		if (rq->perout.index !=3D 0)
->  			return -EOPNOTSUPP;
->=20
->  		period.tv_sec =3D rq->perout.period.sec;
-> --
-> 2.39.5
->=20
 
-I think the correct fix should update the n_per_out value like below.
 
-@@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq=
-_idx)
-        fep->ptp_caps.max_adj =3D 250000000;
-        fep->ptp_caps.n_alarm =3D 0;
-        fep->ptp_caps.n_ext_ts =3D 0;
--       fep->ptp_caps.n_per_out =3D 1;
-+       fep->ptp_caps.n_per_out =3D 4;
+On 2026/3/19 01:05, John Stultz wrote:
+> On Wed, Mar 18, 2026 at 12:33 AM Wen Gu <guwen@linux.alibaba.com> wrote:
+>> - Following the model used by NTP related code, this series lists tip.git
+>>    (timers/core) as the integration tree for emulated PTP clocks in the
+>>    MAINTAINERS entry. Guidance from clock/timekeeping maintainers
+>>    (Thomas Gleixner, John Stultz, Anna-Maria Behnsen, Frederic Weisbecker,
+>>    Daniel Lezcano, Stephen Boyd) on whether this is the appropriate workflow
+>>    for this class of drivers would be appreciated.
+> 
+> While I'm sure it would be good to continue to CC folks, I'm not sure
+> if the timekeeping maintainers would be the right folks for these
+> driver/ptp/ changes to flow through.
+> Thomas has been doing the heavy lifting for a long while and I'd not
+> want to put more on his shoulders.
+> 
+> Richard is listed as the maintainer for drivers/ptp/, is there any
+> reason for it not to go through him?
+> 
+> thanks
+> -john
 
-The commit 566c2d83887f ("net: fec: make PPS channel configurable") added
-the property "fsl,pps-channel" to indicate which pulse channel is available=
-. So
-we should not fix the pulse output channel to 0.
+Hi John,
 
+Thanks a lot for the feedback.
+
+Richard is indeed listed as the maintainer for the PTP subsystem and
+the traditional network-oriented PHC drivers. The intention of this
+series is not to bypass that role. I would very much welcome Richard's
+thoughts on the proposed split and the appropriate workflow for these
+drivers.
+
+Historically the PTP subsystem lived under networking because the
+original PHC devices were tightly coupled with NIC hardware and the
+IEEE1588 packet timestamping pipeline.
+
+Over time, however, the PTP userspace interface (/dev/ptpX together
+with the PTP_* ioctls) has also become a widely used way to expose
+high-precision clocks to userspace. Because of the stable interface
+and the existing ecosystem (e.g. chrony, phc2sys), many platform or
+virtualization-provided clocks have started reusing the same PTP
+interface.
+
+As a result, drivers/ptp/ now contains two different classes of
+devices: traditional network-oriented PHC drivers and clocks which
+are not tied to the IEEE1588 networking pipeline.
+
+The difficulty today is that there is no very clear upstream path for
+this class of drivers: they currently live under drivers/ptp/, but
+their design and review concerns are often closer to clock/timekeeping
+topics than to networking. This series tries to find a clearer
+upstream path and review route for this class of drivers.
+
+Regarding the merge path, the suggestion about tip.git was mainly an
+attempt to identify a possible integration tree for these drivers, but
+I'm open to suggestions if there is a better workflow.
+
+Thanks again for taking a look.
+
+Wen Gu
