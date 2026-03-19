@@ -1,119 +1,146 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F0326D4F7
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 05:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773899381; cv=none; b=Vp32++/4JYAIS4rytblNlmB8QKN9RtDW8DvNIvDr9a1G0iPocY0DxPsaBa85m3e/CFokUvLIS/O+C3PMmvzu/PFeN6C3Lt2iknWn30HzvT3mu/j4S86pqlmtjuILdiFho5ql19/3QNa1BfxR05Lfifg7PPxm3CztDv0dJjqoIhY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773899381; c=relaxed/simple;
-	bh=2430zI9n334JkBj/TpnuTxA+jHhEUJVfLFav+xDkV6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W4orMS+S+ze1Gu11VbPr2fzehaPpAplrLRcwkwM6XHsUjoeglTIpFjyJLktet4uYp4c1wF+Y639aHfvN4/7+GJQhc6HJ3usJKp+WLSmsNAkYubuGP0KLLMrjdNyALSQdXzfIOeH9wYMZPbWaHlmljm70r7RrihFIhpbq9DxEKdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TIxlZbm2; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B613451CF
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 06:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773901807; cv=fail; b=RwPB+x8Xemdyd5yXGnmEVDI1l3vIazstt+AyBL3C/gj7u81fcbKmzchTs+cllmF46xnV2rsDWYtiMSmYsh9A6+YB/7YIJblv7uTrn7YJX0dkoHFljKb53o0+KBNn5Iu1vpz1Z1U+kUcOzpjjThxtTorM0fhyeDMqXP3xPHkzwUQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773901807; c=relaxed/simple;
+	bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=mCX6RC804kmV8ViuscGsmoX1MBg0Bfg04r/oIOnObty7E15ntup53MPNOktcLF50x1Mfs1qmV0Lf5gpGkNlwq//s4reYtZmaW61xJDaAUDNPUmTxCRcol69QhtJkRsZHUtix9W8TQ9g5dyywMDeuXU1YWJ4QPe0/HildeshHul0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XZyaU7kh; arc=fail smtp.client-ip=52.101.66.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TIxlZbm2"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773899377; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Tj5vFVo8hvmkvdXB4Ef9ZyPku2Xx9xcDbTU8B8mwD7o=;
-	b=TIxlZbm2XUL3W/PLwNRLkLwES1mWe3KKgJHH8G5/muP6hh6ZmVnAdyd/x6LbVeyATiaOxIcJWdjmD/Y9H5V1Kt/mm14lhjIGX/kYGTAmSTEqGQsWRXBbG1kTcnvHkOZPrLhmRmq+KF0pYUGtII1uDR4dTunor1RzcG7xe1PN97w=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R511e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0X.HFnoa_1773899374;
-Received: from 30.221.130.238(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X.HFnoa_1773899374 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 19 Mar 2026 13:49:35 +0800
-Message-ID: <1919ef7e-1cff-4f52-873a-61ffe0000728@linux.alibaba.com>
-Date: Thu, 19 Mar 2026 13:49:32 +0800
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XZyaU7kh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k468Ft2srS/N3jk85KgIFBlY6erILGBzYv6zfbl17giLKampjlgQOD4SHGLdk4JGi6sJTBtV786+oi0FWy5ce8aXsp73RYKYQ83P4Pm5wfVEGRfk5DRv13BEMnt5WsXw6vCGP5o0l95929bldh9DNfakXjTB/JVOiunQWs6jSJiXB4ngsxf2OdaluhlpAkC2HqAefj3l8thHqP2etcDAP3M6eRrKMAoVOS4OO20WoXadtxZBquZE/bVZKV5FxYAzLmZidRkEEg+Fab7nbKmycbZfIfuldthJ1vbHo8iRKN0F4nhY9rBgP8HNw0npl2McCeGEnJVv7rzZhbGdURTrjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
+ b=GbklyaFnQBcjn2f0NmV/34UQcLkf+2+44w5RfzSab73ClwFq2XTLMvmwVGC9/+1davU/pRyEpAbep7qAaegzxM2YJx71jn32Taj0q13ZQTNas4Z7TYUm7MfTI8p5nuySZa/TXY7lyuCYUH62oFiUVG484My43g8rx0sHXK+mVIJd38rIv8+Y+R3HwBjF9DEiEGT2197b1TfYmbV+wlvAqS3twem3MkGvJOtUpNez8615XDyTUs/XOw5iPV8PVl2GlcQepYw6j7ybVbzg0+oYm5xCz813RsHUG7WsBATQLyJ4+OLf3CGY7+vpVasXN2+TCzmQrIELimlyng+Ak25vCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
+ b=XZyaU7khcBZtI0wi61s4nRLEfGPKxeGkfotX/vJfzdAQ6PEGEDWmsDqrxLr9M2aajOMFaPa7UC9TZAQZnzHbRAA5I/0G79UDvxkTIuh5Ugs/qvSb1WJHTQG9PKNSzMNo0aKcVfRKMXcwthzQx7ipVNPiMZQkKOWk4aatQQdIU8mMuh//jmKpGve3OmuC9vKfA2h7rYPeTITT+Jg/Sk+/iU+7VYvX7T/LiKYlWvgml0080nX2L9q5YcnfE3qsRer5Q/TbayPEX/RaqMEQKPnFJdRR5GZw5itGz/m000kEdLMkcYNgomniiCN0k7MJbjesq01p3oYoJ1vKL/0BzRZUow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by AM7PR04MB7160.eurprd04.prod.outlook.com (2603:10a6:20b:119::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
+ 2026 06:29:59 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
+ 06:30:00 +0000
+Message-ID: <cd5ef40c-f8dc-42d7-a747-5c20e37bdc7a@oss.nxp.com>
+Date: Thu, 19 Mar 2026 08:32:58 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add i.MX95 19x19 FRDM PRO
+ board
+To: Joseph Guo <qijian.guo@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ xinyu.chen@nxp.com, qijian.guo@oss.nxp.com, justin.jiang@nxp.com
+References: <20260318-imx95_frdm_pro-v1-0-8c00e59f0b1b@nxp.com>
+ <20260318-imx95_frdm_pro-v1-1-8c00e59f0b1b@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260318-imx95_frdm_pro-v1-1-8c00e59f0b1b@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P191CA0009.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d5::16) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] ptp: split non-NIC PHC drivers into the
- clock/timekeeping maintenance domain
-To: John Stultz <jstultz@google.com>
-Cc: tglx@kernel.org, tglx@linutronix.de, richardcochran@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, anna-maria@linutronix.de, frederic@kernel.org,
- daniel.lezcano@kernel.org, sboyd@kernel.org, vladimir.oltean@nxp.com,
- wei.fang@nxp.com, xiaoning.wang@nxp.com, jonathan.lemon@gmail.com,
- vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, svens@linux.ibm.com,
- dwmw2@infradead.org, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org,
- dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org,
- imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
-References: <20260318073330.115808-1-guwen@linux.alibaba.com>
- <CANDhNCoFxsXdP7d6nbLTFLOrB_4GnDvhF4O6ZGyvGEVoqV4U2g@mail.gmail.com>
-From: Wen Gu <guwen@linux.alibaba.com>
-In-Reply-To: <CANDhNCoFxsXdP7d6nbLTFLOrB_4GnDvhF4O6ZGyvGEVoqV4U2g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM7PR04MB7160:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2b9bb63-dadf-403c-80e6-08de8580f28d
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	c2hDdJyLRKOAABhGokJJU4a/+0FAidJIUogtDJ8E8VjFxOwLujfSAPRprouGSDdY+PereZsExqPNbBUOFvnRt+/UlEsVC9LBkBMAlhV0SY2xLNstmyvuNr+UudvhJ5UDwDIfAIoKQ71AUuw0HFI7/NdHuJDwkwIS3NgMOwF7iQvJgjQ6DK0aEYMtBtr3+NOgLYTbLUYnKuaNYkV6Kw51uKRidAKsosBcwWOQNKJ+F+Nby6oJd/ZnRFpTEeuyh+26b7DXUaE97jTU4ZlJCMUUBtXswgh59MvVS3qeTWcgtKt2EOtV4SQFYOI4mIpx1yReJ8ULzVAHl7UWBwQ/0Ae7T/tV8YnIRCokTGlQqO1hlUV7RC5zV2ZQRwc7kdlvzxJbKegkE7p+d8o1hdBpT9Nguz98DN2LpccdsWRfkxtCqxfCpnxKGpdOah44oKHimxPMKKvcX1uwGxn2kFBDtXVOJtAsK6W3WUhEVtxOMVHRagEwEqn3YHZ4OEPFyVk4cGVHsHey5SDLvaPKe7skM+CdNVL3mPwIZBzo4Vex0DxOAMq+7PzTRsoPs/a5yaTO0NBz22UIoqiDmVB3w0U6f3IVwtjvi+RT+Z6ADWXUZ34DXB4jIVN/YJEY59IeL1uKXXCsf/i4GiwWSrpwpk/KIkx14NLh4nYntGQ2prQxjglpONO0RQdghcWlKJwihlK8FwswV8hVpw09iDZTtxyEhqNovAVElHfqZefuhpAFt4YT+Js=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TjlaQVc2TWwzR1pmblVOK0h6ell1aVpadGszOW8rRzJEeSsvaXlramE1MlFh?=
+ =?utf-8?B?TU55bHU2d1k2L1QxOTUwazdSR3hHWWwyZkZCSmRUNCtmRDhWNWtkOVE0NnFL?=
+ =?utf-8?B?ZGFlTEoyUDdPcW0zZjFHWFdJWmkyTzdVdkVSSkEyVlRWblhyNldTLzErcjdV?=
+ =?utf-8?B?OE5SeXp2ZTZGejVURzN2Z21Hd0U2anIvdzdXWXU1NDV3TXp4VmN0VU5nbytu?=
+ =?utf-8?B?RlZHWC8xSkRaRXFER3o5VWpLOFNLb1FWSitqNi9aVTBZTWdkSU50ZTlqeG16?=
+ =?utf-8?B?MUtmSEdiMUtPbTVlaUxxV2RscTh0a0srclRjRDQzSnNudDNtZ2NneU1jV3dX?=
+ =?utf-8?B?U1lSUmZQV1M5NGZIdURqb0c0NkRveElyZmxmQTJ6L3VMQStaTm8xa3dBbDJN?=
+ =?utf-8?B?VHZuV0dKSnl2UzNyUmFoMTN5ZC8rTzhYMXVQWlRGVjhzbjlhcDJhUERPbWY3?=
+ =?utf-8?B?S1R2V1BNUmtzSmU4OC9HT3B4OWlnbkxpWHpENUdYOWE0YVBjWHpza3BSOHNU?=
+ =?utf-8?B?bGRDMEhtSUxzdHZPSVdsenhrOG1NM2ZsM0ZtNlE3RWRtcDFtSEdXMWtsWnV1?=
+ =?utf-8?B?TG9vWmxpZmc3eEhEdWwyQTdoSVkyVU5ENzNFT3RPZU01RVBHNHJwdTRlOFFK?=
+ =?utf-8?B?T1Y5eEhWdnlYaEUyZElzUmVldCt5RFIyRUtnT3VLcUlPYjFCVUlTUWdReXlZ?=
+ =?utf-8?B?TTVUWWpSczJhUStXU0dEVk1DVlFxQ2xGWDd0T2tnWUZxT25sMEZFS09zUjlD?=
+ =?utf-8?B?alNGVDlvOU56UFROWWVjSnhjT29ZL2VkalFpa3EvSm5Vb3krM0ZYWGx5KzF0?=
+ =?utf-8?B?SkJ2azhIUXFLd2Z4aElWQlFTMS9HRVhlZkltdnRzL3ZzbnMyL09FZkJvdHNy?=
+ =?utf-8?B?T1dIclFMWThwbVYxS0h6MDNMRGxrNkxDYzJua1hBeEVDWTlwZG9DQnRBSGJF?=
+ =?utf-8?B?ajEyUnZNcVhGV2F5YVdSaVAwYVZBaEN5RFhlNmVWUjhtdGFhVnRtcnovNk9T?=
+ =?utf-8?B?eTBUOEVvdUFvdW9ITmpBMFRCSE1LUU4vSUFYbmFaemM1MkduM1lXejN2TFB2?=
+ =?utf-8?B?YlI4bGZkM29PTXhFcS9VYXNhTi9nR0VTVGVnVTVia1gyRFdrcCswQmlhMDA5?=
+ =?utf-8?B?NE9DMlZIT3hSNmpBY3p5L2kxYk5pUTRMd3NFaE5NWjFWakRWYVlCdUQzeE1q?=
+ =?utf-8?B?ejBQUTlFMGgwVXROWXlMVHBDUUZUZllGa3Btb1Z3dFBGZkRIbWQxdCtlWTYr?=
+ =?utf-8?B?TEZDK214NHBwY09TaGVxeEZJUW9EUFJOeEEwYnhvekt4cmhOdWdjWnRraFVz?=
+ =?utf-8?B?WWFpM1hCNUtXdTRQdFlNQzdhRGg0TFhuMlB4NEtOb3Q0QkRxaDhUV3RCUnQw?=
+ =?utf-8?B?Z01yM0Z4Mml5UkxhVlY4TFVWOWQ3WjdvMFJEeEJWWUkzUGYwcFE5V3Q1R2Vi?=
+ =?utf-8?B?QTRRUXA0RDBlcUkrUlNEb0IzVCtxd05MYlFSdVBJQmhJYkszMUF0Mk5DVi82?=
+ =?utf-8?B?ZGsxSTh1NDhVdGtZK05CWDhvL0EvVzdRdm9lWG5qTnQ5cFNKaWh4NWI0N0l3?=
+ =?utf-8?B?YXAvV2JDSVlyTFZHRGVpZHMwNlQrYzhOeEloZmlUd2tKTnpXZVZYYk9wYXV1?=
+ =?utf-8?B?dHJjUnZ4U1hDNFRudDFLeUdYZmpRU1hoYW1VM2JKSG9FK3hyZlRiQjJ0UEt3?=
+ =?utf-8?B?THhld1l5Mmo3SHByejZDNTkzdDhoalAybEtsRXphY3FpeUxqazI0RnRZeUhk?=
+ =?utf-8?B?SSs4Mm1TQ214MVpBVmFFRnFqMkRGZ0ZBN0IvUzArNVhzS21NYVFhQ3lMRjV2?=
+ =?utf-8?B?d1FpbjZ1UGZINVFZcG5vbXJBSTNQOWdCYmZmcnFRUjBDQXI3ZUptSm0zYlN1?=
+ =?utf-8?B?STNhdDBZN1BIVWdIVnEwU0tGUTZPSlVETzJrcmU3eU1sL1B0cG41Zlg2eEdz?=
+ =?utf-8?B?NU9MdjgrSVpOaUcrWkYwMGsxamo2RU1KNFdQTWV0OWVMODNiM2ZYZGtkVTRF?=
+ =?utf-8?B?SHZFVGQyamxOaE9CM1g0eHFobEI1ZUYzQ3J2emw5a2trSHJhcTVXTlZlc3A1?=
+ =?utf-8?B?OGNKTThaUlBWUXdydkFDRlY4OFU1YXl3ZGQycmJxakZ4SWtyc0FQQlhjQUdq?=
+ =?utf-8?B?NnNKT1dDMElXak9zNXh0SWhuU0tOTURsc04xbFJvNW0vNlBaNmVPaS9Zc050?=
+ =?utf-8?B?bWhDdmJtZ3loZHhPSUJmOHJ4SEwrYUljVGpuSFZHa1J6eWdaczY0L2NuUEcv?=
+ =?utf-8?B?bm1aMG1hZjk5MktMTU9zbzUrOVYxWE5CcGNTS3gxOVZZYzZRcTRlZkVORFQx?=
+ =?utf-8?B?S2x4N09aT2FGLzRUOWFmaVdGcjdVTVI5L3owVVd2OU5sMVFERzFXUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2b9bb63-dadf-403c-80e6-08de8580f28d
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 06:30:00.6888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DO+NS0XGHCivrpCU9ngNeIXxF/FCLO/8Z7yzmQ5owoS8sMybXT4JTON6bwE5OqZlK0lHuPOCEmvlwWp1OkpjRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7160
 
+On 3/18/26 10:04, Joseph Guo wrote:
+> Add the i.MX95 19x19 FRDM PRO board in the binding document.
+>
+> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
-
-On 2026/3/19 01:05, John Stultz wrote:
-> On Wed, Mar 18, 2026 at 12:33 AM Wen Gu <guwen@linux.alibaba.com> wrote:
->> - Following the model used by NTP related code, this series lists tip.git
->>    (timers/core) as the integration tree for emulated PTP clocks in the
->>    MAINTAINERS entry. Guidance from clock/timekeeping maintainers
->>    (Thomas Gleixner, John Stultz, Anna-Maria Behnsen, Frederic Weisbecker,
->>    Daniel Lezcano, Stephen Boyd) on whether this is the appropriate workflow
->>    for this class of drivers would be appreciated.
-> 
-> While I'm sure it would be good to continue to CC folks, I'm not sure
-> if the timekeeping maintainers would be the right folks for these
-> driver/ptp/ changes to flow through.
-> Thomas has been doing the heavy lifting for a long while and I'd not
-> want to put more on his shoulders.
-> 
-> Richard is listed as the maintainer for drivers/ptp/, is there any
-> reason for it not to go through him?
-> 
-> thanks
-> -john
-
-Hi John,
-
-Thanks a lot for the feedback.
-
-Richard is indeed listed as the maintainer for the PTP subsystem and
-the traditional network-oriented PHC drivers. The intention of this
-series is not to bypass that role. I would very much welcome Richard's
-thoughts on the proposed split and the appropriate workflow for these
-drivers.
-
-Historically the PTP subsystem lived under networking because the
-original PHC devices were tightly coupled with NIC hardware and the
-IEEE1588 packet timestamping pipeline.
-
-Over time, however, the PTP userspace interface (/dev/ptpX together
-with the PTP_* ioctls) has also become a widely used way to expose
-high-precision clocks to userspace. Because of the stable interface
-and the existing ecosystem (e.g. chrony, phc2sys), many platform or
-virtualization-provided clocks have started reusing the same PTP
-interface.
-
-As a result, drivers/ptp/ now contains two different classes of
-devices: traditional network-oriented PHC drivers and clocks which
-are not tied to the IEEE1588 networking pipeline.
-
-The difficulty today is that there is no very clear upstream path for
-this class of drivers: they currently live under drivers/ptp/, but
-their design and review concerns are often closer to clock/timekeeping
-topics than to networking. This series tries to find a clearer
-upstream path and review route for this class of drivers.
-
-Regarding the merge path, the suggestion about tip.git was mainly an
-attempt to identify a possible integration tree for these drivers, but
-I'm open to suggestions if there is a better workflow.
-
-Thanks again for taking a look.
-
-Wen Gu
