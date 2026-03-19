@@ -1,235 +1,117 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011029.outbound.protection.outlook.com [52.101.65.29])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1144B30AD05
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 02:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773972274; cv=fail; b=O56otAPyTsx4wyfAoRa1j/UXSwr4hLHJKe5yeIgxdCIKSaZbPHa6O2qqGvhEuuCPg5v1pkDN5A8GDYWSW4GwSHsdpe5t8nev5QmtSM4T2218MBftnfFxOI0z9WJzsdeApw+0lh58PEdfKYjbH/MDvExNRlLyrHUzZU2LwJiWhZQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773972274; c=relaxed/simple;
-	bh=3M4lbtCV/zptjjiUD80aUnZqWeLCISm2Skx3ooiD6rY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ajUIJnZQ+2SNyB0TL+y8yg1zKgBS/uD2hmOrjixPZHOoZErgCmyZ/FY+S4z8p6ngiQfduSnUtlRr3kKFQO8jLfA7nX8cFau/7KLjE1FfjM0Nox3BxZDQAdRkkmJeUwJvtNG9eiMqns5/aCoNJVLEfkoUDayp2PezOexGXDbFFIg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XPpt/HSA; arc=fail smtp.client-ip=52.101.65.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F46627A477
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 03:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773979152; cv=none; b=eeHOBJ/RrqYQ4U3vzDrSvEKavhmZ9UWlWBW19Qa/nd/Eh/fJ++D+q7M7Tth6huQ0IYuaeJgKCouOGIfT6f4/AYLeynsErhKn8ith1uYaiAmWLe7o2NFT6B8WWbFF0XGW2ipaOP6+jOvQPN3+I8lGg9l5TwOEiTH0r8PU+LjqLYg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773979152; c=relaxed/simple;
+	bh=YbULbe6xEG80wWHH4RWlziMg66NsPPNMV1BvJwUB/Ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tE8Skio3GWo0ZDDm6FAmpuo5F+w5332pMJHpJJc8WBOfup4rUmYW4XDLx9y7jMW3PPYvRxVah8bh+KqiwCUDhvY10D1NRKSUh5XPa9l5M6f3BMC8weCe0c+Wl2GZUw5pY0TqRyd3Keg5/03Uww+V7LiO8CaZ7nc606QY95FCdcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=LUam4bT9; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XPpt/HSA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zr41vd2G3l5rR8IhdDH6J6wFxaZb/shHMXPxzijWVRA7Qev2a8WLIJOYDyUvoLnUX9qoAN7I5SNE9Z7qSsQNEH85rmZBBUBn/sz7sL124HW5KPeFqw8CFLgYB0jqpGCBdbcxLIbq7iBY8crKE2Tb6XSrT/WVq8LV8oi0pe8M/7aJTcbroiAsCmGRb+d/fEdaLEE5Jz3CJCe78Vbma3bDf2Jg9D5DmRZC9OyZoYspUeEA/JO5bOcQiZ8l2ZwHKh7ePW4iXc3LC+5pngyEvNS4VX2vmA2obOG0f9J+6Kt/H5yQM5nwEkRVT6sPvTtLtI1jEwKF+A/4/+lgnNsJId++KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3M4lbtCV/zptjjiUD80aUnZqWeLCISm2Skx3ooiD6rY=;
- b=N8/eVSgrslGoulBOWbRkUo8P9yjDx7IMVDaVkVbOfbIZH6ccowp03v8/0BX1PLK9ZP1L25xCxlA2tMtHX+Q6aeSZUPNn8WWpNf+ACusE3HJyzfeBF7xE3X+I1In/zP03LIwHj3wgSR0J4/AQK2Q9uFdoocZevj0lANdx4s+Bicug1Pxmhw8z/FbS51HcQWJW7DR67nwQFdTht/YT8S5YCbR2RBsfsCnFi1MqUmwVIPYV3W73MMeVpg/vzZa0KD9tjOh1EYD0g2fM8tecMlIc4/baxZxALvjNQbxl4IjKBnvEfb77R80yH+sbzmRSaqcgsYtFLbejFvLZttdahgH7+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3M4lbtCV/zptjjiUD80aUnZqWeLCISm2Skx3ooiD6rY=;
- b=XPpt/HSAoTCsWjUaNLgyST4sXURH3Z1G78iebaKccCl2vX7Vuc8tw5lSE8mXNacHL/zKWmGW9dO7XhQFS35Tl9wXKliSgRPLAtJymi/R3VzJ2IAYLvegAlCYf3htFo2MMm8I8Uwy+GVp+6RbmiZhHYM14oJ/7lKX0ujziW91rGojAh+DS1b5fMuLOWVdP0iPdQvdRS+UxNkUlev2i3Mx+zPj3C77yTI+k2u4rioZmaRr6+0KB3UObBMQyzKuW6Apx8bB10e1DFrKFc1iX39AqXiOnBknj70+qTkShrw3xLsWUcMPi4JDhB/TJ6YfQko3JOyLd0C1p1jIMB+bKU+Vxg==
-Received: from PAWPR04MB9960.eurprd04.prod.outlook.com (2603:10a6:102:38b::5)
- by DU4PR04MB12111.eurprd04.prod.outlook.com (2603:10a6:10:63e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Fri, 20 Mar
- 2026 02:04:22 +0000
-Received: from PAWPR04MB9960.eurprd04.prod.outlook.com
- ([fe80::566f:3659:511:76cf]) by PAWPR04MB9960.eurprd04.prod.outlook.com
- ([fe80::566f:3659:511:76cf%5]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
- 02:04:22 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-CC: Frank Li <frank.li@nxp.com>, Stefan Eichenberger <eichest@gmail.com>,
-	"o.rempel@pengutronix.de" <o.rempel@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>, "stefan.eichenberger@toradex.com"
-	<stefan.eichenberger@toradex.com>, Francesco Dolcini
-	<francesco.dolcini@toradex.com>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated
- after last read
-Thread-Topic: [EXT] Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated
- after last read
-Thread-Index: AQHcqyXwBHUr+bUJrUuXl+mBxXWLd7WdqYeAgBjrEACAAC+/kA==
-Date: Fri, 20 Mar 2026 02:04:22 +0000
-Message-ID:
- <PAWPR04MB9960D02AE0E9D0FFF53D2E82E84CA@PAWPR04MB9960.eurprd04.prod.outlook.com>
-References: <20260218150940.131354-1-eichest@gmail.com>
- <20260218150940.131354-3-eichest@gmail.com>
- <aZXoTGK_v3L4pc-E@lizhi-Precision-Tower-5810>
- <aZXq4gn4xhInQQlq@eichest-laptop> <aaamYByn9dZEIBWb@eichest-laptop>
- <aacECsJ6O8QjHsUa@lizhi-Precision-Tower-5810>
- <PAWPR04MB9960F0118ACC092BCAAB0142E87CA@PAWPR04MB9960.eurprd04.prod.outlook.com>
- <abyBxAvJcMshvB7G@zenone.zhora.eu>
-In-Reply-To: <abyBxAvJcMshvB7G@zenone.zhora.eu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAWPR04MB9960:EE_|DU4PR04MB12111:EE_
-x-ms-office365-filtering-correlation-id: a02860f4-7e0a-4c52-9b47-08de8625010a
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|7416014|366016|376014|1800799024|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- Yc7Orjqu1Bt/29sOMaKqfRYVNByJWKJxpWUrD15VWA+AOWf+3FxiT+cwmglzRho5tbnyNZBZQOJAzCibCX0Qz2ypZdcHFo1ndwNFDFl7yhjv0aRQnO1drz6nwbldagBgHGjMERIgESHaHs+Clx4uxhPMIqeu8dz9BBkOZLRUW7gw05Cl8kKLKJz2dYIJ3tQCwdj5PHNQClmYssEQE4pp93nTIqKAifO54gcg+F132/zbK454FayNaELfwGBHJTxySh0xpKhdcaforK4aBuBb36Pc6zTUzt5+HQ/dPP+bXsUwPpyqfq8heyPlwTwlq7ahRWf2JWEIjadG6GGD1sEsRtjnuzoXYj2sKOyLvxb4B43oYHxWEK8wrYuVwOLTmAVmMkK2KN9lJ7p17hHXbslq1qRpGuK6UL6rpZ7+zt5OvdMdVPx2vRBRZ7Yg8OVQF2BL4Si/VqIhtOKzj1/X9JFg2yEwSsuFICu+b9anU1GPFQt9I7uJzOGTMmXhBwZXv9+lcHljeXE+y1TEMQc1J66qZ31s6x8LL3MbfZ6QoSoRhfjHj6HiKzgudQaXdI/dGj1CRCm4XByFjUTpu91rV5yYaI9ZsLvv+WFPORcwazIXSh/iPg4PahfqXjHp2NVcBsNXxZkBmeIWj43J+7AeebNJ9fYAztKRqRemAEYHCk6jRiuwqXpql/fp55IInlqnihRS+0oaFxJe73pZm+DgWHNfZ0NiLgrR9c4g/53Q1MkklMY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR04MB9960.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(366016)(376014)(1800799024)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8ydNrWAAAzoSeKKBwmJyCIQPIgdc1efMMpCbxfRXEwuQI3AcFEYsRTJxZvlA?=
- =?us-ascii?Q?LVb3kWCSf5E7GzsFmaKV93qfTilZvGqyDP6sYdVGyLB4QymMuuxsKcN/J3gG?=
- =?us-ascii?Q?HROzC5Rd1jZzhkQYviTVdxbHg/cALAxyw+qC6Y0//5ua1KZdC6mDiygamwkN?=
- =?us-ascii?Q?r7eoZYeHnUhc5nFNPiQzWY13vRghsba4No79f9DQMB9ofUO2ieImuYT+SN/s?=
- =?us-ascii?Q?+AvCNiK5qT6m+iaG2lwzl/ozQJ9v88RWipItWo1wx57s0cQ2I6BPQ34nOXQh?=
- =?us-ascii?Q?ituFLbkUvWcnQ05Bw943OWJUqe7Q4ukicxMJpBeqpXn1g6x+c7YAuqUQ5/wP?=
- =?us-ascii?Q?v/MOi1zcHSC1AYb1lAyYSlKZaxd5I0OZRC0RNx9OPhdyX8oX7Kv+8iiD//mP?=
- =?us-ascii?Q?Yc9WZOaKL89v/ROlcrOaGQKStKn6A4XQP+LrmyNMgavKnyJjyF+iVjuyRZrJ?=
- =?us-ascii?Q?bKFVhNOzggaqNXF4Bbsng58Zf8GKDsM9Xog2V8TpWuX+GIm1GfVCIxfTosuK?=
- =?us-ascii?Q?rA18XcDNNQZjAuf7eh7tct0X8kVSzpybRBkARENgsIvVUmlr+lk9i4oa2GjE?=
- =?us-ascii?Q?HhKqlc8Yb53NCBTUzqtSAdvXFusLpYbpgyOg7KBWn40ENUxG26ltK/2Wm/pK?=
- =?us-ascii?Q?q0PxHdPnXL5CHB4h46L+6uPXw6YpG8NLsWxWIcm3UYmqp54jCoejKgEROaN+?=
- =?us-ascii?Q?+G9Mt5K7eDJuRfr950PpU2BaSIOVdg/lZwxAv16m4We5FwV4GWCnqchSZOnl?=
- =?us-ascii?Q?uQ9Pdxg3Hc7eGQz72KfVGjv0ObmUU+Ufa6EcsmhUDY/ORq/QY/iPvq6BLRUU?=
- =?us-ascii?Q?5js/s1KhLoqtbwI8OvTFaspgMSsPpsonbkIPOIP5I1U9jK9fgWjY1RdwTefL?=
- =?us-ascii?Q?Puk9pHcSbvKh3zg627lOUoeVP93WjXftEEE7vnaKkOnyO23xBpFXKSBTqIG3?=
- =?us-ascii?Q?bLxIibLabJYU48c7YZDNxb4DJNypbjB64bgGSUhCOSWmCR2V8fdMvphjg/gk?=
- =?us-ascii?Q?PEivtT23IgFrDNCX+3GuP1xHzeV0TS+aSg1Bxa0isXbeICyuKf8nOOKHNnGI?=
- =?us-ascii?Q?PfqHABGWJITu7XlFUlGRSTc0OPjvlZc4RDm93RWFtOtS5Br7AOb+Det7X82O?=
- =?us-ascii?Q?9GW690kwdvQeIRGD6EtfuJjX3b1pjp9o0tEnlXQPhE7vHQrtrOPswseXfzcI?=
- =?us-ascii?Q?6GEyJ2Qjhwn1EIZI8RmxRP2R/egNAK2T7WaBRDc8662cvheyLAHDZ8naDG3F?=
- =?us-ascii?Q?wWhwgKMLqA5wziATYYyYFpd4acBYoYCnQDxpnTy5wQy5sl1ZKH9KKo0kJvcQ?=
- =?us-ascii?Q?p/beK8ZSsYlvzITIpGFaHzFAugFvJAgYj8IEhawQlUJ9xgNvkWL5vZVjEfCN?=
- =?us-ascii?Q?PIFduE43RyTQ2JaZf6lvu+ODE+F14jZ9LZFBLrVTzaln2VMzGqXP19YFd5HP?=
- =?us-ascii?Q?az8OrbpTPppheFBnUfvRXJIjsbyhDO2Xbco/sP3nAvJg+oCjjNIJ23JR+0tb?=
- =?us-ascii?Q?3NzCzxk9I0DtgL3BehpE6Xwn2ycnXWi5XhvC0vMwcuF5nr952qBNEMVj1lb3?=
- =?us-ascii?Q?sYERvFB0TcSDiHyt7qeXFNSM1jae0C2ooERbSuZsGyojoPG2OWwtAhNChMJT?=
- =?us-ascii?Q?/gJdAt2wOhMLvN2xlYmqPAdtIoffNen7M8FO4y/57Bwq9BXHQourZlu/cwcW?=
- =?us-ascii?Q?zFSOqCqlnKEv3nUqpRsgfz26jrbiqe+nM6I+84S+dP4JjVm9?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="LUam4bT9"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BC70110E34;
+	Fri, 20 Mar 2026 04:58:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1773979140;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=AWHHdDNqh9ZvQHUva5HwCaoi+Z9+EM+dvDGmkXuDbcA=;
+	b=LUam4bT9N39dUOjkSfM0tn5oFZ5aiQ2mhPAM2uOUWYPu/xIVUGDe91ds7BEtiZLZbk6gso
+	8+AY7JYZ3W/8efj1E9nKSEA6Mgj0d8JNAO9wQWczaVWscGHVpzEwktVGP0oKNLPbUBI4GZ
+	q40E0XvRSYCl+wyPg7qnwx84GfGBtbMZAdElMSk26120WNBMLsT3ZLDZwF95j4Kau2V4+L
+	pa7hEBDamt+m2mxLKQQ/djwMcyI6/Vpfj2L8qJythU0gavHe2i74gp6xrTsxuMUg65pkj4
+	o38n69GjSMQNbOMzNw5qxXRRmKMhVgnEIR4hwyPF56oArqBk4O0UpLlnuh8j0g==
+Message-ID: <40b3d1c8-0cf2-470d-8223-751240061735@nabladev.com>
+Date: Thu, 19 Mar 2026 15:38:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAWPR04MB9960.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a02860f4-7e0a-4c52-9b47-08de8625010a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2026 02:04:22.2479
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IZNGN4OM1806n5JR0Lfy5qTGlyxWVL3w7MvwpOhGrgsMb94fjYZ/ZG5L/iRMPBJDukl9zkDI7LyMSJDNnPxgGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/9] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+ Marco Felsch <m.felsch@pengutronix.de>
+Cc: Liu Ying <victor.liu@nxp.com>, imx@lists.linux.dev,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+ dri-devel@lists.freedesktop.org, Frank Li <Frank.Li@nxp.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260304-dcif-upstreaming-v8-0-bec5c047edd4@oss.nxp.com>
+ <20260304-dcif-upstreaming-v8-1-bec5c047edd4@oss.nxp.com>
+ <b7968f1a-c4bc-4bad-bcf8-407ff2d8db27@nxp.com>
+ <dmqbmmpyi3ssvq67iqwbt6ww7tsaik7ifi5dnupmuhep7u5saz@ads5g7ette3y>
+ <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-
-
-> -----Original Message-----
-> From: Andi Shyti <andi.shyti@kernel.org>
-> Sent: Friday, March 20, 2026 7:10 AM
-> To: Carlos Song <carlos.song@nxp.com>
-> Cc: Frank Li <frank.li@nxp.com>; Stefan Eichenberger <eichest@gmail.com>;
-> o.rempel@pengutronix.de; kernel@pengutronix.de; s.hauer@pengutronix.de;
-> festevam@gmail.com; stefan.eichenberger@toradex.com; Francesco Dolcini
-> <francesco.dolcini@toradex.com>; linux-i2c@vger.kernel.org;
-> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
-> linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> Subject: [EXT] Re: [PATCH v1 2/2] i2c: imx: ensure no clock is generated =
-after
-> last read
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->=20
->=20
-> Hi Carlos,
->=20
-> > > > > > > When reading from the I2DR register, right after releasing
-> > > > > > > the bus by clearing MSTA and MTX, the I2C controller might
-> > > > > > > still generate an additional clock cycle which can cause
-> > > > > > > devices to misbehave. Ensure to
-> > > > > >
-> > > > > > Do you means SCL have additional toggle? You capture waveform?
-> > > > > >
-> > > > >
-> > > > > Yes exactly. We were able to capture the waveform when the issue
-> > > > > happens. It doesn't always happen though, it depends on how much
-> > > > > time passes between clearing MSTA and MTX and reading from I2DR.
-> > > > >
-> > > > > If you want to see the waveform, I uploaded it to our server:
-> > > > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F=
-%
-> > > > >
-> 2Fshare.toradex.com%2Fdwnhcrl6b9toib6&data=3D05%7C02%7Ccarlos.song
-> > > > > %40nxp.com%7C9567b791c35345a75eba08de860c9954%7C686ea1d
-> 3bc2b4c6f
-> > > > >
-> a92cd99c5c301635%7C0%7C0%7C639095585800985569%7CUnknown%7CT
-> WFpbG
-> > > > >
-> Zsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMi
-> > > > >
-> IsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DAK6DGztAek
-> > > > > 8Dq0M8G98PO%2F68UhcwfJPxsLSJQZ4jumE%3D&reserved=3D0
-> > > > > You can see the additional clock at the right end, after "0x17 + =
-NAK".
-> > > >
-> > > > Have you had a chance to look at the waveform? Do you have any
-> > > > concerns about the proposed solution?
-> > >
-> > > I am fine. Add carlos, who did many work about I2C.
-> > >
-> > > Frank
-> >
-> > Hi,
-> >
-> > Just review this series, looks this series patch make this fix for the =
-limitation[1]
-> safer:
-> > "It must generate STOP before read I2DR to prevent controller from
-> generating another clock cycle".
-> >
-> > Previous patch[2] has done this to avoid the limitation. However accord=
-ing to
-> the waveform, I2C controller still generated an additional clock cycle
-> sometime.
-> >
-> > The key of patch is ensure to read the last bytes after the bus is not =
-busy
-> anymore to avoid this another clock cycle.So these patches are fine to me=
- also.
-> >
-> > [1] 054b62d9f25c ("i2c: imx: fix the i2c bus hang issue when do repeat
-> > restart") [2] 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma
-> > mode")
->=20
-> Sorry, I'm not understanding your point here. Are you suggesting to chang=
-e the
-> Fixes tag to [1]?
->=20
-
-Hi, Andi
-
-No, don't need to do anything, . I agreed with this patch totally, it is re=
-asonable.
-
-> Thanks,
-> Andi
-
+On 3/19/26 9:57 AM, Laurentiu Palcu wrote:
+> On Fri, Mar 06, 2026 at 09:46:57AM +0100, Marco Felsch wrote:
+>> On 26-03-06, Liu Ying wrote:
+>>> On Wed, Mar 04, 2026 at 11:34:10AM +0000, Laurentiu Palcu wrote:
+>>>> i.MX94 has a single LVDS port and share similar LDB and LVDS control
+>>>> registers as i.MX8MP and i.MX93.
+>>>>
+>>>> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+>>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>> ---
+>>>>   Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml | 2 ++
+>>>>   1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
+>>>> index 7f380879fffdf..fb70409161fc0 100644
+>>>> --- a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
+>>>> +++ b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
+>>>> @@ -20,6 +20,7 @@ properties:
+>>>>         - fsl,imx6sx-ldb
+>>>>         - fsl,imx8mp-ldb
+>>>>         - fsl,imx93-ldb
+>>>> +      - fsl,imx94-ldb
+>>>
+>>> Cc'ing Marco.
+>>>
+>>> Recently, Marco said that LDB node should not have a reg property...
+>>>
+>>> https://lore.kernel.org/all/4sofljffovrorpxe2os3jl745qfjoglvl54oqf3v7r5bk5f6aq@6y3jwn4abiqy/
+>>
+>> Yes, this has to be dropped. All variants of this specific "IP" use the
+>> same approach. This "IP" is part of a general purpose register layout
+>> with very loose reg-field definitions: e.g. resets and clk-gatting share
+>> the same register. Or a mux reg-field shares the same register as a
+>> MIPI-{C,D}SI configuration reg-field. Therefore this "IP" is part of a
+>> syscon and should be abstracted as such within the DT.
+> 
+> Even though I understand the logic behind why 'reg' should be dropped,
+> I'm not exactly sure how to proceed with this. It appears Marek made the
+> 'reg' required in this commit (merely 2 months ago):
+> 
+> 8aa2f0ac08d3b - dt-bindings: display: bridge: ldb: Add check for reg and reg-names
+> 
+> Should the above patch simply be reverted and have 'reg' as optional again?
+> Or should the 'reg' and 'reg-names' be removed completely from the
+> binding.
+> 
+> @Marek, any comments?
+The LDB driver was always written with parsing 'reg' out of the DT, so 
+encoding the register offsets into the driver was a mistake. The LDB 
+controls two registers, which can be comfortably described in DT.
