@@ -1,103 +1,74 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666273ECBDE
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7A73ECBDB;
+	Thu, 19 Mar 2026 17:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773939365; cv=none; b=JxnDNDVtiC/MPqVUJHfYjEPpvEXXJQJAZgIz11PZsW7IVGu9jkRkNQPrfqmgtYwgyPCosO5WpKDKSNLjcdGVBoXW8V8DcCTTE8Ttwlbfb9SO0irkRAVloyI4sXgePqbfyh/W4g93ZBaiFzuWNyjFQISN/7/MSYxLvzQss9ITaec=
+	t=1773940406; cv=none; b=FswjlqD/bmrxc0A7DAH3pWN7OYuL/CmUoM7fSPNetsotA/fay2EPTqoRq3zPCX+F+ovhSW3FFRj7+SPkIiHFxtfRLFllnk2kPS1Ej2omFt6QYtQ7E5rr05U3DOJsag9+Ran6ByrOjTo55Ia9zn00QVEl8lrk7i/YQ2niEFVgMIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773939365; c=relaxed/simple;
-	bh=UWUiatWg4MfD0SI42Vpr1GV3NKMVjp3KTsoMTQ9uxyY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=twhQJYT7qS+nplVHQaiCYCBHuDdWmqE1PI9hvlw/JIwlfVdN8HiubRqpyvp4e7wiU7LBzpcXNc3Hmo1vCoXrHJm3adUwOMuRg73ucFZP2nObRBHS6dt5ZmTomvlTmXsUOhaueM9VGKFWgzzuk8Zv16rujHqvyYuTWfyN5bRD13s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf2-00054h-0S; Thu, 19 Mar 2026 17:55:52 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf1-0016iN-1M;
-	Thu, 19 Mar 2026 17:55:51 +0100
-Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EF7F5508785;
-	Thu, 19 Mar 2026 16:55:50 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 19 Mar 2026 17:55:43 +0100
-Subject: [PATCH spi-next v2 09/11] spi: spi-fsl-lpspi: fsl_lpspi_reset():
- convert to void function
+	s=arc-20240116; t=1773940406; c=relaxed/simple;
+	bh=M8GZbHUIj3Y/6Oe1KjBzpKCejXEtNxOlN7IxJAzIK6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDHZH2oPCQmgLL/UPXjRbs2YPO/QKOK1yjObHkzG7nxyZV7nYM+5Cd+BO9/w4kTaPRH2dkTZ1QGgE5C8neRmcCPBItrRGfEpJIvUi189PIJyVjaaPtOdMtPeDM8M2iapRvB45MDRKfLbIE8cLVQfrsJ+KTa0/KWY04U4gMCTB80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sxc5EeRK; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sxc5EeRK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDD9C19424;
+	Thu, 19 Mar 2026 17:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773940406;
+	bh=M8GZbHUIj3Y/6Oe1KjBzpKCejXEtNxOlN7IxJAzIK6I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sxc5EeRKYEVN1/A7GFpVO0aQn9D5SKSkzzLWm0iuEEQVCHehSMUzoECwJtxwMBwZB
+	 gsthkr54G70IzCRCbHh8NkcGefvZgd6jyL8Ir7cb5G9SmOt/b0kxUf/WRrOlAuSTJI
+	 Z+DXTsq67pTpBxjyCzuI5nMb7HYLHQ2F/KkKg/vahYgqDBvYHU58bFUw9/3p9YOLwc
+	 hblX9FgB/dQarfekDfGBwOiZ2S7B6EiGR2dwF0lZ/AfdHEHZjDGMfH1+evtNT6Ww47
+	 BZRnUjXpEWnL+185d7Pymh/Ne52UIEL85vEL5TOGveS7TrAbH2oPUyBW4YVpYfdDXR
+	 6UqHC5Phkx5Gg==
+Date: Thu, 19 Mar 2026 17:13:20 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: add i.MX91 9x9 QSB board
+Message-ID: <20260319-unranked-bakery-8b735814b907@spud>
+References: <20260319-b4-imx91-qsb-dts-v1-0-2eedc01d8af0@nxp.com>
+ <20260319-b4-imx91-qsb-dts-v1-1-2eedc01d8af0@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-9-02b56c5d44a8@pengutronix.de>
-References: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
-In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
-Cc: Marek Vasut <marex@nabladev.com>, linux-spi@vger.kernel.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1008; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=UWUiatWg4MfD0SI42Vpr1GV3NKMVjp3KTsoMTQ9uxyY=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcozWpkl+1/ebRH46MB/fXN1isunLY9hj3MYZwDZcZm
- 5rN3+bu7ihlYRDjYpAVU2RZ+uOEokCgQ2nvy4RJMHNYmUCGMHBxCsBEvNYw/A/r4HnFG5X9xZ35
- S3paarjOTdeHx3S4TE9zJC/w0bvpq8TI8D1z+nePyt/vOY7VaX5bofyxJuhfi77UNIYlzXOM9l/
- /wwUA
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="RTIVsBf3wxPgv8L7"
+Content-Disposition: inline
+In-Reply-To: <20260319-b4-imx91-qsb-dts-v1-1-2eedc01d8af0@nxp.com>
 
-The function fsl_lpspi_reset() cannot fail and it's return value is never
-checked.
 
-Simplify the code and convert it into a void function.
+--RTIVsBf3wxPgv8L7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/spi/spi-fsl-lpspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index f54b72e3a2aa..9f0d7b9ce2ab 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -578,7 +578,7 @@ static int fsl_lpspi_wait_for_completion(struct spi_controller *controller)
- 	return 0;
- }
- 
--static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
-+static void fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	u32 temp;
- 
-@@ -593,8 +593,6 @@ static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
- 
- 	/* W1C for all flags in SR */
- 	writel(SR_CLEAR_MASK, fsl_lpspi->base + IMX7ULP_SR);
--
--	return 0;
- }
- 
- static void fsl_lpspi_dma_rx_callback(void *cookie)
+--RTIVsBf3wxPgv8L7
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-2.53.0
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabwusAAKCRB4tDGHoIJi
+0nTEAQDbMCOrg64/o0losQs0rt/kE/TFy9uriXfqdjBLNgK4pQD+O/hOqrhmlk3E
+dxsw54Rmx+qQaMs7yj48y2N0Sey4QgY=
+=HmHV
+-----END PGP SIGNATURE-----
+
+--RTIVsBf3wxPgv8L7--
