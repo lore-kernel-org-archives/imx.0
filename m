@@ -1,167 +1,129 @@
-Received: from mail-m3278.qiye.163.com (mail-m3278.qiye.163.com [220.197.32.78])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C565639C003
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 07:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B903A75AC
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 08:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773906791; cv=none; b=nBe++V1bHrY8naoDrvgVLGFwTLP3e117jM6KIWk025Mqp9eHoEQiCvqqgEtSMQtB0a/+ko7/UsVeqixSX5tQfSFCbSdLlsx2jo4NGZfaaMQ9P9wYD4BDYANKd/EtbsVIdQf2SZ1vYnmIImhsFVkNc7LT4ze3ChDLXYQFR6YsD8U=
+	t=1773907484; cv=none; b=o2eTrTtc9saq5kh0jbuGZHWLuOKJRew8YmMJqazoJp9u/cv70fMzXRY9UevW7cGeQGmbc1BbnP7uT3eljys+1qusAvvMf+9DjqOIxT6GbHDSjLAIc1BL2Cmzin9qLkCGDPGv82KtpvwhFdsrFZmSEk9stZTDvKFWcFiYnmyBuAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773906791; c=relaxed/simple;
-	bh=gpRKKYkzZGVqQI9BBbjwYdSayfD0FFVZXkoSR8byfB0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SV9gHPu4QCAqrKeNkukSpFsifx/rd6T3BzFm4TeV6TSZ2yCQ0yRBPq+W1LEIoKORzHnaaB1+VqGyP7RFRlXjkUC1kXUTb65i17CDixzjU9gPsdgvFtu40xlu39IR3Fv+oe6pFoK0GZ3jC13kMQXVUmfoJpIxTU86K/Rm9u4Ll0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=FtijqO5o; arc=none smtp.client-ip=220.197.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1773907484; c=relaxed/simple;
+	bh=q5wCcGzaZCVYHVx/yL/c01yk1kZ39vxRS8V5m69TZSw=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aksjGbypP47+jST+uaTASfKlkY+r2et44tzA6FuXrGmCJl3i3/HfwYn4sVMab4RkoSyIMkMjsOx7JIcG/XOmF19saeXkvl8jgBIduwYmOpFpk+Inj6Gbu4d1+v7CFRfCnrEFYihG6JjnETfgRn7bteMNRdH+tD2ijYfd4WNukSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Dnatj6+e; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="FtijqO5o"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3789bd654;
-	Thu, 19 Mar 2026 15:47:47 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	victor.liu@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	alim.akhtar@samsung.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	luca.ceresoli@bootlin.com,
-	nicolas.frattaroli@collabora.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v11 14/17] drm/exynos: exynos_dp: Apply analogix_dp_finish_probe()
-Date: Thu, 19 Mar 2026 15:47:41 +0800
-Message-Id: <20260319074744.1965918-1-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260319071452.1961274-1-damon.ding@rock-chips.com>
-References: <20260319071452.1961274-1-damon.ding@rock-chips.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Dnatj6+e"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 9B26BA12AA;
+	Thu, 19 Mar 2026 09:04:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:content-transfer-encoding:content-type:content-type:date:from
+	:from:in-reply-to:message-id:mime-version:references:reply-to
+	:subject:subject:to:to; s=mail; bh=Fl2E9rGMlhCBvCHqztZinzXjLFbCx
+	Es+Z7hcQwx7u4s=; b=Dnatj6+eRh5Q9bwe3UH2Aj1kFsNSSgC5mZf/mrKqeS3oI
+	UcjH+Sr2o0F+JWHE13Sv0QqvhFu4ETerFu8JxU4HkXtaxwfKwl+Nq2TTmRfhstLY
+	Y+SjgB+qGTRP+ZeVOWp/CD03Vu7Hw1VRZzkmslDvxmxxRqbNSfwF7a7BR3H+4deG
+	4Ju+vFpJnq3G8Br9SLmHO42UtPkbCofpnwDu6C/Vln1eWh9q5gEXVzmxmLZcQcMT
+	OgBnCMPFegBDsV7MU7h26G9flxIW0yRp3VY6FuhbB1hbwxLyLWcDrn/aOd2vNsq6
+	fEL4LPCrZ/MRaTrkTFGks3kEPgBbNvmQCzjwFbxRylIWXeqsiNVkYqJ7MhVJ+mi2
+	4kGkZ+gYuD62qIpHzCSAJ4xekegiMf3IJ+CJrT4pM2ajGiJOV7bJVcVaEF+JiQLo
+	uPEHmxnJ54xD3DQB+iZbfijg0bv0x6yxYR2uuIGMQFddDsG2sqKD3HTpjWYCTHhe
+	XH6u58Z0Seez0JzqhM2YlYbxExafSotwZSOhnqHKM1Uo9Y99oJBRbYUjRFVCwSCh
+	uIUmOH1KPryR2G/qKfp8wXDAGNDiDSX9nQ9xtPst7VkwWV7XNb5N85cfTKE686GC
+	VWZuVLtE9FMg3X0UpMerXw+X52Ss4BSNW4prQ1x3AiBpHc0gNyqpPldEz/w4G4=
+From: Buday Csaba <Buday.Csaba@prolan.hu>
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, "Clark
+ Wang" <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, =?iso-8859-2?Q?Cs=F3k=E1s_Bence?=
+	<Csokas.Bence@prolan.hu>, Frank Li <frank.li@nxp.com>, Francesco Dolcini
+	<francesco.dolcini@toradex.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Topic: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Index: AQHctu/EnYrCAj+Sc0CtV9sYzw0oyLW1JCUAgABWKQA=
+Date: Thu, 19 Mar 2026 08:04:36 +0000
+Message-ID: <2894050ee58d428cba909b705b7684a2@prolan.hu>
+References: <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
+ <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US, hu-HU
+Content-Language: hu-HU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-esetresult: clean, is OK
+x-esetid: 37303A2998FD5150627D66
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d051098dd03a3kunmf4d8b30239c761
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ05CHVZDSEpOTh5JGE4YHhhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=FtijqO5oKnriZtUzbOA5Va+zjlJ+2aZBe+kPH+PrPR8uPQWaot9rUYJJnGD1ZMho70HeWUjKsXd//VpLcIMQNifohmsFVnf0J7kp1lzHkTyunBvIs16RZ/hXGif6URYqb2cazb2JtJEOH03TeqiQ1OAvs/cMfT2Iz9dAYwEJ4RM=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=l0rCYWGbbWqoD8V97nbLeMFxlHthOJgEIOH48elhF+M=;
-	h=date:mime-version:subject:message-id:from;
 
-Apply analogix_dp_finish_probe() in order to move the panel/bridge
-parsing from Exynos side to the Analogix side.
+>> Fixes: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
+>>=20
+>> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+>> ---
+>>  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+>> b/drivers/net/ethernet/freescale/fec_ptp.c
+>> index 7f6b574320716..c1af81002b8fa 100644
+>> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+>> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+>> @@ -534,7 +534,7 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp=
+,
+>>  		if (rq->perout.flags)
+>>  			return -EOPNOTSUPP;
+>>=20
+>> -		if (rq->perout.index !=3D fep->pps_channel)
+>> +		if (rq->perout.index !=3D 0)
+>>  			return -EOPNOTSUPP;
+>>=20
+>>  		period.tv_sec =3D rq->perout.period.sec;
+>> --
+>> 2.39.5
+>>=20
+>=20
+> I think the correct fix should update the n_per_out value like below.
+>=20
+> @@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int i=
+rq_idx)
+>         fep->ptp_caps.max_adj =3D 250000000;
+>         fep->ptp_caps.n_alarm =3D 0;
+>         fep->ptp_caps.n_ext_ts =3D 0;
+> -       fep->ptp_caps.n_per_out =3D 1;
+> +       fep->ptp_caps.n_per_out =3D 4;
+>=20
+> The commit 566c2d83887f ("net: fec: make PPS channel configurable") added
+> the property "fsl,pps-channel" to indicate which pulse channel is availab=
+le.
+> So we should not fix the pulse output channel to 0.
+>=20
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+But is it wise to expose four channels, when only one is usable by this=20
+driver?
 
----
+This patch does not affect the channel selection. That can be still made
+through the DT. The driver uses `fep->pps_channel` everywhere else, while
+rq->perout.index is only checked in this single line, and never used
+anywhere else.
 
-Changes in v4:
-- Rename analogix_dp_find_panel_or_bridge() to
-  analogix_dp_finish_probe().
+So the question is whether userspace is supposed to reference the hardware
+channel number directly, or the mapping is meant to be left to the devicetr=
+ee
+and the driver internally.
 
-Changes in v7:
-- Remove exynos_dp_legacy_bridge_init() and inline API
-  devm_drm_of_display_mode_bridge().
-- If the panel or the next_bridge is parsed from DT, use ptr validity
-  to check whether to call component_add() directly at the end of
-  probing.
-
--Changes in v9:
-- Add Tested-by tag.
----
- drivers/gpu/drm/exynos/exynos_dp.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index b2597fafd73d..9f3d4d4c7352 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -158,9 +158,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np;
- 	struct exynos_dp_device *dp;
--	struct drm_panel *panel;
--	struct drm_bridge *bridge;
--	int ret;
- 
- 	dp = devm_kzalloc(&pdev->dev, sizeof(struct exynos_dp_device),
- 			  GFP_KERNEL);
-@@ -187,30 +184,30 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 		goto out;
- 	}
- 
--	ret = drm_of_find_panel_or_bridge(dev->of_node, 0, 0, &panel, &bridge);
--	if (ret == -ENODEV) {
-+	if (of_get_display_timings(dev->of_node)) {
- 		dp->plat_data.next_bridge = devm_drm_of_display_mode_bridge(dp->dev,
- 									dp->dev->of_node,
- 									DRM_MODE_CONNECTOR_eDP);
--		ret = IS_ERR(dp->plat_data.next_bridge) ? PTR_ERR(dp->plat_data.next_bridge) : 0;
-+		if (IS_ERR(dp->plat_data.next_bridge))
-+			return PTR_ERR(dp->plat_data.next_bridge);
- 	}
--	if (ret)
--		return ret;
- 
- 	/* The remote port can be either a panel or a bridge */
--	dp->plat_data.panel = panel;
--	dp->plat_data.next_bridge = bridge;
- 	dp->plat_data.dev_type = EXYNOS_DP;
- 	dp->plat_data.power_on = exynos_dp_poweron;
- 	dp->plat_data.power_off = exynos_dp_poweroff;
- 	dp->plat_data.attach = exynos_dp_bridge_attach;
-+	dp->plat_data.ops = &exynos_dp_ops;
- 
- out:
- 	dp->adp = analogix_dp_probe(dev, &dp->plat_data);
- 	if (IS_ERR(dp->adp))
- 		return PTR_ERR(dp->adp);
- 
--	return component_add(&pdev->dev, &exynos_dp_ops);
-+	if (dp->plat_data.panel || dp->plat_data.next_bridge)
-+		return component_add(&pdev->dev, &exynos_dp_ops);
-+	else
-+		return analogix_dp_finish_probe(dp->adp);
- }
- 
- static void exynos_dp_remove(struct platform_device *pdev)
--- 
-2.34.1
+I hope the netdev maintainers and/or Richard Cochran can clarify the
+intended purpose of `n_per_out` and the expected channel indexing.
 
