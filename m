@@ -1,129 +1,82 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B903A75AC
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 08:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2021640DFA4
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 08:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773907484; cv=none; b=o2eTrTtc9saq5kh0jbuGZHWLuOKJRew8YmMJqazoJp9u/cv70fMzXRY9UevW7cGeQGmbc1BbnP7uT3eljys+1qusAvvMf+9DjqOIxT6GbHDSjLAIc1BL2Cmzin9qLkCGDPGv82KtpvwhFdsrFZmSEk9stZTDvKFWcFiYnmyBuAQ=
+	t=1773907794; cv=none; b=jCQFD1V5cZ//ovgk+be3gNy6Z/GKTg0AulPQIjXw8zH9ZeMKXKfzMIyLwZmv9BuwtzvePDxJbUH/vcOsr3LU5yAjxMrXV2rEKnTzsxyeNavB/1vy+PRWSEk0zG8NpPDjuBjuLNEociG5Z5J5Y5NadUy2FRuceX+PUX2gtzLgu/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773907484; c=relaxed/simple;
-	bh=q5wCcGzaZCVYHVx/yL/c01yk1kZ39vxRS8V5m69TZSw=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aksjGbypP47+jST+uaTASfKlkY+r2et44tzA6FuXrGmCJl3i3/HfwYn4sVMab4RkoSyIMkMjsOx7JIcG/XOmF19saeXkvl8jgBIduwYmOpFpk+Inj6Gbu4d1+v7CFRfCnrEFYihG6JjnETfgRn7bteMNRdH+tD2ijYfd4WNukSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Dnatj6+e; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1773907794; c=relaxed/simple;
+	bh=/eoynW+sJF2PZIxRo6AnYTGNfHvzdyYKKp2Ao3jzLcc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FepU4Dd3k19n+6uh3UoKljhnXZh4UiFocLzbLt3BvqkFzWhLRzmgT9dMDgZYBoTEx55BizHf28v0VyyXYibgWt1W2I00vZSdFIZtChbaO5cOBC08uybu0ukkTFFY6RFMmBI2NSe7BEWHzFwkECfBCz56IGS5LPH0uNQOJ3BE3gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zrlJ1VvD; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Dnatj6+e"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 9B26BA12AA;
-	Thu, 19 Mar 2026 09:04:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:content-transfer-encoding:content-type:content-type:date:from
-	:from:in-reply-to:message-id:mime-version:references:reply-to
-	:subject:subject:to:to; s=mail; bh=Fl2E9rGMlhCBvCHqztZinzXjLFbCx
-	Es+Z7hcQwx7u4s=; b=Dnatj6+eRh5Q9bwe3UH2Aj1kFsNSSgC5mZf/mrKqeS3oI
-	UcjH+Sr2o0F+JWHE13Sv0QqvhFu4ETerFu8JxU4HkXtaxwfKwl+Nq2TTmRfhstLY
-	Y+SjgB+qGTRP+ZeVOWp/CD03Vu7Hw1VRZzkmslDvxmxxRqbNSfwF7a7BR3H+4deG
-	4Ju+vFpJnq3G8Br9SLmHO42UtPkbCofpnwDu6C/Vln1eWh9q5gEXVzmxmLZcQcMT
-	OgBnCMPFegBDsV7MU7h26G9flxIW0yRp3VY6FuhbB1hbwxLyLWcDrn/aOd2vNsq6
-	fEL4LPCrZ/MRaTrkTFGks3kEPgBbNvmQCzjwFbxRylIWXeqsiNVkYqJ7MhVJ+mi2
-	4kGkZ+gYuD62qIpHzCSAJ4xekegiMf3IJ+CJrT4pM2ajGiJOV7bJVcVaEF+JiQLo
-	uPEHmxnJ54xD3DQB+iZbfijg0bv0x6yxYR2uuIGMQFddDsG2sqKD3HTpjWYCTHhe
-	XH6u58Z0Seez0JzqhM2YlYbxExafSotwZSOhnqHKM1Uo9Y99oJBRbYUjRFVCwSCh
-	uIUmOH1KPryR2G/qKfp8wXDAGNDiDSX9nQ9xtPst7VkwWV7XNb5N85cfTKE686GC
-	VWZuVLtE9FMg3X0UpMerXw+X52Ss4BSNW4prQ1x3AiBpHc0gNyqpPldEz/w4G4=
-From: Buday Csaba <Buday.Csaba@prolan.hu>
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, "Clark
- Wang" <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>, =?iso-8859-2?Q?Cs=F3k=E1s_Bence?=
-	<Csokas.Bence@prolan.hu>, Frank Li <frank.li@nxp.com>, Francesco Dolcini
-	<francesco.dolcini@toradex.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zrlJ1VvD"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 6D2581F940;
+	Thu, 19 Mar 2026 09:09:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1773907790;
+	bh=dJ9657zYwrukRzdvCzFf1VnhYPLd6Qfy7rR+2FHT8ck=; h=From:To:Subject;
+	b=zrlJ1VvDSl/dduMYyCDLgrB7+m47+yT9EQy2Z/dfvbJiPRQ+4UowtlKFZ/2yZiJa5
+	 mCg78FxTuaxcyPnIothacTLB5C04LPofi+mdhywb/uuAWlbl+V+wbV0MIwKZP/6nE6
+	 2PA1I2fCfn8nvARH3MO9jO5UCQSnxTmGHPkj6seqRMqJxGXxni78Pt1a3fobRbKnQg
+	 KOVB16Fauyszexxxrp675EKp/DfyhS1kioD/7RgeRVzUSeoZS6HKyEe8OYTuVfBitj
+	 D0Sbdj9ykSFlz3M6oRepiEXNSUb4aQZVZB3xPQviKtg+mUoul+oYRm5RxJumDaaTvk
+	 rWYi1dnJSxvJQ==
+Date: Thu, 19 Mar 2026 09:09:46 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	=?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>,
+	Frank Li <Frank.Li@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
  interface
-Thread-Topic: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
- interface
-Thread-Index: AQHctu/EnYrCAj+Sc0CtV9sYzw0oyLW1JCUAgABWKQA=
-Date: Thu, 19 Mar 2026 08:04:36 +0000
-Message-ID: <2894050ee58d428cba909b705b7684a2@prolan.hu>
+Message-ID: <20260319080946.GA6892@francesco-nb>
 References: <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
- <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Accept-Language: en-US, hu-HU
-Content-Language: hu-HU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2998FD5150627D66
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
 
->> Fixes: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
->>=20
->> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
->> ---
->>  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
->> b/drivers/net/ethernet/freescale/fec_ptp.c
->> index 7f6b574320716..c1af81002b8fa 100644
->> --- a/drivers/net/ethernet/freescale/fec_ptp.c
->> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
->> @@ -534,7 +534,7 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp=
-,
->>  		if (rq->perout.flags)
->>  			return -EOPNOTSUPP;
->>=20
->> -		if (rq->perout.index !=3D fep->pps_channel)
->> +		if (rq->perout.index !=3D 0)
->>  			return -EOPNOTSUPP;
->>=20
->>  		period.tv_sec =3D rq->perout.period.sec;
->> --
->> 2.39.5
->>=20
->=20
-> I think the correct fix should update the n_per_out value like below.
->=20
-> @@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int i=
-rq_idx)
->         fep->ptp_caps.max_adj =3D 250000000;
->         fep->ptp_caps.n_alarm =3D 0;
->         fep->ptp_caps.n_ext_ts =3D 0;
-> -       fep->ptp_caps.n_per_out =3D 1;
-> +       fep->ptp_caps.n_per_out =3D 4;
->=20
-> The commit 566c2d83887f ("net: fec: make PPS channel configurable") added
-> the property "fsl,pps-channel" to indicate which pulse channel is availab=
-le.
-> So we should not fix the pulse output channel to 0.
->=20
+On Wed, Mar 18, 2026 at 04:56:15PM +0100, Buday Csaba wrote:
+> The PPS channel selection was incorrectly implemented in the orginal
+> commit (see fixes). The sysfs interface uses a logical channel index,
+> and rejects channel numbers greater than zero (n_per_out is 1).
+> See: period_store() in drivers/ptp/ptp_sysfs.c
+> 
+> On the other hand, the FEC PTP driver was expecting the hardware
+> channel number, making the periodic output unusable from the sysfs
+> interface, with the exception of channel 0.
+> 
+> Fix the FEC PTP driver to match the logical channel number of the
+> sysfs interface.
+> 
+> Fixes: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
 
-But is it wise to expose four channels, when only one is usable by this=20
-driver?
+The commit you mention as fixes, it was just a refactor. The behavior
+before/after that commit was supposed to be the same.
 
-This patch does not affect the channel selection. That can be still made
-through the DT. The driver uses `fep->pps_channel` everywhere else, while
-rq->perout.index is only checked in this single line, and never used
-anywhere else.
+That commit never implemented "PPS channel selection", as you wrongly
+state here.
 
-So the question is whether userspace is supposed to reference the hardware
-channel number directly, or the mapping is meant to be left to the devicetr=
-ee
-and the driver internally.
-
-I hope the netdev maintainers and/or Richard Cochran can clarify the
-intended purpose of `n_per_out` and the expected channel indexing.
+Francesco
 
