@@ -1,153 +1,238 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013030.outbound.protection.outlook.com [52.101.72.30])
+Received: from mail-m3290.qiye.163.com (mail-m3290.qiye.163.com [220.197.32.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8EB368951
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 07:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773905127; cv=fail; b=rztI7D3NHlWdHmdcitzWtuUo6ar9jwo6rKElOcBwhEvC4+rO68ja26sVn1vkagApF+pwTDnsC058uJ21bfHrByq7C98w3xHNKpfalbDSbyWr6dFtb4EE4eH5QY64taPZrYjusDIqiIB4caQXN/unw16K7CA5f5FnnExQJLYGcIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773905127; c=relaxed/simple;
-	bh=1JIjsZndMRmXl4e5EmfVbJ5Bw40WtC/oJ1oJPUc9dsU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sdCKMWERqpVLGR/WqJdXPGgQSWCiStHBCLJ1wO26Wcx4AsnrVCXci42eKGD8ZHe/sfFByUU9KADp5dHc2xUE/q9aaJqUtN+Q7YK6nUK9/oiA30khXtsDvi/05cSDuIM1rfgwhzLM59MmdhcWRzAh7yKz4SZ97sRTPwdYOu0rfKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FeGMmXhl; arc=fail smtp.client-ip=52.101.72.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF10623B63C
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 07:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.90
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773905435; cv=none; b=CUdZ/LadDIojdlr1lGbTDnGwsS/xe3aLSBFN2Tj1W9v/l4eo9LWJI1Yevt1jE3IKf4i1ncxOIttPm5ZOvRE4hUyfgwsPIb+umMwrofpIcN7WfyEA+Bw5TyuMV/P067oei+ciVj5VWPc4d6Ee9AP9024E/wftXDKhuejQr6XhYaE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773905435; c=relaxed/simple;
+	bh=ZhLQy08MbWWzCST44BUQoCXyl1UnArXdF1iTdxd5Xx0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XSvUn6nPimzEeohGDuafm1SIDfPm4eFAE9GeXP60vI6nSlnfmv/1k1qqdeDDYVLdBt43OAUvpAE39IUBnr0YCpNjWx+iQpBLEwaYNQNTVbTZd9VbAy9Cfuj7O2+x5T/+E2qk4hzjQDVk+qIl6GIrfhpUY0vVsX/ao4XV23VyyPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=DA7fnBF2; arc=none smtp.client-ip=220.197.32.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FeGMmXhl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SxFYUjrAItUAj5oM0kmekYwSAbM9EbBMRzatv7hXGcldpnerW/XOEUkdE/ftjBanjeYl/uo65R21QeMP90DoiZmQCi9MNWnt0f/dxXbXkBVpz6X1cJRe6CQI2IEMj2ZAIl3GFtI8TxEDlIR4uVUbbvtpVit0iytX7Ao1G30ZbjnvmEA8l4fiQciCyhx8bb0kkqBmiKLCmC/atCxZFKluDrtIL2kRzzpv9QSfScr4DtlKw3E+AjjoA5KP8CGT0+Q4VSikK/ZM9pgJSjFpZBCjA2Oxp8ASecAXeBVR6rhS5cYwUrDoqog2XDtpAeQ3p8kCj7Lh1Gq3WwhU0JfvUiAHnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mwWJWfII/HfUsn8WD5Qcd/rnYYVaml+vlEubIgQ/hGk=;
- b=qBAvbdK/kXaSQ/bQI7pfRDQvFevVcEq+xKzoGq6sKVDAOpHCKvjaqwnpZ4FFDV84MXxA65N7DmIBmm1ASUqx148Zdxh6BC6bImWGEO8c1Tb4CbnDb6GoY1h27zuMXUpJzrc4AAmQrgbQ8qxB2SKdMntyJQSNm82vZgjiTY1+MXJYgyu9z2+1jRUJDFm2oY/TsY0K+TRJbeOh3RGL3TN6JcRdyhT77BONlm3NPBtlyVkHE/qPHEN4lz40Fzrqh46zzb8udlq5LlqWYL1EvzXDbteo8pOMpR+Lq03ftLg60hMK5VTKahF9npZXsP4BqXIKC/+PXLBb0jfrtIfyND3B7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mwWJWfII/HfUsn8WD5Qcd/rnYYVaml+vlEubIgQ/hGk=;
- b=FeGMmXhlymEdZKeQDD/ht2VAwnIR3pjAsCdi2hSXf4u+kOk4pffJ5yG+SHeiVAPYMdQlQi+WZn5VFnERHAQi0Sc0j9CjfCj5cJ0wBEQpatfOPyenoADe2bLm7zq1rCBF1EaOb+p924t+Myvo8vG3WEMbTS6F9BCpcio+L01aCudbUNSsC7T/UrJTU1O8Z7FMkJspch7Wu2LRIl7YGU0XxgRETGRNEDEIgNOxBTRleI34u28UlWZj4t2C/WldxvfZdQT+Zl7ryJY78EqwXs6eMWTcZUEZ7vdk2dAAz7MlFWcyfqsyM0NxMZ/68QX1JbpuzsmHl1xsNWQqJgY9xLMBXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DUZPR04MB10064.eurprd04.prod.outlook.com (2603:10a6:10:4d3::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 07:25:21 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 07:25:16 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mkubecek@suse.cz
-Cc: netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="DA7fnBF2"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3788743a2;
+	Thu, 19 Mar 2026 15:15:08 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	victor.liu@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	alim.akhtar@samsung.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	luca.ceresoli@bootlin.com,
+	nicolas.frattaroli@collabora.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: enetc: fix the output issue of 'ethtool --show-ring'
-Date: Thu, 19 Mar 2026 15:27:16 +0800
-Message-Id: <20260319072716.511992-1-wei.fang@nxp.com>
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v11 00/17] Apply drm_bridge_connector and panel_bridge helper for the Analogix DP driver
+Date: Thu, 19 Mar 2026 15:14:35 +0800
+Message-Id: <20260319071452.1961274-1-damon.ding@rock-chips.com>
 X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0140.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b9::9) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DUZPR04MB10064:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6107420-0caa-49a2-f689-08de8588aad1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|19092799006|1800799024|56012099003|18002099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	FnQLPKdaeqNV/wJrYx4dvU+Gdl+33lOI5p6DJTW0C3fG6fW30UmEMGDZfwOeO1t5C3pSIa1SdgybXxhLnox47wATub4ek5cnuTKvAUB+fLZ81JIvyNEqa72TMIqguqXMDKg5IKNPwUuZSBR0FLuFgpPuDAYQshVeeKOnhP8RpRdJbqpNp8o44TRsyPXrvwUwe/6sDXRluT5gyUpOaLPH56TxLssbN3D3RJ2u1m1Yiby7xV07SOY5whUDsEkMeDYo12c8JH4J5VARV3WPSFnPB/oQbzPhiFKRATqXBEw66VNJmHnzYAaV0iT03lNZbucae3uYaFkjfnpEYbmhR5tiPiZUcV3zA1ehil1Zwiz1aDCexxwJRMltClURzuems7NbuUaQ7dDK/BBE5OccZAFAmLu8MHFeAHcVpTcb6N3Wez2ovd/75Olj2QVxkspjIkg6XBDlzg3hoeS5bwes3WndHeEZtwG7NKDc97r6sfEhoIZ3v0D89ijGbMhiu96+jInu2JPLcWMHXVn9T8uwDxpflW5zChKiWa4HOwPcJx1LqnSKMSOlWzgT0fq876Ma1HBIOkBKHqKMjAiBgRk8Xu10IT2SpGaL5tIk/LR3ePE2G3l3jwmsUAcGpG6a9QTZQpLDpAUVw+CGV8i3KfUw9j9lL6p2vFnzTR+/oZffPy4HvcGch+GQC9Pe0kqZthHlkQcdGzj5J4hTr0VehvRO9FynKiHkFcQuWyyqx298WuD1SQ2LOWJOjcnG73Ls2qxLnNCC5F8JmBv+y+QQsKNng77RPy/KeTOOz3/wME0FMLtCDnI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(19092799006)(1800799024)(56012099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oufV8tLMUS29B0wGghx6XJfKbxrezrqU6qsQhmhktx+GrMMdfdxUzhnXL9iV?=
- =?us-ascii?Q?eUOYZ0cAC0NH/6ozDNBTWLM3AKFRcBzHFwNt0+XsL8NaUmVVscyTeV/y5xc9?=
- =?us-ascii?Q?28H2RkufJ62IJTJ8p9AorHaJTeSqatLqtVczEV47CWuL5gzC455WgqpOY7R9?=
- =?us-ascii?Q?UPREn9VdLDikDifKThBaSC9FLECUkSI+7ACE4EQOy+iNYBhd7zlBTMJk9BGi?=
- =?us-ascii?Q?Mpa8347qyp6Y7HUXC+GvTw7IYGSzCjDEwk2eWwTiMbcRYzklwyZWMzuXHIl6?=
- =?us-ascii?Q?WOfbCDDSv2lFcoZLFVD14dOCXwdvyNioj3qI97XyYI7vmVIemapNqciMkTNB?=
- =?us-ascii?Q?HmLB5bl/O58YerDGsuIx7KG3BqcwKrflKk163Vbi5RlIhC6DdLvS5u7E0mnU?=
- =?us-ascii?Q?2zOZTdi81fnrAWGOylWALDCOTdVSgtkCRSl+D5k7SwK1xxxoIeCuntFL0I+a?=
- =?us-ascii?Q?Xe5IRxeUmYC/ZEk6q+ZyogMLqKk/O7zqaDyxJjJcJ9sPHK8UTclBt4Xv1Rz6?=
- =?us-ascii?Q?JxlAnHFai7PPGP0Bzqlx010AcDxzAzwbShy0K5HHbDigfA29D3roQQ5K0oM2?=
- =?us-ascii?Q?QWvcYzuioF56xiItltVD/j+Fl1Bq9XbCH+RyN8qtU2nDPLZ7XqaxKY1dZVXG?=
- =?us-ascii?Q?LAUvAc8m0ok/MfFfk/ty5ixZgeILv+quhaWl4Lv61GMzIGVmjnLI4mv3KIG5?=
- =?us-ascii?Q?G1zX0C9gJ8N1k9e2OquCJOu4i4P09FVN9Gu2yb6EImgy6tOlGMW6dGrEYggH?=
- =?us-ascii?Q?qkfD5njoz2zTGhlFJ2E/y+2rlb5e0TSOoCDDB6wBEugDXPM3RiqhxN0tbRfJ?=
- =?us-ascii?Q?qr79oOBalQeeN/QuMG9b5VXN8vQyMejNJV/dmRFRN3FD7UXOtv4cNTLzYFdB?=
- =?us-ascii?Q?aCv1s0Zp4xLvOLGOo3BPF6mPY4CuRNo8aURqN4DsNZ2aJmSV36A5G6DTOKB9?=
- =?us-ascii?Q?6RFzin+YgWQah1GXnrlRebquy2C4op94wXfmiaPWAZT69quPKhAOxTDBS94m?=
- =?us-ascii?Q?rWWN9j8T5B2JGgCFePiVLGTcCiq2sMLrIT1feFWz/ecrLawc50ol2zvsyk2m?=
- =?us-ascii?Q?saYzhsummV51u+e2iBatrLxtNNw9AXt7CfJJty/M6XYo3jyghNxKD62yDxGj?=
- =?us-ascii?Q?D7aaWaUlk+wIY3JqKznSr0PCJ6ahlHSLXgcSHTt5poXs2SWNKABH86Zp5HAw?=
- =?us-ascii?Q?tDkdLONhUIItnthD6XUVHhN1C/p+wf3gprmEebDbSAV65UEsSsaqq6ktWPij?=
- =?us-ascii?Q?IDKQIU4C8RIphN3Agao75K9wqp5cj5aYyvUJlqAxguUngkQw+ErZxUKjDEo+?=
- =?us-ascii?Q?VkjPvpjcDIqtX/o2Kx50aven7t95dfKvPsoqka4HTVNGVuBLa0AQ8+W1I4bc?=
- =?us-ascii?Q?KH6aY+XhcktOpySak0SmIpNlsobVdsxOTyDAM6QLjNuOT9wdnVipphPZ9zGB?=
- =?us-ascii?Q?sLxY6oKdmGDTenWxqUZtQPO3kNtrrIXAOqJtliimBuAY0gCWwl++cNsANXy7?=
- =?us-ascii?Q?JI/2zGtVQ9mD3425sNKGyJxf3vjdNLhinDQWpnIrQMakuwZdg+q9/H8JSFwE?=
- =?us-ascii?Q?Z/TWlJ54cf/ai2d37GR16CSHHDZ5ro9aU3S7cRnRgJqn5L4C/SrI9eDbkKGs?=
- =?us-ascii?Q?OQxIbV1bEJ5RsZ7NA0KLVSi7Tqy4bLdk/RZA9r/fD1nRspMFgZcf5lM/7GMw?=
- =?us-ascii?Q?5zqq7PpcGOePkzacyMFiFMhqJShUkb6lZFJAlxl4D4uS7j75?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6107420-0caa-49a2-f689-08de8588aad1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 07:25:16.4150
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4dcNDUXyISB46ObmlW+//Oqr69w0UThrTkPWU1U4Vl1hC9h4aqw7UaZa/pdjqzkxQwejszgWlufatVXS2bmLgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10064
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d04f2b6d303a3kunm86e540ee39645d
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR4eSlZCQkhDHUMfSU0aTk1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=DA7fnBF2iAkyrOqc9pFahXM0CBqxghhulqoSaWPjroufxECElPEyARs/MJv9Npot89NHSt9kG3gzx4LGe66RDq6KCCrw7oL6xRH+K9RFO2W1NOK5GKZDZU50Kw5fcAOAmY3fKAfi6Z+sxACDsTK+khqB1m/KGEYaq69yFX0hY1I=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=4FLQr6j/Ajnpl8vXUNdSOalw+cZmz8SRafApCLOp0JE=;
+	h=date:mime-version:subject:message-id:from;
 
-Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
-but 'ethtool --show-ring' no longer displays these fields. Because the
-ringparam retrieval path has moved to the new netlink interface, where
-rings_fill_reply() emits rx_pending/tx_pending only if the corresponding
-rx_max_pending/tx_max_pending values are non-zero. So rx_max_pending and
-tx_max_pending to are added to enetc_get_ringparam() to fix the issue.
+PATCH 1 is to add a new parameter to store the point of next bridge.
+PATCH 2 is to make legacy bridge driver more universal.
+PATCH 3-10 are preparations for apply drm_bridge_connector helper.
+PATCH 11 is to apply the drm_bridge_connector helper.
+PATCH 12-14 are to move the panel/bridge parsing to the Analogix side.
+PATCH 15 is to attach the next bridge on Analogix side uniformly.
+PATCH 16-17 are to apply the panel_bridge helper.
 
-Fixes: e4a1717b677c ("ethtool: provide ring sizes with RINGS_GET request")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+The following reviewed commits, which to make codes more concise, are
+rebased to the front of this patch series:
+
+https://lore.kernel.org/all/20251110085823.1197472-1-damon.ding@rock-chips.com/
+https://lore.kernel.org/all/20251111022103.1350183-1-damon.ding@rock-chips.com/
+
+Damon Ding (17):
+  drm/bridge: analogix_dp: Add &analogix_dp_plat_data.next_bridge
+  drm/bridge: Move legacy bridge driver out of imx directory for
+    multi-platform use
+  drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
+  drm/exynos: exynos_dp: Remove unused &exynos_dp_device.connector
+  drm/exynos: exynos_dp: Apply of-display-mode-bridge to parse the
+    display-timings node
+  drm/bridge: analogix_dp: Remove redundant
+    &analogix_dp_plat_data.skip_connector
+  drm/bridge: analogix_dp: Move the color format check to
+    .atomic_check() for Rockchip platforms
+  drm/bridge: analogix_dp: Remove unused
+    &analogix_dp_plat_data.get_modes()
+  drm/bridge: analogix_dp: Remove unused struct drm_connector* for
+    &analogix_dp_plat_data.attach()
+  drm/bridge: analogix_dp: Pass struct drm_atomic_state* for
+    analogix_dp_bridge_mode_set()
+  drm/bridge: analogix_dp: Apply drm_bridge_connector helper
+  drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
+  drm/rockchip: analogix_dp: Apply analogix_dp_finish_probe()
+  drm/exynos: exynos_dp: Apply analogix_dp_finish_probe()
+  drm/bridge: analogix_dp: Attach the next bridge in
+    analogix_dp_bridge_attach()
+  drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing
+    in analogix_dp_unbind()
+  drm/bridge: analogix_dp: Apply panel_bridge helper
+
+ drivers/gpu/drm/bridge/Kconfig                |  10 +
+ drivers/gpu/drm/bridge/Makefile               |   1 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
+ .../drm/bridge/analogix/analogix_dp_core.c    | 236 +++++++++---------
+ .../drm/bridge/analogix/analogix_dp_core.h    |   1 -
+ drivers/gpu/drm/bridge/imx/Kconfig            |  10 -
+ drivers/gpu/drm/bridge/imx/Makefile           |   1 -
+ .../gpu/drm/bridge/imx/imx-legacy-bridge.c    |  91 -------
+ .../gpu/drm/bridge/of-display-mode-bridge.c   |  93 +++++++
+ drivers/gpu/drm/exynos/Kconfig                |   1 +
+ drivers/gpu/drm/exynos/exynos_dp.c            | 110 ++------
+ drivers/gpu/drm/imx/ipuv3/Kconfig             |   4 +-
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   6 +-
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   5 +-
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  67 +----
+ include/drm/bridge/analogix_dp.h              |   8 +-
+ include/drm/bridge/imx.h                      |  17 --
+ include/drm/bridge/of-display-mode-bridge.h   |  17 ++
+ 18 files changed, 293 insertions(+), 386 deletions(-)
+ delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
+ create mode 100644 drivers/gpu/drm/bridge/of-display-mode-bridge.c
+ delete mode 100644 include/drm/bridge/imx.h
+ create mode 100644 include/drm/bridge/of-display-mode-bridge.h
+
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index fed89d4f1e1d..0818a6e8e6db 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -813,6 +813,8 @@ static void enetc_get_ringparam(struct net_device *ndev,
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 
-+	ring->rx_max_pending = SZ_64K;
-+	ring->tx_max_pending = SZ_64K;
- 	ring->rx_pending = priv->rx_bd_count;
- 	ring->tx_pending = priv->tx_bd_count;
- 
+Changes in v2:
+- Update Exynos DP driver synchronously.
+- Move the panel/bridge parsing to the Analogix side.
+
+Changes in v3:
+- Rebase for the existing devm_drm_bridge_alloc() applying commit.
+- Fix the typographical error of panel/bridge check in exynos_dp_bind().
+- Squash all commits related to skip_connector deletion in both Exynos and
+  Analogix code into one.
+- Apply panel_bridge helper to make the codes more concise.
+- Fix the handing of bridge in analogix_dp_bridge_get_modes().
+- Remove unnecessary parameter struct drm_connector* for callback
+  &analogix_dp_plat_data.attach().
+- In order to decouple the connector driver and the bridge driver, move
+  the bridge connector initilization to the Rockchip and Exynos sides.
+
+Changes in v4:
+- Rebase for the applied &drm_bridge_funcs.detect() modification commit.
+- Rename analogix_dp_find_panel_or_bridge() to analogix_dp_finish_probe().
+- Drop the drmm_encoder_init() modification commit.
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge.
+
+Changes in v5:
+- Add legacy bridge to parse the display-timings node under the dp node
+  for Exynos side.
+- Move color format check to &drm_connector_helper_funcs.atomic_check()
+  in order to get rid of &analogix_dp_plat_data.get_modes().
+- Remove unused callback &analogix_dp_plat_data.get_modes().
+- Distinguish the &drm_bridge->ops of Analogix bridge based on whether
+  the downstream device is a panel, a bridge or neither.
+- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP, and remove it for
+  ROCKCHIP_ANALOGIX_DP.
+- Apply rockchip_dp_attach() to support the next bridge attachment for
+  the Rockchip side.
+- Move next_bridge attachment from Analogix side to Rockchip/Exynos sides.
+
+Changes in v6:
+- Move legacy bridge driver out of imx directory for multi-platform use.
+- Apply DRM legacy bridge to parse display timings intead of implementing
+  the same codes only for Exynos DP.
+- Ensure last bridge determines EDID/modes detection capabilities in DRM
+  bridge_connector driver.
+- Remove unnecessary drm_bridge_get_modes() in
+  analogix_dp_bridge_get_modes().
+- Simplify analogix_dp_bridge_edid_read().
+- If the next is a bridge, set DRM_BRIDGE_OP_DETECT and return
+  connector_status_connected in analogix_dp_bridge_detect().
+- Set flag DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment while
+  binding. Meanwhile, make DRM_BRIDGE_ATTACH_NO_CONNECTOR unsuppported
+  in analogix_dp_bridge_attach().
+- Move the next bridge attachment to the Analogix side rather than
+  scattered on Rockchip and Exynos sides.
+- Remove the unnecessary analogix_dp_bridge_get_modes().
+- Squash [PATCH v5 15/17] into [PATCH v5 17/17].
+- Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
+
+Changes in v7:
+- As Luca suggested, simplify the code and related comment for bridge_connector
+  modifications. Additionally, move the commit related to bridge_connector to
+  the top of this patch series.
+- Rename legacy-bridge driver to of-display-mode-bridge driver.
+- Remove unnecessary API drm_bridge_is_legacy() and apply a temporary flag
+  &exynos_dp_device.has_of_bridge instead, which will be removed finally.
+- Remove exynos_dp_legacy_bridge_init() and inline API
+  devm_drm_of_display_mode_bridge().
+
+Changes in v8:
+- Adapt the related modifications to the newest bridge_connector driver.
+
+Changes in v9:
+- Fix the Kconfig help text for CONFIG_DRM_OF_DISPLAY_MODE_BRIDGE.
+- Add Tested-by tag from Heiko.
+
+Changes in v10:
+- Fix to use dev_err_probe() in newly added API analogix_dp_finish_probe().
+- Expaned commit message for [PATCH v9 9/15] and [PATCH v9 10/15].
+- Split [PATCH v9 9/15] into serval smaller commits.
+- Add Reviewed-by tags from Luca.
+
+Changes in v11:
+- Merge [PATCH v10 12/18] into [PATCH v10 11/18].
+- Fix the bridge flag to 'flags | DRM_BRIDGE_ATTACH_NO_CONNECTOR' in
+  [PATCH v10 11/18].
+- Add Reviewed-by tags from Luca.
+
 -- 
 2.34.1
 
