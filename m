@@ -1,215 +1,224 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013013.outbound.protection.outlook.com [52.101.72.13])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011064.outbound.protection.outlook.com [40.107.130.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32B131328B
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 14:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3D130E0ED
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 14:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773929695; cv=fail; b=a4iR6TUcy2zrwkpjOCSc74iWiZTYfr+uvN28JacZMmSWMihnPWc2G6rvYJYMawBZwKlYbk1c69pElksOUyxQ1ZipGKV6vuPtzz6zm7IpykYL1hF0MeBGjYOMP0luCpac+CYcIbicVd4nZFL+Gm+sklclK1fwWtS75mHIqExcA4M=
+	t=1773929833; cv=fail; b=lvr85QRXNVPbx5puTaarwYhWVeJGdMeGPQ28Q1NyizXw/yZ8V9xNpXHb1XF7kwe0SJO3JlcWnwobK1xszszl/y+QakayaKBBBqglVTJ6+hD4zoOWDL0VuCg045riiFc/Ndaa/DBqzw8GvAQOXAOE8aE1tWLAp9gsKud5V68gw1U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773929695; c=relaxed/simple;
-	bh=WdLUjUSA57z1h2radFvS2rkzQn0UhDbmk5bFUkXsUn4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VZkCdRQQpsdA5LqyRJM35IP9/9MezT5iEz7AI1lOlw8PcK72+Biyzd+3w38cNdRQYCB4CdNC8Sleq2Noj5s1GlCamkxMMyY1QM0tdwbDFhpWGQ7A5qHTZdiJhVBayj5Yu7qPPAnc/t2gbNpSOczrH+ugWiwerkv9J6fwAedFENs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uIfYou96; arc=fail smtp.client-ip=52.101.72.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1773929833; c=relaxed/simple;
+	bh=wsKGm2iw5zNYqcNT8dHZtVBJ+QiIUqFBcNAeNBaU/+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JrH6J5o7noHh/UtomjPUApemNFwTsNpQc6HCtNMvjxolewe774uzBSNMAaQuvzGRyZ5ioGgvQyDv1DqBPIxRdepBZucBswHHydykqMG639nlLdU0hX7QIkF8cN6CC/NNBkYlEMht31BJBy+DUdXJPG8lmSzz21Jkhu9zwtmtQIk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jysrWJAT; arc=fail smtp.client-ip=40.107.130.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uIfYou96"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jysrWJAT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GfT7SgUzHraYkhuGrobA7wFugSQ2gZNSS+taMp0ZL7Nq6rjDFS+K2rXhD1sOHcJcREv7CPT8alE3wgG/aSb350AhwcvuMPi/hWinL6KSSjL42rbxGlgFu445UvIA233YELLjacuBCpJceFl9be/rvIM4ADXqPRCLG7ZpCYMSc/bldAkjw5cvUqngaFgO/RD+KXfAW0OvtpYqVoxH8jpiPyD21nLXkwb1VNvYixfNIPPPtmpe5aHu06Fli72GbK0awbWNjYXAsqQUXw+YyTxskIYkZdPGxB+KHhzBt8V9HBHTSrTBbRLppZyKghFVAMWXevWXwfrqRDDqy0WYKeC59w==
+ b=JB76vkhCOZNJuXEAdBUhC/XLBS/AMDBJ2GUfowgqCwkz9+NC3grIO1gNp2ygDnwygDwjQhWoO3uFXZ6Ht++/hsa9FHevAWB5j+8tUkMCJYaceXhkYfqvjRfIuHDP2rAh+v+t8pMPz0IbB76r83VS/lrDdS/RseW0vkGkSv+mEeUfAIOKmShPJ7DiXNQwb/FmaW2IUM2ryYnHq4bAMNOFIYWhHz4oCTmg6ENQ7e35atlhjf0zaK+qGVXY7dDskFXoCCD1krHEuV+7ftBTBMBQd3Sj49couyeB3wfrG3GgflpchRqmF/d5c/rBdnacDaokjqxQ6VnU3gY8PJZG/VJggQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IMHek7d6iTVXSxlCY9E8QudTZtReEVOg++LkgoQOuqc=;
- b=uD1gZU94CJVL4+YLI5GPkRpTrgB/8aJD3bCbwgXsfQV2krbmmBMS/BURgKR0Yq9P5j3a1IsyEQlUs4666XWk6kVYdWLFtwLIZbFYHN0UXFSq0JSYTue0Om5J0Lf3hI88q8aRkekQkyF383MMR7Icn0B2omdpPdzbeTM7uPcoonS4HgKznY8vYC3S2NyFycSdFUpRbUPhn/hbjRPiJ9lA56TwziJTEAPSIe8wbI4cyK+TkqwCelyM8eetLWpG8aGd+EVWsDG9DZNhMMXOXwgBodArpoajRduoV3RoKzpclYCHMc2iXnZFg/T039+esihvjLHTRTfOlXC94rq0IxEN6g==
+ bh=pym4e3xrAUvIE60CJ728tnQHyAZi/yXkfvFfGMiiqHs=;
+ b=cgpNA2vhTRZbJoY/9j7gbhlD7ymHqMrgSC8Pbf9lQ2hRgCYVDkppG9a8QQDO5sr66UIfIptl6MzUkFiLXeQbT+3LaFQ+hlXfTLVyPKr1A2ySqiJUkfcK0iAa6fN7/DLCjg3x2C7WrdixGrc10ncSzADRR+olS7nyuIH+/7GcKZ5tEgqdHnCX3zAD8746k7OuVqZKMca55u4DG+4iDJOwPJUPpSMfj16MwUvd8cgGe9OPtq2AFazIRGoleaYRmWy0wnfvHj6JTa2HiUGlOxpOqgDX5IWcU8olVHveIP0uGdh2HR8to3ui3RLJ/8K+u2UzKbIhdr2aYHE+3ujwgFmkqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IMHek7d6iTVXSxlCY9E8QudTZtReEVOg++LkgoQOuqc=;
- b=uIfYou96PD34RR2Kb+2FOvvWyL4ifcTZVXwf6vKoT/gAyzNpkWdoh0//2+An0zX8ZF2xtTyR8Fsgr3A8Qc1vHJeXw/GditYWu9LWDqmPruUWRFT26o7ToSNlzFVQHdFVyFOLOsml63V1Nid8noPg22fKLrRu4u6egNQgJuXve09ZVo9+6s6yuUOcb2vsQQ+oPANLWHYTF1vq4Kjl/q0fkcFZvGHywBmVXoVvEGGeO612hctPH2bem30NB7gP6Ali0xtQNsn583RscXXBO/fDCZhz+7MZqqdU0x5nd5z2RObz3zVaBruV6rsYD5hK+av8EtkmP3pZlYhG+GrQKWXfxg==
+ bh=pym4e3xrAUvIE60CJ728tnQHyAZi/yXkfvFfGMiiqHs=;
+ b=jysrWJATV+7tJjv+MIZtYc4w2wVtdJu8lI6Mu+aXliww7VIgCN1yfNQucJzK4MjMQu5/7dEP0kwgShDdLFWA4SXMhMduYlyuVBwRPCQqXuugsg8OyLI5piIgqtDS9gQP+Kq1pKq3mOvJE7Ka3RbmO5DvO3bueTeGMcbYOi2Zk97RnBawaw6RcIT/BxKCujmJcr1vblVpoIyOHVrnJlLT2TQsogOYtB+I2sIWE+6vTuKegx6JBokKoascjCRmXK2w12A8X//poOCHz2kX6O3V1ahf5cCx/Wcor4wnv2UtXvzWLsYtFkkncBYTjBKrrqJ9aJLE07eSZVo3EKbx9tpFAQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by DBAPR04MB7464.eurprd04.prod.outlook.com (2603:10a6:10:1a8::19) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AS8PR04MB7672.eurprd04.prod.outlook.com (2603:10a6:20b:23e::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 14:14:49 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::5c3a:1a67:2e02:20d0]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::5c3a:1a67:2e02:20d0%5]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 14:14:47 +0000
-Message-ID: <742c748b-8096-49a3-b1a4-3a8507f6f55d@oss.nxp.com>
-Date: Thu, 19 Mar 2026 16:14:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] can: flexcan: Add NXP S32N79 SoC support
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
- Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
- Eric Chanudet <echanude@redhat.com>
-References: <20260319094032.427697-1-ciprianmarian.costea@oss.nxp.com>
- <20260319-orca-of-legal-science-88e67d-mkl@pengutronix.de>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <20260319-orca-of-legal-science-88e67d-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P189CA0042.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5dd::20) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+ 2026 14:17:02 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
+ 14:17:04 +0000
+Date: Thu, 19 Mar 2026 10:16:54 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: imx6: Don't remove MSI capability For
+ i.MX7D/i.MX8M
+Message-ID: <abwFVpxrriV7Bt2L@lizhi-Precision-Tower-5810>
+References: <20260319091823.446030-1-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319091823.446030-1-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: SJ0PR05CA0057.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::32) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|DBAPR04MB7464:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c2abb21-1481-4b27-4bb7-08de85c1e061
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS8PR04MB7672:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6e4c20a-1b0d-41df-2ec9-08de85c23217
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|18002099003|22082099003|56012099003|83080400003;
+	BCL:0;ARA:13230040|366016|19092799006|376014|7416014|52116014|1800799024|56012099003|22082099003|18002099003|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	KhDPs6HoDSMgJwfIzdF/mRwH5j0Gd0CJe3esCj3JEUyr1DFLLJIAOoXCc9QyjWDQvYpJD4ctsPaGBCK2N6U5lni0u1ExduDamKtV48ASprbWzJocfdIaTaG3R4MwAStu5AU5YMrniajlh8kBEUi3gtBhSw/I4NBZhg1BsmACozv/jBF7PVojyUKgTdkYcn4eTP8WChF5jZV5ekKU4MvgIiXxH4K0EWWxHg6lMQtlA/4U2Qig1A4E/OHuJbRsZ/o/CK9r6ftztUE2zjJkdyLWhcFxAdaKNrhyDoPUCM5yxUSwYUvaI15bWzCU7XFX+rzNd92697s9A5mFy3o+OH2hiBViDArShQ8UwO4zHahdjyRzSHNElmSP85XRQJykW6tEt0ILSa4LRPqWSqMvWxn7Ryumd6bQAz2FjDYvWpmgZ8iXcvMTNkNK6XnCcwt9pDR9eNHMTFuIp5v7YwTtD+LHZt34fGAIxyGYzICOQjNybUMmVFJk70wM3phO2/5D+cSB463EJY3kFQW1EqPEBEFFeizJZMtdOItiXvLgbjOd5elbqhd1hIWFgtv+S/9CXdthl5wB85d1tfcvAb6+dKeB7A+gIC5O/yR1gX9YCRe0DttjCqHxU/RGH5hKQOGzBDoHx19d5BhxbzFb9f5v///HTJLMhH9bxZA1rQuQWLOIm9igoun+3dFJ35tnug8n8t44UW8/wWXTdBvLXLoMmmpdESQsifsKyeDauWZI3vWAWy0=
+	3Ct88AG1JOvxkO1SGvdrj4QCYbqoP3pYc9bWBU6qRTjxcKqPwB2GwgvmfBk6wegOR8UaDjgYg6eU27qK4b43EcwCW/XBHLbB6iHWzHkIh+Zw/Jx0o38yBhtcQWIQPmGJHVmJKyz5nSoR6mtoy7vy1XOunlMTcyInTFA2qRdUxzPFX7A9p59VzXOxRawl+0yh2d7Yk22JKir3lSydAbCqLsYOblQyre+phKHHZAdhtJNna7tIzSdBcqFjFCrRV3IFGRPUYZBON5EQE2h7MQRd8Dc6vlbnYPLzM9RdPxsTXJqvLLhmi4NKd5kGDHnZpYS9KhhbbeXATeUs7MZJnVuK5FVWlokVynQqhtQpUc45ptoFekuDVIY0OTTyS7DuAayOSO73ybazDSZ4yRvijbcA+lpGM28xPwxZXFP+IYAq+GyY6602jDV8r9oZpYcbnK8bl7H1dU64cR+sFxg9OEIiIt4AKYZoK+OARnpJ8z7hnDtEjR+rv7Nb6AvLlkwycbKDaLrNqNVE0IjdEqWglBekxybS7HTGNvOYQAHvUpwZupNmtolNC25GA/zWSeSp+VmKe2rgyPtjiTmhQU1YCxvBw1qbk9WepAC/L+MQOiX8dkYTXyltfy6Tl75YAi1fCg2E++aTsWOahxGByZPPAZv1kl4lpBKjoRnyWLaD3/kIBEBhrClnE6lIJFbtZ7KmE0lXSVI9kqezrzRv+QrqmKZepnc23QfC+0kTPjsWcRUWDFdTf0lnTL6sog0qVQ98HRGEQE73yF0e2bNwkUNySsFZ0Ss+hBk0RFXp3/svUinDokY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003)(83080400003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(52116014)(1800799024)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U09ENW5FQzVlbGozQysrTXo4dVlpUGNZamVpUFpyMzROcXE0bjdnZEFQdkx4?=
- =?utf-8?B?MTZNVzB4cnNiUk1nRjJOMk5waGFlOEp2QWlCY044QzRNRXZ0V3d4VlJoS1Jo?=
- =?utf-8?B?QkxBdUtQWGpYYnZ4UjVHQlNaQ1ZtYjh0NkxxTkoyaVF6cFg5K2VYbEVsaXRX?=
- =?utf-8?B?KzJZSHREcnF2UzZUd1A2a1dXczlBcmtJb1FydmRUdUg3UVQzVnNuRzFScDlp?=
- =?utf-8?B?U2ZPUDZWM3VUQ01td0Z5cWxhUlYvN0FVOWo3QWdpY2xQTC9xdFVkL3BMVHFT?=
- =?utf-8?B?TUxWNlpVVmJ3a0dVSTQ4Y0tmUW5nTFg1dytTVFV1bktoajdCYkNXUzQ3bVBw?=
- =?utf-8?B?bEVzZVBLQURpRkdocFI4ei9McEVRaFJqT0ozdit5aHBBdDFZM3ROVytjTG9r?=
- =?utf-8?B?Z2JNNWlxYkRRc2VSanM0dTVHQUR4VC91ajhQWUtMNzh6WVgrWmdqeGYwVTRK?=
- =?utf-8?B?M2NiMmhyTWpFRzJQa2NPUnBSM1JGeU45WDBSNXFmcnFoYnh2Q0xvUExhcTJJ?=
- =?utf-8?B?UWp3ZHZKNEtkeEErU2p6Z3pqb2dSUjZSV0ZLc291a20veUczWnBEaUJFOEdi?=
- =?utf-8?B?c3lIUSt0dU9ja2hYSm9IQmFQSDZJU2gyd1pnZzdlcGtkeDRSa2JZeWVjUlI5?=
- =?utf-8?B?RW5NMWZ6MVNnWjZNRzNSeXVvbmxacHhkb0RxR3RMcHhiOHg0bFovcEVhc2Vk?=
- =?utf-8?B?TGsveFhrVlNqVitERGtWUkt0YkRtNzRIQXZFdHl2c0Z6aHJiQW1YQzgvd3RV?=
- =?utf-8?B?NzlTcGRFSU41Sy90dFpOR3MxZks0VURqSkwvUzltVHdYYlVaN240Mm1aRXNx?=
- =?utf-8?B?TE50T0NEMHgya1RkQ2JUQjVCQm9jQ211MnR2TjJVMjI3TTROUkk2R25OUW1h?=
- =?utf-8?B?WmlRN0pscW41cTV5dWtoSGVRUGRobWlGS3NiMEo5WENwL3Y0NGdCZDVZYzgr?=
- =?utf-8?B?RGlyVVFFbzFvaUU2cDdTVzVzc25XYU91RmtzWXM5c0crUmdHZXB0b3cxek5M?=
- =?utf-8?B?alYrakEzbzhlbEVkUERsQlN3RlUrdlUzTkZkS3RFZVNWdUFIYkRaYWlKL0pz?=
- =?utf-8?B?M1p3cHJDazlzaVlyKzhLbmxtc08zL1pnd083N3BRTFlhang0RDk5ZHdBbmNo?=
- =?utf-8?B?anlRL1BOUWhnZlRYYzVObGJUNTlmKzk4OWZ2Y05OYTlYZVBMc1lOSk5MVUI2?=
- =?utf-8?B?R3IrL3ZvbzdVbmwyd2NIVTVOL3o4QmlXbmQvVkdNU3pkYklMOUlQc0FZV1V0?=
- =?utf-8?B?emFWVGFJRmJtcFRxa2ZySGpQazV3OXVYOE9xcFdHOEVkL2o1cHpkWE1OcW5k?=
- =?utf-8?B?ZGN4VWdGSGVwUWtaZVlMUkVncE1oaG1DcmxGcEN1OFozWDh5bkdPUFhmQm1i?=
- =?utf-8?B?Ulp0MkhFdTRlUEkzNlUyUkFFaDdLK0FhUnlyU0NNVy96b0VnMnlVWXJTZklH?=
- =?utf-8?B?NUlWbmMyajlIZ29VcENxKzJiT3FEdGR3czVCbFFTVjNlUG5TZmw2d0J0NHNp?=
- =?utf-8?B?QWg5SFk0Z1FzeDdreTRwU1lxbmJFaUQzSFNadFRUN3ltOE5FeUdXeWthNHpI?=
- =?utf-8?B?NlFoNmF4MW5vRTNzWjNDSkxTdFl5ME1ObW52ZFpscmc1UEdzSEhibm1wWk1T?=
- =?utf-8?B?LzA0WXlrRFhLVVFicUh5R1BhUVR5bWZaY21ab2FlZmdiNnZXV1hrRjhxUFVY?=
- =?utf-8?B?NE55SFROSEg5SWJlVXJzaFFlRU9DQjVPY3lHWVdxeHJ4N2EwZ1EzOUtidk13?=
- =?utf-8?B?UlZQQ2MveXpsWFcxK0V4UE9rR0hhNUNHM29uN1hRbjM5Y3F3Vkd5elVHS09U?=
- =?utf-8?B?NlVNZkhPRXV6WWJIbWZ2K2txRmUybC9qa1FqYWw3L0xrNEx0di9lQ0lxYjNk?=
- =?utf-8?B?VVVScElOYjZHMTJqbHFrN1JxQUZlZTExdzh1Z0RKcFdENUxtdUpDeWYydjVu?=
- =?utf-8?B?THpsd0oxV3hZWEM5d0xRcXBzZUZCSzVnOThMU1FiM1lsK2ZvY3VCazMrR2Mz?=
- =?utf-8?B?NXhsajY1OHNldlJabWNtdHZlaGc1SXo5Ym1QM1dEZlAycHFXYkJBRHkvNXJS?=
- =?utf-8?B?SEc4N0pDa1V3bnBFVEpJWDlLS3Zlc3VENmppdHhQWXpsbm0vQjhXY1lmK01T?=
- =?utf-8?B?eitVcFo0TlRqUlFPQ3UyckpRN1d1eHlDUWNEbnc3WVR2cGowc2MzeWtlSEJ1?=
- =?utf-8?B?YkpnVmR4UEo2anloOGVoVjRlcUZPdkRoYjVNazU4Z0w5dlJmS1V0aERTMHJH?=
- =?utf-8?B?Vi9LVGJiNkxiK3p5QWM3a0E4YUZjTFpjMTRQbmNqWGw4eUpWOU1PY0xCa1Bh?=
- =?utf-8?B?bDlEZkhqWWFuckdhVktXRmF2NEVBODAxNjRSalA0bHhaWWFETGxlYkNDUXY1?=
- =?utf-8?Q?wBTiOxsb5UJ/0hEU=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c2abb21-1481-4b27-4bb7-08de85c1e061
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+	=?us-ascii?Q?X8rHgHtyePxToT9MeMTfspvZF0/5ma6v7XWPxlYlFuKLCZ1UbODr1yRH5ZTc?=
+ =?us-ascii?Q?Ovm/5QvpvSuf1s+k2xbPyik30SrY2g0kaxIvbzdqENOfbPor8Q1twBRueRCj?=
+ =?us-ascii?Q?8Q0e32cXSSYXvvJBheTLIdikq3Hr4I+LASuOKvwF4OG71gtG8hMhXb8StBZE?=
+ =?us-ascii?Q?c/AK0GCuzhQvecYkLmbagI0n74TxjD1saWL2AZuRJHIqmnvMb2V7jqoHqBR0?=
+ =?us-ascii?Q?ZxnF1UTuL/+ovqKZ6K5c70PEbMTuJtAx5x7r/kyPVMTSJK9Qh05dDk8ek29G?=
+ =?us-ascii?Q?KuX+M3eRxtlkB4Y5S8sOBaJaNHsh9nWu+YBaD5oO1uXQyE7nNjQ2F0V+x5I4?=
+ =?us-ascii?Q?4ffMGayxNZwMGq0pTgr9pbdOuYCd1j+SIutjDQl/qJrQdge6Y4L/NZ4TXIKw?=
+ =?us-ascii?Q?EQ7w2YuMR+s+RU2ysKrw9eGgCRgAsE/Ud0d96GfAVQGYGpDgLKMo1ZuO6hzx?=
+ =?us-ascii?Q?aCGwdCMETmsHGMRVMU/IfEgQ4OZzDQtZPuGo7UQe5bybwLx6nqANWTNFcf+O?=
+ =?us-ascii?Q?VgReGtcMdSMPuelsDXesUjdt1v+mNPn5jzw238xDzw/+2B/glnS9eckDKCry?=
+ =?us-ascii?Q?B/7iS6BvF0HT8RCvHx5B59LhuaVXVWR2EHML9cOk1uYU9Psapz1E/0aDwr2f?=
+ =?us-ascii?Q?XG5wWhr44KfRHiV5x6WCleInOWWa1DqH2oFIgoWVoAU9B4RC4XBaBvRNP4Qv?=
+ =?us-ascii?Q?YOPVyCrHmvqeYc59k/HbSIOmKoM0NhVpXDIPimdSWj6KQ8DMo/iHI/luyUeS?=
+ =?us-ascii?Q?GctIpmNxb7yIvTPifZyrgshF99r2vY9bIGkDvZ68bQpeTBCLfUKuCKDgEA6p?=
+ =?us-ascii?Q?3dX829vU1J61iF4vmxKHYMMQaH+CJKBfwQdfTqEeZo55s2RmNLrTG/Vw/+xA?=
+ =?us-ascii?Q?aDigHaM0YmL6Y5CfgTkLxufOsVTM0GgkAo5CaGC+Hdx91qPkytrzOnmzupyi?=
+ =?us-ascii?Q?3v+5ZvNYQdKlV4F2PTx0zk0GUyFekG1HqwpDGH9r+3KZFALNQh5H2+7yFYo5?=
+ =?us-ascii?Q?sqAQadJAQBO65qHLQxFAPDMd+AMIulASA5KO3sO97WGJO1K5BwZi4c6OL8Dp?=
+ =?us-ascii?Q?50J29Xy8+lPfWWvYtI7TPl09SixaN6V7w27LE+TVbi2Dpk+qx/nr5WkbeeCA?=
+ =?us-ascii?Q?dfWWnTRYWxb5/6QIUyF3ziBPKybRkC9y9a3CJnGqcFOBb79qF4E5QrKD6kP8?=
+ =?us-ascii?Q?VzP975L2ptb2w8NDGdcMLKYCgbTKprGREilA3SHWVnwEtPFX/elAg+IB1NMv?=
+ =?us-ascii?Q?4d5MPbF55vFvYuQuNDt95F8OjAZC1y9onPXMMON94vw7st/Sw4SOiP6FI+ew?=
+ =?us-ascii?Q?Tvxqxl1PHx/HqES7jMj5z7kIbz+Rlj5orPE5NaJAGhyVWZ3UO9nGvToJE7v7?=
+ =?us-ascii?Q?pqeYf9Rbc7AcZZlooAusZjmIEGCcyiT9aIVFS0YTIKuNvIXpg+npGJQjRVcc?=
+ =?us-ascii?Q?UUTV+sGBVB8q1LCNrg1CroVjvmSsLCPKe+mVoEYVJ2buU7BV4OgSXdOEfVFh?=
+ =?us-ascii?Q?Kupos9Ycz/JaZE1bE/kanrNBDSM2Q6I0HVu+CspCnEaLaMpBVi6fFnUgbfH9?=
+ =?us-ascii?Q?tU85F9AUVJybyQUhiCEwjqgqbG77p7LJbpiKz3R9NPKB3z3OBK+Jc85JgNbt?=
+ =?us-ascii?Q?FzMOsL1SZhNHG8GEdj4LO28Zg+2GHfHiZniTOLa4Nl00O5iZ5bEls3fhJvMW?=
+ =?us-ascii?Q?o8DHN5LrBzF/OfL4QRwsPlJdgGJ1en4nWymedUmXZXWf75Ht?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6e4c20a-1b0d-41df-2ec9-08de85c23217
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 14:14:47.5748
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 14:17:04.5399
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e7R/gOK42Fi3qrPJ7CCUkMe169044EjsGZWYVybM+Z2HcibaeGMY6JpeulXSdrk3xp3j1jRt8O7h1A2xdXV0Wy4oUoBDD6dwbj8yxvV5Q5c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7464
+X-MS-Exchange-CrossTenant-UserPrincipalName: VqwWYzD/oM0TjUFXCuFsvObVloxZdHEUsaW52Wk+l67lNMS+EHnCqp2OeilVbD4sLXCn6eCb2zsDP8yUefj6bw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7672
 
-On 3/19/2026 1:56 PM, Marc Kleine-Budde wrote:
-> On 19.03.2026 10:40:27, Ciprian Costea wrote:
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> This patch series adds FlexCAN support for the NXP S32N79 SoC.
->>
->> The S32N79 is an automotive-grade processor from NXP with multiple
->> FlexCAN instances. The FlexCAN IP integration on S32N79 differs from
->> other SoCs in the interrupt routing - it uses two separate interrupt
->> lines:
->>    - one interrupt for mailboxes 0-127
->>    - one interrupt for bus error detection and device state changes
->>
->> The CAN controllers are connected through an irqsteer interrupt
->> controller in the RCU (Resource Control Unit) domain.
->>
->> This series:
->>    1. Adds dt-bindings documentation for S32N79 FlexCAN
->>    2. Introduces FLEXCAN_QUIRK_IRQ_BERR to handle the two-interrupt
->>       configuration
->>    3. Adds S32N79 device data and compatible string to the driver
->>    4. Adds FlexCAN device tree nodes for S32N79 SoC
->>    5. Enables FlexCAN devices on the S32N79-RDB board
->>
->> Tested on S32N79-RDB board with CAN and CAN FD communication.
-> 
-> I think DTS changes go into a separate series.
-> 
+On Thu, Mar 19, 2026 at 05:18:23PM +0800, Richard Zhu wrote:
+> The MSI trigger mechanism for endpoint devices connected to i.MX7D,
+> i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
+> capability register settings in the root complex. Removing the MSI
+> capability breaks MSI functionality for these endpoints.
+>
+> Preserve the MSI capability for i.MX7D/i.MX8M PCIe root complex to
+> maintain MSI functionality.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
 
-Hi Marc,
+I think it'd better add another varible to check in f5cd8a929c825
+if (pp->has_msi_ctrl && !pp->xxx_broken)
+or direct use IP version, which already auto detected.
 
-I added the devicetree list to this thread.
+Previous patch have not consider this old version controller.
 
-> Please also have a look at the AI review:
-> 
-> https://sashiko.dev/#/patchset/20260318092215.23505-1-ciprianmarian.costea%40oss.nxp.com
-> 
-> Especially on patch#3.
-> 
-> I think we should split the main IRQ handler into 3 parts, message buff,
-> bus error and state change.
-> 
-> regards,
-> Marc
-> 
+Frank
 
-Thanks for pointing to the AI review.
-
-It raises two concerns:
-
-1. Duplicate event processing (can be addressed by splitting the handler
-as you've suggested).
-
-This is a pre-existing issue affecting S32G2 (NR_IRQ_3 with 4 IRQ lines
-to the same handler) and MCF5441X (3 IRQ lines on the same handler).
-I'll include this as a preparatory patch in the next version of the series.
-
-2. Concurrent skb_irq_queue access (pre-existing, separate scope)
-
-The __skb_queue_add_sort() calls on offload->skb_irq_queue are lockless.
-When the mb and esr handlers run concurrently on different CPUs, both
-can manipulate the list simultaneously.
-This is a valid concern, but it's also pre-existing.
-
-The fix requires changes in CAN core's rx-offload.c rather than in
-flexcan, so I think it would be better handled in a separate series.
-
-Would you agree ?
-
-Best regards,
-Ciprian
-
-
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+> v2 changes:
+> CC stable tree.
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 20dafd2710a3..0b0d6a210406 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -41,6 +41,7 @@
+>  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+>  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+>  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
+> +#define IMX8MM_PCIE_MSI_CAP_OFFSET		0x50
+>
+>  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
+>  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
+> @@ -117,6 +118,7 @@ enum imx_pcie_variants {
+>  #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
+>  #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
+>  #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
+> +#define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
+>
+>  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+>
+> @@ -976,10 +978,17 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+>  {
+>  	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
+>  	struct device *dev = pci->dev;
+> -	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> +	u8 offset;
+>  	u32 tmp;
+>  	int ret;
+>
+> +	if (imx_pcie->drvdata->flags & IMX_PCIE_FLAG_KEEP_MSI_CAP) {
+> +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_PM);
+> +		dw_pcie_dbi_ro_wr_en(pci);
+> +		dw_pcie_writeb_dbi(pci, offset + 1, IMX8MM_PCIE_MSI_CAP_OFFSET);
+> +		dw_pcie_dbi_ro_wr_dis(pci);
+> +	}
+> +
+>  	if (!(imx_pcie->drvdata->flags &
+>  	    IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND)) {
+>  		imx_pcie_ltssm_enable(dev);
+> @@ -991,6 +1000,7 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+>  	 * started in Gen2 mode, there is a possibility the devices on the
+>  	 * bus will not be detected at all.  This happens with PCIe switches.
+>  	 */
+> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>  	dw_pcie_dbi_ro_wr_en(pci);
+>  	tmp = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+>  	tmp &= ~PCI_EXP_LNKCAP_SLS;
+> @@ -1897,6 +1907,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX7D] = {
+>  		.variant = IMX7D,
+>  		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_APP_RESET |
+>  			 IMX_PCIE_FLAG_SKIP_L23_READY |
+>  			 IMX_PCIE_FLAG_HAS_PHY_RESET,
+> @@ -1909,6 +1920,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+>  		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_PHY_RESET |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> @@ -1923,6 +1935,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+>  		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_PHYDRV |
+>  			 IMX_PCIE_FLAG_HAS_APP_RESET,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> --
+> 2.37.1
+>
