@@ -1,105 +1,61 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D463EB7FF
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C17B1C8603;
+	Thu, 19 Mar 2026 16:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773936046; cv=none; b=a4KWz8MB7BkBpLcWTkOTJSHoDug2U/zOddZ/UckwfFf1FG7EZNY7t1CXjmz2qo+3cuC5bRSvSDQq3D0R8/9cWC3Vakt51Esq8CadMLfRNltMcNXTI5RVtmDuNTL1ghirpMEEw/x1tUbRqXJf91XA0REFx8ZelMPrSgcqw+vCV7s=
+	t=1773937345; cv=none; b=mOD2fotuTCfjO4R8YOU56YiixWSymNZYf5GHtdlzPVzq5UykHFHQe3bu0uOid0poQbNYQuzXtCZj4mPEJOv+DfXQjkAioS+kMWRLjLNFNWBbnVjsmOMM3DzX83R+j9FfV+aqVkzqKY/I5JJIg2hN5Uhu3mY+YE9gbMTWWPp+1Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773936046; c=relaxed/simple;
-	bh=YU4rvkgh97p9odQ7CVIxch+Qex3dGL72dN9hqAFelpo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYzc2oTcHtc2+W4MIPuQIUUAvU1rKaJoQSNYjt2POoXzCgHnw2k6RrghcrMFNsWjgqgHlDsy6KmMtRdv9GDdc7DJ34cdsPz+ic8xf/pA0XIUkPS9s3Kw34F53339E8KgjwwQXs69uva+S1e9FtyO1de4R9hvu+/eThtnpvVFmZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmZ3Mrzq; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773937345; c=relaxed/simple;
+	bh=OuCnqeQcXwL0H6JyilgAKoAIxzy074pyR/M2JUifC4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Unn5InIVHuOzT66vWV/vOZZxh5IPBUmYqsUGIE+v9boWtumYTwipoH5zLlRNIvOsVdLey2ldLfSshtQF/CvTjWUSGKuHsEKOKhAK0x0XMbWXfr56edVyfBSRnTIOc65HL4Rs++N+fAF6WZiqEf7KwhKDdTieszHGMt/6Yy9g+WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lx+B6Msn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmZ3Mrzq"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43b4121c40aso753168f8f.0
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 09:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773936044; x=1774540844; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uks/f97JENhrvnsThvZhzUZdvgjh3JvnUSmJzAdelLo=;
-        b=CmZ3Mrzq652FYOcpgKAeClreU96gGLt3mcR1bs5rdv/xu2/MXedHd1CbYTQKNCYk0P
-         aL7KpQpu8HfvUmYR8tV6wi/TBI/k3xuz8Y57Dkc1PfslRKzRdPxhyKrSo6e5M+AKHe4y
-         RW6Flm020wIyWI1QHJZS802bj/y6eX9dMMj9AgfrnyDrUg/nqn9E1MjHawLkEDk9uEgu
-         N8I3H2frwnGh0SI0Mbzsv27/LBangTr3YwpX5UOd71mE5ZQzB1t2ZrZxfJgDSuHr55HE
-         wkfWmIjItQVttwp+gwdf0BruNC2f2j5Ly4Liw5y1uNe8XWfO8xq/71bLIoQkqsKYRwhF
-         joQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773936044; x=1774540844;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uks/f97JENhrvnsThvZhzUZdvgjh3JvnUSmJzAdelLo=;
-        b=d7T7HuTeQU5Bj5qla1BLEhOZQSP/i8LB5VWQxdtJ05pNxFBUb4ghMWWsc6lTs0Mxzb
-         M14sS4SOqMYu+fVG2GqFp/C11heQ8qX8E63Z9lj5DvqbtNCS1HYL6d1KNk3l95x195E1
-         HR8VapSl7PhrZRSB2+DNiSGKuLeT+UY0h2/liSq/KWLRXNV5pTVkx9jS4p4WrAJ9YH9z
-         656fJs9EjZ1fCoVY5SymOyfXMksw5JKNIiOn+gIfCQJWq/vJy9kMsBX6iJDvAPZgyMdK
-         sui8RKGgZbtq2P1hEkPygZwvPHOeZdaTY5ZTQbC/VOB0Md7AnZJCGFFwAbHhLs635yve
-         PCbA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3IxsJlVXISJmTuptfxqRjwMVga7W6r7UwYI9BVa2AJA7uu0SS9V13w99fhFfsMcFRMYs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyuYT9Vr5xqG7jK6JDAQ2wHDm8ECTvHaIHzCUV82zIduOxNHnnl
-	dIY3y+JjclLq42vTXZkdGcSDPLSbuZkl8B3RpqG7+bn/ueglWP/JH7xV
-X-Gm-Gg: ATEYQzxcIqKjphCqYGvqjVG43RcmT928Qq3O94jA3/GMTI8mkp+EEMQHCbQEMj9eRK2
-	lVkHLLJ8nqx3kGZ71/T/YY+DngEd07xyZAXpn5PpkHetkcq46Siycdfko51g7btWqjvPdKo5Hzd
-	yeYYPuCRHo6Vhi6BEJgviWTa4ttK1c/VL0cwTk2+c/hu9Godjx5lAtC+VZKCdivREs6iwCfQNQC
-	cb4I4gz+JrWYr/71NKoMmOdcGNPwXB30NfLlP6qX5ZtOueQ6i2/vhNLOA4npKx4Venb+WcyJHXk
-	GNyl1vjQDe/3g6F225r7yLUVnMZgLvXA2KWgxVmss8DzlrbHzegHZHSDqx1u2r9EuFHIX0sdnRx
-	v9ByIdTOPc5DafaMDaZN4GtZf2IVhOmjK410E9L0dVHr+zL5ZuFsnz7QqbcxoJ2QuTx15nL7Pdz
-	aG/5ab1rh7Jr+eJSz1J4/GDgxozVdBfh6zXq9DNeA/qEEEWUIF/7TdfX550OIhy5tlqGfmcj7XI
-	EfukgxHSbV82YXN1uEAlyV8AOkT3UqYrAKNdVsD7JIG5kQ=
-X-Received: by 2002:a5d:5f82:0:b0:43b:45d1:f44f with SMTP id ffacd0b85a97d-43b527c89fbmr14188968f8f.41.1773936043147;
-        Thu, 19 Mar 2026 09:00:43 -0700 (PDT)
-Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b5189964esm16332268f8f.29.2026.03.19.09.00.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 09:00:42 -0700 (PDT)
-Date: Thu, 19 Mar 2026 17:00:40 +0100
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v3 03/11] arm64: dts: freescale: imx8mm-var-som: Update
- FEC support with MaxLinear PHY
-Message-ID: <abwdqN23q9Kx4V-D@Lord-Beerus.station>
-References: <cover.1772898346.git.stefano.radaelli21@gmail.com>
- <24d31e0ca71c9b2dcb64d39117a8501d85cf945f.1772898346.git.stefano.radaelli21@gmail.com>
- <abQzAM1cxsFJoTJ-@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lx+B6Msn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F60C19424;
+	Thu, 19 Mar 2026 16:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773937345;
+	bh=OuCnqeQcXwL0H6JyilgAKoAIxzy074pyR/M2JUifC4Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lx+B6MsnOtMRpVu6Lr3BgjTcWvQR5aDExQ3KB2LMfLOtbXrsiywbQtr7m0ewbQmaS
+	 Bo1YUuVCxG+XbST3XvMYyuUsh/46F7m/48NkcCz74rvLjK8jan9AMkkpr2V+G0/Cc6
+	 D6L6fthL/skxIJiBRW8J+q4kC6ximwpr/3/eVzpExLS5wajM5TsAPG7KnuUoSZ6Xjb
+	 lBP1dsmBmRLN/zReX8I7+kgNEYCkeAIqPK9qLoXYn0GTEgqrw4Zwfi1ukGuS39fIBx
+	 aKxYHTdnJb0MbIZ6zyVPJTq7UutvFXDod85o+kxSqDMGUhnZKNMd9Ag5HFIrGsPfB6
+	 q2auh09vLjKVw==
+Date: Thu, 19 Mar 2026 09:22:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, mkubecek@suse.cz, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH net] net: enetc: fix the output issue of 'ethtool
+ --show-ring'
+Message-ID: <20260319092223.799798a5@kernel.org>
+In-Reply-To: <20260319072716.511992-1-wei.fang@nxp.com>
+References: <20260319072716.511992-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abQzAM1cxsFJoTJ-@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Frank
+On Thu, 19 Mar 2026 15:27:16 +0800 Wei Fang wrote:
+> Currently, enetc_get_ringparam() only provides rx_pending and tx_pending,
+> but 'ethtool --show-ring' no longer displays these fields. Because the
+> ringparam retrieval path has moved to the new netlink interface, where
+> rings_fill_reply() emits rx_pending/tx_pending only if the corresponding
+> rx_max_pending/tx_max_pending values are non-zero. So rx_max_pending and
+> tx_max_pending to are added to enetc_get_ringparam() to fix the issue.
 
-On Fri, Mar 13, 2026 at 11:53:36AM -0400, Frank Li wrote:
-> On Sat, Mar 07, 2026 at 04:54:39PM +0100, Stefano Radaelli wrote:
-> 
-> Any enet referent to this gpio node, otherwise can't guarantee device
-> probe order, maybe enet driver probe before gpio. rst is critcial signal.
-> 
-
-Thanks for pointing this out.
-
-That was just a leftover GPIO hog and not actually used on i.MX8MM.
-It will be removed in the next revision.
-
-Best regards,
-Stefano
+Why set it to 64k vs priv->*x_bd_count ?
+There's not set_ringparam so user can't actually change the value,
+wouldn't setting max to 64k give user the impression they can increase
+the size?
