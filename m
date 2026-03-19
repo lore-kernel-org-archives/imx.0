@@ -1,114 +1,200 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87BB3D47BD
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773952638; cv=pass; b=hUoytZs9GNfNK+dgbl4ByXk/G76Kpr4aRqpWLoSzhkVe1xC5fEL4B17wT+rqnuqJD3U88xyjihhbaUq3kerHlsonYT/08D0Sfld5rpUgsPQbLGGfghXozzj9B5fan6Lr9lhzfzuY4QrUbphBycjDnBloajrFS6aDZBpTUjZMgAw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773952638; c=relaxed/simple;
-	bh=OKcQF1kpAs1PMLQtJxV4BxsdutnEF0dS5maqemA1Tzk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C2t/owMhR7FJUbQfRXIlNYmFIfciarXb4rG9cvDrjlANbtQ0woFDc1DSpnI17wrFT75YlfOej1XdwvpOmvR19eVystiaA+oLhf/FxtS79BHIHzpwER72RgBndw8SGHujtYlPHaeAf5lK7FgusD2XpA91n8R5z0nJ4G/QxLF1X3E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YAg6c4gr; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6673FB7C9
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773953402; cv=none; b=gSFdb4UPDIqeh0rGDyiYzrQ2brhWnMqQirbylXGRSQwKrwCKdInZaSAWFx/aa5FlqPEgoYnY3npRvTFSTRwBrAlcHHhHBOkd4mwncOvu81Mc8NB/pC5+dW6je7ecFACNTOrVlQcv9Ga6VJxf/WaAa+DvPDlWENDziZAoOoxXhzs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773953402; c=relaxed/simple;
+	bh=l305ltgLMdtMBCZvuBvAjIK8atGZ3/0+tZ1sV2Pj/ek=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jMKI3lxzas+gY9b6+LW8EW7qWBaZK6Q6/IuSvDj3vPbio4K0DQ+ua26iSfBGr3G+t7hLNSl40TmtyP6UeuybQ3uKtPFhzZa0Ekh5Smeoj4ToqGwXcCbj9/Dn6zwivZdwHCKHnFKUozvOmF9Crs43XvUQwET/kBZIrOb0FHLPfoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=XUz8NEmO; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YAg6c4gr"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38a01c80c34so8979581fa.0
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:37:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773952636; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Tu6I8VFxXm9HyLwvSC6DIslqsJJsxFYH4ea6pOtHrXLpba9rNs/Dg+05kdsN+Vie1l
-         xbgsFH7e6BrOG4TpDko5VRZvcl/yX3CIns4JAQSrwHqgXiK4bFLcnR916294MIdjfkuH
-         K5M93dqih/2xEj8IXx7y37una5gfS+/qQ1wbQ61X1vNIoC/ouU0YKx1yR47+B+t5u1HG
-         YnNVz0Xr6aAz3D6nSXFdxYI5ZmmlDjs0dztrx4mSPLSJZrQ5T58tyqGcbYZB4TFaFKA9
-         +v7B2GPm2ivckmeVGD1fkB73PDUrckcl/CB0yQ8TKZY5ef582JBq0ej6ngkoZtqah+Bh
-         UGkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
-        fh=Aj5ZcOtELAnyaiJv8MY/GUeCdvN+wmIpiFG8O6BuZpo=;
-        b=eWIDCUiNG4AyWSXfF3ot3eszVFXKjSTn7ioykWXf2XuwrYzlGLxLIl/dmzX3WZbGhY
-         xuL/lxFsBoBrJ5gTKtZWEcpVpr+AMDPq9CmrPfwz1unjEwSDvnqBIWQk7kohBlmE/23Y
-         rkq8iwdjoXRCb5V16k9IBZipNRSmShJzWu7oiLnNgxFBvkfjlGj0uLplCWlISHtSxSR0
-         4GqD90MRfkE42GdvuaX+SRMijnbBYVDeqUJxriM3TL5CYKEmlZfzckgRGsXesCVy/WO7
-         cZ1l92NtzO7L/YBySsOozllHGIMkrHaG1VDGXYrHz2faTtXj8t8SSdxBbrwHIbNGmiB9
-         CMJA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="XUz8NEmO"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50917e02472so14672311cf.2
+        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:49:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773952636; x=1774557436; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
-        b=YAg6c4grAULEUi0U1MXmlRXvAbqBir1Y/ZdO/qb5RW5n6dQTsmTAk+CmjYxVWOydzq
-         2B0bsu0vLIigQgxbSC541+hvRw7fOnWGZbqKAwMJ4xG16Grhm3A21fWcG56mV00JKQsD
-         uo/w6jl/sxksyOjkeMROv1vM9UjlpyUuX+PmShlKZ/Qnn6Tx7EVpmjcSr8PkOyBBdifc
-         y4TrkH5KbvvBoMp3SggM12QXQFNhxBAJ0cq8Xi5H3PL8zW3Zb94EpnOtO0QTQPnM9Oa1
-         GCgyxSBz5kQ8+teRbEeOFWFV9lYuhtwZWVhtLEaRXkpDEttXlquhHcpzyaa5jl7Qtsz1
-         Rc3g==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1773953397; x=1774558197; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=P0AE6ezNpya7RR7FjT2PYnGrtSfyWo+dZi1jY1xEvZs=;
+        b=XUz8NEmOXO7L7zmBRrJdZw3lSO/lh3Y9lCZCyxJXF+hQ9ugiycS9d9SRiWp38UNC8W
+         3HiGjnNh3nhCFi2NHXgp6icsA4OqFVXZsdkMXI3px+e4506WRlOoSkj5p4J+3nlThk9A
+         +06+zrR5F9ZNhTm/Xc7uGlQD/Y7qEpp9VWuGvPeu58PLf4hFda5JlLOAX6DXF6ZSC2hX
+         tchp/qcGLoEmt7CgSrM2KnWt5Sn4pRPs4aRW6cfZoIyvhBWMIigzEeK0AFcXpPvp15jA
+         JBY4O/8sX7o5sYMjL+tNsNkzM37c9W5VcHLFN+c0/FUe/fru4KjUcdy6bZTFyTtnWlEQ
+         Ylug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773952636; x=1774557436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
-        b=gK7oejb9Eu4OkX8gB+N5BpOcV6GTTxDJ6okO12OHRpFA17+53LKP5MR5h5vx7ZIMRu
-         cPYrkKueqmojxOEf6LhbFnPP8ULVQdv73NVmEL9AO5EAkAfdWHSQPEnIAw1ks74zQBKa
-         kplFskc771/zVGXczzd84s7QfavfH+uv7qMVrpirp7h4vTQnituCXxcYh/LmqkfQ0yT9
-         SagSjj97NUbHLtYqE0ZXRhj8VvUZvRT7Z21OnhNTQZ3B8G3cgX53nug0asqhHKxtCTF5
-         cisBFB8oIbx2s1vmsIBsEmyyXPIvXDVmG5+f3woPzvsSBt/eABVhJ/JE0Hfc8H15A1li
-         i01w==
-X-Forwarded-Encrypted: i=1; AJvYcCVSL28RLklvwGWcmhs6QqROGP4S8Ef1DGZdlOdDezZ2ekYjZyKuPXN9G3H1a2XL9fsCeAI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3cN5D8uCfgjTC7qJNgloQHtxgbovIQEOE98i4SEARNsa8npMc
-	4VGzRFZEyMGcyIvzF+1ygjwyqpp1BBwnYSnSXjTT2cdVHq9Vvq5sNTOWkO1x4xv0BNnv+L9H/FJ
-	1fUtgHVAf6d01poz/0Fiej3qUEl+njMw=
-X-Gm-Gg: ATEYQzw9VJP+kHG0YqPi00GXysNKtgYEGdjoPdZffmCkBzFDofgg2FDoBNetp6znM90
-	N6Y/iMTMeOm7Ju3yuS7xmkS7iQpRa1zJQ0X0ROitHxWDL0OMj6kbA4F2u27EMDdIAshTka6L42W
-	p3m3/7QOaIbKr/ljlXF7+9cm5ZOs2pgXJEBdLr4VMAuf0bKCP41Jokog773CUhxzeAbABE1rsR2
-	GEr1c1Vww02tBcn7ph+L2bA7mVQf+AmDdbXeNEmxo7aF7Kq03irspkOpmDP9A86Y7ipKyEiAGn3
-	xf9hfW1Iq+xIo8ftEM56BpMzPWjWcVZOz6F12rpIuXK8e1p6xowke0ex3Xm+Gt7r5oAK9aE0
-X-Received: by 2002:a2e:3215:0:b0:383:18fb:fdf0 with SMTP id
- 38308e7fff4ca-38bf96ee31amr2254101fa.22.1773952635602; Thu, 19 Mar 2026
- 13:37:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773953397; x=1774558197;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P0AE6ezNpya7RR7FjT2PYnGrtSfyWo+dZi1jY1xEvZs=;
+        b=Zh8A58wBnpFen9KGa+1Ko791RfEqkqynWwgwGWmsNdwDvTTaSE4iXAdkJB+Jg+M9/X
+         aIEHnXM2mONXwlBqbZX8Ft0FM1rIqOyxUQTk59SCd1iL/PY6aKZMK1p/N3ryZpeO+mbT
+         Lfs+P7wT4l97/P9D6gjnhcwNbHEjxu/DMxn1CO98g0HxpMZhsVPt6jS4ayHt6AR27vLp
+         2p8AksS7nR9N0eZTsIKtbtyoRGGk2G08PpJGy5UZaokaY31TWAAUqsS9TrJ3RVEDkTvC
+         CTX+RKQFEBWppH9+CMfNYPrNa0r+1dPKLpQWgZcidQx5U+lv8Kpl1ljdkt8FSUtw/z1q
+         ovxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYojAlPu6TJ22aRt+U+zVYSsHKS3iLXJVUxtaphIOdQ+Ex4JdxTk/gSs1o7WTH0piiERI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzlzd6W5YC83LAJslDGzsZuwvpBT5D03JwKucnEgGY1oY+VcT5p
+	CADWDsaqCCy639a6MUGPTQJy/aqsPPMhR7rxAH0lmgxYxQKbAKGYxmei3X3VQPxMNzs=
+X-Gm-Gg: ATEYQzyD5iBpLwgJeqFQs4IUcFtoOTF8YP37pG7KBWQXXSDgqi+o/ak9Wv/kYimzIXZ
+	4zgN2di+jQiUmVY1tyn2B7XpQb1L+CNDW8AtktlV2cJxRw4/n5BYQEcY0VQRroda11POQOVuzB+
+	eCzbY6cpufaaxihLR6ewv1omSkqP+7Wwf0Dqx69Qg35+OmT8CoQQAr1LYURh3usiyDJSMTgaTI5
+	uQ36QkopJXt6ShEMTE1Bz6XIvHmezhAly9PdpS0dgOK+2DAj1kYv0K3x+oTLZuXIHBwKAOubYxc
+	0I3aZHMpM/DXQE8ZAwdvIgkuXG/AOISsgQg3ithQSzVdJ/MAJ3MGMInfOMsEybt0pYEVIqtpr0S
+	Wb1Zw9xCQeFIimlnPsU4aod6Q9wcZJXG/lzs4zj6KKPVlPHym9d+R4SM3aUYdgDwJVW6R6Rkh9u
+	cp8rDM+AIqdYlkc4CUGNbA4+xu9etY
+X-Received: by 2002:ac8:7f43:0:b0:509:481:536d with SMTP id d75a77b69052e-50b3753b698mr10051231cf.59.1773953397275;
+        Thu, 19 Mar 2026 13:49:57 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:11:b76d::5ac? ([2606:6d00:11:b76d::5ac])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36d0671csm5413341cf.10.2026.03.19.13.49.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 13:49:56 -0700 (PDT)
+Message-ID: <ffe1c9db59092ac196e9ad1fdbebe73b75d3fcb4.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: amphion: Fix race between m2m job_abort and
+ device_run
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, Frank.li@nxp.com, 	xiahong.bao@nxp.com,
+ eagle.zhou@nxp.com, imx@lists.linux.dev, 	linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Thu, 19 Mar 2026 16:49:55 -0400
+In-Reply-To: <20260306065951.837-1-ming.qian@oss.nxp.com>
+References: <20260306065951.837-1-ming.qian@oss.nxp.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-NtmVNV443a/7/iP6AJJn"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260319200945.23333-1-adriangarciacasado42@gmail.com>
-In-Reply-To: <20260319200945.23333-1-adriangarciacasado42@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 19 Mar 2026 17:37:04 -0300
-X-Gm-Features: AaiRm50-FVCrW5uqx_caj9h1BrDi-gvkU_nz1UeamW4uIfef2gzzYIjKPKykSOA
-Message-ID: <CAOMZO5DcaucpKj2=gO5kP3vd=f==ydzB+3FbGB4Jwg19Vi8fpg@mail.gmail.com>
-Subject: Re: [PATCH v8 3/3] mmc: sdhci-esdhc-imx: remove redundant mx25
- handling and consolidate soc data
-To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?= <adriangarciacasado42@gmail.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Haibo Chen <haibo.chen@nxp.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-mmc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+
+
+--=-NtmVNV443a/7/iP6AJJn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 19, 2026 at 5:10=E2=80=AFPM Adri=C3=A1n Garc=C3=ADa Casado
-<adriangarciacasado42@gmail.com> wrote:
+Le vendredi 06 mars 2026 =C3=A0 14:59 +0800, ming.qian@oss.nxp.com a =C3=A9=
+crit=C2=A0:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
+> frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
+> with the same context.
+>=20
+> Race sequence:
+> =C2=A0 v4l2_m2m_try_run():=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 v4l2_m2m_ctx_release():
+> =C2=A0=C2=A0=C2=A0 lock/unlock=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v4l2_m2m=
+_cancel_job()
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 job_abort()
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ v4l2_m2m_job_finish()
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(m2m_ctx)=C2=A0 <-=
+ frees ctx
+> =C2=A0=C2=A0=C2=A0 device_run()=C2=A0 <- use-after-free crash at 0x538
+>=20
+> Crash trace:
+> =C2=A0 Unable to handle kernel read from unreadable memory at virtual add=
+ress
+> =C2=A0 0000000000000538
+> =C2=A0 v4l2_m2m_try_run+0x78/0x138
+> =C2=A0 v4l2_m2m_device_run_work+0x14/0x20
+>=20
+> The amphion vpu driver does not rely on the m2m framework's device_run
+> callback to perform encode/decode operations.
+>=20
+> Fix the race by preventing m2m framework job scheduling entirely:
+> - Add job_ready callback returning 0 (no jobs ready for m2m framework)
+> - Remove job_abort callback to avoid the race condition
+>=20
+> Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 
-> @@ -873,11 +865,8 @@ static void esdhc_writeb_le(struct sdhci_host *host,=
- u8 val, int reg)
->                 new_val =3D val & SDHCI_CTRL_LED;
->                 /* ensure the endianness */
->                 new_val |=3D ESDHC_HOST_CONTROL_LE;
-> -               /* bits 8&9 are reserved on mx25 */
-> -               if (!is_imx25_esdhc(imx_data)) {
-> -                       /* DMA mode bits are shifted */
-> -                       new_val |=3D (val & SDHCI_CTRL_DMA_MASK) << 5;
-> -               }
+Ok, I guess that also reduce the overhead of scheduling jobs too.
 
-This removal of the i.MX25 check does not look correct.
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
+> ---
+> =C2=A0drivers/media/platform/amphion/vpu_v4l2.c | 9 +++------
+> =C2=A01 file changed, 3 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/pl=
+atform/amphion/vpu_v4l2.c
+> index 64fc88d89ccc..7cccc994fc50 100644
+> --- a/drivers/media/platform/amphion/vpu_v4l2.c
+> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
+> @@ -447,17 +447,14 @@ static void vpu_m2m_device_run(void *priv)
+> =C2=A0{
+> =C2=A0}
+> =C2=A0
+> -static void vpu_m2m_job_abort(void *priv)
+> +static int vpu_m2m_job_ready(void *priv)
+> =C2=A0{
+> -	struct vpu_inst *inst =3D priv;
+> -	struct v4l2_m2m_ctx *m2m_ctx =3D inst->fh.m2m_ctx;
+> -
+> -	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
+> +	return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static const struct v4l2_m2m_ops vpu_m2m_ops =3D {
+> =C2=A0	.device_run =3D vpu_m2m_device_run,
+> -	.job_abort =3D vpu_m2m_job_abort
+> +	.job_ready =3D vpu_m2m_job_ready,
+> =C2=A0};
+> =C2=A0
+> =C2=A0static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+>=20
+> base-commit: f505e978d1a0442adbbde48aed38c084ddea6d6e
+> prerequisite-patch-id: 0000000000000000000000000000000000000000
+
+Not sure why this line ...
+
+Nicolas
+
+--=-NtmVNV443a/7/iP6AJJn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCabxhcwAKCRDZQZRRKWBy
+9HjYAP0S0YE21EwzVQU1/zKYJbvHM7WGRp6aud37nxGkL7LXVAD/QVLAcoFXLtH9
+khW4FVX+kR4xvQStun2japJcuFbnQg0=
+=Af7N
+-----END PGP SIGNATURE-----
+
+--=-NtmVNV443a/7/iP6AJJn--
