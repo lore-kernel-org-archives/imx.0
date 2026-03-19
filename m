@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20123EE1DB
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D43ED127
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 16:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773939363; cv=none; b=fuDV4+4+QZrF5cguIYmS/YTYQLl0on2mDpV7ISbbNx/vzwnPmKo6xpalDtQN6AzydM1HSeyroVKfXgnCEbd2vLU0T/GYMH4r46QFbe99w91ef8xBHx44PB2RPlaxapoIfZvOTJQfZnQX753eju3Wueuzfzn5KlK8W4twVYzEr1o=
+	t=1773939363; cv=none; b=rLHmXoJYxKHfWoEog4W1MbbRmK7n/Z052ZMH9YAbtXj7r62k2+pLSlGxWsWQOhozE/+Cw/fxRtFfFSNGsbd6S0sY8nDrEc6/4KU58HpX3qFGT1jZzJaEnE2n2N0O7r3Sb+4u1dhp/d/wK8JkiNvZFq8dox3JClmPH3ADxa1xaOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773939363; c=relaxed/simple;
-	bh=cewxigfhr8A62nFh2/tWGpwMAz9fbmcaksUZ7wDWT78=;
+	bh=PkC2yo5BI1aEo+Xf+NS4EiYcu8oB75ML9kN9GINNcjo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gIYu/pjwqSngQixofzT2XUb6XvK/TYSGzsysiGV7AmXxGg2JX9QM/kHM9w8kB52TuEpBy7T6sFPR7TipLM8M36u+Dgym83a19FlBmEbT09Qr6OZcGUJe2x7e/cGDZHtnI9JGOp9nAI1+KQi2Fas9kNi/VoXVYiiWfFtkOcgtMkQ=
+	 In-Reply-To:To:Cc; b=fQH7as0Ahnve62DR62G2v0taS5Fh9OlwsRdtUwomnRD8YcB8yzdpqsD1XPWt6EgEGt3AJcQp0KBgbiyFTMewRmTb7zIoLYYSYPqt/6SuU4SsCwhLNv2cw4Tor6VSovT/6QKfDQL0ojxgUPH3shlSat3fOf7xYhy/NsBsQLyJv0U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,24 +18,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf1-000547-Ad; Thu, 19 Mar 2026 17:55:51 +0100
+	id 1w3Gf1-00054B-Kn; Thu, 19 Mar 2026 17:55:51 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf0-0016i9-2v;
-	Thu, 19 Mar 2026 17:55:50 +0100
+	id 1w3Gf1-0016iF-0Y;
+	Thu, 19 Mar 2026 17:55:51 +0100
 Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8AB2650877D;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A26A750877F;
 	Thu, 19 Mar 2026 16:55:50 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 19 Mar 2026 17:55:35 +0100
-Subject: [PATCH spi-next v2 01/11] spi: spi-fsl-lpspi: adapt to kernel
- coding style
+Date: Thu, 19 Mar 2026 17:55:37 +0100
+Subject: [PATCH spi-next v2 03/11] spi: spi-fsl-lpspi: fsl_lpspi_probe():
+ use FIELD_GET to decode Parameter register and add size check
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-1-02b56c5d44a8@pengutronix.de>
+Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d44a8@pengutronix.de>
 References: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
 In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
 To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
@@ -52,12 +52,12 @@ Cc: Marek Vasut <marex@nabladev.com>, linux-spi@vger.kernel.org,
  imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>
 X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1415; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=cewxigfhr8A62nFh2/tWGpwMAz9fbmcaksUZ7wDWT78=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjco9V53zDzykF/+djlAikzU0/2ci2ONmlveRe7UWPrz
- Zbue26iHaUsDGJcDLJiiixLf5xQFAh0KO19mTAJZg4rE8gQBi5OAZjIPyZGhp5z9YsMTwdYWDbk
- K12epenaaMzHtUxC84PzdJt33689ecDwv3L5oYRD+ro6rjwnVweYnc6I/cR7jMvA5t7KtTXxeg7
- 8LAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2704; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=PkC2yo5BI1aEo+Xf+NS4EiYcu8oB75ML9kN9GINNcjo=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjco9Vzq8Zo38MPH12+b+C2rssI2VFdKZ6R6ybrZ7R4r
+ bT3JIkdHaUsDGJcDLJiiixLf5xQFAh0KO19mTAJZg4rE8gQBi5OAZjIwRiGP1wzY4SNLlbPe+Sl
+ cHLpRKbEr0lb1S2XZmpfaKnpf/BAayMjw6brS/YfmnNYvNonIS61/BPj1n6Bc4/r5z7JkmP4obj
+ Ugh0A
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -65,53 +65,78 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Adapt the driver to current kernel coding style standards.
+According to the i.MX93 datasheet both FIFO order fields are 8 bits wide.
+Widen the PARAM_RXFIFO and PARAM_TXFIFO according to the datasheet.
+
+A 8 bit wide FIFO order field can result in a max FIFO size of 2^255,
+sanity check and limit the FIFO order against the width of the watermark
+field.
+
+Instead of open coding mask and shift operations and to increase
+readability use FIELD_GET() to decode the Parameter register.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/spi/spi-fsl-lpspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index b361c1bb3e43..989d0ffddc25 100644
+index fdd14caf6659..75f4e0e9acee 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -112,8 +112,8 @@ struct fsl_lpspi_data {
+@@ -55,6 +55,9 @@
+ #define IMX7ULP_RDR	0x74
  
- 	void *rx_buf;
- 	const void *tx_buf;
--	void (*tx)(struct fsl_lpspi_data *);
--	void (*rx)(struct fsl_lpspi_data *);
-+	void (*tx)(struct fsl_lpspi_data *fsl_lpspi);
-+	void (*rx)(struct fsl_lpspi_data *fsl_lpspi);
- 
- 	u32 remain;
- 	u8 watermark;
-@@ -271,8 +271,9 @@ static void fsl_lpspi_write_tx_fifo(struct fsl_lpspi_data *fsl_lpspi)
- 		}
- 
- 		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
--	} else
-+	} else {
- 		fsl_lpspi_intctrl(fsl_lpspi, IER_TDIE);
-+	}
- }
- 
- static void fsl_lpspi_read_rx_fifo(struct fsl_lpspi_data *fsl_lpspi)
-@@ -348,11 +349,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 		return -EINVAL;
+ /* General control register field define */
++#define PARAM_PCSNUM	GENMASK(23, 16)
++#define PARAM_RXFIFO	GENMASK(15, 8)
++#define PARAM_TXFIFO	GENMASK(7, 0)
+ #define CR_RRF		BIT(9)
+ #define CR_RTF		BIT(8)
+ #define CR_RST		BIT(1)
+@@ -77,6 +80,8 @@
+ #define CFGR1_HOST	BIT(0)
+ #define FCR_RXWATER	GENMASK(18, 16)
+ #define FCR_TXWATER	GENMASK(2, 0)
++#define RXFIFO_ORDER_MAX	(ilog2(FIELD_MAX(FCR_RXWATER) + 1))
++#define TXFIFO_ORDER_MAX	(ilog2(FIELD_MAX(FCR_TXWATER) + 1))
+ #define FSR_TXCOUNT	(0xFF)
+ #define RSR_RXEMPTY	BIT(1)
+ #define TCR_CPOL	BIT(31)
+@@ -906,6 +911,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	struct fsl_lpspi_data *fsl_lpspi;
+ 	struct spi_controller *controller;
+ 	struct resource *res;
++	unsigned int txfifo_order, rxfifo_order;
+ 	int ret, irq;
+ 	u32 num_cs;
+ 	u32 temp;
+@@ -981,12 +987,22 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
  	}
  
--	if (config.speed_hz > perclk_rate / 2) {
-+	if (config.speed_hz > perclk_rate / 2)
- 		div = 2;
--	} else {
-+	else
- 		div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
--	}
- 
- 	for (prescale = 0; prescale <= prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+-	fsl_lpspi->txfifosize = 1 << (temp & 0x0f);
+-	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
++	txfifo_order = FIELD_GET(PARAM_TXFIFO, temp);
++	rxfifo_order = FIELD_GET(PARAM_RXFIFO, temp);
++	if (txfifo_order > TXFIFO_ORDER_MAX || rxfifo_order > RXFIFO_ORDER_MAX) {
++		dev_info(fsl_lpspi->dev,
++			 "TX-FIFO order (%u) or RX-FIFO order (%u) too high, limiting to %u\n",
++			 txfifo_order, rxfifo_order, TXFIFO_ORDER_MAX);
++
++		txfifo_order = min(TXFIFO_ORDER_MAX, txfifo_order);
++		rxfifo_order = min(RXFIFO_ORDER_MAX, rxfifo_order);
++	}
++	fsl_lpspi->txfifosize = 1 << txfifo_order;
++	fsl_lpspi->rxfifosize = 1 << rxfifo_order;
+ 	if (of_property_read_u32((&pdev->dev)->of_node, "num-cs",
+ 				 &num_cs)) {
+ 		if (devtype_data->query_hw_for_num_cs)
+-			num_cs = ((temp >> 16) & 0xf);
++			num_cs = FIELD_GET(PARAM_PCSNUM, temp);
+ 		else
+ 			num_cs = 1;
+ 	}
 
 -- 
 2.53.0
