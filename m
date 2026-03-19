@@ -1,130 +1,125 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mail-m49241.qiye.163.com (mail-m49241.qiye.163.com [45.254.49.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBD33CCA1B
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 11:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE10F2D060D
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 12:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773921377; cv=none; b=tIr9SGVZQkucu1zPfDF+swEKhkllGsBVdaewPmoxjgoa9vVqUviW72JHiHxnD4Vn5BnaXPF+QuM2nLH+eCoXrykE0dhUaCoK5MSEMF12mg+d/f1myP4wfclcTTOJI1316cXpDjhBJAwrD5vtNm6vG45ZZgQ9Y1KrYYDO07iWakw=
+	t=1773923047; cv=none; b=C776+NPmBNx0Y48OxOGUQZXIIP1D3MVEULXm8Qt+tacGVHHta3PrCoOIqrrkmZbqPtP0imS0zSADfi13yRXuxU4DW5wLzRoj2gj4ognwyv21eRcTi/4G+Z71LK3jNS1jh3XaEUN/1eGTAm2NjJjmtyXO6jVLvpX/l+7lLB9PuM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773921377; c=relaxed/simple;
-	bh=9SAk7s4C28CC0IKD6BObzlcXaILvpHcNKuiTKMAlFxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GSE2V/MlMgIraNbZXGPCjmm+92MEZeT7ZB1qEOUu5L7PR0z1FXvrFT7O6EleUPy/wsbnTCeBYFCUjtAWWZcPavIdZLwmpMftl/hKZoYgaPU0sOsF+wb9i1bWGBOU9cZcIQlQD/VPx0u28EiW1NZ9AKWO3hWgOgKUbQtcDEdatBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Byv-0001bT-8l; Thu, 19 Mar 2026 12:56:05 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Byu-0014ET-1g;
-	Thu, 19 Mar 2026 12:56:04 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3925E5083C0;
-	Thu, 19 Mar 2026 11:56:04 +0000 (UTC)
-Date: Thu, 19 Mar 2026 12:56:03 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, 
-	Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>, 
-	Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v2 0/5] can: flexcan: Add NXP S32N79 SoC support
-Message-ID: <20260319-orca-of-legal-science-88e67d-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260319094032.427697-1-ciprianmarian.costea@oss.nxp.com>
+	s=arc-20240116; t=1773923047; c=relaxed/simple;
+	bh=eHrChhip+o8m1iHgX+5tHnZt/MGjQEgQ16TleRy/Ozg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=i9sN+LlTwfGzEZH9fQOD6XykxDPlGoLT3f3y7H7yuZmNlF7wNvc0ODfo6I2aVe60PowJFpYPG1nljksPQ27c+JxofZUYZBF6tpizGp9vxwE9WkTNdA7SreDUnqjsGnuiXdiTxV8zMHlSyF6nMvV8kqzV0bNZMjikV6WfFFy4ml8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=hIukTVb4; arc=none smtp.client-ip=45.254.49.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="hIukTVb4"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3789bd688;
+	Thu, 19 Mar 2026 15:47:54 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	victor.liu@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	alim.akhtar@samsung.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	luca.ceresoli@bootlin.com,
+	nicolas.frattaroli@collabora.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v11 16/17] drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing in analogix_dp_unbind()
+Date: Thu, 19 Mar 2026 15:47:43 +0800
+Message-Id: <20260319074744.1965918-3-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260319074744.1965918-1-damon.ding@rock-chips.com>
+References: <20260319071452.1961274-1-damon.ding@rock-chips.com>
+ <20260319074744.1965918-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xzuitslxiv2ov2za"
-Content-Disposition: inline
-In-Reply-To: <20260319094032.427697-1-ciprianmarian.costea@oss.nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d0510b79003a3kunmf4d8b30239c7d0
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGh4ZGFZKQkNPTh5JTUhMQ0tWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=hIukTVb4XFxetlBt0FPS/KTYfkbeXsbwZhSS6r1lq+x7LVB2jrQ7Vp2Gm95nrXZJrVYcklQur4NFZMEAQDEgnckMZFeqrtWUcLkxUqlxftjGXpMpkyyiIVVZW4sC5NAEPL85yH9Mynt7Vb/QGEAiCVc/JKwa20litQlAzvqgZok=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=nPGx4IvWV+Ock1XEVW+WwXHaTIvJp5Q7k7Ol/XePnRM=;
+	h=date:mime-version:subject:message-id:from;
 
+The analogix_dp_unbind() should be balanced with analogix_dp_bind().
+There are no bridge enabling and panel preparing in analogix_dp_bind(),
+so it should be reasonable to remove the bridge disabing and panel
+unpreparing in analogix_dp_unbind().
 
---xzuitslxiv2ov2za
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 0/5] can: flexcan: Add NXP S32N79 SoC support
-MIME-Version: 1.0
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
 
-On 19.03.2026 10:40:27, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->
-> This patch series adds FlexCAN support for the NXP S32N79 SoC.
->
-> The S32N79 is an automotive-grade processor from NXP with multiple
-> FlexCAN instances. The FlexCAN IP integration on S32N79 differs from
-> other SoCs in the interrupt routing - it uses two separate interrupt
-> lines:
->   - one interrupt for mailboxes 0-127
->   - one interrupt for bus error detection and device state changes
->
-> The CAN controllers are connected through an irqsteer interrupt
-> controller in the RCU (Resource Control Unit) domain.
->
-> This series:
->   1. Adds dt-bindings documentation for S32N79 FlexCAN
->   2. Introduces FLEXCAN_QUIRK_IRQ_BERR to handle the two-interrupt
->      configuration
->   3. Adds S32N79 device data and compatible string to the driver
->   4. Adds FlexCAN device tree nodes for S32N79 SoC
->   5. Enables FlexCAN devices on the S32N79-RDB board
->
-> Tested on S32N79-RDB board with CAN and CAN FD communication.
+-----
 
-I think DTS changes go into a separate series.
+Changes in v9:
+- Add Tested-by tag.
 
-Please also have a look at the AI review:
+Changes in v11:
+- Add Reviewed-by tag.
+---
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-https://sashiko.dev/#/patchset/20260318092215.23505-1-ciprianmarian.costea%=
-40oss.nxp.com
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index b66fd3062e41..8bb248e44c26 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -1526,10 +1526,6 @@ EXPORT_SYMBOL_GPL(analogix_dp_bind);
+ 
+ void analogix_dp_unbind(struct analogix_dp_device *dp)
+ {
+-	analogix_dp_bridge_disable(&dp->bridge);
+-
+-	drm_panel_unprepare(dp->plat_data->panel);
+-
+ 	drm_dp_aux_unregister(&dp->aux);
+ }
+ EXPORT_SYMBOL_GPL(analogix_dp_unbind);
+-- 
+2.34.1
 
-Especially on patch#3.
-
-I think we should split the main IRQ handler into 3 parts, message buff,
-bus error and state change.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---xzuitslxiv2ov2za
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabvkUQAKCRDMOmT6rpmt
-0vKUAQDwbFhW/W03Hu77q7GEEYWqTGLJDuJC+wiHZTFx4SO5KgEAuB+vLYvGzlSO
-D4BK9Z3qYaKcq6JxEQhyIMUxoUVA/QQ=
-=vGIE
------END PGP SIGNATURE-----
-
---xzuitslxiv2ov2za--
