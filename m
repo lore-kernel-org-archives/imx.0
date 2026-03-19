@@ -1,103 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BD62405ED;
-	Thu, 19 Mar 2026 13:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF37A3B47C8
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773927042; cv=none; b=M1L8K14rJy1lJj4obMWMkcdE3QHVuNLeXYhIdw8yISORB7yWYAXq9dJGYPzQUQHiVKKsMxZRp5tlsutlnkFEgHcl/WEeI2MxiYiJ//pWhSNqYqvxfvP6cqThLNd7hvHM6hyQtEdmj3sIrDYk/gfVD4Gda8Xt7Z4dXlC+ZY1DADM=
+	t=1773927834; cv=none; b=Z6qROXsBgwwFRU31qbfTYxiEhG+YtIsTKJ+VeW8s07c1kMMMZmyvyj5P/cT8UG0Q70rIcHtvSP3tjf1c444Bavzc3G/6scPiehTCXvL6ooTBlKAX1PlKb1OV7vhyZj4oOJ5V/JmSZ3j7EEheZGqUw9gVa1BEBylZ6BGNgAt5SpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773927042; c=relaxed/simple;
-	bh=3QlzWkuw61oY8s0uNHfKgjUBHUrFUa2f7wFH23ZCvqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvTbv3LUzzzFv8O9TsOk5ia1jurc9Ch35gsJl1s0GnMlM0NV8tv3sX97zMOer2NeDlYpXiQmwR2hDHlTzJPiHuLfhJQdssbDSF8w7rVUAZcNx4hl/5/IIZYfVAF90Hdb5yOsVk+khciWwS34QdZiTNnrF0mqH3Q0ZZFNMV8nd0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xWMwkOVA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1773927834; c=relaxed/simple;
+	bh=Fa/Fief1P4zROqR9fX2RoLklMZ0ySyoencTReVNdA6I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RqAo7FTW/oQH0EMWe0bKEFdwPX+qAjxBNTXqDtfUrDBplMUkADaW9p/WZLXXx0/X2+a9N2lH8vZDlRWlsom2wvOxrH6xAdcFkOvEOPkqTrx3/xLsPvvwF3klMV5/dxRdiuHag7wfgY2uvnvJuvNlMTjsij2K86h0MBn//ktKbs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCFGMDx5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xWMwkOVA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=ICmpwB6fh0A2b0UPMsVtdQowQ3NwvZk/ZYuBrQL7xLU=; b=xW
-	MwkOVARasJTlAwliM6ZawizqVt4PFeUf14ARuA+C51I+kWFt0bZckt8s57fDBxNmUdtXzyPTSmm7q
-	MJ4vDl34CMg6TQLbKllfsO6/jAVLYn0SnKtP7sGgIu2Ao5lZhrRJYrKCn6epW9PpKKQbPciFC18IJ
-	P+Knr+mgYvtL6po=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w3DSJ-00COBb-6c; Thu, 19 Mar 2026 14:30:31 +0100
-Date: Thu, 19 Mar 2026 14:30:31 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: add initial device tree for
- TQMa93xx/MBa93xxLA-MINI
-Message-ID: <16102fa9-4b6e-4e40-98b2-2f138ad75ecd@lunn.ch>
-References: <20260317111704.1075938-1-alexander.stein@ew.tq-group.com>
- <20260317111704.1075938-3-alexander.stein@ew.tq-group.com>
- <d67fafc1-4261-4818-8b58-7f3a874613e4@lunn.ch>
- <2259293.irdbgypaU6@steina-w>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCFGMDx5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E19C2BCB0
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773927834;
+	bh=Fa/Fief1P4zROqR9fX2RoLklMZ0ySyoencTReVNdA6I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=cCFGMDx5K1bOQ7BdL9sehx8J+7gNGA1mui4U4C7+CnTeP7hPgFnJRB6VluFLH7aLn
+	 W88iizUGBm5wR0MorSTWodICnOzQ69vW19M+4O90puv0h7NgZCdrDfstj2uvBfEhWE
+	 mDktqNATNrhvwJSke4wCyic5Ke37hziIOoL+HlpDlh3uvly8DdjxccxCr6kqZVGeDv
+	 1Vd+icQ3KEnBzMNhvSSMLBfNWQ/BBP0ifWubXfPcL3g1xUt39zL2mXgUAbjry9jI/b
+	 MqT/Zw3VaQnk/LnIjgj9yqZS6siTR+Udqm1iGzU6EvNZ7qXRLj0H/lcU5KvhA2b0+u
+	 9lZIhK6Onzniw==
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-79a74765703so9652027b3.3
+        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 06:43:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW2Ay9i7aQNFiIGI9IqJbp9xmVw0Y6079nMBI52Xf4hlyc85RKzgK7HMGF1gm4FCgtH2QU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJXozO5PPtDO0mHjoV4uDdS9Wiyg4XxmyLLvy/kxwTwZqEHd8t
+	xFT9vUDvEpQhmx4pwBoJIxvzA8ZN1jXhmatdch25PbT2hz+wIRVhricB185Hega2mQr2GokF0hx
+	vAE3a9GcAJMYshYFrY4jGZQUZLu7P0+4=
+X-Received: by 2002:a05:690c:e694:20b0:79a:6d65:c351 with SMTP id
+ 00721157ae682-79a71be5f7dmr53076387b3.36.1773927833922; Thu, 19 Mar 2026
+ 06:43:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2259293.irdbgypaU6@steina-w>
+References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
+ <CAD++jLkVZc7J+39eUtpWz4+YQm035HDtUyiyrEFGifQkcSMsCA@mail.gmail.com> <CANLsYkyd8x29kz1u2dkyn_5hhWVJehz6VVKEx81Ew6i1nKObwg@mail.gmail.com>
+In-Reply-To: <CANLsYkyd8x29kz1u2dkyn_5hhWVJehz6VVKEx81Ew6i1nKObwg@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 19 Mar 2026 14:43:43 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnEGs57dRt0cv8cn6wPBQysUd55xXp2OKNv9pi=KJcYEA@mail.gmail.com>
+X-Gm-Features: AaiRm51dQcDdZfF40DU8z4L0gvrWVXoJ8rq31Zd9UCtsSTES701kVKPMjzXNSzk
+Message-ID: <CAD++jLnEGs57dRt0cv8cn6wPBQysUd55xXp2OKNv9pi=KJcYEA@mail.gmail.com>
+Subject: Re: [PATCH v12 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, arnaud.pouliquen@foss.st.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 19, 2026 at 12:25:11PM +0100, Alexander Stein wrote:
-> Hi Andrew,
-> 
-> Am Mittwoch, 18. März 2026, 15:49:38 CET schrieb Andrew Lunn:
-> > On Tue, Mar 17, 2026 at 12:17:01PM +0100, Alexander Stein wrote:
-> > > +	mdio {
-> > > +		compatible = "snps,dwmac-mdio";
-> > > +		#address-cells = <1>;
-> > > +		#size-cells = <0>;
-> > > +
-> > > +		ethphy_eqos: ethernet-phy@0 {
-> > > +			compatible = "ethernet-phy-ieee802.3-c22";
-> > > +			reg = <0>;
-> > > +			pinctrl-names = "default";
-> > > +			pinctrl-0 = <&pinctrl_eqos_phy>;
-> > > +			interrupt-parent = <&gpio3>;
-> > > +			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
-> > 
-> > Hi Alexander
-> > 
-> > Haven't we been here before? EDGE interrupts are generally wrong for
-> > PHYs.
-> 
-> Whoops. Sorry, this slipped in from the downstream kernel. Will fix that.
+On Mon, Mar 16, 2026 at 5:01=E2=80=AFPM Mathieu Poirier
+<mathieu.poirier@linaro.org> wrote:
+> [Adding Andrew Lunn]
+>
+> On Mon, 16 Mar 2026 at 08:23, Linus Walleij <linusw@kernel.org> wrote:
+> >
+> > Hi Shenwei,
+> >
+> > On Fri, Mar 13, 2026 at 8:58=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.=
+com> wrote:
+> >
+> > > Support the remote devices on the remote processor via the RPMSG bus =
+on
+> > > i.MX platform.
+> >
+> > I think v12 looks pretty good, if Arnaud gives his ACK on this patch
+> > series I think it's ripe for merge.
+>
+> Please wait until Andrew and I have provided our RBs before merging.
 
-You might want to fix your downstream as well, since this is not a
-Mainline thing.
+Fair enough, I think either you will all agree or none of you anyway.
 
-> > > +&fec {
-> > > +	pinctrl-names = "default";
-> > > +	pinctrl-0 = <&pinctrl_fec>;
-> > > +	phy-mode = "rgmii-id";
-> > > +	phy-handle = <&ethphy_fec>;
-> > > +	fsl,magic-packet;
-> > 
-> > Has WoL been tested?
-> 
-> Yes, it works for both interfaces. &eqos doesn't need that property though.
-
-Great. For the next year or two, i might be asking this all the time,
-so maybe call it out in the commit message.
-
-   Andrew
+Yours,
+Linus Walleij
