@@ -1,146 +1,160 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
+Received: from mail-m1973191.qiye.163.com (mail-m1973191.qiye.163.com [220.197.31.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B613451CF
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 06:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773901807; cv=fail; b=RwPB+x8Xemdyd5yXGnmEVDI1l3vIazstt+AyBL3C/gj7u81fcbKmzchTs+cllmF46xnV2rsDWYtiMSmYsh9A6+YB/7YIJblv7uTrn7YJX0dkoHFljKb53o0+KBNn5Iu1vpz1Z1U+kUcOzpjjThxtTorM0fhyeDMqXP3xPHkzwUQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773901807; c=relaxed/simple;
-	bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mCX6RC804kmV8ViuscGsmoX1MBg0Bfg04r/oIOnObty7E15ntup53MPNOktcLF50x1Mfs1qmV0Lf5gpGkNlwq//s4reYtZmaW61xJDaAUDNPUmTxCRcol69QhtJkRsZHUtix9W8TQ9g5dyywMDeuXU1YWJ4QPe0/HildeshHul0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XZyaU7kh; arc=fail smtp.client-ip=52.101.66.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866552EC08C
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 07:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773904524; cv=none; b=TQ+6VdKK1gBBzPukQ9DD+Yvffjg+7mvJW63As/iYOysQO0qetD3Syy9mztuB+mY5gvnYCZ6s0SJb6pX3fQmlpISPF4vsJi84l+EPL2/wSVtNQuATBnn2+d0DLcg8lsmKjN9eJX3Coixw3zBkRCBaQ9ldJhilOY/jfFBZobkVKME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773904524; c=relaxed/simple;
+	bh=yVlKiHcaRs4I5vgaxZMyvoqwS5TOpj16JX1AoSpevUw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ISjBZro8e6ZHdnn8MQFISInyQF+RKkbDdEbZzqaAy7PNDABRHbOLisrs2kFVhOhKRJzZbFa95hEzmKSZ0d7wkOLmN0N9m6rXpGkr2jo8yJt1E8cg+JTVGc8QbmKd069poFqXLE2jhJ3nMEHUoB71Wwr/UpPq1ZPq/KLIsiOfRDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=IHs+jtCK; arc=none smtp.client-ip=220.197.31.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XZyaU7kh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k468Ft2srS/N3jk85KgIFBlY6erILGBzYv6zfbl17giLKampjlgQOD4SHGLdk4JGi6sJTBtV786+oi0FWy5ce8aXsp73RYKYQ83P4Pm5wfVEGRfk5DRv13BEMnt5WsXw6vCGP5o0l95929bldh9DNfakXjTB/JVOiunQWs6jSJiXB4ngsxf2OdaluhlpAkC2HqAefj3l8thHqP2etcDAP3M6eRrKMAoVOS4OO20WoXadtxZBquZE/bVZKV5FxYAzLmZidRkEEg+Fab7nbKmycbZfIfuldthJ1vbHo8iRKN0F4nhY9rBgP8HNw0npl2McCeGEnJVv7rzZhbGdURTrjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
- b=GbklyaFnQBcjn2f0NmV/34UQcLkf+2+44w5RfzSab73ClwFq2XTLMvmwVGC9/+1davU/pRyEpAbep7qAaegzxM2YJx71jn32Taj0q13ZQTNas4Z7TYUm7MfTI8p5nuySZa/TXY7lyuCYUH62oFiUVG484My43g8rx0sHXK+mVIJd38rIv8+Y+R3HwBjF9DEiEGT2197b1TfYmbV+wlvAqS3twem3MkGvJOtUpNez8615XDyTUs/XOw5iPV8PVl2GlcQepYw6j7ybVbzg0+oYm5xCz813RsHUG7WsBATQLyJ4+OLf3CGY7+vpVasXN2+TCzmQrIELimlyng+Ak25vCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zgSMC783ekID2iMZS/ciXQ40YRkdYQ88GanGBYX3FDk=;
- b=XZyaU7khcBZtI0wi61s4nRLEfGPKxeGkfotX/vJfzdAQ6PEGEDWmsDqrxLr9M2aajOMFaPa7UC9TZAQZnzHbRAA5I/0G79UDvxkTIuh5Ugs/qvSb1WJHTQG9PKNSzMNo0aKcVfRKMXcwthzQx7ipVNPiMZQkKOWk4aatQQdIU8mMuh//jmKpGve3OmuC9vKfA2h7rYPeTITT+Jg/Sk+/iU+7VYvX7T/LiKYlWvgml0080nX2L9q5YcnfE3qsRer5Q/TbayPEX/RaqMEQKPnFJdRR5GZw5itGz/m000kEdLMkcYNgomniiCN0k7MJbjesq01p3oYoJ1vKL/0BzRZUow==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by AM7PR04MB7160.eurprd04.prod.outlook.com (2603:10a6:20b:119::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 06:29:59 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 06:30:00 +0000
-Message-ID: <cd5ef40c-f8dc-42d7-a747-5c20e37bdc7a@oss.nxp.com>
-Date: Thu, 19 Mar 2026 08:32:58 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add i.MX95 19x19 FRDM PRO
- board
-To: Joseph Guo <qijian.guo@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- xinyu.chen@nxp.com, qijian.guo@oss.nxp.com, justin.jiang@nxp.com
-References: <20260318-imx95_frdm_pro-v1-0-8c00e59f0b1b@nxp.com>
- <20260318-imx95_frdm_pro-v1-1-8c00e59f0b1b@nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260318-imx95_frdm_pro-v1-1-8c00e59f0b1b@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P191CA0009.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d5::16) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="IHs+jtCK"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3788743d2;
+	Thu, 19 Mar 2026 15:15:16 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	victor.liu@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	alim.akhtar@samsung.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	luca.ceresoli@bootlin.com,
+	nicolas.frattaroli@collabora.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v11 03/17] drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
+Date: Thu, 19 Mar 2026 15:14:38 +0800
+Message-Id: <20260319071452.1961274-4-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260319071452.1961274-1-damon.ding@rock-chips.com>
+References: <20260319071452.1961274-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AM7PR04MB7160:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2b9bb63-dadf-403c-80e6-08de8580f28d
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	c2hDdJyLRKOAABhGokJJU4a/+0FAidJIUogtDJ8E8VjFxOwLujfSAPRprouGSDdY+PereZsExqPNbBUOFvnRt+/UlEsVC9LBkBMAlhV0SY2xLNstmyvuNr+UudvhJ5UDwDIfAIoKQ71AUuw0HFI7/NdHuJDwkwIS3NgMOwF7iQvJgjQ6DK0aEYMtBtr3+NOgLYTbLUYnKuaNYkV6Kw51uKRidAKsosBcwWOQNKJ+F+Nby6oJd/ZnRFpTEeuyh+26b7DXUaE97jTU4ZlJCMUUBtXswgh59MvVS3qeTWcgtKt2EOtV4SQFYOI4mIpx1yReJ8ULzVAHl7UWBwQ/0Ae7T/tV8YnIRCokTGlQqO1hlUV7RC5zV2ZQRwc7kdlvzxJbKegkE7p+d8o1hdBpT9Nguz98DN2LpccdsWRfkxtCqxfCpnxKGpdOah44oKHimxPMKKvcX1uwGxn2kFBDtXVOJtAsK6W3WUhEVtxOMVHRagEwEqn3YHZ4OEPFyVk4cGVHsHey5SDLvaPKe7skM+CdNVL3mPwIZBzo4Vex0DxOAMq+7PzTRsoPs/a5yaTO0NBz22UIoqiDmVB3w0U6f3IVwtjvi+RT+Z6ADWXUZ34DXB4jIVN/YJEY59IeL1uKXXCsf/i4GiwWSrpwpk/KIkx14NLh4nYntGQ2prQxjglpONO0RQdghcWlKJwihlK8FwswV8hVpw09iDZTtxyEhqNovAVElHfqZefuhpAFt4YT+Js=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TjlaQVc2TWwzR1pmblVOK0h6ell1aVpadGszOW8rRzJEeSsvaXlramE1MlFh?=
- =?utf-8?B?TU55bHU2d1k2L1QxOTUwazdSR3hHWWwyZkZCSmRUNCtmRDhWNWtkOVE0NnFL?=
- =?utf-8?B?ZGFlTEoyUDdPcW0zZjFHWFdJWmkyTzdVdkVSSkEyVlRWblhyNldTLzErcjdV?=
- =?utf-8?B?OE5SeXp2ZTZGejVURzN2Z21Hd0U2anIvdzdXWXU1NDV3TXp4VmN0VU5nbytu?=
- =?utf-8?B?RlZHWC8xSkRaRXFER3o5VWpLOFNLb1FWSitqNi9aVTBZTWdkSU50ZTlqeG16?=
- =?utf-8?B?MUtmSEdiMUtPbTVlaUxxV2RscTh0a0srclRjRDQzSnNudDNtZ2NneU1jV3dX?=
- =?utf-8?B?U1lSUmZQV1M5NGZIdURqb0c0NkRveElyZmxmQTJ6L3VMQStaTm8xa3dBbDJN?=
- =?utf-8?B?VHZuV0dKSnl2UzNyUmFoMTN5ZC8rTzhYMXVQWlRGVjhzbjlhcDJhUERPbWY3?=
- =?utf-8?B?S1R2V1BNUmtzSmU4OC9HT3B4OWlnbkxpWHpENUdYOWE0YVBjWHpza3BSOHNU?=
- =?utf-8?B?bGRDMEhtSUxzdHZPSVdsenhrOG1NM2ZsM0ZtNlE3RWRtcDFtSEdXMWtsWnV1?=
- =?utf-8?B?TG9vWmxpZmc3eEhEdWwyQTdoSVkyVU5ENzNFT3RPZU01RVBHNHJwdTRlOFFK?=
- =?utf-8?B?T1Y5eEhWdnlYaEUyZElzUmVldCt5RFIyRUtnT3VLcUlPYjFCVUlTUWdReXlZ?=
- =?utf-8?B?TTVUWWpSczJhUStXU0dEVk1DVlFxQ2xGWDd0T2tnWUZxT25sMEZFS09zUjlD?=
- =?utf-8?B?alNGVDlvOU56UFROWWVjSnhjT29ZL2VkalFpa3EvSm5Vb3krM0ZYWGx5KzF0?=
- =?utf-8?B?SkJ2azhIUXFLd2Z4aElWQlFTMS9HRVhlZkltdnRzL3ZzbnMyL09FZkJvdHNy?=
- =?utf-8?B?T1dIclFMWThwbVYxS0h6MDNMRGxrNkxDYzJua1hBeEVDWTlwZG9DQnRBSGJF?=
- =?utf-8?B?ajEyUnZNcVhGV2F5YVdSaVAwYVZBaEN5RFhlNmVWUjhtdGFhVnRtcnovNk9T?=
- =?utf-8?B?eTBUOEVvdUFvdW9ITmpBMFRCSE1LUU4vSUFYbmFaemM1MkduM1lXejN2TFB2?=
- =?utf-8?B?YlI4bGZkM29PTXhFcS9VYXNhTi9nR0VTVGVnVTVia1gyRFdrcCswQmlhMDA5?=
- =?utf-8?B?NE9DMlZIT3hSNmpBY3p5L2kxYk5pUTRMd3NFaE5NWjFWakRWYVlCdUQzeE1q?=
- =?utf-8?B?ejBQUTlFMGgwVXROWXlMVHBDUUZUZllGa3Btb1Z3dFBGZkRIbWQxdCtlWTYr?=
- =?utf-8?B?TEZDK214NHBwY09TaGVxeEZJUW9EUFJOeEEwYnhvekt4cmhOdWdjWnRraFVz?=
- =?utf-8?B?WWFpM1hCNUtXdTRQdFlNQzdhRGg0TFhuMlB4NEtOb3Q0QkRxaDhUV3RCUnQw?=
- =?utf-8?B?Z01yM0Z4Mml5UkxhVlY4TFVWOWQ3WjdvMFJEeEJWWUkzUGYwcFE5V3Q1R2Vi?=
- =?utf-8?B?QTRRUXA0RDBlcUkrUlNEb0IzVCtxd05MYlFSdVBJQmhJYkszMUF0Mk5DVi82?=
- =?utf-8?B?ZGsxSTh1NDhVdGtZK05CWDhvL0EvVzdRdm9lWG5qTnQ5cFNKaWh4NWI0N0l3?=
- =?utf-8?B?YXAvV2JDSVlyTFZHRGVpZHMwNlQrYzhOeEloZmlUd2tKTnpXZVZYYk9wYXV1?=
- =?utf-8?B?dHJjUnZ4U1hDNFRudDFLeUdYZmpRU1hoYW1VM2JKSG9FK3hyZlRiQjJ0UEt3?=
- =?utf-8?B?THhld1l5Mmo3SHByejZDNTkzdDhoalAybEtsRXphY3FpeUxqazI0RnRZeUhk?=
- =?utf-8?B?SSs4Mm1TQ214MVpBVmFFRnFqMkRGZ0ZBN0IvUzArNVhzS21NYVFhQ3lMRjV2?=
- =?utf-8?B?d1FpbjZ1UGZINVFZcG5vbXJBSTNQOWdCYmZmcnFRUjBDQXI3ZUptSm0zYlN1?=
- =?utf-8?B?STNhdDBZN1BIVWdIVnEwU0tGUTZPSlVETzJrcmU3eU1sL1B0cG41Zlg2eEdz?=
- =?utf-8?B?NU9MdjgrSVpOaUcrWkYwMGsxamo2RU1KNFdQTWV0OWVMODNiM2ZYZGtkVTRF?=
- =?utf-8?B?SHZFVGQyamxOaE9CM1g0eHFobEI1ZUYzQ3J2emw5a2trSHJhcTVXTlZlc3A1?=
- =?utf-8?B?OGNKTThaUlBWUXdydkFDRlY4OFU1YXl3ZGQycmJxakZ4SWtyc0FQQlhjQUdq?=
- =?utf-8?B?NnNKT1dDMElXak9zNXh0SWhuU0tOTURsc04xbFJvNW0vNlBaNmVPaS9Zc050?=
- =?utf-8?B?bWhDdmJtZ3loZHhPSUJmOHJ4SEwrYUljVGpuSFZHa1J6eWdaczY0L2NuUEcv?=
- =?utf-8?B?bm1aMG1hZjk5MktMTU9zbzUrOVYxWE5CcGNTS3gxOVZZYzZRcTRlZkVORFQx?=
- =?utf-8?B?S2x4N09aT2FGLzRUOWFmaVdGcjdVTVI5L3owVVd2OU5sMVFERzFXUT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2b9bb63-dadf-403c-80e6-08de8580f28d
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2026 06:30:00.6888
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DO+NS0XGHCivrpCU9ngNeIXxF/FCLO/8Z7yzmQ5owoS8sMybXT4JTON6bwE5OqZlK0lHuPOCEmvlwWp1OkpjRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7160
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d04f2d4f503a3kunm86e540ee3964de
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ09DHlZPGkgYTx4YT0xKSR9WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=IHs+jtCKod2+eHuv4A1epPQP2Z68/McBrY85xvaLm0umFveR9iamcPgttq3Zl/EcxkOCJMDrJoYwEu3eC8gkcGRXd8opYeMm/2ASBh8C0Pmh6trdFty5T3jyA+wRraU2adVXizm13Mn2ra94VLzPem0R1fq/dX83B84cjdWlxyw=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=d5GS5vfwTVfAl23/CtmQinQG9E3Zp0oDflrp1gqCYsc=;
+	h=date:mime-version:subject:message-id:from;
 
-On 3/18/26 10:04, Joseph Guo wrote:
-> Add the i.MX95 19x19 FRDM PRO board in the binding document.
->
-> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Use &analogix_dp_plat_data.bridge instead of &exynos_dp_device.ptn_bridge
+directly.
+
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+
+------
+
+Changes in v3:
+- Fix the typographical error for &dp->plat_data.bridge.
+
+Changes in v4:
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge.
+
+Changes in v9:
+- Add Reviewed-by and Tested-by tags.
+---
+ drivers/gpu/drm/exynos/exynos_dp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+index 5bcf41e0bd04..f469ac5b3c2a 100644
+--- a/drivers/gpu/drm/exynos/exynos_dp.c
++++ b/drivers/gpu/drm/exynos/exynos_dp.c
+@@ -36,7 +36,6 @@
+ struct exynos_dp_device {
+ 	struct drm_encoder         encoder;
+ 	struct drm_connector       *connector;
+-	struct drm_bridge          *ptn_bridge;
+ 	struct drm_device          *drm_dev;
+ 	struct device              *dev;
+ 
+@@ -106,8 +105,8 @@ static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
+ 	dp->connector = connector;
+ 
+ 	/* Pre-empt DP connector creation if there's a bridge */
+-	if (dp->ptn_bridge) {
+-		ret = drm_bridge_attach(&dp->encoder, dp->ptn_bridge, bridge,
++	if (plat_data->next_bridge) {
++		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
+ 					0);
+ 		if (ret)
+ 			return ret;
+@@ -155,7 +154,7 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
+ 
+ 	dp->drm_dev = drm_dev;
+ 
+-	if (!dp->plat_data.panel && !dp->ptn_bridge) {
++	if (!dp->plat_data.panel && !dp->plat_data.next_bridge) {
+ 		ret = exynos_dp_dt_parse_panel(dp);
+ 		if (ret)
+ 			return ret;
+@@ -232,6 +231,7 @@ static int exynos_dp_probe(struct platform_device *pdev)
+ 
+ 	/* The remote port can be either a panel or a bridge */
+ 	dp->plat_data.panel = panel;
++	dp->plat_data.next_bridge = bridge;
+ 	dp->plat_data.dev_type = EXYNOS_DP;
+ 	dp->plat_data.power_on = exynos_dp_poweron;
+ 	dp->plat_data.power_off = exynos_dp_poweroff;
+@@ -239,8 +239,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
+ 	dp->plat_data.get_modes = exynos_dp_get_modes;
+ 	dp->plat_data.skip_connector = !!bridge;
+ 
+-	dp->ptn_bridge = bridge;
+-
+ out:
+ 	dp->adp = analogix_dp_probe(dev, &dp->plat_data);
+ 	if (IS_ERR(dp->adp))
+-- 
+2.34.1
 
