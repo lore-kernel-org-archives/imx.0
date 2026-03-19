@@ -1,72 +1,66 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011026.outbound.protection.outlook.com [52.101.65.26])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011065.outbound.protection.outlook.com [52.101.70.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972CD1A9F97
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 02:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DADF175A7F
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 03:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773889195; cv=fail; b=aL3zcWyl+lkTRD02cNmI3wmNNWq/uZUNdduOYokK88BXIIOXt0DuzfzLAcfII/SEQ0PvP6lh69PYv1xxumHnEf8Jb1usQ8WfAscjmjfrOuqUO0oL3LnPJQ34P2Oiog5TTWnPwOGacOEA9JzUbioYnG8L5kOBCbBkEKHTA9sZ6tU=
+	t=1773891320; cv=fail; b=T2P8J2xyz6BsSm4X9YgyF8/4uHG+CWc+Kgi7yi4UJAyieQ5AL2FNXFJIddqJXk5vtblNwBTY5w1poXjWEybCZuf5QWQ6UyMDGSeUHwGufT8sI3xLaw10bBTInYqyHuZNBVrJqeOah5bcYfY1LrKv9uLMnDKkpJ6ClGBH0b7vO84=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773889195; c=relaxed/simple;
-	bh=Ii3KpD+1kosjQjhBmqi0sSjw/vXx5LJlCmZorDBA83k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DYBiZqezdJbSGCA26QlMIPM9jKoMHF5DDgFwHqMz30PEy6gLgzfN0Y63COON/QeFGHejs3i+aso9H1+5hyLLNYKz2CC9zMia4gknEkGeDxdCqa38Lj0UWBqVK+Vg5cDgQLHmV9KW8mTMwSUE0nKUBwSgRD271nO7Spak/m0Kp4I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=M1RL/rqQ; arc=fail smtp.client-ip=52.101.65.26
+	s=arc-20240116; t=1773891320; c=relaxed/simple;
+	bh=FF8+6fMjaQsprjBLXAxGFwfnpVlTKhxm50ku+eTDBWs=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Cp21ECBFWV1V9eehY3qopG5VzsbeOpXd9ei/rdGKZtVvAQbutkeVzORriNUhBKLqRz3KdB/6MqgS+AsYlRymtNWKM2aVIh3DHe1/gztxcHFnwYZ29YvadroqVa2pY0eezqDFrqEQ0Gew+DlH+EDP/RIJKkIyZXRXtNEQHCG2q6E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aLhwJ9mf; arc=fail smtp.client-ip=52.101.70.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="M1RL/rqQ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aLhwJ9mf"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F7BWDGyhDsYe5BO2xZo9nxHfzhDExibIOZGdbE6aDSe0vVKCSsLTv4heXk5bZYZG4yj+xLl4fufHLNFI5jUkwV2RFLqwAas39RtdfMRy4/8mP7yTfYowS4PviGLjJP0pHAc8f3qqleeGbZqAjaP1TYR4QY/Ag+nCNAO07unoHrUB3B3OMBNNG8CLSHubuQtK1u3ACudaUPqWziJAETRp8n3vwa0K48NPrqpO851DtNEN2DfDCJAx52MZ8lwcO0OeaTGYoKUq/pfMfaEAZ9gtrjvS4h+0PaqT7H1Z6oIpx49Vm7R1OegTEAlk1Ni0UuRLErPa30ZP1+HmeeVkuUjHWQ==
+ b=f0GO6IoUi6OX5hIBpdmxenbEElLpgGsya/I3No8nGL+YCQ49kCDALyWRU/A/yLgK7D1larpCp9J7FL/HzrMt0RzxhOwLDOAdrmDAvdif4U2PzOWkuYI5BDmG0aVfIVElH4WBPn1UtrMt/y0dPlOENrL9mDYZpqINddtX3Qb4mKocs8sX9eBCbwxI1ouaZkzYDuY0F7cNKmfn8BD+ZmF9nqcSXvQu4u8QaMQW78meBTA9r6R9s60HdL8NDgDNFe0XW2qqIKvpIFWvZK0Mc38NsIVvECV1JHWFHxR1H7DICN5bDRLJ2Mh3Ghezj8SMAvHfHloIuFBjxRlHmsNfP7WR0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2bJ7kA9ej++G09B/+8ohAipN9ABF8VWdt8S3XAnBics=;
- b=SiBfVUYvK7nis66K/Qs/N8D21NJKAnM2ZhzkAuiIb8lQLYR/UbHvTQutng2KkPrCSIrrsGNaU1cvODSm5ggzXx40/hSPISIvVR78cpZ55VDHR0p4SdBq8NM5CLEqjWcyy3OkaKNBjNu0osfHADlWyHfpG5TypQPqsyc7yBpDC0UtpZ0bTjdwOOzp00x9cVnkgVpYWkvkfSm4RFTvfr+jTH2PltfQ8LIiNz7zWvvzDH41a4PgGwCWtdn2VMdqZmlK11H6OPzxZtsuYmUPuVHnm/VZH8qMCRbg47jxAW0GfBb4zTMaRmgv0AJ3RCjJ7nxbHNM+3dmz6UrPN363Ng+BOA==
+ bh=rIvkSZ3zA9s62jK0sjWWLOuYXLSPx67+u08zOC73/GA=;
+ b=YIbeGrQKTYEmmyXIKsPmtkrgmtSoPsxMRU7YAtIo48GgQ9f/785ZIvrAz8ZyK1qtNo13R9mSkSG2JcxJCkh8ryBISuuIpj82b5WUbkAR3hz3p98FEmOYKph/s7GIi6wZe2WhWFK73M+GIMnBEX3J2Sy6sFoRl3rVTaPtA24/EByS6L/Xyc54cWHfI1V+Mgi7R9teOfoyNGJXD0dP2rqTNj3J1IDyvwIPH/1NpfwjltKrFSxmqA+TxFVeX2nizk1vSFot81fnrY9M2DAbJKH/57b15ZXPladDY7IQsPxWfrSBxRgihcmPDqV3VXmrwWA6SUb6zoBUAhZwYle7VL6Jpg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2bJ7kA9ej++G09B/+8ohAipN9ABF8VWdt8S3XAnBics=;
- b=M1RL/rqQQOFRqNNcPwb3IFP1YSEJNQMKL7KOa1rdGVTzW0IpOV+fNDU995UAgTYyLsQOzYpuoGoadPSygo5jUPy8fV3XiwnUvUBtwZ+aM3czNFPDa0v6/clrT6IbfSVw9HpgrVGo4VL4WQBbE8mMqF6pbvwOYVQjcnbi/oq5nonBQluzOUvrSa03Cfx+798BZ88EyaZpEkYfiRdBX7Xg5i6QVTXNsCgyegiH3L4g+uPy8IE+ruZHqDQJOrnx95IyH7U9WNo5rfHslxu2vbCwrvyVynywNvIJSG16NohsengTIfKk76JY8RqPOoJl567d3e9hRDOAPqtqvinMXqdAiA==
+ bh=rIvkSZ3zA9s62jK0sjWWLOuYXLSPx67+u08zOC73/GA=;
+ b=aLhwJ9mfowONgaFbsOmdXjmyImRrsx4WzHIdvYqpSuMv7rUWO/6b8jEOpKsAlS6YULNXjDEhmT1pH0rucTFDmUrsyT61GNFwtKg6Jrpobf3a7TRShz8PhxlTxxAJCPm73uoFOsLvcMXJ9s5BsQ5v1BAUXTif9xAMJYRHI2r3Sbkxt24GEh15ayLfu/EsoGO0kGvYxl+eRvuqx3VLp7R7Zr7pht8EwWdKxBxwrXQJFSTxF0c7HOIGJZvh2l2otoFiEK/7oDi6v/NM1cZvupz9bdCwBkeTqJdx5e2IJS1guJfTP4ZB/GzDzDOSzINJq+lCvpJpu/KbOnVGon1mTm1mmw==
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB8318.eurprd04.prod.outlook.com (2603:10a6:102:1c0::7) with
+ by DB9PR04MB8140.eurprd04.prod.outlook.com (2603:10a6:10:249::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
- 2026 02:59:49 +0000
+ 2026 03:35:14 +0000
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.018; Thu, 19 Mar 2026
- 02:59:45 +0000
+ 03:35:12 +0000
 From: Wei Fang <wei.fang@nxp.com>
-To: Simon Horman <horms@kernel.org>
-CC: "robh@kernel.org" <robh@kernel.org>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank Li <frank.li@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"kuba@kernel.org" <kuba@kernel.org>, "chleroy@kernel.org"
-	<chleroy@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [net-next,12/14] net: dsa: netc: add more basic functions support
-Thread-Topic: [net-next,12/14] net: dsa: netc: add more basic functions
- support
-Thread-Index: AQHctub30hADsLC0r06uQJxn29cQ0LW1KBOQ
-Date: Thu, 19 Mar 2026 02:59:45 +0000
+To: Buday Csaba <buday.csaba@prolan.hu>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard
+ Cochran <richardcochran@gmail.com>, =?iso-8859-1?Q?Cs=F3k=E1s=2C_Bence?=
+	<csokas.bence@prolan.hu>, Frank Li <frank.li@nxp.com>, Francesco Dolcini
+	<francesco.dolcini@toradex.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Topic: [PATCH net 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Index: AQHctu/GZE92suzIgk2+bQlhrX9NVLW1Lrng
+Date: Thu, 19 Mar 2026 03:35:12 +0000
 Message-ID:
- <PAXPR04MB85109C928E024E0D2506CAA0884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260316094152.1558671-13-wei.fang@nxp.com>
- <20260318144954.1893193-3-horms@kernel.org>
-In-Reply-To: <20260318144954.1893193-3-horms@kernel.org>
+ <PAXPR04MB8510E8145481F667DD769F23884FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References:
+ <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
+In-Reply-To:
+ <e2518c8f932fd9da6754b5ab5cc892ed58a0c1db.1773849293.git.buday.csaba@prolan.hu>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -74,48 +68,50 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAXPR04MB8318:EE_
-x-ms-office365-filtering-correlation-id: 919dd5eb-5e02-4c94-4bd9-08de8563938e
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB9PR04MB8140:EE_
+x-ms-office365-filtering-correlation-id: 31618092-1e3d-4710-7ea7-08de85688719
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|366016|376014|19092799006|22082099003|18002099003|56012099003|38070700021;
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|38070700021|18002099003|921020|22082099003|56012099003;
 x-microsoft-antispam-message-info:
- W6ECTeLKtHbomk9dNutnCQB0JuKmiJhAfHIhAqlhZc7jlM+LCHs1lAcE2ydYp24oQnWM6euCoo3hd3mSpqs7rpSSFg8szefF1WZgVg/3W492CPjo/VUPHC2kA53F+VDZkYvZOss3XrgM7gb/diJ+LzgXCLPrgyU4RGyUDhUgMibpj3UqfnDrRaFcB6Yq6GyRaU7kPRxeNumNWDT/rWMGiFnOiCx/DeyPk94AKb+K/0f4m44KaQI5oool/2lLO1ARYpLeLFhDFDNSqQ0PSVmXJCzlAFw0cfEpOMCagFpYH1o7CZVO0ialTKoks0ag2TsGAvRPpdcQwsstByiezRapWSN9c/VXn+xtVDOM8HWWmPtPnl05J+w/iqKv1OaO1VVHrSMJ1p0cqi2BsrD+4Di5D2ydW71PXb/odYv/sMan6FzJxmOfNobURcUG2NTZl6Lgyv9nq5obMk5lxARr2f0ADAL337G13pk89wTtiJq/mKfNGaEO7a/V+LAhzKlFgOWUenWtMSGTVU0MEZ6dopIaXcYOR0AP/zEbESiZOiU7v4QqQjqV/utsxYfdxeqSXpTTHrx2OfDj4bhU6Ri01LO7j/SvSsT++MgxS2/JUVfTmzwonSCvlhTsbbgGqiJ6G1OyhL9QfVpNmIgM2QtM0AABQOOb/xlLyUAZ1Zn7VGkqQxkJ1de11oEVH/3ka07or3YthcLO/uf0ehuhBbWQ41wYbccTCPuQ8LSZYDBdpwQ7WSlvkKsmNt3DWv16XENzMPnJki+BWLaQX1y2G4fjKwIttNhLWQoYDbJUF93Yk4g3qKQ=
+ Llfm2OnOpoeIZEbUjZif/qiTix2ZXloK6RuXwjRWng3zu8EAlNS1hatA8l2EKWu3TfWc9xpvi7B+Y5LfG5wiRe42Y3z/YO5o7I/sv+US675+KlaPAd/9WdglWsXYLQPgy7DvtUWQsrmSKVVSFAtgtogZO5N/QwWF+cYQkai8kODjIXOcrew/dPGY0athmKVUm2F6c5tn6IDk3AoUfXPxen+TPdlMhEwnRSLHO2EAJmwn5rB17xbTGsyy8TGoSoBt18pKxiQpZbApElZ09KekSqxw4UWpdbpu8VItK5NPqNB/hW1TbSUF653xxekHw9ZUXRHSXQtTzkiRiVNh11l1LGPblLWMk8cwpIruol7HVAWZCJ29Lh7E+IG10ocZ6Ig4m3lmY70xgCYhfJAsChxaXsG5LHDtV4HeIseH4fVyuMQ95OYF/+UQNqaGdwCKt4EC5cyUHXczIpN8oigp36r/+OLIMwYxsVwKYRj01upT/l5TxJSHM3oAPsYOJlR3Q/HTqOYVEB1iYqKf+4bYI4O7+mIZQcMbhYOZeuV+NyUTwQF4gYM2Lz1WFfBKhnNrnxHdOq3wentTqhdqB9DB2FYKs7vWL/eszgWCHgV3UOi9xVRPLQbmqsL7OJ5+IzGCBuFPyjoB8zwLJkNEDVnZroQXt5r0eoa4Be/gfEop3G7BZxEWWYVOBuX3aSIJ8v8g4ie4O3UvTcxVaG8V8M8G+QIczmvstf6GjS6v5Dr2HVHFqI93vC9XBZUCTnEwA818O6CcUFDjLqGcqkIsv5lQpeAgwF48/59MxogasHEVev+XeF1GKRz4AlnVpzQsVzNVytTP
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(19092799006)(22082099003)(18002099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(38070700021)(18002099003)(921020)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?HAm9xvCjliz0WXI2IFx0AFkPXigjRI2f0srK/9LaV0SD+Zcg8nBVae+P49X3?=
- =?us-ascii?Q?8f68JgszzcYqiXFJ/oi+ifuKWVQ5NGgKyzuwxC/7+fZlBKXmWSWuQwwTKZ8j?=
- =?us-ascii?Q?1PHEGJhRF7e5x2Qpit7NI9kWVuXktrK7w6H0EqYVCs/tLRMzsc3e0QIOhk4f?=
- =?us-ascii?Q?LFH7hDphNeIjZgt9kKFObL5JmuZZeqId3oaOWetRISwdhz1XW3g19gNj21wd?=
- =?us-ascii?Q?oswrf7Supc+SYYB3xn80vGyfZ/bvurp1DZSW239Y+y8IL1HKY6OlyoaSUkYM?=
- =?us-ascii?Q?AOIdUx2FYiUGBGbrQGdD/5clDX2kYyeFptQGMICcuM4QTAuow7Ksl0RCIsXV?=
- =?us-ascii?Q?4zqNBfNM7asuVpMUTOst5KBPJxRZxsmetJbhmv95iJERdfRO7JZoWe/Z7eYd?=
- =?us-ascii?Q?5rhu+Qk+TbjXNyhx4T+DwPH9ujx5Ig4jJXyhf9PJSDQb+QI/MsGajdNqku/m?=
- =?us-ascii?Q?4ni2f3aNFivxx+GBNW1AvFI5gMyuksGmvHZiD++UK1JU/kFH/0OoIVRruUmU?=
- =?us-ascii?Q?KFaIA4/gWE8id4radVhisVp3pU4ExNL1T/7MzbpHcDFuL4G61w/Pn2Odj/Zf?=
- =?us-ascii?Q?p+iyQXJk83PwokacKaXDcVU6laSeQkqIwUuQE1HwKb6FLLrNVzW3A+dlHFg3?=
- =?us-ascii?Q?qTKEjDme0DF8+qsbhXEJiZhx5unhAgovDE3PDKoVjCK8FKADD0HSWQpX1aZX?=
- =?us-ascii?Q?lVs0VpCymhr862iPwUIsxpyIumoxw1T7vAnmuwNxO1NJX5xva2x7FF5SpMgP?=
- =?us-ascii?Q?sS6cKLYAaUB1uA6zZYm8Wj1QLR1JSFx0EQUBD1M0Ch6CDr2h5M0xTbu/lLsc?=
- =?us-ascii?Q?tZuOTmJzUxW226qOwfDaneY0UiH4AtI2GxofVEZdGFkXSvNoNBvkla6NZ1dy?=
- =?us-ascii?Q?RtfSCstAgbsV7YyMFrU9FLts/4HG9M2u2vsueUfy3r+LVhJNMUq/58/Gtqop?=
- =?us-ascii?Q?u3OU08es8U9lHMj98Fzaeq+fj16h7+/iUQP0ebRDNRCOKtp39XzgCKlyXBmF?=
- =?us-ascii?Q?DTey/DOYuS4B+S8LpwBlRrqmZyvEB3NINnfluSbBGHlAU1GAUIDz07SWzpKZ?=
- =?us-ascii?Q?fLCEyK21LQ/L+NIKU0zNn+9RYRWTIdDtK7Ev8baMhF7PiP6vWZDY5QYOwl4d?=
- =?us-ascii?Q?NnznLRziRkLyPyA+Uly0l4e3CEhWqhAjPUyl8bwO3729GsB4eQkdEN+kzM6h?=
- =?us-ascii?Q?5eC75vFxHdQky2k5BFIhsXdxNMo06md7xIMQhM8AkvbolsFn2levmln01+iG?=
- =?us-ascii?Q?E9SIFLg5Eoaq3/GFsO65IwO5Ki60PDVUz09psq0snwA3J0L9FDyouG8pR8AJ?=
- =?us-ascii?Q?KqYK6MG0x7B9X1t9rCDc8sVye9Ru2Xyn7dosdXLf+eYp4Wv3UULgKzqf1H52?=
- =?us-ascii?Q?eeUG2t1aCGmLZJDtXOxjINtgVt6sbhdodTIPTHHvUJYYvqUO7AmbqwLTbmLW?=
- =?us-ascii?Q?Tx8DBFLGAyL/i+I0+xAZnQ0l/4yVRgfhaE94+vUz1UJGCkLTERSQ4KaQ1JMd?=
- =?us-ascii?Q?lJWgoX3MS9ozOQhNdnhz5qmqXHp2l/xtLIRJ6pjyBSH/DATHUzxvrn17d5dJ?=
- =?us-ascii?Q?KHZQjbNzzt+Rvgbnu5X/kbSgU5FO0J//E+KxlQKR0dwxBlQp/XbRVmgDAxAJ?=
- =?us-ascii?Q?SVqXL3rsVPkWzrOSe/oLnn79ewheKQw5ZKMpd0InIJxPnagLg4Z3snRlcd+X?=
- =?us-ascii?Q?voonxLspY4WKBFpANK5N5rhP7gv0qCTYWU9sTZR6UOo9XIko?=
-Content-Type: text/plain; charset="us-ascii"
+ =?iso-8859-1?Q?vCclr0927FTIODHoVO+N25/yRpsH73WWspquuKv6iT9gdyhCv1KalUTPix?=
+ =?iso-8859-1?Q?+g+PHtAJU9rrNGCLxlS9KXwy4I+ToHZIwWmHgFIhqoWcqgAQWM82SlnndE?=
+ =?iso-8859-1?Q?BJYlScpb06pkYF79ItLfUpl7MkfbPOl9NF9RnGNKWtvnhKyUFnme4E5mv4?=
+ =?iso-8859-1?Q?tb87umwk/oFrX2CPZMraZ3aAhaKg36WN7JJvJRZVwBhWo+HWb8dzeVpP2C?=
+ =?iso-8859-1?Q?I1HQcSdgO6wbi7uYT63u9sZtRodNACUuFFa602zjOfbVJjAnnIwUJGhWJU?=
+ =?iso-8859-1?Q?K+kOpwahk8145PPEHqrNV8IcchCyasgg+E9gVY2s+JRkwHFh+Y71yva9mH?=
+ =?iso-8859-1?Q?HoRm09uk0x1uNboMNUA+qGLICDx5H00p+cqU1/JA7o+YHrhOwdN4QfHdpm?=
+ =?iso-8859-1?Q?MMROVXTGgqhRjB4YFhkCT383Z+AMYMup7hTylKNnOAhTCEcWPvwzy8rtbB?=
+ =?iso-8859-1?Q?UqCMQTQUFsdRi77HLpDV8jKWn85PdWR4/g6fUjsPf6oStGjlteVXWf3UUY?=
+ =?iso-8859-1?Q?dKx4XWiEq+ahU1sbTRYVgU1dL0TG97RYaBrNQmeURBF+NmW9Gb7PEe6FHj?=
+ =?iso-8859-1?Q?THOlQzXv4qRNV0ZrMoLqmMkNK8Ez4stjfEgtKuCqnj7mxf3Dnn079MgATF?=
+ =?iso-8859-1?Q?nEarjvOmmYQqnbDiyFRXKtTa4yfvcmrZiMvWQ+q9QZBoCsk68H3XL8L5Te?=
+ =?iso-8859-1?Q?wjA7EI5nheVbY9ADxgZvnpnZDwd6ZF/hZveMwURXelipSiIBGwrOcCCoUC?=
+ =?iso-8859-1?Q?NIwrB32E8YB8ihjiox/pfCIhcMcFJOpf4gJOumyv7L1Sr+ot++2uwSZMJP?=
+ =?iso-8859-1?Q?zmCBKOZCCcb5dFHCGQ98pJUiktmD3VAjIQX6yuBW0qgRnPfYMVCzYAtx4V?=
+ =?iso-8859-1?Q?P4l7rJ5v+YKWQQTsiVkhdiulvUFyRnoRRg2utCAGmSalxx1e9IOQbKK2Hm?=
+ =?iso-8859-1?Q?j/6GTsu6fMh/mBy4EEUtvRqkmAue/uoaL9ViPNVWoY1YRJl9RJhYUCjYF4?=
+ =?iso-8859-1?Q?+uHWB1GLGjgKRZ2SEKi6Rf6AjDZ48WH6JAESqvumLB74r7B1weBbXze169?=
+ =?iso-8859-1?Q?KtFMXnNRNCeQqR6tdrxqsHK/38vO+3c85R8J6oyxl1HqXV+HhmX/m8ClE6?=
+ =?iso-8859-1?Q?lY+SIrFMwI7K7qcCywIsRhK0mOpBRj1SYxUHJXHcqMPE4KE8yMhdarbQyD?=
+ =?iso-8859-1?Q?CmAUiWfUnU09ZGQsDLp7FDnDU/vShzscy0WT1pa+Ve2QRXFS+A63O0xTFK?=
+ =?iso-8859-1?Q?IBmIw1evOmsRVTiJ8b9HutF5oyJMx106ugT4v3wIk6KuA8JqvnRPC9lgWI?=
+ =?iso-8859-1?Q?glHMhh5avb0z953DgPvOwDL0BlSV/jE9bQU8TH6M1/sjs9LVg3g67vhnet?=
+ =?iso-8859-1?Q?BpQuVg1FR604eo+gXk0VfzwuoNKHAaQYCGyJ07AxNIywFmUOHT8zMXSIoM?=
+ =?iso-8859-1?Q?m8HoljQN95NrSfqyatJ1/iRizY7Vbr6NRLuyBVmX+fY2UNCMgTwXVKjHF8?=
+ =?iso-8859-1?Q?7BMtRJhtaUCPj8izkaLEIZuBhNi+YGWQSEX9pI4YB1mDqZo8Z3eF6xTh1o?=
+ =?iso-8859-1?Q?Sxd121Nile+qpT0QBxrtf09acAPL/47dXCvfkDsxJgVVMn+3+rgqjzZGYP?=
+ =?iso-8859-1?Q?3LgRnCAdOvqwpTdfSdzbIHFLP2UmA3d0bgq7pCn2pT/O/dzzqEUlJ/IeQL?=
+ =?iso-8859-1?Q?YSlpf3W90h/aBl/y5jB1qaDYNKDGT9OX7QYHHU7liXxc1UZeYw6oqWsq/O?=
+ =?iso-8859-1?Q?7nL8QiETgIwlqS4h8Wo10JDXmeTi+WIPYky8/vFOf6Lbw2?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -126,178 +122,52 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 919dd5eb-5e02-4c94-4bd9-08de8563938e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 02:59:45.5976
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31618092-1e3d-4710-7ea7-08de85688719
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 03:35:12.2513
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fWzbmKexZSu5NDNEs5ML2ufoS+Z2W/3YkgoULaT5U7uAOlv67JSmmn78L8zzDrQ/c0PhGe4/Dyx4acFQaNsKwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8318
+X-MS-Exchange-CrossTenant-userprincipalname: LZEdj0tZ08KP6fVEqtXW40nK6P4Z5TKCDtnPf9243Ejqi4KV/M0FSqmW8k//tOf8k9Y9tAxj0hIdAoZnc28I1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8140
 
-> > @@ -427,24 +658,57 @@ static int netc_setup(struct dsa_switch *ds)
-> >  	if (err)
-> >  		goto free_mdio_bus;
-> >
-> > +	INIT_HLIST_HEAD(&priv->fdb_list);
-> > +	mutex_init(&priv->fdbt_lock);
-> > +
-> >  	netc_switch_fixed_config(priv);
-> >
-> >  	/* default setting for ports */
-> >  	dsa_switch_for_each_available_port(dp, ds)
-> >  		netc_port_default_config(priv->ports[dp->index]);
-> >
-> > +	err =3D netc_add_standalone_vlan_entry(priv);
-> > +	if (err)
-> > +		goto free_ntmp_user;
-> > +
-> > +	err =3D netc_add_standalone_fdb_bcast_entry(priv);
-> > +	if (err)
-> > +		goto free_ntmp_user;
-> > +
-> >  	return 0;
-> >
-> > +free_ntmp_user:
-> > +	netc_free_ntmp_user(priv);
-> >  free_mdio_bus:
-> >  	netc_free_mdio_bus(priv);
-> >
-> >  	return err;
-> >  }
+> Fixes: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
 >=20
-> Does the error path handle the mutex properly?
+> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+> ---
+>  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> In netc_setup(), the mutex is initialized with mutex_init(&priv->fdbt_loc=
-k).
-> If netc_add_standalone_vlan_entry() or
-> netc_add_standalone_fdb_bcast_entry()
-> fails, the error path jumps to free_ntmp_user:
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+> b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 7f6b574320716..c1af81002b8fa 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -534,7 +534,7 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+>  		if (rq->perout.flags)
+>  			return -EOPNOTSUPP;
 >=20
-> drivers/net/dsa/netc/netc_main.c:netc_setup() {
-> 	...
-> 	INIT_HLIST_HEAD(&priv->fdb_list);
-> 	mutex_init(&priv->fdbt_lock);
-> 	...
-> 	err =3D netc_add_standalone_vlan_entry(priv);
-> 	if (err)
-> 		goto free_ntmp_user;
+> -		if (rq->perout.index !=3D fep->pps_channel)
+> +		if (rq->perout.index !=3D 0)
+>  			return -EOPNOTSUPP;
 >=20
-> 	err =3D netc_add_standalone_fdb_bcast_entry(priv);
-> 	if (err)
-> 		goto free_ntmp_user;
+>  		period.tv_sec =3D rq->perout.period.sec;
+> --
+> 2.39.5
 >=20
-> 	return 0;
->=20
-> free_ntmp_user:
-> 	netc_free_ntmp_user(priv);
-> free_mdio_bus:
-> 	netc_free_mdio_bus(priv);
->=20
-> 	return err;
-> }
->=20
-> But netc_free_ntmp_user() and netc_free_mdio_bus() don't call
-> mutex_destroy(&priv->fdbt_lock) to clean up the mutex.
->=20
-> Looking at the normal teardown path in netc_teardown(), it calls
-> netc_destroy_all_lists() which properly handles both the FDB list and
-> mutex cleanup:
->=20
-> drivers/net/dsa/netc/netc_main.c:netc_destroy_all_lists() {
-> 	netc_destroy_fdb_list(priv);
-> 	mutex_destroy(&priv->fdbt_lock);
-> }
->=20
-> drivers/net/dsa/netc/netc_main.c:netc_teardown() {
-> 	struct netc_switch *priv =3D ds->priv;
->=20
-> 	netc_destroy_all_lists(priv);
-> 	netc_free_host_flood_rules(priv);
-> 	netc_free_ntmp_user(priv);
-> 	netc_free_mdio_bus(priv);
-> }
->=20
-> Should the error path in netc_setup() call netc_destroy_all_lists() befor=
-e
-> calling netc_free_ntmp_user()?
 
-Yes, I will fix it.
+I think the correct fix should update the n_per_out value like below.
 
->=20
-> > @@ -595,6 +859,261 @@ static void netc_switch_get_ip_revision(struct
-> netc_switch *priv)
-> >  	priv->revision =3D val & IPBRR0_IP_REV;
-> >  }
-> >
-> > +static void netc_destroy_all_lists(struct netc_switch *priv)
-> > +{
-> > +	netc_destroy_fdb_list(priv);
-> > +	mutex_destroy(&priv->fdbt_lock);
-> > +}
-> > +
-> > +static void netc_free_host_flood_rules(struct netc_switch *priv)
-> > +{
-> > +	struct dsa_port *dp;
-> > +
-> > +	dsa_switch_for_each_user_port(dp, priv->ds) {
-> > +		struct netc_port *np =3D priv->ports[dp->index];
-> > +
-> > +		kfree(np->host_flood);
-> > +		np->host_flood =3D NULL;
-> > +	}
-> > +}
->=20
-> [Simon says: I think this is a false positive and the clean-up
->  suggestion is not needed in tear down]
->=20
-> Does this properly clean up the hardware state?
+@@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq=
+_idx)
+        fep->ptp_caps.max_adj =3D 250000000;
+        fep->ptp_caps.n_alarm =3D 0;
+        fep->ptp_caps.n_ext_ts =3D 0;
+-       fep->ptp_caps.n_per_out =3D 1;
++       fep->ptp_caps.n_per_out =3D 4;
 
-No need to clear the hardware IPFT entry in tear down. Because PCIe FLR wil=
-l
-be performed when the switch is registered, it will reset hardware state. T=
-he
-driver only needs to free the memory to avoid memory leak.
+The commit 566c2d83887f ("net: fec: make PPS channel configurable") added
+the property "fsl,pps-channel" to indicate which pulse channel is available=
+. So
+we should not fix the pulse output channel to 0.
 
->=20
-> netc_free_host_flood_rules() just frees the host_flood memory and sets
-> the pointer to NULL:
->=20
-> drivers/net/dsa/netc/netc_main.c:netc_free_host_flood_rules() {
-> 	struct dsa_port *dp;
->=20
-> 	dsa_switch_for_each_user_port(dp, priv->ds) {
-> 		struct netc_port *np =3D priv->ports[dp->index];
->=20
-> 		kfree(np->host_flood);
-> 		np->host_flood =3D NULL;
-> 	}
-> }
->=20
-> But it doesn't delete the hardware IPFT entry or disable the PIPFCR regis=
-ter.
->=20
-> Compare with netc_port_remove_host_flood() which performs complete
-> cleanup:
->=20
-> drivers/net/dsa/netc/netc_main.c:netc_port_remove_host_flood() {
-> 	struct netc_switch *priv =3D np->switch_priv;
->=20
-> 	if (!np->host_flood)
-> 		return;
->=20
-> 	ntmp_ipft_delete_entry(&priv->ntmp, np->host_flood->entry_id);
-> 	kfree(np->host_flood);
-> 	np->host_flood =3D NULL;
-> 	np->uc =3D false;
-> 	np->mc =3D false;
-> 	/* Disable ingress port filter table lookup */
-> 	netc_port_wr(np, NETC_PIPFCR, 0);
-> }
->=20
-> In netc_teardown(), netc_free_host_flood_rules() is called before
-> netc_free_ntmp_user(), so the NTMP command infrastructure is still
-> operational at that point.
->=20
-> Should netc_free_host_flood_rules() call netc_port_remove_host_flood(np)
-> for each user port instead of directly calling kfree()?
