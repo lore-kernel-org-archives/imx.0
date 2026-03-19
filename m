@@ -1,151 +1,114 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAB1364953
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773950993; cv=none; b=cj3UPqIi+n09U+9E2g/WXQXkS2dg1uyp2z8t+nNGfnrtnXr47PWy9mn6Z+FwxgL2Qcikr70ApUTKGnIvABlWiwY8BvogwvXvOx/PX1SxZ0yMa+NihCu/XI67GboGZYuGv9ZwL9qC17tcM4DwfMU6H8iLc6FzODP36eX9HUNLNTc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773950993; c=relaxed/simple;
-	bh=aeThNmYclG663rSdCfTCLH9YRcXxpMqFylkpFWaIsu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SCErEwPuqdg9rEXs9IJQ0TwzMlm7q23oUWX0P1PYQCpH9ZigDaalCx+/0ZZm6Q/kQ4WQAQjcBQ/Go1AuE3cFeoHSgeRXCynidgXMrcxFeraBx4vsqjU3wKN0QHNQDpaXnWsFO6MbyaRgJqP0SNDSX7QtS8nr1iQrU/aodbQzNXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+h/Oott; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87BB3D47BD
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773952638; cv=pass; b=hUoytZs9GNfNK+dgbl4ByXk/G76Kpr4aRqpWLoSzhkVe1xC5fEL4B17wT+rqnuqJD3U88xyjihhbaUq3kerHlsonYT/08D0Sfld5rpUgsPQbLGGfghXozzj9B5fan6Lr9lhzfzuY4QrUbphBycjDnBloajrFS6aDZBpTUjZMgAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773952638; c=relaxed/simple;
+	bh=OKcQF1kpAs1PMLQtJxV4BxsdutnEF0dS5maqemA1Tzk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C2t/owMhR7FJUbQfRXIlNYmFIfciarXb4rG9cvDrjlANbtQ0woFDc1DSpnI17wrFT75YlfOej1XdwvpOmvR19eVystiaA+oLhf/FxtS79BHIHzpwER72RgBndw8SGHujtYlPHaeAf5lK7FgusD2XpA91n8R5z0nJ4G/QxLF1X3E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YAg6c4gr; arc=pass smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k+h/Oott"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso9988905e9.3
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:09:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YAg6c4gr"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38a01c80c34so8979581fa.0
+        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:37:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773952636; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Tu6I8VFxXm9HyLwvSC6DIslqsJJsxFYH4ea6pOtHrXLpba9rNs/Dg+05kdsN+Vie1l
+         xbgsFH7e6BrOG4TpDko5VRZvcl/yX3CIns4JAQSrwHqgXiK4bFLcnR916294MIdjfkuH
+         K5M93dqih/2xEj8IXx7y37una5gfS+/qQ1wbQ61X1vNIoC/ouU0YKx1yR47+B+t5u1HG
+         YnNVz0Xr6aAz3D6nSXFdxYI5ZmmlDjs0dztrx4mSPLSJZrQ5T58tyqGcbYZB4TFaFKA9
+         +v7B2GPm2ivckmeVGD1fkB73PDUrckcl/CB0yQ8TKZY5ef582JBq0ej6ngkoZtqah+Bh
+         UGkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
+        fh=Aj5ZcOtELAnyaiJv8MY/GUeCdvN+wmIpiFG8O6BuZpo=;
+        b=eWIDCUiNG4AyWSXfF3ot3eszVFXKjSTn7ioykWXf2XuwrYzlGLxLIl/dmzX3WZbGhY
+         xuL/lxFsBoBrJ5gTKtZWEcpVpr+AMDPq9CmrPfwz1unjEwSDvnqBIWQk7kohBlmE/23Y
+         rkq8iwdjoXRCb5V16k9IBZipNRSmShJzWu7oiLnNgxFBvkfjlGj0uLplCWlISHtSxSR0
+         4GqD90MRfkE42GdvuaX+SRMijnbBYVDeqUJxriM3TL5CYKEmlZfzckgRGsXesCVy/WO7
+         cZ1l92NtzO7L/YBySsOozllHGIMkrHaG1VDGXYrHz2faTtXj8t8SSdxBbrwHIbNGmiB9
+         CMJA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773950991; x=1774555791; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Z+t3nij9duvH51q1jubZS0ZmVziEVK5rVexkb8LriA=;
-        b=k+h/OottEi21Oojj/W+6XuvTLO1/2FMLV107cO5YTiN2+PDYdkB2KobyIGil0yFpxd
-         NnAPJhhIgXFz/nxRw0lfzNNEoHdor6NIWBQebNWAVyTveOCSngPdL0PtkYmIlA65bZD9
-         6PnLDBEFjpmw7GsxapwsDgsvUYkwd6P2iNmJ1jNsw4smkA/+VYc09BD9sOuWFjmCqrpG
-         9NsBxC2SycT3sOHweKKDZds3ikAuTUVxUtwvirur3tVy33TEm5yCkc9CPMk79SVft+h9
-         8BvOTSpDCS+513nPFo2gO3pqN7Ss8L01/RyeLoyJxRtsy8X4q9OvOAYyx1mf9N6tWjTW
-         Judg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773950991; x=1774555791;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773952636; x=1774557436; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9Z+t3nij9duvH51q1jubZS0ZmVziEVK5rVexkb8LriA=;
-        b=aYNuLpmp7VPy/SsGR9Moysr0ZM/AoefcMSW0PCiXbITnIEsfPzB8jkGhMfvWur8EO/
-         FNVyRAixxxVmflAhO0YS+wQrchx2RkZHhwI1gnJBbQxueq02JofgH9G0e9kxeN9FN6L1
-         UU82IAZpLEWDkYxeb4hxLo7b/84X2WQjUNvLnt2s4ZblNspA3lTySbDFph9a74O9wBwA
-         EQJfUWKlV0n9Lcn57BcijYo42Zhwku4mLQQQr4l70w1D2m9DYTBrqBDDw6HW4lkygTqr
-         DtftxNEp7+ic3ZEJVSz9vQ4CWO2UA2OmddxpOaZMe9trYYktQNg9/cgcWAnL4n08Uuy5
-         A5Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCVg+1MP3gi/0riKJeTHTdfGCAbfmB78zrx7BcegcCCfE3GKkNxckgKIQtL6Pe30gNGs0wU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwLVCdrxlv5SxNfzPopM7LEPhO68ND7/xSIE+gQQ/nZM5Ef9ftC
-	bQWTE8l6+Kuea5TWQP4gSYkxaBBpxNnFu+X5aPyXO8DCfAeFZ7JFI7+r
-X-Gm-Gg: ATEYQzyXz7OZ2E18xUktPsR+eJPzAHGbtXjr/PgoyMOYoRzR1MtiaE7mVKVqPLBeNCA
-	y676ULusI4Xm8C7HuyhNMMZMfW51prha3DIcbPwGvHpKfmwgX3wonACOGCnJmvPP/zELnoB1tOQ
-	wB0P7510SZNZINRKgqhZ0ib9qZs/RPYehxO7mzecHXElK7GqfxJUHYQHckh03v5EaFZXuraBig1
-	3EDLO1xEO1TZVA3okq+fPKslRBlWiEr4QF6tLRaa51kCnsiYe0vOQMI9DjdSsVsKikpdQgH2aS7
-	lPjE+9SrIwXsCtVdQiRnjCMfkAaAjcst0u4+YLND9vdHGnKx/42WjvBpch5fagJIZazBeWRyPJx
-	EYVPB7/Vmjg2PXlQGBfAncvLP5T2LF2c8+lvasSq3aMTY1Qe+2VSB4Ttri54IiMYwTelLhUNjPQ
-	7iufJNvOtD1hFnXNsCcWMT7SrK0rz0bPNiBg==
-X-Received: by 2002:a05:600c:a4a:b0:486:fe83:8621 with SMTP id 5b1f17b1804b1-486fee1ab20mr5793965e9.23.1773950990582;
-        Thu, 19 Mar 2026 13:09:50 -0700 (PDT)
-Received: from debian.lan ([171.22.85.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe967c64sm8991685e9.2.2026.03.19.13.09.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 13:09:50 -0700 (PDT)
-From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-mmc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
-Subject: [PATCH v8 3/3] mmc: sdhci-esdhc-imx: remove redundant mx25 handling and consolidate soc data
-Date: Thu, 19 Mar 2026 21:09:45 +0100
-Message-ID: <20260319200945.23333-1-adriangarciacasado42@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
+        b=YAg6c4grAULEUi0U1MXmlRXvAbqBir1Y/ZdO/qb5RW5n6dQTsmTAk+CmjYxVWOydzq
+         2B0bsu0vLIigQgxbSC541+hvRw7fOnWGZbqKAwMJ4xG16Grhm3A21fWcG56mV00JKQsD
+         uo/w6jl/sxksyOjkeMROv1vM9UjlpyUuX+PmShlKZ/Qnn6Tx7EVpmjcSr8PkOyBBdifc
+         y4TrkH5KbvvBoMp3SggM12QXQFNhxBAJ0cq8Xi5H3PL8zW3Zb94EpnOtO0QTQPnM9Oa1
+         GCgyxSBz5kQ8+teRbEeOFWFV9lYuhtwZWVhtLEaRXkpDEttXlquhHcpzyaa5jl7Qtsz1
+         Rc3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773952636; x=1774557436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4jm2MmqwJpQn+S058TYQTUmQvMQC9Tb/3vBRI4X0gPQ=;
+        b=gK7oejb9Eu4OkX8gB+N5BpOcV6GTTxDJ6okO12OHRpFA17+53LKP5MR5h5vx7ZIMRu
+         cPYrkKueqmojxOEf6LhbFnPP8ULVQdv73NVmEL9AO5EAkAfdWHSQPEnIAw1ks74zQBKa
+         kplFskc771/zVGXczzd84s7QfavfH+uv7qMVrpirp7h4vTQnituCXxcYh/LmqkfQ0yT9
+         SagSjj97NUbHLtYqE0ZXRhj8VvUZvRT7Z21OnhNTQZ3B8G3cgX53nug0asqhHKxtCTF5
+         cisBFB8oIbx2s1vmsIBsEmyyXPIvXDVmG5+f3woPzvsSBt/eABVhJ/JE0Hfc8H15A1li
+         i01w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSL28RLklvwGWcmhs6QqROGP4S8Ef1DGZdlOdDezZ2ekYjZyKuPXN9G3H1a2XL9fsCeAI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3cN5D8uCfgjTC7qJNgloQHtxgbovIQEOE98i4SEARNsa8npMc
+	4VGzRFZEyMGcyIvzF+1ygjwyqpp1BBwnYSnSXjTT2cdVHq9Vvq5sNTOWkO1x4xv0BNnv+L9H/FJ
+	1fUtgHVAf6d01poz/0Fiej3qUEl+njMw=
+X-Gm-Gg: ATEYQzw9VJP+kHG0YqPi00GXysNKtgYEGdjoPdZffmCkBzFDofgg2FDoBNetp6znM90
+	N6Y/iMTMeOm7Ju3yuS7xmkS7iQpRa1zJQ0X0ROitHxWDL0OMj6kbA4F2u27EMDdIAshTka6L42W
+	p3m3/7QOaIbKr/ljlXF7+9cm5ZOs2pgXJEBdLr4VMAuf0bKCP41Jokog773CUhxzeAbABE1rsR2
+	GEr1c1Vww02tBcn7ph+L2bA7mVQf+AmDdbXeNEmxo7aF7Kq03irspkOpmDP9A86Y7ipKyEiAGn3
+	xf9hfW1Iq+xIo8ftEM56BpMzPWjWcVZOz6F12rpIuXK8e1p6xowke0ex3Xm+Gt7r5oAK9aE0
+X-Received: by 2002:a2e:3215:0:b0:383:18fb:fdf0 with SMTP id
+ 38308e7fff4ca-38bf96ee31amr2254101fa.22.1773952635602; Thu, 19 Mar 2026
+ 13:37:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260319200945.23333-1-adriangarciacasado42@gmail.com>
+In-Reply-To: <20260319200945.23333-1-adriangarciacasado42@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 19 Mar 2026 17:37:04 -0300
+X-Gm-Features: AaiRm50-FVCrW5uqx_caj9h1BrDi-gvkU_nz1UeamW4uIfef2gzzYIjKPKykSOA
+Message-ID: <CAOMZO5DcaucpKj2=gO5kP3vd=f==ydzB+3FbGB4Jwg19Vi8fpg@mail.gmail.com>
+Subject: Re: [PATCH v8 3/3] mmc: sdhci-esdhc-imx: remove redundant mx25
+ handling and consolidate soc data
+To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?= <adriangarciacasado42@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Haibo Chen <haibo.chen@nxp.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-mmc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The is_imx25_esdhc check and redundant mx25-specific handling are no
-longer necessary since the initial SoC data initialization covers
-all relevant compatibility cases.
+On Thu, Mar 19, 2026 at 5:10=E2=80=AFPM Adri=C3=A1n Garc=C3=ADa Casado
+<adriangarciacasado42@gmail.com> wrote:
 
-Remove the is_imx25_esdhc helper and its associated logic. Consolidate
-the drive data structures for imx25 and imx35 to reduce code size
-and improve maintainability.
+> @@ -873,11 +865,8 @@ static void esdhc_writeb_le(struct sdhci_host *host,=
+ u8 val, int reg)
+>                 new_val =3D val & SDHCI_CTRL_LED;
+>                 /* ensure the endianness */
+>                 new_val |=3D ESDHC_HOST_CONTROL_LE;
+> -               /* bits 8&9 are reserved on mx25 */
+> -               if (!is_imx25_esdhc(imx_data)) {
+> -                       /* DMA mode bits are shifted */
+> -                       new_val |=3D (val & SDHCI_CTRL_DMA_MASK) << 5;
+> -               }
 
-Signed-off-by: Adrián García Casado <adriangarciacasado42@gmail.com>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index a7a5df673b0f6..3dc43f1e517aa 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -256,11 +256,7 @@ struct esdhc_soc_data {
- 	u32 quirks;
- };
- 
--static const struct esdhc_soc_data esdhc_imx25_data = {
--	.flags = ESDHC_FLAG_ERR004536,
--};
--
--static const struct esdhc_soc_data esdhc_imx35_data = {
-+static const struct esdhc_soc_data esdhc_imx25_35_data = {
- 	.flags = ESDHC_FLAG_ERR004536,
- };
- 
-@@ -391,8 +387,8 @@ struct pltfm_imx_data {
- };
- 
- static const struct of_device_id imx_esdhc_dt_ids[] = {
--	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_data, },
--	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx35_data, },
-+	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_35_data, },
-+	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx25_35_data, },
- 	{ .compatible = "fsl,imx51-esdhc", .data = &esdhc_imx51_data, },
- 	{ .compatible = "fsl,imx53-esdhc", .data = &esdhc_imx53_data, },
- 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data, },
-@@ -412,10 +408,6 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
- 
--static inline int is_imx25_esdhc(struct pltfm_imx_data *data)
--{
--	return data->socdata == &esdhc_imx25_data;
--}
- 
- static inline int is_imx53_esdhc(struct pltfm_imx_data *data)
- {
-@@ -873,11 +865,8 @@ static void esdhc_writeb_le(struct sdhci_host *host, u8 val, int reg)
- 		new_val = val & SDHCI_CTRL_LED;
- 		/* ensure the endianness */
- 		new_val |= ESDHC_HOST_CONTROL_LE;
--		/* bits 8&9 are reserved on mx25 */
--		if (!is_imx25_esdhc(imx_data)) {
--			/* DMA mode bits are shifted */
--			new_val |= (val & SDHCI_CTRL_DMA_MASK) << 5;
--		}
-+		/* DMA mode bits are shifted */
-+		new_val |= (val & SDHCI_CTRL_DMA_MASK) << 5;
- 
- 		/*
- 		 * Do not touch buswidth bits here. This is done in
--- 
-2.47.3
-
+This removal of the i.MX25 check does not look correct.
