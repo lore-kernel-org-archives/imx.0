@@ -1,200 +1,197 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6673FB7C9
-	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA96314B62
+	for <imx@lists.linux.dev>; Thu, 19 Mar 2026 20:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773953402; cv=none; b=gSFdb4UPDIqeh0rGDyiYzrQ2brhWnMqQirbylXGRSQwKrwCKdInZaSAWFx/aa5FlqPEgoYnY3npRvTFSTRwBrAlcHHhHBOkd4mwncOvu81Mc8NB/pC5+dW6je7ecFACNTOrVlQcv9Ga6VJxf/WaAa+DvPDlWENDziZAoOoxXhzs=
+	t=1773953660; cv=none; b=lCMMw0YravqVffL3+dny2AlKZQo/nznFCF9QQBhpNDbWr+f5C4D90dTrrO79oQcJDJWjJ6EXskSyWRoswHlrS88tMmwBlVmrJQweX2e/bYuXOpK6ij/yj96IFpV0+QQbiMfki+OcVyoUukAUp2fipxJEpsVkrWaLxYc1J8wwUpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773953402; c=relaxed/simple;
-	bh=l305ltgLMdtMBCZvuBvAjIK8atGZ3/0+tZ1sV2Pj/ek=;
+	s=arc-20240116; t=1773953660; c=relaxed/simple;
+	bh=OspvSUceR9D7FWErEaMeS4pbjFGXhTs0d3vC6fXFa4g=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jMKI3lxzas+gY9b6+LW8EW7qWBaZK6Q6/IuSvDj3vPbio4K0DQ+ua26iSfBGr3G+t7hLNSl40TmtyP6UeuybQ3uKtPFhzZa0Ekh5Smeoj4ToqGwXcCbj9/Dn6zwivZdwHCKHnFKUozvOmF9Crs43XvUQwET/kBZIrOb0FHLPfoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=XUz8NEmO; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	 MIME-Version:Content-Type; b=izH6avA0CkrLWazBnvz1zQAaXtyHg9yHP9WXJSA9Tyno8Y77E4FQdPm/rWgXNQ+JWBJxNgJstb1OFoc1+k3npo0kHRqqq+DbuAsV+ZvQ35fYVxCTMRDdxukAYqAgcQsk4mr9CPcE7mK7r67rGXjQKz0Ell1YvODcwtC0QyaI+y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i5Da/vfQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="XUz8NEmO"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50917e02472so14672311cf.2
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1773953397; x=1774558197; darn=lists.linux.dev;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=P0AE6ezNpya7RR7FjT2PYnGrtSfyWo+dZi1jY1xEvZs=;
-        b=XUz8NEmOXO7L7zmBRrJdZw3lSO/lh3Y9lCZCyxJXF+hQ9ugiycS9d9SRiWp38UNC8W
-         3HiGjnNh3nhCFi2NHXgp6icsA4OqFVXZsdkMXI3px+e4506WRlOoSkj5p4J+3nlThk9A
-         +06+zrR5F9ZNhTm/Xc7uGlQD/Y7qEpp9VWuGvPeu58PLf4hFda5JlLOAX6DXF6ZSC2hX
-         tchp/qcGLoEmt7CgSrM2KnWt5Sn4pRPs4aRW6cfZoIyvhBWMIigzEeK0AFcXpPvp15jA
-         JBY4O/8sX7o5sYMjL+tNsNkzM37c9W5VcHLFN+c0/FUe/fru4KjUcdy6bZTFyTtnWlEQ
-         Ylug==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i5Da/vfQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773953658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OspvSUceR9D7FWErEaMeS4pbjFGXhTs0d3vC6fXFa4g=;
+	b=i5Da/vfQQUDm2uf3tcOptZL5DQrMwOU6IgvDH0Pauitz+9D5T+97ikCR2+7agzhUNtoyau
+	EkkaDSiPmBCq74PTATbRJ5RACQag8VIgjeCDthLR9G6HJm3A097LBpFAl7XGMa26eyggq5
+	H0KlMWvFZDeJgXUcqrfHAFpp7i/aLcs=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-176-kLXwkKeVMKyPXyPYY7vLPA-1; Thu, 19 Mar 2026 16:54:16 -0400
+X-MC-Unique: kLXwkKeVMKyPXyPYY7vLPA-1
+X-Mimecast-MFC-AGG-ID: kLXwkKeVMKyPXyPYY7vLPA_1773953656
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5091327215dso133105101cf.1
+        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 13:54:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773953397; x=1774558197;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P0AE6ezNpya7RR7FjT2PYnGrtSfyWo+dZi1jY1xEvZs=;
-        b=Zh8A58wBnpFen9KGa+1Ko791RfEqkqynWwgwGWmsNdwDvTTaSE4iXAdkJB+Jg+M9/X
-         aIEHnXM2mONXwlBqbZX8Ft0FM1rIqOyxUQTk59SCd1iL/PY6aKZMK1p/N3ryZpeO+mbT
-         Lfs+P7wT4l97/P9D6gjnhcwNbHEjxu/DMxn1CO98g0HxpMZhsVPt6jS4ayHt6AR27vLp
-         2p8AksS7nR9N0eZTsIKtbtyoRGGk2G08PpJGy5UZaokaY31TWAAUqsS9TrJ3RVEDkTvC
-         CTX+RKQFEBWppH9+CMfNYPrNa0r+1dPKLpQWgZcidQx5U+lv8Kpl1ljdkt8FSUtw/z1q
-         ovxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYojAlPu6TJ22aRt+U+zVYSsHKS3iLXJVUxtaphIOdQ+Ex4JdxTk/gSs1o7WTH0piiERI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzlzd6W5YC83LAJslDGzsZuwvpBT5D03JwKucnEgGY1oY+VcT5p
-	CADWDsaqCCy639a6MUGPTQJy/aqsPPMhR7rxAH0lmgxYxQKbAKGYxmei3X3VQPxMNzs=
-X-Gm-Gg: ATEYQzyD5iBpLwgJeqFQs4IUcFtoOTF8YP37pG7KBWQXXSDgqi+o/ak9Wv/kYimzIXZ
-	4zgN2di+jQiUmVY1tyn2B7XpQb1L+CNDW8AtktlV2cJxRw4/n5BYQEcY0VQRroda11POQOVuzB+
-	eCzbY6cpufaaxihLR6ewv1omSkqP+7Wwf0Dqx69Qg35+OmT8CoQQAr1LYURh3usiyDJSMTgaTI5
-	uQ36QkopJXt6ShEMTE1Bz6XIvHmezhAly9PdpS0dgOK+2DAj1kYv0K3x+oTLZuXIHBwKAOubYxc
-	0I3aZHMpM/DXQE8ZAwdvIgkuXG/AOISsgQg3ithQSzVdJ/MAJ3MGMInfOMsEybt0pYEVIqtpr0S
-	Wb1Zw9xCQeFIimlnPsU4aod6Q9wcZJXG/lzs4zj6KKPVlPHym9d+R4SM3aUYdgDwJVW6R6Rkh9u
-	cp8rDM+AIqdYlkc4CUGNbA4+xu9etY
-X-Received: by 2002:ac8:7f43:0:b0:509:481:536d with SMTP id d75a77b69052e-50b3753b698mr10051231cf.59.1773953397275;
-        Thu, 19 Mar 2026 13:49:57 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:11:b76d::5ac? ([2606:6d00:11:b76d::5ac])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36d0671csm5413341cf.10.2026.03.19.13.49.55
+        d=1e100.net; s=20251104; t=1773953656; x=1774558456;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OspvSUceR9D7FWErEaMeS4pbjFGXhTs0d3vC6fXFa4g=;
+        b=rtZBmrm3QcOlIcTN5fv0ThBAaLkbiwAgIY/qb499goI5SqyX1fkL/X9ZNldxtvpckc
+         7YhvPNaHw/jm6v6vV8fLD+ho4Jw5w2IfOTk2wWhTrrfUy7h1qCJ6UHaF1dyxMU+Es4vR
+         GCp6V+ovYGuXZHWd13h/vD08StOanruGTaZtDdmvLt1/64uU5EDvh3XDfb4qHFBvjpGm
+         Zdh3TFmgYQM5wbEU2Na5fIREVKOfP7zKd9mmMIWgINhowwwWMJrFTclJ+g0/oTJ7VirG
+         9xeNP8pZZHpsB1Em+mIzNzKVKv3HdBZTZEJXAtaMooX2JZ5ExnvEKH+k/LnCKZa9vsPu
+         TVbA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOrMOFd9mU+PtU46hz6xFY/xUG7d7VchCT2FHZwE01cfBZftnVf7gJz5C1dMewF4a+pro=@lists.linux.dev
+X-Gm-Message-State: AOJu0YycOhX1EQW0hM/PRa2z8BR8KujnbMN76Voxv4KcJ0k+xhxiD9H9
+	1xDS8Uy16dW6dq/5U64QpV1d+9dEHS4yf3et21l4GJ3zSDappbiDA7BjFqgcAYyaCneL/IddIR8
+	ZjOj2DLCDrJRIIyjFp4u/EZTgYkdY6OGqsOkCAsUL4rSW8vrNUuzEbQ==
+X-Gm-Gg: ATEYQzzYWwEy4tKd+1qjR1UvcAfWF9A/eLg4a7sQ0eZzunvBRaNlD70qccdJQry48XE
+	B5y7O76etIziOIGEelhWZUbDRa679fE46B1FTbIw4plu1FTXR9igiByCqrlWbGjHmmcqiLGrjhq
+	VmFs3TjBIin0ODhaPnP4jr1ZapLOsMm9us/Rnrje8wtGQSB9LN987UoIOUyHJN8WaSAXQkU+Ms/
+	dyKnF/0LrUbmXKhAqNWe7fnmQA4wlk0Thw6p9I8Q4LnAo4mAg2MYfSngm5kyBbbA7c3OMenP62F
+	S5ZW7t+vqO/2tKrXyi6sSgh/lSY1pZiKJPZsrJrzVvcYOaOmNVeM0WJdibVf8Bn6OG8S6ATFfC1
+	uFIIRmmGxFmldb+2/7Nd0O0NUGmIunPmBNixbnjZmNS+pVBhfXc4dxUbsi100unoauzupKOoWLe
+	PHBF0tknzJ0+oYmg==
+X-Received: by 2002:ac8:7f54:0:b0:509:4e1e:1b9a with SMTP id d75a77b69052e-50b37586c7cmr10125361cf.54.1773953656264;
+        Thu, 19 Mar 2026 13:54:16 -0700 (PDT)
+X-Received: by 2002:ac8:7f54:0:b0:509:4e1e:1b9a with SMTP id d75a77b69052e-50b37586c7cmr10124851cf.54.1773953655634;
+        Thu, 19 Mar 2026 13:54:15 -0700 (PDT)
+Received: from thinkpad-p1.localdomain (pool-174-112-193-187.cpe.net.cable.rogers.com. [174.112.193.187])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36e350c3sm6518601cf.19.2026.03.19.13.54.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 13:49:56 -0700 (PDT)
-Message-ID: <ffe1c9db59092ac196e9ad1fdbebe73b75d3fcb4.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: amphion: Fix race between m2m job_abort and
- device_run
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
-	sebastian.fricke@collabora.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
- linux-imx@nxp.com, Frank.li@nxp.com, 	xiahong.bao@nxp.com,
- eagle.zhou@nxp.com, imx@lists.linux.dev, 	linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Date: Thu, 19 Mar 2026 16:49:55 -0400
-In-Reply-To: <20260306065951.837-1-ming.qian@oss.nxp.com>
-References: <20260306065951.837-1-ming.qian@oss.nxp.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-NtmVNV443a/7/iP6AJJn"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+        Thu, 19 Mar 2026 13:54:15 -0700 (PDT)
+Message-ID: <cf908b20e5f6237c887f6d751be82670d7cbd7b7.camel@redhat.com>
+Subject: Re: [PATCH net-next v9 0/6] net: stmmac: qcom-ethqos: add support
+ for SCMI power domains
+From: Radu Rendec <rrendec@redhat.com>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andrew Lunn	 <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet	
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>,
+ Giuseppe Cavallaro	 <peppe.cavallaro@st.com>, Chen-Yu Tsai
+ <wens@kernel.org>, Jernej Skrabec	 <jernej.skrabec@gmail.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>,  Kevin Hilman
+ <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo
+ <shawnguo@kernel.org>,  Fabio Estevam <festevam@gmail.com>, Jan Petrous
+ <jan.petrous@oss.nxp.com>, s32@nxp.com, Mohd Ayaan Anwar	
+ <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>,
+  Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,  Christophe
+ Roullier <christophe.roullier@foss.st.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, 	linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,  Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, 	linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, 	linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, 	sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org, Bartosz Golaszewski	
+ <bartosz.golaszewski@linaro.org>, Martin Blumenstingl	
+ <martin.blumenstingl@googlemail.com>, Krzysztof Kozlowski	
+ <krzysztof.kozlowski@oss.qualcomm.com>, Lad Prabhakar	
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Konrad Dybcio	
+ <konrad.dybcio@oss.qualcomm.com>
+Date: Thu, 19 Mar 2026 16:54:12 -0400
+In-Reply-To: <CAMRc=MfNcK3MLndik1jy-yhHAph5=amnTGgn-MpXXG0Uv1ifpQ@mail.gmail.com>
+References: <20260316-qcom-sa8255p-emac-v9-0-c58934e76ff2@oss.qualcomm.com>
+	 <64d282fd94be1546df75d7df5b47eacc0479797a.camel@redhat.com>
+	 <CAMRc=MfNcK3MLndik1jy-yhHAph5=amnTGgn-MpXXG0Uv1ifpQ@mail.gmail.com>
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-
-
---=-NtmVNV443a/7/iP6AJJn
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: B15SrgqxKkogaxn2LSLl4cus5m7CWnq-Gr6tpIPmpQQ_1773953656
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le vendredi 06 mars 2026 =C3=A0 14:59 +0800, ming.qian@oss.nxp.com a =C3=A9=
-crit=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
+On Tue, 2026-03-17 at 15:12 +0100, Bartosz Golaszewski wrote:
+> On Mon, Mar 16, 2026 at 7:31=E2=80=AFPM Radu Rendec <rrendec@redhat.com> =
+wrote:
+> >=20
+> > On Mon, 2026-03-16 at 13:05 +0100, Bartosz Golaszewski wrote:
+> > > Add support for the firmware-managed variant of the DesignWare MAC on
+> > > the sa8255p platform. This series contains new DT bindings and driver
+> > > changes required to support the MAC in the STMMAC driver.
+> > >=20
+> > > It also reorganizes the ethqos code quite a bit to make the introduct=
+ion
+> > > of power domains into the driver a bit easier on the eye.
+> > >=20
+> > > The DTS changes will go in separately.
+> >=20
+> > I'm seeing some weird behavior with this version. The probe part looks
+> > good (but see below), but when I try to bring an interface up, it fails
+> > with ETIMEDOUT. The relevant part of the stack trace leading to the
+> > error is this:
+> >=20
+> > dwmac4_dma_reset+0x208/0x220 [stmmac]
+> > stmmac_reset+0x2c/0x68 [stmmac]
+> > stmmac_init_dma_engine+0x108/0x400 [stmmac]
+> > stmmac_hw_setup+0x5c/0x538 [stmmac]
+> > __stmmac_open+0xc8/0x2a0 [stmmac]
+> > stmmac_open+0xcc/0x238 [stmmac]
+> > __dev_open+0x138/0x2a8
+> >=20
+> > Now dwmac4_dma_reset() is very simple. It sets the soft reset bit in
+> > the DMA_BUS_MODE register, then waits for the hardware to clear it, and
+> > that never happens.
+> >=20
+> > Now, getting back to the probe part, there is one extra message
+> > (compared to my previous successful test on v7), which I see at the
+> > very end of the probing:
+> >=20
+> > =C2=A0 qcom-ethqos 23040000.ethernet: clk_csr value out of range (0xfff=
+fff00
+> > =C2=A0 exceeds mask 0x00000f00), truncating
+> >=20
+> > This is a sa8775p ride board, so there are two stmmac devices. I only
+> > see that message for the 2nd one, which is also the one I'm trying to
+> > enable, and which fails.
+> >=20
+> > I realize this may or may not be related to your changes. But there is
+> > no way to test on a SCMI-pd board without them. I'm not sure how
+> > relevant it would be to test on the non-SCMI variant. I'm assuming the
+> > DMA part should work the same way (regardless of SCMI-pd), so if I can
+> > reproduce it there, and since I know it works on mainline Linux (that's
+> > where I tested v7), I could bisect and see which commit in net-next
+> > breaks it. If you don't have any better idea, let me know and I can
+> > try. Meanwhile, I'll keep poking at v9.
+> >=20
 >=20
-> Fix kernel panic caused by race condition where v4l2_m2m_ctx_release()
-> frees m2m_ctx while v4l2_m2m_try_run() is about to call device_run
-> with the same context.
->=20
-> Race sequence:
-> =C2=A0 v4l2_m2m_try_run():=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 v4l2_m2m_ctx_release():
-> =C2=A0=C2=A0=C2=A0 lock/unlock=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v4l2_m2m=
-_cancel_job()
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 job_abort()
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- v4l2_m2m_job_finish()
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(m2m_ctx)=C2=A0 <-=
- frees ctx
-> =C2=A0=C2=A0=C2=A0 device_run()=C2=A0 <- use-after-free crash at 0x538
->=20
-> Crash trace:
-> =C2=A0 Unable to handle kernel read from unreadable memory at virtual add=
-ress
-> =C2=A0 0000000000000538
-> =C2=A0 v4l2_m2m_try_run+0x78/0x138
-> =C2=A0 v4l2_m2m_device_run_work+0x14/0x20
->=20
-> The amphion vpu driver does not rely on the m2m framework's device_run
-> callback to perform encode/decode operations.
->=20
-> Fix the race by preventing m2m framework job scheduling entirely:
-> - Add job_ready callback returning 0 (no jobs ready for m2m framework)
-> - Remove job_abort callback to avoid the race condition
->=20
-> Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> Does current net-next on its own still work? Or is the second
+> interface broken even without this series?
 
-Ok, I guess that also reduce the overhead of scheduling jobs too.
+I don't think there is a way to test net-next on its own (without your
+series) on a board with SCMI-pd firmware. It would require the
+qcom-ethqos driver to have direct access to the clocks, but the clocks
+would not be there.
 
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+What I could test though is a board with the "other" firmware (without
+SCMI-pd). And on that board, I do *not* see the problem even with your
+series applied. In fact, I tested the exact same kernel build I had
+previously tested on the SCMI-pd board.
 
-> ---
-> =C2=A0drivers/media/platform/amphion/vpu_v4l2.c | 9 +++------
-> =C2=A01 file changed, 3 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/pl=
-atform/amphion/vpu_v4l2.c
-> index 64fc88d89ccc..7cccc994fc50 100644
-> --- a/drivers/media/platform/amphion/vpu_v4l2.c
-> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
-> @@ -447,17 +447,14 @@ static void vpu_m2m_device_run(void *priv)
-> =C2=A0{
-> =C2=A0}
-> =C2=A0
-> -static void vpu_m2m_job_abort(void *priv)
-> +static int vpu_m2m_job_ready(void *priv)
-> =C2=A0{
-> -	struct vpu_inst *inst =3D priv;
-> -	struct v4l2_m2m_ctx *m2m_ctx =3D inst->fh.m2m_ctx;
-> -
-> -	v4l2_m2m_job_finish(m2m_ctx->m2m_dev, m2m_ctx);
-> +	return 0;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static const struct v4l2_m2m_ops vpu_m2m_ops =3D {
-> =C2=A0	.device_run =3D vpu_m2m_device_run,
-> -	.job_abort =3D vpu_m2m_job_abort
-> +	.job_ready =3D vpu_m2m_job_ready,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static int vpu_vb2_queue_setup(struct vb2_queue *vq,
->=20
-> base-commit: f505e978d1a0442adbbde48aed38c084ddea6d6e
-> prerequisite-patch-id: 0000000000000000000000000000000000000000
+I'm not sure what to make of that or what else I could try.
 
-Not sure why this line ...
+FWIW, the "clk_csr value out of range" message I mentioned before is
+still there on the board where everything works, so it's probably a
+red herring.
 
-Nicolas
+--=20
+Radu
 
---=-NtmVNV443a/7/iP6AJJn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCabxhcwAKCRDZQZRRKWBy
-9HjYAP0S0YE21EwzVQU1/zKYJbvHM7WGRp6aud37nxGkL7LXVAD/QVLAcoFXLtH9
-khW4FVX+kR4xvQStun2japJcuFbnQg0=
-=Af7N
------END PGP SIGNATURE-----
-
---=-NtmVNV443a/7/iP6AJJn--
