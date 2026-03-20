@@ -1,180 +1,175 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEC234D3B1
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 19:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774035139; cv=fail; b=jQE7tOO9lIEc5F35arR8pf7cmiZR0jj7tFgzK9oxlbvvTvR6S30IlDiH9ROmy+jdCauHU2+IdDLNbOqZdz0O8GtFF2ZVxZBFnByEWn77JIWtbqr4NbUA8Y9A+uUkX0CDWZgX30q/KJ+XvfdtICQ/1xfYllOo6RTpmsNIrOPO6qc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774035139; c=relaxed/simple;
-	bh=6kCVB6pt6+20h7AbSfWcwR6bAJWroqnL5XR214Ckhts=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LGrspDz/J6V/erKNX1c8PybWW9RvIEThhcz8hHCrKO2a3NAqjzP4+IkNDj2ILSaFxtwFKwMTSvAdBn4V6EQ5AbStpSNeVC9QnJlX2oqSDymRTLo9ieghpDv0whFrBS8QA5NR6r9bqLzj8g23/rtGJ+DRA0Ri8MdHGS7+8DCjzXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ti9zUk7U; arc=fail smtp.client-ip=52.101.70.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7DB352C4F
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 20:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774037169; cv=none; b=U/OVkphaPDAh9d6GeaVxBAvc+pgt/sHFVPxMknqd33IV7WwmZoK/OccqS8Swo34iqwzUMqGG2KnZCykV9n1qpUbBb45oSEGeAe6HfR7ZjyoMChwoUWnNJQtbkFk9MV2iL1SrfqrL+V93yqf0WwayyC/E0ConsKcM6fcZCEVjglg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774037169; c=relaxed/simple;
+	bh=1qmaFxDccZRzs0QTOM1bUCGgFCittjZZSZ136PK2yWo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EthSllT1Gdl8hRB+o5Maol/Uq+tqaj9s30qMsuMzVMaJZs8Ai0ko430YM42Z5xaCqH6IGuAMxdEepqPeZ+SIQyuJF4RQQJu7V/W85j8x5VRMBs9ccj8CGnAuzvT8leZidhzNwCFP59lgdm9Y2GJlKOmt6pUHGERqzmRfwiM4KuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6tZq2fR; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ti9zUk7U"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQ3MJN3C2lnbUu2En6FROJ/sTaxtstLUJhmfDzMXF09bbjCLjjUAz/LyKaVVUyUnShhgzrsbImGKpoGfTWLdes9c8jymMHh8BM42wih64okgKKP7xNE4XEFBKEiUlQj9U9As1V/hxQuxqPgl4giIxKFAgXz3WXWjEn6eB/LZ/O4C9uPJyjooxaQrBi1UurRxoJ4EHGWkTjVj/sB9clSKJDlRRQrYTUduR87VkT2u3FUr+sNUTjGromnIE0PNUsVxivxITKupGssNXinhhsIpeJsjBStPwYQ3aYMTxk25KxSN+5aKq6QSpVhthaNVT1g+zifNZGq+yYrQFijU7fgHDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T4BBVTiRyrzodU0nRWZwppkX/hxXIPS7n58Pzp+twh8=;
- b=jwy7oY0azXlczV4XQhanLeHhvAbv1pCBRhlujGdkhPCsr8OLgpJHvp1VvJ+fOX5qH/KZR+eva6gE3tW1SpcKJGwXabt23iRzYCceQaJ6W3NHhd/2qveYQv6s9W40tgqpRVoDkLCrmIFl+PS0uyf8fOBQ+JzVASlzrZ/jPV5MBn9CgNLqupaVn8y8p0enZdgqvYZAoroEyHjFOLalO9D5kBZeeVjQpPW+qyfjZnhTLJkTBzZQ9liBAZKkOJHwp+kh3TO8Oh7RmMttEr9eUVCkNDv2eZMNCQ8FPlTaDjAu0aatAKzCssJNgpYl4XLQDFlMNtILaaZ3hWWxHXwDIDFaVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T4BBVTiRyrzodU0nRWZwppkX/hxXIPS7n58Pzp+twh8=;
- b=Ti9zUk7UQ7sLJTdHs3A/R9F9Io6S0NsgGsZdsCR47aZDLG6a/Sa7PXu+Br46bUSg0OAtjLLAkmDC3EKSdKc5Bzsg2OubsuyIkeFLO6mlBRogrBcBwxJwcxyDFdHlUyy39oa2FT8T7ZrR+VWJCtwQQiTxFe7JVGsm+GO4reLlWE5xm+AOs7sj+JWxq+d2/pVOP45HHA/8KyuQVgyF0m2hfiORwfqC88+cIrQYEq5zVHytXCkG5daaWd7YZKPKJ0tI4cgck9G2QV5uVZ5HoOk/2bfAFzyBffeYz/g4ck5n51njR1zbR5VuRBWWx3+mdb4uWcTnovb7vMRTwWxWsBEUfg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by DB8PR04MB6970.eurprd04.prod.outlook.com (2603:10a6:10:fa::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.22; Fri, 20 Mar
- 2026 19:32:00 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9723.018; Fri, 20 Mar 2026
- 19:32:08 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-imx@nxp.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Date: Fri, 20 Mar 2026 14:31:50 -0500
-Message-ID: <20260320193150.2508850-1-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH7PR02CA0013.namprd02.prod.outlook.com
- (2603:10b6:510:33d::21) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6tZq2fR"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2c107ef474fso823715eec.0
+        for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774037168; x=1774641968; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=w0eYaGcB3V+rZa//1YtvXJWbgZGhvz6cAIvDXCZsJEQ=;
+        b=T6tZq2fRqQ1cnCAOVK/y1UESGVam7FHO9+w46iYHFt5/FJVwKsazRk1EIhT6ChfxSa
+         dtaDuyIXhv+KGKjdjRFFDYzKWXKK1+nPKRnmwxtfcg8f9unUpZoyiOA4tWMMbzwYKIl5
+         iOCI7q+P7UpOHfdnwe0o2oRExXMtuO+MOtCIfUWYwdRHMHV+5eJ2W78+Ux6f6b7FNKWD
+         45eglg02Y5hwr0vN+srfgnpbfC1YDy9QZG4Xg5K5NLcVoepVAW5JDIMKhb1es2tPGbLW
+         zHgTGzxfyxNhcCavYiEbGwvg36KhN9ANS8VXunD/HqDojSjld40pBJpGdAsn4fYyGdEG
+         yD9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774037168; x=1774641968;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w0eYaGcB3V+rZa//1YtvXJWbgZGhvz6cAIvDXCZsJEQ=;
+        b=bBA1OBrpkBqb/w7+yHgVVkAcxpmehMeVrU/MkIhfPiEz+KjWUn52qC1ycBgCkvhSyi
+         J7DAtxREyWZBxfuDgWwdczCZMDKDUgM5LabhyyUIuujHW+/wJfS1ehq1dLJTBeU8ZKLs
+         h5TR3iqCEBE5+o82D8Ue2WeXNyYUA2WBgo93kkj4WbfS6VpMwDMe+5jlkRQXJIgLrpje
+         dgLIEhAFW0WlKxmP3zdw4DIh9e/o5IUX/YdLjfpN7xaFjP0+qSvL/z5M/JEi2lzwRm7k
+         xEE4eUhEC25iHH1rmTzxCvdRkpyvaIsZH5mjtZASc0JuXCkdbKxrZJQJ5bGvfpaBvrd2
+         +oNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUU2MsDC/OCUKskhv3mA0Fu8MvmSH5SL/+mxXaDCeaTxIjHqKMTQwZ+QTwGGVnXvUHbDEs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/SUHMafKHCE6zBLOaTfXbJRL1vNTWA7rvxD04+IKFtP0Hg0Op
+	EDNSWQ+DziaZ+7QRXoFUDL/lNHSk4q6AGjMLvQ/N6xWHc+PPwiuo9Pmu
+X-Gm-Gg: ATEYQzxit7Lrbdujrcd8du/lZZfCXYM2pQz1mIq9yjc3Qfuq61zI+eqlgq8VnIsVTBZ
+	4k6QlowIV2nPxsMyNBBcn3njfExG6Yje+vMaZ1KPHSoOY13D9YBbv/6ZiTRx4tVB+0FHWhI3WLd
+	hITfVzdjmlL9urFoGkVlk5mgYWN9cODYgrDocXb1zBmnA84rwSW50YDG+jA0ngjEm+wqcwaGjFJ
+	T4PLUqE6jf/wu+cs2K3o8U0yslUOkr58GEMuiMV4E2D8jCO53lEhFcwU84ZkMCCOBlTuCNxpjux
+	VH1e9nhaOuwjuYKakMJKiRu+tTwuhAdROZHzt6QCYVYRcm3953UTTufYXs2dtpWSpDN82m88dkw
+	0FvWCWp0++dw3mZi3697Ng4MskgER70Bwfz/G5CtWAkFtoebx7BAwTRi56QeiCYoruWmYaWXAS3
+	RSEyxsndbcUwFhPIk5v7ssE50/S76rp3xki44si8+J2gQv0CgGL26lFm6qptuiP8pu+B0wESaB/
+	5CKUNtC1xs=
+X-Received: by 2002:a05:693c:300b:b0:2c0:d92c:2c68 with SMTP id 5a478bee46e88-2c1098092b8mr2171432eec.31.1774037167545;
+        Fri, 20 Mar 2026 13:06:07 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b14bac4sm5869488eec.4.2026.03.20.13.06.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Mar 2026 13:06:06 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <52642e6e-cd86-46e2-ad73-3775ff9531b0@roeck-us.net>
+Date: Fri, 20 Mar 2026 13:06:04 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB8PR04MB6970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e349652-f318-4092-a0b9-08de86b75fbb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|52116014|1800799024|7416014|38350700014|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	kFoKeZYZjzZQgZGYlQH5uViGbxuJw9IGM0FC7ZLpB28dPeyQHXDmgG9Mqyv0dd4EB0g70fWv91ucpC/LJgZlkiW7EwLa6atfoSHioCtz6KDqGFiLaBfcSRSa3M0JkS1rXlRFCIrGgxg3LuT9MaF+eljXevNuOVOJwm7qOr7EIYdjWsG8HRZPGeX7HQykFHqoYzAwwSGMpxa5XWQaohM8oQceicmLGi6Byg0HKM1nQHH2sdRv80mV/nLrDClMC4U9Gwe/QzIt6Jws3FaRVpWjCL1uB7Vy9208274Ker8wxkbQMJPECYFZKbe2QZa9bDHU30cXSJeV43GClH/3bCuGsKEiEs/JSuXsXVU0PdrgQxaCrVU8etjLDX/RMMiKwFb0ewOzm4Cs0PP+I9vwXXvMsk4AsmNom+mXYUqxI4p3qHp0v1aOtsJBvsB/3DJOmeoubYDbo2sxUiNKY9E0D7fb/WIag9Aogx7COBNuexmKlYRJwEsLYpQ1ac5busyRQRB1RiXgs4YLJo7Hp3oBst0j5Cnb/6Imb/uHcOyAcWX+xA6e/TY6Wg5WD37jtrhawncBccMpoZ/ucDgwWiXHajaIe/1hIctRpXBIm0wnMWxmnoaQ3tTm9MbwHzQ6brvtifuFtj3IVA6nN8kzWvQJYqhKyDcVHbhX4sU9jHrP175AUqA58Eps5oSjHZtCa4IuY/TTOQSiRXFanZ55IN7AKu01DF0LbmydwapAU+a6MjQj+YeF5iHn+uNE/NzbrhGM/DelrTWGzGqcHBr8jVD4P548DG7IUv091IWjkkD2v5iXraw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(52116014)(1800799024)(7416014)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?r2u78aAjjgM4YOzHRg9KBlktCSRCL0fE58RJkKijrN9TqgaQQCORzbz3LEK7?=
- =?us-ascii?Q?qTtpPiNnfGx5Bu5qazund1YnxEwXVYchgloqgq1S2Jd9jj+2MTjyUZtIuWcT?=
- =?us-ascii?Q?kDKPaJ3fpE846H05EvILNJMjrK4bW8PWBXGTjzx7dgl/uERKKpk7yDDmNhHR?=
- =?us-ascii?Q?l6PRtxvUURsMlbn05UfgREX80uC1nUU3pPOemOsHwP4B4m/LUrkj4Rquy29Z?=
- =?us-ascii?Q?R9KwQknScqqywG0MfYJ3Odunc5To3xZvxkUpdJl7iCTz1Yj+Bqq5ZG277p2v?=
- =?us-ascii?Q?N9qFHorNekrQCwGpCcImHX0bXWVDmv1KMte6+SC1TFJS1yrCnWSwjPOlPZWO?=
- =?us-ascii?Q?10WxwVZLjAiS4jYQ8rbP6W4hcFFT2ufwRhWz98k2pXFUu/a34wQB6gFAQeCE?=
- =?us-ascii?Q?c9W65+PfbkLavBMOYHj0VeoKAiJ2tv5vaLAgkEVAyCUvjo+qWnBIboXfbc5V?=
- =?us-ascii?Q?MHZv1jIlsj8ffSsQ6ZhKqAwKhpfFrgqmJBUQluLX1zNd+ijBRaMGdBjXHYwv?=
- =?us-ascii?Q?P8tDjFHvDBgWoCcFypZlprh1F8QKm2SQpJmjC2+O7L6rJ6gmWHcyjRlcauiD?=
- =?us-ascii?Q?U6awSFXOr6sfBW/YxT+s48+bFdYULB68g0LQMeXKvXQI98FQxOWwVk58q1rq?=
- =?us-ascii?Q?i7jw2Cz81wRdNiIGzq6vrYPwVPaezSZIR+exrxkK7nlJSI0fMvF0HaH2HetX?=
- =?us-ascii?Q?QcyTHIPHquTy9N1ISDpV1Kf5UvNQXCLvqJK4QPBtTVPaEZyUWbTCcKOSM9Lf?=
- =?us-ascii?Q?IgIctXmbZSJ2skl7IsroUzvq3JQXX4YDmUI3i8egfyYvxd7hiueETsI6+hvy?=
- =?us-ascii?Q?bvUhLg5PumDeLBGfBs1yFWrxF3nVUWLCckKqQfEgsXFpheltqKXjki2O0nwq?=
- =?us-ascii?Q?Zvf3WcnQTL4doRmCKknhWqrVMkqI92D43DXYgp606n89NEXsy6yzUNizhACm?=
- =?us-ascii?Q?BVUDpceOMFPnZ0d1ZVi5kyvSthHJSNnDeqMauxIr19ybwIeHmEJUZ/CE/uEh?=
- =?us-ascii?Q?kYl+Tm1uFnlZBGHWVMUtt2ls47xv5A3QZVxzaHVqlLIp2qOJlaIH9gpEKHag?=
- =?us-ascii?Q?UgcLNhP68s3WK7U2TkHWueQVFLWyWdPWNOYbUY6IN8D07JsFFdVURvQ9EnrK?=
- =?us-ascii?Q?8AcrllSTLMI6N36UPdiZ1AxTTg1pEHTgSsCqJpvi8/9JgLWGx0wwpdVyqOKA?=
- =?us-ascii?Q?pGZV0C+4TAy9N89P60ihc9Z/yJWNKjA0lpRuoHCWsg5eS4FG/FHsBk+KKGto?=
- =?us-ascii?Q?9EwKi+7qkx25BRhe4zuJ5FvuPNX949EjUxrtRb80IgvePey9X4GeIi3KmmQU?=
- =?us-ascii?Q?g7kAFNxyAWLyI3XNZwGYkT8B52eeN/Z+5NqmW54gqpI35au+H2+FZJgXTslw?=
- =?us-ascii?Q?f4qvCw4Zi+vzhGq12m8CmH7rCIkt0ducM0zulFdOvafoY5GR5U8oCT2brYME?=
- =?us-ascii?Q?PMQn0eo7UMIKbFah7VQntEEXOUFi7hLrv39CtR0ujxTk5ack9L27DOaXunbB?=
- =?us-ascii?Q?/1dBjzBmrzo9dz0dMRH0I7WCM+lQpQL0oJweFVpLe6aJ1gECVOl1NO0BWyzJ?=
- =?us-ascii?Q?/imINyhZoSNnzpkO4N12tsWyuj06R7cxnfmWL45CiECRvxZFwe5cWmTz2h2y?=
- =?us-ascii?Q?15DC/SmZuKK7t77pPRuHFalrxWsRhowRtoHLOkr4o85pE1oQwfMe9GCm2zp9?=
- =?us-ascii?Q?JeY4MPA+/wL81UmG6X3fcnWiZ4KMkOlPM62jJFBzg70m0AVWjhHEfVKsV1iH?=
- =?us-ascii?Q?+cnvHQv45A=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e349652-f318-4092-a0b9-08de86b75fbb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 19:32:07.9487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z6gL4honNJ7m15e95jG7mxScLo8mccguG80iGNXyTmNfY1cG1SFxO1sCS7YiLGIolG4+vYzj6acXsPQpcbRLhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6970
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] hwmon: emc2305: Support configurable fan PWM at
+ shutdown
+To: florin.leotescu@oss.nxp.com, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+References: <20260320152959.1575978-1-florin.leotescu@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260320152959.1575978-1-florin.leotescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
-trigger due to a hardware bug in the detection logic. Since the hardware
-does not support Both Edge wakeup, remap requests for Both Edge to Rising
-Edge by default to avoid hitting this issue.
+On 3/20/26 08:29, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+> 
+> This series adds support for configuring the fan PWM duty cycle applied
+> during system shutdown for the EMC2305 fan controller.
+> 
+> Some platforms require fans to transition to a predefined safe state
+> during shutdown or reboot handoff until firmware or the next boot stage
+> reconfigures the controller.
+> 
+> The new optional Device Tree property "fan-shutdown-percent" allows the
+> shutdown PWM duty cycle to be configured per fan output.
+> 
 
-A warning is emitted when Falling Edge is selected on i.MX8QM.
+Sashiko stil finds some problems. Please check.
 
-Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x platforms")
-cc: stable@vger.kernel.org
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
----
- Changes in V2:
-  - add a check for i.mx8qm and emit a warning when Falling Edge is
-    selected.
+https://sashiko.dev/#/patchset/20260320152959.1575978-1-florin.leotescu%40oss.nxp.com
 
- drivers/gpio/gpio-mxc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Thanks,
+Guenter
 
-diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-index d7666fe9dbf8..095bcfbc56e0 100644
---- a/drivers/gpio/gpio-mxc.c
-+++ b/drivers/gpio/gpio-mxc.c
-@@ -584,12 +584,13 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
- 	unsigned long config;
- 	bool ret = false;
- 	int i, type;
-+	bool is_imx8qm = of_device_is_compatible(port->dev->of_node, "fsl,imx8qm-gpio");
-
- 	static const u32 pad_type_map[] = {
- 		IMX_SCU_WAKEUP_OFF,		/* 0 */
- 		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
- 		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
--		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
-+		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
- 		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
- 		IMX_SCU_WAKEUP_OFF,		/* 5 */
- 		IMX_SCU_WAKEUP_OFF,		/* 6 */
-@@ -604,6 +605,12 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
- 				config = pad_type_map[type];
- 			else
- 				config = IMX_SCU_WAKEUP_OFF;
-+
-+			if (is_imx8qm && config == IMX_SCU_WAKEUP_FALL_EDGE) {
-+				dev_warn_once(port->dev, "No falling-edge support on i.MX8QM\n");
-+				config = IMX_SCU_WAKEUP_OFF;
-+			}
-+
- 			ret |= mxc_gpio_generic_config(port, i, config);
- 		}
- 	}
---
-2.43.0
+> Changes in v4:
+> - Initialize pwm_shudown array to EMC2305_PWM_SHUTDOWN_UNSET in probe,
+>    to avoid treating unconfigured channels as valid and written 0
+>    during shutdown
+> Changes in v3:
+> - Rebased on current upstream
+> - Dropped already upstreamed of_node_put(child) fix
+> Changes in v2:
+> - Address feedback from Guenter Roeck
+> - Make shutdown behavior configurable via Device Tree
+> - Add optional fan-shutdown-percent property
+> - Apply shutdown PWM only for channels defining the property
+> 
+> Florin Leotescu (2):
+>    dt-bindings: hwmon: emc2305: Add fan-shutdown-percent property
+>    hwmon: emc2305: Support configurable fan PWM at shutdown
+> 
+>   .../bindings/hwmon/microchip,emc2305.yaml     |  8 +++++
+>   drivers/hwmon/emc2305.c                       | 35 +++++++++++++++++++
+>   2 files changed, 43 insertions(+)
+> 
 
