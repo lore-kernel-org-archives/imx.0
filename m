@@ -1,203 +1,1600 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012038.outbound.protection.outlook.com [52.101.66.38])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC16342CBD
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 09:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773998177; cv=fail; b=u7+IvnOjFIU7cbXmtwslmTLAHicyqTtRbKOmB3BsvVRBVZyqzfZwzYLYV0l6wEdFh1Panwfn90dkNinYdkc0QzXfmdGGKOUk0HXQ/B4Acqj0942HDSLuhSPl8JZNjiIkL31qeMzVKbWBgmnSI6+BS4W1zOHY099p6hlhsAfnm5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773998177; c=relaxed/simple;
-	bh=vQZKjEQMQq+aSgwrln06Tm1oaEz2ZSoUGlfWy7VhMec=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gEihI0rWvRsYy5WbDODJCAwLw04imQqjLVXWv+fvjARBCsVqVSl4CcHeZW2SBGRxgccdLk2AUfBgghx0Za844a9fpebOPBIauVV/ZS0nDLrjA2krg1mYm/Cfg2MJr+hzkA58M2ALCQ6nEF9hDABhYjIV+wSo2EHgP/E379PAJrY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=htdGtCtz; arc=fail smtp.client-ip=52.101.66.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202C135C1B7;
+	Fri, 20 Mar 2026 09:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773998700; cv=none; b=Nquc6634TinBaxIfbZ4unJt6Kh0St7/X5FXmeL3DOgpJo0wSa3ObQlY+z7CnIbozzmHC6WgNZxk6oz85rJy9Hkk9+cknjDs6R8N5FhxQOMQePMa9VCj50AVtYpGOd84jjm4yzzrEDKhtAufoGRpWLWjw/8BUz19Iu6SXTggJIvI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773998700; c=relaxed/simple;
+	bh=iQzmSa7AYT0kNa3W+ZUG+N2GWnMiakPwuVmkeeJ+y2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iwk7YsfUrR882K96r8ORKzTeKECLSdTQe9pB+JCPUXQXnJ5g3WZiI+r546xw3npcY+j4QC+yobUjeWWUzZRDAS8VL1V/CzcIpq3a2UbnmBm5ARAdrzM7Ab+aobjjdaHdGZqAhlclwpO/OFOXvPH53RvtzCvcbr87KhdNof/zfwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAyMExVU; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="htdGtCtz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fi0YXjn2NJJi6tV1hvwiuTfzqiWVHNYwBoOpsRPQO9dsYGX53Dx/XjL5bwWnTfJ1O+zKhe9m1T7x/ZS/EBCsJz1MZEc6OCWQDPfKQ3IAoZXhz2T2WYuHVHlUjHc9jp1G7hmmGXUJ19ai8yuQodxmViehZ96AURenspywucEiQZkR23fFWjHxhQ5lURxmDIR9BLjg5aysj3dWe2n/iwNaqwTiA6efJGGoWaEtrRKOV9hM3D1Q+xzctIZLFPLY6CMyjkjJPf68mR73LaqRUTWLV1ZdgDeXGqk1rBWKNLUT//HLW5W08XV6DXMLmYAI3hyBxg3Jzxaz67TTf66Yfm3W0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FXuauTC/G3kPnbbZEfgc7s5YpTpz/iP+l3gSYOtKaM8=;
- b=pPVDvvGflfFxQkQC3p1ZUhXdrcqHNEsi31ISzaeZ1KvYYI7Uvcs6rZhePI0+2BmwMI/7o+uSVf3S//Coa3n6eCMhrDbRTfE12MuyVKNurvzVhL5sz5aOiRKCVo/CObjaZDwq7YSzyeXafODvOUxYYUW1nTefKt+uOtQ9SWGzJgqjg4TgOYKZTdPFnK148Yu/ZbNsx+EE5dXUYVhxW8xZ6pMku9XWzwPe8B7MyQ191Vz4OXDl2DTxMWta29L056tvueBzmvMybRJ9+ALOHqcWnTFbWdyjKsCblieKIUHGs3oMGWJPPYGo+BCqVGPSl8bGIihujv9m0poHvi8hG8+2cA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FXuauTC/G3kPnbbZEfgc7s5YpTpz/iP+l3gSYOtKaM8=;
- b=htdGtCtz1oChggfCVMpLXiBMdTBykNo+SW8YoOxuDAAk+J8iKRluNUXuvUQFkDFVHDJr3mwikwkLtFaLf7CVvZly1AisVLOKU2TdKXE/y5cBihBur5DhgDxM5UOOfbNkFT0C/RZ8ATEnROF9wN4T3OnKefOb+xepf8m9NV/LVgDrCYLGwNnh9yEy1H2UAejzrei1W7pJFcVmFM4hPd7vC/ODS9XaC2D/xnThAJNcE0WfGOOBf2h6CPH4d5jt28voW7RnGg+QpqAuStM3W5edTX9YRwuwtAVsDgBxzSXWMgXkFQAU/EKzFrxD0Wp+AMlzvIBS5kr9vawI3cRMbvC2hw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by GVXPR04MB10756.eurprd04.prod.outlook.com (2603:10a6:150:226::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Fri, 20 Mar
- 2026 09:16:01 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9723.018; Fri, 20 Mar 2026
- 09:16:08 +0000
-Message-ID: <b5e05fe6-97c4-40cd-b7cc-b417d8717aec@oss.nxp.com>
-Date: Fri, 20 Mar 2026 11:19:06 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Add i.MX94 remoteproc support and reset vector
- handling improvements
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-References: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM8P190CA0011.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::16) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAyMExVU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773998695; x=1805534695;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=iQzmSa7AYT0kNa3W+ZUG+N2GWnMiakPwuVmkeeJ+y2w=;
+  b=oAyMExVUG7Lw7+yiNtfphFzDURCsiaBf4q4hjcP7mV+uePydWA/jxNj+
+   UezfwfEoOYERT3+kOVit2disNOyHL5eoVAH196JishVSALpZwo3c2K9kx
+   E2q4pMNgcJcUpcqzM2EJubHW9Hx2KUUP6eys9UBfnhHxi4PYqw2Tzvmku
+   mShq+pRX+b8bTzdnugPs1oTTUuxAcbZThgyICc1EH1KPxNFzSUAqnNA7g
+   DSppmRTu8cV2hOd0q/uMfr9wqSxKzQ3kkEIC0T/aiB22Fd508wFgmwo+6
+   KXLVRxZ8cphj58KiyV9RB+pjJlDpcHKkG1cNXbskb3HevPtmGRkmJAEs4
+   g==;
+X-CSE-ConnectionGUID: SwTpwOq1Rh+inu090divtA==
+X-CSE-MsgGUID: vM+esabfS52UgpfTSFgLlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75199884"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="75199884"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 02:24:54 -0700
+X-CSE-ConnectionGUID: +kzKv5itTliNu1FZRwVbLQ==
+X-CSE-MsgGUID: AsCz6WNbQbSxKQCnllbWQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="223262706"
+Received: from lkp-server02.sh.intel.com (HELO a51c2a36b9df) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 20 Mar 2026 02:24:51 -0700
+Received: from kbuild by a51c2a36b9df with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w3W5U-000000002Cb-3cKK;
+	Fri, 20 Mar 2026 09:24:21 +0000
+Date: Fri, 20 Mar 2026 17:23:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Marek Vasut <marex@nabladev.com>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH spi-next v2 03/11] spi: spi-fsl-lpspi: fsl_lpspi_probe():
+ use FIELD_GET to decode Parameter register and add size check
+Message-ID: <202603201743.2jFWu8hL-lkp@intel.com>
+References: <20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d44a8@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|GVXPR04MB10756:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2aa2230-e637-4d66-c0b8-08de8661522f
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|921020|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	SCI71QGRovmyyN9OyacI4gLBledvTiLaPR4Ejlb986S+ZqQMmyUIOTGNcCRxXyG7Os2wcqjFPogiGjHNn5hDKdO8HhEEgNx9RzzxHKndnmVZE7/oadK5eYEjQGDNRZ/VoQOsJSNJ+cFdYr0J4Ho8p5fsC6pBARVMTVP+pT73NQ01k439BYUegvLoNOyE2RkGBC6SmM6sjJyFjw0/9EpeN5hhSejdzCM+uXMD96CLI3Dc3p5VyUJFuN0ORgcy9c+pFi9VT6zwRuFKCD6EKKCWKGpM0r5Eg4JH2WbUJq7C5e3SVEm66fJAIWYwUhHSV7hwFwi0wepc6/wK7vW3TVZAczxy+0pnbQx77BFGsrP981adNmGJ/Uv7V47gutjeLMtMoy+s0VgqByY0UKSgYUSZCngq+LIdf/A+e3LAlOmnPwWz6t09W//SWDRQVKWaMYo9HuOkyVOQqqd5z6zp2uLmKuRvlD924NVR+98FZmps3jumA63nwO/2HK/lW2Ya8r+x11ZAE/YAcYJgM2Mh1OY8WY5aiD3RdRpmOp6tw1WaXP1KDPT29DHL4EZnlnNZ/UVePhFTKPxBavyNQYQe+SWwruHJEpn9FUIUjjxmzbSHhEof5rCGaCYuMVocdurXnNzb4RkSWtjUwCofB7B81i8/ya3FIuNUCcP47pRWiGeMHrIE7nXm+a6T0fJyLduBrjTMBxdv/OmOKyQgEvCInr4/07nSUq6dLJ3Tmpc1i8QFDJ5af0hTbGKt2mXfeambejRiaFpAdfqrQQmZNAikdgndpw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M2RQRjBGMFZ2ZTdnOWtNeG1samlia1Awb3hBdTc4N0NOUmxESVZIVjdBREMy?=
- =?utf-8?B?WldHNUt6YmwvYUVnejlGWDUrenRXbmg3QWR3WlJOK1g1TlhTdFZKSDA2aUJJ?=
- =?utf-8?B?bEczTit2MlNyVVp6RlVQdVNNTElsc05RdjB4cEVYdTFJN25ydDJVY2s0N2JR?=
- =?utf-8?B?dFdyS1RqWlFpOEw4aHVuUFJjRHMxNmxCc0FnU2h3SHVrbEFuTDZkejlZNTIr?=
- =?utf-8?B?M0J0WWlDdkZFTlIvekQwdmJURTZPOTdMV2RoeXJrSDI1SnR4WDBITk1oeGgx?=
- =?utf-8?B?UExhenVDamFhMVBpN0VTNWVmWTA0UXJoWjBPR1dVZisvWmEvd0dpbWxBUWNZ?=
- =?utf-8?B?K3B2c0lSMTFUcERkUEZTVGJIaWlodmtxcDVwTXd5U3hmUGhyb3JRUWJla2Rq?=
- =?utf-8?B?RE82eXp2ZzdENWw5VnFHZFozU21ob1NkOTg1TWswY25VeTZITTRwZEk3anVT?=
- =?utf-8?B?cUlwTUVoVGhZRExVSE1oWEdUbG9MZzN5R1hrdmVrTHpUY1Bsd2QwV2FJSmJl?=
- =?utf-8?B?K2tjb3l5OGhlcnY1Rk40dFpnWXVDS21PdHNLbS9QcFN3RkNPSmVydWZ5MEJP?=
- =?utf-8?B?ZnhPaVRIcW45dGF3UzJNZDJxaEx6UGxJZUdPYVRDQkFqREUyV2ZsV0xLcnY1?=
- =?utf-8?B?Y3RDaThlNjltTVVKWTVhVE1BZVljWlpmMHhTQnljK016STdrQVJpb3BUNFBL?=
- =?utf-8?B?VjlodWlZcFRBMTBFQUhXNFhucG5tWDVxa1BZM2pMTURWZ3l1OG1Ha0xXQ2ww?=
- =?utf-8?B?K2Y0OFZCbHg5TDRXczBrS3BPVnFXMGlkZTUzMG1jeXY1RmlRU2gxMGFXY1cw?=
- =?utf-8?B?K0hnTjRQOXpGRlZ4MGZ4MnRDREg0YnZ4RWNHeUpCY0Y5cHlyQVErbjBRYjFz?=
- =?utf-8?B?cHVWeVV6dDRVeEtxcXY5SWl3UU1DVVM5c2tWeTQxNytneGI1cXpKb1NVRCtN?=
- =?utf-8?B?aThPVHpnUVZMSHB1UVpic1dBVWYzZFdqcDhua3huZW1rR1RUSEdrOEFXcGdm?=
- =?utf-8?B?RjB6Rnh6VnJaVTdhNHRlRWFGd3Jpb01TSkhTOGUvY3ZRbkxQajdTdDlib3lH?=
- =?utf-8?B?ZXhDZ015a1dER0MwUHRZNStzL2dUN3Z5RG1UZ2RjM1pVZ1YySlVHbmFpZEhO?=
- =?utf-8?B?blhNNDBOQTlSZGkvMXliclJLbkNpeVBIaG13QUptNVg0YkIvRHRxd2plckRt?=
- =?utf-8?B?dzV1QVdVWFhDTm9zWlNvbkNKcXVIeTdzZVN1NjBMczhINS96VHZjTWYvZ0ty?=
- =?utf-8?B?cWVDUDNRVWNHbm9yZktCTDdYMU94aWNTTlJJRTVnL1NVVUZxaXhFTm5nbENV?=
- =?utf-8?B?N2VicVVkVmdTZlJyaGJDQ0FXN3M1RjgvemwzWkNqeExOMDJxQmpRS3VqUzRr?=
- =?utf-8?B?eUlHM05UYlNYZ1cwL3VuWEdPRkVMNitDUHc0dTdVcWxoN2Iyc3FtWWkzOXIz?=
- =?utf-8?B?cTl2Y2Z5dmwxTnZsTDk5UEF5YTQ4WGx4aWsvWk90Qko3NitDRDMycVJQZTE5?=
- =?utf-8?B?VEdJVWZhUDVEMHNZMHFwZVU0Um5rMVZPaHo1SDlkandUdW0zN2RtVWtxZXhB?=
- =?utf-8?B?clZUeFMzZlIyQW1WSGhNRzB6QkZjd1BRU3VjcFBoYVV4alg2bE5nTGJYbEVs?=
- =?utf-8?B?aU5Kbkt5cG5DQWV5a2E4YzBMaWF2Wk0xeWpoOTJyVmxQa0p0U2xpUGtGUFNZ?=
- =?utf-8?B?amo2UWtwN2VTRlQvL2svWU0xT0dTb2ZSVktaRU53R1VYWGVqM0RDOCtrUVBz?=
- =?utf-8?B?b0s2VDJpb1dWZVREbWh4TTJEeGp5RFB0ekRKdTRxUXZNUDBLU0Zsa1E2ajZB?=
- =?utf-8?B?ZTNnSitDSjlBYXB1WjkweDR6MG1Ud3RCRUlZWVVUSlppOXJoK1JscjVzQ0li?=
- =?utf-8?B?cHl5RmZBeU1iK1E2Q2oyUEpuRG9McERTM2xFVm0vMTFReGZMbStUNTl6QnBV?=
- =?utf-8?B?bzYvZmlrN0tES2JVVnJnVkMvWWFOL1JjYUd4YTZpWG5DOElQTXFHSlBaUHN3?=
- =?utf-8?B?RGxQN0NnTXN2eVlYaVZHZnNMWTZmQUJQa2xYZVp2K0xDRTlTMmJTNXdwb2Zw?=
- =?utf-8?B?N1JHUUQ0TFUxQkZXZTMzbW5ZZkR3YSs2ZEROd1puY3kvMCtuL3JuNGhYNVh3?=
- =?utf-8?B?aStiZDFQKzQ3OVlnLzJFTk94N3ljeWdSL2JCbENJb21FWEJQeHUzSzhTOXhi?=
- =?utf-8?B?UmRaL3lwNkJzcWFVbE5FVEhxd3V2eG9pd0pObDZmV1lCSldMY3F5YWkzL1lv?=
- =?utf-8?B?UWh1NWJJV211REtQR0hvbUoyL1hYV0JiOWMrREVFdzZLZFlKT0JFMTdGUUVE?=
- =?utf-8?B?LzlyTmtIcXdlWWp6SDJHMjgzVXRFUnRydktPaVh2MEY4RmxlOEdPZz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2aa2230-e637-4d66-c0b8-08de8661522f
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 09:16:08.4125
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ec4r3WYy68mqbZU17fUc5CbB9mgVFVJcYqtoKXBjPUgORE7uNZ+o5X6J19K2iY6G4uHisluxWjx2MPbgv9hA7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10756
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c5d44a8@pengutronix.de>
 
-On 3/12/26 14:36, Peng Fan (OSS) wrote:
-> This series adds remoteproc support for the i.MX94 family, including the
-> CM70, CM71, and CM33S cores, and introduces a new device‑tree property to
-> correctly derive the hardware reset vector for Cortex‑M processors whose
-> ELF entry point does not directly correspond to the actual reset address.
->
-> Background:
-> Cortex‑M processors fetch their initial SP and PC from a fixed reset vector
-> table. While ELF images embed the entry point (e_entry), this value is
-> not always aligned to the hardware reset address. On platforms such as
-> i.MX94 CM33S, masking is required to compute the correct reset vector
-> address before programming the SoC reset registers.
+Hi Marc,
 
-What happens if the reset vector is at 0 and the e_entry point is at 0x800...?
+kernel test robot noticed the following build errors:
 
-In this case masking will no longer work! Can we implement a generic approach?
+[auto build test ERROR on b876ebf2c06042f78b2c9c47c53ffe54c7e480a2]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Marc-Kleine-Budde/sp=
+i-spi-fsl-lpspi-adapt-to-kernel-coding-style/20260320-022127
+base:   b876ebf2c06042f78b2c9c47c53ffe54c7e480a2
+patch link:    https://lore.kernel.org/r/20260319-spi-fsl-lpspi-cleanups-v2=
+-3-02b56c5d44a8%40pengutronix.de
+patch subject: [PATCH spi-next v2 03/11] spi: spi-fsl-lpspi: fsl_lpspi_prob=
+e(): use FIELD_GET to decode Parameter register and add size check
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20260320/=
+202603201743.2jFWu8hL-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archive=
+/20260320/202603201743.2jFWu8hL-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new versio=
+n of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603201743.2jFWu8hL-lkp@i=
+ntel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from <command-line>:
+   drivers/spi/spi-fsl-lpspi.c: In function 'fsl_lpspi_probe':
+>> include/linux/compiler_types.h:706:45: error: call to '__compiletime_ass=
+ert_467' declared with attribute error: min((( __builtin_constant_p(({ ({ (=
+{ do { __attribute__((__noreturn__)) extern void __compiletime_assert_460(v=
+oid) __attribute__((__error__("FIELD_MAX: " "mask is not constant"))); if (=
+!(!(!__builtin_constant_p(((unsigned long)(((int)sizeof(struct {_Static_ass=
+ert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((lon=
+g)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (=
+2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned lon=
+g))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1=
+)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))))) __=
+compiletime_assert_460(); } while (0); do { __attribute__((__noreturn__)) e=
+xtern void __compiletime_assert_461(void) __attribute__((__error__("FIELD_M=
+AX: " "mask is zero"))); if (!(!((((unsigned long)(((int)sizeof(struct {_St=
+atic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void=
+ *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true=
+((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned=
+ long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long)=
+)(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (=
+8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( ty=
+peof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsi=
+gned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned l=
+ong))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 =
+<< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < =
+( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))=
+)) =3D=3D 0))) __compiletime_assert_461(); } while (0); do { __attribute__(=
+(__noreturn__)) extern void __compiletime_assert_462(void) __attribute__((_=
+_error__("FIELD_MAX: " "value too large for the field"))); if (!(!(__builti=
+n_constant_p(0ULL) ? ~((((unsigned long)(((int)sizeof(struct {_Static_asser=
+t(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)=
+((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2)=
+)" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(t=
+ypeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsig=
+ned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) >> (__b=
+uiltin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__built=
+in_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2))=
+ * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is tru=
+e");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)) & (0 + (0ULL=
+)) : 0))) __compiletime_assert_462(); } while (0); do { __attribute__((__no=
+return__)) extern void __compiletime_assert_463(void) __attribute__((__erro=
+r__("BUILD_BUG_ON failed: " "(((((unsigned long)(((int)sizeof(struct {_Stat=
+ic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *=
+)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true(=
+(0) > (2))\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <<=
+ (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( =
+typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))=
+1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) =
+< ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))=
+)))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Sta=
+tic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void =
+*)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true=
+((0) > (2))\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)=
+))))) - 1))) & (((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__=
+builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) >=
+ (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2))\" \=
+" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL <=
+< (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(_=
+_builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) =
+> (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2))\" =
+\" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 <<=
+ (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( =
+typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(ty=
+peof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsign=
+ed long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))=
+1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) =
+< ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeo=
+f(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(un=
+signed long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) -=
+ 1)) !=3D 0"))); if (!(!((((((unsigned long)(((int)sizeof(struct {_Static_a=
+ssert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((l=
+ong)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) >=
+ (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (=
+1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_asse=
+rt(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long=
+)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2=
+))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 =
+<< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < =
+( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(=
+typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsi=
+gned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long=
+))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)=
+) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*siz=
+eof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(=
+unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)))=
+ & (((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choo=
+se_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l))=
+ : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");}))=
+ + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) <=
+< (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(ty=
+peof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsign=
+ed long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned=
+ long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))=
+)) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffs=
+ll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_=
+expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : =
+(int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + =
+(((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(un=
+signed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long=
+))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (=
+0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeo=
+f(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned =
+long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) =
+>> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0))) __com=
+piletime_assert_463(); } while (0); }); do { __attribute__((__noreturn__)) =
+extern void __compiletime_assert_464(void) __attribute__((__error__("FIELD_=
+MAX: " "type of reg too small for mask"))); if (!(!(((typeof( _Generic((((u=
+nsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((=
+sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *=
+)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typ=
+eof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned=
+ long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))=
+ - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 -=
+ (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & (=
+(typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsi=
+gned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))=
+1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((s=
+izeof(unsigned long) * 8) - 1 - (2)))))), char: (unsigned char)0, unsigned =
+char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (uns=
+igned short)0, signed short: (unsigned short)0, unsigned int: (unsigned int=
+)0, signed int: (unsigned int)0, unsigned long: (unsigned long)0, signed lo=
+ng: (unsigned long)0, unsigned long long: (unsigned long long)0, signed lon=
+g long: (unsigned long long)0, default: (((unsigned long)(((int)sizeof(stru=
+ct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ?=
+ ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "con=
+st_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 -=
+ (2)))))))))(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__built=
+in_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2))=
+ * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is tru=
+e");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))) > ((typeof( _Gene=
+ric((0ULL), char: (unsigned char)0, unsigned char: (unsigned char)0, signed=
+ char: (unsigned char)0, unsigned short: (unsigned short)0, signed short: (=
+unsigned short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)=
+0, unsigned long: (unsigned long)0, signed long: (unsigned long)0, unsigned=
+ long long: (unsigned long long)0, signed long long: (unsigned long long)0,=
+ default: (0ULL))))(~0ull))))) __compiletime_assert_464(); } while (0); });=
+ (typeof(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_c=
+hoose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0=
+l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");=
+})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned =
+long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))=
+) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))))((((unsigned long)(((i=
+nt)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=
+=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2=
+), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigne=
+d long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned =
+long) * 8) - 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((int)sizeof=
+(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(=
+*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)),=
+ "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typ=
+eof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(un=
+signed long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned =
+long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))=
+(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))(((=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) =
+- 1 - (2)))))) - 1)); }) + 1) ? ((({ ({ ({ do { __attribute__((__noreturn__=
+)) extern void __compiletime_assert_460(void) __attribute__((__error__("FIE=
+LD_MAX: " "mask is not constant"))); if (!(!(!__builtin_constant_p(((unsign=
+ed long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeo=
+f(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)))=
+, (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(u=
+nsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1)=
+ + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((type=
+of(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned =
+long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) =
+- 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - =
+(((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof=
+(unsigned long) * 8) - 1 - (2))))))))) __compiletime_assert_460(); } while =
+(0); do { __attribute__((__noreturn__)) extern void __compiletime_assert_46=
+1(void) __attribute__((__error__("FIELD_MAX: " "mask is zero"))); if (!(!((=
+((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_exp=
+r((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (in=
+t *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((=
+typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - =
+1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) =
+& ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> =
+((sizeof(unsigned long) * 8) - 1 - (2)))))) =3D=3D 0))) __compiletime_asser=
+t_461(); } while (0); do { __attribute__((__noreturn__)) extern void __comp=
+iletime_assert_462(void) __attribute__((__error__("FIELD_MAX: " "value too =
+large for the field"))); if (!(!(__builtin_constant_p(0ULL) ? ~((((unsigned=
+ long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(=
+int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), =
+(0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(uns=
+igned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) +=
+ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof=
+(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - =
+1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - ((=
+(typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(u=
+nsigned long) * 8) - 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((in=
+t)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D=
+ sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), =
+false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long)=
+)((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned l=
+ong))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - =
+(((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned lon=
+g) * 8) - 1 - (2)))))) - 1)) & (0 + (0ULL)) : 0))) __compiletime_assert_462=
+(); } while (0); do { __attribute__((__noreturn__)) extern void __compileti=
+me_assert_463(void) __attribute__((__error__("BUILD_BUG_ON failed: " "(((((=
+unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr(=
+(sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int =
+*)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (=
+((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(uns=
+igned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long)=
+)1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0=
+) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >=
+> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll((=
+(unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr=
+((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int=
+ *)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + =
+(((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(un=
+signed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long=
+))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (=
+0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeo=
+f(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned =
+long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) =
+>> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)=
+(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =
+=3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) >=
+ (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(unsi=
+gned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + =
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(=
+unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1=
+) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((=
+typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(un=
+signed long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned lon=
+g)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int)=
+ =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) =
+> (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(uns=
+igned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) +=
+ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof=
+(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - =
+1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - ((=
+(typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(u=
+nsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0"))); if (!(!((((((uns=
+igned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((si=
+zeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8=
+))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeo=
+f(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) -=
+ 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((t=
+ypeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((siz=
+eof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsign=
+ed long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeo=
+f(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)))=
+, (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(u=
+nsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1)=
+ + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((type=
+of(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned =
+long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) =
+- 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - =
+(((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof=
+(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)(((int)size=
+of(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeo=
+f(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)=
+), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))(=
+(((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8=
+) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(=
+struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*=
+(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), =
+"const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((=
+typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof=
+(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) -=
+ 1 - (2)))))) - 1))) - 1)) !=3D 0))) __compiletime_assert_463(); } while (0=
+); }); do { __attribute__((__noreturn__)) extern void __compiletime_assert_=
+464(void) __attribute__((__error__("FIELD_MAX: " "type of reg too small for=
+ mask"))); if (!(!(((typeof( _Generic((((unsigned long)(((int)sizeof(struct=
+ {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? (=
+(void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const=
+_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof=
+(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsig=
+ned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned lon=
+g))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1=
+)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (=
+2)))))), char: (unsigned char)0, unsigned char: (unsigned char)0, signed ch=
+ar: (unsigned char)0, unsigned short: (unsigned short)0, signed short: (uns=
+igned short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0, =
+unsigned long: (unsigned long)0, signed long: (unsigned long)0, unsigned lo=
+ng long: (unsigned long long)0, signed long long: (unsigned long long)0, de=
+fault: (((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_ch=
+oose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l=
+)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");}=
+)) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))))=
+ << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(=
+typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsi=
+gned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))))))(((unsigned long)(((i=
+nt)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=
+=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2=
+), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigne=
+d long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned =
+long) * 8) - 1 - (2))))))) > ((typeof( _Generic((0ULL), char: (unsigned cha=
+r)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsign=
+ed short: (unsigned short)0, signed short: (unsigned short)0, unsigned int:=
+ (unsigned int)0, signed int: (unsigned int)0, unsigned long: (unsigned lon=
+g)0, signed long: (unsigned long)0, unsigned long long: (unsigned long long=
+)0, signed long long: (unsigned long long)0, default: (0ULL))))(~0ull))))) =
+__compiletime_assert_464(); } while (0); }); (typeof(((unsigned long)(((int=
+)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D =
+sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), f=
+alse)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))=
+((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long=
+) * 8) - 1 - (2)))))))((((unsigned long)(((int)sizeof(struct {_Static_asser=
+t(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)=
+((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2)=
+)" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(t=
+ypeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsig=
+ned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) >> (__b=
+uiltin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__built=
+in_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2))=
+ * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is tru=
+e");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)); }) + 1) < 2=
+ ? 0 : 63 - __builtin_clzll(({ ({ ({ do { __attribute__((__noreturn__)) ext=
+ern void __compiletime_assert_460(void) __attribute__((__error__("FIELD_MAX=
+: " "mask is not constant"))); if (!(!(!__builtin_constant_p(((unsigned lon=
+g)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int)=
+ =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) =
+> (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigne=
+d long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(uns=
+igned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) +=
+ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsig=
+ned long) * 8) - 1 - (2))))))))) __compiletime_assert_460(); } while (0); d=
+o { __attribute__((__noreturn__)) extern void __compiletime_assert_461(void=
+) __attribute__((__error__("FIELD_MAX: " "mask is zero"))); if (!(!((((unsi=
+gned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((siz=
+eof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)=
+)), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof=
+(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - =
+1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - ((=
+(typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((ty=
+peof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigne=
+d long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))=
+) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 =
+- (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((size=
+of(unsigned long) * 8) - 1 - (2)))))) =3D=3D 0))) __compiletime_assert_461(=
+); } while (0); do { __attribute__((__noreturn__)) extern void __compiletim=
+e_assert_462(void) __attribute__((__error__("FIELD_MAX: " "value too large =
+for the field"))); if (!(!(__builtin_constant_p(0ULL) ? ~((((unsigned long)=
+(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =
+=3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) >=
+ (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned=
+ long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 =
+- (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((ty=
+peof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(u=
+nsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsi=
+gned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + =
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsign=
+ed long) * 8) - 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((int)siz=
+eof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D size=
+of(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false=
+)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((=
+typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof=
+(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))=
+((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * =
+8) - 1 - (2)))))) - 1)) & (0 + (0ULL)) : 0))) __compiletime_assert_462(); }=
+ while (0); do { __attribute__((__noreturn__)) extern void __compiletime_as=
+sert_463(void) __attribute__((__error__("BUILD_BUG_ON failed: " "(((((unsig=
+ned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((size=
+of(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))=
+), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typ=
+eof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned=
+ long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))=
+ - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 -=
+ (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & (=
+(typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsi=
+gned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))=
+1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((s=
+izeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsi=
+gned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((siz=
+eof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)=
+)), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((ty=
+peof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigne=
+d long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))=
+) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 =
+- (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & =
+((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(uns=
+igned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long)=
+)1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((=
+sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)(((in=
+t)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D=
+ sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), =
+false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(unsigned l=
+ong))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - =
+(((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsign=
+ed long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - =
+1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((=
+typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof=
+(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned=
+ long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((i=
+nt)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=
+=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2=
+), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(unsigne=
+d long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(uns=
+igned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) +=
+ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsig=
+ned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0"))); if (!(!((((((unsigne=
+d long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof=
+(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))),=
+ (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(un=
+signed long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) =
++ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeo=
+f(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) -=
+ 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(=
+unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned l=
+ong)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(in=
+t) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0=
+) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsig=
+ned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + (=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(u=
+nsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1)=
+ + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(uns=
+igned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)(((int)sizeof(s=
+truct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(=
+8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "=
+const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned lo=
+ng))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-=
+1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - =
+1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(stru=
+ct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ?=
+ ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "con=
+st_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 -=
+ (2)))))) - 1))) - 1)) !=3D 0))) __compiletime_assert_463(); } while (0); }=
+); do { __attribute__((__noreturn__)) extern void __compiletime_assert_464(=
+void) __attribute__((__error__("FIELD_MAX: " "type of reg too small for mas=
+k"))); if (!(!(((typeof( _Generic((((unsigned long)(((int)sizeof(struct {_S=
+tatic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((voi=
+d *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_tru=
+e((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))=
+))), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: =
+(unsigned char)0, unsigned short: (unsigned short)0, signed short: (unsigne=
+d short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0, unsi=
+gned long: (unsigned long)0, signed long: (unsigned long)0, unsigned long l=
+ong: (unsigned long long)0, signed long long: (unsigned long long)0, defaul=
+t: (((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose=
+_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) :=
+ (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) +=
+ (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << =
+(0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))))=
+ >> ((sizeof(unsigned long) * 8) - 1 - (2)))))))))(((unsigned long)(((int)s=
+izeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D si=
+zeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), fal=
+se)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((=
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsi=
+gned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned l=
+ong))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long=
+))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((=
+typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(=
+unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsign=
+ed long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) =
+* 8) - 1 - (2))))))) > ((typeof( _Generic((0ULL), char: (unsigned char)0, u=
+nsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned sho=
+rt: (unsigned short)0, signed short: (unsigned short)0, unsigned int: (unsi=
+gned int)0, signed int: (unsigned int)0, unsigned long: (unsigned long)0, s=
+igned long: (unsigned long)0, unsigned long long: (unsigned long long)0, si=
+gned long long: (unsigned long long)0, default: (0ULL))))(~0ull))))) __comp=
+iletime_assert_464(); } while (0); }); (typeof(((unsigned long)(((int)sizeo=
+f(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof=
+(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false))=
+, "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((ty=
+peof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(u=
+nsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned=
+ long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long)=
+)(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((=
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsi=
+gned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned l=
+ong))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8)=
+ - 1 - (2)))))))((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__=
+builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) >=
+ (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " i=
+s true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*s=
+izeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeo=
+f(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(=
+unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lo=
+ng))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) >> (__builtin=
+_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_cho=
+ose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)=
+) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})=
+) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeo=
+f(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned =
+long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) =
+<< (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(t=
+ypeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsig=
+ned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigne=
+d long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))=
+))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)); }) + 1)) : (sizeo=
+f(({ ({ ({ do { __attribute__((__noreturn__)) extern void __compiletime_ass=
+ert_460(void) __attribute__((__error__("FIELD_MAX: " "mask is not constant"=
+))); if (!(!(!__builtin_constant_p(((unsigned long)(((int)sizeof(struct {_S=
+tatic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((voi=
+d *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_tru=
+e((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))=
+)))))) __compiletime_assert_460(); } while (0); do { __attribute__((__noret=
+urn__)) extern void __compiletime_assert_461(void) __attribute__((__error__=
+("FIELD_MAX: " "mask is zero"))); if (!(!((((unsigned long)(((int)sizeof(st=
+ruct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8=
+ ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "c=
+onst_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof=
+(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsig=
+ned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned lon=
+g))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1=
+)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((ty=
+peof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(u=
+nsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned=
+ long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long)=
+)(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1=
+ - (2)))))) =3D=3D 0))) __compiletime_assert_461(); } while (0); do { __att=
+ribute__((__noreturn__)) extern void __compiletime_assert_462(void) __attri=
+bute__((__error__("FIELD_MAX: " "value too large for the field"))); if (!(!=
+(__builtin_constant_p(0ULL) ? ~((((unsigned long)(((int)sizeof(struct {_Sta=
+tic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void =
+*)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true(=
+(0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned =
+long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))=
+(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8=
+*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typ=
+eof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))=
+) >> (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(=
+!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((=
+0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))"=
+ " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)) & (=
+0 + (0ULL)) : 0))) __compiletime_assert_462(); } while (0); do { __attribut=
+e__((__noreturn__)) extern void __compiletime_assert_463(void) __attribute_=
+_((__error__("BUILD_BUG_ON failed: " "(((((unsigned long)(((int)sizeof(stru=
+ct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ?=
+ ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"co=
+nst_true((0) > (2))\" \" is true\");})) + (((typeof(unsigned long))((((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((=
+typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof=
+(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) -=
+ 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(str=
+uct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 =
+? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"c=
+onst_true((0) > (2))\" \" is true\");})) + (((typeof(unsigned long))((((typ=
+eof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(un=
+signed long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned =
+long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))=
+(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))(((=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) =
+- 1 - (2)))))) - 1))) & (((((unsigned long)(((int)sizeof(struct {_Static_as=
+sert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((lo=
+ng)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) >=
+ (2))\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned lo=
+ng))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-=
+1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*s=
+izeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeo=
+f(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) =
++ (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_a=
+ssert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((l=
+ong)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) =
+> (2))\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <<=
+ (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( =
+typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))=
+ - 1))) - 1)) !=3D 0"))); if (!(!((((((unsigned long)(((int)sizeof(struct {=
+_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((v=
+oid *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_t=
+rue((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)=
+))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_St=
+atic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void=
+ *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true=
+((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned=
+ long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long)=
+)(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (=
+8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( ty=
+peof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsi=
+gned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned l=
+ong))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 =
+<< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < =
+( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))=
+)) - 1))) & (((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__bui=
+ltin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2=
+)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is t=
+rue");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(uns=
+igned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long)=
+)1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__bu=
+iltin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builti=
+n_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) =
+* 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true=
+");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(=
+typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsi=
+gned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*siz=
+eof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(=
+unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(un=
+signed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long=
+))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0=
+))) __compiletime_assert_463(); } while (0); }); do { __attribute__((__nore=
+turn__)) extern void __compiletime_assert_464(void) __attribute__((__error_=
+_("FIELD_MAX: " "type of reg too small for mask"))); if (!(!(((typeof( _Gen=
+eric((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choo=
+se_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l))=
+ : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");}))=
+ + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) <=
+< (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(ty=
+peof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsign=
+ed long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned=
+ long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))=
+)) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))), char: (unsigned char)0, =
+unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned sh=
+ort: (unsigned short)0, signed short: (unsigned short)0, unsigned int: (uns=
+igned int)0, signed int: (unsigned int)0, unsigned long: (unsigned long)0, =
+signed long: (unsigned long)0, unsigned long long: (unsigned long long)0, s=
+igned long long: (unsigned long long)0, default: (((unsigned long)(((int)si=
+zeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D siz=
+eof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), fals=
+e)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))(((=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long)=
+)((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(u=
+nsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigne=
+d long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) *=
+ 8) - 1 - (2)))))))))(((unsigned long)(((int)sizeof(struct {_Static_assert(=
+!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((=
+0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))"=
+ " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))) > ((type=
+of( _Generic((0ULL), char: (unsigned char)0, unsigned char: (unsigned char)=
+0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, signed=
+ short: (unsigned short)0, unsigned int: (unsigned int)0, signed int: (unsi=
+gned int)0, unsigned long: (unsigned long)0, signed long: (unsigned long)0,=
+ unsigned long long: (unsigned long long)0, signed long long: (unsigned lon=
+g long)0, default: (0ULL))))(~0ull))))) __compiletime_assert_464(); } while=
+ (0); }); (typeof(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__=
+builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) >=
+ (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " i=
+s true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*s=
+izeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeo=
+f(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(=
+unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lo=
+ng))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typ=
+eof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigne=
+d long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))))((((unsigned =
+long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(i=
+nt) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (=
+0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsi=
+gned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + =
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(=
+unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1=
+) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((=
+typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(un=
+signed long) * 8) - 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((int=
+)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D =
+sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), f=
+alse)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))=
+((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long=
+) * 8) - 1 - (2)))))) - 1)); }) + 1) <=3D 4) ? __ilog2_u32(({ ({ ({ do { __=
+attribute__((__noreturn__)) extern void __compiletime_assert_460(void) __at=
+tribute__((__error__("FIELD_MAX: " "mask is not constant"))); if (!(!(!__bu=
+iltin_constant_p(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__b=
+uiltin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > =
+(2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is=
+ true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (=
+8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( ty=
+peof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))))) __compileti=
+me_assert_460(); } while (0); do { __attribute__((__noreturn__)) extern voi=
+d __compiletime_assert_461(void) __attribute__((__error__("FIELD_MAX: " "ma=
+sk is zero"))); if (!(!((((unsigned long)(((int)sizeof(struct {_Static_asse=
+rt(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long=
+)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2=
+))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 =
+<< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < =
+( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(=
+typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsi=
+gned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long=
+))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)=
+) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*siz=
+eof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(=
+unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) =3D=3D=
+ 0))) __compiletime_assert_461(); } while (0); do { __attribute__((__noretu=
+rn__)) extern void __compiletime_assert_462(void) __attribute__((__error__(=
+"FIELD_MAX: " "value too large for the field"))); if (!(!(__builtin_constan=
+t_p(0ULL) ? ~((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__bui=
+ltin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2=
+)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is t=
+rue");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(uns=
+igned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long)=
+)1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) >> (__builtin_ff=
+sll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose=
+_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) :=
+ (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) +=
+ (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << =
+(0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))))=
+ >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)) & (0 + (0ULL)) : 0)))=
+ __compiletime_assert_462(); } while (0); do { __attribute__((__noreturn__)=
+) extern void __compiletime_assert_463(void) __attribute__((__error__("BUIL=
+D_BUG_ON failed: " "(((((unsigned long)(((int)sizeof(struct {_Static_assert=
+(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)(=
+(0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2)=
+)\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned long))=
+1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) =
+< ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeo=
+f(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(un=
+signed long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned lo=
+ng))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-=
+1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*s=
+izeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeo=
+f(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1=
+ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_asser=
+t(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)=
+((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2=
+))\" \" is true\");})) + (((typeof(unsigned long))((((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1=
+))) & (((((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_c=
+hoose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0=
+l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is true=
+\");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__buil=
+tin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_=
+choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * =
+0l)) : (int *)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is tru=
+e\");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeo=
+f(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(un=
+signed long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsi=
+gned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))=
+1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*s=
+izeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeo=
+f(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(=
+unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lo=
+ng))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D=
+ 0"))); if (!(!((((((unsigned long)(((int)sizeof(struct {_Static_assert(!(_=
+_builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) =
+> (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " =
+is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 <<=
+ (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( =
+typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(ty=
+peof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsign=
+ed long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (=
+__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__bu=
+iltin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (=
+2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is =
+true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*siz=
+eof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(=
+unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(un=
+signed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long=
+))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8=
+*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typ=
+eof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeo=
+f(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned =
+long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((u=
+nsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((=
+sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *=
+)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typ=
+eof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned=
+ long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))=
+ - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 -=
+ (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & (=
+(typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsi=
+gned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))=
+1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((s=
+izeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsi=
+gned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((siz=
+eof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)=
+)), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof=
+(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - =
+1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - ((=
+(typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((ty=
+peof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigne=
+d long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))=
+) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 =
+- (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((size=
+of(unsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0))) __compiletime_=
+assert_463(); } while (0); }); do { __attribute__((__noreturn__)) extern vo=
+id __compiletime_assert_464(void) __attribute__((__error__("FIELD_MAX: " "t=
+ype of reg too small for mask"))); if (!(!(((typeof( _Generic((((unsigned l=
+ong)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(in=
+t) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0=
+) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsig=
+ned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + (=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(u=
+nsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1)=
+ + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(uns=
+igned long) * 8) - 1 - (2)))))), char: (unsigned char)0, unsigned char: (un=
+signed char)0, signed char: (unsigned char)0, unsigned short: (unsigned sho=
+rt)0, signed short: (unsigned short)0, unsigned int: (unsigned int)0, signe=
+d int: (unsigned int)0, unsigned long: (unsigned long)0, signed long: (unsi=
+gned long)0, unsigned long long: (unsigned long long)0, signed long long: (=
+unsigned long long)0, default: (((unsigned long)(((int)sizeof(struct {_Stat=
+ic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *=
+)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((=
+0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*=
+sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( type=
+of(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 <<=
+ (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( =
+typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2))))))=
+)))(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose=
+_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) :=
+ (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) +=
+ (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << =
+(0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))))=
+ >> ((sizeof(unsigned long) * 8) - 1 - (2))))))) > ((typeof( _Generic((0ULL=
+), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (u=
+nsigned char)0, unsigned short: (unsigned short)0, signed short: (unsigned =
+short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0, unsign=
+ed long: (unsigned long)0, signed long: (unsigned long)0, unsigned long lon=
+g: (unsigned long long)0, signed long long: (unsigned long long)0, default:=
+ (0ULL))))(~0ull))))) __compiletime_assert_464(); } while (0); }); (typeof(=
+((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_exp=
+r((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (in=
+t *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((=
+typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - =
+1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) =
+& ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> =
+((sizeof(unsigned long) * 8) - 1 - (2)))))))((((unsigned long)(((int)sizeof=
+(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(=
+*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)),=
+ "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typ=
+eof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(un=
+signed long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned =
+long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))=
+(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))(((=
+(typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeo=
+f(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsig=
+ned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lo=
+ng))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) =
+- 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((int)sizeof(struct {_S=
+tatic_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((voi=
+d *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_tru=
+e((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << =
+(8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( t=
+ypeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))=
+))) - 1)); }) + 1) : __ilog2_u64(({ ({ ({ do { __attribute__((__noreturn__)=
+) extern void __compiletime_assert_460(void) __attribute__((__error__("FIEL=
+D_MAX: " "mask is not constant"))); if (!(!(!__builtin_constant_p(((unsigne=
+d long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof=
+(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))),=
+ (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(un=
+signed long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)=
+) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) =
++ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeo=
+f(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) -=
+ 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(=
+unsigned long) * 8) - 1 - (2))))))))) __compiletime_assert_460(); } while (=
+0); do { __attribute__((__noreturn__)) extern void __compiletime_assert_461=
+(void) __attribute__((__error__("FIELD_MAX: " "mask is zero"))); if (!(!(((=
+(unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr=
+((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int=
+ *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((t=
+ypeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) &=
+ ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(un=
+signed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long=
+))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> (=
+(sizeof(unsigned long) * 8) - 1 - (2)))))) =3D=3D 0))) __compiletime_assert=
+_461(); } while (0); do { __attribute__((__noreturn__)) extern void __compi=
+letime_assert_462(void) __attribute__((__error__("FIELD_MAX: " "value too l=
+arge for the field"))); if (!(!(__builtin_constant_p(0ULL) ? ~((((unsigned =
+long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(i=
+nt) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (=
+0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsi=
+gned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + =
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(=
+unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1=
+) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((=
+typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(un=
+signed long) * 8) - 1 - (2)))))) >> (__builtin_ffsll(((unsigned long)(((int=
+)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D =
+sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), f=
+alse)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))=
+((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long=
+) * 8) - 1 - (2)))))) - 1)) & (0 + (0ULL)) : 0))) __compiletime_assert_462(=
+); } while (0); do { __attribute__((__noreturn__)) extern void __compiletim=
+e_assert_463(void) __attribute__((__error__("BUILD_BUG_ON failed: " "(((((u=
+nsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((=
+sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *=
+)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + ((=
+(typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsi=
+gned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))=
+1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) -=
+ 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0)=
+ & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(=
+unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lo=
+ng))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >>=
+ ((sizeof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((=
+unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr(=
+(sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int =
+*)8))), (0) > (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (=
+((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(uns=
+igned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long)=
+)1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0=
+) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof=
+(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned l=
+ong))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >=
+> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)(=
+((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =
+=3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) >=
+ (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(unsi=
+gned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) =
+- 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + =
+((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((type=
+of(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(=
+unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lon=
+g)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1=
+) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((=
+typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(un=
+signed long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned lon=
+g)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int)=
+ =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) =
+> (2), false)), \"const_true((0) > (2))\" \" is true\");})) + (((typeof(uns=
+igned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long))=
+ - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) +=
+ ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof=
+(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned lo=
+ng)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - =
+1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - ((=
+(typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(u=
+nsigned long) * 8) - 1 - (2)))))) - 1))) - 1)) !=3D 0"))); if (!(!((((((uns=
+igned long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((si=
+zeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8=
+))), (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeo=
+f(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) -=
+ 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((t=
+ypeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((siz=
+eof(unsigned long) * 8) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsign=
+ed long)(((int)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeo=
+f(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8)))=
+, (0) > (2), false)), "const_true((0) > (2))" " is true");})) + (((typeof(u=
+nsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long=
+)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1)=
+ + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((t=
+ypeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((type=
+of(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned =
+long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) =
+- 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - =
+(((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof=
+(unsigned long) * 8) - 1 - (2)))))) - 1))) & (((((unsigned long)(((int)size=
+of(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeo=
+f(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)=
+), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigne=
+d long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long=
+))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))(=
+(((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typ=
+eof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8=
+) - 1 - (2)))))) + (1ULL << (__builtin_ffsll(((unsigned long)(((int)sizeof(=
+struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*=
+(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), =
+"const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((type=
+of(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(uns=
+igned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned l=
+ong))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(=
+-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((=
+typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof=
+(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsign=
+ed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned lon=
+g))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) -=
+ 1 - (2)))))) - 1))) - 1)) !=3D 0))) __compiletime_assert_463(); } while (0=
+); }); do { __attribute__((__noreturn__)) extern void __compiletime_assert_=
+464(void) __attribute__((__error__("FIELD_MAX: " "type of reg too small for=
+ mask"))); if (!(!(((typeof( _Generic((((unsigned long)(((int)sizeof(struct=
+ {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? (=
+(void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const=
+_true((0) > (2))" " is true");})) + (((typeof(unsigned long))((((typeof(uns=
+igned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned =
+long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1=
+ << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) <=
+ ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned long))((((typeof=
+(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsig=
+ned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned lon=
+g))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1=
+)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (=
+2)))))), char: (unsigned char)0, unsigned char: (unsigned char)0, signed ch=
+ar: (unsigned char)0, unsigned short: (unsigned short)0, signed short: (uns=
+igned short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0, =
+unsigned long: (unsigned long)0, signed long: (unsigned long)0, unsigned lo=
+ng long: (unsigned long long)0, signed long long: (unsigned long long)0, de=
+fault: (((unsigned long)(((int)sizeof(struct {_Static_assert(!(__builtin_ch=
+oose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l=
+)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is true");}=
+)) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(type=
+of(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned=
+ long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned l=
+ong)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)))))=
+ << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof(=
+typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsi=
+gned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsign=
+ed long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1)=
+)))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))))))(((unsigned long)(((i=
+nt)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=
+=3D sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2=
+), false)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigne=
+d long))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1=
+ - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((t=
+ypeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(=
+unsigned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned =
+long) * 8) - 1 - (2))))))) > ((typeof( _Generic((0ULL), char: (unsigned cha=
+r)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsign=
+ed short: (unsigned short)0, signed short: (unsigned short)0, unsigned int:=
+ (unsigned int)0, signed int: (unsigned int)0, unsigned long: (unsigned lon=
+g)0, signed long: (unsigned long)0, unsigned long long: (unsigned long long=
+)0, signed long long: (unsigned long long)0, default: (0ULL))))(~0ull))))) =
+__compiletime_assert_464(); } while (0); }); (typeof(((unsigned long)(((int=
+)sizeof(struct {_Static_assert(!(__builtin_choose_expr((sizeof(int) =3D=3D =
+sizeof(*(8 ? ((void *)((long)((0) > (2)) * 0l)) : (int *)8))), (0) > (2), f=
+alse)), "const_true((0) > (2))" " is true");})) + (((typeof(unsigned long))=
+((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((ty=
+peof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeof(un=
+signed long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned=
+ long))(-1)) < ( typeof(unsigned long))1))))) << (0) & ((typeof(unsigned lo=
+ng))((((typeof(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (=
+((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1))) - 1) + ((typeo=
+f(unsigned long))1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsi=
+gned long))(-1)) < ( typeof(unsigned long))1))))) >> ((sizeof(unsigned long=
+) * 8) - 1 - (2)))))))((((unsigned long)(((int)sizeof(struct {_Static_asser=
+t(!(__builtin_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)=
+((0) > (2)) * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2)=
+)" " is true");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 <=
+< (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < (=
+ typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(t=
+ypeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsig=
+ned long))1))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long)=
+)1 << (8*sizeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1))=
+ < ( typeof(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*size=
+of(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(u=
+nsigned long))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) >> (__b=
+uiltin_ffsll(((unsigned long)(((int)sizeof(struct {_Static_assert(!(__built=
+in_choose_expr((sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((0) > (2))=
+ * 0l)) : (int *)8))), (0) > (2), false)), "const_true((0) > (2))" " is tru=
+e");})) + (((typeof(unsigned long))((((typeof(unsigned long))1 << (8*sizeof=
+(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(uns=
+igned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(unsig=
+ned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned long))1=
+))))) << (0) & ((typeof(unsigned long))((((typeof(unsigned long))1 << (8*si=
+zeof(typeof(unsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof=
+(unsigned long))1))) - 1) + ((typeof(unsigned long))1 << (8*sizeof(typeof(u=
+nsigned long)) - 1 - (((typeof(unsigned long))(-1)) < ( typeof(unsigned lon=
+g))1))))) >> ((sizeof(unsigned long) * 8) - 1 - (2)))))) - 1)); }) + 1) )),=
+ txfifo_order) signedness error
+     706 |         _compiletime_assert(condition, msg, __compiletime_assert=
+_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:687:25: note: in definition of macro '__c=
+ompiletime_assert'
+     687 |                         prefix ## suffix();                     =
+        \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:706:9: note: in expansion of macro '_comp=
+iletime_assert'
+     706 |         _compiletime_assert(condition, msg, __compiletime_assert=
+_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletim=
+e_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), =
+msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_M=
+SG'
+      93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
+         |         ^~~~~~~~~~~~~~~~
+   include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_=
+once'
+      98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_I=
+D(y_))
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:105:25: note: in expansion of macro '__careful_cm=
+p'
+     105 | #define min(x, y)       __careful_cmp(min, x, y)
+         |                         ^~~~~~~~~~~~~
+   drivers/spi/spi-fsl-lpspi.c:997:32: note: in expansion of macro 'min'
+     997 |                 txfifo_order =3D min(TXFIFO_ORDER_MAX, txfifo_or=
+der);
+         |                                ^~~
 
 
->
-> Similarly, on i.MX95, the existing implementation always programs a reset
-> vector of 0x0, which only works when executing entirely from TCM. When
-> firmware is loaded into DDR, the driver must pass the correct reset vector
-> to the SM CPU/LMM interfaces.
->
-> This series addresses these issues and provides the necessary DT bindings
-> and driver support.
->
-> Summary of patches:
-> [1]dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
-> Adds a new DT property allowing SoCs to specify a mask for deriving the
-> hardware reset vector from the ELF entry point.
->
-> [2]dt-bindings: remoteproc: imx-rproc: Support i.MX9[4,52]
-> Adds compatible strings for i.MX94 CM70, CM71, and CM33S processors.
->
-> [3]remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
-> Ensures the correct reset vector is passed to SM APIs by introducing a
-> driver‑level helper (imx_rproc_get_boot_addr()) that applies the
-> reset‑vector mask.
->
-> [4]remoteproc: imx_rproc: Add support for i.MX94 remoteproc
-> Adds address translation tables and configuration data for CM70, CM71,
-> and CM33S, enabling full remoteproc operation on i.MX94.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> Peng Fan (4):
->       dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
->       dt-bindings: remoteproc: imx-rproc: Support i.MX94
->       remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
->       remoteproc: imx_rproc: Add support for i.MX94
->
->  .../bindings/remoteproc/fsl,imx-rproc.yaml         |  9 +++
->  drivers/remoteproc/imx_rproc.c                     | 85 +++++++++++++++++++++-
->  2 files changed, 91 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-> change-id: 20260311-imx943-rproc-2050e00b65f7
->
-> Best regards,
+vim +706 include/linux/compiler_types.h
 
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  692 =20
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  693  #define _compiletime_assert(co=
+ndition, msg, prefix, suffix) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  694  	__compiletime_assert(conditio=
+n, msg, prefix, suffix)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  695 =20
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  696  /**
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   * compiletime_assert - break =
+build and emit msg if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  698   * @condition: a compile-time =
+constant condition to check
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  699   * @msg:       a message to em=
+it if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  700   *
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  701   * In tradition of POSIX asser=
+t, this macro will break the build if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  702   * supplied condition is *fals=
+e*, emitting the supplied error message if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  703   * compiler has support to do =
+so.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  704   */
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  705  #define compiletime_assert(con=
+dition, msg) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21 @706  	_compiletime_assert(condition=
+, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  707 =20
 
+--=20
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
