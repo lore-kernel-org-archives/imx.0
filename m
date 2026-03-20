@@ -1,35 +1,35 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F46627A477
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 03:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B25231829
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 03:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773979152; cv=none; b=eeHOBJ/RrqYQ4U3vzDrSvEKavhmZ9UWlWBW19Qa/nd/Eh/fJ++D+q7M7Tth6huQ0IYuaeJgKCouOGIfT6f4/AYLeynsErhKn8ith1uYaiAmWLe7o2NFT6B8WWbFF0XGW2ipaOP6+jOvQPN3+I8lGg9l5TwOEiTH0r8PU+LjqLYg=
+	t=1773979155; cv=none; b=ZuPeeubWxFgTrTjy17bbbic9OUiv7UvZtpsBtHzVdGJxvllyb7notOLI1u1maQ91oKYtGgUNlzHHAImxwP5Y/LllaT/lpWyi1C82aTQrHvK8nllemEbRQ8M+SGbZNwAO3rAGAV8JIA2uCdymNFKlQfdpEvxDveMB6VMoOHljqc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773979152; c=relaxed/simple;
-	bh=YbULbe6xEG80wWHH4RWlziMg66NsPPNMV1BvJwUB/Ck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tE8Skio3GWo0ZDDm6FAmpuo5F+w5332pMJHpJJc8WBOfup4rUmYW4XDLx9y7jMW3PPYvRxVah8bh+KqiwCUDhvY10D1NRKSUh5XPa9l5M6f3BMC8weCe0c+Wl2GZUw5pY0TqRyd3Keg5/03Uww+V7LiO8CaZ7nc606QY95FCdcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=LUam4bT9; arc=none smtp.client-ip=178.251.229.89
+	s=arc-20240116; t=1773979155; c=relaxed/simple;
+	bh=qWHOmiWMlFCykPJ2b+4XlDEz8QJcP6jLz86fZcwumns=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LXRHzghWn9UnDm2li4ZpgMoo2NTbfUWkXA/ho5YHYTwUsx6EpU4jnv2TGrnK6vW1Sva1aly3zX9cgJp/kb+1xNc7L09/g2HHcjQ1T103CSjKwco7SVxYvW1S6MOXKRyyecwMB6/+RGOjV/wGXwK5WncQqfaadXUfXMxhYV5eUrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=FqwzNt3W; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="LUam4bT9"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BC70110E34;
-	Fri, 20 Mar 2026 04:58:55 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="FqwzNt3W"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5243A10C4E3;
+	Fri, 20 Mar 2026 04:59:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1773979140;
+	s=dkim; t=1773979146;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=AWHHdDNqh9ZvQHUva5HwCaoi+Z9+EM+dvDGmkXuDbcA=;
-	b=LUam4bT9N39dUOjkSfM0tn5oFZ5aiQ2mhPAM2uOUWYPu/xIVUGDe91ds7BEtiZLZbk6gso
-	8+AY7JYZ3W/8efj1E9nKSEA6Mgj0d8JNAO9wQWczaVWscGHVpzEwktVGP0oKNLPbUBI4GZ
-	q40E0XvRSYCl+wyPg7qnwx84GfGBtbMZAdElMSk26120WNBMLsT3ZLDZwF95j4Kau2V4+L
-	pa7hEBDamt+m2mxLKQQ/djwMcyI6/Vpfj2L8qJythU0gavHe2i74gp6xrTsxuMUg65pkj4
-	o38n69GjSMQNbOMzNw5qxXRRmKMhVgnEIR4hwyPF56oArqBk4O0UpLlnuh8j0g==
-Message-ID: <40b3d1c8-0cf2-470d-8223-751240061735@nabladev.com>
-Date: Thu, 19 Mar 2026 15:38:29 +0100
+	bh=8/Vm0DnGx4oYEEoZEmyuXoKoZ7F37xeqJ9VudjPDGo0=;
+	b=FqwzNt3WJelauIUpjoIb5Io76RQxmP3gbujxlEI5wPPGYNDZjhComzSW9WDmcFK9CTCZ3P
+	UTg6RCJu7rluVHNYpneCqupUNd2g8TATNuY6ySh/1w0F+2dsj3R/zhU0nDXaKoZc3YiFdJ
+	++pssdBQn2vK8+pW1F1NafQYiAGiOitRiYFINXPqTBketa7KH7cc0HVMrcaoyUsT7EQcb4
+	dWmV6fjPIRXNBSucr15HTcMK6wSpf8RKAS/XF+Qv+Yjp8Ev8RKzcJix08PJD4OoIcxiYS+
+	qttTU7NYYIYV1cIk5J6aQEY4TmOukFQm/SazavAReyzOjM7m5fj/q/8OxPyt0Q==
+Message-ID: <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
+Date: Fri, 20 Mar 2026 03:39:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,81 +37,58 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/9] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: Liu Ying <victor.liu@nxp.com>, imx@lists.linux.dev,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
- dri-devel@lists.freedesktop.org, Frank Li <Frank.Li@nxp.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260304-dcif-upstreaming-v8-0-bec5c047edd4@oss.nxp.com>
- <20260304-dcif-upstreaming-v8-1-bec5c047edd4@oss.nxp.com>
- <b7968f1a-c4bc-4bad-bcf8-407ff2d8db27@nxp.com>
- <dmqbmmpyi3ssvq67iqwbt6ww7tsaik7ifi5dnupmuhep7u5saz@ads5g7ette3y>
- <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
-Content-Language: en-US
 From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
+Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
+To: =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
+ Stefan Agner <stefan@agner.ch>, Liu Ying <victor.liu@nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <m3ms04caaj.fsf@t19.piap.pl>
+Content-Language: en-US
+In-Reply-To: <m3ms04caaj.fsf@t19.piap.pl>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 3/19/26 9:57 AM, Laurentiu Palcu wrote:
-> On Fri, Mar 06, 2026 at 09:46:57AM +0100, Marco Felsch wrote:
->> On 26-03-06, Liu Ying wrote:
->>> On Wed, Mar 04, 2026 at 11:34:10AM +0000, Laurentiu Palcu wrote:
->>>> i.MX94 has a single LVDS port and share similar LDB and LVDS control
->>>> registers as i.MX8MP and i.MX93.
->>>>
->>>> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
->>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>> ---
->>>>   Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml | 2 ++
->>>>   1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
->>>> index 7f380879fffdf..fb70409161fc0 100644
->>>> --- a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
->>>> +++ b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
->>>> @@ -20,6 +20,7 @@ properties:
->>>>         - fsl,imx6sx-ldb
->>>>         - fsl,imx8mp-ldb
->>>>         - fsl,imx93-ldb
->>>> +      - fsl,imx94-ldb
->>>
->>> Cc'ing Marco.
->>>
->>> Recently, Marco said that LDB node should not have a reg property...
->>>
->>> https://lore.kernel.org/all/4sofljffovrorpxe2os3jl745qfjoglvl54oqf3v7r5bk5f6aq@6y3jwn4abiqy/
->>
->> Yes, this has to be dropped. All variants of this specific "IP" use the
->> same approach. This "IP" is part of a general purpose register layout
->> with very loose reg-field definitions: e.g. resets and clk-gatting share
->> the same register. Or a mux reg-field shares the same register as a
->> MIPI-{C,D}SI configuration reg-field. Therefore this "IP" is part of a
->> syscon and should be abstracted as such within the DT.
+On 3/19/26 12:45 PM, Krzysztof Hałasa wrote:
+> Running (and terminating) Weston on i.MX8MP sometimes produced black
+> or grey screens. The LCDIF3 INT_STATUS_D0 register showed a FIFO underrun:
 > 
-> Even though I understand the logic behind why 'reg' should be dropped,
-> I'm not exactly sure how to proceed with this. It appears Marek made the
-> 'reg' required in this commit (merely 2 months ago):
+> 32FC6024: 1000002
 > 
-> 8aa2f0ac08d3b - dt-bindings: display: bridge: ldb: Add check for reg and reg-names
+> The PANIC0_THRES register was set to:
 > 
-> Should the above patch simply be reverted and have 'reg' as optional again?
-> Or should the 'reg' and 'reg-names' be removed completely from the
-> binding.
+> 32FC6238:  AA0154
 > 
-> @Marek, any comments?
-The LDB driver was always written with parsing 'reg' out of the DT, so 
-encoding the register offsets into the driver was a mistake. The LDB 
-controls two registers, which can be comfortably described in DT.
+> which apparently meant low = 2736 bytes (0xAA * 16 + 16), high = 5456 bytes
+> (0x154 * 16 + 16).
+> 
+> With this patch (based on NXP's driver) the watermarks are only 16 bytes
+> higher (register values increased by 1) and the underruns are gone.
+> 
+> Tested on Solidrun Hummingboard Mate with a 1080p60 HDMI display.
+> 
+> Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+> 
+> --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> @@ -353,8 +353,8 @@ static void lcdif_enable_controller(struct lcdif_drm_private *lcdif)
+>   	u32 reg;
+>   
+>   	/* Set FIFO Panic watermarks, low 1/3, high 2/3 . */
+> -	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, 1 * PANIC0_THRES_MAX / 3) |
+> -	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, 2 * PANIC0_THRES_MAX / 3),
+> +	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, DIV_ROUND_UP(1 * PANIC0_THRES_MAX, 3)) |
+> +	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, DIV_ROUND_UP(2 * PANIC0_THRES_MAX, 3)),
+
+I am starting to wonder, whether this should be configurable in DT, 
+because it seems there might be users that need to tweak the watermarks 
+one way or the other for different video outputs ?
+
++CC Liu
