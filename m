@@ -1,101 +1,115 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161AC3B894B
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4B2FF669
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774012829; cv=none; b=Xr7Kso8tsm6sjEC5qmdKZd5LBuPfMsoXqspjEFlwVpB9mrWdBUFfUyhB89JEGWLmIj9FIFEnLi1tk3610kydwya1GsUDiqHC8qx3AizUvKlDF6YeKXoioIHbV2fqn0XtKCYQlD6was0mjBL7/eAPOzfJHIv3iBKNKMaWyeCyMyU=
+	t=1774013048; cv=none; b=kNgdLg+t1oKi485wR6Lhe4zLDFqson1RBXNVoU+5/EsoIDtDSXCWwDd3K80BaOrTzsSYGIC6nlv4QSy+cli87Grn4fBr8TzNCKbdgxh1IYVXJgLWjIDknW2gkZ1gaEUvHMZW2u1eBCPqNOD9cocXeiqtLiIroUYZuc63uHfTOkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774012829; c=relaxed/simple;
-	bh=heQDfZkdRmScupBPm1I//0DcDOQJXMIFzeyMjmuXdiA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PO9XzA8BRDftugz6oPjUocPE1alGvnSGPCj58zt/jqOw/OIimzoNlaCbXFMe5hFxkoaeQkI3FjB5uVlvK4dF4druTqSHw7T15xSPIWTE6jva7OLvxoPgzQ1XGdsu6ZxqklIzYuYauTMEPuF1vqr3dpBKnc9hivkx1e6GOKis3TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 655BEC3EEAC9;
-	Fri, 20 Mar 2026 14:20:16 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 655BEC3EEAC9
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>,  Marek Vasut
- <marex@nabladev.com>,  Stefan Agner <stefan@agner.ch>,  Liu Ying
- <victor.liu@nxp.com>,  Simona Vetter <simona@ffwll.ch>,
-  imx@lists.linux.dev,  Fabio Estevam <festevam@gmail.com>,  Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Sascha Hauer
- <s.hauer@pengutronix.de>,  Frank Li <Frank.Li@nxp.com>,
-  linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org,  Thomas
- Zimmermann <tzimmermann@suse.de>,  David Airlie <airlied@gmail.com>,
-  linux-arm-kernel@lists.infradead.org
-Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
-In-Reply-To: <20260320-amiable-hairy-bullfinch-28bfda@houat> (Maxime Ripard's
-	message of "Fri, 20 Mar 2026 10:25:11 +0100")
-References: <m3ms04caaj.fsf@t19.piap.pl>
-	<32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
-	<m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
-	<20260320-amiable-hairy-bullfinch-28bfda@houat>
-Sender: khalasa@piap.pl
-Date: Fri, 20 Mar 2026 14:20:15 +0100
-Message-ID: <m3a4w2d4ds.fsf@t19.piap.pl>
+	s=arc-20240116; t=1774013048; c=relaxed/simple;
+	bh=qKboe0/DtcoJu2p1G1+lmquY232Ov8fUQpxq2txGni0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XMaCYxHSBhXLB/AEMFwjVPJ6LXdyH+GRd6JqeO1iF2W8cTatNYeCxzU81+gzMOvpWOD1Zn7E1h3E8m9E0xspbwsMeYa6N/07GPDWEhWMyJdwpNoroQBCLXXlVpMpIo4Td2mNJkC2pbYNLzgvrUJcCRE381hOTY6g+fdbsg+OqbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsmxSYJe; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsmxSYJe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827FBC2BCB5
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774013048;
+	bh=qKboe0/DtcoJu2p1G1+lmquY232Ov8fUQpxq2txGni0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IsmxSYJe13Uh2Ham+r9TnB/dla6xbqEeqDJoJyBrjNZknv+2gLOnec6nA7rwmRRSp
+	 VX3aWbHsiGogLffTRLtYztOtlD8LUlE5JsZ/+h8X5AMO5UFjDy0hehWlkJA7emwQY9
+	 pdtYgrO9etYNEoUU6i8Wbq2iHg6VH9JEk5Y8yIUwQvxpzjEb0uci4kKmQf1Xj5AePh
+	 1admpNUXPfJIbek+/5Xlog+ItkFA1cIM0IH7Vc8i/l14DCc6Z9HDwG3SGdmqWhRQKZ
+	 v5VIafh3FUq2rN9HFg/qIeRgu71ekoko+6TS3kj3pjE82XNY464bVvJPsJ08Zgcync
+	 w29Hhl9Dn72pg==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79a40fb9890so6061187b3.1
+        for <imx@lists.linux.dev>; Fri, 20 Mar 2026 06:24:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX931CG/hqfVbmN9UxzJlrD3gIscZ5It5CYcN77Rp9aYtzYa62VokDQAB0vhtR0o0b2P3Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7UjtDyHUMb+sq0AwkAQ3dustyeeniM2bYOSHiL2AAnn2yLw9P
+	qBFGRYd8BgBtkXWuHvrxjyJXNanT9lhYDHzLgie05wyILajYeDb8tRRrTRxpolseiP+EQjAz3El
+	Y8LQ2zu6qf8ydnx+pgvGIajK8PVJUG8s=
+X-Received: by 2002:a05:690c:6608:b0:79a:3752:af20 with SMTP id
+ 00721157ae682-79a90aae9a8mr26948667b3.7.1774013047789; Fri, 20 Mar 2026
+ 06:24:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260313195801.2043306-1-shenwei.wang@nxp.com>
+ <20260313195801.2043306-4-shenwei.wang@nxp.com> <2aa1d063-181f-4145-9f1f-7e3012c4d0af@foss.st.com>
+ <104e9861-bfd4-4e0f-8967-a849edf7e6fb@lunn.ch> <CANLsYkx6KhspTjzpk51ywfgWcf-FR7-3XrH=MmBi_W6yZmMukA@mail.gmail.com>
+In-Reply-To: <CANLsYkx6KhspTjzpk51ywfgWcf-FR7-3XrH=MmBi_W6yZmMukA@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 20 Mar 2026 14:23:56 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkAQzQ+zzC9ycRt+CQ3801G4p=sJbg1K0h2ugHW0JnQ8w@mail.gmail.com>
+X-Gm-Features: AaiRm521fZwGOYxcLS7yMLe01ZzXoPJRV2jTRRY65q686pnlDl5uPYKXfNpRPU4
+Message-ID: <CAD++jLkAQzQ+zzC9ycRt+CQ3801G4p=sJbg1K0h2ugHW0JnQ8w@mail.gmail.com>
+Subject: Re: [PATCH v12 3/5] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>, 
+	linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, 
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Maxime Ripard <mripard@kernel.org> writes:
+On Wed, Mar 18, 2026 at 5:03=E2=80=AFPM Mathieu Poirier
+<mathieu.poirier@linaro.org> wrote:
 
->> > > -	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, 1 * PANIC0_THRES_MAX / 3)=
- |
->> > > -	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, 2 * PANIC0_THRES_MAX / 3=
-),
->> > > +	writel(FIELD_PREP(PANIC0_THRES_LOW_MASK, DIV_ROUND_UP(1 * PANIC0_T=
-HRES_MAX, 3)) |
->> > > +	       FIELD_PREP(PANIC0_THRES_HIGH_MASK, DIV_ROUND_UP(2 * PANIC0_=
-THRES_MAX, 3)),
+> I have made this point clear before: modeling legacy protocols in
+> mainline doesn't scale.  Mainline uses a single generic protocol, and
+> yes, it means breaking legacy protocols.  This is the cost of moving
+> to a mainline kernel.  If people want to use the legacy firmware, they
+> must stick with a legacy kernel.
 
-> If this is related to the output resolution, the DT is the last place
-> you should deal with this.
+I mostly agree with this stance.
 
-Well... just tested (v6.19 + patch) with 2160p30 and, surprise surprise,
-it doesn't work for like 10% of the time. I.e., the display may freeze
-at weston start and/or shutdown time, but otherwise works:
+But it is under the assumption that the contributor is coming from the
+same legal body that can define and change the firmware in question.
 
-v6.19 (frozen screen while starting weston, same display, the patch
-applied):
-32FC6000:        2        2        2        2
-32FC6010: 80000000  8700F00  12800B0   480008
-32FC6020:    A0058  1000007        0
-32FC6030:        1        1
-32FC6200:  8700F00            223C00 EF000000
-32FC6210:        0 89000000                 1
-32FC6220:        0        0        0        0
-32FC6230:        0        0   AB0155
+For example: the mainline Linux kernel supports a whole slew of
+funky Apple rpmsg-like protocols. c.f. drivers/soc/apple/rtkit.c
 
-OTOH NXP's 6.6.23 works all the time:
-NCP v6.6.23 (a different i.MX8MP):
-32FC6000:        A        A        A        A
-32FC6010: 80000000  8700F00  12800B0   480008
-32FC6020:    A0058    10005        0
-32FC6030:        1        1
-32FC6200:  8700F00            A23C00 97C00000
-32FC6210:        0 89000000                 1
-32FC6220:        0        0        0        0
-32FC6230:        0        0   AB0155
+We cannot go and tell the Asahi contributors to change the Apple
+firmware to use rpmsg like everyone else, because they are not Apple,
+they just want to run Linux on someone else's hardware.
 
-32FC600x 2 vs. A is pixel clock inversion.
-32FC6208 is config P_SIZE, T_SIZE + pitch.
+In this case, the contributor is coming from the same legal body as
+the one doing the firmware. I know and sympathize with the fact
+that sometimes working inside a company to make changes happen
+can be as hard as working on the outside, and internal structures
+can be as resistant to pressure change as Microsoft, or Apple.
+Additionally they hit the contributor on the head with "just get this
+done, now, fast".
 
-More tests after weekend.
---=20
-Krzysztof "Chris" Ha=C5=82asa
+So it is pretty important in this situation that it is NXP that we address.
+The contributor is just a representative of that legal body
+in this case.
 
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+If someone *outside* of NXP, say an OpenWrt hobbyist contributor
+was pushing the same patches based on code drops and reverse
+engineering, the response would be *different*.
+
+In a way the situation is a bit icky. As the Linux community we often
+see all contributions as personal, individual. And the discussion here
+is that of standards committee, which we are not.
+
+So if we are addressing NXP, then we need to be explicit about that,
+and careful not to put their representative in the crosshairs. It's unfair,
+he's just the messenger.
+
+Yours,
+Linus Walleij
