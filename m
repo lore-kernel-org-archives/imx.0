@@ -1,156 +1,167 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9438E1D5CD1
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 00:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAB5253B42
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 00:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773966004; cv=none; b=dcaKnja07iedHE+7DQlxvGRr65eG1Ug9ms8RctjytEhag7k088pC9IQ0Fxl9aaBZwHEHG6E/mZDOnHe4m+0Fu6DhTYoikqx8n8yF5toYWJaIzSpHdOKJugTQvCc7iVxI+EAuo0Aez26xaCspKMrJitJ+sI07/c7bC4q6hYc/faE=
+	t=1773968263; cv=none; b=HqOnTLc9td62kLcA9dcuChIRCv0WVOxY3imfSQa1OtC2SQqgXVridAnkE0SQto/sSRO7w74U9897agqeEjQceu55cJwnKb5Q77q7uGRASCiympClKEkPZ2x1kd+TwQwQ2PaduB3F9C/MTG7i95ZXLvKrqDgu0N2R9yRlLHJbDcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773966004; c=relaxed/simple;
-	bh=gLQNx9glXF6hqM2kMDc3j1Sg/zalWdjszUK7zPegkZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c+5qjIbE6ZVcInZEvBiWpODMFrR1MJOdhlAw5KlmZ7XxuQGb0/AIEeqYx84QWYdVWAb0uYwXRcMyyUhq5J+WcetAyTWa4gbuIQ0dRdzYmlpt1dXIuskr/HfJE2Ka6NwtIruNMdOFJ3gdmrNcWyrDB9aXBBr8GZb26pt5EPrs6t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BgyrW//U; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773968263; c=relaxed/simple;
+	bh=DhRreVzDDL6zUZ/XfczFGuyPFoaL3ycKNfl/GFeR3Fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ma35wm1RRGXvRE0sZ4EkcsTYQt6uk+VMnnCB4exCsAxomVgd1QJ4cb8Jzg6GtAb9hq402lxV46XJIannqabNffb9FU5zw0wuBbM5hVKXLc6zgDyo7CjdIkHKeavTvASXlutODpTDtTlDv/W5cgPbcVsiqSW64Y+qjiShslTatPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=dr0YK3Ch; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BgyrW//U"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79853c0f5b9so1359837b3.0
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 17:20:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773966002; x=1774570802; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MzlIIY7b66i4fIFyZ2+UWe+HudSTmQ+Ey/SWxXk4aRw=;
-        b=BgyrW//UduRCvqjEwVGqrYxnPV3QG1/BqAFJbGd5zT+lhCPwdcmxaRKz2xyM6O8w9c
-         1GOR/pDg/jv0ci6k+Nuq0S3JA939rE2mhNBgPAojFsv43l6WvApx+TVxtvvoZLfHPkdw
-         OSTAepLlr920sBKyoE7jA7b3+cYDha9veyH7f9hUzNE+y+4iNWQWGInHM1l/C1RCOlFh
-         iANtIUAV7jJFGxOhsrSNxPJgwdOVkKUm9i7USyshNmMzfwIcD5ShPGrPHzrAoOydn1DR
-         XomOADZDh/rdvq/laAUPPQAEcSvGjSMw1nF2Sdar29YJWWW4KDgbdqNV12QbMepjsobd
-         8mzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773966002; x=1774570802;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MzlIIY7b66i4fIFyZ2+UWe+HudSTmQ+Ey/SWxXk4aRw=;
-        b=piHt3qTiUBZibjbU7u95lwb4x50HOvlTn3NsP8Q5463bwZ5rFOL9k7W0sPg/KLaGRw
-         6Flz8ASCTve9RQL3ImogI2K3PAanFAKLtyq8jioAGBY8O/EJFAK4G/TdKoFQ4h023xlJ
-         vkZKEyLIzoxNozD5y0Hr5hbWZnOVSCNGyf/8KVd8/Y/3apQuhWvOKsYW/tMc/kicSXkT
-         J9FXgdRKb95eU4CLrheUXQpoa2AKwmJFIZ+E3amCrUuwfJnXUulSux8dSUP42p9nyzRU
-         WJOGw7F0CYJSg1/iV74JrHDPPBFh9tR5s9uEcY66nTVuIfhpExWjhj3mIa9h/BdYfRtt
-         y6Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPKFkXoHgrgGDkubzMsDHRSnbj5Eho7E/K+QdjEmIXIAkIxNcNl2pnUvlLcfof0RIsUVQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdjPmDpvuRV7x2zaCavvnwqRIwDJ3SaHhdc/bEcr0UMnCMpGl2
-	3AUWBTlciVPnk9u40Wj1OJweaHwD7EOrOISnFKu/5+bwnm26OdFuyV59X+tVGsVo
-X-Gm-Gg: ATEYQzyvsmgUnxg55uK0WyzhwulmMziV/M5wosWSByf4PePTgPAXz6zDV/W4vp8BePB
-	u9TnwO34oUcyo2SKBReNJmMNyfTGI+naZLjzq71oDOSVYvNY88h1JyUwWuawKvp8c3gHeSiPPGF
-	J8Ua5rS1mkBIsNrIbOgH5Q7yKWTlRGFvy9DOXM+V9LmijeBHK1dz8Q5gXz6IlFfRMnQmnKRkLZ0
-	4bPx7dwDZWz5KCDxicG338UjyTdHjoK1fWFwamttjvBFXQAM6AaBLJiv9ngTpbTPrFeVzKzp9l/
-	FAS4JZ+CWbM4Aj5ev9i8z5IJ1lIfWPrlfH2P2TW1STP66Z/8ApBJgXouauUUkVqCpOi55badiNk
-	esSYx4EGev5pNEA1nbIb5KxQb2YG35CskFJY5Eh2TqQ2OwNK6Gz+TQswRsbp0w51S2YbyApqcLT
-	Q+pc+A2q86KqrgeDvArhTphM13Hk1BugIeutrNOp7SJdKKTkzSGAuwxQM=
-X-Received: by 2002:a05:690c:e3c6:b0:79a:65af:7f4d with SMTP id 00721157ae682-79a90aaea1dmr13698267b3.1.1773966002555;
-        Thu, 19 Mar 2026 17:20:02 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d::8bd])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a903a294fsm6866627b3.8.2026.03.19.17.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 17:20:01 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-media@vger.kernel.org
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="dr0YK3Ch"
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 6DD0E225;
+	Fri, 20 Mar 2026 01:56:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773968185;
+	bh=DhRreVzDDL6zUZ/XfczFGuyPFoaL3ycKNfl/GFeR3Fg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dr0YK3ChQpuDUcfBzzB8f0DhyEhuELuztpfMjKc8Q9esI+ZiYBJJSnY7mdzyVhZt5
+	 CzoF7Tsk9+7GSfrOrTT8pJAwycxXoOtC127Y9Qb/lZZQF4luYoQNze/XzDnMj8msWc
+	 9LWthG/qstJzFI0UMuq0eoWIZTzNVspaKrgXf0C4=
+Date: Fri, 20 Mar 2026 02:57:37 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-hardening@vger.kernel.org,
+	gustavoars@kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2] media: nxp: imx8-isi: remove kzalloc_objs
-Date: Thu, 19 Mar 2026 17:19:43 -0700
-Message-ID: <20260320001943.19443-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] media: nxp: imx8-isi: remove kzalloc_objs
+Message-ID: <20260320005737.GE950244@killaraus.ideasonboard.com>
+References: <20260306044536.149204-1-rosenp@gmail.com>
+ <20260319220901.GD950375@killaraus.ideasonboard.com>
+ <CAKxU2N856yYXURRf3td-_RCpe9hyX=zAy3qtD3ki23RjgO+a4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKxU2N856yYXURRf3td-_RCpe9hyX=zAy3qtD3ki23RjgO+a4Q@mail.gmail.com>
 
-Use a flexible array member to combine allocations.
+On Thu, Mar 19, 2026 at 05:11:22PM -0700, Rosen Penev wrote:
+> On Thu, Mar 19, 2026 at 3:09 PM Laurent Pinchart wrote:
+> > On Thu, Mar 05, 2026 at 08:45:36PM -0800, Rosen Penev wrote:
+> > > Use a flexible arraay member to combine allocations.
+> > >
+> > > It looks like pipes never gets freed anywhere. Meaning this effectively
+> > > fixes a memory leak.
+> > >
+> > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > > ---
+> > >  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 11 ++++-------
+> > >  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |  3 ++-
+> > >  2 files changed, 6 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > index 16392420903a..657ffecc4d7e 100644
+> > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > @@ -459,25 +459,21 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
+> > >
+> > >  static int mxc_isi_probe(struct platform_device *pdev)
+> > >  {
+> > > +     const struct mxc_isi_plat_data *pdata;
+> > >       struct device *dev = &pdev->dev;
+> > >       struct mxc_isi_dev *isi;
+> > >       unsigned int dma_size;
+> > >       unsigned int i;
+> > >       int ret = 0;
+> > >
+> > > -     isi = devm_kzalloc(dev, sizeof(*isi), GFP_KERNEL);
+> > > +     pdata = of_device_get_match_data(dev);
+> > > +     isi = devm_kzalloc(dev, struct_size(isi, pipes, pdata->num_channels), GFP_KERNEL);
+> > >       if (!isi)
+> > >               return -ENOMEM;
+> > >
+> > >       isi->dev = dev;
+> > >       platform_set_drvdata(pdev, isi);
+> > >
+> > > -     isi->pdata = of_device_get_match_data(dev);
+> >
+> > I'd keep
+> >
+> >         isi->pdata = pdata;
+> >
+> > here and not below.
+> 
+> Sure
+> 
+> > > -
+> > > -     isi->pipes = kzalloc_objs(isi->pipes[0], isi->pdata->num_channels);
+> >
+> > Wouldn't it be simpler to just replace this with devm_kcalloc() ?
+> 
+> That would only make sense if pipes remained a pointer. A flex array
+> member allows combining allocations since it doesn't take up extra
+> space.
 
-It looks like pipes never gets freed anywhere. Meaning this effectively
-fixes a memory leak.
+Yes, I understand that. My point was that with devm_kzalloc() here you
+won't need to change the mxc_isi_dev structure. The leak fix will be a
+one-liner patch.
 
-Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v2: add fixes tag, fix typo, and move pdata assignment to original
- place.
- drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 10 ++++------
- drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |  3 ++-
- 2 files changed, 6 insertions(+), 7 deletions(-)
+> Technically kzalloc_flex is simpler but I assume a devm version of
+> that will be handled in another treewide commit.
+> >
+> >         isi->pipes = devm_kcalloc(dev, isi->pdata->num_channels,
+> >                                   sizeof(isi->pipes[0]), GFP_KERNEL);
+> >
+> > No other change would be needed.
+> 
+> With a flex array member, that's a compile time error, which I use as
+> a hint to complete the conversion.
+> 
+> > > -     if (!isi->pipes)
+> > > -             return -ENOMEM;
+> > > -
+> > >       isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
+> > >       if (isi->num_clks < 0)
+> > >               return dev_err_probe(dev, isi->num_clks, "Failed to get clocks\n");
+> > > @@ -487,6 +483,7 @@ static int mxc_isi_probe(struct platform_device *pdev)
+> > >               return dev_err_probe(dev, PTR_ERR(isi->regs),
+> > >                                    "Failed to get ISI register map\n");
+> > >
+> > > +     isi->pdata = pdata;
+> > >       if (isi->pdata->gasket_ops) {
+> > >               isi->gasket = syscon_regmap_lookup_by_phandle(dev->of_node,
+> > >                                                             "fsl,blk-ctrl");
+> > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> > > index 3cbd35305af0..99532efa4e41 100644
+> > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> > > @@ -286,7 +286,6 @@ struct mxc_isi_dev {
+> > >       struct regmap                   *gasket;
+> > >
+> > >       struct mxc_isi_crossbar         crossbar;
+> > > -     struct mxc_isi_pipe             *pipes;
+> > >       struct mxc_isi_m2m              m2m;
+> > >
+> > >       struct media_device             media_dev;
+> > > @@ -294,6 +293,8 @@ struct mxc_isi_dev {
+> > >       struct v4l2_async_notifier      notifier;
+> > >
+> > >       struct dentry                   *debugfs_root;
+> > > +
+> > > +     struct mxc_isi_pipe             pipes[];
+> > >  };
+> > >
+> > >  extern const struct mxc_gasket_ops mxc_imx8_gasket_ops;
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-index 16392420903a..8d8ee1b3076b 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-@@ -459,24 +459,22 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
+-- 
+Regards,
 
- static int mxc_isi_probe(struct platform_device *pdev)
- {
-+	const struct mxc_isi_plat_data *pdata;
- 	struct device *dev = &pdev->dev;
- 	struct mxc_isi_dev *isi;
- 	unsigned int dma_size;
- 	unsigned int i;
- 	int ret = 0;
-
--	isi = devm_kzalloc(dev, sizeof(*isi), GFP_KERNEL);
-+	pdata = of_device_get_match_data(dev);
-+	isi = devm_kzalloc(dev, struct_size(isi, pipes, pdata->num_channels), GFP_KERNEL);
- 	if (!isi)
- 		return -ENOMEM;
-
- 	isi->dev = dev;
- 	platform_set_drvdata(pdev, isi);
-
--	isi->pdata = of_device_get_match_data(dev);
--
--	isi->pipes = kzalloc_objs(isi->pipes[0], isi->pdata->num_channels);
--	if (!isi->pipes)
--		return -ENOMEM;
-+	isi->pdata = pdata;
-
- 	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
- 	if (isi->num_clks < 0)
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-index 3cbd35305af0..99532efa4e41 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-@@ -286,7 +286,6 @@ struct mxc_isi_dev {
- 	struct regmap			*gasket;
-
- 	struct mxc_isi_crossbar		crossbar;
--	struct mxc_isi_pipe		*pipes;
- 	struct mxc_isi_m2m		m2m;
-
- 	struct media_device		media_dev;
-@@ -294,6 +293,8 @@ struct mxc_isi_dev {
- 	struct v4l2_async_notifier	notifier;
-
- 	struct dentry			*debugfs_root;
-+
-+	struct mxc_isi_pipe		pipes[];
- };
-
- extern const struct mxc_gasket_ops mxc_imx8_gasket_ops;
---
-2.53.0
-
+Laurent Pinchart
