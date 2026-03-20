@@ -1,41 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DF3386C0F
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 10:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124383806A2
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 10:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774003600; cv=none; b=ZzCiAXx9OF83y5nU9NEeHwzUw0/KKFMZGAo9mZZsNj6kGj5aprfmmgMxJzsgAEZUeRbxE5RYeSSP7B+6lVVvWytGUe6yLqnZzSITnveG98uaq4My8al4mjrElgKJuyg+2cqt9CMLHc6rxjK+aCmGon+8Rnl04Q7s2KkuGLiGE5o=
+	t=1774003611; cv=none; b=IXE4jtSviM44eYGz1LMj4DsLr3dhtlKRFw43C8WOqOcfX5kEneCeFsm0pM3J1hX+9O3O8LjyWXIGpZwbZC0S6ZInW9csALycd1vMJ5B/9y3mMeRcFhih6t4KbMPn5t+rY+TJfd4RI+0CpDWWHwSWQIPzS4DvE5jGgwZAWGCdwMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774003600; c=relaxed/simple;
-	bh=NXMn88NLUE3dFw6IF9cyRWp5D+zmfi3XX/AR7EeU2Iw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uDUKNabXwTKHMX1mEy9VI8o+UAbHdFPhIu9yWrpZPpbtc3Hcgbq5eYY6P2ev5TCcMCTV921l05uCPXy1l+FYyKhqy7UaMUnJZlF+xK5vD7LYWl7p03atJVZwAPNMuYJHRhEAVBy2tDaiPXgqPwy5Y3p0oZ9ygkQGcjCjLAUWLpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=szKV0qzc; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1774003611; c=relaxed/simple;
+	bh=UzvNrvbtD1rtdXXVwhjShRJUrAybWcxGJ5+Qw1LxNwo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tp57A59kRW6yHJnyuGJGJ37v2101Zc06SB1ZfqEy72spq31F3CpYCUxROtaVY+PEwkdXCsxszjIunbdmTQz2WwJKwtZwl/9tmcyY0oiIl/Gwnw/jswN6q2HPAIsXXsB4MPp8aGEi/hx4VaSo6KQBMh3DsE4IoZ/kItaqaazrBug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=h5wv/hd/; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="szKV0qzc"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="h5wv/hd/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A22DE4E42738;
-	Fri, 20 Mar 2026 10:46:36 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CBF51C415B3;
+	Fri, 20 Mar 2026 10:47:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6C063600E0;
-	Fri, 20 Mar 2026 10:46:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4A7BA10450AE3;
-	Fri, 20 Mar 2026 11:46:20 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 69B53600E0;
+	Fri, 20 Mar 2026 10:46:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D16410450B9E;
+	Fri, 20 Mar 2026 11:46:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774003593; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=/AWRA5bKTOqbMorqJFOmykP8MITCV91C8Jm80re4aFA=;
-	b=szKV0qzcOay/Hol/lQkfqVJ0H5wdi/0+gUjtvcsstE8x82Iwq+qlggayZ+LjGNI/gnthTY
-	eTk3PtM3UBNvLGYh6JBsgq+ESNxWfjSK3FqYf+ovdfaVMufrXP+mv3cFazC6AyfnGpebnK
-	bTl/NqdKzrsrru5h4RvabXKNZBL8S6bUipSP/08M1uWMfNOblxNk5HXYaUD0ZUHz/VsbT3
-	U9H4K2Y7hmb0FA7jv2+DfRxTPi84EyyeRSo7mQU40AMAPjy4dSJfkvnHkbKmcm1szje5IH
-	0T8ZqCKLGe7gkQkvMxDPty3uZF8UE29bxVtiA7c9ZD9VGx7TT6Ima9mYoO1NtA==
+	t=1774003604; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BXcIk/NRj8PFc1K1TpjqRHmXNm3bb4oAqAdH6wdWTtU=;
+	b=h5wv/hd/qDbYWSU41Nl9bTFsrOxNYGfHpRGn4j5J3NpByLHohDFfgi7k9ib3YGNsxPL1WH
+	6qyNogfkM8j+A7nYyg9KA2y11Rhox29DSOi/3SLQYU7oS62LADuaKcMDVPsf8/nJlIpKKJ
+	ZkPzL7fRmJKSdhnezmraEcpaM1Bi+yWd0Wv47tzwDmYkP6nwHtcyU9wmpJFjQDfkRzbELf
+	Zmt97x3qEJUHcxGVBPxig3i2WV74+vCLZ+iNsK0x1g99DKROxbwToIAeCq9un11mX9u5BM
+	bUuega/3JAhjY9qxrcphEknCXIpmbCxd86bCWMwpXr9t6XmVh22ZjQv2jkFlzw==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 0/8] drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR
- and the bridge-connector
-Date: Fri, 20 Mar 2026 11:46:11 +0100
-Message-Id: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+Date: Fri, 20 Mar 2026 11:46:12 +0100
+Subject: [PATCH 1/8] drm/mxsfb/lcdif: simplify remote pointer management
+ using __free
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,11 +44,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAHMlvWkC/x3MTQqAIBBA4avErBswjf6uEi3MGWugLBQiiO6et
- PwW7z2QOAonGIoHIl+S5AgZVVmAW21YGIWyQSvdKKMapLjj5kg80myDw84Q9XVndEsMuToje7n
- /4zi97wckFFCPYQAAAA==
-X-Change-ID: 20260306-drm-lcdif-dbanc-83dd948327de
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260320-drm-lcdif-dbanc-v1-1-479a04133e70@bootlin.com>
+References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+In-Reply-To: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
 To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
@@ -94,156 +94,39 @@ Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-This series modernizes the i.mx8mp LCDIF driver to use the
-bridge-connector, which is the current best practice in DRM.
-
-== Call for testing on i.MX8MP boards (especially those using HDMI)!
-
-This series applies changes to how video output devices are probed on
-i.MX8MP, especially those using HDMI. Even though I have put care in not
-breaking anything, there could potentially be pitfalls I haven't realized,
-causing regressions on existing boards.
-
-I have thus added in Cc all developers which appeared active on dts files
-for imx8mp boards involving video. I would appreciate testing on as many
-boards as possible, along with a Tested-by tag, or a report about any
-issues encountered.
-
-Thanks in advance to all testers!
-
-== Review recommendation
-
-I recommend reviewing patches in this order to be understood more
-effectively:
-
- * Cover letter
- * Patches 1-5 are small preliminary cleanups/improvements
- * Patch 8 is the goal of this series, but would not work alone
- * Patch 7 this lets patch 8 work; but in turn it can't work alone
- * Patch 6 lets patch 7 work
-
-== Series description
-
-This series is not strictly related to DRM bridge hotplug, it is rather a
-preparation step. Introducing hotplug would need two different approaches:
-one for the new way, for drivers using bridge-connector and
-DRM_BRIDGE_ATTACH_NO_CONNECTOR, another for drivers using the "old, legacy
-way" where the last bridge is supposed to instantiate the
-drm_connector. Hotplug is complicated enough in one case, so it makes sense
-to only support the new way.
-
-The hardware I'm working on is an i.MX8MP, whose LCDIF driver is still
-using the old way. So this series converts to the new way as a preparation
-step.
-
-Patch 8 does the conversion, which is simple. However this would introduce
-a regression on some boards. Here's why:
-
-There are 3 instances of the LCDIF in i.MX8MP:
-
- * LCDIF1, driving the DSI output
- * LCDIF2, driving the LVDS output
- * LCDIF3, driving the HDMI output
-
-The device drivers of peripherals connected to LCDIF1 and LCDIF2 already
-support the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag. So far so good.
-
-LCDIF3 is more tricky. The HDMI pipeline is:
-
-  LCDIF3 -> fsl,imx8mp-hdmi-pvi -> fsl,imx8mp-hdmi-tx -> HDMI connector
-
-The fsl,imx8mp-hdmi-tx (hdmi-tx) component supports both cases (with or
-without DRM_BRIDGE_ATTACH_NO_CONNECTOR), but in the
-DRM_BRIDGE_ATTACH_NO_CONNECTOR case it does not create a drm_connector,
-thus preventing the creation of the pipeline. To make it work a connector
-must be created, and the way to do so is describing the connector in the
-device tree (compatible = "hdmi-connector"), so the display-driver will add
-the connector along with a wrapping bridge.
-
-Unfortunately not all device trees in mainline have an hdmi-connector
-node. Adding one is easy, but would break existing hardware upgrading to a
-newer kernel without upgrading the device tree blob. This is addressed by
-patch 7 reusing an existing approach to add such a node to the live device
-tree at init time using a device tree overlay for boards which don't have
-one.
-
-Finally, patch 7 cannot work alone because of a bad interaction between
-devlink and device tree overlays. Patch 6 solves that.
-
-== Grand plan
-
-This is part of the work to support hotplug of DRM bridges. The grand plan
-was discussed in [0].
-
-Here's the work breakdown (➜ marks the current series):
-
- 1. … add refcounting to DRM bridges struct drm_bridge,
-      based on devm_drm_bridge_alloc()
-    A. ✔ add new alloc API and refcounting (v6.16)
-    B. ✔ convert all bridge drivers to new API (v6.17)
-    C. ✔ kunit tests (v6.17)
-    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
-         and warn on old allocation pattern (v6.17)
-    E. … add get/put on drm_bridge accessors
-       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
-       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
-       3. ✔ drm_bridge_get_next_bridge() (v6.19)
-       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
-       5. ✔ drm_bridge_connector_init (v6.19)
-       6. … protect encoder bridge chain with a mutex
-       7. … of_drm_find_bridge
-          a. ✔ add of_drm_get_bridge() (v7.0),
-	       convert basic direct users (v7.0-v7.1)
-	  b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
-	  c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
-	  d. ✔… convert direct of_drm_get_bridge() users, part 4
-	        (some v7.1, some pending)
-	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
-       8. drm_of_find_panel_or_bridge, *_of_get_bridge
-       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
-    F. ✔ debugfs improvements
-       1. ✔ add top-level 'bridges' file (v6.16)
-       2. ✔ show refcount and list lingering bridges (v6.19)
- 2. … handle gracefully atomic updates during bridge removal
-    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
-    B. … protect private_obj removal from list
-    C. ✔ Add drm_bridge_clear_and_put() (v7.1)
- 3. … DSI host-device driver interaction
- 4. ✔ removing the need for the "always-disconnected" connector
- 5. ➜ Migrate i.MX LCDIF driver to bridge-connector
- 6.   DRM bridge hotplug
-    A.   Bridge hotplug management in the DRM core
-    B.   Device tree description
-
-[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+Putting the remote device_node reference requires a of_node_put(ep) in both
+error return points. Use a cleanup action to simplify the code.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
-Luca Ceresoli (8):
-      drm/mxsfb/lcdif: simplify remote pointer management using __free
-      drm/mxsfb/lcdif: don't unnecessarily loop over ports
-      drm/mxsfb/lcdif: use dev_err_probe() consistently in lcdif_attach_bridge
-      drm/bridge: dw-hdmi: document the output_port field
-      drm/bridge: dw-hdmi: warn on unsupported attach combination
-      drm/bridge: dw-hdmi: move next_bridge lookup to attach time
-      drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector when missing using a DT overlay at boot time
-      drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
- drivers/gpu/drm/bridge/imx/Kconfig                 | 17 +++++
- drivers/gpu/drm/bridge/imx/Makefile                |  2 +
- .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 60 +++++++++++++++
- .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 38 ++++++++++
- drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c        |  1 +
- drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          | 45 ++++-------
- drivers/gpu/drm/mxsfb/Kconfig                      |  1 +
- drivers/gpu/drm/mxsfb/lcdif_drv.c                  | 88 +++++++++-------------
- include/drm/bridge/dw_hdmi.h                       |  5 ++
- 9 files changed, 174 insertions(+), 83 deletions(-)
----
-base-commit: 8402cf4fc8f8d5756dc81cf9fda1dccdb3622634
-change-id: 20260306-drm-lcdif-dbanc-83dd948327de
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+index 47da1d9336b9..756ca96373c8 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+@@ -53,16 +53,13 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+ 	int ret;
+ 
+ 	for_each_endpoint_of_node(dev->of_node, ep) {
+-		struct device_node *remote;
++		struct device_node *remote __free(drm_bridge_put) =
++			of_graph_get_remote_port_parent(ep);
+ 		struct of_endpoint of_ep;
+ 		struct drm_encoder *encoder;
+ 
+-		remote = of_graph_get_remote_port_parent(ep);
+-		if (!of_device_is_available(remote)) {
+-			of_node_put(remote);
++		if (!of_device_is_available(remote))
+ 			continue;
+-		}
+-		of_node_put(remote);
+ 
+ 		ret = of_graph_parse_endpoint(ep, &of_ep);
+ 		if (ret < 0) {
 
-Best regards,
 -- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+2.53.0
 
