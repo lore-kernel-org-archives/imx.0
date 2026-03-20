@@ -1,80 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A780C259CB2
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06270218ADD;
+	Fri, 20 Mar 2026 13:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774013253; cv=none; b=IEI8In50Zsd7nMMMlN0eX4Wm4flSE57EPbQH8IrlYL42NdF5ADoUn45Uv+EoiS6JLAoVYCizEM/QzO1559HRXEIppzbjwTmdZEFJg1HyglTShMgxAaRda5SoMrDGqvhmU+Xs/WZKqTrtDYbseW82QHOYRjJaQFHJBPLm9tzFz4c=
+	t=1774013418; cv=none; b=Q3C1yBtXeTbsVR3ZlZGL/DBT2Ebl2Xoht7kCQcRNDtJhJvZv5dIEQIuRetcHug9ZAxaJcBkCezNvgKlB4U0zDKnhqctwI9Z0D05dThe4KySRQscAk6l4OWDJZT6z6I3XPwFlESakfIxeoF050yhmML1ERbudqWml79oP/yPBaTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774013253; c=relaxed/simple;
-	bh=fSdC6nRI2uCqIhg1u1XGagrxET9dRdNdAdm1QiCl1eI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bx0aVR/vSL9x18UpQX3FKVjMo5S7m+RjskLENUDf3cpSEmQAXqgkdlnt0SmxzGumYum+Fl0kcRjf1CsADwS7a8HIJX6EZE/+TP4vtE2V1ZSvSwggT0Xfs0BlvDn4QHpmgmzJf925dbihGmEsyoU2RbDVU1Ti+TSGqJcimCtTQqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCVjZ5hE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774013418; c=relaxed/simple;
+	bh=9r9gw5R9AHSl87yaT04zB6hs5VlEcDyQ7zCIOorfEpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lujxtt+8Q91BI5vMWj2UTo31HT5xxa5kAEficxCsB+KWgeoyT5cWtpvsZVAiXxWFzyqBq77azjhMyUC9rSXIVqCrrhIdZwZLCkPJ0lX6Zk4IOoRl0ywgoC7jn8EpO2QpON73GAoWhYhXGzegepOUCwoyLzN3znXzlGTexCY/tKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fLm+T28Z; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCVjZ5hE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71147C2BCB1
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 13:27:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774013253;
-	bh=fSdC6nRI2uCqIhg1u1XGagrxET9dRdNdAdm1QiCl1eI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sCVjZ5hE48RUAtyuqBoHt3kBIF383Naz5B11gttywCAe5Bm2+UdC7ha6oZ/Tb97i0
-	 7aq5D/5cPrDQcaz9290jfUlHPIpmVi4KKf5XAtmOAxa56YOungAWI1b91XDCkEhqv3
-	 t626heyEM+j4UmLfmAw0ITqz7/l8k3VpUQgbEfnOqWQHHnT0QyR+GBauEHhApeHFxY
-	 Ymo6xEVkSLJtHjpaX0o7lP00L+NXKZjlKJmsmmdLQm2Bzu9pQC+AsFy7dehCYwAPCq
-	 5iAqMHc7fn2/H5gaZN62ugi8VK2RcNVgHSAaTU3gkBhpqyscEZRdeSS+3ZGSWGWwd1
-	 qAB3o8eqOjOPg==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7986e538decso5253937b3.1
-        for <imx@lists.linux.dev>; Fri, 20 Mar 2026 06:27:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUS8U9mZVUTKR1UTMnae0P89SWdgGBzrkdNtMVT+iUBzPEFb8QSo/GcUuBx1+Iaz+VIAtU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzo/59vusGP3yknz30VAT0lTebwA/AxMIIrsNg8utV4DyZcAR3u
-	Lf+GYRNEUoT/pB2iMoMZOJBlMejAlzSQ+Fo8exCyALvj5Sz7j1PWyuGzOq895ouXYez7mazOMFb
-	Wq5edvU9oMTiqVL6MsaQR0JsCZbvJQz0=
-X-Received: by 2002:a05:690c:b05:b0:79a:51df:6a0a with SMTP id
- 00721157ae682-79a90c39a45mr28260187b3.60.1774013252835; Fri, 20 Mar 2026
- 06:27:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fLm+T28Z"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KPEmOBrzJQ5lJjApNclCXD+tVOjngOyNohE76noQaxY=; b=fLm+T28ZNDiK0i9piqLnCiMh7t
+	Jh/tkhITAG24PpexF47gsPCC+d17/moI3bicAbShxZZvlE3bWbqVprDNLBBa++Qo+vMXPPpQ7ICvt
+	Y2EAKSa94KAGnKgS9fp0ezD/6FPxushXDUNoAyXlrK5eQ8nda9pN+jrFxwI63/aEHQU8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w3ZvS-00CYvA-49; Fri, 20 Mar 2026 14:30:06 +0100
+Date: Fri, 20 Mar 2026 14:30:06 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Joy Zou <joy.zou@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: add i.MX91 9x9 QSB basic
+ support
+Message-ID: <43d91381-4f11-47b6-b37d-7c624402af5b@lunn.ch>
+References: <20260319-b4-imx91-qsb-dts-v1-0-2eedc01d8af0@nxp.com>
+ <20260319-b4-imx91-qsb-dts-v1-2-2eedc01d8af0@nxp.com>
+ <4124e5ae-52a2-405c-a02d-7a1f48aa2b57@lunn.ch>
+ <abzmpBHDRrsd/Mvr@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260311-pinctrl-mux-v3-0-236b1c17bf9b@nxp.com>
- <20260311-pinctrl-mux-v3-3-236b1c17bf9b@nxp.com> <CAD++jL=U2xNMMHk_LyH8CX+YpC5EGPVRasM11yesXSH4XLhqYw@mail.gmail.com>
- <absvZ5wzAwpbjHf1@lizhi-Precision-Tower-5810>
-In-Reply-To: <absvZ5wzAwpbjHf1@lizhi-Precision-Tower-5810>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 20 Mar 2026 14:27:21 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkp1CFcLccmLP0BWQSBKkruGCPT71dMeuyu3JY1N4T50g@mail.gmail.com>
-X-Gm-Features: AaiRm51PUQY-ru1LXvqRM-CPXfn2OmCbeRvVURB1M-6XemqxSCR95oLy4VR6qXM
-Message-ID: <CAD++jLkp1CFcLccmLP0BWQSBKkruGCPT71dMeuyu3JY1N4T50g@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] pinctrl: pinctrl-generic: add __pinctrl_generic_pins_function_dt_node_to_map()
-To: Frank Li <Frank.li@nxp.com>
-Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abzmpBHDRrsd/Mvr@shlinux89>
 
-On Thu, Mar 19, 2026 at 12:04=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
-> On Mon, Mar 16, 2026 at 10:37:28AM +0100, Linus Walleij wrote:
+On Fri, Mar 20, 2026 at 02:18:31PM +0800, Peng Fan wrote:
+> On Thu, Mar 19, 2026 at 04:43:40PM +0100, Andrew Lunn wrote:
+> >> +&eqos {
+> >> +	phy-handle = <&ethphy1>;
+> >> +	phy-mode = "rgmii-id";
+> >> +	pinctrl-0 = <&pinctrl_eqos>;
+> >> +	pinctrl-names = "default";
+> >> +	status = "okay";
+> >> +
+> >> +	mdio {
+> >> +		compatible = "snps,dwmac-mdio";
+> >> +		#address-cells = <1>;
+> >> +		#size-cells = <0>;
+> >> +		clock-frequency = <5000000>;
+> >
+> >Is that a valid property for "snps,dwmac-mdio"?
+> 
+> It is a valid property in 
+> Documentation/devicetree/bindings/net/mdio.yaml
 
-> > That said: in this case you're just adding a parameter, just add
-> > the parameter and change all of the in-tree users to pass false
-> > or whatever you need, these is just one (1) in-tree user anyway.
->
-> pinctrl_generic_pins_function_dt_node_to_map() directly feed to
-> .dt_node_to_map() callback, add parameter will impact too much.
+Yes, it is in general a valid property. But does snps,dwmac-mdio
+actually implement it?
 
-Why do you say that. It already has many parameters, one more
-or less doesn't matter. It's not like this call is performance-critical.
-Just change the users.
+The danger here is, it is currently ignored, and the MDIO bus is
+clocked at 2.5MHz, and your board works. But sometime in the future,
+somebody actually implements it, your board jumps to 5MHz, and stops
+working.
 
-Yours,
-Linus Walleij
+That is not the usual definition of a regression, so i guess we will
+leave your board broken.
+
+So you need to accept the risk. Or remove the property. Or actually
+implement the property.
+
+   Andrew
