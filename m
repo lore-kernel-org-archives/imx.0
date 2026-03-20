@@ -1,231 +1,151 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013004.outbound.protection.outlook.com [40.107.159.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1706A19CCF7
-	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 01:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A892D5C74
+	for <imx@lists.linux.dev>; Fri, 20 Mar 2026 02:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773968783; cv=pass; b=nIsUhjSu6Lr7lQ3WOo0/iozeJZ8o7MOjHp/FKj6LJZ/oc+Y7s3aaiDQRw6aDwvA0an+lpgstQYdgP/5anwatbxN0kWVqdKB7FmJ4C5Asm2qhEpqbRPZ/eNrQaLcVx15DEN84/eP71QTSipAMSNtsJUFEbGQDgXHLeByukpemzys=
+	t=1773972164; cv=fail; b=DlTkV9ZCykIVJKbIVGCR7U7uI2W6mGViCJZNig99iQF19Bt78s+7nCVABPppO7Cuz+0WzjIA43nVl5V3EmF2nbXsJr7qBW+MH3UWEYbQ8bZRe2LKdd2GoRh/y0WkM4BKf0UbYUe7XImw7+nAzYuj8Z4TRbn88GeiwNvJJ29b2zk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773968783; c=relaxed/simple;
-	bh=r69ExM9MAmSbi4Pa8SdsjkeGTV4p53z6YKYrX7qJXnw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YWsZJd4kOgeOlSups/afgNF9GE1PwX5o3YB//zcpbZH1C3s4CmTH3jbfyzNBeQnTyL+RRC5giHpVGTkm3BOUyh8epaFlLafXmyo+hF3oojCi3frZkzL4Q2OuRt7MLQtz02WR2/dXRfNmcMr0O29vTr7WxuFaapljBl4sjSyEU8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dGVTUQeq; arc=pass smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773972164; c=relaxed/simple;
+	bh=4N+lI3FoGWTPaoBLByadd2N+DITNtuSviM5H5prv+lw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dblxkoFIDPXefi6JwBOAwfKJ52RZW/Q0R6X59b5dkmvOe8ij4aSCLneywkR6xma2iRQuRaCGUW14T0+dFkDuJe99I65wJo9OSQnC0/oMkFAGTSVUlSU4i71/P5gJoQrtOF8++kPXYjirGqtcXH5zVn2BEC+leZLLUAoRhXojEFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ds+8iXN9; arc=fail smtp.client-ip=40.107.159.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dGVTUQeq"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-668d41905a4so508862a12.0
-        for <imx@lists.linux.dev>; Thu, 19 Mar 2026 18:06:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773968780; cv=none;
-        d=google.com; s=arc-20240605;
-        b=geZbtWXpgWWA1ik4j0Vcawg1P81DghV/u5OuDF2vMqIqDrd9f0BeFTYKa8EB7zvcHX
-         t7dXglafScOD7p1fNJusomExkstW1+K0JRUCPxiuteuu77yq0krtbjWFAVE75kA2z+ux
-         OZAWy/eN07wOQ9jdF/yv3fAV9R5MPq+0RwPER8BDNld63gjKfk8DJZUf/7Qp925zcS70
-         SA+f0hTuMiC1pRwau008usHsgY++0xH5kYJGq8CUKZxGsH4i3IZ+ue5oDSRWWJli+QLa
-         mBd+MRYCqA+DlKE4nNfBRrlRiLr6Th2eteMuzX9G4sI9R7UiFswvpqz37z4ViYjUzT9U
-         WmzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9SqJxw/G3C8Z+MfgxLYlgt9ClPmc6gVykGItWwhh0uU=;
-        fh=saUO6yY50D58Oku8OGTsC5JTifbKFUTg8JB9245iTFM=;
-        b=fWDkKALxkIa5UB/ufJkZk/2CvYpQ+i+N//sjD7wBfyM/Q96M3LdlEtuu0Ayb2/2JjD
-         7pvJKqrqnZJgP5bloUbHZlEzn0hNADDcwbL73UgFjy5+Kew1hcKQgmYERX4mzPNCIERO
-         MGW+vzF2089ERJzJlIsS55ZIYqplQw74H+Vx/RoDzKTtk6Wo1nun4s+bD27wdtfp98Qd
-         AgQ+TsBzLN7mfhYimge9LAW6+/w0oYG1LBi9gDlTaY8C+q1nwp2PjhWa6ru3YX3CiGIp
-         0gOYwDrlVligTEJ1TeGaArTunsCNztGqRliuWpfed6DGUb0u/dfZW48dttVlj5620xJx
-         Bnsw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773968780; x=1774573580; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9SqJxw/G3C8Z+MfgxLYlgt9ClPmc6gVykGItWwhh0uU=;
-        b=dGVTUQeqn1RWio0R/eZYrPfh4zS5lZXT6XvbJpdTdYWYQULNEve6mpH9iYt5uvBich
-         Jx9NtvZeUUf43ab9ziE7lFgwjpET8g0xaOblmqlCmk+ZhCF9gItohtvaygI9md3RKB7W
-         DkadBsLVvW2pZi/dUjBQN2eSEswpdLaS6lolBvqHLDiK8CraSGO/cBURIjnQDZoTVttw
-         ABFgpRpTD/932omM0Dcb8ErdkO58IQf2057ozGhYZuwrSqnY9mZvyaAcPE5kQNoX9d32
-         WEJOvHb6AykN19ujK8ypD4rLBZwYTjDh6ujIkWu+h60OLp8i7ccvqxldxQK4tdhyBrll
-         17Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773968780; x=1774573580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9SqJxw/G3C8Z+MfgxLYlgt9ClPmc6gVykGItWwhh0uU=;
-        b=NFYKEdMTM0SfNn2G2G2HxRkFYGF19pUeeoigk6UBETw8GekSUN9juBGrE3+BHf/6HF
-         +9Y2xvbDf7p6Nfj8WIdk8hQ0Ix5dQPqunFiYUJGfGPlXx/cSQ/BNhagvjEDi0zfer0vn
-         35q+G/42a/I5WMIAZCrFkQvcfEZ8TmaoS9Ymh9hiCb7kiOxbeY5wUNCHtB1L5Tv09Mug
-         N4QzRDVifL2oFpkEOdi/W/554OfDDVvtgSzBSNNiKQ4yHc9WIaYs8YDy1WnMAb2p03Vv
-         61GsyQVfDZq989s4FMhb6o17fVlin/hCEo65mszDzC58XayY3RIgWYRQ877vNJNTc7kX
-         PyaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWQfrX/tVVpMkIv5yUipGArCVJYEHD92cxthFhWw1qPzrg/0/HYWgRKXqhFgsOBXNweq8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxdoosfW0XwG0SgBun3GpfXgDuudKHwTBTvaWAQUNvcUhErTYsR
-	URmSHJDWxVNjxf9igY0XOpP0/khZOgip6b/smXs+GNINWrWh9srMXKIhJWvjKUM38UPw11i7qqw
-	hu3t0pNl2C5CpYoppGf6B8e+YJSU7hzXhz3gE
-X-Gm-Gg: ATEYQzz47YRhdUJ2tktXPWJbcquIUApR/Nfn611fP8NJeNKGXjOkcF+/RJSTUYLKgSf
-	dXofpFR3pzCQs3HnYWK07ODIJiQ8/V9CDdxNcXaimg0ZTceUGAtPXXF2LvEmHY9Lx6yJUTOb931
-	I24iREbpDjiGffHjvco4Hc/TsccQS4d3U7xCPyBkhUH1m1pV57eiqlKb+b1SgUbr4/6TVeP/I/8
-	FH4X9+7Th8pj8wnXzNHqu8AQMjPNwNBazOc89ar0BYnHL+h6tfEdyQD60TyOTssk4pYif4bmtIi
-	B34dpdGsTcbFOLbUzbBephXgSm91xxWTDEYUNFaWz9MNF8FBSFohlF8pl0s1xjGlW3dJbxRVL54
-	jhqRFhg==
-X-Received: by 2002:a17:907:8d85:b0:b97:f1a8:ecb7 with SMTP id
- a640c23a62f3a-b982f20c0b2mr81117866b.25.1773968779976; Thu, 19 Mar 2026
- 18:06:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ds+8iXN9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PcjmW6Ju4j0OfMmchviAyD7alL54Hnep71PDhDaozdUxo1jLaMgBTB4gLyjqLyEfFu1ihtcFU52Ur3W2VLjPiOVTLZ3thRAQRIXXwHOKsfoU1DfGbneYpP1nuUHIhagJrRsxFYpjS6V8C4Jeg9vHzSphP4PdxAu22r3y03ym+dFx16zSD5v/F/IbjaVjqrVOPhlQpuFMV0OpOM8J/Mv/j+wXjREMRdBdiO1gSm2gzGrbAVt5mUMaf1h/+ZCkBdEFZyPCTvDzPmOJA/KGqApaAQpsi4J5fbJ+QcgNTHFbw6dCI1LBHymfLupn5zFXEw6WrtxOzQwZoZ8kjS9HMAC3LQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4N+lI3FoGWTPaoBLByadd2N+DITNtuSviM5H5prv+lw=;
+ b=EygwmbHcjFDmZbyqaCnm0+AfKi5YhEkozA0aJSm+7RREKr0u5SGhshl+8RcrdWYkrcnhleL2Pj2146W0fUyvNfEAnQY1v6pU2vJ56m7cVyPnrQwUNfoHcJ/SRH3Pchu6uOC6m4yO6YW9hOnA5M1YF79NPwzleqVXw9TdW7SWdWduAqMEBmaL97ukT2Ff8JPO/sCagFOYyloajv3ItxJhx2tRu1qMyxYBGi24WwK1iHZmc/kNnXTGYwJR7C6vL8aWKgcSjZCsTEwxjHRhV2I1ByYIZWSDB9/QU+Hwhhx71uTSRzzQd3fZNj1ipAN6VgEkQg4iGrPcbsmOrE776PfVag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4N+lI3FoGWTPaoBLByadd2N+DITNtuSviM5H5prv+lw=;
+ b=Ds+8iXN9U+kTI22M7m2PqfKHDmmdyvHADbPuAsgDfUJuDWHxFn3GdxQkqVhGElkgU4jQW6kWKM3w81UFhJnORaIZA6LHhnw5a2ljTd8x9jVgs7EOY1y8S8IJwGEOTBp5tIT5VZyaYL/fRLAysMa9LJPq5w5nCF8ff157TSK1QLOCoY7uFZurcdH33WR+GZ2Sn/TvM4xoG0irAlPV37rHs90Ammb1iddnIri+ONo2BqhQqI2GalC2BI9Kn+kHunxQfdf2wfGzQYc/GV8b31jrNPDYxsUlEs73oTh83SKZS+ukXj9sbJLWNgXX1xOEGunlv4UefEnKy/kRNBepJa6tig==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI1PR04MB9764.eurprd04.prod.outlook.com (2603:10a6:800:1d2::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Fri, 20 Mar
+ 2026 02:02:31 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
+ 02:02:23 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "mkubecek@suse.cz"
+	<mkubecek@suse.cz>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: enetc: fix the output issue of 'ethtool
+ --show-ring'
+Thread-Topic: [PATCH net] net: enetc: fix the output issue of 'ethtool
+ --show-ring'
+Thread-Index: AQHct3GI2Tnqm3/cYUG7kUqnP1dXP7W2Cj+AgACfzmA=
+Date: Fri, 20 Mar 2026 02:02:23 +0000
+Message-ID:
+ <PAXPR04MB851042386A4154ABED31B3FA884CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260319072716.511992-1-wei.fang@nxp.com>
+ <20260319092223.799798a5@kernel.org>
+In-Reply-To: <20260319092223.799798a5@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI1PR04MB9764:EE_
+x-ms-office365-filtering-correlation-id: 52f34d1c-933a-4500-5698-08de8624ba58
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|56012099003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ Il0D3xygyV6OgKNOyCkF5BVBL3MPS+nvdrIf8NzSbeEvFe648BBV9TscbWRcSZg6eNoNFC+nVy3t0CyJmr+qXH0VWJuoq4lij6shja01C7y2pD7VuqBQGzH1XT4c2P3ADIpcaG4MP5PoICiw3Yv/pN65RupL6ahLIn1+yeWI1IM24K6vH1hxQBAWIWmnF5W4TpLxrw1NLO0DkhkIdgqqMy1VARGCFt44Ww9r2OYzQ0o8WQhTsLEMVslJAx4PH3KyiGlDUQ8apX3F48BPhe4CspSRU64IgCoYxanCddmjjuBaWomSHTg1duutxgaliqSZLmhGLTvsZ43CfS0V+wNXWZ6b0e/Omq1QKLl20dR/UDUnEC+cyt4DZSadq05cDYZA3L8IvhE7Bj2Mqx63U4W47uThFeFNAgdE6FbGO53bM1EHzB+ioelAWcViLdvrIJJHPFcqnlckUUSVws/gF8+QHmifbWRVSWVcU58qwyEyJeUVIXrhdcyftzd409vh1uB4mjs7SLjjFeeTEohlBCNiGhc5FVGI/ks0oBWA0VMeRxkWGEdanSrHp4fCSdMzoJwI6BsKakj4H/SsGZ3w4I2asSQyrqfEPS9JJpgph9vV6rJBt2ia6g19GelHOLT5zOGkw2uPd73tgWJpqu/FgxOAEQcKSJg7ghVXqpLVZSV4e0NUVYBTWlzS7gWnY+1j6SgM8eQc0ZZOBzngRO5eiOMzxwOLsNRdMM9tS0Tzl6jzBJAhzy94U+QMfxixYcB7P5ior0b5DJ/1mEH9zfAZ5c437jQmBdGq/c2cmsyLQ+YIA2I=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(56012099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?O1N7wMsWbGl1HzHNgmMb9x7ytejIehmaxorp+MPPzfSrjQ87JDAANhLOjwEJ?=
+ =?us-ascii?Q?OZUmxEDm41YCXUVJlldK09nPhjNJhBBq0RVCfMfqG3d4pQ2hQkR1bVGew0FB?=
+ =?us-ascii?Q?+niMCp/I4JQMPtqo/orrsIUASBaCawfjaVWNi9VcYKFOqpc4N88FsVl1iiz2?=
+ =?us-ascii?Q?wlH2eggq82s8X5wwT1y1LtS6bHtBpuJtnlE+Hb7DyBaFwcWGVRfYdNYuFIkK?=
+ =?us-ascii?Q?uHwW0Wvm0g1h7eqc3EEU+J0XV3dbB29ao7uDKBnfBPvnz91QRPoHlFAH1Lwq?=
+ =?us-ascii?Q?HogOsgHyKf20Xllptqv7TTZjxmEMahXMud5iLBII++L0ZMbL1gaggbSS/DCC?=
+ =?us-ascii?Q?MawijBY0MCHvn6mgLwaoCsNy8tKK2bV1dMuxCgexFwh98842c7hPkc5aHupj?=
+ =?us-ascii?Q?H412Y+AQ2AcP6gIcWfjxJvzrsPgPA8dGtGi180KwXpQX819Xzb7zA8BjjWho?=
+ =?us-ascii?Q?IhwUELbnj64FvOcnnlyEjTYDN9od2T9sjLL0mESxih3rPaOv0htzcFNrnTnu?=
+ =?us-ascii?Q?otAdmR6NAASdxRIMc15IjJOOj2djv+F0qWknhjsIyDxFRUb/izdEEtUCxX8s?=
+ =?us-ascii?Q?aBnKOW9qRxz7J3V+ypjMw5lInpETZP3bjdSWBeZbdPGK1NbysnXXynxL5+G5?=
+ =?us-ascii?Q?VNyIzcsVjt4aB6jhT/sDm0iG6Zj1KzvR/+CG9R6ouaK1w0LpEETkDI96MWOI?=
+ =?us-ascii?Q?G+bwxGjoioGdjuxVIaxfN2nRwyNinBKzB3Ni4fJb+DRkK8TskYIsC/xXRk98?=
+ =?us-ascii?Q?Xc++ViqYkZ+7nmcrDUV6HVfDnKXtikDN6OI3TOGpZLYY9MA5CVF3stQRmxtj?=
+ =?us-ascii?Q?3XKr4qXG+f14mIgHk/GM5yfv8YWATJEhtj1pfMV9aNMMLjvYSOgbAhwhW6tr?=
+ =?us-ascii?Q?EsP2pM18Z03zeCBohKrmFzmWfw0CxxjpJr7YtMHnIqoTsbNlRR5H3b7sL2gU?=
+ =?us-ascii?Q?O2t8BUoKPjtSBZH/Uu9gPXzTMONK+q8+5eGFGks5W4l/K8L3QTriji2gMaz3?=
+ =?us-ascii?Q?wQwhJkzXzukfS5h4RqYuz3xJ5v1X7h8FoKi/F6rPi8/1YpfqvrG0gPV6CwLW?=
+ =?us-ascii?Q?3yWQgIkbXvs1oki0clVCmoJ1uUi/1trIV27WR/qLdye7XvreDbHzAiNQIulS?=
+ =?us-ascii?Q?CsfiW19C5mDNsYvxKS8w9uDYCJRYCaMef6VRSRumGs2E4A6UdRgmRL1OtS4H?=
+ =?us-ascii?Q?xVzojJGoZIRFELU13H9qlL4H/+JX7KrEieoMQGDm+uv/vDmtSlp6v0JdC7Q5?=
+ =?us-ascii?Q?4Tc6mdv+kv2DMaaSln2NplKitmnqW+MeU5uwvXCqbMFQc7gQNJ7z3UO5zBkl?=
+ =?us-ascii?Q?ZJDDlYjdU0Z+WOjXBybLzyoTI9VnaDAfJiMz/eujUZ2li0llidvHWVs4so7G?=
+ =?us-ascii?Q?n+DFfvh6+UdOcX5n3oYJb/nzg/OBMit9kFKJy+om9ndXhXKNgqZhVddXmI6S?=
+ =?us-ascii?Q?X9Yrn45AaovHlaFakYVlxd47LX62NoXBox//Yyj8G/7jlpzU6Adme3v+dTpt?=
+ =?us-ascii?Q?RxsmSYRX2uMhRZ9apLhMyn5gZUV/OP54xbPVQBPZ7PLJkhzenl9W0suP/Srp?=
+ =?us-ascii?Q?9obQY54YHGUHgjvkL2/OEWUA5E3gkCC0sEuwbYrzBRbPKOivIpHHTcPzbU26?=
+ =?us-ascii?Q?Zy1NFvn+T07AL9efu9nUbI8cflum4YqVMNmvLubCkDn1lg0ouuofrrTQ5yW0?=
+ =?us-ascii?Q?N5fHVwHfQQKD+h6DnyqgQjb3R//9/IHtFMb2v45887rD3QaJ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260306044536.149204-1-rosenp@gmail.com> <20260319220901.GD950375@killaraus.ideasonboard.com>
- <CAKxU2N856yYXURRf3td-_RCpe9hyX=zAy3qtD3ki23RjgO+a4Q@mail.gmail.com> <20260320005737.GE950244@killaraus.ideasonboard.com>
-In-Reply-To: <20260320005737.GE950244@killaraus.ideasonboard.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Thu, 19 Mar 2026 18:06:07 -0700
-X-Gm-Features: AaiRm53rx05Tqdc9FwzZoPf5XXpIJZUGAo0qoy3HNuWTkbHSxfZxEG9QI9aaaDs
-Message-ID: <CAKxU2N81WEMkAPOVRHUORWodc21oW7wqvUJYVhd3uBJdLxRW4w@mail.gmail.com>
-Subject: Re: [PATCH] media: nxp: imx8-isi: remove kzalloc_objs
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	gustavoars@kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52f34d1c-933a-4500-5698-08de8624ba58
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2026 02:02:23.6027
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6zJr0d1ieFQG3B9MoPHI6Yjg0+1bHUAdH7vqtNzawkabaDmosXMScQGYk3QpQD0qzjrw7J0eoKgoCmU82qfb3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9764
 
-On Thu, Mar 19, 2026 at 5:57=E2=80=AFPM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> On Thu, Mar 19, 2026 at 05:11:22PM -0700, Rosen Penev wrote:
-> > On Thu, Mar 19, 2026 at 3:09=E2=80=AFPM Laurent Pinchart wrote:
-> > > On Thu, Mar 05, 2026 at 08:45:36PM -0800, Rosen Penev wrote:
-> > > > Use a flexible arraay member to combine allocations.
-> > > >
-> > > > It looks like pipes never gets freed anywhere. Meaning this effecti=
-vely
-> > > > fixes a memory leak.
-> > > >
-> > > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > > > ---
-> > > >  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 11 ++++-----=
---
-> > > >  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |  3 ++-
-> > > >  2 files changed, 6 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/=
-drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > index 16392420903a..657ffecc4d7e 100644
-> > > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > @@ -459,25 +459,21 @@ static const struct dev_pm_ops mxc_isi_pm_ops=
- =3D {
-> > > >
-> > > >  static int mxc_isi_probe(struct platform_device *pdev)
-> > > >  {
-> > > > +     const struct mxc_isi_plat_data *pdata;
-> > > >       struct device *dev =3D &pdev->dev;
-> > > >       struct mxc_isi_dev *isi;
-> > > >       unsigned int dma_size;
-> > > >       unsigned int i;
-> > > >       int ret =3D 0;
-> > > >
-> > > > -     isi =3D devm_kzalloc(dev, sizeof(*isi), GFP_KERNEL);
-> > > > +     pdata =3D of_device_get_match_data(dev);
-> > > > +     isi =3D devm_kzalloc(dev, struct_size(isi, pipes, pdata->num_=
-channels), GFP_KERNEL);
-> > > >       if (!isi)
-> > > >               return -ENOMEM;
-> > > >
-> > > >       isi->dev =3D dev;
-> > > >       platform_set_drvdata(pdev, isi);
-> > > >
-> > > > -     isi->pdata =3D of_device_get_match_data(dev);
-> > >
-> > > I'd keep
-> > >
-> > >         isi->pdata =3D pdata;
-> > >
-> > > here and not below.
-> >
-> > Sure
-> >
-> > > > -
-> > > > -     isi->pipes =3D kzalloc_objs(isi->pipes[0], isi->pdata->num_ch=
-annels);
-> > >
-> > > Wouldn't it be simpler to just replace this with devm_kcalloc() ?
-> >
-> > That would only make sense if pipes remained a pointer. A flex array
-> > member allows combining allocations since it doesn't take up extra
-> > space.
->
-> Yes, I understand that. My point was that with devm_kzalloc() here you
-> won't need to change the mxc_isi_dev structure. The leak fix will be a
-> one-liner patch.
-Leak fix is not the point of the patch to be fair.
->
-> > Technically kzalloc_flex is simpler but I assume a devm version of
-> > that will be handled in another treewide commit.
-> > >
-> > >         isi->pipes =3D devm_kcalloc(dev, isi->pdata->num_channels,
-> > >                                   sizeof(isi->pipes[0]), GFP_KERNEL);
-> > >
-> > > No other change would be needed.
-> >
-> > With a flex array member, that's a compile time error, which I use as
-> > a hint to complete the conversion.
-> >
-> > > > -     if (!isi->pipes)
-> > > > -             return -ENOMEM;
-> > > > -
-> > > >       isi->num_clks =3D devm_clk_bulk_get_all(dev, &isi->clks);
-> > > >       if (isi->num_clks < 0)
-> > > >               return dev_err_probe(dev, isi->num_clks, "Failed to g=
-et clocks\n");
-> > > > @@ -487,6 +483,7 @@ static int mxc_isi_probe(struct platform_device=
- *pdev)
-> > > >               return dev_err_probe(dev, PTR_ERR(isi->regs),
-> > > >                                    "Failed to get ISI register map\=
-n");
-> > > >
-> > > > +     isi->pdata =3D pdata;
-> > > >       if (isi->pdata->gasket_ops) {
-> > > >               isi->gasket =3D syscon_regmap_lookup_by_phandle(dev->=
-of_node,
-> > > >                                                             "fsl,bl=
-k-ctrl");
-> > > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/=
-drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > > index 3cbd35305af0..99532efa4e41 100644
-> > > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > > @@ -286,7 +286,6 @@ struct mxc_isi_dev {
-> > > >       struct regmap                   *gasket;
-> > > >
-> > > >       struct mxc_isi_crossbar         crossbar;
-> > > > -     struct mxc_isi_pipe             *pipes;
-> > > >       struct mxc_isi_m2m              m2m;
-> > > >
-> > > >       struct media_device             media_dev;
-> > > > @@ -294,6 +293,8 @@ struct mxc_isi_dev {
-> > > >       struct v4l2_async_notifier      notifier;
-> > > >
-> > > >       struct dentry                   *debugfs_root;
-> > > > +
-> > > > +     struct mxc_isi_pipe             pipes[];
-> > > >  };
-> > > >
-> > > >  extern const struct mxc_gasket_ops mxc_imx8_gasket_ops;
->
-> --
-> Regards,
->
-> Laurent Pinchart
+> On Thu, 19 Mar 2026 15:27:16 +0800 Wei Fang wrote:
+> > Currently, enetc_get_ringparam() only provides rx_pending and tx_pendin=
+g,
+> > but 'ethtool --show-ring' no longer displays these fields. Because the
+> > ringparam retrieval path has moved to the new netlink interface, where
+> > rings_fill_reply() emits rx_pending/tx_pending only if the correspondin=
+g
+> > rx_max_pending/tx_max_pending values are non-zero. So rx_max_pending
+> and
+> > tx_max_pending to are added to enetc_get_ringparam() to fix the issue.
+>=20
+> Why set it to 64k vs priv->*x_bd_count ?
+> There's not set_ringparam so user can't actually change the value,
+> wouldn't setting max to 64k give user the impression they can increase
+> the size?
+
+I thought that *x_max_pending represents the hardware's capabilities. You
+are right, we don't currently support set_ringparam(), which might cause
+confusion for users. I will change them to priv->*x_bd_count and state this
+in the commit message, thanks.
+
