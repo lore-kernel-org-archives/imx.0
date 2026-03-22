@@ -1,147 +1,93 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011041.outbound.protection.outlook.com [52.101.65.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E18128395
-	for <imx@lists.linux.dev>; Sun, 22 Mar 2026 03:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774148657; cv=fail; b=MpfsddFIsLGAaS5K6G3eVh6ngIhq/Iz4XDjzQZKeE+i1sN12ncv0EyCdxa8Ygzxgp56PNJv3VWqAcdRP68LAq7jMba7uK5WMtrHTnSzXCraa8W3r4hxQaAuLVBHs2imJHd3MndtYpIwpgI5VEFiaicRP7AYm/9Vnk6RBJtc6HJ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774148657; c=relaxed/simple;
-	bh=wH2WesUVmdFsXKDBaHyzDwSHa92p5brSpS3GKEVH750=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CjmTTMpGV8jSowjO7HEqzKXpPYmABMhBAVOTUlu+fwhL7e7o3h51Iis39/4HYsSzfxzzqAMuF2gj8JzUz/EG+bAaYCYnmDFIMdKNkT/Bdi0XFVZENRcwQPo4NaOf+1bdmjncL6KyQrbK0EUMPh6Qr0PH9yTSIszTaPbroF0WBEk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OIzaZsCm; arc=fail smtp.client-ip=52.101.65.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE3035F196
+	for <imx@lists.linux.dev>; Sun, 22 Mar 2026 14:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774188806; cv=none; b=D04+2fo42pPh9tik7+z7Ih0mkMvdmr7b08oJ5mZCCbqdzaZ5kQjnlhFLy+Qo74joq83RfFS2GMiaIiefqAX3cih0aZXMRn5hejVbbCLK03kwIB52LNs4jSU5WoLZhUE9SY6lSLmaMgnZAAmdUAoyns5LDLgxJIc6dcrHjlFORm0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774188806; c=relaxed/simple;
+	bh=6WyenFkskQRviNgIdSNi6d7LvQNFj/WN1yDFKmE61aM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y5hHDI+cQydzxfu1jh5+yr+o7913Cvu/DmeMbu606fEFfivNUl7S7Jm1D1JFdCFBl7kmU05H6GRX9zpEaCklZZ6d2RckjrWG3otiDG2q0OqZhwxA3BJHKjDqD2ycrd8AQ3Jw22aBRiWXI98OTH+vNoQavkNwAWOd7s8970mLKzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1JSvO3v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OIzaZsCm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TBZRaUCQr52frbLMmrWO2uIhxzCHR/BYvJbe17FhwhtCWvEcFP2RWfC2PXZM2xVuRtX5p35LYrk9G88Kh9nm0Ku3ChJDcOc/DQLLgskefDqX5KLeg+aTZgzksCTcEhKuOo3jsrVVPgZZyEdxjOMkZDSgCXcpRQ3X6u9/1Jn0SZQigsbwRfNOChm03uaK3jrwEBuucBAx+ZsxVKiY9w8mVN/a6ZAITgD59bN6kr6VkOvFN6j0qOeiSprIArJgY6VGZdVgCzJjm0EVQOKqw/x+DeTgRMPisJsfiIqWxG06tqaSJ3t8ySpIU4RTO0UY4NB8hy2nKd1AgDZAiN30R32msQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wH2WesUVmdFsXKDBaHyzDwSHa92p5brSpS3GKEVH750=;
- b=tYUjmzK7AmAy+UDDmhc4LCuU54eQgTPjRhBDbznUMKJEYmGViA4FNdhtkoYZXuw3hjiRl2sxSGur7ehmZj7djkB68BXnCNLPZxtnQp41A7uAUO78RtWQNZt+FIQhysg6FwDHryCo/RBqkRFzbaRsDwKCy5nAfbhLvNeWPMbaZqD11AznS3FdiyIsOe82nSfD36tZsZxApCfteuq5Jl60yQnzyXz0guJmzALyqkIT+E0wqfkNqXx6MVzPEl/p5tX3Fp+HpQGNhH1k/iIynUTNM/IA7/FrBU/JZMv6YPvD/s2z7N2ix3Rz1WHABxmPgubGWpLXr/ogaVwBtJvAzrzX5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wH2WesUVmdFsXKDBaHyzDwSHa92p5brSpS3GKEVH750=;
- b=OIzaZsCmjZGHNpIBvtdrwEJ4nzQyuPA+dtqDv0lNH7hTW1+YAzoBh/M+NEAkigG999cK8B2ajXBecCaNwLTRWJRuaOGQei1m+rsj0JuFFRFGx4wrj7IZUx/yk3xdfjyQzSlEwVBaMj7dah4PCxuBD+Qlt6aACpoSCqIb9tYCibaEvzrJdgmQYIEXhiv3hb2N7IAQJ0A/d/yjk9goH/CXyqmYXOk4mT9w7a9bxlameEkwlHPIPBnv6XwqbHocfzjoYS2dTE0NrN7IMCB/SAuh2Jvj8ZabtG33LdbuwVUSxVjwnPRBrKLbySSb0a+P52BzL7vzLdm18TkQf0+EAwEQEQ==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM9PR04MB8811.eurprd04.prod.outlook.com (2603:10a6:20b:40a::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Sun, 22 Mar
- 2026 03:03:55 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%3]) with mapi id 15.20.9723.022; Sun, 22 Mar 2026
- 03:03:59 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>
-CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Thread-Topic: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Thread-Index: AQHcuKA+G1eOINrPn0OSZMvrGuC3iLW536mw
-Date: Sun, 22 Mar 2026 03:03:58 +0000
-Message-ID:
- <PAXPR04MB84592EFE18236DC4D3C71E4C884AA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20260320193150.2508850-1-shenwei.wang@nxp.com>
-In-Reply-To: <20260320193150.2508850-1-shenwei.wang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AM9PR04MB8811:EE_
-x-ms-office365-filtering-correlation-id: 4c1dc546-99ec-4c16-6b4b-08de87bfa9a4
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|19092799006|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- K3c4qOXK/j8JS4H9f2Y/6geZ4YWrKL9PKYBiBqH4j1jatk8TtjadCs8xlRYBPe1OKyTD3YIO9dPyZgDNgbXQVTtBxpxl6sWM35+mPJR/njLmN68QwZMTrtGWpOvHzChMIkzWCmeRBowNCgnz3KRA4FSbYsEnqwcNi5bOuDLVVO3tCo9OXX0rTG7qUxGpWeNaO0dm0OcMFIRg/m5rGNpADyBO63EkiG7A9zB5LyrcQS1tkewnanuiNCmGCESysWi6kd98BlNpmgXu5n5P6rnPPjt9eBoteDPmINSFzyJBDio80kdxYXpWDFN3q6zaRhG0PP3q/A7zv/yK8BL2wcRmyeir6f5l6Ds5HhuFaUWpcn4JkTG0eqaNMxFkLw5VOmObSiwzyCLPxhkNj4XKlyVEjE+mlOftGFW9f4hmrgk8IzxLC2XEeDUHFaZvucEnKJJq4hXbVw0wKBRbeGk1F08lcZ7P1q3aitntiSDsW+F/SgfUJqUooibIP9CHN/QWeIrxthq7SomXxBAZyUXIrT1QAWq1ArGPhq//xMGqgb1xgWTDMjSm81ZFizda5Cec4SB/qJkjTlUMXBobjktEDeU8Y+Faem0w5C9hBeCAR5bVJ8OwQFyh5Vv7yaITx9C2RxRraVvtxOK1qEKNiQNx3KpNuTm7/76OeXF87xK4g40RSKtIR/agwEcxh3AX85v0tEo4uOQQ+0AG1ZxEE/lJvBFutS4NaSlKSfUDTUcjdbIfZtpgU0tVQJOU6in9LQaPjXQ8ommZ1ApYokNNR5Tsq9x1s67/ZgtpBTL9CxFdbuy1K0s=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(19092799006)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?zpU59tqv6ZSAa2y1g5mc7nRgbrGhX3ihmgNMRqD8tZvcrnwRb0jRGQ6M4UfF?=
- =?us-ascii?Q?JBAFP6TfK8oqo34MTx69o3WTLol5KR5BQYmreOaF9H56h4H4ItzaOSQ0hXvG?=
- =?us-ascii?Q?CGGIZjUkjV0dKboKDgb42i3paThMTmpaN3uhHan58NGH7A82553C0NeEFVn7?=
- =?us-ascii?Q?Gi2xXgZiHUNRGYXhmuoL1W4e54Ea37TeoNBuAnLIP+3/oG/DQK5NvnC/IqhN?=
- =?us-ascii?Q?dpyKjO2nicHo0zf3y30Agr1xyMwoOsLa2OEk4XzyjEWidR3ycWog9HI1FR9+?=
- =?us-ascii?Q?vNp0YtvRKcAq155X12hl1bnHw5TY5LBUdxnEKQRbzHDUs3xL9WVk1QyLg+jh?=
- =?us-ascii?Q?H6+XnTSrON7/Ua615e8OccCn3+w6T/ixDDXrhlbdeoOV2HnBEHAp8JvVtt1z?=
- =?us-ascii?Q?TMFATWQf1j6bZC6PQGzWDscKKHnNfCkB2c4JDjqXizpAF8koa6hn7pA+kKks?=
- =?us-ascii?Q?UApfZLRCFQFVEqJfDSIJLvwgHDVTu6x4vssU00MbJCZYNhSb+Q0XRiW5RqXj?=
- =?us-ascii?Q?AgtJk0j8VU4myKddxKiFglkl1gftpAWptM5fFDSfaS1Fl+lb4MIGlThodfJ/?=
- =?us-ascii?Q?3yf5d/vTqonfVKhagnzRh+u5lO7k9D+/Gvrr81CJc06kkWipHLtsHKgPutUs?=
- =?us-ascii?Q?iuO7dyCIksi6XOqPfYSc6bnlc6LaLJain/RHWbHHzXKQSkdan5k9+x9RY7f7?=
- =?us-ascii?Q?04X8775nNnJgadUqJHP74MbhQjH6lqYdWqLZVL0nDJ17LolU9b5zIYTXhzlW?=
- =?us-ascii?Q?9fQZikP4dv+DBQBmcQ1EQ6VG1kCyrPVVEdHA+bIsdxd1PQNjh4pshVWFht+n?=
- =?us-ascii?Q?ahbtTDa3NsfITlgGtCjKtmvvd7HXLkuY8e+5FenR2ASKg2T6GF5AZNFG3HYb?=
- =?us-ascii?Q?RkEkmDI8Iq6Bomcx6oiNysjuOIZiDqXYIYtvN4rar91QG/0iQ5P2gdQcfSLi?=
- =?us-ascii?Q?Xr3KKgZ9NZt7p74UfZuVd9JVbof+GvZBAltUBjmaxBFfoidVPJb93EkZZCsL?=
- =?us-ascii?Q?amf8JxP3COdlDN8K2mhwpvx4UCNFMG2s/Blyk+C/gTaBvmixF2f4Lwd8WKcY?=
- =?us-ascii?Q?mJFY7s6g6BpeG4mdGeKFve4fKh3hxxPazDId30ZqMeBOboclgDsW6UMhnVDe?=
- =?us-ascii?Q?jyRHbxkCHzrCMadRWn3JLbiol7FJkoN+9b9XANUFU9Pn78XRdHcCc/8tARM+?=
- =?us-ascii?Q?l1/5+xOpgz7sRqU9OjIZHstdqCcPTHSkjdcLjOL5HY/yumfdzMYV9WmqzarV?=
- =?us-ascii?Q?mm7M1PlgFpTBn/4IKo5PEzpb8/ZE9tv0TMJudFXec8ye/gAmrWTKEzoetWwJ?=
- =?us-ascii?Q?1d5aGJsrxfygOOuc4JJj1zUL8fS0S94UXRaCha/IFpj/bwrDaCrTvFY/zF3l?=
- =?us-ascii?Q?wYAQkJ7ivw2K6ibo7bEkR/5saBn1pav+qz8qVJTqWl0Vd0/5jmluxB+j1Vtn?=
- =?us-ascii?Q?CEmhoi5hpdE9AD9PH8IALx58MiN9AguHDkNBjX6rrCzbl/a2ABEEWMHynYcV?=
- =?us-ascii?Q?xb8VIWhEilXLFQ9q0xAJaaF3DfcvMumjN08M1mZdncDloa4leXxU6IWsuh3v?=
- =?us-ascii?Q?PshsO7xCBlAbPf424e8zsyLSDspAab6+SMyCJOqqIyFPhdys5RenOZJUk9or?=
- =?us-ascii?Q?TVNlx+4G4c04YRFKRjW6Sbetvm7Nh8dogI+DN4UJuUdm76qebYrL1BM7e1z4?=
- =?us-ascii?Q?S288wL06SsDu+4qtk5ZoQOLCylUnrY141++xCWP1ivcFa/v/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1JSvO3v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318CFC2BCF6
+	for <imx@lists.linux.dev>; Sun, 22 Mar 2026 14:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774188806;
+	bh=6WyenFkskQRviNgIdSNi6d7LvQNFj/WN1yDFKmE61aM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=m1JSvO3vBoAW11h+1jUFpD4M3o87pi5WVIS30EG+IpjrhSbVVm0n+a1tBuAfjEvBt
+	 DUqzvAtEE8KJ6CZfJtmKqQq9BVDuNmVeWZsoYGhGiqY+t+Q6RwWFQc5ZQdL1p/KZIY
+	 UFQwKK08jzzYTvqEXZ4Ac8G4DE5xsSYsUXc8IfhWTBw9DfA2DD2C6LLzRNU24IbyFb
+	 lrOIf3a8BJJBT9sBoXhMHNUMb8I5hhEpcoV0xfuwNuKiNcSCrIcGPuQKtmayUZ9HXR
+	 hFKtrSq+WjK11fCbeC076eyEPEXZo0kTu3ZozNAe6J8tQQi2tgc/U6j9xLH40yQ+qZ
+	 AsEOEj7QkGiCQ==
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12a695044a4so2646194c88.0
+        for <imx@lists.linux.dev>; Sun, 22 Mar 2026 07:13:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWeEmEudPnMeIn784JLZ69x+7ENe6WDKNKYFpmfXGGvuGYPETM9l+zRu4yzQ74jsn+PJ0g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBscJrTtgESgc/GfZBE0WJXyP2s9liz8532mf5pdBrV6VNS+yi
+	ykmneed2oWbk6frxhYUkM4YARfY2UfEggataTa/Fgl4RUqRAyqLS2+kFQFeWMXGgonREahGqlNR
+	edRyDIMNUNGEUGd9glNL3l15EPUoULg==
+X-Received: by 2002:a05:7022:629f:b0:11b:9386:7ecd with SMTP id
+ a92af1059eb24-12a726e3eadmr3908663c88.42.1774188804941; Sun, 22 Mar 2026
+ 07:13:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c1dc546-99ec-4c16-6b4b-08de87bfa9a4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2026 03:03:58.7787
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DzH4zHaW+vELrCFzy1v3CvuB3IHC69mMbRUvC45pcxGvgf43dRzt50RIPxnMddH52wP83b35T4nDPHM2daWgxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8811
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-3-v1-0-ef48a517828e@bootlin.com>
+ <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-3-v1-4-ef48a517828e@bootlin.com>
+In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-3-v1-4-ef48a517828e@bootlin.com>
+From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Date: Sun, 22 Mar 2026 14:13:12 +0000
+X-Gmail-Original-Message-ID: <CAAOTY_9PH4yV-mDFZ+mkNRT7R9qoZOtjQhhqmyWjx1LWSu=giw@mail.gmail.com>
+X-Gm-Features: AaiRm5108rX0H_CDRkg1jedFrdyn5bPiHycKlLMUICMJdSqU48gN54_ILYySwo8
+Message-ID: <CAAOTY_9PH4yV-mDFZ+mkNRT7R9qoZOtjQhhqmyWjx1LWSu=giw@mail.gmail.com>
+Subject: Re: [PATCH 4/6] drm/mediatek: mtk_hdmi*: convert to of_drm_find_and_get_bridge()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Inki Dae <inki.dae@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Subject: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising
-> Edge
->=20
-> Suspend may fail on i.MX8QM when Falling Edge is used as a pad
-> wakeup trigger due to a hardware bug in the detection logic. Since the
-> hardware does not support Both Edge wakeup, remap requests for
-> Both Edge to Rising Edge by default to avoid hitting this issue.
->=20
-> A warning is emitted when Falling Edge is selected on i.MX8QM.
->=20
-> Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x
-> platforms")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Luca Ceresoli <luca.ceresoli@bootlin.com> =E6=96=BC 2026=E5=B9=B41=E6=9C=88=
+7=E6=97=A5=E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=884:22=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+>
+> of_drm_find_bridge() is deprecated. Move to its replacement
+> of_drm_find_and_get_bridge() which gets a bridge reference, and ensure it
+> is put when done by using the drm_bridge::next_bridge pointer.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+
+>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> 2.52.0
+>
