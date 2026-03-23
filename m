@@ -1,103 +1,171 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013030.outbound.protection.outlook.com [40.107.159.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E78629A1
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 12:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774270491; cv=none; b=IFWV6VZO5v2ZRSA9o/0n0KMYv7hl7CRkWhmUimf9ximMM9TPN1B2Xc3S9zTHo48MfnUKqzcSIzY/FOs5/8g8H0hHOY1qVB5FQkvU+4N9fecMJ9TATMnOY+W3wyECAcJ/72/WjKMkB/qlLaVb6Y8SaF7Wvh07XYeEdyUD0QuE0Ps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774270491; c=relaxed/simple;
-	bh=EeEZBp48R9KwYDvG4fDKiPg79sFhVSKHCu47Mf/8i9s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PIU0XA/f8QLyP6fPJ1bvGMsE7wFoGN+Bu4pBoc8QONRS3YoU/MyVYN/a5roSxy9MegQXbCa5R/l7IngE2b36EwD7fBTKr/bRpY3wS7RhEBvRu6v76v+lUNpeR4uhnUelPX9hbjxsfs80rzDB3hAyD3ubJXyBrkIHiGAZe7Rz+NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id AAAAEC3EEAC9;
-	Mon, 23 Mar 2026 13:54:37 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl AAAAEC3EEAC9
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Maxime Ripard <mripard@kernel.org>,  Marco Felsch
- <m.felsch@pengutronix.de>,  Marek Vasut <marex@nabladev.com>,  Stefan
- Agner <stefan@agner.ch>,  Simona Vetter <simona@ffwll.ch>,
-  <imx@lists.linux.dev>,  Fabio Estevam <festevam@gmail.com>,  Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Sascha Hauer
- <s.hauer@pengutronix.de>,  Frank Li <Frank.Li@nxp.com>,
-  <linux-kernel@vger.kernel.org>,  <dri-devel@lists.freedesktop.org>,
-  Thomas Zimmermann <tzimmermann@suse.de>,  David Airlie
- <airlied@gmail.com>,  <linux-arm-kernel@lists.infradead.org>,  Lucas Stach
- <l.stach@pengutronix.de>
-Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
-In-Reply-To: <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com> (Liu Ying's
-	message of "Mon, 23 Mar 2026 16:18:55 +0800")
-References: <m3ms04caaj.fsf@t19.piap.pl>
-	<32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
-	<m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
-	<20260320-amiable-hairy-bullfinch-28bfda@houat>
-	<m3a4w2d4ds.fsf@t19.piap.pl>
-	<ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
-Sender: khalasa@piap.pl
-Date: Mon, 23 Mar 2026 13:54:37 +0100
-Message-ID: <m35x6mpuya.fsf@t19.piap.pl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE413A9D8F
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 12:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774270524; cv=fail; b=JDneZfUroJJe1b5kp862s8RbsqJ7cz5AZ8+PkvdspQGSt7kGOQDufHMAz/SJDzV05UOq3UXISZblQyGE+kSHLycek1pbbfE0BBp+Vc6dPv4+JJz4F9kjPZ58f4CBxEKMav7RNu3dOTRbTMOBNzqX5gfoQPDSgRsOsdvBNu3kMjE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774270524; c=relaxed/simple;
+	bh=v7wg0iztE88yUG792lc60yaTLWpSMDqZN3re59pqwtk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=a6gAB86X5N/h2dR+9sQ6ZIfAztlyUJF0QWxSYPXdWkEPBulVMnlxZtMQf3kX4FXuTuKultp0euOQS7MFknnKWMiMHxO4/rSHOcIrkAjaT5ZY4b0CN8TxhUYj6DdTGyfnZ3SFlXP77kYzqlXsw8KZOjb4qThUNbK6S9NMwzzCDx0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JGhelRkK; arc=fail smtp.client-ip=40.107.159.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JGhelRkK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sHdQ8HULZ3rR4g7F0bkfSZM10rROvRD54jDZr5oJ28OY5JIDeE5YJZ7CkvkpwvjCjSrbqzLxkEASwN95Sep2oD70A9SLGa57df4L76IdjtxMj5VxpWoHjbS2GkxuS1aD45TmvUTsnDgyk3kdnwWJE3ELkUVo63LaHJXrFi1mssNbokVqayVEDfmqUBjVyhY6dWEwGt6GaSKJmnU1GACC3ud1DQMfzxEt39z4yMJi5oBu/zmnBV1d8X3sMWgBuehuTZPFJS5OzeKTDqkvN3gtYnRyohNp76JDPOnJZC61oTluPqa8eOHyhqWlHG9cIE28xF0MlDj/L9t/aDbKwTCV5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gME/0buQlKuCAh/rh73KKoJGEq20p5WAPk9tZvT2YpU=;
+ b=aZidFbPWq3y9hWD8U1p51SDVSiLCvVMww381gXIZHdkaMNu4YpVnCf5NniHP5EX9Dmy9FT9pNyJ79nOQheAuMWQERyFUarqFBIysGPPapu0FBWprDiY8eB64xt5Ju9dCPU0ASG64/mAqVhjJhqmZpmEmP4LB4z1QD6No+ke24XXxgThcJNKwMvkxDQhfE9boCkDCn5jitNGqdIM8yKOK47cuOBqmjE9ysumIymrGaiUOPbthtck3N4eztRqBx2SAT1rVR/BUpRfzVzqlHjLjBLQkcstPkTutI5wuJT4DVx5wOlLD67OM/+MUk8UoEdsPJTXW+44SdXrFMIyj5v5VsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gME/0buQlKuCAh/rh73KKoJGEq20p5WAPk9tZvT2YpU=;
+ b=JGhelRkKged6U0ZyUZy1oJwxTSrhyr7k45ZE0r85VVMy3lbEbem0b2TcbMqUqvSpx5Irc6F/7JqI7ATHGL1iFktpIktWMaILmbx1qI2IMFx9/w3ikewc1JhN+vUvKNOjV84z/v2tVjsLbBn7zzcfFUc1AhETprd9mWTUXWLNYsVumS9GWcwiXdwHiJvbusLwoyPsP1PrugyEgRTKMw6QrfhVx+qfIS5d07BPHM6PdR2QC+kIzxoCnE3eHFL8jy5pQLhDgPNigS+dmg2Fo9k3dAJAPfDzYNaVJGSJita+eOEEHAB6FJKdlghUuZFCdPXf7RLGEKV86wnFqqyArV4RiQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI0PR04MB10300.eurprd04.prod.outlook.com (2603:10a6:800:218::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Mon, 23 Mar
+ 2026 12:54:47 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 12:54:46 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Buday Csaba <buday.csaba@prolan.hu>
+CC: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+	=?iso-8859-1?Q?Bence_Cs=F3k=E1s?= <bence98@sch.bme.hu>, Francesco Dolcini
+	<francesco.dolcini@toradex.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Topic: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs
+ interface
+Thread-Index: AQHct7lhfXWJmdf5eEKPBwB60hlOFrW8GKlQ
+Date: Mon, 23 Mar 2026 12:54:46 +0000
+Message-ID:
+ <PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References:
+ <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
+In-Reply-To:
+ <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI0PR04MB10300:EE_
+x-ms-office365-filtering-correlation-id: 1c5840a9-5991-42ed-eac2-08de88db5cb4
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|38070700021|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ fr3P/J/HYZuocDZwRarQ6mMymBbVw6I3GCMNtFrOATSaOI7UIhp7Oh88CsqQDPFLongs5PHO3aBiSpdkmOWSBWGuTtqPLV9fQexQ2t45VBc9G276NWVB7wYjP9yDPvNCm5Wr+WyFNak/4/f/6a02q16QWWjXF/ptSh8vXTM1mHk2HbAaWxuDWJDhQGG+aQNHu4x4jQERefOI5szcFiiK6y/0WwJ9OdGU0LYeubQUmm/HVlWlMFJcMQ9a4LqInLyPa0LLmRocbgpHq7Upv+98RfSY+Ivclxa9aUEV44m4KiUDSuVjO0de0Jo+5YKpykvlweZR6TrhiBm59e9vgLu5W/uDeJIFqBV4vNdzC87atiRM1p4hk36njnzxrTshtwCsHWmGC2duPr7eCb/TzGEY3VkFvDo8XccnYJX9GGDahOiF2DL/b+I1n0U7v5gyKXBzVb03I+HlSg8aUpjHJu2QOxUUS5JC5g0ni8YYKj/RywlS/qwBdy1rSVsEPOYQwiZb0KIORcZBmNbt82xKMrmVwllKKICABiQEBhzjKt74Ax1pbxkStMqjX4s5cEF5tMN/N6Kt+NKKinL3UMHWTYEodd+cnAfiYLvOG2Rs5AD0CvASZC2Kgujo9OYZ9852qopg48Aze7xFcyJJRTCXEHqoTO6K4S/HG/VfvGj4KXWN+h5UVFZMKh+oy1je4Zul3VW+hiYIWeZDe88sdqG1kFgg0p2yWEgFaSktQnhJk3neE0uqgAjxzd9NgGDpUEa9bU4Jnxhqe3PhuPiL6yFjnrVa43a2Uv/RF/hROp2yZL9389w=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?bXjQvh4hJ7umGhBpT93NxuwR3IPrDFVMkJvbNfTYp24mUohR27zVoLksGd?=
+ =?iso-8859-1?Q?wlLLImqsyjMdZ2tqqmsecL+3Uduf+tacQFlCps+J2u+GhMf0bniYn4I1cF?=
+ =?iso-8859-1?Q?ANW9e2kGS+qtkKs2BnxEUnNoi7GwXcKpGjimjnqcPMZ5NvWYNsVnCY+wzr?=
+ =?iso-8859-1?Q?5ewU5VjtZuKsk918oGM+9TYEE+pYUeVeoPorhosDq+mGPf9V1dmJkg1yId?=
+ =?iso-8859-1?Q?oYOFn0QeJoh06JUQLVsHy5rQsoGiaf51dacDrjXi9FjCasrPdQcjOJrfHG?=
+ =?iso-8859-1?Q?4s/kbSjLlplnqgDNb5RQn57tf8Ex3jUC/E8A4dMoHWLHwY3IJR1jMH8mSG?=
+ =?iso-8859-1?Q?7P/ERAGHXB779pj6REyBhOE8gQjXuguOPfVojG2cdQovQ8eNbLI9+vcLfn?=
+ =?iso-8859-1?Q?Ew2g6VKztxjZDIhdlHbZGFPqAuW9xNNkwChGkf+LQfRfCa2aeDZV5X/5YX?=
+ =?iso-8859-1?Q?PF3uxcT7+j7R9i1l85NfGeKjKkv7YicNFrPvTU17fche6jjwudTQEYBsbG?=
+ =?iso-8859-1?Q?q9lLQSLZbnUwaiqSrCOngSbZ5StDAaXP8yWoy3RYraPj03gCkbJQ0V2o00?=
+ =?iso-8859-1?Q?sknwyjF++O5l6SmNMN/+CpSMMP9ONLMQKOX7N76YheJFGx4Gn+EImR7Ye9?=
+ =?iso-8859-1?Q?ZSrWt+u3wjNP553Ce4fWYxqfjN8ylerIukn6RsKyzw+yD65vt4LoIgxM0f?=
+ =?iso-8859-1?Q?nb446bNn1M+amYLqwsAPP3qwAi8mw6I044TEQERvTiRmA6e1PAzPo3uHgx?=
+ =?iso-8859-1?Q?C0W8hoyIBeRtcFpxgWO3EEl2/a3Wf0VH0yZhQWOiFsRyxa/0cJEKALMZOq?=
+ =?iso-8859-1?Q?joTFN0Wi8GDgqFFuZZQLXYreU8MfZxvu5S156QV1GcfQjU74SZ9e34kOou?=
+ =?iso-8859-1?Q?oS1F4JKlFtk1ITEQYYPPL34TUDq/7YyJty5OY1L9pf64qIVjeTjmpaoHvq?=
+ =?iso-8859-1?Q?JE1MAN0TADb+4dVu3SMLvQg2bjPKsXhXTetv0UDNSCZvhaLw7NKiqM6Gq7?=
+ =?iso-8859-1?Q?2KT2wnh1d+NhYwPcHPESw4MsRFUab6JqQ4h1qsiqj98PNfTm1fIkT0mjEG?=
+ =?iso-8859-1?Q?aAIFG+02rk+6s4ux0l47GwGbMm7l92crISUBH5Q0OsN+PQOV8JedeSsJZf?=
+ =?iso-8859-1?Q?nMfM48XDpF7MRR8fLzmw3eXEPN84MsQqQBz+fb2E4Z2FrbqwUShOXLUcOZ?=
+ =?iso-8859-1?Q?sQMgKKxAfbbC1HaGnvDeAHFMEFAMsHtrW1hEl+Fco/NInE49PgPDEXJQ6V?=
+ =?iso-8859-1?Q?NOeuM/clUZENKEjXj6jmoPcozOr2/maJKFXKndj0M9FZy14W4JE/HpysGq?=
+ =?iso-8859-1?Q?f341JtGxQYAEZ5B/R2xhhu+ZhzzUhfGxujTuYtgkpzxJM4Je7StGhAkJEz?=
+ =?iso-8859-1?Q?Jr196oS4jPMYdjeSOeP10v8wOeFBrj1NVzPSQzME3gPWai6QfodsN5VZbl?=
+ =?iso-8859-1?Q?eS9lLjC390BwlRwzc24ztEPppQTXJJE9msEGjcryqnuRQ4qKti40OFznKb?=
+ =?iso-8859-1?Q?wOsPkV6Y37knCmd3rj4t1z2S5ms1P3VpeOLBBmmnVkybNpfsdYtZVsGzE3?=
+ =?iso-8859-1?Q?Owk6jAbqPB8IwTZGAkD2YLpaJo7NrmlIQJyo3eJ7K5qWLj3XdI+JOR/3r9?=
+ =?iso-8859-1?Q?SwJ1wzTx14qI0bsCwCS5WI5h4+LioZpBxw/Kd5qte2QPDHjiCVAmXpVJJY?=
+ =?iso-8859-1?Q?UZ1o/aJ9K2qk8ELnC1fotEZjtRt4fIaUZyUZr+HxvJhFvCV4kr10ZRvkGd?=
+ =?iso-8859-1?Q?MmHY/LITBsjv4EndExdZ//WfAN+ozZqr+oglTWl9s4vu1f?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c5840a9-5991-42ed-eac2-08de88db5cb4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 12:54:46.7701
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: GKygurFswTsL4EAEBl7Ry5R4239IbjfbjBsbz3GowhI/+VlxhvxYv9pTmMuoi5eLWZzD5oPRAEmoLvkIEfVeBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10300
 
-Hi Liu,
+> When the PPS channel configuration was implemented, the number of
+> supported periodic outputs (`n_per_out`) was left at 1.
+>=20
+> This prohibits using channels 1..3 from the sysfs interface, since
+> period_store() rejects channel numbers greater than `n_per_out`.
+>=20
+> Fix by increasing `n_per_out` to the number of channels supported
+> by the hardware.
+>=20
+> Fixes: 566c2d83887f ("net: fec: make PPS channel configurable")
+> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+> ---
+>  drivers/net/ethernet/freescale/fec_ptp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+> b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 4b7bad9a485d..1a7aa280e7f6 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -756,7 +756,7 @@ void fec_ptp_init(struct platform_device *pdev, int
+> irq_idx)
+>  	fep->ptp_caps.max_adj =3D 250000000;
+>  	fep->ptp_caps.n_alarm =3D 0;
+>  	fep->ptp_caps.n_ext_ts =3D 0;
+> -	fep->ptp_caps.n_per_out =3D 1;
+> +	fep->ptp_caps.n_per_out =3D 4;
+>  	fep->ptp_caps.n_pins =3D 0;
+>  	fep->ptp_caps.pps =3D 1;
+>  	fep->ptp_caps.adjfine =3D fec_ptp_adjfine;
+>=20
+> base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
+> --
+> 2.39.5
+>=20
 
-Liu Ying <victor.liu@nxp.com> writes:
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
 
-> If you may use a display mode with low resolution, say 640x480p60, and
-> the issue still happens, then I bet it's not related to the panic
-> threshold settings, but more likely related to KMS detail control seqeunc=
-e.
-> This reminds me that Lucas had a patch series[1] to try to fix the
-> sequence, but it seems that it didn't fix i.MX93 LCDIF according to [2]
-> hence no landing.
-
-It seems it depends on resolution: at 1080p60 with the DIV_ROUND_UP
-(thresholds increased by 1) it seems to work fine. At 2160p30 (twice the
-clock) there are frequent underruns. Now with thresholds increased to
-2/4 and 3/4, weston started fine 10/10, while shutdowns were 8/10.
-4/6 and 5/6 made it worse, though.
-
-I don't know now. I will try to investigate a bit more tomorrow.
-Perhaps the sequence of register writes could be better, indeed.
-
-The following doesn't fix it for me either:
---- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-@@ -358,34 +358,27 @@ static void lcdif_enable_controller(struct lcdif_drm_=
-private *lcdif)
- 	writel(INT_ENABLE_D1_PLANE_PANIC_EN,
- 	       lcdif->base + LCDC_V8_INT_ENABLE_D1);
-=20
--	reg =3D readl(lcdif->base + LCDC_V8_DISP_PARA);
--	reg |=3D DISP_PARA_DISP_ON;
--	writel(reg, lcdif->base + LCDC_V8_DISP_PARA);
--
- 	reg =3D readl(lcdif->base + LCDC_V8_CTRLDESCL0_5);
- 	reg |=3D CTRLDESCL0_5_EN;
- 	writel(reg, lcdif->base + LCDC_V8_CTRLDESCL0_5);
-+
-+	reg =3D readl(lcdif->base + LCDC_V8_DISP_PARA);
-+	reg |=3D DISP_PARA_DISP_ON;
-+	writel(reg, lcdif->base + LCDC_V8_DISP_PARA);
- }
-=20
-
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
