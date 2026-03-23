@@ -1,614 +1,290 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010015.outbound.protection.outlook.com [52.101.69.15])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013040.outbound.protection.outlook.com [40.107.159.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF5C2D9EFF
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 06:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1D72D321B
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 06:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774246084; cv=fail; b=LfG9Pcom4P+vfMVTGv+ym9NPnFTlEFfx3M+XJN7aLN4mgdgfqdEZQMdYakr8iEac115o2KoiCIgFoN6zKnELEXGzG4wK3Az1bgaaieA81sg35nViwhc3+SVf9gf7+Z3ucyTnz49fC7ooceer8LxvVQjf4kPzPfAYl28g+oNI5Ms=
+	t=1774246102; cv=fail; b=nh6RDCH2sA2Rn30/atNWgiJARBJNrMKglb/w8FaUVxybDvu3j4MLJUR1uZuPgi/Td2hCmK/MTnB5fltFxJrFRfJxG5bapSZYMA2GrTqgkeY9wckyGIaQGA0phO2E/tsfkfMvSEUvsHMKlB25I+6Ea5LNsmHj2YXruS+iVvf8yxc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774246084; c=relaxed/simple;
-	bh=dOw1b44YCJBWmJs7CqTQEjdP9uVaGMab9vFs4WGrX6w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VBvWbqtuSFQfQhO49MXdFVAqQvejKyV1Iad1+SeyqTSL/46o1k7SK9cZoY4xntrL+AFEW9ZWUUmQTMODPK75kwW0lCgzlvcf5HfINGqWfT5RupNvQlHEUjJ9/NLNlZh9fmTAg7MS/h4djVOD8MPcRK7eHOFgYNfP55gBFzDSHo8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PBL1jgnd; arc=fail smtp.client-ip=52.101.69.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1774246102; c=relaxed/simple;
+	bh=H1mcKP4ph4WsrSE1MXlcQyJRAy6eyuT/fjDTAdOXqqU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pxc4yE0GSlTVIe2PyLGGb/Pb+HTLp7wIicTetbS7joyagnIg810EGrLB37YTxFOd0OYaFdL5zR+/w8vUAY/cU8tOu7WzljGwte1FIHti9imAmbDd8o9uBxD/WFex/q+C1BuWr2vx2eHSnFxkVre/GQN1RtvK84jSKsdQ3PxuESQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=pCbBvcel; arc=fail smtp.client-ip=40.107.159.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PBL1jgnd"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="pCbBvcel"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ok4We4+orCH15EzVJv+OgaRPzgZyvRgz1JisZxQJFEc8/O1ZyUE5cVmpuxH0wR3G3tS8aPLkpOyf88YEM/lyxpj1zHIpFolZ4fPpR/fODdS+6gaZpwE6kl58+mQ1hSHJ9IYSNEZbhFgx1l5GKprpjBwVYuewcccwrEMHDhZ1pKj4zRZofiUSBnyGQOkcwSAiBncAitNHPKBB/S1QDWTmmfLysFIY2DIfUzEc601JSkoZQsXGoUdwFnfXNaAAWc+9iJtSRpjI1Dml8xDuUdHGb72rUmhxXXEvEwuuet3bpXU7+19bO+XDY0Y1/UN/FmswZ+OSuIYwjtSWIaTpOSkNkw==
+ b=UdjuygtxaUlHyKpTohO+TA2xLUSYDfzuDyQ0R+Oj2SofniES6DRm6ZkFz17OgawAm9ZK8PwaWA/FuUiwHXMrwdd4VpvwmTvvnnrhNBCKkbdyIRrbcQkuRZbdpQG/vx+lfdDCgS921C2qCBdAzIzZsCSY+dx5TxBemnz57PtMFdzMQXIX4+FkZ/8EE5ahwolcH7lgIXtq+22+sL9KBWATNYdTQD/wyaEnmGgW90SEOz7px1tOC6HUpUd+A77GIKWOilgCMTgy8xjzeFQQdQUyDAxH3Mksmi5W05tU+OXr+Lr0HCqULXXhZi1F/USA8Fxhrocrti12M9Y0nuhRkMIKVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mEji+40KZiCu9feXBBpQ4eynY19LMuGbEYgGc5jQN6s=;
- b=qwVxKYeNKjombXTvHH4jxlO/DsbWioYXtMR/Py/h2RB/vfc4aHZs1ikJ3w+gxeWlAo04+jpq0/+/0kJUJxENq5aqB3QdcuFl1tIrmXcN+i86Yxyg23pf+uxY2MLG4Drk/3jk5Zrn3K1TVvqpJhzc5nTe+OZQunb0Xjwi+FGWnUQjOuuO3Zi+w4dE3hUGOt9UBLRxb0cXxro+ZH/lNvuzyHOefguQKFOPzQ8PEUNt4svZcm0XUVJ1ixqciZdeMud5oxr94COJxnE6h4bj7ykCqJgGHK/jXbCJLAMvUtH7JbBqixPRZTf6bScXsYRZ+ChbF0/CCiNdsqjDG0luvXdqHw==
+ bh=H1mcKP4ph4WsrSE1MXlcQyJRAy6eyuT/fjDTAdOXqqU=;
+ b=RgBoac9a3G+OXOOabp3eMGVY6EH1Rbxbxr0SU4FxaAkVaEOy8bTX7KUkFBKx3P0cKKRvPSHaMCJqWhT2KWvGTEtwecqN1cnyMDlyVg8OLDhJgqZaiDh+H8S+kGnwAOrnqcbqORuqg6Z1wAFJJD41pH2mY0bTxU1aSbAB5EzKP6yQdDRR36GE/kk1siIQYuVqGxN9BqjQ14ZtrcgM5SQ6tLkmh00IU9Xg/Th615MRm5FHsub7Ye0PcEmDBwq6IID0no/Q3Mb8pWiZfYzag1mGDwDSDN9iMdkQXZhuTvL1K79nCrV7rl/8wEvwqXDvS+nk1qiwKgJJpscV8CX4bMq7LA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mEji+40KZiCu9feXBBpQ4eynY19LMuGbEYgGc5jQN6s=;
- b=PBL1jgndShdxZZwcIAO/1LXySA4IWg02vZEaGbtGKCPNfh3O4q/heTd2k2OQoYp7ms5/1vZm2R6UGmIR/aynKrm5zC1uzJcgrqcxu2hqZaYgWfGNibv5dv84m2RJD/GaaIvNmb5ZmPCiM50A1qeYTyLZ+PJcX9ifUhcrVdlr6ZHn1BH//JpPdoKcWgLvzXTZ9KMWFRqQQuQveQfDza9BKkkkcEi3sm2UfNLRw7TIXg53Yi8U+2n/a+QPT+DZ3zITI7MxVKs3+8bxkZNgj/vH0Tu7/iniEPwvKXhsTvWkQVKAdw0O3Wls2DrjFRK6+K0flE4xU0eKHlOwzV0M5FV5bQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
- by VI1PR04MB9882.eurprd04.prod.outlook.com (2603:10a6:800:1da::17) with
+ bh=H1mcKP4ph4WsrSE1MXlcQyJRAy6eyuT/fjDTAdOXqqU=;
+ b=pCbBvcelzpJ3K5h188jiZdEEth8PteCfjNrA47yxZgtz31STiyzVx6Ot1f56TKcUC760E3H/0boLbk0ypNAI9JTvVHADYpXRglp1I+hCMPYJg+A24nSfmRc2mK5mGZRtAfdPkgYRqRISINrQVNyYNhMzwGPg6AGtZ4b1dD0ShkAzFb6E/g63L/AV7rGX3d6qF875my5qP7wKfK55KczCuEjN4xfJZ3uvDnRExPsKd2y+XmOhCqv0dQproCVzeKdqk98m7w9FIA8r1/z8w5hct+bq3ndi4hAf/eilF3TbnlXdgZWcagV4CGCwhqlhG6aliIurKknUIDSr1kLoqNoxkA==
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by DB9PR04MB9284.eurprd04.prod.outlook.com (2603:10a6:10:36c::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 06:07:52 +0000
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e]) by AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e%6]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
- 06:07:53 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	f.fainelli@gmail.com,
-	frank.li@nxp.com,
-	chleroy@kernel.org,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 net-next 14/14] net: dsa: netc: add support for the standardized counters
-Date: Mon, 23 Mar 2026 14:07:52 +0800
-Message-Id: <20260323060752.1157031-15-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260323060752.1157031-1-wei.fang@nxp.com>
-References: <20260323060752.1157031-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAXPR01CA0099.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::17) To AM9PR04MB8505.eurprd04.prod.outlook.com
- (2603:10a6:20b:40a::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Mon, 23 Mar
+ 2026 06:08:05 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 06:08:12 +0000
+From: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "G.N. Zhou (OSS)"
+	<guoniu.zhou@oss.nxp.com>
+CC: Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	=?utf-8?B?U3RlZmFuIFJpZWRtw7xsbGVy?= <s.riedmueller@phytec.de>, Jacopo Mondi
+	<jacopo@jmondi.org>, "c.hemp@phytec.de" <C.Hemp@phytec.de>, Frank Li
+	<frank.li@nxp.com>, Aisheng Dong <aisheng.dong@nxp.com>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "G.N. Zhou" <guoniu.zhou@nxp.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH RESEND v2] media: nxp: imx8-isi: Fix potential
+ out-of-bounds issues
+Thread-Topic: [PATCH RESEND v2] media: nxp: imx8-isi: Fix potential
+ out-of-bounds issues
+Thread-Index: AQHcuottcQmI0e6HP0qF+TbWIj3H/Q==
+Date: Mon, 23 Mar 2026 06:08:11 +0000
+Message-ID:
+ <AS8PR04MB908045C9CABDEC5902D9485DFA4BA@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References: <20260228-isi-v2-1-f6f9208c6844@nxp.com>
+ <20260319213348.GA950375@killaraus.ideasonboard.com>
+In-Reply-To: <20260319213348.GA950375@killaraus.ideasonboard.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|DB9PR04MB9284:EE_
+x-ms-office365-filtering-correlation-id: 65b23999-c5d4-46eb-e519-08de88a29052
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|38070700021|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info:
+ MkqhMIHAug3OvqMd7cnqqfXVdeuhxS5o8JnYka+BrD54YFGenxw1uD4y2sEosvD78YHNn6d6cJXgjWHpxxcbLJFZzyZjlpiRSywH/7QG/hdT2xVn8vPnrOfMZvwqbL+1S2zvdeTwInTsIRnjejC27/WwW4OcBnL6Xvsp2+FTge+lTNNpq9oGPUy1tyg3TyaOFw2+7cX9tPxZBoz2h0eJxL6lxrZCnZiMYNlStX02kPE75ru9Y7G0YPQEGslcyseCwfffz6TS2Wsb+Qx5mv/hk/n+GbMiobidJXj/KC5+hp7/LSA6XJiub9kQoUyh19z1bT/SYqpPjjvBzW/fayoVhUPFWX3tBd2l8dxzzX+eghu8+8IhTudxxyjQiiHuvslI3Dg4em6CxewtcsvYYNlohFzmoIz18xS03Afxy6Ow8uLhcI3BbqDA4wKT8rK+DVcYglzh+v8T+oFOk0VfVLYKtPVTMIzEL+XShplJz4kklC1AZZaqvmmZZW8/4XCz3xjTaxXeWsPPwIAcrMS/gPci86/DG1a47V+wnBVrxy8Z3jbbgYP7/n7s/8MLhSG9F+8ReYOHYF5PICPyEyB0lfsb4PvYesnqm03MXZgFlcwaVYikjq9O+bcgtCrvE/fl1f07heta6xTmYglo5vmUd0gi9/jVdwNDW9olkYhlnOsBpnStNVOWbC/D3QxFWhXT9n9K10ptMQIJFN3fcHrYXLsNsuzrLF7d0HG8y+u4iI1F2fRHY65k4OrAtiHWl/FkGXs+j/9TArAP8LvZ5mGcMW01blH7qyVtrggj8PAPzaxssSQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?U3VLcjdZbWh4VWJuNzIyOXhML1NKNHJsWXRsakJlWkZOemdNbEFXN3JENC9r?=
+ =?utf-8?B?SWwxWnhkRmtNNkszMzEzMzBUSzhlZE5DZU1kamhqTEZ0cXNDbzVsZ3c3ZVUr?=
+ =?utf-8?B?UEowbTZiRnVWemNSOXZCdE5GOG5SNTY1Znk1RkhxNHdVZktjN1FTOGNwbG9Z?=
+ =?utf-8?B?SHNZK0gwYm56Q21zcmRDVUEwc0RyS2pOYWp6dE9QTW9ob0k2Vi9TSE1ScTR1?=
+ =?utf-8?B?bTJlSjlhTngrVHIvU0RvM2hlM3dEdndRd2dMUDdrQ2tOVS9zSXNhelc3U3lx?=
+ =?utf-8?B?KzY4TFk3RUhWelQxL2UwMTBnTDVWMlNZbzZqamRnZlpUYSsyZWw3Q2IzallV?=
+ =?utf-8?B?OGdvYmg5aFRkTmxwTGIvRWRXWVhiVW1Oak1sRXlyNlFPblpSQnVQVFVVR2RN?=
+ =?utf-8?B?MGYyeWRQQTExclViS0Q3ejVBdEhGVVRhdjc4VitEVFJMY2RFWFI5SzAvQlR0?=
+ =?utf-8?B?V05tby85K1VqWFlsK2pYOGlLUTg4aXpLWW9hNWdQSmwrS2x0cG9SeWlTUStm?=
+ =?utf-8?B?enIwUXlNMk5VVDR6STg5YVpWdnBFZ2w1eGxSOFVGSnNzMC9Wa3VvMXFyRDJO?=
+ =?utf-8?B?eGQ3YXplVWhSYU5UR1JTNG9UOSt3WGFKT2JjNFVFVU54ZGRnb2RqeGNJeFox?=
+ =?utf-8?B?T0NZdmtRK20xRE1hLzVvS3RRQjBDUDhvVGpOVm03UTNjeU42SHh4SlBaaU4x?=
+ =?utf-8?B?dzlYTkxqZFVwSFhTbWZMQ3JlUzA4eFpNdmx3UFVMZnpsajV5LzFNK3BrSHRQ?=
+ =?utf-8?B?S2ZQaHJwc05aVXlpZ1ExMnI0cWRuc001eHVORVlTeU9oYm5veHZCaG1oUW53?=
+ =?utf-8?B?U1M3TXJIdk1nNGc0TUNyOHdOTVVYZWVMdkE0dnJUc2xvb0hKbW4zd05IVU1N?=
+ =?utf-8?B?RHZVMmZaelkySGoxWVh1ZWZQaGZTTWVDL3REckRCSFoySzRiaXROTFFuc2Qr?=
+ =?utf-8?B?THowNGtTK0JFUWNaOXZOYkZ1d3ZDaUxBZmR6c3dYMTN3SzROc2sxNm5tMysx?=
+ =?utf-8?B?V1RzNEZIZUMreU9yZmxJdThkV3QrU2lwRHk2ODdpRlhoL1gzYlpsKzIvNFl2?=
+ =?utf-8?B?SnhWNUVySURSQWFQRlY3dkYyQTZlcnUxa0FiWlF6bHozT3daOVBqbHVlMnR3?=
+ =?utf-8?B?OTE3SkhRSDRQSlFyT0tVSzFJcDRmbmZWVW9mL0orU0Qxc1VPWEVEekZGUUIv?=
+ =?utf-8?B?dVRmc2V0WmFSU3BrclM0em5iZWJ4MGhxeExyVWZ6Nm40YWdWekJ2T0ErQ0pC?=
+ =?utf-8?B?QjkzTkU3R1RXYU54OEwzWWRQZU5LcHUzVjEyVFZxYndNMVZPaXF0WCsySS94?=
+ =?utf-8?B?SE1GeU02SVZKaW5oRGtVNEVXaFFDSkRBMlN0SVFCN2JkS0U4NHNvaGYzZGlC?=
+ =?utf-8?B?RFNFSFh4VU9qUzJsWXdlTWIxMU05MThsRk5vQWJjeWxwcnJ3amVvQ2g1bHFt?=
+ =?utf-8?B?VStFK0F3aUI1cXo0QndVdVNPS3dqUUQ5Ym85R0lib2pNbU54TzdEQ3NWQ0dS?=
+ =?utf-8?B?eVVuV3dmY24xNEtIYk9LMXVtSDJJTWN2T1BRWXdSbncxTHR2b0k4TjNRUjBK?=
+ =?utf-8?B?SmtUcEFqdUVBcWRreGZqVjd0R0xmZXdiaXBTdlV4YjhxRnp3Y2p2SE5UaFlR?=
+ =?utf-8?B?cEd6KzRCOGcvWlRWWnJ1Y3VUdnFhbHQveGliWGtDUVYwUkVRV25sblNMMEha?=
+ =?utf-8?B?SFR1am82cmI0QlRZV1lWY0ZUNlJ6N0tPWDFDUGh1b0NJME1pVkkwaXdmeUNL?=
+ =?utf-8?B?VVc5Y2QxcHlDaURHL3pVZ3ZPZ2JYbXpJdEpHUGVYVjdBeStvaFdxQUpTK3Jr?=
+ =?utf-8?B?UmtuVzQ3dDBTTVZheHV4ak41NTZPdk5hTjhpdGdZdDE0Sk1ZV2szT1dJQUxB?=
+ =?utf-8?B?Q1pNUjhwa2U1YW40cUVybXY1VTBheWFST0d6aTBDa1QwcGFHWTZBeGh3NEpv?=
+ =?utf-8?B?NFAwMWEwM0lMRzVwSUlFMmVnS2dUdU93M3VCT0trTTVhcy9uUmZucWYrTCsy?=
+ =?utf-8?B?ZGJEZGkxejZiS2p4d283Z1h6dTZLUVYzY3VtVThqZVpnSVF6azJma3VkN2NV?=
+ =?utf-8?B?YURwNUl3cytrcTJGMXJ3bzMvdEIvUlhneTdaeXJoeHpYUFovMC9ESzFQc2xF?=
+ =?utf-8?B?Y2trbGdTdUtjamtEMVEyc2NvTHhjR1o5MkVhYnJHUjFhbFBzTnBuUWtsSjM4?=
+ =?utf-8?B?d0t1QVhBOHQrbkpxWlEzNVphTXhDNzhsVTNtMkMxaVB6a3Yrcks1Q2E4TTk5?=
+ =?utf-8?B?ZWNqLyswZjhtSDdUdU03M1YrWEQrOGpVL2hNL0VCVWhaTU15Ny9nSTJyTGd6?=
+ =?utf-8?Q?eB7BK0AzDBk1dWAZdS?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8505:EE_|VI1PR04MB9882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87bb191a-5c3f-4c63-fe72-08de88a2849b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|52116014|376014|7416014|921020|38350700014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	b57sik+96wnHIvi3o6l8+Ij7J6BpUEZ3SSCsrCaL8nGhP5ftIr0YNdl+7XmXSUjL4vYJO8UsEIXhnwlqBapXr1qqYPT7EZC5jZOfxllpDOmxzspAufvH8cbBvyQ1prhMQM19FH28+WtHpH+gZxO6BD7lvoZz3NVyFSZvFP2/E+PE/TDvnciFsmI4nhOGo3Xsc5EMwlor2osFDtOcYFNrG9d1LiEkSEv6nkW7A6QvMpdkfCHR16DV9n1Fbs9HM0cbwcnnpoG6XYl0Fq1RSPQMROWm8yK3OJiIP/MENdY2A34Al6F0/9B343qJXVJU/6HvtoQxQ+LpmpFUrX6frsjuI/TxjeYrSxsQ9cxFJdLKbNI01BtnGD/TrP5z5q5I8sg48hX7pWNMAm2Yy/wHsYKJw1CF2Yz8N/hbtGjQTalOyheT9u0oGks1VmMW1x26X2EwOrS6ZaCnrEVnjOZDeFRd5cYs7PBtTEYDZepZ8rpv2YyBUb285BDDjrRhkvT2YMfSHUVvaxPfUxYkm0yNgTqXphISeXSUyYzig1zADILifZ1LZPN0nDPueoHj/QFT/00oDlkIWYtvf6QGBStYv1DeR3yqm6TNWOkA8N3UfuaDv5KRbqU1I3uo9fe5HhQHA4PsKX/O/cYvxVB9QROXeHEhFhASav+E7N9H2Ic55L+A0tP9IccY+h4CFvSFBMMksnRPXkMyZV4vH/0yaaKgO1npFpue4F68ClRldkEHUDgSLR768v3B3L+NQPom3T3gWzXsx/uIZKinM1xYSN3vzcOSX6qfHbK6Nf+7MMMpW2JHuKAUlcwWeDPIDh+Jfz67qUyE
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(52116014)(376014)(7416014)(921020)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ISDrLiGVA0TBV23n9w1o4jv4t/uWmgt0KisGpStfjpWVMjNi1sxXDupV56xj?=
- =?us-ascii?Q?YOhIzTrG5Zjt36pOfZ66bpQ6UyqXa2TGXur5OsvTPMkG++cWhXTl5umAcBvA?=
- =?us-ascii?Q?JK3m2xg6cHsGo2ajgXaoi0B6aL97idJVlUvVbVOcOdyhNiAsQlE3nvi6W9u6?=
- =?us-ascii?Q?Wj31XWlO4tV4xNVV1VjIbNhUDDxLP23WqpPI7JxnKm5E17Cw0AQp/QNeqiSa?=
- =?us-ascii?Q?CTD2Xy74Cui/qLRxTe+uL7JFb4rabyxw8SvHHghFkVMoF0UOxEa6G3KtOmVH?=
- =?us-ascii?Q?+qrre90/BhHa0NRo+hCW6fINHB/qvT3wDyYIdUlMmaVFLn5eay1yGDTI5Djo?=
- =?us-ascii?Q?rrKCSZ8Li1pGWG7mK6QT1+ET5+JPuAvwi6w2ufRR6oCZ7+QWequ9Rfw94uSW?=
- =?us-ascii?Q?+KE9sGPDtUIf3GOa4zXF7MGzeWo13M2ZjL9MQBqADAcfD9kdSkDkPYsfGxLl?=
- =?us-ascii?Q?n4ORBcBNszE4viGGNyqOQdEO2fCkasMMN3xtQNUjLgnYBPVBICCQJUUvcHeL?=
- =?us-ascii?Q?6lcQ8GTIWjfAfOEaYcf01jD8IGmFJPo4n6InedRO9s7zp55XIVjJPMnYckOw?=
- =?us-ascii?Q?uiVtQ1Sh0NOtTvlwu0iBROLf8Qjk2YNpiwqXS6ZeqH88UpB+R5CeqXPCi3mZ?=
- =?us-ascii?Q?Pg7/TWlDLjhY2cpS3fxj3TxE0CyJ12LM+tQJLtwsDG94DHYv0F6X2cSiqh4P?=
- =?us-ascii?Q?zxqepybwO4vM70puqIuOaNjsfHEmKU0zFwqDcXl5XhC2sel+TGyqSVycZP5D?=
- =?us-ascii?Q?KncnI+4Q7yVxRHbAjv8aOnWXo1xY4WpIA/Il724uqLZgKfvCfjWW3P2nMS7y?=
- =?us-ascii?Q?KwJ0osPDrPOo+BglUMkVtQS8WVwb+sA1I2kDo2LtzZ5DDsPQr0NxrV/OiuOW?=
- =?us-ascii?Q?RtNuJ8jCQoyI4087ZNv3iSpMndHf4s2mkOlXnmUuBQmQCI029Dp93JVANRN1?=
- =?us-ascii?Q?0O6uQvxcJQz5pZ3qDeFkPQB5NncHibvD1xxjVeK32xHL/r2oyLDVhPHukenV?=
- =?us-ascii?Q?m2m8Pob5e0Ea/b0qKdcQGja40Sg8ZTp5/UenIacGdpBDFhoni1jD9090zA1F?=
- =?us-ascii?Q?iVpJ9pscIEdzqP2VvuNbV9ZUwbm0cD/PMd7NMAq0JKL0J/E8EepuHrOkZ1Xl?=
- =?us-ascii?Q?YQX+DiwKf8HmKOp7j/n4nlbxYJnm41+cvrt2bpqP1YBVrHVQgFQ97Y7yxlEe?=
- =?us-ascii?Q?b1r3+HtpDaF1jAk7FgNs+xSkj4dKSZi9qEuE3qqdFxtx2cfP903+ytqfKP3H?=
- =?us-ascii?Q?U6lBojry0on789p3HKRDLbpH3kW71cTs8nEqCL6UNfvBB0U2Q/0U0g0akK+j?=
- =?us-ascii?Q?6sz+qFmOQnXR5/GWP1Pv4LQ/QW6pUSu2SUTMfv2FTZsGxXktrHlk8jvp53iZ?=
- =?us-ascii?Q?qowLA5bxmN0VYDxhSHOHlQJOxIho7RlOlhqXOJb+xVOUiGA/leAVeQs/w9Ew?=
- =?us-ascii?Q?M1ejOQ2Isn4rriZqWhYT8x4qilxIiVEntrqjzRNrVrhQKx8UO2u0a9P7FZ4B?=
- =?us-ascii?Q?3wJhWhi3oq2fcZ0wqsrD6kwObdMJu59bdYYzRb3VgRQQOLBKUWcqfFuQytsW?=
- =?us-ascii?Q?s/MROzC0R7tspUmRC262mKfZkKjZmZvFX8oLwCrAfUy+o2W6bVwJYC4SC/4F?=
- =?us-ascii?Q?kpcZ1sNpD+/9rhCuc7d9gCIXaU4jDnMfOhuxPsm0d9/IaPR+GkUAMxid4d3l?=
- =?us-ascii?Q?ub75WHVPwM/igX5jHF8sJJdQAvzYAuRvTlxG29rfXJHnI4ZPSZrBt9s+kO5+?=
- =?us-ascii?Q?pPCY/PyGRw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87bb191a-5c3f-4c63-fe72-08de88a2849b
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
+X-OriginatorOrg: oss.nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 06:07:53.2312
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65b23999-c5d4-46eb-e519-08de88a29052
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 06:08:12.0388
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ed/vUYPs3K+rIo1F4601eiHQUxseX0T+4x/xVeAUhUf+FC6K35spYMsd2H6aIaNg9QR9zO2Z3D0hcuMlYzhYsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9882
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WzEGbshZAK6tl1Z6b5qWkUkfFHGx0kfD6ALQZn3bNZsswMG1dHj7mHj1cSsYr64IO/VjC33lMJ7PYA4ejBxE6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9284
 
-Each user port of the NETC switch supports 802.3 basic and mandatory
-managed objects statistic counters and IETF Management Information
-Database (MIB) package (RFC2665) and Remote Network Monitoring (RMON)
-counters. And all of these counters are 64-bit registers. In addition,
-some user ports support preemption, so these ports have two MACs, MAC
-0 is the express MAC (eMAC), MAC 1 is the preemptible MAC (pMAC). So
-for ports that support preemption, the statistics are the sum of the
-pMAC and eMAC statistics.
-
-Note that the current switch driver does not support preemption, all
-frames are sent and received via the eMAC by default. The statistics
-read from the pMAC should be zero.
-
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/dsa/netc/Makefile         |   2 +-
- drivers/net/dsa/netc/netc_ethtool.c   | 192 ++++++++++++++++++++++++++
- drivers/net/dsa/netc/netc_main.c      |   4 +
- drivers/net/dsa/netc/netc_switch.h    |  17 +++
- drivers/net/dsa/netc/netc_switch_hw.h | 153 ++++++++++++++++++++
- include/linux/fsl/netc_global.h       |   6 +
- 6 files changed, 373 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/dsa/netc/netc_ethtool.c
-
-diff --git a/drivers/net/dsa/netc/Makefile b/drivers/net/dsa/netc/Makefile
-index 4a5767562574..f40b13c702e0 100644
---- a/drivers/net/dsa/netc/Makefile
-+++ b/drivers/net/dsa/netc/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_NET_DSA_NETC_SWITCH) += nxp-netc-switch.o
--nxp-netc-switch-objs := netc_main.o netc_platform.o
-+nxp-netc-switch-objs := netc_main.o netc_platform.o netc_ethtool.o
-diff --git a/drivers/net/dsa/netc/netc_ethtool.c b/drivers/net/dsa/netc/netc_ethtool.c
-new file mode 100644
-index 000000000000..8e5861543d30
---- /dev/null
-+++ b/drivers/net/dsa/netc/netc_ethtool.c
-@@ -0,0 +1,192 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * NXP NETC switch driver
-+ * Copyright 2025-2026 NXP
-+ */
-+
-+#include <linux/ethtool_netlink.h>
-+
-+#include "netc_switch.h"
-+
-+static void netc_port_pause_stats(struct netc_port *np,
-+				  enum netc_port_mac mac,
-+				  struct ethtool_pause_stats *stats)
-+{
-+	if (mac == NETC_PORT_PMAC && !np->caps.pmac)
-+		return;
-+
-+	stats->tx_pause_frames = netc_port_rd64(np, NETC_PM_TXPF(mac));
-+	stats->rx_pause_frames = netc_port_rd64(np, NETC_PM_RXPF(mac));
-+}
-+
-+void netc_port_get_pause_stats(struct dsa_switch *ds, int port,
-+			       struct ethtool_pause_stats *pause_stats)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	struct net_device *ndev;
-+
-+	switch (pause_stats->src) {
-+	case ETHTOOL_MAC_STATS_SRC_EMAC:
-+		netc_port_pause_stats(np, NETC_PORT_EMAC, pause_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_PMAC:
-+		netc_port_pause_stats(np, NETC_PORT_PMAC, pause_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_AGGREGATE:
-+		ndev = dsa_to_port(ds, port)->user;
-+		ethtool_aggregate_pause_stats(ndev, pause_stats);
-+		break;
-+	}
-+}
-+
-+static const struct ethtool_rmon_hist_range netc_rmon_ranges[] = {
-+	{   64,   64 },
-+	{   65,  127 },
-+	{  128,  255 },
-+	{  256,  511 },
-+	{  512, 1023 },
-+	{ 1024, 1522 },
-+	{ 1523, NETC_MAX_FRAME_LEN },
-+	{ }
-+};
-+
-+static void netc_port_rmon_stats(struct netc_port *np,
-+				 enum netc_port_mac mac,
-+				 struct ethtool_rmon_stats *stats)
-+{
-+	if (mac == NETC_PORT_PMAC && !np->caps.pmac)
-+		return;
-+
-+	stats->undersize_pkts = netc_port_rd64(np, NETC_PM_RUND(mac));
-+	stats->oversize_pkts = netc_port_rd64(np, NETC_PM_ROVR(mac));
-+	stats->fragments = netc_port_rd64(np, NETC_PM_RFRG(mac));
-+	stats->jabbers = netc_port_rd64(np, NETC_PM_RJBR(mac));
-+
-+	stats->hist[0] = netc_port_rd64(np, NETC_PM_R64(mac));
-+	stats->hist[1] = netc_port_rd64(np, NETC_PM_R127(mac));
-+	stats->hist[2] = netc_port_rd64(np, NETC_PM_R255(mac));
-+	stats->hist[3] = netc_port_rd64(np, NETC_PM_R511(mac));
-+	stats->hist[4] = netc_port_rd64(np, NETC_PM_R1023(mac));
-+	stats->hist[5] = netc_port_rd64(np, NETC_PM_R1522(mac));
-+	stats->hist[6] = netc_port_rd64(np, NETC_PM_R1523X(mac));
-+
-+	stats->hist_tx[0] = netc_port_rd64(np, NETC_PM_T64(mac));
-+	stats->hist_tx[1] = netc_port_rd64(np, NETC_PM_T127(mac));
-+	stats->hist_tx[2] = netc_port_rd64(np, NETC_PM_T255(mac));
-+	stats->hist_tx[3] = netc_port_rd64(np, NETC_PM_T511(mac));
-+	stats->hist_tx[4] = netc_port_rd64(np, NETC_PM_T1023(mac));
-+	stats->hist_tx[5] = netc_port_rd64(np, NETC_PM_T1522(mac));
-+	stats->hist_tx[6] = netc_port_rd64(np, NETC_PM_T1523X(mac));
-+}
-+
-+void netc_port_get_rmon_stats(struct dsa_switch *ds, int port,
-+			      struct ethtool_rmon_stats *rmon_stats,
-+			      const struct ethtool_rmon_hist_range **ranges)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	struct net_device *ndev;
-+
-+	*ranges = netc_rmon_ranges;
-+
-+	switch (rmon_stats->src) {
-+	case ETHTOOL_MAC_STATS_SRC_EMAC:
-+		netc_port_rmon_stats(np, NETC_PORT_EMAC, rmon_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_PMAC:
-+		netc_port_rmon_stats(np, NETC_PORT_PMAC, rmon_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_AGGREGATE:
-+		ndev = dsa_to_port(ds, port)->user;
-+		ethtool_aggregate_rmon_stats(ndev, rmon_stats);
-+		break;
-+	}
-+}
-+
-+static void netc_port_ctrl_stats(struct netc_port *np,
-+				 enum netc_port_mac mac,
-+				 struct ethtool_eth_ctrl_stats *stats)
-+{
-+	if (mac == NETC_PORT_PMAC && !np->caps.pmac)
-+		return;
-+
-+	stats->MACControlFramesTransmitted =
-+		netc_port_rd64(np, NETC_PM_TCNP(mac));
-+	stats->MACControlFramesReceived =
-+		netc_port_rd64(np, NETC_PM_RCNP(mac));
-+}
-+
-+void netc_port_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
-+				  struct ethtool_eth_ctrl_stats *ctrl_stats)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	struct net_device *ndev;
-+
-+	switch (ctrl_stats->src) {
-+	case ETHTOOL_MAC_STATS_SRC_EMAC:
-+		netc_port_ctrl_stats(np, NETC_PORT_EMAC, ctrl_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_PMAC:
-+		netc_port_ctrl_stats(np, NETC_PORT_PMAC, ctrl_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_AGGREGATE:
-+		ndev = dsa_to_port(ds, port)->user;
-+		ethtool_aggregate_ctrl_stats(ndev, ctrl_stats);
-+		break;
-+	}
-+}
-+
-+static void netc_port_mac_stats(struct netc_port *np,
-+				enum netc_port_mac mac,
-+				struct ethtool_eth_mac_stats *stats)
-+{
-+	if (mac == NETC_PORT_PMAC && !np->caps.pmac)
-+		return;
-+
-+	stats->FramesTransmittedOK = netc_port_rd64(np, NETC_PM_TFRM(mac));
-+	stats->SingleCollisionFrames = netc_port_rd64(np, NETC_PM_TSCOL(mac));
-+	stats->MultipleCollisionFrames =
-+		netc_port_rd64(np, NETC_PM_TMCOL(mac));
-+	stats->FramesReceivedOK = netc_port_rd64(np, NETC_PM_RFRM(mac));
-+	stats->FrameCheckSequenceErrors =
-+		netc_port_rd64(np, NETC_PM_RFCS(mac));
-+	stats->AlignmentErrors = netc_port_rd64(np, NETC_PM_RALN(mac));
-+	stats->OctetsTransmittedOK = netc_port_rd64(np, NETC_PM_TEOCT(mac));
-+	stats->FramesWithDeferredXmissions =
-+		netc_port_rd64(np, NETC_PM_TDFR(mac));
-+	stats->LateCollisions = netc_port_rd64(np, NETC_PM_TLCOL(mac));
-+	stats->FramesAbortedDueToXSColls =
-+		netc_port_rd64(np, NETC_PM_TECOL(mac));
-+	stats->FramesLostDueToIntMACXmitError =
-+		netc_port_rd64(np, NETC_PM_TERR(mac));
-+	stats->OctetsReceivedOK = netc_port_rd64(np, NETC_PM_REOCT(mac));
-+	stats->FramesLostDueToIntMACRcvError =
-+		netc_port_rd64(np, NETC_PM_RDRNTP(mac));
-+	stats->MulticastFramesXmittedOK =
-+		netc_port_rd64(np, NETC_PM_TMCA(mac));
-+	stats->BroadcastFramesXmittedOK =
-+		netc_port_rd64(np, NETC_PM_TBCA(mac));
-+	stats->MulticastFramesReceivedOK =
-+		netc_port_rd64(np, NETC_PM_RMCA(mac));
-+	stats->BroadcastFramesReceivedOK =
-+		netc_port_rd64(np, NETC_PM_RBCA(mac));
-+}
-+
-+void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
-+				 struct ethtool_eth_mac_stats *mac_stats)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	struct net_device *ndev;
-+
-+	switch (mac_stats->src) {
-+	case ETHTOOL_MAC_STATS_SRC_EMAC:
-+		netc_port_mac_stats(np, NETC_PORT_EMAC, mac_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_PMAC:
-+		netc_port_mac_stats(np, NETC_PORT_PMAC, mac_stats);
-+		break;
-+	case ETHTOOL_MAC_STATS_SRC_AGGREGATE:
-+		ndev = dsa_to_port(ds, port)->user;
-+		ethtool_aggregate_mac_stats(ndev, mac_stats);
-+		break;
-+	}
-+}
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index 2a7ad39f8bed..1fb5eca0e41e 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -1456,6 +1456,10 @@ static const struct dsa_switch_ops netc_switch_ops = {
- 	.port_mdb_add			= netc_port_mdb_add,
- 	.port_mdb_del			= netc_port_mdb_del,
- 	.port_set_host_flood		= netc_port_set_host_flood,
-+	.get_pause_stats		= netc_port_get_pause_stats,
-+	.get_rmon_stats			= netc_port_get_rmon_stats,
-+	.get_eth_ctrl_stats		= netc_port_get_eth_ctrl_stats,
-+	.get_eth_mac_stats		= netc_port_get_eth_mac_stats,
- };
- 
- static int netc_switch_probe(struct pci_dev *pdev,
-diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
-index 7ebffb136b2f..825601847c89 100644
---- a/drivers/net/dsa/netc/netc_switch.h
-+++ b/drivers/net/dsa/netc/netc_switch.h
-@@ -70,6 +70,11 @@ struct netc_port {
- 	struct ipft_entry_data *host_flood;
- };
- 
-+enum netc_port_mac {
-+	NETC_PORT_EMAC = 0,
-+	NETC_PORT_PMAC,
-+};
-+
- struct netc_switch_regs {
- 	void __iomem *base;
- 	void __iomem *port;
-@@ -110,6 +115,7 @@ struct netc_switch {
- 
- /* Write/Read registers of Switch Port (including pseudo MAC port) */
- #define netc_port_rd(p, o)		netc_read((p)->iobase + (o))
-+#define netc_port_rd64(p, o)		netc_read64((p)->iobase + (o))
- #define netc_port_wr(p, o, v)		netc_write((p)->iobase + (o), v)
- 
- /* Write/Read Switch global registers */
-@@ -135,4 +141,15 @@ static inline void netc_del_fdb_entry(struct netc_fdb_entry *entry)
- 
- int netc_switch_platform_probe(struct netc_switch *priv);
- 
-+/* ethtool APIs */
-+void netc_port_get_pause_stats(struct dsa_switch *ds, int port,
-+			       struct ethtool_pause_stats *pause_stats);
-+void netc_port_get_rmon_stats(struct dsa_switch *ds, int port,
-+			      struct ethtool_rmon_stats *rmon_stats,
-+			      const struct ethtool_rmon_hist_range **ranges);
-+void netc_port_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
-+				  struct ethtool_eth_ctrl_stats *ctrl_stats);
-+void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
-+				 struct ethtool_eth_mac_stats *mac_stats);
-+
- #endif
-diff --git a/drivers/net/dsa/netc/netc_switch_hw.h b/drivers/net/dsa/netc/netc_switch_hw.h
-index 7ef870fbba4d..9be859d20675 100644
---- a/drivers/net/dsa/netc/netc_switch_hw.h
-+++ b/drivers/net/dsa/netc/netc_switch_hw.h
-@@ -193,6 +193,159 @@ enum netc_stg_stage {
- #define   SSP_1G			2
- #define  PM_IF_MODE_ENA			BIT(15)
- 
-+/* Port MAC 0/1 Receive Ethernet Octets Counter */
-+#define NETC_PM_REOCT(a)		(0x1100 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Octets Counter */
-+#define NETC_PM_ROCT(a)			(0x1108 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Alignment Error Counter Register */
-+#define NETC_PM_RALN(a)			(0x1110 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Valid Pause Frame Counter */
-+#define NETC_PM_RXPF(a)			(0x1118 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Frame Counter */
-+#define NETC_PM_RFRM(a)			(0x1120 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Frame Check Sequence Error Counter */
-+#define NETC_PM_RFCS(a)			(0x1128 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive VLAN Frame Counter */
-+#define NETC_PM_RVLAN(a)		(0x1130 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Frame Error Counter */
-+#define NETC_PM_RERR(a)			(0x1138 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Unicast Frame Counter */
-+#define NETC_PM_RUCA(a)			(0x1140 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Multicast Frame Counter */
-+#define NETC_PM_RMCA(a)			(0x1148 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Broadcast Frame Counter */
-+#define NETC_PM_RBCA(a)			(0x1150 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Dropped Packets Counter */
-+#define NETC_PM_RDRP(a)			(0x1158 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Packets Counter */
-+#define NETC_PM_RPKT(a)			(0x1160 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Undersized Packet Counter */
-+#define NETC_PM_RUND(a)			(0x1168 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 64-Octet Packet Counter */
-+#define NETC_PM_R64(a)			(0x1170 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 65 to 127-Octet Packet Counter */
-+#define NETC_PM_R127(a)			(0x1178 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 128 to 255-Octet Packet Counter */
-+#define NETC_PM_R255(a)			(0x1180 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 256 to 511-Octet Packet Counter */
-+#define NETC_PM_R511(a)			(0x1188 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 512 to 1023-Octet Packet Counter */
-+#define NETC_PM_R1023(a)		(0x1190 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 1024 to 1522-Octet Packet Counter */
-+#define NETC_PM_R1522(a)		(0x1198 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive 1523 to Max-Octet Packet Counter */
-+#define NETC_PM_R1523X(a)		(0x11a0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Oversized Packet Counter */
-+#define NETC_PM_ROVR(a)			(0x11a8 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Jabber Packet Counter */
-+#define NETC_PM_RJBR(a)			(0x11b0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Fragment Packet Counter */
-+#define NETC_PM_RFRG(a)			(0x11b8 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Control Packet Counter */
-+#define NETC_PM_RCNP(a)			(0x11c0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Dropped Not Truncated Packets Counter */
-+#define NETC_PM_RDRNTP(a)		(0x11c8 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Ethernet Octets Counter */
-+#define NETC_PM_TEOCT(a)		(0x1200 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Octets Counter */
-+#define NETC_PM_TOCT(a)			(0x1208 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Valid Pause Frame Counter */
-+#define NETC_PM_TXPF(a)			(0x1218 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Frame Counter */
-+#define NETC_PM_TFRM(a)			(0x1220 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Frame Check Sequence Error Counter */
-+#define NETC_PM_TFCS(a)			(0x1228 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit VLAN Frame Counter */
-+#define NETC_PM_TVLAN(a)		(0x1230 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Frame Error Counter */
-+#define NETC_PM_TERR(a)			(0x1238 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Unicast Frame Counter */
-+#define NETC_PM_TUCA(a)			(0x1240 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Multicast Frame Counter */
-+#define NETC_PM_TMCA(a)			(0x1248 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Broadcast Frame Counter */
-+#define NETC_PM_TBCA(a)			(0x1250 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Packets Counter */
-+#define NETC_PM_TPKT(a)			(0x1260 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Undersized Packet Counter */
-+#define NETC_PM_TUND(a)			(0x1268 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 64-Octet Packet Counter */
-+#define NETC_PM_T64(a)			(0x1270 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 65 to 127-Octet Packet Counter */
-+#define NETC_PM_T127(a)			(0x1278 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 128 to 255-Octet Packet Counter */
-+#define NETC_PM_T255(a)			(0x1280 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 256 to 511-Octet Packet Counter */
-+#define NETC_PM_T511(a)			(0x1288 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 512 to 1023-Octet Packet Counter */
-+#define NETC_PM_T1023(a)		(0x1290 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 1024 to 1522-Octet Packet Counter */
-+#define NETC_PM_T1522(a)		(0x1298 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit 1523 to TX_MTU-Octet Packet Counter */
-+#define NETC_PM_T1523X(a)		(0x12a0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Control Packet Counter */
-+#define NETC_PM_TCNP(a)			(0x12c0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Deferred Packet Counter */
-+#define NETC_PM_TDFR(a)			(0x12d0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Multiple Collisions Counter */
-+#define NETC_PM_TMCOL(a)		(0x12d8 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Single Collision */
-+#define NETC_PM_TSCOL(a)		(0x12e0 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Late Collision Counter */
-+#define NETC_PM_TLCOL(a)		(0x12e8 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Excessive Collisions Counter */
-+#define NETC_PM_TECOL(a)		(0x12f0 + (a) * 0x400)
-+
- #define NETC_PEMDIOCR			0x1c00
- #define NETC_EMDIO_BASE			NETC_PEMDIOCR
- 
-diff --git a/include/linux/fsl/netc_global.h b/include/linux/fsl/netc_global.h
-index fdecca8c90f0..5b8ff528d369 100644
---- a/include/linux/fsl/netc_global.h
-+++ b/include/linux/fsl/netc_global.h
-@@ -5,6 +5,7 @@
- #define __NETC_GLOBAL_H
- 
- #include <linux/io.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
- 
- static inline u32 netc_read(void __iomem *reg)
- {
-@@ -16,4 +17,9 @@ static inline void netc_write(void __iomem *reg, u32 val)
- 	iowrite32(val, reg);
- }
- 
-+static inline u64 netc_read64(void __iomem *reg)
-+{
-+	return ioread64(reg);
-+}
-+
- #endif
--- 
-2.34.1
-
+SGkgTGF1cmVudCwNCg0KVGhhbmtzIGZvciB5b3VyIHJldmlldy4NCg0KPiAtLS0tLU9yaWdpbmFs
+IE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBMYXVyZW50IFBpbmNoYXJ0IDxsYXVyZW50LnBpbmNoYXJ0
+QGlkZWFzb25ib2FyZC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgTWFyY2ggMjAsIDIwMjYgNTozNCBB
+TQ0KPiBUbzogRy5OLiBaaG91IChPU1MpIDxndW9uaXUuemhvdUBvc3MubnhwLmNvbT4NCj4gQ2M6
+IE1hdXJvIENhcnZhbGhvIENoZWhhYiA8bWNoZWhhYkBrZXJuZWwub3JnPjsgU2hhd24gR3VvDQo+
+IDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4
+LmRlPjsNCj4gUGVuZ3V0cm9uaXggS2VybmVsIFRlYW0gPGtlcm5lbEBwZW5ndXRyb25peC5kZT47
+IEZhYmlvIEVzdGV2YW0NCj4gPGZlc3RldmFtQGdtYWlsLmNvbT47IFN0ZWZhbiBSaWVkbcO8bGxl
+ciA8cy5yaWVkbXVlbGxlckBwaHl0ZWMuZGU+Ow0KPiBKYWNvcG8gTW9uZGkgPGphY29wb0BqbW9u
+ZGkub3JnPjsgYy5oZW1wQHBoeXRlYy5kZTsgRnJhbmsgTGkNCj4gPGZyYW5rLmxpQG54cC5jb20+
+OyBBaXNoZW5nIERvbmcgPGFpc2hlbmcuZG9uZ0BueHAuY29tPjsgbGludXgtDQo+IG1lZGlhQHZn
+ZXIua2VybmVsLm9yZzsgaW14QGxpc3RzLmxpbnV4LmRldjsgbGludXgtYXJtLQ0KPiBrZXJuZWxA
+bGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgRy5OLiBa
+aG91DQo+IDxndW9uaXUuemhvdUBueHAuY29tPjsgc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBT
+dWJqZWN0OiBSZTogW1BBVENIIFJFU0VORCB2Ml0gbWVkaWE6IG54cDogaW14OC1pc2k6IEZpeCBw
+b3RlbnRpYWwgb3V0LW9mLQ0KPiBib3VuZHMgaXNzdWVzDQo+IA0KPiBIZWxsbyBHdW9uaXUsDQo+
+IA0KPiBUaGFuayB5b3UgZm9yIHRoZSBwYXRjaC4NCj4gDQo+IE9uIFNhdCwgRmViIDI4LCAyMDI2
+IGF0IDA1OjM1OjUzUE0gKzA4MDAsIEd1b25pdSBaaG91IHdyb3RlOg0KPiA+IEZyb206IEd1b25p
+dSBaaG91IDxndW9uaXUuemhvdUBueHAuY29tPg0KPiA+DQo+ID4gVGhlIG1heGltdW0gZG93bnNj
+YWxpbmcgZmFjdG9yIHN1cHBvcnRlZCBieSBJU0kgY2FuIGJlIHVwIHRvIDE2LiBBZGQNCj4gPiBt
+aW5pbXVtIHZhbHVlIGNvbnN0cmFpbnQgYmVmb3JlIGFwcGx5aW5nIHRoZSBzZXR0aW5nIHRvIGhh
+cmR3YXJlLg0KPiA+IE90aGVyd2lzZSwgdGhlIHByb2Nlc3Mgd2lsbCBub3QgcmVzcG9uZCBldmVu
+IHdoZW4gQ3RybCtDIGlzIGV4ZWN1dGVkLg0KPiANCj4gQ291bGQgeW91IHNoYXJlIGhvdyB5b3Ug
+Y2FuIHRyaWdnZXIgdGhpcyBmcm9tIHVzZXJzcGFjZSA/IEknZCBsaWtlIHRvIHRlc3QgaXQgYW5k
+DQo+IHNlZSB3aGVyZSB0aGUgYWJzZW5jZSBvZiByZXNwb25zZSBjb21lcyBmcm9tLg0KDQpTdXJl
+LCBJIGZvdW5kIHRoaXMgaXNzdWUgb24gaS5NWDk1MiBidXQgb3RoZXIgcGxhdGZvcm0gbGlrZSBp
+Lk1YOE1OIGFsc28gY291bGQgcmVwcm9kdWNlLiANCg0KQmVsbG93IGNvbW1hbmQgdXNpbmcgSVNJ
+IG0ybSgvZGV2L3ZpZGVvMSkgZnVuY3Rpb24uDQpyb290QGlteDhtbmV2azp+IyB2NGwyLWN0bCAt
+LWxpc3QtZGV2DQpteGMtaXNpLWNhcCAocGxhdGZvcm06MzJlMjAwMDAuaXNpKToNCiAgICAgICAg
+L2Rldi92aWRlbzANCiAgICAgICAgL2Rldi92aWRlbzENCiAgICAgICAgL2Rldi9tZWRpYTANCiQg
+Z3N0LWxhdW5jaC0xLjAgdmlkZW90ZXN0c3JjIG51bS1idWZmZXJzPTEwMCAnIScgdmlkZW8veC1y
+YXcsd2lkdGg9MTkyMCxoZWlnaHQ9MTA4MCxmb3JtYXQ9QkdSeCAnIScgcXVldWUgJyEnIHY0bDJj
+b252ZXJ0ICchJyB2aWRlby94LXJhdyx3aWR0aD0zMixoZWlnaHQ9MzIsZm9ybWF0PUJHUnggJyEn
+IHF1ZXVlICchJyB3YXlsYW5kc2luaw0KDQo+IA0KPiA+IEZpeGVzOiBjZjIxZjMyOGZjYWYgKCJt
+ZWRpYTogbnhwOiBBZGQgaS5NWDggSVNJIGRyaXZlciIpDQo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmcNCj4gPiBSZXZpZXdlZC1ieTogRnJhbmsgTGkgPEZyYW5rLkxpQG54cC5jb20+DQo+
+ID4gU2lnbmVkLW9mZi1ieTogR3Vvbml1IFpob3UgPGd1b25pdS56aG91QG54cC5jb20+DQo+ID4g
+LS0tDQo+ID4gQ2hhbmdlcyBpbiB2MjoNCj4gPiAtIEZpeCBwb3NzaWJsZSBzaWRlLWVmZmVjdHMg
+Y2F1c2VkIGJ5ICdtYXhfdmFsJyBpbiBDTEFNUF9ET1dOU0NBTEVfMTYNCj4gbWFjcm8uDQo+ID4g
+LSBBZGQgc3BhY2UgbGluZSBiZXR3ZWVuIHR3byBwYXJhZ3JhcGggaW4gY29tbWVudC4NCj4gPiAt
+IExpbmsgdG8gdjE6DQo+ID4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI2MDEyMi1pc2kt
+djEtMS1jM2VjNmUyNjRmMTNAbnhwLmNvbQ0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21lZGlhL3Bs
+YXRmb3JtL254cC9pbXg4LWlzaS9pbXg4LWlzaS1jb3JlLmggfCAxNg0KPiA+ICsrKysrKysrKysr
+KysrKysgIGRyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgtaXNpL2lteDgtaXNpLW0ybS5j
+DQo+ID4gfCAgNiArKystLS0gIGRyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgtaXNpL2lt
+eDgtaXNpLXBpcGUuYyB8ICA2DQo+ID4gKystLS0tDQo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgMjEg
+aW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL21lZGlhL3BsYXRmb3JtL254cC9pbXg4LWlzaS9pbXg4LWlzaS1jb3JlLmgNCj4gPiBiL2Ry
+aXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgtaXNpL2lteDgtaXNpLWNvcmUuaA0KPiA+IGlu
+ZGV4DQo+ID4NCj4gM2NiZDM1MzA1YWYwZjgwMjZjNGY3NmI1ZWI1ZDA4NjRmOGUzNmRjMy4uODRl
+MTM0ZjRkNWZiMjZiZTY1MmFjM2U2DQo+IGFlY2QNCj4gPiA0NTliYjJhMGQxYzYgMTAwNjQ0DQo+
+ID4gLS0tIGEvZHJpdmVycy9tZWRpYS9wbGF0Zm9ybS9ueHAvaW14OC1pc2kvaW14OC1pc2ktY29y
+ZS5oDQo+ID4gKysrIGIvZHJpdmVycy9tZWRpYS9wbGF0Zm9ybS9ueHAvaW14OC1pc2kvaW14OC1p
+c2ktY29yZS5oDQo+ID4gQEAgLTU5LDYgKzU5LDIyIEBAIHN0cnVjdCB2NGwyX20ybV9kZXY7DQo+
+ID4gICNkZWZpbmUgTVhDX0lTSV9NMk0JCQkibXhjLWlzaS1tMm0iDQo+ID4gICNkZWZpbmUgTVhD
+X01BWF9QTEFORVMJCQkzDQo+ID4NCj4gPiArLyoNCj4gPiArICogSVNJIHNjYWxpbmcgZW5naW5l
+IHdvcmtzIGluIHR3byBwYXJ0czogaXQgcGVyZm9ybXMgcHJlLWRlY2ltYXRpb24NCj4gPiArb2YN
+Cj4gPiArICogdGhlIGltYWdlIGZvbGxvd2VkIGJ5IGJpbGluZWFyIGZpbHRlcmluZyB0byBhY2hp
+ZXZlIHRoZSBkZXNpcmVkDQo+ID4gKyAqIGRvd25zY2FsaW5nIGZhY3Rvci4NCj4gPiArICoNCj4g
+PiArICogVGhlIGRlY2ltYXRpb24gZmlsdGVyIHByb3ZpZGVzIGEgbWF4aW11bSBkb3duc2NhbGlu
+ZyBmYWN0b3Igb2YgOCwNCj4gPiArYW5kDQo+ID4gKyAqIHRoZSBzdWJzZXF1ZW50IGJpbGluZWFy
+IGZpbHRlciBwcm92aWRlcyBhIG1heGltdW0gZG93bnNjYWxpbmcNCj4gPiArZmFjdG9yDQo+ID4g
+KyAqIG9mIDIuIENvbWJpbmVkLCB0aGUgbWF4aW11bSBzY2FsaW5nIGZhY3RvciBjYW4gYmUgdXAg
+dG8gMTYuDQo+ID4gKyAqLw0KPiA+ICsjZGVmaW5lIENMQU1QX0RPV05TQ0FMRV8xNih2YWwsIG1h
+eF92YWwpCQkJXA0KPiANCj4gTGV0J3MgYWRkIGEgTVhDX0lTSV8gcHJlZml4Lg0KPiANCj4gPiAr
+KHsJCQkJCQkJCVwNCj4gPiArCXR5cGVvZihtYXhfdmFsKSBfX21heF92YWwgPSAobWF4X3ZhbCk7
+CQkJXA0KPiA+ICsJCQkJCQkJCVwNCj4gPiArCWNsYW1wKCh2YWwpLCBtYXgoMVUsIF9fbWF4X3Zh
+bCA+PiA0KSwgX19tYXhfdmFsKTsJXA0KPiANCj4gSSB0aGluayB5b3Ugc2hvdWxkIHJvdW5kIHRo
+ZSBkaXZpc2lvbiB1cCBoZXJlOg0KPiANCj4gCWNsYW1wKCh2YWwpLCBtYXgoMVUsIChfX21heF92
+YWwgKyAxNSkgLyAxNiwgX19tYXhfdmFsKTsJXA0KPiANCj4gTGV0J3MgYXNzdW1lIHRoZSBpbnB1
+dCBzaXplIChtYXhfdmFsKSBpcyAxMDAwLiBXaXRob3V0IHJvdW5kaW5nIHVwLCB0aGUgb3V0cHV0
+DQo+IHNpemUgd2lsbCBiZSBjbGFtcGVkIHRvIDEwMDAgLyAxNiA9IDYyLiBUaGlzIGxlYWRzIHRv
+IGEgZG93bnNjYWxpbmcgZmFjdG9yDQo+IHNsaWdodGx5IGFib3ZlIDE2Lg0KPiANCj4gPiArfSkN
+Cj4gDQo+IEFueSByZWFzb24gbm90IHRvIG1ha2UgdGhpcyBhbiBpbmxpbmUgZnVuY3Rpb24gaW5z
+dGVhZCBvZiBhIG1hY3JvID8NCg0KVGhhbmsgeW91IGZvciB0aGUgc3VnZ2VzdGlvbi4gWW91J3Jl
+IHJpZ2h0IC0gYW4gaW5saW5lIGZ1bmN0aW9uIHdvdWxkIGJlIGJldHRlciBoZXJlIGZvciB0eXBl
+IHNhZmV0eQ0KYW5kIGVhc2llciBkZWJ1Z2dpbmcuIFRoZSBtYWNybyB3YXMgaW5pdGlhbGx5IHVz
+ZWQgd2l0aG91dCBzcGVjaWFsIGNvbnNpZGVyYXRpb24uIEknbGwgY2hhbmdlIGl0DQp0byBhIHN0
+YXRpYyBpbmxpbmUgZnVuY3Rpb24gaW4gbmV4dCB2ZXJzaW9uLg0KDQo+IA0KPiA+ICsNCj4gPiAg
+c3RydWN0IG14Y19pc2lfZGV2Ow0KPiA+ICBzdHJ1Y3QgbXhjX2lzaV9tMm1fY3R4Ow0KPiA+DQo+
+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgtaXNpL2lteDgt
+aXNpLW0ybS5jDQo+ID4gYi9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL254cC9pbXg4LWlzaS9pbXg4
+LWlzaS1tMm0uYw0KPiA+IGluZGV4DQo+ID4NCj4gZjQyNWFjNzg2ODU0N2RhNDAxZTg2Y2U1YTli
+NzBhOTg5MGU3MjU0MS4uODg2MGQ4OTcxMzY2N2QwNmFiYzk0ZQ0KPiA2MDI0NTINCj4gPiA2ZmFi
+YWM0NmZlYjcgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9tZWRpYS9wbGF0Zm9ybS9ueHAvaW14
+OC1pc2kvaW14OC1pc2ktbTJtLmMNCj4gPiArKysgYi9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL254
+cC9pbXg4LWlzaS9pbXg4LWlzaS1tMm0uYw0KPiA+IEBAIC01MDksOSArNTA5LDkgQEAgX19teGNf
+aXNpX20ybV90cnlfZm10X3ZpZChzdHJ1Y3QNCj4gbXhjX2lzaV9tMm1fY3R4ICpjdHgsDQo+ID4g
+IAkJCSAgY29uc3QgZW51bSBteGNfaXNpX3ZpZGVvX3R5cGUgdHlwZSkgIHsNCj4gPiAgCWlmICh0
+eXBlID09IE1YQ19JU0lfVklERU9fTTJNX0NBUCkgew0KPiA+IC0JCS8qIERvd25zY2FsaW5nIG9u
+bHkgICovDQo+ID4gLQkJcGl4LT53aWR0aCA9IG1pbihwaXgtPndpZHRoLCBjdHgtPnF1ZXVlcy5v
+dXQuZm9ybWF0LndpZHRoKTsNCj4gPiAtCQlwaXgtPmhlaWdodCA9IG1pbihwaXgtPmhlaWdodCwg
+Y3R4LT5xdWV1ZXMub3V0LmZvcm1hdC5oZWlnaHQpOw0KPiA+ICsJCS8qIERvd25zY2FsaW5nIG9u
+ZS1zaXh0ZWVudGggb25seSAgKi8NCj4gDQo+IFRoZXJlIGFyZSB0d28gc3BhY2VzIGFmdGVyICJv
+bmx5Ii4NCg0KV2lsbCByZW1vdmUgaXQuDQoNCj4gDQo+ID4gKwkJcGl4LT53aWR0aCA9IENMQU1Q
+X0RPV05TQ0FMRV8xNihwaXgtPndpZHRoLCBjdHgtDQo+ID5xdWV1ZXMub3V0LmZvcm1hdC53aWR0
+aCk7DQo+ID4gKwkJcGl4LT5oZWlnaHQgPSBDTEFNUF9ET1dOU0NBTEVfMTYocGl4LT5oZWlnaHQs
+DQo+ID4gK2N0eC0+cXVldWVzLm91dC5mb3JtYXQuaGVpZ2h0KTsNCj4gDQo+IFRvIGtlZXAgbGlu
+ZXMgc2hvcnRlciwgeW91IGNhbiB3cml0ZQ0KPiANCj4gCQljb25zdCBzdHJ1Y3QgdjRsMl9waXhf
+Zm9ybWF0X21wbGFuZSAqZm9ybWF0ID0NCj4gCQkJJmN0eC0+cXVldWVzLm91dC5mb3JtYXQ7DQo+
+IA0KPiAJCS8qIERvd25zY2FsaW5nIG9ubHksIGJ5IHVwIHRvIDE2LiAqLw0KPiAJCXBpeC0+d2lk
+dGggPSBDTEFNUF9ET1dOU0NBTEVfMTYocGl4LT53aWR0aCwgZm9ybWF0LQ0KPiA+d2lkdGgpOw0K
+PiAJCXBpeC0+aGVpZ2h0ID0gQ0xBTVBfRE9XTlNDQUxFXzE2KHBpeC0+aGVpZ2h0LCBmb3JtYXQt
+DQo+ID5oZWlnaHQpOw0KDQpPay4NCg0KPiANCj4gPiAgCX0NCj4gPg0KPiA+ICAJcmV0dXJuIG14
+Y19pc2lfZm9ybWF0X3RyeShjdHgtPm0ybS0+cGlwZSwgcGl4LCB0eXBlKTsgZGlmZiAtLWdpdA0K
+PiA+IGEvZHJpdmVycy9tZWRpYS9wbGF0Zm9ybS9ueHAvaW14OC1pc2kvaW14OC1pc2ktcGlwZS5j
+DQo+ID4gYi9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL254cC9pbXg4LWlzaS9pbXg4LWlzaS1waXBl
+LmMNCj4gPiBpbmRleA0KPiA+DQo+IGE0MWM1MWRkOWNlMGYyZWViNzc5ZTlhYTI0NjE1OTNiMGQ2
+MzVmNDEuLmMzZmZjOGEzOGQxMjY5YzBhNGU2NDkzYg0KPiA0ZDc1DQo+ID4gNjkwZjAxY2M4N2Ji
+IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgtaXNpL2lt
+eDgtaXNpLXBpcGUuYw0KPiA+ICsrKyBiL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDgt
+aXNpL2lteDgtaXNpLXBpcGUuYw0KPiA+IEBAIC02NDcsMTAgKzY0Nyw4IEBAIHN0YXRpYyBpbnQg
+bXhjX2lzaV9waXBlX3NldF9zZWxlY3Rpb24oc3RydWN0DQo+ID4gdjRsMl9zdWJkZXYgKnNkLA0K
+PiA+DQo+IA0KPiBUaGVyZSdzIGEgY29tbWVudCBhYm92ZSB0aGF0IHN0YXRlcw0KPiANCj4gCQkv
+KiBUaGUgc2luayBjcm9wIGlzIGJvdW5kIGJ5IHRoZSBzaW5rIGZvcm1hdCBkb3duc2NhbGluZyBv
+bmx5KS4NCj4gKi8NCj4gDQo+IFRoYXQncyBub3QgcmlnaHQsIGxldCdzIGZpeCBpdDoNCj4gDQo+
+IAkJLyoNCj4gCQkgKiBUaGUgSVNJIHN1cHBvcnRzIGRvd25zY2FsaW5nIG9ubHksIHdpdGggYSBm
+YWN0b3IgdXAgdG8gMTYuDQo+IAkJICogQ2xhbXAgdGhlIGNvbXBvc2UgcmVjdGFuZ2xlIHNpemUg
+YWNjb3JkaW5nbHkuDQo+IAkJICovDQoNCldpbGwgZml4Lg0KDQo+IA0KPiBSZWFkaW5nIHRoZSBk
+cml2ZXIgY29kZSB0byBjaGVjayBob3cgcm91bmRpbmcgaXMgZG9uZSB3aGVuIHByb2dyYW1taW5n
+IHRoZQ0KPiBoYXJkd2FyZSwgSSBub3RpY2VkIHRoYXQgd2UgY2xhbXAgdGhlIGJpbGluZWFyIHNj
+YWxpbmcgcmF0aW8gdG8NCj4gSVNJX0RPV05TQ0FMRV9USFJFU0hPTEQsIGRlZmluZWQgYXMgMHg0
+MDAwOg0KPiANCj4gCXJldHVybiBtaW5fdCh1MzIsIGZyb20gKiAweDEwMDAgLyAodG8gKiAqZGVj
+KSwNCj4gSVNJX0RPV05TQ0FMRV9USFJFU0hPTEQpOw0KPiANCj4gVGhlIHJhdGlvIGlzIGRvY3Vt
+ZW50ZWQgdG8gYmUgYSBRMi4xMiB2YWx1ZSwgc28gMHg0MDAwIGlzIHgxLjAuIFRoZSBjb2RlIHNl
+ZW1zDQo+IHdyb25nIHRvIG1lLCB3aGF0IGRvIHlvdSB0aGluayA/DQoNClllcywgeW91J3JlIHJp
+Z2h0LiBJU0lfRE9XTlNDQUxFX1RIUkVTSE9MRCBzaG91bGQgYmUgMHgyMDAwIGJlY2F1c2Ugc2Nh
+bGluZw0KZG93biBieSBhIGZhY3RvciBncmVhdGVyIHRoYW4gMiBpcyBub3Qgc3VwcG9ydGVkIHdp
+dGggdGhlIGJpbGluZWFyIGZpbHRlciwgd2lsbCBmaXggaW4NCm5leHQgdmVyc2lvbi4gVGhhbmtz
+IGZvciBwb2ludGluZyBvdXQuDQoNCj4gDQo+ID4gIAkJc2VsLT5yLmxlZnQgPSAwOw0KPiA+ICAJ
+CXNlbC0+ci50b3AgPSAwOw0KPiA+IC0JCXNlbC0+ci53aWR0aCA9IGNsYW1wKHNlbC0+ci53aWR0
+aCwgTVhDX0lTSV9NSU5fV0lEVEgsDQo+ID4gLQkJCQkgICAgIGZvcm1hdC0+d2lkdGgpOw0KPiA+
+IC0JCXNlbC0+ci5oZWlnaHQgPSBjbGFtcChzZWwtPnIuaGVpZ2h0LCBNWENfSVNJX01JTl9IRUlH
+SFQsDQo+ID4gLQkJCQkgICAgICBmb3JtYXQtPmhlaWdodCk7DQo+ID4gKwkJc2VsLT5yLndpZHRo
+ID0gQ0xBTVBfRE9XTlNDQUxFXzE2KHNlbC0+ci53aWR0aCwgZm9ybWF0LQ0KPiA+d2lkdGgpOw0K
+PiA+ICsJCXNlbC0+ci5oZWlnaHQgPSBDTEFNUF9ET1dOU0NBTEVfMTYoc2VsLT5yLmhlaWdodCwg
+Zm9ybWF0LQ0KPiA+aGVpZ2h0KTsNCj4gPg0KPiA+ICAJCXJlY3QgPSBteGNfaXNpX3BpcGVfZ2V0
+X3BhZF9jb21wb3NlKHBpcGUsIHN0YXRlLA0KPiA+ICAJCQkJCQkgICAgTVhDX0lTSV9QSVBFX1BB
+RF9TSU5LKTsNCj4gPg0KPiA+IC0tLQ0KPiA+IGJhc2UtY29tbWl0OiBlYjRlZTg3MDc0N2MzYTc3
+YTljM2M4NGQ4NGVmYjY0YmQ0ODEwMTNhDQo+ID4gY2hhbmdlLWlkOiAyMDI2MDEyMi1pc2ktNzRm
+ODdmYmI5YTZmDQo+IA0KPiAtLQ0KPiBSZWdhcmRzLA0KPiANCj4gTGF1cmVudCBQaW5jaGFydA0K
