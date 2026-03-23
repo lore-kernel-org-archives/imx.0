@@ -1,46 +1,34 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0017D36E47A
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47087389454
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 10:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774259741; cv=none; b=XslmMZ8ZtucM8kRFouJe5n9swc4ntJGWzPSke2UrWlZUchOnYMeuCxoLVJPRUOgGRBIebJzcrVLPVJBpr/Ff6F/ScoYQne9lkRWVXMUx/4IzQA2W7qzezTiHS+o38N4LHsX03KmHnsEHlWgULP4U1/+pQ1B9fCnGX8np3n1mItQ=
+	t=1774260486; cv=none; b=O3LGIgMxGLgS1zKUKwIb9iKR+A23PsfYx0bwG0J00FbEtxp7ABwvObGbC8vByONARbXuF3MTct+2a37huVbfmMP3Hh23URZhnf3wQdHCe2YvqDMFDHTwG3cmr4fVpbPRflFLXY3ZyRUBdNUJRo6/v/E+UIYcquS9oVmmvcXgSZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774259741; c=relaxed/simple;
-	bh=GSqj15XOYgZ+z3rGtlQoS2JdFGH8XW37H8ENXEVYxQ8=;
+	s=arc-20240116; t=1774260486; c=relaxed/simple;
+	bh=iyWyNlV51BpyMkw7V5QwsB1bepmvYO6pQ+kULfmgUXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tGzt6Tqxi07EP49ybHibCUCRWV6tdOr8UJjDZX2TyumzE4g8MRHC8dHbQoP0GlFMLnp08izez6Q8JZ5MIyxo3tkhqL6tTLgcf0Z/YkgONCcAaD2xLQb40CirWVX/TAOSaIZgvFr/28J+lNvh8OgksFEh5nHF5rgUSY0Nfsy8AFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KSobhkUH; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTyTSuRqi1+ftgkwuWb9JwF0OK2Lis/J/FY4HWc2jUystMNA20X//lUyqUA1SEP1pRFP6ir+8I+Qn3YdZtvs+QTLCRn9tVLiQzCQI8RQCeKyLXf3ItMj7t+14FdGv2nv9RvHXcRwBNrtd/z8caxncy2CDIT4RDw5u4ZuUuRihno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=rP0iqGlG; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KSobhkUH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lrsfFTGfYyLKxF07ePPhHcfSutGOTt7NkUKvGum/24k=; b=KSobhkUH1DcN4nToJvqyD5yAUQ
-	/YpHvXdbSzU/y6TgMZ2xtyfj7RPYzfRRFYJvfvJV8J5aiOWZgDg8+Otj13FDeCHV8cyXcj6+gVISn
-	Gp4j/vwmO0HAIkQSvho4ojB8Cgnow6dWrQ8onHswqgD55iniIYO9q8WKP/M6Pywi3EkY5I4Zv2Zlc
-	Ua/Yy8CL4gLXFmaIx4CdSXbes8YbsXVCJiC+jHf4ODYwLNia5zNHTJrLJobSaLhf1VGO+gw3NHXJU
-	BrNyURQGWUCtEdKSVuVDuWRkDoObJqSlntuD5RJHQOZuDT6VsZjm1Fu0tj4lLxOAuljroKiHj9FE6
-	tHgTrPqA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57086)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w4c0X-000000000GI-2nAx;
-	Mon, 23 Mar 2026 09:55:37 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w4c0W-000000003w9-0ocX;
-	Mon, 23 Mar 2026 09:55:36 +0000
-Date: Mon, 23 Mar 2026 09:55:36 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="rP0iqGlG"
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 747CB225;
+	Mon, 23 Mar 2026 11:06:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1774260406;
+	bh=iyWyNlV51BpyMkw7V5QwsB1bepmvYO6pQ+kULfmgUXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rP0iqGlGqtP8yALjUej6Mzd+BVB60eXEQ+JfZWcKub/mOgG7qPq0t7htAkmAuKR6l
+	 pcPJxxSC8Y5eQh/zVpgf/X7zpucSMTQI379kjsX0oeUNsCOzHOeJ9jljDg7tBi10xy
+	 +bu9gvl5k6jlX9RfCE+CNiEW8lIPsvHWggzblZqQ=
+Date: Mon, 23 Mar 2026 12:08:01 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -56,64 +44,68 @@ Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
 	Stefan Klug <stefan.klug@ideasonboard.com>,
 	linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v3 1/2] net: stmmac: provide flag to disable EEE
-Message-ID: <acEOGMHfYsxv3GOk@shell.armlinux.org.uk>
+Message-ID: <20260323100801.GA1514659@killaraus.ideasonboard.com>
 References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
  <20260323093933.1785583-2-laurent.pinchart@ideasonboard.com>
+ <acEOGMHfYsxv3GOk@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260323093933.1785583-2-laurent.pinchart@ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <acEOGMHfYsxv3GOk@shell.armlinux.org.uk>
 
-On Mon, Mar 23, 2026 at 11:39:32AM +0200, Laurent Pinchart wrote:
-> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+On Mon, Mar 23, 2026 at 09:55:36AM +0000, Russell King (Oracle) wrote:
+> On Mon, Mar 23, 2026 at 11:39:32AM +0200, Laurent Pinchart wrote:
+> > From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+> > 
+> > Some platforms have problems when EEE is enabled, and thus need a way
+> > to disable stmmac EEE support. Add a flag before the other LPI related
+> > flags which tells stmmac to avoid populating the phylink LPI
+> > capabilities, which causes phylink to call phy_disable_eee() for any
+> > PHY that is attached to the affected phylink instance.
+> > 
+> > iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
+> > along with the main dwmac interrupts. Since lpi_intr_o is synchronous
+> > to the receive clock domain, and takes four clock cycles to clear, this
+> > leads to interrupt storms as the interrupt remains asserted for some
+> > time after the LPI control and status register is read.
+> > 
+> > This problem becomes worse when the receive clock from the PHY stops
+> > when the receive path enters LPI state - which means that lpi_intr_o
+> > can not deassert until the clock restarts. Since the LPI state of the
+> > receive path depends on the link partner, this is out of our control.
+> > We could disable RX clock stop at the PHY, but that doesn't get around
+> > the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+> > 
+> > Previously, iMX8MP worked around this by disabling gigabit EEE, but
+> > this is insufficient - the problem is also visible at 100M speeds,
+> > where the receive clock is slower.
+> > 
+> > There is extensive discussion and investigation in the thread linked
+> > below, the result of which is summarised in this commit message.
+> > 
+> > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 > 
-> Some platforms have problems when EEE is enabled, and thus need a way
-> to disable stmmac EEE support. Add a flag before the other LPI related
-> flags which tells stmmac to avoid populating the phylink LPI
-> capabilities, which causes phylink to call phy_disable_eee() for any
-> PHY that is attached to the affected phylink instance.
-> 
-> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> to the receive clock domain, and takes four clock cycles to clear, this
-> leads to interrupt storms as the interrupt remains asserted for some
-> time after the LPI control and status register is read.
-> 
-> This problem becomes worse when the receive clock from the PHY stops
-> when the receive path enters LPI state - which means that lpi_intr_o
-> can not deassert until the clock restarts. Since the LPI state of the
-> receive path depends on the link partner, this is out of our control.
-> We could disable RX clock stop at the PHY, but that doesn't get around
-> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
-> 
-> Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> this is insufficient - the problem is also visible at 100M speeds,
-> where the receive clock is slower.
-> 
-> There is extensive discussion and investigation in the thread linked
-> below, the result of which is summarised in this commit message.
-> 
-> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> As you are sending this on my behalf, you need to add your s-o-b after
+> mine:
 
-As you are sending this on my behalf, you need to add your s-o-b after
-mine:
+Oops, I'm not sure how I missed that. Sorry.
 
- Any further SoBs (Signed-off-by:'s) following the author's SoB are from
- people handling and transporting the patch, but were not involved in its
- development. SoB chains should reflect the **real** route a patch took
- as it was propagated to the maintainers and ultimately to Linus, with
- the first SoB entry signalling primary authorship of a single author.
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Thanks.
+>  Any further SoBs (Signed-off-by:'s) following the author's SoB are from
+>  people handling and transporting the patch, but were not involved in its
+>  development. SoB chains should reflect the **real** route a patch took
+>  as it was propagated to the maintainers and ultimately to Linus, with
+>  the first SoB entry signalling primary authorship of a single author.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Regards,
+
+Laurent Pinchart
