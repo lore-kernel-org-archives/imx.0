@@ -1,165 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013063.outbound.protection.outlook.com [52.101.72.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359CF330650;
-	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303740; cv=none; b=rWbTslhY+uHWo5Ewv+bmdBxnys7wMjOHWMkX082Reg1EVXkKnR9DpJLIbcftDoPFRJTmJWBHxSgsTtig58GfZFqt3zrjKheu0Vx1L2JHsK0R1r5cEto9xt8jd9is5m/IW/AhnxL7Umyp3UCt1bsKBZRZDGzvUVIO2Z3VDGInkqk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303740; c=relaxed/simple;
-	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=r0AYMm+GIPbFt0aPGFlqwTowenCm59JmigX5a8J/0D/GUL0ib7pBi73muCA/owdZyJma1bJxSPfFOrKASIFoRSBUTB7P4l2/NWqRlMBjtVkLnTwsp82PsMh2/4w4GSxomwM4ftwNMEX45OiNQgSDAK3oa7c+ajWe4YnQqIa7HvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6c6b7WN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E642D5950
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 22:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774306030; cv=fail; b=IQjIHnPF9Ryho8DtYAp37Rg/QJpnvjtq+uekxgf6ny41yMXW1QwmHCbTlL24Zm8PwbYrEQNWh++CErHj3Yb3MVJp1liuTU42QQcfhTj9DF0jbHc5hB0VV9Uy8OBZfpA5/oM3j2Ak5x9bij67CaFOTxszFmXiZHEprM6xYprlMUc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774306030; c=relaxed/simple;
+	bh=d0klPy+EG0hWuwcd9csu1ewyF+4Y61sSt3WhYj1XV6w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NHcDXRTZe9YIrkYZNUQvv91X8hsPy2q4joTFh6gbE1pdYfb4OqMX6BF4yS1kPLNbW6WPQakv2/3R3LrrSjjixPrRKjPyCe4b47nuhneCZ21lfsH1BtHUZ2d0QP3DZhV9kOBkReLaAyVr4HO7VfzT2NZksa5QBeJRP3jQ+hWCSvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HRMyXin1; arc=fail smtp.client-ip=52.101.72.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6c6b7WN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CD6C4CEF7;
-	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774303739;
-	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=p6c6b7WNpOd2eeBbpZ+9+2Gsn8oNjJpqEk2RkYgUgq1lw+rXj7lyV3xUSS/Fs1CIS
-	 EUqx124nJBcjkR3Uu8YXUq3V3WcG29Bxtwo484LJIaQFr9GjafiBnbsFCRaG9LxULg
-	 wu5+MF1aIyKWHUL+pOXMNuWfo0nzegfaEcyt/Fj4LeK90B1W7TAs2lzxA28ZLPkKs7
-	 U7dkrBFu4aukb5MEnrk3StnwOweJG23d38+yVBRo++3W7W/CyiQjuEGv0tSez4uV4t
-	 CON5b+WUJSNCIFl6UfWTmP9KZVHCJc64626ftkv5JWT8AVGPaZ/J45MWlOVXTnBtTG
-	 bIOiaGwk4qPzg==
-Date: Mon, 23 Mar 2026 17:08:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
- suspend skip
-Message-ID: <20260323220858.GA1084506@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HRMyXin1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OA+VUJjvJdeyJiCeRpoBOm0n6XAoqe1E467bAi/UYoNVKyy8h9X22H5aWx/2VJIah/kjS3egCfQB4hlgAZHMyzHqimDIg0twm0GylhV4SEOxg85USaqffmzvgdf5ba+E046lRT7tjglhcVaXpbSv1v51BgkQtKBs/mYmtLJgxCruyERc38/+TPfAoOFWsrw73joNfriXam/a/TZ3KniOC0uXpuNNPA/FCSa72lFvXUY2D8U8490niRfLCz7NhMDJPsr79iIGz46DRTcsukujveUa1OJDfrbFYXexZNUloZQsFD5apJUAZyVYBwjWtvl/5f/UEsaLMK/vVyd88YvVdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XnBS5d8Af0kdj4K6dk1dnRPW2O5zdnxrbpuFLKgUYMA=;
+ b=Iv9x+qCLJTz6FTn5l37NbYeZ2lPYzBh+I0z38V5CZEzZvqaI8bCTKxlXoqGWJyhpCo92DYQy3iEyj/M9fOb+khoNNJN9AuwPKSiwLWfidZnUTsrAtLt0BsrHebMJSkUVN2ap06oZODx4l6voFjR+vopI+67Aug9mNTC0vXaTejtkapw4Z9lrSO7Ygc0LnOE8i5vOSlDm1th0wAlhzsF72xQ9XOgeVbMCPOK/BXlEDRGHJjywiUHE6BCnazCkDrX7r8SKISf7g1fRepE+hSxb/hfqYWG3kYnZOH5NE4JnKqnoUFA7wvVlpPVJJoeZVDf27prP0zB84AaivnfDCiSvfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XnBS5d8Af0kdj4K6dk1dnRPW2O5zdnxrbpuFLKgUYMA=;
+ b=HRMyXin16YFN/IRof3gfUlm5iQOcEcp2T20fTtblnOsQRIUTnXUrh3CuBu/r76g6ec9/Q+G0N/eEeF0NgzwntMJlEa4Z2WDPt3A9SapCFu1tLYcdDHVLzO6KzS4D6wKAZY1qwvBosG1YgOphjwpBBRUB96ucFOvG+F1Q7Y+Z9ES/9sfh/lpU2U+cZnyOxKXIaiNkVu1pVchRwXNf2dWoz8UM9miPuQr3qX/8ietc8NHg2pXE6LUCbxG2hjaf+rwvf5Oha2nzg4UCAYweUZMnwkDFMsfCuWmAJNwKuCv1oZLTzfIu3Yt+FsSwKU9k3o6lRIYs6XRGWwYQp5pDhDMX1A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PA4PR04MB9392.eurprd04.prod.outlook.com (2603:10a6:102:2ab::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
+ 2026 22:47:06 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 22:46:57 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com,
+	linux-clk@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/6] TQMa91/TQMa93: display support on MBa91xxCA
+Date: Mon, 23 Mar 2026 18:46:42 -0400
+Message-ID: <177430593061.1453080.768758627598818290.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260313070740.585043-1-alexander.stein@ew.tq-group.com>
+References: <20260313070740.585043-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR21CA0026.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::36) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA4PR04MB9392:EE_
+X-MS-Office365-Filtering-Correlation-Id: deb7ab1b-9f2d-4cc4-92d4-08de892e1663
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|7416014|376014|1800799024|38350700014|921020|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	2yLYKFW0J3GP7uWZaz12dBvBVfA1bkhK0He6syutoIStrPy5Fp+SlcEs0APA7zFE+ccjRxwvcdP8GdmAEGVYbFOBsHRC1pVDcXcu12CpTLy4SDFQ7NQyL9JfWBiyDV5hsqGIkblLkyzNx+7BNlq5+P1NE1W/b5k67st7IFtNWZZfI1+D+9XP3Du3i9PYPAkN0P2ma0g6or0zrfBjaY+B+MAfHP8j//XAKn7ssUxKXW+8LEEmPpGSqA00CeIRVQX3E8QMCPATy2SJKgFlcFlbYINIFCSSGKejtOPQhXnIqEHb15AFK/eq7XuvGH1uwLo+zfcimMfel8awMib8qqk+w5sNepYPbNEUVilU6Leoh+VNzn6z0Z9LRxspiJPYtHUYskrIFvGAtpbV4/CmHmA5QbHv1KVkcUmx8nlQqmUpY8cqkjvbvAwsviTel4k9pMkdlprYam4kZ3yoGfi9mKMcjjuRePsdvJZiTKCZCwhxfzKQ2zG8R8prlF+jfoP/uzklaJCK+FO9J+kcul72DdRk3xk+mTeozDu1JmRiTcVpLdGMTaOUVqZF8E/jcidRvJAfiuTuDFHkSbMs2libzdogVpZphK09haAYOcsQPjdU22QK0rl23Hre0rC0LQTrcVNJVXcBvrq9ySjB41F63qIYwGtXhtPLqbBqTKdPRTFs5vvJZEriB9jXEiNHweyQVFFHdHR3Jrv41xQa1GcE98WxWsdJQjDTr0Ev1z07NsSw/iFCRUJA0UM07PXJsrcvhFcL+6SiQnQgI+QEW3w4EY7kqc1FDZxQ26APnH7IIJlg4z4DnBACNljILAHfjxzpfRot
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NDhncmt5WWFta1hpQkdtaTdwZ0dhRFY0WXVNdEhhYi8vU041dVpOQWx0R2lS?=
+ =?utf-8?B?STh5bURsZHloaEVGUnFOd1ZhVHhyWGp2K0E4NlQ1MldMU3lCNGpCcytoRmsy?=
+ =?utf-8?B?d0wvd1lmY3kvd1pIVWpWRlZvZzAvOExKRjB4ME9ZUFU4Y2pnMWF6THNwcm1h?=
+ =?utf-8?B?Z3h4K3piQy9vNTNDM0RmNFI5eXR5TG9FbVp6bFpMY3I4SjhmWVk1MnY3Mm1a?=
+ =?utf-8?B?L0FKY1B1YmllZHN2ME1Oa0ltN0w1UnJZZGFvQkpkcmFOZ1RHTTN2ZS9BajFh?=
+ =?utf-8?B?MW4yT3pDYnNNdGVzcWF2R3JlVElwM25UWmo2NnVmZ0F2S01BbDEwYUVqWVkz?=
+ =?utf-8?B?a241RHJFUENOYW44cU1OY2ZNdFlvU2R1Q0tzelFHNzJiVXJ0ZitiZWFKQ2dG?=
+ =?utf-8?B?a25PeUkxRitlSlVTYnEvb1BZK0lvWTRIeXpZTE5vY3NVeFNKQzBabGlJRitu?=
+ =?utf-8?B?VFRqZm15ejJackMyd2RaMUR0UzZ5VTNUQzAzeDdqOFVtL1lhY3BMdmdEN3Fk?=
+ =?utf-8?B?aEFkbDE1Mys0aEFWZCsrazhURnNXcGFDc3h4Y3MwSytRY2N6UFgzVFpoOHBu?=
+ =?utf-8?B?Q3U4aHBMNXQ4M2N1Y1NrdkMxamxPVkV5cENYbzNNZTNDeVJ2YnVPNVJwanVX?=
+ =?utf-8?B?cE1qbUY2WUpFUTNodjFjYk0zYm1GdFR3czVxUlRJVURONmRpMU5qUXpUQWJO?=
+ =?utf-8?B?NWdQcEoxRmZRT2d1ZjM3S0owN09seGt0Qmw1dyttdXBVM2ZGMjVNeDhKUHFZ?=
+ =?utf-8?B?N21pb1gxcXBGczBJK0FTd2hLZlpNdVFmb053dzF1MENzcDRJWmMzMCtLUmxs?=
+ =?utf-8?B?UUhGOCt5RXhMNmtUMTFIYldnemUvNVdLbHVBRmJRMlhZaVJKc3gwWmh4M0JU?=
+ =?utf-8?B?REIrakNta0xwRUZneTJWVGYyblB2SVBmL0tuQ3p6azBOWE1JK0R4M0NqQUVP?=
+ =?utf-8?B?ZGhwaUhab1dPNjdKTlpBSjR4VkpXZjQ2ODExYjZvU3lucEs3a2RMSzNxUWJV?=
+ =?utf-8?B?TDNYRzMwZklSWlprc0RlblF4UkNISTh4UXhhb0xwWE0yZGtSNnY2Nm1MSWxP?=
+ =?utf-8?B?dGZyNTRZL0NlOEtBSDcrclpzYWpUUkJ0R3YyMGZnS2hqRHV3c2grdGZhK0hS?=
+ =?utf-8?B?czlDamZkSUVDMnZQc1ZrekljWnVJckNSL3E4WitIdUs1NFZlWGlsNkgxaE83?=
+ =?utf-8?B?RFFLZDZ2M2FXeU11aUVzOGlLZFdoVk9COENqczFWUUhBN0VrbTJYQXMrclc5?=
+ =?utf-8?B?eUhpMEFXL3RCVlVtaFlnRkQ5bk9BUzMwK3J5SlQyNGNqTmtCMy9LbUI4c1J6?=
+ =?utf-8?B?UHZCOXE0UVY5OTF4SXV4ZFE0ZXJzalhtTmc4NXpOR2hvdHlQVzF3WFZqMUQv?=
+ =?utf-8?B?UmpyWVBVWkdzL0ZMVER3bHRoUnRSSjI3K2h5bHA3MFdoMTN6L1hqaG9PdkdE?=
+ =?utf-8?B?cEtpS3M3a3lFNnljQnBBUktrY016VFdhT3pvUmpURXpSOHgzeU4zR3A5NmY2?=
+ =?utf-8?B?U3QxeUw0WlNhTXg4N3QxcmlXN2ExbzlVZVdZU3VXVzdLUk1SY1dhdUcwMXda?=
+ =?utf-8?B?c3ZKMEVNeUJwNjBqVGxsbWN4bjlmdTRDT1kwWldnNHJEK05MRHZnMU9jZGFE?=
+ =?utf-8?B?YnhHUC85OXo2YkpSOS9JaU0wUXp3MUtlWFliNnRlTFNraXlUVDBUTjVkUytl?=
+ =?utf-8?B?cTZ4Wll3cy9TQXZJZVg2a2VHcmNTbXdHK0V4dlcrejZ3dXhBQUx5VU9qSlBk?=
+ =?utf-8?B?MC9wM0t0S25KMVBVN1d1QmVJY0cxRWNHL29HUHF3bDVUZWs5NGhJQVp2OCtO?=
+ =?utf-8?B?SU9MODU0ZERBb3EzaDZ1cDJEZUloTkMyZ2t6TmdFWmJIZmJyUGh3VHRjQ1dG?=
+ =?utf-8?B?QTYrajB3WTM3WkpUWW5vV0VxNnR2QjBXeVpJQXkydmtRdldNZ0szUmZMMFA5?=
+ =?utf-8?B?MHo0Mkpxc0ZUSVdVczVRR2kzN05DeldJWk9xQk4vTmdNd3ByMEdHTTVqNnhM?=
+ =?utf-8?B?Q1FHQjFTTHc4RE9lL0FwVWhIdi95ZC9ycjBqeVp6QitkR0pjNmJwNFhKbExZ?=
+ =?utf-8?B?ZHdHRnZNd0xJZkgrQ3BGUzJaeXJ4RnVqWlAzcENoY0tmbXZyR1NvRWF5VlJm?=
+ =?utf-8?B?Nnhac3FLSjlnUk1YTVZyWHdBbXlSaW04dksrSVByaEwxdDlrVWVtbHdZM2th?=
+ =?utf-8?B?YnFqWUttRFFLNjBXczc2SzZQbzZ1OXBvdTUzaHo1QWdRTUt1YjdSSTZSa1or?=
+ =?utf-8?B?b2VZS3lzVjZqYXBaK296Nk9wMkFHYWhsZEZqYURTQ1hadHVoZlBZQUZ0eEVX?=
+ =?utf-8?Q?JB6Z9LR122Zn/sKGVg?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: deb7ab1b-9f2d-4cc4-92d4-08de892e1663
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 22:46:57.4263
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1L+30n0fuDlOtj70/tGKjoKDjUTv+/ldkzSblCpWO5o7TaJBseTl8mQAFOeUZdvUf+70TDF3ay17heGMmxQkiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9392
 
-On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> ... [messed up quoting]
 
-> > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
-> > > Add a force_suspend flag to allow platform drivers to force the PCIe
-> > > link into L2 state during suspend, even when L1SS (ASPM L1 Sub-States)
-> > > is enabled.
-> > >
-> > > By default, the DesignWare PCIe host controller skips L2 suspend when
-> > > L1SS is supported to meet low resume latency requirements for devices
-> > > like NVMe. However, some platforms like i.MX PCIe need to enter L2
-> > > state for proper power management regardless of L1SS support.
-> > >
-> > > Enable force_suspend for i.MX PCIe to ensure the link enters L2 during
-> > > system suspend.
-> > 
-> > I'm a little bit skeptical about this.
-> > 
-> > What exactly does a "low resume latency requirement" mean?  Is
-> > this an actual functional requirement that's special to NVMe, or
-> > is it just the desire for low resume latency that everybody has
-> > for all devices?
+On Fri, 13 Mar 2026 08:07:30 +0100, Alexander Stein wrote:
+> this series adds support for parallel and LVDS displays on MBa91xxCA, both for
+> TQMa91 and TQMa93. The parallel display is attached directly, while the LVDS
+> uses an LVDS-Encoder. To actually work it needs the pdfc driver from [1].
 >
-> From my understanding, L1SS mode is characterized by lower latency
-> when compared to L2 or L3 modes.
+> The first two patches add required (Video) PLL configurations to achieve the
+> necessary pixel clocks for both displays.
+> The last 4 patches add the overlays for TQMa91 and TQMa93, although the
+> overlays for TQMa91 use the same overlay for TQMa93.
 >
-> It can be used on all devices, avoiding frequent power on/off
-> cycles. NVMe can also extend the service life of the equipment.
+> [...]
 
-All the above applies to all platforms, so it's not an argument for
-i.MX-specific code here.
+Applied, thanks!
 
-> > Is there something special about i.MX here?  Why do we want i.MX
-> > to be different from other host controllers?
->
-> i.MX PCIe loses power supply during Deep Sleep Mode (DSM), requiring
-> full reinitialization after system wake-up.
+[3/6] arm64: dts: imx93-tqma9352-mba91xxca: Add parallel display overlay
+      commit: 57e546efd0948d9b580cb7b8824ea62b16af4cb7
+[4/6] arm64: dts: imx93-tqma9352-mba91xxca: Add LVDS display overlay
+      commit: d6b12b4c49a11baed9b4de98f333f731aab6bf9d
+[5/6] arm64: dts: imx91-tqma9131-mba91xxca: Add parallel display overlay
+      commit: d99156ff8bcb5607c7688dde5a55315ea818b150
+[6/6] arm64: dts: imx91-tqma9131-mba91xxca: Add LVDS display overlay
+      commit: 10d12c22336cc7477142fddbe0b17111797fc68c
 
-I don't know what DSM means in PCIe or how it would help justify this
-change.
+Update commit message by change "This adds" => Add ...
 
-> Removing the L1SS check allows the suspend process to complete
-> successfully and ensures the pci->suspended flag is set to true,
-> which triggers the proper resume sequence during system wake-up for
-> i.MX PCIes.
-
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume
-> > > functionality")
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c             | 1 +
-> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 4 +++-
-> > >  drivers/pci/controller/dwc/pcie-designware.h      | 1 +
-> > >  3 files changed, 5 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 81a7093494c8..7902d39185a5 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -1831,6 +1831,7 @@ static int imx_pcie_probe(struct platform_device
-> > *pdev)
-> > >  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
-> > >  			pci->pp.skip_l23_ready = true;
-> > >  		pci->pp.use_atu_msg = true;
-> > > +		pci->pp.force_l2_suspend = true;
-> > >  		ret = dw_pcie_host_init(&pci->pp);
-> > >  		if (ret < 0)
-> > >  			return ret;
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index a74339982c24..720154fd4ff0 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -1229,7 +1229,9 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  	 * If L1SS is supported, then do not put the link into L2 as some
-> > >  	 * devices such as NVMe expect low resume latency.
-> > >  	 */
-> > > -	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > PCI_EXP_LNKCTL_ASPM_L1)
-> > > +	if (!pci->pp.force_l2_suspend &&
-> > > +	    (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > > +	     PCI_EXP_LNKCTL_ASPM_L1))
-> > >  		return 0;
-> > >
-> > >  	if (pci->pp.ops->pme_turn_off) {
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
-> > > b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index ae6389dd9caa..5261036bbe6e 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -447,6 +447,7 @@ struct dw_pcie_rp {
-> > >  	bool			ecam_enabled;
-> > >  	bool			native_ecam;
-> > >  	bool                    skip_l23_ready;
-> > > +	bool                    force_l2_suspend;
-> > >  };
-> > >
-> > >  struct dw_pcie_ep_ops {
-> > > --
-> > > 2.37.1
-> > >
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
