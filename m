@@ -1,130 +1,164 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D15E386C34
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2402D97BD
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258783; cv=none; b=frxwXR4gjBd7At4EXL54SNvpFj8Zn0sHge/RwimE/DkDNuAosFkoLZUeIum1XPwCiApnU0mQz354juowRGojEag6sgyqsTaAKtK7OQrKUYR/6wiI5yeQR07Tm8Fiw7983UN+6foIQYFa8JKE3ySY7yFFkoyLxqxr6Yw/ZgYkQ+c=
+	t=1774259008; cv=none; b=FH3mGoN5n4KxcTKzGFGeQFwYPlgYPTkWVqF1/SSRXO+97NfbyRLPTdHifYXKQ54L7HPKp5yEcXv4eXZy+odQRI9F8X4t/7G/zNCdj042PicfMwH2tuZegOGtjmTTYmExEz85XG1xvBinyobSKJtAZl7MRyhYKtKqTMWmBc4FRiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258783; c=relaxed/simple;
-	bh=RNR1EUTKKAcgh1q7y4WEUB3H7fiwM2yffGl/eVpVGFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOUWOFqbBw/TDhD+ILTlWbt6q44Qp0QkkfMP0Qj7sKF79do7jBjcGXaEMhApQajkgGVfTb97DLH0hW1TZzHlOcohDTAWLHk6kQSu2oY3V5geW4IfcGhlFCasxmjgsngX3afXakJHZFYJQEc+Q9L0vPTNLZ4CSH7c3XDNilbc3JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jz597tg+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1774259008; c=relaxed/simple;
+	bh=TI5JFDwjWcEkHz2N++OnVaBuk+jQNncRJqQUQmXcqVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lrQxQLXbCMK1ql56fI4ftObfizoLpeux2ti1hgiOCzzdikZUS3ew7u3w+GeefrZ2LclHyw4i/EWNm6V+w8IRQEjVFEY5hpvt4wnUcT6n+I23KRnrMXAV8aZW1+4PyZJUhYoTx+cc1cQ1km/Qcbs7FGBp6G3q7/VmSdLhsNJTdn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k5HwNrpZ; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jz597tg+"
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4390119C0;
-	Mon, 23 Mar 2026 10:38:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774258702;
-	bh=RNR1EUTKKAcgh1q7y4WEUB3H7fiwM2yffGl/eVpVGFo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jz597tg+/+oDtwoeNTVEJxDpoCB2j/j8tMfYwO/579aOfKZ6UzeMHA/YFWmKTSbkL
-	 3N+p5K+tF1QF1bVZUi5KL2WLWcbHar2bIE/3iHbaN2c76PIsRtVFVMfeHBUsK4wfcr
-	 64cbtV6qKxgByjKhtX24wJ2MPOtsAX9hJapGO57k=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: netdev@vger.kernel.org,
-	imx@lists.linux.dev
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Joy Zou <joy.zou@nxp.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 2/2] net: stmmac: imx: Disable EEE
-Date: Mon, 23 Mar 2026 11:39:33 +0200
-Message-ID: <20260323093933.1785583-3-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
-References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k5HwNrpZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774259007; x=1805795007;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TI5JFDwjWcEkHz2N++OnVaBuk+jQNncRJqQUQmXcqVo=;
+  b=k5HwNrpZfK9w5af1VnFaVZ3S6EKBitnSBtVAzwOaJlqJYmr5qQWvz4s7
+   hjQNjFdonVa1thrbNbQFv2pL+JhFWx7haBhZ1Fnk+LJRqKbI/o6Gv4u7g
+   H0c9OJ8YCO50zdmbIodvbrFVwW12BDUlkWUE2lfhE7n7T+khHJkb8RA/p
+   1KDjnkOfsbMoSA0OmuhJ9c9yQQkS/mb1VTW4PJPsEyCeSjSEIln/uv+Dz
+   QfoBMKWFuR24ZAZOWmODgk3jzpZd/oA1BXAFLREFDXZnsYKEJyciAlANF
+   6DkJT4Eo77zPecA3xobIUZ5j/fJWC4rkRTiMrG2shdETAnGSGM9/WIZ2N
+   Q==;
+X-CSE-ConnectionGUID: 1d5ugyXmT+WCQHsp3ae2fQ==
+X-CSE-MsgGUID: qvKALkxpTdWjTbVGR7Q/qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="75373519"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="75373519"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 02:43:27 -0700
+X-CSE-ConnectionGUID: wg8KxA7KSA6blYJhL6H3mA==
+X-CSE-MsgGUID: ulTJ0Fo1Q76uF1CaBru1aA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="254449660"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa002.jf.intel.com with ESMTP; 23 Mar 2026 02:43:23 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 3133295; Mon, 23 Mar 2026 10:43:22 +0100 (CET)
+Date: Mon, 23 Mar 2026 11:42:34 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Li Jun <jun.li@nxp.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] usb: typec: tcpci: support setting orientation
+ via GPIO
+Message-ID: <acELCgSYi48Pc0tj@kuha>
+References: <20260319-support-setting-orientation-use-gpio-v4-0-ab6dfa8610c2@nxp.com>
+ <20260319-support-setting-orientation-use-gpio-v4-2-ab6dfa8610c2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319-support-setting-orientation-use-gpio-v4-2-ab6dfa8610c2@nxp.com>
 
-The i.MX8MP suffers from an interrupt storm related to the stmmac and
-EEE. A long and tedious analysis ([1]) concluded that the SoC wires the
-stmmac lpi_intr_o signal to an OR gate along with the main dwmac
-interrupts, which causes an interrupt storm for two reasons.
+On Thu, Mar 19, 2026 at 05:48:49PM +0800, Xu Yang wrote:
+> If the chip indicates its "Connection Orientation" standard output control
+> in STANDARD_OUTPUT_CAPABILITIES register, it can do the thing by
+> programming CONFIG_STANDARD_OUTPUT register. Due to the optional feature,
+> the chip which not present this capability currently doesn't have a way to
+> correctly set the data path. This add the support to set orientation via
+> a simple GPIO.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-First, there's a race condition due to the interrupt deassertion being
-synchronous to the RX clock domain:
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-- When the PHY exits LPI mode, it restarts generating the RX clock
-  (clk_rx_i input signal to the GMAC).
-- The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
-  the ENET_EQOS interrupt.
-- Before the CPU has time to process the interrupt, the PHY enters LPI
-  mode again, and stops generating the RX clock.
-- The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
-  registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+> ---
+> Changes in v4:
+>  - simplify gpiod_set_value_cansleep()
+> Changes in v3:
+>  - use "err = !!orient_gpio"
+> Changes in v2:
+>  - return early in tcpci_set_orientation() if using gpio method
+> ---
+>  drivers/usb/typec/tcpm/tcpci.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+> index 8b7e6eb92ca2..0148b8f50412 100644
+> --- a/drivers/usb/typec/tcpm/tcpci.c
+> +++ b/drivers/usb/typec/tcpm/tcpci.c
+> @@ -7,6 +7,7 @@
+>  
+>  #include <linux/bitfield.h>
+>  #include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/i2c.h>
+> @@ -42,6 +43,7 @@ struct tcpci {
+>  
+>  	struct tcpc_dev tcpc;
+>  	struct tcpci_data *data;
+> +	struct gpio_desc *orientation_gpio;
+>  };
+>  
+>  struct tcpci_chip {
+> @@ -316,6 +318,10 @@ static int tcpci_set_orientation(struct tcpc_dev *tcpc,
+>  	struct tcpci *tcpci = tcpc_to_tcpci(tcpc);
+>  	unsigned int reg;
+>  
+> +	if (tcpci->orientation_gpio)
+> +		return gpiod_set_value_cansleep(tcpci->orientation_gpio,
+> +						orientation != TYPEC_ORIENTATION_NORMAL);
+> +
+>  	switch (orientation) {
+>  	case TYPEC_ORIENTATION_NONE:
+>  		/* We can't put a single output into high impedance */
+> @@ -903,6 +909,7 @@ EXPORT_SYMBOL_GPL(tcpci_unregister_port);
+>  static int tcpci_probe(struct i2c_client *client)
+>  {
+>  	struct tcpci_chip *chip;
+> +	struct gpio_desc *orient_gpio = NULL;
+>  	int err;
+>  	u16 val = 0;
+>  
+> @@ -931,12 +938,23 @@ static int tcpci_probe(struct i2c_client *client)
+>  	if (err < 0)
+>  		return err;
+>  
+> +	if (err == 0) {
+> +		orient_gpio = devm_gpiod_get_optional(&client->dev, "orientation",
+> +						      GPIOD_OUT_LOW);
+> +		if (IS_ERR(orient_gpio))
+> +			return dev_err_probe(&client->dev, PTR_ERR(orient_gpio),
+> +					"unable to acquire orientation gpio\n");
+> +		err = !!orient_gpio;
+> +	}
+> +
+>  	chip->data.set_orientation = err;
+>  
+>  	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
+>  	if (IS_ERR(chip->tcpci))
+>  		return PTR_ERR(chip->tcpci);
+>  
+> +	chip->tcpci->orientation_gpio = orient_gpio;
+> +
+>  	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
+>  					_tcpci_irq,
+>  					IRQF_SHARED | IRQF_ONESHOT,
+> 
+> -- 
+> 2.34.1
 
-An attempt was made to fixing the issue by not stopping RX_CLK in Rx LPI
-state ([2]). This alleviates the symptoms but doesn't fix the issue.
-Since lpi_intr_o takes four RX_CLK cycles to clear, an interrupt storm
-can still occur during that window. In 1000T mode this is harder to
-notice, but slower receive clocks cause hundreds to thousands of
-spurious interrupts.
-
-Fix the issue by disabling EEE completely on i.MX8MP.
-
-[1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
-[2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
-Changes since v1:
-
-- Fix | operator placement
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 9d1bd72ffb73..01260dbbb698 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -325,11 +325,7 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	if (data->flags & STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY)
--		plat_dat->flags |= STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY;
--
--	if (data->flags & STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD)
--		plat_dat->flags |= STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD;
-+	plat_dat->flags |= data->flags;
- 
- 	/* Default TX Q0 to use TSO and rest TXQ for TBS */
- 	for (int i = 1; i < plat_dat->tx_queues_to_use; i++)
-@@ -366,7 +362,8 @@ static struct imx_dwmac_ops imx8mp_dwmac_data = {
- 	.addr_width = 34,
- 	.mac_rgmii_txclk_auto_adj = false,
- 	.set_intf_mode = imx8mp_set_intf_mode,
--	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY |
-+	.flags = STMMAC_FLAG_EEE_DISABLE |
-+		 STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY |
- 		 STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD,
- };
- 
 -- 
-Regards,
-
-Laurent Pinchart
-
+heikki
