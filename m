@@ -1,159 +1,182 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F413A9DAD
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 14:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760AA175A80
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 14:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276383; cv=none; b=jNM4A8lTBzjBLX94ouJs8nO6yp2NR8/tp/an/uitbVjkV4jSyMbmTjiJ3feLpIBpm6vZedu0vUrPp17ipSyFunByRaFdDUsbqPege8x50lm9ebWKLjvbAA/gQGQTdyw6fPXxG8WhYkAJsQIh9aIdlLTsZsMBODF1jYptb3ybOx8=
+	t=1774277032; cv=none; b=YxqS2fuQjUql3upy9SUkC+eeYSi0KJVoB+kWDXEK1ubMUc0x6sXP1sAOO26ZqyEgzUABIP856b712Fx/A/YRuz6gPj2Z+cP3XsXZbeMQFamQ+162U/gDz4rZem0n+Jkkc8O3U//5fXNlW4VRSlvbhljczEJUrBKvhmdHA3pTmY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276383; c=relaxed/simple;
-	bh=L314OVt7jzJjhCVDOKBkuT++0Uzl9fPon89IPJAPcK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WyyTPhhSkpfPQ79GogOthz8Xdg0Oem613nwDiowoNDRAUuTQssDlgJMK9kmlDY+OT09s9bpMnNxaaNghOxaN0JcwX4UK5VUwmwo1dJsS2xTWQK1DdxOQ2py8PgeZCWDNGFt36oHbFPJh3x0GCBCd4xumGcusVVAiyW2OS16UMYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vtxLi9OZ; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1774277032; c=relaxed/simple;
+	bh=TjnRYqm+07dz1JIPm25P3R4cWx82uCOBLAu76ZxLyi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WISERdjKNc0Coe80ePbDuaTwCL+PdzBKGenUkVu3YEvSKOlXE2lb3aYHLYKyYJd3qyNcwQfpvnrpQkmzhdgd63nMr/juA8/SGgbpzC+R56ZAdjfaHYOw58I/6fYDB3Ag5WnSpL0EWE+JHFnvuUw0ez5SCnz+RX6fe/jIa3an07c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iY2w+M/3; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vtxLi9OZ"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35ba749f441so211628a91.1
-        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 07:33:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iY2w+M/3"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1271257ae53so232305c88.1
+        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 07:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774276381; x=1774881181; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cZBfJFwgoEUz2EcnixeOofm+Rp3x7VxxVqxoB2WloHc=;
-        b=vtxLi9OZQMEFxweyn0+G7dJ4gkrNTOwYRq6qR0UsQplQzSsFAe5i9HBMxqv/jH1Ud4
-         cw+e44hiCgwHJJKIcZ4Q58SV8MkHn3u4BKCjExZbZqzauVIJLKkaOaGhpF5Vjs79DKO5
-         v1o2aBvvvzDWDe+2AfjKDSlhxCYoGTlZAPm3jECx3gwyUu+OCd+ynkue+U79C+le8cqo
-         JYA5oBVxJQnrIuGJtdZf2GVK2K1ZAcegGRZJKqXP49UGJXNobh/yR3yQy7QStgALgTC0
-         CVMELNU0+Cr6KiBDMol23FyfT+/B5dfJ8CvWN3wM6YnT3VDnIbuZ9443tLLY57wCeZKX
-         ePJA==
+        d=gmail.com; s=20230601; t=1774277030; x=1774881830; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mw89EmH8qUZwnDDKLdU6WpDiI5F4oXbKdFeBF7Ff7+U=;
+        b=iY2w+M/3utWWVMKdUQk3BoJsCiMKmAMQuPoB+Lmo1/I0tpfH/f2wGD9Dq7EFhNXmn2
+         RZ/jwWbijBIGVhfA7ZTv925u6qHlUUiHXTM+RsutfitXjzx9SKak2fjiIUEuNLvIyLS8
+         2k8S9PEuGr33OiXdRmnInq7K/Ktdc0Svf1EBlVEs5QMEWQHGYX7gHfn+J1gQfSASBJs+
+         W+xslJJ3Am/t9p3IidZRk5E+4HzeaodKGbIELbQ4ivNQH5YcUL8uDkkDz8oCyE46nmDt
+         XOzUutI0h5EZ/bG5k8vmsl7HlKb7r9LbdpZjvBD40rkNF03vPzzWK6PwnVFsAp+f2wR0
+         drgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774276381; x=1774881181;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cZBfJFwgoEUz2EcnixeOofm+Rp3x7VxxVqxoB2WloHc=;
-        b=E8SM94sCN1smu0OFIZKBVCkb1sOJ/HsDfqv/WR4WzCc5OchZ568yQzeCQKDOO9FCa8
-         xMqohv3DH89OciAD7PaW79kiu/S2/fBeWtqPtqtWqJS4OYVpWgCRSHe4G9CFtVugTn6A
-         4/1pVgAE60ApQS2/ZGe8w/+Oe7rtbSLCDX+kOuEhpg0FzyNv2rbKT0D7Qo13NlVIDiDN
-         fakiKQNTIcgR0/GvRxol1ypPm72XMIXNRmcpVXLm6zZQhmYOqCnIgO9BUpbsQPbd2eVl
-         y21iFpYaO/+AID3JKo5yX1garJwfBsJHJLbZLyRhHIJF0644ZW4GfiWo/m7oPu0JVWIE
-         6NOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVq2S4EzhfaV8GuWv6ouUSREXs+NN8KGrAwJER2lvvyqih+s93WdLTOFxjrYjpxXhyE0c0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCdNwuBANkmIljzITaRsWMn8YKsCibwXjPSBTRt64e7eWwRkgm
-	xU7FwBJeEHZgL67qZ+fv1KPntfta858MGtP0bWlQ/sWq5Slpt2bvmDigVIC5LzbXSHc=
-X-Gm-Gg: ATEYQzwkEpDg6rUTOnRkEPibGcfMLHyfVrG2RPsLdKPsNtEwlOtdbPRhnKX0x0h5i6j
-	GM6pMGP4imB4YtluIM76O0lNfzWClDjaQxrXGw3dTpxqqaU9lIelGNSUyV4kLa04hdFVDJjsVUT
-	ExpqrHLi67dvNw/ccmNwmIwwRy+NpAyHDQwbdlGSVBO2eg114927UH6LVvWsOZiX9JfGIpWjVot
-	k4hhf5JB/G1XMkaQLu7ZnCKObd89EyNni44+DW7TIJv5IwyKPNUKMFoO3vSojuZHueLzcD9cQxY
-	IDyVrrrCpJN0q19wKicXusdeqIuJPTaAZ/qAHcBt1aSfvsEVNgz7MQdlzrLfA7WVfS0qs5AxA8l
-	dDrabHFuPRKDWUYcl7yWpJIUJHnj9e+A1b9hKQQ/IytufJe9uMI6gbtY2l3/q81AH6N1c5HJaRj
-	6K666v8rQ/hhqQFCKiYA1uq8p6iHPMT7FVIgyu4w==
-X-Received: by 2002:a17:90b:3943:b0:359:f22:8879 with SMTP id 98e67ed59e1d1-35bd2cec783mr10505770a91.22.1774276381189;
-        Mon, 23 Mar 2026 07:33:01 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:36f1:e61e:d1a0:422b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd262cb35sm4765516a91.1.2026.03.23.07.32.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 07:33:00 -0700 (PDT)
-Date: Mon, 23 Mar 2026 08:32:57 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Daniel Baluta <daniel.baluta@oss.nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 0/4] Add i.MX94 remoteproc support and reset vector
- handling improvements
-Message-ID: <acFPGVNOornxsPG6@p14s>
-References: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
- <b5e05fe6-97c4-40cd-b7cc-b417d8717aec@oss.nxp.com>
+        d=1e100.net; s=20251104; t=1774277030; x=1774881830;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mw89EmH8qUZwnDDKLdU6WpDiI5F4oXbKdFeBF7Ff7+U=;
+        b=B6Qipk051zBP7Mchu4SdWSnsry3zT7honaKedvMIVUpys63vk16scBJiu9G99HO2nC
+         S9G+Rf+HhCj/Vh80OmFOREbh/SG+MmeBAPVPCUdi9GU6Qzlgnc3j+0AUVJLn+byYheGh
+         OgT5iFPh7X0OPswzpKVjXEQ1W3+idgsnVEgwwxKzPj8ptLL1fgLZaQGEnhJ50dzFQoMr
+         tzEwyw+FLaOmUhI3XRqScwhHKMwb4DIZYB2b3+wXT9YqrfDGEMlDd5zc++nqTEwAp0Rx
+         eE5BkGxUJzvDdCJInrFjkQJ4duy4do8X+j2ScHNAQJUcXE1KQDuD044AhlBfRlz2t1o2
+         l+og==
+X-Forwarded-Encrypted: i=1; AJvYcCVipFASFaHL8my6SI7+nlr877yfiERIRC1P89sQjCli98FBO7yUKcVfbBlpGHIOH5bjj5A=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZR5zj5zhZA6mmrh6pRW3P0DgNmDFUd6M4KZTaYAfcw68dU0iB
+	I2jr41yQ5IxGl/T7QuLmpSZOrqcaJTVjxmc5+8Fdd2AEkNCIRsS0+prq
+X-Gm-Gg: ATEYQzyS/efTscatKFdFeGe5PbbfquK1SKlWbiPhd1i7gHmxRbRwRR4GWsbeuXCid/0
+	PoHQ4a5nkBouYHWfHC9XGmLu1la1hJKdOVh3w9yjFGMiQcdtjUdvFg2RgDyDWb6EBhQZ0WQGI/a
+	dBmTOk1aaW90Fns6IoAggUgObGZlD7xFj+ko9rrGCzXznEdZqAi1L5vxJRQrhV/s72Q6sM5dBXg
+	qzC4idztdYbvAkPoGQh7f+VkmBHnds7206bDO3d4AOL1IlsKKKPAyhoroy5kbWt4C7nwJp2uvkq
+	L37eRzSZjHt+0INxaNOM6RzuNfdThm3obwrzR7zBfeIN3nLTfZvJ3EGCp8TSgRAKxtPIpMi+yCn
+	WeZC0k+P3CMh9h1qFZHYLhqiIWplTNsHkX3yoVNjmE2Ypp+C7Gmw1lvyYNT9nrrl8c+xeTX638Y
+	2q8jOU3JaH1NhQEL3K1EVZmUfZq0EouhOyiS7zuKySQ2w3PkWiExZM/9OwA+7Zv/wVKj4oLfd0
+X-Received: by 2002:a05:7022:327:b0:127:5cd6:fa45 with SMTP id a92af1059eb24-12a72684c44mr5788964c88.14.1774277029439;
+        Mon, 23 Mar 2026 07:43:49 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a733e794esm9375194c88.6.2026.03.23.07.43.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 07:43:48 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <72ba643e-c716-4332-bff0-f9d12add0cc6@roeck-us.net>
+Date: Mon, 23 Mar 2026 07:43:47 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] dt-bindings: hwmon: emc2305: Add
+ fan-shutdown-percent property
+To: Daniel Baluta <daniel.baluta@oss.nxp.com>, florin.leotescu@oss.nxp.com,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+References: <20260320152959.1575978-1-florin.leotescu@oss.nxp.com>
+ <20260320152959.1575978-2-florin.leotescu@oss.nxp.com>
+ <8a8d2991-cd85-4aed-a7ef-a90b0cd10fbd@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <8a8d2991-cd85-4aed-a7ef-a90b0cd10fbd@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b5e05fe6-97c4-40cd-b7cc-b417d8717aec@oss.nxp.com>
 
-On Fri, Mar 20, 2026 at 11:19:06AM +0200, Daniel Baluta wrote:
-> On 3/12/26 14:36, Peng Fan (OSS) wrote:
-> > This series adds remoteproc support for the i.MX94 family, including the
-> > CM70, CM71, and CM33S cores, and introduces a new device‑tree property to
-> > correctly derive the hardware reset vector for Cortex‑M processors whose
-> > ELF entry point does not directly correspond to the actual reset address.
-> >
-> > Background:
-> > Cortex‑M processors fetch their initial SP and PC from a fixed reset vector
-> > table. While ELF images embed the entry point (e_entry), this value is
-> > not always aligned to the hardware reset address. On platforms such as
-> > i.MX94 CM33S, masking is required to compute the correct reset vector
-> > address before programming the SoC reset registers.
+On 3/23/26 02:10, Daniel Baluta wrote:
+> On 3/20/26 17:29, florin.leotescu@oss.nxp.com wrote:
+>> From: Florin Leotescu <florin.leotescu@nxp.com>
+>>
+>> The EMC2305 fan controller supports multiple independent PWM fan
+>> outputs. Some systems require fans to enter a defined safe state
+>> during system shutdown or reboot handoff, until firmware or the next
+>> boot stage reconfigures the controller.
+>>
+>> Add an optional "fan-shutdown-percent" property to fan child nodes
+>> allowing the shutdown fan speed to be configured per fan output.
+>>
+>> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+>> ---
+>>   .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>> index d3f06ebc19fa..7bcadfab9fc4 100644
+>> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>> @@ -54,6 +54,12 @@ patternProperties:
+>>             The fan number used to determine the associated PWM channel.
+>>           maxItems: 1
+>>   
+>> +      fan-shutdown-percent:
+>> +        description:
+>> +          Fan RPM in percent set during shutdown.
+> AI review suggests to update description to 'Fan speed percent' or 'PWM duty cycle in percent'. This could be an easy update.
+> More important question here is how should we proceed with the following observation:
 > 
-> What happens if the reset vector is at 0 and the e_entry point is at 0x800...?
+> "fan-shutdown-percent property is already defined identically in pwm-fan.yaml."
 > 
-> In this case masking will no longer work! Can we implement a generic approach?
->
+> Guenter, should we move it from pwm-fan.yaml to fan-common.yaml and use it here?
+> 
+> Our initial thought was to add have it merged in microchip,emc2305.yaml as it is now
+> 
+> and then factor it out in fan-common.yaml in a later patch.
+> 
+> 
+> What do you think?
+> 
 
-I will wait to see an R-B from Daniel before looking at this set.
+Both are fine with me, with slight preference for the second approach.
+Please do whatever gets approval from DT maintainers.
 
 Thanks,
-Mathieu
- 
-> 
-> >
-> > Similarly, on i.MX95, the existing implementation always programs a reset
-> > vector of 0x0, which only works when executing entirely from TCM. When
-> > firmware is loaded into DDR, the driver must pass the correct reset vector
-> > to the SM CPU/LMM interfaces.
-> >
-> > This series addresses these issues and provides the necessary DT bindings
-> > and driver support.
-> >
-> > Summary of patches:
-> > [1]dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
-> > Adds a new DT property allowing SoCs to specify a mask for deriving the
-> > hardware reset vector from the ELF entry point.
-> >
-> > [2]dt-bindings: remoteproc: imx-rproc: Support i.MX9[4,52]
-> > Adds compatible strings for i.MX94 CM70, CM71, and CM33S processors.
-> >
-> > [3]remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
-> > Ensures the correct reset vector is passed to SM APIs by introducing a
-> > driver‑level helper (imx_rproc_get_boot_addr()) that applies the
-> > reset‑vector mask.
-> >
-> > [4]remoteproc: imx_rproc: Add support for i.MX94 remoteproc
-> > Adds address translation tables and configuration data for CM70, CM71,
-> > and CM33S, enabling full remoteproc operation on i.MX94.
-> >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> > Peng Fan (4):
-> >       dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
-> >       dt-bindings: remoteproc: imx-rproc: Support i.MX94
-> >       remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
-> >       remoteproc: imx_rproc: Add support for i.MX94
-> >
-> >  .../bindings/remoteproc/fsl,imx-rproc.yaml         |  9 +++
-> >  drivers/remoteproc/imx_rproc.c                     | 85 +++++++++++++++++++++-
-> >  2 files changed, 91 insertions(+), 3 deletions(-)
-> > ---
-> > base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-> > change-id: 20260311-imx943-rproc-2050e00b65f7
-> >
-> > Best regards,
-> 
-> 
+Guenter
+
