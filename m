@@ -1,30 +1,31 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF0B33D4E5
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D15E386C34
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258781; cv=none; b=mIAQ3nC0xv0J0Akex1Y7lK3x7hs5dkuqE1lH4DcEgFW002AFzzj2K5Z0ayzfqsIyAr1CLzHghVeK5vyB8afACB9/pPAuMpkOCXT2NcWO1mrINyNH2vIDivEjiIOUnQnzHJF97BUy77w9vXUn4MT5KCo+fvVnOTxYrQyY6WrtaZ0=
+	t=1774258783; cv=none; b=frxwXR4gjBd7At4EXL54SNvpFj8Zn0sHge/RwimE/DkDNuAosFkoLZUeIum1XPwCiApnU0mQz354juowRGojEag6sgyqsTaAKtK7OQrKUYR/6wiI5yeQR07Tm8Fiw7983UN+6foIQYFa8JKE3ySY7yFFkoyLxqxr6Yw/ZgYkQ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258781; c=relaxed/simple;
-	bh=CtREjtYUErNei1WWtCpEy/9MeVxaYUz32mC5eZ7Fh2U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nmA3ZdU1WGK7FcpDfrY3LEtJg85tiAfNClFzyw2FaKRMp51k5SGobBlj6a7FWQ0p8PMoMW3XHA8KEMZagrHFGpdRTH1kIvJSJVf0Jn3fLH0rZiNUoihVECe9Bp3tSQM0Q+1gLenVg7ki+uBZpg38TQQ1F7pClSymobaIjqhHLZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VVJL01JE; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1774258783; c=relaxed/simple;
+	bh=RNR1EUTKKAcgh1q7y4WEUB3H7fiwM2yffGl/eVpVGFo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eOUWOFqbBw/TDhD+ILTlWbt6q44Qp0QkkfMP0Qj7sKF79do7jBjcGXaEMhApQajkgGVfTb97DLH0hW1TZzHlOcohDTAWLHk6kQSu2oY3V5geW4IfcGhlFCasxmjgsngX3afXakJHZFYJQEc+Q9L0vPTNLZ4CSH7c3XDNilbc3JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jz597tg+; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VVJL01JE"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jz597tg+"
 Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 7F5E5874;
-	Mon, 23 Mar 2026 10:38:19 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4390119C0;
+	Mon, 23 Mar 2026 10:38:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774258699;
-	bh=CtREjtYUErNei1WWtCpEy/9MeVxaYUz32mC5eZ7Fh2U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VVJL01JEFv5cnLs7xSwqok45AzRLo0XwBFW9rfJxMdud/+WHEMN1TcKFD/TzP7Zdr
-	 Sf5Sap6PLQBQ7SvHng1gkA+h7r4OAAAQRjNPJs3sAgn1SHaUGa2z01ZY1cZ7JGw/K1
-	 SdAqXUmR/6DBlvcQo++Xza5qdeyUKtKIeWgwP5N4=
+	s=mail; t=1774258702;
+	bh=RNR1EUTKKAcgh1q7y4WEUB3H7fiwM2yffGl/eVpVGFo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jz597tg+/+oDtwoeNTVEJxDpoCB2j/j8tMfYwO/579aOfKZ6UzeMHA/YFWmKTSbkL
+	 3N+p5K+tF1QF1bVZUi5KL2WLWcbHar2bIE/3iHbaN2c76PIsRtVFVMfeHBUsK4wfcr
+	 64cbtV6qKxgByjKhtX24wJ2MPOtsAX9hJapGO57k=
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: netdev@vger.kernel.org,
 	imx@lists.linux.dev
@@ -43,10 +44,12 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Stefan Klug <stefan.klug@ideasonboard.com>,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 0/2] net: stmmac: Disable EEE on i.MX
-Date: Mon, 23 Mar 2026 11:39:31 +0200
-Message-ID: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
+Subject: [PATCH v3 2/2] net: stmmac: imx: Disable EEE
+Date: Mon, 23 Mar 2026 11:39:33 +0200
+Message-ID: <20260323093933.1785583-3-laurent.pinchart@ideasonboard.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
+References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,37 +58,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The i.MX8MP suffers from an interrupt storm related to the stmmac and
+EEE. A long and tedious analysis ([1]) concluded that the SoC wires the
+stmmac lpi_intr_o signal to an OR gate along with the main dwmac
+interrupts, which causes an interrupt storm for two reasons.
 
-This small patch series fixes a long-standing interrupt storm issue with
-stmmac on NXP i.MX platforms.
+First, there's a race condition due to the interrupt deassertion being
+synchronous to the RX clock domain:
 
-The initial attempt to fix^Wwork around the problem in DT ([1]) was
-painfully but rightfully rejected by Russell, who helped me investigate
-the issue in depth. It turned out that the root cause is a mistake in
-how interrupts are wired in the SoC, a hardware bug that has been
-replicated in all i.MX SoCs that integrate an stmmac. The only viable
-solution is to disable EEE on those devices.
+- When the PHY exits LPI mode, it restarts generating the RX clock
+  (clk_rx_i input signal to the GMAC).
+- The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
+  the ENET_EQOS interrupt.
+- Before the CPU has time to process the interrupt, the PHY enters LPI
+  mode again, and stops generating the RX clock.
+- The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
+  registers. This does not clear lpi_intr_o as there's no clk_rx_i.
 
-Individual patches explain the issue in more details. Patch 1/2,
-authored by Russell, adds a new STMMAC_FLAG to disable EEE, and patch
-2/2 sets the flag for i.MX platforms.
+An attempt was made to fixing the issue by not stopping RX_CLK in Rx LPI
+state ([2]). This alleviates the symptoms but doesn't fix the issue.
+Since lpi_intr_o takes four RX_CLK cycles to clear, an interrupt storm
+can still occur during that window. In 1000T mode this is harder to
+notice, but slower receive clocks cause hundreds to thousands of
+spurious interrupts.
 
-[1] https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
+Fix the issue by disabling EEE completely on i.MX8MP.
 
-Laurent Pinchart (1):
-  net: stmmac: imx: Disable EEE
+[1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
+[2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
 
-Russell King (Oracle) (1):
-  net: stmmac: provide flag to disable EEE
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+Changes since v1:
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   |  9 +++------
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  7 ++++++-
- include/linux/stmmac.h                            | 11 ++++++-----
- 3 files changed, 15 insertions(+), 12 deletions(-)
+- Fix | operator placement
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-
-base-commit: fb78a629b4f0eb399b413f6c093a3da177b3a4eb
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 9d1bd72ffb73..01260dbbb698 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -325,11 +325,7 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	if (data->flags & STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY)
+-		plat_dat->flags |= STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY;
+-
+-	if (data->flags & STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD)
+-		plat_dat->flags |= STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD;
++	plat_dat->flags |= data->flags;
+ 
+ 	/* Default TX Q0 to use TSO and rest TXQ for TBS */
+ 	for (int i = 1; i < plat_dat->tx_queues_to_use; i++)
+@@ -366,7 +362,8 @@ static struct imx_dwmac_ops imx8mp_dwmac_data = {
+ 	.addr_width = 34,
+ 	.mac_rgmii_txclk_auto_adj = false,
+ 	.set_intf_mode = imx8mp_set_intf_mode,
+-	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY |
++	.flags = STMMAC_FLAG_EEE_DISABLE |
++		 STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY |
+ 		 STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD,
+ };
+ 
 -- 
 Regards,
 
