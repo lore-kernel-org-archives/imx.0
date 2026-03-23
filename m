@@ -1,182 +1,248 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010022.outbound.protection.outlook.com [52.101.69.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760AA175A80
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 14:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277032; cv=none; b=YxqS2fuQjUql3upy9SUkC+eeYSi0KJVoB+kWDXEK1ubMUc0x6sXP1sAOO26ZqyEgzUABIP856b712Fx/A/YRuz6gPj2Z+cP3XsXZbeMQFamQ+162U/gDz4rZem0n+Jkkc8O3U//5fXNlW4VRSlvbhljczEJUrBKvhmdHA3pTmY0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277032; c=relaxed/simple;
-	bh=TjnRYqm+07dz1JIPm25P3R4cWx82uCOBLAu76ZxLyi0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WISERdjKNc0Coe80ePbDuaTwCL+PdzBKGenUkVu3YEvSKOlXE2lb3aYHLYKyYJd3qyNcwQfpvnrpQkmzhdgd63nMr/juA8/SGgbpzC+R56ZAdjfaHYOw58I/6fYDB3Ag5WnSpL0EWE+JHFnvuUw0ez5SCnz+RX6fe/jIa3an07c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iY2w+M/3; arc=none smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB0E3B6363
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774278792; cv=fail; b=fxpiMwSl6VAbP0xOPgu0h2vCQ1r0YDrk96Etdiprgz8pZhFgxx6ZKN2yuAKp3H1tlPAF6iC1Ro37oTAGIod4LOjJa3fJnrOx8I3TKdK+o+1JIA3Wol0jIF4tiFbNkIZvPN8Y32YIsIHl9Ine8bOV3NJaJz/6//K9PItOV+6W+PU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774278792; c=relaxed/simple;
+	bh=vcJSPWYzS0lPIOHGMTi6pUbXF32o83BB3k8e+JFWEwM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lS84ztvUvMD+K3pWUlnlS05anK5Yt8oj0KCq4ctGiTEl5xpWtamLn6mEUyoV2pIzXRumQ33ilJT1vVbL+MW/9JO0RMiOWoYXelsMA3G3KNedcH6J1QoRZq4J6OMfxFCXExHe4sr/22MqW+SAg/aYTqyH0R7V/inCNErqOO++e5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MmrxB42G; arc=fail smtp.client-ip=52.101.69.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iY2w+M/3"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1271257ae53so232305c88.1
-        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 07:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774277030; x=1774881830; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mw89EmH8qUZwnDDKLdU6WpDiI5F4oXbKdFeBF7Ff7+U=;
-        b=iY2w+M/3utWWVMKdUQk3BoJsCiMKmAMQuPoB+Lmo1/I0tpfH/f2wGD9Dq7EFhNXmn2
-         RZ/jwWbijBIGVhfA7ZTv925u6qHlUUiHXTM+RsutfitXjzx9SKak2fjiIUEuNLvIyLS8
-         2k8S9PEuGr33OiXdRmnInq7K/Ktdc0Svf1EBlVEs5QMEWQHGYX7gHfn+J1gQfSASBJs+
-         W+xslJJ3Am/t9p3IidZRk5E+4HzeaodKGbIELbQ4ivNQH5YcUL8uDkkDz8oCyE46nmDt
-         XOzUutI0h5EZ/bG5k8vmsl7HlKb7r9LbdpZjvBD40rkNF03vPzzWK6PwnVFsAp+f2wR0
-         drgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774277030; x=1774881830;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mw89EmH8qUZwnDDKLdU6WpDiI5F4oXbKdFeBF7Ff7+U=;
-        b=B6Qipk051zBP7Mchu4SdWSnsry3zT7honaKedvMIVUpys63vk16scBJiu9G99HO2nC
-         S9G+Rf+HhCj/Vh80OmFOREbh/SG+MmeBAPVPCUdi9GU6Qzlgnc3j+0AUVJLn+byYheGh
-         OgT5iFPh7X0OPswzpKVjXEQ1W3+idgsnVEgwwxKzPj8ptLL1fgLZaQGEnhJ50dzFQoMr
-         tzEwyw+FLaOmUhI3XRqScwhHKMwb4DIZYB2b3+wXT9YqrfDGEMlDd5zc++nqTEwAp0Rx
-         eE5BkGxUJzvDdCJInrFjkQJ4duy4do8X+j2ScHNAQJUcXE1KQDuD044AhlBfRlz2t1o2
-         l+og==
-X-Forwarded-Encrypted: i=1; AJvYcCVipFASFaHL8my6SI7+nlr877yfiERIRC1P89sQjCli98FBO7yUKcVfbBlpGHIOH5bjj5A=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxZR5zj5zhZA6mmrh6pRW3P0DgNmDFUd6M4KZTaYAfcw68dU0iB
-	I2jr41yQ5IxGl/T7QuLmpSZOrqcaJTVjxmc5+8Fdd2AEkNCIRsS0+prq
-X-Gm-Gg: ATEYQzyS/efTscatKFdFeGe5PbbfquK1SKlWbiPhd1i7gHmxRbRwRR4GWsbeuXCid/0
-	PoHQ4a5nkBouYHWfHC9XGmLu1la1hJKdOVh3w9yjFGMiQcdtjUdvFg2RgDyDWb6EBhQZ0WQGI/a
-	dBmTOk1aaW90Fns6IoAggUgObGZlD7xFj+ko9rrGCzXznEdZqAi1L5vxJRQrhV/s72Q6sM5dBXg
-	qzC4idztdYbvAkPoGQh7f+VkmBHnds7206bDO3d4AOL1IlsKKKPAyhoroy5kbWt4C7nwJp2uvkq
-	L37eRzSZjHt+0INxaNOM6RzuNfdThm3obwrzR7zBfeIN3nLTfZvJ3EGCp8TSgRAKxtPIpMi+yCn
-	WeZC0k+P3CMh9h1qFZHYLhqiIWplTNsHkX3yoVNjmE2Ypp+C7Gmw1lvyYNT9nrrl8c+xeTX638Y
-	2q8jOU3JaH1NhQEL3K1EVZmUfZq0EouhOyiS7zuKySQ2w3PkWiExZM/9OwA+7Zv/wVKj4oLfd0
-X-Received: by 2002:a05:7022:327:b0:127:5cd6:fa45 with SMTP id a92af1059eb24-12a72684c44mr5788964c88.14.1774277029439;
-        Mon, 23 Mar 2026 07:43:49 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a733e794esm9375194c88.6.2026.03.23.07.43.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 07:43:48 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <72ba643e-c716-4332-bff0-f9d12add0cc6@roeck-us.net>
-Date: Mon, 23 Mar 2026 07:43:47 -0700
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MmrxB42G"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TQ/Aco+qHhekCNebkGjQG5xZYSmZjCCVqyXpRiNEe3whsbQyPzyyUqOmqxo8O8f8FdQo6BgvK6i28kNU4Tz+/RjPMkWuoHdFOqJRfE0uiDOI/ku4ejfxlc206l75gz0cFCNJACjOmJBe6l1/0JH1TzZvjfJFjULto4U9hl6INoCHubSm85TQTVU3JT0p2CQ4duQY9rtpMzTMrP8iJQJPrwwuiMs9Z7QuKxna0RAUs+TIQtzh30Z4Ol8Lmi1eQtvrbLBfzNuGeC89RRc+HFWsw1HPDYcyV3PZpbAlr11T9H4eMY3XmZhTTfQMVk6pWIHa9zig1YMdc8R7m+I1pcJZYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Th394ncQCs3Kh40Hvs0LbO7LZwJCHzz6crYYomWJRS8=;
+ b=uwBB39anTUS1xNE4eg5XR995DxVeyQEQGtEzFcDjTKEW7SkldaUWkCXKMthPrPcGY41jFMV0t9MeIFER/OT1m5/AYpgd9m6yooGaHIPGIDmgK/p9dPT1gI5RkgreadDvhlT1iTmXlA3sc4zOTfnWK7b4M0qBONhWU+vjfN04dTyhwY0qRXttinxzpBPBglm16CtIyXPJnYPR7GsebKuA6zY7D7iHKXCiHT8gCnvJjV7XjrccRG+ZtXjY3FrK7glvS+62bgNo+sVC6roqW9bplZySIeDwvO5BVCi6g+3Ypy3lgUah4138Fn+mVb/pRb7dmy+dXiCc1jT+1+VWVTWGHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Th394ncQCs3Kh40Hvs0LbO7LZwJCHzz6crYYomWJRS8=;
+ b=MmrxB42G56jx+9ioLpouZDTCPzOStGqXbD1/ODBZseUcj6+CymZVRwA7NEkum55cXhqbrLBVlIhHGZ6p3kg/NboRwnQO+VP0+CO90c3jGLkIuHGQ1KFmNXAE9PwKXjWuR+pLuqkfzorNHnNZBy4No9bq4QIb5DU8zk+KlddrUJuduARaZOLc2gp0J9Ic8l0qAkaUhsebBhtfVtbzC2CDGCtVJkd1/cqh0MYCoMQ3qdct5zCl34c7vkIrmY0U9x7ntwk0+nSx79N5dZ06DyLiSiYR/ADdt6iD1xxD0HpuUWj+vpbeMWA21AY9vPufnwuzaLh/TdSyOlIHy1WQJh7IAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by DU4PR04MB11860.eurprd04.prod.outlook.com (2603:10a6:10:628::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Mon, 23 Mar
+ 2026 15:12:41 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
+ 15:12:55 +0000
+Message-ID: <a7982125-1782-4655-9800-235f99fc913e@oss.nxp.com>
+Date: Mon, 23 Mar 2026 17:15:59 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: imx-rproc: Introduce
+ fsl,reset-vector-mask
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-remoteproc@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Peng Fan <peng.fan@nxp.com>
+References: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
+ <20260312-imx943-rproc-v1-1-3e66596592a8@nxp.com>
+ <3e1a3f07-8c0c-4757-afd2-b9e6574a6274@oss.nxp.com>
+ <ab1D2qIUh+KPnS7p@shlinux89>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <ab1D2qIUh+KPnS7p@shlinux89>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0224.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::14) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-To: Daniel Baluta <daniel.baluta@oss.nxp.com>, florin.leotescu@oss.nxp.com,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-References: <20260320152959.1575978-1-florin.leotescu@oss.nxp.com>
- <20260320152959.1575978-2-florin.leotescu@oss.nxp.com>
- <8a8d2991-cd85-4aed-a7ef-a90b0cd10fbd@oss.nxp.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <8a8d2991-cd85-4aed-a7ef-a90b0cd10fbd@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|DU4PR04MB11860:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5ecba83-2dd5-44da-3e7e-08de88eea931
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	jQUSYHN2B6V99tZQGgw9MjHiMdEqFAyOnakg+NL9bJ7icz566mMWa3hZBX3XrLJLFgDm44TcxVw98GcWG7DGIED5WUakSjiu5Td4Fnom74nRl0RySdka6JQCUjhLih0P5sZ6uY/Sn5Atq8De+bsY6rMdJt3qdHOMZ1XL097iNL6WObMlfozZ2yrIPUd/tL5Dq6ysUI1OlZD25WWC/fBygAQ1FAO1Tzz3bBmAosKZy2Cec86wEt2jYiKVLSXqJr/HvT7zsUyBxjGrtVd1SqbwJiJ2lEkab/UIr0pikct/k+O4juq6CHj5YoOJ7guEJobshPJMV6D1ZCYR6fXQKVXT9UniPveRJqj2PQSz4kKtrXEp98VQoJ1JRCdN1lupwjfJTVYRW8uzvciS0onIdQPCjzmfwci7CfPSZ7Qk/nB87YGIJ0ZOG90FluPgF4kd0whcJhh+ZGDYzFxrS5Oq/INShMZky8/eRwyf4aCe5xi4QVqgt9I8r7/LDPm61xvJZmENweK23MBEDhuvxdCNZKee4J4pjvBsFrkz3QjA8BtfOl6LtFRsHk5hos0fv+9is2zYcjyTSgoudFttacuuE4pBYT6ph3A0FYIJuHA8/kmATO/3dTA4UDH8gGveNw0U3r6FapvsSgsjllJVZLPWo0sm/ZxPePT62LxxMPJRiawPQoh0GoXcPxezV+MRqswUxpkW
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MjExb1R4OFlXbUljdDJMMlhodlgxaDhQc1R0TDk2ei96NXlrd01rSzMvMEY4?=
+ =?utf-8?B?YWhvS1ROVGZmdmU3MFBxVVRXMzl6bFBtY0YwZGs4a1g3UFpUZVJLM2NNRlZ5?=
+ =?utf-8?B?cXpUcmxCUnpOVWVnWVNkSEFTNFFtb2lMOFZGSHV4bk4xMlpEeG9qd0RFNFVs?=
+ =?utf-8?B?Mjc0K3FBWVpUSHN2OGhXcytJUGVCMGJYTVRaWEJUbkFWTHhrczd6citHbVhT?=
+ =?utf-8?B?d0dqNEw0emdXcUtXa0ZGbHhGeU9KajcrUEtqT0lnZWZBQ0xaYTJTc3dRb01I?=
+ =?utf-8?B?VGJ2Rm92b1hkNGhnUlI1Z0VTSkp4VExlZndPSHRxT1J4dmdVemJMd2lMakRN?=
+ =?utf-8?B?OEFmRlRtcFkvOUFKbURweG5RWloyN0NQOFlwZ0pZWDVFTVZrZjdNN00yVHBj?=
+ =?utf-8?B?SHJIV045NnNLMkFWU1lhTXVQWHExY2RQLzE2aWNjb3dSUDY2ak5pNmdmMXZC?=
+ =?utf-8?B?dENlMFJDN1gxZlFWM2FISWxEL0lEckhhdU5yRnFDQkJRUmRLMXl0aFNPZks5?=
+ =?utf-8?B?TlFiVVduR3VmS0lSeHdvYmdETGRlVDI4TXErTHRKYnBpUnNNTTVCTnJKYWZR?=
+ =?utf-8?B?VWt2bUdPVTdLWk5BOVNmemp1alExeE5BRzk5YzdWaFM3ZmZ5MnNpM0lhQmVT?=
+ =?utf-8?B?UkJueGFhSTZWd3JWc09NOHVRTWxNaWFzZUlqTHgxaEpnNWVRYVlHNDI1Z1dT?=
+ =?utf-8?B?YWZEdGNPWFhnc1pYdEpWa0wwcktTVkJxY2tjTm5kMWwwWllOUWFFSmptMkVD?=
+ =?utf-8?B?N3ZWL0lMdGx1K29mamh5YkpPUHJrWEVzckRVaVVJTFdzcExlY0Y3SUhjZVlQ?=
+ =?utf-8?B?UW1tK3hpalBKUGVqdjhZYUorVUtnOW1XUnI2OVQwUEFmRGpBdEpUVFFKb1U0?=
+ =?utf-8?B?MkUvdVBTNHN5S1dyM3QxNkt4cjFNM0Ftc0Z1L2tvVmN5VFhLVjFlV2t3UXNN?=
+ =?utf-8?B?Z3dkZzFlVkZDaE82T3RaR1pFbWlRS1c2YTJ3ZWhCemt3Zml3WHZMVVI0OFA0?=
+ =?utf-8?B?QnRtdXBsZzErdy9RaGUrN0lLdytaMWJObm4wa05DLzhKWGVuQmdnUGovQzcy?=
+ =?utf-8?B?R3BNa25xOTRSbWJJaFZoVnhpMEkzaDN0d3hhY2dQVDlzZHlUUnFyaVJyZWc3?=
+ =?utf-8?B?a25nUStkZU1uZWNKQXNGNFNZWWhRT05senRrTkxKaFJ3V3BGdmVuTGU1elFn?=
+ =?utf-8?B?ZG1WbXB3SWlVZDdkVjdXM1dzOVdhYWJTVUE5VGlMK0kwKzV5RFJNeFdNQVgy?=
+ =?utf-8?B?UzNKMmcwN2p3Z1NJdm96Q2NhTHVUSW93UzJEV0FibkNYcll6NlI0M1g1L2Zm?=
+ =?utf-8?B?OGk0YnhsSk5sQnpMRkUxVUhua200bjIzQWhvVW1TTS90SVJvYnZWd1JpUjRG?=
+ =?utf-8?B?aXV6eGxBTTNYeWxRRGFjTElMbDVkSEdLcG5yNjdyeUJqZ0Vqc0ttWmFZTUU1?=
+ =?utf-8?B?MkRTVjZhSERlU1d0Rk9BOC9HMzRGWExGdG9QbDVoUVo2bWt1MDlVbGpuNVcx?=
+ =?utf-8?B?QlkzOG5mZnhPNEdIWnhFZkxNTVN4NXJUUHBENFlVbFN1ZlpwWlI0N2Zpa1dU?=
+ =?utf-8?B?UHcyQ1pTNGlLTkFNa1VSSXRQRXdXQ2FHNEVhdjNrVUZ0aVErbkhnMkNmVzBZ?=
+ =?utf-8?B?cnBUSDV5OWo2ZGhXUGd3ejRMMTdJTStlQVVLZTllMTR6THU5RTNnWTVveTUr?=
+ =?utf-8?B?S050V0ZtQS9ZMjloeENldXBlTUlaN3RqWFNRRkNCNWp2WWZFWWNQbnpwUS9z?=
+ =?utf-8?B?Z1pZRXZVUGN2TWtqRERZWE1NRFYyTUlQZjdEMGc0VXUxR1Fybzc5Vk1ualE1?=
+ =?utf-8?B?L2hTVm85YnpHSXl3NGJUSHR1TkJsclh6YVdORkhJNnF2OU5seURFOE95UlRo?=
+ =?utf-8?B?L1NSQ1loUXhRREo1WWZRdGNubWhNL1pRQVRSU1JiN1VmcDlEY1ltejZQdmMw?=
+ =?utf-8?B?Z2lRdWRaTzZKcE82T3lPSklVa0hIeWFQb0NFZGppSGVORkdpWWgva2dpYWs4?=
+ =?utf-8?B?N251RWFhUWJtYVV3WnppQmlMRVo5ZXZleEVUUXNDR3A4RG5zSjdFR3NpWkNZ?=
+ =?utf-8?B?aTgybEZndUxnUDhqcEY3M2VxelBONytwOEw2a1pNcFVsNTR3ZW5BVFJETk1O?=
+ =?utf-8?B?emRtVGcyVDQyZURiTitGYmZJM0FVSTF6OUZ2NlUrYzNMMnJlMkd5am1ZRGpv?=
+ =?utf-8?B?RThBNE01NTBxN0lxa0diOUJ2enRpY3J4cE9Db05zSkJGTGtpZHFEM2dBY2NI?=
+ =?utf-8?B?NE9ZaXU1SUpmQTJRa3pieDFjazV6a1podHFmOWFTaGVFakZ0MER5ZHYxSkg0?=
+ =?utf-8?B?MklYSGo3SFkxZDNqV2cwZlZoR04yNXl0SzcrTG9rTUZBRlBSNkgyQT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5ecba83-2dd5-44da-3e7e-08de88eea931
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 15:12:55.7819
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Nx5v9HbHnPflcP41VB2Bbt8daj1ZrVrvH7LodLJbNKEh83xBaHAQTZEipArkksaEuPDh4o0ZVtwGoay4HGkO1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11860
 
-On 3/23/26 02:10, Daniel Baluta wrote:
-> On 3/20/26 17:29, florin.leotescu@oss.nxp.com wrote:
->> From: Florin Leotescu <florin.leotescu@nxp.com>
->>
->> The EMC2305 fan controller supports multiple independent PWM fan
->> outputs. Some systems require fans to enter a defined safe state
->> during system shutdown or reboot handoff, until firmware or the next
->> boot stage reconfigures the controller.
->>
->> Add an optional "fan-shutdown-percent" property to fan child nodes
->> allowing the shutdown fan speed to be configured per fan output.
->>
->> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
->> ---
->>   .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
->>   1 file changed, 8 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->> index d3f06ebc19fa..7bcadfab9fc4 100644
->> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
->> @@ -54,6 +54,12 @@ patternProperties:
->>             The fan number used to determine the associated PWM channel.
->>           maxItems: 1
->>   
->> +      fan-shutdown-percent:
->> +        description:
->> +          Fan RPM in percent set during shutdown.
-> AI review suggests to update description to 'Fan speed percent' or 'PWM duty cycle in percent'. This could be an easy update.
-> More important question here is how should we proceed with the following observation:
-> 
-> "fan-shutdown-percent property is already defined identically in pwm-fan.yaml."
-> 
-> Guenter, should we move it from pwm-fan.yaml to fan-common.yaml and use it here?
-> 
-> Our initial thought was to add have it merged in microchip,emc2305.yaml as it is now
-> 
-> and then factor it out in fan-common.yaml in a later patch.
-> 
-> 
-> What do you think?
-> 
+On 3/20/26 15:02, Peng Fan wrote:
+> Hi Daniel,
+>
+> On Fri, Mar 20, 2026 at 11:46:53AM +0200, Daniel Baluta wrote:
 
-Both are fine with me, with slight preference for the second approach.
-Please do whatever gets approval from DT maintainers.
+Hi Peng,
 
-Thanks,
-Guenter
+
+Thanks for your explanation. Few comments inline so that we can
+
+find the most scalable solution for all IMX platforms.
+
+>> On 3/12/26 14:36, Peng Fan (OSS) wrote:
+>>> From: Peng Fan <peng.fan@nxp.com>
+>>>
+>>> Cortex-M[7,33] processors use a fixed reset vector table format:
+>>>
+>>>   0x00  Initial SP value
+>>>   0x04  Reset vector
+>>>   0x08  NMI
+>>>   0x0C  ...
+>>>   ...
+>>>   IRQ[n]
+>>>
+>>> In ELF images, the corresponding layout is:
+>>>
+>>> reset_vectors:  --> hardware reset address
+
+Is the hardware reset address fixed by the hardware team? Can it be modified at runtime by software (e.g SM or any other firmware)?
+
+For example, with M7 on i.MX8MP the M7 core will always boot at address 0.
+See table and explanation here: https://docs.zephyrproject.org/latest/boards/nxp/imx8mp_evk/doc/index.html
+So even if you build an ELF to run in DDR the reset vector won't be placed in the DDR. But instead you need
+
+to add a small romstart code in ITCM that is you put the reset vectors in ITCM then you jump to DDR.
+
+>>>         .word __stack_end__
+>>>         .word Reset_Handler
+>>>         .word NMI_Handler
+>>>         .word HardFault_Handler
+>>>         ...
+>>>         .word UART_IRQHandler
+>>>         .word SPI_IRQHandler
+>>>         ...
+>>>
+>>> Reset_Handler:  --> ELF entry point address
+>>>         ...
+>>>
+>>> The hardware fetches the first two words from reset_vectors and populates
+>>> SP with __stack_end__ and PC with Reset_Handler. Execution proceeds from
+>>> Reset_Handler.
+>>>
+>>> However, the ELF entry point does not always match the hardware reset
+>>> address. For example, on i.MX94 CM33S:
+>>>
+>>>   ELF entry point:           0x0ffc211d
+>>>   CM33S hardware reset base: 0x0ffc0000
+>>>
+>>> To derive the correct hardware reset address, the unused lower bits must
+>>> be masked off. The boot code should apply a SoC‑specific mask before
+>>> programming the reset address registers, e.g.:
+>>>
+>>>   reset_address = entry & reset-vector-mask
+>>
+>> What do you think about this idea:
+>>
+>> Use fsl,reset-vector-base instead of a mask. It could happen that for example
+>>
+>> a CM7 instance has explicit requirements to boot from TCM but the entry point is in DRAM.
+>> Then masking won't help.
+>>
+>> fsl,reset-vector-base is always fixed hardware integration dependent and you can always
+>>
+>> specify it in DT.
+>>
+> Thanks for sharing ideas. But this not work:
+> 1. User start an elf which is built to run in TCM. the reset vector is in TCM.
+> 2. User stop remote processor
+> 3. User start an elf which is built to run in DDR. the reset vector is in DDR.
+>
+> So a fixed fsl,reset-vector-base not work. We need a per elf reset vector base.
+
+Ok, I see. So a fixed reset-vector-base won't work! But in your case above a fixed
+
+reset-mask won't work unless you always know that for both cases (TCM, DDR) the
+
+entry point is within a fixed interval relative to the reset vectors.
+
+> For the case you list about boot from TCM, entry is DRAM. this is i.MX8M DDR
+> elf demo. The hardware always fetches PC/STACK from 0, but elf entry is in
+> DDR. We always use 0 as boot address for i.MX8M, no matter what elf entry is.
+>
+> For i.MX95/943, there is an register to configure M7 or M33S start address,
+> If the image is designed to run in DDR, user should set reset vector and elf
+> entry both in DDR. If the image is designed to run TCM, but space is not enough,
+> DDR is also used, the reset vector and elf entry should be both in TCM.
+>
+> Per my talk with NXP SDK team, It is less that 16KB from reset vector to
+> elf entry address.
+
+I think with this assumption it will work. Please mention this in the commit message
+
+and we will go with your initial idea.
 
