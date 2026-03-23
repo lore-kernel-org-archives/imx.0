@@ -1,31 +1,30 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDA9370D75
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF0B33D4E5
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 09:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258780; cv=none; b=iyrY0HlrYL2Ge42Z2WLHiWGb8Psjt81Os1hwW6JA5r9NTW3j+wF+wtskpUFOqxm5yV89l1sGyhyjI5rJifIKPnPMK2I7yda8oeBzltWp2hXPpx5I/AuHHaxBreVBC5PBw7DwU678iU0dlvsn7mWT4g9SePwdtNusV/MiZAMCsPY=
+	t=1774258781; cv=none; b=mIAQ3nC0xv0J0Akex1Y7lK3x7hs5dkuqE1lH4DcEgFW002AFzzj2K5Z0ayzfqsIyAr1CLzHghVeK5vyB8afACB9/pPAuMpkOCXT2NcWO1mrINyNH2vIDivEjiIOUnQnzHJF97BUy77w9vXUn4MT5KCo+fvVnOTxYrQyY6WrtaZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258780; c=relaxed/simple;
-	bh=sF6qgHH7miXuud+L6TE/bmuwXzW6q0JYUl5o+SwrI08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxLmBzF3YqsODkcP3q5qFS6CIuyczZ1UW/Tngrq0fF0HVvS7rxPB1+fLsH8JvNQ1O4115HwBCkeW6fG1rkYoUULlnSSwe5Qb2GWSV0mMOw8TjkD8An2Fz4Grw6ZeqQo7r+B/X2UxtcQs2DkBXtIK6ZdLrjSmvUaItK1519v/H9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=glkcvn6N; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1774258781; c=relaxed/simple;
+	bh=CtREjtYUErNei1WWtCpEy/9MeVxaYUz32mC5eZ7Fh2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nmA3ZdU1WGK7FcpDfrY3LEtJg85tiAfNClFzyw2FaKRMp51k5SGobBlj6a7FWQ0p8PMoMW3XHA8KEMZagrHFGpdRTH1kIvJSJVf0Jn3fLH0rZiNUoihVECe9Bp3tSQM0Q+1gLenVg7ki+uBZpg38TQQ1F7pClSymobaIjqhHLZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VVJL01JE; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="glkcvn6N"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VVJL01JE"
 Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EFC7C189C;
-	Mon, 23 Mar 2026 10:38:20 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 7F5E5874;
+	Mon, 23 Mar 2026 10:38:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774258701;
-	bh=sF6qgHH7miXuud+L6TE/bmuwXzW6q0JYUl5o+SwrI08=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glkcvn6NsWcfUzgMb37qmSv3DWH0u7SigdNirCVAxbaHnO1xWbzru7ItnTRyC/qGo
-	 CLbNn6DDbRy/vZViq90A30c5WCeZ/EmIVzE8dsDmFb2NdTn1IFCoYbinF9PVUhXChD
-	 Odts8UmiZoEgheTUEWQp7GxOQVgPcsZNohhY7ybQ=
+	s=mail; t=1774258699;
+	bh=CtREjtYUErNei1WWtCpEy/9MeVxaYUz32mC5eZ7Fh2U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VVJL01JEFv5cnLs7xSwqok45AzRLo0XwBFW9rfJxMdud/+WHEMN1TcKFD/TzP7Zdr
+	 Sf5Sap6PLQBQ7SvHng1gkA+h7r4OAAAQRjNPJs3sAgn1SHaUGa2z01ZY1cZ7JGw/K1
+	 SdAqXUmR/6DBlvcQo++Xza5qdeyUKtKIeWgwP5N4=
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: netdev@vger.kernel.org,
 	imx@lists.linux.dev
@@ -44,12 +43,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Stefan Klug <stefan.klug@ideasonboard.com>,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 1/2] net: stmmac: provide flag to disable EEE
-Date: Mon, 23 Mar 2026 11:39:32 +0200
-Message-ID: <20260323093933.1785583-2-laurent.pinchart@ideasonboard.com>
+Subject: [PATCH v3 0/2] net: stmmac: Disable EEE on i.MX
+Date: Mon, 23 Mar 2026 11:39:31 +0200
+Message-ID: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
-References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,83 +55,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Hello,
 
-Some platforms have problems when EEE is enabled, and thus need a way
-to disable stmmac EEE support. Add a flag before the other LPI related
-flags which tells stmmac to avoid populating the phylink LPI
-capabilities, which causes phylink to call phy_disable_eee() for any
-PHY that is attached to the affected phylink instance.
+This small patch series fixes a long-standing interrupt storm issue with
+stmmac on NXP i.MX platforms.
 
-iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-to the receive clock domain, and takes four clock cycles to clear, this
-leads to interrupt storms as the interrupt remains asserted for some
-time after the LPI control and status register is read.
+The initial attempt to fix^Wwork around the problem in DT ([1]) was
+painfully but rightfully rejected by Russell, who helped me investigate
+the issue in depth. It turned out that the root cause is a mistake in
+how interrupts are wired in the SoC, a hardware bug that has been
+replicated in all i.MX SoCs that integrate an stmmac. The only viable
+solution is to disable EEE on those devices.
 
-This problem becomes worse when the receive clock from the PHY stops
-when the receive path enters LPI state - which means that lpi_intr_o
-can not deassert until the clock restarts. Since the LPI state of the
-receive path depends on the link partner, this is out of our control.
-We could disable RX clock stop at the PHY, but that doesn't get around
-the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+Individual patches explain the issue in more details. Patch 1/2,
+authored by Russell, adds a new STMMAC_FLAG to disable EEE, and patch
+2/2 sets the flag for i.MX platforms.
 
-Previously, iMX8MP worked around this by disabling gigabit EEE, but
-this is insufficient - the problem is also visible at 100M speeds,
-where the receive clock is slower.
+[1] https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
 
-There is extensive discussion and investigation in the thread linked
-below, the result of which is summarised in this commit message.
+Laurent Pinchart (1):
+  net: stmmac: imx: Disable EEE
 
-Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
----
+Russell King (Oracle) (1):
+  net: stmmac: provide flag to disable EEE
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   |  9 +++------
  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  7 ++++++-
  include/linux/stmmac.h                            | 11 ++++++-----
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 5062537f79e9..7f7682a5fbe4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1445,7 +1445,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
- 				 config->supported_interfaces,
- 				 pcs->supported_interfaces);
- 
--	if (priv->dma_cap.eee) {
-+	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
-+	 * used for stmmac's main interrupts, which leads to interrupt storms.
-+	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
-+	 */
-+	if (priv->dma_cap.eee &&
-+	    !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
- 		/* The GMAC 3.74a databook states that EEE is only supported
- 		 * in MII, GMII, and RGMII interfaces.
- 		 */
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 72febd246bdb..435a890a3b2e 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -208,11 +208,12 @@ enum dwmac_core_type {
- #define STMMAC_FLAG_MULTI_MSI_EN		BIT(7)
- #define STMMAC_FLAG_EXT_SNAPSHOT_EN		BIT(8)
- #define STMMAC_FLAG_INT_SNAPSHOT_EN		BIT(9)
--#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(10)
--#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(11)
--#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
--#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
--#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD	BIT(14)
-+#define STMMAC_FLAG_EEE_DISABLE			BIT(10)
-+#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(11)
-+#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(12)
-+#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(13)
-+#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(14)
-+#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD	BIT(15)
- 
- struct mac_device_info;
- 
+
+base-commit: fb78a629b4f0eb399b413f6c093a3da177b3a4eb
 -- 
 Regards,
 
