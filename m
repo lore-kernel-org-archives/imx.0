@@ -1,61 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B914B30C60D;
-	Mon, 23 Mar 2026 21:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B98A36D9EB;
+	Mon, 23 Mar 2026 21:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774301840; cv=none; b=ZeC60BR7daHBrJrxOMeIX/SGk28TjW848XDJMacDnb98wrvVl6EbOox/zgAplI/GydCynk+l8xJG4Atc3nXy4ZfJCA6ZGVpl8sDr9Cq2DA2c002H1qiQ8uKd2xgxNEcufwlsjLTJGUU3tIDFlNtKTkH3x3rWgYPgZ/0w6DeHP7U=
+	t=1774302575; cv=none; b=VoG9N2XahgA0mzAOk9YrI5RRDjMM6WXUR/1ImnBdoA8ZdLEafDgpFZioDiBWhnkQPM+/G5eeBt3jjtK37wLfcEsPhltTyyjr9FUVvo0UIcR8K/iLpxqJ+HhwsM3M1SHE7TvJG1jiPGjzc1UGWJaiBluP4YrX3CbL/NF4pWZ91yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774301840; c=relaxed/simple;
-	bh=R3STABNJSGZwjloMcL06xiDWvjGg8hdaV8ssjZ92LGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dLdoGwED5ynEGnUso+vTavTylCtNf+8lPoPmRMXppUqr3Gg1HmahQ4isVYPGnp0NZrPCWqKBZhliIbT5uu0vIy1DLvQq/k/sGvRsTOoBehBEFoK3H6fruBlcrO4/uUwqSzX17zHrHud2dg+66G1TxZ6ayL2lwLP9hpwofyCwu04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5b2oonq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774302575; c=relaxed/simple;
+	bh=e2ZhSCx0wJsAx1emJeyO4FU08Tb6VMlBPPL5XXi0V+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPthi5v86+KEcLstoPVZBcpU4mdvOvQ87xWiYXUlRNdsremJ5KxImm6mO1muW+U8I8omUDO2GltWxUANxvRUN/tdSlNlekCrGEg1o/BanQ7UppxoVw2sTyvqbLTpl8DqeMOSwWn2/R788eQ/PBhvTE8a5Yp4SOrRLXnGExS6P5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXR3s6Ii; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5b2oonq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6B4C4CEF7;
-	Mon, 23 Mar 2026 21:37:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXR3s6Ii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E23DC4CEF7;
+	Mon, 23 Mar 2026 21:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774301840;
-	bh=R3STABNJSGZwjloMcL06xiDWvjGg8hdaV8ssjZ92LGA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H5b2oonqc23ORaa8vMdis3FeoHd1eDPStrY8+jmwiqim5IwbRMllw60/cc6xB3jp1
-	 gwUYpRMZsoiB3sO0PabNWKGwKEV9kSiyO95r6781X1SxIDgxN/oODY0mwK/N0wtD+h
-	 QZPXKEcKptDM4dB6SS8jCi3HCniR53fV/fGNZCAHoixRur9n6Sr04F1NWq5d+a1KUG
-	 uTguasdQem6xLY5uI5LYOyqVG5rulNHOPQ05sLiozBdK2qyyGOroV54StrJfB24VHB
-	 H0dQaX0IKYU0pIZU9PbDa8kJ7yCklSXVPHrFc2VkOSaX8GOj3RODI1iPUz8tp8SPSJ
-	 8Zk7SXIYqQFlQ==
-Date: Mon, 23 Mar 2026 14:37:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- Frank Li <frank.li@nxp.com>, "horms@kernel.org" <horms@kernel.org>,
- "saikrishnag@marvell.com" <saikrishnag@marvell.com>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>
-Subject: Re: [PATCH v5 net 0/3] net: enetc: safely reinitialize TX BD ring
- when it has unsent frames
-Message-ID: <20260323143711.2775bfa7@kernel.org>
-In-Reply-To: <PAXPR04MB8510310D3FEC15E163A2FCF7884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260313094644.1132411-1-wei.fang@nxp.com>
-	<PAXPR04MB8510310D3FEC15E163A2FCF7884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	s=k20201202; t=1774302574;
+	bh=e2ZhSCx0wJsAx1emJeyO4FU08Tb6VMlBPPL5XXi0V+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MXR3s6Iie7Hp0vfWKYIxZqEwcifDLvFfeZtG7iRbEA0DhAy6OrFcIRNASgmDu1wES
+	 zn4IB9ubKrtOy0wXus4wPsc0eBevTbJva1lSU9ESfklLjSd5pBNB1nV24Q36di4wYW
+	 0lXP0/FiXiQNTgJjuefwj+TrVnsIet/iqOzKs3Iq+mE+Od+sUt35pv7eHj4n55e+gz
+	 13fLIGiGQyk69OH0znKnUMNM0rDD9dbru0bdVoDvY3E2gfDe4vCze6n6yxC9kUGOMb
+	 kSLEBVcMkyjMZKjC+Q98InaQDpdQcVNO4WZCXfb7pbVZYBqGq7rQw4g31sEWJnyczt
+	 1LJaq/W2VhUWw==
+Date: Mon, 23 Mar 2026 21:49:30 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, Frank.Li@nxp.com,
+	amelie.delaunay@foss.st.com
+Subject: Re: [PATCH v5 15/17] spi: uniphier: Simplify clock handling with
+ devm_clk_get_enabled()
+Message-ID: <2f623083-5846-48d4-8c36-e55d663047c0@sirena.org.uk>
+References: <cover.1773885292.git.xiaopei01@kylinos.cn>
+ <bcfc4a5191976b2ada9cd4094b61ac67a0ea9da7.1773885292.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Y/Y2tr05pHZcxD/m"
+Content-Disposition: inline
+In-Reply-To: <bcfc4a5191976b2ada9cd4094b61ac67a0ea9da7.1773885292.git.xiaopei01@kylinos.cn>
+X-Cookie: Advancement in position.
 
-On Mon, 23 Mar 2026 10:40:03 +0000 Wei Fang wrote:
-> Can this series be applied? Or is further improvement needed?
 
-It's too old now, please repost and reflect the discussion in 
-the commit messages.
+--Y/Y2tr05pHZcxD/m
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Mar 19, 2026 at 10:04:11AM +0800, Pei Xiao wrote:
+> Replace devm_clk_get() followed by clk_prepare_enable() with
+> devm_clk_get_enabled() for the clock. This removes the need for
+> explicit clock enable and disable calls, as the managed API automatically
+> handles clock disabling on device removal or probe failure.
+
+This breaks an allmodconfig build:
+
+/build/stage/linux/drivers/spi/spi-uniphier.c: In function =E2=80=98uniphie=
+r_spi_remove=E2=80=99
+:
+/build/stage/linux/drivers/spi/spi-uniphier.c:773:35: error: unused variabl=
+e =E2=80=98pr
+iv=E2=80=99 [-Werror=3Dunused-variable]
+  773 |         struct uniphier_spi_priv *priv =3D spi_controller_get_devda=
+ta(host
+);
+      |                                   ^~~~
+
+--Y/Y2tr05pHZcxD/m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBtWkACgkQJNaLcl1U
+h9BGOQf+P4qqM5W2u6LtXeZ+RqwAf5bIlruWN7Zu6y+s0RsmbnL8SLo7ezN1P5XA
+CaagW1s3A1znQ+f+UOmPpt7CUIM1lfu4JMWMQEq/cZthfywlxT0GzJCFxfwmIfXc
+CIg28KtEajxKDNgRhc5AUvY+uPwX0bN3q2rUJ/kMcSeopHH61rIVinefkvqchzj3
+FcC4NVtnG1cKpbV/hwswiKs7/f4NPM3PJs/PUgGtrqtvcaylsOcjEkL/tUQN5bHY
+TupvhVwEX8LSCuTL2A0ihBwbZj1FWzwTqmb2nkc+zwDd0wOWosktdz/D4qYx04Ox
+knJf2rx/baCD+1NxJPUJXi0GgY9dkg==
+=IvRp
+-----END PGP SIGNATURE-----
+
+--Y/Y2tr05pHZcxD/m--
