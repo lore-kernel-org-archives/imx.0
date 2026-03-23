@@ -1,75 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B683542E2;
-	Mon, 23 Mar 2026 19:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82EA3AD508;
+	Mon, 23 Mar 2026 19:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774293375; cv=none; b=YlVqMJ6BMIg7QSIh2Scwh/FPb1cNUTK4EoMqJSsV2golE1Azal0Pz53b2JR87nyIYs4JPGeBd8BwGRtu9qsFEGaed/88AYg4nR62tdd3CHo5MjnYTz3P1zvY3H62hoLLcC4Tp3G5wG6sJ5Svngg424ZS8iQc1dMEmgvOax5Tif0=
+	t=1774294522; cv=none; b=rkVU5lFtqhBvHYOOcsK3FwekzKWbR7vJe/apXFaZHxo21dD9ZlsbW4UQtaZtdJC8AFbtGsBjkpZN1T1Rp9EgxBFFGItUDBAPHX0TugIQeVKjmz3Ch6+HuopdcSGb1azXpBu9Ii4n93wdu+PGJCBBBtDBMFS4FGEzUA0YouzPEMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774293375; c=relaxed/simple;
-	bh=1nF+saa90o7U+gCHf9BeJ9mw/K1YHlF0/VNjlIghgx0=;
+	s=arc-20240116; t=1774294522; c=relaxed/simple;
+	bh=/AltQxVMRaDiZn/otYACU056eFGHpp8ohsXtQFKkbMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHwWexA/HzfsbYL4uFMuZ5IeiBUeIUHqOMvQTo/eOU/9sS6FJoJPXkfpVhSF+NCxuEVeezzloascIyTrrFbAJO02n8w7PzqWj/ohOCO2J4SDcK4r+eKKDzSFQ2L/JuN4S0DqxgJ3BoL7oATR1CDlVzSUBYfEAJP746uW6XeiFsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAbsMxnG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=o9UF2gzMIFxYv0osGNh+3GVz1ZheUpiHdqqoXuFAJeU1AGZId+tComWY40wkyZv7RejzrKQkkZ6+7X3iy/xJWXxqo7CtN+mrFxTnHx+F8AEHNTg8dvdOTRem2JbIkwOVcHYXyujbmbDzsDv+fpBWzdKMHRbsbPnrRqZfhQp1w3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mw723Ji8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAbsMxnG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF47C4CEF7;
-	Mon, 23 Mar 2026 19:16:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mw723Ji8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB6FC4CEF7;
+	Mon, 23 Mar 2026 19:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774293375;
-	bh=1nF+saa90o7U+gCHf9BeJ9mw/K1YHlF0/VNjlIghgx0=;
+	s=k20201202; t=1774294522;
+	bh=/AltQxVMRaDiZn/otYACU056eFGHpp8ohsXtQFKkbMg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WAbsMxnGX6XhQ6Gt8uhiEP+Sqq+4tsZmBGMYHL7dgJVzURomVB0k5/0xkKvMuUe/W
-	 JefAmj5rYWkqvjA+WKe0Y0xqqO2ZwpriXJIfBLrzkmLbDieSO6lPU4rokKsOzsNfqi
-	 LPh2+X2eM3A1/D/7Pdcsa+uqogHfn3mvU3TjU5f+uaiTNoQGvHfqflJwxXawdCS/up
-	 h4uwsPMaXY86j2wL21GVoQPnBzlm7ktQmYKvxnBHsooFLVKhaE2SwKKbV//p8xgkrA
-	 VzNA+rcSOpUuip1FKyuOs+SCYfg6b9sN4aZtS5wFFTGpnjDzPsAY9/B/cwt5g1Iphm
-	 4dFUDAnZY7e/g==
-Date: Mon, 23 Mar 2026 14:16:13 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	b=mw723Ji8ItqQwUkwxJcN/Lz9ZCPbLplRhgd+/HWLjYYhaaJLwqAchXAPVB8RAhCA2
+	 RJQ4xB1wv9PE8mYmtagQpq6CD2sp5GucDxge8kwOFo7DLsxOwa3Ol/DUDgI+3GpH2W
+	 UryNApEJlAgmW9xEL6N/ptwGGPL/omQbNMntwtTeXGBJt5lnc4AxwrpWBdYQOAm7DU
+	 KUWKu/LxUSCOfgJvc/8yCR9S4R2sQermq2LugTuYmsGfIFXpKjUpoZFLUwx8IVUC/h
+	 9DwUAdT4XaHKI21LeFuhUCfdYjrgLaj4We1bDNeGvs+jL1zvmNsRKC7YWtP8uOmqyj
+	 WbtjNoqX0a+xA==
+Date: Mon, 23 Mar 2026 19:35:15 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-remoteproc@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 2/4] dt-bindings: remoteproc: imx-rproc: Support i.MX94
-Message-ID: <177429337280.1109099.6895391728397977603.robh@kernel.org>
-References: <20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com>
- <20260312-imx943-rproc-v1-2-3e66596592a8@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-can@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Andra-Teodora Ilie <andra.ilie@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>
+Subject: Re: [PATCH v3 2/6] dt-bindings: can: fsl,flexcan: add NXP S32N79 SoC
+ support
+Message-ID: <20260323-treadmill-enactment-2aa03aaf785d@spud>
+References: <20260323135827.2129371-1-ciprianmarian.costea@oss.nxp.com>
+ <20260323135827.2129371-3-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8gizptVAuJfhu7Yo"
+Content-Disposition: inline
+In-Reply-To: <20260323135827.2129371-3-ciprianmarian.costea@oss.nxp.com>
+
+
+--8gizptVAuJfhu7Yo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312-imx943-rproc-v1-2-3e66596592a8@nxp.com>
 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-On Thu, 12 Mar 2026 20:36:57 +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Add compatible string for:
->  Cortex-M7 core[0,1] in i.MX94
->  Cortex-M33 Sync core in i.MX94
-> 
-> To i.MX94, Cortex-M7 core0 and core1 have different memory view from
-> Cortex-A55 core, so different compatible string is used.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml | 3 +++
->  1 file changed, 3 insertions(+)
-> 
+--8gizptVAuJfhu7Yo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacGV8wAKCRB4tDGHoIJi
+0vsFAP0btJesQ6LLyqyvxF+cJfSUf05z8QVlm4W0g7uyZH6qDQD/QhkoMM9OvPji
+TI2/IY8edpfBbuYsdSQVYhOjy7CapgI=
+=rX6j
+-----END PGP SIGNATURE-----
+
+--8gizptVAuJfhu7Yo--
