@@ -1,289 +1,109 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76BA3112B2;
-	Mon, 23 Mar 2026 08:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD81378D85
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 08:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774255590; cv=none; b=DjCfhyumgmBTHaZO8ac3rDXhNhDvGLWthdZ6x2cPobPXzdcqtENrshk/LpEAt2i+sO0UGilEOwj8Qpvw+FSBTUlD4fxEsfBMLcEX1Cx9dQfyM5xszhAxoeGsfb0V96my9+ALcNukd+89nxtC0ZOdSAoJe95FPUgTDADQyYIRkNE=
+	t=1774255699; cv=none; b=XsCLrFD1yZ4w5/lT+NDIETfOypSyshXP2BgASZZV5uxcJRC+X6ezOxaZaanleZ/PfEuoTEGHvUtqVlI4Ow7QK5DyrTOriVZcLaaZCAUQQnwL6S5cnalg74R3yVQDmyguADNrMTsBCFGUR+gnrYTef8g6fCTdByzrsQKSzs2a35I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774255590; c=relaxed/simple;
-	bh=DmabcV05Q4rIroMc2jTvqjoXVcHlfhgxlVf63HUclhs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KVqObqA1eOsSxC62wVZ4xqxyHn+y41vMpYwqR7KcNkRlLotm1JiFiS++jgoXcG9ShoL1SeL/iDML8UclG+wEiwZWWSeCXOrJe2lIL4Ip1O6dQ70W8jdh42K3no/MDnI1dyrUZYsykG13RWuerGbVQY1CwSUFEDsz6mR5V3DcsmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hcIcTtu3; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1774255699; c=relaxed/simple;
+	bh=W6NG9xgcfT4Z2dlu3OJuwD9rFp6apPLQJbr7qjrqp84=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=LZhaPX9VnwKGn2RBL4bTQ7sGfp+SGFrZV0yCEBWpQ3cpkA2K2MD6+Wut9aShSaRwXBGP4cch3CuhUAw16oQ8jyKlntyJ7lxQuftN6pW3wgkBliR9QoNHszMOxbZqgi/y7Z/4ts0kXhNg84rkwwzCN36wuVKGi6x59PELx1PzU5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ONRBsrsa; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hcIcTtu3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=42wfj5oPDvYYm2P83J07LN41r7Hpdm8uxGaKSkks4V0=; b=hcIcTtu3a187FMmZZd09cjZgZ6
-	0RKZ2THUgo9rlSFYblFTPydzpgzu+XFVu3/n87gN3NDjab4YNydSZwU/mD9Yi3hle/JepOSKY/I00
-	ksunZLkLlMrZo70P2n1vIvL/L2EtOssAAmhLTdc8MgG9sscBEOABsbK90RqN7uSLplPfZKRrzapf1
-	ELxVQgJGwpdwQ0N3xi45eS7ri5cuLJsFsCBq9CoKcWnTNPXI31e6Uapf82WRyILAwUjZqLFRtOEuR
-	SZ7CAPMyybyaO9lGfmo2yCQ3WZBJf2MBGwS4MjYK6oOOEfQQMkmydFuoKHbRXaiiGjoX3572cAz8M
-	xRxuvxIw==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4avO-0009O3-0d;
-	Mon, 23 Mar 2026 09:46:14 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4avM-000JBH-1N;
-	Mon, 23 Mar 2026 09:46:12 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
- =?ISO-8859-1?Q?Herv=E9?= Codina <herve.codina@bootlin.com>,
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
- Anson Huang <Anson.Huang@nxp.com>,
- Christopher Obbard <christopher.obbard@linaro.org>,
- Daniel Scally <dan.scally@ideasonboard.com>,
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
- Fabio Estevam <festevam@denx.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Gilles Talis <gilles.talis@gmail.com>,
- Goran =?utf-8?B?UmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
- Heiko Schocher <hs@denx.de>,
- Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Josua Mayer <josua@solid-run.com>,
- =?ISO-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Martyn Welch <martyn.welch@collabora.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
- Philippe Schenker <philippe.schenker@toradex.com>,
- Richard Hu <richard.hu@technexion.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>,
- Vitor Soares <vitor.soares@toradex.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject:
- Re: [PATCH 0/8] drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the
- bridge-connector
-Date: Mon, 23 Mar 2026 09:46:10 +0100
-Message-ID: <2948177.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
-References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ONRBsrsa"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486fb112c09so22418975e9.1
+        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 01:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774255697; x=1774860497; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iDc+ycXXu9BZBpDDnQjC6JghUL48eeZBnExRMHFl6tc=;
+        b=ONRBsrsapIBkLZrz5gR6qBl3qf31LvDWGXyzMt3/ufeJ4l5oqYQsZ+MzI9P8bD98Cj
+         o6ebppg2wwb04s8bIcidN7NJHpLMLIMdGSdzZNzZ6kqSIfiLRM0BNnkzs+zVd9dEp55H
+         bPToGxnbOU2qyrLF7p8k0iFdBe7dMcB8PMxYuNNwYgAbK3HX2lOnCQS93khNt2W8VtRK
+         tP9oZ6iQ7iDKaAi7xggiEDTRosHxJypUl8FXAIYtMBuiIh8qthrj8QOw6Ct0WfrtoF56
+         o939ULZUrHyFKCQF8x0/pKmM9ftZBWR8phsCeW52m1HwVMAroEHTPyjqyOvHcOApQULE
+         /bIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774255697; x=1774860497;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iDc+ycXXu9BZBpDDnQjC6JghUL48eeZBnExRMHFl6tc=;
+        b=EqY0/y+UaLKKeCgqt2LK/uMzzv31U8EE/6pEdoCzbhI+Y+7UY5w5Os3OLaO8RmhwgH
+         6H4r+hVBhq+o9lg0IVdhoEJY6z3Cseum1HTtU98LIgEVvRCbAn8f1e2oQtYn1gDynURA
+         eNCBOOFM3e4Dn3IhKggc3uIEHIy2zA2DG4oZIB9WG6TzgQvs1tDUGLtW/DjiyBm+VzJn
+         9e5VSvAJa4n12Dk1f0+PM9/m6sWRTC9Nvil9ZJrU/z/JfuIuUGQybaK5EY4GI3j++J2k
+         QWq4BtvXQQpgBrsP0/v4ki1exKPheck3SUw5OEa4nGi42qf3cXTwH5mhsucUkpd0a5TD
+         0k2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUNgjlUIVeobHrLqdPkGWiZ6RwL3JB6ioeOUs82l8gr6O2kk66tAf8ACoEBhPfnQqS6Ig4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/C/RZ71E9zJTTtdBIcWIXYZPbpUvTTUJtgww4gy4SqyC2SUwO
+	9jGDzWoYXdCfPgf3AeqMQnSXoN3qYUDlqmg8uT98/DCbwskO87OQBysa
+X-Gm-Gg: ATEYQzzdBgU9253WqDCmAS7etVI/0Fo9F7WDpLme6KR93VYZiPmXAaw1ZSJAbqcdU9c
+	Uou3YsFR5jOhfifPne1LF4O8rcVahzKRJct1vRSNCVYe2EFYqMoVARYMtz5D7sj9r6QXx3IdeLI
+	yBewiRCTb1D2IKLldlw4FPgq6JOs5GialAGOi/VaLgFRhNIGiwix3SudOHk6UHvSAW4g/x1VwkT
+	zJBSQ8ONNvwLwCfqC+DpfCyLMYzgK30ZrkZXCyuqvFXvRnYFgEtPLDF2VmOYSWKXkcbiqhX3ywM
+	QpRpeKZLTC6QYjLVP7z7QS0azdlI6q2sIGQpT30AwF01qtrNgTv/5NQ18FtDkYzS1eJRDuHTKbT
+	tEvHmmaUpjalfkoj5KaaZ6XaQNgKOYwLV0ecTR6TPkCdEiXuTRRUuEf0rkBus8F/9PlItSyFz3F
+	srTgtTpq33Rdm+
+X-Received: by 2002:a05:600c:5250:b0:485:9a50:338d with SMTP id 5b1f17b1804b1-486fedab419mr176165215e9.3.1774255696490;
+        Mon, 23 Mar 2026 01:48:16 -0700 (PDT)
+Received: from fedora ([82.77.79.23])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-486fe8367d8sm316822715e9.14.2026.03.23.01.48.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 01:48:16 -0700 (PDT)
+From: Eduard Bostina <egbostina@gmail.com>
+To: daniel.baluta@nxp.com,
+	simona.toaca@nxp.com,
+	egbostina@gmail.com,
+	d-gole@ti.com,
+	m-chawdhry@ti.com,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-watchdog@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/2] dt-bindings: watchdog: Convert TS-4800 to DT schema
+Date: Mon, 23 Mar 2026 10:46:11 +0200
+Message-ID: <20260323084616.10469-1-egbostina@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27949/Mon Mar 23 07:24:47 2026)
+Content-Transfer-Encoding: 8bit
 
-Hi Luca,
+This patch series converts the Technologic Systems TS-4800 Watchdog timer
+bindings to DT schema and fixes the active hardware node in the iMX51
+device tree.
 
-Am Freitag, 20. M=C3=A4rz 2026, 11:46:11 CET schrieb Luca Ceresoli:
-> This series modernizes the i.mx8mp LCDIF driver to use the
-> bridge-connector, which is the current best practice in DRM.
->=20
-> =3D=3D Call for testing on i.MX8MP boards (especially those using HDMI)!
->=20
-> This series applies changes to how video output devices are probed on
-> i.MX8MP, especially those using HDMI. Even though I have put care in not
-> breaking anything, there could potentially be pitfalls I haven't realized,
-> causing regressions on existing boards.
->=20
-> I have thus added in Cc all developers which appeared active on dts files
-> for imx8mp boards involving video. I would appreciate testing on as many
-> boards as possible, along with a Tested-by tag, or a report about any
-> issues encountered.
->=20
-> Thanks in advance to all testers!
+Eduard Bostina (2):
+  dt-bindings: watchdog: Convert TS-4800 to DT schema
+  ARM: dts: nxp: imx51-ts4800: Rename wdt node to watchdog
 
-=46or the whole series:
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MB=
-a8MPxL
+ .../watchdog/technologic,ts4800-wdt.yaml      | 46 +++++++++++++++++++
+ .../bindings/watchdog/ts4800-wdt.txt          | 25 ----------
+ arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts    |  2 +-
+ 3 files changed, 47 insertions(+), 26 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/technologic,ts4800-wdt.yaml
+ delete mode 100644 Documentation/devicetree/bindings/watchdog/ts4800-wdt.txt
 
-Because this platform falls into type A of patch 7
-DRM_IMX8MP_DW_HDMI_BRIDGE_CONNECTOR_FIXUP has been disabled for me.
-
-Best regards,
-Alexander
-
->=20
-> =3D=3D Review recommendation
->=20
-> I recommend reviewing patches in this order to be understood more
-> effectively:
->=20
->  * Cover letter
->  * Patches 1-5 are small preliminary cleanups/improvements
->  * Patch 8 is the goal of this series, but would not work alone
->  * Patch 7 this lets patch 8 work; but in turn it can't work alone
->  * Patch 6 lets patch 7 work
->=20
-> =3D=3D Series description
->=20
-> This series is not strictly related to DRM bridge hotplug, it is rather a
-> preparation step. Introducing hotplug would need two different approaches:
-> one for the new way, for drivers using bridge-connector and
-> DRM_BRIDGE_ATTACH_NO_CONNECTOR, another for drivers using the "old, legacy
-> way" where the last bridge is supposed to instantiate the
-> drm_connector. Hotplug is complicated enough in one case, so it makes sen=
-se
-> to only support the new way.
->=20
-> The hardware I'm working on is an i.MX8MP, whose LCDIF driver is still
-> using the old way. So this series converts to the new way as a preparation
-> step.
->=20
-> Patch 8 does the conversion, which is simple. However this would introduce
-> a regression on some boards. Here's why:
->=20
-> There are 3 instances of the LCDIF in i.MX8MP:
->=20
->  * LCDIF1, driving the DSI output
->  * LCDIF2, driving the LVDS output
->  * LCDIF3, driving the HDMI output
->=20
-> The device drivers of peripherals connected to LCDIF1 and LCDIF2 already
-> support the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag. So far so good.
->=20
-> LCDIF3 is more tricky. The HDMI pipeline is:
->=20
->   LCDIF3 -> fsl,imx8mp-hdmi-pvi -> fsl,imx8mp-hdmi-tx -> HDMI connector
->=20
-> The fsl,imx8mp-hdmi-tx (hdmi-tx) component supports both cases (with or
-> without DRM_BRIDGE_ATTACH_NO_CONNECTOR), but in the
-> DRM_BRIDGE_ATTACH_NO_CONNECTOR case it does not create a drm_connector,
-> thus preventing the creation of the pipeline. To make it work a connector
-> must be created, and the way to do so is describing the connector in the
-> device tree (compatible =3D "hdmi-connector"), so the display-driver will=
- add
-> the connector along with a wrapping bridge.
->=20
-> Unfortunately not all device trees in mainline have an hdmi-connector
-> node. Adding one is easy, but would break existing hardware upgrading to a
-> newer kernel without upgrading the device tree blob. This is addressed by
-> patch 7 reusing an existing approach to add such a node to the live device
-> tree at init time using a device tree overlay for boards which don't have
-> one.
->=20
-> Finally, patch 7 cannot work alone because of a bad interaction between
-> devlink and device tree overlays. Patch 6 solves that.
->=20
-> =3D=3D Grand plan
->=20
-> This is part of the work to support hotplug of DRM bridges. The grand plan
-> was discussed in [0].
->=20
-> Here's the work breakdown (=E2=9E=9C marks the current series):
->=20
->  1. =E2=80=A6 add refcounting to DRM bridges struct drm_bridge,
->       based on devm_drm_bridge_alloc()
->     A. =E2=9C=94 add new alloc API and refcounting (v6.16)
->     B. =E2=9C=94 convert all bridge drivers to new API (v6.17)
->     C. =E2=9C=94 kunit tests (v6.17)
->     D. =E2=9C=94 add get/put to drm_bridge_add/remove() + attach/detach()
->          and warn on old allocation pattern (v6.17)
->     E. =E2=80=A6 add get/put on drm_bridge accessors
->        1. =E2=9C=94 drm_bridge_chain_get_first_bridge(), add cleanup acti=
-on (v6.18)
->        2. =E2=9C=94 drm_bridge_get_prev_bridge() (v6.18)
->        3. =E2=9C=94 drm_bridge_get_next_bridge() (v6.19)
->        4. =E2=9C=94 drm_for_each_bridge_in_chain() (v6.19)
->        5. =E2=9C=94 drm_bridge_connector_init (v6.19)
->        6. =E2=80=A6 protect encoder bridge chain with a mutex
->        7. =E2=80=A6 of_drm_find_bridge
->           a. =E2=9C=94 add of_drm_get_bridge() (v7.0),
-> 	       convert basic direct users (v7.0-v7.1)
-> 	  b. =E2=9C=94 convert direct of_drm_get_bridge() users, part 2 (v7.0)
-> 	  c. =E2=9C=94 convert direct of_drm_get_bridge() users, part 3 (v7.0)
-> 	  d. =E2=9C=94=E2=80=A6 convert direct of_drm_get_bridge() users, part 4
-> 	        (some v7.1, some pending)
-> 	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
->        8. drm_of_find_panel_or_bridge, *_of_get_bridge
->        9. =E2=9C=94 enforce drm_bridge_add before drm_bridge_attach (v6.1=
-9)
->     F. =E2=9C=94 debugfs improvements
->        1. =E2=9C=94 add top-level 'bridges' file (v6.16)
->        2. =E2=9C=94 show refcount and list lingering bridges (v6.19)
->  2. =E2=80=A6 handle gracefully atomic updates during bridge removal
->     A. =E2=9C=94 Add drm_bridge_enter/exit() to protect device resources =
-(v7.0)
->     B. =E2=80=A6 protect private_obj removal from list
->     C. =E2=9C=94 Add drm_bridge_clear_and_put() (v7.1)
->  3. =E2=80=A6 DSI host-device driver interaction
->  4. =E2=9C=94 removing the need for the "always-disconnected" connector
->  5. =E2=9E=9C Migrate i.MX LCDIF driver to bridge-connector
->  6.   DRM bridge hotplug
->     A.   Bridge hotplug management in the DRM core
->     B.   Device tree description
->=20
-> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9=
-c3058@bootlin.com/#t
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> Luca Ceresoli (8):
->       drm/mxsfb/lcdif: simplify remote pointer management using __free
->       drm/mxsfb/lcdif: don't unnecessarily loop over ports
->       drm/mxsfb/lcdif: use dev_err_probe() consistently in lcdif_attach_b=
-ridge
->       drm/bridge: dw-hdmi: document the output_port field
->       drm/bridge: dw-hdmi: warn on unsupported attach combination
->       drm/bridge: dw-hdmi: move next_bridge lookup to attach time
->       drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector when missing usin=
-g a DT overlay at boot time
->       drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-=
-connector
->=20
->  drivers/gpu/drm/bridge/imx/Kconfig                 | 17 +++++
->  drivers/gpu/drm/bridge/imx/Makefile                |  2 +
->  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 60 +++++++++++++++
->  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 38 ++++++++++
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c        |  1 +
->  drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          | 45 ++++-------
->  drivers/gpu/drm/mxsfb/Kconfig                      |  1 +
->  drivers/gpu/drm/mxsfb/lcdif_drv.c                  | 88 +++++++++-------=
-=2D-----
->  include/drm/bridge/dw_hdmi.h                       |  5 ++
->  9 files changed, 174 insertions(+), 83 deletions(-)
-> ---
-> base-commit: 8402cf4fc8f8d5756dc81cf9fda1dccdb3622634
-> change-id: 20260306-drm-lcdif-dbanc-83dd948327de
->=20
-> Best regards,
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
+-- 
+2.53.0
 
