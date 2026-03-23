@@ -1,61 +1,63 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD81378D85
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 08:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DD237F8B1
+	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 08:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774255699; cv=none; b=XsCLrFD1yZ4w5/lT+NDIETfOypSyshXP2BgASZZV5uxcJRC+X6ezOxaZaanleZ/PfEuoTEGHvUtqVlI4Ow7QK5DyrTOriVZcLaaZCAUQQnwL6S5cnalg74R3yVQDmyguADNrMTsBCFGUR+gnrYTef8g6fCTdByzrsQKSzs2a35I=
+	t=1774255701; cv=none; b=WMUdroI8QycovJV4q1Z0S6iZoM6f4VOGUnsexkocSmm99J27sgMXGO92ZWw3eFeHJheAiTh1UP29iUnyPKpeAXhiCy/25w3DgXm4XcLYeO1eAr76u01BM4v4Nq9cDKwhVlg/xn+qCoPMUTR+tsniSZecHliQbY8r5s3AJGtkcv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774255699; c=relaxed/simple;
-	bh=W6NG9xgcfT4Z2dlu3OJuwD9rFp6apPLQJbr7qjrqp84=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=LZhaPX9VnwKGn2RBL4bTQ7sGfp+SGFrZV0yCEBWpQ3cpkA2K2MD6+Wut9aShSaRwXBGP4cch3CuhUAw16oQ8jyKlntyJ7lxQuftN6pW3wgkBliR9QoNHszMOxbZqgi/y7Z/4ts0kXhNg84rkwwzCN36wuVKGi6x59PELx1PzU5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ONRBsrsa; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1774255701; c=relaxed/simple;
+	bh=BnHHgfi+YmfrLHT/dUq69ubD2Rw4c8iZpcGQ9pZBjr8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mfK9pzG89igb+k0H9qygdLR4UeP26X7EEyCAenH3ElGEF90zHXprFnqUWTXZzHALC1Dt1xlPt+RT0Cxv/M0Sx3JecKUA8OT/yaawUZ13A4etjgzfYM+6UWiMoDOd3dl6wW+V8RgsHFdFND9OJIYSPk31BpezB6/NUMokjCFbfU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xees4REy; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ONRBsrsa"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486fb112c09so22418975e9.1
-        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 01:48:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xees4REy"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439b97a8a8cso2782841f8f.1
+        for <imx@lists.linux.dev>; Mon, 23 Mar 2026 01:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774255697; x=1774860497; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iDc+ycXXu9BZBpDDnQjC6JghUL48eeZBnExRMHFl6tc=;
-        b=ONRBsrsapIBkLZrz5gR6qBl3qf31LvDWGXyzMt3/ufeJ4l5oqYQsZ+MzI9P8bD98Cj
-         o6ebppg2wwb04s8bIcidN7NJHpLMLIMdGSdzZNzZ6kqSIfiLRM0BNnkzs+zVd9dEp55H
-         bPToGxnbOU2qyrLF7p8k0iFdBe7dMcB8PMxYuNNwYgAbK3HX2lOnCQS93khNt2W8VtRK
-         tP9oZ6iQ7iDKaAi7xggiEDTRosHxJypUl8FXAIYtMBuiIh8qthrj8QOw6Ct0WfrtoF56
-         o939ULZUrHyFKCQF8x0/pKmM9ftZBWR8phsCeW52m1HwVMAroEHTPyjqyOvHcOApQULE
-         /bIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774255697; x=1774860497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1774255699; x=1774860499; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iDc+ycXXu9BZBpDDnQjC6JghUL48eeZBnExRMHFl6tc=;
-        b=EqY0/y+UaLKKeCgqt2LK/uMzzv31U8EE/6pEdoCzbhI+Y+7UY5w5Os3OLaO8RmhwgH
-         6H4r+hVBhq+o9lg0IVdhoEJY6z3Cseum1HTtU98LIgEVvRCbAn8f1e2oQtYn1gDynURA
-         eNCBOOFM3e4Dn3IhKggc3uIEHIy2zA2DG4oZIB9WG6TzgQvs1tDUGLtW/DjiyBm+VzJn
-         9e5VSvAJa4n12Dk1f0+PM9/m6sWRTC9Nvil9ZJrU/z/JfuIuUGQybaK5EY4GI3j++J2k
-         QWq4BtvXQQpgBrsP0/v4ki1exKPheck3SUw5OEa4nGi42qf3cXTwH5mhsucUkpd0a5TD
-         0k2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUNgjlUIVeobHrLqdPkGWiZ6RwL3JB6ioeOUs82l8gr6O2kk66tAf8ACoEBhPfnQqS6Ig4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/C/RZ71E9zJTTtdBIcWIXYZPbpUvTTUJtgww4gy4SqyC2SUwO
-	9jGDzWoYXdCfPgf3AeqMQnSXoN3qYUDlqmg8uT98/DCbwskO87OQBysa
-X-Gm-Gg: ATEYQzzdBgU9253WqDCmAS7etVI/0Fo9F7WDpLme6KR93VYZiPmXAaw1ZSJAbqcdU9c
-	Uou3YsFR5jOhfifPne1LF4O8rcVahzKRJct1vRSNCVYe2EFYqMoVARYMtz5D7sj9r6QXx3IdeLI
-	yBewiRCTb1D2IKLldlw4FPgq6JOs5GialAGOi/VaLgFRhNIGiwix3SudOHk6UHvSAW4g/x1VwkT
-	zJBSQ8ONNvwLwCfqC+DpfCyLMYzgK30ZrkZXCyuqvFXvRnYFgEtPLDF2VmOYSWKXkcbiqhX3ywM
-	QpRpeKZLTC6QYjLVP7z7QS0azdlI6q2sIGQpT30AwF01qtrNgTv/5NQ18FtDkYzS1eJRDuHTKbT
-	tEvHmmaUpjalfkoj5KaaZ6XaQNgKOYwLV0ecTR6TPkCdEiXuTRRUuEf0rkBus8F/9PlItSyFz3F
-	srTgtTpq33Rdm+
-X-Received: by 2002:a05:600c:5250:b0:485:9a50:338d with SMTP id 5b1f17b1804b1-486fedab419mr176165215e9.3.1774255696490;
-        Mon, 23 Mar 2026 01:48:16 -0700 (PDT)
+        bh=IiFXaq2KynT225qwMSd7jsUuMjJ4J3qIwVeyuIMFqQA=;
+        b=Xees4REyjV+PQj64LqeTh48HlM8zQkSO15GCVPSHIY8H+kFBnihJQluMtnbKwQ8qPk
+         cDHuarUxbNFHZ6axKKStlFXiFdFS2Y+5sGQmehsIbqPHeS7rqyG3uR9Y1ryyKI/h8PCR
+         8PImBasPWmwkqjpmRI4/3ArFbJQAeMqQBSC8s1mFPzSqXNnptuKh/StG9aAxlJjGUTdZ
+         KZpEAoPxjWWLR6vTF/HnQnImqCnU+IoxetjFtyUdGfYhOh4bFYi3WKKXtVbu+XOuVx6r
+         Y+GHhdzr4yQok92NsjhhHJNzIzJETPFDlfJpJg6qMyagM+J1wb5OJoHG6T+Unp2NbBv0
+         2l5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774255699; x=1774860499;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IiFXaq2KynT225qwMSd7jsUuMjJ4J3qIwVeyuIMFqQA=;
+        b=BP6TJoLAsBcS7uTyYwXydx0G31nLesbPCLZMLtfYYdpOfS1IiIom+igYrDof6DMSKN
+         VCgURJ4gLX3Y+nOxXVn1SJmMciT2Ff3+waTVJT0yl6JPDrC3h9e5QiGRVzQ9h89zvpQm
+         +3l1YXEz1Icq4nLkVKh1n6SOGfWDrgPcFdfaLhGDnfwxJOgmNqKdU9N5gucsC1hL7Tg0
+         trRrzRjIZa/QB94s+93/ECu5HZT+LVAQlcTH7dBrvcp2qj779IbifsMVWwNxxuBi2GGH
+         Xh1lyDMLyp1SQE8wXt98JTmL51aHUm9ec+26Qzb7mW95D+fxaDLWYmBj7+hreCkhDlRB
+         7Fbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeB+yWCCnGSnfEf759WBaUzgHstRO1FRSl3hBzQs0AFGxVwgIiOku1/sSQvQ1v62x00ZI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxiMr+kvACvyHNmThGagHsYmvp7L12qi/3i+m9bwBTm8eqaNscd
+	nph+6ThIKFff4HFmsCcZEEz+UOZaGezTK6+djC6LRLazYmkGFTIwHXjk
+X-Gm-Gg: ATEYQzxJT6fMbmnW7PEDhk4I6BVLjhFjfcDy1BngTTJDB8mOYnUUFNxUSBUvSsNVdp4
+	/L1TomuAxLlmoYyApt2YxnuO2TCXRoBTMb71oBkKVxMSqxM/v6BLX+fc//NOapn4otPVVJ9UDAY
+	CWL+bjROZxC7tMNrMld8EfzTE4nGBk8Jfet/POBRCSjDug/13eoIEYFdOO7+xV1R37qgSmyACGV
+	frVTZD5H+WYfV1vHCQqKaYAqIcYQYZ9QyJUOCXdwLbIV6kaklKk6P396PtLQsJEyotQ17Nzc9tK
+	xGXJVJxoeCffbZMDfL+6yC31INpA/CbwJfYXiNl0MysXGHWLXOicX2lFObYWYgt79PiGyEItTXi
+	PhomgUeea2nyg2iDFHvOW8dgWanpbMH4xsOhtNSAuXX3161ah/3lVc1D/MdV3GMqVpkaxeCae9l
+	2TGCrk/4GJSZv3
+X-Received: by 2002:a05:600c:3f19:b0:483:badb:618e with SMTP id 5b1f17b1804b1-486fedf70a8mr160064695e9.8.1774255698607;
+        Mon, 23 Mar 2026 01:48:18 -0700 (PDT)
 Received: from fedora ([82.77.79.23])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-486fe8367d8sm316822715e9.14.2026.03.23.01.48.15
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-486fe8367d8sm316822715e9.14.2026.03.23.01.48.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 01:48:16 -0700 (PDT)
+        Mon, 23 Mar 2026 01:48:18 -0700 (PDT)
 From: Eduard Bostina <egbostina@gmail.com>
 To: daniel.baluta@nxp.com,
 	simona.toaca@nxp.com,
@@ -77,10 +79,12 @@ To: daniel.baluta@nxp.com,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 0/2] dt-bindings: watchdog: Convert TS-4800 to DT schema
-Date: Mon, 23 Mar 2026 10:46:11 +0200
-Message-ID: <20260323084616.10469-1-egbostina@gmail.com>
+Subject: [PATCH 1/2] dt-bindings: watchdog: Convert TS-4800 to DT schema
+Date: Mon, 23 Mar 2026 10:46:12 +0200
+Message-ID: <20260323084616.10469-2-egbostina@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323084616.10469-1-egbostina@gmail.com>
+References: <20260323084616.10469-1-egbostina@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,21 +93,104 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series converts the Technologic Systems TS-4800 Watchdog timer
-bindings to DT schema and fixes the active hardware node in the iMX51
-device tree.
+Convert the Technologic Systems TS-4800 watchdog timer bindings
+to DT schema.
 
-Eduard Bostina (2):
-  dt-bindings: watchdog: Convert TS-4800 to DT schema
-  ARM: dts: nxp: imx51-ts4800: Rename wdt node to watchdog
+Signed-off-by: Eduard Bostina <egbostina@gmail.com>
+---
+Note:
+* This patch is part of the GSoC2026 application process for device tree bindings conversions
+* https://github.com/LinuxFoundationGSoC/ProjectIdeas/wiki/GSoC-2026-Device-Tree-Bindings
 
  .../watchdog/technologic,ts4800-wdt.yaml      | 46 +++++++++++++++++++
  .../bindings/watchdog/ts4800-wdt.txt          | 25 ----------
- arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts    |  2 +-
- 3 files changed, 47 insertions(+), 26 deletions(-)
+ 2 files changed, 46 insertions(+), 25 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/watchdog/technologic,ts4800-wdt.yaml
  delete mode 100644 Documentation/devicetree/bindings/watchdog/ts4800-wdt.txt
 
+diff --git a/Documentation/devicetree/bindings/watchdog/technologic,ts4800-wdt.yaml b/Documentation/devicetree/bindings/watchdog/technologic,ts4800-wdt.yaml
+new file mode 100644
+index 000000000..cb2066b4b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/watchdog/technologic,ts4800-wdt.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/watchdog/technologic,ts4800-wdt.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Technologic Systems TS-4800 Watchdog
++
++maintainers:
++  - Eduard Bostina <egbostina@gmail.com>
++
++allOf:
++  - $ref: watchdog.yaml#
++
++properties:
++  compatible:
++    const: technologic,ts4800-wdt
++
++  syscon:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    items:
++      - items:
++          - description: Phandle to the FPGA's syscon
++          - description: Offset to the watchdog register
++    description: Phandle / integers array that points to the syscon node which
++      describes the FPGA's syscon registers.
++
++required:
++  - compatible
++  - syscon
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    syscon: syscon@b0010000 {
++      compatible = "syscon", "simple-mfd";
++      reg = <0xb0010000 0x3d>;
++      reg-io-width = <2>;
++
++      watchdog {
++        compatible = "technologic,ts4800-wdt";
++        syscon = <&syscon 0xe>;
++        timeout-sec = <10>;
++      };
++    };
+diff --git a/Documentation/devicetree/bindings/watchdog/ts4800-wdt.txt b/Documentation/devicetree/bindings/watchdog/ts4800-wdt.txt
+deleted file mode 100644
+index 8f6caad42..000000000
+--- a/Documentation/devicetree/bindings/watchdog/ts4800-wdt.txt
++++ /dev/null
+@@ -1,25 +0,0 @@
+-Technologic Systems Watchdog
+-
+-Required properties:
+-- compatible: must be "technologic,ts4800-wdt"
+-- syscon: phandle / integer array that points to the syscon node which
+-          describes the FPGA's syscon registers.
+-          - phandle to FPGA's syscon
+-          - offset to the watchdog register
+-
+-Optional property:
+-- timeout-sec: contains the watchdog timeout in seconds.
+-
+-Example:
+-
+-syscon: syscon@b0010000 {
+-	compatible = "syscon", "simple-mfd";
+-	reg = <0xb0010000 0x3d>;
+-	reg-io-width = <2>;
+-
+-	wdt@e {
+-		compatible = "technologic,ts4800-wdt";
+-		syscon = <&syscon 0xe>;
+-		timeout-sec = <10>;
+-	};
+-}
 -- 
 2.53.0
 
