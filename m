@@ -1,281 +1,141 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011023.outbound.protection.outlook.com [40.107.130.23])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4B305E3B
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 07:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774250491; cv=fail; b=WLUZQ6xW7YE+88mqzcjxM4f/BCT0iw7+MCvd8QmnmIE2qRK50n33foQ26JZ6f+eLZS4LdXXypVg6CU7WO0lRhRDiQxNrG+kH+3ckduS+TxdcsRwNYZtEjlrJ/Euoy9eK0eECojeLMyD7Wngbuj2R5lby9XNcNia0+1KtEA+W+RA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774250491; c=relaxed/simple;
-	bh=Db00192D/X7CkAuGVZO4NifcmY2Xl2J/+e239NeZO8s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Le2yrGQ+bMnLQjifJuYv4U7ZneEl1Y/HQUQXI0zO5mwA0glBN08T0qYhq7MVwYQD/SKiGMjajQGfKXuNXXgeOQbijwivAhHuRHLgZ3WJluT0QOCALC2cuyN/SwBKFBRzD3ffrYjQnyDBR6h6ZesVlkBCAu7SGcaIg83CdP407UQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jOroDQBn; arc=fail smtp.client-ip=40.107.130.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1102D7DDB;
+	Mon, 23 Mar 2026 07:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774250823; cv=none; b=ZHX1J9i/cN5Ve/RtDuS15xJd+DK+6l+eWLvXGEHxHfH8h+4IZcAe1+l+hh6YN8TedoCX6HqDcDTAaElJlZxeH2QvU6qqUfPR9IzkwyJ9fHHOg0LVX79kylx+P88itMOK15S7rxyfWC1y62RZ44kQivwmqGuYksXUtAkoqDimujU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774250823; c=relaxed/simple;
+	bh=QMLfOSHN7yBX7dd2DeMRSHAPCl1Q8shqK91AzimibIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k+ZAtwKdTSNSLRaDamSx3OBq7oMvnak2tJZtNFEVd2oamduXX4KpQLrOWpJCFU5F6+dIpYULxcq99025avjBbKb1el/guylvdvzUhh/iUZgmKV36zkypew7zTJdYEonecyc4vZYMSSiY682yrxpgXK+4Y4/J9otFT3JAra841qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=R0hPVjz/; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jOroDQBn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q3dudFtQU/9DpOWseZ9iSWyEfgbBks9SCJqVVkeBkaYfObVtjGgwEpX5Xz4EgIJCVD+WYPm+djVu8LsME3rgzIT3vm9hyVbOK3LnK+G25WzclcEMbvCWE5DIGez9qFO1fVLREKIIdQkr4rdhTRfDUIvzij9yIbfzL8FrdnOUaOWEMYW55unKx9dhnf/DQBS/MWI7b5B6pMfvrmhSrEjP06+/YSTzF31qtChAkJYdbuUsv1/XpPZP0RIkNod+lsElS0H4Kv5AeuzVSCPU/QgdI7z4jFjLfG7p5EFRdaIQe1mWWeUAdFe5nj1zSXAg8CVnJ62lruILDGGlOaMeZIRa1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Emc8os1r7XskKJ0Qce0vVV15F3fjfgn+jM8MudOUxxQ=;
- b=eSy1s91uM+B1jSKGF+TFq6M1TD1bkd0BYlneW34rOuBFkMQTWPYNUfSHRNJyvxIsKGBQ48i4nkFHtrTYQotul9I8K7N4lubyaZDs9SJoo19b3HkMXhmjy0E3UWyWrU9RSrrBa2vL9vaMGvIQsh34o08W9ALAiYtwmaY7UbYACh+7Bz8u2zdwhWf2+8WW5bjR3mlX0ZLc4hBImYy+SHiZDOXAvOckoPOqi9JL9gAY5+XPyCcMqJs1OvlIw1RxrVixjgP5kKeWXyBgRibcqU65zQfm2SYOv3dN9Hff9nIkz0ggiH8MIe1Ztpe1w4bSim4HvWW9vgL7RHW8REVkmQgGMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Emc8os1r7XskKJ0Qce0vVV15F3fjfgn+jM8MudOUxxQ=;
- b=jOroDQBnAEPFZVzm6OOXdfA6+zVeKgZnxQxp7fLyCD4QuKCcPYht9yl3gSMTWScw2FV1Iu2ypdDyeCtfNl3GGRGUqll9Jkg8f8F/k5k1GfH+jmqX6QovKFTKb2nCWvbYMk1Tza+xfczgJExEVdh0vOlYuMyaZn2JDc2lDUPK8sxf2FuWLi4Ssae9PWgHdbAwFsDhb36EtC6heGKW0Gmipi/e6cAurirJDKHbVdmhAjTt2eWsDeKMJZrF0IV4B+BFHHD2l8gKo7jN9VJz7arBVfsI13yJDY7Km6HfI9qiStTSzrFQyxILREM5DObCpuqD8jWAOYuqFORxOMQXW7Mafg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by PA1PR04MB11333.eurprd04.prod.outlook.com (2603:10a6:102:4f3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 07:21:08 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%3]) with mapi id 15.20.9723.022; Mon, 23 Mar 2026
- 07:21:06 +0000
-Message-ID: <2fe36f04-97d3-4e99-97e9-7a3ac53cffdb@nxp.com>
-Date: Mon, 23 Mar 2026 15:22:35 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/9] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
-To: Marek Vasut <marex@nabladev.com>, Marco Felsch <m.felsch@pengutronix.de>
-Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, imx@lists.linux.dev,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
- dri-devel@lists.freedesktop.org, Frank Li <Frank.Li@nxp.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260304-dcif-upstreaming-v8-0-bec5c047edd4@oss.nxp.com>
- <20260304-dcif-upstreaming-v8-1-bec5c047edd4@oss.nxp.com>
- <b7968f1a-c4bc-4bad-bcf8-407ff2d8db27@nxp.com>
- <dmqbmmpyi3ssvq67iqwbt6ww7tsaik7ifi5dnupmuhep7u5saz@ads5g7ette3y>
- <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
- <40b3d1c8-0cf2-470d-8223-751240061735@nabladev.com>
- <xqy67fmh42k26iagl7wqrh2dbsn7c5fytwbkcksfzagefp327j@s5hg4lpuvy3q>
- <4e75f1d3-29ff-46a2-adb5-78a08f781834@nabladev.com>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <4e75f1d3-29ff-46a2-adb5-78a08f781834@nabladev.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0002.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:176::11) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="R0hPVjz/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=foORgteAPlfrIAS1ba1QdpFRcnbJ/IN133dyq0cl3iU=; b=R0hPVjz/e4re407HofT8dGEi1i
+	3JQFkXx9UO3s9OlU19vdAjXPHEUcBzvdyiBPi3DsLnMUCj9uOVolF6dMKHg5ofWtTd1S1/g65GYA0
+	bTUmFtRmprxRn8aON9G+L2Rws5xyEd/NkeZSCXRLAUfcPgsoMVHlTQZyiXaZVRhC1zOegPlo/iW3Z
+	d/liLWIOX6ww6cXhLLmsDBL0UeG8/+mGp7VPpE/Q3CuMTKazScNmAjIkVDNJJEItjcHdrFUR5oNfP
+	sog5+bH2+knmqkgqP4jQ7fxHYpymAa1Z5a2dJbVWA7/ss/yw7vI80ZLEOadk7aEOl5i2ASn5wrvat
+	VpK0VGpg==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4Zga-000OD6-1i;
+	Mon, 23 Mar 2026 08:26:52 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4Zg2-000N2t-2c;
+	Mon, 23 Mar 2026 08:26:52 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-imx@nxp.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising Edge
+Date: Mon, 23 Mar 2026 08:26:51 +0100
+Message-ID: <2826794.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260320193150.2508850-1-shenwei.wang@nxp.com>
+References: <20260320193150.2508850-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PA1PR04MB11333:EE_
-X-MS-Office365-Filtering-Correlation-Id: cacc4bd2-0c4f-4398-f7e0-08de88acbf7a
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- sjbDLNaWQq/oPOMM+zRv2dMX7a7YETa1Hk2sCqzcza6okg8iRv07k+TTqh6pGrlnKOjvaj7tnNPinU+VwsUiQvrg7njg1dtengaVl3a9rYTNgZqtwotDOnNFtL78l9qQhBUKhSbe3EEBVtczxv6LIhtpRAhZqUiRZ/nNnLA4o2sBrONo6QZBV9JzHgkgoy8AWOteLUbMyuvWc664SVXIOYRvpjsXBy3rrdAViiUzbWSZ6gekygF4AsDvTa5O9DwSKgiHjteBeGZ+WP/Nb+eX6brc2UYKFyMxl2rYCvRIwcsESun6mzEA3G9h3kbcGq4rNgkopd7atqsCi2jZyYvdWApcBK2ZejqWmYgmbupWfZr2DIDyA72hGd5nSQOMOC8k8Nk89be0+cF2JoZ8Fvu8Uagmpp6HxRE51Oo6TegS+JJyWFE6TVEIa0LtQ1dvsyNZ3OpeGmt0ZICvRrdCCpC+sco9OC8Hu3QJzVjtNOttjpnrT/VQnpPS5LaHQtZNYcS4ho0nNUU6uNNzDDxChD5TA2Jpi1zfIMfUrPBuDhSSRvLtkFD15KAHJ3HOqAAUxeewaigpV2PXhtluEWprxntFieFYuqZbDfsnBO3WtPHTSd8aU6G4eBy/OfopPkN71k3qu4OzXjeskDWK6zOlpFU25Dg2YwFG1h6SRR0tZUKR6zPTaXCIi6Mofo78W3SwaHsDAefrwjTjkpkdJT3XnAsFmAuIaK4oxPBZSYW2iuxnOvE=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?MTQwNjBHeDZ1OEV2dGtnQ3RCemdXZlp5bzZrZ2xtNGtsdzYwSFlLWVlhdDBO?=
- =?utf-8?B?b0xHSm5ERWFrRjQ5Mml0RmZzbTZQV3ZwWXE2SG1UZjV3a1ZVRFpPaHJtMjk4?=
- =?utf-8?B?MlRsNmxDcTUxTGI0MUpWRkFrYnJCbVpWeWdXTm5JRnM3T2R5bjNwY3hUOGp1?=
- =?utf-8?B?MmxUeitYUnpaQ0ZqQnZzRWs0SlRFV0tSSEJzVDdqaGhrVWV5UFVTV3RTazlZ?=
- =?utf-8?B?UDJtek9uSXloYTFoZ3dUMWVBMHN6aE5PRytVZnFvZXZWZG5YMERsajRrclBO?=
- =?utf-8?B?bFcxVmYyQlp6SnNTTVVlVmU4U20rZDBvNmh6dFZKS3dZYU9wNzE2U000Sk82?=
- =?utf-8?B?blUrUTZMeE9zSE8xV2hMeXhMRitVSmpCd2hNMExna2NTMm15SG1mZ2Joc2dj?=
- =?utf-8?B?dlR1OTRiVSt2Uk0vT1NNU1pBWmZpbkc5aDgzbk9DY2p3NUNTanpuOHdmend2?=
- =?utf-8?B?VU4waDF5RGpnOFY2S0EyZk9Jc0FhM2Y1L2VERm1hUFlMYy9tR3ozdXAyajR2?=
- =?utf-8?B?cnp4VlQzYTFDU25WcVRTN3Q0NWdLWktnTVdrU2lxbEc1aC82WGhZVHFNWHV2?=
- =?utf-8?B?b1lVS3dZbTFPZ1BBR0VxdXVFY3IzWllRRGlpMjlDUUJ1QTVrSTUxNlNoS0tF?=
- =?utf-8?B?STJTdU9yc3dsT3dFOXJIMFU0M0NTUXlhSUd0WDN4UDR5dXpTbURLK0ZkWldk?=
- =?utf-8?B?RFZya0U0SEU5UkVsbUJ5dDlzKzVDNXRtdzErTnBxUVg4c0cvV0V4cGxtelln?=
- =?utf-8?B?Nk5yYnBHdE9QeTFjakFqeXpxRXJJOEVHNmZLbE5ZOWd2TThMT2IwK0IzUC8y?=
- =?utf-8?B?a1dEeUFhNVdIWVF5eUhmWFBHWi9xR1NDUGtpWEY4b2FBenZ0aThHdjlOOTZ4?=
- =?utf-8?B?bHEzVExhNG1YbDh2M1RhSjFOWVNGRWhpMkgzYytSM1hoQWl6OXo2Uk1qMGRm?=
- =?utf-8?B?SnRsR2RWSGZoVnpKWlI4WnNidW1mVllIUU1vYUprU1NWcXJ6b2kwV0NQUjJq?=
- =?utf-8?B?WHhDVElYL25JZ0FGWE1tUDZOSHR3anNDMVA0ZUVIN2k1WFZBYzl1NHRmWUpI?=
- =?utf-8?B?eFNkdTNva3ZyYWFwRlBUc1lRbUdaRWJmTERPYkFvcldPb1ZaaUN1NFEvQitQ?=
- =?utf-8?B?Qlh1UDFNa21iSnpLWUtFS0dzMTgxSC9sbjNBc2lveWFVLytGNkV3bXVhbDZ4?=
- =?utf-8?B?dXRLRkVkODk0eCtZNzdyUk95S3BSQm1rU05RMVNGZGp5em1LbGR5eTBGTEJ4?=
- =?utf-8?B?T1duSUkxVjNxL0Z4N3QxVTl3TXUxcjI3SDQ5eURCalJoOEs4SDExdTNzT0tX?=
- =?utf-8?B?N2FqM3lOL041VGJLVXpDYXRjS1FrWXQwYUhPdGd3K2tuNWlSVFEwZXF3ZDRs?=
- =?utf-8?B?MUVlU0swNGxGVFpERm1hWWdkN2h4NnBpUEVzdmNmaHZpZjlWRm5LTkZ6cGZa?=
- =?utf-8?B?WG5sOGxBNkRjYkVtQVExWmxwbUMxNTdhLzRsQzBHTDRJdWZVb29hd3oySHRP?=
- =?utf-8?B?cERicUllbkZSelY5dkVyTE1TQ0c4VWNlendtbUMzTldDbXpvb2ljVzNnTzhZ?=
- =?utf-8?B?U3Q1c3NMTm9uZDBpbTFoTktvdVdmbWpMSENDcjk5NjJYb1FFUWc4VkRVcE0r?=
- =?utf-8?B?b09pdXJPejZJL3JVQURtT0w1ay9NVkNRc1d1MkdSYU1BRS9OOTAvalRMaHEz?=
- =?utf-8?B?TVkrWGRPS3B1SjMycVIza1AyY0VIYU0wZkJjTjdsMHpZQXRvWGJselZvQnJt?=
- =?utf-8?B?MU5nbmNwY2d1M3RwYXRUL2M4S0pTenJZOXRCbnIrOHlBZVgxeE5aQUlDbEU3?=
- =?utf-8?B?ajd1MmtVNzNhcm9zNzEyTVlidGZqc0xCZWcwTGhVSzVmTmlRR3Q0bU5oQjVi?=
- =?utf-8?B?bjBjVFhYV2RzWkRQUG1yNFBKdWRrbWRzZDRIMjJUZ0NhV0htVGhhMUhKOVRI?=
- =?utf-8?B?NXlnTkwzVmtUSkxYVzl3VkFWaEc1MDBvUUNaZjBCSXlnbTdFOWl2Qi9kNUlr?=
- =?utf-8?B?MTdIZGNQVzVhTlFTMkRpL1ErclpKYnc3d2ZaeE5NUUlXQ09yLzZ2YndVVU9i?=
- =?utf-8?B?QlpyRDZpcjFKbjlBcjRFdksyZFN1NjdaQ00rMDdiaCswWEdEaExBckdZaEVN?=
- =?utf-8?B?d2s4THdGNCt0VDl1aDlrWldvcEtHcW1lclB2Tkl4bTFwdG4zUGszZVJFRk9E?=
- =?utf-8?B?blgvSU5pbDc2NnRGYlhOeGUvQnVkZEpVQTVZZ3hsb1B6NG5pM1VXN1dxNjh3?=
- =?utf-8?B?bHR1VWVsb043blBDRHlkMlFFTHFqMUNKNEF6d2hESlVScHdPekorUjNBSTB6?=
- =?utf-8?B?ZlVJRU90M0VGQncyNGtNL3NlR2I4RUQ5cmwzQWVUT2M5Tm1VZmxvQT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cacc4bd2-0c4f-4398-f7e0-08de88acbf7a
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 07:21:06.5173
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1/i7zcUdMb8TKyzLkfsJq9Wp8ZsilnK+kifchWAl5ax9g3pFiX5TI0gkJyHoGk1+Vf3EzL5BsZWhQIuIkRFIhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11333
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27948/Sun Mar 22 07:24:25 2026)
 
-On Sat, Mar 21, 2026 at 03:37:47AM +0100, Marek Vasut wrote:
-> On 3/20/26 9:23 AM, Marco Felsch wrote:
-> 
-> Hello Marco,
-> 
->>> The LDB driver was always written with parsing 'reg' out of the DT, so
->>
->> Not sure what you mean by always.
-> 
-> By always, I mean since the very beginning.
+Am Freitag, 20. M=E4rz 2026, 20:31:50 CET schrieb Shenwei Wang:
+> Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
+> trigger due to a hardware bug in the detection logic. Since the hardware
+> does not support Both Edge wakeup, remap requests for Both Edge to Rising
+> Edge by default to avoid hitting this issue.
+>=20
+> A warning is emitted when Falling Edge is selected on i.MX8QM.
+>=20
+> Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x platforms")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  Changes in V2:
+>   - add a check for i.mx8qm and emit a warning when Falling Edge is
+>     selected.
+>=20
+>  drivers/gpio/gpio-mxc.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index d7666fe9dbf8..095bcfbc56e0 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -584,12 +584,13 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio=
+_port *port, bool enable)
+>  	unsigned long config;
+>  	bool ret =3D false;
+>  	int i, type;
+> +	bool is_imx8qm =3D of_device_is_compatible(port->dev->of_node, "fsl,imx=
+8qm-gpio");
+>=20
+>  	static const u32 pad_type_map[] =3D {
+>  		IMX_SCU_WAKEUP_OFF,		/* 0 */
+>  		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
+>  		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
+> -		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
+> +		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
+>  		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
+>  		IMX_SCU_WAKEUP_OFF,		/* 5 */
+>  		IMX_SCU_WAKEUP_OFF,		/* 6 */
+> @@ -604,6 +605,12 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_=
+port *port, bool enable)
+>  				config =3D pad_type_map[type];
+>  			else
+>  				config =3D IMX_SCU_WAKEUP_OFF;
+> +
+> +			if (is_imx8qm && config =3D=3D IMX_SCU_WAKEUP_FALL_EDGE) {
+> +				dev_warn_once(port->dev, "No falling-edge support on i.MX8QM\n");
 
-Marek, your below patch is not accepted(at least for now).  In that patch,
-register offset(s) are directly parsed by calling of_property_read_reg().
-Without that patch, register offset(s) are determined via device data in
-driver according to compatible string.
+How about "No falling-edge support for wakeup on i.MX8QM"? Without
+context this message in the kernellog is confusing.
 
-[PATCH v3] drm/bridge: fsl-ldb: Parse register offsets from DT
-https://lore.kernel.org/all/20260104213712.128982-1-marek.vasut@mailbox.org/
+Best regards,
+Alexander
 
-[...]
+> +				config =3D IMX_SCU_WAKEUP_OFF;
+> +			}
+> +
+>  			ret |=3D mxc_gpio_generic_config(port, i, config);
+>  		}
+>  	}
+> --
+> 2.43.0
+>=20
+>=20
+>=20
 
-> 
->>> encoding the register offsets into the driver was a mistake. The LDB
->>> controls two registers, which can be comfortably described in DT.
->>
->> Sorry but I have to disagree on this. It's no about if it's possible,
->> it's about if the abstraction is correct and IMHO the LDB is just one
->> subdevice of the syscon. For i.MX6SX the syscon is the iomuxc-gpr for
->> the i.MX8M and i.MX9 this is now a blkctrl.
-> 
-> Right, and the "reg" DT property specifies at which offsets are the LDB
-> control registers from the start of that blkctrl. What is the problem
-> with that ?
 
-The problem is that ...
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-> 
-> Look at e.g. imx8mp.dtsi as an example with blkctrl and LDB as a subnode
-> with "reg" DT properties:
-> 
-> 1938                         media_blk_ctrl: blk-ctrl@32ec0000 {
-> 1939                                 compatible = "fsl,imx8mp-media-blk-ctrl",
-> 1940                                              "syscon";
-> ...
-> 2003                                 lvds_bridge: bridge@5c {
-> 2004                                         compatible = "fsl,imx8mp-ldb";
-> 2005                                         reg = <0x5c 0x4>, <0x128 0x4>;
-> 2006                                         reg-names = "ldb", "lvds";
 
-... i.MX8MP LVDS bridge node is fine with the reg property, but the property
-is not allowed for i.MX93 LVDS bridge node according to commit[1] while
-commit[2] requires the property for all LVDS bridge nodes.  See the contradict
-here?
-
-[1] 3feaa4342637 dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and example
-[2] 8aa2f0ac08d3 dt-bindings: display: bridge: ldb: Add check for reg and reg-names
-
-To avoid the contradict, how about requiring the reg property only for i.MX6SX
-and i.MX8MP LVDS bridge nodes and making it kind of optional for i.MX93 and
-i.MX94 LVDS bridge nodes?  Overall, in terms of the reg property, I feel the
-LVDS bridge nodes look similar to reg-mux/mmio-mux(See reg-mux.yaml) where
-the property is optional.  BTW, there is a mux-controller node with 'mmio-mux'
-compatible string in i.MX8mq syscon@30340000:
-
-iomuxc_gpr: syscon@30340000 {
-	compatible = "fsl,imx8mq-iomuxc-gpr", "syscon", "simple-mfd";
-	reg = <0x30340000 0x10000>;
-
-	mux: mux-controller {
-		compatible = "mmio-mux";
-		#mux-control-cells = <1>;
-		mux-reg-masks = <0x34 0x00000004>; /* MIPI_MUX_SEL */
-	};
-};
-
-We never know if HW designer would put a mux-controller next to a LVDS
-bridge under a syscon device like gpr or blk-ctrl in future i.MX SoCs,
-so the optional reg property would buy us some flexibility.
-
-The below patch is what I propose together with a Fixes tag for commit[2].
-Since commit[2] is not in v6.19 and v7.0-rc5 was just released, it seems
-that we have time to land the proposal fix if it makes sense.  WDYT?
-
---- a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
-@@ -28,6 +28,7 @@ properties:
-     const: ldb
- 
-   reg:
-+    minItems: 1
-     maxItems: 2
- 
-   reg-names:
-@@ -68,7 +69,6 @@ required:
-   - compatible
-   - clocks
-   - ports
--  - reg
- 
- allOf:
-   - if:
-@@ -83,12 +83,23 @@ allOf:
-         ports:
-           properties:
-             port@2: false
-+
-   - if:
--      not:
--        properties:
--          compatible:
--            contains:
--              const: fsl,imx6sx-ldb
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx6sx-ldb
-+              - fsl,imx8mp-ldb
-+    then:
-+      required:
-+        - reg
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: fsl,imx8mp-ldb
-     then:
-       required:
-         - reg-names
-
--- 
-Regards,
-Liu Ying
