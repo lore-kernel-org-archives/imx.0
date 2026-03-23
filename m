@@ -1,260 +1,289 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011033.outbound.protection.outlook.com [52.101.65.33])
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15D37FF59
-	for <imx@lists.linux.dev>; Mon, 23 Mar 2026 08:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774254911; cv=fail; b=qENegrDVGiuYCajPOn2HdJ9RHgicKWawoWbNRUiblSHeGTWLMWY2yf2iKCCsQp3YfRHEWP4mJjTV+cVIblFepWBRhnTJydOd/eDxa6qb84T67TIP+Q7fOJylMk2Jur597KLMtfzdRJaCrfu308dYXoMkD0AsxjgJ5Sl3kGWHOFA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774254911; c=relaxed/simple;
-	bh=ybOcXAPF1eFhzWlQz+pwIqWusCShwgB0BfeFmPZz5oo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nm8lM8TmoQLxPeqVty7CTBOftuiisDPymrKhO6OQgNaMoJdX8eX9+rT4gNU+mMWS0fsrLnQRNaWchQClfXNLQ4Q87hNWZSJDuNGRE2wRaKsJ+O1DxWzw2rYERXyoiW+4PCrnKkksJc/oWNSXELhsobOnBC9sy7ADicA66K5AiJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BdJe1XLr; arc=fail smtp.client-ip=52.101.65.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76BA3112B2;
+	Mon, 23 Mar 2026 08:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774255590; cv=none; b=DjCfhyumgmBTHaZO8ac3rDXhNhDvGLWthdZ6x2cPobPXzdcqtENrshk/LpEAt2i+sO0UGilEOwj8Qpvw+FSBTUlD4fxEsfBMLcEX1Cx9dQfyM5xszhAxoeGsfb0V96my9+ALcNukd+89nxtC0ZOdSAoJe95FPUgTDADQyYIRkNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774255590; c=relaxed/simple;
+	bh=DmabcV05Q4rIroMc2jTvqjoXVcHlfhgxlVf63HUclhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KVqObqA1eOsSxC62wVZ4xqxyHn+y41vMpYwqR7KcNkRlLotm1JiFiS++jgoXcG9ShoL1SeL/iDML8UclG+wEiwZWWSeCXOrJe2lIL4Ip1O6dQ70W8jdh42K3no/MDnI1dyrUZYsykG13RWuerGbVQY1CwSUFEDsz6mR5V3DcsmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hcIcTtu3; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BdJe1XLr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lVGI687eifrsHGRSFbbK3r4moroApS1CSysC6s2tKQZNi/oSNyVn8vPU09AbHUDciy66BcrWx+PwXZe5VBCzAN4aSMtpcuRIRQcRLC5o+8jiFMgCi8zrAnPxK9mB9ZNvfNlaHsfMLRMgWyKSTeAN4GejuaNTNnARCuAop2kHv8d9Tc/4kYab9pGNnkutgLrSiwoPrCGvMWEmD9V8/LVgYbyWnnUhiyqBTnbZz0nBVbmdME/Vk0ncAlxjTqZEVbANg/jpbJlGgSjSVqQpDnbNJf4IyDXmgaRrMrCdod9elCwithpgo3Vw/x+uhCOPD0P4L7MjBvn3BGjG87Mh87UoIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ybOcXAPF1eFhzWlQz+pwIqWusCShwgB0BfeFmPZz5oo=;
- b=ecVSM7OVuHia4kLG3MrxaR/yijd1AxaMrUk8PWdhHHW7SKEF+6tDpoKXc+HcPAnlGf9sBrG8emuwYdJO3BuG0EUnLSQVe0D4hRVeWAnhacEDBFHUjM7wvfS1jOvBaZ0pzSJjW3xuQHvEqdMSQEFXk9GqyGYLRwb1U7NXGyfoAEFHJ2GjQFlwU1RI8WWh1c9kJ7Wz6NNYO3jAfGZ8OAnKg1D78uKuzhHc8+bQ9SU6wDusdxM3Zv9LpmjWuRzzXYqj8drK/58X7dJ5bQQZGhvucWvbvXUatxAnAqoTUiVXGpIz4lpsG4SSnBIAQPi+J64t8EGS27Ij0uiUntqrcd9lPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ybOcXAPF1eFhzWlQz+pwIqWusCShwgB0BfeFmPZz5oo=;
- b=BdJe1XLr5YAHIWobqrFBcQgEFiN1d0Pg/QfgkbDogNT6pph0E69ODanOFnQuLwGQFSCjT1FAMb/iz8cC/Vwh43Z2B2oBT19pVuwYEfLOCFXumTP5GD5XIwgOWg+sQnbe393qvzcQUAiwU/YTK868osXRzAzJKC2m/Vq/smiMYDt7WLZWTrpIMkzCDfICHWWsqsqRO2+AyMUx+NbsSeW/TscHWMNdHUQ9az0J9LR3KN1ZPxjsR7VDPolZ8EGM8oJ/53N7fCwrJYiDrLqE5aTCzchRRdTJBcpSW2w7+A6+qovePEpK/OMameMEjBDDLxok7KQ+xoZBiL3VrzIO2L8PIw==
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
- by AS4PR04MB9387.eurprd04.prod.outlook.com (2603:10a6:20b:4ea::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Mon, 23 Mar
- 2026 08:35:09 +0000
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9723.030; Mon, 23 Mar 2026
- 08:35:01 +0000
-From: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, "G.N. Zhou (OSS)"
-	<guoniu.zhou@oss.nxp.com>
-CC: Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger
-	<martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <frank.li@nxp.com>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v10 2/5] media: imx8mq-mipi-csi2: Use
- devm_clk_bulk_get_all() to fetch clocks
-Thread-Topic: [PATCH v10 2/5] media: imx8mq-mipi-csi2: Use
- devm_clk_bulk_get_all() to fetch clocks
-Thread-Index: AQHcZcaOy1jIyOSz3USRRoh+mkyhd7W3Ix+AgAVQ7qA=
-Date: Mon, 23 Mar 2026 08:35:01 +0000
-Message-ID:
- <AS8PR04MB9080B1876973EE0C86D45354FA4BA@AS8PR04MB9080.eurprd04.prod.outlook.com>
-References: <20251205-csi2_imx8ulp-v10-0-190cdadb20a3@nxp.com>
- <20251205-csi2_imx8ulp-v10-2-190cdadb20a3@nxp.com>
- <20260319232305.GA967713@killaraus.ideasonboard.com>
-In-Reply-To: <20260319232305.GA967713@killaraus.ideasonboard.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|AS4PR04MB9387:EE_
-x-ms-office365-filtering-correlation-id: 5810e8fa-798c-4956-805f-08de88b71358
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- CDqmTqG9fAaCahRUQ8Ma5syBYSpQUVy8RAd5nIgzrsUP/uBez+CWzPxdhkk24m4iWvvdMWT9n0uCArVmb3QE6CY84h4yDBnGi8HllxVbGNyTlC6YOhXYBnC2y6JlZXJb+51iWB4KeCChvMGQZs5N5n3WApobSxRRH0nE0oVJRwEfh2UK5QSepnqNA+73m56uAtPNAd/cbZUgBoPUvYWuUStV5Yd6tONXH2zjEG5+ETJEgVZksAkvQpFHsQgDkGkEFHBOvfvzl2HsJThRWiEx2GqRsDeFP+7L3dfxhJzllUSzf13UZDHH9BJdtPOmhKg+ETN33PCQYjbHZ28OJWg+EUaMTLKrtBkBjH2P6ONLlnyY/oljDYbOJkPMdKlDjIknQe24l1BFjj/N3JY/DuvHbNZfB+bsOAniAQajJ6eCI2R7NpBxogGP2Auv0HFv7TZXQYs1iTW85JfK2tnDiq25fkSVcQoRnEW5OjvAov3NzGB83sbxT1mGOaZHWODVA/dbw3SqMICKZFw93kh4zGBntLHXcCxyGHivlLVRMPeMbZit+zKn3usd+/bwaCDkY2qYrqpv9OvTD51M6BRmsPipXh4zIbCrLK6r7IgM5Ph6JgkXF5yMn72CwpTosj0ZmWxkkq+wvUCRMrBZcc32pvwPv7T7NnH/jywdDR4QBpVRrAigPQGvenrj8fgLZ6Hy+pNyyfw+QR+XW6k6FgcoeZknQ1s/XPJIY+LwLZOjDJCu3Gqlqd1GTiTgoKGQr/+4ymp1wjGyYcgIswSKpRm4KtLuB2Fm4WEcrPpA+CkbRDApbqU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?cCtLUFBFSFplMmdza1NKM01VSGQ4T1psMjNIQWFzbmpncHUxOTQxbFRScWN2?=
- =?utf-8?B?SWx5ZlYrRW40OUtSZitEbWtoSEhRRWx6Z1BWeFY0blc0UXdzOEhKZVlzZytw?=
- =?utf-8?B?RmZ0OXc5MCtqaW4zd1BoVVJWU2x3Ny9heUtCRHExSjcvV1o1VFIrU1M2azMv?=
- =?utf-8?B?cmhwY0hnYUo0UDNxZE1FSExuaCtJd2Q2aDR6S09PVGJhTWozTUl0b0NwWmxM?=
- =?utf-8?B?N1lIVUNXUjYzV1UwVW5ySTlyd21mbUl1bFRSeFB4R2VsK3dBQjRHdk1HbVhB?=
- =?utf-8?B?aUJGQndxa3NqOThPMEx6T2s5NFg2cCtrOSthRGlHdXBDcHdaUFp3ODM2RW1N?=
- =?utf-8?B?Si9Jc21NSmJzOE1uSXgzZjg1c3gzajM3eENzdWpid1dGaDFJVlBEcm5zb0ox?=
- =?utf-8?B?L095UkpHVmY3Z3NidWZ5dTJhd1FEWGhpYzVGOStydXp5VTQ5Zk8zektXZ3Vu?=
- =?utf-8?B?akZyTnlvSnBZbCswRE0vMXcwTzZxRktNclhiNWd5Vk9lWXFZMExTRk9iQTM3?=
- =?utf-8?B?Z2pBUDFDa1NXamdkS0pqaXZMT0hTMTk2aHZ4VGVuMkNiNXZnUzh2U3M4VUVC?=
- =?utf-8?B?c2ZkcnJFeHBtMUQwV3ZhbkRVZmhqdHhLazBoV0ZmSFRITFhhUW5mVE84U3R5?=
- =?utf-8?B?ZWtGM1NZRGtvaDVFa3lCeVVsQ0xmbnVZTDF4WHVMTi9Fa1ZGZlkvamlmandl?=
- =?utf-8?B?eW5id2ZBZUQzZ1pJZ3k2ZE52cXlEb1ZFYzZ2TXRTZURFNURXc3hvYi9lL3lt?=
- =?utf-8?B?S2NCTmt0aTdkMTdlNXRtNER5dDYzZmVsTjkwZDBWZXV2L095c0pWL1dvWGov?=
- =?utf-8?B?S3dzUWZyYlBYaG9Wc2FEZFZxQmJ6cVlUNlJhYnI1TzFVZmZIZTVUTmJYaCtk?=
- =?utf-8?B?MXllL2lpdlkwZGRUVFUzQXozQVJSTXkxNExGL3B5YTlPT2ZQMkFaaWFsWXEy?=
- =?utf-8?B?VUxqaHUyV0tma3U5YmxRMlpYNjhualZMVElJbzJod054Sml2bjg2SUF2RUFq?=
- =?utf-8?B?aVcrMUF0cmIzTEhZV1RscXQyNFBwRCt0S2ZyVWwwMTAyN0M2RlB0aUdvZnBy?=
- =?utf-8?B?TkpXcjA4Skt6TTNSZUZGcUZLYUNFeXVCOStST1kxOUpBQ2RmeDNsMHdvUWFn?=
- =?utf-8?B?MXE0SkllaEdqMDY3K1U3Vms2a1JMbzc4YllhSXdTeHd2eHRKN0crQmtoOXA0?=
- =?utf-8?B?ODVjZTN2OUMwWnNOUTBNU25YYmVnU3pXMngyZEtxaDBwQWtsd1B5WEFiUFZQ?=
- =?utf-8?B?ZFZuZkZ5OUlJMDRxZ21hWE1yVkVNUVdpMm1vem9teVhiSzd6MmRoNFNubGF3?=
- =?utf-8?B?YVNkQXQ2SWY0bkNnK2tSa0ZPdVduMGFMRXBiMjEyV1UwL1N5ZGgzYlY2Ym1E?=
- =?utf-8?B?K3VTdUtHd2JJMEVFaE1IS2pxaFpOVUpNS2J1bXk2RU1ITjBJcFY3TWVtZ2JM?=
- =?utf-8?B?dks2bXJWTkVvVmpkZkthN1I1SjRsR1NxNW40aisxRDJNeC9halBpL0hnbVJ1?=
- =?utf-8?B?enVlTUdaKzJla3hyNkh0Zy92Tm5FK01hczdXOExQaEg4cUM5VWhjZHBmMTBr?=
- =?utf-8?B?VjErekE2OExqYnQwemJOZHlMdysrOGNPdDNkRTRFUmpGeFJaUXFpZHhpeDB6?=
- =?utf-8?B?SjVleGNOR0NWZS9HeURzaXBkeU1Mc1hNVHNpREkxQXEyVG1CMVQ4Y0UxNjFM?=
- =?utf-8?B?RVhoNGVYbU5uVHJUbXBJbzNoS3o3RVBTQ1VZRm9Yd2VpWlExOXd2SERpU08z?=
- =?utf-8?B?VC84NlFpei81OEpqaEJRTk1tUTZFSXNWWXphUURsUGZ3RCtBWTY2MEZScVBy?=
- =?utf-8?B?WUd2M3l6WHUvUnRtcjJTZGVlaUVBRndKNFhUZDBWMStDQWhPSVdHaGROQkxu?=
- =?utf-8?B?aitxZ0RyamhadmNlenhwQ1d6MnV1NGo3bmh6QnhYWUJxQ0pHMmJrS2pVNTF0?=
- =?utf-8?B?Q0ZEUENmNG05UFhxSzVsemlPcS82b0RhWWcyZ2VlY1RnTm5uYTd3U3Z4WDNr?=
- =?utf-8?B?ZXhFS2ltd3l6R1ZzTVVDZkdZb0Z1UlJSUSs1cC9CeVNTcmhHS3gvdndaZVBP?=
- =?utf-8?B?REJGRkFrcEQzVDgrL09qS0RVNUhrUUliRjNjR01oN1E1N25HL1pyRVEwWmZW?=
- =?utf-8?B?ZWpEZXdKTHpYTkxyRVpvcFV2RXBVakJsL3QyUHl1UnN6RzlMREo0R1J6cjdN?=
- =?utf-8?B?RGkxUFczbm0zRnRWa25YbTRyMGV1SVppZlErV0FrdEhseVI5cDcxRlk1RGJ6?=
- =?utf-8?B?ZnkrOFdkZjF0Vjl5OEF4VzF2K1ovZ0JObDVXNjBwcmEyT3p5Qzc4OE03RW1o?=
- =?utf-8?Q?l0tgFR2K3Pm1dPA6cy?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hcIcTtu3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=42wfj5oPDvYYm2P83J07LN41r7Hpdm8uxGaKSkks4V0=; b=hcIcTtu3a187FMmZZd09cjZgZ6
+	0RKZ2THUgo9rlSFYblFTPydzpgzu+XFVu3/n87gN3NDjab4YNydSZwU/mD9Yi3hle/JepOSKY/I00
+	ksunZLkLlMrZo70P2n1vIvL/L2EtOssAAmhLTdc8MgG9sscBEOABsbK90RqN7uSLplPfZKRrzapf1
+	ELxVQgJGwpdwQ0N3xi45eS7ri5cuLJsFsCBq9CoKcWnTNPXI31e6Uapf82WRyILAwUjZqLFRtOEuR
+	SZ7CAPMyybyaO9lGfmo2yCQ3WZBJf2MBGwS4MjYK6oOOEfQQMkmydFuoKHbRXaiiGjoX3572cAz8M
+	xRxuvxIw==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4avO-0009O3-0d;
+	Mon, 23 Mar 2026 09:46:14 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4avM-000JBH-1N;
+	Mon, 23 Mar 2026 09:46:12 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
+ =?ISO-8859-1?Q?Herv=E9?= Codina <herve.codina@bootlin.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
+ Anson Huang <Anson.Huang@nxp.com>,
+ Christopher Obbard <christopher.obbard@linaro.org>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+ Fabio Estevam <festevam@denx.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Gilles Talis <gilles.talis@gmail.com>,
+ Goran =?utf-8?B?UmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
+ Heiko Schocher <hs@denx.de>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Josua Mayer <josua@solid-run.com>,
+ =?ISO-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Marco Felsch <m.felsch@pengutronix.de>,
+ Martyn Welch <martyn.welch@collabora.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Philippe Schenker <philippe.schenker@toradex.com>,
+ Richard Hu <richard.hu@technexion.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+ Vitor Soares <vitor.soares@toradex.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject:
+ Re: [PATCH 0/8] drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the
+ bridge-connector
+Date: Mon, 23 Mar 2026 09:46:10 +0100
+Message-ID: <2948177.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5810e8fa-798c-4956-805f-08de88b71358
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 08:35:01.7821
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UhVc+TmEBH0xBakwud4WqeEsIwqR7Q7dysJtvLNyeYhupUvvR3s2rXQHtzmIZ3FVkxLCVpNIVeyLfVhbMZcOeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9387
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27949/Mon Mar 23 07:24:47 2026)
 
-SGkgTGF1cmVudCwNCg0KVGhhbmtzIGZvciB5b3VyIHJldmlldy4NCg0KPiAtLS0tLU9yaWdpbmFs
-IE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBMYXVyZW50IFBpbmNoYXJ0IDxsYXVyZW50LnBpbmNoYXJ0
-QGlkZWFzb25ib2FyZC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgTWFyY2ggMjAsIDIwMjYgNzoyMyBB
-TQ0KPiBUbzogRy5OLiBaaG91IChPU1MpIDxndW9uaXUuemhvdUBvc3MubnhwLmNvbT4NCj4gQ2M6
-IFJ1aSBNaWd1ZWwgU2lsdmEgPHJtZnJmc0BnbWFpbC5jb20+OyBNYXJ0aW4gS2VwcGxpbmdlcg0K
-PiA8bWFydGlua0Bwb3N0ZW8uZGU+OyBQdXJpc20gS2VybmVsIFRlYW0gPGtlcm5lbEBwdXJpLnNt
-PjsgTWF1cm8NCj4gQ2FydmFsaG8gQ2hlaGFiIDxtY2hlaGFiQGtlcm5lbC5vcmc+OyBSb2IgSGVy
-cmluZyA8cm9iaEBrZXJuZWwub3JnPjsNCj4gS3J6eXN6dG9mIEtvemxvd3NraSA8a3J6aytkdEBr
-ZXJuZWwub3JnPjsgQ29ub3IgRG9vbGV5DQo+IDxjb25vcitkdEBrZXJuZWwub3JnPjsgU2hhd24g
-R3VvIDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgU2FzY2hhIEhhdWVyDQo+IDxzLmhhdWVyQHBlbmd1
-dHJvbml4LmRlPjsgUGVuZ3V0cm9uaXggS2VybmVsIFRlYW0NCj4gPGtlcm5lbEBwZW5ndXRyb25p
-eC5kZT47IEZhYmlvIEVzdGV2YW0gPGZlc3RldmFtQGdtYWlsLmNvbT47IFBoaWxpcHANCj4gWmFi
-ZWwgPHAuemFiZWxAcGVuZ3V0cm9uaXguZGU+OyBGcmFuayBMaSA8ZnJhbmsubGlAbnhwLmNvbT47
-IGxpbnV4LQ0KPiBtZWRpYUB2Z2VyLmtlcm5lbC5vcmc7IGRldmljZXRyZWVAdmdlci5rZXJuZWwu
-b3JnOyBpbXhAbGlzdHMubGludXguZGV2OyBsaW51eC0NCj4gYXJtLWtlcm5lbEBsaXN0cy5pbmZy
-YWRlYWQub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjEwIDIvNV0gbWVkaWE6IGlteDhtcS1taXBpLWNzaTI6IFVzZQ0KPiBkZXZtX2Nsa19i
-dWxrX2dldF9hbGwoKSB0byBmZXRjaCBjbG9ja3MNCj4gDQo+IEhpIEd1b25pdSwNCj4gDQo+IFRo
-YW5rIHlvdSBmb3IgdGhlIHBhdGNoLg0KPiANCj4gT24gRnJpLCBEZWMgMDUsIDIwMjUgYXQgMDU6
-MDc6NDRQTSArMDgwMCwgR3Vvbml1IFpob3Ugd3JvdGU6DQo+ID4gRnJvbTogR3Vvbml1IFpob3Ug
-PGd1b25pdS56aG91QG54cC5jb20+DQo+ID4NCj4gPiBVc2UgZGV2bV9jbGtfYnVsa19nZXRfYWxs
-KCkgaGVscGVyIHRvIHNpbXBsaWZ5IGNsb2NrIGhhbmRsZSBjb2RlLg0KPiA+DQo+ID4gTm8gZnVu
-Y3Rpb25hbCBjaGFuZ2VzIGludGVuZGVkLg0KPiA+DQo+ID4gUmV2aWV3ZWQtYnk6IEZyYW5rIExp
-IDxGcmFuay5MaUBueHAuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEd1b25pdSBaaG91IDxndW9u
-aXUuemhvdUBueHAuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL21lZGlhL3BsYXRmb3JtL254
-cC9pbXg4bXEtbWlwaS1jc2kyLmMgfCA1NQ0KPiA+ICsrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
-LQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKSwgMzUgZGVsZXRpb25zKC0p
-DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tZWRpYS9wbGF0Zm9ybS9ueHAvaW14OG1x
-LW1pcGktY3NpMi5jDQo+ID4gYi9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL254cC9pbXg4bXEtbWlw
-aS1jc2kyLmMNCj4gPiBpbmRleA0KPiA+DQo+IDM3MWI0ZTgxMzI4YzEwNzI2OWY4OWRhMjM4MThh
-YjBhYmQwMTc5ZGEuLjBlM2E0MWNkMzVlZGZlZmM1MWI1NjMxDQo+IGUyYzM2DQo+ID4gZmQ3NmUz
-ZTE0ZDgzIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDht
-cS1taXBpLWNzaTIuYw0KPiA+ICsrKyBiL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vbnhwL2lteDht
-cS1taXBpLWNzaTIuYw0KPiA+IEBAIC03MSwyMSArNzEsNiBAQCBlbnVtIHsNCj4gPiAgCVNUX1NV
-U1BFTkRFRAk9IDQsDQo+ID4gIH07DQo+ID4NCj4gPiAtZW51bSBpbXg4bXFfbWlwaV9jc2lfY2xr
-IHsNCj4gPiAtCUNTSTJfQ0xLX0NPUkUsDQo+ID4gLQlDU0kyX0NMS19FU0MsDQo+ID4gLQlDU0ky
-X0NMS19VSSwNCj4gPiAtCUNTSTJfTlVNX0NMS1MsDQo+ID4gLX07DQo+ID4gLQ0KPiA+IC1zdGF0
-aWMgY29uc3QgY2hhciAqIGNvbnN0IGlteDhtcV9taXBpX2NzaV9jbGtfaWRbQ1NJMl9OVU1fQ0xL
-U10gPSB7DQo+ID4gLQlbQ1NJMl9DTEtfQ09SRV0gPSAiY29yZSIsDQo+ID4gLQlbQ1NJMl9DTEtf
-RVNDXSA9ICJlc2MiLA0KPiA+IC0JW0NTSTJfQ0xLX1VJXSA9ICJ1aSIsDQo+ID4gLX07DQo+ID4g
-LQ0KPiA+IC0jZGVmaW5lIENTSTJfTlVNX0NMS1MJQVJSQVlfU0laRShpbXg4bXFfbWlwaV9jc2lf
-Y2xrX2lkKQ0KPiA+IC0NCj4gPiAgc3RydWN0IGlteDhtcV9wbGF0X2RhdGEgew0KPiA+ICAJaW50
-ICgqZW5hYmxlKShzdHJ1Y3QgY3NpX3N0YXRlICpzdGF0ZSwgdTMyIGhzX3NldHRsZSk7DQo+ID4g
-IAl2b2lkICgqZGlzYWJsZSkoc3RydWN0IGNzaV9zdGF0ZSAqc3RhdGUpOyBAQCAtMTExLDcgKzk2
-LDkgQEAgc3RydWN0DQo+ID4gY3NpX3N0YXRlIHsNCj4gPiAgCXN0cnVjdCBkZXZpY2UgKmRldjsN
-Cj4gPiAgCWNvbnN0IHN0cnVjdCBpbXg4bXFfcGxhdF9kYXRhICpwZGF0YTsNCj4gPiAgCXZvaWQg
-X19pb21lbSAqcmVnczsNCj4gPiAtCXN0cnVjdCBjbGtfYnVsa19kYXRhIGNsa3NbQ1NJMl9OVU1f
-Q0xLU107DQo+ID4gKwlzdHJ1Y3QgY2xrX2J1bGtfZGF0YSAqY2xrczsNCj4gPiArCXN0cnVjdCBj
-bGsgKmVzY19jbGs7DQo+ID4gKwl1MzIgbnVtX2Nsa3M7DQo+ID4gIAlzdHJ1Y3QgcmVzZXRfY29u
-dHJvbCAqcnN0Ow0KPiA+ICAJc3RydWN0IHJlZ3VsYXRvciAqbWlwaV9waHlfcmVndWxhdG9yOw0K
-PiA+DQo+ID4gQEAgLTM4NCwyNCArMzcxLDE2IEBAIHN0YXRpYyB2b2lkIGlteDhtcV9taXBpX2Nz
-aV9zZXRfcGFyYW1zKHN0cnVjdA0KPiBjc2lfc3RhdGUgKnN0YXRlKQ0KPiA+ICAJCQkgICAgICBD
-U0kyUlhfU0VORF9MRVZFTCk7DQo+ID4gIH0NCj4gPg0KPiA+IC1zdGF0aWMgaW50IGlteDhtcV9t
-aXBpX2NzaV9jbGtfZW5hYmxlKHN0cnVjdCBjc2lfc3RhdGUgKnN0YXRlKSAtew0KPiA+IC0JcmV0
-dXJuIGNsa19idWxrX3ByZXBhcmVfZW5hYmxlKENTSTJfTlVNX0NMS1MsIHN0YXRlLT5jbGtzKTsN
-Cj4gPiAtfQ0KPiA+IC0NCj4gPiAtc3RhdGljIHZvaWQgaW14OG1xX21pcGlfY3NpX2Nsa19kaXNh
-YmxlKHN0cnVjdCBjc2lfc3RhdGUgKnN0YXRlKSAtew0KPiA+IC0JY2xrX2J1bGtfZGlzYWJsZV91
-bnByZXBhcmUoQ1NJMl9OVU1fQ0xLUywgc3RhdGUtPmNsa3MpOw0KPiA+IC19DQo+ID4gLQ0KPiA+
-IC1zdGF0aWMgaW50IGlteDhtcV9taXBpX2NzaV9jbGtfZ2V0KHN0cnVjdCBjc2lfc3RhdGUgKnN0
-YXRlKQ0KPiA+ICtzdGF0aWMgc3RydWN0IGNsayAqZmluZF9lc2NfY2xrKHN0cnVjdCBjc2lfc3Rh
-dGUgKnN0YXRlKQ0KPiANCj4gaW14OG1xX21pcGlfY3NpX2ZpbmRfZXNjX2NsaygpLg0KPiANCj4g
-PiAgew0KPiA+ICAJdW5zaWduZWQgaW50IGk7DQo+ID4NCj4gPiAtCWZvciAoaSA9IDA7IGkgPCBD
-U0kyX05VTV9DTEtTOyBpKyspDQo+ID4gLQkJc3RhdGUtPmNsa3NbaV0uaWQgPSBpbXg4bXFfbWlw
-aV9jc2lfY2xrX2lkW2ldOw0KPiA+ICsJZm9yIChpID0gMDsgaSA8IHN0YXRlLT5udW1fY2xrczsg
-aSsrKSB7DQo+ID4gKwkJaWYgKCFzdHJjbXAoc3RhdGUtPmNsa3NbaV0uaWQsICJlc2MiKSkNCj4g
-PiArCQkJcmV0dXJuIHN0YXRlLT5jbGtzW2ldLmNsazsNCj4gPiArCX0NCj4gPg0KPiA+IC0JcmV0
-dXJuIGRldm1fY2xrX2J1bGtfZ2V0KHN0YXRlLT5kZXYsIENTSTJfTlVNX0NMS1MsIHN0YXRlLT5j
-bGtzKTsNCj4gPiArCXJldHVybiBFUlJfUFRSKC1FTk9ERVYpOw0KPiA+ICB9DQo+ID4NCj4gPiAg
-c3RhdGljIGludCBpbXg4bXFfbWlwaV9jc2lfY2FsY19oc19zZXR0bGUoc3RydWN0IGNzaV9zdGF0
-ZSAqc3RhdGUsIEBADQo+ID4gLTQ1Niw3ICs0MzUsNyBAQCBzdGF0aWMgaW50IGlteDhtcV9taXBp
-X2NzaV9jYWxjX2hzX3NldHRsZShzdHJ1Y3QgY3NpX3N0YXRlDQo+ICpzdGF0ZSwNCj4gPiAgCSAq
-IGRvY3VtZW50YXRpb24gcmVjb21tZW5kcyBwaWNraW5nIGEgdmFsdWUgYXdheSBmcm9tIHRoZQ0K
-PiBib3VuZGFyaWVzLg0KPiA+ICAJICogTGV0J3MgcGljayB0aGUgYXZlcmFnZS4NCj4gPiAgCSAq
-Lw0KPiA+IC0JZXNjX2Nsa19yYXRlID0gY2xrX2dldF9yYXRlKHN0YXRlLT5jbGtzW0NTSTJfQ0xL
-X0VTQ10uY2xrKTsNCj4gPiArCWVzY19jbGtfcmF0ZSA9IGNsa19nZXRfcmF0ZShzdGF0ZS0+ZXNj
-X2Nsayk7DQo+ID4gIAlpZiAoIWVzY19jbGtfcmF0ZSkgew0KPiA+ICAJCWRldl9lcnIoc3RhdGUt
-PmRldiwgIkNvdWxkIG5vdCBnZXQgZXNjIGNsb2NrIHJhdGUuXG4iKTsNCj4gPiAgCQlyZXR1cm4g
-LUVJTlZBTDsNCj4gPiBAQCAtNzgzLDcgKzc2Miw3IEBAIHN0YXRpYyB2b2lkIGlteDhtcV9taXBp
-X2NzaV9wbV9zdXNwZW5kKHN0cnVjdA0KPiA+IGRldmljZSAqZGV2KQ0KPiA+DQo+ID4gIAlpZiAo
-c3RhdGUtPnN0YXRlICYgU1RfUE9XRVJFRCkgew0KPiA+ICAJCWlteDhtcV9taXBpX2NzaV9zdG9w
-X3N0cmVhbShzdGF0ZSk7DQo+ID4gLQkJaW14OG1xX21pcGlfY3NpX2Nsa19kaXNhYmxlKHN0YXRl
-KTsNCj4gPiArCQljbGtfYnVsa19kaXNhYmxlX3VucHJlcGFyZShzdGF0ZS0+bnVtX2Nsa3MsIHN0
-YXRlLT5jbGtzKTsNCj4gPiAgCQlzdGF0ZS0+c3RhdGUgJj0gflNUX1BPV0VSRUQ7DQo+ID4gIAl9
-DQo+ID4NCj4gPiBAQCAtODAxLDcgKzc4MCw3IEBAIHN0YXRpYyBpbnQgaW14OG1xX21pcGlfY3Np
-X3BtX3Jlc3VtZShzdHJ1Y3QNCj4gZGV2aWNlDQo+ID4gKmRldikNCj4gPg0KPiA+ICAJaWYgKCEo
-c3RhdGUtPnN0YXRlICYgU1RfUE9XRVJFRCkpIHsNCj4gPiAgCQlzdGF0ZS0+c3RhdGUgfD0gU1Rf
-UE9XRVJFRDsNCj4gPiAtCQlyZXQgPSBpbXg4bXFfbWlwaV9jc2lfY2xrX2VuYWJsZShzdGF0ZSk7
-DQo+ID4gKwkJcmV0ID0gY2xrX2J1bGtfcHJlcGFyZV9lbmFibGUoc3RhdGUtPm51bV9jbGtzLCBz
-dGF0ZS0+Y2xrcyk7DQo+ID4gIAl9DQo+ID4gIAlpZiAoc3RhdGUtPnN0YXRlICYgU1RfU1RSRUFN
-SU5HKSB7DQo+ID4gIAkJc2Rfc3RhdGUgPSB2NGwyX3N1YmRldl9sb2NrX2FuZF9nZXRfYWN0aXZl
-X3N0YXRlKHNkKTsNCj4gPiBAQCAtMTAyNyw5ICsxMDA2LDE1IEBAIHN0YXRpYyBpbnQgaW14OG1x
-X21pcGlfY3NpX3Byb2JlKHN0cnVjdA0KPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ID4gIAlp
-ZiAoSVNfRVJSKHN0YXRlLT5yZWdzKSkNCj4gPiAgCQlyZXR1cm4gUFRSX0VSUihzdGF0ZS0+cmVn
-cyk7DQo+ID4NCj4gPiAtCXJldCA9IGlteDhtcV9taXBpX2NzaV9jbGtfZ2V0KHN0YXRlKTsNCj4g
-PiArCXJldCA9IGRldm1fY2xrX2J1bGtfZ2V0X2FsbChkZXYsICZzdGF0ZS0+Y2xrcyk7DQo+ID4g
-IAlpZiAocmV0IDwgMCkNCj4gPiAtCQlyZXR1cm4gcmV0Ow0KPiA+ICsJCXJldHVybiBkZXZfZXJy
-X3Byb2JlKGRldiwgcmV0LCAiRmFpbGVkIHRvIGdldCBjbG9ja3NcbiIpOw0KPiA+ICsNCj4gPiAr
-CXN0YXRlLT5udW1fY2xrcyA9IHJldDsNCj4gPiArDQo+ID4gKwlzdGF0ZS0+ZXNjX2NsayA9IGZp
-bmRfZXNjX2NsayhzdGF0ZSk7DQo+ID4gKwlpZiAoSVNfRVJSKHN0YXRlLT5lc2NfY2xrKSkNCj4g
-PiArCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIFBUUl9FUlIoc3RhdGUtPmVzY19jbGspLCAi
-Q291bGRuJ3QNCj4gZmluZA0KPiA+ICtlc2MgY2xvY2tcbiIpOw0KPiANCj4gVGhpcyBjb3VsZCBi
-ZSBsaW5lLXdyYXBwZWQuDQo+IA0KPiBSZXZpZXdlZC1ieTogTGF1cmVudCBQaW5jaGFydCA8bGF1
-cmVudC5waW5jaGFydEBpZGVhc29uYm9hcmQuY29tPg0KPiANCj4gSSBjYW4gbWFrZSB0aG9zZSBz
-bWFsbCBjaGFuZ2VzIHdoZW4gYXBwbHlpbmcgaWYgdGhlcmUncyBubyBvdGhlciBuZWVkIHRvDQo+
-IHN1Ym1pdCBhIG5ldyB2ZXJzaW9uLg0KDQpUaGFuayB5b3UgZm9yIHRoZSByZXZpZXcgYW5kIG9m
-ZmVyISBJIGhhdmUgbm8gb3RoZXIgY2hhbmdlcywgc28gcGxlYXNlIGZlZWwgZnJlZQ0KdG8gbWFr
-ZSB0aG9zZSBhZGp1c3RtZW50cyB3aGVuIGFwcGx5aW5nLg0KDQo+IA0KPiA+DQo+ID4gIAlwbGF0
-Zm9ybV9zZXRfZHJ2ZGF0YShwZGV2LCAmc3RhdGUtPnNkKTsNCj4gPg0KPiA+DQo+IA0KPiAtLQ0K
-PiBSZWdhcmRzLA0KPiANCj4gTGF1cmVudCBQaW5jaGFydA0K
+Hi Luca,
+
+Am Freitag, 20. M=C3=A4rz 2026, 11:46:11 CET schrieb Luca Ceresoli:
+> This series modernizes the i.mx8mp LCDIF driver to use the
+> bridge-connector, which is the current best practice in DRM.
+>=20
+> =3D=3D Call for testing on i.MX8MP boards (especially those using HDMI)!
+>=20
+> This series applies changes to how video output devices are probed on
+> i.MX8MP, especially those using HDMI. Even though I have put care in not
+> breaking anything, there could potentially be pitfalls I haven't realized,
+> causing regressions on existing boards.
+>=20
+> I have thus added in Cc all developers which appeared active on dts files
+> for imx8mp boards involving video. I would appreciate testing on as many
+> boards as possible, along with a Tested-by tag, or a report about any
+> issues encountered.
+>=20
+> Thanks in advance to all testers!
+
+=46or the whole series:
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MB=
+a8MPxL
+
+Because this platform falls into type A of patch 7
+DRM_IMX8MP_DW_HDMI_BRIDGE_CONNECTOR_FIXUP has been disabled for me.
+
+Best regards,
+Alexander
+
+>=20
+> =3D=3D Review recommendation
+>=20
+> I recommend reviewing patches in this order to be understood more
+> effectively:
+>=20
+>  * Cover letter
+>  * Patches 1-5 are small preliminary cleanups/improvements
+>  * Patch 8 is the goal of this series, but would not work alone
+>  * Patch 7 this lets patch 8 work; but in turn it can't work alone
+>  * Patch 6 lets patch 7 work
+>=20
+> =3D=3D Series description
+>=20
+> This series is not strictly related to DRM bridge hotplug, it is rather a
+> preparation step. Introducing hotplug would need two different approaches:
+> one for the new way, for drivers using bridge-connector and
+> DRM_BRIDGE_ATTACH_NO_CONNECTOR, another for drivers using the "old, legacy
+> way" where the last bridge is supposed to instantiate the
+> drm_connector. Hotplug is complicated enough in one case, so it makes sen=
+se
+> to only support the new way.
+>=20
+> The hardware I'm working on is an i.MX8MP, whose LCDIF driver is still
+> using the old way. So this series converts to the new way as a preparation
+> step.
+>=20
+> Patch 8 does the conversion, which is simple. However this would introduce
+> a regression on some boards. Here's why:
+>=20
+> There are 3 instances of the LCDIF in i.MX8MP:
+>=20
+>  * LCDIF1, driving the DSI output
+>  * LCDIF2, driving the LVDS output
+>  * LCDIF3, driving the HDMI output
+>=20
+> The device drivers of peripherals connected to LCDIF1 and LCDIF2 already
+> support the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag. So far so good.
+>=20
+> LCDIF3 is more tricky. The HDMI pipeline is:
+>=20
+>   LCDIF3 -> fsl,imx8mp-hdmi-pvi -> fsl,imx8mp-hdmi-tx -> HDMI connector
+>=20
+> The fsl,imx8mp-hdmi-tx (hdmi-tx) component supports both cases (with or
+> without DRM_BRIDGE_ATTACH_NO_CONNECTOR), but in the
+> DRM_BRIDGE_ATTACH_NO_CONNECTOR case it does not create a drm_connector,
+> thus preventing the creation of the pipeline. To make it work a connector
+> must be created, and the way to do so is describing the connector in the
+> device tree (compatible =3D "hdmi-connector"), so the display-driver will=
+ add
+> the connector along with a wrapping bridge.
+>=20
+> Unfortunately not all device trees in mainline have an hdmi-connector
+> node. Adding one is easy, but would break existing hardware upgrading to a
+> newer kernel without upgrading the device tree blob. This is addressed by
+> patch 7 reusing an existing approach to add such a node to the live device
+> tree at init time using a device tree overlay for boards which don't have
+> one.
+>=20
+> Finally, patch 7 cannot work alone because of a bad interaction between
+> devlink and device tree overlays. Patch 6 solves that.
+>=20
+> =3D=3D Grand plan
+>=20
+> This is part of the work to support hotplug of DRM bridges. The grand plan
+> was discussed in [0].
+>=20
+> Here's the work breakdown (=E2=9E=9C marks the current series):
+>=20
+>  1. =E2=80=A6 add refcounting to DRM bridges struct drm_bridge,
+>       based on devm_drm_bridge_alloc()
+>     A. =E2=9C=94 add new alloc API and refcounting (v6.16)
+>     B. =E2=9C=94 convert all bridge drivers to new API (v6.17)
+>     C. =E2=9C=94 kunit tests (v6.17)
+>     D. =E2=9C=94 add get/put to drm_bridge_add/remove() + attach/detach()
+>          and warn on old allocation pattern (v6.17)
+>     E. =E2=80=A6 add get/put on drm_bridge accessors
+>        1. =E2=9C=94 drm_bridge_chain_get_first_bridge(), add cleanup acti=
+on (v6.18)
+>        2. =E2=9C=94 drm_bridge_get_prev_bridge() (v6.18)
+>        3. =E2=9C=94 drm_bridge_get_next_bridge() (v6.19)
+>        4. =E2=9C=94 drm_for_each_bridge_in_chain() (v6.19)
+>        5. =E2=9C=94 drm_bridge_connector_init (v6.19)
+>        6. =E2=80=A6 protect encoder bridge chain with a mutex
+>        7. =E2=80=A6 of_drm_find_bridge
+>           a. =E2=9C=94 add of_drm_get_bridge() (v7.0),
+> 	       convert basic direct users (v7.0-v7.1)
+> 	  b. =E2=9C=94 convert direct of_drm_get_bridge() users, part 2 (v7.0)
+> 	  c. =E2=9C=94 convert direct of_drm_get_bridge() users, part 3 (v7.0)
+> 	  d. =E2=9C=94=E2=80=A6 convert direct of_drm_get_bridge() users, part 4
+> 	        (some v7.1, some pending)
+> 	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
+>        8. drm_of_find_panel_or_bridge, *_of_get_bridge
+>        9. =E2=9C=94 enforce drm_bridge_add before drm_bridge_attach (v6.1=
+9)
+>     F. =E2=9C=94 debugfs improvements
+>        1. =E2=9C=94 add top-level 'bridges' file (v6.16)
+>        2. =E2=9C=94 show refcount and list lingering bridges (v6.19)
+>  2. =E2=80=A6 handle gracefully atomic updates during bridge removal
+>     A. =E2=9C=94 Add drm_bridge_enter/exit() to protect device resources =
+(v7.0)
+>     B. =E2=80=A6 protect private_obj removal from list
+>     C. =E2=9C=94 Add drm_bridge_clear_and_put() (v7.1)
+>  3. =E2=80=A6 DSI host-device driver interaction
+>  4. =E2=9C=94 removing the need for the "always-disconnected" connector
+>  5. =E2=9E=9C Migrate i.MX LCDIF driver to bridge-connector
+>  6.   DRM bridge hotplug
+>     A.   Bridge hotplug management in the DRM core
+>     B.   Device tree description
+>=20
+> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9=
+c3058@bootlin.com/#t
+>=20
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> Luca Ceresoli (8):
+>       drm/mxsfb/lcdif: simplify remote pointer management using __free
+>       drm/mxsfb/lcdif: don't unnecessarily loop over ports
+>       drm/mxsfb/lcdif: use dev_err_probe() consistently in lcdif_attach_b=
+ridge
+>       drm/bridge: dw-hdmi: document the output_port field
+>       drm/bridge: dw-hdmi: warn on unsupported attach combination
+>       drm/bridge: dw-hdmi: move next_bridge lookup to attach time
+>       drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector when missing usin=
+g a DT overlay at boot time
+>       drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-=
+connector
+>=20
+>  drivers/gpu/drm/bridge/imx/Kconfig                 | 17 +++++
+>  drivers/gpu/drm/bridge/imx/Makefile                |  2 +
+>  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 60 +++++++++++++++
+>  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 38 ++++++++++
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c        |  1 +
+>  drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          | 45 ++++-------
+>  drivers/gpu/drm/mxsfb/Kconfig                      |  1 +
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c                  | 88 +++++++++-------=
+=2D-----
+>  include/drm/bridge/dw_hdmi.h                       |  5 ++
+>  9 files changed, 174 insertions(+), 83 deletions(-)
+> ---
+> base-commit: 8402cf4fc8f8d5756dc81cf9fda1dccdb3622634
+> change-id: 20260306-drm-lcdif-dbanc-83dd948327de
+>=20
+> Best regards,
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
+
