@@ -1,68 +1,69 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013021.outbound.protection.outlook.com [40.107.159.21])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011038.outbound.protection.outlook.com [52.101.65.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2DA38F23D
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 16:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A4739FCD6
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 16:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774368112; cv=fail; b=JwbQA+Hvquk8oBDDBiQxQ7DSrKVPbIiK+gt6+GifQWjTFn2GO5IPGnpr96AIsaedzfcDv64GHeuovwjaT5gHvGgXmA9+Cz1PGuVMI8dkXvNZl3voF8YiiPOVf23EQfXwmx+Kibs7EYvtzIEf8eSukrbI8DJG6fGOhJsW5zAB+iA=
+	t=1774368507; cv=fail; b=eCw+1DabcApsITi/87F8qfEYZMwoaPlir+YXxtJ7oyzGZsK7g5VrGgGpDLBA02PrVVuzs3LMC13kzZ9EPJb3XddSnRuwkRkL8S+WkcToh3gRi4A31j8WAv+CUHIRqWcz4fWi3dIkexztO2KEyMcd+4qTTbZEcph/TzPuIaOBrp8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774368112; c=relaxed/simple;
-	bh=RjM32UpYS+VyhAzHHzd45HCOlgxgq6Q8hNZ+tVuoB/w=;
+	s=arc-20240116; t=1774368507; c=relaxed/simple;
+	bh=6Px1doiRTTrvJ20aZJ5Vg2EFJqqFpCIuoOs0FBiBVcY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZYeXg8iGRQSlj2cs5vYA482oBO5cMrmh8QocnJ5ItxGNsT1Vug2VBPI3yIhd4Hd4JAYiYuSin6F763w2p1v9Hg0yCMIQw4xvaeqajB5yz+X1HyTsB9lEJCMSt+vwCOypLgQ3HWixzp+3VfJRBPGy19lbulF5+kkpQFaUSp7W208=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DcL1U4lp; arc=fail smtp.client-ip=40.107.159.21
+	 Content-Disposition:In-Reply-To:MIME-Version; b=MKT5OqkI1O6vCSqlREv5I9tyKx13+kkx7QuksBpa9D3GbRylMNAjq73LcQPPzMr3EnsfgJIoEzzwqhc27iBFSz0SSVYWWr7m936N+Do9Y1lVyJslDMG1Xsb2ftVAPXfvF20bYoFybAvrk2CsibpLXV8OW3O7ykIXy257HjbaiEc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QbVbGBkV; arc=fail smtp.client-ip=52.101.65.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DcL1U4lp"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QbVbGBkV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gd9WYnkmRZ/N5AP4RGdd+8n9TB+1lHzNFwoKA6ecOqQoWotctuV29/tL6L73rEMyutKKlNVsxmpF8dNKzn2058va0xUvpEYR7YMO7xRLSMaJ9oWyWd/baEd/ajITII2z5PS1hdsdht/tvQAiExRdY3IzPs+z0JIcWR6bNW62Rawl+8syMEMUljKb8syCHDvrwxe4Qz4+VF/tAX8kvIeVDFmFZiGZreOELeQX0RDhatyEp4fp5PxkI2H2nqptPVgX+fi6NWyzO0rrzAM4iI/Ck6Quvzd+4iUKvN+C5rLDp/LdZsVFdvQ0iBktqD/WXPDoFnNUtaGCWSdsmfH9eHHQaA==
+ b=lg41yDgCVUj1ry3ZGMENCjA2jU3SW1t01zQCQeeXqehJQRm5WI+w4b0PPRqnudMiyNbbsc84W8SHdsrF071llM/4legWM0aQD5qgotcGqFsKccRSJBR0xNDx2tCzG/LsiywwI4YwTxV9m6UAbOBVfAy6D8JuuRHuoj2Y2d9yA31Vaf9VoD/b+B6jII0t8oMmHD2gA/jhDwba01q1zsF5EYGD/5RZ0mmNMOB8zXMVxLMpCWRH9m76iFIWfdJ5ylnEN/f+DpmxtUPBWPLiOcLHd9xOUWgPr8F6HWNvC5+c0guoHUy5ZmvfzAj6GTbYiDlVZSe0PlH9VsbFGmrA2hAtSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PH+QdQ5X/s1HvH64Wge9K0LYCBIGz2gLfp7KL/4tttQ=;
- b=AwNAitA/LrnqCn8nBN8CeSk3l7c+F1SyqG/DRh6nojnSqbX0AG96RFJPNMnN+3I4bTGw0bc0NBt5Y7T3mfX1Hha5xTEty78R91sI0K/Nrv11kKtO+iSB1jUcbqnCKYBhX02njnubk4fk67t30JJ5b6KM28G+/W13lr7E8AB4Kq+jkudI/n0NmeQEsY9uJ4pUdE1jLCJZiM3eF+rotDUMvSLmBna6wLTV9fbjKWSHbFPkX36DP8Iw8v+gm6UdZKzuve787oLMTRtyYu5N26PHhjRa0SWNeZLzgLhgQFngFGI7T8I8lhIuqh3qOWFW63DvrvQBPj87/5mnXO0U8a+nkg==
+ bh=p4wmmxMq51a+UZyJ5e3BgqjNPsEVNBscF1jHzUjAzxs=;
+ b=SHMd7XLcSfJE+y+Mdp05o45Zg6E+wpPtERdKsHEnf2FUww1I/mpyOheNxhACR7g5P6Nx6KOjrtKlBZnBXELB0+DNT+oZiW/iRyOibMynlGok1B1dx+iERygam7d8pHkGaXYPOPsO351bdBbBCY/92s8WDiCU9T8bCac7V4FU5aTzToMfeby1BDdkOvR13hAU1EIv73EjS0mIo0F1i8JNY3LdVOtSOXg99TW6sQy1OxEsGW5qYiMzBGArPL6Kx2qUdc/I6tNbRlgNbdkGfWlJPp2ePpMBEEMJ8a74N/0wgn4swEWpZbR9bhcZfHIv91ibY1OVgR7NMe4PFeW86qdbSA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PH+QdQ5X/s1HvH64Wge9K0LYCBIGz2gLfp7KL/4tttQ=;
- b=DcL1U4lpRnYHZT3gSHCxNa2sM8BJnvGKVmPnhi14YmSiGEKnzUpvydEz73x5+mZZ9aPJ2qwE+9RLV/FwxPKzeDmnFWi+KFquQqhT6YnEeM4319LZxpWBSiFH+ZY3uEvMxcEWrkz3/Kjoy8fV60IUgX5LKV4foyZ/H0UMYz6xmJoCqusC+7l6jNt4prlcRAU4BCu6cUfZdsRP6RR+Ok/SbWImZnCtUoET9VuH0hXD/wDR0Pp/svdFtif5G/Xo2lsLhKr7EegeMf1S1fCuzKC0/1YyhzmUSuEJThixypoFUzAS+H6nF1sTnUtJ/L5Qk+4GI1ZangxIollXKpuXo8aM7A==
+ bh=p4wmmxMq51a+UZyJ5e3BgqjNPsEVNBscF1jHzUjAzxs=;
+ b=QbVbGBkV1L/V5DNKCPEs3OCrZlwidOuif+8F68t8tC5Jn3ABWl2ZCqxkOXFsjEvtfc5hPW/Jv5+ZtHvq4ZlxdRsi+0r813+vSVx7Wt8ApW2GDmdQ1Ex0IPhVr5OMHBtqKugdm/eFMIL7+1qnleHzZrhaA+YnlhXxVTrRhyv/DoKwmHjC5PQfRXpargm/U+VI+Zo9Os4fuk27OZ5IBCgR5m+XsGlWqvhKU1mRsre3AE/CK/AQOT/8J/E4JGexh3s7Pu6H06nkwoccb907X1SC5+h5UYEArLkomcHkrgd10pfGoFQWyV4o/XWGKgU0OyuvFqrnUmyR5DhHTIPsUsDtHA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by GV2PR04MB11561.eurprd04.prod.outlook.com (2603:10a6:150:2cb::19) with
+ by AM0PR04MB6929.eurprd04.prod.outlook.com (2603:10a6:208:181::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Tue, 24 Mar
- 2026 16:01:16 +0000
+ 2026 16:08:11 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
- 16:01:37 +0000
-Date: Tue, 24 Mar 2026 12:01:37 -0400
+ 16:08:13 +0000
+Date: Tue, 24 Mar 2026 12:08:09 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: Add DT overlays for DH i.MX8M Plus
- DHCOM SoM and boards
-Message-ID: <acK1YU6M5FGK3qM2@lizhi-Precision-Tower-5810>
-References: <20260312232500.197096-1-marex@nabladev.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/6] dt-bindings: arm: fsl: add Verdin iMX95
+Message-ID: <acK26Vt_rasid8AR@lizhi-Precision-Tower-5810>
+References: <20260313-verdin-imx95-upstream-frank-li-base-v2-0-bd488be7c699@toradex.com>
+ <20260313-verdin-imx95-upstream-frank-li-base-v2-1-bd488be7c699@toradex.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312232500.197096-1-marex@nabladev.com>
-X-ClientProxiedBy: SJ0PR03CA0077.namprd03.prod.outlook.com
- (2603:10b6:a03:331::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260313-verdin-imx95-upstream-frank-li-base-v2-1-bd488be7c699@toradex.com>
+X-ClientProxiedBy: SJ0PR13CA0116.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::31) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,122 +72,124 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB11561:EE_
-X-MS-Office365-Filtering-Correlation-Id: b290f036-745f-4b4e-2482-08de89bea12b
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM0PR04MB6929:EE_
+X-MS-Office365-Filtering-Correlation-Id: fba7a8e6-0d5a-4357-9864-08de89bf8c80
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|376014|52116014|7416014|366016|38350700014|18002099003|56012099003|22082099003;
+ BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|19092799006|366016|38350700014|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	ITRS42qgbgw4/jSbqJDjjoocgMFbFKy2RgGVLwsCXNBHIBfTMnbQwRdmBQGKYPlsIXXyEALMysEehY/fG9pUBNmVCNoCU+I5u0WqGDmzWvsQr2yDKFS1QrvTmxGVWvHdJofXLk0IsgucwidI79nwk84sGVB/AlpBwh9+voTsdaqxOX7UCkCUout2AmcdgHlJwOWKLN/WCxCo6jdF6N+Mq2lM5J/WLw/Bl7YQjErMhpd+YbAkirj5tkhkdel8+SIrJqJYjVOyA7Z/1zs8VylcZNd+17jqABrpWmK5CTFpjanPSInw3Fccu4a0Cqya7n/c81esdSL000cvDwparycOxxsjm9Yyrf9B8UFqwtz5SUFR3loNpHKXfG0ZPYilWYOnp8s6NPrhN/dEbXKOiVyJq5sKpl+ooPOVMDU/MH2fk+3objL7VqdTOB5yeImkYewRRT2CpnELoT+V94AjXOAogvrnQ92C/kVfKJYNEBdhIul6lqI8hwSH5xWcr61fjHgzDhmuL+ZDsWkPmuiYL7EHRVDYtnBF0yM7Om1NUxzc29TuGabdLVlftZmKRQ729ku7hfhJ4cMXOAURSgBmm1b36vO8xzib5jS7bfz6l7Y/6Rtfc1UqSH2seufyBVXlMlCvK/GJHqiOFAsjvMM4wOsvJ6CUENZyG0l+bVVm+7FNr2Lngz+P2RN05HshfWBNkbJVBHnrNX1XRSYLYzqyYDuB+50XAnGqFdeeZOWRn5RNydxQgjglKP9a+JvwMaSatOFTJxW5OXk9d2/5Xc+1eLm7lsMDcLS/RuZ351iIPup0uq4=
+ IiXH/krgqB+m21/criyTo3KFVYn92ga5uyL9Pg+IHIuwhKzHSFL+w42qbz0/vZ83kjqq6qOYAteC2zCCopGuBdLd72Sr2GNOEuoJTfSsZA/A59v2g4qr8uWKtC3+IqH23kvHg+5QnrqYeMbukU5y5ctMj7Mg/vnkY4A/Nlty5lDIcR6iibHSQ7LbyuF3TheufomAkRpXy2IhbSUBMh8gCyVZYGCDfw9r8FviI7UMNraCE/inGUH7oyE7JglAoHKFm9SkWYdRPaTrUnaxg5CQDVzzXivQNUDJ7nY1hHgJrkQHCMpC0QapAn2B2X8OxNcn5gx/uwDwiebBFeftTSkYnC8l77R6Lfdx9T1mNUsS7qDhjquQ5CpluMLzTerU373ZiE4f++KC6JK9eze0uKYUa6my8fVvnfjnWZHInGX7GPbZgt2Y9dUD7QxKUyiSQfa3+JOMHXTOQTczIfHWU8HLszUZTcwVO79PRkbpRXVAfnI5gKfjOUWEC5tSvMcJT86OwPKhcoNEyLZ1E3EW0SEht46TbAysRdtN+Xm6A3nPWq3FM8PDQVb/JMCwwKAPNb/7c8REtVOU40NUgw6JC8loA2KqWNtB8hOoE50Y9TyAaxkUvqVDGZbFIBHnaPR1ZzJIXb8U3SbqQDLzaq1QvzZ7VoH1Wa5mgvnrxSdgD7PbzRCedD6/It+3dPYWYgTats0wxO6FgI6oELhxRxyoIvJK6zd1oAaPVhWV7ecFeXOqsm0wdcJ+bZqt6qXusFXgakT8UfZwo3iudthd/KaoCKozcuRIPV12zFXhx0iVM7nWaYQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(19092799006)(366016)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7Cp92PZa9rrE70/JUk8elyjtuM9V1ok3YOav9Y0jCmG1h5iiVKULl+iT8/53?=
- =?us-ascii?Q?snWDMh9n7YE5+Z9ad8LorjYRXGqiR19O5KZBXyEjTlnTgrTXHWV56ilAQuRu?=
- =?us-ascii?Q?jZy+0xh6ie28W1VTykyI3E1eVXYPRLCXZfmI43SQNITZfBUYjthzi4+X2CCq?=
- =?us-ascii?Q?QEskEUdcEH/bC9HLed4kkP3OT3/kmVvxYPFL+7z2HpMw+PXRE9taE4hHsq2v?=
- =?us-ascii?Q?a51goSBWpteYJIvUul4INpv3FyyoKJZvcGlrUEYJlEXDIWH/0kcKhDfwTPl9?=
- =?us-ascii?Q?QJIaCKmWsYr5NoIwDTsSuJFCkD4ZcM2yG2UPzYxEnXbdwCBpfB7QQf2G1wKu?=
- =?us-ascii?Q?08BHXhOVaOxt8cAUca+SCBAI0Rh6QYFv5+feWYLHxtD8Vna6EsoNVq+UuJmd?=
- =?us-ascii?Q?GYq3KdavShBsjpocg29UIRhvezDjFPFs7U/rTh9beZyd1F1IbzX/IaIriJjR?=
- =?us-ascii?Q?7slB9Wh9mLfQG8f5eUVVbUQONDubEJJDx5x5rS6zgjJTsAAUeIPhQM+46BHN?=
- =?us-ascii?Q?mE6d1UQdLH78UYQEhlBNsIjxxS2HYarepS8jQbEthPZXZMTm8bRPKTVjVHhF?=
- =?us-ascii?Q?CijpFVoYNX9VS2eZgfFhvnX5/E2Sv5+bean1SvRHdt8wJQNoq7GreApFkRdh?=
- =?us-ascii?Q?xE8Z1oB12JC1wrIyjFC/0vfUXe/ZZzIcnOeYHYS7XxpPm+tJnf40OZfMF0Q9?=
- =?us-ascii?Q?1uXt5qF4fpUzirsAYWK5hJ1XLQEXTxP+HMvdq1mqUy8ZZcN15185lyneOsHt?=
- =?us-ascii?Q?SOXrpPKMNPv7NI/tA02Z1uIdOZHTrfGpyXnKZTye3qWmg4V1Ih7NSIff7wt1?=
- =?us-ascii?Q?bDSXOaeLdt7TykEyZjTCy85Pp7JhsyQtvkNxi0TuIemPpMvPsAxphCHgKg/j?=
- =?us-ascii?Q?DT3eqcsVaixBx89D/wkqbRW6fuIyQu+8CC9afKm1DyPJz/TQlXjCpQ9OtwcN?=
- =?us-ascii?Q?5Srg9sStMO8/K2vuAMJM3SzxPP5eAROcxICCQDnY7Pth53/cR48LRUsaG+7P?=
- =?us-ascii?Q?x2kBY0O9HxpuRDGIa2E+zzOvZ1ZBN951Nf5MxQWmfI4wYw8XFXXSflOxt5Sn?=
- =?us-ascii?Q?WBfdSWR9e9mqfOjtf7eY9na4dvfv6kA9DoqJt0XeLcObI4nqAtb/12gU/CJ8?=
- =?us-ascii?Q?7ZDN8MYjpPuurJehidYrvp00H8L4c6ecKzas5W7saXelz2InU/ynX90MVarw?=
- =?us-ascii?Q?psS4KOvYNrb/Gx7KqTaxMlPknUlsarctvVhht/in40Kh0b7QPjubJtCsXax3?=
- =?us-ascii?Q?zuoxvn2qYhzRov57mNuyh0Dwuvgbz1AlKtzfceC4Z3qcwTkt2C6tjQE/dUkd?=
- =?us-ascii?Q?m7vQ4HOhqBCwv5zjXT70N9O+ZxhTK+LBnfCRnftcp2ldLnRyFdRluLOPpNRH?=
- =?us-ascii?Q?xMgapvlQV+sJNXbZEfPOSlQHdV01NiHnrWXCVBgUNtwsT37bI7YmVqrsYyLl?=
- =?us-ascii?Q?slTbYdaYos0STMeyKuVgLN61oXiPUxMroljSiLJdiY+ud5oSstenzrRrpzuc?=
- =?us-ascii?Q?p+8sdrYRsYNf+fE2Pp5C6RAazsoZ9HBZGjIy9LBVroGFKbXAMD0N4xxFUn22?=
- =?us-ascii?Q?XjcdJ63E08q1RPP/Nt6C0a7Wa0qyLx2ee/sflTMpeTvOhayI0SOb3G+zDnIO?=
- =?us-ascii?Q?Tdqnqbhqnl6hDNjn7iAwpTpQsHJvGghv11agvNdwYSpcOV1P/sX/cIpvGQkj?=
- =?us-ascii?Q?yueXFqEgJ+5gPTFhIsNT/ilCEBFL58JPkE42DzsdaXOJ1Ina?=
+ =?us-ascii?Q?jAFKmoLbHRa22vc4QyjhhyhKOhiocHH0sj+cHgFRHO7VBfn/AMSq9np1sKHz?=
+ =?us-ascii?Q?07ZxWdSUz2JajIpQAzTwx+yIrcEXFG6oMHFBOjKCuAGvVdWVUmkNaMCQDPd0?=
+ =?us-ascii?Q?LKKvC4aAD2KKtPeNJfU1IGfxoqt6QoumQJVekHUC2qmI8q7T1a+2r2TfLNC0?=
+ =?us-ascii?Q?Mfb8+0uoQ4Q4q0DhFGwZXI7IvCn++d1fG0dTV2Vr/v09JSyzLMYl8wOJNt8m?=
+ =?us-ascii?Q?qDQD0Rhme0KTTbnA4Y3xlrzqYLUmop1Xourtl6ubhJnjowh6P6CLMzhOFBZL?=
+ =?us-ascii?Q?s9UKWQHBA25ioJY0mmST0BhyTbLk8tS7WlDmcK9YFi8q7XV5EsGTSEJsl40s?=
+ =?us-ascii?Q?Pl1q04B5r77V9DZ3AEuOWkPpS5QtiUOHPaybsJgO3BKxssSJBtub7DsKtg1a?=
+ =?us-ascii?Q?D7RXJIfkHoZAWwb+amIm3GUgyhSWo+iEOLbaWrLfIc0kH9MsUPLVdvM5+cbf?=
+ =?us-ascii?Q?o29ZmCcikW/1yNIPZIonvYQ8HONC0c5UexWO2DMkk8/K8ecO4aWfJtFYHKBX?=
+ =?us-ascii?Q?lTFHEB1KWBU0G0g5HnhDtxxUkdfxaa3Gdj+Dx/i3icffV0bbIbkIwTgrRqAW?=
+ =?us-ascii?Q?G8it1Q9uVjAI0mcDaX0PebSam2+4a4n8xws2Umn8AXXHnZ2bAXELO4I4+qnu?=
+ =?us-ascii?Q?D9DJkBI76pNWM92JhmkNRQ4iR/vHKmoFcgphaCjRPXcGE4LNvkpF+iRShYAZ?=
+ =?us-ascii?Q?CjwbsFhmvqtk8rtcJO3AZd6kKmxgyEFYjChfTfxPXvg3enFGuc8udGXSjilz?=
+ =?us-ascii?Q?5gE3T0k5lFW9Fd9OU9Wjj1zWX0v7BJXUtabKuBTpdS3wSZ/iaHWfo9ysas9D?=
+ =?us-ascii?Q?TTd43IEKG9o8e/U9v25Ncj5uL1DwaffgATI00zILL1wTpWDcor/GpMX4LV1V?=
+ =?us-ascii?Q?UuR+4JI7EbYm7Q7olrX+mfxykAE4FOS1K9qireEJLOfs+EHB+6uT5y9449XK?=
+ =?us-ascii?Q?1FkonB+51dTR0SsI0KeG4pbRYGVQGYw77pyQj2df1N00G57+iFvy7RbfNwhP?=
+ =?us-ascii?Q?6hUNcoJ+RMGl9AnffeGRopLMlrIbf7bIkNKwm3JNE/hG4cIXQenFJIkI4Sni?=
+ =?us-ascii?Q?nvShwv6uv1m0O5fWXp8YfZJoI6nAHda0YUQQ2SkXlYwQymJRbktQpaak09SI?=
+ =?us-ascii?Q?6lguO6/0IHLCzedaxVeKE4E9dXnPy0LjeOOVfKFK2qbLAleHZ9l7HsueW/kf?=
+ =?us-ascii?Q?VWrsZtZ507nsPmsSUWG8cEHooBNVBY+wdQw55jDIB2pzVeadhIQxt25yG92+?=
+ =?us-ascii?Q?IbTd6x3szww90DDpFo531dGVzV6cCrlksdxK8ZfFjMr0zxyqKFj5MTPZcXAn?=
+ =?us-ascii?Q?te3eyD+oYEtHPaCMb5NPzbc93L9PFDpyG89eAWvOZAv4GAWjOTumr2tEmz7h?=
+ =?us-ascii?Q?Cwbmn0F0holRvLkLFJu2LeemmucdlAwcY0Br17ydARPkYVb89QTc5sHI39NH?=
+ =?us-ascii?Q?ZdtNWjD6iYhFT0S01v4cbCto8lUHq+BfbQJfNLtOHe/qjElZWtmffasM5CBF?=
+ =?us-ascii?Q?yx2uLuWK9raXYq+juIQvd80o+hyhazIlZvvc175YuDYJyEaPDZriVQNOuaBa?=
+ =?us-ascii?Q?0aPlZT/T3ZygBMspAeB24ovHi7vbioYVayFYQXc5L19GZXNlrLkF83OPT7t9?=
+ =?us-ascii?Q?gEPpPGNJKiwzkmdJC6xWb1Gfp+ynQCzwom4lzTQ+6nlQ6oULflXAK3lTz2np?=
+ =?us-ascii?Q?uof6UFcSTrEvazpKgSP1Yv4+9Hkr/B8JELOpRrCNLw44KHQIq4mDUH1OCgZa?=
+ =?us-ascii?Q?sbeRHyX1pA=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b290f036-745f-4b4e-2482-08de89bea12b
+X-MS-Exchange-CrossTenant-Network-Message-Id: fba7a8e6-0d5a-4357-9864-08de89bf8c80
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 16:01:37.7068
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 16:08:13.0198
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T/a0MUmspiiQEkfXctctfDNhgQEt1J30WJ5hFjuPktsxW/CIA9Y4oiG97EPfk+V05HfxQrHjncLePCHVhJFWbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11561
+X-MS-Exchange-CrossTenant-UserPrincipalName: MkIAOP6CjCIIOzN1akxJVfhTQTpe7zSp/oaK8o2j+BEsLOqlWykjx5m7660PIV6UkRaKSE9qv6E9DvTlrrug+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6929
 
-On Fri, Mar 13, 2026 at 12:24:04AM +0100, Marek Vasut wrote:
-...
+On Fri, Mar 13, 2026 at 09:57:42AM +0100, Ernest Van Hoecke wrote:
+> From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+>
+> Add DT compatible strings for the Verdin i.MX95 SoM and its supported
+> carrier boards: the Verdin Development Board, and the Dahlia, Ivy,
+> Mallow and Yavia carrier boards.
+>
+> Link: https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
+> Link: https://www.toradex.com/products/carrier-board/verdin-development-board-kit
+> Link: https://www.toradex.com/products/carrier-board/dahlia-carrier-board-kit
+> Link: https://www.toradex.com/products/carrier-board/ivy-carrier-board
+> Link: https://www.toradex.com/products/carrier-board/mallow-carrier-board
+> Link: https://www.toradex.com/products/carrier-board/yavia
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> ---
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi
-> new file mode 100644
-> index 0000000000000..534737363c9f0
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi
-> @@ -0,0 +1,42 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright (C) 2022 Marek Vasut
-
-2026?
-
-> + */
-> +
-> +&display_bl {
-> +	pwms = <&pwm1 0 5000000 0>;
-> +};
-> +
-> +&DH_OVERLAY_PANEL_I2C_BUS {
-
-why upcase for label, generally it should be lower case
-
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	touchscreen@41 {
-> +		compatible = "ilitek,ili251x";
-> +		pinctrl-0 = <DH_OVERLAY_PANEL_I2C_TOUCHSCREEN_PINCTRL>;
-> +		pinctrl-names = "default";
-> +		reg = <0x41>;
-
-reg should second property,  please dt-format for new dts files.
-check others
-
-> +		interrupt-parent = <&DH_OVERLAY_PANEL_I2C_TOUCHSCREEN_IRQ_PARENT>;
-...
-> +
-> +	ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		port@1 {
-> +			reg = <1>;
-
-need empty line between child node and property.
-
-> +	#size-cells = <0>;
-> +
-> +	eeprom@56 {
-> +		compatible = "atmel,24c04";
-> +		reg = <0x56>;
-> +		pagesize = <16>;
-> +	};
-> +};
-> +
-> +&ecspi2 {
-> +	status = "okay";
-
-status should be last property. I stop here because these
-should be identify by tools/script
+can you rebase to https://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git/log/?h=for-next
 
 Frank
 
+> v2: Added Krzysztof's reviewed-by
+> v1: https://lore.kernel.org/all/20260305-verdin-imx95-upstream-frank-li-base-v1-1-823fad02def9@toradex.com/
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 5716d701292c..f0701143b237 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1477,6 +1477,30 @@ properties:
+>            - const: toradex,smarc-imx95     # Toradex SMARC iMX95 Module
+>            - const: fsl,imx95
+>
+> +      - description: Toradex Boards with Verdin iMX95 Modules
+> +        items:
+> +          - enum:
+> +              - toradex,verdin-imx95-nonwifi-dahlia # Verdin iMX95 Module on Dahlia
+> +              - toradex,verdin-imx95-nonwifi-dev    # Verdin iMX95 Module on Verdin Development Board
+> +              - toradex,verdin-imx95-nonwifi-ivy    # Verdin iMX95 Module on Ivy
+> +              - toradex,verdin-imx95-nonwifi-mallow # Verdin iMX95 Module on Mallow
+> +              - toradex,verdin-imx95-nonwifi-yavia  # Verdin iMX95 Module on Yavia
+> +          - const: toradex,verdin-imx95-nonwifi     # Verdin iMX95 Module without Wi-Fi / BT
+> +          - const: toradex,verdin-imx95             # Verdin iMX95 Module
+> +          - const: fsl,imx95
+> +
+> +      - description: Toradex Boards with Verdin iMX95 Wi-Fi / BT Modules
+> +        items:
+> +          - enum:
+> +              - toradex,verdin-imx95-wifi-dahlia  # Verdin iMX95 Wi-Fi / BT Module on Dahlia
+> +              - toradex,verdin-imx95-wifi-dev     # Verdin iMX95 Wi-Fi / BT Module on Verdin Development B.
+> +              - toradex,verdin-imx95-wifi-ivy     # Verdin iMX95 Wi-Fi / BT Module on Ivy
+> +              - toradex,verdin-imx95-wifi-mallow  # Verdin iMX95 Wi-Fi / BT Module on Mallow
+> +              - toradex,verdin-imx95-wifi-yavia   # Verdin iMX95 Wi-Fi / BT Module on Yavia
+> +          - const: toradex,verdin-imx95-wifi      # Verdin iMX95 Wi-Fi / BT Module
+> +          - const: toradex,verdin-imx95           # Verdin iMX95 Module
+> +          - const: fsl,imx95
+> +
+>        - description: i.MXRT1050 based Boards
+>          items:
+>            - enum:
+>
+> --
+> 2.43.0
+>
