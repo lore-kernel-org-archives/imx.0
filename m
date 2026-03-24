@@ -1,94 +1,97 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD9A3BA229;
-	Tue, 24 Mar 2026 07:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B6D3CEB97
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 08:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774339150; cv=none; b=dTwlULUWYJWTzLQXGnpZZR4Gx04BDXCCf9NtArof8KzQ1Twds2vG1hvMCdHvcAYHe+AawdW8nIIMYaEsStDF+W9SR8dmcDTORGd8XDJO1yNTQRkQk+y7V1wkEjDEz1j2jelJr46Ktdtbo+QRjIHDG+y6o0wlWHZeJtmHcVYbHc4=
+	t=1774339309; cv=none; b=jcKihdRKzz2SjYDufcrAtYC3Qni2wrLkOjpC47LNE/2Qg7Z4wMdruXTOD+tZm6R8yxeBcNJfXJ1k4gXMb37MzS9t3Mf9TCUeAnMdMZduSSoORKkQn4BLT0hJD5+jcaYBVQ/0oivOVEkXqvl80mudR+RFXjtp4mINIMkm2Z5M1yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774339150; c=relaxed/simple;
-	bh=/exYHT4xvwtRNFT7aSwLX7YZqQtwhyWqfh9k71LtQYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CL9d4w7a2Ln5LnIBtpEyxcsvYouAVR1uS843JPnpLXk6SdPW2/fJ70ooMWiHub6wGQR3G26nhTJxd6tncNlZBcW/T2Nua9qEeWKqW/u000m9b7e+ttMDt7N4U/6yzacgXthD3SkCBqX7lzHNw2AjXMMsR6Tf21BZqPUjQJRgrEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Hjps5GQW; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1774339309; c=relaxed/simple;
+	bh=zrmpDTQR2dcwegoCA09wNc70NnhwuP4l44nvaPXk+bM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lJK3Qjc6jXsHaNvcHulW7KLpvP7Gg9XkdSsoVkYQHIttv002TJnlSI4olsgl11mWxwNbA+/n0oHzQdFJzj9moPWoUF4tQttwWvnbbD712ba83KNRfoDEImErQmZQplFhiJzHPts9h8veNiKykyDRjuGRn67itr3Yx/PwGE9CFpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zk+8MxFK; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Hjps5GQW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=si/eobm2/301x/lhWsQuk+KprwyUBTmSi1/KkCexfss=; b=Hjps5GQWep3LPWQCUHnbszejTe
-	7xA1D8hzaYKunS5zJ8hp1Bdm0OsuK9dS6vo4H8006fpJ0X73ywNERmf/M5Nkjsb4HEMTDU9u8TSTG
-	Sxn2zX8CorzXOMqC+g9A7hwtCajYVkSlea4DcHNpj7C8t3MrfUiShnPqUuFnYT5H7m+XP9l6SX12M
-	/Jkiz+7saLmqwNO5Y8VhSiAjycT0aN3ikcjT1qvNc7RcwdESdZ/gzKA2CfHaMsoKl6jlwFIcVeS6Q
-	pZLNOM1YWms97B+xAnoLNrcKu5DPb2sP59eHD2NMlguzAygpSg6yiH5d56hwEDZXMw41E5pSWPFco
-	Q5b+ltHA==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4wf5-000Hjo-0Z;
-	Tue, 24 Mar 2026 08:58:51 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4wf3-000Oz1-2t;
-	Tue, 24 Mar 2026 08:58:50 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zk+8MxFK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774339301; x=1805875301;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zrmpDTQR2dcwegoCA09wNc70NnhwuP4l44nvaPXk+bM=;
+  b=Zk+8MxFKpXksjpdqXyJbvv7pQrmcGLDAtqqiuiqpMxAqGdcrPKxVJgAA
+   4sCOHhSm/eU9puNGXOBB4BDHbpnTnlzIu1OhNYtdgaWp4aZNHbgOXftLl
+   v2H1S0yfw/yv2r/qILXoxlEHuxE+KMIs/jarGJEg2H6Pq8DsI71n9LcIR
+   xJXIDcoK46WYlHvqOmbv255AjfnTx4XCwS3G4TyNBj0QFUucRLBINOnBV
+   oadYaRfFFCmj0jf30onUiXGvMYs6L7cXdg3Cu2pbeeP4SG+RpLSolmXPC
+   0CXM2+q23wP1z6Nrw7VY07DozJmvrK7Jqb02cR4/ot+beVLjwaW9yBoeY
+   g==;
+X-CSE-ConnectionGUID: /A9XYqAqSxKrWZB4zJyDkw==
+X-CSE-MsgGUID: wtKV15meSKCvqyJH7xyx1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="77954385"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="77954385"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 01:01:40 -0700
+X-CSE-ConnectionGUID: wmuqJsnJRY2ZLNSQR4SiyQ==
+X-CSE-MsgGUID: v9d5ioxDTnai6O7Y2ycJMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="219850502"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.180])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 01:01:37 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id A50EE121CFF;
+	Tue, 24 Mar 2026 10:01:39 +0200 (EET)
+Date: Tue, 24 Mar 2026 10:01:39 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Michael Riesch <michael.riesch@collabora.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] arm64: dts: imx8mp-tqma8mpql: Add DT overlays to explicit list
-Date: Tue, 24 Mar 2026 08:58:41 +0100
-Message-ID: <20260324075842.815005-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	Guoniu Zhou <guoniu.zhou@oss.nxp.com>, imx@lists.linux.dev
+Subject: Re: [PATCH 0/6] media: synopsys: Add imx93 support
+Message-ID: <acJE43J9to2bP3lv@kekkonen.localdomain>
+References: <20260210-imx93-dw-csi2-v1-0-69667bb86bfa@nxp.com>
+ <acGQNIUKqfh8eWNB@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27950/Tue Mar 24 07:24:19 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acGQNIUKqfh8eWNB@lizhi-Precision-Tower-5810>
 
-Armbian installs DT overlays using dtbs_install. For it to work all
-the overlays have to be added to dtb-y explicitly.
-Add the overlays for platforms supported by Armbian.
+Hi Frank,
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/Makefile | 3 +++
- 1 file changed, 3 insertions(+)
+On Mon, Mar 23, 2026 at 03:10:44PM -0400, Frank Li wrote:
+> On Tue, Feb 10, 2026 at 12:11:07PM -0500, Frank Li wrote:
+> > This 3rd time try to support DW CSI2RX support for imx93.
+> >
+> 
+> Laurent Pinchart and Sakari Ailus:
+> 
+> 	I am not who will take care this patch?
+> 	original drivers/media/platform/synopsys/dw-mipi-csi2rx.c picked
+> by Sakari Ailus
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 9a55a86ad385b..fb5073196fdf5 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -347,8 +347,11 @@ imx8mp-tqma8mpql-mba8mp-ras314-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb
- imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo
- imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-imx219.dtb
- 
+I'll review them soonish; please cc me in the future.
+
+Thanks.
+
 -- 
-2.43.0
-
+Sakari Ailus
