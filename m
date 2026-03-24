@@ -1,79 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08070382378;
-	Tue, 24 Mar 2026 03:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4918A3A1A5C
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 03:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774322765; cv=none; b=U7/hf1CTgioQa2I3sINnk8YR/X2whR2vBKm1fVAvVgfSVDVOMJlhEo2ejnMObDI1E642tt78gaqgL0NC6zJ+VOTDo+ZUvaMUx1pX5hwAKjuWlTsMABukz+fPhxW9h6Tsajw5l3iOADk5tFabnckL/UlWRxbm3dMIct0mwzKBIAQ=
+	t=1774324003; cv=none; b=cbGvIIIxoLaD+WK0mjxE+UtqkCbLQJdKmNRCY6u4wUzNKnU03k3YGBj7GoSo5O+PBSdBEhivJ+7Eb3RdXP6uaOh5bBFECrFoC1ZBTNGjPOJ6EU6JNTApL9J7emyafIZDJeOR1Jj/CrJ0Gg0M6+rs8P5uiH9drZKeASc7J1p2TNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774322765; c=relaxed/simple;
-	bh=dM8xcvzdCwGP0xEYUTAqBoCTq5vz7t0JFOfYavbXA0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YvnNtuLLOOLO1Onw7Z1NVEPW6mQQAueQ/lmgewaSNzh77E90EnwMakuOyrNnsbT6pnmdo4hNuxSUPd76hDnqdxDn1gHWk7WnwaTYu/gZvKjG3T/F1aBTHDAvRkxtoS7xv2a5zx1HU0GpjW0gdaC9uBtZTv5Y8z4QMCT4oaFN3iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cto8vUuM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774324003; c=relaxed/simple;
+	bh=0PeVMEi1xnjHxw1FfnRAZZSarRt0/Dtbi/3bueBnvaY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NWb119oBtrFidFxbbmaEJwyC/lQyQRaVbpnyahJGUBlZITNFBZfyNvfGIJIS5XMWw+ojF3bxnT04thMXBohGZTD1Ic9vriMDPExzJB6KWnOSGJRfY/fnihHq8DJn41pIpkxLydkehfmXmcj8RzFfQmGTX19snu9kGSUYyFcd4E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=W8dBdgZZ; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cto8vUuM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12008C19424;
-	Tue, 24 Mar 2026 03:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774322764;
-	bh=dM8xcvzdCwGP0xEYUTAqBoCTq5vz7t0JFOfYavbXA0M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cto8vUuMLqYBM/NA3AfRulMTa8ydKlDxXVJVkojPdMuQKJRPnyp4LS5p4qPD6AY8p
-	 CLTWh1YY605CylZHdPLpvKUC5nzVkvSq26p95ojrZjxorSvyjeQd11po/kVF8iy/12
-	 wA52DtZM9RJ8+DbJScg6WOF1pXg8v4tdUWYzirDureRZC1pV8igDx2U0W/pcPO6lVV
-	 EiLk3RHbYft/dbNlGf9BtJVSZ3MZybXCUWCO5bPjPj+2kudt1g4YTwcEFlpDi81fCE
-	 9kEBfT8CAOemmTfKfTBnZaK4Ivypkki4vOwm32cTCPnI6wc0QjlCEoj4Py1ZOEkrgs
-	 fKzzcJ1nBgg3Q==
-Date: Mon, 23 Mar 2026 20:26:03 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Richard Cochran <richardcochran@gmail.com>, Buday Csaba
- <buday.csaba@prolan.hu>, Frank Li <frank.li@nxp.com>, Shenwei Wang
- <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Bence =?UTF-8?B?Q3PDs2vDoXM=?=
- <bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2 1/1] net: fec: fix the PTP periodic output sysfs
- interface
-Message-ID: <20260323202603.2897abf4@kernel.org>
-In-Reply-To: <PAXPR04MB85106975EB34F6B1652953FC8848A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
-	<PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-	<20260323172842.7a62979d@kernel.org>
-	<PAXPR04MB85106975EB34F6B1652953FC8848A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="W8dBdgZZ"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774323997; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gfj9pH9HdFGubioadCjBnLlcB4bnm19iAov+QtWe4RQ=;
+	b=W8dBdgZZiD7sit7t3UzflEUwM7kzolxg35RLo84TqrIlkiZseML80/1dP1YdYcRjjoNKsbE4oXCw8pJAec33VGZ60HCJ+4J0CDmB9F/HTiOt7cYA3UKyhv4cIKBZjZgj1LSrIgXaaO/d53kIrXmQJy624hyWPzsbzDrJnWIF7w8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0X.d9ZI5_1774323994;
+Received: from 30.221.131.145(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X.d9ZI5_1774323994 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Mar 2026 11:46:35 +0800
+Message-ID: <025b7816-ca8e-4cea-bb84-bf324c8c3b22@linux.alibaba.com>
+Date: Tue, 24 Mar 2026 11:46:34 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: tglx@kernel.org, tglx@linutronix.de, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ jstultz@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+ daniel.lezcano@kernel.org, sboyd@kernel.org, vladimir.oltean@nxp.com,
+ wei.fang@nxp.com, xiaoning.wang@nxp.com, jonathan.lemon@gmail.com,
+ vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, svens@linux.ibm.com,
+ dwmw2@infradead.org, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ linux-fpga@vger.kernel.org, imx@lists.linux.dev, linux-s390@vger.kernel.org,
+ dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com, mani@kernel.org,
+ imran.shaik@oss.qualcomm.com, taniya.das@oss.qualcomm.com
+References: <20260318073330.115808-1-guwen@linux.alibaba.com>
+ <20260318073330.115808-3-guwen@linux.alibaba.com>
+ <20260323192232.3a5205dc@kernel.org>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <20260323192232.3a5205dc@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Mar 2026 02:36:55 +0000 Wei Fang wrote:
-> > > Reviewed-by: Wei Fang <wei.fang@nxp.com>  
-> > 
-> > I don't understand why you think that we should be exposing 4 channels
-> > to the user when they can only use one. And have the user guess which
-> > one should be programmed. Please explain (and Buday will have to update
-> > the commit message), to me v1 looked like a much better fix.  
+
+
+On 2026/3/24 10:22, Jakub Kicinski wrote:
+> On Wed, 18 Mar 2026 15:33:30 +0800 Wen Gu wrote:
+>> +PTP EMULATED CLOCK SUPPORT
+>> +M:	Wen Gu <guwen@linux.alibaba.com>
+>> +M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>> +L:	linux-kernel@vger.kernel.org
+>> +S:	Maintained
 > 
-> As I explained in v1, I think the "channel index" parameter of
-> "/sys/class/ptp/ptp<N>/period" refers to the hardware channel number,
-> rather than the software mapping to the hardware channel.
+> I thought David W was supposed to be the main maintainer?
+> Two moderately known developers from a single vendor/company
+> is not enough to delegate this IMO.
 
-Can you cite any documentation or examples?
-What would be the benefit of exposing the ID within the MAC IP (not
-even the board) to the user? 
-As I said the benefit of having just 1 is that user doesn't have 
-to poke around to find out which one works.
 
-> Although the current driver only supports one channel for output,
-> the channel index should specify the correct hardware channel instead
-> of a fixed 0. Perhaps Richard could share his thoughts on the channel
-> index parameter.
+Thanks for pointing this out.
+
+We would also very much prefer for this area to be maintained
+by people with deeper expertise in the clock/timekeeping domain
+(such as David). The reason David was not listed in this version
+is that an earlier attempt to ask about maintainership did not
+receive a reply[1]. So we avoided adding without confirmation.
+
+If David has no objections to being listed here, that would
+definitely be preferable from our perspective. Other suggested
+clock/timekeeping experts would also be very welcome.
+
+[1] https://lore.kernel.org/all/78489ff1-c2fa-47dc-beb4-54e9410f7d5c@linux.alibaba.com/
