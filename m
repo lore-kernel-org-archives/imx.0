@@ -1,288 +1,131 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0998431195A
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 19:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5685530EF7B
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 19:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774380301; cv=none; b=YauPPj/pj0Voz+58n+xfdj6uYdmddL78Bl+aMY5f+oE+Hr3A8lspFIg/lRCEEuLBXKNCcFJtbsYiUwp7Kkj+RKS7/hjrttTt4DjhbAkATnRJHaV4sn3qwdKyq2ZCJXCvJceH8nfrs6gyVlzNR9Bhw1XKhfWXY/FKGcajQFj2WGI=
+	t=1774381438; cv=none; b=qaN25+i6AAhxqrjgp38HBwAlJfkFRB9irLE5r+EKM9m7TKx8/rA3/xWnhYmALSybWq+sPXvPC2gmsEpbcabYuuP4bY4Im3fuVl3SdFSOFwDXneHm4GurPTCFk0ahekKqlAn0tapI02uGycUMRHanw+hTISHiJPtAlB7iLVKUS8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774380301; c=relaxed/simple;
-	bh=wPhgCjwQeSn+BRAqoO5C5GaoqnCQLTgwDb2zWF3xTM4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nXIEcSEf6EVEhtKbG5hlbgK9kdlEqfihgLjORRfJC52pg3EDrdaajVlCEw2HbU1I8ANAtW9nDUWSFEixLBqD3o9zuA3RtqCEBJBdZu8z0UmIVSuILtKiYg5mrTy0kZI14WtsWNEW/PT7SxrhMfqLSz8D9m0uEFHxFcVrO/y7Jms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=P9lL39LB; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774381438; c=relaxed/simple;
+	bh=kNNB3ARW8MAB0TKKRx9eUF6IcUYNngEha9H4UXUg9yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kWJKZJqlPGOnF397EuxEvqcIH5YuR88Jxp/qFlBw8fczfcQbO8E4acw9GZaFc1NU7FuDqhVIgznpbtJFYVVFbvSsGZtdH/EC2DhD2Im+AirtcrMM6giaGb88xAgiBneImohmwGoXvGn96+njRwBPsU4+AcRvWmBvaUILSjbbEX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sAJ34CpZ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="P9lL39LB"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CF2664E427DC;
-	Tue, 24 Mar 2026 19:24:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A5362601A0;
-	Tue, 24 Mar 2026 19:24:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 965F410451131;
-	Tue, 24 Mar 2026 20:24:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774380297; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1q0RfS1aGG0lt8SxBmxfpAMO/VATuKtCz+N6YMM1DZo=;
-	b=P9lL39LBq8Hpic2d2kTOq1A50ORaO2tfnv4QJtnyolkztW8KFPRi6TAB7le3ipL7mzoYtR
-	05MzCY9tvSoH6XuteTaMIaWBOh+htIYzUoYR12OKpvrGoOTGH1ssxVRL6i8Bp9KLj95crJ
-	x/JvXtdU1/89Ls5oQ75ldw+YVmXmwKUKN9iZw85XgTa/6n5mk9Zu8hZYarYPmafvoQW7cc
-	IK/B3T5JPu3yTLE/qOX2gwxYpn3svLJr5jWBbcY1OMqts5vnHo973XCY3v+xHti0R3H6hl
-	tuqJxrLuQAagaXIUg4JGEBD7wgS6pLx6SjFs05HbwG/x/Yx+YUjK8YYw0UAsYA==
-From: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-Date: Tue, 24 Mar 2026 20:24:31 +0100
-Subject: [PATCH v4 5/5] watchdog: aaeon: Add watchdog driver for SRG-IMX8P
- MCU
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sAJ34CpZ"
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 78789591;
+	Tue, 24 Mar 2026 20:42:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1774381357;
+	bh=kNNB3ARW8MAB0TKKRx9eUF6IcUYNngEha9H4UXUg9yw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sAJ34CpZdDWJm18yKHVWUdPrzJRwvPjbjmdZTBpbW7Y6OdXPde+6yM4MxQ+8CZyld
+	 YmpFyI8wB1rKiLEtT8hXEf+PaH62eBO2tkYlQHXminxPj/O25j7D9Y52fyG9KmZtS8
+	 nfR2UT8uZnclssb4uVlvRz8srtjRHhRIKaCKM6c8=
+Date: Tue, 24 Mar 2026 21:43:53 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Correct PAD settings
+ for pmicirqgrp
+Message-ID: <20260324194353.GB2352505@killaraus.ideasonboard.com>
+References: <20260324-imx8mp-dts-fix-v1-1-df0eb2f62543@nxp.com>
+ <20260324093850.GA2351719@killaraus.ideasonboard.com>
+ <177437389415.1230693.16040948368071205395@ping.linuxembedded.co.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260324-dev-b4-aaeon-mcu-driver-v4-5-afb011df4794@bootlin.com>
-References: <20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794@bootlin.com>
-In-Reply-To: <20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- =?utf-8?q?J=C3=A9r=C3=A9mie_Dautheribes?= <jeremie.dautheribes@bootlin.com>, 
- Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6725;
- i=thomas.perrot@bootlin.com; h=from:subject:message-id;
- bh=wPhgCjwQeSn+BRAqoO5C5GaoqnCQLTgwDb2zWF3xTM4=;
- b=owEB7QES/pANAwAKAZ/ACwVx/grtAcsmYgBpwuT27JsW8/YHaUMPDqgCojJdgL89bJwEQd9x4
- cly+1EmiH+JAbMEAAEKAB0WIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCacLk9gAKCRCfwAsFcf4K
- 7UhvC/0UM418wlXqO3GCW341kENa5EIpae1YpssVqwzEhaf+0gDrlvNyNW5D4GWWsnK51zJlnzM
- 08fPq7tmk7sp9/Pf4DdFHoaAWPJ4imB8JPbXO5FlMomguIVdmSp35VCvbBkGr1Bai16ZEl7KdrT
- 9xBOfeb8PJDsFlrLoT2dJ91bQS7ZdiAp12NjZ6xO/8UhfdoAPzOVu5BUEQfXa4O64SQLD72P6mJ
- fTQJwjVmsPMGLg4giGEhDZkLhcZ+p0MKkcqNqHBN1L4ELUvMT+L5Ox8XRcberjiEOM8FIG2nMK4
- lchewQwOIFJF6mj7WQlMtszE53Eci1gsnaKx7V91djJkpI8lGqq/aCagdjP1RrLW2e7K69zAE+w
- LocOuwnEDaRN5t+KJMpIP/nvLmd7vDRb+nMdWIecysAybdracX/J8pn7gdGIXJRGuX3wNYFFunP
- w16aBXCnUhtQOeTmj293cxeOXjChM41pUMZO7VMhctcoMoInbC8S2Xw8PivPI+ktiCcKc=
-X-Developer-Key: i=thomas.perrot@bootlin.com; a=openpgp;
- fpr=874077C6A6A30A2303A812219FC00B0571FE0AED
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <177437389415.1230693.16040948368071205395@ping.linuxembedded.co.uk>
 
-Add watchdog driver for the Aaeon SRG-IMX8P embedded controller.
-This driver provides system monitoring and recovery capabilities
-through the MCU's watchdog timer.
+On Tue, Mar 24, 2026 at 05:38:14PM +0000, Kieran Bingham wrote:
+> Quoting Laurent Pinchart (2026-03-24 09:38:50)
+> > On Tue, Mar 24, 2026 at 11:16:13AM +0800, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > > 
+> > > With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+> > > there is interrupt storm for i.MX8MP DEBIX Model A. Per schematic, there
+> > > is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
+> > > PUE and PU together to make pull up work properly.
+> > > 
+> > > Fixes: c86d350aae68e ("arm64: dts: Add device tree for the Debix Model A Board")
+> > > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > Closes: https://lore.kernel.org/all/20260323105858.GA2185714@killaraus.ideasonboard.com/
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > 
+> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > 
+> > Frank, would you be able to handle this as a v7.0 regression fix ?
+> > 
+> > I think the same is needed for imx8mp-debix-som-a.dtsi, but I can't
+> > confirm it as I don't have the schematics for the SoM, neither do I have
+> > access to the board.
+> > 
+> > Dan, Kieran, Stefan, could one of you check if you get an interrupt
+> > storm from the PMIC on v7.0 ?
+> 
+> Confirmed:
+>  35:      83626          0          0          0 gpio-mxc   3 Level     pca9450-irq
+> 
+>  and
+> 
+> 200:     270180          0          0          0    GICv3  67 Level     30a20000.i2c
+> ...
+> 200:     400925          0          0          0    GICv3  67 Level     30a20000.i2c
+> ...
+> 
+> increasing rapidly on the debix-som.
+> 
+> I started out on the linux-media branches which were 7.0-rc2 based, and
+> this didn't happen but cherry-picking in 5d0efaf47ee90 certainly causes
+> this issue to occur on my board.
 
-The watchdog supports start, stop, and ping operations with a maximum
-hardware heartbeat of 25 seconds and a default timeout of 240 seconds.
+Could you confirm that setting MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03 to
+0x000001c0 fixes the issue ?
 
-Co-developed-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-Signed-off-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
----
- MAINTAINERS                      |   1 +
- drivers/watchdog/Kconfig         |  10 +++
- drivers/watchdog/Makefile        |   1 +
- drivers/watchdog/aaeon_mcu_wdt.c | 134 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 146 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2538f8c4bc1482b139e18243a68f0a21b9be3704..7b92af42c9fdc17a69a4e7a2fe50f9e199c8b144 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -193,6 +193,7 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
- F:	drivers/gpio/gpio-aaeon-mcu.c
- F:	drivers/mfd/aaeon-mcu.c
-+F:	drivers/watchdog/aaeon_mcu_wdt.c
- F:	include/linux/mfd/aaeon-mcu.h
- 
- AAEON UPBOARD FPGA MFD DRIVER
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index d3b9df7d466b0b7215ee87b3040811d44ee53d2a..da54e6a641d7af343e4f0ae84f96f150979f8348 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -168,6 +168,16 @@ config SOFT_WATCHDOG_PRETIMEOUT
- 	  watchdog. Be aware that governors might affect the watchdog because it
- 	  is purely software, e.g. the panic governor will stall it!
- 
-+config AAEON_MCU_WATCHDOG
-+	tristate "Aaeon MCU Watchdog"
-+	depends on MFD_AAEON_MCU
-+	select WATCHDOG_CORE
-+	help
-+	  Select this option to enable watchdog timer support for the Aaeon
-+	  SRG-IMX8P onboard microcontroller (MCU). This driver provides
-+	  watchdog functionality through the MCU, allowing system monitoring
-+	  and automatic recovery from system hangs.
-+
- config BD957XMUF_WATCHDOG
- 	tristate "ROHM BD9576MUF and BD9573MUF PMIC Watchdog"
- 	depends on MFD_ROHM_BD957XMUF
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index ba52099b125398a32f80dad23317e223cc4af028..2deec425d3eafb6b208e061fda9f216f4baa8ecc 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -37,6 +37,7 @@ obj-$(CONFIG_USBPCWATCHDOG) += pcwd_usb.o
- # ALPHA Architecture
- 
- # ARM Architecture
-+obj-$(CONFIG_AAEON_MCU_WATCHDOG) += aaeon_mcu_wdt.o
- obj-$(CONFIG_ARM_SP805_WATCHDOG) += sp805_wdt.o
- obj-$(CONFIG_ARM_SBSA_WATCHDOG) += sbsa_gwdt.o
- obj-$(CONFIG_ARMADA_37XX_WATCHDOG) += armada_37xx_wdt.o
-diff --git a/drivers/watchdog/aaeon_mcu_wdt.c b/drivers/watchdog/aaeon_mcu_wdt.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..f01571cf0036d252f9bebd3a9d6a1c2e7a83e42c
---- /dev/null
-+++ b/drivers/watchdog/aaeon_mcu_wdt.c
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Aaeon MCU Watchdog driver
-+ *
-+ * Copyright (C) 2025 Bootlin
-+ * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
-+ * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-+ */
-+
-+#include <linux/mfd/aaeon-mcu.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/watchdog.h>
-+
-+#define AAEON_MCU_CONTROL_WDT	0x63
-+#define AAEON_MCU_PING_WDT	0x73
-+
-+#define AAEON_MCU_WDT_TIMEOUT         240
-+#define AAEON_MCU_WDT_HEARTBEAT_MS    25000
-+
-+struct aaeon_mcu_wdt {
-+	struct watchdog_device wdt;
-+	struct regmap *regmap;
-+};
-+
-+static int aaeon_mcu_wdt_cmd(struct aaeon_mcu_wdt *data, u8 opcode, u8 arg)
-+{
-+	/* The MCU always sends a response byte after each command; discard it. */
-+	return regmap_write(data->regmap, AAEON_MCU_REG(opcode, arg), 0);
-+}
-+
-+static int aaeon_mcu_wdt_start(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_CONTROL_WDT, 0x01);
-+}
-+
-+static int aaeon_mcu_wdt_status(struct watchdog_device *wdt, bool *enabled)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+	unsigned int rsp;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap,
-+			  AAEON_MCU_REG(AAEON_MCU_CONTROL_WDT, 0x02),
-+			  &rsp);
-+	if (ret)
-+		return ret;
-+
-+	*enabled = rsp == 0x01;
-+	return 0;
-+}
-+
-+static int aaeon_mcu_wdt_stop(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_CONTROL_WDT, 0x00);
-+}
-+
-+static int aaeon_mcu_wdt_ping(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_PING_WDT, 0x00);
-+}
-+
-+static const struct watchdog_info aaeon_mcu_wdt_info = {
-+	.identity	= "Aaeon MCU Watchdog",
-+	.options	= WDIOF_KEEPALIVEPING
-+};
-+
-+static const struct watchdog_ops aaeon_mcu_wdt_ops = {
-+	.owner		= THIS_MODULE,
-+	.start		= aaeon_mcu_wdt_start,
-+	.stop		= aaeon_mcu_wdt_stop,
-+	.ping		= aaeon_mcu_wdt_ping,
-+};
-+
-+static int aaeon_mcu_wdt_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct watchdog_device *wdt;
-+	struct aaeon_mcu_wdt *data;
-+	bool enabled;
-+	int ret;
-+
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->regmap = dev_get_regmap(dev->parent, NULL);
-+	if (!data->regmap)
-+		return -ENODEV;
-+
-+	wdt = &data->wdt;
-+	wdt->parent = dev;
-+	wdt->info = &aaeon_mcu_wdt_info;
-+	wdt->ops = &aaeon_mcu_wdt_ops;
-+	/*
-+	 * The MCU firmware has a fixed hardware timeout of 25 seconds that
-+	 * cannot be changed. The watchdog core will handle automatic pinging
-+	 * to support longer timeouts. The software timeout of 240 seconds is
-+	 * chosen arbitrarily as a reasonable value and is not user-configurable.
-+	 */
-+	wdt->timeout = AAEON_MCU_WDT_TIMEOUT;
-+	wdt->max_hw_heartbeat_ms = AAEON_MCU_WDT_HEARTBEAT_MS;
-+
-+	watchdog_set_drvdata(wdt, data);
-+
-+	ret = aaeon_mcu_wdt_status(wdt, &enabled);
-+	if (ret)
-+		return ret;
-+
-+	if (enabled)
-+		set_bit(WDOG_HW_RUNNING, &wdt->status);
-+
-+	return devm_watchdog_register_device(dev, wdt);
-+}
-+
-+static struct platform_driver aaeon_mcu_wdt_driver = {
-+	.driver		= {
-+		.name	= "aaeon-mcu-wdt",
-+	},
-+	.probe		= aaeon_mcu_wdt_probe,
-+};
-+
-+module_platform_driver(aaeon_mcu_wdt_driver);
-+
-+MODULE_DESCRIPTION("Aaeon MCU Watchdog Driver");
-+MODULE_AUTHOR("Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>");
-+MODULE_LICENSE("GPL");
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > index 9422beee30b29c5a551b08476c80fbff96af3439..df7489587e48ed0c678f11291f6f2b77082ade95 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > @@ -440,7 +440,7 @@ MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA                                   0x400001c3
+> > >  
+> > >       pinctrl_pmic: pmicirqgrp {
+> > >               fsl,pins = <
+> > > -                     MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03                             0x41
+> > > +                     MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03                             0x000001c0
+> > >               >;
+> > >       };
+> > >  
+> > > 
+> > > ---
+> > > base-commit: 09c0f7f1bcdbc3c37a5a760cbec76bf18f278406
+> > > change-id: 20260324-imx8mp-dts-fix-512530fe4dcd
 
 -- 
-2.53.0
+Regards,
 
+Laurent Pinchart
