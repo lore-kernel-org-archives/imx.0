@@ -1,181 +1,343 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013032.outbound.protection.outlook.com [40.107.159.32])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E83C3B47D8
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 06:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774333185; cv=fail; b=UE9M8duydarizXsH1uvNiue9TLIw8pNky2aJnb01PRf2llcRHaNLmTfIovG9o5Cru/IJYnIoLjzUX5lju5rPGRDzTgq7544S0FiiOXg8Zu7+oAnL1EakRREyXrA5qe9qLJ6ESdPPBWtuuT9TLF5AaZecG98ZZKL5or9ehYFx57E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774333185; c=relaxed/simple;
-	bh=oYsYh+MnjxCpNyujS2j4KM6QbEZrJm0jBFlVIruk99A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k4kmOlzXbxK7bpxRV4vP1NZiTHBDhlyjwD5Szdyb8P5AglYlQBoNVdtY3El6QYIo+i1tgYUl42mmslEnVUvp7Jg7QgoKzWsyfz2q3KpgcY5hXTm6DOltBHvxeQebO6qdsPYVtQHa30TSF0mCNlCdv+nRWzDdNQsFFL/aORP/dnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UmFcaqA/; arc=fail smtp.client-ip=40.107.159.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7C0314B72
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 07:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774335978; cv=none; b=UZ4jb5V9xGPP4cLJqXlHNSuixy8jQLI3dEhE7dj1P8D3K0+69pN9T6xmEzFWcLzMxcL7teZOkgIpY4yPX8RV97NKPutFExbkr+m45GPXgcF1o6ItDwZCjae3NIOogtm86psCm8Wj65b/HxTrnTk0HwS2C64CpP89HNkKHdYDexk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774335978; c=relaxed/simple;
+	bh=LHhujGMk6weuukeS5dy2YD0iSfnFU9eSzyGfbuoVmCw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JRG1Q5BxI+HFBHd1mr9/E+PJf1RtgSfqLvOt9O4KLNxq/x82crvp1rWVW+6DggNVISiMtsr/zrUzmRBjdcUq8Y4WpYAD7s27+BgJl8vPiUcBtkWpPaRu5jj7T/u/yx9cFvprDU4b03L+wku53AUhj487q/DdoALFHXfs46Q/NKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kpLExsBP; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UmFcaqA/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=STtqX0taD5Ab5XVwnACn/0keVgUOD8zT8xcQ38bN/LZi04UVEXIAG4DqpGfcNozzvv1vWOrCoEWWDX+hctHcMrfByPhOl5JQMgGcg2oyk9kEYjkr9uXG7twJUOaGdjr6uzkHEl0kh6u7U46EIHyfr9Z4zE9FizLRZWtq+dvx7EhItWgddMxjjmSOFKpoNHxYhU4LCChvAkL8lPzXPLwIDO0LU8UMxVMZOp2J67qUzRzhR8UEPm6zvcNFdYCD1RDEGhzKUS5XQnSNffjLD9vl/y91bsbwaO4OmW4SEtD3xud1R1HyZRltdzgKINHOVKPf894AsvIhqEdH8fZmCJeW3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fSoe7TA4ToFYeGLl9fYAcyXPQEeORSuFw1f60XjJclE=;
- b=ZkiejSIZWU0Hzw4fu+o0ZVRp/YgVWPY13ugTWNiMXwOKEJw479BLzo/G9CExGuxZ8dow0+fR8tm2V9ud3LEPBtn+ZLc//sXzexmJT/UvOtIreDYaBUjkxPpZGv1l9INYsifyg0Z6KZMZZVIOYH6jFhg0+ExVUELRuni8uxj0QQK5YIvotxSr5tF4SOujzF15icxxh1WjiUxPvj0F2jNg68193sfA+H2LYfzE1uWffuL2l0mWi3RV8Vo17oEC073Sn9i9W1+ALaOYCl+sRLDAOuWTSQaKsu179+h6VvIlj4eC/fW/npF+p8q0JNV3UFFEBPyRIq9Oe5UGqXtNy88/zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fSoe7TA4ToFYeGLl9fYAcyXPQEeORSuFw1f60XjJclE=;
- b=UmFcaqA/daJmgVfQjyyfTz7UcbFoduYal+94EIVJ/pFmi+/cESW/OAohN5caG23hjr6tvwvHZuccuj74e6Hq2zHRA5CeoSk/Z8BhOdmG+cPCi0eG3wKOa/eWsElEIMvtl5jeArowjDzwq9tdMvqGDf0bz3jfryG9ht3FeJoXeHyLp0VyIHt7oHdIH65PG2OadoOhSe4CYgggyNh+MTCG+AHSDKK6QyA6P56YddJYs30jEVWN2YkNwP1Nfl4gCA7K/MKWNd3vBdKeXqxg1VPEouT2Q0uGMBi1d3zHmMW0rJRo7h4HL32IFB/iR9f3tazumOFuxDW994s3Lf4RPHGiPA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DU4PR04MB10960.eurprd04.prod.outlook.com (2603:10a6:10:585::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Tue, 24 Mar
- 2026 06:19:15 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
- 06:19:37 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	Frank.Li@nxp.com,
-	horms@kernel.org,
-	saikrishnag@marvell.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v5 RESEND net 3/3] net: enetc: do not access non-existent registers on pseudo MAC
-Date: Tue, 24 Mar 2026 14:21:21 +0800
-Message-Id: <20260324062121.2745033-4-wei.fang@nxp.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kpLExsBP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=EC
+	t3iIDWrav4P5wrIAZ7MzDj+kkt+1A1GncpUQdHIg8=; b=kpLExsBPV3cBzO9hrK
+	ZRUtU4zchsPsBD9f85e9Ki3RATXfMYoHlgBg+P2Tja1WiHufD6Qf+YZkrJ+CLNxs
+	+TPrEP16eef1emI8FzmuczVb7hTxvnwbF0AaxtYvmX/uHHuvu2eKcGj8Fp1aoUX3
+	m2UW8bVn8Snm9ZVkMcI/0V4PU=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD39w6kN8JpbT5hBA--.36422S2;
+	Tue, 24 Mar 2026 15:05:09 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Richard Leitner <richard.leitner@linux.dev>
+Cc: Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-media@vger.kernel.org,
+	Robert Garcia <rob_garcia@163.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12.y] media: nxp: imx8-isi: Fix streaming cleanup on release
+Date: Tue, 24 Mar 2026 15:05:07 +0800
+Message-Id: <20260324070507.2554507-1-rob_garcia@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260324062121.2745033-1-wei.fang@nxp.com>
-References: <20260324062121.2745033-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0225.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1f3::18) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU4PR04MB10960:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43c3af0f-e498-4a1a-2279-08de896d52f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|921020|38350700014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	rhedYQVAcx5vED8fK6ZzFTdirNynRjRWz2D4r6ahMl1NyNjTKMClbgqU06zNfNWEJwvCTqsSTtJ08fbSPlvRdIE+7DTedFr66hJjAHQzEJUvMdGyBGVk8J1Qhf+dZ+jtQN4J2x5W9LTWPW1Vhq6d/Dbpod7E1JD4oE7/F29+ckQKCg2Ltf0kkJHPJmdE8Hk+C8E5BEyCLdCpsnJmxMiEqGhyBu6bN29R1y6p/iQNTdqCDn+j4COLd2pjsbeVZz9quWe0X28b5MY0/qk1ydESN++ebFx83JsTLqZJQc26cRwdVcRTPE8tk96eyapt3Cou/4+pnG6Co/Elt4d/ntmXzjOFuma01GX2mfYvZlZNTvaX3Qdzh1JlqeTJit9OrlFnEWjitvpRynIrKIvtJlqASTMdzZcHmdn6jMZyyPRY2RtIxGRGmV5ZoKrPAu1kvH1cTSuA7GWKeVrmBI2uZrho8q6wCTfTP9GIDmCmCEY04os0rM4Ik+W4Sfs9baSjMqHJVdjKx0irCY4NZ2Q/cwib50TvquwldBxUG0QsH41MG+KE8/MPZoyZtz3eRIR/Uo7bS2IQfcQ5bBzpPynw1cJmC8J9aOM3mayMzdoVqPSKT7XkuOoydkASXx9ytYtmwDg/LU+8nFlX4I8REaPBkeNi/K46DyVDZCAgw0Wz7VXz4krfhxjIikbq9u2JuzPJXThBkGB34DoPs3BGyFLhpyTa/+JDRYKM9iwUH3VX05Kt+K/YDQNSFFiCcepoPi5298/w1JVzfbfby11ddqJgJYkiAND+GBP6KTCT1m0/2ACTNxAkqPUYxvuYrRUkqMvxTORo
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(921020)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XhfG5Qqvoz8yGatY43i7vTosMYHDw92XWXDwsmhBzR4TVcNUsvmN4ojgJ7XX?=
- =?us-ascii?Q?3Q3+kqRj7jrTlzhsxHhrbMtqsOcDZkmHoSygfLovpwvLyT3ay2gCKQURi1Sj?=
- =?us-ascii?Q?pL0ofGqe1BxDR9i+o2/n7aa4EfEnHztPCEXuW+s3IyM4C7AqTqP9BskJUiXt?=
- =?us-ascii?Q?ku2ljsgb70S/yGlT2/qny8f9wiwOeNf9+CFuJYjigvWc0D6t3wfxZwFBkQN8?=
- =?us-ascii?Q?PpU8XuwAXMT+xCsF3Uj6HQ15sQab44MLlNWWH91gEpQCv4WErdCaWXW7uq2J?=
- =?us-ascii?Q?llMAQps/mvTGrN0maTdoAFV1aB/Fn2PdtFuqFCTnW4VbF3MMAad2f6mbMJEt?=
- =?us-ascii?Q?lOBATSPw1t8IS4RPtMnOuWiBbpLVVm+y7j26Zmhbd1nq60ZeK7V/8VzDc+6G?=
- =?us-ascii?Q?muzDBTrUmea4nN5dkGjYzoSo8kknouXONpeftcn+QU/aE/iZ6q3aJJEa1rYD?=
- =?us-ascii?Q?pYqy6lJIcxZHVdsGQ8E3oN0f5egBolb2quq6mX7qc/grzyL0VyObMnvPDuLI?=
- =?us-ascii?Q?LKxMZ3V47Xzolf2zkyjo1BzUych0WpqdY55/R4HhsNnfY9zwE132qaitCvbb?=
- =?us-ascii?Q?Nrl+SJYoP8bY57L3tptcXnC3ORayE9ctPTvXICHHDLFszXNmiek7I96zQnIb?=
- =?us-ascii?Q?kBOzS4wgP9OkTXRzCjSWEmZDGMiRwQaesikzoYuwhABz4Oziii7Ktk2caBmf?=
- =?us-ascii?Q?+d+8TWuXmlOx5ElIdMZukiUfREb8SrQc3kYaebYBU9RX+xAt2vrDtgiy2aEm?=
- =?us-ascii?Q?R81UCMOjTGMlsCFF20f5V0taLD1DB5NUwOTmoeAYZdyAnjRlQ4wz40N6jyoc?=
- =?us-ascii?Q?Vf60pZVTWzc3KaTNyOKiPEoGSqDKvD96baECqEzoUgS3Pm7nQS/H14Kba292?=
- =?us-ascii?Q?ZDfI7ZoXpuTOwmebdt2zmfZbJP3HX3xtMhSqmLWJTwPmjRA7xD6a2zoPxZqx?=
- =?us-ascii?Q?QWASTMIY3uc2duSQbc5skWHDNOFJ7LZvGCn+2QQqdfuDDebaaOCGoVQJn0yy?=
- =?us-ascii?Q?fQPZ+IR31UOvBQTSDMOnyl6jApGqnwwsiRlpRSQd4oMnUg7H1Z6xJpBXxVz6?=
- =?us-ascii?Q?kKeNrGORtlaQOLxff8j9tkJyv2KBRXw/ZLZ6NUcu3pW2nlryYlLhkP2L4h3a?=
- =?us-ascii?Q?EToHDXPQth0E/UjuzGrsQKizNi9VEiCnmSRh5RLYS3pe8qEqWB8ZQhCYzQEp?=
- =?us-ascii?Q?sXwyFdN6OHDe3I0jdoALIa9chwYOkmnREcJ2qgfbpYzyeTvPO/7/QcEKIamZ?=
- =?us-ascii?Q?C+k3qvQ1YKykOFQPUdnjUBzOWbcpsAM3IyuOkW4h/BCvg1RHTcURon1rbXJy?=
- =?us-ascii?Q?2v+Mx5vrKutaGYpbpJtrZ6KUwfkmGZ5s1hoUUWpHJ/K3IsApub0AC+yQZ7gF?=
- =?us-ascii?Q?lQ3LZL6T3U+TPjfBEAsUOcMCZDVtBKs8QxNNTi1fA3zLaoVEUWvckWShXI4q?=
- =?us-ascii?Q?w27Q/hOt0TCn3XgIduKK8D9rxA2jnurnEM+eh9DjYl491u2xZ0lTEm6p2h2I?=
- =?us-ascii?Q?CQeYiij72cQN1LCVGx2mN6ophbv+PIeTbNKww53SJIpcsKYUZuICsKjIkwBO?=
- =?us-ascii?Q?9oMwfviGoJvX4Uw5OfRT1+5ycoeC0CObL5ZtQLACe9z9tjd0Rd5K3ShA852J?=
- =?us-ascii?Q?9EMY8o83qYw/j7O4ge3yTNzPcrGW0f2rk6GjOuMoqHGqDI5UmkQibeVCvazu?=
- =?us-ascii?Q?v5o5jwj70ZyFiir+llEmBycSQGnlFSolqLo1Z6UweqnovImAZ9DpWGycqKGE?=
- =?us-ascii?Q?XTTGXNh3VQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43c3af0f-e498-4a1a-2279-08de896d52f1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 06:19:37.2695
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c08pbGQ9Gp7L5DDxg9JToGVeLOtAZTLTVwRYUlyGFEENfLTWWJpkxBMskAYZWJepY71m5TFLLLEgZyaqAUH/JQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10960
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD39w6kN8JpbT5hBA--.36422S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Cr47JFWDGrW8Xw17WFWxJFb_yoWDZw4xpF
+	4fWrWfWr48try8A3WDJa1UXr15Ga4vva97JrWxGa4rAF15ur1YqF1UtFW0qrZ5GrWkZFW3
+	trW5X3yIkr45XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_zuAUUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAQYCbWnCN6ZIXwAA3F
 
-The ENETC4_PM_IEVENT and ENETC4_PM_CMD_CFG registers do not exist on the
-ENETC pseudo MAC, so the driver should prevent from accessing them.
+From: Richard Leitner <richard.leitner@linux.dev>
 
-Fixes: 5175c1e4adca ("net: enetc: add basic support for the ENETC with pseudo MAC for i.MX94")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Tested-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+[ Upstream commit 47773031a148ad7973b809cc7723cba77eda2b42 ]
+
+The current implementation unconditionally calls
+mxc_isi_video_cleanup_streaming() in mxc_isi_video_release(). This can
+lead to situations where any release call (like from a simple
+"v4l2-ctl -l") may release a currently streaming queue when called on
+such a device.
+
+This is reproducible on an i.MX8MP board by streaming from an ISI
+capture device using gstreamer:
+
+	gst-launch-1.0 -v v4l2src device=/dev/videoX ! \
+	    video/x-raw,format=GRAY8,width=1280,height=800,framerate=1/120 ! \
+	    fakesink
+
+While this stream is running, querying the caps of the same device
+provokes the error state:
+
+	v4l2-ctl -l -d /dev/videoX
+
+This results in the following trace:
+
+[  155.452152] ------------[ cut here ]------------
+[  155.452163] WARNING: CPU: 0 PID: 1708 at drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c:713 mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.004248] Modules linked in: cfg80211 rpmsg_ctrl rpmsg_char rpmsg_tty virtio_rpmsg_bus rpmsg_ns rpmsg_core rfkill nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables mcp251x6
+[  157.053499] CPU: 0 UID: 0 PID: 1708 Comm: python3 Not tainted 6.15.4-00114-g1f61ca5cad76 #1 PREEMPT
+[  157.064369] Hardware name: imx8mp_board_01 (DT)
+[  157.068205] pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  157.075169] pc : mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.081195] lr : mxc_isi_pipe_irq_handler+0x38/0x1b0 [imx8_isi]
+[  157.087126] sp : ffff800080003ee0
+[  157.090438] x29: ffff800080003ee0 x28: ffff0000c3688000 x27: 0000000000000000
+[  157.097580] x26: 0000000000000000 x25: ffff0000c1e7ac00 x24: ffff800081b5ad50
+[  157.104723] x23: 00000000000000d1 x22: 0000000000000000 x21: ffff0000c25e4000
+[  157.111866] x20: 0000000060000200 x19: ffff80007a0608d0 x18: 0000000000000000
+[  157.119008] x17: ffff80006a4e3000 x16: ffff800080000000 x15: 0000000000000000
+[  157.126146] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  157.133287] x11: 0000000000000040 x10: ffff0000c01445f0 x9 : ffff80007a053a38
+[  157.140425] x8 : ffff0000c04004b8 x7 : 0000000000000000 x6 : 0000000000000000
+[  157.147567] x5 : ffff0000c0400490 x4 : ffff80006a4e3000 x3 : ffff0000c25e4000
+[  157.154706] x2 : 0000000000000000 x1 : ffff8000825c0014 x0 : 0000000060000200
+[  157.161850] Call trace:
+[  157.164296]  mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi] (P)
+[  157.170319]  __handle_irq_event_percpu+0x58/0x218
+[  157.175029]  handle_irq_event+0x54/0xb8
+[  157.178867]  handle_fasteoi_irq+0xac/0x248
+[  157.182968]  handle_irq_desc+0x48/0x68
+[  157.186723]  generic_handle_domain_irq+0x24/0x38
+[  157.191346]  gic_handle_irq+0x54/0x120
+[  157.195098]  call_on_irq_stack+0x24/0x30
+[  157.199027]  do_interrupt_handler+0x88/0x98
+[  157.203212]  el0_interrupt+0x44/0xc0
+[  157.206792]  __el0_irq_handler_common+0x18/0x28
+[  157.211328]  el0t_64_irq_handler+0x10/0x20
+[  157.215429]  el0t_64_irq+0x198/0x1a0
+[  157.219009] ---[ end trace 0000000000000000 ]---
+
+Address this issue by moving the streaming preparation and cleanup to
+the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
+also simplifies the driver by allowing direct usage of the
+vb2_ioctl_streamon() and vb2_ioctl_streamoff() helpers, and removal of
+the manual cleanup from mxc_isi_video_release().
+
+Link: https://lore.kernel.org/r/20250813212451.22140-2-laurent.pinchart@ideasonboard.com
+Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
+Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Richard Leitner <richard.leitner@linux.dev> # i.MX8MP
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
-Note that the commit 5175c1e4adca ("net: enetc: add basic support for
-the ENETC with pseudo MAC for i.MX94") does not have such issue, this
-patch depends on the patch 2 in this patch set.
----
- drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../platform/nxp/imx8-isi/imx8-isi-video.c    | 156 +++++++-----------
+ 1 file changed, 58 insertions(+), 98 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 53cecbb23a97..56899f2254aa 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -814,6 +814,9 @@ static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
- 	val |= POR_TXDIS;
- 	enetc_port_wr(hw, ENETC4_POR, val);
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+index a71eb30323c8..4e6c3540de35 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+@@ -937,6 +937,49 @@ static void mxc_isi_video_init_channel(struct mxc_isi_video *video)
+ 	mxc_isi_channel_set_output_format(pipe, video->fmtinfo, &video->pix);
+ }
  
-+	if (enetc_is_pseudo_mac(si))
-+		return;
++static int mxc_isi_vb2_prepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_video *video = vb2_get_drv_priv(q);
++	struct media_device *mdev = &video->pipe->isi->media_dev;
++	struct media_pipeline *pipe;
++	int ret;
 +
- 	enetc4_mac_wait_tx_empty(si, 0);
- 	if (si->hw_features & ENETC_SI_F_QBU)
- 		enetc4_mac_wait_tx_empty(si, 1);
-@@ -856,6 +859,9 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
- 	struct enetc_si *si = pf->si;
- 	u32 val;
- 
-+	if (enetc_is_pseudo_mac(si))
-+		goto check_rx_busy;
++	/* Get a pipeline for the video node and start it. */
++	scoped_guard(mutex, &mdev->graph_mutex) {
++		ret = mxc_isi_pipe_acquire(video->pipe,
++					   &mxc_isi_video_frame_write_done);
++		if (ret)
++			return ret;
 +
- 	if (si->hw_features & ENETC_SI_F_QBU) {
- 		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
- 		val &= ~PM_CMD_CFG_RX_EN;
-@@ -868,6 +874,7 @@ static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
- 	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
- 	enetc4_mac_wait_rx_empty(si, 0);
++		pipe = media_entity_pipeline(&video->vdev.entity)
++		     ? : &video->pipe->pipe;
++
++		ret = __video_device_pipeline_start(&video->vdev, pipe);
++		if (ret)
++			goto err_release;
++	}
++
++	/* Verify that the video format matches the output of the subdev. */
++	ret = mxc_isi_video_validate_format(video);
++	if (ret)
++		goto err_stop;
++
++	/* Allocate buffers for discard operation. */
++	ret = mxc_isi_video_alloc_discard_buffers(video);
++	if (ret)
++		goto err_stop;
++
++	video->is_streaming = true;
++
++	return 0;
++
++err_stop:
++	video_device_pipeline_stop(&video->vdev);
++err_release:
++	mxc_isi_pipe_release(video->pipe);
++	return ret;
++}
++
+ static int mxc_isi_vb2_start_streaming(struct vb2_queue *q, unsigned int count)
+ {
+ 	struct mxc_isi_video *video = vb2_get_drv_priv(q);
+@@ -985,6 +1028,17 @@ static void mxc_isi_vb2_stop_streaming(struct vb2_queue *q)
+ 	mxc_isi_video_return_buffers(video, VB2_BUF_STATE_ERROR);
+ }
  
-+check_rx_busy:
- 	if (read_poll_timeout(enetc_port_rd, val,
- 			      !(val & PSR_RX_BUSY),
- 			      100, 10000, false, hw,
++static void mxc_isi_vb2_unprepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_video *video = vb2_get_drv_priv(q);
++
++	mxc_isi_video_free_discard_buffers(video);
++	video_device_pipeline_stop(&video->vdev);
++	mxc_isi_pipe_release(video->pipe);
++
++	video->is_streaming = false;
++}
++
+ static const struct vb2_ops mxc_isi_vb2_qops = {
+ 	.queue_setup		= mxc_isi_vb2_queue_setup,
+ 	.buf_init		= mxc_isi_vb2_buffer_init,
+@@ -992,8 +1046,10 @@ static const struct vb2_ops mxc_isi_vb2_qops = {
+ 	.buf_queue		= mxc_isi_vb2_buffer_queue,
+ 	.wait_prepare		= vb2_ops_wait_prepare,
+ 	.wait_finish		= vb2_ops_wait_finish,
++	.prepare_streaming	= mxc_isi_vb2_prepare_streaming,
+ 	.start_streaming	= mxc_isi_vb2_start_streaming,
+ 	.stop_streaming		= mxc_isi_vb2_stop_streaming,
++	.unprepare_streaming	= mxc_isi_vb2_unprepare_streaming,
+ };
+ 
+ /* -----------------------------------------------------------------------------
+@@ -1147,97 +1203,6 @@ static int mxc_isi_video_s_fmt(struct file *file, void *priv,
+ 	return 0;
+ }
+ 
+-static int mxc_isi_video_streamon(struct file *file, void *priv,
+-				  enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_video *video = video_drvdata(file);
+-	struct media_device *mdev = &video->pipe->isi->media_dev;
+-	struct media_pipeline *pipe;
+-	int ret;
+-
+-	if (vb2_queue_is_busy(&video->vb2_q, file))
+-		return -EBUSY;
+-
+-	/*
+-	 * Get a pipeline for the video node and start it. This must be done
+-	 * here and not in the queue .start_streaming() handler, so that
+-	 * pipeline start errors can be reported from VIDIOC_STREAMON and not
+-	 * delayed until subsequent VIDIOC_QBUF calls.
+-	 */
+-	mutex_lock(&mdev->graph_mutex);
+-
+-	ret = mxc_isi_pipe_acquire(video->pipe, &mxc_isi_video_frame_write_done);
+-	if (ret) {
+-		mutex_unlock(&mdev->graph_mutex);
+-		return ret;
+-	}
+-
+-	pipe = media_entity_pipeline(&video->vdev.entity) ? : &video->pipe->pipe;
+-
+-	ret = __video_device_pipeline_start(&video->vdev, pipe);
+-	if (ret) {
+-		mutex_unlock(&mdev->graph_mutex);
+-		goto err_release;
+-	}
+-
+-	mutex_unlock(&mdev->graph_mutex);
+-
+-	/* Verify that the video format matches the output of the subdev. */
+-	ret = mxc_isi_video_validate_format(video);
+-	if (ret)
+-		goto err_stop;
+-
+-	/* Allocate buffers for discard operation. */
+-	ret = mxc_isi_video_alloc_discard_buffers(video);
+-	if (ret)
+-		goto err_stop;
+-
+-	ret = vb2_streamon(&video->vb2_q, type);
+-	if (ret)
+-		goto err_free;
+-
+-	video->is_streaming = true;
+-
+-	return 0;
+-
+-err_free:
+-	mxc_isi_video_free_discard_buffers(video);
+-err_stop:
+-	video_device_pipeline_stop(&video->vdev);
+-err_release:
+-	mxc_isi_pipe_release(video->pipe);
+-	return ret;
+-}
+-
+-static void mxc_isi_video_cleanup_streaming(struct mxc_isi_video *video)
+-{
+-	lockdep_assert_held(&video->lock);
+-
+-	if (!video->is_streaming)
+-		return;
+-
+-	mxc_isi_video_free_discard_buffers(video);
+-	video_device_pipeline_stop(&video->vdev);
+-	mxc_isi_pipe_release(video->pipe);
+-
+-	video->is_streaming = false;
+-}
+-
+-static int mxc_isi_video_streamoff(struct file *file, void *priv,
+-				   enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_video *video = video_drvdata(file);
+-	int ret;
+-
+-	ret = vb2_ioctl_streamoff(file, priv, type);
+-	if (ret)
+-		return ret;
+-
+-	mxc_isi_video_cleanup_streaming(video);
+-
+-	return 0;
+-}
+-
+ static int mxc_isi_video_enum_framesizes(struct file *file, void *priv,
+ 					 struct v4l2_frmsizeenum *fsize)
+ {
+@@ -1293,9 +1258,8 @@ static const struct v4l2_ioctl_ops mxc_isi_video_ioctl_ops = {
+ 	.vidioc_expbuf			= vb2_ioctl_expbuf,
+ 	.vidioc_prepare_buf		= vb2_ioctl_prepare_buf,
+ 	.vidioc_create_bufs		= vb2_ioctl_create_bufs,
+-
+-	.vidioc_streamon		= mxc_isi_video_streamon,
+-	.vidioc_streamoff		= mxc_isi_video_streamoff,
++	.vidioc_streamon		= vb2_ioctl_streamon,
++	.vidioc_streamoff		= vb2_ioctl_streamoff,
+ 
+ 	.vidioc_enum_framesizes		= mxc_isi_video_enum_framesizes,
+ 
+@@ -1334,10 +1298,6 @@ static int mxc_isi_video_release(struct file *file)
+ 	if (ret)
+ 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
+ 
+-	mutex_lock(&video->lock);
+-	mxc_isi_video_cleanup_streaming(video);
+-	mutex_unlock(&video->lock);
+-
+ 	pm_runtime_put(video->pipe->isi->dev);
+ 	return ret;
+ }
 -- 
 2.34.1
 
