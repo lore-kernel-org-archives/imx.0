@@ -1,111 +1,66 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366B13DB63B
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 09:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FBE2727E2;
+	Tue, 24 Mar 2026 09:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774343289; cv=none; b=fAj4TEyEG3pwfzUBjk3qvhdHgTyTBLhZqfDjiBw3RkiKPEHvyrAQejySHhsy0U6J3ng+VD1dV6MjVeJ7jWWoBpWewnT2dofjubEwP0dhZyLt/EsoXifLefLUDLXt+CYNCivf1HdDIXUowyIaOTODl+U3oB7TviEw1BMYe70PVd0=
+	t=1774343768; cv=none; b=KtTHh90AKe3eKCgRU4kkBwbgGzWo5ndXhTvzoKahZKMcVSLZXmmjV/jff3qD43ygoyple9KD4ScZm/FWPc1/Mn2Lh85kg8r3zUsekY4RtwJxLa9dM9KX+/+kLORWqeniWqdh+JoTokCZCFkpKJrjc8y4a0qRz64M+rE0MoaPLwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774343289; c=relaxed/simple;
-	bh=mibbCjdrjU8yBoCWq5s5GbbgutcaVzJ27y9cMJs+vtM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=k3XkvJZcrG3UePhi/zmcCPyvAa7//uojubQzFddjgIdh2ZyatjnmrfpfgWNPVZkL8U5j7zC+n5pI5Gm53njRPWevFDV+YGhInKlnE27t5KCZ3OGAmc/2lp2PiHemBmTuZIRnyArcKePDBu3+BS7N//Q47t8DrpJPEiHUa8Muq8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=TO8pGJ7n; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1774343768; c=relaxed/simple;
+	bh=+RIij9NEuIuPQtqJ5P/rbM6Rew0JlQNlsK8q3ZzlVV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CDDdxwY3Y4vVjHm4GiX4dtvVh+SmrXb443uwzCfXuuX6bdRVRea3zdZqQtzepqdbRhlfciv6qokYmkYbzv7FNUlFIIjk1XPXQLt69CyszmzSjFYSMSsQhWpwIsxQXTms8aj8p0OhXn+7FuUWLjebovFy9IZbymWvoTAJwjsl21Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvbLWtsy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="TO8pGJ7n"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 37B91A0C3F;
-	Tue, 24 Mar 2026 10:07:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:from:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=mail; bh=mibbCjdrj
-	U8yBoCWq5s5GbbgutcaVzJ27y9cMJs+vtM=; b=TO8pGJ7nl4URV6x4QgMMOWSCy
-	O/ubs9x9LxRGzt4dpFVEl4i01f96Ak9jfEHdHnymD7RyOiaWWRSzptsXhs9WXlTa
-	nPDHiuH/VTB5Eibxw0m+fsoJU6vg8kstAORw879i+frDU0aGkUTc1lFV5vNKmKwQ
-	ESH78z0lMSKfbMYKqLyYypQcEU0iWBFKkhHvMsAgjn0xAJi1zbLFI/5v/w8rILK4
-	UegBmYjBuUbvxmCGsHDeobuir6TKIcf5HB/k9+9JJdN1JfLVRp1p2hlhovFoVIel
-	L6x0nC/78VP729fVhSVQoVt51yQm4Rp9ksKOHdH/XYXgO9pIuYC0tolvAM6B+Cgr
-	VEk5scOaiyw36y+bnOLn9z1Gr0TvC7O5wnsVhEKSfBxdJQt97th9LzCjrwtns40n
-	+/QJ/9HnsW1Jv1ofPcNwED8ZKtMZTqJXRP1mdFxNavr1TYYWovrWgcgXst95NtZ/
-	JXSXaGOUrGTulJjpDs25cEzz1xcWMiGD7gsqEJfxtQzHTTq2eXhky0zgnDF36TQp
-	AzhYbOAFgMKziuyg8hh4IgJLOIfWI+zJHJa9SllB2edUAB3leYaZoKxIx2kW3mcx
-	L7ZwxYds0+fvV4zgOEPNRGNGTgwbFY4pm9sT+whEXTpBtEUOjg0zWtaSjAvMd/dQ
-	VQnRovIjsdHmj0y7FE=
-From: Buday Csaba <Buday.Csaba@prolan.hu>
-To: Wei Fang <wei.fang@nxp.com>, Jakub Kicinski <kuba@kernel.org>
-CC: Richard Cochran <richardcochran@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, =?utf-8?B?QmVuY2UgQ3PDs2vDoXM=?=
-	<bence98@sch.bme.hu>, Francesco Dolcini <francesco.dolcini@toradex.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: RE: [PATCH net v2 1/1] net: fec: fix the PTP periodic output
- sysfs interface
-Thread-Topic: RE: [PATCH net v2 1/1] net: fec: fix the PTP periodic output
- sysfs interface
-Thread-Index: AQHct7ljjxL82zOBtEWLVp6vDzHTHLW8CD0AgADB4gCAACPTgIAADbqAgAAvOwCAADBKAA==
-Date: Tue, 24 Mar 2026 09:07:57 +0000
-Message-ID: <983afd55-5007-4929-8fe5-396c46570977@prolan.hu>
-References: <7012fbf90b844083d5fa7d764ed6372fe0288157.1773928309.git.buday.csaba@prolan.hu>
- <PAXPR04MB8510889775D757361CEAFA39884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20260323172842.7a62979d@kernel.org>
- <PAXPR04MB85106975EB34F6B1652953FC8848A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20260323202603.2897abf4@kernel.org>
- <PAXPR04MB85102EBE72888699094C42EF8848A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB85102EBE72888699094C42EF8848A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Accept-Language: en-US, hu-HU
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A29676715506D766A
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1041B058A708F74B9E7928B600DD8C07@prolan.hu>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvbLWtsy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED606C19424;
+	Tue, 24 Mar 2026 09:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774343767;
+	bh=+RIij9NEuIuPQtqJ5P/rbM6Rew0JlQNlsK8q3ZzlVV0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fvbLWtsyRGOYeoAGVckAfF3ELImNKX+HDa7zDf4l9Oq9nCNtEMlxFfruyiYwe5eLV
+	 fJgWujeUclti7Gs3nbxuPFQPMxwF1qU0wIVEeMjwI44bnU/iUvDm0gQR7Lf20d7qhH
+	 FeaeI/WHcFFQ8KvhljnpPf4UjoTuNPZBJN7Cp46cbKwQqvsN7FYSTlf/2WJ2J3GtZa
+	 GhBNOfavdRm5JTlMBUpufETsAtiAp7TUxZ4Q1uigwC/oWZ5mRjCj4bVU1Qd8SR9+K+
+	 ckhIfJ2yhVccZDO7u+CRzmVj85CDiRA7m9vJjdqMXjjYDva8dEd6/kHmBb8z8USIT4
+	 EUEbBV+J/oNDQ==
+Date: Tue, 24 Mar 2026 10:16:05 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Eduard Bostina <egbostina@gmail.com>
+Cc: daniel.baluta@nxp.com, simona.toaca@nxp.com, d-gole@ti.com, 
+	m-chawdhry@ti.com, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>, linux-watchdog@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: watchdog: Convert TS-4800 to DT
+ schema
+Message-ID: <20260324-transparent-lemur-of-emphasis-f3605b@quoll>
+References: <20260323175948.302441-1-egbostina@gmail.com>
+ <20260323175948.302441-2-egbostina@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260323175948.302441-2-egbostina@gmail.com>
 
-Pj4+PiBJIGRvbid0IHVuZGVyc3RhbmQgd2h5IHlvdSB0aGluayB0aGF0IHdlIHNob3VsZCBiZSBl
-eHBvc2luZyA0IGNoYW5uZWxzDQo+Pj4+IHRvIHRoZSB1c2VyIHdoZW4gdGhleSBjYW4gb25seSB1
-c2Ugb25lLiBBbmQgaGF2ZSB0aGUgdXNlciBndWVzcyB3aGljaA0KPj4+PiBvbmUgc2hvdWxkIGJl
-IHByb2dyYW1tZWQuIFBsZWFzZSBleHBsYWluIChhbmQgQnVkYXkgd2lsbCBoYXZlIHRvIHVwZGF0
-ZQ0KPj4+PiB0aGUgY29tbWl0IG1lc3NhZ2UpLCB0byBtZSB2MSBsb29rZWQgbGlrZSBhIG11Y2gg
-YmV0dGVyIGZpeC4NCj4+Pg0KPj4+IEFzIEkgZXhwbGFpbmVkIGluIHYxLCBJIHRoaW5rIHRoZSAi
-Y2hhbm5lbCBpbmRleCIgcGFyYW1ldGVyIG9mDQo+Pj4gIi9zeXMvY2xhc3MvcHRwL3B0cDxOPi9w
-ZXJpb2QiIHJlZmVycyB0byB0aGUgaGFyZHdhcmUgY2hhbm5lbCBudW1iZXIsDQo+Pj4gcmF0aGVy
-IHRoYW4gdGhlIHNvZnR3YXJlIG1hcHBpbmcgdG8gdGhlIGhhcmR3YXJlIGNoYW5uZWwuDQo+Pg0K
-Pj4gQ2FuIHlvdSBjaXRlIGFueSBkb2N1bWVudGF0aW9uIG9yIGV4YW1wbGVzPw0KPiANCj4gVGhl
-cmUgaXMgbm8gZG9jdW1lbnRhdGlvbiB0aGF0IGV4cGxpY2l0bHkgc3BlY2lmaWVzIHdoZXRoZXIg
-aXQgbXVzdCBiZQ0KPiB0aGUgaGFyZHdhcmUgY2hhbm5lbCBvciB0aGUgc29mdHdhcmUtZGVmaW5l
-ZCBjaGFubmVsLiBTbyB0aGlzIGxlYWRzDQo+IHRvIGRpZmZlcmVudCBwZW9wbGUgaGF2aW5nIGRp
-ZmZlcmVudCB1bmRlcnN0YW5kaW5ncyBvZiBpdC4NCj4gDQoNCldoYXQgYWJvdXQgdXBkYXRpbmcg
-dGhlIGRvY3VtZW50YXRpb24gZmlyc3Q/DQpMaWtlOg0KLS0tIGEvRG9jdW1lbnRhdGlvbi9BQkkv
-dGVzdGluZy9zeXNmcy1wdHANCisrKyBiL0RvY3VtZW50YXRpb24vQUJJL3Rlc3Rpbmcvc3lzZnMt
-cHRwDQpAQCAtNTksNyArNTksOCBAQCBEYXRlOiAgICAgICAgIFNlcHRlbWJlciAyMDEwDQogIENv
-bnRhY3Q6ICAgICAgIFJpY2hhcmQgQ29jaHJhbiA8cmljaGFyZGNvY2hyYW5AZ21haWwuY29tPg0K
-ICBEZXNjcmlwdGlvbjoNCiAgICAgICAgICAgICAgICAgVGhpcyBmaWxlIGNvbnRhaW5zIHRoZSBu
-dW1iZXIgb2YgcHJvZ3JhbW1hYmxlIHBlcmlvZGljDQotICAgICAgICAgICAgICAgb3V0cHV0IGNo
-YW5uZWxzIG9mZmVyZWQgYnkgdGhlIFBUUCBoYXJkd2FyZSBjbG9jay4NCisgICAgICAgICAgICAg
-ICBvdXRwdXQgY2hhbm5lbHMgb2ZmZXJlZCBieSB0aGUgUFRQIGhhcmR3YXJlIGNsb2NrLCBhbmQN
-CisgICAgICAgICAgICAgICBzdXBwb3J0ZWQgYnkgdGhlIGRyaXZlci4NCg0KICBXaGF0OiAgICAg
-ICAgICAvc3lzL2NsYXNzL3B0cC9wdHA8Tj4vbl9waW5zDQogIERhdGU6ICAgICAgICAgIE1hcmNo
-IDIwMTQNCg0KU2FtZSBmb3IgdGhlIHBlcmlvZC4NCg0KPj4gV2hhdCB3b3VsZCBiZSB0aGUgYmVu
-ZWZpdCBvZiBleHBvc2luZyB0aGUgSUQgd2l0aGluIHRoZSBNQUMgSVAgKG5vdA0KPj4gZXZlbiB0
-aGUgYm9hcmQpIHRvIHRoZSB1c2VyPw0KPiANCj4gIEZyb20gbXkgcGVyc3BlY3RpdmUsIEkgZXhw
-ZWN0IHRoZSAiY2hhbm5lbCBpbmRleCIgdG8gYmUgY29uc2lzdGVudCB3aXRoDQo+ICJmc2wscHBz
-LWNoYW5uZWwiIHByb3BlcnR5LCBvdGhlcndpc2UgdGhpcyBtYXkgY29uZnVzZSBzb21lIHVzZXJz
-Lg0KPiANCj4gSGkgQnVkYXksDQo+IA0KPiBJZiB5b3Ugd2FudCB0byByZXZlcnQgdG8gdGhlIGZp
-cnN0IHZlcnNpb24sIEkgc3VnZ2VzdCByZW1vdmluZyB0aGUgY2hlY2suDQo+IEJlY2F1c2UgdGhl
-IGNoZWNrIGluIHBlcmlvZF9zdG9yZSgpIGFscmVhZHkgZ3VhcmFudGVlcyB0aGF0DQo+IHJlcS5w
-ZXJvdXQuaW5kZXggbXVzdCBiZSAwLg0KPiANCj4gDQoNCk9rYXksIEkgd2lsbCBkbyB0aGF0Lg0K
+On Mon, Mar 23, 2026 at 07:59:44PM +0200, Eduard Bostina wrote:
+> Convert the Technologic Systems TS-4800 watchdog timer bindings
+> to DT schema.
+> 
+> Signed-off-by: Eduard Bostina <egbostina@gmail.com>
+> ---
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+Best regards,
+Krzysztof
 
