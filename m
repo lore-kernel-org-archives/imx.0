@@ -1,179 +1,109 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B093E1230;
-	Tue, 24 Mar 2026 10:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F023E3D8E
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 10:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774347861; cv=none; b=aKQ25nC48pVKIuNh/meDLo7sdKKCSqkrqRe4L2OE+WDLnCLSNatyqM+XKM/aDvOmsTYMBg7AuHeVbGK5LaAlQ7UZj3+v9Buw7LvoaqB9KkojdGB9YhMqgaB6Lh6XWh3kbKLSyBJ1RjmnKfdZrktas8ZaJf1KXKCtJ/Mtib2w30k=
+	t=1774348518; cv=none; b=suWDg97Tw1SUa57eG9QEVxQlGpS8yORkKDeQ9CK4gTOwt0RNhNzQ6iZpUfVyFTKPOa3brvFdpSlfCtvJMBRL/4EBQOJ7OrAX8JKB/CiWZq3GeOXD+Q40kzhuMfWX8CHotkaDoEFdL2qFzE+xv9Sf9NvKdGVcVPJnwRHVBAyjm+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774347861; c=relaxed/simple;
-	bh=uOc2W0qFV291yPRbXPafqHAGAkVduR26ne2oc7X4SYA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O2MpT2OzT2Nk5sSsEc+HU6WmUg+b0d2cZc/aZdD0zeD9ptjeKD3cYQd332r6Dgr/RWWrbpjiAX3r3a856KxW/kdMb8QFUa5XM31rZI7TNE+4DEyj+8UbP7+dn1fijz8t0VNUdWa4QCeUg2ocQCnsZ6VOWwO0R606iIMM9NZ8oRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=FrI/5Qh2; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1774348518; c=relaxed/simple;
+	bh=hAR97mSfzBsK6s2/V2lxo/QMFvGGs27xGdB50d/Icsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dfPfBBQerFh+x9tkXIksVr821e8ZqckCyUoqxjftbwHty1HX6kILDWMfqgz3DYG7BoBss7C2vxXdKKNMkOrLmHc0hfU8/czcZ0XVdHaCuhtZtf2dy/GaqhCX9JUCvwXDtzbxqNIz0fibWUb3XC0lGqUQM38ojd/Q3xP2X6lRg0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNNcTAdW; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="FrI/5Qh2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=S6uvvEM8Q8RkAK0BRhim+FMr5vS+WhCd8Ae7ZnBCYfM=; b=FrI/5Qh26/Bf0qI2wuHwMH5x1o
-	l0ZcurgJMqFwdycKwHnU7AfnwWV6bVn3ESzW6v4BLnICtYS3M4Calj9U0lio62uJO4+cnP2WDDcbK
-	TqKYfj+nvFnnAK/LEcwUc1Rt6F7wzJxC4hZICVGRevdq/UXEML4WVK1VKDGvM5vPslKqNpBMuQ+vk
-	vJ9ZFIH4wqs3M480+9AEIz50WkRgbPM9d4o64BM2HZv3yg+Ks2fTLoKJaSC9uHldnkVrAVR1h7QHy
-	iXF8bweU2MiIjMdXFLSaXLP+Ir6MrWioUiHnx+lu5xoYvqZuYAOre828JcY9CgbYZ1NlVIeHZ4cbX
-	c6T9UXxQ==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4yvj-000E43-2Z;
-	Tue, 24 Mar 2026 11:24:11 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w4yvj-0006q3-0d;
-	Tue, 24 Mar 2026 11:24:10 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v2 6/9] soc: imx8m: don't access of_root directly
-Date: Tue, 24 Mar 2026 11:24:09 +0100
-Message-ID: <6593091.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260223-soc-of-root-v2-6-b45da45903c8@oss.qualcomm.com>
-References:
- <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-6-b45da45903c8@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNNcTAdW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774348515; x=1805884515;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hAR97mSfzBsK6s2/V2lxo/QMFvGGs27xGdB50d/Icsw=;
+  b=nNNcTAdWTxJcZjEYm0+APYUV9UyVfXFcxhg3T0rXNmCdibxvNrxmisLY
+   b/Zw72FCz7uMUMmLCVJkHSTToi+MYVr1BzZxue28aAJhV1R/BRqAeCQE5
+   roWjWcNqmBN2K8+eqGEqJDPDDn0t5mCU2cNgMO/Xs0Zr1pDCmKLBCp/GM
+   S8Dcaiz7bI1aykf/JnjhP80vNub4WhpaWJ14sNM3BHzzRfi0VMdh0ArFp
+   SKp5VdehOKrJllUFIl1Z0cA+zy3xqU4GgPVyTUltnb2qmTMdC2CdKGNYL
+   6FJ9K0uPidorglbvVjSfJiqHqsCsBjL0YDTztymNfkSryUbURIlfAd6n0
+   w==;
+X-CSE-ConnectionGUID: +Mv0seCgTLiNkVMNocnRCA==
+X-CSE-MsgGUID: FfEO730CS+2vL/oxEHbZjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="97978535"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="97978535"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:35:14 -0700
+X-CSE-ConnectionGUID: JzFhO/gaRVC88UXRsJRd+A==
+X-CSE-MsgGUID: ovTG8psfRoShtwdAORxHvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="262239026"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.180])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:35:12 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 2B5CC121CFF;
+	Tue, 24 Mar 2026 12:35:14 +0200 (EET)
+Date: Tue, 24 Mar 2026 12:35:14 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Michael Riesch <michael.riesch@collabora.com>
+Cc: Sakari Ailus <sakari.ailus@iki.fi>, Frank Li <Frank.li@nxp.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	Guoniu Zhou <guoniu.zhou@oss.nxp.com>, imx@lists.linux.dev
+Subject: Re: [PATCH 0/6] media: synopsys: Add imx93 support
+Message-ID: <acJo4qamh9edxqb-@kekkonen.localdomain>
+References: <20260210-imx93-dw-csi2-v1-0-69667bb86bfa@nxp.com>
+ <acGQNIUKqfh8eWNB@lizhi-Precision-Tower-5810>
+ <acJI3wYnl8_g4WpO@valkosipuli.retiisi.eu>
+ <08e6b649-61ac-4059-a914-c537b5c4da7e@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27950/Tue Mar 24 07:24:19 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08e6b649-61ac-4059-a914-c537b5c4da7e@collabora.com>
 
-Hi,
+Hi Michael,
 
-Am Montag, 23. Februar 2026, 14:37:21 CET schrieb Bartosz Golaszewski:
-> Don't access of_root directly as it reduces the build test coverage for
-> this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper functio=
-ns
-> to retrieve the relevant information.
->=20
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Tue, Mar 24, 2026 at 10:46:49AM +0100, Michael Riesch wrote:
+> Hi all,
+> 
+> On 3/24/26 09:18, Sakari Ailus wrote:
+> > On Mon, Mar 23, 2026 at 03:10:44PM -0400, Frank Li wrote:
+> >> On Tue, Feb 10, 2026 at 12:11:07PM -0500, Frank Li wrote:
+> >>> This 3rd time try to support DW CSI2RX support for imx93.
+> >>>
+> >>
+> >> Laurent Pinchart and Sakari Ailus:
+> >>
+> >> 	I am not who will take care this patch?
+> >> 	original drivers/media/platform/synopsys/dw-mipi-csi2rx.c picked
+> >> by Sakari Ailus
+> > 
+> > Michael seems to have questions on the last patch, too.
+> 
+> I.. don't.. think so. After digging a bit in my memory and lore, I found
+> a v3 of that series with my Reviewed-by [0]
+> 
+> [0]
+> https://lore.kernel.org/all/20260216-imx93-dw-csi2-v3-0-aabafee10923@nxp.com/
 
-today I noticed the following warning running next-20260323:
-> caam 30900000.crypto: No clock data provided for i.MX SoC
+Message-Id <9e14d605-9419-441e-a554-432d435191b3@collabora.com>.
 
-This happens when there is no matching against the soc_id.
-
-Checking the source it turns out this patch is the cause that the SoC info
-does not provide soc_id anymore.
-next-20260323:
-> $ grep . /sys/devices/soc0/*
-> /sys/devices/soc0/family:Freescale i.MX
-> /sys/devices/soc0/machine:TQ-Systems i.MX8MPlus TQMa8MPxL on MBa8MP-RAS314
-> grep: /sys/devices/soc0/power: Is a directory
-> /sys/devices/soc0/revision:unknown
-> /sys/devices/soc0/serial_number:0000000000000000
-> grep: /sys/devices/soc0/subsystem: Is a directory
-
-reverting this patch (2524b293a59e586afd06358d0b191ab57208a920):
-> $ grep . /sys/devices/soc0/*
-> /sys/devices/soc0/family:Freescale i.MX
-> /sys/devices/soc0/machine:TQ-Systems i.MX8MPlus TQMa8MPxL on MBa8MP-RAS314
-> grep: /sys/devices/soc0/power: Is a directory
-> /sys/devices/soc0/revision:1.1
-> /sys/devices/soc0/serial_number:469677A693A4B8CE131D180033E44903
-> /sys/devices/soc0/soc_id:i.MX8MP
-> grep: /sys/devices/soc0/subsystem: Is a directory
-
-soc_id is restored. Now that I write these lines I noticed that
-serial_number also contained empty value which is restored with the revert.
-
-Best regards,
-Alexander
-
-> ---
->  drivers/soc/imx/soc-imx8m.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-> index 8e2322999f0996d2723768469c6893b0ea22eb9d..77763a107edbd11302017e3f6=
-1ecb4369fda1ab0 100644
-> --- a/drivers/soc/imx/soc-imx8m.c
-> +++ b/drivers/soc/imx/soc-imx8m.c
-> @@ -226,7 +226,6 @@ static int imx8m_soc_probe(struct platform_device *pd=
-ev)
->  	const struct imx8_soc_data *data;
->  	struct imx8_soc_drvdata *drvdata;
->  	struct device *dev =3D &pdev->dev;
-> -	const struct of_device_id *id;
->  	struct soc_device *soc_dev;
->  	u32 soc_rev =3D 0;
->  	u64 soc_uid[2] =3D {0, 0};
-> @@ -244,15 +243,11 @@ static int imx8m_soc_probe(struct platform_device *=
-pdev)
-> =20
->  	soc_dev_attr->family =3D "Freescale i.MX";
-> =20
-> -	ret =3D of_property_read_string(of_root, "model", &soc_dev_attr->machin=
-e);
-> +	ret =3D soc_attr_read_machine(soc_dev_attr);
->  	if (ret)
->  		return ret;
-> =20
-> -	id =3D of_match_node(imx8_soc_match, of_root);
-> -	if (!id)
-> -		return -ENODEV;
-> -
-> -	data =3D id->data;
-> +	data =3D device_get_match_data(dev);
->  	if (data) {
->  		soc_dev_attr->soc_id =3D data->name;
->  		ret =3D imx8m_soc_prepare(pdev, data->ocotp_compatible);
-> @@ -326,7 +321,7 @@ static int __init imx8_soc_init(void)
->  	int ret;
-> =20
->  	/* No match means this is non-i.MX8M hardware, do nothing. */
-> -	if (!of_match_node(imx8_soc_match, of_root))
-> +	if (!of_machine_device_match(imx8_soc_match))
->  		return 0;
-> =20
->  	ret =3D platform_driver_register(&imx8m_soc_driver);
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-- 
+Sakari Ailus
