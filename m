@@ -1,159 +1,535 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010034.outbound.protection.outlook.com [52.101.69.34])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5EA3B7759
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 18:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774377935; cv=fail; b=T9Cw9jxHaf15Q79g68/9zFU1VYw57ojqzuP0wZX195YoshKD4ULEcXFz3JIC8R7VQtyAeasFjbgv5yRqEihyg8d+hcb7XpW48aPrQYwQ9q8oODSC30u7dA0MB2/Vr2TlBNx01lrZfFjJ45WRp7uzHGgzvXhSxa8oxGJiXJ0O2jw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774377935; c=relaxed/simple;
-	bh=3+YnIKrFeEI7e+SmX2zctqm+mRMvNsWiVrf03x5G5Uk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 Content-Type:MIME-Version; b=Dc3GjCuTLcz2a4GbJQG+0f/YJrGIfwpm6E269hBh2oHzE8dG8TjfCooJfMENsCBDoevi+u9CaDIZQh85leVn8j8ii3VdoGspGORAOhvE8gx75NDNMq1cD7W2N47HdWO6AkfarOJ/FhZsTQPZtkKEBZfn5spDCTJUJzaFOU7YWPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Wog1Mn2r; arc=fail smtp.client-ip=52.101.69.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982FB31619A
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 19:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774379047; cv=none; b=ZSqmVt5KYjH7l0RYiuZBM6ptWd7gy0XWAVsGP3+t6kdcZyPSyiBDEK0Tkxn6n8aUIunto09xhG918htrSkcxBoqypLDKsXK2MyRJjdZuHuTwQHLYVgncSTHuNXYU7jCNtii2Tk2wqcLgmphKiTvIABWLI72toeWAQ8LElMqA76s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774379047; c=relaxed/simple;
+	bh=rr0QtRKZdikrkYJ4hikUXlopkVJJPmPU4w4s7bJv6cs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aXtFlfBqxa50vgeCX7bfq++KdmprU+JNW32IDaQC1TC6cM4xuTGNUpyZ2INDQveP04VzmowaFmCPAs5VN7pxdVJU05k2lu9tHG/LI93AO+LawFRw3EkfG8o5TH9LjJE6BiCXg9nbfDQDUl682HoASMbSG/le8OV6vl1PIKyJMvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=U6Vkgc1O; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Wog1Mn2r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q+Q9jQo5J4WHSNxhMW7AubNKBPdH1nOlU/DmV9mkcYiykIfiO4W6pKRSIkee4s6/JSCl+I8u3L1b1VaSjCxdJ0YGHYZy0CoXXLvDkNdLGIxlL6ExX8Oxwaf5baPcjTpBvkGOK9v08k+spFaYq+f74O/hxqbXtduBQyiX/Gvuiy28dY/g6YUXzFZo8lqDN8/QtRpJCTmllQMlJj5X9hrV/viof0lV6L3Bf0UZQD0ycL+u1JTjZVZd44oUEuiXiOy8BeulW8A2VQrF6s6AskoJ++VrNu++6n9JJdXbSRU8UYP1tx+VUm3YnVxzPRU/gnhgZvFH/y+0u/Zl6JA3CjEODQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s6/I/CMyi8npqW1jp2r4+50Roc6oKRlxIT/GWAXYrOQ=;
- b=SuDEALrPmO+KAkXgk/1aBw4VKytvtvUIqyX56NKIHEIg8cFHBpMJT9Qe/03hSgy1jyEkOEmlHaKxquKXCH+l3hE+r4Hm4/d43uxUEluFMuKGgHN5YtTTIbynJvr46941BHYktJfIebk4p5zid1vHiWFn3pAAFCBZMKUYtlqXuDIDSKhWaSVE/gnFUGkHApS73T1hKRa8uzo77Oo+jjsVV0ET2TX0OlUb54odO0DpSmve0miwzMWwaUQ77AvQbpmZSNnU8OUkgZnxFRuKdcwikphavSXohTmPNMLLkWklTKKMEE3Q4eUs/sYDVD1GWk8DwwGtsA0vWHvZHSmGHJH/mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s6/I/CMyi8npqW1jp2r4+50Roc6oKRlxIT/GWAXYrOQ=;
- b=Wog1Mn2r8Aw5AjYsW8wbY7Qx12BHGK9rwC7yoa/DRLAsbdPGpgjQSyE93NsCjgvEbnZ6em8Wbwl1wGjjtQf5ACXgNk+QXRvuEDCe4focO95kAwbnZw1PPGZxtN+Run6wwo1uR5L+TRr2gaTAzShV+wRpz+RyMCzuBzrREJuxKEpHxNCkN4A+lHKhxa21lLYKjp6DtkJDvmuYmUe2blJ4riWPl+yKNj7b3bbgVE5PAM+EDMTXKuJdqUrlkMCmzhyTD+WnQFpMRnVB7w5OxUA7ZhBzaw1XZ1n90a0rZhh2i+79cqiR+OSArKHxz65sMohQVP8lmkEER7lmPjs4+H+c9g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI0PR04MB10806.eurprd04.prod.outlook.com (2603:10a6:800:262::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Tue, 24 Mar
- 2026 18:45:32 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
- 18:45:23 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20260313174707.26902-1-stefano.r@variscite.com>
-References: <20260313174707.26902-1-stefano.r@variscite.com>
-Subject: Re: [PATCH v7 0/2] Add support for Variscite DART-MX95 and Sonata
- board
-Message-Id: <177437792900.2244983.17690248521418133178.b4-ty@nxp.com>
-Date: Tue, 24 Mar 2026 14:45:29 -0400
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SA1P222CA0009.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:22c::25) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="U6Vkgc1O"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B5FE5112201;
+	Tue, 24 Mar 2026 20:03:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1774379042; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=LRK+Pbk+JcjIEgkJ8gJovXilJoSLfy1esd2Vmrus+/Y=;
+	b=U6Vkgc1OrledZh7vrd+LEgH5Bf1pv5L/6rIB+B+Yirhmev7YoBWP9VjHeGAB+Uu0q+W2oz
+	uHjnpNJMunYfhPCqCxkvA1ZLIPSiS3rO2OuoK8CDLZnFJ3jgjBIruDJBDzfeFvizFz/kQ+
+	M8pameULZxpjuUy7KtoJe0fLFWuGhzlDrFm980z74HGDxNM3M0mLi7CT5fCAYS3Pjvc53y
+	mrcKLM9iHU7DY4kJ55qHdjDvoysQYN0zj9WcAMUXzEHc7nRPH0uBgquBEBRZxD1FNFWFq8
+	9VIYpojgArHAhqB5UQoc7y/30dTIgXnm+8mQnzagaKVrqic0TWHBN110pui0NA==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ARM: dts: imx: Add DT overlays for DH i.MX6 DHCOM SoM and boards
+Date: Tue, 24 Mar 2026 20:03:11 +0100
+Message-ID: <20260324190356.74293-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB10806:EE_
-X-MS-Office365-Filtering-Correlation-Id: d741eb02-a085-45e3-1fb8-08de89d581f8
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|52116014|366016|56012099003|18002099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
- psZJ7twDRQbP5Dftd9xz9pgBPwI8dMAT9juNzGfXt04GVP2A/f40ZGLVpLtqgDqs++ZlbMA92ANiRJ94dzmokV9BNenI5l7DSwM1T3UkffJupzOjQMgydkSt07yLHveA/dbLNSL9iNfTp5hP9W1XILa7atGhr/BSR44AWOVh9jFT4YiYTgydZP8fCHWMO4fjvJMcuPK4vWgIZTwtsiC73VOdzDWhaGeXusgNJzMBUyW/jj8TPTk9K6PMEwuxZ3YxQ9SZ6CZavfBWfLylzXFE+9hGZA5Bn+xUMVB7+hNKrt3l7fCoufoOzSWsA+tS2WCasNjHdvljDRfJfd5AI0K+besj6e8a96dVleO6fvHOIFe2lWoh9NfGlFCAQieZ6roZGSI1nKCY5lqwHYsY+lOrCsjlUgzQCcTTwGxtIkiZZGMtvNZBob38V9ITZRx1fen0nuOM+J3TDAGfSQWwo/S2ZJTiGEMUZhLAeLD2iKURQMQKpsUvaK3jmXFhbc7hTfolFS0XefXKVDG6j3Nus2kCc2s2seUVTdhnBXjKLD/550Raja8R9Qf7MMPwhl+dCx1drK14vQc4qH8cL3iO0pdn+DmcKg2QOZhWsxEzQfUu9GIlFOS2ADmDO0nnHatGb9/34fzh46euuqnYOOJVuZgvc4hHBtVvadSaKBKm6QlCV+Se1iDuiuVFHMibTwQ138mUqUrgGqdQx8QD0Cn6llp4TSfwhNZPClUcfgcyUHF9QA+M9XqpA+guvvSERiSg9jkphi2vVstA42f5Q54RFu4ge27nXTwc/r4JU2jFDqKskio=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(52116014)(366016)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?UXBKMDdzM09jWHdQWEtJWXdGNXBmWm5rRTB0MWJhS1Q4RzBKTDZNWDNyUkla?=
- =?utf-8?B?cUpuSm8wK1lYQ0lSYVBESjlaTWpMQlllV2Q4eitERm4veTJHSEIxaXE1K2NH?=
- =?utf-8?B?RHVXZVlmZ2RLNjEveDR2UW1ZL3RlSTd2bUdGT0hkbGk5MjN5UkcvQ2Y4NnVt?=
- =?utf-8?B?OU5pbnBmOHlaRTR6SkxEd3AvZU51OHVoN3ZZREU0YU04amJCZGtnNTR0bzl2?=
- =?utf-8?B?VWhTRmczdWFaNWU3NFBUQ3B6d1hBcnlHMXY3TkptOEhxY2x1S1pySnV1bEtr?=
- =?utf-8?B?LzdtRE1xRjJGaDM4S0wrVThWSTBpMDFPeGRaN2tCOUVSUWptdFBzaUh5eEE3?=
- =?utf-8?B?ZWpFb2ZrSzZuT3VEanJEWXp0QmJmYWxSMElYZVJucUtEZnl1S3pIQXpQdi9T?=
- =?utf-8?B?RHNqakNLVWN2TEc2SzQ2UWp3QURMTHl2aDhVaHZGdzFkcyt6cEtEcithMURO?=
- =?utf-8?B?RFhFTmR5Qk5KYmpjMG4vdmFtSEV0N1FDaHlLbk8xQTVxTmVXQmR3VUNQSmRP?=
- =?utf-8?B?L2dINkZBR3ZmeWVLMGJFT1hDMUFWb2VGWWFjcVFuT2ZuUVl0eDdZY0VjV0FR?=
- =?utf-8?B?SWJBM0xFNDFDcjBCNDdkcXYzV3l5QnZiSWo2SGNRQ3M3QWQzUUVHVENkL1ZO?=
- =?utf-8?B?TCtocUlQWUxnOGo1d1BBME81bEFuMDQ0Wk9kYURNQUE1Z1g4UURsSG5UZExq?=
- =?utf-8?B?RjJUaU94YVMzZ1pSVVpwYitHM2tVL29rbXZlYmxaSnVPQzVSSzFuM3hpb2Rn?=
- =?utf-8?B?NmRYbzVUbTNtS0NyMXhVcjY3S21YVnNVaE1BSEplak5zbkxERkUrVFhVQ2ZD?=
- =?utf-8?B?dW9IWldSdDZPQWlNeXZtZzRwSVhRcCtYTWtvNnNXZVlqa3FnOHRpVmo1cjdi?=
- =?utf-8?B?YWhzWFN4RHFVSXV0UGtYbkFEQ1VBYUh1T1dlWTRLSjZYd2xBV25TTXZiZjMw?=
- =?utf-8?B?Q09TT0hTYmpkT2plRTNWREFEa3RHYVYwdFl4V1FtRzlHR0lESlhyQmpYdjJK?=
- =?utf-8?B?Z3NHdmpNZHlFMWVuOG9HNXptRTBPemxFVkluRThGS1Jtd2dINUZKUGs0MHF5?=
- =?utf-8?B?WENHNjdXNWp4Zk9pSHNkd1FQWVRodGN0enY3U3hKTUNOczZvdVlmTkN1eXVW?=
- =?utf-8?B?a1BITVZybVVTNURYYmMvamp5V3NYUU5zeU1LUkRqcFliSHVzY1U0TVRlYkEy?=
- =?utf-8?B?TGNxM1g1S0pUa3AwUmRxV1ZuSjNOcS9qTjZjbWpRcWx5OFlTMGk1U1dZTEFz?=
- =?utf-8?B?bWpaenpvRDZOUUZvdnArWUY0ZStxZ21OOUVtVkljWTl2d1ZmL1lUNDYyWG9z?=
- =?utf-8?B?UUxCVGx3VnU3cEZZcjIrek83ZW1yTVZRZ2tqSkhLMXp1TEhxaktjaFFkT0tr?=
- =?utf-8?B?dVJMNWNTTWFVaUdtZng2M1YveG5rMjNXWHlTdDVraGJKMUxNRFpBOUhFWkpZ?=
- =?utf-8?B?QmI3dXk5NStRM1IyaHMxOFpNMzJkVnhCM3kwczNmWTZwWW1IQTI1K3FKdFJP?=
- =?utf-8?B?SFJwZENzQW1MVW1pVEJTbit5YW9CUFZoZDBEL3lycCt4T3pwYXFBNnArb0Rx?=
- =?utf-8?B?Sk9QYURZVmI2ZUFzS3g3K1gxNnVLN0dQeUhlK2tiWEdsRW84MEtMZXhYakdY?=
- =?utf-8?B?OFoyMHMyUGNPRit6QlUrSlNxdXB3bTVpcGY2akdJcTA5RzgzYk9yOU5FbHBh?=
- =?utf-8?B?aUZ1RGQyRFJabHhFZldoOWxjSldZMVVEOHNxTGxzR0h5WUtBakMvMTlHOU9H?=
- =?utf-8?B?cDR1RlNGU0RCaWFTbXFybmRldG9iekpSNnUvQmp6dWg5US9Ib2s1bU50aUNO?=
- =?utf-8?B?OXg0K0VSdm5FUUh0aUE1T0ZYeTR2MkhrOStEcG5lbldXSFczU0FNelFLOTJv?=
- =?utf-8?B?UWpmbzNNMm1OdFl5VTNxR3FISXNlUWJleXVKbFlqZEQ2RG9UZzkzZHU4c3lP?=
- =?utf-8?B?QXJ2Um1UTWxhbU5GRGwveTVHdGFJSDk2dVEwVkFGMVlFbWhtS2F3RDh5dm9U?=
- =?utf-8?B?WTVDSmg1NlJINnZ0bWpWY1ZmNjZ5b3VGNGZBM2dsVGYzVzl2S09iTVdkV2pQ?=
- =?utf-8?B?ZmpFRzducHNSQ1RLenArblR2elR0N1I3WmUxcW56ZjZmQUc0WEVyVFFtT1Mr?=
- =?utf-8?B?ajJPR2ZPQmpVdzZQR2EraHJMeWdSUFlqblY1S0FwaXVtWTU2YktMaGt0VGFX?=
- =?utf-8?B?WVBTNEpFL0RKUmVRSVRFSXpaaDMyMHRHMEd2VVFlNktkUTA2YU1VSWJwZTM5?=
- =?utf-8?B?RXlPZHptSkQyVnlCaU1NY2FRVm96YThYTk41Si9HN2I0N1czbFY3dk81UWRM?=
- =?utf-8?B?UGhYaTNhRmtkeFRiZVovUzNYV2pYY21EdERmVWowN1FvMC8zeEFNZz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d741eb02-a085-45e3-1fb8-08de89d581f8
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 18:45:23.7340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w1mTj5y3Cs54DYVnhHkmAFWANgolHaJuRPDJNVy1mQVw9I0Kx6howgFnlx7ThXQE/lcCk3kfaBbLGaaueuFn/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10806
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Add DT overlays to support DH i.MX6 DHCOM SoM carrier board expansion
+modules. The following DT overlays are implemented:
+- PDK2:
+  - DH 497-200 Display board in edge connector X12
+  - DH 505-200 Display board in edge connector X12
+  - DH 531-100 SPI/I2C board in header X21
+  - DH 531-200 SPI/I2C board in header X22
+  - DH 560-200 Display board in edge connector X12
+- PicoITX:
+  - DH 626-100 Display board in edge connector X2
 
-On Fri, 13 Mar 2026 18:47:01 +0100, Stefano Radaelli wrote:
-> This patch series adds support for the Variscite DART-MX95 system on
-> module and the Sonata carrier board.
-> 
-> The series includes:
-> - Device tree bindings documentation for both SOM and carrier board
-> - SOM device tree with on-module peripherals
-> - Sonata carrier board device tree with board-specific features
-> 
-> [...]
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: - Update copyright years
+    - Sort compatible and reg
+---
+ arch/arm/boot/dts/nxp/imx/Makefile            | 37 +++++++++
+ ...l-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi | 75 +++++++++++++++++++
+ .../imx/imx6qdl-dhcom-overlay-panel-dpi.dtsi  | 61 +++++++++++++++
+ ...mx6qdl-dhcom-pdk2-overlay-497-200-x12.dtso | 28 +++++++
+ ...-pdk2-overlay-505-200-x12-ch101olhlwh.dtso | 26 +++++++
+ ...mx6qdl-dhcom-pdk2-overlay-531-100-x21.dtso | 32 ++++++++
+ ...mx6qdl-dhcom-pdk2-overlay-531-100-x22.dtso | 32 ++++++++
+ ...mx6qdl-dhcom-pdk2-overlay-560-200-x12.dtso | 39 ++++++++++
+ ...icoitx-overlay-626-100-x2-ch101olhlwh.dtso |  8 ++
+ .../boot/dts/nxp/imx/imx6qdl-dhcom-som.dtsi   |  6 +-
+ 10 files changed, 341 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtso
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtso
 
-Applied, thanks!
-
-[1/2] arm64: dts: freescale: Add support for Variscite DART-MX95
-      commit: 5953966f26f5f825cf1fed6f96c1f3138bee6d6b
-[2/2] arm64: dts: imx95-var-dart: Add support for Variscite Sonata board
-      commit: b5fede0246d012e0fe66588e85825c2bfac626eb
-
-Best regards,
+diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+index de4142e8f3ce8..856c9f21bd703 100644
+--- a/arch/arm/boot/dts/nxp/imx/Makefile
++++ b/arch/arm/boot/dts/nxp/imx/Makefile
+@@ -58,6 +58,31 @@ dtb-$(CONFIG_SOC_IMX53) += \
+ 	imx53-voipac-bsb.dtb
+ imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
+ imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
++
++imx6qdl-dhcom-pdk2-overlay-497-200-x12-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo
++
++imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtbo
++
++imx6qdl-dhcom-pdk2-overlay-531-100-x21-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtbo
++
++imx6qdl-dhcom-pdk2-overlay-531-100-x22-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtbo
++
++imx6qdl-dhcom-pdk2-overlay-560-200-x12-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtbo
++
++imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh-dtbs := \
++	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo
++
+ dtb-$(CONFIG_SOC_IMX6Q) += \
+ 	imx6dl-alti6p.dtb \
+ 	imx6dl-apf6dev.dtb \
+@@ -179,6 +204,18 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
+ 	imx6q-cubox-i-som-v15.dtb \
+ 	imx6q-dfi-fs700-m60.dtb \
+ 	imx6q-dhcom-pdk2.dtb \
++	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtb \
++	imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtbo \
++	imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtb \
++	imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtbo \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtb \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtbo \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtb \
++	imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtbo \
++	imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtb \
++	imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtbo \
++	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtb \
++	imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtbo \
+ 	imx6q-display5-tianma-tm070-1280x768.dtb \
+ 	imx6q-dmo-edmqmx6.dtb \
+ 	imx6q-dms-ba16.dtb \
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi
+new file mode 100644
+index 0000000000000..90259785126ba
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx6qdl-dhcom-overlay-panel-dpi.dtsi"
++
++&{/} {
++	lvds-encoder {
++		compatible = "onnn,fin3385", "lvds-encoder";
++		pclk-sample = <1>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				lvds_bridge_in: endpoint {
++					remote-endpoint = <&ipu1_dpi0_out>;
++				};
++			};
++
++			port@1 {
++				reg = <1>;
++
++				lvds_bridge_out: endpoint {
++					remote-endpoint = <&panel_in>;
++				};
++			};
++		};
++	};
++};
++
++&display_bl {
++	pwms = <&pwm1 0 5000000 0>;
++};
++
++&i2c2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	touchscreen@41 {
++		compatible = "ilitek,ili251x";
++		reg = <0x41>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
++		touchscreen-size-x = <16384>;
++		touchscreen-size-y = <9600>;
++		touchscreen-inverted-x;
++		touchscreen-inverted-y;
++	};
++
++	eeprom@50 {
++		compatible = "atmel,24c04";
++		reg = <0x50>;
++		pagesize = <16>;
++	};
++};
++
++&ipu1_dpi0_out {
++	remote-endpoint = <&lvds_bridge_in>;
++};
++
++&panel {
++	compatible = "chefree,ch101olhlwh-002";
++};
++
++&panel_in {
++	remote-endpoint = <&lvds_bridge_out>;
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi.dtsi
+new file mode 100644
+index 0000000000000..48d346b6b484b
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-overlay-panel-dpi.dtsi
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/interrupt-controller/arm-gic.h>
++#include <dt-bindings/pwm/pwm.h>
++
++&{/} {
++	display_bl: display-bl {
++		compatible = "pwm-backlight";
++		brightness-levels = <0 16 22 30 40 55 75 102 138 188 255>;
++		default-brightness-level = <8>;
++		enable-gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
++		status = "okay";
++	};
++
++	lcd_display: disp0 {
++		compatible = "fsl,imx-parallel-display";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		interface-pix-fmt = "rgb24";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_ipu1_lcdif>;
++		status = "okay";
++
++		port@0 {
++			reg = <0>;
++
++			ipu1_display_in: endpoint {
++				remote-endpoint = <&ipu1_di0_disp0>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++
++			ipu1_dpi0_out: endpoint {
++				remote-endpoint = <&panel_in>;
++			};
++		};
++	};
++
++	panel: panel {
++		backlight = <&display_bl>;
++
++		port {
++			panel_in: endpoint {
++			};
++		};
++	};
++};
++
++&ipu1_di0_disp0 {
++	remote-endpoint = <&ipu1_display_in>;
++};
++
++&pwm1 {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtso
+new file mode 100644
+index 0000000000000..a5cb77b351af9
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-497-200-x12.dtso
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx6qdl-dhcom-overlay-panel-dpi.dtsi"
++
++&display_bl {
++	pwms = <&pwm1 0 50000 PWM_POLARITY_INVERTED>;
++};
++
++&ipu1_dpi0_out {
++	remote-endpoint = <&panel_in>;
++};
++
++&panel {
++	compatible = "dataimage,scf0700c48ggu18";
++};
++
++&panel_in {
++	remote-endpoint = <&ipu1_dpi0_out>;
++};
++
++&touch_som {	/* TSC2004 */
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtso
+new file mode 100644
+index 0000000000000..3e02031b74d0c
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-505-200-x12-ch101olhlwh.dtso
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi"
++
++&{/} {
++	gpio-keys {
++		/* BUTTON1 GPIO-B conflicts with touchscreen reset */
++		button-1 {
++			/* Use status as /delete-node/ does not work in DTOs */
++			status = "disabled";
++		};
++	};
++
++	led {
++		/* LED7 GPIO-H conflicts with touchscreen IRQ */
++		led-7 {
++			/* Use status as /delete-node/ does not work in DTOs */
++			status = "disabled";
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtso
+new file mode 100644
+index 0000000000000..84a498833674d
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x21.dtso
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++&ecspi1 {
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	eeprom@1 {
++		compatible = "microchip,25aa010a", "atmel,at25";
++		reg = <1>;
++		address-width = <8>;
++		pagesize = <16>;
++		size = <128>;
++		spi-max-frequency = <5000000>;
++	};
++};
++
++&i2c2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	eeprom@56 {
++		compatible = "atmel,24c04";
++		reg = <0x56>;
++		pagesize = <16>;
++	};
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtso
+new file mode 100644
+index 0000000000000..9ff0771c6abf9
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-531-100-x22.dtso
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++&ecspi2 {
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	eeprom@0 {
++		compatible = "microchip,25aa010a", "atmel,at25";
++		reg = <0>;
++		address-width = <8>;
++		pagesize = <16>;
++		size = <128>;
++		spi-max-frequency = <5000000>;
++	};
++};
++
++&i2c1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	eeprom@56 {
++		compatible = "atmel,24c04";
++		reg = <0x56>;
++		pagesize = <16>;
++	};
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtso
+new file mode 100644
+index 0000000000000..9f5814e7a04f2
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-pdk2-overlay-560-200-x12.dtso
+@@ -0,0 +1,39 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2021-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx6qdl-dhcom-overlay-panel-dpi.dtsi"
++
++&display_bl {
++	pwms = <&pwm1 0 50000 PWM_POLARITY_INVERTED>;
++};
++
++&i2c2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	touchscreen@38 {
++		compatible = "edt,edt-ft5406";
++		reg = <0x38>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_dhcom_e>;
++		/* Touchscreen IRQ GPIO-E conflicts with LED5 GPIO */
++		interrupt-parent = <&gpio4>;
++		interrupts = <5 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
++	};
++};
++
++&ipu1_dpi0_out {
++	remote-endpoint = <&panel_in>;
++};
++
++&panel {
++	compatible = "edt,etm0700g0edh6";
++};
++
++&panel_in {
++	remote-endpoint = <&ipu1_dpi0_out>;
++};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtso b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtso
+new file mode 100644
+index 0000000000000..5c380572c4092
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-picoitx-overlay-626-100-x2-ch101olhlwh.dtso
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
++/*
++ * Copyright (C) 2023-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx6qdl-dhcom-overlay-panel-dpi-ch101olhlwh.dtsi"
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-som.dtsi
+index af0d95396cd51..74dfb92f15147 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-dhcom-som.dtsi
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Copyright (C) 2015-2021 DH electronics GmbH
+- * Copyright (C) 2018 Marek Vasut <marex@denx.de>
++ * Copyright (C) 2015-2026 DH electronics GmbH
++ * Copyright (C) 2018-2026 Marek Vasut
+  */
+ 
+ #include <dt-bindings/pwm/pwm.h>
+@@ -303,7 +303,7 @@ ldo2_reg: ldo2 {
+ 		};
+ 	};
+ 
+-	touchscreen@49 { /* TSC2004 */
++	touch_som: touchscreen@49 { /* TSC2004 */
+ 		compatible = "ti,tsc2004";
+ 		interrupts-extended = <&gpio4 14 IRQ_TYPE_EDGE_FALLING>;
+ 		pinctrl-0 = <&pinctrl_tsc2004>;
 -- 
-Frank Li <Frank.Li@nxp.com>
+2.53.0
 
