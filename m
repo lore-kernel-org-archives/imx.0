@@ -1,109 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013025.outbound.protection.outlook.com [52.101.83.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F023E3D8E
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 10:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774348518; cv=none; b=suWDg97Tw1SUa57eG9QEVxQlGpS8yORkKDeQ9CK4gTOwt0RNhNzQ6iZpUfVyFTKPOa3brvFdpSlfCtvJMBRL/4EBQOJ7OrAX8JKB/CiWZq3GeOXD+Q40kzhuMfWX8CHotkaDoEFdL2qFzE+xv9Sf9NvKdGVcVPJnwRHVBAyjm+U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774348518; c=relaxed/simple;
-	bh=hAR97mSfzBsK6s2/V2lxo/QMFvGGs27xGdB50d/Icsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfPfBBQerFh+x9tkXIksVr821e8ZqckCyUoqxjftbwHty1HX6kILDWMfqgz3DYG7BoBss7C2vxXdKKNMkOrLmHc0hfU8/czcZ0XVdHaCuhtZtf2dy/GaqhCX9JUCvwXDtzbxqNIz0fibWUb3XC0lGqUQM38ojd/Q3xP2X6lRg0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNNcTAdW; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5E63E3146
+	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 11:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774350181; cv=fail; b=Tk07FKU/VtjQQqDM+ERQXUj2qduVhygXo52Mz80NU3vHhY6UbjqSTOa4abPEfi93h6uEzAImNz+zhchEE7w9BwJ7U8hMYgRbUvVgSAQceIGjnBbyBIr2E43LnzCJd7Fia7OT51cRxI4nmKcYXZP/BURec/nymHz7lYjw2APasLo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774350181; c=relaxed/simple;
+	bh=8txW/sDPO/hqdth3UpSpN/Er2A85IHO5Ure8/Eo8E6g=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=d/D5g0J1f1TPtdOeoMoZU+y91dmFSJWKvB0amFfB65x52EvKE6w/HQcega2lMakaq0qC/JoTRysl812XtanSY6YvNpaXuB3rtYGziAGoQuqHYurxQHAOa/TW6H7OBpGJ9sjqyHsq1y4rMjn7fucqc23kM3bxXsi97pvb+eu9kF4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MpH7JMPD; arc=fail smtp.client-ip=52.101.83.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNNcTAdW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774348515; x=1805884515;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hAR97mSfzBsK6s2/V2lxo/QMFvGGs27xGdB50d/Icsw=;
-  b=nNNcTAdWTxJcZjEYm0+APYUV9UyVfXFcxhg3T0rXNmCdibxvNrxmisLY
-   b/Zw72FCz7uMUMmLCVJkHSTToi+MYVr1BzZxue28aAJhV1R/BRqAeCQE5
-   roWjWcNqmBN2K8+eqGEqJDPDDn0t5mCU2cNgMO/Xs0Zr1pDCmKLBCp/GM
-   S8Dcaiz7bI1aykf/JnjhP80vNub4WhpaWJ14sNM3BHzzRfi0VMdh0ArFp
-   SKp5VdehOKrJllUFIl1Z0cA+zy3xqU4GgPVyTUltnb2qmTMdC2CdKGNYL
-   6FJ9K0uPidorglbvVjSfJiqHqsCsBjL0YDTztymNfkSryUbURIlfAd6n0
-   w==;
-X-CSE-ConnectionGUID: +Mv0seCgTLiNkVMNocnRCA==
-X-CSE-MsgGUID: FfEO730CS+2vL/oxEHbZjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="97978535"
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="97978535"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:35:14 -0700
-X-CSE-ConnectionGUID: JzFhO/gaRVC88UXRsJRd+A==
-X-CSE-MsgGUID: ovTG8psfRoShtwdAORxHvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
-   d="scan'208";a="262239026"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.180])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 03:35:12 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 2B5CC121CFF;
-	Tue, 24 Mar 2026 12:35:14 +0200 (EET)
-Date: Tue, 24 Mar 2026 12:35:14 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Michael Riesch <michael.riesch@collabora.com>
-Cc: Sakari Ailus <sakari.ailus@iki.fi>, Frank Li <Frank.li@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Guoniu Zhou <guoniu.zhou@oss.nxp.com>, imx@lists.linux.dev
-Subject: Re: [PATCH 0/6] media: synopsys: Add imx93 support
-Message-ID: <acJo4qamh9edxqb-@kekkonen.localdomain>
-References: <20260210-imx93-dw-csi2-v1-0-69667bb86bfa@nxp.com>
- <acGQNIUKqfh8eWNB@lizhi-Precision-Tower-5810>
- <acJI3wYnl8_g4WpO@valkosipuli.retiisi.eu>
- <08e6b649-61ac-4059-a914-c537b5c4da7e@collabora.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MpH7JMPD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=S9hP7zq1tYp0eFNV4ielqxpz0WpFD0XYfdUZjwBUSIb5uadshyT0JQhmCU/qgSN3vk2aRin12tIO23wFs6NWnM8nRnw5HpcgETMS9kDSrtwB5JL9kVDnnShQ3I16r0noZE8vAymJblLacf+tdcO+cZdcjAEXybJD5BbRtheeIAONr7UDo0hI39YCYmKPu8f2t7BVw7aR94r4uqIPM9ID3HBBSDbSzJyEQbjvUD7g5FCLqnfmcJAue06gS0/GujloqZaBMt7gnASKuyR0TZPoWx5v9vTnUqGJnmjuzh0XOZrk5trapWVxwKm2EzgJHksrf4Cuik9kVDeVxrJqrrcpkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PN7DUqrRxtBjIo5THdCZsmygbBhBI+CVwIVyKNrI++s=;
+ b=EyObR28KIQ0UlvPwdR535YjOehDu0yPJnsxqUz2irO11xNt5WD19tsxkeJHHMGtXgLW28onie1GqFnXaQOwCr5YVwNM/ekOcLdeiexZKjuxKouKx7O3IbgkOxuM9L5nrVqPOL8dMR+Al1Zz8hZ7GKmlFeZ4bIMHvdZzosu1BJBfX0HTGZyzfmR7NzURkC7xRunwiocBzR/zzav0r7qw/mGW2w5OgqRiA+Vp81Saq2CQ8jvhLF+rnozppP3m5GmrRn3xDggGijYsKnmFolTM88CuCXvlHUfg0kUucL8f3FqzeCEQPr40ztg0EMoedNkQ32g9Ju9txae0RqvxjrMxL6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PN7DUqrRxtBjIo5THdCZsmygbBhBI+CVwIVyKNrI++s=;
+ b=MpH7JMPDVn0N7WFxN3o9lxGOMizdEIFuf12caxyDqmdrA83z/hkQqHx84ImaxZeCkUPCHftVG5WKZRh6r738D2LCoAmZRe3XKXVjMlZd9IEE3L4cz4N8Y3k9C/cqTtjDh44AkEB3l6vW4OgyRsLj/PQAg09b/xF+dT/YySmY3oR8mVVkZcnc8hA31ndRUWFzkMAE8/kRvOZwBWyuyd5cqt0Qj/L5VA7gRRkPt7taxJ2vKzzW0nbP6ml95YZn6k5MZfp3Ote+CPK86YWEAw/qQ5d8IY93VId5QUM6F143exX0EByyVXaRsnfcsGxUrp2WBplONUV0HBFG7GZ4cL/N9A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS1PR04MB9504.eurprd04.prod.outlook.com (2603:10a6:20b:4c6::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Tue, 24 Mar
+ 2026 11:02:44 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
+ 11:02:50 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	jun.li@nxp.com
+Subject: [PATCH v2 1/2] arm64: dts: imx8qm-mek: switch Type-C connector power-role to dual
+Date: Tue, 24 Mar 2026 19:04:58 +0800
+Message-Id: <20260324110459.2838767-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
+ (2603:1096:4:195::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08e6b649-61ac-4059-a914-c537b5c4da7e@collabora.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS1PR04MB9504:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ac85cc3-36f1-4394-748b-08de8994e379
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|7416014|1800799024|38350700014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	1llaWU6aI0UubuMgCthphpL1nrgL/xfY0P/AXt2/28Bsvma5E+ZQcqpqbRXSy1g7ZqAJK2VVy7CqDCiz7+C0qfMYIVqC9XpPKQuPbYJORcuovmuEwZ9kYN35P+fccK+KWcw+lxKt4KAFCC2j3FdJRzesNqA6aYgnZtGSvIwg4HlIQtWoH55VxL6kv4fvI067TfZOYM9Q1RfJQqZ9P/kcSrmIvxs8L51pydgByNRtmiYKMZt901U+etQjhFQ7F5+mYhWPzG8gO4K/o8jCvOjC+uejad4YCUNO+gePLOCI/vmMfWgEV0KWNjKVlgaMhj0lQXJSZnUfXvbL72MqB0vfrWKQHCC/4tQHXxwgS1luM4dd9Ko0+fXp9N7JYqOyugC0RZpKkvsh+FC+kYRbvpO68U4GW2jgcNl4zqdWOPhk5i+Z30fkPNvJPdD8GdcjUeeviuMuiIJ3z/Q1xeKRfwFsmyFo3FlwbH/A9kVKDyH9yv16iYwc9pcBPAWlQyeaoz5M4mM8/n7h/r0AXyYd+qjCBvDS6nvHBTZjFW2x6tIGEfe4whTqb5PI8J6MxU+igqQbIH3oAwOtjOXrZmuDD9Kj2FFsV++59/if1CYDWKlrDTs47AVudOOnxYm2P593bbYVoNaSxev8Y3MOYBZnRBH20/flrfifIuLvqJvZ7IvQYiyXSP3tqHX3IHE/mybE2gPKz+tNkBeDSYhWSUqmxIlqj8s/BHiizLUuXQaqV04LZv5MyZ4wW/JPdiAwLixIFzYqEW5yUWjYHk/KmDvNgZQMW0lY+mbgMf5L7OsFjTbksns=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OuOZIx3YKtSSOxF5dnosjHrpLgq6g6GbeybdF3ik4J7hb98IugfGBgvK5NnK?=
+ =?us-ascii?Q?k4CtaeReccM1NVPZjQWTOvs7ONJcs25EGNjhyVa+FtjPxJPQgy9wVaLb2Z8+?=
+ =?us-ascii?Q?9Th4d/HwB72iyi+rGr1nEksq3rU8ii3cqKE5qeD3KqLDSxxyFkXg8n0yOOfA?=
+ =?us-ascii?Q?NlnLOh2k+DOOBp+MMHN861bgL+UWHEUkzopMwLnVcy2cJgBUccod6vjYkZtu?=
+ =?us-ascii?Q?BTouoc1U7HLHeTJw3e6ed3EmGYc27CUSIfH1roAVzqklFzhH5FLZg6uGFuWv?=
+ =?us-ascii?Q?pYTSUuJM8JB3/pfqwvsjWtQhqUszquMQKyyJ0EvFJ/TKbAumjMy5j8r73oKo?=
+ =?us-ascii?Q?2Anz4hcwUFFBcZ3I8qfKN8ImteVumk9VXJAe5R8xrvjzpFNaUSFPSKXKZzjf?=
+ =?us-ascii?Q?a8kYw17bOV4BPSm5qkwj0fryO0W00OWdleOoahYtj5irZxZB5mUt0oWLXA00?=
+ =?us-ascii?Q?qEmLMHhF2fbs9j5VnUfRocYpfljj3d/3g8bDH6Ks7Dlhrmfh7GKVChDacccj?=
+ =?us-ascii?Q?a40ROVkARj6YVq/XTMk1nnpdu9I6/LRU/j4jEoo0oO5GglOj4hLlvwcJgu1c?=
+ =?us-ascii?Q?b/CFrfifzsut50HUn8bKIZchdLbD20oHEh1/AisXEzl1sy/PXXuilJU+NReY?=
+ =?us-ascii?Q?VLMtFP0CLLVNIc1NF5B+PiIDZ4mRfKzaXqwtv1P8rROGVy1gXsBoEis5047m?=
+ =?us-ascii?Q?DUhLFVS+ww33GEzy9JqdWoy2NwNpkTK9s82tOoUr/fVOT7dazTesy8i+A7vV?=
+ =?us-ascii?Q?rmgIcEVm9aypcMswxDW+J87zKBOFkf1nMauZVF99ZcP6cFT1KddNeF2J3Kv4?=
+ =?us-ascii?Q?UJ5y+uCCJ6GdR2D29grU7gLQrOKl/kkKFioeauRyEoeS5CmKmr0GHkyvooeW?=
+ =?us-ascii?Q?nCSmM1Ytoik+sQ1GOrgr2YQ70ESngtEuzYRpPIbFjDtTwPQZzqu0cnS1idOA?=
+ =?us-ascii?Q?/qmIR3zDdov9qtdtooR7yhpfj7xLDPkEs8AS9b0q0kddXcvT/VTkYpHg+Vcp?=
+ =?us-ascii?Q?5W/BzG7r1f8V/tE2MrFd6Nxt5ZzV89Fsqpv2XGordAbWbt93HPFgpZIsDPo1?=
+ =?us-ascii?Q?9mvuaMVMJeyZfUgnfObEwoKLub50Fleg0R5W5g24YeY2cgMTSMnOFJRHr2HX?=
+ =?us-ascii?Q?cvCdajPJnh0WRVxrlYzKwlwaseCNeAh2gzR67pNGVNlaYDN+TtTt1O6Ygqdt?=
+ =?us-ascii?Q?vv2PYH8UfN/fiB2h1U1AbVH+lc9IjFuwDeRbfV8JCE/JZIzbZm3iXzMgSDBc?=
+ =?us-ascii?Q?HP42EoI0+YH2S22X07pCxjeJvOSSnZlAusiKF/8EEW8BEJay1lWoeExUoYVw?=
+ =?us-ascii?Q?1YT6FnGLYxvW+Q0RrHlW3ht7/sletOT9y/0eMmOtzS3OU+uh1iLWNAXyzOVU?=
+ =?us-ascii?Q?5ljj8QNj8rrp2plc1qVYpbeydWdL5elvuc/LzlrHcbbCSWB2pE6oKwi00N9E?=
+ =?us-ascii?Q?GWavvdoVWlRDZWa5OtNcAz7XwSkGeY1JlFall/wxqE2l7pR+dxopmfq1/dHS?=
+ =?us-ascii?Q?aHoitWW0uNTw98e6A2TMYnu7IqCh85al18mmoyamAywIit1CnkGIQDt5EMrb?=
+ =?us-ascii?Q?8Oldu4dOPkpdIYQ0CQCjywhMU/DiaI9dmE4N7McujFOaWe4mcaYksbmbz3Q2?=
+ =?us-ascii?Q?nTyPHmOG9aVPYf3h5cWKvAcRnJqnPlNmjJmvJE2vr03RqUEIgmFB0qvw/ydT?=
+ =?us-ascii?Q?2Oj5bOst9pYr/Jzwu80UiLs/Rl19GCNiMLHSCU73lVh+ihNu2zqfwE8+sQuA?=
+ =?us-ascii?Q?nrAATZV+Ow=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ac85cc3-36f1-4394-748b-08de8994e379
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 11:02:50.1431
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OiUTyzZDv/YC/Qn2KAlDuG3xh/PUXystI3AYfljjWJqU7Q4lnaHbq3+D4utoWYnrY2r1LJNbuQBZ/8+iLkTp8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9504
 
-Hi Michael,
+When attach to PC Type-A port, the USB device controller does not function
+at all. Because it is configured as source-only and a Type-A port doesn't
+support PD capability, a data role swap is impossible.
 
-On Tue, Mar 24, 2026 at 10:46:49AM +0100, Michael Riesch wrote:
-> Hi all,
-> 
-> On 3/24/26 09:18, Sakari Ailus wrote:
-> > On Mon, Mar 23, 2026 at 03:10:44PM -0400, Frank Li wrote:
-> >> On Tue, Feb 10, 2026 at 12:11:07PM -0500, Frank Li wrote:
-> >>> This 3rd time try to support DW CSI2RX support for imx93.
-> >>>
-> >>
-> >> Laurent Pinchart and Sakari Ailus:
-> >>
-> >> 	I am not who will take care this patch?
-> >> 	original drivers/media/platform/synopsys/dw-mipi-csi2rx.c picked
-> >> by Sakari Ailus
-> > 
-> > Michael seems to have questions on the last patch, too.
-> 
-> I.. don't.. think so. After digging a bit in my memory and lore, I found
-> a v3 of that series with my Reviewed-by [0]
-> 
-> [0]
-> https://lore.kernel.org/all/20260216-imx93-dw-csi2-v3-0-aabafee10923@nxp.com/
+Actually, PTN5110THQ is configured for Source role only at POR, but after
+POR it can operate as a DRP (Dual-Role Power). By switching the power-role
+to dual, the port can operate as a sink and enter device mode when attach
+to Type-A port.
 
-Message-Id <9e14d605-9419-441e-a554-432d435191b3@collabora.com>.
+Since the board design uses EN_SRC to control the 5V VBUS path and EN_SNK
+to control the 12V VBUS output, to avoid outputting a higher VBUS when in
+sink role, we set the operation current limit to 0mA so that SW will not
+control EN_SNK at all.
 
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+---
+Changes in v2:
+- improve commit message
+- add comments for 0mA operational current
+---
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index dadc136aec6e..011a89d85961 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -611,9 +611,17 @@ ptn5110: tcpc@51 {
+ 		usb_con1: connector {
+ 			compatible = "usb-c-connector";
+ 			label = "USB-C";
+-			power-role = "source";
++			power-role = "dual";
+ 			data-role = "dual";
++			try-power-role = "sink";
+ 			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++			/*
++			 * Set operational current to 0mA as we don't want EN_SNK
++			 * enable 12V VBUS switch when it work as a sink.
++			 */
++			sink-pdos = <PDO_FIXED(5000, 0, PDO_FIXED_USB_COMM)>;
++			op-sink-microwatt = <0>;
++			self-powered;
+ 
+ 			ports {
+ 				#address-cells = <1>;
 -- 
-Sakari Ailus
+2.34.1
+
