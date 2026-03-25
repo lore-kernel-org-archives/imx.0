@@ -1,161 +1,195 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011042.outbound.protection.outlook.com [52.101.70.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A642E282B
-	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 16:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774456578; cv=fail; b=afkmXzQGeNQVcwG7X3D2l5+T9FPIc5tA5LB96ebgcBH8dSlOTLstyMM/UQy1lj2YL5aB5t768NlfMc9Evrt2L9Tcjf7PL7XEnOc2AgZRU5P5iDxUtR9Cd560Rrav7fXbo5qljqTKF843hAomEDW0xTQPTb8tVPXGJIjwsEKjS0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774456578; c=relaxed/simple;
-	bh=Ctv70HTmXXcxNp16H25hsZK9mPN5OWbvTgaMZ94ADxw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F1C3FAE0E;
+	Wed, 25 Mar 2026 16:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774457656; cv=none; b=TFdbFO4Zta9KrDvMvOncNJ+iVyc3/uu6VxSDaBmAqOilqWRt8cuFVfNOfEKvaAy7m1fWFlY8z2i23x7TcRYhy1pKvmOcHedIN2F4DfEAZ/HdPGsii0G32Pj9RxfcAEJ3WOto+n6aZWK9Tm76USp4T4Q8HhhU/14E3ZBh0o10/SU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774457656; c=relaxed/simple;
+	bh=oMuUWLmoNITVcQzV/o3it6GVvrYLaH+S1Qr6U989rSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ULImRHqrJgu0Fn2G2ryss94EGw4QYIEzvdDrKEyxRLN0IHM9ZoGG1Ddr7wtzSIMBPksG7Pugy3F2iuGNTiPeA1/+AsQSGJxPZ0n7yYXyIW3jW+UxAV8dzh7QE37RoxvDV8LAxNIsMvpXjhyWFiWcDiaPIe8yod9gKKwvfrZnpOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S9aKjUnn; arc=fail smtp.client-ip=52.101.70.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 MIME-Version; b=Jg0hjiQ5orSBo1X7qmNjy9KaQYmd0GdhFGKKhKVBXt1F4GMVbxzbFgSL1g8LnddXKvqEefVr342IhnUhJjduRVjbHlldDLtQSY6zKKvlNck/xy9FoqVaqbB22cdymHopfeA2dKyONUsJ/2DjrtVl1RJm51dy2WQRyNijja8UmDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDB30oUW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S9aKjUnn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i4b7BSWpns5WJKcvBmTnC+XyA50s1d7CLBmNTOWyDp8RaDz7Wsntwwj38qfmbZlrfx/z1meBWu0+4ce/7swugaGblcBsPJi5SvajeTLg1jO0P+z7Am8BOQnm/Lx0zVqjU7YKSrkd7hwqPmFlFN314qHLSQeqwTo4sGltUfk8x4qtToaBhyOQ/AqlmOjhKTQNSuGlKupwBNxrqCKS+tqvzA/QtPg/O22TfVZ1alqyX5e9jBjpLtuzaR4MWo/JjbxuNDkvx3/Gz07k+vOoUNqPpBjXGu/yJe2WwiLZCsPS3rO+qffjvZGC1Tr+TyDrWCLenU/kiY/2Osc4Nmc2Nuu2IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3oFCYO/2uBZMbWIPcIvny/Ri4mK5icfTLEFzX8ZLBM8=;
- b=aPvi425ZImra7c3NvSsyCMfjOJ0X1704lKJib1Y/ufRZjlIX1DN+bcwknJlwQa3uoz51clcoESTx9p5M23sRriTOwp7b/lWkJs9IjObhVub3cePz/QGZu9imbJNXSE2DuRC7PAYfdjcBmDWidw5XdK3zFmcZY8QFq6CGfhFvmRQCJ+XZeGjY6N3IxAEO5Cssbi7wUUv92pdJfDfawQxJWAKR4chZDXp82te5MqD78iSKc6vpyNAORGPiaLE7E5FrwqxvNgRCY0tGoMqYhJCUF7pj6yJW7hLiCo89JLCzU/NyvKqs5mciF+gNhwZY9RqP0E4+fBgJmHpwrHUPoj4zuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3oFCYO/2uBZMbWIPcIvny/Ri4mK5icfTLEFzX8ZLBM8=;
- b=S9aKjUnn5yKWHJbwz5CU2L8921FsTXOVK0xBf3Ap4zWetv09Q9kA+OZn+Y8Rqv9DelpAXYU6eAZfF5aExLjyI0DSP+lJy4iVKC4Skp7HUGTEobUgMGi64MjFV2cSv7IY6Au4WzVZ7M1gHFAVpNG+xOJb4s1BzVts7oAKWUJszwlCsSfNvKPQ4JjorJ6vZVtVyZd45w2FMAzBMRQvj8SWyv7dj1K8THBCPV7BmQySW4ORRIQXA0RBvslMn0PUUs594x5QPH1Pgi/b8ZIEZoF071kAtagwi6ZOOjIv7ThE3GsXmVjaUttmtrq5s3z1MdEZMaLHhDMr2feRfQIYjfB/vg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
- by DUZPR04MB9783.eurprd04.prod.outlook.com (2603:10a6:10:4b0::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 16:36:13 +0000
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
- 16:36:13 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Fabian Pfitzner <f.pfitzner@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDB30oUW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A05C4CEF7;
+	Wed, 25 Mar 2026 16:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774457655;
+	bh=oMuUWLmoNITVcQzV/o3it6GVvrYLaH+S1Qr6U989rSY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qDB30oUW5a/3zO8cnh+u95v1NNfWmdGI2IjUhVXfyQO4SZA9TyoTDvTMqD+MHZCZB
+	 NbZtSa7ImOyDdMHoSkCtK7kMx2M9RnDL3kZd0WZAGqqSFNhJA4Vyj+bRdJUtT/WJ1+
+	 smzMbNGLEjkZHNkEwdIxqekKRq5iCdcpKCC+5KHh0JNGfGHt78pBcZNG2XZr+ZjCL8
+	 +pQPBWT2Qxf0S+D+n9gEGvUaIXjm0r1poXr0/YGLOZB2oBLm4MXdkhUtjKNkn3Qdqe
+	 uvMiMQG7Gvnj5hAOzCxfefchzrdYpSo9zodIbgOmf0vcfll+P9lh2ztHg9oF7j+3q5
+	 jVMvbkd5KgOww==
+From: Simon Horman <horms@kernel.org>
+To: bartosz.golaszewski@oss.qualcomm.com
+Cc: Simon Horman <horms@kernel.org>,
+	magnus.damm@gmail.com,
+	jernej.skrabec@gmail.com,
+	s32@nxp.com,
+	krzysztof.kozlowski@oss.qualcomm.com,
+	linux-arm-msm@vger.kernel.org,
 	imx@lists.linux.dev,
+	festevam@gmail.com,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] arm64: dts: imx8mp-frdm: add sd, ethernet, wifi, usb and hdmi support
-Date: Wed, 25 Mar 2026 12:35:55 -0400
-Message-ID: <177445648422.3146408.865544240722814138.b4-ty@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325-fpf-imx8mp-frdm-v3-1-1c98eade991a@pengutronix.de>
-References: <20260325-fpf-imx8mp-frdm-v3-1-1c98eade991a@pengutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR05CA0051.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::26) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	wens@kernel.org,
+	netdev@vger.kernel.org,
+	geert+renesas@glider.be,
+	linux-stm32@st-md-mailman.stormreply.com,
+	dfustini@tenstorrent.com,
+	andersson@kernel.org,
+	khilman@baylibre.com,
+	linux-mips@vger.kernel.org,
+	mripard@kernel.org,
+	romain.gantois@bootlin.com,
+	vkoul@kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	jbrunet@baylibre.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	sophgo@lists.linux.dev,
+	brgl@kernel.org,
+	devicetree@vger.kernel.org,
+	konradybcio@kernel.org,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	linux-sunxi@lists.linux.dev,
+	conor+dt@kernel.org,
+	davem@davemloft.net,
+	jan.petrous@oss.nxp.com,
+	shawnguo@kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	bartosz.golaszewski@linaro.org,
+	peppe.cavallaro@st.com,
+	krzk+dt@kernel.org,
+	mohd.anwar@oss.qualcomm.com,
+	konrad.dybcio@oss.qualcomm.com,
+	martin.blumenstingl@googlemail.com,
+	andrew+netdev@lunn.ch,
+	rrendec@redhat.com,
+	linux-rockchip@lists.infradead.org,
+	christophe.roullier@foss.st.com,
+	linux-kernel@vger.kernel.org,
+	neil.armstrong@linaro.org,
+	alexandre.torgue@foss.st.com,
+	edumazet@google.com,
+	robh@kernel.org
+Subject: Re: [PATCH net-next v10 6/6] net: stmmac: qcom-ethqos: add support for sa8255p
+Date: Wed, 25 Mar 2026 16:53:35 +0000
+Message-ID: <20260325165335.326630-1-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323-qcom-sa8255p-emac-v10-6-79302b238a16@oss.qualcomm.com>
+References: <20260323-qcom-sa8255p-emac-v10-6-79302b238a16@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|DUZPR04MB9783:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26636ef1-08be-4ca8-0c42-08de8a8ca0b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|19092799006|38350700014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	sKXr1xoBpnHADGw8/86UQq9i67T8uDzYbuIZXv/6s56gA3msHB4/y3qu1EmcNx4OcCJ7uPd8WoUQwACcd/jFCu21TNiisYimH+Y3gxfWxSHFnzRmN35I64hmI6+Uu5IRg51NconsZHGVR3emo+bZGo4/yUacpR1QT9KF84UfTB+RElkSjMQbHdc/06SmGmnC7u6zQy5ymV1BKpaxWMXfOyH76QsOp5M8cH5Wq1XFJu696ZRAORTDJg2+SrzllgQlhNP63F48qTaU08o1ivlfZVd20XMd9+m2X+cZjStQ3yyiLQKlfUcJLA58ezmkLY4dVb3UaNt1VkoYTeMes1mpJVKdROY20ziJiStykyFDYfkgPT0marbsN9Rxv9s5FyGzH/k9tf7IJOVH5+nvF5Oh5XHuj7ODQLBXGx6EKAfrDZxvAES/DWKe/MFau9W7mZCB5/KhRcjZWypfepflorJWkIOHCnf56xFuCPBnp/3PKpEqis1stRgkUVfAXlnOcdyrJQUAxrRPpnHcVKbU2/Dm2YM7dgmGdUcxpQUus1hBWMPmaNRkGR/ocN6S2bolYwx5ilEShu0hsbz+aHwjxZKVB8o56/P1f2flMUOHb1fuEphTxeL5Rl28xilRlukauG3QmVN//LMd9h/WezC9hCOe0ZUlJUpVLY2IrxbeDn+6iVOSwnnFi9xgFf4d7nKR/rrd25MTMHQ8/IlNWhyqMzzsf3Tfg+HNN3jbc95aEYIu8MzylG5FpWtBhvpaO8A2b6JZZgB9Y60OOfcR9LTqozN6wQ0v6+dFOXq9jEkiESmVWKM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(19092799006)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUk3VnBueXBlS3NGRTNLanFOT05kdzZ5c1FGdFNGYWlVUzlEazZwZU9GQkt1?=
- =?utf-8?B?L0RzMjNxZDVMdzRqb1U5VTBqOTJvWjUrc3ZvcHpHU0t3T1VKTmJnd0ZxN1dq?=
- =?utf-8?B?amZqWERSSzk1MzNoME5TT29qY29UYk1QSHdieUJQekJML1YrQVhBRHFpSWpD?=
- =?utf-8?B?Y3BUeTU0V0c4TzJzUUZWN3hjeHA0djhobWdRc1dldE9NN0ZZUVY5Z2diSFVi?=
- =?utf-8?B?VFhEU1o0Uk1DaGRyeHZ2aFZHaGtReHlxWTZ0L3NjT0pzNEpEbkFhOUlTa0RX?=
- =?utf-8?B?V0JSejNyMElwcFdoY0pPK0xaNGVDOEM1V0NOdG9ZOVM5MWlCVmhSOGJKN1Fh?=
- =?utf-8?B?eXY2cEZOd25uMTNidVByLzVCSkljQUZ6bjFqL3c2WWxwOFZWdlFXYVYzZHZK?=
- =?utf-8?B?NytMenprbEQzRkRCOEVGK1BicUcvbmJlVFhPaENJOVUxNjFmc09YZm1KUkgv?=
- =?utf-8?B?ck82b3dXakRYTGtsWEhGa3NRSE8xL09WaWY3ZjhYT25OR0M0T0xGT2NveEcx?=
- =?utf-8?B?bGh3Yy9oOW9VbUZQVkc0VHRtN1NFdTFDR2p4cmJFMlh5c1dvWVpiOU9VSytY?=
- =?utf-8?B?bHpaTG5aNGhVelM3dys2UmRXRkpaM1VWTlJoVXNsQWlZc0JpRTNuWWE0Si9k?=
- =?utf-8?B?dmxqdS8zNUJNSG1HKy9MWXVOQlNaeTJoRmVSQ24xNjhDelNCZEh5L2RlYitu?=
- =?utf-8?B?Y25Gb2t5dktQdnJBTTJLMTc3QnhxUEVuME1wTTVXZjZvK0FzTmIyb0Q1bkQ0?=
- =?utf-8?B?cGpBd1lFMFBTM1l2dFkrZERnMy9qWFZIT2tVQlhIZ1JQMjB6MGRBaUpYdnpH?=
- =?utf-8?B?UjdBVkZwaFVDSExnZVp5QlNQUDlhUnlCOVkvZ2liMm55MFB6NEJjQW93d2ov?=
- =?utf-8?B?dFNWMXdhUzAybCt5T2RFQisvSEdkSGROZThJWHlTUUhTRlNIMko0OEhNZWNX?=
- =?utf-8?B?ZU1UWmF1a2lxelhWa01naVJaWEQ1QUxaZWRsSnJtS2xSbVBYRkVRLyttL2JU?=
- =?utf-8?B?TW93dlBWeWhzYjFiZjVKN3J4b3VHZjg2cHVvVE91cE5SVGk2UHJ2eFpYQVR5?=
- =?utf-8?B?T3FwTnFLNEFFb0RFL3dFZkpjekZDSUZmcTRZRkQyckpMazR0V0lsNnZTRVRv?=
- =?utf-8?B?dUdxOE82dVFVbWExV0FRZ0hWbmhYc0ZHVy8zSmVUNFhDZUpuMkRZYXBKVmll?=
- =?utf-8?B?WnhsQ2lhLzBrQzdUeFNFejFGcThXa2VrUEtSRG90NW5EZnU4cWZzeVFrbitP?=
- =?utf-8?B?WkpNc0o4eDM5MENPVWJjZWlsN0p6TURkb2lHWWtKWWk3RmluR3BkMUtaSjZm?=
- =?utf-8?B?TE9RMUJYU2VyYmZZSGJGN3pKTWxTb1F2Q0hWVG10M2FVWVRLbmIwZHhraVNM?=
- =?utf-8?B?MVJKMnVpcFprNTJjY3Z5clRkR1JvMW52MXd2Y2k4UDE1azVFWE5QMmFSVVhG?=
- =?utf-8?B?dHJ4SjRPeTVZaGRJOHZVeE9UQ2NLR2U0amN2UHBmRjVmMUhOajlVK1BETU1F?=
- =?utf-8?B?NjUrUlpQQzM4ZC9aS3BqUnRGQzhtRVJUZXAzQlpQLzFRdnFpb2hTN1YxU3ZY?=
- =?utf-8?B?dDRWQXZtdngwKzB5d1FGbmR1cUFIL0JwdXhqajFvTThjNGZvKzF2bmxzYldF?=
- =?utf-8?B?YlQwU0ZGL3A0VXBaVU41NkpEdnl4THVldDFoUlBCRm9LQWJkUFhNWmQ5NC9o?=
- =?utf-8?B?VGlRS3lwNWpDMG0wTTRDU0dnZ2I4MUJPU3hzNlUwdlozUzcwSmNGNXpWcHV6?=
- =?utf-8?B?R1lSK3hUMU5CVXNpd2NMTGxNZnJ2Z3NCWklJNlRWTXFQUzNacno2dEJpMXp6?=
- =?utf-8?B?UFJLZDN4ZHNDUEdhQW9jZVNEMnJCTGVnUlE4YjlkZHZ2OHZmRkI2RlRSNGND?=
- =?utf-8?B?R1hHTGhNRHAyQUN0ODJDMmorQmdaOFJzUkdTK0t0N2Uvemp0blowYnp6N0RF?=
- =?utf-8?B?QnRTS0VvQWdNalZLRVpGVS9TT2grN1BqU2dTMTZGQmZNR3preVBnN0UwRGlu?=
- =?utf-8?B?Y3ZlSW9QalBiYkN4YVhpRXE4dTM5cWpyYjZtTUgxZE1pNTBjTUFKcTZPSFRx?=
- =?utf-8?B?TDNZa1Y3RHEwUThncmJLTWVKRkMycFVFODY3VFhyUWVZRFBDTUU2R3BUVzNi?=
- =?utf-8?B?YlM2c1lMVm92TWZoajJwRUYzRjdCRlhTOWc4cGZMRHo5QTQrYm1oQzdJcWND?=
- =?utf-8?B?a0dXY0FMK0U2Uy9iOWJvMnBneTBJRERZYVlBOFZsZXZYT214UnVzTDMrNDhH?=
- =?utf-8?B?bG5nTUJFNm9WLyt0QThqbXZ1YStpbFJMQnpxZDViK3A1L2U2WVVzVWZMdHF3?=
- =?utf-8?B?VjV6RExwV00xNWhVUnNnVVVPUW5SQktUV0c2d3ByVjl2aGZDMm80UT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26636ef1-08be-4ca8-0c42-08de8a8ca0b9
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 16:36:13.7508
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xoFHleaMn28UGEp+8Zwi2WUP0wjweY7oIuFcqRY17iF7jPN6wwhL+Z/TigeXt6cbEZWCN3D96rfQOWSWM9mgGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9783
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-On Wed, 25 Mar 2026 17:01:49 +0100, Fabian Pfitzner wrote:
-> Add support for the following new features:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: stmmac: qcom-ethqos: add support for sa8255p
+
+Extend the driver to support a new model - sa8255p. Unlike the
+previously supported variants, this one's power management is done in
+the firmware using SCMI. This is modeled in linux using power domains so
+add support for them.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> index f32ff0d9ce51..09ce80b446cb 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+
+[ ... ]
+
+> @@ -710,6 +785,45 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
+>  	return ret;
+>  }
 >
-> - SD Card
-> - Ethernet (FEC + EQOS)
-> - Wifi
-> - USB
-> - HDMI
->
-> [...]
+> +static int ethqos_mac_finish_serdes_pd(struct net_device *ndev, void *priv,
+> +				       unsigned int mode,
+> +				       phy_interface_t interface)
+> +{
+> +	struct qcom_ethqos *ethqos = priv;
+> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
+> +	int ret = 0;
+> +
+> +	qcom_ethqos_set_sgmii_loopback(ethqos, false);
+> +
+> +	if (interface == PHY_INTERFACE_MODE_SGMII ||
+> +	    interface == PHY_INTERFACE_MODE_2500BASEX)
+> +		ret = dev_pm_opp_set_level(dev, ethqos->pd.serdes_level);
+> +
+> +	return ret;
+> +}
+> +
+> +static int qcom_ethqos_pd_serdes_powerup(struct net_device *ndev, void *priv)
+> +{
+> +	struct qcom_ethqos *ethqos = priv;
+> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
+> +	int ret;
+> +
+> +	ret = qcom_ethqos_domain_on(ethqos, ETHQOS_PD_SERDES);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return dev_pm_opp_set_level(dev, ethqos->pd.serdes_level);
+> +}
 
-Applied, thanks!
+Does this leak the PM runtime reference if dev_pm_opp_set_level() fails?
 
-[1/1] arm64: dts: imx8mp-frdm: add sd, ethernet, wifi, usb and hdmi support
-      commit: 961719c5456ce407221868d9cab2a1311ccf1eeb
+qcom_ethqos_pd_serdes_powerup() calls qcom_ethqos_domain_on() which
+acquires a PM runtime reference via pm_runtime_resume_and_get():
 
-Remove extra line before &hdmi_pvi
-move usb* node before usdhc1 to keep alphabet order.
+qcom_ethqos_pd_serdes_powerup()
+  qcom_ethqos_domain_on()
+    pm_runtime_resume_and_get(dev)
 
+If the subsequent dev_pm_opp_set_level() fails, the function returns the
+error without calling qcom_ethqos_domain_off() to release the reference.
 
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+The caller stmmac_legacy_serdes_power_up() in stmmac_main.c does not set
+legacy_serdes_is_powered=true on error, so stmmac_legacy_serdes_power_down()
+in the cleanup path skips the powerdown call.
+
+In the existing non-PD code path, qcom_ethqos_serdes_powerup() correctly
+handles this case by calling phy_exit() when phy_power_on() fails:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c:qcom_ethqos_serdes_powerup() {
+	ret = phy_init(ethqos->pm.serdes_phy);
+	if (ret)
+		return ret;
+
+	ret = phy_power_on(ethqos->pm.serdes_phy);
+	if (ret) {
+		phy_exit(ethqos->pm.serdes_phy);
+		return ret;
+	}
+	...
+}
+
+Should qcom_ethqos_pd_serdes_powerup() call qcom_ethqos_domain_off()
+before returning the error from dev_pm_opp_set_level()?
+
+> +
+> +static void qcom_ethqos_pd_serdes_powerdown(struct net_device *ndev, void *priv)
+> +{
+> +	struct qcom_ethqos *ethqos = priv;
+> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
+> +
+> +	dev_pm_opp_set_level(dev, 0);
+> +	qcom_ethqos_domain_off(ethqos, ETHQOS_PD_SERDES);
+> +}
+
+[ ... ]
