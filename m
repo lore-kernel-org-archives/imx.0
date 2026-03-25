@@ -1,116 +1,155 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D69736D51E
-	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 20:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE83644D1;
+	Wed, 25 Mar 2026 20:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774469620; cv=none; b=LV5lD6+MymtymFnnDM6W6keFKFtNBpAC4jqLVvOFnyREzGk9/yxCbcY0gzp9QKuTdCnZ4ZEw07LkSYxTY0mbVJAx2sb8qLTHl4pEn+swikUEm0diogY51WSCZQiKWCXSflXZD9xT8s+enE/qOzRbtmw2HvLiQ7eWBjeu8cZ/82k=
+	t=1774470039; cv=none; b=eybBcXhRxMxmPtn87BtN2tyZcMcdfxSZUt/3Vfh4OOjuGp65DIV2u0pfE6O8/JElhxGUPZWbN+VE+kgpMOocSSz+uj2NLdfs7/+hRyKUaLlNHBDZ48YuTqK1vet6nCutMXOs6JvvBjMhSR/1EDgQc3XpoF4m6mbAR1aOSS6hZyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774469620; c=relaxed/simple;
-	bh=7BsRlEHo9DuNRcemqGPBLT932bs5lLCqHzyJZhsZrS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E3qzctOnQJoP3kdugKrvA59g0BLeT7wQ3F3bQHYOdzGETdOjK7TSBNTKPuIe2k4RoGbjHqyzwKzbzMZaKCkOcF96U4Gvrkp0ZtK4LjAo1lNWJUXZycLqyjtazamG+fFdjmpfHRZvWOwwWY9sm6rP3RCZOHmUOGHcG/LU0s7uvUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=B0AC0wLn; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1774470039; c=relaxed/simple;
+	bh=EJf9EH03K048GnQyciGn9nJ/4njlCY8sY9h7aSYy5jQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=d/hwnw7DXZ71R5AFbQeXXCrtvFgOKDmscmEvalotQF+3a31/4Ma6W+uZ9Qw+wCSvMBWMNpapeMzBt22kwDRMBsextEGh8G4w2MfQoWoEFcWtHyC2rZfeue+sMkjxFXxIAkj8x6on8EibsojxQ1FTYudKAy2gjaUoASKU56Lwwjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/sHWhQC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="B0AC0wLn"
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 06C8D1BA;
-	Wed, 25 Mar 2026 21:12:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774469536;
-	bh=7BsRlEHo9DuNRcemqGPBLT932bs5lLCqHzyJZhsZrS4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B0AC0wLn3Ob992yC9suQRcS93NkYNC9Ll/NgROD2xXR6oqAMCm78nzYvCg2EIY4gF
-	 f6Jbp405eKuz1i9nTY0+PS5tHE8c/9RKIHI12Ecp49luwgITLgdzHPvck9js6zRLoy
-	 ftEim5hQ4AMyO7uN2YyLcQ2sQLCjZrn+7inbXkvg=
-Date: Wed, 25 Mar 2026 22:13:32 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: netdev@vger.kernel.org
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, imx@lists.linux.dev,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
-	Joy Zou <joy.zou@nxp.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/sHWhQC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469B9C4CEF7;
+	Wed, 25 Mar 2026 20:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774470038;
+	bh=EJf9EH03K048GnQyciGn9nJ/4njlCY8sY9h7aSYy5jQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=R/sHWhQCzYd+ZF4ClNbFtPpjz3TwD6fZXZ1sS0wPW8AqP3rl0tovUYaWdonKVWaiJ
+	 OwlrlLGPKyQJzjTcNTMD7KHdXAJOjy/Pgec4iK1sQUwsjoZifIZYI5uC0jTlzEGcLG
+	 18viuyai68dZgzN8F87qzLT1SkxhJdMLTx9dm/6064TjKTmgnptwvlSI/XP/fcRtl4
+	 giL0rQUFbbUETMdG05uXbW4WH5fvuqaOMDFtm2P7I5VMCeTlaQAU4irvLB2JumoxMH
+	 16eIDSTM+Evjf3AQNa1cthVdIu/mws4vSuaCZCJQTTLQFydtFozsiRGP5ZJm2cF9Ry
+	 tmA3OJZNW4eqw==
+Date: Wed, 25 Mar 2026 15:20:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kalle Niemi <kaleposti@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] net: stmmac: provide flag to disable EEE
-Message-ID: <20260325201332.GA2670326@killaraus.ideasonboard.com>
-References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
- <20260323093933.1785583-2-laurent.pinchart@ideasonboard.com>
- <acEOGMHfYsxv3GOk@shell.armlinux.org.uk>
- <20260323100801.GA1514659@killaraus.ideasonboard.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v6 13/27] PCI: of: Remove fwnode_dev_initialized() call
+ for a PCI root bridge node
+Message-ID: <20260325202037.GA1291636@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323100801.GA1514659@killaraus.ideasonboard.com>
+In-Reply-To: <20260325143555.451852-14-herve.codina@bootlin.com>
 
-On Mon, Mar 23, 2026 at 12:08:02PM +0200, Laurent Pinchart wrote:
-> On Mon, Mar 23, 2026 at 09:55:36AM +0000, Russell King (Oracle) wrote:
-> > On Mon, Mar 23, 2026 at 11:39:32AM +0200, Laurent Pinchart wrote:
-> > > From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-> > > 
-> > > Some platforms have problems when EEE is enabled, and thus need a way
-> > > to disable stmmac EEE support. Add a flag before the other LPI related
-> > > flags which tells stmmac to avoid populating the phylink LPI
-> > > capabilities, which causes phylink to call phy_disable_eee() for any
-> > > PHY that is attached to the affected phylink instance.
-> > > 
-> > > iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> > > along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> > > to the receive clock domain, and takes four clock cycles to clear, this
-> > > leads to interrupt storms as the interrupt remains asserted for some
-> > > time after the LPI control and status register is read.
-> > > 
-> > > This problem becomes worse when the receive clock from the PHY stops
-> > > when the receive path enters LPI state - which means that lpi_intr_o
-> > > can not deassert until the clock restarts. Since the LPI state of the
-> > > receive path depends on the link partner, this is out of our control.
-> > > We could disable RX clock stop at the PHY, but that doesn't get around
-> > > the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
-> > > 
-> > > Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> > > this is insufficient - the problem is also visible at 100M speeds,
-> > > where the receive clock is slower.
-> > > 
-> > > There is extensive discussion and investigation in the thread linked
-> > > below, the result of which is summarised in this commit message.
-> > > 
-> > > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > 
-> > As you are sending this on my behalf, you need to add your s-o-b after
-> > mine:
+On Wed, Mar 25, 2026 at 03:35:40PM +0100, Herve Codina wrote:
+> During the instantiation of devices described by a device-tree overlay
+> applied on a PCI device, devlink displays the following kind of debug
+> messages instead of creating the expected links:
+>    'Not linking xxxx - might never become dev'
 > 
-> Oops, I'm not sure how I missed that. Sorry.
+> Without those expected links, the device removal order cannot be
+> correct.
 > 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Those debug traces are printed by fw_devlink_create_devlink(). In our
+> use case, they are all printed because the supplier of the link has at
+> least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
+> set.
+> 
+> The culprit ancestor is the PCI root bridge.
+> 
+> The fwnode related to the PCI root bridge is created dynamically by the
+> of_pci_make_host_bridge_node() function. During this creation
+> fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
+> flag.
+> 
+> Calling fwnode_dev_initialized() tells devlink that the device related
+> to this node is handled out of the driver core. This is not correct in
+> our case. Indeed the device related to this firmware node is handled
+> using driver core mechanisms and is fully compliant devlink
+> expectations.
+> 
+> Simply remove the fwnode_dev_initialized() call. With that done, the
+> devlink debug messages are no more displayed and links that were missing
+> are correctly created.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-Should I submit a v4, or can this series be picked for v7.1 with my SoB
-added ?
+I would ordinarily make sure the person who added
+fwnode_dev_initialized() here was ok with its removal, but it looks
+like you added this with 1f340724419e ("PCI: of: Create device tree
+PCI host bridge node"), so I assume you're ok with removing it :)
 
-> >  Any further SoBs (Signed-off-by:'s) following the author's SoB are from
-> >  people handling and transporting the patch, but were not involved in its
-> >  development. SoB chains should reflect the **real** route a patch took
-> >  as it was propagated to the maintainers and ultimately to Linus, with
-> >  the first SoB entry signalling primary authorship of a single author.
+I suppose there could be a "Fixes: 1f340724419e" tag, but maybe
+there's no need to backport this anywhere?
 
--- 
-Regards,
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Laurent Pinchart
+> ---
+>  drivers/pci/of.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index b694fcda16b1..0993257fe025 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -811,7 +811,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
+>  	 */
+>  	of_node_set_flag(np, OF_POPULATED);
+>  	fw_devlink_set_device(&np->fwnode, &bridge->dev);
+> -	fwnode_dev_initialized(&np->fwnode, true);
+>  
+>  	ret = of_changeset_apply(cset);
+>  	if (ret)
+> -- 
+> 2.53.0
+> 
