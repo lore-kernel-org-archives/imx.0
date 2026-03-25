@@ -1,126 +1,95 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6B33D16EA
-	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 11:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9AC3033E3
+	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 12:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774439738; cv=none; b=sOU2b6rqu5veaS4D3AY0+5AJuilTutz/bGxoo4qnF/hQwZX8P3JkAte0OirJ5ZAOr8KwSrMCA4N3AmXU0w5tpCdIGplktBYo7zXs4aSYr5H/WM79B9JNZJ4oKIkw0MnPK1XyHfo4yYLYes528xOO16NWEGKsAeseWUta0RgRuVs=
+	t=1774441274; cv=none; b=kw6wh0niShx8U95PN5T+aLl4o4qIzsHGRnTGSjzEjN8aViwGYEkE1kqBKJOzqPCTsXXA4D2C0bMdrYECdWLaaok0NizFkdLyOQcCJwzXn58c8987JpxEpMyUL7+SxiFwIgnSdpDJVC9t9zsIA+6Md9MCwjDuZkoDZkmI0eBeCLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774439738; c=relaxed/simple;
-	bh=tr97VAsx+STGWIgq9u0NL64qefYSNwCZv34gxQAE/Gg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdhvU/nJMfYc3a6PkP8v6RZ52QDiybawKLh2shKooHtxKWDekG9xsmO4mBsYMIBwV2DU+y6b7dQ/TZbivkKxRF8UcH4kQaIFSoStjQdrBpeqvQPRTwYlospSDQhfHJdfVtJGt8X+kphELaxSx5LxOUmuKEdiHomfW0Ez2UWW9dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XoUJsJOd; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774441274; c=relaxed/simple;
+	bh=2XSKZRnXacS18o8cTGKTm/tgWX68V2PKffs9WfB92Cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9dfLdhJHsqekrq4Eo5mOC7LTSJsRG4iHJCr77JzF7vV5OdeobjDDjztl4GEGITnzlS7nvyk0iUvCEVPdK77jCd2RMbmPtB6j0B6N2MNuYPN33ByP7S8xSWK+ct/xQ5Ad+DJDqa9hKJEkmAKkz/4U2HaWmKNr5KgX7DyabfQy4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=JAU0gmmP; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XoUJsJOd"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-486ff201041so44336345e9.1
-        for <imx@lists.linux.dev>; Wed, 25 Mar 2026 04:55:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774439734; x=1775044534; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jdN9cflUTNRosGOiuG2K4soHcCdEwWx9Mv6NnPQ9sVM=;
-        b=XoUJsJOdrtB+g75MTQyI967ZuGUHzTjCME6IUgSbogP4aEEY1QEZzZmUUrOjm41fK/
-         y8WWNTJvWC6jPBX9DzV+tPaeTEvKQ1BbzfwQ4STzm4aQH5ktsBUbKYrzmmhOBh5OyiTO
-         Y8D9ZljN5v2F+tJXzYjH2zjsQU+Dz7H70o+6ef+OWaQ94jtVnJJ+R+j1EAFL6wrR7MnP
-         oBHQWkUAVR1bdfroJdG5dkRW/bTqMvvechmFqmYrjG6fZVoBPZ+yoPb0Cb5+ETrfYIc0
-         hlxIqeSO9dnlZMqMnz3qxJPHpxEvHcmq9+rqn0leW5NeGu8iiApyBN+nnSzYDyMvUQqs
-         aYlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774439734; x=1775044534;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jdN9cflUTNRosGOiuG2K4soHcCdEwWx9Mv6NnPQ9sVM=;
-        b=AkmO7N9rv6snCpd4VFZXRumcR8RMNcsebu45hmoi4Ins0DXhyZATioGhabV8Pqmn9J
-         yyLJqB8taO7HUNzc8c3yvT3xITr9OdJwua90nut/G0vsGRFHSTQfWH26k+dCh82uxEv1
-         FyMshsyHquy2BOS2sc6nKI60oSwzPu91/IZOZA3fexCYOr/6zKyD+t/eL6opwocf6sPF
-         3FR3Gv/QqgRG3FJ/De+IKrGkjAiJ+2zyUDXwYTlVM5T2q8KwE52dm1cfUX0nBqOT9wIx
-         4pr//MFCBjVMYv22BW80FO6l8RZzFA+4SCxDXIADhD8oygKszCRjXxw7050zDn8R2+Ed
-         WqDg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5GOAafQ5Lp2sv85RLoMyrEe87mgr81WK70saki52rM1fXN1HYYy9OHjF76e6n3dyQ5PQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx/REnrOOZgQzSwPHnpuudCEKRRFOHBy5G+tCOJrwU+64eW5pD4
-	tbkyQy0/8JT74c2uajSQ2VECxNw0jpfPaS1GrYXR37KAQjmlXVLBAQI3
-X-Gm-Gg: ATEYQzxIM4maJmBG1J2zih3FeYDjhG589qbgIdn9cb8JB3PjPtwlMnEbD7TZH1EZGBN
-	ELjKXUgS44hiTDy3BADQTOg3oQUJuDUCzTLhAHW2vs4LIa/3PDCS5fzDo/TzFSoBecO8C8PH7m7
-	brF7iMHr1p27LxgzkyQMEzQjOBdM54yCqxx5x80vykHUhQdOCAQMb/miPRrIM+4qok1zqxkvTZc
-	HCBnFGjcW7+6ynyFH7IjeKjA1YPmFL7QzgFtIBfrhu2jNpkmDHYNGt/N04wVe40/wTWLJp9PeVE
-	QtmliNVA+fKibFm6ZrRE4yizS/lLwTh6/DXWlP80HeT3549NQoqcxToffN88IipL+Iu5xdSKu+M
-	GmRpUSru4dI/zCWVnK6Nvey0jvFiaMTMDaojf4nF3O0Pd39sTYF0NHOqz5w3IdCXgZ8ndgd609I
-	EWmtjEfADMbFlV2eKsYrgJdAGXK+zsMo4PiMU1iJjREjX1A33TmiMzcmImQtSL5DAmrlW7r/DzH
-	RP/c6oh1udV89MJ+31WNmDQH0/VsXpgRJV43kEYyJShiGUUfLMaqycNdlQPN6Jr1PpwqTo6mP86
-	/TCKKRX4FpLxwQzrSAz4
-X-Received: by 2002:a05:600c:3b12:b0:485:419c:4eba with SMTP id 5b1f17b1804b1-48715fc3286mr51267335e9.1.1774439733479;
-        Wed, 25 Mar 2026 04:55:33 -0700 (PDT)
-Received: from franzs-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-487116c44bfsm147878035e9.9.2026.03.25.04.55.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 04:55:32 -0700 (PDT)
-From: Franz Schnyder <fra.schnyder@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="JAU0gmmP"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 148B01FC3D;
+	Wed, 25 Mar 2026 13:21:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1774441271;
+	bh=PLOm9XjuNpTv3crP433snW9Y0q8ywlGOwYlifFWD9Ic=; h=From:To:Subject;
+	b=JAU0gmmPMd1iVqtE16jH7H7pDG2riyi1NUZlA/MxZ12t+WjaNP1dMxqSShWUHGkIV
+	 Xzf+zvn83Qp/1T5tk370e1X7QyfyIxFKXqc5wHCzJKZS/an56mZ6vUO9pQiI9s0i4i
+	 IqSgEJtDtP4EdCKn/hISN0aIShN70LRhl/utqg4QYUgpWYMs4evzd17/evnV7jE+Ag
+	 1vX++PbpqmN6QkeW3OeZkZ/vshzTpLcoY/mdVkaWTFVzyhxpGlm39d1un80Qj8BOyb
+	 VKKXfOH5gpbFe09WcN9hdsUR31159AxcBI1rCIJ7sXBF/h00n8xPSDlBsCW+Y0SvAz
+	 aD2lAmBjVYleQ==
+Date: Wed, 25 Mar 2026 13:21:04 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Franz Schnyder <franz.schnyder@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>
-Subject: [PATCH 3/3] arm64: dts: freescale: imx95-toradex-smarc: Use gpio-hog for WIFI_UART_EN
-Date: Wed, 25 Mar 2026 12:55:11 +0100
-Message-ID: <20260325115513.707914-1-fra.schnyder@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325-mainline-update-imx95-v1-0-b5ebe976655b@toradex.com>
-References: <20260325-mainline-update-imx95-v1-0-b5ebe976655b@toradex.com>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 0/2] Add support for Variscite DART-MX95 and Sonata
+ board
+Message-ID: <20260325122104.GA19112@francesco-nb>
+References: <20260313174707.26902-1-stefano.r@variscite.com>
+ <abRdwy_AS046QVRI@lizhi-Precision-Tower-5810>
+ <acLqjeqmR4eVDoKw@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acLqjeqmR4eVDoKw@lizhi-Precision-Tower-5810>
 
-From: Franz Schnyder <franz.schnyder@toradex.com>
+On Tue, Mar 24, 2026 at 03:48:29PM -0400, Frank Li wrote:
+> On Fri, Mar 13, 2026 at 02:56:03PM -0400, Frank Li wrote:
+> > On Fri, Mar 13, 2026 at 06:47:01PM +0100, Stefano Radaelli wrote:
+> > > This patch series adds support for the Variscite DART-MX95 system on
+> > > module and the Sonata carrier board.
+> > >
+> > > The series includes:
+> > > - Device tree bindings documentation for both SOM and carrier board
+> > > - SOM device tree with on-module peripherals
+> > > - Sonata carrier board device tree with board-specific features
+> > >
+> > > The implementation follows the standard SOM + carrier board pattern
+> > > where the SOM dtsi contains only peripherals mounted on the module,
+> > > while carrier-specific interfaces are enabled in the board dts.
+> > >
+> > > v7:
+> > > - Order nodes in symphony dts
+> >
+> > Can you run https://github.com/lznuaa/dt-format for new file to easy
+> > track and check by script later.
+> 
+> I applied with below change
+> - update copywrite to 2026
 
-On the Toradex SMARC iMX95, the WiFi UART signals are shared with the
-JTAG. The WIFI_UART_EN signal is used to select between these
-two functions.
+How do you know that the correct copyright year is 2026?
+The copyright years does not change to today just because it is the year
+it was submitted.
 
-Configure the signal as gpio-hog and drive it high to select the UART
-function by default. Add a label to override the hog in derived
-device trees.
+I think that you should refrain yourself for doing these kind of changes
+to the code when you apply patches.
 
-Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+Thanks
+Francesco
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-index a90edefc5197..29e3f5bf867b 100644
---- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-@@ -451,6 +451,13 @@ som_gpio_expander_1: gpio@21 {
- 			"",
- 			"",
- 			"SMARC_SDIO_WP";
-+
-+		wifi_uart_en: wifi-uart-en-hog {
-+			gpio-hog;
-+			gpios = <12 GPIO_ACTIVE_HIGH>;
-+			line-name = "WIFI_UART_EN";
-+			output-high;
-+		};
- 	};
- 
- 	embedded-controller@28 {
--- 
-2.43.0
 
