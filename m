@@ -1,154 +1,153 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D523EE1E8;
-	Wed, 25 Mar 2026 14:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E7F3DEAFE
+	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 14:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774449858; cv=none; b=PGCXeDX5FEwwSMgKkbKRKLn69ZEwpMAMqWZcyWVqDi6udNWVRA/v16hgAF64Izb6YfrVyFKjkv3BfqCYIcWeuVTmlZnUeegkJZ8GFfMdawX8VXxOMoT+BrvO08wo0msyA0nESk6mBi7v5oZIGNkgC5bkEDERK6oaB0qmxD93I9Q=
+	t=1774449994; cv=none; b=lWuShgalnyv1KI1J84aAaQCT7uFQon57dkAdF/0OetdbTwnf6Sdc9QBUFv4Q/AWGwVs84smcK4VZaxSU9SJnJK8ghcsqkW/qZ2evhZiy3NiUEJdneyol/3vMS+Zyfs61GrxIIrzTlFMMARRP7O7/Q21M0aG/08R+QiXAt6kcOig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774449858; c=relaxed/simple;
-	bh=jT14jpW+74aFxWT5k0JsiKiyPP15AQVRZS7/5fdgNS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYDc/5iW2CHOx5ZgfhAAj1KRbS6I39RSH4laO+67WdlL17Qyy/MnSu6MvWYf8YW1DgDwv3xc5YMHjTW8dg57MAASqsY8ljwaGNF8hqhXJ2SnAoTUj5djXNaQ+Xp/Lhgk9znJPufplAXn5Ac9GPxWqvH6Mu4v7dJKV4aPqy7Z/Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gqvjBLpm; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774449994; c=relaxed/simple;
+	bh=kHxBFXyBEQwW+JA+T/tUhZ9lPaGuYJ0BEWTAZcwodGg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kfnkhFlRup5jezivQ8n2p8CM7l9lepo1u/KNUi6R/YFr0anyCAtCYSJq+QZI3hV5RaXkG6KlAS/engvknINpALFS5AOYBS5ML/aybr7wd5iwVt8jfxSnmpvm1NmBKRrU4XKHl+MALr//aRoooNzma5cBcWQzUCYYaK0Ms7HO2xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nV+qT050; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gqvjBLpm"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 569A34E427EF;
-	Wed, 25 Mar 2026 14:44:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2164A601E2;
-	Wed, 25 Mar 2026 14:44:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 56D7D10451522;
-	Wed, 25 Mar 2026 15:43:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774449852; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JD+Fs5XfMyLydBRoehNihG/5lsm5NM0S4zMf8NGpirs=;
-	b=gqvjBLpmkSLJAYbmDeGzZRLD9Ccx0kGJ+DN1N+YpWxaW5rwGSimaQrzjJDOYlV9EYSCJXC
-	EGclYReSW/RNCSO1Hu4WTUKD57Ziz1RKr8cPgpsfGmAP4WEPw+vgCwWkjKY9MSUY9LEVJ5
-	6tZHX14Ux3GOzP2naksiasYRWY6SGCxOeInkkhKHnjF3KzqTlDE/RonHW77l2feenMrKtZ
-	cSTYd0V7ODBlSM4QX1RMj5id3x2Ob313sCSnE3Hd+xGsT3juXCzJcIYBFohtcxaPyYLz+X
-	eKq3F87xw+izeQvuGGtry4ygCvsiMBpIw+2Bl/K7VPxnw+SA0SbnFtvGb6ObSA==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v6 27/27] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
-Date: Wed, 25 Mar 2026 15:35:54 +0100
-Message-ID: <20260325143555.451852-28-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325143555.451852-1-herve.codina@bootlin.com>
-References: <20260325143555.451852-1-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nV+qT050"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43b88b7ca76so861272f8f.3
+        for <imx@lists.linux.dev>; Wed, 25 Mar 2026 07:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774449991; x=1775054791; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aIJ6bt/DVjHXVsX2+SKn88jbhDMD1b3roo62WEZzt0Y=;
+        b=nV+qT050JtKX8oszwHj7pd/VxVY4/bdzoWCBE5y+fTVegbuLS+nrSUmA7fDm8AnUq8
+         V/RrInTTUrg2wZZ82Sy7U2T4/pnaMgMei/BaUmajCbqNVFfs/WJDte1DApsEWTYpQzwi
+         +L1buZtqvMDx6bUJ3LyKlvICziDDgEJ8TaIvQ44z2Gbgov/lunCRV9u4lt2aOVPO16Z2
+         Yqn23+e2eIL2slWU39wDCsk5GVi2RuIBZZ3nCsQxBBPjI33JNQ2rSJ0TRjMw8BZEboy3
+         +jD2itCBSXWl/A97ixr4BUMDJ0vFd1Es1ggEV6RMG0Le/z6XfI7rhNmGNkHrFHCYk4OQ
+         U9Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774449991; x=1775054791;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aIJ6bt/DVjHXVsX2+SKn88jbhDMD1b3roo62WEZzt0Y=;
+        b=lR7uoSqSBDn8kKPgXZWw4fFJUuPD6MI3tfrPiwcredcjcx830ndlMTDNbjbJFgiYZq
+         VVBILwqfUYMRj2RIG7yOQm2EkAgvpPrknhu5q/ymG8gxPCgOiXxnzauDdD4xHiD/DGFw
+         xQSKo2Ce7k2KajO7MOKbPFyMy+KkBxu0hE0L/qZUMAsMAzvxdZOBnTkE2d6cKa8XRCLd
+         a6u+R8dA5GnYkOzPwBaHtYFvgdlCnYYDkt6ALrlX1iyLlFatMg2+SKQ2BltA0X8TPCKW
+         QT77B9nH7wtNfUsg9LWWnRQRY83vbJrJ8X/wDwJoIbxC0irI0sxzqCNW5A3utvVHhE/Y
+         awpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVeIIYUHoqwEge3K+Gjlyus94N9XoBeEygoj7ogTmXh160F0mhUgU+vFdPUEcr7DBiXlKw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy601hj+UZVcB4EdynnUmwCh53eafF6ZnLaXlNfjkfjU+yFWZuM
+	NTBklD44Ilk17gCF8PB6FaLm9y9PhNJVM3usqEMxUPlaV5910EyFWqwj
+X-Gm-Gg: ATEYQzz5uX3M4JtxWAQs2oxAQFvXC7mSYAaXmDGcOj0rNh8IxXCkiuLvYg7S/vxHqaY
+	WTGGG08Kj73GQJHwtqjEhSs2CTUTn+WisA77HC7E2ikZGEJqODBJcth59YvlUaYsTsyRiL6x8wl
+	0cx7j1i8DMXmgrfOJk23L/J+B0V1TIc5gJjz5GCOvbXOrJkPidRxr8JpU0ekMvqSi00Q0HuJSS2
+	J5HftjoJ31f+NyatcN7dmtziApiGYvE3Ckm78SKuudR7KNtRdsj1pX5gu2ke9Cgm1GCk2CMxPAP
+	Pi8Bi5TtxGlbdMuxQmWM0T/WUnO8HaYzpcVAWDEcYAIn3E2lX0Z8ggsHx6WwZtVQlK7og2m6c/U
+	ncpYyOhQlwl7royPRJZwuW2C49susXII8vL2+LQkoQ6foHU8R8ZnW0Ojyt5DyKclAZiS19sYhue
+	PXKrh/jA+aw14nX65sq6/emUmT3i9iY8PCLEfRTuuzYYGzswMFBKSqs7zbn0gBKO28U/k+IJpKX
+	vRh3uDV1QRVDaY3c3NkgBRDPMk=
+X-Received: by 2002:a05:6000:2385:b0:43b:4396:674f with SMTP id ffacd0b85a97d-43b88a0d0b0mr5635919f8f.55.1774449991153;
+        Wed, 25 Mar 2026 07:46:31 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b9192e305sm304592f8f.8.2026.03.25.07.46.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 07:46:30 -0700 (PDT)
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Subject: [PATCH v3 0/6] arm64: dts: freescale: add Verdin iMX95
+Date: Wed, 25 Mar 2026 15:46:01 +0100
+Message-Id: <20260325-verdin-imx95-upstream-frank-li-base-v3-0-b2b5221a8077@toradex.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACn1w2kC/5XNSw6CMBSF4a2Yjr2mFMvDkfswDvq4yI1SSIsNh
+ rB3CyPjSIf/GXxnZgE9YWCn3cw8RgrUuxT5fsdMq9wNgWxqJrgoeM4lRPSWHFA31RKeQxg9qg4
+ ar9wdHgRaBQQtS6Xr0khpMpakwWND0/ZyuaZuKYy9f22nMVvX//yYAYdK5I2yXFhs6nPilMXpY
+ PqOrQ9RfKhZ/psqkqrtsao0lqaov9RlWd4L7OILLgEAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.13.0
 
-Recently, new device-tree nodes were added in the overlay to add support
-for SFPs on LAN966x PCI device.
+This patch series adds support for the Toradex Verdin i.MX95 SoM and its
+currently available carrier boards: the Verdin Development Board, and
+the Dahlia, Ivy, Mallow and Yavia carrier boards.
 
-The LAN966X Kconfig help section mentions drivers related to devices
-added based on the overlay description.
+The module consists of an NXP i.MX95 family SoC, up to 16GB LPDDR4x RAM,
+up to 128GB of storage, a USB 3.2 OTG and USB 2.0 Host, a Gigabit
+Ethernet PHY, an I2C EEPROM and Temperature Sensor, an RX8130 RTC, an
+I3C bus, one Quad lane CSI interface, one Quad lane DSI or CSI
+interface, one LVDS interface (one or two channels), and some optional
+addons: TPM 2.0, and a WiFi/BT module.
 
-Add drivers related to devices described by those new nodes in the
-already existing driver list.
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95
+Link: https://www.toradex.com/products/carrier-board/verdin-development-board-kit
+Link: https://www.toradex.com/de/products/carrier-board/dahlia-carrier-board-kit
+Link: https://www.toradex.com/products/carrier-board/ivy-carrier-board
+Link: https://www.toradex.com/products/carrier-board/mallow-carrier-board
+Link: https://www.toradex.com/products/carrier-board/yavia
 ---
- drivers/misc/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v3:
+- Rebased
+- Link to v2: https://lore.kernel.org/r/20260313-verdin-imx95-upstream-frank-li-base-v2-0-bd488be7c699@toradex.com
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 9c285a7c88ba..69825dc0f85e 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -635,13 +635,18 @@ config MCHP_LAN966X_PCI
- 	  Even if this driver does not depend on those other drivers, in order
- 	  to have a fully functional board, the following drivers are needed:
- 	    - fixed-clock (COMMON_CLK)
-+	    - i2c-mux-pinctrl (I2C_MUX_PINCTRL)
- 	    - lan966x-cpu-syscon (MFD_SYSCON)
-+	    - lan966x-gck (COMMON_CLK_LAN966X)
- 	    - lan966x-miim (MDIO_MSCC_MIIM)
- 	    - lan966x-oic (LAN966X_OIC)
- 	    - lan966x-pinctrl (PINCTRL_OCELOT)
- 	    - lan966x-serdes (PHY_LAN966X_SERDES)
- 	    - lan966x-switch (LAN966X_SWITCH)
- 	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
-+	    - sam9x60-i2c (I2C_AT91)
-+	    - sama5d2-flexcom (MFD_ATMEL_FLEXCOM)
-+	    - sfp (SFP)
- 
- source "drivers/misc/c2port/Kconfig"
- source "drivers/misc/eeprom/Kconfig"
+Changes in v2:
+- Fixed imx95-verdin.dtsi, imx95-verdin-dahlia.dtsi and imx95-verdin-ivy.dtsi node order
+
+Link to v1: https://lore.kernel.org/r/20260305-verdin-imx95-upstream-frank-li-base-v1-0-823fad02def9@toradex.com
+
+---
+Ernest Van Hoecke (6):
+      dt-bindings: arm: fsl: add Verdin iMX95
+      arm64: dts: freescale: Add Verdin iMX95 support
+      arm64: dts: freescale: imx95-verdin: Add Dahlia carrier board
+      arm64: dts: freescale: imx95-verdin: Add Ivy carrier board
+      arm64: dts: freescale: imx95-verdin: Add Mallow carrier board
+      arm64: dts: freescale: imx95-verdin: Add Yavia carrier board
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   24 +
+ arch/arm64/boot/dts/freescale/Makefile             |   10 +
+ .../boot/dts/freescale/imx95-verdin-dahlia.dtsi    |  270 +++++
+ .../arm64/boot/dts/freescale/imx95-verdin-dev.dtsi |  250 +++++
+ .../arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi |  515 +++++++++
+ .../boot/dts/freescale/imx95-verdin-mallow.dtsi    |  223 ++++
+ .../dts/freescale/imx95-verdin-nonwifi-dahlia.dts  |   21 +
+ .../dts/freescale/imx95-verdin-nonwifi-dev.dts     |   21 +
+ .../dts/freescale/imx95-verdin-nonwifi-ivy.dts     |   21 +
+ .../dts/freescale/imx95-verdin-nonwifi-mallow.dts  |   21 +
+ .../dts/freescale/imx95-verdin-nonwifi-yavia.dts   |   21 +
+ .../boot/dts/freescale/imx95-verdin-nonwifi.dtsi   |   16 +
+ .../dts/freescale/imx95-verdin-wifi-dahlia.dts     |   21 +
+ .../boot/dts/freescale/imx95-verdin-wifi-dev.dts   |   21 +
+ .../boot/dts/freescale/imx95-verdin-wifi-ivy.dts   |   21 +
+ .../dts/freescale/imx95-verdin-wifi-mallow.dts     |   21 +
+ .../boot/dts/freescale/imx95-verdin-wifi-yavia.dts |   21 +
+ .../boot/dts/freescale/imx95-verdin-wifi.dtsi      |   50 +
+ .../boot/dts/freescale/imx95-verdin-yavia.dtsi     |  217 ++++
+ arch/arm64/boot/dts/freescale/imx95-verdin.dtsi    | 1162 ++++++++++++++++++++
+ 20 files changed, 2947 insertions(+)
+---
+base-commit: b4c2be6e5620c5054299aaf63e89412f08ab60d8
+change-id: 20260305-verdin-imx95-upstream-frank-li-base-b57ab97c55c1
+
+Best regards,
 -- 
-2.53.0
+Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
