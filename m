@@ -1,121 +1,66 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC45B3CA484
-	for <imx@lists.linux.dev>; Tue, 24 Mar 2026 23:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7A018AFE;
+	Wed, 25 Mar 2026 00:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774393919; cv=none; b=aYK3gCrirI9MQVMDwgVIwyY+AX/vcBpzi20hRHKlZpdITPTRlNjWJJprkXdiVqwv/+XCQZppgPPbojLm4CrNY+go9QnT+ghsHPOp4S6/nTjO8BQE+h6cf+Yd5ieLFaOXdTxh8cznnGEyaFBl8IAZ2chamBAnRR+H6i7RIvg3Zds=
+	t=1774400046; cv=none; b=DlnI5LFX6xbosGztlltHD+b4EZJQXJp7QTO3gFpmpHsk6lxaiVdTqZYFTsgNhuUue4tFqaFGXgS+reIwr7oyLh6vMdqtK8CxkWzu/f8skCdCrRSLrxL4VibvDRtRDK/XcnTmffAanPGQJmVCi07k5cWazytjOj8SO53MfFUkvyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774393919; c=relaxed/simple;
-	bh=UsdJ+Q4kBS1MbW0xQpYTJ+JAo9wLCnAzmaVXx1tB79Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=glIiono52ew1h66BwAX5SuoGq4aG/bIIl1oza4mXnBkfwHnwUcIEzmmqAHM0+LJR0XHAZzSL6n9w0Fg2ON1WKBbVQqEfe/I1nzvQ+Wd2Pe7ADm4eGbtlaWrwFO7sOZa1rtAhXQ+DZ/Q4WLAABFNZXjUn2+jX8FLRR+tWad8Sxps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=dMPkaKvp; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1774400046; c=relaxed/simple;
+	bh=dRfWufNAJCcOhh0AhmUSfHoYAd4HMIuJBmV7zbhHIv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OVvN659fG1aoK2Q84hryIyBvzIO0mWNk7o0u+NK1dnJJ2ZYyAazAvg4rAV/Uj7luQ1dnutopVUTwIbidErhfhvVhZn2kvv1BWv4YSQFxtpQc/5OUYh2dmuCILOgSkwimnhNk1RY+M6EGNflj8kY/nxRkkHKxtA950ub5nz5UDUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUbP/vJT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="dMPkaKvp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15605112263;
-	Wed, 25 Mar 2026 00:11:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1774393908;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6hkqmn5/Lm/RJ1zH+MMrxFpBSNBqxslxfAIu548ZS6o=;
-	b=dMPkaKvpgdhIyAKyu5nYxwRdnlq3N08T9loLdL6JOo/n7tqhieKPGvR74HmmvbEvTH1Px3
-	UrO2Xca6vycanpXrFwcbi1VDsFi1IOxCDf/BljTZHNJCUuk6uw73z0ttCZiALwznufbr/5
-	U4VIaOt5Yu9v6o5XI9Eh4ZWdyrPFD/gTQMxxa8vgvRRgmy407PInjQ7GEEQ33x5BnQIVl4
-	6IuDYHrF+gKQ761WAFV0CnyGbuL72ws6xInX/fo/y6BKEQI7KAuA0U8fOFDqELKJEhpezz
-	vjhsYM1ldlLjk0p9PThqSCfkFZDSExQVAefZDiWfJTKyPV5a95ydouYXUeKQww==
-Message-ID: <e580bc1d-96ce-43c5-880f-bb8ee31fda28@nabladev.com>
-Date: Tue, 24 Mar 2026 22:43:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUbP/vJT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BF3C19424;
+	Wed, 25 Mar 2026 00:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774400045;
+	bh=dRfWufNAJCcOhh0AhmUSfHoYAd4HMIuJBmV7zbhHIv8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AUbP/vJT3ju85md9fr2qXnnguARCnC6pYHEWEpWgxdy3mERVlbgDcDeN0tTsdggeF
+	 KxflKX2yJwN7hFAEkp8hMd8eaVm5AUgnfY2+97Ty1E7yBjuR/Wl5PRZYCNeSrtPb3f
+	 /kxaCN8j1pDIOkvGRsFvzPTB0rCZzuPhn1Y9rVwhKmm2HqQhOhNkCPN+H6l6VKgg/i
+	 F9aG7r+Zu6Vfd4IUxNNp/DhFsEzIJ0BfxyIKb7z6ooH8gC2QhBxJYrECUxjAJGpvLG
+	 js2BbpJNCjvSNmdhCNS+CrcA9r6yute3EqWKFLWaS7GtuxH1Z1n9edAI/rn63JdOE/
+	 msh13CzeR4YhA==
+Date: Tue, 24 Mar 2026 19:54:04 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: kernel@pengutronix.de, linux-kernel@vger.kernel.org, krzk+dt@kernel.org,
+	l.stach@pengutronix.de, s.hauer@pengutronix.de, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, festevam@gmail.com, frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, lpieralisi@kernel.org,
+	linux-pci@vger.kernel.org, conor+dt@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, bhelgaas@google.com
+Subject: Re: [PATCH v8 2/5] dt-bindings: PCI: imx6q-pcie: Add i.MX94 and
+ i.MX943 PCIe compatible strings
+Message-ID: <177440004361.2302904.12708290351428536062.robh@kernel.org>
+References: <20260324023036.784466-1-hongxing.zhu@nxp.com>
+ <20260324023036.784466-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: imx8mp: Add DT overlays for DH i.MX8M Plus
- DHCOM SoM and boards
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-arm-kernel@lists.infradead.org,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-kernel@vger.kernel.org
-References: <20260312232500.197096-1-marex@nabladev.com>
- <acK1YU6M5FGK3qM2@lizhi-Precision-Tower-5810>
- <e5d7ca6a-fdd3-4aca-aa1f-1d35bc9c0119@nabladev.com>
- <acLtV4Vwpbj9vpE3@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <acLtV4Vwpbj9vpE3@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324023036.784466-3-hongxing.zhu@nxp.com>
 
-On 3/24/26 9:00 PM, Frank Li wrote:
-> On Tue, Mar 24, 2026 at 06:39:10PM +0100, Marek Vasut wrote:
->> On 3/24/26 5:01 PM, Frank Li wrote:
->>> On Fri, Mar 13, 2026 at 12:24:04AM +0100, Marek Vasut wrote:
->>> ...
->>>
->>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi
->>>> new file mode 100644
->>>> index 0000000000000..534737363c9f0
->>>> --- /dev/null
->>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-overlay-panel-ch101olhlwh.dtsi
->>>> @@ -0,0 +1,42 @@
->>>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>> +/*
->>>> + * Copyright (C) 2022 Marek Vasut
->>>
->>> 2026?
->>
->> That was the original copyright year when this was implemented, but I can
->> update it to 2022-2026 ?
-> 
-> Okay, you upstream this year.
 
-Right, V2 does extend the copyrights until this year.
+On Tue, 24 Mar 2026 10:30:33 +0800, Richard Zhu wrote:
+> Add i.MX94 and i.MX943 PCIe compatible strings and fallback to
+> i.MX95 PCIe compatible string.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  .../bindings/pci/fsl,imx6q-pcie-ep.yaml       | 18 ++++++++-----
+>  .../bindings/pci/fsl,imx6q-pcie.yaml          | 26 ++++++++++++-------
+>  2 files changed, 28 insertions(+), 16 deletions(-)
+> 
 
->>>> + */
->>>> +
->>>> +&display_bl {
->>>> +	pwms = <&pwm1 0 5000000 0>;
->>>> +};
->>>> +
->>>> +&DH_OVERLAY_PANEL_I2C_BUS {
->>>
->>> why upcase for label, generally it should be lower case
->>
->> Because this label is really a macro , please read on.
->>
->>>> +	#address-cells = <1>;
->>>> +	#size-cells = <0>;
->>>> +
->>>> +	touchscreen@41 {
->>>> +		compatible = "ilitek,ili251x";
->>>> +		pinctrl-0 = <DH_OVERLAY_PANEL_I2C_TOUCHSCREEN_PINCTRL>;
->>>> +		pinctrl-names = "default";
->>>> +		reg = <0x41>;
->>>
->>> reg should second property,  please dt-format for new dts files.
->>> check others
->> What is "dt-format" ? Linux kernel source tree, even current next, does not
->> mention such a tool . I did run schema check and checkpatch on these
->> patches. obv.
-> 
-> I send out at many place, https://github.com/lznuaa/dt-format
-> I write small tools to detect and fix node and property order problem,
-> it may be buggy.
-> 
-> These node order problem is easy to detected and fix by tools to save
-> review cycle and focus on the important stuff.
-Maybe "make dtbs_check" target could include this tool , to make people 
-aware of it ?
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
