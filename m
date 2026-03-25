@@ -1,157 +1,143 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80783B8937;
-	Wed, 25 Mar 2026 10:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76BC3B893B;
+	Wed, 25 Mar 2026 10:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774434790; cv=none; b=C+u2s3fOM3SX3qUPZkHvo9CSPV5XY8a82eYAig8vOy/UCN8/J9Kmd6jDRg9W4WkwU/wo4ndygVug548PZ4FqWLgnsOURTta0Op6hJIKMG4uFJssIRVw4MFY+SwWjeYpQ/nd4cVk36vJrztoHzznPCIbqRXJUhIMN9SRXYVhO5CQ=
+	t=1774434826; cv=none; b=sC4+V3eUgRALXWRsT/Mg7W3pJr9LRE4jQU9enfr0dhSRP9QaOoPvoXhCRA3iMvNQdpiDi4R4ONFmAAJT5Ax+EDoNOD0OhtNwehUcnEQLxeulFcLbqKl9hZNebk6X7x+/O4uqV6tyBsM2CS4IS5aYqz6bWepuyL1gEXzJFLSAYpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774434790; c=relaxed/simple;
-	bh=EqAJ4JmzVDIM8zuNvQXcQbmW19GyMId6pMXxIqxpfPw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvmWN5wXrY8zgKILp/HpIMPc/s+02TGiVRpPHAySRgHok00armfROtecqrRVwHIETZIrjt/Jkkc9Mkg92BRztdy0u16gPB478Iky5yx8+RYgCPPZlhdvCIUtPJHYU5b9wHmxcPj7rFLEGvpFG0zboI/ZujW0zOS7Xo2Z90QvYt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0vFr6RC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774434826; c=relaxed/simple;
+	bh=aJiJufwALZTrMErym90lg9xadYFrtwTh9zLM612wdfU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=izvZ5uGt/141mDroqVgEWmmo3ckrTrrhH9zQMgYWQwNPkp5xP+r1Yu6Tbv/AKVQ/UKLalP0N2K3bY3vNQY04Uo/S/x0J7isRmTdtEpkfm3nQ2MgVW0aHH+bK04y1AZBSG5YdPfbL+KcUpProsDO0jcTL/qoq/lWVfAu5h9/zRMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQ7wamBu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0vFr6RC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5572C4CEF7;
-	Wed, 25 Mar 2026 10:33:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQ7wamBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D04C4CEF7;
+	Wed, 25 Mar 2026 10:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774434790;
-	bh=EqAJ4JmzVDIM8zuNvQXcQbmW19GyMId6pMXxIqxpfPw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b0vFr6RCuA8SyrW80P9JDA/OV32R/8VshRwGmUxJp0BzyCU4rEpWrHzUcYlZp0Cbi
-	 nP+gTTTJZ4jvVYBy5ivfFcbIeI4lHt4+Mu/JzpmkJJ4Uf68p+YexgmwQ6hJeS7CzGG
-	 LO9164vJNabH3EN4duTgCy2mGAhUrmdDG/4fL8GrulupzULULm7tx+LSaezhD4EwxH
-	 trHyW+NacA9/i/6S9zpYWFm50cgfobbJLOfPj8/yknWgmmeref4cUDvSuGFL8hvbGw
-	 lTv4gWgOy62lXD7gm9ZRYoDOGAoUMOtT/wX32RlfGAKtvLlB5hIN21kntD/8DfE6ie
-	 uqJTO7YEnq5cw==
-Date: Wed, 25 Mar 2026 10:33:05 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v3 3/7] pinctrl: pinctrl-generic: add
- __pinctrl_generic_pins_function_dt_node_to_map()
-Message-ID: <20260325-riding-browbeat-293b47f43d82@spud>
-References: <20260311-pinctrl-mux-v3-0-236b1c17bf9b@nxp.com>
- <20260311-pinctrl-mux-v3-3-236b1c17bf9b@nxp.com>
- <CAD++jL=U2xNMMHk_LyH8CX+YpC5EGPVRasM11yesXSH4XLhqYw@mail.gmail.com>
- <absvZ5wzAwpbjHf1@lizhi-Precision-Tower-5810>
- <CAD++jLkp1CFcLccmLP0BWQSBKkruGCPT71dMeuyu3JY1N4T50g@mail.gmail.com>
- <ab1Rpf2zS8Bn1-HV@lizhi-Precision-Tower-5810>
- <acLxCnz3qYfAC3iB@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1774434826;
+	bh=aJiJufwALZTrMErym90lg9xadYFrtwTh9zLM612wdfU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IQ7wamBuBswIV06YMQ512/86FaeSJDO1hVJmHF15aa7lwqSBhYRoh2/xQs7mCuMVn
+	 jIZx2QfPrLjG8x4HGTqwuohoFEss2YApWTN6VCPS6cZhs/Cz8meOXIe/nuz3nW3OfQ
+	 sW0aKsRm2pkCRj3Tz0xlGVf6Gag2qK2q2BHc6gd5m/lWaXyDpvlRC/a6o2Y0gsRKbw
+	 RfK3wED0pdnN0Lx0xk8dNqAWio6aPnfaaxOQ/5BjXGXYBkYeT67KblOmgVEwNZOcNA
+	 F7WJV99ADDvaoAhrnEG8aPpXAxBYDzixJeHIYfU0n1hRsq0hJGFAKTXaXIvu5adZgH
+	 fldf6DCQY3dFg==
+Message-ID: <965fe446-8f91-48bf-9453-878fef4eb1d0@kernel.org>
+Date: Wed, 25 Mar 2026 11:33:20 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rph5EFAPA81jsNAV"
-Content-Disposition: inline
-In-Reply-To: <acLxCnz3qYfAC3iB@lizhi-Precision-Tower-5810>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] scripts: kconfig: merge_config.sh: use POSIX '=' in
+ test
+To: Mikko Rapeli <mikko.rapeli@linaro.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>,
+ =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+ =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Mark Brown <broonie@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>, Michael Walle <mwalle@kernel.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Anna Schumaker <anna.schumaker@oracle.com>,
+ Alexandre Gonzalo <alexandre.gonzalo@arm.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, openbmc@lists.ozlabs.org
+References: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org>
+ <20260317-arm_defconf_cleanup-v1-1-8eecb7fdd24d@kernel.org>
+ <abkfJsyQSbW-VjxD@nuoska>
+From: "Vincent Mailhol (Arm)" <mailhol@kernel.org>
+Content-Language: en-US
+In-Reply-To: <abkfJsyQSbW-VjxD@nuoska>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 3/17/26 10:30, Mikko Rapeli wrote:
+> Hi,
+> 
+> On Tue, Mar 17, 2026 at 10:13:37AM +0100, Vincent Mailhol (Arm) wrote:
+>> merge_config.sh yields this warning:
+>>
+>>   ./scripts/kconfig/merge_config.sh: 384: [: false: unexpected operator
+>>
+>> This happens because the script runs under /bin/sh but compares
+>> strings using the '==' operator, which is a bash extension. The POSIX
+>> test command only specifies '=' for string equality.
+>>
+>> Replace '==' with the POSIX-compatible '=' so the script works when
+>> run with /bin/sh as intended.
+>>
+>> Fixes: dfc97e1c5da5 ("scripts: kconfig: merge_config.sh: use awk in checks too")
+>> Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
+> 
+> This fix is already merged in kbuild trees:
+> 
+> https://lore.kernel.org/linux-kbuild/20260309121505.40454-1-o451686892@gmail.com/
+> https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git/log/?h=kbuild-fixes-for-next
+
+Noted! I actually started to write this before the other solution was
+posted, but, anyway, this will be removed in v2.
 
 
---rph5EFAPA81jsNAV
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yours sincerely,
+Vincent Mailhol
 
-On Tue, Mar 24, 2026 at 04:16:10PM -0400, Frank Li wrote:
-> On Fri, Mar 20, 2026 at 09:54:45AM -0400, Frank Li wrote:
-> > On Fri, Mar 20, 2026 at 02:27:21PM +0100, Linus Walleij wrote:
-> > > On Thu, Mar 19, 2026 at 12:04=E2=80=AFAM Frank Li <Frank.li@nxp.com> =
-wrote:
-> > > > On Mon, Mar 16, 2026 at 10:37:28AM +0100, Linus Walleij wrote:
-> > >
-> > > > > That said: in this case you're just adding a parameter, just add
-> > > > > the parameter and change all of the in-tree users to pass false
-> > > > > or whatever you need, these is just one (1) in-tree user anyway.
-> > > >
-> > > > pinctrl_generic_pins_function_dt_node_to_map() directly feed to
-> > > > .dt_node_to_map() callback, add parameter will impact too much.
-> > >
-> > > Why do you say that. It already has many parameters, one more
-> > > or less doesn't matter. It's not like this call is performance-critic=
-al.
-> > > Just change the users.
-> >
-> > In only user drivers/pinctrl/microchip/pinctrl-mpfs-mssio.c,
-> > 	.dt_node_to_map =3D pinctrl_generic_pins_function_dt_node_to_map;
-> >
-> > pinctrl_generic_pins_function_dt_node_to_map() need match .dt_node_to_m=
-ap()'s
-> > declear.
-> >
-> > So it can't direct add two parameters in pinctrl_generic_pins_function_=
-dt_node_to_map()
-> > Need simple wrap function, which other in pinctrl-mpfs-mssio.c or in
-> > pinconf.h.
-> >
-> > If add two parameter in .dt_node_to_map(), need change all functions, w=
-hich
-> > .dt_node_to_map =3D xxx_to_map(). and OF core part.
->=20
-> Linus Walleij:
-> 	Is my explain clear enough? I am preparing respin it?
->=20
-> 	is okay use wrap function
-> 	pinctrl_generic_pins_function_dt_node_to_map_ext()?
-
-I don't understand this patch. The function is called
-pinctrl_generic_pins_function_dt_node_to_map(). You have no pins.
-You're adding a parameter to make a function with *pins* in its name not
-use pins. The new function doesn't use pins but has pins in the name.
-At the very least function names should not be misleading.
-
-I was going to suggest pulling out the relevant portions and creating
-some helpers that could be used by multiple different-but-similar
-functions, but I don't actually even think that there's much in common.
-Most damningly I think, you don't actually read either the functions or
-pins properties at all and neither are permitted by your binding.
-So turns out you use neither pins or functions...
-
-You don't actually have any of these properties which runs counter to the
-goal of the function, which is parsing. With this in mind, it feels to me
-like you're trying way too hard to make use of a generic function when the
-right thing to do is probably just have an entirely custom function.
-Maybe that's a custom implementation in your driver, or a new function
-here, but I think writing that will highlight just how little of the
-code would be shared between the existing function and what your
-use-case needs: no pin configuration stuff, no reading of the devicetree
-other than the node names and no dealing with the label pointing to the
-"wrong" place.
-
-I recently bought a spacemit k1 board to go and write a sister function
-to pinctrl_generic_pins_function_dt_node_to_map() that deals with pins
-and groups (because that's a pretty common pattern).
-I would be calling that pinctrl_generic_pinmux_dt_node_to_map(),
-because it that's the property it deals with. I have honestly got no
-idea what to call one for this situation since you don't have any of the
-properties in pinmux-node.yaml. Maybe that's a sign.
-
-Cheers,
-Conor.
-
---rph5EFAPA81jsNAV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacO54QAKCRB4tDGHoIJi
-0pMgAP9oMmCGeSjt4dlxPST9iaYHHdHPq/OLqZAXovZzPIwdvwEA88h6G/MIAJvB
-OdYLGz82KLktiumTetrkiU2kvIDRlQY=
-=fORh
------END PGP SIGNATURE-----
-
---rph5EFAPA81jsNAV--
