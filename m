@@ -1,301 +1,225 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093C43D5660
-	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 12:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD833CF697;
+	Wed, 25 Mar 2026 12:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774442419; cv=none; b=g6umzFgj1Jqveb1+XAOp3Z3wp+V+oTtNPHQUjB/45eRRw91ZIVvH/yFo5tLkuUgcL/x+mbCTQfV5H3d/LXTN/D1O73usN6pkAN2V7amz3KmsScwmf4hO2XEDwHimU1XYiUrQx0/PcI7p4JgQszSVHsUHG1wQffWWhPOgBauMeyY=
+	t=1774442554; cv=none; b=f/NzQtcOBHoN6TBxdAwUOzpW+EF9t6zlxGtB4ZTm8PzrPeVXVRrabQbRxVN4elVg73nyMc+kwbxVV0b14f/y99bhucGu6YtZobPskZ8eDTJbbrTE4onJJ+h0MaIsaSO480skHijchzhM4LL1Fd+0RB+BRs1x73opTL8cjoYFGe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774442419; c=relaxed/simple;
-	bh=L/UNMrgHBSOFL6DNr+jMvKiC1uI5IFA5MHg77aVTVD4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dxtuc0Lus3jIW36VCBxYWF/dLhLJ89h3IU/3knivWZACTqWRdSAsMwhZzKAWtS5Z2Zb52agwGBMEA3V6G9YqVjJZ+1OoCLPXCPpKFmP6rKhoyLnhp8MW2Cw+fbxCHkoy7FoPQGs1ssshuzzDjTv5TVUo/mjFizqjBpchLRSxQz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 2DBBDC3EEAC9;
-	Wed, 25 Mar 2026 13:40:04 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 2DBBDC3EEAC9
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Maxime Ripard <mripard@kernel.org>,  Marco Felsch
- <m.felsch@pengutronix.de>,  Marek Vasut <marex@nabladev.com>,  Stefan
- Agner <stefan@agner.ch>,  Simona Vetter <simona@ffwll.ch>,
-  <imx@lists.linux.dev>,  Fabio Estevam <festevam@gmail.com>,  Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Sascha Hauer
- <s.hauer@pengutronix.de>,  Frank Li <Frank.Li@nxp.com>,
-  <linux-kernel@vger.kernel.org>,  <dri-devel@lists.freedesktop.org>,
-  Thomas Zimmermann <tzimmermann@suse.de>,  David Airlie
- <airlied@gmail.com>,  <linux-arm-kernel@lists.infradead.org>,  Lucas Stach
- <l.stach@pengutronix.de>
-Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
-In-Reply-To: <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com> (Liu Ying's
-	message of "Mon, 23 Mar 2026 16:18:55 +0800")
-References: <m3ms04caaj.fsf@t19.piap.pl>
-	<32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
-	<m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
-	<20260320-amiable-hairy-bullfinch-28bfda@houat>
-	<m3a4w2d4ds.fsf@t19.piap.pl>
-	<ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
-Sender: khalasa@piap.pl
-Date: Wed, 25 Mar 2026 13:40:03 +0100
-Message-ID: <m3se9onkv0.fsf@t19.piap.pl>
+	s=arc-20240116; t=1774442554; c=relaxed/simple;
+	bh=w7OzwCqt8SyLebOkd0ga04DG/iV8dPT4IUIMUesHAhk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TRhNqX1jWDikFFhJRxhVwxwZJ07API5RVDPKVAdHuzrzZsQOMU1tZWlrsr+DL2Iok+VfLh8aPWxWcuF62qJFJxK6G7hqdWYMwQc4Vk+k5NQb2YSTISg3K3VqN3TqHsODBg+F/lX6j16l/g9d9Q+euJmgpuPuJTIiqZpIfeRVPcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqEhZy0K; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqEhZy0K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E418FC4CEF7;
+	Wed, 25 Mar 2026 12:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774442554;
+	bh=w7OzwCqt8SyLebOkd0ga04DG/iV8dPT4IUIMUesHAhk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kqEhZy0KWeBErR981dacfREdOZWMmz6qOIxI4/aT7/aolwxv4kqXgQoqF3yfj/NNW
+	 qgGHWlfdf7fya7BTe6mmtyKuBxTwb8JRvk8QJK4RagZwcDRCTeDpS43812XcQjA2fE
+	 xkWy5aAn2w1MBXjPWyj+48XlvnssAxxrCjCI8ZK1sME1Sq+CNkRXJf+NW4CwA+iLF0
+	 4/e+TmLS5G9HIh/K2I27R5Ahbm5eBBLcd4KNdpwhs3CPjw669K1nE6SpkZrWp7/j1C
+	 bIjJAauviZ79LmzBEAAEmH1UTErdMS3unexGlTUMbIgrVB90vexkMKwZ7Jc/uAM6lJ
+	 pSCoDpRuXkrQQ==
+Message-ID: <85818080-c267-4c80-851e-daf050de97a0@kernel.org>
+Date: Wed, 25 Mar 2026 13:42:06 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] arm: configs: remove obsolete assignments to
+ SND_SOC_ROCKCHIP
+To: "Vincent Mailhol (Arm)" <mailhol@kernel.org>
+Cc: Alexandre Gonzalo <alexandre.gonzalo@arm.com>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-omap@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ openbmc@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, Mikko Rapeli <mikko.rapeli@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>,
+ =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+ =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Mark Brown <broonie@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>, Michael Walle <mwalle@kernel.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Anna Schumaker <anna.schumaker@oracle.com>
+References: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org>
+ <20260317-arm_defconf_cleanup-v1-5-8eecb7fdd24d@kernel.org>
+ <febd0f7e-59f3-4ba4-8706-53c7353e3fe5@kernel.org>
+ <3ec53a2e-a8e1-43d3-abdb-c00433e7675c@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <3ec53a2e-a8e1-43d3-abdb-c00433e7675c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 25/03/2026 12:27, Vincent Mailhol (Arm) wrote:
+> +CC: soc@lists.linux.dev
 
-maybe I don't understand this, but... added a bunch of printk()s:
+Please don't. This is not a patch review mailing list.
 
-static void dump(struct lcdif_drm_private *lcdif, const char *func, unsigne=
-d line)
-{
-	uint32_t d1 =3D readl(lcdif->base + LCDC_V8_INT_STATUS_D1);
-	printk(KERN_DEBUG "%s[%u]\n", func, line);
-	printk(KERN_DEBUG "CTRL %08X PARA %08X %08X %08X %08X %08X\n",
-	       readl(lcdif->base + LCDC_V8_CTRL),
-	       readl(lcdif->base + LCDC_V8_DISP_PARA),
-	       readl(lcdif->base + LCDC_V8_DISP_SIZE),
-	       readl(lcdif->base + LCDC_V8_HSYN_PARA),
-	       readl(lcdif->base + LCDC_V8_VSYN_PARA),
-	       readl(lcdif->base + LCDC_V8_VSYN_HSYN_WIDTH));
-	printk(KERN_DEBUG "D0   %08X %08X D1 %08X(C) %08X\n",
-	       readl(lcdif->base + LCDC_V8_INT_STATUS_D0),
-	       readl(lcdif->base + LCDC_V8_INT_ENABLE_D0),
-	       d1,
-	       readl(lcdif->base + LCDC_V8_INT_ENABLE_D1));
-	printk(KERN_DEBUG "DESC %08X %08X %08X %08X %08X\n",
-	       readl(lcdif->base + LCDC_V8_CTRLDESCL0_1),
-	       readl(lcdif->base + LCDC_V8_CTRLDESCL0_3),
-	       readl(lcdif->base + LCDC_V8_CTRLDESCL_LOW0_4),
-	       readl(lcdif->base + LCDC_V8_CTRLDESCL_HIGH0_4),
-	       readl(lcdif->base + LCDC_V8_CTRLDESCL0_5));
-	if (d1)
-		writel(d1, lcdif->base + LCDC_V8_INT_STATUS_D1); // clear D1 status
-}
+> 
+> On 3/17/26 12:28, Krzysztof Kozlowski wrote:
+>> On 17/03/2026 10:13, Vincent Mailhol (Arm) wrote:
+>>> CONFIG_SND_SOC_ROCKCHIP was removed in commit cae3cc435db5 ("ASoC:
+>>> rockchip: Standardize ASoC menu"). However it is still referenced in
+>>> some defconfigs.
+>>>
+>>> Remove any references to CONFIG_SND_SOC_ROCKCHIP.
+>>>
+>>> FYI, the suppressions were done using:
+>>>
+>>>   git ls-files -z 'arch/*/configs/*defconfig' |\
+>>>     xargs -0 sed -i -E '/^CONFIG_SND_SOC_ROCKCHIP/d'
+>>>
+>>> Fixes: cae3cc435db5 ("ASoC: rockchip: Standardize ASoC menu")
+>>> Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
+>>> ---
+>>>  arch/arm/configs/multi_v7_defconfig | 1 -
+>>>  arch/arm64/configs/defconfig        | 1 -
+>>
+>> This was already posted:
+>> https://lore.kernel.org/all/20260313-rockchip-snd-cleanup-v1-1-77d9a953fd1b@schnwalter.eu/
+>> but just like that patch you did not send it to soc@ (if I am not
+>> mistaken... CC list is enormous).
+> 
+> OK, I will add soc@lists.linux.dev to the recipient list in v2.
 
-(C) after LCDC_V8_INT_STATUS_D1 value means I clear it after read. It's
-the single PANIC bit, "write 1 to clear".
+Could be, but isn't this specific to given SoC? defconfigs go via SoC
+platform trees (maintainer soc profile).
 
-LCDIFV3_PANIC0_THRES is 0x15501AA, but 2/4 and 3/4 didn't fix it either
-(completely at least). 2160p30. Also added the undocumented
-CTRLDESCL0_3_STATE_CLEAR_VSYNC bit as in NXP's driver (clearing FIFO on
-VSYNC).
+> 
+>> I think you are mixing here independent works, like kconfig and per-arch
+>> defconfig changes. Please split these per arch defconfig maintainers -
+>> patches and patchset, so you won't be Cc-ing 50 addresses.
+> 
+> The config issues which I am addressing are transversal problems so I
+> was expecting to just get the Acked-by from the other architecture and
 
-Normal start (before Weston):
-4.943 lcdif_reset_block[432]
-4.943 CTRL 80000000 PARA 00000000 00000000 00030003 00030003 00030003 <<<<<=
- SW_RESET
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 00000000 00000000 00000000 00000000 00000000
-4.943 lcdif_reset_block[437]
-4.943 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 00000000 00000000 00000000 00000000 00000000
-4.943 lcdif_set_formats[197]
-4.943 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 00000000 00000000 00000000 00000000 00000000
-4.943 lcdif_set_formats[320]
-4.943 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 00000000 00000000 00000000 00000000 09000000
-4.943 lcdif_set_mode[340]
-4.943 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 00000000 00000000 00000000 00000000 09000000
-4.943 lcdif_enable_controller[382]
-4.943 CTRL 00000002 PARA 00000000 08700F00 012800B0 00480008 000A0058
-4.943 D0   00000000 00000000 D1 00000000(C) 00000000
-4.943 DESC 08700F00 00A23C00 ED000000 00000000 09000000
-4.948 lcdif_enable_controller[402]
-4.948 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.949 D0   00000000 00000000 D1 00000000(C) 00000001
-4.949 DESC 08700F00 00A23C00 ED000000 00000000 89000000               <<<<<=
- DMA_EN
+Well, sure, IMO this only stalls the patchset but fine with me.
 
-I don't know what exactly happens at this point, the DMA starts and the
-CRTC also starts scanning right away? No underrun follows. Not even
-"panic" indication:
+> have all this go through the same tree.
 
-4.949 lcdif_crtc_atomic_enable[604]
-4.950 lcdif_plane_primary_atomic_update[746]
-4.951 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.951 D0   00000000 00000000 D1 00000000(C) 00000001
-4.951 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-4.956 lcdif_plane_primary_atomic_update[755]
-4.956 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.956 D0   00000000 00000000 D1 00000000(C) 00000001
-4.956 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-4.956 lcdif_crtc_atomic_flush[554]
-4.956 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.956 D0   00000000 00000000 D1 00000000(C) 00000001
-4.957 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-4.957 lcdif_crtc_atomic_flush[558]
-4.957 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.957 D0   00000000 00000000 D1 00000000(C) 00000001
-4.957 DESC 08700F00 00A23C00 ED000000 00000000 C9000000               <<<<<=
- SHADOWS
-
-^^^ The code programs the CRTC to update DMA registers (only?), I guess
-mostly the frame buffer address, on the next frame end / start /
-whatever event.
-
-4.957 lcdif_crtc_enable_vblank[678]
-4.957 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.957 D0   00000000 00000000 D1 00000000(C) 00000001
-4.957 DESC 08700F00 00A23C00 ED000000 00000000 C9000000               <<<<<=
- SHADOWS
-4.962 lcdif_crtc_enable_vblank[683]
-4.962 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.962 D0   00000000 00000004 D1 00000000(C) 00000001
-4.962 DESC 08700F00 00A23C00 ED000000 00000000 C9000000               <<<<<=
- SHADOWS
-4.963 lcdif_crtc_atomic_flush[572]
-
-if the frame started at 4.948 - 4.949, the next one is due at ca. 4.982
-(30 Hz). VSync should start not sooner than 4.980 (32.0 ms).
-
-4.977 lcdif_crtc_atomic_destroy_state[632]
-4.977 Console: switching to colour frame buffer device 240x67
-4.977 lcdif_crtc_atomic_duplicate_state[661]
-4.977 lcdif_crtc_atomic_check[480]
-4.977 lcdif_crtc_atomic_check[542]
-4.977 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.977 D0   00000001 00000004 D1 00000000(C) 00000001                  <<<<<=
- VSYNC
-4.978 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-
-^^^ Here the "update shadow" bit is (self) cleared, so I think the frame
-has ended (or the next one started), and a new one has started (or is
-about to). No underrun. This is not an IRQ. Interestingly, it's not
-4.980 yet.
-
-4.978 lcdif_crtc_atomic_check[543]
-4.978 lcdif_plane_primary_atomic_update[746]
-4.978 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.978 D0   00000001 00000004 D1 00000000(C) 00000001
-4.978 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-4.985 lcdif_plane_primary_atomic_update[755]
-4.985 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-4.985 D0   00000001 00000004 D1 00000000(C) 00000001
-4.985 DESC 08700F00 00A23C00 ED000000 00000000 89000000
-
-At this point, the new frame definitely has started (7+ ms since VSYNC).
+But which tree?
 
 
-Now starting Weston:
-...
-34.655 CTRL 80000000 PARA 00000000 00000000 00030003 00030003 00030003 <<<<=
-< SW_RESET
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 00000000 00000000 00000000 00000000 00000000
-34.655 lcdif_reset_block[437]
-34.655 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 00000000 00000000 00000000 00000000 00000000
-34.655 lcdif_set_formats[197]
-34.655 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 00000000 00000000 00000000 00000000 00000000
-34.655 lcdif_set_formats[320]
-34.655 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 00000000 00000000 00000000 00000000 09000000
-34.655 lcdif_set_mode[340]
-34.655 CTRL 00000000 PARA 00000000 00000000 00030003 00030003 00030003
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 00000000 00000000 00000000 00000000 09000000
-34.655 lcdif_enable_controller[382]
-34.655 CTRL 00000002 PARA 00000000 08700F00 012800B0 00480008 000A0058
-34.655 D0   00000000 00000000 D1 00000000(C) 00000000
-34.655 DESC 08700F00 00A23C00 EF000000 00000000 09000000
-34.660 lcdif_enable_controller[402]
-34.660 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.660 D0   00000000 00000000 D1 00000000(C) 00000001
-34.660 DESC 08700F00 00A23C00 EF000000 00000000 89000000               <<<<=
-< DMA_EN
+> 
+> As I explained in my cover letter, this is not doing any functional changes.
+> 
+> But if this is not acceptable, I will just reduce the scope to arm/arm64
+> then. Doing a per arch split as you suggested would be too much overhead
+> (more than what I am ready to invest on this clean-up).
 
-As above, the only difference is frame buffer address.
+The first thing your cover letter should explain is the
+merging/dependencies or other expectations you have. That's the most
+important thing when maintainers give your patchset 15 seconds in their
+mailbox. Or when you want to optimize maintainers process, making also
+your patchset easier to get in.
 
-34.660 lcdif_crtc_atomic_enable[604]
-34.661 lcdif_plane_primary_atomic_update[746]
-34.661 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.661 D0   00000000 00000000 D1 00000000(C) 00000001
-34.661 DESC 08700F00 00A23C00 EF000000 00000000 89000000
-34.666 lcdif_plane_primary_atomic_update[755]
-34.666 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.666 D0   00000000 00000000 D1 00000000(C) 00000001
-34.667 DESC 08700F00 00A23C00 EF000000 00000000 89000000
-34.667 lcdif_crtc_atomic_flush[554]
-34.667 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.667 D0   00000000 00000000 D1 00000000(C) 00000001
-34.667 DESC 08700F00 00A23C00 EF000000 00000000 89000000
-34.667 lcdif_crtc_atomic_flush[558]
-34.667 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.667 D0   00000000 00000000 D1 00000000(C) 00000001
-34.667 DESC 08700F00 00A23C00 EF000000 00000000 C9000000               <<<<=
-< SHADOWS
+There is a lot of text in the cover letter but nothing explaining what
+you wrote here.
 
-The DMA registers are to be updated on the next VSYNC.
-
-34.667 lcdif_crtc_enable_vblank[678]
-34.667 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.667 D0   00000000 00000000 D1 00000000(C) 00000001
-34.667 DESC 08700F00 00A23C00 EF000000 00000000 C9000000               <<<<=
-< SHADOWS
-34.672 lcdif_crtc_enable_vblank[683]
-34.672 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-34.672 D0   00000000 00000004 D1 00000000(C) 00000001
-34.672 DESC 08700F00 00A23C00 EF000000 00000000 C9000000               <<<<=
-< SHADOWS
-34.689 lcdif_crtc_atomic_destroy_state[632]
-35.482 lcdif_crtc_atomic_duplicate_state[661]
-35.482 lcdif_crtc_atomic_check[480]
-35.482 lcdif_crtc_atomic_check[542]
-35.482 CTRL 00000002 PARA 80000000 08700F00 012800B0 00480008 000A0058
-35.482 D0   01000002 00000004 D1 00000001(C) 00000001                  <<<<=
-< UNDERRUN
-35.482 DESC 08700F00 00A23C00 EF000000 00000000 89000000
-
-No VSYNC bit (though shadow updates happen on VSYNC), PANIC registered,
-and UNDERRUN.
-
-Why did the first (boot) sequence result in success and this second one
-in failure? This is somehow reproducible.
-Interestingly, Weston usually starts fine in subsequent launches.
-
-How is this first (actually second - after the first VSYNC) frame
-different from all the others? Maybe we're programming UPDATE_SHADOW
-after the actual start of blanking period, but before DE, so it has no
-chance to reload registers, yet the DMA is somehow not ready?
-
-The manual (LCDIF display control Register (CTRL)) suggests that the DMA
-(with present settings) starts to fetch FB data at the end of the
-previous active video pixel time (DE and pixel data going inactive):
-fetch_start_option (bits 9-8): Indicates when to start fetching for new
-frame. This signals also decide the shadow load, fifo clear time
-00b - fetch start as soon as FPV begins(as the end of the data_enable).
-
-This should leave a lot of time to fill the FIFO (before the next DE),
-shouldn't it?
-
-297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
-V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
-HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6 =3D
-32 ms, with the remaining 1.3333 ms for all the V sync stuff.
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+Best regards,
+Krzysztof
