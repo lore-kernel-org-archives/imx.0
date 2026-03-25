@@ -1,195 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010037.outbound.protection.outlook.com [52.101.84.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F1C3FAE0E;
-	Wed, 25 Mar 2026 16:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774457656; cv=none; b=TFdbFO4Zta9KrDvMvOncNJ+iVyc3/uu6VxSDaBmAqOilqWRt8cuFVfNOfEKvaAy7m1fWFlY8z2i23x7TcRYhy1pKvmOcHedIN2F4DfEAZ/HdPGsii0G32Pj9RxfcAEJ3WOto+n6aZWK9Tm76USp4T4Q8HhhU/14E3ZBh0o10/SU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774457656; c=relaxed/simple;
-	bh=oMuUWLmoNITVcQzV/o3it6GVvrYLaH+S1Qr6U989rSY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E1A3FCB23
+	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 16:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774457772; cv=fail; b=cN8hCjsdq/0Dt6mHJoC8NJXUZGpwZ4D8M1xU3HV6TN6sySMbHyLESkQvbN2rFPJKcbX81y4+QwaCpaG7fEkdC96jg/Jwrm4jpMeqV991LA7jA6QmyK7LEI9riWYXqFg1bIyrmOVp0DYHULKF3+7mtgqURAF9BMTQ1/E7+25CaX8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774457772; c=relaxed/simple;
+	bh=q5kw+BZiaIRhQ3MaNe7Lv6nOUsHcX2aSyNsGiPCV430=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jg0hjiQ5orSBo1X7qmNjy9KaQYmd0GdhFGKKhKVBXt1F4GMVbxzbFgSL1g8LnddXKvqEefVr342IhnUhJjduRVjbHlldDLtQSY6zKKvlNck/xy9FoqVaqbB22cdymHopfeA2dKyONUsJ/2DjrtVl1RJm51dy2WQRyNijja8UmDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDB30oUW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:MIME-Version; b=sP4qGiRlT7B+0s5UbPLbinhH/kg+4/u415I0PZiK+z5X4ewKKC4soLSEWMJhIzBw2rWGHcJn9IdH5qFQx+LgEfjwDAhW2OAuYjOfF87iv70ZYpHyXc4S42x20PJv5I1c1IHIm/DFQUaQoFAOb1Nqtubb7bMwoj06PBvwJ9QumFU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=COXjM4OW; arc=fail smtp.client-ip=52.101.84.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDB30oUW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A05C4CEF7;
-	Wed, 25 Mar 2026 16:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774457655;
-	bh=oMuUWLmoNITVcQzV/o3it6GVvrYLaH+S1Qr6U989rSY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDB30oUW5a/3zO8cnh+u95v1NNfWmdGI2IjUhVXfyQO4SZA9TyoTDvTMqD+MHZCZB
-	 NbZtSa7ImOyDdMHoSkCtK7kMx2M9RnDL3kZd0WZAGqqSFNhJA4Vyj+bRdJUtT/WJ1+
-	 smzMbNGLEjkZHNkEwdIxqekKRq5iCdcpKCC+5KHh0JNGfGHt78pBcZNG2XZr+ZjCL8
-	 +pQPBWT2Qxf0S+D+n9gEGvUaIXjm0r1poXr0/YGLOZB2oBLm4MXdkhUtjKNkn3Qdqe
-	 uvMiMQG7Gvnj5hAOzCxfefchzrdYpSo9zodIbgOmf0vcfll+P9lh2ztHg9oF7j+3q5
-	 jVMvbkd5KgOww==
-From: Simon Horman <horms@kernel.org>
-To: bartosz.golaszewski@oss.qualcomm.com
-Cc: Simon Horman <horms@kernel.org>,
-	magnus.damm@gmail.com,
-	jernej.skrabec@gmail.com,
-	s32@nxp.com,
-	krzysztof.kozlowski@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev,
-	festevam@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	wens@kernel.org,
-	netdev@vger.kernel.org,
-	geert+renesas@glider.be,
-	linux-stm32@st-md-mailman.stormreply.com,
-	dfustini@tenstorrent.com,
-	andersson@kernel.org,
-	khilman@baylibre.com,
-	linux-mips@vger.kernel.org,
-	mripard@kernel.org,
-	romain.gantois@bootlin.com,
-	vkoul@kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	jbrunet@baylibre.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	sophgo@lists.linux.dev,
-	brgl@kernel.org,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="COXjM4OW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tlpWvW8nHQMbShZolf/7piMFD1pS8rNGxf2io1YqkymAtMMutbihZ295lXm0Bd/o0/Yh8LEASa3KIPEM05eEFbbKrsvdyzE2KgSPy5hrOk7/pP3ItQ2jq8Vtlouswu3XC69hz59i0IEhXLEu66Vv+3g1Xcwys8vZ6T8bw41FPdVVAku3TMuHY9KzxmuRnmN15DkrRq/f6VZ8sPGr6TGDZ7scgS1l+zWYR0IhbFCbMvpDGQ8CZ5cqxmmFV1HliizH1nka4aLIy2SSlEMyn7c/pO8VdJkVMOq5XPLyqOPNJFWfxmezcLaGgASFhGPJVfbU8vj8lHcUdXZcoJFLtXF8JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wm7U5CbZjN9rzV1Mut4CAdmwBye793+CVzMozkQETkw=;
+ b=allma1DyWEcLv41wapefAYR+kmbBavQfILOg5EuLpKh5TxUNUzGVZRx3igsiwjbTqbRqwbOlkKtnVh/Gsj11m9WyMu79D/at6aJ/cabg6l9UU1KKCVqR+LwA9wNpGI/S9qSNTAGqtJItho15lB3l71fSAowbY8TCpzj/91bdxYBW2fh+ylbFpizp+WWZjj3C33VYO3kzfk11FeCXRJgBPvHlD/Ydlml1JS4hxxIR52aRe0b4MPrYyKxhXOXh19Q9uzhFju3SC4amYrmm5KBFzIW3p4vcjl/rMMNAS5H7VvQ0gnskw9s/TwDON9HXL0tVCOjrzThPpc/FWPglaZQQHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wm7U5CbZjN9rzV1Mut4CAdmwBye793+CVzMozkQETkw=;
+ b=COXjM4OW2c5upKNCauGxkCuNa9cczJPuXrrMcVhAiMveZCVPn8tHvwNzcsD3I9d+dA5t2V4IgwW7Itu85khywCQoxKvBpeRHDmiWq037Ha5mKVYPHUjmpCNRbDZ2mYoXRXxzB+1yWpEJ/6eB2gAikzW+ddN6gWATjYdshqSLyFiwhqJLCTgQoiiHw+Qi8OFk1E928zd1+d4P8KDEX0bioi+KpRR8K/PbzZCRFazs+rd84tJ2IAYZ7zeBG61+AytsOFt0qjEmFKhAZiWLUN71u1eacml9Vu2BkPcEyKGseGqQ0DMP5Uhl4wswwQQTewwEQcyo72epvmv3/MEQMeza+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
+ by AS5PR04MB11417.eurprd04.prod.outlook.com (2603:10a6:20b:6c8::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 16:56:05 +0000
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 16:56:04 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
 	devicetree@vger.kernel.org,
-	konradybcio@kernel.org,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	linux-sunxi@lists.linux.dev,
-	conor+dt@kernel.org,
-	davem@davemloft.net,
-	jan.petrous@oss.nxp.com,
-	shawnguo@kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	bartosz.golaszewski@linaro.org,
-	peppe.cavallaro@st.com,
-	krzk+dt@kernel.org,
-	mohd.anwar@oss.qualcomm.com,
-	konrad.dybcio@oss.qualcomm.com,
-	martin.blumenstingl@googlemail.com,
-	andrew+netdev@lunn.ch,
-	rrendec@redhat.com,
-	linux-rockchip@lists.infradead.org,
-	christophe.roullier@foss.st.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	neil.armstrong@linaro.org,
-	alexandre.torgue@foss.st.com,
-	edumazet@google.com,
-	robh@kernel.org
-Subject: Re: [PATCH net-next v10 6/6] net: stmmac: qcom-ethqos: add support for sa8255p
-Date: Wed, 25 Mar 2026 16:53:35 +0000
-Message-ID: <20260325165335.326630-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323-qcom-sa8255p-emac-v10-6-79302b238a16@oss.qualcomm.com>
-References: <20260323-qcom-sa8255p-emac-v10-6-79302b238a16@oss.qualcomm.com>
+	Peng Fan <peng.fan@nxp.com>,
+	Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
+	Joy Zou <joy.zou@nxp.com>,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: Re: [PATCH v3 0/7] arm64: dts: imx943: various update
+Date: Wed, 25 Mar 2026 12:55:44 -0400
+Message-ID: <177445748186.3158404.3142643293426637405.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260324-imx943-dts-v1-v3-0-b33bf1f1c254@nxp.com>
+References: <20260324-imx943-dts-v1-v3-0-b33bf1f1c254@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN7P220CA0029.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::34) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|AS5PR04MB11417:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a56ccaf-2672-44f2-7d86-08de8a8f66cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|19092799006|52116014|1800799024|366016|38350700014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	Q/oFCbMGvUJToRRrjGp5VNu/9IZgp7Tf6CFopX4n566XVwx9VBVzRGEUNxkZo1X7PGIIzslCaYAZBKQyvFVGfIVBI+oGQi4Aa+AnyS4x30k7s/OA4ABGATKFHJIO6dxvykHGf8Pn2/jUrp5PA25Q72Fl4lK1X8k75ibzXwQrhqQvKcCucin8mUTC6DGeUHkG1l8+e4WbaER/xFggEFjhdwUpTvJRHYA5TlTbondxoaREZ50IGM5ZePeZo+YVkbCZF/y6o/iEWmfmoYmHxZQbNhY9FOaonOZy+MttOlsOqgMkotYmuH71bp7Sec+ed5WI6Df2/ioMR2WEG0CXxM23EZr7OMJSRcNM9yXlmR3oZJSw5sWs7qgjQYVj9dYHZAb5omo6amlCvBkWNCwCObs3m6XZ8SHuLn1cfu1IptrabXFbnw4JpCQC4VigLkUcyZrMQ2m8ldxTMYZ+ufKSr54VxNrQEuRHuztsDzVVYuqyAK5epzHI4LIqGcyru5tN16s1ALSYzChUR4nARmBgFw5iN7wKBCoV6WlNTfPjER6mlpd2GDiogBDVNCH7f5EpbksnforrJWonz9V2ibnRDf3KSV0Yq4jt00lCMFY6XRMfOvFmZEWoJ4LAedHY2nX7nGEatn+qUFui1Z4KTfMVd1ystRDAFaukU75ZQrI2YGLce8CGVq2prgcK4ehKaBZ/FhbmBbtT4kOcLznJ6CWEgbygRJ53tLPGfDipJj3AeVtweNVOpsbiPHs3KjyKcDQkBSQinIESll+8W35gweCQIFKAJk3N50CJWGNVbxeG4Zzc5OM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(52116014)(1800799024)(366016)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WGswSHlZSlozREd3cU1IRXZRU3Z4NWhXcWNrcjEzYnRvelFpK1hDVndrZmFS?=
+ =?utf-8?B?a1RXMThEV0NmZXdzaVhOV3VnZEpOOXNYMERzbU91dXFtVlFkUnMrT1kxV1NL?=
+ =?utf-8?B?QVRMOWI5NTIvckd2eXZVbEhRVmhaMmovRnF4ZVBES0tmTStIYUdWNVA2NCsy?=
+ =?utf-8?B?cVFHb1NoKzJEbzJiZCtZYnV4ZU50TTlMYlNObUVxbVF2T3ZxUlEzRXdndUxv?=
+ =?utf-8?B?SDBxUjVjT3dSRkRlNFpnYkpxWXN5Z1lsdGRjR2ZoaXR3Y1Z2NmtibWlwcW9T?=
+ =?utf-8?B?aWRXQ092eDJxREY4NStFQlMyYzkyZStseXNvOFlFL1BNc3BxWHViSFpqcFNp?=
+ =?utf-8?B?V3ExWG13RjZ2NlV1b1l5bDVMNklSVmI1a0R6SUV2c1NMV0MrYm05TkQ4azJh?=
+ =?utf-8?B?M2VCZ3B6bVAvbXljVDRRRituM21TaXRRSHhZb1BNOGJqWHBxWlpGOUNSU0tC?=
+ =?utf-8?B?N2h2K1RQMVlHYmJzYzdEdXFHQklJZkhEM1NSREJ2Qmo5Rkk2b3orczVzdjg5?=
+ =?utf-8?B?OVpHNEduUE5CSUcyeG5leXRzMXNMQUlXU3hYdEd3cHk5OFJHQ241ektPcWJ1?=
+ =?utf-8?B?OHFWZ0hKWEJKQ202WXVWbDhKcHhkWGZlVDU4OEswN0Jlb2NmdnpYcksvUHZ6?=
+ =?utf-8?B?Qjc3MHRlYWtMakFRN0tTejVrcnY2azZyWDQ4c09ucHNyRE5lKzh4Y3VQcE1s?=
+ =?utf-8?B?ZGxoZlhoRlJMVnFjSnVEa3JJNEhaYXZoUXdzUGRRSHorN1FmYmZ4K1Q4NmVI?=
+ =?utf-8?B?NFVCU0NoaW1YUk4wUmZvRmpLL0MrdXRaQWFVdWFzOUlGUzg4V3V6YlE0UHZi?=
+ =?utf-8?B?M3lFWFhRVGhxOW5NUXdnYVplYWlRYU5KL3hxVWJEeXV5QktsdGF6ZUJLNGov?=
+ =?utf-8?B?KzBzNFJLQmZ0WmtkeVVjek10L1A0STJmZmtQNlhCRnU0YjNqa0EzVXFrUnZM?=
+ =?utf-8?B?Yzk5Sk9LRVNpLytlVjdVR2ZpaWxBdEJSbnkxYTVpWG4wYWIwQ05LK0cvYlJl?=
+ =?utf-8?B?ZExiSkVTK0tZRSswRUN1WWVnYkI3cDRIVkdRZGRvdFROUWhxZTJlQnozMnIr?=
+ =?utf-8?B?Z1g5ZHBQREdvQnc0emhBaVRqOVRFeVM0V01YS1RqbzU0NnlyYmkzK3FJMUVK?=
+ =?utf-8?B?VzEvSEx0OXk4OWZsbUNYWm91dWtTOGtsRHVIZUdnWVNhVlc4TVh2SHJaRFQ5?=
+ =?utf-8?B?TUdHL3gzc2cxK04wb3lMS0FmWVAyTHRMR2pYYUg1N3ZBN2w4T1FXM2RWU2My?=
+ =?utf-8?B?RXZUR1NDV2VsVlB0WjZQY0VKM0JrUmsrdnJ1TFcrNEJwN1hUb1hJeTRsc2tN?=
+ =?utf-8?B?V1p6QWRNVkNvZ2ZWZ2JLUHVzWVN6c2o0dHI2UU5OVUNKcjQyMVVtemNkNjRG?=
+ =?utf-8?B?dHBlKzR1eGQ4Zzhjd1JSY2ZCZmlyWm9WS0IxcGxVOUVQclVoK2M0L3VsWTd3?=
+ =?utf-8?B?TFRVbVhXUUw3ZkRyUWZWQy9HSnBvZHNubk81N013ZFZnaVM3ZnpKRmxYYm9h?=
+ =?utf-8?B?TXRuQzJiTktCcjdHc1R6OHdlVm1GT1RNeksvZXRNZlhMbHFLZXQ1ZXhRWk5D?=
+ =?utf-8?B?M2lreGlwQWtMRXFERCtPRmNUQXZWdVNnRzIxZkFyRG50eXBXZ0JyQm5Nc3l2?=
+ =?utf-8?B?SWlYbmltM21QL2p5cVFQNTBDRGxvS3VUL0wyMXJkTWpRdnVwYzFjTGtBbThk?=
+ =?utf-8?B?Rmh3NHc1em9Dci9TZ1JPTVlEOWNlcGQ1V3FOK0U1M1FoUUlBL2ZTQ2hhL25a?=
+ =?utf-8?B?RnZnb1ZQSTBhcDlNbnVYc0lTanV3TzBPRjJRYkIwd1dkL2k5Sk50cjJJK0xv?=
+ =?utf-8?B?N2RtaG04Q1c4aGw0anhVeUFyT1F4ZHpab0pCaTNnazZuTVFvQmswdFc0VUJC?=
+ =?utf-8?B?d3RWbzZuaTNINkV3UDV0NVczM1l3V3NhZWk0ZThYQ3RVV1VZSkp2cU1uSVZL?=
+ =?utf-8?B?QmhSVEVYSUhOKzJEWUc5SjE0Z3BhSytNeWk5QnJPUmZxVFdkUU9HcVNRdmdl?=
+ =?utf-8?B?WTJyclUrSWxGSzF1QllrbHJwSWNRbC9lUWRlTS9oT1d0dEIxTXhieTJYbU90?=
+ =?utf-8?B?MkJ4MVY0dXJGVlJKVUFTVTUxSzI5QlhJR0lxN0tMN2VCeFJ5TlhqbTJJRU10?=
+ =?utf-8?B?UjBQbDFUcCtEbnJFNndFVEhGYm1sVlJUT0ltUW1QMm5ndnhkclRtMGxScDBq?=
+ =?utf-8?B?MFdjSFFKRis4N04vNnJvSEd1Q240U2c3QmlzeWdHd3NkRXBmeTJUOVZ3aERS?=
+ =?utf-8?B?VFNjVmJvNGVvTGkzYVRlL3RPUkdzYk0zaUxxQVNaakl3cnNPTWZEczJqZ0Y3?=
+ =?utf-8?Q?HgbS+kiCemn1eG1Wma?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a56ccaf-2672-44f2-7d86-08de8a8f66cf
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 16:56:04.6337
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FhYK99ErKXW9b+KWxn/zxLRsKuTH2TvDn1vJiRRuyCO0hj7AmBggvIU+pHnatPxCRUBxH6Hbe2hi9X6KWDt3Yw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11417
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: stmmac: qcom-ethqos: add support for sa8255p
-
-Extend the driver to support a new model - sa8255p. Unlike the
-previously supported variants, this one's power management is done in
-the firmware using SCMI. This is modeled in linux using power domains so
-add support for them.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index f32ff0d9ce51..09ce80b446cb 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-
-[ ... ]
-
-> @@ -710,6 +785,45 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
->  	return ret;
->  }
+On Tue, 24 Mar 2026 13:44:06 +0800, Peng Fan (OSS) wrote:
+> Update pin header
+> Add V2X/ELE mailbox nodes, more SCMI nodes, thermal nodes, fan node
+> Add nxp,ctrl-ids.
 >
-> +static int ethqos_mac_finish_serdes_pd(struct net_device *ndev, void *priv,
-> +				       unsigned int mode,
-> +				       phy_interface_t interface)
-> +{
-> +	struct qcom_ethqos *ethqos = priv;
-> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
-> +	int ret = 0;
-> +
-> +	qcom_ethqos_set_sgmii_loopback(ethqos, false);
-> +
-> +	if (interface == PHY_INTERFACE_MODE_SGMII ||
-> +	    interface == PHY_INTERFACE_MODE_2500BASEX)
-> +		ret = dev_pm_opp_set_level(dev, ethqos->pd.serdes_level);
-> +
-> +	return ret;
-> +}
-> +
-> +static int qcom_ethqos_pd_serdes_powerup(struct net_device *ndev, void *priv)
-> +{
-> +	struct qcom_ethqos *ethqos = priv;
-> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
-> +	int ret;
-> +
-> +	ret = qcom_ethqos_domain_on(ethqos, ETHQOS_PD_SERDES);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return dev_pm_opp_set_level(dev, ethqos->pd.serdes_level);
-> +}
+>
 
-Does this leak the PM runtime reference if dev_pm_opp_set_level() fails?
+Applied, thanks!
 
-qcom_ethqos_pd_serdes_powerup() calls qcom_ethqos_domain_on() which
-acquires a PM runtime reference via pm_runtime_resume_and_get():
+[1/7] arm64: dts: imx94: Update pin headers
+      commit: 91faaca1db2ff31dd9a964c419ea39dcb396022f
+[2/7] arm64: dts: imx94: Add V2X/ELE mailbox nodes
+      commit: 87ac991725ccc441af0fc16d54f9cee7e05bd4a2
+[3/7] arm64: dts: imx94: Add SCMI sensor/lmm/cpu nodes
+      commit: dee18abd657f2cf5c1540eafadfdeb9444f4721d
+[4/7] arm64: dts: imx943: Add thermal support
+      commit: 81b428c2a761d9f40fb95eb0c556544541988263
+[5/7] arm64: dts: imx943-evk: Add nxp,ctrl-ids for scmi_misc
+      commit: a2cdee4ce35863e0e6d4f58808f8e051b9608073
+[6/7] arm64: dts: imx943-evk: Add fan node and enable active cooling on A55
+      commit: 12cac5ae8bc741de9b03a2c23d128bfaf0c4c4ce
 
-qcom_ethqos_pd_serdes_powerup()
-  qcom_ethqos_domain_on()
-    pm_runtime_resume_and_get(dev)
+Adjust pwm@2f after codec@1a keep order by address
 
-If the subsequent dev_pm_opp_set_level() fails, the function returns the
-error without calling qcom_ethqos_domain_off() to release the reference.
+[7/7] arm64: dts: imx943-evk: Add pf09/53 thermal zone
+      commit: bd25e888974ffa2e6097b2ee352c8f6f860f5e87
 
-The caller stmmac_legacy_serdes_power_up() in stmmac_main.c does not set
-legacy_serdes_is_powered=true on error, so stmmac_legacy_serdes_power_down()
-in the cleanup path skips the powerdown call.
+Add extra empty line between children node trips and properties.
 
-In the existing non-PD code path, qcom_ethqos_serdes_powerup() correctly
-handles this case by calling phy_exit() when phy_power_on() fails:
-
-drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c:qcom_ethqos_serdes_powerup() {
-	ret = phy_init(ethqos->pm.serdes_phy);
-	if (ret)
-		return ret;
-
-	ret = phy_power_on(ethqos->pm.serdes_phy);
-	if (ret) {
-		phy_exit(ethqos->pm.serdes_phy);
-		return ret;
-	}
-	...
-}
-
-Should qcom_ethqos_pd_serdes_powerup() call qcom_ethqos_domain_off()
-before returning the error from dev_pm_opp_set_level()?
-
-> +
-> +static void qcom_ethqos_pd_serdes_powerdown(struct net_device *ndev, void *priv)
-> +{
-> +	struct qcom_ethqos *ethqos = priv;
-> +	struct device *dev = ethqos->pd.pd_list->pd_devs[ETHQOS_PD_SERDES];
-> +
-> +	dev_pm_opp_set_level(dev, 0);
-> +	qcom_ethqos_domain_off(ethqos, ETHQOS_PD_SERDES);
-> +}
-
-[ ... ]
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
