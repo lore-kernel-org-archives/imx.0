@@ -1,125 +1,262 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013054.outbound.protection.outlook.com [40.107.159.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E470C22CBE6;
-	Wed, 25 Mar 2026 01:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774400998; cv=none; b=tOGVur8420WvfozixshxtWhBh64KYOKygyfx6FjW/ZUX14qW2lkATOqlc5so9OucQDXKBoEYbBb0irCNVgbmMlwXgYeT9y3aCNBmM3iRu53j+Aj9wmW6Ykx2Ln4NiWOwuhIMIgJzIPBrbZ7lzfyMUkXdXutN89Z55tj5rK1q0Mw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774400998; c=relaxed/simple;
-	bh=YfBBgt1syU0ry/vvqRH6IoZ65DUjX8qoIovBPDPsdXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f8qGf9FKo3oLCHEI7EyJPmhqyqI4u1nQ7P5IQt/+odhEdn3qqMo5q0TOjtMPXDxWldidyl18gahP6wAqb/vH9rtZqJ0oC+uF2Dpk7olql6tTGTSBIG2C4f/HA959xSu9A3PY5huVaO/XM3VfOWKHpGDf842yoxReePVLtx++xFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ji+MW3K5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5321684A4
+	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 01:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774403618; cv=fail; b=fwVyRHXZJDtdFsDwBCH3o/mZJWOSKolNYQ9RQ/piOddW8YXk4LbuQu6DE0nPJUJBLVWTkDJk2FsRP7Frf8G+Av6HeqdDF7ZQSg6KdTHzjPHa2Jg9sSaUFJ9RPr2JNMxmwMRaBjLN22VVNjsurEzyRMh7z6+QTd44LGLNiWkgN6A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774403618; c=relaxed/simple;
+	bh=HX/PDNHEoP6hXlBf+QPSRv/XY6uANuUkwlJ3AJYkBIo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dVvG/K22WqeoEGWFwPrj9GiImff0GsRHz4YonB95KMmc09OYiRKSrVdS6ylJXxOO+eX+bZCs+Er/mHhfE+IwW03GUld9UaBB6WzZQDQrbfudt2NAzhurLHgYS8joyFlELV5da/HvIZfe8tclarTCuoIALu3UVF5QYJFnJafroXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dZq/nCLa; arc=fail smtp.client-ip=40.107.159.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ji+MW3K5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43292C19424;
-	Wed, 25 Mar 2026 01:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774400997;
-	bh=YfBBgt1syU0ry/vvqRH6IoZ65DUjX8qoIovBPDPsdXE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ji+MW3K55lmJ/YNUuQrJr97TBLTEsc2U0T04+aUZB1uLqa8Dv6DO04oUZy0v1SOVZ
-	 p6/uPKBgh3Z3ibY09+mxnblC/vSpYadRvFQQ+gKed3LBTmtLdUf0WnY4E+2krHp9BV
-	 6jiImP8ZVrdAMzv+/Wr2bnnrVrgxVF4NLER4UM5mwhnS8JxQe0w/beSVlIJgNDMaYh
-	 nygmULv9Bq66XM2OoCVcCvkSU9pZzHqkjxoplI9/7c1mmJT5jfPiYD9WVOcwylzzfN
-	 emwnYRAqUAZybDz2IwhZPhVrHliMLsmL76gZ+xLeIcOL1GAWGC/xfsMcOz81LAofcA
-	 tuj8G6mSX46qA==
-Date: Tue, 24 Mar 2026 20:09:56 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-mtd@lists.infradead.org, Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: mtd: refactor NAND bindings and add
- nand-controller-legacy.yaml
-Message-ID: <177440099590.2332534.9132007696467343522.robh@kernel.org>
-References: <20260324221624.2424092-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dZq/nCLa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZhSlFQq7qgQgq4zUE6aqhZ0EKK/a+yos//WBo9vgn/kPQTnLKqHYoGKRjkQH7iiUyY8UhkozcJHT0MCKXo0g5mTC9Qs0ulX8yT3AjOedtmXVCJ6iDt3xDt2YVSZ96FR8wuml1xlscXlHvhd3LhzeuL30LB5njjmY7TOKP/obVw7VqNPYasAUPZXIQOpiTgDSa0DY3rYvigTe3hKvUPbNWNbV3sccnNRp1nzcjacOIoPA9thSjc38ZAVlW6Oj8aCswxmW+vA/nj6xPxn0/DXGGnB2UU/wSrHG4IS3F+7ah8BQa8RJ9etMv14wKX2vdVZRXJM7ibjtINsiV3Xs3mCReQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wDppV0/PVtQMkWNtR+DOHowtE6IeHsFRTHyY8wN2sWU=;
+ b=nRhCiUVFy3FViqV9bF7uBwhjOpAB39DmWNetKab2xKMWUU+3r2HQqoKVRCrxnjz3IKHoSSD03HUznrCOwPu26g+AToT+pl7o2FsIGigkWQjrId4l8Bg9nO+0Jvmi7ZX8U6Trnrwwdq2AFypQFyuk3d0i/RvpEJxFMwXWC4m7X5n2GvWop3AXRy8utI6uo6rX1xhgLkpj3Hjh2ZjELYAgqYI509M7IgpsgXHlEkUz1Nz/w8ZHAg5u0tLUVcVS8/24riBH+q/aqjXNkttDIqamnoLqt0qtW86H/4oGEsksK2EuKzdKYO0DdVFzt+DN8ch5kVUyfFeVqU9mWNmPUdrgJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wDppV0/PVtQMkWNtR+DOHowtE6IeHsFRTHyY8wN2sWU=;
+ b=dZq/nCLavmmvfraGUmDDRl7boWYBVa1PqsGDVJEJasvpVNMKTUbMBZqXTTgKUUAU2r4w/snJN6niH0dPL8MWULfYpOAYqBos1BsyZaEkpTRZ6wy2Dx8zYckjFKSj4lGOueFzfPL2jKfuVv9uBSs3NV7ytBEqg1Raw3Rrzf/nNCxGlgF9QuZCHqbyLKfeDnBU3ZY+ut2xIvmqWSp6oTrLNLRugwT+E1tXqza1LlYAr5n0sn/oaViUz5iRvti5pifto52eOCQWtXeTkWEGU8Gesx90cCkjnqXt0hH5HeObz8nlRyGMlVBqmlteCICTRCaqU1l3P5N/+iY0kgwFGSL4lQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM8PR04MB7202.eurprd04.prod.outlook.com (2603:10a6:20b:1da::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 01:53:32 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 01:53:32 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Simon Horman <horms@kernel.org>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"chleroy@kernel.org" <chleroy@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "edumazet@google.com"
+	<edumazet@google.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Frank Li <frank.li@nxp.com>,
+	"robh@kernel.org" <robh@kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"davem@davemloft.net" <davem@davemloft.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v2 net-next 13/14] net: dsa: netc: initialize buffer bool
+ table and implement flow-control
+Thread-Topic: [PATCH v2 net-next 13/14] net: dsa: netc: initialize buffer bool
+ table and implement flow-control
+Thread-Index: AQHcuote84lxYz/saUypBRN66PVRZbW95VIAgACYkLA=
+Date: Wed, 25 Mar 2026 01:53:32 +0000
+Message-ID:
+ <PAXPR04MB8510C8FA7D3E0635EC23E2178849A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260323060752.1157031-14-wei.fang@nxp.com>
+ <20260324164234.238201-1-horms@kernel.org>
+In-Reply-To: <20260324164234.238201-1-horms@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM8PR04MB7202:EE_
+x-ms-office365-filtering-correlation-id: 6b126050-cd03-4d14-bef0-08de8a1151c3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|19092799006|1800799024|56012099003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ iMLCGKbe1evIbv8dm8/JR72lHW6gljniCGxlRBlVk+0QMtbiMz/GJ4Owru31weNOKW+Mb8k6DkgYrxFOiFCvS97JGEK0PLop1U+tdZvIKdvaYCAfIdKks9Pu7p23hw98dzskDl9bj41MIFH5zGDCawgdpZi5+U6mHNWii4rrwin1J1fg/BZUUc+IshfCinOaCPMSbfALD5O4xHYdL1zFfpd/C/qH7Xn84yQcdHbjYvDuLoU31hNcvF/XIvIffh6uKLuq2tBMy6CUMBqB9l09tdFaF23kzqFj7BEWi/7uBQP89AmbScvq84MAnN1eAov04kq8ZJmq3jR0jaEulVA+aiNzJT0N8KS0OVC118S5LyxPUOVzUchzNcjo06/eDqqaXKXoPZ1oGsqmUQ2GODFHM4by9kirGL9BXa/v49TYBktcVHWH+/pfiN+SHph7ZQqVn0PkfhOv0kjZdjPJJlcnSuQMFH+fF56sGlTPJUcls/8EE/QBurUvbnGbBqUnvrNJACZFa2RU62iU6zn66nSYMKSlivxeuLCmocuE8NIG7arHEk8KUxuZDio0O4HvgHTA7O4vEYjK3fDZv4J1alvPa/pu1EWxTaQS6cdfE0L8L1Hd0uDXVicsBzR/+047XFPY1fvjcSJAIItTRLJYZZBcUMOWoF2c2lD1/SLmO85aP7zdgwKKJqWYwSbJoVa+vVTwP/UD5+x0Fyihf8HqrCFixFThKsm/h9m3gS9TiNKH6/PPgr+1+kAX2eMCIFjbxfcIFrros4c3L61av/afgl7WOCuX9UU4VpWtBzoVLoaFdQE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(1800799024)(56012099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?g4jLznmHFxWYc6m8LzKds/hEkLPvJRnWepDYKrKJlz3wTNjAf4S5OBlkAwzi?=
+ =?us-ascii?Q?J0Zw0SrWuvF3VF6S6kQU2iYYRkSSjOZw6pQuAXr/90OvqWE/nc6uwJzTPA0j?=
+ =?us-ascii?Q?PcJvZEcG140Q8RPTm1kv3oLO925qBJ+mNqqU++tDBv05rwMGWggR3IYkN5/Y?=
+ =?us-ascii?Q?+oq44NYRZK6B2oyJwKtutY2bzPHfG4dUZZG5kK5P2i5fxF4D0hnRyEF0wmNG?=
+ =?us-ascii?Q?S1e9lS19neZ/DO0ULChW15U8OhpNCxZ9rsrlIlQ8GXgJMPyEAr2cZl+tFDnF?=
+ =?us-ascii?Q?YHTUp5RsWvukMcforptSwaTdaMAIv9yXVGSu2TnwcPdX3kgCm16BvIC26RQI?=
+ =?us-ascii?Q?xKPhUsFy+uYh1f4yDbGtOKN85FVjOLv4lRZsSVcGx+fYgRz4NimYdZ5P8hlm?=
+ =?us-ascii?Q?+zzJtpM1MJ/oXVsxwqBGi9+vNEl62qwfVlxAwy6CDLYrwSHmQZ8YNRzFbo56?=
+ =?us-ascii?Q?NH63ialX+2bRS1RTpoVdphSutDbj9eTEsV3GfsNedRbw7C5sPIfzKP3/Kthy?=
+ =?us-ascii?Q?7FU9O4mTc7MfKWTTMAMHKUOh0i0IIrzbwXquywanjUPwOohetUydnLcD3H7b?=
+ =?us-ascii?Q?sZ6/dJxVgalyOAKCkVNOXT2kjGYiTGlbgByrDNzs+2bTeh9QPZElRs2TIrvs?=
+ =?us-ascii?Q?S8Rw/F/OEWO3LRWDztrAQwCNCJhk8fQo4+GMutlCfdUAAVdPboT+DtrjYqYH?=
+ =?us-ascii?Q?rOeEX9ys0jZI5Va4b3F4U6pvlfP6312FNspw8owzZFAfjtIMbLFsg3gYw4cN?=
+ =?us-ascii?Q?XCqXg2t2HwiKcb9AmRLcxYCk/gFp7m4YFS8Qro0sielGHzkj2oXMm2DPfQrm?=
+ =?us-ascii?Q?mM/Nbaf6qQ+lrsEcBbr9J/igx97jVdhQVonvIKpshUCr0PVL9oVWde2XXooU?=
+ =?us-ascii?Q?I6f0B97FounfKzsy88EkuEFeM/scn1qHh26mdScyTuWp08QGphwAZ0tQbEYw?=
+ =?us-ascii?Q?zD04PBozWeYC5HlKxhWKhikF+FJV3u+/26GQBNfemJpyUOssB4ZwIQdov09S?=
+ =?us-ascii?Q?x8xJzAL0QcqZ2FiK0lyuwHz63NFRTcM75nG4FGfUr1VA4KT5F1kmPR7OqmR+?=
+ =?us-ascii?Q?QDstYPaDiy0fdi6HWETtLc6CyklXbmyFSJTgb64V1zNFmeMzV5CBAd6wSk3U?=
+ =?us-ascii?Q?Z8hFZoB6DI90IfnbFDtTnJTI42FSi0/UQGUndFE5srVjJqIyHBjZDbj4BIhx?=
+ =?us-ascii?Q?ukuZCTbYJoR19lfDfw3s52ZdtivM6Q2lfW/ayDiMBugb++VmQnanh1yBf6AX?=
+ =?us-ascii?Q?IAVZo3P7EuCXWb4cyTye4JzGhOW/JBHIAH8+TxCvtkinopkKGaI+MjgsNsNr?=
+ =?us-ascii?Q?JWvqIsZU8DbRJNvgkJuD9rcTckYA15P5J0wZfG8krYznnvjjLx4CZQ0kUGK2?=
+ =?us-ascii?Q?MmyxZ0bLy4sjpvyNAwIxMo+Ce21XVPYcqTLRdzbP0hGT0a7vKii2HiHvSoOq?=
+ =?us-ascii?Q?CPLbOtlNTfCNPFsogLSwjkns9mSsmJyGhG5h5JjNE/Lfr3GCqk94I1SYyLgC?=
+ =?us-ascii?Q?iyCRShPwhSrqOTwRzgRNUyY/AfPW5FOitLyhqiibvrmucL8LOAvNAa1EKm95?=
+ =?us-ascii?Q?Qg79GOhTuO2S2sSno6bDKOCp+JaFx46Pz1tmH9DWyiX8AgzwNUuDTwcfJ8yS?=
+ =?us-ascii?Q?8h9AmbF0tz1WlshGklfczuB3QZSAkzASnAJ7fP3i7XZuveq6UHPtbnNKIAy/?=
+ =?us-ascii?Q?hZQK2xjietvw8VxMqySk7hSGVTnonI4+rKuk5NqWrZkws3dw?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324221624.2424092-1-Frank.Li@nxp.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b126050-cd03-4d14-bef0-08de8a1151c3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2026 01:53:32.3772
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KfTzxF/R8v234/WkQ1o2t1R6W62ruLA6253gaW2VHjzvqJaGIaMnq4bmpBo4xtgna8pW8xKQWs4OOaOue0Pzow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7202
 
+> > +static u32 netc_get_buffer_pool_num(struct netc_switch *priv)
+> > +{
+> > +	return netc_base_rd(&priv->regs, NETC_BPCAPR) & BPCAPR_NUM_BP;
+> > +}
+> > +
+> > +static void netc_port_set_pbpmcr(struct netc_port *np, u64 mapping)
+> > +{
+> > +	u32 pbpmcr0 =3D lower_32_bits(mapping);
+> > +	u32 pbpmcr1 =3D upper_32_bits(mapping);
+> > +
+> > +	netc_port_wr(np, NETC_PBPMCR0, pbpmcr0);
+> > +	netc_port_wr(np, NETC_PBPMCR1, pbpmcr1);
+> > +}
+> > +
+> > +static void netc_ipv_to_buffer_pool_mapping(struct netc_switch *priv)
+> > +{
+> > +	int num_port_bp =3D priv->num_bp / priv->info->num_ports;
+> > +	int q =3D NETC_IPV_NUM / num_port_bp;
+> >                ^^^^
+>=20
+> Can this cause a division by zero?  If netc_get_buffer_pool_num() reads
 
-On Tue, 24 Mar 2026 18:16:18 -0400, Frank Li wrote:
-> The modern NAND controller binding requires NAND chips to be described as
-> child nodes of the controller, for example:
-> 
->   nand-controller {
->           ...
->           nand@0 {
->                   /* raw NAND chip properties */
->           };
->   };
-> 
-> However, many existing device trees place NAND chip properties directly
-> within the controller node because those controllers support only a single
-> chip. This layout is still widely used by older platforms and by other DT
-> consumers such as U-Boot. Migrating all existing users to the new layout
-> will take time.
-> 
-> Several kernel drivers, such as ams-delta.c, davinci_nand.c and
-> fsmc_nand.c, still expect the legacy layout where raw NAND properties are
-> defined in the controller node.
-> 
-> To support both layouts during the transition:
-> 
-> - Extract NAND chip-related properties into separate schemas
->   (nand-property.yaml and raw-nand-property.yaml) from
->   nand-chip.yaml and raw-nand-chip.yaml.
-> - Introduce nand-controller-legacy.yaml to allow both the
->   legacy and modern layouts.
-> - Add a select condition in nand-controller.yaml to prevent
->   node name pattern matching for fsl,* NAND controllers.
-> 
-> Keep compatibility with existing device trees while allowing gradual
-> migration to the modern binding structure.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v3
-> - use select: false
-> - s/under/within/
-> - s/property/properties/
-> 
-> two problem left:
-> 1. about "^nand@[a-f0-9]$" in nand-controller-legacy.yaml
-> 
-> allow dts to do mirgeration from legacy layout to modern layouts for different
-> boards, which use the same compatible string.
-> 
-> 2. ref to mtd.yaml
-> 
-> mtd.yaml force node name as flash@, nand@  ..., but here is parent node
-> name is nand-controller@.  Only two properties, duplicate these should be
-> simple and clean enough now.
-> 
-> change in v2
-> - none
-> 
-> change dts layout break boot
-> https://lore.kernel.org/imx/177281063848.253518.12995342124719933118.b4-ty@nxp.com/T/#t
-> ---
->  .../devicetree/bindings/mtd/nand-chip.yaml    | 46 +-----------
->  ...oller.yaml => nand-controller-legacy.yaml} | 46 +++++-------
->  .../bindings/mtd/nand-controller.yaml         |  2 +
->  .../{nand-chip.yaml => nand-property.yaml}    | 14 +---
->  .../bindings/mtd/raw-nand-chip.yaml           | 74 +------------------
->  ...-nand-chip.yaml => raw-nand-property.yaml} | 15 +---
->  6 files changed, 27 insertions(+), 170 deletions(-)
->  copy Documentation/devicetree/bindings/mtd/{nand-controller.yaml => nand-controller-legacy.yaml} (69%)
->  copy Documentation/devicetree/bindings/mtd/{nand-chip.yaml => nand-property.yaml} (89%)
->  copy Documentation/devicetree/bindings/mtd/{raw-nand-chip.yaml => raw-nand-property.yaml} (94%)
-> 
+From hardware perspective, num_bp is more than num_ports, so num_port_bp
+will not be zero. Let me think how to improve it to avoid such false positi=
+ve.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> the hardware register NETC_BPCAPR and returns 0, then num_port_bp would
+> be
+> 0 and this division would crash the kernel.
+>=20
+> The call chain is:
+>=20
+> netc_setup()
+>   netc_switch_bpt_default_config()
+>     priv->num_bp =3D netc_get_buffer_pool_num()
+>     netc_ipv_to_buffer_pool_mapping()
+>       num_port_bp =3D priv->num_bp / priv->info->num_ports;
+>       q =3D NETC_IPV_NUM / num_port_bp;  <- division by zero
+>=20
+> Should netc_switch_bpt_default_config() validate that priv->num_bp is
+> non-zero before proceeding?
+>=20
+> > +	int r =3D NETC_IPV_NUM % num_port_bp;
+> > +	int num =3D q + r;
+> > +
+> > +	/* IPV-to-buffer-pool mapping per port:
+>=20
+> [ ... ]
+>=20
+> > +static int netc_switch_bpt_default_config(struct netc_switch *priv)
+> > +{
+> > +	priv->num_bp =3D netc_get_buffer_pool_num(priv);
+> > +	priv->bpt_list =3D devm_kcalloc(priv->dev, priv->num_bp,
+> > +				      sizeof(struct bpt_cfge_data),
+> > +				      GFP_KERNEL);
+> > +	if (!priv->bpt_list)
+> > +		return -ENOMEM;
+> > +
+> > +	/* Initialize the maximum threshold of each buffer pool entry */
+> > +	for (int i =3D 0; i < priv->num_bp; i++) {
+> > +		struct bpt_cfge_data *cfge =3D &priv->bpt_list[i];
+> > +		int err;
+> > +
+> > +		cfge->max_thresh =3D cpu_to_le16(NETC_BP_THRESH);
+> > +		err =3D ntmp_bpt_update_entry(&priv->ntmp, i, cfge);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> > +
+> > +	netc_ipv_to_buffer_pool_mapping(priv);
+> > +
+> > +	return 0;
+> > +}
+> > +
+>=20
+> [ ... ]
+>=20
+> > @@ -1224,6 +1313,40 @@ static void netc_port_set_hd_flow_control(struct
+> netc_port *np, bool en)
+> >  			  en ? PM_CMD_CFG_HD_FCEN : 0);
+> >  }
+> >
+> > +static void netc_port_set_tx_pause(struct netc_port *np, bool tx_pause=
+)
+> > +{
+> > +	struct netc_switch *priv =3D np->switch_priv;
+> > +	int port =3D np->dp->index;
+> > +	int i, j, num_bp;
+> > +
+> > +	num_bp =3D priv->num_bp / priv->info->num_ports;
+> > +	for (i =3D 0, j =3D port * num_bp; i < num_bp; i++, j++) {
+> > +		struct bpt_cfge_data *cfge;
+> > +
+> > +		cfge =3D &priv->bpt_list[j];
+> > +		if (tx_pause) {
+> > +			cfge->fc_on_thresh =3D cpu_to_le16(NETC_FC_THRESH_ON);
+> > +			cfge->fc_off_thresh =3D cpu_to_le16(NETC_FC_THRESH_OFF);
+> > +			cfge->fccfg_sbpen =3D FIELD_PREP(BPT_FC_CFG,
+> > +						       BPT_FC_CFG_EN_BPFC);
+> > +			cfge->fc_ports =3D cpu_to_le32(BIT(port));
+> > +		} else {
+> > +			cfge->fc_on_thresh =3D cpu_to_le16(0);
+> > +			cfge->fc_off_thresh =3D cpu_to_le16(0);
+> > +			cfge->fccfg_sbpen =3D 0;
+> > +			cfge->fc_ports =3D cpu_to_le32(0);
+> > +		}
+> > +
+> > +		ntmp_bpt_update_entry(&priv->ntmp, j, cfge);
+> >                 ^^^^
+>=20
+> Should the return value of ntmp_bpt_update_entry() be checked here?
+>=20
+> Simon Horman noted in v1 review that other NTMP table operations in the
+> driver propagate errors from the update functions. While this was fixed
+> in netc_switch_bpt_default_config() in v2, the same issue remains here.
+>=20
+> If the hardware update fails (for example, DMA allocation failure or
+> hardware timeout), the driver's bpt_list will have flow control values th=
+at
+> do not match the actual hardware state, potentially causing incorrect flo=
+w
+> control behavior.
+
+Okay, I will improve it.
 
