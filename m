@@ -1,86 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE83644D1;
-	Wed, 25 Mar 2026 20:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B8F2C028F
+	for <imx@lists.linux.dev>; Wed, 25 Mar 2026 20:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774470039; cv=none; b=eybBcXhRxMxmPtn87BtN2tyZcMcdfxSZUt/3Vfh4OOjuGp65DIV2u0pfE6O8/JElhxGUPZWbN+VE+kgpMOocSSz+uj2NLdfs7/+hRyKUaLlNHBDZ48YuTqK1vet6nCutMXOs6JvvBjMhSR/1EDgQc3XpoF4m6mbAR1aOSS6hZyY=
+	t=1774471214; cv=none; b=Xq7UwjVyAGCjTaBxO3048NBdifz2ppLq4qpvXqmAukLH/GSGI7IkdWFNOAOMJgUUZkMVp9eHjEIORkC4lbeJVoYgDmfcJIZ7wC0cnqN56G3oyvTdY9AaQduvJpwAYEqJD+DSVsZ9WBgneVw57pTuzh54ODWs+mpSq46DjPWlXns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774470039; c=relaxed/simple;
-	bh=EJf9EH03K048GnQyciGn9nJ/4njlCY8sY9h7aSYy5jQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=d/hwnw7DXZ71R5AFbQeXXCrtvFgOKDmscmEvalotQF+3a31/4Ma6W+uZ9Qw+wCSvMBWMNpapeMzBt22kwDRMBsextEGh8G4w2MfQoWoEFcWtHyC2rZfeue+sMkjxFXxIAkj8x6on8EibsojxQ1FTYudKAy2gjaUoASKU56Lwwjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/sHWhQC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774471214; c=relaxed/simple;
+	bh=+GEUfA+dQ7kaTZDoTzOD8hzNGGZvKoPVSlncYyIgycA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Msf6BHrxAZ45CKfCOg1nHqx3cBkyDc3OB0dWS7SiKwrAnmbnLWkRmDZrI8PX5B1RKSaLeoQG574/DuNclYQTBgYxQmK0V+dEyQxXp/0wQbVctnjRZci+Rdi4dWNGpcGN7ojvemgDluJN+p8H7cYVmog4ssEQ9aGJ2zl65vbI2/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mceejZKQ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/sHWhQC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469B9C4CEF7;
-	Wed, 25 Mar 2026 20:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774470038;
-	bh=EJf9EH03K048GnQyciGn9nJ/4njlCY8sY9h7aSYy5jQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=R/sHWhQCzYd+ZF4ClNbFtPpjz3TwD6fZXZ1sS0wPW8AqP3rl0tovUYaWdonKVWaiJ
-	 OwlrlLGPKyQJzjTcNTMD7KHdXAJOjy/Pgec4iK1sQUwsjoZifIZYI5uC0jTlzEGcLG
-	 18viuyai68dZgzN8F87qzLT1SkxhJdMLTx9dm/6064TjKTmgnptwvlSI/XP/fcRtl4
-	 giL0rQUFbbUETMdG05uXbW4WH5fvuqaOMDFtm2P7I5VMCeTlaQAU4irvLB2JumoxMH
-	 16eIDSTM+Evjf3AQNa1cthVdIu/mws4vSuaCZCJQTTLQFydtFozsiRGP5ZJm2cF9Ry
-	 tmA3OJZNW4eqw==
-Date: Wed, 25 Mar 2026 15:20:37 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mceejZKQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/L649BGHfzjPeUOm873tBDJOzKxxjacvMmrNB1ND0NY=; b=mceejZKQu1r5osaBGGu8D5bmS6
+	LlEGU+Kj4Gojb9WRVpB20EU9bwop0rMed2nI16rOt/8R/YDM0mFc+tazI99PdrL+KjH3ypxVY/16a
+	8NCVmvUtAcSYtTsC6D6H6ftl2pxWHEom1saTEQNov3hl7aAhxwZf/a5nwLt/BsDvGCOU1SXXVngSb
+	AA2je89k6Lecuk0X0Qc8XD7TROev9I9ilXzezAxsBhz2vjciDh1JY2vSClMzk6iJ4qIsxX/Rhpozj
+	s+Y6bOijsUrxL2U/SF+NqpfWXJcBYz2srxbaceuWm9TbtLhYpl7YPy67P7QNnlG0Ao5kzefy2AGmm
+	wKy7OD2A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33832)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w5V1L-000000003s4-3MDN;
+	Wed, 25 Mar 2026 20:40:07 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w5V1I-000000006Lq-1xqC;
+	Wed, 25 Mar 2026 20:40:04 +0000
+Date: Wed, 25 Mar 2026 20:40:04 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v6 13/27] PCI: of: Remove fwnode_dev_initialized() call
- for a PCI root bridge node
-Message-ID: <20260325202037.GA1291636@bhelgaas>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	Joy Zou <joy.zou@nxp.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/2] net: stmmac: provide flag to disable EEE
+Message-ID: <acRIJMQSTt-N52C0@shell.armlinux.org.uk>
+References: <20260323093933.1785583-1-laurent.pinchart@ideasonboard.com>
+ <20260323093933.1785583-2-laurent.pinchart@ideasonboard.com>
+ <acEOGMHfYsxv3GOk@shell.armlinux.org.uk>
+ <20260323100801.GA1514659@killaraus.ideasonboard.com>
+ <20260325201332.GA2670326@killaraus.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,67 +70,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325143555.451852-14-herve.codina@bootlin.com>
+In-Reply-To: <20260325201332.GA2670326@killaraus.ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Mar 25, 2026 at 03:35:40PM +0100, Herve Codina wrote:
-> During the instantiation of devices described by a device-tree overlay
-> applied on a PCI device, devlink displays the following kind of debug
-> messages instead of creating the expected links:
->    'Not linking xxxx - might never become dev'
+On Wed, Mar 25, 2026 at 10:13:32PM +0200, Laurent Pinchart wrote:
+> On Mon, Mar 23, 2026 at 12:08:02PM +0200, Laurent Pinchart wrote:
+> > On Mon, Mar 23, 2026 at 09:55:36AM +0000, Russell King (Oracle) wrote:
+> > > On Mon, Mar 23, 2026 at 11:39:32AM +0200, Laurent Pinchart wrote:
+> > > > From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+> > > > 
+> > > > Some platforms have problems when EEE is enabled, and thus need a way
+> > > > to disable stmmac EEE support. Add a flag before the other LPI related
+> > > > flags which tells stmmac to avoid populating the phylink LPI
+> > > > capabilities, which causes phylink to call phy_disable_eee() for any
+> > > > PHY that is attached to the affected phylink instance.
+> > > > 
+> > > > iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
+> > > > along with the main dwmac interrupts. Since lpi_intr_o is synchronous
+> > > > to the receive clock domain, and takes four clock cycles to clear, this
+> > > > leads to interrupt storms as the interrupt remains asserted for some
+> > > > time after the LPI control and status register is read.
+> > > > 
+> > > > This problem becomes worse when the receive clock from the PHY stops
+> > > > when the receive path enters LPI state - which means that lpi_intr_o
+> > > > can not deassert until the clock restarts. Since the LPI state of the
+> > > > receive path depends on the link partner, this is out of our control.
+> > > > We could disable RX clock stop at the PHY, but that doesn't get around
+> > > > the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+> > > > 
+> > > > Previously, iMX8MP worked around this by disabling gigabit EEE, but
+> > > > this is insufficient - the problem is also visible at 100M speeds,
+> > > > where the receive clock is slower.
+> > > > 
+> > > > There is extensive discussion and investigation in the thread linked
+> > > > below, the result of which is summarised in this commit message.
+> > > > 
+> > > > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
+> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > 
+> > > As you are sending this on my behalf, you need to add your s-o-b after
+> > > mine:
+> > 
+> > Oops, I'm not sure how I missed that. Sorry.
+> > 
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > 
-> Without those expected links, the device removal order cannot be
-> correct.
-> 
-> Those debug traces are printed by fw_devlink_create_devlink(). In our
-> use case, they are all printed because the supplier of the link has at
-> least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
-> set.
-> 
-> The culprit ancestor is the PCI root bridge.
-> 
-> The fwnode related to the PCI root bridge is created dynamically by the
-> of_pci_make_host_bridge_node() function. During this creation
-> fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
-> flag.
-> 
-> Calling fwnode_dev_initialized() tells devlink that the device related
-> to this node is handled out of the driver core. This is not correct in
-> our case. Indeed the device related to this firmware node is handled
-> using driver core mechanisms and is fully compliant devlink
-> expectations.
-> 
-> Simply remove the fwnode_dev_initialized() call. With that done, the
-> devlink debug messages are no more displayed and links that were missing
-> are correctly created.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Should I submit a v4, or can this series be picked for v7.1 with my SoB
+> added ?
 
-I would ordinarily make sure the person who added
-fwnode_dev_initialized() here was ok with its removal, but it looks
-like you added this with 1f340724419e ("PCI: of: Create device tree
-PCI host bridge node"), so I assume you're ok with removing it :)
+I don't see it in patchwork's pending queue, so yes please. Don't forget
+to specify the tree in the subject line:
 
-I suppose there could be a "Fixes: 1f340724419e" tag, but maybe
-there's no need to backport this anywhere?
+[PATCH net-next v4 0/2] net: stmmac: ...
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+which may be a factor in it not showing up.
 
-> ---
->  drivers/pci/of.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> index b694fcda16b1..0993257fe025 100644
-> --- a/drivers/pci/of.c
-> +++ b/drivers/pci/of.c
-> @@ -811,7 +811,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
->  	 */
->  	of_node_set_flag(np, OF_POPULATED);
->  	fw_devlink_set_device(&np->fwnode, &bridge->dev);
-> -	fwnode_dev_initialized(&np->fwnode, true);
->  
->  	ret = of_changeset_apply(cset);
->  	if (ret)
-> -- 
-> 2.53.0
-> 
+It's worth keeping an eye on:
+
+https://patchwork.kernel.org/project/netdevbpf/list/?delegate=123371
+
+about 24h after submission in case of any issues.
+
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
