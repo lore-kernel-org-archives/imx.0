@@ -1,62 +1,64 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3696402B92
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 15:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C873402431
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 15:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774540108; cv=none; b=augLJ/ACxXD8Nd2NSwHgPPK+lnWGYwys2PHxnImjOK378Z/qnKo4E9Vvz6sSYNMCExCG/LbZV6jbhohh5Epe8ul1cqu3LW+zSPABk2zA44BClbZ1xhu07kdXXO8h51zxbwpl1KQI7qw6bQLbs91B42d//Y5+qP2IAc6Ng0JXMlI=
+	t=1774540109; cv=none; b=RiByMBPWywP9V7d4/zyrSNWdPB3fOLzZhbmiXnrMmC61CkY2ZWXYiedcXMsfbnMufWtz/TW9X5n7nMgZPXVEbjVQtFwT4aQ+mlzvA+vBGCTBnQdx+KtDEhpCqOkiHQ0fIOMmg6doWyL2JJP15h5Ce5p+2VGodCkReXG0sdspWrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774540108; c=relaxed/simple;
-	bh=/ZmT/DBJHUb+IDvYI73kBBbncazb+maXp9T5kj0cSLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IeGlz3atAacajHWM0fXql66zSCPpk5jOPCLFjCl6MjiD1s14+eeUeu9S3DOKLV247w5NyiGA3dGK/qqEXjT9cogF11NLdJIgu0/iYb3mpf6QCjiAo7ZSEdQZ/cmC1mHqrGHjtQm09NqhrmS0MqgKt4H0Cz8d67dMhlEQ7Z0uShY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N1qN4wTR; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1774540109; c=relaxed/simple;
+	bh=oBV5iKDKpEOL1t/HXBw1Hg18aSXy7dOvz7mlaIaJkss=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ETRMfZefwj8j5LxiIU2AylQ10APZcHpZLKkiVngboIX6lX5km+nqsMhQnFQNOQ2CTN2aobA9BXQu+0P9GOGvjaA6rL8nKKOAZtg3tFKMmgfUgeEpauXQ8Z11DcsIVZhWoNLOkxMC4xStzJsX0brZc0hePUpATTDZD6sqZlqnOdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eab1q8fV; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N1qN4wTR"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48541edecf9so13825455e9.1
-        for <imx@lists.linux.dev>; Thu, 26 Mar 2026 08:48:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eab1q8fV"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439b7c2788dso701321f8f.1
+        for <imx@lists.linux.dev>; Thu, 26 Mar 2026 08:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774540105; x=1775144905; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=07/cjURuXrTCYh7didrIz8VeWt0ESapQ65aqs/B2tiM=;
-        b=N1qN4wTRVRsOnSNTK9B9PBkpHHhV4FXG5BS+L+TKXSeT8TyW3KyV+/hus6CzoBBTly
-         GADH25xC9QjJUbwBPOOJphhTT86cyC08jrZD9oR/Sh8f+dDsBGJ36lPOFE6CYAjnSARH
-         ENtXRDGr7S8F4gHOVAp1/JlXqUgB++wgLDOinchaPtteOPAsj2wB/prXFO2ZXBde9o02
-         kymtvPahs+LF+5poGvBfLfDbPwLO98my/ODpl+TFtoRKDadBq1ekKnUbyyOw4makCgcD
-         5pwxXXHE82tidC6cqMOq5ZkOKpe6w6BOQSFhFxCwEYyL23xOZn4zG1bHFoJvMMdJSVOZ
-         RmNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774540105; x=1775144905;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774540106; x=1775144906; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=07/cjURuXrTCYh7didrIz8VeWt0ESapQ65aqs/B2tiM=;
-        b=N/bwCTPwETTEhjV1D+Vff+M8a/3nFlK2vnynGiAluHEMPKbg+jThBoBTHizJuFZqwE
-         /7B31QtR0k21Am7rAYBC1zCZ7ymwdBsllaoCKdv4CHC9j/QmPmuUJwz0sbxT7LV+FSFT
-         cLXYQ4DzLLrpso9By9XSqRI+ILSMT3abFv8fPqC0VaZgbvupXRkbOnFLjhflXI+TVfxa
-         XUv3u8nf1LtcsVey9WNnFsRrj2+X+v9j1r7ORPZY5uRJotfiWftRT4dihJnKqqD4z/05
-         SrsMundo2F6kOM5r91cICdJA3U6RnntPNxz47KpMHwZ9l82wTFM7m+I8xMt9PWDBKFr7
-         GJmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUY+3LhRljeAMUli22TeDARxGJTqSVpARAI6b9AmUVjSBNrh6aWqpAjSlLPGCmHgBV555w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwCidoRal85kXjQVe/iuoL0qNnChOS+NP1QT1n8k2oXqlB6lHVJ
-	NzJ/sHH0BfSG0iCnQLUmHsSp1bYESXWmGYF/ixcAfy00w85FUJERbPJf
-X-Gm-Gg: ATEYQzwsXi6Jq4h7afQkm8Qwp7ss58be5auGTFv4bPPSQ3wQ/hXeOBV7DlUhacuvVGs
-	8VE7oIwnQs5dGrOb4hV11MgbCI6+JhtU5FN49KNZqte6YTLqox0LkhSoS3OnZOV3Znid1fuL6W1
-	L2WPX0IAp4ynhprQnuEYXmhCLH4MkOF/Wtjagxolnbr9KMByylTI2WpEViU337SNc4IL0MqRBIe
-	KBGQqqbU9y8BgY2wAQecrbJhShV6LBdJB8PrPq12kw4PCEctnad4TKKl1WIvep7Cf3xsrlYF6/x
-	fBrmZZXurwh/RyiIKmz/kDZnGu5rNny06Z861mkgaywl6djT54vKACBoH7EVXUXmmQFw8aCg+T4
-	cxPyI7H1kuWiqH0hJrYfBpUMwo0aI1TmCXUnkKpwG3SU+8KIZMz3S7KDk8h2w9IDnB2OKmTZCYo
-	mnDQ+6oP6xtXawoT1xLymv4Q3CpTWeiVbSUnMQPOkIFJOVwFDTjUNp78yMziVP3lm+K+nGOeY8d
-	nWyVx9CZ2IQLSp0/8bY6FeAts8Tsy8Xe/Rz7Q==
-X-Received: by 2002:a05:600c:8489:b0:485:304a:58cd with SMTP id 5b1f17b1804b1-48715fc3925mr119005735e9.4.1774540104995;
-        Thu, 26 Mar 2026 08:48:24 -0700 (PDT)
+        bh=dI0wt5Oy0ocRxFiQlKWRud+Cipg15jZsGIOFf8LRYNk=;
+        b=Eab1q8fVBWHrvUqvUX2i1W6qF7HWhIfpLCnYrL6Y1X0hO5vaYS/5wu8QJNMt9dIUxX
+         IOn7zCwoFOeUV4d770wzNf/wgET6iAs+DHZJ1QD+60zQCCcr8ZMaty14Egi5TbNZ1Osn
+         /PwxIIS8wmh+kB+OHfbURWhlfYSxwwsU6IVm+IV9bcpZhWb4loayjRrHipS9hZG8rf5Z
+         qvu+dDTP7tZCD+aRdH5O8IDJ6R+zaEI+WcR60bSVZLtfnJwWGTkPBvx2KABre9beXpwI
+         I+GPv4jNol2GxRsh1N2nnTIynCL5Bg9UiF+C8S2QxPWlT+v2mi7EfVDwRz9S0etsvVDX
+         8DYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774540106; x=1775144906;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dI0wt5Oy0ocRxFiQlKWRud+Cipg15jZsGIOFf8LRYNk=;
+        b=hr1NhiPzyMPmuGNYYmGseZgb+Ult6tq0jQtEeyQM9GsscYb3FhoeqHnCYs4/AVXNk9
+         6KnLEGpiVz4YIe+PJBTEYLV06w3OXTDMtgcCuzfq1cKgHGsSpOYKw2QY2zbmu+jnU+EX
+         J4fqMmqNH19P8KM216p6XojAD6wxBJklcWWarSklawZv2oGTBAsw1Gu0n6uhLBwpxlYB
+         qxYlFhuUQFzX228ii4Z9JOjuJzMX5UAoNCMc/0pF5R0T5qDfjuHNDuGXsjMccGcY+6v2
+         Hm58Y1y2JkXULeF+FjVwNK+4zeO7ySKiMhFwl5McZOx7eFmUR8ktb8ryA8s0Z/wGT3ay
+         k7Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhUCe7808wgSjhf6c6epN+ODWHo7eO57HWIWTG1wRsYs0XTKRwx6EFZHfiWoBJBCW1sqU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzWWAl18PhO0o7tzNFfsnx353c5t9uv0chgbQzob6CQ4g/59e5r
+	/xMiUezZfeqVm9ZNr90Fpmch9F+9ECG7ZUK3zi6gClkliMKCWzezJ+gl
+X-Gm-Gg: ATEYQzywReYrDyStcLyjfGnPVkro0NGyfBa7xsMyI3gbmYEGitHtVReXAuXsi+k/va/
+	0ljSVyVTvmBjJN2/vlmT79Lt5OfcJ531oiB363+SsVmOGVfPRkZlBd5fcjyYyhTkyh58qy/0xuo
+	7ObodavoamI8HIdsTTtS90R8ww755wmw53QhVTst8lLDzK5j4MKR0jz8fw3Pugw5ySbqm6N5TqR
+	y2F9tft2hRSjSt7RBlVdz7gpp/H4KH4tPqkwb3Ppv4EZYsMFPP70DNLAH3e35eWGAzCF7mX+yqV
+	vD+I2mM0QeF6YLzLphpvMoPYejM6VgFxZUhtRUL3Mspqt/hOVGllwp1v+KB03GZ9ECRrCKxDCbg
+	w/8VJ0AQeycSZWuTFqQgkAh2oODHyZSoiWk16/+ctqEyzRU5pm4hWZ8zBFTFy1uAwSiARKNGyEA
+	1YEiSbzlGxaXUCaYKP7rnJ8mDVLXvMhN3vl9/iu6yYjS1RzfJPs6msum1qzToE4P1f1xh+o7Uan
+	TBu1/MVFY85S/t4jTiZ8GlKqxsWLmiXvFL31g==
+X-Received: by 2002:a05:600c:c0cd:b0:480:6bef:63a0 with SMTP id 5b1f17b1804b1-48716031822mr86372605e9.21.1774540106277;
+        Thu, 26 Mar 2026 08:48:26 -0700 (PDT)
 Received: from Lord-Beerus.station (net-93-144-20-233.cust.vodafonedsl.it. [93.144.20.233])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b91942e52sm8831016f8f.9.2026.03.26.08.48.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b91942e52sm8831016f8f.9.2026.03.26.08.48.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 08:48:24 -0700 (PDT)
+        Thu, 26 Mar 2026 08:48:25 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -80,10 +82,12 @@ Cc: pierluigi.p@variscite.com,
 	Markus Niebel <Markus.Niebel@tq-group.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Primoz Fiser <primoz.fiser@norik.com>
-Subject: [PATCH v1 0/3] Add support for Variscite DART-MX93 and Sonata board
-Date: Thu, 26 Mar 2026 16:47:16 +0100
-Message-ID: <cover.1774539301.git.stefano.r@variscite.com>
+Subject: [PATCH v1 1/3] dt-bindings: arm: fsl: add Variscite DART-MX93 Boards
+Date: Thu, 26 Mar 2026 16:47:17 +0100
+Message-ID: <b7b243c9c3931e8d7ddd984b654e7ef493e84690.1774539301.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1774539301.git.stefano.r@variscite.com>
+References: <cover.1774539301.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -92,32 +96,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds support for the Variscite DART-MX93 system on
-module and the Sonata carrier board.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-The series includes:
-- SOM device tree with on-module peripherals
-- Sonata carrier board device tree with board-specific features
+Add DT compatible strings for Variscite DART-MX93 SoM and Variscite
+development carrier Board.
 
-The implementation follows the standard SOM + carrier board pattern
-where the SOM dtsi contains only peripherals mounted on the module,
-while carrier-specific interfaces are enabled in the board dts.
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Stefano Radaelli (3):
-  dt-bindings: arm: fsl: add Variscite DART-MX93 Boards
-  arm64: dts: freescale: Add support for Variscite DART-MX93
-  arm64: dts: imx93-var-dart: Add support for Variscite Sonata board
-
- .../devicetree/bindings/arm/fsl.yaml          |   6 +
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx93-var-dart-sonata.dts   | 654 ++++++++++++++++++
- .../boot/dts/freescale/imx93-var-dart.dtsi    | 462 +++++++++++++
- 4 files changed, 1123 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart-sonata.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-var-dart.dtsi
-
-
-base-commit: 6c4b48012d57f205c94f25da0c68a4027ea6daf6
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index da2be7114f64..77497a261fd5 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1587,6 +1587,12 @@ properties:
+           - const: variscite,var-dart-mx91 # Variscite DART-MX91 SOM
+           - const: fsl,imx91
+ 
++      - description: Variscite DART-MX93 based boards
++        items:
++          - const: variscite,var-dart-mx93-sonata # Variscite DART-MX93 on Sonata Development Board
++          - const: variscite,var-dart-mx93 # Variscite DART-MX93 SOM
++          - const: fsl,imx93
++
+       - description: Variscite VAR-SOM-MX93 based boards
+         items:
+           - const: variscite,var-som-mx93-symphony
 -- 
 2.47.3
 
