@@ -1,151 +1,159 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011017.outbound.protection.outlook.com [40.107.130.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B02C3C944F
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 15:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774540406; cv=none; b=Ra4H+3NGhO725H5yF8oG3WB68xZSnx/Hh1jtssBOHp/0bHVk8NMDsXqdeNsJRkH1M7mTNNePKvITcn2IEq0IQymWUhOwn/NcT/sxGSYNkXID+s7PZ3AaBFkKvYThIV3w6y5NKbrw4b8E9mRe8TX0XWL94C8qhlVNyuQlGnbzJCU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774540406; c=relaxed/simple;
-	bh=jWCzCO8aMHEZUZ7DQtZDmmJccLhh6PSRxwep9L4gXII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wn2aI669SDo9QnN0yg17GRzJR+f3jhhUbgXwVbA7rW+S0819oB2Yr6OiKRE9F6ahWaeg5tnvcjNefV2Kwh7tHYKGGb7I2DGVXj2pQE7bEsPHjhhYWMCR26QJ35Pt8Yz6DwdK+1lDkMT4NFRqpT2toPoKJxGk4yg6YWqHF8R9Viw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=joWP8ZbJ; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A338B401A16
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 15:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774540693; cv=fail; b=E+fe7izgQocgwb6KItum2SleXxvqVi99rksCME4ArQl1IBdb8jGRxcAYohcTC0zb004hqPPoPEWknNQzJikSc7hPxrirYOK5+6kxsBpO99kqcruxWSCpPEyerjN8k2LM/wKaI47D7W5Gl++iFgE06gXKxBfk0LYaO0aqLj4XNAo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774540693; c=relaxed/simple;
+	bh=cA+5ujOV+gUIFLAo4QOH+rj9MqqUzzJkEEGG9dItTYM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DjAHd+R7/UejyiQoN186WtY8f8ok3WKhggB61CDQfxvkbYmM6IkypUPoCrHmeu9AuB2G3AVUTd+IQc4ReDKFSrctkEJ7DASTMIyA16EP2E8t1y6+zKspRyjtfxROqdn/GXfXwXhsLzkPFBQCMyVT0cKOpVjDGIGgAzyKkxcqxKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RazeuMtE; arc=fail smtp.client-ip=40.107.130.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="joWP8ZbJ"
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 312F39A9;
-	Thu, 26 Mar 2026 16:52:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774540323;
-	bh=jWCzCO8aMHEZUZ7DQtZDmmJccLhh6PSRxwep9L4gXII=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=joWP8ZbJ4pAXm4DFioLVh0FvhCYCPI2Jv1TfsVBxaf1l2Z7EREDeQUXU3WOu87FSy
-	 aQW9zeIZcL2jeCdbhgOk5CT/RA1qzlqrJbeWcPitiNxIHwOlZ5rJYp63cHL83p0Qds
-	 pazg0Vl/Jic2PmKa5/02oasm+6KHQh/MY/7KceCQ=
-Date: Thu, 26 Mar 2026 17:53:20 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: netdev@vger.kernel.org, imx@lists.linux.dev
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
-	Joy Zou <joy.zou@nxp.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RazeuMtE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LP0n/3N++xMIUdS7tTEK+3Xvl57waFiRRkShvX7Cmm9ufcNHiwnRuEw6NE1Pu/ekJ3GNA9VX+RqUzQ1AOhARcoETpne9M0wqVpnIU+tYd/DcaX7GBoDXY9OkmgqlWMFvvksuFsVvvzsjMjlPbajrqUxzNeMI/s8yVjPDFenJ1B2G7Ier716w+TroNlBqysXHIFZbv8e1ZS9vGkMn94WffyUIJ6wWVICrCrhDN6W0JAZqvTuecO1Lig9nUntUKnnSDZnMcWw6GTaiLsr8wZxc5W7UfeAqzuqGc2P33WJcPLBEZ22mPve6T515pb4fjPeK6uAnLjKBgJPnvdG8IUNmew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1JZ0FfDdnlixNx4zFT8GXGx6gj+gUGUDPyPY70mgnqo=;
+ b=OBvzrQwqb3HihKW6oy0eDziFdU1iGup7JIcedDacVBCw5UaveY+VIlK8yX/IuMraTMctSHpeKiFkE0Vjmrys3cVxlmRQXqh0EMAS2Tq1QB45ruShQN+1+2P3iwoz440QK2pOLxKnbCZWW0Fr/cpxdzFD07fW66qJ1I9kmWMMAmp0k07B2MeWl0UVTQXEylDJooh4K7RxBYYMcujje7E+KY5IhfgxNrryoMwgOZMvQhLbdztdfrwW/mVFS3jyzb1CJ4omyukeCQXtf4d4F1/OtA/aXiree08TVanMtbFienEQ/94QrvQyHUNBaYfy8DiaAhq58uZ3E08Z1p34yfu0xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1JZ0FfDdnlixNx4zFT8GXGx6gj+gUGUDPyPY70mgnqo=;
+ b=RazeuMtEnlcbLWAgfo8kP6fBqJgL4ZyK58BdlAWs1QM8vzrMi3vM63F+ISUVUWxtUR3ScXaj2yba0B4IxMtTWjBS1OAgBeAHkVCVXfIHWU4NLjBDFHEg8zBme9gkIKRB+S9kumeTuZgS6+P2VZKeienTnGG2JStP8aZOeRIbr7IJuaj8ttHklH6WyCeZEpC9j1gfxKyG0yk/Yt1vJI59vzbeag89X3ajFDQgGNjMuJiqTsJbIMs4v4ZIQ0yAMYcAExhgQXrOzHVrja9gUfD405eVssLwBaxeo7H+WVr/HshXtY70AsrppyZCXcqP7+wS1CznqMfAaRRDgNtj7p8J4g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DU2PR04MB8680.eurprd04.prod.outlook.com (2603:10a6:10:2df::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
+ 2026 15:58:08 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9745.022; Thu, 26 Mar 2026
+ 15:58:08 +0000
+Date: Thu, 26 Mar 2026 11:57:59 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v4 1/2] net: stmmac: provide flag to disable EEE
-Message-ID: <20260326155320.GA2929106@killaraus.ideasonboard.com>
-References: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com>
- <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: (subset) [PATCH v10 0/5] Add MIPI CSI-2 support for i.MX8ULP
+Message-ID: <acVXhxohG8RS67_U@lizhi-Precision-Tower-5810>
+References: <20251205-csi2_imx8ulp-v10-0-190cdadb20a3@nxp.com>
+ <177453839102.4969.6512848643800500076.b4-ty@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177453839102.4969.6512848643800500076.b4-ty@nxp.com>
+X-ClientProxiedBy: PH0P220CA0012.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::35) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU2PR04MB8680:EE_
+X-MS-Office365-Filtering-Correlation-Id: d588cc2a-66ea-4eb5-10ab-08de8b507919
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|52116014|376014|921020|56012099003|22082099003|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ PsRm69/SBh3QBlCmKzOiyfVToOiihOwur2A34ycFvtkZHlXr81iUUm7Nb8yY2pHFA1I7NiIc+lpEKp10CTDKVVNcTYrVr/z+AZMH6mfo9di3dujyKYlHmtV5hqHgB+p9Exi8L1RHXa0zOT4sP4vmpOImtQCKwM+zwrY5NeVGKPMsG0PSGkKmnFF6aouZRZWq2wyMvcXQs9ReiB47jX3Groi8xMNIqColY6V5v1aFBikX5gsa/0DsLBj0smjWFspRFkHzDNRvLkaItR7AZnNkf42xlkEBUM8eN5+EswhSbbr3PQaG5a7K+T9lNSE9yItPfC/8VVsMkDw6Y3w8jQ+Hsnba0mOMCk6Re0V/ny9x2sphZrx7VPVwG4teDRGCfTHQnlFGmAZEDuRy4AMr6RrlkcBNfH8mFpqeAZV1LFIiEQetcuzW7yE6+GYxjyjCeCtKSVuK1T7T7TiRHkIOSI1URGTr/YRaqaypfNQxko1mauFVRUSnV6GQzu9xTkTe8iBPVkzOpMo5pRvWQuoTSiZrXSIcWPh0KZVyX0er64fk8tbHHqjWYAnQL/ZgpJD6zszS6z8oaf9sXlG0feI2+9hKDDZppk9ogfoXGCk9+YfeakXiR2ov3CEf/p8tpB1VLBXfTdBT3sM7ZyXOvxa5h02ijMYmaBAkHS61iLrJ/9ERRpEEUgqYuXA6Oc+6cPmpxiuDoCaHZcfYSWtrurCIrE40ULJ7PYOaGhQfUs0iyA1MeX+zs7wL6jw1avXvKmzWHyWaxrmFtnkrMXII5ATmh9qTlRvnilOHFB2DH+JibFFvY3O3Ts8tFRU3H9MV/kiDRcuH
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(52116014)(376014)(921020)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?2gNUspJfN1GF5NTYltQQtDE4+EyuvmWrG10FTpjM36A7BCfsyqEXCQbLxSgO?=
+ =?us-ascii?Q?e7Cm634OzPb9S+WfFp4Mq3xEDCIyw6BHtZt9iGJBCwrNi/67vDClUKAJEnvi?=
+ =?us-ascii?Q?rynNf8JwFgUf+mwFcgFTeEydybzo2wZHUc2+AAT81o0S1M7OFatoIq6Cgxvd?=
+ =?us-ascii?Q?LQfIZCPmSJBvFXjGHVv4x31nGdk9X94CoicQEo5p065MH1pgDAjpgozQIgOo?=
+ =?us-ascii?Q?8YcznbGw+NiOYHzzaLVFK7ieDtX1qoUGyXU+m/1PhukuzYssgA5cbhz3aWSb?=
+ =?us-ascii?Q?HUDziYu4sZK5MSyKXklla1vYrzLXtIaqcN3Hc8LJM2mSEiaYyrrALajG1uy8?=
+ =?us-ascii?Q?6ycKivxNnrPpW1PpQ5ZIXnPmoRFsP8gIN7ACuHHaIFVlZyRpFZHM9BiruehT?=
+ =?us-ascii?Q?ay2Ul0Rgx1rZFPP4PiGt3ogrnqnfptfpdlooQGRUBQxiggLvhG5frZS98HIt?=
+ =?us-ascii?Q?gG+1J6oXwX3XVcqCr+3XIGribf4Ux+u0sTJtU7unB/EyGISZtjwSBxtvmtTU?=
+ =?us-ascii?Q?iC3n2lYahwomgzHjaXgmt0s6I9tGkL/Iv/pUL2kM2i/O3IbRqLX5jpssl2Ea?=
+ =?us-ascii?Q?9hHshUw4NUkKPKSJ46EYbPqUy8SjbnSpvxHwgvpWNT5GzEsBhKJu6HAH3ghj?=
+ =?us-ascii?Q?d/fpeuReMoK9WAra8S6fKIBNVkWpmxQO8wCvNqij91hFQdyx8b9zUWC/DRjH?=
+ =?us-ascii?Q?GB98pWDB+lbg0kr+PnObqjTbXqlQQs8JyFGGPCrMUYducYp3f6Bfe2FGGh0p?=
+ =?us-ascii?Q?Nlt8A/tNr3D9+g7OMWVZkeOQ7Hdz2pYmeZ/yWBuWjJfUFIXHE6/RctTwB67u?=
+ =?us-ascii?Q?0SvFNb1ffBTUgJpfKHQcwn0yHyDJ7rwf3VONVK8ie3O/VdmLSmsTqRDzwEJJ?=
+ =?us-ascii?Q?+CU3r7UKHO4qbxmJ5IepA3xcfYw0TEawyKXLHpX3iU+lT2fKhmBKRvLODQBb?=
+ =?us-ascii?Q?p7JIn12GIvCAbEkzsF+Mvsk2E3829kXQ9g4vumBEAtZN75TxoaSpt4vsUNsg?=
+ =?us-ascii?Q?89RMXCayErzRFFRR54i3UiH3SK8Xli0TL0Hfrxi0wKqY3oYaherp0jxeYEHo?=
+ =?us-ascii?Q?7RgtDeiOA8stqk5fa2JUwfFo5b0nhGzcA1mmoIUVX+d/bSlglziX/syQ2XAr?=
+ =?us-ascii?Q?vXgLwMMOj7PPxTqnU8qkLB1/uzHK7H6wmKx0D9sNY/jsLj84ahngQqJMDn35?=
+ =?us-ascii?Q?LLBb8YoQzBfHdrnaHpCNw7RtjzG/j2bZQFWVRf50Me05nQzJZc58E4PUUM1i?=
+ =?us-ascii?Q?vO6wvsCoRAW1oaB/JSCsSfKF8a5Q5FltzPEiqEvRums+BKd0iWs4xZn80upC?=
+ =?us-ascii?Q?sfI+p0Io6T3TlPpFCDPADXljsWV6Su/NNOkOmtt2fXa3qveB2Al/mkQouNHM?=
+ =?us-ascii?Q?k2AXebMOEINVxBbL72WBXxJCnF05MOZQbRwQqSXIL1PMjXFTREI8e7zQmENc?=
+ =?us-ascii?Q?p5LnYeNP3HyFuHSonmwmtOafcxJ3pyPJ1hPIbvNqbgYEpNpSKa9YOWm+ealh?=
+ =?us-ascii?Q?agkPfp4soUmb0kgYytBYjVxENBW5uxEU52NLYTWPXBJnhabu7QcljIVWevDS?=
+ =?us-ascii?Q?rvnMgub2JcwhdISWzYrL+mDiDL0tiMwis+NTdh4Fz6ooZeLnQmCn5UFAe7NT?=
+ =?us-ascii?Q?evAayikazwiihRN/WZHOU3fKOiolEX1YwVDB3sGfmtmWkwkwfQmA8XOqVy1C?=
+ =?us-ascii?Q?WCQhq8tiAo6cLKzc3LrRr1W3xpb2obT5NauVGnAJh+QqZa/6v7YWOxpgPgCG?=
+ =?us-ascii?Q?Jc4hPSYPwg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d588cc2a-66ea-4eb5-10ab-08de8b507919
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 15:58:08.0390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7QWJcIRRtFI1VhbbQFIziRuFY0WU0HYRq9k0F+JfN4sW/dxnttwDsc72cECOe7KNXYUNmvUq0BRePMfybHMetQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8680
 
-On Wed, Mar 25, 2026 at 11:00:02PM +0200, Laurent Pinchart wrote:
-> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-> 
-> Some platforms have problems when EEE is enabled, and thus need a way
-> to disable stmmac EEE support. Add a flag before the other LPI related
-> flags which tells stmmac to avoid populating the phylink LPI
-> capabilities, which causes phylink to call phy_disable_eee() for any
-> PHY that is attached to the affected phylink instance.
-> 
-> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> to the receive clock domain, and takes four clock cycles to clear, this
-> leads to interrupt storms as the interrupt remains asserted for some
-> time after the LPI control and status register is read.
-> 
-> This problem becomes worse when the receive clock from the PHY stops
-> when the receive path enters LPI state - which means that lpi_intr_o
-> can not deassert until the clock restarts. Since the LPI state of the
-> receive path depends on the link partner, this is out of our control.
-> We could disable RX clock stop at the PHY, but that doesn't get around
-> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
-> 
-> Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> this is insufficient - the problem is also visible at 100M speeds,
-> where the receive clock is slower.
-> 
-> There is extensive discussion and investigation in the thread linked
-> below, the result of which is summarised in this commit message.
-> 
-> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+On Thu, Mar 26, 2026 at 11:20:54AM -0400, Frank Li wrote:
+>
+> On Fri, 05 Dec 2025 17:07:42 +0800, Guoniu Zhou wrote:
+> > The serial adds MIPI CSI-2 support for i.MX8ULP.
+> >
+> >
+>
+> Applied, thanks!
+>
+> [5/5] arm64: dts: imx8ulp: Add CSI and ISI Nodes
+>       commit: 73f3ca0f85285b2fc4ea05affb9a44bf899cd595
+>
+> Add extra empty line between reg and child node.
 
-And I just realized I haven't sent an R-b tag, despite having reviewed
-the patch.
+Guoniu Zhou:
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+I have to drop this one because miss <dt-bindings/reset/imx8ulp-pcc-reset.h>
 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  7 ++++++-
->  include/linux/stmmac.h                            | 13 +++++++------
->  2 files changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9b6b49331639..ce51b9c22129 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1438,7 +1438,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
->  				 config->supported_interfaces,
->  				 pcs->supported_interfaces);
->  
-> -	if (priv->dma_cap.eee) {
-> +	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
-> +	 * used for stmmac's main interrupts, which leads to interrupt storms.
-> +	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
-> +	 */
-> +	if (priv->dma_cap.eee &&
-> +	    !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
->  		/* The GMAC 3.74a databook states that EEE is only supported
->  		 * in MII, GMII, and RGMII interfaces.
->  		 */
-> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-> index 5b2bece81448..e62d21afd56d 100644
-> --- a/include/linux/stmmac.h
-> +++ b/include/linux/stmmac.h
-> @@ -207,12 +207,13 @@ enum dwmac_core_type {
->  #define STMMAC_FLAG_MULTI_MSI_EN		BIT(7)
->  #define STMMAC_FLAG_EXT_SNAPSHOT_EN		BIT(8)
->  #define STMMAC_FLAG_INT_SNAPSHOT_EN		BIT(9)
-> -#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(10)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(11)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
-> -#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
-> -#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD	BIT(14)
-> -#define STMMAC_FLAG_SERDES_SUPPORTS_2500M	BIT(15)
-> +#define STMMAC_FLAG_EEE_DISABLE			BIT(10)
-> +#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(11)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(12)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(13)
-> +#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(14)
-> +#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD	BIT(15)
-> +#define STMMAC_FLAG_SERDES_SUPPORTS_2500M	BIT(16)
->  
->  struct mac_device_info;
->  
+Do you miss some dependence?
 
--- 
-Regards,
-
-Laurent Pinchart
+Frank
+>
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
