@@ -1,109 +1,84 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B23469F6
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 18:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30563FF1;
+	Thu, 26 Mar 2026 18:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774548612; cv=none; b=UnlOo6j19+n+4LQ6TtsZsspH0xaDjjkIOkD3R2WRP2DIOuVoNSCeFc5sDHrdCCrUkVCBgN4eCSMdRH5N9w4q3XXXK4FCJQmRZlCWc/QTvGqZ5WdClqmKzIwR1/Xg1jdHJ3wlHdDQUBp5zTZzCFSD2iGRLKqmZajK40+C7q7E8Sc=
+	t=1774548786; cv=none; b=Rw9xUNdVqoVChJeW8ExLP5eEgk4xMVlVxtksGOXvG7T3mUomou5aUoo2PZtpbbPJ7P3PK0jVOg91csJfpGBkWuiOlGBBEz2JJbORnjDFry3IUt0sSu2OJPlsYxTY3KHgeXP+jBjC8ElhKMGpxnPJ84AgOBxwcHTiAzA1R4FevaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774548612; c=relaxed/simple;
-	bh=C31T0iB05TcG8+dBb0BQwUARXXYeyW/ypNNov2Ya5G4=;
+	s=arc-20240116; t=1774548786; c=relaxed/simple;
+	bh=onuRQkPmwCIpth/t55bBYnvpguxJISC6gk3ZFvsnTBs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U5P3gSDoc+/5NJKctRtNPdjRZQrc0NWBpfg5D46G2L2XORW8K1SisbDh07sHYBB+joKBi7BwzHgIJ94aKaPaSW8zu09fn5g/cx+Kn2F3W+plzLt17znUAQKfXArP10lzGhodfsKEiAtD/tE8hFWINX01Hd3DjXRym2LhUX0bZR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qgJYzpCR; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQHqba2bRgJdPtH7CmUEhTbuAiHtn6KKb9BE3CAQEoH+rka3nwqJmG+jYmzmu50YCxOrNX0PRvP6mXb7FpzwzO3bgi13rtlPVQ+d2YC1ZVEOqmqBufHqtbxWfKh4qWupuGsC6Nxbz4cp9jNldls6TwjGk7KoFPJQrBBc1MJ0pCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbY1+q+f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qgJYzpCR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=D7UKezHTYAPqledPGUEh2DO5MGs9hcwA+U9WoF1npkM=; b=qgJYzpCR7jCviujwEpZ0vv2vUF
-	oxcFOACz5qSYZY/QQRwAwide7RZINgtbvEdKCebe7OUAUAo+e2poBx9eYb19KuV8uLhnUiVaLVELH
-	QUAjK+E21l9asVws7NVaNBm75aKcthHu99WY9el+y++etD0SHfhZm3HN0+vQnPPTd8uB0LO9LZAUH
-	giNrseuQbFoDjabUnZAiZNcYsep3qxXzKekLjeMLao49bqNPY7EDx65pAdw3u4Mv4SyHimrz4nbRa
-	4bT1eDcMFca1gLonlXQEhCKThWwxDzGzxX5U8ptEQWHvMqDQh2/lZW/6cLK8VAevQJhXaXWjVPXDX
-	7XvO9bhg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56258)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w5p9h-0000000058m-3Fmw;
-	Thu, 26 Mar 2026 18:10:05 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w5p9d-000000007Fh-3HE2;
-	Thu, 26 Mar 2026 18:10:01 +0000
-Date: Thu, 26 Mar 2026 18:10:01 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
-	Joy Zou <joy.zou@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbY1+q+f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B3FC116C6;
+	Thu, 26 Mar 2026 18:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774548785;
+	bh=onuRQkPmwCIpth/t55bBYnvpguxJISC6gk3ZFvsnTBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fbY1+q+fVV90ac80mhG7oRHiW7dLVnAsaxYjEkvgg3RVEFRF0TOLP78UWAGX/SuY8
+	 teiNxXthB5s/sZWS3Smp+uFCrPq8ojKuCHd8NSI3Gw4YlAJ0eZJCalsGxb3CQgKyNg
+	 eE1dzIZBQ7wIPacSMEtjz+W167HfW4PRVMa7j/Xog/6vfBOIIivZ4ouauNxM2QC47I
+	 V8TjpiElAs+ES082b9UBM/BR1qfqsoG8tHgWvKzeHPdndlCjEvTGLOOp1DWjDkuqao
+	 +5JTscv4FhUOvc08NNBR3vGZ91/Sojk/EsyBrD3koapnBIgCwBcEVvr1IwUdOJJhsG
+	 YevULXYCG6UrA==
+Date: Thu, 26 Mar 2026 18:12:59 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v4 1/2] net: stmmac: provide flag to disable EEE
-Message-ID: <acV2edMExFP0i8TK@shell.armlinux.org.uk>
-References: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com>
- <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
- <177454628933.1078312.13488207016388509694@ping.linuxembedded.co.uk>
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Primoz Fiser <primoz.fiser@norik.com>
+Subject: Re: [PATCH v1 1/3] dt-bindings: arm: fsl: add Variscite DART-MX93
+ Boards
+Message-ID: <20260326-sizable-dance-78b73f70fac5@spud>
+References: <cover.1774539301.git.stefano.r@variscite.com>
+ <b7b243c9c3931e8d7ddd984b654e7ef493e84690.1774539301.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PLO7GUF6w8z+16Yd"
+Content-Disposition: inline
+In-Reply-To: <b7b243c9c3931e8d7ddd984b654e7ef493e84690.1774539301.git.stefano.r@variscite.com>
+
+
+--PLO7GUF6w8z+16Yd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <177454628933.1078312.13488207016388509694@ping.linuxembedded.co.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Mar 26, 2026 at 05:31:29PM +0000, Kieran Bingham wrote:
-> This one has been a roller coaster, but I'm glad we got to the bottom of
-> it.
-> 
-> I hope someone from synopsis takes note and and documents this for
-> future silicon integrations.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-I would say that it _is_ clearly documented in the databook. v3.74a
-4.3.4. LPI Interrupt already states that this signal is generated in
-the receive clock domain, and is not cleared immediately after the LPI
-control and status register is read.
+--PLO7GUF6w8z+16Yd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It goes on to state that this is because the signal to clear it has to
-cross from the CSR clock domain to the receive clock domain to clear
-the signal - and states that it is at least _four_ receive clock
-cycles.
+-----BEGIN PGP SIGNATURE-----
 
+iHQEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacV3KwAKCRB4tDGHoIJi
+0owPAQD3E45ZJKFwFRvgLC7JzNAeyiR+9OmbwQ35jEMeSNonDQD1Gn84ysRfckCH
+1VN+CjFscwhHyf6LfZt3azNzZtaVDg==
+=NoRV
+-----END PGP SIGNATURE-----
 
-So, if the dwmac core is operating at 10Mbps, that means its receive
-clock is running at 2.5MHz which has a period of 400ns. In this case,
-the four receive clock cycles to clear this interrupt is 1.6us,
-assuming that the receive clock is running.
-
-However, if EEE is enabled, the receive clock comes from the PHY,
-which may gate off when the link re-enters LPI - and this event is
-under the control of the remote end, not the local end. So, what this
-means is that even though it states four receive clocks to clear the
-lpi_intr_o signal, that doesn't necessarily mean it will clear in
-1.6us as the receive clock may be stopped.
-
-So, I think it is clearly stated in the databook already, but as it's
-just two paragraphs buried in around 1500 pages, that may explain why
-it has been missed on iMX.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+--PLO7GUF6w8z+16Yd--
