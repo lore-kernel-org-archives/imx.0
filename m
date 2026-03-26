@@ -1,69 +1,78 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011007.outbound.protection.outlook.com [52.101.65.7])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013014.outbound.protection.outlook.com [52.101.83.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D1C3AE18D
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 05:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4902A3AD524
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 06:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774504602; cv=fail; b=XXhHZGKO+cKR3uopDVcDq2So5SzTIDDwXVh3ObGeBXv9ogocHE52XsOTgmyrZJHGDPvZSltaEpNQRb3Ho0huQWqr6KO1SrqdtfeKBXSWA9i/QgZ3oowz68Fdt571R5lyNb6e2m3bLz8N/79H70S/Uut2OwypL0+mtyShE39Y3ak=
+	t=1774506447; cv=fail; b=k8+LgxOY/9uxovVohNWuKXbHQD8Mi9i5zjOxxL5koKBBc0WPPApHBaSahoGi4aeZKdWNgFKZaooUVOcPLnHeYT5pRyhRYxNKzCY3516qLsgV+T3bic0ZS8NF+/rf/Vhs66WecnX/c04MUDkOv6N2Bj1VXd1jdFthiYY6PxmaDEA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774504602; c=relaxed/simple;
-	bh=zRtBxJdRxwmUk8r9k1/wB4gSaep1BnybrQxtXhqXQ18=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jmS4n37m7VXYxnxJQUnBU1wnZKXeLnWLVfdLBBR7ikeUkd4iHF3F0bQKd4Cb2ZYX9J/nqq/mc3uNNyVJm8uHSY2uURtM4ysvKT4MZwRrdkLKttmzCPcNVmYYvjddAXp90W0NtvCVsAHHfFsre9QHAK28nxjrmKXrCVTAJxv3tZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MRiHhlsT; arc=fail smtp.client-ip=52.101.65.7
+	s=arc-20240116; t=1774506447; c=relaxed/simple;
+	bh=Jcfv9OB1YKjez630Wrb5qiBKbK4xiwF97ERsu+AuRY8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=NTRYU5TyuIy2/SNpIqqCl8gh3+uQwLO/u2vNb00Cfunl8PUi66wCPzVtmeSqwA/vs6z/fIyOvDOvCk9fyXGZ++44lLRJ81/ymFl0fh+lF5wztKDFrKd7HehPmB41TAXIwQTWrCgPS7Sa+oZq2Rp04swcXb7/Yy5fTidJy+jVVZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EYxkafqC; arc=fail smtp.client-ip=52.101.83.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MRiHhlsT"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EYxkafqC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nprFCOeF51hKmwPqldQyBJl2bbdvEMCG5LCiFaIi/HPP9H+YG1zsmlBGJjVTssxMJ9yJUtM2KQJlPz6uF3jbkreOsNYtfrP2VvAiHuVp5M2YEv+avnir+isLOEwBghRmFD7aIaVYuC/N79KpOFkzIuJ4NVfY73mgW7gNfwcbp0cQaEHH2ZHcfiLEevk/3YSFZcAPFbRraIsxpDIIS8f6CLXQ7QZqYaupZYFfZZfoPoZjAMhBFiqnDXC9bLN0/pLzqtC4a8xaE2gIotVlUEIKa4IWusVDlMjmNSRc97pZ3MHPfy4/FfQWZZKTBJZ5wJ2XIF3kBqdkDepdFjPVIOevJA==
+ b=exyGiZWhw19WdOG2ya+sBjGf+ArubCdqFChAC73JjlpatZZzCRVp+j7/DDvGv0e8kBSx5/M4R8d9TVmQPuk4fyZORbdh6yUVgX5+YafMSTfkBxnhyye2g9GTMYEt8EDj/F7zm4O3rkefVrDGR79YNWhgC2JmbXxUJk8ENRaBeEakRhaOELwDOB1i3s0CzUOExxcK5vdYyY0o5UA7VhH4/UsaEMr5s+WgznOcKiU189WWv3YNRN3yCpSUTi3aYZsq0bKiw3hHIv2pfW9Vn5piOYcGxFR/wZl0QO8NfOyR5EU7hxJ2LktCgo5KvwnT8nmWj89V/t7wuohwC73t/lGWtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s6rW0TV517vAvNS5s3RYdTceFSZ/Jz0VH7R8KKmSeaQ=;
- b=AFCjjtvUtlXXfadEcyDlVJdZMBUB7qvb8la19pGGPt1K05d+XUZrgD+b4tDuRfpBLpSOod03Qoh0IitRjyTfa0P6JtoYJDPpVTEGc66D3TQdd0GgK1IEhTSpWaiRy6GDIQo3SJSxnheXFGCtBuImXwOvqX94ZXHepLXbvkmpKtpjtp40cVNm5CBU0JlsacUXmiL7HLi3WV6u4vdTCRKQA7hk9D9+9cu9943SaY+6RfDzjWyBO/hLUsxKn8B3usyy+xRloBZPyfCIu/owxs48cGPY/ZaaV/kiMrd9GVYQtdX0Nel4Z5gCTigTKREWyxo3/j3LdxXx/JgF1OsGWhlnPw==
+ bh=0/Ig6QHm6f+vAuUX+t5kRLquc9gxss9/tlRHXXrTG5k=;
+ b=yyc6HLeSUPtOCTZSDP7BaBnOcu/ytC5R6Ox5EBlaXOeqe5kPjPJJYsiqHqJq+CUwU4E8A9SKd+5/yg+6U585DNC4RVMCEQRpqss7kMJ0fmHB+MXZeWXTv34pmNUzPkGsjvZ/YM4bG+DoMzOvSVs1rGwsC84rxhxhwYsDHT3hBS7IKrzqqmjNMXIj08TpuWensI4EOBmpVOAUQbuAnIct2zoK/c/JqUEPEXE2ePeEwm0j9QpoGmq4U2K452Ajbu//XQYM332AWn7uM9UkRJCv0qu9u6xu1ohXBLle+fHyWo0OBAMBtMyDyX/8h/mnhflwS3V4sKdLdnkgM/T1Hgzr+w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s6rW0TV517vAvNS5s3RYdTceFSZ/Jz0VH7R8KKmSeaQ=;
- b=MRiHhlsT4x7fThWjFZlt1HYQPyGscbad4fswO19sQSwrpjzPeBiEn3jSQBSymGWiccexncvDeHBDhbG3POTdhIP/tCnBRXmMdVkNE3k1o/uY7wI2ISyWsxqThyzhJTmkRla+oWBGnR+xn+A+xwU6hyIWxHOqb3IuZtmodrSis1xL6TbyV7+VC517y+yTPPpPYj5on94mZRWyaimM/89G/d1yjKLr+awm9QFJ+0HSjv3RX5fePFgTb3+S53UMthnWIKjTbK6UUW+QBOpguk+HFhrszfOw+SIQtXseLLA+veqScsKISvHIjLb2CH13TNHv7nMFvQ+MbQJk0an/hHb/yw==
+ bh=0/Ig6QHm6f+vAuUX+t5kRLquc9gxss9/tlRHXXrTG5k=;
+ b=EYxkafqChvRnfAmqIdw2jylgU7zsI1vVWCzZn53ZOLMYsCWFub9wJVKOxMLQ56EqJJCeHj0iOaC3InwdfDg0UnRIPjlAm3SjabumGBXhi03vSFyg5PMZBJqFWB8+zhReup3I/sJYmiKiJ0LpE1kS+Gv+xnRgnlJAv7S53scHuG2Uw7GhUHkQjGquZ48qjZzEW6C4Q8FxHjgm9TuW7lFAaB0moOTYcBy7sEt39AvcpC9sdY9B5PfYUUwpEPAxHz7m/6VUiz7qO0Zb/MUx6CKNAVYrYkmk8/02XdAQsYMku+tM7TclKAhGzdxH73NKXVNxm4Bw1ib1KigJYPfn2hhIpg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8353.eurprd04.prod.outlook.com (2603:10a6:20b:3ef::22)
- by VI2PR04MB11195.eurprd04.prod.outlook.com (2603:10a6:800:291::20) with
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA2PR04MB10309.eurprd04.prod.outlook.com (2603:10a6:102:41f::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
- 2026 05:56:36 +0000
-Received: from AM9PR04MB8353.eurprd04.prod.outlook.com
- ([fe80::46ae:f774:f04c:a1bc]) by AM9PR04MB8353.eurprd04.prod.outlook.com
- ([fe80::46ae:f774:f04c:a1bc%5]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
- 05:56:36 +0000
-From: Chancel Liu <chancel.liu@nxp.com>
-To: festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	linux-sound@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Thu, 26 Mar
+ 2026 06:27:21 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9745.019; Thu, 26 Mar 2026
+ 06:27:21 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: imx-rpmsg: Add DSD format support with dynamic DAI format switching
-Date: Thu, 26 Mar 2026 14:56:14 +0900
-Message-ID: <20260326055614.3614104-1-chancel.liu@nxp.com>
-X-Mailer: git-send-email 2.50.1
+	imx@lists.linux.dev
+Subject: [PATCH v3 net-next 00/14] Add preliminary NETC switch support for i.MX94
+Date: Thu, 26 Mar 2026 14:29:03 +0800
+Message-Id: <20260326062917.3552334-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SL2P216CA0172.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:1b::18) To AM9PR04MB8353.eurprd04.prod.outlook.com
- (2603:10a6:20b:3ef::22)
+X-ClientProxiedBy: MA5PR01CA0046.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d6::15) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,135 +80,207 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8353:EE_|VI2PR04MB11195:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02fd1920-f75f-4e0b-180e-08de8afc70d3
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA2PR04MB10309:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad4b04c3-2c56-4135-1ba9-08de8b00bbf0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|38350700014|921020|56012099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|19092799006|366016|52116014|921020|38350700014|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	Dv6+bIyZO+PLtpUThtDtdLSsUSysoQNQC89C+gLRY17nakyD6eAArO4LGNGp/5Rsu3SswcJxlBEFjRwjz/F+HsUFQNhA6DsE0PeAIUPWK5S8lJf0tw658xKSIsXNTBqKIeqEHiYLP8LvQHFUI5FZ5h2u/kxHlw8VKQTO40DbG0oj1Qn7Tjqg9O2/F4Xa6arx1cgkvHdsOUX5wwdJA7fIyNAwAHXxlIXFJayto+DUNE9tHRWmQWSCYZxZmlGPDRP2N47Gcxuet4+YYYabaYrttRqFx63jQFR7brRaexQfNKlj6uaXgKc3oHH1dINLw2fm8hYKiA3OaDRtQLSLjuvi/zeTIGYchr2o4urNcPj/dp3GxKvIO+nDh7eM//V1UZzG7+myylfzLaP9oRiPDQErRBy5HgINbAOH4NWjake1mvSerWi01cANQZGA6aOCQzrdQyFwu1yWwuSJs1Gbq61nhhODxn7uoJlEQvseg9BmSXds6Eb9CKHEJgIhlIGH5gqAe9o66Jesv0hp/CdQcjG6SXQ7liMytxyGwvNAGesMquuiZLkMTVlHiuyzNaT8dzEBmyRL3Ihsh9EuPh59oSEnSb/RY02gYLMRWPSflzlRyoicELiRipnA8DfeQiNUOZ9WKHYlycOJXFWCMgujYWq+U3n6CkYrzYQlGZ/kGzHdzoHHmfnVZzomv2AqeglKdiGxBpYnOAIxHz4pZwPNY3Q8USjpY24uidxIdZICh3yWapQqbKgyyEwP5xncDsOFLpOTEx/33obSxuFOTfPRJ+Aj85bkfiBE58hzp9/IaH9Q7lvbMK4wr8Nukg2UViKLkUoM
+	n/IbjOXh/hvAVBW488W2FliTqx22f71NwkVYt/9cBjsMFLqE5qeA8IfrXGLj7SPNSOaprvk5LYlmtJcODrir/y7eHDlzltN4VYVt/MK5M3wbcswsZYWuNVzcuTT3koccC7mmRvwMSbTtcTANDRMfFISR0USoU00pv95S50h8wA6xF6lKoMPDc1aiMIO2pRVKc2CjxHEtrkcO03cZAoBbli4VmY2y47g4GrpBRck1e2bGT5wVGyd4iV2gyel68eidt+vQUc+J/zPTbcJLUgKvOr2y14iS40GQanJbvEK9SlBBgtj05Xqc95UUo6yKlwgH752vNTO09puR65owQuiUr/HFv7kO2L3xvED5QbzCu0SsZuoSSEgrzsvlaosnZjhMtxb5AxMIfpbzTKZW83EDDDa5IYoRxCogtUVgTD9ZgXLcmyAAZCZ2mRwGkwulZTvkyzFxwfyu5wmXuoWQvCgyCMSH6lwUblNu+9g+R2hHw7DurEPrdu56zpfkKaNKOOKDW2qQWLdHNBIIJOYDUvJDBxKkxsybGL4ln0an56EUxYAG/YpupyZvMqoIvpC/Oyv4HfAxtFOhMdIDyFe1BTWeXy3I/CD85c5G2jrSqFHh3021NfPoBWGdMshUD5/wVxgzZ8FAeHkYSsmUpLDsAR4Uw9uyktN9IgfwcC2zwGgyaBcyX2Dual94Txnc1xi7Ry8tco0F0VQcgz+BENPYtz7yXvA7bJmYTzoD2JkvufgU7xeAtioih2E0QnSJhyVjVJmvNSAirJllPK6n5r1bWT9e+uFErBmb4REUp9uGmmcld7C4TzgatnmAziQkskh/QCSx
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8353.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(38350700014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(19092799006)(366016)(52116014)(921020)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tYXoXl85f7RcrLsZJGfuZwEZFYqccKIXxv/KumfzODa5rDMW/gZs67j74jG8?=
- =?us-ascii?Q?oFjGdn3EGoUl7yuAH/ecyI1qqrbQC5sDDXfMXgGcx1y2nUA3Wf0UQ/YxiTj7?=
- =?us-ascii?Q?fgHshDneZMXLCBChNAv/I69Grf8nZsLNud91axUwLi0DjwP9QvroyYRDCeWs?=
- =?us-ascii?Q?LAlELVTZKHcHfAAONcUPbW+Fks2lizTBQFqKf9dBly7TelhwVSLl3zz9dEJ+?=
- =?us-ascii?Q?QXIcW+RphM2Jakg9QsldUiKlTOC2qQBjYKExmLbPQ0c3HlVpSJ8Aqn79Mugd?=
- =?us-ascii?Q?Ms5shn+WMmmV7So4gRlgHNBmL8ctFLeadp8KB2PczCioXszCgjm9DoKXrmaZ?=
- =?us-ascii?Q?fJ4mGA5WejIQADTy854Xa34cil1/dUX1iZioKagXnbHLfcXasN9Ksy1RWfbX?=
- =?us-ascii?Q?gRi/IOkTmSBHSC/sAGVW1lpTZWAKLmx5ytcYAR0gBpDX6/jZ6Q4otvASlXDv?=
- =?us-ascii?Q?V4prd38eOCqNtaGsNgdUwtZNSNZ+24x1WQ/n8y7kiOFuPKz8viPONvLN08ZR?=
- =?us-ascii?Q?jWLaS/KqfwSkgjwS7EeLSdtpteMvns9qOU/qeWXQ5RJ7Ti/Jd52jIrewhTUF?=
- =?us-ascii?Q?Rz7amcJxmIe0O56iXAReAtlLjMbhT/eB5du0Y/kz4D8W0jNUy0fS7tzmgyfE?=
- =?us-ascii?Q?CUqRANZxInl3jLD4abIZMLAR/4OrTSvZGpJS6h4ItAexV13xo+lXdTGTJEBe?=
- =?us-ascii?Q?1W168AiI+euB3VP76Pzd1SfUFv5/gef1SzLpwn7WsrJLVsEZdcmsjtlDjbfj?=
- =?us-ascii?Q?PoVBrdxJPlotR7+jlCariIp77vr5wxVF7HwT/iVPoPsocZ29rWISpQE1Iqmg?=
- =?us-ascii?Q?q8TNpiVdAa9XSU9HI9r3GEOz51F+nK/BA5GhHoYkXlMhRumxGYHgfDIDLaSa?=
- =?us-ascii?Q?Ug+yl/NgLRLGDwiAAg9Js/Q2EOCkbY2v/FmV/BOeLWxEil75KVy1Frlzjpa5?=
- =?us-ascii?Q?W7tD+3XpAoRSXOVkTAyxrCXXZ0iQK5fGtAa6kSTbfMS0mK6G0jjffAVTGzzH?=
- =?us-ascii?Q?a/0rztlu3t4bQzymPnLVpAoX/bPXiAyqFHHS7R1carhx7fRbalngk4Vfx6aO?=
- =?us-ascii?Q?DjoVDeSkavZWYcuucI4a33xipgBsF9htMvpOFgNXRYQZHq2Av2ANvqVTj5ud?=
- =?us-ascii?Q?1bb1IK4huqUfLGFeeqto8Ja4YxKCZ6tkNglAa9lXFjlm3num2ILKrH8Liv6C?=
- =?us-ascii?Q?+Ax9Si2HtkhWH5+gyqmnYNOoyyx2yFwSwNL/voPpwE1BRqkQGp7maSZIOgnI?=
- =?us-ascii?Q?X6sRMMwETA3QcdNihUmBQKJLvkNk+GYV2ifdUlup0x1k/OHEx9IFm7J3qoD0?=
- =?us-ascii?Q?Vw/HbKBkDbfaOBkHmN5IMoAcnhU1fAiEH6/UBay9W9CQKktmrVwpzHb8lYK0?=
- =?us-ascii?Q?K8UBvIXpKdpECM0K25WW1RwQW4+GhK36HfQY3pYbcSCijbbgw3ioggdeABGX?=
- =?us-ascii?Q?FysBM62IarUTMC7P7ZwBzjnRvXM/XuQ8ElHX4MWSlcZjITC+g1UbrOx7T8ZD?=
- =?us-ascii?Q?AYRsnPaR5WKFKXahJFPTg2xkgAooI9CVdi5bj0tv6GOMaZpKTtlBhOtZ5+tC?=
- =?us-ascii?Q?Jt6ZRkt4WhDaV2ZeZFhvg0DhAh+4DHETd65Zraeof6Ncz0VqVWdrp+x40HjH?=
- =?us-ascii?Q?sjHP1UqzhyjtL2EeG12Fdd3ppBcvKz8kn6Ptspn8Tz6IaFqXm8peZCrXFP9j?=
- =?us-ascii?Q?djQkEukiyVMRi9CzHD8Li0Z1tVqQrpbpi+j9N3E+goey4kZr67pFEj624zPc?=
- =?us-ascii?Q?nB7XEi/nJQ=3D=3D?=
+	=?us-ascii?Q?3+4ddGcUU/vzWpyHkzCUi1tuU/92tmICIq+NxtpJqXNHVNJIcuAoDkDHBevq?=
+ =?us-ascii?Q?A9kXk8oAw6lbxG+ZlQd33y/yuUulpKkzldsD66wSB+NiAJ0k4rQj3Xz7KV/K?=
+ =?us-ascii?Q?/qittqKB97oQg7QG/Vw5AcPBdoBcztZumjeVvIPTBJRAvZpBAbIJJ2Zjykcy?=
+ =?us-ascii?Q?YYM4olR0mpdCtBEdwHRZePKDOU+WPG8JAAFxH5ue8xPGGyYHWjZINEuqxmPQ?=
+ =?us-ascii?Q?fyFNYHAco3J103agIs7cJjYi7VBEzmW0qhxNN5W8Zy1S8FE35IKL+gWBccd+?=
+ =?us-ascii?Q?RTWXMbnaiVLIx154xE5xKwrudlTVpQ7c8H+tRgrdMYmVgEuNGeak+ARMKcds?=
+ =?us-ascii?Q?s/EK9BQbJaJyFJ42rMkqEgNx393t3H137/qn7FpdGMk3+6521cI87f3Iqb/3?=
+ =?us-ascii?Q?TA4KDhGT7kLezgG5MujPUGvQEuPRaJlO/CJZliBndTLP58UukHH27kD1MqUc?=
+ =?us-ascii?Q?XOySH2pQs3I2AL1U3mwHMqtut8qFRu6Iz7pIdA2wd23hQKZzNb+fJ4xpA/Ot?=
+ =?us-ascii?Q?q5K9ca11w/eECblxqoEpr2hYe03lxln0fFsCvKcpSVbzWz/BFZXZng3rpwwB?=
+ =?us-ascii?Q?XJ0NTh7H3TrPwMpUbJOlboOIyw1Kkyr3nqw6gzhehvn4wvuXDnt6lSeeOM6N?=
+ =?us-ascii?Q?mkMvKL5UHfHe+YAApPiZnnbvBF7OZOCegm82YOATH17sBxdW0kGLnqDfdj2A?=
+ =?us-ascii?Q?Vpr2ladmiDDXwW8tUIbcRkk03iHisC016r54JILXf/+DmxhbaKkRy9pSNDd/?=
+ =?us-ascii?Q?uPWAVomsiRvwucRdyy5xu4NLG+8xkKQF0uW1Z+ZgusM5V+CA/9LaNb1ld88W?=
+ =?us-ascii?Q?pGVh/EeKpQ+hkEjAMapJWzwggoUzz8x1OVmT6kxrMHImKj1IT7+MbuQBKzNW?=
+ =?us-ascii?Q?STA7Shl39neeKWketMIJq2DgaviqcfK8MYs+a+jZ4LPtTLWFOjecbRyhrfyD?=
+ =?us-ascii?Q?6WkrcTxJuVnlpCFqZNCqockE0Gvg011jar4R1cJLRiMU/4XmvHusZBfqybBL?=
+ =?us-ascii?Q?UCLW2K7cx2152ta1O00ImpQ64y7KPDXFnjZfQ5lbS+wOLFQKHjPMTeDuwPA5?=
+ =?us-ascii?Q?dRRJwVs4xLvsDJ5oxk5FK2C/3eZsgvEJBqMjnkbjBZoMtPv4EBYquyt5uWOF?=
+ =?us-ascii?Q?HYm0Om7EZIozaTH7RGRvXNLqXXLh9gCL1i7fg2CTLh/a6NZw39r+tFvx+QDi?=
+ =?us-ascii?Q?1p89NGIAVRbMSZwTJcZQU1BzWVHrTqH51wtija1JaqbDK4jzeiI1ZA1oQtuE?=
+ =?us-ascii?Q?eMxPGuz143+bnAM0yVi43vHr/CuuZcy9QRGCdt3ngKjTMvzHHRlZZGY0UIZT?=
+ =?us-ascii?Q?MBbK2Pmgd5Ru4R3Zte0bkVWXOJJiQmnban8f/LiWB4RzzKlHlJYnLKbh96G0?=
+ =?us-ascii?Q?2I80HF9ImE1O0YTbBTxTRbGBmadtt6p/Io+QPz+xuQR7bzxxU3qvRPqG85Jp?=
+ =?us-ascii?Q?iRW8ReJvK5s4ImHuBbtgY3ji4fRirfkSy3sIlPGAQGDyl5lOdtZkuKVExS4T?=
+ =?us-ascii?Q?x7Vg9PHXLVasSMTee4SS6N9gn0fG42/V9zSBcH803ejTw3afyAzYa9ggpvbB?=
+ =?us-ascii?Q?J6ud3mWWb/5k7ntax3qaV8wI5GFUETKuxbig5P39Te2HOKBQwJnxLkjKqapN?=
+ =?us-ascii?Q?jaklgLCzQnnStrn7qcBqfbfx398mTCrgTiCpYva3+BgplzoXzAX8Po8OEnvb?=
+ =?us-ascii?Q?UBOBVpfUtfK2tAdOlcQNrZ6N3LlE0JOGYKNlwg8wRn9NOa9C?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02fd1920-f75f-4e0b-180e-08de8afc70d3
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8353.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad4b04c3-2c56-4135-1ba9-08de8b00bbf0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 05:56:36.3447
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 06:27:21.0294
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M4AN2BQpT2vUZ+DELpHMfeqbm9rEvQQ9/1UIGHInvWEVkexcmlNvq7vAOPcl7P9yFbuDUA84J8TV+Sok0HBRdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11195
+X-MS-Exchange-CrossTenant-UserPrincipalName: 92Epaf3YVdyUvXVmfllqh2cEgjsRmAvXn1bWHTP/2NRUY5n3OrS490QPpV/1dPvBknbYHP3rZDRKgY8HIPZ4Iw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10309
 
-Add hw_params callback to dynamically switch DAI format between I2S
-and PDM based on audio stream format. When DSD formats are detected,
-the DAI format is switched to PDM mode.
+i.MX94 NETC (v4.3) integrates 802.1Q Ethernet switch functionality, the
+switch provides advanced QoS with 8 traffic classes and a full range of
+TSN standards capabilities. It has 3 user ports and 1 CPU port, and the
+CPU port is connected to an internal ENETC through the pseduo link, so
+instead of a back-to-back MAC, the lightweight "pseudo MAC" is used at
+both ends of the pseudo link to transfer Ethernet frames. The pseudo
+link provides a zero-copy interface (no serialization delay) and lower
+power (less logic and memory).
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Like most Ethernet switches, the NETC switch also supports a proprietary
+switch tag, is used to carry in-band metadata information about frames.
+This in-band metadata information can include the source port from which
+the frame was received, what was the reason why this frame got forwarded
+to the entity, and for the entity to indicate the precise destination
+port of a frame. The NETC switch tag is added to frames after the source
+MAC address. There are three types of switch tags, and each type has 1
+to 4 subtypes, more details are as follows.
+
+Forward switch tag (Type = 0): Represents forwarded frames.
+  - SubType = 0 - Normal frame processing.
+
+To_Port switch tag (Type = 1): Represents frames that are to be sent to
+a specific switch port.
+  - SubType = 0. No request to perform timestamping.
+  - SubType = 1. Request to perform one-step timestamping.
+  - SubType = 2. Request to perform two-step timestamping.
+  - SubType = 3. Request to perform both one-step timestamping and
+    two-step timestamping.
+
+To_Host switch tag (Type = 2): Represents frames redirected or copied to
+the switch management port.
+  - SubType = 0. Received frames redirected or copied to the switch
+     management port.
+  - SubType = 1. Received frames redirected or copied to the switch
+    management port with captured timestamp at the switch port where
+    the frame was received.
+  - SubType = 2. Transmit timestamp response (two-step timestamping).
+
+Currently, this patch set supports Forward tag, SubType 0 of To_Port tag
+and SubType 0 of To_Host tag. More tags will be supported in the future.
+
+In addition, the switch supports NETC Table Management Protocol (NTMP),
+some switch functionality is controlled using control messages sent to
+the hardware using BD ring interface with 32B descriptors similar to the
+packet Transmit BD ring used on ENETC. This interface is referred to as
+the command BD ring. This is used to configure functionality where the
+underlying resources may be shared between different entities or being
+too large to configure using direct registers.
+
+For this patch set, we have supported the following tables through the
+command BD ring interface.
+
+FDB Table: It contains forwarding and/or filtering information about MAC
+addresses. The FDB table is used for MAC learning lookups and MAC
+forwarding lookups.
+
+VLAN Filter Table: It contains configuration and control information for
+each VLAN configured on the switch.
+
+Buffer Pool Table: It contains buffer pool configuration and operational
+information. Each entry corresponds to a buffer pool. Currently, we use
+this table to implement flow control feature on each port.
+
+Ingress Port Filter Table: It contains a set of filters each capable of
+classifying incoming traffic using a mix of L2, L3, and L4 parsed and
+arbitrary field data. We use this table to implement host flood support
+to the switch port.
+
+The switch also supports other tables, and we will add more advanced
+features through them in the future.
+
 ---
- sound/soc/fsl/imx-rpmsg.c | 48 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+v3:
+1. Improve the description of 'dsa,member' property in patch 2.
+2. Remove netc_select_cbdr() and use spin_trylock_bh() instead.
+3. Use pskb_may_pull() in netc_rcv().
+4. Remove phylink_autoneg_inband() from netc_main.c
+5. Remove netc_port_set_hd_flow_control() from netc_main.c.
+6. Impove netc_mac_link_up(), remove unnecessary code from it.
+7. Restore cfge if ntmp_bpt_update_entry() returns an error in
+netc_port_set_tx_pause().
+8. Improve netc_ipv_to_buffer_pool_mapping().
+v2 link: https://lore.kernel.org/imx/20260323060752.1157031-1-wei.fang@nxp.com/
+v2:
+1. Use raw_smp_processor_id() in netc_select_cbdr() instead of
+smp_processor_id().
+2. Remove netc_port_free_mdio_bus() and netc_free_mdio_bus().
+3. Correct the mask value in netc_port_set_mac_mode()
+4. Rename net_port_set_rmii_mii_mac() to netc_port_set_rmii_mii_mac().
+5. Check the return value of ntmp_bpt_update_entry() in
+netc_switch_bpt_default_config().
+6. Add some comments to avoid false positives from AI review.
+v1 link: https://lore.kernel.org/imx/20260316094152.1558671-1-wei.fang@nxp.com/
+---
 
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 76a8e68c1b62..40e0043cfe15 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -30,6 +30,53 @@ static const struct snd_soc_dapm_widget imx_rpmsg_dapm_widgets[] = {
- 	SND_SOC_DAPM_MIC("Main MIC", NULL),
- };
- 
-+static int imx_rpmsg_hw_params(struct snd_pcm_substream *substream,
-+			       struct snd_pcm_hw_params *params)
-+{
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
-+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
-+	snd_pcm_format_t format = params_format(params);
-+	struct device *dev = rtd->card->dev;
-+	unsigned int fmt = rtd->dai_link->dai_fmt;
-+	bool format_is_dsd = false;
-+	int ret;
-+
-+	switch (format) {
-+	case SNDRV_PCM_FORMAT_DSD_U8:
-+	case SNDRV_PCM_FORMAT_DSD_U16_LE:
-+	case SNDRV_PCM_FORMAT_DSD_U16_BE:
-+	case SNDRV_PCM_FORMAT_DSD_U32_LE:
-+	case SNDRV_PCM_FORMAT_DSD_U32_BE:
-+		format_is_dsd = true;
-+		break;
-+	default:
-+		format_is_dsd = false;
-+		break;
-+	}
-+
-+	if (format_is_dsd)
-+		fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
-+		       SND_SOC_DAIFMT_PDM;
-+
-+	ret = snd_soc_dai_set_fmt(cpu_dai, fmt);
-+	if (ret && ret != -ENOTSUPP) {
-+		dev_err(dev, "failed to set cpu dai fmt: %d\n", ret);
-+		return ret;
-+	}
-+	ret = snd_soc_dai_set_fmt(codec_dai, fmt);
-+	if (ret && ret != -ENOTSUPP) {
-+		dev_err(dev, "failed to set codec dai fmt: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct snd_soc_ops imx_rpmsg_ops = {
-+	.hw_params = imx_rpmsg_hw_params,
-+};
-+
- static int imx_rpmsg_late_probe(struct snd_soc_card *card)
- {
- 	struct imx_rpmsg *data = snd_soc_card_get_drvdata(card);
-@@ -135,6 +182,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 	data->dai.dai_fmt = SND_SOC_DAIFMT_I2S |
- 			    SND_SOC_DAIFMT_NB_NF |
- 			    SND_SOC_DAIFMT_CBC_CFC;
-+	data->dai.ops = &imx_rpmsg_ops;
- 
- 	/*
- 	 * i.MX rpmsg sound cards work on codec slave mode. MCLK will be
+Wei Fang (14):
+  dt-bindings: net: dsa: update the description of 'dsa,member' property
+  dt-bindings: net: dsa: add NETC switch
+  net: enetc: add pre-boot initialization for i.MX94 switch
+  net: enetc: add basic operations to the FDB table
+  net: enetc: add support for the "Add" operation to VLAN filter table
+  net: enetc: add support for the "Update" operation to buffer pool
+    table
+  net: enetc: add support for "Add" and "Delete" operations to IPFT
+  net: enetc: add multiple command BD rings support
+  net: dsa: add NETC switch tag support
+  net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+  net: dsa: netc: add phylink MAC operations
+  net: dsa: netc: add more basic functions support
+  net: dsa: netc: initialize buffer bool table and implement
+    flow-control
+  net: dsa: netc: add support for the standardized counters
+
+ .../devicetree/bindings/net/dsa/dsa.yaml      |    6 +-
+ .../bindings/net/dsa/nxp,netc-switch.yaml     |  130 ++
+ MAINTAINERS                                   |   11 +
+ drivers/net/dsa/Kconfig                       |    3 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/netc/Kconfig                  |   14 +
+ drivers/net/dsa/netc/Makefile                 |    3 +
+ drivers/net/dsa/netc/netc_ethtool.c           |  192 ++
+ drivers/net/dsa/netc/netc_main.c              | 1558 +++++++++++++++++
+ drivers/net/dsa/netc/netc_platform.c          |   89 +
+ drivers/net/dsa/netc/netc_switch.h            |  155 ++
+ drivers/net/dsa/netc/netc_switch_hw.h         |  335 ++++
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  |  188 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   |  383 +++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  122 +-
+ include/linux/dsa/tag_netc.h                  |   14 +
+ include/linux/fsl/netc_global.h               |    6 +
+ include/linux/fsl/ntmp.h                      |  235 ++-
+ include/net/dsa.h                             |    2 +
+ include/uapi/linux/if_ether.h                 |    1 +
+ net/dsa/Kconfig                               |   10 +
+ net/dsa/Makefile                              |    1 +
+ net/dsa/tag_netc.c                            |  185 ++
+ 23 files changed, 3614 insertions(+), 30 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
+ create mode 100644 drivers/net/dsa/netc/Kconfig
+ create mode 100644 drivers/net/dsa/netc/Makefile
+ create mode 100644 drivers/net/dsa/netc/netc_ethtool.c
+ create mode 100644 drivers/net/dsa/netc/netc_main.c
+ create mode 100644 drivers/net/dsa/netc/netc_platform.c
+ create mode 100644 drivers/net/dsa/netc/netc_switch.h
+ create mode 100644 drivers/net/dsa/netc/netc_switch_hw.h
+ create mode 100644 include/linux/dsa/tag_netc.h
+ create mode 100644 net/dsa/tag_netc.c
+
 -- 
-2.50.1
+2.34.1
 
