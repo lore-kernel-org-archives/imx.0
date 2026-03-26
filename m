@@ -1,151 +1,109 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2FC4279F0
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 17:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B23469F6
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 18:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774546303; cv=none; b=QLkhB+T3T7IZ+HQ2lcErISRP6mQMgFeI/hUSwYLCpiljd9+o/0Ywcv16wCEjF7FJkMIUEpWnrSrWs8Tqzfyg67mJ48NxHb1OkWskEO22yDiLtLtfoyjwe2POa0Q+meDUUV81sthrmjmiKZR3rKb4qDvqHlwF39BSLJsJ8l7aVFo=
+	t=1774548612; cv=none; b=UnlOo6j19+n+4LQ6TtsZsspH0xaDjjkIOkD3R2WRP2DIOuVoNSCeFc5sDHrdCCrUkVCBgN4eCSMdRH5N9w4q3XXXK4FCJQmRZlCWc/QTvGqZ5WdClqmKzIwR1/Xg1jdHJ3wlHdDQUBp5zTZzCFSD2iGRLKqmZajK40+C7q7E8Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774546303; c=relaxed/simple;
-	bh=mHuz9dD/zD769Vzc3Oy2YrsHQDGOSHJorSKK6FwAkVo=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=GVJisSxJEdSbRfnhZKcRMv4nYr4Gxv16tlcySDNMZXBsTBcsqeO9a/btUEQjHWt6BwvNBKHr6omqBy8PTm51xZkIaBc22FO7xmEwAMTau5Bhpjz4PZheH6UVNbwmUStA3BEOyxUGgLJ6ysJlVzkB+AfV9VIwSJNR7g/RLBVorJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oDctDRaT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1774548612; c=relaxed/simple;
+	bh=C31T0iB05TcG8+dBb0BQwUARXXYeyW/ypNNov2Ya5G4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U5P3gSDoc+/5NJKctRtNPdjRZQrc0NWBpfg5D46G2L2XORW8K1SisbDh07sHYBB+joKBi7BwzHgIJ94aKaPaSW8zu09fn5g/cx+Kn2F3W+plzLt17znUAQKfXArP10lzGhodfsKEiAtD/tE8hFWINX01Hd3DjXRym2LhUX0bZR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qgJYzpCR; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oDctDRaT"
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CA2779A9;
-	Thu, 26 Mar 2026 18:30:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1774546212;
-	bh=mHuz9dD/zD769Vzc3Oy2YrsHQDGOSHJorSKK6FwAkVo=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=oDctDRaTumN+rKqm1apL6hQ5EeJKBozOuxXux4FR1BLSspMbcjhIASsgEkGV0F3K4
-	 S9wn6jEcBNcS5x2bsCtPTCRMYaP/XciJ/0RN0C/0I4+YSEXceKjAw6XVpioelgjzBV
-	 +jPuoWkcfkVapeJfhzE/BMxSFi8DeArKke7dxYgs=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qgJYzpCR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=D7UKezHTYAPqledPGUEh2DO5MGs9hcwA+U9WoF1npkM=; b=qgJYzpCR7jCviujwEpZ0vv2vUF
+	oxcFOACz5qSYZY/QQRwAwide7RZINgtbvEdKCebe7OUAUAo+e2poBx9eYb19KuV8uLhnUiVaLVELH
+	QUAjK+E21l9asVws7NVaNBm75aKcthHu99WY9el+y++etD0SHfhZm3HN0+vQnPPTd8uB0LO9LZAUH
+	giNrseuQbFoDjabUnZAiZNcYsep3qxXzKekLjeMLao49bqNPY7EDx65pAdw3u4Mv4SyHimrz4nbRa
+	4bT1eDcMFca1gLonlXQEhCKThWwxDzGzxX5U8ptEQWHvMqDQh2/lZW/6cLK8VAevQJhXaXWjVPXDX
+	7XvO9bhg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56258)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w5p9h-0000000058m-3Fmw;
+	Thu, 26 Mar 2026 18:10:05 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w5p9d-000000007Fh-3HE2;
+	Thu, 26 Mar 2026 18:10:01 +0000
+Date: Thu, 26 Mar 2026 18:10:01 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
+	Joy Zou <joy.zou@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v4 1/2] net: stmmac: provide flag to disable EEE
+Message-ID: <acV2edMExFP0i8TK@shell.armlinux.org.uk>
+References: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com>
+ <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
+ <177454628933.1078312.13488207016388509694@ping.linuxembedded.co.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
-References: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com> <20260325210003.2752013-2-laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH net-next v4 1/2] net: stmmac: provide flag to disable EEE
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, Frank Li <Frank.Li@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Joy Zou <joy.zou@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>, Paolo Abeni <pabeni@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Stefan Klug <stefan.klug@ideasonboard.com>, linux-arm-kernel@lists.infradead.org
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev, netdev@vger.kernel.org
-Date: Thu, 26 Mar 2026 17:31:29 +0000
-Message-ID: <177454628933.1078312.13488207016388509694@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177454628933.1078312.13488207016388509694@ping.linuxembedded.co.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Quoting Laurent Pinchart (2026-03-25 21:00:02)
-> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
->=20
-> Some platforms have problems when EEE is enabled, and thus need a way
-> to disable stmmac EEE support. Add a flag before the other LPI related
-> flags which tells stmmac to avoid populating the phylink LPI
-> capabilities, which causes phylink to call phy_disable_eee() for any
-> PHY that is attached to the affected phylink instance.
->=20
-> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> to the receive clock domain, and takes four clock cycles to clear, this
-> leads to interrupt storms as the interrupt remains asserted for some
-> time after the LPI control and status register is read.
->=20
-> This problem becomes worse when the receive clock from the PHY stops
-> when the receive path enters LPI state - which means that lpi_intr_o
-> can not deassert until the clock restarts. Since the LPI state of the
-> receive path depends on the link partner, this is out of our control.
-> We could disable RX clock stop at the PHY, but that doesn't get around
-> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
->=20
-> Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> this is insufficient - the problem is also visible at 100M speeds,
-> where the receive clock is slower.
->=20
-> There is extensive discussion and investigation in the thread linked
-> below, the result of which is summarised in this commit message.
+On Thu, Mar 26, 2026 at 05:31:29PM +0000, Kieran Bingham wrote:
+> This one has been a roller coaster, but I'm glad we got to the bottom of
+> it.
+> 
+> I hope someone from synopsis takes note and and documents this for
+> future silicon integrations.
 
-This one has been a roller coaster, but I'm glad we got to the bottom of
-it.
+I would say that it _is_ clearly documented in the databook. v3.74a
+4.3.4. LPI Interrupt already states that this signal is generated in
+the receive clock domain, and is not cleared immediately after the LPI
+control and status register is read.
 
-I hope someone from synopsis takes note and and documents this for
-future silicon integrations.
-
-Can't wait to see where else this pops up.
+It goes on to state that this is because the signal to clear it has to
+cross from the CSR clock domain to the receive clock domain to clear
+the signal - and states that it is at least _four_ receive clock
+cycles.
 
 
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+So, if the dwmac core is operating at 10Mbps, that means its receive
+clock is running at 2.5MHz which has a period of 400ns. In this case,
+the four receive clock cycles to clear this interrupt is 1.6us,
+assuming that the receive clock is running.
 
->=20
-> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Closes: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart=
-@ideasonboard.com
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  7 ++++++-
->  include/linux/stmmac.h                            | 13 +++++++------
->  2 files changed, 13 insertions(+), 7 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/=
-net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9b6b49331639..ce51b9c22129 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1438,7 +1438,12 @@ static int stmmac_phylink_setup(struct stmmac_priv=
- *priv)
->                                  config->supported_interfaces,
->                                  pcs->supported_interfaces);
-> =20
-> -       if (priv->dma_cap.eee) {
-> +       /* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same inter=
-rupt
-> +        * used for stmmac's main interrupts, which leads to interrupt st=
-orms.
-> +        * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such plat=
-forms.
-> +        */
-> +       if (priv->dma_cap.eee &&
-> +           !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
->                 /* The GMAC 3.74a databook states that EEE is only suppor=
-ted
->                  * in MII, GMII, and RGMII interfaces.
->                  */
-> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-> index 5b2bece81448..e62d21afd56d 100644
-> --- a/include/linux/stmmac.h
-> +++ b/include/linux/stmmac.h
-> @@ -207,12 +207,13 @@ enum dwmac_core_type {
->  #define STMMAC_FLAG_MULTI_MSI_EN               BIT(7)
->  #define STMMAC_FLAG_EXT_SNAPSHOT_EN            BIT(8)
->  #define STMMAC_FLAG_INT_SNAPSHOT_EN            BIT(9)
-> -#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI         BIT(10)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING      BIT(11)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP      BIT(12)
-> -#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY   BIT(13)
-> -#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD   BIT(14)
-> -#define STMMAC_FLAG_SERDES_SUPPORTS_2500M      BIT(15)
-> +#define STMMAC_FLAG_EEE_DISABLE                        BIT(10)
-> +#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI         BIT(11)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING      BIT(12)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP      BIT(13)
-> +#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY   BIT(14)
-> +#define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD   BIT(15)
-> +#define STMMAC_FLAG_SERDES_SUPPORTS_2500M      BIT(16)
-> =20
->  struct mac_device_info;
-> =20
-> --=20
-> Regards,
->=20
-> Laurent Pinchart
->
+However, if EEE is enabled, the receive clock comes from the PHY,
+which may gate off when the link re-enters LPI - and this event is
+under the control of the remote end, not the local end. So, what this
+means is that even though it states four receive clocks to clear the
+lpi_intr_o signal, that doesn't necessarily mean it will clear in
+1.6us as the receive clock may be stopped.
+
+So, I think it is clearly stated in the databook already, but as it's
+just two paragraphs buried in around 1500 pages, that may explain why
+it has been missed on iMX.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
