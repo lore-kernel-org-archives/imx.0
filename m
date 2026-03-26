@@ -1,91 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DD9399002;
-	Thu, 26 Mar 2026 03:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C639C626
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 04:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774495181; cv=none; b=it6ATsJYfua/hVE/4ibMHfHIAiz+6rb4D17Oaim19nv8Om1F46LWg1BSc/sEMYSJH/pxLcPT9hsOCf73BNikm1jjIKzYDgVUKQSoPaiuFTp5Jk8AhSTMCtzz7Uf4/UzA+cMwoaMy3cMvxuGPBFyCe1CcsLPq78sPtsYJ+sKBqas=
+	t=1774499310; cv=none; b=jFI5PGfh1v/OfPsh9CxnAlN7wFnnpdwUA9Ej0qdfiUod3MH1jzMJhVPAwgc5yX3aOTgvdpXsOS6RksjfTeZd24LrmV1XtCHwEq1ExJmqk1RjvM3Es/C1L21pjWPwotV06lItho9f2jHoLzSMxVgM2hywTlxHFEkLp9xJ6Ob5FHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774495181; c=relaxed/simple;
-	bh=64GvIUh5BK+CA6321kY9KFkS39Cla/4+STtvnAwRWeg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cymlS0+iX6pRjX/LWHWa+zU/0A4R/FKnOuY0Rtw32gMdMeat6dLODBMswyykmDmxE+gI2kDsKjmXCBa7Uz57tljLZ2BZJZrmP3PwqLwdiMZQB3+9JysNw7qGbdJAeiYZGPbrVKB8odirrMZaQU4W8KcBNQzSZL1ydtnah6Q6WAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DoNJjbvs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774499310; c=relaxed/simple;
+	bh=MfeCrWnZI6Chf+c6NFu44lpjGhI2Fvkl128+VJIXsHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LBfE1H4gelTO/a8lGyvtHaeeShsNS/OEJdhhLySRXVN8glSdde/VEU4ClSR+VmLCpJhyu/uTVWCSGLxdpnlCY1TqTjcj0dGJnLa56wnqnqhBuK7tlLl4kZ9P+ptRnPG/+utVVt2t/Tytc237Kx9jAB6ItLK6kIO5LDlm73AHoZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=AjaK5I7B; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DoNJjbvs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B85C2BC9E;
-	Thu, 26 Mar 2026 03:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774495180;
-	bh=64GvIUh5BK+CA6321kY9KFkS39Cla/4+STtvnAwRWeg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoNJjbvsdO9M8I355YakZTdyuT3xoRXpGtMM2wojdApb9Q7ajDoGdWHuW7T+qyJs8
-	 JLJtoasNll/fzCTKgF2pot1ARQr8/WJz18ymv6QdXj8Tag8zYprMsTUMGMVBz07VAn
-	 5/ol1dU6SqblhURvBbAUXWOT7ww/gO3Zmxb6zeoa1vKQWvC6Bi4QosLSw70nx8ljqL
-	 mxsSn9BJvJy2ba4neAZFnE1z8Z2JJhzsTZs5kI0u1/lgpSiGsj2hWBD4svpQ3mlUIl
-	 XLzSUDEneP1HMa3cDTXdRO7iUfFokDI5VOrhaCtSvbUNOFApAwpcyH/ryPfTXW5PdJ
-	 42LGsCrP7+iHQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/7] arm64: dts: Drop CPU masks from GICv3 PPI interrupts
-Date: Wed, 25 Mar 2026 22:19:21 -0500
-Message-ID: <177449516624.60308.16445349174496027428.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772643434.git.geert+renesas@glider.be>
-References: <cover.1772643434.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="AjaK5I7B"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7526511235B;
+	Thu, 26 Mar 2026 05:28:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1774499300;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=L8MoVHmnri3Cl6KqI9p0QwU1t7f2UmlqeymbhBedSQk=;
+	b=AjaK5I7BFXMnFI+2HcRDawC/xob/VQ748J5RHgRbK9FLPWVJAtFvIPdyzojUsHATfSkonD
+	84Ms/M70WkiQV79UxjekOE2hMsc6KxPV2q90HU6F29rpPB95vRVRa4MCQzNCWp1H2sJlvC
+	22lWXixYleZz7ZUL160jpXngAtAPeaxbSNU76GZaAGSC5MtYC4DcjkNid2f3y3aSuT/Bg0
+	jLUP/0RoETGqSwVPRAYIpUQ0vhaKe/758QHD8jwWD4odLVAV9vZiCNngvoeNzXW3CE68eT
+	A2Nta6wLH3YRrBDQOdpGnDsnbDFHAeKbKlZW3H/BBRJn/4l3MXhxyK2Mwz9JcQ==
+Message-ID: <49b82956-4ec8-4602-9aaa-0d6a2a612fca@nabladev.com>
+Date: Thu, 26 Mar 2026 05:28:15 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT overlays for DH i.MX8M Plus
+ DHCOM SoM and boards
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, kernel@dh-electronics.com,
+ linux-kernel@vger.kernel.org
+References: <20260324190544.74531-1-marex@nabladev.com>
+ <acQqc1AuCa1Tkb-w@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <acQqc1AuCa1Tkb-w@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 3/25/26 7:33 PM, Frank Li wrote:
 
-On Wed, 04 Mar 2026 18:10:57 +0100, Geert Uytterhoeven wrote:
-> 	Hi all,
+Hello Frank,
+
+>> +#define DH_OVERLAY_PANEL_I2C_BUS			i2c5
+>> +#define DH_OVERLAY_PANEL_I2C_TOUCHSCREEN_PINCTRL	&pinctrl_dhcom_b &pinctrl_dhcom_h
 > 
-> Unlike older GIC variants, the GICv3 DT bindings do not support
-> specifying a CPU mask in PPI interrupt specifiers.  Hence this patch
-> series drop all such masks where they are still present.
+> This is not straight forward.
 > 
-> This has been compile-tested only.  But note that all such masks were
-> removed before from Renesas SoCs in commit 8b6a006c914aac17 ("arm64:
-> dts: renesas: Drop specifying the GIC_CPU_MASK_SIMPLE() for GICv3
-> systems")).
+> you can add label like panel_i2c at dts file.
 > 
-> [...]
-
-Applied, thanks!
-
-[7/7] arm64: dts: qcom: Drop CPU masks from GICv3 PPI interrupts
-      commit: 99bb0693df91db9338fa69d496de4601c9582058
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+> panel_i2c: &i2c5 {
+> }
+> 
+> in overlay file use
+> 
+> &panel_i2c {
+> 	....
+> }
+> 
+> So you use the same overlay file for difference dts. The same as others
+I did that in V3, thanks.
