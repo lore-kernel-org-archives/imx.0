@@ -1,67 +1,68 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC953290DB
-	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 04:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D439E193
+	for <imx@lists.linux.dev>; Thu, 26 Mar 2026 05:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774501020; cv=none; b=OZox1Q0Jcg+/QJJTPKdtxZhEtsNEvYSviTe15d8E05By1dT9EkjZZjWQ/5IYggMyzkoHnkU6NMPsYBcK3Pc3UO+PF1brDHo0VOTHxLxC87pxkyh5PCW9YUIVaMYnt1Q1AI80UMA358Qqg0PYgBWJOTPipJhQQkvo9JQdLUs6CgU=
+	t=1774504380; cv=none; b=aek2IcUq80SbBqo0ZuSY9cPR/2DC99gpd90ThSSPw4Rr5PUNR4r77Cklxq5qXgws+zZoMnh0NHxUJEyuLMc4VZFGewX6J2pFFWRDg0ZtEs+DB/TEGbUTPZvPDKQHvSIHC/lx+34xZLZ/x9w5AeCsJFg3OajcOeV04jIPSlM7VU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774501020; c=relaxed/simple;
-	bh=3liW3TTczHbCWW6xyzTaD5p7Ee26sA2HpZbUQqz+dhc=;
+	s=arc-20240116; t=1774504380; c=relaxed/simple;
+	bh=0yhZX0DH8A5C35IHXsYkFJYJVmgHMHBij5UNfrFZogE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MOrpQH8hkGqWosrufjkmYcS+bUWi7SUMn5AgZR5OTfIdaiPUH0RqRixRLAYBqW31hzAwaXXPX1vVX9MdaWHMe7fjeH3vi9VsQD7vTFlGC40AmZx63LCD7ENP7DeCymOK79kd31IZ0GHNwu5t3i/ZxEriasnHkOFiek3bb0yYc0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zr52Gqkx; arc=none smtp.client-ip=74.125.82.174
+	 In-Reply-To:Content-Type; b=VozISFjdcqXo+GfUuHDPCL3UvDIm/P2F6wETwMMPsvzFH5u6zXjmyJLrKqMhiZdPys7qzw2t3/UmS0obj7l2meoiqX0fJj9Tk19S3jCyJheqG+cd8R0XmFezEDCTVvvh1l4SxHv6kI/BqPiYK8jDSmYvWoj4Q6X7VTg1xTtAVhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mh3HexvF; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zr52Gqkx"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2c0bb213b16so1116114eec.0
-        for <imx@lists.linux.dev>; Wed, 25 Mar 2026 21:56:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mh3HexvF"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b0b0064027so3791095ad.3
+        for <imx@lists.linux.dev>; Wed, 25 Mar 2026 22:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774501018; x=1775105818; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1774504377; x=1775109177; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=mdrREemxYfCx5YD4EhfvcYVTWQ7/gTjv0x5FHQxyZYY=;
-        b=Zr52Gqkx5d5Yf+xnh6KeItwHvY3Wsk2KBTG1S8BUzfnNDnNC6qtHyWje8TIArG2f+E
-         WW3O+cuEflRjpLpln4beTEWY9UIiPES4Fg/gEZBzSsuKd0VUQtR4lypK8PMcDJz41uBJ
-         p1k76rrLa/UQ6T23IiuyEXeoYvics/f/rJ4VaxC/8e/mpVtiKxuqFETBmyITpfWTHSmF
-         4nOrwbmf7l//WRIF9yNZb/vfl4YaTDCqOjMf5R/oQe4+F5DntW2wXYgiYfQXXdk4SPX8
-         CpyC0Ebe/CNy1HQCMRmKJr+PJ2TyiMGmlpkpiVLhtGvgyXZh6RVrXsydBXOaPvPOclIe
-         HaVg==
+        bh=VWC6Bj+K9uxHnGnEONT80OvFfh7DvFkOXxkVna9Jzek=;
+        b=Mh3HexvFzvLIYi93uaFwdcXGfBVnp164PI1ZpejtoAJYkck0AwEfQcAeq8KJxuOMpp
+         oq8TtU47MaG7Fq6A3akTGMEtl2Hw6Fgqf2qvxgyabPZI8fD+hQLgIenFVs+c/NDsGIvy
+         hb0J1xdCuS4zPSX41exxQTggKWyFsKFoJpe/hi/5/iel2e3bN7u/nEVKt3wHmQYZie0m
+         dHnB8Q5I8/eC5qDV20dbT0pByVNecxDv2bEabCMGP5945GNTHW72biExjXVGXYRiuY9T
+         eb/O7ooKsAvG0/lXg8Iu1QGFMuZj26QZ5G4tHIIvJvNuyj0N6FC//Iak0LUTDDImkd4Z
+         fyYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774501018; x=1775105818;
+        d=1e100.net; s=20251104; t=1774504377; x=1775109177;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mdrREemxYfCx5YD4EhfvcYVTWQ7/gTjv0x5FHQxyZYY=;
-        b=sDXDJI8MIX4gVkN+A5mFfQsgCpz6FU91eXh5Cd5FTMPdjnADEoN1c+SBzkwUDNr52p
-         rr8XeWz6G4YyFpgUfgwE49htg5VGw9RPLlHnir3FgfjcrIj1OGYsqfgM9YLRfVwlYHTn
-         Pom1kGO+EQw1CbhHC6tbXH9IcwqXN9DJowrrN7Vn7NUVIPfkOOYUzAXLNFnvC0TNcJoi
-         avPdr5x2k1AvW+FegFhQIEHl7P8fNMWFkQ80TCqi9Gzu4S07cNLBnrYy+gPF5/dnkhUr
-         M16OvA/m5J02Xz+4+GqVOJgof3eNb5b3xZqIEPziktYUfDS7ITuKAQlqhS2J3ASUSZPB
-         ag+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWFfchTwwNk5tjreKN1kvD4j9nJNlLJp1rvu8/iNDNztBuoRGJWSNqk+flwtU/MdnpqlOI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxs51lHwg4zZHyOvdmSuxJucQBVffTlGiEXt19zQeInxWANEyvs
-	uk4+ybn0swIVx5hCM3c0BlHDKxCPk4lzwXSbz5P/GQzHJnjV5A9cEQxz
-X-Gm-Gg: ATEYQzxrOXeIHiSgRYHcKJGTes57jxPD0fC/3ac6ceJ/uWTg6KJi6qHpo08iJEJdy6V
-	i3sTiogYfQbFbsndJTEjksUEZh1lrqwAzjfvNDziqK6KPmRMvadgm1pDvwQnYEBnlSvawSoC/if
-	m4IouWxoLZKQjI+oKxZIHvKE6HQFzk0khFEVyRnRU+m7Wl8Tczc+fvZypXEVqMrh+T4HlzCiVJS
-	xHn6wj2RZ4WlW7f2/creLSGJfx0b8/O3Q/jpygCczMhkfCnGs8Nyz6C1xuDKuTo8A/545H+5qVr
-	3zcfYi6gbrmayrISy9eQJWH7gSnzUkgUMBjsItCfUlO8FN40x1ZczLRkwI/6/tgZ/wS3LsvkLYJ
-	OQbLH9REXHOca/fqI5aPH/L+wHfcea6kTnc9ERrir+SX2e9N1ig39P3IxeUFMzGDe11gXkbx5RS
-	5NqN7qSveRlkhkKRoTNMTOY8spy8kGimKGBPGIq6g2K+HpvNe8Wo2ygsfZxwCyyFArww6f8bul
-X-Received: by 2002:a05:7300:430e:b0:2be:9989:331e with SMTP id 5a478bee46e88-2c15d2805admr3224190eec.2.1774501018257;
-        Wed, 25 Mar 2026 21:56:58 -0700 (PDT)
+        bh=VWC6Bj+K9uxHnGnEONT80OvFfh7DvFkOXxkVna9Jzek=;
+        b=I+wW7iOifmK9579fdhFEbCGz0ve4Kc1ZMOURQML2DjpcCpGsYYXHolL3gptoSClDh0
+         q0vGytVb9Ce8zZTJfrWxLP0h/0R6bAoG/9GBRX9c9HJ+s5p7jq+XOxOQArk9kvjS/aUZ
+         lbz7hqJvArDydfM67tqJdMl6Tjio/jjiCfXAOKgm0DTFO8rdJSsplr8ktKOY5TJbszCR
+         Zk00qeDrq9M1dN0EjWNDzBDT41Y9eKUC2y1JyIMMFTJpTncWF+GWbr6JaV8lyDZaQthz
+         GOcC0t94ZKjcUZ9e91lY421RWhKREaE20ND2VuO/Nk8w9XvWzrYcbiUpp/5JMBrnRMps
+         T3Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXD1097UOpOeubr8gxJ9+JoBd5I0OyDpQHOPoCKzi6mcwAd38B4r6kS6lkgVAvd4m7Ub8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxpCb/vvv0XOwnUudjRaWl7YnHnD7I9s3TpTrCHWomj7NYO2o2I
+	+UeDO6eQwEeRYaNWtBWHMDvT8BHIrRJlndJDlxWRKt7IBvb7LT5j+jye
+X-Gm-Gg: ATEYQzxAvI84xhGUYPpWWVRKCuyQda0FT0CggQiJbGoow1fGz6767HR+Jwmx8jYcGvK
+	B6YmWvHm8TqX+ZKv+zjkfpLTx+ik97Qlo4w35YJoz6jDOyLwxKl0Zr3H1VKFbKgO5+I6yj4ihyi
+	J2ngQ65JdWhKhLg/wMLWxz1JW3KBrnShtSl2fw+j2j3vBUZa/tzS+9nF/cS/pwh1DiWyJk7jySK
+	gCoAKQ9DtRgPFgL04tAERqCnmZYLw+4y+iKmDvy1Oyh6hpodp+yh8qbLeGJvpREY8q53KeGRvmN
+	yRxqMFWWuYL52prPtnSo1OdG+hAGB47hPbw6oMl8gSt4XHzZiUACe+4SsbpYKp/NFtCgDmWoRWA
+	3IWpORjMEiBey8lz6WABPCqIzZS42f6dR+Nf93kpvGjY9kidFjIugle65D07j1+D5MDlArz4BdI
+	wxLkO8Sm3+gJR17wfWEiiOMkqueLIbTxFxPfOOXWE3Y5IaMkjVttCY+0UGmCeztX4dHMpZEdwZo
+	5wLr4AQg/M=
+X-Received: by 2002:a17:90b:3f46:b0:35b:e844:3bd with SMTP id 98e67ed59e1d1-35c0ddf6eabmr5677531a91.31.1774504377493;
+        Wed, 25 Mar 2026 22:52:57 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c16edc0458sm1635295eec.21.2026.03.25.21.56.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22ce693csm329442a91.14.2026.03.25.22.52.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2026 21:56:57 -0700 (PDT)
+        Wed, 25 Mar 2026 22:52:57 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <478e7388-f91e-4e26-bc47-eef4ec5b1c1f@roeck-us.net>
-Date: Wed, 25 Mar 2026 21:56:55 -0700
+Message-ID: <9648e0ae-8102-4f70-866b-163fbd5050eb@roeck-us.net>
+Date: Wed, 25 Mar 2026 22:52:55 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,25 +70,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] Add support for AAEON SRG-IMX8P MCU
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- =?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Lee Jones <lee@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-References: <20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794@bootlin.com>
+Subject: Re: [PATCH v5 2/2] hwmon: emc2305: Support configurable fan PWM at
+ shutdown
+To: florin.leotescu@oss.nxp.com, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+References: <20260325160444.1736866-1-florin.leotescu@oss.nxp.com>
+ <20260325160444.1736866-3-florin.leotescu@oss.nxp.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -133,39 +127,149 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794@bootlin.com>
+In-Reply-To: <20260325160444.1736866-3-florin.leotescu@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 3/24/26 12:24, Thomas Perrot (Schneider Electric) wrote:
-> This patch series introduces support for the AAEON SRG-IMX8P embedded
-> controller (MCU). The MCU is connected via I2C and provides GPIO and
-> watchdog functionality for the SRG-IMX8P board.
+On 3/25/26 09:04, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
 > 
-> The series includes:
-> - Device tree binding for the MFD driver
-> - MFD driver that serves as the core driver for the MCU
-> - GPIO driver implementing the GPIO functionality
-> - Watchdog driver for system monitoring
-> - MAINTAINERS entry for the new drivers
+> Some systems require fans to enter in a defined safe state during system
+> shutdown or reboot handoff.
 > 
-> The drivers follow the standard Linux kernel subsystem patterns, with
-> the MFD driver registering the sub-devices (GPIO and watchdog) which
-> are then handled by their respective subsystem drivers.
+> Add support for the optional Device Tree property "fan-shutdown-percent"
+> to configure the shutdown PWM duty cycle per fan output.
 > 
-> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
+> If the property is present for a fan channel, the driver converts the
+> configured percentage value to the corresponding PWM duty cycle and
+> applies it during driver shutdown.
+> 
+> If the property is not present, the fan state remains unchanged.
+> 
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
 
-Sashiko reports a number of issues with this series.
+Sashiko has a couple of concerns.
 
-https://sashiko.dev/#/patchset/20260324-dev-b4-aaeon-mcu-driver-v4-0-afb011df4794%40bootlin.com
+https://sashiko.dev/#/patchset/20260325160444.1736866-1-florin.leotescu%40oss.nxp.com
 
-I can not comment on the non-watchdog concerns, even though the ones I looked at
-seem to be valid. However, please address the watchdog subsystem related comments.
-If functionality such as CONFIG_WATCHDOG_NOWAYOUT is explicitly not supported,
-please add the rationale as comment into the driver.
+I don't know about the shutdown problem. If that is real, a lot of drivers
+have the same problem. Don't bother about it right now.
+
+However, the range check should indeed be a separate patch.
 
 Thanks,
 Guenter
+
+> ---
+>   drivers/hwmon/emc2305.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 41 insertions(+)
+> 
+> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+> index 64b213e1451e..722ec1d054f8 100644
+> --- a/drivers/hwmon/emc2305.c
+> +++ b/drivers/hwmon/emc2305.c
+> @@ -32,6 +32,7 @@
+>   #define EMC2305_REG_DRIVE_PWM_OUT	0x2b
+>   #define EMC2305_OPEN_DRAIN		0x0
+>   #define EMC2305_PUSH_PULL		0x1
+> +#define EMC2305_PWM_SHUTDOWN_UNSET      -1
+>   
+>   #define EMC2305_PWM_DUTY2STATE(duty, max_state, pwm_max) \
+>   	DIV_ROUND_CLOSEST((duty) * (max_state), (pwm_max))
+> @@ -104,6 +105,7 @@ struct emc2305_cdev_data {
+>    * @pwm_output_mask: PWM output mask
+>    * @pwm_polarity_mask: PWM polarity mask
+>    * @pwm_separate: separate PWM settings for every channel
+> + * @pwm_shutdown: Set shutdown PWM.
+>    * @pwm_min: array of minimum PWM per channel
+>    * @pwm_freq: array of PWM frequency per channel
+>    * @cdev_data: array of cooling devices data
+> @@ -116,6 +118,7 @@ struct emc2305_data {
+>   	u8 pwm_output_mask;
+>   	u8 pwm_polarity_mask;
+>   	bool pwm_separate;
+> +	s16 pwm_shutdown[EMC2305_PWM_MAX];
+>   	u8 pwm_min[EMC2305_PWM_MAX];
+>   	u16 pwm_freq[EMC2305_PWM_MAX];
+>   	struct emc2305_cdev_data cdev_data[EMC2305_PWM_MAX];
+> @@ -539,6 +542,7 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
+>   				      struct device_node *child,
+>   				      struct emc2305_data *data)
+>   {	u32 ch;
+> +	u32 pwm_shutdown_percent;
+>   	int ret;
+>   	struct of_phandle_args args;
+>   
+> @@ -548,6 +552,12 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
+>   		return ret;
+>   	}
+>   
+> +	if (ch >= EMC2305_PWM_MAX) {
+> +		dev_err(dev, "invalid reg %u of node %pOF (valid range 0-%u)\n", ch, child,
+> +			EMC2305_PWM_MAX - 1);
+> +		return -EINVAL;
+> +	}
+> +
+>   	ret = of_parse_phandle_with_args(child, "pwms", "#pwm-cells", 0, &args);
+>   
+>   	if (ret)
+> @@ -579,6 +589,16 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
+>   	}
+>   
+>   	of_node_put(args.np);
+> +
+> +	ret = of_property_read_u32(child, "fan-shutdown-percent",
+> +				   &pwm_shutdown_percent);
+> +
+  > +	if (!ret) {
+> +		pwm_shutdown_percent = clamp(pwm_shutdown_percent, 0, 100);
+> +		data->pwm_shutdown[ch] =
+> +			DIV_ROUND_CLOSEST(pwm_shutdown_percent * EMC2305_FAN_MAX, 100);
+> +	}
+> +
+>   	return 0;
+>   }
+>   
+> @@ -631,6 +651,9 @@ static int emc2305_probe(struct i2c_client *client)
+>   	if (ret)
+>   		return ret;
+>   
+> +	for (i = 0; i < EMC2305_PWM_MAX; i++)
+> +		data->pwm_shutdown[i] = EMC2305_PWM_SHUTDOWN_UNSET;
+> +
+>   	pwm_childs = emc2305_probe_childs_from_dt(dev);
+>   
+>   	pdata = dev_get_platdata(&client->dev);
+> @@ -714,6 +737,23 @@ static int emc2305_probe(struct i2c_client *client)
+>   	return 0;
+>   }
+>   
+> +static void emc2305_shutdown(struct i2c_client *client)
+> +{
+> +	int i;
+> +	int ret;
+> +	struct emc2305_data *data = i2c_get_clientdata(client);
+> +
+> +	for (i = 0; i < data->pwm_num; i++) {
+> +		if (data->pwm_shutdown[i] != EMC2305_PWM_SHUTDOWN_UNSET) {
+> +			ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i),
+> +							data->pwm_shutdown[i]);
+> +			if (ret < 0)
+> +				dev_warn(&client->dev,
+> +					 "Failed to set shutdown PWM for ch %d\n", i);
+> +		}
+> +	}
+> +}
+> +
+>   static const struct of_device_id of_emc2305_match_table[] = {
+>   	{ .compatible = "microchip,emc2305", },
+>   	{},
+> @@ -726,6 +766,7 @@ static struct i2c_driver emc2305_driver = {
+>   		.of_match_table = of_emc2305_match_table,
+>   	},
+>   	.probe = emc2305_probe,
+> +	.shutdown = emc2305_shutdown,
+>   	.id_table = emc2305_ids,
+>   };
+>   
 
