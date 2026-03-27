@@ -1,69 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9AB3537C2
-	for <imx@lists.linux.dev>; Fri, 27 Mar 2026 11:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0830B3BA24F
+	for <imx@lists.linux.dev>; Fri, 27 Mar 2026 14:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774612314; cv=none; b=RVd7DLGELMZN9yN0aC5p9mp36m71IVn8h6uIetCn0KFKGkJBQMXWHiU9j+AEGBKdXf7rQWsSxs30ZGTzS2/vERzbmwAWcSSROwgswsdX+a5t6hR/ODu7phD13StQ5UANF2vo/mU40s/MiWOVMnDhiRJAw85iufgM6D3aC21ccHc=
+	t=1774620286; cv=none; b=OhO/SHnA+uE/HHw2r/qCHCnEjfl0AMfKPddeLWuIgqxswqlwN3CrCe/tK6CDEEfPZYwIr/rPV8D5sJnQnkbUdkNzqExQlnI/AFGwnGOBc+bUEWcAYpZl4YWn0yfx+trJcFRX+RWj8gQQ1+sspP6GiydIr8mrJNsov8bs23s3lu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774612314; c=relaxed/simple;
-	bh=QGuvPPe1JtZ1isWkV9NXorQ9KG10bT2O55AFrSSxNUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TmHw4qD4r/5rbl5Xnp6cDTgOk7MARTZHVWJme13qThbKdjBjN018GuSPKisP8m3WzId+hmMaLtk1hIg9bAWsHz4l/q1FrZFnLPopGNLYkPIMYwzpe/Jxcr0u1aGpRpNnLYG4dMNWGyYjZHsXpWe9inujfhMT2fR78C4i1X6QnUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIpT78a5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774620286; c=relaxed/simple;
+	bh=q9V97Tr+6k2fCh537AkmCOo0/qg1EEGC6ygs46eoSNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oWH0bVsPQVAeWsg7ejI2Picce3RK4b+OWt9fEh1mLWcLKz20TxPiX7Epa+uh3DqKIxrEuZuXuIB3klq6dNo1JR89eBFaw1jcSjtDO5kLtLexEHrbro8WFJzzs0TrsZ5E1zgg2h8sHeL0F3pCEOXK47aFYNhyxGjsMlJFHxQ9+qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xRnL8C9J; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIpT78a5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A3BC2BC86;
-	Fri, 27 Mar 2026 11:51:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774612314;
-	bh=QGuvPPe1JtZ1isWkV9NXorQ9KG10bT2O55AFrSSxNUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uIpT78a5sMOBFX5NsnyJFZHgB1KFWLuNu8+A54M9fKOAD1eIo2GgRVA7fJhis1Asm
-	 RyhoIOfYpP9wQWFuR3exP+z763/5teNmCEGZru0gFdRmmvlpwd9xxR3P9UM1JXceMs
-	 mAjT2PxqgsxQMTyQ/stl3UNpOvzRamPg5iuFtlLUiE4COvvzp9xdm+Rc5w234Ng0UF
-	 Ez3q1Jg4Rt8AFPXPhrnGK2/0LClk2r+CUSSCn2QRcPtgIV9P85G6nQ0f33zNKPAxp0
-	 HrNcDOGuJKGTbiW49pPtrU9CjKGR/Kq6g3aT6aJuF75I8qwZSDp+BH4oKtefgD5qdq
-	 RMSklOFToqarQ==
-Date: Fri, 27 Mar 2026 12:51:52 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: soc@kernel.org, arm@kernel.org, Fabio Estevam <festevam@gmail.com>, 
-	kernel@pengutronix.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL] i.MX fixes for 7.0 (v2)
-Message-ID: <20260327-glaring-aardwolf-of-joy-2201e9@quoll>
-References: <20260323162849.1203617-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xRnL8C9J"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48702d51cd0so24776155e9.2
+        for <imx@lists.linux.dev>; Fri, 27 Mar 2026 07:04:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774620283; x=1775225083; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TnwOxiQgTrY2GQTcPVQdPC36P8UQNWjAuceWpM/pOE8=;
+        b=xRnL8C9JH33Xkle/E2t3ypSCNjwIzhTR22MEdW9n2m38mJepAEiahPQprQqjRBflKe
+         ywPdNoGW/DC/4PUIr3lX7fShMy/6uem1fAuHLdQkkxnLj4H72UWrGnlu9ac9hSEY6GuP
+         LHWzQDHk1d9A0fC7Qf/zZzaO9jye0nMgjJbHSdgIMq1I+sSiBlaLikm0NqauBAUviK6F
+         j4WTynsDFvS9CaeSe05jXEfbsoAqS2to3iIDeGSzkj8u38TmAp/S7WeNyAitRHoV76rg
+         H3XZrmaB4zKPqATXPmF1fiyyePU/RcXfCWTfU9MhCEcmhZQLUKYQ/DJI7hTRfgtlrFVW
+         Bdiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774620283; x=1775225083;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TnwOxiQgTrY2GQTcPVQdPC36P8UQNWjAuceWpM/pOE8=;
+        b=sEnO2+y7UtIhbBWKq/Z2+gnXaeQ0E8RlYDaZq7kOUPu85ilXGTwgZ6ccl6N4d4YUFq
+         aXIy2/SqVdDvwVE+l1ePm3hsQxqZE0RoSgBe4Q9od1f3vSm+/4CmfR5qrQDArjQF7xxx
+         Z+MiKBRq5b7AGSNhmxZfBm0oeVfMdY71NoJqRrudXzuPIVlfGMMvkgcJw2OiPBaGt5Bq
+         ENAHztx3WD7MJpXJFmrP1/FR6xlwxBU/FOen8GwEFN4+ipHmTTP0poauxDbgfBLH2WtS
+         C8ioPmMxTMjH4cDSLANwT0GO6UvDWreXKm95LGl35pSeHI0Ol7Vtnai8ARLNjXEoJQbQ
+         iy0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXss6+ETgvX3UkxCp7zLlawxSTqhUUo3KzVo9bt16nkbnJmJOwNncJuqp0QlquO6ralJHw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+QGLHqIalF8vSNdHqQXidD+srFoxGNCpYtnHs6nfK9ZDcAar0
+	A1KGsp6dc6+QdPAx5WYI1vc3jmVamIkm2G0jgheJi+5c6n1Dy/IuscfYidqhpdzn8yI=
+X-Gm-Gg: ATEYQzz0jIAKafzq6DLX3J1ieX//LqNiJoqUps5xSls3MR5+LBfAxgNraTlPbt47zZa
+	ZmN++QzpdBsjpYAyoheEY5fcrKN8wHLbXKtNllZ/xsk+iAtQwWV7Jul5AqGQLNnz5tHjglGLjog
+	74LJvR/dBppJnr6mmLR2tvtk8yXH1XpuoFH0PLKOTE0wVcaejZillh+V6syKK5YWkItWhA7MO/R
+	5k0KqrLzGmCYKiFnDnyUKB9Bm8LtTxv/MiMlIYMGIND0eX9eDtTDOEmAGY6bU8kG3XtJUw0IX09
+	hYttN5vMwO8xurewkYbp+J6VK2X+KuyfWKyA5GnYizZWTNfuS9jKDZ4EeDCW0iRYc1j0H9yVPgu
+	jhTHkwj3OleMkaWQy9FWcHQ/HITDi3ySaYOr3gwr3nd6w7kFrBc9D/QnxKi2BfKXi8q6gR9Jo+a
+	DmMSkCs/QvZjE2ZL/V4fFOLKozxXmklI2bAb/l4LUSUf0NoIIp/LV2EGYYXE4Pkif2HmlPPR6c9
+	PyS3o2lPDY3ZD3OV7FRaEY=
+X-Received: by 2002:a05:600c:3f16:b0:486:fdba:f5db with SMTP id 5b1f17b1804b1-48727c86862mr44979375e9.0.1774620283136;
+        Fri, 27 Mar 2026 07:04:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:81c2:60b3:ff00:9a5e? ([2a01:e0a:106d:1080:81c2:60b3:ff00:9a5e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48725eb5417sm27114795e9.3.2026.03.27.07.04.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Mar 2026 07:04:42 -0700 (PDT)
+Message-ID: <7d9675e6-3f02-49e8-b65a-9785d5b6a7c7@linaro.org>
+Date: Fri, 27 Mar 2026 15:04:39 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260323162849.1203617-1-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] PCI: dwc: Add multi-port controller support
+To: Sumit Kumar <sumit.kumar@oss.qualcomm.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+ Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@Amlogic.com>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Greentime Hu <greentime.hu@sifive.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Chuanhua Lei <lchuanhua@maxlinear.com>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Pratyush Anand <pratyush.anand@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ imx@lists.linux.dev, linux-amlogic@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20260305-dt-parser-v2-0-85836db8dc06@oss.qualcomm.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Content-Language: en-GB
+In-Reply-To: <20260305-dt-parser-v2-0-85836db8dc06@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 23, 2026 at 12:28:46PM -0400, Frank Li wrote:
-> From: Frank Li <Frank.li@nxp.com>
+Le 05/03/2026 à 07:20, Sumit Kumar a écrit :
+> This series adds support for multi-port PCIe controllers in the DesignWare
+> driver. Currently, the driver only supports a single Root Port with
+> controller-level properties, which doesn't work for multi-port controllers
+> where each port may have different configurations.
 > 
-> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
+> This series introduces a per-port structure and parsing API that allows
+> each Root Port to be configured independently via pcie@N child nodes in
+> device tree, while maintaining backward compatibility with existing
+> single-port bindings.
 > 
->   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
+> Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+> ---
+> Changes in v2:
+> - Fix error code preservation in dw_pcie_resume_noirq() to return actual
+>    error from dw_pcie_wait_for_link() instead of hardcoded -ETIMEDOUT (Mani).
+> - Initialize ret variable to -ENOENT in dw_pcie_parse_root_ports() (Mani).
+> - dw_pcie_host_init(): Remove -ENOENT error skipping to make parsing
+>    failures fatal for now, add TODO comment about making properties
+>    optional later (Mani).
+> - Link to v1: https://lore.kernel.org/r/20260105-dt-parser-v1-0-b11c63cb5e2c@oss.qualcomm.com
 > 
-> are available in the Git repository at:
+> ---
+> Sumit Kumar (2):
+>        PCI: API changes for multi-port controller support
+>        PCI: dwc: Add multi-port controller support
 > 
->   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.0
+>   drivers/pci/controller/dwc/pci-exynos.c           |   4 +-
+>   drivers/pci/controller/dwc/pci-imx6.c             |  15 +-
+>   drivers/pci/controller/dwc/pci-meson.c            |   1 -
+>   drivers/pci/controller/dwc/pcie-designware-host.c | 175 ++++++++++++++++++----
+>   drivers/pci/controller/dwc/pcie-designware.c      |  32 ++--
+>   drivers/pci/controller/dwc/pcie-designware.h      |  17 ++-
+>   drivers/pci/controller/dwc/pcie-fu740.c           |   6 +-
+>   drivers/pci/controller/dwc/pcie-intel-gw.c        |  13 +-
+>   drivers/pci/controller/dwc/pcie-qcom-common.c     |   5 +-
+>   drivers/pci/controller/dwc/pcie-qcom-ep.c         |   4 +-
+>   drivers/pci/controller/dwc/pcie-qcom.c            |   4 +-
+>   drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  13 +-
+>   drivers/pci/controller/dwc/pcie-spear13xx.c       |   5 +-
+>   drivers/pci/controller/dwc/pcie-tegra194.c        |   4 +-
+>   drivers/pci/of.c                                  |   6 +-
+>   drivers/pci/pci.h                                 |   2 +
+>   16 files changed, 232 insertions(+), 74 deletions(-)
+> ---
+> base-commit: 097a6c336d0080725c626fda118ecfec448acd0f
+> change-id: 20251010-dt-parser-98b50ce18fc1
 > 
-> for you to fetch changes up to 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637:
-> 
->   arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V (2026-03-17 23:24:44 -0400)
-> 
-> ----------------------------------------------------------------
-> i.MX fixes for 7.0:
+> Best regards,
 
-Thanks, applied
+Tested on meson-pci (boot log https://gitlab.com/amlogic-foss/abcd-linux-test/-/jobs/13677061036)
 
-Best regards,
-Krzysztof
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # On Bananapi M2S
 
+Thanks,
+Neil
