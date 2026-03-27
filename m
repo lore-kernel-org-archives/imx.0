@@ -1,189 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB9534107A;
-	Fri, 27 Mar 2026 17:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9B92EA172
+	for <imx@lists.linux.dev>; Fri, 27 Mar 2026 17:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774631691; cv=none; b=Ie6KxvzyTvt6kw4mbW7WC4Zk6oAJxHuS/EVOFG0ivCIBb7kljNxFZO3L9xcdbUA2rWXSLjSgRczSFq+kfwaa0qeKtOmpmeNO9/+zfpdGCPPwufpIV+mnMEXtDpx9r2Vb8cNzZEtunR8T8fivJfLg6WaoXvr5+tpAwcbq5UaQ2Vk=
+	t=1774631801; cv=none; b=et+n6r1LY/nT+kuqYOsPhLZ+B86028T2Ys4rLn87Z3f7GPjx7+SpidhG6ZXm9Bltru9M3kfRZ6MPvqOaXn3XdwoLPjAlYaiuDtkvVzGQoYfdr6EOcBc9zfqUWyR4bn/08ZjHedl53R8oYruTtAE0K8u99DAFwJKDFzleadiCJvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774631691; c=relaxed/simple;
-	bh=K/gLTO9BZCY9CeZMqLSveaXc5Cq+EEiHtsmhIau0ADg=;
+	s=arc-20240116; t=1774631801; c=relaxed/simple;
+	bh=ieDfxlzG2E3LaTCNMrozmh423Pobxbf4YDtO1gx/bAs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nPSZ+IF1kzsCPUW3/hGUwvjQHjudZuVhjLEqdDSdK9v26d7rgFNcYrOnmkGCQ8bF1P9od3H4N2sYs+NzlLrFNBF2/zfvDaztrSx7P9gLnEF4Bf3sBv6cSamWqmmDQii0IVMmm8+omAEfU8SVjzyoGsf4Bcao4crkOPL6e48WaKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCuOyAx6; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vn9GSe67WySJkN2pAEoMrItT04Rxne4IKIWynoCMNzP7Ms/xQ3auO3lZRH4WYeRHYy3i33vRh2YfZ/OZdKbKxIuuYTIYDyMu/JsDyoCii/qAiXMyoDsc7gINKASlq3rBpRZd2Y1r5y++z/nxDYLO46R8H1yB+TCkletJSZABOnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KLLoQVy4; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCuOyAx6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C6CC19423;
-	Fri, 27 Mar 2026 17:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774631690;
-	bh=K/gLTO9BZCY9CeZMqLSveaXc5Cq+EEiHtsmhIau0ADg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rCuOyAx6bXbHXajLcXofBRMQm35IYQDU9GeYsBogWpYwfCnUYTJGXt6+v35nSrrFU
-	 HDjf1ex5dYyzsq2AwhQ/rczEJKB1+MiuHBuuwFyobz+Qrigx5CBetrKN5GmM+8cK80
-	 AMAxXa5dOY9UyC+k5KAyq51evGL4yEBKw18x4jizpmhP+HVUAucCbE+gmlR22q3Bg5
-	 B3/p5bZ5Iuevgf14+hn3YzMtB/AHWZ3kjQ36VzlujXJ1GI8kATRd5+qFqAAj9w2dmE
-	 7Z4fXodO3VRjXOm37LKcvTfCqx2wVeuLpDgNjb9FqNDFln/3CV+uJJPC6wWhPwT8iT
-	 6cbQo9gfPsAww==
-Date: Fri, 27 Mar 2026 17:14:44 +0000
-From: Conor Dooley <conor@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KLLoQVy4"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-486ff3a0fc1so23033945e9.2
+        for <imx@lists.linux.dev>; Fri, 27 Mar 2026 10:16:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774631798; x=1775236598; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vV6E9yjY+PcJxkfGX/VZyyMBIRVFPjQlBGDGet9H4gE=;
+        b=KLLoQVy4hAjiJV6eSHyVLXaMDdhIt3irKGIvdqlqvOd9NIE7ANJIMnakC3N+pDmawr
+         /2GxYTQLkqgPrb5PKPtOhO6stmH/WDHObxrWS6tGLVXfvsIxgCRlM1THlA+IsfZsiGiE
+         oHrlQWELX+msWYGgLNYg/lN1FRiWB4DnLjdMP1VvZewNnsqNGOlaEL8MeTmDSG6HW9DI
+         to5tEJarnmLNKzhv+0lHwibHa6EzwfE3TeQKF7fmLsJyLjAAqaRT9qQOg9dVTajgPsn6
+         oQVX97SARtDgRuAKLvrYUPmhiE288AP4tSI+Ju5gshGPlwCrTMQF+Bw4ZJ47jhJakhj1
+         mpNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774631798; x=1775236598;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vV6E9yjY+PcJxkfGX/VZyyMBIRVFPjQlBGDGet9H4gE=;
+        b=rXZCUICmERd4daxXZXeD4f1YQbYAqfz0kzF8nUvgSCaqDML9jUYSkh5CIq+ym+GSyb
+         E+yMDGUXjiWYPFn6KGmKOQRQr69LTctqfYda558Ghp3LFQL/QUdqORI2/WEjsK0tYDR7
+         Sm05OhR58kL9ckvLxDVxQsSWjA4CBtPI6a+fcmNZUP9zpgRgsGw9XbQRpClioxfSKxXl
+         sW3cFIr6GgS0owKF9OyYByRfcaua+mPXWtBQkxKvr86S9/FFbFj5as1I2HeCDzfrW/LZ
+         vo5C/h1sdif2jrBMhyJCtvtfVkIEF+SCUnZyaRwqdhZAHQt0vKxyIkv8ZU48o16PLTUS
+         Gn1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWPm2BAsOnA8/zSB2HiGu0/meVN1rrEaMQvp/OU8WanCKXqAOpnXfTLIfTHkeBWjrDhrgY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPt769gMLqYOqG+HWeFDsgACLNyPm4RBITuCUdMga5HYi/pBqm
+	al4YwcILvtrV9sh2ATWtViTW56lO9HapsytathoakTqJTyvb2clDEZtH
+X-Gm-Gg: ATEYQzw0MKItUO+DQLqjItfJo250nuHLfxAow8XIbVRRjaRxFvY1IIwIX7IWkzy9jVJ
+	OjPa7wrg1SVTu8EE3Tc9H6VOogCUV7uNmD9oUQIjJmQyPCZguT8Po72Lne+NPdkBP/AXUn2NwQj
+	ybWBEnRIokyokuBbPUO7CXlaG6a1Fkq+KXGWkeTHuQpxFzL6T7pBmaiz4jPFstmWW3ynscXgoMl
+	v/CiBT4EG8KSt8mcdGpxrj+RxPsmgwfgIm1DJ15FaIdrn3NO9rolQcpcY17lPhGQX70SQCt1jMi
+	U8VUHyhETJxS4SPpL/JFEtZ9Kv0ya54SNJ3kPK76Dqqim03AISJEfEK5H1aTe6WTW7cMyCQOBWV
+	xCISMMii8oOzWT4/TKmP5CEWkWqwgUF++Et5Zes8khdYHC+VPCEGMcCbS19+LIeGejbTJWeSNku
+	yAXbGatJMnIL6ObjWMFnf1PE2gJE1AtgKY0I9uxI+gS2cFqo1mD5t5LU1tB9dCoSRG886zsi5X6
+	wJaIIVIahZbJ3mNa7d0PeD+jO8m2MVQC6yE7+/wJjY=
+X-Received: by 2002:a05:600d:1c:b0:485:3f17:425 with SMTP id 5b1f17b1804b1-48727ec7681mr45535245e9.21.1774631798048;
+        Fri, 27 Mar 2026 10:16:38 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-20-233.cust.dsl.teletu.it. [93.144.20.233])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48725d9e85fsm34322455e9.1.2026.03.27.10.16.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 10:16:36 -0700 (PDT)
+Date: Fri, 27 Mar 2026 18:16:34 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 To: Frank Li <Frank.li@nxp.com>
-Cc: Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v4 3/7] pinctrl: extract pinctrl_generic_to_map() from
- pinctrl_generic_pins_function_dt_node_to_map()
-Message-ID: <20260327-cymbal-reliant-30f1e7e0cfcb@spud>
-References: <20260325-pinctrl-mux-v4-0-043c2c82e623@nxp.com>
- <20260325-pinctrl-mux-v4-3-043c2c82e623@nxp.com>
- <20260327-overdrawn-stretch-2311ec39aa58@spud>
- <aca2UquiW9lFikhR@lizhi-Precision-Tower-5810>
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx91-var-dart-sonata: add RGB select
+ supply for PCA6408
+Message-ID: <aca7ckVY9ure8Cwe@Lord-Beerus.station>
+References: <20260327163243.17334-1-stefano.r@variscite.com>
+ <aca1jdx0DjmmHqFk@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pAa+sME3mtw+rhIt"
-Content-Disposition: inline
-In-Reply-To: <aca2UquiW9lFikhR@lizhi-Precision-Tower-5810>
-
-
---pAa+sME3mtw+rhIt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aca1jdx0DjmmHqFk@lizhi-Precision-Tower-5810>
 
-On Fri, Mar 27, 2026 at 12:54:42PM -0400, Frank Li wrote:
-> On Fri, Mar 27, 2026 at 12:09:32AM +0000, Conor Dooley wrote:
-> > On Wed, Mar 25, 2026 at 07:04:12PM -0400, Frank Li wrote:
-> > > Refactor pinctrl_generic_pins_function_dt_subnode_to_map() by separat=
-ing DT
-> > > parsing logic from map creation. Introduce a new helper
-> > > pinctrl_generic_to_map() to handle mapping to kernel data structures,=
- while
-> > > keeping DT property parsing in the subnode function.
-> > >
-> > > Improve code structure and enables easier reuse for platforms using
-> > > different DT properties (e.g. pinmux) without modifying the
-> > > dt_node_to_map-style callback API. Avoid unnecessary coupling to
-> > > pinctrl_generic_pins_function_dt_node_to_map(), which provides
-> > > functionality not needed when the phandle target is unambiguous.
-> > >
-> > > Maximize code reuse and provide a cleaner extension point for future
-> > > pinctrl drivers.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > > change in v4
-> > > - new patch
-> > > ---
-> > >  drivers/pinctrl/pinconf.h         | 18 ++++++++
-> > >  drivers/pinctrl/pinctrl-generic.c | 91 ++++++++++++++++++++++++-----=
-----------
-> > >  2 files changed, 74 insertions(+), 35 deletions(-)
-> > >
-> > > diff --git a/drivers/pinctrl/pinconf.h b/drivers/pinctrl/pinconf.h
-> > > index 2880adef476e68950ffdd540ea42cdee6a16ec27..ffdabddb9660324ed8886=
-a2e8dcacff7e1c6c529 100644
-> > > --- a/drivers/pinctrl/pinconf.h
-> > > +++ b/drivers/pinctrl/pinconf.h
-> > > @@ -166,6 +166,13 @@ int pinctrl_generic_pins_function_dt_node_to_map=
-(struct pinctrl_dev *pctldev,
-> > >  						 struct device_node *np,
-> > >  						 struct pinctrl_map **maps,
-> > >  						 unsigned int *num_maps);
-> > > +
-> > > +int
-> > > +pinctrl_generic_to_map(struct pinctrl_dev *pctldev, struct device_no=
-de *parent,
-> > > +		       struct device_node *np, struct pinctrl_map **maps,
-> > > +		       unsigned int *num_maps, unsigned int *num_reserved_maps,
-> > > +		       const char **group_name, unsigned int ngroups,
-> > > +		       const char **functions, unsigned int *pins);
-> > >  #else
-> > >  static inline int
-> > >  pinctrl_generic_pins_function_dt_node_to_map(struct pinctrl_dev *pct=
-ldev,
-> > > @@ -175,4 +182,15 @@ pinctrl_generic_pins_function_dt_node_to_map(str=
-uct pinctrl_dev *pctldev,
-> > >  {
-> > >  	return -ENOTSUPP;
-> > >  }
-> > > +
-> > > +static inline int
-> > > +pinctrl_generic_to_map(struct pinctrl_dev *pctldev, struct device_no=
-de *parent,
-> > > +		       struct device_node *np, struct pinctrl_map **maps,
-> > > +		       unsigned int *num_maps, unsigned int *num_reserved_maps,
-> > > +		       const char **group_name, unsigned int ngroups,
-> > > +		       const char **functions, unsigned int *pins,
-> > > +		       void *function_data)
-> > > +{
-> > > +	return -ENOTSUPP;
-> > > +}
-> > >  #endif
-> > > diff --git a/drivers/pinctrl/pinctrl-generic.c b/drivers/pinctrl/pinc=
-trl-generic.c
-> > > index efb39c6a670331775855efdc8566102b5c6202ef..20a216ae63e91b69985ea=
-4cfcd0b57103c6ca950 100644
-> > > --- a/drivers/pinctrl/pinctrl-generic.c
-> > > +++ b/drivers/pinctrl/pinctrl-generic.c
-> > > @@ -17,29 +17,18 @@
-> > >  #include "pinctrl-utils.h"
-> > >  #include "pinmux.h"
-> > >
-> > > -static int pinctrl_generic_pins_function_dt_subnode_to_map(struct pi=
-nctrl_dev *pctldev,
-> > > -							   struct device_node *parent,
-> > > -							   struct device_node *np,
-> > > -							   struct pinctrl_map **maps,
-> > > -							   unsigned int *num_maps,
-> > > -							   unsigned int *num_reserved_maps,
-> > > -							   const char **group_names,
-> > > -							   unsigned int ngroups)
-> > > +int
-> > > +pinctrl_generic_to_map(struct pinctrl_dev *pctldev, struct device_no=
-de *parent,
-> > > +		       struct device_node *np, struct pinctrl_map **maps,
-> > > +		       unsigned int *num_maps, unsigned int *num_reserved_maps,
-> > > +		       const char **group_names, unsigned int ngroups,
-> > > +		       const char **functions, unsigned int *pins)
+Hi Frank,
+
+On Fri, Mar 27, 2026 at 12:51:25PM -0400, Frank Li wrote:
+> On Fri, Mar 27, 2026 at 05:32:43PM +0100, Stefano Radaelli wrote:
+> > From: Stefano Radaelli <stefano.r@variscite.com>
 > >
-> > npins needs to be an argument to this function also, otherwise
-> > pinctrl_generic_add_group() uses it uninitialised...
->=20
-> Is this one the root cause of then broken?
+> > RGB_SEL controls the routing of some carrier board lines on the Sonata
+> > board. The two PCA6408 GPIO expanders depend on that path being enabled,
+> > so describe the selector as a fixed regulator and use it as their
+> > vcc-supply.
+> 
+> Does below resolve your problem?
+>  https://lore.kernel.org/imx/20260325-pinctrl-mux-v4-0-043c2c82e623@nxp.com/
+> 
+> So needn't hack select as regualtor
+> 
 
-No, this is not the cause of the breakage. I can't believe I still have
-to say that. Go read the code and you'll see why that allocation thing
-is problematic.
+Thanks for pointing me your patch, interesting improvement!
 
-> I am not sure why compiler have not report waring for it.
+Actually, in this case RGB_SEL is not meant to model a selectable mux
+on the Sonata carrier.
+On this board it must stay asserted permanently, otherwise the
+downstream path to the two PCA6408 expanders is not accessible.
 
-It did, that's how I found it. Used uninitialised warnings are normally
-=66rom clang, so your toolchain might not have seen it. clangd integration
-with my editor is how I saw it.
+Modeling it as a mux might be confusing for users of the DART-MX91, as
+as it would suggest that the routing is configurable, while on this
+board it is actually fixed.
 
---pAa+sME3mtw+rhIt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaca7AQAKCRB4tDGHoIJi
-0tJOAP47mkwupF69iSRR/PJaWWFW6GDxmNFaLiYahpyjU+NVeQEAnZdw+Qj9g9Ik
-qNJvKTLF5rcBtj5CBnTu6h/gxd9oXQk=
-=B990
------END PGP SIGNATURE-----
-
---pAa+sME3mtw+rhIt--
+Best Regards,
+Stefano
