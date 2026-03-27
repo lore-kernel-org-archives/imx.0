@@ -1,86 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CC010F2;
-	Sat, 28 Mar 2026 04:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCF33081D6
+	for <imx@lists.linux.dev>; Sat, 28 Mar 2026 06:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774671032; cv=none; b=KkGmNWAEWS5e4T+KDHMzQFmDy8F612M1ZCH7C7zIPOm9M+17rA2yBZ2+/C6EZ9hTR+F7rGu9C2llHanETzQR+dY3nwjGQWFNpPqz7ZKvJCqx5qUb3EmBsWYvIWUJaObPrHBgpt4//hhVHWAd6bY4xW4BNjTWvrAqMe7NQmP3RL4=
+	t=1774680242; cv=none; b=nNHHlvZpxVl2Steh6S/NDTmyKURa8NGVWkGvpWqeyhUCsMjopQtwJDtA9cAzozFFQSMTtwrNmY4wgzF0B0UzQ9lwBW2hLVd+57Bwtko6AdlsMQxgPLH3FewamL7n5kl687ac/tq0yyc72jvwRjeYtXn1ZnGjiAsAidZUNLVACF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774671032; c=relaxed/simple;
-	bh=yKf2T1AUe+h23GNwJLNhDG4gyygGwCV0bDosgAI3kAg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hhiRoCjbmXBn433xHXuxA5tVrqDRZkxJL/G8rg4jJKTcnzAjjUC0cOzZ/HFmvW/DwCjlx5nQHRYE1afCaOv36zYbx1pRaLClRpjVfew+6VvX36izes8qO5IEYLSCzJYp+lzoPGQ324MeHM9VEVNdzgCxoGg1ECfX11CmGzXWbec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlha+pW4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774680242; c=relaxed/simple;
+	bh=OCQ7xdDKzEC0lFAjkEryn6WP9INTgzW/siQ1oZjwxoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O5EVof+Dyb2KPTAYba8lnWbmXemaanB373h8Bi/KFrceK82G36RA7mBRQgeAqcw2Rqlr1mpqb/YQWAhp9uxAu+/RjmEHgrfvvER7rCLoVyfvBmfHd9NqC/sTtkK6semIkJd4b96SL4m5jM6b7KjXeAdCe/2vKxpyQGpEOHv9Q5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=ezHRUiTx; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlha+pW4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E367AC4CEF7;
-	Sat, 28 Mar 2026 04:10:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774671031;
-	bh=yKf2T1AUe+h23GNwJLNhDG4gyygGwCV0bDosgAI3kAg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nlha+pW44VxN3w5alT5oKzNDcJpZvSUo3FBkFduMlSuoiYv30In23k+cfMT6Y1Pz0
-	 +opdGfyhMYo6vs9Cz971Rocu5ooFV6nh+qzWVr8nTYh124HY5b3LtK7IWLys4VXf4q
-	 yjCf0/SGt7ti0i/SQRI5VG7WGlczVNSMlUeatAFGjArGORaqgqcsOvrIRmOZl15qB8
-	 p0/4WO61492GYqzAIjq6uk2DR5Q7Y2huc6734RpvaRiMgldOfqmzK/Td2hHDbuEV6p
-	 Av7t7Qa9pHMXbg20uXpDpanv3bMljOeBPYsEm6HQ6UmIW0y1qCC3ANyUAw/Dk/OUi7
-	 jd84+3+6uOs5w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F2B3930181;
-	Sat, 28 Mar 2026 04:10:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="ezHRUiTx"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 964F41125E5;
+	Sat, 28 Mar 2026 07:43:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1774680238;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=K8IExplj4jNkiy6koIYs6HsbetYK5EUUl0gJcPtFT+I=;
+	b=ezHRUiTxuJwQt9p9FGgw0+VcCYPZNLrdcS82esBojW4G5HRjxLzZt9XDmrG5yGqhjfEOWz
+	DZMKBGBet8COkiky3tcehlbt9Fjka6XrG6pushgkBdPmTG+iAe63057Au7Z2hCBxfdfINg
+	DXGv4+YiV8vyVN/UCd6ZIK9BvP/YnlywaO10Eh4tdJhN9A6MjmtGo7Cf1sa5q7cs8qgs5D
+	j+2DNbD2M+suMlEPacgpl3wc+K9FRAEMSElBKXF3ukePZkl77yDhSuoJ9Yoa46+0FRRZg6
+	UxYT3L5FZY/fpPIOhnYscWsqUzH425pkUQ+P+v5yvznC7gd/qEE2eIHUabeRUw==
+Message-ID: <a4a5284d-6004-46c5-b5a3-f8eb4d9b3680@nabladev.com>
+Date: Sat, 28 Mar 2026 00:17:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/2] net: stmmac: Disable EEE on i.MX
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177467101728.4182342.3438344923033995715.git-patchwork-notify@kernel.org>
-Date: Sat, 28 Mar 2026 04:10:17 +0000
-References: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com>
-In-Reply-To: <20260325210003.2752013-1-laurent.pinchart@ideasonboard.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: netdev@vger.kernel.org, imx@lists.linux.dev, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, festevam@gmail.com,
- francesco.dolcini@toradex.com, Frank.Li@nxp.com, kuba@kernel.org,
- joy.zou@nxp.com, kieran.bingham@ideasonboard.com, m.felsch@pengutronix.de,
- pabeni@redhat.com, kernel@pengutronix.de, rmk+kernel@armlinux.org.uk,
- stefan.klug@ideasonboard.com, linux-arm-kernel@lists.infradead.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/9] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
+To: Liu Ying <victor.liu@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>
+Cc: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, imx@lists.linux.dev,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+ dri-devel@lists.freedesktop.org, Frank Li <Frank.Li@nxp.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260304-dcif-upstreaming-v8-0-bec5c047edd4@oss.nxp.com>
+ <20260304-dcif-upstreaming-v8-1-bec5c047edd4@oss.nxp.com>
+ <b7968f1a-c4bc-4bad-bcf8-407ff2d8db27@nxp.com>
+ <dmqbmmpyi3ssvq67iqwbt6ww7tsaik7ifi5dnupmuhep7u5saz@ads5g7ette3y>
+ <mx6b5svmvlonil4efuiaxcmtygn7lld3nj7gcxnnauaryt2yed@gohjshakc2g6>
+ <40b3d1c8-0cf2-470d-8223-751240061735@nabladev.com>
+ <xqy67fmh42k26iagl7wqrh2dbsn7c5fytwbkcksfzagefp327j@s5hg4lpuvy3q>
+ <4e75f1d3-29ff-46a2-adb5-78a08f781834@nabladev.com>
+ <2fe36f04-97d3-4e99-97e9-7a3ac53cffdb@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <2fe36f04-97d3-4e99-97e9-7a3ac53cffdb@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+On 3/23/26 8:22 AM, Liu Ying wrote:
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hello Liu,
 
-On Wed, 25 Mar 2026 23:00:01 +0200 you wrote:
-> Hello,
+> ... i.MX8MP LVDS bridge node is fine with the reg property, but the property
+> is not allowed for i.MX93 LVDS bridge node according to commit[1] while
+> commit[2] requires the property for all LVDS bridge nodes.  See the contradict
+> here?
 > 
-> This small patch series fixes a long-standing interrupt storm issue with
-> stmmac on NXP i.MX platforms.
+> [1] 3feaa4342637 dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and example
+> [2] 8aa2f0ac08d3 dt-bindings: display: bridge: ldb: Add check for reg and reg-names
 > 
-> The initial attempt to fix^Wwork around the problem in DT ([1]) was
-> painfully but rightfully rejected by Russell, who helped me investigate
-> the issue in depth. It turned out that the root cause is a mistake in
-> how interrupts are wired in the SoC, a hardware bug that has been
-> replicated in all i.MX SoCs that integrate an stmmac. The only viable
-> solution is to disable EEE on those devices.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v4,1/2] net: stmmac: provide flag to disable EEE
-    https://git.kernel.org/netdev/net-next/c/187b00a26679
-  - [net-next,v4,2/2] net: stmmac: imx: Disable EEE
-    https://git.kernel.org/netdev/net-next/c/394863097e36
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> To avoid the contradict, how about requiring the reg property only for i.MX6SX
+> and i.MX8MP LVDS bridge nodes and making it kind of optional for i.MX93 and
+> i.MX94 LVDS bridge nodes?
+I would be fine with that, thanks !
