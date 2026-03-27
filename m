@@ -1,329 +1,197 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010056.outbound.protection.outlook.com [52.101.69.56])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010051.outbound.protection.outlook.com [52.101.84.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E57313540
-	for <imx@lists.linux.dev>; Fri, 27 Mar 2026 02:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C2E225416
+	for <imx@lists.linux.dev>; Fri, 27 Mar 2026 02:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774577371; cv=fail; b=E3OP0GqoNPmgDxaJcxjOElYr1zbVgIgQ6xwZk70sylt1j69mxUAhqbrahWsApsfnc0a4z9y8mS8AuQ2zQXZqMOSFcmqOwhQXz1KvG+zAcaGIOblYzrQFqjl2QiED1nEfmNhVq2EaiEnX9tdnyudPmULUc3vLj82v38n7uWANt0A=
+	t=1774579237; cv=fail; b=Tb3++csURpmV8ssdOe9NCfK9/EM7gc0AzYYURTJTX3Y7UP0uIrOtd5jB1FUpXi0kjZRFCaZJfNP49cn2t2FlEaRAYTZ8+S44AiytPfCMuMqIZiiC+sB0ox15N6SwaHQXtKnxvtW/MnD1IwPZypEiFGeEqEW3E9zzHbb9m6xrDzo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774577371; c=relaxed/simple;
-	bh=N+5IpXbKyLGeT2JXOAvGpo6cXsKhiOB1sjFzyEYJuo4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cjC/XuEBiffIhGwI5iTSodDaIKD3VklWgG5fESrCh6yDd4G3UAAIOFzYrgkZjDxoDX0LGwQbnFAmE+X3NSAmeE8G8DWoaD/YjeIrmWqxDfyANSHTD2P7ERY76XYjZocDXoimHwj3bcx9GvcgXQeosCbJ/yeFsFkkjmQzP2tzXUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dfVO1F0/; arc=fail smtp.client-ip=52.101.69.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1774579237; c=relaxed/simple;
+	bh=c9Cf6i1sj0SPg0+Z5zfxvb3M0hq3XUExfHFZ2ZeO/UE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=uDgTxnj2hKTniFLwLwuUEjtuD4OEBT3sv8Kw65RqB/VclebaRkoTtOAspfe3B3KXIBiOdtH9jZPwywji8QcN4FFLLtpkT+KDnk5LWarzG5Mj115XyhdOOPcnM5qTpq8t/8NTh/qmboxNOYfEzMnldw7sZhfCvzelNpdOWaKi/9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=w01BnZlo; arc=fail smtp.client-ip=52.101.84.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dfVO1F0/"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="w01BnZlo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mmDtMJbZf2v8jpixnAmkQx+JVN9zy9dK1Xx09MXQExkOUeB+qb/4fL7oDZ3NIChv3OAjFRbr2z2H++VzBtH3t564dRdAyRNzHKUHxeRX/WlWw4sYi9hKEuS+kcAieSs0MMzJPZ7854Ma4jchVBWyULRzgedXNanq2tTsiaseLWu+4eVrPRKYUixLwt4GdEh9Veb+C7RDYZUxuJikoke8q3vma6/6FIW73ihHjYl97faNHaPS2wnfFUoh6N0oEyOVA7ODYvw8DklxdHRPVwbP0oZNHM5ox69Q2n25NQ2a4/tSB0xJuA+PpVR29CZ01XMzOJCHICHgQ08ziuMOLaqOOw==
+ b=jOgKgUq5qdX5hbphpw8cHa408PVxKO77GYqNCy/G+UpsjdNwlwxoHJQXX6rA+8Tjh7LocxcS5XCBT1syowipI1iHG03RaG5Uu+fyhmgpm7q/zPXWAf+DDHMCTarDTSt4yVZG8Xs/YV3eveG9CTSd28O3Xyk/nN5s+mtMSCk1Pasf8q17qA6Nv9FGAit7Rz+6YkOnYfnKv5tBWM91x/NjI0QWUNp5zKJrag0ekyKwbWlM3sctqUCaSv1Aub39ebNIWh+zX9BSXffi7wlUCbWUZLfsW1FVOs3VRPoU/on13nwlX49xgUo2rkGIMYzIINB6QKlnZ1tr46sSQlpZaodmjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kmgNoMsBFB0Av275v1YiL0J71l8nAs5LT4Ra84zm3vg=;
- b=yp4hIEYe/vk+z7/leo9/eRqCT/uOutQePSQz45T3BxfI7yd3vJuYFNKaVqrkIKomNW57BMoIfaLKJZ2DPurdf889CAYmm4eCmEmEOH5OBKGdUspKRbgl8Wvh+BBwZ/wO6/pZGdXjQVWPWxqng+cAh8ncQsqpquabYKGKHzd9254lzCd8ezWWKnt7YVZqk6uatHG9fxfBh379GlY6kFZnZwMwfmUfomFFbIeZsGEQeX5JGcXIKsYik/IVSfXwDZGKJDn3vjbfnvyIoR7VTOazXr7co6To6FEZiVHWqUhK8p43U0LZd/6Oy4vX7857IcnS6iuhqJshw8oCWLmc1I+qEQ==
+ bh=IdX3KIpIgGxFNlPOTo9tZAmlmtEEVZ4173AlD7CC5g8=;
+ b=tttNAs6u7wKEoQ8U0ILqpdeu+0xNSWGdYZd6P/r+djT6rt5VoXHNFF4hcWCZSzGWPqNRvxLkMiBap40vTZ3l1apW5K3stlljhsGaocYJgKYqEDBkLGWVOj2/GRgN/s3/k+fsOxLstwamT5CCoxLwYuOxsJFtLMC6Jz/R9UYdT6m2NYyJgM+bYC27euRUtlAJBn9WKK0zZLPNZUpEkJTJzLyep7qCoIWv94qNpNHOdSJ9o39o3a02/x0dQn4wMOgoClOKle9+8MlOcGIO7j8yFDx+vWzJw0/OI0i6v5rlxf30qb+wokOT4aLKg9X93Oxqv6/uHWSXYVH18woKZmia9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kmgNoMsBFB0Av275v1YiL0J71l8nAs5LT4Ra84zm3vg=;
- b=dfVO1F0/u3L6NH+Qf4Ks2AoxKSQYav1RopvnfD7VKMMXv09fH9t3DfBHNHe4OecAqq3WEVf4oWgiUAhgtFIdy3K9NgtyyOEjLwPk4lHRKrYwyfR+B1AnB+A+m7zhewriUGS5Bv7Eepz0s/csk8ahFVe8ikg+6WnLBOxs5V80nYPsBDg7+vJ4jknyslr+GX07MQWFGT6pVrgLxw2oe/ypRRZ4FzD0+T2sUWcCaCOiUJz2CL5005uZ8KPw12q+vkkuDwLE6IJUdXEokGQ8ymMQz73Y4cSi2UcCNQ9PLe73RB9y4Ay3kcF/D48eOVSr6VBUcpW1ehC3q2VpTpomT24b7Q==
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
- by DBBPR04MB7946.eurprd04.prod.outlook.com (2603:10a6:10:1ec::5) with
+ bh=IdX3KIpIgGxFNlPOTo9tZAmlmtEEVZ4173AlD7CC5g8=;
+ b=w01BnZloExGdzzEL47sOs6iBieApSeWWUa711wn5glgqiIuwcqrStZNGreMZbpNOadzc45i++1kRcHFAsjOIIPSTkaiCsJMbsDGnpw+2i9tzU43UWjufIGz2UXixT+kBia/7EACwnnCY44QUhnVYUyo1PpAyzwnqIzTBfuxY8UjiiBH+Y3blXbZ9BeEq12k0Ocb+pjUZCsGl2+YC3z4+rAJZLKF4yeACEycTU61TgpAK1AHUE+TT7J3kMtu+UMxZSqbbzNVoCCp2mM+ZTwD65iz6CE3R7DxmqSaaplP/3dtZxtcB0v92gi5+tQXZY2DuqGL8dxb/IeFalQQoYyLZsA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by PA1PR04MB11084.eurprd04.prod.outlook.com (2603:10a6:102:492::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Fri, 27 Mar
- 2026 02:09:26 +0000
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e]) by AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::dc5a:b0aa:4a1b:c55e%6]) with mapi id 15.20.9745.023; Fri, 27 Mar 2026
- 02:09:25 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, "chleroy@kernel.org"
-	<chleroy@kernel.org>, "horms@kernel.org" <horms@kernel.org>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v3 net-next 02/14] dt-bindings: net: dsa: add NETC switch
-Thread-Topic: [PATCH v3 net-next 02/14] dt-bindings: net: dsa: add NETC switch
-Thread-Index: AQHcvOmiCqGqD8E13EaBFJCRDGW3MrXBPkuAgABjMsA=
-Date: Fri, 27 Mar 2026 02:09:25 +0000
-Message-ID:
- <AM9PR04MB8505D880CDAD79A8AF107E248857A@AM9PR04MB8505.eurprd04.prod.outlook.com>
-References: <20260326062917.3552334-1-wei.fang@nxp.com>
- <20260326062917.3552334-3-wei.fang@nxp.com>
- <acWR0QwRSnupmCvI@lizhi-Precision-Tower-5810>
-In-Reply-To: <acWR0QwRSnupmCvI@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8505:EE_|DBBPR04MB7946:EE_
-x-ms-office365-filtering-correlation-id: 8cd3a518-c330-42b8-153e-08de8ba5dee2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|56012099003|38070700021|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- GlJBBQeoUmtD3w8t8FPNdYxdxRHzO33cf1lOVuVKL/Ky6LuJ/QKvvJSNpNzHKCXICm6ygrlVoaJzDijek/knGqkjHg96wuIWwpUsa9dKWKVyJW2r0ro8xaYC2FsaxST3qcoDkN05y9PNfvYxokyzWNGY6eUw1e+nPDs8m5M6Rlr4Fda/4JBwK+tSaFMidW4VBFyfF/jMGdK1pWuS8DHJzw67KFcPMWihIFtkm5hqzSCx53y44LwGikkCl7Ybk7Y/TJ0uEf9d6dDE/99/AqDBMx6nZi34YJrVP1UtGBxhpmG0NwmhpoQBMnq/vZEciU3iz5ssf23gfVKeVlUl7OzeEhAmhbQZMch5rtVo+daOpaw1DaTda3XIc2oEXIaPv/lYh34dh/P4in9cq2dOyrtkczGaLSHUk4T4O+MF2yrJPsyBtdvaGdocJCpmULcfsc2nN2Lsi4SF8NcJVaYnN68eVMr8JBetSGQO2CRdO1BtVV49amVVJyWA29C982NEK65fwXqH0YeDFIlV/J1tLctjSTzSVvSA9y9p31AbQ3p9areiTot/frik6GGU9EizQQZ4KQq4JOoWdNYggThxnFxaCb8nzpwwI3yXp4C86US1vyEUQzY92AYNX5wQlyDvYOkzWw0q77KylmyXfzs3IbgynObqDhEw8NLs9/XTS1+lH1txP3wbHGtVtbvspU+beVsZTf4z+8PbJE3/tRKUmP5uOZEQqNzoAz6T28KRI1Eg2wA6ET3+W6qx8bPS3e+OMDuV
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(56012099003)(38070700021)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?krxOn/Mesc/dxqFU1WqDUiYhwN8rdbRDK7UbVjHNXOMpiKdbN0LOSVTW7FTs?=
- =?us-ascii?Q?7JP7iPGHgcz9b0yNbMGiE3SIAP0Vu7BzLt67k8FcBCzdeWwgBPZtmsWy32OD?=
- =?us-ascii?Q?Wf1DvtNft+FEBhe66U6oxTi+NwEWUVl52t+gtD7hS+DRaGaO5FkSyrufBIQv?=
- =?us-ascii?Q?aXd43R6Te++5H79jEXPnYN11WUkrLz+a9X5rDtOW4CwvvoYxir3oVCxPa+Lk?=
- =?us-ascii?Q?R0tipuXHzqknD5VWZlBWKODBLWBc8j0+icxneNvcBYIfUwRWzbneeWjTuDvL?=
- =?us-ascii?Q?6wU6VwtTWvkpIpNUk2FYsufsWBqzC/nDMqRJQ23L3V86d/t80Xf7WWsZK2Tz?=
- =?us-ascii?Q?93QOY9xMkxCg9EbtDsT7j8ThBeWtFUf5zS45suoXg1wDabV5N5q+20JFVT5t?=
- =?us-ascii?Q?JObCPliavBJrpWh3GYosErD7lcgEbaUw8sVkZivDvxx6yflONMFyqdQea5wh?=
- =?us-ascii?Q?Yw/LqEWrLaBIZ1qUjZLCLhBsAuYD5rHEs7p29BpjfiymbFj4lq0QWTLc80uq?=
- =?us-ascii?Q?1/YLI8EAtYTLFL4gR5dPrVCmmuPrAm5QKs2ypPGjiflZMEZT52Y97EmLH6Hg?=
- =?us-ascii?Q?fcp5MVspxk8c550VKp7U9qxstCWSM7kNQLTQJ6ZGsEMA1oIThTN5zsA+5Ex4?=
- =?us-ascii?Q?1TKMgTS6KqqELOX/snVO8blejytfhwAUqyIaxG/7TL8QgFbfHn36np/hMj7Q?=
- =?us-ascii?Q?96kyBTGi9HdfZ5UJxrK48v2jVl21ZqU8HiGMR6u7AytSIXxsMcRZqilR8R1z?=
- =?us-ascii?Q?yG6GUKQ86hWR7xsjf2fC8wSOgMOhWer4v9KawAH50XorfNlEhgxWnThPE8MG?=
- =?us-ascii?Q?eQX+l8I0fs7YsN19ctQNdTMk+giXPNWeTqs8+DE8zvCW1EibMX3d93i4j5n3?=
- =?us-ascii?Q?TVG7mUco6nbu6Wckh2cmplKQMmfK1B+cwjDBGDSbitfK2t/glzsqibRVOFkf?=
- =?us-ascii?Q?rE/lQAka5ruH0eJIkSRSOM1izYt3+pUi9v0JNTKIf0c3pH9VrND7W7NiVQMm?=
- =?us-ascii?Q?5LxriPPDQSJH22wu5hv2GrEk9ienAa1EarG9OXNZ6dbRKrh058jyCdEEkuIp?=
- =?us-ascii?Q?REwK+TL6mDRxwBaOlJiCkQwTbcXEnEI4znzutgIRxVTjKolwNFj3I2eHu8c1?=
- =?us-ascii?Q?q4x3GFtcacjYboqiQNW09HHfZay3RMYfIWE4NkQQ45FGFRXMThCXbnTTldZC?=
- =?us-ascii?Q?rM6W+MKRKtgaSqBCYaQMTtlrQQaym33ktqu49zrPMyhKTs2YD0Nr1a0HPnUT?=
- =?us-ascii?Q?/kRpORWvaz9R1h3NKXMWNUFYp8k0ZAAIf7M0Do6GfVT42ka1S+kpCoFmlo88?=
- =?us-ascii?Q?bQX3n5xVQ5TJocmH2mamtmUYMos3Yf3Ezc0tV7yX1lRjzk27VgIssualegjO?=
- =?us-ascii?Q?YcWle0fu4IsIk9J9yjKDl6k1oqjGqEzQHCpaeSvqgV+YsatkSItylWhkndNg?=
- =?us-ascii?Q?ZfALv+Y3ajq+owkior/OGh7sOUgDCZWAFnpIJYFh/eaqVj11MZcJ1HF1OWW8?=
- =?us-ascii?Q?vC4kpeEHdy4P14JBj3mtxhsSlp/uMd4e1GD4rhcig26tWxfHmfIq8Rb9J0p7?=
- =?us-ascii?Q?MmDBUX+XJdlX1AXWDPfV0dBeBlsEfNtO0pEdzAOgCFWCTDFlPCBtbOHMEKlC?=
- =?us-ascii?Q?39a2e07VNYVvJIUwjdxuXfEk/3kDbb+OKcecMbMWwDDJhLO2ir4EBBY9hiqX?=
- =?us-ascii?Q?/DA+eAiR4e3peVjqcc2zJe/gNvVAP2yf9iCyDO52UGvf3Jri?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Fri, 27 Mar
+ 2026 02:40:32 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e%3]) with mapi id 15.20.9723.030; Fri, 27 Mar 2026
+ 02:40:08 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v2 0/3] Add i.MX94 remoteproc support and reset vector
+ handling improvements
+Date: Fri, 27 Mar 2026 10:42:01 +0800
+Message-Id: <20260327-imx943-rproc-v2-0-a547a3588730@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHnuxWkC/1XMQQrCMBCF4auUWRuZJCbarryHdFHj1M6iSUgkV
+ Ervbiy4EGbzD7xvhUyJKUPXrJCocObga6hDA24a/JMEP2qDQmVRSyl4XtqTFimm4IRCg4R4t2Y
+ 8Q53ERCMvO3fra0+cXyG9d73I7/cHqX+oSIFCk7WmraeGy9Uv8ejCDP22bR+nfvmlpgAAAA==
+X-Change-ID: 20260311-imx943-rproc-2050e00b65f7
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>
+Cc: linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: MA5P287CA0190.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b6::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA1PR04MB11084:EE_
+X-MS-Office365-Filtering-Correlation-Id: f55e3fb5-03de-4df6-e8e6-08de8baa28a1
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|19092799006|366016|921020|38350700014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8B/wMH1YVLgb3nzGTIA5GpOU2X2vcK8aPaE17J6fXzbqMOm9j/jNlAg9R5JT2YL7W5EwTrZINSG2bidPIrTmDWxs+oqeeTBSPvL6FKIpOdwBsVjEshi0bRrMMO0FGMFepuLKf5B5WAoEbO3KyD+ynGqiuBjkL2QZB5n/pb12i7qr2NdIB7zEpfvLkuHa3HPMKanCZ0/ZgdNNZm98/k7MMoRELvypjJmRKroq6AveObaD0+7RTNnjRliA6QiziMfhKBz7qwANbafu6m0MyWKpywxmQyEGkomEy7uGyW+xNkqdTkxjl4/W2BfGWCF2NqGsMmrnlLBSultOdbs2vJ/7ICd+4/tWQoTLJ6DodLidYhPFTJUimZ7bTIO4RAl9PdsoGKchNAEMmmxAYP6zVuj80zT5T0cZ3qC8whKa/y/7TuB7rcVEomRqmZA2RAbltRVKjm4EiVB1GZVzFrSjf5r2+vvzno4PDmsIskFf9zqqdVh+DRjnAJ2HHMj+1xKuHPnpvGivohWkc4c+f5suA0+AZRm6V4WueQGim/DXTNSCNiyqjHut64pKzbgllOF0SWQeJlbfjMKvnyebcI5ZcL8MAR9+dJcRusfPuc6bu2gI6ieUg9LYh6cyXSlFz80x5rMVJ5vtwVx0EiUNejbvHU4szwqkvGKmpL1+ZJ72Dbag0UyWi9tOqheLgFg2AkqlWJTQnL1UFUZenL/9jCevMl2d3YWzc/Yv+6IP8t4uXzcjk5EvVlQWomoZ5jNd4kozGJg6BQoND9tat6sVhrh5bXyCuXCfodf/1lalfMPTYzXByvOAHQRAAVXvjCBRtpK52Lq+
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(19092799006)(366016)(921020)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ak4zcnNKYUdicDNKN01HWmIxcDkzejdjQWZTZTR5ZDdob0VTc2llektnMXUr?=
+ =?utf-8?B?R2toMkljUTJtYk9aRUxIUGt4ajl2aVpqWGRZZzJSSWRUUVBsS0N5WktJRkdi?=
+ =?utf-8?B?WTNxbEJONzRHcm1DWGFEZGN5MUdIRHgrd3MrQm51cWwzVjl5aFkrbHJFdGx5?=
+ =?utf-8?B?QW5FOTBCZnYzUVdJaUFDQ3ozVlBjU3dOVVdxeENxazlGL3JWdGR0WDhDS21i?=
+ =?utf-8?B?NlE4NDN0cy9vRGdKd3Y3Y0hraWVDYmhNVk9od29YVnRRK3BZTjYxT0YzUHh1?=
+ =?utf-8?B?Zkk4Zkt5S3FCYVpjdGc2eGRYb2s4bjhQbmtaUUZOUU13TnFId2Z4TlRKcStY?=
+ =?utf-8?B?MnR1ZHl1bVNVV2ZVUmNDaVlESFhvV1h1MjB2REh5aWdHbUJGdzNNSU1YK09n?=
+ =?utf-8?B?RkJaS2w3eEVmTS9lQnVja0w4WVFQN2lOWW8vNkJnT3NCRi8vRmo2bEVHK0Zl?=
+ =?utf-8?B?UFp6b1ZHRnR4bEE3d0VUZUFaZTk1WTVHbHNqNk9VNkZKdUFVUlYzdXNsY3Rl?=
+ =?utf-8?B?RGw1aWI4cEE0a25OT2d4dE5ra2ZSNExCUDRSUldsNHJpTExUdU5PTWxkdXpF?=
+ =?utf-8?B?UmFia1RoeW5ZNWFNMnBYL0c5aGt4UVBnTFR4REFKejJjYzMxeC9naXhFNVR0?=
+ =?utf-8?B?eFJjSmd1MGR0RXBHelV0dnB2Z01TSUt2RXMrUzJuTGYyckNFaHoxeWlEQS91?=
+ =?utf-8?B?VmlaZWJoTEVSbGY3UzV5NTRqUDJYeW9LdmxFVHNBV1hiWUdXTTVScFF5V294?=
+ =?utf-8?B?V0xVRi9rYyt3NHBTTHJFRU80cHQ2TDJYekFKMlNRMkdsQzlNQVFxaktKT0to?=
+ =?utf-8?B?QlZJV3gxZHVhKzkxTjc1cThUSXRoRXdtWlR6Qi9Sck9sU3BEcjlabmYxSXFx?=
+ =?utf-8?B?L3pCVk95MWJCckR2OVF0V3JwUHVOWVkveUd6aVliZC9OeU9DWHdLK2RrN2My?=
+ =?utf-8?B?czlpNU1kZnYweVJhQXQwZTNaUTVScU5LeW83eGVtc0dBSDBaYUlwUlZYYTdH?=
+ =?utf-8?B?Nk0zUndZMHh2VWxzcHh2dktzS1lNcmUya1lYd245UEJRNm83aHlpSzB1UXls?=
+ =?utf-8?B?T0tOMUxnWUVGcW5nUUlvMWxVNlhMV1prVXY5eWJKTis5eFpkdkkvRHM4akx0?=
+ =?utf-8?B?a21INUsxZ1E4NnpWYW1GMUFsNWRWbFRGMldDR25rNW1SWUFJR2I5ZHR4OHlj?=
+ =?utf-8?B?SExDbWRFbktEZUlrVy82Y3Zob0xDTVloOUFkY2dVMDFVVnBQM1E1R29aUW1w?=
+ =?utf-8?B?bGVNQTd6K0xPZ0d4MWZXYkp2ZDA1OWVSWUJHYmM0M0h2VUhGQm5ZNEwxeU1u?=
+ =?utf-8?B?RThmRDZIRVZDMVpBdHBlSVpKTHBsMzV3VjdvVndTb2NvTERpbHkwSmNjc2o2?=
+ =?utf-8?B?ZmpmSkU2TFZVUGNwTWpYa1htZ2VsaUxzQS9EQm9vWVZ1enkyaWRTenJTVURJ?=
+ =?utf-8?B?NVM0c1ZOdXFlRXRQdDZXdGxRWEllVFkxWFpTRC9hdit3RVV5TzJQK0YrKysz?=
+ =?utf-8?B?U05GV0dXK21KdE9wSVFWYXVIYzE5SkIvQkh2NlZiSWgyQ0lwQ1RFdzZpckpX?=
+ =?utf-8?B?YnhsbEM5dDJoaGVSandteFBEWUJzajJ2TmRwWFNXR1F1b1o3bFpyK2JrZG5P?=
+ =?utf-8?B?OUNZcXJtLzRwblZadG9TdXdIVkZtdWNEYjA0ZlVEaERZQzBGNzUvcDk5YzZQ?=
+ =?utf-8?B?SkhiSTRrVng5bFRadW45dlZoRzhyK2ljbHlFSmgxZDJWbTVrcWRoUEpXNk9M?=
+ =?utf-8?B?VHZjL0paWWYyTGZLb2ErdENFV0JhemR4aS8wSGx3SWExSlk3U3lUUjJ5eEZL?=
+ =?utf-8?B?b1hPZlFrQ3A1SEJ3MFFqRGRzMDBMSmhsSDdiVG1DN1dKc0NGOVhKalRKZjhN?=
+ =?utf-8?B?TEJnZkZEb05RZ25iZ3U3TVhLYW52NC9PQzEzZE1WUWJKQmVZeXR4Mk9zWWVY?=
+ =?utf-8?B?VjB5UzBMaWVjZzVHazVxeWtrajVrd0lwQjhEV21YaXJ6T2wzT2JTZFhoQkxt?=
+ =?utf-8?B?U2p5QjRYTEFsVUd6cDE2aU1GN2Z4TmRnc0l6aHUwRFNIajR5OWgvVkVBZmJ5?=
+ =?utf-8?B?MnM2SEltcWdFUWZkR0pHbXFWVEVKVWE1WXB3bTJVZ3pEb1kwbUpObmozNlFE?=
+ =?utf-8?B?KzN4WUVZT1lQc2xxTkloNVdmZThhL0NMMUdaK2xlTUxDQjNCSmpsV2NOOG95?=
+ =?utf-8?B?cmp5b2ZGNmc0MzBhOGhFV2dGcDZaYVY0NUM1d2xaeWRjdklWcjdYWlJySjNt?=
+ =?utf-8?B?dGNJZy9kZ0NrOStEOUdtb3JwU0NzUGhXd2lUbXN0RUpreGUxeTlGOE1wK2ps?=
+ =?utf-8?B?Y1kwMHpTRHlLcXM5MDJsSHNuTUtqRXZtTkZQMWJUOGNFcU5rTEtvUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f55e3fb5-03de-4df6-e8e6-08de8baa28a1
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cd3a518-c330-42b8-153e-08de8ba5dee2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2026 02:09:25.7979
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 02:40:08.4356
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Fd2iwcNwsBQWxeEkfoCmfgw2ly/s5fjwgW3m7bG4QSqKG4fhLjxjuuJ381wbVwxEcy+04oZBi98gaAMcg9DaEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7946
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GiWULPiJts/S/8t5ZlaC5khT6gFJvuBLjZ4mBhCM3A4tPV2PwOhIumeBzrobxw95ccqovtlYo3fORhgBnw6wFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11084
 
-> On Thu, Mar 26, 2026 at 02:29:05PM +0800, Wei Fang wrote:
-> > Add bindings for NETC switch. This switch is a PCIe function of NETC
-> > IP, it supports advanced QoS with 8 traffic classes and 4 drop
-> > resilience levels, and a full range of  TSN standards capabilities.
-> > The switch CPU
->=20
-> Nit: double space before TSN.
+This series adds remoteproc support for the i.MX94 family, including the
+CM70, CM71, and CM33S cores, and derive the hardware reset vector for
+Cortex‑M processors whose ELF entry point does not directly correspond to
+the actual reset address.
 
-Thanks for catching this, I will fix it.
+Background:
+Cortex‑M processors fetch their initial SP and PC from a fixed reset vector
+table. While ELF images embed the entry point (e_entry), this value is
+not always aligned to the hardware reset address. On platforms such as
+i.MX94 CM33S, masking is required to compute the correct reset vector
+address before programming the SoC reset registers.
 
->=20
-> > port connects to an internal ENETC port, which is also a PCIe function
-> > of NETC IP. So these two ports use a light-weight "pseudo MAC" instead
-> > of a back-to-back MAC, because the "pseudo MAC" provides the
-> > delineation between switch and ENETC, this translates to lower power
-> > (less logic and
->=20
-> what's means "this translates", do you means "this help reduce power and
-> latency."
+Similarly, on i.MX95, the existing implementation always programs a reset
+vector of 0x0, which only works when executing entirely from TCM. When
+firmware is loaded into DDR, the driver must pass the correct reset vector
+to the SM CPU/LMM interfaces.
 
-This sentence is excerpted from the NETC Block Guide. It is equivalent to
-"it means".
+Summary of patches:
+[1]dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
+Adds a new DT property allowing SoCs to specify a mask for deriving the
+hardware reset vector from the ELF entry point.
 
->=20
-> > memory) and lower delay (as there is no serialization delay across
-> > this link).
-> >
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  .../bindings/net/dsa/nxp,netc-switch.yaml     | 130 ++++++++++++++++++
-> >  1 file changed, 130 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
-> >
-> > diff --git
-> > a/Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
-> > b/Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
-> > new file mode 100644
-> > index 000000000000..e34a4e3504c3
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
-> > @@ -0,0 +1,130 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/dsa/nxp,netc-switch.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NETC Switch family
-> > +
-> > +description:
->=20
-> Nit use ">" for multi paragraph.
+[2]remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
+Ensures the correct reset vector is passed to SM APIs by introducing a
+driver‑level helper (imx_rproc_get_boot_addr()) that applies the
+reset‑vector mask.
 
-Okay, I suppose I also need to add '>' to the below description of
-"dsa,member" property.
+[3]remoteproc: imx_rproc: Add support for i.MX94 remoteproc
+Adds address translation tables and configuration data for CM70, CM71,
+and CM33S, enabling full remoteproc operation on i.MX94.
 
->=20
-> others look good
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->=20
-> > +  The NETC presents itself as a multi-function PCIe Root Complex
-> > + Integrated  Endpoint (RCiEP) and provides full 802.1Q Ethernet
-> > + switch functionality,  advanced QoS with 8 traffic classes and 4
-> > + drop resilience levels, and a  full range of TSN standards capabiliti=
-es.
-> > +
-> > +  The CPU port of the switch connects to an internal ENETC. The
-> > + switch and  the internal ENETC are fully integrated into the NETC
-> > + IP, a back-to-back  MAC is not required. Instead, a light-weight
-> > + "pseudo MAC" provides the  delineation between the switch and ENETC.
-> > + This translates to lower power  (less logic and memory) and lower
-> > + delay (as there is no serialization  delay across this link).
-> > +
-> > +maintainers:
-> > +  - Wei Fang <wei.fang@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - pci1131,eef2
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  dsa,member:
-> > +    description:
-> > +      The property indicates DSA cluster and switch index. For NETC sw=
-itch,
-> > +      the valid range of the switch index is 1 ~ 7, the index is refle=
-cted
-> > +      in the switch tag as an indication of the switch ID where the fr=
-ame
-> > +      originated. The value 0 is reserved for ENETC VEPA switch, whose=
- ID
-> > +      is hardwired to zero.
-> > +
-> > +$ref: dsa.yaml#
-> > +
-> > +patternProperties:
-> > +  "^(ethernet-)?ports$":
-> > +    type: object
-> > +    additionalProperties: true
-> > +    patternProperties:
-> > +      "^(ethernet-)?port@[0-9a-f]$":
-> > +        type: object
-> > +
-> > +        $ref: dsa-port.yaml#
-> > +
-> > +        properties:
-> > +          clocks:
-> > +            items:
-> > +              - description: MAC transmit/receive reference clock.
-> > +
-> > +          clock-names:
-> > +            items:
-> > +              - const: ref
-> > +
-> > +          mdio:
-> > +            $ref: /schemas/net/mdio.yaml#
-> > +            unevaluatedProperties: false
-> > +            description:
-> > +              Optional child node for switch port, otherwise use NETC
-> EMDIO.
-> > +
-> > +        unevaluatedProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - dsa,member
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/pci/pci-device.yaml
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    pcie {
-> > +        #address-cells =3D <3>;
-> > +        #size-cells =3D <2>;
-> > +
-> > +        ethernet-switch@0,2 {
-> > +            compatible =3D "pci1131,eef2";
-> > +            reg =3D <0x200 0 0 0 0>;
-> > +            dsa,member =3D <0 1>;
-> > +            pinctrl-names =3D "default";
-> > +            pinctrl-0 =3D <&pinctrl_switch>;
-> > +
-> > +            ports {
-> > +                #address-cells =3D <1>;
-> > +                #size-cells =3D <0>;
-> > +
-> > +                port@0 {
-> > +                    reg =3D <0>;
-> > +                    phy-handle =3D <&ethphy0>;
-> > +                    phy-mode =3D "mii";
-> > +                };
-> > +
-> > +                port@1 {
-> > +                    reg =3D <1>;
-> > +                    phy-handle =3D <&ethphy1>;
-> > +                    phy-mode =3D "mii";
-> > +                };
-> > +
-> > +                port@2 {
-> > +                    reg =3D <2>;
-> > +                    clocks =3D <&scmi_clk 103>;
-> > +                    clock-names =3D "ref";
-> > +                    phy-handle =3D <&ethphy2>;
-> > +                    phy-mode =3D "rgmii-id";
-> > +                };
-> > +
-> > +                port@3 {
-> > +                    reg =3D <3>;
-> > +                    ethernet =3D <&enetc3>;
-> > +                    phy-mode =3D "internal";
-> > +
-> > +                    fixed-link {
-> > +                        speed =3D <2500>;
-> > +                        full-duplex;
-> > +                        pause;
-> > +                    };
-> > +                };
-> > +            };
-> > +        };
-> > +    };
-> > --
-> > 2.34.1
-> >
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v2:
+- Drop fsl,reset-vector-mask by using fixed value in driver for per device
+- Add R-b for i.MX94 dt-binding
+- Update commit log to include dev addr and sys addr
+- Link to v1: https://lore.kernel.org/r/20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com
+
+---
+Peng Fan (3):
+      dt-bindings: remoteproc: imx-rproc: Support i.MX94
+      remoteproc: imx_rproc: Pass bootaddr to SM CPU/LMM reset vector
+      remoteproc: imx_rproc: Add support for i.MX94
+
+ .../bindings/remoteproc/fsl,imx-rproc.yaml         |  3 +
+ drivers/remoteproc/imx_rproc.c                     | 88 +++++++++++++++++++++-
+ drivers/remoteproc/imx_rproc.h                     |  2 +
+ 3 files changed, 90 insertions(+), 3 deletions(-)
+---
+base-commit: a2f31c83962f7f298b2975ab004810f3ac4875dc
+change-id: 20260311-imx943-rproc-2050e00b65f7
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
