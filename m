@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05A2DC344;
-	Fri, 27 Mar 2026 03:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2D336C9C0;
+	Fri, 27 Mar 2026 03:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774581620; cv=none; b=Bk2yMeYYv2jr/L3eFTnhs/Od8XM+9GxZfZkMkbj9O7XkyyYpuX3rz7GjE8a92APS9BkwUSk3xdPXQNk4YSCZBdbRlEdj3ArMPjRN07ZtuBaGctZvHj/8OP4duehp/2NwTlbIIzU/OIUOwHlt2tPvXUNdAy0i5BJSXes6LZB972U=
+	t=1774582223; cv=none; b=VGA/5WWeNvm2bLVCMeXjTARNdiX0o8vyE7M1LVLK5hKXIhC0WuPwoqRPGS6WIBYeXoaIQs7FzMiTz70bZce9Laqw2tMbqUAQsvMQyACj5zQrnoFPkgeG/8RzCmPGZNBC3X+XNBubq/RYQrtvgsM3GdKJ/cJs9iuG/E586/1Xvfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774581620; c=relaxed/simple;
-	bh=vk+zRmQ+v4KaJieMrzy5TUowtEPMCkm9f5/l7bJGDWo=;
+	s=arc-20240116; t=1774582223; c=relaxed/simple;
+	bh=aaJRGPqgb61KY23V+ty+AwjuClm0OPw0i+z42m/+LsQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VsyXF8X2nsajd/qUC/p9JHSnq+eReEqghR26E+hmxnsm1OkOQG60XHVuegnFcxe5Id2QbAiSkhkODD2IvBKA7G9Z5HkHrsg9/tLIj+zWAihHIlDwBTC83sHo+KB78ZxQ1A/CD42XLhE1YvIe4DL6ZbR1SKSnHphekR/P4yVdgB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ou2vWs01; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=QNwXSgMIXXS4kLiulJgRblr5fOBGybeTLi7Sfbvljc/yWzs0uHEkyh8NwPrH7vea+cLrktyl7Vp39tY0rupSXIaDys71B9NNUYO/Lx6vIqAn4AXjfogsGqtWYlkMVFfZkCaKE4itKeS6UPJKVtNxYPERBfKBw4bc0I6tvNVtUpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQ3LpiiQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ou2vWs01"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6864C2BCB0;
-	Fri, 27 Mar 2026 03:20:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQ3LpiiQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892B2C116C6;
+	Fri, 27 Mar 2026 03:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774581619;
-	bh=vk+zRmQ+v4KaJieMrzy5TUowtEPMCkm9f5/l7bJGDWo=;
+	s=k20201202; t=1774582223;
+	bh=aaJRGPqgb61KY23V+ty+AwjuClm0OPw0i+z42m/+LsQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ou2vWs01AHnVsUcO0ZvN+4ldvfzkaykEAAIKXBjdEOELEtpWQu94IzI7JoM9PGRIP
-	 eyURzRpISEwJdwEbNTA+ulpqU0Zx2s3prSROIIXRNrcQdvXa2S9UJg+LYindvFZhH4
-	 rmBokYeOSFRmPVyh/o1+kcP3pSKVMYtBNo9QJKqpT+pRFKUsX5ImqcDzFew66Xm5rs
-	 RR/F2aY8ME2Z10pGmf+nEIBfF65FZbqnCRGY7eRhU7kEpx5bnGWLUhXJ7FVchN83MQ
-	 MmiSG9V4eJBNn0xipzeFibKiLCZ7CuhWtV+rnuq2zgL0IPOc+m7u9mMioXyDthSSff
-	 Xnthos5JPR1oA==
+	b=JQ3LpiiQYZLOFELuUUrMmgAGaOAQUuAZQs5eYaN3ltprz0suvk6RJu7ZG1VtgdkS2
+	 YWhkGuohNRcp/hAglrZxTqSPOX4nCj4Itq33vRk84qUd2OHNnhvVv+7TFAROwwPJ1x
+	 N3ODMM9DCmUG7fNO4t88N4+JsOJ+aQUQefFsGnZBT52AfMoHFGGGZytoB8fImfWhr3
+	 rDS3axb5qWCw/59c4SGXrI/oGb4Da1FeU3ds7vS/VDYRnubVmKBN3iRU4ZRmGHEDWL
+	 GOeMTzy7k5OaTxT41z/HOAxEieF/1mOlWEF5TxRHLiA8IBGy+K1irsEyF7+iRv1pJR
+	 HdOq3U6uATGzw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE1A380692E;
-	Fri, 27 Mar 2026 03:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E8A3809A0B;
+	Fri, 27 Mar 2026 03:30:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -37,44 +37,45 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 1/1] net: fec: fix the PTP periodic output sysfs
- interface
+Subject: Re: [PATCH v5 RESEND net 0/3] net: enetc: safely reinitialize TX BD
+ ring
+ when it has unsent frames
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177458160604.3283168.10059556551058678731.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Mar 2026 03:20:06 +0000
-References: 
- <8ec2afe88423c2231f9cf8044d212ce57846670e.1774359059.git.buday.csaba@prolan.hu>
-In-Reply-To: 
- <8ec2afe88423c2231f9cf8044d212ce57846670e.1774359059.git.buday.csaba@prolan.hu>
-To: Buday Csaba <buday.csaba@prolan.hu>
-Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+ <177458220979.3285968.1583263638777426157.git-patchwork-notify@kernel.org>
+Date: Fri, 27 Mar 2026 03:30:09 +0000
+References: <20260324062121.2745033-1-wei.fang@nxp.com>
+In-Reply-To: <20260324062121.2745033-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- francesco.dolcini@toradex.com, bence98@sch.bme.hu, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, Frank.Li@nxp.com,
+ horms@kernel.org, saikrishnag@marvell.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 24 Mar 2026 14:32:30 +0100 you wrote:
-> When the PPS channel configuration was implemented, the channel
-> index for the periodic outputs was configured as the hardware
-> channel number.
-> 
-> The sysfs interface uses a logical channel index, and rejects numbers
-> greater than `n_per_out` (see period_store() in ptp_sysfs.c).
-> That property was left at 1, since the driver implements channel
-> selection, not simultaneous operation of multiple PTP hardware timer
-> channels.
+On Tue, 24 Mar 2026 14:21:18 +0800 you wrote:
+> Currently the driver does not reset the producer index register (PIR) and
+> consumer index register (CIR) when initializing a TX BD ring. The driver
+> only reads the PIR and CIR and initializes the software indexes. If the
+> TX BD ring is reinitialized when it still contains unsent frames, its PIR
+> and CIR will not be equal after the reinitialization. However, the BDs
+> between CIR and PIR have been freed and become invalid and this can lead
+> to a hardware malfunction, causing the TX BD ring will not work properly.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/1] net: fec: fix the PTP periodic output sysfs interface
-    https://git.kernel.org/netdev/net/c/e8e44c98f789
+  - [v5,RESEND,net,1/3] net: enetc: reset PIR and CIR if they are not equal when initializing TX ring
+    https://git.kernel.org/netdev/net/c/0239fd701d33
+  - [v5,RESEND,net,2/3] net: enetc: add graceful stop to safely reinitialize the TX Ring
+    https://git.kernel.org/netdev/net/c/2725d84efe25
+  - [v5,RESEND,net,3/3] net: enetc: do not access non-existent registers on pseudo MAC
+    https://git.kernel.org/netdev/net/c/f2df9567b123
 
 You are awesome, thank you!
 -- 
