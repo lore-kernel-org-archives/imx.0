@@ -1,93 +1,262 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176DA346E63;
-	Thu, 26 Mar 2026 21:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959014C6D;
+	Fri, 27 Mar 2026 00:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774558991; cv=none; b=AGrv5rwy69ZCxe0ocg/aMu8YX+EgIh5k7FGi1LMOpytl7OAnhHzvtycrciYQWXSmTqgQBpCDTL3wKeY27PfaWy4iXvBdr1mI3N1jPZrndAOS5EMbC9iC0uUVAenJh7+NHgjhdLRN/TtDDNAmxjhutK3OimS8w3YyzPUHVFQuT9I=
+	t=1774570012; cv=none; b=k5A25Lres3tTBx0xPqLxZKOC967PMXClYc7174IcAckAJqq3ZRIRCr2uAXIRp3gY5WQ1wTVDoGeScdVF7UUYDbZxVMfs236G8NJY/qCfI1yAic0OkpeG3iqbWbjkSrXHF9JNnEmSurTQYBXHGHCvkr+PBbyfsW9Oq2a1zBZ8PkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774558991; c=relaxed/simple;
-	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=szeZkdJJEMaEKEac4/jeT1SsUEMRT55nf43o96zp0tzF4C0WskdEWf4Do1YrS0zir83x9XuewaUh6xPvnopAOvBxU18C/h+q6XCVThmbSeWtLBo55oJbX0nW8TKedAgWHjzOkk+wMsNUfkZyGPeEplpJHZwCwuG4U0d8EHEpmf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPAAIB3f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774570012; c=relaxed/simple;
+	bh=ImIPmx6AnEDb6/60dXKqr0SMF6qzc2/4ui0g+5wcem4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tYZfW+B0PFQQMNXPJ50cP/u2jxb8eAvjsx/K2muPb0FQSQu3tNk6ndYYupLKTbr3sgprYcuv4UJmogvAei4o87ekcQf2DDAicNxTjIdGdFni4TvPzgIxVOJ0tAPBs3+sABclXgBjTK1aDXyTmgv2IdC2e+5ir59JMtUe1mbpiKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLPv43BO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPAAIB3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9306BC116C6;
-	Thu, 26 Mar 2026 21:03:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLPv43BO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43046C116C6;
+	Fri, 27 Mar 2026 00:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774558990;
-	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=gPAAIB3fsENGAvoB1ls1d+lyJstfElum/pLWj2DuNK2WleRkSJpZzbuOcSRguNRex
-	 LE7yjFpGJeYqgeiTWSX6kkVoDPXfYgQsoiYvVNcYBuRy7Weff6IyhdJ7LJejW3y2q7
-	 Lu58LJqd2qR99uWpkNGFPfJeYhdGTH7gmxUd9PImDf3hgeIKuz12xa1bfI6GtosZ25
-	 zz/3VILPimPfvECimlah9QRnSQlerX84zqBcJ1XtWuuz4pCn2J3IQkAwYpmSsY+R6p
-	 Vq0PeeQgRdA6sV45AaVZZ3KVJItFvjXCg6L1WvlZQDmeunZRkvtTNmqHb/caoBZYIw
-	 rdfYLFPYbjpsg==
+	s=k20201202; t=1774570012;
+	bh=ImIPmx6AnEDb6/60dXKqr0SMF6qzc2/4ui0g+5wcem4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mLPv43BOud1czIw27DXQ3ERM9udF260XoPVxHF9ZsVaSyLYWOvzSbREpF1lS+rVKv
+	 Z5ZeX6NUFu5okvgMOKRebWjk4TY8r3FcT51nyN7Zy1rWz4xt55JbnkP2E5K+izHTCJ
+	 rgqqfxZCuxGS3BEGQ+mKWgzDX32VVoW/caqNfbvWDbtZRiaSmlVX3Ap1e/Eo0oXhX2
+	 e2Pni65CdQ7bvJZYSBMzsUO1t0cEUu2Sc2veQwAu094GbUjrbx48AYJOgS7r2m1FTx
+	 SSrH+trAwyFpNVRriXx8X2R42k5JJy6PqMkx90q2Bsp1UhOqyOX+z0bN1bP7XHlGrO
+	 EReHcA13XWoqQ==
+Date: Fri, 27 Mar 2026 00:06:47 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Haibo Chen <haibo.chen@nxp.com>
+Subject: Re: [PATCH v4 3/7] pinctrl: extract pinctrl_generic_to_map() from
+ pinctrl_generic_pins_function_dt_node_to_map()
+Message-ID: <20260327-caucus-lunchtime-9b732c1e74d1@spud>
+References: <20260325-pinctrl-mux-v4-0-043c2c82e623@nxp.com>
+ <20260325-pinctrl-mux-v4-3-043c2c82e623@nxp.com>
+ <20260326-concur-eel-3e0b3d91e00a@spud>
+ <20260326-poncho-expanse-d30a9eded8e2@spud>
+ <acWNOhnBvA5l9NW3@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jz0AcoB0Nxtd0vkz"
+Content-Disposition: inline
+In-Reply-To: <acWNOhnBvA5l9NW3@lizhi-Precision-Tower-5810>
+
+
+--jz0AcoB0Nxtd0vkz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Mar 2026 22:03:02 +0100
-Message-Id: <DHD0NQH9UJ21.3J691DBDXS0K0@kernel.org>
-To: "Douglas Anderson" <dianders@chromium.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode
- "flags" thread safe
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, <stable@vger.kernel.org>, "Andy Shevchenko"
- <andriy.shevchenko@linux.intel.com>, "Mark Brown" <broonie@kernel.org>,
- "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Andrew Lunn"
- <andrew@lunn.ch>, "Daniel Scally" <djrscally@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Fabio
- Estevam" <festevam@gmail.com>, "Frank Li" <Frank.Li@nxp.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
- <lenb@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Pengutronix Kernel
- Team" <kernel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Russell
- King" <linux@armlinux.org.uk>, "Sakari Ailus"
- <sakari.ailus@linux.intel.com>, "Saravana Kannan" <saravanak@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
- <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
 
-On Tue Mar 17, 2026 at 5:01 PM CET, Douglas Anderson wrote:
-> In various places in the kernel, we modify the fwnode "flags" member
-> by doing either:
->   fwnode->flags |=3D SOME_FLAG;
->   fwnode->flags &=3D ~SOME_FLAG;
->
-> This type of modification is not thread-safe. If two threads are both
-> mucking with the flags at the same time then one can clobber the
-> other.
->
-> While flags are often modified while under the "fwnode_link_lock",
-> this is not universally true.
->
-> Create some accessor functions for setting, clearing, and testing the
-> FWNODE flags and move all users to these accessor functions. New
-> accessor functions use set_bit() and clear_bit(), which are
-> thread-safe.
->
-> Cc: stable@vger.kernel.org
-> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+On Thu, Mar 26, 2026 at 03:47:06PM -0400, Frank Li wrote:
+> On Thu, Mar 26, 2026 at 06:55:01PM +0000, Conor Dooley wrote:
+> > On Thu, Mar 26, 2026 at 06:52:12PM +0000, Conor Dooley wrote:
+> > > On Wed, Mar 25, 2026 at 07:04:12PM -0400, Frank Li wrote:
+> > >
+> > > > diff --git a/drivers/pinctrl/pinctrl-generic.c b/drivers/pinctrl/pi=
+nctrl-generic.c
+> > > > index efb39c6a670331775855efdc8566102b5c6202ef..20a216ae63e91b69985=
+ea4cfcd0b57103c6ca950 100644
+> > > > --- a/drivers/pinctrl/pinctrl-generic.c
+> > > > +++ b/drivers/pinctrl/pinctrl-generic.c
+> > > > @@ -17,29 +17,18 @@
+> > > >  #include "pinctrl-utils.h"
+> > > >  #include "pinmux.h"
+> > > >
+> > > > -static int pinctrl_generic_pins_function_dt_subnode_to_map(struct =
+pinctrl_dev *pctldev,
+> > >
+> > > > +int
+> > > > +pinctrl_generic_to_map(struct pinctrl_dev *pctldev, struct device_=
+node *parent,
+> > >
+> > > Can you drop this stylistic change please? The
+> >
+> > Whoops, cut myself off. To be clear, what I am asking for is to keep the
+> > "int" etc on the same line as the function name. This function is new,
+> > but you did it for the existing function too and the comparison is here.
+> >
+> > >
+> > > > +		       struct device_node *np, struct pinctrl_map **maps,
+> > > > +		       unsigned int *num_maps, unsigned int *num_reserved_maps,
+> > > > +		       const char **group_names, unsigned int ngroups,
+> > > > +		       const char **functions, unsigned int *pins)
+> > > >  {
+> > > >  	struct device *dev =3D pctldev->dev;
+> > > > -	const char **functions;
+> > > > +	int npins, ret, reserve =3D 1;
+> > > > +	unsigned int num_configs;
+> > > >  	const char *group_name;
+> > > >  	unsigned long *configs;
+> > > > -	unsigned int num_configs, pin, *pins;
+> > > > -	int npins, ret, reserve =3D 1;
+> > > > -
+> > > > -	npins =3D of_property_count_u32_elems(np, "pins");
+> > > > -
+> > > > -	if (npins < 1) {
+> > > > -		dev_err(dev, "invalid pinctrl group %pOFn.%pOFn %d\n",
+> > > > -			parent, np, npins);
+> > > > -		return npins;
+> > > > -	}
+> > > >
+> > > >  	group_name =3D devm_kasprintf(dev, GFP_KERNEL, "%pOFn.%pOFn", par=
+ent, np);
+> > > >  	if (!group_name)
+> > > > @@ -51,22 +40,6 @@ static int pinctrl_generic_pins_function_dt_subn=
+ode_to_map(struct pinctrl_dev *p
+> > > >  	if (!pins)
+> > > >  		return -ENOMEM;
+> > >
+> > > This looks suspect. You've left the pins allocation behind:
+> > > 	pins =3D devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
+> > > 	if (!pins)
+> > > 		return -ENOMEM;
+> > > but pinctrl_generic_pins_function_dt_subnode_to_map() has already
+> > > populated this array before calling the function.
+>=20
+> what's means?
 
-    [ Fix fwnode_clear_flag() argument alignment, restore dropped blank
-      line in fwnode_dev_initialized(), and remove unnecessary parentheses
-      around fwnode_test_flag() calls. - Danilo ]
+It means you broke my driver by not removing this allocation from
+pinctrl_generic_to_map().
 
-Applied to driver-core-testing, thanks!
+>=20
+> pinctrl_generic_pins_function_dt_subnode_to_map()
+> {
+> 	pins =3D devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
+> 	...
+> 	pinctrl_generic_to_map();
+> }
+>=20
+> pinctrl_generic_pins_function_dt_subnode_to_map() have not use this array.
+
+I have no idea what this statement means.
+
+>=20
+> Frank
+> > >
+> > > Also, this should probably be
+> > > Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+> > >
+> > > Cheers,
+> > > Conor.
+> > >
+> > > >
+> > > > -	functions =3D devm_kcalloc(dev, npins, sizeof(*functions), GFP_KE=
+RNEL);
+> > > > -	if (!functions)
+> > > > -		return -ENOMEM;
+> > > > -
+> > > > -	for (int i =3D 0; i < npins; i++) {
+> > > > -		ret =3D of_property_read_u32_index(np, "pins", i, &pin);
+> > > > -		if (ret)
+> > > > -			return ret;
+> > > > -
+> > > > -		pins[i] =3D pin;
+> > > > -
+> > > > -		ret =3D of_property_read_string(np, "function", &functions[i]);
+> > > > -		if (ret)
+> > > > -			return ret;
+> > > > -	}
+> > > > -
+> > > >  	ret =3D pinctrl_utils_reserve_map(pctldev, maps, num_reserved_map=
+s, num_maps, reserve);
+> > > >  	if (ret)
+> > > >  		return ret;
+> > > > @@ -103,6 +76,54 @@ static int pinctrl_generic_pins_function_dt_sub=
+node_to_map(struct pinctrl_dev *p
+> > > >  	return 0;
+> > > >  };
+> > > >
+> > > > +static int
+> > > > +pinctrl_generic_pins_function_dt_subnode_to_map(struct pinctrl_dev=
+ *pctldev,
+> > > > +						struct device_node *parent,
+> > > > +						struct device_node *np,
+> > > > +						struct pinctrl_map **maps,
+> > > > +						unsigned int *num_maps,
+> > > > +						unsigned int *num_reserved_maps,
+> > > > +						const char **group_names,
+> > > > +						unsigned int ngroups)
+> > > > +{
+> > > > +	struct device *dev =3D pctldev->dev;
+> > > > +	unsigned int pin, *pins;
+> > > > +	const char **functions;
+> > > > +	int npins, ret;
+> > > > +
+> > > > +	npins =3D of_property_count_u32_elems(np, "pins");
+> > > > +
+> > > > +	if (npins < 1) {
+> > > > +		dev_err(dev, "invalid pinctrl group %pOFn.%pOFn %d\n",
+> > > > +			parent, np, npins);
+> > > > +		return npins;
+> > > > +	}
+> > > > +
+> > > > +	pins =3D devm_kcalloc(dev, npins, sizeof(*pins), GFP_KERNEL);
+> > > > +	if (!pins)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	functions =3D devm_kcalloc(dev, npins, sizeof(*functions), GFP_KE=
+RNEL);
+> > > > +	if (!functions)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	for (int i =3D 0; i < npins; i++) {
+> > > > +		ret =3D of_property_read_u32_index(np, "pins", i, &pin);
+> > > > +		if (ret)
+> > > > +			return ret;
+> > > > +
+> > > > +		pins[i] =3D pin;
+> > > > +
+> > > > +		ret =3D of_property_read_string(np, "function", &functions[i]);
+> > > > +		if (ret)
+> > > > +			return ret;
+> > > > +	}
+> > > > +
+> > > > +	return pinctrl_generic_to_map(pctldev, parent, np, maps, num_maps,
+> > > > +				      num_reserved_maps, group_names, ngroups,
+> > > > +				      functions, pins);
+> > > > +}
+> > > > +
+> > > >  /*
+> > > >   * For platforms that do not define groups or functions in the dri=
+ver, but
+> > > >   * instead use the devicetree to describe them. This function will=
+, unlike
+> > > >
+> > > > --
+> > > > 2.43.0
+> > > >
+> >
+> >
+>=20
+>=20
+
+--jz0AcoB0Nxtd0vkz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacXKFgAKCRB4tDGHoIJi
+0mQlAQCCrpynWKye+JnQ3d79G381Pt3Rtj9h7zOyzY0DrZV22gD/f58jVm9SlzrG
+YHkt07haqbZTweNomXGNWGl+D+tiNQw=
+=EOzH
+-----END PGP SIGNATURE-----
+
+--jz0AcoB0Nxtd0vkz--
