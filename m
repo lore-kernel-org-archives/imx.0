@@ -1,144 +1,169 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010051.outbound.protection.outlook.com [52.101.69.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24CC3890F4
-	for <imx@lists.linux.dev>; Sat, 28 Mar 2026 11:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774697878; cv=none; b=GjNUZvCR/bmFZcXsUcJkJY+nrXAjQas9XfuxsG50z+M/urgDHWOHSmJNbKh4MQanb8g39kDgUaTQYACuWqGEHd8wpbILHlzLqPM5v2DLFpbLUKvdaagWanlYhwRH10+qkLsrlw5y2nXlC9yFZeHcwERlKuK9xZGfb/3ZOnNgoDg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774697878; c=relaxed/simple;
-	bh=LkDJmadL615W4q00l7NDdJK9EtbSo9KpRQOXiC2c5hU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eovKj+pbZuuGiZURNpjmT9RKwmvr3apbzBJUZJT3r8ZzvCMJEcTe40bQddJGKaupoqarStwax00mndEc0OQC68nrK0mG9H78s1C8ArFZ0Sp42Mh/7JGIlMmpDJcKBBZ3IIkQmz0jhuXVOsPr4SWSrUD9Gi6pf9KsKTg9rcyDl78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=PHmaBbPs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=2J/acEMG; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55835313520
+	for <imx@lists.linux.dev>; Sun, 29 Mar 2026 12:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774789127; cv=fail; b=k6sQlw0HTAUFWSiIkTUxv2PB21qseyN4uljGIEKcJBhgl//G7F8cBXjXvnHPOjFj/hajtnNGXtREk6GnAU0MSRgk6v6rXNibqfo/RRgMl4OCU6NyOePw83ff1fnfuAwlYyGzz380RW60KcpDzNvaK0nyq2baa6ELMxKiuELqWpI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774789127; c=relaxed/simple;
+	bh=yyT8m/IX5d+g6wgIUgupccD4numdEVi42h9m4JnwV20=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=QunXQBoKRY2bMxqtf9v4y7S+R4yWuqUXcURZcA24IIUBQki4tjaPDDuat+ftfUDibRtIBS9AdXXFx5GShINlv4jOk5hNSRusmF9W/rdvRGgA2Pn+H+SxOp9o3Gx6r9vjthXisKx+SmyNkZ30S2ylcwEP4BI3EOJJ1rjLpuOeVh8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lkvcPBZL; arc=fail smtp.client-ip=52.101.69.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="PHmaBbPs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="2J/acEMG"
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.stl.internal (Postfix) with ESMTP id BBAAE1D001A0;
-	Sat, 28 Mar 2026 07:37:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Sat, 28 Mar 2026 07:37:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774697874;
-	 x=1774784274; bh=PTd2pk8Y/+znmp8P0psuOqPXJpEyyacbHu+SbMYHSN8=; b=
-	PHmaBbPsV2OTbR9JWMgA7ehBXInZwrFnFkGFb/FMRYDmyFG5A7d/Q22juhsdoe+Y
-	IUYUU0vuEeDoPIqV+hwcft232ghe4xI4VLdOT3/sILW+Mp5QtTUNAdnZJkSjZoPU
-	xjCX6zQBMFAkVDUa22Ed7SMqKnFTr0/RPjv642UrM4oQ8CEWsKS0loHGQWEcAkhD
-	IeCqXW8BfHG7HzVaTFsFXcEP8vXT0+50BKryOiiN995zzLdjbt7EZk+U8UzXrJn6
-	FqEZyPFsyG+j9Xe8SoCIlVqmDc19XwlntkTbXhThTH2OMEh/OpKeXuCTlASTzJOM
-	PRJOeIU6aDqV3MSVQz4/Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774697874; x=
-	1774784274; bh=PTd2pk8Y/+znmp8P0psuOqPXJpEyyacbHu+SbMYHSN8=; b=2
-	J/acEMG0Ka3barJs0x/+zf07nOlQbuUxjxoTAetzASOoav6S5VeVVO03AbpGRUzN
-	7KXxW+gXG/CVdFF6001CHGsxR0QFvQdqs6pQI7swXZTQKgQgrXjWdoraQmt83Vps
-	GIfeidqt05tmYA1WtWvJk4xONG/VkP8YDKxnHNw1WzGCSkdTwL5TQpb1+Me1txyg
-	lgUy3U34J/BB4ExQsRN7HUEYbA3yRhc26I+8XV+TIFhzh9nZEsp3jY7I6Usj+aL4
-	fpqyEtBLEiNIrNGQndiMziTd58WvoOoCXSMZJPjr8JwaES4OxFj2ucldSwDDP5/C
-	3B5EgJIBF6crpIMV0f/jA==
-X-ME-Sender: <xms:kb3HadCU7DHeZ4UDxdr4eDTyAxV4-U6ByQIkEZOWx7-tVhpVZuDFCw>
-    <xme:kb3HaVMfuzwlEFuU0cR3G1-K74we4GBOEGGwNfQCTtZgJOz64U_273HP0Ap1utl80
-    ynqm7ugaJbgYyhtcK13mrsoXtH6wq5Wyo6MEaEFkCqvH65NFA>
-X-ME-Received: <xmr:kb3HaX4pttNIG2iOi_yBDr4REp7gjRsHTsCYbb7YKv8GuwAA94JImy6AEeA5kR9b8VR9znO2l3GfRnvquA1PlJ_P-SXluv020mqLssvm-aM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeftdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtugfgjgesthekre
-    dttddtjeenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheq
-    necuggftrfgrthhtvghrnhepleekheejjeeiheejvdetheejveekudegueeigfefudefgf
-    ffhfefteeuieekudefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomhdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeguvghvnhgvgigvnhesghhmrghilhdrtghomhdprhgtphhtthhopehlrghurhgvnh
-    htrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohep
-    mhgthhgvhhgrsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfhhrrghnkhdrlhhise
-    hngihprdgtohhmpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidr
-    uggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtph
-    htthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehjrggtohhp
-    ohesjhhmohhnughirdhorhhgpdhrtghpthhtoheprghishhhvghnghdrughonhhgsehngi
-    hprdgtohhm
-X-ME-Proxy: <xmx:kb3Haf38_2FPlxhNNos9IFMbsBN7LOQO-Oi0s8NMTdV8ibfL2TY9XQ>
-    <xmx:kb3HaWpaTrM1gkArlHVQeyD67VVQly80TeBsp6X4T9ftX_JXaxkk3w>
-    <xmx:kb3HaW9fSaDcLgREkK2tgn6UhzupkHJ8ZACymagJoYkJ9cqrLp6dHA>
-    <xmx:kb3HaZ65IoRqWDf-4etebvhEwAHDI1yhOX8fQ8uoI5p_YtxDHdMyLQ>
-    <xmx:kr3HaSvVLQgFq0nvqlCVieN6KT3kjY4cXPuvIF7FW8eAzJdnJVLYc6EL>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Mar 2026 07:37:52 -0400 (EDT)
-Date: Sat, 28 Mar 2026 12:37:29 +0100
-From: Greg KH <greg@kroah.com>
-To: David CARLIER <devnexen@gmail.com>
-Cc: laurent.pinchart@ideasonboard.com, mchehab@kernel.org, Frank.Li@nxp.com,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	jacopo@jmondi.org, aisheng.dong@nxp.com, guoniu.zhou@nxp.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: nxp: imx8-isi: fix memory leaks in probe error
- paths and remove
-Message-ID: <2026032832-reputably-bankroll-1205@gregkh>
-References: <20260327222711.268132-1-devnexen@gmail.com>
- <20260328100010.41236-1-devnexen@gmail.com>
- <2026032803-tree-stubbed-1e9b@gregkh>
- <CA+XhMqw+pR3fLGbysq3FnfpH+b2GtmdhSjjgCKhTwfZFrF0_0w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lkvcPBZL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=giGSYpXUZDRUTi/XMro90j8E7F+eapaGVVwlLjHPa6+LPhceKyx95oI4h/iCgpUgqrIy3vZ1O1R0PRTAouhbLSiDdtcvEKDjP9XIXDSgf6kY22GmOycexyhZxKFZJ0ci6frJMz8vsNfugVRFwW5WqsKMYRu0dgl01/XW1EY5XPfiV3A4qSdli24szebm95gx2x67gfbJKLU4KaOMnQErrv7GnTIbmt5GBK3qyZKwf6IYSFABA8SWCWb5OkcyGPQqV5ipupk+bbOn05y4ZbFfl3753jAelFhC7M1br3tr0GxTEyqMVBBaJKOwjtt7XDYJXDDScFjmaYBmsmAP7BZpxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UT6JmkPlihwtcjJoVVze2D6EEFjoILQXXkmJVn5wnIM=;
+ b=IvNw37O6u6AYgRNBW9CH5LKkSIEOnlFhmAwn6YY/c9X3jMFWZZ/qykuZz8CBrrN9aBTj8TuKlDGKHo6DYj5RpsDkzjKUNUj5L8OIEfugaksKYCVsFL0pXKDOD/4+rmfoPCPzjPKfDc5eRhDCGncGXDepXN55IaIUeVbyCtz3XmgXYMfY/fJnBWRw9Q7PBF4E2Sds2w8dV7W25MmAAhxuhZ0JrclnLLyEnaIIZJbwTYA/RlwP8qWovuWw430cv20yp1ZrAbBYHagX4T0PF/PTBLHjo5AiPFzjN35vAQp54AAu4yx7OQM/YFUXNdlT4YOoJANyity3Z1yTssUsH8uW8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UT6JmkPlihwtcjJoVVze2D6EEFjoILQXXkmJVn5wnIM=;
+ b=lkvcPBZLdcHTEhBgvky8RQ0535MZMDPk9sHQvVuUg+OWS2fZmdg9DcrNS4z9WTkRlULjKHGsv12GHmcwpEa5xzDwuv7VfnlQhemXr054Y1QUn/X/GdbKegauY41gfZVjUstkdAEVdLZ2QNs50/uiniRDo5/yfm/ROzdyXN594vdQLKgHBRnHpleVBfBuUyLeE3SYVlgm+c9S+y9FxBWh9c9HokyZqNhvgSTXwcTR/TWRBB3Le3UGJRT7uOaHP/I9EmI4LGgrrpS7pgG3FVtgr6YlohVyFFy3EuQISdwnxhyn4eYV8ucEDbkBekXLc3CeZvrJqGalaV9UICVg4geE6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GV2PR04MB11190.eurprd04.prod.outlook.com (2603:10a6:150:278::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.23; Sun, 29 Mar
+ 2026 12:58:40 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::4972:7eaa:b9f6:7b5e%3]) with mapi id 15.20.9723.030; Sun, 29 Mar 2026
+ 12:58:13 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH 0/3] arm64: dts: imx8m: Correct PAD settings for PMIC_nINT
+ (2nd part)
+Date: Sun, 29 Mar 2026 21:00:10 +0800
+Message-Id: <20260329-imx8m-regulator-v1-0-802c0ec507cc@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFoiyWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYyNL3czcCotc3aLU9NKcxJL8Il2TVKNU4zTDJLPUFFMloK6CotS0zAq
+ widGxtbUAp42aN2EAAAA=
+X-Change-ID: 20260329-imx8m-regulator-4e2e3f1b6ed5
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux@ew.tq-group.com, Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SI2PR02CA0010.apcprd02.prod.outlook.com
+ (2603:1096:4:194::15) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+XhMqw+pR3fLGbysq3FnfpH+b2GtmdhSjjgCKhTwfZFrF0_0w@mail.gmail.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV2PR04MB11190:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3c5528a-7a67-4463-918b-08de8d92d649
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|366016|1800799024|38350700014|921020|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	vr9bmoS9MWthCmqRQpz+hfd67vt+rijHD0NMi2pJxaOIRZgWJqeOg+Tyd2OJ+AlWL75pyGETjgTmbAQOp5iih6rOq0TAFeTa2ssydB/pFph3oQUq5LZJvSSrgyw7gcXceGWp8vxMj5J8RUpeAwjZJ2EQGQTh3fgkFab8jZgKtbyNsBMuQt6x8nL+0V/+KGW1TwrWJMyPGGB6PXoCYehFViUbQK6eyriOIOrsCR2fhImkRvwlHOJmIvYgRL2/501QY1I6d/zgLBpWUDlzIZdOQXbBrPMKtb9W69cxppw5lGIoPPLYNjVznZLVP21So+HiLybNIbBWSm60K1ZG+e7VF9nZMPUwvo4jSEAjZAaCveRPrdBgM7EbW6XLE+E72lx5N0q/3ATd1ur/+/k4nBq68yIbFcEE241HmeJJgUqVUVUL33WfQb5cFftMYM8k30CEH/RaDbzgz/UtcWz86j4cpDB3ruEpAA98G3hfmpZhzPlwy0d2eeBgrIyThjC9lN0Vj0j+A6HDJGAI7ZF5XUB1Qs/Twiqtl8xC+vOktiH1rnxrwIIULW8hdR6s6+yibIm1S4BQoiNdseKaX5u15ospguoYyDrZRkJnQpSlmgXyA40/VjRJgzpVOqMRS56KkfM2F5LZbYonch2wgjq4CvYhYZi8BAkjlBmG9PiFVX576/0fFhkiZC3698E377ZqgWBxEn74JV+KqeE2BfACEqG5tl1EFey2RYHXyUDsGYTdhrbFVjgerP2lkeR5thU/otT9aautNFvbVHEUbPw2XsHZyU+Dy7eneAC1es9slLTPwgIPdhiMX5UnpH0w8WFqm++W
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(366016)(1800799024)(38350700014)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cW11enlvaFVibFlUeHFFQWdxeEllKzEzUzhaRHhUZlp4SExMVkdxUnVveWhs?=
+ =?utf-8?B?SXVybTNiYXhtUkg1VXhDcU5KMDBrVEQ1dGFaSHJ1eXd0Rmt6bjdveWl0aGRY?=
+ =?utf-8?B?aTVrRms4bGtRM2tOdmFESkxXa1hMM3JMZ29Fc2puZzg5ZG5MK0M3ZGc4NWUr?=
+ =?utf-8?B?dWptdXV3VXFXQkdtWEZveVBITy9aNmplcXUvZFVvOTlFQVE1c2o5cWJLNi9R?=
+ =?utf-8?B?aVNNRzFWak5saE53YlVpNTV3MTFYaVRyL3pWSW9acGp3QkZ0RnF4V09KOHJ1?=
+ =?utf-8?B?U2N0MEVEVWU5bjhsejBiYzNGR0FXZTRxU3BoTmJHU0tkTnUrZ0thMFF2ams4?=
+ =?utf-8?B?Y2k3aFhtSHQvaTVLUmdrMklNbzZWRnhjMGxQL0JHK1lnREs0VWd1bk15endy?=
+ =?utf-8?B?ZHZPeE1wbjVtK1Z4OE5iSjdVeDBkejdzRjVsb2EyTEx5ajJYZkIwb3M2Mmt0?=
+ =?utf-8?B?a2tuMVFieFNCcnpSTlNCZ1Fzb3oyTUJhZmVnK09kTWtHTXhEMHpGbkRPWGpO?=
+ =?utf-8?B?TXBueDk2b3ZneHAxaW9iTldvVVppYWFVVzlhbUY0Z2t4cUQvQ21vYzZQbHU1?=
+ =?utf-8?B?U0dEQU9jaTZtQ3pUMHFFeWV0VSswV0hidTNWZE51WE9kREhWazU4QWVxTXp2?=
+ =?utf-8?B?UytqN2hEV2M3M012U21oOFAwMmttYWJzWHJ5SEZvbUV0NzdadDFzZWtHWEti?=
+ =?utf-8?B?djd0bjAyb1dsdWJUeTRCWFRiQ0lmemdLTkhXRjBIc29VVlVuOTBJOGFWMUZ3?=
+ =?utf-8?B?WHNTK0tMMjVHdUovSzBCQkljOFlVMXJmV0ZTcno1Y0VHaHd3MXdpM0tZUThS?=
+ =?utf-8?B?SzNwT2Y4bUt6SlU3aW8vc0ZacStYTmt6eFh4TGtpQ0MzZ1FROWo4SS83Nk5P?=
+ =?utf-8?B?VVh2T0dkVHM3NVJiTkdvVGtHWVJ1S2tqdlZPRW40dGNYNEhzcHRjR2ZzYWY5?=
+ =?utf-8?B?QXRrR2o3YVdlUU9uUkFKRzZxZEI0M0NqOHpvSFNqMmhqZHBHbEpqRUVXUXBs?=
+ =?utf-8?B?NjU3TThndWx4UnB2WUNmQ2pKTFhObEdORnVFdDVsVUlsOWFSZ2NnRUljSHcy?=
+ =?utf-8?B?NFplaFFQdkxka0N0ZkxnVU5ZMEFqbzluRXJodDI4RVpLRmgzRjR2eW42b0Jq?=
+ =?utf-8?B?T0RMc3YyZWxja2tGbmcxTW81T3g0anRhVHFVcTlzbEtNZFQ5ZkdBaUU4bnZz?=
+ =?utf-8?B?cjZ2cEFEM0duaGxNWlN5ZWVvL2lyZFVhZTJYOVBXdDhUbWE5dmZRdkl6VldK?=
+ =?utf-8?B?d3NDYllYUlV3OG5SMUdEU3ZsbEFFaGE3b3dLZDdJd3NWWHQwVHhxUWNxL1hZ?=
+ =?utf-8?B?M0lRZ0RpMXcvRkpURWNMTWhSVm5oaC83TjBDWTVCL21mdDJjZjhLQmwrWXVv?=
+ =?utf-8?B?RHZvTzkzc2ZNL2VHbXRvWG1nRW8wWmVxejZmTmtkMmVRSEIzYlBUeERlRkRZ?=
+ =?utf-8?B?NDJUSjVZc0NwNFdpdlB0anl5ODJ5VlREeU9rdnMzSXl6SUtxem9VYUlSOGlS?=
+ =?utf-8?B?QW56ZExCM21INXRDcnRSN1ZJd0FZbzZnYVdyR3J3dy9UVmRGTnVna1JiVzRh?=
+ =?utf-8?B?MkN2dHpaZjlrTjNUc3JBVnFUNi91OERaTTY2MzN4VXV5YVNmTWtBanlNclNZ?=
+ =?utf-8?B?S0txYzhoZWFQampoTjVPczc3c3hzMGxxbFBReW5YWmRuSEhiVWJvT1VRdS9T?=
+ =?utf-8?B?dUpwYXdRL2QwcmhyZjZsOVVYUDZHM2VGQ0RVMDhQS2FJUXBNYWdiSXErVDA0?=
+ =?utf-8?B?MG1JUWFpSUhoOEkrYkIrYndzQ25pc1lqSXVtZjl6OVNsZUdOSjJnWExweWU1?=
+ =?utf-8?B?NHZjblNQYkx1Wmh2ZHhtRXhsbmdWS2pGZU9aQ08zRFdTTGVZY3YzZWE1eFc3?=
+ =?utf-8?B?TlF3bXo3cGREbEUxOTMwRE1EdnhFRVZyZCtYSFZHbm9DTy8vOXVBUTRhempj?=
+ =?utf-8?B?V3dsZnk2MVlUQXUwMTk2K2dpRmExU1k2dUZLVlVxaENLZkdtZlZ6OHFwTGhv?=
+ =?utf-8?B?RWFmWTBJRTRLdHBFTjhSbDQ2Y0lzVDVxRE4zd3ArMStjV0F6NmJBclZBaHB6?=
+ =?utf-8?B?d3RwZ2ptbWF0YkhQd0pLTkNCeTRSN1ZvR0tUcDlRbHdsMUsvRGJIVjFxeDd4?=
+ =?utf-8?B?cDg1MlpXZzVFNFpaQzVzakRIbnZEekZveGg0NzJOQlBYYzRYTDI3UXo0UWdQ?=
+ =?utf-8?B?b3hTR3lZSDYvQWg3T1o0VmxiakV4bFRKaGRzUFBUajdwTHRVbi9FYnJBNEc2?=
+ =?utf-8?B?M3hyTGhtK0pWcmZ2QzhpT2xYR0xWYmJ0U3FRRTFTaHZNYmxMN1hXMDZLMzh0?=
+ =?utf-8?B?ZW83MzNiWStMT05OVDZiRnRpUmJXV3JZM3lZVElYQ1R3aGR4ei9uQT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3c5528a-7a67-4463-918b-08de8d92d649
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2026 12:58:13.5360
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FFb8AGNi+KKPd1ap4nFcvDZoZWsshWLGIvd2UqFLStLiZc5Rv9zJNRkybvtjCNK0i2Ilk2BdzPr0jnRY26YIUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11190
 
-On Sat, Mar 28, 2026 at 11:15:18AM +0000, David CARLIER wrote:
-> On Sat, 28 Mar 2026 at 10:21, Greg KH <greg@kroah.com> wrote:
-> >
-> > On Sat, Mar 28, 2026 at 10:00:10AM +0000, David Carlier wrote:
-> > > mxc_isi_probe() allocates isi->pipes with kzalloc_objs() but never
-> > > frees it on any probe failure path or in mxc_isi_remove(), leaking the
-> > > allocation on every failed probe and every normal unbind.
-> > >
-> > > Additionally, when mxc_isi_pipe_init() fails partway through the
-> > > channel loop or when mxc_isi_v4l2_init() fails, the already initialized
-> > > pipes are not cleaned up — their media entities and mutexes are leaked.
-> > >
-> > > Fix both by adding kfree(isi->pipes) to all probe error paths and to
-> > > mxc_isi_remove(), and cleaning up already-initialized pipes in the
-> > > err_xbar error path.
-> > >
-> > > Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> > > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > > ---
-> >
-> > <formletter>
-> >
-> > This is not the correct way to submit patches for inclusion in the
-> > stable kernel tree.  Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> 
-> Apologies for the confusion — I wasn't submitting this for stable
-> inclusion directly. The Cc was added based on CI bot feedback since
-> the Fixes target is in the
->   stable tree, but I understand the correct flow is to let it go
-> through the maintainer tree first and let the Fixes tag handle stable
-> backporting.
+There was a patchset for i.MX8MP [1], but after further check,
+i.MX8MM/N were missed, there are three boards that might also has
+interrupt storm issue. I not have the boards, per NXP board design
+, PMIC_nINT requires CPU internal pull up, I think most vendors will
+follow NXP design. So updates the i.MX8MM/N boards, but I not have
+the boards for testing. If board owners would give a test, that would
+be great.
 
-If you read the above, "Fixes:" does not guarantee backporting at all,
-so NEVER rely on that if you know you want something applied to a stable
-kernel tree.
+[1] https://lore.kernel.org/all/20260326-imx8mp-dts-fix-v2-v2-0-62c4ce727448@nxp.com/
 
-thanks,
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Peng Fan (3):
+      arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
+      arm64: dts: imx8mn-tqma8mqnl: Correct PAD settings for PMIC_nINT
+      arm64: dts: imx8mm-tqma8mqml: Correct PAD settings for PMIC_nINT
 
-greg k-h
+ arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+---
+base-commit: 3b058d1aeeeff27a7289529c4944291613b364e9
+change-id: 20260329-imx8m-regulator-4e2e3f1b6ed5
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
