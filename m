@@ -1,227 +1,139 @@
 Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78835288D0
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 21:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551463EB816
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 22:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774905400; cv=none; b=pslkoQx+9C/LHCmZAaZkjYDPgVd2lHjvsoUSStzVWAePJyNXQhimnqe3E1sxFM13gu6c2mjDj7O7tArUZv17CBwr+D77vmhaj+r/BPAWO0iYxQZM3lvR11RQlh81EP9PVr/gjT1Y4AESeGZ6FrnsoVoPqTxFJUfZHc2ZnJ/5Vl4=
+	t=1774910262; cv=none; b=nI4+eC/FrCZP1G0q2QZmdcGWTAxfeRyJ1wzU6kNsuxxsCqk5Sf7lh48+Ok2JWwhsVpdCwYDQxxBtuQ56Rf5gD7ZI6SlyPL76beDBnlh7+4yOJWWZS+A1bV5Sf51K+qkGoiDMZv01aoWcNWIKWTonu7qsz1JnmK8v3TdsJh9RKLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774905400; c=relaxed/simple;
-	bh=68gdUMz2g9grlcrDSpgn+dvojozMOX9UEMee9F39uM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kG/XfLleSfdmnkmJLsmnicvv2IUTDSFnHgN+U4egZ5UzjAerJVtfmz0BpfwsLuRMULmbCPq04meHpalGDhGVg8ZxwPCC7zqhzBav06h7VyN5UmNEdheowlhSzLzqbf2GG69iYtaVWjxuhp8VAPdjfOzwtdGOj+67CtKic3KYuhY=
+	s=arc-20240116; t=1774910262; c=relaxed/simple;
+	bh=BY/vXYKWXsOYhNXxlYmDYaYO9MVDb3KmDbOj7JUs3mI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BWdv2iqf4/hW6ABURpondLWV+InCaYZOsZiOeReKcbH/uo9FsWX1lgwOyWPfQ5I2dWnuVJjUzoAAQPF6Zls7gyeGpU+bDXwGVqm0kvX5U757BvzO/srZBWenHVRsANONalXFeVRiY7dMWbjKSIiQzLieKHh6PcLBapUIo9IkBOI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
 Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id BD5091F8005D
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 21:16:29 +0000 (UTC)
+	by leonov.paulk.fr (Postfix) with ESMTPS id DBE6C1F80041
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 22:37:31 +0000 (UTC)
 Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id E65A9B2EB93; Mon, 30 Mar 2026 21:16:27 +0000 (UTC)
-X-Spam-Level: 
-Received: from shepard (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id B7459B2EB8F;
-	Mon, 30 Mar 2026 21:16:24 +0000 (UTC)
-Date: Mon, 30 Mar 2026 23:16:22 +0200
+	id 54E39B2EBBF; Mon, 30 Mar 2026 22:37:31 +0000 (UTC)
+X-Spam-Level: *
+Received: from shepard (unknown [192.168.1.65])
+	by laika.paulk.fr (Postfix) with ESMTP id B2320B2EB88;
+	Mon, 30 Mar 2026 22:37:13 +0000 (UTC)
 From: Paul Kocialkowski <paulk@sys-base.io>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
-	Liu Ying <victor.liu@nxp.com>, Maxime Ripard <mripard@kernel.org>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Marek Vasut <marex@nabladev.com>, Stefan Agner <stefan@agner.ch>,
-	Simona Vetter <simona@ffwll.ch>, imx@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
+To: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
-Message-ID: <acroJiSTReDL_2bB@shepard>
-References: <m3ms04caaj.fsf@t19.piap.pl>
- <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
- <m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
- <20260320-amiable-hairy-bullfinch-28bfda@houat>
- <m3a4w2d4ds.fsf@t19.piap.pl>
- <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
- <m3se9onkv0.fsf@t19.piap.pl>
- <acqgO5b8_1fL9t_U@shepard>
- <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Paul Kocialkowski <paulk@sys-base.io>
+Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Add HDMI support
+Date: Tue, 31 Mar 2026 00:37:12 +0200
+Message-ID: <20260330223712.2615273-1-paulk@sys-base.io>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CDf277NznvZQn5xT"
-Content-Disposition: inline
-In-Reply-To: <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 
+The PHYTEC phyBOARD Pollux comes with a HDMI port on the base board.
+Add the required device-tree nodes to enable support for it.
 
---CDf277NznvZQn5xT
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+---
+ .../freescale/imx8mp-phyboard-pollux-rdk.dts  | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-Hi Lucas,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 0fe52c73fc8f..0d52f29813f1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -38,6 +38,18 @@ fan0: fan {
+ 		#cooling-cells = <2>;
+ 	};
+ 
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "hdmi";
++		type = "a";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	panel_lvds1: panel-lvds1 {
+ 		/* compatible panel in overlay */
+ 		backlight = <&backlight_lvds1>;
+@@ -201,6 +213,28 @@ &flexcan2 {
+ 	status = "okay";
+ };
+ 
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ &i2c2 {
+ 	clock-frequency = <400000>;
+ 	pinctrl-names = "default", "gpio";
+@@ -244,6 +278,10 @@ &i2c3 {
+ 	scl-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ &ldb_lvds_ch1 {
+ 	remote-endpoint = <&panel1_in>;
+ };
+@@ -444,6 +482,15 @@ MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x154
+ 		>;
+ 	};
+ 
++	pinctrl_hdmi: hdmigrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL			0x1c3
++			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA			0x1c3
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD				0x19
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC				0x19
++		>;
++	};
++
+ 	pinctrl_i2c2: i2c2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400001c2
+-- 
+2.53.0
 
-On Mon 30 Mar 26, 18:44, Lucas Stach wrote:
-> Am Montag, dem 30.03.2026 um 18:09 +0200 schrieb Paul Kocialkowski:
-> > After weeks of investigation I finally narrowed it down to a part of th=
-e nxp
-> > original code that is missing in the upstream driver:
-> > https://github.com/phytec/linux-phytec-imx/blob/v6.6.23-2.0.0-phy/drive=
-rs/gpu/imx/lcdifv3/lcdifv3-common.c#L492
-> >=20
-> Thanks for tracking this down! It was also on my list of things to look
-> at.
-
-Glad that it helps :)
-
-> > A big old sleep that waits for the DMA engine to finish handling the cu=
-rrent
-> > frame before it is disabled. When this delay is not respected, there se=
-ems to
-> > be "unlucky" times when disabling the DMA engine too early will confuse=
- the
-> > unit and make it unable to resume proper operation later.
-> >=20
-> I think we can be a bit more clever than a indiscriminate sleep. If we
-> set the shadow load enable bit in the disable sequence, we should be
-> able to wait for this bit to be cleared by the hardware. All the DMA
-> parameters (presumably including the enable state) should be applied by
-> the hardware when this bit is cleared.
-
-I just tried it out and it works fine, thanks! It polls for a variable delay
-=66rom < 1 ms to < 16 ms, which makes perfect sense for a 60 Hz mode.
-
-This is much better than the hardcoded 25 ms. I'll add your Co-developed-by=
- tag
-to the final commit.
-
-> I guess the read_poll_timeout in lcdif_disable_controller() was
-> supposed to do exactly that wait, but as it was actually copied from
-> the mxsfb driver, it's not working as intended. It's my understanding
-> that the old lcdif HW only cleared the enable bit once it is actually
-> done, but on the lcdifv3 on i.MX8MP those states are double buffered,
-> so the bit in the register would be cleared instantaneously, rendering
-> the wait in the current code a no-op. The only reliable indicator to
-> see if the HW has updated it's internal state is to set the shadow load
-> enable bit and wait for it to be cleared.
-
-Sounds right to me. Thanks for the details! Are there resources about the
-different generations/families used by nxp/freescale? They seem to be in-ho=
-use
-designs but with lots of different variations.
-
-> > It is a bit surprising that the issue is not actually related to config=
-uring
-> > the display engine but to disabling it. This is why the first mode set =
-always
-> > works but subsequentil ones might fail. The crtc is essentially disable=
-d and
-> > re-enabled each time a new mode is applied.
-> >=20
-> > Adding the sleep solves the issue on my side and all mode sets now work
-> > reliably. It does add a delay before returning to userspace when config=
-uring
-> > a new mode, but it seems legitimate to me if the underlying hardware is=
- still
-> > in-flight. I'm also unsure if it would apply to an async atomic commit.
-> >=20
-> This hardware doesn't support async commits. All DMA state changes are
-> applied during vblank when the shadow load enable bit is set.
-
-Ah sorry I meant non-blocking atomic commit, not async. Since this is in the
-CRTC disable path, it probably makes the userspace process sleep even in the
-case of a non-blocking commit (unless this happens in a kernel thread, I'm =
-not
-sure exactly). But I guess it is legitimate to block until the previous fra=
-me
-is finished if it is mandatory.
-
-All the best,
-
-Paul
-
->=20
-> Regards,
-> Lucas
->=20
-> > I will send a patch adding the delay and the undocumented fifo clear
-> > bit that was discovered in this thread too.
-> >=20
-> > All the best,
-> >=20
-> > Paul
-> >=20
-> > Perhaps there is a more elegant way to handle this=20
-> >=20
-> >=20
-> > > Interestingly, Weston usually starts fine in subsequent launches.
-> > >=20
-> > > How is this first (actually second - after the first VSYNC) frame
-> > > different from all the others? Maybe we're programming UPDATE_SHADOW
-> > > after the actual start of blanking period, but before DE, so it has no
-> > > chance to reload registers, yet the DMA is somehow not ready?
-> > >=20
-> > > The manual (LCDIF display control Register (CTRL)) suggests that the =
-DMA
-> > > (with present settings) starts to fetch FB data at the end of the
-> > > previous active video pixel time (DE and pixel data going inactive):
-> > > fetch_start_option (bits 9-8): Indicates when to start fetching for n=
-ew
-> > > frame. This signals also decide the shadow load, fifo clear time
-> > > 00b - fetch start as soon as FPV begins(as the end of the data_enable=
-).
-> > >=20
-> > > This should leave a lot of time to fill the FIFO (before the next DE),
-> > > shouldn't it?
-> > >=20
-> > > 297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
-> > > V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
-> > > HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6=
- =3D
-> > > 32 ms, with the remaining 1.3333 ms for all the V sync stuff.
-> > > --=20
-> > > Krzysztof "Chris" Ha=C5=82asa
-> > >=20
-> > > Sie=C4=87 Badawcza =C5=81ukasiewicz
-> > > Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-> > > Al. Jerozolimskie 202, 02-486 Warszawa
-> >=20
->=20
-
---=20
-Paul Kocialkowski,
-
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
-
-Expert in multimedia, graphics and embedded hardware support with Linux.
-
---CDf277NznvZQn5xT
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnK6CYACgkQhP3B6o/u
-lQyH5A//V/9yZvIamca2VLwgWSF16F64igms4AaRROuVg2t9+TzNgINKg6rOU77z
-A6J9f6O4Wo36zukvA86exdLkrHAiCcgWhk5cAhxujIgvJ0LoeCqi1GgjN53K0PGQ
-TN7fzxVBENSA72l+E/Gd8o77dUsUAJHb9fcq/yB6po2OqkK/k5CVxkutugT0CDZa
-65w8gaTVdZ8z7XUIwdHKrmCfK5g1KixHBa/GGN3Dm/KO6klvpY8ErTH6WwzftdDr
-gtct/x2RKkJrUc2rkYY47MP88b9Mu83Ob9kMn//h87uuaTh29M5demnJJ3p2++3B
-EzE+SKR+E3Z289Lab5ricLwhROZ68lDjRaVICqrq6T5Elaf/cTyTkV0sgu3SC9yh
-XKKihJFlddsruoUnBQzcZ/uXYlVO/YeBH4pXZtlopAgM+XIcV4zX6iAPRNfoYO6J
-4/vArKYosjZAvmQ16S+V17aSvCCTWJcFoqeqlRhjgenZn8EVGU8l/JLubf4vNSTN
-6IskqUahUGrXoZ/sfcrGaJVe3d63b4SoUGDaWXWF30XAFsuRw2RUkujF2+SdFhLQ
-6RC/WNLF7DD93bcOgVyybP+gqa3ea8neNq2/lTNG36oQ9AIen2C5dPyxUzOVavJH
-3gfTbgw4AYg6KgXKLY1U3DnNxebD99sXsso8y95FDyZ/yDd5JqU=
-=/b6w
------END PGP SIGNATURE-----
-
---CDf277NznvZQn5xT--
