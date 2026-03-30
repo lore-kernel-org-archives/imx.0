@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3C1397E6A
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 19:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7447395D8F
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 19:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774898837; cv=none; b=Mv+gXJHUeqqmJb2DdKZ79wzwopAUG76pEu3r6quBUDvhqdrsnZGQ0eTI/3pfqH/XYEeGPjuZ/vhpKKaehAY8Neo8xZYSzbK1NKcwmcqfJLGEmP1EvyfF34dJKjJZu3B0wYaXAzHcgr24MEXe2aSSFVdOVZt20SAHPw8FeD+fohk=
+	t=1774898848; cv=none; b=fQiHy0X6s+NxVinLUBFbdwZTkVrqXJf5sRmmi7rD0m2ReaI4LQUpQUtsMcusv1yWVkLdbaMjSDvcXRPUs4nio/bboMgmA2Eucydl2ZAu1mpmAyj44G4MhZVic08yD6xdYIUcrlVHyg6C0e4hfkX+kfsai61IU7V1Xr16C/mh4kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774898837; c=relaxed/simple;
-	bh=67BecinHv8uNkx13YQtQOdO/VfN630S0g0v7Zaiz2BE=;
+	s=arc-20240116; t=1774898848; c=relaxed/simple;
+	bh=oRDSLVIhZREQnhojtBhd+XVOGond5MBmTbcfchbLU+0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qaB8iDKupBmhLkpTbRZWFYlZE67o/OT9LfKEXJ8BUK1+EU5g4OHH3JkFgtC9DmyfANPs1I/DH5LfEClSmHFq94Uv8d4ClIOu9gX10uqRL+vN1xJQregBiy6oblCQnI7U54ZmCHbCsuMYFfwbQhDGOU5g2SfKKFCoQDaLJ5Teqik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GI5rb1mn; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=NgJgrV5C0qgvo8PXccLG/Xl//S4/EMGEDvbnTTCGrckRMmPSHImh4o3UtyWmrJISVEm0RN3P1ummbWPgTp/Hl4Ir40nsIHB1YHLMt8jktnuoOPtVezrKilvWhMYjCbukoCPVIlrJn1g8uA5b8aSh29B+0p0KLgbp7JvDG9YBG3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=F9vgzbbE; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GI5rb1mn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="F9vgzbbE"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D51871A3090;
-	Mon, 30 Mar 2026 19:27:14 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 773541A3090;
+	Mon, 30 Mar 2026 19:27:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A46055FFA8;
-	Mon, 30 Mar 2026 19:27:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AC1610450A1D;
-	Mon, 30 Mar 2026 21:27:01 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 479D05FFA8;
+	Mon, 30 Mar 2026 19:27:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C99510450C85;
+	Mon, 30 Mar 2026 21:27:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774898831; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1774898842; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LB8F39dnm+yWAxgcFRa27us+SDsfN60WmWpBoxHvYqA=;
-	b=GI5rb1mnrDS9yyt7I390DDbYlsXwX8BS4puwHEeopz0HSK5o/wu98GWdd6j9u/Mhonljpn
-	qhm9z8GtkMdy97Yzrxm1oGVFOWVPO7Xsmx92BtXSLGoEOMSNJ1S0a4G4H3YKK2D8EeKtym
-	tT/LFv15ALlCfXuu6+XScOoVcvUDwrT6yl2Kv+W7YTlIppzMsKZcu1Bw0Qxv9BuT7N0zHB
-	B+E/8elgjZ1biUVaIryxfGZo+l7B3my0qCtriSrqaSsAp+CZ1zSk/JR6m4JKSFMqCtWU4T
-	NePGfLp0dJJwKIV7CJBt/GuXPfqjB0tDmnOGx3HwVboWrtztr8c/Azs8toXsHA==
+	bh=VuQRGR76TLjd4qdXspTNlbhKj4opWUlSzRZbLjOVvpA=;
+	b=F9vgzbbEcNJVkvVzGgGFoBmR/Y82n5lzSKHfow5QeEc5erRoRaeUyYagLIDpymkFqaYhrV
+	0aJZwyRDdf72JL1fmibdwxK+nfwuW+cd1y9OIqSKMV1CIvv/7/QizOsBpDumAFaSV1v6vH
+	K77yGlxpXpBgJyMvFDcm8HsB/PZrCjqrf8ddbS/Zw6ObrJC/1rJAmAU77pzZplXF761A5B
+	CEDcj/JElQGEBeOahSZfQfZ4TmAB56xSfrlB8jaNccZwYnGydUjvKHrESw/cz8FW7W0KLd
+	u8cXbiiSho5q5HMhryYZmlIeCXZ81/fmvUptQG3N2qNQIsM94wuLpjbXCeiLnw==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Mon, 30 Mar 2026 21:25:45 +0200
-Subject: [PATCH v2 04/10] drm/mxsfb/lcdif: lcdif_attach_bridge: move
- iteration-specific variables declaration inside loop
+Date: Mon, 30 Mar 2026 21:25:46 +0200
+Subject: [PATCH v2 05/10] drm/bridge: dw-hdmi: document the output_port
+ field
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260330-drm-lcdif-dbanc-v2-4-c7f2af536a24@bootlin.com>
+Message-Id: <20260330-drm-lcdif-dbanc-v2-5-c7f2af536a24@bootlin.com>
 References: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
 In-Reply-To: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
 To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
@@ -90,41 +90,38 @@ Cc: Damon Ding <damon.ding@rock-chips.com>,
 X-Mailer: b4 0.15.1
 X-Last-TLS-Session-Version: TLSv1.3
 
-The bridge and ret variables are per-iteration variables, whose values
-don't have to be carried to the next iteration or be used after the loop
-end. Move their declaration inside the loop scope as a cleanup and to make
-code clearer.
+The meaning of this flag may not be obvious at first sight.
 
+Reviewed-by: Liu Ying <victor.liu@nxp.com>
+Tested-by: Martyn Welch <martyn.welch@collabora.com>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MBa8MPxL
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
 ---
 
-This patch is new in v2
+Changes in v2:
+- improved comment as suggested by Liu
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/drm/bridge/dw_hdmi.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 1c76709c4d94..c8ba8f9b1da8 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -50,14 +50,14 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- {
- 	struct device *dev = lcdif->drm->dev;
- 	struct device_node *ep __free(device_node) = NULL;
--	struct drm_bridge *bridge;
--	int ret;
+diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdmi.h
+index 336f062e1f9d..8500dd4f99d8 100644
+--- a/include/drm/bridge/dw_hdmi.h
++++ b/include/drm/bridge/dw_hdmi.h
+@@ -126,6 +126,12 @@ struct dw_hdmi_phy_ops {
+ struct dw_hdmi_plat_data {
+ 	struct regmap *regm;
  
- 	for_each_endpoint_of_node(dev->of_node, ep) {
- 		struct device_node *remote __free(device_node) =
- 			of_graph_get_remote_port_parent(ep);
- 		struct of_endpoint of_ep;
-+		struct drm_bridge *bridge;
- 		struct drm_encoder *encoder;
-+		int ret;
++	/*
++	 * The HDMI output port number must be 1 if the port is described
++	 * in the device tree. 0 if the device tree does not describe the
++	 * next component (legacy mode, i.e. without
++	 * DRM_BRIDGE_ATTACH_NO_CONNECTOR flag when attaching bridge).
++	 */
+ 	unsigned int output_port;
  
- 		if (!of_device_is_available(remote))
- 			continue;
+ 	unsigned long input_bus_encoding;
 
 -- 
 2.53.0
