@@ -1,296 +1,196 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m83211.xmail.ntesmail.com (mail-m83211.xmail.ntesmail.com [156.224.83.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A78225F99F
-	for <imx@lists.linux.dev>; Sun, 29 Mar 2026 16:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774801130; cv=pass; b=tW024pPcMdAWq255tvf2ZL4ClX4NwDwGZg1c41hJDoPuL1RkKEFt6R8e+vnuG+dx4s0TQ6LGTAxAt4dZ71d60Coaj4fus6B6eNsqiUvP6FjG8xVCgjUpcU6SzOSKitSnbgANWQI6zTK/+b0Y9VUfXwEULEyRjqV5Z9G3I12DvMo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774801130; c=relaxed/simple;
-	bh=xQqCvaSYvMDehLMpCAi2Exo2F9/DzAf4RUjSbu4AXqo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H+W0ulMeKyrH4zHwGuOELdrm3YQ+1v2nDp6PXPeyd015g/yuIyQkOaw6SWFIKDv2GwLj2Cov/ELppYEsxhN1j/ZnCDL2ij+9jZY2h/6b0N/p1kdiOHhDfDygrQbln0XMUTRH/bMiQyii8wU11uDlqjJ3NMJ9HpwjKQ7NX/yxtDo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W7cxJx+l; arc=pass smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC481E1DE5
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 01:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.83.211
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774833527; cv=none; b=BhXUpVyF3F/X5e6BO+PSjXtWmW8upxyrdcGlC4k8K4FANEiuXMnXtJL4WwyIYk+0x5s4XhTv/FtWaxwyaHykv85PdSu1q83Gnes3kePl0tdzTr0XldKy+Uc3aAvI1ueIj4f7z8PvCjrm1H5p7MxueOvovvIwccY+VdL3Os/Mlmk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774833527; c=relaxed/simple;
+	bh=x6uqc3T6Ku2RuArZD3G6OI1p4EBA4wI89d135MBdApY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=twe7Ks80dlaLhnJhrHRyFsEtxlz01DDdHjkDab0vabRbXZJA3JukcP5zg4aByAfQb8VaeqsKdZYHbwRFLpXXs4JVItpJ8kiLD+a/XgVY/5YeaSCYDlYjWB5H036HvM5DxqKbI1vM7+88DgwKa+BN2KC13M2XK6KfUjqKcjsGcbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=eZpEmZWw; arc=none smtp.client-ip=156.224.83.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W7cxJx+l"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4670bcc40d7so1204947b6e.2
-        for <imx@lists.linux.dev>; Sun, 29 Mar 2026 09:18:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774801127; cv=none;
-        d=google.com; s=arc-20240605;
-        b=T3YR+PSaIYHdiOINm5ou5zCTFWHEZeuiF5HfncOvCzZQsGbnjyjfhV12YyxfHzIdB/
-         5GxG9msZt/XpuVArgVsAdQVdtBiUcG8t0HLmVZjOmVEWMeFlX5LjVPU7qfoD9viVvS0E
-         HJtAPi2py7yEXjy211zA3NGv+NFR8k2v/quTfwzxEs3OlRFJAjNoY+8umKxVosQb0kxc
-         1+/mV20m1SGqsEi0w0Sb88YcWGgxfIkuBfZuyLbBSx5hRxD5IpmUraaocQYHw8eQUQ4t
-         uN+WtF3X0PXPN/C8pT1fDvKvIz0DshI9O5awi9fcn1SdfHMmU+jiRGSt4PWI5WXzX57g
-         FEQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WxRWrohRC+fNvhhMsjBNKWfMlLneWiOcUehlHfN3ctw=;
-        fh=13xHbIR8gJptDYZxLOmXoM/1M56wQzSLSSyqT+3kyD0=;
-        b=Km4mTz5NvwW1WuaRGIYfkp4Qj2POLQ/QehDZp9i7ZHAv2FCzc2M4MfTK6I8DBJPOLY
-         Y0eh27A6AbkYc2OEb5rXewYarWRbM3uC0GObeDEkG9sPKKBpuDhFJOniQThv1SPYsQWu
-         38D8YiGGkTFCQMAa0l9STUIdsW1dIGoa+ZQb7UNjNeVR6VGkwcLWSuTXUev0X3CV8apo
-         UOn4KYBPL9E8aIxrUI0aLaSSHSG6A8ypMLpkKI3gP0UOT8WNSupf6U08DridlamWFcd4
-         ZIxOWXgwCq7tyAOYJZif/O6XSxJB6OjDv/3rs7Jcw0i1f49lX1LBgNr9OHjKGf0MoekN
-         mUJg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774801127; x=1775405927; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WxRWrohRC+fNvhhMsjBNKWfMlLneWiOcUehlHfN3ctw=;
-        b=W7cxJx+lqsE/9gpzfa2/94v9om3D8MXMZ8acoIV02BGmSFqdgY1jxoDTZIVEfimi8K
-         m/bdFUw8wKtnwDrxngq5yWpMsnGuX3IS7rOFB3XPkY1oN79rl/a3xWoUQM3VlprerjA6
-         dGkZ5xYhxaE8T3DT0Cr0Nrf0nmEuqHwXBS3x8jGZyo3IWj1uMQMFOhsIbu3QwDccLW7c
-         8H50ivQDrc4wYWO/BxfancpxirbE8XD7iadp1pXaMBXMARvhkCxha3VhRyk0nZMuiZc3
-         55MShF7L0pwofJjnPfA+9wd46utVN9u+JaAY9yKn18rH+bBrTYYWy7bkbw2k5MPMeiNt
-         UMtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774801127; x=1775405927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WxRWrohRC+fNvhhMsjBNKWfMlLneWiOcUehlHfN3ctw=;
-        b=iGG4MtsLb6yOGrYGIBzwIrcLHnGHGmQdvCI7JblXfft8/R+4lRWpIbGeyM7N2Irz1R
-         ckbr6VPhgt+Fv5uWZC5kxjobw3SGcByWtVGCKmrJ0uFXGWJL/a3aD07umv78BtdcZYcz
-         gmX/SZ4nDNtPoFWKo1g6P5uiPjfhvfUBUHd5Da67v0f2VNyEMEd14jO2aBIk7EVt6lm7
-         N7R98Bnn6PbJbpeqiRIG6LsgMIiz0ND4Dd2h1xITlj5FMwE11eU5hbqHYyRa2LdwFc8M
-         4/SdSVs/dGA4sF+evpDSYlvsr8XPtUFXImeTC2n0AO65r+ZlwXS0xel6VEwvEiRQ3vMf
-         cKfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVn+u8ZjJjrNjIEQ+PZgEToJHUKUJ2xbCpil1f/Cs0keStB/LYbN8DvFjoXr8Fl/uCMWyY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVI5pKvXygcugdD4sekOicgC+FHlAmcvpkM7qQ4FpdAGSwnAeX
-	5tjiHnS9lcXgpUva5VsQtTY+R8UilfzWes/mZS0zn6UI8GgdyVudgp3meRNUUCdL8RJ6gxnWwl+
-	tBaqg7uKba7/UklnOmSGWHIaXDytLXVU=
-X-Gm-Gg: ATEYQzx42CW0bnBCyr2hzGS9r0S4d5wlDM/HIBM/6dU5vAFsNUCXqO1ewCwcZyDwt9j
-	FVYL5tBes98of9LEmAAH46p+TL47TuZBzSDGSMuONhGaROviMaGVDPkApLRqK6CF7APZkot8pIY
-	OOXzU/sPhBvsoZ04kcm+gIxtoU8fsrOyawdr2bhinxGd3/9zHMJCQYtQq+6B8XAozF/N/aigivk
-	k5HVHH+OpeLzWjAcJZs01g/UXAc/UixSvhBnImeeo6iDXFwGLhWMxNo4znqlXtVqAxC2f+QXxVC
-	dn3P+Vms
-X-Received: by 2002:a05:6808:1909:b0:466:f25d:3281 with SMTP id
- 5614622812f47-46a8a535f24mr4527393b6e.29.1774801127539; Sun, 29 Mar 2026
- 09:18:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="eZpEmZWw"
+Received: from [172.16.12.43] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 38bce2746;
+	Mon, 30 Mar 2026 09:13:28 +0800 (GMT+08:00)
+Message-ID: <4396e94d-7b88-4599-a938-3c1932a2f9cb@rock-chips.com>
+Date: Mon, 30 Mar 2026 09:13:28 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260327151112.5202-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20260327151112.5202-2-wsa+renesas@sang-engineering.com>
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Sun, 29 Mar 2026 11:18:36 -0500
-X-Gm-Features: AQROBzAT0Y7MQA0Vu0exbVKBXS_ASbnND8ZlhVVTpfO0frVJ0Okq55qzNtMBYvo
-Message-ID: <CABb+yY3J2T5c4=dGaqPYi3L=88zgTqRn6AJwxBJ9Sqx6aDH8jw@mail.gmail.com>
-Subject: Re: [PATCH v3] mailbox: remove superfluous internal header
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Peter Chen <peter.chen@cixtech.com>, 
-	Fugang Duan <fugang.duan@cixtech.com>, 
-	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] drm/bridge: dw-hdmi: document the output_port field
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Liu Ying <victor.liu@nxp.com>,
+ Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>
+Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Anson Huang <Anson.Huang@nxp.com>,
+ Christopher Obbard <christopher.obbard@linaro.org>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+ Fabio Estevam <festevam@denx.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Gilles Talis <gilles.talis@gmail.com>,
+ =?UTF-8?B?R29yYW4gUmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
+ Heiko Schocher <hs@denx.de>,
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+ Josua Mayer <josua@solid-run.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Marco Felsch <m.felsch@pengutronix.de>,
+ Martyn Welch <martyn.welch@collabora.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Philippe Schenker <philippe.schenker@toradex.com>,
+ Richard Hu <richard.hu@technexion.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+ Vitor Soares <vitor.soares@toradex.com>
+References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+ <20260320-drm-lcdif-dbanc-v1-4-479a04133e70@bootlin.com>
+ <050c6532-8122-4ded-9946-3ce1a86d2be0@nxp.com>
+ <ea1bf890-c4be-4d66-ad26-a6bdb58a9292@rock-chips.com>
+ <DHDIOSVSDG9W.B7BW87297KT3@bootlin.com>
+Content-Language: en-US
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <DHDIOSVSDG9W.B7BW87297KT3@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9d3c4d8ad603a3kunmb6afc6b9975c61
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ04eHVZNQh8ZQk9LGRpMGU9WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=eZpEmZWwwaSjIoUWR6mYxenV4TR5LI+XqrvotvfyareVQaqofwzjO8DCxa63FCKucjvKG7JGK5gLX37AaRGA6O5Rb6yJ+vuGm55mkxI2CXeGCkW2a+TIrySRAMfp6z5Try+v9TYYmxFfW6CCywhiE/Fixei6bMGmCZmJgV8nz9I=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=2q+SKMvTSwvw8pBudKi7sI2w6VGkdqOlh8f4io4a83Q=;
+	h=date:mime-version:subject:message-id:from;
 
-On Fri, Mar 27, 2026 at 10:11=E2=80=AFAM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
->
-> Quite some controller drivers use the defines from the internal header
-> already. This prevents controller drivers outside the mailbox directory.
-> Move the defines to the public controller header to allow this again as
-> the defines are not strictly internal anyhow.
->
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
-> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> ---
->
-> Changes since v2:
-> * rebased to 7.0-rc5
-> * add tag (Thanks, Daniel!)
->
->  drivers/mailbox/cix-mailbox.c      |  2 --
->  drivers/mailbox/hi3660-mailbox.c   |  2 --
->  drivers/mailbox/imx-mailbox.c      |  2 --
->  drivers/mailbox/mailbox-sti.c      |  2 --
->  drivers/mailbox/mailbox.c          |  2 --
->  drivers/mailbox/mailbox.h          | 12 ------------
->  drivers/mailbox/omap-mailbox.c     |  2 --
->  drivers/mailbox/pcc.c              |  2 --
->  drivers/mailbox/tegra-hsp.c        |  2 --
->  include/linux/mailbox_controller.h |  5 +++++
->  10 files changed, 5 insertions(+), 28 deletions(-)
->  delete mode 100644 drivers/mailbox/mailbox.h
->
-> diff --git a/drivers/mailbox/cix-mailbox.c b/drivers/mailbox/cix-mailbox.=
-c
-> index 443620e8ae37..864f98f21fc3 100644
-> --- a/drivers/mailbox/cix-mailbox.c
-> +++ b/drivers/mailbox/cix-mailbox.c
-> @@ -12,8 +12,6 @@
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->
-> -#include "mailbox.h"
-> -
->  /*
->   * The maximum transmission size is 32 words or 128 bytes.
->   */
-> diff --git a/drivers/mailbox/hi3660-mailbox.c b/drivers/mailbox/hi3660-ma=
-ilbox.c
-> index 17c29e960fbf..9b727a2b54a5 100644
-> --- a/drivers/mailbox/hi3660-mailbox.c
-> +++ b/drivers/mailbox/hi3660-mailbox.c
-> @@ -15,8 +15,6 @@
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
->
-> -#include "mailbox.h"
-> -
->  #define MBOX_CHAN_MAX                  32
->
->  #define MBOX_RX                                0x0
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.=
-c
-> index 003f9236c35e..22331b579489 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
-> @@ -23,8 +23,6 @@
->  #include <linux/slab.h>
->  #include <linux/workqueue.h>
->
-> -#include "mailbox.h"
-> -
->  #define IMX_MU_CHANS           24
->  /* TX0/RX0/RXDB[0-3] */
->  #define IMX_MU_SCU_CHANS       6
-> diff --git a/drivers/mailbox/mailbox-sti.c b/drivers/mailbox/mailbox-sti.=
-c
-> index b4b5bdd503cf..b6c9ecbbc8ec 100644
-> --- a/drivers/mailbox/mailbox-sti.c
-> +++ b/drivers/mailbox/mailbox-sti.c
-> @@ -21,8 +21,6 @@
->  #include <linux/property.h>
->  #include <linux/slab.h>
->
-> -#include "mailbox.h"
-> -
->  #define STI_MBOX_INST_MAX      4      /* RAM saving: Max supported insta=
-nces */
->  #define STI_MBOX_CHAN_MAX      20     /* RAM saving: Max supported chann=
-els  */
->
-> diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-> index e63b2292ee7a..9d41a1ab9018 100644
-> --- a/drivers/mailbox/mailbox.c
-> +++ b/drivers/mailbox/mailbox.c
-> @@ -18,8 +18,6 @@
->  #include <linux/property.h>
->  #include <linux/spinlock.h>
->
-> -#include "mailbox.h"
-> -
->  static LIST_HEAD(mbox_cons);
->  static DEFINE_MUTEX(con_mutex);
->
-> diff --git a/drivers/mailbox/mailbox.h b/drivers/mailbox/mailbox.h
-> deleted file mode 100644
-> index e1ec4efab693..000000000000
-> --- a/drivers/mailbox/mailbox.h
-> +++ /dev/null
-> @@ -1,12 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0-only */
-> -
-> -#ifndef __MAILBOX_H
-> -#define __MAILBOX_H
-> -
-> -#include <linux/bits.h>
-> -
-> -#define TXDONE_BY_IRQ  BIT(0) /* controller has remote RTR irq */
-> -#define TXDONE_BY_POLL BIT(1) /* controller can read status of last TX *=
-/
-> -#define TXDONE_BY_ACK  BIT(2) /* S/W ACK received by Client ticks the TX=
- */
-> -
-> -#endif /* __MAILBOX_H */
-> diff --git a/drivers/mailbox/omap-mailbox.c b/drivers/mailbox/omap-mailbo=
-x.c
-> index d9f100c18895..5772c6b9886a 100644
-> --- a/drivers/mailbox/omap-mailbox.c
-> +++ b/drivers/mailbox/omap-mailbox.c
-> @@ -22,8 +22,6 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/mailbox_controller.h>
->
-> -#include "mailbox.h"
-> -
->  #define MAILBOX_REVISION               0x000
->  #define MAILBOX_MESSAGE(m)             (0x040 + 4 * (m))
->  #define MAILBOX_FIFOSTATUS(m)          (0x080 + 4 * (m))
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 22e70af1ae5d..636879ae1db7 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -59,8 +59,6 @@
->  #include <linux/io-64-nonatomic-lo-hi.h>
->  #include <acpi/pcc.h>
->
-> -#include "mailbox.h"
-> -
->  #define MBOX_IRQ_NAME          "pcc-mbox"
->
->  /**
-> diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
-> index ed9a0bb2bcd8..2231050bb5a9 100644
-> --- a/drivers/mailbox/tegra-hsp.c
-> +++ b/drivers/mailbox/tegra-hsp.c
-> @@ -16,8 +16,6 @@
->
->  #include <dt-bindings/mailbox/tegra186-hsp.h>
->
-> -#include "mailbox.h"
-> -
->  #define HSP_INT_IE(x)          (0x100 + ((x) * 4))
->  #define HSP_INT_IV             0x300
->  #define HSP_INT_IR             0x304
-> diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_c=
-ontroller.h
-> index 80a427c7ca29..16fef421c30c 100644
-> --- a/include/linux/mailbox_controller.h
-> +++ b/include/linux/mailbox_controller.h
-> @@ -3,6 +3,7 @@
->  #ifndef __MAILBOX_CONTROLLER_H
->  #define __MAILBOX_CONTROLLER_H
->
-> +#include <linux/bits.h>
->  #include <linux/completion.h>
->  #include <linux/device.h>
->  #include <linux/hrtimer.h>
-> @@ -11,6 +12,10 @@
->
->  struct mbox_chan;
->
-> +#define TXDONE_BY_IRQ  BIT(0) /* controller has remote RTR irq */
-> +#define TXDONE_BY_POLL BIT(1) /* controller can read status of last TX *=
-/
-> +#define TXDONE_BY_ACK  BIT(2) /* S/W ACK received by Client ticks the TX=
- */
-> +
->  /**
->   * struct mbox_chan_ops - methods to control mailbox channels
->   * @send_data: The API asks the MBOX controller driver, in atomic
-> --
-> 2.51.0
->
-Applied to mailbox/for-next
-Thanks
-Jassi
+On 3/27/2026 7:10 PM, Luca Ceresoli wrote:
+> Hello Damon,
+> 
+> On Thu Mar 26, 2026 at 10:15 AM CET, Damon Ding wrote:
+>> On 3/26/2026 3:25 PM, Liu Ying wrote:
+>>> Hi Luca,
+>>>
+>>> On Fri, Mar 20, 2026 at 11:46:15AM +0100, Luca Ceresoli wrote:
+>>>> The meaning of this flag may not be obvious at first sight.
+>>>>
+>>>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>>> ---
+>>>>    include/drm/bridge/dw_hdmi.h | 5 +++++
+>>>>    1 file changed, 5 insertions(+)
+>>>>
+>>
+>> First of all, these changes related to the DW HDMI controller work well
+>> when tested on RK3399 HDMI.
+> 
+> Great!
+> 
+> You'd be welcome to send your Tested-by: tag if you tested the series on
+> hardware, that would be useful.
+> 
+> However at this point I suggest to wait for v2, which I'm sending soon, and
+> test that. I added you in Cc for it.
+> 
+>>>> diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdmi.h
+>>>> index 336f062e1f9d..45f6ba1a8ee1 100644
+>>>> --- a/include/drm/bridge/dw_hdmi.h
+>>>> +++ b/include/drm/bridge/dw_hdmi.h
+>>>> @@ -126,6 +126,11 @@ struct dw_hdmi_phy_ops {
+>>>>    struct dw_hdmi_plat_data {
+>>>>    	struct regmap *regm;
+>>>>
+>>>> +	/*
+>>>> +	 * The HDMI output port number (which must be 1) if it is described
+>>>
+>>> I'd rephrase:
+>>> The HDMI output port number must be 1 ...
+>>>
+>>
+>> Yes, the output port number should be 1, but I found that the output
+>> port number in the Rockchip-side dw-hdmi driver remains 0.
+> 
+> Really? I checked all the bindings in
+> Documentation/devicetree/bindings/display/rockchip/*hdmi* and all mention
+> port@1 as the output port number. Can you point to code using port@0 as the
+> output port?
+> 
+> Should it be true, that would be unfortunate because the output_port
+> variable does not handle this case. It's used as a sort of bool-or-int
+> variable:
+> 
+>   * as a bool [0] to find out whether the DT is supposed to describe the
+>     output port
+>   * as an integer to tell the port number to parse in DT [1]
+> 
+> So saying "please parse port 0" is impossible.
+> 
+> [0] https://elixir.bootlin.com/linux/v7.0-rc5/source/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c#L3310
+> [1] https://elixir.bootlin.com/linux/v7.0-rc5/source/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c#L3315
+> 
+
+Aha, my description might be a little misleading. The 
+&dw_hdmi_plat_data.output_port is 0 on the Rockchip side, so the next 
+bridge will not be parsed for it.
+
+Then I think the &dw_hdmi_plat_data.output_port should be 1, as this 
+helps support the hdmi-connector and other bridge chips.
+
+>> Therefore, it may be better to adapt the dw-hdmi drivers across all
+>> platforms to the bridge-connector architecture simultaneously.
+>>
+>> This would allow removing &dw_hdmi_plat_data.output_port and unify the
+>> setting of DRM_BRIDGE_ATTACH_NO_CONNECTOR during the attach stage.
+>> (Just as the Analogix DP driver does [0])
+>>
+>> [0]
+>> https://lore.kernel.org/all/20260319071452.1961274-1-damon.ding@rock-chips.com/
+> 
+> I agree converting all users is a good goal, but I disagree it should be
+> done simultaneously. There are various users of dw-hdmi, and converting one
+> having the hardware to test it was painful enough for me. Converting all of
+> them without testing on hardware would be a hell.
+> 
+> However I might be wrong. Having a precise list of all users, which ones
+> need to be converted, and whether they have any special detail to be taken
+> care of would be good to estimate the work to convert all users. Without
+> that I'd rather let users convert one by one and hopefully get rid of
+> legacy code eventually.
+> 
+
+Yes, I've noticed that there are quite a few drivers associated with the 
+DW HDMI controller. It would be a better idea to let users handle this 
+themselves.
+
+BTW: The Rockchip side dw-hdmi patches for bridge connector support will 
+be updated as a follow-up to your patch series. :-)
+
+Best regards,
+Damon
+
