@@ -1,217 +1,174 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF421A681E
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 16:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10E32EA171
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 16:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774887762; cv=none; b=Pe3Q/r+4omp4jE4x4lX6sBZ7KahPtkYShh07OHHIXZrTNE4SrZPUDjuBNexnl0cW0OQyOCeTbhqP8cr85ov/zpefonlgGNJZ3TsKaVbohhksRQEGflzyAF+DI2uAoVhnR9GLpCKRbPbvhqFtbcDwDws07VD7UP0LnYFacDa7qZg=
+	t=1774889074; cv=none; b=fIWY469huz3tRJlPxG1O8jMBZZ1/NfrOilEPHLOASw6EBbqXLi46dFV4yDxfqHJurGZKEv1aRXgDIC6eV/JuI7EaBNwpc1hiRydm1mjMLelSBzFqYqwSGrHRnJ2HAZ1xBAwtjcucnDHopyVc+vf27UhtOXYTcKKDbOgWxG3Igb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774887762; c=relaxed/simple;
-	bh=OWclWe7z9oM5qjVK/Jh3Q3Y6NyRY3zTBQRnXXXEeho8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sv0yhs/Qluplt3LQ2LbuMTkFeSLrMfmvYbE2cm4PaIwklfxqKfTSJ0qFo1S0Y39KNxZ71ZTVvYLnhJU9XBHXaHa+roKRpaLvRXOzUlIdMl8rWvb3BxxpKuK8lvAwyBPFa+CzTfr5Qz+DtZ2cyQv/XUaZ298NNIctSdc+dpo22Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OdY6dYFp; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OdY6dYFp"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b23fcf90b2so25586605ad.3
-        for <imx@lists.linux.dev>; Mon, 30 Mar 2026 09:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1774887759; x=1775492559; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EMohgIf2kDkk6Cae0YiULQonmSDmJhFZPXEiKdJxSFI=;
-        b=OdY6dYFpoj8V9Z8AIZwSXIk7o+gWwVu59GQVdJWZqJmbuVKHQzBDTJvOLIK4n0vh3z
-         El6yYzO0Jf7noNII7kCYJ/EYT6wnlQvIaFEgt6kYgFKlyjnO2GKe1Gz5roalhURtqf9C
-         lQaME9WI61vhVjeawd911MbtWJZ4ZgG0FQ5jU8rGFOMOEh0fviTWoPU/sjacz/dOgJWu
-         M0AwaQUktJAaVOmCxS6p/PP4SC9+avyKCKVou5oH4c8gyOhRWE1qj5PmgAp1NrUcM8wf
-         zgqZtt+hNunIotOH1B9tvYcm4v2i8Q2DX8sDj1k6C9K9FN5CE7l16htFbhN0Q30IFrCH
-         K3Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774887759; x=1775492559;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EMohgIf2kDkk6Cae0YiULQonmSDmJhFZPXEiKdJxSFI=;
-        b=Uku/v8zTz2kJT8gbJPzc5IpJG+Vo/NWC6yDlnabf7AG5kGY4tw3mfbjsHe0NCVpSbl
-         BCEPCsgLzHaYOhWHV9oQ8NA1MAKtJbGywzU/09XJd3eboCklJTixE2s+W9/SKlBNSfZl
-         N+6smJ5370T2QEk+C7vT1WjwVoTfuuZa2ZUESNWAk2H7lYHPAlLVqRi4i+PMt13SNR3d
-         oJrWYeyPf5zrhV3rSaotJj1ELoj5xuPsC8wdVX27+zM0trajm3uWq3hPt5R4gd9k5GdK
-         PTmbHwZi3Spl4jMPnyU2AbKxn7mJz5078j8BUQX5YkdlQ7+ZH8xVq7tCWZdIduvinttM
-         hJQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXC83QznGgNAE6dzNSKMp8BVB0iEU4WKDwkYRk5jX/NAyTtQ5rT/aogbpjTxLHQmoOfJfM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYk2ThPms2qHVRJG6jTIfQtQ39irWj4xY88IOWWFJh+K1AddRl
-	mzjJGB8T/kUhvpvK3zoWemyR3mLK/PGfTele3ectsmv8AdQpz71nQzXEjBZEhgZI7SY=
-X-Gm-Gg: ATEYQzzs6ONV0ix0MTMWBLlpz3sUp2z17fDeLUmp/qEPAoBbwtw6FOw4jwmuWE1EYhO
-	mc3FpIMAOqVu//zKER4P0QXs6u5svXQDNHGkMrOyxgwk68cCY+KFYSq2hP0R8jGUC+vrImQEf0T
-	oqLDh2s6xjhRXUs+Z/FwmEwmybFlNyR6t5lzYBU1gJhg9T142BBFXrrnxdJEOVEeiw9PxE4dXAr
-	6an20vx7y81Uq+FymncZJaghFjbFl4SbKDjAhiRplFXbYJOG/dOmQTQCShabtGfRwys60W2Vx7m
-	paHdl4jrEI0MFB55DaZ7gkUCRctDKO/EU7sh6hWDGpDEFZX0xPcFVJI1qRA9vEyLOsnU9q4ZlIw
-	FuvmdItWl/sHjkmfweVd3phsEyjy6QTxUMPpFt6F7PEw02s85ihS0lFPKI6UiNahMrCSeYRgsOo
-	ciSQzXuS2cQk+Tq8SFm1RuLJUfEP4=
-X-Received: by 2002:a17:902:e843:b0:2b2:5428:ead8 with SMTP id d9443c01a7336-2b2542902d6mr38590925ad.0.1774887759333;
-        Mon, 30 Mar 2026 09:22:39 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:e8c9:5e1e:f42a:2b73])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24268aa4fsm83826645ad.36.2026.03.30.09.22.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 09:22:38 -0700 (PDT)
-Date: Mon, 30 Mar 2026 10:22:35 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 2/3] remoteproc: imx_rproc: Pass bootaddr to SM
- CPU/LMM reset vector
-Message-ID: <acqjS440STRl2sK2@p14s>
-References: <20260327-imx943-rproc-v2-0-a547a3588730@nxp.com>
- <20260327-imx943-rproc-v2-2-a547a3588730@nxp.com>
+	s=arc-20240116; t=1774889074; c=relaxed/simple;
+	bh=LyrL60ey8eS6gEWd30fnPmjm9d6S/QljeFofuGU8Zz0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H3gwf7jnykD0aiwI3u7qpwAv/WQrnqQ9xUbl5I5XMaNm33oUrmtfYd+zZhFoZs0JwTULly24As3+eeXsf0lXAlGqXanv81EZi6v9U6l1vv8eatKFQMd7MATTeeISCjF/bKidlLWLLIT0Yla/rWfttpjqtJDBF5mCY1RdnspKO+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1w7Fiu-0002FJ-Fk; Mon, 30 Mar 2026 18:44:20 +0200
+Message-ID: <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
+Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Paul Kocialkowski <paulk@sys-base.io>, Krzysztof =?UTF-8?Q?Ha=C5=82asa?=
+	 <khalasa@piap.pl>
+Cc: Liu Ying <victor.liu@nxp.com>, Maxime Ripard <mripard@kernel.org>, Marco
+ Felsch <m.felsch@pengutronix.de>, Marek Vasut <marex@nabladev.com>, Stefan
+ Agner <stefan@agner.ch>,  Simona Vetter <simona@ffwll.ch>,
+ imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel
+ Team <kernel@pengutronix.de>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Sascha Hauer
+ <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+ linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org, Thomas
+ Zimmermann <tzimmermann@suse.de>,  David Airlie <airlied@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+Date: Mon, 30 Mar 2026 18:44:17 +0200
+In-Reply-To: <acqgO5b8_1fL9t_U@shepard>
+References: <m3ms04caaj.fsf@t19.piap.pl>
+	 <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
+	 <m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
+	 <20260320-amiable-hairy-bullfinch-28bfda@houat>
+	 <m3a4w2d4ds.fsf@t19.piap.pl> <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
+	 <m3se9onkv0.fsf@t19.piap.pl> <acqgO5b8_1fL9t_U@shepard>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260327-imx943-rproc-v2-2-a547a3588730@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Mar 27, 2026 at 10:42:03AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Cortex-M[7,33] processors use a fixed reset vector table format:
-> 
->   0x00  Initial SP value
->   0x04  Reset vector
->   0x08  NMI
->   0x0C  ...
->   ...
->   IRQ[n]
-> 
-> In ELF images, the corresponding layout is:
-> 
-> reset_vectors:  --> hardware reset address
->         .word __stack_end__
->         .word Reset_Handler
->         .word NMI_Handler
->         .word HardFault_Handler
->         ...
->         .word UART_IRQHandler
->         .word SPI_IRQHandler
->         ...
-> 
-> Reset_Handler:  --> ELF entry point address
->         ...
-> 
-> The hardware fetches the first two words from reset_vectors and populates
-> SP with __stack_end__ and PC with Reset_Handler. Execution proceeds from
-> Reset_Handler.
-> 
-> However, the ELF entry point does not always match the hardware reset
-> address. For example, on i.MX94 CM33S:
-> 
->   ELF entry point:     0x0ffc211d
->   hardware reset base: 0x0ffc0000 (default reset value, sw programmable)
->
+Hi Paul,
 
-But why?  Why can't the ELF image be set to the right reset base?
- 
-> To derive the correct hardware reset address, the unused lower bits must
-> be masked off. The boot code should apply a SoC-specific mask before
-> programming the reset address registers, e.g.:
-> 
->   reset_address = entry & reset_vector_mask
-> 
-> Current driver always programs the reset vector as 0. But i.MX94 CM33S's
-> default reset base is 0x0ffc0000, so the correct reset vector must be
-> passed to the SM API; otherwise the M33 Sync core cannot boot successfully.
-> 
-> rproc_elf_get_boot_addr() returns the ELF entry point, which is not the
-> hardware reset vector address. To derive the proper reset vector, this
-> patch introduces imx_rproc_get_boot_addr(), which masks the ELF entry
-> point using the SoC‑specific 'reset_vector_mask'. The resulting reset
-> vector address is then passed to the SM CPU/LMM reset vector API calls.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 17 ++++++++++++++---
->  drivers/remoteproc/imx_rproc.h |  2 ++
->  2 files changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 0dd80e688b0ea3df4c66e5726884dc86c8a5a881..d8ead42640881bd523d605fa7002935ef6e98077 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -345,7 +345,7 @@ static int imx_rproc_sm_cpu_start(struct rproc *rproc)
->  	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
->  	int ret;
->  
-> -	ret = scmi_imx_cpu_reset_vector_set(dcfg->cpuid, 0, true, false, false);
-> +	ret = scmi_imx_cpu_reset_vector_set(dcfg->cpuid, rproc->bootaddr, true, false, false);
->  	if (ret) {
->  		dev_err(priv->dev, "Failed to set reset vector cpuid(%u): %d\n", dcfg->cpuid, ret);
->  		return ret;
-> @@ -365,7 +365,7 @@ static int imx_rproc_sm_lmm_start(struct rproc *rproc)
->  	 * If the remoteproc core can't start the M7, it will already be
->  	 * handled in imx_rproc_sm_lmm_prepare().
->  	 */
-> -	ret = scmi_imx_lmm_reset_vector_set(dcfg->lmid, dcfg->cpuid, 0, 0);
-> +	ret = scmi_imx_lmm_reset_vector_set(dcfg->lmid, dcfg->cpuid, 0, rproc->bootaddr);
->  	if (ret) {
->  		dev_err(dev, "Failed to set reset vector lmid(%u), cpuid(%u): %d\n",
->  			dcfg->lmid, dcfg->cpuid, ret);
-> @@ -739,6 +739,17 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
->  	return rproc_elf_find_loaded_rsc_table(rproc, fw);
->  }
->  
-> +static u64 imx_rproc_get_boot_addr(struct rproc *rproc, const struct firmware *fw)
-> +{
-> +	struct imx_rproc *priv = rproc->priv;
-> +	u32 reset_vector_mask = GENMASK_U32(31, 0);
-> +
-> +	if (priv->dcfg->reset_vector_mask)
-> +		reset_vector_mask = priv->dcfg->reset_vector_mask;
-> +
-> +	return rproc_elf_get_boot_addr(rproc, fw) & reset_vector_mask;
-> +}
-> +
->  static const struct rproc_ops imx_rproc_ops = {
->  	.prepare	= imx_rproc_prepare,
->  	.attach		= imx_rproc_attach,
-> @@ -752,7 +763,7 @@ static const struct rproc_ops imx_rproc_ops = {
->  	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
->  	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
->  	.sanity_check	= rproc_elf_sanity_check,
-> -	.get_boot_addr	= rproc_elf_get_boot_addr,
-> +	.get_boot_addr	= imx_rproc_get_boot_addr,
->  };
->  
->  static int imx_rproc_addr_init(struct imx_rproc *priv,
-> diff --git a/drivers/remoteproc/imx_rproc.h b/drivers/remoteproc/imx_rproc.h
-> index d37e6f90548cec727b4aeb874680b42af85bdbb4..0d7d48352a1091ad24e8e083172ce6da6d26ae10 100644
-> --- a/drivers/remoteproc/imx_rproc.h
-> +++ b/drivers/remoteproc/imx_rproc.h
-> @@ -41,6 +41,8 @@ struct imx_rproc_dcfg {
->  	/* For System Manager(SM) based SoCs */
->  	u32				cpuid; /* ID of the remote core */
->  	u32				lmid;  /* ID of the Logcial Machine */
-> +	/* reset_vector = elf_entry_addr & reset_vector_mask */
-> +	u32				reset_vector_mask;
->  };
->  
->  #endif /* _IMX_RPROC_H */
-> 
-> -- 
-> 2.37.1
-> 
+Am Montag, dem 30.03.2026 um 18:09 +0200 schrieb Paul Kocialkowski:
+> Hi folks,
+>=20
+> On Wed 25 Mar 26, 13:40, Krzysztof Ha=C5=82asa wrote:
+> > Why did the first (boot) sequence result in success and this second one
+> > in failure? This is somehow reproducible.
+>=20
+> I've been seeing the same issue that is described in this thread when dri=
+ving
+> a regular 1080p@60 monitor, which shows a solid color background with a p=
+ixel
+> from the previous frame when reconfiguring the mode from time to time.
+>=20
+> When that happens, I see the lcdif fifo underrun/empty status until a new=
+ mode
+> is applied, which often resolves the situation. This situation never happ=
+ens
+> with the downstream nxp bsp driver.
+>=20
+> After weeks of investigation I finally narrowed it down to a part of the =
+nxp
+> original code that is missing in the upstream driver:
+> https://github.com/phytec/linux-phytec-imx/blob/v6.6.23-2.0.0-phy/drivers=
+/gpu/imx/lcdifv3/lcdifv3-common.c#L492
+>=20
+Thanks for tracking this down! It was also on my list of things to look
+at.
+
+> A big old sleep that waits for the DMA engine to finish handling the curr=
+ent
+> frame before it is disabled. When this delay is not respected, there seem=
+s to
+> be "unlucky" times when disabling the DMA engine too early will confuse t=
+he
+> unit and make it unable to resume proper operation later.
+>=20
+I think we can be a bit more clever than a indiscriminate sleep. If we
+set the shadow load enable bit in the disable sequence, we should be
+able to wait for this bit to be cleared by the hardware. All the DMA
+parameters (presumably including the enable state) should be applied by
+the hardware when this bit is cleared.
+
+I guess the read_poll_timeout in lcdif_disable_controller() was
+supposed to do exactly that wait, but as it was actually copied from
+the mxsfb driver, it's not working as intended. It's my understanding
+that the old lcdif HW only cleared the enable bit once it is actually
+done, but on the lcdifv3 on i.MX8MP those states are double buffered,
+so the bit in the register would be cleared instantaneously, rendering
+the wait in the current code a no-op. The only reliable indicator to
+see if the HW has updated it's internal state is to set the shadow load
+enable bit and wait for it to be cleared.
+
+> It is a bit surprising that the issue is not actually related to configur=
+ing
+> the display engine but to disabling it. This is why the first mode set al=
+ways
+> works but subsequentil ones might fail. The crtc is essentially disabled =
+and
+> re-enabled each time a new mode is applied.
+>=20
+> Adding the sleep solves the issue on my side and all mode sets now work
+> reliably. It does add a delay before returning to userspace when configur=
+ing
+> a new mode, but it seems legitimate to me if the underlying hardware is s=
+till
+> in-flight. I'm also unsure if it would apply to an async atomic commit.
+>=20
+This hardware doesn't support async commits. All DMA state changes are
+applied during vblank when the shadow load enable bit is set.
+
+Regards,
+Lucas
+
+> I will send a patch adding the delay and the undocumented fifo clear
+> bit that was discovered in this thread too.
+>=20
+> All the best,
+>=20
+> Paul
+>=20
+> Perhaps there is a more elegant way to handle this=20
+>=20
+>=20
+> > Interestingly, Weston usually starts fine in subsequent launches.
+> >=20
+> > How is this first (actually second - after the first VSYNC) frame
+> > different from all the others? Maybe we're programming UPDATE_SHADOW
+> > after the actual start of blanking period, but before DE, so it has no
+> > chance to reload registers, yet the DMA is somehow not ready?
+> >=20
+> > The manual (LCDIF display control Register (CTRL)) suggests that the DM=
+A
+> > (with present settings) starts to fetch FB data at the end of the
+> > previous active video pixel time (DE and pixel data going inactive):
+> > fetch_start_option (bits 9-8): Indicates when to start fetching for new
+> > frame. This signals also decide the shadow load, fifo clear time
+> > 00b - fetch start as soon as FPV begins(as the end of the data_enable).
+> >=20
+> > This should leave a lot of time to fill the FIFO (before the next DE),
+> > shouldn't it?
+> >=20
+> > 297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
+> > V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
+> > HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6 =
+=3D
+> > 32 ms, with the remaining 1.3333 ms for all the V sync stuff.
+> > --=20
+> > Krzysztof "Chris" Ha=C5=82asa
+> >=20
+> > Sie=C4=87 Badawcza =C5=81ukasiewicz
+> > Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+> > Al. Jerozolimskie 202, 02-486 Warszawa
+>=20
+
