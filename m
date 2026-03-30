@@ -1,232 +1,174 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E25373C0C
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 15:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC65337700F
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 16:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774885665; cv=none; b=sw1TjQWRgTBYKQ6fTnESRJuajBm7p6OMeGox+7bxqB0k3IWQ5Y8aTAwVxfC6bwxtcaD/saKLt80/JKvQNYYSVktsoQX12Uu/M8dfP15VmOxuFPYHAugE4wUuEpS4yZlXExJiC/h3xJGW5sOz/t5krfFYerVTUzrIEl42CpoaGdI=
+	t=1774887550; cv=none; b=KLTNMRsai4/MkPNIqSgvdRFxNTKfggnnIGJfTj9m0BgyvKwTCyz5CkAVf6ZJlNjF3zH0ME5HZOB6+E9kd2aNePn0yFqySrVypSu1fzN0Z/8z2REW2vgJKPkDAkeZmWbduxh0yMrPaqd0Bao+kXgiuE4F3L7Bt6f+SwO+UUTtN2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774885665; c=relaxed/simple;
-	bh=cOe0HByo+TuYk7g7P644FVqK34hh7493ag9RCpWOM0Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=UO+scLqsS41ocCedVBFTZYgHmgLTbytUUfRkTu5SXGWBiLfJLuINceJjZG2gpIpQwdSSr5zr1T5eAZ9uSZeoaViPm/SIsHfhinkpIRlScuJ5o6q0cICZjYc3aCOHfx4r5RjXwz3hG+7V+XLYzQ+6hsy+K7ysj8JLdvsrz5BwbcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xW8RPQAX; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xW8RPQAX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 001B3C58776;
-	Mon, 30 Mar 2026 15:48:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C7EB55FFA8;
-	Mon, 30 Mar 2026 15:47:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8693104505B1;
-	Mon, 30 Mar 2026 17:47:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774885657; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1aTpyd+0/mSU/s+c0fNfX3pIn8QwVOQZDTaD5Bg1dRU=;
-	b=xW8RPQAXdsgEPWs8JAXpw7qKfhkRJwFTssKu/pCYpXKdD0k3EpKzzFUMSC4jTPa6ha01OP
-	ell4Cyq42Pef0NFr1nkLE9wFav3TJ0wNOIBoHEnRkxxVhcpemnPRAR3tSCfpSs6Ey7VkHr
-	TOdEUjvFf5phGcGYzOoxQwf5Ifg+s7hMaf63HnEo8Q18bSj8gjgWkzMkzyG0tOVOZbgRil
-	BTTi+uv98pOhS29laOmj8YfGLErilsrSZN2gU7edGsqDRBmp9el03ejLQiHrBqbKsfFhGa
-	a0i4TpnHjLdS8Bci2iz0h3DuF34ACgZEomSMpODsX5K4HB5gv1c+LN22Cq49kw==
+	s=arc-20240116; t=1774887550; c=relaxed/simple;
+	bh=DYQ9wjqSdht1392dW4oQAD2+eULrFKr44hzGOCtVMiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jteBhO+N2WfcJWinmVyUQYxK4mHcD9BkujaACZ71KHbs/pFRfYrP10iEUw0kvbCfm5/Y5p9fbC9Ur5OkIXso8fw5hHeIzMRiAJ0A+VsT/yTE+8d+Xprveey15jzt3H0dMsZWDmq2V2rH19lOs6l3T2ZPip14t3hpHC4MeKKVsYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
+Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
+	by leonov.paulk.fr (Postfix) with ESMTPS id 889691F8005F
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 16:09:39 +0000 (UTC)
+Received: by laika.paulk.fr (Postfix, from userid 65534)
+	id 12070B2EA4A; Mon, 30 Mar 2026 16:09:36 +0000 (UTC)
+X-Spam-Level: 
+Received: from shepard (unknown [192.168.1.1])
+	by laika.paulk.fr (Postfix) with ESMTPSA id 4AAEAB2EA3F;
+	Mon, 30 Mar 2026 16:09:33 +0000 (UTC)
+Date: Mon, 30 Mar 2026 18:09:31 +0200
+From: Paul Kocialkowski <paulk@sys-base.io>
+To: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
+Cc: Liu Ying <victor.liu@nxp.com>, Maxime Ripard <mripard@kernel.org>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Marek Vasut <marex@nabladev.com>, Stefan Agner <stefan@agner.ch>,
+	Simona Vetter <simona@ffwll.ch>, imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
+Message-ID: <acqgO5b8_1fL9t_U@shepard>
+References: <m3ms04caaj.fsf@t19.piap.pl>
+ <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
+ <m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
+ <20260320-amiable-hairy-bullfinch-28bfda@houat>
+ <m3a4w2d4ds.fsf@t19.piap.pl>
+ <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
+ <m3se9onkv0.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Jn217E1wIDKakohc"
+Content-Disposition: inline
+In-Reply-To: <m3se9onkv0.fsf@t19.piap.pl>
+
+
+--Jn217E1wIDKakohc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 30 Mar 2026 17:47:23 +0200
-Message-Id: <DHG8G8FMXA6C.U6LU563OZ8NR@bootlin.com>
-To: "Liu Ying" <victor.liu@nxp.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Rob
- Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 7/8] drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector
- when missing using a DT overlay at boot time
-Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, "Adam Ford" <aford173@gmail.com>, "Alexander
- Stein" <alexander.stein@ew.tq-group.com>, "Anson Huang"
- <Anson.Huang@nxp.com>, "Christopher Obbard"
- <christopher.obbard@linaro.org>, "Daniel Scally"
- <dan.scally@ideasonboard.com>, "Emanuele Ghidoli"
- <emanuele.ghidoli@toradex.com>, "Fabio Estevam" <festevam@denx.de>,
- "Francesco Dolcini" <francesco.dolcini@toradex.com>, "Frieder Schrempf"
- <frieder.schrempf@kontron.de>, "Gilles Talis" <gilles.talis@gmail.com>,
- =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, "Heiko
- Schocher" <hs@denx.de>, "Joao Paulo Goncalves"
- <joao.goncalves@toradex.com>, "Josua Mayer" <josua@solid-run.com>, "Kieran
- Bingham" <kieran.bingham@ideasonboard.com>, "Marco Felsch"
- <m.felsch@pengutronix.de>, "Martyn Welch" <martyn.welch@collabora.com>,
- "Oleksij Rempel" <o.rempel@pengutronix.de>, "Peng Fan" <peng.fan@nxp.com>,
- "Philippe Schenker" <philippe.schenker@toradex.com>, "Richard Hu"
- <richard.hu@technexion.com>, "Shengjiu Wang" <shengjiu.wang@nxp.com>,
- "Stefan Eichenberger" <stefan.eichenberger@toradex.com>, "Vitor Soares"
- <vitor.soares@toradex.com>
-X-Mailer: aerc 0.20.1
-References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
- <20260320-drm-lcdif-dbanc-v1-7-479a04133e70@bootlin.com>
- <544112ab-8ca0-4622-b680-233457198e3e@nxp.com>
- <DHDNA5HLQPIB.3F21G9QPBUQG8@bootlin.com>
- <5f06ea5a-5388-440f-91d6-cebb0bee0a88@nxp.com>
-In-Reply-To: <5f06ea5a-5388-440f-91d6-cebb0bee0a88@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Liu,
+Hi folks,
 
-On Mon Mar 30, 2026 at 5:02 AM CEST, Liu Ying wrote:
->>>> --- a/drivers/gpu/drm/bridge/imx/Kconfig
->>>> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
->>>> @@ -25,6 +25,23 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
->>>>  	  Choose this to enable support for the internal HDMI encoder found
->>>>  	  on the i.MX8MP SoC.
->>>>
->>>> +config DRM_IMX8MP_DW_HDMI_BRIDGE_CONNECTOR_FIXUP
->>>> +	bool "Support device tree blobs without an hdmi-connector node"
->>>> +	default y
->>>
->>> depends on DRM_IMX_LCDIF ?
->>
->> If the imx hdmi-tx is not enabled then HDMI won't work anyway, so users =
-are
->> not affected and the overlay is not needed. Am I missing something?
->
-> I meant I'm fine with "default y" and think that this could also depend o=
-n
-> DRM_IMX_LCDIF, because no display controller driver other than the LCDIF
-> driver needs the fixup.
+On Wed 25 Mar 26, 13:40, Krzysztof Ha=C5=82asa wrote:
+> Why did the first (boot) sequence result in success and this second one
+> in failure? This is somehow reproducible.
 
-Ah, I see your point. OK, I'll add 'depends on DRM_IMX_LCDIF'.
+I've been seeing the same issue that is described in this thread when drivi=
+ng
+a regular 1080p@60 monitor, which shows a solid color background with a pix=
+el
+=66rom the previous frame when reconfiguring the mode from time to time.
 
->>> I see build warnings(W=3D1):
->>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:25.8-37.=
-4: Warning (unit_address_vs_reg): /fragment@0/__overlay__/soc@0: node has a=
- unit name, but no reg or ranges property
->>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:26.16-36=
-.5: Warning (unit_address_vs_reg): /fragment@0/__overlay__/soc@0/bus@32c000=
-00: node has a unit name, but no reg or ranges property
->>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:27.18-35=
-.6: Warning (unit_address_vs_reg): /fragment@0/__overlay__/soc@0/bus@32c000=
-00/hdmi@32fd8000: node has a unit name, but no reg or ranges property
->>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:29.13-33=
-.8: Warning (unit_address_vs_reg): /fragment@0/__overlay__/soc@0/bus@32c000=
-00/hdmi@32fd8000/ports/port@1: node has a unit name, but no reg or ranges p=
-roperty
->>
->> AFAIK the device tree checkes just can't work on overlays. The tools jus=
-t
->> cannot know on which base tree the overlay can be applied, so they canno=
-t
->> know the existing properties. That might change in the future, but for n=
-ow
->> my understanding is that it is OK to have overlays which produce such
->> harmless warnings, at least for driver-specific overlays like the tilcdc
->> one [0] which is already in linux-next since a few weeks.
->
-> Hmm, not sure a few weeks in linux-next is long enough ;)
-> I'd say, I saw the warnings, so simply reported along with a fix to suppr=
-ess
-> them.  TBH, build warnings make me nervous, especially this DT overlay is
-> under the "DRM DRIVERS FOR FREESCALE IMX BRIDGE" umbrella.
+When that happens, I see the lcdif fifo underrun/empty status until a new m=
+ode
+is applied, which often resolves the situation. This situation never happens
+with the downstream nxp bsp driver.
 
-That's fine, I'll add the lines needed to suppress the warnings then.
+After weeks of investigation I finally narrowed it down to a part of the nxp
+original code that is missing in the upstream driver:
+https://github.com/phytec/linux-phytec-imx/blob/v6.6.23-2.0.0-phy/drivers/g=
+pu/imx/lcdifv3/lcdifv3-common.c#L492
 
->>>> +	fixup-hdmi-connector {
->>>> +		compatible =3D "hdmi-connector";
->>>> +		label =3D "HDMI";
->>>> +		type =3D "a";
->>>
->>> What if a board uses another type?
->>
->> For boards affected by this patch, currently the connector is created by
->> dw_hdmi_connector_create() which hardcodes type A [0], so there would be=
- no
->> difference.
->
-> Yes, that's from driver's PoV.  However, userspace may get the type
-> from /sys/firmware/devicetree/base/fixup-hdmi-connector/type and use it
-> to do something.
+A big old sleep that waits for the DMA engine to finish handling the current
+frame before it is disabled. When this delay is not respected, there seems =
+to
+be "unlucky" times when disabling the DMA engine too early will confuse the
+unit and make it unable to resume proper operation later.
 
-I'd say this is incorrect, the device tree is not an API for that. The
-connector type might be known to the driver by other means (ACPI, DP MST,
-whatever). So I think this is a non-problem.
+It is a bit surprising that the issue is not actually related to configuring
+the display engine but to disabling it. This is why the first mode set alwa=
+ys
+works but subsequentil ones might fail. The crtc is essentially disabled and
+re-enabled each time a new mode is applied.
 
-If userspace needs to know the connector type, that should come from the
-ioctl (DRM_IOCTL_MODE_GETCONNECTOR perhaps).
+Adding the sleep solves the issue on my side and all mode sets now work
+reliably. It does add a delay before returning to userspace when configuring
+a new mode, but it seems legitimate to me if the underlying hardware is sti=
+ll
+in-flight. I'm also unsure if it would apply to an async atomic commit.
 
-> Maybe, that's trivial.
+I will send a patch adding the delay and the undocumented fifo clear
+bit that was discovered in this thread too.
 
-Not sure I got what you mean here, sorry. What are you referring to?
+All the best,
 
->> OTOH how can a common module know the specific connector?
->
-> Hmm, maybe add a module parameter or let users set the type through Kconf=
-ig
+Paul
 
-I'm afraid none of this would work for distribution kernels, where who
-configures the distribution has no idea on how many different hardware it
-will run.
+Perhaps there is a more elegant way to handle this=20
 
-> or even define an unknown type to honestly tell users that we don't know =
-it?
 
-This sounds like a potentially valid idea, even though I'm not fully
-convinced. Also I suspect it would be a pretty large change, and also
-adding "unknown type" in the device tree seems not compliant with the rule
-that DT describes the hardware (not the lack of info about the hardware).
+> Interestingly, Weston usually starts fine in subsequent launches.
+>=20
+> How is this first (actually second - after the first VSYNC) frame
+> different from all the others? Maybe we're programming UPDATE_SHADOW
+> after the actual start of blanking period, but before DE, so it has no
+> chance to reload registers, yet the DMA is somehow not ready?
+>=20
+> The manual (LCDIF display control Register (CTRL)) suggests that the DMA
+> (with present settings) starts to fetch FB data at the end of the
+> previous active video pixel time (DE and pixel data going inactive):
+> fetch_start_option (bits 9-8): Indicates when to start fetching for new
+> frame. This signals also decide the shadow load, fifo clear time
+> 00b - fetch start as soon as FPV begins(as the end of the data_enable).
+>=20
+> This should leave a lot of time to fill the FIFO (before the next DE),
+> shouldn't it?
+>=20
+> 297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
+> V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
+> HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6 =3D
+> 32 ms, with the remaining 1.3333 ms for all the V sync stuff.
+> --=20
+> Krzysztof "Chris" Ha=C5=82asa
+>=20
+> Sie=C4=87 Badawcza =C5=81ukasiewicz
+> Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+> Al. Jerozolimskie 202, 02-486 Warszawa
 
-But definitely it's not needed for this specific case, because:
+--=20
+Paul Kocialkowski,
 
- * with current code, every imx8mp-hdmi-tx usage adds a type-A connector [0=
-]
- * with this patch the correct type will be created when described in DT,
-   and type-A will be used only as a fallback when the DT is lacking
+Independent contractor - sys-base - https://www.sys-base.io/
+Free software developer - https://www.paulk.fr/
 
-So after the patch we'd do sometimes better, never worse in this respect.
+Expert in multimedia, graphics and embedded hardware support with Linux.
 
-Based on the above I'm sending v2 soon, but don't hesitate in following up
-in case I may be missing something (this topic is tricky).
+--Jn217E1wIDKakohc
+Content-Type: application/pgp-signature; name=signature.asc
 
-[0] https://elixir.bootlin.com/linux/v7.0-rc5/source/drivers/gpu/drm/bridge=
-/synopsys/dw-hdmi.c#L2601
+-----BEGIN PGP SIGNATURE-----
 
->> Boards with a different connector should describe the connector in the
->> device tree, if they need to instantiate the exact type.
+iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnKoDsACgkQhP3B6o/u
+lQyx4Q//VSSRsJUGm5WCV7YPfDUG0xf7mOtp4abi14Aex6rUK3pqhg5tQhgPH2+B
+5G/OHVQ9/c8JyD+DInPLpF+4Om0Dh29RYG0MPVpjZoCDMUXUKQ0IjX4kc+ALeU0Z
+zNazd3fX+X5oLLZJWODeXWWEt3aMDQ9YOGVVaNVGEHD/b89BGwqPQiO9MPC4IttA
+VJfX8vaYI0k1ZHgQ5fsj1fny7DXk4wsPVMPEkwZSl5Mq/777aNAMTI0uGq4hvx4c
+Wm2QiF9j9CZnvy8hhc1LPkq5VItvMnKY6bMt9IJO2pRD2+hXdBC5zA94B9SLRyWi
+CmcfqfEVNUGytlIRa0bfR7/CnpQtBnMR6SwP2sJ61TAYt5qo3yS28w1yhUoAr+GQ
+zXWKLJ+CcNIO2PMUNi6xRNQyXdfLGxra8kHAKWuMUocmPuG49TXfuRGRjamC4iOV
+7TnwrSlqcIycrKrPl3zFWrJ4dcmL2iWyzMbwociHkwsAGKfDySOzGsvf0wdxHUSu
+OrvzrwXOqysrquDlaePDw3H4Sz3piJq1bigGcA6hia6yvn3S4MXOn7kS6hGwmyX5
+dAYL/eovcdJmskL0QywMqW643Te+8lc+/iZoJBytRjnKk4oA4CATIRvA25fQGM/J
+BXUFUn0PAqrg7GwVbKn6/9thlUfuwnqGZ7czriJiZ9z0MKVU4is=
+=Hjtk
+-----END PGP SIGNATURE-----
 
-I think this is the only valid solution. It's very easy to do, nothing new
-to invent.
-
-Maybe on top of that we could add a warning when the overlay is applied,
-e.g. "imx8mp-hdmi-tx used without a connector described in device tree;
-adding a type A connector as a fallback; please add a valid description to
-your device tree". Maybe pointing to a TODO entry in the documentation.
-
-What do you think about this?
-
-Thanks again for your careful review!
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--Jn217E1wIDKakohc--
