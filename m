@@ -1,172 +1,227 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6962B397E68
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 19:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78835288D0
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 21:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774898903; cv=none; b=Jdal16v4wm4f+R5eAOHNGTeT4p8/KvJ4fhxFMdvpdaFfnCUkWKI3WyMiIC71VQ4aBrCL2vYZWC0yVCGpzb0fHwcE3JmlSDHumqnmLuNahCcQ6TUZDH+d58GY9KXCfYmzaUWvwT9VYVnosaI5xGkUcqqqs3Ha+Y+fgyP810DIhVI=
+	t=1774905400; cv=none; b=pslkoQx+9C/LHCmZAaZkjYDPgVd2lHjvsoUSStzVWAePJyNXQhimnqe3E1sxFM13gu6c2mjDj7O7tArUZv17CBwr+D77vmhaj+r/BPAWO0iYxQZM3lvR11RQlh81EP9PVr/gjT1Y4AESeGZ6FrnsoVoPqTxFJUfZHc2ZnJ/5Vl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774898903; c=relaxed/simple;
-	bh=k4oECNgcgBffSrqVG/1BTCiLFKfxRRx2KgQM/Onrk2c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cCWM96OlWgvRmyYE/LscjCXWOeAkxthk2+qt0J9hrNJ3kOT5+H4I2MK1kNUbson5IxveDNnK0NpQw04MrEHG7TBa2wluX5JONYpTFliSR0wVx4CiwDi80Cqps59JNbRRbB+dRFvmx9u5gl9T1dBY8YEhFRrzrBvxOu/8yBAf2Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oUJWw+sn; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oUJWw+sn"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6286DC4042D;
-	Mon, 30 Mar 2026 19:28:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2B5685FFA8;
-	Mon, 30 Mar 2026 19:28:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D985E10450A1D;
-	Mon, 30 Mar 2026 21:28:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774898898; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=RWUsNAX4qkcAdj0Wcj9Oo2se6gzwrm1zu3SjMpebEPg=;
-	b=oUJWw+snQiJK02OPuQbuHCk6voqfaJP4n5+P7ls65RFfDHnsX2qLyzuuWtQtOZpB2d8Ju2
-	/Ql5QOLjabiVDAJsEshL8Rx1jn0a9fEKfk558xZkRHYFjnmqluA6pP7pTYbvRByv/7KgPF
-	qPPd2c2Aptn8+8W2XDOalCkM5rLwHIFbLkHHMZQq066fyk2yZ6aREg12OPszPsII5wkk/c
-	3ZKS4bQiXN0ix65glAXmXA4TlR1ZKO4pn3beZ17TMH3k7qCbSNdZZKqprWad0MTHo4Kdkm
-	cCuXPz6SezX9ubQncm6HLiFQKMQK6wMfkfN/F/sHH/aJrnaM0jDU02rO0RlELA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Mon, 30 Mar 2026 21:25:51 +0200
-Subject: [PATCH v2 10/10] drm/mxsfb/lcdif: use
- DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+	s=arc-20240116; t=1774905400; c=relaxed/simple;
+	bh=68gdUMz2g9grlcrDSpgn+dvojozMOX9UEMee9F39uM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kG/XfLleSfdmnkmJLsmnicvv2IUTDSFnHgN+U4egZ5UzjAerJVtfmz0BpfwsLuRMULmbCPq04meHpalGDhGVg8ZxwPCC7zqhzBav06h7VyN5UmNEdheowlhSzLzqbf2GG69iYtaVWjxuhp8VAPdjfOzwtdGOj+67CtKic3KYuhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
+Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
+	by leonov.paulk.fr (Postfix) with ESMTPS id BD5091F8005D
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 21:16:29 +0000 (UTC)
+Received: by laika.paulk.fr (Postfix, from userid 65534)
+	id E65A9B2EB93; Mon, 30 Mar 2026 21:16:27 +0000 (UTC)
+X-Spam-Level: 
+Received: from shepard (unknown [192.168.1.1])
+	by laika.paulk.fr (Postfix) with ESMTPSA id B7459B2EB8F;
+	Mon, 30 Mar 2026 21:16:24 +0000 (UTC)
+Date: Mon, 30 Mar 2026 23:16:22 +0200
+From: Paul Kocialkowski <paulk@sys-base.io>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
+	Liu Ying <victor.liu@nxp.com>, Maxime Ripard <mripard@kernel.org>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Marek Vasut <marex@nabladev.com>, Stefan Agner <stefan@agner.ch>,
+	Simona Vetter <simona@ffwll.ch>, imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
+Message-ID: <acroJiSTReDL_2bB@shepard>
+References: <m3ms04caaj.fsf@t19.piap.pl>
+ <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
+ <m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
+ <20260320-amiable-hairy-bullfinch-28bfda@houat>
+ <m3a4w2d4ds.fsf@t19.piap.pl>
+ <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
+ <m3se9onkv0.fsf@t19.piap.pl>
+ <acqgO5b8_1fL9t_U@shepard>
+ <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260330-drm-lcdif-dbanc-v2-10-c7f2af536a24@bootlin.com>
-References: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
-In-Reply-To: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>, 
- Saravana Kannan <saravanak@kernel.org>
-Cc: Damon Ding <damon.ding@rock-chips.com>, 
- "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>, 
- Alexander Stein <alexander.stein@ew.tq-group.com>, 
- Christopher Obbard <christopher.obbard@linaro.org>, 
- Daniel Scally <dan.scally@ideasonboard.com>, 
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- Fabio Estevam <festevam@denx.de>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, 
- Gilles Talis <gilles.talis@gmail.com>, 
- =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, 
- Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Marco Felsch <m.felsch@pengutronix.de>, 
- Martyn Welch <martyn.welch@collabora.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, 
- Richard Hu <richard.hu@technexion.com>, 
- Shengjiu Wang <shengjiu.wang@nxp.com>, 
- Stefan Eichenberger <stefan.eichenberger@toradex.com>, 
- Vitor Soares <vitor.soares@toradex.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.15.1
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CDf277NznvZQn5xT"
+Content-Disposition: inline
+In-Reply-To: <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
 
-Convert this driver to DRM_BRIDGE_ATTACH_NO_CONNECTOR and to the
-drm_bridge_connector framework which is the current DRM bridge best
-practice.
 
-Tested-by: Martyn Welch <martyn.welch@collabora.com>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MBa8MPxL
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+--CDf277NznvZQn5xT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
----
+Hi Lucas,
 
-Changes in v2:
-- Added missing select DRM_DISPLAY_HELPER in Kconfig
-- Rebased on previous patch changes
----
- drivers/gpu/drm/mxsfb/Kconfig     |  2 ++
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 16 +++++++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+On Mon 30 Mar 26, 18:44, Lucas Stach wrote:
+> Am Montag, dem 30.03.2026 um 18:09 +0200 schrieb Paul Kocialkowski:
+> > After weeks of investigation I finally narrowed it down to a part of th=
+e nxp
+> > original code that is missing in the upstream driver:
+> > https://github.com/phytec/linux-phytec-imx/blob/v6.6.23-2.0.0-phy/drive=
+rs/gpu/imx/lcdifv3/lcdifv3-common.c#L492
+> >=20
+> Thanks for tracking this down! It was also on my list of things to look
+> at.
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 264e74f45554..31db7a824a93 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -33,6 +33,8 @@ config DRM_IMX_LCDIF
- 	select DRM_GEM_DMA_HELPER
- 	select DRM_PANEL
- 	select DRM_PANEL_BRIDGE
-+	select DRM_DISPLAY_HELPER
-+	select DRM_BRIDGE_CONNECTOR
- 	help
- 	  Choose this option if you have an LCDIFv3 LCD controller.
- 	  Those devices are found in various i.MX SoC (i.MX8MP,
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index c8ba8f9b1da8..7f07ae24e0dc 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -18,6 +18,7 @@
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -57,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 		struct of_endpoint of_ep;
- 		struct drm_bridge *bridge;
- 		struct drm_encoder *encoder;
-+		struct drm_connector *connector;
- 		int ret;
- 
- 		if (!of_device_is_available(remote))
-@@ -86,11 +88,23 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 					     "Failed to initialize encoder for endpoint%u\n",
- 					     of_ep.id);
- 
--		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-+		ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 		if (ret)
- 			return dev_err_probe(dev, ret,
- 					     "Failed to attach bridge for endpoint%u\n",
- 					     of_ep.id);
-+
-+		connector = drm_bridge_connector_init(lcdif->drm, encoder);
-+		if (IS_ERR(connector))
-+			return dev_err_probe(dev, PTR_ERR(connector),
-+					     "Failed to init bridge_connector for endpoint%u\n",
-+					     of_ep.id);
-+
-+		ret = drm_connector_attach_encoder(connector, encoder);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Failed to attach connector for endpoint%u\n",
-+					     of_ep.id);
- 	}
- 
- 	return 0;
+Glad that it helps :)
 
--- 
-2.53.0
+> > A big old sleep that waits for the DMA engine to finish handling the cu=
+rrent
+> > frame before it is disabled. When this delay is not respected, there se=
+ems to
+> > be "unlucky" times when disabling the DMA engine too early will confuse=
+ the
+> > unit and make it unable to resume proper operation later.
+> >=20
+> I think we can be a bit more clever than a indiscriminate sleep. If we
+> set the shadow load enable bit in the disable sequence, we should be
+> able to wait for this bit to be cleared by the hardware. All the DMA
+> parameters (presumably including the enable state) should be applied by
+> the hardware when this bit is cleared.
 
+I just tried it out and it works fine, thanks! It polls for a variable delay
+=66rom < 1 ms to < 16 ms, which makes perfect sense for a 60 Hz mode.
+
+This is much better than the hardcoded 25 ms. I'll add your Co-developed-by=
+ tag
+to the final commit.
+
+> I guess the read_poll_timeout in lcdif_disable_controller() was
+> supposed to do exactly that wait, but as it was actually copied from
+> the mxsfb driver, it's not working as intended. It's my understanding
+> that the old lcdif HW only cleared the enable bit once it is actually
+> done, but on the lcdifv3 on i.MX8MP those states are double buffered,
+> so the bit in the register would be cleared instantaneously, rendering
+> the wait in the current code a no-op. The only reliable indicator to
+> see if the HW has updated it's internal state is to set the shadow load
+> enable bit and wait for it to be cleared.
+
+Sounds right to me. Thanks for the details! Are there resources about the
+different generations/families used by nxp/freescale? They seem to be in-ho=
+use
+designs but with lots of different variations.
+
+> > It is a bit surprising that the issue is not actually related to config=
+uring
+> > the display engine but to disabling it. This is why the first mode set =
+always
+> > works but subsequentil ones might fail. The crtc is essentially disable=
+d and
+> > re-enabled each time a new mode is applied.
+> >=20
+> > Adding the sleep solves the issue on my side and all mode sets now work
+> > reliably. It does add a delay before returning to userspace when config=
+uring
+> > a new mode, but it seems legitimate to me if the underlying hardware is=
+ still
+> > in-flight. I'm also unsure if it would apply to an async atomic commit.
+> >=20
+> This hardware doesn't support async commits. All DMA state changes are
+> applied during vblank when the shadow load enable bit is set.
+
+Ah sorry I meant non-blocking atomic commit, not async. Since this is in the
+CRTC disable path, it probably makes the userspace process sleep even in the
+case of a non-blocking commit (unless this happens in a kernel thread, I'm =
+not
+sure exactly). But I guess it is legitimate to block until the previous fra=
+me
+is finished if it is mandatory.
+
+All the best,
+
+Paul
+
+>=20
+> Regards,
+> Lucas
+>=20
+> > I will send a patch adding the delay and the undocumented fifo clear
+> > bit that was discovered in this thread too.
+> >=20
+> > All the best,
+> >=20
+> > Paul
+> >=20
+> > Perhaps there is a more elegant way to handle this=20
+> >=20
+> >=20
+> > > Interestingly, Weston usually starts fine in subsequent launches.
+> > >=20
+> > > How is this first (actually second - after the first VSYNC) frame
+> > > different from all the others? Maybe we're programming UPDATE_SHADOW
+> > > after the actual start of blanking period, but before DE, so it has no
+> > > chance to reload registers, yet the DMA is somehow not ready?
+> > >=20
+> > > The manual (LCDIF display control Register (CTRL)) suggests that the =
+DMA
+> > > (with present settings) starts to fetch FB data at the end of the
+> > > previous active video pixel time (DE and pixel data going inactive):
+> > > fetch_start_option (bits 9-8): Indicates when to start fetching for n=
+ew
+> > > frame. This signals also decide the shadow load, fifo clear time
+> > > 00b - fetch start as soon as FPV begins(as the end of the data_enable=
+).
+> > >=20
+> > > This should leave a lot of time to fill the FIFO (before the next DE),
+> > > shouldn't it?
+> > >=20
+> > > 297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
+> > > V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
+> > > HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6=
+ =3D
+> > > 32 ms, with the remaining 1.3333 ms for all the V sync stuff.
+> > > --=20
+> > > Krzysztof "Chris" Ha=C5=82asa
+> > >=20
+> > > Sie=C4=87 Badawcza =C5=81ukasiewicz
+> > > Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+> > > Al. Jerozolimskie 202, 02-486 Warszawa
+> >=20
+>=20
+
+--=20
+Paul Kocialkowski,
+
+Independent contractor - sys-base - https://www.sys-base.io/
+Free software developer - https://www.paulk.fr/
+
+Expert in multimedia, graphics and embedded hardware support with Linux.
+
+--CDf277NznvZQn5xT
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnK6CYACgkQhP3B6o/u
+lQyH5A//V/9yZvIamca2VLwgWSF16F64igms4AaRROuVg2t9+TzNgINKg6rOU77z
+A6J9f6O4Wo36zukvA86exdLkrHAiCcgWhk5cAhxujIgvJ0LoeCqi1GgjN53K0PGQ
+TN7fzxVBENSA72l+E/Gd8o77dUsUAJHb9fcq/yB6po2OqkK/k5CVxkutugT0CDZa
+65w8gaTVdZ8z7XUIwdHKrmCfK5g1KixHBa/GGN3Dm/KO6klvpY8ErTH6WwzftdDr
+gtct/x2RKkJrUc2rkYY47MP88b9Mu83Ob9kMn//h87uuaTh29M5demnJJ3p2++3B
+EzE+SKR+E3Z289Lab5ricLwhROZ68lDjRaVICqrq6T5Elaf/cTyTkV0sgu3SC9yh
+XKKihJFlddsruoUnBQzcZ/uXYlVO/YeBH4pXZtlopAgM+XIcV4zX6iAPRNfoYO6J
+4/vArKYosjZAvmQ16S+V17aSvCCTWJcFoqeqlRhjgenZn8EVGU8l/JLubf4vNSTN
+6IskqUahUGrXoZ/sfcrGaJVe3d63b4SoUGDaWXWF30XAFsuRw2RUkujF2+SdFhLQ
+6RC/WNLF7DD93bcOgVyybP+gqa3ea8neNq2/lTNG36oQ9AIen2C5dPyxUzOVavJH
+3gfTbgw4AYg6KgXKLY1U3DnNxebD99sXsso8y95FDyZ/yDd5JqU=
+=/b6w
+-----END PGP SIGNATURE-----
+
+--CDf277NznvZQn5xT--
