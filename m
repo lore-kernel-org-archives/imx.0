@@ -1,174 +1,264 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10E32EA171
-	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 16:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8336397E86
+	for <imx@lists.linux.dev>; Mon, 30 Mar 2026 19:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774889074; cv=none; b=fIWY469huz3tRJlPxG1O8jMBZZ1/NfrOilEPHLOASw6EBbqXLi46dFV4yDxfqHJurGZKEv1aRXgDIC6eV/JuI7EaBNwpc1hiRydm1mjMLelSBzFqYqwSGrHRnJ2HAZ1xBAwtjcucnDHopyVc+vf27UhtOXYTcKKDbOgWxG3Igb4=
+	t=1774898798; cv=none; b=TYq+dfjwJwwMdm20yAYpYC/MpK5KL1YN4FXpaqz+OvtKX9dzolAfBpfljQHWjP5UOlNcOZMey98cVxgpibEyiVLDtfGaUEGXqE2scaofUEnNs78RuEYkdIbBToxj/wbeBgwWsGHntUuyYHXmG8UDxzEbkXqJNdx6cJgvZKjEg3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774889074; c=relaxed/simple;
-	bh=LyrL60ey8eS6gEWd30fnPmjm9d6S/QljeFofuGU8Zz0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H3gwf7jnykD0aiwI3u7qpwAv/WQrnqQ9xUbl5I5XMaNm33oUrmtfYd+zZhFoZs0JwTULly24As3+eeXsf0lXAlGqXanv81EZi6v9U6l1vv8eatKFQMd7MATTeeISCjF/bKidlLWLLIT0Yla/rWfttpjqtJDBF5mCY1RdnspKO+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1w7Fiu-0002FJ-Fk; Mon, 30 Mar 2026 18:44:20 +0200
-Message-ID: <0e8863b39cc9cab3ef16aedde480c70a158c4cbe.camel@pengutronix.de>
-Subject: Re: i.MX8MP: Fix HDMI LCDIF FIFO underruns
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Paul Kocialkowski <paulk@sys-base.io>, Krzysztof =?UTF-8?Q?Ha=C5=82asa?=
-	 <khalasa@piap.pl>
-Cc: Liu Ying <victor.liu@nxp.com>, Maxime Ripard <mripard@kernel.org>, Marco
- Felsch <m.felsch@pengutronix.de>, Marek Vasut <marex@nabladev.com>, Stefan
- Agner <stefan@agner.ch>,  Simona Vetter <simona@ffwll.ch>,
- imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel
- Team <kernel@pengutronix.de>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Sascha Hauer
- <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
- linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org, Thomas
- Zimmermann <tzimmermann@suse.de>,  David Airlie <airlied@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-Date: Mon, 30 Mar 2026 18:44:17 +0200
-In-Reply-To: <acqgO5b8_1fL9t_U@shepard>
-References: <m3ms04caaj.fsf@t19.piap.pl>
-	 <32317022-3c44-4ead-9e2d-04caa12b28cb@nabladev.com>
-	 <m36pvjbo4xy2rtdymshjpmwu7icl3wlyiwcmmjaozo7jpe5lqk@zt7byx7iwmym>
-	 <20260320-amiable-hairy-bullfinch-28bfda@houat>
-	 <m3a4w2d4ds.fsf@t19.piap.pl> <ecd02f87-c4b7-44ed-8ecf-98e0990af34a@nxp.com>
-	 <m3se9onkv0.fsf@t19.piap.pl> <acqgO5b8_1fL9t_U@shepard>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1774898798; c=relaxed/simple;
+	bh=IuMmDNBNBhm0pN8RTCBb5WQqh/9HZNBm08xncAVWW7o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OcyUCDan4iFqpaGe87OmSmwaof1BvZyBH47yxKYTSXr1YJ0XznzRjDYVodfbkxxkUbLFbZ0/I2u9iAxb3mRLq/bHOlXFVKIMMoe482QPIy2cngML3nUIP1Z2iOir3BQLkPVncg4T+zhMKwBtzbVD2riXo75kR4uJ9n6sTY9PzYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YS9DiUgT; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YS9DiUgT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id AABFA4E4286D;
+	Mon, 30 Mar 2026 19:26:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4C1B45FFA8;
+	Mon, 30 Mar 2026 19:26:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7617A10450C85;
+	Mon, 30 Mar 2026 21:26:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1774898790; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=CxC6W+lWciuGPHof3yM5J3AM+C2kzWOd5iyEtmbwMWM=;
+	b=YS9DiUgTeHtKqFfIo1Bwn325arnUo0lYeHfDJFgQKBTxXppiEbhP5AqgQbH0ee60AA3pxH
+	nZEqZNHtJ9NiUIRLnlpb9IcHlpOoY6Q2SulfQErCAPQR5vzNZo4LcJuAw0Oe0bxSQepO1V
+	bCfPgMS8d5PpbUYcPwN+0AEyNvFHh21A+DCAXuIoSLSw0pan1DuR/brBiYutkgg+GifWTJ
+	wSlVHdX+iiSRxS9ZnS6UBvnLmytrcVAMNV9rixiGRemVEc/6Vb0FTDJV+RQVPOXb10TOmQ
+	G3+NlaZynIcid5CYboh5FGxnw0Pw5XB3FSnkG9pTiRgzIYwsCcSA8XuwLqOeAw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v2 00/10] drm/mxsfb/lcdif: use
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+Date: Mon, 30 Mar 2026 21:25:41 +0200
+Message-Id: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADbOymkC/2WNywqDMBBFf0Vm3SkxER9d9T+KC82MdUATSURax
+ H9vKt11eQ7cc3eIHIQj3LIdAm8SxbsE+pKBHTv3ZBRKDFrpUhlVIoUZJ0syIPWds1gboqaoja6
+ IIa2WwIO8zuKjTTxKXH14nwdb/rW/llZ/rS1HhUXVdKrIjeFK3Xvv10nc1foZ2uM4Ph6vkPuwA
+ AAA
+X-Change-ID: 20260306-drm-lcdif-dbanc-83dd948327de
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@kernel.org>
+Cc: Damon Ding <damon.ding@rock-chips.com>, 
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Christopher Obbard <christopher.obbard@linaro.org>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
+ Fabio Estevam <festevam@denx.de>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Gilles Talis <gilles.talis@gmail.com>, 
+ =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, 
+ Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Marco Felsch <m.felsch@pengutronix.de>, 
+ Martyn Welch <martyn.welch@collabora.com>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, 
+ Richard Hu <richard.hu@technexion.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>, 
+ Vitor Soares <vitor.soares@toradex.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15.1
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Paul,
+This series modernizes the i.mx8mp LCDIF driver to use the
+bridge-connector, which is the current best practice in DRM.
 
-Am Montag, dem 30.03.2026 um 18:09 +0200 schrieb Paul Kocialkowski:
-> Hi folks,
->=20
-> On Wed 25 Mar 26, 13:40, Krzysztof Ha=C5=82asa wrote:
-> > Why did the first (boot) sequence result in success and this second one
-> > in failure? This is somehow reproducible.
->=20
-> I've been seeing the same issue that is described in this thread when dri=
-ving
-> a regular 1080p@60 monitor, which shows a solid color background with a p=
-ixel
-> from the previous frame when reconfiguring the mode from time to time.
->=20
-> When that happens, I see the lcdif fifo underrun/empty status until a new=
- mode
-> is applied, which often resolves the situation. This situation never happ=
-ens
-> with the downstream nxp bsp driver.
->=20
-> After weeks of investigation I finally narrowed it down to a part of the =
-nxp
-> original code that is missing in the upstream driver:
-> https://github.com/phytec/linux-phytec-imx/blob/v6.6.23-2.0.0-phy/drivers=
-/gpu/imx/lcdifv3/lcdifv3-common.c#L492
->=20
-Thanks for tracking this down! It was also on my list of things to look
-at.
+== Call for testing on i.MX8MP boards (especially those using HDMI)!
 
-> A big old sleep that waits for the DMA engine to finish handling the curr=
-ent
-> frame before it is disabled. When this delay is not respected, there seem=
-s to
-> be "unlucky" times when disabling the DMA engine too early will confuse t=
-he
-> unit and make it unable to resume proper operation later.
->=20
-I think we can be a bit more clever than a indiscriminate sleep. If we
-set the shadow load enable bit in the disable sequence, we should be
-able to wait for this bit to be cleared by the hardware. All the DMA
-parameters (presumably including the enable state) should be applied by
-the hardware when this bit is cleared.
+For who tested v1 (thanks!): some patches have changed so I had to drop
+your Tested-by on them. A new round of test would still be useful.
 
-I guess the read_poll_timeout in lcdif_disable_controller() was
-supposed to do exactly that wait, but as it was actually copied from
-the mxsfb driver, it's not working as intended. It's my understanding
-that the old lcdif HW only cleared the enable bit once it is actually
-done, but on the lcdifv3 on i.MX8MP those states are double buffered,
-so the bit in the register would be cleared instantaneously, rendering
-the wait in the current code a no-op. The only reliable indicator to
-see if the HW has updated it's internal state is to set the shadow load
-enable bit and wait for it to be cleared.
+This series applies changes to how video output devices are probed on
+i.MX8MP, especially those using HDMI. Even though I have put care in not
+breaking anything, there could potentially be pitfalls I haven't realized,
+causing regressions on existing boards.
 
-> It is a bit surprising that the issue is not actually related to configur=
-ing
-> the display engine but to disabling it. This is why the first mode set al=
-ways
-> works but subsequentil ones might fail. The crtc is essentially disabled =
-and
-> re-enabled each time a new mode is applied.
->=20
-> Adding the sleep solves the issue on my side and all mode sets now work
-> reliably. It does add a delay before returning to userspace when configur=
-ing
-> a new mode, but it seems legitimate to me if the underlying hardware is s=
-till
-> in-flight. I'm also unsure if it would apply to an async atomic commit.
->=20
-This hardware doesn't support async commits. All DMA state changes are
-applied during vblank when the shadow load enable bit is set.
+I have thus added in Cc all developers which appeared active on dts files
+for imx8mp boards involving video. I would appreciate testing on as many
+boards as possible, along with a Tested-by tag, or a report about any
+issues encountered.
 
-Regards,
-Lucas
+Thanks in advance to all testers!
 
-> I will send a patch adding the delay and the undocumented fifo clear
-> bit that was discovered in this thread too.
->=20
-> All the best,
->=20
-> Paul
->=20
-> Perhaps there is a more elegant way to handle this=20
->=20
->=20
-> > Interestingly, Weston usually starts fine in subsequent launches.
-> >=20
-> > How is this first (actually second - after the first VSYNC) frame
-> > different from all the others? Maybe we're programming UPDATE_SHADOW
-> > after the actual start of blanking period, but before DE, so it has no
-> > chance to reload registers, yet the DMA is somehow not ready?
-> >=20
-> > The manual (LCDIF display control Register (CTRL)) suggests that the DM=
-A
-> > (with present settings) starts to fetch FB data at the end of the
-> > previous active video pixel time (DE and pixel data going inactive):
-> > fetch_start_option (bits 9-8): Indicates when to start fetching for new
-> > frame. This signals also decide the shadow load, fifo clear time
-> > 00b - fetch start as soon as FPV begins(as the end of the data_enable).
-> >=20
-> > This should leave a lot of time to fill the FIFO (before the next DE),
-> > shouldn't it?
-> >=20
-> > 297 MHz pixclk, 3840x2160, 30 Hz, H back porch 296 pixclks, Vfp 176,
-> > V back porch 72 lines, Hfp 8 lines, VSYNC 10 lines, HSYNC 88 pixclks.
-> > HTotal =3D 4400 pixels which makes Vactive time =3D 4400 * 2160/297e6 =
-=3D
-> > 32 ms, with the remaining 1.3333 ms for all the V sync stuff.
-> > --=20
-> > Krzysztof "Chris" Ha=C5=82asa
-> >=20
-> > Sie=C4=87 Badawcza =C5=81ukasiewicz
-> > Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-> > Al. Jerozolimskie 202, 02-486 Warszawa
->=20
+== Review recommendation
+
+I recommend reviewing patches in this order to be understood more
+effectively:
+
+ * Cover letter
+ * Patches 1-6: small preliminary cleanups (can be applied independently)
+ * Patch 10: the goal of this series, but would not work alone
+ * Patch 9: lets patch 10 work; but in turn it can't work alone
+ * Patch 8: lets patch 9 work; but in turn it can't work alone
+ * Patch 7: lets patch 8 work
+
+== Series description
+
+This series is not strictly related to DRM bridge hotplug, it is rather a
+preparation step. Introducing hotplug would need two different approaches:
+one for the new way, for drivers using bridge-connector and
+DRM_BRIDGE_ATTACH_NO_CONNECTOR, another for drivers using the "old, legacy
+way" where the last bridge is supposed to instantiate the
+drm_connector. Hotplug is complicated enough in one case, so it makes sense
+to only support the new way.
+
+The hardware I'm working on is an i.MX8MP, whose LCDIF driver is still
+using the old way. So this series converts to the new way as a preparation
+step.
+
+Patch 10 does the conversion, which is simple. However this would introduce
+a regression on some boards. Here's why:
+
+There are 3 instances of the LCDIF in i.MX8MP:
+
+ * LCDIF1, driving the DSI output
+ * LCDIF2, driving the LVDS output
+ * LCDIF3, driving the HDMI output
+
+The device drivers of peripherals connected to LCDIF1 and LCDIF2 already
+support the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag. So far so good.
+
+LCDIF3 is more tricky. The HDMI pipeline is:
+
+  LCDIF3 -> fsl,imx8mp-hdmi-pvi -> fsl,imx8mp-hdmi-tx -> HDMI connector
+
+The fsl,imx8mp-hdmi-tx (hdmi-tx) does not support
+DRM_BRIDGE_ATTACH_NO_CONNECTOR, but it is based on the dw-hdmi component
+which supports it by simply changing a setting in the driver platform
+data. Patch 9 does this switch.
+
+However, for that switch to work, the device tree must describe the HDMI
+connector (compatible = "hdmi-connector").
+
+Unfortunately not all device trees in mainline have an hdmi-connector
+node. Adding one is easy, but would break existing hardware upgrading to a
+newer kernel without upgrading the device tree blob. This is addressed by
+patch 8 reusing an existing approach to add such a node to the live device
+tree at init time using a device tree overlay for boards which don't have
+one.
+
+Finally, patch 8 cannot work alone because of a bad interaction between
+devlink and device tree overlays. Patch 7 solves that.
+
+== Grand plan
+
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
+
+Here's the work breakdown (➜ marks the current series):
+
+ 1. … add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. … add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. … of_drm_find_bridge
+          a. ✔ add of_drm_get_bridge() (v7.0),
+	       convert basic direct users (v7.0-v7.1)
+	  b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
+	  c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
+	  d. ✔… convert direct of_drm_get_bridge() users, part 4
+	        (some v7.1, some pending)
+	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
+    B. … protect private_obj removal from list
+    C. ✔ Add drm_bridge_clear_and_put() (v7.1)
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. ➜ Migrate i.MX LCDIF driver to bridge-connector
+ 6.   DRM bridge hotplug
+    A.   Bridge hotplug management in the DRM core
+    B.   Device tree description
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v2:
+- Dropped patch removing the loop in lcdif_attach_bridge, adapted following
+  patches as needed, added patch to use __free on the ep pointer
+- Added new cleanup patch (patch 6)
+- Build the fixup module unconditionally
+- patch 7: fix returned error codes
+- patch 1: fix cleanup action
+- Various minor improvements based on reviews, see per-patch changelog
+- Removed bouncing recipients from Cc
+- Link to v1: https://lore.kernel.org/r/20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com
+
+---
+Luca Ceresoli (10):
+      drm/mxsfb/lcdif: simplify remote pointer management using __free
+      drm/mxsfb/lcdif: simplify ep pointer management using __free
+      drm/mxsfb/lcdif: use dev_err_probe() consistently in lcdif_attach_bridge
+      drm/mxsfb/lcdif: lcdif_attach_bridge: move iteration-specific variables declaration inside loop
+      drm/bridge: dw-hdmi: document the output_port field
+      drm/bridge: dw-hdmi: warn on unsupported attach combination
+      drm/bridge: dw-hdmi: move next_bridge lookup to attach time
+      drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector when missing using a DT overlay at boot time
+      drm/bridge: imx8mp-hdmi-tx: switch to DRM_BRIDGE_ATTACH_NO_CONNECTOR
+      drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+
+ drivers/gpu/drm/bridge/imx/Kconfig                 | 18 ++++++
+ drivers/gpu/drm/bridge/imx/Makefile                |  2 +
+ .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 53 +++++++++++++++++
+ .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 56 ++++++++++++++++++
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c        |  1 +
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          | 49 +++++++--------
+ drivers/gpu/drm/mxsfb/Kconfig                      |  2 +
+ drivers/gpu/drm/mxsfb/lcdif_drv.c                  | 69 +++++++++++-----------
+ include/drm/bridge/dw_hdmi.h                       |  6 ++
+ 9 files changed, 193 insertions(+), 63 deletions(-)
+---
+base-commit: cb6fd48ab016a4b2245d805a5b766eea590e32dd
+change-id: 20260306-drm-lcdif-dbanc-83dd948327de
+
+Best regards,
+--  
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
