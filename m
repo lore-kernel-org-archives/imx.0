@@ -1,105 +1,196 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235873FB7DA
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774967534; cv=none; b=D8nY2zrbXVBYIqGJTk3azXqBHMj0DdjUAE8FFtCr1C7pIN0Ez4+DQDin2Jv0TCRJq9dOwoTThsa5fe2Qh/H2UjYicwwbrWDcPqpHSXx8kcQC+NOUeFX/e/hCWc7KKRWacc8mvsuzzMK/cMPy7YCubM2faKFOGUmfGQaXTrMe2Lo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774967534; c=relaxed/simple;
-	bh=iNxOjW15bAhGECqyOpje5IdokDrygM3OjbtlLkrF2ss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lbWIQfKOFLKg6PFfB24cquBnF56UJkTNAwnFyP7gAAKWYE6F8CkCj5m12a8WASLX7FxN+YEzPxg22PZHxZ8Tiz5ET2Z9whEY3XRzfpdLUbD0aQRKls3LEMYTIn1+9GEAkayXiReg4+RYGKovuvZiiJYRl2IoB8op2O15hrYwISk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=aVTikRMV; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111B73FCB0E
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774967622; cv=fail; b=Vv3rFRpde0Y/4reYEWKu75GsryYoMUv2RDEQXz7jaX4yx5Vtv0D2HSqYRwtSdZcaWXaRDYltNNX3YlFsiuJBMdECkE05XeGz4arszH9Zqv4po3D50J2uybyaJScCXXrPZB+dEb+vPV0uxCftlrJ9MxVYlT2K/umyYpnZ9uHTbDg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774967622; c=relaxed/simple;
+	bh=RvMPoPDu+mhus/vjZZD+d8SFPMRCLyivtQMiTrfT9mI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FBgcXX7n+RnYqEX087fem9mq0OE8TCuPRutJqG+SDCyY66gjynWjtN42HLBK0keRm3q41ZGA3LNtJ1NcAdUh6bnvIUHjKESC3mIreLlEJFFQz6sDQ026Bf4VBwKxaAzC/BZXgla4Fww4xiT/WGS2pX4w2rFqZNLEaB8SYbLb69g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J3Gedx2a; arc=fail smtp.client-ip=52.101.70.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="aVTikRMV"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC5BA49E3
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 07:32:06 -0700 (PDT)
-Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5CD6A3F641
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 07:32:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774967532; bh=iNxOjW15bAhGECqyOpje5IdokDrygM3OjbtlLkrF2ss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aVTikRMVuBkern1FurrvHO17RHcsS39tiiK9N33vQYOUa/3MuGzD1J2B3XeObid7J
-	 n5igH/8T7e7DZpCzOfR3aejLatzM6lAmqBN8dZpyXy2vkmne/uPKRQ6TNFCpX6Nw3e
-	 /PGJhwM7noqg+SHD+JXnoYs79jLy0Z65Gr4VWbZ4=
-Date: Tue, 31 Mar 2026 15:31:49 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Guangliu Ding <guangliu.ding@nxp.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Jiyu Yang <jiyu.yang@nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: gpu: mali-valhall-csf: Document i.MX952
- support
-Message-ID: <acva1Xt8V4k9-uG8@e142607>
-References: <20260331-master-v1-0-65c8e318d462@nxp.com>
- <20260331-master-v1-1-65c8e318d462@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J3Gedx2a"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tH4qxLn/CN8x83/IVxNh6jRlKnPuZfRxQwjxFJa8O2ENH3XmcaqKvA0QZ/KSvJPbw30SH4ZFIUGGVctX5RZbS/S7EXwKcrAlg6iVY9yPlQsPgYuBU+qtUEIgbD3t89xpNVxUhNAm0+AR5b211QliioK3ZPIFOSS47N/3wW/D5TSlr31xrYWj9ebJ/XO/uxv1gC3jqv06q/BJtPb4/aRhfI/22gFSdUMfDYb7pcppbRRTNkCiwRbabVOUspm4lcLIM7s/6VlDKIIetNE7MBv4BVS+7iCkSPloW0K0imwLwiiNyBDvrGQSAv+FALZVYr4EwkYF4WPWumJtiEF5JZABiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VcOL3Vh4pwkqd9kOphdXO12VUXfppE56TJGlIPr/YKM=;
+ b=j8jvswcaoiupYFktXI8mv7exxkEJ2xpcIhTO/FmwzBpFMajEjYw5QaTLpnZ4IOEb8WGSX0Yag7qrkFEbNfgemZIeLJB/HuJTMuwJ3zze7LYRCrb+3plh9fZA356xeKMuYmglZi/7kEjqOvwIlWou0PILGgMNAPIlkHE5J80ezuSPH4qNcl/l6D4k+eBx0QFJgqdqs/Z7pX6NLmFB7P4wcQ9PnZbPGV8MOQwE1/s3x6AQDu8/zNfuywpM273nqjVDHptkJK1pZ/FhEwv/hQAJi//WEC4nrW4Nlwcm6TKtYKpFbH0y6fS1fwo+AlWVRB4JfwI3YSI+BIcs7kTbXzTBuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VcOL3Vh4pwkqd9kOphdXO12VUXfppE56TJGlIPr/YKM=;
+ b=J3Gedx2aQN0bBzkfm8vUQoACvbVRHAHwQLxdlGD7rpCapfEHsmIFxFS8AqbozxaaFLq66fj7a/C2RrrlevvOXGuC1JaE7ahM0IPMHLFP9KmxLUPszXPibx0BOZWJggbtoRuv5dSDuvNmX7I7Zedo0vw7Fm/IFpLfR7I2e76urE7CNXkuaU/13WwfE1U1DUk3Ee+UDmE3OlgkX66a6oDbSsjm0phhGx78k3sJpv+t7DmbyYNibBX1NETKorON8xSLZIVk/Bad0rqI1AXU80rD5mWmGh6xgAy6NQJAbNy1kGKz/Yki4cUQe5c/SyCu1p+zlhoBdGVggUgHRCNMY+0ZWA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PR3PR04MB7354.eurprd04.prod.outlook.com (2603:10a6:102:8e::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
+ 2026 14:33:38 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
+ 14:33:37 +0000
+Date: Tue, 31 Mar 2026 10:33:30 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: ming.qian@oss.nxp.com
+Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [RFC PATCH 1/7] media: v4l2-ctrls: Add V4L2_CID_MEMORY_USAGE
+ control
+Message-ID: <acvbOo17tU-s20BS@lizhi-Precision-Tower-5810>
+References: <20260331072347.253-1-ming.qian@oss.nxp.com>
+ <20260331072347.253-2-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331072347.253-2-ming.qian@oss.nxp.com>
+X-ClientProxiedBy: PH7P221CA0055.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:33c::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260331-master-v1-1-65c8e318d462@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PR3PR04MB7354:EE_
+X-MS-Office365-Filtering-Correlation-Id: dda1fab5-77d3-4c91-3ea4-08de8f327f1f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|52116014|38350700014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	MyBr552MXGqCPzK9UUcIkHCq6gZraaT+0E6NIgtuEP/YEgWOlh44ijyazPwRwOmKyUxmKVn6lX86kNBkJYmpNxpJtGohRCsoSiDDaz6ZBqeudLRsvCsxzvG8xL2czmmLRqaSMeiEDx9ZiIO2buuPRgnFlsEfXs2EEUEJmak9BcqEcS/+EBLsTzqMNQNz+Jn9wJ7z0GJ5gpWe6FxWSk904fuH7joDQHVSoPTPVvW+E32SyQUjkTMC/742zNpEAHzG48jMZOLDrD9ehcd2iiM8Q916EicvieE74TsmKlFqwUFjV1txGPZ2psW4vKeLgRQp2NBk3fYNscWSIK3QZyLafUCJpkXO2sI735UmBNGjVn9Hh00LcqtfEY9CwxgvTWjNdCGokkh5SPOZ2uxL15bshbQKfaYs6s6Esy2B9uj3dCYXtRfdzcS9kEtLm5ZoIuhv57RGJd64k5yLLa8qnYD/I/9TTLZM3xVt4c+y+tsSqc/JLZ3fbdydZhESNUEDpmLO1anbSPNfxMttlBzc5Q1eGgtZ53YDQJzyOeRekNbT0maumTvjsEq5ClE35hIPknXDhUwuk2e8OXqBv1kYA3rT36yHpeF7xnZO0Wj5k5gokyFuMhKUmuBYkior+UsiB9tBle1l+O0nvOtHJZPnJ1F1NCEGZkNRDns0CLpxKNXCwAV1IVBSaVK53/i+hi2DTwTLdoH1SPwNrrfx4HW3K3U1szAR2TjYTihgjMpUu9t0ZXuGJ+tcCrEqSO81v0c9Xztitajo+Y1iD6Q5ChX0QKSDwmVPRYM+GMG98SLwXd9BhJU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(52116014)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9t2BHxIuixm8Xo30V7psL8sLvi8SKkpLtGamCwW9pQ4Dl949gnKXF9SJkFjW?=
+ =?us-ascii?Q?jHhLMC6sT9qn1aTN/iphM7JiFeCXgmI6PpEK5YqvBvu7DF91ucSO/gEhZ1hA?=
+ =?us-ascii?Q?mKGPXlU7g981PIyrTWmhPKFxPpw2Q5gFJp6v7oKF3d5I+GKb087dBQIv3afw?=
+ =?us-ascii?Q?UjLMNwUC6f4d0pVfBYdk7nKhyB6XnKH7I2p+irTaz4wx5rkxelO9RePWvKdt?=
+ =?us-ascii?Q?R+anC+9kUoCTuPS39eslcEhMirERE9dz6LEBpsbzfpNi2bhcdjmfCaWTbcW9?=
+ =?us-ascii?Q?T9QOjUJE+FL1JRxJtGEH8MM5xF48DN9u5WU+2lSr3upa9tWRF9arsn+stGsr?=
+ =?us-ascii?Q?iM5/ZnPOmqTf7OvBqLxQK9CnJRymb857YQY0szeCfek/Fh8GlTYp+l1I6M/N?=
+ =?us-ascii?Q?6puH0KRfItwCqPYzDCC9gEFG0tRGxmsyTKKcvcEkgka+ANbprq0/e7lP0n3l?=
+ =?us-ascii?Q?oUCvYmcM8Bi1FNBBwmk8K+xG4rAqi+WFKZsrtj95rdMG6POgFkSPYFGmFkjs?=
+ =?us-ascii?Q?MmWxVjifDyNDRqlyIGLByamZ7LfvlAYHjFWzIlfAqCkM34BGRnrDfmw9SFW/?=
+ =?us-ascii?Q?zJAAfLfrDrRrGLH5M39D9yGRKBW+yuG13parcIPcpQihS1aSVOCBme3DF6lf?=
+ =?us-ascii?Q?0yDfAD4jZB4kOTUUMl9B8+PwDXLm7X3X9MJnjYxgg8h6u1D2yCc11VmlQy3a?=
+ =?us-ascii?Q?o8h3tJOhy9cPxgA91xbBQl+y80HqlP6E7o6gFOIVpupiMFckdQFD4woqHBsv?=
+ =?us-ascii?Q?Yh4461p21uXVKPLiXnj7cPoP2thFDYmrSiyV4OTKA9U9x+qhU+akNUeB2/c7?=
+ =?us-ascii?Q?9lfE3KCFxwyub9HCeQdn6a5263QX1Suvsw1xjX7xicJD4GMPeF2Iw+rIk/nB?=
+ =?us-ascii?Q?U8GfLat+oKD8exQ2ZqEtCgsiAzhHXPpzRknuTHEcwk/7LCiXAR3FlRW38Nlx?=
+ =?us-ascii?Q?GmjNb8kre0dQBz+jv5mKbpjmstWXOUoa/JwdPbPvW5I+QHtafq8o+Lie7Q7z?=
+ =?us-ascii?Q?GqGdyMvWEoIBRodUrtHRRcPSHKCeobRMjWSYtw8bVgDHYv1D4J/RpXF8AE0K?=
+ =?us-ascii?Q?HFEsstvsUq4xEgHvPorEUVLolB6zEil3t+1xvaHaKRUrwTYXWIS40ShlUDgc?=
+ =?us-ascii?Q?/Cd16h7/uLAYX18C1L9nWjdMk2TGq3dmbrzG0XAQyls6/eOPGWamDA4C0pLY?=
+ =?us-ascii?Q?+GKoTpTTgSDo96Ea4tZPTKqvQUyTaxJ0+MVsElGMdAedxmISac1+ZTFFyI76?=
+ =?us-ascii?Q?uxSqCdT8uCvwlLA6QlmUKt22ujzePuDVsF2YmkrqRv9oruvPk7QI4p6szA+K?=
+ =?us-ascii?Q?FdZvyCb/ba772Xe+5vwRS3gBOmjFXrhqY7tFvbidqFOF3izIvK/QXOTWwo6F?=
+ =?us-ascii?Q?HPD1RCO6POJVy9Gf+urWS6Jyb0bhy+tPiwBghXpkXcZ5DT4LLlfiTjU96do4?=
+ =?us-ascii?Q?9gqE45CGJD6AR/Tld71Ts8RBqTNqj1w9P41WHS1cgXdS8JTv9jKVxnb2k2EC?=
+ =?us-ascii?Q?HQifwi7w0nWsyQqpHC1OlwJV4FyzvlE9gx7l63Ir7SQAnzalLA4AuhMwd3j+?=
+ =?us-ascii?Q?OVNRO1oLWwQ3ytEHvGM1xUGfWpBJGOJhAHaXXrTiSC4n/My68+jw+Ewyndqb?=
+ =?us-ascii?Q?uQdnpysecfkmRFpJ6fSoLCjDKe2MFWN6HWeg4OuMmeECCwk3pEprrkue19f2?=
+ =?us-ascii?Q?gztfnxqzzsql2SbWxYq6c/nzu35bZct8BuXguF0Un6fFZE60?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dda1fab5-77d3-4c91-3ea4-08de8f327f1f
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 14:33:37.8367
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BSG3LuzOEa7XKWy5c8QCQvLPdYR2+I6myV93LoIVHnv/Fuq7BvtlNdXmWrErDx8RFENTRjhal6htpecpgE/eeg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7354
 
-On Tue, Mar 31, 2026 at 06:12:38PM +0800, Guangliu Ding wrote:
-> Add compatible string of Mali G310 GPU on i.MX952 board.
-> 
-> Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
-> Reviewed-by: Jiyu Yang <jiyu.yang@nxp.com>
+On Tue, Mar 31, 2026 at 03:23:11PM +0800, ming.qian@oss.nxp.com wrote:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>
+> Add a new read-only control V4L2_CID_MEMORY_USAGE that allows
+> applications to query the total amount of memory currently used
+> by a device instance.
+>
+> This control reports the memory consumption in bytes, including
+> internal buffers, intermediate processing data, and other
+> driver-managed allocations. Applications can use this information
+> for debugging, resource monitoring, or making informed decisions
+> about buffer allocation strategies.
+>
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 > ---
->  Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> index 8eccd4338a2b..6a10843a26e2 100644
-> --- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> @@ -20,6 +20,7 @@ properties:
->            - enum:
->                - mediatek,mt8196-mali
->                - nxp,imx95-mali            # G310
-> +              - nxp,imx952-mali           # G310
 
-Can you explain why this is needed? Can it not be covered by the existing compatible?
+Not sure why not export these information by debugfs, or any benefit vs
+debugfs?
 
-Best regards,
-Liviu
+Generanlly document should be first patch, then driver change.
 
->                - rockchip,rk3588-mali
->            - const: arm,mali-valhall-csf   # Mali Valhall GPU model/revision is fully discoverable
->  
-> 
-> -- 
-> 2.34.1
-> 
+Frank
 
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+>  drivers/media/v4l2-core/v4l2-ctrls-defs.c | 8 ++++++++
+>  include/uapi/linux/v4l2-controls.h        | 4 +++-
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> index 551426c4cd01..053db78ff661 100644
+> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> @@ -831,6 +831,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+>  	case V4L2_CID_ALPHA_COMPONENT:		return "Alpha Component";
+>  	case V4L2_CID_COLORFX_CBCR:		return "Color Effects, CbCr";
+>  	case V4L2_CID_COLORFX_RGB:              return "Color Effects, RGB";
+> +	case V4L2_CID_MEMORY_USAGE:		return "Memory Usage";
+>
+>  	/*
+>  	 * Codec controls
+> @@ -1476,6 +1477,13 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+>  		*min = 0;
+>  		*max = 0xffff;
+>  		break;
+> +	case V4L2_CID_MEMORY_USAGE:
+> +		*type = V4L2_CTRL_TYPE_INTEGER64;
+> +		*flags |= V4L2_CTRL_FLAG_READ_ONLY;
+> +		*min = 0;
+> +		*max = S64_MAX;
+> +		*step = 1;
+> +		break;
+>  	case V4L2_CID_FLASH_FAULT:
+>  	case V4L2_CID_JPEG_ACTIVE_MARKER:
+>  	case V4L2_CID_3A_LOCK:
+> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+> index 68dd0c4e47b2..02c6f960d38e 100644
+> --- a/include/uapi/linux/v4l2-controls.h
+> +++ b/include/uapi/linux/v4l2-controls.h
+> @@ -110,8 +110,10 @@ enum v4l2_colorfx {
+>  #define V4L2_CID_COLORFX_CBCR			(V4L2_CID_BASE+42)
+>  #define V4L2_CID_COLORFX_RGB			(V4L2_CID_BASE+43)
+>
+> +#define V4L2_CID_MEMORY_USAGE			(V4L2_CID_BASE+44)
+> +
+>  /* last CID + 1 */
+> -#define V4L2_CID_LASTP1                         (V4L2_CID_BASE+44)
+> +#define V4L2_CID_LASTP1                         (V4L2_CID_BASE+45)
+>
+>  /* USER-class private control IDs */
+>
+> --
+> 2.53.0
+>
