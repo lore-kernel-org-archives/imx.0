@@ -1,116 +1,139 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4D42989B7
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 09:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BF03ED13C
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 09:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774948447; cv=none; b=EL48HIoal4UajcZScITQoMF+GXp6rfUZhYaOwdjiK9yEi1izOsmzVVUFazIgD7VdVTSV7NbDXSxOrs9N/V1Jp5vjvxUm/nC4rz1H1tGFE0UZkQN20/un1ic3JL54IU/dtxs4KVZobsrm/YhWJN/l0PeYLLtBCYdu3Gq4FGwFEe0=
+	t=1774948892; cv=none; b=NIoYjWoxXBsCWBCE1PGnKzaehVhId6oCZOSXdievUN2VxMsH3koOKdkXvTVIKKnCm6Rn+ZK+SFC37nYTuFtOkxtLzXS9LRvjRkF2p2qYchJ3P2gzJnotLeTTcZwoZecGcTLzuY3r4tCENrpkHJ3+beFHbMjudA/8UdAwbz0rLHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774948447; c=relaxed/simple;
-	bh=uQFhuYHKGeTd9a04gGwQaIkE4FHZw7JCoI00O9lemig=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EqHrrCSjEyhdx4Gr1EceX/DKXZv4EjIT9DI7SUCxD53oKTb56PxWi+nqSNViLMFf0/KISCvfrwV1dQLBsZkEYDlJWfyWcREqpacDgiDRfUSp9HkMdDh7qP8FlGzOeXlEmg0Av9GMFyf4vil+C1bhqZkRzxg7RILPsoKf5ZTxKZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1w7VAh-0004po-K9; Tue, 31 Mar 2026 11:14:03 +0200
-Message-ID: <3305c7ec621987a30043f274b2705f739bddd497.camel@pengutronix.de>
-Subject: Re: [PATCH 3/3] drm: lcdif: Wait for vblank before disabling DMA
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Paul Kocialkowski <paulk@sys-base.io>, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Frank Li
- <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
- Krzysztof =?UTF-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Marco Felsch
- <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>
-Date: Tue, 31 Mar 2026 11:14:01 +0200
-In-Reply-To: <20260330224619.2620782-4-paulk@sys-base.io>
-References: <20260330224619.2620782-1-paulk@sys-base.io>
-	 <20260330224619.2620782-4-paulk@sys-base.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1774948892; c=relaxed/simple;
+	bh=v3wmLYmQg77QEc7sqHGbVbnyNA/JY333o7aiBU0y/XU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKdqx7RWl4QjwmfD47mtdYknAjK8QSAwjhfeVYwI5IhX68t696nSlfgnL0Euesi7IUXzbPkAEQBaeOC00bo7eR9j0lhEWASQk1txXuBq08b1y3lCSUnw4JNWXFvHJpZcq5x1QCoWSHxsm2mZoFWjVDvreSCelm2+iP6V8AYpTMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aFT0gMO0; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aFT0gMO0"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fb14227cso72135055e9.3
+        for <imx@lists.linux.dev>; Tue, 31 Mar 2026 02:21:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774948889; x=1775553689; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cE0PWmhtnEqQSnWYYYOuzSEl1gB3SuYtUjjS/Ucvahw=;
+        b=aFT0gMO04+3cFJ8aNEkm6FHZs/4/w1tSxaiVXPnscVL3tccR/mfgy67kCvcvIFbPlK
+         AEhgLhBuYyiqw0fZLZv4hpwcGaoZ8pzw94KhYeNv5uIM1u1r7pgBWltXqOKSoX6U6SFa
+         G8tE/l5GCm+n4OYacgkZ69Mk1u0WcR8d3U3b7Fc5AKh2tQpcVBRv97Ci4Xh3L+vT16ro
+         8ahlNpffWvkIrwxBGTbOoO73mXlKG3a2sMsFnP/gnhIPvfxvJbsUdXTyVdQlIDOEljK4
+         afXujEfKp8AQVFDlrFy8w5qnYDb5BrqVcr2tMcw6kSQPeaL8OMlL48uM/uv4nEhs2fNj
+         nwSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774948889; x=1775553689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cE0PWmhtnEqQSnWYYYOuzSEl1gB3SuYtUjjS/Ucvahw=;
+        b=bbSfgR7rmxTCm/v62ixjiL7o0L8uPFtJAs2AA+7VY4mmDjRSsLtch2p26o8CAI9tAz
+         pYFtK04BmAd2iWw/TPXHMdd/lNVZ3ku2U2WTDBXd/ONW27WyrRoLC5adeIDG+wZTip72
+         nUlVMW9aD8BA5T4XnJf0XaVjjfOv7SQb67Srum3pZ9veCX9jAgQEXsxy3jcTlVfdsCck
+         CkHSwnLE8YFyDS2JcQWDlioZyEzp6+iQ6tW726WeVP7ktBMzyYNOrRrKoHdlOcV5TMwb
+         hEPS9OXcrSqL5wX+rH0BXfr6xFkVR4lAqwoVH656rDR1668Dpr7eLvYpQ/BmwElszobO
+         s0qA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeFCJ2p51qg8m1BQXscVKWjAgDA4ax+hjVtHCWN3SZx+mWc3hmSMo+xmk+1sAqx9oWUao=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgQ5p6cPQKCPSB29ufTuzWzcPIVNwP4J0o90MTYCx48LRQpsnu
+	z0wTaadnwFRKMK26wTPxZ51f/UILVddd0EwGWmW2mAFzp+XTt/CQQBLC
+X-Gm-Gg: ATEYQzwXhbo/9G375b64KG2uK73FWYU2ydc5P5IffuZtN07d4OXVEGJ/6tOy3GsAYfy
+	yaKnyUpyLnTTGPekWnC51Y1c4nguXdUA94aqzHVx/L8eXY8lPZoAcMnBxDrvJkWcBEXEpuQaJQw
+	HleNhg142unMZ1HdqicD3327jl3MwvsVS+6cpO8qe++NRnqohUh+RqOW4WV6p5xkFLO/j5qlO1Q
+	fWyZPJMn4BKEaoih2uc6hBXsrR3qFVHGSmp4M1IwzlwHV+vg/7zjeOHDDULrxxPsCcPdesuHNIl
+	IYYQt+U4wcY8a6Ew3UQzg5WPCvJcZuqyl5bHmBgfMdU3uZIS+9hVSCU6P7yVHgGseYFsI2xD8dA
+	UVeIl1x65MCPbNvfbyEgKav0uGwFmw0Cz/dSPNl27dh25bmZZ+qroMk2fOaPyxcJs4yxMXhK1pr
+	Ge2ea9GHd0/pv3cLa3EqPvXH6GE/VHqHNf9W47ucRXGEUxyn21z+3JhYwuA12cY9fiWwZIoxqyH
+	G49TvHtCsTCrt9+xJbuZ8rm7+OxgNJ4FwIXMC6SmpAHtxM=
+X-Received: by 2002:a05:600c:4744:b0:485:4278:2558 with SMTP id 5b1f17b1804b1-48727d5a313mr266045295e9.6.1774948888897;
+        Tue, 31 Mar 2026 02:21:28 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-20-233.cust.dsl.teletu.it. [93.144.20.233])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e7e96fcsm25474495e9.2.2026.03.31.02.21.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 02:21:28 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v2 1/1] arm64: dts: imx91-var-dart-sonata: add RGB enable supply for PCA6408
+Date: Tue, 31 Mar 2026 11:21:12 +0200
+Message-ID: <20260331092112.7876-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-Am Dienstag, dem 31.03.2026 um 00:46 +0200 schrieb Paul Kocialkowski:
-> It is necessary to wait for the full frame to finish streaming
-> through the DMA engine before we can safely disable it by removing
-> the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> hardware confused and unable to resume streaming for the next frame.
->=20
-> This causes the FIFO underrun and empty status bits to be set and
-> a single solid color to be shown on the display, coming from one of
-> the pixels of the previous frame. The issue occurs sporadically when
-> a new mode is set, which triggers the crtc disable and enable paths.
->=20
-> Setting the shadow load bit and waiting for it to be cleared by the
-> DMA engine allows waiting for completion.
->=20
-> The NXP BSP driver addresses this issue with a hardcoded 25 ms sleep.
->=20
-> Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
-> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-> Co-developed-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/gpu/drm/mxsfb/lcdif_kms.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lc=
-dif_kms.c
-> index 1aac354041c7..7dce7f48d938 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> @@ -393,6 +393,22 @@ static void lcdif_disable_controller(struct lcdif_dr=
-m_private *lcdif)
->  	if (ret)
->  		drm_err(lcdif->drm, "Failed to disable controller!\n");
-> =20
-You can drop this no-op poll above...
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-> +	/*
-> +	 * It is necessary to wait for the full frame to finish streaming
-> +	 * through the DMA engine before we can safely disable it by removing
-> +	 * the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> +	 * hardware confused and unable to resume streaming for the next frame.
-> +	 */
-> +	reg =3D readl(lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> +	reg |=3D CTRLDESCL0_5_SHADOW_LOAD_EN;
-> +	writel(reg, lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> +
-.. then setting the shadow load enable bit can be merged with the
-access clearing the DMA enable bit.
+RGB enable pin, labeled as RGBSEL, is a board-level enable signal on
+the Sonata carrier board.
 
-> +	ret =3D readl_poll_timeout(lcdif->base + LCDC_V8_CTRLDESCL0_5,
-> +				 reg, !(reg & CTRLDESCL0_5_SHADOW_LOAD_EN),
-> +				 0, 36000);	/* Wait ~2 frame times max */
+The two PCA6408 GPIO expanders depend on this signal being asserted, so
+model it as a fixed regulator and use it as their vcc-supply.
 
-I know this is just a copy from the existing poll, but I don't think
-the busy looping makes a lot of sense. I guess relaxing the poll by a
-100us or even 200us wait between checks wouldn't hurt.
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+v1->v2:
+ - Fixed commit message and RGB pin references.
 
-> +	if (ret)
-> +		drm_err(lcdif->drm, "Failed to disable controller!\n");
-> +
->  	reg =3D readl(lcdif->base + LCDC_V8_DISP_PARA);
->  	reg &=3D ~DISP_PARA_DISP_ON;
->  	writel(reg, lcdif->base + LCDC_V8_DISP_PARA);
+ arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
+index afa39dab240a..3f0fd321d95f 100644
+--- a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
++++ b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
+@@ -90,6 +90,13 @@ reg_vref_1v8: regulator-adc-vref {
+ 		regulator-max-microvolt = <1800000>;
+ 	};
+ 
++	reg_rgb_sel: regulator-rgb-enable {
++		compatible = "regulator-fixed";
++		regulator-name = "RGBSEL";
++		gpio = <&pca9534 7 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -195,6 +202,7 @@ pca6408_1: gpio@20 {
+ 		#gpio-cells = <2>;
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
++		vcc-supply = <&reg_rgb_sel>;
+ 	};
+ 
+ 	pca6408_2: gpio@21 {
+@@ -204,6 +212,7 @@ pca6408_2: gpio@21 {
+ 		#gpio-cells = <2>;
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
++		vcc-supply = <&reg_rgb_sel>;
+ 	};
+ 
+ 	pca9534: gpio@22 {
+-- 
+2.47.3
 
