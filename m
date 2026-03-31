@@ -1,74 +1,82 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023139.outbound.protection.outlook.com [40.107.159.139])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013038.outbound.protection.outlook.com [40.107.159.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328E397E68
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 09:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615D13783A2
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774951102; cv=fail; b=OdxgGCyhbiOH/IQINLymVCJLml+WGA/yKpy6Rlf1sFmZ3jGc3MjL7b400z6Z6cxQ9Bk8GdGia/OOGbIDIdboTS4SXsspBAt84xl+qDMOU2lQzUEM3sPJYv3l8TUfpQS/BJQtI7e1Ieh4GXPVHGdPKR1GmNywHdh8S6XuR8Fl7FM=
+	t=1774951454; cv=fail; b=HFEQAJHYZjtoD/hW0gDTcxy2Ekw+Ul6zRBIr4aARQUqSflqfRCLI0zGpx8Ezvre6gIwBjf6lhgRFvq66k2zkvlZ9YY1vTJqJzMRDJvsBIG7eYJypM9sgNVpzBEiLqIXhAeSVUBzb//8lNjZgWVLG7GK2SJhrMS/JoWz0ocku+s4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774951102; c=relaxed/simple;
-	bh=jrCamqDeZ1vUZuv2a6t2T4JYbhbwFKzzxqsSgF1PH0w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=A3CLbfDK3s3pGutaGH/9DjlZLqLw/f1VbdoHSfEY9eDQCCrvjv0/5Pg/GG5hk+LOSxZSyaDy+j7aIt/pYciQ5t6uX43poZH6eGVBZ2lc5ZEZ0UWBRoT6zWxk1BGsW22wyg2q0KOYrU05k9LLYAKNT6fvuA0KN7e9GmxOwXvbQ/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=V3Xn2Bvw; arc=fail smtp.client-ip=40.107.159.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
+	s=arc-20240116; t=1774951454; c=relaxed/simple;
+	bh=XAvMAAo+kDspHcNpO8qmkU1+5SIV818wTRLmzUwbjMk=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=G9xvs/vkAnPvZfWJDSMwY8e59mXxoXs1fFEfwFP7fXZcn4Pcv+1VzVKiXcy9BRQICoAgo0c+dzBWe6kiV5ObsGMGCBeP8VJNP31kK1qQbfSX/jh51nA/eBLxtK1xohtKBiBU+I1KnD36pWfDoaPc2jHDPri5qSGcZiARoHpQJCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HEmFqY0T; arc=fail smtp.client-ip=40.107.159.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="V3Xn2Bvw"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HEmFqY0T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ohXDfpgRknkkAx7SO+eyADE8e6Y8hh6lEa2vjs2FXi0sS6aVX1AieFLyQSwxgCZLUfJHKzjoP8sqXi0IrnOA/6gH53oE6mds4U9ZzCToSRxn/c/FGAxx7gRlgFsSU4bgAuqYa/Cz75VCnzAE6/EwpkJZDnJdIlaCK8aXD13FSzRQWq/ks4St6byny1t1b+TQ4Lrlfu4KDKxxxb9b8vEc2y1rX35xIYaQuE0aJGHURyHYBPm1JtwdACLuOJao72/tZhQTYU8OAXm/rTDSa8FNpkPDEWTTOHb/iG9imlVD6XUVJWZ1j6I5JjjyzIR2TKEZEar3DGR0kxfpsTdrY/1nGA==
+ b=wu/WkvaoNPhIaWpjEVeHbTlPURspHL5xdWchkXrK1Fn/Xrx0CiGq5ACOCe14lgTEnGlw+L8qgdPziFBuFuSMRqFvKiEZZTa3xNa11MLxinYQgpkv3hoFc8r3sYyo5sXgSkwxjgdpalTkyrzWYZrvXFl4+AB1ZifjuyNQHe/5JT9sylbnaGRy8RATR1hWCjnJsUQYx8eXwBn9F8mirtFmHyY1L5ztTolIqdosCtlrqE++q2xZuKwJbCOTYzPGrjZ56ZO2Dws6PT/U8o47j+EVBmZTnPxOD3cD/wqSqjRiyKy7D2krcf2W+25JKK6ZwX7VJCyVDQ2x8K0V3QkMQV5Kfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VtzYOMcnnVQ1cBjTjqLj9JmfW2kd8R/QjumMdV0CA/g=;
- b=EuxTkOlbcLh3z+paLuePTsOe0A11Ey5g2tbhj4zFaVk+YBSseEeFGWWSy0/lD68qLPLowf2ZSugfU7A1KvsL28P5rzFGjjm1xbn1I1ehqmHy9ajO//W6SEnip1EodLxeDo9eCx8ybi7BPp3ZXJF/fGfqfofFMOKjOseFTYhEVUq+o5W1UsjbLD7csf69tHmSSHYtlhLk1mQo9CkOnUuVbb/PMyjZjvOQvRV0QUxhNLGyWDCDuVpSSbrBr9zheoMJ4sBvOjpGjY5ONc57yuMX7ZLqfz7Li30/VSLI0hjmhPp9FkhJfjwi8h5dgRQaJWGR4fWUxCkHgQHIymHnsJfXrg==
+ bh=Poa30EbQrp9tPurqDUIw9VwCUI/6v4Fucx2VYl1+G/0=;
+ b=jDvyNnKqu+9RfsiWZMawD99htv5euRWYbE7aD6vnWxH54NU/hxW40D8ZMWlzXGV/l+WWREgLiyv/QwCVRNc0a08QGZOShwSd98heNwnA10+04JP8bJcYhL/2t5zpqrkEKB6q/IZvApSA1/XkC7KpNs+sm0mDjR/Y5+u4UB7UczzCiiVwrKtz4KZRfwQC9ChDsCE/fImnjDePahaht0FMXttnIu3sulXmDES3shbxIMWglgXJhzJCWkGRlb+qAZ4QudibkHfOYDqGiOaNKYJUkPOc3OAcNp51aMDDnbNBWNs/svavrICUI374KXwxyfdY4Pv+pFlKXvehYZ89KHlgoQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
- dkim=pass header.d=kontron.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VtzYOMcnnVQ1cBjTjqLj9JmfW2kd8R/QjumMdV0CA/g=;
- b=V3Xn2Bvw4BXoEWjghTfBqfe4J+2VpwdohJFE8mcOn+J+CB/MHsDzi3J5Fjkf1P7RQJ4mBO110bX6AzV+Y28OBUqLx3TUFZYAMnLS45dea80009ZIlC8LtahuIxqTXk2eJgxWzKkT3zYTVgC4Mq3KTn4a+0hC97E4ATcvRB+LEPrESlRA0pxWpKYzjH8IR9+9PSx45hJ7NwutOxV0cL267KHJPIOFKWKWLdJBtOoQj2ReTmWMe/z1ZqdKdarjSfVWWJd23OK7WHjXEAS1UtJ1mVhQ8CEEJ7MwbjJe2owllU5tnujfeHjeLfiMGjYS0M2gwrD4npAI6WNbwottG5wlEA==
+ bh=Poa30EbQrp9tPurqDUIw9VwCUI/6v4Fucx2VYl1+G/0=;
+ b=HEmFqY0TXRD16G8T4LWkq8UqA9jbr2B/KHYXVwU1sraHsJQiVky/VhDrx65Wrpf4JtIAwwBfpp5Mz2aqkXUVmvrz2wwbXpfiiALhfB6sGgUUjAcLGw8AbFNHgynY2kMC1D752vhlFsMAtr30AHEwh1NRkw633TGSlB2gUfNxnYx49xZXX5pvka98ZvdRfZmMs0EiHdXcbGhE84ZG/nhKyHCIDM2brZj8mKMi4Qp6l5tyyGjm6en4j7qVD3LIRG8/Ya30g+hc9j+MN+J7DjYtk+MukzKZ/xqP3iQmEKafMNgIwmxk0YkXq5qZgbjk7NduN9sZYkH9FWwBknjXLT7WoA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.de;
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
- by DU0PR10MB7610.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:34e::16) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB4707.eurprd04.prod.outlook.com (2603:10a6:208:c0::29)
+ by AS8PR04MB8309.eurprd04.prod.outlook.com (2603:10a6:20b:3fe::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 09:58:13 +0000
-Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a276:4ad7:962:da22%3]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
- 09:58:13 +0000
-Message-ID: <633fee13-a397-410f-a595-db95e04b8110@kontron.de>
-Date: Tue, 31 Mar 2026 11:58:11 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
- for each op
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Frieder Schrempf <frieder@fris.de>, Mark Brown <broonie@kernel.org>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Han Xu <han.xu@nxp.com>, Eberhard Stoll <eberhard.stoll@kontron.de>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mtd@lists.infradead.org, imx@lists.linux.dev,
- Santhosh Kumar K <s-k6@ti.com>
-References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
- <20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
- <87wlzlnioh.fsf@bootlin.com>
- <a1a711c4-d9df-4bba-8831-2ec787f84cc4@kontron.de>
- <87ecl09wtv.fsf@bootlin.com>
-Content-Language: en-US, de-DE
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
-In-Reply-To: <87ecl09wtv.fsf@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0153.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b3::12) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1fb::23)
+ 2026 10:04:09 +0000
+Received: from AM0PR04MB4707.eurprd04.prod.outlook.com
+ ([fe80::e918:eca8:f034:698f]) by AM0PR04MB4707.eurprd04.prod.outlook.com
+ ([fe80::e918:eca8:f034:698f%5]) with mapi id 15.20.9632.017; Tue, 31 Mar 2026
+ 10:04:09 +0000
+From: Guangliu Ding <guangliu.ding@nxp.com>
+Subject: [PATCH 0/2] Enable Mali G310 GPU support on i.MX952 board
+Date: Tue, 31 Mar 2026 18:12:37 +0800
+Message-Id: <20260331-master-v1-0-65c8e318d462@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABWey2kC/yXM2wpAQBSF4VfRvjY1M4ryKnLBWMNWDs1GSt7d4
+ PKrf62LBIEhVCYXBRwsvMwRJk3IDc3cQ3EXTVbbXGeZUVMjG4Iq4ArvtYdpLcV4DfB8fkdV/Vv
+ 2doTb3jXd9wP3z085agAAAA==
+X-Change-ID: 20260331-master-7ec7ff0fe1b2
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Guangliu Ding <guangliu.ding@nxp.com>, 
+ Jiyu Yang <jiyu.yang@nxp.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774951984; l=653;
+ i=guangliu.ding@nxp.com; s=20260331; h=from:subject:message-id;
+ bh=XAvMAAo+kDspHcNpO8qmkU1+5SIV818wTRLmzUwbjMk=;
+ b=WuKpG6PE/T7MPfUzoKUVwl2YsjCY9ryIpgFPrOJuZIUb1bic3yuYoOAyU7lMS4WRPRUd/IZsa
+ aprrfOpfSY4BeVSl0vdGZEXliNBUt1WZPad+kZwthsQizonY9wy8QzO
+X-Developer-Key: i=guangliu.ding@nxp.com; a=ed25519;
+ pk=Ozo8o/sk09NyO6URvn0eD0v0uVHduT/yJzVGTAJ9gxw=
+X-ClientProxiedBy: MA5PR01CA0112.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d1::17) To AM0PR04MB4707.eurprd04.prod.outlook.com
+ (2603:10a6:208:c0::29)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,162 +84,86 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|DU0PR10MB7610:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60bc29af-990d-4bfc-eadd-08de8f0c05b5
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4707:EE_|AS8PR04MB8309:EE_
+X-MS-Office365-Filtering-Correlation-Id: cbdc7a89-f570-4182-0a06-08de8f0cda21
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|19092799006|366016|38350700014|921020|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	On86BcW7tCwcWpj7ZkMkcd98Ana6/QSUYvJ8rlnGBgfxB/NVdGdjTkKGcrcHEhEdJwxyoBZoJqINiDku1bYKqOKrt+rpK+pWDO2MvDElnwTDJ7vJpVhsAbCGWqBQC1ldaL8a0S/N3pf0edBEq5Ky7bbPXtkdzQeY/OxOrM8hHOBwhqyMXo8SruqSHkhrqCElyiC1f7nXXWdC3ayfzwF+uUkfAHr4pvvQXw4nrCfj29ZLHIMRLhq9ftSEal8+w09DM0hXZTeckKpO1c6gKjkMbZyHEnWTN6fG45m4vXzwg/wEnRDe3eBlUlCMQ/sWEG1N5hcFiXsvggEjyjUgGEJKZoJfOr0AtB+2y2B4TNGa/J8U/2X4DOgT/Rx5yt1asWQ19qv9H4nosFEhvaOZzyKrcqmtD7aG1DJEbySpjxxSGsfSjrJjjnUfRDa7I1qYb3U5mYkv25TWqNTwCS/7E2vxKK7yakeYGc41o0XSreau7Vgl1LdQfrPn95Up4kpEN24Z3/+Lweckj8Pkv0eEKLlsH3Bwxbx3ZAiNq13wNmzS4H8COfAdZWwUyYZc/n+2dd0jH5vhIww6Bi9AFwOshTigXQxShtx4uVzfjOEELFXLy8pFYmhMOFnbv6A8W1gc5rpOavJfBlptHBuSaqkGoNO8PTDuS/MU+KKVgHBNJXPzlGZBXkIU9bitpCBVo2J7Cgztjzof39NpSNzDbcPiNRjPcfp+QS2t+wcwkrX5AJFNlEA=
+	JG27Icq6kExdjqz0r0okdvsphkL//z4YZJy4OWc5laBE3NTNBfD5alg5ngTCYPeyo+LuMNgRfJFq+AmQGKixGbKp3W3vnPM5+ojXixKdaP6nk7Sre8mao8H6Mwww3gyRh1wVeHPLn+tAL4u9SMy0Z6FJp3ICdSMgZvLyKTNpoLpABoVg2dKUo7r5kQ6ObF+2KeAs6iayXn/ti5cRMCJQJmAUTilZ8uHAG4/97sLE2pSou2PEbk6zTNRSAOIGTs3FANWKF59ukGRIWD/VdDoqEtRjdfxXOUXbd7YiSZ26jhzlxAe68Y3vUS36t3CMo6DRUwUHFVG4tliYjOP+YP0QP1Xyu/oNq3nwNDN1O5Rn0bW6tQHtbVyqbgti1tBuxfaV1b3xug7ALeiVZ0LC9Lw/AYiopKKTnZ436NDEghXxh1fmk4E3Lqt2JmZhvMnYLRPVlmEacrf2FhqOMkEmTxatJ7AY+Z+1pDc5Vmgo8Ghjib876TPd4JGfppxn7tSAD7p6GAHvkXSemNByWiKiWYMrzjsGoOhvVjHpStA4xGkVCKVGLaoBjAgowYe9EZshsTctwz8yScPD052e65EVoYReCyq6UXo8Nsy13i2inThHoytPFRJOUOyjelu1JFgGtcFjYPsa7NkSjFJQMeCl5sMnNlqHcJpb5mdM8SJ7u4iFmR6QTgutmkrFAry8ey3zmrqAYO2W6tMRCtAgB8lXAWIyxzQPck8hnBYCHg7WqMmXrZAiF2zqeXbfES5XVAT6npT2nHwfcutxvjFvZwZBt8cpuBntenMNGxz4Q/KZweJWqsEFMeRnoxkyBW7kGJtQjjx1
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB4707.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(19092799006)(366016)(38350700014)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dVl6d1V0Q3VGSnNzQlZlM1habEhwNnl2TGgrUU4rTXR3Nk1LQ0piWkpSeDk5?=
- =?utf-8?B?TUwvUnRPQjJ3Tit2Yk9teGZXUGsvRTdzQjdyblR6WWQ3NmlnL3QveEtrRCta?=
- =?utf-8?B?K3lFSXFwQUpSSERFcndlNzU0L0o3K3p0akI2b1FZcnR2VStzbTltQ2Z5U0du?=
- =?utf-8?B?bVYxSURLc3dGdEM4WENGSUhjcDYwWDBSWVM4dXE1a1lFYmoreG5ocS9rcHNq?=
- =?utf-8?B?SUQyV2RoLys4aVpPUW01b09WZjV6T3ZRZ0dSWFJwbHJjbW44TWNhdUdJN293?=
- =?utf-8?B?RTQ3aEtXVmlqRmNodDg3UzBjd25BYWh5dTdEYlAvRmRhcW1wa3FNOXR1K2hn?=
- =?utf-8?B?UURNcERDL05sTlZheVZUUEhVT3JoUFdKNmkxeUR4YmdhVWs0cThlM0lsYk9F?=
- =?utf-8?B?T1UzSThoQkgxQTFhY01zNFQvT1JzaWhEeHdWb3dNSGppbDI0bEpXaUYxS2xk?=
- =?utf-8?B?MVBPWjNqOGM0ZEFoVDgvb0pVNDVhRTBrWG1YZkdsQmx3UUNrY3IyVFNWNEk0?=
- =?utf-8?B?dXdaTWNYSHpEOEhDYjdQVHF4bjlSZ3V4bHo3RGxXMjZZNk1QU21lS2lCaVVF?=
- =?utf-8?B?SlJ6c0NrYTFIZWdnYm9xR2VBK3k5Q3pGL2RBUW5CRzZtNlVZV3lpVkVSd3Rh?=
- =?utf-8?B?Y0M1bS8rM2J0N2tkdXdYV2kvNE9YU3RGQWZuVnBuUEE5Qkh5QU5HR3NtZUJB?=
- =?utf-8?B?Y2ZobDFmdjlDaC9NcjNhZFhVRnBqTmljVURvdEJ1M3FhR0M4Y0RpZWVTTDZu?=
- =?utf-8?B?TW9SeW0wNXZWUmR0T2dyTlpDYzc2YXU2Nm5NWmhOdTRZR0RaV2tGQVl1bHZK?=
- =?utf-8?B?NkMrOXNSOVFLSkZWWGU1Vk1rSXloQTVtTTBrTGg2M3gzbERlN1NEeTZSdzlw?=
- =?utf-8?B?Zmw1WlQ0YmRGM0ZNYUtVR2ZhQWxISVJSTDgwQXdTNlgxUGQ5MXN6MHh6ODJi?=
- =?utf-8?B?RWFUako4WE9qTWI4L2xENDlCSVRhSWd6VmNyZzQveWIzajNIOTdPenU4dnhH?=
- =?utf-8?B?NEdZY1JSWndGSHJLNGlrNFR6aWpMQ3pMOWIxVDVXQ29WdEZodFVpRU81dWJ6?=
- =?utf-8?B?Um9DeXVBRE5oNjRjQlZxekxtS0ViNFRJOWVPTi8vUHJXaFhBUVhkME53UzJh?=
- =?utf-8?B?YzdsNkc5SzV1dlNYcVJsMHhIOW5USGpseU5rV1djbWM5OHQ1RktRb1JnZDgz?=
- =?utf-8?B?d2hhbDU0NTNIaGpjdWVVRWRlbG1jcG1EaXdlK1lXOVV5TjdmNlpLdWtqVWZH?=
- =?utf-8?B?TVprSzVSRnhneDNYZndYVVhGOG14aXlpYm0xaWIzYnhpN1dBT1dlRDgwbmdu?=
- =?utf-8?B?NEQ1OTUyaFIxMkZ4OHpsTnhxeDkya3psRWZXNDFQQ2FobzRSWEJIRW5WbnJV?=
- =?utf-8?B?eXdhUERRSmM2L0N1TG8zbFI0QmtwdEtYL0x5dlo0MmJHYmN2cUNhQmNDcWNT?=
- =?utf-8?B?YTVzb3U4QnN0L2VBZWRjK2xWTmJORmQwNGlOTjRZVjdUdE5iRUZUUEQweHYy?=
- =?utf-8?B?akhDdE8vQ0xNTEIvQU1TdEtRWjQxWjdNd1p3blBOWjN1QldQZ2lOd0RXYktw?=
- =?utf-8?B?djd4U1RZeTg5bUl3T25zVDd6S3NKaWhNdHJ2bnNSL0VQejI2ZjJrRm0vcXBt?=
- =?utf-8?B?RS9naDROWlRyb0syZGJlSlgvRTZkZlltOXhhQmhld1VZUHY1OEZGNFJIbk83?=
- =?utf-8?B?akRyVmVOSXBkMUV6RHFRRmhnNjFsbTYwTnJqazU1ckZlb0lpUUt0dVlzd05x?=
- =?utf-8?B?ZnQ4Um9RV09HdGxVSGY1eFJoUzF0UDRnQm9tTGtTQ0R2UzJlSlRXUFhNSVlZ?=
- =?utf-8?B?c3lwMHBjenYzNFMyYkowZmpPNDlubHc0bENIOWRWQThjYkg4VzNmbldpSFpj?=
- =?utf-8?B?L1ZDUklEbXNqQjhTTms2K2h0RlJITWwrT0ZrMzhYcjQ0bHp1Y08ybGd4alRI?=
- =?utf-8?B?aDlnWDJQcVZDYzFIemNaa0F1b25ZNEEwcmdRTUV0dXc4Nk9QSTQ5ZjdFQ2xE?=
- =?utf-8?B?K0J5bFcyYjRaSmFGaTQzLytPb0dncFJoMzdDRnkvbkVHTG1XMmJzUGRrd2Ri?=
- =?utf-8?B?T0Z4RzBFZjM1d3I0SG1yc2VHMmFDY0VDcFhNWjZOQVhMRm5xc0h4M0hWanR3?=
- =?utf-8?B?SWlnemtNWklacE1FZVRSOS9jcVZ5a1Q1bDVhblo3SGg0SnJOa3JlZEhyS0p4?=
- =?utf-8?B?UDdhWWVFU2VEUkFyZVVXbEtqa2ZIZG1naHJZZ0xxeFFqVnhva0FZKzZQUlJO?=
- =?utf-8?B?anpCUzYxbkpvU2hpdzBUZ0h3V2tyVjhabkZnaG9GQjFwU1hBb3NXNFB4NVg5?=
- =?utf-8?B?RDFlV0x4bG14eVdTRDgrMkpqY0hNMThkK1hqbWpRRFFrVVVBaE5PZXlzSWxK?=
- =?utf-8?Q?mdxbx/3frZPaG234=3D?=
-X-OriginatorOrg: kontron.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60bc29af-990d-4bfc-eadd-08de8f0c05b5
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+	=?utf-8?B?dzVYZTlERktTdmhnZ3NCMElRSkx2b0IvcG5KVlo0czJic3JLTGZ6d0pyS2Fy?=
+ =?utf-8?B?cHpSdjE4QmRiS0FXeGxXOXJCZjBMRmhLVis0dDZGQWlFK3ZOeXUvMFJWVkxp?=
+ =?utf-8?B?VmFlNnc5QkU4UnNuVXpSdmlOeHVnY1hoQU00SWE0RnJkNzJoaEFYczNFSFJX?=
+ =?utf-8?B?UGU1UHoxV0JYTmFtN1FDL01jR29qRkhYQ3hlWWN5Vmt3WXVjVnlrcnRvZVZw?=
+ =?utf-8?B?aUVNc2FudHdjbGNsTGdQSEliY1hzT0ErRXJhMk5uZ21oT3dqUHlUb1MwdExT?=
+ =?utf-8?B?Y1g2Yzhsd0c4ZTNpWmIrbzZvSUFBRWZjY3MwdkVPKzdjMnd1N0wvcFdiWDJB?=
+ =?utf-8?B?d053U1pZRkcrbm94Zmlxd3VKSTk5V1EwcHp4cUQ3em11cS9CTk1aWEJGQW55?=
+ =?utf-8?B?S0NQaVRxT05TZUwzNEdjWFhVSW1iYjFLWW92OUxIeURjczhJeEFZQVhRc2VD?=
+ =?utf-8?B?S3VRdHE2ajVSZkQ4RFkwTTJqeXBJZWVVTXFjVVFEYzJ0aXBIRW9od0hUY2hr?=
+ =?utf-8?B?SVptSGRKYkczQWNiTlQ5bTBLVi9kWHQxNWROZ3BiU0lMVnV5Sm44T28yUTZG?=
+ =?utf-8?B?OTlieENQL2lhckh4VXpaZ1dWdFRXWCsrK2hiNzNCS3prLzVBRFF3SUduRkF1?=
+ =?utf-8?B?dG5YSEM4eFlxQUFWUGhmdmFJOVE5N0pmTEtUWVZhZ0x1VkNpZTE5V3FFVWNR?=
+ =?utf-8?B?dUNwaE9YaUFQc09sVHYzWDU2UjVDSitNUXkzeHVZMVFqVkU1UFR4QlhMVFZY?=
+ =?utf-8?B?TWFSVU12NnU3Wk1XZ3BJVk4vR0FTN3dBQUNWcjkyd1VWZXZvdDBrd0lnWDVY?=
+ =?utf-8?B?TytCcGRTVnp1VVFzUk5kV2dXUUtyYmZVRUlHKzlpWGtlTmdVbGx1a1ZpT3VP?=
+ =?utf-8?B?RnhDSXg0TnEwaTB1OGFzVko1ajNaTEJzdm1nUG1SeWExUFlwVjdSdVBqZ2tv?=
+ =?utf-8?B?K1k2TkpwYjZ3S1JNNmFVSWI1QXRDdGVjYXpyNW5DZnRPUGtUTmVlRUo4cDVZ?=
+ =?utf-8?B?eTF1QWNNdzBTWjkzQ0Y3Z01lRVlJQ240R2E2N3hXWlMrRGR1SDVQR0Frd0lY?=
+ =?utf-8?B?YTR2dmhRL2tQb1pYa1BPS3U3Z29RNXI5N3cyZnptZmUzTldEMCtFbGcrNEo5?=
+ =?utf-8?B?Zmd5bE1SaVdRNWVIVlFYV0FWRm10NW51dGgyWXdLZExlUUg1aVlXL3RmKzl6?=
+ =?utf-8?B?T1RFUlh4bzlSVGk3eWlXMFM4ZnVsY3RMRldFUWRJcGkwNitHNUFRYktPNURX?=
+ =?utf-8?B?OXFCRml3V3A4SC9lRTdBckRRU2NkT282c2RmNWlJNno5bVdTQUh4MkZaZ0xt?=
+ =?utf-8?B?YzZzaGdUWVJLV09hTWhqUzIrMWVzcERpakZGYzg4cFArc040NGtXNWRPUjM0?=
+ =?utf-8?B?dXltbnFzd0JpTFo3cmo3YWRidlN6ZEpDVnJIdEE0RXRuRWN3SmlSSysxR05p?=
+ =?utf-8?B?a0tOVlE5ZU9PNVUwci9ONkI5WDRJMmx0c2dTbVpFTEdLYzFUNi9UT3cydTZL?=
+ =?utf-8?B?ZE5aMld6YW9nYmk0RjR0enprYmY4cUlmODM2Mzd2OERiaVlKVG55NEZNNEJ0?=
+ =?utf-8?B?VmhRY3phRllkMHlIZVNKT1dES2V5L0RlRlBXSjNnTHFhbVNlSHpzckpDYVVy?=
+ =?utf-8?B?Y0hFUkFMbUJ0RGpWa09SZTNCaVlheUMxZEVPQStWb1VTWnpBN0lKNXhnOS8z?=
+ =?utf-8?B?TVM2cFAzQmFXVHFFSFlRbkgxQURFWXQ5WDJyYzVVbXgxSFBuMkhERXNEbG1Q?=
+ =?utf-8?B?dVN1K2JmOGY0UmF3NDZOeWNGemtDdDU4Z2tySXkrOC95bGtXT3d3Zk5Ja1d3?=
+ =?utf-8?B?dE9ldG1tZ2FtejUvd2NIV1pmMUVtbDA0ZjFtRlFsUFpvWUFIUW5lZHlVZzE4?=
+ =?utf-8?B?WmtIMDBjcTVYN2Frb2wzRkxjU29ONFZMbEIrRHVxUXgwMVZralFHR0RFL05V?=
+ =?utf-8?B?Y3B2M1RnWkcxYXdWWXkrK3pYUjV6NFRsSEhOYjZ4VTZ3T0RxZ0pwOVVJc0hN?=
+ =?utf-8?B?Nm9oSlJnZElkUUkvUk92Qy91SWxmRUF3dUw1YWIrR3JZUkFsdVFGVktVRlpL?=
+ =?utf-8?B?VDNieXhuVU9WVDZBWW1zcDlSMUJRbTc0QzdZVGExZEcxU2dSWUxTeFgrOHJI?=
+ =?utf-8?B?Nm15UVRUME9ZamJPaHBVMWduVFRxWHkrWGV0V2NEOFZyU0ZaekxIRW9OdFRW?=
+ =?utf-8?B?SnVMQjIzUHRqOURlUGVyRXliUWh3WUdmRCtoU0JVVEdRNVdjQWhpRkVTNVFh?=
+ =?utf-8?B?dlVvc2JXTUpQK1dRWDU3VmNwcEc0NTJ2SnZUWlFrYm1FRnFueUZRMnRUakNw?=
+ =?utf-8?B?UmpxQTQ5Wml6amwwYlRqcGd5ZUpuK0hiaG8vMXUzKytsK3o2U0JBUT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cbdc7a89-f570-4182-0a06-08de8f0cda21
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB4707.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 09:58:13.2814
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 10:04:09.6818
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IWhL6qEhpyvWO62H1DJMzFVGJk+r2fkWJXwcE8o9wLcoUB5+UgH5El8uofKYWEA5S8zZ4PxbUlGAOAUR6vqOspZjcvwPi07iBdfTT9iO6tg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB7610
+X-MS-Exchange-CrossTenant-UserPrincipalName: C5Yrb3dVePRQW9UWknyB5C/l6E32sPTaF5i1TzIw5JoJYb70KdN40nWmlybr1W161733Si0p2edphEk1gWFOGA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8309
 
-Hi Miquèl,
+This series enable Mali G310 GPU support on i.MX952 boards, the same GPU
+IP as the instance on i.MX95 boards.
 
-On 31.03.26 11:23, Miquel Raynal wrote:
-> Hi Frieder,
-> 
->> The sampling point delay is coupled to the clock frequency. So if the
->> clock changes per-op, we also need to change the sampling delay per-op.
->>
->> In general, if we want to avoid switching the parameters back and forth
->> in cases of alternating ops with different max frequencies, we should
->> maybe do some "min of the max" calculation and use the resulting
->> frequency for all ops.
->>
->> Is that what you mean?
-> 
-> Not exactly, I am not afraid by the time it would take to switch, I am
-> afraid by the likelihood that both the PHY tuning series and your series
-> might want to force a different maximum frequency. For instance with TI
-> designs, when entering PHY mode, the frequency is 166MHz, period. You
-> cannot lower it because by design, you bypass the SPI divisors.
+Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
+---
+Guangliu Ding (2):
+      dt-bindings: gpu: mali-valhall-csf: Document i.MX952 support
+      arm64: dts: imx952: Describe Mali G310 GPU
 
-Ah, ok. I didn't know the PHY mode bypasses the usual clock setup.
+ .../bindings/gpu/arm,mali-valhall-csf.yaml         |  1 +
+ arch/arm64/boot/dts/freescale/imx952.dtsi          | 36 ++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+---
+base-commit: 0138af2472dfdef0d56fc4697416eaa0ff2589bd
+change-id: 20260331-master-7ec7ff0fe1b2
 
-> 
->> We could even set a threshold to decide between using a common "min of
->> the max" frequency or do the switching per-op.
->>
->> One other possibility would be to somehow cache the per-op frequencies
->> and calculated sampling delay values so they can be reused when
->> switching without much overhead.
->>
->> There is one more issue that is not yet covered by this series: Before
->> spinand_id_detect() we don't know yet what RX sampling delay value the
->> chip requires, but we already use read-status and read-id operations at
->> maximum chip clock.
-> 
-> Not exactly "maximum chip clock" as in Santhosh's work, but indeed we
-> run these at the frequency given in the DT as bein the maximum
-> frequency. If that's not correct, you must lower it in the DT. That is
-> why I am in favour of having two maximum frequencies: the standard one,
-> that just works, which is the one for non optimized settings (the one we
-> actually use today) and another one, when tuning the bus timings.
-> 
->> For example on Winbond W25N04KV this leads to detection failures. So we
->> should maybe introduce some kind of reduced clock setpoint for the
->> initial detection, that is safe to be used without RX sampling delay
->> compensation.
-> 
-> That should be the DT max frequency, no?
+Best regards,
+--  
+Guangliu Ding <guangliu.ding@nxp.com>
 
-Hm, I've seen it the other way round. In my perspective the DT max
-frequency describes the maximum clock frequency supported by the chip as
-given in the datasheet (assuming there are no other limitations
-introduced by board design, etc.).
-
-The RX sampling delay is a timing parameter specified in the datasheet
-and it is relevant in order to interface the chip at maximum frequency
-within spec.
-
-Your approach would mean, that we need to manually calculate the maximum
-supported clock frequency without RX sampling delay compensation and use
-this value in the DT. Then let the driver increase the clock if RX
-sampling delay compensation is available.
-
-This would have the advantage, that even before initial detection we
-would use the correct clock by default. But it has the downside that the
-clock value in DT won't match the datasheet value.
-
-In my approach we assume the driver is able to use the maximum clock
-from the DT (same as in datasheet) by using RX sampling delay
-compensation and only if it turns out the compensation is not possible
-we will lower the clock dynamically.
-
-What if we do the following?
-
-1. Add a parameter in the SPI NAND chip driver that contains the maximum
-supported clock frequency as given in the datasheet as this is clearly
-the best place to keep this device-specific parameter.
-
-2. Allow to leave spi-max-frequency in DT unset for SPI NANDs in case
-there are no board-specific limitations and therefore the maximum
-frequency supported by the combination of chip and controller can be used.
-
-3. By default limit the clock frequency for the READ_ID op to a safe
-value that works for all chips and controllers, even if RX sampling
-delay compensations is not available.
-
-4. In PHY mode, check against the DT max frequency (board limitations)
-and chip max frequency before switching to this mode.
-
-I hope this makes at least a bit of sense. I'm really not yet familiar
-with all the different use-cases and limitations.
-
-Best regards
-Frieder
