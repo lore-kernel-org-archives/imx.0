@@ -1,195 +1,352 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D173AA19D
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FED73AA50C;
+	Tue, 31 Mar 2026 10:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774954494; cv=none; b=slxb/ckU3dT77JFvaJMdSyU65X6ITNLMZtkrK29FlGKP7bBYybiMgbsKjwa+Q63IYQMspgVYG2jZWwPlnCWN0+CmNZgfp+qo2SxIobquQvA9h+E++sqaEuN64SX2/n30hb/H3bPs3sgtf8hqUUKZKCiTX/YSLMD94bQkAfcufvk=
+	t=1774954531; cv=none; b=n7HCGAT6ny6lDh4MpIyaSKCNg7L5NK0XN+L3GVX2xDoKVnx6VGrZTcO4sV/GC9DaJafzu2M/KhBv1EMjnaRwq+ZNiVWYQgooIv1SQvYN5rZDXKpv9pdkBFoqaosK/aYKdL9WZnudVO9rf/+2AvjvlKqx8YKUAGhlhNb33o3dEy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774954494; c=relaxed/simple;
-	bh=01BLDUIE042rdiUNErhUHuYN+13nkq8UQhcqVy5Kq4M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=shCP0SW6zpn1SCnQem5yrj4Gg/zuKsnxUNqV9XOxbpeVNLvxQWHJkAWeGf3nSENLfWDiFGb6dKDZfqpRVfMKzFHH74m4DP7koUjj/acbdDimnQi5br+EyllbyFjWr/IIPxTsB7Q5xg7Ti43UkAEJXoNj0MghSJTcNlcXHleeykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M+B7mJwU; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774954531; c=relaxed/simple;
+	bh=+jvHaQVeSFg5z818x57GmRQUGGqzsKtURxRsFRWvNso=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type; b=eCNROKyb3Nzh8NV2329fKRf/OThr9OHr/Tpvbiv+ibFhwO04dVwTuEDfAkBlsErec5sTnRfas/XSgnsxZeNY02+pQGT+iULSTWGih8nDEE/31xK5NppMZgu/etpSbxXxHDz7XTaRlJz3C1BHQtv+VG/5f24axiQutLGEez/PVvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROsVoLDx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M+B7mJwU"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E31DD4E42889;
-	Tue, 31 Mar 2026 10:54:50 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9BF5A602CD;
-	Tue, 31 Mar 2026 10:54:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4F8B6104505CA;
-	Tue, 31 Mar 2026 12:54:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774954487; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qDgz531RmkefuEvnhqpL6F+0n4jtWlVFpT0D9ukPSnc=;
-	b=M+B7mJwUdJ737gkyUjDrg4ZfLPjmt2IDlaNDsNRqt54vtdI6gQ+Mkj7hI5XdBJLv54LuIU
-	yKINAVdHwdzszU0t/NgEZa7ZLOBl7sXd09v3YNE8YBbRhw05IhDgj5pN4ps+2y/+7XSGo3
-	10YtEYZeSjABRSgWpzAOCRT2V8tiyJxh/HjFPMWsYWpFAYJYu5k8ti0GTQd9afDQzp2MmK
-	cwbhFdWF/EU6zuWYHMtdLN2McxBSEtoU9p0z6cHWy+U9bPXOAyUja5yp5FLrYF8uuhIaKr
-	rYRCm3ByzO+YyFf4cubFsULwxKDH2mZRHZ6qhyCRouk+aHMfCMxhEd5MCZVaRQ==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROsVoLDx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E20C19423;
+	Tue, 31 Mar 2026 10:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774954531;
+	bh=+jvHaQVeSFg5z818x57GmRQUGGqzsKtURxRsFRWvNso=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=ROsVoLDxNZjzPt0lG2eVtl6zWAmHz0R8K4kgkKPcKSHJ9X7Rfh2N0cdXjEKOYkiI9
+	 7IOZNPTMcjiWwF/ikQiLk+5sX9aHWQci29zoJJrgqBxN2nYmBkumV+JRxQicxQtHiU
+	 kBR7ZhQZdTUjVKJ8H+R7dlsuhEiGvJXGZxcQZ22o=
+Subject: Patch "media: nxp: imx8-isi: Fix streaming cleanup on release" has been added to the 6.12-stable tree
+To: festevam@gmail.com,gregkh@linuxfoundation.org,hverkuil+cisco@kernel.org,imx@lists.linux.dev,kernel@pengutronix.de,laurent.pinchart@ideasonboard.com,linux-arm-kernel@lists.infradead.org,mchehab@kernel.org,richard.leitner@linux.dev,rob_garcia@163.com,s.hauer@pengutronix.de,shawnguo@kernel.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 31 Mar 2026 12:55:00 +0200
+In-Reply-To: <20260324070507.2554507-1-rob_garcia@163.com>
+Message-ID: <2026033159-twistable-populate-e4c7@gregkh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Mar 2026 12:54:30 +0200
-Message-Id: <DHGWUIUIKETI.1F1636GUBB3VI@bootlin.com>
-Subject: Re: [PATCH 7/8] drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector
- when missing using a DT overlay at boot time
-Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, "Adam Ford" <aford173@gmail.com>, "Alexander
- Stein" <alexander.stein@ew.tq-group.com>, "Anson Huang"
- <Anson.Huang@nxp.com>, "Christopher Obbard"
- <christopher.obbard@linaro.org>, "Daniel Scally"
- <dan.scally@ideasonboard.com>, "Emanuele Ghidoli"
- <emanuele.ghidoli@toradex.com>, "Fabio Estevam" <festevam@denx.de>,
- "Francesco Dolcini" <francesco.dolcini@toradex.com>, "Frieder Schrempf"
- <frieder.schrempf@kontron.de>, "Gilles Talis" <gilles.talis@gmail.com>,
- =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, "Heiko
- Schocher" <hs@denx.de>, "Joao Paulo Goncalves"
- <joao.goncalves@toradex.com>, "Josua Mayer" <josua@solid-run.com>, "Kieran
- Bingham" <kieran.bingham@ideasonboard.com>, "Marco Felsch"
- <m.felsch@pengutronix.de>, "Martyn Welch" <martyn.welch@collabora.com>,
- "Oleksij Rempel" <o.rempel@pengutronix.de>, "Peng Fan" <peng.fan@nxp.com>,
- "Philippe Schenker" <philippe.schenker@toradex.com>, "Richard Hu"
- <richard.hu@technexion.com>, "Shengjiu Wang" <shengjiu.wang@nxp.com>,
- "Stefan Eichenberger" <stefan.eichenberger@toradex.com>, "Vitor Soares"
- <vitor.soares@toradex.com>
-To: "Liu Ying" <victor.liu@nxp.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Rob
- Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
- <20260320-drm-lcdif-dbanc-v1-7-479a04133e70@bootlin.com>
- <544112ab-8ca0-4622-b680-233457198e3e@nxp.com>
- <DHDNA5HLQPIB.3F21G9QPBUQG8@bootlin.com>
- <5f06ea5a-5388-440f-91d6-cebb0bee0a88@nxp.com>
- <DHG8G8FMXA6C.U6LU563OZ8NR@bootlin.com>
- <9a6e74ed-d4ab-4f11-ab17-25e1a2b64b2d@nxp.com>
-In-Reply-To: <9a6e74ed-d4ab-4f11-ab17-25e1a2b64b2d@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 
-Hello Liu,
 
-On Tue Mar 31, 2026 at 5:03 AM CEST, Liu Ying wrote:
-> Hi Luca,
->
-> On Mon, Mar 30, 2026 at 05:47:23PM +0200, Luca Ceresoli wrote:
->> Hello Liu,
->>
->> On Mon Mar 30, 2026 at 5:02 AM CEST, Liu Ying wrote:
->
-> [...]
->
->>>>>> +	fixup-hdmi-connector {
->>>>>> +		compatible =3D "hdmi-connector";
->>>>>> +		label =3D "HDMI";
->>>>>> +		type =3D "a";
->>>>>
->>>>> What if a board uses another type?
->>>>
->>>> For boards affected by this patch, currently the connector is created =
-by
->>>> dw_hdmi_connector_create() which hardcodes type A [0], so there would =
-be no
->>>> difference.
->>>
->>> Yes, that's from driver's PoV.  However, userspace may get the type
->>> from /sys/firmware/devicetree/base/fixup-hdmi-connector/type and use it
->>> to do something.
->>
->> I'd say this is incorrect, the device tree is not an API for that. The
->> connector type might be known to the driver by other means (ACPI, DP MST=
-,
->> whatever). So I think this is a non-problem.
->
-> I just feel that it's not great to report potentially wrong type to users
-> through the above sys node ...
->
->>
->> If userspace needs to know the connector type, that should come from the
->> ioctl (DRM_IOCTL_MODE_GETCONNECTOR perhaps).
->>
->>> Maybe, that's trivial.
->>
->> Not sure I got what you mean here, sorry. What are you referring to?
->
-> ... with the above potentially wrong type being said, I think maybe this
-> drawback is not a big deal and could be ignored.  Sorry for not being
-> clear in my last reply.
+This is a note to let you know that I've just added the patch titled
 
-Ah, clear now. No problem!
+    media: nxp: imx8-isi: Fix streaming cleanup on release
 
->>>> Boards with a different connector should describe the connector in the
->>>> device tree, if they need to instantiate the exact type.
->>
->> I think this is the only valid solution. It's very easy to do, nothing n=
-ew
->> to invent.
->>
->> Maybe on top of that we could add a warning when the overlay is applied,
->> e.g. "imx8mp-hdmi-tx used without a connector described in device tree;
->> adding a type A connector as a fallback; please add a valid description =
-to
->> your device tree".
->
-> I'd say this doesn't sound a bad idea but I hope the message is clear and
-> short.
+to the 6.12-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-What about:
+The filename of the patch is:
+     media-nxp-imx8-isi-fix-streaming-cleanup-on-release.patch
+and it can be found in the queue-6.12 subdirectory.
 
-  Connector description not found in device tree, please add one. Falling b=
-ack to Type A.
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
->> Maybe pointing to a TODO entry in the documentation.
->
-> To parameterize the HDMI connector type?  If so, I'm okay with that.
 
-I was meaning a TODO entry to suggest people to add a connector description
-to the dts. E.g., expanding on the above suggested warning:
+From stable+bounces-230063-greg=kroah.com@vger.kernel.org Tue Mar 24 08:08:16 2026
+From: Robert Garcia <rob_garcia@163.com>
+Date: Tue, 24 Mar 2026 15:05:07 +0800
+Subject: media: nxp: imx8-isi: Fix streaming cleanup on release
+To: stable@vger.kernel.org, Richard Leitner <richard.leitner@linux.dev>
+Cc: Hans Verkuil <hverkuil+cisco@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, Robert Garcia <rob_garcia@163.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Message-ID: <20260324070507.2554507-1-rob_garcia@163.com>
 
-  Connector description not found in device tree, please add one. See https=
-://docs.kernel.org/gpu/todo.html#<...>
+From: Richard Leitner <richard.leitner@linux.dev>
 
-And of course adding a TODO entry describing what one needs to do (add an
-hdmi-connector node and link it to port@1 of the hdmi-tx).
+[ Upstream commit 47773031a148ad7973b809cc7723cba77eda2b42 ]
 
-The drawback of the TODO is that items in todo.rst are supposed to be
-removed eventually when done in the code, but this one cannot be removed
-until some kernels printing the above logging message will be around,
-i.e. potentially for decades.
+The current implementation unconditionally calls
+mxc_isi_video_cleanup_streaming() in mxc_isi_video_release(). This can
+lead to situations where any release call (like from a simple
+"v4l2-ctl -l") may release a currently streaming queue when called on
+such a device.
 
-So maybe the simplest solution is just the first warning message + a
-comment in the code right before the warning line, so it easily found with
-grep or a web search by who sees the warning.
+This is reproducible on an i.MX8MP board by streaming from an ISI
+capture device using gstreamer:
 
-Luca
+	gst-launch-1.0 -v v4l2src device=/dev/videoX ! \
+	    video/x-raw,format=GRAY8,width=1280,height=800,framerate=1/120 ! \
+	    fakesink
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+While this stream is running, querying the caps of the same device
+provokes the error state:
+
+	v4l2-ctl -l -d /dev/videoX
+
+This results in the following trace:
+
+[  155.452152] ------------[ cut here ]------------
+[  155.452163] WARNING: CPU: 0 PID: 1708 at drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c:713 mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.004248] Modules linked in: cfg80211 rpmsg_ctrl rpmsg_char rpmsg_tty virtio_rpmsg_bus rpmsg_ns rpmsg_core rfkill nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables mcp251x6
+[  157.053499] CPU: 0 UID: 0 PID: 1708 Comm: python3 Not tainted 6.15.4-00114-g1f61ca5cad76 #1 PREEMPT
+[  157.064369] Hardware name: imx8mp_board_01 (DT)
+[  157.068205] pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  157.075169] pc : mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.081195] lr : mxc_isi_pipe_irq_handler+0x38/0x1b0 [imx8_isi]
+[  157.087126] sp : ffff800080003ee0
+[  157.090438] x29: ffff800080003ee0 x28: ffff0000c3688000 x27: 0000000000000000
+[  157.097580] x26: 0000000000000000 x25: ffff0000c1e7ac00 x24: ffff800081b5ad50
+[  157.104723] x23: 00000000000000d1 x22: 0000000000000000 x21: ffff0000c25e4000
+[  157.111866] x20: 0000000060000200 x19: ffff80007a0608d0 x18: 0000000000000000
+[  157.119008] x17: ffff80006a4e3000 x16: ffff800080000000 x15: 0000000000000000
+[  157.126146] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  157.133287] x11: 0000000000000040 x10: ffff0000c01445f0 x9 : ffff80007a053a38
+[  157.140425] x8 : ffff0000c04004b8 x7 : 0000000000000000 x6 : 0000000000000000
+[  157.147567] x5 : ffff0000c0400490 x4 : ffff80006a4e3000 x3 : ffff0000c25e4000
+[  157.154706] x2 : 0000000000000000 x1 : ffff8000825c0014 x0 : 0000000060000200
+[  157.161850] Call trace:
+[  157.164296]  mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi] (P)
+[  157.170319]  __handle_irq_event_percpu+0x58/0x218
+[  157.175029]  handle_irq_event+0x54/0xb8
+[  157.178867]  handle_fasteoi_irq+0xac/0x248
+[  157.182968]  handle_irq_desc+0x48/0x68
+[  157.186723]  generic_handle_domain_irq+0x24/0x38
+[  157.191346]  gic_handle_irq+0x54/0x120
+[  157.195098]  call_on_irq_stack+0x24/0x30
+[  157.199027]  do_interrupt_handler+0x88/0x98
+[  157.203212]  el0_interrupt+0x44/0xc0
+[  157.206792]  __el0_irq_handler_common+0x18/0x28
+[  157.211328]  el0t_64_irq_handler+0x10/0x20
+[  157.215429]  el0t_64_irq+0x198/0x1a0
+[  157.219009] ---[ end trace 0000000000000000 ]---
+
+Address this issue by moving the streaming preparation and cleanup to
+the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
+also simplifies the driver by allowing direct usage of the
+vb2_ioctl_streamon() and vb2_ioctl_streamoff() helpers, and removal of
+the manual cleanup from mxc_isi_video_release().
+
+Link: https://lore.kernel.org/r/20250813212451.22140-2-laurent.pinchart@ideasonboard.com
+Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
+Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Richard Leitner <richard.leitner@linux.dev> # i.MX8MP
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ Minor context change fixed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c |  156 +++++++------------
+ 1 file changed, 58 insertions(+), 98 deletions(-)
+
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+@@ -937,6 +937,49 @@ static void mxc_isi_video_init_channel(s
+ 	mxc_isi_channel_set_output_format(pipe, video->fmtinfo, &video->pix);
+ }
+ 
++static int mxc_isi_vb2_prepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_video *video = vb2_get_drv_priv(q);
++	struct media_device *mdev = &video->pipe->isi->media_dev;
++	struct media_pipeline *pipe;
++	int ret;
++
++	/* Get a pipeline for the video node and start it. */
++	scoped_guard(mutex, &mdev->graph_mutex) {
++		ret = mxc_isi_pipe_acquire(video->pipe,
++					   &mxc_isi_video_frame_write_done);
++		if (ret)
++			return ret;
++
++		pipe = media_entity_pipeline(&video->vdev.entity)
++		     ? : &video->pipe->pipe;
++
++		ret = __video_device_pipeline_start(&video->vdev, pipe);
++		if (ret)
++			goto err_release;
++	}
++
++	/* Verify that the video format matches the output of the subdev. */
++	ret = mxc_isi_video_validate_format(video);
++	if (ret)
++		goto err_stop;
++
++	/* Allocate buffers for discard operation. */
++	ret = mxc_isi_video_alloc_discard_buffers(video);
++	if (ret)
++		goto err_stop;
++
++	video->is_streaming = true;
++
++	return 0;
++
++err_stop:
++	video_device_pipeline_stop(&video->vdev);
++err_release:
++	mxc_isi_pipe_release(video->pipe);
++	return ret;
++}
++
+ static int mxc_isi_vb2_start_streaming(struct vb2_queue *q, unsigned int count)
+ {
+ 	struct mxc_isi_video *video = vb2_get_drv_priv(q);
+@@ -985,6 +1028,17 @@ static void mxc_isi_vb2_stop_streaming(s
+ 	mxc_isi_video_return_buffers(video, VB2_BUF_STATE_ERROR);
+ }
+ 
++static void mxc_isi_vb2_unprepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_video *video = vb2_get_drv_priv(q);
++
++	mxc_isi_video_free_discard_buffers(video);
++	video_device_pipeline_stop(&video->vdev);
++	mxc_isi_pipe_release(video->pipe);
++
++	video->is_streaming = false;
++}
++
+ static const struct vb2_ops mxc_isi_vb2_qops = {
+ 	.queue_setup		= mxc_isi_vb2_queue_setup,
+ 	.buf_init		= mxc_isi_vb2_buffer_init,
+@@ -992,8 +1046,10 @@ static const struct vb2_ops mxc_isi_vb2_
+ 	.buf_queue		= mxc_isi_vb2_buffer_queue,
+ 	.wait_prepare		= vb2_ops_wait_prepare,
+ 	.wait_finish		= vb2_ops_wait_finish,
++	.prepare_streaming	= mxc_isi_vb2_prepare_streaming,
+ 	.start_streaming	= mxc_isi_vb2_start_streaming,
+ 	.stop_streaming		= mxc_isi_vb2_stop_streaming,
++	.unprepare_streaming	= mxc_isi_vb2_unprepare_streaming,
+ };
+ 
+ /* -----------------------------------------------------------------------------
+@@ -1147,97 +1203,6 @@ static int mxc_isi_video_s_fmt(struct fi
+ 	return 0;
+ }
+ 
+-static int mxc_isi_video_streamon(struct file *file, void *priv,
+-				  enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_video *video = video_drvdata(file);
+-	struct media_device *mdev = &video->pipe->isi->media_dev;
+-	struct media_pipeline *pipe;
+-	int ret;
+-
+-	if (vb2_queue_is_busy(&video->vb2_q, file))
+-		return -EBUSY;
+-
+-	/*
+-	 * Get a pipeline for the video node and start it. This must be done
+-	 * here and not in the queue .start_streaming() handler, so that
+-	 * pipeline start errors can be reported from VIDIOC_STREAMON and not
+-	 * delayed until subsequent VIDIOC_QBUF calls.
+-	 */
+-	mutex_lock(&mdev->graph_mutex);
+-
+-	ret = mxc_isi_pipe_acquire(video->pipe, &mxc_isi_video_frame_write_done);
+-	if (ret) {
+-		mutex_unlock(&mdev->graph_mutex);
+-		return ret;
+-	}
+-
+-	pipe = media_entity_pipeline(&video->vdev.entity) ? : &video->pipe->pipe;
+-
+-	ret = __video_device_pipeline_start(&video->vdev, pipe);
+-	if (ret) {
+-		mutex_unlock(&mdev->graph_mutex);
+-		goto err_release;
+-	}
+-
+-	mutex_unlock(&mdev->graph_mutex);
+-
+-	/* Verify that the video format matches the output of the subdev. */
+-	ret = mxc_isi_video_validate_format(video);
+-	if (ret)
+-		goto err_stop;
+-
+-	/* Allocate buffers for discard operation. */
+-	ret = mxc_isi_video_alloc_discard_buffers(video);
+-	if (ret)
+-		goto err_stop;
+-
+-	ret = vb2_streamon(&video->vb2_q, type);
+-	if (ret)
+-		goto err_free;
+-
+-	video->is_streaming = true;
+-
+-	return 0;
+-
+-err_free:
+-	mxc_isi_video_free_discard_buffers(video);
+-err_stop:
+-	video_device_pipeline_stop(&video->vdev);
+-err_release:
+-	mxc_isi_pipe_release(video->pipe);
+-	return ret;
+-}
+-
+-static void mxc_isi_video_cleanup_streaming(struct mxc_isi_video *video)
+-{
+-	lockdep_assert_held(&video->lock);
+-
+-	if (!video->is_streaming)
+-		return;
+-
+-	mxc_isi_video_free_discard_buffers(video);
+-	video_device_pipeline_stop(&video->vdev);
+-	mxc_isi_pipe_release(video->pipe);
+-
+-	video->is_streaming = false;
+-}
+-
+-static int mxc_isi_video_streamoff(struct file *file, void *priv,
+-				   enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_video *video = video_drvdata(file);
+-	int ret;
+-
+-	ret = vb2_ioctl_streamoff(file, priv, type);
+-	if (ret)
+-		return ret;
+-
+-	mxc_isi_video_cleanup_streaming(video);
+-
+-	return 0;
+-}
+-
+ static int mxc_isi_video_enum_framesizes(struct file *file, void *priv,
+ 					 struct v4l2_frmsizeenum *fsize)
+ {
+@@ -1293,9 +1258,8 @@ static const struct v4l2_ioctl_ops mxc_i
+ 	.vidioc_expbuf			= vb2_ioctl_expbuf,
+ 	.vidioc_prepare_buf		= vb2_ioctl_prepare_buf,
+ 	.vidioc_create_bufs		= vb2_ioctl_create_bufs,
+-
+-	.vidioc_streamon		= mxc_isi_video_streamon,
+-	.vidioc_streamoff		= mxc_isi_video_streamoff,
++	.vidioc_streamon		= vb2_ioctl_streamon,
++	.vidioc_streamoff		= vb2_ioctl_streamoff,
+ 
+ 	.vidioc_enum_framesizes		= mxc_isi_video_enum_framesizes,
+ 
+@@ -1334,10 +1298,6 @@ static int mxc_isi_video_release(struct
+ 	if (ret)
+ 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
+ 
+-	mutex_lock(&video->lock);
+-	mxc_isi_video_cleanup_streaming(video);
+-	mutex_unlock(&video->lock);
+-
+ 	pm_runtime_put(video->pipe->isi->dev);
+ 	return ret;
+ }
+
+
+Patches currently in stable-queue which might be from rob_garcia@163.com are
+
+queue-6.12/media-nxp-imx8-isi-fix-streaming-cleanup-on-release.patch
