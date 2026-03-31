@@ -1,163 +1,69 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400863E3DA8
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C69410D3B;
+	Tue, 31 Mar 2026 15:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774970783; cv=none; b=jIt6biv9bXrbjtsoS/s2u4e5Tqmr0vwyw5/5qBvt3ExcedIN03E57MNu1cPTh9IIEisn+w3N4jxcPiPQgI83cTRWxxAYOuq3zVnlUk+g8rYwzCLznsfQRqYH6JbEoKbCshixF9KU8Vc6Jg5W7/ZucA8PyQHiTrEnvF9CQmqsIpM=
+	t=1774971982; cv=none; b=ee09sYkNqrmO5oeaYfngm2XodhA4d8dzfQ4YIF1h39Dcqa4p82v9EsYeIOPvs/LYin6ge/seHYRvE5CDxGqky4wXbO3wFEoRpPjMXqpv5s4yFLmiCmyjACq1Yf4tYLXWeutoDtGyNR7fepShuQ0cxKb3IXWdsqltWsUwVldXRyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774970783; c=relaxed/simple;
-	bh=eK5dGg65CGb94A/wEx0yo49sGIlrvKeB/Y/mHd4ngNs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nqBMcedu0ZF/V8LyVP7LcxfQ3bPEcC7jHzudOq1hi8wejFQncei/iTpEeTvXw63MWoa6Cxszx9kwDveTTAdKC9Vl9TzOBnbhzxbkSUW/u86YZQPFZyOXsDr72XsN4rlU5T80UymE3ZXBWZW/j8LlTbIvYbewyz4EULifbboPQYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SBYnse5B; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774971982; c=relaxed/simple;
+	bh=+O/D4dq7l0PcK3ZNxXWbcQrfbfts/LXvkEblCFjW1XE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOHM//fTasZMrkLuSGGQt4GfTxVN98Y1AhIpBcY7+l1OmYGul5RnUmTsdfuxa/KXBVGU3RdmK3ZkedqP29KOdQTYvSeWY+pWSXLjViIxGzAtvdaAUX1Xyr1rt149EGzJwr+yxQvYy1j//gkNhnhFNQ3MkcxYwZvk8oK5ZHhstUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IO5nyiN4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SBYnse5B"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3DA024E4288B;
-	Tue, 31 Mar 2026 15:26:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1202B6029D;
-	Tue, 31 Mar 2026 15:26:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44E6010450349;
-	Tue, 31 Mar 2026 17:26:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774970777; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=eK5dGg65CGb94A/wEx0yo49sGIlrvKeB/Y/mHd4ngNs=;
-	b=SBYnse5BpxBUFO2L4JeWzsooEAaHJTXxKl2yuUBLP75/mlaqoi7j/aCoopSs48uEcYagKS
-	Dhvrt17i6qCC/IRZxtJ6/rlmBPFbVfhHE7X6Ke8hXaRa/6I+lzVRUAHYr8yNT0nwEq1dDl
-	dtAjaBBBbuNdmmMXpCoFB7wiD42x2d2lYuOvzN2PRCrv8bHLphN55rFpggTsaM9V4C50pT
-	XbFKuoqJZ1llUCIGeWj6Rua7mnE6XOW4d8rbPRVVrw26VyLrhhOPqHUjJ2aXL2Dxe1cRrC
-	M4M5npnsvJ06jMavG1OvTNQ0WWEbPgS9P2viifNcQSAUvYqE9ygYqOJXhHTs/A==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: Frieder Schrempf <frieder@fris.de>,  Mark Brown <broonie@kernel.org>,
-  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  Han Xu <han.xu@nxp.com>,  Eberhard Stoll
- <eberhard.stoll@kontron.de>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
-  Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
-  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mtd@lists.infradead.org,  imx@lists.linux.dev,  Santhosh Kumar K
- <s-k6@ti.com>
-Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
- for each op
-In-Reply-To: <633fee13-a397-410f-a595-db95e04b8110@kontron.de> (Frieder
-	Schrempf's message of "Tue, 31 Mar 2026 11:58:11 +0200")
-References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
-	<20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
-	<87wlzlnioh.fsf@bootlin.com>
-	<a1a711c4-d9df-4bba-8831-2ec787f84cc4@kontron.de>
-	<87ecl09wtv.fsf@bootlin.com>
-	<633fee13-a397-410f-a595-db95e04b8110@kontron.de>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Tue, 31 Mar 2026 17:26:12 +0200
-Message-ID: <87ldf881gr.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IO5nyiN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7CBC19423;
+	Tue, 31 Mar 2026 15:46:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774971981;
+	bh=+O/D4dq7l0PcK3ZNxXWbcQrfbfts/LXvkEblCFjW1XE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IO5nyiN4mY7ZedYXsGRoy8PzbWNeO57ygH3Iz6Kf2qPt7tRlB9ZJjsaIO8dnX+zii
+	 CrITy+eeAPoOBXmkVzn0ernd8R94W8CsZmC2DsH8oWvaavhXXDDhgWbnYYjDBoL0eS
+	 uD7Dwq/dc0zHP5OiNA3fwOEElthkqTFPcSCheNJ9nUlutpAZq5cNQDzfX9HCNRjXKY
+	 e+7BjgpnwfNVZKNWPDL+u2XKFcKERL1oXhZZOaudNoY3GplpkYiErf0w6KJ4MF6A6h
+	 3KFlwey3PqbwELn+YNoQbazH8XErBAg+rcz6d44vOwnJ7nYr3kl3CX3aLBDCfObIN0
+	 CabEP0sPyy50Q==
+Date: Tue, 31 Mar 2026 10:46:17 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: amitsd@google.com, kyletso@google.com, krzk+dt@kernel.org,
+	badhri@google.com, conor+dt@kernel.org, imx@lists.linux.dev,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: Re: [PATCH v2] dt-bindings: connector: add pd-disable dependency
+Message-ID: <177497197535.1298549.8741687393452368913.robh@kernel.org>
+References: <20260330063518.719345-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330063518.719345-1-xu.yang_2@nxp.com>
 
-Hello,
 
->>> For example on Winbond W25N04KV this leads to detection failures. So we
->>> should maybe introduce some kind of reduced clock setpoint for the
->>> initial detection, that is safe to be used without RX sampling delay
->>> compensation.
->>=20
->> That should be the DT max frequency, no?
->
-> Hm, I've seen it the other way round. In my perspective the DT max
-> frequency describes the maximum clock frequency supported by the chip as
-> given in the datasheet (assuming there are no other limitations
-> introduced by board design, etc.).
+On Mon, 30 Mar 2026 14:35:18 +0800, Xu Yang wrote:
+> When Power Delivery is not supported, the source is unable to obtain the
+> current capability from the Source PDO. As a result, typec-power-opmode
+> needs to be added to advertise such capability.
+> 
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Fixes: 7a4440bc0d86 ("dt-bindings: connector: Add pd-disable property")
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v2:
+>  - add acked by tag
+>  - DTS patch has been picked by Frank
+> ---
+>  Documentation/devicetree/bindings/connector/usb-connector.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-I believe that what is in the datasheet should instead be statically
-described in the SPI NAND vendor file.
+Applied, thanks!
 
-The max SPI frequency DT property is here to tell at which speed to use
-the device, and this depends mostly on the routing.
-
-> The RX sampling delay is a timing parameter specified in the datasheet
-> and it is relevant in order to interface the chip at maximum frequency
-> within spec.
-
-If it's not design dependent, then we should handle it "statically".
-
-> Your approach would mean, that we need to manually calculate the maximum
-> supported clock frequency without RX sampling delay compensation and use
-> this value in the DT. Then let the driver increase the clock if RX
-> sampling delay compensation is available.
->
-> This would have the advantage, that even before initial detection we
-> would use the correct clock by default. But it has the downside that the
-> clock value in DT won't match the datasheet value.
-
-It never does. Winbond chips can run at 166MHz. I know no design capable
-of that natively (ie. without finer tuning, like what Santhosh
-proposes).
-
-> In my approach we assume the driver is able to use the maximum clock
-> from the DT (same as in datasheet) by using RX sampling delay
-> compensation and only if it turns out the compensation is not possible
-> we will lower the clock dynamically.
->
-> What if we do the following?
->
-> 1. Add a parameter in the SPI NAND chip driver that contains the maximum
-> supported clock frequency as given in the datasheet as this is clearly
-> the best place to keep this device-specific parameter.
-
-I've so far avoided doing it, but yes, this is something we can do. It
-is going to be simple enough to implement as all the infrastructure is
-already there. You can provide variants with speed limitations (look
-into winbond.c). I was writing "0" in the fields which didn't need a
-limitation that is something else than the maximum speed the chip can
-sustain, as anyway the DT property *will* tell us what is this speed, if
-we are ever able to reach it.
-
-> 2. Allow to leave spi-max-frequency in DT unset for SPI NANDs in case
-> there are no board-specific limitations and therefore the maximum
-> frequency supported by the combination of chip and controller can be
-> used.
-
-In many cases, the limitations are board specific. Anyway, this is
-already the case, you may just not put any value in this property.
-
-> 3. By default limit the clock frequency for the READ_ID op to a safe
-> value that works for all chips and controllers, even if RX sampling
-> delay compensations is not available.
-
-I am sorry this is not going to work out. There is no such harmonized
-speed, differences can be an order (or two) of magnitude different, we
-do not want to pay the penalty of a very slow identification on all
-designs. We currently do the read several times with different
-parameters. What if we were trying one more time by cutting the speed by
-2 (completely random proposal)?
-
-> 4. In PHY mode, check against the DT max frequency (board limitations)
-> and chip max frequency before switching to this mode.
-
-There is not such thing :-) the max frequency in DT currently would be
-set to the platform limitation. We need somehow another parameter
-indicating what is the maximum speed if we can fine tune the timings.
-
-> I hope this makes at least a bit of sense. I'm really not yet familiar
-> with all the different use-cases and limitations.
-
-If I get back to your own issue. Is there any chance we could avoid
-tweaking the DT for handling it? Would there be a configuration of your
-controller that would allow reading the ID of all the chips with enough
-delays? Currently, the spi core doesn't care much about other parameters
-than the frequency, but there is perhaps room for improvement.
-
-Thanks,
-Miqu=C3=A8l
