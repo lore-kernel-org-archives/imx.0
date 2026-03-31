@@ -1,71 +1,65 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011031.outbound.protection.outlook.com [40.107.130.31])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013010.outbound.protection.outlook.com [40.107.159.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2353E0C62
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9391C3A63FD
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774952009; cv=fail; b=ETHjeEwJktKsiSC2pbfywI0m6Ls8ISG7mfhPth0yBxYTnUOrdK3lQuc0cDkIpdoPlvHeCFAfrv4GjplVw1vKISDXK8qS3DG9l1241m0x7pG/hAJrJCZ4cf8Vs86VlR2ePCBVzjCUUydBldomX9HPvzGDeNAZ68mXCDgZEjnblik=
+	t=1774953924; cv=fail; b=Mi7vkAuC7h+6ep54dM18aWkCpU0zcmeIIKZL358AH4IgRFKJljYv6p554uFNBuvf1f7cRpdslyiRm4fHLYxiuVu2XNKLK6kiUSNZkKfwGm1BKIc6TMvkDU7ZWOSasXovMu5K0RLNmlpYrxXu3wfw/AT/rdq5qsGaNNESnAU4Ob4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774952009; c=relaxed/simple;
-	bh=apIxWAWC0KTfgYM7w9hf3hXW6t/0ExJf53OSLAI9DNE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Sf7DbIX8P12onth3qsbo2+b0C2JarO05YFASU2/vUdPUgsh6jQt6wRu/V75ItrrnuVtb92TjxGyD9NL13f3M1X5eKqsvPRT1Yo4J2qAtmkLYr6GAi9osjOyD9bt4qkGVuvRuFhk+13Yd8Z7nE9wELxnjPZ3wRhS4ANYf+CnH4+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dhHYCxTW; arc=fail smtp.client-ip=40.107.130.31
+	s=arc-20240116; t=1774953924; c=relaxed/simple;
+	bh=ntvbQHrh4fKnmeT1Q12F+czawbbZguXNqpkP67evBlY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SzTsjQi/4NqM6uo/+82Ywf/3Bvc5ylfiA8cVIa5Uxt8mvkxMRpwn19V9tOrz381ckfjDg8EYwbjP9g1YvbrUDu1lpBEawx2xn+wZfuWXATPjoPIQtzlSfB7j+1veu7cTTR4Fl7QqWq/ILlDWgLXiuIotT4z3+O+Z+RtLIUSyKlY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PopKXFM+; arc=fail smtp.client-ip=40.107.159.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dhHYCxTW"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PopKXFM+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M3cDjOkqpwvgX+N9e9leAo326ySdUIf1i8X+ycCTaNvflY/H7p+xJxIgl8XhtOa0OMqD/kaHWzautULKmlru9zEjrBd08NSWSZDbbmU+XTfv/EUCjNVPPNp5nS1u+hS2ZwmuKlig0tiUTkYXMa/kwkw3W8XxzCkD6NF9bxdU+iOqLGfbY4l+LC2W8QAh+ZYq/kprHuw4xu4LyoMHrYGDVWEOZ22FMZ/jOiBJhXKMmfwm/Edlhp5cz+usxJrQhodnVdEb9u9GTVQ4hVpQh+0cqtBeSySf0GCUfWMxQeBzEHRsWAd/Bfhx/fiOHJ+ivOnVgV2Y1Hf6WkvV/RGRL3Rqig==
+ b=L+glNBoOk69S08x/kuALiiZZB4hF96iD343cpyrAajMO4qqz8SFeb/jqDfcu9GD2EiVLAycWVq/jFw/SF7+obYjWhipUSF8OujLqPpHuUOEB1GMQJdvzdGZthviNwUL0bMMlgM+1oK5EwXROreKBWgDpDAlP87ggkjTjBYK4BvikfRbypens8CU3jkJ5Ed+MK4AaXL3Ej8/x0Vwl2b1JWHaQbYQRiFJS3yqtEAf6r+uAVXsHzdTXYDtaSbtRL03mII9ZJbwws9QNOVpbqIJmPnFIuNkx/zHiUVVYGCKz75wH+/N5oKURkKodbSDA1d14tZb3E04D00G6wkFmTj/f1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VDil+NYsv1aPjJjs8ClD+KDA4JkaiZ0WwI+0mI+BaZw=;
- b=UAZkkwDY+521Kh2ad/5UC4dSxTIYB8CQU7iZhgwFKYRXPsaZ53EQUk8/LDCYmptTgd/Y5EBX+2PrF9xH77BDDwkJCcvARqlRGqVQ+9kRhR5yYprwLsExIfWW5+XqphNuyOTMVojbVmidW3jn1WSrx1idAI349z52G0HgtWItiqJdpZZitu3IFlwln2P6CG5XQSrjNR5J2gICBLw2qaoiLF3aI8r7D/oDrdruW6H1YYDJ1QNwwHhJR1x4pawD73gWlesJGUKqwY281iS1hCalGM1/2D3EvUQsfPpjrtsFlRnM/y9CBZAvxRPPQRbPEQmA3gDjTAMZHuSq5CDJ7tLwrA==
+ bh=eaDUkjW6I3lJ0vbgLnHSl1OqAEboOQLz2LCguNHZmY8=;
+ b=FXy3CSZ8iVuYQTHFVix34tP93m5NL1w8mj0nSUcr/zmCuGptomklRJ6lRT/xJgX/xAd0PM/MzWDXpQMGvvHuSNizYccDjzNP05IrwOVZElz7oo1dBokUP0uavG6jOQiyRc1kHXObs1IdyTcjnqENYK7HUlU5HINX+RVc4nhwXIo6mc1kidtGQrP9eF5vCgH9pd7+8RBq3TopqCZ05G6h2jCl+Zm+v+4kmeiZTdZEuvp+XuTOjBjzin6Mpf8MH6EAFoz6sGVL/WiQj8nyx2ZgPqDpD2S/VX+a1Qum+XuHlLDPDjjg1cFYL9GG7Y4PJ/j2gwquh/pnSjg7JImkqDqslQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VDil+NYsv1aPjJjs8ClD+KDA4JkaiZ0WwI+0mI+BaZw=;
- b=dhHYCxTWaaDNC+bKyrIO1BYUn0HfaT8tY1mT+BNHZhHQaymsLwpVli8IunaFMHZgjDVTmlalNUfXkQzQ7U6NmTu+LoFU8j5istFJdEFdDA0x8HutaRRHFdfOkQgf0gWlxP4gQ/6OyGGAr/R0Bv8Cunz1TmjYe3q9D5MUIrkMs3gSOhIVZRaZYH72ec3laBwMC+3gfCHh4I1AmVDNa3y2V1H+TchUHYpbK7/Q9JcRaM0858itVJFY+QuAUKTF3TJcCTDordWNhzMaa1PPX/1h5B79wJO2s+8DeZYOz3MpGfpNNyTkKeHCz+QhT18HTzgxNV/JN8/P9Ts7dPncmjeZ/g==
+ bh=eaDUkjW6I3lJ0vbgLnHSl1OqAEboOQLz2LCguNHZmY8=;
+ b=PopKXFM+GzstHcC+1KMhYRfcLpId+17wEZ2px1nQeiDvJJhP0PLZ4wCVJgX9evw9ZVB8K6qMZmH16Rf3ZHZZvPuuuHxlwfTwEAWXg4cawKgxj75g1nS+/Dd429aMIGj6gokZr46XKI6ag2UWyNb77N7jNYcB2Y+UQ0moO8rRIaF+/oK4zTuIBwGwiJSleafOLF/6LpvGgeh+QMhYHgFHFVAI8MJ4swDX1I1NwIlqkn5CJ7kFd/ASJVFU1HC+BMGvrxsIo78w7YHHwJVd1FsQBPEFtNgjrD1fyHayqCwhXhLIlYInUiWEBXhokH3qxPw+lBAWp5EB8qKxaRnpN8cDYQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB7821.eurprd04.prod.outlook.com (2603:10a6:102:c5::5)
- by MRWPR04MB12354.eurprd04.prod.outlook.com (2603:10a6:501:81::13) with
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
+ by AM7PR04MB6853.eurprd04.prod.outlook.com (2603:10a6:20b:107::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 10:13:25 +0000
-Received: from PA4PR04MB7821.eurprd04.prod.outlook.com
- ([fe80::67dc:4bd2:8552:9b50]) by PA4PR04MB7821.eurprd04.prod.outlook.com
- ([fe80::67dc:4bd2:8552:9b50%5]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
- 10:13:25 +0000
-From: Robby Cai <robby.cai@nxp.com>
-To: p.zabel@pengutronix.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: devicetree@vger.kernel.org,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	aisheng.dong@nxp.com
-Subject: [PATCH 2/2] reset: imx7: Fix handling of MIPI CSI resets on i.MX8MQ
-Date: Tue, 31 Mar 2026 18:13:31 +0800
-Message-Id: <20260331101331.1405588-3-robby.cai@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20260331101331.1405588-1-robby.cai@nxp.com>
-References: <20260331101331.1405588-1-robby.cai@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0094.apcprd03.prod.outlook.com
- (2603:1096:4:7c::22) To PA4PR04MB7821.eurprd04.prod.outlook.com
- (2603:10a6:102:c5::5)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 10:45:18 +0000
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::1fdb:9c8f:5400:8bdb]) by AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::1fdb:9c8f:5400:8bdb%4]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
+ 10:45:18 +0000
+Date: Tue, 31 Mar 2026 18:46:55 +0800
+From: Joy Zou <joy.zou@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Ye Li <ye.li@nxp.com>, imx@lists.linux.dev,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] Input: snvs_pwrkey - report press event in interrupt
+ handler
+Message-ID: <20260331104655.GA1415371@shlinux88>
+References: <20260326-pwrkey-cleanup-v1-0-d85d7c0bf275@nxp.com>
+ <20260326-pwrkey-cleanup-v1-3-d85d7c0bf275@nxp.com>
+ <acWPp7KHxv9a5Az6@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acWPp7KHxv9a5Az6@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SI2PR02CA0041.apcprd02.prod.outlook.com
+ (2603:1096:4:196::20) To AS4PR04MB9386.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4e9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,106 +67,125 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7821:EE_|MRWPR04MB12354:EE_
-X-MS-Office365-Filtering-Correlation-Id: d69ab4f3-00bc-4935-5957-08de8f0e2517
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|AM7PR04MB6853:EE_
+X-MS-Office365-Filtering-Correlation-Id: 196bcbb2-39d9-4b74-edb4-08de8f129958
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014|22082099003|56012099003|18002099003;
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|19092799006|38350700014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	gCwuVxHWGgQOcPjAWbWYS6oCtqbUZTTXSEpWDsO737BOMFoxORQWXjeXSKgjivpnJZdNLrO7WJvCiRzyH2nqmvlSAFb5RK63bgLCk5bICDW3lExPQf/9hKdagpLy5ACuTzCnshFp6OcOuR0V6cY2Xr9zYLt0Gt5sHK+6HSeUvyWWejUVohASJnq/bOs80JYXB80Ag4QmDZU6sgAZ7ldbYkJZdZuyYffYjT8pwag584Eeoqg9jh03O/YDoKuvE3cEWZqa4BbMrUl3arb8HNERaFKtWM+5TieEsF+AlClzhpin7xXKXJMPLXSM6Z5BmoK0a5ZG77lMnblxiO1IUazsTvGGbqoDpL2ZCEe7/vRnG++G3AlZGBDXtoK9NsDDSKjK0Yc4brjO0pCorpz382RlEiVj2/1FItrMUi5X8aSfdIbx7PZ7McBky1iQktEaUwLm6jTNMWmAOYI/3p2Uf8+MoLgcnqH8tosyFa0Ff+ICX50x6NoloW+ZefvlNnx/9zL9StT7VEF+17pGXyEsGZotKz1qRuFdMUAA6GRUGwO1GWRxRgYeTXKativN15E+FKjOCNRj3jEKclJRucTsDbuoXgZ3+aa6vSZ4cW52q1FIFG7kaZuc7YnrLd8iWKdVJki4byuYqM3iGocuqjx/XCZKnt1IOY86wIlcZWDrcDey3k1eg1qfB/vjZuCloX3n5EUoD0/WFQAGhccsH+BZorOT+1ifNYgzeUaglmuAnBRiyRTOJD/TkXtbmYak0m6xuYQfvrUKrQ8rtBOqDMcta2A3OeUkxSTGqZGQmBk+eK4U1qA=
+	V5v64JgKzj1L55ang4JPa2dqavgei9VOMIRfJgNGZiqVQ2wZ+czACgORcHXVTz5qtkDJfSVujYFuMDx75Xs8Zl6s4XmHqDiPO2ff+1cC0vG3W/9us5BXmmAwofg9dEX6z4dCfwC3L4bvRVoewwrNRLQVkF9wqz/3pomwMvDQOBLwkQwbeiEchdqlj2QoLm87J32MFp5aRibeOFFdop6E8aQP1tnxv4l8RQtzJTp1ZZTAl6RfynyYWdnflLzePoL/MXLN7KdIwXrUPqnshKngdxGkQa6c/xx7gxu2kQyK6DAFDxTstftP2X68TMFtxiZdUPElPoJDLAJ1lPq80u4uspAG09ff4t0JsDwki59tOgZY9CP+g1LDAW0z7LqN3OwbzyIarjNcCpBDFEnS4+AQPBITVlOAnxdF57JcQp3TX/PnuIvyvM32aga/Afe8yPOZt/6Oe996jgAogItM25qoE8+Q4pHTk12chtZOgmYuhtQuMriiyW+KhaPnkT3H5cqKrgu0gbdgACvfs0qorcpw8ZRAerJB2s8M9bNWXxDDkKDvEvVvIQuhGHLRBQsdReCEzRoi5HVjHDhjeQ05Qk9e0R1jhEVCqXI1LWpyQZowrT0ASSEEff+rIRvgYpalCbKFW5x+MQUjTiStuz9qiitcMHdUDSem+uJBSp1l1oDZD2KV9wUqvtkHQtDG84AMwc9lgtbrn2ubXcEIAO0gDwxw3HqrqzvqIfTUvZHDz4OHuLI3U/3XtTe9v3Pwcjly/VZaaupimIW6Ed/+VDiyDtDeLna/hLyD5npFTqWcXTFOxs0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7821.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(19092799006)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qcPiXLbOL26GWcQncTEZJb0DoX1CBaBRTiy9wQV66yUEIHTTF6jSLMND7vNW?=
- =?us-ascii?Q?IrfL5KIUEdx2yykg3WeXv3JXHJlNQEeuxpEDd9OaRoLeVQcAHu7HxhFH3tEU?=
- =?us-ascii?Q?8mQIcu6ljM+l1P3l6w8YkslwbuXzhOhxtKBJUG9LFSHccX0b9kCtqbswxJYF?=
- =?us-ascii?Q?Z7R6/plFfx09a4OGPQt0u/+MQJIqTWvbRzWZcE2CjJZiExjcQ5wUpgj2UQUd?=
- =?us-ascii?Q?RAykpHkKT5ubXF0xUC6E+0TO4IIngtOXvtAUoSc9HO+OPX06Ys1B0QlqlkAU?=
- =?us-ascii?Q?xEMJAqfIDSLx5O5239J1MROfFaFk31q67Rc3XtrJgtf0cmUZyWqO5uHxzICL?=
- =?us-ascii?Q?MWss+eMi7r8/6XBWMG9cRDF+1HQ2KXmtXQJQEmV3T5HPji8urqK2GL9QS156?=
- =?us-ascii?Q?sy+qBgsJznN/bly107eG6AzKu+OjDQkq6gTRJRl6iz5Ro+oH7W0z0K4Le4xG?=
- =?us-ascii?Q?2PiqsXmk9VYeB4xA/pHprNOF1hH9plMydFSWiLm+1bwlYMiI2dtecglg0oGd?=
- =?us-ascii?Q?41mo//9Mjsb/H4/RqbZ1KWepZxVqD6eYscD5RVDlO8/1mJmaNdd6WatsgmOU?=
- =?us-ascii?Q?UGVBpYTEXSOuFHntmuxkj00DT9+6VRlShiFyTwHBf/uJLAEMmwJEmLtTYjJ9?=
- =?us-ascii?Q?hGiIyk9Rxbyiyc3A+EkXOat2t6qilhUlOiOxu4VNp0tEAcN50/6/3pZFeJ50?=
- =?us-ascii?Q?zFwcxWLiiNBSCce5B4AsOw+F0Uv35BfsENCxP/4Y8drXQNjFiv0TFMWW+Xx1?=
- =?us-ascii?Q?R2/cuQDIu4JVAyZNQ7w86/9YW42RdV3+7fSqjyz81z5acbNvV5s6RzaMFc7Z?=
- =?us-ascii?Q?5faF8AZDOKaVd9VU417oMtPZGodXvsCkgk5cc5UDVpaSKkfK6UjmIRbzh7MS?=
- =?us-ascii?Q?mIl646ZrM8/PYWy/MrEp1NgMGH2K9dXNV/oCXnAxBWYYw4H1IXsAnBnIMdFf?=
- =?us-ascii?Q?Willau2Wt12OIeK8/0d8fD15273HwVLkCG0NxoCquAOS8Ud68BYLP+yOtvtm?=
- =?us-ascii?Q?dJTzrWfhQcZhKKod8XpXwwgSzUyAWIOvwtEIicRxDZa07FSIa3KH2Bm9viGR?=
- =?us-ascii?Q?r/UjTm73sIphs+yejB/MItlVOPD85/r8N/yJqSJYtTSqhYYmNst7At0ps3Ds?=
- =?us-ascii?Q?MAPCSV6pw+ekGZ+a6Cj4FsimoDAF/WmaJTjgp98tY+2e97dyEPYNawtzAlUa?=
- =?us-ascii?Q?f5r+YWuUb/uZOKb3Y8Zf+gLHlhJX74TA6zQKi++gohmtr54L5+n1+5Iwkz7f?=
- =?us-ascii?Q?Ta/lFG+8XJbhjaQIYud4v6DOVRms5sdKvXyHKdUvahREY7Vm8tf3H0ZReBHS?=
- =?us-ascii?Q?Fb8+uz1tHSsCLDBAXCZqANjfYEoJtSXCFsQF1oncDvfkC2i+VuoVYuqoDseQ?=
- =?us-ascii?Q?H8XdIHID5XOrrQ4xRFN1YZNSRB3YQE4MVHpFECrNFbP7uPay/IajxzWAONzn?=
- =?us-ascii?Q?1B6fl0KNUjcEnAHHx+vfyVljjeDXV4X1ozrB+Mp9vOyJgEHScQJzXH8ByN0T?=
- =?us-ascii?Q?JIay1an715/jX6J1FLZdWWxTElNf7B0iBPiMoYKyDCqfg4MfOYSKA9ZKEbXg?=
- =?us-ascii?Q?LLaALfY+DKKVrmItZR+WhAvD0r+bsqoxq/MZPIVQkpDpwD/DXslf2PrzPF3x?=
- =?us-ascii?Q?e8ewVIEAzluGbAmP5x4f2kcIVS2z0+7vEeQ4Pg8ziKHrHXKPMIhfWGwhzvwU?=
- =?us-ascii?Q?579kTNixw7bL+8m+3LgOivuIKiUDHJpErn/ec8W9e5ZPzp1VziKl4BTMeYTQ?=
- =?us-ascii?Q?oZ2X+I5IJw=3D=3D?=
+	=?us-ascii?Q?XO8/e3eyXp6a1cGwR7fPVn1/evpOSHf/GQVmNrSI7HcgveIAXMj7U+t4hNRl?=
+ =?us-ascii?Q?4TM6z0jaG88b+SImEaw1S43OkPvT3GmfMCvUuDeadB+dPQV3ZTtfFZIMzjWF?=
+ =?us-ascii?Q?nsOvz5AiWKjqGmo03iZgkPAWS0/9XxodyhvtxyOFTtFi84ZN2Z2oYocmibyA?=
+ =?us-ascii?Q?zCesN+uirhLTomzfjoFKOFsC/8DaW5p/b8pfmGhVDqm4IsaJA9F+dVZGhj7R?=
+ =?us-ascii?Q?Mi3UqvC0m9Mf0o0wR8JFEahXN3fj9mmc3i4Ox4roi/8NFaLCewnHcDUpPG9y?=
+ =?us-ascii?Q?gUVlhlzZxGP/JZzoGpspMQMMvHyPZx9LroRX9+6EN3U434EXs4s9Gt+0YARc?=
+ =?us-ascii?Q?1r5t/c3I784GklEV3iMC5E+P2lUYuipH1NEAcDiU574q/qaHOl6GcQfFsk+0?=
+ =?us-ascii?Q?ru3M9hWnymcFk4E03aUJJx+2WqU28GZNgtA1FRoekoFgf/auiLNv2KCcBAH6?=
+ =?us-ascii?Q?gfm8ZisVj7UmsvGiU1KjPAZCbZgVtG2TJUYCY0qw5BJnUEeRffQYhuEboxso?=
+ =?us-ascii?Q?hnCJ5RE/P91gYJXfHvws2UVN2HseyYdM18J99vn8MnE1qR7t+u67ts2W1QX6?=
+ =?us-ascii?Q?Bw5pvTRA2HM2d6XNc4L7nslynp/9Ktg0TKUcpZpPxKQi57oL9mP5NU9+XhrW?=
+ =?us-ascii?Q?8ciiq8RuKfD0RF7mD1f/dIpLr0BjdYxJHmpZVyduI9+PBoUw8DfuiwLdn1Dy?=
+ =?us-ascii?Q?bFzv/pmea9d0be3KePPyyKa+/LkiacDuSCQOOcHnLoO+55oPclC6qv5D1cFq?=
+ =?us-ascii?Q?hEzx+pYxCJFmYr+XJjiinirieOoW2T11slZanThGjL8128LjRHthbUnn8l6H?=
+ =?us-ascii?Q?5Tsdq/zl+IQqnN4Jxjv+5OBJzxiEuufrcLuMTN0dyYEvUcWs2nJEKfGLx2XG?=
+ =?us-ascii?Q?FRgdb9pg6gRZq0hFAByt7E8riGlt9/WGXiqmqtgpAUU6zSHvPheFvG6CDxyd?=
+ =?us-ascii?Q?PpUolhtNdsLzai6qlqvL3GMmG9/cj4khUdTWu+04uf39zulvgxrngIW16mkv?=
+ =?us-ascii?Q?RfLo6EhzmcSWWIOIFsPtp6Ap8wEMDgJll5tRWZs6yy/oqtWfIkfoJs6fngLW?=
+ =?us-ascii?Q?VPofnIBtbDx0lO471mU2/79NgWKbNBIcbZzugARa/1sYFX3sz34LJuoV/wVY?=
+ =?us-ascii?Q?irnHxIjUNIsYZPtHLIYKCoKu+W7R92eU4ekNH+e46M70+FX0uMeQfCtrXFUK?=
+ =?us-ascii?Q?A9ZzIAHrZHTl47MeK9PKzLJg3A+xKtfk9phfoS2kaJYUMY01jaon7jnLJRVM?=
+ =?us-ascii?Q?y0jO98M3rQ+fDsn5aX7B/FhG8129XouBppCc/WO0iHJG9EWGJy4kvu6qAYHF?=
+ =?us-ascii?Q?kAx5/e0/ug7THNDqV/1IMo7hjsDASqMnF1iFT2yXo4dmYPM+LZK7cjaji6Fn?=
+ =?us-ascii?Q?iWy3de1FTmf+hLRB/rlCfj96m52FSThAmV++MiPVcGgrx0Krm1jcF4UGaHus?=
+ =?us-ascii?Q?HaEJeltynoeZgr927bIOC9tUG+y1hEUCZAZ5EdY6vJzOkJlVAQt7R3LiMDRk?=
+ =?us-ascii?Q?8RiLVgL628DWXlo19wUxWCrs92LafmHClszOmyaRmg+Ojsy8OQlpMXkVaS4C?=
+ =?us-ascii?Q?Y2yzWhZw36lqrt8bPZ7RyY+KTHkB03JWch/nkPOTvrwJvlc+jCMT7EaXtT/S?=
+ =?us-ascii?Q?1Sz3r7bZeqwKqMRzFtGz0QN7F0Egf9wrF5JtOe6cQ/qb9DGWns0qtSXYWJSD?=
+ =?us-ascii?Q?bfjxFLdfe8beh5LTa3el9K69fxvhy7b3a4KV45DcQGLm/v3f?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d69ab4f3-00bc-4935-5957-08de8f0e2517
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7821.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 196bcbb2-39d9-4b74-edb4-08de8f129958
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 10:13:24.9989
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 10:45:18.1252
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iiPkLY5q/UH52+cMMzIBiNEdr40b1rGHOGaCUso7HnYBQYfJOL/kKKmiIfJlKhfjYAonDq/e8CFdb0R7/AMNKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12354
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0rL2pQCERIHE5eV0vSvMAsYRcq1wv9XYPuUG4uZkJXZAyp/zcWcsFgfAnvHoGLxT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6853
 
-The MIPI CSI reset signals on i.MX8MQ are active-low, but the reset
-controller driver previously treated them as active-high, resulting in
-incorrect assert/deassert behavior. Update the reset handling logic to
-correctly process these active-low reset lines.
+On Thu, Mar 26, 2026 at 03:57:27PM -0400, Frank Li wrote:
+> On Thu, Mar 26, 2026 at 06:39:40PM +0800, Joy Zou wrote:
+> > On some boards such as i.MX8MQ-EVK, the PCIe driver may take up to
+> > 200ms to restore the PCIe link during the no_irq resume phase. This
+> > causes key press events to be lost because the key may be released
+> > before the timer starts running, as interrupts are disabled during
+> > this 200ms window.
+> 
+> if irq disable, how imx_snvs_pwrkey_interrupt get run?
+> 
+Thank you for your comments. I might have missed some details in my commit
+message. Could you please review the description below and let me know if
+it's clear and comprehensive enough?
 
-Signed-off-by: Robby Cai <robby.cai@nxp.com>
----
- drivers/reset/reset-imx7.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+The driver implements debounce protection using a timer-based mechanism:
+when a key interrupt occurs, a timer is scheduled to verify the key state
+after DEBOUNCE_TIME before reporting the event. This works well during
+normal operation.
 
-diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
-index dd01fe11c5cb..b7048e1f10df 100644
---- a/drivers/reset/reset-imx7.c
-+++ b/drivers/reset/reset-imx7.c
-@@ -202,12 +202,12 @@ static const struct imx7_src_signal imx8mq_src_signals[IMX8MQ_RESET_NUM] = {
- 	[IMX8MQ_RESET_PCIEPHY2_PERST]		= { SRC_PCIE2_RCR, BIT(3) },
- 	[IMX8MQ_RESET_PCIE2_CTRL_APPS_EN]	= { SRC_PCIE2_RCR, BIT(6) },
- 	[IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF]	= { SRC_PCIE2_RCR, BIT(11) },
--	[IMX8MQ_RESET_MIPI_CSI1_CORE_RESET]	= { SRC_MIPIPHY1_RCR, BIT(0) },
--	[IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET]	= { SRC_MIPIPHY1_RCR, BIT(1) },
--	[IMX8MQ_RESET_MIPI_CSI1_ESC_RESET]	= { SRC_MIPIPHY1_RCR, BIT(2) },
--	[IMX8MQ_RESET_MIPI_CSI2_CORE_RESET]	= { SRC_MIPIPHY2_RCR, BIT(0) },
--	[IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET]	= { SRC_MIPIPHY2_RCR, BIT(1) },
--	[IMX8MQ_RESET_MIPI_CSI2_ESC_RESET]	= { SRC_MIPIPHY2_RCR, BIT(2) },
-+	[IMX8MQ_RESET_MIPI_CSI1_CORE_RESET_N]	= { SRC_MIPIPHY1_RCR, BIT(0) },
-+	[IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET_N] = { SRC_MIPIPHY1_RCR, BIT(1) },
-+	[IMX8MQ_RESET_MIPI_CSI1_ESC_RESET_N]	= { SRC_MIPIPHY1_RCR, BIT(2) },
-+	[IMX8MQ_RESET_MIPI_CSI2_CORE_RESET_N]	= { SRC_MIPIPHY2_RCR, BIT(0) },
-+	[IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET_N] = { SRC_MIPIPHY2_RCR, BIT(1) },
-+	[IMX8MQ_RESET_MIPI_CSI2_ESC_RESET_N]	= { SRC_MIPIPHY2_RCR, BIT(2) },
- 	[IMX8MQ_RESET_DDRC1_PRST]		= { SRC_DDRC_RCR, BIT(0) },
- 	[IMX8MQ_RESET_DDRC1_CORE_RESET]		= { SRC_DDRC_RCR, BIT(1) },
- 	[IMX8MQ_RESET_DDRC1_PHY_RESET]		= { SRC_DDRC_RCR, BIT(2) },
-@@ -236,6 +236,12 @@ static int imx8mq_reset_set(struct reset_controller_dev *rcdev,
- 
- 	case IMX8MQ_RESET_PCIE_CTRL_APPS_EN:
- 	case IMX8MQ_RESET_PCIE2_CTRL_APPS_EN:
-+	case IMX8MQ_RESET_MIPI_CSI1_CORE_RESET_N:
-+	case IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET_N:
-+	case IMX8MQ_RESET_MIPI_CSI1_ESC_RESET_N:
-+	case IMX8MQ_RESET_MIPI_CSI2_CORE_RESET_N:
-+	case IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET_N:
-+	case IMX8MQ_RESET_MIPI_CSI2_ESC_RESET_N:
- 	case IMX8MQ_RESET_MIPI_DSI_PCLK_RESET_N:
- 	case IMX8MQ_RESET_MIPI_DSI_ESC_RESET_N:
- 	case IMX8MQ_RESET_MIPI_DSI_DPI_RESET_N:
--- 
-2.37.1
+However, key press events can be lost during system resume on platforms
+like i.MX8MQ-EVK because:
+1. During the no_irq resume phase, PCIe driver restoration can take up to
+200ms with IRQs disabled.
+2. The power key interrupt remains pending during the no_irq phase.
+3. If the key is released before IRQs are re-enabled, the timer eventually
+runs but sees the key as released and skips reporting the event.
 
+Report key press events directly in interrupt handler to prevent event
+loss during system suspend. This is safe because:
+
+1. Only one event is reported per suspend cycle.
+2. Normal operation retains the existing timer-based debounce mechanism.
+BR
+Joy Zou
+> Frank
+> >
+> > Report key press events directly in interrupt handler to prevent event
+> > loss during system suspend.
+> >
+> > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > ---
+> >  drivers/input/keyboard/snvs_pwrkey.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboard/snvs_pwrkey.c
+> > index bab3ab57fdac77256be75a080773ea99372ec9c7..b557c1618d7369e872c6ce708a7b3017264ee385 100644
+> > --- a/drivers/input/keyboard/snvs_pwrkey.c
+> > +++ b/drivers/input/keyboard/snvs_pwrkey.c
+> > @@ -78,6 +78,16 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
+> >
+> >  	pm_wakeup_event(input->dev.parent, 0);
+> >
+> > +	/*
+> > +	 * Report key press events directly in interrupt handler to prevent event
+> > +	 * loss during system suspend.
+> > +	 */
+> > +	if (pdev->dev.power.is_suspended) {
+> > +		pdata->keystate = 1;
+> > +		input_report_key(input, pdata->keycode, 1);
+> > +		input_sync(input);
+> > +	}
+> > +
+> >  	regmap_read(pdata->snvs, SNVS_LPSR_REG, &lp_status);
+> >  	if (lp_status & SNVS_LPSR_SPO) {
+> >  		if (pdata->minor_rev == 0) {
+> >
+> > --
+> > 2.37.1
+> >
