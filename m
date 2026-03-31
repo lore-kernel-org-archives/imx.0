@@ -1,205 +1,180 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513AC194C98
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623D342CBD
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774968848; cv=none; b=iXm7i2XAuG5taiEx9EBhms0dKfJwYR/+7qSlloOGqMfXMfQivQ5pJWEf/LZeUVVBlpafjqrqZrI2UF9UPrnMKp5mgxJqGeD1AnazinchzymLPG8qI8zW8CpDleRmcO2yNu5MHzlbzHayVb5r36TOd/HkS7fHA/brbx1OTNi5dBg=
+	t=1774970278; cv=none; b=esMf3ASTIFDpwMeMjUs6O/fl+lrlToZxvu0eabEpYPHBb+S1djUhgV0kuVVJydSN+QjM8s5Oa7HxSWSgev+ymxDVzXMCxXhuzOgnqvfNJlzHZzbzCtgDDV7ZjWA7CXS1Mjf6SPLPSVAPdDvym3QMFKTLnLhwjEam8J0B10GIl5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774968848; c=relaxed/simple;
-	bh=4UGmf50+gfLnZc6+u6iDl6NicmkmuoVpuu9aSS4dDAY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LNs+hUIBOyo0nz55QkWmOQqSbLPpz5JhlvAewBnmsmsrJHRmZu6XVMdKecWRaG9NsguvhfeNf084jI3dMDtr8BDmJW9xwHzP23PH1jD3UkHHMRRhjiWNu1WBr2KTw9K24e3szMv6i9pAT+b0ySrU+Ermi7ZEGNWtJYD6XifAxcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=ck14aDTO; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="ck14aDTO"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-899a9f445cbso66173286d6.0
-        for <imx@lists.linux.dev>; Tue, 31 Mar 2026 07:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1774968846; x=1775573646; darn=lists.linux.dev;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xn5zNT1spHRq0DkkC+7339Y+wwjQRD78iQTIrf+3mdw=;
-        b=ck14aDTO5XHz0RI+bv300IdwOC25bFm27LuvXc0lujfEFybSj3sz2UOlNjEd3H4dPZ
-         D2VRg1g8qX8r9tyJOOIxgF0OJdjDhhFX4lvzHO8kQKn4im+of4dgJiXt9Ye5VfZw0VE8
-         llht3Ousf4S1wIBpiv6UkpZXU5UHoyxSfJfZsE43dZhQo389Y/zwC5pRMPLAGK/9IeyN
-         nQtxlN5l/jrtIbeEqVqVDx18GYlC+SABeNuRqJxZnp30DbKssM86KOc5RcW8deWKR3N5
-         0uWd2ASZDu5m+y+1csIxspOLffp/s/PhBHLwCGs5v1L0NKPUqze/mwKP+wmvxysMcHyR
-         apvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774968846; x=1775573646;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xn5zNT1spHRq0DkkC+7339Y+wwjQRD78iQTIrf+3mdw=;
-        b=V2wslNN7Thk2x1JbAbar1EecVUOVdmAJky1D98mBTwCedLzX9xGZScCd3JfJIENGVO
-         B9LFuzcRCB1059EyRQA5MCz4ywlaA9PxX5S730S7ChNqQ67LXQJgbwXs0FaMxsTouUh8
-         bkAqX5x8oonFecj1UqU8hMW4zXAq4ixTUTEmnkIxvZsnYIKaXCS6b87h0aEYpMgKTsyL
-         LVXrL2ndvr1URGrFXt5VZvYS09uMRUZFOS7x2y3dS1KDx4xhV3TXng8KcaG/VDqFXhNG
-         yYtqnLuyIvSmIvfUtsiXYQ5ixp1GxhsHwaKG2i/pFGlTuJ9Rvlwm41+46BuCd9ceM2WI
-         FSHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSYKckgUVi4Y+tkvQm7D9x904fy4pbxZNR5sXsPk3MhWslZQ+qD8grlbb2X9m3PhSTdwo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwTYGuQ9uFsRyFYo5w0gwHZcrTneBix7Ry6WO9WtarOAr/3RCe/
-	dK/SI/xj7C+vnBePssj6PI2X3xLPNky4joeNOFAwdgTyWY8s/obQfdLgZxQkxI0EbDU=
-X-Gm-Gg: ATEYQzzd+/4taCgXXTc1xb84WoJJ7gqXfdmnuo79ziSY0Ehsc3es+m2gCLsO/5PsRZ2
-	qtREBvfDXNhpHpm6jFrwKhF8ftqldJ57levJfEg15i9ZPwVOdidUe71fNW9h/FJRVoK+mYZD9Zf
-	CLBQzShiBg0pVNMGI6fL5Z9U48t67XBWMdGTsPN1H1qO2sWSvWPl+uaU+xqcE3+VUdZe0I0niQO
-	LZotIDJfZRfB7MX6x52mrh/FGVifhYPHeTQVBXIOw7OgB1SRHsgE7Gym7AC/rNyAU6J8M8kTR76
-	I+zU7W5Mv/7R5cj4NfLjOanKKUGm+KmRxMtEK6ijQlOfLGT2H1JTgzdAszfHtcMPM8IYIwHmmIe
-	zF+sKS2xldvi9ApoKNzLLPZD6lus6il9tnS88gBxSJEQA4LleVqMzaReXgVcCmLXc/227XkhL++
-	s06M7ilRZpYKf/MWjVHwnm+j7ESSQC
-X-Received: by 2002:a05:6214:27cb:b0:89c:ca30:6b92 with SMTP id 6a1803df08f44-89ce8f8d2fcmr240762806d6.56.1774968846090;
-        Tue, 31 Mar 2026 07:54:06 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:e06b::5ac? ([2606:6d00:15:e06b::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecb5cb14bsm89054306d6.1.2026.03.31.07.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 07:54:05 -0700 (PDT)
-Message-ID: <079b1630abe5dd22e032797fc12925c9c79ea305.camel@ndufresne.ca>
-Subject: Re: [RFC PATCH 1/7] media: v4l2-ctrls: Add V4L2_CID_MEMORY_USAGE
- control
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Frank Li <Frank.li@nxp.com>, ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl, 	sebastian.fricke@collabora.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, 	kernel@pengutronix.de,
- festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com, 
-	eagle.zhou@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Date: Tue, 31 Mar 2026 10:54:03 -0400
-In-Reply-To: <acvbOo17tU-s20BS@lizhi-Precision-Tower-5810>
-References: <20260331072347.253-1-ming.qian@oss.nxp.com>
-	 <20260331072347.253-2-ming.qian@oss.nxp.com>
-	 <acvbOo17tU-s20BS@lizhi-Precision-Tower-5810>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-L4QS/jCTQxYv029Nq/FW"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1774970278; c=relaxed/simple;
+	bh=YpVdBdQWAmP40muXxVeAFS7k+EOrZV7ngM70e/TcQH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pRDCQE7zb++w1U64dPSIQn/0+vj89pGDAv9mhhsJH4nUDJhGEiOgQVGbJwdnXWRAIR8MFHU99Rmg9cw6/RoqBd+WQ46+KNkYnUqoXuwS8GUK1YrF2uozn3D9xlgrkRt6Sh6AvEV/MU02bOJzIdxx+SWl3zEP74fBSnrM0CeCxh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
+Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
+	by leonov.paulk.fr (Postfix) with ESMTPS id 445451F8004A
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:17:47 +0000 (UTC)
+Received: by laika.paulk.fr (Postfix, from userid 65534)
+	id 45472B2EFD5; Tue, 31 Mar 2026 15:17:45 +0000 (UTC)
+X-Spam-Level: 
+Received: from collins (unknown [192.168.1.1])
+	by laika.paulk.fr (Postfix) with ESMTPSA id 41E46B2EFC8;
+	Tue, 31 Mar 2026 15:17:43 +0000 (UTC)
+Date: Tue, 31 Mar 2026 17:17:41 +0200
+From: Paul Kocialkowski <paulk@sys-base.io>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Liu Ying <victor.liu@nxp.com>
+Subject: Re: [PATCH 2/3] drm: lcdif: Use dedicated set/clr registers for
+ polarity/edge
+Message-ID: <acvllbRTHyVFTgmS@collins>
+References: <20260330224619.2620782-1-paulk@sys-base.io>
+ <20260330224619.2620782-3-paulk@sys-base.io>
+ <f5b628f50def756da356184ff6febb11cc9aaa68.camel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/Y3a12dyBXGbAn3r"
+Content-Disposition: inline
+In-Reply-To: <f5b628f50def756da356184ff6febb11cc9aaa68.camel@pengutronix.de>
 
 
---=-L4QS/jCTQxYv029Nq/FW
-Content-Type: text/plain; charset="UTF-8"
+--/Y3a12dyBXGbAn3r
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Le mardi 31 mars 2026 =C3=A0 10:33 -0400, Frank Li a =C3=A9crit=C2=A0:
-> On Tue, Mar 31, 2026 at 03:23:11PM +0800, ming.qian@oss.nxp.com=C2=A0wrot=
-e:
-> > From: Ming Qian <ming.qian@oss.nxp.com>
+Hi Lucas,
+
+Le Tue 31 Mar 26, 11:09, Lucas Stach a =C3=A9crit :
+> Hi Paul,
+>=20
+> Am Dienstag, dem 31.03.2026 um 00:46 +0200 schrieb Paul Kocialkowski:
+> > The lcdif v3 hardware comes with dedicated registers to set and clear
+> > polarity bits in the CTRL register. It is unclear if there is a
+> > difference with writing to the CTRL register directly.
 > >=20
-> > Add a new read-only control V4L2_CID_MEMORY_USAGE that allows
-> > applications to query the total amount of memory currently used
-> > by a device instance.
+> > Follow the NXP BSP reference by using these registers, in case there is
+> > a subtle difference caused by using them.
 > >=20
-> > This control reports the memory consumption in bytes, including
-> > internal buffers, intermediate processing data, and other
-> > driver-managed allocations. Applications can use this information
-> > for debugging, resource monitoring, or making informed decisions
-> > about buffer allocation strategies.
-> >=20
-> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> I don't really like that patch, as it blows up what is currently a
+> single register access to three separate ones. If there is no clear
+> benefit (as in it has been shown to fix any issue), I would prefer this
+> code to stay as-is.
+
+Well I guess the cost of a few writes vs a single one is rather
+negligible. I'm rather worried that there might be an undocumented
+reason why these registers exist in the first place and why they are
+used in the BSP.
+
+But yes this is only speculation and I could not witness any actual
+issue. My setup (lcdif3 with hdmi) uses all positive polarities which is
+the default state, so not a good way to check.
+
+It would be great if somebody from NXP could confirm whether this is
+needed or not. In the meantime I guess we can drop the patch. It'll stay
+on the list in case someone has polarity issues later :)
+
+All the best,
+
+Paul
+
+> Regards,
+> Lucas
+>=20
+> > Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
 > > ---
->=20
-> Not sure why not export these information by debugfs, or any benefit vs
-> debugfs?
-
-There is also a on-going proposal that uses fdinfo.
-
-Nicolas
-
->=20
-> Generanlly document should be first patch, then driver change.
->=20
-> Frank
->=20
-> > =C2=A0drivers/media/v4l2-core/v4l2-ctrls-defs.c | 8 ++++++++
-> > =C2=A0include/uapi/linux/v4l2-controls.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 4 +++-
-> > =C2=A02 files changed, 11 insertions(+), 1 deletion(-)
+> >  drivers/gpu/drm/mxsfb/lcdif_kms.c | 23 ++++++++++++++++-------
+> >  1 file changed, 16 insertions(+), 7 deletions(-)
 > >=20
-> > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/=
-v4l2-core/v4l2-ctrls-defs.c
-> > index 551426c4cd01..053db78ff661 100644
-> > --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> > +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> > @@ -831,6 +831,7 @@ const char *v4l2_ctrl_get_name(u32 id)
-> > =C2=A0	case V4L2_CID_ALPHA_COMPONENT:		return "Alpha Component";
-> > =C2=A0	case V4L2_CID_COLORFX_CBCR:		return "Color Effects, CbCr";
-> > =C2=A0	case V4L2_CID_COLORFX_RGB:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return "Color Effects, RGB";
-> > +	case V4L2_CID_MEMORY_USAGE:		return "Memory Usage";
-> >=20
-> > =C2=A0	/*
-> > =C2=A0	 * Codec controls
-> > @@ -1476,6 +1477,13 @@ void v4l2_ctrl_fill(u32 id, const char **name, e=
-num v4l2_ctrl_type *type,
-> > =C2=A0		*min =3D 0;
-> > =C2=A0		*max =3D 0xffff;
-> > =C2=A0		break;
-> > +	case V4L2_CID_MEMORY_USAGE:
-> > +		*type =3D V4L2_CTRL_TYPE_INTEGER64;
-> > +		*flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
-> > +		*min =3D 0;
-> > +		*max =3D S64_MAX;
-> > +		*step =3D 1;
-> > +		break;
-> > =C2=A0	case V4L2_CID_FLASH_FAULT:
-> > =C2=A0	case V4L2_CID_JPEG_ACTIVE_MARKER:
-> > =C2=A0	case V4L2_CID_3A_LOCK:
-> > diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4=
-l2-controls.h
-> > index 68dd0c4e47b2..02c6f960d38e 100644
-> > --- a/include/uapi/linux/v4l2-controls.h
-> > +++ b/include/uapi/linux/v4l2-controls.h
-> > @@ -110,8 +110,10 @@ enum v4l2_colorfx {
-> > =C2=A0#define V4L2_CID_COLORFX_CBCR			(V4L2_CID_BASE+42)
-> > =C2=A0#define V4L2_CID_COLORFX_RGB			(V4L2_CID_BASE+43)
-> >=20
-> > +#define V4L2_CID_MEMORY_USAGE			(V4L2_CID_BASE+44)
+> > diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/=
+lcdif_kms.c
+> > index a00c4f6d63f4..1aac354041c7 100644
+> > --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> > +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+> > @@ -296,18 +296,27 @@ static void lcdif_set_formats(struct lcdif_drm_pr=
+ivate *lcdif,
+> >  static void lcdif_set_mode(struct lcdif_drm_private *lcdif, u32 bus_fl=
+ags)
+> >  {
+> >  	struct drm_display_mode *m =3D &lcdif->crtc.state->adjusted_mode;
+> > -	u32 ctrl =3D 0;
+> > +	u32 ctrl;
+> > =20
+> >  	if (m->flags & DRM_MODE_FLAG_NHSYNC)
+> > -		ctrl |=3D CTRL_INV_HS;
+> > +		writel(CTRL_INV_HS, lcdif->base + LCDC_V8_CTRL + REG_SET);
+> > +	else
+> > +		writel(CTRL_INV_HS, lcdif->base + LCDC_V8_CTRL + REG_CLR);
 > > +
-> > =C2=A0/* last CID + 1 */
-> > -#define V4L2_CID_LASTP1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 (V4L2_CID_BASE+44)
-> > +#define V4L2_CID_LASTP1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 (V4L2_CID_BASE+45)
-> >=20
-> > =C2=A0/* USER-class private control IDs */
-> >=20
-> > --
-> > 2.53.0
-> >=20
+> >  	if (m->flags & DRM_MODE_FLAG_NVSYNC)
+> > -		ctrl |=3D CTRL_INV_VS;
+> > +		writel(CTRL_INV_VS, lcdif->base + LCDC_V8_CTRL + REG_SET);
+> > +	else
+> > +		writel(CTRL_INV_VS, lcdif->base + LCDC_V8_CTRL + REG_CLR);
+> > +
+> >  	if (bus_flags & DRM_BUS_FLAG_DE_LOW)
+> > -		ctrl |=3D CTRL_INV_DE;
+> > -	if (bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
+> > -		ctrl |=3D CTRL_INV_PXCK;
+> > +		writel(CTRL_INV_DE, lcdif->base + LCDC_V8_CTRL + REG_SET);
+> > +	else
+> > +		writel(CTRL_INV_DE, lcdif->base + LCDC_V8_CTRL + REG_CLR);
+> > =20
+> > -	writel(ctrl, lcdif->base + LCDC_V8_CTRL);
+> > +	if (bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
+> > +		writel(CTRL_INV_PXCK, lcdif->base + LCDC_V8_CTRL + REG_SET);
+> > +	else
+> > +		writel(CTRL_INV_PXCK, lcdif->base + LCDC_V8_CTRL + REG_CLR);
+> > =20
+> >  	writel(DISP_SIZE_DELTA_Y(m->vdisplay) |
+> >  	       DISP_SIZE_DELTA_X(m->hdisplay),
+>=20
 
---=-L4QS/jCTQxYv029Nq/FW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+--=20
+Paul Kocialkowski,
+
+Independent contractor - sys-base - https://www.sys-base.io/
+Free software developer - https://www.paulk.fr/
+
+Expert in multimedia, graphics and embedded hardware support with Linux.
+
+--/Y3a12dyBXGbAn3r
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCacvgCwAKCRDZQZRRKWBy
-9HhiAP9pxmgO01Tw2u1jmX3JDGf0HUlwoJFHITjsspschCXhGwEA2CLSZfwaGF3P
-FBjvjpv8iG0M2472UaZ+ET35dRy4DwA=
-=NB0B
+iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnL5ZQACgkQhP3B6o/u
+lQxgrw//a0o+aXG0xYeofhRxty58+PDTHipKdthiX6kA1F3s9h+oFSlsP7xo65CW
+Bf+q9KrUXxRmSwKbVLNwNv2rD2QgBso6MboJh1tZxgu5zfyMPe06Y2a4Dv8TLBV8
+4tKTxd8qKZ/dv3lUzkXHRilotZfDr2rktpmrI5f3Ur4bqNBWUTUyslGeE1E0jn0a
+dRDw1gbXp3AunYTca1Nuc+VN/EfvcACOra4dtzlnY5woQTOrQ8Po6GUmy3gTY/vd
+P+hEzKrIDbUG9WKym/b+eHoT/2LM1+g0QiWc2Y7mWTYnMeXwEkdPL7H0mCqeionu
+hegWBbQHvSljPBj/mZiWkHlu+ZPq4V6XsZsBEXztZ9oqVHRH3/8/6/HlBxVszgZc
+Fg3zeMvhgd8arvlz/c23BgoYjYkIIjRDluUFan/+t2hzNKBgUVDfOivdmuRsnaPg
+nejYqNEocGX/kkn8rXNg1P723L4Hwvrn9ClmTlN+ilTTpEHtIRrFnbMYJnC49bdh
+42BeP2Ne2z56Ly8r6f/uoCYKj0kQTUk+pNjGYLnE+V5sBk9TmiZVif75WTlDiqPp
+r2zFGQnbINtq3KVIe13i+yrxTVTBe5bUVtGc4qjCnQjIBDUYXXiJa599Dx78pagB
+JqdGrYggUEwWL+6Sq3YVDInit8khsTwHuoypi3/HcuRF49RMDMw=
+=YlyP
 -----END PGP SIGNATURE-----
 
---=-L4QS/jCTQxYv029Nq/FW--
+--/Y3a12dyBXGbAn3r--
