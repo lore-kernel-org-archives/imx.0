@@ -1,234 +1,162 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428E13B52E0
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25083BADBD
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 10:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774951931; cv=none; b=P6FB0H6TnPHsiqfyqypKkU6auDoW7T5bxgZsbJCeljH1NGt7taSposptUa18p+GnWRFHB0XEYRLX0l+98q6zUcxp/Hqf47ZUo9vJ24DhYGdMdxigk7N+7xOjcc9KFe4brs2KszPCX0DZ7LTe+quZ7l9ExYiY5rkQOeXbYnmI59U=
+	t=1774951943; cv=none; b=LREEWHDEm42nFGu4CLD0y1Xbvt9CUxwSGVUSxOpfA9TTzFNMZs5FqPbNi9ZvjrBtEh3e36A+gSZjQi8T2a3blCWEzgo7HRolkLYyFyQbrUHYIHz4U/AFKYH1edRjbRbqgEs60vcJcADOjHkv4BY3oBuU88GM0Yr3EO7Id646LBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774951931; c=relaxed/simple;
-	bh=x84HNrnqsaJFBvHMyxDNG13Hb7RiG0MlAIHu0Z6B7N4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=o/8UW44SKlHBeKCzQCnlPd3ExUzH58DacUkFJhW2YQyQt/U6ArUlro6j1Mkz0zixclcltDcC9qFe98UO44GDTQIMxim+08ddj5g9wVnIpj/G3dF93UobNePIoBt/VpTfrJmzLLpTG/zwk2yLSj7m/FxlKisxiDsKh2wqSRmevPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 8A00EC3EEAC9;
-	Tue, 31 Mar 2026 12:11:56 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 8A00EC3EEAC9
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Paul Kocialkowski <paulk@sys-base.io>
-Cc: <dri-devel@lists.freedesktop.org>,  <imx@lists.linux.dev>,
-  <linux-arm-kernel@lists.infradead.org>,  <linux-kernel@vger.kernel.org>,
-  Marek Vasut <marex@denx.de>,  Stefan Agner <stefan@agner.ch>,  Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>,  Maxime Ripard
- <mripard@kernel.org>,  Thomas Zimmermann <tzimmermann@suse.de>,  David
- Airlie <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Frank Li
- <Frank.Li@nxp.com>,  Sascha Hauer <s.hauer@pengutronix.de>,  Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
-  Lucas Stach <l.stach@pengutronix.de>,  Marco Felsch
- <m.felsch@pengutronix.de>,  Liu Ying <victor.liu@nxp.com>
-Subject: Re: [PATCH 3/3] drm: lcdif: Wait for vblank before disabling DMA
-In-Reply-To: <20260330224619.2620782-4-paulk@sys-base.io> (Paul Kocialkowski's
-	message of "Tue, 31 Mar 2026 00:46:19 +0200")
-References: <20260330224619.2620782-1-paulk@sys-base.io>
-	<20260330224619.2620782-4-paulk@sys-base.io>
-Sender: khalasa@piap.pl
-Date: Tue, 31 Mar 2026 12:11:56 +0200
-Message-ID: <m3y0j8mhoz.fsf@t19.piap.pl>
+	s=arc-20240116; t=1774951943; c=relaxed/simple;
+	bh=ED7tg0lfon/aB5lbP4hi2wJ6i3VH5bCIJ3/mOjYixwo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=uTPIpzb22rhnvQ7Mj1HnLj5gyG69WCGJA3BD4bM3ZRz60X7sxoUlkEen3R8f/mZE2knA6TONSJMKd5qdGNYDIMBExHparYhnsbWomthFsq5a/UUlqbKm99yOdlrq4gTElJL9CDasJ1twfNn3Aegqq8d3hQIv7OhqiLfVwumdqUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=SH5HD3eD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JheDDw++; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="SH5HD3eD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JheDDw++"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id F12ABEC010C;
+	Tue, 31 Mar 2026 06:12:20 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 06:12:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774951940;
+	 x=1775038340; bh=Ppm8Ahxu3yD+PaCS+Jim/Aqx0Ce8DbNQlo2I+oBEARU=; b=
+	SH5HD3eDFjqigcr/67yohxqmEFPcoDYm+X66SGibt8qEGfUvVYOF8Fb2pErlBdJk
+	gS3Fk6APUCJC/Ydbo8NykY5BH7rKOfxiQPAvYxpk2MF6J2dUNoAKxTLnGoYPxFmU
+	DQkhNlRqRr7Ql/QCON1ryH0nim/eKY/AWEBnKuinvp1XmblZDTdgoGUgDwrOZ4/c
+	PrX0ZhZIBl2SDv3cSHI13UhpclcUE99/klk6NBGiOPLwJHqLLnwcuDT6M+lGFxmi
+	31mOciEGB32HB1X3EhK7cZRlOCkP4WApBnG7p67mL2S23snBa4j4FZolC3JYCCju
+	l/kPh+S6hoFiUjigRyZ/bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774951940; x=
+	1775038340; bh=Ppm8Ahxu3yD+PaCS+Jim/Aqx0Ce8DbNQlo2I+oBEARU=; b=J
+	heDDw++4zOPnwVEt4nKnSX739unAB96P1xTMIZdCDH59ovLtEUqU6WTkp/KAx/s/
+	g2a9M9SJRSu5eXpToDVGv8ufqm9yRYH4fxX2JoAPLcs6gSDXd11ZuibCA3rH9Z5X
+	snxpvBtPvz2otie2z1+/bmkHMV3HkH5LGydrDouPm1rov3J74auD1ikEQOb0eZXU
+	3Z3VO/BrEiZcso9tl9HAize72+MxRmq9bwNff/cJNcI6J8Pb+MtpwGpq7Heo4kbD
+	qnuxlxQEoF623TGCBAC3LKmYtQhrKgtY2kX4CzUg5bxCmCt0ZEsrZYOg2k3ebwpo
+	nNSGpta9lQvDABDyHgvXg==
+X-ME-Sender: <xms:BJ7LacTMVsVR2n3PY_TFnbd3-JVesOhKJHqrEfgZBliveklaH6ZTaQ>
+    <xme:BJ7LaUkbLJqcOkbDAT0uuax9_BhkPUyeEdcXB-S01Z9G69BSehW__hR0yrVpe1mfX
+    ZglUg91dBZx_bPoofZ_vNKZsRhoVyApPO4Z-mh39os0B8-UwbH8rXc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefgeduieduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegsrhhglhessghguggvvhdrphhlpdhrtghpthhtoheptghhvghsth
+    gvrheivdehudehsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehg
+    mhgrihhlrdgtohhmpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehk
+    rhiikheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgvvgeskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehr
+    ohgshheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:BJ7LaddLmIq35YemD71eYqqc6mzG5eLijk23RuFEQ3BTb8wC75g4_w>
+    <xmx:BJ7LaYsk_2JHQ6SFNpX-EkzZ6nmJyF2phArkF-dCiaVchnnRWU1eEQ>
+    <xmx:BJ7LaSmHEKbIz7QwDnLsC5Q6h0EKLqK7cOfq3XMumq6xK0XOoWjCCQ>
+    <xmx:BJ7LaUNKtVS1PZvg4n9AvAMg1JNydzOj-lm-Bm8Ynj5veo9TpfFhQw>
+    <xmx:BJ7LadQ-ubt37WZVfMH62Qp9RhbIYCL0YTWmv2MWnCrvo8iyrsXaBQZK>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5ACF3700065; Tue, 31 Mar 2026 06:12:20 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: ABMmOHXEXk43
+Date: Tue, 31 Mar 2026 12:11:40 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Ghennadi Procopciuc" <ghennadi.procopciuc@oss.nxp.com>
+Cc: "Linus Walleij" <linus.walleij@linaro.org>,
+ "Bartosz Golaszewski" <brgl@bgdev.pl>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "Chester Lin" <chester62515@gmail.com>,
+ "Matthias Brugger" <mbrugger@suse.com>,
+ "Ghennadi Procopciuc" <ghennadi.procopciuc@nxp.com>,
+ "Larisa Grigore" <larisa.grigore@nxp.com>, "Lee Jones" <lee@kernel.org>,
+ "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Aisheng Dong" <aisheng.dong@nxp.com>, "Jacky Bai" <ping.bai@nxp.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Alberto Ruiz" <aruizrui@redhat.com>,
+ "Christophe Lizzi" <clizzi@redhat.com>, devicetree@vger.kernel.org,
+ "Enric Balletbo" <eballetb@redhat.com>,
+ "Eric Chanudet" <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, "NXP S32 Linux Team" <s32@nxp.com>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Vincent Guittot" <vincent.guittot@linaro.org>,
+ "Rob Herring" <robh@kernel.org>
+Message-Id: <e1c341d6-e60d-4200-a094-48667e8ccd5c@app.fastmail.com>
+In-Reply-To: <4c46909d-641b-4389-bc4a-29394cb1d46d@oss.nxp.com>
+References: 
+ <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+ <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+ <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
+ <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
+ <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
+ <fe755e85-1558-4272-bdd4-af7a2038ab1f@kernel.org>
+ <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
+ <c7a59716-3d53-4787-b4ef-9674c2a4a9b5@kernel.org>
+ <3c454da1-d949-4258-87ce-8b545000bf01@app.fastmail.com>
+ <5f1b651b-1064-4280-a7e0-b7d66c396cde@oss.nxp.com>
+ <f3ff461b-edd7-423a-ac99-e70145aaaaea@kernel.org>
+ <4c46909d-641b-4389-bc4a-29394cb1d46d@oss.nxp.com>
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2 module
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi Paul,
+On Tue, Mar 31, 2026, at 09:48, Khristine Andreea Barbulescu wrote:
+> 
+> With the current layout, the SIUL2 node itself now contains the two
+> MMIO ranges directly, while the remaining child node is only the
+> pinctrl/GPIO function.
 
-Paul Kocialkowski writes:
+The thread started by saying this is an MFD "It can export information
+about the SoC, configure the pinmux&pinconf for pins and it is also
+a GPIO controller with interrupt capability." Having a combined
+pinctrl/gpio/irqchip driver is normal, but can you clarify what
+you plan to do with the "information about the SoC" part?
 
-> It is necessary to wait for the full frame to finish streaming
-> through the DMA engine before we can safely disable it by removing
-> the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> hardware confused and unable to resume streaming for the next frame.
->
-> This causes the FIFO underrun and empty status bits to be set and
-> a single solid color to be shown on the display, coming from one of
-> the pixels of the previous frame. The issue occurs sporadically when
-> a new mode is set, which triggers the crtc disable and enable paths.
->
-> Setting the shadow load bit and waiting for it to be cleared by the
-> DMA engine allows waiting for completion.
->
-> The NXP BSP driver addresses this issue with a hardcoded 25 ms sleep.
+Was this a "soc_device" driver, or something else? Have you
+concluded now that this is not going to be needed at all?
+In that case, I guess having a monolithic driver is
+indeed simpler than an MFD.
 
-...or "addressed" in the previous version :-)
+What I wonder about then is whether the binding needs to be changed
+at all. With the current nxp,s32g2-siul2-pinctrl.yaml binding
+and pinctrl-s32g2.c implementation, you seem to have a monolithic
+device already, though missing the gpio functionality. Rather
+than completely replacing this, I assume the easiest way then
+would be to add the PGPD registers into this device node, right?
 
-Test results: it works for me: at 1080p60 and 2160p30. I.e. it fixed the
-underrun problem. It's interesting how a CRTC shutdown can affect it's
-subsequent start following an SW_RESET.
+It is still a bit weird to list the individual register areas
+inside of the larger device here, but that still seems better
+than an incompatible binding change.
 
-Or... perhaps it has something to do with the clocks? Also see below.
-If somehow the DMA engine was "running" with it's clock disabled, it
-would result in an underrun, or worse.
-
-
-BTW apparently something converted your tab characters into spaces.
-
-> --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> @@ -393,6 +393,22 @@ static void lcdif_disable_controller(struct lcdif_dr=
-m_private *lcdif)
->         if (ret)
->                 drm_err(lcdif->drm, "Failed to disable controller!\n");
->
-> +       /*
-> +        * It is necessary to wait for the full frame to finish streaming
-> +        * through the DMA engine before we can safely disable it by remo=
-ving
-> +        * the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> +        * hardware confused and unable to resume streaming for the next =
-frame.
-> +        */
-> +       reg =3D readl(lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> +       reg |=3D CTRLDESCL0_5_SHADOW_LOAD_EN;
-> +       writel(reg, lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> +
-> +       ret =3D readl_poll_timeout(lcdif->base + LCDC_V8_CTRLDESCL0_5,
-> +                                reg, !(reg & CTRLDESCL0_5_SHADOW_LOAD_EN=
-),
-> +                                0, 36000);     /* Wait ~2 frame times ma=
-x */
-
-I guess this comment is not necessarily correct - at 2160p30 one frame =3D
-ca. 33 ms. Still works, though (I guess anything more than one frame is
-enough). I don't know how long a frame on HDMI (or LVDS, MIPI etc.) can
-take. 30 FPS on 2160p is common because the i.MX8MP can't display 2160p60.
-
-Also, found an issue. Perhaps unrelated? Powered the board without HDMI
-connected. Then connected 1080p60 display. It came in 1024x768, console
-64x24 :-)
-Run weston. Pressed ctrl-alt-backspace. It deadlocked. Sysrq (serial
-console, show blocked state) showed (with *lcdif* in it):
-task:systemd-logind  state:D stack:0     pid:253   tgid:253   ppid:1      t=
-ask_flags:0x400100 flags:0x00000800
-Call trace:
- ...
- schedule+0x34/0x118
- rpm_resume+0x188/0x678
- __pm_runtime_resume+0x4c/0x98
- clk_pm_runtime_get.part.0.isra.0+0x1c/0x94
- clk_core_set_rate_nolock+0xd0/0x2fc
- clk_set_rate+0x38/0x158
- lcdif_crtc_atomic_enable+0x74/0x8d0
- drm_atomic_helper_commit_crtc_enable+0xac/0x104
- drm_atomic_helper_commit_tail_rpm+0x68/0xd8
- commit_tail+0xa4/0x1a4
- drm_atomic_helper_commit+0x178/0x1a0
- drm_atomic_commit+0x8c/0xcc
- drm_client_modeset_commit_atomic+0x1f8/0x25c
- drm_client_modeset_commit_locked+0x60/0x17c
- __drm_fb_helper_restore_fbdev_mode_unlocked.part.0+0x2c/0x8c
- drm_fb_helper_set_par+0x5c/0x78
- fb_set_var+0x190/0x35c
- fbcon_blank+0x178/0x24c
- do_unblank_screen+0xa8/0x19c
- vt_ioctl+0x4fc/0x14c0
- tty_ioctl+0x228/0xb88
- __arm64_sys_ioctl+0x90/0xe4
- ...
-
-This is reproducible, though not always.
-It seems it locks on some mutex - the shell works until I do 'cat
-log.txt' or similar. Now (with std output/error redirection?), weston
-doesn't even start.
-
-dmesg doesn't show anything of interest.
-weston: 14.0.2
-using /dev/dri/card1
-DRM: supports atomic modesetting
-DRM: supports GBM modifiers
-DRM: does not support Atomic async page flip
-DRM: supports picture aspect ratio
-Loading module '/usr/lib64/libweston-14/gl-renderer.so'
-Using rendering device: /dev/dri/renderD128
-EGL version: 1.5
-EGL vendor: Mesa Project
-EGL client APIs: OpenGL OpenGL_ES
-...
-Registered plugin API 'weston_drm_output_api_v1' of size 40
-Registered plugin API 'weston_drm_virtual_output_api_v2' of size 48
-Color manager: no-op
-  protocol support: no
-Output 'HDMI-A-1' attempts EOTF mode SDR and colorimetry mode default.
-Output 'HDMI-A-1' using color profile: stock sRGB color profile
-Chosen EGL config details: id:  17 rgba: 8 8 8 0 buf: 24 dep:  0 stcl: 0 in=
-t: 1-1 type: win vis_id: XRGB8
-)
-Output HDMI-A-1 (crtc 37) video modes:
-1920x1080@60.0, preferred, current, 148.5 MHz
-
-Output 'HDMI-A-1' enabled with head(s) HDMI-A-1
-Loading module '/usr/lib64/weston/desktop-shell.so'
-launching '/usr/libexec/weston-keyboard'
-launching '/usr/libexec/weston-desktop-shell'
-Warning: computed repaint delay for output [HDMI-A-1] is abnormal: -69164 m=
-sec (happens always)
-
-could not load cursor 'dnd-copy'
-could not load cursor 'dnd-copy'
-could not load cursor 'dnd-none'
-could not load cursor 'dnd-none'
-
-Why all these clk* mutexes? Perhaps something didn't work out as it
-should there? clk_set_rate isn't supposed to take much time, is it?
-
-$ grep clk /tmp/minicom.cap -C1
-[  728.310054]  __pm_runtime_resume+0x4c/0x98
-[  728.310059]  clk_pm_runtime_get.part.0.isra.0+0x1c/0x94
-[  728.310065]  clk_core_set_rate_nolock+0xd0/0x2fc
-[  728.310071]  clk_set_rate+0x38/0x158
-[  728.310076]  lcdif_crtc_atomic_enable+0x74/0x8d0
---
-[  728.310210]  mutex_lock+0x48/0x58
-[  728.310216]  clk_prepare_lock+0x80/0xc0
-[  728.310223]  clk_unprepare+0x28/0x44
-[  728.310227]  fsl_samsung_hdmi_phy_suspend+0x24/0x40
---
-[  728.310344]  mutex_lock+0x48/0x58
-[  728.310350]  clk_prepare_lock+0x80/0xc0
-[  728.310359]  clk_unprepare+0x28/0x44
-[  728.310364]  etnaviv_gpu_clk_disable.isra.0+0x28/0x80
-[  728.310372]  etnaviv_gpu_rpm_suspend+0x78/0x1dc
---
-[  728.310494]  mutex_lock+0x48/0x58
-[  728.310499]  clk_prepare_lock+0x80/0xc0
-[  728.310506]  clk_unprepare+0x28/0x44
-[  728.310512]  sdhci_esdhc_runtime_suspend+0x7c/0x198
---
-[  728.310627]  mutex_lock+0x48/0x58
-[  728.310632]  clk_prepare_lock+0x80/0xc0
-[  728.310639]  clk_round_rate+0x38/0x1d8
-[  728.310646]  dev_pm_opp_set_rate+0xe4/0x2e0
---
-[  728.310760]  mutex_lock+0x48/0x58
-[  728.310765]  clk_prepare_lock+0x80/0xc0
-[  728.310771]  clk_prepare+0x1c/0x50
-[  728.310778]  sdhci_esdhc_runtime_resume+0x34/0x180
---
-[  728.311286]  mutex_lock+0x48/0x58
-[  728.311292]  clk_prepare_lock+0x80/0xc0
-[  728.311298]  clk_prepare+0x1c/0x50
-[  728.311303]  sdhci_esdhc_runtime_resume+0x34/0x180
-
-Something fishy here.
---
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+    Arnd
