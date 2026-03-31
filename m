@@ -1,139 +1,111 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BF03ED13C
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 09:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7461D40DFCB
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 09:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774948892; cv=none; b=NIoYjWoxXBsCWBCE1PGnKzaehVhId6oCZOSXdievUN2VxMsH3koOKdkXvTVIKKnCm6Rn+ZK+SFC37nYTuFtOkxtLzXS9LRvjRkF2p2qYchJ3P2gzJnotLeTTcZwoZecGcTLzuY3r4tCENrpkHJ3+beFHbMjudA/8UdAwbz0rLHs=
+	t=1774949011; cv=none; b=pJuDVJufn6z1s9+lTcvfLFOulB/JYIRnIx1YQhRbYVnE5h99S5TdpDmAKb0IcGJ7d9KyULxE7b3mUhkR+QPzf+ImyhjlhTdlokuQpsYllI1O8Lh7ti6ReKaZDOceherfcnEAyZ7APCyxG9JOihcxMyBQra+Pjk2Gm1DOb07cuJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774948892; c=relaxed/simple;
-	bh=v3wmLYmQg77QEc7sqHGbVbnyNA/JY333o7aiBU0y/XU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKdqx7RWl4QjwmfD47mtdYknAjK8QSAwjhfeVYwI5IhX68t696nSlfgnL0Euesi7IUXzbPkAEQBaeOC00bo7eR9j0lhEWASQk1txXuBq08b1y3lCSUnw4JNWXFvHJpZcq5x1QCoWSHxsm2mZoFWjVDvreSCelm2+iP6V8AYpTMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aFT0gMO0; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774949011; c=relaxed/simple;
+	bh=fkBjjN7bhpG5aw4pPbOMePbSqonLTcmD2I2uQB/bMjk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BsI5dKuKioPYS2SsHAfaMxdiTYEe68tGmPYNavmg53wKJ4J+mCtnljbwZT3zS1Z7GiZJ9J+NhN5g3JGKutBhhrCZd01kjFnesDFxima23g3gq8rlAxWNTobpX007FehTMqxIxR4AL5Ey72U5KpRTNkN1y83s7JfdKuC59uorGiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZHnjeBZJ; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aFT0gMO0"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fb14227cso72135055e9.3
-        for <imx@lists.linux.dev>; Tue, 31 Mar 2026 02:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774948889; x=1775553689; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cE0PWmhtnEqQSnWYYYOuzSEl1gB3SuYtUjjS/Ucvahw=;
-        b=aFT0gMO04+3cFJ8aNEkm6FHZs/4/w1tSxaiVXPnscVL3tccR/mfgy67kCvcvIFbPlK
-         AEhgLhBuYyiqw0fZLZv4hpwcGaoZ8pzw94KhYeNv5uIM1u1r7pgBWltXqOKSoX6U6SFa
-         G8tE/l5GCm+n4OYacgkZ69Mk1u0WcR8d3U3b7Fc5AKh2tQpcVBRv97Ci4Xh3L+vT16ro
-         8ahlNpffWvkIrwxBGTbOoO73mXlKG3a2sMsFnP/gnhIPvfxvJbsUdXTyVdQlIDOEljK4
-         afXujEfKp8AQVFDlrFy8w5qnYDb5BrqVcr2tMcw6kSQPeaL8OMlL48uM/uv4nEhs2fNj
-         nwSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774948889; x=1775553689;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cE0PWmhtnEqQSnWYYYOuzSEl1gB3SuYtUjjS/Ucvahw=;
-        b=bbSfgR7rmxTCm/v62ixjiL7o0L8uPFtJAs2AA+7VY4mmDjRSsLtch2p26o8CAI9tAz
-         pYFtK04BmAd2iWw/TPXHMdd/lNVZ3ku2U2WTDBXd/ONW27WyrRoLC5adeIDG+wZTip72
-         nUlVMW9aD8BA5T4XnJf0XaVjjfOv7SQb67Srum3pZ9veCX9jAgQEXsxy3jcTlVfdsCck
-         CkHSwnLE8YFyDS2JcQWDlioZyEzp6+iQ6tW726WeVP7ktBMzyYNOrRrKoHdlOcV5TMwb
-         hEPS9OXcrSqL5wX+rH0BXfr6xFkVR4lAqwoVH656rDR1668Dpr7eLvYpQ/BmwElszobO
-         s0qA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeFCJ2p51qg8m1BQXscVKWjAgDA4ax+hjVtHCWN3SZx+mWc3hmSMo+xmk+1sAqx9oWUao=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgQ5p6cPQKCPSB29ufTuzWzcPIVNwP4J0o90MTYCx48LRQpsnu
-	z0wTaadnwFRKMK26wTPxZ51f/UILVddd0EwGWmW2mAFzp+XTt/CQQBLC
-X-Gm-Gg: ATEYQzwXhbo/9G375b64KG2uK73FWYU2ydc5P5IffuZtN07d4OXVEGJ/6tOy3GsAYfy
-	yaKnyUpyLnTTGPekWnC51Y1c4nguXdUA94aqzHVx/L8eXY8lPZoAcMnBxDrvJkWcBEXEpuQaJQw
-	HleNhg142unMZ1HdqicD3327jl3MwvsVS+6cpO8qe++NRnqohUh+RqOW4WV6p5xkFLO/j5qlO1Q
-	fWyZPJMn4BKEaoih2uc6hBXsrR3qFVHGSmp4M1IwzlwHV+vg/7zjeOHDDULrxxPsCcPdesuHNIl
-	IYYQt+U4wcY8a6Ew3UQzg5WPCvJcZuqyl5bHmBgfMdU3uZIS+9hVSCU6P7yVHgGseYFsI2xD8dA
-	UVeIl1x65MCPbNvfbyEgKav0uGwFmw0Cz/dSPNl27dh25bmZZ+qroMk2fOaPyxcJs4yxMXhK1pr
-	Ge2ea9GHd0/pv3cLa3EqPvXH6GE/VHqHNf9W47ucRXGEUxyn21z+3JhYwuA12cY9fiWwZIoxqyH
-	G49TvHtCsTCrt9+xJbuZ8rm7+OxgNJ4FwIXMC6SmpAHtxM=
-X-Received: by 2002:a05:600c:4744:b0:485:4278:2558 with SMTP id 5b1f17b1804b1-48727d5a313mr266045295e9.6.1774948888897;
-        Tue, 31 Mar 2026 02:21:28 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-144-20-233.cust.dsl.teletu.it. [93.144.20.233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e7e96fcsm25474495e9.2.2026.03.31.02.21.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 02:21:28 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2 1/1] arm64: dts: imx91-var-dart-sonata: add RGB enable supply for PCA6408
-Date: Tue, 31 Mar 2026 11:21:12 +0200
-Message-ID: <20260331092112.7876-1-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZHnjeBZJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8DFF8C5994D;
+	Tue, 31 Mar 2026 09:23:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EE17F6029D;
+	Tue, 31 Mar 2026 09:23:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D6B3210451114;
+	Tue, 31 Mar 2026 11:23:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1774949008; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=fkBjjN7bhpG5aw4pPbOMePbSqonLTcmD2I2uQB/bMjk=;
+	b=ZHnjeBZJluQoayfHtxxX3c10BPU4KWGyV1gVTK5ZdH8P8kFLWrPjaHonn7FVTSNAyaxIPm
+	zqA5nCnxGEkINET8MEv8ZAL9d/9AhEQjjKLzEnXKldLrNgstNgHXh/9fouSuUvW2IxkCN3
+	7gYwb7rnXrFlSfph/kkH0uXW+SeI3hHVLgrb04DYJnECHUs8pOqOrGDz6zXBdp0yXjWGs7
+	i9vfCfmf1ymHpgEbCtpLQqQJ5CElhLbuisSx/EpOpG1oz+1ib94CaSmSvLY2jLWzMlaSgw
+	fdHfHt6aeuJhO7pPiEzPH7a58CS8ug5ozTOfb6vMb7LnwtodY/Ufu0Rx7n3yuA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Frieder Schrempf <frieder@fris.de>,  Mark Brown <broonie@kernel.org>,
+  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Han Xu <han.xu@nxp.com>,  Eberhard Stoll
+ <eberhard.stoll@kontron.de>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
+  Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  imx@lists.linux.dev
+Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
+ for each op
+In-Reply-To: <a1a711c4-d9df-4bba-8831-2ec787f84cc4@kontron.de> (Frieder
+	Schrempf's message of "Tue, 10 Mar 2026 15:16:47 +0100")
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	<20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+	<87wlzlnioh.fsf@bootlin.com>
+	<a1a711c4-d9df-4bba-8831-2ec787f84cc4@kontron.de>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 31 Mar 2026 11:23:24 +0200
+Message-ID: <87ecl09wtv.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+Hi Frieder,
 
-RGB enable pin, labeled as RGBSEL, is a board-level enable signal on
-the Sonata carrier board.
+> The sampling point delay is coupled to the clock frequency. So if the
+> clock changes per-op, we also need to change the sampling delay per-op.
+>
+> In general, if we want to avoid switching the parameters back and forth
+> in cases of alternating ops with different max frequencies, we should
+> maybe do some "min of the max" calculation and use the resulting
+> frequency for all ops.
+>
+> Is that what you mean?
 
-The two PCA6408 GPIO expanders depend on this signal being asserted, so
-model it as a fixed regulator and use it as their vcc-supply.
+Not exactly, I am not afraid by the time it would take to switch, I am
+afraid by the likelihood that both the PHY tuning series and your series
+might want to force a different maximum frequency. For instance with TI
+designs, when entering PHY mode, the frequency is 166MHz, period. You
+cannot lower it because by design, you bypass the SPI divisors.
 
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-v1->v2:
- - Fixed commit message and RGB pin references.
+> We could even set a threshold to decide between using a common "min of
+> the max" frequency or do the switching per-op.
+>
+> One other possibility would be to somehow cache the per-op frequencies
+> and calculated sampling delay values so they can be reused when
+> switching without much overhead.
+>
+> There is one more issue that is not yet covered by this series: Before
+> spinand_id_detect() we don't know yet what RX sampling delay value the
+> chip requires, but we already use read-status and read-id operations at
+> maximum chip clock.
 
- arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Not exactly "maximum chip clock" as in Santhosh's work, but indeed we
+run these at the frequency given in the DT as bein the maximum
+frequency. If that's not correct, you must lower it in the DT. That is
+why I am in favour of having two maximum frequencies: the standard one,
+that just works, which is the one for non optimized settings (the one we
+actually use today) and another one, when tuning the bus timings.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-index afa39dab240a..3f0fd321d95f 100644
---- a/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-+++ b/arch/arm64/boot/dts/freescale/imx91-var-dart-sonata.dts
-@@ -90,6 +90,13 @@ reg_vref_1v8: regulator-adc-vref {
- 		regulator-max-microvolt = <1800000>;
- 	};
- 
-+	reg_rgb_sel: regulator-rgb-enable {
-+		compatible = "regulator-fixed";
-+		regulator-name = "RGBSEL";
-+		gpio = <&pca9534 7 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
- 	reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -195,6 +202,7 @@ pca6408_1: gpio@20 {
- 		#gpio-cells = <2>;
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
-+		vcc-supply = <&reg_rgb_sel>;
- 	};
- 
- 	pca6408_2: gpio@21 {
-@@ -204,6 +212,7 @@ pca6408_2: gpio@21 {
- 		#gpio-cells = <2>;
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
-+		vcc-supply = <&reg_rgb_sel>;
- 	};
- 
- 	pca9534: gpio@22 {
--- 
-2.47.3
+> For example on Winbond W25N04KV this leads to detection failures. So we
+> should maybe introduce some kind of reduced clock setpoint for the
+> initial detection, that is safe to be used without RX sampling delay
+> compensation.
 
+That should be the DT max frequency, no?
+
+Thanks,
+Miqu=C3=A8l
