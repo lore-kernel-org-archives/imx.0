@@ -1,175 +1,198 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010033.outbound.protection.outlook.com [52.101.84.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F6E3AA1AF
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774966136; cv=none; b=erjyUJ3PlZubD5ppHhKpDAgV8PEaCwSkxwD/I0qtbQ9UEdyD9w1pYTpcYO6UdK9yxfwa60Hb2lfWZ+/IPXmEIyszLxsZwgzlc+9jDJzQmY1UImUcmlj2cmv1qqRgxJQQuqGxrYmccDB27AM9MpoFRv/m59ev0oxYCArjaIssuiA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774966136; c=relaxed/simple;
-	bh=rnxwcNzb3fPolYDOHzrOQiXvCPNY8XDxsBQaUp9OUnU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Wje/NoxBAJYpzLT82hcixhy4ciSNdv3/3ImMKdD6bDMHASS0QsT1ZRxDQkWYrGkxCft8ET0Uy+ohJ5v22ffZKc/rTu9i7QBSIiTJlelZvUuGQPrWRtB7zZeP1D5yiYPW1OMzej9HUrztGaf8r83hCINlWI/h9zMrVZxnKWSnhGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=B1LCww5S; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CWbrwQ7W; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AAA3E5EFD
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774966280; cv=fail; b=YOnHIdExklQ3vg0k1z6uaw+TwQReJrn5KZAnfvBLIn52ASpBXqE5fTheI5lAgZ15EyLJL0Vyc6noL04HJYb8u7XEYNFUlRpWOmQagkjxpJzGkIvPSITii82tSTQsWgZoADkYVu/9ytMHyW3UOEqh7AMjo+tTXOKKfKWmL24g/1c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774966280; c=relaxed/simple;
+	bh=iDOrB0mumEvI5ZjLaJvuoMZGlw0PARt2zLxdEbw4aNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pl/5LtBHoDxmTU8r910oonrdY4n/uHfYREfwMupBsFMphnYDLV+M60gt2dY+VI9wuINyrw/kOEeRIUtm//7GJ/xtw+MBxJwuCE/Cqtzh5Ui6qRfpDo/Oa6XxLnPppafEG82kYMRKg8T+MJNDA7dWV8fPYoxgXQ0TQ6Ji+TVNxlc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hpYLoOh5; arc=fail smtp.client-ip=52.101.84.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="B1LCww5S";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CWbrwQ7W"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 120971D0018F;
-	Tue, 31 Mar 2026 10:08:53 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 10:08:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774966132;
-	 x=1775052532; bh=+wB5qVtq/fKVMAqMqoSITrLfao0bHO9kdmdL6ob1esQ=; b=
-	B1LCww5SHprChvjdDhQI4LHZjDChEB2tZO8cjxh8WpbQZRShsreuUnnSTnlL3Ahn
-	QCrNsUp35Pbx5nswQcBH0oZhDglNNa32RyMScKs8kvUZY0NiWEIoza0NNxuNW0Ld
-	d4vNO5k9+oSPNTeUj1BfIIypgD1x0Shljb/8jBYd+qUE4KBzUiUVC6UHHOk1ioBj
-	25q1L9bl+kdWJa00VZeUGVC5hiQw+7lA8K/aOc7s2tR6wNweOpvcbHPQPRC0z2sl
-	FTGPKJAohRBpJQu99nfNqaTWRzhKWLqz6JMiA0Sv5wo0ChMf/hVp2VvR8W6cSCUU
-	8C/g2dF9xSKEkjFusZhxwA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774966132; x=
-	1775052532; bh=+wB5qVtq/fKVMAqMqoSITrLfao0bHO9kdmdL6ob1esQ=; b=C
-	WbrwQ7WOlPJbXrTJ39oQjfRWzqdsAAO2jn+orvIp2vh9bj7yOlLP9iN29/e+QcL/
-	S3Wb5lvEgQP9NasSAud8hCBJxB1lGiMfqrteZG/cGMdTXS68WEw9skfIjPrKRzR3
-	MLrEVx7ZtkDjNj2rn4fQJqi6gdg9vKbBALveUnvvZWpn/gSxVNB4acU++9Zj0Gz4
-	1fvlr+1Ny37Z5DwbVCp7IDRHRDWtFT5VvDjavE633c34iluwLsta379T6CHNXfQ8
-	xTZvclmKmt8y9JJyDyvsSrW/wwiO4bOPY9cjloZ17BvhNJNpfI4sD6DJompSOucg
-	0NVQIObVTrRP17AVwka/A==
-X-ME-Sender: <xms:c9XLaYTAkZ8e2SygqkXmUPSfi887r1A6GBN06apjKB6aset5L0stzA>
-    <xme:c9XLaQlkRLHRDxhMiY0yxXeFYhUFNpGziUk7G6SKBqiCt0ABXQS98Me2jnY--b--z
-    c97HcH8dQEZBnEBvApgPnSts7piqn1eYAxgcScgUHBKPSWI0jxR>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegtdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    foggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcuuegv
-    rhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrhhnpe
-    efhfehteffuddvgfeigefhjeetvdekteekjeefkeekleffjeetvedvgefhhfeihfenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthht
-    ohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsrhhglhessghguggvvh
-    drphhlpdhrtghpthhtoheptghhvghsthgvrheivdehudehsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghonh
-    horhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehkrhiikheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:dNXLaZfv9GSbkLKfM-5iSaGk5mPu9owz27weaJ1tk0itL-smBqH24A>
-    <xmx:dNXLaUtdjwwx6whu2Rp0Ewgf4qTI2G_YQ4ktIi059_0ldn0RhaVSww>
-    <xmx:dNXLaekwdTzWIGJ914lp8fvdxQEV7G0ASaLHLhybPnIqaHPO5tH5SQ>
-    <xmx:dNXLaQMRFMsVlZKpzoYJzx2wBHdt9Qcsy0V67Cqrp33ea-owvHI4xg>
-    <xmx:dNXLaZS7XS-e_g_pxLDBPvibHaYx8a2TUHZ5C51W5UnEMrfIxYbyKT4a>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DE24A700065; Tue, 31 Mar 2026 10:08:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hpYLoOh5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n6cbqcPvTOfL/sS7qP6ZEVuoikV7h8bkWvPc4UhIJaVIv1RvBqC3n7NH3qX6n5DJqQ1L3jW5VF/t7qd9fC0xpDV2ReA9/UIhVtzVqVYUZFY+CmQbWdC74ZAMqORUB6orbRc6rjZr6nmJ6LGf1mzI6zc5zTPezuPOcvSOZxaclnw5YIuFEoc0nTbkwQtQbdwPepa1OKrGIHAiiOd8u0eLjh3NcV1U2atCt/aVoPSYHBGjjdBOvsKcYMEuuh1f53GY+qGFa2xXVSPTbWEyNe2sjYN1N1Iz8qMHom4xv3Fb49mzuPw2JqHnFzVIceFr/pVqZJ/Q6bNdTw8SJe0/4Ji+PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nxoYgfVHyGS6XPhXn1VNTT3fDHkqikurTqMCQ7BHCII=;
+ b=T3/sFR9P3Vdc11xVdG4vMuZNsiPcZ+heG/jNyoeUEcB+DAuXw2tMWCGbQY31GrsEgnrgHCm3Fx64o7yiVHlcWQFkxL+TKhonnkDo848JPfS3vKASD5IgXsrvi9R+Muu1XSgFRyXYpdBYK7QGFU/Xh0lEqR1xJ/ZKkBPjhOkC55KMmXkRDq5SmiaY5PCWXzW9f0mua7/LFJ6iRtT6UxymWXE7ptqkx4lBKmKocSHFYXfKiD8RfWML8lFZ2k4N2OzYJZiQSMfQj/TXdHBqC0ramzDJGS/tImkdaVq4bJSPfa2Y5JPxng0UYeB3AV+HL5PrcAGj4/xH9dLUw32BcLm2xQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nxoYgfVHyGS6XPhXn1VNTT3fDHkqikurTqMCQ7BHCII=;
+ b=hpYLoOh5tpvDnn8Ff40QmskDihQ7Zciz3H3LLLrYh7Vt1/Rl7SsotP04TTBXBmlgsbIBU0n5n4Ho0RfD0w8KG9Eq2nEYBaXf83y0MIpXDLdujfiF4KgzZDpNVjitigPSezRbIyGf1Fe2NgRpGVm2/nWYjhqM0QgRPJZ4MpMv7u9qOeiiU6XaEt/MLqpmUdR7imwQ31iKgELlMDv8MdtEK9n2DBtD8ukPc/hnXWzyedwJYGPB0Jfa6OvvFNJnNrMXoi2EHlHa5pmLmvU5Ko1O6NGw6rX68KvKML6KZihJgcUKBQ9yV2Pw9j6SSqyQWl7nVe05gQ6F789SgXY419Vnnw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by BESPR04MB12563.eurprd04.prod.outlook.com (2603:10a6:b10:ff::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
+ 2026 14:11:16 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
+ 14:11:16 +0000
+Date: Tue, 31 Mar 2026 10:11:08 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Ye Li <ye.li@nxp.com>, imx@lists.linux.dev,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] Input: snvs_pwrkey - report press event in interrupt
+ handler
+Message-ID: <acvV_Gk3UNUFEsUK@lizhi-Precision-Tower-5810>
+References: <20260326-pwrkey-cleanup-v1-0-d85d7c0bf275@nxp.com>
+ <20260326-pwrkey-cleanup-v1-3-d85d7c0bf275@nxp.com>
+ <acWPp7KHxv9a5Az6@lizhi-Precision-Tower-5810>
+ <20260331104655.GA1415371@shlinux88>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331104655.GA1415371@shlinux88>
+X-ClientProxiedBy: SJ0PR05CA0156.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::11) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: ABMmOHXEXk43
-Date: Tue, 31 Mar 2026 16:08:31 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Ghennadi Procopciuc" <ghennadi.procopciuc@oss.nxp.com>
-Cc: "Linus Walleij" <linus.walleij@linaro.org>,
- "Bartosz Golaszewski" <brgl@bgdev.pl>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Chester Lin" <chester62515@gmail.com>,
- "Matthias Brugger" <mbrugger@suse.com>,
- "Ghennadi Procopciuc" <ghennadi.procopciuc@nxp.com>,
- "Larisa Grigore" <larisa.grigore@nxp.com>, "Lee Jones" <lee@kernel.org>,
- "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Aisheng Dong" <aisheng.dong@nxp.com>, "Jacky Bai" <ping.bai@nxp.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Alberto Ruiz" <aruizrui@redhat.com>,
- "Christophe Lizzi" <clizzi@redhat.com>, devicetree@vger.kernel.org,
- "Enric Balletbo" <eballetb@redhat.com>,
- "Eric Chanudet" <echanude@redhat.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-kernel@vger.kernel.org, "NXP S32 Linux Team" <s32@nxp.com>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Vincent Guittot" <vincent.guittot@linaro.org>,
- "Rob Herring" <robh@kernel.org>
-Message-Id: <0666ab85-60ef-4eb9-81fb-636c604653fe@app.fastmail.com>
-In-Reply-To: <fd8c90ec-927e-4395-85ba-9e45c23fd799@oss.nxp.com>
-References: 
- <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
- <20260121021913.GA1704619-robh@kernel.org>
- <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
- <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
- <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
- <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
- <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
- <fe755e85-1558-4272-bdd4-af7a2038ab1f@kernel.org>
- <ba6140bf-237e-4099-af0c-ee404c1719cd@oss.nxp.com>
- <c7a59716-3d53-4787-b4ef-9674c2a4a9b5@kernel.org>
- <3c454da1-d949-4258-87ce-8b545000bf01@app.fastmail.com>
- <5f1b651b-1064-4280-a7e0-b7d66c396cde@oss.nxp.com>
- <f3ff461b-edd7-423a-ac99-e70145aaaaea@kernel.org>
- <4c46909d-641b-4389-bc4a-29394cb1d46d@oss.nxp.com>
- <e1c341d6-e60d-4200-a094-48667e8ccd5c@app.fastmail.com>
- <fd8c90ec-927e-4395-85ba-9e45c23fd799@oss.nxp.com>
-Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2 module
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|BESPR04MB12563:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3775d1d0-13eb-4555-30cb-08de8f2f5f3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|376014|1800799024|38350700014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	Pl8qeG19P7AhtnMGolz/MeLPibkv4VhF/XKsi/Rw437C45O4gRXGRpqO2xHAmxIV3Y9SEcuuZ2Uzsu7//NIF3gch3iWm10uJKrZMfxUPaScGmge3TJDjiQNkVOuv48ubpsHiEduTFk6Ym2s9XOwVMesBB/X0hXnrkWCzNOTZtFIhlPal6NPw8J+JnDsfGNNI8S+T01Z0lAQkdOaF7B3RjTlkkKgq8mY9JwX+9x0oTWEJYhAYBfsUeFYUVWp83SEvrETTkxnAWmdO3F5GQIOLU94Tta/c+QatpXx8opxB1siP2AATFjKCMsbzT2zTLVg1WOfSWh3uCXRozbMHl1/IiMgctB6qc10zz7pJY9Bv3Y8wOu9vuHL6Mu+xQjgDhLT0aPzdUbzUxNF/OLZo2sYJ+0A07UZmTtTU2pvrX1ENyRxqfG5npLHQEYGoSpgSGr9I+KmGDyF1bVIQbsLDRJ0Go4w2oiyGmL3ADSv9qNqQXDBt1NeNHuCzx9EzXv2XDMiwbfDV83axvWvyXT25To3oSJPOxHZ/rE/1QLo4AchIhVOXfPIleP1VIGLIIPIPPmxrGb9/IKIWmOhwiOB8ZlKpQte9LPC07Yr/KZin0VkQpL0qBy9xEX+O2w7lUmeMtWLCa0TezLpWN+xaCPt2QDuWxg8S8+NfAqGSFLQK4IOxNKG4TCrZcorvb9g5sN/pWC92l+xqlNbVIqrBb/VW4SihdW2A87rFuYYdpEfOKB0QBov1sKB8A87lOlXM81U2UWlqG/3woa6LV/73YNXHx2vOmRnjhteWw1Jq2x5XmtSYgvs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(376014)(1800799024)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eBnKERYAmK+Ewzad10nRviB/vEKEsZK4DjzGU6Ll8LMrLfLTiy/ELtwaXmeF?=
+ =?us-ascii?Q?CD/AKuPKarXgK42gT8B0a4zVrx90F2ss18vVbFEAm1Qoo77a2I9dKC3ESEK0?=
+ =?us-ascii?Q?xztaUSPdMUvve8y1cfzDLIjMUfuLV5iLfPHVFRaM7T3gLmAmdXK5tNMAzvNM?=
+ =?us-ascii?Q?axhMCEIeibKBgeYMCxDUNbc1JbmbPvRXNXfxIr8R+QMfdC0YsgMZFzVccZNJ?=
+ =?us-ascii?Q?cny2ITyvWMvqYTaosdMXY7cjM8lMOZTDTkHiNdXUTmXM0t2cqiBk9OkPDVJM?=
+ =?us-ascii?Q?vDVzkIJocKKnZ52jwMOHwGYC0EPBHUfZB2XoLJMODfsnihUH+T72rg28lg6f?=
+ =?us-ascii?Q?SmjI4LJziBZi8eaN0dIstL1LPuUNOa6yWi2R7aCu8bgV4iDUrspbVZr5qrC5?=
+ =?us-ascii?Q?XSosDoK29Sye7GWCF+6CeqtPABUASqwxIvH+TytrguuTuVXiRQXBpCFIP/gI?=
+ =?us-ascii?Q?Vf+i81sJ1EezXXF2qqIDIla76nzftkxpQy4DRGuVqD2MnYKmEiKsdbg/VS64?=
+ =?us-ascii?Q?IDV4XgK1/v/70FtRESvbbBt04kF0qD/iZ0RXcWMXVQuoGlK5UK8NGga39M1M?=
+ =?us-ascii?Q?5uAK24qIgekqjGkL63MbtRw+ErQUHUajaINgmMS9ehIWkXJ6IxPXl9gpj+HA?=
+ =?us-ascii?Q?c4/9y7p7yFqyKpZdNpJ/eEJMcjkBBjxwyEZFbgUAxJchgB+rj3LjRAD/YQc9?=
+ =?us-ascii?Q?hnA+MzHFMAzc5Cn/cO2qwREG5rKw3foBkoldI4/5ImPdDtaRYE8dmM7NaII/?=
+ =?us-ascii?Q?x2vKtsKp6Rx1I95q0dKOVB/12KNN74vAUpCtg5YtmqL9JsbCkn/lpCHc+7f3?=
+ =?us-ascii?Q?MdqWl3WrIx8AS7/9mJlpYcSXid0ZbcNDkZXCY5DBDWRhPwS2BGgKVciaW4oC?=
+ =?us-ascii?Q?iIyXSlYkVZfGyl58kJ/aii2ol2Xk1oIiwDDQZvOE6yfkefPecj5A0sVe1jux?=
+ =?us-ascii?Q?aa8NViOPgU9RcCTxzc5/3foI6WFAkclGJ+otS4+783JXiemwAgOPISxspnGb?=
+ =?us-ascii?Q?3KKUqkbG/J2mI4mfNFYVHMi+aE5GCTOXgOhNbV08yH7cwQ+jR3q7n37EkRvQ?=
+ =?us-ascii?Q?qNY1HfqA40ph2mnFezS/ntGssmAVK9U0hVKR9epQ076SPFdsBZudRk2BN41A?=
+ =?us-ascii?Q?1/oUiXT7mZMEDnyP0H8CTGypiMFLY8AX31lXeyFBPO9vz4Ns30JRo1ky8zMk?=
+ =?us-ascii?Q?2ydCe96EpwaqgOZoKmSIZKjK3SMRIJZ7FWCR4lXFmVVDof7UKfP5/q6+kEoA?=
+ =?us-ascii?Q?MPWQAnoA+IHfzzpXc0Tvzgz6nRJ1owYZJNJZkQJfEElGllWolp9rMjeoqO6F?=
+ =?us-ascii?Q?s0XjMcVSNFSpYi2tc0obtWVDPF3E6vPLXTpQs7paP9e5bno9yRL8Mc1NlJXv?=
+ =?us-ascii?Q?uvmP1yWZb0G9vYKSj1qYV/2xN41YxWYx74PtZyrQOwFmKnAfsK6Wiolndp5z?=
+ =?us-ascii?Q?buwFhbNVY2sJyQmmSWJ9mq/pWtdockWIrgnkl4eAozBqJGuStfmNGNeHSsbq?=
+ =?us-ascii?Q?GVMDk0cJvNz1RoK2STrzrU1FvG31BFjg18IG0krll53yni07s1CCx/xLkVOg?=
+ =?us-ascii?Q?6y5Lo02LJxu5FliH6fwcFSxFRaWuBMJdUnO1jTA47uLprJ5/+778VNyItZfK?=
+ =?us-ascii?Q?5daxLqVqFMyNY9ExPSdUkUnZ3Kdipc4jaOopWlTxUIXkTRp8MmUT61Nx1X0G?=
+ =?us-ascii?Q?CMJOR/vkYZMxgvlvNodpqFyGtCtNOvvIrj0HLRgSmE+lWBZH?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3775d1d0-13eb-4555-30cb-08de8f2f5f3c
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 14:11:15.9726
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ACuo7w0mD0lp/hZq6eN6d11Ui7Qt252aIFu/De08BaH0Rt5zfybuS/LGQCGT7s0CJYQN6Yh1PEy3GNFh8rHZPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESPR04MB12563
 
-On Tue, Mar 31, 2026, at 15:43, Khristine Andreea Barbulescu wrote:
-> On 3/31/2026 1:11 PM, Arnd Bergmann wrote:
+On Tue, Mar 31, 2026 at 06:46:55PM +0800, Joy Zou wrote:
+> On Thu, Mar 26, 2026 at 03:57:27PM -0400, Frank Li wrote:
+> > On Thu, Mar 26, 2026 at 06:39:40PM +0800, Joy Zou wrote:
+> > > On some boards such as i.MX8MQ-EVK, the PCIe driver may take up to
+> > > 200ms to restore the PCIe link during the no_irq resume phase. This
+> > > causes key press events to be lost because the key may be released
+> > > before the timer starts running, as interrupts are disabled during
+> > > this 200ms window.
+> >
+> > if irq disable, how imx_snvs_pwrkey_interrupt get run?
+> >
+> Thank you for your comments. I might have missed some details in my commit
+> message. Could you please review the description below and let me know if
+> it's clear and comprehensive enough?
 >
-> Our initial intention had been to expose that SoC-information as
-> discussed in the earlier revisions of this series. However,
-> taking the review feedback into account, the current direction is
-> to stop handling those SoC information registers in the Linux driver
-> altogether and instead rely on a boot firmware to pass that
-> information forward, as you suggested.
-> 
-> With this approach, the SIUL2 driver would no longer be responsible
-> for any separate SoC-information functionality. In that case,
-> I understand your point that a monolithic pinctrl/GPIO/irqchip
-> driver is a better fit than keeping the MFD structure.
-
-Ok
-
-> However, as you mentioned, this is still weird because it means
-> listing individual register areas of the larger device inside.
+> The driver implements debounce protection using a timer-based mechanism:
+> when a key interrupt occurs, a timer is scheduled to verify the key state
+> after DEBOUNCE_TIME before reporting the event. This works well during
+> normal operation.
 >
-> For this reason, I was wondering whether it would still be
-> acceptable to move forward with the new binding introduced
-> in this series, but simplify it so that it describes a single
-> monolithic SIUL2 pinctrl/GPIO device instead of an MFD, 
-> following the example node I included in my previous reply [1].
+> However, key press events can be lost during system resume on platforms
+> like i.MX8MQ-EVK because:
+> 1. During the no_irq resume phase, PCIe driver restoration can take up to
+> 200ms with IRQs disabled.
+> 2. The power key interrupt remains pending during the no_irq phase.
+> 3. If the key is released before IRQs are re-enabled, the timer eventually
+> runs but sees the key as released and skips reporting the event.
 >
-> [1] 
-> https://lore.kernel.org/linux-gpio/20260120115923.3463866-4-khristineandreea.barbulescu@oss.nxp.com/T/#m778088251774a15bde7463350d6e75d5e9b9b57d
+> Report key press events directly in interrupt handler to prevent event
+> loss during system suspend. This is safe because:
+>
+> 1. Only one event is reported per suspend cycle.
+> 2. Normal operation retains the existing timer-based debounce mechanism.
 
-I can't think of a justification for making this an incompatible
-binding change, if the new "nxp,s32g-siul2-pinctrl" binding is almost
-the same as the old "nxp,s32g2-siul2-pinctrl" one, and you still
-plan to support both versions in the same driver indefinitely.
+much better. Thanks
 
-It would seem much easier to me to make sure that nxp,s32g-siul2-pinctrl
-remains backwards compatible with the existing driver and only
-adds the properties for gpio support on top, so a single
-driver can handle both old and new dts files.
+Frank
 
-      Arnd
+> BR
+> Joy Zou
+> > Frank
+> > >
+> > > Report key press events directly in interrupt handler to prevent event
+> > > loss during system suspend.
+> > >
+> > > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > > ---
+> > >  drivers/input/keyboard/snvs_pwrkey.c | 10 ++++++++++
+> > >  1 file changed, 10 insertions(+)
+> > >
+> > > diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboard/snvs_pwrkey.c
+> > > index bab3ab57fdac77256be75a080773ea99372ec9c7..b557c1618d7369e872c6ce708a7b3017264ee385 100644
+> > > --- a/drivers/input/keyboard/snvs_pwrkey.c
+> > > +++ b/drivers/input/keyboard/snvs_pwrkey.c
+> > > @@ -78,6 +78,16 @@ static irqreturn_t imx_snvs_pwrkey_interrupt(int irq, void *dev_id)
+> > >
+> > >  	pm_wakeup_event(input->dev.parent, 0);
+> > >
+> > > +	/*
+> > > +	 * Report key press events directly in interrupt handler to prevent event
+> > > +	 * loss during system suspend.
+> > > +	 */
+> > > +	if (pdev->dev.power.is_suspended) {
+> > > +		pdata->keystate = 1;
+> > > +		input_report_key(input, pdata->keycode, 1);
+> > > +		input_sync(input);
+> > > +	}
+> > > +
+> > >  	regmap_read(pdata->snvs, SNVS_LPSR_REG, &lp_status);
+> > >  	if (lp_status & SNVS_LPSR_SPO) {
+> > >  		if (pdata->minor_rev == 0) {
+> > >
+> > > --
+> > > 2.37.1
+> > >
