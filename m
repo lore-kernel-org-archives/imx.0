@@ -1,352 +1,274 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013025.outbound.protection.outlook.com [40.107.162.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FED73AA50C;
-	Tue, 31 Mar 2026 10:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774954531; cv=none; b=n7HCGAT6ny6lDh4MpIyaSKCNg7L5NK0XN+L3GVX2xDoKVnx6VGrZTcO4sV/GC9DaJafzu2M/KhBv1EMjnaRwq+ZNiVWYQgooIv1SQvYN5rZDXKpv9pdkBFoqaosK/aYKdL9WZnudVO9rf/+2AvjvlKqx8YKUAGhlhNb33o3dEy8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774954531; c=relaxed/simple;
-	bh=+jvHaQVeSFg5z818x57GmRQUGGqzsKtURxRsFRWvNso=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type; b=eCNROKyb3Nzh8NV2329fKRf/OThr9OHr/Tpvbiv+ibFhwO04dVwTuEDfAkBlsErec5sTnRfas/XSgnsxZeNY02+pQGT+iULSTWGih8nDEE/31xK5NppMZgu/etpSbxXxHDz7XTaRlJz3C1BHQtv+VG/5f24axiQutLGEez/PVvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROsVoLDx; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D513AE1A4
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 11:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774956511; cv=fail; b=lzlQ5/Z5j0nQm7vaX25dvV9HblAK4iiZinUkh/yT0EoqmLsyWCSENhU9pHMHc1zjY++ZENX6qzItk45p/HO98n4OvG8tgpXjOoElSppJVPu7o9NUInaKmham1/U6eaphCExcE76In78ZoE5xCyMOHw4k7EvtjwdRIKHxcviea+o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774956511; c=relaxed/simple;
+	bh=8KairnEpvD517/yMlZVVy7ppXOvydGY7+dubFP74Ozg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fpNvkgFzs8Boa8f93cGB1qkdBJuoGYglczaKBEdXFeqKGLtb0tfdHyuCQgNW4tJske57q+LKLTCXOtNyjsoVc/U1EitZVu8zwbYAoWPkvGSr8+q31FYgfhY1q/r7s4/lH4W5M7jcGJwOEQcmxgjl5Nw1EUgsh4/Z4lPOHbwCjAk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EMyjoGzI; arc=fail smtp.client-ip=40.107.162.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROsVoLDx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E20C19423;
-	Tue, 31 Mar 2026 10:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774954531;
-	bh=+jvHaQVeSFg5z818x57GmRQUGGqzsKtURxRsFRWvNso=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=ROsVoLDxNZjzPt0lG2eVtl6zWAmHz0R8K4kgkKPcKSHJ9X7Rfh2N0cdXjEKOYkiI9
-	 7IOZNPTMcjiWwF/ikQiLk+5sX9aHWQci29zoJJrgqBxN2nYmBkumV+JRxQicxQtHiU
-	 kBR7ZhQZdTUjVKJ8H+R7dlsuhEiGvJXGZxcQZ22o=
-Subject: Patch "media: nxp: imx8-isi: Fix streaming cleanup on release" has been added to the 6.12-stable tree
-To: festevam@gmail.com,gregkh@linuxfoundation.org,hverkuil+cisco@kernel.org,imx@lists.linux.dev,kernel@pengutronix.de,laurent.pinchart@ideasonboard.com,linux-arm-kernel@lists.infradead.org,mchehab@kernel.org,richard.leitner@linux.dev,rob_garcia@163.com,s.hauer@pengutronix.de,shawnguo@kernel.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 31 Mar 2026 12:55:00 +0200
-In-Reply-To: <20260324070507.2554507-1-rob_garcia@163.com>
-Message-ID: <2026033159-twistable-populate-e4c7@gregkh>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EMyjoGzI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gy85vFN5Pd1/fnfLPhU6Prl0/23MwkzfoSsGuYO5y9nRleJ3jQJjvEEJS8hl4t1s5VAv8otyqhnn+EWaf1gFgtXjaJMMDeW+YRfHGF2Qh3dVxLxzqxdGqWhulcBRENL1SwfVIoonVmQbEPKYen+n0VXTwvRrx52FX+5TEc2SIq6hJIKgBdwc5yTevxzuAdrRp/jLewJyXhuRtNrDFkYoihRFd+g8rM7VOaPwlda08BrDAsYa9x9twZiHTKDWmQoGau9mrDpfEod9aUE/rhOYoOWo74Wu+VC1KHfz09jC14/S5weeR1LYuSCIG/8lOLMZaj5AHa0VSgf3fpzqztwI8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5jcnRm0BumwIlGcbyzvJHquB8nYFg38oeUdyH/Havak=;
+ b=F945RdErYlTf+IB9zphhYdPRelBGxgRqrUvBQlY2xDgQ5nET61lkpo9mIOHd7t99O2NiA0yYjvB6p+nmMUMzyspG7FYiFVlrtj8qQOwWgeCcDc5XoFU4TaDr6vPK+Ojj8DGwKf8/xt8CvE43+6TSurI3/XLbxTMJGKx73ZS5T9iqUYyyNuG/dfQ7Qsk+VPrH7456XPqN9L7FOoLeP6O28KvTYL/p/Vr/pa76uqHCn09RhOr6i22xGdZr62Qy5saeqQJw70C0ru4YD01QPpl4m0W8imMHD9fD9Ol45GwuLtgxuifdrVJTCeiV1o2cSaDiSUdE68NFbwS1tqoLubhIlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5jcnRm0BumwIlGcbyzvJHquB8nYFg38oeUdyH/Havak=;
+ b=EMyjoGzIJRN1Z8YOsj6UROvx1hbXJVU1LqO5LainWCtwS9i97soUta9ts8XkIN9pm2YBqsdrxnGibn8F9UF/BSAN3nRQMYfhV11s/JRywhvPYxS+Wjq6VEFMW2FdxiOfD+v233sQJAAawY86bKWM/HCj1ft/7lTxplD4OfHjAE+KjyVOpMFYTkdgeh3lRU8RD89IjYOAtMLS6LjQiZzGNNc5XA95fyz+VGneqI/3i7U6wgKP3BsxauwnOXLD4QpAR+Bp8rzhipPXgG9UKf4z4wEUM6Sz1X3ydrpRnc9gMtEp96Mq4/hANVH1ZCwZN6ZvG4SMu4KI2CWJPYBhsiJoDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
+ by PA1PR04MB11406.eurprd04.prod.outlook.com (2603:10a6:102:4f1::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 11:28:26 +0000
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
+ 11:28:26 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH v4 net-next 00/14] Add preliminary NETC switch support for i.MX94
+Date: Tue, 31 Mar 2026 19:30:11 +0800
+Message-Id: <20260331113025.1566878-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0151.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d7::14) To AM8PR04MB7284.eurprd04.prod.outlook.com
+ (2603:10a6:20b:1dc::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7284:EE_|PA1PR04MB11406:EE_
+X-MS-Office365-Filtering-Correlation-Id: 925ddcf2-fdba-4c41-1618-08de8f18a02c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|52116014|366016|7416014|1800799024|18002099003|56012099003|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	niXsti/1qNTpWUFwB1kLOsHqjBjBDL7jyJrTuoOORhLwuaYxJucnsT8gZrnjwJxT7nHfs4BjbvJOtvN8yUHayL5e7myIMQW2bf5nGZTLcDPnzmL1SgHu6QcsZ3Ca38fJlG+zJPmq8ER4cM+b0zaEYqMb2QqqaS7O6KiGF+8+XXnHVilS8kYQfB8CUH7x42mFyn7wEhoSf6SkR7z0z2QHqN6xMGQXhpWrnRBKxfkgvOecAdqxyu8EPBJd0wbJGxPXwj8Yyra5efVYGwH7tYZHl95EGFTXKxMHn9R9kwQH1iSI+hwRWNpt/vlJe+c0nCDNs8+LjVZhqmQAy1fU5C95sURS1M1i8mJ7QQPh1ldfr1NaHQsTgBak25rkJ6Wv6CcV/AhYmEKpZicwFnjP3EXZskbvxCJa9WQgsHFYniHmTt1/TrQAiPOe+W7//EdjV1up8ZlACqGGBMzrpWJtdeLL8RQW09UpW+S9sVLkGixEcczSd6AbV8uwk4l/SSOWOb65ofwsGPgR/FsiRdxbq7WfQApBeMCupDbVxp83fz8ZRN0+j894U5bGVlleeUhABCmLLmq60tvVkHI2OcOexkjURh+9PozJnoDRK+eHvaBh44wvGbNuiGyegjehgladRZOUy6S/SfU0V6/vQU7myBKWTLTYCzcMODlr38txaMiZJjYBsha6CLvSaJBihmppg+WllidizAhvyfC0m92gYfO1m5/xcBVKxC2/5bIenoEerS4QbweA6IR70VEMhQnvufmxzEBM5dBUQ8GwPfMajP04+Mc+iVuWghgfOFKlAAtag7hfBhbdtxFgF3Zt9aM4Dcka
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(366016)(7416014)(1800799024)(18002099003)(56012099003)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?p4J13O73iyu+rnAsDdG2pUt2OUvTlpat724afifA6Bcdsg4Sch6az4RWIb/e?=
+ =?us-ascii?Q?cbm8U9hNf7ZTi2c0nrNOnWu0uQ+2eXOW1IJQq8dxr9lrcOJhkaFlnlDRsEBY?=
+ =?us-ascii?Q?pBskFJXB9Qm7kLPtfle0cU/WkotPYKHXwbKSdv04j4onSFP2J4PoLjtWW8i5?=
+ =?us-ascii?Q?UjmLw0TT4iveERTRvUg8a5dSrhLb5sIjaQA1EWWiOIRie8naT4E52KCWi6ZZ?=
+ =?us-ascii?Q?00X15qFNzpz67vpEn/F1oA92dEoIeE612JM4+TrxKuP357F0itfpl5DxS3fH?=
+ =?us-ascii?Q?AbZxjSpckYKJrVaDVoFWmyJRAqBLjp2THkLiZ3Eklq8cj7FfSKSCPLsk9ZSP?=
+ =?us-ascii?Q?oZogVdt2k8gW+eS0DRX4ARQDypZumGGomjH0lvYNCLtBiPjimSjO8M23mEFT?=
+ =?us-ascii?Q?JEMHHVLOwQ4CBZxaW78svK+1ii4pcTqcRTx0DM/J62Yf24OH9Oay/gv8f3q/?=
+ =?us-ascii?Q?UnWz28ehWOcN6PaKpfU4lRI8in6BE9RrJiplJZGd+Bwzi4G3blK5aeECLv+u?=
+ =?us-ascii?Q?N2lCwLxh7Ij+q9d/KghSFmWQmCjdjyDj9/L/yl5uF4BqoTy/4zeD8ZMnWi42?=
+ =?us-ascii?Q?0/l8IjyZL4PiD9NjkDaqo6mJjWMNvoVWDmtuKzDWZytF7tsMf1efo2RICqLh?=
+ =?us-ascii?Q?FhV18tRA9OazCC/4SNv5Vxl7ln0FWTgyAP2suw14SLpVXdUmrxyP9N2KAV7G?=
+ =?us-ascii?Q?yk9b1Uvn7RKdF8GgvyUz3Nb+xeN2sp1R7sWWOOTbngmq0HczGvDEt8KfoyrZ?=
+ =?us-ascii?Q?qRV4RDMXHYHMtI0ckBE3k9vr7NXFQ0nM/kc0A2zo/XB9nru1aITd6FbG5EvX?=
+ =?us-ascii?Q?9C/4rVd0sDOJhWHBbIMgaBNr8sHQOKFo4g9DXc6goJZt4GJI0YL5QuSiHUCG?=
+ =?us-ascii?Q?beNnnf1Ll1WI0kR5KHPcuurI8AFdNBKxY2eXTNnmPEGLB31jdHXApbJB2S2G?=
+ =?us-ascii?Q?+pi2vrF32xxfsUeUhrX2L9L0fcHJOQu/ajEPH9pHE4IJdqdHpqT+ffxJZ5Gy?=
+ =?us-ascii?Q?JBkVZm/6SSjtsL4lUOXxTTd8hbv654lG5mR02dKD1irlKjNj3kLbhjUQpRCb?=
+ =?us-ascii?Q?UauI2wxtxbluUw668H+4tHV/b8mjfhdo5jBzogXxa1ibf7OQs4KH0UzBm7qW?=
+ =?us-ascii?Q?hn4oM2BoOZpZYDblXpqjwgZ0qbDyd63lf8pIOH3CbulUmFVF+kQYadmfbdKo?=
+ =?us-ascii?Q?djGCFeWIx7dl5O1FnF2e7XUZpqEAOKhRxq+1kh3IvXewQPH4poXF7ZFvXaV8?=
+ =?us-ascii?Q?I/HaQtU5v51hTUFU6bo2asptTx2KiEu5qbVEXRcJsn1KEi2Pu438oD7gSWg1?=
+ =?us-ascii?Q?PKcoPTgAA+bXESvipFw4rdc6HjGj0FtRmT5ceC8uQt+ksOANLUaxpLztgHLd?=
+ =?us-ascii?Q?DOmLSAjvyhsqcdTKFUre6VXhja3Tx6c1blTlW1YZp7EHQ37JDClsEJLJQ6Hq?=
+ =?us-ascii?Q?2/a7sLEiRnX3s4Ll/PkNOkPGVovl7fjfNDz0bl7QP3O2Q+0DazoMUo0BoCEE?=
+ =?us-ascii?Q?zJius2OzwCuhcKCZKguDr5LymSAqo/Cy6bgY5eQruvyLCUdelvAUieohuD06?=
+ =?us-ascii?Q?i85qAtKqWutOk7nsgd6Q1UYIodPnw9QCad6KQBmNLgsEZ8ktHnQQruR3YgVK?=
+ =?us-ascii?Q?dG+fVhEktrfb1sljOPsbUo7FhGxZvsh1xcdNpmf8myFhLzGS/XRUCvLDlM10?=
+ =?us-ascii?Q?Cp2Fc+OQi7827jJADV+GwTFjsdLiu8gPhG6rIClTBj46MlwC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 925ddcf2-fdba-4c41-1618-08de8f18a02c
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 11:28:26.3847
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: thVRyfkjGR2jq2gYWNCh/YbsyRihhQeS6GPx54B+eDkIlaZwcnYh6w+9ZIneW1c40t/9Ij8CvNL+mse0TclwPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11406
 
+i.MX94 NETC (v4.3) integrates 802.1Q Ethernet switch functionality, the
+switch provides advanced QoS with 8 traffic classes and a full range of
+TSN standards capabilities. It has 3 user ports and 1 CPU port, and the
+CPU port is connected to an internal ENETC through the pseduo link, so
+instead of a back-to-back MAC, the lightweight "pseudo MAC" is used at
+both ends of the pseudo link to transfer Ethernet frames. The pseudo
+link provides a zero-copy interface (no serialization delay) and lower
+power (less logic and memory).
 
-This is a note to let you know that I've just added the patch titled
+Like most Ethernet switches, the NETC switch also supports a proprietary
+switch tag, is used to carry in-band metadata information about frames.
+This in-band metadata information can include the source port from which
+the frame was received, what was the reason why this frame got forwarded
+to the entity, and for the entity to indicate the precise destination
+port of a frame. The NETC switch tag is added to frames after the source
+MAC address. There are three types of switch tags, and each type has 1
+to 4 subtypes, more details are as follows.
 
-    media: nxp: imx8-isi: Fix streaming cleanup on release
+Forward switch tag (Type = 0): Represents forwarded frames.
+  - SubType = 0 - Normal frame processing.
 
-to the 6.12-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+To_Port switch tag (Type = 1): Represents frames that are to be sent to
+a specific switch port.
+  - SubType = 0. No request to perform timestamping.
+  - SubType = 1. Request to perform one-step timestamping.
+  - SubType = 2. Request to perform two-step timestamping.
+  - SubType = 3. Request to perform both one-step timestamping and
+    two-step timestamping.
 
-The filename of the patch is:
-     media-nxp-imx8-isi-fix-streaming-cleanup-on-release.patch
-and it can be found in the queue-6.12 subdirectory.
+To_Host switch tag (Type = 2): Represents frames redirected or copied to
+the switch management port.
+  - SubType = 0. Received frames redirected or copied to the switch
+     management port.
+  - SubType = 1. Received frames redirected or copied to the switch
+    management port with captured timestamp at the switch port where
+    the frame was received.
+  - SubType = 2. Transmit timestamp response (two-step timestamping).
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+Currently, this patch set supports Forward tag, SubType 0 of To_Port tag
+and SubType 0 of To_Host tag. More tags will be supported in the future.
 
+In addition, the switch supports NETC Table Management Protocol (NTMP),
+some switch functionality is controlled using control messages sent to
+the hardware using BD ring interface with 32B descriptors similar to the
+packet Transmit BD ring used on ENETC. This interface is referred to as
+the command BD ring. This is used to configure functionality where the
+underlying resources may be shared between different entities or being
+too large to configure using direct registers.
 
-From stable+bounces-230063-greg=kroah.com@vger.kernel.org Tue Mar 24 08:08:16 2026
-From: Robert Garcia <rob_garcia@163.com>
-Date: Tue, 24 Mar 2026 15:05:07 +0800
-Subject: media: nxp: imx8-isi: Fix streaming cleanup on release
-To: stable@vger.kernel.org, Richard Leitner <richard.leitner@linux.dev>
-Cc: Hans Verkuil <hverkuil+cisco@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, Robert Garcia <rob_garcia@163.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Message-ID: <20260324070507.2554507-1-rob_garcia@163.com>
+For this patch set, we have supported the following tables through the
+command BD ring interface.
 
-From: Richard Leitner <richard.leitner@linux.dev>
+FDB Table: It contains forwarding and/or filtering information about MAC
+addresses. The FDB table is used for MAC learning lookups and MAC
+forwarding lookups.
 
-[ Upstream commit 47773031a148ad7973b809cc7723cba77eda2b42 ]
+VLAN Filter Table: It contains configuration and control information for
+each VLAN configured on the switch.
 
-The current implementation unconditionally calls
-mxc_isi_video_cleanup_streaming() in mxc_isi_video_release(). This can
-lead to situations where any release call (like from a simple
-"v4l2-ctl -l") may release a currently streaming queue when called on
-such a device.
+Buffer Pool Table: It contains buffer pool configuration and operational
+information. Each entry corresponds to a buffer pool. Currently, we use
+this table to implement flow control feature on each port.
 
-This is reproducible on an i.MX8MP board by streaming from an ISI
-capture device using gstreamer:
+Ingress Port Filter Table: It contains a set of filters each capable of
+classifying incoming traffic using a mix of L2, L3, and L4 parsed and
+arbitrary field data. We use this table to implement host flood support
+to the switch port.
 
-	gst-launch-1.0 -v v4l2src device=/dev/videoX ! \
-	    video/x-raw,format=GRAY8,width=1280,height=800,framerate=1/120 ! \
-	    fakesink
+The switch also supports other tables, and we will add more advanced
+features through them in the future.
 
-While this stream is running, querying the caps of the same device
-provokes the error state:
-
-	v4l2-ctl -l -d /dev/videoX
-
-This results in the following trace:
-
-[  155.452152] ------------[ cut here ]------------
-[  155.452163] WARNING: CPU: 0 PID: 1708 at drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c:713 mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
-[  157.004248] Modules linked in: cfg80211 rpmsg_ctrl rpmsg_char rpmsg_tty virtio_rpmsg_bus rpmsg_ns rpmsg_core rfkill nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables mcp251x6
-[  157.053499] CPU: 0 UID: 0 PID: 1708 Comm: python3 Not tainted 6.15.4-00114-g1f61ca5cad76 #1 PREEMPT
-[  157.064369] Hardware name: imx8mp_board_01 (DT)
-[  157.068205] pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  157.075169] pc : mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
-[  157.081195] lr : mxc_isi_pipe_irq_handler+0x38/0x1b0 [imx8_isi]
-[  157.087126] sp : ffff800080003ee0
-[  157.090438] x29: ffff800080003ee0 x28: ffff0000c3688000 x27: 0000000000000000
-[  157.097580] x26: 0000000000000000 x25: ffff0000c1e7ac00 x24: ffff800081b5ad50
-[  157.104723] x23: 00000000000000d1 x22: 0000000000000000 x21: ffff0000c25e4000
-[  157.111866] x20: 0000000060000200 x19: ffff80007a0608d0 x18: 0000000000000000
-[  157.119008] x17: ffff80006a4e3000 x16: ffff800080000000 x15: 0000000000000000
-[  157.126146] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[  157.133287] x11: 0000000000000040 x10: ffff0000c01445f0 x9 : ffff80007a053a38
-[  157.140425] x8 : ffff0000c04004b8 x7 : 0000000000000000 x6 : 0000000000000000
-[  157.147567] x5 : ffff0000c0400490 x4 : ffff80006a4e3000 x3 : ffff0000c25e4000
-[  157.154706] x2 : 0000000000000000 x1 : ffff8000825c0014 x0 : 0000000060000200
-[  157.161850] Call trace:
-[  157.164296]  mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi] (P)
-[  157.170319]  __handle_irq_event_percpu+0x58/0x218
-[  157.175029]  handle_irq_event+0x54/0xb8
-[  157.178867]  handle_fasteoi_irq+0xac/0x248
-[  157.182968]  handle_irq_desc+0x48/0x68
-[  157.186723]  generic_handle_domain_irq+0x24/0x38
-[  157.191346]  gic_handle_irq+0x54/0x120
-[  157.195098]  call_on_irq_stack+0x24/0x30
-[  157.199027]  do_interrupt_handler+0x88/0x98
-[  157.203212]  el0_interrupt+0x44/0xc0
-[  157.206792]  __el0_irq_handler_common+0x18/0x28
-[  157.211328]  el0t_64_irq_handler+0x10/0x20
-[  157.215429]  el0t_64_irq+0x198/0x1a0
-[  157.219009] ---[ end trace 0000000000000000 ]---
-
-Address this issue by moving the streaming preparation and cleanup to
-the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
-also simplifies the driver by allowing direct usage of the
-vb2_ioctl_streamon() and vb2_ioctl_streamoff() helpers, and removal of
-the manual cleanup from mxc_isi_video_release().
-
-Link: https://lore.kernel.org/r/20250813212451.22140-2-laurent.pinchart@ideasonboard.com
-Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
-Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Richard Leitner <richard.leitner@linux.dev> # i.MX8MP
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ Minor context change fixed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c |  156 +++++++------------
- 1 file changed, 58 insertions(+), 98 deletions(-)
+v4:
+1. Fix some nits in patch 2.
+2. Revert netc_ipv_to_buffer_pool_mapping() to v2, the new added code in
+v3 is actually a dead code and was only added to address false positives
+reported by AI review. Therefore, v4 optimizes the comments in
+netc_switch_bpt_default_config() to avoid the false positives.
+v3 link: https://lore.kernel.org/imx/20260326062917.3552334-1-wei.fang@nxp.com/
+v2 link: https://lore.kernel.org/imx/20260323060752.1157031-1-wei.fang@nxp.com/
+v1 link: https://lore.kernel.org/imx/20260316094152.1558671-1-wei.fang@nxp.com/
+---
 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-@@ -937,6 +937,49 @@ static void mxc_isi_video_init_channel(s
- 	mxc_isi_channel_set_output_format(pipe, video->fmtinfo, &video->pix);
- }
- 
-+static int mxc_isi_vb2_prepare_streaming(struct vb2_queue *q)
-+{
-+	struct mxc_isi_video *video = vb2_get_drv_priv(q);
-+	struct media_device *mdev = &video->pipe->isi->media_dev;
-+	struct media_pipeline *pipe;
-+	int ret;
-+
-+	/* Get a pipeline for the video node and start it. */
-+	scoped_guard(mutex, &mdev->graph_mutex) {
-+		ret = mxc_isi_pipe_acquire(video->pipe,
-+					   &mxc_isi_video_frame_write_done);
-+		if (ret)
-+			return ret;
-+
-+		pipe = media_entity_pipeline(&video->vdev.entity)
-+		     ? : &video->pipe->pipe;
-+
-+		ret = __video_device_pipeline_start(&video->vdev, pipe);
-+		if (ret)
-+			goto err_release;
-+	}
-+
-+	/* Verify that the video format matches the output of the subdev. */
-+	ret = mxc_isi_video_validate_format(video);
-+	if (ret)
-+		goto err_stop;
-+
-+	/* Allocate buffers for discard operation. */
-+	ret = mxc_isi_video_alloc_discard_buffers(video);
-+	if (ret)
-+		goto err_stop;
-+
-+	video->is_streaming = true;
-+
-+	return 0;
-+
-+err_stop:
-+	video_device_pipeline_stop(&video->vdev);
-+err_release:
-+	mxc_isi_pipe_release(video->pipe);
-+	return ret;
-+}
-+
- static int mxc_isi_vb2_start_streaming(struct vb2_queue *q, unsigned int count)
- {
- 	struct mxc_isi_video *video = vb2_get_drv_priv(q);
-@@ -985,6 +1028,17 @@ static void mxc_isi_vb2_stop_streaming(s
- 	mxc_isi_video_return_buffers(video, VB2_BUF_STATE_ERROR);
- }
- 
-+static void mxc_isi_vb2_unprepare_streaming(struct vb2_queue *q)
-+{
-+	struct mxc_isi_video *video = vb2_get_drv_priv(q);
-+
-+	mxc_isi_video_free_discard_buffers(video);
-+	video_device_pipeline_stop(&video->vdev);
-+	mxc_isi_pipe_release(video->pipe);
-+
-+	video->is_streaming = false;
-+}
-+
- static const struct vb2_ops mxc_isi_vb2_qops = {
- 	.queue_setup		= mxc_isi_vb2_queue_setup,
- 	.buf_init		= mxc_isi_vb2_buffer_init,
-@@ -992,8 +1046,10 @@ static const struct vb2_ops mxc_isi_vb2_
- 	.buf_queue		= mxc_isi_vb2_buffer_queue,
- 	.wait_prepare		= vb2_ops_wait_prepare,
- 	.wait_finish		= vb2_ops_wait_finish,
-+	.prepare_streaming	= mxc_isi_vb2_prepare_streaming,
- 	.start_streaming	= mxc_isi_vb2_start_streaming,
- 	.stop_streaming		= mxc_isi_vb2_stop_streaming,
-+	.unprepare_streaming	= mxc_isi_vb2_unprepare_streaming,
- };
- 
- /* -----------------------------------------------------------------------------
-@@ -1147,97 +1203,6 @@ static int mxc_isi_video_s_fmt(struct fi
- 	return 0;
- }
- 
--static int mxc_isi_video_streamon(struct file *file, void *priv,
--				  enum v4l2_buf_type type)
--{
--	struct mxc_isi_video *video = video_drvdata(file);
--	struct media_device *mdev = &video->pipe->isi->media_dev;
--	struct media_pipeline *pipe;
--	int ret;
--
--	if (vb2_queue_is_busy(&video->vb2_q, file))
--		return -EBUSY;
--
--	/*
--	 * Get a pipeline for the video node and start it. This must be done
--	 * here and not in the queue .start_streaming() handler, so that
--	 * pipeline start errors can be reported from VIDIOC_STREAMON and not
--	 * delayed until subsequent VIDIOC_QBUF calls.
--	 */
--	mutex_lock(&mdev->graph_mutex);
--
--	ret = mxc_isi_pipe_acquire(video->pipe, &mxc_isi_video_frame_write_done);
--	if (ret) {
--		mutex_unlock(&mdev->graph_mutex);
--		return ret;
--	}
--
--	pipe = media_entity_pipeline(&video->vdev.entity) ? : &video->pipe->pipe;
--
--	ret = __video_device_pipeline_start(&video->vdev, pipe);
--	if (ret) {
--		mutex_unlock(&mdev->graph_mutex);
--		goto err_release;
--	}
--
--	mutex_unlock(&mdev->graph_mutex);
--
--	/* Verify that the video format matches the output of the subdev. */
--	ret = mxc_isi_video_validate_format(video);
--	if (ret)
--		goto err_stop;
--
--	/* Allocate buffers for discard operation. */
--	ret = mxc_isi_video_alloc_discard_buffers(video);
--	if (ret)
--		goto err_stop;
--
--	ret = vb2_streamon(&video->vb2_q, type);
--	if (ret)
--		goto err_free;
--
--	video->is_streaming = true;
--
--	return 0;
--
--err_free:
--	mxc_isi_video_free_discard_buffers(video);
--err_stop:
--	video_device_pipeline_stop(&video->vdev);
--err_release:
--	mxc_isi_pipe_release(video->pipe);
--	return ret;
--}
--
--static void mxc_isi_video_cleanup_streaming(struct mxc_isi_video *video)
--{
--	lockdep_assert_held(&video->lock);
--
--	if (!video->is_streaming)
--		return;
--
--	mxc_isi_video_free_discard_buffers(video);
--	video_device_pipeline_stop(&video->vdev);
--	mxc_isi_pipe_release(video->pipe);
--
--	video->is_streaming = false;
--}
--
--static int mxc_isi_video_streamoff(struct file *file, void *priv,
--				   enum v4l2_buf_type type)
--{
--	struct mxc_isi_video *video = video_drvdata(file);
--	int ret;
--
--	ret = vb2_ioctl_streamoff(file, priv, type);
--	if (ret)
--		return ret;
--
--	mxc_isi_video_cleanup_streaming(video);
--
--	return 0;
--}
--
- static int mxc_isi_video_enum_framesizes(struct file *file, void *priv,
- 					 struct v4l2_frmsizeenum *fsize)
- {
-@@ -1293,9 +1258,8 @@ static const struct v4l2_ioctl_ops mxc_i
- 	.vidioc_expbuf			= vb2_ioctl_expbuf,
- 	.vidioc_prepare_buf		= vb2_ioctl_prepare_buf,
- 	.vidioc_create_bufs		= vb2_ioctl_create_bufs,
--
--	.vidioc_streamon		= mxc_isi_video_streamon,
--	.vidioc_streamoff		= mxc_isi_video_streamoff,
-+	.vidioc_streamon		= vb2_ioctl_streamon,
-+	.vidioc_streamoff		= vb2_ioctl_streamoff,
- 
- 	.vidioc_enum_framesizes		= mxc_isi_video_enum_framesizes,
- 
-@@ -1334,10 +1298,6 @@ static int mxc_isi_video_release(struct
- 	if (ret)
- 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
- 
--	mutex_lock(&video->lock);
--	mxc_isi_video_cleanup_streaming(video);
--	mutex_unlock(&video->lock);
--
- 	pm_runtime_put(video->pipe->isi->dev);
- 	return ret;
- }
+Wei Fang (14):
+  dt-bindings: net: dsa: update the description of 'dsa,member' property
+  dt-bindings: net: dsa: add NETC switch
+  net: enetc: add pre-boot initialization for i.MX94 switch
+  net: enetc: add basic operations to the FDB table
+  net: enetc: add support for the "Add" operation to VLAN filter table
+  net: enetc: add support for the "Update" operation to buffer pool
+    table
+  net: enetc: add support for "Add" and "Delete" operations to IPFT
+  net: enetc: add multiple command BD rings support
+  net: dsa: add NETC switch tag support
+  net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+  net: dsa: netc: add phylink MAC operations
+  net: dsa: netc: add more basic functions support
+  net: dsa: netc: initialize buffer bool table and implement
+    flow-control
+  net: dsa: netc: add support for the standardized counters
 
+ .../devicetree/bindings/net/dsa/dsa.yaml      |    6 +-
+ .../bindings/net/dsa/nxp,netc-switch.yaml     |  130 ++
+ MAINTAINERS                                   |   11 +
+ drivers/net/dsa/Kconfig                       |    3 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/netc/Kconfig                  |   14 +
+ drivers/net/dsa/netc/Makefile                 |    3 +
+ drivers/net/dsa/netc/netc_ethtool.c           |  192 +++
+ drivers/net/dsa/netc/netc_main.c              | 1528 +++++++++++++++++
+ drivers/net/dsa/netc/netc_platform.c          |   90 +
+ drivers/net/dsa/netc/netc_switch.h            |  155 ++
+ drivers/net/dsa/netc/netc_switch_hw.h         |  335 ++++
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  |  188 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   |  383 ++++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  122 +-
+ include/linux/dsa/tag_netc.h                  |   14 +
+ include/linux/fsl/netc_global.h               |    6 +
+ include/linux/fsl/ntmp.h                      |  235 ++-
+ include/net/dsa.h                             |    2 +
+ include/uapi/linux/if_ether.h                 |    1 +
+ net/dsa/Kconfig                               |   10 +
+ net/dsa/Makefile                              |    1 +
+ net/dsa/tag_netc.c                            |  185 ++
+ 23 files changed, 3585 insertions(+), 30 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
+ create mode 100644 drivers/net/dsa/netc/Kconfig
+ create mode 100644 drivers/net/dsa/netc/Makefile
+ create mode 100644 drivers/net/dsa/netc/netc_ethtool.c
+ create mode 100644 drivers/net/dsa/netc/netc_main.c
+ create mode 100644 drivers/net/dsa/netc/netc_platform.c
+ create mode 100644 drivers/net/dsa/netc/netc_switch.h
+ create mode 100644 drivers/net/dsa/netc/netc_switch_hw.h
+ create mode 100644 include/linux/dsa/tag_netc.h
+ create mode 100644 net/dsa/tag_netc.c
 
-Patches currently in stable-queue which might be from rob_garcia@163.com are
+-- 
+2.34.1
 
-queue-6.12/media-nxp-imx8-isi-fix-streaming-cleanup-on-release.patch
