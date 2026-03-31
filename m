@@ -1,182 +1,205 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010032.outbound.protection.outlook.com [52.101.84.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9D93DD525;
-	Tue, 31 Mar 2026 14:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774968248; cv=fail; b=jvqCspfSAqfT2iAyNh1Rldk3W53CmIYmnNAETbethu/2Z/aP3Nh46S4vv9YmIwexC2tld3R3JuBkKcFBUlCbv7kmjQsrDslrP7NJon6gRe3HNISyj1GpSRLjsvVWohsqVRoRhopXNZX+TFEp9etv++BYzCNU3E+Ee74R1UCnawU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774968248; c=relaxed/simple;
-	bh=1VgPTdrQUyFd5DxYcVsOmHzGgFuCjLXEe/uu2DsJCNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=H4OHn5gzKcGTgH0HI1JRmLd9RC3b0YBDbMPaYJwUfc5fj6oBw5Lt2VqQj4uxEdMIDLq+5iOuc8oeuqDzXwFhhH4WoWkHpIW1wiGJPhLqHsZef6BrK8Y40aH3nqT+jay10d54XwZ2bQrz39CsHGQLXDp/LuIJVgl2prvrrkhnGDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XLm123qM; arc=fail smtp.client-ip=52.101.84.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513AC194C98
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 14:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774968848; cv=none; b=iXm7i2XAuG5taiEx9EBhms0dKfJwYR/+7qSlloOGqMfXMfQivQ5pJWEf/LZeUVVBlpafjqrqZrI2UF9UPrnMKp5mgxJqGeD1AnazinchzymLPG8qI8zW8CpDleRmcO2yNu5MHzlbzHayVb5r36TOd/HkS7fHA/brbx1OTNi5dBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774968848; c=relaxed/simple;
+	bh=4UGmf50+gfLnZc6+u6iDl6NicmkmuoVpuu9aSS4dDAY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LNs+hUIBOyo0nz55QkWmOQqSbLPpz5JhlvAewBnmsmsrJHRmZu6XVMdKecWRaG9NsguvhfeNf084jI3dMDtr8BDmJW9xwHzP23PH1jD3UkHHMRRhjiWNu1WBr2KTw9K24e3szMv6i9pAT+b0ySrU+Ermi7ZEGNWtJYD6XifAxcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=ck14aDTO; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XLm123qM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AdYsGRhqRDD4FOd4IEbXR8BfmHiufSGLIQP420ghXe32R4WwVUQTVClzJ/1+7BvKQlkKk1M5TmhQWdd7XTb0XdLWeCTKGkOtKoP9dZ9wIMtC0so8EOW554J0mjzqjYGTkgqluanYZJH5fg4L64I5iN2RihtTiN/Hxll0oFs2JsbsRo+UVOWMz9WT4Jf5rbXOR/dms1uzqugkILAO1eddPho6oho3IHrIm2+VJEz7mvKW9Y0eNq2gPmvraH6pGTHYwvEcGXF5WyBOZOtEPEhrrvEweLesv3BSCkQ0ewgxGq5ddFzXrTzQhOj+aDf5ye+LgXClFDDr1PtNJ6iQ0ja3bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5rjP5iBsy8kPlzbvdsL0bTiLtesZG/Q20ju5pr8bjOM=;
- b=JKB1te1GuyhYGbAB2/mjOavy3vmsXHwiuME8EBLDFxIUnR8S3v9hjNEC07E2YiOeuEgYgVX+kU0ZAH4Uj+MFdzLJfpInYkeqJFzpQMM/RBk0sJ4X9bM2GAgAd6rQil7tuep5aY6cOe2CJx0Ehh8gEW8VGiymsZq2j+J9eJHqdxSAtm4t2ApAzeda74PQle4LEfArJn6cl1Dt5DnuKv1NEqoGzYYtuQTXQjisPGsDSR7wg0c0DbVsBYrcUNyHA/jgkCxahwHIpYsdbdrYqwXldl0Wx8fB+dwv7c9KNGrE4HOfq5S0/3HWQIqru2QZrmn8fOutjN6Nqh3eRyVKH33Arw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5rjP5iBsy8kPlzbvdsL0bTiLtesZG/Q20ju5pr8bjOM=;
- b=XLm123qMbXdIcdERP9LJSClEFYgOIdUeYok6fwMk2NASndipY4t8+DWkE8m5wiUSnmExz8SKaRvcbInQr0KveVlZn+9M+psW0vtl/HJBXS8+5sCQVn72jr7UnjAOtOwqFv4okEC3clOsPGfxYwL+N3RSLDnk6xe/YBwJn6ABPVRwAVrG+IYK8IzQDVoGOBJyqWOZkLHOu/IOc3SV2YVEiGfbV4zmMeziG5/n+RWdnN298WrCq1QqVkvFjpQC4h2Fl5TItT0mkZX8VYWv5IlWgax3dRzusJe6xg+G4Ofx37lzAmo7Goac5oEMDf53m/R6QTAl9KhkWiG24s3MKxW5Ow==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PA1PR04MB10964.eurprd04.prod.outlook.com (2603:10a6:102:490::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 14:44:03 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9745.027; Tue, 31 Mar 2026
- 14:44:03 +0000
-Date: Tue, 31 Mar 2026 10:43:53 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-Cc: Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, imx@lists.linux.dev,
-	xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org,
-	Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Subject: Re: [PATCH v12 2/3] of: Factor arguments passed to of_map_id() into
- a struct
-Message-ID: <acvdqQvcitLTCZbm@lizhi-Precision-Tower-5810>
-References: <20260331-parse_iommu_cells-v12-0-decfd305eea9@oss.qualcomm.com>
- <20260331-parse_iommu_cells-v12-2-decfd305eea9@oss.qualcomm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260331-parse_iommu_cells-v12-2-decfd305eea9@oss.qualcomm.com>
-X-ClientProxiedBy: SA9PR13CA0007.namprd13.prod.outlook.com
- (2603:10b6:806:21::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="ck14aDTO"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-899a9f445cbso66173286d6.0
+        for <imx@lists.linux.dev>; Tue, 31 Mar 2026 07:54:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1774968846; x=1775573646; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xn5zNT1spHRq0DkkC+7339Y+wwjQRD78iQTIrf+3mdw=;
+        b=ck14aDTO5XHz0RI+bv300IdwOC25bFm27LuvXc0lujfEFybSj3sz2UOlNjEd3H4dPZ
+         D2VRg1g8qX8r9tyJOOIxgF0OJdjDhhFX4lvzHO8kQKn4im+of4dgJiXt9Ye5VfZw0VE8
+         llht3Ousf4S1wIBpiv6UkpZXU5UHoyxSfJfZsE43dZhQo389Y/zwC5pRMPLAGK/9IeyN
+         nQtxlN5l/jrtIbeEqVqVDx18GYlC+SABeNuRqJxZnp30DbKssM86KOc5RcW8deWKR3N5
+         0uWd2ASZDu5m+y+1csIxspOLffp/s/PhBHLwCGs5v1L0NKPUqze/mwKP+wmvxysMcHyR
+         apvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774968846; x=1775573646;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xn5zNT1spHRq0DkkC+7339Y+wwjQRD78iQTIrf+3mdw=;
+        b=V2wslNN7Thk2x1JbAbar1EecVUOVdmAJky1D98mBTwCedLzX9xGZScCd3JfJIENGVO
+         B9LFuzcRCB1059EyRQA5MCz4ywlaA9PxX5S730S7ChNqQ67LXQJgbwXs0FaMxsTouUh8
+         bkAqX5x8oonFecj1UqU8hMW4zXAq4ixTUTEmnkIxvZsnYIKaXCS6b87h0aEYpMgKTsyL
+         LVXrL2ndvr1URGrFXt5VZvYS09uMRUZFOS7x2y3dS1KDx4xhV3TXng8KcaG/VDqFXhNG
+         yYtqnLuyIvSmIvfUtsiXYQ5ixp1GxhsHwaKG2i/pFGlTuJ9Rvlwm41+46BuCd9ceM2WI
+         FSHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSYKckgUVi4Y+tkvQm7D9x904fy4pbxZNR5sXsPk3MhWslZQ+qD8grlbb2X9m3PhSTdwo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwTYGuQ9uFsRyFYo5w0gwHZcrTneBix7Ry6WO9WtarOAr/3RCe/
+	dK/SI/xj7C+vnBePssj6PI2X3xLPNky4joeNOFAwdgTyWY8s/obQfdLgZxQkxI0EbDU=
+X-Gm-Gg: ATEYQzzd+/4taCgXXTc1xb84WoJJ7gqXfdmnuo79ziSY0Ehsc3es+m2gCLsO/5PsRZ2
+	qtREBvfDXNhpHpm6jFrwKhF8ftqldJ57levJfEg15i9ZPwVOdidUe71fNW9h/FJRVoK+mYZD9Zf
+	CLBQzShiBg0pVNMGI6fL5Z9U48t67XBWMdGTsPN1H1qO2sWSvWPl+uaU+xqcE3+VUdZe0I0niQO
+	LZotIDJfZRfB7MX6x52mrh/FGVifhYPHeTQVBXIOw7OgB1SRHsgE7Gym7AC/rNyAU6J8M8kTR76
+	I+zU7W5Mv/7R5cj4NfLjOanKKUGm+KmRxMtEK6ijQlOfLGT2H1JTgzdAszfHtcMPM8IYIwHmmIe
+	zF+sKS2xldvi9ApoKNzLLPZD6lus6il9tnS88gBxSJEQA4LleVqMzaReXgVcCmLXc/227XkhL++
+	s06M7ilRZpYKf/MWjVHwnm+j7ESSQC
+X-Received: by 2002:a05:6214:27cb:b0:89c:ca30:6b92 with SMTP id 6a1803df08f44-89ce8f8d2fcmr240762806d6.56.1774968846090;
+        Tue, 31 Mar 2026 07:54:06 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:e06b::5ac? ([2606:6d00:15:e06b::5ac])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecb5cb14bsm89054306d6.1.2026.03.31.07.54.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 07:54:05 -0700 (PDT)
+Message-ID: <079b1630abe5dd22e032797fc12925c9c79ea305.camel@ndufresne.ca>
+Subject: Re: [RFC PATCH 1/7] media: v4l2-ctrls: Add V4L2_CID_MEMORY_USAGE
+ control
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Frank Li <Frank.li@nxp.com>, ming.qian@oss.nxp.com
+Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl, 	sebastian.fricke@collabora.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, 	kernel@pengutronix.de,
+ festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com, 
+	eagle.zhou@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Date: Tue, 31 Mar 2026 10:54:03 -0400
+In-Reply-To: <acvbOo17tU-s20BS@lizhi-Precision-Tower-5810>
+References: <20260331072347.253-1-ming.qian@oss.nxp.com>
+	 <20260331072347.253-2-ming.qian@oss.nxp.com>
+	 <acvbOo17tU-s20BS@lizhi-Precision-Tower-5810>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-L4QS/jCTQxYv029Nq/FW"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA1PR04MB10964:EE_
-X-MS-Office365-Filtering-Correlation-Id: 238e6cc5-6b23-42b7-8b74-08de8f33f3ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|19092799006|7416014|366016|38350700014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	s+KiA0MI42oQZjz97rmpPSQpWToS2IRv5hA0wHFEfQ66xgsjPtoOj9ZMmslrUM076pQAWJvYsHrvyebukhsQ4XAJM0x8O6BXX2ThzbrWO7mZoEH19gL6CoGyh0GlJFkpg6aua4BGZ6iexITGS74I7lVFSD8iryLffh+f3zIymaPL0VpY10HItZbSpNwUhBJMZrNw6jOUjQbf6rdChQYUsOtbHt7zZ6gq1tr4GqKrcP7brmUv9qY/aqXkJyZEZmRFrwBE+9qci02UHmSc2Dxb5vjbIUTDfmRYLD5DQv6J+4pQ+B7ybsJmamaaOyQySdUABFrxi39veWV7dRYlA1g3EKGxQUEy2VuGhori2AXujb41clpsUDX0ZC/LEvZv1KSeeVdE2WtYg3/775tjh6psWWIDeuWNAKXhJAlTaLgLmT772D7qNn5E9l3r8gBnwYfpd7j/Pg4Gw8+gNIw6dl+zhC7GsXYX2o0JYRYe1lHikufyEb0wf2kzwqGfaMIGu85m3JmIujt5iqX/41X5axuxKJ+Lr9HcXRXL7uS62awNx5kOmAfp+cA9mwgWxGeBgnkiRyI1dCGQQ6Y1iyDdJGWvWs1Fd2TnaCCd3jEcGgo31etGPcBr0rrZWjvLlK1S4s088ncYmX7jveSGvWeC22lnFigMWvlBl7Pv9LNo59jxDXG6JVKFYS0sMMrnGMwySLXlLo7oqTJe4CHXYAg4pNh0Vg2OxRx/xwZxX8msLiFnQPzh5UdBxoxRWGn2sRjE0QpirfG6FVA3eLQScmd8ttAH/wvXFKDHg9J203L5SbCpd10=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(19092799006)(7416014)(366016)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2iT9OHtHa+9bxUiNicBG0P/R6shQ/HaKVFFsEx/BcChqdn2hP08875nETbBY?=
- =?us-ascii?Q?8YQXh8M+Lq/Dc9PmWbMKeS6gk3m76p9SutE/+pCFHdLq8eAXlwYkIhm25Yvb?=
- =?us-ascii?Q?3k01D2Y0O+idAWzrbaTOGf4djc9rR7Hco89NznpwSSrxN7zxnQ3o0qfEy2/O?=
- =?us-ascii?Q?ZfdmNyoV433YFVUn2gaobRCr/K2e7+etGyjEWyfbxude9W+zhDFy9vjADNW7?=
- =?us-ascii?Q?n+6bncInM9l+tq4QUE0qQ+MYwsluE6r1pV2WAnn7EFHC1nbEo4yL+CjlgdJF?=
- =?us-ascii?Q?LkMhcYkH6Gqnw+87spICB1Agvr8DMwBMTNcqAFcvYHErR/QFlC9dBKacUlOj?=
- =?us-ascii?Q?fexhAH5qjYnXRRGsu2qtsIlwPKxBXmdur6LGhqi2m3qA+F/h2up6ux+9GNGK?=
- =?us-ascii?Q?5MIcbSh2W+6BO/TGpIcyrrhA/RrCQ6RKLLod50qo+FJfnDT8S0lupzDCszhC?=
- =?us-ascii?Q?ca0g3wxK9v+5TzwRzyobZMtze/QsZLZeeSrSN/s1u+Xr1IZWQcLSkswEGxqD?=
- =?us-ascii?Q?dXUzom5siSa/hCgVDYPMbi1D7CySRMFO1bDfb7g5f4MyPMURfDkPJVTfrIbc?=
- =?us-ascii?Q?DySVh8F8KTTkTzzFco0S121SLcD7hEDYIinqZVA6YatZQvu21HKik85kgKCK?=
- =?us-ascii?Q?Qih0BGi1es8UjMnf6qVmkBjqPcGGbUt+Ab9QJ2PbuW98Bmsk1IR1qrCnU4pO?=
- =?us-ascii?Q?A+WVAVTHUrjm+YMbp6Vj+0sugzC2+FV+IEWfGoUdlLNR8gmGh3rPAVN0vgKU?=
- =?us-ascii?Q?x8J4l5K8tEHSDXVaAq5EFMIbuwvmdZhCkr3857r6id0jyqMYnJ+WlGOiz052?=
- =?us-ascii?Q?6G/P4THBPjglA5biZc40FOkgZskw3TA1TG0FhRBRcWI5lcI3LKGzR0/w9yQ6?=
- =?us-ascii?Q?PI4a/D3TL3uGVZAfSwSC7cl8hWmRdUsVg6qy6onXnCT2Gs660pFDeCIUta4R?=
- =?us-ascii?Q?UUtIrkSGnDajFE92f8sgjKndjCIs+YSeWzXsdGrEP/Mini730vGxoLmNhuxU?=
- =?us-ascii?Q?l7IpdFMhTWH9AJw4Aqu6esRNdRKjJda5K9QsTezbVze0MzD469dPxZmwou9W?=
- =?us-ascii?Q?DJDjt0WfDEZJZyeaOpgR2VY6S0uk3kEsgk60LLcNm+sjPDuFwuC7CYMhOWaS?=
- =?us-ascii?Q?RwZSO0N0YhqxRtEKbriw6UbxrJ59IIwg+d9BdhSGB3U5Omy3xTW9jANTeXvu?=
- =?us-ascii?Q?Lpqf0UCJFae2MKBtBPHMk92yum9q/LFrIviKQzxoWszSznZ/+ZU2eYhgaNRp?=
- =?us-ascii?Q?Nb+yFP5GsfRLNBiWCEeVeJoD+i+8qzI0z7fvN5xRV2Q7HiJGZsicyieNDR0W?=
- =?us-ascii?Q?PJAR4hs2scosJne9NJZOlsh6KhBlcPjOyU7FUUJiaiWMeEDGG9XZb0navxRL?=
- =?us-ascii?Q?qSkZ51JRPmtejfhBr9fknmjREAR0JyL7fqGK0idQkmeDkZ/P4ZDwR0RK6/P5?=
- =?us-ascii?Q?qnyQUUjmF3G9gtHRp+3CmSnF0wfOLaGOUcu61W/yAVm0FMG1xURayDls+1/i?=
- =?us-ascii?Q?XZ+8ApOEGspIXbvX2mIoP+EWiBw3XiGdx2aUm277x72oSIgOkl5PdzagQwww?=
- =?us-ascii?Q?NJF84rfOgLEIHW91NEasYiqsE8aP43OGoD1i5gyBL5IRCi7RqdEWhhMmnQKh?=
- =?us-ascii?Q?ezClV6M0/ZDd1lMN68+OUJjAdCQ0riWdwr9wIaCBg8jhw6axWXAMfTL9QNbQ?=
- =?us-ascii?Q?AnKeRtx67LOv7ATbuRAP9nH19A5GPWGmH4Ypw0eShktvT4y5?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 238e6cc5-6b23-42b7-8b74-08de8f33f3ae
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 14:44:02.9815
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bivlZCOpDITUUh4tp669044ekslH3QourhUFHd2mfBsju1B1zO8ghXCYuVQ+4SwORLuIHvnCqGNFkexd92bU6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10964
 
-On Tue, Mar 31, 2026 at 07:34:47PM +0530, Vijayanand Jitta wrote:
-> From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
->
-> Change of_map_id() to take a pointer to struct of_phandle_args
-> instead of passing target device node and translated IDs separately.
-> Update all callers accordingly.
->
-> Add an explicit filter_np parameter to of_map_id() and of_map_msi_id()
-> to separate the filter input from the output. Previously, the target
-> parameter served dual purpose: as an input filter (if non-NULL, only
-> match entries targeting that node) and as an output (receiving the
-> matched node with a reference held). Now filter_np is the explicit
-> input filter and arg->np is the pure output.
->
-> Previously, of_map_id() would call of_node_put() on the matched node
-> when a filter was provided, making reference ownership inconsistent.
-> Remove this internal of_node_put() call so that of_map_id() now always
-> transfers ownership of the matched node reference to the caller via
-> arg->np. Callers are now consistently responsible for releasing this
-> reference with of_node_put(arg->np) when done.
->
-> Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-> ---
->  drivers/cdx/cdx_msi.c                    |  7 ++--
->  drivers/iommu/of_iommu.c                 |  4 +-
->  drivers/irqchip/irq-gic-its-msi-parent.c | 11 ++++--
->  drivers/of/base.c                        | 68 +++++++++++++++++---------------
->  drivers/of/irq.c                         | 10 ++++-
->  drivers/pci/controller/dwc/pci-imx6.c    | 32 +++++++--------
->
-> for imx part.
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+--=-L4QS/jCTQxYv029Nq/FW
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Le mardi 31 mars 2026 =C3=A0 10:33 -0400, Frank Li a =C3=A9crit=C2=A0:
+> On Tue, Mar 31, 2026 at 03:23:11PM +0800, ming.qian@oss.nxp.com=C2=A0wrot=
+e:
+> > From: Ming Qian <ming.qian@oss.nxp.com>
+> >=20
+> > Add a new read-only control V4L2_CID_MEMORY_USAGE that allows
+> > applications to query the total amount of memory currently used
+> > by a device instance.
+> >=20
+> > This control reports the memory consumption in bytes, including
+> > internal buffers, intermediate processing data, and other
+> > driver-managed allocations. Applications can use this information
+> > for debugging, resource monitoring, or making informed decisions
+> > about buffer allocation strategies.
+> >=20
+> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > ---
+>=20
+> Not sure why not export these information by debugfs, or any benefit vs
+> debugfs?
+
+There is also a on-going proposal that uses fdinfo.
+
+Nicolas
+
+>=20
+> Generanlly document should be first patch, then driver change.
+>=20
+> Frank
+>=20
+> > =C2=A0drivers/media/v4l2-core/v4l2-ctrls-defs.c | 8 ++++++++
+> > =C2=A0include/uapi/linux/v4l2-controls.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 4 +++-
+> > =C2=A02 files changed, 11 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/=
+v4l2-core/v4l2-ctrls-defs.c
+> > index 551426c4cd01..053db78ff661 100644
+> > --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> > +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> > @@ -831,6 +831,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+> > =C2=A0	case V4L2_CID_ALPHA_COMPONENT:		return "Alpha Component";
+> > =C2=A0	case V4L2_CID_COLORFX_CBCR:		return "Color Effects, CbCr";
+> > =C2=A0	case V4L2_CID_COLORFX_RGB:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return "Color Effects, RGB";
+> > +	case V4L2_CID_MEMORY_USAGE:		return "Memory Usage";
+> >=20
+> > =C2=A0	/*
+> > =C2=A0	 * Codec controls
+> > @@ -1476,6 +1477,13 @@ void v4l2_ctrl_fill(u32 id, const char **name, e=
+num v4l2_ctrl_type *type,
+> > =C2=A0		*min =3D 0;
+> > =C2=A0		*max =3D 0xffff;
+> > =C2=A0		break;
+> > +	case V4L2_CID_MEMORY_USAGE:
+> > +		*type =3D V4L2_CTRL_TYPE_INTEGER64;
+> > +		*flags |=3D V4L2_CTRL_FLAG_READ_ONLY;
+> > +		*min =3D 0;
+> > +		*max =3D S64_MAX;
+> > +		*step =3D 1;
+> > +		break;
+> > =C2=A0	case V4L2_CID_FLASH_FAULT:
+> > =C2=A0	case V4L2_CID_JPEG_ACTIVE_MARKER:
+> > =C2=A0	case V4L2_CID_3A_LOCK:
+> > diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4=
+l2-controls.h
+> > index 68dd0c4e47b2..02c6f960d38e 100644
+> > --- a/include/uapi/linux/v4l2-controls.h
+> > +++ b/include/uapi/linux/v4l2-controls.h
+> > @@ -110,8 +110,10 @@ enum v4l2_colorfx {
+> > =C2=A0#define V4L2_CID_COLORFX_CBCR			(V4L2_CID_BASE+42)
+> > =C2=A0#define V4L2_CID_COLORFX_RGB			(V4L2_CID_BASE+43)
+> >=20
+> > +#define V4L2_CID_MEMORY_USAGE			(V4L2_CID_BASE+44)
+> > +
+> > =C2=A0/* last CID + 1 */
+> > -#define V4L2_CID_LASTP1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 (V4L2_CID_BASE+44)
+> > +#define V4L2_CID_LASTP1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 (V4L2_CID_BASE+45)
+> >=20
+> > =C2=A0/* USER-class private control IDs */
+> >=20
+> > --
+> > 2.53.0
+> >=20
+
+--=-L4QS/jCTQxYv029Nq/FW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCacvgCwAKCRDZQZRRKWBy
+9HhiAP9pxmgO01Tw2u1jmX3JDGf0HUlwoJFHITjsspschCXhGwEA2CLSZfwaGF3P
+FBjvjpv8iG0M2472UaZ+ET35dRy4DwA=
+=NB0B
+-----END PGP SIGNATURE-----
+
+--=-L4QS/jCTQxYv029Nq/FW--
