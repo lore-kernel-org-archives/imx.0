@@ -1,180 +1,163 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623D342CBD
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400863E3DA8
+	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774970278; cv=none; b=esMf3ASTIFDpwMeMjUs6O/fl+lrlToZxvu0eabEpYPHBb+S1djUhgV0kuVVJydSN+QjM8s5Oa7HxSWSgev+ymxDVzXMCxXhuzOgnqvfNJlzHZzbzCtgDDV7ZjWA7CXS1Mjf6SPLPSVAPdDvym3QMFKTLnLhwjEam8J0B10GIl5k=
+	t=1774970783; cv=none; b=jIt6biv9bXrbjtsoS/s2u4e5Tqmr0vwyw5/5qBvt3ExcedIN03E57MNu1cPTh9IIEisn+w3N4jxcPiPQgI83cTRWxxAYOuq3zVnlUk+g8rYwzCLznsfQRqYH6JbEoKbCshixF9KU8Vc6Jg5W7/ZucA8PyQHiTrEnvF9CQmqsIpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774970278; c=relaxed/simple;
-	bh=YpVdBdQWAmP40muXxVeAFS7k+EOrZV7ngM70e/TcQH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pRDCQE7zb++w1U64dPSIQn/0+vj89pGDAv9mhhsJH4nUDJhGEiOgQVGbJwdnXWRAIR8MFHU99Rmg9cw6/RoqBd+WQ46+KNkYnUqoXuwS8GUK1YrF2uozn3D9xlgrkRt6Sh6AvEV/MU02bOJzIdxx+SWl3zEP74fBSnrM0CeCxh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 445451F8004A
-	for <imx@lists.linux.dev>; Tue, 31 Mar 2026 15:17:47 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 45472B2EFD5; Tue, 31 Mar 2026 15:17:45 +0000 (UTC)
-X-Spam-Level: 
-Received: from collins (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id 41E46B2EFC8;
-	Tue, 31 Mar 2026 15:17:43 +0000 (UTC)
-Date: Tue, 31 Mar 2026 17:17:41 +0200
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Liu Ying <victor.liu@nxp.com>
-Subject: Re: [PATCH 2/3] drm: lcdif: Use dedicated set/clr registers for
- polarity/edge
-Message-ID: <acvllbRTHyVFTgmS@collins>
-References: <20260330224619.2620782-1-paulk@sys-base.io>
- <20260330224619.2620782-3-paulk@sys-base.io>
- <f5b628f50def756da356184ff6febb11cc9aaa68.camel@pengutronix.de>
+	s=arc-20240116; t=1774970783; c=relaxed/simple;
+	bh=eK5dGg65CGb94A/wEx0yo49sGIlrvKeB/Y/mHd4ngNs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nqBMcedu0ZF/V8LyVP7LcxfQ3bPEcC7jHzudOq1hi8wejFQncei/iTpEeTvXw63MWoa6Cxszx9kwDveTTAdKC9Vl9TzOBnbhzxbkSUW/u86YZQPFZyOXsDr72XsN4rlU5T80UymE3ZXBWZW/j8LlTbIvYbewyz4EULifbboPQYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SBYnse5B; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SBYnse5B"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3DA024E4288B;
+	Tue, 31 Mar 2026 15:26:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1202B6029D;
+	Tue, 31 Mar 2026 15:26:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44E6010450349;
+	Tue, 31 Mar 2026 17:26:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1774970777; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=eK5dGg65CGb94A/wEx0yo49sGIlrvKeB/Y/mHd4ngNs=;
+	b=SBYnse5BpxBUFO2L4JeWzsooEAaHJTXxKl2yuUBLP75/mlaqoi7j/aCoopSs48uEcYagKS
+	Dhvrt17i6qCC/IRZxtJ6/rlmBPFbVfhHE7X6Ke8hXaRa/6I+lzVRUAHYr8yNT0nwEq1dDl
+	dtAjaBBBbuNdmmMXpCoFB7wiD42x2d2lYuOvzN2PRCrv8bHLphN55rFpggTsaM9V4C50pT
+	XbFKuoqJZ1llUCIGeWj6Rua7mnE6XOW4d8rbPRVVrw26VyLrhhOPqHUjJ2aXL2Dxe1cRrC
+	M4M5npnsvJ06jMavG1OvTNQ0WWEbPgS9P2viifNcQSAUvYqE9ygYqOJXhHTs/A==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Frieder Schrempf <frieder@fris.de>,  Mark Brown <broonie@kernel.org>,
+  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Han Xu <han.xu@nxp.com>,  Eberhard Stoll
+ <eberhard.stoll@kontron.de>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
+  Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  imx@lists.linux.dev,  Santhosh Kumar K
+ <s-k6@ti.com>
+Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
+ for each op
+In-Reply-To: <633fee13-a397-410f-a595-db95e04b8110@kontron.de> (Frieder
+	Schrempf's message of "Tue, 31 Mar 2026 11:58:11 +0200")
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	<20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+	<87wlzlnioh.fsf@bootlin.com>
+	<a1a711c4-d9df-4bba-8831-2ec787f84cc4@kontron.de>
+	<87ecl09wtv.fsf@bootlin.com>
+	<633fee13-a397-410f-a595-db95e04b8110@kontron.de>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 31 Mar 2026 17:26:12 +0200
+Message-ID: <87ldf881gr.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/Y3a12dyBXGbAn3r"
-Content-Disposition: inline
-In-Reply-To: <f5b628f50def756da356184ff6febb11cc9aaa68.camel@pengutronix.de>
-
-
---/Y3a12dyBXGbAn3r
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Lucas,
+Hello,
 
-Le Tue 31 Mar 26, 11:09, Lucas Stach a =C3=A9crit :
-> Hi Paul,
->=20
-> Am Dienstag, dem 31.03.2026 um 00:46 +0200 schrieb Paul Kocialkowski:
-> > The lcdif v3 hardware comes with dedicated registers to set and clear
-> > polarity bits in the CTRL register. It is unclear if there is a
-> > difference with writing to the CTRL register directly.
-> >=20
-> > Follow the NXP BSP reference by using these registers, in case there is
-> > a subtle difference caused by using them.
-> >=20
-> I don't really like that patch, as it blows up what is currently a
-> single register access to three separate ones. If there is no clear
-> benefit (as in it has been shown to fix any issue), I would prefer this
-> code to stay as-is.
+>>> For example on Winbond W25N04KV this leads to detection failures. So we
+>>> should maybe introduce some kind of reduced clock setpoint for the
+>>> initial detection, that is safe to be used without RX sampling delay
+>>> compensation.
+>>=20
+>> That should be the DT max frequency, no?
+>
+> Hm, I've seen it the other way round. In my perspective the DT max
+> frequency describes the maximum clock frequency supported by the chip as
+> given in the datasheet (assuming there are no other limitations
+> introduced by board design, etc.).
 
-Well I guess the cost of a few writes vs a single one is rather
-negligible. I'm rather worried that there might be an undocumented
-reason why these registers exist in the first place and why they are
-used in the BSP.
+I believe that what is in the datasheet should instead be statically
+described in the SPI NAND vendor file.
 
-But yes this is only speculation and I could not witness any actual
-issue. My setup (lcdif3 with hdmi) uses all positive polarities which is
-the default state, so not a good way to check.
+The max SPI frequency DT property is here to tell at which speed to use
+the device, and this depends mostly on the routing.
 
-It would be great if somebody from NXP could confirm whether this is
-needed or not. In the meantime I guess we can drop the patch. It'll stay
-on the list in case someone has polarity issues later :)
+> The RX sampling delay is a timing parameter specified in the datasheet
+> and it is relevant in order to interface the chip at maximum frequency
+> within spec.
 
-All the best,
+If it's not design dependent, then we should handle it "statically".
 
-Paul
+> Your approach would mean, that we need to manually calculate the maximum
+> supported clock frequency without RX sampling delay compensation and use
+> this value in the DT. Then let the driver increase the clock if RX
+> sampling delay compensation is available.
+>
+> This would have the advantage, that even before initial detection we
+> would use the correct clock by default. But it has the downside that the
+> clock value in DT won't match the datasheet value.
 
-> Regards,
-> Lucas
->=20
-> > Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-> > ---
-> >  drivers/gpu/drm/mxsfb/lcdif_kms.c | 23 ++++++++++++++++-------
-> >  1 file changed, 16 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/=
-lcdif_kms.c
-> > index a00c4f6d63f4..1aac354041c7 100644
-> > --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> > +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> > @@ -296,18 +296,27 @@ static void lcdif_set_formats(struct lcdif_drm_pr=
-ivate *lcdif,
-> >  static void lcdif_set_mode(struct lcdif_drm_private *lcdif, u32 bus_fl=
-ags)
-> >  {
-> >  	struct drm_display_mode *m =3D &lcdif->crtc.state->adjusted_mode;
-> > -	u32 ctrl =3D 0;
-> > +	u32 ctrl;
-> > =20
-> >  	if (m->flags & DRM_MODE_FLAG_NHSYNC)
-> > -		ctrl |=3D CTRL_INV_HS;
-> > +		writel(CTRL_INV_HS, lcdif->base + LCDC_V8_CTRL + REG_SET);
-> > +	else
-> > +		writel(CTRL_INV_HS, lcdif->base + LCDC_V8_CTRL + REG_CLR);
-> > +
-> >  	if (m->flags & DRM_MODE_FLAG_NVSYNC)
-> > -		ctrl |=3D CTRL_INV_VS;
-> > +		writel(CTRL_INV_VS, lcdif->base + LCDC_V8_CTRL + REG_SET);
-> > +	else
-> > +		writel(CTRL_INV_VS, lcdif->base + LCDC_V8_CTRL + REG_CLR);
-> > +
-> >  	if (bus_flags & DRM_BUS_FLAG_DE_LOW)
-> > -		ctrl |=3D CTRL_INV_DE;
-> > -	if (bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
-> > -		ctrl |=3D CTRL_INV_PXCK;
-> > +		writel(CTRL_INV_DE, lcdif->base + LCDC_V8_CTRL + REG_SET);
-> > +	else
-> > +		writel(CTRL_INV_DE, lcdif->base + LCDC_V8_CTRL + REG_CLR);
-> > =20
-> > -	writel(ctrl, lcdif->base + LCDC_V8_CTRL);
-> > +	if (bus_flags & DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
-> > +		writel(CTRL_INV_PXCK, lcdif->base + LCDC_V8_CTRL + REG_SET);
-> > +	else
-> > +		writel(CTRL_INV_PXCK, lcdif->base + LCDC_V8_CTRL + REG_CLR);
-> > =20
-> >  	writel(DISP_SIZE_DELTA_Y(m->vdisplay) |
-> >  	       DISP_SIZE_DELTA_X(m->hdisplay),
->=20
+It never does. Winbond chips can run at 166MHz. I know no design capable
+of that natively (ie. without finer tuning, like what Santhosh
+proposes).
 
---=20
-Paul Kocialkowski,
+> In my approach we assume the driver is able to use the maximum clock
+> from the DT (same as in datasheet) by using RX sampling delay
+> compensation and only if it turns out the compensation is not possible
+> we will lower the clock dynamically.
+>
+> What if we do the following?
+>
+> 1. Add a parameter in the SPI NAND chip driver that contains the maximum
+> supported clock frequency as given in the datasheet as this is clearly
+> the best place to keep this device-specific parameter.
 
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
+I've so far avoided doing it, but yes, this is something we can do. It
+is going to be simple enough to implement as all the infrastructure is
+already there. You can provide variants with speed limitations (look
+into winbond.c). I was writing "0" in the fields which didn't need a
+limitation that is something else than the maximum speed the chip can
+sustain, as anyway the DT property *will* tell us what is this speed, if
+we are ever able to reach it.
 
-Expert in multimedia, graphics and embedded hardware support with Linux.
+> 2. Allow to leave spi-max-frequency in DT unset for SPI NANDs in case
+> there are no board-specific limitations and therefore the maximum
+> frequency supported by the combination of chip and controller can be
+> used.
 
---/Y3a12dyBXGbAn3r
-Content-Type: application/pgp-signature; name=signature.asc
+In many cases, the limitations are board specific. Anyway, this is
+already the case, you may just not put any value in this property.
 
------BEGIN PGP SIGNATURE-----
+> 3. By default limit the clock frequency for the READ_ID op to a safe
+> value that works for all chips and controllers, even if RX sampling
+> delay compensations is not available.
 
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnL5ZQACgkQhP3B6o/u
-lQxgrw//a0o+aXG0xYeofhRxty58+PDTHipKdthiX6kA1F3s9h+oFSlsP7xo65CW
-Bf+q9KrUXxRmSwKbVLNwNv2rD2QgBso6MboJh1tZxgu5zfyMPe06Y2a4Dv8TLBV8
-4tKTxd8qKZ/dv3lUzkXHRilotZfDr2rktpmrI5f3Ur4bqNBWUTUyslGeE1E0jn0a
-dRDw1gbXp3AunYTca1Nuc+VN/EfvcACOra4dtzlnY5woQTOrQ8Po6GUmy3gTY/vd
-P+hEzKrIDbUG9WKym/b+eHoT/2LM1+g0QiWc2Y7mWTYnMeXwEkdPL7H0mCqeionu
-hegWBbQHvSljPBj/mZiWkHlu+ZPq4V6XsZsBEXztZ9oqVHRH3/8/6/HlBxVszgZc
-Fg3zeMvhgd8arvlz/c23BgoYjYkIIjRDluUFan/+t2hzNKBgUVDfOivdmuRsnaPg
-nejYqNEocGX/kkn8rXNg1P723L4Hwvrn9ClmTlN+ilTTpEHtIRrFnbMYJnC49bdh
-42BeP2Ne2z56Ly8r6f/uoCYKj0kQTUk+pNjGYLnE+V5sBk9TmiZVif75WTlDiqPp
-r2zFGQnbINtq3KVIe13i+yrxTVTBe5bUVtGc4qjCnQjIBDUYXXiJa599Dx78pagB
-JqdGrYggUEwWL+6Sq3YVDInit8khsTwHuoypi3/HcuRF49RMDMw=
-=YlyP
------END PGP SIGNATURE-----
+I am sorry this is not going to work out. There is no such harmonized
+speed, differences can be an order (or two) of magnitude different, we
+do not want to pay the penalty of a very slow identification on all
+designs. We currently do the read several times with different
+parameters. What if we were trying one more time by cutting the speed by
+2 (completely random proposal)?
 
---/Y3a12dyBXGbAn3r--
+> 4. In PHY mode, check against the DT max frequency (board limitations)
+> and chip max frequency before switching to this mode.
+
+There is not such thing :-) the max frequency in DT currently would be
+set to the platform limitation. We need somehow another parameter
+indicating what is the maximum speed if we can fine tune the timings.
+
+> I hope this makes at least a bit of sense. I'm really not yet familiar
+> with all the different use-cases and limitations.
+
+If I get back to your own issue. Is there any chance we could avoid
+tweaking the DT for handling it? Would there be a configuration of your
+controller that would allow reading the ID of all the chips with enough
+delays? Currently, the spi core doesn't care much about other parameters
+than the frequency, but there is perhaps room for improvement.
+
+Thanks,
+Miqu=C3=A8l
