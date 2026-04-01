@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C11F79DA;
-	Wed,  1 Apr 2026 16:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307154657E3;
+	Wed,  1 Apr 2026 16:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775059290; cv=none; b=V+ZOZIrPVH23fzodq9yw8otej0XfzIoDCdw4LBpYlORSlFpm/2JgFrEHf18f5BE5wH94ZVZHHfcJsOlhE2W1SqqcmOkZeKbQMI0WRiXVTOxPr4hRcVLdM4IcgCCYT+94kqE3vbsVxQGqsvgPROOUCeA8+u18m6TJQTwVLNcRl9g=
+	t=1775059652; cv=none; b=BnHvYjJpghj7bxut3tc6p/To2CDiuaa62TWpfCCsBrMML5BFYrSyqvKFQD6IYoApUsquH2Gx9uEbBBRqKFq50t/OX4ot2K6rV1gSPpbOKc2PI7EQc317lftuCxGwPElk04hnsmgnrgv++SQUaUGT+ntkA+MfZ6Xm0ECTKUsZDg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775059290; c=relaxed/simple;
-	bh=W9qx/b89lLAH5xKATjSr4FjoF8xSzZzboxnb+4KLYY8=;
+	s=arc-20240116; t=1775059652; c=relaxed/simple;
+	bh=EFiVz7oTsJZh6ZU1Ng7jCh+8Psy0EZFpu1yBCNbbNEo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L4NbGopkMKp6W/wnA+CeVfgPsh/85XEWW4ZC2qE6hcRFEmcOC+vxOPU62v38jd7ovn+ZC/n4X7r2Rn0hFKFssOv4YIVJluhl1LEbfg/15i6uKt//m1RBhfXkA5J7grY/ZJocuFoIoZ0WzUhAyVX8gcpRywQyA8S3VBqrKjTJPjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKwgVmSA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=gHHmANgZ2X/fLOoT/Eo9onxeA6WAHiC+3ZWMEoDDUEWOCkXqrT1NliUj1e/cgWR9Kqb2m+tr9WtkqQha5fUg5qYhd0E4+XeApCjqXtEqRBwu9gGunuhMawjqEV/AWSD0c2nq2nAabLtHbKxHgVNkW3jSCINVVf4HaFl9X6nQkhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UD1ISEYc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKwgVmSA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E304CC19423;
-	Wed,  1 Apr 2026 16:01:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UD1ISEYc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710CBC19421;
+	Wed,  1 Apr 2026 16:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775059290;
-	bh=W9qx/b89lLAH5xKATjSr4FjoF8xSzZzboxnb+4KLYY8=;
+	s=k20201202; t=1775059650;
+	bh=EFiVz7oTsJZh6ZU1Ng7jCh+8Psy0EZFpu1yBCNbbNEo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gKwgVmSAxxvBbw1CPLzmPJv7PtM7inQR8cZwoafTWDdo4dBnnR87DPqffL+itfKia
-	 jLGAooi36YLbRnOlZDk4cfJkhQ70pO4Y86FtHaYjtr6IVn78mKX71s3sBGlNhPgVfG
-	 ziq9gdKcEDwgBcmTp0E18lygeAR3rk5K2WKN/2nRQ7PyqfA+eKN4FAJKBKRLZTtLnr
-	 oIBzTon1i40EZHvzz3GO0xpnaN4Crt7W9DVWwzKRyQzxha85dZAJOD/SJhCFpnm7pO
-	 BqRFv9sXOXsUigZ/ZhYC9HbVHD9HkaSeYly7cBvhskECynru7k7o036e3LI0JumiYc
-	 FpuYi+9bF5/xg==
-Message-ID: <b64a71fc-9a3f-49c0-a035-be6fe2a1ea4d@kernel.org>
-Date: Wed, 1 Apr 2026 18:01:20 +0200
+	b=UD1ISEYcsmSYDhlb01nvZDFtlQlbSemlnr7iXtgCk104YW1Q5UxqwsolERk5ylFHv
+	 Vt1PY4i4FHRYcP8dnxS8Q8eBRTzYywTPGKUZtWQdZdpoNe99VW6H7iQQqNCm1jw8Bz
+	 n86Z36xJ4BZ5cWRXG6m9oIgvPhCmBpLh1ki9W4JudWmC9EHmPhTbLAGUU6e+kwqm7L
+	 8KuEJ4EPuD9AWV1PsnVAcs+Tn1B/bI/YO5n1g500VM71HHkbnXXbOF29Vr0SwSACPQ
+	 /K0VJ66vzfau79yssDUdidY/ndCcqyKFplWKKQok3R8Tvn+pWIvzT4D5nxYoFCDUqY
+	 ZUo5E5dWU/p+Q==
+Message-ID: <562530e9-a607-4dae-9b43-786a3946f795@kernel.org>
+Date: Wed, 1 Apr 2026 18:07:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,38 +35,39 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/3] of: Factor arguments passed to of_map_id() into a
- struct
-To: Frank Li <Frank.li@nxp.com>,
- Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-Cc: Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal
- <nikhil.agarwal@amd.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Marc Zyngier <maz@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
- Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH 1/2] dt-bindings: gpu: mali-valhall-csf: Document i.MX952
+ support
+To: Guangliu Ding <guangliu.ding@nxp.com>, Liviu Dudau <liviu.dudau@arm.com>
+Cc: "Daniel Baluta (OSS)" <daniel.baluta@oss.nxp.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, imx@lists.linux.dev,
- xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org,
- Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-References: <20260331-parse_iommu_cells-v12-0-decfd305eea9@oss.qualcomm.com>
- <20260331-parse_iommu_cells-v12-2-decfd305eea9@oss.qualcomm.com>
- <acvdqQvcitLTCZbm@lizhi-Precision-Tower-5810>
+ Fabio Estevam <festevam@gmail.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, Jiyu Yang <jiyu.yang@nxp.com>
+References: <20260331-master-v1-0-65c8e318d462@nxp.com>
+ <20260331-master-v1-1-65c8e318d462@nxp.com> <acva1Xt8V4k9-uG8@e142607>
+ <AM0PR04MB47073E9E8B5C704BCF5D9F72F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+ <99a1da55-d6e5-4d11-abaa-8c85283ab5f2@oss.nxp.com>
+ <AM0PR04MB4707B3E37DFE7AEE587DBA2AF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+ <aczv0R0aQRmHKdvt@e142607>
+ <AM0PR04MB4707335CC7035232D44E6ED9F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+ <2f4c4063-daf6-48f2-b830-9f58dc7af80d@kernel.org>
+ <AM0PR04MB4707D758EC8B08C6D42F3A82F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+ <253608f3-8b47-428d-a703-97dcd9731628@kernel.org>
+ <AM0PR04MB47075AF2C5863FC665285CA9F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -112,62 +113,45 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <acvdqQvcitLTCZbm@lizhi-Precision-Tower-5810>
+In-Reply-To: <AM0PR04MB47075AF2C5863FC665285CA9F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/03/2026 16:43, Frank Li wrote:
-> On Tue, Mar 31, 2026 at 07:34:47PM +0530, Vijayanand Jitta wrote:
->> From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+On 01/04/2026 13:27, Guangliu Ding wrote:
+>>>>
+>>>> We discuss only the lack of compatibility in terms of DT, how DT sees
+>>>> compatible devices.
+>>>>
+>>>> And lack of driver code is clear indication that devices are
+>>>> compatible in terms how DT understands it. Feel encouraged to bring
+>>>> actual arguments in commit msgs in the future.
+>>>>
+>>>> Best regards,
+>>>> Krzysztof
+>>>
+>>> So the best approach is only reserve "arm,mali-valhall-csf" for now,
+>>> since currently there is no need for an additional compatible entry from a DT
+>> compatibility perspective.
+>>> We can introduce "nxp,imx952-mali" in future commits if hardware or
+>>> driver differences actually require it, and include more detailed justification
+>> in the commit message. Right?
 >>
->> Change of_map_id() to take a pointer to struct of_phandle_args
->> instead of passing target device node and translated IDs separately.
->> Update all callers accordingly.
->>
->> Add an explicit filter_np parameter to of_map_id() and of_map_msi_id()
->> to separate the filter input from the output. Previously, the target
->> parameter served dual purpose: as an input filter (if non-NULL, only
->> match entries targeting that node) and as an output (receiving the
->> matched node with a reference held). Now filter_np is the explicit
->> input filter and arg->np is the pure output.
->>
->> Previously, of_map_id() would call of_node_put() on the matched node
->> when a filter was provided, making reference ownership inconsistent.
->> Remove this internal of_node_put() call so that of_map_id() now always
->> transfers ownership of the matched node reference to the caller via
->> arg->np. Callers are now consistently responsible for releasing this
->> reference with of_node_put(arg->np) when done.
->>
->> Suggested-by: Rob Herring (Arm) <robh@kernel.org>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
->> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
->> ---
->>  drivers/cdx/cdx_msi.c                    |  7 ++--
->>  drivers/iommu/of_iommu.c                 |  4 +-
->>  drivers/irqchip/irq-gic-its-msi-parent.c | 11 ++++--
->>  drivers/of/base.c                        | 68 +++++++++++++++++---------------
->>  drivers/of/irq.c                         | 10 ++++-
->>  drivers/pci/controller/dwc/pci-imx6.c    | 32 +++++++--------
->>
->> for imx part.
->>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>> So does that mean you decided not to read writing bindings document?
+> 
+> Actually, I followed the compatible string of gpu node in imx952.dtsi during
+> code work since they share the same GPU IP.
+>          gpu: gpu@4d900000 {
+>              compatible = "nxp,imx95-mali", "arm,mali-valhall-csf"; > 
+> 
+> Is this line in writing bindings document that you want to mention about?
+> Could you please share more suggestions about the patch optimization?
+> 		DO add new compatibles in case there are new features or bugs.
 
-So that's an Ack. Leaving a Rb tag for a tiny tiny piece of big patch
-will give impression that everything is reviewed on v13. And the patch
-was not reviewed by you.
+Please read entire file. I feel like you avoid doing this and just ask
+me to give you shortcut.
 
-If you cannot certify the reviewers statement of oversight then use acked
-
-"For instance, maintainers may use it to signify that they are OK with a
-patch landing, but they may not have reviewed it as thoroughly as if a
-Reviewed-by: was provided."
-
-"For example, if a patch affects multiple subsystems and has an
-Acked-by: from one subsystem maintainer then this usually indicates
-acknowledgement of *just the part which affects that maintainer's code.*"
-
+There is more than one point from that trivial writing bindings file
+which applies here.
 
 Best regards,
 Krzysztof
