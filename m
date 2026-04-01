@@ -1,223 +1,165 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B54747CC87
-	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 17:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775064053; cv=none; b=OtGrKOhoggNZSk/2EmBcsiRAOdJeghJUVFdCNjIfpUcjkDWmKB3nj9TW+hqoL2dRG3ooscHN/samHDnAQYd6E2aWBy0Ce2VeSfPS1vd/fV9TmdEEYMt4E+mwZakTElAJebrhh764tIeVT878ydnxwf/6YZSExlKjHDnLXGR/Zek=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775064053; c=relaxed/simple;
-	bh=jso9ol/BwsazpOhcwBaDQGk6Irh//4G6BIQJqtlE/t4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HkmW4h5qTRWMwCerhhiO+3gCPxLFEZ/vL0DIb+B3Z45d59KqyvtTAj4EHp9bDok3iXOyrtZ4nwG0YYp1ABB5ZcKPW1ygFQbfDWZWPVQlDtRkKELhF/mVif65lbcfGvw1Z6zRAmNuhlI7ia+ORY/IO7IWyaul+p8YkK5rdtNu0pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NBqFjF2f; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013065.outbound.protection.outlook.com [52.101.83.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C82B3F54A1
+	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 17:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775064178; cv=fail; b=Rp2QxezxW5u8xws88Mab673eBtag98YtCQEoY81b7CL09LpX/sdWxMAfrwGYigc24Cou11HFQd9goYwDwmVqXAdM0+UvnP5AFBujRf9EnqviNgg4GwHyIgbPrxvAPlVj/fcKIYS0/3MRgKE2ZuGhMB9z7bUjvAx7tCQ31EBZXBE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775064178; c=relaxed/simple;
+	bh=KMO7SxJO1IuIZTdZ4NK3ijMfLIAUTnFeao5ZnZc/Svg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ifV3CMi1f+9C7cWS9Mq7W1Y5EFl83a5zXLa0sSNafO0U7QX+7oWwz8wNMI9t0rfaWIuoE1DLkmn8Dq15UBrWJoVusqHiur/T1F4sGPR1m4lvJuPVenC/WlveLOh7oOnfEuIafWS5RDgvK+/U20roKd88QpBaWm2mugUvNr3g6PA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jA0tHIfM; arc=fail smtp.client-ip=52.101.83.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NBqFjF2f"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B41F232B1
-	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 10:20:45 -0700 (PDT)
-Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5B9AF3F641
-	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 10:20:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775064051; bh=jso9ol/BwsazpOhcwBaDQGk6Irh//4G6BIQJqtlE/t4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NBqFjF2f/vFlgzdOWUorccE9SOFDNJXt9831KQw65PWxtk7PMvL9On/h0s96qtPlY
-	 n3f7mlhV8dT6UjCeJ75cBvSWpX7udYkTNMX3KmH0vd/Q8KpYgHugYDbWb4yLQhavQx
-	 iXiK+PhBu+S6Bw43HlKAH8E5S36y+XLwa4xGZD6Y=
-Date: Wed, 1 Apr 2026 18:20:27 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Guangliu Ding <guangliu.ding@nxp.com>
-Cc: "Daniel Baluta (OSS)" <daniel.baluta@oss.nxp.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Jiyu Yang <jiyu.yang@nxp.com>
-Subject: Re: Re: Re: Re: [PATCH 1/2] dt-bindings: gpu: mali-valhall-csf:
- Document i.MX952 support
-Message-ID: <ac1T282yvpdAp_TP@e142607>
-References: <20260331-master-v1-0-65c8e318d462@nxp.com>
- <20260331-master-v1-1-65c8e318d462@nxp.com>
- <acva1Xt8V4k9-uG8@e142607>
- <AM0PR04MB47073E9E8B5C704BCF5D9F72F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <99a1da55-d6e5-4d11-abaa-8c85283ab5f2@oss.nxp.com>
- <AM0PR04MB4707B3E37DFE7AEE587DBA2AF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <aczv0R0aQRmHKdvt@e142607>
- <AM0PR04MB4707335CC7035232D44E6ED9F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <ac05OpEMjKMd8CXy@e142607>
- <AM0PR04MB4707604AF2C445971C7474EFF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jA0tHIfM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZwSU0bN5jf8hxNxPLw8tb6h+DN8wrdPsGKCIJpXbb4bcxkfZirAexHRkwDbZrKmzNS+PUx8bEj/Z2Q157Z7/BMQ/goRbvMrx3tfIR033HmM9xHbYOr8HCS2exORkuY6KFCLJib9Mpu9bB2lrwHesHY8V6c14gV0dFSaGH6DzPjQXEFpjQQnYJEddI0ebsPq0PyPDEn69fMyUPsHP31QGp09XMicekEnxz+R+GyJZ86sIeYspwsMEqxYwpIMmfErthmzFrdo8HH7+33+qE6sftDhnxHAtkEheFRJGXE8x2wKg1B6oQwPjtbeAbMKynUE5thMRYO1TX6jsABrgUhiVGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=snCyxZwsFD5ESy9yO5XgaqefWFmq9Y0dA4I71OzI9mM=;
+ b=n6837p0goQAZjx+NwguXT7o+Qt8wLZpsRSX9dkGK74tJeqtf6IhrCShfOdS9fGfxJgdwFJ+HrcA7QzpuxGa6QOfYeV5RoFWuYNvzMp3hh26B1/y1AiwOyLWTJe4+LmRcjiCaKno8esoJip+ZnwqeB+8wVPhDjDIgYoJg0E9n9cQG9iZ5+U0s79zwsyMuV5W7cyiLCKiCTbL4ZvBA7oLxFVDlY4UsNaxebnNbFxTd42QtSOlPK4af4dEzlIR5tS9k2flsrj9fu35JrhESe/3G1CVth62Wj6PPJE4Qna/AxRi2xXns244weGvrcjOrd61S2T8MScERXb3LiZ2ih++zsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=snCyxZwsFD5ESy9yO5XgaqefWFmq9Y0dA4I71OzI9mM=;
+ b=jA0tHIfMHgCBobxFOSB1VsJQzDUZ9jHpz6DvKOMm9oNEGeH4gqH6PWCPRnOww1szL/m8VIiE0cZpRnR5GyEiYAjYo3Se8hHzP+dpVKH4JM2qzQAz+MxTHbWgf6iHIs8shamQxYieLwPFvooyUAqqwndFYb42DQ0vax9ltaiRwkVuXJwBetOi7UOAx8vSB7y5F5DXVx/JXaJPZSkOXOLGzy5eUZ81rxYWWxva0b35HHio8wpmSwt4kTx/havSEi4x9Js5Cb6MYlsaXYGcr1XLo1EXGm2WClTA28wUxN9HvEP6dINLjeLcoDIO5Uz44N6vFlcTfoNLKQQH6p6XvxPVgA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by PR3PR04MB7402.eurprd04.prod.outlook.com (2603:10a6:102:89::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 1 Apr
+ 2026 17:22:53 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9769.016; Wed, 1 Apr 2026
+ 17:22:53 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: netdev@vger.kernel.org
+Cc: Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>,
+	bpf@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/3] Fix short frame transmission in enetc
+Date: Wed,  1 Apr 2026 20:22:43 +0300
+Message-ID: <20260401172246.1075883-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: WA2P291CA0028.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1f::23) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM0PR04MB4707604AF2C445971C7474EFF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PR3PR04MB7402:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7db7362-4136-4328-eb27-08de90134e0a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|19092799006|366016|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	UdQxU/+1II8ACbxtd4MOF19/xzQSYH5INqX/3LxxviIY8/Okbq6dsWGZZJoCNIbcNrsGvXQ0/sNVMmB9LmAW0Uwt+SB3ENbU1gQL+H3Mq+QUHG47eBP+/nC3GtuAvlRgyULDV01wyIlPzYU9B0AmLrtGDZhFx8A+7HYAsKgR4UfClf0ye30ILiyiTyzVeJSxHE/ULkhixWtWoWrpIMGx1iufrhQEjqxA7H8HNMAtVCEgjrwnqZ9eO9/UZyZ55Ce7IOJ+UDT71+N8ytjDtWRVMJqmyjs7Udna1xlGD39yAMQSgDeM6a7+mNMgzq0dFvAq9/yFrde1YE5jjwEx4aLwlqLezF+ZWKBX3cLDnoCQ69kJmeoFsnpgg5ytUGRaWHEIBM4tr8UWvvXaK3OkDzjQmkzeKbGBi516RUZCajxs6Q06bavWMw6DZ1CL74JXM3K0mW1EV0el218QItoSMn0BcjEqLdhe6oU1dYBx/SX2SkTdJyhv2zj+SfW5q7eLbk33/NqE4WXATiFuNxISvFp5ivgTo9+EseY7pbbf5zQHByQGexfrYMloR0ZVrxYGiXuAHhjwR7ZV2LDPZ4VQPcGm1Vn6g3Bhd4bJAoxRD2zpthOZFpaIanbAq2jBzWXhSK5ojjvO4fInmu3+PY6v+CHV+gVzoM+8XDNycq/YvHHzxviJAHLsNhWR4KbsSFJbi5NEuNFbkI3Rxt3q+H4a+ylNya5CQ/DAXFv9DtanbznMs68=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(19092799006)(366016)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FV/J1BfxtvbZO09VfhcCW41LlDhFwEfvYX9+MyVS08JrQneU42lQJsIZ/ZJZ?=
+ =?us-ascii?Q?KSbhFgFHS4BLBY+Qxl30jaMMF+Ws1VoKQfStMyzbe3QPHawWLh1TviMw4o1X?=
+ =?us-ascii?Q?fETGdVvBtTouxO0P2XOQJhOZGeOnwaDeNLRZG/0FU2iyBSWBygYh9qFczw2x?=
+ =?us-ascii?Q?Eci0u98AsOMr2nZjJA+OP9LxYE3uyKnbqXwSy+Nx1QprssEqyKxTFoCvbNVY?=
+ =?us-ascii?Q?8F995KZ+iZuswMo7UALpg5RYVHm4dO4XP3li2WmUjICOMUBBtwAd0nnByLY1?=
+ =?us-ascii?Q?BLjdsc3+lCGgh6Bn0U8TLGKbl+T+1JZL5oPQSsgcd9SdDc2gnvMZxFfybcL5?=
+ =?us-ascii?Q?h7nD1cos3esR4mk6Ujj7W6VAeBwIWD3XPS9OS8byeeE9M8/TR8Utnl01Xv2g?=
+ =?us-ascii?Q?hCbqPhziGb2IYxi2uUfodDDYjjYw391FisPl0sApzPjmpyRDQvYN3DbhOV18?=
+ =?us-ascii?Q?biVemrlCc6U+kK7Wwhhym33DJr2G2BZjPmjToKuO6fxHFwFeAKWN8374qNVt?=
+ =?us-ascii?Q?mY9+WO+0zpij7eivJidZxDOGUg1cB20pcsyVySMOjTV2F/PJMMS1Z8ajRUdZ?=
+ =?us-ascii?Q?RhVa5Dwdb3aL3ATZ0AVl7u2uCBNeRvPomujUF2ML3Iv73rj/xVXOwpsj836j?=
+ =?us-ascii?Q?UQ2JOPPlIvClik3hFP2LwVYDf3xxcpKkkW6+dSGoE1GM3qsW+jYoF2EW1WgI?=
+ =?us-ascii?Q?DUMcPSTIhep5fBYiprN9qm1UugtCBLJhN2oBwz+/KU4lk2jj6sPc40QjZn5f?=
+ =?us-ascii?Q?PmorblT/CtonK+vMVXjpDUq2jHYVx4KFSFiiUDNHyUiNKxy1l1pQSysF2ltQ?=
+ =?us-ascii?Q?4eXq1OCjzNzsBNy+mJhl9w5gQMQiSvXhufezDhcp6GrctfV/++8FyqYMOO9Z?=
+ =?us-ascii?Q?v++QQ3MmHlJ9kq/+t+j6CTLROUlswXno0O6XBgwzgA5/V+dYXkQkyn+Wlhdr?=
+ =?us-ascii?Q?w3BUHtfV4PvpCq2y7Z7zk2077OKlvCSEiFXeJZBz+26SbI9pJXyd+XiF3kk7?=
+ =?us-ascii?Q?Mq8uU8SERNgNIYxBUdgCWkFPD3eXffVbEqpcd+EjWL9tTT0f4isuMQKDHX91?=
+ =?us-ascii?Q?Jm2K4DBNOYL5PTgakFT5Zue6Bwqo/KhcdYAKnDf+2Oyxc1TSlaz/K1DRC3c7?=
+ =?us-ascii?Q?kUZZSnctH0h8rcl4idvIVwYibd8Xz2iDZXPXYJH5I0YlG00RTBIY0uUrX5ip?=
+ =?us-ascii?Q?t9M/NZumv+Hy7AjRhvFTVRQe7Gp6a25HMZmtA77+8+Q9+hNa6QGTLvii/IqL?=
+ =?us-ascii?Q?8aAuQcD6yayYq8IJRYNcS5a8vkRXqTiy3o2RUv6EnRztVvQRQsqG9yGjTWsC?=
+ =?us-ascii?Q?v17ryffuS8HW9omvqC2gvvkHUI57jeeEIgm/OF0DHTQvPc2M22DyZsvZQq7L?=
+ =?us-ascii?Q?bImmkVnFN1V3hDZPWth7MvOMknFhm67L5/8T5QoBc0OnuseEwcP69l/V47ab?=
+ =?us-ascii?Q?l+2ZG8bsfcvTp8uN2cMWOvtk9Zk/Hu8U8/ai9D+PLnTf0RR+EqOwMR0Wf6eg?=
+ =?us-ascii?Q?B0rTDTUDlMEOPlDLktKvcTkpdr9Z3oIeE2EN6oLD4K533H5xZAa8wTO9lH47?=
+ =?us-ascii?Q?bHM+Yg5t/yWzptbNj8xrKVxB8lCjXywAHWB3AXW7D2bBQHjL4VILfx4CwPrK?=
+ =?us-ascii?Q?xk+vxFMHkMFI+LuckTE1UUSOE69kXL9LyAfpbErJ8A2ceIrSaEY7PV2WT5NL?=
+ =?us-ascii?Q?pwqP2T2JBLoRYbl21blkLYQo4TkWJywTGWGDth5eBzP1T29+25gmBqZtZB3+?=
+ =?us-ascii?Q?YXInDoz0K1tSZrzLSUZk+vfkliO2jUvm4hRlkl8OvIvdBCmserXT51yRbgG+?=
+X-MS-Exchange-AntiSpam-MessageData-1: svfHd4cSZnB0sQiKRsyLXROkZyOZMOquAJo=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7db7362-4136-4328-eb27-08de90134e0a
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 17:22:52.9402
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ay1gl+X2w+00xTv8UUwjvh3BYhlSshAi65izFLpvdIPwckUBkUPuKbIU6xVh8i+F6rRICMzyZ5onjijsbbL9uQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7402
 
-On Wed, Apr 01, 2026 at 03:59:23PM +0000, Guangliu Ding wrote:
-> Hi Liviu
-> 
-> > On Wed, Apr 01, 2026 at 10:31:01AM +0000, Guangliu Ding wrote:
-> > > Hi Liviu
-> > >
-> > > > On Wed, Apr 01, 2026 at 09:43:12AM +0000, Guangliu Ding wrote:
-> > > > > Hi Daniel
-> > > > >
-> > > > > > On 4/1/26 11:48, Guangliu Ding wrote:
-> > > > > > > [You don't often get email from guangliu.ding@nxp.com. Learn
-> > > > > > > why this is important at
-> > > > > > > https://aka.ms/LearnAboutSenderIdentification
-> > > > > > > ]
-> > > > > > >
-> > > > > > > Hi Liviu
-> > > > > > >
-> > > > > > > Thanks for your review. Please refer to my comments below:
-> > > > > > >
-> > > > > > >> On Tue, Mar 31, 2026 at 06:12:38PM +0800, Guangliu Ding wrote:
-> > > > > > >>> Add compatible string of Mali G310 GPU on i.MX952 board.
-> > > > > > >>>
-> > > > > > >>> Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
-> > > > > > >>> Reviewed-by: Jiyu Yang <jiyu.yang@nxp.com>
-> > > > > > >>> ---
-> > > > > > >>>
-> > > > > > >>> Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.y
-> > > > > > >>> aml
-> > > > > > >>> | 1
-> > > > > > >>> +
-> > > > > > >>>  1 file changed, 1 insertion(+)
-> > > > > > >>>
-> > > > > > >>> diff --git
-> > > > > > >>> a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf
-> > > > > > >>> .yam
-> > > > > > >>> l
-> > > > > > >> b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.
-> > > > > > >> yaml
-> > > > > > >>> index 8eccd4338a2b..6a10843a26e2 100644
-> > > > > > >>> ---
-> > > > > > >>> a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf
-> > > > > > >>> .yam
-> > > > > > >>> l
-> > > > > > >>> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall
-> > > > > > >>> +++ -csf
-> > > > > > >>> +++ .yam
-> > > > > > >>> +++ l
-> > > > > > >>> @@ -20,6 +20,7 @@ properties:
-> > > > > > >>>            - enum:
-> > > > > > >>>                - mediatek,mt8196-mali
-> > > > > > >>>                - nxp,imx95-mali            # G310
-> > > > > > >>> +              - nxp,imx952-mali           # G310
-> > > > > > >> Can you explain why this is needed? Can it not be covered by
-> > > > > > >> the existing compatible?
-> > > > > > > There are functional differences in GPU module (GPUMIX)
-> > > > > > > between
-> > > > > > > i.MX95 and i.MX952. So they cannot be fully covered by a
-> > > > > > > single existing
-> > > > compatible.
-> > > > > > > On i.MX952, The GPU clock is controlled by hardware GPU auto
-> > > > > > > clock-gating mechanism, while the GPU clock is managed
-> > > > > > > explicitly by the
-> > > > > > driver on i.MX95.
-> > > > > > > Because of these behavioral differences, separate compatible
-> > > > > > > strings "nxp,imx95-mali" and "nxp,imx952-mali" are needed to
-> > > > > > > allow the driver to handle the two variants independently and
-> > > > > > > to keep room for future
-> > > > > > divergence.
-> > > > > >
-> > > > > >
-> > > > > > This information should be added in the commit message
-> > > > > > explaining why
-> > > > > >
-> > > > > > the change is needed.
-> > > > > >
-> > > > > >
-> > > > > > But then where is the driver code taking care of these diferences?
-> > > > > >
-> > > > >
-> > > > > Yes. Currently the driver does not require "nxp,imx952-mali" string.
-> > > > > However, when GPU ipa_counters are enabled to calculate the GPU
-> > > > > busy_time/idle_time for GPU DVFS feature, they will conflict with
-> > > > > the hardware GPU auto clock‑gating mechanism, causing GPU clock to
-> > > > > remain
-> > > > always on.
-> > > > > In such cases, ipa_counters need to be disabled so that the GPU
-> > > > > auto clock‑gating mechanism can operate normally, using
-> > "nxp,imx952-mali"
-> > > > string.
-> > > >
-> > > > OK, I understand that you're following guidance from some other
-> > > > senior people on how to upstream patches so you've tried to create
-> > > > the smallest patchset to ensure that it gets reviewed and accepted,
-> > > > but in this case we need to see the other patches as well to decide
-> > > > if your approach is the right one and we do need a separate compatible
-> > string.
-> > > >
-> > > > If enabling GPU ipa_counters causes the clocks to get stuck active,
-> > > > that feels like a hardware bug, so figuring out how to handle that
-> > > > is more important than adding a compatible string.
-> > > >
-> > > > Either add the patch(es) that use the compatible to this series in
-> > > > v2, or put a comment in the commit message on where we can see the
-> > driver changes.
-> > > >
-> > >
-> > > According to discussions with the GPU vendor, this is a hardware
-> > > limitation of Mali-G310 rather than a hardware bug, and it has been
-> > > addressed in newer Mali GPU families.
-> > 
-> > I represent the said GPU vendor and I think I know what you're talking about,
-> > but you're taking the wrong approach. All G310s have a problem where in
-> > order to enable access to the ipa_counters the automatic clock gating gets
-> > disabled. So the solution that needs to be implemented when we add support
-> > for IPA_COUNTERs will apply to all GPUs, not just MX952.
-> 
-> Yes. We have bring-up G310 (V2) GPU on both i.MX95 and i.MX952. And auto clock 
-> gating mechanism is firstly introduced in i.MX952 (not supported on i.MX95).
-> According to your update, solution needs to be implemented to all GPUs which support 
-> auto clock gating mechanism after IPA_COUNTERs are supported in the driver, right?
+This is a belated follow-up to Zefir Kurtisi's report:
+https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
 
-A solution is needed, yes.
+My analysis shows quite a different chain of events than the one
+presented by Zefir. What is common is that, indeed, the ENETC misbehaves
+when transmitting packets smaller than 16 octets sans FCS: it sends them
+but does not update the completed index in the transmit BD ring.
+However, I did find a sentence in the reference manual explicitly
+stating these short frames are not supported.
 
-> What's your suggestions for 952 gpu dtb node?
+The main patch is 2/3, which Zefir already tested and confirmed working
+in the thread from February.
 
-There is no IPA_COUNTER use in Panthor at the moment. Unless your DVFS controller uses
-that, I would suggest that we don't introduce a compatible for 952 until the time we
-add support for reading the counters.
+Patch 3/3 fixes a similar issue which can be reproduced from the XDP
+path.
 
-It helps if you think in terms of what is already in upstream, rather than mixing with
-the tests that uses kbase code. Does your hardware need extra code in upstream in order
-to function? If so, where is that code? If not, then let's not introduce the compatible
-until we are absolutely sure we need it because we have code specific to that SoC. For
-everything else we will implement an architecture fix if needed.
+Patch 1/3 fixes an issue I identified while reviewing the code w.r.t.
+TBaCIR interaction.
 
-Best regards,
-Liviu
+Vladimir Oltean (3):
+  net: enetc: fix bogus TX ring consumer index after reinitialization
+  net: enetc: pad short frames in software
+  net: enetc: pad short XDP frames coming from devmap
+
+ drivers/net/ethernet/freescale/enetc/enetc.c |  9 ++++++++-
+ include/net/xdp.h                            | 17 +++++++++++++++++
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
 -- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+2.43.0
+
