@@ -1,90 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B403330D25;
-	Wed,  1 Apr 2026 07:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF79F7404E
+	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 07:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775029311; cv=none; b=bvmQWyWfemGHzoSRchU4dmjz+ZnRDaZd1O10jz2NVfTvxch3mt2+XI0afEY2Eu5y3H6WTdJn4jYsdSNIcrIJvqtRYhEueuFwXw7EDJ+ynESfeysyRQNowXHlvD8+LMnVmj6yvoiqc408ujVodawou2ztmAGorjEQQtAFw02lkW4=
+	t=1775029913; cv=none; b=pybg64ZzTlEMmMtzp7vLd0KWY86YQiyDckCeBJbKwnhTNHDIBlZNMwMx+ZSnyWLQkle78mnlIWdCeawEpSN09FsV3ndCErBmOlSBIHP0sLiVH1wzvemWCLZWJClTcm0qZxz2rRZ/if2fHWG4uS9cLP5XE9Q202j80XTI8p8fEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775029311; c=relaxed/simple;
-	bh=2QALR86Ua7MoBi5F0W+OaAxgTNDklOvWHZhuy7YhXts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jbIElMUOVE10r9Dq5lcxJSYZUpp0V3Bkx4rBwhoW4/n+XV/yUeuoUo75ZR2w/ao4qpUjOBKFREnIhGyhJEPOkAEXv8DVoSvwIt7bRJzYGudHqcoqolgLSONB/TruXhB+ss6NwPoP5Wd22CsKjrxWJJj/XAMi56kycbo6RXmZ9mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQBWpmqc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775029913; c=relaxed/simple;
+	bh=nGkaXP9XPQ+gkqH3UjHw265YM7bUq5L6id6igkjNKAU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=NzNEPb+lxqRoVGD/R7S6unuED8ovmqT9y4U0WHyHPzkZGyS6C2ArHBkxdJVnX9a1KFU9bEPjzC8FND8yD0pFCsrgSiR5Ta0fxzArx+SpYcXc8t4gK5eHLdlPrsqsWq85Gyz9sAeCQagCSh/hKtGYOnWL3ESlqTDOXKSpj1yYt0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jWk6Fnxj; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQBWpmqc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC1FC4CEF7;
-	Wed,  1 Apr 2026 07:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775029311;
-	bh=2QALR86Ua7MoBi5F0W+OaAxgTNDklOvWHZhuy7YhXts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JQBWpmqcjis29i5L2j99vizY5ydDRBX99V0HjEeQkzydDDIhvAX10ZsuKw5xMiBlA
-	 2ETWv0uxjleyGgdxg+hwbPt+Qr1YKzKmCB+Nv4KqBQbwL01vCErYqYaERakqUbuM0D
-	 rTjNPvnXP+q7vgxSIuARcqJ9AX1i6QJPs98Awhfvkdh5NKdNuPDVcMtJKfM2aoQvCI
-	 ySGuZNVJNKrT+p2cxDvL4H0FEKIQQ1m5VQ0yckpTgiGhRARyVKaD0OYopx6yk3Smp6
-	 1I4mNOilPVXByQ72Z23iMUZKTLOBYjMIujkbOGnjd38cbyc+jk41EdsNEiFE5gMeWO
-	 wq80ELwUxCHZg==
-Date: Wed, 1 Apr 2026 09:41:48 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Robby Cai <robby.cai@nxp.com>
-Cc: p.zabel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com, 
-	devicetree@vger.kernel.org, kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, aisheng.dong@nxp.com
-Subject: Re: [PATCH 1/2] dt-bindings: reset: imx8mq: Add _N suffix to
- IMX8MQ_RESET_MIPI_CSI*_RESET
-Message-ID: <20260401-simple-dragonfly-of-will-fedc8c@quoll>
-References: <20260331101331.1405588-1-robby.cai@nxp.com>
- <20260331101331.1405588-2-robby.cai@nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jWk6Fnxj"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 16F1C1A30E8;
+	Wed,  1 Apr 2026 07:51:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D6800602BF;
+	Wed,  1 Apr 2026 07:51:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 48FAD104512AE;
+	Wed,  1 Apr 2026 09:51:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775029906; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=uT7sfHLuVPP3pEA5gLyzkA2Moxay1BQG8R6pq63tpdQ=;
+	b=jWk6FnxjhGu2HcFc6zGL1OGj6IL5Zs7/Fl2Q686nDDtC28o/cBxZ0B5lnUgMb37DGCL/Uk
+	rAjgfnUYQptI93q8MJ004w4xbAb0+iSNuMQn9BXWLFmJ0E+TwO5ks3CpK3aS4oCSxnCKRU
+	QXYU3b5/LY3B0NwZS5vOTSmfYsZ2wWNaStVw9fQjBhfWXkjntmhhB5fsLoGxV9ESHBvuX4
+	CJxuDmkRLmRKssspV9E+L5j8UlAdYdS0YRJjLFpjzXOjdxfqUwFKGxr09Kpv1Y0sAvTKxM
+	aadA789/nx2gmTp7hmC5i/xOnlgXKhPoYHWGW6hvDd7p6XHfczcQNgIyNyDbzg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260331101331.1405588-2-robby.cai@nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 01 Apr 2026 09:51:32 +0200
+Message-Id: <DHHNKZK3NYI0.34BT204KH2VLS@bootlin.com>
+Subject: Re: [PATCH 7/8] drm/bridge: imx8mp-hdmi-tx: add an hdmi-connector
+ when missing using a DT overlay at boot time
+Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Ian Ray" <ian.ray@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, "Adam Ford" <aford173@gmail.com>, "Alexander
+ Stein" <alexander.stein@ew.tq-group.com>, "Anson Huang"
+ <Anson.Huang@nxp.com>, "Christopher Obbard"
+ <christopher.obbard@linaro.org>, "Daniel Scally"
+ <dan.scally@ideasonboard.com>, "Emanuele Ghidoli"
+ <emanuele.ghidoli@toradex.com>, "Fabio Estevam" <festevam@denx.de>,
+ "Francesco Dolcini" <francesco.dolcini@toradex.com>, "Frieder Schrempf"
+ <frieder.schrempf@kontron.de>, "Gilles Talis" <gilles.talis@gmail.com>,
+ =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, "Heiko
+ Schocher" <hs@denx.de>, "Joao Paulo Goncalves"
+ <joao.goncalves@toradex.com>, "Josua Mayer" <josua@solid-run.com>, "Kieran
+ Bingham" <kieran.bingham@ideasonboard.com>, "Marco Felsch"
+ <m.felsch@pengutronix.de>, "Martyn Welch" <martyn.welch@collabora.com>,
+ "Oleksij Rempel" <o.rempel@pengutronix.de>, "Peng Fan" <peng.fan@nxp.com>,
+ "Philippe Schenker" <philippe.schenker@toradex.com>, "Richard Hu"
+ <richard.hu@technexion.com>, "Shengjiu Wang" <shengjiu.wang@nxp.com>,
+ "Stefan Eichenberger" <stefan.eichenberger@toradex.com>, "Vitor Soares"
+ <vitor.soares@toradex.com>
+To: "Liu Ying" <victor.liu@nxp.com>, "Marek Vasut" <marex@denx.de>, "Stefan
+ Agner" <stefan@agner.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
+ <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Rob
+ Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com>
+ <20260320-drm-lcdif-dbanc-v1-7-479a04133e70@bootlin.com>
+ <544112ab-8ca0-4622-b680-233457198e3e@nxp.com>
+ <DHDNA5HLQPIB.3F21G9QPBUQG8@bootlin.com>
+ <5f06ea5a-5388-440f-91d6-cebb0bee0a88@nxp.com>
+ <DHG8G8FMXA6C.U6LU563OZ8NR@bootlin.com>
+ <9a6e74ed-d4ab-4f11-ab17-25e1a2b64b2d@nxp.com>
+ <DHGWUIUIKETI.1F1636GUBB3VI@bootlin.com>
+ <246ca728-1be6-4dd9-b228-7d99f28e1abe@nxp.com>
+In-Reply-To: <246ca728-1be6-4dd9-b228-7d99f28e1abe@nxp.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Mar 31, 2026 at 06:13:30PM +0800, Robby Cai wrote:
-> The assert logic of the MIPI CSI reset signals is active-low on i.MX8MQ,
-> but the existing names do not indicate this explicitly. To improve
-> consistency and clarity, append the _N suffix to all
-> IMX8MQ_RESET_MIPI_CSI*_RESET definitions. The deprecated
-> IMX8MQ_RESET_MIPI_CSI*_RESET versions remain temporarily for DT ABI
-> compatibility and will be removed at an appropriate time in the future.
-> 
-> Signed-off-by: Robby Cai <robby.cai@nxp.com>
-> ---
->  include/dt-bindings/reset/imx8mq-reset.h | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/dt-bindings/reset/imx8mq-reset.h b/include/dt-bindings/reset/imx8mq-reset.h
-> index 705870693ec2..83a155dbbd4a 100644
-> --- a/include/dt-bindings/reset/imx8mq-reset.h
-> +++ b/include/dt-bindings/reset/imx8mq-reset.h
-> @@ -46,12 +46,18 @@
->  #define IMX8MQ_RESET_PCIEPHY2_PERST		35	/* i.MX8MM/i.MX8MN does NOT support */
->  #define IMX8MQ_RESET_PCIE2_CTRL_APPS_EN		36	/* i.MX8MM/i.MX8MN does NOT support */
->  #define IMX8MQ_RESET_PCIE2_CTRL_APPS_TURNOFF	37	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI1_CORE_RESET	38	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET	39	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI1_ESC_RESET	40	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI2_CORE_RESET	41	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET	42	/* i.MX8MM/i.MX8MN does NOT support */
-> -#define IMX8MQ_RESET_MIPI_CSI2_ESC_RESET	43	/* i.MX8MM/i.MX8MN does NOT support */
-> +#define IMX8MQ_RESET_MIPI_CSI1_CORE_RESET	38	/* Deprecated. Use *_RESET_N instead */
-> +#define IMX8MQ_RESET_MIPI_CSI1_CORE_RESET_N	38	/* i.MX8MM/i.MX8MN does NOT support */
+Hello Liu,
 
-That's quite a churn for no need. The entire point of these values being
-the binding is that it describes the ABI for SW and DTS, not your
-hardware registers.
+On Wed Apr 1, 2026 at 8:45 AM CEST, Liu Ying wrote:
+>>>>>> Boards with a different connector should describe the connector in t=
+he
+>>>>>> device tree, if they need to instantiate the exact type.
+>>>>
+>>>> I think this is the only valid solution. It's very easy to do, nothing=
+ new
+>>>> to invent.
+>>>>
+>>>> Maybe on top of that we could add a warning when the overlay is applie=
+d,
+>>>> e.g. "imx8mp-hdmi-tx used without a connector described in device tree=
+;
+>>>> adding a type A connector as a fallback; please add a valid descriptio=
+n to
+>>>> your device tree".
+>>>
+>>> I'd say this doesn't sound a bad idea but I hope the message is clear a=
+nd
+>>> short.
+>>
+>> What about:
+>>
+>>   Connector description not found in device tree, please add one. Fallin=
+g back to Type A.
+>
+> Maybe:
+> Please add a hdmi-connector DT node for imx8mp-hdmi-tx. A fixup node in t=
+ype a is added for now.
+>
+>>
+>>>> Maybe pointing to a TODO entry in the documentation.
+>>>
+>>> To parameterize the HDMI connector type?  If so, I'm okay with that.
+>>
+>> I was meaning a TODO entry to suggest people to add a connector descript=
+ion
+>> to the dts. E.g., expanding on the above suggested warning:
+>>
+>>   Connector description not found in device tree, please add one. See ht=
+tps://docs.kernel.org/gpu/todo.html#<...>
+>>
+>> And of course adding a TODO entry describing what one needs to do (add a=
+n
+>> hdmi-connector node and link it to port@1 of the hdmi-tx).
+>>
+>> The drawback of the TODO is that items in todo.rst are supposed to be
+>> removed eventually when done in the code, but this one cannot be removed
+>> until some kernels printing the above logging message will be around,
+>> i.e. potentially for decades.
+>
+> Not a big fan of adding a TODO entry, because those DT blobs without a
+> hdmi-connector node could be out there forever, meaning the added TODO
+> entry can never be removed.
+>
+>>
+>> So maybe the simplest solution is just the first warning message + a
+>> comment in the code right before the warning line, so it easily found wi=
+th
+>> grep or a web search by who sees the warning.
+>
+> +1.
 
-Whether signal is active low or high is kind of irrelevant. Linux uses
-it exactly the same way.
+Agreed. I've already sent v2, so I'll queue this for v3.
 
-Best regards,
-Krzysztof
+Luca
 
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
