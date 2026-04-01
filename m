@@ -1,241 +1,174 @@
-Received: from mail-m49202.qiye.163.com (mail-m49202.qiye.163.com [45.254.49.202])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011013.outbound.protection.outlook.com [40.107.130.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE533D75A0
-	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 09:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775037086; cv=none; b=OBLgK4OfVZBHsZxa0E8vdQfQviF/O8/HZgA9KTxfSS+nSTkEFZXYLYgG11IVd0CSNo3zaV2RUmyem4AL6/jQc69hdvDiYmI3lSJ2NnSZGPor9YFQ4JAUCKYoeyIPbTCCGYvd8CmTNQRkbyYG32Du1QiguNEH+gVINkRJZUQFaKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775037086; c=relaxed/simple;
-	bh=91ZYDpH2SSucAC7pPLtkHTrWAsU01vIAXwb2xQhDkw0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GLKaSfx9vhRRf7smnoDEpWofHPO/uQ1Pk0KXZe2+NeVHWNO0D51jW3RFzScIdjopRrwG8TQXFMllBjV1VnfuRBpzGs7WyW1lcouX5E5K7odKBKkfGA8gA5zA6ExcaRqZHdz7SNGg9aw5XQPMuk4gMuS5UoJdMj20JIVlHkm7Ba4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=cZa4qLsU; arc=none smtp.client-ip=45.254.49.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5C133AD8B
+	for <imx@lists.linux.dev>; Wed,  1 Apr 2026 10:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775038238; cv=fail; b=nWvzOIktc5znb6NCaUVJUpoehOHSVZ8ZXB60siEfIE/lq/B346WdalbINTkvnPkFnnRUV7VseIXXobW0EdH5yNPwRkbGzAbg7vNXwRKnxhyin75GJ5Jyatz7WS3DuTkbJ6WUeI999FUL6W1uDXA1ohWRMP8Sk8hInJ/kRuXE1Sw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775038238; c=relaxed/simple;
+	bh=M9tnXSkJiHVQhvwYG9BiPtJnIIyqGFzuNVaT/vCAdxU=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ehhXekGYdm8JXD5nD+fYsYJ6pw7IOw2JFBIuxt1LQLM32Hh1LjsBwIeqUovEv/xoMsvSBwkB3k/7fIYsAte6ZtWU/XlBj3VaA3dLmEKI4+hIeSsInJePxNFosqp+cR3dqSSaSp3pzgjIFr7pABQCavJbPnzuhzBVIo8Dxc5pjD0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S/hQW55+; arc=fail smtp.client-ip=40.107.130.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="cZa4qLsU"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 392496b77;
-	Wed, 1 Apr 2026 17:35:57 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	victor.liu@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	alim.akhtar@samsung.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	luca.ceresoli@bootlin.com,
-	nicolas.frattaroli@collabora.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v12 17/17] drm/bridge: analogix_dp: Apply panel_bridge helper
-Date: Wed,  1 Apr 2026 17:35:47 +0800
-Message-Id: <20260401093547.25840-4-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260401093547.25840-1-damon.ding@rock-chips.com>
-References: <20260401091454.25730-1-damon.ding@rock-chips.com>
- <20260401093547.25840-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S/hQW55+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wMFgQUx5OG06VGAWhLLacsdDlzpMeguRg6vFUhUBYIKM56DrTzR1jCAnxV65NTKbKQsCXT8z8nCgWkYSBE6D8ATJ6qxCusX7d0wehAlaV58ygVCXNf3Gq9/zp1KInvfZ7coh4jnzqGDF0dzooQdIosvZsudfD97JqJnXwmw0BUD3SoSYdc5QiAjrvVr7O1IGqPI6rpZPEUVBHV9aeF4EEqxCr/vh9Guw7IiCKhnzYlFTbb5hnhnnrxxAYY6/J6+SBEavkbsB4Rtg4qFfSHb5VpIFi9xddqUXdjyPXex7e5SZh0R6kUPVG4OQp1N6YtCito+suRcFsscbJZJCb8uSog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iDe8a93AqU6keuRUCaW4pXUCoE94i833MpDA9YCuKHM=;
+ b=CabEyS2c1aEarUEiBTiJLDhUmidCY6fFnpbowOXV2VR/OwAyOh4Dbc+m0jgtoJx6g5Ap2t1cBfznHbt4V4imMrF1BVcSTCl7dVIzjQuDizMA3A720b3KkXlwhAli9mhWljeH0doQNJX62iHooTA5zAQcpC9/t6t6z/UFDnBVNkpXQRVmzP67RKEy5XOZNaH/cKShrKXwNojUJnBUi8ucpTVXXqOp1T0dO/unTV5rGl+YFN2xi3Ttq+bTP7ilP/6QmbGR5lvIOsidRvHE9TXT6RuQNo5b8NcdCW4l2l9+24TDYHNGvh7OVZODWKc0xQ/n43MUt1OvokyLHJ1ByoNyHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iDe8a93AqU6keuRUCaW4pXUCoE94i833MpDA9YCuKHM=;
+ b=S/hQW55+AVM7QYQxf2tQrLOBnaGcrUt22MxRzlN2cxVg6HRZlP8aV8jwJ7zNH+lhFmzXHEMFkRgAYL8azXE1m/ytjY5tSkKNeeyDVG7H/FFJfRMcEXINdph4i7DrvW0Ug/NgCl0uvZ8dA2AyuT/vUeRDwj8ZZzz7XTgolSld2tIqZY3aQcoiKzIgYOApmlNtYGmvNEiw7ZRu8FvrhttjQXvf2cgAB51b8Mw7mE7MsYT2lBob2syGq0uwz+ChUdqNAYvNukDBaPemoA42Spi3FTGJYCfcFDCdslhBIuLRHmg+TxZxn1Eei1euGUZe4lT47wVi21mKZkdnz6N2CYpiCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB4707.eurprd04.prod.outlook.com (2603:10a6:208:c0::29)
+ by VI2PR04MB10667.eurprd04.prod.outlook.com (2603:10a6:800:278::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Wed, 1 Apr
+ 2026 10:10:33 +0000
+Received: from AM0PR04MB4707.eurprd04.prod.outlook.com
+ ([fe80::e918:eca8:f034:698f]) by AM0PR04MB4707.eurprd04.prod.outlook.com
+ ([fe80::e918:eca8:f034:698f%5]) with mapi id 15.20.9632.017; Wed, 1 Apr 2026
+ 10:10:33 +0000
+From: Guangliu Ding <guangliu.ding@nxp.com>
+Subject: [PATCH v2 0/2] Enable Mali G310 GPU support on i.MX952 board
+Date: Wed, 01 Apr 2026 18:19:11 +0800
+Message-Id: <20260401-master-v2-0-20d3fbcd19d6@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB/xzGkC/2WNyw7CIBQFf6W5azE8lDau/A/TRUsvFpNCA0hqG
+ v5dqEuXk8yZs0NAbzDArdnBYzLBOFuAnxpQ82CfSMxUGDjlkgrByDKEiJ60qFqtqUY2cijy6lG
+ b7Qg9+h+H9/hCFeu6GrMJ0fnP8ZRY9f6iiRFK5FV1KFg3XSS/2209K7dAn3P+ApSyIBSsAAAA
+X-Change-ID: 20260331-master-7ec7ff0fe1b2
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Guangliu Ding <guangliu.ding@nxp.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775038767; l=844;
+ i=guangliu.ding@nxp.com; s=20260331; h=from:subject:message-id;
+ bh=M9tnXSkJiHVQhvwYG9BiPtJnIIyqGFzuNVaT/vCAdxU=;
+ b=KT5zZnNIEvbTAuaFZCyYbEvRFaDNzSzEq1QbmTPvXXMzR+CaF99I69i2fKbn6500SZ0w1dsSs
+ I28pCpNn60QDAqJJt3cZT49twPwXp5r/FWlgnhysGerL40bKO0WDFQv
+X-Developer-Key: i=guangliu.ding@nxp.com; a=ed25519;
+ pk=Ozo8o/sk09NyO6URvn0eD0v0uVHduT/yJzVGTAJ9gxw=
+X-ClientProxiedBy: MA5PR01CA0106.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d1::16) To AM0PR04MB4707.eurprd04.prod.outlook.com
+ (2603:10a6:208:c0::29)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d48664f7e03a3kunm1fbc9b38b36f2f
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU9LS1YfTExKS0NCGUlDHRlWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=cZa4qLsUvjrNN/AY1zvpBPABsGLYLalTGFrkm/Kd66edNxQtMBTRVusSxtxuPCQ+ObZh6reQC0wkYSYxVvmF7oa0rFx+4tkFIG7DZDUBL+FQcuiaGTK5nbdf25AfN0sfYuZAs3R3CXzbq9yV4fAfQnkHy64MGbujrg3p0OYZDYo=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=UBM7dL1OUA4VGkwXGmpRQ7M0XsEe3xz5uWZVRc/9PSw=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4707:EE_|VI2PR04MB10667:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34a71203-7020-4592-76cf-08de8fd6e91b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|52116014|376014|7416014|366016|56012099003|18002099003|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	zDccNFqYKVLZCyKfNOIXlYN0+h0p5KhgYUf8LimxW/9YdPdhVW+fm7ydnAmvsZ8nWv7pv+ReiE2Tfj8XdtOCVlfgbJGhVYdvewsVsiOVLFxezRFEAXmv95mfupJQ9mkMZT5Xy5FF+ok+kDk773JYqrW58loX8quA4cuwsoHw6I61Q8GEjF8H+UFvvsAPTfCBlrfhqRnvdtlDUkIjfplm5fWbsp9W/oi7e5PxoNLwEyd4eUFke7pEmfTP5mN6d7V0NH0QlBJpGE7XWUzia+mlFBnFy15rN9/9P6lGJXZHxptMPTcHYsVdp3N2wCcb0eQp8o4S5L5b7sVD4WA8mhFH/ydJyimYuBmjYDVXTIqt5PXKn0usjWg4OS6dZbnMeEiaP0kb/EfhRVLXCrvHNwaN18yyUcxBsmcaVjg0fp+Qe8M3f9SAUiP+unVgeVzxYii7dJayKR2qzgQH6UJ/2LYiDd7kBXcNiT3gSpGmKWW82dxnUKnDXx7MC5hwFV3by0rc8fQ5lwA3vOtPCkeWRzNc487hdmLiplwmoD7gfmtDMd3fYuLGCB/owqdYx7WFbeDnkE29yrOGKyTqYsMX/TyMVBaQ6BTns9ZVqKyrPmfaUhqlXlsU+AjDv8FvyOfMsqNJkb0rBSH19oKDYQFu1PaqCjQ1dlV9qZr/T99tenJCNhURb2U0GN1DAUIlych9+dD3OYNCA2IDtyc4eiQl7RAaMhJo61wXDQ3yEBb+aH6LeB9lTNxkMGisrRk19mp1DXEdFt5GCKopChWwagqP2+4fhw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB4707.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(52116014)(376014)(7416014)(366016)(56012099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MUh1eG9TU3F0ZkJqenp2dWtPOFN5OUhFVmtNVncwdHgyTmpUYzdzNkNWRjR6?=
+ =?utf-8?B?N3A4SE9KM3k0aVNLTnNtYUNBSWM4alhLeGdJVVEwUWxMWGUzcnFPZ3NZWGVC?=
+ =?utf-8?B?L3lCN0dvZHRiVVJhTXZrRnJLWG85Y29MQ0RRYVk5dWJTemRpdHN1Q1ROK3Yv?=
+ =?utf-8?B?RlltWm9sWXdpZGpXQmxpS0Y1R1d3LzRtZ0JzMDUvekhmV3oyTlV2bVF4Tmhw?=
+ =?utf-8?B?SGhQUnNGd2VjdDhRS0oyYW51SWRvSmVMNWhaMVN1SVZlMy94RGVmYldVNXFN?=
+ =?utf-8?B?cVZyNmZYSFU0YitaK1IvUlZHcTJaNGFtKy80dWR4Yk15N0J3VHdQZXV2K2Rh?=
+ =?utf-8?B?VHc2NU11MXpDT2tLOVJiUFlJVXlVQ1JVVGVLUW5sN3FueCtkYnBXS1VQKzdw?=
+ =?utf-8?B?NFljUU9xWENhYWVqakZLV3p2ejFKZHRJeEU1ZnB3dWVlRkkreFRDNDIyODQz?=
+ =?utf-8?B?TVpiWXRFdTZEYTV1RHpHQ01LK1ptYlYzTjEwaCt0VVNacllqYzFvbm5IWTFw?=
+ =?utf-8?B?aFFFV3dmVG5VRVhRSDFNVUlxMFowQ2IxUlFIbi9lTXZ3Z29pdG1YdFQ5L0lq?=
+ =?utf-8?B?aENPQWtFQ2NPdVg4cTlGOFBvNllPY2hFWjJ5RFc1UldRK25lQVE0OHV6ZFRG?=
+ =?utf-8?B?NXhjYlFvVFdtRytuL0ZCZEN0eDJGTWtnMEhtMVB0UUdyUGVZWThUWU5UV1Ar?=
+ =?utf-8?B?ZWpsVzNtV0dobkVJdVFWdnBWemZhbHR6ZW5JQ2llYm03TnhqaXBsMGh2cDdr?=
+ =?utf-8?B?bnFWY3M4aVRGMTRnYUkvUjV5MFZ2UmZROCs0NUVkLytva2pnSERGTkFmdXFI?=
+ =?utf-8?B?TWVlSTk5eFVKUXdSOGZnYWxuRGV2MEVSK0NGMnRsN0Z2ZnRQTXVQenA3MENR?=
+ =?utf-8?B?cWMyMEVtRHU4MFNjWjR5NTF5TThBS2ZFTWhnNnpkaE1SbUpDTzN0YWc4NCtn?=
+ =?utf-8?B?UDgxNVdMQVYwVTFyS2xCdGtuNVBEU3QveDk0dnluNTN4dFY5VHA4Qm9mdUty?=
+ =?utf-8?B?QWJGMVVVclNGdG1GOWo0VWtDUWtUMUw3enVLZkJJN2V6MHJLOVQ5d2VuWkJK?=
+ =?utf-8?B?d1MyQWZ0RW1IUFdTc1NmMU5qSUgwV3pzcUhocDZTL25xMDFPSmVaZUhhVW1t?=
+ =?utf-8?B?dkNJZXV3Mlh3cnJ5cURYQjBTMnI2czhNaElqWHdnbXJ1dlR6TU1UYWJ4NVow?=
+ =?utf-8?B?ZklyYjZYYzBTcHZCTGh6NkZVUnF4TS9NbGp5SHFIKzFXeUcwMmFidmx5c05G?=
+ =?utf-8?B?cFk0cldqVnE0SHNxWmlYalh3eEtybGQyMG5CNktMUGMvbGZObnJLZ3kxZldY?=
+ =?utf-8?B?cC83WHgyenJ4bktnL1RWdUtleWZKM29xQUV1b2FaaHRhSnJDdzJWZ0VpQklO?=
+ =?utf-8?B?eDhReWpBZHkrLzhnRWNlaEg0MVVuejkyS3MzOVE0WlZXdkw2S3E4VkRUQ3lX?=
+ =?utf-8?B?QU9IZHp1d0lUUFMrYk5ZV1ZqTWx6azlxLzJNSitSTHNDK2wzTnUwM2w1NE90?=
+ =?utf-8?B?NkVpUkw3TjVRWVRTQktMdkI4UG1Pbi9BdzZmRTlyREFCcHpLRDh3VmoyekZx?=
+ =?utf-8?B?R1daWGdLUnFzT0JYYlJNWDZnbmVtWS9lclhEOWx0U2lhbVhDNHJTUlIwaXNF?=
+ =?utf-8?B?MWlKTVBoNmYyay9tem93Z0JjcDBhQU5EYkU4bzhMeWdSUjYybTVtZUZIeDV4?=
+ =?utf-8?B?c3FtdUlSeEIxZHh6bUEyMEIybEhDWENIbmZOcnc2SE9oSXpoby9hd3ZiTjFr?=
+ =?utf-8?B?Nk5zbXdvdFdCTXcrL2s0Q1ZRL2hiR2JINHdZcllRcmY4RGd1M3ZObW9XTnFI?=
+ =?utf-8?B?cjlacFh1d0praklud0ltbmk2NHBKNG8yUlNPcEd1TGR6R1NmRk5vNlhRUExo?=
+ =?utf-8?B?ellsVGZEWGdqa3VMNElXaDcwaHE1aFhmSFVzQ2p5MzdJTHNzWFhnRUhmbVAr?=
+ =?utf-8?B?aUw2bWE0OUdMNWFwcDArVW5OYWU4ZVdTWXMyTHFlY0RJSGd0S0prMjBvYzFC?=
+ =?utf-8?B?cjBoMDdGbVZRZnVnbDJnY0h6RnpjMU44Z3V2MWhrQWdQZ2dBQ1BmUkoxN21R?=
+ =?utf-8?B?dGZPTHNPem5ISHdHMW9xVkdRR1JsR2NzL0JwZ0pVbktuUENySGNGNGlxeFN4?=
+ =?utf-8?B?eE10c3ZvRzlJWXFRV1JjQy9FNmV4c0hINVh0NE5mWjlZSnlPMGh2aHZSUDlN?=
+ =?utf-8?B?dEdiVmV3c1MyRnZtcnRVWW80Y3B1NUMzTTB6Y2tDbXpYUm04ZG40dzZ0M1F3?=
+ =?utf-8?B?bFZrQkhiRzhBMmhBczc3VDZWaElVaEJwUS8zaFNXTDZFaEc3S3JaWkx3ODRL?=
+ =?utf-8?B?dDVGc25Kc0FhWHJHTGtMK3pMa3Zsb0FNczJFczJDMkdpbnhJY21WZz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34a71203-7020-4592-76cf-08de8fd6e91b
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB4707.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 10:10:33.1641
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ND7mbiPfTCI3AqLgwV7q+bnIhgnvQUY4wv79cO24uJahepSuw60PfUar+QIyTQ5ur7DQjc5mIPMQWkwLBp+jtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10667
 
-In order to unify the handling of the panel and bridge, apply
-panel_bridge helpers for Analogix DP driver. With this patch, the
-bridge support will also become available.
+This series enable Mali G310 GPU support on i.MX952 boards, the same GPU
+IP as the instance on i.MX95 boards.
 
-The following changes have ben made:
-- Apply plane_bridge helper to wrap the panel as the bridge.
-- Remove the explicit panel APIs calls, which can be replaced with
-  the automic bridge APIs calls wrapped by the panel.
-- Remove the unnecessary analogix_dp_bridge_get_modes().
-
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
+---
+Changes in v2:
+- Improve patch description, adding more GPU information.
+- Remove Reviewed-by tag.
+- Link to v1: https://patch.msgid.link/20260331-master-v1-0-65c8e318d462@nxp.com
 
 ---
+Guangliu Ding (2):
+      dt-bindings: gpu: mali-valhall-csf: Document i.MX952 support
+      arm64: dts: imx952: Describe Mali G310 GPU
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-
-Changes in v5:
-- Move panel_bridge addition a little forward.
-- Move next_bridge attachment from Analogix side to Rockchip/Exynos
-  side.
-
-Changes in v6
-- Remove the unnecessary analogix_dp_bridge_get_modes().
-- Not to set DRM_BRIDGE_OP_MODES if the next is a panel.
-- Squash [PATCH v5 15/17]drm/bridge: analogix_dp: Remove panel
-  disabling and enabling in analogix_dp_set_bridge() into this
-  commit.
-- Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
-
-Changes in v9:
-- Add Tested-by tag.
+ .../bindings/gpu/arm,mali-valhall-csf.yaml         |  1 +
+ arch/arm64/boot/dts/freescale/imx952.dtsi          | 36 ++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 ---
- .../drm/bridge/analogix/analogix_dp_core.c    | 41 +++++--------------
- 1 file changed, 11 insertions(+), 30 deletions(-)
+base-commit: 0138af2472dfdef0d56fc4697416eaa0ff2589bd
+change-id: 20260331-master-7ec7ff0fe1b2
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 8bb248e44c26..fe7158d9edde 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -749,9 +749,6 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
- {
- 	int ret;
- 
--	/* Keep the panel disabled while we configure video */
--	drm_panel_disable(dp->plat_data->panel);
--
- 	ret = analogix_dp_train_link(dp);
- 	if (ret) {
- 		dev_err(dp->dev, "unable to do link train, ret=%d\n", ret);
-@@ -771,9 +768,6 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
- 		return ret;
- 	}
- 
--	/* Safe to enable the panel now */
--	drm_panel_enable(dp->plat_data->panel);
--
- 	/* Check whether panel supports fast training */
- 	ret = analogix_dp_fast_link_train_detection(dp);
- 	if (ret)
-@@ -858,17 +852,6 @@ static int analogix_dp_disable_psr(struct analogix_dp_device *dp)
- 	return analogix_dp_send_psr_spd(dp, &psr_vsc, true);
- }
- 
--static int analogix_dp_bridge_get_modes(struct drm_bridge *bridge, struct drm_connector *connector)
--{
--	struct analogix_dp_device *dp = to_dp(bridge);
--	int num_modes = 0;
--
--	if (dp->plat_data->panel)
--		num_modes += drm_panel_get_modes(dp->plat_data->panel, connector);
--
--	return num_modes;
--}
--
- static const struct drm_edid *analogix_dp_bridge_edid_read(struct drm_bridge *bridge,
- 							   struct drm_connector *connector)
- {
-@@ -909,7 +892,7 @@ analogix_dp_bridge_detect(struct drm_bridge *bridge, struct drm_connector *conne
- 	struct analogix_dp_device *dp = to_dp(bridge);
- 	enum drm_connector_status status = connector_status_disconnected;
- 
--	if (dp->plat_data->panel || dp->plat_data->next_bridge)
-+	if (dp->plat_data->next_bridge)
- 		return connector_status_connected;
- 
- 	if (!analogix_dp_detect_hpd(dp))
-@@ -995,8 +978,6 @@ static void analogix_dp_bridge_atomic_pre_enable(struct drm_bridge *bridge,
- 	/* Don't touch the panel if we're coming back from PSR */
- 	if (old_crtc_state && old_crtc_state->self_refresh_active)
- 		return;
--
--	drm_panel_prepare(dp->plat_data->panel);
- }
- 
- static int analogix_dp_set_bridge(struct analogix_dp_device *dp)
-@@ -1168,16 +1149,12 @@ static void analogix_dp_bridge_disable(struct drm_bridge *bridge)
- 	if (dp->dpms_mode != DRM_MODE_DPMS_ON)
- 		return;
- 
--	drm_panel_disable(dp->plat_data->panel);
--
- 	disable_irq(dp->irq);
- 
- 	analogix_dp_set_analog_power_down(dp, POWER_ALL, 1);
- 
- 	pm_runtime_put_sync(dp->dev);
- 
--	drm_panel_unprepare(dp->plat_data->panel);
--
- 	dp->fast_train_enable = false;
- 	dp->psr_supported = false;
- 	dp->dpms_mode = DRM_MODE_DPMS_OFF;
-@@ -1252,7 +1229,6 @@ static const struct drm_bridge_funcs analogix_dp_bridge_funcs = {
- 	.atomic_post_disable = analogix_dp_bridge_atomic_post_disable,
- 	.atomic_check = analogix_dp_bridge_atomic_check,
- 	.attach = analogix_dp_bridge_attach,
--	.get_modes = analogix_dp_bridge_get_modes,
- 	.edid_read = analogix_dp_bridge_edid_read,
- 	.detect = analogix_dp_bridge_detect,
- };
-@@ -1498,17 +1474,22 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 		return ret;
- 	}
- 
--	if (dp->plat_data->panel)
--		bridge->ops = DRM_BRIDGE_OP_MODES | DRM_BRIDGE_OP_DETECT;
--	else
--		bridge->ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
--
-+	bridge->ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
- 	bridge->of_node = dp->dev->of_node;
- 	bridge->type = DRM_MODE_CONNECTOR_eDP;
- 	ret = devm_drm_bridge_add(dp->dev, &dp->bridge);
- 	if (ret)
- 		goto err_unregister_aux;
- 
-+	if (dp->plat_data->panel) {
-+		dp->plat_data->next_bridge = devm_drm_panel_bridge_add(dp->dev,
-+								       dp->plat_data->panel);
-+		if (IS_ERR(dp->plat_data->next_bridge)) {
-+			ret = PTR_ERR(bridge);
-+			goto err_unregister_aux;
-+		}
-+	}
-+
- 	ret = drm_bridge_attach(dp->encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 	if (ret) {
- 		DRM_ERROR("failed to create bridge (%d)\n", ret);
--- 
-2.34.1
+Best regards,
+--  
+Guangliu Ding <guangliu.ding@nxp.com>
 
