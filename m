@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8843659ED
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 09:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4265438758D
+	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 09:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775122091; cv=none; b=N/IrthWLGT66puj3XwJOhVMmK9NrYsDMC/3MhTp7R2xSpQYMhhXws2aaiv3xwvBk7gU7TmaG2HWpSFPjVQXxwOWbmrcPyi2HTnf7Dx77kuYg6m7vvKGbLCDhF09wJn+zmjolIhGuKAkCQeI3rienXuQFxOIUpYLYtLtiffAgU+g=
+	t=1775122107; cv=none; b=mXrzImbQINng25DPtrlIWcTw0R0xgOiGhUWR7QJwkt+GdIlJoy4KWIICuNqYIm3GcyJ/T+vUT8x8p8K3r8X0audFKn7XieK5SDsISAPkOT+Tm9z/hLQO2nhQKEs6avgo+9ib7fMrVLREq1rLMbL7kL2RHqTuEkOz6nYpirYw0SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775122091; c=relaxed/simple;
-	bh=xCyOeEb1Rt3PAU0y1z2oi9zSYVPFWqIkwkXXe5MYVu4=;
+	s=arc-20240116; t=1775122107; c=relaxed/simple;
+	bh=DGkZabpVSfCZx4qVU8GLozjN/+Zh0JyHCyPpQLjan0k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dtk9utjPoPnI5ui1rsHWaME9phXK+9aGYeSGA59nLy59+ifiBpn9VvPf7QJupSdelhZOW4uRIp1xDWwvhhSmD/ygwT03yFSCOB12SSwM9CGgii0e+cY9g9bLT66eTPyoC4gL/NP1GLpnch+twXpALMrWag4XDvnDnaN1ORQp+5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hVlz+9Zn; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=Ecaoj6BwetQFLAzl6+xNbadELc7gcEZ1CMBJ5fpNK9Xrdgla7IKkxdljAZpDCisDw4BZGV6+xMCcn0X6rk6i1bLkSw9VPge+MVS6yHzGLiEPTXhPnf176mHBPy5/MDyk0OwBwvF1wWJWHnhWb/2gmuxszAhombe7YyarPtcB7lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bkTvVYUR; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hVlz+9Zn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bkTvVYUR"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B1F19C5997C;
-	Thu,  2 Apr 2026 09:28:32 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D9FFE1A30EE;
+	Thu,  2 Apr 2026 09:28:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B7785FDEB;
-	Thu,  2 Apr 2026 09:28:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 370731045124A;
-	Thu,  2 Apr 2026 11:27:48 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AD22C5FDEB;
+	Thu,  2 Apr 2026 09:28:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED5B910450A10;
+	Thu,  2 Apr 2026 11:27:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775122078; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775122089; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ivxqBE+xFSPsodl278KAuSqCfPXljKrE3bnno2mTk08=;
-	b=hVlz+9ZnqMianxoB7Bx50+CIIjxVXe5qIbytykm44W3JHSnVewznEi+DNW9jPvFVrwi6ba
-	YzvUKHNN77HX4FvSEtTVuCdhmhS0b+hf8dmsT8Edh7SPO1JIGN310t8/rmuVoBJWBWp7+E
-	/KlyNk5b15uTL8u4S0qh7K8x0MZ1UW9A/0MVLHRzm+U+KzcvpeJJxvYEuKMz5KyjLXrpor
-	j5g7TTpolsb9+mfgLgBwUHK7rysmnnTEjfYhpDIsxNpBw4BEovs9WMZqANt92VRUA8bPm1
-	mc3dyY809JLnSVrDqK9a4z1clJwDwXvBjRRj7YhM/r96i688PxwCRNAjgoxMpw==
+	bh=2J+9TG/VyHLnCiKQu2dJ+E2QJC0b8CpVuopBw9nld/w=;
+	b=bkTvVYURYUu2zNWtCug8/esLmZziFcEBaT4+fvEoQ1Lf3RKJ1TlfgvYq8SNDRFkAB4xoug
+	8VnWf32ovVeFb8rSpT/SHhM0ZP2QIcU9a8jiswcpxMXbcKqbvmf3ZYWo9lzUkHpMN7RaC1
+	uDjKZNdGpTWuatFV0xEJrYONAsgtGcihxZBZRV6YpXdYVDZBkZ7wf38Gz1rWE/2k5vmIqz
+	ljUq8dAR5zL5gzjiBpiyXpXre66fdQXeTiHxnKhLGxObcGNg4kRPYWfDJGNgSz1ZJ8tUaT
+	BXs8nxEJkllMh53B1510PLvNM5F4t6/rw8bk/T2AFDRUESCPO3ZJAl0+6DFz4w==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Thu, 02 Apr 2026 11:25:56 +0200
-Subject: [PATCH v3 01/11] drm/mxsfb/lcdif: simplify remote pointer
- management using __free
+Date: Thu, 02 Apr 2026 11:25:57 +0200
+Subject: [PATCH v3 02/11] drm/mxsfb/lcdif: simplify ep pointer management
+ using __free
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-drm-lcdif-dbanc-v3-1-27cd247a0847@bootlin.com>
+Message-Id: <20260402-drm-lcdif-dbanc-v3-2-27cd247a0847@bootlin.com>
 References: <20260402-drm-lcdif-dbanc-v3-0-27cd247a0847@bootlin.com>
 In-Reply-To: <20260402-drm-lcdif-dbanc-v3-0-27cd247a0847@bootlin.com>
 To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
@@ -90,56 +90,74 @@ Cc: Damon Ding <damon.ding@rock-chips.com>,
 X-Mailer: b4 0.15.1
 X-Last-TLS-Session-Version: TLSv1.3
 
-Putting the remote device_node reference requires a of_node_put(remote) in
-two places. Use a cleanup action to simplify the code.
+Putting the ep device_node reference requires a of_node_put(ep) in many
+return points. Use a cleanup action to simplify the code.
 
 Reviewed-by: Liu Ying <victor.liu@nxp.com>
-Tested-by: Martyn Welch <martyn.welch@collabora.com>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MBa8MPxL
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
 ---
-
-Changes in v2:
-- Use the correct cleanup action
-- Fix commit message
-- add missing cleanup.h include
+This patch is new in v2
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 47da1d9336b9..7719629487da 100644
+index 7719629487da..8da8a265c05c 100644
 --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
 +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -5,6 +5,7 @@
-  * This code is based on drivers/gpu/drm/mxsfb/mxsfb*
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
- #include <linux/io.h>
-@@ -53,16 +54,13 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+@@ -49,7 +49,7 @@ static const struct drm_encoder_funcs lcdif_encoder_funcs = {
+ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+ {
+ 	struct device *dev = lcdif->drm->dev;
+-	struct device_node *ep;
++	struct device_node *ep __free(device_node) = NULL;
+ 	struct drm_bridge *bridge;
  	int ret;
  
- 	for_each_endpoint_of_node(dev->of_node, ep) {
--		struct device_node *remote;
-+		struct device_node *remote __free(device_node) =
-+			of_graph_get_remote_port_parent(ep);
- 		struct of_endpoint of_ep;
- 		struct drm_encoder *encoder;
- 
--		remote = of_graph_get_remote_port_parent(ep);
--		if (!of_device_is_available(remote)) {
--			of_node_put(remote);
-+		if (!of_device_is_available(remote))
- 			continue;
--		}
--		of_node_put(remote);
- 
+@@ -65,23 +65,19 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
  		ret = of_graph_parse_endpoint(ep, &of_ep);
  		if (ret < 0) {
+ 			dev_err(dev, "Failed to parse endpoint %pOF\n", ep);
+-			of_node_put(ep);
+ 			return ret;
+ 		}
+ 
+ 		bridge = devm_drm_of_get_bridge(dev, dev->of_node, 0, of_ep.id);
+-		if (IS_ERR(bridge)) {
+-			of_node_put(ep);
++		if (IS_ERR(bridge))
+ 			return dev_err_probe(dev, PTR_ERR(bridge),
+ 					     "Failed to get bridge for endpoint%u\n",
+ 					     of_ep.id);
+-		}
+ 
+ 		encoder = devm_kzalloc(dev, sizeof(*encoder), GFP_KERNEL);
+ 		if (!encoder) {
+ 			dev_err(dev, "Failed to allocate encoder for endpoint%u\n",
+ 				of_ep.id);
+-			of_node_put(ep);
+ 			return -ENOMEM;
+ 		}
+ 
+@@ -91,17 +87,14 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+ 		if (ret) {
+ 			dev_err(dev, "Failed to initialize encoder for endpoint%u: %d\n",
+ 				of_ep.id, ret);
+-			of_node_put(ep);
+ 			return ret;
+ 		}
+ 
+ 		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+-		if (ret) {
+-			of_node_put(ep);
++		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 					     "Failed to attach bridge for endpoint%u\n",
+ 					     of_ep.id);
+-		}
+ 	}
+ 
+ 	return 0;
 
 -- 
 2.53.0
