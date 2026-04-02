@@ -1,38 +1,39 @@
 Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EDF3909B5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940E839659A
 	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 10:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775127378; cv=none; b=PqIYo9fbgzxhAS4mlg5kpdxcjm8dQ/Lnp3Yx9P3Boh3uD92HIVDOsWncoH9xvfEPIUPiWR9wREl30qLDvqNGObQAPbcBhCg7b4Etg8w1TzzJWQ8Xrx+azSFdk2z0EDS9aECbEG6t+keRkwqzSLCOud7g2f3ZqOuGWYB3Fi43XoU=
+	t=1775127378; cv=none; b=QzCvEFbtQXcgGrxU3jGavqOHyqtoD7RylmOyVuOw281spfWv2nSqumdWFe1hKp8pfLveYR7E0I2BUYhznyrgTg46wpuTwmCMtR9BL8hbtZ5qmuwSfE0k95IXbe+Af9+2qdLD6N55d0oZaW4SWMH2CQIhcU7L02Rx6P8CE2gGOjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775127378; c=relaxed/simple;
-	bh=r1kXVug9afwt9LLOSOUxNyzHexEiwqXyzSr9Z5DrmDY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rOu/70+fuixLzgFaGSBrS1EqvIzWGB+dVPEFfVQWlXtNw9KyRWkJH6T7Cebg6UvxD7JPyaFmsAUofBQ3gvMFn/Ov0udISPpW7AJlhWhlUcHgCHfrYPWcKDSJ97jFmHhHRmjwmYERi8p8xPg50ufk6/hSfFy6UnINsvfN+R8wzqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=a35zriNz; arc=none smtp.client-ip=46.19.12.180
+	bh=se1NbwLgkKepQEgClAtuOlG9UWWIHCEediGM/ZRTUpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=emkOblvRYJkAisgantavJft5wbiy1wkHaqz6tQ52jVvIS1yN+SHpcxZh8ufHjrbikXhKznA/RGFsjOaqYikw4pjr+gDp+ithica+giWJjO/xlOEODR88mE9bJdnc2O0KB80bu+WnBUEJJ/BsvOUzVVQy26EYMtTLnZ7vEdPndJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=V0CLWWY/; arc=none smtp.client-ip=46.19.12.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="a35zriNz"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="V0CLWWY/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=LftVk3p+D1lpNfbkKE4+KpyUeAmiTsBUQjaiRU8yqnw=; b=a35zriNzqF4F5VQ4nKIZhr2URy
-	fWXHFkdz6aQg6BoTWFEjt1/VNjhyATDc69e/UPvPNv0rA0gTVTxyQJFlSyDes1M8jfluU6GRs8gvW
-	sp8y641h7dZcNHzHiGJXrAjkOIWZLua53kEaCDonL4jrwSauxbqfKXkbW7O4ciN3TzB7LHkJTp5KA
-	5cfCFa4oMMkuB8ObZ777K6msb66My2QamtC8S+sYZVyKxsWl+PFCgqGmhzqHdpVvLs8LkCYDpabDX
-	JsRoNyY8abCkzeORiFHD628JJk3jQZHyyAV07ymP9c/GOO1LpRE7Y6hibt30g+v/pdVtYCmyJIrfw
-	n+1EyOWQ==;
+	bh=+BoXlgipnNG+DuSePjmrCMzbqdgrmzoaZUj/nX6RrCU=; b=V0CLWWY/sLKZOW2STEH4RHVwE5
+	lJ6E+w2HmPYIM1EE63oh4TJY8ytqInDyDJQUSRz7tCH4PC4p8+97rtCDGi6YU4lrzNcXI4eUCFHTG
+	nthOkKpkN4rgKQzG7FIHX3BZyfR2eVX4W72Q2r02PFnn3oZAHo1lil+oRmWICWezomRWpXTgiTnye
+	TlvSbl/iVm+2ato1WcY75+2qn7PiJyNeF7umexTr/E8noK42Buq6hVCqQ0AXJVynkSNvQ0cvWveZg
+	avFwqOnUemws9/jGto7K/UyUOejlkabJjyM1becDskHnwbV1huaUGKll/zCAMpXNemkzWMy5eZL5/
+	ni9TaIOg==;
 Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:52086 helo=florijan-nb..)
 	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.1)
 	(envelope-from <florijan.plohl@norik.com>)
-	id 1w8Fig-00000009fYO-2Q1h;
-	Thu, 02 Apr 2026 12:56:13 +0200
+	id 1w8Fig-00000009fYO-3jLJ;
+	Thu, 02 Apr 2026 12:56:14 +0200
 From: Florijan Plohl <florijan.plohl@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -46,10 +47,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH 1/5] arm64: dts: freescale: imx91-phycore-som: Add gpio-line-names
-Date: Thu,  2 Apr 2026 12:56:09 +0200
-Message-ID: <20260402105613.1303871-1-florijan.plohl@norik.com>
+Subject: [PATCH 4/5] arm64: dts: freescale: imx93-phyboard-nash: Add gpio-line-names
+Date: Thu,  2 Apr 2026 12:56:12 +0200
+Message-ID: <20260402105613.1303871-4-florijan.plohl@norik.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260402105613.1303871-1-florijan.plohl@norik.com>
+References: <20260402105613.1303871-1-florijan.plohl@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,45 +72,54 @@ X-Source-Args:
 X-Source-Dir: 
 
 Add gpio-line-names for GPIOs with a defined board-level
-function on the PHYTEC phyCORE-i.MX91 SoM.
+function on the PHYTEC phyBOARD-Nash-i.MX93.
 
 Signed-off-by: Florijan Plohl <florijan.plohl@norik.com>
 ---
- .../boot/dts/freescale/imx91-phycore-som.dtsi | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../dts/freescale/imx93-phyboard-nash.dts     | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi
-index 29a428a052b0..b9a453f6b290 100644
---- a/arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi
-@@ -88,6 +88,28 @@ ethphy1: ethernet-phy@1 {
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+index eac389ed30f3..b82192f25498 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+@@ -141,6 +141,37 @@ &flexcan1 {
+ 	status = "okay";
  };
  
 +&gpio1 {
-+	gpio-line-names = "", "USER_LED";
++	gpio-line-names = "", "USER_LED", "I2C2_SCL", "I2C2_SDA";
 +};
 +
 +&gpio2 {
-+	gpio-line-names = "", "", "", "", "",
++	gpio-line-names = "SPI6_CS0", "", "", "", "",
 +			  "", "", "", "", "",
 +			  "", "", "", "", "",
-+			  "", "", "", "", "",
++			  "", "", "TPM_nIRQ", "", "",
 +			  "", "", "", "", "",
 +			  "", "", "", "I2C3_SDA", "I2C3_SCL";
++};
++
++&gpio3 {
++	gpio-line-names = "SD2_nCD", "", "", "", "",
++			  "", "", "SD2_nRESET", "", "",
++			  "", "", "", "", "",
++			  "", "", "", "", "",
++			  "", "", "", "", "",
++			  "", "nENET1_INT";
 +};
 +
 +&gpio4 {
 +	gpio-line-names = "", "", "", "", "",
 +			  "", "", "", "", "",
 +			  "", "", "", "", "",
-+			  "", "", "", "", "",
++			  "", "nCAN_EN", "", "", "",
 +			  "", "", "", "RESET_PHY", "",
-+			  "", "", "PMIC_IRQ_B";
++			  "", "RTC_nINT", "PMIC_IRQ_B";
 +};
 +
- /* I2C3 */
- &lpi2c3 {
+ /* I2C2 */
+ &lpi2c2 {
  	clock-frequency = <400000>;
 -- 
 2.43.0
