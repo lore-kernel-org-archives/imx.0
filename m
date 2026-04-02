@@ -1,248 +1,76 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191242C08D0
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 15:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9A33A007;
+	Thu,  2 Apr 2026 15:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775142908; cv=none; b=D4eDXTYX1FQhgDB0eqHLtjnkDt6VRquvqu/e7i5GccJzrwCK9f2YxnU4sbZVbKUmPFJ9OI1799GuZSnPLEqvAEviZJpkaK73dQBo5eM8Q8syS+LX+t+j7HDyxMzRhRIWh//8f+6l+JrLXVcWHc369ss9D83aPqFfgsgdfcK4yUQ=
+	t=1775144270; cv=none; b=UdovXm6J7Wl3EY38MA5e1+BNrJnc4Im7U1Bnn6eryhEAvNFfzpBpcKyQaGvM9WRaCBMZ+yOse0YpkRuGlJoOlgJTOwsbWHEn0R9lZ1j3NWk/Bu/3EW2nJlu+QKD9b2DwW8ZlIBElRT8XwOKpfttxPO4OTU8KcSEfeOehvMhhfK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775142908; c=relaxed/simple;
-	bh=Wus51/A5TXZ0C83VrwImP/P+7klhk6dGV/W8j6rkqYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oeb47qJt/fQ+VFgK8vWSErQSn83n59VxzZp/xxkLYgIkPsPdd4jXvi7cVuCO7NbZkjstAWxWj4F0tnJAEAxGDuZAl7uBQMQ4GxcLGvIeqbRk0crwfLQI5ciHxIQaOg1selqV6Y9tQ1QNK7OwhSit4hO77IQNr8eHzaV3J0msEto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=iB/5slJ6; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1775144270; c=relaxed/simple;
+	bh=ohZ2HDtp4Z/Z6WJrkpeUxDLSzAUSROOullIzOzd8hmY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jfMYYj8kanDE3TmTHi0aXblBbFqTqoZIX0PgmkZy/IHzwCpjtfAOVXfcL61B46b1Rqf47lMkrq5jToRc+NFXtB8rKLrT3jjho6DxZYOIZKTy1eeaNWa0BP9WKQMc58dWQatfDrsfjzNfaYU5AJF0/U2vL7dQtKY6UHXOjgLREHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D392ZXZS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="iB/5slJ6"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 64C541596
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 08:14:59 -0700 (PDT)
-Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 00D0A3F7D8
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 08:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775142905; bh=Wus51/A5TXZ0C83VrwImP/P+7klhk6dGV/W8j6rkqYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iB/5slJ6+rRiwokuOFBsPb2N+Fp4OC+xo0C2nW8jF5Qp3mHB7gcNZxU0fWNZ7CgmN
-	 5AWP4zSJ26rGb8CjhpAZJPWE5UFxxgQgVTZ4VOSAcZN/GUKDC8lS9U8rig9Fhx3TPf
-	 zixmREAvvCctgQj7uZ71Cv+OBWx8MU63vbtejKDE=
-Date: Thu, 2 Apr 2026 16:14:41 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Guangliu Ding <guangliu.ding@nxp.com>
-Cc: "Daniel Baluta (OSS)" <daniel.baluta@oss.nxp.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Jiyu Yang <jiyu.yang@nxp.com>
-Subject: Re: Re: Re: Re: Re: [PATCH 1/2] dt-bindings: gpu: mali-valhall-csf:
- Document i.MX952 support
-Message-ID: <ac6H4SHdNqKEXgIK@e142607>
-References: <acva1Xt8V4k9-uG8@e142607>
- <AM0PR04MB47073E9E8B5C704BCF5D9F72F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <99a1da55-d6e5-4d11-abaa-8c85283ab5f2@oss.nxp.com>
- <AM0PR04MB4707B3E37DFE7AEE587DBA2AF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <aczv0R0aQRmHKdvt@e142607>
- <AM0PR04MB4707335CC7035232D44E6ED9F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <ac05OpEMjKMd8CXy@e142607>
- <AM0PR04MB4707604AF2C445971C7474EFF350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
- <ac1T282yvpdAp_TP@e142607>
- <AM0PR04MB470716BD5A538CFBB6685C87F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D392ZXZS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81EAC116C6;
+	Thu,  2 Apr 2026 15:37:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775144269;
+	bh=ohZ2HDtp4Z/Z6WJrkpeUxDLSzAUSROOullIzOzd8hmY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=D392ZXZSh4jR48UCxYhNi9SeatNR+FbXthOJM98LYHxJS9/Q6CONIEPD74QcqMxQa
+	 EP1c6Pistguv12W1E7eSJMU7joPtxbgo/dcwshmT3/9oPnicJ4D3slH5e+RYqBfu5L
+	 RApvGw0q/8xSqB3md7/+O/g75ejuU5M7szSbBuiZeLs4QM+lXnYPELyuMaWIpzVS60
+	 81KIfgxKH1k3mxUyJ7VQyyMJkCEuMxkQ71KMHPgkgPRATCEN1QU9KzEUVsXRPHvf0D
+	 aqa2DCPNmhvLAotVQTPrGaMNAGjY4uF5yCQBrMbJiuYnhTJ0Z0GooBanRADjFJWqRi
+	 Tb4uru2vjG0Zg==
+Date: Thu, 2 Apr 2026 08:37:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Simon
+ Horman <horms@kernel.org>, bpf@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/3] net: enetc: pad short frames in software
+Message-ID: <20260402083747.4f496c9a@kernel.org>
+In-Reply-To: <20260401172246.1075883-3-vladimir.oltean@nxp.com>
+References: <20260401172246.1075883-1-vladimir.oltean@nxp.com>
+	<20260401172246.1075883-3-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM0PR04MB470716BD5A538CFBB6685C87F350A@AM0PR04MB4707.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 01, 2026 at 06:03:28PM +0000, Guangliu Ding wrote:
-> Hi Liviu
+On Wed,  1 Apr 2026 20:22:45 +0300 Vladimir Oltean wrote:
+> The ENETC does not support BUF_LEN or FRM_LEN in TX buffer descriptors
+> less than 16. This is written in the reference manual of all SoCs
+> supported by the driver: LS1028A, i.MX943, i.MX95 etc.
 > 
-> Thanks a lot for your sharing.
+>   Frames must not have a FRM_LEN that is less than 16 bytes. Frames of
+>   0-15 bytes are not supported.
+>   (...)
+>   The first descriptor in a chain must not have a BUFF_LEN that is less
+>   than 16 bytes.
 > 
-> > On Wed, Apr 01, 2026 at 03:59:23PM +0000, Guangliu Ding wrote:
-> > > Hi Liviu
-> > >
-> > > > On Wed, Apr 01, 2026 at 10:31:01AM +0000, Guangliu Ding wrote:
-> > > > > Hi Liviu
-> > > > >
-> > > > > > On Wed, Apr 01, 2026 at 09:43:12AM +0000, Guangliu Ding wrote:
-> > > > > > > Hi Daniel
-> > > > > > >
-> > > > > > > > On 4/1/26 11:48, Guangliu Ding wrote:
-> > > > > > > > > [You don't often get email from guangliu.ding@nxp.com.
-> > > > > > > > > Learn why this is important at
-> > > > > > > > > https://aka.ms/LearnAboutSenderIdentification
-> > > > > > > > > ]
-> > > > > > > > >
-> > > > > > > > > Hi Liviu
-> > > > > > > > >
-> > > > > > > > > Thanks for your review. Please refer to my comments below:
-> > > > > > > > >
-> > > > > > > > >> On Tue, Mar 31, 2026 at 06:12:38PM +0800, Guangliu Ding
-> > wrote:
-> > > > > > > > >>> Add compatible string of Mali G310 GPU on i.MX952 board.
-> > > > > > > > >>>
-> > > > > > > > >>> Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
-> > > > > > > > >>> Reviewed-by: Jiyu Yang <jiyu.yang@nxp.com>
-> > > > > > > > >>> ---
-> > > > > > > > >>>
-> > > > > > > > >>> Documentation/devicetree/bindings/gpu/arm,mali-valhall-c
-> > > > > > > > >>> sf.y
-> > > > > > > > >>> aml
-> > > > > > > > >>> | 1
-> > > > > > > > >>> +
-> > > > > > > > >>>  1 file changed, 1 insertion(+)
-> > > > > > > > >>>
-> > > > > > > > >>> diff --git
-> > > > > > > > >>> a/Documentation/devicetree/bindings/gpu/arm,mali-valhall
-> > > > > > > > >>> -csf
-> > > > > > > > >>> .yam
-> > > > > > > > >>> l
-> > > > > > > > >> b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.
-> > > > > > > > >> yaml
-> > > > > > > > >>> index 8eccd4338a2b..6a10843a26e2 100644
-> > > > > > > > >>> ---
-> > > > > > > > >>> a/Documentation/devicetree/bindings/gpu/arm,mali-valhall
-> > > > > > > > >>> -csf
-> > > > > > > > >>> .yam
-> > > > > > > > >>> l
-> > > > > > > > >>> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-val
-> > > > > > > > >>> +++ hall
-> > > > > > > > >>> +++ -csf
-> > > > > > > > >>> +++ .yam
-> > > > > > > > >>> +++ l
-> > > > > > > > >>> @@ -20,6 +20,7 @@ properties:
-> > > > > > > > >>>            - enum:
-> > > > > > > > >>>                - mediatek,mt8196-mali
-> > > > > > > > >>>                - nxp,imx95-mali            # G310
-> > > > > > > > >>> +              - nxp,imx952-mali           # G310
-> > > > > > > > >> Can you explain why this is needed? Can it not be covered
-> > > > > > > > >> by the existing compatible?
-> > > > > > > > > There are functional differences in GPU module (GPUMIX)
-> > > > > > > > > between
-> > > > > > > > > i.MX95 and i.MX952. So they cannot be fully covered by a
-> > > > > > > > > single existing
-> > > > > > compatible.
-> > > > > > > > > On i.MX952, The GPU clock is controlled by hardware GPU
-> > > > > > > > > auto clock-gating mechanism, while the GPU clock is
-> > > > > > > > > managed explicitly by the
-> > > > > > > > driver on i.MX95.
-> > > > > > > > > Because of these behavioral differences, separate
-> > > > > > > > > compatible strings "nxp,imx95-mali" and "nxp,imx952-mali"
-> > > > > > > > > are needed to allow the driver to handle the two variants
-> > > > > > > > > independently and to keep room for future
-> > > > > > > > divergence.
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > This information should be added in the commit message
-> > > > > > > > explaining why
-> > > > > > > >
-> > > > > > > > the change is needed.
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > But then where is the driver code taking care of these diferences?
-> > > > > > > >
-> > > > > > >
-> > > > > > > Yes. Currently the driver does not require "nxp,imx952-mali" string.
-> > > > > > > However, when GPU ipa_counters are enabled to calculate the
-> > > > > > > GPU busy_time/idle_time for GPU DVFS feature, they will
-> > > > > > > conflict with the hardware GPU auto clock‑gating mechanism,
-> > > > > > > causing GPU clock to remain
-> > > > > > always on.
-> > > > > > > In such cases, ipa_counters need to be disabled so that the
-> > > > > > > GPU auto clock‑gating mechanism can operate normally, using
-> > > > "nxp,imx952-mali"
-> > > > > > string.
-> > > > > >
-> > > > > > OK, I understand that you're following guidance from some other
-> > > > > > senior people on how to upstream patches so you've tried to
-> > > > > > create the smallest patchset to ensure that it gets reviewed and
-> > > > > > accepted, but in this case we need to see the other patches as
-> > > > > > well to decide if your approach is the right one and we do need
-> > > > > > a separate compatible
-> > > > string.
-> > > > > >
-> > > > > > If enabling GPU ipa_counters causes the clocks to get stuck
-> > > > > > active, that feels like a hardware bug, so figuring out how to
-> > > > > > handle that is more important than adding a compatible string.
-> > > > > >
-> > > > > > Either add the patch(es) that use the compatible to this series
-> > > > > > in v2, or put a comment in the commit message on where we can
-> > > > > > see the
-> > > > driver changes.
-> > > > > >
-> > > > >
-> > > > > According to discussions with the GPU vendor, this is a hardware
-> > > > > limitation of Mali-G310 rather than a hardware bug, and it has
-> > > > > been addressed in newer Mali GPU families.
-> > > >
-> > > > I represent the said GPU vendor and I think I know what you're
-> > > > talking about, but you're taking the wrong approach. All G310s have
-> > > > a problem where in order to enable access to the ipa_counters the
-> > > > automatic clock gating gets disabled. So the solution that needs to
-> > > > be implemented when we add support for IPA_COUNTERs will apply to all
-> > GPUs, not just MX952.
-> > >
-> > > Yes. We have bring-up G310 (V2) GPU on both i.MX95 and i.MX952. And
-> > > auto clock gating mechanism is firstly introduced in i.MX952 (not supported
-> > on i.MX95).
-> > > According to your update, solution needs to be implemented to all GPUs
-> > > which support auto clock gating mechanism after IPA_COUNTERs are
-> > supported in the driver, right?
-> > 
-> > A solution is needed, yes.
-> > 
-> > > What's your suggestions for 952 gpu dtb node?
-> > 
-> > There is no IPA_COUNTER use in Panthor at the moment. Unless your DVFS
-> > controller uses that, I would suggest that we don't introduce a compatible for
-> > 952 until the time we add support for reading the counters.
-> > 
-> > It helps if you think in terms of what is already in upstream, rather than mixing
-> > with the tests that uses kbase code. Does your hardware need extra code in
-> > upstream in order to function? If so, where is that code? If not, then let's not
-> > introduce the compatible until we are absolutely sure we need it because we
-> > have code specific to that SoC. For everything else we will implement an
-> > architecture fix if needed.
-> > 
-> 
-> Got it. The following compatible string is the correct choice since the GPU on
-> i.MX952 is fully compatible with the GPU on i.MX95 now.
-> compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
-> 
-> I will not mix tests with kbase code in the following upstream patches for panthor driver.
+> I don't think proper attention was paid to this during development, we
+> found the text at the end of a bug investigation. Therefore, the driver
+> does not enforce this.
 
-OK. I think if you drop patch 2/3 from your series you can send a v3.
-
-Best regards,
-Liviu
-
+AI points out that the frame may be longer than 16B but fragmented.
+Only the Ethernet header is guaranteed to be in the linear part.
+So you may need to also toss something like pskb_may_pull(16) after
+that padding call.
 -- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+pw-bot: cr
