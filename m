@@ -1,51 +1,51 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013004.outbound.protection.outlook.com [40.107.162.4])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013055.outbound.protection.outlook.com [40.107.159.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DC134EF08
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 04:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A023264D2
+	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 04:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775102840; cv=fail; b=HnkAfQS9RRUFQZ+iJH0nzziic614bSiI3aJr81QAgraYfl7nSR8pBRrevzIb4TBS2qrGR3TI4+5aO5clS47rV95J+nTThwvg4Ks9mh4b56rDAc2h6aH92gWvhnEm1iPbCRNmQHD/qMynKVUAF1qk9ztBzB2fx2aJUF4wj6irzuM=
+	t=1775105671; cv=fail; b=kDyQtUhZKqKxZA+Xozmb7l8pjsXFGTBtg60vYd2NXsQHtggcWWonoqLZiqVNqP5BuCPo3Us3hk8mKxBTRvyOdmU740tV6HfTlVqxthyxVDG2iMo3ECAOlLTN2v0459ukkjpqHZymiLjgweq/1Lt0Gc+qWOukyrR81igz00IXZpM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775102840; c=relaxed/simple;
-	bh=o3DXe0W3De6JstX13kahvOzYLPgeCUYBJA5o55fpcLw=;
+	s=arc-20240116; t=1775105671; c=relaxed/simple;
+	bh=+kXwQp9ZqyJJtazLgVHcWq5UOdw57maVI61wWjZNTgs=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dpjHecRBSNogFnLJJmD4RXllFiFYBy6lCC0zWnkfAb0hj3BGLsBngtR+gN/JYXWeLsj+jKuPZLHKWaXMs11vUQcKHY7L/ym0fD0VPijXqUfPprPOPshUAAjSOLZUo6qx9vDBum30bvPF3jSW2Hcu42BBaEw1Rv4WpnDMNFby65k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K0BrxylS; arc=fail smtp.client-ip=40.107.162.4
+	 Content-Type:MIME-Version; b=qunZaJqQ7ZzJJMYJ2RXTmNLRsVLFMA90PGZAgMXYrPCyJxyk4BGR/jnym8431zRpQvKbP06jRP4wvEGMLa6XEdWlbo8Gy6sllsO4ZYyFKa6+XyQUwWKclcvf06P76mRB93FX6lnJfk+xbynQAo1A/9nfqzZB6L8/GHhiHw9/rXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iJp5C9NU; arc=fail smtp.client-ip=40.107.159.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K0BrxylS"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iJp5C9NU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TXVSU7V0DE6QVmLb6HTdA3sJxV8lHmYDWD/r2DMIgXIlx/8LcvuajE+2yiFrwFk9GaY6FHMTvtksr0QdZ3QY/DClMhQMpoftami558MTebKXPiDXUexmAl57h4hemQk5LQbgwabh9NYJWHe3FLSILvFKI535zHhZDrNfuvE66WKFCPvhX5Rigg/lHTc949lFNJrvvJcy4v5bexmLzYZSrkkiZaAeN/IehEyQ8acZWBo5Tb9k0ObW3r/ARBI9ftzorzsHTJbgtFmUBYd8jQizGNq1qT6pd7qRS50jh1ZeVaRJp22NEoZJ3K5aNFwSiCKlurP5Zz+IuKMV4D2V9OimRg==
+ b=CVF1kQEbjBN70rc1xbSATEEGsBPAw+yH3UiwyDM8dEKec9fS5lc0JmnlzbgglxmC9W8JzrJSqFkSjAgTB6PDLeKswZC+G8wtU/60UCcpsDh5rI0w6HPhB562pOc66rNYE9pggoNDt3HE7WR/dUd45gjjzbpYxZUZFn1c1LUfdujPQXCHLiDfwcfNcMJc/ZglAOZiWDB9bQr4Wo63xHKjx+XDq6TNHUiRe/vwtvFraJIsYw0hWph1DkAH1Fu886nDQyMUGT3IUQa8DvFkanvWuRex4d4eZFkq8R6zntLvV0+aPH9mBF6mBAadbuS+qhy3Mz/K2r0JaJG1dzZGi0O45w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=itTTfABoqNt5Yq1uh4hxvafHLM9qMSfk+EjeZnAz+VU=;
- b=uBDdD7kM/JiNeNNW/9OOG/n7iEtdifOkGerjRDY2LLoIV0DsR8U6pJ1rzQylg7zt+dYKpkUbr7GwKlnQhNb1knr+qgNAvn/olEQ8PSa510n78ao5kZmHaVBsTmchyiFg73MjibSTCyOABXma0fcBG4ZTyL7vd3K1IZvjariPRns9HTD1jv9obnzzQ1huHcLyka1HPaurZ8X84cJlPgqrLrJwt/sQ8XXPyhFJ4ZGXcqSG9DQVhN1CesuqcaL9D0eEE1ZRHrU7T4V19yWE2qomx3cMxbxOFGNpRaI4qUgVrNbROwB74s15pc4jFhw/wpvVimcdvk3hybJ9oIfo8bsHhQ==
+ bh=EvsBRDDp3LyWkzHH+OIM45C3UVT78jLzPxpsGYby3xQ=;
+ b=jRog0AL0DwW7elIT4aMOlDg7QM9nQtATXpWYh3lKq7XsLpxOfOlP9qXLCAtqDcKdgf7BscoqgpfHsjMXMnT0F4XKPnY2+EvHEnYuwXgnICrvpSPQpFppIk5vIp+ogTl4wbhUuGZf4R8SBEK3/RlFCwXcNn7mPOWIZKA4mQGaB7aLF/EZlj+OnxPHqmr+jdgNPm3nS4aMM/G/3FasBiFVO2LSP7JAuSo1QobeHy9tcjfMTIq85T4ICRUqsMDHKerzmH5HFWblvYfLxy3vu5EarDrnwkzjXLCQsfzWxEly31BjZDCCNxMGGmeHxjotPNInM8Qjv95MlDvSKJRjRU1G3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=itTTfABoqNt5Yq1uh4hxvafHLM9qMSfk+EjeZnAz+VU=;
- b=K0BrxylS9qzlEj8TGGlBUsFSeyeqyS3G4UIc+C98JFoRfV7YIWy9Xd/PiCMiOo2Tco+R9Hr9Y2wKn28C3cVVMA2Gvs4lfxbCBnwTBQBEccFsdsuAnPHm5Ygq9V8OvVZw3At4YRWb+rxgJYYBvsWu5RIPqCK5hHvz02KRH9cEqsTWMd/K2pWC/M3i4m4BFoyaobx1LvjB8LmMqYI/CzmaMFS5cuH7gOLW/D/No5PxKGufmOdJO1onDF6EsmqTGYbQWTgxJGTF/EduFpq0HtXE5pVZNRAI2kRhZhoUtvu6PeIP4LJmxtZP0q3QMz8LHDni/ebAtWwaXT2ShZnKTqzQ3Q==
+ bh=EvsBRDDp3LyWkzHH+OIM45C3UVT78jLzPxpsGYby3xQ=;
+ b=iJp5C9NUzgBS+3tinrv0aw2UlJi+1p4ZSQzlguzA5YIGKcxKdamrxiI+ZOXC36RNi/WyZGVmceKBLAgSR9u8pan27yjXlOSjMfkT8jFnmrfmRFX90nk7cE1ZyHRfIxTVLrUgdeCyUgzsp1CKnKGqYU6rltwDInddH0E2VflYy4nIxGyzcFFTTMvdt6v2BO1TMPzgHBuukdrBgWKwoDEq180OfgUj/idZT7viim0sqU2tHaIoIBL/H+/uPUyNoNz+SIsEJnjY9IaqOSoc6xA9kiYUPebyv8OwSsrRBf1yyRkBSre7ADQI0sHqWCYP2BXNdSV4rQ67QDDK+GlhXorFyA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DU0PR04MB9657.eurprd04.prod.outlook.com (2603:10a6:10:31c::22) with
+ by AS8PR04MB8994.eurprd04.prod.outlook.com (2603:10a6:20b:42d::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
- 2026 04:07:11 +0000
+ 2026 04:54:24 +0000
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::4609:64af:8a4b:fd64%3]) with mapi id 15.20.9769.016; Thu, 2 Apr 2026
- 04:07:11 +0000
-Message-ID: <e8870675-f764-4d69-805a-cb2aeee84011@nxp.com>
-Date: Thu, 2 Apr 2026 12:08:19 +0800
+ 04:54:24 +0000
+Message-ID: <1a8b1a34-89bd-436e-8b5c-64ea71e8f333@nxp.com>
+Date: Thu, 2 Apr 2026 12:55:32 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/10] drm/bridge: imx8mp-hdmi-tx: switch to
- DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Subject: Re: [PATCH v2 10/10] drm/mxsfb/lcdif: use
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
  Stefan Agner <stefan@agner.ch>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -85,10 +85,10 @@ Cc: Damon Ding <damon.ding@rock-chips.com>,
  Stefan Eichenberger <stefan.eichenberger@toradex.com>,
  Vitor Soares <vitor.soares@toradex.com>
 References: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
- <20260330-drm-lcdif-dbanc-v2-9-c7f2af536a24@bootlin.com>
+ <20260330-drm-lcdif-dbanc-v2-10-c7f2af536a24@bootlin.com>
 From: Liu Ying <victor.liu@nxp.com>
 Content-Language: en-US
-In-Reply-To: <20260330-drm-lcdif-dbanc-v2-9-c7f2af536a24@bootlin.com>
+In-Reply-To: <20260330-drm-lcdif-dbanc-v2-10-c7f2af536a24@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: SI2P153CA0025.APCP153.PROD.OUTLOOK.COM
@@ -101,98 +101,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU0PR04MB9657:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7245ded8-045a-4193-7c2f-08de906d50a5
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB8994:EE_
+X-MS-Office365-Filtering-Correlation-Id: bee08a06-bd1e-4bd8-2035-08de9073e91b
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|19092799006|921020|22082099003|18002099003|56012099003;
+ BCL:0;ARA:13230040|7416014|366016|376014|19092799006|1800799024|921020|18002099003|56012099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
- tiASy5KPbwf9mah+VruOm6ylXGa+5amvqN5R6Kyk0FJSxmE3Pta4kKL2CDXwapOxaiu+PBqMZf7Bn1ss98pEj5oGeq5MkqzMR286W+4kt/bGPnehr3WpDcYAgr+JLyVveZccn79NQ3ViexLE9lyaKL1N1P4Sz3GSSq6X02jN01DU9cTmJEG3Zva8ysHY6acnCGBYVa34rX/EO87IJ7hPfT1m0DpZ7LP1x82pTeM6tp3QjhV8377eD30ZYWiXws3EBzg9rVv1guztIc1S7jOmtQQZe+lt0W1npm1g7VEyo51S9L0esoBk7983jWVDhpBlp3QurKMQRq9NsfKkOV9i1CxY8ssTxlmL8E81t+F3VWKhDfaPwLA6bY0GCSmc9TATV0novNimsKbR2EFmrPRIq8eBDJev3BjQN6hKvAi4qcHau/Ed6ajZfKdQN4wvOSqzyW+67kHoYfgiV1S4FoVrvp6XCLwHtWdDRYHX8Y4d2TLOhxXK0AitDRQcvfkk5HzS17j7eeJqif5qTVSdjMvYO3ge3rQhABKvb8vGH4jPTCZxKCwpnV22shlcrVdCCXD3mRDvLmIGSqz7HJC/6DT85+QWxNewKBQ/YhiGl7/X7uINbfUbHwinovegv2QzDMqpT1FjKApocNldXFokegZj9aVEsyvUSgYLViNrN+WpEnyPE5tj7azdNLbzMALi24zxoFUirWOfW+sMCkIayoP9Isshp0uSKlnQguSE1pK1Oa8xo0ONu+aFYlJiTGCPv6jY8Uvik/w+sfwCFKuDmAYUkA==
+ FQ4YcZxRBwisAxpFCS8KrAmo6gLVARvZWLgQqYKl+DYueAvCkrLFTDV2oIdi7wf4uB50S1k9FtmZEdGn1eDWTXLsa0do0nYgjN7dXWKD9+dCJGdCoXthcDdQNpSktSMkPPE3UmqDFjZmE43nTH+E3QV1j+AEt9wD07YZeFK4BiMUXaeffedlYxGgoxQs0Jx5khPxdU74BthjZBuyAkpG3T/UlYVRSTOYK+QWmsuQ/0fJtez3vV/rwyiTyavGxM14DcfTTWovPxET/StqsTTI7qe9wqpR9ENC5Z8Qxva+tD1Lw4YxEyWS9PukW28tLVaFvXjd8KRlsZSscCFJ0TvboPILpdUV5ZHCglocOh+zzdfkgtfJW+nEoiFSCCgRfsHGYaly7un1D5pTeaBqeElntqRwMcc3S4gnPXFLz1s0BiX62N9GgWrupVKU4ePMQTevK05t5+6TvUoxni+XeROQiX0IpTdhoSaami3rrifUcUmVC5UvAmKs3Aiuuvh2T/BnjJUYXyTeDle83mpcdw59CZz5TQV/pNB29RJXSVuiNiLJi1iTY0TJqkiwYsZ3Zq7C4JL3CkVF9/VqixJOAnkJPSsSSTQhFxbLMPSssqK+gJssXV9VQIvUzSKhxHJAtTvh75AsKI+XlCfv0N9YRKuMYy2X/OiD2rnr9XNY2duN8ee4jn3VwG4FZ+GiU5+z4Is+cXm9elJ4Vh3Z6+jmlmk1SWpOqqMVmX+SxoLkoVp83gh+NCSTN1deCItVx3uJJeHTh9sc5N02BcBnlhzRq3Be8w==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(19092799006)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(1800799024)(921020)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?TmJkZU9QV3NZMXVZa3ZXNzBFYk54TVRxM09VMnpsNTY5bEcwTFhYOFcreklq?=
- =?utf-8?B?QTh1YmtLcFBXamQzSWsyeVVKOGdEQzhuV2FCYXlSOEpLdzVtUlc4V0RIY1hH?=
- =?utf-8?B?cEdCL21jWXlsbngwalhQZENlU2crN1FKSkpndUF2NGlxcTU5QmhRUjUrU1p1?=
- =?utf-8?B?YWpSbDhmVFNxcDhrTFFlNDFSZlQrbFFwQTNwSUE1S2tWaGxVVFBVZnZzZ3dt?=
- =?utf-8?B?c3YydGlrYWRvLzhQTGdWdmQ4aFlYcnFpYW5XMFJkZ0svcFhRdXp0dEdveHRQ?=
- =?utf-8?B?TTcrYnFGc1hXL3hUa1gzVmhNZ0ltbGF6eUFrakR0UktucWVTOVk5NE94QWRZ?=
- =?utf-8?B?WmNjMWdBN01OeGdtbUJINmpYWklBcnk2cVBKVmwweWd0c2ZpTDRoWW9pVGl3?=
- =?utf-8?B?dzFYOXJKNkc5bkdOUWtpdVFlaUNiam44TjJIVldIUWxFZ29kaDRDb3pUalhE?=
- =?utf-8?B?YW1LZkx0M1lYSnlhWnNvdXdYMmJ0ZVZrb2ZIVFlBakJ5WG80NkZyTUVNeCtQ?=
- =?utf-8?B?dGlWV1hLSHYyN0tGbXhXQk5GMzBMUFVCMWE2MklFdTBpRjFPYzgwK3B2N2xj?=
- =?utf-8?B?WWhSMjZHV0VMVExqbXVRVllsMUF3eWI1djc2L04zVnZTYWpIQndqaTQxL3do?=
- =?utf-8?B?Ri9iT1pGb0xIZGl0djBoakV4eDZ1RXVCVFJ1T3ExakxZdGRtMWFRZ2Y5SSts?=
- =?utf-8?B?OXFTYjBjWXljTkdON3g4bzFWU051MFUzQkhuejQ5aFdNWklSMHE3dCs2bEFj?=
- =?utf-8?B?ZVJvWElTeFByZkR6cmpYcU9jbW4wQzIwcEd2TXFacjEybDlXRC9yV0VqN0V1?=
- =?utf-8?B?Mnc5cUlyczNYalB1WTlGLzR0VFA3VWJSb3dzWTh2V29zMW9sbTIyR3NoWTJQ?=
- =?utf-8?B?Ym5uR04zSDJKZ0RmSG1ZcDhOK2Z0VVBzbzhCWnRIMEM5UDNvV2duaHlvMXFn?=
- =?utf-8?B?cDluOXVyTFgvRnF2MTRuR0FyLzk0YnNZblE4V1MyRGNqUCthazl6WUhQZVN1?=
- =?utf-8?B?R2dwT05xYXVaOHBIanF2TUY0K1MvNFRYd2lmcmg3cnVYeUxTU05nei9OSG1H?=
- =?utf-8?B?Q3B6ZFUvQ1ZqSGxrVHFIQVY1STRqZGdranZrMGFCZytPUU5sazhMazZESDgz?=
- =?utf-8?B?d0UwS2FOcXZWNFpGUUo0dnJkVXR3cCtGYlRzTk81cDM2ZEdJdkhxakNIc1ZI?=
- =?utf-8?B?L01SNXhwcUZEcHJhUHFxclJCL1V6emtIbEJQSkJlK2U2TWxibE0yaUxJNCtD?=
- =?utf-8?B?Z2xSZWQ0aktuRU1Mb0Z0dW54VDF0ZE9aeG5aYzQ1SVRHckJRQzNMUFRJa2pr?=
- =?utf-8?B?bzlTRWtNciswNUJFMEVBY3NkNWQyZmd1Q2NxMXFMQzY1Z0huNlc5S2pnQlFC?=
- =?utf-8?B?TzJVaXJDQWRFcS9aZWZXT2pRTzBqaG1sTmQ1Sitjb1g3YmtqSUk1UExidTls?=
- =?utf-8?B?REpHTHJjaW5ZTXowaFdWeDB0SWl6eDZ4TGVWbTVUbVVWOU1iMkY5b3NwSW5p?=
- =?utf-8?B?RmIzK1FBRmVsL290MVZrQlBxcFA3bmV2eWpZc21MQmU2Tm53bHdtRE44czhC?=
- =?utf-8?B?Mlk5dXFUOG5Vd2tLRTZXK0tiMjB2NmFBVG1VQ0RYZVJsT0trWmFyR3oxS1NT?=
- =?utf-8?B?cWtXSGJFRXhiUk5tbFh5ZFduVlVTeFk3b3ErVERncVZjd3lMaWgzNEgrRzBN?=
- =?utf-8?B?NnVybzh6dkh1OXdxcnJXaXorRTJVa2p2cGU3UWM1R0dDSUoydlZ5dVNCRjZr?=
- =?utf-8?B?eWJvUkU4eXhiTTZpMHV0cm41VHZKYUVjcTR4SHpaRVJRRHltN0xRWUY2TEQ1?=
- =?utf-8?B?a0p1dmRVYnFRb1BhM0RlWmVFemhvUEFzeUswZlVadEh0L0JnUm5Teld1N2Rv?=
- =?utf-8?B?UE9PRTY3Uk5taTdNM3FzUVRCUkdvalFVN1lBYWMwRi9NVUlpdFhSVkQ1ZjhR?=
- =?utf-8?B?T0RvZEFLa0VsZTNmNTNTMzFGcDJYS1Fjb09EaCtHSEZaUWV0cjRGWElhZUYy?=
- =?utf-8?B?RnV4T1JPOU1GcldrTnA4M04xN3hTaHBNOXl0QXA0NjlnRlBvN3hub0VIY2oy?=
- =?utf-8?B?SDVVUWRJZ2ZIRHV2MVVBNkk1ZVlXV04xTmkyVEpxM0RBOElNMTJYY0wvaTFz?=
- =?utf-8?B?c0pCZmNabGxGcDRZWmVLR1NSS0VJWit0bkV6WDhzOFcyZWcweXlrU2tNc21D?=
- =?utf-8?B?aWNVeWZXK2VRODU1NWZERFU2Tm9XT2s0Y3hRdUtLYnNqSC9IcWtSdFMzVXNk?=
- =?utf-8?B?TkVCU0FjTTgrMWl2YmZIZFFPcUFaRWtGZ1E4Q05LMy9CWmZKY0lZUy9nVU9i?=
- =?utf-8?B?TEtJVm4xNXV2NjkyQzc4bXhIREJkbllYQWhMcUxxam5sOHA1cU1WUT09?=
+ =?utf-8?B?YmNFZ3dYK3VLZXQxYjFZbHR5YzRZWVU4TG5pZStCZTdYWHZHczdXUW1nZktE?=
+ =?utf-8?B?RTJycTR4dnE0ZXpiMTJtOHpyUWlId0ViNFIwRzdhWmd2U3JJQlBrSUdWMWRm?=
+ =?utf-8?B?RnpzeXV3ZWRJV0htK1d3T3hrTlVrdjhkV28yWHMwWnk2K0VsRis3UytFelpH?=
+ =?utf-8?B?czNrQ0FXdU5UQTg3M0hOaXc4dnBBZHlKc3dLc3I1TEhwd25DVVYwcnovTXNV?=
+ =?utf-8?B?Q2c1UlVFaFQ5dkFUVlRCN2ZORHdSc0JuK0xnUUtJeURqZURkaS9kM0JWTWll?=
+ =?utf-8?B?YTNpR1o2Q0dLeGZGaTVFMEZ0T1l5QTBFS1A4U1hSeVU2MGdvT1JZQk5DejJE?=
+ =?utf-8?B?UEl3dE9rRzdyZ2ZDZnZSSmdRbkl1Q0hCVDNSWmphUEZOcDNSS0tsQ1hOVzRC?=
+ =?utf-8?B?SG5IMElKWDljVGVZajRzT1JDZDkvaUwydWs0ODRULzJOd2xkNk9naW5YS2Zj?=
+ =?utf-8?B?LzNyNUsrRUZZUFhjVFI2TUorN205Ky9ma1prVlZhMTNzWDdJcVVmQnBGMHB6?=
+ =?utf-8?B?ZmVtMEdZQXlzTlh0eTBzYW1LMUNlYnA2bG1aYzQvaEdhNEs1QzQwNWVIT3Vy?=
+ =?utf-8?B?YUVkM3JiWXAzMjVPajVkT0lYazV5c3hHTERocUlueVJGdEtoek5GNFQwK0xq?=
+ =?utf-8?B?dnhManE4VUhFYkF3bVArT2FzQWlwaEoyUlJ5cXpqUkpxSmVacU1WK1U3eGRO?=
+ =?utf-8?B?OEh4ZjVVUmRsdzBiOTdNSkNtdXJGa210Y0xZeDZhZE05VUd5R1FDbm9yUDNs?=
+ =?utf-8?B?Z0QyTGRNTW1DOXhNOHFuaC9RNU12eHcrM2h6WjdETHVXRmRCUllld0dzb1dF?=
+ =?utf-8?B?cnQ2NUxSUzhTQ2FSQTUvSFRuZFJDT3lsUlBrMlI2N1laUndSVHo4dU5Ya0Jk?=
+ =?utf-8?B?VzVzTStuZHpwcFFzaDNNdU4vR1dod0RuaEFUYTNZVTFyZTgxMXNZY1lQTGxL?=
+ =?utf-8?B?YnJTN1MyZEo3alZUSi9qcGRRcVFMaVZFUUoySzJjL0thcWw3ekV2V3ZqSzZ5?=
+ =?utf-8?B?amhneXdiY3pxQ1EwRHczKzUvWHhhZVI3ZWVteS9LVTA5V3c3aXBHZlFhZkdL?=
+ =?utf-8?B?Njl0Titja2ZnMFFkR0xHQWhobjg0NW5Jd1pwTDNxWEFiak1laDA4MWVsa04y?=
+ =?utf-8?B?K0FWbmJid09iUGxwU1hKM1lhM3U3bjIzSDVPOWJwdG82YVdOZFdNeWM5M1Rm?=
+ =?utf-8?B?eko0U0FXRm1Mbmc2MVQ0N1VlN1d5NDU0STZSL0IzOER6K21QRGRkTDBPMFNy?=
+ =?utf-8?B?aVFndmZzT1d0aFRoNnV5NFN2SUxBZ3lPUk8xL01ETTcyeXVkNnRta1lRZ0sz?=
+ =?utf-8?B?S2JQUC9RVWM4dC9xakF2SFZqWlFWY003UkRtTDVuRHBGMHZTQWRkWnhVdERW?=
+ =?utf-8?B?dUI5bjFIaGJYZHJPTWlDREJLWko4cy9YUHhmREcvdjJ6ZUdXSXgxSkJCSlBp?=
+ =?utf-8?B?ZTlwM1R3L3RmTWFTYWh0cE9Tc3hEZkxFYnhDYjd3dHMzL1d2b1dxd3FkR3Ra?=
+ =?utf-8?B?SUwydUplWDlxK2RlN1NlWStpSS9uTzE5UFpQbXYvSVRXVjlVWE1QdEIwdW1F?=
+ =?utf-8?B?M1JSdEtIMjVkUlZRS0c0ZU5oT0ozM2kvOUl6R2o0NkV5U1ptb2lNNVE2ZEtY?=
+ =?utf-8?B?Z3VucVZFWXluVldGSDZhbGJRRzVxdXFESjl4bGc4SDBkVFFCbmV3VnpYT29L?=
+ =?utf-8?B?ckNBc053cVJJaEYxVjh4M2JoVDVLRHVEbW9PT0d1TGdNVnorMEpoUHgzVUdF?=
+ =?utf-8?B?QzcxUjJSdnpxaThia0IvY0k3SjZKa0IzckdZYmRiV3pNeE5mVGI5VEJGK2Vz?=
+ =?utf-8?B?Vm14QVhkNFhXTm9Bcmg2UFdKeitneTdISjc4UnlXV0tUdG5QaDV6NlpyL0RF?=
+ =?utf-8?B?S3ZDdnZqL3krWDJTL0dGOUM0MWYwYjFFYWRFRUZEbGcyYkIxUHNOL0tnQWF0?=
+ =?utf-8?B?TlJOSnJ1V2ZoLytzUk5TRmFUNVJiMkRaTGpkZkRHUkNzbGlLWmFONHBnMlFx?=
+ =?utf-8?B?bGVpSUprN0tRcExvRGEzdlAwY0M5Q3dkTGNubUpGUERMbzdxNVNpSVpRSlpo?=
+ =?utf-8?B?REF5V2lZSTM0VHRNWENEZU1pMlB1R1R3aVkycEp0dmUxWDBrL2VmempjSGYr?=
+ =?utf-8?B?SUhSaVZ3YjU1Y2dnYVYwOGNhNk5abkFwZWxJbkwvbVczZllMUnRJdjFVZC9M?=
+ =?utf-8?B?bWpuNlIwQ3NVZ2xFampjb3JEZVh5TWZIS1JaTERsemJMbU5EWmxFaWliMHZW?=
+ =?utf-8?B?bFhQWUR2bENSdTdDWjhITTRqSGZoRERqbExWdW9RQTRnTlhCeE5ZcVNSWGpC?=
+ =?utf-8?B?K2RDdndJY3ZPN3ZMN04wQkZjWXBFbkZ1bXY5aitaV0xuZFlpbWI5QT09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7245ded8-045a-4193-7c2f-08de906d50a5
+X-MS-Exchange-CrossTenant-Network-Message-Id: bee08a06-bd1e-4bd8-2035-08de9073e91b
 X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 04:07:11.5061
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 04:54:24.7834
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JEVdQHXcNiG/x6RLEyLTMlZczDRzTY4wDy6htvL7/IPQTg7bTBMrHAqcvmXuwfnrPQimiJ6uvZxA+nNZroli0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9657
+X-MS-Exchange-CrossTenant-UserPrincipalName: JsJX7j/7V18Xwv+is2vV4WOhJzP25vSCu9dsywvKD91j0VTH4gFJhJb3j30ZQd/onEov+uDod/xiEGZoYCdEvg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8994
 
-On Mon, Mar 30, 2026 at 09:25:50PM +0200, Luca Ceresoli wrote:
-> The imx8mp-hdmi-tx one of many drivers based on dw-hdmi. dw-hdmi in turn
-> can operate in two different modes, depending on the platform data as set
-> by the driver:
+Hi Luca,
+
+On Mon, Mar 30, 2026 at 09:25:51PM +0200, Luca Ceresoli wrote:
+> Convert this driver to DRM_BRIDGE_ATTACH_NO_CONNECTOR and to the
+> drm_bridge_connector framework which is the current DRM bridge best
+> practice.
 > 
->  A. hdmi->plat_data->output_port = 0:
->     the HDMI output (port@1) in device tree is not used [0]
-> 
->  B. hdmi->plat_data->output_port = 1:
->     the HDMI output (port@1) is parsed to find the next bridge
-> 
-> The imx8mp-hdmi-tx driver falls in case A. Switching to case B, which is
-> the current best practice, requires that the HDMI connector is always
-> described in the live device tree, and a previous commit ensured this is
-> always the case by adding an overlay in case the device tree does not
-> comply.
-> 
-> So now we can simply switch to the new mode and support
-> DRM_BRIDGE_ATTACH_NO_CONNECTOR.
-> 
+> Tested-by: Martyn Welch <martyn.welch@collabora.com>
+> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MBa8MPxL
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > 
 > ---
 > 
 > Changes in v2:
-> - new patch, split out of the previous patch
+> - Added missing select DRM_DISPLAY_HELPER in Kconfig
+> - Rebased on previous patch changes
 > ---
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/gpu/drm/mxsfb/Kconfig     |  2 ++
+>  drivers/gpu/drm/mxsfb/lcdif_drv.c | 16 +++++++++++++++-
+>  2 files changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
+> index 264e74f45554..31db7a824a93 100644
+> --- a/drivers/gpu/drm/mxsfb/Kconfig
+> +++ b/drivers/gpu/drm/mxsfb/Kconfig
+> @@ -33,6 +33,8 @@ config DRM_IMX_LCDIF
+>  	select DRM_GEM_DMA_HELPER
+>  	select DRM_PANEL
+>  	select DRM_PANEL_BRIDGE
+> +	select DRM_DISPLAY_HELPER
+> +	select DRM_BRIDGE_CONNECTOR
+>  	help
+>  	  Choose this option if you have an LCDIFv3 LCD controller.
+>  	  Those devices are found in various i.MX SoC (i.MX8MP,
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> index c8ba8f9b1da8..7f07ae24e0dc 100644
+> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> @@ -18,6 +18,7 @@
+>  #include <drm/clients/drm_client_setup.h>
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_bridge.h>
+> +#include <drm/drm_bridge_connector.h>
+>  #include <drm/drm_drv.h>
+>  #include <drm/drm_encoder.h>
+>  #include <drm/drm_fbdev_dma.h>
+> @@ -57,6 +58,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+>  		struct of_endpoint of_ep;
+>  		struct drm_bridge *bridge;
+>  		struct drm_encoder *encoder;
+> +		struct drm_connector *connector;
+>  		int ret;
+>  
+>  		if (!of_device_is_available(remote))
+> @@ -86,11 +88,23 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+>  					     "Failed to initialize encoder for endpoint%u\n",
+>  					     of_ep.id);
+>  
+> -		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+> +		ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
 
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
+It seems that only analogix-anx6345.c, analogix-anx78xx.c and analogix_dp_core.c
+don't allow DRM_BRIDGE_ATTACH_NO_CONNECTOR, since they error out when attaching
+the bridge with the flag:
+
+if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR) {
+         DRM_ERROR("Fix bridge driver to make connector optional!");
+         return -EINVAL;
+}
+
+Looks like i.MX8MP platforms don't use these drivers.
+But, are we completely safe here by adding the flag?  You also mentioned
+"pitfalls" in commit mesg, which makes me a bit more worried.
+
+Sorry for not bringing this up in v1.
+
+>  		if (ret)
+>  			return dev_err_probe(dev, ret,
+>  					     "Failed to attach bridge for endpoint%u\n",
+>  					     of_ep.id);
+> +
+> +		connector = drm_bridge_connector_init(lcdif->drm, encoder);
+
+Also, kernel doc of drm_bridge_connector.c says:
+
+ * To make use of this helper, all bridges in the chain shall report bridge
+ * operation flags (&drm_bridge->ops) and bridge output type
+ * (&drm_bridge->type), as well as the DRM_BRIDGE_ATTACH_NO_CONNECTOR attach
+ * flag (none of the bridges shall create a DRM connector directly).
+
+Are you sure that we are safe to use this helper?
+
+> +		if (IS_ERR(connector))
+> +			return dev_err_probe(dev, PTR_ERR(connector),
+> +					     "Failed to init bridge_connector for endpoint%u\n",
+> +					     of_ep.id);
+> +
+> +		ret = drm_connector_attach_encoder(connector, encoder);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to attach connector for endpoint%u\n",
+> +					     of_ep.id);
+>  	}
+>  
+>  	return 0;
+> 
+
+-- 
+Regards,
+Liu Ying
