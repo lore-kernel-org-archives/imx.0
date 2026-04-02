@@ -1,251 +1,177 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010033.outbound.protection.outlook.com [52.101.69.33])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368AB3DD50A
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 12:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775131806; cv=fail; b=RhHAO8LP8cX2rvapo3KJZgU30Bch+fQR0FiScKilknLEUOhhrApLb/xOEvtwte56JWlfFf/nHl0gW9irHknwvICddUZCD6aHh9nTZPamDLKLLdo39xwhk66pvLP5cWU9d+xcd0QMOrLGxOHfHWNqlKNSlj241jvBxdL/Pwy0Cgw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775131806; c=relaxed/simple;
-	bh=+PU7VnGBnhrgJMpbey/JpN4Qz9XIWKcE6T19pgYXGb4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bd6/6ZO3axPKvxH9wgbkLO7ZCnP9sSwOxsZXzzMcnrV8vZSIO4bV0VnbdKnGj7n8wpiOYO8m7vH3Cp5h4GXdCrPl2Y6ZNYa459fQ3FDU70eu9odEwbDmUCOtcHqk4iO4WXcfr5xlut5u/pMAEPIYbQGfRSoGLI3+vYH/aVrn/cY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ASJl2gkl; arc=fail smtp.client-ip=52.101.69.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CCE17DFE7
+	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 13:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775137287; cv=none; b=a4XFbxKsfNexwWByqNavhvMN4IwYI0cBi5zS7wmPWHa/7W9gABohhmiK/Amza0Eoqmx3HSsp6oipLkxQCb7RlrpwPzANWYHMVu7AFvWUAuYMCJEttvZfV33IWj4wl50p4KoY5sX2xa2EL4JJsh/28q2QU+QIXD2nWCOVAkczTvU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775137287; c=relaxed/simple;
+	bh=BQWzsvFxUOEy93Lv9oCbsgPB19vUqLBsv/3Z000R/KE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lt3O/ts4qth7m3WrpzcJ4BjWp7312iSaHmgwUILJ+Owsj/Nk1+8PanyCG1ikAssnsrse/L6AIxfrhqdTpzSpbmzOF4C2nuZ7Fx8ARMBma/FDePwml8MvxeBgyF64yvBSBx4O+gzN3AwIXqCywu/ME1EygvRBgbLWTwcvdHbj1gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dzZIq2WN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZoLiY+wV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ASJl2gkl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fZAPfUU9NCR1ms3/RY+k6vGJV9RNHdYkCxi/stIswZ+e2Yi+j3GjcfOp7zDXlj5BIv18pjzVmTFESNALz0IZ/ClpYXHT54PmoNghlwDr4SsV9bCQg2eZJuoDPVNJwntzhOnqdvlitWXuamYMpMqle/Xdt7TOz32dSqBH3Z/Pg4aCEan9KZbOdwogM16PN+dbauleJyY/BG7SdvvZmGVx2sm3HmrV3LDUd/m+32G8IyWA/7inGKt3AHdKladSt2MG9kU7uJF1yl69XJPjhHUVbadMN084JpPMXJKvZJwHYsUqfwILj8xpRkjvRpG5DCCyE5skXZZhR1/mMQL0hpGM5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xie2KyAwJ0U4IgVD+zf7OHMnpQ6RnxyPLRDcOMmZ05U=;
- b=rMieMWb47kRo82RQfmaojXyeDjWtXSkcIf9ziPyKvubP4VEZAhUEgxaidH7WGxGnQE7JKegIVFMdbg+REcFKQD2M0ZKTdNR6V+p9hR05awhVD3nyKcqAF4wY532OiXwxS7jXBbuamjXO/z2yU9Z6GzoCA6xjnrc06kWcLRcfPjV78fhWhz17vzZF/ISuY2vLJEhJfZAksIKOvt++xWGqdxz7NPaBTqgmp/JrjttCvnSYJe/QalQf+zgYqN6YinrVgiRcRtvKN9Bau84SiTvYs0cxCVCaDL79jXZ2X4ntgj+/dNbbeFaDMH/bW7Zb5vEH5jyR94VKYEvTaMHoy1WniA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xie2KyAwJ0U4IgVD+zf7OHMnpQ6RnxyPLRDcOMmZ05U=;
- b=ASJl2gklOYaJPdCQvwuxP+6qkkqHTlXYUkh6Y5MnNSgPBB3NY2PNvCr63KCAP/+5KvsxH3OL1LSV/JZnjvDEkYPNrCYxNKcfeM0JW9L9WHa7VRhKWa53ZrGhWEeCDTZBiddmOvYlyDcTNBin36Mgh8x6zHzgJx7KGXVkrSXwuEHDo6c7uhKoQstE+i4tKenclINGOBFyW6DsvEeaW5rZaNKuZNtsn2LEstV2vlcZU5KrepNL+3m1vA+Ww7ouKEvB5aNT5cYWWbvcG8YSHBet+kyxeSWfhe4SvauKIWArq83+N4GZJEvEcqaqf0qp3FbTGJkmJ7w8GjRKs1cfUXbm4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
- by VI1PR04MB6976.eurprd04.prod.outlook.com (2603:10a6:803:130::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 2 Apr
- 2026 12:09:57 +0000
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a%5]) with mapi id 15.20.9769.018; Thu, 2 Apr 2026
- 12:09:57 +0000
-From: florin.leotescu@oss.nxp.com
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com,
-	viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	festevam@gmail.com,
-	Florin Leotescu <florin.leotescu@nxp.com>
-Subject: [PATCH v6 3/3] hwmon: emc2305: Support configurable fan PWM at shutdown
-Date: Thu,  2 Apr 2026 15:25:14 +0300
-Message-Id: <20260402122514.1811737-4-florin.leotescu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260402122514.1811737-1-florin.leotescu@oss.nxp.com>
-References: <20260402122514.1811737-1-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0162.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:99::12) To DU7PR04MB11163.eurprd04.prod.outlook.com
- (2603:10a6:10:5b3::14)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dzZIq2WN";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZoLiY+wV"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 632BLX6H091589
+	for <imx@lists.linux.dev>; Thu, 2 Apr 2026 13:41:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=sv9xB6+Go76erVqN6g1vezYQ8vqR4bRuLJP
+	JN/bGVwo=; b=dzZIq2WNVEYA9OwFvprmEDltpgrDBe2YFsgUr3xmsQ6rcIFegCi
+	mICsS8T6jCzWxO32uHP1w1ER2HMsIHiVyi2CP122Stul04xYgCxpL4CSdbSyu7qc
+	Og3hRwTAKVnGBn4pcLk9YQRufo/rhVWjrrgmXps6LvzY0rWp3o0qY517KrLdKx2V
+	lC1m7PDvmRyULPoSE4rMl2bCvdleSmplTx5DQ7qiBTy5dHRSDNbbDosBSr5K1UKv
+	eXQPtP1GD4EJI/8tJMgi1iKMWkQ/ylvk662eyhQjhnxb1ExsOm/pMsKmruk9cbnQ
+	pgDwQJYiTGtGq9+UdNnr3rx9ppA0t8l/LOg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d9jcu9yh0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 02 Apr 2026 13:41:25 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50b3544bc7bso11020071cf.2
+        for <imx@lists.linux.dev>; Thu, 02 Apr 2026 06:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1775137284; x=1775742084; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sv9xB6+Go76erVqN6g1vezYQ8vqR4bRuLJPJN/bGVwo=;
+        b=ZoLiY+wVjM0KD/7hcwBVrVBW0unK8XjnUNvY6Q20vHoRUlgMSnLvbzXgBNeIvZhiFj
+         +d5Lnl4jqWeHOf4o7KCri0jhshNjgM+YWKZVwkRitV2XGAYpURAa0rrE0lFRvIxbmG3i
+         nGnCUATMhJcZ7C5WxUh5GkILNUsgLq2KnuI6vi8vKHlUkUL4OBfN1PkAS73KlHPn2QEG
+         1/u8dhYL1pgl4Jbo6mHfcJml/3WVMhPw6vkLSDIRku6OxQw6QFW/vVqouG5kWCnKmPXe
+         Jt1IH2dkw/JK8d8oOvgJvGGl0CVSxdPLbfalGBFFqjEcOyAB5lE3a7TskW+iYiytbMrp
+         SecQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775137284; x=1775742084;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sv9xB6+Go76erVqN6g1vezYQ8vqR4bRuLJPJN/bGVwo=;
+        b=lcI1kZXwwh59P/hdInPYd2OjJaeI+efGyRzy4Yx0XGtt6+/mzD6ylIpHdfkIT2YK3R
+         OBBMSciPDMXuDDznxvgtiScvsCx/zvwE/A0OB6TBAwi4czCTyrz7tEdsyyJlq505s0ke
+         PC6uICM7nP6WY/8ARy1nprVNgxGRrSyU1aEQjTyIKP3rHgI50DwqOUFS/LTJjg2LJu8m
+         r32gZvftQ3QTVR9cmVuSgYExzn8kHqrG6h2zGfzjMUMAn6PKhIHmvkz4UQc+OjwqOv26
+         65KYyNKqH3F9/OE/dAe2jRc6n1z1SZrDNBOz1UJbsrlx5FXhnj8nx5fb9/dU6f3G+ckp
+         waXg==
+X-Gm-Message-State: AOJu0YxYFURzWk8k25fTnW5SyO5Dv7yP9katBKoWY6MTJClCgW/WtI0z
+	bYrFYZT1BsDSWB0BeUvNPV2NFTltj6GP8AdcLvLIJZHDAM+bFexMS4+aT1ZRYYmXJnpD4rTdorm
+	GkVO079UGLhdnkJs1f50N/GQ5D9aTNosz2vN0CWaHSbvGnJeH5CMBRmE=
+X-Gm-Gg: ATEYQzxej0KljSnOyPCo3oc4pq0YWxMhHZRT0GMV6VGTAkPtuXBkf+1uTT3fnx2y7vx
+	QMWxbbTTBFiqggJDyANNLZ4zIPaxvcHA+Q/zVIykD5N/Gl6iIM4lL3nO2I0LCD76X7aJeMBz8g3
+	3QrccKtDl6yz/4h6EJLU3Txa1q1gIGe9DliMEE+m+acJYK3eorwMJwVYYJV5fgE7m7pATPBPpDh
+	nmCPlOWK67qf/QFCb5nVkqC4A0ZehAhMOaPawKC9NrEORlTI5jfvsYdDPk+fbMQ0ZbFSOGWmBNp
+	MawsCjtnIItI8uHc/4XLmd+qdYwpcKbhAQtTmYZkXjvAukUMGw9b0rZ12O4eF/FKL+m/CAqc0Gf
+	cfngxn3TElESFEGduHntIeXyvMgxv/w==
+X-Received: by 2002:a05:622a:5815:b0:50b:1adf:89c4 with SMTP id d75a77b69052e-50d3bd3a047mr99605701cf.46.1775137284401;
+        Thu, 02 Apr 2026 06:41:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:5815:b0:50b:1adf:89c4 with SMTP id d75a77b69052e-50d3bd3a047mr99605151cf.46.1775137283847;
+        Thu, 02 Apr 2026 06:41:23 -0700 (PDT)
+Received: from hackbox.lan ([84.232.191.214])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8bc9dcsm115066065e9.6.2026.04.02.06.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 06:41:22 -0700 (PDT)
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Mike Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>,
+        linux-clk@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v7.1
+Date: Thu,  2 Apr 2026 16:41:07 +0300
+Message-ID: <20260402134107.1528450-1-abel.vesa@oss.qualcomm.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|VI1PR04MB6976:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca38969a-09d4-479d-f319-08de90b0c140
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|7416014|1800799024|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	tECoUPbti3C/CXMlmJJRwGbud5UOGVTPhkhzeRlZaaMg2xeBM8aCrGYr/WD5ds6iUBhm6HENVc2djWoYk45zWYlzKTmBoReeEj/Qvi1rJP9z8JvFm4R1zG9WTiCgpWFRnnNpz/xtPtftnX15PbuEQxykY3ulTPSvVGrCdQYu0PjadlfdX5NmYcw934JU0lOfiIvX6vgh7kWJ5ceTttJoYc7C9sbSQwfOuSOKIHzQrKMTKrJaN8YleSahG5V5BPcmBlVkrb6i+QztxZFhlZw0RijeInKqNTSS1VUthxmxJNt710nI6LM6KAqTX05r11vd5JuvlGjbb1gA7iJAcS1DtVYT0qawRU4c0J0PB87fs2M1kYemAuwBaMlLQp4EzxUmI9jLIbupT6BvXY8sQ3AXt7dBrsisQVe020VwDvngA6Oul8Zz0inLmnuEab/hdT9XqOrJBYpu03NMYt+aZbUEf/PejMj6RPJEoXnjl7dhDaWozDSI3r9XvPUt1j564Ka2B55o/E8SPqu9FoLcOfP5TQ5v7xQbLlRlCHBscKohhSrF90sXb+F1SsbG73kCwgAMUMkQdlrriJ1jbVrkWh8aDZ13bgdkLw76sI8bhC/0DmvvpAg1ZBwKMielNSyp/XVU+opLiGDbJdd26wyBwiWaRn5GTN539j7a+tTg+WMUsCG5T5ndUWrfn+NKMzW41yvwlJTevHt3GPGN35GGfKqU24f1weZWK7l3qX/83OfPFeA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?plpbRoIPtv6qUmj96otR+Y0AaduChBzVXGZeq4MpacsyqcNn5VW/EZCGlq?=
- =?iso-8859-1?Q?gDdOYglS45Urh6zQuKxo1Lf5x0O7XJOllIlL/8xpl5H444zKobIGjTKYc/?=
- =?iso-8859-1?Q?7yAJN4jS4a4i62qGO/2mR7ueEqbFLfvY6n1kAe+w5RbqPwSYxdACdCw9zS?=
- =?iso-8859-1?Q?e2/Ol9ePi3sNmdtmXm7Vlj9OEK/O17/gi1OB73uL4RqGqR9Fj+HB4DoizE?=
- =?iso-8859-1?Q?Noaf2HxuVkQBp19IqfOE/odxD/Ul7jE2VCCCiVvlhaG9GcunxsOkOqupJH?=
- =?iso-8859-1?Q?q6x5ivShY8uCmRqBXyWYzsr08UmzBB8Sdk7WsCk5+BTI4rgSITZ/Lex8hh?=
- =?iso-8859-1?Q?KS+oWDgKf9KjDLUhfUw55cV3Rsl3+X1iBbgk7C1fpT/6berh/8MP2LHGPp?=
- =?iso-8859-1?Q?0yDKehoyi/+lPGBMh1xXM5A0CzmQ9hwXTwX3FqqRv518aCP4PKoPZg8ao7?=
- =?iso-8859-1?Q?BcJ8r5fSUJI3EgUH38+yjuSm+0aTffOcu2PZJG/P/0/JDjmiTHQ4mKIg/F?=
- =?iso-8859-1?Q?n9rdnGIS60vyFlQl23Xf+250gDh03D3fUe2VsL4T0S6wPIK8H03bw4XgnU?=
- =?iso-8859-1?Q?AVX6k0j6/7gPVJYZHHxPIXjP2pgpl3BCC/YAavWT/npTbwshoovQcLiIc4?=
- =?iso-8859-1?Q?Hu0dmpaEjB15foFDv9iigDW0PN7L+i46uLcLaH6f1C63OtIsvi19/0HNdx?=
- =?iso-8859-1?Q?bpSrgY6Gc5iZOGP+psrPpWzlqh2IdvEOd9lsY1Gs/GWx6Hh2BmodkHqM9X?=
- =?iso-8859-1?Q?vmGdY+7ECRJorVnmLUWNVD07xeA506gPlrzpWGaxbASTP8zj9SXA5iKtZz?=
- =?iso-8859-1?Q?Tg93IuPyKbE5Uhl3QHlzYybZtwtfc/AhnQYIm+MgyR3NM2PCES+e58ZhMg?=
- =?iso-8859-1?Q?mUdT9qf5ntYGV5102CLsFXyAERqhSnRv4qGxaaKDjOBIUCfh6kdD6fbHr5?=
- =?iso-8859-1?Q?xHmkgNijub5I9pzSPaVsG+CuUjCl4tiTLQEseyBEN2grJSP55LOAKfZ2uM?=
- =?iso-8859-1?Q?97nT7rLUXDHyZ3U0W05SYNKlYz5Q1j/W9pI1ta55ipDZ5TUbFBWcJUAf/q?=
- =?iso-8859-1?Q?KJvZRvjtW6v5nACUMlSwHFDiDvzAyq/or+V8XM8tr6gn9iBNjAzFFFyjj3?=
- =?iso-8859-1?Q?on34Fx8Rj6XB6pCAYuh9HlLs1K+Zuk67Y9tLkdBMMVHK0Gal6k4cTwxUB5?=
- =?iso-8859-1?Q?IW3wiXMSiBAxOXKGkczSgAt1RJ6IkwWP0PgO2VIBeoyb09nmZTuVfQhhHV?=
- =?iso-8859-1?Q?42Qg3RZFAfADwikohdv+UJmT+2/mAKrtiT+t8v+4KeEJ1bdpXhaV+c+jQ7?=
- =?iso-8859-1?Q?1iD/dTqSYxYZ8EE3/WIaoK+5sevco8CJXbgZWTIDHJ03WhrLuAjYEY50kq?=
- =?iso-8859-1?Q?8nlr9YMihqljhLeHl0YqXvNoPr+0tYGidDkuWqLMD8nHdVK40lcJVexI+M?=
- =?iso-8859-1?Q?jFxjoBqqLD6YbIp0xLUnNBWthanW5E2b7DgKCSTtS80g4AT505nyvouPcv?=
- =?iso-8859-1?Q?qG/MplSnK9Ztdu7/S54KMp+SZj/ApTWT6ADa+PcK92dGgoKrhygY+PP1WS?=
- =?iso-8859-1?Q?wLoL/kanaUcPPJq9UQkfyMJJFKNqzIYlLogCS/RzmU5vEE/KhxnhmhMXAu?=
- =?iso-8859-1?Q?tP3UCYNcuWFYdr914UvE/jf9PwTTDmqUBNSuRhOpt7dg/da2de4UtB2vPG?=
- =?iso-8859-1?Q?o8oSR/7PWGEDokh+D9MZhiNsuTuweG/ii1EQDxoi9ulFLYt0SCMeU/2oOC?=
- =?iso-8859-1?Q?/Xj5XNsidUhOW+n4igdJhBEuZFCTift5mHEvHgz7+BmEOkb2r+U8kZTmEu?=
- =?iso-8859-1?Q?qz3aJOYLlg=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca38969a-09d4-479d-f319-08de90b0c140
-X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2026 12:09:57.0105
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8klfTJzF4NLJsfaaEvZtYYn/vsanh+H/GVJBppp4M+lOhJSd949wCwgTtSsUpIvdriYP88YbJ+R5ZD9Oeb3Ihg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6976
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDEyMCBTYWx0ZWRfXwjHegxM5ZN4t
+ JWEKy+ziKWsyz7woacdmxeBtwceiO/CHWDGgbTDvfJMKTFL1AndTl5TjG9VSfAzuuGivtqoqYpz
+ 1W5difmWHhcCmZ4whVZrMwQqkefKD4JjqiEIlzLMDI0qMddJ+dQTYT73PfsNdGBsv6sPHatDRmK
+ 9HZJ5ntXhyLfpSOXzqXiHN/nJsNN+UqWW6NCThuOBQg8AueTn0wWfz4GmitDUW/TOP4MlWTm6Oo
+ yPd6zg5TB6vZ2cbzp+JtymqhlEEnTP+BFMW1QtacpQKnl67GSeB7fG/B7cOeVQkkYW/01Li/hkd
+ /ww4LbYx9Dt7kwolXzApgMJPzH0iim1MlrAZeXSOHG3YbBO+DXpGjIsfZSEfJ1aGgi+IQZTFdyQ
+ z1KPLt+RAD7t6YQPVWaSscmBfcoFvBMCkjXSm10SjGIs6H2zpXWet0T/zAEPLLcLent7fWz1/OC
+ CfhK5FwHp80MoFpIpSQ==
+X-Proofpoint-GUID: gDvctGQ4ySelT9H5bP2RhqekTMROcw-u
+X-Authority-Analysis: v=2.4 cv=eYYwvrEH c=1 sm=1 tr=0 ts=69ce7205 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=1UCgTMz9MQc3icybWezSFQ==:17
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8
+ a=DpqbpgNP_Zn6TWIi6OsA:9 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-ORIG-GUID: gDvctGQ4ySelT9H5bP2RhqekTMROcw-u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_02,2026-04-02_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 adultscore=0 clxscore=1015
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604020120
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
 
-Some systems require fans to enter in a defined safe state during system
-shutdown or reboot handoff.
+  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
 
-Add support for the optional Device Tree property "fan-shutdown-percent"
-to configure the shutdown PWM duty cycle per fan output.
+are available in the Git repository at:
 
-If the property is present for a fan channel, the driver converts the
-configured percentage value to the corresponding PWM duty cycle and
-applies it during driver shutdown.
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-7.1
 
-If the property is not present, the fan state remains unchanged.
+for you to fetch changes up to d16f57caa78776e6e8a88b96cb2597797b376138:
 
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
----
- drivers/hwmon/emc2305.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+  clk: imx8mq: Correct the CSI PHY sels (2026-03-19 16:15:32 +0200)
 
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index 0b42b82c8e22..dec3a79933c1 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -32,6 +32,7 @@
- #define EMC2305_REG_DRIVE_PWM_OUT	0x2b
- #define EMC2305_OPEN_DRAIN		0x0
- #define EMC2305_PUSH_PULL		0x1
-+#define EMC2305_PWM_SHUTDOWN_UNSET      -1
- 
- #define EMC2305_PWM_DUTY2STATE(duty, max_state, pwm_max) \
- 	DIV_ROUND_CLOSEST((duty) * (max_state), (pwm_max))
-@@ -104,6 +105,7 @@ struct emc2305_cdev_data {
-  * @pwm_output_mask: PWM output mask
-  * @pwm_polarity_mask: PWM polarity mask
-  * @pwm_separate: separate PWM settings for every channel
-+ * @pwm_shutdown: Set shutdown PWM.
-  * @pwm_min: array of minimum PWM per channel
-  * @pwm_freq: array of PWM frequency per channel
-  * @cdev_data: array of cooling devices data
-@@ -116,6 +118,7 @@ struct emc2305_data {
- 	u8 pwm_output_mask;
- 	u8 pwm_polarity_mask;
- 	bool pwm_separate;
-+	s16 pwm_shutdown[EMC2305_PWM_MAX];
- 	u8 pwm_min[EMC2305_PWM_MAX];
- 	u16 pwm_freq[EMC2305_PWM_MAX];
- 	struct emc2305_cdev_data cdev_data[EMC2305_PWM_MAX];
-@@ -539,6 +542,7 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
- 				      struct device_node *child,
- 				      struct emc2305_data *data)
- {	u32 ch;
-+	u32 pwm_shutdown_percent;
- 	int ret;
- 	struct of_phandle_args args;
- 
-@@ -585,6 +589,16 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
- 	}
- 
- 	of_node_put(args.np);
-+
-+	ret = of_property_read_u32(child, "fan-shutdown-percent",
-+				   &pwm_shutdown_percent);
-+
-+	if (!ret) {
-+		pwm_shutdown_percent = clamp(pwm_shutdown_percent, 0, 100);
-+		data->pwm_shutdown[ch] =
-+			DIV_ROUND_CLOSEST(pwm_shutdown_percent * EMC2305_FAN_MAX, 100);
-+	}
-+
- 	return 0;
- }
- 
-@@ -637,6 +651,9 @@ static int emc2305_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
- 
-+	for (i = 0; i < EMC2305_PWM_MAX; i++)
-+		data->pwm_shutdown[i] = EMC2305_PWM_SHUTDOWN_UNSET;
-+
- 	pwm_childs = emc2305_probe_childs_from_dt(dev);
- 
- 	pdata = dev_get_platdata(&client->dev);
-@@ -720,6 +737,23 @@ static int emc2305_probe(struct i2c_client *client)
- 	return 0;
- }
- 
-+static void emc2305_shutdown(struct i2c_client *client)
-+{
-+	int i;
-+	int ret;
-+	struct emc2305_data *data = i2c_get_clientdata(client);
-+
-+	for (i = 0; i < data->pwm_num; i++) {
-+		if (data->pwm_shutdown[i] != EMC2305_PWM_SHUTDOWN_UNSET) {
-+			ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i),
-+							data->pwm_shutdown[i]);
-+			if (ret < 0)
-+				dev_warn(&client->dev,
-+					 "Failed to set shutdown PWM for ch %d\n", i);
-+		}
-+	}
-+}
-+
- static const struct of_device_id of_emc2305_match_table[] = {
- 	{ .compatible = "microchip,emc2305", },
- 	{},
-@@ -732,6 +766,7 @@ static struct i2c_driver emc2305_driver = {
- 		.of_match_table = of_emc2305_match_table,
- 	},
- 	.probe = emc2305_probe,
-+	.shutdown = emc2305_shutdown,
- 	.id_table = emc2305_ids,
- };
- 
--- 
-2.34.1
+----------------------------------------------------------------
+i.MX clock changes for 7.1
 
+- Add optional ENET reference pad clock inputs for i.MX6Q/UL.
+- Fix debug output in PLL14xx driver to use unsigned format specifier.
+- Add 333.333 MHz and 477.4 MHz support to fracn-gppll for display use cases.
+- Fix device node reference leaks in i.MX6 driver.
+- Fix device node reference leak in of_assigned_ldb_sels().
+- Fix ACM clock flags on i.MX8 to prevent SAI sysclk failures.
+- Move VF610_CLK_END define into the driver.
+- Add VF610 Ethernet switch clock support.
+- Correct CSI PHY parent clock selection on i.MX8MQ.
+
+----------------------------------------------------------------
+Alexander Stein (3):
+      clk: imx: pll14xx: Use unsigned format specifier
+      clk: imx: fracn-gppll: Add 333.333333 MHz support
+      clk: imx: fracn-gppll: Add 477.4MHz support
+
+Felix Gu (2):
+      clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
+      clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
+
+Frank Li (1):
+      dt-bindings: clock: imx6q[ul]-clock: add optional clock enet[1]_ref_pad
+
+Lukasz Majewski (4):
+      clk: vf610: Move VF610_CLK_END define to clk-vf610 driver
+      dt-bindings: clock: vf610: Drop VF610_CLK_END define
+      dt-bindings: clock: vf610: Add definitions for MTIP L2 switch
+      clk: vf610: Add support for the Ethernet switch clocks
+
+Sebastian Krzyszkowiak (1):
+      clk: imx8mq: Correct the CSI PHY sels
+
+Stefan Eichenberger (1):
+      clk: imx: imx8-acm: fix flags for acm clocks
+
+ Documentation/devicetree/bindings/clock/imx6q-clock.yaml  |  4 ++++
+ Documentation/devicetree/bindings/clock/imx6ul-clock.yaml |  4 ++++
+ drivers/clk/imx/clk-fracn-gppll.c                         |  2 ++
+ drivers/clk/imx/clk-imx6q.c                               | 12 +++++++++++-
+ drivers/clk/imx/clk-imx8-acm.c                            |  3 ++-
+ drivers/clk/imx/clk-imx8mq.c                              |  4 ++--
+ drivers/clk/imx/clk-pll14xx.c                             |  6 +++---
+ drivers/clk/imx/clk-vf610.c                               | 12 ++++++++++++
+ include/dt-bindings/clock/vf610-clock.h                   |  6 +++++-
+ 9 files changed, 45 insertions(+), 8 deletions(-)
