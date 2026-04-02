@@ -1,225 +1,275 @@
-Received: from mail-m3282.qiye.163.com (mail-m3282.qiye.163.com [220.197.32.82])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE38225397
-	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 09:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91763659ED
+	for <imx@lists.linux.dev>; Thu,  2 Apr 2026 09:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775121316; cv=none; b=HDZvhs5aHkR6ahPqJQSYMpRFFjW8jF8Ubjy6nk+tCSzY4MpZ8C6pNioYnU34cOh8FEw6F0pOfPt9pB8Xjn9Z7FxFJQhZvrq1PAamX11gt9RfA/41sDuXlbhZRGpVggJ81Umj1/pT1shBM5EwnjsmI13Bfi6woEGUODZzSdykXfQ=
+	t=1775122082; cv=none; b=TPf2zXGmDqnFwglO8pipQ88qWyzrGshflUlmPYYhXQFMjIoTfwQDPDi7w/4qn/pOdAkckdFCKusf5nP44l6+PJUE4NCdazXp0BORHpznGnfM3y63de5JamSP2OFWOB3VKE9MQqHXpW+w4Uk3dd8pGwtHZEPCttzPe3MjOtxAvvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775121316; c=relaxed/simple;
-	bh=aFtK8sQ8qOWs+W8tyZzAuGXF23VLU5IYLBNIEWLnsN8=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=bRBXRnMdxiUf71SZ2rapYzUsy7nDAvZIPdV/ElB7COzeEfmNdIykO4fhe0RwE0pcSr0fIx5ylFW2dTV4cCP/Dh9dxrA6Jv0iPA7Vh11eOWtxnor3B34dT+Cba/L2MpMjITKPWZ5d/WtZBn2JiynzUcF1d58nEtSAa8PhwDIoabw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=hwYGHIkS; arc=none smtp.client-ip=220.197.32.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1775122082; c=relaxed/simple;
+	bh=gMRZAHgcfFpRFiiaPQkPdDqznN/krRbjnbMRMQrzy3I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ze213yj3jL84t7ls/exDnCvyEAWf44He8UiyLa43k/Vm7W3i1J8MM3GOOfxIsTq9vcFxWFet8EotXCNLUtLNU5Ovp4OnOwjG3p5uWDLi+O/KsJEYa9mQcZ8agBf+JCYWQamekkB1FMEXi3NzuETQ1Tsx+pOlTTXZ1GnvI6z9Cmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M/RjTFpE; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="hwYGHIkS"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 394c8157d;
-	Thu, 2 Apr 2026 17:14:53 +0800 (GMT+08:00)
-Content-Type: multipart/mixed; boundary="------------pA08w6av2CYGH1v5Vjy6t1NO"
-Message-ID: <d9b5c826-e0eb-4c0a-989b-48aa12fdbaef@rock-chips.com>
-Date: Thu, 2 Apr 2026 17:14:53 +0800
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M/RjTFpE"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E76AF4E428AF;
+	Thu,  2 Apr 2026 09:27:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 99F855FDEB;
+	Thu,  2 Apr 2026 09:27:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A725810450A10;
+	Thu,  2 Apr 2026 11:27:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775122067; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=hNltrT681hiTQbE3LGT048Wx1XJA0ekV7Io5cPmIrZM=;
+	b=M/RjTFpEHWGpIz1DiOGq2rb5j81ppWs+giQBMPZIUw11Dbhns1gowQY1/+iF4Vm+ncLO4j
+	bsAK/Lezzs5m60qgcuZOCq+LGuY7kEX+wyTACozmVLhWjwZg8Dx2FR4Fz0uUJrJ8dGb5xf
+	PnZgLeGwSvVIyeX1kOFqp+RbqWs9yvbK88jEHnweZUGXM6CN9qfXTTebxvt9RbfTjOyVqC
+	Ru8JymYRkf97+IhAs+c0hlgBbc+s8gnfZfkJ1fJhbBL8+u3hmAmBfdJZbPF4ivYjh/JVCh
+	vYu71Yb6apxbkH+vEgnNgbb8sYAWNSR7Ty/COntGXtEmuh4q+XYcw3s6gx6fIQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v3 00/11] drm/mxsfb/lcdif: use
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+Date: Thu, 02 Apr 2026 11:25:55 +0200
+Message-Id: <20260402-drm-lcdif-dbanc-v3-0-27cd247a0847@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/10] drm/bridge: dw-hdmi: warn on unsupported attach
- combination
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
- Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACM2zmkC/23NTQ7CIBCG4as0rMXQAUt15T2MC8qPnaQFAw3RN
+ L27tHGh0eX7JfPMTJKNaBM5VTOJNmPC4EvwXUV0r/zNUjSlCTBoGGcNNXGkgzboqOmU17Tlxhx
+ Fy0EaS8rVPVqHj028XEv3mKYQn9uDXK/r2wL2Y+WaMirkUTFRc24lO3chTAP6vQ4jWbUMHwL/I
+ 0ARtHSg3IE3CsS3sCzLC0Gyn/zyAAAA
+X-Change-ID: 20260306-drm-lcdif-dbanc-83dd948327de
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Liu Ying <victor.liu@nxp.com>, Rob Herring <robh@kernel.org>, 
  Saravana Kannan <saravanak@kernel.org>
-Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Christopher Obbard <christopher.obbard@linaro.org>,
- Daniel Scally <dan.scally@ideasonboard.com>,
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
- Fabio Estevam <festevam@denx.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Gilles Talis <gilles.talis@gmail.com>,
- =?UTF-8?B?R29yYW4gUmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
- Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Martyn Welch <martyn.welch@collabora.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
- Richard Hu <richard.hu@technexion.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>,
- Vitor Soares <vitor.soares@toradex.com>
-References: <20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com>
- <20260330-drm-lcdif-dbanc-v2-6-c7f2af536a24@bootlin.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <20260330-drm-lcdif-dbanc-v2-6-c7f2af536a24@bootlin.com>
-X-HM-Tid: 0a9d4d795e9303a3kunme69324b095241
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0pNT1YeT00dQxkaTUgaShhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUJNS0
-	pVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=hwYGHIkSikuofpTSHFwebC8Z6feWaoUJ3dbqqnt9MZuAJBUbRzjDoxXGvxcOn4j9NkNUUDiNbucKPIduKZrvAmo8ZgTvnE+WmB9N+e3tldsjk8dwC5SwWopcFHloVqwkfPXzAgbjILPvIGv1x74neMWR2lXN4dpR+i+rgG7KmPs=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=2uJAsa6K7YXQMIGwXKQObtdIlbK0ldqP5sBHg2+Uhn0=;
-	h=date:mime-version:subject:message-id:from;
+Cc: Damon Ding <damon.ding@rock-chips.com>, 
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Christopher Obbard <christopher.obbard@linaro.org>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
+ Fabio Estevam <festevam@denx.de>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Gilles Talis <gilles.talis@gmail.com>, 
+ =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, 
+ Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Marco Felsch <m.felsch@pengutronix.de>, 
+ Martyn Welch <martyn.welch@collabora.com>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>, 
+ Richard Hu <richard.hu@technexion.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>, 
+ Vitor Soares <vitor.soares@toradex.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15.1
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is a multi-part message in MIME format.
---------------pA08w6av2CYGH1v5Vjy6t1NO
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+This series modernizes the i.mx8mp LCDIF driver to use the
+bridge-connector, which is the current best practice in DRM.
 
-Hi Luca,
+== Call for testing on i.MX8MP boards (especially those using HDMI)!
 
-On 3/31/2026 3:25 AM, Luca Ceresoli wrote:
-> dw-hdmi can operate in two different modes, depending on the platform data
-> as set by the driver:
-> 
->   A. hdmi->plat_data->output_port = 0:
->      the HDMI output (port@1) in device tree is not used
-> 
->   B. hdmi->plat_data->output_port = 1:
->      the HDMI output (port@1) is parsed to find the next bridge
-> 
-> Only case B is supported when the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag is
-> passed to the attach callback. Emit a warning when this is violated. Also
-> return -EINVAL which would be returned by drm_bridge_attach() right after
-> anyway.
-> 
-> Reviewed-by: Liu Ying <victor.liu@nxp.com>
-> Tested-by: Martyn Welch <martyn.welch@collabora.com>
-> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8MPxL/MBa8MPxL
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> Note: Returning when the warning triggers does not change the functional
-> behaviour of this function. It is not strictly necessary in this patch but
-> it will have to be done anyway in the following patch.
-> ---
->   drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> index 0296e110ce65..ab1a6a8783cd 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> @@ -2910,6 +2910,10 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge,
->   {
->   	struct dw_hdmi *hdmi = bridge->driver_private;
->   
-> +	/* DRM_BRIDGE_ATTACH_NO_CONNECTOR requires a remote-endpoint to the next bridge */
-> +	if (WARN_ON((flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR) && !hdmi->plat_data->output_port))
-> +		return -EINVAL;
-> +
->   	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
->   		return drm_bridge_attach(encoder, hdmi->bridge.next_bridge,
->   					 bridge, flags);
-> 
+For who tested v1 or v2 (thanks!): some patches have changed so I had to
+drop your Tested-by on them. A new round of test would still be useful.
 
-Since many older Rockchip platforms (RK3288, RK3399, etc.) lack a 
-hdmi-connector node linked to the HDMI DT node, which corresponds to 
-case A. Could we relax this restriction and treat cases where 
-DRM_BRIDGE_ATTACH_NO_CONNECTOR is set but hdmi->plat_data->output_port = 
-0 as a new case C?
+This series applies changes to how video output devices are probed on
+i.MX8MP, especially those using HDMI. Even though I have put care in not
+breaking anything, there could potentially be pitfalls I haven't realized,
+causing regressions on existing boards.
 
-For Rockchip platforms, the HDMI driver invokes dw_hdmi_bind() to attach 
-the Synopsys bridge. This sequence differs from that on the XNP 
-platform, but is similar to the Allwinner implementation.
+I have thus added in Cc all developers which appeared active on dts files
+for imx8mp boards involving video. I would appreciate testing on as many
+boards as possible, along with a Tested-by tag, or a report about any
+issues encountered.
 
-If we treat the case where DRM_BRIDGE_ATTACH_NO_CONNECTOR is set and 
-hdmi->plat_data->output_port = 0 as -EINVAL, I will have to modify the 
-HDMI DT configuration for all Rockchip platforms when adapting to the 
-bridge-connector framework.
+Thanks in advance to all testers!
 
-The patch that adapts to the bridge-connector framework and has been 
-verified OK on RK3399 is attached.
+== Review recommendation
+
+I recommend reviewing patches in this order to be understood more
+effectively:
+
+ * Cover letter
+ * Patches 1-6: small preliminary cleanups (can be applied independently)
+ * Patch 11: the goal of this series, but would not work alone
+ * Patch 10: lets patch 11 work; but in turn it can't work alone
+ * Patch 8+9: lets patch 10 work; but in turn it can't work alone
+ * Patch 7: lets patch 8 work
+
+== Series description
+
+This series is not strictly related to DRM bridge hotplug, it is rather a
+preparation step. Introducing hotplug would need two different approaches:
+one for the new way, for drivers using bridge-connector and
+DRM_BRIDGE_ATTACH_NO_CONNECTOR, another for drivers using the "old, legacy
+way" where the last bridge is supposed to instantiate the
+drm_connector. Hotplug is complicated enough in one case, so it makes sense
+to only support the new way.
+
+The hardware I'm working on is an i.MX8MP, whose LCDIF driver is still
+using the old way. So this series converts to the new way as a preparation
+step.
+
+Patch 11 does the conversion, which is simple. However this would introduce
+a regression on some boards. Here's why:
+
+There are 3 instances of the LCDIF in i.MX8MP:
+
+ * LCDIF1, driving the DSI output
+ * LCDIF2, driving the LVDS output
+ * LCDIF3, driving the HDMI output
+
+The device drivers of peripherals connected to LCDIF1 and LCDIF2 already
+support the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag. So far so good.
+
+LCDIF3 is more tricky. The HDMI pipeline is:
+
+  LCDIF3 -> fsl,imx8mp-hdmi-pvi -> fsl,imx8mp-hdmi-tx -> HDMI connector
+
+The fsl,imx8mp-hdmi-tx (hdmi-tx) does not support
+DRM_BRIDGE_ATTACH_NO_CONNECTOR, but it is based on the dw-hdmi component
+which supports it by simply changing a setting in the driver platform
+data. Patch 10 does this switch.
+
+However, for that switch to work, the device tree must describe the HDMI
+connector (compatible = "hdmi-connector").
+
+Unfortunately not all device trees in mainline have an hdmi-connector
+node. Adding one is easy, but would break existing hardware upgrading to a
+newer kernel without upgrading the device tree blob. This is addressed by
+patch 8+9 reusing an existing approach to add such a node to the live device
+tree at init time using a device tree overlay for boards which don't have
+one.
+
+Finally, patch 8+9 cannot work alone because of a bad interaction between
+devlink and device tree overlays. Patch 7 solves that.
+
+Tested on the Avnet MSC SM2-MB-EP1 board which currently has no
+"hdmi-connector" in the upstream device tree.
+
+== Grand plan
+
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
+
+Here's the work breakdown (➜ marks the current series):
+
+ 1. … add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. … add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. … of_drm_find_bridge
+          a. ✔ add of_drm_get_bridge() (v7.0),
+	       convert basic direct users (v7.0-v7.1)
+	  b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
+	  c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
+	  d. ✔… convert direct of_drm_get_bridge() users, part 4
+	        (some v7.1, some pending)
+	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
+    B. … protect private_obj removal from list
+    C. ✔ Add drm_bridge_clear_and_put() (v7.1)
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. ➜ Migrate i.MX LCDIF driver to bridge-connector
+ 6.   DRM bridge hotplug
+    A.   Bridge hotplug management in the DRM core
+    B.   Device tree description
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v3:
+- Patch 8: simplified overlay, handle of_overlay_fdt_apply() errors, use
+  of_graph_get_endpoint_by_regs() + add warning in separate patch  
+- Updated cover and mentioned the hardware used for testing
+- Minor fixes to other patches
+- Link to v2: https://patch.msgid.link/20260330-drm-lcdif-dbanc-v2-0-c7f2af536a24@bootlin.com
+
+Changes in v2:
+- Dropped patch removing the loop in lcdif_attach_bridge, adapted following
+  patches as needed, added patch to use __free on the ep pointer
+- Added new cleanup patch (patch 6)
+- Build the fixup module unconditionally
+- patch 7: fix returned error codes
+- patch 1: fix cleanup action
+- Various minor improvements based on reviews, see per-patch changelog
+- Removed bouncing recipients from Cc
+- Link to v1: https://lore.kernel.org/r/20260320-drm-lcdif-dbanc-v1-0-479a04133e70@bootlin.com
+
+---
+Luca Ceresoli (11):
+      drm/mxsfb/lcdif: simplify remote pointer management using __free
+      drm/mxsfb/lcdif: simplify ep pointer management using __free
+      drm/mxsfb/lcdif: use dev_err_probe() consistently in lcdif_attach_bridge
+      drm/mxsfb/lcdif: move iteration-specific variables declaration inside loop in lcdif_attach_bridge
+      drm/bridge: dw-hdmi: document the output_port field
+      drm/bridge: dw-hdmi: warn on unsupported attach combination
+      drm/bridge: dw-hdmi: move next_bridge lookup to attach time
+      drm/bridge: imx8mp-hdmi-tx-connector-fixup: add an hdmi-connector when missing using a DT overlay at boot time
+      drm/bridge: imx8mp-hdmi-tx-connector-fixup: show a warning when adding the overlay
+      drm/bridge: imx8mp-hdmi-tx: switch to DRM_BRIDGE_ATTACH_NO_CONNECTOR
+      drm/mxsfb/lcdif: use DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
+
+ drivers/gpu/drm/bridge/imx/Kconfig                 | 18 ++++++
+ drivers/gpu/drm/bridge/imx/Makefile                |  2 +
+ .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 75 ++++++++++++++++++++++
+ .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 33 ++++++++++
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c        |  1 +
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          | 49 ++++++--------
+ drivers/gpu/drm/mxsfb/Kconfig                      |  2 +
+ drivers/gpu/drm/mxsfb/lcdif_drv.c                  | 69 ++++++++++----------
+ include/drm/bridge/dw_hdmi.h                       |  6 ++
+ 9 files changed, 192 insertions(+), 63 deletions(-)
+---
+base-commit: 5304ff59fe90c4f89c1ba8fea5e07d4a6673a9bf
+change-id: 20260306-drm-lcdif-dbanc-83dd948327de
 
 Best regards,
-Damon
+--  
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
---------------pA08w6av2CYGH1v5Vjy6t1NO
-Content-Type: text/plain; charset=UTF-8;
- name="dw_hdmi-rockchip_test_env_20260402.patch"
-Content-Disposition: attachment;
- filename="dw_hdmi-rockchip_test_env_20260402.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszMzk5LWV2Yi1p
-bmQuZHRzIGIvYXJjaC9hcm02NC9ib290L2R0cy9yb2NrY2hpcC9yazMzOTktZXZiLWluZC5k
-dHMKaW5kZXggNzBhZWUxYWI5MDRjLi41YTc4ZTc0MWYxMTMgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszMzk5LWV2Yi1pbmQuZHRzCisrKyBiL2FyY2gv
-YXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszMzk5LWV2Yi1pbmQuZHRzCkBAIC0xNyw2ICsx
-Nyw3IEBAIGFsaWFzZXMgewogCiAJY2hvc2VuIHsKIAkJc3Rkb3V0LXBhdGggPSAic2VyaWFs
-MjoxNTAwMDAwbjgiOworCQlib290YXJncyA9ICJyb290PVBBUlRVVUlEPTYxNGUwMDAwLTAw
-MDAgcm9vdHdhaXQiOwogCX07CiAKIAl2Y2M1djBfc3lzOiByZWd1bGF0b3ItdmNjNXYwLXN5
-cyB7CmRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vYnJpZGdlL3N5bm9wc3lzL2R3LWhk
-bWkuYyBiL2RyaXZlcnMvZ3B1L2RybS9icmlkZ2Uvc3lub3BzeXMvZHctaGRtaS5jCmluZGV4
-IGFkYTQ1ZThiM2UyYy4uMGU5N2UxODNhOGIzIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9k
-cm0vYnJpZGdlL3N5bm9wc3lzL2R3LWhkbWkuYworKysgYi9kcml2ZXJzL2dwdS9kcm0vYnJp
-ZGdlL3N5bm9wc3lzL2R3LWhkbWkuYwpAQCAtMjkxNCw3ICsyOTE0LDcgQEAgc3RhdGljIGlu
-dCBkd19oZG1pX2JyaWRnZV9hdHRhY2goc3RydWN0IGRybV9icmlkZ2UgKmJyaWRnZSwKIAog
-CS8qIERSTV9CUklER0VfQVRUQUNIX05PX0NPTk5FQ1RPUiByZXF1aXJlcyBhIHJlbW90ZS1l
-bmRwb2ludCB0byB0aGUgbmV4dCBicmlkZ2UgKi8KIAlpZiAoV0FSTl9PTigoZmxhZ3MgJiBE
-Uk1fQlJJREdFX0FUVEFDSF9OT19DT05ORUNUT1IpICYmICFoZG1pLT5wbGF0X2RhdGEtPm91
-dHB1dF9wb3J0KSkKLQkJcmV0dXJuIC1FSU5WQUw7CisJCXJldHVybiAwOwogCiAJaWYgKGZs
-YWdzICYgRFJNX0JSSURHRV9BVFRBQ0hfTk9fQ09OTkVDVE9SKSB7CiAJCXN0cnVjdCBkZXZp
-Y2Vfbm9kZSAqcmVtb3RlIF9fZnJlZShkZXZpY2Vfbm9kZSkgPQpAQCAtMzYyOCw3ICszNjI4
-LDcgQEAgc3RydWN0IGR3X2hkbWkgKmR3X2hkbWlfYmluZChzdHJ1Y3QgcGxhdGZvcm1fZGV2
-aWNlICpwZGV2LAogCWlmIChJU19FUlIoaGRtaSkpCiAJCXJldHVybiBoZG1pOwogCi0JcmV0
-ID0gZHJtX2JyaWRnZV9hdHRhY2goZW5jb2RlciwgJmhkbWktPmJyaWRnZSwgTlVMTCwgMCk7
-CisJcmV0ID0gZHJtX2JyaWRnZV9hdHRhY2goZW5jb2RlciwgJmhkbWktPmJyaWRnZSwgTlVM
-TCwgRFJNX0JSSURHRV9BVFRBQ0hfTk9fQ09OTkVDVE9SKTsKIAlpZiAocmV0KSB7CiAJCWR3
-X2hkbWlfcmVtb3ZlKGhkbWkpOwogCQlyZXR1cm4gRVJSX1BUUihyZXQpOwpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9ncHUvZHJtL3JvY2tjaGlwL0tjb25maWcgYi9kcml2ZXJzL2dwdS9kcm0v
-cm9ja2NoaXAvS2NvbmZpZwppbmRleCBlN2Y0OWZlODQ1ZWEuLjY5YjgzMmQwYzhjNCAxMDA2
-NDQKLS0tIGEvZHJpdmVycy9ncHUvZHJtL3JvY2tjaGlwL0tjb25maWcKKysrIGIvZHJpdmVy
-cy9ncHUvZHJtL3JvY2tjaGlwL0tjb25maWcKQEAgLTc2LDYgKzc2LDcgQEAgY29uZmlnIFJP
-Q0tDSElQX0RXX0RQCiAKIGNvbmZpZyBST0NLQ0hJUF9EV19IRE1JCiAJYm9vbCAiUm9ja2No
-aXAgc3BlY2lmaWMgZXh0ZW5zaW9ucyBmb3IgU3lub3BzeXMgRFcgSERNSSIKKwlzZWxlY3Qg
-RFJNX0JSSURHRV9DT05ORUNUT1IKIAloZWxwCiAJICBUaGlzIHNlbGVjdHMgc3VwcG9ydCBm
-b3IgUm9ja2NoaXAgU29DIHNwZWNpZmljIGV4dGVuc2lvbnMKIAkgIGZvciB0aGUgU3lub3Bz
-eXMgRGVzaWduV2FyZSBIRE1JIGRyaXZlci4gSWYgeW91IHdhbnQgdG8KZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvZ3B1L2RybS9yb2NrY2hpcC9kd19oZG1pLXJvY2tjaGlwLmMgYi9kcml2ZXJz
-L2dwdS9kcm0vcm9ja2NoaXAvZHdfaGRtaS1yb2NrY2hpcC5jCmluZGV4IDBkYzFlYjVkMmFl
-My4uMTc0YTEwYzFkN2MyIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vcm9ja2NoaXAv
-ZHdfaGRtaS1yb2NrY2hpcC5jCisrKyBiL2RyaXZlcnMvZ3B1L2RybS9yb2NrY2hpcC9kd19o
-ZG1pLXJvY2tjaGlwLmMKQEAgLTEzLDYgKzEzLDcgQEAKICNpbmNsdWRlIDxsaW51eC9yZWd1
-bGF0b3IvY29uc3VtZXIuaD4KIAogI2luY2x1ZGUgPGRybS9icmlkZ2UvZHdfaGRtaS5oPgor
-I2luY2x1ZGUgPGRybS9kcm1fYnJpZGdlX2Nvbm5lY3Rvci5oPgogI2luY2x1ZGUgPGRybS9k
-cm1fZWRpZC5oPgogI2luY2x1ZGUgPGRybS9kcm1fb2YuaD4KICNpbmNsdWRlIDxkcm0vZHJt
-X3Byb2JlX2hlbHBlci5oPgpAQCAtNTQyLDYgKzU0Myw3IEBAIHN0YXRpYyBpbnQgZHdfaGRt
-aV9yb2NrY2hpcF9iaW5kKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldmljZSAqbWFz
-dGVyLAogCXN0cnVjdCBkcm1fZGV2aWNlICpkcm0gPSBkYXRhOwogCXN0cnVjdCBkcm1fZW5j
-b2RlciAqZW5jb2RlcjsKIAlzdHJ1Y3Qgcm9ja2NoaXBfaGRtaSAqaGRtaTsKKwlzdHJ1Y3Qg
-ZHJtX2Nvbm5lY3RvciAqY29ubmVjdG9yOwogCWludCByZXQ7CiAKIAlpZiAoIXBkZXYtPmRl
-di5vZl9ub2RlKQpAQCAtNjE5LDcgKzYyMSwxNCBAQCBzdGF0aWMgaW50IGR3X2hkbWlfcm9j
-a2NoaXBfYmluZChzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZpY2UgKm1hc3RlciwK
-IAkJZ290byBlcnJfYmluZDsKIAl9CiAKLQlyZXR1cm4gMDsKKwljb25uZWN0b3IgPSBkcm1f
-YnJpZGdlX2Nvbm5lY3Rvcl9pbml0KGRybSwgZW5jb2Rlcik7CisJaWYgKElTX0VSUihjb25u
-ZWN0b3IpKSB7CisJCXJldCA9IFBUUl9FUlIoY29ubmVjdG9yKTsKKwkJZGV2X2VycihoZG1p
-LT5kZXYsICJGYWlsZWQgdG8gaW5pdGlhbGl6ZSBicmlkZ2VfY29ubmVjdG9yXG4iKTsKKwkJ
-Z290byBlcnJfYmluZDsKKwl9CisKKwlyZXR1cm4gZHJtX2Nvbm5lY3Rvcl9hdHRhY2hfZW5j
-b2Rlcihjb25uZWN0b3IsIGVuY29kZXIpOwogCiBlcnJfYmluZDoKIAlkcm1fZW5jb2Rlcl9j
-bGVhbnVwKGVuY29kZXIpOwo=
-
---------------pA08w6av2CYGH1v5Vjy6t1NO--
