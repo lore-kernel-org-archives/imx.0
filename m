@@ -1,130 +1,164 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541311A9FBA;
-	Fri,  3 Apr 2026 17:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A19325490;
+	Fri,  3 Apr 2026 21:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775235798; cv=none; b=u4X/th8pxpUnJLOhKCw5pafPmcsqqoAIOjq2NRb51+W5uXUQaS5T87OhImcDWPhTaz0hYAPoyX7hsZW815zTTax4HNmLlyT3IdVcATN9PMuSDvSdxe5h/+SDUP2bZ6SVrOZpHUCEzbMWqDCFO3NOc6PEjcsqUlsg9ru12yS3fM0=
+	t=1775253418; cv=none; b=awLctfdYG0ppaqXGMcrfcB+Gbwdq31NhM2VRs+a20dxB/GAapSx0XCsyd+2sOxg1SawmNFO9zDU4XWnZvCLHYVfi1hcYhVE1tch+TkptyX+Pj7WqMnw114TChYNdQbKDf8JIUau1S4qo2nf6TX8qr3rtgkS8LE7fFFZhMHHsgFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775235798; c=relaxed/simple;
-	bh=AOS61gbnHSp9w8+XowYHPIQQIZMANYd5/P0NBGDXrIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUbuFJ0vCezbvL8AeWJYleEp81Rmn7uCzJFUzbXAxnRG3j8uld15XoZ49vW/vg7ZXA9Y71p/uehQuwvt3dwS2S+iUrID1TK0tAR95gIAfSK05ajxnSkQx0ow7DD3nEsAuUvBgCxpgeziVIuq0lIY5VN+OMW7VgQy88Vre+Vkkp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcppZFR2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775253418; c=relaxed/simple;
+	bh=uHkzLeYRPMdYHIG9yS72h3rCLUWaLfdftqsXVr+qimI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=qu++Wbt23eTi9s+EdWUldmWC2jT94MmCFWo6uejK0P44ZrOlvHxQMSBezpztq7V19djugvbM1FS9+ZXcxT9Fj4Ht+c7iKIjxjK17YmB7Z5Sv08VVBp14Bln0S+zsY+v8Y+e98kKIyQoH0zBDBPrZCi1O2bz5vVcicnkKcET2MXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBQKPM5U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcppZFR2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AB5C4CEF7;
-	Fri,  3 Apr 2026 17:03:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBQKPM5U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA43C4CEF7;
+	Fri,  3 Apr 2026 21:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775235797;
-	bh=AOS61gbnHSp9w8+XowYHPIQQIZMANYd5/P0NBGDXrIg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dcppZFR2728XjAy91UjuJreyiJLkT1JSxrFm7WUeqgzLH+t/zs9O2CadQ1LuQPkCE
-	 1yPDzkplh6xvOy1RnplfX8yvT0MT5n3r5y6uAL9W9T8JxkF0/wTH2ELd580zM0CwZ/
-	 SXEntQ4XlfCN9EnwqzCO/FEEM7soxB/8YwacJBRvo5rTgrLJkLLlRgInit/UnNyDxy
-	 ApHFhNzgr+NnbNMhMBmK8PhFKfJoOB3ePgrrI7wRvps3m8xudbtzTA3Mwi6OSoEL9W
-	 fksYtPkY5QapWcxwaceESrOlfI1TdrP+mbiWez7tsavsiX5N8XehlDq+r+8Q8rBD6p
-	 50VpNVzisZwew==
-Date: Fri, 3 Apr 2026 22:33:04 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
- suspend skip
-Message-ID: <y76fzvju42srykr3khio2bx5lmzusy6iasodvs45imis7fw3b5@wjv3gsocj534>
-References: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <20260323220858.GA1084506@bhelgaas>
- <AS8PR04MB8833137860C682F9E1E743E08C48A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	s=k20201202; t=1775253418;
+	bh=uHkzLeYRPMdYHIG9yS72h3rCLUWaLfdftqsXVr+qimI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=MBQKPM5UnHKHXaLvuAW2yMteTzbBKm6o+cIPktQNSj7g8MkMeNPI9vLcMxFjuJ5vd
+	 QYvwf90vLdXpqUi2aCAm2lAexHcIkCPFbho11IkgLhK/rv4OkSUIFXxsHTB64iQcO9
+	 LCLHcm8pKQbw1FvuWQ9zeVB3j6Fqk23nWR6UV6iLk+tTxrqJJkyu3i9xyHUGNbpiFA
+	 KM7nX6SaPg/sgjKVXQWQvkhlIieK0m1LaUm+XOvgxte3WdlX/D1pVFjqJ3e02+2nHU
+	 IMwMUAeQtPdkLF5kzicxA/yiDeQBrGz69Oz8j182HYbEGlwSjB+7SqkOVS0EF6cqu7
+	 ofu8KrqrngGhA==
+Date: Fri, 3 Apr 2026 16:56:56 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+	bhelgaas@google.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] PCI: imx6: Don't remove MSI capability for
+ i.MX7D/i.MX8M
+Message-ID: <20260403215656.GA360979@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8833137860C682F9E1E743E08C48A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+In-Reply-To: <20260331085252.1243108-1-hongxing.zhu@nxp.com>
 
-On Tue, Mar 24, 2026 at 02:01:58AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: 2026年3月24日 6:09
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Frank Li <frank.li@nxp.com>; jingoohan1@gmail.com;
-> > l.stach@pengutronix.de; lpieralisi@kernel.org; kwilczynski@kernel.org;
-> > mani@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
-> > suspend skip
-> > 
-> > On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > ... [messed up quoting]
-> > 
-> > > > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
-> > > > > Add a force_suspend flag to allow platform drivers to force the
-> > > > > PCIe link into L2 state during suspend, even when L1SS (ASPM L1
-> > > > > Sub-States) is enabled.
-> > > > >
-> > > > > By default, the DesignWare PCIe host controller skips L2 suspend
-> > > > > when L1SS is supported to meet low resume latency requirements for
-> > > > > devices like NVMe. However, some platforms like i.MX PCIe need to
-> > > > > enter L2 state for proper power management regardless of L1SS
-> > support.
-> > > > >
-> > > > > Enable force_suspend for i.MX PCIe to ensure the link enters L2
-> > > > > during system suspend.
-> > > >
-> > > > I'm a little bit skeptical about this.
-> > > >
-> > > > What exactly does a "low resume latency requirement" mean?  Is this
-> > > > an actual functional requirement that's special to NVMe, or is it
-> > > > just the desire for low resume latency that everybody has for all
-> > > > devices?
-> > >
-> > > From my understanding, L1SS mode is characterized by lower latency
-> > > when compared to L2 or L3 modes.
-> > >
-> > > It can be used on all devices, avoiding frequent power on/off cycles.
-> > > NVMe can also extend the service life of the equipment.
-> > 
-> > All the above applies to all platforms, so it's not an argument for
-> > i.MX-specific code here.
-> >
-> Hi Bjorn:
-> Thanks for your kindly review. 
-> Yes, it is.
-> > > > Is there something special about i.MX here?  Why do we want i.MX to
-> > > > be different from other host controllers?
-> > >
-> > > i.MX PCIe loses power supply during Deep Sleep Mode (DSM), requiring
-> > > full reinitialization after system wake-up.
-> > 
-> > I don't know what DSM means in PCIe or how it would help justify this
-> > change.
-> > 
-> i.MX PCIe power is gated off during suspend, requiring full reinitialization
-> on resume
+On Tue, Mar 31, 2026 at 04:52:52PM +0800, Richard Zhu wrote:
+> The MSI trigger mechanism for endpoint devices connected to i.MX7D,
+> i.MX8MM, and i.MX8MQ PCIe root complex ports depends on the MSI
+> capability register settings in the root complex. Removing the MSI
+> capability breaks MSI functionality for these endpoints.
 > 
+> Add keep_rp_msi_en flag to indicate platforms (i.MX7D, i.MX8MM, i.MX8MQ)
+> that should preserve the MSI capability during initialization.
 
-Is this an unconditional behavior? What if the PCIe device is configured as a
-wakeup source like WOL, WOW? And if you connect NVMe, this behavior will result
-in resume failure as NVMe driver expects the power to be retained if ASPM is
-supported.
+I guess Mani added this to the commit log:
 
-- Mani
+  Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
+  PME and others won't be received by default. So users need to use
+  workarounds such as passing 'pcie_pme=nomsi' cmdline param.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Why can't we fix this automatically?  I hate it when users are
+expected to use command line parameters to work around issues.
+
+Obviously we know at probe-time, before any PCI devices are
+enumerated, so it seems like we should be able to do the equivalent of
+"pcie_pme=nomsi" even without the parameter.
+
+> Cc: stable@vger.kernel.org
+> Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
+> Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+> v3 changes:
+> Use a flag 'dw_pcie_rp::keep_rp_msi_en' to identify SoCs that require MSI
+> capability preservation, and skip the capability removal in
+> pcie-designware-host.c accordingly.
+> 
+> v2 changes:
+> CC stable tree.
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c             | 7 +++++++
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
+>  drivers/pci/controller/dwc/pcie-designware.h      | 1 +
+>  3 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 20dafd2710a3..fde173770933 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -117,6 +117,8 @@ enum imx_pcie_variants {
+>  #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
+>  #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
+>  #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
+> +/* Preserve MSI capability for platforms that require it */
+> +#define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
+>  
+>  #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
+>  
+> @@ -1820,6 +1822,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	} else {
+>  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+>  			pci->pp.skip_l23_ready = true;
+> +		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_KEEP_MSI_CAP))
+> +			pci->pp.keep_rp_msi_en = true;
+>  		pci->pp.use_atu_msg = true;
+>  		ret = dw_pcie_host_init(&pci->pp);
+>  		if (ret < 0)
+> @@ -1897,6 +1901,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX7D] = {
+>  		.variant = IMX7D,
+>  		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_APP_RESET |
+>  			 IMX_PCIE_FLAG_SKIP_L23_READY |
+>  			 IMX_PCIE_FLAG_HAS_PHY_RESET,
+> @@ -1909,6 +1914,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX8MQ] = {
+>  		.variant = IMX8MQ,
+>  		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_PHY_RESET |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx8mq-iomuxc-gpr",
+> @@ -1923,6 +1929,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX8MM] = {
+>  		.variant = IMX8MM,
+>  		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+>  			 IMX_PCIE_FLAG_HAS_PHYDRV |
+>  			 IMX_PCIE_FLAG_HAS_APP_RESET,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index a74339982c24..7b5558561e15 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -1171,7 +1171,7 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+>  	 * the MSI and MSI-X capabilities of the Root Port to allow the drivers
+>  	 * to fall back to INTx instead.
+>  	 */
+> -	if (pp->use_imsi_rx) {
+> +	if (pp->use_imsi_rx && !pp->keep_rp_msi_en) {
+>  		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSI);
+>  		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSIX);
+>  	}
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index ae6389dd9caa..b12c5334552c 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -421,6 +421,7 @@ struct dw_pcie_host_ops {
+>  
+>  struct dw_pcie_rp {
+>  	bool			use_imsi_rx:1;
+> +	bool			keep_rp_msi_en:1;
+>  	bool			cfg0_io_shared:1;
+>  	u64			cfg0_base;
+>  	void __iomem		*va_cfg0_base;
+> -- 
+> 2.37.1
+> 
