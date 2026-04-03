@@ -1,204 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5983CA4B3;
-	Fri,  3 Apr 2026 16:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15AA1FE47B;
+	Fri,  3 Apr 2026 16:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775233800; cv=none; b=tXrGWlzfLopREZ53SL1U/lHfbfYHqdJcaQUGGM5APPi2JLOT9k5JvEDNiunXwWVdaZGrLnqyFkp8167ailjHNA2o802Gs4S7vyW5drv4P+1sQjO6eZUYlEVrbmJoC5DGjXfvZAxXbJMfOp4RWjLDwVXC4Agp6v0SdxBUOxcQxnU=
+	t=1775235165; cv=none; b=iIo87X9vMua3pWdQaQEfoRugSFhwtF0Om9StmuAopty96Ah5s0lDi0AZ2qURLBaMmYL6HA3I3MPmmH/IxKZfJ7RFtDhmc717T/yqxckm67hD2mN5CvLO/vPjQkFCGbQtzYRRYTz51pWC3EJ0FjoNpDqe/WuMj5ama+xXLEPoo/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775233800; c=relaxed/simple;
-	bh=uQCRAOjiV5WXPzI6jcTO694gx4cH1dlQgpFKmqcXA5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BPO0fj67kA8dUIl7EbB5cAEEhoiwvzJw4FZAhbLWarVVdVEswmO9ZoqDM21k7HtvZtOjH2Y3mfSuV8SHcE0DjmYIJJRXpf5YNhG4DfwCdH24ztJha7ilCbVlQU9nVuFKW5RYJ0wlkVFPBAAARD4scB85XUPuRK6gYcGzeYieK0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3t2+OAH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775235165; c=relaxed/simple;
+	bh=YRveJVZCu8GDGV3bBJZ/v1pJiWaRn6WEGXVvRMAeJ9I=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=u3Dx7c6uEhKHevjPtHtTfo5dlN+5dO0ZKb1dY/N125YsNli3YMgpo1LmKb7K3nxp93bAPks8Hu/lA/GFwM0wJ+g14j5nnclZUNIBKaPRypxse1ESyDCI5fQeehgpKfPRr6r319FIxODBGcpT7dxhJLBg95iIGl80w+mOLAWqaPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U29NGLna; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3t2+OAH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B757CC4CEF7;
-	Fri,  3 Apr 2026 16:29:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U29NGLna"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57C8C4CEF7;
+	Fri,  3 Apr 2026 16:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775233800;
-	bh=uQCRAOjiV5WXPzI6jcTO694gx4cH1dlQgpFKmqcXA5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d3t2+OAHZo0jkm8hzozNa4QRBweKwXcljiFW5lnb6ImG2r0kh/bxvTFk5MGH9pdHQ
-	 y0OmYJ54QNe/FAIJtrxCmSu/AjdYl1AWsXJtdyU8kOuQvesdIxwEfTdO3WZCXxmAXe
-	 2dA2z5XGivG0D0urzxBuNu5sKF/8YawL8d5IDyVD2XI9nhFftRgsDzOf3FVldR9vOF
-	 44tDIAykbbaKNmfzBMTDa6uiAot2E+jOcuaIaFFTWEb6oFFG3yM1hjN/R98jhkWr10
-	 KMqyDUeMPLa0ekmOXVPnfeU23W3Aq/xOeKiDxU7PfV0EkTO8zxhR+z3jql6Oyo317h
-	 FQickyvwtnYaA==
-Date: Fri, 3 Apr 2026 21:59:46 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
-	bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
-	imx@lists.linux.dev, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V10 04/13] PCI: imx6: Assert PERST# before enabling
- regulators
-Message-ID: <jwazawvhuoafkhfwpjfgccc3hz6kej7i6iwkh5be2qena2b4di@yzv6e75zezfu>
-References: <20260402095107.205439-1-sherry.sun@nxp.com>
- <20260402095107.205439-5-sherry.sun@nxp.com>
+	s=k20201202; t=1775235165;
+	bh=YRveJVZCu8GDGV3bBJZ/v1pJiWaRn6WEGXVvRMAeJ9I=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=U29NGLna1TugWKaYx1hSqQYPS4LcIP8K7XlUqdSh3E61Lv4CTXYohzIUMSem2MY2S
+	 9IrNsow63DN3BAKQbKKkRCy4l1hEe6UxPBuzRyDBjrZRiJCiSb4Oq8zA1SDccry/S2
+	 66ysEQ2FRNyOw+ud/hw8JTmnq1LB9Frc2sEgLOZ47bdemzkMo5IJE/NAtHvQHnMfOv
+	 suvgN7PW0y6e9y8es+t8OaRXHhDxibFECuKitFRDpzn63c6VfbP9DVWlnjZwlyby2q
+	 fKxu6twCXWSCVKuCihudKP8MJl+fyLFGnAcYLaNfeJMAgFIj/inPlGw3OQEIPBy4op
+	 AHXO0hVXumvog==
+From: Mark Brown <broonie@kernel.org>
+To: festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com, 
+ perex@perex.cz, tiwai@suse.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
+ kernel@pengutronix.de, linux-sound@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Chancel Liu <chancel.liu@nxp.com>
+In-Reply-To: <20260326055614.3614104-1-chancel.liu@nxp.com>
+References: <20260326055614.3614104-1-chancel.liu@nxp.com>
+Subject: Re: [PATCH] ASoC: imx-rpmsg: Add DSD format support with dynamic
+ DAI format switching
+Message-Id: <177522560849.52946.6682860027345640594.b4-ty@b4>
+Date: Fri, 03 Apr 2026 15:13:28 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260402095107.205439-5-sherry.sun@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev-67696
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1163; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=YRveJVZCu8GDGV3bBJZ/v1pJiWaRn6WEGXVvRMAeJ9I=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpz/BZjF5/dR+mfS9bVnwsI6rH+fG7++qDr6DB9
+ tPVDW3SuEqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCac/wWQAKCRAk1otyXVSH
+ 0Dj3CACACwFyTyL3B80o6GL+XDzhZs9Js2nU3MCZD6GOxiGo+q2C18nuoN+b483KQ56BH9uAkVu
+ SAYCSNd07/9j0DTvcHSMZFQY+2GxbAk7KO6ZX6IdnqmjRCVl0WNT5vjSUbDXEAHyWdv/qaVd2xi
+ gTViu52u5ePDcratJ3DcnWWUQiG370nfnVgFTsCzRppH5JdLcLRM9kIlWjq3FSb0VgcND1tFXsH
+ 3dg+rtbO0nzM+xe4ybjFj9IuToYATdGkNfUq5AWTNbQYMNP9qVVAlACGT/2unUcFEQjrnHAUDFU
+ FIlpjlPw/sszdhTFI9ynKQo37UDd1OoJC2eGSnDD5HMfb8xd
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Thu, Apr 02, 2026 at 05:50:58PM +0800, Sherry Sun wrote:
-> According to the PCIe initialization requirements, PERST# signal should
-> be asserted before applying power to the PCIe device, and deasserted
-> after power and reference clock are stable.
-> 
+On Thu, 26 Mar 2026 14:56:14 +0900, Chancel Liu wrote:
+> ASoC: imx-rpmsg: Add DSD format support with dynamic DAI format switching
 
-Spec wording is not quite like this. Spec mandates asserting PERST# *before*
-stopping refclk and powering down the device and deasserting it *after* applying
-power and refclk stable.
+Applied to
 
-I believe you want to assert PERST# before enabling regulator to prevent the
-endpoint from functioning? If so, is it due to refclk not available yet or some
-other reason?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.1
 
-> Currently, the driver enables the vpcie3v3aux regulator in
-> imx_pcie_probe() before PERST# is asserted in imx_pcie_host_init(),
-> which violates the PCIe power sequencing requirements. However, there
-> is no issue so far because PERST# is requested as GPIOD_OUT_HIGH in
-> imx_pcie_probe(), which guarantees that PERST# is asserted before
-> enabling the vpcie3v3aux regulator.
-> 
-> This is prepare for the upcoming changes that will parse the reset
-> property using the new Root Port binding, which will use GPIOD_ASIS
-> when requesting the reset GPIO. With GPIOD_ASIS, the GPIO state is not
-> guaranteed, so explicit sequencing is required.
-> 
-> Fix the power sequencing by:
-> 1. Moving vpcie3v3aux regulator enable from probe to
->    imx_pcie_host_init(), where it can be properly sequenced with PERST#.
-> 2. Moving imx_pcie_assert_perst() before regulator and clock enable to
->    ensure correct ordering.
-> 
-> The vpcie3v3aux regulator is kept enabled for the entire PCIe controller
-> lifecycle and automatically disabled on device removal via devm cleanup.
-> 
+Thanks!
 
-vpcie3v3aux handling should be in a separate patch.
+[1/1] ASoC: imx-rpmsg: Add DSD format support with dynamic DAI format switching
+      https://git.kernel.org/broonie/sound/c/ccd7e53b7d6f
 
-- Mani
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 49 +++++++++++++++++++++------
->  1 file changed, 39 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 45d70ae7e04f..948ffb75d122 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -166,6 +166,8 @@ struct imx_pcie {
->  	u32			tx_swing_full;
->  	u32			tx_swing_low;
->  	struct regulator	*vpcie;
-> +	struct regulator	*vpcie_aux;
-> +	bool			vpcie_aux_enabled;
->  	struct regulator	*vph;
->  	void __iomem		*phy_base;
->  
-> @@ -1220,6 +1222,13 @@ static void imx_pcie_disable_device(struct pci_host_bridge *bridge,
->  	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
->  }
->  
-> +static void imx_pcie_vpcie_aux_disable(void *data)
-> +{
-> +	struct regulator *vpcie_aux = data;
-> +
-> +	regulator_disable(vpcie_aux);
-> +}
-> +
->  static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool assert)
->  {
->  	if (assert) {
-> @@ -1240,6 +1249,24 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
->  	int ret;
->  
-> +	imx_pcie_assert_perst(imx_pcie, true);
-> +
-> +	/* Keep 3.3Vaux supply enabled for the entire PCIe controller lifecycle */
-> +	if (imx_pcie->vpcie_aux && !imx_pcie->vpcie_aux_enabled) {
-> +		ret = regulator_enable(imx_pcie->vpcie_aux);
-> +		if (ret) {
-> +			dev_err(dev, "failed to enable vpcie_aux regulator: %d\n",
-> +				ret);
-> +			return ret;
-> +		}
-> +		imx_pcie->vpcie_aux_enabled = true;
-> +
-> +		ret = devm_add_action_or_reset(dev, imx_pcie_vpcie_aux_disable,
-> +					       imx_pcie->vpcie_aux);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	if (imx_pcie->vpcie) {
->  		ret = regulator_enable(imx_pcie->vpcie);
->  		if (ret) {
-> @@ -1249,25 +1276,24 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  		}
->  	}
->  
-> +	ret = imx_pcie_clk_enable(imx_pcie);
-> +	if (ret) {
-> +		dev_err(dev, "unable to enable pcie clocks: %d\n", ret);
-> +		goto err_reg_disable;
-> +	}
-> +
->  	if (pp->bridge && imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT)) {
->  		pp->bridge->enable_device = imx_pcie_enable_device;
->  		pp->bridge->disable_device = imx_pcie_disable_device;
->  	}
->  
->  	imx_pcie_assert_core_reset(imx_pcie);
-> -	imx_pcie_assert_perst(imx_pcie, true);
->  
->  	if (imx_pcie->drvdata->init_phy)
->  		imx_pcie->drvdata->init_phy(imx_pcie);
->  
->  	imx_pcie_configure_type(imx_pcie);
->  
-> -	ret = imx_pcie_clk_enable(imx_pcie);
-> -	if (ret) {
-> -		dev_err(dev, "unable to enable pcie clocks: %d\n", ret);
-> -		goto err_reg_disable;
-> -	}
-> -
->  	if (imx_pcie->phy) {
->  		ret = phy_init(imx_pcie->phy);
->  		if (ret) {
-> @@ -1780,9 +1806,12 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
->  	imx_pcie->supports_clkreq = of_property_read_bool(node, "supports-clkreq");
->  
-> -	ret = devm_regulator_get_enable_optional(&pdev->dev, "vpcie3v3aux");
-> -	if (ret < 0 && ret != -ENODEV)
-> -		return dev_err_probe(dev, ret, "failed to enable Vaux supply\n");
-> +	imx_pcie->vpcie_aux = devm_regulator_get_optional(&pdev->dev, "vpcie3v3aux");
-> +	if (IS_ERR(imx_pcie->vpcie_aux)) {
-> +		if (PTR_ERR(imx_pcie->vpcie_aux) != -ENODEV)
-> +			return PTR_ERR(imx_pcie->vpcie_aux);
-> +		imx_pcie->vpcie_aux = NULL;
-> +	}
->  
->  	imx_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
->  	if (IS_ERR(imx_pcie->vpcie)) {
-> -- 
-> 2.37.1
-> 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
--- 
-மணிவண்ணன் சதாசிவம்
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
