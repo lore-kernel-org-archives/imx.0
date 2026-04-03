@@ -1,74 +1,120 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EC8371D14
-	for <imx@lists.linux.dev>; Fri,  3 Apr 2026 08:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8B431AA87
+	for <imx@lists.linux.dev>; Fri,  3 Apr 2026 08:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775204413; cv=none; b=hpdsvl2qkjR9/iM934y9ixtFGXZcczNt9ikEDU9K0IAjZTmkoLW9GjSm2mfYgiuzdqVr84g+34KEI+QqofXvtS197FUvVkpcx0N/+sv1eHCBXP9Gfgu9ZQJKYVtBgKZWXziOYe6ypbNa/hmvaY8GgiLeG2Hq6qE5ymXV7Bl83qA=
+	t=1775204953; cv=none; b=Fi+fyi2zLlztQ7yHqzz3kcd29CN7kKYJGxqnuILDizS1mEnxiKKlrdW8DzU5mmWPsIZH5DWfwuoMn2dZ+Vt7w/0wextqifCJmpqP8mAB8KGiHovvttTxeoZaDe878WVuYGqgqK8KpFK54wBx+5/CVrzFhPnt6K+gURxdv5S9oo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775204413; c=relaxed/simple;
-	bh=Wk39R5GHYD6wYOiYd+T5UK3erJyg4bo4XtH0Z9D8Mms=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PFlLFa6Wi01ZVNa6Za5G9p5RuHMVHd7+BtYrcXu7XOYT7b0/0FCIDOTPGHW3UE//VhcjIsNj0xSRYxnFKHt8Nw1eCXqetVaVz3oSuX8p/q5sP6edL3b8hLe9AIRoPnH7Mp3EMgwQXh8f45IxSSt+540T2Lx8IPrgPkuV1KTQvfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LZ7oUbaE; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1775204953; c=relaxed/simple;
+	bh=7hsMRWPDSH/DXgvbG4YrjCTJi0ukPsFS73y526akbmw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DTS1WKpX7/15QaxF+78g/PCKm5uHPmfG2v3UgAwUMci9OqoGLl3ndQQXAuvztZ7BmZZFnknFA34rW834S2Ef83rj88KTyrrvDfsFjVNb19dvtncvS1CgA+8cKqpD1ymzh16OYYgeATDhXx0c+AupmEQZBGz/LLWxICN9BBV3v+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=HkLIlFth; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LZ7oUbaE"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7DF884E428CA;
-	Fri,  3 Apr 2026 08:20:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 51CEB603C1;
-	Fri,  3 Apr 2026 08:20:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F7671045013D;
-	Fri,  3 Apr 2026 10:20:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775204409; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=1lEA07+/hkDJ8JJLpB7l06BYU/2a5Curlp04Uz301j4=;
-	b=LZ7oUbaEToEHCxN6FYUkEf3my3laRHBinlvDgV4xdlrX8K+3GjBUPsQB9rlYaWP958Yxgo
-	NZzqarCO2SP05QFWNYxgU/BT54wResKkf5ahC+kntJltW+vIXNrzqKd2NgMfuQO7IVU1T1
-	DGa2C7nWnv9BdDHqEQFEjwGBgYgzeXtmnqOlyt/QiT4j82jdYqN9vLBufpBgQFSOjeSbfA
-	GOrjauNWJ9k7m4NhYl4MJ0K34Kc6DRnUGrXknnKqCbta0P7l3/EhiA05Bjw01r9BAXiVB8
-	6iKIZzPpj4vWxPVS9uDlpwCbtFNNzuxcMGLj07LqNBnm8aNDtTnYKar1sefn9g==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
- <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Sascha Hauer
- <s.hauer@pengutronix.de>,  Pengutronix Kernel Team
- <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  Shawn Guo
- <shawnguo@kernel.org>,  Daniel Baluta <daniel.baluta@nxp.com>,
-  devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE
- TREE BINDINGS),  imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC
- ARM ARCHITECTURE),  linux-arm-kernel@lists.infradead.org (moderated
- list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-  linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH 2/2] ARM: dts: imx25: remove empty clock-names for
- nand-controller@bb000000
-In-Reply-To: <20260403074634.774234-2-Frank.Li@nxp.com> (Frank Li's message of
-	"Fri, 3 Apr 2026 03:46:31 -0400")
-References: <20260403074634.774234-1-Frank.Li@nxp.com>
-	<20260403074634.774234-2-Frank.Li@nxp.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Fri, 03 Apr 2026 10:20:07 +0200
-Message-ID: <87ika85ubs.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="HkLIlFth"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YjFUAr5TF9qMHsoiwD86cKQNGRB+CzXIhSoVtDvqsOU=; b=HkLIlFthMtqIU2FWjoXhuHCrK1
+	CNV810xc7IAnUy03WGQmFdqV5TE/yzzWXxDdsomaDk32vH+a28yFp2LDT57+sVO5Rp/IGFkJJz4OR
+	OGJnUSW7W5sz7ruEDjHvyDgsabOz0mFVJzDEjxtoemUR7U077UNr6GyXWyjXWO/y0MHto/QyswYTO
+	4IFPlY1e7yICBfCZJw40FSSjzJZ+FJuQjQbm1Pg3dVL7b95kt5BSZ0VvEF+B/6QNeHd27EPS1F4r2
+	hTHfS1DMZvGEl2r2wcsukPns3KYUmMsqnUaMmUJ7R6ywD4cuEA6dXOwTZBGxMzcXOe4Vgw/+uMwce
+	QA4D8lmw==;
+Received: from 86-58-88-254.dynamic.telemach.net ([86.58.88.254]:30374 helo=[192.168.1.122])
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <florijan.plohl@norik.com>)
+	id 1w8Zto-0000000AR5L-0548;
+	Fri, 03 Apr 2026 10:29:03 +0200
+Message-ID: <56b9e133-74b9-4e59-a40c-c7637c080fd8@norik.com>
+Date: Fri, 3 Apr 2026 10:29:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: imx{91,93}-phyboard-segin: Add peb-av-18
+ overlay
+To: Frank Li <Frank.li@nxp.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+References: <20260402070826.970012-1-florijan.plohl@norik.com>
+ <ac50OHuEApM3tRHq@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Florijan Plohl <florijan.plohl@norik.com>
+In-Reply-To: <ac50OHuEApM3tRHq@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: florijan.plohl@norik.com
+X-Authenticated-Sender: cp2.siel.si: florijan.plohl@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 03/04/2026 at 03:46:31 -04, Frank Li <Frank.Li@nxp.com> wrote:
+Hello,
 
-> clock-names is empty in nand-controller@bb000000, which is wrong.
+On 4/2/26 15:50, Frank Li wrote:
+> On Thu, Apr 02, 2026 at 09:08:26AM +0200, Florijan Plohl wrote:
+>> Add overlay for the PEB-AV-18 adapter on phyBOARD-Segin-i.MX91/93.
+> what's means PEB-AV-18? Is it random board name?
+The PEB-AV-18 is PHYTEC designation for Audio/Video adapter modules that can
+be used to connect displays on their boards.
+
+I will improve commit message to add more such information in v2.
+
 >
-> Remove it to fix below CHECK_DTBS warings:
->    arch/arm/boot/dts/nxp/imx/imx25-pdk.dtb: nand-controller@bb000000 (fsl,imx25-nand): Unevaluated properties are not allowed ('clock-names' was unexpected)
 >
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>> The supported LCD is Powertip PH800480T032-ZHC19 panel (AC220).
+>>
+>> Signed-off-by: Florijan Plohl <florijan.plohl@norik.com>
+>> ---
+>>   arch/arm64/boot/dts/freescale/Makefile        |   4 +
+>>   .../imx91-phyboard-segin-peb-av-18.dtso       | 142 ++++++++++++++++++
+>>   .../imx93-phyboard-segin-peb-av-18.dtso       | 142 ++++++++++++++++++
+> Any difference between 91 and 93, can use one overlay file?
+>
+> Frank
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Can you suggest how to do so?
+
+There are imx93-pinfunc.h and imx91-pinfunc.h which are not unified
+between imx91 and imx93.
+
+So we can only create common dtsi like so:
+
+imx91-93-phyboard-segin-peb-av-18.dtsi
+
+and still use separate dtsos:
+
+imx91-phyboard-segin-peb-av-18.dtso
+imx93-phyboard-segin-peb-av-18.dtso
+
+Is that your idea?
+
+BR,
+
+Florijan Plohl
+
+>> --
+>> 2.43.0
+>>
