@@ -1,64 +1,98 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011049.outbound.protection.outlook.com [52.101.65.49])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011003.outbound.protection.outlook.com [52.101.65.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE531DE8BB
-	for <imx@lists.linux.dev>; Fri,  3 Apr 2026 08:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA96B34753A
+	for <imx@lists.linux.dev>; Fri,  3 Apr 2026 09:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775205286; cv=fail; b=RDgU0+krdEx9L07zndffwfawPMSRmVn0IiU8ggau5iwjhtB5NyivL1dF4uUp6KBgZ6ldk/ah+4I4eFfJ4gg5MzsMUQ24QPPwn30yJrlcYQ1LNCZKItvV3MUd/JaOxcxaxy8W4hEyocEGvhGKNJ8+SL2KL9pJS0aNTVyAoI7cSk4=
+	t=1775208476; cv=fail; b=LYIpeeNv/dqKHJm4q5o9oOS1yn/uCBzAoJG2JeJT9W1Xux8ZJDDSnarT23xqFmonWByYiLxNsRfg8AS2uFV0XnHWjlGcp4SEZ5CxuEUAXgUKCfHJNdDfsG4+ObLSWhVtgvobvY8lowdHQV3676tlggvEX9biKw3ADYnX+J4zV3Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775205286; c=relaxed/simple;
-	bh=BnABhRC84HeKNBcvKTFMj926Xf4g56ZcY3WQ/qHfhXI=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tJk/vY6Dvlxh987V1BtU+Rjvn/EBIcfQfxEVJGqf1sB/FlQX/pKS+KP4HDz9myNw3tRogIwK+q0TQhdbv4xJ2jHW/rKFsbNvc9uMlrhAJxCd4sKolYfs7cYxWzMtP3sLygimSCDY5A+29lDrhjqeadehulxEmK/S4hiee7cjVls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fd0KOtGG; arc=fail smtp.client-ip=52.101.65.49
+	s=arc-20240116; t=1775208476; c=relaxed/simple;
+	bh=65+SbUsuHfH1SONdL1n+HVXYDtLESv0XYhzHmDlWcg8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZiiqOlth7mVEMiRkoUD0+5M+qO1nVBbxhSXqfPmvFB8S0bC/yuVQw6dSK8jmjLenUD1VmtDOvvNmRSTspfLH/Uhi4FOUDeOulYJYtAPMxqCQspxqOaRWsorw3Z564LhjuQYeRs49I79qQR1JMVgjQiYhyE+YDEF6cNKmL+GujiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aFRzQLeg; arc=fail smtp.client-ip=52.101.65.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fd0KOtGG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aFRzQLeg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qnk+A6n9DE15YwJSAZ5cvo25c3xqFC277ofzDLyoyY8qiKby6D4XuKMQNc/cF7BFJLMKzfDFespeW+69jZWlQrmBh+sEzfHQCOCtdYH87GKxf7+Vkdv4xH76urZ/E2xH8eMdtnAQWZ7aFx8nGHi8DhyF/gDkB9xJ4jPpArXHszTymmHlmlCPZyODMHPde9giwxpDXMHKL+HP7UWTV9vgvRw0137UM2P7sqFQiWZQwxr+70T/Qvxc53eiYbww/E4XV9HdzNmnRaAV0Y1NUyf/EOOD5B+NwqvxN9uQ31aVEgLrkg45ZrGI/T0olD8siGYyIowk7fMyOfOp694lfZjbCQ==
+ b=B7HQctrz2NWbeIOoSMEG/TxSGDL6bWWH2s8NLxP/1R6f4+9qcfX+ZOAduV7eWBTE/2EtUqkoSsLmH7YOrSoQ9EjINPE20ZwnOXu8zKtqQwY2ZxuRI2HHbgk+0KuNDjg6M/fwq2WlqmS2k71qu1d4a5GogF7LNRPpyU5OgOq1x4Nox+8fmtgqdVFy+tctdDmb6C44OZFyc7i/VG0EyPTZGiyPLthmw6SByh0yZ8JBx4NrwnOwsQTPvIVFiliHj0JwLD9bS/UIP5mOC1YgrPMGTkAGr7j674uoBqMqRP+xPovqLLVbPOtYieskpwoYoySEHMejLd+Ppb9RwOM/bsn6qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2EDhQ3rrhU918zgSlkj5HKTpmjN5n1mYpVd3OA9YGh0=;
- b=puZMLUiDYXSozXbFJZASyp0LFounFjRV5sfzIcs0aL/pFFXK/Cpvy5LK+a6s+9Pa0Wqxu/I0bCxkJVISTHzGJhlpJLHo2udQtvaxPo6M3Plevk5rv/Ek/aqHEOHQMJxbpRXtH+cE8s5JhtIehSemGuP4U2zbzi8QN99kPZ2dpuh/j2sk+SIlFvma+QCVtd+w4/Q7r1WnUtAVOqw7c2I3QwmDdXMnIdLlxZNKwmH8RvUrYIg3n2SXYVKBXhiN/r+y7fVuQxolw5G8qZLOo/ODe2CFMkDEdWId28AfAIDG0Zgd9jHoEOV2MuViATWZ4OIn59sOkPF89GwJmLUOhxihDg==
+ bh=q+OB3SaS+jDhqQnXU6FHvLzUhcznczO7c5Ll9cqHcF8=;
+ b=TksGtzulP4OoAnwwCkM3LE9TI4K9wgV0dmFcqm6JJdfuunuPvbF7ba5Q/qvIVLtFT+LKwV2WVB5YI+S9CbWixctneVOHRMmFV+rat8tKb7ywfsK61wubWcCtEW4VtvwrBWWXHyLtRw601w0JlikZTJBtLm0OYTLA9LiuaRc9YbIb/KbwUVvKz0Q/GTcVAVgfeD6aAOAgKnR7JRGZh5m0g7pAjPeDFlAvN3QPEP8CcFGkpfega4kEBr9chVEgWL9Btp5bHS7w5AxF56kTo8Z7P5+WdFxIINhX2H4qrQop0r3f4yRxTTPaoBJ5P3w0BtM2Rr7KcTbAGUd8h/njqRIz8A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2EDhQ3rrhU918zgSlkj5HKTpmjN5n1mYpVd3OA9YGh0=;
- b=fd0KOtGGYwEvloqKGiMyb8nVqR7rW6t22Yztub70NxTaTH0Ogxq/oitjYTHaVNe+ma6TWasfVQ79yUvuwV/0AG8T7t9NUW/qzH9teF9m+BcaZP5VTfJjU35ip+/C0yJDX370L5N83/a+pjOd/1d3XYo3c2rLsODCf3P19KlYhmtp0ML+QM/FTBR3gof97Fr+FzhHl3dU+R9zZQ+6kGCBLM+kqs6rhoO0ofgZY5r1sT2CS2bXPWzg6J9z8veDGIzrn2nqacUUwdQ/KSip2snyEnPYjTyYL54iSgctHMRHKeo8lGW3/yKEqPiSpoJezl/kNKuXLe/Y7YzaH0ru6SXMeA==
+ bh=q+OB3SaS+jDhqQnXU6FHvLzUhcznczO7c5Ll9cqHcF8=;
+ b=aFRzQLeg5rkUblBcRwmcMa/5YuOuVUGOjo0ZZB6LiGQjp1WTwaBG/D097YEM1l1y7Hz1m/wB9a7OPvnAcut6b5F2XCnkPs1oMGLLtInSDoknS7AJwxc08705vKy7OVH9Qom/YLEBiijXF35gBT/k9Gwwwuotd7S5sNbVx3LjuxrePOa3VDawI4PM6une0GYGPt0bp6uR+RQGZSezgxBDBoD1K7fB8ptgig0wMQDBcl54liuHsPr8Q3xkDwPSGHj4Pjxna0dM5AvAvzgEE+fXO5BDwZs1560PVtxcJWEh6UCgd7EIiZ8ZdLX1+FThbrTHNAYllGLXbmxeyj3ApJ8mqA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by GVXPR04MB10383.eurprd04.prod.outlook.com (2603:10a6:150:1df::22) with
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by DB9PR04MB8284.eurprd04.prod.outlook.com (2603:10a6:10:25e::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Fri, 3 Apr
- 2026 08:34:41 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b%4]) with mapi id 15.20.9769.016; Fri, 3 Apr 2026
- 08:34:41 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: vkoul@kernel.org,
-	Frank.Li@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	dmaengine@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dmaengine: imx-sdma: Refine spba bus searching in probe
-Date: Fri,  3 Apr 2026 16:33:13 +0800
-Message-Id: <20260403083313.1172292-1-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0121.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a7::10) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Fri, 3 Apr
+ 2026 09:27:49 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%3]) with mapi id 15.20.9769.016; Fri, 3 Apr 2026
+ 09:27:48 +0000
+Message-ID: <88cf4526-ca8f-4b25-acea-347d92539a2b@nxp.com>
+Date: Fri, 3 Apr 2026 17:28:56 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/11] drm/bridge: imx8mp-hdmi-tx-connector-fixup: add
+ an hdmi-connector when missing using a DT overlay at boot time
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
+ Stefan Agner <stefan@agner.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>
+Cc: Damon Ding <damon.ding@rock-chips.com>,
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Christopher Obbard <christopher.obbard@linaro.org>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+ Fabio Estevam <festevam@denx.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Gilles Talis <gilles.talis@gmail.com>,
+ =?UTF-8?B?R29yYW4gUmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
+ Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Marco Felsch <m.felsch@pengutronix.de>,
+ Martyn Welch <martyn.welch@collabora.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Richard Hu <richard.hu@technexion.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+ Vitor Soares <vitor.soares@toradex.com>
+References: <20260402-drm-lcdif-dbanc-v3-0-27cd247a0847@bootlin.com>
+ <20260402-drm-lcdif-dbanc-v3-8-27cd247a0847@bootlin.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20260402-drm-lcdif-dbanc-v3-8-27cd247a0847@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: MA5PR01CA0199.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b2::11) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,97 +100,312 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|GVXPR04MB10383:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52aa927a-fb85-4d60-1450-08de915bd9e8
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DB9PR04MB8284:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd2c59ce-764f-4a9a-10f5-08de9163457e
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|52116014|19092799006|38350700014|18002099003|56012099003;
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|921020|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	5t0gV56SZ8r4Wo/zMCobCBUfGfP+GHrf0sJKuUv90fJ+7fHM9GEhM7qwD2LtK3x3X0BNrZ/yJqaRVDICitebfi9v5RWY6MRMrXvtR26iPvjOjGIaXSebL8RE/48UZsUA9BPKxeHfcta75QbwrDHJbQ66Fe7UQJlLfCWdH64ERuE9QTNjAQ5/8vw+6S+cdEF2HviFEZupRjjoJ98WJQ1Mk5wr3eh7eguTGfBoXkgo/grtcW7Q7p6zk+oTQgpkzBBfVbetm/svUPlTXn/bKTIQ4RknyWolfKXHSAvJaMR5TXCFCnn/x4mZVMWnEc6eFJN7o2ozG6xJIE2lYOK5k8LaNcmivCZt41He8R1fY2e6PopREh+IRCsehOWrifsGDoSL81vYVxMmKXBKGRHsVBPn20/ms/RSy/p/8/K99wDWX4MOwncjdS80LvxNK7JVeZfxmD8lB7NjKPjkZ3S8jMt6/g5HLF+RAsCyfRnk2/Mup2abFOT/wEvxGo3NicGldLcN++54ab15NAeO6QmrDqQlk5tL8v1BsCc7ffzjuBHry81cAZyXdfYhJhxJPfj2C61UN10NGCaUe4e2e15+TdcqEb28o4BWCGNP/Ggtxdx6w5qCFGY4Kw8DDEntIxiQnpupBlmRPRGaCr37DCWkt7ClfqNzwCZzDh4X7mX74K0fDi6yxKrxme7hHh5JIiLnZLu0igveA1dOVLrommKPTgq7QU0jinLZSmiT4CIOWgPxz8YeU6NNWHjU2hFpCiAfFGXhL9WOFRGTIqHUzVHIjmDexN+OIMK3qwaDZeugkMMQEk4=
+ iZtsDU1KkU1zCY2tc5sEpA9uFHZDj4N7MzFGmUcEykRj7/uCC0JePQDPXFccUhehgnIbJP35fg5YNDSB6KCzdUQi9oQAR7Eyf4v9Tk0I3WLp+qreoXoDW41w/FwBgsLc6IwFFt4aW2Ap1MTxgfLS/FTZ289FOd/LgkFoDu2EYIbSscHIXfPD+HqASMFVtmmPL39o7oGGdE34IFxkbsATJdhd3l9GC02lohGe7aeQW5Or7QHbIJ32WkQI7bU1McPGJ3yAwdxjCD4EHLDT6RTaZ8UoTJrKOUVFORVsph6dfp0nMWE+shtgWsabe1yFsptr9BKWiyp3AKrSy9UXXmm6u6fsNJyYDMm2GOZhb4vky5v1bygASBc/TZ5oXRiMFcIRtDn7VmaG64eWDPpOhiy4Cbv3VPyQJic0hVW6eYacwxbO9pxKQuO9BsLWrQH7ZoXhRlHyC6mNMTlUoU7j/MrAYTriBG6Z70n5h4ar7UnoAx/Jzn/aPdpm+JryFzT7RVimdw6XZrvPW0LXhDsPW8KrJdOjKH3xHitDc1Z4C8bHWjG3XrcwkoFIIiLwzzkO34zrGA0B/U4z31gbwRFjW/28g7Qt1zUW6Tp0pjO+P56WKRvVM7ZN3DJd+9NbNQwrfhyD/EhnoICswPSq35JuPN/LNWvczg66igYHCgi/8Kf8EvqpcVOglDAny/3UHrYkkR77hmTBxCMZikzE7s7SWM+w0DC0tg55pOBWdcdOnSHZMiI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(52116014)(19092799006)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?f8Owl3DNs+fKvhP3l4qWZOYDlgZovLUcMyf1i4/zb7vFAtmYTGqmSUj6jZEk?=
- =?us-ascii?Q?zmUkcLp20pVBT5Rp37mZuVVNoaCmhgbKzQ0SL7Bb8Auw/nHZrgQf0zq1iIrY?=
- =?us-ascii?Q?na9mQZb3g8OBJGPW8wsJiaIfFAHph+NSpkjNUzciNt1s+8oJpVk1yqop0R4C?=
- =?us-ascii?Q?bsXEYBvDDnzfb2yt/f8oUipRNHy6cO+GFZcDvAz39/Z37JeX/YpP+5uRJfMp?=
- =?us-ascii?Q?5xqJQU0+TCm+YOvc6Z/fZCMLX5+l5AMIYolzW2UeS05pK3lmzas7gxhP/Cyf?=
- =?us-ascii?Q?3cI4HBIN2zjx9ksZLOAhbNyk+DKPW8DWUSzHUj9Hl4Uqg6ZW8ThZJaaKIN70?=
- =?us-ascii?Q?e4hFe2z5VAR3tk1CdiA/YX5QxPL3U2qP6QyD5rwf6ZOEn+RkuqKtVbgTaJMn?=
- =?us-ascii?Q?YhU8u8q/PeOhQhx1+3IVCR3QU+WUAWIHkkIjieuHp8HJCKdk8sAXzrL5xjn8?=
- =?us-ascii?Q?l4RXiVB4rbRwHUfOICo6GuZjorltUBIY4De6Bqv3AId7YTJHkwtYHDaESJ0T?=
- =?us-ascii?Q?eLMhasn1ndfOjOfYfeOoLb8TTvnEHRWEQAOkwHHHBOj8ZZQvIAbZIfC+maMw?=
- =?us-ascii?Q?P7u3WhHi+zS5rEHC2hDwTK/w/sQOdUsvOaiDgZ7ahurQhms/oF0YTkCEDzUX?=
- =?us-ascii?Q?bMU1Zq/oBFuB7f0aTiXU/O88FgLQdjZILiY7W4h6z/W+sHqLOWcoDANa6V0p?=
- =?us-ascii?Q?tr448rn4otut11M1EaeggL83QdeMjj0UQEVTcv67+fy6N2EJ7u9HpfNuX6Li?=
- =?us-ascii?Q?DejwLe6cJPjrsaqRSzQZVb+cIAslJcb4Ms7/+zIL+hL1qJzK5aZ0eAwDO0yg?=
- =?us-ascii?Q?m/PnBGzIdy8M9iaL56oXy1W8J3dpnkOzVVYzRG5jUX9mpjKsLxPiKy7JqBu1?=
- =?us-ascii?Q?yK/6YJGROQP7eSGy+dKNoKTGtWwDIOlS6ylGHSlMiY74xKgsqlRFgzT2p8Ip?=
- =?us-ascii?Q?53CZLJ0VD4ho0t5UmqpueB6tZwYzSlLK8LkCQvR6nbtj4hygvJkfUq/+PzgM?=
- =?us-ascii?Q?h9D0D0+Gye/TkdcVuKGLYRMi1SXv84mSW97QAk+KB2GvkvgRQNEkVJsVZFDn?=
- =?us-ascii?Q?wNzV3Lp4klgp3CeEVhxmIP38PkMUyCS+KQppBFhmkL7MuQrdSmpdm5Go8KFg?=
- =?us-ascii?Q?xVeKK3iS0OLQ+HP1SeTp2iR8WfOR4G1si2xqsmmsGTGCzlQyNX+i8Ejx7j6E?=
- =?us-ascii?Q?MgvrEF/IKd7B2pOgsGoU4tJ5QRxwJnNdfJnYeZzuuOzZOdrvIc3Uur3cbCep?=
- =?us-ascii?Q?6glolkq4FH/hmW7dqe1+pdCS5GX5fA+bgGjL5bAhQVLRGNxR1RfyHQZiXyvY?=
- =?us-ascii?Q?None5MzBr/SSx78vEO54Ng8c5saUcu+r9q/pOKmX7a77ycbwwBjWUC83I6UW?=
- =?us-ascii?Q?RTpcRTGQ9q0goOZqNY1s18aCHoGCWq/o0T3wZPPpdDxGOxLeKInnIMYpSzH/?=
- =?us-ascii?Q?GyNzeJuBPXV5LFnDlQqK9XM95T2lzHTmexFDTaq/1uimcsO2aVVvZw/dRCYq?=
- =?us-ascii?Q?0iCWKqFzxNsM/UvYpH9EYtOBtReWIqfrijFsQV37BeBDZYC2IEN5twxS9eny?=
- =?us-ascii?Q?hZehgWY22mhJwuVbnN/ThVoAMrSJYBat12QezCcID9RdvoQlmnQB9MNAd962?=
- =?us-ascii?Q?9W15HRr7hpVOcD+Et9z8bA2vLEu/aq82xOEpmEwFscEp2CYpaSHqHwtWi7+u?=
- =?us-ascii?Q?S42/1PHJAN0SYzKv9rdRHrCAmfjsj7R7inAumf1JFiQLfsfHJZMXgcrmbYLR?=
- =?us-ascii?Q?lXVCgLqkaA=3D=3D?=
+ =?utf-8?B?UVdhK3E5L2lpUS9JMUFKNmp1Z0FaWnhVNkc3V0xJNnRGWjdyLzNBUnl1QnlT?=
+ =?utf-8?B?RHk3SGlzOUdZNWxENVBYSVZaUkQrK2hyOUgwOUJ6RElQR1BKd3lBaDVyYmRR?=
+ =?utf-8?B?bUpYZE5UalVkZ1YvdnVyRy96SXVwWm9XM0RvUFBYQXl5TWQ5dnBod0pyYmwy?=
+ =?utf-8?B?bmNmdUV4UXNQbVBQdFl4MW5IMG1BNTJoZ2lESXo2NXRkMDJ2TmltaFJyMis3?=
+ =?utf-8?B?TGU0RGR1K3c0QmNQeXVVQUNFRkNUYm9OaXF2eTA5UjBHdmxZWmNtN0pDWDFv?=
+ =?utf-8?B?R05ZYzdYYnM0ZEFQWXhWNnFlcDg1bmdjaFU1LzUrRjBlUDVBWmdITkEwTjNE?=
+ =?utf-8?B?S1YvRUZCQTVIMk9vQ2hMbDcwbGRheEFESUxNTGREZExRRU9iU1h6a1o0akRZ?=
+ =?utf-8?B?SHNzbUthb2ZJZlgzbUxWQW8vSFhJYWU1L0ptWE1TV3lpRFhncHV6NE1aUHVD?=
+ =?utf-8?B?d2VTVzkyMUdLMDVuM1J6QS9acWNHaVRrZElvRGVNZ3BDNW9yVTM2V3lkbUV6?=
+ =?utf-8?B?WklwVDFOWFJ4ckZYVTdlUFZlYjVNenhzWEpCK3AzVHA1b204YVpLakdEOU1D?=
+ =?utf-8?B?V1FvOTB3dUFwMkw2c2xMZ1prcjFySi91OGlRcis2bllEVi9nMWRuaFZrSWpN?=
+ =?utf-8?B?Yk1pZXNCUjVPY3d0ZWMxdHN0QVMwMy9MVnRkbXkzZG1SUTNMNGtnakxGRUR2?=
+ =?utf-8?B?Q0IxV1VzbUJuRXJ2TDBkakJRWWtnVFpvT2t1cno3MU0zcTNRRlZrVk1rWHlj?=
+ =?utf-8?B?c0FCZ01QNFVrVGxxNEcyejUwSkllcXZNZjJpZ3k2ejV3MG1CWGQ0RndSV1Jz?=
+ =?utf-8?B?NnVNcU50L0pQSkpCeVFTcFVMYksya1hMSWNjNWlyS09XeUxreFFYeUFqbHI0?=
+ =?utf-8?B?YWtaV3NKR1B0U0lzMWtmQjRzWjZyVlZncGthQUp2K0E0QzhQUHg1NVFJMzln?=
+ =?utf-8?B?RkwzcWc1RzBWb1l6WEtVd2VPVTdOUHY5aytSR2dFUHhiVUw0QWxOZU5QanB6?=
+ =?utf-8?B?TFNSNk43Unc0Q2szZEYrWitaaXNWRW9hQ2p0OEFMd1o1Ni9YOWZOUXZzVjh0?=
+ =?utf-8?B?c2YxSytjL2dBWEQzc3FWRmtKTHNvUFhYN2xKVWlTMjFDNjk5cUk4Q25vZ0pa?=
+ =?utf-8?B?ZGVwTFZSb3V5N3lTNCtTSFlJVHVlQzFPNXhPN29TOTNGbndhcFpPS09FWWRF?=
+ =?utf-8?B?ZG1jVFQ0R3BHUzJCUURkcHJTcHhaQjRLUjlVdC9HMEV4SzZjdzRCbUZEN3li?=
+ =?utf-8?B?MDh4dlkxZnVVZlQ5MEY5azhyNjZ3ZkQ2NldyVFgzblhvOEdtb3kydTBRK0lp?=
+ =?utf-8?B?LzZyVnU1dUtWOGtvb1htVnN3ZWMrQ1RjNTdsSHJ2d1JPeDhQZm5McUFXVmxV?=
+ =?utf-8?B?OVJzUGt2OVIzZXI5RkxkOU5iWnBwcEc5WG9oTzdnWW9jNWp4U3ZISEllMG52?=
+ =?utf-8?B?cVI5dEtJWkI4YjRWYzdVWFBiTm1SS0loMC9aM3lkNitEc2tpdG8zUkJUQnJo?=
+ =?utf-8?B?bk1wU1dHRGY3VlIvU0kyU0lKK2I0RERhUXdyOS9NaEtzQUN5NjZTT1UxSG9C?=
+ =?utf-8?B?OGtTaktIcTlPQ1pLZEM3V1FMdDVHSHlvRERkSzBQU0lhOERUdEVBeFk0MGxX?=
+ =?utf-8?B?Q2EwQ0JqbWllWnFpYVJjeEt4OTRNWDdJSy96NnJSSUcwbHRwZnpSWXJMY1pj?=
+ =?utf-8?B?aG0vSi9ITjVXMFJ4K3djbE12TXkwUGQ5WTcwNEZXNmJjR2tITWRLd0Q1N25h?=
+ =?utf-8?B?ZzVmR1NYcEpmZXVXS0FNbitZZnc1NFpNV3gwaXhWWm96dGo5c2dWdHRCaG04?=
+ =?utf-8?B?dEs2aHRSQ0hOeld4K0o3M1I3NGFEVWhWdnB6NlZjeEhORkRRNjVtZlpROGNi?=
+ =?utf-8?B?b3NQRld4OWFkWkVYNGpZY0dtNjN0SnhKbkVuNXJvZ3l6djdHNUVMSm5WOFll?=
+ =?utf-8?B?UXpPbC81aHE1cE4rSm16cDQwZExWdjhnWW9sdHNZVjNKYXV0SGR6emRJV2Ux?=
+ =?utf-8?B?UUw0cTNoM0hsa3FlamtGcHh3eDluenhMTmN3Yk1CQXR2UlFpVDc5M2cyOXJ2?=
+ =?utf-8?B?bHhCaGFSYnlLcW9qUDNpaXo4QTNjbm0yNm1DOGcrMVFDRXdFbTBDZHpBeUgy?=
+ =?utf-8?B?eU9ESmdzU2M2SlgrdkV1VDZXdDNSVEZ5RFZ0UkFpa0tUMC9nVmx0V3JoYVpE?=
+ =?utf-8?B?LzJpOGxGWURoU1ZBYWhpSEFEdFFsV3dURHlTdU1EM2tTTXV6RCtFdTBoTUNQ?=
+ =?utf-8?B?bmJuRGZDakNLQTdIZmNCK0tsNk14dEYwSXY3bDF4U1JZTUFnV1AwOUVrQmp4?=
+ =?utf-8?B?ZHdvSkNhZ0VXZm1MbXowd3B4QnIzaTg4TFMwSTUyUVNDejJGOFlOQT09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52aa927a-fb85-4d60-1450-08de915bd9e8
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd2c59ce-764f-4a9a-10f5-08de9163457e
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 08:34:41.8071
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2026 09:27:48.8785
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zerV8QkbAaf4iDMIUyeljX4JsROIhyXF7ku+10NQV2XoiCVp4sHQSj4o5eKsZKCkrWKvipf6cY4vbxSToPh72w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10383
+X-MS-Exchange-CrossTenant-UserPrincipalName: HUhFS9tWZZxPY6OYeG06D1aAUVJlibASGJDiMi1rUJK9q4R48bkW1YdrRTr7UvSjZAm3uiJ6iWgOotQdx0tm4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8284
 
-There are multi spba-busses for i.MX8M* platforms, if only search for
-the first spba-bus in DT, the found spba-bus may not the real bus of
-audio devices, which cause issue for sdma p2p case, as the sdma p2p
-script presently does not deal with the transactions involving two devices
-connected to the AIPS bus.
+Hi Luca,
 
-Search the SDMA parent node first, which should be the AIPS bus, then
-search the child node whose compatible string is spba-bus under that AIPS
-bus for the above multi spba-busses case.
+On Thu, Apr 02, 2026 at 11:26:03AM +0200, Luca Ceresoli wrote:
+> The imx8mp-hdmi-tx is one of many drivers based on dw-hdmi. dw-hdmi in turn
+> can operate in two different modes, depending on the platform data as set
+> by the driver:
+> 
+>  A. hdmi->plat_data->output_port = 0:
+>     the HDMI output (port@1) in device tree is not used [0]
+> 
+>  B. hdmi->plat_data->output_port = 1:
+>     the HDMI output (port@1) is parsed to find the next bridge
+> 
+> The imx8mp-hdmi-tx driver falls in case A. This implies next_bridge will
+> always be NULL, and so dw_hdmi_bridge_attach() [1] will always fail if
+> called with the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
+> 
+> In fact case A assumes that DRM_BRIDGE_ATTACH_NO_CONNECTOR is not set and
+> in that case it adds an HDMI Type A connector programmatically at bridge
+> attach time.
+> 
+> Support for DRM_BRIDGE_ATTACH_NO_CONNECTOR is implemented by dw-hdmi.c in
+> case B. However switching to base B requires that port@1 is connected to a
+> "next bridge" DT node, typically the HDMI connector, because dw-hdmi won't
+> add the connector when using DRM_BRIDGE_ATTACH_NO_CONNECTOR.
+> 
+> Many dts files for imx8mp-based boards in the kernel have such a connector
+> described and linked to port@1, so the pipeline will be fully attached up
+> to a display-connector and a drm_connector added by the
+> bridge-connector. Sadly some of those dts files don't have the connector
+> described. Adding it would solve the problem easily, but this would break
+> existing devices which do not update the dtb when upgrading to a newer
+> kernel.
+> 
+> In preparation for switching to case B while preserving backward
+> compatibility for such devices, introduce a module adding the
+> hdmi-connector node to the live device tree at init time. This will allow
+> the dw-hdmi code to find the next bridge (the one wrapping the
+> hdmi-connector) and let the pipeline work as before.
+> 
+> The module is inserted only if there is no endpoint in port@1. So boards
+> whose device tree describe the connector will not have the device tre
+> modified, and will start isntantiating the correct HDMI connector type as
+> described in the device tree.
+> 
+> For boards lacking a connector description in DT the overlay will be added,
+> abd the HDMI connector will be Type A, which is a reasonable fallback and
+> is what the driver is currently doing.
+> 
+> [0] https://elixir.bootlin.com/linux/v7.0-rc1/source/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c#L3310
+> [1] https://elixir.bootlin.com/linux/v7.0-rc1/source/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c#L2907
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> 
+> ---
+> 
+> Changes in v3:
+> - removed unused variable
+> - simplified overlay using full path to port@1
+> - handle of_overlay_fdt_apply() errors
+> - use of_graph_get_endpoint_by_regs() for more robust endpoint lookup
+> - improve subject line
+> 
+> Changes in v2:
+> - don't apply the overlay if the SoC is not i.MX8MP
+> - build unconditionally, but depend on DRM_IMX_LCDIF
+> - remove useless error check
+> - add missing cleanup.h and init.h includes, remove unneeded includes
+> - avoid dtc warnings on overlay
+> - fix typo in Kconfig help text
+> - not added the Tested-bys because the code has changed
+> - split the 'plat_data->output_port = 1' line to a separate patch
+> - improve commit message
+> 
+> This patch is inspired by commit 0ff223d99147 ("drm/tilcdc: Convert legacy
+> panel binding via DT overlay at boot time")
+> ---
+>  drivers/gpu/drm/bridge/imx/Kconfig                 | 18 +++++++
+>  drivers/gpu/drm/bridge/imx/Makefile                |  2 +
+>  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.c    | 58 ++++++++++++++++++++++
+>  .../bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso | 33 ++++++++++++
+>  4 files changed, 111 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+> index b9028a5e5a06..49f074559b00 100644
+> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> @@ -18,6 +18,8 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+>  	depends on OF
+>  	depends on COMMON_CLK
+>  	select DRM_DW_HDMI
+> +	select OF_OVERLAY
+> +	select DRM_DISPLAY_CONNECTOR
+>  	imply DRM_IMX8MP_HDMI_PAI
+>  	imply DRM_IMX8MP_HDMI_PVI
+>  	imply PHY_FSL_SAMSUNG_HDMI_PHY
+> @@ -25,6 +27,22 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+>  	  Choose this to enable support for the internal HDMI encoder found
+>  	  on the i.MX8MP SoC.
+>  
+> +config DRM_IMX8MP_DW_HDMI_BRIDGE_CONNECTOR_FIXUP
+> +	bool
+> +	default y
+> +	depends on DRM_IMX_LCDIF
+> +	depends on DRM_IMX8MP_DW_HDMI_BRIDGE
+> +	depends on OF
+> +	help
+> +	  Modifies at early boot the live device tree of boards using the
+> +	  i.MX8MP fsl,imx8mp-hdmi-tx adding a hdmi-connector node linked to
+> +	  the hdmi-tx. This is needed to support bridge-connector usage in
+> +	  the i.MX8MP LCDIF driver.
+> +
+> +	  You need this if you use the i.MX8MP HDMI output and your board
+> +	  device tree file does not have an hdmi-connector node connected
+> +	  to it.
+> +
+>  config DRM_IMX8MP_HDMI_PAI
+>  	tristate "Freescale i.MX8MP HDMI PAI bridge support"
+>  	depends on OF
+> diff --git a/drivers/gpu/drm/bridge/imx/Makefile b/drivers/gpu/drm/bridge/imx/Makefile
+> index 8d01fda25451..84499fe2e444 100644
+> --- a/drivers/gpu/drm/bridge/imx/Makefile
+> +++ b/drivers/gpu/drm/bridge/imx/Makefile
+> @@ -1,6 +1,8 @@
+>  obj-$(CONFIG_DRM_IMX_LDB_HELPER) += imx-ldb-helper.o
+>  obj-$(CONFIG_DRM_IMX_LEGACY_BRIDGE) += imx-legacy-bridge.o
+>  obj-$(CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE) += imx8mp-hdmi-tx.o
+> +obj-$(CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE_CONNECTOR_FIXUP) += imx8mp-hdmi-tx-connector-fixup.o \
+> +							   imx8mp-hdmi-tx-connector-fixup.dtbo.o
+>  obj-$(CONFIG_DRM_IMX8MP_HDMI_PAI) += imx8mp-hdmi-pai.o
+>  obj-$(CONFIG_DRM_IMX8MP_HDMI_PVI) += imx8mp-hdmi-pvi.o
+>  obj-$(CONFIG_DRM_IMX8QM_LDB) += imx8qm-ldb.o
+> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.c
+> new file mode 100644
+> index 000000000000..dc1736bfc3ac
+> --- /dev/null
+> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.c
+> @@ -0,0 +1,58 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Add an hdmi-connector node to boards using the imx8mp hdmi_tx which
+> + * don't have one. This is needed for the i.MX LCDIF to work with
+> + * DRM_BRIDGE_ATTACH_NO_CONNECTOR.
+> + *
+> + * Copyright (C) 2026 GE HealthCare
+> + * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> + */
+> +
+> +#include <linux/cleanup.h>
+> +#include <linux/init.h>
+> +#include <linux/of.h>
+> +#include <linux/of_graph.h>
+> +
+> +/* Embedded dtbo symbols created by cmd_wrap_S_dtb in scripts/Makefile.dtbs */
+> +extern char __dtbo_imx8mp_hdmi_tx_connector_fixup_begin[];
+> +extern char __dtbo_imx8mp_hdmi_tx_connector_fixup_end[];
+> +
+> +static int __init imx8mp_hdmi_tx_connector_fixup_init(void)
+> +{
+> +	struct device_node *soc      __free(device_node) = NULL;
+> +	struct device_node *hdmi_tx  __free(device_node) = NULL;
+> +	struct device_node *endpoint __free(device_node) = NULL;
+> +	void *dtbo_start;
+> +	u32 dtbo_size;
+> +	int ovcs_id;
+> +	int err;
+> +
+> +	soc = of_find_node_by_path("/soc@0");
+> +	if (!soc)
+> +		return 0;
+> +
+> +	/* This applies to i.MX8MP only, do nothing on other systems */
+> +	if (!of_device_is_compatible(soc, "fsl,imx8mp-soc"))
+> +		return 0;
+> +
+> +	hdmi_tx = of_find_node_by_path("/soc@0/bus@32c00000/hdmi@32fd8000");
+> +	if (!of_device_is_available(hdmi_tx))
+> +		return 0;
+> +
+> +	/* If endpoint exists, assume an hdmi-connector exists already */
+> +	endpoint = of_graph_get_endpoint_by_regs(hdmi_tx, 1, -1);
+> +	if (endpoint)
+> +		return 0;
+> +
+> +	dtbo_start = __dtbo_imx8mp_hdmi_tx_connector_fixup_begin;
+> +	dtbo_size = __dtbo_imx8mp_hdmi_tx_connector_fixup_end -
+> +		    __dtbo_imx8mp_hdmi_tx_connector_fixup_begin;
+> +
+> +	err = of_overlay_fdt_apply(dtbo_start, dtbo_size, &ovcs_id, NULL);
+> +	if (err)
+> +		err = of_overlay_remove(&ovcs_id);
+> +
+> +	return err;
+> +}
+> +
+> +subsys_initcall(imx8mp_hdmi_tx_connector_fixup_init);
+> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso
+> new file mode 100644
+> index 000000000000..070be24fed3e
+> --- /dev/null
+> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso
+> @@ -0,0 +1,33 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * DTS overlay adding an hdmi-connector node to boards using the imx8mp hdmi_tx
+> + *
+> + * Copyright (C) 2026 GE HealthCare
+> + * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&{/} {
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	fixup-hdmi-connector {
+> +		compatible = "hdmi-connector";
+> +		label = "HDMI";
+> +		type = "a";
+> +
+> +		port {
+> +			fixup_hdmi_connector_in: endpoint {
+> +				remote-endpoint = <&hdmi_tx_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&{/soc@0/bus@32c00000/hdmi@32fd8000/ports/port@1} {
+> +	hdmi_tx_out: endpoint {
+> +		remote-endpoint = <&fixup_hdmi_connector_in>;
+> +	};
+> +};
+> 
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- drivers/dma/imx-sdma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+There is a build warning(W=1):
 
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 3d527883776b..be2fb87b7a89 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -2364,13 +2364,16 @@ static int sdma_probe(struct platform_device *pdev)
- 			return dev_err_probe(&pdev->dev, ret,
- 					     "failed to register controller\n");
- 
--		spba_bus = of_find_compatible_node(NULL, NULL, "fsl,spba-bus");
-+		struct device_node *sdma_parent_np = of_get_parent(np);
-+
-+		spba_bus = of_get_compatible_child(sdma_parent_np, "fsl,spba-bus");
- 		ret = of_address_to_resource(spba_bus, 0, &spba_res);
- 		if (!ret) {
- 			sdma->spba_start_addr = spba_res.start;
- 			sdma->spba_end_addr = spba_res.end;
- 		}
- 		of_node_put(spba_bus);
-+		of_node_put(sdma_parent_np);
- 	}
- 
- 	/*
+  DTC     drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtbo
+drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:12.6-27.3: Warning (avoid_unnecessary_addr_size): /fragment@0/__overlay__: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
+
 -- 
-2.34.1
-
+Regards,
+Liu Ying
