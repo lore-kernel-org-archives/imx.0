@@ -1,136 +1,210 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A39438237A;
-	Thu,  2 Apr 2026 21:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A827A907;
+	Fri,  3 Apr 2026 01:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775166741; cv=none; b=jrV8Wi4AL68755IDZGL/yvQkqblhMeOnBa95fmp0I8w7p0a+uBoxSxj3J6eaoz4aFvMAKWADFJG7LiMFA8FQ10bL+nM+fnIZX/UBI/oHyJ4QKORoBCcrmrMw0TbDiEI/BOg37+sLVarolpZZYBD6zW5L5nS0hv6LyxQrIj04efY=
+	t=1775179047; cv=none; b=IaZcCCjUd9vPXyrnAjkS8CiYDanoc9jtmcoB1nMi4lvqWK4HP7bz3HXow2Q1oYm2Qj3nSYu9KSShIzfWoYyycoZnEfXf/at62iI62DTtwCY7avI8GhfLy1w4DALxQd3AoVv9I50reWnrbN6kLRmF7hqBUo2Kwet4VRdZC3vEkI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775166741; c=relaxed/simple;
-	bh=v9zJEeNVmz7NcsMkpOPkdYk7q2EoPoCfcmjxBRbg/Gw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=kST9lBUpPAwcUljsn4/TDzTuqhzA0G7DHv178sWvx+ViQBDLJO58/07ikIzQQjU7egA4SB5DqziBWqmHlR58m6mdSsrdMsMpnaSly7Ru75MvO01yTwSt7kca/3vGaN7p+nO3bbmHMeP/JdwSXwwPtl9wEgzczEUOXKquKdJzfnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTB78iuK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775179047; c=relaxed/simple;
+	bh=JaZaqXx7UjhAu1o2iKmm1mcnfKWDRIbQehAs9zgMebg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G2XQ1mpECdnh9O0Caj4hUWyD2b7llw6kbGhDLUff0CIUzAuUgBdFAw9K3RY1SjuapyscezTvFS8p4SzKL9uA+/i/nHNi8o9ooNIJoxZBHT1BfQ9PadHzyca8ELvH9eSzhpItbyFVKkOClgVNJJ4wBfA/TM87SYCMI4Hvj38it+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odmCkW0v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTB78iuK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9D9C116C6;
-	Thu,  2 Apr 2026 21:52:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odmCkW0v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5498C116C6;
+	Fri,  3 Apr 2026 01:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775166740;
-	bh=v9zJEeNVmz7NcsMkpOPkdYk7q2EoPoCfcmjxBRbg/Gw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=PTB78iuKGtB1jnCLkrdAAEbFdUBu6bIVdFt5Wka6j9T73o4DOPCGZwiNrnq4PiEr6
-	 mBFN0TFFR6noe6wbi63LOXrgXpdD106UW3pCqKSxrNzj8GxdtV8MQyp2Vy1SAsdp3d
-	 M6xKXlZbCh0YABGR2JZ5uus7RZzPqgGZDTd9cRTDxhbH89DrUCD35i7ucql2BdpP2E
-	 7ULjB46nbQkz0boFssqZvNz1786uWfD+aGTkjAGmooYiXv+ruQ7/oxb1SnuN7wMHKS
-	 dZy72w3QSkA4WUNCLllLtT+k1bSnFq6cedLa+/KrtjYL9V2SlHZOhBUsWcX1NjRLrv
-	 DcESm7m/FmPPA==
-Date: Thu, 2 Apr 2026 15:52:15 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: "Vincent Mailhol (Arm)" <mailhol@kernel.org>
-cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-    Mikko Rapeli <mikko.rapeli@linaro.org>, 
-    Richard Henderson <richard.henderson@linaro.org>, 
-    Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-    Russell King <linux@armlinux.org.uk>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-    Andreas Kemnade <andreas@kemnade.info>, 
-    Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-    Tony Lindgren <tony@atomide.com>, Huacai Chen <chenhuacai@kernel.org>, 
-    WANG Xuerui <kernel@xen0n.name>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-    "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-    Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-    Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, 
-    Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-    Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Clark Williams <clrkwllms@kernel.org>, 
-    Steven Rostedt <rostedt@goodmis.org>, 
-    Pablo Neira Ayuso <pablo@netfilter.org>, 
-    Krzysztof Kozlowski <krzk@kernel.org>, 
-    Alim Akhtar <alim.akhtar@samsung.com>, Frank Li <Frank.Li@nxp.com>, 
-    Sascha Hauer <s.hauer@pengutronix.de>, 
-    Pengutronix Kernel Team <kernel@pengutronix.de>, 
-    Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
-    Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-    Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    Geert Uytterhoeven <geert+renesas@glider.be>, 
-    Magnus Damm <magnus.damm@gmail.com>, 
-    Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
-    Gregory CLEMENT <gregory.clement@bootlin.com>, 
-    =?ISO-8859-15?Q?Th=E9o_Lebrun?= <theo.lebrun@bootlin.com>, 
-    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-    Helge Deller <deller@gmx.de>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-    =?ISO-8859-15?Q?Jonathan_Neusch=E4fer?= <j.neuschaefer@gmx.net>, 
-    Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-    Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>, 
-    Heiko Stuebner <heiko@sntech.de>, 
-    Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-    Mark Brown <broonie@kernel.org>, Eric Biggers <ebiggers@kernel.org>, 
-    Ard Biesheuvel <ardb@kernel.org>, 
-    Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
-    Bjorn Andersson <andersson@kernel.org>, Michael Walle <mwalle@kernel.org>, 
-    Guenter Roeck <linux@roeck-us.net>, 
-    Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
-    "Rob Herring (Arm)" <robh@kernel.org>, 
-    Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Anna Schumaker <anna.schumaker@oracle.com>, 
-    Alexandre Gonzalo <alexandre.gonzalo@arm.com>, 
-    linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-omap@vger.kernel.org, loongarch@lists.linux.dev, 
-    linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-    linux-sh@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-    linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
-    linux-renesas-soc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-    openbmc@lists.ozlabs.org
-Subject: Re: [PATCH 3/9] configs: remove obsolete assignments to
- CONFIG_NFS_V4_1
-In-Reply-To: <20260317-arm_defconf_cleanup-v1-3-8eecb7fdd24d@kernel.org>
-Message-ID: <2a5bb9cf-3f0c-6069-6412-cd4c5c4e8b78@kernel.org>
-References: <20260317-arm_defconf_cleanup-v1-0-8eecb7fdd24d@kernel.org> <20260317-arm_defconf_cleanup-v1-3-8eecb7fdd24d@kernel.org>
+	s=k20201202; t=1775179046;
+	bh=JaZaqXx7UjhAu1o2iKmm1mcnfKWDRIbQehAs9zgMebg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=odmCkW0vCuh4urc8EBRzGnbdsI1D7bki86zEYeShQ5iBGE0KbhZtGUh1TYW61UifM
+	 vlZHEIb9RaVRJGFQM90CW2FTMdJVg7rTtV3Cn6qKnA6Udo6V2mCALGdOOkpc7sWyL7
+	 1/mYbbTxLddFsySO148Z/Di7Bi0W8SPd3NAHFa/gBoX46ljq7C9wKjgbsSufCiBleV
+	 BzDqEBm7D2ZkGrCurTK/ahccod50nLtj/EEtaNvDUbNyMG3jUXrtG9MXFelGSUExpp
+	 lLGnyvayMqtQU/dbr2Mwt942GBzYgPP47aePrQlIDLtC0Iir7STP++CxmJmplaBXM5
+	 iC2+aAECkb13Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: wei.fang@nxp.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v4 net-next 03/14] net: enetc: add pre-boot initialization for i.MX94 switch
+Date: Thu,  2 Apr 2026 18:17:23 -0700
+Message-ID: <20260403011723.1795349-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260331113025.1566878-4-wei.fang@nxp.com>
+References: <20260331113025.1566878-4-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Tue, 17 Mar 2026, Vincent Mailhol (Arm) wrote:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: enetc: add pre-boot initialization for i.MX94 switch
 
-> CONFIG_NFS_V4_1 was revomed in commit 7537db24806f ("NFS: Merge
-> CONFIG_NFS_V4_1 with CONFIG_NFS_V4"). However, some defconfigs are
-> still referring the old configuration.
-> 
-> Clean-up all the leftover references to CONFIG_NFS_V4_1.
-> 
-> FYI, the suppressions were done using:
-> 
->   git grep -z -l '^CONFIG_NFS_V4=' -- 'arch/*/configs/*defconfig' |\
->     xargs -0 sed -i -E '/^CONFIG_NFS_V4_1=/d'
-> 
-> CONFIG_NFS_V4_1_IMPLEMENTATION_ID_DOMAIN and CONFIG_NFS_V4_1_MIGRATION
-> were not in scope of the renaming and still use V4_1 in their name, so
-> keep those two untouched.
-> 
-> Fixes: 7537db24806f ("NFS: Merge CONFIG_NFS_V4_1 with CONFIG_NFS_V4")
-> Signed-off-by: Vincent Mailhol (Arm) <mailhol@kernel.org>
+This commit adds pre-boot initialization logic for the i.MX94 switch
+in the NETC block control driver. It configures external ports, MII
+protocols, and MDIO PHY addresses, and handles the MAC selection
+constraint between switch port 2 and ENETC 0.
 
-Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
+> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> index 92a0f824dae7..c21230f7a7fb 100644
+> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+[ ... ]
+> +static int imx94_switch_link_config(struct netc_blk_ctrl *priv,
+> +				    struct device_node *np,
+> +				    bool *swp2_en)
+> +{
+> +	struct device_node *ports;
+> +	int port_id, err = 0;
 
+Since of_property_read_u32() expects a u32 pointer, does passing a
+signed int pointer here trigger an incompatible pointer types warning
+during compilation?
 
-- Paul
+> +
+> +	ports = netc_get_switch_ports(np);
+> +	if (!ports)
+> +		return -ENODEV;
+> +
+> +	for_each_available_child_of_node_scoped(ports, child) {
+> +		if (of_property_read_u32(child, "reg", &port_id) < 0) {
+
+If the device tree provides a reg value with the MSB set, port_id
+would be evaluated as a negative number.
+
+[ ... ]
+>  static int imx94_netcmix_init(struct platform_device *pdev)
+>  {
+>  	struct netc_blk_ctrl *priv = platform_get_drvdata(pdev);
+>  	struct device_node *np = pdev->dev.of_node;
+> +	bool enetc0_en = false, swp2_en = false;
+>  	u32 val;
+>  	int err;
+>  
+>  	for_each_child_of_node_scoped(np, child) {
+>  		for_each_child_of_node_scoped(child, gchild) {
+> -			if (!of_device_is_compatible(gchild, "pci1131,e101"))
+> -				continue;
+> -
+> -			err = imx94_enetc_link_config(priv, gchild);
+> -			if (err)
+> -				return err;
+> +			if (of_device_is_compatible(gchild, "pci1131,e101")) {
+> +				err = imx94_enetc_link_config(priv, gchild,
+> +							      &enetc0_en);
+> +				if (err)
+> +					return err;
+> +			} else if (of_device_is_compatible(gchild,
+> +							   "pci1131,eef2")) {
+
+Is it possible for the switch node to be disabled in the device tree?
+
+If so, should we check of_device_is_available() for gchild before proceeding,
+similar to how it is checked for enetc0_en?
+
+Without checking availability, if the disabled switch lacks a ports subnode,
+imx94_switch_link_config() might return -ENODEV and abort the entire probe.
+
+Alternatively, if the disabled switch node has a ports subnode with an
+available port 2, it could spuriously set swp2_en = true and cause a false
+conflict with ENETC 0.
+
+> +				err = imx94_switch_link_config(priv, gchild,
+> +							       &swp2_en);
+> +				if (err)
+> +					return err;
+> +			}
+>  		}
+>  	}
+[ ... ]
+> @@ -610,6 +682,77 @@ static int imx94_enetc_mdio_phyaddr_config(struct netc_blk_ctrl *priv,
+>  	return 0;
+>  }
+>  
+> +static int imx94_ierb_enetc_init(struct netc_blk_ctrl *priv,
+[ ... ]
+> +static int imx94_switch_mdio_phyaddr_config(struct netc_blk_ctrl *priv,
+> +					    struct device_node *np,
+> +					    int port_id, u32 phy_mask)
+> +{
+> +	int addr;
+> +
+> +	/* The switch has 3 external ports at most */
+> +	if (port_id > 2)
+> +		return 0;
+
+If port_id is negative due to the signed type, it will bypass this upper
+bound check.
+
+> +
+> +	addr = netc_get_phy_addr(np);
+> +	if (addr < 0) {
+> +		if (addr == -ENODEV)
+> +			return 0;
+> +
+> +		return addr;
+> +	}
+> +
+> +	if (phy_mask & BIT(addr)) {
+> +		dev_err(&priv->pdev->dev,
+> +			"Found same PHY address in EMDIO and switch node\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	netc_reg_write(priv->ierb, IERB_LBCR(port_id),
+> +		       LBCR_MDIO_PHYAD_PRTAD(addr));
+
+Could this lead to an out-of-bounds register write prior to the array base
+since port_id is negative?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx94_ierb_switch_init(struct netc_blk_ctrl *priv,
+> +				  struct device_node *np,
+> +				  u32 phy_mask)
+> +{
+> +	struct device_node *ports;
+> +	int port_id, err = 0;
+
+A similar signed int declaration is used here for port_id, which would run
+into the same pointer type warning and negative value issues.
+
+> +
+> +	ports = netc_get_switch_ports(np);
+> +	if (!ports)
+> +		return -ENODEV;
+[ ... ]
+-- 
+pw-bot: cr
