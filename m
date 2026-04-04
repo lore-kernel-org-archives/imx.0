@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D481EE7B7
-	for <imx@lists.linux.dev>; Sat,  4 Apr 2026 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E541D5CC6
+	for <imx@lists.linux.dev>; Sat,  4 Apr 2026 14:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775313280; cv=none; b=CizeUIEvdLBpREzwyJddaWjNb6QGBMDD0bBpeKkh8pfiMEbiovOfYhRaFTyURW6synHRbi0FK75X+oaosisU+6Zq3BVGV9giQbs5VjvMQ9vMGkuwnuDaG8ZwO9BWe5Hl/5/ubAQbydZQ548BtF52wUSJ8/apCWenR3AjkCTC5LY=
+	t=1775314039; cv=none; b=DvQNliEZDvpnUlqh1o7kEhf51xapQIgi8CkPySsgmfIBmx+7TnSH6xPxnw4oDRCaL9e8KEgXRWycW+009OmWXIyI4GdXal++tIH/s3fjPpcH4lnqe2NVztCxeh0hpopelKgpn+sl5lRkKvmRnh2tJEkt0fIvYDshUvolG1kSSkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775313280; c=relaxed/simple;
-	bh=2xgJUGK4xs2Z/4HKoiHpphCYn8IFg7c1x66ai8aA2zQ=;
+	s=arc-20240116; t=1775314039; c=relaxed/simple;
+	bh=wkWsq3wOxvvGHQk5g9AdcPeG8Kmz14QfgWPiPSY/fAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s3cOef4+z4rGHnkkc7K0XJCMiEwmlIUjKfIaGHEj7NAMEfQ2aEVjQHAItT3MShWHCoIhVpZW0UsEnhiLh7mEamtMLqKL4RhmwdxdzorpxqC5V2/NrcdKLzxQcrzLEOMXwH8rHuivD2gxBEsM5+A6ZoXqCb6h7LIMkFDhnwgaNn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwwXma6J; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kMROk/chHs3E1RzMkt6faLSKFN+I8dIqXnz8CdH9PRSIGts2609NYc425K5sRAjEoMofgYsx5fQ0ivR18AXUOmuY6TtBqBl07WfeOO0CZWUjxEcUhlDrv7drs8jFmTycLyKhc6XiKElusb9sPb8u9X+hDTz7V6idCOEobcQQnPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mgWB8Cvr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwwXma6J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5669C19421;
-	Sat,  4 Apr 2026 14:34:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mgWB8Cvr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F677C19421;
+	Sat,  4 Apr 2026 14:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775313280;
-	bh=2xgJUGK4xs2Z/4HKoiHpphCYn8IFg7c1x66ai8aA2zQ=;
+	s=k20201202; t=1775314038;
+	bh=wkWsq3wOxvvGHQk5g9AdcPeG8Kmz14QfgWPiPSY/fAw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JwwXma6JBk61kxPVjXRQAQafGrGyW9yj/VSpsgw13z2oBkjQQ8WffLdOBmxczJDfB
-	 y+VG3GBfItG4zWAlA2luC87AoDmSA3lHJOQXMfvp3uNeradx6x75x0rFYubP4z/tvd
-	 LNb/UevxA5bVcpnx7oetaEwwSRbt6CvB/U8TZ4s0LUkSAnUmOdJO7cUv+jjdu6wUDU
-	 gMjZpW/d2rFpmesHfHOs4Oj4+8kmXTFgeCrfz9CGErOPYlTMa0hkRdtsAVIpzdZ9uH
-	 FV1ZqdLpQCDjuIk/tOpwVBexjTjBwWhu3soNc2aUx6jrijVB88qpdNPewWT+lx8rNj
-	 GHJH8SWpWYSbg==
-Date: Sat, 4 Apr 2026 16:34:37 +0200
+	b=mgWB8CvrnBabd/PPFTftEM8Yg4ce7Bnp5i35nCClv52Fol4A5/jbB0PR04WD4D5nx
+	 OZ2mTONoFKKP91Q5Bb3d0CUgEm553zGSmU5/qFMxjD6MKaD1df3y+AmdN5rTgL1kjZ
+	 x2F/zt4suiuQB1Fq+NvvHpgMld8/IVU7q85yds8LTwwKOQdzf+WpJOgzYjuEXHSBOz
+	 m3masDW9xk0r2292SJ79A4GOBHboGlVxErafkxqh/biq5bsP9qsGLouFD2m/avjxjY
+	 LMe2uTJmkZdCNUaF/FBkCCdrKxOAx+lGKBCZMVpLbt6atGPBpLVZrqKfV45a3+fJem
+	 wCqBTw0AfzJqQ==
+Date: Sat, 4 Apr 2026 16:47:16 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: soc@kernel.org, arm@kernel.org, Shawn Guo <shawnguo@kernel.org>, 
 	Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL 1/4] i.MX arm64 dts changes for v7.1
-Message-ID: <20260404-practical-purple-jackal-8e250d@quoll>
+Subject: Re: [GIT PULL 2/4] i.MX arm dts changes for v7.1
+Message-ID: <20260404-thoughtful-placid-boobook-da26da@quoll>
 References: <20260330141444.3789193-1-Frank.Li@nxp.com>
- <20260330141444.3789193-2-Frank.Li@nxp.com>
+ <20260330141444.3789193-3-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,93 +44,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260330141444.3789193-2-Frank.Li@nxp.com>
+In-Reply-To: <20260330141444.3789193-3-Frank.Li@nxp.com>
 
-On Mon, Mar 30, 2026 at 10:14:37AM -0400, Frank Li wrote:
-> From: Frank.Li@nxp.com
-> 
-> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
-> 
->   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-dt64-7.1
-> 
-> for you to fetch changes up to 825b8c7e1d2918d89eb378b761530d1e51dba82e:
-> 
->   arm64: dts: imx8qxp-mek: switch Type-C connector power-role to dual (2026-03-27 09:53:32 -0400)
-> 
-> ----------------------------------------------------------------
-> i.MX arm64 device tree changes for 7.1:
-> 
-> - New Board Support
->   S32N79-RDB, Variscite DART-MX95, DART-MX91 with Sonata carrier boards,
->   Verdin iMX95 with multiple carrier boards (Yavia, Mallow, Ivy, Dahlia)
->   TQMa93xx/MBa93xxLA-MINI, SolidRun i.MX8MP HummingBoard IIoT,
->   SolidRun i.MX8MM SOM and EVB, SolidRun SolidSense-N8 board
->   Ka-Ro Electronics tx8m-1610 COM, GOcontroll Moduline IV and Moduline Mini,
->   NXP FRDM-IMX91S board, i.MX93 Wireless EVK board with Wireless SiP,
->   NXP i.MX8MP audio board v2.
+On Mon, Mar 30, 2026 at 10:14:38AM -0400, Frank Li wrote:
+> Frank Li (24):
+>       ARM: dts: imx35: rename emi to emi-bus to fix CHECK_DTBS warning
+>       ARM: dts: imx35: rename i2c clock-names to ipg
+>       ARM: dts: imx35: remove simple-bus 'usbphy'
+>       ARM: dts: imx51-ts4800: rename fpga@0 to fpga@0,0
+>       ARM: dts: imx51-babbage: rename at45db321d@1 to flash@1
+>       ARM: dts: imx53: drop fallback compatible "dlg,da9052"
 
-You do not have any bindings for these.
+This, just like arm64 pull, breaks users without explanation. You use
+incorrect terms in that commit msg which might mean you did not perform
+proper analysis of compatibility. Commit claims compatibility string is
+not comaptible and as proof brings dtbs_check warning. So the sole
+reason is the binding. What if binding is wrong?
 
-I found them in driver bindings (!!!) pull request so completely
-different branch. This is wrong. Bindings come with the user. Who is the
-user of board bindings? Not a driver, but exactly this pull request.
+Commit msg must explain that.
 
-This makes this branch full of warnings which is completely unnecessary.
-Plus this will spawn multiple checkpatch warnings if tested. It must
-have also cause warnings in your case, so probably you do not test your
-tree enough.
+I looked at the drivers and it looks 100% compatible, so commit msg is
+clearly wrong and this might affect users of DTS.
 
-...
-
-> Marco Felsch (1):
->       arm64: dts: imx93: Add parallel display output nodes
-> 
-> Martin Schmiedel (2):
->       arm64: dts: freescale: add initial device tree for TQMa93xx/MBa93xxLA-MINI
->       arm64: dts: freescale: imx93-tqma9352-mba93xxla-mini: Add WLAN/BT overlay
-> 
-> Maud Spierings (4):
->       arm64: dts: imx8mm: Add pinctrl config definitions
->       arm64: dts: freescale: add Ka-Ro Electronics tx8m-1610 COM
->       arm64: dts: freescale: Add the GOcontroll Moduline IV
->       arm64: dts: freescale: Add the GOcontroll Moduline Mini
-> 
-> Nora Schiffer (1):
->       arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix UART1 RTS/CTS muxing
-> 
-> Peng Fan (4):
->       arm64: dts: imx94: Add V2X/ELE mailbox nodes
->       arm64: dts: imx94: Add SCMI sensor/lmm/cpu nodes
->       arm64: dts: imx943-evk: Add nxp,ctrl-ids for scmi_misc
->       arm64: dts: imx943-evk: Add pf09/53 thermal zone
-> 
-> Primoz Fiser (1):
->       arm64: dts: freescale: imx93-phy{core,board}: Add i2c bus recovery
-> 
-> Ranjani Vaidyanathan (1):
->       arm64: dts: imx94: Update pin headers
-> 
-> Rob Herring (Arm) (1):
->       arm64: dts: freescale: imx93: Add Ethos-U65 NPU and SRAM nodes
-> 
-> Shengjiu Wang (7):
->       arm64: dts: imx8mm-evk: correct the spdif compatible string
-
-This breaks users of DTS and explains nothing about impact or why this
-should be changed (corrected). It should not pass review of two people.
-Also I could not find explanation of the impact in the tag message.
-
-Device was apparently working fine, so it should have been made
-compatible. I know that 10 years ago we did not care that much about
-DTS users, but that changes for a few years already.
-
-I am merging this but next time I would postpone the pull till some
-clarifications are provided. Please pay attention to OF_UPSTREAM and
-other users impact next time.
+Please resend pull without this commit.
 
 Best regards,
 Krzysztof
