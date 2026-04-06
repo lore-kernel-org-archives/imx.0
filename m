@@ -1,161 +1,171 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011012.outbound.protection.outlook.com [52.101.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208C531AF3B
-	for <imx@lists.linux.dev>; Mon,  6 Apr 2026 15:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775489865; cv=none; b=fCpIqXKgOm7cFdMb1EFdUsATMwRExXifAwGlGmPgOGqbbjXbjocSadGiMGp8t5ni8jBC4Bo75zyhlr8b1oe9Imbu8uaM1gcvp9fWN6Be7PXirdtr0mqfhPtUjE/WQ9E1D2fb0zGtPODUmGkBMJIO14ccSsYHZ+EFftKJGCy/I0Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775489865; c=relaxed/simple;
-	bh=DW8zlTGwJiHy7FewsrXhORkxRsEFt1IHmZzhoztW1c8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=mBxJPKIC76+qguNSfRbL90DfuvNviWVcX1yxj+rHRYXJr1jnwB6zEScH3x7qKcclWdX8MFxw3pGbT0tAGfcIvVtl9CG1zNSJeD1jP6DkGzBuw637EEPZMDmYtr2T1ObuNuVKbieq61cNFQuotboNil+FdQv1TG4Q+kHO5Ud56oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alefors.se; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aMp6ePHG; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alefors.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D902C11E7
+	for <imx@lists.linux.dev>; Mon,  6 Apr 2026 20:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775508095; cv=fail; b=m+j3NOyPwyWddJZv+Je0pMNsxvxjQfc6LZZneUTp4FfADj+aBzlyrZvnVM8WPgGDtbpmncjJT9gkneKLXML0CWpg2IdRH9Jg1wcdqDJK6TiG9SI8ZWqf4XSyec5kueJCgwaFMEYHwDhN/k9A/rH5lb2BAdeSLJCpW1z245UiDTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775508095; c=relaxed/simple;
+	bh=c2t7neGM+DbFaFHS4l5Gu4Uj7tAJ8W917alrefKiEzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EBmYJaBsTa96Qgyu37xyQcIcW09c5aVu31ljSuWB8nPBmOS9NlgBBjl4l1FT/UrQeWRaVjFV6Xdi7LXD6rtTDOP2ZADKnBFecF7m+x9x5k8hLMZ2X+AeYEmmASgJXZbsqeb3j4QWWHfUa45RAM2g55zPhSFs6p90eqgiiAqdvsg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DhY941wb; arc=fail smtp.client-ip=52.101.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aMp6ePHG"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38dd8e7f131so21668201fa.1
-        for <imx@lists.linux.dev>; Mon, 06 Apr 2026 08:37:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775489861; x=1776094661; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=OT0m2cjrqDSfo99BQTDsCGng9x/9w2Ex3suv7RFRwgk=;
-        b=aMp6ePHGMAzBq94wWn8FecQQX1WaJ5NHmczy00vAorOSfCkFjxjqC97DPmho6rZsDb
-         NOTz882wiP1+pEv9PsFNqFB84WSN6v3ePoZB79gmAMPADF93lKJIsi03S3yU6CzBx2RO
-         Qj5tdhR6eioQUBMTsHNyLpuCBs/mueHiCmKQkDZMXC1HFlXcvRovmwRP/yO3iWdspYa/
-         2D4/W5zC7F9019ZV3EWElZXi4Z0eRoWZ1grIRIWHOZT8hxD9r/gAt43qLfCJvQCUtPlT
-         0l0i5Wzw3wnzN28UslyTyQexphXU7r5pmd5gPjtWHi4tZu2o7UG9bkL4oTdyjuM93xVx
-         d8Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775489861; x=1776094661;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OT0m2cjrqDSfo99BQTDsCGng9x/9w2Ex3suv7RFRwgk=;
-        b=aOEHH71AWcdZWscJz8V0zwkPEvzsWBWhUbmp4xf0MfVa7+08eYDQ/+RJ/6O/hRYmTP
-         ka6sDoXN5S81AYwmQ+Gef0BF+zz8rP4KRJaVV71Oa9ODDKQwroT3Kpi2PmeJmhKomwhi
-         pSAs6B0S4L5wo/X8RrsREixXrAx+536ZW2+K9St5hKO5Mnjj4uWLVcaxB6QTALCgjbAT
-         60d8piritWupRy+PYTDI9zeLCY19bAoUA/CAQ1XNVAEaG9URowmf+h7DZqIFAPiPH7Jq
-         h/NpcAyiMYHoVwlLPBWOVXVSKv0Qbc9BBrUCM5pmTH2IZwHcNLcxU8T40NBM7aWgKfXD
-         OX0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVu0WUMjM2LO410KEGVu6kP0/drrcCZe5tMCV5n/DQd4EJXt6+v6wtUu7eiyw4PnwI1FyM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZWLNd7xuoy07Uiz/sttQ5uo1+3QQLAwwyQ9w1bCvuh34vCd/f
-	G/a+Mtqvuf5PAGCLEICNPh+Y3Sk1Fr8TQILweAx0jZBrpeA8pafFi9h5
-X-Gm-Gg: AeBDievI3tlrR6viZakZhaX5Y82ZiUqC/cSLDwPHvoEFGIMtL/5zO6/ou4P6tnF9RtS
-	fmuIZBhwjXjyzHWkLFpXdBWo/D1Vi964lzNz0ZdgAMjFem5F7Orw3TvauLfnC0kKOXkjZolmL/O
-	jbdkje8bcCCgLbfxNc//VQiZ9UTMdetDkuS+iC5DM9MpmzbWXpsO9Or231yDvYJq+0Qiek15DW9
-	uMPllqOdXr2D93tysWbcjmxDpxzXX5RtOjNNORdnVEKkGl70ui3uARpx+WqlDwemxqYZhZcTh3G
-	TS+BQ1OFG6Z3vqz9CJiL3dScYicF1z7iiEvwP0bIBDI+EviCmBw3H4XNZvRc0Zeg+lTOLi93ON/
-	73ho2xUbPu/ZzqKZwT1v91slAigk+jjM16t5+BRkWl7wu1DZy+q6WyzuP/ByW66doMtvpvPb29H
-	cskUxybAXjRyWYR7iw4RKkNEzknDdfdAc+QxEWMPAKzh9cZca7rBhA
-X-Received: by 2002:a2e:bd81:0:b0:38a:5102:9190 with SMTP id 38308e7fff4ca-38d91d72c8emr37975631fa.28.1775489861128;
-        Mon, 06 Apr 2026 08:37:41 -0700 (PDT)
-Received: from nano.alefors.se (83-233-6-82.cust.bredband2.com. [83.233.6.82])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38cd2108a4fsm30781991fa.23.2026.04.06.08.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2026 08:37:40 -0700 (PDT)
-Sender: =?UTF-8?Q?Magnus_H=C3=B6rlin?= <magnus.alefors@gmail.com>
-From: =?UTF-8?q?Magnus=20H=C3=B6rlin?= <magnus@alefors.se>
-To: p.zabel@pengutronix.de
-Cc: dri-devel@lists.freedesktop.org,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DhY941wb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wk8Lj8enw8cSz8QYpJbJmlqZdEQk3nDmiYyk10xKw0WwIrVleV+JRt2D6OXuAVZA08JgUr7CDXBwm3iKB4jJor8WjeBL/GYOeoYaCEc8cyQ4NBurSDah4HOfUn6RdsRpzS5o/3Xee2QnDhQ09Ot5XqHgawEPnluVT5op2iQycFiRsRcSR8iwDevhwgQgiIgRAtAHX0n9PKBeHLMBbQZ9xrGAyTJOpGrDrlxMlnHUTLf4unn6YUco5yFB09aEYCf5pAZVuGtke66kUg8fdgLZqpcFyGk9hdXfbvAD8YcAVBUurUrF2GmYaJkM9/toSCT3/YZp/DC4GTamlwzHYw+2ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F7QeIdxbmF0/oxi6vpl060uVZ7A3mqZRFTYeBdqeGEQ=;
+ b=xyh67mE0xDPjA7tYuti4AKw4Z0tcZikfcNu0XP2Yzu34mYNNOCpEtkmPvhA4FBQ2wOrzrNWkJTvkygp8mfUd6z6QZk+fP5cCI2ceWILCiS5wE599x2tvAVqeW+e3Lsw/w7igKT0t9+5dMTYbgpzGC8COptP58JmiiN6MYacXqZeK9li0ejfWJ5SHhONEudZg8B9L8J3nqxvrMcVa9krDKSRhMPnh7X7x8X3V9wRe5mF3fMIh+l9kyiQ2BkNwg4SPaUwXlgspyPhX/BBIKEqLqqnsmqIUXlYEGDVuuzgO+OsYlOrEKi0Nm923WyBHlPPSWKclazXG5tjEt2hKxnDkIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F7QeIdxbmF0/oxi6vpl060uVZ7A3mqZRFTYeBdqeGEQ=;
+ b=DhY941wb+2tJ57aatQb0xASxJh2WwBvA+mEO3+VnV23t7Gp44sd0TLRwAr+IS6ukGU/+57DdtA8SrYV2UY4rB+qbTmFXbfM65Erg+8UbAz4vfH5CJ3w5Q6TRjh0RNikfwR8ForgvidRs49CLzlixAqwNGOA9WaU+GC6WKBI2EGq5sI0XjE3KGxXdAihB6lPL4TrDlhlT6vkexkku3Hjs6BIZSY2/m/MCEnluuAoRliD1Y8IR26/pvgj/ErfqItvFhtxz/skArvcm8RRg6Y4ZM+hrkrz38Af1pidw6UfXNtyHKWZbcxGpvJN++R3s5oqFvLxwsbOp33MFz3wyjZx8Cg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by DB9PR04MB8347.eurprd04.prod.outlook.com (2603:10a6:10:245::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Mon, 6 Apr
+ 2026 20:41:31 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9769.017; Mon, 6 Apr 2026
+ 20:41:31 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: netdev@vger.kernel.org
+Cc: Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>,
+	bpf@vger.kernel.org,
 	imx@lists.linux.dev,
-	=?UTF-8?q?Magnus=20H=C3=B6rlin?= <magnus@alefors.se>
-Subject: [PATCH] drm/imx/ipuv3: do not adjust hactive for non-8-pixel-aligned modes
-Date: Mon,  6 Apr 2026 17:36:54 +0200
-Message-Id: <20260406153654.2094908-1-magnus@alefors.se>
-X-Mailer: git-send-email 2.39.5
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net 0/6] Fix short frame transmission in enetc
+Date: Mon,  6 Apr 2026 23:41:16 +0300
+Message-ID: <20260406204122.167237-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR0102CA0075.eurprd01.prod.exchangelabs.com
+ (2603:10a6:803:15::16) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|DB9PR04MB8347:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3da7a02c-baa5-46af-66cd-08de941ce206
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|10070799003|366016|7416014|376014|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	BTN01wXNtNnK/sGkvlC1GRsicADKO/ogrt+qCaeofiPiCm3CEaATWa8v5K6kS9xsnDwXyrD8vVU+AvxccbddmDiP5+lLkeOtdtB/b+OANnkVywhIklK68p/tCe1+WfVnO0MuO/lvp/4eT2ASs2zTKKLC8u+qAEJdtARTpz1gqLF5z7YqXhOf7cFNj/d69oVfA4hr7svzMT//sOxq1WPBml/Yy0DVFt0cKhEx76psSfmizU7WxQGANMCwrflUlDrwyF332i6q2FZH3S3K4PoeDvPFINyllztGyKMtNw/GBQtdiM9l5Cl6PlsCJy1gqrlAjf4v/39hRQnQgS14E4NEE1xu7sV+S12uilcWhCFolW9Kl/vI4rlcGlfCIz73iMG7aokoUwDc5zZ9gzqovoiLm7cRkNDNkIyefBfLPal7wwSlr1hzdw5PXGLYWZ6hLcSCtJEjWo/oQp9qAkFuP/TTMXZL9jxNLxYEPnnVB5uUBmQMDLYWDX8ORHEDkD4HlIbL1Qqh6Mk23yKStiyRV3Z4dLI5gwcojeA67V8ry469rySb6rIXHyenuPVrN4XIausY+lLKrrn6rBsCwBYDl7HPSG6OkCHmmu05TpglfVCLyx2vugNAVCsgh30BAtIPrtHfDkEUkVvdU4CKUl1biEg6SDAOlGhRpeYxoHerpp7Ad1tHbF+FqzCueCMg1epR5k9nCip/HknZADEIRMXj43m6G+d7C7Yp3CsZyZhoxdNLRnGEt0yfBo8ac0ESX2rbN5zA
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(10070799003)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9Ngu+mxzqnLduMDRuZ5Fc5Bmb2DmGcg0anERXZf9/1sthGKMHEXIsoDaV53n?=
+ =?us-ascii?Q?joUlSD573AGMfdwFAJ0bdXiB4KpcyaWC94avpL8ZgYw24zFQcIbLwXa+TPHa?=
+ =?us-ascii?Q?9Ug047V93cYe2XETfH1+r04O6ZfeCKgbX9nn2EgMZTUQ8FeFLIw/V8sLjLjA?=
+ =?us-ascii?Q?HSbEE68fHgguEkFBK36oCJQbKkkrpisON2BuhNJSPO7ve5zJnl5l2TicWj+B?=
+ =?us-ascii?Q?2/h6H49W4tWaqqhhbQDwmo3jkhbZmeAlxSqXGVtj3E0JgXfbDAlY3HR47Y4w?=
+ =?us-ascii?Q?nOrW0B0AWt/x/hhxv5Grbyr+PjBXU6AO3d9PFzIvTrgDW1d6euGILoN+erlo?=
+ =?us-ascii?Q?C8OEDcxFSHeU8TLYzaSBMAUjo5avcp4yxWliOAdCF+UYB/K6u2kg6gWFr3lf?=
+ =?us-ascii?Q?rCfwB4bu0Kxeg8x+ppVxkztxx3oV3QZtdAsc1HWGO7XEh4LVsPjFS9te50hB?=
+ =?us-ascii?Q?GhE/B1Ho3Y5pX2Ws2F2fCEcuzWKn+JEJVAgdvPze7VRkJsTeZuuApJ1+4eA/?=
+ =?us-ascii?Q?tpJ/BX1rCB5MIVTW0hNZSFoeDejugl9tkh2zch1V3G0VdVKNbt2aYpMh75fz?=
+ =?us-ascii?Q?uryOXMQjXZIkY00SrFREj4/eVmHXxdvKF7rajwQx2T2ccDzULziqa0t1EMYl?=
+ =?us-ascii?Q?RNul4xXCh1ml3WSNUZshxrau9EE2EvtuUgkTrkp+DhvrKKbDTV917K25P6Kg?=
+ =?us-ascii?Q?g2g/lJ05uJgWzji5k4wfRIqcy2x66JYMIakoYpQ8nzlBSEIwhuuaZA86Z1Fl?=
+ =?us-ascii?Q?J4flJPpjD6f7Z834IoBYFXIAVwhmDHu9BdSVuagHaIqiqa8l3m6ymc1TWim8?=
+ =?us-ascii?Q?o17qm8QNLaLKOFDIA+kuLT87ch7oggQLYHd4BzZjTFHqmxwXjZ2ZdpBaubX1?=
+ =?us-ascii?Q?Z7H5T2duubB54i/F7b5UikXU/n4fhwuIClTnV/Agu7iyWEhwcptHhkn6hjZG?=
+ =?us-ascii?Q?93Bi20iA472kB5ehRZzA8FtO7UDGFPF6sRyPb7VTtZj0rqih0ZdFK6T5IH3l?=
+ =?us-ascii?Q?/J228qibfScVG5w4yUVln4TDD8LThNO4Qc4Oa8I/s2m40SmPdYkdnjVTtR1z?=
+ =?us-ascii?Q?M1ORjkeQpAvuUeHmOEpVaDtZ/uJKs3qyJ9HAm5os3FnXlAVQIHuok5+MeMap?=
+ =?us-ascii?Q?4BzkziuDBmax7e7+fgS/G7pDs5qJ6gXL4F1Xe/pc66mwxnA1E9Ty5/aEaB4l?=
+ =?us-ascii?Q?JHyfowpT343X6/lw5Bwew8FU6jbhrte0ivIo5LN3w1E6hKZEUxgSo5m/Yfsv?=
+ =?us-ascii?Q?9kZaieT5GHzBzyIoUbdLKmRB4Xpq4PhsUD3C002IZXG8/r4d64qxsL7qgyqc?=
+ =?us-ascii?Q?nID2C+FmXSFyB7gxRWr4U6XHN499i8YE7CjYK6DQox9YoNVKehIYuHJEGSOi?=
+ =?us-ascii?Q?NW3nDfCxrEhZgHgT/SeaL941AE8KqLw6qRbDFI6I/oOkm2XsMxH6B3EfyFrM?=
+ =?us-ascii?Q?woIDijMgpIj/fBKqCiAWu2ZlOddMXT7yGTEL5SBDWcA3/mr2eBO+ILfKHIm4?=
+ =?us-ascii?Q?qZsGO7ChdcrWzOtLFwBx3/ojHmOsjlb40sU9QECOBe2lotoU9rHzavSHJJ3P?=
+ =?us-ascii?Q?oudDMwYs9KbBLWEopEgDrE4bLPvVHvUkpFREjtvuWYSFs7ghiEhXcItLDh9d?=
+ =?us-ascii?Q?2+n8W2eBcN45QJJDaHmaRtvivaUCwFBEIAaKSMqrYeNieKwgfPrRNxQF80AW?=
+ =?us-ascii?Q?npaDKGwTmJHY8/kc3HJTJi7jFCSUwuMPNFMEuIWxByHkxJhcN9nj9UpJ8ZqN?=
+ =?us-ascii?Q?opigCb2gvhPGCTRmwUvTlFylBvv74/7n0URe2EzrQpwAuc69rLYE170pmTHE?=
+X-MS-Exchange-AntiSpam-MessageData-1: aq1AmsquZv5QIQ==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3da7a02c-baa5-46af-66cd-08de941ce206
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Apr 2026 20:41:31.0596
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0AzvU1SH+Q6dAc9m1RS27pAh2eflwBmYDlMeEbY68HWnzzu28K3MIy/wxrMlSCSy0jjohhvIW6NzD7iyzpVlVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8347
 
-The IPUv3 display driver rounds up hactive to 8-pixel alignment in
-mode_set_nofb(), stealing pixels from the front porch.
-ipu_src_rect_width() applies the same rounding to the IDMAC read
-width. While this keeps the DC and IDMAC in sync, it causes the
-display to receive more active pixels than the mode specifies.
+This is a belated follow-up to Zefir Kurtisi's report:
+https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
 
-On fixed-pixel displays whose native width is not 8-pixel aligned
-(e.g. 854x480), the extra pixels cause visible skewing: each
-scanline is offset, making vertical lines lean.
+which is that the ENETC misbehaves when transmitting packets smaller
+than 16 octets sans FCS: it sends them but does not update the completed
+index in the transmit BD ring. I did find a sentence in the reference
+manual explicitly stating these short frames are not supported.
 
-Remove both alignment overrides. The IDMAC and DC now use the exact
-mode width. The DMA burst size is already adapted to arbitrary
-widths by ipu_calculate_bursts(), so no alignment is required at
-the pixel level.
+The original series (patches 5, 6) were focused on handling the invalid
+frame geometries. However, review pointed out further issues in annex
+code. Patches 1-4 handle those.
 
-Demote the DC warning about non-8-aligned hactive to dev_dbg, since
-it is informational rather than indicative of a problem.
+The main patch is 2/3, which Zefir already tested (in a simpler form)
+and confirmed working in the thread from February. The code path should
+be identical for his issue, so I've preserved the tag despite the
+additions.
 
-Signed-off-by: Magnus Hörlin <magnus@alefors.se>
----
- drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c  | 9 ---------
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 9 ++++++++-
- drivers/gpu/ipu-v3/ipu-dc.c             | 5 +++--
- 3 files changed, 11 insertions(+), 12 deletions(-)
+v1 at:
+https://lore.kernel.org/netdev/20260401172246.1075883-1-vladimir.oltean@nxp.com/
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-index a18b9d1a6..47b88f29a 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-@@ -304,15 +304,6 @@ static void ipu_crtc_mode_set_nofb(struct drm_crtc *crtc)
- 	sig_cfg.vsync_pin = imx_crtc_state->di_vsync_pin;
- 
- 	drm_display_mode_to_videomode(mode, &sig_cfg.mode);
--	if (!IS_ALIGNED(sig_cfg.mode.hactive, 8)) {
--		unsigned int new_hactive = ALIGN(sig_cfg.mode.hactive, 8);
--
--		dev_warn(ipu_crtc->dev, "8-pixel align hactive %d -> %d\n",
--			 sig_cfg.mode.hactive, new_hactive);
--
--		sig_cfg.mode.hfront_porch -= new_hactive - sig_cfg.mode.hactive;
--		sig_cfg.mode.hactive = new_hactive;
--	}
- 
- 	ipu_dc_init_sync(ipu_crtc->dc, ipu_crtc->di,
- 			 mode->flags & DRM_MODE_FLAG_INTERLACE,
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-index c1c7be4e2..58e7853e6 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-@@ -34,7 +34,14 @@ to_ipu_plane_state(struct drm_plane_state *p)
- 
- static unsigned int ipu_src_rect_width(const struct drm_plane_state *state)
- {
--	return ALIGN(drm_rect_width(&state->src) >> 16, 8);
-+	/*
-+	 * Do not align width to 8 pixels here. The IDMAC read width
-+	 * must match the DC/DI hactive exactly, otherwise the DMFC
-+	 * FIFO overflows or underflows causing IDMAC timeouts or
-+	 * display corruption. The DMA burst size is adapted to the
-+	 * actual width by ipu_calculate_bursts().
-+	 */
-+	return drm_rect_width(&state->src) >> 16;
- }
- 
- static inline struct ipu_plane *to_ipu_plane(struct drm_plane *p)
-diff --git a/drivers/gpu/ipu-v3/ipu-dc.c b/drivers/gpu/ipu-v3/ipu-dc.c
-index b038a6d73..f5990e3dc 100644
---- a/drivers/gpu/ipu-v3/ipu-dc.c
-+++ b/drivers/gpu/ipu-v3/ipu-dc.c
-@@ -168,8 +168,9 @@ int ipu_dc_init_sync(struct ipu_dc *dc, struct ipu_di *di, bool interlaced,
- 	dc->di = ipu_di_get_num(di);
- 
- 	if (!IS_ALIGNED(width, 8)) {
--		dev_warn(priv->dev,
--			 "%s: hactive does not align to 8 byte\n", __func__);
-+		dev_dbg(priv->dev,
-+			"%s: hactive %u is not 8-pixel aligned\n",
-+			__func__, width);
- 	}
- 
- 	map = ipu_bus_format_to_map(bus_format);
+Vladimir Oltean (6):
+  net: enetc: increment error counter in enetc_xdp_xmit() on DMA mapping
+    errors
+  net: enetc: linearize PTP event packets with one-step TX timestamping
+  net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
+  net: enetc: fix bogus TX ring consumer index after reinitialization
+  net: enetc: pad short frames in software
+  net: enetc: pad short XDP frames coming from devmap
+
+ drivers/net/ethernet/freescale/enetc/enetc.c | 38 +++++++++++++++++---
+ drivers/net/ethernet/freescale/enetc/enetc.h |  2 ++
+ include/net/xdp.h                            | 23 ++++++++++++
+ 3 files changed, 59 insertions(+), 4 deletions(-)
+
 -- 
-2.39.5
+2.43.0
 
