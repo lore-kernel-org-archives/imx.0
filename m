@@ -1,183 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F60175A83;
-	Tue,  7 Apr 2026 07:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4C13A1A26
+	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 08:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775546665; cv=none; b=GkOIDEXYH6QklvYPr9bia3lSoRP+QhN4CyqaE2qnbhAGjOge8ajv62yYJB+u6vGZ73hmgPEUVuwDsKa94Y9m126YYCajLc0K8Tnc5gcEfhUrsJ/nMFPhjDpBDwWqzEr0JAzXsJqe5xoBYFYhuwTTDVYjuzbyJLG6OcfqOi2E3Jc=
+	t=1775550422; cv=none; b=ImtugdIMZBirpfOKWuybUq+FS47xURCtOQLJwF7Da1mchL5xznZF27MZmRYGeIUTGMUF7VSwmevh1dZOI75rTgLu6v24rjSd6h6qbYvrXdoiW5hGyEzwpP6Apigh1hjb1A6O/ba8u3bTk0yTeIwj9ecKZN4ct8a/rvmDroYw7Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775546665; c=relaxed/simple;
-	bh=jEc9B6t8+lXVDt5wKNS6slGegGXQKYnxbzzTO5yXNHs=;
+	s=arc-20240116; t=1775550422; c=relaxed/simple;
+	bh=uDTaAwhZucKwokovA4IAGAvz5D4PHMwRKPRxuNWbfQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IH4Ooy6j27nk1NN4DuEobdp79fhsCoQ/1tmjWJqWDtamNCL5q63K+47PefTN/TymlwbiPXM7CWulrMV3XqaRSYtHowK7hlRM6CYuuXtm3OjtNS6aKu07W3RSfTyaD1G/VcFcuKpkaELLRPBOC2BhEB4woinl5D0uXY52F18aoOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPmQrMhV; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPmQrMhV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6945C116C6;
-	Tue,  7 Apr 2026 07:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775546665;
-	bh=jEc9B6t8+lXVDt5wKNS6slGegGXQKYnxbzzTO5yXNHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rPmQrMhVxW1tQdh87LPyX8H6IconvtcEUVKVP+aHk9T7B7lTyXvj9pj5i5oTV7OmZ
-	 Damuf1sgbXHS0uOdxW2AHsOaVlkv4gyp7NXcgtUvyHldfqSC4U6+i0/KmZkW5mQ9Ae
-	 MjG4FJ93sVs3JIApyRkt683Cvq35sw1Cb8kbsLpKIjjnj9oq8llBAlNQPCTs/ndC5b
-	 R3mpnhoVDEVrLmTs0r+m+f5WkAGKz5d1MOTxTAs5vvFl7uAD5cCE5l2D74u+1ngZjj
-	 0BF5S/GyFrHnvRDuIQdKo8ojli0YLHdBLptY236EeP97P5QuZXkFet7IVcYUibvVqd
-	 0D/kWWYt39OtA==
-Date: Tue, 7 Apr 2026 12:54:15 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
- suspend skip
-Message-ID: <ihoprlijtwgihkbmszm53iftvpyg7ljvubs3bv2lt22uma74ul@zqgulwmj4jpb>
-References: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <20260323220858.GA1084506@bhelgaas>
- <AS8PR04MB8833137860C682F9E1E743E08C48A@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <y76fzvju42srykr3khio2bx5lmzusy6iasodvs45imis7fw3b5@wjv3gsocj534>
- <AS8PR04MB8833C20B6FF92F96EE7641E38C5AA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EOTwhMvS1W2R6GVNtzumXCg9f8+tspvflmIBu9Mo1o5Qgd4LRmPN7oTt1C+Zf5LjzVnUX3/iL4BR9eQYL0TriVd/FWjrYiUUtPz8j1W1etlxR24WE+r0uZYkRGNpswkuLn5E6hMFgeEHkXHSG3z0FCwTCnEgKPbujR8sUsaApgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wA1lq-0007on-3F; Tue, 07 Apr 2026 10:26:50 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wA1lp-00498b-2L;
+	Tue, 07 Apr 2026 10:26:49 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wA1lp-0000000CxyR-2VYR;
+	Tue, 07 Apr 2026 10:26:49 +0200
+Date: Tue, 7 Apr 2026 10:26:49 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, dmaengine@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] dmaengine: imx-sdma: Refine spba bus searching in
+ probe
+Message-ID: <6r7ih7wz7xn44c7c2ukohy3fgp3tpo222jh7ocxacccrvywz3i@mddoznil6way>
+References: <20260407032755.2758049-1-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8833C20B6FF92F96EE7641E38C5AA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+In-Reply-To: <20260407032755.2758049-1-shengjiu.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Apr 07, 2026 at 03:31:57AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: mani@kernel.org <mani@kernel.org>
-> > Sent: 2026年4月4日 1:03
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Bjorn Helgaas <helgaas@kernel.org>; Frank Li <frank.li@nxp.com>;
-> > jingoohan1@gmail.com; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kwilczynski@kernel.org; robh@kernel.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
-> > suspend skip
-> > 
-> > On Tue, Mar 24, 2026 at 02:01:58AM +0000, Hongxing Zhu wrote:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > Sent: 2026年3月24日 6:09
-> > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > Cc: Frank Li <frank.li@nxp.com>; jingoohan1@gmail.com;
-> > > > l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > > > kwilczynski@kernel.org; mani@kernel.org; robh@kernel.org;
-> > > > bhelgaas@google.com; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > > > festevam@gmail.com; linux-pci@vger.kernel.org;
-> > > > linux-arm-kernel@lists.infradead.org;
-> > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org;
-> > > > stable@vger.kernel.org
-> > > > Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to
-> > > > override L1SS suspend skip
-> > > >
-> > > > On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
-> > > > > > -----Original Message-----
-> > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > ... [messed up quoting]
-> > > >
-> > > > > > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
-> > > > > > > Add a force_suspend flag to allow platform drivers to force
-> > > > > > > the PCIe link into L2 state during suspend, even when L1SS
-> > > > > > > (ASPM L1
-> > > > > > > Sub-States) is enabled.
-> > > > > > >
-> > > > > > > By default, the DesignWare PCIe host controller skips L2
-> > > > > > > suspend when L1SS is supported to meet low resume latency
-> > > > > > > requirements for devices like NVMe. However, some platforms
-> > > > > > > like i.MX PCIe need to enter L2 state for proper power
-> > > > > > > management regardless of L1SS
-> > > > support.
-> > > > > > >
-> > > > > > > Enable force_suspend for i.MX PCIe to ensure the link enters
-> > > > > > > L2 during system suspend.
-> > > > > >
-> > > > > > I'm a little bit skeptical about this.
-> > > > > >
-> > > > > > What exactly does a "low resume latency requirement" mean?  Is
-> > > > > > this an actual functional requirement that's special to NVMe, or
-> > > > > > is it just the desire for low resume latency that everybody has
-> > > > > > for all devices?
-> > > > >
-> > > > > From my understanding, L1SS mode is characterized by lower latency
-> > > > > when compared to L2 or L3 modes.
-> > > > >
-> > > > > It can be used on all devices, avoiding frequent power on/off cycles.
-> > > > > NVMe can also extend the service life of the equipment.
-> > > >
-> > > > All the above applies to all platforms, so it's not an argument for
-> > > > i.MX-specific code here.
-> > > >
-> > > Hi Bjorn:
-> > > Thanks for your kindly review.
-> > > Yes, it is.
-> > > > > > Is there something special about i.MX here?  Why do we want i.MX
-> > > > > > to be different from other host controllers?
-> > > > >
-> > > > > i.MX PCIe loses power supply during Deep Sleep Mode (DSM),
-> > > > > requiring full reinitialization after system wake-up.
-> > > >
-> > > > I don't know what DSM means in PCIe or how it would help justify
-> > > > this change.
-> > > >
-> > > i.MX PCIe power is gated off during suspend, requiring full
-> > > reinitialization on resume
-> > >
-> > 
-> > Is this an unconditional behavior? What if the PCIe device is configured as a
-> > wakeup source like WOL, WOW? And if you connect NVMe, this behavior will
-> > result in resume failure as NVMe driver expects the power to be retained if
-> > ASPM is supported.
+On 26-04-07, Shengjiu Wang wrote:
+> There are multi spba-busses for i.MX8M* platforms, if only search for
+> the first spba-bus in DT, the found spba-bus may not the real bus of
+> audio devices, which cause issue for sdma p2p case, as the sdma p2p
+> script presently does not deal with the transactions involving two devices
+> connected to the AIPS bus.
 > 
-> Yes, this is unconditional behavior. The i.MX PCIe controller exclusively
-> supports sideband wakeup mechanisms, which operate independently of the
-> PCIe link state and device power configuration.
+> Search the SDMA parent node first, which should be the AIPS bus, then
+> search the child node whose compatible string is spba-bus under that AIPS
+> bus for the above multi spba-busses case.
+
+Sorry but I've to NACK this, I already fixed it in a more robust way by
+checking the consumer sdma node.
+
+Regards,
+  Marco
+
+
+> Fixes: 8391ecf465ec ("dmaengine: imx-sdma: Add device to device support")
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+> changes in v2:
+> - add fixes tag
+> - use __free(device_node) for auto release.
 > 
-
-I believe you are referring to WAKE# as the sideband wakeup mechanism. If so,
-both host and device has to support WAKE#.
-
-> For devices configured as wakeup sources (WOL, WOW, etc.): The sideband
-> wakeup path bypasses the standard PCIe power management, so these
-> configurations do not impact the i.MX PCIe RC controller's suspend/resume
-> behavior.
+>  drivers/dma/imx-sdma.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-
-Once user enables wakeup for a device, PCI core will configure PME_EN only if
-the device supports toggling WAKE# from D3Cold. So the wakeup functionality
-depends on device too, not just the RC.
-
-> For NVMe devices with ASPM: While NVMe drivers typically expect power
-> retention when ASPM is enabled, the i.MX implementation's sideband wakeup
-> mechanism operates through a separate signaling path. The wakeup functionality
-> does not depend on maintaining PCIe link power, thus avoiding conflicts with
-> NVMe power state expectations.
+> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+> index 3d527883776b..36368835a845 100644
+> --- a/drivers/dma/imx-sdma.c
+> +++ b/drivers/dma/imx-sdma.c
+> @@ -2364,7 +2364,9 @@ static int sdma_probe(struct platform_device *pdev)
+>  			return dev_err_probe(&pdev->dev, ret,
+>  					     "failed to register controller\n");
+>  
+> -		spba_bus = of_find_compatible_node(NULL, NULL, "fsl,spba-bus");
+> +		struct device_node *sdma_parent_np __free(device_node) = of_get_parent(np);
+> +
+> +		spba_bus = of_get_compatible_child(sdma_parent_np, "fsl,spba-bus");
+>  		ret = of_address_to_resource(spba_bus, 0, &spba_res);
+>  		if (!ret) {
+>  			sdma->spba_start_addr = spba_res.start;
+> -- 
+> 2.34.1
 > 
-
-There is no relation between WAKE# and NVMe. NVMe is a passive device, so it
-doesn't support WAKE#. With this patch alone, the NVMe driver won't resume (is
-ASPM is enabled). You need to tell the NVMe driver to perpare for power loss
-too. Maybe this patch can help you:
-https://lore.kernel.org/all/20251231162126.7728-1-manivannan.sadhasivam@oss.qualcomm.com/
-
-But that patch will only help if your platform supports S2RAM through PSCI.
-
-- Mani
+> 
+> 
 
 -- 
-மணிவண்ணன் சதாசிவம்
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
