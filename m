@@ -1,90 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DE63BE165;
-	Tue,  7 Apr 2026 16:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8EB270ED7;
+	Tue,  7 Apr 2026 16:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775578814; cv=none; b=bvJGXhK1FXi9XI51x9puXCzY6rCnerv0X/mg2//d79l56N7p2/cIj7g7DdVCUZwSOM55BM9z8Lq0PM5RADDFsRGdv021pTAI9X2umGrSREYAeLR04jUQCioVb17cnxSLJ0I9btrQ5CbeXGLySLljocZvBV6zfDGB0As9tW1SCtE=
+	t=1775580252; cv=none; b=g4PsvywW3R4MiEonilwhgu+B4/f1VYH9THjLGaz6ADyRCSSbgD4U08DryAKeB9wwJuxbZhnA8r0BclnSfAyr8p/QQPFIjhKxGHhbo84k6VRYJRjYuJQpXAlZGa29h6bx7Iyp4G5jrwjWfueF+ACKo/fyd3CFhL7Xct+NUAY5UcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775578814; c=relaxed/simple;
-	bh=qLSOcHPJ/LT9wr/fQ9H8JFrAuuvSRX/sEM3SKVjwVhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SfrmaT33oUzs6m8gqbz9pQYMZP0pFqYObLy7cwgNtUz+MjbospHINCLdIC9noh6hKtONsl9FQQWlHw2RgCseXw/vdPOusFIrlKjXf4haoddDViqrjf1Dlv14RO5hOuZb1IlZTPux+VfGYIy8BSuLZb6Rbo6IUn/5UL6cWk0Yd9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvyR4JRo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775580252; c=relaxed/simple;
+	bh=OTLcOXmaIfWcPVXtCmveKkzNsSZvfPjWzGKzUesx3EU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Z6iqjoNR/CHuj2qp3r6/14zA0ax7yJI2JCdPNOiY1e5GcFXbDuL3o+juf91Nsz340xRNCMC2TZw9r7nz6Uoq7c4qQbrtIHPkv39rjOFxZdV2ZW10TPpVYkwRoLNXQ5om4jyZynocQ6mf45wNTfS9yNJiyGT1+r0pHc17TZYyCnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpXy0Ecn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvyR4JRo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D1DC19424;
-	Tue,  7 Apr 2026 16:20:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpXy0Ecn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C31DC116C6;
+	Tue,  7 Apr 2026 16:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775578814;
-	bh=qLSOcHPJ/LT9wr/fQ9H8JFrAuuvSRX/sEM3SKVjwVhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VvyR4JRo8MP4XchgDZHkJK+xhrdJ4hJYSqFvsIrTb5kCbMSAtxiFit6EDSYddduhg
-	 2NCBwHFOB6mQxYMlXQnHWMl2JiltkZr2WsWAS6lLCvH4bJIZiVRt5jr/BKZjNzk34V
-	 ppOEFAO6dQbzUIGirFM3NHLksT7sQiG0JLCNjYg0/uY+fqe6F3CctUkcSimBM08k90
-	 yalf2rPk7mmMbXyYMuFAbp0ATMRlKqs8GosBv/U4LI1J023vXANHTsr1+wOBbQyqBJ
-	 lyOuiDTddfC5CWSLyFQOzh3PGjqG9z2M8jXOB1K/am86iDxJWuvk/Rd5WPpSq29sCt
-	 Pv5pBmqtDiWYg==
-Date: Tue, 7 Apr 2026 17:20:08 +0100
-From: Conor Dooley <conor@kernel.org>
-To: florin.leotescu@oss.nxp.com
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [PATCH v6 2/3] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-Message-ID: <20260407-slang-scoff-795164352c62@spud>
-References: <20260402122514.1811737-1-florin.leotescu@oss.nxp.com>
- <20260402122514.1811737-3-florin.leotescu@oss.nxp.com>
+	s=k20201202; t=1775580251;
+	bh=OTLcOXmaIfWcPVXtCmveKkzNsSZvfPjWzGKzUesx3EU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=DpXy0EcnnZPtnFAaGsDKazeREJx46aq15xf/UKgzE19eh43h1biXtQ0jEWoEmuMCe
+	 duUQM/W6JsXWT5RGKAPO2wJT42/8dv2jn+5HEZFCSVNBw2UbTxWH9QrXrwLd9CrGnA
+	 vS9+bVGxujc4vfj5hOZb1KmKl+mL6x4yU3TOdSK3vy0sm/77MS19uX/le1u2leqVna
+	 aBYuCXFY3yrdcmd8iLNBEiaFk8HKOs8e+iyXkIYCR2Qd8FkLTZifGJoH8JVZZkq+BR
+	 A/PXmdTqNMz9EVGXvUpWt+fCQKPXGMIVqLPhOgWMtMFf5y2ySGC2khVmIPllv8EXC9
+	 HwXhiPeM8Co1Q==
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Marek Vasut <marex@nabladev.com>, linux-spi@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de
+In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+References: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+Subject: Re: [PATCH spi-next v2 00/11] spi: spi-fsl-lpspi: various cleanup
+ and enhancement patches
+Message-Id: <177555933572.37897.44593080530337492.b4-ty@b4>
+Date: Tue, 07 Apr 2026 11:55:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DeEoZ3LUzOVpm+Wq"
-Content-Disposition: inline
-In-Reply-To: <20260402122514.1811737-3-florin.leotescu@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev-7a3e7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2778; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=OTLcOXmaIfWcPVXtCmveKkzNsSZvfPjWzGKzUesx3EU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp1TRZT2SeWOEi6GIYKMMiG3MM2y+jysCQ7g+GT
+ 7n+42MEuoqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCadU0WQAKCRAk1otyXVSH
+ 0IElB/9Nhx8fQ52hxTD9fMvwISsrorXRrcXi+Rz5S3YdkFRyzHqQs0ZxmQcxMwEhJPCLBYFDe52
+ idrhL5uvqfCdyTvGIvUkfDt+6w0p2oE9NF/PJy8OF8yPxoqVutB0o6CbneFl71wTE6cogHilQ2D
+ gIcpNRutpP5ieUlqlZpdO+BQJ1P1ii4ItEp1y9fSHkjrGPV3UrvvfkFFOB3wAt+fxm0fMVn6wzn
+ s2Bp8B7Kg98q7Kq7QuPSf5/+3fyhlcHvEXm1XllGP/xco1ADKlguH5XcdUrk3LNbFPl1lN6dn7Q
+ pRS7qCJLHOzeEZlhkIl4gBHx85NvQ8JHo11ER2j01B8AU/sy
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 19 Mar 2026 17:55:34 +0100, Marc Kleine-Budde wrote:
+> spi: spi-fsl-lpspi: various cleanup and enhancement patches
+> 
+> While optimizing the spi-fsl-lpspi driver, I created some cleanup and
+> enhacement patches.
 
---DeEoZ3LUzOVpm+Wq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Thu, Apr 02, 2026 at 03:25:13PM +0300, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
->=20
-> The EMC2305 fan controller supports multiple independent PWM fan
-> outputs. Some systems require fans to enter a defined safe state
-> during system shutdown or reboot handoff, until firmware or the next
-> boot stage reconfigures the controller.
->=20
-> Add an optional "fan-shutdown-percent" property to fan child nodes
-> allowing the PWM duty cycle applied during shutdown to be configured
-> per fan output.
->=20
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Thanks!
 
---DeEoZ3LUzOVpm+Wq
-Content-Type: application/pgp-signature; name="signature.asc"
+[01/11] spi: spi-fsl-lpspi: adapt to kernel coding style
+        https://git.kernel.org/broonie/spi/c/8292eded5998
+[02/11] spi: spi-fsl-lpspi: fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Control register
+        https://git.kernel.org/broonie/spi/c/732b903ea3e2
+[03/11] spi: spi-fsl-lpspi: fsl_lpspi_probe(): use FIELD_GET to decode Parameter register and add size check
+        https://git.kernel.org/broonie/spi/c/6e5431f4d0b6
+[04/11] spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): use mode from struct fsl_lpspi_data::config::mode
+        https://git.kernel.org/broonie/spi/c/b191fbf446bc
+[05/11] spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): remove obfuscated and obsolete assignment of TCR_CPOL and SPI_CPHA
+        https://git.kernel.org/broonie/spi/c/1712be8623b2
+[06/11] spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): use FIELD_PREP to encode Transmit Command register
+        https://git.kernel.org/broonie/spi/c/c6e178460434
+[07/11] spi: spi-fsl-lpspi: fsl_lpspi_setup_transfer(): remove useless spi_transfer NULL pointer check
+        https://git.kernel.org/broonie/spi/c/ca431d50bf62
+[08/11] spi: spi-fsl-lpspi: fsl_lpspi_can_dma(): directly assign return value to fsl_lpspi->usedma
+        https://git.kernel.org/broonie/spi/c/e59fe5e0c418
+[09/11] spi: spi-fsl-lpspi: fsl_lpspi_reset(): convert to void function
+        https://git.kernel.org/broonie/spi/c/b326c71d4e6f
+[10/11] spi: spi-fsl-lpspi: fsl_lpspi_write_tx_fifo(): simplify while() loop check
+        https://git.kernel.org/broonie/spi/c/4ef7fa7bca57
+[11/11] spi: spi-fsl-lpspi: make struct lpspi_config::mode u32
+        https://git.kernel.org/broonie/spi/c/baa1cb259cc7
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadUuuAAKCRB4tDGHoIJi
-0vYKAQDc8PmGvn+SYQyxj/xBCFto2oQSVCh4pi6grWFMzYdABQD+PBeWK1D/8di9
-FKOw6IBmOzagSoiKXzLj6NnQuvX6EQI=
-=QQhM
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---DeEoZ3LUzOVpm+Wq--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
