@@ -1,163 +1,90 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397AC33BBA2
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 16:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DE63BE165;
+	Tue,  7 Apr 2026 16:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775578059; cv=none; b=hFwF3NfwUsQvQziTLa2MBkZz8YTk910CCcv/TKbp/dYfjmHAfIi09CuLTYhTyup3WhjR9u6d547E1KFzon+DwUb0HI6A/10oG37v3jpUPWkTyBa3REy9TheK257c9cAXeNFvk1SHT6kDQdqBCU/Mx/XLj0l1ZcLiixFdPR085gU=
+	t=1775578814; cv=none; b=bvJGXhK1FXi9XI51x9puXCzY6rCnerv0X/mg2//d79l56N7p2/cIj7g7DdVCUZwSOM55BM9z8Lq0PM5RADDFsRGdv021pTAI9X2umGrSREYAeLR04jUQCioVb17cnxSLJ0I9btrQ5CbeXGLySLljocZvBV6zfDGB0As9tW1SCtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775578059; c=relaxed/simple;
-	bh=Sas0qFAzYzKIQIqhTxUtCs0Sf1ywrEvKGP51tLQ/h3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NwkNHvZEISZHJF3NB0LA9bInAOH4KuuwzGlXsYcA5QxDrVvaua8z7slJbYGVJ8+1+tHcTpNuUVrEnx7ciaT+zRzSIe4ctz3q+kPv5BuO9afeErTuegHWU1v+NQPfXjj074YJcC9/JULtS5rjozVK+dcNAsr0bzrzwAwrrR2IBuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=UDV9qEJX; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1775578814; c=relaxed/simple;
+	bh=qLSOcHPJ/LT9wr/fQ9H8JFrAuuvSRX/sEM3SKVjwVhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SfrmaT33oUzs6m8gqbz9pQYMZP0pFqYObLy7cwgNtUz+MjbospHINCLdIC9noh6hKtONsl9FQQWlHw2RgCseXw/vdPOusFIrlKjXf4haoddDViqrjf1Dlv14RO5hOuZb1IlZTPux+VfGYIy8BSuLZb6Rbo6IUn/5UL6cWk0Yd9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvyR4JRo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="UDV9qEJX"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED5BC11334C;
-	Tue,  7 Apr 2026 18:07:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1775578045;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=VQOEtqktX3I93eFAh5RlM4ZbAW6K3b/kpAkaRgEKJfw=;
-	b=UDV9qEJX1Z8JurECjyExsJaF63ofjwkKZY/0pnQr5da8dnjR5/qjNhfYsyJ/z7fNePCWQD
-	KcSiR/jdIsrNTS4MacFH/RjD7p99OXPK8V5y7j5x2zgEqncdGALG9Mp117g5xq85EFf6IU
-	XYLaNlcX4ZtKGDHJJFksrKsLSGaZNg2O+EW5yCgPMc8XRc00TDlcZPN/uiQavhRGbrC0cr
-	ToHoNLeic/G+yszJQCqWCmmj/8c1BWZHtCnwrKXcRP0fnU7ChVYGhwZkeJhmFGSS8JLJ3O
-	5ajJxXmSnauGWL4sRQf/B70UfjyN/slsVtKy3AoUOXwVc7aQznUhdgISV67bcg==
-Message-ID: <3539165f-88ff-41c5-8c01-b1f997a9201a@nabladev.com>
-Date: Tue, 7 Apr 2026 18:07:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvyR4JRo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D1DC19424;
+	Tue,  7 Apr 2026 16:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775578814;
+	bh=qLSOcHPJ/LT9wr/fQ9H8JFrAuuvSRX/sEM3SKVjwVhk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VvyR4JRo8MP4XchgDZHkJK+xhrdJ4hJYSqFvsIrTb5kCbMSAtxiFit6EDSYddduhg
+	 2NCBwHFOB6mQxYMlXQnHWMl2JiltkZr2WsWAS6lLCvH4bJIZiVRt5jr/BKZjNzk34V
+	 ppOEFAO6dQbzUIGirFM3NHLksT7sQiG0JLCNjYg0/uY+fqe6F3CctUkcSimBM08k90
+	 yalf2rPk7mmMbXyYMuFAbp0ATMRlKqs8GosBv/U4LI1J023vXANHTsr1+wOBbQyqBJ
+	 lyOuiDTddfC5CWSLyFQOzh3PGjqG9z2M8jXOB1K/am86iDxJWuvk/Rd5WPpSq29sCt
+	 Pv5pBmqtDiWYg==
+Date: Tue, 7 Apr 2026 17:20:08 +0100
+From: Conor Dooley <conor@kernel.org>
+To: florin.leotescu@oss.nxp.com
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, viorel.suman@nxp.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+Subject: Re: [PATCH v6 2/3] dt-bindings: hwmon: emc2305: Add
+ fan-shutdown-percent property
+Message-ID: <20260407-slang-scoff-795164352c62@spud>
+References: <20260402122514.1811737-1-florin.leotescu@oss.nxp.com>
+ <20260402122514.1811737-3-florin.leotescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: imx8mm: imx8mp: Add DTOs for Data Modul
- i.MX8M Mini and Plus eDM SBC
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260406215959.184061-1-marex@nabladev.com>
- <adRhN_DDthCDHymn@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <adRhN_DDthCDHymn@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="DeEoZ3LUzOVpm+Wq"
+Content-Disposition: inline
+In-Reply-To: <20260402122514.1811737-3-florin.leotescu@oss.nxp.com>
 
-On 4/7/26 3:58 AM, Frank Li wrote:
-> On Mon, Apr 06, 2026 at 11:58:45PM +0200, Marek Vasut wrote:
->> Add DT overlay for feature connector expansion module eDM-MOD-iMX8Mm-FIO1
->> providing additional UARTs, CAN, PWM Beeper, I2C, SPI and GPIO breakout.
->> This adapter can be optionally populated onto the eDM SBC.
->>
->> Add DT overlay for the DSI-to-HDMI adapter eDM-MOD-iMX8Mm-HDMI populated
->> with Lontium LT9611 bridge. This adapter can be optionally populated onto
->> the eDM SBC.
->>
->> Add DT overlay for the DSI-to-LVDS adapter eDM-MOD-iMX8Mm-LVDS populated
->> with Lontium LT9211 bridge. This adapter can be optionally populated onto
->> the eDM SBC. This adapter can be extended with multiple panels, currently
->> supported are the following:
-> 
-> At least you can split to 3 patches to add these.
 
-I did now, will send V3 patchset as 6 patches, but it won't help much 
-because most of the stuff is DSI-to-LVDS .
+--DeEoZ3LUzOVpm+Wq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> +#include "imx8mm-pinfunc.h"
->> +#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-fio1-audio.dtsi"
->> +
->> +&can_fio {
->> +	interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
-> 
-> Now, I have not good ways to unify this information for difference boards
-> yet. It is quite common user case, let me think more.
+On Thu, Apr 02, 2026 at 03:25:13PM +0300, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+>=20
+> The EMC2305 fan controller supports multiple independent PWM fan
+> outputs. Some systems require fans to enter a defined safe state
+> during system shutdown or reboot handoff, until firmware or the next
+> boot stage reconfigures the controller.
+>=20
+> Add an optional "fan-shutdown-percent" property to fan child nodes
+> allowing the PWM duty cycle applied during shutdown to be configured
+> per fan output.
+>=20
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
 
-It is a different interrupt line on these two boards.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
->> +};
->> +
->> +&iomuxc {
->> +	pinctrl_codec_mclk: codec-mclk_feature-grp {
->> +		fsl,pins = <
->> +			/* GPIO4_IO27 */
->> +			MX8MM_IOMUXC_SAI2_MCLK_SAI5_MCLK		0x2
->> +		>;
->> +	};
->> +
->> +	pinctrl_sai2: sai2_feature-grp {
->> +		fsl,pins = <
->> +			MX8MM_IOMUXC_SAI2_RXC_SAI2_RX_BCLK		0x90
->> +			MX8MM_IOMUXC_SAI2_TXD0_SAI2_TX_DATA0		0x96
->> +			MX8MM_IOMUXC_SAI2_RXD0_SAI2_RX_DATA0		0x90
->> +			MX8MM_IOMUXC_SAI2_TXFS_SAI2_TX_SYNC		0x96
->> +		>;
->> +	};
-> 
-> I think this part should be in main boards's dts file, there should have
-> hardware plug header, which include these signals.
-> 
-> If there are other added on boards, add-on dtso can resuse the label,
-> pinctrl_sai2 and pinctrl_codec_mclk.
+--DeEoZ3LUzOVpm+Wq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-No, not really, the audio-board is a bit of an outlier so I would prefer 
-to keep the audio-board specific changes in the audio-board DTO instead 
-of polluting the base DT with its specifics.
+-----BEGIN PGP SIGNATURE-----
 
->> +};
->> +
->> +&pinctrl_hog_feature {
->> +	fsl,pins = <
->> +		/* GPIO5_IO03 */
->> +		MX8MM_IOMUXC_SPDIF_TX_GPIO5_IO3				0x40000006
->> +		/* GPIO5_IO04 */
->> +		MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4				0x40000006
->> +
->> +		/* CAN_INT# */
->> +		MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25			0x40000090
->> +	>;
->> +};
->> +
->> +&sai2 {
->> +	assigned-clocks = <&clk IMX8MM_CLK_SAI2>;
->> +	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
->> +	fsl,sai-bit-clock-swap;
->> +};
->> +
->> +&sgtl5000_fio {
->> +	VDDA-supply = <&buck4_reg>;
->> +	VDDD-supply = <&buck5_reg>;
->> +	VDDIO-supply = <&buck4_reg>;
-> 
-> buck4_reg can provide addtional label, such as porta_vdd ..., so needn't
-> this sections.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadUuuAAKCRB4tDGHoIJi
+0vYKAQDc8PmGvn+SYQyxj/xBCFto2oQSVCh4pi6grWFMzYdABQD+PBeWK1D/8di9
+FKOw6IBmOzagSoiKXzLj6NnQuvX6EQI=
+=QQhM
+-----END PGP SIGNATURE-----
 
-I simply renamed the base DT regulator names to buckN_reg and ldoN_reg 
-for both MX8MM and MX8MP eDM SBC , no need for additional labels .
-
->> +};
->> +
->> +&spba2 {
->> +	#address-cells = <1>;
->> +	#size-cells = <1>;
->> +
->> +	sai5clk: clock-controller@30050000 {	/* SAI5 */
->> +		compatible = "fsl,imx8mm-sai-clock", "fsl,imx8mq-sai-clock";
->> +		reg = <0x30050000 0x10000>;
->> +		#clock-cells = <1>;
-> 
-> Not sure why need overwrite these informaiton here, suppose it should be
-> the same for Soc.
-I don't quite understand this comment, I am adding a node separate from 
-the sai5 node, so I won't end up pulling in unrelated properties for the 
-"fsl,imx8mm-sai-clock" (which is not "fsl,imx8mm-sai").
+--DeEoZ3LUzOVpm+Wq--
