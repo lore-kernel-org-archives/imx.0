@@ -1,82 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D1638B7BE
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 06:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3AE38C2C3;
+	Tue,  7 Apr 2026 06:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775544546; cv=none; b=HjPIan2SOunJ0F7OohPwuUy6h5/7QrZmQbkk4w+fXRryhc1QN74uZNGYV+RtsyaiJ471PZakeRkkq8lN9afxOasB5oV8RglNZL9/pmgxLoyFND8zn6nKDS19/RO98uq67tZ4IdXGot+ENi1I63pJCJY4+NIhqhbfPokN+KVGYUU=
+	t=1775544772; cv=none; b=moeEZpdaIlHdujo9X6/IdPP+YrElN8i4mnWnEg9QmmvPn3oXaK6bvLKfgHyZXBZVBT1TIp/UB5IVgIMmYHlbTEu8D6EE8X1dj9bHPjEzmmxigNlZ/qfcehDj4HXkvhq7TMIccGXhydxN7wVWr5R4ZbInKwPE+qKk7Xv6SIIrS8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775544546; c=relaxed/simple;
-	bh=HjjlIen8rUrvGYqNR05Jq/L1IRmPKRpg+nH7yZl2hRg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UXxbBP/ITmGFy8GMGRxvoDGdh/mM0fI4Q/AdJDCXCePthEC34sjSfRvB+Yuwztq/YAKG5nXf/+W4M7s6u2XmSmWRQUStaXoWdgD+0/cF4HbYhdZivNP00sLD8JBooSxlhMf4g60BuTKCzdR/24eoyM8GvoS+wzutQPavFB+hKXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGNC2/lq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775544772; c=relaxed/simple;
+	bh=WGsLWUaefXttIWa4xg//3ucHTQKXOeomFOP2gCuLPaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fVrUx5+hMHtMaN7TvshdmKplEc0hdh7mWZjr/zHoOx6+h3zleKbHTvTo9Vo660j6EjhDD963VP20qPFpt3MMLx1DIHRVt0VyhmmpOFS56f/qvi+r023/u8dZXW4p9PHuwOWrwRve48gfl5k9ZMEWOAmTzdKgPVwnOzjCeEhfAKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMiZJyBS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGNC2/lq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01451C2BCB9
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 06:49:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMiZJyBS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC4FC19424;
+	Tue,  7 Apr 2026 06:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775544546;
-	bh=HjjlIen8rUrvGYqNR05Jq/L1IRmPKRpg+nH7yZl2hRg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kGNC2/lqyiujlvSY6SSWV8fe8eVTjPMe5dVTVNEl1a/g9RTwdfCcLBylgtyOdnWyO
-	 j5JN82QNLKuFCexfdfAmwq9aoCsnnWePrIknivfP98412hCf00i5/EH614vO037t12
-	 18wfYDVEC8WS823YkuRKRufiqess1ghcV91OvDZFFDO2XRw4UXJjZL442ZShZFxWOq
-	 nIAOrcpc0ENNVeLec61Ua2bnpxVE90J4bNNqIm2BLSPpHIWyM4eCnJyZsH5ZEt+UrH
-	 pI/C8sG+WOjxUwU9qwXOfxv3uRqJEoKUhSc+eYDQNhghb3n++zAKyy5JWYXcJhRdoI
-	 CUNnylxTI4Bpw==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79ea87af213so82251697b3.0
-        for <imx@lists.linux.dev>; Mon, 06 Apr 2026 23:49:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUFY/GjtKFW/K7bxKfirfAAxS0J37ETq2amAEeqssL1nxxfMf4n1vU2UYIc4qUqjXn8nLA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzFwCvO/SLh8238cvFemnDw1lWVkKhDrDdcuAtdBYpqJ8FurhVR
-	GyCyBKBQBqjuJIGiH3pOY7nIKUXoCTplvQWxk6raelCphvjx4VxbVlpm/Movavrpuna1ewFe0TS
-	yZbS7rFIKT5HDVC2KuvaIo5aRQBrsph4=
-X-Received: by 2002:a05:690c:4903:b0:7a2:46b8:3858 with SMTP id
- 00721157ae682-7a3be360aaamr143427997b3.24.1775544545311; Mon, 06 Apr 2026
- 23:49:05 -0700 (PDT)
+	s=k20201202; t=1775544772;
+	bh=WGsLWUaefXttIWa4xg//3ucHTQKXOeomFOP2gCuLPaQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JMiZJyBS4mIHsbyctppDhmAKIiEAFEcyZzWgxNdB/JZgKoP9I6U0Z0gMuyODk/+0w
+	 PJkA8c2thFkCppygUqBiD3WNPgwFWMWK+hSpvwCeR2/VSIZIrTfWurnRMHwap7A/9L
+	 uPnBZHFMEbz6ZdDp18rxenqpokrVLSS1txIbHpwjFBzLLTeleOsTn1pfvib8/MO9o3
+	 prj50U83P8JLIE+csPT/sFsyhuw2M7qOYO0dup5/FLdVOJJA8Q9Gx6P9uLukSI/rCt
+	 eRq5/GdmHiadCfIenQawy4MHHPOHHUib1ZfCgf/J+2uv/51LwA1Gqg8QW5dUgBdhVU
+	 wt9wjPX0hjMSw==
+Date: Tue, 7 Apr 2026 12:22:42 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V10 03/13] PCI: dwc: Parse Root Port nodes in
+ dw_pcie_host_init()
+Message-ID: <gxqcmujdzlzcoawn4rkttasftuyusqtvycu7oagogxaw4yggeo@ww6rjdwbyj2w>
+References: <20260402095107.205439-1-sherry.sun@nxp.com>
+ <20260402095107.205439-4-sherry.sun@nxp.com>
+ <xlsfwtcy3wl6nasmx2w2oys6u4bbnvh24qiwr4pf3v5uz523gz@qvhzqfcs5q2c>
+ <VI0PR04MB121147E4D3F9FDC95391C1153925AA@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260327-pinctrl-mux-v5-0-d4aec9d62c62@nxp.com> <CAD++jLmoHiJWV3J8f3TtpmQWLpUFD24icQEv2cbO3+x7775zxw@mail.gmail.com>
-In-Reply-To: <CAD++jLmoHiJWV3J8f3TtpmQWLpUFD24icQEv2cbO3+x7775zxw@mail.gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 7 Apr 2026 08:48:53 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmyf9mD4FgmLqNdrP1WdFgQptGZ7KbVOhwYCRrxZQXuHA@mail.gmail.com>
-X-Gm-Features: AQROBzCgkwudsrLfavBP6ja7953ovvgx3yZllIUGcsr7ztcvvCdDDTr3vn9C_-w
-Message-ID: <CAD++jLmyf9mD4FgmLqNdrP1WdFgQptGZ7KbVOhwYCRrxZQXuHA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] pinctrl: Add generic pinctrl for board-level mux chips
-To: Frank Li <Frank.Li@nxp.com>, Peter Rosin <peda@axentia.se>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <VI0PR04MB121147E4D3F9FDC95391C1153925AA@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
-On Tue, Apr 7, 2026 at 8:42=E2=80=AFAM Linus Walleij <linusw@kernel.org> wr=
-ote:
+On Tue, Apr 07, 2026 at 03:21:30AM +0000, Sherry Sun wrote:
+> > On Thu, Apr 02, 2026 at 05:50:57PM +0800, Sherry Sun wrote:
+> > > Add support for parsing Root Port child nodes in dw_pcie_host_init()
+> > > using pci_host_common_parse_ports(). This allows DWC-based drivers to
+> > > specify Root Port properties (like reset GPIOs) in individual Root
+> > > Port nodes rather than in the host bridge node.
+> > >
+> > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > index da152c31bb2e..f6fca984fb34 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > @@ -20,6 +20,7 @@
+> > >  #include <linux/platform_device.h>
+> > >
+> > >  #include "../../pci.h"
+> > > +#include "../pci-host-common.h"
+> > >  #include "pcie-designware.h"
+> > >
+> > >  static struct pci_ops dw_pcie_ops;
+> > > @@ -581,6 +582,13 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+> > >
+> > >  	pp->bridge = bridge;
+> > >
+> > > +	/* Parse Root Port nodes if present */
+> > > +	ret = pci_host_common_parse_ports(dev, bridge);
+> > > +	if (ret && ret != -ENOENT) {
+> > > +		dev_err(dev, "Failed to parse Root Port nodes: %d\n", ret);
+> > > +		return ret;
+> > 
+> > Won't this change break drivers that parse Root Ports on their own? Either
+> > you need to modify them also in this change or call this API from imx6 driver
+> > and let other drivers switch to it in a phased manner.
+> > 
+> > I perfer the latter.
+> 
+> Hi Mani, sorry I didn't fully get your point here, there are no changes to this part
+> V10, for drivers that parse Root Ports on their own, here pci_host_common_parse_ports()
+> will return -ENOENT, so nothing break as we discussed this in V8
+> https://lore.kernel.org/all/dcl3bdljrdzgeaybrg3dc5uaxkebkjns7pajix6mxxftao5g4m@vm3ywyyp4ujh/.
+> 
 
-> >       mux: add devm_mux_control_get_from_np() to get mux from child nod=
-e
->
-> Didn't get an ACK from the mux maintainer for this but this has been goin=
-g
-> on for long now so I applied it.
->
-> Peter: protest if you don't like this and I will back it out.
+So if this API gets called first, it will acquire PERST# from the Root Port node
+and if the controller drivers try to do the same in their own parsing code,
+PERST# request will return -EBUSY and the probe will fail.
 
-I created an immutable branch for Peter to pull in if he want it:
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/lo=
-g/?h=3Dib-mux-pinctrl
+On the other hand, if the controller drivers parse PERST# first, this API will
+return -EBUSY and will result in probe failure.
 
-(You can also pull in just the bottom commit which is just the mux change)
+Only way to fix this issue would be to call this API from imx6 driver for now
+and start migrating other drivers later.
 
-Yours,
-Linus Walleij
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
