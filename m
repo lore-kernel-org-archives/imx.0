@@ -1,148 +1,258 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3A23AA4FC
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 12:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C362F60CC;
+	Tue,  7 Apr 2026 13:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775565848; cv=none; b=nExaNNjWiCBw4Jv3GCgfJoZapTylTTTGrNbxdSd66gQ3O+XlkPiPGCcxcWSOO/0c0RTXRTTYyl/UF0dpFgWD9IPQgzua/xJZczTV9z86lAVhJyAPByB/WMZ/HDbjXxhA3zSH+kIC0PPCEgOZkJ90h8in6SQxb1Q7DaQPPwOtFOw=
+	t=1775568433; cv=none; b=n64wZke4PM3kvBMvqyF+xQtwx6NFlQWP+YjL4pxFKPC5ikD575b74qzHCUx7xHInmlzVTYdcN10fQEKFjHPg4HYqSBVTVq6LYlApaouW84IjI4v2h1ApKwbbydLGPvv93hkUEJ1zTeuSAZc5juhgIHW4J9KKyJKTkzR5KccYhe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775565848; c=relaxed/simple;
-	bh=4eCfqGoK6C2ueQZKx6S7NXcX2FQyyva+vuYu0Lvkkro=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=gTzJdQP92zb1txi5jcumQ/7BkHfF2EuplJmv4T5M7bT103EA558y3//LjDRqjonRlAhKtj/VfpGkJ/SP8iQAoTchVQZYa2k4f9ihUAedCSuOLdhNSDaVahMfqEr404n6Mw+gyNU352P2RxGBeGiAFlOuqeP5ILXHn5GUJLAC5IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xpJfVE+D; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1775568433; c=relaxed/simple;
+	bh=NbvYPznNh5YF7BLCPc0vkkphiqZCgi6sGlSzqTEKe4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ByqzeXlOShuDm3SAt23FO807xZtYjoWXqA8C0sk72W+GXs8qf8l/QDi6D51xKnM37BIhcJyLMMa8Pl+QOrDK/AnkeJjbCjgCvyfsjJ8WxUrl3vSMwOUeRXuJhzhDENeGD/vIIpTalyGXhyPmDC7uFFx6ovbXlLgD0MRKOrcjnvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ch1UitFu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xpJfVE+D"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D12AF1A31CB;
-	Tue,  7 Apr 2026 12:44:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CE4B603C7;
-	Tue,  7 Apr 2026 12:44:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B93C104500CD;
-	Tue,  7 Apr 2026 14:43:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775565842; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=93hW5u7kA6zQFXa6aVbYkWf1SP6enbNwj09rJ/uKnY0=;
-	b=xpJfVE+DhfpK6BJKwTs6G+k4orXAFM7qXHNM122mw7BmUf/+v8aWArISlO1AxW1py4zL0D
-	l3eDoGsEeqfBg1NKMbO9sgJ4S7D6zRz49ioXvYzduYmPkCOilbY5pk+yTQcDsWpiF8RnXY
-	IvAdF6hzJNMVcF/WwhBVJfWIdcyNRuoSdJfleLTioAxZEyY1+v1FmsBfCjyJ+6cyfJ020Y
-	nnkewI+ugG+AwkXlJxkwrmjE1GtDuuHqFU1LCKorXBcpdBQgApB3iEY9zbt66+ARnv2mi8
-	OnFqql8fiZh+ZZsIEtR6zuX+LesqN6VQWFDWaZi1M8Rtn2gIZNgpSpvHjWJtHA==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ch1UitFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B371EC19424;
+	Tue,  7 Apr 2026 13:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775568433;
+	bh=NbvYPznNh5YF7BLCPc0vkkphiqZCgi6sGlSzqTEKe4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ch1UitFu4B4nmanDqFPopy62LPM5Pa7VCdL0eyDdf5CyqE/KW9DvFpWntJtqIdMcK
+	 VA3pt1Hd+/ORLe3VqOo52fYtUYdhO1OVGn1d2rDmvdHLnbOMZEZLoTzlJlNfcMA2+A
+	 tiGCzXFaXeMOJY+JiFf+cZLBxShZEPA1GrmBdxOMqI5hfOmchhwxzsUOf87hgWZlo6
+	 3fsXhARMFVOONtS+hz54n1CFbZC9OD4BjLwcE2QdqxSPbSACZrZoI/LNaMMWmgd6RK
+	 CQADol0qm36nT5JbY4vzh9DTz7tR5XNvqaUG5glthTYqXI7YyJAxHmuTCt826rbtYR
+	 v9jLAXWxsKnsg==
+Date: Tue, 7 Apr 2026 18:57:03 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
+	bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
+	imx@lists.linux.dev, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V11 02/12] PCI: host-generic: Add common helpers for
+ parsing Root Port properties
+Message-ID: <lnzprzrdwra7pn7d6m3sbj5pvjy64blwpjl6i3lmlnfbyho63b@czpyhpgz5vum>
+References: <20260407104154.2842132-1-sherry.sun@nxp.com>
+ <20260407104154.2842132-3-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Apr 2026 14:43:51 +0200
-Message-Id: <DHMXK2CNE9M8.W9BXCX4I7WR5@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3 08/11] drm/bridge: imx8mp-hdmi-tx-connector-fixup:
- add an hdmi-connector when missing using a DT overlay at boot time
-Cc: "Damon Ding" <damon.ding@rock-chips.com>, "Kory Maincent (TI.com)"
- <kory.maincent@bootlin.com>, =?utf-8?q?Herv=C3=A9_Codina?=
- <herve.codina@bootlin.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, "Adam Ford"
- <aford173@gmail.com>, "Alexander Stein" <alexander.stein@ew.tq-group.com>,
- "Christopher Obbard" <christopher.obbard@linaro.org>, "Daniel Scally"
- <dan.scally@ideasonboard.com>, "Emanuele Ghidoli"
- <emanuele.ghidoli@toradex.com>, "Fabio Estevam" <festevam@denx.de>,
- "Francesco Dolcini" <francesco.dolcini@toradex.com>, "Frieder Schrempf"
- <frieder.schrempf@kontron.de>, "Gilles Talis" <gilles.talis@gmail.com>,
- =?utf-8?q?Goran_Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>, "Heiko
- Schocher" <hs@denx.de>, "Josua Mayer" <josua@solid-run.com>, "Kieran
- Bingham" <kieran.bingham@ideasonboard.com>, "Marco Felsch"
- <m.felsch@pengutronix.de>, "Martyn Welch" <martyn.welch@collabora.com>,
- "Oleksij Rempel" <o.rempel@pengutronix.de>, "Peng Fan" <peng.fan@nxp.com>,
- "Richard Hu" <richard.hu@technexion.com>, "Shengjiu Wang"
- <shengjiu.wang@nxp.com>, "Stefan Eichenberger"
- <stefan.eichenberger@toradex.com>, "Vitor Soares"
- <vitor.soares@toradex.com>
-To: "Liu Ying" <victor.liu@nxp.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Frank Li"
- <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Rob
- Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20260402-drm-lcdif-dbanc-v3-0-27cd247a0847@bootlin.com>
- <20260402-drm-lcdif-dbanc-v3-8-27cd247a0847@bootlin.com>
- <88cf4526-ca8f-4b25-acea-347d92539a2b@nxp.com>
-In-Reply-To: <88cf4526-ca8f-4b25-acea-347d92539a2b@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260407104154.2842132-3-sherry.sun@nxp.com>
 
-Hello Liu,
+On Tue, Apr 07, 2026 at 06:41:44PM +0800, Sherry Sun wrote:
+> Introduce generic helper functions to parse Root Port device tree nodes
+> and extract common properties like reset GPIOs. This allows multiple
+> PCI host controller drivers to share the same parsing logic.
+> 
+> Define struct pci_host_port to hold common Root Port properties
+> (currently only reset GPIO descriptor) and add
+> pci_host_common_parse_ports() to parse Root Port nodes from device tree.
+> 
+> Also add the 'ports' list to struct pci_host_bridge for better maintain
+> parsed Root Port information.
+> 
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+>  drivers/pci/controller/pci-host-common.c | 77 ++++++++++++++++++++++++
+>  drivers/pci/controller/pci-host-common.h | 16 +++++
+>  drivers/pci/probe.c                      |  1 +
+>  include/linux/pci.h                      |  1 +
+>  4 files changed, 95 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+> index d6258c1cffe5..0fb6991dde7b 100644
+> --- a/drivers/pci/controller/pci-host-common.c
+> +++ b/drivers/pci/controller/pci-host-common.c
+> @@ -9,6 +9,7 @@
+>  
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+>  #include <linux/of_pci.h>
+> @@ -17,6 +18,82 @@
+>  
+>  #include "pci-host-common.h"
+>  
+> +/**
+> + * pci_host_common_delete_ports - Cleanup function for port list
+> + * @data: Pointer to the port list head
+> + */
+> +void pci_host_common_delete_ports(void *data)
+> +{
+> +	struct list_head *ports = data;
+> +	struct pci_host_port *port, *tmp;
+> +
+> +	list_for_each_entry_safe(port, tmp, ports, list)
+> +		list_del(&port->list);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_host_common_delete_ports);
+> +
+> +/**
+> + * pci_host_common_parse_port - Parse a single Root Port node
+> + * @dev: Device pointer
+> + * @bridge: PCI host bridge
+> + * @node: Device tree node of the Root Port
+> + *
+> + * Returns: 0 on success, negative error code on failure
+> + */
+> +static int pci_host_common_parse_port(struct device *dev,
+> +				      struct pci_host_bridge *bridge,
+> +				      struct device_node *node)
+> +{
+> +	struct pci_host_port *port;
+> +	struct gpio_desc *reset;
+> +
+> +	reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
+> +				      "reset", GPIOD_ASIS, "PERST#");
 
-On Fri Apr 3, 2026 at 11:28 AM CEST, Liu Ying wrote:
+Sorry, I missed this earlier.
 
->> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso
->> @@ -0,0 +1,33 @@
->> +// SPDX-License-Identifier: GPL-2.0+
->> +/*
->> + * DTS overlay adding an hdmi-connector node to boards using the imx8mp=
- hdmi_tx
->> + *
->> + * Copyright (C) 2026 GE HealthCare
->> + * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
->> + */
->> +
->> +/dts-v1/;
->> +/plugin/;
->> +
->> +&{/} {
->> +	#address-cells =3D <2>;
->> +	#size-cells =3D <2>;
->> +
->> +	fixup-hdmi-connector {
->> +		compatible =3D "hdmi-connector";
->> +		label =3D "HDMI";
->> +		type =3D "a";
->> +
->> +		port {
->> +			fixup_hdmi_connector_in: endpoint {
->> +				remote-endpoint =3D <&hdmi_tx_out>;
->> +			};
->> +		};
->> +	};
->> +};
->> +
->> +&{/soc@0/bus@32c00000/hdmi@32fd8000/ports/port@1} {
->> +	hdmi_tx_out: endpoint {
->> +		remote-endpoint =3D <&fixup_hdmi_connector_in>;
->> +	};
->> +};
->>
->
-> There is a build warning(W=3D1):
->
->   DTC     drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtbo
-> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx-connector-fixup.dtso:12.6-27.3:=
- Warning (avoid_unnecessary_addr_size): /fragment@0/__overlay__: unnecessar=
-y #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" =
-or "ranges" property
+Since PERST# is optional, you cannot reliably detect whether the Root Port
+binding intentionally skipped the PERST# GPIO or legacy binding is used, just by
+checking for PERST# in Root Port node.
 
-Ouch, my bad, forgot to run W=3D1 after the last edit. Fix incoming v4,
-toghether with the other improvements you have suggested.
+So this helper should do 3 things:
 
-Luca
+1. If PERST# is found in Root Port node, use it.
+2. If not, check the RC node and if present, return -ENOENT to fallback to the
+legacy binding.
+3. If not found in both nodes, assume that the PERST# is not present in the
+design, and proceed with parsing Root Port binding further.
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+But there is one more important limitation here. Right now, this API only
+handles PERST#. But if another vendor tries to use it and if they need other
+properties such as PHY, clocks etc... those resources should be fetched
+optionally only by this helper. But if the controller has a hard dependency on
+those resources, the driver will fail to operate.
+
+I don't think we can fix this limitation though and those platforms should
+ensure that the resource dependency is correctly modeled in DT binding and the
+DTS is validated properly. It'd be good to mention this in the kernel doc of
+this API.
+
+> +	if (IS_ERR(reset))
+> +		return PTR_ERR(reset);
+> +
+> +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
+> +	if (!port)
+> +		return -ENOMEM;
+> +
+> +	port->reset = reset;
+> +	INIT_LIST_HEAD(&port->list);
+> +	list_add_tail(&port->list, &bridge->ports);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * pci_host_common_parse_ports - Parse Root Port nodes from device tree
+> + * @dev: Device pointer
+> + * @bridge: PCI host bridge
+> + *
+> + * This function iterates through child nodes of the host bridge and parses
+> + * Root Port properties (currently only reset GPIO).
+> + *
+> + * Returns: 0 on success, -ENOENT if no ports found, other negative error codes
+> + * on failure
+> + */
+> +int pci_host_common_parse_ports(struct device *dev, struct pci_host_bridge *bridge)
+> +{
+> +	int ret = -ENOENT;
+> +
+> +	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+> +		if (!of_node_is_type(of_port, "pci"))
+> +			continue;
+> +		ret = pci_host_common_parse_port(dev, bridge, of_port);
+> +		if (ret)
+> +			return ret;
+
+As Sashiko flagged, you need to make sure that devm_add_action_or_reset() is
+added even during the error path:
+https://sashiko.dev/#/patchset/20260407104154.2842132-1-sherry.sun%40nxp.com?part=2
+
+- Mani
+
+> +	}
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_add_action_or_reset(dev, pci_host_common_delete_ports,
+> +					&bridge->ports);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_host_common_parse_ports);
+> +
+>  static void gen_pci_unmap_cfg(void *ptr)
+>  {
+>  	pci_ecam_free((struct pci_config_window *)ptr);
+> diff --git a/drivers/pci/controller/pci-host-common.h b/drivers/pci/controller/pci-host-common.h
+> index b5075d4bd7eb..37714bedb625 100644
+> --- a/drivers/pci/controller/pci-host-common.h
+> +++ b/drivers/pci/controller/pci-host-common.h
+> @@ -12,6 +12,22 @@
+>  
+>  struct pci_ecam_ops;
+>  
+> +/**
+> + * struct pci_host_port - Generic Root Port properties
+> + * @list: List node for linking multiple ports
+> + * @reset: GPIO descriptor for PERST# signal
+> + *
+> + * This structure contains common properties that can be parsed from
+> + * Root Port device tree nodes.
+> + */
+> +struct pci_host_port {
+> +	struct list_head	list;
+> +	struct gpio_desc	*reset;
+> +};
+> +
+> +void pci_host_common_delete_ports(void *data);
+> +int pci_host_common_parse_ports(struct device *dev, struct pci_host_bridge *bridge);
+> +
+>  int pci_host_common_probe(struct platform_device *pdev);
+>  int pci_host_common_init(struct platform_device *pdev,
+>  			 struct pci_host_bridge *bridge,
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index eaa4a3d662e8..629ae08b7d35 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -677,6 +677,7 @@ static void pci_init_host_bridge(struct pci_host_bridge *bridge)
+>  {
+>  	INIT_LIST_HEAD(&bridge->windows);
+>  	INIT_LIST_HEAD(&bridge->dma_ranges);
+> +	INIT_LIST_HEAD(&bridge->ports);
+>  
+>  	/*
+>  	 * We assume we can manage these PCIe features.  Some systems may
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 8f63de38f2d2..a73ea81ce88f 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -636,6 +636,7 @@ struct pci_host_bridge {
+>  	int		domain_nr;
+>  	struct list_head windows;	/* resource_entry */
+>  	struct list_head dma_ranges;	/* dma ranges resource list */
+> +	struct list_head ports;		/* Root Port list (pci_host_port) */
+>  #ifdef CONFIG_PCI_IDE
+>  	u16 nr_ide_streams; /* Max streams possibly active in @ide_stream_ida */
+>  	struct ida ide_stream_ida;
+> -- 
+> 2.37.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
