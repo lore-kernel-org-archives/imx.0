@@ -1,170 +1,168 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6CA35970F
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 15:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C80359A79
+	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 15:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775574115; cv=none; b=NVAyAIMoa5qcxp//S9FTi8FxZiXs48WWnvtVHKcoQvvkRDgunYNl08wENpr0k19PoTZf1UuVrzU+NoGS3YEsaEv/YoMeuHI0xIQUwcxj84CNPQR/hJs65FzuVqWKnfMZqjDT5r99Kg/8Q+yUdQRRJ78wKbXvzd6XpUYL95l263s=
+	t=1775575180; cv=none; b=XUoZannQwult32NrwjmxBkN9Ll3KKV0bXX9KpJjxTkdauL7El9Jxm879tJZhrKBDWoFOhcpGbAFn0as6DGG5Yavu5NQ8p7snlXXF1GpKg0c4fo2lY+k/R5r7CVTFDqXj6Kpna/gzly0TFNskM0u6Y0pP7psfxPtVrg3ln+Nn5VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775574115; c=relaxed/simple;
-	bh=iDOVNpgTm7E3bVzDquw0I4ESCYFkTOQqV/hyqBv/j+s=;
+	s=arc-20240116; t=1775575180; c=relaxed/simple;
+	bh=Esr4m/CWzlzGxIEXM4jv9Iy3Hrt7tqhgId2RGV+BjP0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cL1G1sFizBEoT9/wPxF4C5+tYSIXOQ139LuiNm1b9nbNetegVp0/z9cTfZkCtPVO9ESh0LUpfZhZf3YpZjBIJett+nkGw8tq+Kp+XX0eWa+cMuPBYB/cwH9gTAI/LjIi8IxHRF6wvsx9JMrSzwfCyqeb33uhHdfK6loiB4Np5Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id AF94E1F8005F
-	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 15:01:26 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id CE312B40194; Tue,  7 Apr 2026 15:01:24 +0000 (UTC)
-X-Spam-Level: 
-Received: from shepard (unknown [192.168.1.1])
-	by laika.paulk.fr (Postfix) with ESMTPSA id C0656B4018A;
-	Tue,  7 Apr 2026 15:01:22 +0000 (UTC)
-Date: Tue, 7 Apr 2026 17:01:20 +0200
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=PkYh++CIG+O+kJoRedv87Dd10X2xrK4D3sc/7mCwcltOw9TwKhY4Bqj9Xc89gHbnMQosPR20BZDUuR26efIpQhz0zJQtrpA95dvenwvXA/EzG5ikNDwQXkLq7DV9nkV1O+tgBzRz+9wdZ806PAeQNYIU7SaMTaRwgDTk/WvvGbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VYGeMPdF; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VYGeMPdF"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82a7ebc729dso2216891b3a.3
+        for <imx@lists.linux.dev>; Tue, 07 Apr 2026 08:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1775575178; x=1776179978; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=px+aTSO680+yUdTUoCh2tkBc+4urCGyGCdnmZi+tHi8=;
+        b=VYGeMPdFFmCp51FS5JwoZG5DJl4iMzu3ujAEehnzyN3AlmCfvIYNeNaH7Gz8Db0D5b
+         sZindc7+n3B2RtJl3zOdDuLZhOHAAp/rDp2NGpR1TkXR9oz3RRVU7cdK1DunK+5cXmiZ
+         aB5NaYJlVvwmMtXdQYSF05UCni1J8phXIX4DQydOZL4RDmENplSkHL36HVh1ZANQ5Qb5
+         bEplyh9agt/0UZ3X5YA1L/otFS7wzxk5u8k+URr8+SR0xXxgKTbv90cPgUaUpcLo9bBi
+         QS7lU6m7Cjw6SgcEiIMtheNt8XzSNIeoKtR8ueKmIPB0wHjJRiy+oBCwZ4zcQjtVxero
+         Tczw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775575178; x=1776179978;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=px+aTSO680+yUdTUoCh2tkBc+4urCGyGCdnmZi+tHi8=;
+        b=THgxMfEPYHDmLTdGoDG9cQxvZxn6baySwzh7KyeqELYYvgMiF04iEQMhyGhE4wowZ0
+         WD1UaAiylMQI5VuFlUakYkKzHC0ZURTB66nSLS64yZAesdlHhWUt13pGeu2fuslFZeIZ
+         ikEjVT8tihU9Ub3v7Di86POeyCIfQULCvKEpn9nUo6dq+5BOJUJBehYyy4LqNK82maOW
+         57cwI35mpTwrO8BQs9H6d8h27XXjIyYgHg6pmC05paC+INfZf67WgG+jVwIqBNSNrjxc
+         iD8Jx2O8WBul2G+fNlplp4U93XAljfWGpAxD7hODZP8SbIX+E3Hg+fMGSGQ08uP90fcI
+         sk0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXe9XleToJRGP4RiaPhIBPF56/0vE/Qozx+SL9LFRjmRVgZ10Hkp0k0ITH8oxDGhezByqE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYJT490oPecY4dVE/j5Nr66KzZGgQnsm+Z+ICE9hBK2cJzQAT2
+	TwAlx3kUsR0pi0hTcqtmuNnEUdJAUFMcuSVWFpa/QB2a3OO4yOO+0YGXJXfUfcqqjbQ=
+X-Gm-Gg: AeBDiesn6zTLWMo9ovtwkzaAdPqJ/gPTFkomwkKJD5WONC9Z8K4voTJqbxMMpwRsQBP
+	iwiYJzN6pmi6T/RnbyayxNh4DM5qcJyxFypW41Yo7wJJyKqeF+UEmDMKu5r08fQUl13cov332vd
+	SzZSkc8DdUGlyWlMbubQmHewocPg1zhMN2R97ZOwYx17d6HOJbQ/ydPFgGz5iPX0P9X+Bvkd3+C
+	OOYkMCWy5yKz8pedJylkH7GwOSul0WU+RnUiQnOtkhHfcG7O8PC0tpf940xPaJrGPHojesaCcY1
+	r49G4oIkEZ7BJIa2PGFPG9aNkeMd0fup6OMn1/caGhDjrZEJhoTmt8jKeo+yv0VkQ0efO3Jp0ZT
+	Ai2G/lANi7VMmEDxWIMISPhU3PHLD6rfCcv0RmoCUmnywpIn17MV9pgH/2LzqMPHeEd8y43LE26
+	84WdIfZQJnfIvmHFpf0XvFhmyrilM=
+X-Received: by 2002:a05:6a00:3926:b0:7f7:2f82:9904 with SMTP id d2e1a72fcca58-82d0da2c50cmr17909669b3a.5.1775575177733;
+        Tue, 07 Apr 2026 08:19:37 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:97a2:befd:d439:79fb])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c6ba2fsm18101364b3a.45.2026.04.07.08.19.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 08:19:37 -0700 (PDT)
+Date: Tue, 7 Apr 2026 09:19:34 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Liu Ying <victor.liu@nxp.com>
-Subject: Re: [PATCH v2 2/2] drm: lcdif: Wait for vblank before disabling DMA
-Message-ID: <adUcQIor2tEMCn3R@shepard>
-References: <20260402183351.3281123-1-paulk@sys-base.io>
- <20260402183351.3281123-3-paulk@sys-base.io>
- <d6bbf0c23dc5cf0c6ab0375fb1d2d3f6b4579737.camel@pengutronix.de>
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 2/3] remoteproc: imx_rproc: Pass bootaddr to SM
+ CPU/LMM reset vector
+Message-ID: <adUghiyZbe3fmcNX@p14s>
+References: <20260327-imx943-rproc-v2-0-a547a3588730@nxp.com>
+ <20260327-imx943-rproc-v2-2-a547a3588730@nxp.com>
+ <acqjS440STRl2sK2@p14s>
+ <acs2PAZq2k3zjmDW@shlinux89>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tr3oA7U7+SI63nqs"
-Content-Disposition: inline
-In-Reply-To: <d6bbf0c23dc5cf0c6ab0375fb1d2d3f6b4579737.camel@pengutronix.de>
-
-
---tr3oA7U7+SI63nqs
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <acs2PAZq2k3zjmDW@shlinux89>
 
-Hi Lucas,
+On Tue, Mar 31, 2026 at 10:49:32AM +0800, Peng Fan wrote:
+> On Mon, Mar 30, 2026 at 10:22:35AM -0600, Mathieu Poirier wrote:
+> >On Fri, Mar 27, 2026 at 10:42:03AM +0800, Peng Fan (OSS) wrote:
+> >> From: Peng Fan <peng.fan@nxp.com>
+> >> 
+> >> Cortex-M[7,33] processors use a fixed reset vector table format:
+> >> 
+> >>   0x00  Initial SP value
+> >>   0x04  Reset vector
+> >>   0x08  NMI
+> >>   0x0C  ...
+> >>   ...
+> >>   IRQ[n]
+> >> 
+> >> In ELF images, the corresponding layout is:
+> >> 
+> >> reset_vectors:  --> hardware reset address
+> >>         .word __stack_end__
+> >>         .word Reset_Handler
+> >>         .word NMI_Handler
+> >>         .word HardFault_Handler
+> >>         ...
+> >>         .word UART_IRQHandler
+> >>         .word SPI_IRQHandler
+> >>         ...
+> >> 
+> >> Reset_Handler:  --> ELF entry point address
+> >>         ...
+> >> 
+> >> The hardware fetches the first two words from reset_vectors and populates
+> >> SP with __stack_end__ and PC with Reset_Handler. Execution proceeds from
+> >> Reset_Handler.
+> >> 
+> >> However, the ELF entry point does not always match the hardware reset
+> >> address. For example, on i.MX94 CM33S:
+> >> 
+> >>   ELF entry point:     0x0ffc211d
+> >>   hardware reset base: 0x0ffc0000 (default reset value, sw programmable)
+> >>
+> >
+> >But why?  Why can't the ELF image be set to the right reset base?
+> 
+> Per zephyr general link script[1]:
+> ENTRY(CONFIG_KERNEL_ENTRY)
+> 
+> CONFIG_KERNEL_ENTRY(_start) is the first instruction that Cortex-M starts to
+> execute.
+> 
+> config KERNEL_ENTRY
+>         string "Kernel entry symbol"
+>         default "__start"
+>         help
+>           Code entry symbol, to be set at linking phase.
+> 
+> The hardware reset base is different: it is the address where the hardware
+> fetches the initial MSP and PC values from the vector table. Hardware uses
+> this base to initialize the stack pointer and program counter, and only then
+> does the Cortex‑M begin execution at the reset handler.
 
-On Tue 07 Apr 26, 10:28, Lucas Stach wrote:
-> Am Donnerstag, dem 02.04.2026 um 20:33 +0200 schrieb Paul Kocialkowski:
-> > It is necessary to wait for the full frame to finish streaming
-> > through the DMA engine before we can safely disable it by removing
-> > the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> > hardware confused and unable to resume streaming for the next frame.
-> >=20
-> > This causes the FIFO underrun and empty status bits to be set and
-> > a single solid color to be shown on the display, coming from one of
-> > the pixels of the previous frame. The issue occurs sporadically when
-> > a new mode is set, which triggers the crtc disable and enable paths.
-> >=20
-> > Setting the shadow load bit and waiting for it to be cleared by the
-> > DMA engine allows waiting for completion.
-> >=20
-> > The NXP BSP driver addresses this issue with a hardcoded 25 ms sleep.
-> >=20
-> > Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant=
-")
-> > Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-> > Co-developed-by: Lucas Stach <l.stach@pengutronix.de>
->=20
-> Looks good to me. Since the co-developed tag requires a sign-off from
-> me, I'll add that instead of a review tag. And you might want to move
-> your sign-off down, as you are the one submitting the patch.
+That part is clear.
 
-Sounds good to me! This can probably be done when picking up the patch,
-but if maintainers need me to respin the series to get all the tags in
-order myself, just let me know!
+> 
+> Aligning the ELF entry point with the hardware reset base on Cortex‑M systems
+> is possible, but it comes with several risks.
 
-All the best,
+I'm not asking to align the ELF entry point with the hardware reset base.  All I
+want is to have the correct start address embedded in the ELF file to avoid
+having to use a mask.
 
-Paul
-
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
->
-> > ---
-> >  drivers/gpu/drm/mxsfb/lcdif_kms.c | 15 ++++++++++++---
-> >  1 file changed, 12 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/=
-lcdif_kms.c
-> > index a00c4f6d63f4..0d04a0028671 100644
-> > --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> > +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> > @@ -375,14 +375,23 @@ static void lcdif_disable_controller(struct lcdif=
-_drm_private *lcdif)
-> >  	int ret;
-> > =20
-> >  	reg =3D readl(lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> > +	/* Disable the layer for DMA. */
-> >  	reg &=3D ~CTRLDESCL0_5_EN;
-> > +	/*
-> > +	 * It is necessary to wait for the full frame to finish streaming
-> > +	 * through the DMA engine before we can safely disable it by removing
-> > +	 * the DISP_PARA_DISP_ON bit. Disabling it in-flight can leave the
-> > +	 * hardware confused and unable to resume streaming for the next fram=
-e.
-> > +	 */
-> > +	reg |=3D CTRLDESCL0_5_SHADOW_LOAD_EN;
-> >  	writel(reg, lcdif->base + LCDC_V8_CTRLDESCL0_5);
-> > =20
-> > +	/* Wait for the frame to finish or timeout after 50 ms. */
-> >  	ret =3D readl_poll_timeout(lcdif->base + LCDC_V8_CTRLDESCL0_5,
-> > -				 reg, !(reg & CTRLDESCL0_5_EN),
-> > -				 0, 36000);	/* Wait ~2 frame times max */
-> > +				 reg, !(reg & CTRLDESCL0_5_SHADOW_LOAD_EN),
-> > +				 200, 50000);
-> >  	if (ret)
-> > -		drm_err(lcdif->drm, "Failed to disable controller!\n");
-> > +		drm_err(lcdif->drm, "Timed out waiting for final vblank!\n");
-> > =20
-> >  	reg =3D readl(lcdif->base + LCDC_V8_DISP_PARA);
-> >  	reg &=3D ~DISP_PARA_DISP_ON;
->=20
-
---=20
-Paul Kocialkowski,
-
-Independent contractor - sys-base - https://www.sys-base.io/
-Free software developer - https://www.paulk.fr/
-
-Expert in multimedia, graphics and embedded hardware support with Linux.
-
---tr3oA7U7+SI63nqs
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmnVHEAACgkQhP3B6o/u
-lQx7KA/7BnpEWNIUmhxDgwURWcnToLoxc1aEBm/u/+bpY0PzQwdfdimZy7f8fR4h
-PuxDVy7QBNZTag6cT6rcoJ9QoWw8Srx2docDOotHjGHMOjytxrv3KJ4KeN7kVlpH
-EeuJNt8jWSulxNRiuEv85B6pFw9yUpwb1UCyiLx4H8jIHvOIxbPAOxc7f20PkCjP
-Sbwx+0iSgxffcH0c++DlDONOOLj/3pjLtjw8K6MGXQtRXX0kIxU9lVI9SNgvaZlR
-18xQ3n1Y92Zm/wOuN8tGB7VX3ILwYTXJYDU/qE3DSAzqRvLFFNTBAeBLPOVzTmhB
-Pile1vjDAdO/A4YoV/pOUS0mt0lpT40dyEH2aDC5Rzty7w5s9VbPaE9AjnPLvEvY
-GPCZ+Jcln2clHdhEEX3TiVyimht8j0GLtNtJ+Dl28b1GhYmJN6xouNNLMOvOikE3
-RwCE8eq+ijQly5rxYwnpRONuHhAPWEMg10oayJiM6vhJ4xoBxgimChoF9Klvfqev
-nbn5eOqezBWsPFx/AT53T1TJoP0kNwJLdu6HKNPIdEyWN3Fk0zbrD3kHDsPfvpDF
-vHStdPI8fyeJygwslAKAgEJNv9Vj7OFWBYap3Hn70jkLR+zAMRsKr4Or3b4PQCKq
-ZtOAvsX/zNSDVt50bwMhPmbWBE530bMy75n+cbLTPB1KgY1yT1o=
-=Ted2
------END PGP SIGNATURE-----
-
---tr3oA7U7+SI63nqs--
+> 1, Semantic mismatch (ELF vs. hardware behavior)
+> 2, Debuggers may attempt to set breakpoints or start execution at the entry symbol
+> 
+> [1] https://elixir.bootlin.com/zephyr/v4.4.0-rc1/source/include/zephyr/arch/arm/cortex_m/scripts/linker.ld#L103
+> 
+> Regards
+> Peng.
+> > 
