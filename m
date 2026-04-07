@@ -1,142 +1,280 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257AA1F4CA9;
-	Tue,  7 Apr 2026 18:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8434137C91A
+	for <imx@lists.linux.dev>; Tue,  7 Apr 2026 21:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775585374; cv=none; b=m6xdbRhc0Pz9A3IhRqDEq7Qu9p7i4fyTQtdjvSj5tt3FisJ3pN8XSaoo710eifcFE2buNNnY0DEfZQvd29Orz5iR1hQ0RkN7TFIIfUuoPg9W3ukRkIrXZyvq7M/wV1qfmHSP9bDWFSZ0VbU76MkRMU/uPh3rGZ0DSJPFJumw0lI=
+	t=1775596740; cv=none; b=CJZ+JBVLfJsbk5W2/05L4h48jWlYYvlZBJJ07cqy0Y4DhTvENrij/TdS4uzbC2r8YEYW2UVRML6tDcvogp5PiO0ZfheY00uCJmVpatJ24qXc3AR1ZejWkVHaqH8eT8qI2NaL38Fm9iITYZRUYwa5Udv2kXh3fXI6XcuIjuuLM/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775585374; c=relaxed/simple;
-	bh=6+TXhFe1ZLkWZlJdqPKfzqrTGxVXq539FFUaAib5kcw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HIOYBhSfpeF9eqfOMlt9LffRKzjs+zLsEYXz08hGOsRuZcKZ7ibyBiAKqG0yHnK7zCfdAkwNuKo+hqGvKzHdwAsirLe9Jpj6YmHoHwvEQJbty2n0D0mzMMkbj2E8KkkEgux1dm4nf8ynhN9R7PcpfHuDHOAw06eJvFtDpxPUJsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ggWzSJFT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775596740; c=relaxed/simple;
+	bh=J6EWVxurceztpOBsxc5zZevaNL+OyTx8lfTxmxef0Bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aGcBfgKx4r3GvLtN2kfc0RCk1gK1m9VOOMIFELxWx+V0Nf76e4peqorQUiUOebj2uaIEMZD5j6V1j3G9QuFagFa5pt2twk40w1aOOfmWps+4qRE8ck00JJ100FzHc4hX4mSSyZhzmtJaqV3R+v31MOtbXjozq9w5UOdSNQPnwQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=RndNeFm/; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ggWzSJFT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E86C116C6;
-	Tue,  7 Apr 2026 18:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775585374;
-	bh=6+TXhFe1ZLkWZlJdqPKfzqrTGxVXq539FFUaAib5kcw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ggWzSJFTesIwd2YhKNu1ymWX+Ta4kTPTPY/3h9dlBpdCpYSbEFsbI0H7e9rSlT5gs
-	 Dao5q1Oa7o6HCCAUXtV9dfxMsY+RSsuhceg6FMyGrDJkgcPprSBxYixpt2oL06fUXR
-	 fjuRo2v5yqgnbv1bCJBrEFqu7JP6qlhp1w4VGWAoJt/7Hrhhki1cVd9WNdne4rtWTB
-	 tyuXA6AzboaLz0+HNY0y87qaeiqnHvvfAcNZ1m6C4p2aarv/pooDxIA23mF/3H/an3
-	 YzUeOAvZpqtqjMW5M1jIqPurebCAO7fqtckQaFMzzFVE4qnEZeH025Kb6A4AATN2Kk
-	 V0UFuhMW9MWcQ==
-Date: Tue, 7 Apr 2026 13:09:32 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="RndNeFm/"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2D7C2113407;
+	Tue,  7 Apr 2026 23:18:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1775596736; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=V09GZmRVkgobQ4KodWmzSPPlzuE3ztbAiUslccGT6Rw=;
+	b=RndNeFm/mszwtXWMzwqNfhrG+JONZtP2BSBdOHtd95qdCOfMT2Q/NWdcvKQs/DJUuBkSuO
+	iupTh/dDIci0VXgl2SL9yIXcx8EZDy8QliOi5mx7fcmCiyBNka7jYCjquFCgCCzpTZlTyV
+	jjRZBbuQQnSBiaj/yScf/Eklbl1u8234GwW6m5JTq3/CPi9Csdu1tC6UQVvEhMHXoyNKzL
+	ct0fbPL7DJ0rsJ9slA67z/e+5ZhLk4TYLcw7UrJrTPc1ShO8RT78vIW2C2o043EejnnCmZ
+	U88qgJWn2VtueJCqoXS75CtI9D2KiMrSH67IaqmpXwzXl7tsrPUwhd3WmdU/dA==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Linus Walleij <linusw@kernel.org>, imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org, patches@opensource.cirrus.com,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andrew Lunn <andrew@lunn.ch>, devicetree@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-arm-kernel@lists.infradead.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>, linux-pm@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Wolfram Sang <wsa@kernel.org>, Len Brown <lenb@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	driver-core@lists.linux.dev, linux-i2c@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Kalle Niemi <kaleposti@gmail.com>, linux-cxl@vger.kernel.org,
-	Alison Schofield <alison.schofield@intel.com>,
-	linux-clk@vger.kernel.org, linux-pci@vger.kernel.org,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-spi@vger.kernel.org, Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH v6 17/27] of: property: Allow fw_devlink device-tree on
- x86
-Message-ID: <177558537013.3212080.6337028648731238779.robh@kernel.org>
-References: <20260325143555.451852-1-herve.codina@bootlin.com>
- <20260325143555.451852-18-herve.codina@bootlin.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 3/6] arm64: dts: imx8mm: imx8mp: Add HDMI DTOs for Data Modul i.MX8M Mini and Plus eDM SBC
+Date: Tue,  7 Apr 2026 23:17:29 +0200
+Message-ID: <20260407211850.79881-3-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260407211850.79881-1-marex@nabladev.com>
+References: <20260407211850.79881-1-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325143555.451852-18-herve.codina@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Add DT overlay for the DSI-to-HDMI adapter eDM-MOD-iMX8Mm-HDMI populated
+with Lontium LT9611 bridge. This adapter can be optionally populated onto
+the eDM SBC.
 
-On Wed, 25 Mar 2026 15:35:44 +0100, Herve Codina wrote:
-> PCI drivers can use a device-tree overlay to describe the hardware
-> available on the PCI board. This is the case, for instance, of the
-> LAN966x PCI device driver.
-> 
-> Adding some more nodes in the device-tree overlay adds some more
-> consumer/supplier relationship between devices instantiated from this
-> overlay.
-> 
-> Those fw_node consumer/supplier relationships are handled by fw_devlink
-> and are created based on the device-tree parsing done by the
-> of_fwnode_add_links() function.
-> 
-> Those consumer/supplier links are needed in order to ensure a correct PM
-> runtime management and a correct removal order between devices.
-> 
-> For instance, without those links a supplier can be removed before its
-> consumers is removed leading to all kind of issue if this consumer still
-> want the use the already removed supplier.
-> 
-> The support for the usage of an overlay from a PCI driver has been added
-> on x86 systems in commit 1f340724419ed ("PCI: of: Create device tree PCI
-> host bridge node").
-> 
-> In the past, support for fw_devlink on x86 had been tried but this
-> support has been removed in commit 4a48b66b3f52 ("of: property: Disable
-> fw_devlink DT support for X86"). Indeed, this support was breaking some
-> x86 systems such as OLPC system and the regression was reported in [0].
-> 
-> Instead of disabling this support for all x86 system, use a finer grain
-> and disable this support only for the possible problematic subset of x86
-> systems (at least OLPC and CE4100).
-> 
-> Those systems use a device-tree to describe their hardware. Identify
-> those systems using key properties in the device-tree.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Link: https://lore.kernel.org/lkml/3c1f2473-92ad-bfc4-258e-a5a08ad73dd0@web.de/ [0]
-> ---
->  drivers/of/property.c | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
-> 
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: Deduplicate the DTOs further
+V3: New patch split from the original megapatch
+---
+ arch/arm64/boot/dts/freescale/Makefile        | 12 +++
+ ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi | 94 +++++++++++++++++++
+ ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso | 17 ++++
+ ...l-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso | 17 ++++
+ 4 files changed, 140 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
 
-Applied, thanks!
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 09ea330884ad4..679346cd35d95 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -116,6 +116,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdp-mba8xx.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8dxp-tqma8xdps-mb-smarc-2.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-beacon-kit.dtb
+ 
++imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
++	imx8mm-data-modul-edm-sbc.dtb \
++	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
++
+ imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01-dtbs := \
+ 	imx8mm-data-modul-edm-sbc.dtb \
+ 	imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo
+@@ -149,6 +153,8 @@ imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900-dtbs := \
+ 	imx8mm-data-modul-edm-sbc-overlay-edm-sbc-imx8mm-rev900.dtbo
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-data-modul-edm-sbc.dtb \
++			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
++			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
+ 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
+ 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
+ 			  imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtb \
+@@ -288,6 +294,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-beacon-kit.dtb
+ DTC_FLAGS_imx8mp-cubox-m := -@
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-cubox-m.dtb
+ 
++imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi-dtbs := \
++	imx8mp-data-modul-edm-sbc.dtb \
++	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo
++
+ imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01-dtbs := \
+ 	imx8mp-data-modul-edm-sbc.dtb \
+ 	imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo
+@@ -363,6 +373,8 @@ imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902-dtbs := \
+ 	imx8mp-data-modul-edm-sbc-overlay-edm-sbc-imx8mp-rev902.dtbo
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-data-modul-edm-sbc.dtb \
++			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtb \
++			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtbo \
+ 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtb \
+ 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g070y2-l01.dtbo \
+ 			  imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-lvds-g101ice-l01.dtb \
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
+new file mode 100644
+index 0000000000000..c0f2aa462104f
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2026 Marek Vasut
++ */
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/arm-gic.h>
++
++&{/} {
++	hdmi-out {
++		compatible = "hdmi-connector";
++		type = "a";
++
++		port {
++			hdmi_con: endpoint {
++				remote-endpoint = <&lt9611_out>;
++			};
++		};
++	};
++};
++
++&i2c_display {	/* Display connector I2C */
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	lt9611_codec: hdmi-bridge@3b {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_panel_expansion>;
++		compatible = "lontium,lt9611";
++		reg = <0x3b>;
++		vcc-supply = <&buck4_reg>;	/* X400 pin 55, +3V3_S0 */
++		vdd-supply = <&buck5_reg>;	/* X400 pin 51, +1V8_S0 */
++
++		/* Audio I2S not described */
++		#sound-dai-cells = <1>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				lt9611_a: endpoint {
++					remote-endpoint = <&mipi_dsi_bridge1_out>;
++				};
++			};
++
++			port@2 {
++				reg = <2>;
++
++				lt9611_out: endpoint {
++					remote-endpoint = <&hdmi_con>;
++				};
++			};
++		};
++	};
++
++	eeprom@50 {
++		compatible = "atmel,24c02";
++		reg = <0x50>;
++		pagesize = <16>;
++	};
++};
++
++&iomuxc {
++	/* Free &pinctrl_panel_expansion from hog for lt9611_codec above */
++	pinctrl-0 = <&pinctrl_hog_misc>, <&pinctrl_hog_feature>,
++		    <&pinctrl_hog_panel>, <&pinctrl_hog_sbc>;
++};
++
++&mipi_dsi {
++	/* HDMI 148.5 MHz x2 (DDR) x3 (24bpp / 8) */
++	samsung,burst-clock-frequency = <891000000>;
++	samsung,esc-clock-frequency = <10000000>;
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@1 {
++			reg = <1>;
++
++			mipi_dsi_bridge1_out: endpoint {
++				clock-lanes = <0>;
++				data-lanes = <1 2 3 4>;
++				/* Clock and data lanes have DN/DP swapped */
++				lane-polarities = <1 1 1 1 1>;
++				remote-endpoint = <&lt9611_a>;
++			};
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+new file mode 100644
+index 0000000000000..334ba299a3541
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi"
++
++&lt9611_codec {
++	interrupts-extended = <&gpio2 3 IRQ_TYPE_EDGE_FALLING>;
++	reset-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
++};
++
++&lcdif {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+new file mode 100644
+index 0000000000000..d8114fd869b54
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtso
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022-2026 Marek Vasut
++ */
++/dts-v1/;
++/plugin/;
++
++#include "imx8mm-data-modul-edm-sbc-overlay-edm-mod-imx8mm-hdmi.dtsi"
++
++&lt9611_codec {
++	interrupts-extended = <&gpio4 19 IRQ_TYPE_EDGE_FALLING>;
++	reset-gpios = <&gpio4 0 GPIO_ACTIVE_HIGH>;
++};
++
++&lcdif1 {
++	status = "okay";
++};
+-- 
+2.53.0
 
