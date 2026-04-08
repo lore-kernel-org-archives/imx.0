@@ -1,286 +1,125 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52973D88EB
-	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 17:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE3D3D3D06
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 17:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775668955; cv=none; b=pYfeoyRfHubMtXqAsc5/y3C1sw5YwUHsphtU2VIua8PuAJcJad3EJO8qGTOapVCmCf/aUNYdhrqWgBd+C8mxrAPrpeZjnSJRCexJrLr4XsUMrXhgxHe7NbTzXpajB/SiypKtW7aA2Q3YK7SKE8lrAoUvoR1+fzXC7UasANta8ZI=
+	t=1775670042; cv=none; b=B0LjXHRAURkNHZ1EYHUWFgVpqaFGBJ0webSQY3x/Pmkz7J3phZB+F0LXzdx+HopF/YcvIwgjWVGtZIC/+c29rYnnLK139joBTmCRc5j8vj6+yA1gW8+V2TOgAnDjFJdp19dcWJKI38/rOcDT+n4piQae4DuevYjjQjyZ7QSY/VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775668955; c=relaxed/simple;
-	bh=65QwNvr+I5OOmsYxfpRudawMxhKeDbuvLhOvIVdlggg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H9EaQgrPf2t0pb4yaF/3hjpHppZtYCDTX8uw6G552v+jNnm2G7p9lIfM+FQrWTrX/3YTMrTzu9sId9yGHdxIwJ2sg13cDZqgu13c5KgdKy2nz2UrMyo3mDv47AEcR1sMnFDyv3riSa+lDo5SdoVgz8dV3OvaGbM7BOFnkF6Qukk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=z8unAsqB; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1775670042; c=relaxed/simple;
+	bh=0qsG/us2WVwXLTbDE9ON6cQRer4EhyAiATQsPRj6xis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIL6KMB3Q+RLfLwWqoq1tnpD+YfuOMCGc9k/tNjln4fxWyoM1RdRqq80D6aRIkR6iIPw6dWc9bPz0bdgd9cfMrn95am3zSC+DFUqrzjXJ1Go3JX6qmvpWcIxnabbS7eCSwgRIsjiD6e9DGf+PK7b4vD3ebGYBQ0dkhuBGZMdSJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+vZmvpP; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="z8unAsqB"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 05BB4C5AAA8;
-	Wed,  8 Apr 2026 17:23:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AE170603CE;
-	Wed,  8 Apr 2026 17:22:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 195F51045019E;
-	Wed,  8 Apr 2026 19:22:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775668951; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qZhH8c6x0PEbv9p0RAqu0ezmUYM5PZZV4d1Q1ar4FwE=;
-	b=z8unAsqBhcFq5Vp4lQHlWVnZSxrWvHScIDOYqqp+A+dS3QgjjtDHAxKDjuEx0sxx6Ntw8m
-	/9p7zjSpikeOg/vfYZYTPmaqnAxKLigX/Sqh4Cy+ieb4WQ7IJlDRyLsFZM0CjTR8cipVBd
-	isItGziOohCzTwkhA8OjWcXijOoRqFa02KLen0vqjAdvH7maZMF66u4S0a4lFFsVfzOBB8
-	dGgEGIuM6i2daXd89VBetMT61jlXZbVRuJ2zPu+P4oL/+wjZn3oeZ0pflLVK85kJDBrbrV
-	+Dn/hhvE5dZl4tMmiG7Kv4LHFaOrEoW8aepF3HLtlgyhJThYLzrtH4vLKklGqg==
-From: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-Date: Wed, 08 Apr 2026 19:21:58 +0200
-Subject: [PATCH v5 5/5] watchdog: aaeon: Add watchdog driver for SRG-IMX8P
- MCU
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+vZmvpP"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488b0046078so940955e9.1
+        for <imx@lists.linux.dev>; Wed, 08 Apr 2026 10:40:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775670039; x=1776274839; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JVknTNXnOvlztmP5bPCaJ9VCAFMggsih6gMsKKZCoUg=;
+        b=c+vZmvpPDJ/lCMikmYWmx96+ixnWtX2ZocvCKzYV+/HwIBp3AGj4HfxAcuPJpWDoAa
+         +mV3mrjL83Oc1sEfP1E/c02cqEZmj9xoZ+oMHaD9BLgzl5eNZxHe3PZzl3NHT1CNmRNa
+         XTibEkNut8Vqom8Gg+H1IeE3kkmZx+n+E+phW3gKWH+cF+i0KDDZjwcgWA4ADncYPHTr
+         bhH+ptnlcWaxvezhL3gQtEajau/ujBXdQOqHXIneA+atwnVrmu711jz1dj3HYrumnRpJ
+         EbBrtTumDa05mPU+NRVfBbbGrvk3VYDXMreYU9Vk4uRY7kOm1nV8bfmVtc/nt82gFv+b
+         yOKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775670039; x=1776274839;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JVknTNXnOvlztmP5bPCaJ9VCAFMggsih6gMsKKZCoUg=;
+        b=IJXQO1XjqABfuTC4UyyX6MohqnSgcEWJN5VJxDNphdQ+L4QC6z4I0mGU1WoEHwHJOF
+         th859q9j93o7oEQ93gsxjqNFp39G1ctOUfKVyEpqnSKhvOZi8G/KClCVzX7TIb/114NM
+         wMI6dTdVUrqotoiCKwUcTNDqlJ1DnDjF2IhPK5rH5gYB2gDYx/baHRNaFP5lUDzkvgPs
+         aP2i4Inghoye2xzSXWvBJR5JPy5tFYabD6yq+m8BV9wQTieEPPLyJ5JMymGyzoIi+qB3
+         Ke9CpAnyPrQQgjOM3laHGU3JTfyMZCHqL9TtIHywawQNU1pb33LqYYTyaUhFfw6AfFNF
+         23Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbMyMf9fordi11JbRzSFPISPzzVtDcdDZSgTBeEJhPAFOSiXHtSRWu1w6BM5ZzWzSCLbo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZVpnspiCdR5KZpUdnQJJ0SfpMpOR12/UASgRBqgNBiFEZoauP
+	SO17IkQdylhAIxNpsXx+bUPI27XR8sH11exrq8rL6ZXP9mMAalQJ+Ijs
+X-Gm-Gg: AeBDieuxdPieHxdkEGOKk2SdncYfaJDW8A7Kn4VJb+pMWESdhjv/m0vLgbHcVw7Jaix
+	/9+3IjEZ/yq1kDzPQTDZtQzyr7eiGLBPF4niTFQhlQVH+vfapZCa5eAUJW1UwZnPGVPByQfVr1P
+	IuKBxBidOlVVMqD8HByxpSk+NUNA6+FJAWIMGOgGxrGG3DrM0YYWNgUpg5+nAIaigfRz8F9PdF8
+	0aBAgRD3ZHF+Gi+D7ZG+sTKNJ/S6Lp5gLrutQisDyXcdDUGlbhx9bVNDnH4PVJkgM1+GN8SS9Ap
+	4iG5R6sq3n1LDqVPRvo8wiZD6fvrjyx6u+eGFxDMLLA7amC/QtzD82bft18FLY9Png5RtA2VRj4
+	Hmy7j+dTN7hI2JgO36QzwR5u3kf5HAzb4+dNNg6cYvbidQKNEagT+qQwiE26kEeFTBNNLT3+4bc
+	R+TqxA+WRNUXeqy8YYqzHJ+RKFn12dspnkkenrEPH0ZvlW7sUxo+vS0I/yyQ5sw6l27rWZtIVSx
+	vJ9lD6m5XBpaIfGSBjN50J+fuwoGGY6mkE1prBawJ4YNxlA
+X-Received: by 2002:a05:600c:1884:b0:488:a2ac:a340 with SMTP id 5b1f17b1804b1-488a2aca44emr139853645e9.12.1775670039126;
+        Wed, 08 Apr 2026 10:40:39 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-20-233.cust.vodafonedsl.it. [93.144.20.233])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e1fe0b0sm61774659f8f.0.2026.04.08.10.40.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 10:40:38 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Primoz Fiser <primoz.fiser@norik.com>
+Subject: [PATCH v1 0/3] Add support for Variscite VAR-SOM-MX91 and Symphony board
+Date: Wed,  8 Apr 2026 19:39:43 +0200
+Message-ID: <cover.1775669847.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260408-dev-b4-aaeon-mcu-driver-v5-5-ad98bd481668@bootlin.com>
-References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
-In-Reply-To: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- =?utf-8?q?J=C3=A9r=C3=A9mie_Dautheribes?= <jeremie.dautheribes@bootlin.com>, 
- Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6289;
- i=thomas.perrot@bootlin.com; h=from:subject:message-id;
- bh=65QwNvr+I5OOmsYxfpRudawMxhKeDbuvLhOvIVdlggg=;
- b=owEB7QES/pANAwAKAZ/ACwVx/grtAcsmYgBp1o7D023/jd70SBytcOY53H44Gff8aGs8jSBbo
- +a/5Eg1d1aJAbMEAAEKAB0WIQSHQHfGpqMKIwOoEiGfwAsFcf4K7QUCadaOwwAKCRCfwAsFcf4K
- 7Rx/C/9qKnMPOpRaDoSlA09ZRN0giYZatPJUexrNcHxuK8cjBp7y11zuq3C4s6O8QrilmBKw/Aw
- 9CYaXtm39Vdy2OWOKWAZA6TG3cA3/eiqsIdUo+OI93hbIW3LMyRMh9zlXKRoNkwfQFds4OAZe1C
- AU3TL8eKuUPdYFoJVd7lldprM14b2snHsFh6zZBpbj+49hwOViirfLN2Se57m/bDVdti3uZiRRh
- jb2wRfdz7ZxJlwCSIwSmsWN26FuFad417V+SI1+AbGTFd1oLdFiBruJg2qR4yh5sMsL3Kt7vbyq
- GdQeZEwjTVZOvWIQy7NmhtIejB5qDPLB4I8EwN39VU0Xe9bx3hzFMo5RVh3s5mX4yrKw5G6zKX4
- Y5Lg1DX7sFU8jKy+m+fPTNDAEzNJE9/ocw8rL1vSsokOiUFaHAPxnxuWdlwDEuIXFfywTMG9kGZ
- Q0fsKoWJlpZrlUt0qXONDKXTylsIx88zGYCLZQUGJ1KqNzkknFiG5qVJR0CT1Uh56i3Ds=
-X-Developer-Key: i=thomas.perrot@bootlin.com; a=openpgp;
- fpr=874077C6A6A30A2303A812219FC00B0571FE0AED
-X-Last-TLS-Session-Version: TLSv1.3
 
-Add watchdog driver for the Aaeon SRG-IMX8P embedded controller.
-This driver provides system monitoring and recovery capabilities
-through the MCU's watchdog timer.
+This patch series adds support for the Variscite VAR-SOM-MX91 system on
+module and the Sonata carrier board.
 
-The watchdog supports start, stop, and ping operations with a maximum
-hardware heartbeat of 25 seconds and a default timeout of 240 seconds.
+The series includes:
+- SOM device tree with on-module peripherals
+- Sonata carrier board device tree with board-specific features
 
-Co-developed-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-Signed-off-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
----
- MAINTAINERS                      |   1 +
- drivers/watchdog/Kconfig         |  10 +++
- drivers/watchdog/Makefile        |   1 +
- drivers/watchdog/aaeon_mcu_wdt.c | 132 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 144 insertions(+)
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2538f8c4bc14..7b92af42c9fd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -193,6 +193,7 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
- F:	drivers/gpio/gpio-aaeon-mcu.c
- F:	drivers/mfd/aaeon-mcu.c
-+F:	drivers/watchdog/aaeon_mcu_wdt.c
- F:	include/linux/mfd/aaeon-mcu.h
- 
- AAEON UPBOARD FPGA MFD DRIVER
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index d3b9df7d466b..f67a0b453316 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -420,6 +420,16 @@ config SL28CPLD_WATCHDOG
- 
- # ARM Architecture
- 
-+config AAEON_MCU_WATCHDOG
-+	tristate "Aaeon MCU Watchdog"
-+	depends on MFD_AAEON_MCU
-+	select WATCHDOG_CORE
-+	help
-+	  Select this option to enable watchdog timer support for the Aaeon
-+	  SRG-IMX8P onboard microcontroller (MCU). This driver provides
-+	  watchdog functionality through the MCU, allowing system monitoring
-+	  and automatic recovery from system hangs.
-+
- config AIROHA_WATCHDOG
- 	tristate "Airoha EN7581 Watchdog"
- 	depends on ARCH_AIROHA || COMPILE_TEST
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index ba52099b1253..2deec425d3ea 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -37,6 +37,7 @@ obj-$(CONFIG_USBPCWATCHDOG) += pcwd_usb.o
- # ALPHA Architecture
- 
- # ARM Architecture
-+obj-$(CONFIG_AAEON_MCU_WATCHDOG) += aaeon_mcu_wdt.o
- obj-$(CONFIG_ARM_SP805_WATCHDOG) += sp805_wdt.o
- obj-$(CONFIG_ARM_SBSA_WATCHDOG) += sbsa_gwdt.o
- obj-$(CONFIG_ARMADA_37XX_WATCHDOG) += armada_37xx_wdt.o
-diff --git a/drivers/watchdog/aaeon_mcu_wdt.c b/drivers/watchdog/aaeon_mcu_wdt.c
-new file mode 100644
-index 000000000000..949b506d8194
---- /dev/null
-+++ b/drivers/watchdog/aaeon_mcu_wdt.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Aaeon MCU Watchdog driver
-+ *
-+ * Copyright (C) 2026 Bootlin
-+ * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
-+ * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-+ */
-+
-+#include <linux/mfd/aaeon-mcu.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/watchdog.h>
-+
-+#define AAEON_MCU_PING_WDT	0x73
-+
-+#define AAEON_MCU_WDT_TIMEOUT         240
-+#define AAEON_MCU_WDT_HEARTBEAT_MS    25000
-+
-+struct aaeon_mcu_wdt {
-+	struct watchdog_device wdt;
-+	struct regmap *regmap;
-+};
-+
-+static int aaeon_mcu_wdt_cmd(struct aaeon_mcu_wdt *data, u8 opcode, u8 arg)
-+{
-+	return regmap_write(data->regmap, AAEON_MCU_REG(opcode, arg), 0);
-+}
-+
-+static int aaeon_mcu_wdt_start(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_CONTROL_WDT_OPCODE, 0x01);
-+}
-+
-+static int aaeon_mcu_wdt_status(struct watchdog_device *wdt, bool *enabled)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+	unsigned int rsp;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap,
-+			  AAEON_MCU_REG(AAEON_MCU_CONTROL_WDT_OPCODE, 0x02),
-+			  &rsp);
-+	if (ret)
-+		return ret;
-+
-+	*enabled = rsp == 0x01;
-+	return 0;
-+}
-+
-+static int aaeon_mcu_wdt_stop(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_CONTROL_WDT_OPCODE, 0x00);
-+}
-+
-+static int aaeon_mcu_wdt_ping(struct watchdog_device *wdt)
-+{
-+	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-+
-+	return aaeon_mcu_wdt_cmd(data, AAEON_MCU_PING_WDT, 0x00);
-+}
-+
-+static const struct watchdog_info aaeon_mcu_wdt_info = {
-+	.identity	= "Aaeon MCU Watchdog",
-+	.options	= WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE
-+};
-+
-+static const struct watchdog_ops aaeon_mcu_wdt_ops = {
-+	.owner		= THIS_MODULE,
-+	.start		= aaeon_mcu_wdt_start,
-+	.stop		= aaeon_mcu_wdt_stop,
-+	.ping		= aaeon_mcu_wdt_ping,
-+};
-+
-+static int aaeon_mcu_wdt_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct watchdog_device *wdt;
-+	struct aaeon_mcu_wdt *data;
-+	bool enabled;
-+	int ret;
-+
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->regmap = dev_get_regmap(dev->parent, NULL);
-+	if (!data->regmap)
-+		return -ENODEV;
-+
-+	wdt = &data->wdt;
-+	wdt->parent = dev;
-+	wdt->info = &aaeon_mcu_wdt_info;
-+	wdt->ops = &aaeon_mcu_wdt_ops;
-+	/*
-+	 * The MCU firmware has a fixed hardware timeout of 25 seconds that
-+	 * cannot be changed. The watchdog core will handle automatic pinging
-+	 * to support longer timeouts. The software timeout of 240 seconds is
-+	 * chosen arbitrarily as a reasonable value and is not user-configurable.
-+	 */
-+	wdt->timeout = AAEON_MCU_WDT_TIMEOUT;
-+	wdt->max_hw_heartbeat_ms = AAEON_MCU_WDT_HEARTBEAT_MS;
-+
-+	watchdog_set_drvdata(wdt, data);
-+
-+	ret = aaeon_mcu_wdt_status(wdt, &enabled);
-+	if (ret)
-+		return ret;
-+
-+	if (enabled)
-+		set_bit(WDOG_HW_RUNNING, &wdt->status);
-+
-+	return devm_watchdog_register_device(dev, wdt);
-+}
-+
-+static struct platform_driver aaeon_mcu_wdt_driver = {
-+	.driver		= {
-+		.name	= "aaeon-mcu-wdt",
-+	},
-+	.probe		= aaeon_mcu_wdt_probe,
-+};
-+
-+module_platform_driver(aaeon_mcu_wdt_driver);
-+
-+MODULE_DESCRIPTION("Aaeon MCU Watchdog Driver");
-+MODULE_AUTHOR("Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>");
-+MODULE_LICENSE("GPL");
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite VAR-SOM-MX91 Boards
+  arm64: dts: freescale: Add support for Variscite VAR-SOM-MX91
+  arm64: dts: imx91-var-som: Add support for Variscite Symphony board
 
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx91-var-som-symphony.dts  | 527 ++++++++++++++++++
+ .../boot/dts/freescale/imx91-var-som.dtsi     | 456 +++++++++++++++
+ 4 files changed, 990 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-var-som-symphony.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
+
+
+base-commit: 52bd553667e68b91ae6bb686ebddb66e539c7798
+prerequisite-patch-id: 6aed59e9105465c7ff1c01475972351600be1526
 -- 
-2.53.0
+2.47.3
 
