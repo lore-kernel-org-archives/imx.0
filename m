@@ -1,204 +1,81 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010022.outbound.protection.outlook.com [52.101.69.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872663859F5
-	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 07:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775633887; cv=fail; b=P66EfFjdRHXHKCoFaeGpp0rAP75Jo9Q/af3XLJVvq+PqzAmRcE2hBWqTiCf0b1MaSlnsDwmX9rIddW0CUEJPlefmVWhKIKiG0Rer/1UR1omabOZpFwJ0AByM8EK5xyfehHrA50QgBKQC9NsYpSfZijUEmaUvSx95UCG/GNs1SHI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775633887; c=relaxed/simple;
-	bh=+UEvJoH6wa2/nXt0d20tzJ17lr+cWUq5GEcHWHYNGpg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pUCpwyvTj9O2SbmgHEYIqzrMOfOw35d0bTF/M9eRZoF2AHeijlk9A9QiNH2EG4T3qFFDytih839krmpmksSx7yh7GR/cdVzaLm9bPvBA5Mj7QlKVSRnB9zsDXufI95MYosyx4QizUc8ILdbBQmGufF6LoeNVqBeVSwi7tWdonZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eE2pNGg9; arc=fail smtp.client-ip=52.101.69.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50F038E5E8
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 07:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775634830; cv=none; b=L2tmmJ6lFczWXLJPnHiCCXRezcOD778/ESi9Q2n9lXkQ5tA443gt2FOCyeg9bCNLK1Ds1BD8AJ0gqun/R8TfkPwsuBjINHDNAGqghr1ElV5PHPek+PxojEUFWu7KZUp3mj7NBUH5vVMuNIgB8+gMgrxVXQ0INlfB3ZXemWwHpaw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775634830; c=relaxed/simple;
+	bh=q8YBRRsDu2bvLGOzr1v72QMsI03TLtycld+RPAvbQBU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SZonAh6zOcC0y+KTroImwrpo+tda/wTz1nIXm7ak+zorpYtmhIul0K7oBni5G1i3+8y8Z9XH2KVmK6a5b4bovnGbzBaU123SN/HXUDiJ7VlB6PtnvB9mzTu/v1Jaq3PtnK8+kfFQAvO65TrnL2bFBXECah2QPmo5fV1EJdzSTHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXvTPmzH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eE2pNGg9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ILkEPXNxJ+HeJXzhpbcriBQ1hss/CpaEihtALZRjwvgc0/SGqC6h2LWwAoShOaKJ1Bs7cc4wgdiIvnKID1+ZQbWN7k42Z9jL9CzCZ2RjB27U5D6LwIDpBNPRi1GrvnFcdp+73Z1b+5xi435FrtS9VbRb96MKkX2fIxPhRqXr6c7i50F8KKwLmucsmKNtpUEvTkje++o+5E7GngiwEFWRNDcLLWiUYNMVfjCo4nes4g74qrs8/p7niew0QUkDW47EW0Dp+wU6w30dmf3h6tnIEu3f+iWd9svN2L7GyKmtXSetdpgchHMnXHaFDHwqh2MKMBbB6Mn16Dj36Pr6ItITzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pgjc+iDhtRtK3JACWAL8i9BfyIOhdj4DskF7Y0r/1rs=;
- b=yZ/8Cmo663PHgMPONVcOj5ny5XoJ2WlvquBDs3aoZoC9InoykL28SGotrJ+QYvwory2MK8xU+vERnPSEEoX+D9Hn9XBq7IMkE/k5oSrIu4s8ERqnU5lTYoPoE07aLZc4RfIwmJwxo5kERAXSpOou8sIHAuYic8VLgs8tOJCGzMXt4sKReM3oVNgDaKjZthUuRDAWW3l5A/yPHCYFDvsXSYhfGFfjZ+VYGS0cjS4ZIL8Spz9LrY37OtQQRHGs1M5ahqReLuweMHPB+6LR0cgOcKhaCKv8nNyMXLWCMyBcVhmMn860yOZHoz+WEvly0BNuLeFnFrmoVtvrlWuZRavSfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pgjc+iDhtRtK3JACWAL8i9BfyIOhdj4DskF7Y0r/1rs=;
- b=eE2pNGg9Ux/GRHgepd3B+ayw6qdfJxbeQyWqysZAZmk1/OZfJyvw5FVWxGoeYBPZBUAmWueEwAsSwMxflBMtjSMlRAo33rc8H4ia6lh4BtonBIz7yeOYo3NI5AvWqIuJCtD8wwZunGNhR42Oizq94mb+qrIuRNbS8OOzXp1E97wn7npaEToYOyoFXm3y8nAYqW4dU2OOlfzgfBJMQwyK32j+Lz7mwn1mMj4a0MIIM3D7dVddsr/OwzDdulX7OAUCi7ItqWXy13LmP/o/dwrq2qAV5otckEduOqv4bCbiFju3371TfdG/fmlvigbSiJmRm7pQSIK/U4tEuV+aAnIolg==
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
- by DU4PR04MB10599.eurprd04.prod.outlook.com (2603:10a6:10:593::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 07:37:58 +0000
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
- 07:37:58 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank
- Li <frank.li@nxp.com>, "chleroy@kernel.org" <chleroy@kernel.org>,
-	"horms@kernel.org" <horms@kernel.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v4 net-next 07/14] net: enetc: add support for "Add" and
- "Delete" operations to IPFT
-Thread-Topic: [PATCH v4 net-next 07/14] net: enetc: add support for "Add" and
- "Delete" operations to IPFT
-Thread-Index: AQHcwQGeP/HV20mPxkKmaPorSbeZFrXMjUkAgAhC7jA=
-Date: Wed, 8 Apr 2026 07:37:58 +0000
-Message-ID:
- <AM8PR04MB72844F38B677543BE84ED605885BA@AM8PR04MB7284.eurprd04.prod.outlook.com>
-References: <20260331113025.1566878-8-wei.fang@nxp.com>
- <20260403011734.1795551-1-kuba@kernel.org>
-In-Reply-To: <20260403011734.1795551-1-kuba@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR04MB7284:EE_|DU4PR04MB10599:EE_
-x-ms-office365-filtering-correlation-id: da041aa6-4c0e-4d80-7aae-08de9541c1a3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|7416014|376014|366016|1800799024|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- gfuyhuNKRI6hs0PFdIdaNoro2Y5cA17B5tcllWF28I+kYMu8Zwt8JSP666+wWneGh8Ra37/j0SfjUT6CSvBWdcNkFI18ZGmN36ZovlZHFTf7iol5vmZ6rnZknGBmB9DOeDau+AMUXGxm9Lk0sXzjuQryFsatq9WARdGgoEQT+xHuGs1l2TXq8aw2M5QEJLA2RlzkU+LNrV7cC448Pbqpdm6LorptGoxbRQI3dPWC99eLiw0yZGqkH5i8W1rbfPtJej/EBArcRQwHzlkdvM4Ho8f3QLr/JFsWYdJ7B+WB4t7Fir2geBDy/W9DAFKkNmBXWcYu98vT4iQN6HJjNSL6kyFxg5MjK5Gm/WkA8mZT/8Pnk/h5/N8StlxD4EvG5anJ3DhO8K2Jdv1CUNb9uD7AtLGOSyvqPxw8kfi4ZJyxY3/DvG3HDomfUKtqVCoRchGHnIi0SgzPDaLlpJn/c7ezUmnHQcf2tdnjqA0WSEOBiBKoGM05sw5XPVOjLnCBrhc6ghXFxCPVrf59ImkFlWq2XDlA4qrnYne9zyzHd3S7Iw2TM1rtoR0h0VDFettJ5sgR9wumkbUQ6eNTMQO5ZTIMKyAGlDyl6aEvhnF87+9nWNpXgHsBxpbsUvjS1lpoAggKtEcsXEQwMV+ej3y3GEd/9aG2t4Ja2TeVVu5RRRRBTiPFXy5cP7TjOMJm9lYJgDuiMnXxCoQdogOVFYRPP0FC+jhiZp/UxN8RfQ9RRlGxNc0WtE2XFVmDY+FUt0KxOiqasuoFWCq7JIQKuvGR2eVoSw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(1800799024)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?gVyzECq8b80JMrQaEnPMavQxaOSia4E3FVyZyJSGqV1jOEwe2LZcFC7c+xcx?=
- =?us-ascii?Q?GkUaGoyhbJWRSUen5GOX3COR79oOnJNiTJdloaHhhQx7kOdbOLfZj1Rv6aUC?=
- =?us-ascii?Q?LastaNKiTfbiBU+dXW93nt9OlzPV/unD5bpHIkcDraAl7ZFzCBF2/jLAKlBC?=
- =?us-ascii?Q?cjxcZWmpnhffUZNFmTds/ypIjwn07WkgWhAtDE4UqO2oSwv2HR5NFWhg7tEX?=
- =?us-ascii?Q?suZ4O37hbdorvuxmXMEv8zS7PV6fl++yNKzii/I03b3lceY+UJ/MruXkYv19?=
- =?us-ascii?Q?zu8RwUDLj/yM39C4O0dPX3VT0RBgKYgE5R2m7PLmiJOeAc3uTn7EcwPNEfkZ?=
- =?us-ascii?Q?x/s9P60dl7NAaIBoAIGtqD6VlQMmedkwLD8SVQIt2aYurTXKEsveHT3edfHz?=
- =?us-ascii?Q?ybz0t181QpPdmJMLnboEoJCHVeeVmZKfA41kOscoT2/r856DR/dOzeAfgsjU?=
- =?us-ascii?Q?FuMpXgKteLv/8vJgLaR7SlBZwxIXAxFgbpQQAWvbwSyppHlOhe3MFJeRZBVn?=
- =?us-ascii?Q?OGYUOi38GAs9wRbLb6Id3sQI9F9IKdE18M4O0LlfafFLFKTkeG3c5u0UXpvi?=
- =?us-ascii?Q?/uqOVvZwrXPUaA/Y49x4kCw+sVrRHHRJ6oIxuIXQGw22czxzI2d1GTOBSmmj?=
- =?us-ascii?Q?tNtx+G/1Mub+h/N55BQr/4+EVJlKrxbw2hHkeRlNqfH8NjMgATv2iA3/9jZs?=
- =?us-ascii?Q?3t6hcYtebsD1GzHzlbFPjs31mF9tzZbAxXaAxc0pxgSgmGvlCHq17UYWNedG?=
- =?us-ascii?Q?ldiSqeyMPJQb9RwoH+Z4ASRm9v1E3e/sNMLWBeBJwfbmMHPXvvrYgjTrSmZa?=
- =?us-ascii?Q?HI6vU2sbi0FDjch0wqjzLzS7b9tOyKqa1/em4cPzBiROo+j7ixgrUCrVVyd5?=
- =?us-ascii?Q?QMdoMKIohgT4V8Q7s6iQ/Cc4Uw5b+KXu3AOKKYEDDTKDT3lMXuW0O7GjYn7G?=
- =?us-ascii?Q?rW1JRaADWKxv76jGYIu6LyxVOK1dLVvu7B4KH4dVvoCoRJS1Hq6edHtbg2jj?=
- =?us-ascii?Q?9hL0sGVRlt8klIPkUnGtmd7orMvfprkglf/8DUbzq51gjDVPWk7JpCd2hZbK?=
- =?us-ascii?Q?IHhH5zbYvNg0F9QMs4cke/AG0ValqiqrhY5BHHK9eVLADHlrvxsu2Q++YsU5?=
- =?us-ascii?Q?zcepYS+k1J1h4Eqw6unwCB6aXlRFTLiUiIF8u85M0IgtzdPZ8/5h0Xa4Br5L?=
- =?us-ascii?Q?3SDcdnAw7s0I+KECWS03fjGDd5+RLMy436TYFmCjtU6LfsC7wEQh0TWlQkGs?=
- =?us-ascii?Q?PUMHFEAPeQieM0Hc6AAzfGoElK1Cbxuxr8pLNfK69c6/yYzVOBwCOQMSsif3?=
- =?us-ascii?Q?k5A6+LfjWsAVTVJtrThJlOWFpa4o7g3i/80zkvd/rjw/NFGLqkDGgTc/ig2W?=
- =?us-ascii?Q?zbwQI1MG8dCdZJGHGXIxSaa0KihaHbT86IepMO0OXSSoxOgULiHUpATPruoz?=
- =?us-ascii?Q?W39M8aaZfGsjTrukmnSJ1zcOrDj+QFdv6BzlN3qnLsmjUmn0LcmaSoE5iYJH?=
- =?us-ascii?Q?oJXutoUTm+i4M2FoqxHKbi1IUXI3snIqN8PfV+ZgKZcyuRLsRXvwrOeHT8h0?=
- =?us-ascii?Q?3szC2X36sVwkusKY3zgyZZjdZIu5Z7ZxodV+2vjqE3ciRooZ80EyK7P8XRo9?=
- =?us-ascii?Q?bO8uIPrdtit0nOWtNZ+eEPfyIxcA6Iu6RidIb86KXGIYNXI0NlhO6vTXPMAv?=
- =?us-ascii?Q?Rt3a/htq44m5/UobTlVj67V7qmOPr+v7VGPw7C2QkANO1iI/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXvTPmzH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3119C2BCB2
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 07:53:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775634830;
+	bh=q8YBRRsDu2bvLGOzr1v72QMsI03TLtycld+RPAvbQBU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LXvTPmzHaW/5Vs02f9Za6DWrJXFtGqCcSoY+XXRcOdDWMFXHhSdKkMz39MTJd7VLg
+	 qOC8k67f6IGGCBbvzCIqvEGPn4rHhbsQl8TiKtk+291ifcTHjch0CpCHzQtERjucRI
+	 u5ZtAgLq5DPh3iiujmLg/YYj083yE2JKXgspaVHjNzeokmBu36yHBpEqO+wyftmbKi
+	 o7j+qPt6NJVp4pC6q52/U8OPLUQDiwPfbJlHK+tzNf92BkWbT6yx7vV2QG2dxJ0W0Y
+	 ohtT2wGN+vJEkpUjr5GtBiMQ6fyJpljsZkeBZ6IiI7H6bBARJBn4Tf7PIlBLbscMdH
+	 q7mvBas8LCIeQ==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-797ab169454so94964887b3.3
+        for <imx@lists.linux.dev>; Wed, 08 Apr 2026 00:53:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWH6P15iHQE8tNQL/AYPh7oIGCceIpDdYu3zxFMViGAMI890fh8sImh77yKU7gaRort068=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzor/+Z9HIUaILOcW3gg0hMv9EgA36SgXveOZkq9NvIkHVaNj0j
+	sZoElTmyQIPb86g9n4Vuj3tjehUoKIjMifNXavOztW0NsECRjdbRvWGZmWu9MJxp1u2tESxjghf
+	/7f7ZL0TbAyXgygoXhgIAhHSVhi8Z8gU=
+X-Received: by 2002:a05:690c:7283:b0:79a:167a:c0d1 with SMTP id
+ 00721157ae682-7a4d6732033mr193822857b3.54.1775634829956; Wed, 08 Apr 2026
+ 00:53:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da041aa6-4c0e-4d80-7aae-08de9541c1a3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 07:37:58.7284
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lU8Jzw3qcjTBjYf6eiEhYVvAMfpQuo0y+/erRTiIyfs3OrIaz+eY+S3Dz/tzuugvWqTGT8OCb1VytAwjK7FzRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10599
+References: <20260408050702.2454661-1-Frank.Li@nxp.com>
+In-Reply-To: <20260408050702.2454661-1-Frank.Li@nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 8 Apr 2026 09:53:39 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnm2gKYJ_0-4Kc054vVttptaSXAAPw55fw7P9ZY9uZA6w@mail.gmail.com>
+X-Gm-Features: AQROBzBXWgnoGtug1OYbD9vmYnolAwjXWvXAcgscglqcDfH8q0_m24dir54JH1E
+Message-ID: <CAD++jLnm2gKYJ_0-4Kc054vVttptaSXAAPw55fw7P9ZY9uZA6w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] pinctrl: Add OF dependency for PINCTRL_GENERIC_MUX
+To: Frank Li <Frank.Li@nxp.com>
+Cc: "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > +int ntmp_ipft_add_entry(struct ntmp_user *user,
-> > +			struct ipft_entry_data *entry)
-> > +{
-> [ ... ]
-> > +	err =3D ntmp_alloc_data_mem(&data, (void **)&req);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	ntmp_fill_crd(&req->crd, user->tbl.ipft_ver, NTMP_QA_ENTRY_ID,
-> > +		      NTMP_GEN_UA_CFGEU | NTMP_GEN_UA_STSEU);
-> > +	req->ak.keye =3D entry->keye;
-> > +	req->cfge =3D entry->cfge;
->=20
-> The request sets NTMP_GEN_UA_STSEU to indicate statistics data is present=
-,
-> but struct ipft_req_ua does not appear to contain a match_count or STSE d=
-ata
-> field before cfge.
->=20
-> Since the hardware expects STSE data before CFGE data (as seen in
-> struct ipft_resp_query), will this cause the hardware to misinterpret the
-> first 8 bytes of cfge as the match_count, and then read the actual filter
-> configuration from out-of-bounds or uninitialized memory?
+Hi Frank,
 
-Based on NETC manual, the STSE_DATA is present only for the commands
-which perform a query. So for the 'add' command, we do not need to
-provide the STSE_DATA buffer. And STSE_DATA is the statistics of the
-entry, which is stored in the internal buffer of IPF table. Performing
-NTMP_GEN_UA_STSEU is to reset the statistic counter when adding
-an entry.
+On Wed, Apr 8, 2026 at 7:07=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
 
-[...]
+> Add an explicit OF dependency for PINCTRL_GENERIC_MUX to ensure the
+> generic mux support is only enabled when device tree is available.
+>
+> Also fix the stub implementation of pinctrl_generic_to_map() by correctin=
+g
+> its last argument to match the non-stub prototype.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202604072013.aI84l57L-lkp@i=
+ntel.com/
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-> > +struct ipft_pld_byte {
-> > +	u8 data;
-> > +	u8 mask;
-> > +};
-> > +
-> > +struct ipft_keye_data {
-> > +	__le16 precedence;
-> > +	__le16 resv0[3];
-> > +	__le16 frm_attr_flags;
-> > +#define IPFT_FAF_OVLAN		BIT(2)
-> > +#define IPFT_FAF_IVLAN		BIT(3)
-> > +#define IPFT_FAF_IP_HDR		BIT(7)
-> > +#define IPFT_FAF_IP_VER6	BIT(8)
-> > +#define IPFT_FAF_L4_CODE	GENMASK(11, 10)
-> > +#define  IPFT_FAF_TCP_HDR	1
-> > +#define  IPFT_FAF_UDP_HDR	2
-> > +#define  IPFT_FAF_SCTP_HDR	3
-> > +#define IPFT_FAF_WOL_MAGIC	BIT(12)
-> > +	__le16 frm_attr_flags_mask;
-> > +	__le16 dscp;
-> > +#define IPFT_DSCP		GENMASK(5, 0)
-> > +#define IPFT_DSCP_MASK		GENMASK(11, 0)
->=20
-> Does IPFT_DSCP_MASK completely overlap with IPFT_DSCP?
->=20
-> If it is defined as GENMASK(11, 0) instead of GENMASK(11, 6), using
-> FIELD_PREP with this mask will not shift the value into the upper bits,
-> which might overwrite the actual DSCP value in bits 0-5.
+I just squashed the fixes into respective offending committ, then
+re-pushed my immutable branch.
 
-Thanks, this is a bug, I will fix it.
+Let's see if this compiles fine, if so I can merge it into devel
+for v7.1.
 
-
+Yours,
+Linus Walleij
