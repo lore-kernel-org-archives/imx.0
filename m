@@ -1,267 +1,324 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011018.outbound.protection.outlook.com [40.107.130.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F60C385513
-	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 09:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775641492; cv=fail; b=fzqZE+IsfGNHHDuzEg1wn7nqmsWY+R4Ky4qUduxOaxDmkgaZRFXB8p2rHenGdnWBlXi+Iv66Tkx4RnSZ5EyzPNFOqwbdi7MJ8jDTM9D3MqNDksrU0IqANZgeUt2ZX0Sd1fyC3NodD/z/WSyHsW977UTRWB2fR985feGVuUV0CSM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775641492; c=relaxed/simple;
-	bh=wjoY0Xe6mBZu6lxOOgHezvnqkvTlfoVMhrYV8l+yA7c=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=r5WdIbUVVVlL7iEtHP8J1yN3jI+yXXObBOY5rGHKVWKhQZI4n68cFNSsk+oN3oPh0huFE7AdnPknq0UycVKmtqiEiJZisC56tGX7YocCHZQcu0d189BL4UoDJhCi24zbvmkWMfH5jHRdE85h5i3yQzHdPGJtHxNyM5LJbM72An4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eSDclOdP; arc=fail smtp.client-ip=40.107.130.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FAE3B6361
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 10:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775642635; cv=none; b=KVm/GDmZSFXhuA4CGH1j1CK/zp6XJmnbuMkgIg8IqUABu7uaPorx8EqWoM6n8wed7apXYsv7hBJ//ZZAwPioXwrPgzBphpZHzIh4AUS94oiIYmN8A2VSnWdS0YvzgxYKzMDrpM0cwI7j7vumYxaEQGSCxaaaWthsYgCVmV29PiY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775642635; c=relaxed/simple;
+	bh=k94qEoqP6LeaqMjZ56JkwcDL9Caxb++/1ywGR2aNrcE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KO/MfFgMSbjPbMl0dn6OJ5kVvjpyOdV7i9lU8lPzCicfjVrU9JJ56X06qKiea+xYKeL1AkQefkQNF1UNkssXQIKMsTUqzOyvyP5Ngt+jYn+zhXFxZUx1FBESOb8PkLKZ/kgkyzwgWijD8gHgXVBQywAalQ5T6wejlYow2dWthOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E5a+CiVG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZXooDhJX; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eSDclOdP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gBQcLHCvFtUN6WCiqY47uOkIesC5eP//HmYDexCNSc6ofZjdvUifTcsD4wkpc1vaw5aVTE4ZDlDzmVHIPBpuLPo57hcOPRjMIaGOHKd+ZjOATetXr87iW34CvNpqGNq619/mKkj293dnhr47X0XWv4MF0C0xW0fAEZyFZkgLgD0Vxoc6hOajOvPNCkMau++9gLSyva/OYn7en6UQtH7KF79hIvQH8uPXn3kF+z44XxepGbLD3N9stM9mSo73XUY9tSCdQw4p69hpf7RkwKnUvu1tjbkXdiFQAltOWcYbiws64Y3tb1JRx0A3XRilQxBmaF+UFwm0o3gTzlLeVuouhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cqkMj/z9YLf1xcoPo8qRCjJAL0AYkEHiBoA0k21NQak=;
- b=Zk2a4LL4KGBUfYfPfiN7mfdu6ansT2aWGQbJoxSR38EVpj1a0Y7vb224Zwhk8gclJTJHrFSEzkudmMpsxR5ZzVYtoTasiSGHP0Az5kZe+IpiBGrYhLtYXXkL0OQ71TpmNes66kdKVNgV/dpRC7xi/K/2IJ1F3UM03dleuy33Ofad8NMSe15hWqxQrdmmruY8SvGQmygNkaTEp55DVZUZ0+ZMrVrDrKU/ul94baQqSDZbZT5P65Xecc2QbqL257qehEeurnciu83u4bq49BjicP7n5lOXhXYxtEP8wImgAuHYKXMpsACzTYc2+GrTon7QcJZdr1zz/OEOZIW5oIQVZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cqkMj/z9YLf1xcoPo8qRCjJAL0AYkEHiBoA0k21NQak=;
- b=eSDclOdPWInOdvTuWF2UjUeEaoKP96fyWh1BBsi3QO+DV1pNKKLKQB8XAjSqHHEN8ieNmzpjhtjbtz/8qZ33y4sN0c8gzbnv5+jv3tO1N993C4Ml2sOZfk8WMyIhPf83WP6RMtiK6E+1pNf2e/HBy+IuP+Tpx2yqM0d+Rp5dCJ0xmBDTNvA9PCXiiFwwFbalW3QdGlObgs5nNUeeDWo9379/UHSv8IrcIu/yJXzxbp2IaQWJgXebSO+fOpgnwwbUcfm+C+9h5xVkgIgIKgWyuE/9ZoENHihvItbowgVPe7SwiEt5pk6YrPpE8C4ZmRV3cxIJVRdiFb6GCUHY/FKamg==
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
- by VI0PR04MB10592.eurprd04.prod.outlook.com (2603:10a6:800:266::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 09:44:44 +0000
-Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
- ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
- 09:44:44 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, Frank
- Li <frank.li@nxp.com>, "chleroy@kernel.org" <chleroy@kernel.org>,
-	"horms@kernel.org" <horms@kernel.org>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v4 net-next 11/14] net: dsa: netc: add phylink MAC
- operations
-Thread-Topic: [PATCH v4 net-next 11/14] net: dsa: netc: add phylink MAC
- operations
-Thread-Index: AQHcwQGvQKsKh1G3FkuUy4SjctygFrXMjVAAgAhdnYA=
-Date: Wed, 8 Apr 2026 09:44:44 +0000
-Message-ID:
- <AM8PR04MB7284FECA252137F74F32EFFA885BA@AM8PR04MB7284.eurprd04.prod.outlook.com>
-References: <20260331113025.1566878-12-wei.fang@nxp.com>
- <20260403011740.1795694-1-kuba@kernel.org>
-In-Reply-To: <20260403011740.1795694-1-kuba@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR04MB7284:EE_|VI0PR04MB10592:EE_
-x-ms-office365-filtering-correlation-id: c5c7be12-23e2-4413-8bee-08de95537719
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|18002099003|38070700021|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- OrkY3751x0BgL5hAYVjty9Cf1fNjsrig8gBJ9TiF/X7jayiG/BpmM6Y0XfXuuQuiJ18rriPxgBICjiLyWi52MvtwOfZhOnzqTi+tQPFecMUETpQZAmsFh76ho8a90GvlEkGY7aIXLIPDqCfNzNivoirZb0Hk7cR0QVSK0G6NFqo8nwPe4l86cLkFvu1lKlmidpjO8C56/QrIHs1YO4TX+EsQZCg9x6MleyZ8a8qiL0RBHaR36UJQuA/Ir0CHOv4gluKVg29HcXjjgW+Eg136zO9CUYfwlTKFMi0RsStVhZzOw1Yk1UQZJKkrdTtpDz3Z3fIr3TvVoE12B31cHHvO0PvIpcll9E+DrIL0AvoRavBEtn2E2NsneQo+gKNV/zJ4O7UhE/zQmX3SYhWblB4Oa9S8in//kOCZnv+MP+VLtY1EZwBHRWAmdrtN+ra/dm+fHGYWNB6/yHQnjGIQrbxgim9+U2CGi4k1H9YAUfG00/2zvJBegAJxnPy1+IPIAjdfHAX7/OJWNUhGwloAawsb38UOfj27Uk9hCT87pusau5nYewM5UnsAcq7TZkQpsksGZ5uYSGt7KxTiHU6crfcZSk49kKd/SEXacY+COydmg2Gox/8aGWXJJ3l8bDY3Ta6QKHY2OW3u7BkKMCCe+BB+U4dYEyLoKJoAfWysCY+5qLHXmMzUUEZXphZRP8xaCdmePEhfUX2UHGMAMB3GvKTGe+piqu2kqX7oGJsOrM7Hmo/GwKJCIBF3CZKhsOIoQxyhcCpX7PtfXkLFzq38eorVeUxL+m51KMxiNWrVVmWQn1I=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(18002099003)(38070700021)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1NwDr/0TM5CWrC8MTXqCTEBhbS/ysrYjibcyTIizswG9DlZJ/m3yfOO7/603?=
- =?us-ascii?Q?uKHEaVn4znK3gJoByGz+zO39SQvV4A+QFaRQ2gMW7ycMHx+MqrDWNgR/8TYU?=
- =?us-ascii?Q?Rjglsg7ueHa57z5FKrf/zjP3FHGqLt1dInmWjhfnvocMNevSRCV0ZZAhoahe?=
- =?us-ascii?Q?a997+BJDFQqqaCWz6LqExbn1Hd7fiCTL2Rnlf13PZLpNnoOr6pdn2wnqfklJ?=
- =?us-ascii?Q?lO590Vzr2X5EJHpezT/OuuK7PBjyg3XEvlUasjfOuHL1WhycrMnKW0TXkr9I?=
- =?us-ascii?Q?xVrkdipqsIcyOcpKHBMH6X53f4SC+O4/zVAYBw7lxgwql9OhUcFoOsgwhX+s?=
- =?us-ascii?Q?J2l/WyTs0eTy/wQ2UP1QaSqTMuq25cEiQ8G7HR/goBhsAu4XOtFEy0OLH07I?=
- =?us-ascii?Q?SP7UrpS+rrV8lyG/uf6HgNpM/5fj3V1lncTGrcO39nJso8cijEgHo/ryPhGg?=
- =?us-ascii?Q?OT0JSZ6jGLf2U6xOhkVTvHKkZulLuxbzH6oAdzGLwWTHwD+4hwnVQGh619AN?=
- =?us-ascii?Q?xZp0Elg7jHEhI8cUEnfMYvIlFsc8EURNofLqZo2YCW9PNFlceTeHgPwRE7hx?=
- =?us-ascii?Q?gxpW2HQGjpD3JvACUifjJjThr3XFrxb2YDBJB4onU1a+4vY2LdLAIPw4F69p?=
- =?us-ascii?Q?zBSl/ZV5YdpA9GFUkKBlCIKNLGgyTTY/64TDV7lzZ3NQgGr4hOGY2v//jQeF?=
- =?us-ascii?Q?o3iEHvpI8UqA6unD0Dh5qKj7ukzzp6SABq6o5/xDmp+GdzC+NfhMLApP9PUG?=
- =?us-ascii?Q?crOvuVUZQkRkrNM65TTVG3WtBI6gFApqPSre9EOv9W4YlUlsw+cVmKF32igQ?=
- =?us-ascii?Q?vjKIhdt9NnSIH+kkOTSA2VDj1c7vnJo/Fj6Yhcoss8bUxPWpZtSH+BPIrWNp?=
- =?us-ascii?Q?bo1WluECA/qyOFmq6X6Q42zpMosBN4BufAdm8nxh7RnvtPzH66pdd5Z7DH33?=
- =?us-ascii?Q?QQ+X1HzvwYnvdywzgce+gNHHVpZAiSN5HpoytfQE4UirG/eHkT15fBySh1Jl?=
- =?us-ascii?Q?v7Ffb+/kJ3l7H/1P30adlMW05rkt+MufHj6xUihw5+phnlfMCzEC8BcVGeRt?=
- =?us-ascii?Q?v28TRcZCuS663zUqhXhOc9ltEjw+4CfDNZLzj5lLk7aQqWyTbF49Z6Nt7zoU?=
- =?us-ascii?Q?ivsGl0DkhGU2S3N+kkZAtJCXTTNrfqXvx0pp6td6kcjZUb7CCsvDKUQe1QJF?=
- =?us-ascii?Q?jpPMM1bLCGKMxwADouPEgHDBtcFO4r8dwEy8Ls51LMGpGhMzW6cirzDoLFzr?=
- =?us-ascii?Q?oAb9qEFt9edlm3QDZhvJyTPrA+xgfoPqwhibfoOtMtBU+97wIjezRrSCjGH1?=
- =?us-ascii?Q?K5urx5Kb0rghst6BnEs/6qWYd0y9qfiGXLBf1hea0s1d7U7bZgz7HEXGg7yw?=
- =?us-ascii?Q?YqvvUrDZ/GlGDxJKL0L8vks3zXtJotKsqvtvoK0G82SmyimjrBbXRP4m3/bl?=
- =?us-ascii?Q?QTeajVQ1fhZ1BmGoSOIFQiGkBxq5S+SJTQgP1C8OyB/wwckydLhUs/jRbLC+?=
- =?us-ascii?Q?MDB587Rmmdn1En2B+x4SU+ch7kDOU+swdEVktsjZtbbejrKk/revHtvH+nI9?=
- =?us-ascii?Q?lrCBu3vL7nVDExHADPguaPvEXB+Gcnoy1/NVz5UWQDY090CdWxHt79sNM8WR?=
- =?us-ascii?Q?GO888bPGfW9krLzPuW3MYEkmIXUpVSsHk6kycBJAv8I4ji5SZo+byejBiB7w?=
- =?us-ascii?Q?7R6BtHtaS6upnszodg5nz8l4lLDJ/IYUBk1kPsHzFTMFvEAS?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E5a+CiVG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZXooDhJX"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6387NxKZ1619595
+	for <imx@lists.linux.dev>; Wed, 8 Apr 2026 10:03:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7S+jIsI8IolI8S/0NzS+SU
+	gTDKQIENCfMEWeyQ17RZs=; b=E5a+CiVGxDzyfBjpQZeW+h8coO6mDpkw3C4VLr
+	Il7IruwRRyGVifBF2tWEIh0RITVBUh7wynkqqBDiu0qvVthDXizphb40Z0fXg7l1
+	4ePD+LWpuMLVmio17YTK1QVRNMPOyHYbMWFwoed9dZ4dSV6Mg9UfbYAstBHh0LrC
+	ZcRfFoLo3Ctd4aDMK0HXfG7wz4TO1bUEzKb0WISeGCY/qyVcs8KZiv5bhjTW+QUi
+	MjqFoHQ/Aq+Lu9LM0xUn0dFnnR/PTKUZzQwF1+yIbkQFbo36+N0foO3Q1elT13BM
+	ppen4soBoDXUil18hOzE/8lDj63ocv022uBlYiZUp66jejBA==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ddacrj7rp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 08 Apr 2026 10:03:44 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82ce1c395ccso8473872b3a.2
+        for <imx@lists.linux.dev>; Wed, 08 Apr 2026 03:03:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1775642623; x=1776247423; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7S+jIsI8IolI8S/0NzS+SUgTDKQIENCfMEWeyQ17RZs=;
+        b=ZXooDhJX9z1t2yQY9STwJTMcCcrsdLqEiVfVvt5ZHsTEDgfM7NYxGtSe0Jfpakn40c
+         Yj0ksr3GND+my9nlTKKf1Qs8b1BqmUofE5rputh2bSt+O/gdPTTMIM20hcJaSwzSSXoU
+         EKFl5PW71tIJBpwUSPP5AbMddh8hvB6ZnKyEdTyrjgIXaSzGwMjb/VD2rZ+yz7Y2x5VZ
+         mc9EkvhJDqkCLNm2Z/EhSyw2cuMmcEinnR2BRX7qxVkVqprRa8ldzqwattY/ve26F2gq
+         Wv1bVP2/tEBPKXS1wI21EaSVZKxCzUop6zO0p9NvddjU2ijq/7mWDtRuftXIQWPycQnw
+         wh3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775642623; x=1776247423;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7S+jIsI8IolI8S/0NzS+SUgTDKQIENCfMEWeyQ17RZs=;
+        b=S7P0gu7mbGeJsfRkzZB6PgjwgBJMEFbu3jmytLGKy76rHy16ngdPHIccUJfqCkHeGh
+         DKtCSfWaQQ8kN5KgUD3ZhHDw4vmqOiIlMdnyzOzIV7wxRga+xGAbvI2o8Aq/QpREtL8g
+         gub2GyG9qmSqXPvUE1cvXDahFo8BIyG12XOiElcrW/jZ4q/6llk9KPCHMOJDUEdDXKpX
+         RzZGoCGBvQJzC8MotEQqRNlbEwdQJ1EZIfwfQ2Fm+Tf5LGyH3smkb9/qYMvMSD6c1uTT
+         IhP8cp/OsgSe9YxpTk8IwFN8yYv5AxXjJyG2rOhtvBEJCuw2NjwFz6dSNGY8dPe+JpBc
+         gPmA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Yjn488vPP00ZVk2seo6oifqfpWUqYBhUGBFkhYiDs9CMJ+woIIJlJvAHeLy7lgHj8/M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSIDLekjUTeOIfFIUMdyjirT/EywZYDhV+P03D/8IHUCk/bQwO
+	p4Me5HQ/9yhUIg2lkyG0yPH9Lw1Ape88JjdZe7W3Bshe8WeUmXdBgksNsVoE0h57Ze2vMBUHH1r
+	VdzNPNv7+0TnKZk+ZHkwE9R3jrLFZb9h+/3gc6b6q6+FMGnOLqv5nVsA=
+X-Gm-Gg: AeBDieuEjRSDoAvtFmgmwTzcrCrZEOSA2BETjZty+cHWjzg94sjSpH7e2EeLTkpHwxk
+	rthTivXvGU9Pz6GXSDjaP6JqF9vsVKZchMR0DATUaSU+jiKMN4MWBjb1NTwVO5yq/o0ObP7YNqS
+	L7h9fwbckSE8+ORSRk5LsfrzCQR3j1+02PCcitlWEHTwZ0gt4Ma/UbUtQaWXCibEZmJTufyWRzJ
+	HappX9/u2TOQlGPCbtfIx+yFh2De3Ohlk/4UssYOUFNdHaiDDvYgaYBgXKtaNqm9JRZYqj8kNOZ
+	t8Jvo4woTIB3P7Dng6DnSnBEBI+9wnItoiZEfSk2YLaR/osCCKVbyLHCU+Wal0mvHiaEHI/kiB9
+	ND44P5IcZMLT1pWGSc80oaRdmGdJivhDW2ykgEDey9nGRKW4dK8uc4QyG
+X-Received: by 2002:a05:6a00:3696:b0:827:2a07:231d with SMTP id d2e1a72fcca58-82d0da77231mr19594598b3a.17.1775642623055;
+        Wed, 08 Apr 2026 03:03:43 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3696:b0:827:2a07:231d with SMTP id d2e1a72fcca58-82d0da77231mr19594542b3a.17.1775642622439;
+        Wed, 08 Apr 2026 03:03:42 -0700 (PDT)
+Received: from hu-vjitta-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b5fb22sm25805584b3a.26.2026.04.08.03.03.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 03:03:42 -0700 (PDT)
+From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+Subject: [PATCH v13 0/3] of: parsing of multi #{iommu,msi}-cells in maps
+Date: Wed, 08 Apr 2026 15:33:24 +0530
+Message-Id: <20260408-parse_iommu_cells-v13-0-fa921e92661b@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c5c7be12-23e2-4413-8bee-08de95537719
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 09:44:44.6101
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hccfQUgPuG9+rYeHm4bAGxMGYeXS9/IJGMG0gZad8vnk5GcAKc+wIET8UV/ozDK510IJCL96XWc6Nv3X1BHo0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10592
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOwn1mkC/33PQY7CMAwF0KugrCcoTkinnRX3QAi5jgORCmUSq
+ ECod8ew6qKwsfQt+1l+qMI5cVF/i4fKPKSS+pMEcD8LRQc87VmnIA1lja2MM6DPmAvvUn88Xnf
+ EXVc0kHO/VY3ctqhk75w5ptsb3WwlH1K59Pn+vjE0r+43bWi00asALTETeYZ1X8ry/4odydRSi
+ nqhA5ip1MxJYISiykZC9Aih/kTBhLJ+lgKhIHJET4ZrS58oO6Hc7H9ghQpMMTjjmbGZocZxfAK
+ rbA/VmwEAAA==
+X-Change-ID: 20260301-parse_iommu_cells-1c33768aebba
+To: Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, imx@lists.linux.dev,
+        xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org,
+        Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>,
+        Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775642611; l=6465;
+ i=vijayanand.jitta@oss.qualcomm.com; s=20260301; h=from:subject:message-id;
+ bh=k94qEoqP6LeaqMjZ56JkwcDL9Caxb++/1ywGR2aNrcE=;
+ b=Fa93m6jMAv59XO0RGhV08H7u/lbeMgEu+VO89mYeYe9+udo03+OfW5l6aRjt+/+cujOgn9u6U
+ /txq4POfFP1D4nQK6IieIAafLv29dRyBbPOkaAXwmZAh5zFPlwXVp/j
+X-Developer-Key: i=vijayanand.jitta@oss.qualcomm.com; a=ed25519;
+ pk=Lpi7Cs3wHe8KZtqvyci7FTOLzsKpEHKGCaPNZw+1zRI=
+X-Proofpoint-ORIG-GUID: aB6FrB1RAp-d4cHRBAzWyWvAzJz0EFVi
+X-Proofpoint-GUID: aB6FrB1RAp-d4cHRBAzWyWvAzJz0EFVi
+X-Authority-Analysis: v=2.4 cv=WZs8rUhX c=1 sm=1 tr=0 ts=69d62800 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=NEAV23lmAAAA:8 a=bC-a23v3AAAA:8
+ a=EUspDBNiAAAA:8 a=qMDWySynzQg1s02BiloA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22 a=TjNXssC_j7lpFel5tvFf:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDA5MSBTYWx0ZWRfX2cUKDzl256yw
+ gOTspIkgCgdXpcvt4FEU1c1AaojY2D/hsfZSaLrM6tlgWRgNuaImSuGHskJV23cBdqdV4BFkgJj
+ EFDYFK9b1/lN3aEyTfNiy6LXkI0lAob0gqTZTlNbSSJl/4Z9WpxdqPGd30H1ss81fIGIz0hht2d
+ 8C8THFOH/HSonZlVy87JZy5Gg8/DVXZcqW16GUQcZ/qEDZwOUVwPC8lKjpS2TMtWcvKGzxeLycv
+ G8HpLmJUYNbxLdnaMbYtoA/y19GGrxMW7v4jpfnz9gfa1Xn5k8pel3kW8iltXL1kChxv3PVztd1
+ mw6/Vy7EKsZH7Qx+hBgoC9sq7uowvMTSTRAcjuEQ9iJKSAtn9gYPViU6x+OVyhkvdAqGRX591cn
+ +YfuW1Ezkww+EADMg5hnqBMRXQaJyi3B1qEROHCafnEG26LTwIH9//7XIC0yNmoqGxeNl9bRdoV
+ PIz1sl32Naz4ErTTRTg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-08_03,2026-04-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 adultscore=0 phishscore=0 clxscore=1015
+ bulkscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080091
 
-> > +static void netc_port_mac_rx_enable(struct netc_port *np)
-> > +{
-> > +	netc_port_rmw(np, NETC_POR, PCR_RXDIS, 0);
-> > +	netc_mac_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_RX_EN,
-> > +			  PM_CMD_CFG_RX_EN);
-> > +}
->=20
-> Pseudo ports (like the CPU port) bypass PMAC register accesses during
-> graceful stop via is_netc_pseudo_port(). Should there be a similar check
-> here, and in netc_port_set_mac_mode(), to prevent accessing physical MAC
-> registers on pseudo ports?
+So far our parsing of {iommu,msi}-map properties has always blindly
+assumed that the output specifiers will always have exactly 1 cell.
+This typically does happen to be the case, but is not actually enforced
+(and the PCI msi-map binding even explicitly states support for 0 or 1
+cells) - as a result we've now ended up with dodgy DTs out in the field
+which depend on this behaviour to map a 1-cell specifier for a 2-cell
+provider, despite that being bogus per the bindings themselves.
 
-netc_mac_port_rmw() has checked whether the port is pseudo MAC. See
-below.
+Since there is some potential use[1] in being able to map at least
+single input IDs to multi-cell output specifiers (and properly support
+0-cell outputs as well), add support for properly parsing and using the
+target nodes' #cells values, albeit with the unfortunate complication of
+still having to work around expectations of the old behaviour too.
+							-- Robin.
 
-static void netc_mac_port_rmw(struct netc_port *np, u32 reg,
-			      u32 mask, u32 val)
-{
-	u32 old, new;
+Unlike single #{}-cell, it is complex to establish a linear relation
+between input 'id' and output specifier for multi-cell properties, thus
+it is always expected that len never going to be > 1. 
 
-	if (is_netc_pseudo_port(np))
-		return;
+These changes have been tested on QEMU for the arm64 architecture.
 
-	[...]
-}
->=20
-> Additionally, when np->caps.pmac is true, netc_port_mac_rx_graceful_stop(=
-)
-> disables the preemption MAC via NETC_PM_CMD_CFG(1). Should this function
-> re-enable it when bringing the link back up?
+Since, this would also need update in dt-schema, raised PR[2] for the
+same.
 
-netc_mac_port_rmw() also set preemption MAC if the port supports preemtion.
+[1] https://lore.kernel.org/all/20250627-video_cb-v3-0-51e18c0ffbce@quicinc.com/
+[2] PR for iommu-map dtschema: https://github.com/devicetree-org/dt-schema/pull/184
 
-static void netc_mac_port_rmw(struct netc_port *np, u32 reg,
-			      u32 mask, u32 val)
-{
-	[...]
-	if (np->caps.pmac)
-		netc_port_wr(np, reg + NETC_PMAC_OFFSET, new);
-}
+Robin,
 
->=20
-> > +static void netc_port_wait_rx_empty(struct netc_port *np, int mac)
-> > +{
-> > +	u32 val;
-> > +
-> > +	if (read_poll_timeout(netc_port_rd, val, val & PM_IEVENT_RX_EMPTY,
-> > +			      100, 10000, false, np, NETC_PM_IEVENT(mac)))
-> > +		dev_warn(np->switch_priv->dev,
-> > +			 "MAC %d of swp%d RX is not empty\n", mac,
-> > +			 np->dp->index);
-> > +}
->=20
-> Is NETC_PM_IEVENT a sticky write-1-to-clear register? If the RX FIFO had
-> previously emptied during normal operation, could this bit already be set=
-,
-> causing read_poll_timeout() to return immediately without waiting?
+Could this series be pulled into an immutable branch/tag, if it doesn't make
+it into the v7.1 merge window? There are client changes dependent on it,
+So it would help to get them moving forward rather than waiting another
+cycle.
 
-NETC_PM_IEVENT[RX_EMPTY] is a read only bit. It will be cleared
-if Rx FIFO not empty or Rx packet receive in process. And it will be
-set if Rx FIFO is empty and no Rx packet receive in process.
+Thanks,
+Vijay
 
->=20
-> > +static void netc_port_mac_rx_graceful_stop(struct netc_port *np)
-> > +{
-> > +	u32 val;
-> > +
-> > +	if (is_netc_pseudo_port(np))
-> > +		goto check_rx_busy;
-> > +
-> > +	if (np->caps.pmac) {
-> > +		netc_port_rmw(np, NETC_PM_CMD_CFG(1), PM_CMD_CFG_RX_EN,
-> 0);
-> > +		netc_port_wait_rx_empty(np, 1);
-> > +	}
-> > +
-> > +	netc_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_RX_EN, 0);
-> > +	netc_port_wait_rx_empty(np, 0);
-> > +
-> > +check_rx_busy:
-> > +	if (read_poll_timeout(netc_port_rd, val, !(val & PSR_RX_BUSY),
-> > +			      100, 10000, false, np, NETC_PSR))
-> > +		dev_warn(np->switch_priv->dev, "swp%d RX is busy\n",
-> > +			 np->dp->index);
-> > +
-> > +	netc_port_rmw(np, NETC_POR, PCR_RXDIS, PCR_RXDIS);
-> > +}
->=20
-> For pseudo ports, the code jumps directly to check_rx_busy and polls for
-> PSR_RX_BUSY to clear. Since PCR_RXDIS is only set after the polling
-> completes, will the RX pipeline continue accepting traffic and cause this
-> poll to always timeout on an active link?
+V13:
+  - Fix bad_map handling in of_map_id(): 'cells' is re-initialized to 0
+    on each loop iteration, so the !bad_map guard was insufficient, cells
+    stayed 0 for all entries after the first. Fix by explicitly setting
+    cells=1 when bad_map is true on every iteration.
+  - Collected Acked-by from Frank Li.
 
-For the pseudo ports, no need to check the PSR_RX_BUSY bit, only need
-to set PCR_RXDIS bit to discard RX packets. I will improve it.
+  Link to v12:
+  https://patch.msgid.link/20260331-parse_iommu_cells-v12-0-decfd305eea9@oss.qualcomm.com
 
->=20
-> > +static void netc_mac_link_up(struct phylink_config *config,
-> > +			     struct phy_device *phy, unsigned int mode,
-> > +			     phy_interface_t interface, int speed,
-> > +			     int duplex, bool tx_pause, bool rx_pause)
-> > +{
-> > +	struct dsa_port *dp =3D dsa_phylink_to_port(config);
-> > +	struct netc_port *np;
-> > +
-> > +	np =3D NETC_PORT(dp->ds, dp->index);
-> > +	netc_port_set_speed(np, speed);
-> > +
-> > +	if (phy_interface_mode_is_rgmii(interface))
-> > +		netc_port_set_rgmii_mac(np, speed, duplex);
-> > +
-> > +	if (interface =3D=3D PHY_INTERFACE_MODE_RMII ||
-> > +	    interface =3D=3D PHY_INTERFACE_MODE_REVMII ||
-> > +	    interface =3D=3D PHY_INTERFACE_MODE_MII)
-> > +		netc_port_set_rmii_mii_mac(np, speed, duplex);
-> > +
-> > +	netc_port_mac_rx_enable(np);
-> > +}
->=20
-> The callback imx94_switch_phylink_get_caps() advertises MAC_ASYM_PAUSE
-> and
-> MAC_SYM_PAUSE capabilities. Is it expected that tx_pause and rx_pause are
-> ignored here? If flow control is implemented in a subsequent patch, shoul=
-d
-> the advertisement be deferred until then?
+V12:
+  - Call of_node_put() unconditionally in imx_pcie_add_lut_by_rid()
+    thereby addressing comments from Bjorn Helgaas.
 
-Okay, I will move the advertisement to the subsequent patch.
+  Link to v11:
+  https://lore.kernel.org/r/20260325-parse_iommu_cells-v11-0-1fefa5c0e82c@oss.qualcomm.com
+
+V11:
+  - Added explicit filter_np parameter to of_map_id() and of_map_msi_id()
+    per Dmitry Baryshkov's review feedback, making the filter explicit
+    instead of overloading arg->np as both input filter and output parameter.
+  - Removed of_node_put() from inside of_map_id(), making the caller responsible
+    for reference management. Updated of_msi_xlate() to properly handle reference counting.
+  - Collected ACKed by tags, and fixed minor typos.
+  Link to v10:
+  https://lore.kernel.org/r/20260309-parse_iommu_cells-v10-0-c62fcaa5a1d8@oss.qualcomm.com
+
+V10:
+  - Move of_map_iommu_id()/of_map_msi_id() from include/linux/of.h to
+    drivers/of/base.c as out-of-line helpers per feedback from Marc Zyngier
+    and Rob Herring.
+  - Add kernel-doc to document both helpers for discoverability and
+    usage clarity.
+  - Fix of_map_msi_id() wrapper and all its callers (cdx_msi.c,
+    irq-gic-its-msi-parent.c, drivers/of/irq.c) to correctly use the new
+    struct of_phandle_args-based API with proper of_node_put() handling
+    as per feeback from Dmitry.
+  Link to v9:
+  https://lore.kernel.org/r/20260301-parse_iommu_cells-v9-0-4d1bceecc5e1@oss.qualcomm.com
+
+V9:
+  - Updated TO/CC list based on feedback to include all relevant
+    maintainers.
+  - No functional changes to the patches themselves.
+
+  Link to V8:
+  https://lore.kernel.org/all/20260226074245.3098486-1-vijayanand.jitta@oss.qualcomm.com/
+
+V8:
+  - Removed mentions of of_map_args from commit message to match code.
+
+  Link to V7:
+  https://lore.kernel.org/all/20260210101157.2145113-1-vijayanand.jitta@oss.qualcomm.com/
+
+V7:
+  - Removed of_map_id_args structure and replaced it with
+    of_phandle_args as suggested by Dmitry.
+
+  Link to V6:
+  https://lore.kernel.org/all/20260121055400.937856-1-vijayanand.jitta@oss.qualcomm.com/
+
+V6:
+  - Fixed build error reported by kernel test bot.
+
+  Link to V5:
+  https://lore.kernel.org/all/20260118181125.1436036-1-vijayanand.jitta@oss.qualcomm.com/
+
+V5:
+  - Fixed Build Warnings.
+  - Raised PR for iommu-map dtschema: https://github.com/devicetree-org/dt-schema/pull/184
+
+  Link to V4:
+  https://lore.kernel.org/all/20251231114257.2382820-1-vijayanand.jitta@oss.qualcomm.com/
+
+V4:
+  - Added Reviewed-by tag.
+  - Resolved warnings reported by kernel test bot, minor code
+    reorganization.
+
+  Link to V3:
+  https://lore.kernel.org/all/20251221213602.2413124-1-vijayanand.jitta@oss.qualcomm.com/
+
+V3:
+  - Added Reviewed-by tag.
+  - Updated of_map_id_args struct as a wrapper to of_phandle_args and
+    added comment description as suggested by Rob Herring.
+
+  Link to V2:
+  https://lore.kernel.org/all/20251204095530.8627-1-vijayanand.jitta@oss.qualcomm.com/
+
+V2:
+  - Incorporated the patches from Robin that does the clean implementation.
+  - Dropped the patches the were adding multi-map support from this series
+    as suggested.
+
+V1:
+ https://lore.kernel.org/all/cover.1762235099.git.charan.kalla@oss.qualcomm.com/
+
+RFC:
+ https://lore.kernel.org/all/20250928171718.436440-1-charan.kalla@oss.qualcomm.com/#r
+
+Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+---
+---
+Charan Teja Kalla (1):
+      of: Factor arguments passed to of_map_id() into a struct
+
+Robin Murphy (2):
+      of: Add convenience wrappers for of_map_id()
+      of: Respect #{iommu,msi}-cells in maps
+
+ drivers/cdx/cdx_msi.c                    |   8 +-
+ drivers/iommu/of_iommu.c                 |   6 +-
+ drivers/irqchip/irq-gic-its-msi-parent.c |  11 +-
+ drivers/of/base.c                        | 215 ++++++++++++++++++++++++-------
+ drivers/of/irq.c                         |  11 +-
+ drivers/pci/controller/dwc/pci-imx6.c    |  34 +++--
+ drivers/pci/controller/pcie-apple.c      |   6 +-
+ drivers/xen/grant-dma-ops.c              |   5 +-
+ include/linux/of.h                       |  30 ++++-
+ 9 files changed, 242 insertions(+), 84 deletions(-)
+---
+base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
+change-id: 20260301-parse_iommu_cells-1c33768aebba
+
+Best regards,
+--  
+Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
 
