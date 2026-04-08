@@ -1,184 +1,95 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012003.outbound.protection.outlook.com [52.101.66.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315B02836AF
-	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 03:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775617228; cv=fail; b=q1sTEHB4JL3gUcf3g4LgjS1TTofKmqacp68AZe9f+DI+lAClUFKBjs71qlqEpNrcX6RNbYnnilVuijdTIKM8z/QOkytp8elq9lJsHkhSUWFj0wcz/7gmsG+eQfHJWzvUX0oFga5EuIbwyXk0dSS87bYmnkeJqmlHH6HxBQQMLtw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775617228; c=relaxed/simple;
-	bh=A7yOh0uY7NrGicf/9jWn0cCeuLhQvRYsU14dQKJ4Cdo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jx+6cE9rY0B9yGD5bMldtZCwvV28up/J9pqJPTX2POsQrSZBgfM7QNIj/LqzewG9mkD4295nvv8lcgoWsCjNViXDmVK1uum3Z1mHZfGK6Ah510PP4jfifUqi4TTrmB9epmqJiJ66MUIb2OY0qcgBGoQPJW4AZRTfw6qW2YcQTlQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gBbnCgFJ; arc=fail smtp.client-ip=52.101.66.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gBbnCgFJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a441UnrxhMag2u2Hovm1AFjyDZrcmiVGLkFcOvp5feAOy3mKomI6cEl51gJyumNg26B12/625jGj8JtnOj9rXEcoq7PUrhoristaFSyqitkdzngzGibCdgmLcE3lxUS0p/q6lI6UZ67KhRdp/Lv+MO+DDB6vEii2/50psMgWE90yFUWIRM1G7leG0l5dKhJP8TjoCcRMeVGZL8OHRVvMPnGzE1K1+NIAZEawHLCkOUmMmTen+wItvfapMv2WQw0yYNPjYxJMx/C+N43zXoMKabbyhuDTVSQEwKcdnvQbLZ0Y8tpI1Tu7xHwkqXOvnftjgZe6iAcvDjTErNH7OpuIvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ES/XsuOVIuselhNviVnNDEN11iMyuR8LMgvecTY0/sc=;
- b=xkewWaNySHaBYAwWukcRBcwgcGQ53ga0hpJm8J73QzdrPruN+gGSvSJrXYaYCh5kvzuEZ8V3zyeVk8+swWmhCOxjgQgtlCTUOn/QVJDc9gkDH5jYwVkJHSi+B4fSgvQqvLiPrgTtrRx/uWsPZcOulJ5QkySnnvg634QQHEH5Dzh93nOGpbaMNkndqmMShTdASmQs6mvxXOr0F1kCkGd4fwiOvi6RhPKbzhy1gnvWhFqW30ncdTJG+neEOILE3MG93wm/6CTDACQM6snEywxqZD4hHXiJUCzZzA0Kt71y7TW7DmVxrjN8HR4DkXkgH+vqdBLwj701Yu1yehzgsLHGdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ES/XsuOVIuselhNviVnNDEN11iMyuR8LMgvecTY0/sc=;
- b=gBbnCgFJ8PMgP1TOi13AE+8VlshNCLOujf+YkMv+4Va/p1hGaLSiu1nLb7Qbom9Ap31rXw1PEEjub5cDP9zK9LY3zbI4fQ6vGeW0GpD5KVH9gb5sKQwkit43TRUurBIJ3EeHGG9Ik9o/e1D8xJnNPc0KMqeaQ6lRiuPYRtIdhr6vpiOW8DyU/ZJvPY/R9iiG8Sdaptp/C1dBFwZkXhDxTsJX5XAPadiXu7zetz5WKe7Y+IpLGU9WERrRHtnwBDz7awI6LTO1MWfrnRJ30pST9uT3KLhHQC1YHCgOf6AlYIOJvAuSloNF39EmaswnWaKeuX8QX/KDqY1pJxFX5SCuHg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DB9PR04MB9356.eurprd04.prod.outlook.com (2603:10a6:10:36a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 03:00:23 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%3]) with mapi id 15.20.9769.016; Wed, 8 Apr 2026
- 03:00:23 +0000
-Message-ID: <f467c021-268e-48b2-9c62-8998759c4a74@nxp.com>
-Date: Wed, 8 Apr 2026 11:01:32 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/11] drm/mxsfb/lcdif: use
- DRM_BRIDGE_ATTACH_NO_CONNECTOR and the bridge-connector
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
- Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>
-Cc: Damon Ding <damon.ding@rock-chips.com>,
- "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
- Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Christopher Obbard <christopher.obbard@linaro.org>,
- Daniel Scally <dan.scally@ideasonboard.com>,
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
- Fabio Estevam <festevam@denx.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Gilles Talis <gilles.talis@gmail.com>,
- =?UTF-8?B?R29yYW4gUmHEkWVub3ZpxIc=?= <goran.radni@gmail.com>,
- Heiko Schocher <hs@denx.de>, Josua Mayer <josua@solid-run.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Martyn Welch <martyn.welch@collabora.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
- Richard Hu <richard.hu@technexion.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>,
- Vitor Soares <vitor.soares@toradex.com>
-References: <20260407-drm-lcdif-dbanc-v4-0-247a16e61ef9@bootlin.com>
- <20260407-drm-lcdif-dbanc-v4-11-247a16e61ef9@bootlin.com>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20260407-drm-lcdif-dbanc-v4-11-247a16e61ef9@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0207.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b0::6) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70960211A14
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 03:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775617855; cv=none; b=fuzsniHnSAgyI+YlH64K2vFV2tQ/kUOonky1WQ2fwFJS2j2Y2oQ/6r/H5UfDiYy8/Xtbyhk2+ebBmUNdJJwFIx0zaxa3ltuFNBry9ZvpV1ll4bT8ukjfW7Yty8dXuA4ZGK5doVRhCK1StNZV43FVFbkAAND+mXBjzk3PqYOjMoE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775617855; c=relaxed/simple;
+	bh=VaBGZ1QXqRg76zaGf8gaHSUdkNpNvxf0g9jxhu1rBco=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nwjjrOYC5zGg4J/MMJwp5h43qnYV+oI6dL1mGNj0eRyowfELgFQm0b/XDYMmRtLstpdgk5pKSXQrLSRrVJvJPwIg7j4WYOlDtwWfU0HkQLz2aOX3YDb87NMA4ZVlsA+tQr01w+AIIW1e9KqeY+E7X+zRXMY/XXt2GChabKRV7Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowACXQm4yx9Vp3iqWDA--.31904S2;
+	Wed, 08 Apr 2026 11:10:42 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Georgi Djakov <djakov@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] interconnect: imx: fix use-after-free in imx_icc_node_init_qos()
+Date: Wed,  8 Apr 2026 03:10:04 +0000
+Message-Id: <20260408031004.309483-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DB9PR04MB9356:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38f673dd-1ada-43c9-ed1c-08de951afa2f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|376014|1800799024|7416014|19092799006|22082099003|18002099003|56012099003|921020;
-X-Microsoft-Antispam-Message-Info:
- +o++tXAHXLF0+qvDJFGT3E8Hd84WEUiyPB01Nc9jmSOI3V6zYlCqmwAcfiYZewbQtv+6xcO7NV9iITAlGAsY5lhEK/d5b0gZPu0FXmWzfyWbhd7Bf7fQmxodGeP+z1LpeZae5uz61GwxwUgLMdjcZej7VKU6pExrLN2mZc35cm1QDl9vGWgd3KJ/tm4Wo6Zjz3Zmgm5wAVVlZxEeYEMwBTplez1Mkx6+0PW/vpMrJLkvVVlfP6c3vE632hyFrWbtNoLc4KSv67cqHEqdDAvxbq0dwjWl/vlbpCjNRcsSLyxpMUi9lczW7viMmhRT6wl0TVYvkNI0fU4k7DjWgtfq1X7oGf0w31QWu1q3aD1F/FwAnR7skaDWF+9lw7QNF8ANKew66HwXiLFtWTJYZyDv5EBPDtVmj6EBsaBIiAfM+yMqO8NuJeS+Vdk5K0JIKomfvmGUA5UxesLSw5/5+TXFCa4xSPcuTM5NtuqZsj5c6ZWaLHyUeji4+dtdz6oIcUD8T6g2M+aWDXx3HHwXZZ9lqfy5DW2UDm3Rby1k5A7QcXF4EFMoxwdRVbnBwVM6Ft5r5PjDu13XIz0A9ncZprVQ7bBs2jgi/k/xUbN2VkGeSNuaAbcirFKxi3nVhmnsomw3letEknjqNopZeg6QnVVSxq7PzQO7XjUGLJYySWqc2Tw9ftWFrcGFv1+QjoGHb8g94CJZcgdoRx1UE6SSuL74Tye0984OpMxNClhoxJXMIjmjAKwGRBx4gksogeNqcY8vaXFsea/F2YR95v1GGrz5aw==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(19092799006)(22082099003)(18002099003)(56012099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?aXEzTGhiaCtkaVhPdTFBdnVLdURNUXJKUXpReGczN0U2K3N3MnAvL1pJYk1r?=
- =?utf-8?B?RVpoUjM3U1FKUEdjL084ZHBOVnRxZFpqTjNWVk5oalNFWUNsSUx2SEJ3Qksx?=
- =?utf-8?B?OVRIL1NxWUl3WkplQUI5bGpIUmJnN2YrcWU3SUM5dWxTS0taMWZ0OExLVlI4?=
- =?utf-8?B?WUh0czdaTXJGZXhuSldoMUU3TkhwOEhqN0ExWVZ1Mm51ZVAxT1NsZHYvOVhN?=
- =?utf-8?B?T3ltTERBNWVmQWtDQ2V5RjNCajVXS1NZeG1pMEV3OWpvZjB6RDFkRXV5aUJk?=
- =?utf-8?B?eG11cEY1N3BiS2w0VkdVOW9FbU5kNGFmcExEekRKRXBMWWtnelQ4OVc3dXZi?=
- =?utf-8?B?VU9vQzhkOHhuV2pXdkRYWVJsRmJEaWVram03Nno4R2x2bFJLd3FWcGp3em5s?=
- =?utf-8?B?NUh3TTh3TVdObmNqdWl4Njl2WVJJb2lOajROV0doeFNTaVBvQUtsZDlxU01D?=
- =?utf-8?B?elRPMzU5bnQyL002czFCYXl2Tk9aTmY3OGVRUVV3c0hxTmVmOFFnb0kvcmZJ?=
- =?utf-8?B?Z2NHMVJTZFhjWkZiYnNHZEx3NUhYclBQb3c1c1Nua2hvWkNQb3BEUks1eVpu?=
- =?utf-8?B?L29FclVCN2U4dFBJckZDUjlMbUNBaXZqVXhDMWdjZEJaQUk1UXF0N2JmS0tx?=
- =?utf-8?B?d1RudDNVeS83UXgrajBkTC9HOE5kekVnbjJYcGVrVm90QjhCRi9BeU1nd2xi?=
- =?utf-8?B?blBaZU1Gclp2RUE4QzdKa3hlbVNubzhzSHJxWUJwMHA3ellpc1pDTnlSSlFU?=
- =?utf-8?B?bDR5K0Q2cVluMzB1U2lvcysybWQ4ZFJSNm9jWnpydFVQTVhyUGZXb1lnSWZo?=
- =?utf-8?B?Tkh4VEp4cWpkVEtHcnVWeEVtTWNIelFPYmkva2hMOEF1NUhmekFmTjdldWo4?=
- =?utf-8?B?emJGWE1XRnE3aEZvd1lPSTY5Y2wvc1VHT2cvTldJZWlVWEdZRkVxNHd0dWRB?=
- =?utf-8?B?RDVqUEtnU0V6MDA3bGlvQUlOZFN2YzkvYi9KQWdFWDR1TUcwcmZsYzh3anJN?=
- =?utf-8?B?elBtQXBwaDRXVDByMGJSZWt3WTNpcU5ZOFRqRVZTditMYkczZnFTRkRuczZL?=
- =?utf-8?B?OTQ1Tm5JWmJYTXRuRUgxN2hzYkgxamZac0R0QXFQYUZITDliU1hlajFzbDJn?=
- =?utf-8?B?ZHJwaW84amY4NnRrYXNYTUYvejdQTmFSdWorWlhHM2lvbDdYTUlHMUdwbjE0?=
- =?utf-8?B?SWpMb3ZMTzdKZFF4U21WdHZNSXRBdFZrR0ZFdlBDazVxRVY3NUtHWjludngx?=
- =?utf-8?B?MUxQclhqZUowV3hzVGNZRkNFb1NSTXUrUSs3RXZ4Q2ZIL2pRb2kwSlBHQms1?=
- =?utf-8?B?SGJQanVtcHRmTFJzVUVZVFNWYVNDajZyUGxhdlB0dWxpRzUxZkNyeWxKVVdp?=
- =?utf-8?B?UjJvMlZvMW11eEtJc2JuK1VRSk1mTTJoNExKRVgxcVZMS1VOYm51OFhLSDVk?=
- =?utf-8?B?cjBqbTVDcWdpdFJGRW1IWDBNTmcxRVdyS1hWbFBYNXlaQzFMbmg5UzgvZy9h?=
- =?utf-8?B?Q0gwNFg1d2NqcnlOaktJcGRWVitwTjcyQnltejdqMWVQcVFldTY1MkhTQVJq?=
- =?utf-8?B?UEVLbzN0T3d3d1I5TXVOenB5Umtscno0ZW5Tam5XTEJLWmRPdFZ4Mk0xSTFB?=
- =?utf-8?B?U0w3d1FyK2E1THozcW0zTkFaZWoyWFpHOS9RVHVSR1hxbmRZZkVSMk8ySmtR?=
- =?utf-8?B?ck1pR09sWjcwZmxrMVJ3QlZWOWtSYVdsQWtBZzJDMS9zazI5clFrMDBOeVpk?=
- =?utf-8?B?YkE2NllVbGhSNWkwMXZ0Y2pyUkpydXFPYnMyR0NSRkU1Mkx4VjB5NkZzb1dQ?=
- =?utf-8?B?TlUyVW1mampuUWRUMDVWenh2WStZeVlqcVEzK09lci9nWkVyblEzWkVLQ0ZN?=
- =?utf-8?B?aVQzZnVsRkw0c2hNZUg4SWE0bnVYZURGS2V6a2N6Tk95a1RWOVZnVWs3dUli?=
- =?utf-8?B?a0c4OGptTkxwSjZ2NGdlU3dMb2hHTmw4T0lGNlFlZzhENE9mck80NVRCa1JX?=
- =?utf-8?B?WmViQjlZY0k0aVhmb2J5N1B5aS8rWlJJenAxR1cyUk4vK0c1d0ZKc2VGVGxa?=
- =?utf-8?B?UlR2bWZvTXFWdmE3N21WYjF0SkExWXg2Q2JuQzRLbFRqS1NrMlgzVGdEc2ZJ?=
- =?utf-8?B?czUrUW9NSlpSV0FUbVM2T014TTdhUVorNlhPTVhPQSt3R3MvVnovRWZDNEkz?=
- =?utf-8?B?b2hiTTFyMkVOdXFsQTdpQWZBMUpDUkRGMlN1QjJZV2txb0YvVk5QQVg0QTdq?=
- =?utf-8?B?SXFBYjNVOGZYQ2FjTU80VzlaNHNUUXBwRktWL0FMWTBaUlhoZDROaEtDSUJV?=
- =?utf-8?B?RUV5NndueEVGYWdMeCtnekRXbDRsQlJFendjM2NzTDhCZktMQzVVZz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38f673dd-1ada-43c9-ed1c-08de951afa2f
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 03:00:23.4205
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p/0WcG3xGy18HBy9MV2lPGiCrFsogps9D3AoxSQzGHqMCa70l5rLXgergckaTr0vnS6AdLBqbUWLFqsPGfAMbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9356
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACXQm4yx9Vp3iqWDA--.31904S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtw1UZr4rGr18Cw4kWrW8tFb_yoWkJwc_uF
+	18uFZrXF48CF40gwsIyr1fZFyqyw1I9ws3ZF1jqF93t34qvrsxXrsIqw4DZ3y8Xr4Ut34U
+	Grn0vFn8Zry7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU-a9-UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwLA2nVmXqrYwAAsV
 
-Hi Luca,
+Move of_node_put(dn) after the last use of dn, and add a missing put
+in the error path to avoid both use-after-free and reference leak.
 
-On Tue, Apr 07, 2026 at 02:24:25PM +0200, Luca Ceresoli wrote:
+Fixes: f0d8048525d7 ("interconnect: Add imx core driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/interconnect/imx/imx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-[...]
-
->    (even though only the pane-bridge is surrently supported), amd all these
-
-s/surrently/currently/
-s/amd/and/
-
-With these fixed:
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-
+diff --git a/drivers/interconnect/imx/imx.c b/drivers/interconnect/imx/imx.c
+index 9511f80cf041..75431b5ccef8 100644
+--- a/drivers/interconnect/imx/imx.c
++++ b/drivers/interconnect/imx/imx.c
+@@ -143,15 +143,16 @@ static int imx_icc_node_init_qos(struct icc_provider *provider,
+ 		}
+ 
+ 		pdev = of_find_device_by_node(dn);
+-		of_node_put(dn);
+ 		if (!pdev) {
+ 			dev_warn(dev, "node %s[%d] missing device for %pOF\n",
+ 				 node->name, node->id, dn);
++			of_node_put(dn);
+ 			return -EPROBE_DEFER;
+ 		}
+ 		node_data->qos_dev = &pdev->dev;
+ 		dev_dbg(dev, "node %s[%d] has device node %pOF\n",
+ 			node->name, node->id, dn);
++		of_node_put(dn);
+ 	}
+ 
+ 	return dev_pm_qos_add_request(node_data->qos_dev,
 -- 
-Regards,
-Liu Ying
+2.34.1
+
