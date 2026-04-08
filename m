@@ -1,51 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE13B8938;
-	Wed,  8 Apr 2026 13:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAD63D092A
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 13:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775656530; cv=none; b=k2KcMr7TNZEy7SO0ou6bCqyVZf1/vifg579OFiywz7ylLFd3vpJHDb3aD9Kny48dt++R2PQJB+c/1SDZMlNlArXcR5XWln+ZznP+V75t0StUIREUUnCjFKireBV5OqqgUW0GwK+GmSHdx4VNFTpgREkBEi/wkonagHVihuVrK7s=
+	t=1775656632; cv=none; b=Bez7TF9YJDubFCTwX60seu9Q7P6N+fz7G/pUOdpY2sSd7Bo/AAFbNBU64WRnVgFQtCiSduoImuOZIhiLDktw64TouKCk82F6/pC+LYJYL3y7CkqkkUs0P83MDn2sXTYFNWQjINIefbmqBfbv0VpWiMVPlJHpgtnAwSRdijEGqGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775656530; c=relaxed/simple;
-	bh=bWhTBkh9lG0OYn3p1uqGUIvyw6GLsmFHsj0//fglkRI=;
+	s=arc-20240116; t=1775656632; c=relaxed/simple;
+	bh=DtgfAHIcG2yL3Uyz3ksmN6rTp9I1YSd/gQUgwKu2M3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M7qp2G3/hCf2nwv9pALkmEH4qvgcr+NzH01sHt5i5OZ03w2Fj3QO5SOEQ028aPNBm4fbqIs+mgufGW4N3vtWdxD9pUROGFDL5qUPf43iwPE+uQTFB+3oXVcHwepbg92fTsaEzYUA4ocSn1zXbTkDGixTRgolXt818L0b30jPqtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyh+eGOS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eKAWJUxKdlcQ4IyGYz39O01HlHaUpZ444Q2kE0LK0O8Dq/R1rJGIyQGMnxmMOBueNhYUPQeyDAoU8ulDGXN6Nag1gQgz4msGEWvb1uQPuUHtTs8660EOGX6Ny7TlwE7gPE8YcGUkv206jsGtk3KvFYsXJd9+ZzGlKkIU9+dct68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mAJcX59u; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyh+eGOS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA82DC19421;
-	Wed,  8 Apr 2026 13:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775656529;
-	bh=bWhTBkh9lG0OYn3p1uqGUIvyw6GLsmFHsj0//fglkRI=;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mAJcX59u"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92C3A35B7
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 06:57:04 -0700 (PDT)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2329C3F641
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 06:57:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775656630; bh=DtgfAHIcG2yL3Uyz3ksmN6rTp9I1YSd/gQUgwKu2M3Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xyh+eGOS1uEhknb6elYjvxe9plsLEQA0ndZ/lEoPUYioAiP5zQvjd2bNOOWvI5MCL
-	 dZfs0TsU9xwBVF5m6omQOw13bGHGgud/VvcptZASu3QkiKC8BCoEO+mkYwyUCwzz1J
-	 jes4D92bC7QMF7a9IOOGoVb3U8JTx4tCUFf4SaCvo5DDyZDEcXE3XDiP3Rq4W/skR9
-	 zf/ld081YahQDRuyOUmAPBGZFFE1GEOdZjtyqIvCZrXGAXsLZBOzMXh6jasUlbgBvO
-	 1D/CXQGw4lO4f54mBTQyiNhYZU2Klfd6QJQ5LTHEYWyQ09Dks+38g79+7twLd8/bex
-	 //beLRzRUVylA==
-Date: Wed, 8 Apr 2026 19:25:19 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V11 04/12] PCI: imx6: Add support for parsing the reset
- property in new Root Port binding
-Message-ID: <t5x45nyn6lw7cofzj2rec5j6z2ml6kve2hvzeeastdrv4hilsu@ujhkmltpp5ky>
-References: <20260407104154.2842132-1-sherry.sun@nxp.com>
- <20260407104154.2842132-5-sherry.sun@nxp.com>
- <7ewnbwdo5qtasbxj4uel6a6uthczq2l6udbvoqqkwm776lvseb@v54ri2gknwxn>
- <VI0PR04MB12114AAA709016DADF0B45DA6925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
+	b=mAJcX59u4W/aqXW81HzGoXP5XtHA0vgrsdBMXqfi74RCpflq8Oo47Mse73hAwiHnr
+	 t2WhOQ+L9TochES0+8Up1YiKcNSTe5M0h5QwXrIEyjfUTmADS+Q5smD1Vrrem5Q633
+	 MWq9JcvX+OqmA22yY6AwyvnGs+HKOWbHhjeZJKbk=
+Date: Wed, 8 Apr 2026 14:56:47 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Guangliu Ding <guangliu.ding@nxp.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3] arm64: dts: imx952: Describe Mali G310 GPU
+Message-ID: <adZeny_sRg7t_A3j@e142607>
+References: <20260407-master-v3-1-5a05cea0c521@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,187 +57,110 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <VI0PR04MB12114AAA709016DADF0B45DA6925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
+In-Reply-To: <20260407-master-v3-1-5a05cea0c521@nxp.com>
 
-On Wed, Apr 08, 2026 at 08:34:03AM +0000, Sherry Sun wrote:
-> > On Tue, Apr 07, 2026 at 06:41:46PM +0800, Sherry Sun wrote:
-> > > The current DT binding for pci-imx6 specifies the 'reset-gpios'
-> > > property in the host bridge node. However, the PERST# signal logically
-> > > belongs to individual Root Ports rather than the host bridge itself.
-> > > This becomes important when supporting PCIe KeyE connector and PCI
-> > > power control framework for pci-imx6 driver, which requires properties
-> > > to be specified in Root Port nodes.
-> > >
-> > > Add support for parsing 'reset-gpios' from Root Port child nodes using
-> > > the common helper pci_host_common_parse_ports(), and update the reset
-> > > GPIO handling to use the parsed port list from bridge->ports. To
-> > > maintain DT backwards compatibility, fallback to the legacy method of
-> > > parsing the host bridge node if the reset property is not present in
-> > > the Root Port node.
-> > >
-> > > Since now the reset GPIO is obtained with GPIOD_ASIS flag, it may be
-> > > in input mode, using gpiod_direction_output() instead of
-> > > gpiod_set_value_cansleep() to ensure the reset GPIO is properly
-> > > configured as output before setting its value.
-> > >
-> > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 75
-> > > +++++++++++++++++++++------
-> > >  1 file changed, 60 insertions(+), 15 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index d99da7e42590..dd8f9c0fcec4 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -34,6 +34,7 @@
-> > >  #include <linux/pm_runtime.h>
-> > >
-> > >  #include "../../pci.h"
-> > > +#include "../pci-host-common.h"
-> > >  #include "pcie-designware.h"
-> > >
-> > >  #define IMX8MQ_GPR_PCIE_REF_USE_PAD		BIT(9)
-> > > @@ -152,7 +153,6 @@ struct imx_lut_data {
-> > >
-> > >  struct imx_pcie {
-> > >  	struct dw_pcie		*pci;
-> > > -	struct gpio_desc	*reset_gpiod;
-> > >  	struct clk_bulk_data	*clks;
-> > >  	int			num_clks;
-> > >  	bool			supports_clkreq;
-> > > @@ -1224,6 +1224,32 @@ static void imx_pcie_disable_device(struct
-> > pci_host_bridge *bridge,
-> > >  	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));  }
-> > >
-> > > +static int imx_pcie_parse_legacy_binding(struct imx_pcie *pcie) {
-> > > +	struct device *dev = pcie->pci->dev;
-> > > +	struct pci_host_bridge *bridge = pcie->pci->pp.bridge;
-> > > +	struct pci_host_port *port;
-> > > +	struct gpio_desc *reset;
-> > > +
-> > > +	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_ASIS);
-> > > +	if (IS_ERR(reset))
-> > > +		return PTR_ERR(reset);
-> > > +
-> > > +	if (!reset)
-> > > +		return 0;
-> > > +
-> > > +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
-> > > +	if (!port)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	port->reset = reset;
-> > > +	INIT_LIST_HEAD(&port->list);
-> > > +	list_add_tail(&port->list, &bridge->ports);
-> > > +
-> > > +	return devm_add_action_or_reset(dev,
-> > pci_host_common_delete_ports,
-> > > +					&bridge->ports);
-> > > +}
-> > > +
-> > >  static void imx_pcie_vpcie_aux_disable(void *data)  {
-> > >  	struct regulator *vpcie_aux = data;
-> > > @@ -1233,13 +1259,22 @@ static void imx_pcie_vpcie_aux_disable(void
-> > > *data)
-> > >
-> > >  static void imx_pcie_assert_perst(struct imx_pcie *imx_pcie, bool
-> > > assert)  {
-> > > -	if (assert) {
-> > > -		gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 1);
-> > > -	} else {
-> > > -		if (imx_pcie->reset_gpiod) {
-> > > -			msleep(PCIE_T_PVPERL_MS);
-> > > -			gpiod_set_value_cansleep(imx_pcie->reset_gpiod, 0);
-> > > -			msleep(PCIE_RESET_CONFIG_WAIT_MS);
-> > > +	struct dw_pcie *pci = imx_pcie->pci;
-> > > +	struct pci_host_bridge *bridge = pci->pp.bridge;
-> > > +	struct pci_host_port *port;
-> > > +
-> > > +	if (!bridge)
-> > > +		return;
-> > > +
-> > > +	list_for_each_entry(port, &bridge->ports, list) {
-> > > +		if (assert) {
-> > > +			gpiod_direction_output(port->reset, 1);
-> > > +		} else {
-> > > +			if (port->reset) {
-> > > +				msleep(PCIE_T_PVPERL_MS);
-> > > +				gpiod_direction_output(port->reset, 0);
-> > > +				msleep(PCIE_RESET_CONFIG_WAIT_MS);
-> > > +			}
-> > 
-> > Sashiko flagged this loop:
-> > 
-> > ```
-> > Does this loop multiply the initialization delays?
-> > If a controller has multiple Root Ports, the msleep calls will run sequentially
-> > for each port, linearly increasing the delay. Could we optimize this by
-> > asserting all reset GPIOs, waiting the pre-delay once, de-asserting all GPIOs,
-> > and waiting the post-delay once for the entire bus?
-> > ```
-> > 
-> > Maybe you should do:
-> > 
-> > 	if (!list_empty(&bridge->ports) && !assert)
-> > 		msleep(PCIE_T_PVPERL_MS);
-> > 
-> > 	list_for_each_entry(port, &bridge->ports, list) {
-> > 		...
-> > 		gpiod_direction_output(port->reset, 0);
-> > 		...
-> > 	}
-> > 
-> > 	if (!list_empty(&bridge->ports) && !assert)
-> > 		msleep(PCIE_RESET_CONFIG_WAIT_MS);
-> > 
+On Tue, Apr 07, 2026 at 11:15:03AM +0800, Guangliu Ding wrote:
+> Support Mali G310 GPU on i.MX952 board. Describe this GPU in the DT.
+> Include dummy GPU voltage regulator and OPP tables.
 > 
-> Hi Mani, I think the code below looks clearer, is that ok for you?
+> A hardware GPU auto clock‑gating mechanism has been introduced,
+> enabling GPUMIX to automatically manage the GPU clock. This improves
+> overall response time.
 > 
->     if (assert) {
->         list_for_each_entry(port, &bridge->ports, list)
->             gpiod_direction_output(port->reset, 1);
->     } else {
->         if (list_empty(&bridge->ports))
->             return;
-> 
+> Signed-off-by: Guangliu Ding <guangliu.ding@nxp.com>
 
-This check should be moved out of the if() condition. Other than this, the
-change looks good.
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
->         msleep(PCIE_T_PVPERL_MS);
->         list_for_each_entry(port, &bridge->ports, list)
->             gpiod_direction_output(port->reset, 0);
->         msleep(PCIE_RESET_CONFIG_WAIT_MS);
->     }
->
-> > And then this:
-> > 
-> > ```
-> > Also, since this function is called from imx_pcie_resume_noirq, which
-> > executes with hardware interrupts disabled, does the use of msleep here
-> > trigger a 'sleeping while atomic' bug?
-> > ```
-> > 
-> > This is a valid concern. You should use mdelay(). But I'd recommend switching
-> > to IRQ enabled callback, resume() instead. There is no complelling reason to
-> > use resume_noirq() in this driver and adding delays in noirq() callbacks is not
-> > recommended as it may increase the overall system resume time.
-> > 
-> > I will submit a separate series to convert dw_pcie_resume_noirq() and its
-> > callers to IRQ enabled callbacks since this dw_pcie_resume_noirq() could
-> > potentially cause delay up to 1sec.
+Best regards,
+Liviu
+
+> ---
+> This series enable Mali G310 GPU support on i.MX952 boards, the same GPU
+> IP as the instance on i.MX95 boards.
+> ---
+> Changes in v3:
+> - Follow the order of interrupts/interrupt-names in arm,mali-valhall-csf.yaml.
+> - Drop dt-bindings change in arm,mali-valhall-csf.yaml.
+> - Replace "nxp,imx952-mali" with "nxp,imx95-mali" in compatible.
+> - Link to v2: https://patch.msgid.link/20260401-master-v2-0-20d3fbcd19d6@nxp.com
 > 
-> Yes, this is not a new bug introduced by this patch. I agree we should covert the
-> convert dw_pcie_resume_noirq() and the caller to IRQ enabled callbacks to fix
-> this in a separate patch series.
-> For now, should I leave it as is, or switch to mdelay in this patch?
+> Changes in v2:
+> - Improve patch description, adding more GPU information.
+> - Remove Reviewed-by tag.
+> - Link to v1: https://patch.msgid.link/20260331-master-v1-0-65c8e318d462@nxp.com
+> ---
+>  arch/arm64/boot/dts/freescale/imx952.dtsi | 36 +++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
-
-Just use mdelay() in your patch for now.
-
-- Mani
+> diff --git a/arch/arm64/boot/dts/freescale/imx952.dtsi b/arch/arm64/boot/dts/freescale/imx952.dtsi
+> index 91fe4916ac04..ced09e7a1dc5 100644
+> --- a/arch/arm64/boot/dts/freescale/imx952.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx952.dtsi
+> @@ -318,6 +318,28 @@ usbphynop2: usbphynop2 {
+>  		clock-names = "main_clk";
+>  	};
+>  
+> +	gpu_opp_table: opp-table {
+> +		compatible = "operating-points-v2";
+> +
+> +		opp-500000000 {
+> +			opp-hz = /bits/ 64 <500000000>;
+> +			opp-hz-real = /bits/ 64 <500000000>;
+> +			opp-microvolt = <920000>;
+> +		};
+> +
+> +		opp-800000000 {
+> +			opp-hz = /bits/ 64 <800000000>;
+> +			opp-hz-real = /bits/ 64 <800000000>;
+> +			opp-microvolt = <920000>;
+> +		};
+> +
+> +		opp-1000000000 {
+> +			opp-hz = /bits/ 64 <1000000000>;
+> +			opp-hz-real = /bits/ 64 <1000000000>;
+> +			opp-microvolt = <920000>;
+> +		};
+> +	};
+> +
+>  	soc {
+>  		compatible = "simple-bus";
+>  		#address-cells = <2>;
+> @@ -1262,5 +1284,19 @@ usbmisc2: usbmisc@4c200200 {
+>  			reg = <0x0 0x4c200200 0x0 0x200>,
+>  			      <0x0 0x4c010014 0x0 0x4>;
+>  		};
+> +
+> +		gpu: gpu@4d900000 {
+> +			compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
+> +			reg = <0 0x4d900000 0 0x480000>;
+> +			interrupts = <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "job", "mmu", "gpu";
+> +			clocks = <&scmi_clk IMX952_CLK_GPU>;
+> +			clock-names = "core";
+> +			power-domains = <&scmi_devpd IMX952_PD_GPU>;
+> +			operating-points-v2 = <&gpu_opp_table>;
+> +			dynamic-power-coefficient = <1013>;
+> +		};
+>  	};
+>  };
+> 
+> ---
+> base-commit: 0138af2472dfdef0d56fc4697416eaa0ff2589bd
+> change-id: 20260331-master-7ec7ff0fe1b2
+> 
+> Best regards,
+> --  
+> Guangliu Ding <guangliu.ding@nxp.com>
+> 
 
 -- 
-மணிவண்ணன் சதாசிவம்
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
