@@ -1,211 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013030.outbound.protection.outlook.com [52.101.83.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696503D2FE1;
-	Wed,  8 Apr 2026 14:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775657429; cv=none; b=aaw0dwVm573hqLNdPDs+n3U5bSHp2h7ph+dUMD3ON74t76kOikVuIp4ZCd5ATNpiWt6ZIjQX6FFQ+o0HLtvniau82q+/0LIpe//nB4Afe0YRhCa3P8H4BJ6ndE1qV7CXmkzRiNwlr/6xe8tAh74nlRtmxHAarldl7yK2M1kU4N4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775657429; c=relaxed/simple;
-	bh=i2Dbh2ANq28qBSTN2bv54+q1a50BxTE9oJVrrroT5ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AVEUYNuvHOdBxfzZJi5/WcllD/9xWDw98jUhFz0THFbdr1VhkrPqJ2kEJPS/axqUILdMJDMURzF9dU9kvD/HifRa2vNGVAMh8gFjkYVq84psArY4IOYE1LNkN5sD7sOi5DMv19FUxINo4kori9VBIvxH+ZAFAntxylq2kkD0kdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=up9YGgAc; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B691286409
+	for <imx@lists.linux.dev>; Wed,  8 Apr 2026 14:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775658993; cv=fail; b=aswfh9V749aJdg2GMUMnWG8eDnwpPcyWv6tN2WvYVNuLeGRTR/08s9U8+8oitiROItIIVRFhCPWF+gHI2+rsPozyDx5bSfwa13myYdoAPzbKRn6Q67VRacoPaTDvM+Ow9R2e+0bX7AU7AKo1xUldYDbK6nxJUrGkmDLM59cvlk0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775658993; c=relaxed/simple;
+	bh=9Wbn3h+75UeOYWjPGww/YWWVI6zo1uyuk3I1ccZK1zA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pYxO8kDQzCPMapp+YiYPxnKzc2Y4onMGUcV4AR5vuwV8USJ714pWRPZLBp/dzIBj+1pmIYvfmNGqAnCwrMrtKsQrAEdzrZ+NPC+9R+fEYco5dPCQOT+J7DO1HONa/nHQDpY1NizUGW2bb0pDK05drau0BWi2VUbAq4WjnqhcEi0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ia3a9YU6; arc=fail smtp.client-ip=52.101.83.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="up9YGgAc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFE9C19421;
-	Wed,  8 Apr 2026 14:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775657429;
-	bh=i2Dbh2ANq28qBSTN2bv54+q1a50BxTE9oJVrrroT5ZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=up9YGgAc7IHMuoBdh3ONWLG9qnGSwvEiHxfi39HKRZ8mywBhKMEm94Rlzn1VuzHDT
-	 33HmtrnISdZapkbYCiHQjrmR+XSrquFED4gadV3DPKdWRpj+a/hMReRETWCsZWNl/u
-	 LriCmU95F2JEOGNheFI41iQL3lQ9uv0JkXa8JtM+/1wz1RyGvOL8k24ogA4dd1fe8k
-	 EmnSVEpf8u+JxK3wcf8oYdNQhCF1saI99/xBesze8W5A8sKEDM2Q5iS/EogyuGBgBA
-	 PeOr16P2iVdIVOPPvwAsRk5gcFTlSMaZ8STdL2vqIgXSmSlUJS604tkBltVO1F4cQ+
-	 0yYXyL5qWsgew==
-Date: Wed, 8 Apr 2026 19:40:19 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V11 02/12] PCI: host-generic: Add common helpers for
- parsing Root Port properties
-Message-ID: <yijf6mwclpx6n7giucgykxvrm73baicy2urhzns34sxgloli3z@ygose2qrgvuz>
-References: <20260407104154.2842132-1-sherry.sun@nxp.com>
- <20260407104154.2842132-3-sherry.sun@nxp.com>
- <lnzprzrdwra7pn7d6m3sbj5pvjy64blwpjl6i3lmlnfbyho63b@czpyhpgz5vum>
- <VI0PR04MB12114A60C4A7E43ED62A32B04925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ia3a9YU6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ih2bMZP/MUUUEAl6tt4fdE0II9TCEkVno4N/JlwjRsQ2judaHciWnMsFZfYoNrb+wgxdweXDYis6iRxjoX9Gy6N0YfLjhlAg7QRAXhMV67Euuwu3W77pMy/fdOSHSc9dQjG2Ns9U0ZcwB6q8nTIoJ4/uAvHoe3sFKSENXOY0JmslF2VEo+HW6WRAPYpYjvzCtC4rIXnHL6EGy2scR1J9QZKMBvv2pTwZG5Vl/qTmKKVl870J5CbzSzPmP6SfTW91qpz5IU4/bAwMpyHq++UlBq4Jw4X7WuX+xz6Z7k1H/aAnVyBlcDCogKK2zofZT7vKO1Nzztd4Ju1aGG6EkAFdOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=297WAgKQeW0KQQcBc68Yf3iEK3gX+VzLajW4fX7A2oE=;
+ b=PLFrKwt/qKxLe+XJgMTAV5goPlFLIsnFf/7DexP0r3OYbu5eHOaZIAWojaYXX6nWu5wj5hfxtymaew/21Zti1T/9bDCJTkpInAV2cmIXuAlNvfTIdIt7eDEd6ypyPTvz+MykP/6AK1s0LsWOv/LCvz7YWspHmofB+cQAx2rYn5bQwSm4af82g3/PaFQk2CFNCAbNg2rcJZLu/XZdBj0KuhIHGHTEJJRCevlzQw/srmObodafP0CLqAUOs6YRULehaRLJGwxGBUyw2OGaMMy6AiawLxJ7mADl060eYScwedWjTdX7l91LzWZE/gctlK/luAOueNBOjkMseT7uU+0HOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=297WAgKQeW0KQQcBc68Yf3iEK3gX+VzLajW4fX7A2oE=;
+ b=Ia3a9YU6HuNFfAScVynEYdhpF2oU871PlVtmSE/KquZYILNq/mVXGP6oO4YNHazyKUbdtMYLgjPgqAiHSIxKdHD/Ag+oXBWBUepYokN+8VAxXkuxKBjBfCFcPsiWr8waQO1aU+1Tr7Dm70Sy4oVsMey0X2qSJc7pwRLKA6NDI3NqVhuID744290B/laS7hVQGqkbhA1IZp8nR9BFt3wHjXGrIclmISShw3NqENnDdw4haVX4gmMnO2Qc6nsY5LOJI9ZaCmfeDFeAJmtp9XpOaG2kZEekXIP0talAP/KHEUX8wkEFntu1CEcIpcznrT2jJWu/rkl1PRjgDVSW/5iVEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
+ by GV1PR04MB10251.eurprd04.prod.outlook.com (2603:10a6:150:1aa::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
+ 2026 14:36:25 +0000
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::3826:2706:1e81:c9e2]) by GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::3826:2706:1e81:c9e2%5]) with mapi id 15.20.9769.016; Wed, 8 Apr 2026
+ 14:36:25 +0000
+Date: Wed, 8 Apr 2026 17:36:20 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: imx@lists.linux.dev, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	dri-devel@lists.freedesktop.org, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Ying Liu <victor.liu@nxp.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v21 3/8] dt-bindings: display: bridge: Add Cadence
+ MHDP8501
+Message-ID: <6avfg3f5djqkdvq6q6ouyvw2ms25rvixpluxqmbzey6ylnesnd@2st3tvlmxtvv>
+References: <20260407-dcss-hdmi-upstreaming-v21-0-4681070ab82f@oss.nxp.com>
+ <20260407-dcss-hdmi-upstreaming-v21-3-4681070ab82f@oss.nxp.com>
+ <20260408-large-marigold-pheasant-bef65f@quoll>
+ <wowfuuvnhnm6fjuynow4uvle7idvuyf77hct46gxakjre63y2z@xlmau2vl3lwb>
+ <277cdf3b-7032-4847-9c22-bddae2a76b34@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <277cdf3b-7032-4847-9c22-bddae2a76b34@kernel.org>
+X-ClientProxiedBy: FR4P281CA0045.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c7::14) To GV1PR04MB9135.eurprd04.prod.outlook.com
+ (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <VI0PR04MB12114A60C4A7E43ED62A32B04925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|GV1PR04MB10251:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fa5ec6b-e647-459d-4abe-08de957c3625
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|376014|19092799006|7416014|366016|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+ wvOKoo6F9m81QTJQhL7hWhiuy6K60hNWYdtElX6sq57p+8/PppEqUv5dY8OYfSKpK5ZVUpMG5DbXffnV9nzbrbwNO3yqHRyNfXYIYFKqpoVDMUhzPYh3JILPJQNVN3Gcy5nHOJmQoAh0uj19Ko8qr43iqUg6RloMNzhMioEZcDz52dxIxYMXw8IODUeS1ymgG7tHazp2w89+I5Qqic69n+BtRg+V5vDqtFrgg04Owr+cMpnCmG1wNyYTCrkgVJx/a+YZdsj46qVc2UCXG1h5xrTQnwoci0eq3kgqsTRr91mOrVCf5ceUQ4+kAcNTRNyZXkcbYr/JNOJTb8uyj4sHZpDr7p20FWTcY5EUAQGuJcmSGbk9mUWwBm7wc7WKwx8Fl2i1n7uJ7j/PtfvTJGo/TcnH9fGzWAml3n0RC3FT4eFFMNYAVAq9ahokdDN033TSe3ME3ebyNR5QF3xyYuesuSYm30hgQCFA6XhFvB2tDWy27Ypg4DUrmySuIT537FjnuCKxBBuGPNClNMpjKIeNhqXoAKsVhexAjatf2Q2fRNFq00kguWSr0UqsyDDl5dBlcOqAhLInemE7+8eo9T+ojBQIGDRT/hYURGng7/s5sXqybweUnbHjEseQmxZ05KdvNpesw16cvJZnqxUIDl5e5v8dq+fP6q1MtLPq5udX5wVNLPeTq++gNzJg44s5kg9qUUdERCqWy1nNEZfuR5I0SLKiCuvx+NIKvSZMp0NBFmKGS/IVBarojXylOsL7xFS6
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(7416014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?lC5WOJuq683uoX7MkmKMoJKYFacg+A2gO80ynqg2DWgXHom4xeiGXuXQHRqA?=
+ =?us-ascii?Q?vZioIo1FNctG2SmuaXCzYBZhPB6WnRlmbVn1wgT4gfuKk+3gteh8JtWJqOQw?=
+ =?us-ascii?Q?ZX2puQ61RBQkv4qOBAT+4K/aTxfc9hGp3NZW2TQk5pX4tUtwYs/kX/YXMFh4?=
+ =?us-ascii?Q?rZApnvgEQrdfX9G3zFs1ErJEyQKzruRYG42JgfZcvcOn6W2nOzok1rPRAOkE?=
+ =?us-ascii?Q?3mreZVUzxc/KujG6b4LIOyz4Po3NHeivqDPXm2W5CZ4DXWlfcCdfbN/CMviM?=
+ =?us-ascii?Q?6OV76lfgZ6Z/IDr8hgVCe+vuFNApRRdljYLoyGc1Bm/0bQn59uODcpMhxbl3?=
+ =?us-ascii?Q?38fkdRZSZLeSYhKRHH81OvSi4dMMqfWrWWPjkeXtWRI1f79sbyUbYy2CDmzp?=
+ =?us-ascii?Q?aGxxlIHuK+rOl73EYpcuEpcw+tMMYsB8znRAF/92G2y+INhznP+opTkp71gd?=
+ =?us-ascii?Q?jZB1e7uU3S289l2QY6Yfyl5TE9MIYisF3gJsKOwWTHXMeN8vDu7o2rv1W8XG?=
+ =?us-ascii?Q?HJtYTunGd6RPUEb4NHe+w6kPIpOciRSYsN4NVOBRboe/IH/9XwlLOTdjjDXE?=
+ =?us-ascii?Q?cptc8oQ0/2MUFX4sM48FHVD0Au2phuYlulPBw+LMdBdpwU0UgNYoe/9PYii0?=
+ =?us-ascii?Q?k6jLmT8fxl3ycGDx/JFSwAojBi2JxV79xUC8cpCTM1kvwF0QsFLwYkX9IFr3?=
+ =?us-ascii?Q?/cMPDpv+lEaSf7vNUbBkxiomKs5LNW42FcsvgsN4ATsu+fMHmMf6yqT6eXDN?=
+ =?us-ascii?Q?+DtE4mtHs1obLKi2QsGdlnlexwcM1LsfGD2Vo7ywUxyt6XF16Y98ZN5ULkab?=
+ =?us-ascii?Q?vsZv6S5aZIDmYw3lImJ3uKtO8aA0W+IMjB/abRTYD3IyJbwwqmJG8/Sc26WB?=
+ =?us-ascii?Q?/WNqYfarbZVz89SkkCPNxkTrW/aRDZAmmVNydHunc1RlmEOf4NasNvfc6kCo?=
+ =?us-ascii?Q?3pce9IyrPn2JyNQenCnzsD8yaj/NJMDlhuU4jlqNBM8cHHSVLMmQuKdKh2n0?=
+ =?us-ascii?Q?eljrMuApLV6VfqAvPWUdf3dz9U7y96i2Kll7r8EjyAyPe9e/t6hiiuabvehm?=
+ =?us-ascii?Q?iVDvH4OCYljdlitLqa9PaYANn/dvFT323Xx9Y54wPaUdura+Kk8OnBBWnlmp?=
+ =?us-ascii?Q?jNAxQK2KIj1WbFgFYsRol+7D8B9p9HcR0NZ8dR7JkMsjPqhZ2tIbDBBJtX04?=
+ =?us-ascii?Q?sCFMIxLDDsbDUtyRuV0p1c9Xp4OMqYT9e7PkoRBn6ZO+CnYkRFsJIdS+MQc1?=
+ =?us-ascii?Q?N/H+2SoxfT+FS2Drb+d6RIZvlpDCzHfFD788vL1dIt/JMNyKwAIz0gtONtQV?=
+ =?us-ascii?Q?mM2e613/J/6yclUVhzuFXe8gVKGWBi1B8PUr/vQrke1N0sSdgc4Lc9jIY/jv?=
+ =?us-ascii?Q?Sq7PgGrOXq5bvCqvb300wlJzm/a+nDrvctuPghGMhdi/It5Axyv2il3lYMyK?=
+ =?us-ascii?Q?3YdU4ZdXOmBPRc9v7kqKzuAaFNST1g/0uaDRjn+G2hOMQh33LmjuXglx++lK?=
+ =?us-ascii?Q?eO9e/nOkURQxJe/oXmHZi7E4xrUgrIaliCvkziEs1O347FK18JQQoIneUknE?=
+ =?us-ascii?Q?5znPQrzo/lh3pM7Sc7B7lk4GL1Hh1847vpQ8HnBErwkz/65V9kMnBf/MLm1P?=
+ =?us-ascii?Q?YfKvy5l4JXtqIAQX+15r2I5Jmx0MQG5q+2NBkVJMPi1yiCCXnOqwYMKwKb4B?=
+ =?us-ascii?Q?GWHxlljY0BgP0bH4PEg7/f+OVu9CMvV2aOYW+D7OQhmApHEz2ozzNMprQbTN?=
+ =?us-ascii?Q?z0ewJaakgUKAoRMg7Pqpxp4WNOixcC8=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fa5ec6b-e647-459d-4abe-08de957c3625
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 14:36:25.2619
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6YjRgYCVYPAxQnqnG9I7uU6sfkEBZklEY96WEkQNZxxUS7uEF7lerPoWyUZvss3lkLxlvvQ8z4f9ent+KCWsnA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10251
 
-On Wed, Apr 08, 2026 at 06:34:02AM +0000, Sherry Sun wrote:
+On Wed, Apr 08, 2026 at 09:32:54AM +0200, Krzysztof Kozlowski wrote:
+> On 08/04/2026 09:13, Laurentiu Palcu wrote:
+> >>> +  phys:
+> >>> +    maxItems: 1
+> >>> +    description:
+> >>> +      phandle to the DP/HDMI PHY
+> >>> +
+> >>> +  interrupts:
+> >>> +    items:
+> >>> +      - description: Hotplug cable plugin.
+> >>> +      - description: Hotplug cable plugout.
+> >>> +
+> >>> +  interrupt-names:
+> >>> +    items:
+> >>> +      - const: plug_in
+> >>> +      - const: plug_out
+> >>> +
+> >>> +  cdns,bridge-type:
+> >>
+> >> Drop property. Graph defines what is connected on the other side. And if
+> >> this is for different devices then compatible tells what bridge is that.
+> > 
+> > Initially, Sandor did use the remote compatible to decide the bridge
+> > type but he assumed the remote is always the connector. However, as
+> > Dmitry pointed out [1], this is not reliable as we can have another bridge
+> > in-between this one and the connector.
+> > 
+> > [1] https://lore.kernel.org/all/dpj333mzr5azqhrgw3cxd7x5kiwxms4iomwy74uqfhr2zu4ocr@36rkth27d2jc/
+> 
+> So you still know what is on the other side, e.g. second bridge for HDMI
+> or DP, even if this is DP over USB-C.
+> 
+> I understand that Dmitry did not want to use that part of code in the
+> drivers, but what is located at the end is not really a separate
+> property of this bridge, because it already duplicates that information.
+> The final endpoint defines the type.
 
-[...]
-
-> > > +/**
-> > > + * pci_host_common_parse_port - Parse a single Root Port node
-> > > + * @dev: Device pointer
-> > > + * @bridge: PCI host bridge
-> > > + * @node: Device tree node of the Root Port
-> > > + *
-> > > + * Returns: 0 on success, negative error code on failure  */ static
-> > > +int pci_host_common_parse_port(struct device *dev,
-> > > +				      struct pci_host_bridge *bridge,
-> > > +				      struct device_node *node)
-> > > +{
-> > > +	struct pci_host_port *port;
-> > > +	struct gpio_desc *reset;
-> > > +
-> > > +	reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
-> > > +				      "reset", GPIOD_ASIS, "PERST#");
-> > 
-> > Sorry, I missed this earlier.
-> > 
-> > Since PERST# is optional, you cannot reliably detect whether the Root Port
-> > binding intentionally skipped the PERST# GPIO or legacy binding is used, just
-> > by checking for PERST# in Root Port node.
-> > 
-> > So this helper should do 3 things:
-> > 
-> > 1. If PERST# is found in Root Port node, use it.
-> > 2. If not, check the RC node and if present, return -ENOENT to fallback to the
-> > legacy binding.
-> > 3. If not found in both nodes, assume that the PERST# is not present in the
-> > design, and proceed with parsing Root Port binding further.
-> 
-> Hi Mani, understand, does the following code looks ok for above three cases?
-> 
->     /* Check if PERST# is present in Root Port node */
->     reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
->                       "reset", GPIOD_ASIS, "PERST#");
->     if (IS_ERR(reset)) {
->         /* If error is not -ENOENT, it's a real error */
->         if (PTR_ERR(reset) != -ENOENT)
->             return PTR_ERR(reset);
-> 
->         /* PERST# not found in Root Port node, check RC node */
->         rc_has_reset = of_property_read_bool(dev->of_node, "reset-gpios") ||
->                    of_property_read_bool(dev->of_node, "reset-gpio");
-
-Just:
-		if (of_property_read_bool(dev->of_node, "reset-gpios") ||
-		    of_property_read_bool(dev->of_node, "reset-gpio")) {
-			return -ENOENT;
-		} 
-
->         if (rc_has_reset)
->             return -ENOENT;
-> 
->         /* No PERST# in either node, assume not present in design */
->         reset = NULL;
->     }
-> 
->     port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
->     if (!port)
->         return -ENOMEM;
-> ...
-> 
-> > 
-> > But there is one more important limitation here. Right now, this API only
-> > handles PERST#. But if another vendor tries to use it and if they need other
-> > properties such as PHY, clocks etc... those resources should be fetched
-> > optionally only by this helper. But if the controller has a hard dependency on
-> > those resources, the driver will fail to operate.
-> > 
-> > I don't think we can fix this limitation though and those platforms should
-> > ensure that the resource dependency is correctly modeled in DT binding and
-> > the DTS is validated properly. It'd be good to mention this in the kernel doc of
-> > this API.
-> 
-> Ok, I will add a NOTE for this in this API description.
-> 
-> > 
-> > > +	if (IS_ERR(reset))
-> > > +		return PTR_ERR(reset);
-> > > +
-> > > +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
-> > > +	if (!port)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	port->reset = reset;
-> > > +	INIT_LIST_HEAD(&port->list);
-> > > +	list_add_tail(&port->list, &bridge->ports);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +/**
-> > > + * pci_host_common_parse_ports - Parse Root Port nodes from device
-> > > +tree
-> > > + * @dev: Device pointer
-> > > + * @bridge: PCI host bridge
-> > > + *
-> > > + * This function iterates through child nodes of the host bridge and
-> > > +parses
-> > > + * Root Port properties (currently only reset GPIO).
-> > > + *
-> > > + * Returns: 0 on success, -ENOENT if no ports found, other negative
-> > > +error codes
-> > > + * on failure
-> > > + */
-> > > +int pci_host_common_parse_ports(struct device *dev, struct
-> > > +pci_host_bridge *bridge) {
-> > > +	int ret = -ENOENT;
-> > > +
-> > > +	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
-> > > +		if (!of_node_is_type(of_port, "pci"))
-> > > +			continue;
-> > > +		ret = pci_host_common_parse_port(dev, bridge, of_port);
-> > > +		if (ret)
-> > > +			return ret;
-> > 
-> > As Sashiko flagged, you need to make sure that devm_add_action_or_reset()
-> > is added even during the error path:
-> 
-> Yes, it needs to be fixed. We can handle it with the following two methods, I am not sure which method is better or more preferable?
-> 
-> #1: register cleanup action after first successful port parse and use cleanup_registered flag to avoid duplicate register.
->     int ret = -ENOENT;    
->     bool cleanup_registered = false;
-> 
->     for_each_available_child_of_node_scoped(dev->of_node, of_port) {
->         if (!of_node_is_type(of_port, "pci"))
->             continue;
->         ret = pci_host_common_parse_port(dev, bridge, of_port);
->         if (ret)
->             return ret;
-> 
->         /* Register cleanup action after first successful port parse */
->         if (!cleanup_registered) {
->             ret = devm_add_action_or_reset(dev,
->                                pci_host_common_delete_ports,
->                                &bridge->ports);
-
-Even if you register devm_add_action_or_reset(), it won't be called when
-pci_host_common_parse_port() fails since the legacy fallback will be used.
-
-So you need to manually call pci_host_common_delete_ports() in the error path.
-
-- Mani
+Ok, I'll drop the property and add a routine to traverse the graph and
+find the last endpoint.
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Thanks,
+Laurentiu
