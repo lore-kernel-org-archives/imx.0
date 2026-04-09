@@ -1,24 +1,24 @@
-Received: from mail-m3282.qiye.163.com (mail-m3282.qiye.163.com [220.197.32.82])
+Received: from mail-m49237.qiye.163.com (mail-m49237.qiye.163.com [45.254.49.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9759B34CFC6
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 06:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3E134B404
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 06:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775717930; cv=none; b=SAEAASvYg8In1k+sOGZmIMa8Dw73rPjaA74i82Csn/sVkhSxzNSBNxQMnBe04p8aQlujOaGwTpnYvPZMWH6noxfFeE6TRWmoFlopSM2adYHTQ4ecS/hEo3r7V78Hr8l2dIa4kqY1gcykAYb9oXfo55W+YcI514FZqEGSf9Z/GTU=
+	t=1775717938; cv=none; b=PBXwUE0b4l+U6rjKo2M+H56XzjEQVIDAUIeH9yEIZr+ePR2aTOQ0+Nc0du6gKWo/ubcnouCVj4mt0NBACRRFupavsc3Y3hrP0S/ANeo2uUvH5tufosp/Uqf8L/SnAKQB4qgYM+HlEkhFzXHNQztNBd5xi4fS1Ln6xnvy+dpk4cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775717930; c=relaxed/simple;
-	bh=HpQ4t9ux5vwPBMU54UWd/t26SrEPSsmBudKJLBrbKSA=;
+	s=arc-20240116; t=1775717938; c=relaxed/simple;
+	bh=X3JQJZ1WTitXAwM1Ma/YX7iri9ZDOdTSQY6PqDo4xPo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PpmVnlmG159TlkpaaXE8Aa0xupznRy/lecThx47K7HXlrWr+oJqqgKd25mjWkjPET84NGCmRi/GS8nBR8knJ3MC4vp0J0OCsDZwiyaIBvZyX/juHaM27x1Pf+iKhRqszdx1nXZTLFTu4hc8iPIGWnj+S4lckiTocacbVE7P4d7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=YLycWiWX; arc=none smtp.client-ip=220.197.32.82
+	 MIME-Version; b=bFOI1Cm6iv25iWJ/PonEFiZets2u/7bEp6grsloJv1IO4RZE1RMqGIGLFEzRvbE+KOG7FgSa9AkefV+gdd2CvsWdA4LTkIflX07URoSvlHoFl2nSF4w00CHmolzgsv6h2LuSdwlQ9d1StETkLBxjbbsSUYfod/pjJQidue7PUy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=KVaavLxi; arc=none smtp.client-ip=45.254.49.237
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="YLycWiWX"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="KVaavLxi"
 Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3a11ab311;
-	Thu, 9 Apr 2026 14:53:29 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3a11ab33b;
+	Thu, 9 Apr 2026 14:53:34 +0800 (GMT+08:00)
 From: Damon Ding <damon.ding@rock-chips.com>
 To: andrzej.hajda@intel.com,
 	neil.armstrong@linaro.org,
@@ -59,9 +59,9 @@ Cc: Laurent.pinchart@ideasonboard.com,
 	linux-samsung-soc@vger.kernel.org,
 	linux-rockchip@lists.infradead.org,
 	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v13 08/17] drm/bridge: analogix_dp: Remove unused &analogix_dp_plat_data.get_modes()
-Date: Thu,  9 Apr 2026 14:52:52 +0800
-Message-Id: <20260409065301.446670-9-damon.ding@rock-chips.com>
+Subject: [PATCH v13 10/17] drm/bridge: analogix_dp: Pass struct drm_atomic_state* for analogix_dp_bridge_mode_set()
+Date: Thu,  9 Apr 2026 14:52:54 +0800
+Message-Id: <20260409065301.446670-11-damon.ding@rock-chips.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260409065301.446670-1-damon.ding@rock-chips.com>
 References: <20260409065301.446670-1-damon.ding@rock-chips.com>
@@ -72,68 +72,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d71046e8603a3kunmc1f4d6544039e0
+X-HM-Tid: 0a9d7104840a03a3kunmc1f4d654403a3f
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRhNGlYfGEhKSEoZTx1JQkJWFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh4eHlZJQx5PSB1DTh1PGUtWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
 	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=YLycWiWX+q+3SsGC9vsDZJZdn/kHKTiRpKnmbGuiXNpb9uhuCDANS6yC2BtvCns7/arQMhFR/e39SZY1Lw/83UfeUGuFb51RXPAZI0dDdUnujW86Rie8ivdj3FBRmn0fBNA6Ie9x2K5j/TeFPy1JtCxW2Vinq+f/+aAH804cVKA=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=E1tyz4VCaAlK+Lo++mI/0vaU8Xclxart6kNd0gLLTbk=;
+	b=KVaavLxiNsTRboPRgtoNS1Ve3Ojj0CT4IflTsi7aGQhgzayIH0Df36csj5MFdsiGnHmVJ95EEcMnowe1Z9iemObA3EUvWzHwwkZPOZCoRwXpBRlSMgR5Of+VSGin+I2pAXxz/1NaN858YFNC8b9zKd6tx8g3/PKrUwL9Ze9+V3E=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=A/8Fvy7J5BVB+FxoirPdlPQvgwvtL4v5yvK+fpD9HUY=;
 	h=date:mime-version:subject:message-id:from;
 
-The callback &analogix_dp_plat_data.get_modes() is not implemented
-by either Rockchip side or Exynos side.
+To avoid using &analogix_dp_device.connector for compatibility
+with the bridge connector framework, get &drm_connector from
+&drm_atomic_state instead.
 
 Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
-
 ---
-
-Changes in v9:
-- Add Tested-by tag.
-
-Changes in v10:
-- Add Reviewed-by tag.
-
-Changes in v13:
-- Modify '(on rk3588)' to '# rk3588' for Tested-by tag.
----
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 3 ---
- include/drm/bridge/analogix_dp.h                   | 2 --
- 2 files changed, 5 deletions(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index c05cf100f17e..09b8b5e4fa23 100644
+index 840c1963e60e..84b994cce900 100644
 --- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
 +++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -875,9 +875,6 @@ static int analogix_dp_get_modes(struct drm_connector *connector)
- 		}
- 	}
- 
--	if (dp->plat_data->get_modes)
--		num_modes += dp->plat_data->get_modes(dp->plat_data, connector);
--
- 	return num_modes;
+@@ -1095,14 +1095,21 @@ static int analogix_dp_set_bridge(struct analogix_dp_device *dp)
  }
  
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index f06da105d8f2..3301392eda5f 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -35,8 +35,6 @@ struct analogix_dp_plat_data {
- 	int (*power_off)(struct analogix_dp_plat_data *);
- 	int (*attach)(struct analogix_dp_plat_data *, struct drm_bridge *,
- 		      struct drm_connector *);
--	int (*get_modes)(struct analogix_dp_plat_data *,
--			 struct drm_connector *);
- };
+ static void analogix_dp_bridge_mode_set(struct drm_bridge *bridge,
++					struct drm_atomic_state *state,
+ 					const struct drm_display_mode *mode)
+ {
+ 	struct analogix_dp_device *dp = to_dp(bridge);
+-	struct drm_display_info *display_info = &dp->connector.display_info;
+ 	struct video_info *video = &dp->video_info;
+ 	struct device_node *dp_node = dp->dev->of_node;
++	struct drm_connector *connector;
++	struct drm_display_info *display_info;
+ 	int vic;
  
- int analogix_dp_resume(struct analogix_dp_device *dp);
++	connector = drm_atomic_get_new_connector_for_encoder(state, bridge->encoder);
++	if (!connector)
++		return;
++	display_info = &connector->display_info;
++
+ 	/* Input video interlaces & hsync pol & vsync pol */
+ 	video->interlaced = !!(mode->flags & DRM_MODE_FLAG_INTERLACE);
+ 	video->v_sync_polarity = !!(mode->flags & DRM_MODE_FLAG_NVSYNC);
+@@ -1186,7 +1193,7 @@ static void analogix_dp_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	new_crtc_state = drm_atomic_get_new_crtc_state(old_state, crtc);
+ 	if (!new_crtc_state)
+ 		return;
+-	analogix_dp_bridge_mode_set(bridge, &new_crtc_state->adjusted_mode);
++	analogix_dp_bridge_mode_set(bridge, old_state, &new_crtc_state->adjusted_mode);
+ 
+ 	old_crtc_state = drm_atomic_get_old_crtc_state(old_state, crtc);
+ 	/* Not a full enable, just disable PSR and continue */
 -- 
 2.34.1
 
