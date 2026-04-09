@@ -1,65 +1,63 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010049.outbound.protection.outlook.com [52.101.69.49])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013061.outbound.protection.outlook.com [52.101.83.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3190930F531
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 03:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F68130E0ED
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 06:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775705690; cv=fail; b=O0mltuVcrBKsL0BuULrKSjQrLIhe/MUJquDTYDmtIUn8vnYFpxlg53Nzc9jGYWSDNh181qNAfUyuZwUMM32IFwYpNT8ahoGm5h+dDDnYI3aFHwilWf+Me3FCtfNnKc8m1ZSLK3A4DdB1toHoNl6n6BK2i1Qv6llx5TY35CsmJuY=
+	t=1775715572; cv=fail; b=Y1+/YwlVETs2PCp4LURDsSysc8FCiG41B2U/0MwFkE5TeKrHKRHS+eaOdoDSwenoukvA3bN6272/XaZlgOZsM61DCOGhRHwTs/53TcRoAe4oqOsCYpYlrBt6K4ZBO+DtJCHu/cQZYk1E81sXgdaR5exz4NVdJQ+EqoqekdDQL6M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775705690; c=relaxed/simple;
-	bh=OG3jVtPVAHXDkOPxRPQuMDya6XpuoF+kjDVAkWfbgcw=;
+	s=arc-20240116; t=1775715572; c=relaxed/simple;
+	bh=ffos5oD/hxa5oySKq7uca0KuCFgxZuzluVozUmkmAjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Pwk4TR0usK4obxmllJlCkgJ/Ub7PxJhUQ95oIxtaw9UmHiHtEE6RD+GDLB3cDL5yPNfDuZ2eqC4jbrcW/soYj/xR74kjcJ7xHgynWllHzYce4cMYqTtLutTbbVt/gu5BSARiqwkUr2zvgymDwT+fKIAmnLi0QmLCHSQi+2d64pQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nFaW2bo3; arc=fail smtp.client-ip=52.101.69.49
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UQ0HGiXyS+OayLdo0NXEqzuErtVdO6I0V4EZEOjpGwINfJ2kTOFzjnSHAJ2zmxnM3UrpTfKsa2Z9gmC1tiEQkiz63AatB31tYLoQbM2jthBNJOinD3LRvkldz361dXTflK6xDQzimcSKdIUDVFtNtEAHBLqeeyUy72C6QvvB0QI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jhhvaAk8; arc=fail smtp.client-ip=52.101.83.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nFaW2bo3"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jhhvaAk8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D0elGl8JEvLnXGr297y5zy+v2hMLhKrNqtPLgZUKxm+9lY8ApkyxcFfY9lJqZ4xWNoGIKm5mpp7FB3Tc2ZayNq7GjLNfyv9Y1f1i4A/k6OT02IYqz/OkvxvKr20iZ9Y47dK1EWMcaIru9Xy9sQXGFKK88UY28CEMRSM0EqP/s8NihdgeCpbWWhXlJmEqu/7dF2JPbx49zSx3ayhESrddD0+ho+ZyYXQwMnCViBS8WjctC4VnjkG3HkDnJ5Hc9wj0sJor0YRH5UPB5eV7kKE5uWOPDwH7oPUR//Ok7lHvFE0vV2znS1pwj/NOAs3or4S9OedGkV4I7XSRhkiiUNkEXA==
+ b=H47x7bLGsI62LDR0g6g02FZyWdKnzpQ3XyhFyA2Ql0HZ+fwWVpAOBGXYC1wy1ogt/Tz/a2HKTVv/PCpwsOZo+ri9H/H8Bet0yJO8tElaDm8HPNvZpm8gGdvl5H3AHhXqTO7VjAzTz6YUZmfzPcG9KYk+ERmk3ATWqaxBy6V8rlxiVS7oDhogahtuj3w3J9njg4GHFAq3ANp5TIcAjlbegEXmyBLmIL231sKtb272Koinxwb/c21TWgeNDYnRuGUkwdQjDg1hn9Np9IQvE16jeFWjbt11qr+5FoSkjqUAtZnHFlDXhVCQMaIWbkW00XelrYx8wQa+Ju93dlUTXIYfAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+KIrMCJE/EP4jNOH+lQ5ryPmRKAz2kzeuk6e65xD4A=;
- b=XTB5FlQcKHX9EYohXS2Hw2QhYGqKgRt/e95RDlVSOlZeCbYDzYdudRgYeMPDPpqqcejw34ALnX2fWjpT8ka5Zj2K/zdg7/LXzlT3Sptps+8Ap7Wci/Cyd/DWkLl0msM5oUNP5/+OaHmrPkUR/nYi9Ppdxaza4KR4OpHVm+PODxdsC5RtN9LiIQaIzGbUAC+0Ea9zozq9XECHGZGfrTLlqOz7y/eHH/bYxfrtaCSCurhOa1TsdBz18c8J2F2luK9Xj5GDRNOH+ufAWQtsFUEkSCA+kloPaMOTLdXS8rFuethmiQTxDa6/adalz2rKOGI3s1Zv8Y33UIVwfqhW/tA7ag==
+ bh=7PJlBV62AgbPJuiBqAOSoI2ZEIOLa+DlOyyANsTF5rc=;
+ b=AP3XmtZoaW74Fhd1zLYqJKu6GFPd6rvsn0SApGjCUcDW3ltlvcm6KbMvVEGYoMYFnbhYw3LAcgPPNuRye9PEKfYL+Rmqn4R1i4TTDWablS5Pre68QaR68x1+b6mvKEHSHZsZ5KfGF8TVPIKqq260jvniotQmwmnqjRu7pRRnBUW0dcKiLbapze/i/jREMiGwYHW1pRnEcVDuT+voKCiJJw2STdipGfzcxvo3nm0OUzTFnnYG0txMGze7EqL6BR0qg6j9TdEKn2Y5ogXd5GcQ0U6RGbiKIaUBLQPcgvtEueIQVYZDrDA1acXXpm35w8Au7j3ONckilxACfCiA+8q/wg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+KIrMCJE/EP4jNOH+lQ5ryPmRKAz2kzeuk6e65xD4A=;
- b=nFaW2bo34VImTmd4tQA6ZHahYl7TIPc+PvV6svC/NeTDIH8W2G3ICLAJzicf/F2DzjfO2IxReuUx26gIuXwLOQpjNZEqRv52+WOiZWtp0UQEvkCwcmlYAR2Bq+5JWLpAmyuAyNWtrVdnOJLIjXbUmM1AZAodDJhVorEZPPFHrI6fQV85tq932hEmpK0Ya4nQ4f3UKdWE/OxNXGXDgaWX9EVzjYJ6gxSb1HxBmWU0O5m2L8zD9szClrKXDBGvrFMCAK6UO7dabFmhs1l0f1EITc+8Y2XTbcSXcN00bfsmU5HfjvqA0fuYSNZKxr1oNC2fvI+f6LJqaaXuvxBp68r0iw==
+ bh=7PJlBV62AgbPJuiBqAOSoI2ZEIOLa+DlOyyANsTF5rc=;
+ b=jhhvaAk8S8bq05W/BoRydWUTG5J9nav1sGRkdpALk5WF0REgLICT1j6+qcs420GrtmyEtjzWUgVedsLX7mnbauOH70iUE/NifdMiiJRVgZtPMrevL5wUQZUp5ShKCPtUvjaTOfDnQkdx7BgqysqlNkArsMaqOiuIQxurZj1UyzKW1sZV4BDyinaK4yU/FDOiwSowPOvWRmbVLph1wEifZOQ0Eq2rx6kyBgBH70L7eM5P17fpVFBBgXcY/tVJwK7d2K/dkE9yaEaoMcJrysjfj/azWWZx6t1QITUyBlriKM2wwQOUQXOEB1iyHhnjpu+MFGTjOjvoRgYDnhr96/O3Mw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PAXPR04MB8766.eurprd04.prod.outlook.com (2603:10a6:102:20d::18) with
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
+ by GV2PR04MB12085.eurprd04.prod.outlook.com (2603:10a6:150:305::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 9 Apr
- 2026 03:34:46 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9769.018; Thu, 9 Apr 2026
- 03:34:46 +0000
-Date: Wed, 8 Apr 2026 23:34:40 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Georgi Djakov <djakov@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] interconnect: imx: fix use-after-free in
- imx_icc_node_init_qos()
-Message-ID: <adceUA7PkOLjgyOt@lizhi-Precision-Tower-5810>
-References: <20260408153022.401123-1-vulab@iscas.ac.cn>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Thu, 9 Apr
+ 2026 06:19:27 +0000
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5]) by PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5%5]) with mapi id 15.20.9769.017; Thu, 9 Apr 2026
+ 06:19:26 +0000
+Date: Thu, 9 Apr 2026 14:11:26 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: "Peter Chen (CIX)" <peter.chen@kernel.org>
+Cc: gregkh@linuxfoundation.org, jun.li@nxp.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 2/3] usb: chipidea: core: allow ci_irq_handler()
+ handle both ID and VBUS change
+Message-ID: <nxj46zagq7udixsxaupl67ehekzsyzttnkyvvwwjzzzqkq52rm@kecaausbf4ab>
+References: <20260402071457.2516021-1-xu.yang_2@nxp.com>
+ <20260402071457.2516021-2-xu.yang_2@nxp.com>
+ <adXqKIri+bFwIbwt@nchen-desktop>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408153022.401123-1-vulab@iscas.ac.cn>
-X-ClientProxiedBy: SN6PR08CA0036.namprd08.prod.outlook.com
- (2603:10b6:805:66::49) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+In-Reply-To: <adXqKIri+bFwIbwt@nchen-desktop>
+X-ClientProxiedBy: SI1PR02CA0026.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::11) To PAXPR04MB8829.eurprd04.prod.outlook.com
+ (2603:10a6:102:20c::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,114 +65,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8766:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3392e401-80b0-4c01-ef8a-08de95e8f22b
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|GV2PR04MB12085:EE_
+X-MS-Office365-Filtering-Correlation-Id: 905f8250-5ead-48af-205b-08de95fff33c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|7416014|366016|19092799006|56012099003|18002099003|22082099003|38350700014;
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|52116014|366016|22082099003|38350700014|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	5hwh+CaNRUqp/I11kypWJCtKvd84GFDMKzRdryuXvTLKmlCgM5bT9ClMWQQEmX3C4JLcw6HDLvF3ne2kkl2enfVjijaK5z8OwTE4MRfqu0PH8xZfnoQE6opL8EoqzxDa5nWn6xuCCHLDTHRYOt49qaYj72h2Z8Fx/OlpWnQ7O2gnjMWt9NkmH1SC+pk/RuZE2sTWf6kotBS6PPzixlLlJCPUoCPxIbCxUrj+7S7SQDPwrA48mTCbL+BQx0OkG3xMdRxFGyY9+lj0YUfvbLyFh9fG7BX4PzEp0VTiLULCWMDNUALMtNcr1A+3zxjuHrryWnwFMbKWHe/pciL56ZgrP4mSmknHVyQXgahoP7L00q1EI2G+VFspJdsi4bGO7szC//Ueci9VVSFI8xkyhAjBRZsZ5C0mm6ffaJRjKZaQNHW7O1J9Nm/0x1zhYgAi1jZ5nGpCd1+AmAz9ErP64cQweo4vE6d/DsNbv13c9muukgQ2fq3ZM9o6KcUjP9RWVWZbMCJLfXd/3lAxMaH2I/ABhnLr2Flim5uTVkVbIedChiP8O/nDYuiDPOvFD9kG6/dDiI6MU8HLX0dtAsBL9PKE0XrH98uDGzgglhZVBkPSDpCdvRaS1pGVWGSRlzIpHuNngNEt0o9vkfGHqx0XKrnA22cHr/4cKTYsoz/NkkC36LyanyDSxRNwKc10UlrUWm/rNC9Q77lp0bOByhAnn6hKy20JKOWFy/+BRGrtz9hL2tIDs7BRX95JEvkNJ7HA8bj+8RBEZwt+dsggg8DxAPIomE93zJpUGnXcHkdCprZvYuA=
+	GOXKhwtZRdbyZZy9xugajxAOwdxWmuwti5q/QbaKXtafOGQLH/o5n+NUQ4eF8D8QXcKs/qkV4ypVNOv8ugY1hd5z0erp0EB/NQXcnoVczIjSL4udGq0RLQROa5Ancf/CMEHmYdkTTq+GlMuTsBDIDY9F8EojrkwETBNH9OAWxs6iqRFBTN85FRqI4r9B9tG5lAXgohW57Y0OWd49ETXOtWJ2gzGOOipS8ezKOH2UqcRNU4ISiezgkD6fh6r5s8OEjLedO/7Hg1DCn6baPxVbyLrVEk0C+828p2NxVXDofzqD2hjWLnXbuzUGFeRFoQ2o5s4ROUlUWSyvWbIZRryW3OkkmVHK8lathh4D33QFYocLloMeux2QAQZFYtlYFl6UNIBKS4095v9i/bHVpjWck57XcG7V8tLXjzlrYtEX47DfTElBn78JrhRhJdNbhFBmxRGrvcbmR8eb9m0xVyOpG7IoMai0c5k2fG3OhOClGHBEKXooUkpy2d/B4E3V+dzDjJCDms4qTZFV3DKnZaLluYcHtRI3TjgvZAScPv90RjJdV2Him4QFUpxIsZ9GzEVu1kyD/jq6gMv8Jx9Z4KDgAfJ7vuuRVtDunO0ZMCO3uaw0EnHqxdb0FUgt1H1kjuclqv9LSiPe8sYv887yqYPmcays9Q8ClBtncgIyCinafGdJMtJ7fWrp45u8vAbKFvEO67EepEXLx73EjFR4lsvUyqftGdPZmybYRBEz3QdSbRHfhFbfFHLvZLgx1+2N65q93ahMYjVdB0y1JVOt6KtFt/y9srUTDOwg7bX7GN8gwYo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(7416014)(366016)(19092799006)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(52116014)(366016)(22082099003)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ap2L2WsbPvIpDAA9jrubl/HhUdYQZkmET5qvY/8ul6BLJ0kYTrrHeI4t+l3R?=
- =?us-ascii?Q?HFXAhua8dIpMvhacw5P1AvBCzr7FFNwhv64FAdIscjQ5Gr5VzqVsCM0bPjhz?=
- =?us-ascii?Q?x+HMZgyuUIGX2gOiydT+/OpcobJw/fOqvt6lPhSMDFY8oFmgzPxwX4XANC57?=
- =?us-ascii?Q?ypNNm/H+xA6tf6iG8Dkjxb9ORw93ljmmRhnc1CZ2oZC8M/F8xs3Dtvhf2gcU?=
- =?us-ascii?Q?PnwzZtbWaSiPmuMdTaPqV09+dERcZOqjs7e+Xr7WYAzwCAqo820EVPO+u0wE?=
- =?us-ascii?Q?WNh2sZDedHfHJ0T7tldwuwoQFk5QncWBc0m2ryUD1U3KE/Z31I8Ky2CPeHBK?=
- =?us-ascii?Q?fnYobIUKcsE4teRon5duYJeDLEMwuYn9DV+F6lY70+HIphhNufsG1DPvRFW7?=
- =?us-ascii?Q?BPEM8sC/iZj7FWe9nCmLyqjplKr69JOqkqK9psWHrj84TofGgDO6FlK93ExP?=
- =?us-ascii?Q?8fHVEVSQqgjGoqDh/MlKvM0Z2qsF3T8HzWTsYhBzUV3aJTxtAA82cJYOYkiD?=
- =?us-ascii?Q?rI2Rke7ztYqSDBTBmSaN78ae4nVuN30REP90eepPCPEkHSJmZFTSqfQVxDN5?=
- =?us-ascii?Q?jLZ+GLd9u6NPtn+bmNq0kZOn10NKzjf8/Mkvq9n6a8HOTDPazILa11yllyMF?=
- =?us-ascii?Q?ZixoBA/7OaC9T5LhyrXUwKeLdvxzl9fR5TzchpQpGktyQ4XqmfVFm0bOBPoZ?=
- =?us-ascii?Q?Q6jKGxmHEzbNJ6Yge4n4d2dMPhQq/iazuGTlofuHvEMXkV2E66LJGLUc1jNP?=
- =?us-ascii?Q?q/uW8xBUH1ayhIJJnUxnlDru3hLHvQJnLb5A3YaleNoJjSeDO5ZbhixQKSYG?=
- =?us-ascii?Q?GCTZDsWu9DoEmo5tgDBtxMRnNnDX6NORXmSf83M4uvi1jho3YzFAbdIXXLG/?=
- =?us-ascii?Q?vnLMc8nEbboLSgN57TMtvlvy6SqUxg3m/8BfLHUZhpHbjDZc6ceS3klD7EQO?=
- =?us-ascii?Q?QhFKHzj/VcGhF55JvW4zGX/swrrDZSaPmekSGq1oUkAcud85kxhhxF4pDC/K?=
- =?us-ascii?Q?bzBBvn5IGU21+ebKCkOo6FsDxxjmBMTBkURqKgLTDhm1Q2d3yRcFTk3JpdbT?=
- =?us-ascii?Q?pGt4rB9HykKtQrx3jDKfpuSOgcE3HJsMtAglHFE1jnESF9jW+bVX5MGakIII?=
- =?us-ascii?Q?+s7O6Y4hjfcwKfrYQX7ufNYENAz2t8vpul4agktUPqdgqPOybUvo/s220DN8?=
- =?us-ascii?Q?ssIQf+fTbfWinPCakTtAAEzI5sVAASjnjO3enpqQBrgP9FALl1bciVCzQ/tW?=
- =?us-ascii?Q?DtZuKXAa1XI+fX+8X1rALCIzEFh3j79QP7Pf1Q5IemrExJlFNNDub6Rup2do?=
- =?us-ascii?Q?7K8+Pf/upPgaRqDgIhheIQ/MIKU55LCXM1dC0o6HYhMFOJtTolaq5+X166HN?=
- =?us-ascii?Q?zncwySogM2Llj2zM0qxozdM+mLo/Ka9QS+X4wHho3kzDKTUXuqb2FNI6d2lV?=
- =?us-ascii?Q?GUgUdpdR0k+ZePVjpwwwia5sbEHyDT27k3J0rgyCdo7oLVud5yEjq8DG6P0j?=
- =?us-ascii?Q?7ZiPt78vWE3kQbH8v38yOrbGh2bimrgdaiKhNnAn1A8e0CrCHiK6OXHMO6E2?=
- =?us-ascii?Q?CgJbmfRCAnsIW1oWiD7MOWptNQEytDzM4TQZmMwcImZ1zQTjp8SSc4h4dM9m?=
- =?us-ascii?Q?Nf8nq69Ii38RGBCK6YYoqEkXfO//ctebZ/72QRwXVFJ6KRqfkvw02v2LU6kl?=
- =?us-ascii?Q?Azk3sMOaG6EvKkDzglng1khqOQKMxHocVIMyNzj4qLl6HQ0f?=
+	=?us-ascii?Q?/47vJWUV2aOhoTiI5JPkfHNIcpz8Ofg3nMxYdMSkFsxfH4c5UhlgtcEi/mQv?=
+ =?us-ascii?Q?241BydOKTkS/fJXtRVjHduBPPFBZj/3iRiiumpMHeJoB405cxoPd1QzIxWjB?=
+ =?us-ascii?Q?hxaC4VlvvZR6TUDbycLT+JApHWoKLKyLbKram19/hkpDiVSrozsKrR9Hzyej?=
+ =?us-ascii?Q?SCUBzPA4Cu6x8kunGlbUcZ+1KBSTx/WPx9KTCcTjWZDmaY6G2pCRUvBiIadr?=
+ =?us-ascii?Q?yj33qrhmo2GAZK3Yxg/OErWirl4TU2Jhtr4iIz6AvWJ2XMhuKeSM4S508qBE?=
+ =?us-ascii?Q?kLUDbcV8wCagofA1B+lbM2xrE/NSRX8Gb8GZRGqFl2enAaGiPC9Q5g+DUhwy?=
+ =?us-ascii?Q?D8Xlo+e1gY3DSiajFN95XYuNNGooBc7D3NhJD3mUpZpR4ZlSoV8/vGwSWV7o?=
+ =?us-ascii?Q?JnOJAQ65C7lhtSz5ndxvii+0BUu2vWonhTEzdHHUpuwaVTJ2/tDW7J6bCQhK?=
+ =?us-ascii?Q?5tDACvc0lXWxDOZuLuqokkAYNjYuC2VegB08v8HJz6ZXOO74TTpkCDuMpfiq?=
+ =?us-ascii?Q?W1W0+Je2TQL+nc82FrD8kAQxohAwovE5+/XsxLMST1ELRpfQii/rMt316Cd+?=
+ =?us-ascii?Q?6jy3odUUzoNDsFio5JFyeKlSJ16LKkphGPXwydICKVywxkEBHpZjNk6Fi4p5?=
+ =?us-ascii?Q?99D0YEN3jysg4FND0fCMGNujbDpigrtbkcjAbkh3rJbI/Y7UKAoxskr0nli/?=
+ =?us-ascii?Q?Zj6iWtCjdcnuoZGQJ5c5ONCLtnGBpYVz7PkMtqZka3SIQqKWzdXJq8l7eYra?=
+ =?us-ascii?Q?5n7JHUAR1D7dQ3lUgpxQQCgUPERrydOl8m+4O/X5Hh2jdKB+AtLT17PLs6IX?=
+ =?us-ascii?Q?QE58fmbdAw57MTB638JPgawUpfBoE5sHZfshbprJfxQexPkXyn/ag0/JyCfu?=
+ =?us-ascii?Q?/rsrfl5B6sRpszyRo32ZflOOxd3+r8V0K9g1tcsCDL/GEmAE/z2qZ7Iyacvv?=
+ =?us-ascii?Q?XLY048jJEoVrU60oUu8OUOQ2c1Lk4pkg+klPDHv3IrYk6JSk6keXw/v8YCqg?=
+ =?us-ascii?Q?RuD/4FpHi109KEqNmAH9vhIr97Tit3/HDYKSyY5fpzM5EefWD7O9gnGT2l/+?=
+ =?us-ascii?Q?EBcsSq3aMtNJTgArkn1ogzaMYlBr1YvT/f8bd9UEElCwFX7ZjXViA/cuef6L?=
+ =?us-ascii?Q?E9yrp0s2yq9yDkYS0887V8bemDCyraG5C+JzTw4Ljntg7YjO8Zpo0ZyXFGkr?=
+ =?us-ascii?Q?7kqL/rT5dmKSU99CI18VtdsVlLLXm10q5fcm66LwZfieRr8yTk30m4pZOOkm?=
+ =?us-ascii?Q?C7XVz2Hvfosf/DiEHpH6KdLX+/1XlvXcmUo2OOgry0FhMYlzZ3tMP5+Jn4A/?=
+ =?us-ascii?Q?Fq2UnTbRSiRoyrxDsvABlmu7HMKEGZ+G31iB2ylzZ09X/LDMRPJ7BovurCR7?=
+ =?us-ascii?Q?ealDRwIYSPHAzHyMWEJK8OLlilSgeH422Q93tRG2z9HCwiQ2nrpGP9Iq5dbL?=
+ =?us-ascii?Q?sFwSFB/68kG8jYm74xaTyEiBDYaspBgZEbuIG12DDgmUTpnOtVjwDpdI6fLX?=
+ =?us-ascii?Q?g+fP6xUnzQTsDI9fytfbI8pLbnloSIjrn1PPtt4FkicbuFvy72BK1XXR6J2b?=
+ =?us-ascii?Q?DzYFenIMChDuhEfZ4ztm+7XcTAZf23PsAJa43tbesZ0ujyPAYRHAgBLrRDbU?=
+ =?us-ascii?Q?Oruqbpipj7D7EaI3kHEoBP2xsKNJUPx0KRvqfSry4XhOnqX9IeHj7yEkswq+?=
+ =?us-ascii?Q?OMs4OOPqww8WSAnRqwegMkKNS3cjf9X238R8GNvIkP1qjNU8kq73J6Xss5+B?=
+ =?us-ascii?Q?hbaPWGGchg=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3392e401-80b0-4c01-ef8a-08de95e8f22b
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 905f8250-5ead-48af-205b-08de95fff33c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 03:34:46.2690
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 06:19:26.7866
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zIzKDf6jcFAVCPmpMMsyF1NUHfui5rzKSmE7xA4D3o9OoKW5uysoFVLQdlxpQB4GQD5lqxlykDuXC63Tzd9MUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8766
+X-MS-Exchange-CrossTenant-UserPrincipalName: Cn2PBbPlZZYw8TW53YuTqJsP4fz9c6OuMT+XbBB/36r55VwEOkUbUG+OP3eqLPlkI9teppRMWGUV5j9bExpWIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12085
 
-On Wed, Apr 08, 2026 at 03:30:22PM +0000, Wentao Liang wrote:
-> The function imx_icc_node_init_qos() manually manages the reference count
-> of struct device_node *dn using of_node_put(). However, some error paths
-> use dn after the put, leading to use-after-free. Convert to automatic
-> cleanup using __free(device_node) to ensure the reference is always
-> released when dn goes out of scope.
->
-> Fixes: f0d8048525d7 ("interconnect: Add imx core driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - Use auto cheanup to fix the problem.
-> ---
+On Wed, Apr 08, 2026 at 01:39:52PM +0800, Peter Chen (CIX) wrote:
+> On 26-04-02 15:14:56, Xu Yang wrote:
+> > For USB role switch-triggered IRQ, ID and VBUS change come together, for
+> > example when switching from host to device mode. ID indicate a role switch
+> > and VBUS is required to determine whether the device controller can start
+> > operating. Currently, ci_irq_handler() handles only a single event per
+> > invocation. This can cause an issue where switching to device mode results
+> > in the device controller not working at all. Allowing ci_irq_handler() to
+> > handle both ID and VBUS change in one call resolves this issue.
+> > 
+> > Meanwhile, this change also affects the VBUS event handling logic.
+> > Previously, if an ID event indicated host mode the VBUS IRQ will be
+> > ignored as the device disable BSE when stop() is called. With the new
+> > behavior, if ID and VBUS IRQ occur together and the target mode is host,
+> > the VBUS event is queued and ci_handle_vbus_change() will call
+> > usb_gadget_vbus_connect(), after which USBMODE is switched to device mode,
+> > causing host mode to stop working. To prevent this, an additional check is
+> > added to skip handling VBUS event when current role is not device mode.
+> > 
+> > Suggested-by: Peter Chen <peter.chen@kernel.org>
+> > Fixes: e1b5d2bed67c ("usb: chipidea: core: handle usb role switch in a common way")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > ---
+> > Changes in v2:
+> >  - change ci_irq_handler() instead of assign id_event/b_sess_valid_event
+> >    as true and queue otg work directly
+> > ---
+> >  drivers/usb/chipidea/core.c | 45 +++++++++++++++++++------------------
+> >  drivers/usb/chipidea/otg.c  |  3 +++
+> >  2 files changed, 26 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+> > index 87be716dff3e..7cfabb04a4fb 100644
+> > --- a/drivers/usb/chipidea/core.c
+> > +++ b/drivers/usb/chipidea/core.c
+> > @@ -544,30 +544,31 @@ static irqreturn_t ci_irq_handler(int irq, void *data)
+> >  			if (ret == IRQ_HANDLED)
+> >  				return ret;
+> >  		}
+> > -	}
+> >  
+> > -	/*
+> > -	 * Handle id change interrupt, it indicates device/host function
+> > -	 * switch.
+> > -	 */
+> > -	if (ci->is_otg && (otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
+> > -		ci->id_event = true;
+> > -		/* Clear ID change irq status */
+> > -		hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
+> > -		ci_otg_queue_work(ci);
+> > -		return IRQ_HANDLED;
+> > -	}
+> > +		/*
+> > +		 * Handle id change interrupt, it indicates device/host function
+> > +		 * switch.
+> > +		 */
+> > +		if ((otgsc & OTGSC_IDIE) && (otgsc & OTGSC_IDIS)) {
+> > +			ci->id_event = true;
+> > +			/* Clear ID change irq status */
+> > +			hw_write_otgsc(ci, OTGSC_IDIS, OTGSC_IDIS);
+> > +		}
+> >  
+> > -	/*
+> > -	 * Handle vbus change interrupt, it indicates device connection
+> > -	 * and disconnection events.
+> > -	 */
+> > -	if (ci->is_otg && (otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
+> > -		ci->b_sess_valid_event = true;
+> > -		/* Clear BSV irq */
+> > -		hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
+> > -		ci_otg_queue_work(ci);
+> > -		return IRQ_HANDLED;
+> > +		/*
+> > +		 * Handle vbus change interrupt, it indicates device connection
+> > +		 * and disconnection events.
+> > +		 */
+> > +		if ((otgsc & OTGSC_BSVIE) && (otgsc & OTGSC_BSVIS)) {
+> > +			ci->b_sess_valid_event = true;
+> > +			/* Clear BSV irq */
+> > +			hw_write_otgsc(ci, OTGSC_BSVIS, OTGSC_BSVIS);
+> > +		}
+> > +
+> > +		if (ci->id_event || ci->b_sess_valid_event) {
+> > +			ci_otg_queue_work(ci);
+> > +			return IRQ_HANDLED;
+> > +		}
+> >  	}
+> >  
+> >  	/* Handle device/host interrupt */
+> > diff --git a/drivers/usb/chipidea/otg.c b/drivers/usb/chipidea/otg.c
+> > index 647e98f4e351..def933b73a90 100644
+> > --- a/drivers/usb/chipidea/otg.c
+> > +++ b/drivers/usb/chipidea/otg.c
+> > @@ -130,6 +130,9 @@ enum ci_role ci_otg_role(struct ci_hdrc *ci)
+> >  
+> >  void ci_handle_vbus_change(struct ci_hdrc *ci)
+> >  {
+> > +	if (ci->role != CI_ROLE_GADGET)
+> > +		return;
+> > +
+> 
+> Are there the situations that the ci->role is not CI_ROLE_GADGET, but
+> it needs to handle VBUS? Eg, ci->role is CI_ROLE_NONE, and VBUS event
+> occurs?
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+I suppose you refer CI_ROLE_END.
 
->  drivers/interconnect/imx/imx.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/interconnect/imx/imx.c b/drivers/interconnect/imx/imx.c
-> index 9511f80cf041..e5fcdcb88cfb 100644
-> --- a/drivers/interconnect/imx/imx.c
-> +++ b/drivers/interconnect/imx/imx.c
-> @@ -120,7 +120,8 @@ static int imx_icc_node_init_qos(struct icc_provider *provider,
->  	struct imx_icc_node *node_data = node->data;
->  	const struct imx_icc_node_adj_desc *adj = node_data->desc->adj;
->  	struct device *dev = provider->dev;
-> -	struct device_node *dn = NULL;
-> +	struct device_node *__free(device_nod) dn = of_parse_phandle(dev->of_node,
-> +			adj->phandle_name, 0);
->  	struct platform_device *pdev;
->
->  	if (adj->main_noc) {
-> @@ -128,7 +129,6 @@ static int imx_icc_node_init_qos(struct icc_provider *provider,
->  		dev_dbg(dev, "icc node %s[%d] is main noc itself\n",
->  			node->name, node->id);
->  	} else {
-> -		dn = of_parse_phandle(dev->of_node, adj->phandle_name, 0);
->  		if (!dn) {
->  			dev_warn(dev, "Failed to parse %s\n",
->  				 adj->phandle_name);
-> @@ -138,12 +138,10 @@ static int imx_icc_node_init_qos(struct icc_provider *provider,
->  		if (!of_device_is_available(dn)) {
->  			dev_warn(dev, "Missing property %s, skip scaling %s\n",
->  				 adj->phandle_name, node->name);
-> -			of_node_put(dn);
->  			return 0;
->  		}
->
->  		pdev = of_find_device_by_node(dn);
-> -		of_node_put(dn);
->  		if (!pdev) {
->  			dev_warn(dev, "node %s[%d] missing device for %pOF\n",
->  				 node->name, node->id, dn);
-> --
-> 2.34.1
->
+When the role is CI_ROLE_END, the VBUS IRQ is disabled.
+ - If the controller keeps at CI_ROLE_END state and VBUS comes, the IRQ
+   won't trigger just like it is ignored as it means nothing for CI_ROLE_END.
+ - If VBUS comes at CI_ROLE_END state and the controller switches to
+   CI_ROLE_GADGET later, the VBUS event was lost but the driver will lookup
+   real VBUS state and do proper actions.
+
+So the situations seem not exist.
+
+Thanks,
+Xu Yang
