@@ -1,61 +1,70 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from mail-m32103.qiye.163.com (mail-m32103.qiye.163.com [220.197.32.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6E437F726;
-	Thu,  9 Apr 2026 10:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590953BB48
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 10:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775729895; cv=none; b=N8Jc9AkgtJCa+yuph8vqMvzzW+SQ7XbSdQBlXV+txBS6BHVDfmAZPBgcPqA83AQRQszJxlX5k6A7WmIiKmBKJlRIHwiojWcprkvw3UtZaMWQeGlcf6lN5qsWmJi0W6BUhOu2bGHoRwTZzx07YwADe6UdXFMjgvAd4kkmyi3Qn9U=
+	t=1775730170; cv=none; b=joT8c/KssDDDqGVh5x+6Yn4Er/vC3u4kYZigmp+HlJTZwEixw8myDbzQwTjHmakKWZSyDqZKgL1jwOs9Le1bxIqZBTzFF7hSkLHn20OYTVwJGcPOV3mxB/3x2XEAZtpkVeeDXjyZWsHdx3xZQLVGMwj1pJKyE3gkar4/1vocqf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775729895; c=relaxed/simple;
-	bh=jc6SP7O8WBRvAHXApukLlYFJwm9H367fnx30CF22FKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GmZ57m41JCpYf3R7XhriswX138C2/MkaIxH76GQM+YsA2kOueoz0Sf82TTiTgmYZEG66BhyvJkMJEmDEOX4JnYpiqDo8xSQs0BKOsmVPkbrP36yG2//We1k5mOmwRqR1AoL6f+6F4k3eaA724NOYZXnwJNMW50u1Af9Z64NuBME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lmD3ldwB; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1775730170; c=relaxed/simple;
+	bh=KuRjQ6sUnFKEgVz8f/qkn//5fJ53Dw6wpj8j7AnrI7k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=b6dpQM/meKnd/2dnZLrZMxqKt5FpbGidaJwT6GqwrXiAIy8vS2B/X6FEp6/JgJ/qyEw/W6FBuZgcdw+eXHtRJv1PSxRnhXuJN1SKNoXHHmYOCfdmvBEa+xncGMCgqoWvK4mCcIdQIxxMtCRDMjjZy6RzGnvbAISKbnyuoLn8dw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=fG4eTU8Y; arc=none smtp.client-ip=220.197.32.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lmD3ldwB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=86el+SLw/QgiWOEupwoMilPrwU17U7TooJ52U2GyoRY=; b=lmD3ldwBZT/G/8ilO/sURQ2035
-	qDVZLKQPRAsz4WGKddDz1weC2WTp0WpEE4ZThCvq56e3V4siH00SxmRcEUbswTv4QPWorTTKmP/v5
-	edyFfQK515zZicg/dRcTWpTdSz9/IAK4dPJr1p5h7R5vwQcTKy8bOpVTanI2JXVBBmaKU0j2x2kZT
-	OYbLmbNk6273Nt9ab2F6kQMb0prGHtb60uGCPL8FFk4GhF0IaljmJlTUJYbbVBNMLgbIns5Urc1GG
-	837beWnyXa+kQJdo8SWvEESQdZBc9/xbDaMdrTngo5ZeUJXAuXuQ+hvUtTd/a5GjZYXJsA3+xuH+G
-	J09upCAQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wAmSZ-000CCL-2m;
-	Thu, 09 Apr 2026 12:18:03 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wAmS2-000NIs-0Y;
-	Thu, 09 Apr 2026 12:18:03 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="fG4eTU8Y"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3a11ab2fe;
+	Thu, 9 Apr 2026 14:53:26 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	victor.liu@nxp.com,
+	Frank.Li@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	alim.akhtar@samsung.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	luca.ceresoli@bootlin.com,
+	nicolas.frattaroli@collabora.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 1/1] ARM: dts: imx6ul: add #io-channel-cells to ADC
-Date: Thu,  9 Apr 2026 12:17:57 +0200
-Message-ID: <20260409101759.4159324-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v13 07/17] drm/bridge: analogix_dp: Move the color format check to .atomic_check() for Rockchip platforms
+Date: Thu,  9 Apr 2026 14:52:51 +0800
+Message-Id: <20260409065301.446670-8-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260409065301.446670-1-damon.ding@rock-chips.com>
+References: <20260409065301.446670-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,31 +72,104 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27966/Thu Apr  9 08:24:43 2026)
+X-HM-Tid: 0a9d7104642803a3kunmc1f4d6544039b1
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0keGVZDHR1MSU4fQk0ZTk1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=fG4eTU8Y6gI8LZufE0OZUpJIJpMGf/uQaTzMANpdDZjmOsHC/QpOPchiiG4c+V94RO933YOflxdwUDhNy9QQZh6MAlGm0G1rO2MHmgCzbcXyQENFAeOp/ErPjX0ggpSL3FD0PXphnT+gIlL+P9dsSqtd7ewEstpWSDhOrKtGnK4=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=5efsGfB2pxv5Psr5CbfD9hyEEEYI7WSMCyRa9CxLDTc=;
+	h=date:mime-version:subject:message-id:from;
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+For Rockchip platforms, the YUV color formats are currently unsupported.
+This compatibility check was previously implemented in
+&analogix_dp_plat_data.get_modes().
 
-This commit adds io-channel-cells property to the ADC node. This
-property is required in order for an IIO consumer driver to work.
+Moving color format check to &drm_connector_helper_funcs.atomic_check()
+would get rid of &analogix_dp_plat_data.get_modes() and be more
+reasonable than before.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
+
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul.dtsi | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-index 24541fdf49ceb..d2bfa08b5e767 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
-@@ -951,6 +951,7 @@ adc1: adc@2198000 {
- 				interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6UL_CLK_ADC1>;
- 				clock-names = "adc";
-+				#io-channel-cells = <1>;
- 				fsl,adck-max-frequency = <30000000>, <40000000>,
- 							 <20000000>;
- 				status = "disabled";
+Changes in v9:
+- Add Tested-by tag.
+
+Changes in v13:
+- Rebase after commit 01962a191242 ("drm/rockchip: analogix: Convert to
+  drm_output_color_format")
+- Modify '(on rk3588)' to '# rk3588' for Tested-by tag.
+---
+ .../gpu/drm/bridge/analogix/analogix_dp_core.c | 11 +++++++++++
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c    | 18 ------------------
+ 2 files changed, 11 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index 88fb863fed78..c05cf100f17e 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -894,8 +894,19 @@ static int analogix_dp_atomic_check(struct drm_connector *connector,
+ 				    struct drm_atomic_state *state)
+ {
+ 	struct analogix_dp_device *dp = to_dp(connector);
++	struct drm_display_info *di = &connector->display_info;
+ 	struct drm_connector_state *conn_state;
+ 	struct drm_crtc_state *crtc_state;
++	u32 mask = BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444) | BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
++
++	if (is_rockchip(dp->plat_data->dev_type)) {
++		if ((di->color_formats & mask)) {
++			DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
++			di->color_formats &= ~mask;
++			di->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
++			di->bpc = 8;
++		}
++	}
+ 
+ 	conn_state = drm_atomic_get_new_connector_state(state, connector);
+ 	if (WARN_ON(!conn_state))
+diff --git a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+index 387fb6259edd..48206a7b767f 100644
+--- a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
++++ b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+@@ -166,23 +166,6 @@ static int rockchip_dp_powerdown(struct analogix_dp_plat_data *plat_data)
+ 	return 0;
+ }
+ 
+-static int rockchip_dp_get_modes(struct analogix_dp_plat_data *plat_data,
+-				 struct drm_connector *connector)
+-{
+-	struct drm_display_info *di = &connector->display_info;
+-	/* VOP couldn't output YUV video format for eDP rightly */
+-	u32 mask = BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR444) | BIT(DRM_OUTPUT_COLOR_FORMAT_YCBCR422);
+-
+-	if ((di->color_formats & mask)) {
+-		DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
+-		di->color_formats &= ~mask;
+-		di->color_formats |= BIT(DRM_OUTPUT_COLOR_FORMAT_RGB444);
+-		di->bpc = 8;
+-	}
+-
+-	return 0;
+-}
+-
+ static bool
+ rockchip_dp_drm_encoder_mode_fixup(struct drm_encoder *encoder,
+ 				   const struct drm_display_mode *mode,
+@@ -483,7 +466,6 @@ static int rockchip_dp_probe(struct platform_device *pdev)
+ 	dp->plat_data.dev_type = dp->data->chip_type;
+ 	dp->plat_data.power_on = rockchip_dp_poweron;
+ 	dp->plat_data.power_off = rockchip_dp_powerdown;
+-	dp->plat_data.get_modes = rockchip_dp_get_modes;
+ 
+ 	ret = rockchip_dp_of_probe(dp);
+ 	if (ret < 0)
 -- 
-2.43.0
+2.34.1
 
