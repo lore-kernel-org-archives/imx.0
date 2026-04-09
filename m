@@ -1,70 +1,43 @@
-Received: from mail-m32100.qiye.163.com (mail-m32100.qiye.163.com [220.197.32.100])
+Received: from mail.prodrive-technologies.com (mail.prodrive-technologies.com [212.61.153.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9F739185E
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 09:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095EC3ACA7F
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 09:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775726176; cv=none; b=QWM+VhYbYLALbKDSe7OM0ZuYwopGRpTWBrI3T0/zdo1d2hMh1ocbddRm95im5xeg1EYN5qbPisWSUG/usWUX+9UlK2nMbnQFX8ZZ8vKzX2ky6HUMIkEYoj4ll2D6/ygjpelW0fI1DBnGgjGQ1ZosyuQQlXDijZXcbAFBkq/rbjw=
+	t=1775726220; cv=none; b=B/f7U/vYUidib4ea/AoPj0Vuu5GaomCJq/sjvi/z/S7wSh9xN0zz2My2s+dx+7/n1zeVhK+IujrsgC7ZekWFAyiYjWS4S3FqAmhkn7I20dxgTuoSXj/C/3labhb2a9krQserp3Y/WAIX48MpRTu6TFXKRVEb5pmvHL2CfJA3tew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775726176; c=relaxed/simple;
-	bh=mTTTNdRwYU42WOwmO0b9Nd70qjb/cnsVhqnu6E5/HuY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KTOnvTZxuQ+W2rY0s1UBuBLAdLT6WvOnN5u1iLdknRZQ02eIy6NSMVyrl4lHBDnIwdsd9MfzyhMawcnzElhFUywDu+iLtUgi5Ai+/MeCGZkbVY6ok56GSo5ZIgRbeftOWbgOk7WAFf5vMnxjQ6xQOAOUWSBuJe6kexKqlFEioDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=NfgLPShc; arc=none smtp.client-ip=220.197.32.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="NfgLPShc"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3a11ab355;
-	Thu, 9 Apr 2026 14:53:39 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	victor.liu@nxp.com,
-	Frank.Li@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	alim.akhtar@samsung.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	luca.ceresoli@bootlin.com,
-	nicolas.frattaroli@collabora.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v13 12/17] drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
-Date: Thu,  9 Apr 2026 14:52:56 +0800
-Message-Id: <20260409065301.446670-13-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260409065301.446670-1-damon.ding@rock-chips.com>
-References: <20260409065301.446670-1-damon.ding@rock-chips.com>
+	s=arc-20240116; t=1775726220; c=relaxed/simple;
+	bh=jVY18RrhX3s9AskLVB//8j0zI2tCSDvQNpsvY71GDeA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JLYbS+7G5eO+KFnp5GMmbOfj1o5FBV63OcGymAp69JFzyJx6h05JiOnPrCLikPLTt+sk2WIazFSoNk7sL42Bgcvj/uhmSLBtozqga6k6uTi2vj0ekRIethLnqxZgesgnZdG/Ks+EP/BUsfaSm8+at4vn9b9l3EnPE8T/USTkMcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
+Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
+ (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Thu, 9 Apr
+ 2026 11:16:44 +0200
+Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
+ EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1748.39
+ via Frontend Transport; Thu, 9 Apr 2026 11:16:44 +0200
+Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
+	(envelope-from <paul.geurts@prodrive-technologies.com>)
+	id 1wAlVE-00FtCh-0K;
+	Thu, 09 Apr 2026 11:16:44 +0200
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+To: <abelvesa@kernel.org>, <peng.fan@nxp.com>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>, <shawnguo@kernel.org>,
+	<linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: <martijn.de.gouw@prodrive-technologies.com>
+Subject: Re: [PATCH] clk: clk-imx8mm: Initialize clocks in arch_initcall
+Date: Thu, 9 Apr 2026 11:16:43 +0200
+Message-ID: <20260409091643.3787112-1-paul.geurts@prodrive-technologies.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <9f36af74-ef1a-4777-a1c3-ff13b68c2221@pengutronix.de>
+References: <9f36af74-ef1a-4777-a1c3-ff13b68c2221@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,160 +45,76 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d7104987303a3kunmc1f4d654403a82
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUlJTFZJTEweTEMZGhgeT0lWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=NfgLPShc0w9uMMuPv55oZHN+tMLlyGefHa/zX0vSvPZ27vUYKQ4sGRu8y7ah/6gNoiXL1vtiiVt1/NnKzD0GDSTadnZanFouX8MCwFQ8ifKq+3pTHEP+/zjxXQC2Ax1vEQArsmoP2BdvDJRr0WRzP/MoiDZajivjY/Od/NvgI9E=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=ZvkE3EzfbX662HjFY9Yvr45JG7g8y95OEJMnvmGi64k=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
 
-Since the panel/bridge should logically be positioned behind the
-Analogix bridge in the display pipeline, it makes sense to handle
-the panel/bridge parsing on the Analogix side. Therefore, we add
-a new API analogix_dp_finish_probe(), which combines the panel/bridge
-parsing with component addition, to do it.
+> Hello Paul,
+> 
+> On 4/8/26 12:13 PM, Paul Geurts wrote:
+> > The i.MX8MM clock driver is implemented as module_platform_driver();,
+> > which makes it initialize in device_initcall(). This means that all
+> > drivers referencing the clock driver nodes in the device tree are
+> > deferred by fw_devlink, which are most of the i.MX8M platform drivers.
+> >
+> > Explicitly initialize the clock driver in arch_initcall(), to make sure
+> > the clock driver is ready when the rest of the drivers are probed.
+> >
+> > Fixes: af7e7ee0e428 ("clk: imx8mm: Switch to platform driver")
+> 
+> Your commit message doesn't explain why this was a problem for you.
+> Does it delay your boot? What makes this patch a fix?
 
-In order to process component binding right after the probe completes,
-the &analogix_dp_plat_data.ops is newly added to pass &component_ops,
-for which the &dp_aux_ep_device_with_data.done_probing() of DP AUX bus
-only supports passing &drm_dp_aux.
+Yes I could update that in the commit description. The problem is that because
+of this, _all_ hardware is initialized in late_initcall, as that is where
+deferred probes are handled. For embedded devices, some sign of life is
+expected by most people during boot. Especially when an initrd needs to be
+unpacked, this sign of life is going to take a very long time. Some display
+controllers don't even get enough time to show the boot logo because of this.
+I don't think the idea behind the initcall levels is that _everything_ is
+initialized in late.
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
+> 
+> > Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+> > ---
+> >  drivers/clk/imx/clk-imx8mm.c | 14 +++++++++++++-
+> >  1 file changed, 13 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/clk/imx/clk-imx8mm.c b/drivers/clk/imx/clk-imx8mm.c
+> > index 319af4deec01..7b2cf867b920 100644
+> > --- a/drivers/clk/imx/clk-imx8mm.c
+> > +++ b/drivers/clk/imx/clk-imx8mm.c
+> > @@ -636,7 +636,19 @@ static struct platform_driver imx8mm_clk_driver = {
+> >                .of_match_table = imx8mm_clk_of_match,
+> >        },
+> >  };
+> > -module_platform_driver(imx8mm_clk_driver);
+> > +
+> > +static int __init imx8mm_clk_init(void)
+> > +{
+> > +     return platform_driver_register(&imx8mm_clk_driver);
+> > +}
+> > +arch_initcall(imx8mm_clk_init);
+> 
+> What happens if you build the driver as module with your changes applied?
 
----
+On module insertion, there is no initcall level, and initialization is
+performed on insertion (AFAIK). Fact is that the system would probably
+not boot when this is built as a module, as there are no peripheral clocks
+without it.
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-- Remame API analogix_dp_find_panel_or_bridge() to
-  analogix_dp_finish_probe().
+> 
+> Cheers,
+> Ahmad
+> 
+> > +
+> > +static void __exit imx8mm_clk_exit(void)
+> > +{
+> > +     platform_driver_unregister(&imx8mm_clk_driver);
+> > +}
+> > +module_exit(imx8mm_clk_exit);
+> > +
+> >  module_param(mcore_booted, bool, S_IRUGO);
+> >  MODULE_PARM_DESC(mcore_booted, "See Cortex-M core is booted or not");
+> > 
 
-Changes in v5:
-- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP.
-
-Changes in v9:
-- Add Tested-by tag.
-
-Changes in v10:
-- Fix to use dev_err_probe() in analogix_dp_finish_probe().
-- Expand the commit message.
-
-Changes in v13:
-- Modify '(on rk3588)' to '# rk3588' for Tested-by tag.
----
- drivers/gpu/drm/bridge/analogix/Kconfig       |  1 +
- .../drm/bridge/analogix/analogix_dp_core.c    | 46 +++++++++++++++++++
- include/drm/bridge/analogix_dp.h              |  2 +
- 3 files changed, 49 insertions(+)
-
-diff --git a/drivers/gpu/drm/bridge/analogix/Kconfig b/drivers/gpu/drm/bridge/analogix/Kconfig
-index 03dc7ffe824a..8a6136cd675f 100644
---- a/drivers/gpu/drm/bridge/analogix/Kconfig
-+++ b/drivers/gpu/drm/bridge/analogix/Kconfig
-@@ -29,6 +29,7 @@ config DRM_ANALOGIX_ANX78XX
- config DRM_ANALOGIX_DP
- 	tristate
- 	depends on DRM
-+	select DRM_DISPLAY_DP_AUX_BUS
- 
- config DRM_ANALOGIX_ANX7625
- 	tristate "Analogix Anx7625 MIPI to DP interface support"
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 4c0192733085..17d078b836e3 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -20,12 +20,14 @@
- #include <linux/platform_device.h>
- 
- #include <drm/bridge/analogix_dp.h>
-+#include <drm/display/drm_dp_aux_bus.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_device.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
-@@ -1581,6 +1583,50 @@ struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp)
- }
- EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
- 
-+static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
-+{
-+	struct analogix_dp_device *dp = to_dp(aux);
-+	struct analogix_dp_plat_data *plat_data = dp->plat_data;
-+	int port = plat_data->dev_type == EXYNOS_DP ? 0 : 1;
-+	int ret;
-+
-+	/*
-+	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no valid panel
-+	 * or bridge nodes. The driver should go on for the driver-free bridge or the DP
-+	 * mode applications.
-+	 */
-+	ret = drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
-+					  &plat_data->panel, &plat_data->next_bridge);
-+	if (ret && ret != -ENODEV)
-+		return ret;
-+
-+	return component_add(dp->dev, plat_data->ops);
-+}
-+
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp)
-+{
-+	int ret;
-+
-+	ret = devm_of_dp_aux_populate_bus(&dp->aux, analogix_dp_aux_done_probing);
-+	if (ret) {
-+		/*
-+		 * If devm_of_dp_aux_populate_bus() returns -ENODEV, the done_probing() will
-+		 * not be called because there are no EP devices. Then the callback function
-+		 * analogix_dp_aux_done_probing() will be called directly in order to support
-+		 * the other valid DT configurations.
-+		 *
-+		 * NOTE: The devm_of_dp_aux_populate_bus() is allowed to return -EPROBE_DEFER.
-+		 */
-+		if (ret != -ENODEV)
-+			return dev_err_probe(dp->dev, ret, "failed to populate aux bus\n");
-+
-+		return analogix_dp_aux_done_probing(&dp->aux);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(analogix_dp_finish_probe);
-+
- MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
- MODULE_DESCRIPTION("Analogix DP Core Driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index 3428ffff24c5..bae969dec63a 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -30,6 +30,7 @@ struct analogix_dp_plat_data {
- 	struct drm_bridge *next_bridge;
- 	struct drm_encoder *encoder;
- 	struct drm_connector *connector;
-+	const struct component_ops *ops;
- 
- 	int (*power_on)(struct analogix_dp_plat_data *);
- 	int (*power_off)(struct analogix_dp_plat_data *);
-@@ -49,5 +50,6 @@ int analogix_dp_stop_crc(struct drm_connector *connector);
- 
- struct analogix_dp_plat_data *analogix_dp_aux_to_plat_data(struct drm_dp_aux *aux);
- struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp);
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp);
- 
- #endif /* _ANALOGIX_DP_H_ */
--- 
-2.34.1
-
+Thanks!
+Paul
