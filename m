@@ -1,44 +1,49 @@
-Received: from mail.prodrive-technologies.com (mail.prodrive-technologies.com [212.61.153.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2B83A875D
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 09:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74366361650
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 09:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775726949; cv=none; b=JsT6CH5AEzn/l3KpQ7je7Sz3b66Dh5GKs9WHV1rhg8h0IUy/jVDeYBOTboe7EFaAyMvEfs7Vej8pPVxPJXHKYpqjneV+9sPnK5S0dd4F7gfhrixunVMFBAj62ozeA+iDD3nnGJm33qcOIZKAs6Bwse6grOh2FDm/W9tg6o9ILMQ=
+	t=1775727200; cv=none; b=JPL/oh92fkVb4T+QQwBWHIh3vEeMYAnCXBmNa2DoNlI7PsHX5wupu2Zzv8cxm1PhcvCwtKZP1n70EbUK4SdELRbutt4b/YdrTiTNjhEmlioTvo7W+DKShz1aMk8zje1iSudrgbvvHm0M1DxmD5SY0Oqo9wM5TawZA6/QDL/lisc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775726949; c=relaxed/simple;
-	bh=qMabHelRPCuOMLmiUlPC7oy4lz0QK1Ulkxk47nbfzYU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JL9ht0Hl/nYLv5iG9kCemWDRJoDOSiCv1DGVnTIIhORz0WZVOqvhDMpTqO+pQjRMjcC5fOMO2IF1p9HgouQ4kk44g827cMQeg/OB1eMt9UiZsBb2Tk3zhy1b0ticn4R7rOvnEV6d62wH3i1difQXH3N4Vc3A00KlB9u8nC9qslc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
-Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP02.bk.prodrive.nl
- (10.1.0.91) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Thu, 9 Apr
- 2026 11:29:03 +0200
-Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
- EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1748.39
- via Frontend Transport; Thu, 9 Apr 2026 11:29:03 +0200
-Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
-	(envelope-from <paul.geurts@prodrive-technologies.com>)
-	id 1wAlh9-00GNSA-2r;
-	Thu, 09 Apr 2026 11:29:03 +0200
-From: Paul Geurts <paul.geurts@prodrive-technologies.com>
-To: <peng.fan@nxp.com>
-CC: <abelvesa@kernel.org>, <mturquette@baylibre.com>, <sboyd@kernel.org>,
-	<Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-	<festevam@gmail.com>, <shawnguo@kernel.org>, <linux-clk@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <martijn.de.gouw@prodrive-technologies.com>,
-	<paul.geurts@prodrive-technologies.com>
-Subject: Re: [PATCH] clk: clk-imx8mm: Initialize clocks in arch_initcall
-Date: Thu, 9 Apr 2026 11:29:03 +0200
-Message-ID: <20260409092903.3903393-1-paul.geurts@prodrive-technologies.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <addMdwvnDkCMJxhx@shlinux89>
-References: <addMdwvnDkCMJxhx@shlinux89>
+	s=arc-20240116; t=1775727200; c=relaxed/simple;
+	bh=qFmJXVhKlV2z7bI+qd54SbZEdUkWMlJD2hheBQTVhc8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gzzUF9+eIeuR8vmrp3AKWR/2hYe4k89f0ZnMf2qqiY1HuF0Q4EH6070EhiFnNp54Ig2i5mLRd11ShaaKex3OUGZ3/Dok3efI7Lu9Cxo7TAhN9pzcuz/GELJobWJhQlktUwdfB54VlcjQS/bFXjuWEKtjx9t3nA9QKiMrVosA9co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=C+P/oFvC; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="C+P/oFvC"
+Received: from francesco-nb.. (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 0BC611F920;
+	Thu,  9 Apr 2026 11:33:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1775727192;
+	bh=N5jGRa8k8ho44x6kxKXfOn0v5fdgNOC2UYBlehneq68=; h=From:To:Subject;
+	b=C+P/oFvCdmVwP4vHysF2vWWDgKM/64WHarjEP+UGhuf8l2Z4GAha7Sg3Bmq1HzMn9
+	 gkAVLAIyt98JV1NojyNqNxBhKoMlyZ5Xqbs1+mOfV5pXoHMZNI7lYXSArsa9pwP3Kq
+	 CmCIwZpM6qBbeJ6BT9zvZarvKvuSMhnoArqO1jCGQsGhQ/ZvXlZYD0ZgT38H5LPrBB
+	 WmQAfRSHk83NQ4CUyVjpd7n0XxgRoq2XfXmavDC7i/SVhVnhhCXTM8pO+D9oz7QgtS
+	 MruburPXk2RTlwqfVj4i30KXX4/TBjnn22ew77kX4QhsSX6+0SFDv61C0jtYG9SmWM
+	 B6hZ0te5O0vlQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx95-verdin-ivy: fix RS485 RTS polarity
+Date: Thu,  9 Apr 2026 11:33:04 +0200
+Message-ID: <20260409093307.56471-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,27 +51,29 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-> On Wed, Apr 08, 2026 at 12:13:13PM +0200, Paul Geurts wrote:
-> >The i.MX8MM clock driver is implemented as module_platform_driver();,
-> >which makes it initialize in device_initcall(). This means that all
-> >drivers referencing the clock driver nodes in the device tree are
-> >deferred by fw_devlink, which are most of the i.MX8M platform drivers.
-> >
-> >Explicitly initialize the clock driver in arch_initcall(), to make sure
-> >the clock driver is ready when the rest of the drivers are probed.
-> 
-> Let's keep as it is, changing to arch_initcall() is not allowed.
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Why is it not allowed? This is an arch driver, so I think it should be
-initialized in arch? I don't think the initcall system was intended to
-initialize everything in late_initcall, which is effectively what this
-problem is causing.
+Fix the RS485 functionality, the RS485 RTS signal is active high on Ivy.
 
-> 
-> Thanks,
-> Peng
+Fixes: f33a1f9a942c ("arm64: dts: freescale: imx95-verdin: Add Ivy carrier board")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thanks!
-Paul
+diff --git a/arch/arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi b/arch/arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi
+index 8337c8b25f05..ff31f7c48cfb 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95-verdin-ivy.dtsi
+@@ -452,7 +452,6 @@ &lpuart7 {
+ 
+ /* Verdin UART_2, through RS485 transceiver */
+ &lpuart8 {
+-	rs485-rts-active-low;
+ 	rs485-rx-during-tx;
+ 	linux,rs485-enabled-at-boot-time;
+ 
+-- 
+2.47.3
+
