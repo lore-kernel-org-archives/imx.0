@@ -1,100 +1,244 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02254348453;
-	Thu,  9 Apr 2026 15:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C24F3E1CE8;
+	Thu,  9 Apr 2026 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775748972; cv=none; b=Xqd6LxC2yJo8Jm7eCYHuuFPWVlBjZrG4UDrO674Fp7TtwxuceThkKVvcDzuoVRh0UxzhF7zaOqJ5tUIxnadC+37MuKo+L5TEI62xVxbYX5hKBtIBMmBKrqWrxTH/xHXGk/7X/u+UlAioEQea6lgShzTtah9n/u7036XOJA6CAL0=
+	t=1775753907; cv=none; b=BMQwNmWqvuMnSKxKKrzpBVdfZuRV7sRXi9MiSRLLWssTo7P6bL+ib1NiLn+dXAG3ivG2vAR9WtzygxwG5jPC5lcZV/BVJF5X3EFNmPzho8WbHk2nCcTLoWCZudIrAomXr/3Hb8isPij2gDOw08jRZa1NTvzjQImpOkmBjdX+7wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775748972; c=relaxed/simple;
-	bh=GaBsF253+7/0/7ERds0sHbzej0dAyfzmyKqbhi68H6c=;
+	s=arc-20240116; t=1775753907; c=relaxed/simple;
+	bh=jzQepuIPTUxzXw6nvVnnvG0DD/52Qtgmozdmz3RF8Dc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GmRvD4i09WjLZfI+93xNbET/5WVsNsPVX8cyqRdK1++E7ZV0CzbJ55SP2+oMrssuvxImSoFH45nvbb+gQxyEMArHP8R1qvxMn7KfDxXlmABiAqB5vQBOEN3CzZk9t9Fg8/lZ5Kh8EkHqb84yoLLGEFGsxQ0aB9kPSWPpYceU5HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oFVh+w9B; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GaFYsFZWyLlxzNwFpMa9EtSKtaNXLrFXweJJIyBZHB3GkN1m0W+rElR4AQtD75KxRogCNG5u/al2zhwteiSqtNsIFjP32tt0zfzUpRTqa51I1LPVPmBldgsymhqU5WI2knd7yspUPXYRoEFJfJK8mSM3wXdGZOt9kp6S5u34McY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFpM1HVL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oFVh+w9B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03943C4CEF7;
-	Thu,  9 Apr 2026 15:36:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFpM1HVL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A83DC116C6;
+	Thu,  9 Apr 2026 16:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775748971;
-	bh=GaBsF253+7/0/7ERds0sHbzej0dAyfzmyKqbhi68H6c=;
+	s=k20201202; t=1775753907;
+	bh=jzQepuIPTUxzXw6nvVnnvG0DD/52Qtgmozdmz3RF8Dc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oFVh+w9B2ldMkOPGVl6bIKnn59TCHL0dytoqAX3A1iQs2ErGvYeLQmmpfm8lef8mq
-	 VoExxPRoA8rQN0DeT+s+6uqcL7AXkMyTholVv57reE6JSRkV0P1YFJDvY/C/nJMt5b
-	 VVnAXF9iLERirSIfpaoqcEcKGHJYoMrz5fz2hz17zxWlCEpWw2+yZMR5uQ5536BhpG
-	 eTLofzn2Y+BROrNBOKopUwJ/n02Xrh5xBvCKFEyB+QQwRJRHMIcRpU2M/755+FVZMf
-	 03FRvcgHnbYJU7CVHc1l5qU+cud+t4cFdzYiNLUPmY/ZMhNpFbNOiB3bDkUHaltkT1
-	 LBuz7zpWpAlIA==
-Date: Thu, 9 Apr 2026 16:36:04 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Alexander Dahl <ada@thorsis.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: net: dsa: nxp,sja1105: make spi-cpol
- optional for sja1110
-Message-ID: <20260409-afar-striving-d89022c8a2bc@spud>
-References: <20260409-imx8dxl-sr-som-v2-0-83ff20629ba0@solid-run.com>
- <20260409-imx8dxl-sr-som-v2-1-83ff20629ba0@solid-run.com>
+	b=IFpM1HVLK0gj/ENLmzP+oNXpi+o1r6eJD99Xz2JAeeE9//s28r0AkFibOJjgDCa7g
+	 2TZnjHbG7Q1rDYrxUN6wXFWJts0vnvCXSnICth6fI19BYuE+3cRWP1du/bw7vM4BIj
+	 AskhIq+vIHe0s5wQorI5G3iGW3Go/uLcRna5qQkUYdRvdS/D3qGUCYKNa8gY54BsaP
+	 YLawo9o8483hclAtRSauVavPsIeiQ58oxINp5WgqDhPFv+dIlj/x2bxHFliApKfC1W
+	 KJv/GYUqnnJ37bS7izC3i1voWnVIrHVE4Q6et6bDg1q/LsXbCxRP+KZ1rhUALG6uuD
+	 ZuuDmkhKY5i7A==
+Date: Thu, 9 Apr 2026 22:28:17 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V11 02/12] PCI: host-generic: Add common helpers for
+ parsing Root Port properties
+Message-ID: <yzy3xui6wzc6h4jguju6hj66bqsj37ulnkl4sjsq4ytyb6azgn@lc2zpqbquzwa>
+References: <20260407104154.2842132-1-sherry.sun@nxp.com>
+ <20260407104154.2842132-3-sherry.sun@nxp.com>
+ <lnzprzrdwra7pn7d6m3sbj5pvjy64blwpjl6i3lmlnfbyho63b@czpyhpgz5vum>
+ <VI0PR04MB12114A60C4A7E43ED62A32B04925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
+ <yijf6mwclpx6n7giucgykxvrm73baicy2urhzns34sxgloli3z@ygose2qrgvuz>
+ <VI0PR04MB1211419BB996B4790AE04170F92582@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FfoVPBWIp5Jpffvt"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260409-imx8dxl-sr-som-v2-1-83ff20629ba0@solid-run.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <VI0PR04MB1211419BB996B4790AE04170F92582@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
+On Thu, Apr 09, 2026 at 02:58:21AM +0000, Sherry Sun wrote:
+> > On Wed, Apr 08, 2026 at 06:34:02AM +0000, Sherry Sun wrote:
+> > 
+> > [...]
+> > 
+> > > > > +/**
+> > > > > + * pci_host_common_parse_port - Parse a single Root Port node
+> > > > > + * @dev: Device pointer
+> > > > > + * @bridge: PCI host bridge
+> > > > > + * @node: Device tree node of the Root Port
+> > > > > + *
+> > > > > + * Returns: 0 on success, negative error code on failure  */
+> > > > > +static int pci_host_common_parse_port(struct device *dev,
+> > > > > +				      struct pci_host_bridge *bridge,
+> > > > > +				      struct device_node *node) {
+> > > > > +	struct pci_host_port *port;
+> > > > > +	struct gpio_desc *reset;
+> > > > > +
+> > > > > +	reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
+> > > > > +				      "reset", GPIOD_ASIS, "PERST#");
+> > > >
+> > > > Sorry, I missed this earlier.
+> > > >
+> > > > Since PERST# is optional, you cannot reliably detect whether the
+> > > > Root Port binding intentionally skipped the PERST# GPIO or legacy
+> > > > binding is used, just by checking for PERST# in Root Port node.
+> > > >
+> > > > So this helper should do 3 things:
+> > > >
+> > > > 1. If PERST# is found in Root Port node, use it.
+> > > > 2. If not, check the RC node and if present, return -ENOENT to
+> > > > fallback to the legacy binding.
+> > > > 3. If not found in both nodes, assume that the PERST# is not present
+> > > > in the design, and proceed with parsing Root Port binding further.
+> > >
+> > > Hi Mani, understand, does the following code looks ok for above three
+> > cases?
+> > >
+> > >     /* Check if PERST# is present in Root Port node */
+> > >     reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
+> > >                       "reset", GPIOD_ASIS, "PERST#");
+> > >     if (IS_ERR(reset)) {
+> > >         /* If error is not -ENOENT, it's a real error */
+> > >         if (PTR_ERR(reset) != -ENOENT)
+> > >             return PTR_ERR(reset);
+> > >
+> > >         /* PERST# not found in Root Port node, check RC node */
+> > >         rc_has_reset = of_property_read_bool(dev->of_node, "reset-gpios") ||
+> > >                    of_property_read_bool(dev->of_node, "reset-gpio");
+> > 
+> > Just:
+> > 		if (of_property_read_bool(dev->of_node, "reset-gpios") ||
+> > 		    of_property_read_bool(dev->of_node, "reset-gpio")) {
+> > 			return -ENOENT;
+> > 		}
+> 
+> Ok, will do.
+> 
+> > 
+> > >         if (rc_has_reset)
+> > >             return -ENOENT;
+> > >
+> > >         /* No PERST# in either node, assume not present in design */
+> > >         reset = NULL;
+> > >     }
+> > >
+> > >     port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
+> > >     if (!port)
+> > >         return -ENOMEM;
+> > > ...
+> > >
+> > > >
+> > > > But there is one more important limitation here. Right now, this API
+> > > > only handles PERST#. But if another vendor tries to use it and if
+> > > > they need other properties such as PHY, clocks etc... those
+> > > > resources should be fetched optionally only by this helper. But if
+> > > > the controller has a hard dependency on those resources, the driver will
+> > fail to operate.
+> > > >
+> > > > I don't think we can fix this limitation though and those platforms
+> > > > should ensure that the resource dependency is correctly modeled in
+> > > > DT binding and the DTS is validated properly. It'd be good to
+> > > > mention this in the kernel doc of this API.
+> > >
+> > > Ok, I will add a NOTE for this in this API description.
+> > >
+> > > >
+> > > > > +	if (IS_ERR(reset))
+> > > > > +		return PTR_ERR(reset);
+> > > > > +
+> > > > > +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
+> > > > > +	if (!port)
+> > > > > +		return -ENOMEM;
+> > > > > +
+> > > > > +	port->reset = reset;
+> > > > > +	INIT_LIST_HEAD(&port->list);
+> > > > > +	list_add_tail(&port->list, &bridge->ports);
+> > > > > +
+> > > > > +	return 0;
+> > > > > +}
+> > > > > +
+> > > > > +/**
+> > > > > + * pci_host_common_parse_ports - Parse Root Port nodes from
+> > > > > +device tree
+> > > > > + * @dev: Device pointer
+> > > > > + * @bridge: PCI host bridge
+> > > > > + *
+> > > > > + * This function iterates through child nodes of the host bridge
+> > > > > +and parses
+> > > > > + * Root Port properties (currently only reset GPIO).
+> > > > > + *
+> > > > > + * Returns: 0 on success, -ENOENT if no ports found, other
+> > > > > +negative error codes
+> > > > > + * on failure
+> > > > > + */
+> > > > > +int pci_host_common_parse_ports(struct device *dev, struct
+> > > > > +pci_host_bridge *bridge) {
+> > > > > +	int ret = -ENOENT;
+> > > > > +
+> > > > > +	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+> > > > > +		if (!of_node_is_type(of_port, "pci"))
+> > > > > +			continue;
+> > > > > +		ret = pci_host_common_parse_port(dev, bridge, of_port);
+> > > > > +		if (ret)
+> > > > > +			return ret;
+> > > >
+> > > > As Sashiko flagged, you need to make sure that
+> > > > devm_add_action_or_reset() is added even during the error path:
+> > >
+> > > Yes, it needs to be fixed. We can handle it with the following two methods, I
+> > am not sure which method is better or more preferable?
+> > >
+> > > #1: register cleanup action after first successful port parse and use
+> > cleanup_registered flag to avoid duplicate register.
+> > >     int ret = -ENOENT;
+> > >     bool cleanup_registered = false;
+> > >
+> > >     for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+> > >         if (!of_node_is_type(of_port, "pci"))
+> > >             continue;
+> > >         ret = pci_host_common_parse_port(dev, bridge, of_port);
+> > >         if (ret)
+> > >             return ret;
+> > >
+> > >         /* Register cleanup action after first successful port parse */
+> > >         if (!cleanup_registered) {
+> > >             ret = devm_add_action_or_reset(dev,
+> > >                                pci_host_common_delete_ports,
+> > >                                &bridge->ports);
+> > 
+> > Even if you register devm_add_action_or_reset(), it won't be called when
+> > pci_host_common_parse_port() fails since the legacy fallback will be used.
+> > 
+> > So you need to manually call pci_host_common_delete_ports() in the error
+> > path.
+> 
+> Get your point, so seems I should just add the err_cleanup handle path like this, right?
+> 
+>     for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+>         if (!of_node_is_type(of_port, "pci"))
+>             continue;
+>         ret = pci_host_common_parse_port(dev, bridge, of_port);
+>         if (ret)
+>             goto err_cleanup;
+>     }
+> 
+>     if (ret)
+>         return ret;
+> 
+>     return devm_add_action_or_reset(dev, pci_host_common_delete_ports,
+>                     &bridge->ports);
+> 
+> err_cleanup:
+>     pci_host_common_delete_ports(&bridge->ports);
+>     return ret;
+> 
 
---FfoVPBWIp5Jpffvt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes!
 
-On Thu, Apr 09, 2026 at 02:34:33PM +0200, Josua Mayer wrote:
-> Currently, the binding requires 'spi-cpha' for SJA1105 and 'spi-cpol'
-> for SJA1110.
->=20
-> However, the SJA1110 supports both SPI modes 0 and 2. Mode 2
-> (cpha=3D0, cpol=3D1) is used by the NXP LX2160 Bluebox 3.
->=20
-> On the SolidRun i.MX8DXL HummingBoard Telematics, mode 0 is stable,
-> while forcing mode 2 introduces CRC errors especially during bursts.
->=20
-> Drop the requirement on spi-cpol for SJA1110.
->=20
-> Fixes: af2eab1a8243 ("dt-bindings: net: nxp,sja1105: document spi-cpol/cp=
-ha")
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+- Mani
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
---FfoVPBWIp5Jpffvt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadfHYQAKCRB4tDGHoIJi
-0pHMAP4xcZs2F6zIRBAC+PvYt8NsWbZkNNOCtJhpauOF9O+jugD/dx95sKUe2Px2
-XiwZrAPhK4i3PH2q0hqkv0eSMmaMNwY=
-=I38d
------END PGP SIGNATURE-----
-
---FfoVPBWIp5Jpffvt--
+-- 
+மணிவண்ணன் சதாசிவம்
