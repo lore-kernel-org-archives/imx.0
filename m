@@ -1,53 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C24F3E1CE8;
-	Thu,  9 Apr 2026 16:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8813C3444
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 17:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775753907; cv=none; b=BMQwNmWqvuMnSKxKKrzpBVdfZuRV7sRXi9MiSRLLWssTo7P6bL+ib1NiLn+dXAG3ivG2vAR9WtzygxwG5jPC5lcZV/BVJF5X3EFNmPzho8WbHk2nCcTLoWCZudIrAomXr/3Hb8isPij2gDOw08jRZa1NTvzjQImpOkmBjdX+7wk=
+	t=1775755078; cv=none; b=Hx/lvRPyPRtbPYuh3viSu61WarMKE1GKATCKKH8P+en7nsiYaljR+YqUgCpDOcX5E+0ynjRcq3mdoSPzSeKfeql9rrA7HwZ2ThWn9V4k1QoTLRgtfs1WkShguNhlJMNMn8kPsfbTkYsAIkSYTJ6jXnyuDGgRWwvdL+VUlNdWiPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775753907; c=relaxed/simple;
-	bh=jzQepuIPTUxzXw6nvVnnvG0DD/52Qtgmozdmz3RF8Dc=;
+	s=arc-20240116; t=1775755078; c=relaxed/simple;
+	bh=j0xqAFcXy+y97lgyV3KGv9q3LpnMFE0VPGGc/x2XZ3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GaFYsFZWyLlxzNwFpMa9EtSKtaNXLrFXweJJIyBZHB3GkN1m0W+rElR4AQtD75KxRogCNG5u/al2zhwteiSqtNsIFjP32tt0zfzUpRTqa51I1LPVPmBldgsymhqU5WI2knd7yspUPXYRoEFJfJK8mSM3wXdGZOt9kp6S5u34McY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFpM1HVL; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFpM1HVL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A83DC116C6;
-	Thu,  9 Apr 2026 16:58:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775753907;
-	bh=jzQepuIPTUxzXw6nvVnnvG0DD/52Qtgmozdmz3RF8Dc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IFpM1HVLK0gj/ENLmzP+oNXpi+o1r6eJD99Xz2JAeeE9//s28r0AkFibOJjgDCa7g
-	 2TZnjHbG7Q1rDYrxUN6wXFWJts0vnvCXSnICth6fI19BYuE+3cRWP1du/bw7vM4BIj
-	 AskhIq+vIHe0s5wQorI5G3iGW3Go/uLcRna5qQkUYdRvdS/D3qGUCYKNa8gY54BsaP
-	 YLawo9o8483hclAtRSauVavPsIeiQ58oxINp5WgqDhPFv+dIlj/x2bxHFliApKfC1W
-	 KJv/GYUqnnJ37bS7izC3i1voWnVIrHVE4Q6et6bDg1q/LsXbCxRP+KZ1rhUALG6uuD
-	 ZuuDmkhKY5i7A==
-Date: Thu, 9 Apr 2026 22:28:17 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	Frank Li <frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V11 02/12] PCI: host-generic: Add common helpers for
- parsing Root Port properties
-Message-ID: <yzy3xui6wzc6h4jguju6hj66bqsj37ulnkl4sjsq4ytyb6azgn@lc2zpqbquzwa>
-References: <20260407104154.2842132-1-sherry.sun@nxp.com>
- <20260407104154.2842132-3-sherry.sun@nxp.com>
- <lnzprzrdwra7pn7d6m3sbj5pvjy64blwpjl6i3lmlnfbyho63b@czpyhpgz5vum>
- <VI0PR04MB12114A60C4A7E43ED62A32B04925BA@VI0PR04MB12114.eurprd04.prod.outlook.com>
- <yijf6mwclpx6n7giucgykxvrm73baicy2urhzns34sxgloli3z@ygose2qrgvuz>
- <VI0PR04MB1211419BB996B4790AE04170F92582@VI0PR04MB12114.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CE+XNAymF8V/Erjqm5lI7q40tF3wx4ymtPOdWRJM0vvk5lWUgzcp2RMYyPkoiyDxC4g72Ual+KqL3yjMce5gbsTpTfMwYD+shH4QupaYFq0C8tAX6YpItcslnppK6d4dKYac70msEVlaNISAzAxvpQ+v8buoZ6g+moR4Jo9S1VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wAt0g-0004hp-82; Thu, 09 Apr 2026 19:17:42 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wAt0f-004YXC-2f;
+	Thu, 09 Apr 2026 19:17:41 +0200
+Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wAt0f-0000000H9Cg-2yeW;
+	Thu, 09 Apr 2026 19:17:41 +0200
+Date: Thu, 9 Apr 2026 19:17:41 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH v2 0/3] media: imx-csi: cleanup media pipeline start
+Message-ID: <adffNaI6hQbc1mAO@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+	Frank Li <Frank.li@nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-staging@lists.linux.dev
+References: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+ <aXOoc0lvAtPt0fAL@pengutronix.de>
+ <aco5Ei1B4vJWKMMj@pengutronix.de>
+ <acqK9Ms_eRxg59Xa@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,189 +70,73 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <VI0PR04MB1211419BB996B4790AE04170F92582@VI0PR04MB12114.eurprd04.prod.outlook.com>
+In-Reply-To: <acqK9Ms_eRxg59Xa@lizhi-Precision-Tower-5810>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.tretter@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Apr 09, 2026 at 02:58:21AM +0000, Sherry Sun wrote:
-> > On Wed, Apr 08, 2026 at 06:34:02AM +0000, Sherry Sun wrote:
-> > 
-> > [...]
-> > 
-> > > > > +/**
-> > > > > + * pci_host_common_parse_port - Parse a single Root Port node
-> > > > > + * @dev: Device pointer
-> > > > > + * @bridge: PCI host bridge
-> > > > > + * @node: Device tree node of the Root Port
-> > > > > + *
-> > > > > + * Returns: 0 on success, negative error code on failure  */
-> > > > > +static int pci_host_common_parse_port(struct device *dev,
-> > > > > +				      struct pci_host_bridge *bridge,
-> > > > > +				      struct device_node *node) {
-> > > > > +	struct pci_host_port *port;
-> > > > > +	struct gpio_desc *reset;
-> > > > > +
-> > > > > +	reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
-> > > > > +				      "reset", GPIOD_ASIS, "PERST#");
-> > > >
-> > > > Sorry, I missed this earlier.
-> > > >
-> > > > Since PERST# is optional, you cannot reliably detect whether the
-> > > > Root Port binding intentionally skipped the PERST# GPIO or legacy
-> > > > binding is used, just by checking for PERST# in Root Port node.
-> > > >
-> > > > So this helper should do 3 things:
-> > > >
-> > > > 1. If PERST# is found in Root Port node, use it.
-> > > > 2. If not, check the RC node and if present, return -ENOENT to
-> > > > fallback to the legacy binding.
-> > > > 3. If not found in both nodes, assume that the PERST# is not present
-> > > > in the design, and proceed with parsing Root Port binding further.
-> > >
-> > > Hi Mani, understand, does the following code looks ok for above three
-> > cases?
-> > >
-> > >     /* Check if PERST# is present in Root Port node */
-> > >     reset = devm_fwnode_gpiod_get(dev, of_fwnode_handle(node),
-> > >                       "reset", GPIOD_ASIS, "PERST#");
-> > >     if (IS_ERR(reset)) {
-> > >         /* If error is not -ENOENT, it's a real error */
-> > >         if (PTR_ERR(reset) != -ENOENT)
-> > >             return PTR_ERR(reset);
-> > >
-> > >         /* PERST# not found in Root Port node, check RC node */
-> > >         rc_has_reset = of_property_read_bool(dev->of_node, "reset-gpios") ||
-> > >                    of_property_read_bool(dev->of_node, "reset-gpio");
-> > 
-> > Just:
-> > 		if (of_property_read_bool(dev->of_node, "reset-gpios") ||
-> > 		    of_property_read_bool(dev->of_node, "reset-gpio")) {
-> > 			return -ENOENT;
-> > 		}
-> 
-> Ok, will do.
-> 
-> > 
-> > >         if (rc_has_reset)
-> > >             return -ENOENT;
-> > >
-> > >         /* No PERST# in either node, assume not present in design */
-> > >         reset = NULL;
-> > >     }
-> > >
-> > >     port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
-> > >     if (!port)
-> > >         return -ENOMEM;
-> > > ...
-> > >
-> > > >
-> > > > But there is one more important limitation here. Right now, this API
-> > > > only handles PERST#. But if another vendor tries to use it and if
-> > > > they need other properties such as PHY, clocks etc... those
-> > > > resources should be fetched optionally only by this helper. But if
-> > > > the controller has a hard dependency on those resources, the driver will
-> > fail to operate.
-> > > >
-> > > > I don't think we can fix this limitation though and those platforms
-> > > > should ensure that the resource dependency is correctly modeled in
-> > > > DT binding and the DTS is validated properly. It'd be good to
-> > > > mention this in the kernel doc of this API.
-> > >
-> > > Ok, I will add a NOTE for this in this API description.
-> > >
-> > > >
-> > > > > +	if (IS_ERR(reset))
-> > > > > +		return PTR_ERR(reset);
-> > > > > +
-> > > > > +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
-> > > > > +	if (!port)
-> > > > > +		return -ENOMEM;
-> > > > > +
-> > > > > +	port->reset = reset;
-> > > > > +	INIT_LIST_HEAD(&port->list);
-> > > > > +	list_add_tail(&port->list, &bridge->ports);
-> > > > > +
-> > > > > +	return 0;
-> > > > > +}
-> > > > > +
-> > > > > +/**
-> > > > > + * pci_host_common_parse_ports - Parse Root Port nodes from
-> > > > > +device tree
-> > > > > + * @dev: Device pointer
-> > > > > + * @bridge: PCI host bridge
-> > > > > + *
-> > > > > + * This function iterates through child nodes of the host bridge
-> > > > > +and parses
-> > > > > + * Root Port properties (currently only reset GPIO).
-> > > > > + *
-> > > > > + * Returns: 0 on success, -ENOENT if no ports found, other
-> > > > > +negative error codes
-> > > > > + * on failure
-> > > > > + */
-> > > > > +int pci_host_common_parse_ports(struct device *dev, struct
-> > > > > +pci_host_bridge *bridge) {
-> > > > > +	int ret = -ENOENT;
-> > > > > +
-> > > > > +	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
-> > > > > +		if (!of_node_is_type(of_port, "pci"))
-> > > > > +			continue;
-> > > > > +		ret = pci_host_common_parse_port(dev, bridge, of_port);
-> > > > > +		if (ret)
-> > > > > +			return ret;
-> > > >
-> > > > As Sashiko flagged, you need to make sure that
-> > > > devm_add_action_or_reset() is added even during the error path:
-> > >
-> > > Yes, it needs to be fixed. We can handle it with the following two methods, I
-> > am not sure which method is better or more preferable?
-> > >
-> > > #1: register cleanup action after first successful port parse and use
-> > cleanup_registered flag to avoid duplicate register.
-> > >     int ret = -ENOENT;
-> > >     bool cleanup_registered = false;
-> > >
-> > >     for_each_available_child_of_node_scoped(dev->of_node, of_port) {
-> > >         if (!of_node_is_type(of_port, "pci"))
-> > >             continue;
-> > >         ret = pci_host_common_parse_port(dev, bridge, of_port);
-> > >         if (ret)
-> > >             return ret;
-> > >
-> > >         /* Register cleanup action after first successful port parse */
-> > >         if (!cleanup_registered) {
-> > >             ret = devm_add_action_or_reset(dev,
-> > >                                pci_host_common_delete_ports,
-> > >                                &bridge->ports);
-> > 
-> > Even if you register devm_add_action_or_reset(), it won't be called when
-> > pci_host_common_parse_port() fails since the legacy fallback will be used.
-> > 
-> > So you need to manually call pci_host_common_delete_ports() in the error
-> > path.
-> 
-> Get your point, so seems I should just add the err_cleanup handle path like this, right?
-> 
->     for_each_available_child_of_node_scoped(dev->of_node, of_port) {
->         if (!of_node_is_type(of_port, "pci"))
->             continue;
->         ret = pci_host_common_parse_port(dev, bridge, of_port);
->         if (ret)
->             goto err_cleanup;
->     }
-> 
->     if (ret)
->         return ret;
-> 
->     return devm_add_action_or_reset(dev, pci_host_common_delete_ports,
->                     &bridge->ports);
-> 
-> err_cleanup:
->     pci_host_common_delete_ports(&bridge->ports);
->     return ret;
-> 
+Hi Frank,
 
-Yes!
+On Mon, 30 Mar 2026 10:38:44 -0400, Frank Li wrote:
+> On Mon, Mar 30, 2026 at 10:49:22AM +0200, Michael Tretter wrote:
+> > Hi Hans,
+> >
+> > On Fri, 23 Jan 2026 17:57:23 +0100, Michael Tretter wrote:
+> > > On Thu, 18 Dec 2025 10:23:48 +0100, Michael Tretter wrote:
+> > > > The imx media device currently assumes that there is only a single media
+> > > > pipeline. However, the media graph has multiple imx capture devices.
+> > > > These may be started separately on media pipelines if they don't cause
+> > > > conflicts in the media graph.
+> > > >
+> > > > Move the media pipeline from the media device to the capture devices to
+> > > > properly track and handle multiple media pipelines for the imx-csi.
+> > > > Refactor the code to start the media pipeline from the driver to help
+> > > > the reader.
+> > >
+> >
+> > Could you take a look and apply this series for the imx-media driver,
+> > too? The patches are already reviewed by Frank Li and Philipp Zabel.
+> 
+> Michael Tretter:
+> 
+> Sorry, I will take care imx's stage driver. I already sent pull-request,
+> which included your other two patches.
 
-- Mani
+Thanks for taking care! I found the other two patches in the
+media-committers repository.
 
--- 
-மணிவண்ணன் சதாசிவம்
+> 
+> Do you have others patches, which need me take care. I am not sure if
+> there are chance to send 2nd pull request for 7.1.
+
+Currently, I have only the patches in this series.
+
+Michael
+
+> > >
+> > > >
+> > > > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> > > > ---
+> > > > Changes in v2:
+> > > > - Improve code readability in Patch 2
+> > > > - Update commit message of Patch 3 as suggested by Frank Li
+> > > > - Link to v1: https://patch.msgid.link/20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de
+> > > >
+> > > > ---
+> > > > Michael Tretter (3):
+> > > >       media: imx-csi: move media_pipeline to video device
+> > > >       media: imx-csi: explicitly start media pipeline on pad 0
+> > > >       media: imx-csi: use media_pad_is_streaming helper
+> > > >
+> > > >  drivers/staging/media/imx/imx-media-capture.c |  8 ++++----
+> > > >  drivers/staging/media/imx/imx-media-utils.c   | 12 ++++++++----
+> > > >  drivers/staging/media/imx/imx-media.h         |  7 ++++---
+> > > >  3 files changed, 16 insertions(+), 11 deletions(-)
+> > > > ---
+> > > > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > > > change-id: 20251107-media-imx-cleanup-9022d941ae44
