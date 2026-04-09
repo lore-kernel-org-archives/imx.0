@@ -1,129 +1,115 @@
-Received: from mail-m32102.qiye.163.com (mail-m32102.qiye.163.com [220.197.32.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631E40855
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 07:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5B2382399
+	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 07:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775720391; cv=none; b=aTSHu/koTZYYd26fGu5jjBj51wtAWc4tX6x8DmLLi/znTDcZNps5hv89CNgYOD7y8UspFmbUdcrYW07MR76AmO56TptZDMiz6vIcXS8j+yJHWxRSmSXhlSIu+AWzL3ZRQKIurRKKJ8FOZ3AWtJJnmSjMBo9Ag+C6/qBmSeuNaLI=
+	t=1775720930; cv=none; b=N8jSGriy1edsmBJE0rQ4PMYx6/6DO+r8SI0/7Dj+RA/p0TG/nivTkX9KADgj9RUDcHLzVjZFyRD4cimHiAK6O2xU+iksBHWUSGeBHg+fX8rMwFRs1OQqYjoC3vzmufyAsQfuLwFTmRKUV6PwErf83IHfgB5/F7dFa6ZiBxwuBzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775720391; c=relaxed/simple;
-	bh=kZ2qvx7m+kOjx0IsW7ATjWHnUkNXL5RQ4V4K7O6eT5s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C2L6wzKbw0UP3UaZWUI8FW4QRjEP8/19zbyGERZavW1G9A30BsCsPOTQ5vXDAJg3eS8kelCwWWgKutU7w/BWa2W6L42JzXpy/Nm9yKvugv6XNTOO/CtM/tN2WLFbZ0uVibp20sTvar5R4zc1A6s0fbkPfFFvDKlhm7FDNLWjelY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=DdsZvBv7; arc=none smtp.client-ip=220.197.32.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1775720930; c=relaxed/simple;
+	bh=CNFB9BCmZvykJHd/6qFTyqv7wQ8Bpi9RiQylAO3FZNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h/OeN4QB5bEACAmhnXXQDSOdzhLviuTONYvLb6ahR9jL4qY42uNMiBV1iijoYFKOVuBU57jJEe/gSSsmL7skowA0NJRv5qYjKTDP7tjFGfc05A8LIWJ5DEyzAHlwKkpYX/vTJ9uxAqFf2hc1C4h9IaJD2uYAjRBBDqH3pkHE5tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XTxEGZEf; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="DdsZvBv7"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3a130ab5c;
-	Thu, 9 Apr 2026 15:24:22 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	victor.liu@nxp.com,
-	Frank.Li@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	alim.akhtar@samsung.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	luca.ceresoli@bootlin.com,
-	nicolas.frattaroli@collabora.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v13 16/17] drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing in analogix_dp_unbind()
-Date: Thu,  9 Apr 2026 15:19:07 +0800
-Message-Id: <20260409071908.466294-4-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260409071908.466294-1-damon.ding@rock-chips.com>
-References: <20260409065301.446670-1-damon.ding@rock-chips.com>
- <20260409071908.466294-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XTxEGZEf"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43b949bf4easo271804f8f.0
+        for <imx@lists.linux.dev>; Thu, 09 Apr 2026 00:48:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775720927; x=1776325727; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rxRaGky1PDExK5cCBC91gIZwwHEAgwUQ6PW8LpppLKE=;
+        b=XTxEGZEfvH9sXNWXEfhTMLz+X52Ty4HJamkJ2bRp04Q1IhdvcDgMMkcDfPa9RV2r5X
+         pnleZ+HO0UJjRvcxUqw+3IcVIOi4z7TLcfXPSgt3anyzccJIWfmXhQutMMQJbFXhqdQ3
+         REgoQwVHxqb40e4H8aYAApyDyLQrRXo5T/9QnyH7mAcU1JPyLPkoITiOmZJeWkjXn59Z
+         I5gpdALk8huxcZDo6ORX1+Z9WZPNVMSx1R/VeumLam/oKuylp0uXY3YyxXZZSBI5uP2y
+         FkXgT4qY1PbuOZrfq6GGm5lCSp8M2l3XFd00cPYiGVMmUA+pIm5BIqH8L6xjE5ndf/n+
+         wwLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775720927; x=1776325727;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rxRaGky1PDExK5cCBC91gIZwwHEAgwUQ6PW8LpppLKE=;
+        b=frImt3lEr1Uj+0kqXBD2kjBkgJ6tNO5/SJt/zwO22dr/gVIn2bjNeFJcTiGWJTDc6X
+         MQMkfP9BASXs3Ni+2aiAdC4Osaesm7WWo6RNf7Se5FRPEeoA+AfXxKTX1KvwayCYoMeS
+         9exrfzfQIRrnpXUaF4k5+H7U8OWnrnNN3LYKjenATgkSUkNJhIcJ5ewVEAtLGgjR5Udd
+         tFG8qYmD0LKh6i7sdxPM/+Tk1OCrLk2fZnxK/MNUzRgd8Spm4DZKQkDjEV4UHOX2BVE8
+         cx0iBBWGoWdXP5PGw7wgDVr2A9MGE6wH4ZdUuvlsV5ici3Qbydvas0dJjNf3P+gXxAAo
+         +i4w==
+X-Forwarded-Encrypted: i=1; AJvYcCWlaNm1GSw/xUCF2NbVgd7oEEaLR3zh7BV+iM1ow20JmHX3Mq23khGIVBHC5b9MQ7pYBE4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwhGDh/+EZvkH5djTC6AoL3cOSU/jiSBlbPE+eD0pT6MZb8R/LX
+	ULtbUmPn8Fj81ro3ddfCyTCk7bkqHraYl58yQQXuCObWutFDbdY1bBjp
+X-Gm-Gg: AeBDieueIRBT9qwWNWGgrguvuD88FYPXsZ/CkSd1FIwBLHRuFxTZjrHxD0pqqor3ait
+	ZxxMPCzA1lAZBvxtbCeseeouMUzDPQ8lUsm9UcavSJYImrLrOw/CNLxkKzTB5eal+yx6vidPUeK
+	BEgeqRPK/i05AcO+1goc6383XAPIIk3hD+cklfdx0X9uQxK7vji02esWpAhM0gLn1QBdLcPJfBH
+	ZDHPVJpogWEAJR3oZFlUPTRJDz7GDlnSTL0ZQ0as6JjndEQqOs148cawpQe+QDlHoxmMyW5eTjV
+	5MyP1y9okAOgfDEptnQJITgXjWcASAUIcwe852nWaC1n+s+FNIOg8jXqgMqZm7VSn/GY51up6TS
+	8lCtELxShlo2O8hN1qSmllKpVfOwami9VdDXG0SYKI/I2qPCPVn5wuZd39lJI6r9G/2xcIQYUrG
+	3y0tgdU2AYgCPnGAtfWfSeDPldUz44D45R4ObnXrW3CFTmovTznX91mXnx+QdkO7mtyJ9f9YP1N
+	gc2Y8/BpHO2m8nunm7b5rjuK4NWHSInrWD4MA/HTBuqIUubxBzGQw==
+X-Received: by 2002:a05:6000:2506:b0:43d:1598:2d6e with SMTP id ffacd0b85a97d-43d595bbc20mr3631331f8f.20.1775720926997;
+        Thu, 09 Apr 2026 00:48:46 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-144-20-233.cust.dsl.teletu.it. [93.144.20.233])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2a6f5bsm59805211f8f.7.2026.04.09.00.48.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 00:48:46 -0700 (PDT)
+Date: Thu, 9 Apr 2026 09:48:44 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Primoz Fiser <primoz.fiser@norik.com>
+Subject: Re: [PATCH v1 2/3] arm64: dts: freescale: Add support for Variscite
+ VAR-SOM-MX91
+Message-ID: <addZ3BNYfwIrFBuG@Lord-Beerus.station>
+References: <cover.1775669847.git.stefano.r@variscite.com>
+ <1ed7e2100e3feb74c9f0006d5b88e1bba1ad4339.1775669847.git.stefano.r@variscite.com>
+ <adcdWdTcVR2T2F5c@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d7120b52603a3kunm41c7027340af66
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQkpDHlZJQ0pKGh4fHR5KHRpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=DdsZvBv7GlXevRF4noo7Dwc/p/6z/ABBcH/fRjzXRS/22wJTe/JopdJTD+fC38ClA4+ptOhvc5IX18YIMGH2QzpOBcA0tbjIxVTJaUz5PU01rs+lVkak9lGn+MjvDGoSLUG058TqCcM1i7NI+stY4UxJErYxkqQ1bYSnvnNMv9Q=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=xFey6R1yWibLe19igTYUu2uT3scZHnKnAjb/CMQifsA=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adcdWdTcVR2T2F5c@lizhi-Precision-Tower-5810>
 
-The analogix_dp_unbind() should be balanced with analogix_dp_bind().
-There are no bridge enabling and panel preparing in analogix_dp_bind(),
-so it should be reasonable to remove the bridge disabing and panel
-unpreparing in analogix_dp_unbind().
+Hi Frank!
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
+On Wed, Apr 08, 2026 at 11:30:33PM -0400, Frank Li wrote:
+> 
+> what' difference with imx93-var-som ? Can you reuse it?
+> 
 
----
+The imx91-var-som is conceptually similar to imx93-var-som, and I used
+it as a reference while preparing this DTS.
 
-Changes in v9:
-- Add Tested-by tag.
+However, it cannot be directly reused as there are several hardware
+differences between the two platforms, including SoC integration and
+peripheral configuration (e.g. pinctrl, and available IPs).
 
-Changes in v11:
-- Add Reviewed-by tag.
+So a separate description is required for imx91.
 
-Changes in v13:
-- Modify '(on rk3588)' to '# rk3588' for Tested-by tag.
----
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 3daf72aa643e..7d30e4184a80 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1526,10 +1526,6 @@ EXPORT_SYMBOL_GPL(analogix_dp_bind);
- 
- void analogix_dp_unbind(struct analogix_dp_device *dp)
- {
--	analogix_dp_bridge_disable(&dp->bridge);
--
--	drm_panel_unprepare(dp->plat_data->panel);
--
- 	drm_dp_aux_unregister(&dp->aux);
- }
- EXPORT_SYMBOL_GPL(analogix_dp_unbind);
--- 
-2.34.1
-
+Best regards,
+Stefano
