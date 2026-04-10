@@ -1,175 +1,171 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD7D5733E
-	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 03:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775790054; cv=fail; b=YymT9zFFsvMSw44HqLRJbbOto561Biv6Fiyhhgok48aHKLrBx5EHoUAnBkyWRG4rC9CrtLYC2oDNepPalyxVYxoNQgPwj8WjfgVawqRJr2CNGjtuBNUyBtUaZ1+qXMcL49TyWwvf+dD8TBWGko9a2ThHR2mvR0KVwGvEhZ/Du7M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775790054; c=relaxed/simple;
-	bh=MuKy8G0h4ov6uECgU+7KhtsNDlOxBhJFcr8tXVmfv5E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Slko38APqCAr5tjoSpna9Djsd3SsR8TJhWqXjGs7kJeC1ij1W8WkvHDsxwTAWYsF/cgZB3DdhAhk47eR44QZNqu8EXwQHgW9fye4pK5wCVP3jdUXkOP+6DSq0afPpAqmyUP/QB+FbuypLQxXAqOzsicqraZZuTCc4S3Rn7V+w0E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Je+Ueg/s; arc=fail smtp.client-ip=52.101.70.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEDD389101
+	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 07:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775806939; cv=none; b=XEDKlMP5S1gmRXRoA3jROW8fNZH3RH7dW3SP9z5ibzrAXF+9BdlfuWenU30iOdhTw0YBpcvpWYzPMQDYPHJGqhhAoX+qkY5nRfl6ZJM+KJUPBdwmIknnUNt4GlpVAoMUor04HMnRqSYYjGZ+0wm3Wee5Y/o+sLmtbxdemhZDIeM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775806939; c=relaxed/simple;
+	bh=VkhfhNquYsyNc37SnDTi0w342HFcvOgIsBsPHVrfdRQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Oo1g2CnU0NnlC9FcXBK2dCSYTYnarMSn5OAN5QcSb5SZe1onFC+tojbn5XBr2HWb2W3ISxesEUciDWdkAZe+3eXUG7qReIIWzsRnD0x63pLHl2kb6z0wfiSoa2uSDSCjE8gOQ6APXbER8bakqLKr8ew8uJogQ88MqG629pR2qJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fb6SynIs; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Je+Ueg/s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eM3Jh888+YF92CCId1tO6hm+h+phQJVqOKpPAanIGJpy06UH2xSS2m06ejx9fjZcaf/hmQJFoI0t1fSEq4DCS0sUzIzPN2kjp5h4kTXsLA0s0eRhLgTd2cd0hBO7/8LevnGZfxJgwM49cjwjg/W5TqpJjBzwGfdCTQ+U9ulMVDEqWF3XOjwhiEHjtdauc7PrLpKQp7pteJBAi2bwTVNUYw6v1rBw7G4TAMxbZJc61UV4smfe/QBPyiXnfQgUR+gRwT6jGBngvLIiBbqMYUHrmplzYwSXUWMZekCq5vG4ukQlZ7KPIFyOIrRMXF8VyDLsfG6Cniq/Uijco7J/aIJgKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MuKy8G0h4ov6uECgU+7KhtsNDlOxBhJFcr8tXVmfv5E=;
- b=U6ExAAqH0Bv6SwIDyAYo75X0FMX1mWMF899CjMP+SHFrcJa/vf0R//HMN3xNVpnCnf4o/ld/tUBi6/YdHLZu5iWD4Ltl8tMchnv6tOITtAkpjkhrKpOPnk0Dhb0yXZucejP3oNnld4VkEGiFBYGZ1g3hB21PSh5C+x18jgZG5WAPQZvpTcCWhty7N+JOvPu5r4Nna3TKyFx1nEF/RgIM7Llel4zlegY92NiHSKtM9w9C0U4D7megxYoLdQT2AknskXMMB0jzJ/iw31j52gX3U/t66dUlKi8fs5iDCyEns1NKGqHh91yVTFlaq5EwirOR9HnD4o/j05pBCZ2K4ZfSag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MuKy8G0h4ov6uECgU+7KhtsNDlOxBhJFcr8tXVmfv5E=;
- b=Je+Ueg/s9FCqLaPuy/0aPSf9Qp2NWcZKWu+H1Yx9Z5lSn7hKWHDfIOiIThej517IRebJAf39q7wVJmBjoADElypEFdRAtRKTWFkEKlmxi6HfRmczRinHE5FJdZX1NaSh6O93JSEjRnvr+6mcXH7tj7e6nfIxBXvD9VoXgeiJOWiCqFyDbOMUaFv49zb6+HQd8GEWNrrZooN/NxQb1xsNpP1SMyzkQXrOEpm4xI/O5Eq/kTpLZmyZHQaKxPhVX9dGczo23T8W8OuBQjES7h7NU08A7GTzCiQ74NDMNrHjmEyCYFi5L8zgBkiCr4ygcs3Ls/gJCSmu6rnlNsjwZdslVg==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by AM9PR04MB8398.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b7::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
- 2026 03:00:49 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.20.9769.018; Fri, 10 Apr 2026
- 03:00:49 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: Manivannan Sadhasivam <mani@kernel.org>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li
-	<frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH V2 0/8] PCI: imx6: Integrate pwrctrl API and update device
- trees
-Thread-Topic: [PATCH V2 0/8] PCI: imx6: Integrate pwrctrl API and update
- device trees
-Thread-Index: AQHcwojBc+ekpdCTn06s59ZTbCzv4LXPJr4AgAh9WHA=
-Date: Fri, 10 Apr 2026 03:00:49 +0000
-Message-ID:
- <VI0PR04MB12114534B0861BB1AC5FACBEE92592@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References: <20260402101007.208419-1-sherry.sun@nxp.com>
- <omtn42mopdz7igg7jaqwehd67l6xc77zk7zzqwkufgnsycvadg@5kodhpgfesre>
-In-Reply-To: <omtn42mopdz7igg7jaqwehd67l6xc77zk7zzqwkufgnsycvadg@5kodhpgfesre>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|AM9PR04MB8398:EE_
-x-ms-office365-filtering-correlation-id: 842db70a-231e-4f0d-ca6c-08de96ad5ea8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|19092799006|366016|1800799024|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- uszM6Sy+eLRVbhwKTQYdjLce86STSs3+rdyQ+x33bZ+eg0/LePNLLYZ0phF45e01L1Kd7gy01ppVUnboqoUNTyR3zdG31JrwVPg9KHB/y9bIMXI2JTbzTSkRjoy7JnguK/mkVGBjdxM5mdqTj5kx/5goN6n114AQ2xDZCynvm07orXhJf0LXQl59jbk7QGGgrH4DXz8mkCZ08sHLdlzS/x5iZ79VRp4YsV3wp7yAgm/iAZI01E9fim1pNKuf1ry4jZMNFNDQf72JkP5fd38qEI2/EoxZtci3Q1plHvS6wGLhveFK+XI5CaeeWqsJmc2OT0BpsUDLk7WSsYKvYwOrahaSTICVgfSz6DKAuVTqPssNh+6PZESautT2tQ/Q12qFW0qlPRGDfxIh6HGBohMwi1gysjkRcHhGuc3/UMBnIADRtzIp93zLTA+62y/gq3YtSPHSFwkWPfO6j64kVwBgmepQFCTBkKcDICHT/ZlF5ALGwk6TITPy5TRPFEY5k1yxqoGo/Lq3Xzjy8HRJQBoaQEKAn8xvREmT2S6Y1AoswZ2uwV/MuhlfAT1WpoIboV5EdyOF55t+jocwUWUKY3X6bQhpAB98Xn+sAJjozRRl8I3foQyYASg4WB4Q5pl0DGwnwBhmqRaX3ITC+V/EcTxSwVUnIsvkDI+b9HkUOBSyC/NkdG1vZb8Y1LSYpCFZC70dC6ivzW6S8U9bB2EFtiR+r/IxCE5wmnE7Hq/19UhnvRjw3Gpaj8tdRMBU1878FRsvcxzBGYYP/ojedtZTvi1iq7vPz5kYwgdKrvSjsXVEiX0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(366016)(1800799024)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TFR5WEg4VXdLcmd3bEZWbk1OMDhPWkgrdnpiZVlkSHIvK0RyQzQvU2pRZ29m?=
- =?utf-8?B?RXNWM2x4bzNoc09LRHhmQ3Y2UitGQkxIVUFoZG1HZkhWOFhOdzhZR2d6TEdR?=
- =?utf-8?B?RXFBcVhNWTBPdTE4SnpkMnlZNzVpc0w4WFlYNHZYcGZzOTRTNk50N1k1UTRQ?=
- =?utf-8?B?VEUxWVRiVWEwWGltTG9vaUlpN0JzRlhpRElET1FldTBaVXZQQ1N6bHRINkc4?=
- =?utf-8?B?dXh1bVBzMklzbjkxYUVZVU55dC9MTXhiNDhDQjkvMURIcFdRZVZweFVTcm5J?=
- =?utf-8?B?Y2FPSHUvRThZZ1BVSFo0cVVacCt5Yi9kMHpLRHNNem5zdkVYRTIyQWVtbXho?=
- =?utf-8?B?cE5kQlluWjVCdW0yS1dHSHcvOVRqSEtVcEY0OGNRTG5oQU93eG9uQjE5eTlh?=
- =?utf-8?B?WjYvZWhOQU5uS21lZng0d3hpOHVOZHpqRFpld0dmYlBWckdLc1BLM0VKRHJF?=
- =?utf-8?B?QTdJVEtrNjhmNVVHcVZ5OE53cThvOEZGUmE3L0VWQk1jVkh2bzdZNytZWlUr?=
- =?utf-8?B?dVI3c2p0RFU0cGxoZnQ0a0J4RFBDb3NiZWdHZFI5Q05qbU5BdDZlZXIvSjNY?=
- =?utf-8?B?bXlIVFltTEpCVEdyS2hRZHpOd1JPbUpuWnljYzJWZXJuUDRMY3pjSnRqNUV0?=
- =?utf-8?B?MDJOV1ZrNURqM3dqSXlDaFBZWTdrMHptK2FLVFcxb2FPNU8zU25UdWxGRFdr?=
- =?utf-8?B?SDhXcWIwaGswWFFjV0ZBS2ZVUXNMakZuQmY3RGorL09FaGwrdnpaenJiQ0d4?=
- =?utf-8?B?NzNvYXNpUTVmSXpyUVh5aW9HZ21uTlV2RlhpNTEwOEdLY0RkNkNHdnlkWHd4?=
- =?utf-8?B?RGdrK1A0dU0rOFFucEtiSVBqTU84L0hSYkRLOWtDdzZuS0dNc1UzdXV4SzBn?=
- =?utf-8?B?Zi9xdjEzSENjZ1pUZWQ5UTBhVDYxV1FyWnVaQ25VR3QzMzZObDI0eDR1cy9n?=
- =?utf-8?B?YnVCVTVyR3pWRzgySkY4ZnZIZFNJWTdGRkIrcE5EU0tFTXRnOVU4VDljL2Y1?=
- =?utf-8?B?dERBMFF0Yk1YckxWN203cHRQZFgwSTJRU1J0UEF5ZnJZWnowdUFkbldmeHlo?=
- =?utf-8?B?T0hIK05IL3FBQTJidEZUUEF5eHkwdjlYNm1lK3QwS2dCb2JZbFoyVUN4YXJk?=
- =?utf-8?B?MCtNd1IwNU1Pdm9iUUI0b3pmQkpzUitCSXk5RFpuWmt0WWRocytuRnRTeWM2?=
- =?utf-8?B?NmNTa2l0TnRVeTFDNWQ1cUViMU85dDI0SDJ5Q080RGdvbndJZ3ZNejcxcVZM?=
- =?utf-8?B?cEROMFh2OWU1YVdpYXRHb1Y3ODd5YUhURVNiYk1PcWloMlVjNWhXUHJKWkFZ?=
- =?utf-8?B?c1VYV3NueitGMDB5R3hPNVYrSnRaTXZWN2lRcUZNb0VNbm1GUitCeUZtdTI3?=
- =?utf-8?B?SmVRc2Yxc3cydU1qZXFtTFIyZVBEL2UzNWNKcy9KL1hONVdyUGFlYUVzWDdn?=
- =?utf-8?B?T3NGdUlRME5RK3dkQWNER2dXZDJCZ2EwVUdMVUt3Zkk4cWJmMEJuMnhwT3FD?=
- =?utf-8?B?QWQ5eTZnZW5nVGtYNVRBU2VPRGZBRUVGemVjV1k5V29zendyWXpIMDFOeGNT?=
- =?utf-8?B?a05PV2NtTmw5aXFucklPRVpOVEMyb0RKWnNESUQvN3AwQk1nT2xhYW5lMEdL?=
- =?utf-8?B?RTBtdjhjTFBsU1lIYTQxZHBHNHR4cGJ5WUJMazBMTDFJRlFEdG5WR05iSGtP?=
- =?utf-8?B?WExJeWNicHRUYmczNkV5blV5VVNsbUI0bVdMWDIrWmg1Mm4wWGY0OU0xM0xi?=
- =?utf-8?B?eWNueis3dkZucHRyRVVOYW0xbm8vSER5ZG5BSmtJQm9nS29HcGF5MVFwTzBI?=
- =?utf-8?B?bnhUR1UrZjZCaFd6Qi9ZOXNaTHkxUmVTVkRtUTlDeEExY1FJRnEwMXl4MjZC?=
- =?utf-8?B?QXVCeDhoQkZJcmdaM1RKYzh6c1FZZVZZa2pPelZyYW91V0RUYy9DOE40cmpl?=
- =?utf-8?B?OHRJZXFzcHJPbWFKYjdqVWRJTjkvOE1lblphVzRCVTFSUG9BaHJEU3lvQmxp?=
- =?utf-8?B?ZjdlZGc5dm5SMFdNbXpyWFhnR2NFOGVPT0hsSDdRUk0wUllIQ09RUGpZdTFt?=
- =?utf-8?B?dWlBNmwwalVNU2hYQ2hYeEJBbWRWMStRV2xHVTVZV29Kd3g3NU1sRk9nUE9I?=
- =?utf-8?B?NjlZRDE4S0pmeTBDeFp3VzNtbVhuSHhVcjhNRFpGdzllV0x5bVVNbHowbFd2?=
- =?utf-8?B?SVdJd1hDbHZZUm5HeTUzNW9MdFFnRlNGTXFUdUU2T0pvVGRxTjJFbFVIeUda?=
- =?utf-8?B?WCt1RzZoY0N5WG1oRkpLejI4d2ttQ2R6YUZycmVEVTU1Y25nSXlpNlI1ZUds?=
- =?utf-8?Q?HSKhdn+FYybFBNkVqg?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fb6SynIs"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 50CC1C5C19A;
+	Fri, 10 Apr 2026 07:42:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 165CE603F0;
+	Fri, 10 Apr 2026 07:42:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D03FF1045001D;
+	Fri, 10 Apr 2026 09:41:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775806932; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=MHNH9UXB0cyYa0OWDg7so8oezJOoutLQTfep4KfFZOA=;
+	b=fb6SynIsvC1cwH9UKMqmu4ZqdazkS5hj4bRDu9pSaGAYro1/prY1xJlayMW0oVjkSSaa8u
+	X2jxQ54EkZg+y6nChj6kz3mRVp7dNOtBI28A4cBrBEtqEN66r3BmY9QrxKOkp0HxY4tu2C
+	uwVKIKo6SUQzn0KW5PgsgF6hoSux+egTxZbMMxHUHhai10afej68DxjClWB2HDRxFaz3yJ
+	WlpUgceB2XIpYBiD3OIddnvBOoBsQJ7GRfS2x0EE84QrzerRTDZJwP+0vyblHujmoMcsKt
+	8LphUmAUnRscmt/LZ4XLaCBeKy45DwJF+Zm9WA3ObZBdXzaPWXpynlPIi53/wg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 842db70a-231e-4f0d-ca6c-08de96ad5ea8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2026 03:00:49.4602
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CiWjexFqpVRsnQ16feWNz9iRIzbqmJT6HQlz9cYQvvkyB0CZfRD/CAi8Yglihmn/alX/qBKgfabCJYE5eHzpOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8398
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 10 Apr 2026 09:41:58 +0200
+Message-Id: <DHPB0K9AHVR3.33XQ35I1GV96N@bootlin.com>
+To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
+ <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+ <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+ <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <victor.liu@nxp.com>, <Frank.Li@nxp.com>, <shawnguo@kernel.org>,
+ <s.hauer@pengutronix.de>, <inki.dae@samsung.com>, <sw0312.kim@samsung.com>,
+ <kyungmin.park@samsung.com>, <krzk@kernel.org>, <jingoohan1@gmail.com>,
+ <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
+ <andy.yan@rock-chips.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v13 11/17] drm/bridge: analogix_dp: Apply
+ drm_bridge_connector helper
+Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <kernel@pengutronix.de>, <festevam@gmail.com>,
+ <alim.akhtar@samsung.com>, <dmitry.baryshkov@oss.qualcomm.com>,
+ <nicolas.frattaroli@collabora.com>, <dianders@chromium.org>,
+ <m.szyprowski@samsung.com>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
+X-Mailer: aerc 0.20.1
+References: <20260409065301.446670-1-damon.ding@rock-chips.com>
+ <20260409065301.446670-12-damon.ding@rock-chips.com>
+In-Reply-To: <20260409065301.446670-12-damon.ding@rock-chips.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIFYyIDAvOF0gUENJOiBpbXg2OiBJbnRlZ3JhdGUgcHdyY3Ry
-bCBBUEkgYW5kIHVwZGF0ZSBkZXZpY2UNCj4gdHJlZXMNCj4gDQo+IE9uIFRodSwgQXByIDAyLCAy
-MDI2IGF0IDA2OjA5OjU5UE0gKzA4MDAsIFNoZXJyeSBTdW4gd3JvdGU6DQo+ID4gTm90ZTogVGhp
-cyBwYXRjaCBzZXQgZGVwZW5kcyBvbiBteSBwcmV2aW91cyBwYXRjaCBzZXQgWzFdIHdoaWNoIGFk
-ZHMNCj4gPiBSb290IFBvcnQgZGV2aWNlIHRyZWUgbm9kZXMgYW5kIHN1cHBvcnQgcGFyc2luZyB0
-aGUgcmVzZXQgcHJvcGVydHkgaW4NCj4gPiBuZXcgUm9vdCBQb3J0IGJpbmRpbmcgaW4gcGNpLWlt
-eDYgZHJpdmVyLg0KPiA+DQo+ID4gVGhpcyBzZXJpZXMgaW50ZWdyYXRlcyB0aGUgUENJIHB3cmN0
-cmwgZnJhbWV3b3JrIGludG8gdGhlIHBjaS1pbXg2DQo+ID4gZHJpdmVyIGFuZCB1cGRhdGVzIGku
-TVggRVZLIGJvYXJkIGRldmljZSB0cmVlcyB0byBzdXBwb3J0IGl0Lg0KPiA+DQo+ID4gUGF0Y2hl
-cyAyLTggdXBkYXRlIGRldmljZSB0cmVlcyBmb3IgaS5NWCBFVksgYm9hcmRzIHdoaWNoIG1haW50
-YWluZWQNCj4gPiBieSBOWFAgdG8gbW92ZSBwb3dlciBzdXBwbHkgcHJvcGVydGllcyBmcm9tIHRo
-ZSBQQ0llIGNvbnRyb2xsZXIgbm9kZQ0KPiA+IHRvIHRoZSBSb290IFBvcnQgY2hpbGQgbm9kZSwg
-d2hpY2ggaXMgcmVxdWlyZWQgZm9yIHB3cmN0cmwgZnJhbWV3b3JrLg0KPiA+IEFmZmVjdGVkIGJv
-YXJkczoNCj4gPiAtIGkuTVg2US9ETCBTQUJSRVNEDQo+ID4gLSBpLk1YNlNYIFNEQg0KPiA+IC0g
-aS5NWDhNTSBFVksNCj4gPiAtIGkuTVg4TVAgRVZLDQo+ID4gLSBpLk1YOE1RIEVWSw0KPiA+IC0g
-aS5NWDhEWEwvUU0vUVhQIEVWSw0KPiA+IC0gaS5NWDk1IDE1eDE1LzE5eDE5IEVWSw0KPiA+DQo+
-ID4gVGhlIGRyaXZlciBtYWludGFpbnMgbGVnYWN5IHJlZ3VsYXRvciBoYW5kbGluZyBmb3IgZGV2
-aWNlIHRyZWVzIHRoYXQNCj4gPiBoYXZlbid0IGJlZW4gdXBkYXRlZCB5ZXQuIEJvdGggb2xkIGFu
-ZCBuZXcgZGV2aWNlIHRyZWUgc3RydWN0dXJlcyBhcmUNCj4gPiBzdXBwb3J0ZWQuDQo+ID4NCj4g
-DQo+IFRoYW5rcyBmb3IgdGhlIHdvcmshIER1ZSB0byBzb21lIHJlY2VudGx5IG1lcmdlZCBwYXRj
-aGVzLCB0aGlzIHNlcmllcyAoUGF0Y2gNCj4gMSkgZG9lc24ndCBhcHBseSBvbiB0b3Agb2YgcGNp
-L2NvbnRyb2xsZXIvZHdjLWlteDYgYnJhbmNoLiBQbGVhc2UgcmViYXNlIGFuZA0KPiByZXNlbmQh
-DQo+IA0KPiAtIE1hbmkNCg0KSGkgTWFuaSwgdGhhbmtzIGZvciB0aGUgcmVtaW5kZXIuDQpBY3R1
-YWxseSB0aGlzIHBhdGNoIHNldCBkZXBlbmRzIG9uIG15IFBFUlNUIyBwYXRjaCBzZXQgWzFdLCB3
-aGljaCBhZGRzDQpzdXBwb3J0IGZvciBSb290IFBvcnQgZHRzIG5vZGVzIGFuZCBjb3JyZWN0bHkg
-YWRqdXN0cyB0aGUgc2VxdWVuY2Ugb2YgUEVSU1QjDQphc3NlcnQvZGVhc3NlcnQgYW5kIHJlZ3Vs
-YXRvci9jbG9jayBlbmFibGUgaW4gcGNpLWlteDYgZHJpdmVyLg0KSSB3aWxsIHJlc2VuZCB0aGlz
-IHNlcmllcyBvbmNlIHRoZSBQRVJTVCMgcGF0Y2ggc2V0IGJlZW4gYWNjZXB0ZWQuDQoNClsxXSBo
-dHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MTAwMjMwNTUuMjQzOTE0Ni0xLXNoZXJy
-eS5zdW5AbnhwLmNvbS8NCg0KQmVzdCBSZWdhcmRzDQpTaGVycnkNCg==
+Hello Damon,
+
+On Thu Apr 9, 2026 at 8:52 AM CEST, Damon Ding wrote:
+> Initialize bridge_connector for both Rockchip and Exynos encoder sides.
+> Then, make DRM_BRIDGE_ATTACH_NO_CONNECTOR mandatory for Analogix bridge
+> side, as the private &drm_connector is no longer created.
+>
+> The previous &drm_connector_funcs and &drm_connector_helper_funcs APIs
+> are replaced by the corresponding &drm_bridge_funcs APIs:
+>
+> analogix_dp_atomic_check() -> analogix_dp_bridge_atomic_check()
+> analogix_dp_detect()       -> analogix_dp_bridge_detect()
+> analogix_dp_get_modes()    -> analogix_dp_bridge_get_modes()
+>                               analogix_dp_bridge_edid_read()
+>
+> Additionally, the compatibilities of Analogix DP bridge based on whether
+> the next bridge is a 'panel'. If it is, OP_MODES and OP_DETECT are
+> supported; If not (the next bridge is a 'monitor' or a bridge chip),
+> OP_EDID and OP_DETECT are supported.
+>
+> The devm_drm_bridge_add() is placed in analogix_dp_bind() instead of
+> analogix_dp_probe(), because the type of next bridge (the panel, monitor
+> or bridge chip) can only be determined after the probe process has fully
+> completed.
+>
+> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
+
+I noticed two issues, sorry I haven't catched them before...
+
+> @@ -1580,7 +1533,8 @@ EXPORT_SYMBOL_GPL(analogix_dp_unbind);
+>
+>  int analogix_dp_start_crc(struct drm_connector *connector)
+>  {
+> -	struct analogix_dp_device *dp =3D to_dp(connector);
+> +	struct analogix_dp_device *dp;
+> +	struct drm_bridge *bridge;
+>
+>  	if (!connector->state->crtc) {
+>  		DRM_ERROR("Connector %s doesn't currently have a CRTC.\n",
+> @@ -1588,13 +1542,26 @@ int analogix_dp_start_crc(struct drm_connector *c=
+onnector)
+>  		return -EINVAL;
+>  	}
+>
+> +	bridge =3D drm_bridge_chain_get_first_bridge(connector->encoder);
+> +	if (bridge->type !=3D DRM_MODE_CONNECTOR_eDP)
+> +		return -EINVAL;
+> +
+> +	dp =3D to_dp(bridge);
+> +
+>  	return drm_dp_start_crc(&dp->aux, connector->state->crtc);
+>  }
+
+drm_bridge_chain_get_first_bridge() takes a reference, you must call
+drm_bridge_put(bridge) before returning. Given there are two return paths I
+suggest:
+
+-	struct drm_bridge *bridge;
+
+-	bridge =3D drm_bridge_chain_get_first_bridge(connector->encoder);
++	struct drm_bridge *bridge __free(drm_bridge_put) =3D
++		drm_bridge_chain_get_first_bridge(connector->encoder);
+
+>  EXPORT_SYMBOL_GPL(analogix_dp_start_crc);
+>
+>  int analogix_dp_stop_crc(struct drm_connector *connector)
+>  {
+> -	struct analogix_dp_device *dp =3D to_dp(connector);
+> +	struct analogix_dp_device *dp;
+> +	struct drm_bridge *bridge;
+> +
+> +	bridge =3D drm_bridge_chain_get_first_bridge(connector->encoder);
+> +	if (bridge->type !=3D DRM_MODE_CONNECTOR_eDP)
+> +		return -EINVAL;
+> +
+> +	dp =3D to_dp(bridge);
+>
+>  	return drm_dp_stop_crc(&dp->aux);
+>  }
+
+Same here:
+
+-	struct drm_bridge *bridge;
+
+-	bridge =3D drm_bridge_chain_get_first_bridge(connector->encoder);
++	struct drm_bridge *bridge __free(drm-bridge_put) =3D
++		drm_bridge_chain_get_first_bridge(connector->encoder);
+
+With the above two changes you can add to v14:
+
++Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
