@@ -1,171 +1,326 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011040.outbound.protection.outlook.com [52.101.70.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0B429992A
-	for <imx@lists.linux.dev>; Thu,  9 Apr 2026 21:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775768795; cv=none; b=sjjbmwwBE/2NU2ktGHuMB0DWE3xP8WxTzDgEadDI3oNEzQYjYFAe4Av5vBnhQmKLLsEYEwgQEFfRDI9qIWqaEdmjfSaKk6IUwDTxkUkJ0BPsuEwguuzsydK+bFdHELWRDJ3thmz8TQavzF4dv8a+UKSu5+Xu5jK8Z8s7tVF6jzU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775768795; c=relaxed/simple;
-	bh=REdKr6BZsP5C2a98ix9lskwNUNfZ1QiVR443hUjwdWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rxHFDPGqeIWuJJdR5r1KIPm3+kRFV6tO9PFhl/+ZP63fz+uxTnzNvIKOkpwQanL0iBFzpYFklBe896ezIaXoAZbNfjIXhE2l3zNq6CguOrtnVrgcR98+oFWTtvXw7XCGOr0QBuBeM2wFY/eS3z8AlqmMVCLdvx49c34nLR3pdV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BIWL5Rqq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Qcwe7C/2; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0C1B3B19
+	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 02:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775788179; cv=fail; b=C3tQrYVqXv2s8VuaqcUS+vwJR9P1Kc3giVMO0vRSihckUIpJHvJjk8A/pDEq3a4RlzbY35QnuS1J6KCvxREC9vTFGfhrqqSNB3yU7GeaY6AkcKO6DzYDRPla2ORyCrGDth80SQS9Z55A7InitGB1CAptOG87a1Gg24+JGfR05iI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775788179; c=relaxed/simple;
+	bh=5qTS4gj+hbhLQa/oPerZ/Y8/Pno8FcF6ysRjAWiuvtU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=paDTWi4prSuwr7Ee71imPZW29alQqycCelcFPdpwnYVs3EsyEfiJVl1lthz4GPpE0d9CO8iQE0R42mLSfHCv61oGF1GJlu1J0u+wP4105+QyRKU1AXcQTqxtSDpaREFaFxOkuLr5BW54tf21okp3GYlx0z2z3n4lwNZJVvaQxh8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lZYXaDkE; arc=fail smtp.client-ip=52.101.70.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BIWL5Rqq";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Qcwe7C/2"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639IEbsK3352631
-	for <imx@lists.linux.dev>; Thu, 9 Apr 2026 21:06:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=BkT2BXpxWHehgHaz7HpCxZpY
-	hADGt5iQQLiK/P6Xocs=; b=BIWL5Rqqsj0jnC+EeLvbLFI4/kra1Oj3NiTjbMPp
-	/XQeyVBxb1yj1Xik4FOtTE05S4A4Y8Ie772HGVqYNd61VIRj2+D0qMLWU16xVOr6
-	SM2jzt68Gq35kUw0JSA5klvDL3s06inD5cmehemAhJy+NTeCO4+x9w/k9DFM7GVO
-	2sRadJT/Ay75272QJ8YVCFvUNQnZjK3Mo0EuFRALKPE2QdZetCMfBW3rLcVM6eDl
-	9MYmcQAnR4te0uifG3MWVMAHfVb4kTUUdEuDcVYlQ4cZNNOkheYns+TXTwxVubvu
-	gCj0kpjPZ6D3EUQfYXRaSw3MpMLftlHDyqgbxpS4EoM0iQ==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dec1qswu6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 09 Apr 2026 21:06:33 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50d8c192b3fso57863621cf.1
-        for <imx@lists.linux.dev>; Thu, 09 Apr 2026 14:06:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1775768793; x=1776373593; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BkT2BXpxWHehgHaz7HpCxZpYhADGt5iQQLiK/P6Xocs=;
-        b=Qcwe7C/2PdZxaVzbOeNk0eyNgxGsNdFWRKe4BBmK70MMUSD70jDimymbpoI0Nws3Dv
-         B7pic44v+AW943XLo1mF4SF8Q6Bykkbpg4FacCVJ9fTM2jNhsluBTke5qzQ22JCci55j
-         bL74gN/BrcilFyH5ILx632A+jMFwiJfdva1PCgx9Sxz3jZd2ip71cZMGNr0Jhz8QJ+Si
-         QJsbGx6zsbz7klIFO8fkJT/9juuBo0b0Kp5fgj35gTZwOpPOdyOMPDHiTxOH/glOPh8V
-         xG+ss/F9vfel4CB+zT2fzSVpDXsxisfrVE3As/75WZChooVwWH3aa5P8YiqEefK0imEq
-         sFzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775768793; x=1776373593;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BkT2BXpxWHehgHaz7HpCxZpYhADGt5iQQLiK/P6Xocs=;
-        b=aytmZE5sWnR77GWbMvlzF1BBL75yYBenUSa+WJz9cXzygjzmgixLBN/jk1HOdAcIhK
-         /1iVALqjOnD6Du+A06tWeEXKC1BTJAsJ/V/1YuSZrFVkNmqsGoomBc/OR7I4R082FJ6a
-         xdPTAXswAbC14J1JvtTU604+E2Avybc+arQiC9qLp2MsxRDMnwgxrR8qZduhyORcSFEF
-         lY6OGTWVCHiXYXhxSjHf+mt0XwLrKtZyJId2+bqrRoQXLTIzV5G61HXh7+aFRkqABR1x
-         v0jpm8ujVZvJrtSZo5b7HEgT/KrcIGoVgu2Zkh1xZfWlIGOKusfzXAJfzQOv3rRfO1lS
-         OjsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVj1GQmMdQ1X7TdqJIL3cASPafwy1r7mjkjrovPgEWx3CXahKOqBMQ+mohlJGKU3Msouk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzdd+tQq/DnVOobpT26op5gRRJoLTM8DVJrbQvmvmO+pNPq+mMe
-	2Jd/LTVpzF2v5HHJaApWiQa5eu5y4VH8hS53Guct3TfEY08RYa5WKUdOWmGxcbjT4VMJWlnIFAS
-	6cx6ajnqJ/Ed1E4XWEirHfPTafrNIsR/rrZdOkh6lcAWLPN42VQoIpKk=
-X-Gm-Gg: AeBDiesr2G2Yv7VfLHzjEA/bfmMUJfzD5QS7x0TPo7GwGmuWsYmdUezVDniGMW82sZr
-	lEaL3Nw4EtSMWt55fEx9vx8+3JuQ3RmETdzlhm5RWn1mbsiq3r0td1cRnmcLL/DPuc5+Or63tqp
-	4ZH8WBTQEOnl4VvYyeFd2C0BAyNE6QrMDtRvNfEcWRkcRu5ZmVHAK2RbK0Dv9Gl2wssfSC+Bz0h
-	vQ04ENsl01oVXU1XAAZz8KIXNjIWSXUzOy6PsMiDeBpZkLLuQL/eyWFqFZoL+6BBmZGUjp8uzSF
-	Fp37M3DKXcvtBrrOATJBtrW/xFS443DmJ0taYXoVxpLU4T2+eL9qzIlhqxYw1afBBIOkw2wuLHc
-	rCfsOLFbyO05eWza3YU3ylIcWsu4M4TcvsesM+vRR1sQ+1MS9ic29mqADvpU9Jj+GFw4UDoUnZS
-	SRiGHSZJy756BA2K8FqhkZKlbdsiI/CBnbTus=
-X-Received: by 2002:ac8:5a02:0:b0:50d:8734:ba65 with SMTP id d75a77b69052e-50dd5b95bc8mr14103781cf.11.1775768792640;
-        Thu, 09 Apr 2026 14:06:32 -0700 (PDT)
-X-Received: by 2002:ac8:5a02:0:b0:50d:8734:ba65 with SMTP id d75a77b69052e-50dd5b95bc8mr14102751cf.11.1775768791806;
-        Thu, 09 Apr 2026 14:06:31 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a3eee86641sm161191e87.3.2026.04.09.14.06.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 14:06:30 -0700 (PDT)
-Date: Fri, 10 Apr 2026 00:06:28 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Damon Ding <damon.ding@rock-chips.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        victor.liu@nxp.com, Frank.Li@nxp.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com,
-        kyungmin.park@samsung.com, krzk@kernel.org, jingoohan1@gmail.com,
-        p.zabel@pengutronix.de, hjc@rock-chips.com, heiko@sntech.de,
-        andy.yan@rock-chips.com, Laurent.pinchart@ideasonboard.com,
-        jonas@kwiboo.se, jernej.skrabec@gmail.com, kernel@pengutronix.de,
-        festevam@gmail.com, alim.akhtar@samsung.com, luca.ceresoli@bootlin.com,
-        nicolas.frattaroli@collabora.com, dianders@chromium.org,
-        m.szyprowski@samsung.com, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v13 11/17] drm/bridge: analogix_dp: Apply
- drm_bridge_connector helper
-Message-ID: <wmt75edxyrmhyyfxx7xrrhfdjvdu6u24zwwwsd4ryy52ctwm6f@th73j4phtvmm>
-References: <20260409065301.446670-1-damon.ding@rock-chips.com>
- <20260409065301.446670-12-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lZYXaDkE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E3u+Y6VPxeJok5ZyLwRX90rUs0axkGm1u6bFqSp8zz0Xn/z2ZHIqbP3cikUkK0l41MaYlkfIrDNLDQbXl95f0JsWh+SYN86mcw/O/nn2ZVnUXOOpUbrUi/wLJkG8tuG784OQDwoSF67hcxLFOmYth+fetqwjauzAIPUoaWYryk/Kby3Ss8QscmCd+VMltpToAfzt20tCtWYBazS46IKgv/TBhoJ9RvIOraQsj3KPHINNrRNpfAtKIhKNCVa3N4Zr/TuDbacUgR42t4jlfBRSP3DYy+9Y+U4PBS6wLj2Ks+ic/xa8DWHTzZnTLIqnoJq5QzB6w3d9y2F44DhDab38Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K7eMdwNpWEaI6jZq9E7pLihK/e00FZc2PVZBTDuWohI=;
+ b=GGCLFzdVnLeVnnDFI+GzVhajiihk+ePFYUsLijp4f0Yj/s4j7y6oyBZh9MaYGA/LtVJQg8X8B3yEd5jz4mV+gDq08pD362zlZUw8L0Jt8NJ3Dje5+vU7emNmEzm75uj5kGrpaDEAUIzgeMFcpHvL7R1AZCAhQxq63dd+eAQf2tM9kTnWUJ5Dh+/lBjqL3/Vp/4lE9Jn+2X6e+cAo0ICdsOqnSTODf6/lsVnRNhGQRPjCaDtCUQXD3on1Frdz71S8Od3nREfqb8KZhgqnL8e/6NfJ9aUP1jLYTTjXRP0m5zm0MuglUkGF0pZ+UFGSoIlXOvT46TMXI5BEZuzrvbONBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K7eMdwNpWEaI6jZq9E7pLihK/e00FZc2PVZBTDuWohI=;
+ b=lZYXaDkEKc8XahR7y5V7XWrmk8581IRKaRfNK8iuweS0yR2cOE+yDUo+CQAiB5EYFddytWNf3H1JiWkFtlty3c/0PjVrz7ns3DvMmZyIRMjdCTXPAIqUHK2yT62grz+0s6GKU2Fny5GxSakAc1UmxD+k2E1rWv79vHpH4w1DWGDFc6NkDotCMx3dj1Qa6HKe+/Mc6QdLfs9yISbka75lipI8cwsAtUAU9DHtTK/gnH48qKuToumVji6fybTzi1o0fIhY2v0gyVw+gWIs0qRQONaAp6qlKpkpQG3pe49nEIVh6AfNfX7sc8R1lnm2HmNeu8OeV5FeXEj/RBTcE6s2Ng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13) by AS5PR04MB9826.eurprd04.prod.outlook.com
+ (2603:10a6:20b:673::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.42; Fri, 10 Apr
+ 2026 02:29:34 +0000
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.20.9769.018; Fri, 10 Apr 2026
+ 02:29:34 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	bhelgaas@google.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de
+Cc: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V12 00/12] pci-imx6: Add support for parsing the reset property in new Root Port binding
+Date: Fri, 10 Apr 2026 10:30:43 +0800
+Message-Id: <20260410023055.2439146-1-sherry.sun@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI1PR02CA0020.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::9) To VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409065301.446670-12-damon.ding@rock-chips.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE5NCBTYWx0ZWRfX603XuPy97Yvt
- mn4uD7MPC2ytayy1RTy7a//H5R8hsYldv55Nj0r0ebiT2iSVutgIggj1JkM7AEU6tO2gKDj49PX
- 2V4W8M4SqUAHYaFUaCZS7uo65alJh6KdCmVOblgCoo9YCpW2+zkKnw6S+YcoJJUy2awr1yGwVOC
- zqUKOyTNE0PSD83I7BBRTdjaAJ+ixHom7l8L2YNwVkKhK2gemEQvLMPqoI8Ot4eZI77wXdPkkHY
- nRB/NnFQvh9mMuB8O8tSuOi4vM7/IMNrGzSu7A+Srj8rtn2T2fkgel56fLcNYeTsZe+4cGEKxEn
- LfbdIA/F17MIMCXf71FjG6xX27hoIhSyiNtg087aKa6uOWIehlpXKlBQtr4UUX9BCGCxuMj3kKz
- N4PMI3asSoFl02HAuumLGDL0oUdA51MX/w1xNWy1EY2wBPDvcqEtT5kmgiGbTGW83jVdmCz5jty
- P08Xua0UJcw/4/Jbfwg==
-X-Authority-Analysis: v=2.4 cv=eOcjSnp1 c=1 sm=1 tr=0 ts=69d814d9 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=s8YR1HE3AAAA:8
- a=hD80L64hAAAA:8 a=EUspDBNiAAAA:8 a=yovIxdhcBUqVpsxpVugA:9 a=CjuIK1q_8ugA:10
- a=dawVfQjAaf238kedN5IG:22 a=jGH_LyMDp9YhSvY-UuyI:22
-X-Proofpoint-GUID: zJBAaEJ3EJbBnbhsdSyV-d9vadRDgPpK
-X-Proofpoint-ORIG-GUID: zJBAaEJ3EJbBnbhsdSyV-d9vadRDgPpK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 bulkscore=0 suspectscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
- definitions=main-2604090194
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR04MB12114:EE_|AS5PR04MB9826:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81da5969-5359-410c-7f32-08de96a900f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|7416014|376014|38350700014|921020|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	ZZoEmpmLKTe1D6/r9HeUFW0WEQ6/o+0JJT3WVkmII382xi+HjJ9OPfWyX60fi91VupZl85sB8ubHnCaKnOKO8TabrdNZQhhJ1qWduwhJDsOtOAV6hJlE9hn3XQZi1rKpaGlBztAyoVB+t/maR4D8BK1Q9vwu8X8MJf+xlkHtYhDUwqGDCC+p1lUIrh8vketg5OkTpH/wvJIPGOmZU1sHhBFk5kDS0fms2tG2EofP5He8ANy4u0HecVWLPhtnJbmkdwlS/I0A+voyTsNn6XBEiCFro9ZRqT2vzZiPzAtx89haskoa5fhgFiddIgAo+fDgbjjfEd6DuZWpsJVcovcUcVSXf9QBWqgwlGVK3Uzczv3vG9O0zT0sWa+5LkZ5+gPC0JYYGxv4oaCbVgarGsC+KfDqBivXaxqsf5EZOuF8qHSFR8AFbzBg1ddVs4VpQf7RvvwOYtoCZqGCRjOe+CK+KPggIQHJHlABQM7qSlTYZtnip/7PRNAeDJUSC4lTuLh5PnD5yARUudPXMheCFgCEosNLwje4TXmZbLHmUo+FGUqj3rlhczp4iaQCd1yJzXUpVyubXiMz1k6unqPPe8s9XuzS3+5qDgo6r0WFHq2PfaPL6D0VzbqRXpMXzGBQcvJX+RLd32/hAMTCQ/NsoozN9lWd7Ofb/OOtIBIv/XNQXOT275iRIXIVKgwUNfbB5SDG1V7TwzaWiv1vEdCdbmcEHEQ5SAgJ8FfbfHgWDtrXHBattGhn+fDMFVsGCI8FMESwhiNeohTBotq2Qd1TZ8rurojiw5xC4O6uaBo1k1PMNVebmTdLF2RxQvTl83Rxe8l+IcaxS94VCNLn2Iy4V914KQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(7416014)(376014)(38350700014)(921020)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cDN2em1vVllwUlBPTHpybS9QYzNHcCttZ3pwcmZnRExGeUVqdGV5R1BRZlRp?=
+ =?utf-8?B?amtLVDJ2MzZsaU1jQ1lHMUxnSklueGZuaDZGUm5UNmsyamJYeC9lUHFROFFD?=
+ =?utf-8?B?dGFtMkdJNUZ1aC9tN0hrRW9RRnAzeDdmTDlZK1Jaa0NJWmJ1UzB3TU12MG5k?=
+ =?utf-8?B?QXMySnJ1eUNXaU9iU2NsZEk5U0w2d0VzVzFaSjFYbHQzemxWNlUvR2FTZlBq?=
+ =?utf-8?B?RXlIOWRKTDVrRFJDb05hZGttem1UT3RYUlM4N1o1SFdIMGhLdnJabFFkemhE?=
+ =?utf-8?B?L3NjWEVmd284blUvd1dZOWVUaXQ1ZDNLeldJUFJ0TUJ1NVBhUTF3NUtTV2di?=
+ =?utf-8?B?R3Nvc1ZLL0xoUGJhOElKUFc2MkRpQVVPYTRoZUR2NmRVV2g3MzR4TjJZNVdi?=
+ =?utf-8?B?bDdnLzJlZmFjdEhBSVZ6UWhRU3g2Rk5hM3d2bno4dUNZeGhSTjFzRTZyU2tv?=
+ =?utf-8?B?M01oZmNVMzZ6bGRCTXZSUkhqVFJXMjRLallDMWlGRHpqaWtic092ZE5aTStr?=
+ =?utf-8?B?ejgwWk1PNUFmaW4yUnNjSHJ2WHlRa3R0VmtLUUdLNklLSGNIZlBwWWw4bHhF?=
+ =?utf-8?B?M1FMVVZFcytkS295UmRGZjFDVk03andKS2FPN0R2ZzVJV3pwMUQ4ekllaVQx?=
+ =?utf-8?B?RDRIT0JvUExQV3kySHhLemdhbHVJRmc2YmhCM2d5blBTWFJxclJGMHc5Qndv?=
+ =?utf-8?B?dWlSK0J1QlVjVDRwVXY0ekhERWVXcFAxTTN0NnJaY216MjYzL2hjMTZhVE5v?=
+ =?utf-8?B?cUZDL2hLSHJNVWZ4YVpXZ0lBZkc0dTBzYWF6RjlveFVCLzNJMlU0K0lVY0h3?=
+ =?utf-8?B?d2hrTzYvTGh1dU1zQjQrdHc0WkhNNWZubDU0cS9JaWtRUnhQUmZwc2Z6blBC?=
+ =?utf-8?B?bHFmT3BnQ1JHZm1EZVF1eVJST0dmNzV0UnFhblBvRTU1aGZNS1ZXZ1hjdFhU?=
+ =?utf-8?B?SUpRVlNMaGNjbDRxREhFaExwNzNiNVpEMUtaN2IzRkJQS1RFMzdFbWl4dzlQ?=
+ =?utf-8?B?dVRvYVY5NnlMdm1ZTkxFTFpTdnFab0w1cU13YU9KL0ZDcXpyL1JiSlBvWjlU?=
+ =?utf-8?B?KzZmRzAvRlBLcGNTZFdVTUVadHA4VEFNRTE5Uk9BOEZsWFhPbzM0SDR5TVpR?=
+ =?utf-8?B?UlBIT0htSUQ1VEtDNjFMMlUyNUdkcUk3UVhTM0gxYjJ3RzhPR3BsK0lZbjYz?=
+ =?utf-8?B?aTRpNkhjSTBiOFp4cjcxREFTdVJOejVLTFVZdmh3T1JYcFJxRkFEcnhjOVd6?=
+ =?utf-8?B?SWFRUG9JMjVnbk5GYXc2dFhzTVFLRG44SVRmWERwOXFDV0JIdXZzOWFPWm9R?=
+ =?utf-8?B?VWs3OGpIUU9kTCs3YXpDRVRFN3FvUm1qak9IRGZobGtDY3h5Z08zdGdWYjhK?=
+ =?utf-8?B?V3JaazA5RHlCSStOckNKSFRQWEhUbTQ4dUdmYXVvT0l3OFU1d3FRbE9pL2N4?=
+ =?utf-8?B?SVB4ZDM5YzM5NmNLZ0ZrcFREWXBiZlhxZlo1eWNjT21oTktKbTNWY1NEM3pU?=
+ =?utf-8?B?K0ZBVDhDRmk1VmRJbUpmMzVmWUM2dTh0M3dHZ1piZUZEbXJRTmJ0dTllbjBl?=
+ =?utf-8?B?NzJCZEg3cWM2QmF5R1ZUY0t5cTdwOUpnV1FValBmL3lJelFvVzhiOWJ1TjVp?=
+ =?utf-8?B?dElsdDRISVQ1YVoyYXFVK1pWaXBiNllaaUlzSzFESkFyOFdKZXlLVWRzZURq?=
+ =?utf-8?B?U09wRDZoTncyS3dNZE11M295ejdQV2VPWlpHQ01aNkpYbkJXV3IrOGdlNVpQ?=
+ =?utf-8?B?OUhqTmsyRnIwVUdVdk53Mnd3RjQzbmRWQk9rQloxV2FiZy9jdXI0WlNtMzNI?=
+ =?utf-8?B?dU5vRzA0V05vWmZYSWJERnlEc3FxL0Z4RCt6dkYzVm1kVmgvYTluS21rdXVD?=
+ =?utf-8?B?V2VhWjdDbFpPNnRVN01WcVN2aXdyeWFwb2VEclRBVDNBMmxaaTM4ME1OTnRW?=
+ =?utf-8?B?bUY5YUdKb1ZJMWxidXkwOWdOSkRCeG5DWjBBR0JjTVoxUWZZc3I3MU15ZE0v?=
+ =?utf-8?B?dEdHTXhtUGdTeVlSdldVa2VqT3oyRjBDRUZ0ZGFPR1VnRmM5cWFCU2xLeHEz?=
+ =?utf-8?B?Zzh3b1Z0T3FTOTVRaG8wWnR3SStpZzRnR2RiMjJDK01oclFXbloreTJsYTVU?=
+ =?utf-8?B?dXlrcWo1WlczVVRsT0FtWHN3MjV1ZWphTEZ4eURIVlF4UlRTL0lOZURaaVBl?=
+ =?utf-8?B?U2xJQWwvRTdjWEk5NGVtSXU2RnFjUEd6ZTlXYnh2Rko0dElPVUNxUlUwbExx?=
+ =?utf-8?B?MHUyTmgvUjBaaEdqZnMwMnVPaDZwU3JYS29OYWhEYUlwcnE2cDk5bVBBL0JV?=
+ =?utf-8?B?RWwrd0xVMGszUjRLL0ZjYTBPb3FMSEFlUUVZZDl0dXBocGoyTmpQdz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81da5969-5359-410c-7f32-08de96a900f4
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 02:29:34.4260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gzyJVdRUdJ8tCNv04WsSO50aFby4sHW6oDcFZBaXn1hB8tzQvzUKayoLUWhw7DrqSx6Al/URSrpMBSRTy6urgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9826
 
-On Thu, Apr 09, 2026 at 02:52:55PM +0800, Damon Ding wrote:
-> Initialize bridge_connector for both Rockchip and Exynos encoder sides.
-> Then, make DRM_BRIDGE_ATTACH_NO_CONNECTOR mandatory for Analogix bridge
-> side, as the private &drm_connector is no longer created.
-> 
-> The previous &drm_connector_funcs and &drm_connector_helper_funcs APIs
-> are replaced by the corresponding &drm_bridge_funcs APIs:
-> 
-> analogix_dp_atomic_check() -> analogix_dp_bridge_atomic_check()
-> analogix_dp_detect()       -> analogix_dp_bridge_detect()
-> analogix_dp_get_modes()    -> analogix_dp_bridge_get_modes()
->                               analogix_dp_bridge_edid_read()
-> 
-> Additionally, the compatibilities of Analogix DP bridge based on whether
-> the next bridge is a 'panel'. If it is, OP_MODES and OP_DETECT are
-> supported; If not (the next bridge is a 'monitor' or a bridge chip),
-> OP_EDID and OP_DETECT are supported.
-> 
-> The devm_drm_bridge_add() is placed in analogix_dp_bind() instead of
-> analogix_dp_probe(), because the type of next bridge (the panel, monitor
-> or bridge chip) can only be determined after the probe process has fully
-> completed.
-> 
-> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
-> 
+This patch set adds support for parsing the reset property in new Root Port
+binding in pci-imx6 driver, similar to the implementation in the qcom pcie
+driver[1].
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Also introduce generic helper functions to parse Root Port device tree
+nodes and extract common properties like reset GPIOs. This allows multiple
+PCI host controller drivers to share the same parsing logic.
 
+Define struct pci_host_port to hold common Root Port properties
+(currently only reset GPIO descriptor) and add
+pci_host_common_parse_ports() to parse Root Port nodes from device tree.
+Also add the 'ports' list to struct pci_host_bridge for better maintain
+parsed Root Port information.
+
+The plan is to add the wake-gpio property to the root port in subsequent
+patches. Also, the vpcie-supply property will be moved to the root port
+node later based on the refactoring patch set for the PCI pwrctrl
+framework[2]. 
+
+The initial idea is to adopt the Manivannan’s recent PCIe M.2 KeyE
+connector support patch set[3] and PCI power control framework patches[2],
+and extend them to the pcie-imx6 driver. Since the new M.2/pwrctrl model is
+implemented based on Root Ports and requires the pwrctrl driver to bind to
+a Root Port device, we need to introduce a Root Port child node on i.MX
+boards that provide an M.2 connector.
+
+To follow a more standardized DT structure, it also makes sense to move
+the reset-gpios and wake-gpios properties into the Root Port node. These
+signals logically belong to the Root Port rather than the host bridge,
+and placing them there aligns with the new M.2/pwrctrl model.
+
+Regarding backward compatibility, as Frank suggested, I will not remove
+the old reset-gpio property from existing DTS files to avoid function
+break.
+
+For new i.MX platforms — such as the upcoming i.MX952-evk will add
+vpcie-supply, reset-gpios, and wake-gpios directly under the Root Port
+node.
+Therefore, driver updates are needed to support both the legacy
+properties and the new standardized Root Port based layout.
+
+[1] https://lore.kernel.org/linux-pci/20250702-perst-v5-0-920b3d1f6ee1@qti.qualcomm.com/
+[2] https://lore.kernel.org/linux-pci/20260115-pci-pwrctrl-rework-v5-0-9d26da3ce903@oss.qualcomm.com/
+[3] https://lore.kernel.org/linux-pci/20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com/
+
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+Changes in V12:
+1. Improve the pci_host_common_parse_port() to correctly handle three scenarios:
+   PERST# found in Root Port node & PERST# not in Root Port but found in RC node
+   & PERST# not found in either node.
+2. Add documentation noting for pci_host_common_parse_port().
+3. Add err_cleanup handle path for pci_host_common_parse_ports() to clean up any
+   partially parsed Root Port resources.
+4. Optimize imx_pcie_assert_perst() to avoid the linearly increasing deassertion
+   delay if controller has multiple Root Ports.
+5. Use mdelay instead of msleep in imx_pcie_assert_perst() for noirq context
+   safety.
+6. Remove early return in imx_pcie_parse_legacy_binding() when reset is NULL to
+   align with pci_host_common_parse_port(), allowing port creation even without
+   PERST# GPIO.
+
+Changes in V11:
+1. Call pci_host_common_parse_ports() API from pci-imx6 driver instead of dwc
+   common layer as Mani suggested.
+2. Improve the commit message of patch#3 to avoid confusion as Mani suggested.
+
+Changes in V10:
+1. Use gpiod_direction_output() instead of gpiod_set_value_cansleep() to
+   ensure the reset GPIO is properly configured as output before setting
+   its value in patch#5 as now the reset GPIO is obtained with
+   GPIOD_ASIS flag.
+
+Changes in V9:
+1. Improve the error handling in pci_host_common_parse_ports() as Mani suggested. 
+2. Move the list_empty check and the comment to imx_pcie_host_init() to make it
+   clear that imx_pcie_parse_legacy_binding() is a fallback as Mani suggested.
+3. Export pci_host_common_delete_ports() so that it can be called by
+   imx_pcie_parse_legacy_binding().
+
+Changes in V8:
+1. Add back the cleanup function pci_host_common_delete_ports() to properly
+   handles the ports list instead of simply using pci_free_resource_list().
+2. Improve the patch#4 commit message.
+3. Remove the irrelevant code change in patch#4.
+
+Changes in V7:
+1. Change to use GPIOD_ASIS when requesting perst gpio as Mani suggested.
+   using bridge->dev.
+2. Add a seperate patch to move vpcie3v3aux regulator enable from probe to
+   imx_pcie_host_init() and move imx_pcie_assert_perst() before regulator and
+   clock enable for pci-imx6.
+3. Add device pointer parameter for pci_host_common_parse_port() instead of
+
+Changes in V6:
+1. Drop the pre-allocate pci_host_bridge struct changes in dw_pcie_host_init()
+   and imx_pcie_probe().
+2. Parse Root Port nodes in dw_pcie_host_init() as Frank and Mani suggested.
+3. Move the imx_pcie_parse_legacy_binding() from imx_pcie_probe() to
+   imx_pcie_host_init(), so that dw_pcie_host_init() parse Root Port first, if
+   no Root Port nodes were parsed(indicated by empty ports list), then parse
+   legacy binding.
+4. Add device pointer parameter for pci_host_common_parse_ports().
+5. Add NULL pointer check for reset gpio in imx_pcie_parse_legacy_binding().
+
+Changes in V5:
+1. Add the Root Port list(pci_host_port) to struct pci_host_bridge for better
+   maintain parsed Root Port information.
+2. Delete the pci_host_common_delete_ports() as now the Root Port list in
+   pci_host_bridge can be cleared by pci_release_host_bridge_dev().
+3. Change the common API pci_host_common_parse_ports() pass down struct
+   pci_host_bridge *. 
+4. Modify dw_pcie_host_init() to allow drivers to pre-allocate pci_host_bridge
+   struct when needed.
+5. Allocate bridge early in imx_pcie_probe() to parse Root Ports.
+
+Changes in V4:
+1. Add common helpers for parsing Root Port properties in pci-host-common.c in
+   patch#2.
+2. Call common pci_host_common_parse_ports() and pci_host_common_delete_ports()
+   in pci-imx6 driver.
+3. Use PCIE_T_PVPERL_MS and PCIE_RESET_CONFIG_WAIT_MS instead of magic number
+   100 in patch#3 as Manivannan suggested.
+4. Use "PERST#" instead of "PCIe reset" for the reset gpio lable in patch#3.
+
+Changes in V3:
+1. Improve the patch#2 commit message as Frank suggested.
+2. Add Reviewed-by tag for patch#1.
+
+Changes in V2:
+1. Improve the patch#1 commit message as Frank suggested.
+2. Also mark the reset-gpio-active-high property as deprecated in
+   imx6q-pcie DT binding as Rob suggested.
+3. The imx_pcie_delete_ports() has been moved up so that the
+   imx_pcie_parse_ports() can call this helper function in error handling.
+4. Keep the old reset-gpio property in the host bridge node for the
+   existing dts files and add comments to avoid confusion.
+---
+
+Sherry Sun (12):
+  dt-bindings: PCI: fsl,imx6q-pcie: Add reset GPIO in Root Port node
+  PCI: host-generic: Add common helpers for parsing Root Port properties
+  PCI: imx6: Assert PERST# before enabling regulators
+  PCI: imx6: Add support for parsing the reset property in new Root Port
+    binding
+  arm: dts: imx6qdl: Add Root Port node and PERST property
+  arm: dts: imx6sx: Add Root Port node and PERST property
+  arm: dts: imx7d: Add Root Port node and PERST property
+  arm64: dts: imx8mm: Add Root Port node and PERST property
+  arm64: dts: imx8mp: Add Root Port node and PERST property
+  arm64: dts: imx8mq: Add Root Port node and PERST property
+  arm64: dts: imx8dxl/qm/qxp: Add Root Port node and PERST property
+  arm64: dts: imx95: Add Root Port node and PERST property
+
+ .../bindings/pci/fsl,imx6q-pcie.yaml          |  32 +++++
+ .../arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi        |  11 ++
+ .../arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6sx.dtsi         |  11 ++
+ arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts       |   5 +
+ arch/arm/boot/dts/nxp/imx/imx7d.dtsi          |  11 ++
+ .../boot/dts/freescale/imx8-ss-hsio.dtsi      |  11 ++
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |   5 +
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi |   5 +
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi     |  11 ++
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |   5 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  11 ++
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  |  10 ++
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi     |  22 ++++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  10 ++
+ .../boot/dts/freescale/imx8qm-ss-hsio.dtsi    |  22 ++++
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts |   5 +
+ .../boot/dts/freescale/imx95-15x15-evk.dts    |   5 +
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |  10 ++
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |  22 ++++
+ drivers/pci/controller/dwc/pci-imx6.c         | 117 ++++++++++++++----
+ drivers/pci/controller/pci-host-common.c      | 104 ++++++++++++++++
+ drivers/pci/controller/pci-host-common.h      |  16 +++
+ drivers/pci/probe.c                           |   1 +
+ include/linux/pci.h                           |   1 +
+ 27 files changed, 454 insertions(+), 24 deletions(-)
 
 -- 
-With best wishes
-Dmitry
+2.37.1
+
