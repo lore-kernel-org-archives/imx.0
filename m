@@ -1,173 +1,168 @@
-Received: from mail-m1973172.qiye.163.com (mail-m1973172.qiye.163.com [220.197.31.72])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013071.outbound.protection.outlook.com [52.101.83.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F129A33F585
-	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 08:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775811155; cv=none; b=PuhVRpc1sjk0Udaup5uQd5Gtmzk9znEoZGQYxCet6njbY39nKJnk9w/9VX+/ItxxLkDDL/2DPnMBVj6Ub0FB8EQzVS3EaTiwksN/BnY7Xr5op4r6xR5Wx1y7zWj6poMpEalrFwCseKmbILK9hb818n6cZz1jFhio/xKWvVFrTDk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775811155; c=relaxed/simple;
-	bh=gZN3wtgx8RYWngf+HA0tzuEgZPV3k8EPEYG5n47mvfY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GiOhMmwohCx+dDdFA284W6BQyw6qX271HOStct+ywTEtGkTv0gLGehkY3MiNb4tEHROFfl0XNo2TABrIwmaMF2kLqYIyMpgaXuEaqaNUjDXch2XnNNcz8SOnXYs08O5Im4z4EUC+gWkkBw7Yjy8cyLgWT5SAZVrAF5JeZxzrFek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=NJ6nulOP; arc=none smtp.client-ip=220.197.31.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EE7346E46
+	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 09:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775813287; cv=fail; b=hJ8Sfknh0chxvRnkgkCPbIO54R1KysA4ef6il8XsnhrVn+bIec6m7ZXQK9lkpP27E6mP0XV8jjYnMDPuyrgvUIIJUTiWafYjx6fQaRZ87d1Tlgr3OlKUFizrq7SvdwxFEr4P1+/Hem6MyRmLZqeTBZkUTd6v1U6Xu63LJLz91h4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775813287; c=relaxed/simple;
+	bh=BJgMP0+qS1lrjlxVQO+CWBRIXo4Qi8dPuO7M5SGPXEU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jpTdtmh2bupNKeYQz5+1m7XdWsghdNLlT2ktATL9LUtxtRiCQ8ggRUkazSERBgnHMeK+56T3XMDbV/KGqPe0qYeIgEbjNOeX/vWh/ICkyN+GQhCA4WPNy3PBCz9+/8r1Ch7F7CxBzkVjGjUvxuvsLfKWN1Yt+467Ixy33DtR4wk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QV0sG3g4; arc=fail smtp.client-ip=52.101.83.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="NJ6nulOP"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3a3da4ce0;
-	Fri, 10 Apr 2026 16:52:20 +0800 (GMT+08:00)
-Message-ID: <39a86d7c-59fc-4849-aa60-d9bc62632143@rock-chips.com>
-Date: Fri, 10 Apr 2026 16:52:18 +0800
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QV0sG3g4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tP8FKjlVBP04Yyh/WzLrLoYRLeR+ntnPl+qVwJAto2bWAT5buioPaHM19wJwlayoUhB7eiQk8pyKDbVTdyLIW2mQS7PS9bbALsF0vZyCvs1JZqzBKzeQhcyNsQ95HiLDIml4g5cazl9oERDARVO6sB9GPcaaAw1LGyn+sqM+uKKCdo3Oiz5LY64YBPLtrwqh4Bz5s6XqihtL3r+lvB6CDm0IWtT/l/Bk7okHSZd8AO0AkU2syFUzQJUT3jYPys4W/sLhTY+HokTO1x5b5V38JKY2i+nZtSS1is53hHl6i4TlAn+1G7ua6hHl2oC6Conjdb4R/v8chMSfb9H/DU2zNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xhi7es4B2xMqkBuOYksa7iiVydcM7PWs6DNo7qyJQq8=;
+ b=E51lcZ5TyB0/B9bKfZ6WGxkYH2GQUdw+kMf5Y+IyF4IGfjhDdGf5QE2IBnfLSZggY84+dqroaSz8pluAXl1CgYGjh1ujnCNjAA3EbSWzH4+eb7xZcgiqsgXdU9UmDmUV38mIxmQzVu4+qN3jUHpE8p/Zms2iWCazMJzXT2gHFZDPMYTnbT3UYaEaPnJw/HntQ3yggLZgBUDVacR1nolgWs1s9oR1K0ADhOkj4fVEU2oM2XSjkBOYMLMkyswZDy2peIsssW7O+KlRT3k8h1cr9hrGC6y5IaBRHomIp8x/tdX++jSbvac+oH4sJ7gQgZ7x3wOUBtvv+cojIJp7Lvz9jA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xhi7es4B2xMqkBuOYksa7iiVydcM7PWs6DNo7qyJQq8=;
+ b=QV0sG3g4lzhK08JBkLkZ0ZzqVKjLMO7mFx1IKjRJzHKpdtZyZTMOzmX/841es69IgJutJlnkHZHe/kypKdBselNlndcW5Ecf7B4eJCrgX/S3rekf1bHOOMS5hVw1i7tYHM1Y0g7K+WSkDQtSuQ6IaugzgjLOR3dqKgCJcve81BAQrUPua2ZzXVF9ZTwNXcHXFmtj4mt/+gPAy/fSvkN3dlGJVsbz1SWdc3NkFMMKCRSPXFfz62kNCNibLuT1dLnJRwVooJTtSRTaTEHR5l8SfgQzJ5Tr9LcpMBqOY9JwGdwnHo0vp73pI14JGfaMlPglwzWtMPach+vYqWOs45+7Zg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8420.eurprd04.prod.outlook.com (2603:10a6:20b:3fd::16)
+ by GV4PR04MB11894.eurprd04.prod.outlook.com (2603:10a6:150:2ed::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Fri, 10 Apr
+ 2026 09:27:58 +0000
+Received: from AS8PR04MB8420.eurprd04.prod.outlook.com
+ ([fe80::3f0f:857:96a5:17f]) by AS8PR04MB8420.eurprd04.prod.outlook.com
+ ([fe80::3f0f:857:96a5:17f%6]) with mapi id 15.20.9769.041; Fri, 10 Apr 2026
+ 09:27:58 +0000
+From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+To: ulfh@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	xuegang.liu@nxp.com,
+	jindong.yue@nxp.com
+Subject: [PATCH] pmdomain: imx: Make IMX8M/IMX9 BLK_CTRL tristate
+Date: Fri, 10 Apr 2026 18:27:35 +0900
+Message-Id: <20260410092735.1065294-1-zhipeng.wang_1@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0103.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d1::7) To AS8PR04MB8420.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3fd::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 11/17] drm/bridge: analogix_dp: Apply
- drm_bridge_connector helper
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, victor.liu@nxp.com, Frank.Li@nxp.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, inki.dae@samsung.com,
- sw0312.kim@samsung.com, kyungmin.park@samsung.com, krzk@kernel.org,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, kernel@pengutronix.de, festevam@gmail.com,
- alim.akhtar@samsung.com, dmitry.baryshkov@oss.qualcomm.com,
- nicolas.frattaroli@collabora.com, dianders@chromium.org,
- m.szyprowski@samsung.com, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org
-References: <20260409065301.446670-1-damon.ding@rock-chips.com>
- <20260409065301.446670-12-damon.ding@rock-chips.com>
- <DHPB0K9AHVR3.33XQ35I1GV96N@bootlin.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <DHPB0K9AHVR3.33XQ35I1GV96N@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9d7697996f03a3kunm160a3efe4d69e3
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhoZS1ZPThhOS0NCTBhKSRhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=NJ6nulOPfjZxPerehJRi5Y1NtCkBNPQwbAOOZphJjJqnZQcUBEd6latzMr86rU+hU3micX3Am0ufud/JcsO2wZP15qN8f5tMbYTB87QgUiVssfv/m8UjSY7qseEQ8LpNcoVD048hBzWuFmWesLnasRDM/50ymJR67Px+yh4i2+0=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=FSaNZqWfDxbNZ57v4AyAy7Xb4S5mgUBeo3DUPCIrdgs=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8420:EE_|GV4PR04MB11894:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f5b6433-62a9-45e8-3446-08de96e373cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|19092799006|376014|366016|1800799024|38350700014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	L7galnlKv+43TQLK/LTAzixqPm97MEsQYAj2tVDGocS0xHSOoVFPfJb+UP04jaBiptaKL5a0R/VK8xNCeorjHUl7IxqokVRszcHb1nGRgyIf4jyb05/7BBpspvnfeJoaKoGbG+uaqcFu14RpbPomiPtfmx7wT2a0r3HYyY3TFlsHGGs0sfw4Ltu1MIGsyovGeDK6+64yH4d3m5ZdVHSQEZuGByVKTfEbB+kGQgunnQpHsPUUqCgB5QQoUTSVIuCOAiVquHuKNnVmhRtZeDUTrxt6ocAj9/WDbs3YOWRmajTz1Cgce37KA8Psc9cr5uKunmfh8jiByYhVDca01r35DDbQse/aoV2GW6VzJh8AJu77hQSvKIPE8nNmAvOk49tU3fNsuIbrxYZZvvcIHy4lD5DxWcVhVOdAWIME8CvEa9Qm0Y5C9mdLXUpSJ91dJqF7DCY5Elw6b5THT4m72m2C7Sw3kmbzjZIL8yzTSt/4hLPjPg+Iyiys/qWXZW185MZSKjhRfIPS2nXx02cSwXDv0vawuXw+18VMindpVXqD0uJTay9KiB4UYfuHEd8G8a6Yvdr3INBmutjHi9djYGpoLLnzxBIHisuUII9ucUoKFi2AofJkXQGvZwdguvnDaZ0XlqsrT4Byd8ADQ0KYmqQW6sfR2W5BtAs5GvR1EWZ6wBJYNvtaSUe2bjxWUXJB+naC3rw9AZkpBNFCnX7yDOS+2bQ+UFzDGjP6HIC+lZr9z1RCALwZkrpujYsms46FNwn6u1LNFgRh5rOybwMzALlRdyRXtaDCcC6gNJCOeMdNsuE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8420.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(19092799006)(376014)(366016)(1800799024)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LRVu0QHLpwS0dJ++58WxcZ/LGCHblaur69Y4VWR9/AOuG7GV/WU1MpJwIBKr?=
+ =?us-ascii?Q?9znylX9DulDKGbBavhqWoucOrfNJNQyZ6Z+JpvlNslm01aBSOKAVa6VDpHlg?=
+ =?us-ascii?Q?5nn7DfFzL+zqKRFJydJBHbpJ1rJSoT3hrTyYNyr+oyOWxF4gBtxHKxLVkUWK?=
+ =?us-ascii?Q?W+PRLZqyGuqPtVm5RBUPmnDCrg39R+rSG1wjUVaCbruO9Kbq7rwL30YQKIMC?=
+ =?us-ascii?Q?VHkkQsNgGEy1NIH7qHdyIieew4K+Pj2ahKzw/hbWH5zh+pFJ6GBiyp1+dGFD?=
+ =?us-ascii?Q?9KCKbyLngScjlFx+HouN2vKmqdfbkIMasUq7wVWasiT3lwS5bZRSoIMPNw6Q?=
+ =?us-ascii?Q?uuYVdLHfd24s9bnzjJttCQT7rKrLgJSWld48UoOtIJe8erYNjsFz5YqKXbp5?=
+ =?us-ascii?Q?gX9RZjZmQIljlbE9MPEGMKuECQwmgmKWZv/MfOCQzC6tDNVv09cHc6NY5yXB?=
+ =?us-ascii?Q?w0S+rLtXcFtQpGCXCP+GcF8G0l6uYcRLwCXMMf2MezbEK7eWX0e8y2g2R7Cr?=
+ =?us-ascii?Q?8+nPvL6gsX2XlRDU08SSoXwMTlRvwZa5e7LHgS80QdLnS05erd5jnjZmVce+?=
+ =?us-ascii?Q?VqOMpdAhY13mnrGj3nD3bPT4l901z8ZL+kKTNecQJVdq+tRBwRf6GdVhqL3m?=
+ =?us-ascii?Q?tezWAVhiYXG12mR5bOWYUh2bklRaA6/SsuMtTEJjjvdOpKmAQ/eUzLfoUKJ6?=
+ =?us-ascii?Q?mbI7m2q5+57h98if/1xSsj084i8627uF5GbegQaDOnU1+zV4mmryQ2cu0tvg?=
+ =?us-ascii?Q?th4mB/Ed/x0055ylsc80ztqKIQDIYxgdsaKAkvawj3WUVGJ6o8Srjwv54pf8?=
+ =?us-ascii?Q?KpR0+2wBeE9hbJib5BVTZ8gG23pkQrT1OSwLisz5aFM0rJdMspwmgJ93kT5Z?=
+ =?us-ascii?Q?CJBAHiq/pHwSNDW1Vh5/MrbuIdTllHcz+k2wGtq4sf3lYpYpr5P7DHfMrHTa?=
+ =?us-ascii?Q?EbpGEGLnwzNybaJSHrqhFmfZNNIcGsN0OsPubShZ9c1fk34nM/wemfXjZvmk?=
+ =?us-ascii?Q?4leeEaq9SqT5WlATw8kVcn4pcQbNtJHdoCMaFQiwyZuPLpRa7HTyuEZ/UPct?=
+ =?us-ascii?Q?TaUYqWYOVYrA6nS3muNo9gRtyQFs6DCCHzGbPdJw2zmN29r3WIY8ixx7m/l5?=
+ =?us-ascii?Q?lYdZeDBVjZL1Hp45AOOXzoy67+miqqQ2XZvv+y2wLiAmOfy/+pxA1D5mGk+A?=
+ =?us-ascii?Q?bqmEq6E5uPTZj2qeSWxz4V1HKBMiZiJnjq68uXP80FcOudz9wXzL0BpNlN4E?=
+ =?us-ascii?Q?9b+1gGQzKuqEimWFjN9J1GOPLXrsLu40H8whiFxCJN9ru5ScnAtMD+fDWWRt?=
+ =?us-ascii?Q?7EYGvbbE1XEsNu5+3YXOqlPIAVaDKziBSTDIo9qCarCUO1cyCJsUXXBT4IjK?=
+ =?us-ascii?Q?rx1026pe06p+EuRDs1dJ8esGLnBjlE0Y/bcF8q60PsZJ2KyUE7eBYdIWRoeV?=
+ =?us-ascii?Q?kW9bMHAdTd0AuwduKSsuasFgeMghf6G/rsMOXdPgwgJmbWHX4duDx4G6FzEE?=
+ =?us-ascii?Q?ZEonx7Qm//xD8i1aOuX94DJWa7ewq/BcKtQj4xItW3z/dTO+R+/kGB5pNL+9?=
+ =?us-ascii?Q?ZAyAZJGuaBbHHnI4HqYGsV+uB7QwOiMG1M3CRG4001hqPUcFYKpCWXqPgNgt?=
+ =?us-ascii?Q?Omm2qCd2akQbN738xs2mNApYvwRKohpzfI6vtOrQlwlj5ARs/UfhEw5BbxHU?=
+ =?us-ascii?Q?vEMK1roHHhEie6xwjq6pfLwMZ9clFzGP7xYkysGhTKatlu+mztekuGBX5Rpo?=
+ =?us-ascii?Q?MjMsHzMm5Q=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f5b6433-62a9-45e8-3446-08de96e373cb
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8420.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2026 09:27:58.1525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7aUDksfDPc83/vHvlpC37YCjHupJxrP0i3bFbCoxV5uKVujhD7IM8jIREOFoUeF5RyQzBtjZnRh82Gqnorm/RQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11894
 
-Hi Luca,
+Convert IMX8M_BLK_CTRL and IMX9_BLK_CTRL from bool to tristate
+to allow building as loadable modules.
 
-On 4/10/2026 3:41 PM, Luca Ceresoli wrote:
-> Hello Damon,
-> 
-> On Thu Apr 9, 2026 at 8:52 AM CEST, Damon Ding wrote:
->> Initialize bridge_connector for both Rockchip and Exynos encoder sides.
->> Then, make DRM_BRIDGE_ATTACH_NO_CONNECTOR mandatory for Analogix bridge
->> side, as the private &drm_connector is no longer created.
->>
->> The previous &drm_connector_funcs and &drm_connector_helper_funcs APIs
->> are replaced by the corresponding &drm_bridge_funcs APIs:
->>
->> analogix_dp_atomic_check() -> analogix_dp_bridge_atomic_check()
->> analogix_dp_detect()       -> analogix_dp_bridge_detect()
->> analogix_dp_get_modes()    -> analogix_dp_bridge_get_modes()
->>                                analogix_dp_bridge_edid_read()
->>
->> Additionally, the compatibilities of Analogix DP bridge based on whether
->> the next bridge is a 'panel'. If it is, OP_MODES and OP_DETECT are
->> supported; If not (the next bridge is a 'monitor' or a bridge chip),
->> OP_EDID and OP_DETECT are supported.
->>
->> The devm_drm_bridge_add() is placed in analogix_dp_bind() instead of
->> analogix_dp_probe(), because the type of next bridge (the panel, monitor
->> or bridge chip) can only be determined after the probe process has fully
->> completed.
->>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> Tested-by: Heiko Stuebner <heiko@sntech.de> # rk3588
-> 
-> I noticed two issues, sorry I haven't catched them before...
-> 
->> @@ -1580,7 +1533,8 @@ EXPORT_SYMBOL_GPL(analogix_dp_unbind);
->>
->>   int analogix_dp_start_crc(struct drm_connector *connector)
->>   {
->> -	struct analogix_dp_device *dp = to_dp(connector);
->> +	struct analogix_dp_device *dp;
->> +	struct drm_bridge *bridge;
->>
->>   	if (!connector->state->crtc) {
->>   		DRM_ERROR("Connector %s doesn't currently have a CRTC.\n",
->> @@ -1588,13 +1542,26 @@ int analogix_dp_start_crc(struct drm_connector *connector)
->>   		return -EINVAL;
->>   	}
->>
->> +	bridge = drm_bridge_chain_get_first_bridge(connector->encoder);
->> +	if (bridge->type != DRM_MODE_CONNECTOR_eDP)
->> +		return -EINVAL;
->> +
->> +	dp = to_dp(bridge);
->> +
->>   	return drm_dp_start_crc(&dp->aux, connector->state->crtc);
->>   }
-> 
-> drm_bridge_chain_get_first_bridge() takes a reference, you must call
-> drm_bridge_put(bridge) before returning. Given there are two return paths I
-> suggest:
-> 
-> -	struct drm_bridge *bridge;
-> 
-> -	bridge = drm_bridge_chain_get_first_bridge(connector->encoder);
-> +	struct drm_bridge *bridge __free(drm_bridge_put) =
-> +		drm_bridge_chain_get_first_bridge(connector->encoder);
-> 
->>   EXPORT_SYMBOL_GPL(analogix_dp_start_crc);
->>
->>   int analogix_dp_stop_crc(struct drm_connector *connector)
->>   {
->> -	struct analogix_dp_device *dp = to_dp(connector);
->> +	struct analogix_dp_device *dp;
->> +	struct drm_bridge *bridge;
->> +
->> +	bridge = drm_bridge_chain_get_first_bridge(connector->encoder);
->> +	if (bridge->type != DRM_MODE_CONNECTOR_eDP)
->> +		return -EINVAL;
->> +
->> +	dp = to_dp(bridge);
->>
->>   	return drm_dp_stop_crc(&dp->aux);
->>   }
-> 
-> Same here:
-> 
-> -	struct drm_bridge *bridge;
-> 
-> -	bridge = drm_bridge_chain_get_first_bridge(connector->encoder);
-> +	struct drm_bridge *bridge __free(drm-bridge_put) =
-> +		drm_bridge_chain_get_first_bridge(connector->encoder);
-> 
-> With the above two changes you can add to v14:
-> 
-> +Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> 
-> 
+Add prompt strings to make these options visible and configurable
+in menuconfig, keeping them enabled by default on appropriate platforms.
 
-Ah, your previous commit added this nice reference handling. Thanks for 
-the kind review.
+Also remove the IMX_GPCV2_PM_DOMAINS dependency from IMX9_BLK_CTRL
+since i.MX93 doesn't use GPCv2 power domains.
 
-I'll fix it in v14.
+Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+---
+ drivers/pmdomain/imx/Kconfig | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Best regards,
-Damon
+diff --git a/drivers/pmdomain/imx/Kconfig b/drivers/pmdomain/imx/Kconfig
+index 00203615c65e..9168d183b0c5 100644
+--- a/drivers/pmdomain/imx/Kconfig
++++ b/drivers/pmdomain/imx/Kconfig
+@@ -10,15 +10,18 @@ config IMX_GPCV2_PM_DOMAINS
+ 	default y if SOC_IMX7D
+ 
+ config IMX8M_BLK_CTRL
+-	bool
+-	default SOC_IMX8M && IMX_GPCV2_PM_DOMAINS
++	tristate "i.MX8M BLK CTRL driver"
++	depends on SOC_IMX8M
++	depends on IMX_GPCV2_PM_DOMAINS
+ 	depends on PM_GENERIC_DOMAINS
+ 	depends on COMMON_CLK
++	default y
+ 
+ config IMX9_BLK_CTRL
+-	bool
+-	default SOC_IMX9 && IMX_GPCV2_PM_DOMAINS
++	tristate "i.MX93 BLK CTRL driver"
++	depends on SOC_IMX9
+ 	depends on PM_GENERIC_DOMAINS
++	default y
+ 
+ config IMX_SCU_PD
+ 	bool "IMX SCU Power Domain driver"
+-- 
+2.34.1
 
