@@ -1,210 +1,171 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1ED31197B
-	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 15:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2A03C9EDC
+	for <imx@lists.linux.dev>; Fri, 10 Apr 2026 16:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775836353; cv=none; b=EeYzEmxDAmcP3lhF+VRc0BMI6hDrj7IYY5/klKdeIt0NTsBofx+S2ryfy9UoeOYhJv5hY+c06Ii9I+jNL3MaUBESl33v6kRBYe7bq/YWeF2zEwTN73Yb87TZ5ZEBiboSASLeyhidmrCVlp5latCowUogXYpVqaQuAXnigCTMYZs=
+	t=1775837133; cv=none; b=TnGiWHdbamhC589vn55KZ0WDi8RLVn46oRjFa9pKpS8EAORWyEz/SftOrQIc7F4SjhZEQYiZuTC+uroGp4eaQXkj7ToKT5p2E3Hfo8kuGeSqqv/CnpmijwR6VTTs+qmpQtWLVQUHlORfp2fS8Ixc57r6wJkoxP7fHbXUA9O5j8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775836353; c=relaxed/simple;
-	bh=IVX1psQg7ZO53TJ7iWhI8o/DZnKxxZyF+3P5lFmYSOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkDF4wJumWlSa0ArOJdhBIxg21pGpRdhb3V1zltU2KQtBXqdeMbObFXfrAM2GKJR6eVOUUEGLedp/whjJ3XwBFbUJLXh0p/vFrfEzfXiKfOc51jqVKWwG3CAWF7hKYcb4UmnEgflvQEldCvqZ8KLXAVPr7jyT4aovcEEAopAQ6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qR9jZJB4; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1775837133; c=relaxed/simple;
+	bh=JVRuMiNPOp0rOofZTG53QZRaqC74TDxdD8KJao+OyDc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cR+r3d7hUIs5wb8PjE+Gj+LcTCtgQscrmm9UhyAB6E0ZvCA/VHGQgPlPavimjyeAxMLqgKy/247Z73Nsid/aCrLi5j7zk3gllr+rJdwHdcDFQk9RsrP0287PRuFqY07e6mMaEhhKmBExOXbuHorctCAEDRdj94jvc9GbRSVKecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QU3l4TFb; arc=none smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qR9jZJB4"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so1544102a91.0
-        for <imx@lists.linux.dev>; Fri, 10 Apr 2026 08:52:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QU3l4TFb"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1271257ae53so9647071c88.1
+        for <imx@lists.linux.dev>; Fri, 10 Apr 2026 09:05:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775836349; x=1776441149; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BpSOIXXZ3ZNpAOx8++v8mFOwpFQb2y00e+UwJxOC5kE=;
-        b=qR9jZJB4a2SHSYm88aoKsoytfPVRD7UeC0Y87chL4WBwhiFfAy+hVj7CrFAFg/tSfg
-         ieQMtUv2rFykogwAxQhxiAPTC26qQ51cX99Aqsq0fRy7mzYGgJ7OWCQbeLAJcQr0ssXQ
-         qnNQZxEwkYKqrPPWX6YKjMdWaz44pFVtdOgZRTtgtCJy/MtwkORVFV+arEv9IRmpnAFo
-         0pz6ygczbSqg8Rcoofdjhac9fWXtory+hogLV0B12L7dERQbNaQrT+uRqgD6cQ+5xdqX
-         rXAMKmqiP44962/LKqgEczE0YYkqlu3b8kJHvniVIx+AxnaHFt5tlnfrJ3Vz5BlKhPNM
-         6xzA==
+        d=gmail.com; s=20251104; t=1775837131; x=1776441931; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rdw806p54hv0WYSi4dT+YA4YfP2LywL8N5qs00NGoaw=;
+        b=QU3l4TFbRZ55V82UWKj0MKGgt1f1gaiklwQFIDyu5aEsefXFkQrbQxjgSBrwEPLztO
+         HI/RXWHINFjI17eTRCWB+MX3u07VfaZ0/PYeznOq18kFojuh8ptJ8COwI7P8ep30eexU
+         FYo1ay84v3dAd5spvwn/W8x3VRdBrpLqIIA6D7d2fu+ieHNp0mw5JnqEaPcOhPELE45W
+         0rCK9kyR8XJ6Ka6CZth+nnBjOyE+2uAV6V97JuPk6hy6a/mYJ6E1bw9OO7GsftbkAK4F
+         QSvTyD/MntFi6d09FA4ipKvy/qiI/IA7QgyOx0LMeaI65hFrLRwAAu4iVlcekTNmdUen
+         meGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775836349; x=1776441149;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BpSOIXXZ3ZNpAOx8++v8mFOwpFQb2y00e+UwJxOC5kE=;
-        b=EQ2YFjdfNtkOYH+sXL3J6vJmAaLZpgYBE7+Vkt2bVmKmgVJgVgS2hr01iDevLFFpWm
-         fj0j0l9HyNOAtob3wR/hn2uWmiftIRGqXd+JzeAb8P/6BU2+TQsqOkf0DTDwjRfLr+wp
-         gLl8phF+1fkK8NiBM7S/Xvm0cRgzXWfd6RBA1c8f0XogD5NiFJsyW9eb+2fU9h81+w+5
-         nSYa03cAopnH/gIjZKsPzyi4WPjLP7fMi1u1+AkB3l+S5YPemjA/RIxogB5deHYxhmZj
-         ynYlrgpWS8D5qyGAVUwscyL0z1uGRUD0YfEvHV+zPLK8JeB0ByAUMfKFhS+p2/fsdHvI
-         AFFA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+2jgWzsWv/f9dB5NclZDBdLFfbd2pfYQ+n5P1oxmKIn92NmVhTuIBQo4QaY6+JfS6bCA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yww32W74pJvkKInabJR3ZkOErW61lgM2rmQByWq9Ysg7l+2nl6Z
-	meRadg6ZMh7nO6SBenZpSSZ5HZ0KJtquOf+nLL2MlU3fhEsHjXMPyEbrTVxk4lEsAn4=
-X-Gm-Gg: AeBDievSBrQAdMR1je/ZiNoh07XhMZeP3Qwn/iEDJipGswsT1ybTjswCS38Y4kKlLk6
-	9zaP7TS7qodNfTnFQaI8KfoF7yAHpmRrLMAdWhPGod5JaCTrIqaoOE9GlIiLnbjQaGUVEj0yUSz
-	qINNzEdZXnRI9jGKgGbywp7wYSC/aFwkqDm3d3vY59jCRiRh4HYa1pi+cJ0qOV8AixjpBdXkSC4
-	Idw43EvVKR9M42mlkX9B1kky9ZELgoYlgZrNmKz1hU+zc2PZGzAiYgx5HhEpaSKItvbPd+xR243
-	epfq+lvtR7IknDZWFjuwdz5B96Nhb7/zF309Pu7GLQkKiQCRMM6odDwCbZMPq35+yswGBE6VcX8
-	dDuSI2V7Bb3sKJv134eBhc0c6hWJK5jB6y/fpBphVv98OjbKf47Q2BXD8uje7nLghF0sY0ccqsK
-	wyPnXUYpohKeLmfohyd2bXnjmjPXg=
-X-Received: by 2002:a17:90b:2fd0:b0:359:d54:846f with SMTP id 98e67ed59e1d1-35e4275f708mr4213158a91.7.1775836349298;
-        Fri, 10 Apr 2026 08:52:29 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:372f:d8dc:5d88:3c78])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f25aa2sm33630105ad.55.2026.04.10.08.52.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 08:52:28 -0700 (PDT)
-Date: Fri, 10 Apr 2026 09:52:26 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] remoteproc: imx_rproc: Pass bootaddr to SM
- CPU/LMM reset vector
-Message-ID: <adkcugNgyrkHtUML@p14s>
-References: <20260327-imx943-rproc-v2-0-a547a3588730@nxp.com>
- <20260327-imx943-rproc-v2-2-a547a3588730@nxp.com>
- <acqjS440STRl2sK2@p14s>
- <acs2PAZq2k3zjmDW@shlinux89>
- <adUghiyZbe3fmcNX@p14s>
- <PAXPR04MB8459AA009C932EB9D6139A11885BA@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <adZ4WIaC6WN97JhR@p14s>
- <adbzPl7ydUvb+MIS@shlinux89>
+        d=1e100.net; s=20251104; t=1775837131; x=1776441931;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rdw806p54hv0WYSi4dT+YA4YfP2LywL8N5qs00NGoaw=;
+        b=CntFpv/AXltd72hwPa2pP0JdLTjOER1KJZMJ1Cs9mc519zn+EFkyRpkDjBtOrI71Xl
+         SbrU3cJo2/TJP3uvvWKXoUJx4riI5xK948v/D833gH2rq0DUBgOuX/piKOOToSN+o/qj
+         8i6e+ipH+yWCi3XW1L+L3ahYKjY2k/tnBtnV9T/Eih4D0lK7c1lbf5rFKGgZwTRyyeGK
+         Q8Xsuj9lypKaV3sWXzrFu6gwR9i9Ub5vkJn0ABISSKMbf5Vmu/iHm5EQoCWZCRaK8Foj
+         8AQgjob72A5cYVA9hWw9p3g+ai721Y7KdtzSlpntf7AZddYVzltV2vwZl2smiEsWKEz3
+         UFEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWEWLeNQvUHPF+GoUgT0XLDAm6j9pQpSJjiLwNTXR4zyjw03NOMXzlVcmyMO9gMATH1zYE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx/+zq+WQMOr3Cd5yNGe2PlUvI44icARF8zS1uhXD1zNmg73d9H
+	UI2cCpCXPuEwzdnfHeo06cShe870JBZfedGx0goTwPSuETrmL0H7vh8p
+X-Gm-Gg: AeBDieuGzW/174v7lnfKky7cpBuxliBbyYF1j6xx16drVJnEx+LQQVkXV2vSpiQAwTq
+	9U6ciybE02jlHvO/eQACEDck+xLnK/UBtYESAiJOhinRu/OmKoQi/he9wrxDRr9Gt5Iaxl5Ctuw
+	/xbiRt+QBIhsJkzM4slpLol4wAW/8pWIZS6CXsqSqxMYfiYbMQLUrwqOb7LBHFVA7VaSYBW7BOx
+	R+GBRPS6awuP14XtzpHrEqfn4KkHtTQGig3rbKUFbhXKrsBlN+MtoTVclyMcDutcEBcqSzZEW5D
+	ZQKYt/3+r3Roz41EN6aRpvYN3eT/+gJmvbsbeeuFJH6YH2z9daU1ysulrzTAoodq9adLxl6wDOp
+	QggBQ6zY0XMgawVsA8hrJT1kHfega12CorU8VqOzieTTHehKunjzuG9vcpgVRi+ahSr9857vq/l
+	X0BSQmFTv7QrMhHRoDw1x68AX+4K9pA594m/R5FDNRZBLaovOj9SJZdQFsr/PW6v812acnABsZ1
+	v7wmjEpiPE=
+X-Received: by 2002:a05:7022:492:b0:12a:6c7e:bef2 with SMTP id a92af1059eb24-12c34e68eb6mr1904050c88.7.1775837131226;
+        Fri, 10 Apr 2026 09:05:31 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55f5c69b3sm4849901eec.1.2026.04.10.09.05.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Apr 2026 09:05:30 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <54fec616-3cc2-4d73-9ddf-aadcf41c924e@roeck-us.net>
+Date: Fri, 10 Apr 2026 09:05:29 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <adbzPl7ydUvb+MIS@shlinux89>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] hwmon: emc2305: Validate fan channel index
+To: florin.leotescu@oss.nxp.com, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com, viorel.suman@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+References: <20260402122514.1811737-1-florin.leotescu@oss.nxp.com>
+ <20260402122514.1811737-2-florin.leotescu@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260402122514.1811737-2-florin.leotescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 09, 2026 at 08:30:54AM +0800, Peng Fan wrote:
-> On Wed, Apr 08, 2026 at 09:46:32AM -0600, Mathieu Poirier wrote:
-> >On Wed, Apr 08, 2026 at 01:30:16AM +0000, Peng Fan wrote:
-> >> > Subject: Re: [PATCH v2 2/3] remoteproc: imx_rproc: Pass bootaddr to
-> >> > SM CPU/LMM reset vector
-> >> > 
-> >> [...]
-> >> > 
-> >> > >
-> >> > > Aligning the ELF entry point with the hardware reset base on
-> >> > Cortex‑M
-> >> > > systems is possible, but it comes with several risks.
-> >> > 
-> >> > I'm not asking to align the ELF entry point with the hardware reset base.
-> >> > All I want is to have the correct start address embedded in the ELF file
-> >> > to avoid having to use a mask.
-> >> 
-> >> I see, per my understanding:
-> >> FreeRTOS typically exposes __isr_vector, which corresponds to the hardware
-> >> reset / vector table base.
-> >> Zephyr (Cortex‑M) exposes _vector_table, which serves the same purpose.
-> >> I am not certain about other RTOSes, but the pattern seems consistent:
-> >> the vector table base is already available as a named ELF symbol.
-> >> 
-> >> Given that, if the preferred approach is to parse the ELF and explicitly
-> >> retrieve the hardware reset base, I can update the implementation accordingly.
-> >> If you prefer to parse the elf file to get the hardware reset base,
-> >> I could update to use them.
-> >> 
-> >> Options1: Something as below:
-> >> 1. Include rproc_elf_find_symbol in remoteproc_elf_loader.c
-> >> 2. Use below in imx_rproc.c
-> >> ret = rproc_elf_find_symbol(rproc, fw, "__isr_vector", &vector_base);
-> >> if (ret)
-> >>     ret = rproc_elf_find_symbol(rproc, fw, "__vector_table", &vector_base);
-> >> 
-> >> if (!ret)
-> >>     rproc->bootaddr = vector_base
-> >> else
-> >>    dev_info(dev, "no __isr_vector or __vector_table\n")
-> >
-> >No
+On 4/2/26 05:25, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
 > 
-> If your concern is about rproc->bootaddr, I could introduce
-> imx_rproc->vector_base for i.MX.  Please help detail a bit.
+> The fan channel index is used to access per-channel data structures.
+> Validate the index agains the number of available channels
+> before use to prevent out-of-bounds access if an invalid
+> value is provided.
 > 
-> >
-> >> 
-> >> This makes the hardware reset base explicit, avoids masking e_entry.
-> >> 
-> >> Option 2: User‑provided reset symbol via sysfs 
-> >> As an alternative, we could expose a sysfs attribute,
-> >> e.g. reset_symbol, allowing users to specify the symbol name
-> >> to be used as the reset base:
-> >> 
-> >> echo __isr_vector > /sys/class/remoteproc/remoteprocX/reset_symbol
-> >> 
-> >
-> >Definitely not.
-> >
-> >The definition of e_entry in the specification is clear, i.e "the address of the
-> >entry point from where the process starts executing".  If masking is required
-> >because the tool that puts the image together gets the wrong address, then it
-> >should be fixed.
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> ---
+>   drivers/hwmon/emc2305.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> The hardware reset base is the address from which the hardware fetches the
-> initial stack pointer and program counter values and loads them into the SP
-> and PC registers.  In contrast, bootaddr (i.e. e_entry) represents the address
-> at which the CPU starts executing code (the PC value after reset). As you
-> pointed out earlier, this distinction is clear.
-> 
-> In our case, we need to obtain the hardware reset base and pass that value to
-> the system firmware. However, e_entry should not be set to the hardware reset
-> base. Doing so would introduce the issues I described in [1]. This means we
-> should not modify the Zephyr or FreeRTOS build outputs to make e_entry equal
-> to the hardware reset base.
+> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+> index 64b213e1451e..0b42b82c8e22 100644
+> --- a/drivers/hwmon/emc2305.c
+> +++ b/drivers/hwmon/emc2305.c
+> @@ -548,6 +548,12 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
+>   		return ret;
+>   	}
+>   
+> +	if (ch >= data->pwm_num) {
+> +		dev_err(dev, "invalid reg %u for node %pOF (valid range 0-%u)\n", ch, child,
+> +			data->pwm_num - 1);
+> +		return -EINVAL;
+> +	}
+> +
+>   	ret = of_parse_phandle_with_args(child, "pwms", "#pwm-cells", 0, &args);
+>   
+>   	if (ret)
 
+Please address Sashiko's concerns regarding channel index validation.
+It seems valid to me. Feel free to ignore the other comments.
 
-As I said earlier, I am _not_ suggesting to make e_entry equal to the hardware
-reset base.
+https://sashiko.dev/#/patchset/20260402122514.1811737-1-florin.leotescu%40oss.nxp.com
 
-We are going in circles here.
+Thanks,
+Guenter
 
-> 
-> Given these constraints, the feasible solutions I can see are either:
-> - option 1 (explicitly retrieving the hardware reset base), or
-> - continuing to use masking.
-> 
-> Please suggest.
-> 
-> [1] https://lore.kernel.org/all/acs2PAZq2k3zjmDW@shlinux89/
-> 
-> Thanks,
-> Peng
-> 
-> >
-> >> The remoteproc core would then resolve that symbol from
-> >> the ELF and set rproc->bootaddr accordingly.
-> >> This provides maximum flexibility but does introduce a new user‑visible ABI,
-> >> so I see it more as an opt‑in or fallback mechanism.
-> >> 
-> >> Please let me know which approach you prefer, and I will update
-> >> this series accordingly in v3..
-> >> 
-> >> Thanks,
-> >> Peng.
-> >> 
-> >> 
-> >> > 
-> >> > > 1, Semantic mismatch (ELF vs. hardware behavior) 2, Debuggers may
-> >> > > attempt to set breakpoints or start execution at the entry symbol
-> >> > >
