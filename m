@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94811B6CE9
-	for <imx@lists.linux.dev>; Sat, 11 Apr 2026 08:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBC51DFDA1
+	for <imx@lists.linux.dev>; Sat, 11 Apr 2026 08:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775895251; cv=none; b=bjcucmCkvPIyUxeDqCaqEtJMcxFvCpp9yHlwQgmNQbuklb7ua1NJ9R88X36/pMtXoPSj2t9OQjDtrJURrOhtzTbDw/LAE6YjvoSsNUn8x8ZvJ70JLg8+ofNqoQn5OB6dAXTsn4+Dddbyz6oYh50Yu6TBMS9z0DHgQu0BAG7/HdM=
+	t=1775895917; cv=none; b=YhRmLELyJ5l6/MU0TAYQKDtdapgzYoA5tH1dTioDNy5g0NhE3+6XhMYWApBiKvTZ5vWz221E+6aO47IVpGklWS9vGuT1geXF3gIYzo4GoXkUlS+Lu0KXVP61FFKJQl6OrM3uzFWBBVMewNuC7GquY9W+Bzkq1sX/htwYPKVKhcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775895251; c=relaxed/simple;
-	bh=dwBCOiXBWQ9YL4DB5lMeqs9qrMikjKAukVChq9kRbDU=;
+	s=arc-20240116; t=1775895917; c=relaxed/simple;
+	bh=UNE/FDKJlKGVYWqaC8jppJoejgnR0BL7bQaOen40Y7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/zvi1+qRwHe3FxaLnSPexGB5p+1uRrNN6ey6dIJx+U9xtBtKcVI773H01OLvdUVUjT5cFr4ywbTf9i/mjK6aUQpUYI4DPUBVAdAFHhzAWc1ly6R+w99djGDuOpPQp5wZw8X6oFNW79N2PnA4oo5kTkpA05PywAXvRSvCviZSkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhwFuPMP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/t8M3CRhRdXXnIv7PEqo794Lo7w8EHvKodbrKzo4gqyPXEkmMuynh0eYWoFixr5mYm9lf1tEM6sTbTwp0xILum0Pye+lK3JO1YsS23gq89llRRhuvY8uf60AygZfxiJN6DLdnViDQSyNWH6/cyb49s9UoqvyiNFc46TjN7bpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZ0gnSW0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhwFuPMP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89ADC19425;
-	Sat, 11 Apr 2026 08:14:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZ0gnSW0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1E6C4CEF7;
+	Sat, 11 Apr 2026 08:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775895251;
-	bh=dwBCOiXBWQ9YL4DB5lMeqs9qrMikjKAukVChq9kRbDU=;
+	s=k20201202; t=1775895917;
+	bh=UNE/FDKJlKGVYWqaC8jppJoejgnR0BL7bQaOen40Y7E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WhwFuPMPpUhZQESrVQ7+1xVqqd844um0qi670mptM2+luPvwdYlm73uks5Oxwyim5
-	 pd3Dxztg3X9znhTbFIWjZ44uwtI8RR5Zddyb5tEC06MBEgTaZQPBEp/IvYzyQFe6of
-	 wvzKGah5MdEaI+Ny8jOHr7XnKmRrXNT+hjwFQnoQ8UQZHkSrQQ7uLETHrtzJdy9vaZ
-	 J5LHDkcgxhaoypQy5UsyviYgcNnvU0xhNfPk4t0pmA+5m/SNDZdMIsiHfj5UR9AFz/
-	 snLMBLyybSFWvDS3JbyQrxnFuGfI6ZbeFWMlCrrQAjpksDNMcKI+wM+KpJN52dUyCf
-	 JxlYYfJTb6ZWQ==
-Date: Sat, 11 Apr 2026 10:14:08 +0200
+	b=kZ0gnSW0NU0/XQ3BE9PFVmO1hpWpS0Wc7CQ1q9zLKt0griIZ3iS912V5O5S2YKLBl
+	 2ZvC7QwupywZ1zEBYd/j800dp1o/VYOrBCsBevZuRbf/tExm/xMJRnpELdmPDlQK4x
+	 Lt1pB5INeGUqXmYNEiLUvKSZNB5QSc3MCwWvpOqy3mfjkim6BTbWZ7GvZ+IfmOlgbG
+	 Tc7Db5p7nGCde9yz6wSJZIlwtDSv5+tlMWL8DDFbj7CXg+06d6wdGI2HyJa5ukDFKi
+	 bmNExfAR0ywMKN6gXgE6+7Ka2XyPvLZOaotskH0VoPmEgmucVCdanJB9ZlbRhegmFE
+	 b9m1etNmJj+Ow==
+Date: Sat, 11 Apr 2026 10:25:15 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: soc@kernel.org, arm@kernel.org, Shawn Guo <shawnguo@kernel.org>, 
 	Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL] i.MX fixes for 7.0 round 2
-Message-ID: <20260411-ancient-okapi-of-excitement-e5e22f@quoll>
-References: <20260404001857.3374669-1-Frank.Li@nxp.com>
+Subject: Re: [GIT PULL] i.MX arm dts changes for v7.1 (V2)
+Message-ID: <20260411-honored-cockatoo-of-inquire-2d5c26@quoll>
+References: <20260406020819.2812877-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,35 +43,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260404001857.3374669-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260406020819.2812877-1-Frank.Li@nxp.com>
 
-On Fri, Apr 03, 2026 at 08:18:47PM -0400, Frank Li wrote:
+On Sun, Apr 05, 2026 at 10:08:08PM -0400, Frank Li wrote:
 > From: Frank.Li@nxp.com
-> 
-> The following changes since commit 511f76bf1dce5acf8907b65a7d1bc8f7e7c0d637:
-> 
->   arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V (2026-03-17 23:24:44 -0400)
-> 
+>=20
+> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f2=
+7f:
+>=20
+>   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
+>=20
 > are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/imx-fixes-7.0-2nd
-> 
-> for you to fetch changes up to 42a9f5a16328ed78a88e0498556965b6c6ec515c:
-> 
->   arm64: dts: imx8mm-tqma8mqml: Correct PAD settings for PMIC_nINT (2026-04-02 22:07:41 -0400)
-> 
+>=20
+>   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/i=
+mx-dt-7.1
+>=20
+> for you to fetch changes up to 0037d16644b15686eec420a90f05bcd2804edf6d:
+>=20
+>   ARM: dts: imx: Add DT overlays for DH i.MX6 DHCOM SoM and boards (2026-=
+04-05 21:35:41 -0400)
+>=20
+> Changes in v2:
+>   drop patch: ARM: dts: imx53: drop fallback compatible "dlg,da9052"
+>=20
 > ----------------------------------------------------------------
-> i.MX fixes for 7.0 2nd round:
-> 
-> - Fixes interrupt storm by adding pull up pinctrl config for pin PMIC_nINT.
-
-This is way too vague. Commits are odd and suggest that you rely on
-driver. Or that DTS and driver are inter-connected. That is a warning
-sign. You need to explain all this here. We had internal discussion
-about without clear resolution, so I decide to merge it.
-
-But in future this is your message to convince SoC maintainers that
-such DTS changes are correct from rules point of view.
+> i.MX ARM device tree changes for 7.1:
+>=20
+> - Device Tree Schema Compliance Fixes
+>=20
+>   Fixed numerous CHECK_DTBS warnings across multiple i.MX SoC families
+>   Renamed nodes to match schema requirements (tcq=E2=86=92touchscreen,
+>   uart8250=E2=86=92serial, iomuxc=E2=86=92pinmux, etc.). Fixed node namin=
+g conventions
+>   (added "led-" prefix, proper addressing formats).
+>=20
+>   Corrected compatible strings and removed undocumented fallbacks. Added
+>   required properties (clocks, clock-names, power supplies,
+>   #sound-dai-cells).
+>=20
+> - New Hardware Support
+>=20
+>   Added DT overlays for various expansion modules (i.MX6 DHCOM PDK2,
+>   PicoITX display boards). Added support for muRata 1YN WiFi chip
+>   (replacement for 1DX) on i.MX6ULL DHCOR board.
+>=20
+>   i.MX7ULP: Added CPU clock and OPP table support for frequency scaling.
+>=20
+> - Boot Phase Properties
+>   Added bootph.yaml properties to multiple TQ-Systems boards and SoCs:
+>   imx7s, tqma7, mba7 imx6ul/ull, tqma6ul/ull, mba6ulx imx6qdl, tqma6, mba=
+6.
+>=20
+> - Bug Fixes & Corrections
+>=20
+>   Fixed interrupt property usage (interrupts=E2=86=92interrupts-extended =
+where
+>   needed). Corrected spelling ("TQ-Systems" with hyphen). Removed redunda=
+nt
+>   intermediate nodes in pinmux hierarchy. Fixed clock references and
+>   naming.
+>=20
+> ----------------------------------------------------------------
 
 Thanks, applied
 
