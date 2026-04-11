@@ -1,113 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBC51DFDA1
-	for <imx@lists.linux.dev>; Sat, 11 Apr 2026 08:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF92133030F;
+	Sat, 11 Apr 2026 10:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775895917; cv=none; b=YhRmLELyJ5l6/MU0TAYQKDtdapgzYoA5tH1dTioDNy5g0NhE3+6XhMYWApBiKvTZ5vWz221E+6aO47IVpGklWS9vGuT1geXF3gIYzo4GoXkUlS+Lu0KXVP61FFKJQl6OrM3uzFWBBVMewNuC7GquY9W+Bzkq1sX/htwYPKVKhcY=
+	t=1775904046; cv=none; b=ImYId5czQN8FbryFXAF/o3Hlz8NgrcpH8r1DvNdcZZ7Zp643zdqumWyFY5WVdyFEE6bcm+FvlxYsIOfeuxLEMEDQVi0QTN26sLw2KUnJQcAW5UWNXGtEPolh/CDyE32N58ViLNDf3/2Ymc8aJv96ezAl8FRZsDi4cQvg3x6FsIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775895917; c=relaxed/simple;
-	bh=UNE/FDKJlKGVYWqaC8jppJoejgnR0BL7bQaOen40Y7E=;
+	s=arc-20240116; t=1775904046; c=relaxed/simple;
+	bh=61nevb5U7KmJ6GlJeZz+DxBkLNyhcBVs6JVbc3G0hRg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/t8M3CRhRdXXnIv7PEqo794Lo7w8EHvKodbrKzo4gqyPXEkmMuynh0eYWoFixr5mYm9lf1tEM6sTbTwp0xILum0Pye+lK3JO1YsS23gq89llRRhuvY8uf60AygZfxiJN6DLdnViDQSyNWH6/cyb49s9UoqvyiNFc46TjN7bpQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZ0gnSW0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=YyRdy8z0amBbwb92G5LNw7lP5MRoa+A+zNow6DIX9wTBfak5f3sHynzrEQkyeNVQP818WlS91LC5o0FhJJK9NhQGJc4Z3kk2gduq3wbW8sDzccIokyjHn6laRwmefqFJfQoqUgY9PquLZALLOuiJkwsdu//83AN5jLYiNYykbcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgWv0wKF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZ0gnSW0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1E6C4CEF7;
-	Sat, 11 Apr 2026 08:25:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgWv0wKF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D47C4CEF7;
+	Sat, 11 Apr 2026 10:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775895917;
-	bh=UNE/FDKJlKGVYWqaC8jppJoejgnR0BL7bQaOen40Y7E=;
+	s=k20201202; t=1775904046;
+	bh=61nevb5U7KmJ6GlJeZz+DxBkLNyhcBVs6JVbc3G0hRg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZ0gnSW0NU0/XQ3BE9PFVmO1hpWpS0Wc7CQ1q9zLKt0griIZ3iS912V5O5S2YKLBl
-	 2ZvC7QwupywZ1zEBYd/j800dp1o/VYOrBCsBevZuRbf/tExm/xMJRnpELdmPDlQK4x
-	 Lt1pB5INeGUqXmYNEiLUvKSZNB5QSc3MCwWvpOqy3mfjkim6BTbWZ7GvZ+IfmOlgbG
-	 Tc7Db5p7nGCde9yz6wSJZIlwtDSv5+tlMWL8DDFbj7CXg+06d6wdGI2HyJa5ukDFKi
-	 bmNExfAR0ywMKN6gXgE6+7Ka2XyPvLZOaotskH0VoPmEgmucVCdanJB9ZlbRhegmFE
-	 b9m1etNmJj+Ow==
-Date: Sat, 11 Apr 2026 10:25:15 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: soc@kernel.org, arm@kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL] i.MX arm dts changes for v7.1 (V2)
-Message-ID: <20260411-honored-cockatoo-of-inquire-2d5c26@quoll>
-References: <20260406020819.2812877-1-Frank.Li@nxp.com>
+	b=EgWv0wKFO9krr6M6Xkfs3b5boJvhz+IUUDY0knPmrLlxJEZBCNqIuOkKZ6lrlwW3i
+	 1voGar9s5isgNb59sAJNBA0QLDA7P5P7aCIuRXGkrWxLETW+rhU43ymy1obXU+E4Hu
+	 vQ07EBaeeNjo7j4d8wLCqPYNLj3o1HC7jiquV46Ek/wnhCQGp83SIcc15t+JASGQaU
+	 AhnMsrN3qenIbfjRucmJxp2NKncOBNWR0rTZF0sRRfRgl95VPp+680nHHFqwslAmIa
+	 8HzIV0MPc0a/6MuwY1cmPHOL18xYgHV7X7+KLeG9cpIiToYISm6sbgtMq83EEgEOYF
+	 Me/AkfacOtr6w==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 6F6A01AC58BA; Sat, 11 Apr 2026 11:40:42 +0100 (BST)
+Date: Sat, 11 Apr 2026 11:40:42 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Chancel Liu <chancel.liu@nxp.com>
+Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz,
+	tiwai@suse.com, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ASoC: imx-rpmsg: Fix ignore-suspend-widgets only applied
+ to codec DAPM
+Message-ID: <adolKj26DFqZ-XTi@sirena.co.uk>
+References: <20260411072439.1125664-1-chancel.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Wxo/GoZ8NwX6CkGC"
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260406020819.2812877-1-Frank.Li@nxp.com>
+In-Reply-To: <20260411072439.1125664-1-chancel.liu@nxp.com>
+X-Cookie: You will be divorced within a year.
 
-On Sun, Apr 05, 2026 at 10:08:08PM -0400, Frank Li wrote:
-> From: Frank.Li@nxp.com
->=20
-> The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f2=
-7f:
->=20
->   Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git tags/i=
-mx-dt-7.1
->=20
-> for you to fetch changes up to 0037d16644b15686eec420a90f05bcd2804edf6d:
->=20
->   ARM: dts: imx: Add DT overlays for DH i.MX6 DHCOM SoM and boards (2026-=
-04-05 21:35:41 -0400)
->=20
-> Changes in v2:
->   drop patch: ARM: dts: imx53: drop fallback compatible "dlg,da9052"
->=20
-> ----------------------------------------------------------------
-> i.MX ARM device tree changes for 7.1:
->=20
-> - Device Tree Schema Compliance Fixes
->=20
->   Fixed numerous CHECK_DTBS warnings across multiple i.MX SoC families
->   Renamed nodes to match schema requirements (tcq=E2=86=92touchscreen,
->   uart8250=E2=86=92serial, iomuxc=E2=86=92pinmux, etc.). Fixed node namin=
-g conventions
->   (added "led-" prefix, proper addressing formats).
->=20
->   Corrected compatible strings and removed undocumented fallbacks. Added
->   required properties (clocks, clock-names, power supplies,
->   #sound-dai-cells).
->=20
-> - New Hardware Support
->=20
->   Added DT overlays for various expansion modules (i.MX6 DHCOM PDK2,
->   PicoITX display boards). Added support for muRata 1YN WiFi chip
->   (replacement for 1DX) on i.MX6ULL DHCOR board.
->=20
->   i.MX7ULP: Added CPU clock and OPP table support for frequency scaling.
->=20
-> - Boot Phase Properties
->   Added bootph.yaml properties to multiple TQ-Systems boards and SoCs:
->   imx7s, tqma7, mba7 imx6ul/ull, tqma6ul/ull, mba6ulx imx6qdl, tqma6, mba=
-6.
->=20
-> - Bug Fixes & Corrections
->=20
->   Fixed interrupt property usage (interrupts=E2=86=92interrupts-extended =
-where
->   needed). Corrected spelling ("TQ-Systems" with hyphen). Removed redunda=
-nt
->   intermediate nodes in pinmux hierarchy. Fixed clock references and
->   naming.
->=20
-> ----------------------------------------------------------------
 
-Thanks, applied
+--Wxo/GoZ8NwX6CkGC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards,
-Krzysztof
+On Sat, Apr 11, 2026 at 04:24:39PM +0900, Chancel Liu wrote:
+> Currently the property "ignore-suspend-widgets" are applied only to the
+> codec's DAPM context. However, some widgets listed in the property
+> (e.g. "Headphone Jack") belong to card or CPU DAI DAPM context.
 
+> Extend the handling so that widgets which are marked ignoring suspend
+> are looked up across all widgets in the card.
+
+> --- a/sound/soc/fsl/imx-rpmsg.c
+> +++ b/sound/soc/fsl/imx-rpmsg.c
+
+> +		num_widgets = of_property_count_strings(data->card.dev->of_node,
+> +							"ignore-suspend-widgets");
+
+Don't we get an error code back if the property doesn't exist at all?
+
+> +		for_each_card_widgets(card, w) {
+> +			for (i = 0; i < num_widgets; i++) {
+> +				of_property_read_string_index(data->card.dev->of_node,
+> +							      "ignore-suspend-widgets",
+> +							      i, &widgets);
+> +				if (!strcmp(w->name, widgets)) {
+> +					ret = snd_soc_dapm_ignore_suspend(w->dapm, widgets);
+> +					if (ret) {
+> +						dev_err(dev, "failed to find ignore suspend widgets\n");
+> +						return ret;
+> +					}
+> +				}
+> +			}
+> +		}
+
+This seems like the wrong level to implement this search, it should be
+in the core.  I'm also not seeing any prefix handling, the widget name
+might've been prefixed at runtime.
+
+--Wxo/GoZ8NwX6CkGC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnaJPoACgkQJNaLcl1U
+h9C79Af9Eww5MqUM4l2uWRZsMS1+DeTVXwJPdg7NgJgCOgzNWNI6hP6w9WE8X1BG
+Ulvj0GOSZy7HDwLahBChs8AydyTxc1qaR7qNljsVj0Bb7zJmVIkHa8nuqtGxsDux
+nvwnyybQFXambSXYfK4rbsUrF1XZ03NYnV5QroMIa3GsfyFsdK2otKJv5SNmgT82
+pG2VFlhxxd/uocwyG5CqWxj0bTija2Qf0mlmbJMb971kafdmhRUWLFuC8FKxKnTr
+POxLHJO4V3G5SbdvtZDMYqLLAn3psbWCPIkMXMy5krUPef/qh+wCVAwMapMnpWsV
+WOjblDfXWqT7+DwxsSH8yOpoGJ+d9w==
+=Y0Br
+-----END PGP SIGNATURE-----
+
+--Wxo/GoZ8NwX6CkGC--
