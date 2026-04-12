@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65B364028;
-	Sun, 12 Apr 2026 20:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129483803C2;
+	Sun, 12 Apr 2026 21:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776025248; cv=none; b=Ub7JFE+V4WAqhfruPjoGW9GQi578s94NxBGAzC7N5lkcOxzfcxs7MiUXPiyX1vIFWkBPeu8wvl+QjlYSH7kw2y+ZTQ78s3tK7+tCdsyr5zqOxw9FKfNEIUe8xwVM1wnqybU3St7JXKz7+tDgYvktqbDEPOK8gWIBH+XfaK17DZM=
+	t=1776027647; cv=none; b=Oci9fqNnxRmnAnRSYC7mmHGFh+8Uth3oGRyns3442HGeFVxGzieDi0taQo4pIdtIuntj7mwVeFLDAt/qdX0/MxeZ7wvng3wmzbfnUfA5yhqIJaNfLUsx7WBCZhik/NnATmmKOhNOV5CrlcEIDg6aPw+fd4aycAJ10BchIXdtPWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776025248; c=relaxed/simple;
-	bh=gLpPgysxhLlJa9nY2yTS0JpNyujz+os93VUHl5tw6H8=;
+	s=arc-20240116; t=1776027647; c=relaxed/simple;
+	bh=0kkJrf/sN/KJLKD6+Jn3pIHPTyPnQFMi7rT5ASifeck=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lM8az4IIaW8Y7DIhqkzUF4+6JTVctsUK8OtjoswUJEPN6Ks/O+GqKl+odxdSG9lguVGDADuOUIkof0DhS0BBpQ9N3iHYAefD6IXVpiebW9F3+NOf34g+QANwo/VolShEg+yeNjYQ13PCvNqDAVZgvdePukCeJ0STJTA/XXSvDg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpiuhhjE; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=JLJS9HjP5k31sNFn8G67mqG6v3+FuIgQsg6GAmKliqVppCm7jVQMq/I1XBWT6sOjwJQEa0nDdi0a/tT/E8Yb6Oay1q+YeqV2o8iNYnUyXcy4ubihcDyoCqyjtcQ06Mpjddx9cXTYjgpFB5L+VWt9bgL1xuLN8MLNGqivuwLP/as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of/8gkvD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpiuhhjE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EB3C19424;
-	Sun, 12 Apr 2026 20:20:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of/8gkvD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB71C2BCB1;
+	Sun, 12 Apr 2026 21:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776025248;
-	bh=gLpPgysxhLlJa9nY2yTS0JpNyujz+os93VUHl5tw6H8=;
+	s=k20201202; t=1776027646;
+	bh=0kkJrf/sN/KJLKD6+Jn3pIHPTyPnQFMi7rT5ASifeck=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=PpiuhhjEylmkmc+DsTpPS6WGzL1ji+DmGmXqBvbs9W+HfddTPd6XFjrR7ih7ITf6S
-	 ydYLGu3GUYJOZkkRKzrgBoNXUgfVjtE5B0FLNzcqx/uxxZlgxaflzzCrcHevox1DUs
-	 J6LDjmCze1EdUMJOj1gm+B9+yyVuIo/RWGBIKyNE/T0lcbMDt7T1W86b/SuCRkkRX7
-	 uSeXf0jCCsMglNsZIx0flWQiTK+SKX1PxDjo7YJjlmKIiocLdbwiC20N8LQ/61p6iw
-	 aS657XejOdLR1u9RkVPv9qWarc9l8PFWqd2Piun6TTGGoLwstYAwJaSIq8+2bzX0j8
-	 s5cRXK5GAL3EQ==
+	b=Of/8gkvDKzLvqeqmi3RpmPjplsfAiGHyiFtQ7k9pY8OvPRasn+GfTas3tnW/92VUJ
+	 4dQyC90LklTrT/QvQ6nyN7fZIBH1r9nvvTbGVj7IZPp/2pkkSuU7/c7e82KwHNcu9A
+	 bXHXJZ0+ij3WllG5yGP9fnhWJQQK35bGnLkb6Oz9wRQJxqYRViZye2HimjimGWyc2f
+	 haIN/B9W5J0TjB+TacJAnM19QBnlbLD8hnb3hnDYPOMaN8T71Dd823m8IKfDnl33fG
+	 nDAq2I4nBveMUcmrKvQtVYpuazWBXYnW3ETDr+CvP2YZUgFyifHZZEqpsEyZFPEt9r
+	 ShHx06a3EmAyg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9ED43809A8C;
-	Sun, 12 Apr 2026 20:20:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD403809A8C;
+	Sun, 12 Apr 2026 21:00:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -37,50 +37,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/5] net: enetc: improve statistics for v1 and
- add
- statistics for v4
+Subject: Re: [PATCH v2 0/3] arm64: dts: imx8dxl: Add SolidRun SoM and
+ HummingBoard
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177602522028.3398432.7978690408684084054.git-patchwork-notify@kernel.org>
-Date: Sun, 12 Apr 2026 20:20:20 +0000
-References: <20260408055849.1314033-1-wei.fang@nxp.com>
-In-Reply-To: <20260408055849.1314033-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+ <177602761904.3408407.18432734570452504880.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 21:00:19 +0000
+References: <20260409-imx8dxl-sr-som-v2-0-83ff20629ba0@solid-run.com>
+In-Reply-To: <20260409-imx8dxl-sr-som-v2-0-83ff20629ba0@solid-run.com>
+To: Josua Mayer <josua@solid-run.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ yazan.shhady@solid-run.com, mikhail.anikin@solid-run.com, ada@thorsis.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ vladimir.oltean@nxp.com, conor.dooley@microchip.com, krzk@kernel.org,
+ netdev@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  8 Apr 2026 13:58:44 +0800 you wrote:
-> For ENETC v1, some standardized statistics were redundantly included in
-> the unstructured statistics, so remove these duplicated entries.
-> Previously, the unstructured statistics only contained eMAC data and
-> did not include pMAC data; add pMAC statistics to ensure completeness.
+On Thu, 09 Apr 2026 14:34:32 +0200 you wrote:
+> Add bindings and description for SolidRUn i.MX8DXL based SoM and
+> HummingBoard Telematics.
 > 
-> For ENETC v4, the driver previously reported MAC statistics only for the
-> internal ENETC (Pseudo MAC). Extend the implementation to provide
-> additional statistics for both the internal ENETC and the standalone
-> ENETC.
+> Modify SJA1110 Ethernet Switch bindings to allow SPI Mode 0.
+> 
+> This patch-set is based on v7.0-rc2, because rc1 was experiencing
+> deadlocks with imx8qxp clock driver.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/5] net: enetc: add support for the standardized counters
-    https://git.kernel.org/netdev/net-next/c/c6c223fd06ed
-  - [net-next,2/5] net: enetc: show RX drop counters only for assigned RX rings
-    https://git.kernel.org/netdev/net-next/c/c571d309d4cf
-  - [net-next,3/5] net: enetc: remove standardized counters from enetc_pm_counters
-    https://git.kernel.org/netdev/net-next/c/6d78c37a73e0
-  - [net-next,4/5] net: enetc: add unstructured pMAC counters for ENETC v1
-    https://git.kernel.org/netdev/net-next/c/dbc30b154e33
-  - [net-next,5/5] net: enetc: add unstructured counters for ENETC v4
-    https://git.kernel.org/netdev/net-next/c/98a4f3d34132
+  - [v2,1/3] dt-bindings: net: dsa: nxp,sja1105: make spi-cpol optional for sja1110
+    https://git.kernel.org/netdev/net-next/c/600f01dc4bd0
+  - [v2,2/3] dt-bindings: arm: fsl: Add SolidRun i.MX8DXL SoM and HummingBoard
+    (no matching commit)
+  - [v2,3/3] arm64: dts: imx8dxl: Add SolidRun SoM and HummingBoard
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
