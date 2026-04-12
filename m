@@ -1,85 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1F150997;
-	Sun, 12 Apr 2026 16:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65B364028;
+	Sun, 12 Apr 2026 20:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776012784; cv=none; b=mYcol6bAaUUoOp1PmQ9vqeEw81o0bZasgi+4bnh2ZkfKm/Pakux588nymHSNB4r8KRclI/glNN01m9d3uJSxiHO7ESUh7i92YjMJEemeHgECKHmWvsEOlpgMOdnrXRwK0OUly77+NzOha6LkQwJl3YKjYYggVZNM1tPdNDgtlPE=
+	t=1776025248; cv=none; b=Ub7JFE+V4WAqhfruPjoGW9GQi578s94NxBGAzC7N5lkcOxzfcxs7MiUXPiyX1vIFWkBPeu8wvl+QjlYSH7kw2y+ZTQ78s3tK7+tCdsyr5zqOxw9FKfNEIUe8xwVM1wnqybU3St7JXKz7+tDgYvktqbDEPOK8gWIBH+XfaK17DZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776012784; c=relaxed/simple;
-	bh=g5poCvQcWA/xbkpNMF1O1j2MyXDRI+9MIN54+M9oWpc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QlNvzBvE2aYdj4wjso9yCAe1WaaOOyNWpK/rKoVJcs5eTqGmqpfGtcv1xk9tvJTvWaKYMV8vUcWC3vRIC5KQCVP0PhV32MlLyRNCbHAq2E6AJgfvWxyt3XeY/UnRia4i4+GlvMkNkBovLNaixnm4Zr+si9CqJ+23sz9CMLEoK0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+lT/ZRL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776025248; c=relaxed/simple;
+	bh=gLpPgysxhLlJa9nY2yTS0JpNyujz+os93VUHl5tw6H8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lM8az4IIaW8Y7DIhqkzUF4+6JTVctsUK8OtjoswUJEPN6Ks/O+GqKl+odxdSG9lguVGDADuOUIkof0DhS0BBpQ9N3iHYAefD6IXVpiebW9F3+NOf34g+QANwo/VolShEg+yeNjYQ13PCvNqDAVZgvdePukCeJ0STJTA/XXSvDg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpiuhhjE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+lT/ZRL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32D1C19424;
-	Sun, 12 Apr 2026 16:53:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpiuhhjE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EB3C19424;
+	Sun, 12 Apr 2026 20:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776012784;
-	bh=g5poCvQcWA/xbkpNMF1O1j2MyXDRI+9MIN54+M9oWpc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=P+lT/ZRL7FLKTG/gOLIjYcotU2QOfltOQ0inwPC9VbLQ/1zLQt+1IRB6wLHaMzZL4
-	 48DpP2AIud3qlMgPu/8lcnKERUeEelj+pU1I2cA+NYEPiTphXEWxw77ote8JOLZisS
-	 WF97g96fb6mkJUo2Ewd4hAaAicQbPP78mcvm9SiXcx2ARuj72WkqikDibRo/CeP/Df
-	 gapbNyMvb/Z4WNPi/YvJJtHUj1QZtCEPjtskwTg5Bsfe0fIvCTefSOub+aHfYrlShq
-	 oDlLcIovcgRF2adsTx/3jMxXGBYe2dqxjsXh4Hf50p/V8OUq8v22IlXsnQ+opptd0q
-	 aUAh19GyuRfxg==
-Date: Sun, 12 Apr 2026 09:53:01 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Wen Gu <guwen@linux.alibaba.com>, tglx@kernel.org,
- richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, jstultz@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, daniel.lezcano@kernel.org, sboyd@kernel.org,
- vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev, yangbo.lu@nxp.com,
- svens@linux.ibm.com, nick.shi@broadcom.com, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- linux-fpga@vger.kernel.org, imx@lists.linux.dev,
- linux-s390@vger.kernel.org, dust.li@linux.alibaba.com,
- xuanzhuo@linux.alibaba.com, mani@kernel.org, imran.shaik@oss.qualcomm.com,
- taniya.das@oss.qualcomm.com
-Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
- directory split
-Message-ID: <20260412095301.4fe1fe65@kernel.org>
-In-Reply-To: <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
-References: <20260407104802.34429-1-guwen@linux.alibaba.com>
-	<20260407104802.34429-3-guwen@linux.alibaba.com>
-	<20260412084704.743482ad@kernel.org>
-	<4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+	s=k20201202; t=1776025248;
+	bh=gLpPgysxhLlJa9nY2yTS0JpNyujz+os93VUHl5tw6H8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PpiuhhjEylmkmc+DsTpPS6WGzL1ji+DmGmXqBvbs9W+HfddTPd6XFjrR7ih7ITf6S
+	 ydYLGu3GUYJOZkkRKzrgBoNXUgfVjtE5B0FLNzcqx/uxxZlgxaflzzCrcHevox1DUs
+	 J6LDjmCze1EdUMJOj1gm+B9+yyVuIo/RWGBIKyNE/T0lcbMDt7T1W86b/SuCRkkRX7
+	 uSeXf0jCCsMglNsZIx0flWQiTK+SKX1PxDjo7YJjlmKIiocLdbwiC20N8LQ/61p6iw
+	 aS657XejOdLR1u9RkVPv9qWarc9l8PFWqd2Piun6TTGGoLwstYAwJaSIq8+2bzX0j8
+	 s5cRXK5GAL3EQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9ED43809A8C;
+	Sun, 12 Apr 2026 20:20:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/5] net: enetc: improve statistics for v1 and
+ add
+ statistics for v4
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177602522028.3398432.7978690408684084054.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 20:20:20 +0000
+References: <20260408055849.1314033-1-wei.fang@nxp.com>
+In-Reply-To: <20260408055849.1314033-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-On Sun, 12 Apr 2026 17:32:22 +0100 David Woodhouse wrote:
-> On 12 April 2026 16:47:04 BST, Jakub Kicinski <kuba@kernel.org> wrote:
-> >On Tue,  7 Apr 2026 18:48:02 +0800 Wen Gu wrote:  
-> >> +PTP EMULATED CLOCK SUPPORT
-> >> +M:	David Woodhouse <dwmw2@infradead.org>
-> >> +M:	Wen Gu <guwen@linux.alibaba.com>
-> >> +M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> >> +L:	linux-kernel@vger.kernel.org
-> >> +S:	Maintained
-> >> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core  
-> >
-> >Hi David,
-> >
-> >Do you have a tree to route the patches thru? Or do you really have
-> >access to the tip tree?  
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  8 Apr 2026 13:58:44 +0800 you wrote:
+> For ENETC v1, some standardized statistics were redundantly included in
+> the unstructured statistics, so remove these duplicated entries.
+> Previously, the unstructured statistics only contained eMAC data and
+> did not include pMAC data; add pMAC statistics to ensure completeness.
 > 
-> I do not have access to the tip tree. I can make a shared tree on
-> git.infradead.org if the other two maintainers would like to send me
-> a SSH pubkey and preferred username...
+> For ENETC v4, the driver previously reported MAC statistics only for the
+> internal ENETC (Pseudo MAC). Extend the implementation to provide
+> additional statistics for both the internal ENETC and the standalone
+> ENETC.
+> 
+> [...]
 
-Honestly I'd love for you to be the only M here, and the other two 
-to be reviewers. Xuan Zhuo is currently at v40 trying to upstream 
-an Ethernet driver. Some growth needed there to become a subsystem
-maintainer IMO.
+Here is the summary with links:
+  - [net-next,1/5] net: enetc: add support for the standardized counters
+    https://git.kernel.org/netdev/net-next/c/c6c223fd06ed
+  - [net-next,2/5] net: enetc: show RX drop counters only for assigned RX rings
+    https://git.kernel.org/netdev/net-next/c/c571d309d4cf
+  - [net-next,3/5] net: enetc: remove standardized counters from enetc_pm_counters
+    https://git.kernel.org/netdev/net-next/c/6d78c37a73e0
+  - [net-next,4/5] net: enetc: add unstructured pMAC counters for ENETC v1
+    https://git.kernel.org/netdev/net-next/c/dbc30b154e33
+  - [net-next,5/5] net: enetc: add unstructured counters for ENETC v4
+    https://git.kernel.org/netdev/net-next/c/98a4f3d34132
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
