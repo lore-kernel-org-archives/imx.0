@@ -1,155 +1,114 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7423939D0
-	for <imx@lists.linux.dev>; Wed, 15 Apr 2026 13:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3CD31326B;
+	Wed, 15 Apr 2026 14:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776258641; cv=none; b=n+vq2+HbhK9HgbrcbBqBn+wIL+Zk1gawKBl8nR8sq0mMF0S6mNuspxwte27i/43CMz6Js7k94mcP//CjtqsuMi4dBnm6njbqdpAakTg6T6lb8ptM4C4a1VlWeGabkkQNwV5lBHX9NEmYPxqpI0VstioSf/4WHDza8R8ZzWY5zFw=
+	t=1776261875; cv=none; b=MnSmSr2pCa2eMxLpBdLLhLFcbcWaZMEU5BwkrLIvL8F6d3ZxyIVFaFI+8usqBwqR3+Um16ZHQwbQsMx6E2O8MJc8Z6IA3b5Qy9z6qfwnEYTd0R1609qE/UCrLxx8z/5EIlD9IL0Wo+g485m5sMLAWlyOCNI/RKrB9i6Vx4WQj/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776258641; c=relaxed/simple;
-	bh=7PW1lPMswvgJuRQIYg5xAY53B74djXr4QMhYyX34Qa8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bW/K0w54mTGXpY3WDy0MG3l4+q0sL+y6nu9wSLV2IYr5psTpMFZ5+h6GMOui1C/9BCCmUPPhKQXThaVlbuARrKavHrLaZEsN97/ig5/2jxEmwW/j7jtzf9KcpTCEUVMyupBvxJ62lT/mvK0n7D2vj++PDf9Ln9TydMyqivq1vIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWp+syHP; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776261875; c=relaxed/simple;
+	bh=21h7NyivpOz74ue2rg11pkknE/jlHCT9nP2kf9C1szg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V1sf6MmErrxCWdHRZZYTNYUj2RDT+7HqyPdOvxfACyfCzn/SS5ewaxgdYY/IxwuOIPkZiI4VJqp44O5ld1yAJcYJJp9JpRjW5Z+a2MaP3P0iEoNCqG8Wk2lJhyyI+fD/STJNo3eyIjk81nQyD+9O1ygvRXiO69lwMO/MGb+bRHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kHZJQv3g; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWp+syHP"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ab232cc803so34093135ad.3
-        for <imx@lists.linux.dev>; Wed, 15 Apr 2026 06:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776258640; x=1776863440; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cgiajh9ZFC2IgUfICjc3cGv7OXm2lzFWtpGDZIIxGOc=;
-        b=KWp+syHPeMJrNaNHPzYHlL6MonFTKfl4/bCw3i/V5QAUtUqGrd3AdDWlkXf6xZoa69
-         jZ2/oW13QRo3bcE5C95blqf6lQeqwKN2cmeF4sqHunTEOGEuWQFBoAz5so9SVUVZUWNY
-         7uUmIYmb2JfDjloyobNDyEFuqyXzCd+HQT6bpHBSN0ndm2jgA8V5Mc8sUG3vLMn4k4xr
-         f6Xf7ztVLnoFmGaGC/7uX590mRYUi0eA0WmYXKCXulTCAbOGM7g359KCoNTgH9WUaPRv
-         UFU5mCwBgRy1tJd7AAcc8h7pIZuy09Gno1jIBsVd0bFN0UXQ75rZvciWp5VOskrFejsh
-         0Ong==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776258640; x=1776863440;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Cgiajh9ZFC2IgUfICjc3cGv7OXm2lzFWtpGDZIIxGOc=;
-        b=j86KiEcMUULJ1A/gvNcuQGelWmJ8nAiNc3sipFqdhShkwctfCkIL8h4MdGFuQQ/J2w
-         b7gxZBS6MBJtBDqbSUlDiDXoImYpD0qr3cHDcLbptEmyf2d6YT417aYWHntIe9srhnh3
-         Uq7SmOKrlAS9/3Ppa4e3NfCzWGaY/Kr22S1p2StJm0BNsaAuoBrB3xlvY/DsXOTKGQqZ
-         +wDA91RnB/3wjkF/N8qCm8O13rRBWPydmDTCDVfr93YeKkw6OfdET3Gb24HhYSvjiCFW
-         mzVsSRcKFVdoG5XcvH83uYpKubhs/NdpnSayHYOL4kJc1CNwExMt1pu59lA3gfvR1qwf
-         vi1w==
-X-Forwarded-Encrypted: i=1; AFNElJ+skvsMZ1Disx1zejowda+yw5Uz6bZgmqEAUUZJLn2eRSKBS1z7x9kPco2fAcZVeh1N2ug=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJUEpfw6F7zOQwEbxVz9BFpjr0E8TNewgq/cvreWSC4lKu5wiA
-	MsqzDTPVmccO2SmB2lRvx49AxjXZeSeJLfaBDZzIJ3GU95Iz8PnIowq9
-X-Gm-Gg: AeBDieu/zQEUrsoqGT3VBFWb4KYe9Kc4q4aTEUYq+kNmdBk6JlC39QKIRa33EHt/5AR
-	LXae3oLvwWUZFiTOhlbzl8WDnYMKfb1zZaNR3U5J072sgfWVmEWHthWrAAjgNHdlEiIHo6tahtM
-	LhIpzAOqFBLQmNZCEhwRpPywKSt7MjS9Z6CjBBoGEZSaCWmZYbwfAA1sEpapT159dERdUxcDx8Q
-	e23SHU3AFeTRbuQqutPMSBAJnNb+pjG9zpzxQzvIdPEa0UfGqFYhajz8T+RR7l0tPGSXlE2ASgI
-	WUjgpPudBVa9ty4HxXyMk1gMaXFDZoK6BcXGyUF0oS72dm73smYjiTgUqnx15Bsbkp21ehs3DCY
-	MTojEA5Pn8kcUfk/f1KInAiwQFb3FM0c1Q6WOI+6L45wgm++utWGB1yTINZfHkzsBbp2HgwgRY5
-	u1yKWMbLEnBsM5M+DyBEIfAloVaaKuLouATbSM1cSzxf4WOnHEAUKNu2DTmF9ycXrjjQUHIcZOa
-	E7C4goZW6QzjG9F8mlx4ZcNO8ot0xg=
-X-Received: by 2002:a17:903:1ab0:b0:2b2:67ca:5fff with SMTP id d9443c01a7336-2b2d5a5d952mr210669185ad.28.1776258639793;
-        Wed, 15 Apr 2026 06:10:39 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.167.147.125])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b478292053sm28062555ad.56.2026.04.15.06.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 06:10:39 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Wed, 15 Apr 2026 21:10:28 +0800
-Subject: [PATCH v2 2/2] thermal/drivers/imxl:Fix runtime PM handling on
- early returns
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kHZJQv3g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1776261871;
+	bh=21h7NyivpOz74ue2rg11pkknE/jlHCT9nP2kf9C1szg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kHZJQv3gSr7mjPUiqA8xXytY0Z+tkDFhaHfXBo1GFIUOLFZ2KrSN/Im66qkCUl3f0
+	 ZzBAeWAbyeH4khO07hzYGdOv5nU5Pg4iX6IQaZ4xlMZqV2fG+H3UG9xGcJMngW9vdO
+	 zeL/uHl5iAWvHylAwiLvTM5rarVkUJVmkQPZNAnfCN4Z9f+MJmHhP3HfFL9cvWc5hC
+	 SRh9raw5SnPHfaimcZttFQLSwhVNiTwiffBJOWtjGjT5+E2zwPUZm+XSx9T44iT/Tc
+	 I44azkb8/vTXvFVD+uPwjxoOvxPdpUg3ocaKAHDjfoXx8PyLR3mynZTUPzzgAqJL3+
+	 TGWIJYRytGgpg==
+Received: from benjamin-XPS-13-9310.. (unknown [100.64.1.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: benjamin.gaignard)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5FE1117E1276;
+	Wed, 15 Apr 2026 16:04:30 +0200 (CEST)
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+To: nicolas.dufresne@collabora.com,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	heiko@sntech.de,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	wens@kernel.org,
+	jernej.skrabec@gmail.com,
+	samuel@sholland.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	kernel@collabora.com,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Subject: [PATCH v3 0/2] media: verisilicon: Simplification and clean up
+Date: Wed, 15 Apr 2026 16:04:18 +0200
+Message-ID: <20260415140420.282084-1-benjamin.gaignard@collabora.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260415-imx-v2-2-aeacff9e72b2@gmail.com>
-References: <20260415-imx-v2-0-aeacff9e72b2@gmail.com>
-In-Reply-To: <20260415-imx-v2-0-aeacff9e72b2@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776258629; l=1767;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=7PW1lPMswvgJuRQIYg5xAY53B74djXr4QMhYyX34Qa8=;
- b=zc9s8r8gJYEF99ja/bK8BCYwUX6qO8U83NdS+xZl54YsmqyvJBsRpZbIBaWc4Errs/PcTw9c/
- ylmRwbKMQeDBA6dJu4y5ZbMbRXZFFsIsADvFvXB22DRbNSttxxOPGeW
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Transfer-Encoding: 8bit
 
-Use PM_RUNTIME_ACQUIRE() in imx_get_temp() and imx_set_trip_temp() so
-runtime PM references are released correctly even when the functions
-return early on errors.
+Simplify motion vectors and reference allocation with common helpers.
+Since it requires to move some of codecs specific functions and
+structure in codecs header files add a patch to finish the clean up.
 
-Fixes: 4cf2ddf16e17 ("thermal/drivers/imx: Implement runtime PM support")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/thermal/imx_thermal.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+Benjamin Gaignard (2):
+  media: verisilicon: Simplify motion vectors and rfc buffers allocation
+  media: verisilicon: Clean up messy include
 
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index 3729c3eac748..057dbab70266 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -274,8 +274,9 @@ static int imx_get_temp(struct thermal_zone_device *tz, int *temp)
- 	u32 val;
- 	int ret;
- 
--	ret = pm_runtime_resume_and_get(data->dev);
--	if (ret < 0)
-+	PM_RUNTIME_ACQUIRE(data->dev, pm);
-+	ret = PM_RUNTIME_ACQUIRE_ERR(&pm);
-+	if (ret)
- 		return ret;
- 
- 	regmap_read(map, soc_data->temp_data, &val);
-@@ -316,8 +317,6 @@ static int imx_get_temp(struct thermal_zone_device *tz, int *temp)
- 		enable_irq(data->irq);
- 	}
- 
--	pm_runtime_put(data->dev);
--
- 	return 0;
- }
- 
-@@ -351,8 +350,9 @@ static int imx_set_trip_temp(struct thermal_zone_device *tz,
- 	struct imx_thermal_data *data = thermal_zone_device_priv(tz);
- 	int ret;
- 
--	ret = pm_runtime_resume_and_get(data->dev);
--	if (ret < 0)
-+	PM_RUNTIME_ACQUIRE(data->dev, pm);
-+	ret = PM_RUNTIME_ACQUIRE_ERR(&pm);
-+	if (ret)
- 		return ret;
- 
- 	/* do not allow passive to be set higher than critical */
-@@ -362,8 +362,6 @@ static int imx_set_trip_temp(struct thermal_zone_device *tz,
- 	imx_set_alarm_temp(data, temp);
- 	trips[IMX_TRIP_PASSIVE].temperature = temp;
- 
--	pm_runtime_put(data->dev);
--
- 	return 0;
- }
- 
+ drivers/media/platform/verisilicon/hantro.h   |  31 +-
+ .../media/platform/verisilicon/hantro_av1.c   |   7 -
+ .../media/platform/verisilicon/hantro_av1.h   | 100 +++-
+ .../platform/verisilicon/hantro_g1_h264_dec.c |   1 +
+ .../verisilicon/hantro_g1_mpeg2_dec.c         |   2 +-
+ .../platform/verisilicon/hantro_g1_vp8_dec.c  |   2 +-
+ .../media/platform/verisilicon/hantro_g2.c    |  36 --
+ .../platform/verisilicon/hantro_g2_hevc_dec.c |  26 +-
+ .../platform/verisilicon/hantro_g2_vp9_dec.c  |  12 +-
+ .../media/platform/verisilicon/hantro_h264.c  |   2 +-
+ .../media/platform/verisilicon/hantro_h264.h  |  98 ++++
+ .../media/platform/verisilicon/hantro_hevc.c  |  37 +-
+ .../media/platform/verisilicon/hantro_hevc.h  |  82 ++++
+ .../media/platform/verisilicon/hantro_hw.h    | 446 +-----------------
+ .../media/platform/verisilicon/hantro_mpeg2.c |   1 +
+ .../media/platform/verisilicon/hantro_mpeg2.h |  27 ++
+ .../platform/verisilicon/hantro_postproc.c    |  29 +-
+ .../media/platform/verisilicon/hantro_v4l2.c  | 262 +++++++++-
+ .../media/platform/verisilicon/hantro_vp8.c   |   1 +
+ .../media/platform/verisilicon/hantro_vp8.h   |  29 ++
+ .../media/platform/verisilicon/hantro_vp9.h   | 104 ++++
+ .../media/platform/verisilicon/imx8m_vpu_hw.c |   5 +
+ .../verisilicon/rockchip_vpu2_hw_h264_dec.c   |   2 +-
+ .../verisilicon/rockchip_vpu2_hw_mpeg2_dec.c  |   2 +-
+ .../verisilicon/rockchip_vpu2_hw_vp8_dec.c    |   2 +-
+ .../verisilicon/rockchip_vpu981_hw_av1_dec.c  |  16 +-
+ .../platform/verisilicon/rockchip_vpu_hw.c    |   3 +
+ .../platform/verisilicon/stm32mp25_vpu_hw.c   |   2 +
+ .../media/platform/verisilicon/sunxi_vpu_hw.c |   1 +
+ 29 files changed, 796 insertions(+), 572 deletions(-)
+ create mode 100644 drivers/media/platform/verisilicon/hantro_h264.h
+ create mode 100644 drivers/media/platform/verisilicon/hantro_hevc.h
+ create mode 100644 drivers/media/platform/verisilicon/hantro_mpeg2.h
+ create mode 100644 drivers/media/platform/verisilicon/hantro_vp8.h
 
 -- 
 2.43.0
