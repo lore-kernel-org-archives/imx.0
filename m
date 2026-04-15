@@ -1,65 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011055.outbound.protection.outlook.com [40.107.130.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A777740DFC9;
-	Wed, 15 Apr 2026 08:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776240618; cv=none; b=gFiHPTIktxq6nWK28NSlQj+9rWpK/YeDxSeqYwWkw8dNPul4Kt045hAYve0pEEYdi7erfNDbWppj4NaXYYVO1fSsxooRlJN5ker1ptVenGuG6AYHNhDCj6sknAjWd+J8VlLFsoDiVUBVyPU6v26NcoKtElFeMSL9FffzZ4YU7+A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776240618; c=relaxed/simple;
-	bh=I6eUDp4wTRJP5CSONuLda4AnlkaTkRvF/XhtVGrCOXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pqm/ImGWkYQRvzkj1LV6BT/Bl/HiK6FscHe43ZJ6a8mLV7R/ERH0WULp4nbTfGPdWWlWNxuEXxAn/4C+yBRjjoEUDU0IWFvZEcfogGPboEUtjEgcs/Dr2IK8dw1VzmcS3nm7Xxqt1wo0EKAJ+bcy8tfErSa+MbGTg8TznYQ3kpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3DLZyu8; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F93CBE6C
+	for <imx@lists.linux.dev>; Wed, 15 Apr 2026 08:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776241237; cv=fail; b=TjUQDp57bQ8sFdZQO3jgkLhgeoqN6OMDU7AOBZHw9xPpDExVS9CExP4VKd2R7jWcjz10C0TqASkui8Ms8PyogujLWDNEaFkBAxoS9QI6YnLPzenpAC6w59VQcnuyTPLcEn7fXgEOHkJ9euXr6p0OZ7/V6d3ZKL9ODl+moPzKN7Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776241237; c=relaxed/simple;
+	bh=0W1mfR7qdBkWjA7rraO3gw1pqi2o8hgyxPx+qS9/Yo4=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Oky8uSwbmcIE0784w2BBxRRFtCGd6sg1PL6Y8/GxYGMKZb9nBc7zLGbXJxUEbXto6j4gzJ595r2ugDPC71qif0EPsP9CC4yiYna3aDcqJwYEufNuo4FoN4wZXvN0EUZoPq0AQHehXJcckExGuTcwjbJ3SOU+DuR0On0Ex6+x+9w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H4VepC0s; arc=fail smtp.client-ip=40.107.130.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3DLZyu8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D051FC19424;
-	Wed, 15 Apr 2026 08:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776240618;
-	bh=I6eUDp4wTRJP5CSONuLda4AnlkaTkRvF/XhtVGrCOXs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f3DLZyu8wclWP9+9yOvpttjvy+zqfD0qAV5MaRuHF9J1O8UwpI4uWV8qnSug3lX2w
-	 kPQIXfMqwh36ZO2coLxi2u6jRokNlRwhoEwAxIQ15NumsflWfytZ3O539wqYHLzMQA
-	 apBR8Lwl79DV7n4k8/SBFS0ue3GMZb37+qDKGA01GPmaAFRWVRzs3uQc3btQXZxhA3
-	 ThI3/I4JeR0GjzCPzyqH4sux85UmwK5LBii9LgahjwUtlHT6VDEM7htJ6/cx+I/+OC
-	 4TME98PO+5p1Gb9I01x3Ml1A3UkufM50/TCZv9NuvJKtz8NpIOJhPpoDOEVtOPp1ex
-	 lz01AVaghKcuQ==
-Date: Wed, 15 Apr 2026 10:10:16 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Michael Riesch <michael.riesch@collabora.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Frank Li <Frank.Li@nxp.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 4/5] media: dt-bindings: add NXP i.MX95 compatible string
-Message-ID: <20260415-glaring-premium-nuthatch-ce00fc@quoll>
-References: <20260415-csi2_imx95-v1-0-7d63f3508719@oss.nxp.com>
- <20260415-csi2_imx95-v1-4-7d63f3508719@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H4VepC0s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JtBH/T8vF/qJLmDvOyiBnDs5W9+US26Lt2NeNzmkbl6MClNJ7xXSVqT++YQ1fFqsDnb6T+i7mlYU/A0ALFD9r4QhH/NPBmsiJin0SoSrWUj+CSt5wUq/Jl9SiadfyuAu2TEcPxH0MX69yPSlPLhvYxogNvEOKiC5/vZQiP4WdWwznz8+MDpVaRWnAjfDv1xT4cRLleDsK5E4uiVNi0xWgxkuvuxvj9AAEV9U/AbciKka2gBgAw3wPc2RdHHngiZR5K10q/lB6kbX7Jb1wj0YBkz49jogIdoLnHIKMYm57wNRmcJh1T5lmUZF1Hi7vZ/2Ay0YC66DRla1JS6y5XbLdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FmyGCIFU9jNUyV+NQWKpLVWxYjUojqsTXBcQvNYermM=;
+ b=est6Uv3Jo3ZtYOnujeMcsfnAygyCuQ81zfdCLHrCHjLLLgwrvF0/Ww30ElK0qzyzaLgJDHu8sm7FfwO9i2xZB+JDRe7fO5TkB6hFqDC83S8Uz1daP+rXSlRMvhEzrySYFBYnOVAsZXBTS+hXumoJrdgSzAB4T7C/0CZncHHwjUzGMpDiVY+6ecpT7VZ8BV5omf9SKKnEVWQWlMJiZQy3l+O+7wRJ6fU77USaTSlTb0Rxo7iB4ShklWWBfzguWIMlI6aa2GeW7MmT9dkNq5WM44ZW8/5TY3mveXaRkpgXIMpL1hygaEiDz2yIBq7Tk3F8sKe9CZfZew+5kVInIsrpVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FmyGCIFU9jNUyV+NQWKpLVWxYjUojqsTXBcQvNYermM=;
+ b=H4VepC0ssvPxlROV5DhucN7RPPsxVg+hB6euUx/mmwl6FQ9zJeQPnRAZX6SXCFeYbhc+hFZzNYCdEcTpkftKgy0m6ThHKp4qDqsQpdZsuRzXoqXF9GxwKCPILsI1+FlrdZkWxuKCc+t//b6crE7u7MS9J8eqD7nk16guSa73kG190WWucysuKeaFIk5KEK2YLJF5+NB9QM5NF2H5iKeGYoPD2IMzZJ24MWQjncPS8eDtyqX+Jll7ms7+u9niN4zfOe9KcT60rxSwgjuUDK9AW38nGK2m8W6IICqUn1TZYtbw5GPpmDeknQcfqxD2k/xWn10vfG249aykSrdTWB1jxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8353.eurprd04.prod.outlook.com (2603:10a6:20b:3ef::22)
+ by DU4PR04MB10530.eurprd04.prod.outlook.com (2603:10a6:10:55a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
+ 2026 08:20:29 +0000
+Received: from AM9PR04MB8353.eurprd04.prod.outlook.com
+ ([fe80::46ae:f774:f04c:a1bc]) by AM9PR04MB8353.eurprd04.prod.outlook.com
+ ([fe80::46ae:f774:f04c:a1bc%5]) with mapi id 15.20.9769.016; Wed, 15 Apr 2026
+ 08:20:27 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	shumingf@realtek.com,
+	rander.wang@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/3] ASoC: soc-core: Add core support for ignoring suspend on selected DAPM widgets
+Date: Wed, 15 Apr 2026 17:19:39 +0900
+Message-ID: <20260415081942.4183108-1-chancel.liu@nxp.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SE2P216CA0029.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:114::6) To AM9PR04MB8353.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3ef::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260415-csi2_imx95-v1-4-7d63f3508719@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8353:EE_|DU4PR04MB10530:EE_
+X-MS-Office365-Filtering-Correlation-Id: d771fb2c-a55b-41c7-e601-08de9ac7d9b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|19092799006|1800799024|366016|38350700014|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DN0bZWbcwGiPxMEqNxK5sUx9bEVkqkvNSIMMG6Ia7lulSmyQBOLC6bppJrumpaD4FFj/cNNGp/aYAFSuY6vsoJL+2G/GOqkqsl5PA3xdhvyHOTSpJf5LJ0ZmBPiU8BqXvXA4NwbHCqIGGbqUl8iPwmq2b5rlSldP467s/r522Jt1CUoAMj8Blo46ZRM7eo1cntDBCoC6d2VWn4qtCbKzkotziCM4oSA1wrMHiSlyRmlhnJLLhgqJQsScpH5Ehxg5EO40npbxC0uSCH0mCORrjCIq8sCM1Ibz6wJ2lOWpXn7mfVBTkri3zC/LOBn7qqHcydeSqToLTIcx5qgIVaRdg8xPPLOVu6aPDSFaXreHMhQzkJJ+/YrcCSf1fJ6T9VkvWHo4qTV7iiT3PCzkQGCjoF4uJ1ZY14yvgMNkowENEPECvM8mLV3wmccTU+pKON0AOFTpvVpFO2fAZwsU6Urhu1H6DrREPrbpkBavH3Co24e/rni2Gf8gs0R0TAhaH/isSV1BgzoS8UD1QkQWn5sSHp+ntjhEB/vK3xbdMHRme254nm2wL4AGVgwRA+CIRvmUU7EWKIwmpcDCIIKNm0XU5ztlEHP8Xb8GaF4KQL7bLwAqzTHyB+CKqPg+qQPQVLmGxHXbCzYA4FmJ8k+9SCu+wSrDaa7jB/VKB5H8EYdx7muSFo44SVTQOFTAl+MFufAmCjKQlZn1t8t9LnZunvaT6/5o7M5LzMFDaYvK8utfOoQjMChJwTPzjH+I63TiQRi6IDojDJhj79rS/+qsDcl/VRFTup4Esv8hXApmhjQurArLjimr/WNSEGIgNlowiOrD
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8353.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uV4ihnKeKPSkx9FNZdoJ/xmo/VMP7d2vDj8OgRIWGYfWPxMPrymHqzu0AZSM?=
+ =?us-ascii?Q?2jfPm93YE4z+1ngcLhhczChP9MjpaACaWUZxOlRAU+TYvbFTx7Tfp0HjtVtM?=
+ =?us-ascii?Q?BPmq+tCYz6wOVzRGmEEYYMbRstGtHz6r9Im3PSB3Y3Tx7ZzKO7rsAp+T7m+v?=
+ =?us-ascii?Q?8kJTJa5Bu0NqVUN2edC8pN+x8bdwGVq1ovHhZOVZoy8lQJKCVELJolRe2A2c?=
+ =?us-ascii?Q?iDcLm8RhZRvEvzvWGDPkW996xPTTUmr9G/ewiI/Wm4ee49CgRskkhiyALTU9?=
+ =?us-ascii?Q?3G9jYpH7JS8cmtAWWltNoY6EgBMHQR90tcE81LN/1ijWLgZoK9WYKn/Rc5FK?=
+ =?us-ascii?Q?hgIaCFzfR8587qujSGxZoyYxIm5V8/sScAe23JSdVNMA89k8Maq0+lzPDfUF?=
+ =?us-ascii?Q?E4niVz8rC7zqxAij86ep35aP4TKnxg+h9nJliBZjibT2x19HkCC4PXAP9BhH?=
+ =?us-ascii?Q?Jq12VTXaXeZb8Sck+4RDQE8PeYZiRtluZ6m9f0NJjD012PD4qG3Obh67Ucye?=
+ =?us-ascii?Q?13+L/7b25pChpUiHRZMXBUkcQQc0NvFTWpwU/hMiF38j/zpZ+pawDpfhTBD8?=
+ =?us-ascii?Q?Y0V98ACt42Wg6uUzp81gYUFAszB/AXvfD+JI/aRuh9zOwtqg0ZD9M+v8qZXP?=
+ =?us-ascii?Q?FSbsQqEyrUNRJaJ45xR46OfjQ/4RVco9RxPHbNjzn204KC9zdx2bcnls1EMt?=
+ =?us-ascii?Q?P5kif7X+iM0wURX1cVHRZikmX9IRxKq+jG4hHqQh5m+GUyTAUw2qDNXaW6f1?=
+ =?us-ascii?Q?B2ZUO2Ge8zjN9ohFk3zO554KmKT2nCijsgyeHmn9QhcoRaMzJkZjN1m3KF1A?=
+ =?us-ascii?Q?xIl3KNdgv8AL6vDvjzt9CcRP3DBDNDvzPN5ohpkpb3oOZoEJ/PmG1Vs2eVUq?=
+ =?us-ascii?Q?b0cTBIhzLWkA+VloOC36L6TlN3LMTccLtW9YNKIETeFOt/ZQhMdmAa+TiCzo?=
+ =?us-ascii?Q?aCy0bu+PhOBPk4yl/jWwpJTrBDvn3i2vTK0oD/FHAmZ9lN2lJcfHEc6kL/xY?=
+ =?us-ascii?Q?cNewEh5yVuar7f9+BwGtY2s176Ei4ODY58X0iqthVJcZRmaeR34t4B0L8Qmv?=
+ =?us-ascii?Q?kkHs9N4PH4xUn+650ntI/nmuqVtvBYBpBN/+PxRCUvtxY/JxIGHCrAsDJDwH?=
+ =?us-ascii?Q?TD25qm6f597/+yHvle5lE7fb43B3z0RNDv/ikT3uJck62NEMGgq59yGVllpI?=
+ =?us-ascii?Q?IObQC9R/1Tqrero6bQp96Fbrunr9E93xefsAFp2ZE0hjZ0F3q+I+UI3UOLBz?=
+ =?us-ascii?Q?2z8m978GD53mA3rrPajYsK52tFVISqDLW3vyyWnYJy6OnlBFpTDi6B6SBLZd?=
+ =?us-ascii?Q?tmay7XGpBFUaFfQbw3YFk2f/cmw00f40PcHoTQS8lVUKdJ5k+p7I1fQGOt6E?=
+ =?us-ascii?Q?cfbMSHcr4Gl7cUVNFe+LqN9tHSHg5cb5fKdWktkHBLBeSywLVNdx6epopSUJ?=
+ =?us-ascii?Q?O4HzC2FJvxicbtNiPbMgcBIzQs3wV1b/WwAOsbHyceXwvqGaDOUSgKcRzIMB?=
+ =?us-ascii?Q?PqBl9Nxj2ZMjuDjQtNwQc0eAmct2LSoYypVTDAHTSAnWwTidFDDZ7AW7htVB?=
+ =?us-ascii?Q?bVZBHDgMkMnB8HPLY9RNQoAELNF8W2mMU1ASsBQ9p709rLu46DvpiY8m0uXq?=
+ =?us-ascii?Q?kffQTYDlexnN+uil9+N2GbrrfHP0J+IpwN2NnMAy6DvCZMwk5D9pAEZwybSO?=
+ =?us-ascii?Q?9L69GwWz71Mmd5oqPoy9jVcpogtUiwk4NtioPLU8nXtL0VsngZfoGAyPpOSF?=
+ =?us-ascii?Q?ZQO8YFT8vA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d771fb2c-a55b-41c7-e601-08de9ac7d9b7
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8353.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 08:20:27.6143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fNW28cmItBx0ca+pYgaa+uKkaQTb4YLM5RTFOEtONAxZuvPzZ4O3Ipx9zUSOLJvMAP7/VXuWmaeXroPwifukEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10530
 
-On Wed, Apr 15, 2026 at 11:46:55AM +0800, Guoniu Zhou wrote:
-> The i.MX95 CSI-2 controller is nearly identical to i.MX93, with the
-> only difference being the use of IDI (Image Data Interface) instead
-> of IPI (Image Pixel Interface). The binding constraints are otherwise
-> the same.
+Some audio systems require specific DAPM widgets to remain powered
+during system suspend. Introduce a generic and reusable mechanism in
+the ASoC core to mark selected DAPM widgets as ignore_suspend.
 
-Nearly identical with some difference really, really suggests they are
-compatible. Express compatibility or explain why they are not compatible
-(difference between IDI and IPI unfortunately does not help me).
+The unified mechanism consists of two parts:
+1. Parse and store the name list of widgets to ignore suspend in
+struct snd_soc_card
 
-Best regards,
-Krzysztof
+The list of widgets can be provided either by the machine driver or
+parsed from Device Tree. Different machines have different routing and
+power requirements. Each machine can specify its own widgets to ignore
+suspend through DT property. It enables flexible policy without hard
+code. A new helper, snd_soc_of_parse_ignore_suspend_widgets() is added
+for this purpose.
+
+2. Apply ignore_suspend flags during snd_soc_bind_card()
+
+After all components have been probed and all DAPM widgets have been
+registered, snd_soc_bind_card() performs a unified lookup of the
+configured widget names across all DAPM contexts of the card and marks
+the matching widgets with ignore_suspend = 1.
+
+Switch to use core ignore-suspend-widgets support for imx-rpmsg driver.
+
+This v2 series is a rework of the previous "[PATCH] ASoC: imx-rpmsg:
+Fix ignore-suspend-widgets only applied to codec DAPM".
+Changes in v2:
+- Rework to use a unified core mechanism instead of machine driver
+specific code
+
+Chancel Liu (3):
+  ASoC: dapm: Fix widget lookup with prefixed names across DAPM contexts
+  ASoC: soc-core: Add core support for ignoring suspend on selected DAPM
+    widgets
+  ASoC: fsl: imx-rpmsg: Switch to core ignore-suspend-widgets support
+
+ include/sound/soc-dapm.h  |  1 +
+ include/sound/soc.h       |  5 +++++
+ sound/soc/fsl/imx-rpmsg.c | 26 ++++++++---------------
+ sound/soc/soc-core.c      | 43 +++++++++++++++++++++++++++++++++++++++
+ sound/soc/soc-dapm.c      | 43 ++++++++++++++++++++++++++++-----------
+ 5 files changed, 89 insertions(+), 29 deletions(-)
+
+--
+2.50.1
 
