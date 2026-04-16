@@ -1,474 +1,163 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013000.outbound.protection.outlook.com [40.107.159.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9813822541C
-	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 03:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776310003; cv=none; b=H2Z8HC2Z9bO+82l9On8m9iLkWw7VZW8zUV2WMX7B4K3Vv4W36aEHVaJ/RfUd1fVcWp1TYW0av1SARKzjAm3voRxx767bUvZjyLeH1BDgp88tqWKGstBy0/EBJyKlahmTBEtMCUSoJ/Dkz/WYHPi7iNbcVuRsI0R8/uIfhHLICRk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776310003; c=relaxed/simple;
-	bh=YeNLm5HD9pelPvBZyoqENV0LIXfXT18gRjN/gUVw054=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UwCDK42fM/Ap2S5kDGy9Y/yw155hUgN1kuP8CCMZsU/iM13EtAKdPTXcB1L75Xkql9wLqx+X1M3ptGt7q7lnmA6IN0Tf+pe9IEl1zHQtDPUX6pPE+03gKL/ZtCXnc9njJO6nXAN2Wh2/7HinqRDkkvXR+71LxwYPbT3sJ6b+qOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SWY9Qd3W; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iGwr9yB2; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DAD3793A5
+	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 05:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776319114; cv=fail; b=OCPPWWtpNumHy/XtBbXaBnTAW+KJ8amUxD2SijMWZhO4nk2m1ToYsTj9Chj7Tqmdcbxvk9OmbLH5JI7cztjWGWeUYDRKrQy+E9dnf77Gz66Rbo2z2f67g2A3y6NG4rIA9ZAT7V8qGM6cWyyYDiObU28caWCYDbS5v14z3USFJek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776319114; c=relaxed/simple;
+	bh=OIYAhIZWs/Nr3mKkQkUVPeFxJjDZUegw4VfXxH7MoQs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LiqS/a3QpGpXYJbpvNFq/fTpuFQa17cmAxCdMbjf0rGxqvnRFNecyo0cW+VvRspdEH67qwTQIoymt78xhJZGMy5DT+XFlmODlGXqNWAA/hZ0Vptu6eBYx/Mfe7WmjYqfmeIVqoM8OSAhhr2Yepm2aGot+V9NEuNxd8YaGc3oGVE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=L6eq8JtL; arc=fail smtp.client-ip=40.107.159.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SWY9Qd3W";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iGwr9yB2"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G1ELUv2834783
-	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 03:26:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vDK6pAlGwxYE897uZGp1sSM8FaPwo0OHKjiLMvDJlSM=; b=SWY9Qd3WKivoaF5z
-	JCNUWFn6lHYDHyOuTykCB5IdRbNsUrvJXHcbkMpoXZzEFaGmmiVh4/iNs5m2m3/d
-	1ctBxyEGpnQhAu31duNagl7MvxO6Dphq86jgT8s1bddtRVBYt5aiZvC0Q06xHb4f
-	pJ5mQ251/oFa31hOjocFi81oL7nTanhTsaxGMhiRvRj3+79HdoaaaOzK6DQpIlj8
-	DMKRTns25lEdApCluihx1mohx8vnRlScMBm04DII0VQ2demD5TuPnhQ0Qu4l9aQk
-	+r4A6uDr4avQHRyxxypoO1lgUgcJ9ZoXxMNexwA1OoF0Yg1Uo5d1Y4vVKNY0rEpu
-	3CT5jQ==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4djcsvj3fs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 03:26:40 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c769b25315eso9493740a12.2
-        for <imx@lists.linux.dev>; Wed, 15 Apr 2026 20:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776310000; x=1776914800; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vDK6pAlGwxYE897uZGp1sSM8FaPwo0OHKjiLMvDJlSM=;
-        b=iGwr9yB2ihYKFf/kuCoHWhjYbrDOQ2UGUDuPBWh66QLkr4426yfi2Kk+2reOAFuZxx
-         m2OPryWy/5BA6TXJRhcl7QgZKmBu5fLLjEN6FKeXwPV+9mRgCb06Gi4/5jzjjtH7x/R6
-         RbsrN9WTAMlQftvcdoG+7gW4BsMuZ1qduIftmG3tshkFFib+Jb/hasmj7uNkVuQejqOl
-         GjWVaPbZcYTEI7LmN/yeVaHVo0FcwtwJOAgE1s+3n6RmwjFlnPst7eWcsPIM3Z8c80nP
-         ZJpS4mJcjysDcldj3CW49cHg+p01VvpaJrWQh8yZGjxrwUmLtFM/Y/3t82y9AdLDAKLz
-         kvQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776310000; x=1776914800;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vDK6pAlGwxYE897uZGp1sSM8FaPwo0OHKjiLMvDJlSM=;
-        b=NL6tZfQ1c+aN7KxbhdzVD1AxTjmL5OIZyMYE9/A+ImqlLL54eDNZ361NcMOx0xm749
-         B4AAPGkHKUSjUqyocU5vAMmL/oQ2Tzpw5Dd5RVuHqIJYRSm5E794Z0EyMSNUECJy+vOm
-         2mB8MbFx1fboQzWusNXyWXgNwYczf7kb4CBxamqhuZTwWpPgFmKFQNHApuTYDAS1eLWB
-         oxXe3F+pjfTgK4TXQDA5D0SeEzIUUzdMvMhjWgL9tpRCMdN/ma0I6ltWFMTsY9laWHqf
-         U97hMKRZLHpXFLvHyT07m92kPc5UR6ZRQmCIoxDpl5JpSGkDUGNv+MwOnbfdAtYp1nXz
-         er2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8FjUPuLMBSENbLXOm9mZGXlJPlUj5GfKc7PqvG0cwSa/2zPqnhVeRFWVXDVpXScUHQRjk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyA1+05WNYHkapRy6GQolyFii+81p4tRZTshnV+wheuxryKoJu5
-	Ja/IVncfI3iZszkWS9+7jPLBUBOSKlwJqosv7ZCHJkhhOB5nDWNL0yKn6WXHGM0NERahypIfGat
-	xdxvq7uCopjH7c/JW5D8zovTo7jtfaMVC0ofQAAq3cVQWqkkbfKY+YEQ=
-X-Gm-Gg: AeBDieuvDRrZMRR/sckhIIa1rDeYSPFIK3X20PUpNDUbEEMGqIJeHeClui2fBzdvKgf
-	m4s1zM1k2mBpZNBJF+iuY9X1JYDlP68HMSpc0bOtwvrLS+6JjzWf1azVs7OaZ7YDtv6/Moq4W94
-	MXqbJL2z99uOj+5WSjimcn7ZHpwpWQPXdwOqafiYjVgkVmS3M0Wn6EozBomwIwvCgiv4HvvLlhv
-	uRj6hUBGz35CrCixSbQbRhIIr4tY2lDdDmqTYUZlcACsBSkasoVogcS3nyfkxy39pGhhD4px0rH
-	s/I84nVYgWcE/AJf1Ws7dkpjFvzsjiFC8gWg/5DtAaBDwyz+D1Vo+69PoIeE49FL0/4mgKgJoR5
-	K1ojdP2LAm8ONX5RA6X53c4rfEe/5Oxn16FyXXX2fhkSDsA2csoND5Y3y
-X-Received: by 2002:a05:6a00:3924:b0:82c:77cd:50e8 with SMTP id d2e1a72fcca58-82f0c30f593mr23470686b3a.27.1776309999746;
-        Wed, 15 Apr 2026 20:26:39 -0700 (PDT)
-X-Received: by 2002:a05:6a00:3924:b0:82c:77cd:50e8 with SMTP id d2e1a72fcca58-82f0c30f593mr23470629b3a.27.1776309999089;
-        Wed, 15 Apr 2026 20:26:39 -0700 (PDT)
-Received: from [10.219.57.109] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f6707b6b8sm4265094b3a.22.2026.04.15.20.26.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2026 20:26:38 -0700 (PDT)
-Message-ID: <555b2695-1feb-482b-aec2-d6f3f2b2ef0e@oss.qualcomm.com>
-Date: Thu, 16 Apr 2026 08:56:24 +0530
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="L6eq8JtL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cqN3Runj98hJNVpVeCTKWs8gad5JO6rLyqm78Zs8LxbYLKvU+PIbSF4dzfYbwwZCzoJ5ydRaI10UFojd/EHDUHNi+Zee69vwQXVSw0iQCCie82Wk09GUe4U4sFj2vevEwnhFKqJTm2CG51pSrvwlezSVjHRTo2a/f9PrYWJXs6vHr5iFB2/I3jzIW3nnJ0WLzVGSoG1UPYLa+pb4trAoHb1upAg5ZNBmir/s2/CPUh3PgRGO/IEkHxn8cftga7aSHo5SL/LyO73DzGitsx6hi/fnW2NI5vUqdN1BHT3w+L1WkAbFNcSxYAYnDAch1OBTw9XEn389ckp4+JuHArHQew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gVg2VUkN1zm/7PUJkWHvkn/nhtebsJZJjszckkhPq1A=;
+ b=Hq4vhsFNaDwB7Mc2Ylq9HL4XhiVRI1HaYD/hOjQ9PTaAo7CdpW7LM0KrpfEzvkUEP4UpHi89xDU2j0caOTI2AJSArnb+w2clUD+71Q+AorOmy33mKB6sJAymNk/lYZz1d2FKc/C/fUcFS4AYCFmot9sXqap25boHzREHo/kmr8aqNJ/OayC846kLEp3ljUPo/Vx9/p6AISoL9NLIAY3oNm406tUaoyY/yX+1OfjCsfGweH1wPBInuv8fRQdaYIaje/tTFBagat+9u9jUQ6W4USeM4J55jwjpCHAHeBFhXoLZxkWiILsbtiXs9YzVKL9vTfZZL2qqVbE9Ts4f+IlTvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gVg2VUkN1zm/7PUJkWHvkn/nhtebsJZJjszckkhPq1A=;
+ b=L6eq8JtLad8NIORjn3oeRnrSK3AYZKDn06tPKwC7uPpwRmFpdNYv8Hpzj7gkEzjU+ntEiWxBbl60/mxIupRlAOl6Zv21LkdOnjey8q5prDcY0nBGofq0DbKeJp5ipqy0iPSiLo0YHRIiekgmpQVqd5uvyNUOZ8sCcDQkEHCO9/MPe4dvv2PGNtqWljGtWTtGz5lJjYYrH3dmGWWg35Cu4AhsFHbexfcH1o7HaV5lW8CwuhUDma5w4LxnLNS5BklIwxmwcI8WCMyonzPUNMdcRpYMGcdbUvrsowSh3hKWFY0gWrcwKexrv7iHb46BpWSHsQJAvOGwcQ5PJkwDgouz5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by VI1PR04MB6925.eurprd04.prod.outlook.com (2603:10a6:803:135::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Thu, 16 Apr
+ 2026 05:58:28 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9769.046; Thu, 16 Apr 2026
+ 05:58:27 +0000
+Message-ID: <5e06e26f-7eab-4814-a075-f2e476af3180@oss.nxp.com>
+Date: Thu, 16 Apr 2026 09:01:39 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] pmdomain: imx: Make IMX8M/IMX9 BLK_CTRL tristate
+To: Zhipeng Wang <zhipeng.wang_1@nxp.com>, ulfh@kernel.org, Frank.Li@nxp.com,
+ s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, xuegang.liu@nxp.com, jindong.yue@nxp.com
+References: <20260416015605.3536244-1-zhipeng.wang_1@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260416015605.3536244-1-zhipeng.wang_1@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0053.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:93::6) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 3/3] of: Respect #{iommu,msi}-cells in maps
-To: Nipun Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal
- <nikhil.agarwal@amd.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Bjorn Helgaas
- <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-pci@vger.kernel.org, imx@lists.linux.dev,
-        xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org,
-        Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-References: <20260408-parse_iommu_cells-v13-0-fa921e92661b@oss.qualcomm.com>
- <20260408-parse_iommu_cells-v13-3-fa921e92661b@oss.qualcomm.com>
-Content-Language: en-US
-From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-In-Reply-To: <20260408-parse_iommu_cells-v13-3-fa921e92661b@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: vzXo68fgJBdefMjPHycvSO4z0YIS7zJP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAyOSBTYWx0ZWRfX/hX7n0gK8+wt
- hjICeyBv8TfwTe1y8EPV+kflbkd9NNQAhnnq6Uz3YNHfYULGFIxkW8rpR16mfQlgodYdMq51j3k
- KTG/PHC0vJIhC8M8QEWvmnCoI0TQZTGuazAQ7brlC2CsJpeODCyK+dqcr02Ob425Mf69LZulLRl
- 6g/Cjc5dXGAG/gfJldMR2DMxUJKv+6eVp9TzHldJmJqT6Zh2YndVnMweo1RGY5MON4q/Bj1hpME
- Lwv2Kygdv8PNZn2tfinDsPtp0kdqxOWQUpqY4n2Kkl4ZMFOvywQXhx3FMRKZnFGRIdSksK32KuS
- 1Q+iQAeydvL9TYXubD1mQT+4t4l2xsq8bOo9fPoTp4dbM5gt4wyFSWop4GpvZ4eUqyGy36DBHgK
- 4VaSLQUPts27JWuRBIGyRR+6DhRTsZ80Y5woEi0dGVCvpOHnQtldkXJQAf+O0NErX6iiGvsNN4J
- axljBRsFEFyMFpXCF7A==
-X-Authority-Analysis: v=2.4 cv=Iby3n2qa c=1 sm=1 tr=0 ts=69e056f0 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=OsyBWCJeBE2wmg0BnjgA:9 a=QEXdDO2ut3YA:10
- a=_Vgx9l1VpLgwpw_dHYaR:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-ORIG-GUID: vzXo68fgJBdefMjPHycvSO4z0YIS7zJP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 phishscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160029
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|VI1PR04MB6925:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98ef359c-050c-4c0e-fe33-08de9b7d2dcb
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	cGibRJUaKmtKaoWt8d6Sb1UEHpE0tGA2HPzLd2JkNqsbHgNj6Hd4bZwDlvr7MNqh763lWCZlGziSHaS82i/aTnLZ+zYRAIlqcRbuby+0hK0kJS8Bl77RUHuYpDesm3vJbntJb8r3LFasuIq5jWS8tA08YyQsFILV/aFATGc8AqhwpWdPlv7vvySndED2H1peUZQkrE8H7X9hZLkZnIpubHGnt392VMVo4WSSDqmdgJqGkSCrRu0JmLRfxWQdzUemy2MiOtCAv0vJiVIdAzXCmWUNJxTpMoU5zwBm88vUqEOV9/QpsXYJTwWnHfcZomz+atg/t/GFaLwMx7L4k9f5zkEq0ourG1to53IEF+3Z7al7QUsxF1HtSaFYjfDcy1LpBoc3A9l1zA+hY/jS9Pftx6yzR9bV4fpy8ZjD4yVqw3nWqlsIjJOsDcBJVz/z4sKgU2kr6gTQoZc1eYO5MDtUTn8IiyMUTz7FFXtVJaKSK/maIYA4EWdtjkKtqHQ3BdzDv8yXjJ4ep8xmyzI5iyYU5W+7DU/kxda3BCknSUJtliSI7Gpa0Yz8i92nGtDUmTyTzE7MzKMJBCiBud0yqNd9yEiVEc7N5IxM+I5qQk2147we50yFYqWsoIOADGaV71uBo3oZXnA8tGLb7T1ETqjvVmC9Vc21z20NEuF2Z1MEuEEhtuUyscxHn7ogM1sCrnV90gZPdD5DIwSyUX8sQzcfpWiySrHH10UvjGL3mXkmevY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bVpLbUxmYUxjMzFwS0JsVkkrdkF3RVJJc0xDd3N5TWlTUWxxSnh3SGJiRXc0?=
+ =?utf-8?B?cXJWbU5GbTcwMVYyVEFJOVVrUlpYOXdlT2VTV1VQNTlUUmdRbzFCWHFOVEpa?=
+ =?utf-8?B?VXRFak9tVm5oNXRmd2pYblhTNVBGTW9rN1hlTjhPRHoxQmJRSll0NzBrdkN1?=
+ =?utf-8?B?NDBhK0JqeW5MWi9lamxEcXdvekFZQ3NmeFNSSkZib0xMZHNwU0NON3BseDRm?=
+ =?utf-8?B?dXZ6VTJYZXZ2MDFXUm40Uk8yQ1BFTWhId21CQ2RCa3MwS0s5Q1lVNUYwNzZB?=
+ =?utf-8?B?TzdMOGs1YTlLb2txNHZobFlLY2d0RFpnYkJCaFFMMUo4YXI4WWRxK3ZTZG1x?=
+ =?utf-8?B?R0NaQXpxWVloR1lIZ2lZTEhmOFBQS0R5VDBWeHZDc25NWVdVd0w2T3pEQWxs?=
+ =?utf-8?B?S1FOTE56Z3Y2RnF4UFM5V09Td0ZDa0Y4Q2xKSXVONko3aFdaSjIzZ1dIaURr?=
+ =?utf-8?B?L2RCNEpxY0NwVG51TG5TVThqNElQaE1OYnQxS0NYQW4veG9tWVdlK0IyL3VW?=
+ =?utf-8?B?eFMyRjNSNFJEeisxVDVhbEJLMXB6cVNZR25ZdTFjN3RLZkdpL3VINmxLRzBu?=
+ =?utf-8?B?eW5jcC83R01EYjJ0c1F2aWFCSWxvNE5wQ2gySS93cTdWcXhBUERFU2tRVHhs?=
+ =?utf-8?B?bVpZa2NCZDBkeUg3WHJIdk1VOFdZQ2ZOK3NRaUpvU1QvUHFxMVMxRWFoajZN?=
+ =?utf-8?B?YXVLaVpBWEdXQm5Gekl4aWtRRG5uZkdVMG9CanJuL3Z6MHJOQW9Eb1B3SHlu?=
+ =?utf-8?B?NmZFQVdKdnVpWkUrVDIzdXZYQm9TUHorc3UvbVZXSjhXZ2RYWjlOUk1ZRGRE?=
+ =?utf-8?B?NG5obFRFK3BsR2lOU0tyM0F5ZHFlV2J6dlljdUJ4TzVpNW92eHpzRHFyMmhj?=
+ =?utf-8?B?RElnNlYzUFlxS01vcWQwTWlCbFF2TmxKR0NRbEpxMTJGbUJjai96TTVPQkN3?=
+ =?utf-8?B?MmFVNi9KVjFVQzRJaVYzTHZXSlcyWXRGOHQybm0zN2p0dW83a3hkOFlMNjBZ?=
+ =?utf-8?B?M0JxUjlLVkMyaTRHUnhVUDdMMFUzY25PckVoMHFaZ2k5N1RRNmJBOVNOQWxQ?=
+ =?utf-8?B?RDFrNERhSi9odGJNcTdSQitVYVVtK3IrZEw1dzFmajZDUzdiU0hVR0oxdHg4?=
+ =?utf-8?B?b1o5bHRVdDFuYURVdm03cFhzZHNlYXprTHRFclRWK1ZwMjJwaHlnNEl0ZndD?=
+ =?utf-8?B?M3FBZXlzNmxWSlVGcDdFT040MmNKVWtYdktaT0hKR2tRSlJyK2dqckR5TDl0?=
+ =?utf-8?B?b2lmVXNWc0F1K1RsckIxZ3JSOE9ZRUVUK0dHc1p1b3RYMUhoUDhrYXl1dk1p?=
+ =?utf-8?B?N2grbVZiSWxlbW9OeTRjOGs5dVI1bk9LNjJXeGE1bkRRelNHUW5kOVdpc0JZ?=
+ =?utf-8?B?NjJKNHBkeCthNUVaQ3Joc2JJdkdDUjdxeFZkTGFHRU1DeGR3NVdSS24vOUEy?=
+ =?utf-8?B?QnQwUGlCZEJzNjJuR0tEZFBHTEVXbmJrNGJQb0pCM2d4R0R0SkF6NlEyRjl5?=
+ =?utf-8?B?OGpDVU5UMGQwNW05OVdkaUoyVGpPUjlMdlJ1NGVQa29WZGswZVNpRENiNGg3?=
+ =?utf-8?B?ZTBtOXJRdW1MVjdxZXNqM2NnSmFrb01EdG56S1BCUGRLbE1PNmptbDFGS3hS?=
+ =?utf-8?B?cnFvSmhock9wZVFwWUdqa0tLMG5YRWRGKytKMkZhaG5KNmRDbzZzU3Zxekdl?=
+ =?utf-8?B?UXcwc012ZTFoMzhCdUlWZXJHd3psc2VRcm9mVXZrNUhMT2t5UGQ4VEQ4YWR4?=
+ =?utf-8?B?NzdKTlRJOUI5eEVzVjNjZjBtYndieHlVRjc2bDdoQklZMWkySUQ4OGx2aHZk?=
+ =?utf-8?B?d09HcFFBd3I3Y2QyVkIrLzE4NFVKOUtpemVLbExHa09JcXFOakJraU1ERmRO?=
+ =?utf-8?B?SzA1L2tmektHN3c4clVTbDlHTWVrMkc3eFdCUzkwN05WbUhpWTd4U29IVHlT?=
+ =?utf-8?B?WXlkSFprcmV2YTF1dWc0M3UzL0hyeGlzb2dVQ2tsdmdJVVA4MGRtZ0JUSzl6?=
+ =?utf-8?B?b3pjYWFkQkh4alRtUHNPa25sMlJlSVhNUEp5aEhmdlRjd1A5cVNpM0FndnY2?=
+ =?utf-8?B?bzA2ZWRwQnAxd2pTMGtHSXhSNVZqd21JTTFucXpwOGhIMUlXNWp6MWZhNEx6?=
+ =?utf-8?B?R2NkKzhYazdBVG9VQjFaTGE5L1dLVlVmWHZ6OVA3OVVmTGNlWUJJeFpDdktu?=
+ =?utf-8?B?eXQwL0FuUHJBeGdVQXlrYlRZcFhoZGFZalQ0ZEg1U2hJUHZFdkkvSUgwTVVQ?=
+ =?utf-8?B?b0Z2Rml4TkxRa1dzTzNOSmpQaFNEandxT1c0SGVIOXQ3d2dwUkZHbGVMZVBv?=
+ =?utf-8?B?VC9tSkxQdEpxWUk4QnNyZXdsOGtOaWVBWWw3b09Ta1BqSUlQdGJwUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98ef359c-050c-4c0e-fe33-08de9b7d2dcb
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 05:58:27.7484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vkuSVwJILT3zXyDpcQ86J1oykv7oYY8gnC2R7kT7cdznaflg1hmavQwpynOaKs6a0xR/EG6EK/0zw0U+8l8zCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6925
 
-
-
-On 4/8/2026 3:33 PM, Vijayanand Jitta wrote:
-> From: Robin Murphy <robin.murphy@arm.com>
-> 
-> So far our parsing of {iommu,msi}-map properties has always blindly
-> assumed that the output specifiers will always have exactly 1 cell.
-> This typically does happen to be the case, but is not actually enforced
-> (and the PCI msi-map binding even explicitly states support for 0 or 1
-> cells) - as a result we've now ended up with dodgy DTs out in the field
-> which depend on this behaviour to map a 1-cell specifier for a 2-cell
-> provider, despite that being bogus per the bindings themselves.
-> 
-> Since there is some potential use in being able to map at least single
-> input IDs to multi-cell output specifiers (and properly support 0-cell
-> outputs as well), add support for properly parsing and using the target
-> nodes' #cells values, albeit with the unfortunate complication of still
-> having to work around expectations of the old behaviour too.
-> 
-> Since there are multi-cell output specifiers, the callers of of_map_id()
-> may need to get the exact cell output value for further processing.
-> Update of_map_id() to set args_count in the output to reflect the actual
-> number of output specifier cells.
-> 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-> Signed-off-by: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
+On 4/16/26 04:56, Zhipeng Wang wrote:
+> Convert IMX8M_BLK_CTRL and IMX9_BLK_CTRL from bool to tristate
+> to allow building as loadable modules.
+>
+> Add prompt strings to make these options visible and configurable
+> in menuconfig, keeping them enabled by default on appropriate platforms.
+>
+> Also remove the IMX_GPCV2_PM_DOMAINS dependency from IMX9_BLK_CTRL.
+> This dependency was incorrect from the beginning because i.MX93 uses a
+> different power domain architecture compared to i.MX8M series:
+>
+> - i.MX8M uses GPCv2 (General Power Controller v2) for power domain
+>   management, hence IMX8M_BLK_CTRL correctly depends on it.
+>
+> - i.MX93 uses BLK_CTRL directly without GPCv2. The hardware doesn't
+>   have GPCv2 at all.
+>
+> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>
 > ---
->  drivers/of/base.c  | 157 +++++++++++++++++++++++++++++++++++++++++------------
->  include/linux/of.h |   6 +-
->  2 files changed, 125 insertions(+), 38 deletions(-)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index b3d002015192..2554e4f1a181 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2096,18 +2096,48 @@ int of_find_last_cache_level(unsigned int cpu)
->  	return cache_level;
->  }
->  
-> +/*
-> + * Some DTs have an iommu-map targeting a 2-cell IOMMU node while
-> + * specifying only 1 cell. Fortunately they all consist of value '1'
-> + * as the 2nd cell entry with the same target, so check for that pattern.
-> + *
-> + * Example:
-> + *	IOMMU node:
-> + *		#iommu-cells = <2>;
-> + *
-> + *	Device node:
-> + *		iommu-map = <0x0000 &smmu 0x0000 0x1>,
-> + *			    <0x0100 &smmu 0x0100 0x1>;
-> + */
-> +static bool of_check_bad_map(const __be32 *map, int len)
-> +{
-> +	__be32 phandle = map[1];
-> +
-> +	if (len % 4)
-> +		return false;
-> +	for (int i = 0; i < len; i += 4) {
-> +		if (map[i + 1] != phandle || map[i + 3] != cpu_to_be32(1))
-> +			return false;
-> +	}
-> +	return true;
-> +}
-> +
->  /**
->   * of_map_id - Translate an ID through a downstream mapping.
->   * @np: root complex device node.
->   * @id: device ID to map.
->   * @map_name: property name of the map to use.
-> + * @cells_name: property name of target specifier cells.
->   * @map_mask_name: optional property name of the mask to use.
->   * @filter_np: optional device node to filter matches by, or NULL to match any.
->   *	If non-NULL, only map entries targeting this node will be matched.
->   * @arg: pointer to a &struct of_phandle_args for the result. On success,
-> - *	@arg->args[0] will contain the translated ID. If a map entry was
-> - *	matched, @arg->np will be set to the target node with a reference
-> - *	held that the caller must release with of_node_put().
-> + *	@arg->args_count will be set to the number of output specifier cells
-> + *	as defined by @cells_name in the target node, and
-> + *	@arg->args[0..args_count-1] will contain the translated output
-> + *	specifier values. If a map entry was matched, @arg->np will be set
-> + *	to the target node with a reference held that the caller must release
-> + *	with of_node_put().
->   *
->   * Given a device ID, look up the appropriate implementation-defined
->   * platform ID and/or the target device which receives transactions on that
-> @@ -2116,17 +2146,19 @@ int of_find_last_cache_level(unsigned int cpu)
->   * Return: 0 on success or a standard error code on failure.
->   */
->  int of_map_id(const struct device_node *np, u32 id,
-> -	       const char *map_name, const char *map_mask_name,
-> +	       const char *map_name, const char *cells_name,
-> +	       const char *map_mask_name,
->  	       const struct device_node *filter_np, struct of_phandle_args *arg)
->  {
->  	u32 map_mask, masked_id;
-> -	int map_len;
-> +	int map_bytes, map_len, offset = 0;
-> +	bool bad_map = false;
->  	const __be32 *map = NULL;
->  
->  	if (!np || !map_name || !arg)
->  		return -EINVAL;
->  
-> -	map = of_get_property(np, map_name, &map_len);
-> +	map = of_get_property(np, map_name, &map_bytes);
->  	if (!map) {
->  		if (filter_np)
->  			return -ENODEV;
-> @@ -2136,11 +2168,9 @@ int of_map_id(const struct device_node *np, u32 id,
->  		return 0;
->  	}
->  
-> -	if (!map_len || map_len % (4 * sizeof(*map))) {
-> -		pr_err("%pOF: Error: Bad %s length: %d\n", np,
-> -			map_name, map_len);
-> -		return -EINVAL;
-> -	}
-> +	if (map_bytes % sizeof(*map))
-> +		goto err_map_len;
-> +	map_len = map_bytes / sizeof(*map);
->  
->  	/* The default is to select all bits. */
->  	map_mask = 0xffffffff;
-> @@ -2153,39 +2183,84 @@ int of_map_id(const struct device_node *np, u32 id,
->  		of_property_read_u32(np, map_mask_name, &map_mask);
->  
->  	masked_id = map_mask & id;
-> -	for ( ; map_len > 0; map_len -= 4 * sizeof(*map), map += 4) {
-> +
-> +	while (offset < map_len) {
->  		struct device_node *phandle_node;
-> -		u32 id_base = be32_to_cpup(map + 0);
-> -		u32 phandle = be32_to_cpup(map + 1);
-> -		u32 out_base = be32_to_cpup(map + 2);
-> -		u32 id_len = be32_to_cpup(map + 3);
-> +		u32 id_base, phandle, id_len, id_off, cells = 0;
-> +		const __be32 *out_base;
-> +
-> +		if (map_len - offset < 2)
-> +			goto err_map_len;
-> +
-> +		id_base = be32_to_cpup(map + offset);
->  
->  		if (id_base & ~map_mask) {
-> -			pr_err("%pOF: Invalid %s translation - %s-mask (0x%x) ignores id-base (0x%x)\n",
-> -				np, map_name, map_name,
-> -				map_mask, id_base);
-> +			pr_err("%pOF: Invalid %s translation - %s (0x%x) ignores id-base (0x%x)\n",
-> +			       np, map_name, map_mask_name, map_mask, id_base);
->  			return -EFAULT;
->  		}
->  
-> -		if (masked_id < id_base || masked_id >= id_base + id_len)
-> -			continue;
-> -
-> +		phandle = be32_to_cpup(map + offset + 1);
->  		phandle_node = of_find_node_by_phandle(phandle);
->  		if (!phandle_node)
->  			return -ENODEV;
->  
-> +		if (bad_map) {
-> +			cells = 1;
-> +		} else if (of_property_read_u32(phandle_node, cells_name, &cells)) {
-> +			pr_err("%pOF: missing %s property\n", phandle_node, cells_name);
-> +			of_node_put(phandle_node);
-> +			return -EINVAL;
-> +		}
-> +
-> +		if (map_len - offset < 3 + cells) {
-> +			of_node_put(phandle_node);
-> +			goto err_map_len;
-> +		}
-> +
-> +		if (offset == 0 && cells == 2) {
-> +			bad_map = of_check_bad_map(map, map_len);
-> +			if (bad_map) {
-> +				pr_warn_once("%pOF: %s mismatches target %s, assuming extra cell of 0\n",
-> +					     np, map_name, cells_name);
-> +				cells = 1;
-> +			}
-> +		}
-> +
-> +		out_base = map + offset + 2;
-> +		offset += 3 + cells;
-> +
-> +		id_len = be32_to_cpup(map + offset - 1);
-> +		if (id_len > 1 && cells > 1) {
-> +			/*
-> +			 * With 1 output cell we reasonably assume its value
-> +			 * has a linear relationship to the input; with more,
-> +			 * we'd need help from the provider to know what to do.
-> +			 */
-> +			pr_err("%pOF: Unsupported %s - cannot handle %d-ID range with %d-cell output specifier\n",
-> +			       np, map_name, id_len, cells);
-> +			of_node_put(phandle_node);
-> +			return -EINVAL;
-> +		}
-> +		id_off = masked_id - id_base;
-> +		if (masked_id < id_base || id_off >= id_len) {
-> +			of_node_put(phandle_node);
-> +			continue;
-> +		}
-> +
->  		if (filter_np && filter_np != phandle_node) {
->  			of_node_put(phandle_node);
->  			continue;
->  		}
->  
->  		arg->np = phandle_node;
-> -		arg->args[0] = masked_id - id_base + out_base;
-> -		arg->args_count = 1;
-> +		for (int i = 0; i < cells; i++)
-> +			arg->args[i] = id_off + be32_to_cpu(out_base[i]);
-> +		arg->args_count = cells;
->  
->  		pr_debug("%pOF: %s, using mask %08x, id-base: %08x, out-base: %08x, length: %08x, id: %08x -> %08x\n",
-> -			np, map_name, map_mask, id_base, out_base,
-> -			id_len, id, masked_id - id_base + out_base);
-> +			np, map_name, map_mask, id_base, be32_to_cpup(out_base),
-> +			id_len, id, id_off + be32_to_cpup(out_base));
->  		return 0;
->  	}
->  
-> @@ -2196,6 +2271,10 @@ int of_map_id(const struct device_node *np, u32 id,
->  	arg->args[0] = id;
->  	arg->args_count = 1;
->  	return 0;
-> +
-> +err_map_len:
-> +	pr_err("%pOF: Error: Bad %s length: %d\n", np, map_name, map_bytes);
-> +	return -EINVAL;
->  }
->  EXPORT_SYMBOL_GPL(of_map_id);
->  
-> @@ -2205,18 +2284,21 @@ EXPORT_SYMBOL_GPL(of_map_id);
->   * @id: Requester ID of the device (e.g. PCI RID/BDF or a platform
->   *      stream/device ID) used as the lookup key in the iommu-map table.
->   * @arg: pointer to a &struct of_phandle_args for the result. On success,
-> - *	@arg->args[0] contains the translated ID. If a map entry was matched,
-> - *	@arg->np holds a reference to the target node that the caller must
-> - *	release with of_node_put().
-> + *	@arg->args_count will be set to the number of output specifier cells
-> + *	and @arg->args[0..args_count-1] will contain the translated output
-> + *	specifier values. If a map entry was matched, @arg->np holds a
-> + *	reference to the target node that the caller must release with
-> + *	of_node_put().
->   *
-> - * Convenience wrapper around of_map_id() using "iommu-map" and "iommu-map-mask".
-> + * Convenience wrapper around of_map_id() using "iommu-map", "#iommu-cells",
-> + * and "iommu-map-mask".
->   *
->   * Return: 0 on success or a standard error code on failure.
->   */
->  int of_map_iommu_id(const struct device_node *np, u32 id,
->  		    struct of_phandle_args *arg)
->  {
-> -	return of_map_id(np, id, "iommu-map", "iommu-map-mask", NULL, arg);
-> +	return of_map_id(np, id, "iommu-map", "#iommu-cells", "iommu-map-mask", NULL, arg);
->  }
->  EXPORT_SYMBOL_GPL(of_map_iommu_id);
->  
-> @@ -2229,17 +2311,20 @@ EXPORT_SYMBOL_GPL(of_map_iommu_id);
->   *	to match any. If non-NULL, only map entries targeting this node will
->   *	be matched.
->   * @arg: pointer to a &struct of_phandle_args for the result. On success,
-> - *	@arg->args[0] contains the translated ID. If a map entry was matched,
-> - *	@arg->np holds a reference to the target node that the caller must
-> - *	release with of_node_put().
-> + *	@arg->args_count will be set to the number of output specifier cells
-> + *	and @arg->args[0..args_count-1] will contain the translated output
-> + *	specifier values. If a map entry was matched, @arg->np holds a
-> + *	reference to the target node that the caller must release with
-> + *	of_node_put().
->   *
-> - * Convenience wrapper around of_map_id() using "msi-map" and "msi-map-mask".
-> + * Convenience wrapper around of_map_id() using "msi-map", "#msi-cells",
-> + * and "msi-map-mask".
->   *
->   * Return: 0 on success or a standard error code on failure.
->   */
->  int of_map_msi_id(const struct device_node *np, u32 id,
->  		  const struct device_node *filter_np, struct of_phandle_args *arg)
->  {
-> -	return of_map_id(np, id, "msi-map", "msi-map-mask", filter_np, arg);
-> +	return of_map_id(np, id, "msi-map", "#msi-cells", "msi-map-mask", filter_np, arg);
->  }
->  EXPORT_SYMBOL_GPL(of_map_msi_id);
-> diff --git a/include/linux/of.h b/include/linux/of.h
-> index 8548cd9eb4f1..51ac8539f2c3 100644
-> --- a/include/linux/of.h
-> +++ b/include/linux/of.h
-> @@ -462,7 +462,8 @@ const char *of_prop_next_string(const struct property *prop, const char *cur);
->  bool of_console_check(const struct device_node *dn, char *name, int index);
->  
->  int of_map_id(const struct device_node *np, u32 id,
-> -	       const char *map_name, const char *map_mask_name,
-> +	       const char *map_name, const char *cells_name,
-> +	       const char *map_mask_name,
->  	       const struct device_node *filter_np, struct of_phandle_args *arg);
->  
->  int of_map_iommu_id(const struct device_node *np, u32 id,
-> @@ -934,7 +935,8 @@ static inline void of_property_clear_flag(struct property *p, unsigned long flag
->  }
->  
->  static inline int of_map_id(const struct device_node *np, u32 id,
-> -			     const char *map_name, const char *map_mask_name,
-> +			     const char *map_name, const char *cells_name,
-> +			     const char *map_mask_name,
->  			     const struct device_node *filter_np,
->  			     struct of_phandle_args *arg)
->  {
-> 
 
-Gentle ping.
+Please always add a change log here to help reviewers.
 
-Thanks,
-Vijay
+Change since v2:
+
+* fixed typo reported by Frank
+
+
