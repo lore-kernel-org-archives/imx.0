@@ -1,108 +1,88 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD77E391E65
-	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 08:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797EE39A077;
+	Thu, 16 Apr 2026 09:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776328385; cv=none; b=te3+MtYDMiO32KhTzZYYPTOybaVFwowfLRRw3YnGUWKyZRfkWbbRFJfjCYuE2EHTVxnh4dFSGo5qahrvQ8+kQJWQlBaY4TOjcpDPxrOR7Y4rwzltX42BhkSesGMRqZrQbIcfaHI5KlOlJXozm+3TzTxuWXkJVPOqZlT+xzR45Gc=
+	t=1776331250; cv=none; b=ssWd8+57cObq4D8CkazpPUrobuOB0NqNPVWGPh/e0lMPaxPJb6XqYVCKXtFYw+QlDDIRiOF7ecOT7UgaOFU+A7eryZk+7fl3hqIT3TyRJeO3kcEXo2ETfpZOgaBpHVI9JMtD9kyIWFvXyr/aqcM3aR5pvTbcOoUrMYXokjMsdro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776328385; c=relaxed/simple;
-	bh=A1fxQVZSsEx64SGWOmsIpHCEl3H8zC+buug9pDZnkOk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xs3p76B9/p6GUumjHBvzqQ3wKI92IShWRMiaFsY9KWAFTHKoAbF3CfcZxKq8AGM9poaA8hn0h86t/zvVYBb4x71ZWCjgMwd9t29ISpUhlIDvsYD8cHTWoQ1S7DnRAl8KyqwUw8gWMjrwD/fAmLLfQxk1fywsLo//Lm2t9g1xOSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSNxQwRA; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776331250; c=relaxed/simple;
+	bh=udiYC/LNkNflXeo6pYjFnMVROnJd6qFnN2r99vs66JI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NP/vCtYLX+bXawnCnTYJqNUNo83pZ0miWwuuvb8woAIc+RFo+yJJUcR3DtLGHZP4PbQy4vzsqGPf4VAlzK1ebcVHR0rbPK8wQHMvgq80UbCkh9gBazzhMSppxG4S+sGkZkyBl1PvKsBLrFDne+AJqDT2ASvvatng+0Oi4E9gZMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPurLt4k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSNxQwRA"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b8efed61so4026415e9.1
-        for <imx@lists.linux.dev>; Thu, 16 Apr 2026 01:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776328382; x=1776933182; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A8KwIRBAxcL/Nko4wwgY9WARhqxl2Sh933ZVC+mUoA4=;
-        b=JSNxQwRAx/l/fAgcoN7HzZentpAcFODvwOpqwlTAFhtbcLN1ra90XWjiML/J27W6xG
-         NgnlrlnXgSExyZSEkSeJ0TrprcdjWauiuRtapYchcolShmC/9pURBlUShymRKf++u/E3
-         VF9vXcrfx/gYafVXDx5zmCOsqDbH1aRSlYztWoE4AJ6W7Gz2s0lUIfY2wPQpcRddHxC/
-         19FOooayKVKZAk1tZkTPylUwZA6jiCxpco4IuDqDyyeUHKGTQ55LxTnTNd8gbScINdSm
-         2dOHYekGJlxDFr63NrOgJV72weGkL8WJN2AGK4fKbBEpBgrIgIVxqv/kmnNhJcTnKPXr
-         oVyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776328382; x=1776933182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A8KwIRBAxcL/Nko4wwgY9WARhqxl2Sh933ZVC+mUoA4=;
-        b=cYZ6cBJ9ouaGzGzH4WYLhn4zhM4ZtNbHpwEVJOVQHRy9xxv3bloAE/XMO7WAyf21lw
-         jNDVO48MY6EAXp6B80fSfSH6xhrp6mdPq9wzfSxFncZPqDXY36Jd4TBAacDuqW/eUoWu
-         zgfamMGhQPnNdejAS/uSj2wPIvpNSwbwvnxrPeMI16KypJYIaj5wq08rMspHruGZq9sj
-         s7uinCIol/lSgJlJpN2AxsY7vEojX77MXYJwHAW5+5FcKcFcGLdzN5sNlcOlmI78p7kH
-         UOWxl7y31WTBlVXVXMdxpWxtglEcr7xcs3SOwRpPt5nBE6eGmwqdvAaax+PjpX7FKiOZ
-         BMKw==
-X-Forwarded-Encrypted: i=1; AFNElJ+SyJ720EO5vrPb5DRZT4U9EIVLSAzsn2vhGOgeelaRiqKsT9Zl7GH5qNR5rvOvb3N5MOs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzweYW2eeedqYRor11coMTwpZYyjCzoGp5Jd29dVmluVaju0+fj
-	0oStBQgFrKXjeoU9f1cqHRYBFV9d8kabuUzgIusUfYP6ovaZvE7qATlD
-X-Gm-Gg: AeBDievR/6VHjx78J25karK0uXzLj9maUjkPtJQCA5KGZZ+yTCoRJTXDXMnvX/LDLY0
-	mlYhUXRQUjFd+WUD59taY0lLK1Bh9w5glkTSvlimGvYQp60q/rYmKTrnP/W5UjbFPDWrjt358qw
-	CB1pJwQ4xBteLXQsa8vMpOmo75F0yQzYSjkE/49WndaNgErGceh0dIPj6tEzYmn1BFCDh4EYlJd
-	aLM6RHevlXHS1XBR+AHJxBbHGA+Fd5pmy0EK7Z2u47YYMG2nQTsnVxBcr7ioQ3Yt5OEerv7VsZ+
-	YqxqeZGCOUQk3YKQOi9SP0jX5a/EFgowgNT/hm5zS3I0S8AYZXDFaYAqHEhVAeE86jnJAbt9gFO
-	XJQKkP/PTzR/kZOP5y5pgVVOSl6ZVhBgCIELrLi1JU87fXCe+KxOc0o1cfQqmJ0HwT0ceISKoZa
-	oZjZZ3aKz7/S8fZk+uThJlxuZ4MNuzNA==
-X-Received: by 2002:a05:600c:1549:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-488f4823c3dmr34362705e9.13.1776328382058;
-        Thu, 16 Apr 2026 01:33:02 -0700 (PDT)
-Received: from fedora-dev ([46.10.223.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5854097sm41107735e9.12.2026.04.16.01.33.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 01:33:01 -0700 (PDT)
-From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>
-Subject: [PATCH] serial: mxs-auart: Compare the return value of gpiod_get_direction against GPIO_LINE_DIRECTION_IN
-Date: Thu, 16 Apr 2026 11:32:54 +0300
-Message-ID: <20260416083254.1798-1-zlatistiv@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPurLt4k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2061CC2BCB3;
+	Thu, 16 Apr 2026 09:20:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776331249;
+	bh=udiYC/LNkNflXeo6pYjFnMVROnJd6qFnN2r99vs66JI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RPurLt4kMWDBdtJqM+YZmdrjRupEFV9UMjmm8elShYTKqaiYBb0mEIqgRRR6fuJSC
+	 cQwGuX0kkh9NVTdVLIgm7+x7lTfqbEVWvvZuMqQZcfflcM+Dy79/rxFYTCIrrG4LQH
+	 Vb1AsRQ4AGmnZtXmiB6Qf/lMRjHMnpxTKshxO65F2tm5iK7bFhSF0wA8bhxgr1BJzT
+	 tMIckRTNvDM25REHN66ZZsUSYawarL5vcWCPrch6NnyZwEuhW/MtaJAbKVvOyy4QrR
+	 ePIbrl4a5nH+IzUcX0PqTDOytSfLyRnBHgB47dqWjYDc8f9fMHe+e7WSH9DRbaw7f8
+	 ueBLNo+RRRgqg==
+Date: Thu, 16 Apr 2026 11:20:47 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Antoine Bouyer <antoine.bouyer@nxp.com>
+Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com, 
+	daniel.baluta@nxp.com, peng.fan@nxp.com, frank.li@nxp.com, 
+	jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com, mchehab@kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	michael.riesch@collabora.com, anthony.mcgivern@arm.com, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	ai.luthra@ideasonboard.com, paul.elder@ideasonboard.com
+Subject: Re: [PATCH v1 00/11] media: Add iMX95 neoisp driver
+Message-ID: <20260416-olivine-cuttlefish-from-tartarus-ad3df2@quoll>
+References: <20260413160331.2611829-1-antoine.bouyer@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260413160331.2611829-1-antoine.bouyer@nxp.com>
 
-The GPIO_LINE_DIRECTION_* definitions have just recently been exposed to
-gpio consumers.h by breaking them out in a separate defs.h file.
+On Mon, Apr 13, 2026 at 06:03:20PM +0200, Antoine Bouyer wrote:
+> Hello
+> 
+> This patch series introduces the NXP Neo Image Signal Processor (ISP)
+> driver, used in the NXP i.MX95 SoC and future devices in the i.MX9 family.
+> The series also includes updates to the generic v4l2-isp interface to
+> support extended statistics required by the Neo ISP.
+> 
+> The Neo ISP processes one or more camera streams, converting RAW formats
+> into YUV or RGB outputs. Its architecture is largely influenced by the
+> PISP driver. To limit the number of v4l2 devices, the driver supports only
+> one context, with three sink pads (main input, second input for HDR, and
+> parameter buffers) and three source pads (RGB output, IR output, and
+> statistics metadata).
+> 
+> The driver supports the generic extensible v4l2-isp framework for
+> parameters, similar to rkisp1 and mali-c55, and applies the same approach
+> to statistics buffers. The generic v4l2-isp framework is modified to
+> factorize structure definitions and versioning, so that both parameters
+> and statistics buffers share the same mechanisms.
 
-Use this to validate the gpio direction instead of the hard-coded literal.
+That's a v2, not v1.
 
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
----
- drivers/tty/serial/mxs-auart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Does this work:
+b4 diff 20260413160331.2611829-1-antoine.bouyer@nxp.com
 
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-index cc65c9fb6446..6c6df4d5c21f 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1519,7 +1519,7 @@ static int mxs_auart_init_gpios(struct mxs_auart_port *s, struct device *dev)
- 
- 	for (i = 0; i < UART_GPIO_MAX; i++) {
- 		gpiod = mctrl_gpio_to_gpiod(s->gpios, i);
--		if (gpiod && (gpiod_get_direction(gpiod) == 1))
-+		if (gpiod && (gpiod_get_direction(gpiod) == GPIO_LINE_DIRECTION_IN))
- 			s->gpio_irq[i] = gpiod_to_irq(gpiod);
- 		else
- 			s->gpio_irq[i] = -EINVAL;
--- 
-2.53.0
+? No.
+
+Should it work? Yes.
+
+Also, implement previous feedback - I see no changelog, so I assume you
+just ignored everything. Judging by build process errors, it's even
+worse.
+
+Best regards,
+Krzysztof
 
