@@ -1,227 +1,66 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C9839448B
-	for <imx@lists.linux.dev>; Thu, 16 Apr 2026 13:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776344691; cv=pass; b=BguxchQ5s8W5U8ZOzcrEBejNQ81QfldzEgl9AOYRg9lFm7niY5H0PeNRxZ2o6mm8MgPwIt2RQnOoE/9szDoNiVuMKpe++DJD0sX50EfgQJEtVBICkv44si4yvUcTrsSFP478awUzf7nFhfB75GlISBVKOo6Ij5L16TfqB5pG9lg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776344691; c=relaxed/simple;
-	bh=6HDV9w6rUHdoh6/AommnBFvsyzCig67fdj4T+Ra/Nn4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JCFIVZ+8FFv2VUEIP1gWJXTozreYxrlCklckBKwYgE0/rsA1H0BMOO+aEXp+d4PAVB7adOP97Q8B2VjUKWRt0AXDKwO9LAgtEPFKYf1VDxDqs6pVLwfOc9IQM9WnE5R62qA0Sa7O36NOJnh6NDmZh4RFMIG5OuYn/laEsxLDoY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EqyEYS7d; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591B8223702;
+	Thu, 16 Apr 2026 20:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776371947; cv=none; b=Z8uQ3JUCImBzs3R8jJiktZAwZ1Xh8CAaueIOOG3/C3FAd4/YANcFbpih5/TdgNWvs46PtGb4VSq6Nyxe/qhAzRVILedSwmjade4Da7hnTLUn97AyL51YSlD0KTvBL78i03Wj2SQ2btzeubugKyyIb2UWLNX9TJhXwYe++58sVgM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776371947; c=relaxed/simple;
+	bh=RhBffrmsMOEQ9U00Vb6PjZXRgwm+dO9ZID94mEWA0Ak=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Kp7leOS5DE6VbFlZeXWD+3UXRMb8AfIpjaSWvrOzlfFDRtA2MjFBhZOIu00komA6UjFqdJRf7fP76yXOX/YQfRJDTghvRMKat+A1blXHsm40gQ/jh/HZBJ4qmU43l+acBEz5pR5xVP9GHsAh4+lkP0G/DzF3uWeQsBYPaPD7/yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIC+uZOP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EqyEYS7d"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b23fcf90b2so75667965ad.3
-        for <imx@lists.linux.dev>; Thu, 16 Apr 2026 06:04:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776344689; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EvNqKstzOyv7P7Y4hdBLhHIadNLBSYRQHwc1VAY1/jZ6nWAByJ5CdZ39ibdVFL+D08
-         ZQl01/l7CcxY26Cq7DP7nuVVwLHTq/qRt3Hnjijd2uWZE0r766vmX69HsKdpRX3jQ34Y
-         qi+LJ//ecUHYZLC15ig1+kt/SAhxsTjNHTkajOpyRRD3SMS5jcsrZmtTtmMmYFxGIu9e
-         WuQHFb0rpcvOwpzoNg7fVV7mWP2f99A2QeVw7VZ9z10ozhmJGR3EDfrF5Banc4Dpvl0B
-         tMeW+gwMDO0CWRVeO2zBImsWB6fbaEMCr2fH8fwyQ9ikt2FDdWP2fOKnQrGkOzis6LW5
-         u+Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9keKW5p4++WsVuxHmBqHxADE1ZcTw3Q0sJGd/F983YY=;
-        fh=sVEiZeDPYYgO2gu6uC/psT+jgp4exo5Hewqw+LzFYAM=;
-        b=Muaq7/Ce21gfe89JUOugdGjj8kSZPaowLwTzJI9vnOvjYvrTr+xGT0H6zxsa+r3MYX
-         /YMAdvNYO0wtu2aUjlTabrd6Zh/Ulv5/qUadIPEHMiybSyznzEuk/2k0YxnSkZ/6Ef6u
-         Q6JqCURPyRUNtcrRQONNLQAeSptIjEUEt4KA9IpQaSNz9slsII5PFT1BC8bgBZkA6S0k
-         PJBsRx+09sF0F4Ac2bto89Sbq8nGA7H/c0LH00j8qx7d1fEWDkrn4eXswXQd/KIu2Tuf
-         G2eJRtI7eD7k63hX3S9IXKzZH2TLrDjKFgW0PNDzAzijnv3VljuF4C2qcnyEKFrgOezi
-         mZcg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776344689; x=1776949489; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9keKW5p4++WsVuxHmBqHxADE1ZcTw3Q0sJGd/F983YY=;
-        b=EqyEYS7duh810LyFmKMI747IIVsjeZn9cepZuV/YCucjwzuJbJHORu8w6qTi4h0Bqj
-         fYfFaNQR5ccFKwCqt/g9JDNaL7t2weL1+usCz8NSFR9/Ho1rVCWPa71h5gYXVvHkZF0H
-         JwrfqRnk4z8i8ZAKjCtneEFCD7O47MGAW2H54UKmGOeRTdG8edeeyMnplbEfngn2rRtx
-         vuAYkpYFrfmL4PWXYsdW8ei7haWIPM85CjEGtIQQ/osYliVQbHgVn2XaLxTPaPbEQwJg
-         J3jFnmPSImD82VpPDWLKKQrD6UjQ4bNaGY/NVoCSI8DBkyb3HXCRMq7Xmtew9uiau/vM
-         sgog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776344689; x=1776949489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9keKW5p4++WsVuxHmBqHxADE1ZcTw3Q0sJGd/F983YY=;
-        b=A9rufhynxItuxFcc6eqc5nUI3ZKQOg6wCQi6NYTJQyZ055j3/EYb42LmHihF+kRVWn
-         51mJYMcmLIiHWWwH1/D5hRXxWh1gxV4EZ4OJxGbGxit9GGllug6lq+jhWsW7L4jAZa5r
-         hxNLTeHP6gPPF6foVrN1ynG7w5jZF8W/8KTfydIuzpdj5yYRYzDv8xIXbhVFoOFqhICo
-         PkpF+2hAVq5fE+gbA8ARZWlyNOeP8JoT/l8WTt48cMRqKzm6UWeTEBTV3h8/bMbh/BEi
-         TbsA57fOeHSiBfh7c3uC+NqXJ+LZ/UaCBDca89kgJUtxDSHKVcQlea2i0W7spcVzgAoU
-         2djw==
-X-Forwarded-Encrypted: i=1; AFNElJ+HTQE2Ccp1uVypZ9jlz1DS9h1Ehlr6azahjm76fl8n7xfst7xvbzMJk5aknM/N1WcxDOI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YylBpczv3l+ODTjQ7UqQ14VSmYYXuPRtap943Ygm1H2UGhuiRXq
-	Qv8Zwrul/ZsGGfFR044253GyJrO/boeZ+PSd0PfEOC+02+ILM8ksJzf/xtIJFtIj/87zLLLRQse
-	f6uQUoE6p0Ku1UsatrPEMVvXE48XIqNI=
-X-Gm-Gg: AeBDieva7UwFphyiCmwS0c6GN9LcxbhmDNiRi+e2oQSUMUmJQLWU/64dvi1XGT2rRGy
-	kaMqKHVQWI/gRrQiPkMsJzfye1xsllsZtaO7CywJ7Fq3voTNOXSS2QGlYmLYzotQl0gtIim5GIo
-	uHQi3ZhRXMe0KxW0mxgUGpxBogBoKU9lnE7HZzVtJ6mXhsnw5oxWlFvGkAhOcC0p3GryliGmz9v
-	2/m1DNoZEy01AsMIR2rYgM0RRRdYN6nbVoRx4uiOXw6Di/uHZR5Ub9EyZ+eL3JW9HDbje+6zSFp
-	Kt+E9LsCXhTx+ZSMHZj6NS1e9W+KYu5v6KBZ8RDYjlChCLqdNZsJb90yWZRCB6sz1qG7wus22dQ
-	=
-X-Received: by 2002:a17:902:d507:b0:2b4:5cd0:b6c3 with SMTP id
- d9443c01a7336-2b45cd0bb63mr212259795ad.29.1776344688850; Thu, 16 Apr 2026
- 06:04:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIC+uZOP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC9FC2BCAF;
+	Thu, 16 Apr 2026 20:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776371946;
+	bh=RhBffrmsMOEQ9U00Vb6PjZXRgwm+dO9ZID94mEWA0Ak=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=NIC+uZOPOTFu7mybYkK3oTnc3bdL2r8txodTtcrLDkhApF+K+rfsBdgJQ6aSWThkY
+	 JqpOvSaL0mArNGzN2M0iMSmFbee7mQNnEvqfAqWTLv6U1KEfdTbwejpFRsj+fVtIsb
+	 wSB1W7m+2Y7VxZfP8etFbgvKsjrTIkLkEtJ5SYXL4uJdRKyzpjQ/ujP14rk/WfLYuM
+	 fBLieuO+kfgLbJeeCbzU2S7ImUhAdGLeQU5oXRt9tS31b98FJutEdKNSmOLoQdXJtR
+	 5Yq1GPtrt6yU21YRfIkHj1q/eLrGVHyqMdgbL0cy86aAHatdAKBahoPgjxliq8Dlw2
+	 my5ITqYYZj0BQ==
+Date: Thu, 16 Apr 2026 15:39:05 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, bhelgaas@google.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V13 02/12] PCI: host-generic: Add common helpers for
+ parsing Root Port properties
+Message-ID: <20260416203905.GA29913@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260415-imx-v2-0-aeacff9e72b2@gmail.com> <20260415-imx-v2-1-aeacff9e72b2@gmail.com>
-In-Reply-To: <20260415-imx-v2-1-aeacff9e72b2@gmail.com>
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Thu, 16 Apr 2026 21:04:38 +0800
-X-Gm-Features: AQROBzAHfswAILDPJrZ03lSCXQzT-HPAwyhO5aKUzw0OdIQTV7XQ9Ww0qLogIkk
-Message-ID: <CAN4SLj3rH1q-jd6ccdo2qVNuNUoqfpsiS0KXJ3b=b7m_bh2QBw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] thermal/drivers/imx: Fix thermal zone leak on
- probe error path
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416111422.183860-3-sherry.sun@nxp.com>
 
-On Wed, Apr 15, 2026 at 9:10=E2=80=AFPM Felix Gu <ustc.gu@gmail.com> wrote:
->
-> If pm_runtime_resume_and_get() fails after the thermal zone has been
-> registered, the probe error path cleans up runtime PM but skips
-> thermal_zone_device_unregister(), leaking the thermal zone device.
->
-> Switch to use devm_thermal_of_zone_register() to fix the problem.
->
-> Fixes: 4cf2ddf16e17 ("thermal/drivers/imx: Implement runtime PM support")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> ---
->  drivers/thermal/imx_thermal.c | 35 +++++++++++++++++++----------------
->  1 file changed, 19 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.=
-c
-> index 38c993d1bcb3..3729c3eac748 100644
-> --- a/drivers/thermal/imx_thermal.c
-> +++ b/drivers/thermal/imx_thermal.c
-> @@ -216,6 +216,20 @@ struct imx_thermal_data {
->         const char *temp_grade;
->  };
->
-> +static int imx_thermal_sync_zone_trip(struct thermal_trip *trip, void *a=
-rg)
-> +{
-> +       struct imx_thermal_data *data =3D arg;
-> +       int temp;
-> +
-> +       if (trip->type !=3D THERMAL_TRIP_PASSIVE && trip->type !=3D THERM=
-AL_TRIP_CRITICAL)
-> +               return 0;
-> +
-> +       temp =3D trips[trip->type].temperature;
-> +       thermal_zone_set_trip_temp(data->tz, trip, temp);
-> +
-> +       return 0;
-> +}
-> +
->  static void imx_set_panic_temp(struct imx_thermal_data *data,
->                                int panic_temp)
->  {
-> @@ -679,13 +693,8 @@ static int imx_thermal_probe(struct platform_device =
-*pdev)
->                 goto legacy_cleanup;
->         }
->
-> -       data->tz =3D thermal_zone_device_register_with_trips("imx_thermal=
-_zone",
-> -                                                          trips,
-> -                                                          ARRAY_SIZE(tri=
-ps),
-> -                                                          data,
-> -                                                          &imx_tz_ops, N=
-ULL,
-> -                                                          IMX_PASSIVE_DE=
-LAY,
-> -                                                          IMX_POLLING_DE=
-LAY);
-> +       data->irq_enabled =3D true;
-> +       data->tz =3D devm_thermal_of_zone_register(dev, 0, data, &imx_tz_=
-ops);
->         if (IS_ERR(data->tz)) {
->                 ret =3D PTR_ERR(data->tz);
->                 dev_err(dev, "failed to register thermal zone device %d\n=
-",
-> @@ -693,6 +702,8 @@ static int imx_thermal_probe(struct platform_device *=
-pdev)
->                 goto clk_disable;
->         }
->
-> +       thermal_zone_for_each_trip(data->tz, imx_thermal_sync_zone_trip, =
-data);
-> +
->         dev_info(dev, "%s CPU temperature grade - max:%dC"
->                  " critical:%dC passive:%dC\n", data->temp_grade,
->                  data->temp_max / 1000, trips[IMX_TRIP_CRITICAL].temperat=
-ure / 1000,
-> @@ -724,25 +735,18 @@ static int imx_thermal_probe(struct platform_device=
- *pdev)
->         if (ret < 0)
->                 goto disable_runtime_pm;
->
-> -       data->irq_enabled =3D true;
-> -       ret =3D thermal_zone_device_enable(data->tz);
-> -       if (ret)
-> -               goto thermal_zone_unregister;
-> -
->         ret =3D devm_request_threaded_irq(dev, data->irq,
->                         imx_thermal_alarm_irq, imx_thermal_alarm_irq_thre=
-ad,
->                         0, "imx_thermal", data);
->         if (ret < 0) {
->                 dev_err(dev, "failed to request alarm irq: %d\n", ret);
-> -               goto thermal_zone_unregister;
-> +               goto disable_runtime_pm;
->         }
->
->         pm_runtime_put(data->dev);
->
->         return 0;
->
-> -thermal_zone_unregister:
-> -       thermal_zone_device_unregister(data->tz);
->  disable_runtime_pm:
->         pm_runtime_put_noidle(data->dev);
->         pm_runtime_disable(data->dev);
-> @@ -761,7 +765,6 @@ static void imx_thermal_remove(struct platform_device=
- *pdev)
->         pm_runtime_put_noidle(data->dev);
->         pm_runtime_disable(data->dev);
->
-> -       thermal_zone_device_unregister(data->tz);
->         imx_thermal_unregister_legacy_cooling(data);
->  }
->
->
-> --
-> 2.43.0
->
+On Thu, Apr 16, 2026 at 07:14:12PM +0800, Sherry Sun wrote:
+> Introduce generic helper functions to parse Root Port device tree nodes
+> and extract common properties like reset GPIOs. This allows multiple
+> PCI host controller drivers to share the same parsing logic.
+> 
+> Define struct pci_host_port to hold common Root Port properties
+> (currently only reset GPIO descriptor) and add
+> pci_host_common_parse_ports() to parse Root Port nodes from device tree.
 
-Hi all,
-This patch has a problem, I will fix it and send v3.
-
-Best regards,
-Felix
+Are the Root Port and the RC the only possible places for 'reset' GPIO
+descriptions in DT?  I think PERST# routing is outside the PCIe spec,
+so it seems like a system could provide a PERST# GPIO routed to any
+Switch Upstream Port or Endpoint (I assume a PERST# connected to a
+switch would apply to both the upstream port and the downstream
+ports).
