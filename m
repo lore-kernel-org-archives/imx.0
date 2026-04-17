@@ -1,162 +1,85 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1763191BD;
-	Thu, 16 Apr 2026 22:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5BD2F5A12;
+	Fri, 17 Apr 2026 02:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776379490; cv=none; b=GkidRFl8P86XyVIlmk4tMsBAFFF/PYGdlsZQIk6XYsjDDIzudAh0fqNLX9nnK2p955SgTfoT4mn8hVdmuoyBOYV0BZnADGZFCfaZxQhmuRpra3OJiiIbdLgIY4DpCiSmFYclKnbFEFukSaB9PNmcZQCL9HqsKiO3UIFSa/5IW5E=
+	t=1776393651; cv=none; b=f8KwL9iMoLImYYMc7XbTSZXS9N2CS8MQWjv2/JOYsuU3xe0kkYw9W0pHBxJdej4OrdJ8bUGZG8M03AK25Z3UOes4sn4cavpFqsnxsCdF2yHFZ3mPUgPUUnFvAV/oncFTZSXN+iqgG7mEs3OcO7J3mxXaDLJVu+JjnqwfPn3fLsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776379490; c=relaxed/simple;
-	bh=+0t4SYHquyA3oakfRA2GOKSWPJ7dOq9Grf4Lkkoe4mk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jhFjKMrJC/+0vsXU/co0/qkHexcr5Bu1WsLu6Iv5/68xz+sV+B00ggwEQxigxV1GMyGNwDcJqr/goNCoalx4zbNltIW3Go3UU0J8spJ1R+Pujje1JyFFvrCFL1jssWq86KLE7OhkO9K1qql2j7OCRqu8Wdp3x0ak77DHZb3bmF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lBpjrR8t; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1776393651; c=relaxed/simple;
+	bh=RE8pXUNFnXrfp8k86oykmMdq+NuDocEHXqwp95teTlA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=AbJ0V7JK257jGqOmnuWUlc7dAf7PHNdPZCXSCKCTK3nqjiuiT4YOrL4yHSxcL+N+HJKTQbuPObrJAqUU3EQNj1LH52kpkhS1gjTLFPA907k8ZdT63ogfC4EAPHQqcj+82f8mVuFFuR73xt3jMm1mcRPTAHg0NVVSMZKmYOqBG48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nziXgXAE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lBpjrR8t"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=xOejhf2JTlBUOqRfxdf0lvXpMeOShPqCZFMc+hUVVlA=; b=lBpjrR8tWIGchgX60Dx+3/WuGd
-	z6WoGjbPom/arFHO7QAxC3NtAM+p+0nay1/wyz4eyi85ig4g2oEhSE1rottWgaivgQ/bkLIG6vkz2
-	56LUcBaN0ACOx1WIiF5PuvDIFo6+4ab8Yaq9SERLeQ9u3Lp4eoPmY/pX5SOaj1FQrt1VP+p3AsgBJ
-	eeVeNGH4LrGBtIJbfeC+bITlD1zcbt4Ds5WVPLlll9p3lDcl+DR0/nmWkr8X9R6rqhBvugLKBKnGM
-	ZEMQcF9vUyFTaJjSpKBrVx7BCSUbMW6TraI4EZvU2WAVwHaHEDizW5hsy0+Nb3BHbv0tDYuSLgAmg
-	IIC67+Sw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDVS0-000000039Xq-1DLf;
-	Thu, 16 Apr 2026 22:44:44 +0000
-Message-ID: <e2b309c3-c287-43cf-9ee3-6d092086924b@infradead.org>
-Date: Thu, 16 Apr 2026 15:44:43 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nziXgXAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8597C2BCB3;
+	Fri, 17 Apr 2026 02:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776393650;
+	bh=RE8pXUNFnXrfp8k86oykmMdq+NuDocEHXqwp95teTlA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nziXgXAEDrvVDkLZpvE+XxCZTTZKH/M0cgCTyVUSO2ln2j+DlzcbyJsIwyuZpEsDG
+	 vcgOQCkJO2fjQFNwe5nJ1v/9IAxyVfVAfW4M9mu2CiDbNdVUDR4T+dZwoE/H70UgNG
+	 mYC7Zy6zrfRPTI0J+S65v+riyW9x20dQKieQc4KgHT2t1BUOjmfSG/ibHXyuciyc9+
+	 peqUsTXW95O8TlCI783Pmcvmgh6OHrgpE6u/kkCz/vpfAA7c5fOpxX07BCI/8d5/TF
+	 pLH1TcwabVr46cyJb2FzLu75ShiMqGTXUjgSdulYkca5q/GJwwuA1cWX6NvjxgoBUi
+	 hvPtDEWqVDNAA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE6380AA76;
+	Fri, 17 Apr 2026 02:40:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] gpu: ipu-v3: clean up kernel-doc warnings
-To: dri-devel@lists.freedesktop.org
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org
-References: <20260219215211.459108-1-rdunlap@infradead.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260219215211.459108-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net 0/2] net: enetc: fix command BD ring issues
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177639361854.3490984.12957233652551599024.git-patchwork-notify@kernel.org>
+Date: Fri, 17 Apr 2026 02:40:18 +0000
+References: <20260415060833.2303846-1-wei.fang@nxp.com>
+In-Reply-To: <20260415060833.2303846-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, chleroy@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 
-ping.
+Hello:
 
-On 2/19/26 1:52 PM, Randy Dunlap wrote:
-> Correct all kernel-doc warnings:
-> - fix a typedef kernel-doc comment
-> - mark a list_head as private
-> - use Returns: for function return values
-> 
-> Warning: include/video/imx-ipu-image-convert.h:31 struct member 'list' not
->  described in 'ipu_image_convert_run'
-> Warning: include/video/imx-ipu-image-convert.h:40 function parameter
->  'ipu_image_convert_cb_t' not described in 'void'
-> Warning: include/video/imx-ipu-image-convert.h:40 expecting prototype for
->  ipu_image_convert_cb_t(). Prototype was for void() instead
-> Warning: include/video/imx-ipu-image-convert.h:66 No description found for
->  return value of 'ipu_image_convert_verify'
-> Warning: include/video/imx-ipu-image-convert.h:90 No description found for
->  return value of 'ipu_image_convert_prepare'
-> Warning: include/video/imx-ipu-image-convert.h:125 No description found for
->  return value of 'ipu_image_convert_queue'
-> Warning: include/video/imx-ipu-image-convert.h:163 No description found for
->  return value of 'ipu_image_convert'
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
-> v2: add Reviewed-by, update Cc: list, rebase, resend
-> 
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-fbdev@vger.kernel.org
-> 
->  include/video/imx-ipu-image-convert.h |   16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> --- linux-next-20260218.orig/include/video/imx-ipu-image-convert.h
-> +++ linux-next-20260218/include/video/imx-ipu-image-convert.h
-> @@ -27,12 +27,13 @@ struct ipu_image_convert_run {
->  
->  	int status;
->  
-> +	/* private: */
->  	/* internal to image converter, callers don't touch */
->  	struct list_head list;
->  };
->  
->  /**
-> - * ipu_image_convert_cb_t - conversion callback function prototype
-> + * typedef ipu_image_convert_cb_t - conversion callback function prototype
->   *
->   * @run:	the completed conversion run pointer
->   * @ctx:	a private context pointer for the callback
-> @@ -60,7 +61,7 @@ void ipu_image_convert_adjust(struct ipu
->   * @out:	output image format
->   * @rot_mode:	rotation mode
->   *
-> - * Returns 0 if the formats and rotation mode meet IPU restrictions,
-> + * Returns: 0 if the formats and rotation mode meet IPU restrictions,
->   * -EINVAL otherwise.
->   */
->  int ipu_image_convert_verify(struct ipu_image *in, struct ipu_image *out,
-> @@ -77,11 +78,11 @@ int ipu_image_convert_verify(struct ipu_
->   * @complete:	run completion callback
->   * @complete_context:	a context pointer for the completion callback
->   *
-> - * Returns an opaque conversion context pointer on success, error pointer
-> + * In V4L2, drivers should call ipu_image_convert_prepare() at streamon.
-> + *
-> + * Returns: an opaque conversion context pointer on success, error pointer
->   * on failure. The input/output formats and rotation mode must already meet
->   * IPU retrictions.
-> - *
-> - * In V4L2, drivers should call ipu_image_convert_prepare() at streamon.
->   */
->  struct ipu_image_convert_ctx *
->  ipu_image_convert_prepare(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
-> @@ -122,6 +123,8 @@ void ipu_image_convert_unprepare(struct
->   * In V4L2, drivers should call ipu_image_convert_queue() while
->   * streaming to queue the conversion of a received input buffer.
->   * For example mem2mem devices this would be called in .device_run.
-> + *
-> + * Returns: 0 on success or -errno on error.
->   */
->  int ipu_image_convert_queue(struct ipu_image_convert_run *run);
->  
-> @@ -155,6 +158,9 @@ void ipu_image_convert_abort(struct ipu_
->   * On successful return the caller can queue more run requests if needed, using
->   * the prepared context in run->ctx. The caller is responsible for unpreparing
->   * the context when no more conversion requests are needed.
-> + *
-> + * Returns: pointer to the created &struct ipu_image_convert_run that has
-> + * been queued on success; an ERR_PTR(errno) on error.
->   */
->  struct ipu_image_convert_run *
->  ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
+On Wed, 15 Apr 2026 14:08:31 +0800 you wrote:
+> Currently, the implementation of command BD ring has two issues, one is
+> that the driver may obtain wrong consumer index of the ring, because the
+> driver does not mask out the SBE bit of the CIR value, so a wrong index
+> will be obtained when a SBE error ouccrs. The other one is that the DMA
+> buffer may be used after free. If netc_xmit_ntmp_cmd() times out and
+> returns an error, the pending command is not explicitly aborted, while
+> ntmp_free_data_mem() unconditionally frees the DMA buffer. If the buffer
+> has already been reallocated elsewhere, this may lead to silent memory
+> corruption. Because the hardware eventually processes the pending command
+> and perform a DMA write of the response to the physical address of the
+> freed buffer. So this patch set is to fix these two issues.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net,1/2] net: enetc: correct the command BD ring consumer index
+    https://git.kernel.org/netdev/net/c/759a32900b6f
+  - [v2,net,2/2] net: enetc: fix NTMP DMA use-after-free issue
+    https://git.kernel.org/netdev/net/c/3cade698881e
+
+You are awesome, thank you!
 -- 
-~Randy
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
