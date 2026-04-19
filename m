@@ -1,151 +1,142 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAFB20FAA4
-	for <imx@lists.linux.dev>; Sun, 19 Apr 2026 00:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464B034A76B
+	for <imx@lists.linux.dev>; Sun, 19 Apr 2026 12:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776560317; cv=none; b=Fr9/mLDmAxNHd9SHecU9UDMejadN9AeeICceKRcXRaM3GEwQ1SA7+Cr3gfPnbx50dDHa+ovwyC2wBB9g75wkDBDUpiavhPdgjT87DLjGT+WrMiu7A9kZ5B2ZQCv/x0/EGzqx3VsAf5Cmb5xFH3yleOVRbljwg3YdEojXl3EVJGs=
+	t=1776601317; cv=none; b=QAdZRsglUkmKT2tyzmQ/9Sj4mPr3XLc7anJr7gXfj/0GCZo4PFfx3KM8jAqRGhu5hUJSIhJOS1s05ThAuPD1Ld+hNRR+tancmlM6ym3PgW5RRgP292RUMZOXP0haoyCCYHRxBmp/QZyQgb9/mVZ0oD34YOZR6MiD8hA1l/7nnJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776560317; c=relaxed/simple;
-	bh=yW0F6v7t+BIRPX5uD4zJjeNVn0YMh9w/VIBBFWel3fs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Zn6a6YB3NJ+QDjjED9bjNyVEqXRhbku7IsRTFX0U8ritnSWdzOA5llDsvcKgKG2rrHiRvEXTFQIURiEJ8BvXyZoaFbzBwdach7qNBpY6FDGkwE+Y0lV4HnTz6bihDVUzSzC3Ob8ZBt1+Ug4Tdt9gDlm86IzO7KwPqQHVZSjH3OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com; spf=pass smtp.mailfrom=ethancedwards.com; dkim=pass (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b=dHmOjF0v; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DVBlaSbX; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ethancedwards.com
+	s=arc-20240116; t=1776601317; c=relaxed/simple;
+	bh=nmgKREmCWZiDkKASZtmRc2MVHkFKpfUbB1epmq3XSBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ihT2YLAr14foc3hz7r8AUC37X2KQRKBhrAllBI92GFyMigK/j4Aw+B1s0giVi5W1HlzTmsP4qW1Gxsh6LbzWQRMp2e7FW4A44yxM3/0lx/Xvzd9L4HldYycF5pDQ4U3AB9Nie2QLoT5+QAbQ53BTzAlpptEgKdRy3GGfwxyr43U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=piLoCgNE; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b="dHmOjF0v";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DVBlaSbX"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B1D3B7A0053;
-	Sat, 18 Apr 2026 20:58:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Sat, 18 Apr 2026 20:58:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	ethancedwards.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm1;
-	 t=1776560314; x=1776646714; bh=j2Cl+gYnYHO1DKTjmBwPE5+KeWxesc/P
-	geGQx8inu54=; b=dHmOjF0vM7xLwu4UiCXlrh28BC5r6W96ex6DJOR4r5naMO1F
-	RNNGCwVTTlg7hcsD4yvQycZqL+C+vs6fJ7MTrS+Z/MwyQh1BmI4IkahLDT1McE0j
-	TPBUhQGLaEGWwa6qYh9pbzp7ND1HPZsfGkLisI9hM0TdR9QkkO5OCj77KKohPtn+
-	EUMWunFVneHRFoJE4Y3g1+A6ibQuNJEn/ZtF7A74j9IWfrnO8hTg/lZAK0zlRpsU
-	h0JxmdVINw5MC1fKZchFcYKeGV0l9j8ufGMUlkHflslGOYANN9igS6zjeMOUWDM/
-	RHTMLKTEgmoX6kT2HcjWf/aDfsjHLmrW2nDmHA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1776560314; x=1776646714; bh=j2Cl+gYnYHO1DKTjmBwPE5+KeWxe
-	sc/PgeGQx8inu54=; b=DVBlaSbXael4yTgd63brmPkjisGyqZqGIZp5GY43gYXN
-	ijRaW2d97lOxKnDS+E5rmbJpclfdFSaCAWzv/YLc2TKgFW2wHPkHuCmHkUl4UeOF
-	v+sI7BKxZ7pHarvrCzyQtRxdmutZRqNzztLGBanBNqxrEZuA3LNHvdmZ224OtYvv
-	WfUyl9XUyNsAFANJlESCzfO12FVhGAIt1ljbNmccTR3C42NKhAgWHvYc2YcLHWZG
-	yk6KD5UmZYk+ZNJLS7hH+8IYoviUaE0lMkA7zMRJGQ2kUd+80HMqRky0SUlMd6Yk
-	XFVwYiYkgtt7Ub6kQrzQp0gf2XPijEB3n3ciBUOY1Q==
-X-ME-Sender: <xms:uSjkaZEMuXhaqYBsh8hSXKxZlg2AVE3F_Z9o8owvMianfjSGXAvrpA>
-    <xme:uSjkaf7cbi7OpXIYdIgssCezBn-aoOVUrLfL2ovxRyrlCq_XbhmK5PLUbyrWPcC_a
-    Qd8X2LwdSH5bc9rCB5VQLcltoJaVj_7eg9Noyn4wys0AMztEPNg>
-X-ME-Received: <xmr:uSjkaabicqQDK-k5KeCfs2TDekHnJ9z2iZc2eVS1Fkb5jURkK4-9NlRmHmMz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdehgedviecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomhepgfhthhgrnhcuvegr
-    rhhtvghrucfgugifrghrughsuceovghthhgrnhesvghthhgrnhgtvggufigrrhgushdrtg
-    homheqnecuggftrfgrthhtvghrnhepieeuhfeuhffguefhffekfffgtefgjeeghfdukeel
-    vdduiedutdffffeghedtiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepvghthhgrnhesvghthhgrnhgtvggufigrrhgushdrtghomhdpnhgs
-    pghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuh
-    igqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgt
-    phhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopegumhhith
-    hrhidrthhorhhokhhhohhvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidq
-    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
-    dqihhnphhuthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehimhigsehl
-    ihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepfhhrrghnkhdrlhhisehngihprd
-    gtohhmpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgt
-    phhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvg
-X-ME-Proxy: <xmx:uSjkaVh2kkzbUFf3o-Ldd9IC7gDpbTVuZBe0fJ-DTVKE1MbnB9agKw>
-    <xmx:uSjkaUeBaGNrZlyz8L3_6MFuN_L2nq6UhHNU4hcKFgNjg9Fh6zLQzg>
-    <xmx:uSjkaclTg0nm-8BM5HImW1Z_Sn9RZ6Gx1o5tQdKbOfq1ZDu3pwGogA>
-    <xmx:uSjkaRxkbVKXQvVnmqiSKxA48j9fqNy8y5rNV8Tfo7_HCJQpPoXjpQ>
-    <xmx:uijkaQ1pIyb1aca6tXczcx00zkazgd-OrrDrnLJxa8896xfu4WXuI4my>
-Feedback-ID: ibf9e487c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 18 Apr 2026 20:58:33 -0400 (EDT)
-From: Ethan Carter Edwards <ethan@ethancedwards.com>
-Date: Sat, 18 Apr 2026 20:58:32 -0400
-Subject: [PATCH] Input: imx_keypad - Fix spelling mistake "Colums" ->
- "Columns"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="piLoCgNE"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f6b592fc7so964765b3a.3
+        for <imx@lists.linux.dev>; Sun, 19 Apr 2026 05:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776601316; x=1777206116; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pmWG7OM2EB7RxxwskQ0/zeTI1Kmre4JByGl1ksiUCqU=;
+        b=piLoCgNElgXhQomcfYWqZp73Ie6CQGWNblKVccJUHD4dox4G3LHrNNnqKF1I027lRo
+         U/7YGLOnloX3dY9WZGvCCLIeDY+KUZs9tq5oNrbRoVcnAJ8s6qApV2YbQm//wUj7uYQc
+         hy6uIocR5LvIT95U12s16HJj/U+/gRL+ZrKYWKqNckZQgFxLe5eIhN2TjEQ0CsRXzJqz
+         miaUo4wij6ohsvjNh65hu/qtWgWH020q3m+0L/VFJzLCc7qforJErecydWVoCduH7m57
+         luib8PEBY1bO7QP6xz5taNAAOZavuwkqU5Txw2IXQBbkq7SSfZzXb0SneaEvaq/SQOoq
+         EAeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776601316; x=1777206116;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pmWG7OM2EB7RxxwskQ0/zeTI1Kmre4JByGl1ksiUCqU=;
+        b=GCLIIgUim/5bilj851Ihe9LUwZTwmjgOpqztIlTrMbPbqmoHgBxZIVIzpMtjBnDtyw
+         PxbtO1Vt2lg4XR5zMHexdyaCDFvoIEjByRfNNyXibXlcYm9ZKxc1vHslXUAbr8dqwAnX
+         uS8j00aM3DGtIrPzxtBw40hYZAu1kaT+ZJ1Rxcog+FiS2U4CGcrNfNr2euhfhMJz3q0G
+         OoQR8isTbVysicOtg8BkOEpMmRCsBKfF9pC4nwcl/tSyOIL5yDGy24+CjlCWBTInA9jN
+         ntq827PqbQOaXW3vIyyFb6zLbpDAjlsV1glE8PdEZI/VTEPvQYFZ+0Rxwg2xzACVPbA3
+         C3KQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8jF955okbhKq+hIsAS9ka6Z3ibcrP8W+xD9xqHYS8+KRhdc5hGqi8PfT09SJIjbXoICS4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwmBwfYfEVX0LXQ0huNOIz4Ina3XKLvLIVOqU2ZxcxP1L0iqKjJ
+	QI1NkUyPtpaFEgH1opXctpXnB047M1iWIuwrSVDmVE41SQXmbIa4GgMA
+X-Gm-Gg: AeBDieuvju9VPC36hwDMsNoyldw/3EuHelXeB7KKCj8rSiADR0YEyw8avKPrXsZ0gEA
+	cJB/g0ds3wGNfu1rzPq1nRMwT1vrIxpiSydDDz9ZSw4DcTvs+EVrxpFV96ygEe7deboqs9kJh26
+	hBM/TTCjnpfbOvSuOiQvy98y4KGf310GtBvuaWNuJCjMiYtCJF6PVjoygbG56MgeM1ESyAi/7UD
+	3nsEINs4ZITCfjwG9ucU2wDEFGu+XfqSjsD39+gPhJAz1W67cisHOOag/MIpn7ZbOWux3ONqyDT
+	fTU8mDeD6TefhCG68yD89zFcgCmsy1Gdll9M+xpP5YB3PQ5RZ6Dr1cOcC6Pj69XGJaNIAwJYJoQ
+	HZxp90t8aUlY5t4tAWG2Xp5tqJ1pAVRhjMfr/83689iyGAg4m1bF/HnGMdxPs3bLipVMn4E/FBA
+	jLsnN8HcUOzQlV7H1qPLaYEwZEcbu6vWcf
+X-Received: by 2002:a05:6a00:2d8d:b0:82f:1d38:f68f with SMTP id d2e1a72fcca58-82f8c8bee86mr10893475b3a.31.1776601315542;
+        Sun, 19 Apr 2026 05:21:55 -0700 (PDT)
+Received: from lgs.. ([2408:8417:d50:4775:fc0:88de:ed15:556b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d2fa9sm7700034b3a.16.2026.04.19.05.21.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Apr 2026 05:21:55 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/bridge: imx8qxp-pxl2dpi: avoid of_node_put() on ERR_PTR()
+Date: Sun, 19 Apr 2026 20:21:34 +0800
+Message-ID: <20260419122134.97529-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260418-imx-typo-v1-1-2a15e54ad4e7@ethancedwards.com>
-X-B4-Tracking: v=1; b=H4sIALco5GkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDE0ML3czcCt2SyoJ8XUMTY3ODpBSj5FQTcyWg8oKi1LTMCrBR0bG1tQD
- iqiU6WgAAAA==
-X-Change-ID: 20260418-imx-typo-14370bd2ce47
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-input@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel-janitors@vger.kernel.org, 
- Ethan Carter Edwards <ethan@ethancedwards.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1379;
- i=ethan@ethancedwards.com; h=from:subject:message-id;
- bh=yW0F6v7t+BIRPX5uD4zJjeNVn0YMh9w/VIBBFWel3fs=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkp2QXk4ekFKWGJEOXFoNThlVGp6e
- GhQcXlVeFpEN1IyQ0VzWmpKTjljNUZ2ZXZkVndNdXovT3Z0REdlCk1TV3kzK0RJM3NYbjVRc1l6
- azd0S0dWaEVPTmlrQlZUWlBtZm81ejJVSE9Hd3M2L0xrMHdjMWlaUUlZd2NIRUsKd0VSZW1UUDh
- GVnAyN3UyTWFSdWlYdTVuVkpBejNQYUZZZjU4NWYwTDNWWW41YTNlY1h0Uy9RMkcvNzdQWm56SQ
- pMVjJmTXY5VGRvdmloSC9mbHZ6L09DVWw0SmVON210WC92eFpsemdCRFdaU1JBPT0KPU5jdy8KL
- S0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=ethan@ethancedwards.com; a=openpgp;
- fpr=2E51F61839D1FA947A7300C234C04305D581DBFE
+Content-Transfer-Encoding: 8bit
 
-There is a spelling mistake in a two comments. Fix them.
+imx8qxp_pxl2dpi_get_available_ep_from_port() may return ERR_PTR(-ENODEV)
+or ERR_PTR(-EINVAL). imx8qxp_pxl2dpi_find_next_bridge() stores that
+value in a __free(device_node) variable and then immediately checks
+IS_ERR(ep).
 
-Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
+On the error path, returning from the function triggers the cleanup
+handler for __free(device_node). Since the device_node cleanup helper
+only checks for NULL before calling of_node_put(), this results in
+of_node_put(ERR_PTR(...)), which may lead to an invalid kobject_put()
+dereference and crash the kernel.
+
+Fix it by avoiding __free(device_node) for the endpoint pointer and
+releasing it explicitly after obtaining the remote port parent.
+
+This issue was found by a custom static analysis tool.
+
+Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/input/keyboard/imx_keypad.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/keyboard/imx_keypad.c b/drivers/input/keyboard/imx_keypad.c
-index 069c1d6376e1..ccde60cd6bb3 100644
---- a/drivers/input/keyboard/imx_keypad.c
-+++ b/drivers/input/keyboard/imx_keypad.c
-@@ -324,7 +324,7 @@ static void imx_keypad_config(struct imx_keypad *keypad)
- 	reg_val |= (keypad->cols_en_mask & 0xff) << 8;	/* cols */
- 	writew(reg_val, keypad->mmio_base + KPCR);
+diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+index 441fd32dc91c..3610ca94a8e6 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+@@ -264,12 +264,15 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
  
--	/* Write 0's to KPDR[15:8] (Colums) */
-+	/* Write 0's to KPDR[15:8] (Columns) */
- 	reg_val = readw(keypad->mmio_base + KPDR);
- 	reg_val &= 0x00ff;
- 	writew(reg_val, keypad->mmio_base + KPDR);
-@@ -357,7 +357,7 @@ static void imx_keypad_inhibit(struct imx_keypad *keypad)
- 	reg_val |= KBD_STAT_KPKR | KBD_STAT_KPKD;
- 	writew(reg_val, keypad->mmio_base + KPSR);
+ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
+ {
+-	struct device_node *ep __free(device_node) =
+-		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
++	struct device_node *ep;
++
++	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
+ 	if (IS_ERR(ep))
+ 		return PTR_ERR(ep);
  
--	/* Colums as open drain and disable all rows */
-+	/* Columns as open drain and disable all rows */
- 	reg_val = (keypad->cols_en_mask & 0xff) << 8;
- 	writew(reg_val, keypad->mmio_base + KPCR);
- }
-
----
-base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
-change-id: 20260418-imx-typo-14370bd2ce47
-
-Best regards,
+ 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
++	of_node_put(ep);
++
+ 	if (!remote || !of_device_is_available(remote)) {
+ 		DRM_DEV_ERROR(p2d->dev, "no available remote\n");
+ 		return -ENODEV;
 -- 
-Ethan Carter Edwards <ethan@ethancedwards.com>
+2.43.0
 
