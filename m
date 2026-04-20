@@ -1,279 +1,209 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013039.outbound.protection.outlook.com [52.101.72.39])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011062.outbound.protection.outlook.com [52.101.65.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AB137F011
-	for <imx@lists.linux.dev>; Mon, 20 Apr 2026 02:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1708025F98A
+	for <imx@lists.linux.dev>; Mon, 20 Apr 2026 03:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776653950; cv=fail; b=EVsr6EmOK6aEsmyqmKLpoUUMI0xBd+b3qd0DZBxT2O6CMk1aW90nSQOn1oIo+xOxzAEVjBMY2oTltkDxZsi5tn6xVDrI3zSZSr77gZQDzHPKJ8M00GOBMUVdJZ9DhfqioVRUoF/H24rFdL9m8xJAsHfkIkx0HhiN1Vhl/WBQSl0=
+	t=1776654092; cv=fail; b=H4d48A8bEnLmsApNg8tMQNaN4CirJE7GNSBRPytAkAwdk6dldSRbkfTBcT8AlriGaT9zU1Z/4W51J8oeA/Xk9wH8zlBQZV/ZICFm0IOh/vs1upNOgmPaAGEqQegIC1F56J8TZrJN6zaGDRxBgoONNVj6GKHx3zV0HFwVxuiRXPw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776653950; c=relaxed/simple;
-	bh=HgbxIGSaSBkgBUCArH+jcvekOdWpYOMAWv7x/V9asHg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IjbFtjJp+OC2svbwenh/cGVUwfTBy/YdcpJkOKBpzTgs1TH1BuTONuA7iMNwS0aMwxKu5LUfT4w8maoiOC1SRBc1ntNzwy4aS6TxzWgAoa4h9LuN0yXNtNeS1AQBkWjkyONmZFNGCP8gpyy1aYZbxNYioxllPWXj7HpR2Fs6REk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZLH8JESd; arc=fail smtp.client-ip=52.101.72.39
+	s=arc-20240116; t=1776654092; c=relaxed/simple;
+	bh=/mH1wZWxXrO8AWfLTnyvkUzbnLGAiEznr57/k5PxWw8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HaSHHY+Z3IRFKarrCo1pSw6z+te3BwBDBVKRtSivDUYWIw0VqRHGXuYG31Tc7oVXw6Tqq5uFmSdezSAjXWyE7zSfc1ZyZdpFXymUoIAQmwM3iBFN1GlR7JM84xQM0M7J3Ib3KrEofKwQKgJis5qaH3+nRU56nqufgt9XIU3mf5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Yj8qFFc2; arc=fail smtp.client-ip=52.101.65.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZLH8JESd"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Yj8qFFc2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VlYpoiArvz3ebiFFUOSvBvOhwbs1FWk9tCupSxWoFY3PQDEggmczMdpfvAHtVCX5Ko/NnwvIT78PNNkaruTZ1JIrdov2j+ALPkDtiEdyu372MgMsEMVcRP/qfbgdwhVIPqHJHRjX/M4cPNcktgdrSdw2x0MlC13iNbSq3QlnPDkjqN/57WSUSGc8zmkuI8uc32f8iugceFuJrmqjz/fQWEjiNqLZYqGFNEOe9vTJWV19JM6B9RwB/SpBvxE8AW8++gmUrK2a91GkgAHeTv2F/Tu8/gPLW2ejhyBHG4JvKH5to6LD+/KOlYeTCp4DTxNW31WnaOT8WlLfrb+rlyldDw==
+ b=vFVvDm6DpxiyI8AKWRO+BGMF3vnrRndP6SOZDbmePJoBJjXUNEON/U7w39vLzNCrkIcnIZurG8mWH6J+FppKwolVgZWgRKu1q/AWIskhN/ACHMm/sP5U8DDbw9rkrqthp8Wund+e5nUwJSRvwcOkGNqi61HvLQ0/Vg7C4zHJovEFTZOZY5nmESR9QBuOgfYGXjxA9LbggDFjqVbe4vBLAnzW7eS7YYshmWGpjuncSg20juaNmS2ZBIg0BzJxjh3ZfqvjHhsYcZD8/mghhVKRMLxxR3+IDc9uZDBl+WadinOUdS5V2qV+hNsHLhl2jJMNQ4d4DRXAeh5H9oaQKbxKBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GohfPZ7b0PneqV8zfrmIrWMre5KXUq79+06BLuYuq44=;
- b=GUJBT43Ip7T08q8YJLZlJ/z9bcZVZZjnoas8/wflTdb9pz7Fztrv8GEBXmqZvTMkIUO+zo9oGHu2CAlRey96alfxPaYvbgCkxBbSxMB8I9dRxxkDaEOQhYFJD/pBSwVzSo3ZUyXfjVFu12khGI+WgoyAnNfd06Nh3N10yujm59ehapr3+i+WCRB5g4yk+XSW+G+UQW3Cg4kzuRBwCX7GKXsN2mNHUconRpoQ7HXCvswG0Sv3gHbKHB78D/xZQyS+eSgKFIfaMF9wexeMR+W/Sf36t2bOa+RwK1x+pDsY60HcrLdVZPa88DPwqN8eJRfRB220PpFynhag3UrpHlgyZA==
+ bh=1z30w6FQ6F4qFXSu1zZBMRK/imvQiSK7cCEqeII1EWQ=;
+ b=qJxb/+EFL9LRzzZTkSPDGjUZinEXrs2gpIE3Z26t/XnYKGK6+bawF+dLbIK0PhJw8b5hsBH8n36Y9QYPK98V/fxYRCttFNzWDg3oGLQYxudqodEWWNMludEnvhxH6NW80ayPyBBRXmUwkkasy1oyYEQpGPfH/5O5jYgF3tDZx3gEaWRg6Fl4vuTB6B/J42cDBJFAVD8STauMiTRvtmNS5+LbirZZ5WkhL0UCHXlyVYEdt+ROHSytt9S1kfsj8DuJMnYKBaFG7NQ2vV9C+yjAaesgmhbMhQCyU8ctL5KGUBNaXvn9DN6Tg5jQGKvTFg1YkCjU9xmlkYI+XSeVdx2cQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GohfPZ7b0PneqV8zfrmIrWMre5KXUq79+06BLuYuq44=;
- b=ZLH8JESd/2IioCqFkaBPT072w1Jh/2wuS5/8EogZyUIrQ0S2PUAYUfnfV7qHhscGgfGvv6/+lWcc6+JyaiDT4WSyDnUWjLsMmEp4FIjLI86wqggV8dQNJeua8zcZ8aSD9g9PpR7Z25oF1QGZ/OvOpZWYmLj3F2mtI0AOR47813hXnKfhwv3ujr5lDmEqb34knn/iaA6AX2vO7ynPc2yTPQPPx0dh2ky6N18ts3iXNVLmqrGqwvFu5YN3z0b1/p1viOJ0Ma5UWUb9xFFOb+DZ2IC4EzV+E+kHqUQ2RYyiz7lieR/E6BJqzgmk+boTVx8+dFXVkDwykEiWLCKzwMONPg==
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- (2603:10a6:800:315::13) by AS8PR04MB7704.eurprd04.prod.outlook.com
- (2603:10a6:20b:296::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Mon, 20 Apr
- 2026 02:59:05 +0000
-Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
- ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
- 02:59:05 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>, "mani@kernel.org" <mani@kernel.org>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li
-	<frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH V13 02/12] PCI: host-generic: Add common helpers for
- parsing Root Port properties
-Thread-Topic: [PATCH V13 02/12] PCI: host-generic: Add common helpers for
- parsing Root Port properties
-Thread-Index: AQHczZH9Fw0NTzMvoUCb4PMSz4pIBbXiJv2AgABoHuCAAR4OgIADlH+Q
-Date: Mon, 20 Apr 2026 02:59:04 +0000
-Message-ID:
- <VI0PR04MB121145DB18C2B744856CA6138922F2@VI0PR04MB12114.eurprd04.prod.outlook.com>
-References:
- <VI0PR04MB1211449884AC3BC8E3711F1AB92202@VI0PR04MB12114.eurprd04.prod.outlook.com>
- <20260417195533.GA92707@bhelgaas>
-In-Reply-To: <20260417195533.GA92707@bhelgaas>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-Mentions: mani@kernel.org
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=1z30w6FQ6F4qFXSu1zZBMRK/imvQiSK7cCEqeII1EWQ=;
+ b=Yj8qFFc2eb3gsJgOtlX4YeziosfZLzzD4pJL/CU+pYI+f0mwNpQJEIynpoGhlDsfgnkNnvDA+68Fm+S9VLv/psCQY07IFV8tefFeiYLK3sF5yEm+jLkWXpD3LOJrQ03cMEK/MRJ/y6dBkA51RBzy+phL6e4+DtMoeb9zk7y3LZxHoN5MDteNhe21pRK6kiDcotz88Nucp0cGQQvPL313bC/QSIC6Uy1agKVUnb/fr+ByqlDrxdOe/Nt/jkPZyzHpckWICLe+Y8LOPWKIFJsYe8oZMF9e7wm/6QJ/lIytf9/CEzONU4R3wsKvxFmGtrNRAxn+CZxeWqeKPqLaBgMQJw==
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI0PR04MB12114:EE_|AS8PR04MB7704:EE_
-x-ms-office365-filtering-correlation-id: d3705802-af13-4504-379a-08de9e88c886
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|19092799006|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- OGL6B8WakU+TuMH6L7CwHXM549Eyhj6+pfRuc+D9f+ppQJDipXEzwfp3308Y2yjPWmJEOI0zcTnyLVkXnFIa9TA02o+aG3R/eKkBMNV+0VRMfEjrnSxcCUz3Hrj5HCN5HxRB6sxZAnlCplVG8gvi3jL5aKZW0JU3TgUEN+2TpPZG0+HiTWmRjdRxKvaXwcDC+4E0C14ilMuRiJGbo6CENJnhiNHHOMqoawXDNvL+CyeN6nWb/ALuaFj3DYxp+M2t51xf/mar9SgepYoMojJpkkPMKzofVi1hp8pEdcjB7loGtcIyPtLqRyo2ThdGiHS/dMQ+SgZ2LfDpz7y/YiyeCp6PF5sOikC7S4UqUt519cvuiXTli9G2wKEFMHp5XM+iXZeC7rmWmbpKwa0FU9AlPXmftsSbp3aSCObsp3re+e1k0Ml8zue54qQnuwqPYXBDMoS4Z+YbfxERklLGXvdBWwGf8ia9RB3DHWZnlp5YzpjafWZxECUSLREiLD0YKMon1C/ovM2Pgz1kMiD32ZujaG15n6KAanBgcoB+H0bQqsXPZgdfTLNzAqIVz0T3lVqeFxCs/BSkoGX/4kqn2GQCQ6mxwCnXEI4NmoI6wknXZUyH4v96/+/lSrBEafPtkk1irgfWFLqNjyxC8wgPvi97tSbI4QlNjaeynDlGT4OKBjdQvyJv4JBK3GNMnyJg/qCFjw8gkAivfEoZeRvCZ1WjasTTnXM7k0XAlZ8KpBeTnleM19+w0ZTW8fTnMto+fbaFy9De4yl8MSxCWCM2WTjdwvVTVqcnulQpTYmFmJFT8Cc=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(19092799006)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Nr9rVP+gw5A9YjuTLFcz6fbmjR14v4WXgxrwvEjKZshTs4RqIxlfUIIWC92J?=
- =?us-ascii?Q?3zP6TjHgtNKxCgNWu+r4x7lfwDbj9wxdbxiCPGsbaGbiPzfxM7nMCK7T0xrT?=
- =?us-ascii?Q?/3nSaeFfF52yas0uzzJlW4IOy+Pzq5g5ySRkQF9ZIGjpxF85/8ikGfYlmHlw?=
- =?us-ascii?Q?E1A3qVnMR0ILoGRB82Mhdl8/1rZy/8deouQ7tjfycRlLEE6HzCpXgvln/mld?=
- =?us-ascii?Q?97uzjtd+IxKaL8uFX2d4sLzqN1JD0inCus+xaXU3YGN1VR+5QxqvkchNdMn4?=
- =?us-ascii?Q?Bc8+3XYbA7sFUCWyhB34Na1c1fVyiQo+xLWDh5wWzuhLD1o7FXN1svSjmszo?=
- =?us-ascii?Q?aDzfi6nMkiWqJPlcw2Z9rcU+wFJY/ix5HghgF3Dt/Y9ZjA5RrJj6YRy50NxD?=
- =?us-ascii?Q?NQI9yKsJDhYDktXOf4EfPDkgE+VIGXGZa0F/UGSIS9vZKRHgeqYPFYUIxgjy?=
- =?us-ascii?Q?uGrw5NljBUd/x6Bco92byvkgtzdKxFOTmJVZNfk6Gp0sKRx7byNcnRVigwpL?=
- =?us-ascii?Q?q/HeSQ6T46641+w3hRDLQVrmQyWThmS1Fci+ZaauoXXqIRtJjJgeH1RLNU/K?=
- =?us-ascii?Q?EgE1+o2W+MSIiK18gLU1efcKYW7Sbtpof/uj7iiu8HwVyZxf+allnuBaQ5Wt?=
- =?us-ascii?Q?ZweeHHhOPsDG2/OHMIAKIAvNGd7A51+c0gaM4yu2dMlNS5YjgwnbSr07lnXQ?=
- =?us-ascii?Q?y/kojkh6HxeR+wvNoPfu20jYijUbAz67B80yZYxqzjP/kiIOx3kcjiXlFucS?=
- =?us-ascii?Q?mTu8kYXbVuu/x4MyQ2aN7vnGkWAcd8/7KGTC713eoUkmYDzdv1u8abNykf6X?=
- =?us-ascii?Q?+Y7aDFOXhdFzh62qVkwMMcMCCX/pDQ6Z9mh2KWPFxE6l5OYLeqpxlvwBCBvJ?=
- =?us-ascii?Q?bjh7jJr+vv5Ky4avJXwdv7YGrtkqeI/92WVG4tILlCNweNJoGUDWYDDwAQ5I?=
- =?us-ascii?Q?oUnCDVcksSN5a3G9CDyfJ1DZjkOfgZdXuApXRZB5bSn/M6jGiQTshktEthfX?=
- =?us-ascii?Q?ebWY7Y02hyXVoPR53QXGZTPRHy/duV6zFChzEsTAbjx5alXVAFvvPY2gobVi?=
- =?us-ascii?Q?Usja+C3PcDTvGH/AjIJu+abxLQKZaxTfiktyhulxLrT4dlKQTqgsLJOhveN8?=
- =?us-ascii?Q?iAqXOatxg+cO/+Hzd4cDcx67m8yfBP4EfLng+k9mZ0rR8SUIYAOMBA14BKqU?=
- =?us-ascii?Q?Fov/zVE2xOlE/xnkjld/63fJbY8w5tq+qqLO/HjanRbidbwgNwiT1pa3TQsC?=
- =?us-ascii?Q?pAjmdtzcglS5ujZ/uvonFySWDCfKZ2Ua8VXuvdIZU0bdlCb3svxDIR1Lpugb?=
- =?us-ascii?Q?fQkqqmdJYBb9wGbae6Ao92jpHERK18WNBcTeyKy69dJkSnv598X3oN0VWND/?=
- =?us-ascii?Q?2zbxbI8PqKmxPF713wWe+zGAtPXxmoV2rIfYi4m5ymWlJWdrFLyFs7BlPrup?=
- =?us-ascii?Q?vCdmgu2Jo3rHYS0mbUvrC6kLARF36yN5R4Dl4lTOV2IxLpAHUzsCGuZWnZCI?=
- =?us-ascii?Q?5/0Z+Yqb1NZs9vY1g5SrxvirSCNaAEaLRSp6zYJ+bjIHGZMSgEgTG1kx2BaQ?=
- =?us-ascii?Q?ZRYpl+5ErIENhaEKnF8zu+TcomlhaS6WVsZBL3D4VhbLinXnBH0JcTyUwT0h?=
- =?us-ascii?Q?p2DQmOiqoRZPDdtp68pq4QUYt+GUPWjV30C9E+Jgym5tHgdywH4QxRP1Kd4/?=
- =?us-ascii?Q?z+AIZLmaM5T3FSwJoh8rRhRGWUEVHYPjvYcAwWJrxIYmrUae?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS8PR04MB8641.eurprd04.prod.outlook.com (2603:10a6:20b:428::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.31; Mon, 20 Apr
+ 2026 03:01:27 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
+ 03:01:27 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: badhri@google.com,
+	heikki.krogerus@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	m.grzeschik@pengutronix.de
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH] usb: typec: tcpm: fix debug accessory mode detection for sink ports
+Date: Mon, 20 Apr 2026 11:03:17 +0800
+Message-Id: <20260420030317.425022-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0004.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::17) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS8PR04MB8641:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8318dbc-73d1-431f-c3f9-08de9e891d4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|1800799024|38350700014|56012099003|18092099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	NBiIpFvx5J/kRlZ7hs+Wskv9HMTDmzutmUu4z8YFZwRu3c61/ko4V/gQzdq7RMqbeJyhpjsuK5Mgg/Z8ukx1xba/2J5PGyDS8YhxoC3USXSkWek+KcFMnbSO3wRm0IO0Ck/XUlrVGShaKbrgkh8GyNbLLEhhzEtYJLy7np8S3b9aXLazoXmsuHtlH7uS3HYWXNcbPIKXR65ga97uIk3vO9WV7aD9G83Pv9DM8y+vx3gH4EtSKIbbbBazt+lK8VD+8XoUVtEMB+YfeoB6xAqIRyTrM+960X4zmU2fG80DNphbVg4wF0+6VOcjsxYOA/6Sgu05P9F6o/pVZstd3BVQ05vlGMt5i4RCHquh4L4TUfkkbfIB/Nt1A3rSgJYO6Sic/81xqT2sg/QtzAUy0cEuOwzqRJB5Y+CZzQ3qq1/KoMRb/Cz8uJwqI5hH9DsdFyPgOkDK6L1dQ6/URl4BPssnH5NiybifjLEve7Uns/wTGqxF1uag3mIs1zN5Iqmmz/oBlxaTy9XEy+KkhptQMmOeCXuVn7thZ1hG2OzXwACg3NlWdFsTAv2neBGXnzta0vnkAJEAN7nrR9BPp2lycFpNaKTUtpNEXWo72C0NZQHAGqOuRWz8gS6Eu9xO+EB4bslJqsdxLByGgMbxub8nr26RVzIPPU2usZXj+Y/JkYZDsCwEiTRgXARzf0wZxSFjM5aKkFV6UWqvm9Yi8cckFY56Tnj9W+nfVN6xhQjqQGwj+GSE+aBn0amuVrItLpYyLbd4z/Co5n/AlYOwNwPSKQPEz35gX6ibyZFrlMp53GWzn7g=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(1800799024)(38350700014)(56012099003)(18092099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a5lHR6Tsie04G859D1pJuxDrLHpz5ILqQN554Gq8EiENBq9YF/hywTJdnxLs?=
+ =?us-ascii?Q?04ybkP+L4azfz/tjk3jXSRqm734oFQY/OHw3Oe+8P5kcuopTl89oKXWnA53p?=
+ =?us-ascii?Q?CW2kuBybrqkjwPqe2NNOWlHcw+UA8OYmDtB9ZvcMmv4zVz/s/pjcPXzs3MQz?=
+ =?us-ascii?Q?Mxq1Afai1sj+1wu50pF063bH75I0BXmxm3I3EsuKNGZ9n7/cHIX6P/XAay+o?=
+ =?us-ascii?Q?XOwksQLPav/JG4b/d9cI7NuybKe++bLzQI/+JIk9Pfi4F1FwOpMJekdZ/cGi?=
+ =?us-ascii?Q?RjFHQWhQXdAgxqUExO0K+uvHaz76VQ7rtXAOF8hTbbl7uvPvCiH/Hljnjbh7?=
+ =?us-ascii?Q?kYNX8Mpj+JJ8YbkqQRTkE23uAuXrFd/7Wm9kIWz/wmcUrhk+7kEa1m8/pQTA?=
+ =?us-ascii?Q?c4HAmeKYs7UCdMcWSVSwgyPzqpkpLFbixnJU/EbxVjR0wLb+HyJC7gxJ8tDI?=
+ =?us-ascii?Q?vFf1DwzznPv+/KnW6AiWm10iNcZmmM8//beaYNshcL7GkpsKr3As0cWIEjiB?=
+ =?us-ascii?Q?X2NfMBEFkVNVWdvGP784cEB3T/gM8h8Z1cooJFiG6eLQjfhjB7suHDBmIGc7?=
+ =?us-ascii?Q?qST9Q0iVhWD257NbIm2ikRzTDkteCIo+WT315M4B7AkE2c3R43/zgg+BKiSJ?=
+ =?us-ascii?Q?LAxm+4JwaLrX32d9cFLPQ/lxGtke2lfJe95nIDZY4mk+4JXm+aa8zZzaLXRM?=
+ =?us-ascii?Q?n2a4Q72qSZq+tFtb0NxXCXpQ0qKMjtsmcp3vaazr/Y1+WOFuhuC2D+7zdAB4?=
+ =?us-ascii?Q?+dcLNnHfccktGzQxB8UKxlnHC3NDE9slhGDY71hnCvABgAH7AU/lAGlb7Aw8?=
+ =?us-ascii?Q?ds3gfsFNQX3yDnUC2auER96rLuixsH23waYpH+EEvulsmpqAs+H/xUurf9gY?=
+ =?us-ascii?Q?MhQEDjPIFdeXx/CorkK7MQIqU4aZe/FKFhhNHRv8a/2iWerOlvhsF5zc11HW?=
+ =?us-ascii?Q?hSCcAfrErUemZ2LXI4vzk8Jbtpcy3JF/o7nwIa8i3lpg1ATy2nIaSgUtggZW?=
+ =?us-ascii?Q?xtxhYfNiYTWBWdM2h/oPERqDZ2fvXVi1920SBdOQDfL7yodCd7E6svYTxfrm?=
+ =?us-ascii?Q?0ki62hyxfX1EGPC6yvB/q9+COrPVmihXZl4YxILWbnucf7ALaDLFLfQT7bNl?=
+ =?us-ascii?Q?YV8xuq892Rle2AZSC6UTcpwJe8tiZlJwIRCH00CunXzgxbyid0G+apYtgEwV?=
+ =?us-ascii?Q?3CElmqJCBTJ4RKXrX9KRgdxbNtkv7svRuRguhk6S2QRQe2peZrVHKbETh/oo?=
+ =?us-ascii?Q?XPZObb0t0vU0Nz6/1WjJQOEY7KbWPlfwyXX7ja/CIYTAcB1vYPHD8Z5ZJnvT?=
+ =?us-ascii?Q?nNmdOgfmQsaT/7WWpV2bEN0oB7nQ4enbGhxcxVAKWCnskiyLNEmrfyQ0g8Gu?=
+ =?us-ascii?Q?DfbkhAK+Y3jRe710BkQ26C1ZRdkVkPxKn5s0BK6Gt3cQii5HFtn1j0n2nOEf?=
+ =?us-ascii?Q?6RfRr9ACTBhtW2FQW358dUtIdm7OIchIhc1zjjE8BOFrNJZK/7ZizuhiTrK5?=
+ =?us-ascii?Q?jppcBESCd+daa1SMXmGIcrFPWk+Da14CkncoSqPQrLSqxDpMWWLKS+BGHxoJ?=
+ =?us-ascii?Q?oWiG5vcsj9IJhCuRN7IZM0iherh3JeiDs0zLAcSYjO5ihm5awmsj8zuUMnsB?=
+ =?us-ascii?Q?AzvPV/bg5iMeA9yff1yTsThIZKh7g/hYpi5lYo3gKuA9Lee3LYIw+K93EuzK?=
+ =?us-ascii?Q?SJk56H1edHYYntKXus0eG8qaz98WP4rSjc2DRS5+m81LUhL/UYMcRl7iuXeb?=
+ =?us-ascii?Q?t6HiviHq2Q=3D=3D?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8318dbc-73d1-431f-c3f9-08de9e891d4d
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3705802-af13-4504-379a-08de9e88c886
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2026 02:59:05.0082
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 03:01:27.6338
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UCJxq8a4NEDvQvCOcC6xQRuFGwni1BxfNHuoR9WjZibwfldgE9ztYYwlqW93s8E4tvS+FeYdkg476ADYC2qf7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7704
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lB7xxaYgZb6fGnIDUjw8J2vtc0rqV0klCMZeHUUJwY1HIB0zYNPnLt4QZNI9iEjvMwKuNBwN76bYi+VGi14g7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8641
 
+The port in debug accessory mode can be either a source or sink. The
+previous tcpm_port_is_debug() function only checked for source port.
 
-> On Fri, Apr 17, 2026 at 03:17:16AM +0000, Sherry Sun wrote:
-> > > On Thu, Apr 16, 2026 at 07:14:12PM +0800, Sherry Sun wrote:
-> > > > Introduce generic helper functions to parse Root Port device tree
-> > > > nodes and extract common properties like reset GPIOs. This allows
-> > > > multiple PCI host controller drivers to share the same parsing
-> > > > logic.
-> > > >
-> > > > Define struct pci_host_port to hold common Root Port properties
-> > > > (currently only reset GPIO descriptor) and add
-> > > > pci_host_common_parse_ports() to parse Root Port nodes from device
-> > > > tree.
-> > >
-> > > Are the Root Port and the RC the only possible places for 'reset'
-> > > GPIO descriptions in DT?  I think PERST# routing is outside the PCIe
-> > > spec, so it seems like a system could provide a PERST# GPIO routed
-> > > to any Switch Upstream Port or Endpoint (I assume a PERST# connected
-> > > to a switch would apply to both the upstream port and the downstream
-> > > ports).
-> >
-> > Thanks for the feedback. You're right that PERST# routing could
-> > theoretically be connected to any device in the hierarchy. However,
-> > for this patch series, I've focused on the most common use case in
-> > practice: use Root Port level PERST# instead of the legacy Root
-> > Complex level PERST#.
-> >
-> > Root Port level PERST# - This is the primary target, where each Root
-> > Port has individual control over devices connected to it.  RC level
-> > PERST# - Legacy binding support, where a single GPIO controls all
-> > ports.
-> >
-> > We can extend this framework later if real hardware emerges that needs
-> > Switch or EP-level PERST# control. I can add a comment documenting
-> > this limitation if needed.
-> >
-> > BTW, Mani and Rob had some great discussions in dt-schema about PERST#
-> > and WAKE# sideband signals settings.
->=20
-> > You can check here:
-> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit=
-h
-> > ub.com%2Fdevicetree-org%2Fdt-
-> schema%2Fissues%2F168&data=3D05%7C02%7Csher
-> >
-> ry.sun%40nxp.com%7Cd68515fdc0f842ac82d708de9cbb4b2e%7C686ea1d3bc
-> 2b4c6f
-> >
-> a92cd99c5c301635%7C0%7C0%7C639120525411363026%7CUnknown%7CTW
-> FpbGZsb3d8
-> >
-> eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIj
-> oiTW
-> >
-> FpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DISzWCMSwqYBdw5w%2
-> BDB5ERK51Dr
-> > Tf2jzGtGh3wKNCMZ8%3D&reserved=3D0
-> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit=
-h
-> > ub.com%2Fdevicetree-org%2Fdt-
-> schema%2Fpull%2F126&data=3D05%7C02%7Csherry
-> > .sun%40nxp.com%7Cd68515fdc0f842ac82d708de9cbb4b2e%7C686ea1d3bc
-> 2b4c6fa9
-> >
-> 2cd99c5c301635%7C0%7C0%7C639120525411380537%7CUnknown%7CTWFp
-> bGZsb3d8ey
-> >
-> JFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiT
-> WFp
-> >
-> bCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3D5cohkQIgl0CDlrOmD0dDIbj
-> Q3%2BVg
-> > VOhiOMDRQD1iwLM%3D&reserved=3D0
-> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit=
-h
-> > ub.com%2Fdevicetree-org%2Fdt-
-> schema%2Fpull%2F170&data=3D05%7C02%7Csherry
-> > .sun%40nxp.com%7Cd68515fdc0f842ac82d708de9cbb4b2e%7C686ea1d3bc
-> 2b4c6fa9
-> >
-> 2cd99c5c301635%7C0%7C0%7C639120525411391138%7CUnknown%7CTWFp
-> bGZsb3d8ey
-> >
-> JFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiT
-> WFp
-> >
-> bCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DWtjyGdvt4s84HynGc3%2F0
-> K3UfkZii
-> > naNAW1ypEd%2B11RY%3D&reserved=3D0
->=20
-> The upshot of all those conversations is that WAKE# and PERST# can be
-> routed to arbitrary devices independent of the PCI topology.
->=20
-> I think extending host-generic to look for 'reset' in Root Port nodes is =
-the right
-> thing.  My concern is more about where we store it.  This patch saves it =
-in a
-> new "pci_host_port" struct, but someday we'll want a place to save the
-> PERST# GPIOs for several slots behind a switch.
-> Then we'll have two different ways to save the same information.
->=20
-> WAKE# signals might be more pertinent -- we definitely need to support
-> multiple WAKE# signals below a single Root Port, and it seems like PERST#
-> and WAKE# GPIOs should be saved the same place.
->=20
-> I'm wondering if both should go in the pci_dev itself.  I guess the impli=
-cation
-> is that a pci_dev->reset GPIO would describe a PERST# connected to the
-> device *below* the pci_dev, at least for Downstream Ports.
+Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
+accessory mode debug") changed the detection logic to support both roles,
+but left some logic in _tcpm_cc_change() unchanged, This causes the state
+machine to transition to an incorrect state when operating as a sink in
+debug accessory mode. Log as below:
 
-Hi Bjorn,
-Ok, understand your concern, currently I've defined the struct pci_host_por=
-t  to
-store the common Root Port properties and added the list of 'ports' to stru=
-ct
-pci_host_bridge.
-I will let @mani to comment and see if this is the appropriate place to sto=
-re
-these info, or if we should store them in struct pci_dev. Mani, can you ple=
-ase help?
+[  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, connected]
+[  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
+[  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACHED @ 180 ms [rev1 NONE_AMS]
+[  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarity 0, connected]
+[  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
 
-But for now, the motivation for this patch is that many PCI host controller=
- drivers
-currently share the same requirement: extracting common Root Port propertie=
-s like
-reset GPIOs (at least currently in many drivers, perst is placed in the roo=
-t port). We
-introduce generic helper functions to parse the Root Port t device tree nod=
-es and extract
-these properties so that multiple PCI drivers can share the same parsing lo=
-gic. I'm not
-sure if we should take a step forward here anyway?
+It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
 
-Best Regards
-Sherry
->=20
-> I don't know about WAKE# signals.  When it's in a connector, there's prob=
-ably
-> only a single possible WAKE# per Downstream Port.  But is it possible hav=
-e
-> multiple WAKE# signals from a multi-function device that's on the
-> motherboard?  Saving the WAKE# GPIO in the Downstream Port wouldn't
-> accommodate that case.
+To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sink()
+helper to explicitly identify the power mode in debug accessory mode.
+Update the state transition logic in _tcpm_cc_change() to ensure the state
+machine transitions comply with Type-C specification.
+
+Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into accessory mode debug")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index dfbb94ddc98a..1ee00025de56 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -732,9 +732,14 @@ static const char * const pd_rev[] = {
+ 	 (tcpm_cc_is_source((port)->cc2) && \
+ 	  !tcpm_cc_is_source((port)->cc1)))
+ 
++#define tcpm_port_is_debug_source(port) \
++	(tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2))
++
++#define tcpm_port_is_debug_sink(port) \
++	(tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
++
+ #define tcpm_port_is_debug(port) \
+-	((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)) || \
+-	 (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
++	(tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port))
+ 
+ #define tcpm_port_is_audio(port) \
+ 	(tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
+@@ -6360,10 +6365,10 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+ 
+ 	switch (port->state) {
+ 	case TOGGLING:
+-		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
++		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
+ 		    tcpm_port_is_source(port))
+ 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
+-		else if (tcpm_port_is_sink(port))
++		else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_sink(port))
+ 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+ 		break;
+ 	case CHECK_CONTAMINANT:
+@@ -6371,9 +6376,11 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+ 		break;
+ 	case SRC_UNATTACHED:
+ 	case ACC_UNATTACHED:
+-		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
++		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
+ 		    tcpm_port_is_source(port))
+ 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
++		else if (tcpm_port_is_debug_sink(port))
++			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+ 		break;
+ 	case SRC_ATTACH_WAIT:
+ 		if (tcpm_port_is_disconnected(port) ||
+@@ -6395,7 +6402,7 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+ 		}
+ 		break;
+ 	case SNK_UNATTACHED:
+-		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
++		if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(port) ||
+ 		    tcpm_port_is_sink(port))
+ 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+ 		break;
+-- 
+2.34.1
+
