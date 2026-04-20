@@ -1,63 +1,70 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011062.outbound.protection.outlook.com [52.101.65.62])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010011.outbound.protection.outlook.com [52.101.69.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1708025F98A
-	for <imx@lists.linux.dev>; Mon, 20 Apr 2026 03:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC729D268
+	for <imx@lists.linux.dev>; Mon, 20 Apr 2026 05:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776654092; cv=fail; b=H4d48A8bEnLmsApNg8tMQNaN4CirJE7GNSBRPytAkAwdk6dldSRbkfTBcT8AlriGaT9zU1Z/4W51J8oeA/Xk9wH8zlBQZV/ZICFm0IOh/vs1upNOgmPaAGEqQegIC1F56J8TZrJN6zaGDRxBgoONNVj6GKHx3zV0HFwVxuiRXPw=
+	t=1776663766; cv=fail; b=qY9sLasBylH0Xt6qkTfeKmT2fjTyUMmkqKdRfCwm8yuYc3ugDUCjXMOWWlTDR67FA1t0NVdEHgUu60a2uh026aHBAnwSixLMBREFG/2qx2611S6BaFu9ABtTYA1TdFf1nwjYthpJkdIBn0CU+/y0LUMqucxIOO7xwQ0OHFdb/HM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776654092; c=relaxed/simple;
-	bh=/mH1wZWxXrO8AWfLTnyvkUzbnLGAiEznr57/k5PxWw8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HaSHHY+Z3IRFKarrCo1pSw6z+te3BwBDBVKRtSivDUYWIw0VqRHGXuYG31Tc7oVXw6Tqq5uFmSdezSAjXWyE7zSfc1ZyZdpFXymUoIAQmwM3iBFN1GlR7JM84xQM0M7J3Ib3KrEofKwQKgJis5qaH3+nRU56nqufgt9XIU3mf5o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Yj8qFFc2; arc=fail smtp.client-ip=52.101.65.62
+	s=arc-20240116; t=1776663766; c=relaxed/simple;
+	bh=HIvurB/n/tFI7yqID01qbIXpYoqAv/hfToFl24LhavM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kpnrIIMWGSwMAafy/h6KYdJunX1VRJhCITBmcbizHE/lwsnwiiP7QTzMsEhrmYDwgVDsKbAeFC6+B9rOhbGuC9O4iZfPKBC0OMClb1Jz9PaZnyjnfKcmoFsP4dJi+McJa6kUCqyusaEGMfO7Xh9f3+PGz/pkCI7h14a/DswlE5M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ObTY2T4k; arc=fail smtp.client-ip=52.101.69.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Yj8qFFc2"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ObTY2T4k"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vFVvDm6DpxiyI8AKWRO+BGMF3vnrRndP6SOZDbmePJoBJjXUNEON/U7w39vLzNCrkIcnIZurG8mWH6J+FppKwolVgZWgRKu1q/AWIskhN/ACHMm/sP5U8DDbw9rkrqthp8Wund+e5nUwJSRvwcOkGNqi61HvLQ0/Vg7C4zHJovEFTZOZY5nmESR9QBuOgfYGXjxA9LbggDFjqVbe4vBLAnzW7eS7YYshmWGpjuncSg20juaNmS2ZBIg0BzJxjh3ZfqvjHhsYcZD8/mghhVKRMLxxR3+IDc9uZDBl+WadinOUdS5V2qV+hNsHLhl2jJMNQ4d4DRXAeh5H9oaQKbxKBA==
+ b=Sv/4jaL6YMllCGrFTZbbGxI4/vfhH9ac9x/T6hlexv5QL89hd0fIOrhWstaUOwjzKPQB8oQsXtEnXcJBv+ESXiqqAcEr/9CSgOcuA1tN5qzyoy8dmiECHh+gkM8mkUWMZELfkWGkizOV0s4/JnCpw8Ml+1oH9hEwi0K6VKTc6qY+w8LbGl5IukpYQbqisTx7SMrcQ4KGQczeJGz8NYi60cCOOiNvQ1NqvSLEcOFStQvAb405tbndb70tmqA4i1N87NVU9LkBxAlrWWXh//E9V44KqpB5ZjKxoa6Cw6xgOS9HXVLVqK7CpEa5iPgjkR8bhclR0a/gkp6ngI7/RgkhAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1z30w6FQ6F4qFXSu1zZBMRK/imvQiSK7cCEqeII1EWQ=;
- b=qJxb/+EFL9LRzzZTkSPDGjUZinEXrs2gpIE3Z26t/XnYKGK6+bawF+dLbIK0PhJw8b5hsBH8n36Y9QYPK98V/fxYRCttFNzWDg3oGLQYxudqodEWWNMludEnvhxH6NW80ayPyBBRXmUwkkasy1oyYEQpGPfH/5O5jYgF3tDZx3gEaWRg6Fl4vuTB6B/J42cDBJFAVD8STauMiTRvtmNS5+LbirZZ5WkhL0UCHXlyVYEdt+ROHSytt9S1kfsj8DuJMnYKBaFG7NQ2vV9C+yjAaesgmhbMhQCyU8ctL5KGUBNaXvn9DN6Tg5jQGKvTFg1YkCjU9xmlkYI+XSeVdx2cQg==
+ bh=P/hJFDc/OXO+z1G1aFVdYtqUeTMvbhXCQaiOW6aQ2jU=;
+ b=d46+bqK2YEyxPtqXGYe15HvqpM0IvrTZBbsGjorqozYDZEukMLR4uJDQT5/dOmwpX7iVk3TLzKLPZkIozgAglyXXGiOrZWUpdQrt6n9249sUkm/1uTY7o/ZhGBuE4KOUduZNgALqKlW/i9W8sg+VLd2uGg8F2rLujU2oxrq3RMmfA7sip8u1tgi8HQPfOtZDdqT22gcJlqmx9KrZu27NXdlxb8/aUPmutYnpZl0a5nlXyLMf7kjq4B8drsACMCTCgTy/DHq32Sc96qE/CxPBwalYlLY+E/4EdcjMX9BBzb04IA69FAO36kNIQ2MgIqQ2AlCVPr6w4CXHkWGwx5oC3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1z30w6FQ6F4qFXSu1zZBMRK/imvQiSK7cCEqeII1EWQ=;
- b=Yj8qFFc2eb3gsJgOtlX4YeziosfZLzzD4pJL/CU+pYI+f0mwNpQJEIynpoGhlDsfgnkNnvDA+68Fm+S9VLv/psCQY07IFV8tefFeiYLK3sF5yEm+jLkWXpD3LOJrQ03cMEK/MRJ/y6dBkA51RBzy+phL6e4+DtMoeb9zk7y3LZxHoN5MDteNhe21pRK6kiDcotz88Nucp0cGQQvPL313bC/QSIC6Uy1agKVUnb/fr+ByqlDrxdOe/Nt/jkPZyzHpckWICLe+Y8LOPWKIFJsYe8oZMF9e7wm/6QJ/lIytf9/CEzONU4R3wsKvxFmGtrNRAxn+CZxeWqeKPqLaBgMQJw==
+ bh=P/hJFDc/OXO+z1G1aFVdYtqUeTMvbhXCQaiOW6aQ2jU=;
+ b=ObTY2T4kwSIf5diyCIQ4DKUnH8PQfKNMO1PhjnyCEUxtHm4s2A6w5Dj/g+3gD6Zc4ojSwgS4jPYng9NFJ62dIZaMWFEcHnjCGtv+w1HxC/lMOiPoSABYb2T7TquEjzKQNLEEkLRZ4oHpwh4KNEr5RW+yxySTrHvDNiKnRY2O0hCnLSxYQYK70nyy3O7SI7EpqRE7LdmXQmrU7oSwHz6fJNve6q4fRyRDPnKsRcn3zSzzgj9mrlu7xeC37cPK+x7z3Sp272a7/1RZRL4RnuU8Wj+0eCj/swpZq9LYYKTBQANqV2FH4Q6UQws4xhmdg2Y4mw+kxI4rkHhKsIeOmh3Uig==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS8PR04MB8641.eurprd04.prod.outlook.com (2603:10a6:20b:428::23) with
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DBAPR04MB7447.eurprd04.prod.outlook.com (2603:10a6:10:1b2::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.31; Mon, 20 Apr
- 2026 03:01:27 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
- 03:01:27 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: badhri@google.com,
-	heikki.krogerus@linux.intel.com,
-	gregkh@linuxfoundation.org,
-	m.grzeschik@pengutronix.de
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH] usb: typec: tcpm: fix debug accessory mode detection for sink ports
-Date: Mon, 20 Apr 2026 11:03:17 +0800
-Message-Id: <20260420030317.425022-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA0PR01CA0004.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:80::17) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Mon, 20 Apr
+ 2026 05:42:41 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
+ 05:42:41 +0000
+Date: Mon, 20 Apr 2026 01:42:35 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Michael Riesch <michael.riesch@collabora.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH 2/5] media: synopsys: Add support for multiple streams
+Message-ID: <aeW8y9-Y-4yFKEZa@lizhi-Precision-Tower-5810>
+References: <20260415-csi2_imx95-v1-0-7d63f3508719@oss.nxp.com>
+ <20260415-csi2_imx95-v1-2-7d63f3508719@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415-csi2_imx95-v1-2-7d63f3508719@oss.nxp.com>
+X-ClientProxiedBy: SA1P222CA0125.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c5::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,145 +72,172 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS8PR04MB8641:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8318dbc-73d1-431f-c3f9-08de9e891d4d
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DBAPR04MB7447:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7efd2e80-d64b-4ee9-5881-08de9e9fa354
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|1800799024|38350700014|56012099003|18092099006|18002099003;
+ BCL:0;ARA:13230040|19092799006|366016|52116014|376014|7416014|1800799024|38350700014|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	NBiIpFvx5J/kRlZ7hs+Wskv9HMTDmzutmUu4z8YFZwRu3c61/ko4V/gQzdq7RMqbeJyhpjsuK5Mgg/Z8ukx1xba/2J5PGyDS8YhxoC3USXSkWek+KcFMnbSO3wRm0IO0Ck/XUlrVGShaKbrgkh8GyNbLLEhhzEtYJLy7np8S3b9aXLazoXmsuHtlH7uS3HYWXNcbPIKXR65ga97uIk3vO9WV7aD9G83Pv9DM8y+vx3gH4EtSKIbbbBazt+lK8VD+8XoUVtEMB+YfeoB6xAqIRyTrM+960X4zmU2fG80DNphbVg4wF0+6VOcjsxYOA/6Sgu05P9F6o/pVZstd3BVQ05vlGMt5i4RCHquh4L4TUfkkbfIB/Nt1A3rSgJYO6Sic/81xqT2sg/QtzAUy0cEuOwzqRJB5Y+CZzQ3qq1/KoMRb/Cz8uJwqI5hH9DsdFyPgOkDK6L1dQ6/URl4BPssnH5NiybifjLEve7Uns/wTGqxF1uag3mIs1zN5Iqmmz/oBlxaTy9XEy+KkhptQMmOeCXuVn7thZ1hG2OzXwACg3NlWdFsTAv2neBGXnzta0vnkAJEAN7nrR9BPp2lycFpNaKTUtpNEXWo72C0NZQHAGqOuRWz8gS6Eu9xO+EB4bslJqsdxLByGgMbxub8nr26RVzIPPU2usZXj+Y/JkYZDsCwEiTRgXARzf0wZxSFjM5aKkFV6UWqvm9Yi8cckFY56Tnj9W+nfVN6xhQjqQGwj+GSE+aBn0amuVrItLpYyLbd4z/Co5n/AlYOwNwPSKQPEz35gX6ibyZFrlMp53GWzn7g=
+ IF1rZsg5cVaDgHWWdiZzDsM1LZWhstxp1P4jLQhmDP1E4KBEp5peGLxnxk367Y2KzjtuckMRwO4ivDsFSpb47DlPF/zHbYAyDHiQj0nHsAPNX1F/eFCJMLihTb1c/6sZ+hOKMoh8nVWsZOibkoI8Rq7LGU2JEx73QFW3bngd3ml5Lvx5OAiQY60G77LJpZzlrFwEDTaVk/YSrCaHcY7bhjuDs/8/OVabV3p7LF+EYXk7UbgIlxs07VeeTk7h6mvy2HuNd9C8aQc1A83Aw+820SbNIgoGjbdQV4o3pOYoTIV5h6qBczpaH878UC4h1O02Ohh2MgyJFhSh0Xhuk1l2vWMW/dhRmGeRJd+mEAHtbrJ7Pqp3edPqoxnBD0q+/z9aTE4cs9Ndf0eKUpaCEg9Z6ODAcWLW+BmdcNsR6dWxfhzctxVlms1AaGr2zyrKcwWGn6oKmeccnz9RLcoos2KAfR9ATsZN4zPzC0hL1VuF0tIhVrubN56eQAvCi05SdxL9xkDF5+Xk9vErdw7YLGYxqb3g5CZdk/DpGPYQz3mmXbKaRcZwUUCjQqM0iMvKxUIcmGMwzpHfUJlDYzWKB9AsMyE9QaIJO6Wkc4NN1wXE8QYB4cAOfX9QMp886ZwurJfVZnaLSwGzA2zHKZIPzn41hhPVo5zjnfhhZ3GjGFcSEeT/EvrwRQMd7LzCE7jGljEBug+ZAJ0qiLUmo1C5XXbyYexxNScVVtVH+eeEnOnOlZE8vgc8L39LiUs0O4aXjBZQE5FqgIBc3XXBW8BB6KpzHrad7X9ULsIg8WLLYT0rglo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(1800799024)(38350700014)(56012099003)(18092099006)(18002099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a5lHR6Tsie04G859D1pJuxDrLHpz5ILqQN554Gq8EiENBq9YF/hywTJdnxLs?=
- =?us-ascii?Q?04ybkP+L4azfz/tjk3jXSRqm734oFQY/OHw3Oe+8P5kcuopTl89oKXWnA53p?=
- =?us-ascii?Q?CW2kuBybrqkjwPqe2NNOWlHcw+UA8OYmDtB9ZvcMmv4zVz/s/pjcPXzs3MQz?=
- =?us-ascii?Q?Mxq1Afai1sj+1wu50pF063bH75I0BXmxm3I3EsuKNGZ9n7/cHIX6P/XAay+o?=
- =?us-ascii?Q?XOwksQLPav/JG4b/d9cI7NuybKe++bLzQI/+JIk9Pfi4F1FwOpMJekdZ/cGi?=
- =?us-ascii?Q?RjFHQWhQXdAgxqUExO0K+uvHaz76VQ7rtXAOF8hTbbl7uvPvCiH/Hljnjbh7?=
- =?us-ascii?Q?kYNX8Mpj+JJ8YbkqQRTkE23uAuXrFd/7Wm9kIWz/wmcUrhk+7kEa1m8/pQTA?=
- =?us-ascii?Q?c4HAmeKYs7UCdMcWSVSwgyPzqpkpLFbixnJU/EbxVjR0wLb+HyJC7gxJ8tDI?=
- =?us-ascii?Q?vFf1DwzznPv+/KnW6AiWm10iNcZmmM8//beaYNshcL7GkpsKr3As0cWIEjiB?=
- =?us-ascii?Q?X2NfMBEFkVNVWdvGP784cEB3T/gM8h8Z1cooJFiG6eLQjfhjB7suHDBmIGc7?=
- =?us-ascii?Q?qST9Q0iVhWD257NbIm2ikRzTDkteCIo+WT315M4B7AkE2c3R43/zgg+BKiSJ?=
- =?us-ascii?Q?LAxm+4JwaLrX32d9cFLPQ/lxGtke2lfJe95nIDZY4mk+4JXm+aa8zZzaLXRM?=
- =?us-ascii?Q?n2a4Q72qSZq+tFtb0NxXCXpQ0qKMjtsmcp3vaazr/Y1+WOFuhuC2D+7zdAB4?=
- =?us-ascii?Q?+dcLNnHfccktGzQxB8UKxlnHC3NDE9slhGDY71hnCvABgAH7AU/lAGlb7Aw8?=
- =?us-ascii?Q?ds3gfsFNQX3yDnUC2auER96rLuixsH23waYpH+EEvulsmpqAs+H/xUurf9gY?=
- =?us-ascii?Q?MhQEDjPIFdeXx/CorkK7MQIqU4aZe/FKFhhNHRv8a/2iWerOlvhsF5zc11HW?=
- =?us-ascii?Q?hSCcAfrErUemZ2LXI4vzk8Jbtpcy3JF/o7nwIa8i3lpg1ATy2nIaSgUtggZW?=
- =?us-ascii?Q?xtxhYfNiYTWBWdM2h/oPERqDZ2fvXVi1920SBdOQDfL7yodCd7E6svYTxfrm?=
- =?us-ascii?Q?0ki62hyxfX1EGPC6yvB/q9+COrPVmihXZl4YxILWbnucf7ALaDLFLfQT7bNl?=
- =?us-ascii?Q?YV8xuq892Rle2AZSC6UTcpwJe8tiZlJwIRCH00CunXzgxbyid0G+apYtgEwV?=
- =?us-ascii?Q?3CElmqJCBTJ4RKXrX9KRgdxbNtkv7svRuRguhk6S2QRQe2peZrVHKbETh/oo?=
- =?us-ascii?Q?XPZObb0t0vU0Nz6/1WjJQOEY7KbWPlfwyXX7ja/CIYTAcB1vYPHD8Z5ZJnvT?=
- =?us-ascii?Q?nNmdOgfmQsaT/7WWpV2bEN0oB7nQ4enbGhxcxVAKWCnskiyLNEmrfyQ0g8Gu?=
- =?us-ascii?Q?DfbkhAK+Y3jRe710BkQ26C1ZRdkVkPxKn5s0BK6Gt3cQii5HFtn1j0n2nOEf?=
- =?us-ascii?Q?6RfRr9ACTBhtW2FQW358dUtIdm7OIchIhc1zjjE8BOFrNJZK/7ZizuhiTrK5?=
- =?us-ascii?Q?jppcBESCd+daa1SMXmGIcrFPWk+Da14CkncoSqPQrLSqxDpMWWLKS+BGHxoJ?=
- =?us-ascii?Q?oWiG5vcsj9IJhCuRN7IZM0iherh3JeiDs0zLAcSYjO5ihm5awmsj8zuUMnsB?=
- =?us-ascii?Q?AzvPV/bg5iMeA9yff1yTsThIZKh7g/hYpi5lYo3gKuA9Lee3LYIw+K93EuzK?=
- =?us-ascii?Q?SJk56H1edHYYntKXus0eG8qaz98WP4rSjc2DRS5+m81LUhL/UYMcRl7iuXeb?=
- =?us-ascii?Q?t6HiviHq2Q=3D=3D?=
+ =?us-ascii?Q?fv081oeamM5EdWwjZ0cDObSB7B7BRZjhQUpxFXNGwr7AR3gQ6xfwI9vEEsGt?=
+ =?us-ascii?Q?yfLZ7Dy76Pc+QEWoYn5IGmojD07jVU0lrRyrhgBsTYhfceTjJ4kihiJ2nEtY?=
+ =?us-ascii?Q?y7CFwk1NELH/8YS6m23kA9V6BV1rD+YKHcMWZhJcz66z+4TGZNxUvq3WJltb?=
+ =?us-ascii?Q?LqlqRhREQsLtjhOh4NnURwLOcLCv5ofbhhnBUSyPK8F2QS19tF+pinNvlb59?=
+ =?us-ascii?Q?4KEPM0PT/4qoKCJXSZtZ3KDm31qqIEbHNUE5+U3onUF+aAqW/FMqneZbpQrw?=
+ =?us-ascii?Q?Vk5cl+EkHrOA11j9nmMiCHfgDWeq4VBzIq1hDaEzWVcbN8JQh0zjO7qp5Xaf?=
+ =?us-ascii?Q?VgwKng7FrKuCmIjq3kDBqTP8GbCRVmaLeJR7Didg/y11xXROCl6hF1n92hpP?=
+ =?us-ascii?Q?l4f8rlWcIgtNE2xdQBCfuD550BRX1+au1pVltvA+Q3bWMzNkRVFF3PLBOx3+?=
+ =?us-ascii?Q?RfY0Imka8stAodsZZOkuSo/HV4/zs3H9XNzyjYWSXYhUoBJ9JIOT5v7b0MkS?=
+ =?us-ascii?Q?C/Jh4h3ez7T7/AC3WoviTCqZpj63jlu/MmMytlU06OPvVrBUbIsjSaknElop?=
+ =?us-ascii?Q?xIIoU0tkGb63+FctG98mHxjJDLIFBWHE/JWR+RdIDDY8tq8ew7zt+hsR8n2j?=
+ =?us-ascii?Q?ZCOlGHUyM3s1FFgbF4nqQ+r7KkLgszvjCHlrv+pzsJoa1DLBfka/P5INEJoS?=
+ =?us-ascii?Q?ho6iZYXyihedrD74m4VTAyy+dwzQvbdhCfh3oNSg8x8i9Nfsg1Grkp9lOFhl?=
+ =?us-ascii?Q?oqOliCj8sQbX7T92l1l2OsCRGFcXArr2iVwQWTatXl0xA5FUxGTIUth79M+9?=
+ =?us-ascii?Q?ZSQyeGC+dRnPDoRNkR+AWRLXqeWfliPV24wo35A8fg0C8XCYM+QbnBa5wEwe?=
+ =?us-ascii?Q?TFcM/yrlu1MFrajqwr4XCwB43qr8bRLCvJUw3udh+v9Fij1w9dGCCt2AYn7K?=
+ =?us-ascii?Q?NMWrp4HuOsa17rTaHHRDZJdQnWryKcoxm5RxImJlJpEavzxL3AxeCudFMm1M?=
+ =?us-ascii?Q?CNIguTOwhU1K02kF6TEaWzlbJha5EVNmzrsfDj6LB80+6sNZ0fxFtC4fzZkb?=
+ =?us-ascii?Q?rFsdbOZIm64XDuKMGTdIoQqfwVyGcrFG3mtPzfI5zobMMcRY4Wp3dPuQCMA3?=
+ =?us-ascii?Q?eCKOFf+npV/mLDVzF3suINcx+AO00U6NCF7L/DVNnjx7DvMlZET86sQHv7Uk?=
+ =?us-ascii?Q?aFb9uEw8M7tjsG/PzD1omj39XuPNaNg3X14fvbDE6nKZfG8rzRIu5Cnmw6Mi?=
+ =?us-ascii?Q?y8eJE1qlH3JscyTYtkL1urVcgUbJGHt8aiM/L1ktiubf++MB82viVNt1Nwjn?=
+ =?us-ascii?Q?DwHittvDAZ16bTmPVE/drRs1W47F8mErbjVz5ewugn4cutmjT0LrBXOiz3ix?=
+ =?us-ascii?Q?9aKPbby4PO9heUHoa8EcGZcBgLJ8/DIr4chdHQpBFKUiWrfX2xsHWLwJsCA3?=
+ =?us-ascii?Q?XRXa0EdL1cgSPUuChbKYiYXG/eiezQu9KYJ/qvinVIZ9S/O6iKpsU+pjSwMq?=
+ =?us-ascii?Q?FGR2ppKKuL078bfXXFphu009qA2lJuMyX6MYw1ik7NG41i+IGpeDTmiEOofe?=
+ =?us-ascii?Q?xM9v5rR01ODFXY0Q45OZ6yvOuwLV3PF7tHQxT78Bcw69+F+eAdpaxKO1Nwws?=
+ =?us-ascii?Q?2NwLtnV73tbfj/Fe/RgIZruPM+LXAY5AXlKLwvFF3Q6gnvCSXUaf6GOPmwBm?=
+ =?us-ascii?Q?juP2lwNQ5pePif1L1RIFiLv8tmMhC9ME0wMVCsL87LRyzweo?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8318dbc-73d1-431f-c3f9-08de9e891d4d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7efd2e80-d64b-4ee9-5881-08de9e9fa354
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 03:01:27.6338
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 05:42:41.3646
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lB7xxaYgZb6fGnIDUjw8J2vtc0rqV0klCMZeHUUJwY1HIB0zYNPnLt4QZNI9iEjvMwKuNBwN76bYi+VGi14g7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8641
+X-MS-Exchange-CrossTenant-UserPrincipalName: 310qd3gZJruAgEaTIFAuNywHrEvzVPjHe4fe22VLfYfGBtN9UQuJXKQ7KnL37rqwO78QOFML1RpFZ3yOdUhixA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7447
 
-The port in debug accessory mode can be either a source or sink. The
-previous tcpm_port_is_debug() function only checked for source port.
+On Wed, Apr 15, 2026 at 11:46:53AM +0800, Guoniu Zhou wrote:
+> The current driver only supports single stream operation. Add support
+> for multiple concurrent streams by tracking enabled streams with a
+> bitmask and only initializing the hardware once for the first stream.
+>
+> This enables use cases such as surround view systems where multiple
+> camera streams need to be processed simultaneously through the same
+> CSI-2 receiver interface.
+>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+> ---
+>  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 45 ++++++++++++++----------
+>  1 file changed, 27 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> index 46e2a4315ac2..85a2a95bf080 100644
+> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> @@ -113,6 +113,7 @@ struct dw_mipi_csi2rx_device {
+>
+>  	enum v4l2_mbus_type bus_type;
+>  	u32 lanes_num;
+> +	u64 enabled_streams;
+>
+>  	const struct dw_mipi_csi2rx_drvdata *drvdata;
+>  };
+> @@ -528,28 +529,31 @@ static int dw_mipi_csi2rx_enable_streams(struct v4l2_subdev *sd,
+>  					       DW_MIPI_CSI2RX_PAD_SRC,
+>  					       &streams_mask);
+>
 
-Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
-accessory mode debug") changed the detection logic to support both roles,
-but left some logic in _tcpm_cc_change() unchanged, This causes the state
-machine to transition to an incorrect state when operating as a sink in
-debug accessory mode. Log as below:
+It maybe simpler
 
-[  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, connected]
-[  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
-[  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACHED @ 180 ms [rev1 NONE_AMS]
-[  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarity 0, connected]
-[  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
+	u64 enabled_streams = csi2->enabled_streams;
 
-It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
+	csi2->enabled_streams |= streams_mask;
 
-To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sink()
-helper to explicitly identify the power mode in debug accessory mode.
-Update the state transition logic in _tcpm_cc_change() to ensure the state
-machine transitions comply with Type-C specification.
+	if (!enabled_stream)
+		return 0;
 
-Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into accessory mode debug")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index dfbb94ddc98a..1ee00025de56 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -732,9 +732,14 @@ static const char * const pd_rev[] = {
- 	 (tcpm_cc_is_source((port)->cc2) && \
- 	  !tcpm_cc_is_source((port)->cc1)))
- 
-+#define tcpm_port_is_debug_source(port) \
-+	(tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2))
-+
-+#define tcpm_port_is_debug_sink(port) \
-+	(tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
-+
- #define tcpm_port_is_debug(port) \
--	((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)) || \
--	 (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
-+	(tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port))
- 
- #define tcpm_port_is_audio(port) \
- 	(tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
-@@ -6360,10 +6365,10 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
- 
- 	switch (port->state) {
- 	case TOGGLING:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_source(port))
- 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
--		else if (tcpm_port_is_sink(port))
-+		else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_sink(port))
- 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
- 	case CHECK_CONTAMINANT:
-@@ -6371,9 +6376,11 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
- 		break;
- 	case SRC_UNATTACHED:
- 	case ACC_UNATTACHED:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_source(port))
- 			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-+		else if (tcpm_port_is_debug_sink(port))
-+			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
- 	case SRC_ATTACH_WAIT:
- 		if (tcpm_port_is_disconnected(port) ||
-@@ -6395,7 +6402,7 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
- 		}
- 		break;
- 	case SNK_UNATTACHED:
--		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-+		if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(port) ||
- 		    tcpm_port_is_sink(port))
- 			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
- 		break;
--- 
-2.34.1
+....
 
+err:
+	si2->enabled_streams &= ~streams_mask;
+
+
+Frank
+
+> -	ret = pm_runtime_resume_and_get(dev);
+> -	if (ret)
+> -		goto err;
+> +	if (!csi2->enabled_streams) {
+> +		ret = pm_runtime_resume_and_get(dev);
+> +		if (ret)
+> +			return ret;
+>
+> -	ret = dw_mipi_csi2rx_start(csi2);
+> -	if (ret) {
+> -		dev_err(dev, "failed to enable CSI hardware\n");
+> -		goto err_pm_runtime_put;
+> +		ret = dw_mipi_csi2rx_start(csi2);
+> +		if (ret) {
+> +			pm_runtime_put(dev);
+> +			dev_err(dev, "failed to enable CSI hardware\n");
+> +			return ret;
+> +		}
+>  	}
+>
+>  	ret = v4l2_subdev_enable_streams(remote_sd, remote_pad->index, mask);
+> -	if (ret)
+> -		goto err_csi_stop;
+> +	if (ret) {
+> +		if (!csi2->enabled_streams) {
+> +			dw_mipi_csi2rx_stop(csi2);
+> +			pm_runtime_put(dev);
+> +		}
+> +		return ret;
+> +	}
+>
+> -	return 0;
+> +	csi2->enabled_streams |= streams_mask;
+>
+> -err_csi_stop:
+> -	dw_mipi_csi2rx_stop(csi2);
+> -err_pm_runtime_put:
+> -	pm_runtime_put(dev);
+> -err:
+> -	return ret;
+> +	return 0;
+>  }
+>
+>  static int dw_mipi_csi2rx_disable_streams(struct v4l2_subdev *sd,
+> @@ -572,10 +576,15 @@ static int dw_mipi_csi2rx_disable_streams(struct v4l2_subdev *sd,
+>  					       &streams_mask);
+>
+>  	ret = v4l2_subdev_disable_streams(remote_sd, remote_pad->index, mask);
+> +	if (ret)
+> +		dev_err(dev, "failed to disable streams on remote subdev: %d\n", ret);
+>
+> -	dw_mipi_csi2rx_stop(csi2);
+> +	csi2->enabled_streams &= ~streams_mask;
+>
+> -	pm_runtime_put(dev);
+> +	if (!csi2->enabled_streams) {
+> +		dw_mipi_csi2rx_stop(csi2);
+> +		pm_runtime_put(dev);
+> +	}
+>
+>  	return ret;
+>  }
+>
+> --
+> 2.34.1
+>
