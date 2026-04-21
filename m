@@ -1,187 +1,210 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011007.outbound.protection.outlook.com [40.107.130.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D098372EE0
-	for <imx@lists.linux.dev>; Mon, 20 Apr 2026 16:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776703562; cv=none; b=qymbMnUWfsYnbdztCSew7OwVNgZSfccASStK5AYhO0MRvFn/WV5Py10oirxTtvyhHDMSfzh1XwmvtvT2+fyNUbO7YJBpQ58jNribWobY40w+ULaqqqwu8tjL77t4GKfZW3rcWrsAHPvt30iCOsxKbdzYUilOKXL/2GWi22GAI0A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776703562; c=relaxed/simple;
-	bh=8FNY7MbtkgjbsRoI1I6nx/707r+HF/T/RNrqqCg5fjw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pG26U/EiAtMy4Jf+LKseM+6aD3R3aA4EWhLLIUAMNEuz8QC7g8r3/inzeYH+OvVJfmsXejt4N8XRrCqab9jZ0fGWulkczvNQuiGC7GgfeLKH2G9NAI6SLu9RUlPn8NiNclZ4Bm9k+C0QIvInlWsTh/18hnEn6HMY+gYlKa7zkag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jtrzuYWE; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F81F195811
+	for <imx@lists.linux.dev>; Tue, 21 Apr 2026 02:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776738822; cv=fail; b=c+1yV/m9gm4TvLU5+QMAb7yb/S0rd2z//0mx6pZ5s143ASY2G22PEWIfMbNEhVG0Jm3iBbr+Ak8IHKaCai7WRf9NG5Ze/pYTTypQdRdfrITEB+7wcO3t2Y4AvOWyPmmJkFoxN2VHQ2q+kW29Llb0v5ouG+X1XJqoHOqkgwoB83U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776738822; c=relaxed/simple;
+	bh=0gWS+RaGX5e5pI0putSmuvU9EPtmzEIlnpCJt6aDcDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nf9ONSl2bgECJK5/QAuFIyE7GjjEwGydz3m6rq4VeEdoqIlrl7yiFZxPB5bYM3z2RcfTGWXt8eyvqn2Cr0tcwtSWJQ1s8X4YDAGmTcJT9Rb5QQ4cUtHaUWYDNYnR3bLqObEvoW2lGv5+U1oAw6di10RftKVPBpNTj4DKUcgixRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dz+Sz0GY; arc=fail smtp.client-ip=40.107.130.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jtrzuYWE"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43d7645adbdso1853129f8f.1
-        for <imx@lists.linux.dev>; Mon, 20 Apr 2026 09:46:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776703559; x=1777308359; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5E+UKYZ+gXk3KKDw9hC2HFOEQBrHQpFIVrnj4wNYvlY=;
-        b=jtrzuYWE4s7Lyd4OALGYSIGQc+9Rq4VTrEmFcluTZg+z68O6PkLqKrAAbHR/aMweDZ
-         I/R9N1z5amK+/TB0lmc4STqg90F5NySR8rlVqQ397PyCm2pdZed8vlNtbFbXZX5oq12K
-         btTJFVbcQQqZg1pVSBMh3VjARWuJTQfO1JhRxdlA/YTbpULOmMj7AANxo2ymjHFLup+Q
-         bhzviVrU3jk5BLD7LDLVhVycfs0HgUeHyOzrcsMzGfprfwcgZXw2Z1JMFOOQKzXJNHGv
-         q5HVyDbeCC22xDx8qmPPCXSsOAPX/T1OedhPdToNY5ZxfJvqulfWy7IoLx3ZQQY4I8sX
-         GH8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776703559; x=1777308359;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5E+UKYZ+gXk3KKDw9hC2HFOEQBrHQpFIVrnj4wNYvlY=;
-        b=BfigFKodg2NLKSDlOtp97sDCBOTVCAAr/+MmHwlec8Nmgfv+0OYhqh6XmdQ46I8bJK
-         lRbwfwzAf/xKa8AgkgzVFUpLBzJBeusQyLWtwSDMzMQAhbDsE35wJGyzil7J0JssKfP6
-         ILzgG8ZqqRg9uPvFY2veg9mkm+iCVO2f4ZjWcEKKcQHRHNn56oCuTprWNkkOp+3D9I7i
-         3+I0jMiwuATEo6swgvBww1rq3PWdLrnfVJnXFoKVEpILT6EdxyXm1I+UeBuf4o1Fqk9S
-         zLXm+FaBuTCPzaOCbjMTMooK8jpCt++vWp7HyQD5i3PDTY3uVAbQcDvc0Fc49F3ux4BE
-         kWsA==
-X-Forwarded-Encrypted: i=1; AFNElJ+aTQ89tLhd6XfIlU+eJkTe8yBnoyQImgOLnoc6XbR4bH3ERTtRXHu4kvDpB7JtlKHFGmA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzc9ZuN839PPl72FoiU2amRJl6HZjLv9bMcJKCYqHiHvOIU4CRu
-	SQF5efcHZfIVdJ2I2ilYZl9LfUTgmuA+vZ9xp1+nfYKylKJMr98dN4+g
-X-Gm-Gg: AeBDiesbZVEm1zPxM38bR8QpzYvMFC8ens2LOHJwIBdtODmt4whX2yfpldqliqmjJwG
-	X472uCrxhlcd4iSKfxo9Ba0RlrCy7fBpUC6OltQdZDmwdF1FfIMDpOI0yKLm5U/cvNKg5WmbVei
-	WuZrKfvSNpm9dLs9nS8FT3sYwiusWfvT1+lWIyYPo1y6q6E1cpl5mXJ4PzpYaUDVHhr7hyqW9hn
-	JBD45f2jUMyGcI9zxrlKAc/9O+IJV2/AAKsRHeRzgzCK0ZqVhduDaRdXaF+P63rg0WPQS3l7SRF
-	1eYvKe+0KDXgI2DmNhfD1k1cQ40uN2CweKj9f/LGysOgbwdeZ9Ioe+OvwRExE5dD5ErerNOrYdx
-	2/OximgGjmisVXexNMuBjDPD7XgYxMOaSqSXmLrNHmLNsRv8lKt4xUIDaV3KLd4Ywx+rFNE8VtA
-	ayqbrlONrdFwkfVY82LaMcxAQgLZ1eQeGuOZuBImht
-X-Received: by 2002:a5d:588f:0:b0:43d:2be:e54 with SMTP id ffacd0b85a97d-43fe3dfd4aemr21673354f8f.39.1776703558306;
-        Mon, 20 Apr 2026 09:45:58 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a79esm32560450f8f.17.2026.04.20.09.45.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 09:45:57 -0700 (PDT)
-Date: Mon, 20 Apr 2026 19:45:54 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Jared Kangas <jkangas@redhat.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linaro-s32@linaro.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] dts: s32g: Add GPR syscon region
-Message-ID: <aeZYQp9b5aoV7Ihv@stanley.mountain>
-References: <cover.1769764941.git.dan.carpenter@linaro.org>
- <0e922537c02d1c47734142090f98eb78e921ed34.1769764941.git.dan.carpenter@linaro.org>
- <aeKn2dvOOO43zdev@jkangas-thinkpadp1gen3.rmtuswa.csb>
- <aeZOcCOgMy2g9wqp@rh-jkangas-kernel>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dz+Sz0GY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NhgH1pQt7Qu5HuaZLFphZO099zR2WXxUD/KI0kPSSt1R5uJuVWuZJB03M6hmOIAxb3syqwrM/b6gF55LKBvG8KQ69pUa9rj+ACSGeRAvwxmUXCLjzpnTgDHOXXsWHuuMxK2H1VES3NoKHt+qdGtA8o/r8Rk7JZ2hZz/YXBqmTJWigd8SrjucJCexo9jhGGJt86GvjrU92t0Gb6Xuei0On4F2Mi3PDJCgYNtAWbZX/F+6QtUM5ECfHtI6DozyKYoqV/XNGA9Lsri0yAs4km634bzel09PYEuMVU5xBg4tN3+LJcSlrKMyp4kKnbisGQYVddvhf72zyxu4Kx/wqMQWpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=So9pkkY9x6V0ERELFPbEZ72wKSkk3hQ8uRn6Wt7GMuE=;
+ b=pGiLjXtpakCCQ8GnVVFo3wHN8iCO1Y69PB5utCmyw2vNEIE5XpacPctYsWzq7OioicK5LpwE122b5bnAm/LLFboZf4vO3w5IBtRRbtAJFBgYffX+QNENUVvYD/dRnt7hYkZGfnR4QUEGWzcRK+oC6U7nWWJpvSoRtpusIXPwKRfEO9cZMmMAw+8DOVkx5/xAloIFtS7S2LPkl+lF377a2w9j9LfdDve//Rn6Xp2AzXs79ckKCRJZWmiRF/cQjYjc+Pt8C3PxVpw8/VfYZhk6IeVFMPnvFySYMy+qDuUQd7y9dCmiH2slv+wk7e5njQ0fNhYUNxQgiq7qNeRuMNLCjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=So9pkkY9x6V0ERELFPbEZ72wKSkk3hQ8uRn6Wt7GMuE=;
+ b=Dz+Sz0GYU3PCddg8YTsUoFYWr9rF9BzAe3mlS1UmI981DsH2f0tczw2EIs0NTYfBpLn5VY9AclGdd+AQRjXzSqkRxph9uGTu5UpQoCX3xVf5pHJKYV55O7yoIaDVpZ0vxu3qCYqcFZ+ZNo5zrr2IYSBsRsMc10y4q/oRqf+SDWQXbC6G8J90J7mrvexE7nQ+D7Cv00bDx7nuDPwGzRxpQT6QFfgSckFXzsoGQc2b8iM84G5mI8jeKFJ5ZZocu4/UcbXhRZMXxg52bllBOsKHwFZHw3+/M/0khXAg8SR5TjUMY0rxz/P3GX7Bfb5CjDhYbFYjiaPAWSShUvAtw1220Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AMCPR04MB12622.eurprd04.prod.outlook.com (2603:10a6:20b:76f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.33; Tue, 21 Apr
+ 2026 02:33:37 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 02:33:37 +0000
+Date: Mon, 20 Apr 2026 22:33:19 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
+	bhuvanchandra.dv@toradex.com, peng.fan@nxp.com, sherry.sun@nxp.com,
+	linux-serial@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Subject: Re: [PATCH] serial: fsl_lpuart: fix rx buffer and DMA map leaks in
+ start_rx_dma
+Message-ID: <aebh75Od_EfYhbal@lizhi-Precision-Tower-5810>
+References: <20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com>
+X-ClientProxiedBy: SA9PR11CA0016.namprd11.prod.outlook.com
+ (2603:10b6:806:6e::21) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeZOcCOgMy2g9wqp@rh-jkangas-kernel>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AMCPR04MB12622:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6cafcda-5f88-495f-35e7-08de9f4e6108
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|7416014|52116014|1800799024|38350700014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	TDltTECW8xyLUtDG4W4i2hoabD/wsA1drVZp+E2xAuBkCpSqGaRnG3EfwmtJmKRmGUd4knyJ/7pd+CHnEI8nCIMG6YWmdffWLTcrOF7QeczYGA4A5IvwFGQPjdUxHEXxmNCG/RpFXQg2UHhHOp+dv+KVc6nHO6GuK++0RcyDmAzLnMXxR1ZevFl96QSqPTKTOKsms8a4KZ2I66AOhRY9AMqouEsMmFsLZsXjfmPuhyFqBxicRQh3QqqcNMvvkdiU17iz8Fi8eg6dj+xFFs6KA27QvCUUg6DyhagD870ymPyXJZByt5/YMxNUcVK15dNSo4h3m57lrSgKeynj8QgoM9orc1H9bG9gXImSQzM1XWJXXbGfVNOixiSfEUtXzF2haN0HiLzfufLl7fcE5rhm4Rqb65kCJKQNKdaEyPTabgiCLaC+jPvhCctSagUGhhxh3PJXe+e0calbXe+R+yUpxBNM8jMiqo+DaV2meQV3TCtV+cUWJ5Zmuq2kLusq1OgLLIWGxEycLs9hVyopfz8SMR0++5WEBs4x14GtXfD7pj4qwe5qWaSuJqfkVPVhZZPlqmIQ80rrgheWUgSKQur1qpSBS3gG78BqUdA8MK8NHZVNYi2r0pjeyVFFyJ7gQefd9wSf+Ow+xFWV/aCP3OLxJoBcwdPzZ0WMtAtm4UCQ8xQb09SDWjL52o6ldJx55WqQqgbOPm05MRQZVpTyiVSfTI8qVd0zZXnAWh4/HauEFXNbtYJh8trAtPnj4VBpL3vHo+4CxhaXdiQuDNA5kAZw7FGX4QY+1fSEOhMZAb+oZXo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?npKhwNh0VxeZ/VMiR5MUfMzROB8ZEOJd1S4JBiRroNsSPW/cUxhvOUbsIrc3?=
+ =?us-ascii?Q?6ggDSQiKsWXYz6gPJOpA4qtVgslCDPqxmKIPobq+EIWkuqiBUVKmfYzUC0+B?=
+ =?us-ascii?Q?KJTAaMFMzE6912OEL5/pU5B6cA81tmmRrY2Me58HjuvPPEjRJOGQrzoqFSi/?=
+ =?us-ascii?Q?pvy6oqUwLkai7Fcj8B+8PKWdfc59DBwrYFgWV4z/m7vehl2+KIx0cVFputQv?=
+ =?us-ascii?Q?zoXIP62TMe1V2qPs/7XAyh/04OELUlSwokG09JMQ1oE3VUugN3xGco7dUhAa?=
+ =?us-ascii?Q?XuchnHci2rgKWayougsRZ62BiNsFy5E4ixnPwJMvcuU6qKta2jLS5KW0qQtK?=
+ =?us-ascii?Q?AV+8FKHm9bl13AzEiDh0DEG1ZqHC128wI4azMOiUhjSdYlPnkTJF61KN5i9n?=
+ =?us-ascii?Q?ZegJuEO02L/hYrkDba3AqAHICEwMOlHEuy9OSKekJ31D5JAhHjFwHEWsM4JI?=
+ =?us-ascii?Q?Lehnpla62Ke6vCvANQpSzdUWwr0Wp3aAsyACgylWlgOiXWv56OgHHrBG7Ege?=
+ =?us-ascii?Q?g3UW81a+rjfQS5tnjASUVo/Hy+FtGHs8C1qHLcbuzU1akis2LSNhsKueACVr?=
+ =?us-ascii?Q?LpzAkZpgqgPtR+g0rHtlbBEz3QbG88v7S/TaTLSP6Mw6qXWsbnakA9s2EZXq?=
+ =?us-ascii?Q?s5V4pyvT1OFxe9/y1KURiIXGbOQY44uhGgC7px0DtbVGPWjDEXLWSyp7XCLS?=
+ =?us-ascii?Q?UTD7s5hoOdEwZt1d1ZDVKERnrfMPqKigjKHlVSXLc+kmafb3keLeU/DJQ+wb?=
+ =?us-ascii?Q?j2Ug96DLaBYHVfPIjKhD49qBLRkccuqLhJDlQ/UI9qfwScSZtXeMUL9CKovh?=
+ =?us-ascii?Q?T2xqOKicbW2tfiTK0GbsuMLJ/BZ4KXibWRPxrLP9pwQpqg15Hfvc2UZEyPkF?=
+ =?us-ascii?Q?OeDyU3aBVk3sIr5K3x5vp5ByXfawor1q4w2fxULlombyxtOCB0K0k33ftFdf?=
+ =?us-ascii?Q?F9Y8fjE9q7aqjuu/TvqbEhCDj4wCkBf+CjoNhBRXzYW+fsx3n2axB9JM+R6x?=
+ =?us-ascii?Q?Jf9KqcZIOlAwAPfjtkQxKB4ndG6YLcDxi3vMZNZkbL/kKmRKyhZfssK1Uksy?=
+ =?us-ascii?Q?B0b1ndFIfthQ+JHb8XHCjy7eIWMCA0V+Scds+70zT08rsoY/eDmy/Klh51YA?=
+ =?us-ascii?Q?UtWjaAw5HVeiq3ab+A6g8SO7hwxEN/1nybBZ0PxPycYpxnKrqPgI6l5/I/cm?=
+ =?us-ascii?Q?Qt9GklCeZ/+7pIHuvGWqHoo8BSnt+TRbM+CNniyuFHkR29kVlIQDs4CngIA4?=
+ =?us-ascii?Q?E0rIMstbyLSQYWYLDiNd8Theejrn5OLKUZ/jP9WETNhTUEIkhgmPLcwPTa1h?=
+ =?us-ascii?Q?DsWyswQHzelansv/Al4PGnQ/z/1GjyjlteXIiW2mRPO6mQkt9FJ3EB3/1kdR?=
+ =?us-ascii?Q?PzzmDwSRI4ZPoRw+UIrku96Hh5PT9KO1K6SKD9C+IQflNwIlosQVcwtQ+LHL?=
+ =?us-ascii?Q?pp9l9E3qzDaVt1gvPhhZWaU62oE/43Goxr80HInUu+oBck1sX6vdK8xJfira?=
+ =?us-ascii?Q?L4Y9MswrolEOYTFAeG33alGbgARPjRlMufzWuapdkZ4dOLqWneh2Q6vf8zKz?=
+ =?us-ascii?Q?CLU/fqnkpNTck0RlIqkDXzu5D9l/rvKhw1Pb1uiSXdHzd6huNFvd/Q7LP4S2?=
+ =?us-ascii?Q?dT+7vCkD2Qo6aAnY/CFfMyU/oD9kbE7dlVQ3JvIGu40KpKMULeC7kjuPL2AV?=
+ =?us-ascii?Q?wcMjYPt4rzB0sBI9hp7rlxa7ynwKLW1ePPa89j1ClJQvVTUx?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6cafcda-5f88-495f-35e7-08de9f4e6108
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 02:33:37.7494
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A/i+fShVQrKrLKlLaNwXzIrwiGjEPzwpAl94xxYBeIvuhc5Qnw1D/egETGqh6v68f6Z7Rq9vl5b8cvaCSKup9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMCPR04MB12622
 
-On Mon, Apr 20, 2026 at 09:04:00AM -0700, Jared Kangas wrote:
-> Fixing Dan's address based on mailmap update, sorry for the noise.
-> 
-> On Fri, Apr 17, 2026 at 02:36:25PM -0700, Jared Kangas wrote:
-> > Hi Dan,
-> > 
-> > On Fri, Jan 30, 2026 at 04:19:52PM +0300, Dan Carpenter wrote:
-> > > Add the GPR syscon region for the s32 chipset.
-> > > 
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > > ---
-> > >
-> > > [snip]
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > > index e314f3c7d61d..be03db737384 100644
-> > > --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > > @@ -383,6 +383,11 @@ usdhc0-200mhz-grp4 {
-> > >  			};
-> > >  		};
-> > >  
-> > > +		gpr: syscon@4007c000 {
-> > > +			compatible = "nxp,s32g3-gpr", "syscon";
-> > > +			reg = <0x4007c000 0x3000>;
-> > > +		};
-> > > +
-> > >  		ocotp: nvmem@400a4000 {
-> > >  			compatible = "nxp,s32g3-ocotp", "nxp,s32g2-ocotp";
-> > >  			reg = <0x400a4000 0x400>;
-> > > @@ -808,6 +813,7 @@ gmac0: ethernet@4033c000 {
-> > >  			compatible = "nxp,s32g2-dwmac";
-> > >  			reg = <0x4033c000 0x2000>, /* gmac IP */
-> > >  			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> > > +			nxp,phy-sel = <&gpr 0x4>;
-> > >  			interrupt-parent = <&gic>;
-> > >  			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > >  			interrupt-names = "macirq";
-> > 
-> > I gave this a test on an S32G-VNP-RDB3 and didn't see any issues on the
-> > dwmac-s32 side, but this appears to trigger a panic when reading the new
-> > debugfs regmap/*/registers file for the syscon node:
-> > 
-> >     # grep 4007c000 /proc/vmallocinfo
-> >     0xffff800083da8000-0xffff800083dac000   16384 ioremap_prot+0x74/0xe0 phys=0x000000004007c000 ioremap
-> >     # cat /sys/kernel/debug/regmap/dummy-syscon@0x000000004007c000/registers
-> >     Internal error: synchronous external abort: 0000000096000210 [#1]  SMP
-> >     [...]
-> >     CPU: 0 UID: 0 PID: 4344 Comm: cat Tainted: G   M        E  X   ------  ---  6.12.0+ #226 PREEMPT_RT
-> >     Tainted: [M]=MACHINE_CHECK, [E]=UNSIGNED_MODULE, [X]=AUX
-> >     [...]
-> >     pc : regmap_mmio_read32le+0x44/0xa0
-> >     lr : regmap_mmio_read32le+0x44/0xa0
-> >     [...]
-> >     x23: ffff00080c080000 x22: ffff000802ac4c00 x21: ffff800087b13c9c
-> >     x20: ffff800080a46494 x19: ffff800083da810c x18: 0000000000000004
-> >     [...]
-> >     x5 : ffff800080a46448 x4 : ffff800083da8000 x3 : ffff800080a46494
-> >     x2 : ffff800080a47230 x1 : ffff800083da810c x0 : 0000000000000020
-> >     Call trace:
-> >      regmap_mmio_read32le+0x44/0xa0 (P)
-> >      regmap_mmio_read+0x4c/0x80
-> >      [...]
-> >     Code: 52800400 8b214093 aa1303e1 97f4caf0 (b9400275)
-> >     ---[ end trace 0000000000000000 ]---
-> >     Kernel panic - not syncing: synchronous external abort: Fatal exception
-> > 
-> > Running this through decodecode gives:
-> > 
-> >     All code
-> >     ========
-> >        0:   52800400        mov     w0, #0x20                       // #32
-> >        4:   8b214093        add     x19, x4, w1, uxtw
-> >        8:   aa1303e1        mov     x1, x19
-> >        c:   97f4caf0        bl      0xffffffffffd32bcc
-> >       10:*  b9400275        ldr     w21, [x19]              <-- trapping instruction
-> > 
-> >     Code starting with the faulting instruction
-> >     ===========================================
-> >        0:   b9400275        ldr     w21, [x19]
-> > 
-> > x19's offset from the base address in /proc/vmallocinfo is 0x10c, which
-> > points to a bad read at physical address 0x4007c10c; I also confirmed
-> > that the preceding memory reads back without issues:
+On Mon, Apr 20, 2026 at 07:29:03PM +0530, Shitalkumar Gandhi wrote:
+> lpuart_start_rx_dma() allocates sport->rx_ring.buf with kzalloc() and
+> then maps a scatterlist via dma_map_sg().  On three subsequent error
+> paths the function returns directly without releasing those resources:
+>
+>   - when dma_map_sg() returns 0 (-EINVAL):
+>       ring->buf is leaked.
+>   - when dmaengine_slave_config() fails:
+>       ring->buf and the DMA mapping are leaked.
+>   - when dmaengine_prep_dma_cyclic() returns NULL:
+>       ring->buf and the DMA mapping are leaked.
+>
+> The sole cleanup path, lpuart_dma_rx_free(), is only reached when
+> lpuart_dma_rx_use is set, and the caller lpuart_rx_dma_startup() clears
+> that flag on failure of lpuart_start_rx_dma().  So these resources are
+> permanently leaked on every failure in this function.  Repeated port
+> open/close or termios changes under error conditions will slowly consume
+> memory and leave stale streaming DMA mappings behind.
+>
+> Fix it by introducing two error labels that unmap the scatterlist and
+> free the ring buffer as appropriate.  While here, replace the misleading
+> -EFAULT (bad userspace pointer) returned when dmaengine_prep_dma_cyclic()
+> fails with the more accurate -ENOMEM, matching how other dmaengine users
+> in the tree treat this failure.
+>
+> No functional change on the success path.
+>
+> Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+> ---
 
-Oh, ugh...  I didn't realize that this wasn't merged.  I don't have a
-way to test this any more.  The simplest fix would be to do change the
-0x3000 to 0x100.  The GPR63 register is at 0xFC.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-		reg = <0x4007c000 0x100>;
-
-That's probably the best fix as well.  The later register areas would
-be their own syscons.
-
-regards,
-dan carpenter
-
+>  drivers/tty/serial/fsl_lpuart.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+> index f36d50fe056f..296a096be351 100644
+> --- a/drivers/tty/serial/fsl_lpuart.c
+> +++ b/drivers/tty/serial/fsl_lpuart.c
+> @@ -1376,7 +1376,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+>
+>  	if (!nent) {
+>  		dev_err(sport->port.dev, "DMA Rx mapping error\n");
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto err_free_buf;
+>  	}
+>
+>  	dma_rx_sconfig.src_addr = lpuart_dma_datareg_addr(sport);
+> @@ -1388,7 +1389,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+>  	if (ret < 0) {
+>  		dev_err(sport->port.dev,
+>  				"DMA Rx slave config failed, err = %d\n", ret);
+> -		return ret;
+> +		goto err_unmap_sg;
+>  	}
+>
+>  	sport->dma_rx_desc = dmaengine_prep_dma_cyclic(chan,
+> @@ -1399,7 +1400,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+>  				 DMA_PREP_INTERRUPT);
+>  	if (!sport->dma_rx_desc) {
+>  		dev_err(sport->port.dev, "Cannot prepare cyclic DMA\n");
+> -		return -EFAULT;
+> +		ret = -ENOMEM;
+> +		goto err_unmap_sg;
+>  	}
+>
+>  	sport->dma_rx_desc->callback = lpuart_dma_rx_complete;
+> @@ -1423,6 +1425,13 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+>  	}
+>
+>  	return 0;
+> +
+> +err_unmap_sg:
+> +	dma_unmap_sg(chan->device->dev, &sport->rx_sgl, 1, DMA_FROM_DEVICE);
+> +err_free_buf:
+> +	kfree(ring->buf);
+> +	ring->buf = NULL;
+> +	return ret;
+>  }
+>
+>  static void lpuart_dma_rx_free(struct uart_port *port)
+> --
+> 2.25.1
+>
