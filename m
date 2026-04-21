@@ -1,105 +1,111 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2743D9040
-	for <imx@lists.linux.dev>; Tue, 21 Apr 2026 15:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF3E35B646;
+	Tue, 21 Apr 2026 18:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776785282; cv=none; b=NU2Zk36A7uL8bmhtO5aBtBuVpo0fPMRujWALE4J4O2LzMlT45DtE6E+FPNlQbuNT4vj2vV6RrLkSJDxGVrsBZI1ebn2jdUmeERyU4U/hu20oEDGJAeCbAQOqDnSjFG2Rd2XQ0IAD3CosalYj47JSi2xVZG5u3F5GSXjnF9uhepw=
+	t=1776796092; cv=none; b=Dr8EovFnvd3EoUZKcep+d+bEr9yLUmkIv/7kW07gYyh+LjrkNBY2xBEAO/RPa92AYs+UnW8k9qb1tSkYZk4jE1IiulOmIL74Kf+b+K2LYyY++/k/wruabyG2uiO+LnvEiCc/QwstuX3yBF5vNOT1H8n/6gEvSjSFgLTGdlefWDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776785282; c=relaxed/simple;
-	bh=sudIl/MO5640I3hwPUJJDdibc6FcDmokiN6s4Qznqjs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=c9KKwewl45BDDoK0kiOvQCIuQ3UXPilIR/CFYpXYVOZq5wt3Rgp2gdtnu59sbpL1A06q1wjEZde+grEge3SecSiBn+LbocWI1UUanOLrI/frTO5JJZieuBZO39ZxVn6PcPRdXVHatvpNs0oH3Tjpa+O/KMFfF5b7vT4m+wDWRs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=MfDPEGTZ; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1776796092; c=relaxed/simple;
+	bh=n3dFxMKJkQu67xhbz49OLagibL5gtHF+dkwuBR5uteg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MY+Fwtd1L/n7HKZHwZ2hendA/hnUCHinCsyRt0/DIZaizzCnnGQdc1ojB53xT26bM8B3X9j1bNGu4BilRrsh5FyghaFTFHagfPRFXeXjanWQx3hul0MAs0Hq5udkUqVrY68sl0h53I/mWD+trN1KuZZSz13XzzxEeBCfSo4spzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5kgsuKx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="MfDPEGTZ"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=MfDPEGTZ;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 63LFRWAm2844840
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 16:27:33 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1776785252; bh=FGZYfonOzj3LWdcmpezBnWOMi5Dm/iVF2dnKqO4i3aE=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=MfDPEGTZAXpnb1i8xxoO4+LzIzx/z/Smz2dHN9V3Xmk8Qui38dQK7g+n4rU5QZSWD
-	 qcIvBtt9PvfjOIcuYjUWyN9tmyOUaINgrOxGZcFr20kU46yw0Ev7EANqUbTIyo19wo
-	 5Ph3LZR2leQv8S2i1YSqa6Z4+Mf+UoW292jisiMc=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 63LFRWpb2948045
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 17:27:32 +0200
-Received: (nullmailer pid 2973842 invoked by uid 1000);
-	Tue, 21 Apr 2026 15:27:32 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Xu Yang <xu.yang_2@nxp.com>, gregkh@linuxfoundation.org, khtsai@google.com,
-        kexinsun@smail.nju.edu.cn, hhhuuu@google.com, kees@kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: gadget: udc: skip pullup() if already connected
-In-Reply-To: <e431e2f9-ce24-491a-9447-1b872099ab25@rowland.harvard.edu> (Alan
-	Stern's message of "Tue, 21 Apr 2026 10:37:53 -0400")
-Organization: m
-References: <20260421082050.1260823-1-xu.yang_2@nxp.com>
-	<e431e2f9-ce24-491a-9447-1b872099ab25@rowland.harvard.edu>
-Date: Tue, 21 Apr 2026 17:27:32 +0200
-Message-ID: <87v7dkpc4b.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5kgsuKx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DCFC2BCB0;
+	Tue, 21 Apr 2026 18:28:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776796092;
+	bh=n3dFxMKJkQu67xhbz49OLagibL5gtHF+dkwuBR5uteg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S5kgsuKxgTalvztk266gbjNGjYD49ThIX5hAUweIJvRZYCD11hJ5ZbEZWzXep5IJ1
+	 zRLQIzB1nldVn1oHvvdITsCT+ZxgcJHn9ADXOPj/yJFxl/fO1mSyBpsgLwiGyANe+m
+	 5KdDqVqaGsAtWFQG74e2iQSfBOypmjAMbPejHna96UNRsknNjM1LwbHnDmNGCwkYkR
+	 5cncruZ5QTysqMSeBMySB1g2wsMOwpM9vgBdGFuUunJ+ZASNc6e8AKxeCUouhjXGKZ
+	 kfys1uJQ3vwVupbj5rBZxRDHNPFBWAFd14VVJg03/B/VlNUaYZZIONasPcaqLonxBO
+	 tc0XWwMLmoKPA==
+Date: Tue, 21 Apr 2026 21:28:07 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Stefan Wahren <wahrenst@gmx.net>, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: tpm: spi: do not call blocking ops when !TASK_RUNNING; during
+ shutdown
+Message-ID: <aefBt9T89WDFTTtF@kernel.org>
+References: <e7974d35-0d50-4742-8747-822f28915e00@gmx.net>
+ <PAXPR04MB84598325136E394E0A7D94D6882C2@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB84598325136E394E0A7D94D6882C2@PAXPR04MB8459.eurprd04.prod.outlook.com>
 
-Alan Stern <stern@rowland.harvard.edu> writes:
+On Tue, Apr 21, 2026 at 09:04:43AM +0000, Peng Fan wrote:
+> > Subject: tpm: spi: do not call blocking ops when !TASK_RUNNING;
+> > during shutdown
+> > 
+> > Hi,
+> > we use a custom i.MX93 board, which based on Phytec Phycore i.MX93
+> > with a TPM connected via SPI. If I enable
+> > CONFIG_DEBUG_ATOMIC_SLEEP=y in our kernel config with mainline
+> > kernel 6.18.23 and reboot our board, I will get the following warning:
+> > ffff0000000d8000
+> 
+> The issue seems at drivers/char/tpm/tpm_tis_core.c
+>   94                 rc = wait_event_interruptible_timeout(*queue,                                       
+>   95                         wait_for_tpm_stat_cond(chip, sts_mask, check_cancel,                        
+>   96                                                &canceled),                                          
+>   97                         timeout);
+> 
+> wait_event_interruptible_timeout set task to !TASK_RUNNING,
+> but wait_for_tpm_stat_cond still calls into mutex_lock.
+> 
+> Regards
+> Peng
+> 
+> > [   43.422135] Call trace:
+> > [   43.424570]  __might_sleep+0x74/0x7c (P)
+> > [   43.428487]  mutex_lock+0x24/0x80
+> > [   43.431797]  spi_bus_lock+0x20/0x50
+> > [   43.435281]  tpm_tis_spi_transfer_full+0x70/0x2c4
+> > [   43.439979]  tpm_tis_spi_read_bytes+0x3c/0x48
+> > [   43.444321]  tpm_tis_status+0x58/0xf8
+> > [   43.447978]  wait_for_tpm_stat_cond+0x30/0x90
+> > [   43.452329]  wait_for_tpm_stat+0x1cc/0x2e0
+> > [   43.456419]  tpm_tis_send_data+0xdc/0x334
+> > [   43.460423]  tpm_tis_send_main+0x74/0x160
+> > [   43.464427]  tpm_tis_send+0xd4/0x13c
+> > [   43.467998]  tpm_transmit+0xc4/0x3c4
+> > [   43.471569]  tpm_transmit_cmd+0x38/0xd4
+> > [   43.475399]  tpm2_shutdown+0x6c/0xa4
+> > [   43.478970]  tpm_class_shutdown+0x60/0x88
+> > [   43.482974]  device_shutdown+0x130/0x25c
+> > [   43.486891]  kernel_restart+0x44/0xa4
+> > [   43.490549]  __do_sys_reboot+0x114/0x254
+> > [   43.494466]  __arm64_sys_reboot+0x24/0x30
+> > [   43.498470]  invoke_syscall+0x48/0x10c
+> > [   43.502214]  el0_svc_common.constprop.0+0x40/0xe0
+> > [   43.506911]  do_el0_svc+0x1c/0x28
+> > [   43.510222]  el0_svc+0x34/0xec
+> > [   43.513273]  el0t_64_sync_handler+0xa0/0xe4
+> > [   43.517441]  el0t_64_sync+0x198/0x19c
+> > 
+> > Best regards
 
-> This patch is wrong.  To see why, read the comments just below the end=20
-> of the patch and see also usb_gadget_activate().
+On travel this week but thanks for the report. Investigating next weeek
 
+In the meantime, patches are welcome (whcih I will review next week).
 
-Made me look...
-
-Must say. This strikes me as a nice way to filter out humans from the
-rest of the submitters:
-
-                gadget->connected =3D true;
-                goto out;
-        }
-=20
-        ret =3D gadget->ops->pullup(gadget, 1);
-        if (!ret)
-                gadget->connected =3D 1;
-
-
-The indecisiveness looks strange. There's a nice symmetry with
-usb_gadget_disconnect_locked() though:
-
-                gadget->connected =3D false;
-                goto out;
-        }
-=20
-        ret =3D gadget->ops->pullup(gadget, 0);
-        if (!ret)
-                gadget->connected =3D 0;
-
-
-
-
-What surprised me most was that the different variants were added by the
-same commit
-ccdf138fe3e2 ("usb: gadget: add usb_gadget_activate/deactivate functions").
-
-
-Bj=C3=B8rn
+Br, Jarkko
