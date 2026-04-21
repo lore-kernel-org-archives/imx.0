@@ -1,225 +1,227 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010032.outbound.protection.outlook.com [52.101.69.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1655337B01F
-	for <imx@lists.linux.dev>; Tue, 21 Apr 2026 09:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13E633B6EF
+	for <imx@lists.linux.dev>; Tue, 21 Apr 2026 09:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776762851; cv=pass; b=TLJ2oukVTHbdngQl56aid9T3E/zgJhBhttgRLuNMxHRTRobxPuCzUDiGwAyci7TjvH4EiIYas7zmJuJ0JSt3X5wzA0B12sdJ+sxF9XZH/Apk1PHM9MnUyyBV9Bnq6LBhFWVJkx+L4P4KXh48eK3QXR5izlOvOmGfOywODCAvYsI=
+	t=1776762891; cv=fail; b=RxsL3ShI8rxeD5Quh16SEjdpz494wqyDmxGDs5NkG03Ot+0iHJzEGs11YaIDsLXBzJBbyszaoPA/7QxwWIq14GzNhdt00SxWz9td3ExY32iMV7wk6zgknwIut/8I1TvX3HJfBSqgrUmt/nZcR/+pRxhqbI48wG8kxkbyUjsH4aI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776762851; c=relaxed/simple;
-	bh=ZzRwQS2qgmALD6SzLJul7x1AeveQ3d2kpARqQZFKsiA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gkFmwCnBMWnpXUJgpmzOlumoRyvXUdJoh7VAzBfDwDdsAmQYHr49sW4ypUFH5NIl9WpWV7T6911zSlzvr8E7a1jT4X1jVCTbTcitajUFnNtx4Dvhy6BHG776eZzBqimnOlAHGimvzrFhEl1U4IuZaSefKiQ8+POiANY8SXnaOYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PDt9HP8g; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776762891; c=relaxed/simple;
+	bh=LuHlDA5lOY4YxWrZy7+2pAw7hkN50ef3ZgRO4aMT8fo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=YT61QIhax5ooEQdmXLQmRdZJze9olCtb6rKV9XxOZMPf7fs1Afdo6eX8qcbV1wfahbbU+yp/L5+utiEpBzxHWk1Oc9JDFsSVj+6DM0pwBawhEL5a/m97BvSeFPwMAVOsc3pQyyd6zpSCcMjhmH6P4mWGLIz2XSO/3anv0i8/yyI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MEy/mcKH; arc=fail smtp.client-ip=52.101.69.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PDt9HP8g"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b458ca2296so27168505ad.0
-        for <imx@lists.linux.dev>; Tue, 21 Apr 2026 02:14:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776762849; cv=none;
-        d=google.com; s=arc-20240605;
-        b=B2nKaPfefx8tGe5sA5ekMSru9R5TqOZhCQ/2iblqTC625pz9Nh5LYebJ3b8loah0Us
-         hMc2yGAEITbDphCzICAjcclCmqOw35ku9pC+BzkxOl2ytwMBJ5mVdq1qJaTZeQCPrvAm
-         LdLn6HwNa7m/3zbR2970k5UfGWQlAHoFbBsu0vOx4ewFO7JzwfYlx/y02ZLEAL/7Bpe5
-         4pYan242rp7GiIIUMtTt25F3dF9K26QNd/5M/6Tq/bc5iT+HVQv/UtcWoB66Jmd4crpj
-         waj/3j5t2msjEDKlzFd1dHEdZRDmirO5xh5QWfes6hmIDL4wbWv/jN9PAIiFRd+Qkiia
-         5EEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wuf/J2tmMgGjZTkx9qFzoIJKXecVr6IXY6lWgVYmZ1s=;
-        fh=OeQvMr+uFIL+ziFwEhJencIkTOOFmh+bBaJHF9B+meg=;
-        b=V8okIiTDtyMaJxBY3qRX55E97SeUGSswkExUF84Rron+IU7ws6nm0v+pSS1xRZ/md/
-         R6WBrmuK+pGHXh+DVvcMAmUhf2TcgnYjUukBHgBpjmPv/g8C3ICnoxjqIIxiwd3VWldl
-         TBO0pUCeoHfw8xkSMOempXfTAISYBJk2Yj4WAX7ZXYtg62TY022JZVB+ylSWPYqB67WA
-         i559ZkhqJD0TDl5eJG/kj9nwy2/trSlRWJKdGveWg7Z/Nj/6D4UgAUz21Kev1yI11X+u
-         19RfxVwGDRrK6uBNvzsT6Q/xF4tDTEDTZwW5Wa6ywbk/COvU5h2hQL4EjhwaAK75WSl0
-         fAiQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776762849; x=1777367649; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wuf/J2tmMgGjZTkx9qFzoIJKXecVr6IXY6lWgVYmZ1s=;
-        b=PDt9HP8gQoWD3srEuPaFsvkf90zoMSEPD0wIpgxOhGHo+t4v+9TQpjCUzbo11H13kG
-         hTQsD7NJXDq+OQPtUfLEoF9EA4cXDz0UotZhAPohSCEhnakN5gy9cD6twoSIoY542yB3
-         rcmTNj6i85EcDYraW8HYMJbJ0pY/hwGHbZpAAs2+R6cxxIXQnagIYBLoHDvuCr4mdLAH
-         96pMeSUABfO7fhp1KHZWp1X7XmovyjhIlboznaeYFNNicTdYE0RssYdnviL3MB2zCrE4
-         Mscl08Iy8uQmWRi0C/80XzVhF8cg+qDZcOF4x76yUxL9l8fB6Eh6f9tO/7f8k/TZI7eA
-         Dn8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776762849; x=1777367649;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wuf/J2tmMgGjZTkx9qFzoIJKXecVr6IXY6lWgVYmZ1s=;
-        b=C4O9zyKE/VoK2eQN6y6s5yUTdsWP7VSC8lUJQoNwhVOXbOjOtXmnxb6wHY+BdQeO0a
-         EuEp4bWDA4eLq5kkda8G0DOdHUo0spyhnNqc0cea+0GcUCD+bawxvAz/RvXKbG0qQJ1W
-         ty9N9sbgEAvZahiEPBkdhRRtmvuhP8xmSUbgs9UR5BwV+MLHQ17pjPngZZ42+gJsRrwt
-         j/rxerDL++rWBKfQyqAaQLazpsS8zVxUKnguOQpEi4m90JtEQQwJGo1aIvDUeO8u/YPO
-         32//u2vdbRgE53DNGDW+qYTPDvDzrM2CpEoWeSSIA/3HmHJVhPIOxNC0Thxh8hrLYJI2
-         v+6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ894xrG+ptJdlSnpx5LSujT5t6KzUOGq88uihy70uxs4Zcpwx+rGxnnCpsEs0osLtJprtQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxcyLPbf25MjiLhr6yEDG6xR+9BIWe310Fc/GqwZQRJzgVTTDJs
-	Tp+6umWlX2McdS3qRFod0iHXrzzj8Tztqu+iJHo306FTJxEvl+3H0IUj0P8oMSo1NFm+Hf0L6qV
-	kbMyCdfqpHLyuJdcjAa/OIJULUQhI90U=
-X-Gm-Gg: AeBDievPTxbeuVYjK7F3btvaBxW3ylm0GX7O1j22Y977ZTIvutm1eC0y5XziNFv1C8P
-	hjebOqJRD0cIz0D9MydtlBRzAT7UcZg+Yo75uraCKc3t693aBPNCXDRiBaQQQFK3+yhW8TK6GbI
-	YnIyXNKNvp5qYj8JwZc3jDmt67PQF1nGPrZtd2izBD8d4SG9qzvb+8IkaRuUlFF9LPai3lHfQwm
-	6lIBjDAGbhbQDWLIxztmWt+DIJ6JQPsOcHJ9w+cGwISGdB2l+yGrwSUFsloR5f50WKWxMAgEQX0
-	CRTLVVJn+w9AYBxUPg==
-X-Received: by 2002:a17:903:1aae:b0:2b2:45b7:306e with SMTP id
- d9443c01a7336-2b5f9e85fa7mr170155595ad.3.1776762849302; Tue, 21 Apr 2026
- 02:14:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MEy/mcKH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fUTg/smy/gnI+ZlojpQ2Ri70TmunqOYksbq+EjDFpOj9mXQ8CoEF+Ul7NJbhywZHKSGXuwJQFnVy5N0W2liELTxABCM7Jnm9a2qnwZwj6nv2U7d0FiyuF77sKYBxKp8qvonSiERVmQhjnryhbmedklPyo30cBM80t1ZRvk3j5hQmj15kivzOZCQZokmUuxIgceVEANP2z3v6bcCa3nmd1q4OY3qFOYqTI5h65vGx/+HmTfPWf8Ie9e27feYw6NWOhO195GRCrPlTpxkxcgeGsawPLW/bx+w2gizqWastvx8QQB4JFG+d8u0qucji8nj/1x1U4OsLP2ebVp8HqkHs1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P0291rZxB/fZKrDJ7YELZLdzOoPInT0dvrseXMaylWQ=;
+ b=TscKzf3O3WvwrMqCh9xXehhNihq9lJlJRI1D930BW6bth88sPhr3c6Z2OLELIOpv8i1zoooouKRvea8VZQG11qspvZoRzbhA3ldMr1UiE+6cKjrCtiXbnEP2zSkE3b6CxB1xqC187Lc8kC30Jl/Z+4YjTVTjc9aig49bE8hO7F8JQID4Q/dqjBvYwSt5HLFJVAee0sDwYmD9Prpszx+xgyND+OTEd+NMJ53Oyx2L6FvOf1GaGdkIscLy37RlRT764vpnDUdOQkPQhLcJCwJtGWdqY65nf/O5mJkXHtbESLg+umGJECu4YSRQU3rTxw7jC+5Hqj6Jl+OWebSUkLeKkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P0291rZxB/fZKrDJ7YELZLdzOoPInT0dvrseXMaylWQ=;
+ b=MEy/mcKHwuPhPGMLhISBIco1k+NZzrpZULzvG+T1g7BM+Aej9VWcU2wC9NXXaAGsP8zRpfEF9ixoXU53UzSxqB/tUStExumKGn96YV9EDVOwdi51HOQ5h5oFgvQGyBLY3pTpb3LcOs4GqvJ8XAXmiSOkH0WCsmib4Jq14ubdT6Xj3fcQmWEwXo1BTBlnwvVJu+bRvHyj18m6MDnQFGFc/1hil2+QfRy3db57XNlRNTANzbxJtHR+uBH0RqVII0w94unprpIM0D3Y+/qrnXzB42L49fHiTwtdwMTZPq9+mvO1TXQ/ITBPNfFpNQ2G++8X0YpH7m34LJDUbztZQRNkXQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by AS8PR04MB8056.eurprd04.prod.outlook.com (2603:10a6:20b:288::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.33; Tue, 21 Apr
+ 2026 09:14:45 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9818.023; Tue, 21 Apr 2026
+ 09:14:44 +0000
+Message-ID: <2d1bbd53-1f03-4432-8681-939e0c638d37@oss.nxp.com>
+Date: Tue, 21 Apr 2026 12:17:53 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/4] thermal: qoriq: add i.MX93 tmu support
+To: Jacky Bai <ping.bai@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Alice Guo <alice.guo@nxp.com>
+References: <20260421-imx93_tmu-v5-0-05ea1969bb9f@nxp.com>
+ <20260421-imx93_tmu-v5-2-05ea1969bb9f@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260421-imx93_tmu-v5-2-05ea1969bb9f@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR02CA0158.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28d::25) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260420100854.2095549-1-shengjiu.wang@nxp.com> <lkwfzz4lia37wv56g6ymzpossm42epz2oylhl7vgdpp7odt23h@vszl4uu2wg65>
-In-Reply-To: <lkwfzz4lia37wv56g6ymzpossm42epz2oylhl7vgdpp7odt23h@vszl4uu2wg65>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 21 Apr 2026 17:13:57 +0800
-X-Gm-Features: AQROBzBWcJIwpzrKFBZScNTFM92k2xv5PUM8F5xurNN76m464r4UBrs-7HGJBag
-Message-ID: <CAA+D8ANwT0GKusZtvo6h8mzVf=xXSEkHXsb6nwHGZ2YQzPm5ZQ@mail.gmail.com>
-Subject: Re: [PATCH V3] dmaengine: imx-sdma: Fix SPBA bus detection on
- multi-SPBA platforms
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, Frank.Li@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	dmaengine@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|AS8PR04MB8056:EE_
+X-MS-Office365-Filtering-Correlation-Id: d19c91be-4170-4a77-6081-08de9f866d93
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|921020|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	TXRxwoa29C9QUbW9OXILQBjXyAeRAyMiuYkLX4lRQCtp2gJ+ruF1XjfQvGUmxVRrInNlr+iYADKcvjrmCZ1LX+mgBQDZ65gdp0bUHdltBZQ6v5wPkZyvdYlj4Dt2haEXbaXNJxuYjoTsSBxpnoNont+lAUDpKSSIkbN8FHHIxq0iN12QSBQym7g+pj8fb5HleJaM90QM8iDbUqj9s+qZAf91AZRup4pWwQdSNfbAmKIwFN6wnul0X1UbU7SX3AR4e9PcHTS9HdcPcslRnjDzdKkAl1kHNTs/RfxemfcRDf+s7xyZvTMYlxtB63RyNNuVsoOiT9/tvt2H+CGKdRHGl/r8MPIFAwo/wNB0TQp0Rl3FLbzt9GUvMj4wdSChO38AkKzPGAYa4vQyjOFYFwa/7N2oOB+YwTPcwXh9et2Njdk/4SX8b3jTC/8537aplKAh+r94TLSaa9MkdxS4areZDDWNBQytT827Jrlg23RpTjkD1ejQBqvRbB05+q5A/QcUd3ZxWu/zlINAa+LBsyMFQJ9Y60JOgF/ycbUGlki4kzFLbk1/hkmYAA+Uw69WnI+djGmR5EFQZSR1Z3TIewNwtrurvxaxvM5coek4jRjkeDUBiJ7XCPoFto1w2PGdIFexjgwWex8ICUjUcGlKirzFt5h7X+YIHAAiL2dUHui2dp+vNRWz0IF0/96e0PB1n9tj0msroV5LQVmc7gY214ybtlf4G24ULAMLSTax42z6ImVuI2KWKIiLkoalAzs6cKyxqQ6VPBiV/cPDKbTaCuGjyw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(921020)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S2llTGgzNExFN1gwem5mZFBCc2F1ajFSdlR2ZTgrczlqRGhmTWFKQ21RMk9h?=
+ =?utf-8?B?Z005MU5GSTkwVklmbjNaZUJxY2dKY1p0dGoydWRWUEJkSXBwVklHc3VBMGFp?=
+ =?utf-8?B?MWZkT21MeVIrUDF2ckE2RTFUZkxvbDVBd0hpVVovc2xXYXZWMVNBcnVwMVBU?=
+ =?utf-8?B?UUR2UFJabGRBcW1uTGxISG1TSURmNklRY2IzUlcyZjNmcW9nNm81MnFqVU12?=
+ =?utf-8?B?WG1DR1M4WGhPY1diUmNINlk1RGptRXZOR043UnB3bWFYdnNNOWxjNEtMMklC?=
+ =?utf-8?B?dGR4TlpXK01YRTVVc3RTL2w4eWJxbHRoVWpaQzZIWUQ3SzQyejJYK3R6U1ph?=
+ =?utf-8?B?RENnTWpHMHd5UUVHeXd0L2JDVHljeHRlK2RvRUVDVmkvTzk0VWo3S1FvRi82?=
+ =?utf-8?B?VmpIYW1xUmdaOTFObkprbHNHNjVuRXI2VjdsSlZCY1Y1NzZiSXVXYUdCZDJL?=
+ =?utf-8?B?R0RTZUZ2WEJBc1VvMm1GcEdpY3VWbjNOeGJIaFVlS2pXNGNKZnNSSTRiY3Rn?=
+ =?utf-8?B?MmEzTW5JWFFvbnZya3ZnTExBWTN2dlpFR292d3g2VUhKUHRMNzcyYnB4OFdu?=
+ =?utf-8?B?MEpGMkFJbS9wNkdMUnFVWXprQ3gyTEZFdldDRkFZVEJIUjFsVXVCaVFuUThS?=
+ =?utf-8?B?Z3FQT05RN0xrNDNoTjNJS3VOeTM5SmY3enJSRmlURnl5Sjc1eDVYNDZWWWV6?=
+ =?utf-8?B?bWo4V1oyYlk3Nk5xNlFIaUo4UnJBQmJmYmM4UWlvTSt1SFRnWk5wdlpTeE1x?=
+ =?utf-8?B?YmFRQUNaV2lxUzlSUTNYbDFLM0lhL0dWZDJNeDcxT0JMV1kwZ2hLejlHY3JF?=
+ =?utf-8?B?dnBjWi9KUUFZV0RjSGhxVlJ4VDR4dVRjYzFZY0daVStnaGQ0ZjNscENoS3JU?=
+ =?utf-8?B?elNxZU4xL25KUC9hanozcG1UL2xLaEFtU0ZlekdrazdibVdUSTNSeXd3T2JB?=
+ =?utf-8?B?Y01kay8yUU1uUzZOYkhaL2QyUjVvOWs4M3ltTGwraWlhaHZBOFVkSFFDa3Nt?=
+ =?utf-8?B?bmk4NDlaRGFzRVdPa1dTL1lUL0FzMjFrSGlPNWp0ZTV2ZktlVW9IdnB3OUY5?=
+ =?utf-8?B?dkdQTzh4eE9LbUI2NEVXOXJjUThuUGF4NTBxVERQNmtMbTA3d3V2dmpYS2FK?=
+ =?utf-8?B?dVRGajlXaUZTTytpc3VvZFlTTE5NcVYxbURZZCsrT1JUUk5QeEQ3clUwSFVL?=
+ =?utf-8?B?NEZkbklsdXlQemdFUS9TKzgrZENxYmlKOHB1dURlODJ2cTNkWlg0c3ZmWTJB?=
+ =?utf-8?B?d2ora0tSSmlwMlM3enpMdTFvNElpeFhKVjUwMnpnazZPQmh4d1JheXFVYzcv?=
+ =?utf-8?B?SmxEVXZoS3lXbi9PNGlDVGVMa2U5ZEpxYzljMG5hK2EzWDVYR2VqdHUwTE53?=
+ =?utf-8?B?UVVpMTFKcGJrNlM0NWYyU3VYWkpIRmRHZkJEMFhZY0JhRTB3M0Rja0xiWGdV?=
+ =?utf-8?B?czE2bU5GTWtoS3J4ajhYOENMLysvZDJ2RzJzTHk3SlRRUWt5UnJRaE1rMGxq?=
+ =?utf-8?B?UDdWYmRmaWJ4eUhRMm9kQUhnM0R2MmJZbUkvelhzdFdOaVJOWDlxYjBMM283?=
+ =?utf-8?B?MGgxTEpEZm1NdzZqMkRRanlMbUNqcHU0cFFvUmQyQXpKQkt0d0ZId2cvTEM5?=
+ =?utf-8?B?V3MwYjJQaFBSOVJiM1d3ZUU3TXU0VDFEVFFTSFBQbEwrL0VqUWlLemVBQi95?=
+ =?utf-8?B?T1gwaUFtRTQ3QXlXSXFkT2hKRWYwaHNuekl4ZWR5dFJaTmJ6dWwvZnByYTZy?=
+ =?utf-8?B?RVVTSVpxcEYvTnpySzJWUFhYQ0thSGpJQkppRXhhc3pkSUk3SzlZb1EzY016?=
+ =?utf-8?B?OXBwVmhKWDB4N3BrQ083bU5MRkFRNSsyNVFvSGsraFRyZXJCLzQ1UmVVYUhC?=
+ =?utf-8?B?SWNUWGQ1OXJzMXgzUWZmSDZrVEpFRE16ZFpwbEZpNkhIVEE5eWQ0WWhWbHBw?=
+ =?utf-8?B?ZTgvejBqUW9jZnh2MHRJOGx0MjlSVWhhbXpIdEdMT2YrS1JzaUZ3M1RNdC84?=
+ =?utf-8?B?dFdFbTRISlBIUnJ1N1QraEpNR2o4UVFnSXdaZndjVnZVUGVyQTBWbFhXYjlF?=
+ =?utf-8?B?aGlvalQ2cWlsZjNkcnNpa3hESVRwdHhBdDdZeVZIQjNyM0VDN0dJekhONjN6?=
+ =?utf-8?B?MGVHcmhUR3Y2RTZSNHNobHhCZXpjd3krVGhVS1BuVUs0UGN6cnBXdGxVaEhp?=
+ =?utf-8?B?V0ZIUklzQ1dkcjNEVDQrNnM4bFZlaUNsNlFXKytZTE9DVjVHSk1YRXBpaXlq?=
+ =?utf-8?B?dEpSVE1leTdOcTdCcUJEWXdQT00ybzVvcGQwVDllelV0emx3bHc1MXU4SFVB?=
+ =?utf-8?B?WDRkbXZyWXNGZG9OYmJMbjBoOHdTaEphTmRocHZ5VXNyRDFmUEd6dz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d19c91be-4170-4a77-6081-08de9f866d93
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 09:14:44.8231
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v4QxiGnwv7JAv0KLDf2WUbG44ujBiVxXgb7ROHsXdQuFamWrJqIhiSp3Ef8GnMB/ZCmj2V5/zbgZxGu/0C1kAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8056
 
-On Tue, Apr 21, 2026 at 4:57=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.=
-de> wrote:
->
-> On 26-04-20, Shengjiu Wang wrote:
-> > i.MX8M platforms have multiple SPBA buses under different AIPS buses.
-> > The current code searches the entire device tree and returns the first
-> > SPBA bus found, which may not be under the same AIPS bus as the SDMA
-> > controller.
-> >
-> > This breaks SDMA P2P transfers because the SDMA script needs to know
-> > if peripherals are on SPBA or AIPS to configure watermark levels
-> > correctly. Using the wrong SPBA bus causes DMA timeouts and transfer
-> > failures.
-> >
-> > Fix by searching for the SPBA bus under the SDMA's parent node (AIPS)
-> > first, then falling back to a global search for backward compatibility.
-> >
-> > Example device tree showing the issue:
-> >   aips1 {
-> >     spba1 { sai@...; };      /* Correct SPBA for sdma1 */
-> >     sdma1@...;
-> >   };
-> >   aips2 {
-> >     spba2 { uart@...; };     /* Wrong SPBA - found first by old code */
-> >   };
-> >
-> > Fixes: 8391ecf465ec ("dmaengine: imx-sdma: Add device to device support=
-")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> > changs in v3:
-> > - add fallback to a global search for backward compatibility, which is
-> >   to address comments from sashiko.dev
-> > - update commit subject and commit message
-> > - add comments in code.
-> > - add Cc stable tag
-> > - Don't add Frank's RB on v2 as there are several other changes.
-> >
-> > changes in v2:
-> > - add fixes tag
-> > - use __free(device_node) for auto release.
-> >
-> >  drivers/dma/imx-sdma.c | 13 ++++++++++++-
-> >  1 file changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> > index 3d527883776b..592705af2319 100644
-> > --- a/drivers/dma/imx-sdma.c
-> > +++ b/drivers/dma/imx-sdma.c
-> > @@ -2364,7 +2364,18 @@ static int sdma_probe(struct platform_device *pd=
-ev)
-> >                       return dev_err_probe(&pdev->dev, ret,
-> >                                            "failed to register controll=
-er\n");
-> >
-> > -             spba_bus =3D of_find_compatible_node(NULL, NULL, "fsl,spb=
-a-bus");
-> > +             /*
-> > +              * On i.MX8M platforms with multiple SPBA buses, we need =
-to find
-> > +              * the SPBA bus that's under the same AIPS bus as this SD=
-MA controller.
-> > +              * First check the SDMA's parent (AIPS bus) for a child S=
-PBA bus.
-> > +              * If not found, fall back to searching the entire device=
- tree for
-> > +              * backward compatibility with older platforms.
-> > +              */
-> > +             struct device_node *sdma_parent_np __free(device_node) =
-=3D of_get_parent(np);
-> > +
-> > +             spba_bus =3D of_get_compatible_child(sdma_parent_np, "fsl=
-,spba-bus");
-> > +             if (!spba_bus)
-> > +                     spba_bus =3D of_find_compatible_node(NULL, NULL, =
-"fsl,spba-bus");
->
-> And yet the search is still broken for i.MX8MP case since this platform
-> has two sdma engines below the bus@30df0000.
+On 4/21/26 10:42, Jacky Bai wrote:
+> For Thermal monitor unit(TMU) used on i.MX93, the HW revision info read
+> from the ID register is the same the one used on some of the QorIQ
+> platform, but the config has some slight differance. Add i.MX93 compatible
+> string and corresponding code for it.
+> 
+> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> ---
+>  - v5 changes:
+>   - drop the unnecessary GET_TEUMR0 helper macro
+>   - add drvdata for each of the platforms
+> 
+>  - v4 changes:
+>   - no
+> 
+>  - v3 changes:
+>   - use the drv data struct for match data and refine the code
+>   - update the copyright
+> 
+>  - v2 changes:
+>   - use the compatible match data to identify the i.MX93 TMU variant
+> ---
+>  drivers/thermal/qoriq_thermal.c | 33 ++++++++++++++++++++++++++++++---
+>  1 file changed, 30 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
+> index 01b58be0dcc64d14ca5e4bba654eed8f15e827fc..297a855311f3d6a8d527794abe17ac86c47bf152 100644
+> --- a/drivers/thermal/qoriq_thermal.c
+> +++ b/drivers/thermal/qoriq_thermal.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  //
+>  // Copyright 2016 Freescale Semiconductor, Inc.
+> +// Copyright 2025 NXP
+>  
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+> @@ -24,6 +25,7 @@
+>  #define TMTMIR_DEFAULT	0x0000000f
+>  #define TIER_DISABLE	0x0
+>  #define TEUMR0_V2		0x51009c00
+> +#define TEUMR0_V21		0x55000c00
+>  #define TMSARA_V2		0xe
+>  #define TMU_VER1		0x1
+>  #define TMU_VER2		0x2
+> @@ -73,12 +75,17 @@ struct qoriq_sensor {
+>  	int				id;
+>  };
+>  
+> +struct tmu_drvdata {
+> +	u32 teumr0;
+> +};
+> +
+>  struct qoriq_tmu_data {
+>  	int ver;
+>  	u32 ttrcr[NUM_TTRCR_MAX];
+>  	struct regmap *regmap;
+>  	struct clk *clk;
+>  	struct qoriq_sensor	sensor[SITES_MAX];
+> +	const struct tmu_drvdata *drvdata;
+>  };
+>  
+>  static struct qoriq_tmu_data *qoriq_sensor_to_data(struct qoriq_sensor *s)
+> @@ -225,6 +232,8 @@ static int qoriq_tmu_calibration(struct device *dev,
+>  
+>  static void qoriq_tmu_init_device(struct qoriq_tmu_data *data)
+>  {
+> +	u32 teumr0_val;
 
-I tested on i.MX8MP. It works.  Above line is for backward compatibility
+No need for this here you can just use directly: data->drvdata->teumr0
 
-The search has no dependence on the number of sdma engines. It searches the
-spba-bus, not the sdma node. it will find the aips5 first, then find
-the spba-bus for
-sdma2 and sdma3.
+> +
+>  	/* Disable interrupt, using polling instead */
+>  	regmap_write(data->regmap, REGS_TIER, TIER_DISABLE);
+>  
+> @@ -234,7 +243,8 @@ static void qoriq_tmu_init_device(struct qoriq_tmu_data *data)
+>  		regmap_write(data->regmap, REGS_TMTMIR, TMTMIR_DEFAULT);
+>  	} else {
+>  		regmap_write(data->regmap, REGS_V2_TMTMIR, TMTMIR_DEFAULT);
+> -		regmap_write(data->regmap, REGS_V2_TEUMR(0), TEUMR0_V2);
+> +		teumr0_val = data->drvdata->teumr0;
+> +		regmap_write(data->regmap, REGS_V2_TEUMR(0), teumr0_val);
+>  	}
 
-aips5: bus@30df0000 {
-      spba-bus@30c00000 {
-       }
-       sdma2: dma-controller@30e10000 {
-       }
-       sdma3: dma-controller@30e00000 {
-      }
-}
 
-Best regards
-Shengjiu Wang
-
->
-> Regards,
->   Marco
->
-> >               ret =3D of_address_to_resource(spba_bus, 0, &spba_res);
-> >               if (!ret) {
-> >                       sdma->spba_start_addr =3D spba_res.start;
-> > --
-> > 2.34.1
-> >
-> >
-> >
->
-> --
-> #gernperDu
-> #CallMeByMyFirstName
->
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | https://www.pengutronix.de/ =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    =
-|
->
