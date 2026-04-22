@@ -1,162 +1,258 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011050.outbound.protection.outlook.com [40.107.130.50])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F255B2C3251
-	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 07:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776843254; cv=fail; b=izPabIdahrNBSMS6o3ShJpZD7Qui8a9UJchT+42QdemHoJbayLK57OOEY4rTF0ZfbaoUKYBiRG7dtGNZzk9HpgfW1DwRxOIvSyESCA8Fk/Ajo5bndcLku9HgOmbjLYRIAJwptWhRm59Zo1uRkRuTZF7+VRmGUy8ZCTzgDaJ6QJQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776843254; c=relaxed/simple;
-	bh=lUnSK71U/kN3aClxvgh6GZOJyYSIcM/ruAIX9+tqvuM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=t87YRctTUytypqO+6DPzSFinEUXOdVm8XzSyd14y3YLU5xv1gMJf3zOIAsZ4tBRtjP5NN/XZSxxnKd3lzjAv/4Te76HaqDr+3+igE+crwv8pes/gJbnEhzE/sHScUXaKrOUINf5/aJVMSdZcjoxzY55KmQiNq/Jq50V/HQHzxWs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Bn/6xQhe; arc=fail smtp.client-ip=40.107.130.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9866A3BF66E;
+	Wed, 22 Apr 2026 08:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776847186; cv=none; b=IThGNOa8NIuIH5MI5PTyWu2bnOBL0l4CMQVUyXu9BRf7kFnD6BgoLI1zCeB3AGRXQ9f0TkzgkqWzsnF7NRKJRS/MNNVOHN0ex6NRTEH/BAcTDli0CLWeObvvJZZKZ+xOjFEKjMOkrl2TviTOpaT6lxXT45MGGifL5DrVp/wptOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776847186; c=relaxed/simple;
+	bh=yUNY2WJfRMKnvbtKN/j/UvADsxIjSpJls0F3U9Rux10=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qeabovX/wxN/YRsF308cCfKdiGaRXnpGj3BfGNtjIqq5GTjBg4ems+k2cXA/QKv5UEGwdi8biFKrpFG251pds4fuHcb2S/PJBhVPa6ygdbIzgxPuC/ISNUEXWHaI95CGJqIN4uhTy68hHnLVdU61Xla/36/JC2IunIF6jGVDOsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=g3S8Z4GC; arc=none smtp.client-ip=188.68.63.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Bn/6xQhe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PniTqQOIemG7+uTRD3hE5DbOc/jDTcVBRjkVzOaXTyHMLXLPjqQ3k8B15gISgIPmBkBRadd6p6pfrT0xFMtkfns2qo8xYXY9hNcKfOH7/wr7JXMaQlOxkXRvnNFbxhif9vs28XJnpzFK5/6LAf1ry0T1L1r8fzLWiK/d54kIcRUINgc7zGieEyRHKMaUh3sgTfysvlFPr4s44ed/G6wWtcBWCb5ueCtZYdSBgxewolK2smAsWGAY4CkCvxYgMes4qod+L3OS3hq9SehynygxmephS/Ylx8r6eBUCUVPgTK+b7iqBX7JvWLXI8AgmA16HMxkeOyxAYbaCB+kbtmqdLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C6SIwd7Vbbfro5EGz+kUvKauIKyJNDm6z6N4Smpjz4E=;
- b=CV00vLkSMm4g3oq18fH/d9P998wr0ZK/idB5OmiNKAZ1o4ivjIQs9NslbnoQF44peRbNlGzAEL7o5lc7SsAdS2yjkPr2d/b0WFx0Dp6T57s0/8pirUeECwevXVdXxDy4lBMHBUQ0Jbo2R77vOhLQ1+bndHHBwPwqPbcHCviaWR3fvv6Y5J4y9cBFfm43zwaN74t4bv2P7hiNphBzFTOnWi9KCt+IVNJ6DOVcRvbGK2V2jEwDqROcWXL39vnR5q6dcu1wuFpUnon+333hU+HfARmMnxIN0uo5MSv0YZJXlaPcktUTsqunYHCtEHIrjZkx1rK6mNjkUqo447UyHwGauQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C6SIwd7Vbbfro5EGz+kUvKauIKyJNDm6z6N4Smpjz4E=;
- b=Bn/6xQheIW5ft4UcruJ1PMJ22joHlx8sXWQ3laiZ9diBoVROJaVb4AAxkOJE0SiXGCpYsVz/IfCNqItM9zGLxAG8ZWhkjnaU+d0JmeQck698RclIaNQ5Vk3VCDUaUJepHaD7icTMIkAjdSlhbP3COOci40rECVwpbOWiCLuIS5eMiuJr/PsLQlPhDk7YakBMP+qSlRNjJdRW7yLuumhguH7K+EbmWJuhZYXLuCDv2F34mBxVC/GvBsQ7e7Pg06uXOtGhI2o3kHpfude79dKrWDlEsIn9CF90F+fZalCDZ0MQAIyBe/8sRYC4MHat2E9coc0JfN0x01z44MTXDf9GVQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AS8PR04MB8660.eurprd04.prod.outlook.com (2603:10a6:20b:42b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.19; Wed, 22 Apr
- 2026 07:34:09 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9846.016; Wed, 22 Apr 2026
- 07:34:09 +0000
-Date: Wed, 22 Apr 2026 03:34:01 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: imx: fix runtime pm leak on probe deferral
-Message-ID: <aeh56bUlX_apG3Pa@lizhi-Precision-Tower-5810>
-References: <20260421125632.1537235-1-johan@kernel.org>
- <aehBYJ-R3bXB0RDo@lizhi-Precision-Tower-5810>
- <aehvHZMjwMNmru0x@hovoldconsulting.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aehvHZMjwMNmru0x@hovoldconsulting.com>
-X-ClientProxiedBy: SN6PR04CA0084.namprd04.prod.outlook.com
- (2603:10b6:805:f2::25) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="g3S8Z4GC"
+Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g0t1z2Z2Nz3yVZ;
+	Wed, 22 Apr 2026 10:39:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1776847175;
+	bh=yUNY2WJfRMKnvbtKN/j/UvADsxIjSpJls0F3U9Rux10=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=g3S8Z4GC6aCNC+t29j/1QGZkgIt7qaTO+iQADn2aywvab/Ev8EjJuMreKxeleihQX
+	 2hdKfdg+HuMkcRjd42bCVLxtYVK/pYNPjhtKZBTkIbN9CBpY4tZ8TIqLN+gY3S7Zc2
+	 uL0t+O3FqDh7lspxKshvzyGOmKdjewuKGSX804Oo0ZDY9+CrX+pPoyPmzj8VBLk5iX
+	 0eOlsua9Cwy80ts/Nh9KmaS6Jq9czu/I2UE3aVO4tKs4gTEnx1vcB5X6RxG777+oOi
+	 4rRAUCE6mkWoex7wdG8eQHgHdDp+Q6kXFCQPyKcjRJvywyLQJcS9cnXpOz+0XPJdV4
+	 vOY3S33AEgiQA==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g0t1k4b51z40Db;
+	Wed, 22 Apr 2026 10:39:22 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g0t1j4MTwz8sZP;
+	Wed, 22 Apr 2026 10:39:21 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 88904632AD;
+	Wed, 22 Apr 2026 10:39:20 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <0fe54399-1fb1-4f75-a60c-e171292415a6@leemhuis.info>
+Date: Wed, 22 Apr 2026 10:39:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS8PR04MB8660:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f622829-0b8c-49f9-e243-08dea0418a91
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|19092799006|38350700014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	z40ykDMws0wieoAHN+EcTjHeWUM6aC5TxsAesvVhZbS4RMGOOSOPqT75mvyLXBRgG12Epy9jVmi3tC5QAgoBpImvzBGFynbR9JWt2Qn7NA2mGGgRn6NB1FkAU3vua9C+wYXIS/cFLvZStSUJMDsqisrNEBEkCt+8kWM6yDPE2GM+dNe0N3kPU42BRjoR6FbBtUICnuk49AC2QgolTcRskDQZv/MAVcY71spWU727orjWPmO3I33gVQNosGkPIiKcLeK6Rv6eT6qMtk+ys50w57Ad0Xhmzxsp4tnkFq/KzoLmM7M94/UU+NUAH8DEJF5i1OwvY2sPXtyA8RrMcfeqaL8saHg4ZJGfaQVAh+QFEwHQASHu5znSLbioPyuZ9kKiYxUNpOjQkSHYvczx4+a9N6BZsC3cm1aVRognXf+clugVYTby/WQQBcx77evLuAdi+sVCHOaUoz1Wjx8lsGoOcuFfXxyR5Mdvx2DJFZt2HUWTGJ8Gy2R9qQGllTvvB+aMksiyXK/oA8W4rvGVP/RMYdCq2A98yh6LOc87R6Y8bz+kcj+D0JSRBZliGld9Cz/nZ5uUFJDeJ9wyukPwPUvUuHiqeRniRs24SFNjmmERtySeLgL+NJVGAjA3TI87gpyFhhwW0KpIk1PLYsd3xrubfbnO4mbKJ0iUIh6nQPqz7sbXFPCfHz3NX7ElhgxleglIdyvPPG8CbthCLEx/7w9UvSa3peVQrovPHPDP2rI9Sgn+x3lPJgzUHyU429eED41XpPFdvh9spIxIaH5JlsPrfSHj+aMWLX24slIwEXLaea4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(19092799006)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cd7wyyCfK5lMOUs8fIEAkhnEnj/vNAcKOFUsyXt8Vwcq0i/4HV8XCPI/ZdLK?=
- =?us-ascii?Q?YHdJNeoLjB/WX8St+M6wNwD1JNWUCMuQxftGV23QzEzzMp8NCuVlSjbzXwCB?=
- =?us-ascii?Q?8gbh0sj6MolWapyhe3l3qikSD8MeM5G5MkRkm9ON149F9EZhwTmosEjOxdZh?=
- =?us-ascii?Q?D2ze9fUMpI9eKvSoA3XItX/OQkebu8QZMlxd4xttqilZYbMWiCWy2piRJeY3?=
- =?us-ascii?Q?Q7sVoyTgnD3tsK65PJuidOXOY5XyxlmXo57qSALjn5EcnIgZ29wCbgTrJasb?=
- =?us-ascii?Q?0DuPbqsfCdHHu0wbjtYgvDh5rO5qTjFp70x0ed3IiKMKHiXlSghpKDAbBkW2?=
- =?us-ascii?Q?Et5kNy4uwwC5MxTHeAztur5jMGpE4N94qsnRCan+ZC54PoiCfo9as8/ZaXdL?=
- =?us-ascii?Q?OdVe783Pb9lBlqujxbHMtSbb41Q4t0Lk5eorW03gShHcF30Nj8CQfCR2MHJj?=
- =?us-ascii?Q?dBWzGbXwgRphW0TLRYBs4tJos5tFcmyFt6wRni8geqrFBMglynVdJ9E8RJfT?=
- =?us-ascii?Q?8xjG9+CWvXU28yjMR9pZ9RD82yAmvgksRyyKYbtks6feVC2g3Oc5lSrITLrF?=
- =?us-ascii?Q?+yMBUQaHK2qhCCIKf/0Ev68uRvUrJu80l3LZSFt2khEP8ttVaokKfjwVONx+?=
- =?us-ascii?Q?E7gCiTIfzXz2wNKFPzZW5xt2K3djFu8sNh+56ASUybvsfMb5M+WzkD1jvj37?=
- =?us-ascii?Q?CHfITGZES0OD15TZGYGZe9qLoXLLJLP+W8LxMGF9A+s+xO+toHSpv6i5+TYb?=
- =?us-ascii?Q?9J5e27g8nWy4TJWVeAeoTo7VpvTZougfNerzcRx64YpIQyxQDFpfhwauvW8b?=
- =?us-ascii?Q?QYuWWRrOjoy9lGtu0iHJW/NnDssnCUab0EfdW4TpLQ7uNUnVvEzaNccConyq?=
- =?us-ascii?Q?nh7CI6YC9Z0UEBSe6vgzANnpi8b456yrcOXSNktVAGY2F0diFADIsbi1j23U?=
- =?us-ascii?Q?Sxe9LbVUBFNQ7yLg0kTKrafb33kSgSHIW2JjmedFG8n6BUE2/t+imjMSbRAE?=
- =?us-ascii?Q?fn8pCHB5ChPqhO0jZ17jqdl8k6/xy3LBBXeROcSH0PJT+octKKTRAjyYrwxJ?=
- =?us-ascii?Q?QwYKN/XOZyXqwHWSuvqQvQ/xHL6gE+XurA/CfjRRHDP5bW0//wTPGF0IXFxf?=
- =?us-ascii?Q?82w2rh560B9FI+j7RX3EkKV6vwT030jWUqz+xJiVJ/71tbmBjavRPuZ0+W2G?=
- =?us-ascii?Q?oWJBTFvDX1n3f/rg8GWyYi7kocJtlvGmKYdJeAmjJkEUNTeaYYbilT9uYvPT?=
- =?us-ascii?Q?e2pTnEQPnHJeziIbTB0fZ9HxJixl6eBNWVFCLRwvybgVTNItQohrYcDq+AFJ?=
- =?us-ascii?Q?eEi0Uq5Bzmol781qScxS7UmUbXsHdlJix2Z/NvzRIWzVvVACILIWLLWBwTdB?=
- =?us-ascii?Q?NquMROVWJzNy6Dut9i8EdEnFt/VvItnMcsq/q4uLz3+dpdPPb9cmhfp5XMHn?=
- =?us-ascii?Q?VAeM49emQTCxAf/MXQz9cQvYDhzXELFPl0y/6EfiPlYJG8EFf5n5o2KD2dTF?=
- =?us-ascii?Q?ElMDMIelyMmReZAhx+nn2lQJ7VtqeBUCb20Pg+wf1MBvgtvLxlvngRD3SMU0?=
- =?us-ascii?Q?2OmfZZw4FlXhmElpAvdXD1U31WB5VkUvD91XM/DdExj37RLEOBNOLbN/Rdd7?=
- =?us-ascii?Q?Xm7WnJPF3MAebS0bA7NsSQOXGCfh4PnPt0dzRDhLvwxbpvlksWaZOv7xVYw/?=
- =?us-ascii?Q?p/n0co5S18I4lThhtkQlvlSz+watJ9mJmH1dAVNqRWK1m+YK?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f622829-0b8c-49f9-e243-08dea0418a91
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 07:34:09.2856
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IPe9IzlO3VL4jV0+kukpFYhG9HHudHISs68+FtzwFwHpSds8dRD4YIv/qZsOlstFcINSD1+Rb57W/qXFaOiOWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8660
+User-Agent: Mozilla Thunderbird
+Subject: Re: i.MX8M Plus PCIe link regression
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Hongxing Zhu <hongxing.zhu@nxp.com>, Manivannan Sadhasivam <mani@kernel.org>
+Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <23024521.EfDdHjke4D@steina-w>
+ <AS8PR04MB88332979F06EDE29E751BCE18C7CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+ <2qto2ddqmtks37wxtklxo4ctvxyezmgtjcuprnk6crant5fvsu@vdbmqomrcqt3>
+ <6102060.LvFx2qVVIh@steina-w>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <6102060.LvFx2qVVIh@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177684716089.1821918.1965836553222221611@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: 88904632AD
+X-NC-CID: pbQs2wGavMMtO1Lsg5Lqnthp6i0QkgfZ7gamkgUvglMNXJR6u80=
 
-On Wed, Apr 22, 2026 at 08:47:57AM +0200, Johan Hovold wrote:
-> On Tue, Apr 21, 2026 at 11:32:48PM -0400, Frank Li wrote:
-> > On Tue, Apr 21, 2026 at 02:56:32PM +0200, Johan Hovold wrote:
-> > > Make sure to balance the runtime PM usage count before returning on
-> > > probe failure (e.g. probe deferral) so that the controller can be
-> > > suspended when a driver is later bound.
-> > >
-> > > Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-> > > Cc: stable@vger.kernel.org	# 5.10
-> > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > ---
-> > >  drivers/spi/spi-imx.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> > > index 4747899e0646..e5c907c45b87 100644
-> > > --- a/drivers/spi/spi-imx.c
-> > > +++ b/drivers/spi/spi-imx.c
-> > > @@ -2373,6 +2373,7 @@ static int spi_imx_probe(struct platform_device *pdev)
-> > >  out_runtime_pm_put:
-> > >  	pm_runtime_dont_use_autosuspend(spi_imx->dev);
-> > >  	pm_runtime_disable(spi_imx->dev);
-> > > +	pm_runtime_put_noidle(spi_imx->dev);
-> >
-> > use devm_pm_runtime_get_noresume() and  devm_pm_runtime_enable() to
-> > fix this problem
->
-> No. The first helper you mentioned was only added a year ago and does
-> not even solve the issue without rewriting larger parts of the driver.
->
-> So that would need to be a separate change in any case.
+Lo! What happened to this regression? It looks like it was never
+resolved. Is that something everybody can live with in some way? Or
+something we have to live with, as reverting the culprit at this point
+would create a regression and thus creates even more trouble then it solves?
 
-It should be less 10 line code changes. separate change is okay, but suggest
-create following patches for this also.
+Ciao, Thorsten
 
-Frank
+On 3/4/26 09:47, Alexander Stein wrote:
+> 
+> Am Mittwoch, 4. März 2026, 07:32:48 CET schrieb Manivannan Sadhasivam:
+>> On Wed, Mar 04, 2026 at 02:55:51AM +0000, Hongxing Zhu wrote:
+>>>> -----Original Message-----
+>>>> From: Manivannan Sadhasivam <mani@kernel.org>
+>>>> Sent: 2026年3月4日 0:42
+>>>> To: Hongxing Zhu <hongxing.zhu@nxp.com>; Alexander Stein
+>>>> <alexander.stein@ew.tq-group.com>
+>>>> Cc: linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+>>>> imx@lists.linux.dev
+>>>> Subject: Re: i.MX8M Plus PCIe link regression
+>>>>
+>>>> On Tue, Mar 03, 2026 at 01:38:13PM +0100, Alexander Stein wrote:
+>>>>> Hi,
+>>>>>
+>>>>> these days I noticed that there is a PCIe link regression on my
+>>>>> i.MX8MP platform (TQMa8MPxL) running next-20260227.
+>>>>> I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip link
+>>>>> up workaround for newer platforms"). I always get the following errors:
+>>>>>
+>>>>> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
+>>>>> CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
+>>>>> imx6q-pcie failed with error -110
+>>>>>
+>>>>> Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2
+>>>>> device is detected without issues.
+>>>>>
+>>>>> Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
+>>>>> b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both
+>>>> Gen
+>>>>> 1 and Gen 2 devices are detect. Commit
+>>>>> 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc is only required for conflict
+>>>> free revert.
+>>>>>
+>>>>> Here is a summary with outputs:
+>>>>> Gen 1 device
+>>>>>> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+>>>>>> 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
+>>>>>> RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev
+>>>>>> 01)
+>>>>>
+>>>>> Gen 2 device
+>>>>>> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
+>>>>>> 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 PCIe
+>>>>>> SATA 6 Gb/s RAID controller (rev 20)
+>>>>>
+>>>>> output of "dmesg | grep imx6q-pcie". Common part for all tests:
+>>>>>> imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+>>>>>> imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
+>>>>>> 0x0000000000
+>>>>>> imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
+>>>>>> 0x0018000000
+>>>>>> imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 == cpu 0x1ff00000
+>>>>>> imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K,
+>>>>>> limit 16G
+>>>>>
+>>>>> next-20260227
+>>>>> Gen 1
+>>>>>> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
+>>>>>> CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
+>>>>>> imx6q-pcie failed with error -110
+>>>>>
+>>>>> Gen 2
+>>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie
+>>>>>> 33800000.pcie: PCI host bridge to bus 0000:00
+>>>>>
+>>>>> next-20260227 + reverts
+>>>>> Gen 1
+>>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
+>>>>>> 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie 33800000.pcie: PCI
+>>>>>> host bridge to bus 0000:00
+>>>>>
+>>>>> Gen 2
+>>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
+>>>>>> 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie 33800000.pcie: PCI
+>>>>>> host bridge to bus 0000:00
+>>>>>
+>>>>> What can we do here? I'm wondering why Gen 2 trains correctly, while
+>>>>> Gen 1 doesn't.
+>>>>>
+>>>>
+>>>> Thanks for the report and sorry for the breakage. Commit 9c03e30e3ade3,
+>>>> mentions that the workaround is only needed for the i.MX6 platforms. So
+>>>> I'm not sure why the patch breaks i.MX8M and that too only for Gen 1
+>>>> speed.
+>>>>
+>>>> Also, before 9c03e30e3ade3, LTSSM was always started in Gen 1, but as per
+>>>> your finding, only Gen 1 devices fail to work. So the code till
+>>>> imx_pcie_wait_for_speed_change() shouldn't have an impact. Maybe the
+>>>> issue is due to skipping imx_pcie_wait_for_speed_change()?
+>>>>
+>>>> Richard, thoughts?
+>>> Hi Maini:
+>>> Prior to calling imx_pcie_wait_for_speed_change(), the PCIe link must
+>>>  already be established. Before commit 9c03e30e3ade3, the speed change
+>>>  procedure was only initiated after the initial Gen1 link was successfully
+>>>  brought up.
+>>>
+>>> Hi Alexander:
+>>> Sorry for the breakage.
+>>> Before commit 9c03e30e3ade3, i.MX8MP PCIe forced Gen1 link training
+>>>  initially, then switched to Gen3 after link-up by triggering a speed
+>>>  change. After commit 9c03e30e3ade3, link training starts directly at
+>>>  the Gen3 capability level.
+>>>
+>>> The two link training methods differ only in the i.MX8MP Root Complex (RC)
+>>>  link capability configuration prior to link training: one method forces
+>>>  Gen1 speed, while the other retains the default Gen3 setting in your tests.
+>>>
+>>
+>> I still don't understand why the link fails to train at Gen 1.
+> 
+> Independently from the configured maximum link speed, shouldn't the initial
+> link be Gen1 anyway and upgraded to Gen 2 later on?
+> 
+> I added some debug output to dw_pcie_link_up()
+> 
+> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 3
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f704
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f722
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+> 
+> 
+> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 2
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
+> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
+> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+> 
+> 
+> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 1
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
+> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
+> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+> 
+> So for any maximum speed above Gen1 it seems that LTSSM is stuck at link
+> training.
+> Unfortunately only link training and link up bits are defined and RM doesn't
+> show anything, so I don't know what the other bits are indicating.
+> 
+> For a Gen2 device the link training succeeds right away.
+> 
+> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 2
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
+> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
+> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
+> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
+> 
+> Best regards,
+> Alexander
 
->
-> Johan
