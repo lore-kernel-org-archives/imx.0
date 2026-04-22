@@ -1,91 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477443F166F;
-	Wed, 22 Apr 2026 19:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21E2C15A9
+	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 21:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776887883; cv=none; b=jvmKYwyoLC2CPhoVesLeuHj1gKIS2qFpPZ/EmRvvml/5tUW4FYzECU+dxUtQ10rL4MCUBdLdEReUPdOlx9cP6ISmQcmkUpPsz2uhPLj43bytPVU87vOl28vyZn5k6EyCeyG9lcQOkzWay8fjs7gyyf4Int+aEtd+WvhIxjIUw2Y=
+	t=1776892189; cv=none; b=uNRQCSeBXXibBuvz5sZHlVh/xhrpuWRxd12wtADILUsP7kizN42JUxNHNFvSEsSE06MQw2vL+VPTcAoZae/Cxb8iNjM6Cx8k7YipHSwbHeQkq1g6yKu7FpYznwbEjxEOqDTmor3KEWmeqr0maP6UNmsdzxnIX48onPYaH1zwvrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776887883; c=relaxed/simple;
-	bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZMoVfCxLNYJzAgyyAqf1147obK4x02oyG8GwRYXyMI+m7kdChbH0vKJYGxfKRalfSCCv3mp/M00+iGwv2IqupUbkZC5GRxj+vLYNHaZEYtA2V9UnjoESoXL35F8mE+8NudCGMOIAx3u3tjA94fdLA+fmfq5iLnwC81+lJWFkeck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8DJE3+f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776892189; c=relaxed/simple;
+	bh=R0opaX48wUreBeuxHqlthloldDcFH+ss36NEjGWYK8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pF+LUmk3GcVbOJg+reolGaUTj2XjIR52P9hh+iOcyLoMDtO2ZldYO9Ola92Ts+N453pamO/x8gP3GdiK9gpfPyDm80xJFrSHsHty6LqEN96CwXOgLL6vZyw7KMh/LfrGM9y/QVJd934HIsmFS7E+v2V2H1655CxcAaWAh7Dnrn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=U8yigYDT; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8DJE3+f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB5EC19425;
-	Wed, 22 Apr 2026 19:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776887882;
-	bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=m8DJE3+fBuWrq6Emm2Dlpmf6j/5nmfXaTxmH3gP7JoYVj1mV5/Z33bQIdSiuKEgiH
-	 +Ydq0B7kRGIGhAfgbikBnh9oCauZD0YFV3j0nP2X9yfSyFkFSOSsIbKqp4gDjoKpod
-	 JSSjaYK29SQ+kuvT0yJmxT/4rEyYbYvgCXw1YGbkXO0jO1UlJHNrl88L9T/w7+Iese
-	 1nC3N30VesUGuKDZTfjSbwLfKfamQdcYHnMtwRFPYxRkFRrZT6iLi5r+czCbCjQYls
-	 U8ALxh/jREhf0L9zeZNri73p8/+Z83VYigukq+eOkws/f9X40afCvkA/htbD/MJoBC
-	 EV0rjocwMzfrw==
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260421125632.1537235-1-johan@kernel.org>
-References: <20260421125632.1537235-1-johan@kernel.org>
-Subject: Re: [PATCH] spi: imx: fix runtime pm leak on probe deferral
-Message-Id: <177686186865.36226.7596459545113208031.b4-ty@b4>
-Date: Wed, 22 Apr 2026 13:44:28 +0100
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="U8yigYDT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92417113395;
+	Wed, 22 Apr 2026 23:09:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776892185; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=7T6vZhHl8TSBdOsriXfUWP4e8No8iyNMWD8GABChdsk=;
+	b=U8yigYDTgYCWMZeC9D8jqd0KyXII2RErOPStW0UwZiq3Uc1QkfsOg93lqRwG8dv0/v6iFM
+	2rVoL8pKVrX8rCJNk8CSvT5sXeLhW7RD5HblkMBImK4dfThnY+mOEkfG865ZxKFuf8Wu/M
+	+HujQcW1h1XzZ/6gu2uzgm8K9r706qaJZRfTOwbhWWGBPBAJLgM/x7yr6iYzQsvP9WVZTp
+	Thai8UqUkq9TGLZ4HWBXvVnhnWgYTg2lBKvJ0I1GPDLcclOg+XxXI9u7S0uBvyPC5GRFrZ
+	p2IVpPKYORKZqnP7nmZl8LT3T+01/S7QQaTDIBsmACjIrqu1mRZoH7GJUc0zmw==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx8mn: Sort ifm VHIP4 EvalBoard Makefile entries
+Date: Wed, 22 Apr 2026 23:09:23 +0200
+Message-ID: <20260422210939.81012-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=broonie@kernel.org;
- h=from:subject:message-id; bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp6ShILd7oHSFT3up9wbwkQCWSymhOcdl0Ol8UH
- BDyHyIcXlOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaekoSAAKCRAk1otyXVSH
- 0IFHB/9NeKC4DcoTAo4BAq0Gfpf7lKd16HBOHmZGkgM6+7eMKOvjRfvW+tnaOMhkURibHKPUBMY
- k0HynZwvDK89zty36Ryp+QuzZZ08SchSoH+sQzW3i7CUW2hmmAfACyPDKvkdkOW+7jKT7mDh1mF
- +yugP90/USvTmderY9qMrahUbQrZmNWRl9mRojj3yMmnKnG190AkvgwcM7lBEDmVD3z7UbauAib
- SG2GibMyAX1PcnL0yJ4BaS0lBeCRcoK+wXZIq0Z9uVZs3XFL9tIXBTbh/nuOBW/VE1Fz7MzyWqT
- GWUAGwSisgbZe2UXr8wL40hfzXtWkkcUZSlSmP5DcE77Yi8w
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 21 Apr 2026 14:56:32 +0200, Johan Hovold wrote:
-> spi: imx: fix runtime pm leak on probe deferral
+Sort the Makefile entries alphabetically. No functional change.
 
-Applied to
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm64/boot/dts/freescale/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
-
-Thanks!
-
-[1/1] spi: imx: fix runtime pm leak on probe deferral
-      https://git.kernel.org/broonie/spi/c/a1d50a37d3b1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 711e36cc2c990..1a08c5202f0fd 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -206,10 +206,10 @@ imx8mn-vhip4-evalboard-v1-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v1.dtb
+ 						  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo
+ imx8mn-vhip4-evalboard-v1-overlay-ksz9031-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
+ 						  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo
+-imx8mn-vhip4-evalboard-v2-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
+-						  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
+ imx8mn-vhip4-evalboard-v2-overlay-adin1300-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
+ 						   imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo
++imx8mn-vhip4-evalboard-v2-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
++						  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
+ 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtb \
+ 			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo \
+-- 
+2.53.0
 
