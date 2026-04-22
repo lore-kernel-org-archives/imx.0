@@ -1,75 +1,88 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3F61FE451
-	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 17:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AEB3EE1F5
+	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 18:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776879760; cv=none; b=KRRNexHbfhp8+HII4Vek5SpHy6US3VXVfU8OUMqt1Qin6/eFBej2RHr6/6zpTk8W0zZj4IPneyoWEK5jJr4afHZtG55pHolYb8dlgMbbjFO2wbQbNXrNBufxLEpAAvI/iwccw9ba9kMTX/vaDNABAcqFBo2TkAOj5QMKreefKy4=
+	t=1776884338; cv=none; b=WW0BkKByrkRd9aNxR+NGaNyVJSLElXO9qZVbrk8knW9TXnG6AjUn/owOXHQpMEE3Glpin9h51jgcOmh9eAh9dDfCo81uLFjFf7fn1wbxu7M2qIF9hPQRjMA1BZ/GNBNPdyR2KVJoaoOSGHTFecuaK1PfR/JdSgddkLf4ktG4QoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776879760; c=relaxed/simple;
-	bh=PEC67Z72ISCMHUutb9qe1/Y1CIJmRcte33AN4p2R2vs=;
+	s=arc-20240116; t=1776884338; c=relaxed/simple;
+	bh=W3gJGhETv1i99hgZ4Qzxlq7+a/rqAi15n3RaJvZubfA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X3w6MF2ECgJ4S/M55bznFlvRdal55p7Cdn9pQvegI92wNkm4GU9mWt7xRXOh097bfR2DbDZaB53P3lnkSjHFlYW3uiwH6JhAQc1ofsCSmhXMZ7lOn2Io/Vhi0QhE0g4WKKYyONDlj12AEXpB64WB/56BRc1u74esRFrnQuCSr+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a402b2d102so6615014e87.3
-        for <imx@lists.linux.dev>; Wed, 22 Apr 2026 10:42:39 -0700 (PDT)
+	 To:Cc:Content-Type; b=eoNtevht0C0IehJqz8t/GAxcw/SoCjWW5xcjSQ1K4HKu7qmhFr0wNpYWjHWBnyEaW3g/Av9CbssEq0AN1VYhOQs8dEZFw4x6Ka6eu/hjMVLi+nkWN8qFjBXtxSkIYUNuOfB4A3czHraCTioifKuPEAvCOb+AkWvjRNLm+1mItag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C9MbP0o9; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C9MbP0o9"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-671d60ef9c6so7586906a12.2
+        for <imx@lists.linux.dev>; Wed, 22 Apr 2026 11:58:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1776884326; x=1777489126; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R4vBmmJ5gC2QCrFlTLiSjZ3SPsY2SAKP5dBxbzswxUI=;
+        b=C9MbP0o9CEHR3F5eE54njyh/lJmdkNaSuqfpTdk5ymqIRpzXP/MPzJfWK27p88RRvm
+         EYiqUi6d0IklIqt9a30DHv3Q3e1wN99vesppnfmil3WmP3imkzsVXQ7hS9KlvZ+8QfTr
+         a1N1BWf8ty7E9rD7Zi2tBTH3YV23wTc2ehWWc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776879757; x=1777484557;
+        d=1e100.net; s=20251104; t=1776884326; x=1777489126;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XycB5P8XTGXaeVGqnVmOVfspQ1laZv9fkJpPGtynpSA=;
-        b=Zftkb/pwybJMVlbdhT+xf6PPsBzT7uUPSXLs6Mb7vCX0vrWnnHlHyfZEw9/7uu0f1J
-         iraa+stbgbZgsihjfHJbw+ohdZx4zCNLUEqGlFLoyDtmBMgf13XO2DwDr9NolRlL6VfB
-         kmQX/5rt8JXduJwUniU7DN13e519nF7admj/m7ZR/lSuRZxHg7p6ZDRgn5d8MDMIWc0i
-         N73bDplia/nY+sCpXguQwYF7yGpU5HmzbtoBIqHLMiwos8KTD738fJckjjksJNL9hwNi
-         K7psEkwreH/r73n3YmfzLMG0EpvbHCY3fZNyH1ELsf8qRopi2PLIuuatoi/M//yEOG3H
-         wEeg==
-X-Forwarded-Encrypted: i=1; AFNElJ+gsLl0sZpjs5oocjgqCGWf0cQJBrVnCQ8wGxvGeXa3/Tph4Wfnhz6HeuW0sr4LHsDtZjE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVypCPex4poXUeZHKXbL8QdZc2zrde2P6GTnydFZfRTtfnh/vw
-	2DkW9oH6ineJLeAjEfndUkm+VSBH7Gl4ycM8Xs2uTo3aZ0Dcix15fr2yVIw0BmsAlng=
-X-Gm-Gg: AeBDietrYAry+/O7HG4gZGJDD4Dt0mI2O0yqpL8mrrD1gd0SXDGhF+ZRr5ymkDTIhfS
-	D6VE6ExmBmGA5fwQuCUkdf/a3yZbK1Zm0D+CbmdCRu29f2H12SosMWuRT7XjWC1v6yq7G1pH7cN
-	1pqe+LgLZfj2XPdjMnCd9BWU0v4Q0pd6OMrB6oWHSHOszDDWB1dYKFO0SkZzJb5FQQWHrGEIQDX
-	CdHa/bvOexUtDr6SLTQ56hD3geYm3NxcKScNkWXpkN9DxEONmVqrLNG68ozg6S/Jzs6XiKYssAR
-	dYFBU2trxq9N3IdlPtARjHvK9LzSAx4qCxyytBPGuOhMVdt0CMiABE1MpPsPFUTFbDdftEBOX6J
-	0a1ez8p0rQy03mPOV3Bc+A0fgfDtSKXc5D85V3UPv/76l/nssBUxWnBEvcZsbl1Ud0Ktz5n2Nsi
-	cT8E7ZomhvbFmswQptf95Em6mxOzPqz5LaYXXacIPLhiTnKJOjMOxQzXh3CIo2phsEOaxXZcDlf
-	E0=
-X-Received: by 2002:a05:6512:3d20:b0:5a3:ff44:f019 with SMTP id 2adb3069b0e04-5a4172ca21dmr9511325e87.11.1776879757207;
-        Wed, 22 Apr 2026 10:42:37 -0700 (PDT)
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a418376d0asm4632814e87.0.2026.04.22.10.42.36
+        bh=R4vBmmJ5gC2QCrFlTLiSjZ3SPsY2SAKP5dBxbzswxUI=;
+        b=qkjdRwVsFlUTdv9jZjbKdnyBCIZCQ9ir9uIsn4Jlj0mlUJCZXgHE56UdAhypNxlvtV
+         G4GMObhDIBPlDzMA/xogiXj8WXG+TT/HjBFvsOwI9x0AnCA2mnWTeiTR7wznQtYBWTsM
+         mbhos2EWiqknJ+kDfYLUt7aNUxqBKDBcKvKoJcpi0zLrLWaS4eUT3ds0djMKJZpt4Pk/
+         RgEIJsZmENchpBc9FRUI1zpQ4KQXPVuCG8ERvpJETElM9AAcW6g4aBjL7pTVXupHUOna
+         kJzv1xQ7Zja/uPfvB3AeX0e7vsdM70TEd0FX1bdiIVMcMD1ptDLhWVUb8+KN5s0Kr5kB
+         Ra7A==
+X-Forwarded-Encrypted: i=1; AFNElJ+5v2imw2Sz5pqP/hwqoUgxmtbaiXjUyPP5JxN2P6HaxShQJ94GKUuJUgvCO5wcHxSQIJQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxaLTXS5fOyYv5FCtG94XUg/n6GKg5b19exr47nHphw9NxsiAmU
+	+h7YTQ3fkj6qAANa/q03MXuFCtGgiJ+hIkjpk4Qv2x85BWyT0HJZHB1BdAvEP0enVKkj9oKQHMk
+	a7hzZVCIE
+X-Gm-Gg: AeBDievumh2ZLGHv72fsVu4ngAi7rQyx50cMvj1rLvKUzKfaThiPcrqTyG9vFEL+O67
+	lWd+GZvC4g8BA3u1jQZoBXSq9opq8zcQWSFaHVbkq3QUqFP+151oPQQqVPyx6sk1C2qgi48d9LE
+	scpz1fBK1ZXztv333uK5h1nCieqa+V27KnjGYnNoiuOIYw92ILy5SM/nV9ca+SJWzJqi6petRp5
+	6rGZncOqXNF+pwH6QkRXYoM8zwzYSvSswT0LS9/VehAzsdCYnWPzei4jH671ZDqc0y+rSixtB3U
+	BZ/xKpJpdqH7uKe9cSvoenFMegvwObxt/JFTNNKTnTtMsj0mkRqXLErhW8O/HReQBQGX28ZEOSo
+	fLT1kIZgUOsXKlWRt7tmKLL8fLbI0HJqqg9thS5uO9yL0PNnkHDne4hoWaCSbEVKxJYE9HUqeh/
+	pB4f0HwzPn8G3TlinTIpoBGkia+yH6VjhbVzHIDqw5Pnj671EAfHcQosBIjXM1M51CvtOtQXh1H
+	CPjIL8VFug=
+X-Received: by 2002:a17:907:970c:b0:ba9:bb46:345b with SMTP id a640c23a62f3a-ba9bb46630bmr530556966b.18.1776884326307;
+        Wed, 22 Apr 2026 11:58:46 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba45553e502sm572731866b.61.2026.04.22.11.58.46
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 10:42:36 -0700 (PDT)
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38e68e4389cso61074101fa.3
-        for <imx@lists.linux.dev>; Wed, 22 Apr 2026 10:42:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/FQd6AUSsM/Dd/XCGnrvpZpmK1yVNixBUtQdErO04Lbm/pdOmrpIlc9fZdqQS0g7YSI1M=@lists.linux.dev
-X-Received: by 2002:a17:907:7295:b0:ba7:3d21:c136 with SMTP id
- a640c23a62f3a-ba73d3108d8mr812474966b.18.1776879429078; Wed, 22 Apr 2026
- 10:37:09 -0700 (PDT)
+        Wed, 22 Apr 2026 11:58:46 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-671d60ef9c6so7586858a12.2
+        for <imx@lists.linux.dev>; Wed, 22 Apr 2026 11:58:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+210Rl+GltQeUhgzZ+FdRJlZbk0y9oz3d023tkPQgZOGi59nZaJfI6qM+qJMq8CSpa1b0=@lists.linux.dev
+X-Received: by 2002:a05:6000:2f8a:b0:43d:7a08:a5e6 with SMTP id
+ ffacd0b85a97d-43fe3e073c9mr39087653f8f.29.1776883909243; Wed, 22 Apr 2026
+ 11:51:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260325143555.451852-1-herve.codina@bootlin.com> <20260325143555.451852-3-herve.codina@bootlin.com>
-In-Reply-To: <20260325143555.451852-3-herve.codina@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 22 Apr 2026 19:36:55 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
-X-Gm-Features: AQROBzDRSuCo9KZmmr5oDnyHv4O1KWNwiPD4Dqbl5BIkN4nUOYnL3G8AwjYfgqE
-Message-ID: <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
+References: <20260325143555.451852-1-herve.codina@bootlin.com>
+ <20260325143555.451852-3-herve.codina@bootlin.com> <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
+In-Reply-To: <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 22 Apr 2026 11:51:36 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UK3NQKQN7FXyG4nGdDKO=LQYhnL4ZweomQ_4R9-EAYag@mail.gmail.com>
+X-Gm-Features: AQROBzAV3w_CPq4qi5veiP_uOv4VWrOsaTYpBbypDAKqTbu6jiZzeNsnLIn0Vds
+Message-ID: <CAD=FV=UK3NQKQN7FXyG4nGdDKO=LQYhnL4ZweomQ_4R9-EAYag@mail.gmail.com>
 Subject: Re: [PATCH v6 02/27] of: dynamic: Fix overlayed devices not probing
  because of fw_devlink
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
 	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
@@ -98,103 +111,100 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
 	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
 	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
 	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>, 
-	Douglas Anderson <dianders@chromium.org>
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Herv=C3=A9,
+Hi,
 
-CC Douglas
-
-On Wed, 25 Mar 2026 at 15:36, Herve Codina <herve.codina@bootlin.com> wrote=
-:
-> From: Saravana Kannan <saravanak@google.com>
+On Wed, Apr 22, 2026 at 10:44=E2=80=AFAM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
 >
-> When an overlay is applied, if the target device has already probed
-> successfully and bound to a device, then some of the fw_devlink logic
-> that ran when the device was probed needs to be rerun. This allows newly
-> created dangling consumers of the overlayed device tree nodes to be
-> moved to become consumers of the target device.
+> Hi Herv=C3=A9,
 >
-> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> Reported-by: Herve Codina <herve.codina@bootlin.com>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
-x6=3D9F9rZ+-KzjOg@mail.gmail.com/
-> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
-> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@goo=
-gle.com/
-> [Herve: Rebase on top of recent kernel]
-> [Herve: Add the call to driver_deferred_probe_trigger()]
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Tested-by: Kalle Niemi <kaleposti@gmail.com>
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers(s=
-truct fwnode_handle *fwnode,
->                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
->  }
+> CC Douglas
 >
-> +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
-> +{
-> +       struct fwnode_handle *child;
-> +
-> +       guard(mutex)(&fwnode_link_lock);
-> +
-> +       fwnode_for_each_available_child_node(dev->fwnode, child)
-> +               __fw_devlink_pickup_dangling_consumers(child, dev->fwnode=
-);
-> +       __fw_devlink_link_to_consumers(dev);
-> +}
-> +
-> +/**
-> + * fw_devlink_refresh_fwnode - Recheck the tree under this firmware node
-> + * @fwnode: The fwnode under which the fwnode tree has changed
-> + *
-> + * This function is mainly meant to adjust the supplier/consumer depende=
-ncies
-> + * after a fwnode tree overlay has occurred.
-> + */
-> +void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
-> +{
-> +       struct device *dev;
-> +
-> +       /*
-> +        * Find the closest ancestor fwnode that has been converted to a =
-device
-> +        * that can bind to a driver (bus device).
-> +        */
-> +       fwnode_handle_get(fwnode);
-> +       do {
-> +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
+> On Wed, 25 Mar 2026 at 15:36, Herve Codina <herve.codina@bootlin.com> wro=
+te:
+> > From: Saravana Kannan <saravanak@google.com>
+> >
+> > When an overlay is applied, if the target device has already probed
+> > successfully and bound to a device, then some of the fw_devlink logic
+> > that ran when the device was probed needs to be rerun. This allows newl=
+y
+> > created dangling consumers of the overlayed device tree nodes to be
+> > moved to become consumers of the target device.
+> >
+> > Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+> > Reported-by: Herve Codina <herve.codina@bootlin.com>
+> > Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgy=
+o8x6=3D9F9rZ+-KzjOg@mail.gmail.com/
+> > Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com=
+/
+> > Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.co=
+m/
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@g=
+oogle.com/
+> > [Herve: Rebase on top of recent kernel]
+> > [Herve: Add the call to driver_deferred_probe_trigger()]
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > Tested-by: Kalle Niemi <kaleposti@gmail.com>
+> > Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers=
+(struct fwnode_handle *fwnode,
+> >                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
+> >  }
+> >
+> > +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
+> > +{
+> > +       struct fwnode_handle *child;
+> > +
+> > +       guard(mutex)(&fwnode_link_lock);
+> > +
+> > +       fwnode_for_each_available_child_node(dev->fwnode, child)
+> > +               __fw_devlink_pickup_dangling_consumers(child, dev->fwno=
+de);
+> > +       __fw_devlink_link_to_consumers(dev);
+> > +}
+> > +
+> > +/**
+> > + * fw_devlink_refresh_fwnode - Recheck the tree under this firmware no=
+de
+> > + * @fwnode: The fwnode under which the fwnode tree has changed
+> > + *
+> > + * This function is mainly meant to adjust the supplier/consumer depen=
+dencies
+> > + * after a fwnode tree overlay has occurred.
+> > + */
+> > +void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
+> > +{
+> > +       struct device *dev;
+> > +
+> > +       /*
+> > +        * Find the closest ancestor fwnode that has been converted to =
+a device
+> > +        * that can bind to a driver (bus device).
+> > +        */
+> > +       fwnode_handle_get(fwnode);
+> > +       do {
+> > +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
+>
+> After commit f72e77c33e4b5657 ("device property: Make modifications
+> of fwnode "flags" thread safe"), this must be changed to:
+>
+>     if (fwnode_test_flag(fwnode, FWNODE_FLAG_NOT_DEVICE))
+>
+> With this change my DT overlays are working again.
+>
+> I guess keeping the FWNODE_FLAG_* names, but changing their values
+> from bit masks to bit numbers was probably not such a good idea,
+> as it fails to catch missing conversions...
 
-After commit f72e77c33e4b5657 ("device property: Make modifications
-of fwnode "flags" thread safe"), this must be changed to:
+Crud, I should have thought about that. :( Do you think it's worth it
+to do a rename at this point to catch future problems?
 
-    if (fwnode_test_flag(fwnode, FWNODE_FLAG_NOT_DEVICE))
-
-With this change my DT overlays are working again.
-
-I guess keeping the FWNODE_FLAG_* names, but changing their values
-from bit masks to bit numbers was probably not such a good idea,
-as it fails to catch missing conversions...
-
-> +                       continue;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-Doug
