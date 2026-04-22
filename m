@@ -1,258 +1,342 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013039.outbound.protection.outlook.com [40.107.159.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9866A3BF66E;
-	Wed, 22 Apr 2026 08:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776847186; cv=none; b=IThGNOa8NIuIH5MI5PTyWu2bnOBL0l4CMQVUyXu9BRf7kFnD6BgoLI1zCeB3AGRXQ9f0TkzgkqWzsnF7NRKJRS/MNNVOHN0ex6NRTEH/BAcTDli0CLWeObvvJZZKZ+xOjFEKjMOkrl2TviTOpaT6lxXT45MGGifL5DrVp/wptOI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776847186; c=relaxed/simple;
-	bh=yUNY2WJfRMKnvbtKN/j/UvADsxIjSpJls0F3U9Rux10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qeabovX/wxN/YRsF308cCfKdiGaRXnpGj3BfGNtjIqq5GTjBg4ems+k2cXA/QKv5UEGwdi8biFKrpFG251pds4fuHcb2S/PJBhVPa6ygdbIzgxPuC/ISNUEXWHaI95CGJqIN4uhTy68hHnLVdU61Xla/36/JC2IunIF6jGVDOsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=g3S8Z4GC; arc=none smtp.client-ip=188.68.63.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B8C35F612
+	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 09:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776850447; cv=fail; b=UansLMMP6KHy3QsUp/99hJD9r1irYWtmZ2eaKGwzsnxa6QKbSWwXk5dFG9p3VxDSiTcFWQdtruauVmmTWjIdK1EJDF/PbXlN0BY0h8f41iUDmlauOYiQFb5uE/cEmgrFAfSn2oNZoK+Fn5oIG1QCDBWzKUOyal1/Qr+meYESq8Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776850447; c=relaxed/simple;
+	bh=bXHRax0SaDEwnCwvyRCWsm6lmLnpknNkruCKU6I3/7s=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Hw7CF0efHk3S/+ilskKPQJBuCogG5YlFqAf0LMUEDzbig38wx+YqonHPkm3S1/EF29ieUHUZvrPo71Y+6nf9kwP636chjpzWNhAtXnyD9Qvmd3BObO9WMLKwhX4YPbXkP+zHBo9GC2w6Gr7xQSdwcYOqyok6MaIkNw7raqf4ceY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kAaM+hOl; arc=fail smtp.client-ip=40.107.159.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="g3S8Z4GC"
-Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g0t1z2Z2Nz3yVZ;
-	Wed, 22 Apr 2026 10:39:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1776847175;
-	bh=yUNY2WJfRMKnvbtKN/j/UvADsxIjSpJls0F3U9Rux10=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g3S8Z4GC6aCNC+t29j/1QGZkgIt7qaTO+iQADn2aywvab/Ev8EjJuMreKxeleihQX
-	 2hdKfdg+HuMkcRjd42bCVLxtYVK/pYNPjhtKZBTkIbN9CBpY4tZ8TIqLN+gY3S7Zc2
-	 uL0t+O3FqDh7lspxKshvzyGOmKdjewuKGSX804Oo0ZDY9+CrX+pPoyPmzj8VBLk5iX
-	 0eOlsua9Cwy80ts/Nh9KmaS6Jq9czu/I2UE3aVO4tKs4gTEnx1vcB5X6RxG777+oOi
-	 4rRAUCE6mkWoex7wdG8eQHgHdDp+Q6kXFCQPyKcjRJvywyLQJcS9cnXpOz+0XPJdV4
-	 vOY3S33AEgiQA==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4g0t1k4b51z40Db;
-	Wed, 22 Apr 2026 10:39:22 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g0t1j4MTwz8sZP;
-	Wed, 22 Apr 2026 10:39:21 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 88904632AD;
-	Wed, 22 Apr 2026 10:39:20 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <0fe54399-1fb1-4f75-a60c-e171292415a6@leemhuis.info>
-Date: Wed, 22 Apr 2026 10:39:19 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kAaM+hOl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oWzyAXmxxMv7U65XfIRhx/xJRdvglxbzVrC+b8WGBR/IvwSHg3RGAYn6UyoC7eSW9Y+sUJAnKNaPS19L153LfAzNJuLKky2BPrUA21rtkFdaJCy0k/b2UJj2BR2EQ/e3uQOttTw+ljErVr1hcbPy51a8Mn5pLij156B/5Y2ZDYAU071lyVmXLqN8YrHFNgtFg52Bh1kbr/AAQJkqDZ94JS4dxwi3SMCUey7Ivw+THpthPQO8QJHvqEqw5wUiRnkaJuHtiAGXCjOjvRCDRF7SiSDTAA+kTbGbUJ/EDOXItwyd3iRGu7DP4VgjPT/lEBpBStOiNQv+aoKmLsO6NcH0uA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sYK67FMWg5onoP1n72XO2tK5fq4Lb3GCxsh6UhiSZ24=;
+ b=OBt0ulC8PGc+Vq3r9y2LNcCJLZx4kDjCeIW4cGYD9Zcxwg9s6LW2w4yC2sH+LyyDbqGJVYBT41z2ZBMsIf1AFjIJ053qSVcURJBfkZge/Gj5uWJz8FUWwZAJtukF0J4rcIv8Vltpd8kcFux+fncW1yf2a9Fp4jRWK24w8bSXVoJaV/GZHV4TpUEEJYaLdCNg4h6+heTuQn9jaXkXUTOAXA5emrC9eySnNfyKrrlYF6VX74fta/Syybkg+QjqZ6uoOdjNUSW5qrSHj/FcPS1sa/bRyAfbHv9TUqVqu45hPrsVvxbcHNMmDYRFM59uXJ63ZalK8+WhGbPiKCU93Uq1eA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sYK67FMWg5onoP1n72XO2tK5fq4Lb3GCxsh6UhiSZ24=;
+ b=kAaM+hOlZ6n5GSYspoGfVUbsQejL4/ohj/ssarnSH3SGQ3jDvzqzdpfF207KudUJK1fIZ+9GcbZr49nOtv6rVgdk4xC6be0ZK8KREV12d6ythrjQUbVW/kJHrwWSQdl2NT0K2rsKRYEkfgLTZbkmSApHBop4VbdfzGhtBNr2jGpv9qpyKF54xLfq6DfVSFGazkSBi3QL0opfjWmS8mi1dFGxEn9HX7Xgvw5aR8j5QS9kPCdtySGgFDj0tV6HUaCLywb+Lhk2kQRLuUqp8jpPxM3ZXw6MWedWBSDL9E7U25BUG7yRTkiPiz+lz/Nzv2ZoXhjA9GpNu7NHpSlVp7ZXog==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13) by GV4PR04MB11428.eurprd04.prod.outlook.com
+ (2603:10a6:150:29a::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Wed, 22 Apr
+ 2026 09:34:00 +0000
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994%6]) with mapi id 15.20.9818.032; Wed, 22 Apr 2026
+ 09:34:00 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	bhelgaas@google.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de
+Cc: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V14 00/12] pci-imx6: Add support for parsing the reset property in new Root Port binding
+Date: Wed, 22 Apr 2026 17:35:37 +0800
+Message-Id: <20260422093549.407022-1-sherry.sun@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR01CA0140.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::20) To VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: i.MX8M Plus PCIe link regression
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Hongxing Zhu <hongxing.zhu@nxp.com>, Manivannan Sadhasivam <mani@kernel.org>
-Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <23024521.EfDdHjke4D@steina-w>
- <AS8PR04MB88332979F06EDE29E751BCE18C7CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
- <2qto2ddqmtks37wxtklxo4ctvxyezmgtjcuprnk6crant5fvsu@vdbmqomrcqt3>
- <6102060.LvFx2qVVIh@steina-w>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <6102060.LvFx2qVVIh@steina-w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177684716089.1821918.1965836553222221611@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 88904632AD
-X-NC-CID: pbQs2wGavMMtO1Lsg5Lqnthp6i0QkgfZ7gamkgUvglMNXJR6u80=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR04MB12114:EE_|GV4PR04MB11428:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebb3f8a3-e8c3-4c99-bd45-08dea05248c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|52116014|376014|38350700014|921020|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	bjD4fjH7YjojyY6uzH2VuwfLXhnaO5ReQdNWfB1rSw+EfSeRU7OkECCcd+n9qnxd96qK1vKbhRvJpYjIFF1JTqfGRaEmN42NEtdErMklfDvXtwRvAyMm6+yWylYTXEkeFctryY0hFpD2vX2t9AQlBWF4sKSwMkGNSL+sPtPYSXPF50E6COSDvMlCC2EQdItOWW2N1admwNnu0wCaBFNdECtiGTczpkznDbHCOgtdKKfG+9kdKhtF8PK9w11Ics473iRdA4YxxEw5yUkrk9j3twnhc/Dz6EdBsITHMA/Y8/IAs5t+XAvoG/p2/F3T4wA5FGUneFuZwwAMj7ZJPm9AM//Qqi3Iy7Vz6SweGk/15aJBEsH0z+f5zAPZKv8DR0auOUAoulCR6V2HjqK2Y+wC7hndhKFcKfeCf+icfDWsf9UxPySV2NQmQMtLkkge0Z/QlQF7oLgzjneZr0d92jh37kbv4vwTX1KZEDoiqJF5VlWIjOq2nMt+vPthW6LkTdmVhaWRnenB4mMu/p4fsgjunihA3+lXORFkISJpCvZlg1CXRVZk+Hljqf2VdomJU1hc4EZH3vAIX1B+d7RYdjtiw+6PrVJjnZlkEDSZXv3t3GVI69zBiz7uJnEvAZg0/c2b6ik79ecWEpS+qgxsHgC8h3K0fEnnJeOksK4182KfP9AsYxpTrrVf7GrbJ2Tb9NFRVLHLfYrjI1DJvYe8iW+3/o2RgJY/x4Jc0r4vpC7hYBZ93kuDJ7O+b8Ooo61MFI0M7hWEgE9XQ5Z4oMzKLLzRUDgaqWs1qw1fMin6JAf82kIa/unq5gQUenRXhnzedW8QhjfL8WF5GVEEMqZGLzinQw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(52116014)(376014)(38350700014)(921020)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0x3K2lkM0lDVTN0cC9aSTNNUTBSYnYzalo3d2YxVFZFVWtwRmpiZm85eFMr?=
+ =?utf-8?B?NllBbnRJMXNOaU5pSmtoN1NEYkFVTHJCRGdrcWxwa2RZUjRmUTlOeVNxWWpU?=
+ =?utf-8?B?Y2JwM2FSQXI4azdwMVNGNmQ3ejFNLzFqMWZhdUttNmVpbkFEc1ZMSlhIWXFT?=
+ =?utf-8?B?RXZxVTZKdzdHKzNhQkJLVS83UkxBakM4aVNlUnFNTmVWTFdBSTEwTFplV2lt?=
+ =?utf-8?B?QkdwYWU3ekNGV1Rld2VZQzlKM3JxM21xRFdqZmRuK2I2NkNGc3IyV1BQaGR4?=
+ =?utf-8?B?MEZ6WFZ2Z1c1VllDOHV5OExyZ0hZNG1jWFY1aUxJQmM1SG9uZjNkdDNtbnVQ?=
+ =?utf-8?B?Q2JkZjlmRUIyWitwWmF6enQ1eWp0WDY5S1g2ZElBMGUrSDZYalVpOWlGcDNt?=
+ =?utf-8?B?b2VPUWhaNGZhWkhGT1lCa2g3eHM5TXFkRHdOYjhXR1Z1YXhUeUJxS0FLRjRy?=
+ =?utf-8?B?RFYzZng0c1NjalFLeklYRmRpNHpvMGV5ZVVRZlRQYXJpMzlWRUNBdytxV1lX?=
+ =?utf-8?B?a00vaXVIbzRqajVsbXVvL2tDQ0hFaWJqSkJOVTFoaEpRMTJyRm96elNWeFV5?=
+ =?utf-8?B?VVRzRkFaaFozdmRCOVplVnc1aGtsS3pxT0lJbGw5Tno3REF3d3FDcnFMM1JW?=
+ =?utf-8?B?OHVuUHJOWmVONzZIaFFhK2VrbUhtSUQxeUcwSEp2LzdHZDgyVDIrcmFOdWta?=
+ =?utf-8?B?YWVTbW92QzIrbHEyODNvbmJ0N0hOdGtYNjlVU254SGViVUZUTWVBdXJvUnoz?=
+ =?utf-8?B?Rjc0cmlTa3QxMkdFTkdGR1BVbEVlL1ZzbHhzekJ5T2JZNUVOSmlJNTJ3eXV1?=
+ =?utf-8?B?c3BQWUtFSVhpT1MyVnBqTGRNM0I1RDRFZGx5Sk9QcjV5OXdlT0JTQkt4STcr?=
+ =?utf-8?B?UlFLTjBHMFI5NGx1WFR1bXBHMWZweUNVVXIyY2p6bFlOWk5PUHIyZEpIcFlK?=
+ =?utf-8?B?YTU3MjlVRHdQUTR6OWF4dVpFQU51bXR0K1pyYi9ITE5WRXhYT040L0FtQjg3?=
+ =?utf-8?B?RGNLdmE4TWoyZEdNWHU0RDU3UDB6SjU5OTFZUUhTZmpTd2JzSWU4TXBuWG9y?=
+ =?utf-8?B?WnkwRXVvVG1wRm1JZmNkT0UyQmxmYVV6SGh0SnNZT1ZPZk5qRWlCcUk1Q3dU?=
+ =?utf-8?B?MzBlS1lkK3dOM1JBdTVucHNGaE9BOFV5SUxkYUZnd3RJQStSY3RJNE8rQjdT?=
+ =?utf-8?B?QXJ4d2NWenYzcTYxL0FXMG9iYkhCQVhDMHJuRmRBZDNnVUVpZ04wYUhDY1J5?=
+ =?utf-8?B?SVJjclRMUnVFVXNteEpSMzdpZHJvTXdtY3ltV002dk01TTN4bkxlbG5UNHg5?=
+ =?utf-8?B?WHgzUEl4R3FNdWhXOG5nTWNzVGlCdm1za1F4OGdKa2lhbmt2ZG5mVUpiOW9L?=
+ =?utf-8?B?bU9BTzdJQzF1MFJ2MW82eDdmQnVRZWVkZ3NXUEREbzg2SU1FRUpnVFVWcGp1?=
+ =?utf-8?B?aHpWYVJ6QlFrQTlJWms5OTArR1F3empaOUtDSEp2bEdxaEQ1RlNENTdVSW5l?=
+ =?utf-8?B?SUNJbWpFQms2YWNlR3pWYzVnN2I0Q1ovMUo0eGNtL09KRHJWM1dxekhBdTE0?=
+ =?utf-8?B?NUdWVFZubmRpTkFCQUpCOWxMUk83Vmx4d3c0MmNUS1ZDVHFDZjlUbldaSUZ4?=
+ =?utf-8?B?K3BuRVBGc3NzQ1hPdWQxV3hjaklQZmxCa0ZoSlNFbnc3bGR3Y1RxTEp4Y1FX?=
+ =?utf-8?B?RHl5dFB6eTdlcHI4RUUzcEhxTmtweVUwVDlYQXlRcmZ1TVdFc2cwZk1HUDBp?=
+ =?utf-8?B?T25acFdNOGNJT0VkdTlHQlIxdVcwY0ZXNUU4ZUsvQWZrbTNpWlkvV3J2N0Ja?=
+ =?utf-8?B?SWpSaWM4d3dlVms5NFFoMUhmVWpuT1cxK3cxREVZelVvaGFQMHl5MTFJaS9M?=
+ =?utf-8?B?VVJWT3hPRzZ6blRhWGVEazRMeDNBUjF6eU9xcU5JZXdJY0QwZ082TDdFcmR6?=
+ =?utf-8?B?STQzeWJBeUkrelMxREZLckh0ZHp5V0oxYk5Samp0S2xCOTRJOXZYMExodGRM?=
+ =?utf-8?B?OXV2VzR4enVqWTlBTDhiaE1uUUYxcGJZblpMaFR0TEhHclZoRGtVUFRjTmRE?=
+ =?utf-8?B?VHZEU3FqYkgyellwRVJNL2RQbnBwQnRKdE1HQVpTYWlmWitOZ2krNVJJKzVH?=
+ =?utf-8?B?Tm5TZWYxbEllb3VJZkJSM1Vpb2JqZkUxazRoVXZ4ckpqWW5sSmpiTVY4eUlC?=
+ =?utf-8?B?dTBFSFFaRHZvM0dmbGZxa1V0UklzbXVqVWFoRWlFZ0JoTXFsZWZDNjFYY3Q0?=
+ =?utf-8?B?ODNoWUNiYmRzN01lUTNpOXdBSExSajE3RXhMZ3YvOHJsbnpnblJYMDBCYXQ4?=
+ =?utf-8?B?cm5jMVhHNFlkM1BZNUZUeDQ0UFFpTnMxQ1hzVWFUcVFIcitNejFqQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebb3f8a3-e8c3-4c99-bd45-08dea05248c9
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 09:34:00.5018
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qBgGtgKBw8Z9UItIzouHRqHgVFjbEr70dMGY8GyQ6eQOscV2O1AdD2SW2ZNNcBpBqCVSq6XZ15EM4htT1fHITQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11428
 
-Lo! What happened to this regression? It looks like it was never
-resolved. Is that something everybody can live with in some way? Or
-something we have to live with, as reverting the culprit at this point
-would create a regression and thus creates even more trouble then it solves?
+This patch set adds support for parsing the reset property in new Root Port
+binding in pci-imx6 driver, similar to the implementation in the qcom pcie
+driver[1].
 
-Ciao, Thorsten
+Also introduce generic helper functions to parse Root Port device tree
+nodes and extract common properties like reset GPIOs. This allows multiple
+PCI host controller drivers to share the same parsing logic.
 
-On 3/4/26 09:47, Alexander Stein wrote:
-> 
-> Am Mittwoch, 4. März 2026, 07:32:48 CET schrieb Manivannan Sadhasivam:
->> On Wed, Mar 04, 2026 at 02:55:51AM +0000, Hongxing Zhu wrote:
->>>> -----Original Message-----
->>>> From: Manivannan Sadhasivam <mani@kernel.org>
->>>> Sent: 2026年3月4日 0:42
->>>> To: Hongxing Zhu <hongxing.zhu@nxp.com>; Alexander Stein
->>>> <alexander.stein@ew.tq-group.com>
->>>> Cc: linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->>>> imx@lists.linux.dev
->>>> Subject: Re: i.MX8M Plus PCIe link regression
->>>>
->>>> On Tue, Mar 03, 2026 at 01:38:13PM +0100, Alexander Stein wrote:
->>>>> Hi,
->>>>>
->>>>> these days I noticed that there is a PCIe link regression on my
->>>>> i.MX8MP platform (TQMa8MPxL) running next-20260227.
->>>>> I could bisect it back to commit 9c03e30e3ade3 ("PCI: imx6: Skip link
->>>>> up workaround for newer platforms"). I always get the following errors:
->>>>>
->>>>> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
->>>>> CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
->>>>> imx6q-pcie failed with error -110
->>>>>
->>>>> Connected is a Gen1 PCIe -> Ethernet adapter. Interestingly a Gen2
->>>>> device is detected without issues.
->>>>>
->>>>> Reverting 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc and
->>>>> b9a8d28ebbf118bb3eac953f4a37abbd341257ab "fixes" my platform, both
->>>> Gen
->>>>> 1 and Gen 2 devices are detect. Commit
->>>>> 3c96a61dd2e098dda8dcac3dce3d38a3c87afbfc is only required for conflict
->>>> free revert.
->>>>>
->>>>> Here is a summary with outputs:
->>>>> Gen 1 device
->>>>>> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
->>>>>> 01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.
->>>>>> RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev
->>>>>> 01)
->>>>>
->>>>> Gen 2 device
->>>>>> 00:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 / PCIe bridge (rev 01)
->>>>>> 01:00.0 SATA controller: Marvell Technology Group Ltd. 88SE9128 PCIe
->>>>>> SATA 6 Gb/s RAID controller (rev 20)
->>>>>
->>>>> output of "dmesg | grep imx6q-pcie". Common part for all tests:
->>>>>> imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
->>>>>> imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff ->
->>>>>> 0x0000000000
->>>>>> imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff ->
->>>>>> 0x0018000000
->>>>>> imx6q-pcie 33800000.pcie: config reg[1] 0x1ff00000 == cpu 0x1ff00000
->>>>>> imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K,
->>>>>> limit 16G
->>>>>
->>>>> next-20260227
->>>>> Gen 1
->>>>>> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM:
->>>>>> CFG_LINKWD_START imx6q-pcie 33800000.pcie: probe with driver
->>>>>> imx6q-pcie failed with error -110
->>>>>
->>>>> Gen 2
->>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie
->>>>>> 33800000.pcie: PCI host bridge to bus 0000:00
->>>>>
->>>>> next-20260227 + reverts
->>>>> Gen 1
->>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
->>>>>> 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie 33800000.pcie: PCI
->>>>>> host bridge to bus 0000:00
->>>>>
->>>>> Gen 2
->>>>>> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up imx6q-pcie
->>>>>> 33800000.pcie: PCIe Gen.2 x1 link up imx6q-pcie 33800000.pcie: PCI
->>>>>> host bridge to bus 0000:00
->>>>>
->>>>> What can we do here? I'm wondering why Gen 2 trains correctly, while
->>>>> Gen 1 doesn't.
->>>>>
->>>>
->>>> Thanks for the report and sorry for the breakage. Commit 9c03e30e3ade3,
->>>> mentions that the workaround is only needed for the i.MX6 platforms. So
->>>> I'm not sure why the patch breaks i.MX8M and that too only for Gen 1
->>>> speed.
->>>>
->>>> Also, before 9c03e30e3ade3, LTSSM was always started in Gen 1, but as per
->>>> your finding, only Gen 1 devices fail to work. So the code till
->>>> imx_pcie_wait_for_speed_change() shouldn't have an impact. Maybe the
->>>> issue is due to skipping imx_pcie_wait_for_speed_change()?
->>>>
->>>> Richard, thoughts?
->>> Hi Maini:
->>> Prior to calling imx_pcie_wait_for_speed_change(), the PCIe link must
->>>  already be established. Before commit 9c03e30e3ade3, the speed change
->>>  procedure was only initiated after the initial Gen1 link was successfully
->>>  brought up.
->>>
->>> Hi Alexander:
->>> Sorry for the breakage.
->>> Before commit 9c03e30e3ade3, i.MX8MP PCIe forced Gen1 link training
->>>  initially, then switched to Gen3 after link-up by triggering a speed
->>>  change. After commit 9c03e30e3ade3, link training starts directly at
->>>  the Gen3 capability level.
->>>
->>> The two link training methods differ only in the i.MX8MP Root Complex (RC)
->>>  link capability configuration prior to link training: one method forces
->>>  Gen1 speed, while the other retains the default Gen3 setting in your tests.
->>>
->>
->> I still don't understand why the link fails to train at Gen 1.
-> 
-> Independently from the configured maximum link speed, shouldn't the initial
-> link be Gen1 anyway and upgraded to Gen 2 later on?
-> 
-> I added some debug output to dw_pcie_link_up()
-> 
-> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 3
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f704
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f722
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
-> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
-> 
-> 
-> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 2
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x28000000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x2800f702
-> imx6q-pcie 33800000.pcie: Link failed to come up. LTSSM: CFG_LINKWD_START
-> imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
-> 
-> 
-> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 1
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
-> imx6q-pcie 33800000.pcie: PCIe Gen.1 x1 link up
-> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
-> 
-> So for any maximum speed above Gen1 it seems that LTSSM is stuck at link
-> training.
-> Unfortunately only link training and link up bits are defined and RM doesn't
-> show anything, so I don't know what the other bits are indicating.
-> 
-> For a Gen2 device the link training succeeds right away.
-> 
-> imx6q-pcie 33800000.pcie: dw_pcie_link_set_max_speed: current pci->max_link_speed: 2
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08200000
-> imx6q-pcie 33800000.pcie: dw_pcie_link_up: PCIE_PORT_DEBUG1: 0x08000010
-> imx6q-pcie 33800000.pcie: PCIe Gen.2 x1 link up
-> imx6q-pcie 33800000.pcie: PCI host bridge to bus 0000:00
-> 
-> Best regards,
-> Alexander
+Define struct pci_host_port to hold common Root Port properties
+(currently only reset GPIO descriptor) and add
+pci_host_common_parse_ports() to parse Root Port nodes from device tree.
+Also add the 'ports' list to struct pci_host_bridge for better maintain
+parsed Root Port information.
+
+The plan is to add the wake-gpio property to the root port in subsequent
+patches. Also, the vpcie-supply property will be moved to the root port
+node later based on the refactoring patch set for the PCI pwrctrl
+framework[2]. 
+
+The initial idea is to adopt the Manivannan’s recent PCIe M.2 KeyE
+connector support patch set[3] and PCI power control framework patches[2],
+and extend them to the pcie-imx6 driver. Since the new M.2/pwrctrl model is
+implemented based on Root Ports and requires the pwrctrl driver to bind to
+a Root Port device, we need to introduce a Root Port child node on i.MX
+boards that provide an M.2 connector.
+
+To follow a more standardized DT structure, it also makes sense to move
+the reset-gpios and wake-gpios properties into the Root Port node. These
+signals logically belong to the Root Port rather than the host bridge,
+and placing them there aligns with the new M.2/pwrctrl model.
+
+Regarding backward compatibility, as Frank suggested, I will not remove
+the old reset-gpio property from existing DTS files to avoid function
+break.
+
+For new i.MX platforms — such as the upcoming i.MX952-evk will add
+vpcie-supply, reset-gpios, and wake-gpios directly under the Root Port
+node.
+Therefore, driver updates are needed to support both the legacy
+properties and the new standardized Root Port based layout.
+
+[1] https://lore.kernel.org/linux-pci/20250702-perst-v5-0-920b3d1f6ee1@qti.qualcomm.com/
+[2] https://lore.kernel.org/linux-pci/20260115-pci-pwrctrl-rework-v5-0-9d26da3ce903@oss.qualcomm.com/
+[3] https://lore.kernel.org/linux-pci/20260112-pci-m2-e-v4-0-eff84d2c6d26@oss.qualcomm.com/
+
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+Changes in V14:
+1. Add pci_host_common_parse_perst() helper to parse PERST# from all PCIe bridge
+   nodes starting from the Root Port node.
+2. Corresponding changes in patch#2 and patch#4 for the parsing PERST# logic.
+
+Changes in V13:
+1. Use of_property_present() instead of of_property_read_bool() in patch#2 as
+   reviewed by sashiko.
+2. Add reset Null check in imx_pcie_parse_legacy_binding() to avoid
+   unconditional deassert delays on boards without reset GPIO as reviewed by
+   sashiko.
+3. Delete the pcie@0,0 port defined in imx6q-utilite-pro.dts and use the new
+   pcie_port0 label in imx6qdl.dtsi to avoid to defining the conflicting node as
+   reviewed by sashiko.
+
+Changes in V12:
+1. Improve the pci_host_common_parse_port() to correctly handle three scenarios:
+   PERST# found in Root Port node & PERST# not in Root Port but found in RC node
+   & PERST# not found in either node.
+2. Add documentation noting for pci_host_common_parse_port().
+3. Add err_cleanup handle path for pci_host_common_parse_ports() to clean up any
+   partially parsed Root Port resources.
+4. Optimize imx_pcie_assert_perst() to avoid the linearly increasing deassertion
+   delay if controller has multiple Root Ports.
+5. Use mdelay instead of msleep in imx_pcie_assert_perst() for noirq context
+   safety.
+6. Remove early return in imx_pcie_parse_legacy_binding() when reset is NULL to
+   align with pci_host_common_parse_port(), allowing port creation even without
+   PERST# GPIO.
+
+Changes in V11:
+1. Call pci_host_common_parse_ports() API from pci-imx6 driver instead of dwc
+   common layer as Mani suggested.
+2. Improve the commit message of patch#3 to avoid confusion as Mani suggested.
+
+Changes in V10:
+1. Use gpiod_direction_output() instead of gpiod_set_value_cansleep() to
+   ensure the reset GPIO is properly configured as output before setting
+   its value in patch#5 as now the reset GPIO is obtained with
+   GPIOD_ASIS flag.
+
+Changes in V9:
+1. Improve the error handling in pci_host_common_parse_ports() as Mani suggested. 
+2. Move the list_empty check and the comment to imx_pcie_host_init() to make it
+   clear that imx_pcie_parse_legacy_binding() is a fallback as Mani suggested.
+3. Export pci_host_common_delete_ports() so that it can be called by
+   imx_pcie_parse_legacy_binding().
+
+Changes in V8:
+1. Add back the cleanup function pci_host_common_delete_ports() to properly
+   handles the ports list instead of simply using pci_free_resource_list().
+2. Improve the patch#4 commit message.
+3. Remove the irrelevant code change in patch#4.
+
+Changes in V7:
+1. Change to use GPIOD_ASIS when requesting perst gpio as Mani suggested.
+   using bridge->dev.
+2. Add a seperate patch to move vpcie3v3aux regulator enable from probe to
+   imx_pcie_host_init() and move imx_pcie_assert_perst() before regulator and
+   clock enable for pci-imx6.
+3. Add device pointer parameter for pci_host_common_parse_port() instead of
+
+Changes in V6:
+1. Drop the pre-allocate pci_host_bridge struct changes in dw_pcie_host_init()
+   and imx_pcie_probe().
+2. Parse Root Port nodes in dw_pcie_host_init() as Frank and Mani suggested.
+3. Move the imx_pcie_parse_legacy_binding() from imx_pcie_probe() to
+   imx_pcie_host_init(), so that dw_pcie_host_init() parse Root Port first, if
+   no Root Port nodes were parsed(indicated by empty ports list), then parse
+   legacy binding.
+4. Add device pointer parameter for pci_host_common_parse_ports().
+5. Add NULL pointer check for reset gpio in imx_pcie_parse_legacy_binding().
+
+Changes in V5:
+1. Add the Root Port list(pci_host_port) to struct pci_host_bridge for better
+   maintain parsed Root Port information.
+2. Delete the pci_host_common_delete_ports() as now the Root Port list in
+   pci_host_bridge can be cleared by pci_release_host_bridge_dev().
+3. Change the common API pci_host_common_parse_ports() pass down struct
+   pci_host_bridge *. 
+4. Modify dw_pcie_host_init() to allow drivers to pre-allocate pci_host_bridge
+   struct when needed.
+5. Allocate bridge early in imx_pcie_probe() to parse Root Ports.
+
+Changes in V4:
+1. Add common helpers for parsing Root Port properties in pci-host-common.c in
+   patch#2.
+2. Call common pci_host_common_parse_ports() and pci_host_common_delete_ports()
+   in pci-imx6 driver.
+3. Use PCIE_T_PVPERL_MS and PCIE_RESET_CONFIG_WAIT_MS instead of magic number
+   100 in patch#3 as Manivannan suggested.
+4. Use "PERST#" instead of "PCIe reset" for the reset gpio lable in patch#3.
+
+Changes in V3:
+1. Improve the patch#2 commit message as Frank suggested.
+2. Add Reviewed-by tag for patch#1.
+
+Changes in V2:
+1. Improve the patch#1 commit message as Frank suggested.
+2. Also mark the reset-gpio-active-high property as deprecated in
+   imx6q-pcie DT binding as Rob suggested.
+3. The imx_pcie_delete_ports() has been moved up so that the
+   imx_pcie_parse_ports() can call this helper function in error handling.
+4. Keep the old reset-gpio property in the host bridge node for the
+   existing dts files and add comments to avoid confusion.
+---
+
+Sherry Sun (12):
+  dt-bindings: PCI: fsl,imx6q-pcie: Add reset GPIO in Root Port node
+  PCI: host-generic: Add common helpers for parsing Root Port properties
+  PCI: imx6: Assert PERST# before enabling regulators
+  PCI: imx6: Add support for parsing the reset property in new Root Port
+    binding
+  arm: dts: imx6qdl: Add Root Port node and PERST property
+  arm: dts: imx6sx: Add Root Port node and PERST property
+  arm: dts: imx7d: Add Root Port node and PERST property
+  arm64: dts: imx8mm: Add Root Port node and PERST property
+  arm64: dts: imx8mp: Add Root Port node and PERST property
+  arm64: dts: imx8mq: Add Root Port node and PERST property
+  arm64: dts: imx8dxl/qm/qxp: Add Root Port node and PERST property
+  arm64: dts: imx95: Add Root Port node and PERST property
+
+ .../bindings/pci/fsl,imx6q-pcie.yaml          |  32 ++++
+ .../boot/dts/nxp/imx/imx6q-utilite-pro.dts    |  17 +-
+ .../arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi        |  11 ++
+ .../arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |   5 +
+ arch/arm/boot/dts/nxp/imx/imx6sx.dtsi         |  11 ++
+ arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts       |   5 +
+ arch/arm/boot/dts/nxp/imx/imx7d.dtsi          |  11 ++
+ .../boot/dts/freescale/imx8-ss-hsio.dtsi      |  11 ++
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |   5 +
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi |   5 +
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi     |  11 ++
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |   5 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  11 ++
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  |  10 ++
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi     |  22 +++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  10 ++
+ .../boot/dts/freescale/imx8qm-ss-hsio.dtsi    |  22 +++
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts |   5 +
+ .../boot/dts/freescale/imx95-15x15-evk.dts    |   5 +
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |  10 ++
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |  22 +++
+ drivers/pci/controller/dwc/pci-imx6.c         | 132 +++++++++++---
+ drivers/pci/controller/pci-host-common.c      | 164 ++++++++++++++++++
+ drivers/pci/controller/pci-host-common.h      |  28 +++
+ drivers/pci/probe.c                           |   1 +
+ include/linux/pci.h                           |   1 +
+ 28 files changed, 546 insertions(+), 36 deletions(-)
+
+-- 
+2.37.1
 
