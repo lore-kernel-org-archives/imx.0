@@ -1,111 +1,87 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE6B26AE5;
-	Wed, 22 Apr 2026 05:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1F33A9F5;
+	Wed, 22 Apr 2026 06:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776837505; cv=none; b=sbWpGKlTJw0CgbHpmH53aKV/wpusu6yi5GqlAvE87Wp79nMlg41h/ylikGWgiRIpfLDxhmUNNIDkU/QfNVkFktIv49L3P3+7YcNlcz9xPlbOLi2Q+SvM1Q8vVzLCUyi5lpBY1fIvC7OsWfYC/5n0flyQGUZvW6F/D4eM1YdvQZ8=
+	t=1776840480; cv=none; b=OLqCZp4uc6/X67ULTfQ+try07b4mFcAvtHAo/qkKFN5H2DNrL9LXjqmVd93xrpNipVx9dn/uFfX19bZ/qSbviLh9QhmtzJuUEXhVbFMdvrC3MWNh8R70OUu5IfRLezPhzzmTkyy8D9V06oyOOdFvqZT5aY28XJkWD4EKWtq/mJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776837505; c=relaxed/simple;
-	bh=+SBEpZLG6GAppa05nCtpaeeSwAjeK6SPvGIAE88fxXA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tt2xNxXXi+W3yQ83Rq9R8/ek+pY9xaHZKiNlkr+N/qfs3nPhuH1v+DZapBl5he/xqqzv+rOz9p7Dzzh0KBh6dfpcHYTS2pTuUhd1REgdQ0FQlEyYFpgaGrDBEC/sIig6ZjyMpauhGlSJP16Ck67Ysx9Yjy6RkKDI8IKXQohr5YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HXLCoyB+; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1776840480; c=relaxed/simple;
+	bh=eafGCTKjIPYyjzVPLcBhsv3fs5JULzlGRXa2ggj2ADc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ovcpu7Si8BLu3wmf2xY/bPW0k1A/hsGIi1zQEpfxlysKb7ae4U4rX4bibpHmCoZz/ss2qDrurDF1dAIhrhl3vuZn6tyUHHNFT/GsgiBR6RWNlR4Eqo7E8LCNpAb7H08UqXqlJa/f6MPnHXO3jcXpgpeKjZ0BJvwHj3zcHc00+d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFFmWLEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HXLCoyB+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=lY/hgFBno9RfdYpXPt9j6UEb8sKZ4/mklIZ8F7pl0vM=; b=HXLCoyB+DDPSKlJJ3Boim+K+Al
-	rIESKF3BZiqSWEeF9naIuwgDEmrEnO4nD+xWLLokehnTu+fJEjeqpmT5vdXlMlrtaTgAIaC2tYJzY
-	b5APdYSaLl57W/2Z18OmHKDUJv/BNlQTxQ6vAY/UA4JXzywlhyBSYJoK5VXNjhvBioTpH+VEDfks7
-	XSjtJPD4qXuo/NYxyPrwWr0WGdC/iFVSfdaRj/71uWzG5eZeIQrOX2HcCiSGQmAK6mJ6NO0YMtnFw
-	jXqbZLteEFgYE7unJ5SL0fbyROzQSvQwV9siF48xzWx0Ri0TN9qr1Nymw80+gbLcDCaldNfbU69O4
-	IikISMtw==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wFQbF-000GKu-0q;
-	Wed, 22 Apr 2026 07:58:13 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wFQbE-0006jK-2r;
-	Wed, 22 Apr 2026 07:58:12 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
- linux-renesas-soc@vger.kernel.org, Daniel Baluta <daniel.baluta@oss.nxp.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: add tqma9596la-mba95xxca
-Date: Wed, 22 Apr 2026 07:58:11 +0200
-Message-ID: <5988897.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <4f436a21-ecfa-44ef-9002-c64ebd5e30ee@oss.nxp.com>
-References:
- <20260326111803.1248934-1-alexander.stein@ew.tq-group.com>
- <20260326111803.1248934-2-alexander.stein@ew.tq-group.com>
- <4f436a21-ecfa-44ef-9002-c64ebd5e30ee@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFFmWLEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8896C19425;
+	Wed, 22 Apr 2026 06:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776840479;
+	bh=eafGCTKjIPYyjzVPLcBhsv3fs5JULzlGRXa2ggj2ADc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tFFmWLEPo3JBEQA9nL2BIMeF8phH2+YvY/dfIQZX+fwscHeztzRQNTRBaA8H7wqyQ
+	 W/AGcAGqUg5PS5efpyKwzdQCv9Y5RKFtO+GYnymMSlB281Lu1r6nAsYX4AEz/kEpyp
+	 wdx1GUjlwa83p2SGeqvMaQyRG3889fjjA+ZKsJ10XyFUThtIHyehROR3fbcDpB4oFB
+	 cfKBNkPKC8982qsrRFwNJ+abUUBnfhvkSJWfn4pGmSCePzDN4KHi/yCpStrVXunvlx
+	 WKWhoKammaKmnRHP6LalIrpw2+4cTwsFWepYkjmsO9tY3oPg8RbUTl1Wnha2o0zVfs
+	 b9ELcISU0YDLw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wFRNN-00000006aGN-1txm;
+	Wed, 22 Apr 2026 08:47:57 +0200
+Date: Wed, 22 Apr 2026 08:47:57 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: imx: fix runtime pm leak on probe deferral
+Message-ID: <aehvHZMjwMNmru0x@hovoldconsulting.com>
+References: <20260421125632.1537235-1-johan@kernel.org>
+ <aehBYJ-R3bXB0RDo@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27978/Tue Apr 21 08:26:17 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aehBYJ-R3bXB0RDo@lizhi-Precision-Tower-5810>
 
-Am Dienstag, 21. April 2026, 16:48:25 CEST schrieb Daniel Baluta:
-> [..]
->=20
-> > +
-> > +	reserved-memory {
-> > +		#address-cells =3D <2>;
-> > +		#size-cells =3D <2>;
-> > +		ranges;
-> > +
-> > +		linux_cma: linux,cma {
-> > +			compatible =3D "shared-dma-pool";
-> > +			reusable;
-> > +			size =3D <0 0x28000000>;
-> > +			alloc-ranges =3D <0 0x80000000 0 0x80000000>;
-> > +			linux,cma-default;
-> > +		};
-> > +
-> > +		vpu_boot: vpu_boot@a0000000 {
->=20
-> Should this be memory@a0000000 ?
+On Tue, Apr 21, 2026 at 11:32:48PM -0400, Frank Li wrote:
+> On Tue, Apr 21, 2026 at 02:56:32PM +0200, Johan Hovold wrote:
+> > Make sure to balance the runtime PM usage count before returning on
+> > probe failure (e.g. probe deferral) so that the controller can be
+> > suspended when a driver is later bound.
+> >
+> > Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+> > Cc: stable@vger.kernel.org	# 5.10
+> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > ---
+> >  drivers/spi/spi-imx.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> > index 4747899e0646..e5c907c45b87 100644
+> > --- a/drivers/spi/spi-imx.c
+> > +++ b/drivers/spi/spi-imx.c
+> > @@ -2373,6 +2373,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+> >  out_runtime_pm_put:
+> >  	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+> >  	pm_runtime_disable(spi_imx->dev);
+> > +	pm_runtime_put_noidle(spi_imx->dev);
+> 
+> use devm_pm_runtime_get_noresume() and  devm_pm_runtime_enable() to
+> fix this problem
 
-According to schema in dt-schema repository [1] the node name should
-describe the purpose, so I would keep that. But despite that it should be
-vpu-boot@a0000000 (without underscore). But as this is unused for now,
-I will remove it.
+No. The first helper you mentioned was only added a year ago and does
+not even solve the issue without rewriting larger parts of the driver.
 
-Thanks and best regards,
-Alexander
+So that would need to be a separate change in any case.
 
-[1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/=
-reserved-memory/reserved-memory.yaml#L25-L28
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Johan
