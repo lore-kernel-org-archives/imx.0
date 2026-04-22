@@ -1,155 +1,93 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013003.outbound.protection.outlook.com [52.101.72.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FBA3D16E9
-	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 11:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776857528; cv=fail; b=ZsFL8nQ7XQ+DeIZyUTqfdzZvow6x5PFFxpx5eDdA8m2pQWa5uEjqXaVmg/bkQpBhHFciJJ6VCPKZI2pHR0HpYPNgKcI0fROnLNIiEYNRZS3gRwoDSbgADgnfjBQAE+2A8rhZ6QjlUykRmRnsgwmnjO6uT8tRriaGj40l27TJyhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776857528; c=relaxed/simple;
-	bh=Z3LgIHOf4i5262wo6o6a2oZH/iiGghHy22G0RTe6KeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=B627tQ+svtq7UdKjDw+Z1eJ166O3HLorcFNT4IsWx1dz9IluW7BF3de0vEI6svk4IW/X3VhgXjymIVWU+Fn/kWHSKsBcAg4FkXs8+CzuTH8zsYo/nckVRVbAwOtWJDVrOGHzSxjqGgdm2Flyf4KMEAE2Dn3/y3pnPAbm7rR3/TI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kXormyA2; arc=fail smtp.client-ip=52.101.72.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2106F3CCFB7
+	for <imx@lists.linux.dev>; Wed, 22 Apr 2026 11:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776858150; cv=none; b=CK7gsfCv2jCJ0Mt5KwO6y/LEW1YIPkFuBgmvPvLhPzicIRwfflwt0Uy13dec4b+0qVOzcBHPsbEqe1FOISu5re4JalFUQiYiUlIx2tuMtLIbfLBP5BSJ6TjZy2bsAs0Mka8GQ6YSVNCIUgwgP87iL0LHRNFYb6JNGFM3p1d6/Bg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776858150; c=relaxed/simple;
+	bh=+gm1pnoDIi8SCVbGdJ7sHWVYZxQN5Mdvee6rXsonTBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZnZTwH2kHNRwH5kWKSQRbRnIS/RZMWVNNb7uvveHtcNVDn675tpK0v4GmCFyzuohUyASC0loDdQePsYi7d/EPoCCQetBEujc8GoK8FEWGlREUVmodre3PqFuJ9c28i3jedxErJoZ6j16RFoBev3+9wbVc7ltGjGC/d4eTTTD0i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IyHByBoZ; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kXormyA2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wKzeWRgz/sifC2qpaY08wAVutUaEQ7Gy/WDAjZidEUD96JxonJ6QsqJPr5R+dWZon+M1yhfWP3qNvImkuKKVB5pPPNPv1qxitOqV+WDIT6xlEmufI7i1u3reLK+w0YDIswrmWzrAINWoz810xv+ktXV4Ll52DmBsUZGqPy3VM1E6IDMot1ap7qQ1d+tnWXDxB1N8j6V9HA2VLOupsz3+R1vWQdBGWG0nBn/IPwuC2WiNHKx7dw/8K9V45/NDjkYtcV0b2+huNQsSJ4dtfoIzXcOEvBa25Avk7O0zu2xXx7ymJcQc1bgpM0EvvahgBTvEsQ08fVvCkjI1nn64oySoHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xRDzRsPPae5aeL/rEEkKKNgLiUAreAr7P08x/FNsIp0=;
- b=VT+zlxKh9CyY+BqHw9bcgTx+q4dvm2TTP9MsbK12XQ3MtKSNYtPmFw4MtiwQXU2O8ITDBDgdAvElSDPRZiU0GYfZJbTcrtzITxPunSpsqyWAcoQDGkpLb7UmCAUfNyVHa/Q+mgauPT6iSY7A08EMOGfJR2HrSUT4Idjm42lJOPxCMAA0pV7bcSbmQ9EoIj+PD+xwQ85Y5tEKOfiVkpOjRs9fTXvowj9Gi+V09rg+A9mDpFp1WtwO8N4/o0yA9VCjOz87915yVNh3nZCmLcZfJNcIwk2JwWJZXndhrx6RpdyPGH34KKuusKt8iTDxnHhtehPfO3hepgObc7zu+fgDUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xRDzRsPPae5aeL/rEEkKKNgLiUAreAr7P08x/FNsIp0=;
- b=kXormyA2defXDNYd4sfrgH0SsyukbTvjelEkSmY1ry9k1faAqslGHNJ2qnVNGZjPCmfZ5PD+ucQyv6NXn9CevkhYGJ/OLxir48sCjFSm0ffRVFNuf0QGxZpYmJujq1EERezr0i8CouM3iOpWUG86CNbYTJnnTMp2+Y3AvF3SlN4GZiwluwSaGDtaL/OJDBS3CdqmjQd3grGEpqqihYW5qJ1+TI3LP9k0Tl1fjicP/YkErMDmekZgo8aYG0EWVEryM/bUdnElO2lWhiub0Fr5oue0tSvYJHcGel90rxr/WjwTDnKuZMPAgy0rPL4SrBgdEaN043JLFTkt83iwHLDtSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DU4PR04MB10599.eurprd04.prod.outlook.com (2603:10a6:10:593::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Wed, 22 Apr
- 2026 11:32:04 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9846.019; Wed, 22 Apr 2026
- 11:32:04 +0000
-Date: Wed, 22 Apr 2026 19:31:16 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: gregkh@linuxfoundation.org, khtsai@google.com, 
-	kexinsun@smail.nju.edu.cn, hhhuuu@google.com, kees@kernel.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: gadget: udc: skip pullup() if already connected
-Message-ID: <5ybgpy342zdtcudp3brizuxyisrv5zxsfegwawtaxyvlncnvcn@htqd6bnqdv5j>
-References: <20260421082050.1260823-1-xu.yang_2@nxp.com>
- <e431e2f9-ce24-491a-9447-1b872099ab25@rowland.harvard.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e431e2f9-ce24-491a-9447-1b872099ab25@rowland.harvard.edu>
-X-ClientProxiedBy: MA5PR01CA0241.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1f4::15) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="IyHByBoZ"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8D08F1F95F;
+	Wed, 22 Apr 2026 13:42:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1776858138;
+	bh=cxVjnXVnQ4o2Yj0yc0TUJWtP9ZwdF5obJ1mgQ3ITq3w=; h=From:To:Subject;
+	b=IyHByBoZ0yua7HveDK5Qz7y0M2k8bOkuJLUBq6ifP2jQWQkjbp9HeS6V/FozP0lnr
+	 4lS+SjUB0cyT/6/jyyXYGr8SiQx+/eHIuIGSBI8nd2orIY8P6rdgNdYkE05sBHxX4Y
+	 bC/ZfvVQbvfZouBaymcebs0Mns++XxuQghc6RvCnoQ959cM/VXa+VtitYunfO7mGxj
+	 UtAsh6towM0vAiJ66ZDjkDROIAxDee6oVMMkDflO1EqDE9aoRl36xXS5yo+S4QPmPZ
+	 rwIVwdc2dfGIuKJrSuS591FC33hMBt4RsqabHzn19LkGbYYTCai8Xy46c/lDscddfe
+	 15Ovc8Ugs+3OA==
+Date: Wed, 22 Apr 2026 13:42:13 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Daniel Baluta <daniel.baluta@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux@ew.tq-group.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] arm64: dts: add tqma9596la-mba95xxca
+Message-ID: <20260422114213.GA68897@francesco-nb>
+References: <20260326111803.1248934-1-alexander.stein@ew.tq-group.com>
+ <20260326111803.1248934-2-alexander.stein@ew.tq-group.com>
+ <4f436a21-ecfa-44ef-9002-c64ebd5e30ee@oss.nxp.com>
+ <5988897.DvuYhMxLoT@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DU4PR04MB10599:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c1e07b4-acee-4dc7-eddd-08dea062c718
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|19092799006|38350700014|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	brdEgkCDInf71xEMgCNsVB6E7X0UhB9pUFELroyytbqSsdU5p+kh0HV1Nip90spVo9CX/ILbXmno6zHBNzYzmm5diXjhaDVXPdhIViPcpxnJa0eUHNy7joHg3wL48YeUmxOugq00aKaxVLoRc1g1UAwViY5/mkqGIAsIzqdH51/UNzevzVfkB3MCGa8mUz0vOmQkyCoFwJ9m74hOZx98L2gbWJfoo1GanP2Y0pym/qeV3XZstrPRCQ1Y35PstamMBBbINztlQ4D0dyathR4rqALE4zJVA/AXlgeNg215N7CglINzpUPzWa8goFiXOnA306R5TEwE0n7ISd80+B+Y/SUrf9FXmf8twgFJtcNaBOh6yhmr9yCy0YdylXHPVyz41nJJXiG5lZ0ASv3kiWLoMXLtrluXH7ztKf+oa/w2Ol1lbxbZQGhX83bpwKV7b9GqnMs7NuiWOZdktMzY8cIHRBUuuVMX8O0AOuIe3PHihTnNeEHBD3EM5g1Diep1MlPE/AJgvN5NfNkUMp8R4Cfn2XBpyFlOBpNGnINkxo5nlZ4XyudWGtvItfKcHXWYHxuW4c5tF7Xx7TA8nTmIzbHi5gZmkMXTbq19D+jZTii5632J1Xn/ct+vabZsiGP8dD8SwT3u1umPinkMSl4hbPBUJ+QCAErGvi1jmtpGO1sqJqWNH0bYthnaatEDWCJYbJwKltTNag3k6C/UmJKOeuK9IgM7b+qM1b7rpaX3E90wTEPl5E+LnwO7DSwzCgfP3y0X9saulZKkjx3S6NNdnSwnIjEEnUxSra+vkbOgR5rwXoY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(19092799006)(38350700014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qdOiYqLuluIXIARHadtXqjvvbjftNSLNknqJjFbPF2Q0YUKQht98rJD3YbkS?=
- =?us-ascii?Q?BRmH07zWVe7MYrYMOkA1rRQg3h1uM3xwHHdAyN7EET/8TFNqE+ro14KyaT9i?=
- =?us-ascii?Q?ivLY3TcIj924mDAWi9qR3smL2ut4ifU8zSoOFBzLmZhwsWvAbeqr5k/Si9kV?=
- =?us-ascii?Q?LpHlO6ueRFq3LB7Cu2I6M7uVo2L2KJAuJ4eeG8Z2SaXtlUTKGa1pSHxXadwd?=
- =?us-ascii?Q?jRaoBT9VGxTSAeS4YcAm/tBT7aICNTyfz7JIIlkYZxYwGLonsXRgmcHkjjuK?=
- =?us-ascii?Q?OvNs/ikVgA55C71TeFdByztt37wGOurzKTEK6EciBnjZ14SAmXjUsd6yfh4w?=
- =?us-ascii?Q?iz0opGT3oiaB1qm3rMvmROR9c9UWrylrcKKtjcaABRTsYej1qzfOmoywYkNs?=
- =?us-ascii?Q?6X/LampP/qE/ioMNyr5Vmwm/LgszZybDEjuDvo1Pwq3930+mh96ANhQ0P3I7?=
- =?us-ascii?Q?9fniLnUCMpWGORTp4YT8+Zw7ZX/C3q/zfsrYe+cN+1Fd+3qtGrxhRwZKRM4s?=
- =?us-ascii?Q?EEFR0N3hKpsK0dTYApCkJeMT/vGNs7qPLCb9Ng4RwDtOmhPgBzwcFs7JvtKv?=
- =?us-ascii?Q?HzDLGcztRU2aWM//60j/tuFZ3DVhNN3r5VagGcdXlsIabyZY5/ePCymle88v?=
- =?us-ascii?Q?PKbglYrbiz2D2JkIRkR+vC+Rg44t/lFo+N5BLntZ8UKqpE/gGWOl/RGZOggK?=
- =?us-ascii?Q?04buSnfiia+BEH9tO1DPWIt/zmn8RuX/T1+jlOMHp/CyFsbaVAE8CRKqYGym?=
- =?us-ascii?Q?Ycwx0wpXMzcmWodEyDV0yTmlZAiudzDb524Cy+oBJPtPinPl157Ky2VfZYZt?=
- =?us-ascii?Q?B4Xq31gv+sL4S0dmfOXLtheSoGMRlfjoAfpvray1Rt5exY0HnwPyxPmp+1qU?=
- =?us-ascii?Q?1hl34y4d+eevr4VRL77rSOu1qWC1P03pF9ThX1CSshfsuZ9OobDLVeafDuzC?=
- =?us-ascii?Q?vl7ZFJHGrUqzIVVMEp5y6rLzhLVkyk+5hPrYLcQLMmtlpNJ3l2gqoL9u2Csf?=
- =?us-ascii?Q?+U90jJNU9ZlI9PuYa4XYDjCGog04RUolxMXarf0b8SJvi/b3oaR/NrnMEtzd?=
- =?us-ascii?Q?mOSLTJwF0FIp3zO+eOk8IRNHD2G/PKsDN6OYCaiKf8Da7dP18DJAc/96tH1k?=
- =?us-ascii?Q?i2MBJXADj08NDQsRTnJsh9kVhgnIlqnVH2rdnZYSk4RAR2itdBnqO6WPfnjs?=
- =?us-ascii?Q?ULY8Fep6R1MbuWfg9obBdr7pXm07qV9yP8iCrlFZlXCfgYsIEGm3divUqdSv?=
- =?us-ascii?Q?oP7upWWHVWIBP34VyHprbe0W9/CbzNKFuWM8XR0vIC6LGZctn+QiU1cdXpcA?=
- =?us-ascii?Q?sfU8sXMRkR7FtCk6ZmLiuj2mBmX3ueC7NtzG2P7KGTiwVvsrIhoICe58aGyt?=
- =?us-ascii?Q?aHUISSMD6abkeizStW4nZ+/5yGrUo/rC/sF+GnRSvZRd5PzhM7a2MIJ3Op2+?=
- =?us-ascii?Q?U+dQO2iRvgVjQ6JKukzws5cuqhuZj2dhWp1VnJNYWM3BG1y3WsuMHhY6rQNp?=
- =?us-ascii?Q?RA6IG5EUSM5ETBZlEGgFKTprQc3wtq05TelkNiYzesMAcOFFxck8tV+hAhZq?=
- =?us-ascii?Q?p18MOK5J9t0W2j19c5Zkri2QbTMTJNF2xmO7J9GQnxQ0mAgM6LsZT/bVuSsd?=
- =?us-ascii?Q?cjSWn5Syk45LtqHxxY4JtUJYlRGBFW9be4X0q+lDzs57V8F9nF8WGWTdW3/k?=
- =?us-ascii?Q?mtajKFbQFeQdQLBX8icSE6s5tXwp8tTTp51EodujNAo0r6GEKTdZTI2EWxIr?=
- =?us-ascii?Q?snGlQXQ9Nw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c1e07b4-acee-4dc7-eddd-08dea062c718
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 11:32:04.2295
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gIfs2ePhsqhhAsWOvQ6QMB0KqoL75ao/0uqEN7mtBrZC8nKbdkYjOU938zML/LxrXWsPGH/2QchgV1VuE+9aJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10599
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5988897.DvuYhMxLoT@steina-w>
 
-On Tue, Apr 21, 2026 at 10:37:53AM -0400, Alan Stern wrote:
-> On Tue, Apr 21, 2026 at 04:20:50PM +0800, Xu Yang wrote:
-> > The device controller may update vbus status via usb_udc_vbus_handler(),
-> > which tries to connect the gadget even though gadget_bind_driver() has
-> > already called usb_udc_connect_control_locked(). This causes pullup() to
-> > be called twice. Avoid this by checking if gadget->connected is true.
+On Wed, Apr 22, 2026 at 07:58:11AM +0200, Alexander Stein wrote:
+> Am Dienstag, 21. April 2026, 16:48:25 CEST schrieb Daniel Baluta:
+> > [..]
+> > 
+> > > +
+> > > +	reserved-memory {
+> > > +		#address-cells = <2>;
+> > > +		#size-cells = <2>;
+> > > +		ranges;
+> > > +
+> > > +		linux_cma: linux,cma {
+> > > +			compatible = "shared-dma-pool";
+> > > +			reusable;
+> > > +			size = <0 0x28000000>;
+> > > +			alloc-ranges = <0 0x80000000 0 0x80000000>;
+> > > +			linux,cma-default;
+> > > +		};
+> > > +
+> > > +		vpu_boot: vpu_boot@a0000000 {
+> > 
+> > Should this be memory@a0000000 ?
 > 
-> This patch is wrong.  To see why, read the comments just below the end 
-> of the patch and see also usb_gadget_activate().
+> According to schema in dt-schema repository [1] the node name should
+> describe the purpose, so I would keep that.
 
-OK. So it breaks usb_gadget_activate() as usb_udc_connect_control_locked()
-return early.
+See this question on the topic, and the related answer from Rob,
+https://lore.kernel.org/all/88456d17c91737cfc09af46673b49bb9a9d36dc0.camel@gmail.com/
 
-I think usb_gadget_activate() needs to set gadget->connected as false before
-running usb_gadget_connect_locked() just like usb_gadget_deactivate() sets
-gadget->connected as true after running usb_gadget_disconnect_locked().
+Francesco
 
-Then it will work correctly, do you agree?
-
-> 
-> (Also, is there really anything wrong with calling pullup() twice in a 
-> row?)
-
-It depends on the device controller driver. But currently only a few drivers
-call usb_udc_vbus_handler(), so I think the issue hasn't shown up.
-
-When you look at the pullup() implementation of some UDC driver, you may see
-they do more complicated thing than just pulling the data line up. Such as
-cdnsp_gadget_pullup(), dwc3_gadget_pullup(), etc.
-
-Therefore, I think the UDC core need to handle this well to avoid calling
-pullup() twice in a row.
-
-Thanks,
-Xu Yang
