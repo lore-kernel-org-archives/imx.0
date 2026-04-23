@@ -1,205 +1,199 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68A73EDAD0
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 12:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776948320; cv=none; b=U88rRN0S5zLCjHhr/ql5lZJ+piIRqRMcpAWUXlsZ92NRC3y/V8KSuoBD8IJL5bHws5astn76wgngISjkNOihq+Ly78K0ETbl+6ULcAF8nH+is/MMTIUTH02HtmMzApiyPT+IuVQgp5A8xZryw3nDZfwCy1/aRJMiwzsLQ+wlA4U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776948320; c=relaxed/simple;
-	bh=BRXUU6ztqr1lsb3f4orzbSrY/H/lvrHRoUjqXtc+p8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VBh0TjTnAAz05stWfL/pSqx4vsrBWwwfJkkz+hSFUXxz65QVaxgeo2AfcVGG8/S+soWkkZJHPSKh69+F7AMWeTwNqyi9IeS+zzeOPrhau+ORVlqEk+5VUzvmPc+0xN7yrNzDonrXfF+KfiQtLbRmtk459z2TdWorDSKsh1Sbaz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=f4KeQ6v7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UBdb8/4p; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D783EE1E0
+	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 12:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776948807; cv=pass; b=uOD/dhI4vraGr/URh879m2PQvkpNzMxtNXUVS3PLOG/q1ZcoY/TVxKqVgTIBoIFW9PRrZYyCO4I5VcyJFcIWOGliZd1Ps/x8P0PzImtaEtxDQcP53Dy359NXMVhSOZ2p0aiOyxhbTd0GvKjH0irCZ079ctofaICJt434ilFvEA4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776948807; c=relaxed/simple;
+	bh=F2lKZ/qSN6SIkBL+rAQMZomA6ldD6Jeu1f52cfpnYWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EqzNgN+oE88kgkL4eqti+2d7TXg/eyGk2xvUzKpF2G7zAK1QkdwZnN1ieHt7VinAQTxgjkzQpRKlvAn3I61ItwMav3DkUgDC30Ig/9vkbJdRKnOthZXfv6Cp81kGRcccUbnc+mDVOV0VLF9AwSahUYpR9MbhQXjRvTCfpQMdz6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X8tU2pT0; arc=pass smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="f4KeQ6v7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UBdb8/4p"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N8tpbd179249
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 12:45:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=dRf9flM23evHV+dCjZ11/3wA
-	eY0NjlVmUaCb2MHl7Rc=; b=f4KeQ6v7smM+6vkjRyPOX9wXEYAtm4U3Svh9O4LA
-	F+Ut9ODMjODxPNbgXzx8vYsDdabudfLWLc0zHnFv+oEKiz89nUOO2sQPOHS/+ZM3
-	zQT6oMIVkCq5Wp4R3VTgnkYwX6xePFRT1MC0rIMz32csoNRax4q/mT6Yr/+zL+9C
-	7OuvYNvRF7g+TmXzCH7lNo60EkNeNnDFHwVPY44uYX+2fEK1axSGxBuE/TKbVwb/
-	fm24A7Rzdi8ERqvvgbrmTj90vCgNjVgjSS7A0elPrw1hQn9gGEzfn8Ty8iz4A8An
-	nqvE0T5Xjg8h9sNYtk4IJbU+TIpW+LIBNd98FbPRTRXSOQ==
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dqe62hgcp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 12:45:18 +0000 (GMT)
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-6100b5a0757so10859379137.1
-        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 05:45:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X8tU2pT0"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b932fe2e1a7so96215666b.1
+        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 05:53:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776948804; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XdEPMDl42zv3+CyKnNWRDW2UX2tq1EsuoWa8Ru8TuWpl50GDaxkakszuLKSTIH61OO
+         PUAIdp9QY3CPMb61L6VjgA53LQtioamr2t1snj/qiJaBHxrPGezkiCrGaDGhZirvXcvp
+         emGSwzDfDCbIvkzoTsywrEGawyHIygM4Epc7yV0ciFv7PeMPPMfJIYsmI9WSZqJMsull
+         BV2DmXeHKNpCiAIcutWruG0/Fq7hKmcF4XQ+fLJDgK8Q+hh5Uj1Xy++YPMz0FdG/PlNq
+         WvwVUNrpjMg0HzftABvojNduwyMe+qAd70jvyRo3EvnUW5E2CV2Tmx0wodZHfizCEi0/
+         T+mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=PlOMd/0NtPo9HHMlpt/ZRLGSP9SrMcpTUqdlgaR2uVc=;
+        fh=q3meoiGsxR1Hzg/LB83Uc8oixYDEuipBe0MSuPcAEPM=;
+        b=BZDrxM6ljTdrhBu0I7kxi5j4gxLn90thoxp205QmNEy6Dkxv9+HhHJnxBK1HRbFFWi
+         HJUio/aTZ5yxwL1rJnUycfmvx2wONjA+Gm+NlrtTv4ucL4hNyYWXTlliA+1eBnSPCWA6
+         Nlk2fFUPLtHLSUFi7Zs6Rdd52tZwpMVAHHACXxaL7zVCS04EUj2UkkKkmlGka0XsiUUj
+         G1lFKTIpXwZ0lEIw81jU8ZRmNO0jv0sNgyyQClvmxI2Zq3rC6mBYw/dDsn638D1Egd7m
+         Du/nxR8qXn3VNiooSGCKsXPTzamuhIxRNLnHjfNiUNqeRKMyZuq+3RYRBHVzp+9sYe/a
+         2hhw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776948317; x=1777553117; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dRf9flM23evHV+dCjZ11/3wAeY0NjlVmUaCb2MHl7Rc=;
-        b=UBdb8/4pU1wbO0tH24gh0H/+a+OJA+VZpOFCSCLbiBFwrWwGDT8WDDjljl0Mq6ir5A
-         ugyTAY/E8k8AryupLv836raBvqwBUcdVNTnGwtAFFum6e0PP+4st/338adkf2GDkUeVX
-         Z8W48PVPl/ycAIUlFF3g8J1tf2I1kzuQ8PecIPLKNy2fP+Zex8/3rP4OOkPo+dcBSoN3
-         /FsrDkxG/2x9vP+/P5drkxAhM4N/fyw+tfxITcizNTeBnKv2zUNrK4B4EIx0aP6F4839
-         IfmHu20YXX3Z44ni41C0I8kCEJlBJXqj5pf8RQyMuvr/Cgv03OYIIoxjTOWyjQ0RjAGL
-         4xxA==
+        d=linaro.org; s=google; t=1776948804; x=1777553604; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PlOMd/0NtPo9HHMlpt/ZRLGSP9SrMcpTUqdlgaR2uVc=;
+        b=X8tU2pT0RiBYulLisNdj55MfXZaVH5OYY+mAEj7w4vcGZu8z/JGxjNVcHnrxhMJo/U
+         H89jU1TcnBqlt3OnRpTVaZxwFfNvsqhXheX/mj9kp8WX2gob0BFKmZ8TfhSHJIHZ7fh7
+         gNt8mfbnW3zevTl12RgAh5EodOEGJHB+MdxfGZk6ErY9JDBH92wt+BOy8f6cKZIpmGyZ
+         XTquerflu6zJTEy/BLV5wY7gbxxutiFrHRkXs+MXB/XmYWzeQb/vmNjIB2ymgBwvRbOb
+         Atbeh5fMyyPPI/D1pmVV1u3PWzyed1sj9xHfav7BkNXrLvPwyxE0UqIh1Na4B3GxlCt0
+         BRLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776948317; x=1777553117;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dRf9flM23evHV+dCjZ11/3wAeY0NjlVmUaCb2MHl7Rc=;
-        b=asN4xlejNEu/mUYFLXcTrrHO1d8p45cnf4e22Iquf0vSwfZuc7Trmy9ZhQreZcWKfv
-         WTc/4KW8z3hTFSFz5mIVw2Yd4MceCKZfdC/wQ1a6dQxGtCYdjCUO0PwZo9UaerV6utPI
-         ZmzeNecho5DFrXvmmeI8/6gozh/19UnkgKb/SC7btdm2zAwfjjdLYtSNoG3T9j9x0pbf
-         thkxQqmQbdIHoQgLdXWRZP566KOvFCN9hV+GMYx/iiF+kDzp7a9Zc6qvufIRMhgamLEX
-         NYQqeFLr3Yvl5WIEIrUqDgQMMunA/EL7kAE6KdK8sGY6aRTrMnw2pi99PLONTYrytgFW
-         ZyGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8tUKRS2NTNJOPDMOlqILpCl1NHbRz8YGxXL0FalIqUIMPsvvuRSGReT3KoCSxNj3QyWk0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwL8TN4tsWyIyakHQGQUUcOhHeBWweeBoVfTOFNHR8qc9GT6uij
-	AD7o/ZhbM/cKZXDmXPLBkHfTxb/tw0L7vzp1V8R8sypu/2Gt+pnkEQiQ88Y+fuCgLpfHzSPdAhT
-	xuOFlqSFdvw7ULGzB28pY/W45Qj03A6GAFAsKL1xBPvFphyJsDPKsYsI=
-X-Gm-Gg: AeBDieslfpznbPJqazWike7CJeiidk0tYiUyQ8vVFdoO+NILveGl8+dp8AoYwfMccm5
-	BgrhP8p7VCFdL1gVJH5QhvbMIBG75/4Cux6SAHnI1QAPFv3ZVpk+Icsxctptjx/N3KbAwVWYlD0
-	Eb//6WcVxKYgQFoYCYdDDA6BxeCb31iqNgGEPkOUlaI/eUPzE4JUrkhdEI9F9f/aMPeN/v+9xzG
-	L8WhP5qnBsZsiswH4Q3WmvG34U8217oKuu/cLgdZreGAPUdzBCAggsWZYxH87LMy2Kx5L9iat/G
-	NkulQIW80IrS8hZ97BM9vMeIt8PgjGeJaDHSm74a45skzRN3Up2AMy0auLLgxsURf2PrDoPUtG2
-	affUKZ0cN4HMHkD846b5WAt5AZOf6lOkZcTSieOYMJpCBv2Ezo6LkhQCZXDHaSJ+4PsbtOq98Xz
-	J/x2yHNsA30injPBRxZ+WNv9JfH6GXDuCx4SQeJP5KW6vGgw==
-X-Received: by 2002:a05:6102:3e0f:b0:605:19ce:9ccf with SMTP id ada2fe7eead31-616f58af7d9mr13838586137.13.1776948317059;
-        Thu, 23 Apr 2026 05:45:17 -0700 (PDT)
-X-Received: by 2002:a05:6102:3e0f:b0:605:19ce:9ccf with SMTP id ada2fe7eead31-616f58af7d9mr13838537137.13.1776948316554;
-        Thu, 23 Apr 2026 05:45:16 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb75b033sm41855241fa.39.2026.04.23.05.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 05:45:15 -0700 (PDT)
-Date: Thu, 23 Apr 2026 15:45:12 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Sasha Finkelstein <fnkl.kernel@gmail.com>, Janne Grunau <j@jannau.net>,
-        Liu Ying <victor.liu@nxp.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Sandy Huang <hjc@rock-chips.com>,
-        Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
-        Andy Yan <andy.yan@rock-chips.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-        Jingoo Han <jingoohan1@gmail.com>, Inki Dae <inki.dae@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>, Marek Vasut <marex@denx.de>,
-        Stefan Agner <stefan@agner.ch>, Jyri Sarha <jyri.sarha@iki.fi>,
-        Michal Simek <michal.simek@amd.com>, Hui Pu <Hui.Pu@gehealthcare.com>,
-        Ian Ray <ian.ray@gehealthcare.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2 00/41] drm/display: bridge-connector: attach encoder
- to the connector
-Message-ID: <wanzalswb3lez6kyklprqojcnidab5fkxgu57lfka45w2rt4ic@xdatq5o7yiub>
-References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com>
+        d=1e100.net; s=20251104; t=1776948804; x=1777553604;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PlOMd/0NtPo9HHMlpt/ZRLGSP9SrMcpTUqdlgaR2uVc=;
+        b=sznoFVjhwRn+2HAFvYFUkSWSgbIuD3Fdh7t6/6LqTGSwgsYxbuSurnStSTH10e+zYi
+         rkloL08uRIVfWHBq2uJd2dw2ZHw7UJcNWB9267EAk3AI/QZAEWnyfdBhZrUOhqe6vCYP
+         /lO3VZqpez+Tyq7kSWKaef396j85+9XRxodNjjTYnPhcpzekBB4wfkktLSkqwekgk1rP
+         5tZ96PJULkc7YE/vkukgy/Q16C6Xlq9+tfWN28SZhsSwVW3tLdBMBYlr4NJbdMdMI3BN
+         C0aIq3aPaxGUW9WQlN5T1VCZEDmwKJz+yxoTuDaM4FRCjeXg4TRZ18uRzdPjipd9datR
+         fYlg==
+X-Forwarded-Encrypted: i=1; AFNElJ8uJ2Nw5hUiw1PStWljnpcl7UW0aMRKNBjdGV4P/id77cuKE2FSvbTemc+c/ncydQd7304=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx89+fYho4l7fKCo/S6DdDkW36DJlZIOXJPm6ADegxajNys6DGm
+	EVcMyIdiZltLGSflIWwac/Bk/071D9THgYgzqgG/T14FOzHP38Og3IQs9bKyZk+rDUP2C0erNWj
+	eEQsBMBnggrTLQwqDb2eDrxXjLA3e/ftklP7JQwTKfw==
+X-Gm-Gg: AeBDievsH65rBXdLFGwvn5wL9a32vt5VDF1IB3jJM5YYHpQAEMdi2OWctF8T298IDeW
+	LCU8RDizhCPCo9Qvj9Ic2lUWP15ZfqGY4F3kWQWlHmbntnfUaP3tSuMVRRuN9bdCV5Ga7ORVETb
+	XWoPXjRIe5zVqqBh7f2Ip43SIaxQIiLc3TxSp+W8mKoxh224X4pLBXB6rpYVq/9E0zzZlSYBsxn
+	AIx0gjWJfzAGhqs0lmGDUm4rPTXvMbmgnYiaVR69HRe1/kypenIY5RWCQW/kwgt4xrlemv9f/ht
+	RsjTb/ZlQlv6D2/vHZDHe+3dEosSLWO+5l5dpqa02vQkOYcHVywJ
+X-Received: by 2002:a17:907:72c5:b0:ba5:bef2:2aa9 with SMTP id
+ a640c23a62f3a-ba5bef2333fmr1133294666b.35.1776948803573; Thu, 23 Apr 2026
+ 05:53:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com>
-X-Proofpoint-GUID: s1tqVbuayrY6cND3UmamkKCFBUVARb2d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEyNyBTYWx0ZWRfX4uP+3oHSVhje
- ZnF+BBS3Ni6qBlP4Wix9r+anLcXprWFzmDoY4UbfVmaMXyJaB8xRLEwSrD68eeVPTAGxDpyPotG
- C8b/FNwOt1t1QQ/uMU/JAU5h5JakKlhBgnc9sv6JcLbyy2LbUrjmXI1MZEbW2MfAAlxOg2TfEhY
- Phx8nOINgsbqQY9xM3y4rhAuzwNcLIFn2lSfXQi5SQVTKr8BZMeVEq9fLje607PybieN3YjGzE2
- EuUU6sPscLuZUuUMQ6C5HKIyrTK1NKmrWvHfWT9NLBvlRZPcpF7O965X9o763Rz2T7uYGgvPoLW
- /gTwPrvp5lQ3HX1W/l1J4n+Xdx1eYeOeIjK3s8SLJ2B+qwPTN7ob6nbFZm0hvrVDk0iCkPeo4j4
- 2aAM30PSQ8nG1qgW5XTqUiRqoHvvXOD3IWKK8I1JpJzIVv5YJbI77hFCz41wqdMosxnz4QhGiWB
- kWbrXaqy32gICovFm3A==
-X-Proofpoint-ORIG-GUID: s1tqVbuayrY6cND3UmamkKCFBUVARb2d
-X-Authority-Analysis: v=2.4 cv=Nv7htcdJ c=1 sm=1 tr=0 ts=69ea145e cx=c_pps
- a=N1BjEkVkxJi3uNfLdpvX3g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=EUspDBNiAAAA:8
- a=SkVVgs_SJVxU13IceqMA:9 a=CjuIK1q_8ugA:10 a=crWF4MFLhNY0qMRaF8an:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604230127
+References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+In-Reply-To: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Thu, 23 Apr 2026 06:53:12 -0600
+X-Gm-Features: AQROBzBDIr-bn4DX0ExOJm0nVY72516bKXS1r-ubIMnAcS6p_qKbuXjU_FLZ6Pw
+Message-ID: <CANLsYkypRaFTTP7MLLLR+=AB5JnRTA4i130qvWzB1qoAuM9FWQ@mail.gmail.com>
+Subject: Re: [PATCH v13 0/4] Enable Remote GPIO over RPMSG on i.MX Platform
+To: Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew@lunn.ch>
+Cc: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>, 
+	linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 23, 2026 at 11:16:54AM +0200, Luca Ceresoli wrote:
-> This series simplifies using the bridge-connector by removing the need to
-> attach the newly created connector to the encoder.
-> 
-> == Series description
-> 
-> Currently all users of the bridge-connector must call
-> drm_connector_attach_encoder() immediately after a successful
-> drm_bridge_connector_init().
-> 
-> This is an unnecessary burden for users. Move the call to the end of
-> drm_bridge_connector_init() so all callers can be simplified.
-> 
+Once again Andrew Lunn was left out.
 
-I don't know which one is more correct in this situation, but let it be
-R-B for the series:
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-
-Feel free to take the msm patches through drm-misc-next (A-b).
-
--- 
-With best wishes
-Dmitry
+On Wed, 22 Apr 2026 at 15:29, Shenwei Wang <shenwei.wang@nxp.com> wrote:
+>
+> Support the remote devices on the remote processor via the RPMSG bus on
+> i.MX platform.
+>
+> Changes in v13:
+>  - drop the support for legacy NXP firmware.
+>  - remove the fixed_up hooks from the rpmsg gpio driver.
+>  - code cleanup.
+>
+> Changes in v12:
+>  - Fixed the "underline" warning reported by Randy.
+>
+> Changes in v11:
+>  - Expand RPMSG for the first time per Shuah's review comment.
+>
+> Changes in v10:
+>  - Update gpio-rpmsg.rst according to Daniel Baluta's review comments.
+>  - Add a kernel CONFIG for fixed up handlers and only enable it on
+>    i.MX products.
+>  - Fixed bugs reported by kernel test robot.
+>
+> Changes in v9:
+>  - Reuse the gpio-virtio design for command and IRQ type definitions.
+>  - Remove msg_id, version, and vendor fields from the generic protocol.
+>  - Add fixed-up handlers to support legacy firmware.
+>
+> Changes in v8:
+>  - Add "depends on REMOTEPROC" in Kconfig to fix the build error reported
+>    by the kernel test robot.
+>  - Move the .rst patch before the .yaml patch.
+>  - Handle the "ngpios" DT property based on Andrew's feedback.
+>
+> Changes in v7:
+>  - Reworked the driver to use the rpmsg_driver framework instead of
+>    platform_driver, based on feedback from Bjorn and Arnaud.
+>  - Updated gpio-rpmsg.yaml and imx_rproc.yaml according to comments from
+>    Rob and Arnaud.
+>  - Further refinements to gpio-rpmsg.yaml per Arnaud's feedback.
+>
+> Changes in v6:
+>  - make the driver more generic with the actions below:
+>      rename the driver file to gpio-rpmsg.c
+>      remove the imx related info in the function and variable names
+>      rename the imx_rpmsg.h to rpdev_info.h
+>      create a gpio-rpmsg.yaml and refer it in imx_rproc.yaml
+>  - update the gpio-rpmsg.rst according to the feedback from Andrew and
+>    move the source file to driver-api/gpio
+>  - fix the bug reported by Zhongqiu Han
+>  - remove the I2C related info
+>
+> Changes in v5:
+>  - move the gpio-rpmsg.rst from admin-guide to staging directory after
+>    discussion with Randy Dunlap.
+>  - add include files with some code improvements per Bartosz's comments.
+>
+> Changes in v4:
+>  - add a documentation to describe the transport protocol per Andrew's
+>    comments.
+>  - add a new handler to get the gpio direction.
+>
+> Changes in v3:
+>  - fix various format issue and return value check per Peng 's review
+>    comments.
+>  - add the logic to also populate the subnodes which are not in the
+>    device map per Arnaud's request. (in imx_rproc.c)
+>  - update the yaml per Frank's review comments.
+>
+> Changes in v2:
+>  - re-implemented the gpio driver per Linus Walleij's feedback by using
+>    GPIOLIB_IRQCHIP helper library.
+>  - fix various format issue per Mathieu/Peng 's review comments.
+>  - update the yaml doc per Rob's feedback
+>
+> Shenwei Wang (4):
+>   docs: driver-api: gpio: rpmsg gpio driver over rpmsg bus
+>   dt-bindings: remoteproc: imx_rproc: Add "rpmsg" subnode support
+>   gpio: rpmsg: add generic rpmsg GPIO driver
+>   arm64: dts: imx8ulp: Add rpmsg node under imx_rproc
+>
+>  .../devicetree/bindings/gpio/gpio-rpmsg.yaml  |  55 ++
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml    |  53 ++
+>  Documentation/driver-api/gpio/gpio-rpmsg.rst  | 266 ++++++++
+>  Documentation/driver-api/gpio/index.rst       |   1 +
+>  arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  25 +
+>  drivers/gpio/Kconfig                          |  17 +
+>  drivers/gpio/Makefile                         |   1 +
+>  drivers/gpio/gpio-rpmsg.c                     | 573 ++++++++++++++++++
+>  8 files changed, 991 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml
+>  create mode 100644 Documentation/driver-api/gpio/gpio-rpmsg.rst
+>  create mode 100644 drivers/gpio/gpio-rpmsg.c
+>
+> --
+> 2.43.0
+>
