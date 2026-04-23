@@ -1,66 +1,68 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A1835BDA0
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 20:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36205355F5C
+	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 20:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776977705; cv=none; b=iRTVtbsdVaapPj2+olbWY+4Xe9u/ERfMpLSi2Dz5hy85TfcbJOMSDz4Y3blNdaxUwmEWqbXGooCmF58PkqRaKMh0JBDji02vJvIFmHq3XOxXzDuKIfiffDMCezOxm1Rj4fBLg3O19rnHpDKkSoTk/HqHh+Q4F3mBMStdmid5RcI=
+	t=1776977711; cv=none; b=A9u5dPM9CC0wjTfAQo3deUC9Pe9FwnhG/P/uOP44pE1jxhCa1F28RBPke5+2HB4hbf0eB3UfCwujMCKm1Zo0VaO2XCFN12YRihNws/gmWb0dfJ7jxTj/2ss5cMDWJnhEIktf+5c/WvtnEeaQN7ALFAY0ksBDKqdDkdA/XL81okc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776977705; c=relaxed/simple;
-	bh=y0aqiZzD4/dauxqWGWZpTeZQeDGgmhoKACp8yCx31Lc=;
+	s=arc-20240116; t=1776977711; c=relaxed/simple;
+	bh=Lx8Le50+nsjiQgeV6zgGG9hZjacD3w46irda8Vp6AWc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LO0bjkW+6XvCikkXV1wIiS3FTzZOWfxA7x++e9LG1d9SFT+Mm5v4mIkntCPzwxtS7b83yFIfjUYFWK7QxMkkz6LuIx4+bk3TUscfXanBwSJJExnGOtgPHoE3LlPewUhBaxXjeh0Qt0adfeSafr68OnBOCHIjfnE6Zh1/56HN7qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VthpUP7s; arc=none smtp.client-ip=209.85.167.174
+	 In-Reply-To:To:Cc; b=LNRK1lZyt2GL3hlWLPK8OSyVO+qiAiHYxk9e88UmZd7qpiFy01+YE0xgCPUhb/AiX/mT7gMElSVjeuKG+EypnmOanpgTEogj+gvE0kgnkujxYA2AKUhH7Ao9P7osmG367SHXB6lflPBr8uhYjQlNKlmCXbwkWLtjY4DxU+ByRXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KCHXIvmV; arc=none smtp.client-ip=209.85.167.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VthpUP7s"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4645dde00a7so5779316b6e.1
-        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 13:55:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KCHXIvmV"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-479810de04bso2590673b6e.1
+        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 13:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776977703; x=1777582503; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1776977708; x=1777582508; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MqO5/EH/UF1TE1Yyx5zB/rmOp92tEJKuB03COKwdtP4=;
-        b=VthpUP7senZP5v5+8U9fS5tPedFC7KH4EmtlhT4c3vC9j8ICzn9U/Cok3T+WdJAu0m
-         bJ7d2pBXnUqcwG81QvtOEdt29qTPCAvb4Am2nlBQgXQ1ITyRt0r840TMbLQtmfZ3NDRf
-         Lrysm5Tz2kcREZd52L6QHU0YkEChRDBGLvpOOv0As58BX2MpsBVufMgvAMmqAJDbZvda
-         5uEBxmYl29cpAhP7826XpEWWdu7D4Qgc9x8v1JNPtn0vyk5T8A4yI8j7MrnjdwAH2dIx
-         xjPnLnpV7IXreaPybZkm35gNg4u313dz6bYfongKmyr5Xl0MRMpqRJ9i6gXJPFUmqhr7
-         kpKA==
+        bh=qXxdsOArU9ZJHRv0gxhcPUMG6BfjYVh32ZwNXW3DQls=;
+        b=KCHXIvmVfj1rP3zYLOOVApVN4VpFq0JaGi5j9J10Dgjh23TOI5NCqtj57o8ezaMHEW
+         gLFJ693WOzugdmYJ9ralIMZfsSNWrXTRTk33uum9/vt9qQT579f3vTqhFKEK96uhE8nU
+         jfzYx/+NFY+LbP5JphPa4FH470TOOOzB0XFKOC+53++RMPLjxpiZN1TjB9C+aT8JFjpU
+         akf8zPxtPFQxXnMzoZYabCjPjKiNEGCket1m1o6E40e2mYeW3mWc9EnrYaYiAb46pSzb
+         CwYNEnXnn9PPtzvAx739secOlf9tv9usqCRthabYf3Cw92K/B61/u1qsDW7K62F67jnO
+         4RgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776977703; x=1777582503;
+        d=1e100.net; s=20251104; t=1776977708; x=1777582508;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=MqO5/EH/UF1TE1Yyx5zB/rmOp92tEJKuB03COKwdtP4=;
-        b=UTbcPYkaxhdlZJx/3X978JJrr8KlY45F21+UUpA5HDzPezJ+K2QZy4PwY5hsW1VQWW
-         wYCkqpjLt4QBVN1r/h/wXJ1fR5TaX9dBJeDesQmmqqH8c6m4bgGYBm7CGDVfqruOoNDt
-         YeZaNdtsXnIEqiQ0zWupeUyG23VnDyWuWvCQuwMm29XTgd2APqVsroh/YzuoNt1hinWy
-         AyQedD9NXYfkoHmsUHIWm2eEmhq+3+JqSAhEnxxqFGJF9GvGpvLoCjRCTfHPzoYpULvq
-         jq/NqYH599Q6x5A9oFSfvRWOth4XgK4OrmSrKSRQeob7wHsCHUu5LxoNgQygN3i6gPDX
-         GSPw==
-X-Forwarded-Encrypted: i=1; AFNElJ9D1B6gqPLMc//Jqn1HTrqwvR19tSMOcg6D3xBYtaalUwvLppS8OorpF0CeL7EnMj+1unc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4Zub/XNBTSCrGrdMihhnRHRkA1tzAeD+PSLho5j/t/PRD0LdT
-	RJ6MLHd8sps00VyXS/auv2tEzp8Hzv9vHwXxRF+qJw6hpOXyRhrybH1+
-X-Gm-Gg: AeBDiev0BkYUUyUKOuGSC1dY8Kg2u2szSF/tRuiiVSoScCSdPqtt/KxsElbMWWyIvJs
-	7vCDbhHkcqcpvVjvCgyGy52TzetwEQYfoGbw8rtM9u3AjAPpNxXgj+6tjbw0VQHDROEQJblajcP
-	X3Q1teQSCKqwCoO/yN2iH8VTz1Y7Bqgo6SUpJz3A2NfoTlvrryGlaMbAqT6OUDsLC/TDHXmb3zi
-	MNvNClvbj0Yxsqzcx6TVGJINAVF4w3lV4H13sy8G4EJWAZCapf9rSv9OEVOXr2s/miZPP8XSZtj
-	5bHkzZDchr9gJo7KfT/vdwvSDtiX5wQ/IZefne5JqcLc1J8duC/f0ARQMiAMsE4+2FtkL3KCDOi
-	tE1VY4zUnsTISZF0u0dGf5EF8R2RP7U+AI/BmNgzmQDy5Hd+2LGUFYonng7cgbBvp1mxp1+MHjq
-	1j0g4eixDs8j6yCIjm/WCPlpgNEfBAIofGy+pdP44adqH5Of9aE1/qw55tABxmnKMG96Z45yER
-X-Received: by 2002:a05:6808:4f0a:b0:468:698:a626 with SMTP id 5614622812f47-4799bf4b93dmr13762368b6e.22.1776977702799;
-        Thu, 23 Apr 2026 13:55:02 -0700 (PDT)
+        bh=qXxdsOArU9ZJHRv0gxhcPUMG6BfjYVh32ZwNXW3DQls=;
+        b=HUIu1F7l/xyWsFrrc337VWaPWHQhLtKILNJSNHs4qmS2A14EaPXgRkk1F6+Q1ltPcs
+         NypU/uBqRvjYt4j85R9/L3mEp5gUfVe+eAHhQMXDrXWtNJs/TxcqSHIUAFOPpvWt+ZCP
+         WKgAj+ee/0KBS54a90oOT+YSZi2osEXFukDJFlGfDfFraWj+azSm3gLJ7aidge4tv/U8
+         sdv7g4m7rXLXq+4zvrOHWc9SqGPhx+KtvdFYUSMn1f9np96oneF4erOzELuGBRAQDeUt
+         TfskWqRssjKyF07Q5AjbWQYio1U9eW24SsfFtiHUR+GqU1CIiXSdMVqm4qB3/KJGbQ2y
+         M71w==
+X-Forwarded-Encrypted: i=1; AFNElJ+AOSzsb+6EPApKZbm6RIrCGR0L3UwV6ExcGBGlON5LWER8nIvUk9Kj4dIVncrYPVY9dkk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzEOxZ/bbqzEbIKSFIvE5tkbTyFRcP4jLIYVIC648NUZcJQqpRl
+	pRmGZGXtXc22ZLbX6I4bQrpdd6RhSbojnsZzmlVT9cTwuWKBh0jONYv0
+X-Gm-Gg: AeBDieuuBouHGshpZ7TydwAPy//GicQ/yNR6+lA1fKieSbhrnkgT44Di7MBSpkmie3H
+	HAwKEzJ+CsHJKPCp7604UYn5z36tYcbrSd189Iu9RCzBMznSxkrp/1PsLQAzdyKZT3Fu1S41Iaw
+	CYUXjpFU6sZ6tIdqmCA7v/A6Lue4wufLGZ/hfCVGMQtcwigeaQ3KJ/xDnOZWreKSRf0OjbdjKeh
+	Xf0Uv7GYcha8o0HeSdIMRYoXPPrccpIa2c0an9Ay3Z14dcEZqEY1SL+4gaWahDrhw8hh4RTHdeC
+	eyMo0U+UK36Y4FfW32WddhgWePO3Gk46zFKs7nhuY7hZ4JXBZHpjy9FT61v89uNV6pHFQj9sbJm
+	aVaaTc/+njkkmt7C8Bm0IaIWR7u5axNaoT46ZJnpk4GlOlRU0uiJi/0PmDY420ermXpvMLzT5H+
+	kRyORl+EdBzEzzj6Q4d5dT42PABl4T7Jcy2PnOnaom7cy7pX67kaThHilP9hRu2MadEROhC7qMJ
+	mhuqFhXL2k=
+X-Received: by 2002:a05:6808:2381:b0:467:f567:d609 with SMTP id 5614622812f47-4799cacba8amr15988443b6e.34.1776977708127;
+        Thu, 23 Apr 2026 13:55:08 -0700 (PDT)
 Received: from [192.168.0.245] (c-98-38-17-99.hsd1.co.comcast.net. [98.38.17.99])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-4799fead505sm14329744b6e.2.2026.04.23.13.54.58
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-4799fead505sm14329744b6e.2.2026.04.23.13.55.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 13:55:02 -0700 (PDT)
+        Thu, 23 Apr 2026 13:55:07 -0700 (PDT)
 From: Jim Cromie <jim.cromie@gmail.com>
-Date: Thu, 23 Apr 2026 14:53:53 -0600
-Subject: [PATCH v14 12/92] dyndbg: drop NUM_TYPE_ARRAY
+Date: Thu, 23 Apr 2026 14:53:54 -0600
+Subject: [PATCH v14 13/92] dyndbg: tweak pr_fmt to avoid expansion
+ conflicts
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-submit-dyndbg-classmap-foundation-v14-12-2b809a8019d0@gmail.com>
+Message-Id: <20260423-submit-dyndbg-classmap-foundation-v14-13-2b809a8019d0@gmail.com>
 References: <20260423-submit-dyndbg-classmap-foundation-v14-0-2b809a8019d0@gmail.com>
 In-Reply-To: <20260423-submit-dyndbg-classmap-foundation-v14-0-2b809a8019d0@gmail.com>
 To: Arnd Bergmann <arnd@arndb.de>, Jason Baron <jbaron@akamai.com>, 
@@ -164,41 +166,38 @@ Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, linux-renesas-soc@vger.kernel.org, 
  etnaviv@lists.freedesktop.org, Jim Cromie <jim.cromie@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776977637; l=982;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776977637; l=739;
  i=jim.cromie@gmail.com; s=20260203; h=from:subject:message-id;
- bh=y0aqiZzD4/dauxqWGWZpTeZQeDGgmhoKACp8yCx31Lc=;
- b=0ylBEG5Zr2L9JzVM3p0QOGGNJYPJlqcvdgDfrferqn+IIjg0mF/DXa7yY98RemD0Q77UWcis8
- afOWJy3fK3tDbGja7wdbkN+8vIczS7ipTPRP52IXbHMq4ogKAy8+JGS
+ bh=Lx8Le50+nsjiQgeV6zgGG9hZjacD3w46irda8Vp6AWc=;
+ b=SnpdcS+23XSjrZpeLIyoz7fp4858ZuhNdkUZ3gyhPRKYDKkKBaruLmuYi2tS21h9vU8M8wWZE
+ Y5Q7mlfCnULCyFEZyjXTXMc7I7vQ1FQTWqcfAQXyvf5zEOLG4FrW4jT
 X-Developer-Key: i=jim.cromie@gmail.com; a=ed25519;
  pk=C6E5ODlPQo7ZBynATXH9wg7K6HxP0pIXyf4s38Qw0XE=
 
-ARRAY_SIZE works here, since array decl is complete.
+Disambiguate pr_fmt(fmt) arg, by changing it to _FMT_, to avoid naming
+confusion with many later macros also using that argname.
 
 no functional change
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
 ---
- include/linux/dynamic_debug.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ lib/dynamic_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/dynamic_debug.h b/include/linux/dynamic_debug.h
-index 441305277914..92627a03b4d1 100644
---- a/include/linux/dynamic_debug.h
-+++ b/include/linux/dynamic_debug.h
-@@ -132,11 +132,9 @@ struct ddebug_class_param {
- 		.mod_name = KBUILD_MODNAME,				\
- 		.base = _base,						\
- 		.map_type = _maptype,					\
--		.length = NUM_TYPE_ARGS(char*, __VA_ARGS__),		\
-+		.length = ARRAY_SIZE(_var##_classnames),		\
- 		.class_names = _var##_classnames,			\
- 	}
--#define NUM_TYPE_ARGS(eltype, ...)				\
--	(sizeof((eltype[]) {__VA_ARGS__}) / sizeof(eltype))
+diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
+index ffa1cf7c2c72..9575b92a8deb 100644
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -11,7 +11,7 @@
+  * Copyright (C) 2013 Du, Changbin <changbin.du@gmail.com>
+  */
  
- extern __printf(2, 3)
- void __dynamic_pr_debug(struct _ddebug *descriptor, const char *fmt, ...);
+-#define pr_fmt(fmt) "dyndbg: " fmt
++#define pr_fmt(_FMT_) "dyndbg: " _FMT_
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
 
 -- 
 2.53.0
