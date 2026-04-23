@@ -1,184 +1,78 @@
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0892C324D;
-	Thu, 23 Apr 2026 13:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B37C23EA94;
+	Thu, 23 Apr 2026 13:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776951879; cv=none; b=STfJY/SCCnPA3ptrRPcCnh3uJd4Yh+wLoy6Yg0HX4Avlw5HuDu9AQEzVJrTokKGDpX9/K+tF8MnEuGB5YWjtIU23xx+VklotZoTNChs8vSnkl/6PRTEc4wGPYvWkqewrZrmhvkLi8CM2S14i1KsH2nYm2QdghdMr5RF2DKMLcMU=
+	t=1776952423; cv=none; b=jJiRFdwfnZeKp9Bt9FXOb2VOSnn8o9B1Zm4MbfJPFlSEWeSjg/Yg+77zBKaktGk3JTf7h8F9q5ycQ/HewJNnaWct/vlfrcaI0vSieDb5IBcQ2zQthcrzPl6vDexGAfihnYKx/r0rVmWJSsmikgrEHx5iWPhJWTi4JsXBxnXA8Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776951879; c=relaxed/simple;
-	bh=0mBUUsjOMlEbXvzGVBcx5siwV+SQGGkEt1AQf0bWd9U=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=lS0mKLBolLnk+b2ur+HpVuqs0hyTPs32x82Fc0HZAmWAPWymOzVgfATWKPunaR4O98Ho40rVsSDd8K5U1D87YPS2LqlvQfjF2OVskFM/Fg659rfBoI+4cKORY/+5WNnWsmz22wvF02UcM6cIlHTK9EHyXBOHsZH1Dd4ueIklTT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=d26QQlDY; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+	s=arc-20240116; t=1776952423; c=relaxed/simple;
+	bh=ymn0hziyzCDHZ/xtQ+g72NZCw696mbMVcg4VrvTA860=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XSbwo21iIvEmf3jpb6p5qYAXXv3dysBXEheMzeSEVYLxl2qsRHqEaF0GgPoEDndZ/u/5H/M4OwlvGyIF2lkkwvZm6D2eIRzxCdKUz4ZmNDAzNieqstTUM92dvI7Mp+X40YTVgxBg63VhTdAwjD7j9LGVPOcdOEcGU2yOb3oNoJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Idqd7BHn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="d26QQlDY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
-	To:From:Date:subject:date:message-id:reply-to;
-	bh=eCOUmyCYGwEY2Foet02Vaww9vNupcZt1d3Ifp8xNNkw=; b=d26QQlDYWJoWUhW2tmX2Wu4+ha
-	PAd6/1EFB725wzjU4Q149FqJva95gemdkRf0j1Wxy86auHIuqQuXEw/+UakW3lnOvNX390Ltqu3o5
-	tktfeLKqQ4weibtcH8bqb2+6lA3ZXv5608bVdrvzSP9kCggg5q63B1E9xkltvkIt2W00=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.98.2)
-	(envelope-from <hugo@hugovil.com>)
-	id 1wFuLv-000000003ju-1JAI;
-	Thu, 23 Apr 2026 09:44:23 -0400
-Date: Thu, 23 Apr 2026 09:44:22 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
- simona@ffwll.ch, Frank.Li@nxp.com, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
- laurent.pinchart+renesas@ideasonboard.com, antonin.godard@bootlin.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>
-Subject: Re: [PATCH v2 00/15] var-som-6ul: improve support for variants
-Message-Id: <20260423094422.09206dc0166d30af36c8b87d@hugovil.com>
-In-Reply-To: <20260305180651.1827087-1-hugo@hugovil.com>
-References: <20260305180651.1827087-1-hugo@hugovil.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Idqd7BHn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=NJ45MRd50YmhTuS87ih6apveq2PuxqmT1boxyJYCNPo=; b=Idqd7BHnu2Vb4Ca8b6K1WFzn4p
+	I/HKK+Y6KDoSFcUFKSfzIYdeWWTfIB9QcuVugQ/GkQMCMqd8+1ueMe8ipPGg7khwJjj26jz38/82/
+	RUUEYHFn7spP9fIHQUSVVIkU54Ejhw6/pB/G01fSHd5PwBkqMzz1FeVZ/wgifXjOzEgo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wFuUm-00HFdP-Cn; Thu, 23 Apr 2026 15:53:32 +0200
+Date: Thu, 23 Apr 2026 15:53:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com
+Subject: Re: [PATCH v13 0/4] Enable Remote GPIO over RPMSG on i.MX Platform
+Message-ID: <cb6b8ec9-296e-40fe-848d-ae87463ff1db@lunn.ch>
+References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+ <CANLsYkypRaFTTP7MLLLR+=AB5JnRTA4i130qvWzB1qoAuM9FWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam_score: -2.0
-X-Spam_bar: --
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANLsYkypRaFTTP7MLLLR+=AB5JnRTA4i130qvWzB1qoAuM9FWQ@mail.gmail.com>
 
-On Thu,  5 Mar 2026 13:06:15 -0500
-Hugo Villeneuve <hugo@hugovil.com> wrote:
+On Thu, Apr 23, 2026 at 06:53:12AM -0600, Mathieu Poirier wrote:
+> Once again Andrew Lunn was left out.
+> 
+> On Wed, 22 Apr 2026 at 15:29, Shenwei Wang <shenwei.wang@nxp.com> wrote:
+> >
+> > Support the remote devices on the remote processor via the RPMSG bus on
+> > i.MX platform.
+> >
+> > Changes in v13:
+> >  - drop the support for legacy NXP firmware.
+> >  - remove the fixed_up hooks from the rpmsg gpio driver.
+> >  - code cleanup.
 
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> Hello,
-> this patch series improves support for Variscite VAR-SOM-6UL based boards.
+That looks like a step forward. Now we don't care about legacy NXP
+firmware, it makes it easier to make bigger changes, like use the
+messages format from gpio-virtio.
 
-Hi,
-simple ping to know if anything is missing for this series to be
-applied/picked-up?
-
-Hugo.
-
-
-> 
-> The first two patches fix DT/dmesg warnings.
-> 
-> The next patches fix the incorrect use of VAR-SOM-MX6UL to refer to the
-> VAR-SOM-6UL.
-> 
-> The next patches add support for the imx6ull CPU variant of the VAR-SOM-6UL.
-> 
-> Then improves/fixes the following features/options that are currently not
-> working on the concerto EVK board:
->   - ethernet ports ENET1
->   - LVDS display panel
->   - Wifi/Bt
-> 
-> Note that the previous configuration of the optional Wifi/Bluetooth module
-> was copied from the original Variscite kernel tree, and required custom
-> shell scripts to properly configure the Wifi/Bluetooth module.
-> 
-> Also factor out optional features into separate DTSI include files, so it will
-> be easier to support them for other boards, and to make sure they are not
-> unconditionnally enabled.
-> 
-> I have tested these changes on a Variscite concerto EVK board using a
-> VAR-SOM-6UL with the following options:
->   - EC (ethernet phy on SOM)
->   - LD (LVDS encoder assembled on SOM)
->   - WBD (Wi-Fi 802.11 ac/a/b/g/n and Bluetooth 5.2/BLE on SOM)
-> Result of tests:
->   - Both ethernet ports Ok
->   - LVDS display panel Ok
->   - Wifi/Bt Ok
-> 
-> Also tested on a custom board with a VAR-SOM-6UL SOM (will be submitted in
-> a future series).
-> 
-> Thank you.
-> 
-> Link: [v1] https://lore.kernel.org/all/20260302190953.669325-1-hugo@hugovil.com/
-> 
-> Changes for v2:
-> - Place imx6ull-var-som-concerto.dtb in alphabetical order (Frank)
-> - s/include/dtsi in commit msgs (Frank)
-> - Clarify and improve patches to change VAR-SOM-MX6UL (Krzysztof)
-> - Collect tags for some acked patches (Krzysztof)
-> - Reorder pinctrl_gpio_leds in separate patch (Frank)
-> - Improve git commit messages ((Frank)/Krzysztof)
-> 
-> Hugo Villeneuve (15):
->   ARM: dts: imx6ul-var-som: fix warning for non-existent dc-supply
->     property
->   ARM: dts: imx6ul-var-som: fix warning for boolean property with a
->     value
->   ARM: dts: imx6ul-var-som: change incorrect VAR-SOM-MX6UL references
->   dt-bindings: arm: fsl: change incorrect VAR-SOM-MX6UL references
->   dt-bindings: arm: fsl: add variscite,var-som-imx6ull
->   ARM: dts: imx6ul-var-som: Factor out common parts for all CPU variants
->   ARM: dts: imx6ul-var-som-concerto: Factor out common parts for all CPU
->     variants
->   ARM: dts: imx6ul-var-som-concerto: order DT properties
->   ARM: dts: imx6ul-var-som: factor out SD card support
->   ARM: dts: imx6ul-var-som: add proper Wifi and Bluetooth support
->   ARM: dts: imx6ul-var-som: factor out ENET2 ethernet support
->   ARM: dts: imx6ul-var-som: add support for EC configuration option
->     (ENET1)
->   ARM: dts: imx6ul-var-som: factor out audio support
->   dt-bindings: display/lvds-codec: add ti,sn65lvds93
->   ARM: dts: imx6ul-var-som: add support for LVDS display panel
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   8 +-
->  .../bindings/display/bridge/lvds-codec.yaml   |   1 +
->  arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
->  .../dts/nxp/imx/imx6ul-var-som-audio.dtsi     |  30 ++
->  ...ar-som.dtsi => imx6ul-var-som-common.dtsi} | 140 +++-----
->  ...ts => imx6ul-var-som-concerto-common.dtsi} | 159 ++-------
->  .../nxp/imx/imx6ul-var-som-concerto-full.dts  |  22 ++
->  .../dts/nxp/imx/imx6ul-var-som-concerto.dts   | 318 +-----------------
->  .../dts/nxp/imx/imx6ul-var-som-enet1.dtsi     |  44 +++
->  .../dts/nxp/imx/imx6ul-var-som-enet2.dtsi     |  79 +++++
->  .../nxp/imx/imx6ul-var-som-lvds-panel.dtsi    | 112 ++++++
->  .../boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi   |  27 ++
->  .../boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi |  75 +++++
->  arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi | 219 +-----------
->  .../nxp/imx/imx6ull-var-som-concerto-full.dts |  22 ++
->  .../dts/nxp/imx/imx6ull-var-som-concerto.dts  |  21 ++
->  .../arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi |  36 ++
->  17 files changed, 575 insertions(+), 741 deletions(-)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-audio.dtsi
->  copy arch/arm/boot/dts/nxp/imx/{imx6ul-var-som.dtsi => imx6ul-var-som-common.dtsi} (60%)
->  copy arch/arm/boot/dts/nxp/imx/{imx6ul-var-som-concerto.dts => imx6ul-var-som-concerto-common.dtsi} (50%)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-enet1.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-enet2.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-lvds-panel.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> 
-> 
-> base-commit: c107785c7e8dbabd1c18301a1c362544b5786282
-> -- 
-> 2.47.3
-> 
-> 
-
-
--- 
-Hugo Villeneuve
+	 Andrew
