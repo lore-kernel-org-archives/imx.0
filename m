@@ -1,138 +1,184 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AA03EFD2C
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 13:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0892C324D;
+	Thu, 23 Apr 2026 13:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776950375; cv=none; b=aTtXarOaDNa70lZAFfkuQd2ImQFEYHFYymV8OVyjpgRWmnFKLdN5McyyZj/vTUY1l5x6ngVDiwnAi4s11vR8H8xv2ObnPw8vzOHzQSie7jZUFEk83E7z1efZL1R2krEOCv+uJACPWIzz/JybQKeivoi+5xd/maIEyJraBGzvuCQ=
+	t=1776951879; cv=none; b=STfJY/SCCnPA3ptrRPcCnh3uJd4Yh+wLoy6Yg0HX4Avlw5HuDu9AQEzVJrTokKGDpX9/K+tF8MnEuGB5YWjtIU23xx+VklotZoTNChs8vSnkl/6PRTEc4wGPYvWkqewrZrmhvkLi8CM2S14i1KsH2nYm2QdghdMr5RF2DKMLcMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776950375; c=relaxed/simple;
-	bh=+v1IGGwBlD7W1TrUt5/g/toItgrGx+CShEQy9dqBHjY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hn0OZU9SXL5m3WKKdOX6NBf+kjKS547Xn+Ez8lrRO4u9bHAF3ybM9lmyypY+e0THq4pW9eewlF6OnUTfX48+X1NGrhmISahduEPgzjY/nVnBSsH01OW+TYsyl2BmPjqb/pt2eazY1xaDqFFS/MvSkBYP32NxE1cT6hAHHXh9Zj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CHffhXGz; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1776951879; c=relaxed/simple;
+	bh=0mBUUsjOMlEbXvzGVBcx5siwV+SQGGkEt1AQf0bWd9U=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lS0mKLBolLnk+b2ur+HpVuqs0hyTPs32x82Fc0HZAmWAPWymOzVgfATWKPunaR4O98Ho40rVsSDd8K5U1D87YPS2LqlvQfjF2OVskFM/Fg659rfBoI+4cKORY/+5WNnWsmz22wvF02UcM6cIlHTK9EHyXBOHsZH1Dd4ueIklTT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=d26QQlDY; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CHffhXGz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 800E74E42AC9;
-	Thu, 23 Apr 2026 13:19:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4BD1460495;
-	Thu, 23 Apr 2026 13:19:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B727910460BC4;
-	Thu, 23 Apr 2026 15:19:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776950366; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=N0czXPTCBLd6Via7w9anQbZ1SyEjDMbKmYb2klNRSzM=;
-	b=CHffhXGzBeQ87qx+VLT/QJwCaDtokpzRnxIGgqeeBGcHmpx9dkFTQezMvWUYtBFalmt0ym
-	ZlPNQeOk5Q1kth18AWc/K+W7Raxp9+99ljR8+PbnvhlipPqpO27B6VpRihKIXQayDAqgRG
-	da/TeGo6hU5ux+mR4M6i/8AmHfkbG+YJihJqxxPpKk1ng/qYjjX625VUgLNqxJALo9M/FP
-	rIln33FBGqBltj0d5nmulxlKj/OYQmYlq0XBZlKDps6B3HZSM/rShXabOS7pnFzpExVbdP
-	stMHIMq4UYNiQX+If3xxxJ52QyUsGZwDX30+01HblvyxBtNmG2GoUDU/v0ZI4A==
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="d26QQlDY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
+	To:From:Date:subject:date:message-id:reply-to;
+	bh=eCOUmyCYGwEY2Foet02Vaww9vNupcZt1d3Ifp8xNNkw=; b=d26QQlDYWJoWUhW2tmX2Wu4+ha
+	PAd6/1EFB725wzjU4Q149FqJva95gemdkRf0j1Wxy86auHIuqQuXEw/+UakW3lnOvNX390Ltqu3o5
+	tktfeLKqQ4weibtcH8bqb2+6lA3ZXv5608bVdrvzSP9kCggg5q63B1E9xkltvkIt2W00=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.98.2)
+	(envelope-from <hugo@hugovil.com>)
+	id 1wFuLv-000000003ju-1JAI;
+	Thu, 23 Apr 2026 09:44:23 -0400
+Date: Thu, 23 Apr 2026 09:44:22 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+ simona@ffwll.ch, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+ laurent.pinchart+renesas@ideasonboard.com, antonin.godard@bootlin.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>
+Subject: Re: [PATCH v2 00/15] var-som-6ul: improve support for variants
+Message-Id: <20260423094422.09206dc0166d30af36c8b87d@hugovil.com>
+In-Reply-To: <20260305180651.1827087-1-hugo@hugovil.com>
+References: <20260305180651.1827087-1-hugo@hugovil.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 Apr 2026 15:19:03 +0200
-Message-Id: <DI0KBQCGJWIC.1TNNX177Z8ZNU@bootlin.com>
-Subject: Re: [PATCH 35/41] drm/rockchip: lvds: remove now-redundant call to
- drm_connector_attach_encoder()
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Sasha
- Finkelstein" <fnkl.kernel@gmail.com>, "Janne Grunau" <j@jannau.net>, "Liu
- Ying" <victor.liu@nxp.com>, "Douglas Anderson" <dianders@chromium.org>,
- "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach"
- <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Philipp
- Zabel" <p.zabel@pengutronix.de>, "Paul Cercueil" <paul@crapouillou.net>,
- "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Chun-Kuang Hu"
- <chunkuang.hu@kernel.org>, "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Kevin Hilman" <khilman@baylibre.com>, "Jerome Brunet"
- <jbrunet@baylibre.com>, "Martin Blumenstingl"
- <martin.blumenstingl@googlemail.com>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
- <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
- <marijn.suijten@somainline.org>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Sandy Huang" <hjc@rock-chips.com>,
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, "Andy Yan"
- <andy.yan@rock-chips.com>, "Thierry Reding" <thierry.reding@gmail.com>,
- "Mikko Perttunen" <mperttunen@nvidia.com>, "Jonathan Hunter"
- <jonathanh@nvidia.com>, "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Jingoo
- Han" <jingoohan1@gmail.com>, "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo
- Kim" <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Laurent Pinchart"
- <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
- <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Biju
- Das" <biju.das.jz@bp.renesas.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Michal Simek"
- <michal.simek@amd.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
- <linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
- <freedreno@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
- <linux-renesas-soc@vger.kernel.org>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com> <20260423115334.444750-1-luca.ceresoli@bootlin.com> <wapbiwxou64emxlt6oz5slst3nvcgvs35hvhpz7v3wmwp33bzc@mvdog4t7un6m>
-In-Reply-To: <wapbiwxou64emxlt6oz5slst3nvcgvs35hvhpz7v3wmwp33bzc@mvdog4t7un6m>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam_score: -2.0
+X-Spam_bar: --
 
-Hi Dmitry, Geert,
+On Thu,  5 Mar 2026 13:06:15 -0500
+Hugo Villeneuve <hugo@hugovil.com> wrote:
 
-On Thu Apr 23, 2026 at 2:42 PM CEST, Dmitry Baryshkov wrote:
-> On Thu, Apr 23, 2026 at 01:53:28PM +0200, Luca Ceresoli wrote:
->> drm_connector_attach_encoder() is now called by
->> drm_bridge_connector_init().
->>
->> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->> ---
->>  drivers/gpu/drm/rockchip/rockchip_lvds.c | 6 ------
->>  1 file changed, 6 deletions(-)
->>
->
-> stray duplicate
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Hello,
+> this patch series improves support for Variscite VAR-SOM-6UL based boards.
 
-Due to the long Cc list, when sending the series with b4 I hit the mail
-provider limit, so patches after 34 were not sent.
+Hi,
+simple ping to know if anything is missing for this series to be
+applied/picked-up?
 
-I then sent them manually using the good old git format-patch/send-email,
-but in the process I missed the v2 (heh, b4 is great at automating
-that!). So patch 35 got sent without v2, and then I resent it and the
-following ones with the v2 marker.
+Hugo.
 
-Sorry about the noise!
 
-I think with Dmitry's all-series R-by this whole series can be applied at
-once (I'll wait ~1 week before applying, in case of more comments). This
-will avoid more iterations spamming lots of people.
+> 
+> The first two patches fix DT/dmesg warnings.
+> 
+> The next patches fix the incorrect use of VAR-SOM-MX6UL to refer to the
+> VAR-SOM-6UL.
+> 
+> The next patches add support for the imx6ull CPU variant of the VAR-SOM-6UL.
+> 
+> Then improves/fixes the following features/options that are currently not
+> working on the concerto EVK board:
+>   - ethernet ports ENET1
+>   - LVDS display panel
+>   - Wifi/Bt
+> 
+> Note that the previous configuration of the optional Wifi/Bluetooth module
+> was copied from the original Variscite kernel tree, and required custom
+> shell scripts to properly configure the Wifi/Bluetooth module.
+> 
+> Also factor out optional features into separate DTSI include files, so it will
+> be easier to support them for other boards, and to make sure they are not
+> unconditionnally enabled.
+> 
+> I have tested these changes on a Variscite concerto EVK board using a
+> VAR-SOM-6UL with the following options:
+>   - EC (ethernet phy on SOM)
+>   - LD (LVDS encoder assembled on SOM)
+>   - WBD (Wi-Fi 802.11 ac/a/b/g/n and Bluetooth 5.2/BLE on SOM)
+> Result of tests:
+>   - Both ethernet ports Ok
+>   - LVDS display panel Ok
+>   - Wifi/Bt Ok
+> 
+> Also tested on a custom board with a VAR-SOM-6UL SOM (will be submitted in
+> a future series).
+> 
+> Thank you.
+> 
+> Link: [v1] https://lore.kernel.org/all/20260302190953.669325-1-hugo@hugovil.com/
+> 
+> Changes for v2:
+> - Place imx6ull-var-som-concerto.dtb in alphabetical order (Frank)
+> - s/include/dtsi in commit msgs (Frank)
+> - Clarify and improve patches to change VAR-SOM-MX6UL (Krzysztof)
+> - Collect tags for some acked patches (Krzysztof)
+> - Reorder pinctrl_gpio_leds in separate patch (Frank)
+> - Improve git commit messages ((Frank)/Krzysztof)
+> 
+> Hugo Villeneuve (15):
+>   ARM: dts: imx6ul-var-som: fix warning for non-existent dc-supply
+>     property
+>   ARM: dts: imx6ul-var-som: fix warning for boolean property with a
+>     value
+>   ARM: dts: imx6ul-var-som: change incorrect VAR-SOM-MX6UL references
+>   dt-bindings: arm: fsl: change incorrect VAR-SOM-MX6UL references
+>   dt-bindings: arm: fsl: add variscite,var-som-imx6ull
+>   ARM: dts: imx6ul-var-som: Factor out common parts for all CPU variants
+>   ARM: dts: imx6ul-var-som-concerto: Factor out common parts for all CPU
+>     variants
+>   ARM: dts: imx6ul-var-som-concerto: order DT properties
+>   ARM: dts: imx6ul-var-som: factor out SD card support
+>   ARM: dts: imx6ul-var-som: add proper Wifi and Bluetooth support
+>   ARM: dts: imx6ul-var-som: factor out ENET2 ethernet support
+>   ARM: dts: imx6ul-var-som: add support for EC configuration option
+>     (ENET1)
+>   ARM: dts: imx6ul-var-som: factor out audio support
+>   dt-bindings: display/lvds-codec: add ti,sn65lvds93
+>   ARM: dts: imx6ul-var-som: add support for LVDS display panel
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   8 +-
+>  .../bindings/display/bridge/lvds-codec.yaml   |   1 +
+>  arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
+>  .../dts/nxp/imx/imx6ul-var-som-audio.dtsi     |  30 ++
+>  ...ar-som.dtsi => imx6ul-var-som-common.dtsi} | 140 +++-----
+>  ...ts => imx6ul-var-som-concerto-common.dtsi} | 159 ++-------
+>  .../nxp/imx/imx6ul-var-som-concerto-full.dts  |  22 ++
+>  .../dts/nxp/imx/imx6ul-var-som-concerto.dts   | 318 +-----------------
+>  .../dts/nxp/imx/imx6ul-var-som-enet1.dtsi     |  44 +++
+>  .../dts/nxp/imx/imx6ul-var-som-enet2.dtsi     |  79 +++++
+>  .../nxp/imx/imx6ul-var-som-lvds-panel.dtsi    | 112 ++++++
+>  .../boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi   |  27 ++
+>  .../boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi |  75 +++++
+>  arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi | 219 +-----------
+>  .../nxp/imx/imx6ull-var-som-concerto-full.dts |  22 ++
+>  .../dts/nxp/imx/imx6ull-var-som-concerto.dts  |  21 ++
+>  .../arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi |  36 ++
+>  17 files changed, 575 insertions(+), 741 deletions(-)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-audio.dtsi
+>  copy arch/arm/boot/dts/nxp/imx/{imx6ul-var-som.dtsi => imx6ul-var-som-common.dtsi} (60%)
+>  copy arch/arm/boot/dts/nxp/imx/{imx6ul-var-som-concerto.dts => imx6ul-var-som-concerto-common.dtsi} (50%)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-full.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-enet1.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-enet2.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-lvds-panel.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-wifi.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-full.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
+> 
+> 
+> base-commit: c107785c7e8dbabd1c18301a1c362544b5786282
+> -- 
+> 2.47.3
+> 
+> 
 
-Luca
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+-- 
+Hugo Villeneuve
