@@ -1,138 +1,169 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011035.outbound.protection.outlook.com [52.101.70.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847233E4C6D
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 09:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776936402; cv=none; b=uBgXIOKo+uJmUhPUzGxTseZzjTnIbrJHVCdtZ+dVtyEU8m5ERLoHnmuupcsLKyLsPqMwKyrxvkfpK6Qiydew5uE0+cEOyyHqIrbNwnn3+MBAg5Qy3o8LhNpNufrSziA8foLTPxXO4kQ2zHElfENySoEYX9dkSGzDmXiapvg0Cd0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776936402; c=relaxed/simple;
-	bh=qdphxkzpfpiFfADHURwKArsIqnvk3ona6Ydvx5rScko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ErHJmmdW1PM+/AIuokPHjFTokwUmFRpYxYkRNjm5WQB8d3nsJUP1ikQx5LvNQCT9djeUgI3mrNr7lAv5FRdKqR5unXikHrISgwnjT+RiBX70qKoztKKjOxT/3NvH9BltSAVTim7EeDHAkvpRL9wATrHaIJd2OPf+6V8/8gqzlXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MbRwzF1R; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F743E5ECE
+	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 09:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776937899; cv=fail; b=ojApf8nB8XrG3ODw+0p9YckvOGzJSXE3zuEO8Edfp2E8ivQX4ctEqVeW5uZEuZmPpo7ZQSGo/WDylaORZt31+NZADa3kKq3MJDeWJ0a3UFbumQV9mW2o7JkimfbIg1GiQRZO3ITY/Io5G6al1DCQzfM7NEwVlmUX+tWTu25tSRs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776937899; c=relaxed/simple;
+	bh=WGu+/ySdiknpFNEGAhCucRja9AdEmVzaSkQCdiAxJ5w=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JPPOuxM0a6eC1KGQ1/HZy8NIhix5Th8332+Yf4RQM0JvIrEZGPE28PmAVZXi4miNIDwNQSv0U4BBtIzvsgpZd1zYf+0bBybg2HBzyatHfoP0Eu4ZmavUvV/f8iN7ZWAGnAlHclN7mUEG4aTDvA42a9/LOPOoDJ1bO6e0rggj8c8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lszN6LI7; arc=fail smtp.client-ip=52.101.70.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MbRwzF1R"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 42DE44E42A97;
-	Thu, 23 Apr 2026 09:26:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 13CBB60495;
-	Thu, 23 Apr 2026 09:26:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C98910460B45;
-	Thu, 23 Apr 2026 11:26:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776936396; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Vg4xk0BL9Vx4AIBY/T0FrCStojWIiXvnfyD7V05c31A=;
-	b=MbRwzF1RKivDu9bPqrlwuig+QvzBShR5Qm4bzeer4rlUTd/VkEfPYVkgQt0dIFHTYVIxBL
-	7uy8hIGh0JcidF9EBhClpBsWLfPaSNz2P5H+pUiiSsrRrUKKls8FCitgNNTqFNxwdjuFmI
-	E8G/b5YW0whkI92QeVxeOn1CYBh+G5ryE97MzM5ozIh+dckbWCx7SO+OPydyWLQBZ87bFY
-	4rz7gtomP33u4jmQr3TfNqKG7l/WZhuUz9GPxB5TPq6H02YR0ja6XdAxWFvDWACfXL3eRV
-	HrLFE75DsWEEKPqSsr5w32y5ECCP7JRX5NuIxNTPm5AyZikOYqSJ7uAn3r7bYg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Thu, 23 Apr 2026 11:17:28 +0200
-Subject: [PATCH v2 34/41] drm/mxsfb/lcdif: remove now-redundant call to
- drm_connector_attach_encoder()
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lszN6LI7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mMUjw/I617RLpa1J6dK6wuR5tlqiEUZ+WU8I1/8Uq2jGLg2QrVAvMCdGbIZ3AbVi906GxFn/G1ahUmUcky0J4XZuWOobk5feQXtoiOd0vaTVGsPbkSN2k/DwM3VdGEcAOmf9hXRuHDPvFzaYAQkBymQ9nZ+IVPAZOxMUlWr/1IXfWEi/x5Z5nWsumtXCJBtbiJ9Vg18Po30c+XHw+0yHNxQjRPhvPL32LujpKBwUTm0pzUH9mQvOZtZqTO+8Dxi1BHmoOAawg18UsUoA9rmhRsO3IGsWNKLXC9HtuQCsfyzpSnl1iAvfb00OtuM82pXhTsaMH/NH7oXbWnymv5vubA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HRDDj4nMs4b482Tg99PzxiT9TbfJHoO26KBIybUDWuY=;
+ b=X/ejqaUk58HbLib4uyCRmm+GpnN3gPLrxA55G+m3EEiMigy2T3u9duwYvHW7oVWq93OGhoSxujwy43MkwxTjXmY7F5PxwSPLw4G/DesSmJud2uP4SwoMApHW5h/SXW3PuyX+jCmez1DGXRyTbICwE1UMgTE8Z6Ak8LJjmP1IgE5SQwvhDQNDF0WK4/yemoa6EUOfKQCsBb2rAx3PULkkESITDthkkOWl41PvniUAQLfBPiSYauH4ox1w2UXUXgpk6ulnoeUMkHYGeUC7sljmslkWRYY6ame6yBOnramv+CQpUjdJyLNyP/AQ8z9NtI0Nt9TioVa21tq39q5wP1p7PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HRDDj4nMs4b482Tg99PzxiT9TbfJHoO26KBIybUDWuY=;
+ b=lszN6LI7XaLhouImvKtbNwV6D/0Xj27VQSG/ROJX/uwMsbk1aKqT4PFuh09iWZFAz8dhH5PUfy4OQ4Ks0xlktxnZOV5GkRPv/oXEjsHFbbXsEIL8hppKfMY69BNuzFTi6wC8PtAyFepO1jjq1IwXHDqX2NilBdWz9aynwNbsPLF4HxWyWAxTcefORZx0/mgrEUUEttOiMTQdm/Gd1r2cE9xAUCwUqe4a1pwVULNlhLk29DTh97pfIINZ5GEGfmWsoe+EZ/IoWaUzfLlS7+3XKakE5UOdxkQs6K8/5YvS6sZVtz81/SGgYzpa6MzcA3Rz9Nw43sXrdr2zPIdMX4+PKw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS1PR04MB9334.eurprd04.prod.outlook.com (2603:10a6:20b:4de::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
+ 2026 09:51:32 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
+ 09:51:32 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: gregkh@linuxfoundation.org,
+	khtsai@google.com,
+	kexinsun@smail.nju.edu.cn,
+	hhhuuu@google.com,
+	kees@kernel.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH v2] usb: gadget: udc: skip pullup() if already connected
+Date: Thu, 23 Apr 2026 17:53:55 +0800
+Message-Id: <20260423095355.2673035-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0001.apcprd02.prod.outlook.com
+ (2603:1096:4:194::10) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-drm-bridge-connector-attach_encoder-v2-34-2ae6ca69b390@bootlin.com>
-References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com>
-In-Reply-To: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sasha Finkelstein <fnkl.kernel@gmail.com>, Janne Grunau <j@jannau.net>, 
- Liu Ying <victor.liu@nxp.com>, Douglas Anderson <dianders@chromium.org>, 
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Paul Cercueil <paul@crapouillou.net>, 
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Sandy Huang <hjc@rock-chips.com>, 
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
- Andy Yan <andy.yan@rock-chips.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Icenowy Zheng <zhengxingda@iscas.ac.cn>, Jingoo Han <jingoohan1@gmail.com>, 
- Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
- Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Jyri Sarha <jyri.sarha@iki.fi>, Michal Simek <michal.simek@amd.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, asahi@lists.linux.dev, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- freedreno@lists.freedesktop.org, linux-rockchip@lists.infradead.org, 
- linux-tegra@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS1PR04MB9334:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8eed55a7-09fe-4d9d-2b92-08dea11de648
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|19092799006|1800799024|38350700014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QqIWEc1zrEcs82Vv6lcMAOK3ZV9elT0iDShIj9ujUZ/r58oeSzqqIjTVmdsDLvq2AFU6O2saZMfAX5XaOkgtuI5hxoubAEiMLm+4ZPtuIU4Eot7X93l3jrELRt1flzwWk/53MucwqXJjf3qYcLKNwTr6qWrrMLZGUs6LlPsPJbVU2Wp0JSKgUMt40UiAAPd75HrsFiqFYaZnS+PoXMmCNvdjnDcraP2gd4bC72xax4+FHGSwmahHS8NgFEJkmMzBjezP3jzGibCPVagypfSXj3gyLAli6oz0wzGrIpOAiTrK2khIXqEAVTMrg3fPB6zINTlOJMavqVa7Tdt00EsNqwlw/0WaiiwHipK4xuw+17j1Cq6EblO5YGr45GI2zlZjaL0ZHWAQscUJTOtZZWXyeSCacOXexkkyi6O8yaHiMeOvoFIPN7jzsuV36pjoLrqu6PJRLHbm/Kauu+0os6OgKUyMUc2JKN0ZWi4UOSnuWu/g1UH6MI3YwIbt3WkRY/ytDy7XlCpdzrEBc72RUR1F6rYnUWEd+1ULayVd1ebPDvBsXFE/rjHRDIMhUDldRrnmTQgqSW/X3SuC1BxFQNuJ776Ya/CjnL64ZTDiVwumZlzkcBc2UxUeg3W3lXILc93BPW8yW5dQbBu467sxIpLoZ52YPtNzrCnDxDMnX0ZIeTZJ9kfiwr/nUNL9HBoE261DJm2J4bygepPKNByeiDE5gcwX+WXF8oerMIirvBAygVil/8XR11nF1m1+UvCkXAw81e48sl6YJllJyi0vAvONWz7X8LfekQNf18PxlsSMC/c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(19092799006)(1800799024)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ph0U5sdIuD3b9M3InOFzy7dtQ377/Mt3CdZVe/bHUs/tpOgYlz02Q3uEf743?=
+ =?us-ascii?Q?7TjXg7FxpqbKyEXPkGn748vVZYBCOM+k0N5G9QziTgUNRjFLaZEK7oAA5Xp+?=
+ =?us-ascii?Q?/pRDXQmudH6SKoB9nSWqz8t3CW0BwiazqJQxhvEZurGwjniFYiBNkSc0K1Ys?=
+ =?us-ascii?Q?G6zGi2EJcmfjO8gQq8WENQ6TzroRSEIgPVen6svb0yc69QO+ovkKAqiB+e/L?=
+ =?us-ascii?Q?KHaJa3yG2YfPy3qvhJhFoMt9VOrMR09vcAHFf65oFeZvQPYLZZcxqi6PrGRR?=
+ =?us-ascii?Q?AquQ2tvUmfPL4gYAV4SXIDRf8ML1fDteKRF90DgmUnJ1Hl/Q6HjJepPRC3Av?=
+ =?us-ascii?Q?gn4k5lAo1oWcEo0s+mkO3QlJKM+EjZr3WKu0xGqoHqLMSJNeSL0IAMCiFiod?=
+ =?us-ascii?Q?Y1VrLC5dxzHVt/zgHekI0v0Sbu1f1czWYz5lPw8U5ddVBfO8nzhCOnvLC15u?=
+ =?us-ascii?Q?oJF8RUu2sF6NZ0r7vBIRS7fkU6zCvhx3pfMCsQ/XcI39AnayGhoeKbJNQs4r?=
+ =?us-ascii?Q?1Piv0HnlenL8L5nAleJmkgo1RzuD5QdZJYMqsygT5Yzvnrm+RzRpHPjCIprm?=
+ =?us-ascii?Q?dnsMSJ7GRUFysxH4MALZJmSVHugU1ETw/iqS0uph40RcCgqerbstbX7gXcFV?=
+ =?us-ascii?Q?RYk1JFUIij3zp8JibD9kf2xTb8VGTUEby6J/oMlAXJGM0VY+sqXV2zXukSdu?=
+ =?us-ascii?Q?H4Q4EAAV4OP7cxC4i6T1mYrnePh43JYy8xS5tvEXdG0yfdScWk8u6OjgiJ8O?=
+ =?us-ascii?Q?5QOVX8E5naMqilrmFOMmMMBk6D0hq8A7UisxdkxAaj6n9EeDi911Y8ww8UEs?=
+ =?us-ascii?Q?jJ27v8scVvwEVqhmgg17QpsWcj7eZcOUrMI4U1XeeZTqTQfl8qv3XiTrOzO6?=
+ =?us-ascii?Q?bjaCKqy99t1de0L2zo2D7LHdoZEWkcYc/Cu/+V2Ti50mnI92Cf41dvsOUJZR?=
+ =?us-ascii?Q?h5gj323O/e9dhLFK/XTcb4E2PMx/qqk7W2Qp5OvsYna/V/02dJwDcHvxI7QY?=
+ =?us-ascii?Q?bi1nOGxqEJ2Gbsq7+gBmgR0kW+U1JPauIBfY6DbvH1N231R7zmdDWbVNYEjh?=
+ =?us-ascii?Q?1AhFBCnp2Lq5ouFE77djA5hUCZmMJOzXLMDNtMEsbEC7m9QEUm0zo5wL/cuk?=
+ =?us-ascii?Q?UpEeFfHybd+dpoxvwab0/e0liOdWhFSMu/B1H+2coveg5sGL16ElwcizDwLT?=
+ =?us-ascii?Q?HcnBFke2hroyor4Ck46ajX85GclymgIxUrSmLt68tG9CQiwhXW1EOWMMTjHV?=
+ =?us-ascii?Q?p1Q/1eIDc2GpuGDUaiAIw3RQPssqKpNY5gW/Q9z6RQ9WB+W6xhxlIhEV6L0g?=
+ =?us-ascii?Q?2aJOXlpk37Mm7k/nCiPg9Qo/ohclFfOYnSZ5vFO9wF2Gct7B/j6GWh3AbF3K?=
+ =?us-ascii?Q?R9psIsmkuQWcEWF5cINWoglSDFAHeZCAzd8BOzJriE4HEkPYC0qelOxGWzd4?=
+ =?us-ascii?Q?CdsnouppiY46gPh9kquPR9Moz3+v5uYSGWqhfw+Nvi9ycDgLh49snPKJDw5k?=
+ =?us-ascii?Q?T23aOiHqgbODgafY625kYugZ/FM5KJm7D3HACXrgBTxhusI9bpbx9VMZGX+N?=
+ =?us-ascii?Q?RJooRDaOkgrpgNUfJtwwOjv9qyBgNwwbC3a17o0W3WVylxx1YDNvGV5Yi3Bl?=
+ =?us-ascii?Q?2OcUyL7hm5ae1Fp7N9oJ+aZagydxB25uJJrB4DBUawnD4WFqaWuCXuG95S3y?=
+ =?us-ascii?Q?XOxYdslZHmIvXgnLtV1w70d/zBDHddt7r4JQb7YaRKqt9beagLbH+tkEsQyy?=
+ =?us-ascii?Q?RbzrtfQQ1A=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eed55a7-09fe-4d9d-2b92-08dea11de648
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 09:51:32.5753
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6WAtBAgLe20PRlBMkl4wJfxE5xAGx/f5L0GgQ0fcFOIG35DCPf81A4t85O0MbQZU42Nh31Lb4g7R+MVK2u5xlw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9334
 
-drm_connector_attach_encoder() is now called by
-drm_bridge_connector_init().
+The device controller may update vbus status via usb_udc_vbus_handler(),
+which tries to connect the gadget even though gadget_bind_driver() has
+already called usb_udc_connect_control_locked(). This causes pullup() to
+be called twice. Avoid this by checking if gadget->connected is true.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+This also set gadget->connected as false in usb_gadget_activate() if it
+became connected while it was being deactivated. Otherwise,
+usb_gadget_connect_locked will return early and pullup() won't be called.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 ------
- 1 file changed, 6 deletions(-)
+Changes in v2:
+ - reset gadget->connected as false before calling usb_gadget_connect_locked()
+---
+ drivers/usb/gadget/udc/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 7f07ae24e0dc..f5bb59cd5028 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -99,12 +99,6 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 			return dev_err_probe(dev, PTR_ERR(connector),
- 					     "Failed to init bridge_connector for endpoint%u\n",
- 					     of_ep.id);
--
--		ret = drm_connector_attach_encoder(connector, encoder);
--		if (ret)
--			return dev_err_probe(dev, ret,
--					     "Failed to attach connector for endpoint%u\n",
--					     of_ep.id);
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index e8861eaad907..60340ff9edbf 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -712,6 +712,9 @@ static int usb_gadget_connect_locked(struct usb_gadget *gadget)
+ 		goto out;
  	}
  
- 	return 0;
-
++	if (gadget->connected)
++		goto out;
++
+ 	if (gadget->deactivated || !gadget->udc->allow_connect || !gadget->udc->started) {
+ 		/*
+ 		 * If the gadget isn't usable (because it is deactivated,
+@@ -885,8 +888,10 @@ int usb_gadget_activate(struct usb_gadget *gadget)
+ 	 * If gadget has been connected before deactivation, or became connected
+ 	 * while it was being deactivated, we call usb_gadget_connect().
+ 	 */
+-	if (gadget->connected)
++	if (gadget->connected) {
++		gadget->connected = false;
+ 		ret = usb_gadget_connect_locked(gadget);
++	}
+ 
+ unlock:
+ 	mutex_unlock(&gadget->udc->connect_lock);
 -- 
-2.53.0
+2.34.1
 
