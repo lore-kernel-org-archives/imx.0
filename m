@@ -1,67 +1,66 @@
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D872F3624A5
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 20:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A1835BDA0
+	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 20:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776977701; cv=none; b=VHT5pDUdQ2a6j9buCPFuQ5SCUeYn3Ggh2A9+c1fkKyVG+uX4SvnMzmqnEEN1XrxFrRlhvvcdyE09YxEFLnpJrR8snmpYTz0snnfO90bXpLhWWzv5I807WsfNSUSzO/siw1fkrPJaj3jxp1OQhF/3IRL9n+r60PudzgpbR2r8Ifk=
+	t=1776977705; cv=none; b=iRTVtbsdVaapPj2+olbWY+4Xe9u/ERfMpLSi2Dz5hy85TfcbJOMSDz4Y3blNdaxUwmEWqbXGooCmF58PkqRaKMh0JBDji02vJvIFmHq3XOxXzDuKIfiffDMCezOxm1Rj4fBLg3O19rnHpDKkSoTk/HqHh+Q4F3mBMStdmid5RcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776977701; c=relaxed/simple;
-	bh=u5K5LyAR3nduZ9uYNLcH0Ml0SCvaXWSVYWZzdtQqFQ0=;
+	s=arc-20240116; t=1776977705; c=relaxed/simple;
+	bh=y0aqiZzD4/dauxqWGWZpTeZQeDGgmhoKACp8yCx31Lc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jqbn1stmoPX169B+KhLO++fFEa8Oe+sx75ShQkepliYtsnmpZCDgc59PyV7JqNTR8cfFEc3EiyUKA1/HS0gv+KbJ90j2bpOiLgxE2qoJk/g7qLZhQd99pP6SGvU82c7IUmikKyz9uUWjd1oIGyN5GefeIGxhHLEm5qx4K+jBNME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QST76Fa0; arc=none smtp.client-ip=209.85.167.173
+	 In-Reply-To:To:Cc; b=LO0bjkW+6XvCikkXV1wIiS3FTzZOWfxA7x++e9LG1d9SFT+Mm5v4mIkntCPzwxtS7b83yFIfjUYFWK7QxMkkz6LuIx4+bk3TUscfXanBwSJJExnGOtgPHoE3LlPewUhBaxXjeh0Qt0adfeSafr68OnBOCHIjfnE6Zh1/56HN7qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VthpUP7s; arc=none smtp.client-ip=209.85.167.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QST76Fa0"
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-479dc6d26e3so2469816b6e.0
-        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 13:54:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VthpUP7s"
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4645dde00a7so5779316b6e.1
+        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 13:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776977698; x=1777582498; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1776977703; x=1777582503; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FdUnCLnqK7cADbbPufTlrq1d/w7tRGa85zNmvhkeAnE=;
-        b=QST76Fa0mwLNXfSECutY86tqYIj3LsIObBULzI8xt4EHsmkvsEORj83mugEScaygQS
-         ra7FssopcroptX4csgfFbK+EztrWY/a29yNX2hb5+n4P2h6LUjHfBWFVx3PPwNYsBe1x
-         89teitiY+ilX2BvjcWBYjY4TiGdeI4xebqhUiAoUJlE2n/hrqfXaY9L0OE4w2rgp9INI
-         y3Gp13czZ+V8RePRJD1a+HZoB1ZK4WNqfKwdjVRrsxbyqBi86C548uOFLbwNtJkIVtV9
-         BaSwcIbQfBx7iotKtNfdpHxnZgKAJ70L1XkYuBLNvlyNOAmoaYNRk1jS3LH39ua0ZF6Y
-         GIHg==
+        bh=MqO5/EH/UF1TE1Yyx5zB/rmOp92tEJKuB03COKwdtP4=;
+        b=VthpUP7senZP5v5+8U9fS5tPedFC7KH4EmtlhT4c3vC9j8ICzn9U/Cok3T+WdJAu0m
+         bJ7d2pBXnUqcwG81QvtOEdt29qTPCAvb4Am2nlBQgXQ1ITyRt0r840TMbLQtmfZ3NDRf
+         Lrysm5Tz2kcREZd52L6QHU0YkEChRDBGLvpOOv0As58BX2MpsBVufMgvAMmqAJDbZvda
+         5uEBxmYl29cpAhP7826XpEWWdu7D4Qgc9x8v1JNPtn0vyk5T8A4yI8j7MrnjdwAH2dIx
+         xjPnLnpV7IXreaPybZkm35gNg4u313dz6bYfongKmyr5Xl0MRMpqRJ9i6gXJPFUmqhr7
+         kpKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776977698; x=1777582498;
+        d=1e100.net; s=20251104; t=1776977703; x=1777582503;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=FdUnCLnqK7cADbbPufTlrq1d/w7tRGa85zNmvhkeAnE=;
-        b=C4TYSERRAsnPI6ev4/F9E1kyO+Z65eLsmYSzUf1y9Bh3ItBOSyThsY2zJZChOtl0gU
-         iWqKhkHfz3aSa4RStL1rMJkizo4TcCEjh6iAdhdn7TCAWJUQfLG/uVjzCgqS0wmSOwxx
-         QeZySWshtld3UQcuSQ5Y//vK2DhHk5NHQTJ3VUrS6eaoVZhCBmwZIfQ4MgQVPDEajpma
-         bsULDgY6TNpqv85uj5wuY7B1BdJcGrpcpvlybLVSC7VKoGjSIkgWbYD1UyCxS0SlbuL2
-         x5Q1ovdl8gbGoNISzsqwWTSOV+i9mhHIJlwuN4E1JYSl3XAifXxYE4gmg0W1YTXjndW8
-         JbiA==
-X-Forwarded-Encrypted: i=1; AFNElJ9aazgIZgjw1iwIQ+JiGXyMxfexUaUz/K333m/8hYIivnn1NpRddtq3ig8Qid5D6cgUkpw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmDkTPL43WUtmrod46om9ZJmb02lN+EUu85c5vVSdK+FehGhEH
-	QVq8tBywmHhekUJX3fWrkIpYmoucIoY4bs/ru9MQ2jUoml/r0TmZd73d
-X-Gm-Gg: AeBDieuAC7a6CIe/+CbbIqHSEqKOOLoCugzttJ/ofry3+yRzgpWWbhMD2wzuLh570mO
-	DRLT50HgFXhxtLtG7OXv1S8+1/HJPHBsQudERHNbRwOBmMTMQa6TBoJ1DknThrtJAP6I0THgGaN
-	JDEpk1eWqUQufxPuX5idgyeCHnc73fkLuOpa6gxk9uB3rtBdMR60MRqr8rD+d7ILS0u+6i2DwGs
-	44UgYX0LNjFpeMTtTkBv0UM9E/z+6Aj0LvjpP2ubviyh2bC5G04dyOsPNJ904zsR6eApijRSZvM
-	DD9AuaN+ndeQ11+voMd1V/wNXa214Wr8OCHs2CX2/hIkGf7r686Sa0ztXHHXIVG2Ash41ThK+j9
-	FdFb+w6hyDGCW5383W/Z7KHyMJ7mtMigs/ycmJPTDAWpSc+7FLwvwi2HjMAbDAUoYjYvhFguRzW
-	5aVb823Yi9jlLPt762iJU2JGhXBInwZ6RtPbXTRqITpP0R+xP2udjmOwSlOw4FKH7aoWEkxGBa
-X-Received: by 2002:a05:6808:3a06:b0:45c:8fa8:7497 with SMTP id 5614622812f47-4799ca25fddmr15351058b6e.34.1776977697862;
-        Thu, 23 Apr 2026 13:54:57 -0700 (PDT)
+        bh=MqO5/EH/UF1TE1Yyx5zB/rmOp92tEJKuB03COKwdtP4=;
+        b=UTbcPYkaxhdlZJx/3X978JJrr8KlY45F21+UUpA5HDzPezJ+K2QZy4PwY5hsW1VQWW
+         wYCkqpjLt4QBVN1r/h/wXJ1fR5TaX9dBJeDesQmmqqH8c6m4bgGYBm7CGDVfqruOoNDt
+         YeZaNdtsXnIEqiQ0zWupeUyG23VnDyWuWvCQuwMm29XTgd2APqVsroh/YzuoNt1hinWy
+         AyQedD9NXYfkoHmsUHIWm2eEmhq+3+JqSAhEnxxqFGJF9GvGpvLoCjRCTfHPzoYpULvq
+         jq/NqYH599Q6x5A9oFSfvRWOth4XgK4OrmSrKSRQeob7wHsCHUu5LxoNgQygN3i6gPDX
+         GSPw==
+X-Forwarded-Encrypted: i=1; AFNElJ9D1B6gqPLMc//Jqn1HTrqwvR19tSMOcg6D3xBYtaalUwvLppS8OorpF0CeL7EnMj+1unc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx4Zub/XNBTSCrGrdMihhnRHRkA1tzAeD+PSLho5j/t/PRD0LdT
+	RJ6MLHd8sps00VyXS/auv2tEzp8Hzv9vHwXxRF+qJw6hpOXyRhrybH1+
+X-Gm-Gg: AeBDiev0BkYUUyUKOuGSC1dY8Kg2u2szSF/tRuiiVSoScCSdPqtt/KxsElbMWWyIvJs
+	7vCDbhHkcqcpvVjvCgyGy52TzetwEQYfoGbw8rtM9u3AjAPpNxXgj+6tjbw0VQHDROEQJblajcP
+	X3Q1teQSCKqwCoO/yN2iH8VTz1Y7Bqgo6SUpJz3A2NfoTlvrryGlaMbAqT6OUDsLC/TDHXmb3zi
+	MNvNClvbj0Yxsqzcx6TVGJINAVF4w3lV4H13sy8G4EJWAZCapf9rSv9OEVOXr2s/miZPP8XSZtj
+	5bHkzZDchr9gJo7KfT/vdwvSDtiX5wQ/IZefne5JqcLc1J8duC/f0ARQMiAMsE4+2FtkL3KCDOi
+	tE1VY4zUnsTISZF0u0dGf5EF8R2RP7U+AI/BmNgzmQDy5Hd+2LGUFYonng7cgbBvp1mxp1+MHjq
+	1j0g4eixDs8j6yCIjm/WCPlpgNEfBAIofGy+pdP44adqH5Of9aE1/qw55tABxmnKMG96Z45yER
+X-Received: by 2002:a05:6808:4f0a:b0:468:698:a626 with SMTP id 5614622812f47-4799bf4b93dmr13762368b6e.22.1776977702799;
+        Thu, 23 Apr 2026 13:55:02 -0700 (PDT)
 Received: from [192.168.0.245] (c-98-38-17-99.hsd1.co.comcast.net. [98.38.17.99])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-4799fead505sm14329744b6e.2.2026.04.23.13.54.53
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-4799fead505sm14329744b6e.2.2026.04.23.13.54.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 13:54:57 -0700 (PDT)
+        Thu, 23 Apr 2026 13:55:02 -0700 (PDT)
 From: Jim Cromie <jim.cromie@gmail.com>
-Date: Thu, 23 Apr 2026 14:53:52 -0600
-Subject: [PATCH v14 11/92] dyndbg: make ddebug_class_param union members
- same size
+Date: Thu, 23 Apr 2026 14:53:53 -0600
+Subject: [PATCH v14 12/92] dyndbg: drop NUM_TYPE_ARRAY
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-submit-dyndbg-classmap-foundation-v14-11-2b809a8019d0@gmail.com>
+Message-Id: <20260423-submit-dyndbg-classmap-foundation-v14-12-2b809a8019d0@gmail.com>
 References: <20260423-submit-dyndbg-classmap-foundation-v14-0-2b809a8019d0@gmail.com>
 In-Reply-To: <20260423-submit-dyndbg-classmap-foundation-v14-0-2b809a8019d0@gmail.com>
 To: Arnd Bergmann <arnd@arndb.de>, Jason Baron <jbaron@akamai.com>, 
@@ -165,54 +164,41 @@ Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, linux-renesas-soc@vger.kernel.org, 
  etnaviv@lists.freedesktop.org, Jim Cromie <jim.cromie@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776977636; l=1479;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776977637; l=982;
  i=jim.cromie@gmail.com; s=20260203; h=from:subject:message-id;
- bh=u5K5LyAR3nduZ9uYNLcH0Ml0SCvaXWSVYWZzdtQqFQ0=;
- b=BwqYVXrj7tbCyuE3yuOq/lyxx2ju6pbTXiqpZ7eBU5OiT93pG4WNojxXxu/5WD0JGR4iMpceB
- gZqSgyxc2D0C00QMgyFHR/Vqp9F39MflhbB9cQ7LMd6NXCLx1ABAvFL
+ bh=y0aqiZzD4/dauxqWGWZpTeZQeDGgmhoKACp8yCx31Lc=;
+ b=0ylBEG5Zr2L9JzVM3p0QOGGNJYPJlqcvdgDfrferqn+IIjg0mF/DXa7yY98RemD0Q77UWcis8
+ afOWJy3fK3tDbGja7wdbkN+8vIczS7ipTPRP52IXbHMq4ogKAy8+JGS
 X-Developer-Key: i=jim.cromie@gmail.com; a=ed25519;
  pk=C6E5ODlPQo7ZBynATXH9wg7K6HxP0pIXyf4s38Qw0XE=
 
-struct ddebug_class_param keeps a ref to the state-storage of the
-param; make both class-types use the same unsigned long storage type.
+ARRAY_SIZE works here, since array decl is complete.
 
-ISTM this is simpler and safer; it avoids an irrelevant difference,
-and if 2 users somehow get class-type mixed up (or refer to the wrong
-union member), at least they will both see the same value.
+no functional change
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
 ---
- include/linux/dynamic_debug.h | 2 +-
- lib/dynamic_debug.c           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/dynamic_debug.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/include/linux/dynamic_debug.h b/include/linux/dynamic_debug.h
-index a10adac8e8f0..441305277914 100644
+index 441305277914..92627a03b4d1 100644
 --- a/include/linux/dynamic_debug.h
 +++ b/include/linux/dynamic_debug.h
-@@ -104,7 +104,7 @@ struct _ddebug_info {
- struct ddebug_class_param {
- 	union {
- 		unsigned long *bits;
--		unsigned int *lvl;
-+		unsigned long *lvl;
- 	};
- 	char flags[8];
- 	const struct ddebug_class_map *map;
-diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
-index a9caf84ddb22..ffa1cf7c2c72 100644
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -811,7 +811,7 @@ int param_get_dyndbg_classes(char *buffer, const struct kernel_param *kp)
- 
- 	case DD_CLASS_TYPE_LEVEL_NAMES:
- 	case DD_CLASS_TYPE_LEVEL_NUM:
--		return scnprintf(buffer, PAGE_SIZE, "%d\n", *dcp->lvl);
-+		return scnprintf(buffer, PAGE_SIZE, "%ld\n", *dcp->lvl);
- 	default:
- 		return -1;
+@@ -132,11 +132,9 @@ struct ddebug_class_param {
+ 		.mod_name = KBUILD_MODNAME,				\
+ 		.base = _base,						\
+ 		.map_type = _maptype,					\
+-		.length = NUM_TYPE_ARGS(char*, __VA_ARGS__),		\
++		.length = ARRAY_SIZE(_var##_classnames),		\
+ 		.class_names = _var##_classnames,			\
  	}
+-#define NUM_TYPE_ARGS(eltype, ...)				\
+-	(sizeof((eltype[]) {__VA_ARGS__}) / sizeof(eltype))
+ 
+ extern __printf(2, 3)
+ void __dynamic_pr_debug(struct _ddebug *descriptor, const char *fmt, ...);
 
 -- 
 2.53.0
