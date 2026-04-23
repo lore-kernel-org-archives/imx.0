@@ -1,137 +1,166 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4533238642A
-	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1D335FF57
+	for <imx@lists.linux.dev>; Thu, 23 Apr 2026 17:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776962798; cv=none; b=is3QpDjF7xNJortRIbeMxxJ0MgdPSkXla26h5D/tAiEPXP2IyJrtoW6Xp/8mjBjB4S0ILUq/GLzRHYiqWNhElFZlIMTtyeHDfor38QdDt8an1k/HaeqKvU60DFNFNXTjMZRBJqxqy3uD9lCXxnRDFYpENCRu2Rqo0Nm8z1e0Uys=
+	t=1776964672; cv=none; b=DTmjmDkU0w9ZiZOmdxWH6v4bnMkm7xZiHgxmBnPvoCOQhDTzb+xoSUlvhuupysLwUkCdtqu+krKlngmMO/UXr3YIirOtAJI2k2NyplQbanVmHNOYa6wE7TAccpg2Yv0l9dpXm7z+WixkxdHoNdwHddeF1O3g4DEcvZXmqMoFpJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776962798; c=relaxed/simple;
-	bh=S05j6aseg7c7u3xV5vOsljLds3FQ6L9R3JcogXmLNZs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=met7YJUH/rcGpIU8SwjtiYE5BCg3Fop5E+1yqtzOVRcKAF10nPGqvuelm50173K+B/7RCrFiwqpFsoK8oG6AidkHteH8kvvz5wStEhc+6naTl6S/QsUtX6PmwC4gpGqsd7TOvSxrtCvczfQ2fa6p5p+dlkVJcX0YSD/2GVLz3O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2l2tjOxb; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1776964672; c=relaxed/simple;
+	bh=+GOblQzyAJodv9b6rNOw50K4n/xTVlzZw8d3VUVRDrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GnoQwYMwmHsIcsdnqhujSIKMwYw7PUi3RYTycj9Q6cPSuHPnAbRWa6mw7eZ+vbutchbJalPYLu2N3/diQmxZCLXpNhMuoRDEibOF6mrXZOqNBUKsliU00oBA98iU7KlX2I7CfzBBIV/l2PeSlpKTqQ4rWugHyOgmawAJ3mZMDNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gnh0MMjq; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2l2tjOxb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1FB711A33CA;
-	Thu, 23 Apr 2026 16:46:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E2194600DD;
-	Thu, 23 Apr 2026 16:46:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66CE510720005;
-	Thu, 23 Apr 2026 18:46:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776962785; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=S05j6aseg7c7u3xV5vOsljLds3FQ6L9R3JcogXmLNZs=;
-	b=2l2tjOxbp/muwVUTt1iYaIz8b7OLe+mJ2gwHjUl/Zi9B+c+A9VYP6Ja5C2fCxD7EBcL8KE
-	tj9o1FWt6yl5MwmosOaOCmM5hg14Gf6FQCD6xO4NlTRrX8rWJO7AXZiqzKJUGSdGNfq0dX
-	90/Fet3eusoHdXKPgHJviW0bm/BmWmkW8WJGQJXu+6RINWTT2CgIMhDV/YcJ+q/TJAH7GV
-	wy8CB9xvhkE+fTuzqLnN9+emGn4BkhcJVhKXnLTSZCbNekK5oVrGCbiUFXMRSBxTBCE1Lo
-	fGJwcmZCjXWgzqASXiN/aqIJ5NiJ8amWgtQeCTnheHeEOAEeGBshs0HQdugKjg==
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gnh0MMjq"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so4823661a91.0
+        for <imx@lists.linux.dev>; Thu, 23 Apr 2026 10:17:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1776964670; x=1777569470; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bsUocZL2Bn6GCAa3hABSmeuNfrbPhRDBHVb9kanPFaA=;
+        b=Gnh0MMjqYF7nJFHgmIa9U75qrNS4QpX9xhFAIjVtZTbjgutGLNyWu9GOkZ8P4sLhw3
+         p5ocRI0Yw+04Bb0ynzMmvdlLyGesQCJPS12mLA37ZBJisJnhmmPgnb59qS7JjHn7MIH+
+         Vn8bYNhIUymOVfUrwUGLYEPFi3AcpLz4fMftglvjWhGJ2ROjal/UMOQpz0qlRCLu6b/o
+         cVYeeMUCmrag0MmlrLSRddszbIQ6E/7CXTKBGXxKWdKfoK4fTHwDU+O09C+M6llUX5Nr
+         d+FljAe3Inne9uE5DRANuD49amUVjR2gAl/u2E2BgdDJUOlsbsj47PoNiJf19FWrdDrR
+         slTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776964670; x=1777569470;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bsUocZL2Bn6GCAa3hABSmeuNfrbPhRDBHVb9kanPFaA=;
+        b=YZdX4eeRVjB62vULx6zJuoFuA1T9hWnpxd76NQwO8Zfw2KOT92IGA/6WHFhAzFxWXf
+         gdHkw/UYBlQCFqxrF/TNpHpC6yjcMsn7hvJYBvuhSd/4lbqqzL1NO/0rkkOVYHTQAtqI
+         J5uy88Hwl0AlebLykpMo4od2UMBGerZn1Cr3uXW58LC+BQrDtITm2rwP83LoyfUBvwyE
+         Pmj3yPrTGkASimTdxWbHpWK6QvEx7IFsHw/HxhJkJ3jnagvefr2jRq2TOnBLmcaD3fsy
+         ogsUnxjxEX5snKIE5VW2eB1ZxBO7qInJgTdxeKwexQlp7Mrpas+op7O/hrZapxlNngpT
+         cjug==
+X-Forwarded-Encrypted: i=1; AFNElJ9hKGYtndywaNstFkl3GGYIHnkQoXqW+NQKZmFxVOyXl6cYqHY4qTliJNnMkiz24uIlxEs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxxI9xwyy73abgbWejuzZ9xkdyAGYbcU0kaoTldkC3n6Gyv85n/
+	RzzOTWCWHyKbEAT6yOZ8I1ttb/zPVrErfPXt5A+Ax8TV36wwBrnyfmROvemKKOq7HyI=
+X-Gm-Gg: AeBDievPLLBJ64QwxaAt+mko5RU02kCulAN5ryjxMNGPApmniGS0gO6OdyYak84lRQa
+	An28hpjs/leYVLXC2l3G6Dc7qcEQYhRtPhHuC9XgVtzmW6jLK5p617uCGqHe8vJOt7Y+Z/rQlFv
+	uLqQLCA51yIUKukObT0IObHra0TkKt4FMOJTP93jNjpro8ki1bppaqFF7GNSKONMpdcD4lGvPTs
+	5QBM7lZzcwecYbKYfFsVZrU+ONb5cGoxUYKkzUF9E5hMmY5jkeJL+bIG6/yv3oqZkc8bGNzyLIC
+	YeSegTOCFliWyPG4jEYfQRpL+DrBOUFG0ZsEroFT8/3CZ5HKnirhdIDPBhAgQbcGmBw3JtdCEBo
+	gENfrLTotME3wXFqocWBk6LTr+5I7Og8n85mmE0ZMkjyJBvpaAaMior9B/GI8ig8xghP0IklMok
+	jGQFacab/JNcrsuUpKuGleTIX2P8zPw9Atlicr0g==
+X-Received: by 2002:a17:902:f78d:b0:2b2:67ca:5ff9 with SMTP id d9443c01a7336-2b5f9d888e8mr278593665ad.0.1776964669767;
+        Thu, 23 Apr 2026 10:17:49 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:54c0:dbdd:6b84:4488])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab20c4fsm250035145ad.59.2026.04.23.10.17.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 10:17:49 -0700 (PDT)
+Date: Thu, 23 Apr 2026 11:17:46 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 0/3] Add i.MX94 remoteproc support and reset vector
+ handling improvements
+Message-ID: <aepUOjXBOWK-0wt9@p14s>
+References: <20260415-imx943-rproc-v3-0-9fa7528db8ca@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 Apr 2026 18:46:00 +0200
-Message-Id: <DI0OQ6JRMPTR.1FP9UHPJBYI7M@bootlin.com>
-Subject: Re: [PATCH v2 00/41] drm/display: bridge-connector: attach encoder
- to the connector
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Sasha
- Finkelstein" <fnkl.kernel@gmail.com>, "Janne Grunau" <j@jannau.net>, "Liu
- Ying" <victor.liu@nxp.com>, "Douglas Anderson" <dianders@chromium.org>,
- "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach"
- <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Philipp
- Zabel" <p.zabel@pengutronix.de>, "Paul Cercueil" <paul@crapouillou.net>,
- "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Chun-Kuang Hu"
- <chunkuang.hu@kernel.org>, "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Kevin Hilman" <khilman@baylibre.com>, "Jerome Brunet"
- <jbrunet@baylibre.com>, "Martin Blumenstingl"
- <martin.blumenstingl@googlemail.com>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
- <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
- <marijn.suijten@somainline.org>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Sandy Huang" <hjc@rock-chips.com>,
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, "Andy Yan"
- <andy.yan@rock-chips.com>, "Thierry Reding" <thierry.reding@gmail.com>,
- "Mikko Perttunen" <mperttunen@nvidia.com>, "Jonathan Hunter"
- <jonathanh@nvidia.com>, "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Jingoo
- Han" <jingoohan1@gmail.com>, "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo
- Kim" <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Laurent Pinchart"
- <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
- <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Biju
- Das" <biju.das.jz@bp.renesas.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Michal Simek"
- <michal.simek@amd.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
- <linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
- <freedreno@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
- <linux-renesas-soc@vger.kernel.org>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com> <wanzalswb3lez6kyklprqojcnidab5fkxgu57lfka45w2rt4ic@xdatq5o7yiub>
-In-Reply-To: <wanzalswb3lez6kyklprqojcnidab5fkxgu57lfka45w2rt4ic@xdatq5o7yiub>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260415-imx943-rproc-v3-0-9fa7528db8ca@nxp.com>
 
-On Thu Apr 23, 2026 at 2:45 PM CEST, Dmitry Baryshkov wrote:
-> On Thu, Apr 23, 2026 at 11:16:54AM +0200, Luca Ceresoli wrote:
->> This series simplifies using the bridge-connector by removing the need t=
-o
->> attach the newly created connector to the encoder.
->>
->> =3D=3D Series description
->>
->> Currently all users of the bridge-connector must call
->> drm_connector_attach_encoder() immediately after a successful
->> drm_bridge_connector_init().
->>
->> This is an unnecessary burden for users. Move the call to the end of
->> drm_bridge_connector_init() so all callers can be simplified.
->>
->
-> I don't know which one is more correct in this situation, but let it be
-> R-B for the series:
->
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->
-> Feel free to take the msm patches through drm-misc-next (A-b).
+On Wed, Apr 15, 2026 at 03:50:37PM +0800, Peng Fan (OSS) wrote:
+> This series adds remoteproc support for the i.MX94 family, including the
+> CM70, CM71, and CM33S cores, and derive the hardware reset vector for
+> Cortex‑M processors whose ELF entry point does not directly correspond to
+> the actual reset address.
+> 
+> Background:
+> Cortex‑M processors fetch their initial SP and PC from a fixed reset vector
+> table. While ELF images embed the entry point (e_entry), this value is
+> not always aligned to the hardware reset address. On platforms such as
+> i.MX94 CM33S, masking is required to compute the correct reset vector
+> address before programming the SoC reset registers.
+> 
+> Similarly, on i.MX95, the existing implementation always programs a reset
+> vector of 0x0, which only works when executing entirely from TCM. When
+> firmware is loaded into DDR, the driver must pass the correct reset vector
+> to the SM CPU/LMM interfaces.
+> 
+> Summary of patches:
+> [1]dt-bindings: remoteproc: imx-rproc: Introduce fsl,reset-vector-mask
+> Adds a new DT property allowing SoCs to specify a mask for deriving the
+> hardware reset vector from the ELF entry point.
+> 
+> [2]remoteproc: imx_rproc: Program non-zero SM CPU/LMM reset vector
+> Ensures the correct reset vector is passed to SM APIs by introducing a
+> helper (imx_rproc_sm_get_reset_vector()) that applies the reset‑vector
+> mask.
+> 
+> [3]remoteproc: imx_rproc: Add support for i.MX94 remoteproc
+> Adds address translation tables and configuration data for CM70, CM71,
+> and CM33S, enabling full remoteproc operation on i.MX94.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v3:
+> - Patch 2: 
+>   Drop R-b because of changes in V3
+> 
+>   Following suggestion from Mathieu that apply reset vector in
+>   scmi_imx_[cpu,lmm]_reset_vector_set(), not change the meaning of
+>   rproc->bootaddr, add helper imx_rproc_sm_get_reset_vector() to get reset
+>   vector and use the hlper in scmi_imx_[cpu,lmm]_reset_vector_set().
+> 
+>   Add reset-vector-mask for i.MX95 CM7 to avoid breaking i.MX95 CM7
+>   boot.
+> 
+> - Link to v2: https://lore.kernel.org/r/20260327-imx943-rproc-v2-0-a547a3588730@nxp.com
+> 
+> Changes in v2:
+> - Drop fsl,reset-vector-mask by using fixed value in driver for per device
+> - Add R-b for i.MX94 dt-binding
+> - Update commit log to include dev addr and sys addr
+> - Link to v1: https://lore.kernel.org/r/20260312-imx943-rproc-v1-0-3e66596592a8@nxp.com
+> 
+> ---
+> Peng Fan (3):
+>       dt-bindings: remoteproc: imx-rproc: Support i.MX94
+>       remoteproc: imx_rproc: Program non-zero SM CPU/LMM reset vector
+>       remoteproc: imx_rproc: Add support for i.MX94
+> 
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml         |  3 +
+>  drivers/remoteproc/imx_rproc.c                     | 98 +++++++++++++++++++++-
+>  drivers/remoteproc/imx_rproc.h                     |  2 +
+>  3 files changed, 101 insertions(+), 2 deletions(-)
 
-Meaning: Acked-by on the msm patches + Reviewed-by on all the series,
-right?
+Much better - I'll pick this up when 7.1-rc1 comes out.
 
-Thank you very much!
+Thanks,
+Mathieu
 
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> ---
+> base-commit: 724699d8d0523909da51fda8d1e10c1ff867b280
+> change-id: 20260311-imx943-rproc-2050e00b65f7
+> 
+> Best regards,
+> -- 
+> Peng Fan <peng.fan@nxp.com>
+> 
