@@ -1,278 +1,265 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011066.outbound.protection.outlook.com [52.101.65.66])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010014.outbound.protection.outlook.com [52.101.84.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0202026B75B
-	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 01:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D81B19D89E
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 02:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776994817; cv=fail; b=g8sezSae8pvmeX9VJINGEFM/bguC3reIppPYGXVmlQlbaXG4nRc2VuD90VgLEHs7A/vIo1suZ7pbKjYRxxuDuwUXqJqys3m7xM3hC3ADNs2Z8QmSzcbWBOcYMAh7fsFEZgnB2EhpMqdA3GopywAlgV+GfCVK7AkwSfhCCD34vtc=
+	t=1776996803; cv=fail; b=re4tFg2sk4SHUb23FwUbhHR/Cw9ihvn9Gx95w2tiGGB/EBijCQ+486A3Cv8tmcgbMTalJ40d0TMC/8GGCm+G5PBf0c+3bHm70ahPWAA0ZBPVHDOs0OenaRB/mF2ZvqAfn+D4TiDuZjl2sCGbJw8UhvmX5THvnLuZZwkZR4mcIFs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776994817; c=relaxed/simple;
-	bh=tqwAZAbm1xXBZMq+FS2vZRW8Ry34ghsQDncw4KuA/4w=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=ksELg+7XlQYRZcy+oaygbS1c1BJ0Js3vCdTOvNo9Fk9e0ZfqeunvaW6yYaSmX9Wtx+YcWamCUgM+z6n5+m0pINnq1zGW9HhFkOxXu7CMMxTIGIz7ticrblBlx60cnV4UvJ8ftaXrM6h+x74azT0w5Upr2BG6m/wUAACxAkiz6Q8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=K300MvX9; arc=fail smtp.client-ip=52.101.65.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1776996803; c=relaxed/simple;
+	bh=Vy9QYHCRULW+BoAzeM1INHmaIi6fZ23aywMruxC2hxU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Tdpaqel1ynYNFrEYMK/hqjrp0qUrZ6D8oKPoNE223Wxl/uHWDNvrZiBUvvCrYvl7H9yOCWCLwg/aC+UWYUPxJ6wy4wmFP3KCYTwqEwS2+34gMth43S9YXVyF4cvpzOLh2bgFEVMtgz9FR401Hu0zdcfqyiTaNyHq7qttBxCM6Q0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NflATdKW; arc=fail smtp.client-ip=52.101.84.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="K300MvX9"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NflATdKW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iHggkUNZYkdzty1/jd53w/m1CjPF/Atk84QTKrfye70SpgKJAJCb9bCDO9BAmhZvCx2h+m4+LZCHJ+1dG1oisE2ecvb7Ya6LucCHeSRVy1u0qkT/ttuTrRwF1up+IGmd0G2mnwZkzg5AK/Qnq6FMModiVi3DoYKsTgISLi9iPy7vrTtfQMO6SsdC6JTut1oV+XK/wJyqIjHAhkDr4IKo845oSmx7KsMC4FP+twZP0X+LbeO9g5xm8ChKp+ceTkn5aeiS8nH3Fs8M/fZncDLK9Fa72DnY+Pa0c+oKqXDWcf6/NexkLwU7fTDEYccNE8PtuMyn4yXqUGUKzPivSNo37g==
+ b=pEz0nsuaZnqXpRuZHNfvqRn7tME2NX9ZPZGQCK034THZM73CXgG6F8SxuH6xXXqJnRjqSjpfPWqQLpMHUZxRWn6d3ICARIwsOD2M2iPtcUUs99zq3nL/3smRu0MVdHMrNsro1oCHqJBm0rVmCG3Jo4CFPO/Q5h+/MPXSi1dhUTaEMKREdSX+HuRviMZvb46j+O3O62ChXfdCIxFyiz1rgWfN1IteZt7V7OJ0Thzp7sUW6FVEUez+tNVTNRZ9WzvZZ9sDMvKSh+7U9Yj/V1Rd8lkYpEqxtQzJu8nx5FnDI17PUAh6YCHoG11KIWdohqsaTKvsD8l+imFNa/A2gL5YpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=09BkqVNIF6Vem0C1TjyDSHBfBYFKTOtLVRkiaoEl6HU=;
- b=ee+7RjHLkfzWTqorDUI7R/YDa/Dl8umtaZ3cG2J4gnPJKeIZYMM4wLSfJhUxP+Sq9D+x4ODAJH58CvvKS7IVVSmm/4hIw7R7tAm7zelJdv+g9/tQMhDOi3I2Wh8j04aBc2WusBjaiZs2+FCLDYzLG4AmJudzTLUqL3DRE/jdtShkHSi2OhBFZFY5jhvavX+Ng2+P1BKi5JlksNdeLGcgUZRW9QazsXSEVph9GhPiGAed2rQIyTVW2iTTXF0MdmRG77o63oZZy4kjyTAP6eAHdfcrlRdPMheNo5qFGi33UTDhYN9qgNX8e67nKNJvJqP6/dqF7jyqHtlcygDOKdvUAg==
+ bh=Rt4uUcvvEh6VC35PtVcsA8cLprf8djuuGgyiAub6/zg=;
+ b=gt89bn+oGkCm/t39TlE94inkuGg+u/aMLPEII66zlXmNMlL1NpEN0SCeQ54GWt6UblKtLHvY+5SMCNLHhNywguNR24Y+GfMP7X/3yJCciZDO/88m8WVAcMK4pXTVEktNSzggwWBo2bM01Y6EBRKbMa9YI47O6LEvgs5WzW0eDc0n7CWl0nAmoCOgSK6MWMunYyghXqqg54acNVmWBUvTHPuXX/9ekpzkMH0HZ7SH7FWCp3+CJpkzgGu9qkYV7Z653IsJFknkdx22W/VzKpjRZJ8/FO/GgQRW8P/oIXH255XVjGW/GHkdtyhyyuXknOKhTAVjHWdZEtTwdvFC0uWEVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=09BkqVNIF6Vem0C1TjyDSHBfBYFKTOtLVRkiaoEl6HU=;
- b=K300MvX9DnCHZsqaX/SnVaG4JZWRTbcUfX8qDfHa8Ujzz2o+F0LjAZKpWOhtMh90QynVrYj51BBXI/yDF/eOyZuNpRlWiwj32Or5/gfjReCFZmBB1FGbLA/Jb5fPvERvlr/+T4URjdDPOn1ep6e7AOaOT+knRk9KTFEdEChtp56MUsXArp7m4SCs6ici4gmWFBLc7Yqjnee5szLqhmcrDYV09TQ4/JR7tH/Y991vMvWw7HAFTQSHVhbxsb5+nYR39+dr47sbgwf1U/pWmpX2nSiyaYz7y11RGFGpSudZiGz5zBOIH7P2rX0USq6L9ddjaE0gGjSKlfRQQYtJ7L0tZA==
+ bh=Rt4uUcvvEh6VC35PtVcsA8cLprf8djuuGgyiAub6/zg=;
+ b=NflATdKWDHPl8Wc77gT9Dr65ltBgFxOFS0k+TxKRSwO8XubNrC61KcWtSPNQsF1Qa/AoxY0QKMKryryyajrqaQNLVcXkoBTqSs9a2ky8kI/33I6jDldIUVIfvIaaRl5N3SQk3sVXazCcwvMgcUX8DfaWtofe+K7W4+if1y9iq/onwk1m2buDX5DT7ZKCxJl1TmzSKA37FanjINoP4uiS50MDAdiA00zgoetH5tKDkE3q+AQ+zcS4+AdQK3bVxMw2M8mAcHvMfg0PXKctFqwVl0Tk41vGfiIEsn+3dPQ+HgHGLUt4HbbypTGB6cpMSj88eh/2RfcSg+hxWOUMCvpsdg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
- by VE1PR04MB7455.eurprd04.prod.outlook.com (2603:10a6:800:1a1::23) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com (2603:10a6:20b:1dc::8)
+ by GVXPR04MB12160.eurprd04.prod.outlook.com (2603:10a6:150:316::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
- 2026 01:40:12 +0000
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
- 01:40:12 +0000
-From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Date: Fri, 24 Apr 2026 09:42:27 +0800
-Subject: [PATCH v6 4/4] media: i2c: ds90ub953: use guard() to simplify code
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-ds90ub953-v6-4-7a84efbab316@oss.nxp.com>
-References: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com>
-In-Reply-To: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Vladimir Zapolskiy <vz@mleia.com>, Linus Walleij <linusw@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-gpio@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776994953; l=3323;
- i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
- bh=wDpgp0zs1QklpvdTjPRwbQWwrPv5sdN6HH2vrTqJEG4=;
- b=LlyMPNZopaY/6EcOkyiqY6+TAqplY4mbKcV66OevkYYYcWclXERC9srwiw8UUAUG+wSl7NTkf
- 9ESalBc4f4JA7T+1sdKVA4XYQLlEASjMpvx9T07FfWB85TRXgr3Zw+D
-X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: MA5P287CA0164.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ba::16) To AS8PR04MB9080.eurprd04.prod.outlook.com
- (2603:10a6:20b:447::16)
+ 2026 02:13:16 +0000
+Received: from AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc]) by AM8PR04MB7284.eurprd04.prod.outlook.com
+ ([fe80::9cd6:51bd:82b:98dc%5]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 02:13:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net] net: enetc: fix VSI mailbox timeout handling and DMA lifecycle
+Date: Fri, 24 Apr 2026 10:15:34 +0800
+Message-Id: <20260424021534.2740211-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA1PR01CA0160.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:71::30) To AM8PR04MB7284.eurprd04.prod.outlook.com
+ (2603:10a6:20b:1dc::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|VE1PR04MB7455:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d05b25d-59b8-498f-e6f1-08dea1a26d66
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7284:EE_|GVXPR04MB12160:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc735ac3-a0cc-46cc-d04f-08dea1a70b5c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|52116014|1800799024|19092799006|56012099003|22082099003|18002099003|38350700014;
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|52116014|38350700014|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	1wFXZNfESbfGMqgyGFzGcxxAOeKmvdxsnXwOYkcCnK9zK0kACFHloInhmRqQ0qelkdJVYnXmQ60DKO2PirNTy3PmKHJ/QpGs8G1ap6xnb8tjQDwkPFDHB73XHZ3b2TaiakhaQWXJqcHszaxv4KJm3zlEhKnoRESO+tdxeq0L5KFSBtAzC9n2BhcaMjo1HtvQiybyR2Erm0R8k1nhvmusOpycydLW3LHAMNQr3vMKItJBDq4UUsBpqPVI4GV0z6Cy3ltuRfW5sgxx5glSZ/SYWh6iaxQzAWwiBRN3gIhRSBygUYH6R9xN6b3sccm3SdtGr0o4ZW0VO0NBMKhuDDCtsh9hgfqMYznAbkXnkLNgKkNmDirk1qup68BfWZF7U7Aqb4S9s9W7Qf2ziTAa5TcJ+2hOKZ5T3hE7kiLPoPi+7nD34/wT6MgD0wR8kC6SrDDCp1BcuBbpDJ8Rz4sOcBuPZ1pBCbErmdZkDtcN2UfmjT11CZ9Oar9yEpzmAiVbPVTogUbzZtdjZbcCwazTYKh6Z+qk8cu4lbtEG+6Vqb+G1nUxgzGG3xDeRUn8uZOctfWx38+44xcHLdH7SHye5qbitN+spDvyq1JolJUaqovzkSaChJGZi04chRqcSlGftclHbMtgpFMleYeQTWPvIMnx8di/e7kLTAJVYvEw/h2v257Oy45DFiyUYGFdJnyZJrNRAVaYFg2VUXKbJQXRGosYvhsmHPaXtclcYy+2K3bwSQNmcR+Go1GZ84EHS1lrpqumG1Z9W11bLQPuo0Hb3ZPv5+TKe+sS/wbZC2V4JC3cryY=
+	lNZBe2tFM5vpj0KSwVoKuy7j5Pkc7ZfCZoAnL828bsngmP8zdU1iDVHBbDcTRMmNyFz7Up+XemAI6ok8hYX/h9yyCd5GVUReiQb+UFwwdhf/XhhOaRmGQPGv4d0o1SjuorFkDLcOiXvUloRiv3z9LTqIS8cIJyl9r6IydgP2R4xPx0Ne/zYCMQJedyLZbMHWZgahl/h6TWJeViXGoyTlHT8Ov8ezheKu817G7Kl+J/mFKUnP6ZP1E/BCZK/7MawblESj+VlJjMCauGPA1EA2nGeImVCjn/hpVqHxkakhICcISDymJNuPAEZ5UzvEHCH+B3JeOAzEYwX06Sxt5WF3GD0KrCigmp1OzGQsAoEluuO/dxmjZHjE7ufcHbxe3nVbDRp7zPgyf7GULc6a1N0HK98NTixl92N8gAXqOYmxWTYwwG9WuncB8s4E/ulCAu/6CFBFNV9mGmXLFbVTHZehVGzHDia5pf/fZhRkJ3/q3bfkCYrzQDzUArGIpLLejBtFzbZQydkMI5IwnhyPcOydbI7DvhKL4/HjSHze+T0QWuYhsvhfO5+eOFrzgKTObkA3KT7KNg/rovkkS+RYQkhTWtYOLAxV+3MQc1AiYKVWVeGguZz+nnNnjZRXygaWbyxrT2EtikvtGKq4XtnChwrAtEmRFhRKlSQw0O+mowO4XIyuVNVPaldGnbjFSZy9RS+rXb0uQrdh03Az31YDpv61fCPAseJe8SnP/GCw+BbIRZ6yT+fe79YIwSovwtlp5Q17VHtA1bddDtmmhKIHmY4ffi9CqZy4Zl/HRYrNUlpRcsE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(1800799024)(19092799006)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7284.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(52116014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cTBtVjd1NHNTQVZ2RnBxZ1VmMVI5RHFscUd6Z3ZDd3lhV3gvT3JuSWNDZmxV?=
- =?utf-8?B?Y3JwNzF5TlJ6dDZMcDBuZ1UzVHNKWUZuR3dZZ3ZkcGI1V2VjdDlXMzdBYVha?=
- =?utf-8?B?Vmo3RHZBVndyTWgybzZkemFKNjEraThKL2pnYldpekFEVElsdlREcE9wQnd5?=
- =?utf-8?B?QjBwOGRmcTNqdzdzM0lHczFRaFYxUmFwUXdDK3BJYjlIcDFzTGh1WFd6WWlX?=
- =?utf-8?B?eWsySW1INkpMZWxUWEdiZExqMXdFL20zMXFJTXlCcDd4YmpNV2F0dFp5OW5y?=
- =?utf-8?B?c3dNVzVYM0JFYzhLYjg2V1NnRkMva0lnWFViTXdtV3ExYUFXWDVBMlBvaWpZ?=
- =?utf-8?B?YmNhOE5ienhsaDg3bTJSNTUwdG9ENUpLOStQMHVJZGExeE1GcG82R2xGYmUx?=
- =?utf-8?B?a2NkUWdzanpHUHZHRnZkOEwrOGFTVVAwWHZLakgzak5RMVBEK1VQbWNrc1hw?=
- =?utf-8?B?RUh0VXlFYU5MYUdGS0gwVktaM2hJbjg4WTNDaWhibEI3ZHNibVFjTkhlUmFj?=
- =?utf-8?B?c2xic05iMHd4T2h0dlNGVzVWZVhTQ2JscXc5R29VUEpqcnhQMmEzN2pDNTFN?=
- =?utf-8?B?UUlTZm5zaUQ0eGVyK25MNk5Kdlc1TnYwRjFON0dSYWl1VmczSU85U1B2aEw1?=
- =?utf-8?B?WW42aFdQdEExdXNCRnVLTDAzZWhrcmJLOUcyaXk0RDBxb0k5cmZnNkZTbCtn?=
- =?utf-8?B?TjFnWDJnVTg2ejA1RDk3VlRYUzBsWVVNTWpTQTF3K2xNdDd3dld1UUlFUFBl?=
- =?utf-8?B?SUlLTXpJRHFBZlpsNkNIejYwMGZoK2dSS2duRWFUc2ozR1k3YXVUbTBBL1gw?=
- =?utf-8?B?d0NnSXhNZHB2ZmN2SXRYZDVueS9VSlp5MGJUdUcrZkxmMlM3emc0b1l1M0tB?=
- =?utf-8?B?MWVoZHpWVlkxeld2U21kZTBUVXdtRmsrbnQzUWNTdE9ZUzc0QXBnYzI0QjFF?=
- =?utf-8?B?STE0ZXFsNHNKZ09POE9pZWNsZVYxcnhHOVduNFNHZzFpOGgyVWJRSXB1SGpj?=
- =?utf-8?B?SHpRR1BOMzl3TStpUHB4Q05SbFpkZWVYTXpCYVgzM3BnbmVrOFZ0RkJxRU9G?=
- =?utf-8?B?MGpZa1R2MVdRNzhRRmt5bW05ZEtzWlU5L3FpMTdBMmR5emFRWXYzY3BzMnRu?=
- =?utf-8?B?VXNxR2J4Vm1mWHJyVXJoZEIvZFJZT1BpUXBxMFRHREdaUmxqYUY2b3JJd29n?=
- =?utf-8?B?NDEyMFNvalRjcVZEVDlpdk1ZdHE4STlhR3ZUdUN0OUdWQVpoeUM4a0FXWU44?=
- =?utf-8?B?OTVZdVFIdkxFenJPbUtmTC9hK2JCUzJicVM4NG5Ebi8rV3FtWG5jQVdlY2dS?=
- =?utf-8?B?b2JydWxub2VJWEJDbFVINk45QXJrZG5QQjlvN1NRNGg3VkNrSGdWVCtxWFFx?=
- =?utf-8?B?cEwvOHNrNVdQZWxueFRVWm5QU3JlbXAvTy9MSmZvVGh2UjhualZGcm00WWcv?=
- =?utf-8?B?bDd2TVpnbk5PTFZ3bTd4ZWljZE50TlhBdkoySmxFOXVESjR0NVFVaEFnNCs5?=
- =?utf-8?B?RHNzVklHWDdhcWR4NUpuQjlPeWp4ZjlSMGhUVmZHOUMrOGh0NEFCQkNWUDhk?=
- =?utf-8?B?dkhoa09od2xTVDQ2ZjJ1Uk9BOFFXWWhMSW90TExuY1dGMThXZ2FQZ2l1QzR6?=
- =?utf-8?B?Z2JYUHJaZC8yOWF1Tkw2bFc0cGtXcFk2elVKaVlHYmFTbzc3d0FodjRuL1hF?=
- =?utf-8?B?R1FSekVKK2JubWIxRmErSzhEOGZ4Q0R5QlFMU0NlNzVwOWhOR2x3a3hVVU9v?=
- =?utf-8?B?RTRjaWRnejV6RlpNKzdLRklQNTFVZ1dyMTVSQ3ZobHFFLzExK3NWVUJ1eDRx?=
- =?utf-8?B?STZBQ1dSUVpmTGZxd05aR0NFaXpJN3hPZU1QaVN3SzlBWnFxL1pab2N0cXdu?=
- =?utf-8?B?dHdmSkthUUU0ZEtqQ0dDSE1JNWJ3dG9SOG13OHdNZi92RWpvd0k3cVRhZ2dS?=
- =?utf-8?B?TGY0T25SS3dyeTNzYmpSY3J0QUxEdERVV0lmdWxNQnlNWXZvTFFHTXltVk1W?=
- =?utf-8?B?amRBMmhUZVhGT0NRMnFQNGVHelJlZ2lveU5EdE0yTnB2Ni9NV0p3Y0hUSWNn?=
- =?utf-8?B?ZHpUZDVRZ0tRTW45c2xHajVURmcyeXhpZTAyYW56bjBYMkdNWTkydVpjUzZB?=
- =?utf-8?B?bGtBK1A1NGd0R2ZMUkhXZWRsVjBwMVVtSk5MREc3N2prelF5Z3pWVm5tV1V6?=
- =?utf-8?B?Vy91c0pUbGNoVnlFSnlkYllTK1MvYWgxQ0FkSkdSNGRwUlNGMkNxdzZhN3p3?=
- =?utf-8?B?VjQyY21nL09RdW1rY0QrbkJXRXRpNTNMK25ibUxOaHdKM1BxNFc1VmlhZ1Ez?=
- =?utf-8?B?OCsvQzMzNFBkL2hkckk3QUhNaFAwYWFPRGFEWjUySGFjckxXSzlndz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d05b25d-59b8-498f-e6f1-08dea1a26d66
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+	=?us-ascii?Q?sUcYsRuRE5tETgheOu+0ri0Ej7J6QTIB3GNKoleR83zU6oP07ttviNi67dV+?=
+ =?us-ascii?Q?dIo1YKvCsS5wTyzFO0wawvvBXy2EnbPxPKBydPnLSyiqjAKdPvIesQH+vPhW?=
+ =?us-ascii?Q?QFsx6NhCX7zCJpdPZazRttaDjM0Bl6wWUGwfr7E9DVrD6BFj0bO4rkIWtaOQ?=
+ =?us-ascii?Q?858k4/t0n11s1b+f70fkM5O3w91/k3Yl30/4VWDGmZlZ/OAJda7SMZOabYAP?=
+ =?us-ascii?Q?WkR/1KbMlAZYM1JLzq0aK5KyZ2RvUP+17inqvkoNltrOTjZYZwLiZz+cmqdJ?=
+ =?us-ascii?Q?0erWNOyG+4NQKvtFa6XquOoq9XLcljDmRvaXXengOeDg7RHP+6E8+MracXQL?=
+ =?us-ascii?Q?GnZlZY8SHkVqZDzJgjZtH2//kB/9XDWGyM6OBvc2KPJrbik6Ix/XpWHs9EQx?=
+ =?us-ascii?Q?5qwUIEAcXfRyeJtLJ4plXUpNCBd2GvqH4F766CXahwZMiUKG27YTLPnXTvFQ?=
+ =?us-ascii?Q?cIXL5lJHe7+lQBUw7cT5fZbo1YypeDSwqP38Oap5MWlfr2HTzZN5QvyPQt1t?=
+ =?us-ascii?Q?JlbqYTvi80CxSkny4CcXYEioCetclgfpoaqc3ELsxRupTX7LYujtr4fIYq1M?=
+ =?us-ascii?Q?KG+LpHcOiBgjyjimawUgTNBr14srzePptFVmVj7/OGkXXVUjzJpjaG/Ijz83?=
+ =?us-ascii?Q?gxt6VDWy/+05HVJ/cAMP0L0E7wa9XyL9h676fzP5XtOrlWOMvEmRUyhJKz2e?=
+ =?us-ascii?Q?0kDgQzfK4vaxrXDz+aZixv/wdWDGM8DGz2IAvLov76IAVDuG80ClcRHWftxx?=
+ =?us-ascii?Q?mhwd3eWGlDohWt0oq8qe+aPcYz3tlGmej32B79t4YslrZiGVrh7ANIalFtzp?=
+ =?us-ascii?Q?pvhBPZvxYBKUlHILy8okn4LJ1R7eBecBglffH88/qUzL70CaF/igonxdbSB5?=
+ =?us-ascii?Q?Cs0UGMYMSnq9YeyJh3WNhnWbyWht3yNUsjkGnrnmgdHnDGSe5gk6Kypddtbf?=
+ =?us-ascii?Q?xkgBBSqbyqQtp4AOkWmROEjs59lBnYg8cuQmLqAWn1Dt85ygQpnvKQ0ULqZ5?=
+ =?us-ascii?Q?1r/d57unhjPLs7riLp0eOfwmyuJzGFX3LHQplXBj74TPt34ZTDUUv9wSRnd+?=
+ =?us-ascii?Q?kv7X1t2vbp2Au6V+OJK+XtnLHvUvIXiY5Yn3AfPID2uOmbOJ5OxbPe3y+vTr?=
+ =?us-ascii?Q?2SOf+/Jmgp+y7E0nrFoXgzwuTX9sJoigoAifHB91wys7VU997fCq7gwOAT7o?=
+ =?us-ascii?Q?HKplH/493hrUBOLQwdlHcINOgrQ/1+cjiMduo9BX8OE/3noVNOJMwucfghxH?=
+ =?us-ascii?Q?L8aXlJKNhebAscrDMzd2EX9caSSaVmi2OiY0eIadf3VTTt0rGjGCAdj6X/mU?=
+ =?us-ascii?Q?a0wVGva7aoeedn3mkfFxJD2/cTcRchbAS92Pb1okf805FAnALQYnXMrqVoZ6?=
+ =?us-ascii?Q?3oQ88eyob1QMrCF//GR1VjOIdDItQhGX1/0oiofTw3SzFY3b/u1M2ST+WZlb?=
+ =?us-ascii?Q?Av5q3YS5UVvjKplxXzMZttyBkZouJn9dHr+THqc1rmIJ9epPHnbwRF3OsaDk?=
+ =?us-ascii?Q?S5adbsvjjvbN0XOrwg6odNt3pR9a7OCQtUkuZ0ziR2bXqz6B8W3IDoP0Q7Su?=
+ =?us-ascii?Q?tX49pXwavlnB7iWdFnknEfIPCtE8MOXSdLrrVENYdItpo80AYOKOipw72Puc?=
+ =?us-ascii?Q?EdEEZqKph0gMOoowWHn2j7S2uthmRqgG7XBSImKwpeDFqhPlPOALatB2Egsr?=
+ =?us-ascii?Q?0s+dUbvXLlDg1b67QfpTrcaECMgLi8k4Ha7tfQOwZk5gyqOm?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc735ac3-a0cc-46cc-d04f-08dea1a70b5c
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7284.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 01:40:12.6509
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 02:13:15.9075
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uow1FgpajdVKxzMnnUASxWEr3BNSQIRJGTcS3GiuUbOHpSbuNPh1INuGrcT4DOVBGxOJxAFBfvpNkQ4Hum9QWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7455
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qip390pOzrX29BwUIWTVwn+QCMLa9yka5BEoRHpbrKSdaD7VhOyNiDGLGBs3eJDdkx11AWmMNnYTC0BIdmFm2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB12160
 
-From: Guoniu Zhou <guoniu.zhou@nxp.com>
+In the current VSI mailbox implementation, the VSI allocates a DMA buffer
+to store the message sent to the PSI. When the PSI receives the message
+request from the VSI, the hardware transfers the message from this DMA
+buffer to PSI's DMA buffer for processing.
 
-Use guard() to simplify mutex locking. No functional change.
+When enetc_msg_vsi_send() times out, two scenarios can occur:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+1) Use-after-free: If the hardware hasn't completed DMA transfer when
+   the VSI frees the buffer, the hardware may subsequently transfer the
+   data from freed memory to PSI's DMA buffer, causing memory corruption.
+
+2) Message race: If PSI hasn't processed the previous message when the
+   next message is sent, the VSI may receive the previous message's
+   reply, leading to incorrect handling.
+
+To address these issues, implement the following changes:
+
+- Check the mailbox busy status before sending a new message. If the
+  mailbox is in busy state, it indicates the previous message is still
+  being processed, so return -EBUSY error immediately.
+
+- Add the 'msg' field to struct enetc_si to preserve the DMA buffer
+  information. The caller of enetc_msg_vsi_send() no longer frees the
+  DMA buffer. Instead, defer freeing until it is safe to do so (when
+  mailbox is not busy on next send).
+
+- Add cleanup in enetc_vf_remove() to free the last message buffer.
+
+This ensures the DMA buffer remains valid during hardware transfer and
+prevents message reply mismatches.
+
+Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
-Changes in v6:
-- Replace label "err" with "out"
----
- drivers/media/i2c/ds90ub953.c | 34 +++++++++++++---------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  1 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   | 41 +++++++++++++++----
+ 2 files changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
-index c37d9cbe88b9..a351d366cc3e 100644
---- a/drivers/media/i2c/ds90ub953.c
-+++ b/drivers/media/i2c/ds90ub953.c
-@@ -114,20 +114,18 @@ static int ub953_read(struct ub953_data *priv, u8 reg, u8 *val, int *err)
- 	if (err && *err)
- 		return *err;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index e663bb5e614e..e691144e8756 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -330,6 +330,7 @@ struct enetc_si {
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct rx_mode_task;
+ 	struct dentry *debugfs_root;
++	struct enetc_msg_swbd msg; /* Only valid for VSI */
+ };
  
--	mutex_lock(&priv->reg_lock);
-+	guard(mutex)(&priv->reg_lock);
+ #define ENETC_SI_ALIGN	32
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+index 6c4b374bcb0e..7cd05e9bdfe4 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+@@ -17,11 +17,36 @@ static void enetc_msg_vsi_write_msg(struct enetc_hw *hw,
+ 	enetc_wr(hw, ENETC_VSIMSGSNDAR0, val);
+ }
  
- 	ret = regmap_read(priv->regmap, reg, &v);
- 	if (ret) {
- 		dev_err(&priv->client->dev, "Cannot read register 0x%02x: %d\n",
- 			reg, ret);
--		goto out_unlock;
-+		goto out;
++static void enetc_msg_dma_free(struct device *dev, struct enetc_msg_swbd *msg)
++{
++	if (msg->vaddr) {
++		dma_free_coherent(dev, msg->size, msg->vaddr, msg->dma);
++		msg->vaddr = NULL;
++	}
++}
++
+ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
+ {
++	struct device *dev = &si->pdev->dev;
+ 	int timeout = 100;
+ 	u32 vsimsgsr;
+ 
++	/* The VSI mailbox may be busy if last message was not yet processed
++	 * by PSI. So need to check the mailbox status before sending.
++	 */
++	vsimsgsr = enetc_rd(&si->hw, ENETC_VSIMSGSR);
++	if (vsimsgsr & ENETC_VSIMSGSR_MB) {
++		/* It is safe to free the DMA buffer here, the caller does
++		 * not access the DMA buffer if enetc_msg_vsi_send() fails.
++		 */
++		enetc_msg_dma_free(dev, msg);
++		dev_err(dev, "VSI mailbox is busy\n");
++		return -EBUSY;
++	}
++
++	/* Free the DMA buffer of the last message */
++	enetc_msg_dma_free(dev, &si->msg);
++	si->msg = *msg;
+ 	enetc_msg_vsi_write_msg(&si->hw, msg);
+ 
+ 	do {
+@@ -32,12 +57,15 @@ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
+ 		usleep_range(1000, 2000);
+ 	} while (--timeout);
+ 
+-	if (!timeout)
++	if (!timeout) {
++		dev_err(dev, "VSI mailbox timeout\n");
++
+ 		return -ETIMEDOUT;
++	}
+ 
+ 	/* check for message delivery error */
+ 	if (vsimsgsr & ENETC_VSIMSGSR_MS) {
+-		dev_err(&si->pdev->dev, "VSI command execute error: %d\n",
++		dev_err(dev, "VSI command execute error: %d\n",
+ 			ENETC_SIMSGSR_GET_MC(vsimsgsr));
+ 		return -EIO;
  	}
+@@ -50,7 +78,6 @@ static int enetc_msg_vsi_set_primary_mac_addr(struct enetc_ndev_priv *priv,
+ {
+ 	struct enetc_msg_cmd_set_primary_mac *cmd;
+ 	struct enetc_msg_swbd msg;
+-	int err;
  
- 	*val = v;
+ 	msg.size = ALIGN(sizeof(struct enetc_msg_cmd_set_primary_mac), 64);
+ 	msg.vaddr = dma_alloc_coherent(priv->dev, msg.size, &msg.dma,
+@@ -67,11 +94,7 @@ static int enetc_msg_vsi_set_primary_mac_addr(struct enetc_ndev_priv *priv,
+ 	memcpy(&cmd->mac, saddr, sizeof(struct sockaddr));
  
--out_unlock:
--	mutex_unlock(&priv->reg_lock);
+ 	/* send the command and wait */
+-	err = enetc_msg_vsi_send(priv->si, &msg);
 -
-+out:
- 	if (ret && err)
- 		*err = ret;
- 
-@@ -141,15 +139,13 @@ static int ub953_write(struct ub953_data *priv, u8 reg, u8 val, int *err)
- 	if (err && *err)
- 		return *err;
- 
--	mutex_lock(&priv->reg_lock);
-+	guard(mutex)(&priv->reg_lock);
- 
- 	ret = regmap_write(priv->regmap, reg, val);
- 	if (ret)
- 		dev_err(&priv->client->dev,
- 			"Cannot write register 0x%02x: %d\n", reg, ret);
- 
--	mutex_unlock(&priv->reg_lock);
+-	dma_free_coherent(priv->dev, msg.size, msg.vaddr, msg.dma);
 -
- 	if (ret && err)
- 		*err = ret;
+-	return err;
++	return enetc_msg_vsi_send(priv->si, &msg);
+ }
  
-@@ -186,18 +182,18 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
- 	if (err && *err)
- 		return *err;
+ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
+@@ -269,7 +292,7 @@ static void enetc_vf_remove(struct pci_dev *pdev)
+ 	enetc_teardown_cbdr(&si->cbd_ring);
  
--	mutex_lock(&priv->reg_lock);
-+	guard(mutex)(&priv->reg_lock);
- 
- 	ret = ub953_select_ind_reg_block(priv, block);
- 	if (ret)
--		goto out_unlock;
-+		goto out;
- 
- 	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
- 	if (ret) {
- 		dev_err(&priv->client->dev,
- 			"Write to IND_ACC_ADDR failed when reading %u:0x%02x: %d\n",
- 			block, reg, ret);
--		goto out_unlock;
-+		goto out;
- 	}
- 
- 	ret = regmap_read(priv->regmap, UB953_REG_IND_ACC_DATA, &v);
-@@ -205,14 +201,12 @@ static int ub953_read_ind(struct ub953_data *priv, u8 block, u8 reg, u8 *val,
- 		dev_err(&priv->client->dev,
- 			"Write to IND_ACC_DATA failed when reading %u:0x%02x: %d\n",
- 			block, reg, ret);
--		goto out_unlock;
-+		goto out;
- 	}
- 
- 	*val = v;
- 
--out_unlock:
--	mutex_unlock(&priv->reg_lock);
+ 	free_netdev(si->ndev);
 -
-+out:
- 	if (ret && err)
- 		*err = ret;
++	enetc_msg_dma_free(&pdev->dev, &si->msg);
+ 	enetc_pci_remove(pdev);
+ }
  
-@@ -228,18 +222,18 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
- 	if (err && *err)
- 		return *err;
- 
--	mutex_lock(&priv->reg_lock);
-+	guard(mutex)(&priv->reg_lock);
- 
- 	ret = ub953_select_ind_reg_block(priv, block);
- 	if (ret)
--		goto out_unlock;
-+		goto out;
- 
- 	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_ADDR, reg);
- 	if (ret) {
- 		dev_err(&priv->client->dev,
- 			"Write to IND_ACC_ADDR failed when writing %u:0x%02x: %d\n",
- 			block, reg, ret);
--		goto out_unlock;
-+		goto out;
- 	}
- 
- 	ret = regmap_write(priv->regmap, UB953_REG_IND_ACC_DATA, val);
-@@ -249,9 +243,7 @@ static int ub953_write_ind(struct ub953_data *priv, u8 block, u8 reg, u8 val,
- 			block, reg, ret);
- 	}
- 
--out_unlock:
--	mutex_unlock(&priv->reg_lock);
--
-+out:
- 	if (ret && err)
- 		*err = ret;
- 
-
 -- 
 2.34.1
 
