@@ -1,133 +1,82 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DFC23B62B;
-	Fri, 24 Apr 2026 08:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA297314D34
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 08:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777017871; cv=none; b=u2LLXZMP2krBIBXGDN9G5Jj4tr84SwJ+WSgchgnLEQIWj+Q+GVDbQB5YPLCpXWlVSoT23l8I4T15ZJ/UYJhJrgY+Rk8MomxxPkpGS53G0efBPPuFQrWl5eZ8nWlWhAuWoHdWL1PAgIxkWHMORIxUrMMagQj22wFWDKklmutOM7k=
+	t=1777018500; cv=none; b=iIpN+0gObni0ElrpgBneb08dfgnBBMFFKjH3Ryh8Is5OpWzVKga1/yAkD1lTMY7kS0jUirr6Soogp2RP5vzQ7jJ436mVGpFAuW56LEDwRKLcouLON4SDzEOhfOr011b+Q9ZKkDWbF7a2Xbb7VZ2NZUg9eaY/3XKGGz4KfFfAiUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777017871; c=relaxed/simple;
-	bh=nsGmz/XOAFfWWCKHB/LqWDng5+yK0gywP/rNY2w0lAA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pmT1dPqCfjvtJOmXhHvfLcuAIbmESe6Jof5+h156eD3JTkHURXSBNHFjlOkE1E607hsuydbYq6JE7Hv+ovAh7jpPbn6cGP2lJVl6w8aqP39w3nvR7+B9MGNdRfZkTnyYx+zW7IiG0+dgH/Vf+sH0rKHljvO0l9Sk9n0K9dSZccs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.102.10])
-	by APP-03 (Coremail) with SMTP id rQCowABnhNvRI+tpv7EHDw--.22752S2;
-	Fri, 24 Apr 2026 16:03:33 +0800 (CST)
-Message-ID: <1d54c67c3c1892805793e58e77ef5708cf5b7ca4.camel@iscas.ac.cn>
-Subject: Re: [PATCH v2 24/41] drm: verisilicon: remove now-redundant call to
- drm_connector_attach_encoder()
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Dmitry Baryshkov	
- <dmitry.baryshkov@oss.qualcomm.com>, Andrzej Hajda
- <andrzej.hajda@intel.com>,  Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart	
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Sasha Finkelstein <fnkl.kernel@gmail.com>,
- Janne Grunau <j@jannau.net>, Liu Ying <victor.liu@nxp.com>, Douglas
- Anderson <dianders@chromium.org>, Laurentiu Palcu	
- <laurentiu.palcu@oss.nxp.com>, Lucas Stach <l.stach@pengutronix.de>, Frank
- Li	 <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Philipp Zabel	 <p.zabel@pengutronix.de>, Paul Cercueil
- <paul@crapouillou.net>, Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, Matthias Brugger	
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno	
- <angelogioacchino.delregno@collabora.com>, Kevin Hilman
- <khilman@baylibre.com>,  Jerome Brunet <jbrunet@baylibre.com>, Martin
- Blumenstingl <martin.blumenstingl@googlemail.com>, Rob Clark	
- <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
- Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang
- <jesszhan0024@gmail.com>, Sean Paul	 <sean@poorly.run>, Marijn Suijten
- <marijn.suijten@somainline.org>, Tomi Valkeinen
- <tomi.valkeinen@ideasonboard.com>, Sandy Huang <hjc@rock-chips.com>, Heiko
- =?ISO-8859-1?Q?St=FCbner?=	 <heiko@sntech.de>, Andy Yan
- <andy.yan@rock-chips.com>, Thierry Reding	 <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>,  Jonathan Hunter
- <jonathanh@nvidia.com>, Jingoo Han <jingoohan1@gmail.com>, Inki Dae
- <inki.dae@samsung.com>,  Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin
- Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski	 <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Laurent Pinchart	
- <laurent.pinchart+renesas@ideasonboard.com>, Tomi Valkeinen	
- <tomi.valkeinen+renesas@ideasonboard.com>, Kieran Bingham	
- <kieran.bingham+renesas@ideasonboard.com>, Geert Uytterhoeven	
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Biju Das	
- <biju.das.jz@bp.renesas.com>, Marek Vasut <marex@denx.de>, Stefan Agner	
- <stefan@agner.ch>, Jyri Sarha <jyri.sarha@iki.fi>, Michal Simek	
- <michal.simek@amd.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	asahi@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, 	linux-mips@vger.kernel.org,
- linux-mediatek@lists.infradead.org, 	linux-amlogic@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, 	freedreno@lists.freedesktop.org,
- linux-rockchip@lists.infradead.org, 	linux-tegra@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, 	linux-renesas-soc@vger.kernel.org
-Date: Fri, 24 Apr 2026 16:03:29 +0800
-In-Reply-To: <20260423-drm-bridge-connector-attach_encoder-v2-24-2ae6ca69b390@bootlin.com>
-References: 
-	<20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com>
-	 <20260423-drm-bridge-connector-attach_encoder-v2-24-2ae6ca69b390@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+	s=arc-20240116; t=1777018500; c=relaxed/simple;
+	bh=9fyu30Oftn9ohfIUdEzIbgQz3LjGLQmWulU0txjr59M=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XqKbR6Yq3K+T+q8ii3wUIUDJInYriAvq+z/rGofutMbJvtmNUveCS2dM9Cp4B3e6jKCknwjTYBwGFBmDBd8TbCvkFiQKjDxhHn3uOi8gCv4WvU819oBmV5bNRycf3ovdXRNVyLqBCvwFQFiLeDBXGWUdeV54W6zxFALs94zVkGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eApoQHjc; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eApoQHjc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92891C2BCB5
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 08:15:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777018500;
+	bh=9fyu30Oftn9ohfIUdEzIbgQz3LjGLQmWulU0txjr59M=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=eApoQHjchj5JBxhPcsli/ymo5qto9jxKmoRTtSM1ZfaKlGQ5p3MGGgwvIw6uVzybd
+	 2UfN6JnLEjhcKNd2jtlSVmRf+HhvSy3PFuHgzAwhMsggZNpG3+KZWqsEp7QNgFddLL
+	 zFxQ2U5bUmpMg2staGmksCrSaq2JpGgA2mudYitwJ64a+ekUltDi50D6JU0dxFIsYO
+	 tIasFL8q53DHSebCqKLcdHyoNvdRpEabVTJElAW4mni+0k2Jro0SBvc4zYsVwUuFsB
+	 eOKqt7I9YVmVr4rSfnF9Yh+T/8lBNt73MFZvqkqdfIe27RqW4yAosz5WELR0B+z+n6
+	 sMGxAYI3FmPmQ==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38e7b8e3f38so63307881fa.3
+        for <imx@lists.linux.dev>; Fri, 24 Apr 2026 01:15:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+hwLaRDx1p49NtFvV2S1oiI1YjyVrfxGz3Y2CrEM6HQ04aQ8i2r613X/BUFADB8gN7/h4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzaMY5gmNchHY6vvKLhlTvl8iCPZ7iycHlxPRmezANwrXNvHe8b
+	pSbQZk5jn9Qj9Ro1wjqcsfwXn0SuUpuJonoq10S2gN5pVGKVq/1gVfQjApySfOAjmg+CHxtZQrn
+	QmGy0kZlUy9thvhZExtevsADA3cJP+3szKHhOaPSqag==
+X-Received: by 2002:a05:651c:41d7:b0:38b:f632:e0fc with SMTP id
+ 38308e7fff4ca-38ec77f6762mr94772331fa.1.1777018499076; Fri, 24 Apr 2026
+ 01:14:59 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 24 Apr 2026 04:14:56 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 24 Apr 2026 04:14:56 -0400
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260424-ds90ub953-v6-3-7a84efbab316@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowABnhNvRI+tpv7EHDw--.22752S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFWxKr15Xw1xXw48Jr4rGrg_yoWfWFc_uw
-	nY9F9rWrW5KFyDC3Z7Jrn5Zry2v3Z5uFW8uwnrt393KwsrAw18Z347Xry2v34UuFyUAFZF
-	kw4DWFZ7Ar4akjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVxYjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	c7CjxVAaw2AFwI0_ZF0_GFyUMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjxUxeOJUUUUU
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+References: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com> <20260424-ds90ub953-v6-3-7a84efbab316@oss.nxp.com>
+Date: Fri, 24 Apr 2026 04:14:56 -0400
+X-Gmail-Original-Message-ID: <CAMRc=Mc4OfNV5++4qAFsqqLc4DUeVK7fyZqHYtZQvSwmZnbnuw@mail.gmail.com>
+X-Gm-Features: AQROBzB5gvtfuPCI7WpxRRoySyjcEEuN-HwXoxfW5uWOp8T7YWLltn6XjRSIokA
+Message-ID: <CAMRc=Mc4OfNV5++4qAFsqqLc4DUeVK7fyZqHYtZQvSwmZnbnuw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] media: i2c: ds90ub953: use devm_mutex_init() to
+ simplify code
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-gpio@vger.kernel.org, 
+	Guoniu Zhou <guoniu.zhou@nxp.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-=E5=9C=A8 2026-04-23=E5=9B=9B=E7=9A=84 11:17 +0200=EF=BC=8CLuca Ceresoli=E5=
-=86=99=E9=81=93=EF=BC=9A
-> drm_connector_attach_encoder() is now called by
-> drm_bridge_connector_init().
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
-Acked-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-
+On Fri, 24 Apr 2026 03:42:26 +0200, Guoniu Zhou <guoniu.zhou@oss.nxp.com> said:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+>
+> Use devm_mutex_init() to simplify the code. No functional change.
+>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 > ---
-> =C2=A0drivers/gpu/drm/verisilicon/vs_bridge.c | 1 -
-> =C2=A01 file changed, 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/verisilicon/vs_bridge.c
-> b/drivers/gpu/drm/verisilicon/vs_bridge.c
-> index 2a0ad00a94d6..83c91d5ce397 100644
-> --- a/drivers/gpu/drm/verisilicon/vs_bridge.c
-> +++ b/drivers/gpu/drm/verisilicon/vs_bridge.c
-> @@ -365,7 +365,6 @@ struct vs_bridge *vs_bridge_init(struct
-> drm_device *drm_dev,
-> =C2=A0		ret =3D PTR_ERR(bridge->conn);
-> =C2=A0		return ERR_PTR(ret);
-> =C2=A0	}
-> -	drm_connector_attach_encoder(bridge->conn, bridge->enc);
-> =C2=A0
-> =C2=A0	return bridge;
-> =C2=A0}
+> Changes in v6:
+> - Added Reviewed-by tag from Tomi Valkeinen
+>
+> Changes in v2:
+> - Move PTR_ERR() in dev_err_probe();
+> ---
 
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
