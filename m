@@ -1,46 +1,47 @@
 Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010058.outbound.protection.outlook.com [52.101.84.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEFD39C014
-	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 11:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A703A1683
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 11:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777028887; cv=fail; b=X6PrHQQqiWVPQcYXvm6JXVRnxpTm/XBGTMcK9kZfXcFrEcTz4GPpjXOnN7IOk725TTK3tdPkWI9dbmxkI6MFT6i9H/6/TkNZZvJHLkgFYJAgDlnO67USKcuL68F6PCXa9my27uHF77WVcIlEM/wFM8OVf+W5zqUvybgpSNFvDRM=
+	t=1777028892; cv=fail; b=YMtyBy9aiJ8FsgqeetPl6P7hw1YruH9GAWyfTVkuF/j6HKduQfvZcPANsm0sBm/dO4tIKZ13mQhTaujw+nJbwlVCcGbjQ8QPo7CmdDP7Ud5Rahmz3m47cepJnbw0+w9NPryeJanqGNDloDkBHfXcNoCAIV88Mc3XekzFkYVGgtY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777028887; c=relaxed/simple;
-	bh=YQ+wTJaIh+ScNocCWtyfw9HXyqZfqyr7Yo+EXo3eTFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NjWYprGLyUiQWSFOWRwPgWzQ9MyQynBdI4kOLBIJZgU4sfGh/xiFajANbwI654vshZlqZbi7PNQQKNHOpiHbYRDACW4WR0ubroJ/5rW8MFyI5QcL5qrp719TdwN0RonOekroUasRneTdSHOyCW8pSq4aJ+6T27WfQ1C9rcn8A0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h8CnEK46; arc=fail smtp.client-ip=52.101.84.58
+	s=arc-20240116; t=1777028892; c=relaxed/simple;
+	bh=5HYBfeC+ZuqODOIRF82wc7XdasWi0pyjKwZsxUUu/6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H0g4L4Igs6UodPEBvQm1d+TLW47lXgkIrWIKXZvrr76vwS4dqWkN91RFJYtu+Xz+6sPaPIhbYrmerZPahWqY6IOZDrCmUL7+Iegmvp+dq+Rjdc+qSpTsoASqGTi+zRKYoudLE5rPNmV97U8LSP1kLdLf+88gEFLhcCXyPm9B6WA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=U+WKs6B+; arc=fail smtp.client-ip=52.101.84.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h8CnEK46"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="U+WKs6B+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WlM4w15K54RBE2D62hjlMIleqMDtLKxzy1OZrMz4ZaAovvUhJiOzCtPMuqV8vpRg2STbXLxLcIUEBOsqfPXzbdS3RF4m0/9XaPk54fFRd3/VpSgpMTediAdhGTN17gm1vaQlywqwZkBAoJgvWlRSVf16yu9/2NjH/qxPMkfXpdHOhyPhTIohW/vvtlb7OXD2mStiPB2XM2mTYO35GQW+nW+rbrnbDKSsH7Ag4aohm9QFkpPHtDqJ9dMS5wvPAeE7jjwTNDRlfyHLfJm8zQTq2YFfFgWuFVI8MZCKXg760i0/Uzz479NTHG7WAvecTCOzFb0/oKa/6GmEKBEU4vn42A==
+ b=Ijih/38m08Dq/7dOZuwoqx9vrZE8wOLyLXPOJBWkd5WhVJHn72h+YQ70fekPzHUWvhj/8tyiIVKhgcn1Lf1T0cUAZ8tXRCb78x5lNii3oPGrMEaHP6BmU4i35IE29a/gjmODG0pp0nr6pOEXYpz1BEgGRSvTqRVCJ7Zin0k3613J6v3YeYeFDDCiRsdT9xye6NY0/zCZ8znQJHXH3tBoPOOON3BpJB2gEnzCmZauuvVq9T1eFuNk8jVDkpMiEjuj9rKMInvXg6d1C+KKLjUqGIc3jK6iPen4RxtAXAs6NQmTkucUXu6AsSW4HlYFdZfoJOiRE19W/xfE/hTZiNxIQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fk5FBYQf4SilOGdL2OgFcR+TuXVIRFfP248BXVWP7ok=;
- b=DbvJVMeQfTWCjy6TSpLFFdsp8A7y5UkhxNijeDoGnxX0Pq5t4ds1TEQrfaz420ESGxmYyq2aZcRhFF0S/xzpUTjBZ/VoGyx14TYEOH3VRl0bP2jtLlYR3iEGJgzFo6T4Cc824CKJ62NeDdS1WufM8OuiKEdumQg8HbGMNUiFfzczpLNIGMmuZcwVCflZCJUmBxN6D2XsiKg6GTx7JL2JuYHE5iVg/fIpPv/gWi8b3B8sjdpdyteMuHcVlIjn+vnU+NcIoSCWmWNsKnsDMTKjhNxb/dWwVup9wdaJKKRyIZxWR7EdaalUh19fjAb9A7aI/ZnUE5qi1pswnTfz9dYq/Q==
+ bh=RofJT9ktnqv8hDEkIUbuLS6i2QXFTVV+DV9zzOqpVNo=;
+ b=vBOXRUmBS6DKtBf0xmKL4z5L1kmNvBUT/+B9+BweV6puLvuPVoRemNiaNGq4l6ljXg2eNQzhl6ApATaP0l7+DsUtU+4QqydrsiR+QiWH+PNf3bZcMo6QwWrP+gb5QfnWioMCzG5DDNscKZX64nmci6VRV68d5h9MAqdSJrJ4WabI/2x48MSRF3z7urPauR4z739M8gXPypZhiPrXjMHuNPEGwPYZp8fiOJw/p161uuNEvKu1IkeLozfcaUh4RvN7uLoE0RE58cfMLdHL9KnBIczxhdeLVlXsTCbOXkSqvD/Fl48pOaHsppgZLFAIDRNRcS93IYnzZOFcD/tVW2kLBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fk5FBYQf4SilOGdL2OgFcR+TuXVIRFfP248BXVWP7ok=;
- b=h8CnEK46P3Xz29IovTlQfhz5Vz99t/QlX0P1q+lUfgO09Yh6T3Vl61YIDlnDI3U0j77xuqDa10iGDoc5uhhlNVVeUCi/ZdPCswWpMumyUpZUHgSOMKw228dHM44ub0C7Km7+cBBtkCsfUpzRkmWpSg1E1L2P+2F8VaGnFWYp01VazV41OJyD//45ykuSYwl4Z2qdJJKqlz5cpBT81jhQ0VI6FWAX44cAXZ+tFS9ARLh8s1fn2Od7ELuv0OhCf0MRkVVAxa1T5AaE0NsKONAZlCmW+Y9xr+qOV7lgax7SCP3oPh0HULGOt6DzOLr9/p9tWXox3+KEkTbGVOPIvtdnKw==
+ bh=RofJT9ktnqv8hDEkIUbuLS6i2QXFTVV+DV9zzOqpVNo=;
+ b=U+WKs6B+uLpv7jE0vPqERsIUJbxDi5FDrBurk+TUq/6T+HYgQJod8cWbL7OSVE4yPAVIzIUgZXvGpV1rPsP70JydkqnobaJHL1YGn993R7y+tSvWdnEXdqA4JTzAQNYsex/eiXKgvYCZ92tO5XAQ+75dSBh1W0FYbIuLeC2jDPDCnAlGUi4hn8F18OXTgRHU0usC4jDXuOcYZeEyr9olEf3NPcKDlMH9yxpCYuq+5ZGmu0jp19sNQrTa5NswvkLNt3cjq1mk26zfOyZ9QBghkixwMsNPgDUZYhcUtrxQWxGXdKNU3ga96ap+NzjKxDvU3iHk27rwucawA0WMJxU8jA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
  by PAXPR04MB9279.eurprd04.prod.outlook.com (2603:10a6:102:2b7::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
- 2026 11:07:54 +0000
+ 2026 11:08:01 +0000
 Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
  ([fe80::3826:2706:1e81:c9e2]) by GV1PR04MB9135.eurprd04.prod.outlook.com
  ([fe80::3826:2706:1e81:c9e2%5]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
- 11:07:54 +0000
+ 11:08:01 +0000
 From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 To: Parshuram Thombare <pthombar@cadence.com>,
 	Swapnil Jakhade <sjakhade@cadence.com>,
@@ -57,15 +58,7 @@ To: Parshuram Thombare <pthombar@cadence.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
+	Simona Vetter <simona@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -75,15 +68,16 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux@ew.tq-group.com,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Ying Liu <victor.liu@nxp.com>
-Subject: [PATCH v22 0/8] Initial support Cadence MHDP8501(HDMI/DP) for i.MX8MQ
-Date: Fri, 24 Apr 2026 11:07:13 +0000
-Message-ID: <20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d@oss.nxp.com>
+Subject: [PATCH v22 2/8] drm: bridge: cadence: Update mhdp8546 mailbox access functions
+Date: Fri, 24 Apr 2026 11:07:15 +0000
+Message-ID: <20260424-dcss-hdmi-upstreaming-v22-2-30a28f89298d@oss.nxp.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d@oss.nxp.com>
+References: <20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d@oss.nxp.com>
 Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260406-dcss-hdmi-upstreaming-28998a88e911
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P250CA0016.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e3::8) To GV1PR04MB9135.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM0PR10CA0049.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:150::29) To GV1PR04MB9135.eurprd04.prod.outlook.com
  (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -94,471 +88,1282 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|PAXPR04MB9279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a55e4bd-acb4-4658-65cf-08dea1f1bb7e
+X-MS-Office365-Filtering-Correlation-Id: 58091653-c72a-42fd-d78c-08dea1f1bf77
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|19092799006|1800799024|56012099003|18092099006|18002099003|921020;
+ BCL:0;ARA:13230040|366016|7416014|376014|19092799006|1800799024|56012099003|22082099003|18002099003|921020;
 X-Microsoft-Antispam-Message-Info:
- I7F8N3Jmr1ocXFOQZA8ubO2QjnhEHPxQxHbQmjSR1cdb2/BPXeKklG97g/WARZ3sCyQHRJHKEH4gMNU6VN8RJH1JFdDsIX/BC1MQtOmeKwVP7DZ9KhjOATfkStQtKg9T5LXWOByH4Xfl/QQerGcgPvUIx0q+zksQ/VkqR3JBW8AAA3mbBnHwNBLPvjA9iadi9AqJwDgfn4WJMgIh2k033qwdSAa18BzV/NVsyv0GNmI1tGmE8wJyqC/IgXgvux04yTa3KBmVz1Gqmuj87KcpQkWtj72q3Q/wIQeZJEv22X+SSmRwRsVPOSJLHjfk9pJ7o+urTmMSIPfcCzqZLaWGgjUweMJC5jmNKfgoqeojWzNvXTIrlmVbrSEmPTgHPobwJHUq1NWQISf/MDbnXAhfwgdSoDCHBjLbZ0I9hYZu5MuabrYnuYsab2VBgw+GfXtIGLZZg5tGtXCu6nfK2TO5jugK6KKUFb32xRs1JdGPARh/8gR+8XyyXpdwKyPlJKTy5DtD2OmCjDIbvD/VKn0uEBauur8A7NcmlLHG8+1oRGyKEmUZYZeeXbcByxEIZcdIsteb7jgGOijEa1gKbhVxCjpXycKpv9kgv15yOwizm5gqBPKj4w9JeB3lhPCJgMZKAAXb3xKNL1YU3FHfomM+NXzgDwMu96jDDacrnscR6ciI6IWYfTA+7Fpgf4LiX3vFzI1FMwSWCgKg3SmXQucRCye91Bj/DTOPkQ1m9LNjNik=
+ zfk6j16UXdqALzOGm3Uqj0Sp96BH1b8QyyD4o8Ct3x0AHZjxozj1GaqdDwrSnO0Q2+i52qxIPQPQI08oqX7jSELH8yYqXMp+pxbF+8SwHkA4RmT8bO1xj7yXVsrjYs0AX9zHt9LKcNOC1J/MIORWELc1W+cOIfwkFrDP+A5RUTQKkzau+MT0rQ3Jvv87WFUan6Tu/qaNuV0bbCRDJVtG/Szsz4w+SRRuryISN3lWEksAT3cXSjOux3haCRBy2UeQLbrJm5oZeQxe8H+O7gy6aYSuIQtGGWbIhCifYckZI9RT5H6idwN9Q3zjW5e1lrPrXQKl+ssqeSJtdaeXohvacCGG8U7UHlnnhmshA4h4MVJ73bFTsPn0fWV8YI4PwidVvuJ8XL3TIjpZFk+Kt7hXtCzedAKFOgvRvNtiJy3cyrMvVs/ep6mFMLyiDRhJk6q3yk2pcZh64d+16ve7GP0POR85501mgLP4gZ7NBnyaTwX8E/WPY+7ivX2jhUNn0aW89tgkLWASNkxV+4HmZf3O3xih+LdrBTIEZkyDB2AKeCvLeTA7i0TMBut5rCw/0DJAXJ8Bx77WdWz6pVrtgwDvec5NJP48xNrsyALx8K9rVx6Wyob556jbQ7msCi9QcZQfeU8vCtVcRfXOJ6iSakdLPvfNW+ynnPzNYRzeockqagIXiOylXlI7+XSw8M8e5pyinhpXVHUgPif1rcjEhC2DKVh4uPdnVmCqaufn7QBPuOREhFznVFyM7EXKAGfDQr2vQzJlDEJUm3qKi8g8Khj0Rg==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(19092799006)(1800799024)(56012099003)(18092099006)(18002099003)(921020);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(19092799006)(1800799024)(56012099003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?c0JFeU85TmxDZ0dDczV1S2hIMGJJVHovYWdWZHdFS1JKbXZhZ1NDb1lwU3VR?=
- =?utf-8?B?KzVIYllJc2VtempZNDNyaTNHN2o0ZWE0K2NPZVJXWTEyS3ArWGNEeWhHL3Z5?=
- =?utf-8?B?TEhsM29GSXhicm9NSzVISmxDQUtDcGF0eURoRzl1YzdsNVJCUjBXbHBHVWcx?=
- =?utf-8?B?VmYvOStyVTl2T2VKWkJvZ2V0MmZUUTc4WFB0K25MZDNxTmFmZ1ByVjhSS2hn?=
- =?utf-8?B?OTRWM0JQZGR3UXp4dzVIZElweFEydFM4QytTa1B4aUdjOVpvWDBZV3hkdVhI?=
- =?utf-8?B?Y1d3M2dOM1BxSmJ6bVozOWg3MkMxQjl1cE1zQ2xBdzlhVEJXK2RBREtvdmdw?=
- =?utf-8?B?OC9HWldWQnBFOFJWY01BTzNBMkpjS1B6NFlZOHZMOEtGMGJtWCtzMEJmVEJ4?=
- =?utf-8?B?N3NoN0d6eWpQTEU3WThNWmNIcDc3NCtxZTVqa2E5QitGMG9FM21jLzdmN1pQ?=
- =?utf-8?B?ZHU0UUordHlJMEVmdU0yQmZqdW1sMHJuenBUemliNlhPdkFhRTVpMk5KYTJX?=
- =?utf-8?B?QlBYTjNOSG5ac1VRTUlzMGJHeGtjUGdYdzR5MnFsYkZidUJRazk2U1c0c3VV?=
- =?utf-8?B?SmhwUVJOL2gvTzdxTklXT3BOMnFaemkxRi80Q1JubVE0N1N0b0pKY0tWei9J?=
- =?utf-8?B?dVRRR3I1enl3QjRXTkc0THdpd2RJRHAzRWdjT3lPY0JpVXJxUHd0Q09MM0s2?=
- =?utf-8?B?b2J6VlBFSnRuZVRVK0NVSGdURUFIUk5pNXJ4L25wZGM0TzRIT2ZMbE51aENU?=
- =?utf-8?B?c1F4S1RGWExnQ0ZDU1pMQmhkNDB5RlBEcVRXajJ3eDlLSlh0bkNiSzB3NVZP?=
- =?utf-8?B?VW95K3JZdXA4L0hZUm03Y1M3TzVCZ2RVK2Z0OGdZNkJTc2pEQmlLSlZxak9C?=
- =?utf-8?B?dzlNcDNGS1F6eXBWZjNRTnZSRFBHd0NxeWUxQTVLYVU4THdiUUhCK01uMExM?=
- =?utf-8?B?RTQxaWlvUE1XekVaU3hyWTFHTTRSODlFbDZDb0FPWU5WdEVSdURMU2tWalE5?=
- =?utf-8?B?SjdLK1QvWU1HSkg2QnA2MkovZEhkQ0RWMFdSUi93Z2d0Wk13Z3loc2lOQkhR?=
- =?utf-8?B?T0p1dzlUc2JJeXNLeDNuYllMUnJVTWFKUnlIV0cwQWE3SktnZGtQT3RWM2Jo?=
- =?utf-8?B?S1dsbUpPN3B6Wm80S3l3S2VkR211dXZrdmp6MjQxM0NBS0IvVG5RaTZLWFV3?=
- =?utf-8?B?bXJZWmVRMHNXaU1SZm1xbDB4OXlkZm9wSElFa0w3OHdHT283RlJ5bkp3REds?=
- =?utf-8?B?MDlQcjVDZXBtRVppblNEeVozTW1ncDE3eWxJcWVGYlVNb0ljV0tYdW5EbSth?=
- =?utf-8?B?dzRILytRYjFNWlFYb3E2VFRPSi9rMDdtaFR2Q3UvSUt1NFJxZDZQanp6Mk53?=
- =?utf-8?B?YzVzNUhrZWZCWVZHNUlNUjhhTUw0dWErU1gxeXFUaDBIL3JTb2ZnK3pUQmhj?=
- =?utf-8?B?ci9SYVJFWnZYMWZpVGZYR2tWaiticXNlOEdiOUx6UUQzSW92cEhaY2pSeHFk?=
- =?utf-8?B?NXpETit1aHlRWEROUG8yOGlqWE5PWUwyUHVZdHlkNXo0WUt1TjlxQzUycjdk?=
- =?utf-8?B?WGRmajRIdHVoNmNQcThTL00rMEg3OHhuVFpqS0ttRGkxbU96Njk3V0ZkNm1T?=
- =?utf-8?B?SjhtYWRlYitiQjVyYnBkQ3ZJaG82cmo0ZHZ5QWQ4S1l0K1RkYUtFTFB1M0xF?=
- =?utf-8?B?MDR0TXdxL3lEcnRwMDAxb0lCZkZiSmZvSDBPNFBRRlZ0UjVaaDdkaUY1TStw?=
- =?utf-8?B?TkZrOGEwU283cWZmZkp3Vk4wL1NEMndOblRaZkZNVXIrL1V2cUdWajEvMU5z?=
- =?utf-8?B?WGR4a1lNcnVSWm5Ra0g2cUhUbzkyQUswaXpKYytRUUNudDhhM0Erbk5Yd2lY?=
- =?utf-8?B?T1ZybEdNckxtVnlNME1MajZ4ajJReHRBblRHSG1RbituVkkwRDNxaVcxY1Rr?=
- =?utf-8?B?UnRyOE1SNE5aRTdoVE5RNndiODVNajAycWhUdzc0ekR5NHpJRnl0VlRlcjVB?=
- =?utf-8?B?Z3NJZUhCdjZpYUI1YU80aWIrUmUyTTNLc0svVHl1eXlmNzd1dStaek5yZXNI?=
- =?utf-8?B?RUpVQ05aQUhxSUdDOGR2OVM3ZDVzWGRhUm9rdmQ1dmlpY1lBbFJqMGVaMWxn?=
- =?utf-8?B?WTR3MitnemlQV0kvUG5iNXZ0MHhhenpxRnVKL3FZU3NDdVZPN3NkRjc1Nmp4?=
- =?utf-8?B?bnBQbjRSYVR6Y1pRWDhaT1RCWTFDL2pNdGxoNHpsamtHaTFDZC8xZDgyK0c4?=
- =?utf-8?B?V3JZT2RiRDU3Q2lpK090RDk5Y091NEoyRUVUMTZ6MjRKakF2VWNLODN0Q2t5?=
- =?utf-8?B?dHZJQVg2b0tTY210Mk1PNDIvN21hbXYrYkpFMTlvdCtFSnBhdHE5M0dCeDJF?=
- =?utf-8?Q?IG4VD3Xn/6VWeA1g=3D?=
+ =?utf-8?B?ZFNQYUx0WG11cmZJbGMwMEQxd1ZWSkdwdk9Zc1ZMcXIvWVRDMTBuWnVqQlJU?=
+ =?utf-8?B?Vi9iSGNiRk1VOU5QYzkxQmpqRWFIZFNJUmlHQmgyQWF4djhKNkh3alF0L3M3?=
+ =?utf-8?B?R09GMDNGZU96Yk0xRjk2blZ3RTcxS2cvOVFvK2FmSGJYWGdCT0FUQkJkK09m?=
+ =?utf-8?B?VnErSXRObXJrcE8zMVl0eVg5UnUyc1E3RTZOdU1ScUhvZXh2ZFRDN21ocDBV?=
+ =?utf-8?B?K3RaN1FKeUZDNFY4bGJEZGh5VXhTOW1McGZBdXFwYmFHTmFHSXkyMUxwbk10?=
+ =?utf-8?B?dVRrZFhwNFFBei9DK005b2NZUC93NTVWVmNIUWFEcjdQYmQrY1g0dWtjb3do?=
+ =?utf-8?B?Qys0TlJwUlc3c3V6VXdIeDNzQUhickpSZmJDbG9WcmpMSElHU1RyVHlWeWti?=
+ =?utf-8?B?RDNSMnU3d0taSkxMV3kwSU9lSDd4SHZHSGpRQ3lWcnZYQUZpQVY4RDJBZGpw?=
+ =?utf-8?B?Nmw3NzFyeWpSY05PN3MvNmFPd2RlcGFPMWRva2xxQ1FpV0F1V1FCU3ZOMm00?=
+ =?utf-8?B?bTRBSjhSZHIwOUQzVmpyME1SV1grYlVkdUJ0NEVFd1hRdGpsVmtvd1dhZ2R6?=
+ =?utf-8?B?VytmNExvc3NUd1BSZ094cGxuYlJrUEMzSGZxU1JpdFFvTXk0N0RDR1ZkOG1h?=
+ =?utf-8?B?ei9zOUFEOGpTcm1qWVc5ZEdCY2wwUU8vZFlFNG9uKzVVbmhQeWVJR1pVdjAv?=
+ =?utf-8?B?WmVHWW5xL3Mxek5DRGl5aEptMml1VTdIVFRvMjNqSC9sUCtGS3ZDOXJXVHlp?=
+ =?utf-8?B?ZTV6UkVHSkRxTDNDS3hERVY2M3BiTExuNSswQVl6TVkzWCtGZ1lMdFVFcmxZ?=
+ =?utf-8?B?bWVtSkJvbjdhdEo4YTlCbGM1TVlmbzF5MTdpUUFNc3RBeDJ1bTNqZ2tQNzl0?=
+ =?utf-8?B?T0ZVckF2bGx4ZGc4RDhEdmF3U0wyM2ZhUjBUK1NOZmxvZExTcFV1UThQUmhG?=
+ =?utf-8?B?aTdST0lwU01DTC93N2VKcjlhUWg3bEw2UklhdmFTWWc0YnptQTlYVlIxS0R5?=
+ =?utf-8?B?T212bWRzTFFEWnlHSFVjUHZFdjdZODE5elM4N3RweFZJZlA4ekM1eXFQKzhr?=
+ =?utf-8?B?MlVlRXpIMTZkVVJmekxCdlNkY0RqWG1GZ0M2ZnJjdEppM1NXM0xxQWhPakZ3?=
+ =?utf-8?B?S0ZMRURsTnh6V2pTTThMTkd3bUpNSDJTc0VSVHBwT2gvQzI1R3diS0tkSkNh?=
+ =?utf-8?B?Yk4rM2hhRDhVVmxFcFVpRTlmRjFDSU5JRXArd0EvRkNYVW1zS3hIMFFlSmtw?=
+ =?utf-8?B?ZWZ1WmFQTlFqODhkREtrQjM2YlBoZU1OcXBWMU9xZ21QWWE3a3hpTFlkZnNQ?=
+ =?utf-8?B?UmhXbk9pM1UyeWNPREFtejFMZWZNM21tZW9WZ1kzd2JPMnRVMkx5azdaR2Uw?=
+ =?utf-8?B?bERseEIvb0VjYXpvT25nNzMvVFZCbTh0Vk9Ldk9maUt6N0cyR3ZNN0RhbEIw?=
+ =?utf-8?B?R094cXNZMmN6OW5VMjJoZ0ZuZE1ma0ZuSmhKMjlZS3JsQnJoNEhGZXVVcjJj?=
+ =?utf-8?B?NDdvQ0o1azc0RXpBL2s5RDVQU2FyVGdDa1hxdlRXRmVZSm4rY1djM3JXZVl0?=
+ =?utf-8?B?S3diQ0s4WnlyY3NsU3dzYmJBWDdTeTY5TWZCVmcvUFUwUmpGRUZVYk9TNVV0?=
+ =?utf-8?B?UjYyZlRrRkJEL2g2QnE3Q0dOdlBDS1VMcTJzMmhMZzAzcDZCV3BOSE9VS1JW?=
+ =?utf-8?B?YXdZS3d2clpzMkNIR2taSzRZQndyWVlEaGdILzNwYWV6NDBNQUJrY3ZTejQ1?=
+ =?utf-8?B?US9JMkxhVktncUdER3o0V0tmYUVEUlF0UVhpTGJKTisyQW54VEw4RW5Vb1FN?=
+ =?utf-8?B?WE51S3B6MWdGcFFwZmVBYnZQVGhCSno5cHpkZUFwbk12SDYyMG1uYVp6VlFD?=
+ =?utf-8?B?b0hHVEhHcFFGOTNCUVpNdEJpek9LQUNVRXlpcHhzUnRQY0g2SG9VbjF1Y3lK?=
+ =?utf-8?B?aEpCZjk0NjRSTTBzcTZieWVwWEJIVVZvbjdlQllvKzBEL1RKVDNtUy9WcWxo?=
+ =?utf-8?B?QVc2K25iOXRpajF2S0pTVFJ1OXdydHcyTllZcE1CV0dtQVAvOW8ySmgyQWQ3?=
+ =?utf-8?B?Q2Eya2NNWU44SFpNbEFzM1BvZTNBYlZDby83bi9SRHd1bmZhTG4wMHBHQ25O?=
+ =?utf-8?B?QUYzaTVrOFdCRFVuZ3RObW5OK2lib1lNOTFLWXRVT1FJcmpIRUlOM0tCbk5h?=
+ =?utf-8?B?SXRmWlNnYnR2eVNiWUZKV0tsZFhHb3FpaHVEV21JYWVRT2lSc0RFYXpwbGtW?=
+ =?utf-8?B?MXJRNGhEK2FaRzdoVHJpS1pkNGowSHE5eEpaMFAvaTNjU3g3bWNiNGhJL3JU?=
+ =?utf-8?B?ZjAwTWtuVjJEa2pjRHprVVNKSXNQZmMyR3JVTDVFWFB4SDNxekpPR1pPdWxk?=
+ =?utf-8?Q?I5BRs/r6sv/ubmP4=3D?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a55e4bd-acb4-4658-65cf-08dea1f1bb7e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58091653-c72a-42fd-d78c-08dea1f1bf77
 X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 11:07:54.0709
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 11:08:01.0860
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XEmZFZFaUmklO28BH5AaINmbUzXpvRgPBtYls0/pao/oldszC86Z1AUBR6zfkiiWSOBukTk6Uh//7s/w7mTZsw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FCdo4QSxxX5Yaq9cm6iebXqInzLXSL+gKWm6vQYXmzrBsfnEyN5GmAnMmWaOBL3R6NiPWrKumHYxKsOU0A4Qew==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9279
 
-Hi,
+From: Sandor Yu <Sandor.yu@nxp.com>
 
-Since Sandor left NXP some time back, I'll be taking over this patchset
-and continue the upstreaming process from where he left off.
+Basic mailbox access functions are removed, they are replaced by
+mailbox helper functions:
+- cdns_mhdp_mailbox_send()
+- cdns_mhdp_mailbox_send_recv()
+- cdns_mhdp_mailbox_send_recv_multi()
+- cdns_mhdp_secure_mailbox_send()
+- cdns_mhdp_secure_mailbox_send_recv()
+- cdns_mhdp_secure_mailbox_send_recv_multi()
 
-The patchset adds initial support for Cadence MHDP8501(HDMI/DP) DRM bridge
-and Cadence HDP-TX PHY(HDMI/DP) for Freescale i.MX8MQ.
+All MHDP commands that need to be passed through the mailbox
+have been rewritten using these new helper functions.
 
-I addressed all remaining reviewers' comments from v20 but I'm not sure
-whether Alexander's issue is still present. Alexander, let me know if
-you're still experiencing a black screen with this patch-set and I'll
-try to address it in the next revision.
-
-Thanks,
-Laurentiu
-
---
-Changes in v22:
- - Addressed most of Sashiko review comments (per-patch changelog below):
-   https://sashiko.dev/#/patchset/20260407-dcss-hdmi-upstreaming-v21-0-4681070ab82f%40oss.nxp.com
- - Removed all existing r-b tags since pretty much all patches have
-   changes;
- - 0001 - soc: cadence: Create helper functions for Cadence MHDP
-   - Global mailbox mutex replaced with a per-instance mailbox_mutex in struct
-     cdns_mhdp_base
-   - Added dedicated mhdp_mailbox_read/write_secure() functions; all mailbox
-     helpers now take a bool secure parameter instead of a raw regs pointer
-   - Fixed HDCP opcode numbering (values 0x09–0x0c shifted up by one)
-   - KDoc style fixes throughout, added a kernel-doc comment to cdns_mhdp_base;
- - 0002 - drm: bridge: cadence: Update mhdp8546 mailbox access functions
-   - Added mutex_init / mutex_destroy calls for the new per-instance mailbox
-     mutex
- - 0003 - dt-bindings: display: bridge: Add Cadence MHDP8501
-   - Dropped 'cdns,bridge-type' property (Krzysztof); added 'phy' child-node
-     property to avoid having 2 nodes with the same address;
-     fixed mdhp_phy -> mhdp_phy typo
- - 0004 - drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
-   - Bridge type is now auto-detected by traversing the OF graph to the
-     connector (DP or HDMI), replacing the removed DT property
-   - Since PHY is now a child platform device, use devm_of_platform_populate
-   - Extensive error handling improvements (goto labels, proper unwinding)
-   - HDMI: fixed uninitialised packet[] buffer, SCDC read rewritten for
-     correctness, hotplug handler uses proper modeset locking, atomic commit
-     handles -EDEADLK, infoframe update moved after hardware config
- - 0005 - dt-bindings: phy: Add Freescale iMX8MQ DP and HDMI PHY
-   - Binding file renamed to fsl,imx8mq-hdptx-phy.yaml to comply with DT spec;
-     removed reg property (PHY inherits parent MMIO now); expanded example
-     showing PHY as a child node
- - 0006 - phy: freescale: Add DisplayPort/HDMI Combo-PHY driver for i.MX8MQ
-   - MMIO now mapped via devm_of_iomap(...parent...) instead of its own reg
-     resource
-   - Fixed uninitialised variable, wrong return type on link-rate error, NULL
-     dereference in phy_valid, and swallowed error code in clock enable
- - 0007 - arm64: dts: imx8mq: Add DCSS + HDMI/DP display pipeline
-   - PHY moved from top-level bus node to child of the bridge node;
-     fixed mdhp_phy -> mhdp_phy typo
- - 0008 - arm64: dts: imx8mq: tqma8mq-mba8mx: Enable HDMI support
-   - Added status = "okay" on the HDMI connector; removed now-gone
-     cdns,bridge-type; added status = "disabled" in shared dtsi
- - Link to v21: https://lore.kernel.org/r/20260407-dcss-hdmi-upstreaming-v21-0-4681070ab82f@oss.nxp.com
-
-Changes in v21:
- - Dropped "phy: Add HDMI configuration options" patch because it was
-   already merged separately;
- - Rebased to latest linux-next (7.0-rc6) and fixed all issues
-   introduced by API changes in DRM;
- - Addressed Maxime's comment on patch #5 and used debugfs file instead
-   of sysfs for printing firmware version;
- - Addressed all Dmitry's comments: handled the
-   cdns_mhdp_mailbox_send_recv_multi() error, removed the RGB 10bit
-   unused code, added a dts property in order to get the bridge type (I
-   couldn't find another way to do it...);
- - Dropped Krzysztof's r-b tag for patch #4 (which is now patch #3)
-   since I added a new property;
- - Link to v20: https://lore.kernel.org/r/cover.1734340233.git.Sandor.yu@nxp.com
-
-Changes in v20:
- - Patch #1: soc: cadence: Create helper functions for Cadence MHDP
- - Patch #2: drm: bridge: cadence: Update mhdp8546 mailbox access functions
-   - The two patches are split from Patch #1 in v19.  The MHDP helper
-     functions have been moved in a new "cadence" directory under the
-     SOC directory in patch #1, in order to promote code reuse among
-     MHDP8546, MHDP8501, and the i.MX8MQ HDMI/DP PHY drivers,
- - Patch #3: phy: Add HDMI configuration options
-   - Add a-b tag
- - Patch #4: dt-bindings: display: bridge: Add Cadence MHDP8501
-   - remove data type link of data-lanes
- - Patch #5: drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
-   - Dump mhdp FW version by debugfs
-   - Combine HDMI and DP cable detect functions into one function
-   - Combine HDMI and DP cable bridge_mode_valid() functions into one function
-   - Rename cdns_hdmi_reset_link() to cdns_hdmi_handle_hotplug()
-   - Add comments for EDID in cdns_hdmi_handle_hotplug() and cdns_dp_check_link_state()
-   - Add atomic_get_input_bus_fmts() and bridge_atomic_check() for DP driver
-   - Remove bpc and color_fmt init in atomic_enable() function.
-   - More detail comments for DDC adapter only support SCDC_I2C_SLAVE_ADDRESS
-     read and write in HDMI driver.
- - Patch #7: phy: freescale: Add DisplayPort/HDMI Combo-PHY driver for i.MX8MQ
-   - implify DP configuration handling by directly copying
-     the configuration options to the driver's internal structure.
-   - return the error code directly instead of logging an error message in `hdptx_clk_enable`
-   - Remove redundant ref_clk_rate check
- - Link to v19: https://lore.kernel.org/r/cover.1732627815.git.Sandor.yu@nxp.com
-
-Changes in v19:
- - Patch #1
-   - use guard(mutex)
-   - Add kerneldocs for all new APIs.
-   - Detail comments for mailbox access specific case.
-   - remove cdns_mhdp_dp_reg_write() because it is not needed by driver now.
- - Patch #3
-   - move property data-lanes to endpoint of port@1
- - Patch #4
-   - get endpoint for data-lanes as it had move to endpoint of port@1
-   - update clock management as devm_clk_get_enabled() introduced.
-   - Fix clear_infoframe() function is not work issue.
-   - Manage PHY power state via phy_power_on() and phy_power_off().
- - Patch #6
-   - Simplify the PLL table by removing unused and constant data
-   - Remove PHY power management, controller driver will handle them.
-   - Remove enum dp_link_rate
-   - introduce read_pll_timeout.
-   - update clock management as devm_clk_get_enabled() introduced.
-   - remove cdns_hdptx_phy_init() and cdns_hdptx_phy_remove().
- - Patch #8:
-   - move property data-lanes to endpoint of port@1
- - Link to v18: https://lore.kernel.org/r/cover.1730172244.git.Sandor.yu@nxp.com
-
-Changes in v18:
- - Patch #1
-   - Create three ordinary mailbox access APIs
-       cdns_mhdp_mailbox_send
-       cdns_mhdp_mailbox_send_recv
-       cdns_mhdp_mailbox_send_recv_multi
-   - Create three secure mailbox access APIs
-       cdns_mhdp_secure_mailbox_send
-       cdns_mhdp_secure_mailbox_send_recv
-       cdns_mhdp_secure_mailbox_send_recv_multi
-   - MHDP8546 DP and HDCP commands that need access mailbox are rewrited
-     with above 6 API functions.
- - Patch #3
-   - remove lane-mapping and replace it with data-lanes
-   - remove r-b tag as property changed.
- - Patch #4
-   - MHDP8501 HDMI and DP commands that need access mailbox are rewrited
-     with new API functions created in patch #1.
-   - replace lane-mapping with data-lanes, use the value from data-lanes
-     to reorder HDMI and DP lane mapping.
-   - create I2C adapter for HDMI SCDC, remove cdns_hdmi_scdc_write() function.
-   - Rewrite cdns_hdmi_sink_config() function, use HDMI SCDC helper function
-     drm_scdc_set_high_tmds_clock_ratio() and drm_scdc_set_scrambling()
-     to config HDMI sink TMDS.
-   - Remove struct video_info from HDMI driver.
-   - Remove tmds_char_rate_valid() be called in bridge_mode_valid(),
-     community had patch in reviewing to implement the function.
-   - Remove warning message print when get unknown HPD cable status.
-   - Add more detail comments for HDP plugin and plugout interrupt.
-   - use dev_dbg to repleace DRM_INFO when cable HPD status changed.
-   - Remove t-b tag as above code change.
- - Patch #6
-   - fix build error as code rebase to latest kernel version.
- - Patch #8:
-   - replace lane-mapping with data-lanes
- - Link to v17: https://lore.kernel.org/r/cover.1727159906.git.Sandor.yu@nxp.com
-
-Changes in v17:
- - Patch #1:
-   - Replaces the local mutex mbox_mutex with a global mutex mhdp_mailbox_mutex
- - Patch #2:
-   - remove hdmi.h
-   - add 2024 year to copyright
-   - Add r-b tag.
- - Patch #3:
-   - Add lane-mapping property.
- - Patch #4:
-   - Reset the HDMI/DP link when an HPD (Hot Plug Detect) event is detected
-   - Move the HDMI protocol settings from hdmi_ctrl_init() to a new function
-     cdns_hdmi_set_hdmi_mode_type(), to align with the introduced link reset functionality.
-   - Implement logic to check the type of HDMI sink.
-     If the sink is not a hdmi display, set the default mode to DVI.
-   - Implement hdmi_reset_infoframe function
-   - Reorder certain bit definitions in the header file to follow a descending order.
-   - Add "lane-mapping" property for both HDMI and DP, remove platform data from driver.
-     lane-mapping should be setting in dts according different board layout.
-   - Remove variable mode in struct cdns_mhdp8501_device, video mode could get from struct drm_crtc_state
-   - Remove variable char_rate in  struct cdns_mhdp8501_device, it could get from struct struct drm_connector_state.hdmi
-   - Replaces the local mutex mbox_mutex with a global mutex mhdp_mailbox_mutex
-   - Remove mutext protect for phy_api access functions.
- - Patch #6:
-   - Remove mbox_mutex
- - Link to v16: https://lore.kernel.org/r/cover.1719903904.git.Sandor.yu@nxp.com
-
-Changes in v16:
- - Patch #2:
-   - Remove pixel_clk_rate, bpc and color_space fields from struct
-     phy_configure_opts_hdmi, they were replaced by
-     unsigned long long tmds_char_rate.
-   - Remove r-b and a-c tags because this patch have important change.
- - Patch #4:
-   - Add DRM_BRIDGE_OP_HDMI flags for HDMI driver,
-   - Introduce the hdmi info frame helper functions,
-     added hdmi_clear_infoframe(), hdmi_write_infoframe() and
-     hdmi_tmds_char_rate_valid() according Dmitry's patch
-     'make use of the HDMI connector infrastructure' patchset ([2]).
-   - mode_fixup() is replaced by atomic_check().
-   - Fix video mode 4Kp30 did not work on some displays that support
-     LTE_340Mcsc_scramble.
-   - updated for tmds_char_rate added in patch #2.
- - Patch #6:
-   - updated for tmds_char_rate added in patch #2.
- - Link to v15: https://lore.kernel.org/r/20240306101625.795732-1-alexander.stein@ew.tq-group.com
-
-Changes in v15:
- - Patch #6 + #7:
-   -  Merged PHY driver into a single combo PHY driver
- - Patch #7 + #8:
-   - Add DT patches for a running HDMI setup
-
-Changes in v14:
- - Patch #4:
-   - Rebase to next-20240219, replace get_edid function by edid_read
-     function as commits d807ad80d811b ("drm/bridge: add ->edid_read
-     hook and drm_bridge_edid_read()") and 27b8f91c08d99 ("drm/bridge:
-     remove ->get_edid callback") had change the API.
-
-Changes in v13:
- - Patch #4:
-   - Explicitly include linux/platform_device.h for cdns-mhdp8501-core.c
-   - Fix build warning
-   - Order bit bpc and color_space in descending shit.
- - Patch #7:
-   - Fix build warning
-
-Changes in v12:
- - Patch #1:
-   - Move status initialize out of mbox_mutex.
-   - Reorder API functions in alphabetical.
-   - Add notes for malibox access functions.
-   - Add year 2024 to copyright.
- - Patch #4:
-   - Replace DRM_INFO with dev_info or dev_warn.
-   - Replace DRM_ERROR with dev_err.
-   - Return ret when cdns_mhdp_dpcd_read failed in function cdns_dp_aux_transferi().
-   - Remove unused parmeter in function cdns_dp_get_msa_misc
-     and use two separate variables for color space and bpc.
-   - Add year 2024 to copyright.
- - Patch #6:
-   - Return error code to replace -1 for function wait_for_ack().
-   - Set cdns_phy->power_up = false in phy_power_down function.
-   - Remove "RATE_8_1 = 810000", it is not used in driver.
-   - Add year 2024 to copyright.
- - Patch #7:
-   - Adjust clk disable order.
-   - Return error code to replace -1 for function wait_for_ack().
-   - Use bool for variable pclk_in.
-   - Add year 2024 to copyright.
-
-Changes in v11:
- - rewrite cdns_mhdp_set_firmware_active() in mhdp8546 core driver,
-   use cdns_mhdp_mailbox_send() to replace cdns_mhdp_mailbox_write()
-   same as the other mailbox access functions.
- - use static for cdns_mhdp_mailbox_write() and
-   cdns_mhdp_mailbox_read() and remove them from EXPORT_SYMBOL_GPL().
- - remove MODULE_ALIAS() from mhdp8501 driver.
-
-Changes in v10:
- - Create mhdp helper driver to replace macro functions, move all mhdp
-   mailbox access functions and common functions into the helper
-   driver.  Patch #1:drm: bridge: Cadence: Creat mhdp helper driver it
-   is totaly different with v9.
-
-Changes in v9:
- - Remove compatible string "cdns,mhdp8501" that had removed
-   from dt-bindings file in v8.
- - Add Dmitry's R-b tag to patch #2
- - Add Krzysztof's R-b tag to patch #3
-
-Changes in v8:
- - MHDP8501 HDMI/DP:
-   - Correct DT node name to "display-bridge".
-   - Remove "cdns,mhdp8501" from mhdp8501 dt-binding doc.
-
- - HDMI/DP PHY:
-   - Introduced functions `wait_for_ack` and `wait_for_ack_clear` to handle
-     waiting with acknowledgment bits set and cleared respectively.
-   - Use FIELD_PRE() to set bitfields for both HDMI and DP PHY.
-
-Changes in v7:
- - MHDP8501 HDMI/DP:
-   - Combine HDMI and DP driver into one mhdp8501 driver.
-     Use the connector type to load the corresponding functions.
-   - Remove connector init functions.
-   - Add <linux/hdmi.h> in phy_hdmi.h to reuse 'enum hdmi_colorspace'.
-
- - HDMI/DP PHY:
-   - Lowercase hex values
-   - Fix parameters indent issue on some functions
-   - Replace 'udelay' with 'usleep_range'
-
-Changes in v6:
- - HDMI/DP bridge driver
-   - 8501 is the part number of Cadence MHDP on i.MX8MQ.
-     Use MHDP8501 to name hdmi/dp drivers and files.
-   - Add compatible "fsl,imx8mq-mhdp8501-dp" for i.MX8MQ DP driver
-   - Add compatible "fsl,imx8mq-mhdp8501-hdmi" for i.MX8MQ HDMI driver
-   - Combine HDMI and DP dt-bindings into one file cdns,mhdp8501.yaml
-   - Fix HDMI scrambling is not enable issue when driver working in 4Kp60
-     mode.
-   - Add HDMI/DP PHY API mailbox protect.
-
- - HDMI/DP PHY driver:
-   - Rename DP and HDMI PHY files and move to folder phy/freescale/
-   - Remove properties num_lanes and link_rate from DP PHY driver.
-   - Combine HDMI and DP dt-bindings into one file fsl,imx8mq-dp-hdmi-phy.yaml
-   - Update compatible string to "fsl,imx8mq-dp-phy".
-   - Update compatible string to "fsl,imx8mq-hdmi-phy".
-
-Changes in v5:
- - Drop "clk" suffix in clock name.
- - Add output port property in the example of hdmi/dp.
-
-Changes in v4:
- - dt-bindings:
-   - Correct dt-bindings coding style and address review comments.
-   - Add apb_clk description.
-   - Add output port for HDMI/DP connector
- - PHY:
-   - Alphabetically sorted in Kconfig and Makefile for DP and HDMI PHY
-   - Remove unused registers define from HDMI and DP PHY drivers.
-   - More description in phy_hdmi.h.
-   - Add apb_clk to HDMI and DP phy driver.
- - HDMI/DP:
-   - Use get_unaligned_le32() to replace hardcode type conversion
-     in HDMI AVI infoframe data fill function.
-   - Add mailbox mutex lock in HDMI/DP driver for phy functions
-     to reslove race conditions between HDMI/DP and PHY drivers.
-   - Add apb_clk to both HDMI and DP driver.
-   - Rename some function names and add prefix with "cdns_hdmi/cdns_dp".
-   - Remove bpc 12 and 16 optional that not supported.
-
-Changes in v3:
- - Address comments for dt-bindings files.
-   - Correct dts-bindings file names
-     Rename phy-cadence-hdptx-dp.yaml to cdns,mhdp-imx8mq-dp.yaml
-     Rename phy-cadence-hdptx-hdmi.yaml to cdns,mhdp-imx8mq-hdmi.yaml
-   - Drop redundant words and descriptions.
-   - Correct hdmi/dp node name.
-
-Changes in v2:
- - Reuse Cadence mailbox access functions from mhdp8546 instead of
-   rockchip DP.
- - Mailbox access functions be convert to marco functions
-   that will be referenced by HDP-TX PHY(HDMI/DP) driver too.
- - Plain bridge instead of component driver.
- - Standalone Cadence HDP-TX PHY(HDMI/DP) driver.
- - Audio driver are removed from the patch set, it will be add in another
-   patch set later.
+Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+Co-developed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
 ---
-Alexander Stein (2):
-      arm64: dts: imx8mq: Add DCSS + HDMI/DP display pipeline
-      arm64: dts: imx8mq: tqma8mq-mba8mx: Enable HDMI support
-
-Sandor Yu (6):
-      soc: cadence: Create helper functions for Cadence MHDP
-      drm: bridge: cadence: Update mhdp8546 mailbox access functions
-      dt-bindings: display: bridge: Add Cadence MHDP8501
-      drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
-      dt-bindings: phy: Add Freescale iMX8MQ DP and HDMI PHY
-      phy: freescale: Add DisplayPort/HDMI Combo-PHY driver for i.MX8MQ
-
- .../bindings/display/bridge/cdns,mhdp8501.yaml     |  135 +++
- .../bindings/phy/fsl,imx8mq-hdptx-phy.yaml         |   80 ++
- .../boot/dts/freescale/imx8mq-tqma8mq-mba8mx.dts   |   28 +
- arch/arm64/boot/dts/freescale/imx8mq.dtsi          |   67 ++
- arch/arm64/boot/dts/freescale/mba8mx.dtsi          |   12 +
- drivers/gpu/drm/bridge/cadence/Kconfig             |   17 +
- drivers/gpu/drm/bridge/cadence/Makefile            |    2 +
- .../gpu/drm/bridge/cadence/cdns-mhdp8501-core.c    |  456 ++++++++
- .../gpu/drm/bridge/cadence/cdns-mhdp8501-core.h    |  382 ++++++
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8501-dp.c  |  724 ++++++++++++
- .../gpu/drm/bridge/cadence/cdns-mhdp8501-hdmi.c    |  780 +++++++++++++
- .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  489 ++------
- .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.h    |   47 +-
- .../gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c    |  212 +---
- .../gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h    |   18 +-
- drivers/phy/freescale/Kconfig                      |   10 +
- drivers/phy/freescale/Makefile                     |    1 +
- drivers/phy/freescale/phy-fsl-imx8mq-hdptx.c       | 1233 ++++++++++++++++++++
- drivers/soc/Kconfig                                |    1 +
- drivers/soc/Makefile                               |    1 +
- drivers/soc/cadence/Kconfig                        |    9 +
- drivers/soc/cadence/Makefile                       |    3 +
- drivers/soc/cadence/cdns-mhdp-helper.c             |  611 ++++++++++
- include/soc/cadence/cdns-mhdp-helper.h             |  143 +++
- 24 files changed, 4800 insertions(+), 661 deletions(-)
+To: Parshuram Thombare <pthombar@cadence.com>
+To: Swapnil Jakhade <sjakhade@cadence.com>
+To: Dmitry Baryshkov <lumag@kernel.org>
+To: Nikhil Devshatwar <nikhil.nd@ti.com>
+To: Jayesh Choudhary <j-choudhary@ti.com>
 ---
-base-commit: fbddb4aaabc2b3b250552eb4ed8074b06acb4e0e
-change-id: 20260406-dcss-hdmi-upstreaming-28998a88e911
+ drivers/gpu/drm/bridge/cadence/Kconfig             |   1 +
+ .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    | 489 ++++-----------------
+ .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.h    |  47 +-
+ .../gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c    | 212 +--------
+ .../gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h    |  18 +-
+ 5 files changed, 106 insertions(+), 661 deletions(-)
 
-Best regards,
+diff --git a/drivers/gpu/drm/bridge/cadence/Kconfig b/drivers/gpu/drm/bridge/cadence/Kconfig
+index f1d8a8a151d84..2ff261e18bf1c 100644
+--- a/drivers/gpu/drm/bridge/cadence/Kconfig
++++ b/drivers/gpu/drm/bridge/cadence/Kconfig
+@@ -29,6 +29,7 @@ config DRM_CDNS_MHDP8546
+ 	select DRM_DISPLAY_HELPER
+ 	select DRM_KMS_HELPER
+ 	select DRM_PANEL_BRIDGE
++	select CDNS_MHDP_HELPER
+ 	depends on OF
+ 	help
+ 	  Support Cadence DPI to DP bridge. This is an internal
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 064c6915c8960..435c006ab0c34 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -73,302 +73,18 @@ static void cdns_mhdp_bridge_hpd_disable(struct drm_bridge *bridge)
+ 	       mhdp->regs + CDNS_APB_INT_MASK);
+ }
+ 
+-static int cdns_mhdp_mailbox_read(struct cdns_mhdp_device *mhdp)
+-{
+-	int ret, empty;
+-
+-	WARN_ON(!mutex_is_locked(&mhdp->mbox_mutex));
+-
+-	ret = readx_poll_timeout(readl, mhdp->regs + CDNS_MAILBOX_EMPTY,
+-				 empty, !empty, MAILBOX_RETRY_US,
+-				 MAILBOX_TIMEOUT_US);
+-	if (ret < 0)
+-		return ret;
+-
+-	return readl(mhdp->regs + CDNS_MAILBOX_RX_DATA) & 0xff;
+-}
+-
+-static int cdns_mhdp_mailbox_write(struct cdns_mhdp_device *mhdp, u8 val)
+-{
+-	int ret, full;
+-
+-	WARN_ON(!mutex_is_locked(&mhdp->mbox_mutex));
+-
+-	ret = readx_poll_timeout(readl, mhdp->regs + CDNS_MAILBOX_FULL,
+-				 full, !full, MAILBOX_RETRY_US,
+-				 MAILBOX_TIMEOUT_US);
+-	if (ret < 0)
+-		return ret;
+-
+-	writel(val, mhdp->regs + CDNS_MAILBOX_TX_DATA);
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_mailbox_recv_header(struct cdns_mhdp_device *mhdp,
+-					 u8 module_id, u8 opcode,
+-					 u16 req_size)
+-{
+-	u32 mbox_size, i;
+-	u8 header[4];
+-	int ret;
+-
+-	/* read the header of the message */
+-	for (i = 0; i < sizeof(header); i++) {
+-		ret = cdns_mhdp_mailbox_read(mhdp);
+-		if (ret < 0)
+-			return ret;
+-
+-		header[i] = ret;
+-	}
+-
+-	mbox_size = get_unaligned_be16(header + 2);
+-
+-	if (opcode != header[0] || module_id != header[1] ||
+-	    req_size != mbox_size) {
+-		/*
+-		 * If the message in mailbox is not what we want, we need to
+-		 * clear the mailbox by reading its contents.
+-		 */
+-		for (i = 0; i < mbox_size; i++)
+-			if (cdns_mhdp_mailbox_read(mhdp) < 0)
+-				break;
+-
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_mailbox_recv_data(struct cdns_mhdp_device *mhdp,
+-				       u8 *buff, u16 buff_size)
+-{
+-	u32 i;
+-	int ret;
+-
+-	for (i = 0; i < buff_size; i++) {
+-		ret = cdns_mhdp_mailbox_read(mhdp);
+-		if (ret < 0)
+-			return ret;
+-
+-		buff[i] = ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_mailbox_send(struct cdns_mhdp_device *mhdp, u8 module_id,
+-				  u8 opcode, u16 size, u8 *message)
+-{
+-	u8 header[4];
+-	int ret, i;
+-
+-	header[0] = opcode;
+-	header[1] = module_id;
+-	put_unaligned_be16(size, header + 2);
+-
+-	for (i = 0; i < sizeof(header); i++) {
+-		ret = cdns_mhdp_mailbox_write(mhdp, header[i]);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	for (i = 0; i < size; i++) {
+-		ret = cdns_mhdp_mailbox_write(mhdp, message[i]);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static
+-int cdns_mhdp_reg_read(struct cdns_mhdp_device *mhdp, u32 addr, u32 *value)
+-{
+-	u8 msg[4], resp[8];
+-	int ret;
+-
+-	put_unaligned_be32(addr, msg);
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_GENERAL,
+-				     GENERAL_REGISTER_READ,
+-				     sizeof(msg), msg);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_GENERAL,
+-					    GENERAL_REGISTER_READ,
+-					    sizeof(resp));
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, resp, sizeof(resp));
+-	if (ret)
+-		goto out;
+-
+-	/* Returned address value should be the same as requested */
+-	if (memcmp(msg, resp, sizeof(msg))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	*value = get_unaligned_be32(resp + 4);
+-
+-out:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-	if (ret) {
+-		dev_err(mhdp->dev, "Failed to read register\n");
+-		*value = 0;
+-	}
+-
+-	return ret;
+-}
+-
+-static
+-int cdns_mhdp_reg_write(struct cdns_mhdp_device *mhdp, u16 addr, u32 val)
+-{
+-	u8 msg[6];
+-	int ret;
+-
+-	put_unaligned_be16(addr, msg);
+-	put_unaligned_be32(val, msg + 2);
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_WRITE_REGISTER, sizeof(msg), msg);
+-
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
+-}
+-
+-static
+-int cdns_mhdp_reg_write_bit(struct cdns_mhdp_device *mhdp, u16 addr,
+-			    u8 start_bit, u8 bits_no, u32 val)
+-{
+-	u8 field[8];
+-	int ret;
+-
+-	put_unaligned_be16(addr, field);
+-	field[2] = start_bit;
+-	field[3] = bits_no;
+-	put_unaligned_be32(val, field + 4);
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_WRITE_FIELD, sizeof(field), field);
+-
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
+-}
+-
+-static
+-int cdns_mhdp_dpcd_read(struct cdns_mhdp_device *mhdp,
+-			u32 addr, u8 *data, u16 len)
+-{
+-	u8 msg[5], reg[5];
+-	int ret;
+-
+-	put_unaligned_be16(len, msg);
+-	put_unaligned_be24(addr, msg + 2);
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_READ_DPCD, sizeof(msg), msg);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-					    DPTX_READ_DPCD,
+-					    sizeof(reg) + len);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, reg, sizeof(reg));
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, data, len);
+-
+-out:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
+-}
+-
+-static
+-int cdns_mhdp_dpcd_write(struct cdns_mhdp_device *mhdp, u32 addr, u8 value)
+-{
+-	u8 msg[6], reg[5];
+-	int ret;
+-
+-	put_unaligned_be16(1, msg);
+-	put_unaligned_be24(addr, msg + 2);
+-	msg[5] = value;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_WRITE_DPCD, sizeof(msg), msg);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-					    DPTX_WRITE_DPCD, sizeof(reg));
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, reg, sizeof(reg));
+-	if (ret)
+-		goto out;
+-
+-	if (addr != get_unaligned_be24(reg + 2))
+-		ret = -EINVAL;
+-
+-out:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	if (ret)
+-		dev_err(mhdp->dev, "dpcd write failed: %d\n", ret);
+-	return ret;
+-}
+-
+ static
+ int cdns_mhdp_set_firmware_active(struct cdns_mhdp_device *mhdp, bool enable)
+ {
+-	u8 msg[5];
+-	int ret, i;
+-
+-	msg[0] = GENERAL_MAIN_CONTROL;
+-	msg[1] = MB_MODULE_ID_GENERAL;
+-	msg[2] = 0;
+-	msg[3] = 1;
+-	msg[4] = enable ? FW_ACTIVE : FW_STANDBY;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	for (i = 0; i < sizeof(msg); i++) {
+-		ret = cdns_mhdp_mailbox_write(mhdp, msg[i]);
+-		if (ret)
+-			goto out;
+-	}
+-
+-	/* read the firmware state */
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, msg, sizeof(msg));
+-	if (ret)
+-		goto out;
+-
+-	ret = 0;
++	u8 status;
++	int ret;
+ 
+-out:
+-	mutex_unlock(&mhdp->mbox_mutex);
++	status = enable ? FW_ACTIVE : FW_STANDBY;
+ 
++	ret = cdns_mhdp_mailbox_send_recv(&mhdp->base, MB_MODULE_ID_GENERAL,
++					  GENERAL_MAIN_CONTROL,
++					  sizeof(status), &status,
++					  sizeof(status), &status);
+ 	if (ret < 0)
+ 		dev_err(mhdp->dev, "set firmware active failed\n");
+ 	return ret;
+@@ -380,34 +96,18 @@ int cdns_mhdp_get_hpd_status(struct cdns_mhdp_device *mhdp)
+ 	u8 status;
+ 	int ret;
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_HPD_STATE, 0, NULL);
+-	if (ret)
+-		goto err_get_hpd;
+-
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-					    DPTX_HPD_STATE,
+-					    sizeof(status));
+-	if (ret)
+-		goto err_get_hpd;
++	ret = cdns_mhdp_mailbox_send_recv(&mhdp->base, MB_MODULE_ID_DP_TX,
++					  DPTX_HPD_STATE,
++					  0, NULL,
++					  sizeof(status), &status);
+ 
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, &status, sizeof(status));
+ 	if (ret)
+-		goto err_get_hpd;
+-
+-	mutex_unlock(&mhdp->mbox_mutex);
++		return ret;
+ 
+ 	dev_dbg(mhdp->dev, "%s: HPD %splugged\n", __func__,
+ 		status ? "" : "un");
+ 
+ 	return status;
+-
+-err_get_hpd:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
+ }
+ 
+ static
+@@ -418,28 +118,17 @@ int cdns_mhdp_get_edid_block(void *data, u8 *edid,
+ 	u8 msg[2], reg[2], i;
+ 	int ret;
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+ 	for (i = 0; i < 4; i++) {
+ 		msg[0] = block / 2;
+ 		msg[1] = block % 2;
+ 
+-		ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-					     DPTX_GET_EDID, sizeof(msg), msg);
+-		if (ret)
+-			continue;
+-
+-		ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-						    DPTX_GET_EDID,
+-						    sizeof(reg) + length);
+-		if (ret)
+-			continue;
+-
+-		ret = cdns_mhdp_mailbox_recv_data(mhdp, reg, sizeof(reg));
+-		if (ret)
+-			continue;
+-
+-		ret = cdns_mhdp_mailbox_recv_data(mhdp, edid, length);
++		ret = cdns_mhdp_mailbox_send_recv_multi(&mhdp->base,
++							MB_MODULE_ID_DP_TX,
++							DPTX_GET_EDID,
++							sizeof(msg), msg,
++							DPTX_GET_EDID,
++							sizeof(reg), reg,
++							length, edid);
+ 		if (ret)
+ 			continue;
+ 
+@@ -447,8 +136,6 @@ int cdns_mhdp_get_edid_block(void *data, u8 *edid,
+ 			break;
+ 	}
+ 
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+ 	if (ret)
+ 		dev_err(mhdp->dev, "get block[%d] edid failed: %d\n",
+ 			block, ret);
+@@ -462,21 +149,9 @@ int cdns_mhdp_read_hpd_event(struct cdns_mhdp_device *mhdp)
+ 	u8 event = 0;
+ 	int ret;
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_READ_EVENT, 0, NULL);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-					    DPTX_READ_EVENT, sizeof(event));
+-	if (ret < 0)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, &event, sizeof(event));
+-out:
+-	mutex_unlock(&mhdp->mbox_mutex);
++	ret = cdns_mhdp_mailbox_send_recv(&mhdp->base, MB_MODULE_ID_DP_TX,
++					  DPTX_READ_EVENT,
++					  0, NULL, sizeof(event), &event);
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -510,35 +185,23 @@ int cdns_mhdp_adjust_lt(struct cdns_mhdp_device *mhdp, unsigned int nlanes,
+ 	put_unaligned_be16(udelay, payload + 1);
+ 	memcpy(payload + 3, lanes_data, nlanes);
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-
+-	ret = cdns_mhdp_mailbox_send(mhdp, MB_MODULE_ID_DP_TX,
+-				     DPTX_ADJUST_LT,
+-				     sizeof(payload), payload);
+-	if (ret)
+-		goto out;
+-
+ 	/* Yes, read the DPCD read command response */
+-	ret = cdns_mhdp_mailbox_recv_header(mhdp, MB_MODULE_ID_DP_TX,
+-					    DPTX_READ_DPCD,
+-					    sizeof(hdr) + DP_LINK_STATUS_SIZE);
+-	if (ret)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, hdr, sizeof(hdr));
++	ret = cdns_mhdp_mailbox_send_recv_multi(&mhdp->base,
++						MB_MODULE_ID_DP_TX,
++						DPTX_ADJUST_LT,
++						sizeof(payload), payload,
++						DPTX_READ_DPCD,
++						sizeof(hdr), hdr,
++						DP_LINK_STATUS_SIZE,
++						link_status);
+ 	if (ret)
+ 		goto out;
+ 
+ 	addr = get_unaligned_be24(hdr + 2);
+ 	if (addr != DP_LANE0_1_STATUS)
+-		goto out;
+-
+-	ret = cdns_mhdp_mailbox_recv_data(mhdp, link_status,
+-					  DP_LINK_STATUS_SIZE);
++		ret = -EINVAL;
+ 
+ out:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+ 	if (ret)
+ 		dev_err(mhdp->dev, "Failed to adjust Link Training.\n");
+ 
+@@ -773,7 +436,7 @@ static ssize_t cdns_mhdp_transfer(struct drm_dp_aux *aux,
+ 		unsigned int i;
+ 
+ 		for (i = 0; i < msg->size; ++i) {
+-			ret = cdns_mhdp_dpcd_write(mhdp,
++			ret = cdns_mhdp_dpcd_write(&mhdp->base,
+ 						   msg->address + i, buf[i]);
+ 			if (!ret)
+ 				continue;
+@@ -785,7 +448,7 @@ static ssize_t cdns_mhdp_transfer(struct drm_dp_aux *aux,
+ 			return ret;
+ 		}
+ 	} else {
+-		ret = cdns_mhdp_dpcd_read(mhdp, msg->address,
++		ret = cdns_mhdp_dpcd_read(&mhdp->base, msg->address,
+ 					  msg->buffer, msg->size);
+ 		if (ret) {
+ 			dev_dbg(mhdp->dev,
+@@ -813,12 +476,12 @@ static int cdns_mhdp_link_training_init(struct cdns_mhdp_device *mhdp)
+ 	if (!mhdp->host.scrambler)
+ 		reg32 |= CDNS_PHY_SCRAMBLER_BYPASS;
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_PHY_CONFIG, reg32);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_PHY_CONFIG, reg32);
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_ENHNCD,
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_ENHNCD,
+ 			    mhdp->sink.enhanced & mhdp->host.enhanced);
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_LANE_EN,
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_LANE_EN,
+ 			    CDNS_DP_LANE_EN_LANES(mhdp->link.num_lanes));
+ 
+ 	cdns_mhdp_link_configure(&mhdp->aux, &mhdp->link);
+@@ -839,7 +502,7 @@ static int cdns_mhdp_link_training_init(struct cdns_mhdp_device *mhdp)
+ 		return ret;
+ 	}
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_PHY_CONFIG,
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_PHY_CONFIG,
+ 			    CDNS_PHY_COMMON_CONFIG |
+ 			    CDNS_PHY_TRAINING_EN |
+ 			    CDNS_PHY_TRAINING_TYPE(1) |
+@@ -984,7 +647,7 @@ static bool cdns_mhdp_link_training_channel_eq(struct cdns_mhdp_device *mhdp,
+ 		CDNS_PHY_TRAINING_TYPE(eq_tps);
+ 	if (eq_tps != 4)
+ 		reg32 |= CDNS_PHY_SCRAMBLER_BYPASS;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_PHY_CONFIG, reg32);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_PHY_CONFIG, reg32);
+ 
+ 	drm_dp_dpcd_writeb(&mhdp->aux, DP_TRAINING_PATTERN_SET,
+ 			   (eq_tps != 4) ? eq_tps | DP_LINK_SCRAMBLING_DISABLE :
+@@ -1248,7 +911,7 @@ static int cdns_mhdp_link_training(struct cdns_mhdp_device *mhdp,
+ 			   mhdp->host.scrambler ? 0 :
+ 			   DP_LINK_SCRAMBLING_DISABLE);
+ 
+-	ret = cdns_mhdp_reg_read(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, &reg32);
++	ret = cdns_mhdp_reg_read(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, &reg32);
+ 	if (ret < 0) {
+ 		dev_err(mhdp->dev,
+ 			"Failed to read CDNS_DP_FRAMER_GLOBAL_CONFIG %d\n",
+@@ -1259,13 +922,13 @@ static int cdns_mhdp_link_training(struct cdns_mhdp_device *mhdp,
+ 	reg32 |= CDNS_DP_NUM_LANES(mhdp->link.num_lanes);
+ 	reg32 |= CDNS_DP_WR_FAILING_EDGE_VSYNC;
+ 	reg32 |= CDNS_DP_FRAMER_EN;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, reg32);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, reg32);
+ 
+ 	/* Reset PHY config */
+ 	reg32 = CDNS_PHY_COMMON_CONFIG | CDNS_PHY_TRAINING_TYPE(1);
+ 	if (!mhdp->host.scrambler)
+ 		reg32 |= CDNS_PHY_SCRAMBLER_BYPASS;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_PHY_CONFIG, reg32);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_PHY_CONFIG, reg32);
+ 
+ 	return 0;
+ err:
+@@ -1273,7 +936,7 @@ static int cdns_mhdp_link_training(struct cdns_mhdp_device *mhdp,
+ 	reg32 = CDNS_PHY_COMMON_CONFIG | CDNS_PHY_TRAINING_TYPE(1);
+ 	if (!mhdp->host.scrambler)
+ 		reg32 |= CDNS_PHY_SCRAMBLER_BYPASS;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_PHY_CONFIG, reg32);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_PHY_CONFIG, reg32);
+ 
+ 	drm_dp_dpcd_writeb(&mhdp->aux, DP_TRAINING_PATTERN_SET,
+ 			   DP_TRAINING_PATTERN_DISABLE);
+@@ -1387,7 +1050,7 @@ static int cdns_mhdp_link_up(struct cdns_mhdp_device *mhdp)
+ 	mhdp->link.num_lanes = cdns_mhdp_max_num_lanes(mhdp);
+ 
+ 	/* Disable framer for link training */
+-	err = cdns_mhdp_reg_read(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, &resp);
++	err = cdns_mhdp_reg_read(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, &resp);
+ 	if (err < 0) {
+ 		dev_err(mhdp->dev,
+ 			"Failed to read CDNS_DP_FRAMER_GLOBAL_CONFIG %d\n",
+@@ -1396,7 +1059,7 @@ static int cdns_mhdp_link_up(struct cdns_mhdp_device *mhdp)
+ 	}
+ 
+ 	resp &= ~CDNS_DP_FRAMER_EN;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, resp);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, resp);
+ 
+ 	/* Spread AMP if required, enable 8b/10b coding */
+ 	amp[0] = cdns_mhdp_get_ssc_supported(mhdp) ? DP_SPREAD_AMP_0_5 : 0;
+@@ -1605,7 +1268,7 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		bnd_hsync2vsync |= CDNS_IP_DET_INTERLACE_FORMAT;
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_BND_HSYNC2VSYNC(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_BND_HSYNC2VSYNC(stream_id),
+ 			    bnd_hsync2vsync);
+ 
+ 	hsync2vsync_pol_ctrl = 0;
+@@ -1613,10 +1276,10 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 		hsync2vsync_pol_ctrl |= CDNS_H2V_HSYNC_POL_ACTIVE_LOW;
+ 	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
+ 		hsync2vsync_pol_ctrl |= CDNS_H2V_VSYNC_POL_ACTIVE_LOW;
+-	cdns_mhdp_reg_write(mhdp, CDNS_HSYNC2VSYNC_POL_CTRL(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_HSYNC2VSYNC_POL_CTRL(stream_id),
+ 			    hsync2vsync_pol_ctrl);
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_PXL_REPR(stream_id), pxl_repr);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_PXL_REPR(stream_id), pxl_repr);
+ 
+ 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		dp_framer_sp |= CDNS_DP_FRAMER_INTERLACE;
+@@ -1624,19 +1287,19 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 		dp_framer_sp |= CDNS_DP_FRAMER_HSYNC_POL_LOW;
+ 	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
+ 		dp_framer_sp |= CDNS_DP_FRAMER_VSYNC_POL_LOW;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_SP(stream_id), dp_framer_sp);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_SP(stream_id), dp_framer_sp);
+ 
+ 	front_porch = mode->crtc_hsync_start - mode->crtc_hdisplay;
+ 	back_porch = mode->crtc_htotal - mode->crtc_hsync_end;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRONT_BACK_PORCH(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRONT_BACK_PORCH(stream_id),
+ 			    CDNS_DP_FRONT_PORCH(front_porch) |
+ 			    CDNS_DP_BACK_PORCH(back_porch));
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_BYTE_COUNT(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_BYTE_COUNT(stream_id),
+ 			    mode->crtc_hdisplay * bpp / 8);
+ 
+ 	msa_h0 = mode->crtc_htotal - mode->crtc_hsync_start;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_MSA_HORIZONTAL_0(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_MSA_HORIZONTAL_0(stream_id),
+ 			    CDNS_DP_MSAH0_H_TOTAL(mode->crtc_htotal) |
+ 			    CDNS_DP_MSAH0_HSYNC_START(msa_h0));
+ 
+@@ -1645,11 +1308,11 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 			   CDNS_DP_MSAH1_HDISP_WIDTH(mode->crtc_hdisplay);
+ 	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
+ 		msa_horizontal_1 |= CDNS_DP_MSAH1_HSYNC_POL_LOW;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_MSA_HORIZONTAL_1(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_MSA_HORIZONTAL_1(stream_id),
+ 			    msa_horizontal_1);
+ 
+ 	msa_v0 = mode->crtc_vtotal - mode->crtc_vsync_start;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_MSA_VERTICAL_0(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_MSA_VERTICAL_0(stream_id),
+ 			    CDNS_DP_MSAV0_V_TOTAL(mode->crtc_vtotal) |
+ 			    CDNS_DP_MSAV0_VSYNC_START(msa_v0));
+ 
+@@ -1658,7 +1321,7 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 			 CDNS_DP_MSAV1_VDISP_WIDTH(mode->crtc_vdisplay);
+ 	if (mode->flags & DRM_MODE_FLAG_NVSYNC)
+ 		msa_vertical_1 |= CDNS_DP_MSAV1_VSYNC_POL_LOW;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_MSA_VERTICAL_1(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_MSA_VERTICAL_1(stream_id),
+ 			    msa_vertical_1);
+ 
+ 	if ((mode->flags & DRM_MODE_FLAG_INTERLACE) &&
+@@ -1670,14 +1333,14 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 	if (pxlfmt == DRM_OUTPUT_COLOR_FORMAT_YCBCR420)
+ 		misc1 = CDNS_DP_TEST_VSC_SDP;
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_MSA_MISC(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_MSA_MISC(stream_id),
+ 			    misc0 | (misc1 << 8));
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_HORIZONTAL(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_HORIZONTAL(stream_id),
+ 			    CDNS_DP_H_HSYNC_WIDTH(hsync) |
+ 			    CDNS_DP_H_H_TOTAL(mode->crtc_hdisplay));
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_VERTICAL_0(stream_id),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_VERTICAL_0(stream_id),
+ 			    CDNS_DP_V0_VHEIGHT(mode->crtc_vdisplay) |
+ 			    CDNS_DP_V0_VSTART(msa_v0));
+ 
+@@ -1686,13 +1349,13 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 	    mode->crtc_vtotal % 2 == 0)
+ 		dp_vertical_1 |= CDNS_DP_V1_VTOTAL_EVEN;
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_VERTICAL_1(stream_id), dp_vertical_1);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_VERTICAL_1(stream_id), dp_vertical_1);
+ 
+-	cdns_mhdp_reg_write_bit(mhdp, CDNS_DP_VB_ID(stream_id), 2, 1,
+-				(mode->flags & DRM_MODE_FLAG_INTERLACE) ?
+-				CDNS_DP_VB_ID_INTERLACED : 0);
++	cdns_mhdp_dp_reg_write_bit(&mhdp->base, CDNS_DP_VB_ID(stream_id), 2, 1,
++				   (mode->flags & DRM_MODE_FLAG_INTERLACE) ?
++				   CDNS_DP_VB_ID_INTERLACED : 0);
+ 
+-	ret = cdns_mhdp_reg_read(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, &framer);
++	ret = cdns_mhdp_reg_read(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, &framer);
+ 	if (ret < 0) {
+ 		dev_err(mhdp->dev,
+ 			"Failed to read CDNS_DP_FRAMER_GLOBAL_CONFIG %d\n",
+@@ -1701,7 +1364,7 @@ static void cdns_mhdp_configure_video(struct cdns_mhdp_device *mhdp,
+ 	}
+ 	framer |= CDNS_DP_FRAMER_EN;
+ 	framer &= ~CDNS_DP_NO_VIDEO_MODE;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, framer);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, framer);
+ }
+ 
+ static void cdns_mhdp_sst_enable(struct cdns_mhdp_device *mhdp,
+@@ -1734,15 +1397,15 @@ static void cdns_mhdp_sst_enable(struct cdns_mhdp_device *mhdp,
+ 
+ 	mhdp->stream_id = 0;
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_TU,
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_TU,
+ 			    CDNS_DP_FRAMER_TU_VS(vs) |
+ 			    CDNS_DP_FRAMER_TU_SIZE(tu_size) |
+ 			    CDNS_DP_FRAMER_TU_CNT_RST_EN);
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_LINE_THRESH(0),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_LINE_THRESH(0),
+ 			    line_thresh & GENMASK(5, 0));
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_STREAM_CONFIG_2(0),
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_STREAM_CONFIG_2(0),
+ 			    CDNS_DP_SC2_TU_VS_DIFF((tu_size - vs > 3) ?
+ 						   0 : tu_size - vs));
+ 
+@@ -1784,13 +1447,13 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 		mhdp->info->ops->enable(mhdp);
+ 
+ 	/* Enable VIF clock for stream 0 */
+-	ret = cdns_mhdp_reg_read(mhdp, CDNS_DPTX_CAR, &resp);
++	ret = cdns_mhdp_reg_read(&mhdp->base, CDNS_DPTX_CAR, &resp);
+ 	if (ret < 0) {
+ 		dev_err(mhdp->dev, "Failed to read CDNS_DPTX_CAR %d\n", ret);
+ 		goto out;
+ 	}
+ 
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_CAR,
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_CAR,
+ 			    resp | CDNS_VIF_CLK_EN | CDNS_VIF_CLK_RSTN);
+ 
+ 	if (mhdp->hdcp_supported &&
+@@ -1854,16 +1517,16 @@ static void cdns_mhdp_atomic_disable(struct drm_bridge *bridge,
+ 		cdns_mhdp_hdcp_disable(mhdp);
+ 
+ 	mhdp->bridge_enabled = false;
+-	cdns_mhdp_reg_read(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, &resp);
++	cdns_mhdp_reg_read(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, &resp);
+ 	resp &= ~CDNS_DP_FRAMER_EN;
+ 	resp |= CDNS_DP_NO_VIDEO_MODE;
+-	cdns_mhdp_reg_write(mhdp, CDNS_DP_FRAMER_GLOBAL_CONFIG, resp);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DP_FRAMER_GLOBAL_CONFIG, resp);
+ 
+ 	cdns_mhdp_link_down(mhdp);
+ 
+ 	/* Disable VIF clock for stream 0 */
+-	cdns_mhdp_reg_read(mhdp, CDNS_DPTX_CAR, &resp);
+-	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_CAR,
++	cdns_mhdp_reg_read(&mhdp->base, CDNS_DPTX_CAR, &resp);
++	cdns_mhdp_reg_write(&mhdp->base, CDNS_DPTX_CAR,
+ 			    resp & ~(CDNS_VIF_CLK_EN | CDNS_VIF_CLK_RSTN));
+ 
+ 	if (mhdp->info && mhdp->info->ops && mhdp->info->ops->disable)
+@@ -2280,7 +1943,6 @@ static int cdns_mhdp_probe(struct platform_device *pdev)
+ 
+ 	mhdp->clk = clk;
+ 	mhdp->dev = dev;
+-	mutex_init(&mhdp->mbox_mutex);
+ 	mutex_init(&mhdp->link_mutex);
+ 	spin_lock_init(&mhdp->start_lock);
+ 
+@@ -2311,6 +1973,12 @@ static int cdns_mhdp_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, mhdp);
+ 
++	/* init base struct for access mailbox  */
++	mhdp->base.dev = mhdp->dev;
++	mhdp->base.regs = mhdp->regs;
++	mhdp->base.sapb_regs = mhdp->sapb_regs;
++	mutex_init(&mhdp->base.mailbox_mutex);
++
+ 	mhdp->info = of_device_get_match_data(dev);
+ 
+ 	pm_runtime_enable(dev);
+@@ -2435,6 +2103,7 @@ static void cdns_mhdp_remove(struct platform_device *pdev)
+ 
+ 	cancel_work_sync(&mhdp->modeset_retry_work);
+ 	flush_work(&mhdp->hpd_work);
++	mutex_destroy(&mhdp->base.mailbox_mutex);
+ 	/* Ignoring mhdp->hdcp.check_work and mhdp->hdcp.prop_work here. */
+ }
+ 
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
+index b53335b0d22c3..ae7b85e56e986 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
+@@ -18,6 +18,7 @@
+ #include <drm/display/drm_dp_helper.h>
+ #include <drm/drm_bridge.h>
+ #include <drm/drm_connector.h>
++#include <soc/cadence/cdns-mhdp-helper.h>
+ 
+ struct clk;
+ struct device;
+@@ -27,10 +28,6 @@ struct phy;
+ #define CDNS_APB_CTRL				0x00000
+ #define CDNS_CPU_STALL				BIT(3)
+ 
+-#define CDNS_MAILBOX_FULL			0x00008
+-#define CDNS_MAILBOX_EMPTY			0x0000c
+-#define CDNS_MAILBOX_TX_DATA			0x00010
+-#define CDNS_MAILBOX_RX_DATA			0x00014
+ #define CDNS_KEEP_ALIVE				0x00018
+ #define CDNS_KEEP_ALIVE_MASK			GENMASK(7, 0)
+ 
+@@ -198,45 +195,10 @@ struct phy;
+ #define CDNS_DP_BYTE_COUNT(s)			(CDNS_DPTX_STREAM(s) + 0x7c)
+ #define CDNS_DP_BYTE_COUNT_BYTES_IN_CHUNK_SHIFT	16
+ 
+-/* mailbox */
+-#define MAILBOX_RETRY_US			1000
+-#define MAILBOX_TIMEOUT_US			2000000
+-
+-#define MB_OPCODE_ID				0
+-#define MB_MODULE_ID				1
+-#define MB_SIZE_MSB_ID				2
+-#define MB_SIZE_LSB_ID				3
+-#define MB_DATA_ID				4
+-
+-#define MB_MODULE_ID_DP_TX			0x01
+-#define MB_MODULE_ID_HDCP_TX			0x07
+-#define MB_MODULE_ID_HDCP_RX			0x08
+-#define MB_MODULE_ID_HDCP_GENERAL		0x09
+-#define MB_MODULE_ID_GENERAL			0x0a
+-
+-/* firmware and opcodes */
++/* firmware */
+ #define FW_NAME					"cadence/mhdp8546.bin"
+ #define CDNS_MHDP_IMEM				0x10000
+ 
+-#define GENERAL_MAIN_CONTROL			0x01
+-#define GENERAL_TEST_ECHO			0x02
+-#define GENERAL_BUS_SETTINGS			0x03
+-#define GENERAL_TEST_ACCESS			0x04
+-#define GENERAL_REGISTER_READ			0x07
+-
+-#define DPTX_SET_POWER_MNG			0x00
+-#define DPTX_GET_EDID				0x02
+-#define DPTX_READ_DPCD				0x03
+-#define DPTX_WRITE_DPCD				0x04
+-#define DPTX_ENABLE_EVENT			0x05
+-#define DPTX_WRITE_REGISTER			0x06
+-#define DPTX_READ_REGISTER			0x07
+-#define DPTX_WRITE_FIELD			0x08
+-#define DPTX_READ_EVENT				0x0a
+-#define DPTX_GET_LAST_AUX_STAUS			0x0e
+-#define DPTX_HPD_STATE				0x11
+-#define DPTX_ADJUST_LT				0x12
+-
+ #define FW_STANDBY				0
+ #define FW_ACTIVE				1
+ 
+@@ -352,6 +314,8 @@ struct cdns_mhdp_hdcp {
+ };
+ 
+ struct cdns_mhdp_device {
++	struct cdns_mhdp_base base;
++
+ 	void __iomem *regs;
+ 	void __iomem *sapb_regs;
+ 	void __iomem *j721e_regs;
+@@ -362,9 +326,6 @@ struct cdns_mhdp_device {
+ 
+ 	const struct cdns_mhdp_platform_info *info;
+ 
+-	/* This is to protect mailbox communications with the firmware */
+-	struct mutex mbox_mutex;
+-
+ 	/*
+ 	 * "link_mutex" protects the access to all the link parameters
+ 	 * including the link training process. Link training will be
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+index 5cd0b873e16f9..1b5c90af63dee 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+@@ -15,144 +15,20 @@
+ 
+ #include "cdns-mhdp8546-hdcp.h"
+ 
+-static int cdns_mhdp_secure_mailbox_read(struct cdns_mhdp_device *mhdp)
+-{
+-	int ret, empty;
+-
+-	WARN_ON(!mutex_is_locked(&mhdp->mbox_mutex));
+-
+-	ret = readx_poll_timeout(readl, mhdp->sapb_regs + CDNS_MAILBOX_EMPTY,
+-				 empty, !empty, MAILBOX_RETRY_US,
+-				 MAILBOX_TIMEOUT_US);
+-	if (ret < 0)
+-		return ret;
+-
+-	return readl(mhdp->sapb_regs + CDNS_MAILBOX_RX_DATA) & 0xff;
+-}
+-
+-static int cdns_mhdp_secure_mailbox_write(struct cdns_mhdp_device *mhdp,
+-					  u8 val)
+-{
+-	int ret, full;
+-
+-	WARN_ON(!mutex_is_locked(&mhdp->mbox_mutex));
+-
+-	ret = readx_poll_timeout(readl, mhdp->sapb_regs + CDNS_MAILBOX_FULL,
+-				 full, !full, MAILBOX_RETRY_US,
+-				 MAILBOX_TIMEOUT_US);
+-	if (ret < 0)
+-		return ret;
+-
+-	writel(val, mhdp->sapb_regs + CDNS_MAILBOX_TX_DATA);
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_secure_mailbox_recv_header(struct cdns_mhdp_device *mhdp,
+-						u8 module_id,
+-						u8 opcode,
+-						u16 req_size)
+-{
+-	u32 mbox_size, i;
+-	u8 header[4];
+-	int ret;
+-
+-	/* read the header of the message */
+-	for (i = 0; i < sizeof(header); i++) {
+-		ret = cdns_mhdp_secure_mailbox_read(mhdp);
+-		if (ret < 0)
+-			return ret;
+-
+-		header[i] = ret;
+-	}
+-
+-	mbox_size = get_unaligned_be16(header + 2);
+-
+-	if (opcode != header[0] || module_id != header[1] ||
+-	    (opcode != HDCP_TRAN_IS_REC_ID_VALID && req_size != mbox_size)) {
+-		for (i = 0; i < mbox_size; i++)
+-			if (cdns_mhdp_secure_mailbox_read(mhdp) < 0)
+-				break;
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_secure_mailbox_recv_data(struct cdns_mhdp_device *mhdp,
+-					      u8 *buff, u16 buff_size)
+-{
+-	int ret;
+-	u32 i;
+-
+-	for (i = 0; i < buff_size; i++) {
+-		ret = cdns_mhdp_secure_mailbox_read(mhdp);
+-		if (ret < 0)
+-			return ret;
+-
+-		buff[i] = ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static int cdns_mhdp_secure_mailbox_send(struct cdns_mhdp_device *mhdp,
+-					 u8 module_id,
+-					 u8 opcode,
+-					 u16 size,
+-					 u8 *message)
+-{
+-	u8 header[4];
+-	int ret;
+-	u32 i;
+-
+-	header[0] = opcode;
+-	header[1] = module_id;
+-	put_unaligned_be16(size, header + 2);
+-
+-	for (i = 0; i < sizeof(header); i++) {
+-		ret = cdns_mhdp_secure_mailbox_write(mhdp, header[i]);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	for (i = 0; i < size; i++) {
+-		ret = cdns_mhdp_secure_mailbox_write(mhdp, message[i]);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+ static int cdns_mhdp_hdcp_get_status(struct cdns_mhdp_device *mhdp,
+ 				     u16 *hdcp_port_status)
+ {
+ 	u8 hdcp_status[HDCP_STATUS_SIZE];
+ 	int ret;
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
+-					    HDCP_TRAN_STATUS_CHANGE, 0, NULL);
+-	if (ret)
+-		goto err_get_hdcp_status;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_header(mhdp, MB_MODULE_ID_HDCP_TX,
+-						   HDCP_TRAN_STATUS_CHANGE,
+-						   sizeof(hdcp_status));
+-	if (ret)
+-		goto err_get_hdcp_status;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_data(mhdp, hdcp_status,
+-						 sizeof(hdcp_status));
++	ret = cdns_mhdp_secure_mailbox_send_recv(&mhdp->base, MB_MODULE_ID_HDCP_TX,
++						 HDCP_TRAN_STATUS_CHANGE, 0, NULL,
++						 sizeof(hdcp_status), hdcp_status);
+ 	if (ret)
+-		goto err_get_hdcp_status;
++		return ret;
+ 
+ 	*hdcp_port_status = ((u16)(hdcp_status[0] << 8) | hdcp_status[1]);
+ 
+-err_get_hdcp_status:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+ 	return ret;
+ }
+ 
+@@ -170,98 +46,52 @@ static u8 cdns_mhdp_hdcp_handle_status(struct cdns_mhdp_device *mhdp,
+ static int cdns_mhdp_hdcp_rx_id_valid_response(struct cdns_mhdp_device *mhdp,
+ 					       u8 valid)
+ {
+-	int ret;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
++	return cdns_mhdp_secure_mailbox_send(&mhdp->base, MB_MODULE_ID_HDCP_TX,
+ 					    HDCP_TRAN_RESPOND_RECEIVER_ID_VALID,
+ 					    1, &valid);
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
+ }
+ 
+ static int cdns_mhdp_hdcp_rx_id_valid(struct cdns_mhdp_device *mhdp,
+ 				      u8 *recv_num, u8 *hdcp_rx_id)
+ {
+ 	u8 rec_id_hdr[2];
+-	u8 status;
+ 	int ret;
+ 
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
+-					    HDCP_TRAN_IS_REC_ID_VALID, 0, NULL);
+-	if (ret)
+-		goto err_rx_id_valid;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_header(mhdp, MB_MODULE_ID_HDCP_TX,
+-						   HDCP_TRAN_IS_REC_ID_VALID,
+-						   sizeof(status));
+-	if (ret)
+-		goto err_rx_id_valid;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_data(mhdp, rec_id_hdr, 2);
++	ret = cdns_mhdp_secure_mailbox_send_recv_multi(&mhdp->base,
++						       MB_MODULE_ID_HDCP_TX,
++						       HDCP_TRAN_IS_REC_ID_VALID,
++						       0, NULL,
++						       HDCP_TRAN_IS_REC_ID_VALID,
++						       sizeof(rec_id_hdr), rec_id_hdr,
++						       0, hdcp_rx_id);
+ 	if (ret)
+-		goto err_rx_id_valid;
++		return ret;
+ 
+ 	*recv_num = rec_id_hdr[0];
+ 
+-	ret = cdns_mhdp_secure_mailbox_recv_data(mhdp, hdcp_rx_id, 5 * *recv_num);
+-
+-err_rx_id_valid:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int cdns_mhdp_hdcp_km_stored_resp(struct cdns_mhdp_device *mhdp,
+ 					 u32 size, u8 *km)
+ {
+-	int ret;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
+-					    HDCP2X_TX_RESPOND_KM, size, km);
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
++	return cdns_mhdp_secure_mailbox_send(&mhdp->base, MB_MODULE_ID_HDCP_TX,
++					     HDCP2X_TX_RESPOND_KM, size, km);
+ }
+ 
+ static int cdns_mhdp_hdcp_tx_is_km_stored(struct cdns_mhdp_device *mhdp,
+ 					  u8 *resp, u32 size)
+ {
+-	int ret;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
+-					    HDCP2X_TX_IS_KM_STORED, 0, NULL);
+-	if (ret)
+-		goto err_is_km_stored;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_header(mhdp, MB_MODULE_ID_HDCP_TX,
+-						   HDCP2X_TX_IS_KM_STORED,
+-						   size);
+-	if (ret)
+-		goto err_is_km_stored;
+-
+-	ret = cdns_mhdp_secure_mailbox_recv_data(mhdp, resp, size);
+-err_is_km_stored:
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
++	return cdns_mhdp_secure_mailbox_send_recv(&mhdp->base, MB_MODULE_ID_HDCP_TX,
++						 HDCP2X_TX_IS_KM_STORED,
++						 0, NULL, size, resp);
+ }
+ 
+ static int cdns_mhdp_hdcp_tx_config(struct cdns_mhdp_device *mhdp,
+ 				    u8 hdcp_cfg)
+ {
+-	int ret;
+-
+-	mutex_lock(&mhdp->mbox_mutex);
+-	ret = cdns_mhdp_secure_mailbox_send(mhdp, MB_MODULE_ID_HDCP_TX,
+-					    HDCP_TRAN_CONFIGURATION, 1, &hdcp_cfg);
+-	mutex_unlock(&mhdp->mbox_mutex);
+-
+-	return ret;
++	return cdns_mhdp_secure_mailbox_send(&mhdp->base, MB_MODULE_ID_HDCP_TX,
++					     HDCP_TRAN_CONFIGURATION, 1, &hdcp_cfg);
+ }
+ 
+ static int cdns_mhdp_hdcp_set_config(struct cdns_mhdp_device *mhdp,
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h
+index 3b6ec9c3a8d8b..1e68530e72229 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.h
+@@ -9,6 +9,7 @@
+ #ifndef CDNS_MHDP8546_HDCP_H
+ #define CDNS_MHDP8546_HDCP_H
+ 
++#include <soc/cadence/cdns-mhdp-helper.h>
+ #include "cdns-mhdp8546-core.h"
+ 
+ #define HDCP_MAX_RECEIVERS 32
+@@ -32,23 +33,6 @@ enum {
+ 	HDCP_SET_SEED,
+ };
+ 
+-enum {
+-	HDCP_TRAN_CONFIGURATION,
+-	HDCP2X_TX_SET_PUBLIC_KEY_PARAMS,
+-	HDCP2X_TX_SET_DEBUG_RANDOM_NUMBERS,
+-	HDCP2X_TX_RESPOND_KM,
+-	HDCP1_TX_SEND_KEYS,
+-	HDCP1_TX_SEND_RANDOM_AN,
+-	HDCP_TRAN_STATUS_CHANGE,
+-	HDCP2X_TX_IS_KM_STORED,
+-	HDCP2X_TX_STORE_KM,
+-	HDCP_TRAN_IS_REC_ID_VALID,
+-	HDCP_TRAN_RESPOND_RECEIVER_ID_VALID,
+-	HDCP_TRAN_TEST_KEYS,
+-	HDCP2X_TX_SET_KM_KEY_PARAMS,
+-	HDCP_NUM_OF_SUPPORTED_MESSAGES
+-};
+-
+ enum {
+ 	HDCP_CONTENT_TYPE_0,
+ 	HDCP_CONTENT_TYPE_1,
+
 -- 
-Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+2.51.0
