@@ -1,213 +1,220 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673D832E134
-	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 21:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777065892; cv=none; b=Hb/itcCXFyJ9BIHPM/8nZ/TSJ/ILlappvZX+88vIUuaLHw4G2ka0bBUG+qw28ChpWqbozDnyQ6vCZT2j06jl+A4qAEqWrlpX0GWXLL/BsHk/B3MKRCotOIDV+IIffciRBMejYzaMvCd9ADpSFOBOau+Eu42s8kOwBZ4v22yP7sU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777065892; c=relaxed/simple;
-	bh=OOvCfNvP/t9snDp0xVHuGAvs/3wkRapGCm8Nkw6btaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FGYBy88zLgx4k+eNubTRI/UhQCwygIHNy20bxNdhmZdjsyrVpqShXPdjgIk1dl5Uo8IWDfkOewOtUylE9tKBhPt19OpnZ3szk+5cyr7/wlF6RUZK+VUy89NRoh9umiiBdHzJ3SoULVz9WexBkxlfhZaiHMimJm/LPrNNTzkDMUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FQ/jaQ5u; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276336309C
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 23:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777072839; cv=fail; b=P7xEFhiUjGeGYcrdzcTRh1m1BuaXWG7YsU+bZHSLhoL18Aou+jFICPbkCgG7SNFACVxFsUcnlm2pM2sG+DSH9luOJAseNfHY3Va65jUqJW2D174dquSEYgUoGylFGLdTu44wibn/S0HP8KO3w9iSYRuO6Xt1/GGTDxX9rsZp1rE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777072839; c=relaxed/simple;
+	bh=Hcgs70l3YfAM8wyA0zd6t2Ii101QV9/Gc01wKOezIac=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ERAJ6bX19Stisn7IVpsoFqrVUn76oCcopuIAwrn17gMNK3gcPpPJk9VbHqBJHepgobQibQppC2Icn82h2mhs32VQoUJzfTtGqU9ByJE87RWLvhSlP0IbT4SOD8PT9yUEdxrJNbAtuU5pq9T4lQ5jenNe8LFpsVn7Ag9HVmocqaQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=DC3dqXYw; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FQ/jaQ5u"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-69486849137so3129235eaf.3
-        for <imx@lists.linux.dev>; Fri, 24 Apr 2026 14:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777065889; x=1777670689; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iJNaihlk3IRG5/RkBM+hnzAM1yk0Bb5wvtfDGLFoLmg=;
-        b=FQ/jaQ5ugcF1P/6XajMYsunyI6wfLPE46WCYVT9DKpjq5/P7teBKXbWKXCPy+N399W
-         gGtopbn0EliWxngv02MbGgQSpktX5DnbTWHiHIuipLxRTpLxGbC1hPg2AjP7wQtGqd4s
-         IUXhySIYIO4UzNaFbuW7rOCjX8RAn2LSmTHYHPsLvZ68OtgCdbV7HgZVMmGR+zDsMmeP
-         uCHsJuTC0vtjwvEGcsJ0V4nG+9iS5ZkPCVQdze0PgMOUzqMU7UoIsJcYR7oHaq6jCkxv
-         hkSa0jaxR8AGcs7iO/+k+4VJIw8wy0EjjUuZPiULVF2kONxQXN5czR18tIJksauTgOvy
-         TIkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777065889; x=1777670689;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iJNaihlk3IRG5/RkBM+hnzAM1yk0Bb5wvtfDGLFoLmg=;
-        b=fU5ZpYckwNUoiGTILtiZmLTB/n8jhlpRtV+VLznhSTxELLqc/XVbaXVl4RT+lKHN4m
-         Wnet5J6NxeHMk1d2kZ0G2oBEF3+VH4e2MPLJUCo6ktDh1N6os75rurA5O7R09um+650l
-         EifJP+iKJwMLUAtH5U5QEFSlKTgPPYr9FGjEyvLeM/yF1ZJaf3WN6n1mM5kbrwWrXat1
-         d/5bXH23R/izg/J7Vwpgy4dwZ/p8fiudTltm5MvlKGHeG83as/3m86O6ITgEjpKXp2wM
-         VrGu+FX18RDhDm6ivD1yVLTtBQMSMVTYt+1xv7zN3c3zjkVZ7lnviPt5zUo1zBxFukNz
-         uF2g==
-X-Forwarded-Encrypted: i=1; AFNElJ+sbin/ill83Wlhb03lEC7EmKXnbzsRGxUgMzEU5nNMFUDz1/dKKnnjuGttUnd+Sk9R4+s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxYzcxzOSk4aUdoAmMIGPv4Fivu++fJCetRLNyMTYcUJpypWfS
-	/RGCvRrFOQCAxHpJ4McJdO7cpljMT+HbYw0t5Da4HySLz6tasz2j0zrnk767jZgKRw==
-X-Gm-Gg: AeBDietw+aLhzZKgkLHz55uvidJz9KbXD/u7I1h0OA0fKOxG0yhIXLjFSHOAaUkOXd7
-	c635PINl3WDfNpVIigKUTqY+iNoKb8+J3lPDS0PjBPPfMPlmx2vsVC12hqeGrRVep2wWwAX93Lw
-	RAXD3FRSxKSTSy2zyYGsJpLWNbkcn5hAF+IgZ9v/FEIMOfyr4s/NIal1DBb44wafHCaepeaWvIo
-	N9RnEgugDKR8wQaG/QXxspW2XUPEzcCPGf66D1nbI78OW54/iRU0wR7yUiFeiruZE049Huhw7NV
-	EmCghlwwCKTjUOGG8CRzHvcWVdQqPS4RWO5dExLjBhL6PEV26PRPD0nXYCwTTQuAjEYLBlWnHWo
-	1GYOLiSynOQd5yUQ2jm5YypnjNfZ1fDpiTY63C+BBIRYxIbtAd3TzvW/i75r4HXdR1nb45qS5oI
-	GL9eLRLjWEfwCk+92XYaDr2CIP5CH8Fe903kGZKY5+x6gQBxFI2rEpnKaI5Dmvr+9cyPp8ppJAV
-	8zyQx0WTL7tgvqYnYod
-X-Received: by 2002:a05:6820:f026:b0:694:97ca:9ecf with SMTP id 006d021491bc7-69497caa1abmr10550455eaf.31.1777065888893;
-        Fri, 24 Apr 2026 14:24:48 -0700 (PDT)
-Received: from ?IPV6:2600:1700:4570:89a0:8f46:c3fb:92e2:2f40? ([2600:1700:4570:89a0:8f46:c3fb:92e2:2f40])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69489e52aacsm9895971eaf.9.2026.04.24.14.24.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 14:24:48 -0700 (PDT)
-Message-ID: <79039de4-aa33-430c-b004-ae98b2541f63@google.com>
-Date: Fri, 24 Apr 2026 14:24:44 -0700
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="DC3dqXYw"
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OEYPH8697676;
+	Fri, 24 Apr 2026 23:20:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	PPS06212021; bh=/A8IoIsIuVtdfrnmo2fIFXoPIMQjScSjh3nykQ1cSP4=; b=
+	DC3dqXYw7rw4wv7GQ4z5+nTSXh4JiHo4thtgAm1d8Tp/tF3wNVlImw6WrQA8AyBr
+	aAvfNnOy79FeVZyGfcMdkl9S9nQh8QMiUlpyDERligyD+yIwd58BbV38XLuYZ/A+
+	4i9ZRwDmL5ITnnqQOhVnhjYbK77WEy3ja3idDsS3Ys7cXuWfyB1cRYSC62nq51M4
+	jxubpjEFJ7ZHq9iqwiihiucWluA00mZjKCMKBbtfqJ/mvYK8AkvtdIutxjQa31Wf
+	+tc3ArKP26rlSej2IqRwM9lXoV4raxpHUGlJSt5T4lQMxzZmz2FY8JER48Xt+2fK
+	kA2EFH2jm6r1X2nAQxaybw==
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012065.outbound.protection.outlook.com [52.101.48.65])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4dq8qc2nb3-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 23:20:03 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A3V3ofj1A4IPeGSLlIeAeikQydPrU41zM2fhIxfUpZZrIUY8PEQfyIq73WEjHgp9mgrNALUAbv+RYdDicgXqOHXdYK1cNMwmF5h7nDBcHzGxPt1ZjSz1tVr+iGgiPnPv49mpgOC183p0J5/fFijOAbtv4u9DfZscWCJFx0juS55eGrfzU/O3c5jW97py7/cpiEnrxvdQh5P0yP7ROUPFA9f6Lu65sYFWTXti4qTca9/WWa++JVwHbJlki7NTP/G8sshJqTktDr28Oofcn89e6c84xmXISXdk/e1Z/x20rwcHA/jeL/7HQSvTV7OahMw1K+xSZvPxxj65V6ZMKZuNmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/A8IoIsIuVtdfrnmo2fIFXoPIMQjScSjh3nykQ1cSP4=;
+ b=I1OicE3NDC3+lLczYsACgm6K2F51y6Eynl5fWnWOyQICMpdLD3ynww494xUc9eRzbL//i+MBCw/izMfX/ch31AhbI+t7mjue7VqJG5G1snffvx8AnX0UwFkzg5k2SSCxNAQdiPpH50LEeJX9WP1YmDo1ty30q1fkFmDzb/zqkNbRSLwYBnzqaXOMQsgFgF02KmljBgMJm7aqxtMbhXsFCWNBUb7fkFPPSnVRGLRXTvbsd8dMSmjKJcvQpWgE4gB6l30mttAwrAZqP7K1Oc1cTZbrqXf9AsdKWNfxxv4H/MrS4/JLzfpM4SZmXla3PXRC9lHjaFGjXm/0EQh7Ua/lHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from DS4PPFD667CEBB6.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::53) by PH8PR11MB8061.namprd11.prod.outlook.com
+ (2603:10b6:510:250::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.22; Fri, 24 Apr
+ 2026 23:20:00 +0000
+Received: from DS4PPFD667CEBB6.namprd11.prod.outlook.com
+ ([fe80::b919:1e6b:48a6:f655]) by DS4PPFD667CEBB6.namprd11.prod.outlook.com
+ ([fe80::b919:1e6b:48a6:f655%6]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 23:20:00 +0000
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+To: laurent.pinchart@ideasonboard.com, mchehab@kernel.org, Frank.Li@nxp.com,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        aisheng.dong@nxp.com, jacopo@jmondi.org, guoniu.zhou@nxp.com,
+        s.riedmueller@phytec.de, Xiaolei.Wang@windriver.com
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH 1/3] media: imx8-isi: fix use-after-free on remove
+Date: Sat, 25 Apr 2026 07:19:24 +0800
+Message-ID: <20260424231926.406079-2-xiaolei.wang@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260424231926.406079-1-xiaolei.wang@windriver.com>
+References: <20260424231926.406079-1-xiaolei.wang@windriver.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0032.apcprd02.prod.outlook.com
+ (2603:1096:4:195::12) To DS4PPFD667CEBB6.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::53)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: typec: tcpm: fix debug accessory mode detection
- for sink ports
-To: Xu Yang <xu.yang_2@nxp.com>, badhri@google.com,
- heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
- m.grzeschik@pengutronix.de
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, jun.li@nxp.com
-References: <20260424074009.2979266-1-xu.yang_2@nxp.com>
-From: Amit Sunil Dhamne <amitsd@google.com>
-Content-Language: en-US
-In-Reply-To: <20260424074009.2979266-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS4PPFD667CEBB6:EE_|PH8PR11MB8061:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb852884-20ae-42ba-c947-08dea2580185
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|56012099003|38350700014|22082099003|921020|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CMTAwe0d87Ti5TvETn24T5cttCEjFV6Qw2J/ewbU4OXrBDI6VxA9ByXRcsnWVnRCocbPBd6rKZTfRP2DqRHtL1aEDRKQ4VI/KCeJspr49TJWNlRa70m2l59dKCzYYGpeCG3/COpNFXTCmwHQ5qG5C6GUuYlTBF7tRaJssuENKyB018c4w6TKpBR3go+1gLN0+OZNVwxMkruzwd5+KAI9ieEazPTiJBzbarKPUIIcb58OiTkeYJ/JbJ0rKm6TgkBkwgqia5cSYbGyh8rQE0gtO6qFLuuuEyAbkGRgRsj/bXahWx7YdgNrfGDJAB8/aczl3ALmUD66zf9npvIJUjHvReQFAreC1V6j6O2N1phR6K82TdCQhvfVz9aS3p4SEJuj5L4u43FLFZCdsGR00vMRmhvR8hOSwIuFhnqgRk0jKXOf2sDek1ZerFmx3FcGHyObfrMfeNFCzSOV5nPm0JRZ2xImmaZEMUX7z6q0IugSwyk5CUCUL7AD/cG1XuWpboc5T1Fe/dhMQ5nkvBEMdkX9JViJStB+K8AU0FllUolZshwS/Q9ps6Rk0L5XzFJGlZKkR+6AzNVFes2DkTs4VO+PlSWGDuyW0osEs+Aas3s8tr8hWwULw5AeXz88vzI43+0NBT4DzFEQrn6+nhjzSRaIcNnpEp0nTN5GKE8kcyHIccCveAgCzg3yTfx7K5iv2tOP9aGMNOlwJd1l/itO1P1iGgb/rTIRy8OLP96/JPSi+u+CEUznoUpuklKMSrxVVL9zEm+tXTIaDvdIQiE5OVFdveO2XHZWfKRGnX2e2jtcubih2OPVLloWZh+6LAGGpM2N
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPFD667CEBB6.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(56012099003)(38350700014)(22082099003)(921020)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qOIg6Oo5NNPVK2ClQis82UpZCdCsAuDQIfGSAUFZ4ouLDiW+KHrMJel+JuJ5?=
+ =?us-ascii?Q?YsIF5qrJVZ3DFdPogBhsMnbest37Qcm8et3e3R97/B2oC2oAem5XNJRO0r8w?=
+ =?us-ascii?Q?jR6jHtyxqG45jvigT7UpwArvZoRE3XeUhVuJXMBFztSqgCIHbbsQ92hQ80YC?=
+ =?us-ascii?Q?/8B974mdpHsiI7VHHRD3ZtezCjEMb5t7wtioEKD/ttPmj47hS+VQwHB8R97Z?=
+ =?us-ascii?Q?cuzzYjpRKAQ5u11B2LLJFDQluLmgBVkC34PVE7mV/1QMHa51SmMGVf7HTB4h?=
+ =?us-ascii?Q?s/BMlmAsK/eS5XgbmT4zhPGs3GqjU++vDQyrvAXcOwVk5A/7SE64yTeiVbaR?=
+ =?us-ascii?Q?oaKB4louMKZS7+YtLM6fM1KqlkWMRtWv9sz5ip7e1RazHIrPjKT2GgsikRsf?=
+ =?us-ascii?Q?Sx0JK7cI09BLTMHDTZXArjMZcPQJZmYOydRZpjXeuerdaws2S152wEOtT+oJ?=
+ =?us-ascii?Q?ondJAarPD/Cdf4RUDPv6XMXOA8lV3xJbfc7QWyj0T3HGdiAzFJaEo9ChTtkO?=
+ =?us-ascii?Q?9xEf9ZZ3sUckT4cRCX6zKW3GGsfWtMMZv4fHNzESZhnve/AQQhuAPpVLM4wI?=
+ =?us-ascii?Q?iDm80gR5SDtrdPP2Kex5SeNctpIPAsnsflzD5aNNudOuJ5YPrbNYPQxSoGWi?=
+ =?us-ascii?Q?EP+WrDjzell0bChsQjbaJ4XuhrMu2QffavlenSaw57qvLvANPUMtkpv7No7R?=
+ =?us-ascii?Q?uX7uhYTYdYRe0+QtMe6WqroXEAepv1amSjDiww852TTXEvAxL9OZW4RkQgis?=
+ =?us-ascii?Q?oz7bjGO8i+4j09KGeBj50Ve48BSp3eE87G789/mjbz/LCrJdfbBUNzdlh3L4?=
+ =?us-ascii?Q?5R8Od/DhnnZyamRPzrhUfTETDdQaHNa51sK45V83yBjhMeLx//zBJuG+Y4vd?=
+ =?us-ascii?Q?SiFWORValmIrrYdsdQWHvxUujtaU9s3y2PznMwViqRI2S43bQWVTPIGhZZ7Y?=
+ =?us-ascii?Q?3Gh7JDLiC8lEel1PmtoDKuAnn93bE1b6/OXxxyH71XcWF2U5PlT/Jq1PgbC9?=
+ =?us-ascii?Q?MF+tfVMUidEfa93/WhHSCDiXT4jyRngPQS/9XhpDcYRFH+CqWjWUtoizuF0B?=
+ =?us-ascii?Q?6XRXiC33p4tWZoFX2zYjcAb2GLzdESk70+Ugx/cZhDFEZCCcnXMUaCRoEeoS?=
+ =?us-ascii?Q?BsjTXF+xPIqZ8WVwNtv7yRB28klKhdlm6HWfLzcDWDG/1/wdRTjtmERoMuQa?=
+ =?us-ascii?Q?fa497X5NaFElaQx9G3Sm/3vKxsE57Jswj2CfmI8YUSK7lt6Kh9GRTN8vqUTj?=
+ =?us-ascii?Q?WZVgNh1yOy9Ebwr7mugWm7YwLTmwVwGvUKcc7ten//IBlQkOiHS+Y88Pz03d?=
+ =?us-ascii?Q?p3X3/7iAyhveaQQw+yZFZi1Sn+HMGf0dD46F5CvmjA2yz7hynFkBbgFfQCxu?=
+ =?us-ascii?Q?O1E/NijIhHkhWAZIsWrhJA8BWcfn9L8rhC+GmsHMJwCsEVHZSi/1qisvCKM2?=
+ =?us-ascii?Q?Kq70QuWuNhMAzUgLJn+XSIqlpgSu8mfkGY+DhzAclUIbXt986uxq80DImWBu?=
+ =?us-ascii?Q?TJcKJgmMOjqCCNuto3aG4KD/COgoCR4mRju1tWLW0h9edY3SC3ffh9rqHU8r?=
+ =?us-ascii?Q?eBbXMXbN1sEnrAC3APRLMvMDaE7qudh3s5/abjrQAwA397ObmvKlirg8Wmfn?=
+ =?us-ascii?Q?Q09LyUs/VCcPzeIe1p3iVJ/i+ANfP1Tbpzk0PU1xphHHcNBC05QLyzy9v+wa?=
+ =?us-ascii?Q?+Bgyx2LgYKCX0X2e2QXvrofF88zG6+cfD8T3Of46mG4uEk6Cox22tvRrzmXb?=
+ =?us-ascii?Q?vEhYOwGZ9VKFbS2DNzm38rP7Edhhe1s=3D?=
+X-Exchange-RoutingPolicyChecked:
+	dka9aIyF0FGE+pHcAyp108U/c26TU9rYvHkRfMaAkK3dLt9khGkQaryQri0VHWwtQ5pxC65q5fDfrGUz1xOPKOzGQFID0lw7/6NSUIomm+BnjQpcoHDAIyPDaTNpAaZfGhjaHSKde1i9Cw2tuQSvntgpaBvHYtU2gN8Cgtw0EQVBK+H+Dib8/fi5lSug5P2TJK2vMeHPV9YDMzKecj06PsPj8ruKMayETSQ1K6YWQZNdDsEV+PBn1up4UN9CZmVflCB7VkQh30bpIdu8FrvGr8xen1fdokvNIh7uM5yJyBlXMDHb44HlK6BqxYntHlWNbiZH5Fj/jvxfAqNRfOyqtA==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb852884-20ae-42ba-c947-08dea2580185
+X-MS-Exchange-CrossTenant-AuthSource: DS4PPFD667CEBB6.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 23:20:00.4704
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N4u76ip6gkQpSeXp7zhILadbdYyOl6wrwgXoYlT25sYf2dXhUWyCIPEZ0J4z52A1UmCyqSldxptU6GKINHNZormN0WMTtkbvRSgnbDfJCg0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8061
+X-Proofpoint-GUID: vB92T57ye1VgvPJPedgXsL8ZnunUe7GU
+X-Proofpoint-ORIG-GUID: vB92T57ye1VgvPJPedgXsL8ZnunUe7GU
+X-Authority-Analysis: v=2.4 cv=EY74hvmC c=1 sm=1 tr=0 ts=69ebfaa3 cx=c_pps
+ a=W8nThqPTbj8xD7CpgneC0w==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=klDOsUkWDRETUCZYPvoE:22 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=UgOjM9SW4ZuDxLeMq3wA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDIyNyBTYWx0ZWRfX4X2cE6z5A3Mi
+ KotxS5jbDBFBsHvzY6a1tzAzfUM861fDDnxwvZ7eTVApdiz9HDRgIovt3V+UvrkcQVTaGFiAtKy
+ m+4oy2TnhltTOKz2Yv6HPDkSjh3P67iy7gQljA8fCnpELEeoFM03qMpCHgBZ4CbIOnPksO4a9H1
+ tkLlfrtOb9zFn7E1FFlD/tZfo8bVR1Tp7W4qiYrag9sW4p268biM2yKovbgzIKFtivVV5EmH6Xk
+ bVf5LE2l6Bz3FQ77Fa/3P14wlpJRxmZ4qeKquN+tbvzMg2PjLg+4f3XNoMllc2QwcxNONylX7c/
+ XQUHxahx2VwicNNnclHdmg+9nN8Papeq4un3hF6rnlKqZ7URx9xHZQrZXvM8gCT8ZwokX+rpPH7
+ /xYmuo3cAiqw6EpJcT1WL1vIqZY8EsW2LQJqKB08YdnJMaikGxhD44AOvfj5xIe89DBNVXxvN0T
+ hZ+yaemt0rihLHUOIhw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-24_04,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ adultscore=0 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604240227
 
+KASAN reports a slab-use-after-free in __media_entity_remove_link()
+during rmmod of imx8_isi:
 
-On 4/24/26 12:40 AM, Xu Yang wrote:
-> The port in debug accessory mode can be either a source or sink. The
-> previous tcpm_port_is_debug() function only checked for source port.
->
-> Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
-> accessory mode debug") changed the detection logic to support both roles,
-> but left some logic in _tcpm_cc_change() unchanged, This causes the state
-> machine to transition to an incorrect state when operating as a sink in
-> debug accessory mode. Log as below:
->
-> [  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, connected]
-> [  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
-> [  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACHED @ 180 ms [rev1 NONE_AMS]
-> [  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarity 0, connected]
-> [  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
->
-> It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
->
-> To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sink()
-> helper to explicitly identify the power mode in debug accessory mode.
-> Update the state transition logic in _tcpm_cc_change() to ensure the state
-> machine transitions comply with Type-C specification. Also update the logic
-> in run_state_machine() to keep consistency.
->
-> Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into accessory mode debug")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+  BUG: KASAN: slab-use-after-free in __media_entity_remove_link+0x608/0x650
+  Read of size 2 at addr ffff0000d47cb02a by task rmmod/724
 
-Reviewed-by: Amit Sunil Dhamne <amitsd@google.com>
+  Call trace:
+   __media_entity_remove_link+0x608/0x650
+   __media_entity_remove_links+0x78/0x144
+   __media_device_unregister_entity+0x150/0x280
+   media_device_unregister_entity+0x48/0x68
+   v4l2_device_unregister_subdev+0x158/0x300
+   v4l2_async_unbind_subdev_one+0x22c/0x358
+   v4l2_async_nf_unbind_all_subdevs+0xfc/0x1c0
+   v4l2_async_nf_unregister+0x5c/0x14c
+   mxc_isi_remove+0x124/0x2a0 [imx8_isi]
 
+  Allocated by task 249:
+   __kmalloc_noprof+0x27c/0x690
+   mxc_isi_crossbar_init+0x22c/0x560 [imx8_isi]
 
-BR,
+  Freed by task 724:
+   kfree+0x1e4/0x5b0
+   mxc_isi_crossbar_cleanup+0x34/0x80 [imx8_isi]
+   mxc_isi_remove+0x11c/0x2a0 [imx8_isi]
 
-Amit
+The problem is that mxc_isi_remove() calls mxc_isi_crossbar_cleanup()
+before mxc_isi_v4l2_cleanup(). The crossbar cleanup frees the media
+entity pads, but the subsequent v4l2 cleanup still tries to remove
+media links that reference those pads.
 
->
-> ---
-> Changes in v2:
->  - update tcpm_port_is_debug() in run_state_machine() as well
->    as suggested by Amit
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index dfbb94ddc98a..6d258efae6f0 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -732,9 +732,14 @@ static const char * const pd_rev[] = {
->  	 (tcpm_cc_is_source((port)->cc2) && \
->  	  !tcpm_cc_is_source((port)->cc1)))
->  
-> +#define tcpm_port_is_debug_source(port) \
-> +	(tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2))
-> +
-> +#define tcpm_port_is_debug_sink(port) \
-> +	(tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
-> +
->  #define tcpm_port_is_debug(port) \
-> -	((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)) || \
-> -	 (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
-> +	(tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port))
->  
->  #define tcpm_port_is_audio(port) \
->  	(tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
-> @@ -5176,7 +5181,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			tcpm_set_state(port, SNK_UNATTACHED, PD_T_DRP_SNK);
->  		break;
->  	case SRC_ATTACH_WAIT:
-> -		if (tcpm_port_is_debug(port))
-> +		if (tcpm_port_is_debug_source(port))
->  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
->  				       port->timings.cc_debounce_time);
->  		else if (tcpm_port_is_audio(port))
-> @@ -5434,7 +5439,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			tcpm_set_state(port, SRC_UNATTACHED, PD_T_DRP_SRC);
->  		break;
->  	case SNK_ATTACH_WAIT:
-> -		if (tcpm_port_is_debug(port))
-> +		if (tcpm_port_is_debug_sink(port))
->  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
->  				       PD_T_CC_DEBOUNCE);
->  		else if (tcpm_port_is_audio(port))
-> @@ -5454,7 +5459,7 @@ static void run_state_machine(struct tcpm_port *port)
->  		if (tcpm_port_is_disconnected(port))
->  			tcpm_set_state(port, SNK_UNATTACHED,
->  				       PD_T_PD_DEBOUNCE);
-> -		else if (tcpm_port_is_debug(port))
-> +		else if (tcpm_port_is_debug_sink(port))
->  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
->  				       PD_T_CC_DEBOUNCE);
->  		else if (tcpm_port_is_audio(port))
-> @@ -6360,10 +6365,10 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
->  
->  	switch (port->state) {
->  	case TOGGLING:
-> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-> +		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
->  		    tcpm_port_is_source(port))
->  			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-> -		else if (tcpm_port_is_sink(port))
-> +		else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_sink(port))
->  			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
->  		break;
->  	case CHECK_CONTAMINANT:
-> @@ -6371,9 +6376,11 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
->  		break;
->  	case SRC_UNATTACHED:
->  	case ACC_UNATTACHED:
-> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-> +		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
->  		    tcpm_port_is_source(port))
->  			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-> +		else if (tcpm_port_is_debug_sink(port))
-> +			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
->  		break;
->  	case SRC_ATTACH_WAIT:
->  		if (tcpm_port_is_disconnected(port) ||
-> @@ -6395,7 +6402,7 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
->  		}
->  		break;
->  	case SNK_UNATTACHED:
-> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
-> +		if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(port) ||
->  		    tcpm_port_is_sink(port))
->  			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
->  		break;
+Fix this by calling mxc_isi_v4l2_cleanup() before
+mxc_isi_crossbar_cleanup() to ensure all media entities are properly
+unregistered while the pads are still valid.
+
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+---
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+index 4bf8570e1b9e..2d639b789910 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+@@ -556,8 +556,8 @@ static void mxc_isi_remove(struct platform_device *pdev)
+ 		mxc_isi_pipe_cleanup(pipe);
+ 	}
+ 
+-	mxc_isi_crossbar_cleanup(&isi->crossbar);
+ 	mxc_isi_v4l2_cleanup(isi);
++	mxc_isi_crossbar_cleanup(&isi->crossbar);
+ }
+ 
+ static const struct of_device_id mxc_isi_of_match[] = {
+-- 
+2.43.0
+
