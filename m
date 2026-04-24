@@ -1,46 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD419339875;
-	Fri, 24 Apr 2026 17:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3FE33D6F9;
+	Fri, 24 Apr 2026 17:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777050383; cv=none; b=hM4GqrJQOciDG+l6MsWqfYrPYOBMU5j3j+rrDG30tXVDzpVNAMKR9odZjQKpSl1Fx/XODR+cxvEXo0WEiuvcf8oKmbje6vGC3cCmW9oNNff8Ta5R4Exf6Kad4ZqcGlYaFS7jDQClx0fC2RgvFzLteS3W8d01N8yW5QYfF4GJQQs=
+	t=1777050572; cv=none; b=j1XXEniByxxPlYs+ZfSQi3wohyDMcmiNJoe08lpwhtEgYs8FUbNTFoacpick1r+6cCe9UXmv8fAXkcBBAz6ASdgQb556IEc+ypE1jJlXks7XSfFXvfxAfNcm2noFGeV/0MTfxfvc80OY457leGJMmdKc3q/vrSM08P8aJPuRL4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777050383; c=relaxed/simple;
-	bh=xCE79Wvi8Mkp+ZGDctaw2DzfjgrYbScCrXQDDCMokJA=;
+	s=arc-20240116; t=1777050572; c=relaxed/simple;
+	bh=Z54BvUsS5OFxX2yzgABhxCja///K+vPhxenY2v5P+ms=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FEGOkgyGta+JcJykrFhwJx4E38qTRG8QctMceRlqeilK+Sc8K1o75FxN+izyoSk/0fghJP0ppg3Nw3QVSdQAPG26AIU6CGSt2Yg+n/1N0Lv1yLSxjcjSoEuWPoCu9JBCZpkxBvRWwwMwCqJc2Q4J7UBjh2GfZxJmmvDgD8W32f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=soS8YKrq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ooGbIzGgaivNwZbMN38Zj0uWL2Udd46ZccOqKaLN3kmNVl/huWh/jf9cgUviTVW5DFb/lxDvSP/dAZ0VETumHmxl5X79mq3LrjiUgJuPdFxZOf4IlAEPJpdX56Ur9Fp048UccJgBHfXHrtE2Jx1cK5du70v8si8yR3dwe8OLnfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pqmbg/Lz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="soS8YKrq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EAFC2BCB2;
-	Fri, 24 Apr 2026 17:06:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqmbg/Lz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68734C19425;
+	Fri, 24 Apr 2026 17:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777050383;
-	bh=xCE79Wvi8Mkp+ZGDctaw2DzfjgrYbScCrXQDDCMokJA=;
+	s=k20201202; t=1777050572;
+	bh=Z54BvUsS5OFxX2yzgABhxCja///K+vPhxenY2v5P+ms=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=soS8YKrqJfBO4XBWAY/r3mngcqtyBkbOm8Ya3Dw6bovRKTuOlbOKpmFdFqTA4EhkC
-	 Q2hn+QQD8fqQwASYJb94Fkf8BPk2sYBXuPW0Vj/3xVdAs1OUii1XE/NRBRHAkPWUMK
-	 moriP1FVBiXjoiD8txVJ3H1nnoUharRuugzbvcdOSIBlPiPfyFZRWp1U3r0N1OEZe6
-	 7LnXlI3tyzqrRLYC6aY36nGLdPOFsn2McuvsBW+ahjgMbgsB4Yu8J5LyeU6ixWMcEe
-	 RiEij5Wajx0XvZE5elE8qSGz7+cJIXmaAL9fuOGkP0bWGFw0d30q6I5ONPPBh09vS0
-	 johWnH51n3CAw==
-Date: Fri, 24 Apr 2026 18:06:18 +0100
+	b=Pqmbg/Lz9C48uYKTZtlMbNufRfa4U91toCpN9NpW3OKppz6pcAHc6qtZ0cqx+wL6H
+	 R8To7Pjbx2m88LlhCnG7dWWGzhaJkLFJwayYzoQBFmCkt9x3rkJsLZ8iUSK+8W4i4p
+	 EbD9FkBTA4PtatEDEii7e3Lcd3QdqGX9dPaNx699Zv/TnxwjV1f/8Ev/Qerb2Fd7u8
+	 K8rRMRbKj32C4y81gBVlotSewZvtN6GUCy06lOb+c+4SRy+MBejv3aAzwGeCoZn7Ar
+	 rcHvq4luhKvuG6euObxeg2pEG+8/5ePUYTseuF1EPEufIOAxgxv1iII6LyLH0Xf/Gy
+	 j+zloTMVo7rGA==
+Date: Fri, 24 Apr 2026 18:09:27 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	bhelgaas@google.com, frank.li@nxp.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] dt-bindings: PCI: imx6q-pcie: Add intr, aer and
- pme interrupts
-Message-ID: <20260424-sinless-unfiled-d1087a894da5@spud>
-References: <20260424025735.1490772-1-hongxing.zhu@nxp.com>
- <20260424025735.1490772-2-hongxing.zhu@nxp.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-gpio@vger.kernel.org,
+	Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v6 1/4] dt-bindings: media: ti,ds90ub953: Add support for
+ remote GPIO data source
+Message-ID: <20260424-reshoot-postage-7bfe0a5eca80@spud>
+References: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com>
+ <20260424-ds90ub953-v6-1-7a84efbab316@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,69 +52,112 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="H0L8i4gwKKUpxCZw"
+	protocol="application/pgp-signature"; boundary="ke8pecYrKCTHWIjs"
 Content-Disposition: inline
-In-Reply-To: <20260424025735.1490772-2-hongxing.zhu@nxp.com>
+In-Reply-To: <20260424-ds90ub953-v6-1-7a84efbab316@oss.nxp.com>
 
 
---H0L8i4gwKKUpxCZw
+--ke8pecYrKCTHWIjs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 24, 2026 at 10:57:33AM +0800, Richard Zhu wrote:
-> Add optional 'intr', 'aer', and 'pme' interrupt entries to the i.MX6Q
-> PCIe binding to support PCIe event-based interrupts for general
-> controller events, Advanced Error Reporting, and Power Management Events
-> respectively.
+On Fri, Apr 24, 2026 at 09:42:24AM +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
 >=20
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> The DS90UB953 supports four pins, GPIO0 through GPIO3. When enabled as an
+> output, it can be programed to output local data or remote data coming
+> from the remote compatible deserializer.
+>=20
+> Add GPIO flag in second cell to select remote GPIO data source.
+>=20
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 > ---
-
-This binding supports lots of devices. Do they all have these additional
-interrupts?
-
->  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Changes in v6:
+> - Added GPIO_DATA_SOURCE_REMOTE flag to dt-bindings/gpio/gpio.h
+> - Updated dt-bindings documentation accordingly
+> - Dropped Reviewed-by tag from Rob Herring due to significant binding cha=
+nge
 >=20
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/=
-Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> index 9d1349855b422..badc7fcbd556c 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> @@ -58,12 +58,18 @@ properties:
->      items:
->        - description: builtin MSI controller.
->        - description: builtin DMA controller.
-> +      - description: PCIe event interrupt.
-> +      - description: builtin AER SPI standalone interrupter line.
-> +      - description: builtin PME SPI standalone interrupter line.
+> Changes in v5:
+> - Improve the description for "#gpio-cells" as commented by Conor.
+>=20
+> Changes in v4:
+> - Use folder block instead of literal block for #gpio-cell property descr=
+iption.
+>=20
+> Changes in v3:
+> - Make GPIO range from 0-3 to 0-7 to support GPIO data from remote
+>   compatible deserializer suggested by Rob instead of adding third
+>   cell for GPIO controller.
+>=20
+> Changes in v2:
+> - Remove new property ti,gpio-data
+> - Add third cell for GPIO controller to select GPIO output source.
+> ---
+>  Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml | 6 ++++--
+>  include/dt-bindings/gpio/gpio.h                               | 8 ++++++=
+++
+>  2 files changed, 12 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yam=
+l b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> index 2e129bf573b7..da63771bc236 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ti,ds90ub953.yaml
+> @@ -21,8 +21,10 @@ properties:
+>    '#gpio-cells':
+>      const: 2
+>      description:
+> -      First cell is the GPIO pin number, second cell is the flags. The G=
+PIO pin
+> -      number must be in range of [0, 3].
+> +      First cell is the GPIO pin number (0-3) and the second cell is used
+> +      to specify flags. See <dt-bindings/gpio/gpio.h> for available flags
+> +      including GPIO_DATA_SOURCE_REMOTE for remote GPIO data source.
+> +      Flags can be OR'd together.
 > =20
->    interrupt-names:
->      minItems: 1
->      items:
->        - const: msi
->        - const: dma
-> +      - const: intr
-> +      - const: aer
-> +      - const: pme
+>    gpio-controller: true
 > =20
->    reset-gpio:
->      description: Should specify the GPIO for controlling the PCI bus dev=
-ice
+> diff --git a/include/dt-bindings/gpio/gpio.h b/include/dt-bindings/gpio/g=
+pio.h
+> index b5d531237448..d04a494d96ad 100644
+> --- a/include/dt-bindings/gpio/gpio.h
+> +++ b/include/dt-bindings/gpio/gpio.h
+> @@ -42,4 +42,12 @@
+>  /* Bit 6 express pull disable */
+>  #define GPIO_PULL_DISABLE 64
+> =20
+> +/*
+> + * Bit 24 indicates the GPIO data source is from a remote device.
+
+Why 24, not 7?
+
+> + * This is used in serializer/deserializer setups where the GPIO pin
+> + * on the local device (e.g., TI DS90UB953 serializer) reflects the
+> + * state of a GPIO on the remote device (e.g., TI DS90UB960 deserializer=
+).
+> + */
+> +#define GPIO_DATA_SOURCE_REMOTE		0x01000000
+
+And why the divergent formatting compared to other defines in this file?
+
+> +
+>  #endif
+>=20
 > --=20
-> 2.37.1
+> 2.34.1
 >=20
 
---H0L8i4gwKKUpxCZw
+--ke8pecYrKCTHWIjs
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaeujCQAKCRB4tDGHoIJi
-0sbBAP9Y8BcAd/MDAAh/RMkRDbsa5ilgaKCx0jwcHj/+rWm2twD+N71s+zgqihzj
-hrfWyfc3pLzNgNi0wFP5B7kAHGteAg8=
-=fyjc
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaeujxwAKCRB4tDGHoIJi
+0vuJAP47zBPA0y+EuIonRzyf2LwPm5ZAuhUateuy3Ff6xDmgNAEAi45SLZvA+n/E
+F+KyhNtKVNr/JQQtECECpY3kR2qY+Q8=
+=XJik
 -----END PGP SIGNATURE-----
 
---H0L8i4gwKKUpxCZw--
+--ke8pecYrKCTHWIjs--
