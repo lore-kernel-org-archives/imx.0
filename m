@@ -1,34 +1,34 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED663CF04A
-	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 12:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CB03CF029
+	for <imx@lists.linux.dev>; Fri, 24 Apr 2026 12:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777034235; cv=none; b=UW/K0aPwXg69ZmzA+lQlkm3iLmLFlxGdW/+Ufa4oehLMZhXk+AcEP3KBMYq8BTQXAmZWa89gS2W1wNNseLUCX8NVHI5cQj+QIo0wRlvli3t2FeiH4FtTMvJtsyGKu2b1ip4+Ex3sWKzjKK5kQsAb9jrF1HLispTH3C1ZuRuWaPA=
+	t=1777034241; cv=none; b=l3YcQ/oomIx6e9Si4hqIgmsoDdwxJ7DiS9RoMeYv4y3/2Q2U9ayktpskYJokMoB71Q1ZllW5GZNmEpMQ+60M3V0Gra4zVT5059bMQcBULqXhKu/6Y/71On0YFWu3MxGdTRStwsBkiMyy7ZU5Nj8sgaFKTMiZk7/6ilibkf/Dpa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777034235; c=relaxed/simple;
-	bh=Vuvcc1h+aGEm+G5RRhrxQOhhVZZeISRZiJxo5Gd7yfU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CsXmMoCCbQQPrWEjvQal7DEfnszDvzcO7BZhE0P/VsdX+Ie0NhtMvnWs0pJUK8Mzi+xTKOabDuOn9ij6hUyH5yx9r+JRQJJHmlu2aq9fQ1Up7EJdSlrqAbe712AL6CQKq+sKd2LyjO8o9s0USNk4QaAu9v0o5WYAxuh+Vz02H5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f+WEPqPS; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1777034241; c=relaxed/simple;
+	bh=WNOfl9TMJAgdQRS+Wl9stY3RrXYZyI6/gxecvU1FULI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WpNwz1dDeN3mphjmGqaAFt1xWg65+yFJvAKTfENUYIRN4pYyzm95mml/59tVMXB1/2drYzLkhTsFPzHmR6s7PuYbFwm1oiP6iDVoLB3WWdDJ50+xu03V1ovm2ITu9/mecpsi/t9qBnPJKsqD0EyhzWFrS9wqoTtnjzyYpvWRd5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=t/y1yHCB; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f+WEPqPS"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="t/y1yHCB"
 Received: from [127.0.1.1] (chfd-03-b2-v4wan-176392-cust229.vm15.cable.virginm.net [82.19.20.230])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 414508F;
-	Fri, 24 Apr 2026 14:35:22 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 86EDD19A8;
+	Fri, 24 Apr 2026 14:35:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1777034122;
-	bh=Vuvcc1h+aGEm+G5RRhrxQOhhVZZeISRZiJxo5Gd7yfU=;
-	h=From:Subject:Date:To:Cc:From;
-	b=f+WEPqPSUh9OpRaqyRcyptrshOlIO30j0MPp8BtjYEKVQN4bR3/DckpKIAKxSLQRF
-	 t3mumK3Vp1kY6/WPiD6wbY1MF/QXDOpU6ANhFIE6N0sWwGRYB6yylY9KTWs5ouWY3b
-	 HXE+43jsM//2gt/qyZ9k1nLcLB5vw4olPJooztCc=
+	s=mail; t=1777034124;
+	bh=WNOfl9TMJAgdQRS+Wl9stY3RrXYZyI6/gxecvU1FULI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=t/y1yHCBELV34W5QxOrNf+WxZZnZbLlYZrKOZ1YknODDpEpAxEXqKSt98NYNAPY6V
+	 PdhF60jzifFQU+6IXfE+gFthQ8dNmdVixKK0W5T/IY1FFA/UO18d0rGnN6rdvT3v+3
+	 R1n+YjQ7u96RGL+t/afHfiDTGnKc4a1cjLZaANO8=
 From: Daniel Scally <dan.scally@ideasonboard.com>
-Subject: [PATCH v2 0/2] Minor changes for i2c-imx driver
-Date: Fri, 24 Apr 2026 13:36:45 +0100
-Message-Id: <20260424-i2c-imx-fixes-v2-0-34fb9504aaeb@ideasonboard.com>
+Date: Fri, 24 Apr 2026 13:36:47 +0100
+Subject: [PATCH v2 2/2] i2c: imx: Retry failed transfers 3 times
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,10 +37,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN1j62kC/3WMzQ7CIBCEX6XZs2v4qYR48j1MDwhbu4eCAUNqG
- t5d7N3jNzPf7FAoMxW4Djtkqlw4xQ7qNIBfXHwScugMSigjtJTIyiOvG868UUFNSkszOuvsDN1
- 5ZTqKrtynzguXd8qf477KX/rvqUoUSEZdhB6D7aMbB3IlxUdyOZx9WmFqrX0BkG1E0LEAAAA=
-X-Change-ID: 20260311-i2c-imx-fixes-3e23164a8a8f
+Message-Id: <20260424-i2c-imx-fixes-v2-2-34fb9504aaeb@ideasonboard.com>
+References: <20260424-i2c-imx-fixes-v2-0-34fb9504aaeb@ideasonboard.com>
+In-Reply-To: <20260424-i2c-imx-fixes-v2-0-34fb9504aaeb@ideasonboard.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
  Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
@@ -51,61 +50,47 @@ Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, 
  Daniel Scally <dan.scally@ideasonboard.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1439;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=941;
  i=dan.scally@ideasonboard.com; h=from:subject:message-id;
- bh=Vuvcc1h+aGEm+G5RRhrxQOhhVZZeISRZiJxo5Gd7yfU=;
- b=kA0DAAoByElXemxFdTIByyZiAGnrY+2hfg01AQYplJ1UP2hWS1LfeEjJlGqWlvQDABs0G3KIk
- 4kCMwQAAQoAHRYhBCrK7DIOdl1v6bGab8hJV3psRXUyBQJp62PtAAoJEMhJV3psRXUy4ZcP/ifU
- M8bPXDhdSbN69rQrxBfKPQcp2eNCk69VX15sfOjKATToTah5tW9sCRo5KmDJsVmgMTpO9BqDBq1
- ZCBNQYn3/rBa5blQmCOGS//XQpwP110XXvEXms9Hqu7QKAJtU2sXBEKHDI28ezwKj2o3I6iXyok
- TXsnJho1ICHrXEgP2WLGvZ4P+hH6EkVtxIGZFFRU7i4H+lL61U1nervGWtzLNqerzHV+5t6cGkA
- ayAh93cPxeT89jfm8pY7VUiGCn5R9eA73etZBQEFkc53SUl23U9b5kPnTdTEMl8IO5d4sZyA53S
- W2QZwDjPFi19mxWZw/ZGzWgxoW9gWEE/ZsMZOZGPH63U+yVvhIrcLzbWIvb6J4V5aNrhmohJToN
- jXg6fa9/2R0vYRvlF3EEDJZO0djJ1OykQ9oOK+9CSXB8DIorW/4hItQVA4oKi+uNy1Fc1gbkkyK
- YTlThc8k9C1AzrbXCBSlmjMA7VWGi7QAtVLcLki7sRWaGfW97fymoEGKG8e76cCxiyWneh1jUvX
- GCz+eXSBKVTCQrs8b3ehJ65wvRypUpfDrh2yHhMTDTlzLwDai4CKbzaS4kTsj8bVf3A1/1wwm/0
- N1z4fZeIWUFNFt+lTgLcJBSjoASHUN7JKbTamnkExQeXXtgDrPwMR8Z7DBBjynGcMB36KemG7gj
- Yjg2C
+ bh=WNOfl9TMJAgdQRS+Wl9stY3RrXYZyI6/gxecvU1FULI=;
+ b=owEBbQKS/ZANAwAKAchJV3psRXUyAcsmYgBp62PtXN02sS6E4D45jdY5YmHKbzszWjA9vdl+1
+ JErMzAIA8OJAjMEAAEKAB0WIQQqyuwyDnZdb+mxmm/ISVd6bEV1MgUCaetj7QAKCRDISVd6bEV1
+ MtNrD/9Lgn0kR7oa/zXMFfKfupm9ABSsN51NPAQpnkTCY2La2De4R7O0JnAAS7lH6R78erTaq6U
+ 5pfv/DTr+bnBTZp5NxmkhDGWYrq+F+Ri4r2bjsfZZgAadxjfqO+MtK+Y+MAkaKiDsF2M1w/jhPe
+ +f9rvykIGB9dBRKvLjYSO0OWnJkZ1SqSrIJPZUiM6grOpIsJvaWEv3UXVG3Dq/DpzWBbG71ey7u
+ fgt1rpOR1vRSF94lT07m5gT6BPPz+OBjAV08evmR+lotp8GLVQbDwBZskHC4SkRzocHEULuJ29+
+ /EgkQQFSgwL6lGirCb4GBI2e91HiQ6yQ3SnK8P2cGtBjhNkEgbolqP3X22ty+72eV3zOSPQRmeM
+ E/MSTXfMcrIIShVRErM962IlJqMaPvV9lDwBPu9vOtEF6ksZtDKgXrKkP/iNdxiSnNFynAfbGmK
+ tXJY5IfIrms5qK11OoUHkjTZQKyIxk3T82Xcz5ynfeegOpbAh8sRFowZIoUdCIUMZB/RyCu4ExX
+ SJGOcYfW1OTi2FiC+BYONVMcO+xKqlcOef+QXfSamnmBLY913sGGnXLx8F7b4MnivaphOnyTtdu
+ XrDvlSZvbKyqhtb1pZj3qPbpKPQvbMxtHQAHrke58VKybqXEqOFPm83MsbRg5vUkBznsrKLF7bJ
+ Cvp4jwLqwaq5ntw==
 X-Developer-Key: i=dan.scally@ideasonboard.com; a=openpgp;
  fpr=EEC699ACA1B7CB5D31330C0BBD501C2A3546CCF6
 
-Hello all
+Set the retries member of the i2c_adapter to 3, which will cause the
+i2c-core code to retry transfers that lose arbitration 3 times before
+giving up.
 
-These small changes helped resolve issues we experienced using the
-i2c-imx driver on a multi-master bus. The device was losing
-arbitration which triggered the driver to attempt to recover the bus
-rather than retry the transfer. The set stops the bus recovery
-attempts on lost arbitration and instructs the driver to retry
-transfers 3 times, which seems sufficient for our setup.
-
-I had intended to make a larger change that added a new devicetree
-property for i2c-controller.yaml that held the number of retries an
-adapter should use, and then parse that to set adap->retries. I found
-a relatively old discussion on the list though in which a similar
-idea was discussed and rejected so I dropped that, but I thought I'd
-mention it in case things had changed.
-
-Thanks
-Dan
-
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
 ---
-Changes in v2:
-- Updated the commit message in v1, and added a Fixes tag.
-- Link to v1: https://lore.kernel.org/r/20260311-i2c-imx-fixes-v1-0-e625034d8202@ideasonboard.com
+ drivers/i2c/busses/i2c-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
----
-Daniel Scally (2):
-      i2c: imx: Don't recover bus when arbitration lost
-      i2c: imx: Retry failed transfers 3 times
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index b68a0f7105682006bbcfee52891c9a9c2d8c009e..e70e64cc633ff1e13dc61920c0c7960fb6a02622 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1749,6 +1749,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 	i2c_imx->adapter.dev.parent	= &pdev->dev;
+ 	i2c_imx->adapter.nr		= pdev->id;
+ 	i2c_imx->adapter.dev.of_node	= pdev->dev.of_node;
++	i2c_imx->adapter.retries	= 3;
+ 	i2c_imx->base			= base;
+ 	ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
+ 
 
- drivers/i2c/busses/i2c-imx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
----
-base-commit: 4a181746639404023abfcb28eb6f6c66974be5a7
-change-id: 20260311-i2c-imx-fixes-3e23164a8a8f
-
-Best regards,
 -- 
-Daniel Scally <dan.scally@ideasonboard.com>
+2.43.0
 
