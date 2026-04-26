@@ -1,168 +1,117 @@
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627097083C
-	for <imx@lists.linux.dev>; Sun, 26 Apr 2026 07:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FE434251D
+	for <imx@lists.linux.dev>; Sun, 26 Apr 2026 08:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777188056; cv=none; b=PuoPx8gwFX3VCrm43qUcGFVZcJ9VArgPoIgipaPZ0lAYoNTlUb2KoQcRZFFOp3KnDa2ofCBZJeu9280lEDQtRbjX3aCgF1yrGplECpag0MsnQ6UI4SK97HEos2Px5il8SDKianKLepoiHXNdaRSxiIdFF1eP9RzGw3wEr2Hutf0=
+	t=1777192584; cv=none; b=GFclHCu9Maos9a0aS1S+/6nDFI/u3ukP/r0XxjlxKOKsaMo7VoTVzEPQCuzoagjqgLxbu5z5qqErJ9NzC/vnh80/uyIxoXpCnY8gpRZZ6gG3z1Mfye4nsBthFmikffGs3AqDQH8JwrgwBLsO2I5FaxtE/aIE1xCd/9EVMW99ep4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777188056; c=relaxed/simple;
-	bh=4/pLqUd06AAde45L6yuzg4t69PYAl2sWshOwgERbD+w=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=KfkhW+ACQ5770Q1VvdIiLAwJP6qQQTxilxv/jlIAAddEwMDps/EKIw/00GoQd8EOtAe0XeNiLFWsEOeuak3LLSd+D/6lz/OOfhTCg3Cg2SY4aik6XmWlNnWAF7Vw1q84YPFxx3dExm0DlkUgclkEunfcbkAseNncZiaCnKWMYOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=M/i2nYK5; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1777192584; c=relaxed/simple;
+	bh=1/6VvyfAL9R5vjxY+AXLp9W1S3GtT0OmLzFLKCWtrJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bOz6fDOB82Jsxh/zD1QHWu0e0ea3E9GEOZWbCr5WXHruK6JR7kaiYASn4IXEkxOhG5Bz5752ZGjaSqhU8+Pi6uOisrgdShBVBFpQaMDVQMg7JG//h7a5GoWO4v6PSZBbr5MFyCF82az2C6/UmfgEm6EzKzJnTpA14t0BHgvCkUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udhCOe34; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="M/i2nYK5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1777188035; x=1777792835; i=markus.elfring@web.de;
-	bh=1J7QaMP0mZ3aZ8Q7RosVs43+dysGw9YCcECBDq5aN5M=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=M/i2nYK5RJ8STuTRvbqRv6hlWQ5ek8mE69rx3YIJI1r2qhezP9TOWDE8NeLn0jYh
-	 MtEDZ3eWLkCOKQRxeBN0eSYA4cIaiv7BT71ZuMusQma/LMDX0vW61AVvJSVwnVXwb
-	 ToGjGC5d+i52FkHmDJ57HcSwTTvVxhyjVm/z8tj3u2JNNxB6nczji7hOvxqIv79Nb
-	 8mb0GE/alp8w320Sl3R1a8Z9nWwaSk6U4WaeyEBB8FEmGhz27SzI7KFM09Nc2Tnap
-	 ommgdkEQoejXhNoxezt4C5Rjyk+CvUKBFpcHHZbetTnthYtof5ddf6cx+DbOAqFLG
-	 QAH2v0VUJB5f1qymgw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M8C09-1wLYlE1kQN-00CgZx; Sun, 26
- Apr 2026 09:20:35 +0200
-Message-ID: <0d7be98e-ab66-46ab-a729-b344500356a6@web.de>
-Date: Sun, 26 Apr 2026 09:20:30 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udhCOe34"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55413C2BCB6
+	for <imx@lists.linux.dev>; Sun, 26 Apr 2026 08:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777192584;
+	bh=1/6VvyfAL9R5vjxY+AXLp9W1S3GtT0OmLzFLKCWtrJs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=udhCOe34rIDWmvzUvt0BIz8XQXO3Ah4sQFGkkX3txna2RL/uzF1YSHOZGrEFHbp7N
+	 P7xdh8tvzx8Pue6FVNHREXMJg5PtfVLFHsfgv0LKmBrERoK31FuhdXj8+AHzXUmknX
+	 3EjvWzIMKNn+8h6+CNjVXg4+TmYeUwuxWjZgIuQf/nIlDsKbrFACQAPT7PhhvykvSX
+	 GxfrgV+aaBmvSK1hqvswcWgiQ1vQZ5UVlpAtjML60BRgLLgTkzEUIf5jqUUTdeI8q2
+	 C3Gnp8wugat1zOs1JYEHKloHiMmu6ZUfqzd/4zFqRY5mFUSmF+lpkjIM7qKJadZOYG
+	 VYo8pB8jbbCTQ==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a2c7427ad9so8925887e87.1
+        for <imx@lists.linux.dev>; Sun, 26 Apr 2026 01:36:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8zkEZ0EcBZIiweLp/NSv6+lQe4wY0cg2ZRjF4Xs50fhUIimNGVYBqgmh7d7cmF7CEqHUQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9ERTwTFjLT9obSJAn6Odi4lDLcFl/X3DFHzdDq9n2tKm9z2VA
+	jiaJ51NQdLSJEZ6fMxuVRQuqFFucaIec2uyOs5QLXJPrRWQvowEqHuRxxYA3X16HQAQTEP2Olx0
+	chi1aOWwBqoz9Jkv/8CNkPvbmEWOSq+o=
+X-Received: by 2002:a05:6512:3ca0:b0:5a2:b979:4b06 with SMTP id
+ 2adb3069b0e04-5a4172b7ae4mr12820186e87.4.1777192583057; Sun, 26 Apr 2026
+ 01:36:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Frank Li <Frank.Li@nxp.com>, vulab@iscas.ac.cn, imx@lists.linux.dev,
- kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
- linux-pm@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Georgi Djakov <djakov@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-References: <adceUA7PkOLjgyOt@lizhi-Precision-Tower-5810>
-Subject: Re: [v2] interconnect: imx: fix use-after-free in
- imx_icc_node_init_qos()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <adceUA7PkOLjgyOt@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+References: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com> <20260424-ds90ub953-v6-1-7a84efbab316@oss.nxp.com>
+In-Reply-To: <20260424-ds90ub953-v6-1-7a84efbab316@oss.nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 26 Apr 2026 10:36:11 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmi1Q4sGeY6vK7fxw8AdCmiiW-8kdEi4OFkV1xep=Od_A@mail.gmail.com>
+X-Gm-Features: AVHnY4JPq-BE7FCv42DA9knJSs0rb0sCy7jk1s9CJjtuaDpy_xLU0YkpPQu4V6Y
+Message-ID: <CAD++jLmi1Q4sGeY6vK7fxw8AdCmiiW-8kdEi4OFkV1xep=Od_A@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] dt-bindings: media: ti,ds90ub953: Add support for
+ remote GPIO data source
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Bartosz Golaszewski <brgl@kernel.org>, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:N/4aGxbZaLhQPHDsNJDRc9fAJLd2rnfZaqh6cCek3W6t7UqtXI2
- 71Yupdo9R/76uUwcYO0axILb1yzXnh4omLaAnh2xBKzE5wh/zKaBMANKRkT85lXs4aKXDvR
- dXXYWgtRYIY8NMWe/sfS6Sbj/i9TXul+FruoSeqJy9XQJeYHzX8LFcvqj0LwiNVtattsWZ9
- zmmxMJNeJkifPbJkvHE6A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:V08j8qviItc=;gVl/wHb8+mccE1Qmw1FD3z/j3Ew
- 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
- hc258dp8IxouseA==
 
+Hi Guoniu,
 
-=E2=80=A6
-> > use dn after the put, leading to use-after-free. Convert to automatic
-> > cleanup using __free(device_node) to ensure the reference is always
-> > released when dn goes out of scope.
-=E2=80=A6
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+thanks for your patch!
 
-> >  drivers/interconnect/imx/imx.c | 6 ++----
-=E2=80=A6
-> @@ -120,7 +120,8 @@ static int imx_icc_node_init_qos(struct icc_provider=
- *provider,
->  	struct imx_icc_node *node_data =3D node->data;
->  	const struct imx_icc_node_adj_desc *adj =3D node_data->desc->adj;
->  	struct device *dev =3D provider->dev;
-> -	struct device_node *dn =3D NULL;
-> +	struct device_node *__free(device_nod) dn =3D of_parse_phandle(dev->of=
-_node,
-> +			adj->phandle_name, 0);
+n Fri, Apr 24, 2026 at 3:40=E2=80=AFAM Guoniu Zhou <guoniu.zhou@oss.nxp.com=
+> wrote:
 
-=E2=80=A6
+> The DS90UB953 supports four pins, GPIO0 through GPIO3. When enabled as an
+> output, it can be programed to output local data or remote data coming
+> from the remote compatible deserializer.
+>
+> Add GPIO flag in second cell to select remote GPIO data source.
+>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+(...)
+> ---
+> Changes in v6:
+> - Added GPIO_DATA_SOURCE_REMOTE flag to dt-bindings/gpio/gpio.h
 
-A typo was overlooked somehow.
+(...)
+> +/*
+> + * Bit 24 indicates the GPIO data source is from a remote device.
+> + * This is used in serializer/deserializer setups where the GPIO pin
+> + * on the local device (e.g., TI DS90UB953 serializer) reflects the
+> + * state of a GPIO on the remote device (e.g., TI DS90UB960 deserializer=
+).
+> + */
+> +#define GPIO_DATA_SOURCE_REMOTE                0x01000000
 
-Regards,
-Markus
+So this is added to all GPIO controllers ever in existance as something
+fundamental about GPIO that may need its own flag.
+
+I doubt this.
+
+I understand that the driver needs to deal with this in a per-gpio-line
+basis though, have you considered:
+
+1. Just hard-coding this into the driver based on the .compatible
+  string, if the remote GPIOs are always the same for this TI thing?
+
+2. If it is just for one particular system, you *could* actually have
+  a table/mask inside the driver for this:
+  if (of_machine_is_compatible("my-funky-system")) which will
+  kick in only on that very machine,
+
+3. If you really want to store the information in the media i2c
+  device node, add some custom property like this:
+  ti,remote-sources =3D <0x0000001f>;
+  where a bit is set to 1 for each GPIO which is remote.
+
+Putting flags on the GPIO lines themselves seems too complex
+and system-specific.
+
+Yours,
+Linus Walleij
