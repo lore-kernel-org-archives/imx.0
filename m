@@ -1,197 +1,173 @@
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAF3318BB5
-	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 11:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B743AEF2A
+	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 12:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777291123; cv=none; b=jrVdoyIARlkK3oIfarcLznkpjG65iMXKJEeJqdRM5+6QF1QUpFTfCMQca0FLoG3lo0bcrCpguhRLQhAziLmT45gzczlK6tBPVt+ykQaNa8aptD/UeFE6Ks9CdC3sdWOrAOFVZTW42Wxm8MLHCoalrTX8yuM6kUsx/vE2kMYbuks=
+	t=1777294800; cv=none; b=dkYguNO6fFLoxg1CsaphwBcW3pSS0splp470nLcxrlh429vtq0zDRasTTvuJMKgHAHguays6qGjIoUqzgmU2oRYJL5+O4LJTUoB7+k5MDLMe1vVIdczojH1MVsQ+aU2ZDqiOYM0ue3Wi9YbI023+USqQw5leF5MwBL0YjBPW5hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777291123; c=relaxed/simple;
-	bh=sT7p1AOR4NHSCnt8HRgZeft4GbIzFKYA9NxPB4WqXM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d2RJaJX/YotpDiaeLD+CHClFfKcYiKd84TqVvMvb4TI+FUwcsmYX9U6wRLDVwFeazysXs9xL5hUgfQTG/YQ6bRk2/nnk0qqH9DQ7C8evny52L4GkblliFKoJ+RPsKC2Mtf+rzXkvE6guW3Lmy5GD+H3mkn4IATJFDGqvC3d9c7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b=qgLSnrBO; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1777294800; c=relaxed/simple;
+	bh=8V1r61c1YDcfyb0te+S3PBFKsStolusEFex58/NJl7Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=FtPdqsSW66v6gaDqCZ6XbnaLnItRjWyCnnNWIGFNdxSXvIY5TK6j/lKGAC8soZC6ykwkvUKBJalPvrVnwa3LWRRb6r7rSHvt1MTFVfT1zPVyqu0WOsfIglZgeSdQTf8NrEq+gJF9JhBU0PN3FuyvRgOEXBvNc0GVgT8yHe9kWCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KM19ZW6A; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=smoch@web.de header.b="qgLSnrBO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1777291095; x=1777895895; i=smoch@web.de;
-	bh=2KhQ2G6x2J8Q5WZNMz2VfLJf1mtdAD7QrMdDraBgb4Q=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=qgLSnrBOud8WRCG8cYHih31yCxXrl3T7678GqJc5ngwJPL2i2HCrQpnMv2wdJOc1
-	 nZK4kRaGyhFEzmTk12KpLMA+tbQ1iLD/YF13jTSg8sxedrYX3zdHGCkrhZBaJRdXw
-	 ZowW5sQBFvf4CDtWxijY+ZVtuVR1gNTIA+8ezna/9o4q0frq1W0gOb6oY1G2+hRO5
-	 bVfWC5+Uyw0WpYEs0w/6hz3qd9nZg2E6G9smLbI/rXWzof3mQYDCl2DLQ3CQSo6cz
-	 mCFWzWG61EYkoxpJsRqCMC3M50LcdkSAcE6Sezxdax215Wi9SGrtS+4BwGzYULgXa
-	 IdYyXbitrs3kOxGOSw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MECGX-1w7Bb80ngr-00FReF; Mon, 27
- Apr 2026 13:58:15 +0200
-From: Soeren Moch <smoch@web.de>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: Soeren Moch <smoch@web.de>,
-	stable@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
-Date: Mon, 27 Apr 2026 13:58:04 +0200
-Message-ID: <20260427115804.134231-1-smoch@web.de>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KM19ZW6A"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E49821A3442;
+	Mon, 27 Apr 2026 12:59:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B81ED600D1;
+	Mon, 27 Apr 2026 12:59:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E5EF1072804C;
+	Mon, 27 Apr 2026 14:59:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777294793; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=w1gq2kSLPRi8BDsMgY4czhQqlGkV5UyJsHxlDfVChz0=;
+	b=KM19ZW6ABhnHYA6hBe+i6d5oGTfsERPMy9ZBlb6TXMxvbpEfHorIfO/ocCrZPQMj83+MMn
+	WrD4/vTbGY6rM5cwa1G5nhIKmyZwF7QFL8+o25zNnOvvG/jh/xdbabGQtgw08qLzLadkNA
+	chUGjND3ttfvUWbS6h1JpmC4LBiJh5KLijGlI/o8xH1uaR5QlibWlwsYuBtsx2A4z4qCtG
+	hmpocuBB1sgz7UJbCtJkJ4N9n542wvcyqzOoR8Zc7rLbxjqeH2e+p95mVteN2TdGXD3UG3
+	cBQ7dp0YU54eialMN0ggw/T08DMOtO5qeg98RjTD0ZpS500TnopeLBbZtcZwTw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:N2MpFZIlfk3KyZHhfVQqO31PNrFqNAiZ5+xuJ+1cNABwhjlgbny
- EgBHSjNosX9kh08YvdEEWuacI2c5fyXe9V0/kVgq3+0Q+Qx+hhfKxOwnmGOq4toyLxVq0C+
- eqw//AKE+TZof9iqKd7BPzCyAzbdzu6+lDvVatUNqWg3CzVqjTqqcZJHCV62HeZK4+xP5Te
- TCIAPI8PCpBOJ7OrA0xEA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PaQqfRxTQgo=;3YyMQwVtLJHEbSUtr9bb85v9t6b
- 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
- xnvl9ce3N/352BQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Apr 2026 14:59:47 +0200
+Message-Id: <DI3YF5Y2B3GZ.25AP4NKQAXH36@bootlin.com>
+Subject: Re: [PATCH v22 5/8] dt-bindings: phy: Add Freescale iMX8MQ DP and
+ HDMI PHY
+Cc: <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux@ew.tq-group.com>, "Alexander Stein"
+ <alexander.stein@ew.tq-group.com>, "Ying Liu" <victor.liu@nxp.com>
+To: "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, "Vinod Koul"
+ <vkoul@kernel.org>, "Neil Armstrong" <neil.armstrong@linaro.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Frank Li" <Frank.Li@nxp.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d@oss.nxp.com>
+ <20260424-dcss-hdmi-upstreaming-v22-5-30a28f89298d@oss.nxp.com>
+In-Reply-To: <20260424-dcss-hdmi-upstreaming-v22-5-30a28f89298d@oss.nxp.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received b=
-y
-the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+Hello Laurentiu,
 
-Even though the Root Port MSIs won't be received by the iMSI-RX controller
-due to design, this chipset has some weird hardware bug that prevents
-the endpoint MSIs from reaching when the Root Port MSI capability is
-disabled.
+On Fri Apr 24, 2026 at 1:07 PM CEST, Laurentiu Palcu wrote:
+> From: Sandor Yu <Sandor.yu@nxp.com>
+>
+> Add bindings for Freescale iMX8MQ DP and HDMI PHY.
+>
+> Signed-off-by: Sandor Yu <Sandor.yu@nxp.com>
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8mq-hdptx-phy.yaml         | 80 ++++++++++++++++=
+++++++
+>  1 file changed, 80 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.y=
+aml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
+> new file mode 100644
+> index 0000000000000..a24435139b8b3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-hdptx-phy.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/phy/fsl,imx8mq-hdptx-phy.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Cadence HDP-TX DP/HDMI PHY for Freescale i.MX8MQ SoC
+> +
+> +maintainers:
+> +  - Sandor Yu <sandor.yu@nxp.com>
 
-Hence, always keep the Root Port MSI capability for this chipset.
+Based on what you said in the cover, I guess this line will have to be
+changed. Are you willing to maintain this binding?
 
-Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
-PME and others won't be received by default. So users need to use
-workarounds such as passing 'pcie_pme=3Dnomsi' cmdline param.
+> +description:
+> +  The Cadence HDP-TX DP/HDMI PHY is a child node of the MHDP8501 bridge,
+> +  sharing the same MMIO region as the parent bridge node.
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx8mq-hdptx-phy
+> +
+> +  clocks:
+> +    items:
+> +      - description: PHY reference clock.
+> +      - description: APB clock.
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ref
+> +      - const: apb
+> +
+> +  "#phy-cells":
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - clocks
+> +  - clock-names
+> +  - "#phy-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8mq-clock.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    display-bridge@32c00000 {
+> +        compatible =3D "fsl,imx8mq-mhdp8501";
+> +        reg =3D <0x32c00000 0x100000>;
+> +        interrupts =3D <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-names =3D "plug_in", "plug_out";
+> +        clocks =3D <&clk IMX8MQ_CLK_DISP_APB_ROOT>;
+> +        phys =3D <&dp_phy>;
+> +
+> +        ports {
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
 
-Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-R=
-X to work around hardware bug")
-Cc: <stable@vger.kernel.org> # 7.0.x
-Signed-off-by: Soeren Moch <smoch@web.de>
-=2D--
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: linux-pci@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: imx@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
+The ports are not mentioned in the properties. I'm not a DT maintainer, but
+I think they should, e.g. to mention which port is the input and which is
+the output.
 
-Tested on a tbs2910 board [1]
-[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-=2D--
- drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> +
+> +            port@0 {
+> +                reg =3D <0>;
+> +                endpoint {
+> +                    remote-endpoint =3D <&dcss_out>;
+> +                };
+> +            };
+> +
+> +            port@1 {
+> +                reg =3D <1>;
+> +                endpoint {
+> +                    data-lanes =3D <2 1 0 3>;
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controlle=
-r/dwc/pci-imx6.c
-index 6d6a1688e7eb..3d461bdef967 100644
-=2D-- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] =3D {
- 		.flags =3D IMX_PCIE_FLAG_IMX_PHY |
- 			 IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
- 			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
--			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
-+			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
-+			 IMX_PCIE_FLAG_KEEP_MSI_CAP,
- 		.dbi_length =3D 0x200,
- 		.gpr =3D "fsl,imx6q-iomuxc-gpr",
- 		.ltssm_off =3D IOMUXC_GPR12,
-=2D-=20
-2.43.0
+Having a remote-endpoint property would be nice here, to make the example
+more complete.
 
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
