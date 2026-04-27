@@ -1,160 +1,200 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011003.outbound.protection.outlook.com [52.101.70.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C5839891C
-	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 07:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777276242; cv=none; b=uR1xygZiiDHKjR6hm4UlImN9Z0kMedNkdh5TV6bN0OrwGZnwHfBQZi0qCW+rTRsCwAZKqHAJCVQTBEfJZShIfOWIviNYoK3pe512v0iXBq16YGuFvHRzszJvmy6FY4Q6Suqydf6d+AEgFf7efuIl2Hot1TSjaWbohZNQLrcm+Sk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777276242; c=relaxed/simple;
-	bh=lN/6325sqKItlf/aw2n425m/Ms2tR/ussSe22vm3WJo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Uxc4QDyK1g07zGkojZhDctWdWBB5Whx1QK+uQqtGx/0HEm8Vs1oh1+KM6gu0YVf4aJKVy8g5uqxIIDmSRgwY6KI25YdNq+1cNDACkmOHoE6bgBmnCiCtIjzATgSI6xdXNLR18sKVCvo7me/ooEEctyR6Pq54zeTSd45XeEqtWrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1wHGjb-00032N-F2; Mon, 27 Apr 2026 09:50:27 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 27 Apr 2026 09:50:14 +0200
-Subject: [PATCH v2 2/2] arm64: dts: imx8mp-skov: support new 7inch panel
- board
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F068396D2C
+	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 07:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777276471; cv=fail; b=Ix80G3SRM9FExFgT9yHJEmDRW/mXSGedw0lPsMOrj/R3auCXU0INglbkJyNUSt85L0nxUwKPvs4CoEqtz2E/EiUkJlAEwMYcHmc79497Xoj0Ev+ed+u7UjHGD1gXk60OjXfI+pr+T+1ist6gxfFoZ3o7QVztO3O5IOfovk+KgIo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777276471; c=relaxed/simple;
+	bh=i6Z0Wsutw6pt7yXlSSTEJGAQ+txz0TymwJe7C9nVevw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Hg0LRvGw6/zH2jJVyX9U78x96duE1L5KBXeuSwqxy+0qEDPggn+kVZ4ulGWGJ0Dt3dtBjZuLN3AkkZ4Y4VJhK7stnTS/6xFvfpI8s1Rm1Go7dAXoOFg7xL97u8HCG4U63E1mPWigU0JAmOBJEPCMzA2+U+K7EZHYZ8gdIRYUW5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QRQ7ricn; arc=fail smtp.client-ip=52.101.70.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QRQ7ricn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I7ThJzsjBSfsLjsnLaxN36Uae/LVjMg5XjBCK/+c9Ek1R5z7Gic0uxBEnEgezZtOUxRdd7SyfAoh0ujNSVwXV5pJGyzIzjUkZ2b1b4ouVf2WJLugFm2JJWZXtUWwYUJaIsyu4/zxgLEzFZtSWPcR8OKVOxv3BE7h0biCndETpHPs+4ESFmLhbndmi9bjfxSf/jWBMVqa0pHPZxxgi+SS079mvmdH22DTQubZWCY+oImGix6AqmcOp32yA1Ix7ZOTN4I7vidU6mJIWt+tswthkNiYRODpW22oW+jDv3I/mEAi2+nfbgOlenFHrKbO2t5Be71IOhlY0O1thu7/HpDe4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t1pCtkCNev52UEJzv+IQPFKdy+2avvpKDuYoGjnE2p8=;
+ b=KJ+gtIpVlKhfR1CfVoO1isn7JCEO6dlGquHq8txNYNySFx8tMD+B2jvkFThkTJIOL983+IHkmbt4i0pkZprbJ71BhMCEBKt+FM6tbEwmYpdC7raX/wz+mDGCtqMKQgp+Rkbg63ZlfLFCkz3oKdK0xv1l/55QjXPkq5pm5Nmru5feEUrIVZMUkvj4/4d45TYCK91UFtydMZeOvTZZWlHoTpafGzW9Y5ebD60+uNbm0hSGvkBDOKcVaiMz463SRIbi0h3iEMB5wB2tl6XOFpd+bOjq+TWzJOwL/+9OIUer/KvHodrwwfl8ZQxEFdOJErabY6rwRMRKVTOJrg5Y+GBJ/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t1pCtkCNev52UEJzv+IQPFKdy+2avvpKDuYoGjnE2p8=;
+ b=QRQ7ricnWn0TKnpU3Pg5lft1Tzqhgz9X4jSoR7bx4mPBhGnT9mw+MRB0wXggobHgSIKjeHtUw80OR7HtL5VeZEiemcSFe39qcaH4SxVH0shCMsye276kLRsLvv3kW3vdnY9qI6C/NSnrvdXJwj+i5LjFFTbGF7SHU6q5vr8GZ01yil0NHZF8B+rA4Wncl8nLCRPVabK1i5ybobyPIUg31V0mWgrTk5RLZVrpbG8x4mmshEBQAeJrHSVni+gjsshgHwwU0I5PBD6iriuzn1wrkovsPD/pVlzE6SCHex2wOvDZHTwvUR/INPxBJmvjEymP26TaTJeIAG7wNlqXcucUEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AM9PR04MB8440.eurprd04.prod.outlook.com (2603:10a6:20b:3df::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
+ 2026 07:54:24 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
+ 07:54:24 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: peter.chen@kernel.org,
+	gregkh@linuxfoundation.org,
+	jun.li@nxp.com
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v3 1/2] usb: chipidea: udc: add a helper ci_udc_enable_vbus_irq()
+Date: Mon, 27 Apr 2026 15:56:52 +0800
+Message-Id: <20260427075653.3611180-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0197.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1aa::15) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-2-e2b79fc24391@pengutronix.de>
-References: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de>
-In-Reply-To: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.15.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AM9PR04MB8440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0031752b-d987-4e3e-7cb7-08dea43232ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|376014|38350700014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	9n9lzJ3qnq7Bm0g6fKTtrJ8RY4+J8oQ70T49fgTxvF5I7gaCSYsduMoTDMe1aZBqcsIYCnbGjoqXYQNAo5gOlsDCLhyk84VR+nNcyY0GOMmDQhZ0Rc4QX7kfH6zb+jpnK053F4ZEu30GO3Dxlr7NVmAt3khfx0H+RfFFG0B29Hx5ntbHvU8lC+1HHatbslPuWCGnJmFr6vlHyZWs0IFHNm0D4SP0QFVicveBPd/JHS4b7IUVUi4IREB2I1SIFRaI2D9euhljcXm7NwHjjWUJH1LCs/UJonz4N6Hah2y7af6DaX2kF2CVK61yalGy5UcvoIYJusbXRqx4b29FU2L1dnfYm1Ko4+VnjVf+SrYoUaMMc3P+suXqDRh+S9VbDjY97KUoVjJU0pz6UOXZts/nFpsSlrljDciA1DuC+63XzEo/On0vRLN6pwh//tUIWRTh7npLvULWP5RGj3BBqFaHxIevIV5koF1+wmgdSVcf5cEyLClWVB08RAkxcoocyCB+2kvatXe7a68nJBcnfh1csogvmVWzHdvv/wfqwy5evE3gwe5ypLB4tkumJMxsPWXd+LngxaQHe1DJEsSjbLFS3ltxVL4vjeFP1IXpnWeiKlkyvYxNuHAgp59C0wmKH/MtawMITKE4D+M3qEPVDVAdIX/zTunyz0OlPzZPUH4gGnKEeAnpJMzwtUzba3KV8f6ZUY1m4q5A8U9B+OJJsNa2xoZju7LtmlNSYEDIQXEEa3GCBhOj4AFWIj9ByJhpL17V6sHquqdyZs1wKFz+pHlAm3f0ddUs5xCIxH3eci5Y9cM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(376014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?czbtvyoyJnWKrBFjVc0foWOeSEtnOm02uihh5p0PI8Nb3z7gEI5Z/IzLaQSz?=
+ =?us-ascii?Q?p+RrO2erg4nO1oQ81BFI753RC+WTuZY9NiSLOeknfT9xl4Qd7B7wE6BbLljK?=
+ =?us-ascii?Q?dIYk4R+M7oEZvomJr3xKanOs7u3/ZvpGHsYgpLAAQDjspEeZd6csrkx1Yzx3?=
+ =?us-ascii?Q?4nf46xSzSs78No0JXrRBtitwM3kqokm0nWdZ3/vzlzfD7Tu/ceP3jYWBVUT5?=
+ =?us-ascii?Q?2C2BDbO6MHW3CxzxVfcXTFEpV6Q8o4qrozXvQvVa2+DYhr3BxsHF4G63pVjw?=
+ =?us-ascii?Q?whG05tfwaNh5utbsUjqcH+sfHcQv0Kfm84Z21Wf+5+GPLmcc0r/0fiFn8Z1E?=
+ =?us-ascii?Q?1XOnHakn209RYguhXLN0YN3lwPOstnRMxvT4ERSZ9ns6q2KH/A04cEIYX+ff?=
+ =?us-ascii?Q?PqYTcupuk8543cglr9CeEyLlzx1y0YVN4UUfYNjIlMcO3V4geevc5Jk3LvWM?=
+ =?us-ascii?Q?c6WkuQiErpU056ep5FPZD6fO9g+9OkY7qMDADeN58IiDLvVHDk1ceO2JJNAh?=
+ =?us-ascii?Q?P44bKHzcrNFrXdjxMRxInFmDLLxiFDIgodUgq0IY4xxmA/MXZoAg5fjZtzBt?=
+ =?us-ascii?Q?EkitfbVYT7moL3Kz2COlTqkz0qDWXQZjeJ8ApuOzmACQL9uAqe0ChFIXFNba?=
+ =?us-ascii?Q?CemNm1UkTp2lALdqzWBrUb4/6rOeuA160cNZ6Ju7h80YxIGFtg/PaDQ94Fpp?=
+ =?us-ascii?Q?BVmyTE4jDLbNR6ugs4QEN1RNOGZ2k14bWvDKoRsTBtUXWloI9xwvPIP/vaAY?=
+ =?us-ascii?Q?4ROrgA8By3sb9+ZZCdHJU73XbF3qOEkIgZViN8hA/gjLnrx7XiiO6gtpZjKY?=
+ =?us-ascii?Q?i97lpcr3AkApg3ps02qo241i4sOeHh8xb5Qsk1337S7euqNQUEt3UncjcwZU?=
+ =?us-ascii?Q?0ZzkZdeT3fqtv+/clM1sIDdgHiLn7oo3IPVqc5qFwiLWMi04xk1+VXn2zHsO?=
+ =?us-ascii?Q?qTwibzBRq37nGlF81ZhiuCjOG01h4R6uN2sCvHDkVaOe86ngbdd0yMd0VA/W?=
+ =?us-ascii?Q?hJH/KUkpDbTvYvfAJq0dzp0X3vHsVpoIX3wh6GUXE4Epe/GP2j5zB+fb0h7I?=
+ =?us-ascii?Q?Hnd+hLqXnj2ZzV3Mnv+2PWyZVxK91+nghdmZTt8eonqNcHFMc0Erd1sQKc42?=
+ =?us-ascii?Q?0zh5+3BEMKXA/e8TQtHZlCuOFXvSV7++gRldGAsm8moeJAafEnqyH4QFY1cC?=
+ =?us-ascii?Q?55aHwXv6qjsuWIW3JU/IpJ9qkDa3LQXxrOud7XAj9+cMtybCaiyFuDTQkz2s?=
+ =?us-ascii?Q?9Ogzvd6FoF1iZOOUgQuupVdksLdlBryDH6yUDsyFNPnmxmN6NyAi5TNcsXSV?=
+ =?us-ascii?Q?gXwmdus5UF5fePD/o2BKto0w0DkhySGyLaiTprSqlXr1TwYm8u0ZCa+5S1Ak?=
+ =?us-ascii?Q?FzvrpQnWJPOOVUEOL4qjSz2dHNdaSujKOxktru0+7ikQvEuPkXmBWPl96qXJ?=
+ =?us-ascii?Q?sw74cNCg0XCgYQ7ieKo7VMa4udHIXq5CUZcDEnln+6w/7tB6r6VGlWroam0T?=
+ =?us-ascii?Q?VZymue7iHqQK0mats6WQQIxgV6tI2MHDVy4ce5BIxIxmrMBMdyGUTtkk2LbK?=
+ =?us-ascii?Q?/p+Menok/jjZ9xNQg9QkFs/5LuRlcJ+mGtUO7CySP4SbawuhV0jeZKHwHVjV?=
+ =?us-ascii?Q?VyfvQHgnoII7XsWkpT6N7Nvojh41z5U9XK1DtcTML1N0hMg39lDEk5UIbMpZ?=
+ =?us-ascii?Q?BPm1dgcSVNr7XJbvUz5S0qV/KDhc4bAT9ssT4UqLhzSp4segfPeNMy2Za5Ir?=
+ =?us-ascii?Q?+JdNsrebXQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0031752b-d987-4e3e-7cb7-08dea43232ca
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 07:54:24.2980
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TT6u6Ln1ndfIJJaJkyeWQCj1Lb9q3/rE74D2UUev8YdelZb4wXFrxPmywfGmkytW5UKLsf7zrULDdwzOuGAkGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8440
 
-This board is similar to the already upstream
-imx8mp-skov-revc-tian-g07017.dts but uses a different 7" panel with a
-different touch controller.
+The VBUS interrupt is configured in multiple places, add a helper function
+ci_udc_enable_vbus_irq() to simplify the code.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
 ---
- arch/arm64/boot/dts/freescale/Makefile             |  1 +
- .../imx8mp-skov-revc-jutouch-jt070tm041.dts        | 79 ++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+Changes in v2:
+ - add R-b and A-b tag
+Changes in v3:
+ - no change
+---
+ drivers/usb/chipidea/udc.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 711e36cc2c990..cc337cc4745bc 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -320,6 +320,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-hdmi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt070tm041.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt101tm023.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dts
-new file mode 100644
-index 0000000000000..56374f1e67663
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt070tm041.dts
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index f2de86d0ce40..d4277d6611ee 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1835,6 +1835,20 @@ static const struct usb_ep_ops usb_ep_ops = {
+  * GADGET block
+  *****************************************************************************/
+ 
++static void ci_udc_enable_vbus_irq(struct ci_hdrc *ci, bool enable)
++{
++	u32 reg = OTGSC_BSVIS;
 +
-+/dts-v1/;
++	if (!ci->is_otg)
++		return;
 +
-+#include "imx8mp-skov-reva.dtsi"
++	if (enable)
++		reg |= OTGSC_BSVIE;
 +
-+/ {
-+	model = "SKOV IMX8MP CPU revC - JuTouch JT070TM041";
-+	compatible = "skov,imx8mp-skov-revc-jutouch-jt070tm041", "fsl,imx8mp";
++	/* Clear pending BSVIS and enable/disable BSVIE */
++	hw_write_otgsc(ci, OTGSC_BSVIE | OTGSC_BSVIS, reg);
++}
 +
-+	panel {
-+		compatible = "jutouch,jt070tm041";
-+		backlight = <&backlight>;
-+		power-supply = <&reg_tft_vcom>;
-+
-+		port {
-+			in_lvds0: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+};
-+
-+&backlight {
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	touchscreen@2a {
-+		compatible = "eeti,exc81w32";
-+		reg = <0x2a>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touchscreen>;
-+		interrupts-extended = <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
-+		touchscreen-size-x = <1024>;
-+		touchscreen-size-y = <600>;
-+		vdd-supply = <&reg_vdd_3v3>;
-+	};
-+};
-+
-+&lcdif2 {
-+	status = "okay";
-+};
-+
-+&lvds_bridge {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
-+				 <&clk IMX8MP_VIDEO_PLL1>;
-+	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
-+	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
-+	assigned-clock-rates = <0>, <358400000>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			ldb_lvds_ch0: endpoint {
-+				remote-endpoint = <&in_lvds0>;
-+			};
-+		};
-+	};
-+};
-+
-+&pwm4 {
-+	status = "okay";
-+};
-+
-+&pwm1 {
-+	status = "okay";
-+};
-+
-+&reg_tft_vcom {
-+	regulator-min-microvolt = <3160000>;
-+	regulator-max-microvolt = <3160000>;
-+	voltage-table = <3160000 73>;
-+	status = "okay";
-+};
-
+ static int ci_udc_get_frame(struct usb_gadget *_gadget)
+ {
+ 	struct ci_hdrc *ci = container_of(_gadget, struct ci_hdrc, gadget);
+@@ -2352,23 +2366,13 @@ static int udc_id_switch_for_device(struct ci_hdrc *ci)
+ 		pinctrl_select_state(ci->platdata->pctl,
+ 				     ci->platdata->pins_device);
+ 
+-	if (ci->is_otg)
+-		/* Clear and enable BSV irq */
+-		hw_write_otgsc(ci, OTGSC_BSVIS | OTGSC_BSVIE,
+-					OTGSC_BSVIS | OTGSC_BSVIE);
+-
++	ci_udc_enable_vbus_irq(ci, true);
+ 	return 0;
+ }
+ 
+ static void udc_id_switch_for_host(struct ci_hdrc *ci)
+ {
+-	/*
+-	 * host doesn't care B_SESSION_VALID event
+-	 * so clear and disable BSV irq
+-	 */
+-	if (ci->is_otg)
+-		hw_write_otgsc(ci, OTGSC_BSVIE | OTGSC_BSVIS, OTGSC_BSVIS);
+-
++	ci_udc_enable_vbus_irq(ci, false);
+ 	ci->vbus_active = 0;
+ 
+ 	if (ci->platdata->pins_device && ci->platdata->pins_default)
+@@ -2395,9 +2399,7 @@ static void udc_suspend(struct ci_hdrc *ci)
+ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+ {
+ 	if (power_lost) {
+-		if (ci->is_otg)
+-			hw_write_otgsc(ci, OTGSC_BSVIS | OTGSC_BSVIE,
+-					OTGSC_BSVIS | OTGSC_BSVIE);
++		ci_udc_enable_vbus_irq(ci, true);
+ 		if (ci->vbus_active)
+ 			usb_gadget_vbus_disconnect(&ci->gadget);
+ 	} else if (ci->vbus_active && ci->driver &&
 -- 
-2.51.0
+2.34.1
 
