@@ -1,125 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F33634B1B0;
-	Mon, 27 Apr 2026 16:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83331F989
+	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 17:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777305856; cv=none; b=mOevJRLv4nH0jdsEQoGqqMXP9Ez8DQ3votvQy9NyWpNTSlPdN9Rr63VKNWNcVezkbdaHUqUDhajXrEYzz2OeulH3Nrc39RUmY2z+1cfcjYTFyu7qKsenkqsBWSaQJ5Ha1hFdYRUzNWEmWZG5a8eXsbLsaMqCCtxeolnzU3VAvq8=
+	t=1777309659; cv=none; b=JLYRlwp2jz6i+JB9a8ye0rmXYqtaQY5PRuCIQ4oBm/5+5u1RnNIKhXgpiWTNpAmfAeVK5ifqzojMhkRZ5Fm6FYvwD3Nnn8thA8ftqU5XLSUs6Zqa0asnp9W9SvMyKJwWYkg1DJDouTDunFKB/QxWPXjsGoAqWBcRBbg8GQNWeRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777305856; c=relaxed/simple;
-	bh=UW2ziu0vYi5bpD6WFhH5Pn3wPP3OyNm/8gp9tgp+Csk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ktp1eYa52g3tN7xq8RicNvdPqbpMfipRSSYQEkafVp6xDOQge6vpi5KAr1JK/5uFHow8A9gizAA06QKm8BJaPEcOHvWXn0UcfCUzd8VpbTF1ywmZUIn0G2wNxnGhKrvp9DsVqjMAJJ+PhQRtieDMvCFghx6tQaZ4axTGi+stCf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANS0RD56; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777309659; c=relaxed/simple;
+	bh=2BBIVyuBfJT/9Pa5JyxKH2ni54xydMVjGCoT+247qyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXJF4HACH7iSwxsb8wMjk9p+clDTLcKingLGAFkocwIGpw95w7n5SrWHjnCezdTP5tZpjl686Om9jMKzIanCGoQet6xOlatXD3ExEGw2nOG4McGUPGhoSsPRcQ1hhuSnpJRVMeooUdxN044PyEkt7ghxDWSum5/rqDMNwMcQW+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C36fv9F2; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANS0RD56"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE58C19425;
-	Mon, 27 Apr 2026 16:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777305855;
-	bh=UW2ziu0vYi5bpD6WFhH5Pn3wPP3OyNm/8gp9tgp+Csk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ANS0RD56V9xO7muEwlXC19L7PVGslrxc8Unt6bLywkbL/6ktX+fA3CVNmVSw5ME0w
-	 hHaHUAuppJxESPCR9N3xldV3rFpIXius4tc96mHRm/yntMRnQu5mJfWzgnV53K2BaI
-	 +JOymfjjgNoe9tj+vIfhRtRNqFVIFVuJ+TxabdFGuo6B2Hy7FWpA0uGqayPQA0Bxdx
-	 7QUbI8JBvOF4fH+Onr5mXyFMn4LdrR7t8BngJOACF9ngxr3VSQjiLEzCeyUvQeDh1Q
-	 uxjTIeUmecSjAFN4dOIjMrrcdncXgOTLjqjeoq9qToILdDbSiEq40Cc2k33kx6y42i
-	 ydNNto3wWQTJg==
-Date: Mon, 27 Apr 2026 17:04:09 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	Frank Li <frank.li@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/3] dt-bindings: PCI: imx6q-pcie: Add intr, aer and
- pme interrupts
-Message-ID: <20260427-mandate-crucial-47bd161ecd73@spud>
-References: <20260424025735.1490772-1-hongxing.zhu@nxp.com>
- <20260424025735.1490772-2-hongxing.zhu@nxp.com>
- <20260424-sinless-unfiled-d1087a894da5@spud>
- <AM0PR04MB522051DF5CA446158839C2BD8C362@AM0PR04MB5220.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C36fv9F2"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so6811274a12.3
+        for <imx@lists.linux.dev>; Mon, 27 Apr 2026 10:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777309657; x=1777914457; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ERRqVYI8CFxrsUDJfV7VsWlDQmS0mSXaXFgBL1Geb4k=;
+        b=C36fv9F2I89QoMvr6nCMT2jvm0zpjcgjBiK5qfrokj6sT1GTm2yazatn1C2bdIaIbB
+         3yJkb0N4Pqr2ajj7VEX4e+xLVklsHPGbIvmkWdXls0/VHaR5wqqA2tDm169CrR5vubkV
+         CxzTJb1zreG/HTaBWiKLRfygJhI/5COwoJW7TJCger4N+e0mYSgdMk4jcetshRySXU9b
+         jEG2taFyyS90l1l6YFTp3zmO7mJ3CvUqBKD2JmHJJmBeiMaiVapPW5/R9EGI1VlUZvVW
+         fgy6S2oNxYiWik3kbggay37JAknLD3Qg2+sD181wFSUNdN/DoO1z3Vj9jtjBzXJNgH8V
+         jBtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777309657; x=1777914457;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERRqVYI8CFxrsUDJfV7VsWlDQmS0mSXaXFgBL1Geb4k=;
+        b=MN8PGzbkj4me831hfAyG7/MOVc9W4/NMPkZ7Q5waRHxtG2Sv3nmSE6N+3L/Kijds1A
+         WSSB1aFuvlzmeCUITlB6kfxydyloR9p0z9itYX6DXt3pyGC5od0F2VHlELOx743i2b32
+         6++EIL1HPcn3peLk81QsF+njQZV4iN2aW0PUvH/EEZcUYidieAn12pDa5UVVDHPcDL3U
+         Q7rpwGPdM2mWvB4SPoJgBHszorrdq78eTGAJE0WObqdTScDndW1YD+XWEvXc1+KlGQlE
+         pGtUU7ZAv8QVcBW5JhlCpvH/qsF/JgvIP6wSTRSRYvJ3tCIC2Rtg9wb8C2EAb4nH6Vfe
+         o1Dg==
+X-Forwarded-Encrypted: i=1; AFNElJ9dhB8b57zAchp+1pLurXCbqY45e8pyT7ufppbGfftmqoNwyn8sLpD7HItGIEifhLo78z0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzjZ3qP3wq7upPoltFablyxtcvwALf1q3969H1dPrr3YY4NTcWV
+	7Z70hI0Q3z7aJybus//hxyqdyNs4xjkFrcrlfevCQHBzjh9Ejf83vbd+
+X-Gm-Gg: AeBDietoXZpco+wBwL7TJEG7mMrVUYuz5jfxS+nXX9iKbaBJdEN6ft1Jvs7QPtJzuBZ
+	I9AwZo7keUGPwnnaReHsoElDCzWR30psYs010pgO1nSKKbDtf2NQtRhLJSGEg9CcXVP7iisIz/e
+	r2x0FBpFHTPGdnPXPZ77oKbevudHw8o18WsqQ+oUm/0r0tQQwcLtDKRgZ6Lno7o1CyzJ7FBh4mZ
+	Pfrw3dzq/7FpAfAZe88d3yQs9zYwvZRDL4UpM0zYk5bH3Ot53aAb+zL2MFAfBP2EWki7pcA5sxJ
+	egbnYcaWLAABzmlCMZDRa27lJezPQypfb1rAOWMMHgN1SgQg/zbRJvl3Izu3JICBJFpA+HPrzaW
+	qlHllqNk6CsrQiEIvHzc961EvsrgUAw2i9PC0V8MOGMe3sOosmiZ0kNqdVDx3VNRqZngDj8517N
+	omj4WLJtCbS8e9ahew98QZAF9SFS2G9+GFb0v6TbuWqhEj62pHzA1m/TpeHgOS9ffAK9PmRnotj
+	O07UAD58GUZYiE6g0wCCjVF97yOlZHp
+X-Received: by 2002:a05:6a20:6a09:b0:39b:ba95:b127 with SMTP id adf61e73a8af0-3a398c117f6mr307416637.4.1777309657446;
+        Mon, 27 Apr 2026 10:07:37 -0700 (PDT)
+Received: from shyam-VMware-Virtual-Platform.localdomain ([223.181.114.98])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec04448sm39497551b3a.55.2026.04.27.10.07.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 10:07:36 -0700 (PDT)
+From: Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
+To: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	s.hauer@pengutronix.de
+Cc: Frank.Li@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
+Subject: [PATCH] staging: media: imx: remove unnecessary braces from single statement if block
+Date: Mon, 27 Apr 2026 22:36:33 +0530
+Message-ID: <20260427170634.23072-1-shyamsunderreddypadira@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qkvg/+lyFeMVn9Cn"
-Content-Disposition: inline
-In-Reply-To: <AM0PR04MB522051DF5CA446158839C2BD8C362@AM0PR04MB5220.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
+Remove braces from a single statement if block to
+follow kernel coding style and improve readability.
 
---qkvg/+lyFeMVn9Cn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No functional change.
 
-On Mon, Apr 27, 2026 at 03:17:12AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Conor Dooley <conor@kernel.org>
-> > Sent: Saturday, April 25, 2026 1:06 AM
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > bhelgaas@google.com; Frank Li <frank.li@nxp.com>; l.stach@pengutronix.d=
-e;
-> > lpieralisi@kernel.org; kwilczynski@kernel.org; mani@kernel.org;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com; linu=
-x-
-> > pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > devicetree@vger.kernel.org; imx@lists.linux.dev; linux-kernel@vger.kern=
-el.org
-> > Subject: Re: [PATCH v1 1/3] dt-bindings: PCI: imx6q-pcie: Add intr, aer=
- and pme
-> > interrupts
-> >=20
-> > On Fri, Apr 24, 2026 at 10:57:33AM +0800, Richard Zhu wrote:
-> > > Add optional 'intr', 'aer', and 'pme' interrupt entries to the i.MX6Q
-> > > PCIe binding to support PCIe event-based interrupts for general
-> > > controller events, Advanced Error Reporting, and Power Management
-> > > Events respectively.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> >=20
-> > This binding supports lots of devices. Do they all have these additiona=
-l interrupts?
-> Currently, only i.MX95 PCIe has these dedicated SPI interrupts. The earli=
-er
-> SoCs in this binding (i.MX6Q/6SX/7D/8MQ/8MM/8MP, etc.) do not expose thes=
-e as
-> separate interrupt lines.
->=20
-> I can constrain these three interrupt entries to be valid only for the i.=
-MX95
-> variant using conditional schemas. Would that be acceptable?
+Signed-off-by: Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
+---
+ drivers/staging/media/imx/imx-media-of.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Please
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index bb28daa4d713..7413551052ae 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -57,9 +57,8 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 		of_node_put(csi_np);
+ 		if (ret) {
+ 			/* unavailable or already added is not an error */
+-			if (ret == -ENODEV || ret == -EEXIST) {
++			if (ret == -ENODEV || ret == -EEXIST)
+ 				continue;
+-			}
+ 
+ 			/* other error, can't continue */
+ 			return ret;
+-- 
+2.43.0
 
---qkvg/+lyFeMVn9Cn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCae+I+QAKCRB4tDGHoIJi
-0qZkAP0VeBYH09JW4VBXLCbVfTkp6AJcYotAdzH9DNBySmjUwgEArxXLiGeMs/b7
-yRxmf+g2s6n2tJ8PXHvaTMjIJac0FwM=
-=ppW6
------END PGP SIGNATURE-----
-
---qkvg/+lyFeMVn9Cn--
