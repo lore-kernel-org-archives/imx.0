@@ -1,81 +1,51 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83331F989
-	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 17:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4032339714;
+	Mon, 27 Apr 2026 18:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777309659; cv=none; b=JLYRlwp2jz6i+JB9a8ye0rmXYqtaQY5PRuCIQ4oBm/5+5u1RnNIKhXgpiWTNpAmfAeVK5ifqzojMhkRZ5Fm6FYvwD3Nnn8thA8ftqU5XLSUs6Zqa0asnp9W9SvMyKJwWYkg1DJDouTDunFKB/QxWPXjsGoAqWBcRBbg8GQNWeRw=
+	t=1777314767; cv=none; b=oxX5tZgBrXNWyeAfXo+4Ta1/1VtIdOClnV+cHh9BDSn50zgURhToI7QZKT8FZK+0fbU2eA76cPsNd7ZfQ01H6b4efSWd1sK4bVmqHv8zBDrdgFyq//YD6LFKXcyJjU/NsQXEWSLn9BHxSgzX+ysNQzmcGlTiNM2deENnoE5jFpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777309659; c=relaxed/simple;
-	bh=2BBIVyuBfJT/9Pa5JyxKH2ni54xydMVjGCoT+247qyE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXJF4HACH7iSwxsb8wMjk9p+clDTLcKingLGAFkocwIGpw95w7n5SrWHjnCezdTP5tZpjl686Om9jMKzIanCGoQet6xOlatXD3ExEGw2nOG4McGUPGhoSsPRcQ1hhuSnpJRVMeooUdxN044PyEkt7ghxDWSum5/rqDMNwMcQW+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C36fv9F2; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777314767; c=relaxed/simple;
+	bh=RKtH9bT25o7/Z7KqiMovy62aulhS9Vl/2AXd8m0CSLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pa8VWNYe0umPRhybqj6Ykg5znId/KnAGLs5tvKJ1xlPDbTBXgWeUQKEImc4bO/x2f77huQCRUlctT+lBbQytcyDabptYoIglho9vV+3cJUIxkNoPSGtyJUWJ0KMbm40OXtA7dnvEOGmMI/4jj1Ye3KNcA1eps8BM3mIqm7jpTtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eirIR8rc; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C36fv9F2"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so6811274a12.3
-        for <imx@lists.linux.dev>; Mon, 27 Apr 2026 10:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777309657; x=1777914457; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ERRqVYI8CFxrsUDJfV7VsWlDQmS0mSXaXFgBL1Geb4k=;
-        b=C36fv9F2I89QoMvr6nCMT2jvm0zpjcgjBiK5qfrokj6sT1GTm2yazatn1C2bdIaIbB
-         3yJkb0N4Pqr2ajj7VEX4e+xLVklsHPGbIvmkWdXls0/VHaR5wqqA2tDm169CrR5vubkV
-         CxzTJb1zreG/HTaBWiKLRfygJhI/5COwoJW7TJCger4N+e0mYSgdMk4jcetshRySXU9b
-         jEG2taFyyS90l1l6YFTp3zmO7mJ3CvUqBKD2JmHJJmBeiMaiVapPW5/R9EGI1VlUZvVW
-         fgy6S2oNxYiWik3kbggay37JAknLD3Qg2+sD181wFSUNdN/DoO1z3Vj9jtjBzXJNgH8V
-         jBtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777309657; x=1777914457;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ERRqVYI8CFxrsUDJfV7VsWlDQmS0mSXaXFgBL1Geb4k=;
-        b=MN8PGzbkj4me831hfAyG7/MOVc9W4/NMPkZ7Q5waRHxtG2Sv3nmSE6N+3L/Kijds1A
-         WSSB1aFuvlzmeCUITlB6kfxydyloR9p0z9itYX6DXt3pyGC5od0F2VHlELOx743i2b32
-         6++EIL1HPcn3peLk81QsF+njQZV4iN2aW0PUvH/EEZcUYidieAn12pDa5UVVDHPcDL3U
-         Q7rpwGPdM2mWvB4SPoJgBHszorrdq78eTGAJE0WObqdTScDndW1YD+XWEvXc1+KlGQlE
-         pGtUU7ZAv8QVcBW5JhlCpvH/qsF/JgvIP6wSTRSRYvJ3tCIC2Rtg9wb8C2EAb4nH6Vfe
-         o1Dg==
-X-Forwarded-Encrypted: i=1; AFNElJ9dhB8b57zAchp+1pLurXCbqY45e8pyT7ufppbGfftmqoNwyn8sLpD7HItGIEifhLo78z0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjZ3qP3wq7upPoltFablyxtcvwALf1q3969H1dPrr3YY4NTcWV
-	7Z70hI0Q3z7aJybus//hxyqdyNs4xjkFrcrlfevCQHBzjh9Ejf83vbd+
-X-Gm-Gg: AeBDietoXZpco+wBwL7TJEG7mMrVUYuz5jfxS+nXX9iKbaBJdEN6ft1Jvs7QPtJzuBZ
-	I9AwZo7keUGPwnnaReHsoElDCzWR30psYs010pgO1nSKKbDtf2NQtRhLJSGEg9CcXVP7iisIz/e
-	r2x0FBpFHTPGdnPXPZ77oKbevudHw8o18WsqQ+oUm/0r0tQQwcLtDKRgZ6Lno7o1CyzJ7FBh4mZ
-	Pfrw3dzq/7FpAfAZe88d3yQs9zYwvZRDL4UpM0zYk5bH3Ot53aAb+zL2MFAfBP2EWki7pcA5sxJ
-	egbnYcaWLAABzmlCMZDRa27lJezPQypfb1rAOWMMHgN1SgQg/zbRJvl3Izu3JICBJFpA+HPrzaW
-	qlHllqNk6CsrQiEIvHzc961EvsrgUAw2i9PC0V8MOGMe3sOosmiZ0kNqdVDx3VNRqZngDj8517N
-	omj4WLJtCbS8e9ahew98QZAF9SFS2G9+GFb0v6TbuWqhEj62pHzA1m/TpeHgOS9ffAK9PmRnotj
-	O07UAD58GUZYiE6g0wCCjVF97yOlZHp
-X-Received: by 2002:a05:6a20:6a09:b0:39b:ba95:b127 with SMTP id adf61e73a8af0-3a398c117f6mr307416637.4.1777309657446;
-        Mon, 27 Apr 2026 10:07:37 -0700 (PDT)
-Received: from shyam-VMware-Virtual-Platform.localdomain ([223.181.114.98])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec04448sm39497551b3a.55.2026.04.27.10.07.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 10:07:36 -0700 (PDT)
-From: Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
-To: slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	mchehab@kernel.org,
-	gregkh@linuxfoundation.org,
-	s.hauer@pengutronix.de
-Cc: Frank.Li@nxp.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eirIR8rc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=DEvjTnuToY1sm0DpgUIVOaDKJXu5b04Nj+3IlevEBIg=; b=eirIR8rc8D1wzx5NBo9ydvEQjC
+	BDJJcZMHpyrJsKJKHvV2bSr0twcYt/sKxtWL6QBQ1Aej9lwaSg1qNfsjgyM6vbwybEawpmk7h+rDx
+	UN7g/OwQJ6XcaW4btAWItcMsw9Kpa+6F5a30Ril+Qgtn7+SFZYfWHGhtmgS05Is7Tj5mblrorODP5
+	+NJFoLGBt0CTsvF968IaoDccuHwFhiC2zagyshXhMSYtepRUL8rJPaSeCNq2dCupMYjDa1eV8cvFf
+	N2gT9udYgl/cfJUC6UPWlPKv2V5R95g3HzpBMQNPhyN8MCa3pZIBjSSEGubJuTPRYN0H8vaDK8qH+
+	zi+EUsuA==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wHQl3-0000000Ha2H-2RpQ;
+	Mon, 27 Apr 2026 18:32:37 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: dri-devel@lists.freedesktop.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
-Subject: [PATCH] staging: media: imx: remove unnecessary braces from single statement if block
-Date: Mon, 27 Apr 2026 22:36:33 +0530
-Message-ID: <20260427170634.23072-1-shyamsunderreddypadira@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org
+Subject: [PATCH v3] gpu: ipu-v3: clean up kernel-doc warnings
+Date: Mon, 27 Apr 2026 11:32:36 -0700
+Message-ID: <20260427183236.656902-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,31 +54,103 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove braces from a single statement if block to
-follow kernel coding style and improve readability.
+Correct all kernel-doc warnings:
+- fix a typedef kernel-doc comment
+- mark a list_head as private
+- use Returns: for function return values
 
-No functional change.
+Warning: include/video/imx-ipu-image-convert.h:31 struct member 'list' not
+ described in 'ipu_image_convert_run'
+Warning: include/video/imx-ipu-image-convert.h:40 function parameter
+ 'ipu_image_convert_cb_t' not described in 'void'
+Warning: include/video/imx-ipu-image-convert.h:40 expecting prototype for
+ ipu_image_convert_cb_t(). Prototype was for void() instead
+Warning: include/video/imx-ipu-image-convert.h:66 No description found for
+ return value of 'ipu_image_convert_verify'
+Warning: include/video/imx-ipu-image-convert.h:90 No description found for
+ return value of 'ipu_image_convert_prepare'
+Warning: include/video/imx-ipu-image-convert.h:125 No description found for
+ return value of 'ipu_image_convert_queue'
+Warning: include/video/imx-ipu-image-convert.h:163 No description found for
+ return value of 'ipu_image_convert'
 
-Signed-off-by: Shyam Sunder Reddy Padira <shyamsunderreddypadira@gmail.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/staging/media/imx/imx-media-of.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+v2: add Reviewed-by, update Cc: list, rebase, resend
+v3: rebase & resend
 
-diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
-index bb28daa4d713..7413551052ae 100644
---- a/drivers/staging/media/imx/imx-media-of.c
-+++ b/drivers/staging/media/imx/imx-media-of.c
-@@ -57,9 +57,8 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
- 		of_node_put(csi_np);
- 		if (ret) {
- 			/* unavailable or already added is not an error */
--			if (ret == -ENODEV || ret == -EEXIST) {
-+			if (ret == -ENODEV || ret == -EEXIST)
- 				continue;
--			}
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+
+ include/video/imx-ipu-image-convert.h |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+--- linux-next-20260427.orig/include/video/imx-ipu-image-convert.h
++++ linux-next-20260427/include/video/imx-ipu-image-convert.h
+@@ -27,12 +27,13 @@ struct ipu_image_convert_run {
  
- 			/* other error, can't continue */
- 			return ret;
--- 
-2.43.0
-
+ 	int status;
+ 
++	/* private: */
+ 	/* internal to image converter, callers don't touch */
+ 	struct list_head list;
+ };
+ 
+ /**
+- * ipu_image_convert_cb_t - conversion callback function prototype
++ * typedef ipu_image_convert_cb_t - conversion callback function prototype
+  *
+  * @run:	the completed conversion run pointer
+  * @ctx:	a private context pointer for the callback
+@@ -60,7 +61,7 @@ void ipu_image_convert_adjust(struct ipu
+  * @out:	output image format
+  * @rot_mode:	rotation mode
+  *
+- * Returns 0 if the formats and rotation mode meet IPU restrictions,
++ * Returns: 0 if the formats and rotation mode meet IPU restrictions,
+  * -EINVAL otherwise.
+  */
+ int ipu_image_convert_verify(struct ipu_image *in, struct ipu_image *out,
+@@ -77,11 +78,11 @@ int ipu_image_convert_verify(struct ipu_
+  * @complete:	run completion callback
+  * @complete_context:	a context pointer for the completion callback
+  *
+- * Returns an opaque conversion context pointer on success, error pointer
++ * In V4L2, drivers should call ipu_image_convert_prepare() at streamon.
++ *
++ * Returns: an opaque conversion context pointer on success, error pointer
+  * on failure. The input/output formats and rotation mode must already meet
+  * IPU retrictions.
+- *
+- * In V4L2, drivers should call ipu_image_convert_prepare() at streamon.
+  */
+ struct ipu_image_convert_ctx *
+ ipu_image_convert_prepare(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+@@ -122,6 +123,8 @@ void ipu_image_convert_unprepare(struct
+  * In V4L2, drivers should call ipu_image_convert_queue() while
+  * streaming to queue the conversion of a received input buffer.
+  * For example mem2mem devices this would be called in .device_run.
++ *
++ * Returns: 0 on success or -errno on error.
+  */
+ int ipu_image_convert_queue(struct ipu_image_convert_run *run);
+ 
+@@ -155,6 +158,9 @@ void ipu_image_convert_abort(struct ipu_
+  * On successful return the caller can queue more run requests if needed, using
+  * the prepared context in run->ctx. The caller is responsible for unpreparing
+  * the context when no more conversion requests are needed.
++ *
++ * Returns: pointer to the created &struct ipu_image_convert_run that has
++ * been queued on success; an ERR_PTR(errno) on error.
+  */
+ struct ipu_image_convert_run *
+ ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
