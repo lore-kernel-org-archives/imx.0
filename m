@@ -1,62 +1,60 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A53939A7F4;
-	Mon, 27 Apr 2026 09:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD783750B2
+	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 09:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777282296; cv=none; b=Y6QPpD/REBR03oFTohKkwiyxCNdatJ54i0rwpiwg2wXPkMckdDxSUv+weBCsqxjpSyqmI8CGOo6sFtct3qLZM8iQIM3loh/6BjhkcEiWkoiQrhWc9Ua/1arLa4rxsfDoDsA/eMN4dmD04Wq6FOHj/yFExairzeAlitGpEbxMq4A=
+	t=1777282415; cv=none; b=JhLcAly4umJhyHCOcjIgfTHY5FgSTb3lhe2kRi627P27/Zsz95y9fUxbfZhiAwz18K4lCo+TeVeL0Ysjc2oP5Wi5OTBcQKwF0VXPYzgxVw92MG2MS82KVrmeZTnohrL3dMwCaVcGtn2PZQYIQb9fCV4CxM+XaxY1kn6M9bsgCPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777282296; c=relaxed/simple;
-	bh=A0oXCMrybLIEwLDt5XmVSSXvZtqREUvn/lU0xjuCu6A=;
+	s=arc-20240116; t=1777282415; c=relaxed/simple;
+	bh=Uirl3JriUyf+qk9P8LZmvsAq5QKe50iwjI6AgT1P3/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7RlpiH4U48fP7xcaHQwOPkJx6htsaGnPx/MwzSXv/GL4y1XOtjahdgAfzubHJTJZpvxhlhpyLUHYpH73D6e7E/yAlG8/oXPCbNJ0LVVMEelN69/jc1rkvvotwD8JEamtzY10Gjt8bdUiiRyOv5QuQDhFk/zbA/TQHDdIN2G1eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Oui0MOT0; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=HtwvPhD1XjpQJPtNAXTIPV8tVIzrgs94gnqGtv5IjGPRATCGIYlGPzVAzlt3QtoqNuTKb1bg7Vo4jADNOIwekoidlPeevEZs7n/hNfBCUmOOvEYQjGhQjOhWDKf0YQazhBKTpE0f+53ijXJHRRswiZamCHiNfMWcKzIODS5rcsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cW/8ubTk; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Oui0MOT0"
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 39F831FB1B;
-	Mon, 27 Apr 2026 11:31:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1777282292;
-	bh=3f+ipyipbG9ve74SWingHtpF8ckpjt3qTGqxppXfFzY=; h=From:To:Subject;
-	b=Oui0MOT0x94+2dM3R5uOpRffJ9Wx9j6ylSA9QAkTg92XTx+dn56JG7xkyoASs/fa6
-	 jeurKD+LfLijfHlA9mg6wH5OqqjaEOvDVucHz17xzhALz3mdyDx+/MsPHaZVp+YVxJ
-	 VIU34BPvnoFHTPl+YThEFIUGqU6HzI1TbxO1HNl3JHKluUYtK9yGDDeiUXDnyOF/Yz
-	 U9rQ8naikD2oQ8qGchfq7QlTttc7kMhUh/sUuzk97naTvYQq6FTtCPfwqgnIJIqwXO
-	 eWElkycEwmM5cl9ZVK2doQf8R3IWlYTNVaMEWuAXQbf20IyJv35NG87Vt7cb+pgGT3
-	 aaV344jJwI6MA==
-Date: Mon, 27 Apr 2026 11:31:27 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>, peng.fan@oss.nxp.com,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH v2 6/9] soc: imx8m: don't access of_root directly
-Message-ID: <20260427093127.GA50667@francesco-nb>
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-6-b45da45903c8@oss.qualcomm.com>
- <6593091.DvuYhMxLoT@steina-w>
- <20260427064704.GA17710@francesco-nb>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cW/8ubTk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777282414; x=1808818414;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Uirl3JriUyf+qk9P8LZmvsAq5QKe50iwjI6AgT1P3/g=;
+  b=cW/8ubTk3S84FkWbA9dtOPsDbRYU3k9qgo8XtHw/YfqpRO/pYoVaTBt5
+   FBrPkRiijHUYlbu4i90WpB5enQTfWLdW6kBk4e7NgiHjgVmNGR+37OzIp
+   2EKCLeNXbcqkFunckbF8hC7Hg3eOLX3IlsbQWvLsFk7cGnZvpyuahjaXj
+   FM16DVFFXJ6LeqUtddpUZDOKpBJ67ZfuVtdTt1sKThAs7iMoOHn55hhnh
+   esqVtfD2kozp1/eQNkIQcENC+f1yfuf+cU/R0elRupR8XZlU1qvzIewzB
+   Sf2OqDQBJFhVXcBrPERf9W3lMbqrashBc4i0tq1hOANB1uqEpTuRMe9Y0
+   g==;
+X-CSE-ConnectionGUID: uMbyHxn7RN2PmOT+02sjUQ==
+X-CSE-MsgGUID: gBP6EuBTSL65kxK0GV/uxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11768"; a="78182860"
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="78182860"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 02:33:34 -0700
+X-CSE-ConnectionGUID: fc7BOEXwT0iHbWnvkGjttQ==
+X-CSE-MsgGUID: KC7SGBNMRLW+SwOcKR4CKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,201,1770624000"; 
+   d="scan'208";a="238629903"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa005.jf.intel.com with ESMTP; 27 Apr 2026 02:33:32 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id B074395; Mon, 27 Apr 2026 11:33:30 +0200 (CEST)
+Date: Mon, 27 Apr 2026 12:33:29 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: badhri@google.com, gregkh@linuxfoundation.org,
+	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2] usb: typec: tcpm: fix debug accessory mode detection
+ for sink ports
+Message-ID: <ae8tabVDj2iH6IQf@kuha>
+References: <20260424074009.2979266-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,63 +63,135 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260427064704.GA17710@francesco-nb>
+In-Reply-To: <20260424074009.2979266-1-xu.yang_2@nxp.com>
 
-+Peng
-
-Hello all,
-
-On Mon, Apr 27, 2026 at 08:47:04AM +0200, Francesco Dolcini wrote:
-> On Tue, Mar 24, 2026 at 11:24:09AM +0100, Alexander Stein wrote:
-> > Hi,
-> > 
-> > Am Montag, 23. Februar 2026, 14:37:21 CET schrieb Bartosz Golaszewski:
-> > > Don't access of_root directly as it reduces the build test coverage for
-> > > this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
-> > > to retrieve the relevant information.
-> > > 
-> > > Suggested-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> > 
-> > today I noticed the following warning running next-20260323:
-> > > caam 30900000.crypto: No clock data provided for i.MX SoC
-> > 
-> > This happens when there is no matching against the soc_id.
-> > 
-> > Checking the source it turns out this patch is the cause that the SoC info
-> > does not provide soc_id anymore.
-> > next-20260323:
-> > > $ grep . /sys/devices/soc0/*
-> > > /sys/devices/soc0/family:Freescale i.MX
-> > > /sys/devices/soc0/machine:TQ-Systems i.MX8MPlus TQMa8MPxL on MBa8MP-RAS314
-> > > grep: /sys/devices/soc0/power: Is a directory
-> > > /sys/devices/soc0/revision:unknown
-> > > /sys/devices/soc0/serial_number:0000000000000000
-> > > grep: /sys/devices/soc0/subsystem: Is a directory
-> > 
-> > reverting this patch (2524b293a59e586afd06358d0b191ab57208a920):
-> > > $ grep . /sys/devices/soc0/*
-> > > /sys/devices/soc0/family:Freescale i.MX
-> > > /sys/devices/soc0/machine:TQ-Systems i.MX8MPlus TQMa8MPxL on MBa8MP-RAS314
-> > > grep: /sys/devices/soc0/power: Is a directory
-> > > /sys/devices/soc0/revision:1.1
-> > > /sys/devices/soc0/serial_number:469677A693A4B8CE131D180033E44903
-> > > /sys/devices/soc0/soc_id:i.MX8MP
-> > > grep: /sys/devices/soc0/subsystem: Is a directory
-> > 
-> > soc_id is restored. Now that I write these lines I noticed that
-> > serial_number also contained empty value which is restored with the revert.
+On Fri, Apr 24, 2026 at 03:40:09PM +0800, Xu Yang wrote:
+> The port in debug accessory mode can be either a source or sink. The
+> previous tcpm_port_is_debug() function only checked for source port.
 > 
-> Any update on this? I would say this is a regression in 7.1-rc1.
+> Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
+> accessory mode debug") changed the detection logic to support both roles,
+> but left some logic in _tcpm_cc_change() unchanged, This causes the state
+> machine to transition to an incorrect state when operating as a sink in
+> debug accessory mode. Log as below:
 > 
-> I noticed the same issue, and CAAM is not working.
+> [  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, connected]
+> [  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
+> [  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACHED @ 180 ms [rev1 NONE_AMS]
+> [  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarity 0, connected]
+> [  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
 > 
-> [    0.000000] Linux version 7.1.0-rc1-0.0.0-devel (oe-user@oe-host) (aarch64-tdx-linux-gcc (GCC) 15.2.0, GNU ld (GNU Binutils) 2.46) #1 SMP PREEMPT Sun Apr 26 21:19:00 UTC 2026
-> ...
-> [   10.611139] caam 30900000.crypto: No clock data provided for i.MX SoC
-> [   10.611211] caam 30900000.crypto: probe with driver caam failed with error -22
+> It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
+> 
+> To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sink()
+> helper to explicitly identify the power mode in debug accessory mode.
+> Update the state transition logic in _tcpm_cc_change() to ensure the state
+> machine transitions comply with Type-C specification. Also update the logic
+> in run_state_machine() to keep consistency.
+> 
+> Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into accessory mode debug")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-I guess this is the fix
+FWIW:
 
-https://lore.kernel.org/all/20260427-soc-imx8m-fix-v1-1-1fe5b43d8090@nxp.com/
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
+> ---
+> Changes in v2:
+>  - update tcpm_port_is_debug() in run_state_machine() as well
+>    as suggested by Amit
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index dfbb94ddc98a..6d258efae6f0 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -732,9 +732,14 @@ static const char * const pd_rev[] = {
+>  	 (tcpm_cc_is_source((port)->cc2) && \
+>  	  !tcpm_cc_is_source((port)->cc1)))
+>  
+> +#define tcpm_port_is_debug_source(port) \
+> +	(tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2))
+> +
+> +#define tcpm_port_is_debug_sink(port) \
+> +	(tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
+> +
+>  #define tcpm_port_is_debug(port) \
+> -	((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)) || \
+> -	 (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
+> +	(tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port))
+>  
+>  #define tcpm_port_is_audio(port) \
+>  	(tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
+> @@ -5176,7 +5181,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			tcpm_set_state(port, SNK_UNATTACHED, PD_T_DRP_SNK);
+>  		break;
+>  	case SRC_ATTACH_WAIT:
+> -		if (tcpm_port_is_debug(port))
+> +		if (tcpm_port_is_debug_source(port))
+>  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
+>  				       port->timings.cc_debounce_time);
+>  		else if (tcpm_port_is_audio(port))
+> @@ -5434,7 +5439,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			tcpm_set_state(port, SRC_UNATTACHED, PD_T_DRP_SRC);
+>  		break;
+>  	case SNK_ATTACH_WAIT:
+> -		if (tcpm_port_is_debug(port))
+> +		if (tcpm_port_is_debug_sink(port))
+>  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
+>  				       PD_T_CC_DEBOUNCE);
+>  		else if (tcpm_port_is_audio(port))
+> @@ -5454,7 +5459,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  		if (tcpm_port_is_disconnected(port))
+>  			tcpm_set_state(port, SNK_UNATTACHED,
+>  				       PD_T_PD_DEBOUNCE);
+> -		else if (tcpm_port_is_debug(port))
+> +		else if (tcpm_port_is_debug_sink(port))
+>  			tcpm_set_state(port, DEBUG_ACC_ATTACHED,
+>  				       PD_T_CC_DEBOUNCE);
+>  		else if (tcpm_port_is_audio(port))
+> @@ -6360,10 +6365,10 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+>  
+>  	switch (port->state) {
+>  	case TOGGLING:
+> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
+> +		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
+>  		    tcpm_port_is_source(port))
+>  			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
+> -		else if (tcpm_port_is_sink(port))
+> +		else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_sink(port))
+>  			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+>  		break;
+>  	case CHECK_CONTAMINANT:
+> @@ -6371,9 +6376,11 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+>  		break;
+>  	case SRC_UNATTACHED:
+>  	case ACC_UNATTACHED:
+> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
+> +		if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio(port) ||
+>  		    tcpm_port_is_source(port))
+>  			tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
+> +		else if (tcpm_port_is_debug_sink(port))
+> +			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+>  		break;
+>  	case SRC_ATTACH_WAIT:
+>  		if (tcpm_port_is_disconnected(port) ||
+> @@ -6395,7 +6402,7 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
+>  		}
+>  		break;
+>  	case SNK_UNATTACHED:
+> -		if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) ||
+> +		if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(port) ||
+>  		    tcpm_port_is_sink(port))
+>  			tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
+>  		break;
+> -- 
+> 2.34.1
+
+thanks,
+
+-- 
+heikki
