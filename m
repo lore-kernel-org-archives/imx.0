@@ -1,148 +1,73 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013010.outbound.protection.outlook.com [40.107.162.10])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03D0382F0D
-	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 07:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777275835; cv=fail; b=rDS/YNmO7L/8p37/OJbag2etGKKL6wAsNq7ehrOk5Y297F5YKx7vr94wNsQmM5WVTOPzzxxebXdbG9/UtgPhOhE8AHCYpLXAmu9yktV3riI2DeGH7z72kkPiYqt2gSq2o5a3M/eI+kF+k3heUmKfF3HC1wxvBY5U/3c89mHmPHU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777275835; c=relaxed/simple;
-	bh=o4Bs+R7QN6QD4ZQBvHWyFJo+D1K6DeutAyTtXMpuvSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VjprwjlIpK0s+A2X/+2Csv1pgr4G9Fo6xpiG9BNRrBp6FUR97RoKCOVvg6fWAQ2wove5UJClHiuTGVKWZ88AaRRXNpWQjQU3XappJv7YZeYVedsa/8Bv4uNc29MU4eUzHTcR91i3CuZICMAVS84trE/RnnzecNqrnDmiOm0hMpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BNdCPjAY; arc=fail smtp.client-ip=40.107.162.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BNdCPjAY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fV4SiUHuJ34kgaSfK5uUEQlDXfh99EDXcaBKVjYI0Gp2767fO/PzCc3qFNJmQlU1+nrMWR7SMqXHzngUhMfDT1IRhOIT7fz7G/fjQPiB9fyE2qDQr/LXqiHohU0V7Zze05Mw6Fiypa75izwsshmZFG0zoYJ1NRGCGJcQnK49z1XYQWkSzSXjyB7WUZyLgwydjeeI6KeHAFZ6uwzvZtn5BGgJu/F9CDeVNqGpOqz7jwaM09aNk4mdhEXlpRYi8dZvyeXEraavJBjrHrtQaznQf2LsWKAVFISh/WjIOHppxENhaCo3jBdPhT+V6KVWyRkQac8mOhmTnbPHY576pbQ5aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R6cMkbxXEyjDe1kHhBWlVve0ErWrIigCbrGP1uR3v80=;
- b=mNizZmLFgGxYMpU+uCoePBMVcvwewr7NwOFH8YF0eQRNdWehVm1Z8BHPbvsZaHPwetI30aJT1FoAQll4yDeaVi6wKrR5HowsiX5p9rkhAIj1nOGkjCQwZSmxJ9Rex6rnVFFnTihS1O0xJHKLk/kEXUkOBjn8bTfpW4TkjfpP/STvvHbJCgKPKjaHDxmcc/kzevollGkg9yQ/E5ekXO1UivFrfZNRmAUef1InxVZlV2RbFbtC8/mq0/8UQ+f+Ee8N+WMRN5ne6uL5omcd93MYBJMPrpdZl8WV4ylFjjAMlCNI9VvdNdn7fh6BzTTdti/I4BWcexRNUcPVH4uqUfMBxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R6cMkbxXEyjDe1kHhBWlVve0ErWrIigCbrGP1uR3v80=;
- b=BNdCPjAYfYeLwgwznofa/qz0hXpMkJk7qWGgUKvP7wygsiTNL6zE6ypz5brhVtIzxvai5WkrdXxmxCtjNCxjEcvn4nDoyNeEjbcs5OmRp6iTTv2wm1za5e7fmkSNrJdUmiu4j3nm3ZE0hEY3ixUHxSwzVFVHCsvZ1+5PihQJBXwcjoRY8Jftf08XVCEa2yFQeq5R82jEuY3tR+t8MzojgWLiz6aS2xxzTkxst8j87vYFkFjIdG3NlcP7YR7NOROCHvt2H+gJEkzgyvXD9+eL67s/3OgLQydFIXKHifFqsbosDFuCgOyPIZhyFeLE0LmuTc9skGdTvZljM075HQyxlg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DBBPR04MB7707.eurprd04.prod.outlook.com (2603:10a6:10:1f4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
- 2026 07:43:50 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9846.025; Mon, 27 Apr 2026
- 07:43:50 +0000
-Date: Mon, 27 Apr 2026 15:43:03 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: peter.chen@kernel.org, jun.li@nxp.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 3/3] usb: chipidea: core: convert ci_role_switch to
- local variable
-Message-ID: <vnkggcmla643euhgiunhdpmxepssylvb3g4o2upn236sgbfbbc@445rsbipmwro>
-References: <20260423102002.2675414-1-xu.yang_2@nxp.com>
- <20260423102002.2675414-3-xu.yang_2@nxp.com>
- <2026042606-plaything-elusive-592f@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026042606-plaything-elusive-592f@gregkh>
-X-ClientProxiedBy: FR2P281CA0019.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416003988F8
+	for <imx@lists.linux.dev>; Mon, 27 Apr 2026 07:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777276241; cv=none; b=HSi7svo5d3922B+OUqWcgYA7c5RqkHHkhW8pm6u7HoCBBVExoBWgIv03dBzBiIwqGCOI2NdVZN9qrTiwiDyQIFPkvXDIKQp+0gOcTEgOM7rDhIetVP4OhUoldgeIqZQ1LiTgWCV3nFlC352mRWUL33NUWgijVxaxrr9uUHpFP1E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777276241; c=relaxed/simple;
+	bh=x2b7o8P89w6Qi/0Xc8usFHXma84J6fBc+PjRCl7nshM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c+pOi+RI4WzlxjkXkL3Mi4P/+ZSfxVFW2CEyWB/YCJ524J2PgBJQXvUkl9YdWsC6qgyCC/gK3EpQgfSpZKXUlQhd7C5Fq+wnmTOC/lbEh+W4GstzY2cqET9ZNhcmIpyckgJ0TIbC9g2iGb/BuMHs+BgaBGVwIKO1lWY4soTejQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1wHGjb-00032N-4n; Mon, 27 Apr 2026 09:50:27 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 27 Apr 2026 09:50:13 +0200
+Subject: [PATCH v2 1/2] dt-bindings: arm: fsl: add compatible for new Skov
+ I.MX8MP variant
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DBBPR04MB7707:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5e74085-a8a5-4a8d-abc7-08dea430b8b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|19092799006|56012099003|18002099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	cwY6li9l2VVGkCbBBILULNgY+K3QS9RE84Juuuur530/B5hawkmzZu2dEgIjRYF0X2t4A3e7sBKhL/JBmVtfPLY8pj87bk0TzceLW+OHeIeXzroVewh9C0qxqMcjv1eBcbNEYY/oqDostzuuTaJ1LDM8700EA/C/5kZ4m3PvMxtBBZBcRTrR32FjLeqL4gzm/pogAlBEAtqqvohFZHjQSxz/UlUzmE9dbayjXx+cxYftXfFwYtfw9Ns8pLR6e6PXwAj3tGTWA9BpaCsAyaaPfVZOUGWyBe6isJnHte3IMA13SxYRC9QJISjSAmmePyCQ4AdfuP8TI6OFiDHpohRNqLd25E/9WLjB1PBgEuPtwRqa6+KPkovMeEgdEi/SSeJd3RdGcYJ/dFW3EjBLcrB2S8SEkdBB1guVJHivEWWYC0U1BKbWs66J0dRZ4IZ66KyaRhClJkGCTMQdIlwYGLlMtK8Afz3iPKGtqD2yKmdEv9TfOj3AS0TQ0FOgO9i8inWeK17SryfqMSwfWy+tUrYqCEaLosG6nQe0bUUncmkVlncNH1ERpAVB1TzKZjNHLKDX+Azoag7xKELCtL029p+s5+TnZbW8MW48SUy8Rr4rC2pM1tqEvWwTom+KIZaNs4GWH0mRO3VfZx45cUhAiDHgC0x3upcJa0YN7e+u3+CfK/j592+tq539sFVpMLbDGqni9v3oTcCMUVRwJXPVQr8IfNHCnA76UM7MPVOllsL5IUdqhTQ20OliAtFiVBeYRWaOj1zXROlJtuf0ZsN8o3Krc6xZIkWA9+Hu4iwk7uAIfFc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(19092799006)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ixTjH04DUBY/Xa9vvXJHergTndMtXn8IsWCQC9FMFkv0wIFDyMh9c+Rr6TUg?=
- =?us-ascii?Q?aswok6K+xQ3rLUqwBmCapBDAzZ+oULIotCCHqssDOf6SPoOgeROihc+zv/Pt?=
- =?us-ascii?Q?jibiRYvl1yZM+pSV34THfsnwFR0xyU5DzKeF5a28s/wmuzpjpGkyMI9SVI/F?=
- =?us-ascii?Q?2dlsBkNB4VoXAZ/TVQeSje2kQDdztdlWOEWePDX/GcLu8mfhyzelp/L0PCCh?=
- =?us-ascii?Q?0D0Ltza/fpO9Ma5PeExQWGmW3lcuSEbqJO08nOENqTkwM66H9EEsR+owibxn?=
- =?us-ascii?Q?E2HcUn+28M35bJN0VVteW2k9nEWrDj0b9T9X8XAX15ov2fQ6ig9HXiswDYjA?=
- =?us-ascii?Q?O/yMQ4GpWF8frZyCVmEgtFPN4rvR0gdy9WBpUGcLIspUPZnJlaSEnsKWq3+Q?=
- =?us-ascii?Q?EIUY6MEtEjuDVr0VTxQmYIvFoyPpY4G26WXgquxSQ3IG6YAlRHb9PFYMmApg?=
- =?us-ascii?Q?sohuOTOF2JjZCyqB+yl+rImTQbwW0Fu8KxSYGbnuEQb8udbyo/335CsgpUMB?=
- =?us-ascii?Q?L8nsVOTcFrUfeqvvfgzirVYUUMFXt3S63AhEsEQMrH7bLK6cch4QBqb/ez/J?=
- =?us-ascii?Q?eSWaZCWNoFcaZwH30y9Cm20eT4QH24jGMXvneqy+ACfbV4JPkK6tlJj2qiHX?=
- =?us-ascii?Q?k6eqnQSe9dQdmIXxadsYPyzjhXmZxwYpCMIl6DA2Fzvk5KkDuasSbx8HSRbF?=
- =?us-ascii?Q?9a6snEbUdLXb2SRGzntEckUJ35mmSI5xabDMhAYU/FNICWnzHfb8fjScnu+Z?=
- =?us-ascii?Q?seZyPu5hdFgaV3s2UAccrfaxdT5PL+bQmocAmMB26XQZ+I1Lt5Bptx5o5ddP?=
- =?us-ascii?Q?mMBWkA9hzv1zl8+MlGXNva6HfNv//xkxvfFZuios9SOFF/go+v4Goi5LEolh?=
- =?us-ascii?Q?wUEzSXWOvIwtzPIHN6H8NFWBZvev7oyJwf3FFegGK5jlQLYxIVCCyV0ClYJW?=
- =?us-ascii?Q?1rJXlVcVoQOall+LxkXWCvt5drI6JpZv4E4rLSeQpF6Es5Evk6/KiQZ46buR?=
- =?us-ascii?Q?75MBx9hrogT+flopBzK77BDOe8kFPItnPZaAUH134GgQP+i/7kmtuVnAyDei?=
- =?us-ascii?Q?HmdpzGBwtvQj4iGYE6GyQUGgVg62fPaVauOZ5JCQEnXInU336976xUfY4ge8?=
- =?us-ascii?Q?bBgArVDpE+zGYVYSCnuD0KQ0czo/DPM8/5yfvi0IKi0hYQ4vLpgLIMYB4LjH?=
- =?us-ascii?Q?v262Ca4VBWeKJKGRjCgbuSwvbz6vrxjEBAZBKQ7eiiCFtd6ZnUuPEuDv5DAa?=
- =?us-ascii?Q?ANHIva0m57VzNAEJsfEQ7FLsMPakMGPuYzMJBvCT3ujVuTLrjpqsqy+jfV8I?=
- =?us-ascii?Q?wye7NQGD2w7FX4Mh+i4RZldHtRfYO2oJ3kKPMMtU42SaW0Di8V7ItRAABXLQ?=
- =?us-ascii?Q?YafQhFOabHMZi6B0XIdGba7p4IPU/+QUtdZV3j9Kt3YkyM+eL+RUMVmEI+gD?=
- =?us-ascii?Q?Z720dkuU9ZDYZCdPnm3QRDSP5tAEfPDsG2dTLgKZpaCE/eeihjwvcpUXF8Cu?=
- =?us-ascii?Q?1lXyOId6mztG7n92c2Rae2YbBKort49eyZspqDQBBoLYF/H4sm6k2h9tLa6Q?=
- =?us-ascii?Q?d7KqsXX3pUZ8CJspOyzzwXjzKrR+n2f6hSflSW05CUQVbygIlSCl/uAWrrUV?=
- =?us-ascii?Q?cTUaPQj32eMpff3tnh/pb3MkpR7gNCe3B6D1bh0822GkpUezu8X2s+HLHh0P?=
- =?us-ascii?Q?IeJ5sCBaXINgxmZioP3UbSlEkxNYXjmudtgdWsVcsT8pvnZ5xREV7vMNQiuf?=
- =?us-ascii?Q?Y9jMcnXQUA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5e74085-a8a5-4a8d-abc7-08dea430b8b4
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 07:43:50.0847
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AEgCgd43QgzLgUc31JMVG7DTSLJIW9DmwhylhX7OFEH6I9ioik/Z0fULVbS0pGlzclAJnJZtPVuy8rHqPiHq3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7707
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-1-e2b79fc24391@pengutronix.de>
+References: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de>
+In-Reply-To: <20260427-v7-0-topic-imx8mp-skov-dts-jutouch-7inch-v2-0-e2b79fc24391@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.15.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Sun, Apr 26, 2026 at 10:29:44PM +0200, Greg KH wrote:
-> On Thu, Apr 23, 2026 at 06:20:02PM +0800, Xu Yang wrote:
-> > When a system contains multiple USB controllers, the global ci_role_switch
-> > variable may be overwritten by subsequent driver initialization code.
-> > 
-> > This can cause issues in the following cases:
-> >  - The 2nd ci_hdrc_probe() sees ci_role_switch.fwnode as non-NULL even
-> >    though the "usb-role-switch" property is not present for the controller.
-> >  - When the ci_hdrc device is unbound and bound again, ci_role_switch
-> >    fwnode will not be reassigned, and the old value will be used instead.
-> > 
-> > Convert ci_role_switch to a local variable to fix these issues.
-> > 
-> > Fixes: 05559f10ed79 ("usb: chipidea: add role switch class support")
-> > Cc: stable@vger.kernel.org
-> > Acked-by: Peter Chen <peter.chen@kernel.org>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> You can not have patch 3 out of 3 be only for stable kernels.  Please
-> break this up into 2 different patch series, one for bugfixes to go to
-> 7.1-final, and the other for new stuff for 7.2-rc1.
+In preparation for adding a new device tree variant with a different 7"
+panel, describe the DT compatible in the binding.
 
-OK. Will do.
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Xu Yang
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 0023cd1268075..1a0ee5dbb4214 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1139,6 +1139,7 @@ properties:
+               - skov,imx8mp-skov-revb-mi1010ait-1cp1 # SKOV i.MX8MP climate control with 10.1" panel
+               - skov,imx8mp-skov-revc-hdmi # SKOV i.MX8MP climate control without panel
+               - skov,imx8mp-skov-revc-bd500 # SKOV i.MX8MP climate control with LED frontplate
++              - skov,imx8mp-skov-revc-jutouch-jt070tm041 # SKOV i.MX8MP climate control with 7" JuTouch panel
+               - skov,imx8mp-skov-revc-jutouch-jt101tm023 # SKOV i.MX8MP climate control with 10" JuTouch panel
+               - skov,imx8mp-skov-revc-tian-g07017 # SKOV i.MX8MP climate control with 7" panel
+               - ultratronik,imx8mp-ultra-mach-sbc # Ultratronik SBC i.MX8MP based board
+
+-- 
+2.51.0
+
