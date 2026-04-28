@@ -1,171 +1,223 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010003.outbound.protection.outlook.com [52.101.84.3])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A843B2FC7
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 13:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383207; cv=fail; b=oJA8yh29846tYvpL8vpSL+bowh5G99lCeVHemrx44X5E52FfPn1N/oaD3YvmE6eVEjt76+kcOopCG8/YZn9EZ7kAyOVe3T3mLMd2PkRbnnSsedzD1FmcI8YRCPjjA9vL8NJIJ3JojAC/TPcADkDuAoDPu0ntYlOsL+fKqnf3W+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383207; c=relaxed/simple;
-	bh=cKsAGqX1l2hY3Mo0twRFJ0Pw1mLouIGqf7xkCjZ8S9E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MGEJzHoZyX3YoTyf1PqcI/Axe7WPuV4q0QRb9ManFUSuqCNCG0omb/xJLvmALICEGUFt7tyu8/8MLp132SXj/HUNHPqMMgpvXgirSXJvmCBHTC5Cbnf1hJM0Q6qWkeEBggJ7OxqYveu3RxninIgX9spPEC5qb0krucK0MxXutrY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Yg1nsPpM; arc=fail smtp.client-ip=52.101.84.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96653AE6E5
+	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 13:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777383614; cv=none; b=qhVweuokkDPGwAeu2U5tf7H8QHEInJiaEK4QOpq6CQxlUzweuVh7iHfkF2NXZ0QxLfGvKtZZqsdiNfEOw/nOO7EJY0qFJ4vGdBz6z7WQ2STIrHMFCFKZmKlpke+//4CbeOxi5lko/pKg/wOLe5uX/8biz7Kkvwvj7sUUnkudo8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777383614; c=relaxed/simple;
+	bh=DY37OnpoYjjW+GFpmDYkzr+BXySsTF4/pHUAAopHjvA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=slL67D5Pb0oXGXNGd6GcDGDQ9SiSh4NCwHbWwmTxOvDwJzawFlIIiZwHrdRw6kNf+MF0tNQrguXOv/sOlQyFZud0kgNFQDTOGbLi4pnGrvUMtf2/PqEQdoXFadmgtWo9dRb7Stl2PP/lPNXthvDdP2tcREiR9paYYoV2kDr6Fpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qRLoVPjW; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Yg1nsPpM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UrRqvgTauHF9akepEhq7AMyv+SgYb3QCQLH7TX8FfXbFMFYwn83XNabnJouptiK5KnL7HHZ/xmoDcpbbPBZ2MqxhRZVMnkta94sueInGL4UKLpvRMcRx9WdCRLc3S+3PkGObLBzdionHA9oPq2LvR62yNkWlqquFrtAB2bFwSJS/gjpa4e58Ma/1Aoh5Qk9zXlTBW/ZuCMFKIu30t3Uq5A7e/8RbIcpjBU7JUvgKSVU/2R5PKSoHIsmwR2frk8/4h7rpgT5bV025EVu6JOJKwhgM0TonDLonz1cfTkFpO+LgnsriRGrSSoeUj7a758ahQ0TYkNgl4c3jsoOAOJbsnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HP3rzJlXCVd8nPjr2i4nvd5gbpfK6YtUCm6KvDZ9Qxg=;
- b=GZ+wheLgULqUzF145j5nw/u2C5IPGhGKMpPYZ56In0iYE1EYeJFuB3DbtohvgAcCaX9HDjz3ssrxwwXrTdh2lwNocPit1EaWsQPmrJkqabTLZp6ESCFw28txTC9b2a3c2xUevfi/zugHltl+ppQeH5bXjGvqRq6QQQ0D/H+0QbVeD3xf0zY9AU/oEEmyTdoYaVzVvIrNcSM4BWpuAaaWOACMncLvCngg8M2nq0lurQ8t+Ee2kEbYLZmTPHBOFsj2lfiaZs9I99QRXgpPHxMJy0ANWLWMDcCZ+61EgJ2LyBp0QzMPGhfyqrS94CjXFr3edTgRf1AU9zidAaxBoEXacg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HP3rzJlXCVd8nPjr2i4nvd5gbpfK6YtUCm6KvDZ9Qxg=;
- b=Yg1nsPpMpkZB+oZaiB0PxvKpbqzixgIBZvrD8DKO06dRqf8u7cvEQd6gEFmyo4fHIuaxcpdr3zumeJNa+YGU18lfm7bWqj/j9v6cM3HlJy+CLJcQXIzpkyT0PKKFzUh3JhMfmSNhFcKGpx1OuGYJDQwMAzCkaB9ABSA6lo6X2/wpsQGYjJAHvmlm4daugVsSnMUVI8QyGUGHD3zcyEKmi+JDZIvEGSApNRsjnYYPyHUspDa0jtOCvF/PM10F+eCPzqD5X7UFsYWFtSTIgZlqjmjvMi3Uf4OxRigEtwnxKbq2q0r+PuLEVjlx7vK4n7X7zEQ6y28NZ7JmCdnt2rRiSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by GV2PR04MB11568.eurprd04.prod.outlook.com (2603:10a6:150:2cb::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
- 2026 13:33:21 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
- 13:33:21 +0000
-Message-ID: <685ed732-fe54-4d2b-b2e9-6bfd10d67b82@oss.nxp.com>
-Date: Tue, 28 Apr 2026 16:36:34 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] remoteproc: imx: use device node name as processor
- name
-To: Jiafei Pan <Jiafei.Pan@nxp.com>, andersson@kernel.org,
- mathieu.poirier@linaro.org, peng.fan@nxp.com, Frank.Li@nxp.com,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com
-References: <20260428090819.17761-1-Jiafei.Pan@nxp.com>
- <20260428090819.17761-6-Jiafei.Pan@nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260428090819.17761-6-Jiafei.Pan@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0292.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e7::8) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qRLoVPjW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D7334E42B56;
+	Tue, 28 Apr 2026 13:40:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D19BC601D0;
+	Tue, 28 Apr 2026 13:40:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C6AAE10728BFF;
+	Tue, 28 Apr 2026 15:39:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777383605; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=DY37OnpoYjjW+GFpmDYkzr+BXySsTF4/pHUAAopHjvA=;
+	b=qRLoVPjWicMlOER4CBoXDyZ31IS3N9wzfHFsgyWbAAFF/gci+qsFmTs0vCeqFcMtumISls
+	Tj3oY/2Cdf6m/7gztcQrTJLdN0ggRvFVqgt+JH8FxO2/nx+GfiibBB7tr9VdYd2pRAyZX1
+	XAXF0QiFbh370lTIQPb7xonACEwx2kQTWqUUcXxmMBeCKnlqHPelpK3fTwkngZn/4NCD/d
+	KE58A7C2KizgbREMj4kyFapvuVzo03ASQ8lKHF89cbbYlD9WTUWuW4Ve1tF5Yw+ztjpBH4
+	MjEA//3NGYT7/zO8OOYAeAWTnaFj1l+B1bRPPqqwsMjaj7jeo7/wmSi84hXibw==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|GV2PR04MB11568:EE_
-X-MS-Office365-Filtering-Correlation-Id: c65d2a2b-1735-45bc-de8e-08dea52ab6b5
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|19092799006|56012099003|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	ilRa+4eQLFmN1R2aC62uHveVNkPeeqFldn+pcg1/jlHt2Qqsc4UhB/sLPwggijieyjib13YdzWvPXu4PqdzxVcULPCQ+MPQvigByxMueLmilZq01Ckjm/4TyZ8Fs0R/cp7epUTgW266zHOTK/UKAL3XsGMNV270/U0sxDBrlU78qr1w9C0ywsr1rEU+45hJW+bsgSxlqdx+iIqx23P+J72FFlTNbXZ/8iN1yVEqFgtieymG8cTi2tQJrHkXVb0187U+xkMqZ4pCSQ0T6qUrwJI3Y1kOcD4XwayB2myq8xsN6tWL7FWXIO+lN6IBwMkijYg8usJYIVWBho9xKISTDMEl+ygzapkPmYsi9wLikxcGPfZkArh5UYPR777jXUJVJMImEBj8grcvqVtNSLfGEvZ+DCPvbKOKyerFGe84ZJ1JhkY2L46oiHB3nRUKB2OVURObUY4nlIpUXvQqzdVrTH4mJ9DGSB+DqOJ8tu57plkRoCSljEBLU8+UQ+8WEHwUSeAmeaFwegqGkbz02MZGGILTsBR8qpFihTA33oUGPOuc2+mDKwIaX6B5z/vJja8Nbts4qt7v1qWydeb1UZ61CPh3heQf6JgkHofGr4F+RMLbl+9kCXahTMP+sQNdLB1szH2iqOTL3PBsXezCOdgySkQT+KtINUVRw54jrQyhzYOVpJwsAvAqvPAcKSzCK+A1Rded5t9qaw+q+yn1VbEHA+hEnMv0+ZekA733sIwxLaz2s+ib4/lYWuksZ2eL5JU5ue1G5tmyHjnMHgyJhcaSmEQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(19092799006)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WnFHY0JQWWYydEUrWUtBMkV2ZG12dEh5ck9CYUNreVF3THNBYWhJcTMwbTNV?=
- =?utf-8?B?U010ZnpXRHhHWGliVWRHQTF2bldqbjUvc2x1SjdkNGRRWUFRVmRpSmZKbStw?=
- =?utf-8?B?YzZlSVlrSTBVSk5TcERKTG93eFd0MzN2MzMxNlVhR280K3FqeUY1SFFuM3g3?=
- =?utf-8?B?RkFMdUdpRW5xUGs2aml5a1NqMEFETEIxWGZGa1lsUVAvdy9QdjJ6S2hlRXNX?=
- =?utf-8?B?S2xQNmRWbm1pOHBqcGdPUU02UExTQ1FZcGJDeC9RMktYUGZ5Y0g3elh5RDZB?=
- =?utf-8?B?d0czdWx6NEtPR0x4UkRBczZkeGU3ZWFTUEMyMGcrQTRJMVhlZkEvRXZTK3VI?=
- =?utf-8?B?cXQyL1QwUnB1aXFjQm1SVWV5K2VXVkxuSitnMHV3TEN1dWl1d0pOQ2lCOE1L?=
- =?utf-8?B?QmhEV1dMeXFvUldzckFSY3JoWStUSUpkVEU0ODEreHdaTVpwdzN0V2hibzlW?=
- =?utf-8?B?QjIrdHlDUkRpZDJraHdycWdjR2hGcW1VZmtrazhFQ0lLQm1jSlVTRXdyUzB4?=
- =?utf-8?B?b2l6azZ1NmltWVhNbDRJY0tJTzRVTHRBV1JzYVNETmFEeW4xVSszalZLQVdS?=
- =?utf-8?B?Y0FHOGs5MDNlVERsVkpZd21FK1NndURJODc0aTBhU1B0RkJCTVM1ZVlxNity?=
- =?utf-8?B?Q2FLYjVCZ3hHSi9CVHlJZXRSQUd6NUtjK3ZXZFhGR1JpMWZkaTNvM2orWjIy?=
- =?utf-8?B?QzdHbVY3V09UMGFsU21FckkxMTF6ZzhQbVoxYWg3ajg0QWpyTS9mMjY3aVpG?=
- =?utf-8?B?S01vM3lBTFcySDNETk43U1RTZ09XTzJMa3Bhb28vSFRweVN0TllHWmhlYVcr?=
- =?utf-8?B?S2xDNEhtRVBUOEU1cHVReVFYMG9jbkowaC9SMW45ekFmTFdXTzVnSXVCbjhy?=
- =?utf-8?B?RmF5QTNBbUdoeUNObGNBZnZtek1QMVFlOU1aMExhT2Z0Y3g2Z2hVOWRhK3Qy?=
- =?utf-8?B?dVJkbVBIZ3F0eTJuK1VQUTRNK05OeEJvR1oxMWJ2a05zNE1aWTN0b05BaWZj?=
- =?utf-8?B?azQyeEh3NncxMllvMThNZkFGbEV3dDJsZnRhem9ZZFp3SU1icTd5K3RxTHNI?=
- =?utf-8?B?L1c2TXlIYXFaWmxkcDN4c2ZTdDl1S1BEb2Y4ZG9PS1c5THFqMStXWnAreVRP?=
- =?utf-8?B?M3NTWEppSkFMQng2cUhTZFM2U2NJSWpxR0dNY2N2ZkVQbDhwcy9WZDRRa0Rq?=
- =?utf-8?B?SExwb21zR3VWQkxsQlhjbkM2VTRrRFM4YXI3bDMyZUVZWlBGT1d5djlBVEtt?=
- =?utf-8?B?dFhqQXBLZEtWTjc1RnVBYWoyWnZ5SUZSQk5JbmE5L1hPaEQ1L1pFNlBTM0Mz?=
- =?utf-8?B?bWRwcUhKZFREdE9jeGt1THRzSzdUZFQvUlNSWDgweUpNb2xSOVl2c05qZjJ2?=
- =?utf-8?B?a2gwdjA0SHNBN1Y0VjhiZnVpRS92UEhoY05UQXFHMFNkbVQvRUF2Sjd3L241?=
- =?utf-8?B?dzhReHVHT3VvLzJmSWR3ZC9TWGthNSs5SzUvVXJIMUlqVDBqYzBmLzJENUIz?=
- =?utf-8?B?VjZROTQ5THViQlNwS1NZa2sxaXhjK3plbXowaEFuNGxtUXMwSXAvVlNadkRp?=
- =?utf-8?B?a2Mrd3NwY3V2WFdHRDI3cFVzTStBd2dEcXh0NEI1dmVITXZXa2VuM1lZcXU2?=
- =?utf-8?B?RGZ5R2NveE5nRGlzSENkMC93Z1lrSG1ZaEJzK2MrU2lIUzVVa2dDMldjVlBw?=
- =?utf-8?B?b2FDOFIxaVJBYmlpNDZnbkNLZlMxNFNpb2w0VUFRV0w3Z0FnL1UxbFlXdUMv?=
- =?utf-8?B?WE1udkRBSFcyQkFwVG5OdDJsOWJURjlZRDliamsvcVhCejErdTlYODd5NHVE?=
- =?utf-8?B?NFYxVzdhT2hDY3dCd3JZeXVEMXJDbUhlM0loKy90cXoxZVRGVXM3YTMzOVM2?=
- =?utf-8?B?NEFzZUVjT1Zzei8zcUcrdkh3Q1hzaEZXc0pHMEdkNm1USHBuVTliV3EvdjdH?=
- =?utf-8?B?emdCZU9iUHFFS1JEb09MbGlPVzE2a2FNTEptVjJlR2JOeklzL2RoK3hiZmFv?=
- =?utf-8?B?MXZJQ2tYQW9WUVhDcVJqeGRjT0tzOGwvTnNtZHB1aTRpS01YUWFDWERWempL?=
- =?utf-8?B?MXBoRWh6alFScUp1Y0F5T0ZESTZUYVZVOEQveEF3UklXZngvZlMxcFJEdXRl?=
- =?utf-8?B?cVQ0emh0TVd4WkxYNU0wcXpaVVA2YlBZaHh3cTVLZ3pTYy8vby9ML1lHV2JC?=
- =?utf-8?B?TDhTMWhCN2xXTUhzR3BPMVNldHlPa0Q3cElHaFNpRnVKcUpkNmxoTDdNak1p?=
- =?utf-8?B?Y1pZRytHNC80aEpNSzR5SmhJdkRVZ3Y1NkRFVnUzMnpabFlJNHNPczh5VU41?=
- =?utf-8?B?RkE5OWRlaXRyQ0htclVQMWxQSzd6bmhqTndyYUxWSXVsa2F5RXBvZz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c65d2a2b-1735-45bc-de8e-08dea52ab6b5
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:33:20.8506
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QKi5GUg5vcO33rNNgJluGHceb34+PipyH7II2bWhfQyoCvpCu84PgvHXBRL6oE1ia1ixtDIE5xVxigk6Va6kPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11568
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 15:39:43 +0200
+Message-Id: <DI4TW9XECX53.17TEZPCSWTH1A@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v2 00/41] drm/display: bridge-connector: attach encoder
+ to the connector
+Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
+ <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+ <linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
+ <freedreno@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
+ <linux-tegra@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
+ <linux-renesas-soc@vger.kernel.org>
+To: "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Sasha Finkelstein"
+ <fnkl.kernel@gmail.com>, "Janne Grunau" <j@jannau.net>, "Liu Ying"
+ <victor.liu@nxp.com>, "Douglas Anderson" <dianders@chromium.org>,
+ "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach"
+ <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Paul Cercueil" <paul@crapouillou.net>,
+ "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Matthias Brugger" <matthias.bgg@gmail.com>,
+ "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Kevin Hilman" <khilman@baylibre.com>, "Jerome Brunet"
+ <jbrunet@baylibre.com>, "Martin Blumenstingl"
+ <martin.blumenstingl@googlemail.com>, "Rob Clark"
+ <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
+ "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
+ <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
+ <marijn.suijten@somainline.org>, "Tomi Valkeinen"
+ <tomi.valkeinen@ideasonboard.com>, "Sandy Huang" <hjc@rock-chips.com>,
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, "Andy Yan"
+ <andy.yan@rock-chips.com>, "Thierry Reding" <thierry.reding@gmail.com>,
+ "Mikko Perttunen" <mperttunen@nvidia.com>, "Jonathan Hunter"
+ <jonathanh@nvidia.com>, "Jingoo Han" <jingoohan1@gmail.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin
+ Park" <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Alim Akhtar" <alim.akhtar@samsung.com>, "Laurent Pinchart"
+ <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
+ <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Biju
+ Das" <biju.das.jz@bp.renesas.com>, "Marek Vasut" <marex@denx.de>, "Stefan
+ Agner" <stefan@agner.ch>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Michal Simek"
+ <michal.simek@amd.com>
+X-Mailer: aerc 0.20.1
+References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com> <cf2c91396eb3017aa51dd9c840badffddca2f7ec.camel@iscas.ac.cn>
+In-Reply-To: <cf2c91396eb3017aa51dd9c840badffddca2f7ec.camel@iscas.ac.cn>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 4/28/26 12:08, Jiafei Pan wrote:
-> [You don't often get email from jiafei.pan@nxp.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> As currently there are maybe multiple remote processors, so change from
-> using fixed name to using device node name as remote processor name in
-> order to make them can be distinguished by through of name in sys
-> filesystem.
-> 
-> Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index e8d239bef5c9..17026e390e88 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -1357,7 +1357,7 @@ static int imx_rproc_probe(struct platform_device *pdev)
->         int ret;
-> 
->         /* set some other name then imx */
+Hello Icenowy,
 
-I think you can also remove the comment above.
+On Sat Apr 25, 2026 at 5:22 PM CEST, Icenowy Zheng wrote:
+> =E5=9C=A8 2026-04-23=E5=9B=9B=E7=9A=84 11:16 +0200=EF=BC=8CLuca Ceresoli=
+=E5=86=99=E9=81=93=EF=BC=9A
+>> This series simplifies using the bridge-connector by removing the
+>> need to
+>> attach the newly created connector to the encoder.
+>>
+>> =3D=3D Series description
+>>
+>> Currently all users of the bridge-connector must call
+>> drm_connector_attach_encoder() immediately after a successful
+>> drm_bridge_connector_init().
+>>
+>> This is an unnecessary burden for users. Move the call to the end of
+>> drm_bridge_connector_init() so all callers can be simplified.
+>>
+>> =C2=A0* Patch 1 adds a drm_connector_attach_encoder() call at the end of
+>> =C2=A0=C2=A0 drm_bridge_connector_init()
+>> =C2=A0* The other patches remove drm_connector_attach_encoder() after al=
+l
+>> =C2=A0=C2=A0 drm_bridge_connector_init() calls, ordered from the simples=
+t ones
+>> =C2=A0=C2=A0 (only the last one is somewhat non-obvious)
+>>
+>> The Cc list is huge due to the many drivers touched. I sent v1 to a
+>> reduced
+>> Cc list to ensure there is an agreement about the overall idea. That
+>> seems
+>> to be the case, so now it's time to copy all drivers maintainers.
+>>
+>> It would be nice to apply all of this series at once to avoid
+>> duplicated
+>> calls to drm_connector_attach_encoder() in the interim. That would be
+>> harmless beacuse drm_connector_attach_encoder() is idempotent, but
+>> unpleasant.
+>>
+>> =3D=3D Additional rationale (for the curious)
+>>
+>> Besides making the usage of the bridge-connector a bit simpler, this
+>> series
+>> is in preparation for DRM bridge hotplug. Here's why, feel free to
+>> skip if
+>> you don't care.
+>>
+>> The old bridge hotplug proposals I have sent in the past [1] were
+>> based on
+>> a hotplug-bridge driver to sit between the last fixed bridge and the
+>> first
+>> hotplugged bridge. Discussion with the community led to the need of
+>> removing the hotplug-bridge and let common DRM code handle hotplug.
+>> The
+>> common place of code that appears the most suitable for hotplug
+>> handling is
+>> the bridge-connector, which is by now the recommended way to handle
+>> connector instantiation after a bridge chain.
+>>
+>> So I'm in the process of extending the bridge-connector to be the
+>> central
+>> point to handle bridge hotplug. Turns out the need to call
+>> drm_connector_attach_encoder() after drm_bridge_connector_init() has
+>> returned is adding big headaches to such work. So I'm send this long
+>> but
+>> simple series to both simplify bridge-connector usage and remove one
+>> obstacle from the bridge hotplug work. This series is relevant by
+>> itself
+>> anyway.
+>>
+>> [1]
+>> https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-26-9d6f2c9c3=
+058@bootlin.com/
+>>
+>> =3D=3D Grand plan
+>>
+>> This is part of the work to support hotplug of DRM bridges. The grand
+>> plan
+>> was discussed in [0].
+>
+> Just see the bridge hotplugging thing, is it possible for DRM drivers
+> to declare bridges attached to themselves after this?
+>
+> Loongson 7A1000 PCH can only output DPI signals, so nearly all products
+> with it are shipping with some kind of external bridges, but currently
+> drm/loongson does not support them (all display connectors are now seen
+> as DPI ones, and connectors behind non-transparent bridges won't work).
+>
+> The bridges are going to be accessed by the DDC I2C busses of 7A1000,
+> and are not declared with device tree (systems with 7A1000 never ship
+> with device trees, and Linux currently matches a built-in device tree).
+> (Bridges being on the DDC I2C also introduces some dependency for them
+> to depend on the drm/loongson driver.)
+>
+> Loongson have defined some kind of VBIOS declaring what bridge is
+> behind, and their non-mainline driver just contains driver codes for
+> all possible bridges. (Sui Jingfeng previously tried to mainline such
+> practice, and of course it's rejected because of code duplicity.)
 
-> -       rproc = devm_rproc_alloc(dev, "imx-rproc", &imx_rproc_ops,
-> +       rproc = devm_rproc_alloc(dev, np->name, &imx_rproc_ops,
->                                  NULL, sizeof(*priv));
->         if (!rproc)
->                 return -ENOMEM;
-> --
-> 2.43.0
-> 
-> 
+I'm afraid your question goes a bit beyond my knowledge, the hotplug work
+I'm carrying on is focuses on DT platforms.
 
+My limited understading of non-DT platforms is that a card driver must
+instantiate all components and tie them together, which assumes it has to
+know them somehow (ACPI, hardcoded, whatever). Others can probably comment
+better about this.
+
+As a general principle, when devices can be mixed and matched by the board
+designer, hardcoding them is a bad design choice. Think of bad old board
+files written in C, which were unmanageable and got replaced exactly by
+device tree. So my opinion is that DRM encoders and bridges should know as
+little as possible about the following bridge, connector or panel that
+follows them.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
