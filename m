@@ -1,33 +1,73 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013065.outbound.protection.outlook.com [40.107.201.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5711135F18D
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 06:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777359283; cv=none; b=ADHS7CYjcq+V1FYdyQs7prb8ZkuTXLEh5GDqRrM3MsNlOQ2apuMtHJ/Bdn9CTL+PXdZmty9kUjhT8i+iLem+R6eocipE9LELlotJS5lpUcJLPxyfGuLOJm5hCDxSan9N+DsrCAR/pJfb3jmW6VummhHCn6zyRRj48d6wdNnAHiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777359283; c=relaxed/simple;
-	bh=87ptCNzS8etKpoWXXSIt1nI1bb8JpNih5tPXA5yoe7E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uTKBToiTxin8USqrN3BF7oVebrgxQU+wH6t7lOPBDMXXHB6OVs0PeJtV7CV4gMUH6kuP94NqIS1AiI1wFCggEZ303G/X2KXeQHc+m7yl/duFiixu3T49M+hv4z10dYY5EKBGeVyhnjSSujOeD+R1oMYYYia14O5DXiamBZ1g5/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Gcgabdgk; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DFC3D6472
+	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 07:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777361147; cv=fail; b=brczbiNKI2q/RJX5yS9vrSpDDWBqBUhBZoZbj9CMpP6iT0MZyxv7HAN/Q6x/Og11VZpZzmwEf6P9vuQhSinEJmUYx893HhssyL1UAwUhhVWbEDK5SeEorrextbR89aLFfJPJKwWAWIyLOHvdSJP18dhlZZkgtGhaadqNPu4Fdx4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777361147; c=relaxed/simple;
+	bh=r+z682TwOQVQQHEUUSEZRbnzsbAdRwkWkLRrIH7NXjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ASZIKEfYwbMS6RFlQr0hpFTHXkyrVKV46xqri4uxs9MushMMsE6DLa9e3Em+hSv23oEIThyWM9vkxU7P9pxUFtvoEDjvhjOhy8vD843w2yakQINA1vCLcDDPq0JamjYzcqob1oH3mjjFJxwU2y3okaDbDAYKPIGsOR45pp7M8sI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fLIvst1e; arc=fail smtp.client-ip=40.107.201.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Gcgabdgk"
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3AED8C79;
-	Tue, 28 Apr 2026 08:52:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1777359177;
-	bh=87ptCNzS8etKpoWXXSIt1nI1bb8JpNih5tPXA5yoe7E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GcgabdgkUGAhD8dHOr51bUB4+AywC/FxGzLk4AIQNxebdhFp5MMOs8lwePEzgIggF
-	 6d9YJmk2KvAuZq0itz4fSkOHFTAVCHcsrXUrkSMq8MnNBazBQl+Hr1Tz233mFiiWG5
-	 qus9OWCp8Rzt4gu3NAmmaoy6MePlOc9OlZHtR49Y=
-Message-ID: <3150bbb4-ff19-4c17-9431-35d33fa97223@ideasonboard.com>
-Date: Tue, 28 Apr 2026 09:54:36 +0300
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fLIvst1e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kHalBljTsqhUnLDRmwN4B68FchroGamOt1ZpSwPYoY4pGSagzMXCTk3z4ngW3aFTwlSpnnBQcoxWBQKSEiNi0JG8gGqcv5rs8bgDXQJRrJWbZMsNUcv1c9877LMovhtZfKK40WVP89p0D/2W8hEdh9uAVw2sgFw8e+b3gQNJvyO0pPV8w7yAC/wiKSqbG8DXEdy2N+Y11VfQVfrUfV66qWIXYq3n3fiRY5/WW/IWlZUoYqPtgV/fgdpj4Jnh1LJYMdOs1XE8FrXeYjS7kBBaIvY73ueERMJnFNtGQBJc+q3Ezk0mcOj2IzwoFUJx2wVgAdHjAFroY/GhfjYOtdOp5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9RGhWb3pV9aImbB6FCeZNp/U9ZSNBoqD2tyoy8boP7g=;
+ b=sxXyDAHzMhgoa86lDkFADbY8/leHAdorXsGXBzYBGxkFhgFUxi1fpzujW9nQptD7Hf9Pmi/hQIXE00gqSR3F31BN8OE3QgqsVUU08om5thOumBG7/CFEc0oPvJGb7bSj0CQbNZeksdePDJOogMGPsu43iLxFFnhBXjw4Y512isG/auwKf3VV5LVJAiv7E7XpfFhSrtYT31jmbDFwS6gn7g4qs1MPh8g18r4WnomL5/9NwmEOvFaNHx+7Vq6u6ULYcXWnGCSEQxJjHxxXbSk0rlXTYtMfSBy4Zdiz8ZPSaTa9+XhfqxmP6qPxA9EPfzRWxWzeRojpgRSJqd+ss63ZPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=lunn.ch smtp.mailfrom=ti.com; dmarc=pass
+ (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9RGhWb3pV9aImbB6FCeZNp/U9ZSNBoqD2tyoy8boP7g=;
+ b=fLIvst1edSq0A6/QlbOhnTGjbZbcWm7asOOheprvFhBJMcr9+WKDoIXi0ycroUmAp+/DTQydvJbckJS0FDQhZGeHeFOeacdK8NgkJjZVYwdn3uk3bJLxfOrgp7PXNWmCzoaAZx/a5rcVvUMiNxy5Iyjdt4P3kEgN8JqXhY0Ebj8=
+Received: from SA1P222CA0038.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2d0::19)
+ by SA1PR10MB5823.namprd10.prod.outlook.com (2603:10b6:806:235::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
+ 2026 07:25:41 +0000
+Received: from SA2PEPF00001508.namprd04.prod.outlook.com
+ (2603:10b6:806:2d0:cafe::b1) by SA1P222CA0038.outlook.office365.com
+ (2603:10b6:806:2d0::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.28 via Frontend Transport; Tue,
+ 28 Apr 2026 07:25:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Tue, 28 Apr 2026 07:25:40 +0000
+Received: from DFLE215.ent.ti.com (10.64.6.73) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Apr
+ 2026 02:25:36 -0500
+Received: from DFLE207.ent.ti.com (10.64.6.65) by DFLE215.ent.ti.com
+ (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Apr
+ 2026 02:25:35 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE207.ent.ti.com
+ (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 28 Apr 2026 02:25:35 -0500
+Received: from [10.24.50.162] (uda0510294.dhcp.ti.com [10.24.50.162])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 63S7PTlA490896;
+	Tue, 28 Apr 2026 02:25:29 -0500
+Message-ID: <29485742-6e49-482e-b73d-228295daaeec@ti.com>
+Date: Tue, 28 Apr 2026 12:55:28 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,190 +75,191 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/4] dt-bindings: media: ti,ds90ub953: Add support for
- remote GPIO data source
-To: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>,
- Linus Walleij <linusw@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
- Vladimir Zapolskiy <vz@mleia.com>, Bartosz Golaszewski <brgl@kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- "G.N. Zhou" <guoniu.zhou@nxp.com>
-References: <20260424-ds90ub953-v6-0-7a84efbab316@oss.nxp.com>
- <20260424-ds90ub953-v6-1-7a84efbab316@oss.nxp.com>
- <CAD++jLmi1Q4sGeY6vK7fxw8AdCmiiW-8kdEi4OFkV1xep=Od_A@mail.gmail.com>
- <AS8PR04MB9080113A71D87E952561FC53FA362@AS8PR04MB9080.eurprd04.prod.outlook.com>
- <CAD++jLkuDWPd5KsKTpQ=htyupaXEwkPt_jV+RNngs+TTVkYSkw@mail.gmail.com>
- <AS8PR04MB908082A6E403407A88D3978DFA372@AS8PR04MB9080.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "Rob
+ Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+	"Mathieu Poirier" <mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>,
+	"Sascha Hauer" <s.hauer@pengutronix.de>
+CC: Shuah Khan <skhan@linuxfoundation.org>, "linux-gpio@vger.kernel.org"
+	<linux-gpio@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
+	<peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>
+References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+ <20260422212849.1240591-4-shenwei.wang@nxp.com>
+ <22fb5fac-2568-42be-a7e3-7e89d0017eb3@ti.com>
+ <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-In-Reply-To: <AS8PR04MB908082A6E403407A88D3978DFA372@AS8PR04MB9080.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Beleswar Prasad Padhi <b-padhi@ti.com>
+In-Reply-To: <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|SA1PR10MB5823:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c8ddfbc-3b63-40b7-833c-08dea4f759b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|7416014|1800799024|82310400026|18096099003|56012099003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	VD0qqZ7wE0UfNhfPiqXa0Yyo7rgipeIwN1MMqcwssWpU3VuOWLmt1eWs9lQ9dn69j/WyJ0vzXo7iIViEuGlY+e0h90etRk4Kd97rJB1Oo7IG6Cfj86O+KPWn7Mq4LKZXiOI+dELlm+NR3vn46c11LNbgwEqKJjmhGKOp3L4z7fdEdzkgQuQJZ4ca4gOUCNPl/JrmUKmO6fYYGUzrdr0nQTzUo8zt7IB/DUFwPoRphbzrHqsVDuk1ugXtZ8m6ZUe9YS6rJjY7lH0Y1esldBQlaZEA1bxjj4dmW7RUThHDS3Bl8mldS5Q4d9MMqkqhZyBw82jTUE5Pv46fcl7Ciw8NaPcXbIIzSWsa9q4puh62b8v59JAan/QWQM3PJxCRJoJW4nKy8qKiWcNnmMxHGigWEwJ2cuiO0AkO9TW3VSfm53yepAnsXF5TYaaSZXPhEnw+iSPB2CS9E5IAiY/N5OBOr6ClWUq4EaPeQ5pbMr6PkXZE5sPbVVQgOByhhphAcGWVQ1/y2/cTHs/ufneepbtDeRkEHvdlIr5CD3iJhHcbLwPirXu00BsjIzf79sJh8ENnkG2viO8OdcKVFp7uyiihmtJ/D5YWbngQaK/y/es3LR9jtz/l4buprUQlEuPO/QUFjkFpQ/jdoeMvRO4/2pEPg5CoSJNhkfsZSdrGjoFkCbcs0EXM2WS4W5bdpWgSrR/pLwUGUMDdJViFWPJLHJYKOANZtpdzWrruQQ1EGn0ULdWvIsw0x5OfMa8OViLy1q6hpE2Jdfp8n1BEIt0zyZtnRIkzZVsgIbXcopTmlF9/Mii+BPN7TEOoQao1Fttnvn9Z
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(1800799024)(82310400026)(18096099003)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	KtEklt5Glk8w7fwe9Onv2y5hZKccaw9lvxBBzrIPls3ZnHjXZoQ/oU/JjDwhqkqfk4JeIxXUAG/LlFk/OcYdPATyafn6NOnEjLz3FYV4d/n9G3pTavDh5wVOnSjQDNkeWEpybZCEn8PIsTs1VGhUcuEFJVtx6UiKmPGYC5jtsmsGtfSaTYryLORJdkQe6gVcb9lJd3qCUO0EARyyinWW4OCscwSWWBONzqLyPxIRnWFJRrTtP/gCeutJIlNJPbQr/xcJzn8lyFySWjeVLoafr9O9hU+pRPYpbuWQ/bP5PeC33iFkVqNvtcbIkZY7DSShnEhT7/Lk/EglV8/EiUGovSVVYsy/QEXCe9jOgNglEuk//TnDpBf4XX7nldrGcJSpikLJM4Ht5E4vMZH2AOgtVaFssc3lq9ZZ+1XpaTd/U5ibsT9j87Y/W85jjsI+W9zJ
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 07:25:40.1266
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c8ddfbc-3b63-40b7-833c-08dea4f759b3
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001508.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5823
 
-Hi,
 
-On 28/04/2026 09:17, G.N. Zhou (OSS) wrote:
-> Hi Linus,
-> 
->> -----Original Message-----
->> From: Linus Walleij <linusw@kernel.org>
->> Sent: Tuesday, April 28, 2026 4:50 AM
->> To: G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>
->> Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>; Mauro Carvalho
->> Chehab <mchehab@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof
->> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Frank
->> Li <frank.li@nxp.com>; Vladimir Zapolskiy <vz@mleia.com>; Bartosz
->> Golaszewski <brgl@kernel.org>; linux-media@vger.kernel.org;
->> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev;
->> linux-gpio@vger.kernel.org; G.N. Zhou <guoniu.zhou@nxp.com>
->> Subject: Re: [PATCH v6 1/4] dt-bindings: media: ti,ds90ub953: Add support for
->> remote GPIO data source
+On 28/04/26 00:53, Shenwei Wang wrote:
+[...]
+>>> +
+>>> +struct rpmsg_gpio_packet {
+>>> +     u8 type;        /* Message type */
+>>> +     u8 cmd;         /* Command code */
+>>> +     u8 port_idx;
+>>> +     u8 line;
+>>> +     u8 val1;
+>>> +     u8 val2;
+>>> +};
 >>
->> On Mon, Apr 27, 2026 at 11:13 AM G.N. Zhou (OSS)
->> <guoniu.zhou@oss.nxp.com> wrote:
->>> [Me]
+>> Could you please document the fields in these structs (and the below ones too)?
+>> From the code, it looks like while sending a message from Linux to Firmware; val1
+>> and val2 are used to describe the values to set. Whereas while receiving a
+>> response, val1 represents a possible error code, and val2 represents the actual
+>> message of get type queries. If that is so, you might want to change the variable
+>> names to be more descriptive and also use a union.
 >>
->>>> I understand that the driver needs to deal with this in a
->>>> per-gpio-line basis though, have you considered:
->>>>
->>>> 1. Just hard-coding this into the driver based on the .compatible
->>>>    string, if the remote GPIOs are always the same for this TI thing?
->>>>
->>>> 2. If it is just for one particular system, you *could* actually have
->>>>    a table/mask inside the driver for this:
->>>>    if (of_machine_is_compatible("my-funky-system")) which will
->>>>    kick in only on that very machine,
->>>>
->>>> 3. If you really want to store the information in the media i2c
->>>>    device node, add some custom property like this:
->>>>    ti,remote-sources = <0x0000001f>;
->>>>    where a bit is set to 1 for each GPIO which is remote.
->>>>
->>>> Putting flags on the GPIO lines themselves seems too complex and
->>>> system- specific.
->>>
->>> Thank you for the detailed feedback.
->>>
->>> After considering your suggestions, I think option 3 (custom device
->>> property) is the most appropriate approach for this case.
+> The fields in the two structs are fairly self-explanatory. Do we really need the additional comments?
+
+
+val1 and val2 sounded arbitrary, that's all. If we are moving away from
+that, then there is no need :)
+
+[...]
+
+>
+>>> +     void *channel_devices[MAX_PORT_PER_CHANNEL];
 >>
->> Why is that the most appropriate?
+>> So this is technically a rpmsg endpoint (struct rpmsg_endpoint) without naming it
+>> "endpoint". Every rpmsg endpoint has a reference to its parent rpmsg channel
+>> (struct rpmsg_device) which represents the same information here. So we should
+>> use the framework standard here.
 >>
->> I think (1) is most appropriate, if the hardware with this compatible always
->> looks like this. You need to answer the question if this is a per-system flag for
->> the GPIO lines or something that is *always* applicable for a device with
->> compatible ti,ds90ub9NN-q1?
+> Yes, agree to use "endpoint_devices".
+
+
+I did not mean to say to just change the variable name from
+"channel_devices" to "endpoint_devices". Infact you would not need to
+have this field & struct anymore.
+
+Pseudo-code:
+1. Add a 'struct rpmsg_endpoint *ept' field to struct rpmsg_gpio_port
+    to maintain the ept to port idx map.
+
+2. Call port->ept = rpmsg_create_ept(rpdev,
+                                                            rpmsg_gpio_channel_callback,
+                                                            port, {rpdev.id.name,
+                                                            RPMSG_ADDR_ANY,
+                                                            RPMSG_ADDR_ANY})
+    from rpmsg_gpiochip_register().
+
+3. Send msgs from local ept in rpmsg_gpio_send_message() by:
+    rpmsg_send(port->ept, msg, sizeof(*msg));
+
+4. Get the port info in rpmsg_gpio_channel_callback() by:
+    struct rpmsg_gpio_port *port = priv;
+
+Which also eliminates the need for struct rpdev_drvdata as you can just
+do rpmsg_get_rproc_node_name(rpdev) from rpmsg_gpiochip_register().
+
+
+>
+>> This also allows for dynamic creation and deletion of ports too! (if/when the
+>> firmware supports it)
 >>
->> If it for example always applies to ti,ds90ub971-q1, then make that compatible
->> decide how to handle indvidual line, just write code for it. That is case (1).
+>> Which means at port init time, we should make a call to
+>> rpmsg_create_ept() for each port tying the same callback
+>> rpmsg_gpio_channel_callback(). And based on the 'u32 src', we could identify the
+>> appropriate gpio port in the callback.
 >>
->> If this setting depends on how the serializer is integrated and the remote
->> setting may apply to some systems with this device and not others, you have
->> options (2) and (3).
+
+[...]
 >>
->>> However, I initially implemented this using a custom device property
->>> (ti,gpio-data) in v1 [1], and Vladimir rejected that approach.
+>>> +
+>>> +     girq = &gc->irq;
+>>> +     gpio_irq_chip_set_chip(girq, &gpio_rpmsg_irq_chip);
+>>> +     girq->parent_handler = NULL;
+>>> +     girq->num_parents = 0;
+>>> +     girq->parents = NULL;
+>>> +     girq->chip->name = devm_kasprintf(&rpdev->dev, GFP_KERNEL, "%s-
+>> gpio%d",
+>>> +                                       drvdata->rproc_name,
+>>> + port->idx);
 >>
->> Vladimir is saying that the driver code should handle this without any extra DT
->> properties. That can be done with approach
->> (1) and (2). But I don't know about that.
+>> We could just re-use gc->label here...
+> We also want to include the remoteproc name (for example, remoteproc-cm33-gpio0), rather than just gpio0.
+
+
+Isn't it also included in the gc->label field?
+
+gc->label = devm_kasprintf(&rpdev->dev, GFP_KERNEL, "%s-gpio%d",
++                   drvdata->rproc_name, port->idx);
+
+[...]
+
+>>> +}
+>>> +
+>>> +static int rpmsg_gpio_channel_probe(struct rpmsg_device *rpdev) {
+>>> +     struct device *dev = &rpdev->dev;
+>>> +     struct rpdev_drvdata *drvdata;
+>>> +     struct device_node *np;
+>>> +     int ret = -ENODEV;
+>>> +
+>>> +     if (!dev->of_node) {
+>>> +             np = rpmsg_get_channel_ofnode(rpdev, rpdev->id.name);
+>>> +             if (np) {
+>>> +                     dev->of_node = np;
+>>> +                     set_primary_fwnode(dev, of_fwnode_handle(np));
+>>> +             }
+>>> +             return -EPROBE_DEFER;
 >>
->> I think the basic problem with the patch is that no-one (myself included) apart
->> from you understand what a remote serializer is, why it is remote and what
->> that means, how the mechanism between the components making up this
->> essentially works etc. I.e. a much longer and more detailed commit message
->> and binding explaining very cleary what this is and how it works and why the
->> special property is needed on some lines, and how it is a property of some
->> specific way of integrating this GPIO controller.
+>> I know this was asked in the v10 version also. But I don't think the answer is
+>> sufficient. Should we not continue the intialization of drvdata etc if np != 0? Why
+>> return a deferred probe, and let the kernel come back to it again to do the same
+>> stuff with extra latency?
 >>
->> If a custom property should be used ti,gpio-data is too generic, come up with a
->> property name that actually says what it is all about and which anyone would
->> understand. "gpio-data" is a bit "the thing that does the thing" and overly
->> generic term.
-> 
-> Thank you for this feedback. Let me explain the hardware architecture and the
-> reason I chose option (3).
-> 
-> Hardware Architecture:
-> SoC --- I2C --- DS90UB960 (Deserializer) ---+--- FPD-Link --- DS90UB953 (Ser) --- OX03C10 Camera
->                                                                             +--- FPD-Link --- DS90UB953 (Ser) --- OX03C10 Camera
->                                                                             +--- FPD-Link --- DS90UB953 (Ser) --- OX03C10 Camera
->                                                                             +--- FPD-Link --- DS90UB953 (Ser) --- OX03C10 Camera
-> 
-> Each DS90UB953 serializer has 4 GPIO pins. One of these GPIOs connects to the
-> OX03C10 camera's FSIN (frame sync input) pin for multi-camera synchronization.
-> 
-> The Problem - Remote vs Local GPIO Data Source:
-> -----------------------------------------------
-> The DS90UB953's GPIO pins can operate in two modes:
-> 1. LOCAL mode: GPIO data comes from the I2C-controlled GPIO register
->     - Standard GPIO expander behavior
->     - Data written via I2C controls the pin state
-> 
-> 2. REMOTE mode: GPIO data comes from the DS90UB960 deserializer
->     - The DS90UB960 generates a frame sync signal internally
+>> We could just do:
+>> if (!np) return -EPROBE_DEFER;
+>> else {everything_else};
+>>
+> After configuring dev->of_node, it would be better to restart the driver probe process. 
+> This ensures that all required resources, such as pinctrl, clocks, and power domains, are 
+> properly set up if they are specified in the device node, before the probe function is invoked.
 
-While not exactly part of this series, how do you handle UB960 
-configuration? I don't remember all the options, but if I'm not 
-mistaken, a GPIO can be generated internally (e.g. frame sync you 
-mention), but it can also come into UB960 via a pin (could also be used 
-for a frame sync). And there were some debug options that can be exposed 
-via the GPIOs.
 
-I'm not asking to implement all those, but I think it's worth at least 
-going through them, to have an idea if whatever is done now could 
-possibly support the other features.
+Hmm that makes sense to me... Thanks!
 
->     - This signal is transmitted to the DS90UB953 via the FPD-Link back channel
->     - The DS90UB953 routes this remote signal to the specified GPIO pin
->     - The GPIO pin state is NOT controlled by I2C register writes
-> 
-> For camera synchronization, we need REMOTE mode: the FSIN GPIO must receive
-> the frame sync signal from the deserializer, not from local I2C writes.
-> 
-> Regarding option1, the remote GPIO configuration can vary between different board
-> designs using the same TI device, so hard-coding based on .compatible wouldn't be
-> flexible enough.
-> 
-> Regarding option 2, if I understand correctly, driver would require adding a new
-> compatible string or mask entry for every different board configuration, which
-> doesn't scale well.
-I think option 3 is okay.
-
-Although I (perhaps naively) think that the approach in this patch feels 
-nicest: the user just defines the GPIO the normal way in the dts, and 
-marks it with a REMOTE flag. But I think the REMOTE flag should be a 
-device specific flag. Are those allowed?
-
-But now, after writing the above, I wonder... If we use the REMOTE flag, 
-that will be in the consumer side of the GPIO, i.e. in the sensor node. 
-A 'ti,remote-sources' (or whatever it would be named) property would be 
-in the provider, the serializer node. Which one is the correct place to 
-configure a thing like this? The REMOTE flag is not quite like the usual 
-flags in gpio.h, as the sensor works fine (wrt. the gpio) with or 
-without the REMOTE flag.
-
-So maybe 'ti,remote-sources' in the serializer node is better, after 
-all, to configure where the serializer gets the GPIOs value...
-
-As for doing this configuration at runtime, with no DT changes... In 
-theory that would be possible with custom V4L2 controls to both the 
-serializer and the deserializer. But I don't know how the user could 
-ever know how to configure it, without having detailed information about 
-the HW.
-
-For example, let's say the board generates a frame sync signal (a pulse, 
-30 Hz), which is connected to deserializer's GPIO pin X. The deser needs 
-to be configured to take the signal from pin X, and forward it to 
-serializers 0,1,2,3. Then the serializer needs to be configured to use 
-the "remote" gpio X from the deser, and provide it from the serializer's 
-GPIO pin, going to the sensor.
-
-  Tomi
+Thanks,
+Beleswar
 
