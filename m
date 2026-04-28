@@ -1,223 +1,149 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013029.outbound.protection.outlook.com [52.101.83.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96653AE6E5
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 13:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383614; cv=none; b=qhVweuokkDPGwAeu2U5tf7H8QHEInJiaEK4QOpq6CQxlUzweuVh7iHfkF2NXZ0QxLfGvKtZZqsdiNfEOw/nOO7EJY0qFJ4vGdBz6z7WQ2STIrHMFCFKZmKlpke+//4CbeOxi5lko/pKg/wOLe5uX/8biz7Kkvwvj7sUUnkudo8g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383614; c=relaxed/simple;
-	bh=DY37OnpoYjjW+GFpmDYkzr+BXySsTF4/pHUAAopHjvA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=slL67D5Pb0oXGXNGd6GcDGDQ9SiSh4NCwHbWwmTxOvDwJzawFlIIiZwHrdRw6kNf+MF0tNQrguXOv/sOlQyFZud0kgNFQDTOGbLi4pnGrvUMtf2/PqEQdoXFadmgtWo9dRb7Stl2PP/lPNXthvDdP2tcREiR9paYYoV2kDr6Fpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qRLoVPjW; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E3B402B8B
+	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 13:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777383970; cv=fail; b=CbYqsvsdltdpRvByfbMYLRFD47keni3y0wVVyNqcSLCG1zyY6DrtpnpQI8rIthP/I2tkY+UJqnGvWXO8rcnjcFBmKIs24cbIT+G7FH5nhvJk4jwl0hnypeIY06SO6CEEbp0xaWWZ09r6tjTQJ9fKSyKbqUTtWWtQZCJHphM5d8g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777383970; c=relaxed/simple;
+	bh=K+BB3NL89Yn2KejYYY7+Nx5trYhBXt6fURv8LmDBlbU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MHN2EGXbbbFu8EdVcciPKTt2UJTlIfd7sd3YKR3CUaJ8Ql0xS+TzL+edr61aVSafmuLg9LaWWBZEVvg6nroWP/H/0lZo0MQREgG/x8vOim+/JW1Pkdjvyirv9AHluq48w39NgVmjrEJHpTzZQxs476HBBhcPENlMz3SaA2k24+k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=avH70yta; arc=fail smtp.client-ip=52.101.83.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qRLoVPjW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D7334E42B56;
-	Tue, 28 Apr 2026 13:40:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D19BC601D0;
-	Tue, 28 Apr 2026 13:40:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C6AAE10728BFF;
-	Tue, 28 Apr 2026 15:39:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777383605; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=DY37OnpoYjjW+GFpmDYkzr+BXySsTF4/pHUAAopHjvA=;
-	b=qRLoVPjWicMlOER4CBoXDyZ31IS3N9wzfHFsgyWbAAFF/gci+qsFmTs0vCeqFcMtumISls
-	Tj3oY/2Cdf6m/7gztcQrTJLdN0ggRvFVqgt+JH8FxO2/nx+GfiibBB7tr9VdYd2pRAyZX1
-	XAXF0QiFbh370lTIQPb7xonACEwx2kQTWqUUcXxmMBeCKnlqHPelpK3fTwkngZn/4NCD/d
-	KE58A7C2KizgbREMj4kyFapvuVzo03ASQ8lKHF89cbbYlD9WTUWuW4Ve1tF5Yw+ztjpBH4
-	MjEA//3NGYT7/zO8OOYAeAWTnaFj1l+B1bRPPqqwsMjaj7jeo7/wmSi84hXibw==
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="avH70yta"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=APNDG/3Y12uPaE9qkUq+ao2CFWjTMNclLA3whmzShCHeUIhv9gwI+M0ZhzBOQNEAPEQOpaj/Uhe+YIjyHUXhZLAmRHR945QyX7Ode6XHeXuITBE5Dyj6lsDZQXREMStZSnQzzrQlkN1kWTjBRFh1tryJK0jN0ntG9YwSZWOznid+4oOSrTkl8zg94I7SVIlmtPixDssSVDtvmTDPyK1cpOxzIQhI4PsmMP6n6aqGOgv8VPu+kODwQObZlnwqUsVKGlY6+9G8nLJFCdJUtP20y8JTHifRUq640U2MEnMALOn+eWNU1jy1l0h7yvhi9Ygikr6XIH8HNUHQJe+NixX52g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s/BbR1sgh93yDXEabIBXbN60lFNHSry52ZI7x94pCZ4=;
+ b=u0vWdrOFJVke5ZkHirSu1ejc9EmIAIImD1Psfo+1n3gdfH0EYXhCwc+EMLoPWubpOA/bo+9u47Z8Fy3AqDIULTQfgwm+4KclRKxcojop0mpf698GLJBPtcMbGpb3hUPYn1Lpv7qPnAmyFsELchRm8btnPrjLzhm/qOVzjP9AhhwSoobzFgB39OK5gmEHyoMlBJ/6DI6SI7p3f9TLnVRTfRbdiBMwjqC4Zd2+FLMk736fWgDdf/bLMjX0ulhi3JKMTgm4Bo36bqsLpMHHmCrEd7tKifjkS7BqfLwWkDsWMzLmtj0t7AdikPEpBUnLaBS3C0fF8DS4M0XDTsfQhJe+gg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s/BbR1sgh93yDXEabIBXbN60lFNHSry52ZI7x94pCZ4=;
+ b=avH70ytaNQkWyBcU6P3E0msBbTXidiHiYOUf2KRV9mOpB5fOrvVbUyeBiHcl/i9khMuuAmkvPIIo9j2s7LMsbAotbXx3XlI3gf/Kcn8mJxf1Ti6Q3H0PcTtTqAhP5L8VZtb1R1Qojqw90tSPAok/eWnFgpFCqMFbl49cVI3d9B6HLaE/lboRLTMnrxzYmHTxXzcwKgHeuU556GsStbr3L68m7V0oy9dvLE646y7REaH7J9Nw0uUmCjFyUyfXkN3tSYCOHmVDN2BxQXBov4vKVOiNDAge/8XJ8nVFA1bbdvETay35pF9uXj4ddq65d6G2NzTM+ZIASJLw0pn87BMwVQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by PR3PR04MB7308.eurprd04.prod.outlook.com (2603:10a6:102:80::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.46; Tue, 28 Apr
+ 2026 13:46:03 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
+ 13:46:03 +0000
+Message-ID: <dfc04c5d-253f-470c-b32c-2da080e91139@oss.nxp.com>
+Date: Tue, 28 Apr 2026 16:49:17 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] drivers: remoteproc: imx: add autoboot support for
+ A-core remoteproc
+To: Jiafei Pan <Jiafei.Pan@nxp.com>, andersson@kernel.org,
+ mathieu.poirier@linaro.org, peng.fan@nxp.com, Frank.Li@nxp.com,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com
+References: <20260428090819.17761-1-Jiafei.Pan@nxp.com>
+ <20260428090819.17761-4-Jiafei.Pan@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260428090819.17761-4-Jiafei.Pan@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0140.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b8::8) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Apr 2026 15:39:43 +0200
-Message-Id: <DI4TW9XECX53.17TEZPCSWTH1A@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 00/41] drm/display: bridge-connector: attach encoder
- to the connector
-Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Ian Ray"
- <ian.ray@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
- <linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
- <freedreno@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
- <linux-renesas-soc@vger.kernel.org>
-To: "Icenowy Zheng" <zhengxingda@iscas.ac.cn>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Sasha Finkelstein"
- <fnkl.kernel@gmail.com>, "Janne Grunau" <j@jannau.net>, "Liu Ying"
- <victor.liu@nxp.com>, "Douglas Anderson" <dianders@chromium.org>,
- "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach"
- <l.stach@pengutronix.de>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Philipp
- Zabel" <p.zabel@pengutronix.de>, "Paul Cercueil" <paul@crapouillou.net>,
- "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Chun-Kuang Hu"
- <chunkuang.hu@kernel.org>, "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Kevin Hilman" <khilman@baylibre.com>, "Jerome Brunet"
- <jbrunet@baylibre.com>, "Martin Blumenstingl"
- <martin.blumenstingl@googlemail.com>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Abhinav Kumar" <abhinav.kumar@linux.dev>, "Jessica Zhang"
- <jesszhan0024@gmail.com>, "Sean Paul" <sean@poorly.run>, "Marijn Suijten"
- <marijn.suijten@somainline.org>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Sandy Huang" <hjc@rock-chips.com>,
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, "Andy Yan"
- <andy.yan@rock-chips.com>, "Thierry Reding" <thierry.reding@gmail.com>,
- "Mikko Perttunen" <mperttunen@nvidia.com>, "Jonathan Hunter"
- <jonathanh@nvidia.com>, "Jingoo Han" <jingoohan1@gmail.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin
- Park" <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Alim Akhtar" <alim.akhtar@samsung.com>, "Laurent Pinchart"
- <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
- <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Biju
- Das" <biju.das.jz@bp.renesas.com>, "Marek Vasut" <marex@denx.de>, "Stefan
- Agner" <stefan@agner.ch>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Michal Simek"
- <michal.simek@amd.com>
-X-Mailer: aerc 0.20.1
-References: <20260423-drm-bridge-connector-attach_encoder-v2-0-2ae6ca69b390@bootlin.com> <cf2c91396eb3017aa51dd9c840badffddca2f7ec.camel@iscas.ac.cn>
-In-Reply-To: <cf2c91396eb3017aa51dd9c840badffddca2f7ec.camel@iscas.ac.cn>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|PR3PR04MB7308:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24974c79-aaf9-4d1e-23e0-08dea52c7d7d
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|921020|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	L/oumAJUX88lNriSuyY1d9lnCxBp1mAwxqqEL6ZO9nXyMvRmvfLa6epO0kUKVsXU+Xd24eAq4VPQnGWupm+F6aUIRni2jcV3TG5PLJvBKW9yWlFvgdM9+T+/xr725IK7dXZjNPb7wOcHjzMEutLjbYwMLqDRW0OuiC0urbl+5hxnR+gL6sE6YGqoJ8iJLnjjaJXY2C+UuAJcLU5hte9GRIgt0euT1YBWDLfYcO4UVTxKBSZyUuYB/bwaH87UE1GZqmwN6dXKs/8vYio6JH2xKCwnxHu4IY+/0eKDjC66/e+be3+hRebVyoSSRfbAXRDk0OzSprHYa0cyIyEW3kXyqImJlIgr7XmoejXanKawct1yAN54QWq/tjbtilbhGbcYQTuF5GWJgg/vjVRLmnyfB2ni6rL1fpB3qAJOutzPMJ/51lvMzhIrHAlrC8dH3HHXEF/MOPzDoPR5DvqG0VKlBCu4igEIbOZ5OsGnxj+LJOnnqiBAou81B+zGnHpXW/9hS2LURLY5miChKqTNN/FO8tw/GjpUCp4ukBX9/1ybIGLto3PTddwQSe5m0CBzheaWxaKOx/AZU7LtaAPPxvsG/YAYzMYr+Y3oprp4OqaROhYa90jBydftnAcYYH/GlhMIZajNdhf8OGtQh1cqoDfNet/CsAau2gXekb8KwZ4QsmmAz9Cw56VAnFTSOVzXLjieY3VHnciqyjdJ4dA0Oq/KZwJUcMWoajWmuCVEzxc55KI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(921020)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MmlIZ2pLYXlMdnVMWXZkUktBSk1tVytDR0JXcHpXTGRYYXk4SGJmMVF6WW9w?=
+ =?utf-8?B?VnVSSlpWb2o2THNpemxUTlAvaGt2NDZiMWZDUXMxWWtUQ1hReEZ1NXBBVjVa?=
+ =?utf-8?B?VFo1Vm5BczREU1FUcFdIZGt5eXFNZXpDQUNjTUdoZmM5ZkFnSGIxVEdZeGtP?=
+ =?utf-8?B?KzRPOVc0bzRUQ2JLNUF4NzZyVEZBZlRjSGFlM2tqZlRNTFJZdUFndlNMemFq?=
+ =?utf-8?B?VjFvK3EzRzI1UDB3djAzMVArV25ybkxyaGoxNW9sRXQ4TXBMUnF6em1HWmxM?=
+ =?utf-8?B?dFFOL21jSTBoL3J2bmNtYnRpTEhzYW1TbzFXaEJrbktaaDlmQWVLUjl0WmRY?=
+ =?utf-8?B?Z0lWbWwwbktuR0JHM2ZUL3Vlc2tkZndoOUdiY1pEQkI2QW0xL1ZHcWtpY09P?=
+ =?utf-8?B?UWVPSnYrYjdxcHkvZklRWkNIWWdHL0NweFpEbzJDSVdvZkczd05FQnV0RytR?=
+ =?utf-8?B?cDYrVnpHOVorUExZSEx4RFFuY3drMGVybFU2dmlFWDArQld6Sm84VkdocWk3?=
+ =?utf-8?B?SmtBYVBZN0dOSTJuM25ZVG9MdUNxL2t0YzRmNnMwSG4xYXpWL09wTjRYcWpF?=
+ =?utf-8?B?Vm5RbXRyUUROdmNuVzZwSjdrc0JvYm5wVTVjdklHcTZqam9hS2pMOGFwbW8y?=
+ =?utf-8?B?WFBlRWFIR0JsNzk4bkd5NjlNcFpqcFk2dE1oTWlpZ3hrT21maHMyVUx2SWFv?=
+ =?utf-8?B?RkJsUFYrOFl5dmluZHFGOE50dmxhRVBJZ2h1Tk1wVU42b0VHdzJtdHlKNmpL?=
+ =?utf-8?B?M0trNDhtbm82TytUajBhSC9vTmhwVnFTUldKYVFHUGV4RWdoVDdEeXZEZDU3?=
+ =?utf-8?B?WDJ5SXA5bUNHTUw4N2xxYTZLcnpGbEdibXFLZ3FVaCtWT1ZsZFVaRG55dXM4?=
+ =?utf-8?B?TDM3SzN1dzBXZkxjdGlyMlhoTFZxZEora1F6LzdrVG9uWTc5UGY5Q3FSVVhz?=
+ =?utf-8?B?dEJYRWREK2w0TXNnMFoyOXhjNERSNkVjSXliWm50a2NhQU1ON2JTZ0FOUTB2?=
+ =?utf-8?B?R1lYWDF4dGJCRWM5YkpQNitIYlFQb1ZkMUhrallMSFAvZUdiQy9oZXpnZmdx?=
+ =?utf-8?B?b1gxMjZqbkdsbjZVYWkyNW9tVEg2RFNtMGlzeDV3QllFK2tsclV4bDc3b3A2?=
+ =?utf-8?B?VHpDUThKaUFjc21QazBiYTY5SHVreCtuWjJPb005QWZKeEF4UVRoS2h6STYr?=
+ =?utf-8?B?TXFpY2RFanZqdlhZcVRoM3c5c1gwbG5SWXhoNkI0TURSVDl2WUVRaVVCWVQx?=
+ =?utf-8?B?WEZuQlY5Rk9Ua2I2Y3BJcFdNT3JFZVg2UnhpdmtXZXlmODhtMkxic1pEV2s1?=
+ =?utf-8?B?ZEgyTXFsV205RDQxckMvVmxvZk9KTERQWnRQY0wxRHZBLzFITWErTHVESjZC?=
+ =?utf-8?B?cGxobklkMlFKYWY4N1E5MUREZCtKMEZTUDF6cTVUVExqWk4vZE51QzlXT3Vn?=
+ =?utf-8?B?UWltaHJJbEQ2MmVHME1pMVhHYnlJRkdiaVNTODFNbTk1ZzJIRUN5Snk0U29E?=
+ =?utf-8?B?WHEwelh1RUgxN3VWL3RGT3o3eHNWMG91TW9BSHE0bUZScURoVDFHN1psYzZw?=
+ =?utf-8?B?dTdTVjkxS1NzT1pSb1lTUVJDNWhoNU5JVTlTYzBma09yZDRwcFg4UDdyOFZ3?=
+ =?utf-8?B?bTQxOGRLSWk2VHVVL2F0RHRDbVREelVsMG9mTzRjSURWK1A3cm05ajBKN1J0?=
+ =?utf-8?B?SFQzZy9LOGVXZVErZEJpNlZUNWNZckY0aENzUXlqUVVNbmVlc21vQUtBYTVh?=
+ =?utf-8?B?QmFmNm42WXFLSjUwRHJZYmdlRWJaNjZYbzdMSkFNVEgzbktkSnp6V1prZ2h3?=
+ =?utf-8?B?bElOREh1Sy9nckNpL01YbUVYVXBqWCtwNU5XQUlTY3MyeS9FNzhqblJ4VGVT?=
+ =?utf-8?B?YmRaZzhPTWs2eVIraDllb1YzbHpQeXRzdlVwU09EUkwzRVp1d2VOUTFYRGNv?=
+ =?utf-8?B?UHBhdGFBOVQ0NXRucFp6eVpwQnM3bFpTSmNmUS9lWlNGTTQrNFpMREQzc2t4?=
+ =?utf-8?B?ZkVxK1BFZll3Q05iNmJjUDhmWUdnZEhBMU41S2lrNFpuRmhBWlFjY0taOTRZ?=
+ =?utf-8?B?MXUxTFRSREdmc1hCa2gzY2g4bTJqWS9rbDZDMTVSR1U4RjhWdlMycy9lTnR5?=
+ =?utf-8?B?ZU91amI3QXJsOWNpU1hXRThER2NhYlhSeGNHNkQ0MHJneUN0NlJmUFlkdm9s?=
+ =?utf-8?B?UWhuM3ZVVHcrbnUwbThmUGF0T0JPY0s0ak9lNEZnM1F2a2M3Nzk3dnV3ZzZS?=
+ =?utf-8?B?L0NzNHJoMjM4cXI2R1p4dHJMcld0ZjFoaHN0d1NaZnlnd0dpNDFwbk9NN2lr?=
+ =?utf-8?B?TzEycXFSVGFobE9RSWtFNDVqdHZLTlFCR21uME81OFZRbmkrOXIrQT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24974c79-aaf9-4d1e-23e0-08dea52c7d7d
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 13:46:03.7509
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5tguW/wIhktjWivc5GiA8unxIkXa3hJDwBUTnP8UVqsTEiA5SLvMY7cwUO4Bk12GHzGrsIAWKk6SuQ4HNdjXiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7308
 
-Hello Icenowy,
+On 4/28/26 12:08, Jiafei Pan wrote:
+> [You don't often get email from jiafei.pan@nxp.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+> 
+> Add autoboot support for Cortex-A Core remoteproc.
+> 
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 
-On Sat Apr 25, 2026 at 5:22 PM CEST, Icenowy Zheng wrote:
-> =E5=9C=A8 2026-04-23=E5=9B=9B=E7=9A=84 11:16 +0200=EF=BC=8CLuca Ceresoli=
-=E5=86=99=E9=81=93=EF=BC=9A
->> This series simplifies using the bridge-connector by removing the
->> need to
->> attach the newly created connector to the encoder.
->>
->> =3D=3D Series description
->>
->> Currently all users of the bridge-connector must call
->> drm_connector_attach_encoder() immediately after a successful
->> drm_bridge_connector_init().
->>
->> This is an unnecessary burden for users. Move the call to the end of
->> drm_bridge_connector_init() so all callers can be simplified.
->>
->> =C2=A0* Patch 1 adds a drm_connector_attach_encoder() call at the end of
->> =C2=A0=C2=A0 drm_bridge_connector_init()
->> =C2=A0* The other patches remove drm_connector_attach_encoder() after al=
-l
->> =C2=A0=C2=A0 drm_bridge_connector_init() calls, ordered from the simples=
-t ones
->> =C2=A0=C2=A0 (only the last one is somewhat non-obvious)
->>
->> The Cc list is huge due to the many drivers touched. I sent v1 to a
->> reduced
->> Cc list to ensure there is an agreement about the overall idea. That
->> seems
->> to be the case, so now it's time to copy all drivers maintainers.
->>
->> It would be nice to apply all of this series at once to avoid
->> duplicated
->> calls to drm_connector_attach_encoder() in the interim. That would be
->> harmless beacuse drm_connector_attach_encoder() is idempotent, but
->> unpleasant.
->>
->> =3D=3D Additional rationale (for the curious)
->>
->> Besides making the usage of the bridge-connector a bit simpler, this
->> series
->> is in preparation for DRM bridge hotplug. Here's why, feel free to
->> skip if
->> you don't care.
->>
->> The old bridge hotplug proposals I have sent in the past [1] were
->> based on
->> a hotplug-bridge driver to sit between the last fixed bridge and the
->> first
->> hotplugged bridge. Discussion with the community led to the need of
->> removing the hotplug-bridge and let common DRM code handle hotplug.
->> The
->> common place of code that appears the most suitable for hotplug
->> handling is
->> the bridge-connector, which is by now the recommended way to handle
->> connector instantiation after a bridge chain.
->>
->> So I'm in the process of extending the bridge-connector to be the
->> central
->> point to handle bridge hotplug. Turns out the need to call
->> drm_connector_attach_encoder() after drm_bridge_connector_init() has
->> returned is adding big headaches to such work. So I'm send this long
->> but
->> simple series to both simplify bridge-connector usage and remove one
->> obstacle from the bridge hotplug work. This series is relevant by
->> itself
->> anyway.
->>
->> [1]
->> https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-26-9d6f2c9c3=
-058@bootlin.com/
->>
->> =3D=3D Grand plan
->>
->> This is part of the work to support hotplug of DRM bridges. The grand
->> plan
->> was discussed in [0].
->
-> Just see the bridge hotplugging thing, is it possible for DRM drivers
-> to declare bridges attached to themselves after this?
->
-> Loongson 7A1000 PCH can only output DPI signals, so nearly all products
-> with it are shipping with some kind of external bridges, but currently
-> drm/loongson does not support them (all display connectors are now seen
-> as DPI ones, and connectors behind non-transparent bridges won't work).
->
-> The bridges are going to be accessed by the DDC I2C busses of 7A1000,
-> and are not declared with device tree (systems with 7A1000 never ship
-> with device trees, and Linux currently matches a built-in device tree).
-> (Bridges being on the DDC I2C also introduces some dependency for them
-> to depend on the drm/loongson driver.)
->
-> Loongson have defined some kind of VBIOS declaring what bridge is
-> behind, and their non-mainline driver just contains driver codes for
-> all possible bridges. (Sui Jingfeng previously tried to mainline such
-> practice, and of course it's rejected because of code duplicity.)
+Please also add your Signed-off-by tag here.
 
-I'm afraid your question goes a bit beyond my knowledge, the hotplug work
-I'm carrying on is focuses on DT platforms.
-
-My limited understading of non-DT platforms is that a card driver must
-instantiate all components and tie them together, which assumes it has to
-know them somehow (ACPI, hardcoded, whatever). Others can probably comment
-better about this.
-
-As a general principle, when devices can be mixed and matched by the board
-designer, hardcoding them is a bad design choice. Think of bad old board
-files written in C, which were unmanageable and got replaced exactly by
-device tree. So my opinion is that DRM encoders and bridges should know as
-little as possible about the following bridge, connector or panel that
-follows them.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+See: https://developercertificate.org/
