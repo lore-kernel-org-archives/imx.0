@@ -1,265 +1,169 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013065.outbound.protection.outlook.com [40.107.201.65])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013002.outbound.protection.outlook.com [40.107.162.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DFC3D6472
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 07:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C12D9EED
+	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 07:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777361147; cv=fail; b=brczbiNKI2q/RJX5yS9vrSpDDWBqBUhBZoZbj9CMpP6iT0MZyxv7HAN/Q6x/Og11VZpZzmwEf6P9vuQhSinEJmUYx893HhssyL1UAwUhhVWbEDK5SeEorrextbR89aLFfJPJKwWAWIyLOHvdSJP18dhlZZkgtGhaadqNPu4Fdx4=
+	t=1777362570; cv=fail; b=A0IUkjd5ObfGUn0CPtAW2BEiNhLTaxthyzOHA/dozbqO1wJToSf5lGJGrAWcMKToaZ7sbsu/FuBSIjoMXU9veqKM9asRkliF/BaA/Ks4IxsjBZSiDClBB+MMyCPhdFHvxy46VJkXb0bOo8EGHww8rs1b8pDYy2e74qC6ClPuf7Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777361147; c=relaxed/simple;
-	bh=r+z682TwOQVQQHEUUSEZRbnzsbAdRwkWkLRrIH7NXjo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ASZIKEfYwbMS6RFlQr0hpFTHXkyrVKV46xqri4uxs9MushMMsE6DLa9e3Em+hSv23oEIThyWM9vkxU7P9pxUFtvoEDjvhjOhy8vD843w2yakQINA1vCLcDDPq0JamjYzcqob1oH3mjjFJxwU2y3okaDbDAYKPIGsOR45pp7M8sI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fLIvst1e; arc=fail smtp.client-ip=40.107.201.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1777362570; c=relaxed/simple;
+	bh=zCg4PuZXl6wdqP7c/0gxzNLMRTlxaKzBgBvFTwyD/Bw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HA8sRmkwVd7Eb5FtTSYSVVDjFHyQP29sxNQHyPo+4wb7GEH6uCpVqYqmlQ3vv/hS8aj4n5ALb78q0t7nFgJhIDte/8mBBW6Rt/JFn4++7mlK86YJU9dvwwY61jXdU8Vt/nsuUKrEFTi9nUdYqzMqvYKpmPjDAe54OmBt4GJ1gYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UlLr49A1; arc=fail smtp.client-ip=40.107.162.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fLIvst1e"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UlLr49A1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kHalBljTsqhUnLDRmwN4B68FchroGamOt1ZpSwPYoY4pGSagzMXCTk3z4ngW3aFTwlSpnnBQcoxWBQKSEiNi0JG8gGqcv5rs8bgDXQJRrJWbZMsNUcv1c9877LMovhtZfKK40WVP89p0D/2W8hEdh9uAVw2sgFw8e+b3gQNJvyO0pPV8w7yAC/wiKSqbG8DXEdy2N+Y11VfQVfrUfV66qWIXYq3n3fiRY5/WW/IWlZUoYqPtgV/fgdpj4Jnh1LJYMdOs1XE8FrXeYjS7kBBaIvY73ueERMJnFNtGQBJc+q3Ezk0mcOj2IzwoFUJx2wVgAdHjAFroY/GhfjYOtdOp5g==
+ b=j4y47mllwDBUdmyFMFqoQ0jQCT3rh6IidQ81fgJEmFPhAo+jylkdWqL5LQYVmcssb4tQHi4t1CQZBfxOm7RBf152C331wy5pIGhqmuGuGydJohHUFV8VxVi6DlRJqdnRTPuv40ortIwQAC32CWYUHkcXube1G9eaWkvwwSV8FcTiuwzL9gDiVNLiFtLBfVkxfwXliHb3TFL2sPVqgVK/bO3nkKi5LHz72UeBh45DSHc3Y/TMYB99w4N6ly4HiLDN03qH+ttFNPSuDOycrvXvLa6QbKgjtC1z4Ex1ylTZZT8uQsw9Es2XcQUdMdHGc7S42knTn9ota6UmLPsC/915tQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9RGhWb3pV9aImbB6FCeZNp/U9ZSNBoqD2tyoy8boP7g=;
- b=sxXyDAHzMhgoa86lDkFADbY8/leHAdorXsGXBzYBGxkFhgFUxi1fpzujW9nQptD7Hf9Pmi/hQIXE00gqSR3F31BN8OE3QgqsVUU08om5thOumBG7/CFEc0oPvJGb7bSj0CQbNZeksdePDJOogMGPsu43iLxFFnhBXjw4Y512isG/auwKf3VV5LVJAiv7E7XpfFhSrtYT31jmbDFwS6gn7g4qs1MPh8g18r4WnomL5/9NwmEOvFaNHx+7Vq6u6ULYcXWnGCSEQxJjHxxXbSk0rlXTYtMfSBy4Zdiz8ZPSaTa9+XhfqxmP6qPxA9EPfzRWxWzeRojpgRSJqd+ss63ZPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=lunn.ch smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ bh=/LS3cjed6wT/ve6oSAab5MfP7jXSZWFqsiBBYZ7azLY=;
+ b=u8ZAgCcI+xUAvjNgwidtpnQAgxp+GBr/HO2ivd0KlbRjzKN/8aHO+WirNkkRgZpXveXRJfnO21iFNQqGCPd1u/GGGtWUgAWFg/2J7j7roVJk7FPdnnAKUBDwFC3XiYDtJg+rsWOEcwkllVeeqw4NtCn46ckHpEdTu356UrGyhOWZQzixLKmdTukPfpktFv6VKaJGQzek1bDR0UM0GjKp6Rhi7XTg0UOZOe2IJ3NbgL9SJb4Q709cvRXCAUOR7dkdt7SRVF+YtTYoi8xgZuhRgND5hmeMzrG/cVVeiYw4TlkO3UYNj/cI1pea8sTM7NPfa0y06SxRbc8jdf9Lq2+RTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9RGhWb3pV9aImbB6FCeZNp/U9ZSNBoqD2tyoy8boP7g=;
- b=fLIvst1edSq0A6/QlbOhnTGjbZbcWm7asOOheprvFhBJMcr9+WKDoIXi0ycroUmAp+/DTQydvJbckJS0FDQhZGeHeFOeacdK8NgkJjZVYwdn3uk3bJLxfOrgp7PXNWmCzoaAZx/a5rcVvUMiNxy5Iyjdt4P3kEgN8JqXhY0Ebj8=
-Received: from SA1P222CA0038.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2d0::19)
- by SA1PR10MB5823.namprd10.prod.outlook.com (2603:10b6:806:235::12) with
+ bh=/LS3cjed6wT/ve6oSAab5MfP7jXSZWFqsiBBYZ7azLY=;
+ b=UlLr49A1IoE4ZU2bCaBgo24YdCnjFMetlNANWYuv6vOOie9UBOyA0Tr3uNC+Ummx7/HTVh4C54GOlxaDSaDo70iBDLq7wKxhB309wTVMJuGrrEDcMER0dDy9PV0DovaDLKkyXE1sG6cEHFCG+KocKvxvDmja8neoKMdLDi1sbR72fkydFqbKjWj6/JTeiXxbrYwRrP8L33d57KSuebyJAAnzL6uonYkhnsH0VaZIPahYqGwaaFfWhWxWSrcWKDJqHhDE7dQdWMPcboRG4oAD/s6HUzZO8jSHB4zLtgwcrmPO6n6p+RAC1sjGVEEkiE6AwbS4452COytr4gPB/NgbLA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB5220.eurprd04.prod.outlook.com (2603:10a6:208:c2::19)
+ by VI0PR04MB11024.eurprd04.prod.outlook.com (2603:10a6:800:260::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
- 2026 07:25:41 +0000
-Received: from SA2PEPF00001508.namprd04.prod.outlook.com
- (2603:10b6:806:2d0:cafe::b1) by SA1P222CA0038.outlook.office365.com
- (2603:10b6:806:2d0::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.28 via Frontend Transport; Tue,
- 28 Apr 2026 07:25:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Tue, 28 Apr 2026 07:25:40 +0000
-Received: from DFLE215.ent.ti.com (10.64.6.73) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Apr
- 2026 02:25:36 -0500
-Received: from DFLE207.ent.ti.com (10.64.6.65) by DFLE215.ent.ti.com
- (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Apr
- 2026 02:25:35 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE207.ent.ti.com
- (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 28 Apr 2026 02:25:35 -0500
-Received: from [10.24.50.162] (uda0510294.dhcp.ti.com [10.24.50.162])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 63S7PTlA490896;
-	Tue, 28 Apr 2026 02:25:29 -0500
-Message-ID: <29485742-6e49-482e-b73d-228295daaeec@ti.com>
-Date: Tue, 28 Apr 2026 12:55:28 +0530
+ 2026 07:49:21 +0000
+Received: from AM0PR04MB5220.eurprd04.prod.outlook.com
+ ([fe80::cbbc:93fd:f7b0:76e5]) by AM0PR04MB5220.eurprd04.prod.outlook.com
+ ([fe80::cbbc:93fd:f7b0:76e5%4]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
+ 07:49:20 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	bhelgaas@google.com,
+	frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] Add root port reset to support link recovery
+Date: Tue, 28 Apr 2026 15:50:27 +0800
+Message-Id: <20260428075030.1626440-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0017.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::10) To AM0PR04MB5220.eurprd04.prod.outlook.com
+ (2603:10a6:208:c2::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-	"Mathieu Poirier" <mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>,
-	"Sascha Hauer" <s.hauer@pengutronix.de>
-CC: Shuah Khan <skhan@linuxfoundation.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
-	<peng.fan@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>
-References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
- <20260422212849.1240591-4-shenwei.wang@nxp.com>
- <22fb5fac-2568-42be-a7e3-7e89d0017eb3@ti.com>
- <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Beleswar Prasad Padhi <b-padhi@ti.com>
-In-Reply-To: <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|SA1PR10MB5823:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c8ddfbc-3b63-40b7-833c-08dea4f759b3
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5220:EE_|VI0PR04MB11024:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7957cbf-196b-4f45-f3c3-08dea4faa80d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|7416014|1800799024|82310400026|18096099003|56012099003|18002099003|22082099003|921020;
+	BCL:0;ARA:13230040|7416014|366016|376014|19092799006|1800799024|52116014|56012099003|18002099003|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	VD0qqZ7wE0UfNhfPiqXa0Yyo7rgipeIwN1MMqcwssWpU3VuOWLmt1eWs9lQ9dn69j/WyJ0vzXo7iIViEuGlY+e0h90etRk4Kd97rJB1Oo7IG6Cfj86O+KPWn7Mq4LKZXiOI+dELlm+NR3vn46c11LNbgwEqKJjmhGKOp3L4z7fdEdzkgQuQJZ4ca4gOUCNPl/JrmUKmO6fYYGUzrdr0nQTzUo8zt7IB/DUFwPoRphbzrHqsVDuk1ugXtZ8m6ZUe9YS6rJjY7lH0Y1esldBQlaZEA1bxjj4dmW7RUThHDS3Bl8mldS5Q4d9MMqkqhZyBw82jTUE5Pv46fcl7Ciw8NaPcXbIIzSWsa9q4puh62b8v59JAan/QWQM3PJxCRJoJW4nKy8qKiWcNnmMxHGigWEwJ2cuiO0AkO9TW3VSfm53yepAnsXF5TYaaSZXPhEnw+iSPB2CS9E5IAiY/N5OBOr6ClWUq4EaPeQ5pbMr6PkXZE5sPbVVQgOByhhphAcGWVQ1/y2/cTHs/ufneepbtDeRkEHvdlIr5CD3iJhHcbLwPirXu00BsjIzf79sJh8ENnkG2viO8OdcKVFp7uyiihmtJ/D5YWbngQaK/y/es3LR9jtz/l4buprUQlEuPO/QUFjkFpQ/jdoeMvRO4/2pEPg5CoSJNhkfsZSdrGjoFkCbcs0EXM2WS4W5bdpWgSrR/pLwUGUMDdJViFWPJLHJYKOANZtpdzWrruQQ1EGn0ULdWvIsw0x5OfMa8OViLy1q6hpE2Jdfp8n1BEIt0zyZtnRIkzZVsgIbXcopTmlF9/Mii+BPN7TEOoQao1Fttnvn9Z
+	RKOoJP3Ihxewdo1Apg4sYIDDk2VOu+gaQLnW2NU4Cs8mgeYmt7ALBdD6ifwNS/Y8wIuDRKRskjpAWmL7DR2fn665MP9cZUNPsw8dJwyw3MUjfK0+h/QOl2DQFHSjB3gnCoFPg4m4QVckY3SrciODky2U2vKysHncMIYfOdxjzGbk4iom94lMmaQ9oGaF0QrRi8yoHijnZIF5g6mLgna0XlwQhkWgs+Uj0kRZYEJ/TsCB3dGc1gQ084t/GUTmwhtMMx6SF2p4Z5t3tUG5lIVnXTr8OnqJG6xA+Bi8G1iHHum9bByaJgwyKZL4OpCoPRngNviUexXtlM+1u2lnqM7Gfq0a0xXCoJfUmsdgzy3EtCOXy3R6IPC4SQzsuRSM2Iv6UOkiZ4o/fezsJcaE2xzwh9GS9ocfzeomFn9Ehn6lAmdQg+2VxyWhJqRykU34PKJFl7LAmuEULKGgYeSiwCrFUeVR20q93HTwmZ+wVhlli/OaiYWLg4nTo1d26EIWLhiXoDec+76Hzod1kxKtFDGFA7PW2ymoz0ri/9WsIHDiX3KRFv0q3973+IiPHrBgbUnXTe2ZykTlGh47DjqUNqfNHa0/eIdUVJNz/Rj+HCJ7zI9qIU+B6iiPV+Td5uyVQ6EAZ5doynfxHrJyDiFGVHLg3cIeIokQzJGzjGIzwaO6q1pq8nQagGw6Q/x7QeSv16uGZtmyBDlfISm74lngoYWowMgI34PvbeSu6Yvm1gCsT/KKw3pT3ME7NXBNAWp3h7lfg07Sr8LOtrwUS130OYouYadnCgEWBcuWD79hUFIZdFaSd2M4hwhEjHUS1L3x70Yz
 X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(1800799024)(82310400026)(18096099003)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5220.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(1800799024)(52116014)(56012099003)(18002099003)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	KtEklt5Glk8w7fwe9Onv2y5hZKccaw9lvxBBzrIPls3ZnHjXZoQ/oU/JjDwhqkqfk4JeIxXUAG/LlFk/OcYdPATyafn6NOnEjLz3FYV4d/n9G3pTavDh5wVOnSjQDNkeWEpybZCEn8PIsTs1VGhUcuEFJVtx6UiKmPGYC5jtsmsGtfSaTYryLORJdkQe6gVcb9lJd3qCUO0EARyyinWW4OCscwSWWBONzqLyPxIRnWFJRrTtP/gCeutJIlNJPbQr/xcJzn8lyFySWjeVLoafr9O9hU+pRPYpbuWQ/bP5PeC33iFkVqNvtcbIkZY7DSShnEhT7/Lk/EglV8/EiUGovSVVYsy/QEXCe9jOgNglEuk//TnDpBf4XX7nldrGcJSpikLJM4Ht5E4vMZH2AOgtVaFssc3lq9ZZ+1XpaTd/U5ibsT9j87Y/W85jjsI+W9zJ
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 07:25:40.1266
+	=?us-ascii?Q?kGZxfR4FDWotBT38W1ahd8PT3r+s6FZ5a+q+nKwc8100UrWN6GySyXOL2pNt?=
+ =?us-ascii?Q?H/7DAEtM8D/wmoYbEmf1e97TAs8YuLrdEexymp4QxzIQ91tWHp1fjLOIXfS+?=
+ =?us-ascii?Q?g08dnNoECtOMPqUS2TQS/gd43n5RHLNV7dlQJd0lF+vDxZdSr1fXmDWHOEF8?=
+ =?us-ascii?Q?klRs+t1pXaPnQ0ua1kv2+LutcNMKDcQy27bVnAQovPQuPgJz/66xWouCGY3M?=
+ =?us-ascii?Q?zA5nmGQ5LZh77MOnWxqtRQIu8OMYPexGzhOdPO6gXjfxXKQ/etHDjfdAhbO3?=
+ =?us-ascii?Q?34jI2HxY3ee8/VS3FONY2R7mlPx5BgkTE/mhUQuoKK9qQhRcHjpQfzf1/7AH?=
+ =?us-ascii?Q?8U20jSjX052tQ1sFNwJ1gQRd/NcDeo2nBj6OtNGFJdKf2bazkafHxDVABh47?=
+ =?us-ascii?Q?a6Wxpyx7BBoL0NGvScsFXqpG+EZ0zEQiblxTulJpVdBGl9Ipu7lMiSJ22Jct?=
+ =?us-ascii?Q?qa/I/9WyhYLNhu7wAUzHChfwOeF3ZUyfbwXqFHa17b2GPNhycjD5BUwmRlkO?=
+ =?us-ascii?Q?aiacK73BWtIB9/mAJ5JrUzFNxodwbpDL6f/IWWsBm9VOyfzKQQwxgTKwVCF0?=
+ =?us-ascii?Q?bV6jJq8plVl1J/T37ygDvmYsFuFkb15p0ovLx9Clx/2qdPdIABWsilx+jgK5?=
+ =?us-ascii?Q?ffbNVW+cG3ynRO2RSxFSw841Nv755YlKm2QhbYnYowTOGrLffjzMAF6ugD/u?=
+ =?us-ascii?Q?WwwuQ0jcci1fDbrWB4lWIh2zayr0/Z4pX098L1qQwnwboUjMmk6MZPQ9U+Hg?=
+ =?us-ascii?Q?TbgG4pKYpGPCEK9e8OUqMwl2xQxaTrB7PlF4HTV7b3a8bkISZ4KP+8LdLOAg?=
+ =?us-ascii?Q?LhZ5wfuXqPuLILS24TALiiaEjbZqH4XN5Q+K1fbsIWBPseWcObL9fAdO1+A+?=
+ =?us-ascii?Q?Jf6BS9oGF+gavslw8G7drx/ODWCqMTEfdqGbhtcJFwuvdQPMNuzfBlrLCC6/?=
+ =?us-ascii?Q?23NDpGjSfn5j/fJixWNbU1y5cKb249XHN6+o5zN+zSrEAi8CtQvEtUmxMEBl?=
+ =?us-ascii?Q?FgWwnwsTXw49DfCn/KDWcwbbfEu8Q9z0p0GnbpqwV4ob2BsxVWVxBybzOFEm?=
+ =?us-ascii?Q?7hkCSbD5qMJqzauyCV+02SClR83aXLdQCa4zUDANJxDub2IxOASpLwKgVtCc?=
+ =?us-ascii?Q?N7dxCIRHk/sUcKw7Nk23Op/3zitQ8mtkRCbloEuGY8PbmlsnOOolyRTf3ePS?=
+ =?us-ascii?Q?R5y1f3p2CekURZA4RvLACyEqeQlgPg83KK/uGuysqLn5AS7PewmzfgIz1Zz0?=
+ =?us-ascii?Q?2ZIfk/lmIn7QSonPpzRhQP2qjTFov8JI5T1jIOy7lWmvrmRZadp/VJWUCVe/?=
+ =?us-ascii?Q?z9GLJqNniKqZWYJR9uSxjbQ45UCKNTooB5qOvQdD1rMiDn5aQ+3kxGRIw4ty?=
+ =?us-ascii?Q?L0sfhXTKFoJyGA5Aw59h1botZ/oJ/rwGxkfDBuqypil8Cm+IfGysrDL4SnVn?=
+ =?us-ascii?Q?qHaw9RPsB+z3ylH0Pl5Kpv/mn/i2fN6HFabYgvc4CEOG/fQiYv1WrTF1dbfR?=
+ =?us-ascii?Q?cUAR/fWX6uHttAtxXuJpoNuOvzaepz5DSQZpwkgtytow59B59Yc5iDB9pyR7?=
+ =?us-ascii?Q?T3U2mbzFP9wPBeJKvVqgAlnPAo/9BNEXVAg1MvzU+HhijSVqC30YFp/+D6c6?=
+ =?us-ascii?Q?b+ouHxSeRQgNwaYRx/O1IcuPw5b79OE5sFugC9vUt0VSxc0JMkOVfzR/ii5Q?=
+ =?us-ascii?Q?ReFzPQVmTALwhQAapQIfvSIq/YcgWekpd0GSJX9DvYD8TKgG6CDPdHF43sfL?=
+ =?us-ascii?Q?fPZLseFKiA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7957cbf-196b-4f45-f3c3-08dea4faa80d
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5220.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 07:49:20.9068
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c8ddfbc-3b63-40b7-833c-08dea4f759b3
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001508.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5823
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v0Zvl+Bz9r7nBAS4IsS5fbpXeyq0YFI/vOCVSmSjpRimmsXts5xdtGaZjD3KuN/b8RunA5cpM6GyYtF0YRd1ZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11024
 
+Based on the following patch-set[1] issued by Mani.
+Add support for resetting the Root Port for i.MX PCIe to enable link recovery.
 
-On 28/04/26 00:53, Shenwei Wang wrote:
-[...]
->>> +
->>> +struct rpmsg_gpio_packet {
->>> +     u8 type;        /* Message type */
->>> +     u8 cmd;         /* Command code */
->>> +     u8 port_idx;
->>> +     u8 line;
->>> +     u8 val1;
->>> +     u8 val2;
->>> +};
->>
->> Could you please document the fields in these structs (and the below ones too)?
->> From the code, it looks like while sending a message from Linux to Firmware; val1
->> and val2 are used to describe the values to set. Whereas while receiving a
->> response, val1 represents a possible error code, and val2 represents the actual
->> message of get type queries. If that is so, you might want to change the variable
->> names to be more descriptive and also use a union.
->>
-> The fields in the two structs are fairly self-explanatory. Do we really need the additional comments?
+[1] [v7,0/4] PCI: Add support for resetting the Root Ports in a platform specific way
 
+PCIe links can go down due to various unexpected circumstances. This patch series
+adds root port reset support for link recovery on i.MX PCIe controllers when the
+optional "intr" interrupt is present.
 
-val1 and val2 sounded arbitrary, that's all. If we are moving away from
-that, then there is no need :)
+When a link down event is detected, the root port reset uninitializes and
+reinitializes the PCIe controller, then restarts the PCIe link.
 
-[...]
+On i.MX95 platforms, link events and PME share the same interrupt line.
+Link event interrupts cannot use only an IRQ thread handler because the PME
+driver uses request_irq() to bind the PME interrupt directly with only the
+IRQF_SHARED flag set.
 
->
->>> +     void *channel_devices[MAX_PORT_PER_CHANNEL];
->>
->> So this is technically a rpmsg endpoint (struct rpmsg_endpoint) without naming it
->> "endpoint". Every rpmsg endpoint has a reference to its parent rpmsg channel
->> (struct rpmsg_device) which represents the same information here. So we should
->> use the framework standard here.
->>
-> Yes, agree to use "endpoint_devices".
+To address this, we register one handler with IRQF_SHARED for link event
+interrupts and manipulate the enable bits of link events to ensure the same
+interrupt source is triggered only once at a time.
 
+Additionally, this series adds 'intr', 'aer', and 'pme' interrupt entries to
+the i.MX6Q PCIe binding to support PCIe event-based interrupts for general
+controller events, Advanced Error Reporting, and Power Management Events
+respectively.
 
-I did not mean to say to just change the variable name from
-"channel_devices" to "endpoint_devices". Infact you would not need to
-have this field & struct anymore.
+Changes in v2:
+- Constrain the new added three interrupt entries to be valid only for the
+i.MX95 variant using conditional schemas
 
-Pseudo-code:
-1. Add a 'struct rpmsg_endpoint *ept' field to struct rpmsg_gpio_port
-    to maintain the ept to port idx map.
+[PATCH v2 1/3] dt-bindings: PCI: imx6q-pcie: Add intr, aer and pme
+[PATCH v2 2/3] arm64: dts: imx95: Add dma, intr, aer and pme
+[PATCH v2 3/3] PCI: imx6: Add root port reset to support link
 
-2. Call port->ept = rpmsg_create_ept(rpdev,
-                                                            rpmsg_gpio_channel_callback,
-                                                            port, {rpdev.id.name,
-                                                            RPMSG_ADDR_ANY,
-                                                            RPMSG_ADDR_ANY})
-    from rpmsg_gpiochip_register().
-
-3. Send msgs from local ept in rpmsg_gpio_send_message() by:
-    rpmsg_send(port->ept, msg, sizeof(*msg));
-
-4. Get the port info in rpmsg_gpio_channel_callback() by:
-    struct rpmsg_gpio_port *port = priv;
-
-Which also eliminates the need for struct rpdev_drvdata as you can just
-do rpmsg_get_rproc_node_name(rpdev) from rpmsg_gpiochip_register().
-
-
->
->> This also allows for dynamic creation and deletion of ports too! (if/when the
->> firmware supports it)
->>
->> Which means at port init time, we should make a call to
->> rpmsg_create_ept() for each port tying the same callback
->> rpmsg_gpio_channel_callback(). And based on the 'u32 src', we could identify the
->> appropriate gpio port in the callback.
->>
-
-[...]
->>
->>> +
->>> +     girq = &gc->irq;
->>> +     gpio_irq_chip_set_chip(girq, &gpio_rpmsg_irq_chip);
->>> +     girq->parent_handler = NULL;
->>> +     girq->num_parents = 0;
->>> +     girq->parents = NULL;
->>> +     girq->chip->name = devm_kasprintf(&rpdev->dev, GFP_KERNEL, "%s-
->> gpio%d",
->>> +                                       drvdata->rproc_name,
->>> + port->idx);
->>
->> We could just re-use gc->label here...
-> We also want to include the remoteproc name (for example, remoteproc-cm33-gpio0), rather than just gpio0.
-
-
-Isn't it also included in the gc->label field?
-
-gc->label = devm_kasprintf(&rpdev->dev, GFP_KERNEL, "%s-gpio%d",
-+                   drvdata->rproc_name, port->idx);
-
-[...]
-
->>> +}
->>> +
->>> +static int rpmsg_gpio_channel_probe(struct rpmsg_device *rpdev) {
->>> +     struct device *dev = &rpdev->dev;
->>> +     struct rpdev_drvdata *drvdata;
->>> +     struct device_node *np;
->>> +     int ret = -ENODEV;
->>> +
->>> +     if (!dev->of_node) {
->>> +             np = rpmsg_get_channel_ofnode(rpdev, rpdev->id.name);
->>> +             if (np) {
->>> +                     dev->of_node = np;
->>> +                     set_primary_fwnode(dev, of_fwnode_handle(np));
->>> +             }
->>> +             return -EPROBE_DEFER;
->>
->> I know this was asked in the v10 version also. But I don't think the answer is
->> sufficient. Should we not continue the intialization of drvdata etc if np != 0? Why
->> return a deferred probe, and let the kernel come back to it again to do the same
->> stuff with extra latency?
->>
->> We could just do:
->> if (!np) return -EPROBE_DEFER;
->> else {everything_else};
->>
-> After configuring dev->of_node, it would be better to restart the driver probe process. 
-> This ensures that all required resources, such as pinctrl, clocks, and power domains, are 
-> properly set up if they are specified in the device node, before the probe function is invoked.
-
-
-Hmm that makes sense to me... Thanks!
-
-Thanks,
-Beleswar
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml |  21 ++++++++++++++++
+arch/arm64/boot/dts/freescale/imx95.dtsi                  |  16 +++++++++---
+drivers/pci/controller/dwc/pci-imx6.c                     | 123 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+3 files changed, 156 insertions(+), 4 deletions(-)
 
