@@ -1,73 +1,68 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013033.outbound.protection.outlook.com [52.101.83.33])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011048.outbound.protection.outlook.com [40.107.130.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B49E38F235
-	for <imx@lists.linux.dev>; Wed, 29 Apr 2026 06:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D966539BFE7
+	for <imx@lists.linux.dev>; Wed, 29 Apr 2026 06:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777445125; cv=fail; b=UqlF2pgxcIcofGiR2DiEyIOntKoOMobU7CBmfYzQDHQTLFw0xSIexHiPB5p77KHifyrcKolIWzZs5f4bcU5lw0ZH1j7Wql2qgWwL8BMISo2Ftsa2cwYujCB3TvdYomjEH9JhSlTf/fkjiFNkXshE/sx1vjChFwduxBo1tncv/xY=
+	t=1777445807; cv=fail; b=rS68JuUXfTn+0kJXrLUg5pxTEt6AeeoEbSn5FpqaqHyLdWxWYJTmV3U8T87O4aiJT1IN3P6yuMYi/opuNM1Fok1zQtOM+2k8WJu8FIRCyuN1ZFT/Izoq50QVMhdKdBK6Kd1HBB7ah3ed/hvPH23SIazZSZErk1DvJnqdQ9m9+AE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777445125; c=relaxed/simple;
-	bh=TgXDH2O5sRpHnEO22nWxwD4eT0/clAcootr4caIabNc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sTwfpOc8Bvicn6dLrBsaZsrRpAvZZoSvRuLwVGzSH1pOwXQaKhf2JSjEM98aA8Dq3AfdVCd6ARdPYnMTI+flnhTmfEGUuQISdPJrkBXhMZ57+2bB03dxkDIFQk6rMBdyzWpbqMnB+JZWXRNfnFiOIsPof/iEkJFXOcXJvTSO8eY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ricYTNhF; arc=fail smtp.client-ip=52.101.83.33
+	s=arc-20240116; t=1777445807; c=relaxed/simple;
+	bh=2iJP1eNpwZqaEjWdq+sezLfH+NQ2SCzCbBsoDeZWX9I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EeVzbe2rPJISJrch9QF+tyi1hYU3Wfj0wv2KOl6LrEyg+4metKj0sUFuELQrdsLaJcBW0WJTLlPIrlITiHH8vSl6tW7l3YlVRu+QUnsuOG94atQi7l4mxZ0v7mygISiKoX8gkX8Fgll4uMpl7VhXt74S0X0aPuVQEDKtDHxbH0w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aMDaH/Bo; arc=fail smtp.client-ip=40.107.130.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ricYTNhF"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aMDaH/Bo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=guTjuYvNnIO4iGq+B7yOU58x05X+LJxbOcDK4yrN1o/MCh885nd2PVLSeqCAilqXelTWVOCdzqKVBy2UGRtCEvS+fU7nXYM0rTWo023wgigvFzhOTQMXT1RwqcUEOg0MTpnddfV7BNBiN4mLI0erAtFT6juuQXGACyL6n+nPOXb9zeEsKXN1+WaGG1SU41EPjy166GRjMZxJKAwFGuvR0Kb78+YHk9huAtLYM5UuFxdz5YH3BlrFEOA545p5RljrV2Pf2HgGLcLvUir5jCWPeA7B9RPHg7nlWxPPxMAgNpq3PB5akigLShkBlBPOs0Izl080pn8QFjmIn4pRPFgAUA==
+ b=i5cRy0+l96Z7uy4ILJf2s/VCcRtSJqVaBBLlgsTVff8JthAW3Dh/hIap2oKLRZJmjHXM3+dahriHQegazt/oQvanDbI6YTx5h8pf0wvptYULLYCYAlBZRuJPNOyVNgO/GExtyTwj24YscbCnbD767eR7Lrrkv1QN2GTapZpw3AGvwLaus21oTk4d0j0ldC50NE8Plu9h9rmMN0VGf3P+T3qrgm3syt0927clQDz4EOBeDsBAGD+O1jONYkFN03xk6y9+CMcxDnMKZG3JGGdjkxq0G3kkQewCgRtr3TvdQcj+3gzbmC186GLpcHN7MJIEBfSgNCcUdZfwrUg66t+sRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VXfN6Ld3/BqKDYQJPrG014ts+/SrA4APKLDba95wrvc=;
- b=oe5FyTZ5nCve8k4Q+fYgey+3Ii9y1cNBkUU2xqoPGniu4YmyR8ZDKX9+W10ycwOWp8v4noEaPKASc+14rtkoKLYFlZzfXei0ssw1VK1hcFBcSDGt6u3e9WwoQabBqS0iPsQlff6GJ2YcqfUogeNOaKhnlxnqqSpNF3xtgGza243AWHL0SmhHNxfKjtv/a9U3r0BafyQUe4ouzKkSctgbuyK2DE+VndbMHciwnDGhyxq2T4rk+uN0Fqro71ren1IX5vDSnAJ0EEml3HtT5kdDj/7maCrvXgPdtuLvJIQ77+Sx6WkDADPzqqx3ZY930WVIqqVZe/GQlDB1rQeoGM50+w==
+ bh=NdyOmgJzatYv2ssRjQxecJAiwOSxt4qP/WMKA70BIOk=;
+ b=TR8twUQPTEBtkXbPIY6R6IaOEFh2xA4YuJOMH2s0LQj87E+g9mGpUw0x40rXco70QMtZZn8XPGYxElUrze+QLw7saWU0gQNZ6xtxICr429CNq74TNbaxNA0XycNRHjY+i047K7c2Htfs0En5mhrxr1J0zwU7i3rTbClB1x1kgOEFGRh5Pr+hQmOpFpMYQYPAnMSifh9oSWMdenz9T5tpODkALIBXUNA2SasZOovzrGMD2kDbcknDmcqggOm/ZTqM6hf/W3dw8DhbXktDnJpAafbHsIpHOQdT7sau9q7xSt1stYlj5CLT9mfyFTHXOv2JrDdHlLC8sAkEyE86Ke9fWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VXfN6Ld3/BqKDYQJPrG014ts+/SrA4APKLDba95wrvc=;
- b=ricYTNhFaOvK4xYCwt4XvTA5UJ/9u4qzGhR6o8mFpfO2frENAZpxr11tKBtN9d+QTYwihjQY+9WfZzeylXuZ7SL0tlZpbWqzfRVRF4LLuNzBVIYueKj4RAbzMmcdrDVYH1EsnNTLrSHLRZuTjUEJPN29ijoUDiWFAQoawo6+/k3LzYl6G0VnMc20P/Uc52DeBS6aFvmNqMec7MvxAmDhtZqsaIfrAdsBTqSo/9jTGRAkQ70q+FPmiTKWMq5/TY7lnQFQeqKDSPcu6GqjG7O+BkxF0d8Z2AHVbva5wGEI3zzeq1y9nhFhCJRkKc9ZJ6lPzyNgBWnDVDSYCaNtdAPKxg==
+ bh=NdyOmgJzatYv2ssRjQxecJAiwOSxt4qP/WMKA70BIOk=;
+ b=aMDaH/BoVM9g0AYKqVUs6wXuMzOeGPTFFhUB8yfj8vjRy7m3dBWGpOPxLChd8a5ClumcJ4+5AgmdmUsN9tirYij6ZOiv/abIvLjO8w/qysJa1K/v1ehIsYeiKKeQ4pJr2JV1wMpuE54Uw/IO0By8MPN4oyrJvFoufd9sNkb+0ETBRrBxtydMOQt/nOgDM7om3ONVKZ2fc8rz8qAsQejMFtGDaaypXL9MJ49WriHwnP/tNgBab0LwCiSdXmv56jOM8pxjHmpIx6CRBp9+ONN3GL5WDow/ffNElZUTw8w9j7cQy3+oqxfua6DdaoJzI+zd81hJ+hwBcEn4ML0EhEgETw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
- by AM9PR04MB8652.eurprd04.prod.outlook.com (2603:10a6:20b:43f::21) with
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by GV2PR04MB11977.eurprd04.prod.outlook.com (2603:10a6:150:2f0::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.19; Wed, 29 Apr
- 2026 06:45:18 +0000
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a%5]) with mapi id 15.20.9846.025; Wed, 29 Apr 2026
- 06:45:18 +0000
-From: florin.leotescu@oss.nxp.com
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com,
-	viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	festevam@gmail.com,
-	Florin Leotescu <florin.leotescu@nxp.com>
-Subject: [PATCH v7 3/3] hwmon: emc2305: Support configurable fan PWM at shutdown
-Date: Wed, 29 Apr 2026 09:59:55 +0300
-Message-Id: <20260429065955.2113012-4-florin.leotescu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260429065955.2113012-1-florin.leotescu@oss.nxp.com>
-References: <20260429065955.2113012-1-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0184.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9f::16) To DU7PR04MB11163.eurprd04.prod.outlook.com
- (2603:10a6:10:5b3::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Wed, 29 Apr
+ 2026 06:56:38 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9846.025; Wed, 29 Apr 2026
+ 06:56:38 +0000
+Message-ID: <4139a8fe-4e82-4700-b372-960915fd1b34@oss.nxp.com>
+Date: Wed, 29 Apr 2026 09:59:51 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] remoteproc: add Cortex-A Core remoteproc support
+ on i.MX platforms
+To: Jiafei Pan <Jiafei.Pan@nxp.com>, andersson@kernel.org,
+ mathieu.poirier@linaro.org, peng.fan@nxp.com, Frank.Li@nxp.com,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260429031047.30893-1-Jiafei.Pan@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260429031047.30893-1-Jiafei.Pan@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0434.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d1::7) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,176 +71,81 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|AM9PR04MB8652:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dc34a27-974c-442a-a4f8-08dea5bae089
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|GV2PR04MB11977:EE_
+X-MS-Office365-Filtering-Correlation-Id: a06aa44b-677c-4c01-5ecc-08dea5bc75c1
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|376014|1800799024|56012099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|366016|19092799006|1800799024|18002099003|22082099003|56012099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	FC7oxNKbc0mryErbB9cTDrGx2qq7VlsWpDRdTZX5s4p85PVBe3YmlSSw4LHM209U55ksecVi+VNIqjcBiP6isV3U2pASLKT5IrR1k4roKvXZHR5JAJezd9RAjJhwKHDc31Wngr9uO9tosvpMo78APh5BDmSOmFHi4PLmxgNwLcFvYrHdbt9uvP6y5R5vjoHSR4DBufC8711LNi1OhCfeY73zJSCJJx+gbipGToq9kbXjWWGsEt77S/L852EZadj5kOQnl7/v7YmHzf53+NxtvQeFa72gHtxvtLLkwiEfISH3vnS7bBEB7QAGx6x/bybE4NZE3Q0gP/tl0ZgjDI/5DHUmU8eFoe/dxQKNdIUOIdhEIww2N9r5YVq/VHnJKb1XPQ5UT1Smn78I+5bHTZkuD6difqP3HwDO61731PoOqZ+vLel6W+FCFw3uEyZHPH+NbfJHlnEGUZ1sFoaq7OfdzDSYsU1DC5oIitg/pnyHFgn/eIL7hXEf+vPS74mj5okKzNPCjaTUhdnTw2fQgDCuGTfekaqbYePVQ55JYKWDPe+LKZnHtAlhnZSHY6cN/2WVeGT96uPOFOEZz3JNrH6g747Kj/EsKr5A74yde28hRBjRHEQVVeRbfrbHrbgUaUEXKLluks/fuFQdMFQqglQdrOhoVwiNS2uwZJlWjLD3At9GnEWaHhhQpmZ/KJLf0uzXsS8RdujljK3aWz46guO6aIbvBb4h7ow5dVDejNIdcv8=
+	/J98WdqszLbYA9eQ8oyaotA50cj865LTcBODpbGopnNvmA457HigrjYBIbCnmDWeRMzmg8QsL4jfZDPpZBPZF3U8bLqTMv2zMkq7ApjMJlXIeIordsjqwVsOBCJL81HKFA6GRi4ke/OrxwxbZzWcCbqKLwutl/HLNYR9atFnhMgLKZwNDq+7Fklyag0pwqsfg4vVt2VI1pGdaXCeDBJmeT8aXlbg7qNYuG7iiDFLw7nUZzVvpWU4h1TN+gQzzgBnjE3p7NxOdAA9SykxHQU+p+eS1nU05p2639jXM0sq3xLU0WM5q+PGdSGXwSl1+OA+DECw22F85teypixiDy2lIk2Pc+phIUtl8qMpKYr+cqhnfONAmm755e0S0u0tVRPyAqk4zBQkAzQa2jkpGYE98htD63P4YD/whVi+ZrSSnoJPn64G171Yaq2TkZlrslCiYwAsxj+2Wc94ZRIXRvxlyh4rQBkBwGSKf4x2zVpsohmQD/US9g+J8R1b/nEE6Xe27BQr4Tt5nlkiYX6fD4tAQUzc2aGBLFPRNK8PVIv/5d9cV+xZY6BzAsIHdznNkD2+Yqo3Yb0FTk8j/CxM+NtSllZXlu5B6xE/vThFBWkvDPnxJWAxuvqw2OYdhTSpQ76Rhgn2ZvLm9wopn4CrgynIlwX4sVCCAhQqKD3BL3i5Owubfx/Xn9JjousrQCc4RpLTGz0pmNSZj11AXY7aX+YAcy7MC3Ja4/QU0KQGnF9++tNxIo4Qf+NucSu71oyMX7OhoPdAPspgoouNb7XwDMmo6Q==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(19092799006)(1800799024)(18002099003)(22082099003)(56012099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?zFn6hrQ1HBT10A3mX1IaGLpg6pM408uDd9d6fJy2b6dG41hJecbXRbTZ5O?=
- =?iso-8859-1?Q?3wiy8ptzDNKDhwS3RkFxvSyXInqRLCot0wbnC1KoJF/aYv1OgPN9ilYUsR?=
- =?iso-8859-1?Q?OBlL+nhNFp7z3Kgj98+oR3Ac0jrZgi926QvzgzDUkrAk4jyhH4gXdeUNjC?=
- =?iso-8859-1?Q?wA3vRAu0LdT1kTE2XOH8gISQTOIRB4VF3NjXZ4RONSJHKcChkL/fvSjhTh?=
- =?iso-8859-1?Q?oLoZK30uO2ququPjgVsBlQfpFds7sPjBLgagUbja7mCOb1LjwsMxX5l1U5?=
- =?iso-8859-1?Q?QKk+oHnB9CKF5rAt+SxW/+KA+FzodUK0Qsbj/stKUfxbBmrvLCi+bfulg8?=
- =?iso-8859-1?Q?HtE3PcxidF/poTsZ5gEr5sQBGL1iTZWuS5MKpFprE9yUKOpqW23DJR/7f0?=
- =?iso-8859-1?Q?8tq+0yP6iNbVi+peVUzyLkZyDNpasQ250yQVHtCUHJU10GtsiCwL7lZf8u?=
- =?iso-8859-1?Q?tVeVdyVg0lXoLMsl2NgN0gd0AG4B4zQ9gfNxra0X91afEhp0LL9N6WG8O2?=
- =?iso-8859-1?Q?wxQW9FK9ehAdrQunhUpicikvCRHx5GKFSUOtGeJlL9WjIKEc7UH3cTcmVj?=
- =?iso-8859-1?Q?zshFY7t8fiRGoyu/jLfHINNjn5Nnpv8RJVc+A0ljabxg9r+BmLXVtT57GK?=
- =?iso-8859-1?Q?lwY+tlFMSm/y8DR604PlFFPxaomIF8KigPBIUlFDy50Y5fiLjLmljHjru5?=
- =?iso-8859-1?Q?22jl0gCjawpBFMIyPCyGAtuSntBgP/h9ZB9Qh8XbODc/1rEsaZPhtYugwy?=
- =?iso-8859-1?Q?MBp9H6JdvjNEKg96DJE60SELsfFL+cxGAnyF4Nccnrp3qgjkLjIIFh9WeT?=
- =?iso-8859-1?Q?pgJlrPvQPOqtV7aJuA7H1fOY/XGnSghJvcsnc4DlrFfT4XH1XeUrqtlfoW?=
- =?iso-8859-1?Q?9jT6LKLTv8eE2+eBAQBozf3ZMsCxfdwUgVBDs2C3MaIGYNlL81+6dJ3mDe?=
- =?iso-8859-1?Q?TXAfPSe6jmeFiQYQA27P+9rClzIwfbfG2qw3JuGC05HCQAI6rHnVAEX/gh?=
- =?iso-8859-1?Q?5ud0P7dOQmPo6Myb6xmBaHZVtsn/pl6pcXp+ttGDfTGLCeUsSo8WL+5Ua3?=
- =?iso-8859-1?Q?goSg5VgXVlwS41sPuxQ+xE0O7q9VzvC712il7rCLSjo4l5Ja+0lKeLpnnI?=
- =?iso-8859-1?Q?o0T3u1f7m4k2WyPeNDVcQve51sRha0iPWAnolu3VJ1yKEnYr2YNLaTd9zP?=
- =?iso-8859-1?Q?3dWcRgzTTZ6sUsHHb1t8QF+pZbn+78c1rFhAt2UvwA50TguiSOmkPESaMz?=
- =?iso-8859-1?Q?/fmv+aNfHslZNUk0ku9T+uYTt/m8gxlJ8lDXSl9NT8mmeq5G4RpQtA2Mzt?=
- =?iso-8859-1?Q?Xvb8WIQoq8GFHoCG3sETx4raB5HmNiqs7zfZprUFoX1Wp1QtRWPPUtOasz?=
- =?iso-8859-1?Q?ywEk95+DCWPJ4D7RvhZXoAbvy45GHwCmHfbTNQkVgs8WIVj7TPkwwrQlWE?=
- =?iso-8859-1?Q?6QOuARdC0uMRe/x7MXq2II0xPyKY4+bdXwwEov/EPNdP6xag9Pin/aDJLQ?=
- =?iso-8859-1?Q?e4OvQiWAmPNy7uwSEMAlFhZuKCm3Ar+wx7/GmvEQRpNqWLzDGhMKPqgDMz?=
- =?iso-8859-1?Q?JEmCVeGMmbFTzrdWs8e8cn3zYlo+diiTiyMreqGXhMqqSs3xTsPrCnh1Wc?=
- =?iso-8859-1?Q?ySntRhYnViyFL8S9b4li/i3eJPa5sHpj2VJlLWLVHKpJR9BMK+zKuEqtO/?=
- =?iso-8859-1?Q?I0spFRIKFh094vEr1q38f2H1Orqj5kfJeQpSn8ZHShR/0/v/K3sj6yRof/?=
- =?iso-8859-1?Q?CfrZCC4U1M04wP/MsDKCeBkZ/OL2wPgg/3osVE72H196zmQ+6d1kvbhrbn?=
- =?iso-8859-1?Q?1bclTxAvnA=3D=3D?=
+	=?utf-8?B?T3BoSGEyNGN5VUtlY0pmV0lXVmJzbWd6MEtMcjRFTVlHd1ZRRXZydlJtTWRL?=
+ =?utf-8?B?RG0yY0pFN3dKaVkvU24rQjIzQzUySlUvTFJ3dGkxZmhPR3g4THc2UTlmWS9U?=
+ =?utf-8?B?SDQyOXJUZlVnNldnMW8vOXhxUkdLNDZpTVk1Y0hRSHR1aFVqMzVvQVhrWmti?=
+ =?utf-8?B?NmpHSHJsYUdBeDNZSW5PdHgybmU4Mi9CRWU5RG9XdjlldkY4WmdWbXRpeEVl?=
+ =?utf-8?B?aXphWFgydGRnZWlrV3UweE5HaW9Dem53Q2N2Sm56WlJtaVhBOXpFUHdMUmky?=
+ =?utf-8?B?YmlhK2RTTnFrV1FDaTcvRURZaHowaGdJM01sMGhsSzJFR0JlQ2duN1RvK1hS?=
+ =?utf-8?B?U25RNWNLK240bXRVVDVPNXVqWVBXL3B4ejNqMnJGNHIzdkNxOXFkUTluQTdm?=
+ =?utf-8?B?UXFwNUE3Wnh5dFNEdjhoYWxFM2UwWGJBU0dkNmtrY2JodSthTFVWNTRtclBY?=
+ =?utf-8?B?QS9zWS81eHZJTnh1eVZZUTVQVXByRkI2K0M5RDZSK3pXUCt0Z0V0dHREWjhs?=
+ =?utf-8?B?cGVQZnVyVU9IQ0g4OFlqSmo2WWRqRE1nRm04MzVYYm1IWi9mV21RbEdNS2k4?=
+ =?utf-8?B?ZDhpby9QZ1p0OXh1V21RbTZlMExCbjJXbEEwaitsN25uNGhnaDViVXVKVW90?=
+ =?utf-8?B?STB5dmkxWkRZc01jMnVHdTlpVEwxajd4djZMcWVHbUxxbGRXdUM5OFBhOFpj?=
+ =?utf-8?B?UG9DcHhmN2pVWGVjNWxQd3lnYkNsU0NnV3hZKzRSU1NhM0hRSTAxaHcvU2lp?=
+ =?utf-8?B?cHd3SVV2dlI0QTA1M2lSZlU3ek93K2VKK255a21BUzhURnRZTVlRQlNNV254?=
+ =?utf-8?B?ZHRTU0NhVXdGVHN3cS8yeFBkdzNPRTl5cTZUNmdZSUpZS09jNDQxaWtBUFo5?=
+ =?utf-8?B?N3FPS0s4TzFQMnFiNWQ5VXA3TGk1dDRCclpJWjJ5SlJycUFMS3VyUTlDOW1l?=
+ =?utf-8?B?WndIZ1M5RTBxVkpwSGVoMkJCOEdxNjVtekRUYzUreE9rRzhiMVc0R3hHNEpK?=
+ =?utf-8?B?V2R4d3prRDJQZEpKbkNabDZXZ2RMN0NPL3B1MkhBLzJGOE1SQlZxRTV3MkdS?=
+ =?utf-8?B?TmI0YklueDY3RUJIZHRGM1N5V0pwYkI2WXg0Z0p3djN6TVh1bFVmdkZUa21Y?=
+ =?utf-8?B?ZjNtclplOGNWWEhNdmJGdVNrQWs5S1U3eXoxc0xhZ3pzQzVYa0MxQjE5Mzc3?=
+ =?utf-8?B?R3hoSkJEaVVZbUNaQkIzR21VTHdSckM3VkNZN3d0ZU50czRZYUJTVG5pMGFI?=
+ =?utf-8?B?SXBYeldqSHc1Y2lRQlgvN1ZiWWJsSDBXRnJkL1RRNjlZUmxjc2dWMUMvU1BG?=
+ =?utf-8?B?QkZDS0lnUFhyUXlpWTFnWXNua0pnemRFb3pvelduaVlrdzNQeTBOeU9tVjNB?=
+ =?utf-8?B?QVZDa0JNTlRVWXNaUE1YQXZqWWRhaFF5ZVFCZFh4c2ZQS25iTXMvL2M5WTJR?=
+ =?utf-8?B?OGdGbC91bnZUUWQyZ2RCMDNoTHl5M1duTENsZkFnZm4zOVp2elAwSHkzZW5u?=
+ =?utf-8?B?dGtRRkY0Zi9tNzBFNVlQbHpNbGd1QTJpWndDWnZuMzZwR3ZFelpiTFNSRWFq?=
+ =?utf-8?B?K1lySXBoVzQ5Wjl1dlRIcjZ2ZjZLRkd5UVVSdE5wVEppQkx4LzN1Ym5pQkth?=
+ =?utf-8?B?QjJhcitkTVZUdGR6QWVGazBlUzl5bnF1Q1BZdFdybER5SitoVG4rcWFaTmZB?=
+ =?utf-8?B?cjVGZTlZTTI1M3hiYXRoS1NMeVVMbzhBVTNIYjBhOW13NHhUSTJGcEJoOW1p?=
+ =?utf-8?B?NGZDQkVRV0t5bTRjZUtwZGhEQy9tTFNEbW0wNDRaQmlpSHRuSHZJbXhCS2Jo?=
+ =?utf-8?B?bmJvcm1ST1ZqRDc0SWd0YW9Kd3VXL1p4Q3VWajVJdnNvOUZPMmtyMXF5NmVQ?=
+ =?utf-8?B?UGVOVkVrR2lLaG5RNzloWWhiRTZLZ3dwSS9WUEhxVDhmdytHek82L2xIQ0JU?=
+ =?utf-8?B?am1lMVNFWitZUTdac0x6aFNpRWNMZG9uYXRkUzZFOWdUYU5rWGdYUndtdXhq?=
+ =?utf-8?B?L0tVWEJDMXZaaTE0OWpFdk1oNVpuZENRN0tmUzJnLzM4SnpWb3hlZy9jVytL?=
+ =?utf-8?B?QkZVaXl0NkpIL0N5TENoQndrUm9KUVZUZDhpb200Y1RBeUhVaHhIekp6cHM3?=
+ =?utf-8?B?TXBQTmJDOFc1SEtETlUvTW5GY0tjelV1NnUrbFpvajNGMlJoWXB4dHdpdDNi?=
+ =?utf-8?B?ZVQ5NWlSLzJmMkU5LzdkdFNTaEdFTUxKK3lyeW85djI0WUY2WFBnbmh4ZHow?=
+ =?utf-8?B?QmtZNW4vOXVqSy9pKzFvM0IrdW9SVjFGcVdkeWxFVTBmMWtybk92NU5pY3hH?=
+ =?utf-8?B?MjdOT212MGJLajZET0huT28rbzF4YVFlMDc0b0ppL1A4Vm5BcFladz09?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dc34a27-974c-442a-a4f8-08dea5bae089
-X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a06aa44b-677c-4c01-5ecc-08dea5bc75c1
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 06:45:18.4552
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 06:56:38.3682
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Oa1EsPjE7GI+g06w+9zWF1QPaeh0YYzMUuyAKV0uDPoXF0PkMvk36vyq9tT/wWatftSR4NPhmNH284z9sglFKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8652
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Q7p54kGBjUjcorMJxIre8x5IagIpI+vks6/YxO5H2JZGhMXwujWaRvqK4Iy/WSXizT2RYMJN9HuIsAMos5/hQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11977
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+On 4/29/26 06:10, Jiafei Pan wrote:
+> This patch series is to add remoteproc support on Cortex-A Core of i.MX platforms:
+> 1. Adding dts binding for Cortex-A Core remoteproc
+> 2. Enable Cortex-A Core remoteproc support in remoteproc driver
+> 3. Adding dts example on imx93 platforms.
+> 4. Updating remoteproc driver to use prcoessor name as device node in sys filesystem
+> 
+> Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
 
-Some systems require fans to enter in a defined safe state during system
-shutdown or reboot handoff.
+Thanks Jiafei for the series! As Mathieu pointed out let's do internal review first.
 
-Add support for the optional Device Tree property "fan-shutdown-percent"
-to configure the shutdown PWM duty cycle per fan output.
+@all, please ignore this series.
 
-If the property is present for a fan channel, the driver converts the
-configured percentage value to the corresponding PWM duty cycle and
-applies it during driver shutdown.
-
-If the property is not present, the fan state remains unchanged.
-
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
----
- drivers/hwmon/emc2305.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index f71a0e265924..c5a0b2146478 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -32,6 +32,7 @@
- #define EMC2305_REG_DRIVE_PWM_OUT	0x2b
- #define EMC2305_OPEN_DRAIN		0x0
- #define EMC2305_PUSH_PULL		0x1
-+#define EMC2305_PWM_SHUTDOWN_UNSET      -1
- 
- #define EMC2305_PWM_DUTY2STATE(duty, max_state, pwm_max) \
- 	DIV_ROUND_CLOSEST((duty) * (max_state), (pwm_max))
-@@ -104,6 +105,7 @@ struct emc2305_cdev_data {
-  * @pwm_output_mask: PWM output mask
-  * @pwm_polarity_mask: PWM polarity mask
-  * @pwm_separate: separate PWM settings for every channel
-+ * @pwm_shutdown: Set shutdown PWM.
-  * @pwm_min: array of minimum PWM per channel
-  * @pwm_freq: array of PWM frequency per channel
-  * @cdev_data: array of cooling devices data
-@@ -116,6 +118,7 @@ struct emc2305_data {
- 	u8 pwm_output_mask;
- 	u8 pwm_polarity_mask;
- 	bool pwm_separate;
-+	s16 pwm_shutdown[EMC2305_PWM_MAX];
- 	u8 pwm_min[EMC2305_PWM_MAX];
- 	u16 pwm_freq[EMC2305_PWM_MAX];
- 	struct emc2305_cdev_data cdev_data[EMC2305_PWM_MAX];
-@@ -539,6 +542,7 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
- 				      struct device_node *child,
- 				      struct emc2305_data *data)
- {	u32 ch;
-+	u32 pwm_shutdown_percent;
- 	int ret;
- 	struct of_phandle_args args;
- 
-@@ -585,6 +589,16 @@ static int emc2305_of_parse_pwm_child(struct device *dev,
- 	}
- 
- 	of_node_put(args.np);
-+
-+	ret = of_property_read_u32(child, "fan-shutdown-percent",
-+				   &pwm_shutdown_percent);
-+
-+	if (!ret) {
-+		pwm_shutdown_percent = clamp(pwm_shutdown_percent, 0, 100);
-+		data->pwm_shutdown[ch] =
-+			DIV_ROUND_CLOSEST(pwm_shutdown_percent * EMC2305_FAN_MAX, 100);
-+	}
-+
- 	return 0;
- }
- 
-@@ -638,6 +652,9 @@ static int emc2305_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
- 
-+	for (i = 0; i < EMC2305_PWM_MAX; i++)
-+		data->pwm_shutdown[i] = EMC2305_PWM_SHUTDOWN_UNSET;
-+
- 	pwm_childs = emc2305_probe_childs_from_dt(dev);
- 
- 	pdata = dev_get_platdata(&client->dev);
-@@ -727,6 +744,23 @@ static int emc2305_probe(struct i2c_client *client)
- 	return 0;
- }
- 
-+static void emc2305_shutdown(struct i2c_client *client)
-+{
-+	int i;
-+	int ret;
-+	struct emc2305_data *data = i2c_get_clientdata(client);
-+
-+	for (i = 0; i < data->pwm_num; i++) {
-+		if (data->pwm_shutdown[i] != EMC2305_PWM_SHUTDOWN_UNSET) {
-+			ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i),
-+							data->pwm_shutdown[i]);
-+			if (ret < 0)
-+				dev_warn(&client->dev,
-+					 "Failed to set shutdown PWM for ch %d\n", i);
-+		}
-+	}
-+}
-+
- static const struct of_device_id of_emc2305_match_table[] = {
- 	{ .compatible = "microchip,emc2305", },
- 	{},
-@@ -739,6 +773,7 @@ static struct i2c_driver emc2305_driver = {
- 		.of_match_table = of_emc2305_match_table,
- 	},
- 	.probe = emc2305_probe,
-+	.shutdown = emc2305_shutdown,
- 	.id_table = emc2305_ids,
- };
- 
--- 
-2.34.1
-
+Daniel.
