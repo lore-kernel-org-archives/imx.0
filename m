@@ -1,91 +1,137 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E5B421EE5;
-	Wed, 29 Apr 2026 18:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654B93A961B
+	for <imx@lists.linux.dev>; Wed, 29 Apr 2026 18:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777486930; cv=none; b=EPUVgkLZWESaugZlJmBQZz+E5dWif/6INUdJzsVoBUV0lzhWXnaW8eeFNbGAhHqfgT6LQv/PY4+SA0c51puqadhq3x9bFboE8Qz9xCCVsMvLuRUeo5KiFL1nHKQXNda8pvmr7Xy1CZbX2yzPREdlQoDwMhucONhR8f2znplLDNU=
+	t=1777487395; cv=none; b=tppiqPadagupYIPCpiZ7aOrljLu0/n2CKYDqYU1S+UM8sJpqVBrE95h4uD5SqCOJblS4RICZGwPiujA1jXbh7E/QfNeETSUcbmaip3rQ1AdTQ4sV+v9bC9pWjow0gDkpgpeEBmGPEP1PCj+Ec1M3qZDdcJPz5A042nC1EDakqks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777486930; c=relaxed/simple;
-	bh=A2HWuygo9laZl+MF0ZT85lu9bwwS8oO/uA3OEJNjKOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NBOrlRxhaSzjv5bD2wWx6N3cdeCZ4KjkfKB7qWeni0lAMyfGsR7hZmWjXMPdySfQDv55B1yziM7xJ3qKSzjJfQl3ZIKhHPma7//tc5vHbFEkhNUk+8Ik3ZOSbooItQqibkOhIl16tkL0jiOyLqADtoSNRxn1mbDX7641Gq6Lwi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SQVWa/55; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777487395; c=relaxed/simple;
+	bh=zxSj7HWQqplcThXZA0nSrk5rmztonhayWGc8TPyLzE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fHPvVMRGyoHMcpcwOK4TLxDzZeole10VAdSmJVWAttb6r0z//k9SlABHhEeYgRPSyA96gLEXaXJxj8CmlHz3MllPLH/uHG12BwVcibNrea4hq/v5fg/r8GfBhL1xj8SKl6wApRKg19J4D0oFXexUayHhHUEQIlfqDeQ7z2ybxb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVxKupcn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SQVWa/55"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=z3GtHk/ol4lljLIonjZbUzzf+Kywq4ueWS/Omn2wpWg=; b=SQVWa/55JM8wQBVpqHDNM1xFfS
-	mXU4TJjeNC4nMrKXqeH6Pxpu44WvN93U2Dka+zbZRN6hDJAI/EfQr1KElAYio7tNyxC15K45AcvWc
-	EwYY1ynlGZTtB0O9GYa8BrqxnIE8+zcVB41N3akHQx8P4e4bI+Bb9cqlfks8drQY8Wfc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wI9Xo-000ZDq-JK; Wed, 29 Apr 2026 20:21:56 +0200
-Date: Wed, 29 Apr 2026 20:21:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Padhi, Beleswar" <b-padhi@ti.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <9837070a-f096-4e8f-a83d-efda0570e62a@lunn.ch>
-References: <20260422212849.1240591-4-shenwei.wang@nxp.com>
- <22fb5fac-2568-42be-a7e3-7e89d0017eb3@ti.com>
- <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6412a758-4560-4cf1-a0d0-5b24d1a715f1@lunn.ch>
- <PAXPR04MB9185009A17DFDF3D6C8B44E789362@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6e01e114-e336-4744-b6b4-563ec42e321b@lunn.ch>
- <PAXPR04MB9185A098D894B6A6EBCC13F889372@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <afImuoeHolxGgw3H@p14s>
- <PAXPR04MB9185F2F6DDB55AC56C92D63B89342@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <b80e17fb-7986-4a95-a845-48a7d318ff33@ti.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVxKupcn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B343C19425;
+	Wed, 29 Apr 2026 18:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777487395;
+	bh=zxSj7HWQqplcThXZA0nSrk5rmztonhayWGc8TPyLzE0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YVxKupcncnqs2q5KaEvuUkt+SqZtIAeybL6OwMOEt+2I1KybLqEoy3UWB+d0tO3al
+	 kteE0piPqFBb9wU43PeaHMBsppqER9TMRvV3x3jSkHIGolIjPkHdV9Fva0Yop01NoJ
+	 z/DgxnZu8voAwrHwHZhZgfWrvQROfCKPftMenVNAhVrmu5TGLMCCpemgdUVd4sz1Y+
+	 ysaI5NjpH/JUGk+jVlsGGmAnKPT9eYLhIC4OFl9XrosgY0a/YmsBVbFw8Est6yF543
+	 EWbFYgMnQcRUTztvMDTQ/L21THS31SoQNL0hY70xRrun46jL3D5ONucrp555Mr28ma
+	 sh8DCA1sfXgQg==
+Message-ID: <0c5a5204-331e-473b-9969-ff96bf711ce5@kernel.org>
+Date: Wed, 29 Apr 2026 20:29:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b80e17fb-7986-4a95-a845-48a7d318ff33@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL 2/4] i.MX arm dts changes for v7.1
+To: =?UTF-8?Q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>,
+ Frank Li <Frank.Li@nxp.com>, soc@kernel.org, arm@kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ kernel@pengutronix.de, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20260330141444.3789193-1-Frank.Li@nxp.com>
+ <20260330141444.3789193-3-Frank.Li@nxp.com>
+ <ab6b9b36-f08d-451a-9c2d-ef27b813d744@armadeus.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <ab6b9b36-f08d-451a-9c2d-ef27b813d744@armadeus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> About this, we only need to do this because you are defining the gpio
-> controller instances "statically" in the device tree. I understand gpio
-> nodes can act as providers, but I do not see any device referencing the
-> gpio nodes you are defining in the device tree.
+On 28/04/2026 16:03, Sébastien Szymanski wrote:
+> Hello,
+> 
+> On 3/30/26 4:14 PM, Frank Li wrote:
+>> ARM: dts: imx: remove redundant intermediate node in pinmux hierarchy
+> 
+> This commit breaks Linux 7.1-rc1 boot on my APF27Dev board. I see the 
+> following errors with earlyprintk enabled:
+> 
+> [    0.346162] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node i2c1grp
+> [    0.354438] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node i2c2grp
+> ...
+> [    0.636217] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node pwmgrp
+> [    0.644346] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node gpioledsgrp
+> [    0.657247] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node uart1grp
+> ...
+> [    0.868102] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node cspi1grp
+> [    0.876513] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node cspi2grp
+> [    0.888903] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node fec1grp
+> ...
+> [    2.413181] imx27-pinctrl 10015000.pinmux: unable to find group for 
+> node gpiokeysgrp
+> 
+> Reverting the commit makes the errors disappear and the board boot again.
+> 
+> Should I send a patch reverting this commit ?
 
-They probably come later, and a board specific. The GPIO controllers
-are probably SoC specific, so can be defined at the SoC .dtsi
-level. The users are then in the board .dts files.
 
-This is how GPIOs are typically used. Same will be true of I2C, the
-SoC provides the I2C adaptor, the boards have devices on the bus,
-again, described in DT.
+If you know how to fix it, then better fixing it instead of reverting,
+but otherwise yes, revert is justified. Just give a few more days for
+Frank or community to reply, because maybe there is a fix known.
 
-       Andrew
-
-     
+Best regards,
+Krzysztof
