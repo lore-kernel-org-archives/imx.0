@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678EE340283;
-	Wed, 29 Apr 2026 07:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C7B39658A;
+	Wed, 29 Apr 2026 07:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777446358; cv=none; b=EoYwlWEMY+FmMkq/1Hhvk1tR9DklrqxSFj7XlOz5tXWFW0rwhJl29025grA7/aaXoDngLcQZvwyaemmJgtsYHlIYdbJdzA4ywvREnQndU+jhG3FtXm7O1OOnW6WQRyiCe+x+rlFeSSS5Kkp4J6uC2fl7EtR7Viu4K0pq6bEkYrc=
+	t=1777446472; cv=none; b=KQ9Ny+lb31Q7jFeq+rWPo+trbis4OcuE+281heB6V2guWANIYpgLtQ9wuwNEE/70PHQdOdZEhZqhk7q8jyzDw6n1h6qB/q4QEXi8WfmaAWyi4PO5+oqydEj9iaDIjtKkjsWwmZSSoNQekb5yJEeFac1MXH3SvHVjIAeWecl30Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777446358; c=relaxed/simple;
-	bh=iBYAZ54Xl05eTg3Q9/tfNnTPc4BMLVfNxU4hsbPGzlk=;
+	s=arc-20240116; t=1777446472; c=relaxed/simple;
+	bh=fsIeqs27Qg7Hp2uONrhRTt8EsMoUhLfpSo8pcqw7U8w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nhrNsLEiJe4bS1n5HdBC18kiCg9f2eevpu5uG6t5iNUYGm/apGqSoj7HwJW7aJS74/4c2g1o9WCqrTjJzq1xqVC19jxZKD7Hyr3fmbK1cTUXNCfzL72hIBax0QrguVZYGEUDw83XgzcKT6aDWNsMgXdJxN6tr87D9lLmv0wUOzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJbb/Cav; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=TwsT6ZqEDIvOK89lco5yjY/fyR61g9IXVXg5UkXgBKY2lK30Q5+OufWQfZHF9GVtaWAsp6jb249vanQykAHUGMjG3Miobpjf4oMp/JD5n6MDRrNfrm+mKfgEP6vcjPOc+O+eRI3Q8NngdmOJf/5rDjvY9RR/68/Cfjib4KKOgSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmby1cLu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJbb/Cav"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012A9C19425;
-	Wed, 29 Apr 2026 07:05:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmby1cLu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3762FC2BCC4;
+	Wed, 29 Apr 2026 07:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777446358;
-	bh=iBYAZ54Xl05eTg3Q9/tfNnTPc4BMLVfNxU4hsbPGzlk=;
+	s=k20201202; t=1777446472;
+	bh=fsIeqs27Qg7Hp2uONrhRTt8EsMoUhLfpSo8pcqw7U8w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MJbb/CavEMwOsMgyn9EOwEoM1OeIU4+lMlAsQEcNpff3cglR8KrvUnk5n1EoybRVG
-	 Pztb0E1qP6rp/QrVCmyMcjfDcooaP9j/lVSm5gUB8q38l+6vaKoJyqLw3p748qfAm1
-	 b4bOcfjv0EogYMJjLV/eQH/WsIn7q2gnBUe/AvOt4XZ4RGW9n11l0m0GlnVTK52J8r
-	 PX2wQG3nTP8X0l0FfaNiw52irnpzOrslVerWf5jEk39K5GCx7c1PoOYkFHAhNalXrX
-	 m8uYc5iBqnRkBQSjKn1c+NcBM9VcyLmnxD7kZFp0IhXiq/NANRS/I78DQkvrs/UoEQ
-	 UM+2CRgbjpp8A==
-Message-ID: <3ddf533b-e023-4982-8ba0-0963b9d72c5c@kernel.org>
-Date: Wed, 29 Apr 2026 09:05:53 +0200
+	b=hmby1cLuP41pok89U8Vjl88H7vEI91WpfK+FF5LP6bj+XgLqQ3ujFxjp2gV/iCN7G
+	 mAYmZgMzie37hL3BorJGNmNCZlnld8112kKaTWcvJRyIC4Dg3xFypR9/RXmvx8mOpc
+	 Q/F4x2W8kzufXIvutf+NrMq0qBLTbZ/0GNXIEU2gzLFnjyVbZxmXKb2CqaNyrv409I
+	 IH6/6wKiZaQBFGOnjA4I3HRcZ1Ado9nlPiJE3s5VvzJCv+CWRQcGs/e6dwsRIrJvHS
+	 ZONDqaza2E3eGAi3QhwaiOcWZJAtiiyT0rgF9MimDj/Jvms7FO+wAMcecRcQuFt8oa
+	 ccH+vu64XM42w==
+Message-ID: <b7e93b01-39aa-4a9f-9927-6c634a6c727c@kernel.org>
+Date: Wed, 29 Apr 2026 09:07:47 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] drivers: remoteproc: imx: add support for Cortex-A
- Core
+Subject: Re: [PATCH 4/5] arm64: dts: imx93: Cortex-A Core remoteproc device
+ node
 To: Jiafei Pan <Jiafei.Pan@nxp.com>, andersson@kernel.org,
  mathieu.poirier@linaro.org, peng.fan@nxp.com, Frank.Li@nxp.com,
  s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
@@ -44,7 +44,7 @@ To: Jiafei Pan <Jiafei.Pan@nxp.com>, andersson@kernel.org,
  linux-kernel@vger.kernel.org
 Cc: Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com
 References: <20260428090819.17761-1-Jiafei.Pan@nxp.com>
- <20260428090819.17761-3-Jiafei.Pan@nxp.com>
+ <20260428090819.17761-5-Jiafei.Pan@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -90,18 +90,36 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260428090819.17761-3-Jiafei.Pan@nxp.com>
+In-Reply-To: <20260428090819.17761-5-Jiafei.Pan@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 28/04/2026 11:08, Jiafei Pan wrote:
-> Add Cortex-A Core remoteproc support, it use PSCI and SIP SMC call
-> to manage Cortex-A Core to be on or off.
-> 
-> Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
+> +	init-on-array = <IMX93_CLK_LPUART2_GATE>;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-rproc-ca55.dtsi b/arch/arm64/boot/dts/freescale/imx93-rproc-ca55.dtsi
+> new file mode 100644
+> index 000000000000..9d9a60404d2b
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-rproc-ca55.dtsi
 
+Heh? A DTSI file for one device node?
 
-Why do you use subject prefix "drivers:"?
+This looks a lot like downstream approach.
 
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +/*
+> + * Copyright 2024-2026 NXP
+> + */
+> +
+> +/ {
+> +	ca55_1: remoteproc-ca55-1 {
+> +		compatible = "fsl,imx-rproc-psci";
+
+Also, you cannot have non-SoC compatibles for SoC component. Nothing
+here, nor in the binding patch, explains that.
+
+>
 Best regards,
 Krzysztof
