@@ -1,129 +1,113 @@
-Received: from 10.mo581.mail-out.ovh.net (10.mo581.mail-out.ovh.net [178.33.250.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8970B2BE051
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 21:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.250.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777410576; cv=none; b=n/bTfBR8du5BkwvIXM6EYbK7oaY742/9G6mVqtYb2NpORkxLVQG1d8aGybo5WXmAIZgSp3jAAOGaV0hCrqxBIR2nI8zeHg/EzLVy96wjUh4lTg/Uuskgh1p0BA58dpGOJREXFiHHz6JP150JpELL64eFBfOaDqbObIqjo/E5CS4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777410576; c=relaxed/simple;
-	bh=jmbNS8SSgDf/DqbY6oXw6uPiO29OxR8S55/KIUC5VDk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gj/lpvjoYKOCvmE7p9euThr4VVN6u5x2pr5SLgvp2B0xbNEWas6wB044f1Lg67d3qWg3ZiMjLz4tspNypNZgIWAQ9XZrqu44mjfMwIh640fYfjt83YoZ2yw9eznSIvECyiEISe4QcznJ6DWsxL+Hm0xOlHCiwtoSV3QuAgNf7Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=ZkpXMjmV; arc=none smtp.client-ip=178.33.250.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D48723183B
+	for <imx@lists.linux.dev>; Wed, 29 Apr 2026 01:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777426687; cv=pass; b=P+Eg40jnBxGyf8Y4Kfg6E6N3Dx5RTlEaSAdY5ZOFK9y9wi4G9yK/fpAJJQlccEkz/ObajOodCZ4TbHc0T0LPz4M5nkbG5IfdsvTv3PM8YD6DPRybVVvLDar9fJeS8uLKym2szpZzjyMhOks27f+8BV3Am3kZMf1oHkBvZYMxh2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777426687; c=relaxed/simple;
+	bh=TL2tkeFOgMZcOO+5OqeSu09okkedmEhoLbRE8Fw/jV4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dfPdJye6CXkWR6NrRXMhYO8M13bP4pHo/At9/817Mb6sasIAKVdHmgb0yvAN3oYJLfP2dbqJ8m27z1DzqbCrZr53JFuf22psz+dCiIdAaRybCvrK2UwM1R7vQYrDyQ/CAkqmNHD/Mxr9f5Rh0B7/vrY4Jx+2rrmUht7vpsLENo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2eSr0gJ; arc=pass smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="ZkpXMjmV"
-Received: from director5.ghost.mail-out.ovh.net (unknown [10.110.43.238])
-	by mo581.mail-out.ovh.net (Postfix) with ESMTP id 4g4hxT2rGVz68l0
-	for <imx@lists.linux.dev>; Tue, 28 Apr 2026 14:03:57 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-f6m5b (unknown [10.110.118.251])
-	by director5.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 9E6451001E8;
-	Tue, 28 Apr 2026 14:03:56 +0000 (UTC)
-Received: from armadeus.com ([37.59.142.98])
-	by ghost-submission-7d8d68f679-f6m5b with ESMTPSA
-	id e7i0HEy+8Gn7awkAA7T7Mg
-	(envelope-from <sebastien.szymanski@armadeus.com>); Tue, 28 Apr 2026 14:03:56 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-98R00242a48d6a-e56a-480c-88df-638997601774,
-                    74DB1B90E6E4B7223053899FBA067BA27D68656B) smtp.auth=sebastien.szymanski@armadeus.com
-X-OVh-ClientIp:86.243.239.229
-Message-ID: <ab6b9b36-f08d-451a-9c2d-ef27b813d744@armadeus.com>
-Date: Tue, 28 Apr 2026 16:03:56 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2eSr0gJ"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38dd575bca3so3928461fa.1
+        for <imx@lists.linux.dev>; Tue, 28 Apr 2026 18:38:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777426684; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KlPaIBfsHX+oKtuwWsibM7cTYKsYBtkDdG7ORu2Nm+/rbbV1+QC5rFgrxd5a09fqrB
+         daiPMZlGyQxkQuTzJXFEQnBQBi9PUu7MRBkWYFWqOfCh09t5LIl0dzYCyiXHtXC8FNS9
+         FCUEnI6Dl+1S6j9AyegwZ+z0FGxfzM5/xXwDtEtNnI1XX460dFE1VhbMYh4DUPeh/pta
+         /fWXX+37Gtn2N6MhFVx73UEUZ9cGtzMujkNtZ9vsXKXDvS2xLMaf0PINF3IBFT4oihdj
+         igFfKDBxuevde2yhabEUpXiYQO8vWVngCKT6xZa6qs3sGnCdPrjQBxsl9bokUEYRY7kw
+         NKcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TL2tkeFOgMZcOO+5OqeSu09okkedmEhoLbRE8Fw/jV4=;
+        fh=nPFnGxlr3fesVZkOwcyqFJF6y5aSmE6BWITRQ0CC0NY=;
+        b=dOwkPuIQM/uvoP38pIU8nZchIHFM0O19jEZCYwUHDjk45zbLfALWODgzghp7eQqivg
+         X7VULsuAeo/Tlu1pHGJDfe44Y6cpKnNj76X/U50R6k7u+Ga29yL7QyilzOg3tg8CVH5F
+         UBL6GQPymyxSOEAJAD85xdjN3zspEMuWWnTaq5eTxza+gzfWb7R/Rw+GvuA7us19VzQ9
+         YbApHHAhuN5Ses9ZgApUrzPBS/fcFXYs0pmuu3k80VrhAPA07TYDdpt95cCdnxdb6aZ8
+         d95prWn8YuzIgqFEdT3q2jJ5gakPyMCOssyTtqM7483XwpgAjQhEOuk8bfqgOR20vFtY
+         zrig==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777426684; x=1778031484; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TL2tkeFOgMZcOO+5OqeSu09okkedmEhoLbRE8Fw/jV4=;
+        b=A2eSr0gJSc9xL1C/lsvKHX3OEw+0sTctwAqYNxbyG45JLC4B+zuu6MTpKz3WV2zZ/N
+         oa5KObV8KzRG6nLBoIH+ai6/XPje/m1wMiKYk6sR/Gg2f+jYOmZTPMmSBBVQoXOmtq++
+         8uYfgJ7PLifHArU4GuWnNJTjuhymra4vurwkivhOEarz3IuHdVZ5Ikh7PQBzBtZm1LTi
+         YxngVCwUB0M1NYrOVw2OP2+xaPc/jPgYftcjUyTmmp9VSTZFAES/loJDgzdqYxiI+6/p
+         rFHdGwilH0OpEE/dAAQ2Iz0VW9zBgoB5lAXKLmsHg8O5qhwSuwgZbC7yOWXsdHeuotud
+         JHtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777426684; x=1778031484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TL2tkeFOgMZcOO+5OqeSu09okkedmEhoLbRE8Fw/jV4=;
+        b=MP5yngHBNcxf/Xp+iQjlTxB+W+DIe1mV6RzyE/nfT3AIt9h/lPZXf4kf/Rn+uPhd/q
+         qF2XQ8ZKhG3+qCz9enlXHQe/K1YEtXjzg04tzzuGi8wLCz0gYR1I9dIr6qR+iwQLIf+D
+         Ve6U/HV45ZvQ1v9+g7QsO5tfF3Idj8mndIiWjb6F1HFNEsnSJIIxAcDwl/zagoHLZwBz
+         2TR26J36sclIAd2RrJ7yvruqDCV646fQc7dQnRIR4E0AlJocRsJmHxKw6nK9KshlP1t8
+         hI/5SswVkGpMXsVXvKeCyhkHXuVy3QUorKblxe4iZ/lRh0Vo1RxI4z0HJ2WsGJdQIthc
+         /ZDA==
+X-Forwarded-Encrypted: i=1; AFNElJ+Yp7VPZbg7Lf6qOOTuYUad9idIuUPZ8sS9/9yadVidX2TvZCNg0f41jWd4+ZeD3hpJIEY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzmBkRU+zcy2feqXxVvJDjrYQeSXjHGYYs3+TMpQCGfO4VRbXO9
+	Ivy3hwzw/xV3stx0mxaRgJqoTZGwNtMzdR1lcdVogM+v2WxtymjapihXPXu/UMMBaylsanUvrl/
+	NPXFt4ZAWVOV96HSZjC3ZGaPV9uVng6Y=
+X-Gm-Gg: AeBDieu47Efg0l62E2bOZOmirAAyfPqmLdLF35UEr4jZ1IYuG7b0oFZ5N+LpCNSdPSi
+	YbFg3CD+7IUOc0wB7HyCX5q/XPhO8kv92bjIdXphJjL3ZloOfPok4ItMsKdd/rKgi0c2KCga4UV
+	rwJ8iiQ7twZ2KwHYvpxu0HRKgPrg8dKvZpjt0vrOALn6VipE0pLKdf5LsRkq4sanGD21LkFvdKR
+	L0ytisEJitfx9etEUbIwhAHCnkhbPbLB/qtOOhMpCRjwGRV6QWJUefpaxNQ7rm6fv/7aURMl/Yf
+	Ly/kJ1/Jk6iy695/BTD4bbK0R5WUvC3GnycYAip6BkkIgzsAohg4dc/ijMAtLX3nY7JAy/wwbXr
+	NUl0ckQ==
+X-Received: by 2002:a05:6512:15a3:b0:5a2:a70a:a9e with SMTP id
+ 2adb3069b0e04-5a749fb8b0amr382100e87.3.1777426684004; Tue, 28 Apr 2026
+ 18:38:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL 2/4] i.MX arm dts changes for v7.1
-To: Frank Li <Frank.Li@nxp.com>, soc@kernel.org, arm@kernel.org
-Cc: Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- kernel@pengutronix.de, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20260330141444.3789193-1-Frank.Li@nxp.com>
- <20260330141444.3789193-3-Frank.Li@nxp.com>
-Content-Language: en-US
-From: =?UTF-8?Q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
-Autocrypt: addr=sebastien.szymanski@armadeus.com; keydata=
- xsBNBFNfZLEBCACv1lqSePHJNpRgcnER+3emy+Arjz84zFax3XkogjY/e3ZneihIgWrVKe5M
- ql16pX4KTkzNgMUKz4bG/XwT3kjcrXshxFLlg7KrHMl287C+W+QOUjnjVeRi/su+SPmjz8VD
- yr11h+ZkVLAWhS+uQJ93jy1NwG8M4t1kBLAVHHD5Vw4FJ+3ouaVYIp1X1Cr8bVKQw33Q1aTd
- ro0kMBb96B9vNu7ciJZ3gvlaBzUEKOgNnq9KaywuLnqrqr4HUIn5JuxZjCjJzt9kTAKcTfp2
- cJM8qpp+2FF5qtbkse9fZ6M64qozgOPr9Tk4Amf9fZEUQ6UNw14mmBZuXSzoHe75gI7TABEB
- AAHNN1PDqWJhc3RpZW4gU1pZTUFOU0tJIDxzZWJhc3RpZW4uc3p5bWFuc2tpQGFybWFkZXVz
- LmNvbT7CwJAEEwEIADoCGyMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgBYhBJwGygpYm/1C
- /GCmwbCaKeiBMmTiBQJdhIHLAAoJELCaKeiBMmTixXIH/2W3kbzRG0UF81jtRRnp0H83rjDT
- v0H+8fgFMRL/7HCJ1QPArkfRJlM2wlJkN+ChP09CCarYfUEHfRCHlTb7At6Yyrz1jziD7ZwX
- 8IWHYRXnZkY5eZc5DsiUgq6JH49kt+GPzK8UVP9MTa6zkBpPCUf7LzZ4pD3FihdkT52BU3gI
- d9P49fSI0TYySlb/VKn815aOhvwEr7+Dh3mZUjSh7saofbRmVUOr7p+R3MvvGI19/IJZjeOE
- ZWliODDOt6HnBOtoGSXMcNIFF6snH52D5N5gY88njZjTwhgGGUBix1bsgf/EY0v4R5itZBXB
- B/Ze4Tm++YHaB75hZK6PQu/YRv7OwE0EU19ksQEIALo7jhXddrXBTRu5SAjelV53jyHBJTX/
- vN4nL/VbbW/saca+NJjDSxx5DBmotZbQdWIyZiSIjU/xnTREvtDrl6ZeSsKWd7ZqiuiY4fSR
- zwuQp9rd0yqRuxesrWeyJB1zCSdEvLyKASERt+nxkOA+IzJ4y1qLtvnWr+SL1AXgTMw+Tkyw
- KIDCRWHTIYas11ldGj82gOIpYeXnapeNLHfT4EQwg0NeWYHynJxAQWiX5aPlw0uSpAQSsBXQ
- FIe3fpoveMSnXK+PG2BBOzexYv7r4S70a6sF9sgTTPpfKqUaqqC+u1+bUX6alTAKhGKJywaF
- 6ViqLlgY8PfwohSyAlqlTRMAEQEAAcLAdgQYAQgAIAIbDBYhBJwGygpYm/1C/GCmwbCaKeiB
- MmTiBQJdhIHSAAoJELCaKeiBMmTitU8IAK7NQM3fEwaF5XaKtepYWsVka44CD8A9e4r7NVK9
- ugirKvXirIxBSDmN/Db862NmVpITsZ6ERNSNZLm/7k55N+TexKYiFZeU7G92TEfAM6qPElvx
- DLEcrkNMq9r08YZeUloacsq31AL5fK4LW+xdvXudkdiKRMJsdTpmff3x5kIziGOHjwFP9wve
- ZgEH52gpbRsP8Whx/Z2lNX/BBRmFM8OnEXFsjjqDzYThdxTq85wGPpkgvvUGyPNRD7TpbB1C
- pajOUUkPxgj5LKt77HD1afeZNudWhgcdkbtT5PMQTT0WY6wvMEj9S1+bGPeXRGWLYB7gHQ+L
- JNoSD7Kz6Y9qnKo=
-In-Reply-To: <20260330141444.3789193-3-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-x-ovh-tracer-id: 13712616442643404459
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEw9tve48xeuW/0pHIXopn/l2+Ei/S3Czvgzi950ns5mJJQ7Ihj5Jwxq/suGN/tS2DUQJj0rlIDVk7jNsZz1bo8ZN6Fg51uKKRXF8P8gKa91T1u84S0h3RlUMCs7Ta43+n6OBx5uJmfLeoH58RspEz+qWrXAL98LU65IIyamgtukazoUmw2z+jvgRqJJWqXZAEmgZhPVG+EQgxULZE9p5QtfEyIyNHhMiOsrVadKWfn1BJyg/zC0QmEJKj+JnkEEYbqfvNkh3jFXMjsEazYHhhG7sXgMnNEvD953xwzvI97N68+Dpt39gZx+j6hZ2WphiS6MYxUF2JOQAQqH7quLF7kohVNmO1+mVgDuKXr0GNq6gP1eBaTZMx3R2NOSLEz+NT9yMbqmdj3/xJhHCFUUO1p/kexAM38s2FaRsjUZ/bhMKtvcGHNtBAPskXOwMtVBKUtN5hF2fb2636ywWngsAX/3M9FMn/PLZC1T+rqXJumtz49GBt1p0zCFWbWTBMCVDcitNwYy0yyTcoC49NuwpyxQ2VRc0CkkEYH5ipZZzy1EFoobHFAjGAJSQyppGvINa7WJSAJ4UZ6VuJPvOzrh5G0t9QysIig5eICS9In5Y6FVxAO7ICsZeg0TyLp1Bp/2BQ5VAv5CJYPZrxjMrSuq8mAmY2RB8cZO0M8bYagIxlVJg
-DKIM-Signature: a=rsa-sha256; bh=1dnnnifmIzpF9Ebh8L++t76XOo1eryK5OY/IV/cdBnI=;
- c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
- t=1777385037; v=1;
- b=ZkpXMjmVLYC9A9pg4wmWmdqk76BC3hBDDXQtA/D56Kq8E8T0/7tbpq4Cwiw55blz/P4qQY8m
- aeD+HUMWH4DXpkpiLMSnw9q7wEqePBQFN45Bqp0MeQLuoBFWj+L8VXHCxCjL1Gs0KClDpXJcceT
- TSKqofDzgm8zGct3MWbcq0wxSsQQKnwwScekth7F8ZW0BsPANHbgjevDcwvz+iU+06qEjk8I50w
- P9KC31DH2MP2Lc8/49lk1qI5ks48mSjgDHpx5wXpqjTFd+SUjY9Y1LhJLBk1T/saoUoBiDEelgP
- Jak3a6OVXpAR4mL+aIprl/rM/rh6Lgrq1XUkVKQvALXgA==
+References: <20260428-imx95_frdm_pro-v2-0-434240b652f4@nxp.com> <20260428-imx95_frdm_pro-v2-2-434240b652f4@nxp.com>
+In-Reply-To: <20260428-imx95_frdm_pro-v2-2-434240b652f4@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 28 Apr 2026 22:37:52 -0300
+X-Gm-Features: AVHnY4KSxb_H5o4trd0JTtQb0bsTzoHjYoluGAlKyA5vbmz4I0-kLq2-xvoMmcw
+Message-ID: <CAOMZO5DV4Nnc+7DfAZT-VYDqxniz=ROR4-DnH3x9NbU4E8d9mQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add i.MX95 19x19 FRDM PRO
+ board dts
+To: Joseph Guo <qijian.guo@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, xinyu.chen@nxp.com, 
+	qijian.guo@oss.nxp.com, justin.jiang@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Tue, Apr 28, 2026 at 5:03=E2=80=AFAM Joseph Guo <qijian.guo@nxp.com> wro=
+te:
+>
+> NXP i.MX95 19x19 FRDM PRO is cost-effective with extensive
+> expansion capabilities based on the i.MX95 19x19 SoC.
 
-On 3/30/26 4:14 PM, Frank Li wrote:
-> ARM: dts: imx: remove redundant intermediate node in pinmux hierarchy
+It would be good to explain the difference between the i.MX95 FRDM PRO
+and i.MX95 FRDM.
 
-This commit breaks Linux 7.1-rc1 boot on my APF27Dev board. I see the 
-following errors with earlyprintk enabled:
-
-[    0.346162] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node i2c1grp
-[    0.354438] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node i2c2grp
-...
-[    0.636217] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node pwmgrp
-[    0.644346] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node gpioledsgrp
-[    0.657247] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node uart1grp
-...
-[    0.868102] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node cspi1grp
-[    0.876513] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node cspi2grp
-[    0.888903] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node fec1grp
-...
-[    2.413181] imx27-pinctrl 10015000.pinmux: unable to find group for 
-node gpiokeysgrp
-
-Reverting the commit makes the errors disappear and the board boot again.
-
-Should I send a patch reverting this commit ?
-
-Regards,
-
--- 
-Sébastien Szymanski, Armadeus Systems
-Software engineer
+Also, does it make sense to share common nodes in a dtsi that can be
+used by the two variants?
