@@ -1,250 +1,140 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010067.outbound.protection.outlook.com [52.101.85.67])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4727741B35C
-	for <imx@lists.linux.dev>; Wed, 29 Apr 2026 18:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777486027; cv=fail; b=RfUZmnmtSgif4PVn+x4Tl/8d5rSxFr2wKbS+sSIc3l5ZMFlzXERXQ/yDnH/KlKmXs/LEsc9p3d1+CSQzCX4j5rrrbHIdhsDV344zMzQ/ak1bHssvw5D7qbn0iWl+zqpUuu6gV/YRM7W3fNJxE7M72y3l/NRz6GLzoIf5XIu1X/Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777486027; c=relaxed/simple;
-	bh=RtUpQzieWNZDjahnSfUJmW3LfpH0MYEP8PaljAn04d4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=j2cv/fdne7/+kJhfnAzYyqcvjPQxmz3TPgoBAHJtPxYdyhYrBnaVS4AnzSY1yp4x2XoUsNqX2LU/f/htDTQzxBoRJr89Y3Ug9rfgh5GdTDtc9v38ltCEnScE2tO7MRScIZvpdXNAbEgNd2p3NrblISc/Txu3SC0pbxMXuAvGw7A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TvD+XHvu; arc=fail smtp.client-ip=52.101.85.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A90F303A0A;
+	Wed, 29 Apr 2026 18:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777486307; cv=none; b=o3f9TXy6vbemeVD3DM/WqpTVZDdrGjJNIwCtZgGQPmg9xa3HokQQIVbH7y78dPx3ns/bYPXPY2x3IykST5/OJhcmqnnnPqls5YzwsKzzf/BiZM3dlu/wupcr3BqRAemblU+psVBxv/nzOkP+Ned0a+YjIntSgFXrD27gLnHCQiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777486307; c=relaxed/simple;
+	bh=vVHtEP46vGKolJeaCtgCNYw3z2ZwVl3u6h4t7hanr/Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DF6T4bySbE71jvipUtf0+MZbxryzMUNT41VuINdjIY9uO14G7BfCinIC3XOsyY+fP8o9AvzIl6Z9D81+v2MpvJYkFsEpvcIQtTOr6QFEH5GjnMwQLI/Hyia6r7xkGDwALd6OBCgdBoF5mC0CZuYjmDSR3znOlSJsfosf01ff4Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Ewbsn7Rs; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TvD+XHvu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M4m0H2s98nrwLuCU+xcWjkFHubTzwYN+dcAldjszBwKYdx9Mc0IZuZb1CsS/qUUOaQXS43LE8QfsbIBizUjiYnBojTIcdviKG+o4Vy0kcdVWOi+xt/9aSQkP2hTAgFlE6gRgYF8xA1fmjlHWhZidSNWO8zBDqTJ/qkBrPvW9RcbA3rvYT1cHTxc+hj1p9bWdVrgFT92xOhiAVUzBblGXgkBfRgbXIdrBkFtceO1YZo+8xq84BEqKl4aOe0oNqoyHU0dAoF14RI5ENuGaFliej3LgKV2LHjrjf/T5t4wDzf19kpZgl+lVCGnNtwaIKIH+8CbJfAKRvH566mQsu3BPWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cPtIV6TgtSFxxV4HSDgk0JPSLnDApXS3RQvj3MVZQa4=;
- b=q6wAsNFlJkj/qWpguNRcDrMHjx91hftX5/GZEW7X505Kqa3nCeysCBY757IhNk4Zl9APp8qL/z3DqYDd3lPgFzhRS1cQAneNc1cxYKkctl/HBfySsxcFvwDHuWYGsKPRtNGcg7B+onh965lIKf2ax4o5Zw3wpcf4fBvu7kHzYygVchMtsE+g9jW3BoSMGA0alVY8RXVcOelQ/myIoSHPP+PtEpUl6wktxzCu5d80I+tfPaNymHEwdrD23Ud1Q3SxBf3pkwJDAEPELVQIkdhAWmIrwpK81MiAs84C2k6NTN8o7hvZLlDq/ZGITIZb5tR5c9HTYuyhttVF6cXsGERGOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=bgdev.pl smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cPtIV6TgtSFxxV4HSDgk0JPSLnDApXS3RQvj3MVZQa4=;
- b=TvD+XHvuguGBipZMUc5i+qdlZhL8jeIbeSQO6AuE283dy+tx/5coENeh2vtJmjMFdGSvHDuj1zHqICi/usfT1ysFu1yM+hRNruRWD1DFIKEHwmNlNQww5el/OGRYp34f0wT21a9us35LyFE0sihH1/mFpxDNfq9pHGRP2JScSXg=
-Received: from MN0P223CA0025.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:52b::20)
- by IA3PR10MB8466.namprd10.prod.outlook.com (2603:10b6:208:57f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Wed, 29 Apr
- 2026 18:06:56 +0000
-Received: from MN1PEPF0000F0E1.namprd04.prod.outlook.com
- (2603:10b6:208:52b:cafe::5) by MN0P223CA0025.outlook.office365.com
- (2603:10b6:208:52b::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Wed,
- 29 Apr 2026 18:06:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- MN1PEPF0000F0E1.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 18:06:55 +0000
-Received: from DLEE214.ent.ti.com (157.170.170.117) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 29 Apr
- 2026 13:06:55 -0500
-Received: from DLEE213.ent.ti.com (157.170.170.116) by DLEE214.ent.ti.com
- (157.170.170.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 29 Apr
- 2026 13:06:54 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE213.ent.ti.com
- (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 29 Apr 2026 13:06:54 -0500
-Received: from [10.249.130.12] ([10.249.130.12])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 63TI6kJp3618387;
-	Wed, 29 Apr 2026 13:06:47 -0500
-Message-ID: <472f85bd-42c2-40c6-abfd-b76924797069@ti.com>
-Date: Wed, 29 Apr 2026 23:36:46 +0530
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Ewbsn7Rs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1777486304;
+	bh=vVHtEP46vGKolJeaCtgCNYw3z2ZwVl3u6h4t7hanr/Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Ewbsn7RsB40xrAgPa5Bt4o5YasSBzfCpYAa5hJAcwhvoee//1lhLEL4dBxIxE02fT
+	 377ycqD41TJX1eAocyvNU5r0RozZ16EWrWFFAbFuMHMP8721NsQ0u8JvDVmnxU8yQD
+	 h+KJ6pMsL8PVxghCIF5D1fotq2uEXqpReN0jdKIBjrekbSDDeFz9kpyS6tRBdGxmVO
+	 dKOKNYdZtl4YE0DkDvos5ajf1QVWgimYG8EXuaWXbuOdQwRNmgJZRS3bNoODeH5wxk
+	 vsxC85TM9D836M2JgN+f6bSyxzrF+JYqZ00fTrTKJPXjBMhygefczmatRlPIiVzeTn
+	 +j2i9I+mM04KA==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3381517E0EBB;
+	Wed, 29 Apr 2026 20:11:42 +0200 (CEST)
+Message-ID: <4064d0168c3409a1e15f9c92da56cea93956b31e.camel@collabora.com>
+Subject: Re: [PATCH v3 1/2] media: verisilicon: Simplify motion vectors and
+ rfc buffers allocation
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Frank Li <Frank.li@nxp.com>, Benjamin Gaignard
+	 <benjamin.gaignard@collabora.com>
+Cc: p.zabel@pengutronix.de, mchehab@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, heiko@sntech.de, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, wens@kernel.org, 
+	jernej.skrabec@gmail.com, samuel@sholland.org,
+ linux-kernel@vger.kernel.org, 	linux-media@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, 	imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	kernel@collabora.com
+Date: Wed, 29 Apr 2026 14:11:41 -0400
+In-Reply-To: <aeIRWW937ev_F8zF@lizhi-Precision-Tower-5810>
+References: <20260415140420.282084-1-benjamin.gaignard@collabora.com>
+	 <20260415140420.282084-2-benjamin.gaignard@collabora.com>
+	 <aeIRWW937ev_F8zF@lizhi-Precision-Tower-5810>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-hO3VKyof1zFkkmRUWXyp"
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, Shenwei Wang
-	<shenwei.wang@nxp.com>
-CC: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linusw@kernel.org>, "Bartosz
- Golaszewski" <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Frank Li
-	<frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan
-	<skhan@linuxfoundation.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
-	<peng.fan@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
- <20260422212849.1240591-4-shenwei.wang@nxp.com>
- <22fb5fac-2568-42be-a7e3-7e89d0017eb3@ti.com>
- <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6412a758-4560-4cf1-a0d0-5b24d1a715f1@lunn.ch>
- <PAXPR04MB9185009A17DFDF3D6C8B44E789362@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6e01e114-e336-4744-b6b4-563ec42e321b@lunn.ch>
- <PAXPR04MB9185A098D894B6A6EBCC13F889372@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <afImuoeHolxGgw3H@p14s>
- <PAXPR04MB9185F2F6DDB55AC56C92D63B89342@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CANLsYkwvL0Z3+12MD=J+Dc2yAU2T8ypizyG=6AhYoWOh55odHA@mail.gmail.com>
-Content-Language: en-US
-From: "Padhi, Beleswar" <b-padhi@ti.com>
-In-Reply-To: <CANLsYkwvL0Z3+12MD=J+Dc2yAU2T8ypizyG=6AhYoWOh55odHA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E1:EE_|IA3PR10MB8466:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4da7dc1-bc50-4a7f-ac85-08dea61a1956
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	sTpG513mmtPV2eCja4+6tGGt9jxjB4K6EKDWhjfSCMNupTi4MD1jOApJM1qseaQX1HmX3NyF1Qn8KP59dtcmdrTx5dXgjK91y1gxfeVEpLbNFwf+4eXYuqubm9D/fH2Sj0J8QU461g41/W2kpinqlVKgsvgzmRPBMci5t9yJ9VUudSpenQ0u8o5PAirKB+1fSTZACdeQnSi06IpujBfo6cM0LfvCsz7NH/OJZwDwwlQnJXvcPOgsjvWeQUKdoVJKDfPWSMHsvT8HtNoAk885vvRD71awhlwUW4o6CkOnPgn27x1RosiT6ZPaNCwchmiMzzCT5l2JL03jN0ntKwZIdL27G8xMsZlVBCimtyDT3oog6ssdB5udhE3gmC9zoAiD97tBSeekF+WLn3XjAMYoIaSO2LoRu2PFf3loIHit22SEdjX/2RAY4sni7vbstJjmb8x+YfpmQXC0S9nwS/EpQdbjEtcX1cFu3k+7k0Y0BEyiQtWr5cOboQ6FldT8Osub+uoeI1kzAuYNyOsZytd4H4n8e8dgLBvIpC3A4jBAIWOnWM/KMZmuB6snD1v+EdhnzXCL5yis3mUqDWAGHnv+ampYmYzrdKUwIK67dvzwU/OKd30GRzT1kB6Gz8DmrTTZL4f29q27HOI/cVwl+xuykWEih1VqhboOEqLtpbKNBHXSxbGpf6qir/VUeJcpDJY2u9yftufWvEC/wV2ULU2lLG/URtjCcmuvU4lOQC0LJtM=
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	eoKduC0g6WVivvCMX7goe+F9AbU7tW8BBx+0JV8d9aNAcOguRAIcZPEExmOuaLGdd+YZBbFr0EtJA19gLW5/HsT8c1qThzICLSGls2+JVYdmlO2lby7oGpWmf6NMQqRH1UYw5ZUbN4sPV7aaCtUEFXFYRqO/8cCtVjnuXN4WsJSeECJz8VceZf9Uve9Lf9TQuapPfombAXXahp4yZEaMriTdSAa/LlAQqfKcrQA/LVAgdYL7epfH58HC+Mo6jp1WxVNuOF2bBizkeDVDddLiAHgu8vFCZik2bVpxAMHg0+XpYdXZuQJfGaendLYn06A6L7Z0UqYHLEjHJzYddI7lTSib4Kpso2Yokdygz17w0KoutAgmcN+h45wDuWY5XNy5CrWclQ9905R2F18tpjQiD7NL31X+7n5YF+4FJBhT/6h7e6X5NJGlptMmFXzh82eW
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 18:06:55.6494
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4da7dc1-bc50-4a7f-ac85-08dea61a1956
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E1.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8466
-
-Hi Mathieu,
-
-On 4/29/2026 11:03 PM, Mathieu Poirier wrote:
-> On Wed, 29 Apr 2026 at 10:53, Shenwei Wang <shenwei.wang@nxp.com> wrote:
->>
->>
->>> -----Original Message-----
->>> From: Mathieu Poirier <mathieu.poirier@linaro.org>
->>> Sent: Wednesday, April 29, 2026 10:42 AM
->>> To: Shenwei Wang <shenwei.wang@nxp.com>
->>> Cc: Andrew Lunn <andrew@lunn.ch>; Padhi, Beleswar <b-padhi@ti.com>; Linus
->>> Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>; Jonathan
->>> Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
->>> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn Andersson
->>> <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
->>> <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
->>> gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
->>> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->>> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
->>> devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
->>> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; dl-linux-imx <linux-
->>> imx@nxp.com>; Bartosz Golaszewski <brgl@bgdev.pl>
->>> Subject: [EXT] Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
->>> On Tue, Apr 28, 2026 at 03:24:59PM +0000, Shenwei Wang wrote:
->>>>
->>>>> -----Original Message-----
->>>>> From: Andrew Lunn <andrew@lunn.ch>
->>>>> Sent: Monday, April 27, 2026 3:49 PM
->>>>> To: Shenwei Wang <shenwei.wang@nxp.com>
->>>>> Cc: Padhi, Beleswar <b-padhi@ti.com>; Linus Walleij
->>>>> <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>; Jonathan
->>>>> Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof
->>>>> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>;
->>>>> Bjorn Andersson <andersson@kernel.org>; Mathieu Poirier
->>>>> <mathieu.poirier@linaro.org>; Frank Li <frank.li@nxp.com>; Sascha
->>>>> Hauer <s.hauer@pengutronix.de>; Shuah Khan
->>>>> <skhan@linuxfoundation.org>; linux-gpio@vger.kernel.org; linux-
->>>>> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix
->>>>> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->>>>> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
->>>>> devicetree@vger.kernel.org; linux- remoteproc@vger.kernel.org;
->>>>> imx@lists.linux.dev; linux-arm- kernel@lists.infradead.org;
->>>>> dl-linux-imx <linux-imx@nxp.com>; Bartosz Golaszewski
->>>>> <brgl@bgdev.pl>
->>>>> Subject: [EXT] Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg
->>>>> GPIO driver
->>>>>>> struct virtio_gpio_response {
->>>>>>>          __u8 status;
->>>>>>>          __u8 value;
->>>>>>> };
->>>>>> It is the same message format. Please see the message definition
->>>>> (GET_DIRECTION) below:
->>>>>
->>>>>> +   +-----+-----+-----+-----+-----+----+
->>>>>> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
->>>>>> +   | 1   | 2   |port |line | err | dir|
->>>>>> +   +-----+-----+-----+-----+-----+----+
->>>>> Sorry, but i don't see how two u8 vs six u8 are the same message format.
->>>>>
->>>> Some changes to the message format are necessary.
->>>>
->>>> Virtio uses two communication channels (virtqueues): one for requests and
->>> replies, and a second one for events.
->>>> In contrast, rpmsg provides only a single communication channel, so a
->>>> type field is required to distinguish between different kinds of messages.
->>>>
->>>> Since rpmsg replies and events share the same message format, an additional
->>> line is introduced to handle both cases.
->>>> Finally, rpmsg supports multiple GPIO controllers, so a port field is added to
->>> uniquely identify the target controller.
->>>
->>> I have commented on this before - RPMSG is already providing multiplexing
->>> capability by way of endpoints.  There is no need for a port field.  One endpoint,
->>> one GPIO controller.
->>>
->> You still need a way to let the remote side know which port the endpoint maps to, either
->> by embedding the port information in the message (the current way), or by sending it
->> separately.
->>
-> An endpoint is created with every namespace request.  There should be
-> one namespace request for every GPIO controller, which yields a unique
-> endpoint for each controller and eliminates the need for an extra
-> field to identify them.
 
 
-Right, but this can still be done by just having one namespace request.
-We can create new endpoints bound to an existing namespace/channel by
-invoking rpmsg_create_ept(). This is what I suggested here too:
-https://lore.kernel.org/all/29485742-6e49-482e-b73d-228295daaeec@ti.com/
+--=-hO3VKyof1zFkkmRUWXyp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-My mental model looks like this for the complete picture:
+Hi Benjamin,
 
-1. namespace/channel#1 = rpmsg-io
-    a. ept1 -> gpio-controller@1
-    b. ept2 -> gpio-controller@2
+Le vendredi 17 avril 2026 =C3=A0 06:54 -0400, Frank Li a =C3=A9crit=C2=A0:
+> On Wed, Apr 15, 2026 at 04:04:19PM +0200, Benjamin Gaignard wrote:
+> > Until now we reserve the space needed for motion vectors and reference
+> > frame compression at the end of the frame buffer.
+> > Disentanglement mv and rfc from frame buffers by allocating
+> > distinct buffers for each purpose.
+> > That simplify the code by removing lot of offset computation.
+>=20
+> Can you try split to more small and straight forward patches, for example
+>=20
+> for example create patch just move hantro_h264_mv_size() to header file,
 
-2. namespace/channel#2 = rpmsg-i2c
-    a. ept1 -> i2c@1
-    b. ept2 -> i2c@2
-    c. ept3 -> i2c@3
+Marking this has Change Requested, as I completely agree with Frank that a =
+split
+of this giant will help proper review.
 
-etc...
+Nicolas
 
-This way device groups are isolated with each channel/namespace, and
-instances within each device groups are also respected with specific
-endpoints.
+>=20
+> ...
+> > +++ b/drivers/media/platform/verisilicon/hantro_hevc.c
+> > @@ -44,30 +44,49 @@ dma_addr_t hantro_hevc_get_ref_buf(struct hantro_ct=
+x *ctx,
+> > =C2=A0	int i;
+> >=20
+> > =C2=A0	/* Find the reference buffer in already known ones */
+> > -	for (i =3D 0;=C2=A0 i < NUM_REF_PICTURES; i++) {
+> > +	for (i =3D 0; i < NUM_REF_PICTURES; i++) {
+> > =C2=A0		if (hevc_dec->ref_bufs_poc[i] =3D=3D poc) {
+> > =C2=A0			hevc_dec->ref_bufs_used |=3D 1 << i;
+> > =C2=A0			return hevc_dec->ref_bufs[i].dma;
+> > =C2=A0		}
+> > =C2=A0	}
+> > -
+> > =C2=A0	return 0;
+>=20
+> Move this code style change to new patches.
+>=20
+> Frank
 
-Thanks,
-Beleswar
+--=-hO3VKyof1zFkkmRUWXyp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafJJ3QAKCRDZQZRRKWBy
+9H3UAQDXMPc16wto5clUhLZLnohxaOrBBoEinO5d3WvhOAdRDAEAq/QIRB2+WigR
+13DyCJr+rFfmdUWiBtqbZtZoXN1CVgg=
+=FgIy
+-----END PGP SIGNATURE-----
+
+--=-hO3VKyof1zFkkmRUWXyp--
