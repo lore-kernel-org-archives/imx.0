@@ -1,140 +1,131 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A90F303A0A;
-	Wed, 29 Apr 2026 18:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA6C413259;
+	Wed, 29 Apr 2026 18:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777486307; cv=none; b=o3f9TXy6vbemeVD3DM/WqpTVZDdrGjJNIwCtZgGQPmg9xa3HokQQIVbH7y78dPx3ns/bYPXPY2x3IykST5/OJhcmqnnnPqls5YzwsKzzf/BiZM3dlu/wupcr3BqRAemblU+psVBxv/nzOkP+Ned0a+YjIntSgFXrD27gLnHCQiQ=
+	t=1777486690; cv=none; b=jMQ/W/eMFYhMvlE/uWjqB6J1oxTSSVQURMkS+gNI4NwgCrsnMLKJmONOxQnH/xfMGcPJ/a75n8Unx5sz4VIlxJ5fmo+eN3YDGXr5aoIucI5BUj1y83EE9a2DBQkf+7pU84VlT205glPt3w4s8zGKrXRlri99HuPqgrS+12yRnA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777486307; c=relaxed/simple;
-	bh=vVHtEP46vGKolJeaCtgCNYw3z2ZwVl3u6h4t7hanr/Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DF6T4bySbE71jvipUtf0+MZbxryzMUNT41VuINdjIY9uO14G7BfCinIC3XOsyY+fP8o9AvzIl6Z9D81+v2MpvJYkFsEpvcIQtTOr6QFEH5GjnMwQLI/Hyia6r7xkGDwALd6OBCgdBoF5mC0CZuYjmDSR3znOlSJsfosf01ff4Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Ewbsn7Rs; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1777486690; c=relaxed/simple;
+	bh=UdSAZ4Ed89EsgnscyKgKTV5jZmvavrICMX4k55nyzeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JgWH92ZzOF7LetPaAaRU9X3U4V2aNAAoxtvI5M9VYDJMk2n3DZz50ZEbaWdQjc3bzVff0pX4BXMVwwooswstGbcnMqrr6oV4kCLAHdSkdSW1C9fbQLsmyK/0w3KlFF9a+EO9Ld+HZYTWmmCKQs17I2t2sH/h5c//vM0IeS3BwKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbfBDsW/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Ewbsn7Rs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1777486304;
-	bh=vVHtEP46vGKolJeaCtgCNYw3z2ZwVl3u6h4t7hanr/Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=Ewbsn7RsB40xrAgPa5Bt4o5YasSBzfCpYAa5hJAcwhvoee//1lhLEL4dBxIxE02fT
-	 377ycqD41TJX1eAocyvNU5r0RozZ16EWrWFFAbFuMHMP8721NsQ0u8JvDVmnxU8yQD
-	 h+KJ6pMsL8PVxghCIF5D1fotq2uEXqpReN0jdKIBjrekbSDDeFz9kpyS6tRBdGxmVO
-	 dKOKNYdZtl4YE0DkDvos5ajf1QVWgimYG8EXuaWXbuOdQwRNmgJZRS3bNoODeH5wxk
-	 vsxC85TM9D836M2JgN+f6bSyxzrF+JYqZ00fTrTKJPXjBMhygefczmatRlPIiVzeTn
-	 +j2i9I+mM04KA==
-Received: from [100.64.0.214] (unknown [100.64.0.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3381517E0EBB;
-	Wed, 29 Apr 2026 20:11:42 +0200 (CEST)
-Message-ID: <4064d0168c3409a1e15f9c92da56cea93956b31e.camel@collabora.com>
-Subject: Re: [PATCH v3 1/2] media: verisilicon: Simplify motion vectors and
- rfc buffers allocation
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Frank Li <Frank.li@nxp.com>, Benjamin Gaignard
-	 <benjamin.gaignard@collabora.com>
-Cc: p.zabel@pengutronix.de, mchehab@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, heiko@sntech.de, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, wens@kernel.org, 
-	jernej.skrabec@gmail.com, samuel@sholland.org,
- linux-kernel@vger.kernel.org, 	linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org, 	imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
-	kernel@collabora.com
-Date: Wed, 29 Apr 2026 14:11:41 -0400
-In-Reply-To: <aeIRWW937ev_F8zF@lizhi-Precision-Tower-5810>
-References: <20260415140420.282084-1-benjamin.gaignard@collabora.com>
-	 <20260415140420.282084-2-benjamin.gaignard@collabora.com>
-	 <aeIRWW937ev_F8zF@lizhi-Precision-Tower-5810>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Organization: Collabora Canada
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-hO3VKyof1zFkkmRUWXyp"
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbfBDsW/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD5BC2BCB8;
+	Wed, 29 Apr 2026 18:18:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777486690;
+	bh=UdSAZ4Ed89EsgnscyKgKTV5jZmvavrICMX4k55nyzeI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CbfBDsW/nyPye5VIbtgNiO28oc3SZxbKtVn2E3OWdbW/8KVI8GeIONNhieeZ/Z0hy
+	 rlkPXrjvjPGCFiouw+FTywdjwyj9DC5DHI9MSwgKGpRNCH71Z4gfLHRdEqkO8g2gqv
+	 rNq2ZrIotKFGd2U3KMTEk4auAnD9lH0Tou54X+TnEwUHXkYEAs329PYL4SGFgBepCR
+	 2o+A7bgoRIih32zJtE5xIj4gD0fGPr6IfvNH8+SCn1G8F+VJcg+n31KzDtD+Ziej9N
+	 gMCLSBlMxWQUvfsz3Wy20FMyFjWRirphFOCzPDs20giCnLZ6aNcuqksYnHX28BR9gX
+	 Hv5CBJqO5Kefg==
+Date: Wed, 29 Apr 2026 19:18:04 +0100
+From: Conor Dooley <conor@kernel.org>
+To: florin.leotescu@oss.nxp.com
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, viorel.suman@nxp.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+Subject: Re: [PATCH v7 2/3] dt-bindings: hwmon: emc2305: Add
+ fan-shutdown-percent property
+Message-ID: <20260429-shiftless-docile-e57509e967c4@spud>
+References: <20260429065955.2113012-1-florin.leotescu@oss.nxp.com>
+ <20260429065955.2113012-3-florin.leotescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="O/6ha+tJR4ql1YNr"
+Content-Disposition: inline
+In-Reply-To: <20260429065955.2113012-3-florin.leotescu@oss.nxp.com>
 
 
---=-hO3VKyof1zFkkmRUWXyp
-Content-Type: text/plain; charset="UTF-8"
+--O/6ha+tJR4ql1YNr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Benjamin,
-
-Le vendredi 17 avril 2026 =C3=A0 06:54 -0400, Frank Li a =C3=A9crit=C2=A0:
-> On Wed, Apr 15, 2026 at 04:04:19PM +0200, Benjamin Gaignard wrote:
-> > Until now we reserve the space needed for motion vectors and reference
-> > frame compression at the end of the frame buffer.
-> > Disentanglement mv and rfc from frame buffers by allocating
-> > distinct buffers for each purpose.
-> > That simplify the code by removing lot of offset computation.
+On Wed, Apr 29, 2026 at 09:59:54AM +0300, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
 >=20
-> Can you try split to more small and straight forward patches, for example
+> The EMC2305 fan controller supports multiple independent PWM fan
+> outputs. Some systems require fans to enter a defined safe state
+> during system shutdown or reboot handoff, until firmware or the next
+> boot stage reconfigures the controller.
 >=20
-> for example create patch just move hantro_h264_mv_size() to header file,
-
-Marking this has Change Requested, as I completely agree with Frank that a =
-split
-of this giant will help proper review.
-
-Nicolas
-
+> Add an optional "fan-shutdown-percent" property to fan child nodes
+> allowing the PWM duty cycle applied during shutdown to be configured
+> per fan output.
 >=20
-> ...
-> > +++ b/drivers/media/platform/verisilicon/hantro_hevc.c
-> > @@ -44,30 +44,49 @@ dma_addr_t hantro_hevc_get_ref_buf(struct hantro_ct=
-x *ctx,
-> > =C2=A0	int i;
-> >=20
-> > =C2=A0	/* Find the reference buffer in already known ones */
-> > -	for (i =3D 0;=C2=A0 i < NUM_REF_PICTURES; i++) {
-> > +	for (i =3D 0; i < NUM_REF_PICTURES; i++) {
-> > =C2=A0		if (hevc_dec->ref_bufs_poc[i] =3D=3D poc) {
-> > =C2=A0			hevc_dec->ref_bufs_used |=3D 1 << i;
-> > =C2=A0			return hevc_dec->ref_bufs[i].dma;
-> > =C2=A0		}
-> > =C2=A0	}
-> > -
-> > =C2=A0	return 0;
->=20
-> Move this code style change to new patches.
->=20
-> Frank
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
 
---=-hO3VKyof1zFkkmRUWXyp
+Why didn't you pick up my tag from here:
+https://lore.kernel.org/all/20260407-slang-scoff-795164352c62@spud/
+
+> ---
+>  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.ya=
+ml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> index d3f06ebc19fa..8c2548539d7f 100644
+> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> @@ -54,6 +54,12 @@ patternProperties:
+>            The fan number used to determine the associated PWM channel.
+>          maxItems: 1
+> =20
+> +      fan-shutdown-percent:
+> +        description:
+> +          PWM duty cycle in percent applied to the fan during shutdown.
+> +        minimum: 0
+> +        maximum: 100
+> +
+>      required:
+>        - reg
+> =20
+> @@ -80,12 +86,14 @@ examples:
+>              fan@0 {
+>                  reg =3D <0x0>;
+>                  pwms =3D <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
+> +                fan-shutdown-percent =3D <100>;
+>                  #cooling-cells =3D <2>;
+>              };
+> =20
+>              fan@1 {
+>                  reg =3D <0x1>;
+>                  pwms =3D <&fan_controller 26000 0 1>;
+> +                fan-shutdown-percent =3D <50>;
+>                  #cooling-cells =3D <2>;
+>              };
+> =20
+> --=20
+> 2.34.1
+>=20
+
+--O/6ha+tJR4ql1YNr
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafJJ3QAKCRDZQZRRKWBy
-9H3UAQDXMPc16wto5clUhLZLnohxaOrBBoEinO5d3WvhOAdRDAEAq/QIRB2+WigR
-13DyCJr+rFfmdUWiBtqbZtZoXN1CVgg=
-=FgIy
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCafJLXAAKCRB4tDGHoIJi
+0gavAQCPTKrm8kliUt98l4rMdBj0rVjas+i0gGIqNsxjP1AXLgD/Vp1BZn+P5YxZ
+Odh6zOWq9LiWRscCj2gLht0B4n8sWQk=
+=7V1K
 -----END PGP SIGNATURE-----
 
---=-hO3VKyof1zFkkmRUWXyp--
+--O/6ha+tJR4ql1YNr--
