@@ -1,58 +1,60 @@
 Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618C54219E7
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 13:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA454266AE
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777555307; cv=none; b=A7POcVgFGUkW+c1ACgjB5XvYR3mlRIrmxTJPockWJ9pasj9Q/xqu5Y/cJRsNnXRgHlK52Gt91Gxtdn0al1JFcVsLK/wZ53/euUs6VqWZgKNvRmyVZnebDdph/VDkInqocyofyZ0pEGLKVO6yf3gb0IjJY0cln/U0GzLeq50TtfQ=
+	t=1777555308; cv=none; b=I6D62VqkAi1zSfvWjKhR805TCZE6N/LcRGiq5exp8HCLZTwiqAFyDJm+9bOMQZFKWV0N0WH7qGtenowUlDjab6hZKY5g3GTCO/4HiQWzmHoqyCpVdnNbuCKFJBBvk2JPlKWdOF6/fX/8tOmj5/b8ebf4HQW2XcZL8CT5ZpPBkl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777555307; c=relaxed/simple;
-	bh=2eZMKrdUq1kE1wYNVAUmX1R9Mh35MCWgdtBeWNPzAyk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BxBuRhbk+TswbDnhZLBLKkBd6rQuV3klO/DbvJuxaF42jb5qaOrzHdS8mGqeLY5P5ViOLo/u11rAUoomWlT1VK0pudn1TyWMAIHcjWAMr2gKPalNUNW97VeLCfcOUE2tYlu+UDDGyBEguMEsCqc3clAFdx7CPdIJINDkI30GgSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc; spf=pass smtp.mailfrom=arduino.cc; dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b=Fp+ujUSc; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1777555308; c=relaxed/simple;
+	bh=NwNLBanCJfWdivsHH3TQq4KhfsrK1t6xAmGPuWJEvUM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QeeLQX3GiRThHVG6HBR5oOKkRmyOJch/crUOnO0LjObVeUV8UdiItCBsDlGLiJOJrDTR0ufokix1MBGpLfYTofrzynz9pckDR+9dL2C2LWq3gkfGMBLKlLI75UyjYXBv3ZauWxPm+CwMVZW99+VCasGzDhthpNMxuK16tiU5F3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc; spf=pass smtp.mailfrom=arduino.cc; dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b=fDIkkp/W; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arduino.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b="Fp+ujUSc"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so15469055e9.2
-        for <imx@lists.linux.dev>; Thu, 30 Apr 2026 06:21:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b="fDIkkp/W"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso6514825e9.3
+        for <imx@lists.linux.dev>; Thu, 30 Apr 2026 06:21:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arduino.cc; s=google; t=1777555304; x=1778160104; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p1duYelZIs2qYPVB/MOAgMGm1UaFo5h5pWBMCVl5tsA=;
-        b=Fp+ujUScP9TbZRHwEn4b6qKXcmGNOtFZ06LrbOU42iJZ0nR2sM+1SEZSqcK/c2AwVD
-         S0B3gKJ0SBuH0dBmY3FivrkoGLbqqnzeO8TqMCKyKfUfZnOzBc30Hfj949+iBTrEv7b7
-         LBkd/pDz2BQqz43MmWe/caGjUMvJDN3jbAUvM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777555304; x=1778160104;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=arduino.cc; s=google; t=1777555305; x=1778160105; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p1duYelZIs2qYPVB/MOAgMGm1UaFo5h5pWBMCVl5tsA=;
-        b=ZxX9jMNepHYB+Z3as/LYdyqkpQn71T+V3Wc7Uf7p/vmDKuB/33Q9UqoHV47TF9ZOqk
-         OSHgjwc2lEHQ9xzaZVtb3NF/xg/b5+ipLlnfnrKo6RQNIc1I5g/mqSN1N2DoP46k8I+b
-         AT4FYvB8XLPkbC9zX7w+tFJ1xwhvaIGYraohgsqf5cWRzqZayjslj0aTrOI+AyZP+9K1
-         NygXc5pIf04IV2TBKOU9ag+06/hfq6QigEVwv3gxupPZeEe84jmdZ4fnwcxq/ubfUDxS
-         NwgdRNufIor0xBmq7cJRAabnR6p1kwD4/kk+TXsvygJGAB+Fvq0B9lC2NNqLweFE1Lqn
-         SqFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8iDwi4o5PN6rIuOfUVthsbUCLpCGLk9hJzHwZu8YfmHa951mLBzjAufTsorSJLjYm57qI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YygFxnIA45lWMThqQxx/Ocmpqbx2ySmMXeqSNrGWdVBZSB4tjuE
-	T5ZufZ5NKsUMX70otFDEuVyiDm/zRwen9FEVnP8k/dGaqzvH/theV8+fGkYhkNDXXfs=
-X-Gm-Gg: AeBDietDC0zH+K/yWzLY02tVF6md6BcWXuzDvT0A+nlndOOAf36dL8yfSR6ehIXzxvn
-	0BdN9ASPPClvOdyh9bNh2z2fM6Ya9dvuYwuhJXVz0tOfD/pmtPUWtJovk2/wg4HdzgeTUlScfjD
-	WaxEDSpyKD6drWVrBnVfOvDDv8rYLUEUHuaF7bGNuPT9u7hBMJh0YbivsWsXFesPhblUcBg9so5
-	99IB5oc6IS2WXpdM9ETJ7IQ54rDMz5zKocGlc7KUNnHYBkCV4tZJxXs8upU80e5fKBAxTrZZz1z
-	Qb5jkZ2IQFR9eEGPss6vFQToOldv6SUOG1j3JArO26ktgWprmnUKp7oPty9+OSd6DbE2EyfDSIZ
-	LFBlNWJUJGi3NhO+Q9EI/fdtqeBgpjCEBTckjpqLcicR2F+1isN7xh+rg1DGDLmZOyule8yHgHk
-	w+9rVH+PwfYkBAhcwzrtqn5jy+R7siF7oQRQD1uOe4gkt989Im2hDKMU9Bg6YkqzaHLpg=
-X-Received: by 2002:a05:600c:8b76:b0:48a:5363:8cac with SMTP id 5b1f17b1804b1-48a84484f9dmr52429955e9.22.1777555303724;
-        Thu, 30 Apr 2026 06:21:43 -0700 (PDT)
+        bh=7KQEi+9Iq6a0oI1284HueD/sDdeYdOgMZIf6VRafu5Y=;
+        b=fDIkkp/WjltIqn9o37mzJyyBcsfAH7H0+vVHteXBMTKIFATjO/Qsbr4gEE5nDgAdrn
+         yLtIDbw9eV9Umay10QDuYNsq99iS1Hk5fdYnKM2/6t+0su8FvdXyYOQW/ZkcUdrM6aYW
+         f2L4skC+jX5TI/fEOdtr/CYnfX7ddvzQRLSBU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777555305; x=1778160105;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7KQEi+9Iq6a0oI1284HueD/sDdeYdOgMZIf6VRafu5Y=;
+        b=W+O26SqIcEV8rMhCQYxH6ftnREeoBWX4qR3wXwhqZiXaMyQdsUDotI4Pg1C6MCZAeO
+         +dEaT14jNA8Fj4SRJ9/xRHwQQBRBhxV7Y9obOFkUTqHw93i6+p//MaUh9O5wfZz4Ouxu
+         pkICK0S4BdNLoMxylMpCnGx7+vq3XuDcf/Ngh+RpcstQ2vfoR/Ry8hfkJ6+y6DiCfNdU
+         lgGpJHdeB/q6231eLlOI6LgZOBlD1BREI6wmYdrg3HPpv2s3lNetLCeoTBiAaaEt7QJz
+         mF7LMDIBXUvN2Nv7JKKiTeXS45WzcNZHvSvXuaygsbUYJEhfz4v/5JhZDbDaNdwL3fvY
+         ghGw==
+X-Forwarded-Encrypted: i=1; AFNElJ+oQUe8Syjf2Znxspve6YczS4zIe3irhNBOsGBMACEYqXELWwFXlJa2jET08pW7TVfXq5c=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yygkl6+P0lVuCwAAVXFWLVqFlqgTM7GvRkY97XKg8cpxG0ddLnP
+	SOMQ/namVXjOjS4vGFDTFHi1dh78BoD2EIvGuevlNsOfXaOI6M/oQiol1T6rbiMHNi0=
+X-Gm-Gg: AeBDietFM4zDm8FLCLBtDu3rAP5sxOIAm9cmcjMyvNlQzYveIlXhDl5petayqdVVRVW
+	7tRr9CcpzLNTyOuRUvpNw5bXKaB2CDq5IoJXikpUpBclvLx415R/u6KQlWPEdO3aNQJPPY59VcP
+	9Cf5oeFMSE483OfsCrrJ950NawfKIe9haw8mui6a4xEegmg10zVHMZY1svBCI8o/uYU+57CnIFw
+	cI01cWO5V1ayvmBiTMVS7OI5/3IMxLEuGBYf/bFjyo/e0IEkLKEv72K6DaK/6bVS5qInT/U+shu
+	0/DAtjs0PaKCjMtoIzA51GrnEXtZetzsk1uZ5+bGsIXRLsMPmu/6weXdgAKoZ4bEQP1XeuRFBAm
+	g0pRC8sy1OLgPejSXRbCU4tkTYuGVHG36vL6lXP61pakm22KuoIUVoPnG/azUaL0EuJvB4EDUG5
+	PelEsmGAnO8yP9hqMyKkV5IXbACJcxGRD3XbnRgjkAaLGkVH8PoCn2qLpWyc1gXPO1nCg=
+X-Received: by 2002:a05:600c:8b04:b0:488:b241:2c5f with SMTP id 5b1f17b1804b1-48a8445fc28mr51917765e9.26.1777555305440;
+        Thu, 30 Apr 2026 06:21:45 -0700 (PDT)
 Received: from riccardo-work (public.toolboxoffice.it. [213.215.163.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82307f28sm106210325e9.13.2026.04.30.06.21.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82307f28sm106210325e9.13.2026.04.30.06.21.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 06:21:43 -0700 (PDT)
+        Thu, 30 Apr 2026 06:21:44 -0700 (PDT)
 From: Riccardo Mereu <r.mereu.kernel@arduino.cc>
 To: andersson@kernel.org,
 	konradybcio@kernel.org,
@@ -78,10 +80,12 @@ Cc: linux@roeck-us.net,
 	dmitry.baryshkov@oss.qualcomm.com,
 	loic.poulain@oss.qualcomm.com,
 	Riccardo Mereu <r.mereu@arduino.cc>
-Subject: [PATCH 0/3] arm64: qcom: imola: add support for Media Carrier 
-Date: Thu, 30 Apr 2026 15:21:37 +0200
-Message-ID: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
+Subject: [PATCH 1/3] arm64: qcom: agatti: Add dai@3
+Date: Thu, 30 Apr 2026 15:21:38 +0200
+Message-ID: <20260430132140.30369-2-r.mereu.kernel@arduino.cc>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
+References: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -92,58 +96,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Riccardo Mereu <r.mereu@arduino.cc>
 
-This patch series adds support for the Arduino UNO Q (aka imola) Media 
-Carrier expansion board.
+This will be used for audio over USB-C in Arduino UNO Q board.
 
-It adds: 
- - two CSI connectors (support only for imx219 sensor)
- - one DSI connector (support for waveshare 5" and 8" touch A panels)
- - 3 jack connectors (headset, lineout and ear)
+Signed-off-by: Riccardo Mereu <r.mereu@arduino.cc>
+---
+ arch/arm64/boot/dts/qcom/agatti.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-It modifies the previous qrb2210-arduino-imola.dts (named in this patch
-series qrb2210-arduino-imola-base.dts) in order to move audio and video
-output via USB-C to a DTBO.
-This is needed since the DSI lines can now be used via the carrier
-board.
-
-Camera and panels are divided each in their dedicated DTBO so the users
-can easily configure the overlayed DTB to match what's actually
-connected to the carrier via user-space tool soon to be released. 
-
-Depends on two patch series:
- - https://lore.kernel.org/dri-devel/20260413-waveshare-dsi-touch-v3-0-3aeb53022c32@oss.qualcomm.com/ 
-   (applied to drm-misc-next)
- - https://lore.kernel.org/dri-devel/20260331-ws-lcd-v2-0-a1add63b6eb6@oss.qualcomm.com/
-
-Riccardo Mereu (3):
-  arm64: qcom: agatti: Add dai@3
-  arm64: qcom: imola: Move analogix video/audio output to dtso
-  arm64: dts: qcom: imola: add support for media carrier board
-
- arch/arm64/boot/dts/qcom/Makefile             |  13 ++
- arch/arm64/boot/dts/qcom/agatti.dtsi          |   4 +
- ...ola.dts => qrb2210-arduino-imola-base.dts} | 122 +++++++++++++---
- ...rrier-media-camera-imx219-csi0-2lanes.dtso |  49 +++++++
- ...rrier-media-camera-imx219-csi0-4lanes.dtso |  49 +++++++
- ...rrier-media-camera-imx219-csi1-2lanes.dtso |  49 +++++++
- ...rrier-media-camera-imx219-csi1-4lanes.dtso |  49 +++++++
- ...10-arduino-imola-carrier-media-common.dtsi |  46 ++++++
- ...a-carrier-media-panel-5in_touch_a-dsi.dtso |  80 +++++++++++
- ...a-carrier-media-panel-8in_touch_a-dsi.dtso |  80 +++++++++++
- .../qrb2210-arduino-imola-carrier-media.dtso  | 131 ++++++++++++++++++
- ...rb2210-arduino-imola-video_sound-usbc.dtso |  61 ++++++++
- 12 files changed, 713 insertions(+), 20 deletions(-)
- rename arch/arm64/boot/dts/qcom/{qrb2210-arduino-imola.dts => qrb2210-arduino-imola-base.dts} (85%)
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi0-2lanes.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi0-4lanes.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi1-2lanes.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi1-4lanes.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-common.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-panel-5in_touch_a-dsi.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-panel-8in_touch_a-dsi.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media.dtso
- create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-video_sound-usbc.dtso
-
+diff --git a/arch/arm64/boot/dts/qcom/agatti.dtsi b/arch/arm64/boot/dts/qcom/agatti.dtsi
+index 8a7337239b1e..01e98ef52271 100644
+--- a/arch/arm64/boot/dts/qcom/agatti.dtsi
++++ b/arch/arm64/boot/dts/qcom/agatti.dtsi
+@@ -2275,6 +2275,10 @@ dai@1 {
+ 							dai@2 {
+ 								reg = <MSM_FRONTEND_DAI_MULTIMEDIA3>;
+ 							};
++
++							dai@3 {
++								reg = <MSM_FRONTEND_DAI_MULTIMEDIA4>;
++							};
+ 						};
+ 					};
+ 
 -- 
 2.53.0
 
