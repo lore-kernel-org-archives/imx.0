@@ -1,80 +1,80 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013055.outbound.protection.outlook.com [52.101.72.55])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012063.outbound.protection.outlook.com [52.101.66.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05C333FE0D
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 02:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A9E32FA3C
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 02:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777517361; cv=fail; b=X3ZRNrOFfpSMg7C9afCQ2AsJ+lXS8jq4rxZLcYcapMt6YkZaoxLa8oOfNDZPpBwzDXcAeEP6w2rAeKPaltHk4kHVYWNPKIzh4/bWyC/gWsGDrJuow9+P0Wzw7Oy1jpuV9pg3CNdpoQ1PFqfixHlu8d+bI48el5xYj61qMsXcukY=
+	t=1777517463; cv=fail; b=LBChDafQbMCuM7VhJE2ryKow9WzRXmegRUgv9XARQrEisbct3IutE9Ry7YoaymrNB8Bm5f0HcpqmkOMvtCMQa8014bRH4bFiMF6ntMjUKRzj1e4gveNU4wdpJLuEy0Ft+yvI0EngbnrYyLIvouPUfR1Byj5skg3uTsRWr49MiiE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777517361; c=relaxed/simple;
-	bh=0V33JuQZ0Fov2wpKeB6RulXK1kkdUhq2n/TH1n3FJD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iNlEku/g3saS+S4qNcEbezaJU/WVPD8LAHAVcq0GQsAENhqEfJWoCjQBroxrvMPbS7ukFRAHlkvkIc6raru4x0+neT45VqaGYymsJS+XV0A7Vv9vN+u64+FSJtTU3fjdCO/fpnbCxYe84Uit0P6kCQzlbvlxuj2V5U8k3SOAPd8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EvXjKQT5; arc=fail smtp.client-ip=52.101.72.55
+	s=arc-20240116; t=1777517463; c=relaxed/simple;
+	bh=fy+z0/bFhSf/4s/RtukX+UyuWynqdkTYlUWIA8DmpyE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=YUCVlk3INlTnxq6Z07fjE6XIXjnXz2IsfzABOXc5gKYXCi41uVSkTjDK7zqnoXj/CDdTeXZddMqjlpHC5EpwVAH29w+06FIO/zr1FztAvatk/+kJ0OzK60xQ3hsyBFzmLjIPf0ezLXSHsCJcCYc+C9osGBSZnU90Q4UFumSAwdQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eKhr4Xv6; arc=fail smtp.client-ip=52.101.66.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EvXjKQT5"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eKhr4Xv6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cuj43wRpCeIZmUELR+JnoBGIFtlEfDP3n8HR5BX9x+scOWR+9cSBwa2/ltDdn5yu1j8oOLUwkZy3Tgm60/uvJ894uudPtQhdf80cbUnu9Y269MBXgbYZr/T2YnVhovQUe4hWg2Bs6erR3oQmQWQ7GhiOX628VcFp1el/obsD06GXl0cQC/fyOWANpYjZo+2LQqjWUTjONcX9bZjLPol0KKMewR8/LrIbiB0WAgUv78yFrtm/awV7Ulck7u+f930RD4PdXrSgAuR0UQbWlXYYCpV7WKcVEUrmOAsLnUhcZAfwZ3C3+M9Get0UBTuB7lFDO601q4fr24nTRArmhVYdZA==
+ b=lJxxTxlYNActynEHjykSu4/ntJZYpa684m9CGx7gCXLLGxG/aWxOvU8NOTVihDg9s+l9QvSt+bKXnkmiV7OuShQWS4oWbAnAIGENmyp9h87xEXiCz+pea5UsNOACym6ofPMCnC/avYGJ6NBzUGUfnHPJfQhCLYPMLKcfEmpE6C+5F1r3IGiD/NrAAPghelJWs7vTssc2H9OqN3bDtr/RQIMvCk86PFuBHV9LrB4tYr3Ap497ZOwKO3OWk+wDgg+tFpyb1A86oZazYZdk4ca8uzErF50swWr7ZfpcwdpTuSzoaGh+D8q1vKtjq9ElKmtFaQlHNCLHT8LL19+XjYQkNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vpFP/5ZCJ+bg+eA8fAjzxurulz/xwiGFfOFB8EZy15M=;
- b=iE3jwqdHG95wOf/jU1H2cJby+0lOt39l9dLWAyWAUwhKTIvlwH5HBtjXHilBnvzW5jwXv30vXDkpnbThfjYeV0hLDp2fpfpjBfQZ0FsuYkb7GHYLXX0sfPni4jNDbY4OSD4g8egBuDFx4td/5/sQi3L0xCgtwytlShZk5qyimFVOkeVSMCEtbtuzcad7i+r0ilUAe8jXAoIX3H+a5/kmvW6GuODGT29CDcIJPkFOsCvehqWoYAjdMClQU/LcDnIifCCvDQJzgN3MsHb9mXg4xbYFp8yZ6Pmh0prudmy5dwX2isbuNiF519EwU77ldcYAIXSsWE9xrqLBruy5ymnpTA==
+ bh=bl0T8RtrAgfrgD+sGvAbuhDpfcS7pyPwXSJ7XtQMhVw=;
+ b=KnjO87ya4XlDEI71sO2Ef/wXqI5AEHOYpFlG0JdUFNDwBvjwIXstCeacGF0P8QA9qRRuJkTbRUrWSF63cKh51xHbbCmC4la28TvAnBysf3DNxDdr3R5gQ5sj7xKRxESagk/Pv0a+kUw0QVb/VHXiGuy/Qoo2gXBTWS0u/VV8cehFeWkruSCe3NXgXmgijF0kQ+e5uJDhYM1/w8FseJBnh3f7TCogrxGqqKxPVjTNe/kHHY2cZEZlierBcT+VV1PKpXNkJvp1mTjHaGJG/iF6dp3/2LY4Zw1MUC35O0ETymyKfhvCHNuORtcnsKDu+JI25zaNNm3X1ElkPtaMyulHng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vpFP/5ZCJ+bg+eA8fAjzxurulz/xwiGFfOFB8EZy15M=;
- b=EvXjKQT5p2zCiDg8Yl75PMssrIwkePgjzkv4NwNQ2Ya9qDMuT771lWPf/+IRnHFWw962QuIcq+dL2GFs5G4a8qRkB+NnNdBypLXausmI1SCJDuec9XpfO2nyZPBkC9f2vOCpV0FtVA9Ov23vWoh89Wah6fZ02+WosUZzsvenPyGLyGTDeXx1p1aw++mukUYHfkhI4rxuEEBlWu0TQ8aZDtJq9Z1M8u3cfNll6/OX5PI9atGK8AToSi2uM2JVGs4Jg9NUlh9z77GrwETXKxHQFQVvJTG5bnaNjWmMSw9d9/l/nbwyR/L2DrR7lJgnQkUEM+83bZkea5iaBsANjxTBWw==
+ bh=bl0T8RtrAgfrgD+sGvAbuhDpfcS7pyPwXSJ7XtQMhVw=;
+ b=eKhr4Xv6F0ez87SAlL8dCBnksigon8ZINGllFvihPKRSZRX3jK67O604Avv1pK2fOuzEM+778JS3A8MVdhvsgQcXXLBB0+AgPyIqdy3AIjO4jrrVmTSEOqipQUxP/ssLmfItBBOxiQHaZ1znWxxH+Bi4DZ532O4oIl197x5NVgC4uVE6LZcCb5uZdfUTZJW++4wluosB/IoMIvGk8C45ulyCIFn3klaY+04JkiolajZrAcJ/QxwuOteuICz0oXfjnvcvUBM7FtUMkZkh4STuq5y1p3NuSuExSgv99rYT84oH14EADxMo6wq35CbPWjorxPqU/B1skA9tCB6dj8SZXQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by PAXPR04MB8608.eurprd04.prod.outlook.com (2603:10a6:102:21b::17) with
+Received: from VI1PR04MB6861.eurprd04.prod.outlook.com (2603:10a6:803:13c::9)
+ by DU2PR04MB8551.eurprd04.prod.outlook.com (2603:10a6:10:2d6::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Thu, 30 Apr
- 2026 02:49:17 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
- 02:49:16 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	f.fainelli@gmail.com,
-	frank.li@nxp.com,
-	chleroy@kernel.org,
-	horms@kernel.org,
-	linux@armlinux.org.uk
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH v5 net-next 15/15] net: dsa: netc: add support for ethtool private statistics
-Date: Thu, 30 Apr 2026 10:49:45 +0800
-Message-Id: <20260430024945.3413973-16-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260430024945.3413973-1-wei.fang@nxp.com>
-References: <20260430024945.3413973-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0133.apcprd01.prod.exchangelabs.com
- (2603:1096:4:8f::13) To DBBPR04MB7500.eurprd04.prod.outlook.com
- (2603:10a6:10:1f4::16)
+ 2026 02:50:59 +0000
+Received: from VI1PR04MB6861.eurprd04.prod.outlook.com
+ ([fe80::7f96:4bde:2e55:cd5]) by VI1PR04MB6861.eurprd04.prod.outlook.com
+ ([fe80::7f96:4bde:2e55:cd5%4]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
+ 02:50:59 +0000
+From: Jacky Bai <ping.bai@nxp.com>
+Subject: [PATCH v6 0/4] Update the thermal support for imx93
+Date: Thu, 30 Apr 2026 10:53:29 +0800
+Message-Id: <20260430-imx93_tmu-v6-0-485459d7b54f@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACnE8mkC/1XOy26DMBCF4VeJvK7RjMFmJqu+RxRVxrGDF1xkK
+ KKKePeaqBeyPJK/3/MQk0/RT+J8eojklzjFoc/DvJ2Ea21/9zLe8hYKlAaCSsZu5fJj7j5lTUS
+ O9A1r40V+PyYf4vpsXa55hzR0cm6Tt8cCAiEiF8jMikmiHGN/Lxob3/t1LNzQ7a02TvOQvp5nL
+ eVe/PFIhwuWUoIsdajZknFQq7/E/v9SHZzCo6uyMy5oQ9QEQPPq9K8zUL06nR1ob5ENNw2Hf7d
+ t2zeOGwUDTAEAAA==
+X-Change-ID: 20250804-imx93_tmu-7888c85d176e
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Jacky Bai <ping.bai@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
+ Alice Guo <alice.guo@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777517621; l=1726;
+ i=ping.bai@nxp.com; s=20250804; h=from:subject:message-id;
+ bh=fy+z0/bFhSf/4s/RtukX+UyuWynqdkTYlUWIA8DmpyE=;
+ b=y+lWMQAPptu5Wp/Yo6M8xhTERoJboD2LTge2qDVEw6ULIrSo79Guti27tr4XgK0Mwc3CB9mX+
+ bjQJ2gZ4/FtBiYav2ktvxZlhG8LbzrA7SKH9l8kV1PpEHQABhluIr9J
+X-Developer-Key: i=ping.bai@nxp.com; a=ed25519;
+ pk=ckFjCfRynXBjQGmSmzOVI5hggMD9XnnNlwj/jcO/j1U=
+X-ClientProxiedBy: MA0PR01CA0093.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::20) To VI1PR04MB6861.eurprd04.prod.outlook.com
+ (2603:10a6:803:13c::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,367 +82,108 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|PAXPR04MB8608:EE_
-X-MS-Office365-Filtering-Correlation-Id: 863931bb-7cda-4160-efcb-08dea66311ef
+X-MS-TrafficTypeDiagnostic: VI1PR04MB6861:EE_|DU2PR04MB8551:EE_
+X-MS-Office365-Filtering-Correlation-Id: beac747a-f4f5-4009-95d8-08dea6634f10
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|52116014|376014|38350700014|921020|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|19092799006|56012099003|18002099003|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	omkXyNqJzMUGvrDATze0xn9OEWc4fUSp1dYH+xQUKQU2bVai8fbNN2mpEIu4MuOS8/76Wh8QWxrymBPS9msNapZoAdYzkrL1le+ZnAhfUlM+3q8uSWTStc84WKdML/yQhjmqai2ZntxDVBwx/M2Tl3iQBlM3x35dRKl2pmwco2bFsy70DzF8mgvNmBgY9C87FuPY4vBIMGKnJqAlOzEEWPll6mSkjuf+8uvDRHfSmuzzqciH72k2CE1QTpCb/K2kWRuu4v5z82pKTQjDEJaz9c7DNoq3wyn/YN5Md8Ttt71q1WR2lmNkgExIUpkCrIwdZWFZVYjWlhiQbehMS7fbOdn3JxDc9TwL9ENWxB9tC0o+NltP+n9iLJ+l8czjAjrLNPXhk7WFd3YBKoVRzma1gaNaJ673SL/3CUtXU1/nMq476uXJSJ4R/kTpUOGlZL41JX69Ui4w53kr6WpEdvctlO7mkXEq2iQOubJQ0v8h2/jfBp4jzO1wiGBXOwcGimaSDrgIhEFBF0FIV81rFzB5YqS+u1sFPY1jnamoU9xykd9u2xl7++DiRBSaASKSZ9Cvij2+uL+cqPia1qxC93/seQh01lzvxFctgIA35LmE5bN6ZXRzJyhU6fnc6X62zJbQ6rCKiI6J96SZqNVBwnLMs8hf5BnGILDJ7/1GPguwT13a52Pwu35HxgWOs0dL59nwzQaBz2R2ecSKVE33daaRH9u2E3hBSb+OXBKFeW/DOuKdXo+o1Fo+vSZ8UZxAqvddwFx4/EXsmPG0maH+q5gKaWhm4UNnJu6KW5h5mtJ7A0oYx8EDEtr8KqLfNP0RcxEd
+	mZgx1etUs7w/83hNdt/MiJnk8F47HVv/IIjBvA0/C+7t2g573eEg9cTUg7rcntPqfcTqylar9T5mEOeYlp1HhDTFhsWVe5N8GB4OsXnPPYKXvOe+p7JpESzULkKpzIdIbddV+10zvm+CiENPrrJYlRQhV57uY3XR4EUgBYARUSZx8gDrqUEDJKwulPW7iYUWvdt+9HXIm/aeTu586Gk0SVMHB+6BchsAsbfli0lGob7T4f+4WwtJYzwqdo1KrBiSmUHPUaFeRfZXJ0g8IS2D+xFXecOrQQFhGIY3rJKRYuAnvVHRsUacWhvYLKJup0xKKuFXXW6tTQ67PQa2XlpK2ibePqeQcCSYHNTorMHQphYXvD4wAWDXCGv62a9mURir9T/Df4lfJ2hePX4mM1rt/og/hFz4hCUB+BQsFZUEF121kL7Pf6KulGnmraeW4Gnm7rvCiEm1eoIlPqKdtvlWKxidzYkKM8QZ41vxe0wJKl8itZEpr6M0X6XgF5Q9M2ETpcR2MEygQAZ/gtFPAT1PSwjFEshk9TvppkEXzXaQey5gfzfRozPF1BS0pRu9YnOG5Jy8tp5M0HT0J6cYJDOVkn3bkJ+vUpL3jVIqrdsB8jfuXH92vKHxH4Ciin/3qPRuuMcUEiGDwPxaeV3TNwWOv/NuTn83AW0CblCLZ5jrvWi5lxbN6PzDIFEHeZ8uFzPlVSt/x5R8102ZzBmEfJNZ0oujR2PJMjOI198zaYkzbMisi68HWEb2z4IJNb6HUY/jIeuO92AfCeOgnjD0jJcS5QF2WWMWPoZM7lxpatlSf53TEEmQ75UClOVUm9st8orIX/l2H+gR0fsUB2/MIPAQNg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(52116014)(376014)(38350700014)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB6861.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(19092799006)(56012099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JBpH7BX7f7Gq3dpgp2ycQ3ARnmRZoCB+cM2H38SjeO7i3E0knbUJrvC+brS9?=
- =?us-ascii?Q?OIOozH6JFM4E5SAsXUsuxbL94IJ8xAuvkMACcE5zgQqYSy+tFXPplvfUtWsL?=
- =?us-ascii?Q?AJwA5OqBpFn0NSTFhWX5D13mOlyVJSVu+gCiV2JniaY0lr8GBclwk/iF4M2H?=
- =?us-ascii?Q?p8ulSqPB6ft27kCn2Vv6BOGEou7ZxuU01ERG0+uml7jvz5+A+lRptYdyZE1D?=
- =?us-ascii?Q?XDxmWrxKG1S/aajDm5erFKHrL4ThrRKrah5HFCLu56IqC26xgSBbmVPRvP36?=
- =?us-ascii?Q?CUv7JnYIA2kQPNVbfCjnSAcfpTNLnXOQOPKpjEW70B+9dEUPDl4/iCYB3rUD?=
- =?us-ascii?Q?dobGyduwZDRV+N3+zN6hTawO89OPtHVSJpVDwWbDGVZt++8ZofLcKi3Ai16D?=
- =?us-ascii?Q?Pdp2jUre+k/q4/yUwaVO/X2+bM8sAvWZbub1LdaP2E0Gy0TA8QQ92db1gyND?=
- =?us-ascii?Q?buo1phbkveCE9o6zmirFPYZVofDA72ZbN11dhUNFJwNAVXO7YU/CcvYGpReO?=
- =?us-ascii?Q?vH49CDqvpCnQp78xZWID9+V9TBK5jPRtIvAEI8eStBXoGJVVdqO2gOg+XPqi?=
- =?us-ascii?Q?lO5ZtEWIOrfK3FNpWp/ZqoRBBj2tfV3jOJohIem5cfH32LZDPbV649UzoiBG?=
- =?us-ascii?Q?rqSAH+9NieJFQH86VAUU9GB8yFEAIq2NyUMsIuvB/c2GFM1KF/ai4bjQyQHH?=
- =?us-ascii?Q?veyaNnfrZ+kuA9e5vPBCFN3EIYytk8NTRlBOjXa9TQSovMEFis/GogIuq+0x?=
- =?us-ascii?Q?pVdDbsixE8PJQnORP1pFBu62wue4o1Ja99OJ+3LACIN40wIs4V7dpEskQVq3?=
- =?us-ascii?Q?pnwHggfUK9IG0SevegjLNaWUi/ok099Bksfw9CfgSTYgOMLCA8WZAP6Qx9UA?=
- =?us-ascii?Q?sUkFp7OamZ8mw5t4mi0p4DrImFCxAquLCLArTBNEvVdYs8GnaGFevw0MB2+B?=
- =?us-ascii?Q?Y0k/1crRI0OLUMhEPspdA1afHWKn9MDhwE/lzrWYq6VZzHi6E92NJGkPBG+s?=
- =?us-ascii?Q?AOkmQV71gkq0bMah22rTSRiltKClIue9DVbzlctjBEmYMSrkhTOW0zKxNTic?=
- =?us-ascii?Q?kPUDAwDM+fiKLJOcErf5kxFM3y+SFqAl+/gUhZs4OzsUUGSFHTVrvdq90O7b?=
- =?us-ascii?Q?cQ5iLnpC31DOho6TuLMh8bA6VV92opyj9JXuOiW7ffZkCF5weymwKSdE0wrZ?=
- =?us-ascii?Q?JR9BOfFgDTobyWpiBSNU6mKyPmAFp5jsjQjC6hwL3YYRqokcId76yJZatZ/4?=
- =?us-ascii?Q?HvBu5L2/t0J/KV5UT78miF0B94ZCeQEnnjwLhLpq2BRircNTMuUvTSwKav2Z?=
- =?us-ascii?Q?p674U/opKk/gvFmtlbjZ4rSJuWXVReObUFkf2hiobtU2dtavuAYlguEE1kUD?=
- =?us-ascii?Q?9aNQ+WQHE6vxoKNXDgraW1uecMkaz/QkUaX5GoW9r9HjvMV6h2wHQFiUhDq4?=
- =?us-ascii?Q?gfBXbQ4ag9awia6TooB9ZpuG8Q/abxW4dD5rwvWGUxsGFEn2v2Q2LuyOrpir?=
- =?us-ascii?Q?YvKa4fXcmrWk7cmfcKjeVtyiSQb+xCrl6ON1aj3Zy2NGvU41ikpPJePLWvA9?=
- =?us-ascii?Q?RrWyYMLteVvpAJYWGV+aXgl0Q9SBu7LYCPGeEFYeNmDLxJsHdsaBWUQErh3r?=
- =?us-ascii?Q?Jpn0fO78EEA+vnliG8Wfkmtk/OFRuSzf15Gy6qW9oh3JwQQjzX7Wlv9tMlUn?=
- =?us-ascii?Q?bDAn//eDZv2Qmn/3zm8Sy9QFCGCGCTITl9PKFRkxYXdI4s0z?=
+	=?utf-8?B?MmVrRlZBNjRBMWRaSlgvUEJVTTRqSE5lcVJNMGZyMlA0YlN0SG1rOTJVT2I0?=
+ =?utf-8?B?aDZMeGZwR1ZjRVdYNU5DWG5HTUNuVUovQXZLd1RWL0ZWN01wK0xialhZNGZp?=
+ =?utf-8?B?OUZXRTJZRGk0cmlpZHl0NjVYWmhLc2VVTkhXeithSmEyZncvd2hIUElwZzdj?=
+ =?utf-8?B?cEJDSWhLRm1McmRLeHc0WDFZZXROSE9RQmFyYnVyYml6aHFNYnc5UTBCNmdF?=
+ =?utf-8?B?dXBkdGlFZEthMlVZOER1cW1PRjNUbm1KUWJlajJSL3YvOEpoWEt2WGQxMUpl?=
+ =?utf-8?B?Rkc5dmovbXpGU3FtYjdhTjBETDNuQzRGYjJmZ2lDSjR1MUpUd29OK1VUaEtO?=
+ =?utf-8?B?eENVbm1xQ1NQR1hwaTVML25VS2ZEZ1hPSkgwQUptU3lldXQ2Z0p0dkZkcTNV?=
+ =?utf-8?B?K08zbU91c1ZuMit6WUNTZERCb2JSUGRBaWNXTmZFSnRKdjBoMTQvYXYxeTJK?=
+ =?utf-8?B?RkRVSFBocC9EenFTN3Ztc0psL2dWM043WkJheGxLTzJER2xQblpTTERHbExO?=
+ =?utf-8?B?RUNDT0xoKzJLSEh3TVlBdEI3L1Fuek9pRHUyNDBwVm5mM0YvV2ZkTWRDVDJx?=
+ =?utf-8?B?akZXWE9oRzlWSHRlY09iR0FBb3JVY0loa3BnMUdENGRhaUxQcEZtL3Rza2or?=
+ =?utf-8?B?ZDdMOTJTUVFoOEloRHhKTjlCQmMrazkyQlV1dlBETUV6Z25ySTRYMnVRTzBs?=
+ =?utf-8?B?Z0UvdnRmL2VIbnZTYy85N3VpaWRTQUZuSGJZbjVUQVNUMXp5cXhYNTAvampJ?=
+ =?utf-8?B?eXVjWlVDUFhrZVBMQllxa2RjL1FSYTE2bUs0NkhGL2tSRnphSldIOSt3UTN1?=
+ =?utf-8?B?QlR2VUhZRkltRGZuaURHbTgwQUR1QitXTlVUOFRxajhUMzdtalAxYWhEUU5Q?=
+ =?utf-8?B?bUlZUlRsdFlEak80NUd1QXIwL1JvNDFuV2l6RDg2T2Fka01yNHZrYmNiZHI3?=
+ =?utf-8?B?VVNVNTJHTTRWSU9kWHY4WDlvcmFFK0gwK0FQQ2srUFBIL2lZZFJ4MTlQZ3Jz?=
+ =?utf-8?B?OVc1UGY5bVlWejcwVXlGKzRob0p6S0dMekpmMkZ3OGFEbUVWOEt4bUtUdzdj?=
+ =?utf-8?B?U09wOGJPRjZTUlhYcG1tMmEvdks0RUxUSjJidERpNGpQbDN5MjMxTXQwY2l5?=
+ =?utf-8?B?dkJmWTJ6dTBtUUFRVmxxY2ZaQjJrOERzdUZvaTBqT3dPTGtFaURaRTdQZCtt?=
+ =?utf-8?B?eFZuOGdleVU1WldKOFVqVzZmc0NuQXJzalRZSjYxOCs0anpEV0R2SUxtWi9M?=
+ =?utf-8?B?Q0VHUGwraER3TUovUm5OWC91NW80RkhvVXl1RFYwRmhIYU5SdUxaa3hCZVFk?=
+ =?utf-8?B?dGZuRmdIT1hrR3BZa0dweDY1QTBMVWxFV2ptWGs2T0diYStjOVVUenpQL0RN?=
+ =?utf-8?B?TlNJS0ZCWnRkNVR2T1o1bmVBeDMweGNBMHR1YmQ1eTJVWHBERCtJSit0eEly?=
+ =?utf-8?B?Q3VpNEpNL2h6eHhNeVYwSFNaWDBtc3EwMS9RcXFRdDVlbkwxYzUwalFyS0xr?=
+ =?utf-8?B?bWphcElGc2c4MUpOVkhtMDYyT1l0cWx4di9XRHEzVlJVNmxYNk5GMlFJQ0ZC?=
+ =?utf-8?B?WENkTWNDdmxTbWFvVGRzM1lZYzc4L2xMMm1kdHlNWTVxcG90dEdzcEs5ajA2?=
+ =?utf-8?B?emgrWXRTdjFLZER4LzgrdnFLWFo2anJOc3hlWUVJcllCdHE0NmNGWHBFT2NO?=
+ =?utf-8?B?V3VTL0VHVmV6VUtjaUJyaW54aFBRWUtmRDVDTUR0NHlmRmF6L1hlUjBua2JE?=
+ =?utf-8?B?Y0ZuOXlZbFBwaE1wMDlnaTY3cXE3WGN4Zk1QRGgweE1IM1BjOUQ0T29BZlcv?=
+ =?utf-8?B?R2VCY2FEWFNxU010WmI2OFo0clVVYTdKOEY3VjBtSjMvUm9rWDhnb2hiM0xK?=
+ =?utf-8?B?bGdNWHNKNXgyOEhwVldRZ1FmSE1BNUNZRzV6Qi8yRzJEdGtCQVo0YTZnQ3ZX?=
+ =?utf-8?B?OWxUcTA3bUpxTTVqN09GWDNWMStIUGdtT1pKMjE1SFhlUktWQ0I5RGVqR3Mw?=
+ =?utf-8?B?T244SmE5blhkT1IwZzc5eVkvM29aVUVORkFCb1d3ZHBUVHV3UDBXZks4c2FJ?=
+ =?utf-8?B?bzlQVU5IdFpkQmRwYkRXWFlidWliUVMrZ25yMnVpZktXRVZJdXlEeUtaclhZ?=
+ =?utf-8?B?Mm5zME1ITERXN3cwaGRWbnJ5bHQ4SVlIa09sUFArTUlESkVkL1ZrNk1xRjIw?=
+ =?utf-8?B?VzdHNE5qNWFFV0RkSUtCQzlFUllPRUdnN2RqUnFYTDY0c3llZGljQVRYZCtY?=
+ =?utf-8?B?dGl4TERwOUpNeExycWtTaC9nUFhwM0xveTRxNTVlK1NQR2IyQlo4RE8xNEd6?=
+ =?utf-8?B?OFM3cnlsa3FjMFpzRXdsSC94L1Rid0pXSkQ2QzFZR3ZVOGE2WVNQQT09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 863931bb-7cda-4160-efcb-08dea66311ef
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: beac747a-f4f5-4009-95d8-08dea6634f10
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB6861.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 02:49:16.7887
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 02:50:59.4254
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dJvxUT4lYrDZnenDWCA7PU9Lz0/FgxVz0efCUqFi+NeaLUvEHZL4HltcUQ35qe63V0zRojy0QNAkVeDlbsnSkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8608
+X-MS-Exchange-CrossTenant-UserPrincipalName: VD7YPZijyGlVQFZ7UE3SUzdqRAMWi4LyxAXwEkz3de5/crVp/pStG0f4EpRXwgmpHO9zXpOANt1X5c0FnUeG2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8551
 
-Implement the ethtool private statistics interface to expose additional
-port-level and MAC-level counters that are not covered by the standard
-IEEE 802.3 statistics. The pMAC counters are only reported when the port
-supports Frame Preemption (802.1Qbu/802.3br).
+The TMU (Thermal Monitoring Unit) on the i.MX93 requires specific
+configurations and workarounds that differ from previous implementations.
+So, using the 'fsl,qoriq-tmu' compatible string is not appropriate.
+To address this, a dedicated compatible string and corresponding driver
+changes need to be introduced to properly support the i.MX93 TMU.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
 ---
- drivers/net/dsa/netc/netc_ethtool.c   | 107 ++++++++++++++++++++++++++
- drivers/net/dsa/netc/netc_main.c      |   3 +
- drivers/net/dsa/netc/netc_switch.h    |   9 +++
- drivers/net/dsa/netc/netc_switch_hw.h |  58 ++++++++++++++
- 4 files changed, 177 insertions(+)
+Changes in v6:
+- Drop the unnecessary local variable
+- Drop the first errata check in get_temp function
+- Link to v5: https://lore.kernel.org/r/20260421-imx93_tmu-v5-0-05ea1969bb9f@nxp.com
 
-diff --git a/drivers/net/dsa/netc/netc_ethtool.c b/drivers/net/dsa/netc/netc_ethtool.c
-index ac8940b5a85c..8d04db534347 100644
---- a/drivers/net/dsa/netc/netc_ethtool.c
-+++ b/drivers/net/dsa/netc/netc_ethtool.c
-@@ -19,6 +19,56 @@ static const struct ethtool_rmon_hist_range netc_rmon_ranges[] = {
- 	{ }
- };
- 
-+static const struct netc_port_stat netc_port_counters[] = {
-+	{ NETC_PTGSLACR,	"port gate late arrival frames" },
-+	{ NETC_PSDFTCR,	"port SDF transmit frames" },
-+	{ NETC_PSDFDDCR,	"port SDF drop duplicate frames" },
-+	{ NETC_PRXDCR,		"port rx discard frames" },
-+	{ NETC_PRXDCRRR,	"port rx discard read-reset" },
-+	{ NETC_PRXDCRR0,	"port rx discard reason 0" },
-+	{ NETC_PRXDCRR1,	"port rx discard reason 1" },
-+	{ NETC_PTXDCR,		"port tx discard frames" },
-+	{ NETC_PTXDCRRR,	"port tx discard read-reset" },
-+	{ NETC_PTXDCRR0,	"port tx discard reason 0" },
-+	{ NETC_PTXDCRR1,	"port tx discard reason 1" },
-+	{ NETC_BPDCR,		"bridge port discard frames" },
-+	{ NETC_BPDCRRR,	"bridge port discard read-reset" },
-+	{ NETC_BPDCRR0,	"bridge port discard reason 0" },
-+	{ NETC_BPDCRR1,	"bridge port discard reason 1" },
-+};
-+
-+static const struct netc_port_stat netc_emac_counters[] = {
-+	{ NETC_PM_ROCT(0),	"eMAC rx octets" },
-+	{ NETC_PM_RVLAN(0),	"eMAC rx VLAN frames" },
-+	{ NETC_PM_RERR(0),	"eMAC rx frame errors" },
-+	{ NETC_PM_RUCA(0),	"eMAC rx unicast frames" },
-+	{ NETC_PM_RDRP(0),	"eMAC rx dropped packets" },
-+	{ NETC_PM_RPKT(0),	"eMAC rx packets" },
-+	{ NETC_PM_TOCT(0),	"eMAC tx octets" },
-+	{ NETC_PM_TVLAN(0),	"eMAC tx VLAN frames" },
-+	{ NETC_PM_TFCS(0),	"eMAC tx FCS errors" },
-+	{ NETC_PM_TUCA(0),	"eMAC tx unicast frames" },
-+	{ NETC_PM_TPKT(0),	"eMAC tx packets" },
-+	{ NETC_PM_TUND(0),	"eMAC tx undersized packets" },
-+	{ NETC_PM_TIOCT(0),	"eMAC tx invalid octets" },
-+};
-+
-+static const struct netc_port_stat netc_pmac_counters[] = {
-+	{ NETC_PM_ROCT(1),	"pMAC rx octets" },
-+	{ NETC_PM_RVLAN(1),	"pMAC rx VLAN frames" },
-+	{ NETC_PM_RERR(1),	"pMAC rx frame errors" },
-+	{ NETC_PM_RUCA(1),	"pMAC rx unicast frames" },
-+	{ NETC_PM_RDRP(1),	"pMAC rx dropped packets" },
-+	{ NETC_PM_RPKT(1),	"pMAC rx packets" },
-+	{ NETC_PM_TOCT(1),	"pMAC tx octets" },
-+	{ NETC_PM_TVLAN(1),	"pMAC tx VLAN frames" },
-+	{ NETC_PM_TFCS(1),	"pMAC tx FCS errors" },
-+	{ NETC_PM_TUCA(1),	"pMAC tx unicast frames" },
-+	{ NETC_PM_TPKT(1),	"pMAC tx packets" },
-+	{ NETC_PM_TUND(1),	"pMAC tx undersized packets" },
-+	{ NETC_PM_TIOCT(1),	"pMAC tx invalid octets" },
-+};
-+
- static void netc_port_pause_stats(struct netc_port *np, int mac,
- 				  struct ethtool_pause_stats *stats)
- {
-@@ -188,3 +238,60 @@ void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
- 		break;
- 	}
- }
-+
-+int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int size;
-+
-+	if (sset != ETH_SS_STATS)
-+		return -EOPNOTSUPP;
-+
-+	size = ARRAY_SIZE(netc_port_counters) +
-+	       ARRAY_SIZE(netc_emac_counters);
-+
-+	if (np->caps.pmac)
-+		size += ARRAY_SIZE(netc_pmac_counters);
-+
-+	return size;
-+}
-+
-+void netc_port_get_strings(struct dsa_switch *ds, int port,
-+			   u32 sset, u8 *data)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int i;
-+
-+	if (sset != ETH_SS_STATS)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
-+		ethtool_cpy(&data, netc_port_counters[i].name);
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
-+		ethtool_cpy(&data, netc_emac_counters[i].name);
-+
-+	if (!np->caps.pmac)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
-+		ethtool_cpy(&data, netc_pmac_counters[i].name);
-+}
-+
-+void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
-+		*data++ = netc_port_rd(np, netc_port_counters[i].reg);
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
-+		*data++ = netc_port_rd64(np, netc_emac_counters[i].reg);
-+
-+	if (!np->caps.pmac)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
-+		*data++ = netc_port_rd64(np, netc_pmac_counters[i].reg);
-+}
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index ae8f28b82b72..803582d939b0 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -1472,6 +1472,9 @@ static const struct dsa_switch_ops netc_switch_ops = {
- 	.get_rmon_stats			= netc_port_get_rmon_stats,
- 	.get_eth_ctrl_stats		= netc_port_get_eth_ctrl_stats,
- 	.get_eth_mac_stats		= netc_port_get_eth_mac_stats,
-+	.get_sset_count			= netc_port_get_sset_count,
-+	.get_strings			= netc_port_get_strings,
-+	.get_ethtool_stats		= netc_port_get_ethtool_stats,
- };
- 
- static int netc_switch_probe(struct pci_dev *pdev,
-diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
-index d477b0cd2157..90d750331fb9 100644
---- a/drivers/net/dsa/netc/netc_switch.h
-+++ b/drivers/net/dsa/netc/netc_switch.h
-@@ -93,6 +93,11 @@ struct netc_fdb_entry {
- 	struct hlist_node node;
- };
- 
-+struct netc_port_stat {
-+	int reg;
-+	char name[ETH_GSTRING_LEN] __nonstring;
-+};
-+
- struct netc_switch {
- 	struct pci_dev *pdev;
- 	struct device *dev;
-@@ -159,5 +164,9 @@ void netc_port_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
- 				  struct ethtool_eth_ctrl_stats *ctrl_stats);
- void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
- 				 struct ethtool_eth_mac_stats *mac_stats);
-+int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset);
-+void netc_port_get_strings(struct dsa_switch *ds, int port,
-+			   u32 sset, u8 *data);
-+void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data);
- 
- #endif
-diff --git a/drivers/net/dsa/netc/netc_switch_hw.h b/drivers/net/dsa/netc/netc_switch_hw.h
-index f8d436ad9623..1b016e7dd03e 100644
---- a/drivers/net/dsa/netc/netc_switch_hw.h
-+++ b/drivers/net/dsa/netc/netc_switch_hw.h
-@@ -87,6 +87,17 @@
- #define  PSR_TX_BUSY			BIT(0)
- #define  PSR_RX_BUSY			BIT(1)
- 
-+#define NETC_PTGSLACR			0x130
-+
-+#define NETC_PRXDCR			0x1c0
-+#define NETC_PRXDCRRR			0x1c4
-+#define NETC_PRXDCRR0			0x1c8
-+#define NETC_PRXDCRR1			0x1cc
-+#define NETC_PTXDCR			0x1e0
-+#define NETC_PTXDCRRR			0x1e4
-+#define NETC_PTXDCRR0			0x1e8
-+#define NETC_PTXDCRR1			0x1ec
-+
- #define NETC_PTCTMSDUR(a)		(0x208 + (a) * 0x20)
- #define  PTCTMSDUR_MAXSDU		GENMASK(15, 0)
- #define  PTCTMSDUR_SDU_TYPE		GENMASK(17, 16)
-@@ -94,6 +105,9 @@
- #define   SDU_TYPE_MPDU			1
- #define   SDU_TYPE_MSDU			2
- 
-+#define NETC_PSDFTCR			0x4c4
-+#define NETC_PSDFDDCR			0x4c8
-+
- #define NETC_BPCR			0x500
- #define  BPCR_DYN_LIMIT			GENMASK(15, 0)
- #define  BPCR_MLO			GENMASK(22, 20)
-@@ -142,6 +156,11 @@ enum netc_stg_stage {
- 	NETC_STG_STATE_FORWARDING,
- };
- 
-+#define NETC_BPDCR			0x580
-+#define NETC_BPDCRRR			0x584
-+#define NETC_BPDCRR0			0x588
-+#define NETC_BPDCRR1			0x58c
-+
- /* Definition of Switch ethernet MAC port registers */
- #define NETC_PMAC_OFFSET		0x400
- #define NETC_PM_CMD_CFG(a)		(0x1008 + (a) * 0x400)
-@@ -176,6 +195,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Receive Ethernet Octets Counter */
- #define NETC_PM_REOCT(a)		(0x1100 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive Octets Counter */
-+#define NETC_PM_ROCT(a)			(0x1108 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Alignment Error Counter Register */
- #define NETC_PM_RALN(a)			(0x1110 + (a) * 0x400)
- 
-@@ -188,12 +210,27 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Receive Frame Check Sequence Error Counter */
- #define NETC_PM_RFCS(a)			(0x1128 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive VLAN Frame Counter */
-+#define NETC_PM_RVLAN(a)		(0x1130 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Frame Error Counter */
-+#define NETC_PM_RERR(a)			(0x1138 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Unicast Frame Counter */
-+#define NETC_PM_RUCA(a)			(0x1140 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Multicast Frame Counter */
- #define NETC_PM_RMCA(a)			(0x1148 + (a) * 0x400)
- 
- /* Port MAC 0/1 Receive Broadcast Frame Counter */
- #define NETC_PM_RBCA(a)			(0x1150 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive Dropped Packets Counter */
-+#define NETC_PM_RDRP(a)			(0x1158 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Packets Counter */
-+#define NETC_PM_RPKT(a)			(0x1160 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Undersized Packet Counter */
- #define NETC_PM_RUND(a)			(0x1168 + (a) * 0x400)
- 
-@@ -236,6 +273,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Ethernet Octets Counter */
- #define NETC_PM_TEOCT(a)		(0x1200 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Octets Counter */
-+#define NETC_PM_TOCT(a)			(0x1208 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Excessive Deferral Packet Counter */
- #define NETC_PM_TEDFR(a)		(0x1210 + (a) * 0x400)
- 
-@@ -245,15 +285,30 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Frame Counter */
- #define NETC_PM_TFRM(a)			(0x1220 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Frame Check Sequence Error Counter */
-+#define NETC_PM_TFCS(a)			(0x1228 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit VLAN Frame Counter */
-+#define NETC_PM_TVLAN(a)		(0x1230 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Frame Error Counter */
- #define NETC_PM_TERR(a)			(0x1238 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Unicast Frame Counter */
-+#define NETC_PM_TUCA(a)			(0x1240 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Multicast Frame Counter */
- #define NETC_PM_TMCA(a)			(0x1248 + (a) * 0x400)
- 
- /* Port MAC 0/1 Transmit Broadcast Frame Counter */
- #define NETC_PM_TBCA(a)			(0x1250 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Packets Counter */
-+#define NETC_PM_TPKT(a)			(0x1260 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Undersized Packet Counter */
-+#define NETC_PM_TUND(a)			(0x1268 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit 64-Octet Packet Counter */
- #define NETC_PM_T64(a)			(0x1270 + (a) * 0x400)
- 
-@@ -293,6 +348,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Excessive Collisions Counter */
- #define NETC_PM_TECOL(a)		(0x12f0 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Invalid Octets Counter */
-+#define NETC_PM_TIOCT(a)		(0x12f8 + (a) * 0x400)
-+
- #define NETC_PEMDIOCR			0x1c00
- #define NETC_EMDIO_BASE			NETC_PEMDIOCR
- 
+Changes in v5:
+- Drop the unnecessary macro defines in patch 2/3
+- Add the drvdata info for each of the platform as suggested by Daniel
+- Link to v4: https://lore.kernel.org/r/20250821-imx93_tmu-v4-0-6cf5688bf016@nxp.com
+
+Changes in v4:
+- Include bitfield.h to fix the build error for RISC-V
+- Use macro to define temp rate threshold related settings
+- Link to v3: https://lore.kernel.org/r/20250818-imx93_tmu-v3-0-35f79a86c072@nxp.com
+
+---
+Jacky Bai (4):
+      dt-bindings: thermal: qoriq: Add compatible string for imx93
+      thermal: qoriq: add i.MX93 tmu support
+      thermal: qoriq: workaround unexpected temperature readings from tmu
+      arm64: dts: imx93: update the tmu compatible string
+
+ .../devicetree/bindings/thermal/qoriq-thermal.yaml |  1 +
+ arch/arm64/boot/dts/freescale/imx93.dtsi           |  2 +-
+ drivers/thermal/qoriq_thermal.c                    | 71 ++++++++++++++++++++--
+ 3 files changed, 69 insertions(+), 5 deletions(-)
+---
+base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
+change-id: 20250804-imx93_tmu-7888c85d176e
+
+Best regards,
 -- 
-2.34.1
+Jacky Bai <ping.bai@nxp.com>
 
