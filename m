@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F40244E05B
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D622FD1A5
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564570; cv=none; b=q9f1FqApHk7SIDI7nPiRktSVztRGUbt0X9CL4qtWOrb96pGFm93u+N4g3+zVkanP2odZBLgHo0+nkoZGBqtzDkW/4yCXTy3FmmFuhxTfuTc4Ut5W+Ulko3QL2hMNv8q2U5SFwwjvk61EL7TPcDukakKcPp/ebxvhdtU11V9TIXg=
+	t=1777564572; cv=none; b=WffkfpRDEpvQkQzJCeUF3zWh2PRf6VF7PbX8oLT4leQt4nDuvh0d8RZUpjCfMLduqUIgwxpNx1sybNOWYVZDeJMENY0+yCm5ZCE0OODASL/1e+nd0Q5Y+7+cJlqySHJFJTJLdNTN4U2T7JaOFtEdYgoyWrRVVqZhdgU3gp9ylRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564570; c=relaxed/simple;
-	bh=+jhBlKsXvsKWEsl/8Sz11TGhp+rmYjPv/rm16EbY7A4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oXjrc7kmdnKipXjFy3D92Q4HU1FV/avTgg7TQibaNGDoqQyjMehLwnKzefcwa6o6EqJ1KYF4aVkrUQ3ReRsGZQPEc/FbkZ+lKRRIsfXl8+u1NDLwk908HR6L/swHn1ICLgYX95FN3isCkIwTWCGTYzRCkbUYY7VlMCD4h1rvo8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=o8vXHoUB; arc=none smtp.client-ip=117.135.210.5
+	s=arc-20240116; t=1777564572; c=relaxed/simple;
+	bh=x4px131zQjXjk02OcBhjKDikCZDt3dgwSRZbN5Xjyqo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nRBYuJP6fPCgKWs/ChpG5R2sbHc4DzmvC0+ssmJ7gb+MGp4rq35x/eSk9ZGd3VgpSSonf/44JWJDX84KaAg9VA8NNb/6Ro1hk8yKXWkl4Q59CE3DJ0wvp7TIzu69UYCnHu9mB4tbRzFhg83zbuAsjIssXRLPXUUB4+YOMk0r1dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fnEcgzN2; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="o8vXHoUB"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fnEcgzN2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mh
-	XA4cqqHPFlshtdy+6Myvdjud+BTw8nlhOl5t9b4BU=; b=o8vXHoUBewuSn3444E
-	d8AGVQhH/Uvg/8sMdhEzhu360oYztp0mtqMMuoTG8nvLVEeaRJDqUTIvg+4GUkLl
-	qFgRs8sZm04XByzz184XL4yVyPPtX7doIThwpaGos9mdcE0qoijGqmMTRWFHtASL
-	K8E5FT8tFOrnU9MKW/AWc9H9U=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=o8
+	u8w2UWcyZeZiwf05Vd1PKU6i5IHTCnVEoz7yLvk1c=; b=fnEcgzN2VFnVE3cMIH
+	9ZUq5Q4C0+a+IlpYW+iGSTDe56JVGkJLGxSXC3uPO2+P+5p5N6L6UibBwGRUG3v1
+	PV843Fz76Y+g8t8cRBuYMH6XK7KNltgmjSRbGADxjZrcUIcAM/DFDizXvFLFpxdP
+	YGE/Q2KsUhdvyJLJ3YRE0mxfU=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S7;
-	Thu, 30 Apr 2026 23:55:05 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S2;
+	Thu, 30 Apr 2026 23:54:59 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,12 +46,10 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 05/10] spi: nxp-xspi: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:51 +0800
-Message-Id: <20260430155456.36998-6-18255117159@163.com>
+Subject: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
+Date: Thu, 30 Apr 2026 23:54:46 +0800
+Message-Id: <20260430155456.36998-1-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
-References: <20260430155456.36998-1-18255117159@163.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,64 +57,46 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S7
-X-Coremail-Antispam: 1Uf129KBjvJXoW7urW7uF4ftw4UKF43Gr48WFg_yoW8Zry5pr
-	18Aa47GFW8tay0y3ZxZF4ayF1YqFs5X3W7A3Wkt39I93Z2vF1kZFWvkF1rJw1UJFy8KFya
-	g392kFyUCw4Yv3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piBMKNUUUUU=
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxBlM72nze1lkagAA3I
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw43GF18GryUWryrGryrXrb_yoW8Jw1DpF
+	4fGFyxZw4xJ3yYyF43CrWYkFyaga93WFWqg3W7twn3ZanYyFyUXrWDK3WrJrW7JF97GFWx
+	KFWjkrZ8CFs2vrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi1SodUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7BRL7mnze1RXzAAA3z
 
-Use FIELD_MODIFY() to remove open-coded bit manipulation.
-No functional change intended.
+Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
+macro across multiple SPI controller drivers. This improves readability and
+adds compile-time checking without functional changes.
 
-Signed-off-by: Hans Zhang <18255117159@163.com>
----
- drivers/spi/spi-nxp-xspi.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+Each patch modifies a single driver, allowing independent review and
+application.
 
-diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
-index 385302a6e62f..037eac24e6fd 100644
---- a/drivers/spi/spi-nxp-xspi.c
-+++ b/drivers/spi/spi-nxp-xspi.c
-@@ -493,9 +493,8 @@ static void nxp_xspi_disable_ddr(struct nxp_xspi *xspi)
- 	writel(reg, base + XSPI_MCR);
- 
- 	reg &= ~XSPI_MCR_DDR_EN;
--	reg &= ~XSPI_MCR_DQS_FA_SEL_MASK;
- 	/* Use dummy pad loopback mode to sample data */
--	reg |= FIELD_PREP(XSPI_MCR_DQS_FA_SEL_MASK, 0x01);
-+	FIELD_MODIFY(XSPI_MCR_DQS_FA_SEL_MASK, &reg, 0x01);
- 	writel(reg, base + XSPI_MCR);
- 	xspi->support_max_rate = 133000000;
- 
-@@ -524,15 +523,13 @@ static void nxp_xspi_enable_ddr(struct nxp_xspi *xspi)
- 	writel(reg, base + XSPI_MCR);
- 
- 	reg |= XSPI_MCR_DDR_EN;
--	reg &= ~XSPI_MCR_DQS_FA_SEL_MASK;
- 	/* Use external dqs to sample data */
--	reg |= FIELD_PREP(XSPI_MCR_DQS_FA_SEL_MASK, 0x03);
-+	FIELD_MODIFY(XSPI_MCR_DQS_FA_SEL_MASK, &reg, 0x03);
- 	writel(reg, base + XSPI_MCR);
- 	xspi->support_max_rate = 200000000;
- 
- 	reg = readl(base + XSPI_FLSHCR);
--	reg &= ~XSPI_FLSHCR_TDH_MASK;
--	reg |= FIELD_PREP(XSPI_FLSHCR_TDH_MASK, 0x01);
-+	FIELD_MODIFY(XSPI_FLSHCR_TDH_MASK, &reg, 0x01);
- 	writel(reg, base + XSPI_FLSHCR);
- 
- 	reg = FIELD_PREP(XSPI_SMPR_DLLFSMPFA_MASK, 0x04);
-@@ -1096,8 +1093,7 @@ static int nxp_xspi_default_setup(struct nxp_xspi *xspi)
- 
- 	/* Give read/write access right to EENV0 */
- 	reg = readl(base + XSPI_FRAD0_WORD2);
--	reg &= ~XSPI_FRAD0_WORD2_MD0ACP_MASK;
--	reg |= FIELD_PREP(XSPI_FRAD0_WORD2_MD0ACP_MASK, 0x03);
-+	FIELD_MODIFY(XSPI_FRAD0_WORD2_MD0ACP_MASK, &reg, 0x03);
- 	writel(reg, base + XSPI_FRAD0_WORD2);
- 
- 	/* Enable the FRAD check for EENV0 */
+Hans Zhang (10):
+  spi: amlogic-spifc-a1: Use FIELD_MODIFY()
+  spi: amlogic-spisg: Use FIELD_MODIFY()
+  spi: cadence-xspi: Use FIELD_MODIFY()
+  spi: meson-spicc: Use FIELD_MODIFY()
+  spi: nxp-xspi: Use FIELD_MODIFY()
+  spi: sn-f-ospi: Use FIELD_MODIFY()
+  spi: stm32-ospi: Use FIELD_MODIFY()
+  spi: stm32-qspi: Use FIELD_MODIFY()
+  spi: sunplus-sp7021: Use FIELD_MODIFY()
+  spi: uniphier: Use FIELD_MODIFY()
+
+ drivers/spi/spi-amlogic-spifc-a1.c |  5 ++---
+ drivers/spi/spi-amlogic-spisg.c    | 13 +++++--------
+ drivers/spi/spi-cadence-xspi.c     |  3 +--
+ drivers/spi/spi-meson-spicc.c      |  5 ++---
+ drivers/spi/spi-nxp-xspi.c         | 12 ++++--------
+ drivers/spi/spi-sn-f-ospi.c        |  5 ++---
+ drivers/spi/spi-stm32-ospi.c       |  7 +++----
+ drivers/spi/spi-stm32-qspi.c       |  5 ++---
+ drivers/spi/spi-sunplus-sp7021.c   |  3 +--
+ drivers/spi/spi-uniphier.c         | 13 +++++--------
+ 10 files changed, 27 insertions(+), 44 deletions(-)
+
+
+base-commit: 3b3bea6d4b9c162f9e555905d96b8c1da67ecd5b
 -- 
 2.34.1
 
