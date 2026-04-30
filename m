@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7987C4611FC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71C145BD57
 	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564566; cv=none; b=Aw7DLiXZUUGn9PdRb2So5XgqtcAGmHx7Z/WA3ef8WqJm5irAXkydGDHhLne4fxJK7/PFRZdSKx1NTmYUHJzv9euL6F802okiUZKlyRx9zPZgaWcBlL2v3E3i7biWLj/ATZJlv/GcRI9fX8oh6jKU0DmCVqMnYQlXC+HM85hxdOI=
+	t=1777564570; cv=none; b=biXq0qwwB0ajzJHvdCFadk5f/eWi2EljGPTrARRYiVdv3uS4LQJlPv7ZCOxz91NYaC8U/03OLF2IVAihZ8aROEKFDdLh7UkZ3Z3I5NfGoz7S+CrtOd1u5QqQRJ/GxXbzt63vOLc9p7RxQm2bfxMSx+SBTaxFlPVBuoaP2VbiHSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564566; c=relaxed/simple;
-	bh=936aGHkMNUuCiorR9txDfg4259Cf7Rkfyo+kqWPQNaA=;
+	s=arc-20240116; t=1777564570; c=relaxed/simple;
+	bh=h0Cz8bf84xfbKmcTQ2/v2Z93g1Acs5e+A7to572ZZGQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MSIcMkGQjJvHa82t1i8elzDDKQk84qaB9noCRPIXtU3aeweMQq0ul6KXzMBB87MPI+9g1kGauJNxpYSB3/BIiPilANC+w/1oXQrX75Ci+hGsXgKSCsiu1Zl0NXLFSO5kuU0AHDWZgGiILWLz8zol0dF7UvDjBF1ZpM6ndWzbK74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XlMGYU/q; arc=none smtp.client-ip=220.197.31.5
+	 MIME-Version; b=YIY77AVXEU1LEazUx6KvcvXjRZrPM2cKPdW7STO6Vvz+c9YReA0BSU3nueQ1dvLUyVjFGljJ77qQ1PNvpHWcbq6HEfC1vC0OnCd/7eeQqf34re28eFATKrsu8U2pmzpVtfcDCJmT4I/MvwimrzUefswvmEsDGH6gmC8Zp+80mNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FAsoKEvV; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XlMGYU/q"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FAsoKEvV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=AS
-	93n7u+mL1S7OPp/PoO5Pi701E6fS59BvUwhYSShuE=; b=XlMGYU/qi9Z9z5RAyA
-	E8DfyMJQU7Opp9AdAjrKlYYcAUb+esPSxKKAB4/6GvcFG1iIY6ADtLCwhG4rpbKt
-	gKagWqTZUSAK0R0/FFwXRq0OtcMN+qiJIXCJ/iujOlDnYc016qBSpF2kks+wUIMX
-	ll9lkzrcEYlut1ljJU3R0Uu9c=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ax
+	jDicrKppounBiGYtfzHy2w7g0lf22gdPRW8ADstbY=; b=FAsoKEvVljxlWVKfZp
+	+VnZlXjh13cnAHhJHMU4ng+BEMP9HEPIPF8XeTzO64hMaJuwRjm48LTek4DEv46P
+	0vieuLj1/nU6KQnOdQgsqzHTC9tjDoMQGzj02WVpeGPI7DQkzQ1HrbdYSTluI6uf
+	car78L5nAbibcHquUFbDryNqo=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S3;
-	Thu, 30 Apr 2026 23:55:01 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S4;
+	Thu, 30 Apr 2026 23:55:02 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,9 +47,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 01/10] spi: amlogic-spifc-a1: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:47 +0800
-Message-Id: <20260430155456.36998-2-18255117159@163.com>
+Subject: [PATCH 02/10] spi: amlogic-spisg: Use FIELD_MODIFY()
+Date: Thu, 30 Apr 2026 23:54:48 +0800
+Message-Id: <20260430155456.36998-3-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
 References: <20260430155456.36998-1-18255117159@163.com>
@@ -60,38 +60,45 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur17tw4kur1DKF47Zry7Jrb_yoWkGwc_CF
-	ykuw4kJF1jgrsrGF4fJryxur90gwn0ga10gF1FqFyYy3s8ta15Zw4qvr1DGryUAa1DCwsY
-	9rnxZrykZrW3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNMKZJUUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6xVL7mnze1VOMQAA3Q
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7urW7uF4rZr4DKr4xCryfZwb_yoW8XFW7pF
+	48JFW7CF1Dt348Ca13CF4YkF1Yg395Zrs7Gw12qw1S93WvgF1DZFW5Kr48uryagFy8XFyI
+	gF4kuFW5KFnrA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE2Q6gUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxBZL7mnze1Zj5gAA3F
 
 Use FIELD_MODIFY() to remove open-coded bit manipulation.
 No functional change intended.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-amlogic-spisg.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 7ee4c92e6e09..77a2c11bec5e 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -206,10 +206,9 @@ static int amlogic_spifc_a1_read(struct amlogic_spifc_a1 *spifc, void *buf,
- 	u32 val = readl(spifc->base + SPIFC_A1_USER_CTRL3_REG);
- 	int ret;
+diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
+index 19c5eba412ef..4c9f4088cb37 100644
+--- a/drivers/spi/spi-amlogic-spisg.c
++++ b/drivers/spi/spi-amlogic-spisg.c
+@@ -601,14 +601,11 @@ static int aml_spisg_prepare_message(struct spi_controller *ctlr,
  
--	val &= ~(SPIFC_A1_USER_DIN_MODE | SPIFC_A1_USER_DIN_BYTES);
- 	val |= SPIFC_A1_USER_DIN_ENABLE;
--	val |= FIELD_PREP(SPIFC_A1_USER_DIN_MODE, mode);
--	val |= FIELD_PREP(SPIFC_A1_USER_DIN_BYTES, size);
-+	FIELD_MODIFY(SPIFC_A1_USER_DIN_MODE, &val, mode);
-+	FIELD_MODIFY(SPIFC_A1_USER_DIN_BYTES, &val, size);
- 	writel(val, spifc->base + SPIFC_A1_USER_CTRL3_REG);
+ 	spisg->bytes_per_word = spi->bits_per_word >> 3;
  
- 	ret = amlogic_spifc_a1_request(spifc, true);
+-	spisg->cfg_spi &= ~CFG_SLAVE_SELECT;
+-	spisg->cfg_spi |= FIELD_PREP(CFG_SLAVE_SELECT, spi_get_chipselect(spi, 0));
+-
+-	spisg->cfg_bus &= ~(CFG_CPOL | CFG_CPHA | CFG_B_L_ENDIAN | CFG_HALF_DUPLEX);
+-	spisg->cfg_bus |= FIELD_PREP(CFG_CPOL, !!(spi->mode & SPI_CPOL)) |
+-			  FIELD_PREP(CFG_CPHA, !!(spi->mode & SPI_CPHA)) |
+-			  FIELD_PREP(CFG_B_L_ENDIAN, !!(spi->mode & SPI_LSB_FIRST)) |
+-			  FIELD_PREP(CFG_HALF_DUPLEX, !!(spi->mode & SPI_3WIRE));
++	FIELD_MODIFY(CFG_SLAVE_SELECT, &spisg->cfg_spi, spi_get_chipselect(spi, 0));
++	FIELD_MODIFY(CFG_CPOL, &spisg->cfg_bus, !!(spi->mode & SPI_CPOL));
++	FIELD_MODIFY(CFG_CPHA, &spisg->cfg_bus, !!(spi->mode & SPI_CPHA));
++	FIELD_MODIFY(CFG_B_L_ENDIAN, &spisg->cfg_bus, !!(spi->mode & SPI_LSB_FIRST));
++	FIELD_MODIFY(CFG_HALF_DUPLEX, &spisg->cfg_bus, !!(spi->mode & SPI_3WIRE));
+ 
+ 	return 0;
+ }
 -- 
 2.34.1
 
