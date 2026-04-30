@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2423451B3
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F40244E05B
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564570; cv=none; b=Yp0Cv1pcTtbiIhLDk7B7ln48N7nOhJ6gKxJGD4HPeX2ZRsWfzCtyTMo9zaCzo7M2sW8E//KSoJQGno34qgzQUfIXleHL09jcUzW1S5eRTm58UFhhOhcTZ+lvV2rvoM41IrmjMbAL38eAojozyExY4XJ5l0JBPMKRMuu4exdmRXo=
+	t=1777564570; cv=none; b=q9f1FqApHk7SIDI7nPiRktSVztRGUbt0X9CL4qtWOrb96pGFm93u+N4g3+zVkanP2odZBLgHo0+nkoZGBqtzDkW/4yCXTy3FmmFuhxTfuTc4Ut5W+Ulko3QL2hMNv8q2U5SFwwjvk61EL7TPcDukakKcPp/ebxvhdtU11V9TIXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777564570; c=relaxed/simple;
-	bh=uWqvU3qbHx1xhUAk3pvJVkTKF5z9katWCR4kaAtFAs8=;
+	bh=+jhBlKsXvsKWEsl/8Sz11TGhp+rmYjPv/rm16EbY7A4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tv7BjUV4qfwDSuisnu4686ONE0rEmRMWxVvyIpsRM6KRjj60EXMI6bb9PObJN3eKjIhWcvwbxa2nZW5p/a3nucdzZFiSIvF6qVo+1oV0E+ECu8sQe+MA7YFlUhLXxdCcLsaRoBxU+A4StF+zC/XQ1HSBj9d2pM9VkXVbSn8vgAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Eeena73N; arc=none smtp.client-ip=117.135.210.4
+	 MIME-Version; b=oXjrc7kmdnKipXjFy3D92Q4HU1FV/avTgg7TQibaNGDoqQyjMehLwnKzefcwa6o6EqJ1KYF4aVkrUQ3ReRsGZQPEc/FbkZ+lKRRIsfXl8+u1NDLwk908HR6L/swHn1ICLgYX95FN3isCkIwTWCGTYzRCkbUYY7VlMCD4h1rvo8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=o8vXHoUB; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Eeena73N"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="o8vXHoUB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=HQ
-	xspS4wxPZq+kXv3CrA/ZYdLYAgARtNleYvId2CL8I=; b=Eeena73NkuNk4UmjwI
-	fXWJ8s/F7TmtJiTyAeJRiS7Hu1cvE/qAiLt+oLjCu4PP0Of0X9AGDalm3UUKqoqU
-	SBMzo3CopvwST1ucWvHRqVzXJPk9NuPlKe7mX9gi3k4QVXA58gbIjMruGQFY+ton
-	PoeU6sTJCLRPPgJIgnR8n51yM=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mh
+	XA4cqqHPFlshtdy+6Myvdjud+BTw8nlhOl5t9b4BU=; b=o8vXHoUBewuSn3444E
+	d8AGVQhH/Uvg/8sMdhEzhu360oYztp0mtqMMuoTG8nvLVEeaRJDqUTIvg+4GUkLl
+	qFgRs8sZm04XByzz184XL4yVyPPtX7doIThwpaGos9mdcE0qoijGqmMTRWFHtASL
+	K8E5FT8tFOrnU9MKW/AWc9H9U=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S5;
-	Thu, 30 Apr 2026 23:55:03 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S7;
+	Thu, 30 Apr 2026 23:55:05 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,9 +47,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 03/10] spi: cadence-xspi: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:49 +0800
-Message-Id: <20260430155456.36998-4-18255117159@163.com>
+Subject: [PATCH 05/10] spi: nxp-xspi: Use FIELD_MODIFY()
+Date: Thu, 30 Apr 2026 23:54:51 +0800
+Message-Id: <20260430155456.36998-6-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
 References: <20260430155456.36998-1-18255117159@163.com>
@@ -60,35 +60,64 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S5
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur17Kr1UAw15ur1DtF43Wrg_yoWfZFb_C3
-	Z5ZrWUKF4DKr1Ika13trs7Ja4qqw4Yvr4DuayvqF43tw4DJ3WYkryqvr9xCrW8ZF18CFWF
-	9wn7Xa4vkr13AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRNmhF7UUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6xdL7mnze1dOhAAA3l
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S7
+X-Coremail-Antispam: 1Uf129KBjvJXoW7urW7uF4ftw4UKF43Gr48WFg_yoW8Zry5pr
+	18Aa47GFW8tay0y3ZxZF4ayF1YqFs5X3W7A3Wkt39I93Z2vF1kZFWvkF1rJw1UJFy8KFya
+	g392kFyUCw4Yv3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piBMKNUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxBlM72nze1lkagAA3I
 
 Use FIELD_MODIFY() to remove open-coded bit manipulation.
 No functional change intended.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/spi/spi-cadence-xspi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-nxp-xspi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 895b4b3276a5..32fa19ebf7a9 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -453,8 +453,7 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
- 		writel(clk_reg,
- 		       cdns_xspi->auxbase + MRVL_XSPI_CLK_CTRL_AUX_REG);
- 		clk_reg = FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
--		clk_reg &= ~MRVL_XSPI_CLK_DIV;
--		clk_reg |= FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
-+		FIELD_MODIFY(MRVL_XSPI_CLK_DIV, &clk_reg, i);
- 		clk_reg |= MRVL_XSPI_CLK_ENABLE;
- 		clk_reg |= MRVL_XSPI_IRQ_ENABLE;
- 		update_clk = true;
+diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+index 385302a6e62f..037eac24e6fd 100644
+--- a/drivers/spi/spi-nxp-xspi.c
++++ b/drivers/spi/spi-nxp-xspi.c
+@@ -493,9 +493,8 @@ static void nxp_xspi_disable_ddr(struct nxp_xspi *xspi)
+ 	writel(reg, base + XSPI_MCR);
+ 
+ 	reg &= ~XSPI_MCR_DDR_EN;
+-	reg &= ~XSPI_MCR_DQS_FA_SEL_MASK;
+ 	/* Use dummy pad loopback mode to sample data */
+-	reg |= FIELD_PREP(XSPI_MCR_DQS_FA_SEL_MASK, 0x01);
++	FIELD_MODIFY(XSPI_MCR_DQS_FA_SEL_MASK, &reg, 0x01);
+ 	writel(reg, base + XSPI_MCR);
+ 	xspi->support_max_rate = 133000000;
+ 
+@@ -524,15 +523,13 @@ static void nxp_xspi_enable_ddr(struct nxp_xspi *xspi)
+ 	writel(reg, base + XSPI_MCR);
+ 
+ 	reg |= XSPI_MCR_DDR_EN;
+-	reg &= ~XSPI_MCR_DQS_FA_SEL_MASK;
+ 	/* Use external dqs to sample data */
+-	reg |= FIELD_PREP(XSPI_MCR_DQS_FA_SEL_MASK, 0x03);
++	FIELD_MODIFY(XSPI_MCR_DQS_FA_SEL_MASK, &reg, 0x03);
+ 	writel(reg, base + XSPI_MCR);
+ 	xspi->support_max_rate = 200000000;
+ 
+ 	reg = readl(base + XSPI_FLSHCR);
+-	reg &= ~XSPI_FLSHCR_TDH_MASK;
+-	reg |= FIELD_PREP(XSPI_FLSHCR_TDH_MASK, 0x01);
++	FIELD_MODIFY(XSPI_FLSHCR_TDH_MASK, &reg, 0x01);
+ 	writel(reg, base + XSPI_FLSHCR);
+ 
+ 	reg = FIELD_PREP(XSPI_SMPR_DLLFSMPFA_MASK, 0x04);
+@@ -1096,8 +1093,7 @@ static int nxp_xspi_default_setup(struct nxp_xspi *xspi)
+ 
+ 	/* Give read/write access right to EENV0 */
+ 	reg = readl(base + XSPI_FRAD0_WORD2);
+-	reg &= ~XSPI_FRAD0_WORD2_MD0ACP_MASK;
+-	reg |= FIELD_PREP(XSPI_FRAD0_WORD2_MD0ACP_MASK, 0x03);
++	FIELD_MODIFY(XSPI_FRAD0_WORD2_MD0ACP_MASK, &reg, 0x03);
+ 	writel(reg, base + XSPI_FRAD0_WORD2);
+ 
+ 	/* Enable the FRAD check for EENV0 */
 -- 
 2.34.1
 
