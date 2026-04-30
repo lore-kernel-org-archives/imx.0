@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C05D450915
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4524508F4
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564566; cv=none; b=brMoaiMJFowzgV0CPhfd5oSvcg6G3BsFklo6w/OuMAo1DT1klRKMeuW4YUokyV/xmMhHGSyJ4GcwlYNnonmurY9t564kS4lKDutTiLpa1YhlV5ypBDsqmgetDs005qk+owk7vPUUo/K+Wz2WK0sJIa8JtI1m5LRjzPikk4jsHwE=
+	t=1777564567; cv=none; b=IE61CszrcWrTitRnlZ5fbA6VGUBguFEgzPK/I6RHZ3Vr4dzegaLL4Ms/fiNguY9xGdypdbrvnLM4EEpHx0zJ3dHiGwR1lc43iJu9D7QMQaypsuWMD2O1jKzOc8gClzQkko1LtDoc+zZ3nsGW1I58vxuE3w68FgJY9sYpYAeAsIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564566; c=relaxed/simple;
-	bh=W6lFfzpfpHlSJb+6mf2xCSNtxKNmn4pnm4EpIfLBycM=;
+	s=arc-20240116; t=1777564567; c=relaxed/simple;
+	bh=lg30E+nI//bFfV/7P+jkI/Alz7Wv8zi6p5QkditKtlQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mVxuDABoStSUZxHEFdo2e0nFIb1IETD+uLd/LXMh6hNHXSAS22l9YHG3s40BegQdPzrwFTM/GRYYGh0BpLgPABNUYte/o+sUdBgyWV+GZpNeXnG6wPOpFZaepCMEpR09+1c84RMOcBMmlG+UFMQvu7+SPPpH4mE3EKOf08XjLVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oHuZOIlr; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=IBvDxMX1pHrPaeKFRJ2eHCdLqVlV8mSY6WiOV9rB3RPj82N9uIWfIeLNIn8NzgT1rVzPAMchIorXmGplt1jfx6S81KONTCTiIpMBonql9AKkM9OQg0eCVaVqDx1StVgHSjOqokHY5mz5hTnd4MdScWpygbf5KzMIrqkHl/GAENo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XQVBYSIf; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oHuZOIlr"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XQVBYSIf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=h/
-	7T1NDghetOHRJTyiGBs6dkj72nosx7Vr+gqd9IPi8=; b=oHuZOIlrbjneTkFD57
-	+HdARWyQjbuM2K+9E8apm9oASe/dq/mESx9apsulDZ3FH1LjAdr/4T0qUXNtay+e
-	Au3rHgG8hU2MXS6wFynfNm8IVTQBkgpU6QDAvTdQkkj+aa9u5/fykhGUuxPInofP
-	gLED3vSHYcXpg7ltIVec615nI=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=EZ
+	yfT7HUgDZVpDW8FnDzfwicIGCHfxW7z0LSAJ2rXYg=; b=XQVBYSIfjg2SUfM4gw
+	q62jHmuXr2HzZNhlmA4IqyN69WveUqMFdR4oXYdDKP1voIHOrxc0eJqFGdsVT5gh
+	qQWlAP4F8qRTobbOtxBFcUYdIbN43rw8bBbp3t2u+Oj2cK7h5SIe033yFTZGO7+F
+	DiORvwZ08IBBK47xtTjQfT0fU=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S6;
-	Thu, 30 Apr 2026 23:55:04 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S9;
+	Thu, 30 Apr 2026 23:55:07 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,9 +47,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 04/10] spi: meson-spicc: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:50 +0800
-Message-Id: <20260430155456.36998-5-18255117159@163.com>
+Subject: [PATCH 07/10] spi: stm32-ospi: Use FIELD_MODIFY()
+Date: Thu, 30 Apr 2026 23:54:53 +0800
+Message-Id: <20260430155456.36998-8-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
 References: <20260430155456.36998-1-18255117159@163.com>
@@ -60,37 +60,39 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S6
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur17tw4DWFWfZr4DZw1xAFb_yoWfCrb_Ca
-	y8WF4IqFsxt34xAF17Ga4xCr90vrn8Zw4vvF1vgFyfta1kZ3s8Zr1DCry8GF15CF4Fkr4S
-	9r93W348Zr43CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S9
+X-Coremail-Antispam: 1Uf129KBjvdXoWrur17tw4DXF1kXFW7Kr1xZrb_yoWDJrg_CF
+	48AF4Ikw4Y9rZxAa1rurn3AF909aykWa109FyDtFZayrWDWw4Uu393Jrn8Ga4UZrs7Ar4f
+	CFnrX3W8A34fKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
 	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRN6pBPUUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC7BhM72nze1hYgAAA32
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxBtM72nze1tkuQAA3b
 
 Use FIELD_MODIFY() to remove open-coded bit manipulation.
 No functional change intended.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/spi/spi-meson-spicc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-stm32-ospi.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index b80f9f457b66..682dda114412 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -539,9 +539,8 @@ static void meson_spicc_setup_xfer(struct meson_spicc_device *spicc,
- 	conf = conf_orig = readl_relaxed(spicc->base + SPICC_CONREG);
+diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
+index 4461c6e24b9e..3757f6ba8fc6 100644
+--- a/drivers/spi/spi-stm32-ospi.c
++++ b/drivers/spi/spi-stm32-ospi.c
+@@ -470,10 +470,9 @@ static int stm32_ospi_send(struct spi_device *spi, const struct spi_mem_op *op)
+ 	u8 cs = spi->chip_select[ffs(spi->cs_index_mask) - 1];
  
- 	/* Setup word width */
--	conf &= ~SPICC_BITLENGTH_MASK;
--	conf |= FIELD_PREP(SPICC_BITLENGTH_MASK,
--			   (spicc->bytes_per_word << 3) - 1);
-+	FIELD_MODIFY(SPICC_BITLENGTH_MASK, &conf,
-+		     (spicc->bytes_per_word << 3) - 1);
+ 	cr = readl_relaxed(ospi->regs_base + OSPI_CR);
+-	cr &= ~CR_CSSEL;
+-	cr |= FIELD_PREP(CR_CSSEL, cs);
+-	cr &= ~CR_FMODE_MASK;
+-	cr |= FIELD_PREP(CR_FMODE_MASK, ospi->fmode);
++	FIELD_MODIFY(CR_CSSEL, &cr, cs);
++
++	FIELD_MODIFY(CR_FMODE_MASK, &cr, ospi->fmode);
+ 	writel_relaxed(cr, regs_base + OSPI_CR);
  
- 	/* Ignore if unchanged */
- 	if (conf != conf_orig)
+ 	if (op->data.nbytes)
 -- 
 2.34.1
 
