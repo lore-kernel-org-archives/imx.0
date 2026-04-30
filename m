@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71C145BD57
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2423451B3
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564570; cv=none; b=biXq0qwwB0ajzJHvdCFadk5f/eWi2EljGPTrARRYiVdv3uS4LQJlPv7ZCOxz91NYaC8U/03OLF2IVAihZ8aROEKFDdLh7UkZ3Z3I5NfGoz7S+CrtOd1u5QqQRJ/GxXbzt63vOLc9p7RxQm2bfxMSx+SBTaxFlPVBuoaP2VbiHSI=
+	t=1777564570; cv=none; b=Yp0Cv1pcTtbiIhLDk7B7ln48N7nOhJ6gKxJGD4HPeX2ZRsWfzCtyTMo9zaCzo7M2sW8E//KSoJQGno34qgzQUfIXleHL09jcUzW1S5eRTm58UFhhOhcTZ+lvV2rvoM41IrmjMbAL38eAojozyExY4XJ5l0JBPMKRMuu4exdmRXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777564570; c=relaxed/simple;
-	bh=h0Cz8bf84xfbKmcTQ2/v2Z93g1Acs5e+A7to572ZZGQ=;
+	bh=uWqvU3qbHx1xhUAk3pvJVkTKF5z9katWCR4kaAtFAs8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YIY77AVXEU1LEazUx6KvcvXjRZrPM2cKPdW7STO6Vvz+c9YReA0BSU3nueQ1dvLUyVjFGljJ77qQ1PNvpHWcbq6HEfC1vC0OnCd/7eeQqf34re28eFATKrsu8U2pmzpVtfcDCJmT4I/MvwimrzUefswvmEsDGH6gmC8Zp+80mNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FAsoKEvV; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=Tv7BjUV4qfwDSuisnu4686ONE0rEmRMWxVvyIpsRM6KRjj60EXMI6bb9PObJN3eKjIhWcvwbxa2nZW5p/a3nucdzZFiSIvF6qVo+1oV0E+ECu8sQe+MA7YFlUhLXxdCcLsaRoBxU+A4StF+zC/XQ1HSBj9d2pM9VkXVbSn8vgAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Eeena73N; arc=none smtp.client-ip=117.135.210.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FAsoKEvV"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Eeena73N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ax
-	jDicrKppounBiGYtfzHy2w7g0lf22gdPRW8ADstbY=; b=FAsoKEvVljxlWVKfZp
-	+VnZlXjh13cnAHhJHMU4ng+BEMP9HEPIPF8XeTzO64hMaJuwRjm48LTek4DEv46P
-	0vieuLj1/nU6KQnOdQgsqzHTC9tjDoMQGzj02WVpeGPI7DQkzQ1HrbdYSTluI6uf
-	car78L5nAbibcHquUFbDryNqo=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=HQ
+	xspS4wxPZq+kXv3CrA/ZYdLYAgARtNleYvId2CL8I=; b=Eeena73NkuNk4UmjwI
+	fXWJ8s/F7TmtJiTyAeJRiS7Hu1cvE/qAiLt+oLjCu4PP0Of0X9AGDalm3UUKqoqU
+	SBMzo3CopvwST1ucWvHRqVzXJPk9NuPlKe7mX9gi3k4QVXA58gbIjMruGQFY+ton
+	PoeU6sTJCLRPPgJIgnR8n51yM=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S4;
-	Thu, 30 Apr 2026 23:55:02 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S5;
+	Thu, 30 Apr 2026 23:55:03 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,9 +47,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 02/10] spi: amlogic-spisg: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:48 +0800
-Message-Id: <20260430155456.36998-3-18255117159@163.com>
+Subject: [PATCH 03/10] spi: cadence-xspi: Use FIELD_MODIFY()
+Date: Thu, 30 Apr 2026 23:54:49 +0800
+Message-Id: <20260430155456.36998-4-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
 References: <20260430155456.36998-1-18255117159@163.com>
@@ -60,45 +60,35 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7urW7uF4rZr4DKr4xCryfZwb_yoW8XFW7pF
-	48JFW7CF1Dt348Ca13CF4YkF1Yg395Zrs7Gw12qw1S93WvgF1DZFW5Kr48uryagFy8XFyI
-	gF4kuFW5KFnrA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE2Q6gUUUUU=
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCxBZL7mnze1Zj5gAA3F
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S5
+X-Coremail-Antispam: 1Uf129KBjvdXoWrur17Kr1UAw15ur1DtF43Wrg_yoWfZFb_C3
+	Z5ZrWUKF4DKr1Ika13trs7Ja4qqw4Yvr4DuayvqF43tw4DJ3WYkryqvr9xCrW8ZF18CFWF
+	9wn7Xa4vkr13AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRNmhF7UUUUU==
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6xdL7mnze1dOhAAA3l
 
 Use FIELD_MODIFY() to remove open-coded bit manipulation.
 No functional change intended.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/spi/spi-amlogic-spisg.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index 19c5eba412ef..4c9f4088cb37 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -601,14 +601,11 @@ static int aml_spisg_prepare_message(struct spi_controller *ctlr,
- 
- 	spisg->bytes_per_word = spi->bits_per_word >> 3;
- 
--	spisg->cfg_spi &= ~CFG_SLAVE_SELECT;
--	spisg->cfg_spi |= FIELD_PREP(CFG_SLAVE_SELECT, spi_get_chipselect(spi, 0));
--
--	spisg->cfg_bus &= ~(CFG_CPOL | CFG_CPHA | CFG_B_L_ENDIAN | CFG_HALF_DUPLEX);
--	spisg->cfg_bus |= FIELD_PREP(CFG_CPOL, !!(spi->mode & SPI_CPOL)) |
--			  FIELD_PREP(CFG_CPHA, !!(spi->mode & SPI_CPHA)) |
--			  FIELD_PREP(CFG_B_L_ENDIAN, !!(spi->mode & SPI_LSB_FIRST)) |
--			  FIELD_PREP(CFG_HALF_DUPLEX, !!(spi->mode & SPI_3WIRE));
-+	FIELD_MODIFY(CFG_SLAVE_SELECT, &spisg->cfg_spi, spi_get_chipselect(spi, 0));
-+	FIELD_MODIFY(CFG_CPOL, &spisg->cfg_bus, !!(spi->mode & SPI_CPOL));
-+	FIELD_MODIFY(CFG_CPHA, &spisg->cfg_bus, !!(spi->mode & SPI_CPHA));
-+	FIELD_MODIFY(CFG_B_L_ENDIAN, &spisg->cfg_bus, !!(spi->mode & SPI_LSB_FIRST));
-+	FIELD_MODIFY(CFG_HALF_DUPLEX, &spisg->cfg_bus, !!(spi->mode & SPI_3WIRE));
- 
- 	return 0;
- }
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index 895b4b3276a5..32fa19ebf7a9 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -453,8 +453,7 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
+ 		writel(clk_reg,
+ 		       cdns_xspi->auxbase + MRVL_XSPI_CLK_CTRL_AUX_REG);
+ 		clk_reg = FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
+-		clk_reg &= ~MRVL_XSPI_CLK_DIV;
+-		clk_reg |= FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
++		FIELD_MODIFY(MRVL_XSPI_CLK_DIV, &clk_reg, i);
+ 		clk_reg |= MRVL_XSPI_CLK_ENABLE;
+ 		clk_reg |= MRVL_XSPI_IRQ_ENABLE;
+ 		update_clk = true;
 -- 
 2.34.1
 
