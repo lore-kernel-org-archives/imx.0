@@ -1,411 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18A941325C;
-	Thu, 30 Apr 2026 13:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618C54219E7
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 13:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777554664; cv=none; b=krMMk8l+DoT/sLm2mlWMu/JmKT17v0R772s10BAwhqhtlZU1BBJAsL83ztGh0mI7QjYEDIfiHBmbxOVDb/HcDzGKe+DoovvBGaZruGcj21dXTSFMA98YK7XOMr3OVimcGbFyy+c24zFDsaCp0Cr7z6BQGN90vc4m5Jhvnm3JRsU=
+	t=1777555307; cv=none; b=A7POcVgFGUkW+c1ACgjB5XvYR3mlRIrmxTJPockWJ9pasj9Q/xqu5Y/cJRsNnXRgHlK52Gt91Gxtdn0al1JFcVsLK/wZ53/euUs6VqWZgKNvRmyVZnebDdph/VDkInqocyofyZ0pEGLKVO6yf3gb0IjJY0cln/U0GzLeq50TtfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777554664; c=relaxed/simple;
-	bh=JuCRkvGOswoi3WGFkpI3D9SLSQcDha7ElNMRA+/rc48=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F4T+3D+nzcYlcIhVA0Lbh8EIbb0ciRjUJwzk82MJ8RMVh+fvjOe2+VfVKykEMZ0C3/rWKaXRtGNM+uHC9ulVUtqimYTaVNbbkzDv/d1PiaH1uc8Lq40M7tVAHf0ZsdXUOum2eAadcZ9xM18vh7qdMbdyvQIxDy9jAyhpFhiqwpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ca7jZ949; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777555307; c=relaxed/simple;
+	bh=2eZMKrdUq1kE1wYNVAUmX1R9Mh35MCWgdtBeWNPzAyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BxBuRhbk+TswbDnhZLBLKkBd6rQuV3klO/DbvJuxaF42jb5qaOrzHdS8mGqeLY5P5ViOLo/u11rAUoomWlT1VK0pudn1TyWMAIHcjWAMr2gKPalNUNW97VeLCfcOUE2tYlu+UDDGyBEguMEsCqc3clAFdx7CPdIJINDkI30GgSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc; spf=pass smtp.mailfrom=arduino.cc; dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b=Fp+ujUSc; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arduino.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ca7jZ949"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A0BC2BCB3;
-	Thu, 30 Apr 2026 13:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777554663;
-	bh=JuCRkvGOswoi3WGFkpI3D9SLSQcDha7ElNMRA+/rc48=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ca7jZ949NiRz9X456ga5edaX4HJ7N1rrUuhHNVXACgqn/B0U4P5qSwpjchzz7e2qc
-	 hzCmqFwrB/h59jNtIGxLgFYVSyu7a7pp4Dn3EY5t/iRfW6df6X7Ox/BOFrdXYtYBYY
-	 +0GS5MPD3Ghg+XX5SXqD19KUT4GeaBra5QUi6l3orMmEx3QLB5Zq/i0zYToDKaDZpV
-	 62a/8qXkSbVQgTGeiEz/lvcg3SBCdoXVP02zVZJTA8Os+MI/ZzbWK0a3MwkYPk0UY8
-	 mMY/BUXsFWd0vTwY00YNZQJh2wtnMfLcnPVH2Nj3ClvumCPyDuraBQmpJHmuKVaXJu
-	 6TqKaHRoDvr+g==
-Date: Thu, 30 Apr 2026 14:10:56 +0100
-From: Lee Jones <lee@kernel.org>
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	=?iso-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-watchdog@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v5 3/5] mfd: aaeon: Add SRG-IMX8P MCU driver
-Message-ID: <20260430131056.GI1806155@google.com>
-References: <20260408-dev-b4-aaeon-mcu-driver-v5-0-ad98bd481668@bootlin.com>
- <20260408-dev-b4-aaeon-mcu-driver-v5-3-ad98bd481668@bootlin.com>
+	dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b="Fp+ujUSc"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so15469055e9.2
+        for <imx@lists.linux.dev>; Thu, 30 Apr 2026 06:21:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arduino.cc; s=google; t=1777555304; x=1778160104; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p1duYelZIs2qYPVB/MOAgMGm1UaFo5h5pWBMCVl5tsA=;
+        b=Fp+ujUScP9TbZRHwEn4b6qKXcmGNOtFZ06LrbOU42iJZ0nR2sM+1SEZSqcK/c2AwVD
+         S0B3gKJ0SBuH0dBmY3FivrkoGLbqqnzeO8TqMCKyKfUfZnOzBc30Hfj949+iBTrEv7b7
+         LBkd/pDz2BQqz43MmWe/caGjUMvJDN3jbAUvM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777555304; x=1778160104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p1duYelZIs2qYPVB/MOAgMGm1UaFo5h5pWBMCVl5tsA=;
+        b=ZxX9jMNepHYB+Z3as/LYdyqkpQn71T+V3Wc7Uf7p/vmDKuB/33Q9UqoHV47TF9ZOqk
+         OSHgjwc2lEHQ9xzaZVtb3NF/xg/b5+ipLlnfnrKo6RQNIc1I5g/mqSN1N2DoP46k8I+b
+         AT4FYvB8XLPkbC9zX7w+tFJ1xwhvaIGYraohgsqf5cWRzqZayjslj0aTrOI+AyZP+9K1
+         NygXc5pIf04IV2TBKOU9ag+06/hfq6QigEVwv3gxupPZeEe84jmdZ4fnwcxq/ubfUDxS
+         NwgdRNufIor0xBmq7cJRAabnR6p1kwD4/kk+TXsvygJGAB+Fvq0B9lC2NNqLweFE1Lqn
+         SqFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8iDwi4o5PN6rIuOfUVthsbUCLpCGLk9hJzHwZu8YfmHa951mLBzjAufTsorSJLjYm57qI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YygFxnIA45lWMThqQxx/Ocmpqbx2ySmMXeqSNrGWdVBZSB4tjuE
+	T5ZufZ5NKsUMX70otFDEuVyiDm/zRwen9FEVnP8k/dGaqzvH/theV8+fGkYhkNDXXfs=
+X-Gm-Gg: AeBDietDC0zH+K/yWzLY02tVF6md6BcWXuzDvT0A+nlndOOAf36dL8yfSR6ehIXzxvn
+	0BdN9ASPPClvOdyh9bNh2z2fM6Ya9dvuYwuhJXVz0tOfD/pmtPUWtJovk2/wg4HdzgeTUlScfjD
+	WaxEDSpyKD6drWVrBnVfOvDDv8rYLUEUHuaF7bGNuPT9u7hBMJh0YbivsWsXFesPhblUcBg9so5
+	99IB5oc6IS2WXpdM9ETJ7IQ54rDMz5zKocGlc7KUNnHYBkCV4tZJxXs8upU80e5fKBAxTrZZz1z
+	Qb5jkZ2IQFR9eEGPss6vFQToOldv6SUOG1j3JArO26ktgWprmnUKp7oPty9+OSd6DbE2EyfDSIZ
+	LFBlNWJUJGi3NhO+Q9EI/fdtqeBgpjCEBTckjpqLcicR2F+1isN7xh+rg1DGDLmZOyule8yHgHk
+	w+9rVH+PwfYkBAhcwzrtqn5jy+R7siF7oQRQD1uOe4gkt989Im2hDKMU9Bg6YkqzaHLpg=
+X-Received: by 2002:a05:600c:8b76:b0:48a:5363:8cac with SMTP id 5b1f17b1804b1-48a84484f9dmr52429955e9.22.1777555303724;
+        Thu, 30 Apr 2026 06:21:43 -0700 (PDT)
+Received: from riccardo-work (public.toolboxoffice.it. [213.215.163.27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82307f28sm106210325e9.13.2026.04.30.06.21.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 06:21:43 -0700 (PDT)
+From: Riccardo Mereu <r.mereu.kernel@arduino.cc>
+To: andersson@kernel.org,
+	konradybcio@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	broonie@kernel.org
+Cc: linux@roeck-us.net,
+	Jonathan.Cameron@huawei.com,
+	wenswang@yeah.net,
+	naresh.solanki@9elements.com,
+	michal.simek@amd.com,
+	nuno.sa@analog.com,
+	chou.cosmo@gmail.com,
+	grantpeltier93@gmail.com,
+	eajames@linux.ibm.com,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	m.facchin@arduino.cc,
+	dmitry.baryshkov@oss.qualcomm.com,
+	loic.poulain@oss.qualcomm.com,
+	Riccardo Mereu <r.mereu@arduino.cc>
+Subject: [PATCH 0/3] arm64: qcom: imola: add support for Media Carrier 
+Date: Thu, 30 Apr 2026 15:21:37 +0200
+Message-ID: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260408-dev-b4-aaeon-mcu-driver-v5-3-ad98bd481668@bootlin.com>
 
-On Wed, 08 Apr 2026, Thomas Perrot (Schneider Electric) wrote:
+From: Riccardo Mereu <r.mereu@arduino.cc>
 
-> Add Multi-Function Device (MFD) driver for the Aaeon SRG-IMX8P
-> embedded controller. This driver provides the core I2C communication
-> interface and registers child devices (GPIO and watchdog controllers).
-> 
-> The driver implements a custom regmap bus over I2C to match the MCU's
-> fixed 3-byte command format [opcode, arg, value]. Register addresses
-> are encoded as 16-bit values (opcode << 8 | arg) using the
-> AAEON_MCU_REG() macro defined in the shared header. The regmap
-> instance is shared with child drivers via dev_get_regmap(). Concurrent
-> I2C accesses from child drivers are serialized by regmap's built-in
-> locking.
-> 
-> I2C transfers use heap-allocated DMA-safe buffers rather than
-> stack-allocated ones, as required by I2C controllers that perform DMA.
-> 
-> Regmap caching is enabled (REGCACHE_MAPLE) with a volatile_reg
-> callback that marks GPIO input read registers (opcode 0x72) and the
-> watchdog status register (opcode 0x63, arg 0x02) as volatile. All
-> other registers written by the driver (GPIO direction,
-> GPO state, watchdog control) are stable and can be safely cached.
-> 
-> Co-developed-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-> Signed-off-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
-> ---
->  MAINTAINERS                   |   2 +
->  drivers/mfd/Kconfig           |  10 +++
->  drivers/mfd/Makefile          |   1 +
->  drivers/mfd/aaeon-mcu.c       | 204 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/aaeon-mcu.h |  40 +++++++++
->  5 files changed, 257 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ea9d55f76f35..f91b6a1826d0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -191,6 +191,8 @@ M:	Thomas Perrot <thomas.perrot@bootlin.com>
->  R:	Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
-> +F:	drivers/mfd/aaeon-mcu.c
-> +F:	include/linux/mfd/aaeon-mcu.h
->  
->  AAEON UPBOARD FPGA MFD DRIVER
->  M:	Thomas Richard <thomas.richard@bootlin.com>
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index aace5766b38a..82ec1d8e7224 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -1561,6 +1561,16 @@ config ABX500_CORE
->  	  remain unchanged when IC changes. Binding of the functions to
->  	  actual register access is done by the IC core driver.
->  
-> +config MFD_AAEON_MCU
-> +	tristate "Aaeon SRG-IMX8P MCU Driver"
-> +	depends on I2C || COMPILE_TEST
-> +	select MFD_CORE
-> +	help
-> +	  Select this option to enable support for the Aaeon SRG-IMX8P
-> +	  onboard microcontroller (MCU). This driver provides the core
-> +	  functionality to communicate with the MCU over I2C. The MCU
-> +	  provides GPIO and watchdog functionality.
-> +
->  config AB8500_CORE
->  	bool "ST-Ericsson AB8500 Mixed Signal Power Management chip"
->  	depends on ABX500_CORE && MFD_DB8500_PRCMU
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index e75e8045c28a..34db5b033584 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -8,6 +8,7 @@ obj-$(CONFIG_MFD_88PM860X)	+= 88pm860x.o
->  obj-$(CONFIG_MFD_88PM800)	+= 88pm800.o 88pm80x.o
->  obj-$(CONFIG_MFD_88PM805)	+= 88pm805.o 88pm80x.o
->  obj-$(CONFIG_MFD_88PM886_PMIC)	+= 88pm886.o
-> +obj-$(CONFIG_MFD_AAEON_MCU)	+= aaeon-mcu.o
->  obj-$(CONFIG_MFD_ACT8945A)	+= act8945a.o
->  obj-$(CONFIG_MFD_SM501)		+= sm501.o
->  obj-$(CONFIG_ARCH_BCM2835)	+= bcm2835-pm.o
-> diff --git a/drivers/mfd/aaeon-mcu.c b/drivers/mfd/aaeon-mcu.c
-> new file mode 100644
-> index 000000000000..3b4e2d891534
-> --- /dev/null
-> +++ b/drivers/mfd/aaeon-mcu.c
-> @@ -0,0 +1,204 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Aaeon MCU driver
-> + *
-> + * Copyright (C) 2026 Bootlin
-> + * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
-> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-> + */
-> +
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mfd/aaeon-mcu.h>
-> +#include <linux/mfd/core.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/slab.h>
-> +
-> +struct aaeon_mcu {
-> +	struct i2c_client *client;
-> +	u8 *cmd;      /* DMA-safe 3-byte write buffer [opcode, arg, value] */
-> +	u8 *response; /* DMA-safe 1-byte read buffer for MCU acknowledgment */
-> +};
-> +
-> +static const struct mfd_cell aaeon_mcu_devs[] = {
-> +	MFD_CELL_BASIC("aaeon-mcu-wdt", NULL, NULL, 0, 0),
-> +	MFD_CELL_BASIC("aaeon-mcu-gpio", NULL, NULL, 0, 0),
-> +};
-> +
-> +/* Number of bytes in a MCU command: [opcode, arg, value] */
-> +#define AAEON_MCU_CMD_LEN      3
-> +
-> +/*
-> + * Custom regmap bus for the Aaeon MCU I2C protocol.
-> + *
-> + * The MCU uses a fixed 3-byte command format [opcode, arg, value] followed
-> + * by a 1-byte response. It requires a STOP condition between the command
-> + * write and the response read, so two separate i2c_transfer() calls are
-> + * issued.  The regmap lock serialises concurrent accesses from the GPIO
-> + * and watchdog child drivers.
-> + *
-> + * Register addresses are encoded as a 16-bit big-endian value where the
-> + * high byte is the opcode and the low byte is the argument, matching the
-> + * wire layout produced by regmap for reg_bits=16.
-> + */
-> +
-> +static int aaeon_mcu_regmap_write(void *context, const void *data, size_t count)
-> +{
-> +	struct aaeon_mcu *mcu = context;
-> +	struct i2c_client *client = mcu->client;
-> +	struct i2c_msg write_msg;
-> +	/* The MCU always sends a response byte after each command; discard it. */
-> +	struct i2c_msg response_msg;
-> +	int ret;
-> +
-> +	memcpy(mcu->cmd, data, count);
-> +
-> +	write_msg.addr  = client->addr;
-> +	write_msg.flags = 0;
-> +	write_msg.buf   = mcu->cmd;
-> +	write_msg.len   = count;
-> +
-> +	response_msg.addr  = client->addr;
-> +	response_msg.flags = I2C_M_RD;
-> +	response_msg.buf   = mcu->response;
-> +	response_msg.len   = 1;
-> +
-> +	ret = i2c_transfer(client->adapter, &write_msg, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ret != 1)
-> +		return -EIO;
-> +
-> +	ret = i2c_transfer(client->adapter, &response_msg, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ret != 1)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static int aaeon_mcu_regmap_read(void *context, const void *reg_buf,
-> +				 size_t reg_size, void *val_buf, size_t val_size)
-> +{
-> +	struct aaeon_mcu *mcu = context;
-> +	struct i2c_client *client = mcu->client;
-> +	struct i2c_msg write_msg;
-> +	struct i2c_msg read_msg;
-> +	int ret;
-> +
-> +	/*
-> +	 * reg_buf holds the 2-byte big-endian register address [opcode, arg].
-> +	 * Append a trailing 0x00 to form the full 3-byte MCU command.
-> +	 */
-> +	mcu->cmd[0] = ((u8 *)reg_buf)[0];
-> +	mcu->cmd[1] = ((u8 *)reg_buf)[1];
-> +	mcu->cmd[2] = 0x00;
-> +
-> +	write_msg.addr  = client->addr;
-> +	write_msg.flags = 0;
-> +	write_msg.buf   = mcu->cmd;
-> +	write_msg.len   = AAEON_MCU_CMD_LEN;
-> +
-> +	read_msg.addr  = client->addr;
-> +	read_msg.flags = I2C_M_RD;
-> +	read_msg.buf   = val_buf;
-> +	read_msg.len   = val_size;
-> +
-> +	ret = i2c_transfer(client->adapter, &write_msg, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ret != 1)
-> +		return -EIO;
-> +
-> +	ret = i2c_transfer(client->adapter, &read_msg, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ret != 1)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct regmap_bus aaeon_mcu_regmap_bus = {
-> +	.write = aaeon_mcu_regmap_write,
-> +	.read  = aaeon_mcu_regmap_read,
-> +};
-> +
-> +static bool aaeon_mcu_volatile_reg(struct device *dev, unsigned int reg)
-> +{
-> +	/*
-> +	 * GPIO input registers are driven by external signals and can change
-> +	 * at any time without CPU involvement, always read from hardware.
-> +	 *
-> +	 * The watchdog status register reflects hardware state and can change
-> +	 * autonomously.
-> +	 *
-> +	 * All other registers are written by the driver and their values are
-> +	 * stable, so they can be safely cached.
-> +	 */
-> +	if ((reg >> 8) == AAEON_MCU_READ_GPIO_OPCODE)
-> +		return true;
-> +	if (reg == AAEON_MCU_REG(AAEON_MCU_CONTROL_WDT_OPCODE, 0x02))
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static const struct regmap_config aaeon_mcu_regmap_config = {
-> +	.reg_bits          = 16,
-> +	.val_bits          = 8,
-> +	.reg_format_endian = REGMAP_ENDIAN_BIG,
-> +	.max_register      = AAEON_MCU_MAX_REGISTER,
-> +	.volatile_reg      = aaeon_mcu_volatile_reg,
-> +	.cache_type        = REGCACHE_MAPLE,
-> +};
-> +
-> +static int aaeon_mcu_probe(struct i2c_client *client)
-> +{
-> +	struct aaeon_mcu *mcu;
+This patch series adds support for the Arduino UNO Q (aka imola) Media 
+Carrier expansion board.
 
-Nit: We usually call this ddata, but it's not a blocker.
+It adds: 
+ - two CSI connectors (support only for imx219 sensor)
+ - one DSI connector (support for waveshare 5" and 8" touch A panels)
+ - 3 jack connectors (headset, lineout and ear)
 
-> +	struct regmap *regmap;
-> +
-> +	mcu = devm_kzalloc(&client->dev, sizeof(*mcu), GFP_KERNEL);
-> +	if (!mcu)
-> +		return -ENOMEM;
-> +
-> +	mcu->client = client;
-> +
-> +	mcu->cmd = devm_kzalloc(&client->dev, AAEON_MCU_CMD_LEN * sizeof(*mcu->cmd), GFP_KERNEL);
-> +	if (!mcu->cmd)
-> +		return -ENOMEM;
-> +
-> +	mcu->response = devm_kzalloc(&client->dev, sizeof(*mcu->response), GFP_KERNEL);
-> +	if (!mcu->response)
-> +		return -ENOMEM;
-> +
-> +	regmap = devm_regmap_init(&client->dev, &aaeon_mcu_regmap_bus,
-> +				  mcu, &aaeon_mcu_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(&client->dev, PTR_ERR(regmap),
-> +				     "failed to initialize regmap\n");
-> +
-> +	return devm_mfd_add_devices(&client->dev, PLATFORM_DEVID_AUTO,
-> +				    aaeon_mcu_devs, ARRAY_SIZE(aaeon_mcu_devs),
-> +				    NULL, 0, NULL);
-> +}
-> +
-> +static const struct of_device_id aaeon_mcu_of_match[] = {
-> +	{ .compatible = "aaeon,srg-imx8p-mcu" },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, aaeon_mcu_of_match);
-> +
-> +static struct i2c_driver aaeon_mcu_driver = {
-> +	.driver = {
-> +		.name = "aaeon_mcu",
+It modifies the previous qrb2210-arduino-imola.dts (named in this patch
+series qrb2210-arduino-imola-base.dts) in order to move audio and video
+output via USB-C to a DTBO.
+This is needed since the DSI lines can now be used via the carrier
+board.
 
-Nit: This should be a '-'.
+Camera and panels are divided each in their dedicated DTBO so the users
+can easily configure the overlayed DTB to match what's actually
+connected to the carrier via user-space tool soon to be released. 
 
-> +		.of_match_table = aaeon_mcu_of_match,
-> +	},
-> +	.probe = aaeon_mcu_probe,
-> +};
-> +module_i2c_driver(aaeon_mcu_driver);
-> +
-> +MODULE_DESCRIPTION("Aaeon MCU Driver");
-> +MODULE_AUTHOR("Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>");
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/linux/mfd/aaeon-mcu.h b/include/linux/mfd/aaeon-mcu.h
-> new file mode 100644
-> index 000000000000..3a1aeec85d60
-> --- /dev/null
-> +++ b/include/linux/mfd/aaeon-mcu.h
-> @@ -0,0 +1,40 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Aaeon MCU driver definitions
-> + *
-> + * Copyright (C) 2026 Bootlin
-> + * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
-> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-> + */
-> +
-> +#ifndef __LINUX_MFD_AAEON_MCU_H
-> +#define __LINUX_MFD_AAEON_MCU_H
-> +
-> +/*
-> + * MCU register address: the high byte is the command opcode, the low
-> + * byte is the argument.  This matches the 3-byte wire format
-> + * [opcode, arg, value] used by the MCU I2C protocol.
-> + */
-> +#define AAEON_MCU_REG(op, arg)		(((op) << 8) | (arg))
-> +
-> +/*
-> + * Opcode for GPIO input reads. These registers are volatile, their values
-> + * are driven by external signals and can change without CPU involvement.
-> + * Used by the MFD driver's volatile_reg callback to bypass the regmap cache.
-> + */
-> +#define AAEON_MCU_READ_GPIO_OPCODE	0x72
-> +
-> +/*
-> + * Opcode for watchdog control and status commands.
-> + * The status register (arg=0x02) reflects hardware state and is volatile.
-> + */
-> +#define AAEON_MCU_CONTROL_WDT_OPCODE	0x63
-> +
-> +/*
-> + * Highest register address in the MCU register map.
-> + * The WRITE_GPIO opcode (0x77) with the highest GPIO argument (0x0B = 11,
-> + * i.e. MAX_GPIOS - 1) produces the largest encoded address.
-> + */
-> +#define AAEON_MCU_MAX_REGISTER		AAEON_MCU_REG(0x77, 0x0B)
-> +
-> +#endif /* __LINUX_MFD_AAEON_MCU_H */
-> 
-> -- 
-> 2.53.0
-> 
+Depends on two patch series:
+ - https://lore.kernel.org/dri-devel/20260413-waveshare-dsi-touch-v3-0-3aeb53022c32@oss.qualcomm.com/ 
+   (applied to drm-misc-next)
+ - https://lore.kernel.org/dri-devel/20260331-ws-lcd-v2-0-a1add63b6eb6@oss.qualcomm.com/
+
+Riccardo Mereu (3):
+  arm64: qcom: agatti: Add dai@3
+  arm64: qcom: imola: Move analogix video/audio output to dtso
+  arm64: dts: qcom: imola: add support for media carrier board
+
+ arch/arm64/boot/dts/qcom/Makefile             |  13 ++
+ arch/arm64/boot/dts/qcom/agatti.dtsi          |   4 +
+ ...ola.dts => qrb2210-arduino-imola-base.dts} | 122 +++++++++++++---
+ ...rrier-media-camera-imx219-csi0-2lanes.dtso |  49 +++++++
+ ...rrier-media-camera-imx219-csi0-4lanes.dtso |  49 +++++++
+ ...rrier-media-camera-imx219-csi1-2lanes.dtso |  49 +++++++
+ ...rrier-media-camera-imx219-csi1-4lanes.dtso |  49 +++++++
+ ...10-arduino-imola-carrier-media-common.dtsi |  46 ++++++
+ ...a-carrier-media-panel-5in_touch_a-dsi.dtso |  80 +++++++++++
+ ...a-carrier-media-panel-8in_touch_a-dsi.dtso |  80 +++++++++++
+ .../qrb2210-arduino-imola-carrier-media.dtso  | 131 ++++++++++++++++++
+ ...rb2210-arduino-imola-video_sound-usbc.dtso |  61 ++++++++
+ 12 files changed, 713 insertions(+), 20 deletions(-)
+ rename arch/arm64/boot/dts/qcom/{qrb2210-arduino-imola.dts => qrb2210-arduino-imola-base.dts} (85%)
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi0-2lanes.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi0-4lanes.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi1-2lanes.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-camera-imx219-csi1-4lanes.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-panel-5in_touch_a-dsi.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media-panel-8in_touch_a-dsi.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-carrier-media.dtso
+ create mode 100644 arch/arm64/boot/dts/qcom/qrb2210-arduino-imola-video_sound-usbc.dtso
 
 -- 
-Lee Jones
+2.53.0
+
