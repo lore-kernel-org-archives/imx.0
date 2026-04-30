@@ -1,40 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272FC401484
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 09:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D25A402BB6
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 09:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777542586; cv=none; b=jVMTpbuaqLVm4GxZmor2fJObQmqxJSfpwndNFobmUD7WmkgGOvkzB7L6XadeXG+9I0q3rKpSb+DtkaLlCxzU/0gwRLkkMxvKX/0gs3HLZJA5hOF4feS1wgJR2eNc2zLx1UsHT0U1QILXKieVbW0DpYdR/VXNSwmhSSK05v3ZGWg=
+	t=1777542593; cv=none; b=iCsHcn/6B/ZEYbhtAKEZLQdl0BPn6PLPvXPnNGjopqbTmDlVTQ30jKsjFCSnBzaRlhhLzFjytMcSaytHXkMkD0fpNM8ZbIajjaV3XFllAvDf+LN+92n1b77j3JIZ3InP0TUTqTiP8YoqRhbvm4i92aL/FYwVRp6ulI/3XqpcZN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777542586; c=relaxed/simple;
-	bh=a0dhxN5cfkc0NB88URs2LR/24fGy77fKRmKXsOfOuWU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fn7ca55k6p0bGojzW/KCKVdCyJXM+L3UxdAcLQtU8XQdZbSrwX0PzSWd0yiimeU+kEmjViwDrUoR4jGOOwBhIdsd5/EX847En+NXR3YTDYlWq5oh/KJAAQSh8mYXUcoDv3mzbvxKh+4cbUI6QZ0wNK8dzmf2yqcgeBxWoZsM6k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sGlQr6Xn; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1777542593; c=relaxed/simple;
+	bh=1bwhwdfvJlIzsKkfaxkktge9gzD6L0rgkayWyCUNTsY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RjMzKVJJZFXsmS5unlj7yCEDVA6N3+iH7efwdL9Hw4198AtB8BxMxgYf0xsbUG36LkrO/B5T61BBkn1MnnPby1IlgfMBpPdIYaQkJRMgzXq2EgQQJpGFpXxM+T/NnYiMki2qP6CEh26WjqQiqDuz3f0PrXDZPTJjxP+JtOGyquY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hIe9HkRs; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sGlQr6Xn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hIe9HkRs"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 252CAC5CD6C;
-	Thu, 30 Apr 2026 09:50:27 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1F5991A3492;
+	Thu, 30 Apr 2026 09:49:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 915B460495;
-	Thu, 30 Apr 2026 09:49:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFE7F1072B8B2;
-	Thu, 30 Apr 2026 11:49:40 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E986160495;
+	Thu, 30 Apr 2026 09:49:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 526711072B8B3;
+	Thu, 30 Apr 2026 11:49:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777542581; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=9LF0fKRjrJRDsIu0dM6XuR1BpD8QYSV/p2523gg017E=;
-	b=sGlQr6Xn5Fu+Qd1yBGPuQOCetBsBs+VDvVNaxxmXnIBX6ABALqJRO2iGG1HXDys21u9RBE
-	4si0TcUcCP06dB+kDmhcpMOBBLIesx7Thj8ijB6xizTPoFaFQhU01nkhVoYZ3CZO/YX0dM
-	P5sT/KU+y+BJMz8kC7ifyKLEo3bdTXeJIbb2yezKIdOEajYZZziHjGViLDzrKzlQ7dP+bK
-	XbFS1+x+SjkdwPH/0LPLhqWtUPg/lLFVicpDcZDkMz6J7VYz9Xr9oRRp75W8uXWkxiqq43
-	INQxq5djni4wPeIzvDdGL/kx3F8URGr0ar+kXeBg7yxTjdf1vniEgSTdgsLXGA==
+	t=1777542584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=aQaOLDa6vezVg2B4JDopiCIwlU8Ntmkdr40yY+rXlOE=;
+	b=hIe9HkRsABsn/+vnF8Otf5XKWQaakvUeB5uB8Rh62sAddYeq6RLMWVHzq8YcSgdM5A2NIM
+	tdHM+uYU8PihXqW2ArhJMxo3nOFVVzOCAZpNgRW7GVfMnvGg0wl7C1nILNQ2FoQH00G7Ml
+	ChEmVkV1Q64H/fw2PaERQUJnk7pKT9H0oG9YTB7hmb6qHD2bR6+XTZVjZi49w7bMtE2aLS
+	+qggK6MkotCu+ClfpBILCBksnPzuph5CSvV+h5j8JwbrXf5JEhceorwIREIG8BEcBz39iP
+	UPBxpycslur3+fdDLGcS3HCVC4psjhB1qMtrXcDtTJM1+nyp/YzFLqDnWvQuEA==
 From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Subject: [PATCH RFC 0/2] dmaengine: fsl-edma: Scatter/gather improvements
-Date: Thu, 30 Apr 2026 11:49:31 +0200
-Message-Id: <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com>
+Date: Thu, 30 Apr 2026 11:49:33 +0200
+Subject: [PATCH RFC 2/2] dmaengine: fsl-edma: Support dynamic
+ scatter/gather chaining
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,10 +45,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAKsl82kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEyML3bTiHN3UlNxE3ZTKPN3idF1LMwNzY8NUY/OURCMloK6CotS0zAq
- widFKQW7OSrEQweLSpKzU5BKQWUq1tQCz7lkFeAAAAA==
-X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+Message-Id: <20260430-fsl-edma-dyn-sg-v1-2-4e0ecbe2df66@bootlin.com>
+References: <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com>
+In-Reply-To: <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com>
 To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
@@ -55,42 +56,155 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-This series adds support for scatter/gather DMA transfers via dma_vec
-and dynamic descriptor chaining to the Freescale eDMA controller driver.
+Implement dynamic linking of scatter/gather transfers to enable
+chaining multiple DMA descriptors without stopping the channel.
+This avoids waiting for the channel to go idle if there is another
+transaction already issued.
 
-The first patch implements the .device_prep_peripheral_dma_vec() callback,
-enabling the DMA engine to accept an array of dma_vec structures. This
-callback supports both regular and cyclic transfer modes.
+Add fsl_edma_link_sg() to dynamically link the last TCD of a previously
+submitted descriptor to the first TCD of a new descriptor by setting
+the scatter/gather address and the E_SG flag, and keeping the channel
+active by clearing the DREQ bit.
 
-The second patch introduces dynamic scatter/gather chaining, which allows
-multiple DMA descriptors to be linked together without stopping the channel.
-This optimization eliminates idle periods when back-to-back transfers are
-submitted, improving throughput and reducing latency. The implementation
-carefully preserves cyclic transfer semantics and respects hardware
-constraints on platforms with split register layouts.
+Linking is only done if the last TCD was set to disable the DMA channel,
+to prevent corrupting cyclic transaction.
 
-I am posting this as an RFC since I only tested it on the i.MX93. The
-dynamic scatter/gather chaining should work with other eDMA controller
-with split register layout.
+Update fsl_edma_xfer_desc() to avoid re-initializing the hardware when a
+transfer is already in progress, allowing seamless chaining of descriptors.
+
+Modify the transfer completion handler to check the DONE flag in the
+channel CSR before marking the transfer complete. Since this flag is
+only available on SoC with the split registers layout, we only link
+transactions for DMA controllers flagged with FSL_EDMA_DRV_SPLIT_REG.
+
+Add trace event for scatter/gather linking operations.
 
 Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
 ---
-Benoît Monin (2):
-      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
-      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+ drivers/dma/fsl-edma-common.c | 64 ++++++++++++++++++++++++++++++++++++++++---
+ drivers/dma/fsl-edma-trace.h  |  5 ++++
+ 2 files changed, 65 insertions(+), 4 deletions(-)
 
- drivers/dma/fsl-edma-common.c | 174 +++++++++++++++++++++++++++++++++++++++++-
- drivers/dma/fsl-edma-common.h |   4 +
- drivers/dma/fsl-edma-main.c   |   2 +
- drivers/dma/fsl-edma-trace.h  |   5 ++
- 4 files changed, 181 insertions(+), 4 deletions(-)
----
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index 26a5ecf493b9..7094c747defa 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
+ 		list_del(&fsl_chan->edesc->vdesc.node);
+ 		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
+ 		fsl_chan->edesc = NULL;
+-		fsl_chan->status = DMA_COMPLETE;
++		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
++		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
++			fsl_chan->status = DMA_COMPLETE;
++		}
+ 	} else {
+ 		vchan_cyclic_callback(&fsl_chan->edesc->vdesc);
+ 	}
+@@ -673,6 +676,51 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
+ 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+ }
+ 
++static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_edma_desc *fsl_desc)
++{
++	u32 flags = fsl_edma_drvflags(fsl_chan);
++	struct virt_dma_desc *vdesc;
++	struct fsl_edma_desc *prev_desc;
++	struct fsl_edma_hw_tcd *last_tcd;
++	u16 csr;
++
++	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
++		return;
++
++	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
++
++	vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
++					struct virt_dma_desc, node);
++	if (!vdesc)
++		vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
++						struct virt_dma_desc, node);
++	if (!vdesc)
++		return;
++
++	prev_desc = to_fsl_edma_desc(vdesc);
++	last_tcd = prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
++
++	csr = fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
++	if (!(csr & EDMA_TCD_CSR_D_REQ))
++		return;
++
++	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast_sga);
++
++	csr &= ~EDMA_TCD_CSR_D_REQ;
++	csr |= EDMA_TCD_CSR_E_SG;
++	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
++
++	if (prev_desc == fsl_chan->edesc && prev_desc->n_tcds == 1) {
++		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
++			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_csr);
++
++		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
++		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
++	}
++
++	trace_edma_link_sg(fsl_chan, last_tcd);
++}
++
+ struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
+ 		struct dma_chan *chan, const struct dma_vec *vecs,
+ 		size_t nb, enum dma_transfer_direction direction,
+@@ -780,6 +828,9 @@ struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
+ 		}
+ 	}
+ 
++	if (!fsl_desc->iscyclic)
++		fsl_edma_link_sg(fsl_chan, fsl_desc);
++
+ 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+ }
+ 
+@@ -883,6 +934,8 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
+ 		}
+ 	}
+ 
++	fsl_edma_link_sg(fsl_chan, fsl_desc);
++
+ 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+ }
+ 
+@@ -925,9 +978,12 @@ void fsl_edma_xfer_desc(struct fsl_edma_chan *fsl_chan)
+ 	if (!vdesc)
+ 		return;
+ 	fsl_chan->edesc = to_fsl_edma_desc(vdesc);
+-	fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
+-	fsl_edma_enable_request(fsl_chan);
+-	fsl_chan->status = DMA_IN_PROGRESS;
++
++	if (fsl_chan->status != DMA_IN_PROGRESS) {
++		fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
++		fsl_edma_enable_request(fsl_chan);
++		fsl_chan->status = DMA_IN_PROGRESS;
++	}
+ }
+ 
+ void fsl_edma_issue_pending(struct dma_chan *chan)
+diff --git a/drivers/dma/fsl-edma-trace.h b/drivers/dma/fsl-edma-trace.h
+index d3541301a247..ac319d2dbb90 100644
+--- a/drivers/dma/fsl-edma-trace.h
++++ b/drivers/dma/fsl-edma-trace.h
+@@ -119,6 +119,11 @@ DEFINE_EVENT(edma_log_tcd, edma_fill_tcd,
+ 	TP_ARGS(chan, tcd)
+ );
+ 
++DEFINE_EVENT(edma_log_tcd, edma_link_sg,
++	     TP_PROTO(struct fsl_edma_chan *chan, void *tcd),
++	     TP_ARGS(chan, tcd)
++);
++
+ #endif
+ 
+ /* this part must be outside header guard */
 
-Best regards,
---  
-Benoît Monin, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+-- 
+2.54.0
 
