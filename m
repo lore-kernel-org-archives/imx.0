@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311B4657C0
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3FC44E05B
+	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 15:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564574; cv=none; b=AugkD3S06gS9C1Sj5BmEYwpZaCl/6J/YXOilEjI13o30kfN71Vf9xfcvJx5K3Nogv4WM4s5M57PPUdgarq2pfJdiZQLjJkg2BHp/EX7hgWelokd79upWBzWNRzimMnzipQgtoXXxLfqwkDYVuymIyo4uIkPEEyFFle1A86csUuc=
+	t=1777564577; cv=none; b=e9jYPwt3Itqsq7yF3FP7osCcezZWZOB2ztTf/PX0VEjEncHXEZRjpOkHxYU41TjG498byXdq/5txuTB1q7pfEdCDar5KACwHa3wq+4UKhX88E127FbcppjftUpVM9SWek3t7tF7Dx01xm2KborK1Q6og5DIKTx9lfjd9aWLjLLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564574; c=relaxed/simple;
-	bh=JuO95LLlvVCqdK/aJx1XUcne2M7CiL54qgbUbBwSJEI=;
+	s=arc-20240116; t=1777564577; c=relaxed/simple;
+	bh=zd1dE7/6Zd8Z2L8eKieK1Px69LQtufkEf9w1SXxqMnQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H06d4DKJ3I0hv7xtXmbzTR2ykhvdKJnqYTBvJZQ1RgKAE4ic9errEbwnwB0KyNc/E4erjEy0NM9AsDWC3rbMZd4aJSqSxkKpbCzWXGUpCwcdOtVna8VKapimrLvt2GDeWE6jAbkDUZMk0qt1MOgCvgzNgoYymdVerprmFVA2+sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Ev0pNmK+; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=rpHF6P1F1nObw1J6ML3qIZkGhnucWGaqcF5O2Mq9lB7PLGHnErin0znKaeXdFte8oOyKZP++gNVXzIjveMLMZFguOlMFP1yLXUBCwzyR+U0GVPnmq4DVzLCTSD7OxskIhVC3SwB/j6ae0AvpSOyIwvIT512qFEC9qqynuOgu+zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=T9pSkmCW; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Ev0pNmK+"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="T9pSkmCW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=sE
-	zybTxl5A7lsGll3i9/ZIVwmqpi3pHGLUkxqxB3X5E=; b=Ev0pNmK+X/kmMND+dC
-	EpxzIK8inHUSw6mGkY8INdzuWZ40vLd+JHraH+juElBjcZ5RLXrbuWRJuhTrQDc/
-	zOnd9BQFW7fSaHNC3dagcPLYyUBMiejx54bgWhu2fks7Fjt3fJqxc2TJeOW5FkkO
-	QrPvI10tC4X+JfJtL1CtMZasI=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=19
+	prBy0n5wuyUpUdXN4aPlt40TxeRc+ijGpYYWAHrnw=; b=T9pSkmCWcahkdwYwN+
+	JEqB7kssGOAN2DzJVHZhlCfIHGwqag/u6OA5YBG84PumYwOKjWXE0gYavC3QB4Wo
+	4akF0Rb+XZUHLduYZoktCUDw0Q3lyMcBumhcAm4B0K3FoDnR3NMB3oXHAYePappo
+	5XaZO2I8ULEMUY5LZ94UxBSco=
 Received: from zhb.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S10;
-	Thu, 30 Apr 2026 23:55:08 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXyu5Se_NpHedTCg--.49548S12;
+	Thu, 30 Apr 2026 23:55:11 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: broonie@kernel.org,
 	sunny.luo@amlogic.com,
@@ -47,9 +47,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 08/10] spi: stm32-qspi: Use FIELD_MODIFY()
-Date: Thu, 30 Apr 2026 23:54:54 +0800
-Message-Id: <20260430155456.36998-9-18255117159@163.com>
+Subject: [PATCH 10/10] spi: uniphier: Use FIELD_MODIFY()
+Date: Thu, 30 Apr 2026 23:54:56 +0800
+Message-Id: <20260430155456.36998-11-18255117159@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
 References: <20260430155456.36998-1-18255117159@163.com>
@@ -60,37 +60,55 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S10
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur17tw43ur1xXF4xXr47Jwb_yoWfKFb_ur
-	1UAFn7Kw4q9F97JF48CryxZr909FWDWa1ktFnIqayfAwn8X3y7u3ykXr1DG3WDZr4kCr4F
-	9FsrX3Wvkry3JjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRN6pBPUUUUU==
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCwxxN8Gnze1xaPQAA34
+X-CM-TRANSID:_____wAXyu5Se_NpHedTCg--.49548S12
+X-Coremail-Antispam: 1Uf129KBjvJXoW7urW7uF43JF4kKrWUJFyUtrb_yoW8WFW5pF
+	s5GFsFyF40yr4UArn5Aay8uFyaqa929as7Ga4DK39xX3WIqr1UAFW0ka15Jr47AFWxXF1f
+	Ca93AFyrGF47ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi9a9hUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6x9N8Gnze19PzAAA30
 
 Use FIELD_MODIFY() to remove open-coded bit manipulation.
 No functional change intended.
 
 Signed-off-by: Hans Zhang <18255117159@163.com>
 ---
- drivers/spi/spi-stm32-qspi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-uniphier.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..ea69fe25686f 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -374,9 +374,8 @@ static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
- 	int timeout, err = 0, err_poll_status = 0;
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index eac6c3e8908b..846f65ba9495 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -184,14 +184,12 @@ static void uniphier_spi_set_transfer_size(struct spi_device *spi, int size)
+ 	u32 val;
  
- 	cr = readl_relaxed(qspi->io_base + QSPI_CR);
--	cr &= ~CR_PRESC_MASK & ~CR_FSEL;
--	cr |= FIELD_PREP(CR_PRESC_MASK, flash->presc);
--	cr |= FIELD_PREP(CR_FSEL, flash->cs);
-+	FIELD_MODIFY(CR_PRESC_MASK, &cr, flash->presc);
-+	FIELD_MODIFY(CR_FSEL, &cr, flash->cs);
- 	writel_relaxed(cr, qspi->io_base + QSPI_CR);
+ 	val = readl(priv->base + SSI_TXWDS);
+-	val &= ~(SSI_TXWDS_WDLEN_MASK | SSI_TXWDS_DTLEN_MASK);
+-	val |= FIELD_PREP(SSI_TXWDS_WDLEN_MASK, size);
+-	val |= FIELD_PREP(SSI_TXWDS_DTLEN_MASK, size);
++	FIELD_MODIFY(SSI_TXWDS_WDLEN_MASK, &val, size);
++	FIELD_MODIFY(SSI_TXWDS_DTLEN_MASK, &val, size);
+ 	writel(val, priv->base + SSI_TXWDS);
  
- 	if (op->data.nbytes)
+ 	val = readl(priv->base + SSI_RXWDS);
+-	val &= ~SSI_RXWDS_DTLEN_MASK;
+-	val |= FIELD_PREP(SSI_RXWDS_DTLEN_MASK, size);
++	FIELD_MODIFY(SSI_RXWDS_DTLEN_MASK, &val, size);
+ 	writel(val, priv->base + SSI_RXWDS);
+ }
+ 
+@@ -308,9 +306,8 @@ static void uniphier_spi_set_fifo_threshold(struct uniphier_spi_priv *priv,
+ 	u32 val;
+ 
+ 	val = readl(priv->base + SSI_FC);
+-	val &= ~(SSI_FC_TXFTH_MASK | SSI_FC_RXFTH_MASK);
+-	val |= FIELD_PREP(SSI_FC_TXFTH_MASK, SSI_FIFO_DEPTH - threshold);
+-	val |= FIELD_PREP(SSI_FC_RXFTH_MASK, threshold);
++	FIELD_MODIFY(SSI_FC_TXFTH_MASK, &val, SSI_FIFO_DEPTH - threshold);
++	FIELD_MODIFY(SSI_FC_RXFTH_MASK, &val, threshold);
+ 	writel(val, priv->base + SSI_FC);
+ }
+ 
 -- 
 2.34.1
 
