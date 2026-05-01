@@ -1,109 +1,94 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B613BC66F
-	for <imx@lists.linux.dev>; Thu, 30 Apr 2026 23:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA081D88B4;
+	Fri,  1 May 2026 00:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777591065; cv=none; b=Q84C19LMYSZRRsunxThwDF0Q3IuU74iGEjsdTcX6noj17YLwBCVK6Yr3/ha5zounf7PX1oRA2PI3bpJ4Wks6Z5yzWJykyVph4COKf2Gc+r3ZqCqv8EoKodtQuMu6qs3y1JZNvT+WXD/NlC12gAarq/Lfys16HsQ9jsqp3vii0gs=
+	t=1777596765; cv=none; b=vB+gKkBk4ddwZkyE/rtc8YOxCB0QZ60n6y1+LIwwma1cM4JGFwVsezCSqkqu3mWU8A3u+qtY0xbUlQqZO5fEm8shVHa7ij0r2k6lRfDGFhWref+WKsJ+jP19iJuJX8mvWCZbQSWlf2rXSjuV7DVtWRl/TjkCoq/RnRy8IgByQQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777591065; c=relaxed/simple;
-	bh=uIyWVp8D7mfhSE21zLSXRVsmni4doJzep5hg6+i9+0U=;
+	s=arc-20240116; t=1777596765; c=relaxed/simple;
+	bh=EOOhMWkdwXNe+cgIqAYVnr7cBZIq3XZI0KMFnUqE0CQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjsAoCQDicwxZcVTmzW3CtoGTz0pc3Yv29vdJA8njBYA5KYTI3RslkioEgyK8NTPZ2cACZAGuxs66lf+STFMYzP7y5lxqUSjQ8BEW1VLNSzOQIAdmAdIdFAkQxinhiTH2Lr8iADyflel6UYUsDMS33wEymXqEy9T0iv+9X9Bxpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gm72fU04; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=czm/DPAg7/TSBBoXaacHo4+ou7xWSgDSC1GKUp4wUJASbZTPn/sTnoqPa3yNpEaNJUlrKoAgJCgu9N5n3GRVDlEmwjb0UX5dL2+UUDDwSVYM17uUPu3a7Wwi1rxGgv0HfDfnPueTmo83FTec6PaRFzrkbhH0kro9lyPaoJZ0+EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ib244Ctw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gm72fU04"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b24fede2acso8933785ad.3
-        for <imx@lists.linux.dev>; Thu, 30 Apr 2026 16:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777591064; x=1778195864; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wPb32HxMm/+qEq7JGxjS6idVv7iM9pOULTkDilujde0=;
-        b=Gm72fU04oYGNAtMnEAV1MV/zrfVJ+RSbsoRMWa5jLLMcPq/hu7zcAYKPfHuIBK2jUE
-         FUJV5My/J7wMeNwIhdlf8qh6E3eW1P9brmMNwE/kZA8QYsLnoD+8ez2tPJOWqk8wW9BU
-         AUKDEPZbes7ZKL3lxeGUhXMHbu8JO0coMZlPVTxtQzu93xJt64L9Se62akoiP1RkO0Vu
-         mVkra1cc8g6htfPPjEqNqykCyK46f2969c4KNqagEDWNInp3PVDKVx7u+nZyaYMk44G8
-         9rNmH1Is52ef1MbZhcI1y0Mbc0C2kgNp/aBGBWxvG6ttvB/ruLw2b2W7l04XnpG7JVia
-         KBjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777591064; x=1778195864;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wPb32HxMm/+qEq7JGxjS6idVv7iM9pOULTkDilujde0=;
-        b=J+21y0RpyuWp6YDJvFl1dmust0u0ec7MAe+sfFvtVGvHYJL65n4MpsNk0Q4BUwnbTH
-         MtbzHeHb93HCm77e6QHajfGr5c2ygT2s71fXPOlFuekL+Ih+RIBaYbgWgdSlKrjyuY6U
-         bgcsm0Vlw/EhmzjTke4OPe1l21qT/WvXFkVk3GB/mjVOMymhzhEKYxAw9Wjxj7e/Mgxn
-         lsD0gMHA7qBZ/DY6n2LnbZcLQFX5X9ej5YPbfVYxxQK0ZSxiDbNGZvUndBfzTSbY3ZZg
-         VdtccXb//kVQ3Gxt8CZ4MLDzPQMYL7/VMmbKv5ki9xxBUh52u/k/bmJqlP/8u/S3B9XF
-         jqNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9trfK6E9mK2HOXeP46FKR2L+uOcLnpQEa+TT5mdVtdHiIXcX/7BAYfNYUDlAz8k8dNOHQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxuvCbXYW/rs9K83SuehNTyJYrVzsNyDXlHOOLNlh8Wtmtiva7I
-	BjKJ/U00ssnjdgLvfna6c0sJCaWwskOeo7z0caNa8JnU7CtkutAYDoJZ
-X-Gm-Gg: AeBDievfYww4XimjbZBtaFR+SDF6FKhfazaSVGFB5oBoZhawz136HJE4Yz1SS4IfWgz
-	sS9dg1qGtnIygqlzpgiraVRmdteRtthGagtgGNn5XPEoXzZ36wlCBK9EKQ/1tHgtHFy/ilHuV7N
-	ZJcjtASy9wtvK2f9mIpXwazeFyfbk+AO8bvwhjJXEKNekBtuXNNzflKo3PyyLctwueXdiFiJmEH
-	RudaD4B2gC9pAFUbPNxYZlkFy9ua31eukf5IpiMXGAaMvxstFfbBrsrw+JIln41OdhCV/0zje5X
-	iws9/7N8uO4/UUTVI+UF4vZrDRsC6L4i/c4qvNB1/zMSrgBR0j2bcAySVf+FVbQiI2ih7lEVdy5
-	Sz+rSBlR84cLS8n1C/BwfNbMcE0KM8nc9EgzGFhUno++Si3oEV63dOBcoAFthnzqieNNeN1MKEw
-	zu6NXaGHdVl4ripG4h29NY1WH9J/lv1RoOcTsqAwij7MxplKc=
-X-Received: by 2002:a17:903:4509:b0:2b7:a350:463f with SMTP id d9443c01a7336-2b9a2316e61mr37002455ad.10.1777591063991;
-        Thu, 30 Apr 2026 16:17:43 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae58906sm6249995ad.74.2026.04.30.16.17.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 16:17:43 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 30 Apr 2026 16:17:42 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: florin.leotescu@oss.nxp.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ib244Ctw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D5CC2BCB3;
+	Fri,  1 May 2026 00:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777596765;
+	bh=EOOhMWkdwXNe+cgIqAYVnr7cBZIq3XZI0KMFnUqE0CQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ib244CtwJUUvN8KWPb5lMj+V3cAt3pp8wwvKUMag+XKg5JDHMOtEYwLvQIdp6xLw/
+	 SuAEUvevA4tChXEj+76ZFA/OYARODzVt5oLc08jwP7CWYVINfkFlfn/5fQF1dXOICq
+	 XH3ZGXBE5C1EzeAAbLsIqR6XNrOdIiqTiYDHBPynlH4tO5XIsERzAYehSDAckiWfyH
+	 Mc1EvcAPlvHoibwjKqQ5VSbMK5PyhZS9FjazSC5rqaUXH9aIm4X+O31INX1YSot854
+	 hUO/IAoikN02Dv1EcKbWhUZ0WyGsG4SDiLRwIjHIpSkBbLLWtyDxab80brTW95TtSG
+	 mOibVax7L7wlA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 1290F1AC5860; Fri, 01 May 2026 01:52:43 +0100 (BST)
+Date: Fri, 1 May 2026 09:52:42 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Hans Zhang <18255117159@163.com>
+Cc: sunny.luo@amlogic.com, xianwei.zhao@amlogic.com,
+	neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com,
+	haibo.chen@nxp.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, lhjeff911@gmail.com,
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+	jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [PATCH v7 3/3] hwmon: emc2305: Support configurable fan PWM at
- shutdown
-Message-ID: <931b8c3c-8555-4333-a660-e1d78fd67a00@roeck-us.net>
-References: <20260429065955.2113012-1-florin.leotescu@oss.nxp.com>
- <20260429065955.2113012-4-florin.leotescu@oss.nxp.com>
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 03/10] spi: cadence-xspi: Use FIELD_MODIFY()
+Message-ID: <afP5Wlzt-dTvnzii@sirena.co.uk>
+References: <20260430155456.36998-1-18255117159@163.com>
+ <20260430155456.36998-4-18255117159@163.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="JFs5EhvgRVT+vvgO"
+Content-Disposition: inline
+In-Reply-To: <20260430155456.36998-4-18255117159@163.com>
+X-Cookie: 667:
+
+
+--JFs5EhvgRVT+vvgO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260429065955.2113012-4-florin.leotescu@oss.nxp.com>
 
-On Wed, Apr 29, 2026 at 09:59:55AM +0300, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
-> 
-> Some systems require fans to enter in a defined safe state during system
-> shutdown or reboot handoff.
-> 
-> Add support for the optional Device Tree property "fan-shutdown-percent"
-> to configure the shutdown PWM duty cycle per fan output.
-> 
-> If the property is present for a fan channel, the driver converts the
-> configured percentage value to the corresponding PWM duty cycle and
-> applies it during driver shutdown.
-> 
-> If the property is not present, the fan state remains unchanged.
-> 
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+On Thu, Apr 30, 2026 at 11:54:49PM +0800, Hans Zhang wrote:
+>  		writel(clk_reg,
+>  		       cdns_xspi->auxbase + MRVL_XSPI_CLK_CTRL_AUX_REG);
+>  		clk_reg = FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
+> -		clk_reg &= ~MRVL_XSPI_CLK_DIV;
+> -		clk_reg |= FIELD_PREP(MRVL_XSPI_CLK_DIV, i);
+> +		FIELD_MODIFY(MRVL_XSPI_CLK_DIV, &clk_reg, i);
+>  		clk_reg |= MRVL_XSPI_CLK_ENABLE;
+>  		clk_reg |= MRVL_XSPI_IRQ_ENABLE;
+>  		update_clk = true;
 
-I don't know if Sashiko's concerns are real; if sysfs accesses are still
-possible during shutdown, lots of drivers have problems. With that in mind,
-applied.
+The existing code is a bit weird here, we could just delete the
+modification entirely AFAICT.
 
-Thanks,
-Guenter
+--JFs5EhvgRVT+vvgO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnz+VoACgkQJNaLcl1U
+h9DEnQf/VAnw03Dnq8NVXT8eelt6wkRf2zJKsMEPrCCYPKzeWXivCbUy9eykDun+
+0JMG0iLP/LpWGz4qpUWkbR2Kz8aA0BehHcrEQ56Du8lygGmGeFUNtTcr3KL8API3
+DEQrtR2rOyvQ5gxfbyX9NN12jKoVi+SQ6E/W2FFwRY9o2Akuj+NK2rRSYcSmiIBO
+b5oZbhABu4P6LiXAtHZ1LK+Yf7NhvgSiFch1chrm/dk225txoJfTFn5BSn14cC+8
+FWtjbKtDpupiD1C94wsXHfoUDT2hOtJqxnQLE63hNAKIMqkU3raORVOemHKqcB+M
+0qK9zAkxfGtf5GZdQ3rD7/lt2v0bCg==
+=Ca6l
+-----END PGP SIGNATURE-----
+
+--JFs5EhvgRVT+vvgO--
