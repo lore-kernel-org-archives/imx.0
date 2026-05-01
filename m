@@ -1,79 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F28329B8D3;
-	Fri,  1 May 2026 01:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15094A35
+	for <imx@lists.linux.dev>; Fri,  1 May 2026 08:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777598457; cv=none; b=RsCMKvL1vG9DADAzusZyzVUPgP4lR7TcuhV0ZCdCFLfpFzZqomjRgXKs3+TuXyVkiw9uUe+GdS/c8Cva5up0DBehRdhUEWbNpOij9Cl4Cvkn40Ec/2BJ1UyK1F4hwi3wVnx/rOxFQxlR82AozUP5MWCycArrzviX+/S9AUminLY=
+	t=1777624257; cv=none; b=m0yJGF4xyUhSEW2d9r2wdn9miUHmu84eFxrbolDfJGeDv6LeBUpcoDuxJ9XHPv/Nr9TEw3mqShUyfYbilVvPjR40K/JhaNsBQmxd5vxcjUnRyZ/nfedUELvaOEH8nT4C5e0ZOlmoA/dmeoTbLmax4TxTQxxoA7RHMRiduvPirPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777598457; c=relaxed/simple;
-	bh=2imGXa3N6r4xt4ck+HHMhGUCCLGMkAH4yajp0OQSZbk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SdeGtXN08EDPok0HzFx8jB3bpADW6JeJOI9GhGKXUbUg/X4IOOadF0yti/7oI7ukWA1uXeHR4qkEWJJVAjSn/0+bR+J4komqZlaisKfvyhc34is7y92a1Zq6+/kwQpXLvSLT/pcxYF01iOsqyKhgC41Jg+oVIqVrhl9ob9Ptf4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNn4ZCLs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777624257; c=relaxed/simple;
+	bh=vi4Y4FrM2u7/NGWEpyOvXjv9CtvV21IppSt/L2UJ634=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dWKytl275yGmKURl8As9hntjLJtBctDTEHxzBiOVhqgpbQj93nk0ECYhFSTq8xibtcF4/phgScnfSBOWefp3WSFebyDuZE6rdGPzBGZurwNqnUEKgvzexsjZRguPD1MnN2aO03hoYT+73JwfwJF3Aw1PhEQ5fORJGh3VoBVrxy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ypjk3WHk; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNn4ZCLs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD5CC2BCB3;
-	Fri,  1 May 2026 01:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777598457;
-	bh=2imGXa3N6r4xt4ck+HHMhGUCCLGMkAH4yajp0OQSZbk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aNn4ZCLsxJaJzTtg6/0rth724e9/5nMOufuufTl6QyyLp6UrqRHPtGjkp4i4kuQgZ
-	 5ZBr+YIIrWsT2VeT+a3zuk3sHdSfSlZveyGhYvqT+1PIVdU7vefmcsrmOhNyJUPAYf
-	 i8Jm1oH1O4dsFGJ4eqxMq+YIZvvy1YLWO4r3MSb1qEioMKqdNqQde2uIKJwCEgtnCa
-	 U/4nYIw4/EqUtCi+tMIZsc5oI8CNSfPetJZsZHuw0QfMFt9nNGyqX4WiRXYztqGFsb
-	 cyMczgdTiWppzTOv3vqmRb+iEaqqJDxDGFgIQgX0KoJ/VPM8eJaANppC+2+G3rBcH5
-	 gnWbAq20GKssg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F09380A957;
-	Fri,  1 May 2026 01:20:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ypjk3WHk"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-44a5174670eso330806f8f.1
+        for <imx@lists.linux.dev>; Fri, 01 May 2026 01:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777624254; x=1778229054; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xvsqEGiRr2aMUPxm2PwD7DIcDzBPYJDFXn2qMdcwOC0=;
+        b=Ypjk3WHkQuJ+rsKib13HXQDoggfPyJ2jmUIw55yyAUA9eLVdnEYIOgOLprm9rLTlu/
+         hn6kv/NMqU9vCu6gwlwYwDinTyGkOowVP7mreWNzSL2pvNCnkNetxdDdZVAOxn4kL0ZA
+         QW4LvwP6yck66ZsyOd72c899eF2Lp65dxJC2hZZuuHqFd18voaaAJR7FDADvyMAq24AQ
+         Ldm4KYLsrr01KOB7fGsITd+6u1KTTrMwcqRtXtcbbuObLgkHaqV7LWB8qHU4g3vbmbFf
+         FUIRG946BKNOUecJ57U8R3qGzZQi3u+s2zmOIJc49FhNWYTanscvPW2KkOJUubG+IRpP
+         bfSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777624254; x=1778229054;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xvsqEGiRr2aMUPxm2PwD7DIcDzBPYJDFXn2qMdcwOC0=;
+        b=ZzEoR64iT0BqnzJxlUG7SRgC/oL3YS8JmtcFCV3tirdxXG9u73v9N+wW5E37VP53vU
+         cfduYfhqExYdqycD6v91Skp1UOaXlUCaXLblh2vu98Ci407xBjcA5rupgTUd8IwGu3Ct
+         Fw6ar8Zd0n+GNI/KbyQKG9GeK8atagriALvKWjnqd8JWAMy1RA6xTYfHCG35ELpvVZYx
+         2VdkcLSAkiEvJN1gbyCLYuuTYQNo2yPRv6VAkAr42I7AAkV4KpQNJgLbhl3zDaMo5khW
+         n2eEvlrbUENH8yq+KyEtBkBwh6S6e+J5tQfPiz96zSdtVbqdnzQ1/ODtj0cFCBEjthEK
+         HAKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ohwi2tWBp9ExltImT8zml8z0ElRNE25tLA/tEhpNwAvjYnvt+swI6/6TA7rk3lGIjP20=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzByXg+WtU7VzSqzZw3R8JW7D8WzDADMUxDtiExy32vIXRatDYU
+	9arzlZObJXEkx78qngZvha7KuuHnzb0KdZtKCTFMDU3j4GDZX+JII+i8
+X-Gm-Gg: AeBDiesNmyUqWkfJaz3SdWYqwlyM8Q3GWd1psBPF3ZbUDDJogsL3BXbs8vjLz9Wxl0H
+	oTBXbLLaVBkvQj5e/kBu0U4ht6AJEP/i0vHNlBh8ofj72p3dJhZvHDXhbKAVMgBlg/Ca4ujNVnK
+	706WBCg3UNXsDn8ehWsoAQsjlbOFKal4P5B/WyenqsNOgOYW+0WUNqoipBLLU1a1xiGDE7OhvwG
+	KA7pT9lZp/ZhSnp4KsgWh4eqS/nEa4NaNFWoe1S/+Q9iGTm9dDlDccBczBL8AteDKl29jq5F5F6
+	st6ylTIIq5JTt+0skEV5UJNo5cUX3140jKliTMX0UXulJr/78ASmfeI7Diqv6CeDyfw2iPY3JUB
+	rlT9jOm9JOV+6dCxltQK7UuK5ooj9Inw61a6faHkR/NwSyc3ElaPXMbagiiWxa+po9DmQW0nfsI
+	7ZmUqo5MATNlAyuzhudieYPi8LPQaUStgxMyk38Q+ccUAuhT1Ie6mYCw/TOP7nnZDnWnxc9ZUix
+	AndktTPTVlakA==
+X-Received: by 2002:a05:6000:2582:b0:44a:2cb3:b633 with SMTP id ffacd0b85a97d-44a2cb3b668mr6019597f8f.12.1777624252671;
+        Fri, 01 May 2026 01:30:52 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a981defbfsm3336950f8f.17.2026.05.01.01.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 01:30:52 -0700 (PDT)
+Date: Fri, 1 May 2026 09:30:50 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Hans Zhang <18255117159@163.com>
+Cc: broonie@kernel.org, sunny.luo@amlogic.com, xianwei.zhao@amlogic.com,
+ neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com,
+ haibo.chen@nxp.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, lhjeff911@gmail.com,
+ hayashi.kunihiko@socionext.com, mhiramat@kernel.org, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
+Message-ID: <20260501093050.3f97cd3e@pumpkin>
+In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
+References: <20260430155456.36998-1-18255117159@163.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] net: enetc: fix VSI mailbox timeout handling and
- DMA
- lifecycle
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177759841130.3278779.8173593080640794446.git-patchwork-notify@kernel.org>
-Date: Fri, 01 May 2026 01:20:11 +0000
-References: <20260429081930.3259824-1-wei.fang@nxp.com>
-In-Reply-To: <20260429081930.3259824-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 30 Apr 2026 23:54:46 +0800
+Hans Zhang <18255117159@163.com> wrote:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
+> macro across multiple SPI controller drivers. This improves readability and
+> adds compile-time checking without functional changes.
 
-On Wed, 29 Apr 2026 16:19:30 +0800 you wrote:
-> In the current VSI mailbox implementation, the VSI allocates a DMA buffer
-> to store the message sent to the PSI. When the PSI receives the message
-> request from the VSI, the hardware copies the message data from this DMA
-> buffer to PSI's DMA buffer for processing.
+I don't think these changes are worth the effort.
+The readability doesn't change much - you need to know what a slightly
+more obscure 'helper' does.
+The extra compile-time checks are pretty unlikely to ever find a problem
+and mostly just slow down the compile.
+The generated code is likely be slightly worse.
+And, with the best will in the world, it is easy to make silly mistakes.
+
+	David
+
 > 
-> When enetc_msg_vsi_send() times out, two scenarios can occur:
+> Each patch modifies a single driver, allowing independent review and
+> application.
 > 
-> [...]
-
-Here is the summary with links:
-  - [v3,net] net: enetc: fix VSI mailbox timeout handling and DMA lifecycle
-    https://git.kernel.org/netdev/net/c/26ebd12e67bf
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> Hans Zhang (10):
+>   spi: amlogic-spifc-a1: Use FIELD_MODIFY()
+>   spi: amlogic-spisg: Use FIELD_MODIFY()
+>   spi: cadence-xspi: Use FIELD_MODIFY()
+>   spi: meson-spicc: Use FIELD_MODIFY()
+>   spi: nxp-xspi: Use FIELD_MODIFY()
+>   spi: sn-f-ospi: Use FIELD_MODIFY()
+>   spi: stm32-ospi: Use FIELD_MODIFY()
+>   spi: stm32-qspi: Use FIELD_MODIFY()
+>   spi: sunplus-sp7021: Use FIELD_MODIFY()
+>   spi: uniphier: Use FIELD_MODIFY()
+> 
+>  drivers/spi/spi-amlogic-spifc-a1.c |  5 ++---
+>  drivers/spi/spi-amlogic-spisg.c    | 13 +++++--------
+>  drivers/spi/spi-cadence-xspi.c     |  3 +--
+>  drivers/spi/spi-meson-spicc.c      |  5 ++---
+>  drivers/spi/spi-nxp-xspi.c         | 12 ++++--------
+>  drivers/spi/spi-sn-f-ospi.c        |  5 ++---
+>  drivers/spi/spi-stm32-ospi.c       |  7 +++----
+>  drivers/spi/spi-stm32-qspi.c       |  5 ++---
+>  drivers/spi/spi-sunplus-sp7021.c   |  3 +--
+>  drivers/spi/spi-uniphier.c         | 13 +++++--------
+>  10 files changed, 27 insertions(+), 44 deletions(-)
+> 
+> 
+> base-commit: 3b3bea6d4b9c162f9e555905d96b8c1da67ecd5b
 
