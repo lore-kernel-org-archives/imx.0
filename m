@@ -1,62 +1,64 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649F13BFE3F
-	for <imx@lists.linux.dev>; Fri,  1 May 2026 14:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3543C063F
+	for <imx@lists.linux.dev>; Fri,  1 May 2026 14:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777644003; cv=none; b=Jp8WfQvmgvfV9C+uzVqMrKlfBILX4mLEe+fSJ5Zg8CllYr4vUwalZwTouvQaWIHVIOgOsML/AxLqyNLF76ft5lbQNSGxFbEvVHLo+bEgE5zP5mhp2qKxClkZSy7BVxEdP2Y19xIvgF8eiCydgFfnYNhquFKWDet6VujQ6f5CCbY=
+	t=1777644005; cv=none; b=SupTN2QgAzwi/dwZu2C0jJa5RI75HE1u7YbffHjD4tbUdShEWr4VyeNfcBRTWo839Zeow4HvNksx/91GTDxgt80dsVydI54oABh3Hh2+y8r7nBay57TZ7Xpc5HCGNlhop43AnPKML1z6lExCyL42BOeV4Jopf1d+sHedodw6HQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777644003; c=relaxed/simple;
-	bh=KyuZZJR4P+3viFsaf+3v9ITJ1YxHUVlIISu9qYGcGWI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pHlR8owoJRQ/dKYvByO93ropg+21Kjt/VxOFH2bSpeLU8z7VZYBG5s6J2QiSwZ64zMdHpfJYUQk8hLstMm2ko47PV3YV5Jn4GJbFfdbsRyvlkRP3R2KaM0PoJnV7/yFoO8qetYPh+mLxujF6bGNzkjLZGoiUe5TvhnkDwQoU670=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QtBWTF8t; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1777644005; c=relaxed/simple;
+	bh=jJjc9mSsrPx/NmfZcqGL2yYaLbyjJmbr1/4K0E8A+5k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ZuLaG6l1qik9kdtsCA3wcQkZYWulcXwaU78rWLn7IDbxBOwjVHBTzHSBw2ZGiim7kosCL95ztscphW3IZIIRzTEtt5KqJAiv4kpqljVQDlqG4gwpN+xdCAiUtY4WhCwgheRIvRD1uvOB19FzFkvfZa8xfg4mN/EynDr2qpFqJ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BCuKS9D1; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QtBWTF8t"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so16088075e9.0
-        for <imx@lists.linux.dev>; Fri, 01 May 2026 07:00:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BCuKS9D1"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44509921fbcso1050126f8f.3
+        for <imx@lists.linux.dev>; Fri, 01 May 2026 07:00:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777644001; x=1778248801; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zNOGLSnwE1t6HIl67zIcI4mTCSe3nqPHRh9GxNxgyWw=;
-        b=QtBWTF8tczvN+dIvBewQEa3c0dNXB4RNy60RaKUq1JKf05JDGpIgLaa2OiBDiUtVCh
-         64UK8ivy3g1c8Dbkg/LiDDvULP7yR8yUwIR4Ru9dPkxO9r+faywetRlqKpm2KxWdwzBP
-         sRQJVTsMCPB+/6/v8svoO2Qi2xcsHxCBeeI+kgtE8sXO3q22VRT6zFG3gviYM34Cnoqw
-         eEFIvbqUxZjMpTfcZ4YBebn38V5iEnks3z3kdaXfkmgNipjPwODfPAmveGdtfR7rUp92
-         tIx1hNgeAmZvUMGflGATnPagyao0RhQkrqEcAT32pLCSVnwLfDRpuSVIYpbXgXi8MDc/
-         e3KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777644001; x=1778248801;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777644002; x=1778248802; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zNOGLSnwE1t6HIl67zIcI4mTCSe3nqPHRh9GxNxgyWw=;
-        b=kB9bZd7atQsX5o9In2/F+znf2ZBA0yB+ygarRmU1D2YFJPrYKmmuOLhF+1XYnJEuEc
-         0y44kKrOXSs1063fZdqko/cJUGaGjZaup8JnAG3LEd1s6C0i4xpUnRoFtOEPOvCc+qJH
-         YOaG4JeHfZHVlGya6bw0KkmOzyNp6AGhxvoNxF+TiiI/woF0s303zsWtbwKSqrDCkS+x
-         N4jr3OpzVrToPchEmYE0l+M7b2UMX+Z8+EwFDYRuDP/Hp7yjL49QVE3zW8s02AJxLC7A
-         ddMBekeUfP2ueOl7fYI4tnEIiOx7OEVcJA2WOZAfceBzYRcXwyrOUmwDBuGPZULSwz0c
-         uw1w==
-X-Forwarded-Encrypted: i=1; AFNElJ8/8ksTRS5WQq1Xk4uf88Vi5EoIRYD3smQ1yaBp0FQQscB2Nk0iCzplIHcL5uD2Wq6Fc/o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzkqDkpXPbWo6vQd6uMdGLhRZWuEf6SEcRz9HUI4U4OZe4ShXVb
-	eqVo/QZXKdeRpofvuN555oEKqKUL3gCkKUv8g6VxZwlPj6fSi2vQzmpl
-X-Gm-Gg: AeBDiesjd0wYV1LFC7vH997gZWQjHIFSZkDk7bqHbFiDkvxNVPhJhCzgxNCy1+NVuFA
-	4ZORtmSdfPZRMbiZdAIpcB/fx5oOxSoGlBjDTiN1WTRKjYcf8rrufQXvqpkjykxNe3Q9N8Rpw+6
-	fQZ0uKcnfdLr9TmCnVxO7SrTyeV4ELm5yRq7u77FrK3fgjNZ85szTwsI9tXcXkq27CHRlROQFg9
-	mn3KzvmPiNB2cGXpQyWVfii5X9sR6+LRiWbkSesU4ngVNPPPWHNdQXnEPTfwD/P4W3bhJSybFBE
-	CJOGD2r6ClDti2phFnim+QYsyTRDUEL/qSNiMk9b21oRsPw25raNXGKDORYQsNKBGdZ4i6ZUv1m
-	8lvjE85qvVpShRB/Fgtslaq3KcvRvWwZPlrqUV6plV/FmXhk0vYSAAqc6VcKly0HcQlFS78bOgE
-	McPtHOsBo5JT0VLeRl+DDBdieHBRH1eDLOrMjbaRVKJ8exHLniiAFl407o3SoQ2j+z2ixbsqx/g
-	uJ8
-X-Received: by 2002:a05:600c:4ed0:b0:48a:54a6:b29f with SMTP id 5b1f17b1804b1-48a84451fc2mr106947765e9.17.1777644000526;
-        Fri, 01 May 2026 07:00:00 -0700 (PDT)
+        bh=wgCd/8OCqeyYKCVUvRrf/jlOcP1suVHYVb2aR3GPrKU=;
+        b=BCuKS9D1zKbQeyhEpehyhuKAFdqcVsni6AOmhKuH30LM2FD7+p9PZtTqocmpUXTUve
+         lFhAemyqOmIMAoVZSL993FK6E/TeqOhD/OnKUET90YKFnySyibwpIZp91gn7kbIfogBd
+         DfUEUS72O8AJ41ZjzLifvanBoEfPltntJTsb3gX8ybpF/loFHJYUC7r+qumFSs+JFUsT
+         135sYzDCpfDsPlfMiCMF4ZfLzK1k7Vm0sZGyhsAN+xyAgEAyb02ril/M7lMsJWzRbtQD
+         UeoQcR/vc/q9FXkQnng8Fqvx5K1CSaeOAb8omwT02z5QUpPf0mX0g3ky5cd2NvnQThf1
+         3cuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777644002; x=1778248802;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wgCd/8OCqeyYKCVUvRrf/jlOcP1suVHYVb2aR3GPrKU=;
+        b=QngiFW/bl020gkh9/nmfQa99OvFy/b/U2sF0o+SUzfUspWz1JG8m83CXzo6QV3j30v
+         Nm+NZfPPxW7TJ0hz1B0mrl5Nbg3TOuxCAKvstAy3hOvLGfRuyTG79mmQqgX1vQXSvQ11
+         PXlH6kVuPI76us06ui+q/kLN+kFzsy1lSp/BpSpeNYwJD6sszOwNr1eV9+nZSTAjCcbX
+         xXmFNIsXCxPRwB4NculAwlnL1T0N0su50BrSo9+JPle0Yt1uDgsbBNrRSqKHz0B7YW2a
+         HV9EzETxqdtbmTUaLQJVc28obFMRehHfw5M3ge3YzDzrfvwChUKFFLpNHZD73y4YFavQ
+         nduw==
+X-Forwarded-Encrypted: i=1; AFNElJ9nWNdjMpwZveoIGRM0bfhq2C2Yn/V+lTsrv6dwXBZJEs6ggPOj37+VlEKhlJXN48TJp68=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy7VUAvczf3OEJR3hdDRAAAjSCg9pUsa8uL0xZPbdikJ4aFditn
+	/3v4LBzWkpmbaDGT1mhfHJ/g3PkKoEWrCgSAG61GfiVJISbNHuMQQR2E
+X-Gm-Gg: AeBDies0v473LkOtdO2k688A4LrnOWBhZFFQ66+fQNMpCtxdqzN+ouELMguLiJAjEvG
+	NfPdRXyUfarm6coyKz+K+u2yTcnC/oX3UsOOrQo/b6HNSXS/42QoFVY7fkmw0diL+LxDGZ7LCEU
+	NiAROoOlkuOTzNxbHsQgb0TtJ5WpWlVIVj/o1XgyfwjxD+OyfouOSEg5Vjt8CLLGQC2yI9x9UU+
+	3kS8uAdU4pIVrJrATqi3wwDs+ScGHweaFWkBKm+Bk4X37YulHILb53LQcTb1cQISMfX1rWiNldR
+	3eDKqUU/Zgb8gJY0C6yFhE9unMFkMBtW3aXmNYRLiX21zbs00weWQWa1cWLeGam5m6HsG3m1t4C
+	BiL2SfAi/amzxjTRQYvICeSNRboITj4gA7Mktzbarcir1ngaTe1cngJFHwrF9fMTffMeyUdwz54
+	tbkzH+tlJ2m17A7dZ3rt97TKHc9Iaksxow1Ro9wb+HwNNm4Ru87HxbXeF772ZHewYHdffpd5gHf
+	sR3
+X-Received: by 2002:a05:6000:2b01:b0:43f:e2b7:7160 with SMTP id ffacd0b85a97d-4493cf2d5e0mr7464637f8f.4.1777644002422;
+        Fri, 01 May 2026 07:00:02 -0700 (PDT)
 Received: from localhost.localdomain (ns31537009.ip-141-94-163.eu. [141.94.163.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.06.59.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.07.00.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 06:59:59 -0700 (PDT)
+        Fri, 01 May 2026 07:00:01 -0700 (PDT)
 From: John Madieu <john.madieu@gmail.com>
 To: broonie@kernel.org,
 	Frank.Li@nxp.com,
@@ -69,10 +71,12 @@ Cc: kernel@pengutronix.de,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	John Madieu <john.madieu@gmail.com>
-Subject: [PATCH 0/3] spi: imx: Three fixes for the i.MX SPI driver
-Date: Fri,  1 May 2026 13:59:48 +0000
-Message-Id: <20260501135951.2416527-1-john.madieu@gmail.com>
+Subject: [PATCH 2/3] spi: imx: Fix UAF on package-1 prepare failure in spi_imx_dma_data_prepare()
+Date: Fri,  1 May 2026 13:59:50 +0000
+Message-Id: <20260501135951.2416527-3-john.madieu@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260501135951.2416527-1-john.madieu@gmail.com>
+References: <20260501135951.2416527-1-john.madieu@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,38 +85,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi All,
+When transfer->len exceeds MX51_ECSPI_CTRL_MAX_BURST and is not a
+multiple of it, spi_imx_dma_data_prepare() splits the transfer into
+two DMA packages. If preparing the second package fails:
 
-This series independent fixes found in the i.MX SPI driver.
+	ret = spi_imx_dma_tx_data_handle(spi_imx, &spi_imx->dma_data[1],
+					 transfer->tx_buf + spi_imx->dma_data[0].data_len,
+					 false);
+	if (ret) {
+		kfree(spi_imx->dma_data[0].dma_tx_buf);
+		kfree(spi_imx->dma_data[0].dma_rx_buf);
+		kfree(spi_imx->dma_data);
+	}
+	}
 
-These are:
+	return 0;
 
-1/3 fixes a precedence bug in spi_imx_dma_max_wml_find() that makes
-    the watermark-finding logic effectively dead code. The function
-    currently always returns wml = 1 because of how the !-operator
-    binds to the modulo expression.
+the function frees the package-0 buffers and the dma_data array,
+then falls through to `return 0`, telling the caller the prepare
+succeeded. The caller then dereferences the freed dma_data array,
+producing a use-after-free.
 
-2/3 fixes a missing return on the package-1 failure path in
-    spi_imx_dma_data_prepare(). The error path frees the
-    dma_data array and the package-0 buffers, then falls through
-    to "return 0" - the caller proceeds with a freed pointer.
+Return the error from the failure path so the caller takes its
+existing failure branch.
 
-3/3 makes spi_imx_setupxfer() propagate the prepare_transfer()
-    return value. Currently a -EINVAL from mx51_ecspi_prepare_transfer
-    (e.g. on a word_delay overflow) is silently swallowed and the
-    transfer proceeds with a partially-configured controller.
+Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA mode")
+Signed-off-by: John Madieu <john.madieu@gmail.com>
+---
+ drivers/spi/spi-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-
-John Madieu (3):
-  spi: imx: Fix precedence bug in spi_imx_dma_max_wml_find()
-  spi: imx: Fix UAF on package-1 prepare failure in
-    spi_imx_dma_data_prepare()
-  spi: imx: Propagate prepare_transfer() error from spi_imx_setupxfer()
-
- drivers/spi/spi-imx.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 7ae8078c10ef..4e3dbd01d619 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1709,6 +1709,7 @@ static int spi_imx_dma_data_prepare(struct spi_imx_data *spi_imx,
+ 			kfree(spi_imx->dma_data[0].dma_tx_buf);
+ 			kfree(spi_imx->dma_data[0].dma_rx_buf);
+ 			kfree(spi_imx->dma_data);
++			return ret;
+ 		}
+ 	}
+ 
 -- 
 2.25.1
 
