@@ -1,126 +1,158 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013037.outbound.protection.outlook.com [40.107.162.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F90B3BFE3E
-	for <imx@lists.linux.dev>; Fri,  1 May 2026 14:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777644007; cv=none; b=hBU1uTtlnH0o3GAGOt1J3/hMkM9V1yWt4LtymT7anIODucCnjfa4/85QfVlUjOfo8MICJbE+NrvdQAEe6Nxt6ivpa3BpmePZMm5iXJsZQ8cyOrIVjoHIWuBsUk3GZ0Hxa0Mv699K2wvooMtvK/4Tgg1oHqFNJoYQWxCb0bDcw80=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777644007; c=relaxed/simple;
-	bh=wr1OnFxz/Ai5i4NfAvoS0ChTxZI8nshMYVtsLOtw7bM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kJQfEYxQi3yyHf8rfxERyMjq4oXmw9E2bcTO1+utkIo9MXcGXriPm1Of9q6hh57aZ9GrhSy04EBzPu93FJlK+zxz0YZwWMa2LVP5wugAoBuJ0Zr9iQCyqfhPhcPB2O36K4mmzRh2q6KQPBB25IKypS3Dma0bQz8fbej0Nww0ueY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJtp84QN; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7615429D281
+	for <imx@lists.linux.dev>; Sat,  2 May 2026 04:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777696909; cv=fail; b=jMqSTvrjuesq1T7elbejq7BUvKzdjXNIhQjbgOTib7Aq24XnoNiS8nwOXPn9lAXrlgFQalt1PXhgMqb00DDu1RUmaEUzafVTS1nsRTiztjCsE8Kz04aYof3KikEeX3vytNOLJJlvoMpz4mNsXxN/a4uhUhZY02zjWJM8KGQVFZE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777696909; c=relaxed/simple;
+	bh=5cjCGg0YeLqzPu+MZ6XWl40RUG9fMlu7SHAhv1qmB/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Nd6ZhLwyilzBCoaHfuRTunDtYbR0FWsTkblpbGasOOuq7hVLS69if/iPa0T2/Q6ANsNXr5Zc4vK9Q1xKQvy8Et54KqHT4whBxGGKeQwIhcJxCKW69n1G5q0NEEN2IDVKWZNZnxFjjc+u1SHAxHyr0MGltD6F+pmM4C/XI08XUkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=X0+3UyN6; arc=fail smtp.client-ip=40.107.162.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJtp84QN"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4891f625344so20802015e9.0
-        for <imx@lists.linux.dev>; Fri, 01 May 2026 07:00:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777644004; x=1778248804; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/yRGhlBCY/TW5XKeeufbyghz250gEgHu0HIRBXKkoYQ=;
-        b=iJtp84QNsy0NC+mJaaGzEgT87Gbt/baGWYS/vEADjgOL+cLhjOqncSPu7/mNLEKh9R
-         KNOS7Qfwvx0GlzNQUFzWcRgK2MC6mLNw0kqczqzNoictC4TdeHTLyDsfyka6FJle6CiW
-         rH90BRlVMTM+PjuTx/Em7Mg7TbBWuX5Y2Ry6vg5V6Z917IWiQOUQFz6JhpDmgSaxXnMR
-         C9tnCAI1lIx+BYSlFBs8TRTzgIi6vkUAlxUTF8CEzqGwZSwfSzVGEvbBkwj66BVvySlV
-         nhH+ofSr8CzbifGClM8Tc2zhgTRbX8jym/7QZsqfBYLUGI7lpEuA+RHa8oqJEUloYDpp
-         bmJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777644004; x=1778248804;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/yRGhlBCY/TW5XKeeufbyghz250gEgHu0HIRBXKkoYQ=;
-        b=n3z8SwnXgvS8gRE6jsz9SlOSbeAwtqBpKO978TxMis/8l12uJ6rTQY3GRz4/QqRG68
-         OZecit+4+cKAOd4IOiA5jWqUwVk5gRymQ0vjCSkYDO+f57LbWGTZQB6Iae+Dyw/cYhl2
-         dcJSQbjydxx8/fY8Au+KXgTKuEPBlO2gCJ6rEhEKBZjii3zOAwUfHZPlOsxIVzc577aU
-         tqp1Jv7gNdNoPPgQFHd5YVdTX7ukrvrfzHOgQ5ei5T+4gfDhWaycHTUYBgSaoMjXHT8o
-         vEnd4ofQaSMadT9g38hBQ303EoItGWDkMmwYhgkTHOeSYmB8PthIJIt79nAMmVmmRP98
-         geNA==
-X-Forwarded-Encrypted: i=1; AFNElJ/fpkXFdCshj53U3Tk0jpS+iX/73LkfFNDRLuHHpfOIqyN593Ib0ueIPeirZsf0M2y1gFk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx9m2vb5hWQOvKSBM/Xl9PpLGPYJtlvS+cbtrMSszGuxZHtsWgV
-	cXKBnbBLuMZy1NhhVHGoeFgQa2X7at/6xkVK8tzbp2MEDw/n9gOsuCHz
-X-Gm-Gg: AeBDietSwEhJdnvm7QhxoQABhF9zueNQx33g9DySX9PiigbzUOiZM46vn3WqZOqz5ND
-	Six2Qji3vEsMcpPdt3uvzZXerhdsCHDEJ/CzzKf1PGwOKhOgJTjpkXKvRAJq9tF/0K96KN73CEU
-	r8z+FnQWe5rF4DkTg+30+DguyCpSmY27duq7Yxv7UJIdq4har80ZWs+fmt+VmJ2SxT3nA4HMZqW
-	NMbvmzE9u85RZFhW0yCrZliBr0YCw+60MgtI0KUlJDklb/QV0zrtgGoY6PESIa2Woa0JuYGYb60
-	aK+EL3/SsPWeJ8ea7STu7aKdzRlzAEPIAjjDjhwYPJVYtBO5ymdH9ewrLGqjYT7ouPoQOpnZ6+L
-	taf5BknepHuXLzfmEif1M0Q6zVp9NBXj6oTfWBDfq23KMHvKHT4192tmktQEfFcT+mm2xlUcyRJ
-	yLExNpB+F5ZM1lcmNV+U5Gp+dm9cw8LtwRrfYAbk7TFZjKHZEoDHCBShWUmS7uQa2xnl8NzxZru
-	hfp
-X-Received: by 2002:a05:600c:34c6:b0:48a:761:5816 with SMTP id 5b1f17b1804b1-48a85e7c80amr105322175e9.8.1777644003492;
-        Fri, 01 May 2026 07:00:03 -0700 (PDT)
-Received: from localhost.localdomain (ns31537009.ip-141-94-163.eu. [141.94.163.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.07.00.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 07:00:02 -0700 (PDT)
-From: John Madieu <john.madieu@gmail.com>
-To: broonie@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	carlos.song@nxp.com,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	John Madieu <john.madieu@gmail.com>
-Subject: [PATCH 3/3] spi: imx: Propagate prepare_transfer() error from spi_imx_setupxfer()
-Date: Fri,  1 May 2026 13:59:51 +0000
-Message-Id: <20260501135951.2416527-4-john.madieu@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260501135951.2416527-1-john.madieu@gmail.com>
-References: <20260501135951.2416527-1-john.madieu@gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="X0+3UyN6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qkdZHLKM91kuiL+KPmY1b6xEgThxPFlBo1nn+HtlrqFpRX/zYExe91APIGUsYEpq2N2h5Bk6ZX5ftA+Os2CsiW5IYgUMhNuagwCtDKsVaSl94hlG8tQJodOGL+JDRDYmEFHpOhrClL50CC7lKZl0euUtHLFfKPzc2Z48UY9Oo3QDrXqe8XqVcmrRt913HILS3GTWJK5H1+TSEJv6SUjP1EBW9CV24hPUGCBGQ9/V/EQF+E0/y19YAtiCRt9T/maXf+J7lP1wMY+Y7jd0e+aEk3XfTfwXH2tpod9XxOWa3Z+YCtNsxmQf5ucHT+dMBG7jdw8laqrAmvKzu2V5L8h6nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5cjCGg0YeLqzPu+MZ6XWl40RUG9fMlu7SHAhv1qmB/E=;
+ b=efHjNGyRVb43vJaUqZK+GKdNHBfeTnBPZPxos1o3WN2m7mcARHRkXxJW1ousGP+EQXMA+2LZ79LfWtLekmeR5zVIA5ceueiZyfD1vAKvDHOmxjX/5YSQxPnBRaCLAW73+65BVLW5+369iQaVUzNm0lENmwcsh/KxQIkYHvKYXvy2xsgjTQnY+u1p41mn8Kw7Ew4cNEtnkfwsal79ensRs5psOezK0RdY7KvsPuz9LpOS60vcJ2U5cG63ADctlSwOx+nZUK4xAH8vzDgZe0Hsyjq0Sna9QeuaLUcY+AXKoxzSYVsSXn5HIW+afoUAKTn07k8ijDifzHxGIQVVWyRjGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5cjCGg0YeLqzPu+MZ6XWl40RUG9fMlu7SHAhv1qmB/E=;
+ b=X0+3UyN6Fxv7fEamLot23/63YsqKk49vsCy3OC0SyPPnulFch1iE1t0SusdkdOGBThDF7EDgtyZRnxyL6fW0NeB3hlym8yibYumIwXlQqozSyqmn/+MechYY55GdDQP3Nz0z3Ptv5En493RAQmnv4mrSdfumon/RuNFNKf1vePOXvFkHR9VpfBAZfvfZUNGbtvoobJAy6a6He0tEPbPyNpax7LEgRzMDX3G/czp6UF7FcQfUMiBOAxdo+X8FI4bxdsQepSTA43rxaMTon0egfv1FnPPOATehGjofg2Z93kpOYEghh7GNh2IndcsvsAl8HswDF+csIaX4ZIVhkl9HkA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DU4PR04MB10792.eurprd04.prod.outlook.com (2603:10a6:10:58e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.23; Sat, 2 May
+ 2026 04:41:44 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9870.022; Sat, 2 May 2026
+ 04:41:44 +0000
+Date: Sat, 2 May 2026 00:41:37 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Sudeep Holla <sudeep.holla@kernel.org>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 1/2] firmware: arm_scmi: imx: Support getting reset
+ reason of MISC protocol
+Message-ID: <afWAgfmnaLZodRkx@lizhi-Precision-Tower-5810>
+References: <20260305-scmi-imx-reset-v1-0-18de78978ba9@nxp.com>
+ <20260305-scmi-imx-reset-v1-1-18de78978ba9@nxp.com>
+ <20260318-savvy-courageous-mule-b3f9ae@sudeepholla>
+ <20260430-private-versatile-jacamar-fd932f@sudeepholla>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430-private-versatile-jacamar-fd932f@sudeepholla>
+X-ClientProxiedBy: SA0PR12CA0014.namprd12.prod.outlook.com
+ (2603:10b6:806:6f::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU4PR04MB10792:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffdd9f9a-9b20-4041-7782-08dea8051cba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|52116014|376014|366016|56012099003|22082099003|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	Twqcp+o5BhtFbySTg5WXKXU+ukZON/jIyykj6Lyn/pv9mXx0ryVNvc98LFLG2p4ngcPKhTQLY2+VqiqZ21WuGgBRIugCbn1FVNV0NMzlG3VHTQmsyPMbBJ7mJDYLiRs4S7vCiAO8Idq5QSMtVuIhCVB3PCdhU+wMHpXreXmkq6obk2bsoYvNyyxkClxCUUD0HyJBvuVy7wDFj0y0pdiERFRtik/zhvdjvC3qeRIfbkwyO/MyIwS6ri5CvdT2oleh9GjUy8n9yVHzBRa25BoHVB6fe4ISkf38dBrIso8Rk3BfZ7ru0+rvZUOLu5mUGSNW6UNPPagpKgzhH6hDCLePtU+6nUKeJ3esNzLgLKzWVCz7aoUo0Fa/IWAVLxVUbWUtl9hTuiHera+6Kt4ivTekaDcgPF07Ul/CttylXooRclM6Z92BObzf5KwDcDWsHbmHPx1QxX1cV48J1R7kWh4UDj4KLTaZDa2fvJfCxWmQLjFzwwJhIxK7VyWpKGijKjyCLCA0F7UrF+Jn4q8RNIkNiRlM5w3RCOB5XAT/x15nQF1aXE1prgYoWQKsGqXzqbSwPUCHUlt2/8gmJF6dAO+rzxxBOUA2w048KBkzrxHkGjygR1yV6aN3OhICOTA7hctv8PFeRuKVwZlraiLtlGup0Q6IpH1rEl5Y61tJDse0YXfufDm4jjpvIcdXYLRvkWYW0WBinhj6dcsncbBFUcdQOXFmpj25bwJxbqLFSp1PCV8tfZmNxtyDpPPTYWDqs6qF
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(52116014)(376014)(366016)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?k+jxyekkaDfPJPkhStd9suGvoUIQJwaU6XIlYzzrDODGKbAWL0e/nvPnjT3h?=
+ =?us-ascii?Q?/zPBR1MzetTUniY+o5ULSEXcCVhpaoEQPF6ITIoHGqwznImKGWR/lH4+loZT?=
+ =?us-ascii?Q?svB1OBiFD3L+H5Pj5TFQcKFHUAteITJbqdLN4b4PeA1yFd6wx/+6uvKfov7S?=
+ =?us-ascii?Q?pDJSMLwLfdsVqh4ZRjdXorNme+qLmMBEXcFT7kI1ab1lfjt0mLEb3KVO3yoH?=
+ =?us-ascii?Q?mGzwKHK5OQB+/YOjUgszhAwIXpls8yXk6akwAT1IiY3P/g1fvkLdQKvgBRCI?=
+ =?us-ascii?Q?cRnK2uSklgEkUk/PZWD71MJk+iPlJqhU/zTujlQxvrqQSiWzC2gYOTHGBc7c?=
+ =?us-ascii?Q?Hp+DGewYCXrVs9/plKtprRN1GqRJtDjQvHZM0bkh6BelexNG1nOcOsFOfMPY?=
+ =?us-ascii?Q?4JiLW+a2vxQz5LFA77HDSBTnmUz1Gda3V2BN1bEJj9g2PLuvM4m93+ykjM9M?=
+ =?us-ascii?Q?D9cFoZbO/c7zaIvF6k58BUwGVuVpUJP/k6ncHNVBrGZpeWk9A4DcER4wMMnk?=
+ =?us-ascii?Q?Ion3uHrVsJU6Gsi2VCyJdYcuYVtFOExXBuSs1esgYc0DhinVwSpAEo6Hazy3?=
+ =?us-ascii?Q?nyk54m96uXHalS10AmvjyaKIPSUWqLpZOnVbie3DJuc+Myn9/nUBWqx1uku9?=
+ =?us-ascii?Q?7G35TCBFAN6eAdCUMECG6zrJJXtfwm7pVl7PvlRsU6K6yUQoiSeA+aeo2sxS?=
+ =?us-ascii?Q?9q7fqmaX0sYRcu/+0D+LSycCbgke/2/KG1JxSFsgSJ/bCavVp4bSKPYC5AT8?=
+ =?us-ascii?Q?0cSZ5xBSTpjz+Wrsm5ASqNfd02CSKAJtWUasZtWwd9wTfdMXRFZ9hX6KttqX?=
+ =?us-ascii?Q?7jRcagNXFIkbzjd2QzNRoNkojIvPWKtvTIiEzLHQ/ik3QpFZMx6oc+BFbYoj?=
+ =?us-ascii?Q?xmfLy4nqE2v8aGnpCILunpJWvGaJIuxF3GNbO1uwMbIfNWPn6QB95i60czIo?=
+ =?us-ascii?Q?hnVlpSS72XHGeupwGGVY5SNZ0n/jyluSyCKVDB79Z9mc0qor9f/VAH9ACbLY?=
+ =?us-ascii?Q?6OhYlyyz6d3oq8gnxDtzbCvikdkVjEbISybgKwgDLmYnj2Lh5K3M08Ivff1L?=
+ =?us-ascii?Q?smUy52nEJevoOxlV5hb7zW2dC9UQYgjByVG2URYHgOnjmk1GdXWWbrnX+GD0?=
+ =?us-ascii?Q?4yGUmYdu6RR97w+/dDzzm8QgWhu1e8YsXlMTjhwXjOUihtSrESZRdh0x4l5/?=
+ =?us-ascii?Q?ztJ+rOfORcv+oXUzyrCwOAQKxp2tt6Ocq6nAX+l/qP8FTzivKrq8/7IbcNCY?=
+ =?us-ascii?Q?ecSJjqXnP2jwVOmRR2THwLZE6X2ozLm/HdsOhty3vq50KS8/CCm5Rdv5W9h8?=
+ =?us-ascii?Q?sm4qjMT1b5Ccc1omIBSLtDhOF2DC96B4hCJMk8GVAnz0TI0m5joKbWOlcJUA?=
+ =?us-ascii?Q?Qtm9JoOV+v4i3Owh7zWxXZnBdDaiwV4yjTM3qjWP8Yn4hs+ckOZvFo1dX8zY?=
+ =?us-ascii?Q?nSX3hRdXtH116STjrSju+69ht+A8ZNb5j6QOsrWzSWQpEECuusBNzebBKIMy?=
+ =?us-ascii?Q?Fd1nPjB5M0dDFPbT8QcwkobhI7kEwpGKapxRHkOMWKW6BLfWrNNfpS/Zrkfr?=
+ =?us-ascii?Q?PzmyeAvHpW9ShVB3excyekGGFnXy1bb6cKdavPv77zVdte7gHBHvNZQBt9eD?=
+ =?us-ascii?Q?W+H020vmdEOHC+TehUF3X7TfzXR8rQdVgt88XI1hzQvBHCFOt68oxy/HV9yb?=
+ =?us-ascii?Q?4nLAFE30i8XdCyJUL+f2yadivNxiogfPC4u+FzVNSXBm/wDC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffdd9f9a-9b20-4041-7782-08dea8051cba
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 04:41:44.5093
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eTLE11U2kyXrARCjACuQc4x3Ko8U1T2iMgi53riIpObjLbf0/OI8AIUbQuK79FhRotQbi1WASP4/W6PMB+I36Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10792
 
-spi_imx_setupxfer() calls the per-variant prepare_transfer()
-callback and returns 0 unconditionally:
+On Thu, Apr 30, 2026 at 10:13:48AM +0100, Sudeep Holla wrote:
+> On Wed, Mar 18, 2026 at 03:25:03PM +0000, Sudeep Holla wrote:
+> > On Thu, Mar 05, 2026 at 09:56:44AM +0800, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > MISC protocol supports getting reset reason per Logical Machine or
+> > > System. Add the API for user to retrieve the information from System
+> > > Manager.
+> > >
+> >
+> > Sorry for missing this earlier. It looks good though my usual rant is that
+> > this MISC protocol is becoming never ending dumping ground for all sorts of
+> > info you want kernel to dump in dmesg. Anyways, I am not too bothered as it
+> > is not any user ABI.
+> >
+> > If, you plan to ask i.MX maintainers to pick this up,
+> >
+> > Reviewed-by: Sudeep Holla <sudeep.holla@kernel.org>
+> >
+> > If not, I need their ack for 2/2/
+> >
+>
+> I have left it in my -next queue assuming I would get ack if I need to take
+> it. But I haven't received any, so not sure if I need to take it or drop it
+> assuming it will go via i.MX tree ?
 
-	spi_imx->devtype_data->prepare_transfer(spi_imx, spi, t);
+Acked-by: Frank Li <Frank.Li@nxp.com>
 
-	return 0;
-
-mx51_ecspi_prepare_transfer() can return -EINVAL when the requested
-word_delay does not fit in MX51_ECSPI_PERIOD_MASK. The error is
-detected after a partial set of register writes (CTRL: BL, clkdiv,
-SMC), so the controller is left in a partially-configured state and
-the transfer is then submitted as if setup succeeded.
-
-Propagate the return value. The other variants' prepare_transfer
-callbacks all return 0, so this is a no-op for them.
-
-Signed-off-by: John Madieu <john.madieu@gmail.com>
----
- drivers/spi/spi-imx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 4e3dbd01d619..480d1e8b281f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1382,9 +1382,7 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		spi_imx->target_burst = t->len;
- 	}
- 
--	spi_imx->devtype_data->prepare_transfer(spi_imx, spi, t);
--
--	return 0;
-+	return spi_imx->devtype_data->prepare_transfer(spi_imx, spi, t);
- }
- 
- static void spi_imx_sdma_exit(struct spi_imx_data *spi_imx)
--- 
-2.25.1
-
+>
+> --
+> Regards,
+> Sudeep
