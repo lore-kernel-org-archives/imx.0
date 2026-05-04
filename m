@@ -1,135 +1,255 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011027.outbound.protection.outlook.com [52.101.65.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0115C32AABD
-	for <imx@lists.linux.dev>; Mon,  4 May 2026 21:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777929502; cv=fail; b=tIIHDgK+d4hx5aw+ZxYO9rdOCYXZVUqKYCv/o3HGkkOgUrFqnKOWG0z80tcEOh6z73ECE+I/kRT9bPyEJMW2WAEvCtXUPgPfzzuiXJr4yq/XotmsxRSZsClB3x2AU+1k9YkmFJrL2nwved+mDONd0jn4qY83Z9q+B4aKgxF4Yuc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777929502; c=relaxed/simple;
-	bh=h1tcueVHZOc60raX+Ef/o0Fmkq7ivPx7FYCeNP0U1B4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mWupm1r+LcZp5aWJDcr3TeQDqNABGLZ2jiHWozqJR6CMmRtqQQLc//JYRPWLG39VDzED7hFXDfYebLj/J3wSo6Gw4hwrMbk8vdT4Dgj+QhC9z65hEXB/eFXYBbaFnFqOy6ua7gEwPFgclcNjoXgmkZf58ldKR7fGvKFyg4a4Tjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MknN49R/; arc=fail smtp.client-ip=52.101.65.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A573451AA
+	for <imx@lists.linux.dev>; Mon,  4 May 2026 21:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777929721; cv=none; b=nfOzxCh7iq9YL9pqf5NfZKnXZn8lkUZmG3IyCMcvCh6pIaOIzNRXy1phCC+PIBuBmIyYmqfObqrqM+7CBOxQjKqinfOM5HNBKAtblW61wwjPw8msXPgSZwrF4e7Zwp/mUF8not6WMZSvLnPW4epugX5WPUKBcOUeMMyZt5pTu5E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777929721; c=relaxed/simple;
+	bh=FIivxzOgQochecLwADzOEzhICH1KzGeWduqtFmOBREc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mlZjOtuh8Klxux14EsHEuGjy5BedsA0Y71sTyypWcNYRek/dlQlESUW/pN752cE/Ni1lj9ccWO1qc+1V+F6Cg2nyIYXzq3/2p/jqttS6hklg9J0WnVPWKkM/aaFuo09WkhSnkJQ2LEopMed5sy5RV0feM527knaMp8lYCTWzENA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D+wgP5uD; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MknN49R/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZforMufM8iuYTFsI65qyDJsz+Wz4Gr5wIFGpSwVdzSYeBZi3UWOeJZsbqh3dfcy6kGopLVxpTCPcXjk4IguKqSx8Bh52JfodNf1leVqGor4eMO5INOw32jp8YFLFv7Ycv8u/n/NvBXMl+/END/WpaGTwO6rDdAIIfwnNHzVnDwZm2jIP/iw6R8+UNfIXvsgr55wUMre+oemdQmMAbKIPo6k/xpawiQyxYpaf3rhIXvvkIihqbypTYCniMfpZZz06uMtwXzSWgzHyzC2jrQcwtwswFKZPngUWL+cZtvAeJTyKelu955XZlHugEX+tWgAFnLCDsI2pTOYpmjmQ2BMmww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h1tcueVHZOc60raX+Ef/o0Fmkq7ivPx7FYCeNP0U1B4=;
- b=vFejs36sGWOw5BtmtWAjAEuABzzQN0eBvuK0IyXPEIBa6xkWh8TczAdYj5EYQp75xfkIpMe3g0UovYllQX+NKD0ep2vjoBu+hbo2LvHSpqlQUHjFU04OP3suAsuXfzyDCgVW8uSAK3PoSKnz9CYm6hcgFlFTQ9K0bUc8tZeyyhPouHMVO0uepOte33sNaIJRjgEY4SxjWgEtmKJ55BO8y850QTxHU2dIpyw9MpzTC1wr05225KGe+oItJNVyo5kXaqA/vEAM8qL3RrQ5/ROyeTHFAB8KlUNZG9y9/ozHmMXI3EBSiT1ZhDcKw31hSAiYor9JBibyj877Dfyt7cMxJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h1tcueVHZOc60raX+Ef/o0Fmkq7ivPx7FYCeNP0U1B4=;
- b=MknN49R/tksc0+P5BVllMFAvaBK5kTTmax/ndzsRp93dKRLnjd60ERoN4BAYfJFGq3Oo0xrd/fVeIydj+Nx8Z3XngFXrWfp5WU6HIg4LZwwHWahL1r0GNqSKKxxSmS5wFxQogpWlCDVXMn+4moIXmQ7n0nufEqXs+w6j5CLHlW/osQ7IgwIeL/NWr3n3miXQ8n7MAfxMjb6PoZfL1SsDAiH3jZfYBano8x0/C6mDZ4NILW3r2+/SR02nj4K9YeTciPSxKrIwbBcsSINOG20VxWo7f7X6k+wFeVfQB6zH2eWPNVbi2IxvtRGhtyBHL/k8yVkJ1s/JKzsTLncscLLeTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by PAXPR04MB8317.eurprd04.prod.outlook.com (2603:10a6:102:1ce::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Mon, 4 May
- 2026 21:18:17 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9870.023; Mon, 4 May 2026
- 21:18:17 +0000
-Date: Mon, 4 May 2026 17:18:10 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	bhelgaas@google.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 3/5] arm64: dts: imx94: Add pcie0 and pcie0-ep supports
-Message-ID: <afkNEjm73o8qoYRY@lizhi-Precision-Tower-5810>
-References: <20260324023036.784466-1-hongxing.zhu@nxp.com>
- <20260324023036.784466-4-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324023036.784466-4-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: SN7PR18CA0001.namprd18.prod.outlook.com
- (2603:10b6:806:f3::15) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D+wgP5uD"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so66463305e9.0
+        for <imx@lists.linux.dev>; Mon, 04 May 2026 14:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777929718; x=1778534518; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nv307eZOcQfpf3d08YRaeg3RgbkORKK7jsD1l1EktYs=;
+        b=D+wgP5uD9eUxvo349nre53eU0J3RJllkhOtYEZPzmgMf1f67KrWmXIiDO2g5pClFFH
+         aMZ9wveMk5ACb5LyaTf/Rn18gBVRrGQl2ED/+EoYPDC13EAhUZ84+Xs8OZ+Jm0mJnc/J
+         +SdC64mzFYeK7a3x8a9wM+41+k2fzklC0yiL5U18TpTDZUg7bDl6L18lU+O8wpoPbbe/
+         x0i0ip7HUqh2t8S/RcnyKwgjJyYHK2WsIElyL8wNkzeIXLPhNIZqHfl5v1/UJTdtb9Wd
+         oMM3bIPA8g50UucM/r8MX7c2OqhYB9eWaHUwjOQRt8wq/mYqmKXYVVBq0KKEpFAb0dcG
+         93Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777929718; x=1778534518;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nv307eZOcQfpf3d08YRaeg3RgbkORKK7jsD1l1EktYs=;
+        b=LFVmLI4gEd8sIXeaco5vt7usQ6wPlixLuO3Y483S7V5PCQlwokW+I1MWrn1BLE18rp
+         oXPDHW7enQdw8xuMlSKXYyLdUPY8Z20SUNETHEs4XK9Fd52VwmldAV+7s3jwqtaBFO3A
+         uEBQhjgQMg8Z5jeMEBPQw534CvWqu0U3kwavZ/8MrMexHSxkkE6DO14TFa0nXd5rl0p7
+         snalX6gwUwCC6Ym6hgkfasAHtqiKLIwPvenpPJToI6jvxpPifkVjC+9j5z3OGrpyXcZX
+         k7hfiL/ZmFnby87otnZKv9z70t94XEDqe3gd3ttbRtXC6NwPSNbbKmnNA4wHkTNVaOHK
+         o0WA==
+X-Forwarded-Encrypted: i=1; AFNElJ8kkSHU52Otr+isgen49CCt52fpp8lZnCHeYMvlX/WDU9ul3uoC/EebSShwkvrpRY1b43I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJmmt1nLII4UDUt9B39geXy928XVbkUlbpFG5ym8DuJQJilnr1
+	l3BKnfudxQ+hOol2lVLqsTfvVOywaOby/N2awoEnVGCWuA7Vxyz6+p8nHrcSQpSNu2c=
+X-Gm-Gg: AeBDies4Z8wzXskGyt9hRW6oNbmv2ZwxkiilWOBL9YuK/u6AAtbpYEicL28fvanr5fk
+	JMxVvil2YuuowpqG5zlXfRRA7121akAzdILFUNcTJ6Rl4bT+Wxl1y16oaMd/6JbpfA/+ji0VhFc
+	ylvQ8s+vT7BCQ+luPxw1M0BKcGHKHDKoi/r7KDwxi3ZaUe+49e2iV+3LiWxNlj4gh4cvBE7R9AO
+	ZBQtpsUmImb2E7OMkAxNBrdEExVAJC9VtFbYTnSG9w/HZTjAlFnJXg1q09pQ7xiIt6cN78zQEdk
+	FNcvqI0DjoB5pk32e9NUk7ljkAPzabKONsNjnP2iGTHLCaNhPW7tSOFXV69w+JRuo1bSJNeefqx
+	0yunhZhFqqnBoYOn1IoWKbVB3jM8zC4vnoJMtmuoToRK4wX2lQgJjRrfsKZsFUN8/VtUySX0mb9
+	2BYXOE0OXAl/wq3fwlDXEsORRnS0GFJ+AqZqW1BiRfULzdOZZpNtgDd7jRwelmY1Qq1GERxe6AV
+	1sd9vj1gauYr9zbwQ==
+X-Received: by 2002:a05:600c:c16a:b0:489:1cda:bbb7 with SMTP id 5b1f17b1804b1-48d18ceb33dmr2855065e9.25.1777929717835;
+        Mon, 04 May 2026 14:21:57 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:4086:6e90:21c8:1555? ([2a01:e0a:106d:1080:4086:6e90:21c8:1555])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d149de41asm5820225e9.2.2026.05.04.14.21.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2026 14:21:57 -0700 (PDT)
+Message-ID: <80fb7a31-3a85-48d5-a971-4e7632778f0c@linaro.org>
+Date: Mon, 4 May 2026 23:21:55 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB8317:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd930db7-d17d-4999-94d3-08deaa22a8e8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|7416014|52116014|1800799024|38350700014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	EsgKNzBeIJvyONJyOyswe6Fq9mXiQ0yX0hy5O2wi9HZUCrIVzd1EFldSmvuRsdxBmdIifkquJ4GZV0u6ohK1xpS253BnkEY3lAxgPT4Wd/yD9X9q5VyK5yrhAOGaC3pS3FoRZxbQU9cxIkpN8o7GcwIH1RHbzb9EW3MmC295D4XM+depLKyQEhaQeXxXa5HGW7N8xX1cQJaIr8a1TbF3meZw7xZLwFPoJnGGney4E5xUf7CO7bFnUtLW7tNcb1GEYhDtL5W7x1M6TIWlqxxYefqalN5l0VRlY/ukXvXzvh5V7ccEKgKo/LBcl3SeW/1TsmmdQTqB2nL+Dz+0O4jRp0wez761WF111SbtLDTKROBUVfy7Mbi689Szc5i2F28ECHpIAeLN0LDQ4C7r722oeN4AB4fi7Dk8AocBXbzU90d4OMkGfDqVCJvy4VBLemWdCK8O4tyiMQLLic95q+6Z2ax/MoZ64ZJZMxVGuvN+Q9aVH1QkGwByxlPNNyVTLFX71UEkr7MYRxTpN9ONH+kYXFb4VrOgSv91M6BYjH9jlqsVFOtuhKVAE6BgcJ7cX7h8XYbQnIQuPJvXo02cq5UaJpiLiUNbWoCImEH19FoEXS1dju4KcXNyRWbEFrHstPU77mFQRrwvcjUK+9T6Ac18q31c7zXcpYduV8NPxMa9/3e1QI1AGMVFaI9knzXt5UUQljF137rffZnh7p6+mftjEvWj88shRCRvtvTazpKWRj2JqdPQxk5dhxTgcjUtJQR7
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(52116014)(1800799024)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?N/EtsGltTtO6ILEEZN9OJxB9eJ8AbfO+7/7xD8HL2A3HTLDGC5SYgrHpR509?=
- =?us-ascii?Q?ZwnGNBb/QAzWWDLua9xioOCViYsLYxgYUev3Q17t0u1TqR4IXnOBlcZJG3xx?=
- =?us-ascii?Q?jh7R3fWKmjeIjJ9eiX41zjX/skWbu0ggohpM254ReIk82fdN71LDs/Ui5V2k?=
- =?us-ascii?Q?QjYV9d/DM1tZtcJ8qzfw/aZZb45/Ry64qWM4D5KKiMyTNfbIoaMAuv5zUYW/?=
- =?us-ascii?Q?n6xGC7NNS2K5iLCxRGOeW7ewI1xEst3OMywlYfK6ixHl83kJH/rlOCjAw1QC?=
- =?us-ascii?Q?ztuci1Uvt2TQEmuYzEZPBWoQL30tibK1EtHPGzonQQj9Suw51RXuKc6eql7E?=
- =?us-ascii?Q?C/9NW6VSPAFefPfV3w51M9b+2z9qqRl9XjNPFL0wleWqQq+43sgy1lGoB4yD?=
- =?us-ascii?Q?jF3wRJjmbhfxl9EZPAHkL62yBNOFAY/a5rjH63n3SdhGrROIU1FRA4SijeYT?=
- =?us-ascii?Q?VPtKC8Y9n9Cthd3kzMU4NcFwCHryCAh6E07RyS5QL5C2dIX+wILR5tuYusv+?=
- =?us-ascii?Q?HSSL9Lv9Nf6aL/+mHbecQv+UNy8IE9hvtxyc1icQJgwHiUcZI3ccmRxBaD3G?=
- =?us-ascii?Q?qsIXj2Eg8XNwBfJnAGCHn4NqUXCQ1shaoV2z28fiEGVachdL3poCB9pz1+vz?=
- =?us-ascii?Q?UXlGaEPO+AG9QErFGsa740FrNqaoSaOqvHS8j9bjyy8X2Dw9RNPuIPj0XmC4?=
- =?us-ascii?Q?Fs4ZcfgOu28TN9P0wHwZw3CGdTW15SlU3d2y0nv5cW3TV9bB6jlsjFTpJHpq?=
- =?us-ascii?Q?I9Au3Ocfr9m0vpsroEdGERfXYsQ335GI28M5vpmoxL9geC1eN8cWL4eACXK3?=
- =?us-ascii?Q?HWcdvUjLySsQkJBqWL3V52gS+La/uvCSaNnUxAv/+VTAQHuk/JbV1xoRXhcO?=
- =?us-ascii?Q?gv3x88AAVKNDGrCb7qIRBZAZ71B9n6LbKufhZqvhSavAlT13dMAubJpxzNoJ?=
- =?us-ascii?Q?M32yxveXywPrPscJzkmrWy4oqNUSRHSHHYQqN8QjBhYqkwL/USuA96ZP8nVZ?=
- =?us-ascii?Q?aUtqlcuFD6tn+oktmzXkw8p29E3WapHZmHOXJMalV0xdIh/NpftojngiU9wN?=
- =?us-ascii?Q?VgEl9chnGIaPgaYDjYj7M3WH9OWIhXarsoLHdDoodwiBACsKqdK1vLXWXnIN?=
- =?us-ascii?Q?ifUXZYRlBpEbX3a+EFIewC3l4gMuJKQt+JDZ9ZFJKG874e+/KFIrREeWmdN+?=
- =?us-ascii?Q?FLA/QBV9LEElle0aOQtYC6HZUg+rg14JSARQ47IpcEfOK1mTi9929C9uppdc?=
- =?us-ascii?Q?wUvHtWaMfmNRoP0YinHIOU3ypXvOqQKHK9KBYKZLqb8FFYLQASt7sdkacDb4?=
- =?us-ascii?Q?s/n1TC+THqojxzLhoqXEXzeP5NukE8ya/sl750ht/HcaLD3pB4TGPaiDNcxO?=
- =?us-ascii?Q?kK1evm6bwTm6AW2fNfW+G4cMK/5pojWKLRrULFeY4pfP7zQS8KD8mB1qRAUV?=
- =?us-ascii?Q?2yQvvJN2Av7diAl3GlADqH6r/jwg6Jq9V0GnpPjktSBpObhruKc+Q+gq0yHu?=
- =?us-ascii?Q?7QrIPPdggNlIhKoVnK619YJLeoRd4L3IJYCoyhDrkLWWGMmjFjfDft7aCOED?=
- =?us-ascii?Q?bxxEbuOITlKsxnvIJmeHeOmVGFvPDbPc67IO0D1QaKxPVB0UmFis3D/qubyu?=
- =?us-ascii?Q?t2ytLOmNlhgpIBZn/952rYlmsENeJgnYO4FO9aESOAd1L6be6dAy5tvIX5xn?=
- =?us-ascii?Q?fxwefZpofemYveKsN7XWAWauXFBljQ7EbAtHindj/MHbJyuvfxlUQf8EjKEU?=
- =?us-ascii?Q?DN+lT6assw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd930db7-d17d-4999-94d3-08deaa22a8e8
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 21:18:17.4139
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I6Lea8ifkN8VnsgqMjVkujG304zy+94CM3tJubdDu66wA7zfmi+nvJoM83B5GPZrZywJRezFp57iwYOk5Vdy8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8317
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v4 12/17] drm: bridge: dw_hdmi: Use generic CEC notifier
+ helpers
+To: Jonas Karlman <jonas@kwiboo.se>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Robert Foss <rfoss@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Liu Ying <victor.liu@nxp.com>, Sandy Huang <hjc@rock-chips.com>,
+ Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Christian Hewitt <christianshewitt@gmail.com>,
+ Diederik de Haas <diederik@cknow-tech.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260504191059.275928-1-jonas@kwiboo.se>
+ <20260504191059.275928-13-jonas@kwiboo.se>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260504191059.275928-13-jonas@kwiboo.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 24, 2026 at 10:30:34AM +0800, Richard Zhu wrote:
-> Add pcie0 and pcie0-ep supports.
->
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+On 5/4/26 21:10, Jonas Karlman wrote:
+> The commit 8b1a8f8b2002 ("drm/display: add CEC helpers code") added
+> generic CEC helpers to be used by HDMI drivers.
+> 
+> Replace the open-coded CEC notifier handling with use of the generic CEC
+> notifier helpers. Ensure DRM_DISPLAY_HDMI_CEC_NOTIFIER_HELPER is also
+> selected when DRM_DW_HDMI_CEC is enabled so that the CEC helpers is
+> available.
+> 
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 > ---
+> v4: New patch
+> ---
+>   drivers/gpu/drm/bridge/synopsys/Kconfig   |  1 +
+>   drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 32 ++++-------------------
+>   2 files changed, 6 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/Kconfig b/drivers/gpu/drm/bridge/synopsys/Kconfig
+> index a46df7583bcf..e6723af03b43 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/Kconfig
+> +++ b/drivers/gpu/drm/bridge/synopsys/Kconfig
+> @@ -49,6 +49,7 @@ config DRM_DW_HDMI_CEC
+>   	depends on DRM_DW_HDMI
+>   	select CEC_CORE
+>   	select CEC_NOTIFIER
+> +	select DRM_DISPLAY_HDMI_CEC_NOTIFIER_HELPER
+>   	help
+>   	  Support the CE interface which is part of the Synopsys
+>   	  Designware HDMI block.
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> index 4c712aa07a89..0aa29b92327e 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -23,12 +23,11 @@
+>   #include <linux/dma-mapping.h>
+>   #include <linux/spinlock.h>
+>   
+> -#include <media/cec-notifier.h>
+> -
+>   #include <linux/media-bus-format.h>
+>   #include <linux/videodev2.h>
+>   
+>   #include <drm/bridge/dw_hdmi.h>
+> +#include <drm/display/drm_hdmi_cec_helper.h>
+>   #include <drm/display/drm_hdmi_helper.h>
+>   #include <drm/display/drm_scdc_helper.h>
+>   #include <drm/drm_atomic.h>
+> @@ -183,8 +182,6 @@ struct dw_hdmi {
+>   	void (*enable_audio)(struct dw_hdmi *hdmi);
+>   	void (*disable_audio)(struct dw_hdmi *hdmi);
+>   
+> -	struct cec_notifier *cec_notifier;
+> -
+>   	hdmi_codec_plugged_cb plugged_cb;
+>   	struct device *codec_dev;
+>   	enum drm_connector_status last_connector_result;
+> @@ -2453,7 +2450,7 @@ dw_hdmi_connector_status_update(struct drm_connector *connector,
+>   
+>   	if (status == connector_status_disconnected) {
+>   		drm_edid_connector_update(connector, NULL);
+> -		cec_notifier_phys_addr_invalidate(hdmi->cec_notifier);
+> +		drm_connector_cec_phys_addr_invalidate(connector);
+>   		return;
+>   	}
+>   
+> @@ -2462,8 +2459,7 @@ dw_hdmi_connector_status_update(struct drm_connector *connector,
+>   	drm_edid_free(drm_edid);
+>   
+>   	if (status == connector_status_connected)
+> -		cec_notifier_set_phys_addr(hdmi->cec_notifier,
+> -				connector->display_info.source_physical_address);
+> +		drm_connector_cec_phys_addr_set(connector);
+>   }
+>   
+>   static enum drm_connector_status
+> @@ -2539,8 +2535,6 @@ static const struct drm_connector_helper_funcs dw_hdmi_connector_helper_funcs =
+>   static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+>   {
+>   	struct drm_connector *connector = &hdmi->connector;
+> -	struct cec_connector_info conn_info;
+> -	struct cec_notifier *notifier;
+>   
+>   	if (hdmi->version >= 0x200a)
+>   		connector->ycbcr_420_allowed =
+> @@ -2571,15 +2565,8 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+>   
+>   	drm_connector_attach_encoder(connector, hdmi->bridge.encoder);
+>   
+> -	cec_fill_conn_info_from_drm(&conn_info, connector);
+> -
+> -	notifier = cec_notifier_conn_register(hdmi->dev, NULL, &conn_info);
+> -	if (!notifier)
+> -		return -ENOMEM;
+> -
+> -	hdmi->cec_notifier = notifier;
+> -
+> -	return 0;
+> +	return drmm_connector_hdmi_cec_notifier_register(connector, NULL,
+> +							 hdmi->dev);
+>   }
+>   
+>   /* -----------------------------------------------------------------------------
+> @@ -2887,14 +2874,6 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge,
+>   	return dw_hdmi_connector_create(hdmi);
+>   }
+>   
+> -static void dw_hdmi_bridge_detach(struct drm_bridge *bridge)
+> -{
+> -	struct dw_hdmi *hdmi = bridge->driver_private;
+> -
+> -	cec_notifier_conn_unregister(hdmi->cec_notifier);
+> -	hdmi->cec_notifier = NULL;
+> -}
+> -
+>   static enum drm_mode_status
+>   dw_hdmi_bridge_mode_valid(struct drm_bridge *bridge,
+>   			  const struct drm_display_info *info,
+> @@ -2972,7 +2951,6 @@ static const struct drm_bridge_funcs dw_hdmi_bridge_funcs = {
+>   	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+>   	.atomic_reset = drm_atomic_helper_bridge_reset,
+>   	.attach = dw_hdmi_bridge_attach,
+> -	.detach = dw_hdmi_bridge_detach,
+>   	.atomic_check = dw_hdmi_bridge_atomic_check,
+>   	.atomic_get_output_bus_fmts = dw_hdmi_bridge_atomic_get_output_bus_fmts,
+>   	.atomic_get_input_bus_fmts = dw_hdmi_bridge_atomic_get_input_bus_fmts,
 
-DTS part fail to apply, can you rebase to v7.1-rc1.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Frank
-
->
+Thanks,
+Neil
