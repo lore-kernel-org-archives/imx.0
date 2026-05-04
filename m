@@ -1,127 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF66F39DBED;
-	Mon,  4 May 2026 13:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECC83DA7D7
+	for <imx@lists.linux.dev>; Mon,  4 May 2026 14:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777902165; cv=none; b=OteL7U5mLw0xBNU5LxlyX386Jprbg9hm2eNs+0pAYj1FJOOJ5+ZRmU35TEkR6JnkStCeIg+J6y4PxsXKbyiBqWzZDwWX2A7UziDXcEAPeaj/Uo+dEPC3BV/VxFVbN8JLPqigLh28cKd0TRYL7fIveh0OTfEcGpe8Jtmu0RzGxL4=
+	t=1777905550; cv=none; b=SRG5WIh3/L762AhO6uMDEvDJXHm600E19tN88m7ZDdyACOh/XqfOU0xYPgSisUognokTpSoD2fU8hYftedCnCR1QXI1thOGceSt2TArwh+A5Y631Y0Z1HAid27cpdiZzqqUGMT+Xr9RW3+16uGm4n0aQWuJ/r4CiaNtKbzvza3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777902165; c=relaxed/simple;
-	bh=8tSxUuDeUyvAzyJEtbx33GrMXbNrQ8yGPFNRsdz/Gs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F3DYUDnjtWG7pWSiIkrQQPoX6faGs721Xf1sjZLPEZKleZy7eeiLCcfdn/0P6EXd06sJlTrMrLZKDXveq+W6WtHbXRelJTz1KkZb+QFeNX3R+2D9SApJxvcIx2St9i1sEZHh7+jLGjadFaDCNwlL+shUi3gUC6u8hiNumLQnQm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zrh5lzVf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777905550; c=relaxed/simple;
+	bh=DH6GxipD1JVJ+S6qzqDGcgA+zWxD7WPa3RRlnb752qg=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BSPi3G1jLPmEW6KehpTwgnGrV8NNELtwDWfu2NCZTtH1/3qAbdVrQKnqtX1C/nFNBC/Kr5o0+9kDFfxRVLUNvxjo6lgL08Vd3wBoQXkjNFB10VmH7T5+3fehOKEBJajiPvQa9x0Lv4Mb34u47W8IZnOrdW5F3Lu483lBio1xJHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1S68tZP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zrh5lzVf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59ADDC2BCB8;
-	Mon,  4 May 2026 13:42:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1S68tZP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBCAC2BD05
+	for <imx@lists.linux.dev>; Mon,  4 May 2026 14:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777902165;
-	bh=8tSxUuDeUyvAzyJEtbx33GrMXbNrQ8yGPFNRsdz/Gs8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zrh5lzVfDhZEsk2qhy4yS5mwhpiYAWQXd41K5Z+bqFwH7Uzmef/Z8XTg/NHKKI0hD
-	 TVmdh+yKwg03VNygJ9vobHiCUrYkun7ThShNwwaEs1ATuiAw1F9ggDcNryy26TvPzQ
-	 gA5T2CYQE43C+HM2mzetxkuUprqZdZOHII6qR2Y0EUKQJ++T5+knqWzFmwmfMFMkEM
-	 VGuzKVCJWuVeo/lbTpKJnLxDV4pz7WDIKI4V1etF4iKaKUBqb+MH+OKHRwvJ8QDfid
-	 hQf9kmW4NYN5sJ5qqXcFu8044fZxP1wIuC5rXJ8H1dFkRJ+bif39CBxKiyOs78C8T/
-	 DYlhXoJuklPpA==
-Date: Mon, 4 May 2026 16:42:41 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-integrity@vger.kernel.org, kernel@pengutronix.de,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: tpm: spi: do not call blocking ops when !TASK_RUNNING; during
- shutdown
-Message-ID: <afiiUdFv7p0fuK-5@kernel.org>
-References: <e7974d35-0d50-4742-8747-822f28915e00@gmx.net>
+	s=k20201202; t=1777905550;
+	bh=DH6GxipD1JVJ+S6qzqDGcgA+zWxD7WPa3RRlnb752qg=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=D1S68tZPnYu1V0bCy9REcTABOQPO/H+FY9NCnMUifUHJ0aVGVM/4RqOUrOi3dZ7tq
+	 SXzE9fZyeruuFmsormEI9/57aLiDhSrowoO8hT3TY4AGjeG/CyZhaNS8+Keza6yny+
+	 HdReQ/pmn/2asK43l41qAI3EsES8X5v4sx/C24LcGuIziybTH0isrk6o8UAdPxvNwI
+	 dC8Gl8stpEn+8ikHvK6rh6ZjyaTugqxKDqtlonKKLpJg2crnmGkGCD6II0fklERtNF
+	 y9qDu5JPGZj11Ht04AAdDQ0lmausLskc9DcJofl8yxybU1bb9QG8Jy+tCPMo7F1TBe
+	 BYZREq1b2FbVA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a3d1561e38so3602666e87.0
+        for <imx@lists.linux.dev>; Mon, 04 May 2026 07:39:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8z5p/7rqpNFavdpRZD96IoK6QhHaOaqwITPfCBpqgz3j+FVsKh+zLBymzHLvwst4kgNzc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4IAAU4eT63J45AH524kr2g83V7xChKSR8puja4ONE2YhA5iRp
+	3Ap5MgMIl+o9Hy6bujRR7v2k+qqiZouRvyBucW1fYsnIHcnfxc8vr5l19d1eWtjNok+FEEyhLR7
+	lE/bV7oXVHw9TVErc/ukvwFWkdiI7H3/u3rC9a41p4w==
+X-Received: by 2002:a05:6512:1255:b0:5a8:6b81:6694 with SMTP id
+ 2adb3069b0e04-5a86b8167c7mr3261187e87.30.1777905548656; Mon, 04 May 2026
+ 07:39:08 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 4 May 2026 14:39:07 +0000
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 4 May 2026 14:39:07 +0000
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260504131148.3622697-2-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e7974d35-0d50-4742-8747-822f28915e00@gmx.net>
+References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com> <20260504131148.3622697-2-khristineandreea.barbulescu@oss.nxp.com>
+Date: Mon, 4 May 2026 14:39:07 +0000
+X-Gmail-Original-Message-ID: <CAMRc=Mdy5d+8fi1Z3cOZ56XiKTNd+BQPfFc9VSYYpk-6KtFQAA@mail.gmail.com>
+X-Gm-Features: AVHnY4LDGkzvq-F0a-Lhky6B8AKh6zx1azWjATamTll0uX7umMCaYvXYiBIHOaI
+Message-ID: <CAMRc=Mdy5d+8fi1Z3cOZ56XiKTNd+BQPfFc9VSYYpk-6KtFQAA@mail.gmail.com>
+Subject: Re: [PATCH v9 1/7] pinctrl: s32cc: use dev_err_probe() and improve
+ error messages
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
+	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
+	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Stefan,
+On Mon, 4 May 2026 15:11:42 +0200, Khristine Andreea Barbulescu
+<khristineandreea.barbulescu@oss.nxp.com> said:
+> Change dev_err&return statements into dev_err_probe throughout the driver
+> on the probing path.
+>
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+> ---
 
-On Mon, Apr 20, 2026 at 12:25:21PM +0200, Stefan Wahren wrote:
-> Hi,
-> we use a custom i.MX93 board, which based on Phytec Phycore i.MX93 with a
-> TPM connected via SPI. If I enable CONFIG_DEBUG_ATOMIC_SLEEP=y in our kernel
-> config with mainline kernel 6.18.23 and reboot our board, I will get the
-> following warning:
-
-Please provide results with the latest mainline kernel.
-
-> 
-> [   43.287416] do not call blocking ops when !TASK_RUNNING; state=1 set at
-> [<000000005a2107f3>] prepare_to_wait_event+0x54/0x14c
-> [   43.299009] WARNING: CPU: 0 PID: 1 at kernel/sched/core.c:8857
-> __might_sleep+0x74/0x7c
-> [   43.306920] Modules linked in: polyval_ce flexcan rtc_rv3028 can_dev
-> mse102x phy_can_transceiver fuse autofs4
-> [   43.316838] CPU: 0 UID: 0 PID: 1 Comm: systemd-shutdow Not tainted
-> 6.18.23-00002-g626a194342f0 #2 PREEMPT
-> [   43.326471] Hardware name: chargebyte Charge SOM Evaluation Kit (DT)
-> [   43.332807] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS
-> BTYPE=--)
-> [   43.339757] pc : __might_sleep+0x74/0x7c
-> [   43.343675] lr : __might_sleep+0x74/0x7c
-> [   43.347592] sp : ffff800081aab720
-> [   43.350894] x29: ffff800081aab720 x28: 0000000000000080 x27:
-> ffff000000235880
-> [   43.358018] x26: ffff800081897000 x25: 0000000000000018 x24:
-> 0000000000000000
-> [   43.365142] x23: ffff800081aab907 x22: 0000000000000000 x21:
-> 0000000000000080
-> [   43.372266] x20: 000000000000010f x19: ffff80008131cd00 x18:
-> 0000000000000001
-> [   43.379390] x17: 0000000000000000 x16: 000000000017d600 x15:
-> ffff00003fda4680
-> [   43.386514] x14: 0000000000017e01 x13: 0000000000000209 x12:
-> 0000000000000000
-> [   43.393638] x11: 00000000000000c0 x10: 0000000000000950 x9 :
-> ffff800081aab5a0
-> [   43.400762] x8 : ffff0000000d89b0 x7 : ffff00003fda3f00 x6 :
-> 000000013417d29a
-> [   43.407886] x5 : 0000000000000000 x4 : 0000000000000002 x3 :
-> 0000000000000010
-> [   43.415010] x2 : 0000000000000000 x1 : 0000000000000000 x0 :
-> ffff0000000d8000
-> [   43.422135] Call trace:
-> [   43.424570]  __might_sleep+0x74/0x7c (P)
-> [   43.428487]  mutex_lock+0x24/0x80
-> [   43.431797]  spi_bus_lock+0x20/0x50
-> [   43.435281]  tpm_tis_spi_transfer_full+0x70/0x2c4
-> [   43.439979]  tpm_tis_spi_read_bytes+0x3c/0x48
-> [   43.444321]  tpm_tis_status+0x58/0xf8
-> [   43.447978]  wait_for_tpm_stat_cond+0x30/0x90
-> [   43.452329]  wait_for_tpm_stat+0x1cc/0x2e0
-> [   43.456419]  tpm_tis_send_data+0xdc/0x334
-> [   43.460423]  tpm_tis_send_main+0x74/0x160
-> [   43.464427]  tpm_tis_send+0xd4/0x13c
-> [   43.467998]  tpm_transmit+0xc4/0x3c4
-> [   43.471569]  tpm_transmit_cmd+0x38/0xd4
-> [   43.475399]  tpm2_shutdown+0x6c/0xa4
-> [   43.478970]  tpm_class_shutdown+0x60/0x88
-> [   43.482974]  device_shutdown+0x130/0x25c
-> [   43.486891]  kernel_restart+0x44/0xa4
-> [   43.490549]  __do_sys_reboot+0x114/0x254
-> [   43.494466]  __arm64_sys_reboot+0x24/0x30
-> [   43.498470]  invoke_syscall+0x48/0x10c
-> [   43.502214]  el0_svc_common.constprop.0+0x40/0xe0
-> [   43.506911]  do_el0_svc+0x1c/0x28
-> [   43.510222]  el0_svc+0x34/0xec
-> [   43.513273]  el0t_64_sync_handler+0xa0/0xe4
-> [   43.517441]  el0t_64_sync+0x198/0x19c
-> 
-> Best regards
-
-BR, Jarkko
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
