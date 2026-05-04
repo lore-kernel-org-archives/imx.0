@@ -1,33 +1,33 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3943E6DD3
-	for <imx@lists.linux.dev>; Mon,  4 May 2026 19:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379223EFD09
+	for <imx@lists.linux.dev>; Mon,  4 May 2026 19:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777921894; cv=none; b=Avz6lhelCdwR1/Sd2UlY9OOgsWliMXxoGALPq9IgxwTTYCl7HWJ4Ei679B9ZXpVdQfo87yuhJnvOiIiOchfcwKQLsMJ3uic/xGBqwgL0Mn7z6+ElLMalPnn7jKO7y0/VmFYJKV935yL/oUu6gitfy8BybbKuj14paiKUnZi28SM=
+	t=1777921898; cv=none; b=Z5pShBot1oC56Fw5P9CgelkRYUDVblJ46k1/w1bOWEwVdeDVGYvEoQ3g4eoetej1X8loNxv2iQhGPws379JrwIHwizPcGwEb9PrVyCt44I22yHMUGhaPMqaVX73q+SMR/ETZMCcxYpexh3jm1yCZGIso/qWuk3W67vS4EM0oTis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777921894; c=relaxed/simple;
-	bh=2vNRIV+X9aziqWVgNJH/9Q4i1l9GuFJGxG9rk+Nehaw=;
+	s=arc-20240116; t=1777921898; c=relaxed/simple;
+	bh=gPod5psDuYHeexBaonjWvaIui42g4wz0uc0rFfhdUcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wu7rCZJ5caZpxl2SQsJJc57+loKEXt7oemlIwHjvZEONGfoi8L7zkj06wlezRXtz3lEuxgpCfSdU5zDEw1V1O/8Qu0sJC65zAQRmS+iXhY0zPK0y11dMnM5gc2xI1HZMyHFjX8fl2fWRvOEeywib3eFal1hYS1phg1uj65WCIDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=wpyjbIBO; arc=none smtp.client-ip=121.127.44.66
+	 MIME-Version; b=a6qbMRlgzDfAkhaGcRwzGgms/ReUfHREt3joQWamf8T14vfVfMRSb1ZV+qzZpBQcM/DOHeMygM2RFUycQ0oV3agj6VGc6F94O6QPKi4wQPbXpFRD7ZA1uLvnQHeqLTTJnO6FlOmbRHUDqNukZwYnyXqQB92Cpf7oS2uj0KtlOQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=QlUILbfJ; arc=none smtp.client-ip=149.28.215.223
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="wpyjbIBO"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="QlUILbfJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
  h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
  Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1777921886; bh=ztwyFtJ+PIzunu61Ma2kZpnK7+L5uIsvetgCX3r3Ivg=;
- b=wpyjbIBOYkAV0/e12jKgGYTRoqi7x5GbxBIvHptaXM38nWmCPa3TIZTvrWzz5lXfwuZcldiJG
- FzLf6aC3sGgn3la1RlsaQdTBX+IeDQ2PsLUCys4N2Fx8dBk7RFaDt6POxKT6vwwmWjtsvXGDkc8
- mz5RFMygjXeEv3HbewJOeUgoPrwWQiP+SOcQyDyc4YtpwdxuS9+QXeZCaf28GfcAMS7JFhHkS08
- IdnYIqfwxdp+zx08DOEWP7zwS4F87IEfiYE7adnIq6TsqQMs/jyz8MuWmY9ksaJw/B8ScWzZcg1
- 7CHnkFaUnP8zfDw+V9DEmmzm2LK8fYmVT4hr4ZMxVEHg==
-X-Forward-Email-ID: 69f8ef5a04bb1dff846bb86f
+ t=1777921891; bh=NVWUpLoYoqwHrhK1PEs6caGhSJc5nSsIxxdrR4kmbpQ=;
+ b=QlUILbfJdQnnyGV4CViETV+CFnhDJuDf4s4vWNpHO73YOVAvadovAJL2052evTlHQmn6rruvc
+ VOSkDxeLL1YbErmtAcLD1trsSMfnPjdSNUWYCeQR4nuaaUWtz0cj1YdKrUaIa3mLWoUmHR58qtN
+ MNGX2l6W+p5lQXMngwwqTQidSIQugMIncQIqXv375ZKQxjUjiKnYW3r28Kx9z19/PS6NlV+gaNA
+ U1suHklRXgYRq0e0ipa9k07rVrdS0imFl85tux7O39lBh+LeyKJZi0nSYUf4PsuPmDTQhG1A9UT
+ YwopGU4I/l1uQ8XhKzsavEeaKDEXs+QFSFW3ilVp4ncQ==
+X-Forward-Email-ID: 69f8ef4e04bb1dff846bb7fb
 X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
- 121.127.44.66
+ 149.28.215.223
 X-Forward-Email-Version: 2.7.7
 X-Forward-Email-Website: https://forwardemail.net
 X-Complaints-To: abuse@forwardemail.net
@@ -60,10 +60,11 @@ Cc: Liu Ying <victor.liu@nxp.com>,
 	linux-amlogic@lists.infradead.org,
 	linux-sunxi@lists.linux.dev,
 	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 04/17] drm: bridge: dw_hdmi: Use passed mode instead of stored previous_mode
-Date: Mon,  4 May 2026 19:10:41 +0000
-Message-ID: <20260504191059.275928-5-jonas@kwiboo.se>
+	linux-kernel@vger.kernel.org,
+	Christopher Obbard <chris.obbard@collabora.com>
+Subject: [PATCH v4 01/17] drm: bridge: dw_hdmi: Disable scrambler feature when not supported
+Date: Mon,  4 May 2026 19:10:38 +0000
+Message-ID: <20260504191059.275928-2-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260504191059.275928-1-jonas@kwiboo.se>
 References: <20260504191059.275928-1-jonas@kwiboo.se>
@@ -75,50 +76,41 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use the passed mode instead of mixing use of passed mode and the stored
-previous_mode in dw_hdmi_setup(). The passed mode is currenly always the
-previous_mode.
+The scrambler feature can be left enabled when hotplugging from a sink
+and mode that require scrambling to a sink that does not support SCDC or
+scrambling.
 
-Also fix a small typo and add a variable to help shorten a code line.
+Typically a blank screen or 'no signal' message can be observed after
+using a HDMI 2.0 4K@60Hz mode and then hotplugging to a sink that only
+support HDMI 1.4.
 
+Fix this by disabling the scrambler feature when SCDC is not supported.
+
+Fixes: 264fce6cc2c1 ("drm/bridge: dw-hdmi: Add SCDC and TMDS Scrambling support")
+Reported-by: Christopher Obbard <chris.obbard@collabora.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
 v4: No change
 v3: Collect r-b tag
-v2: Update commit message, s/type/typo/
+v2: New patch
 ---
- drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-index 4ecad0d2eeaa..f028a4b71aad 100644
+index f4a1ebb79716..248454c45d6b 100644
 --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
 +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-@@ -2258,6 +2258,7 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi,
- 			 const struct drm_connector *connector,
- 			 const struct drm_display_mode *mode)
- {
-+	const struct drm_display_info *display = &connector->display_info;
- 	int ret;
+@@ -2135,6 +2135,8 @@ static void hdmi_av_composer(struct dw_hdmi *hdmi,
+ 				    HDMI_MC_SWRSTZ);
+ 			drm_scdc_set_scrambling(hdmi->curr_conn, 0);
+ 		}
++	} else if (hdmi->version >= 0x200a) {
++		hdmi_writeb(hdmi, 0, HDMI_FC_SCRAMBLER_CTRL);
+ 	}
  
- 	hdmi_disable_overflow_interrupts(hdmi);
-@@ -2303,12 +2304,10 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi,
- 	hdmi->hdmi_data.video_mode.mdataenablepolarity = true;
- 
- 	/* HDMI Initialization Step B.1 */
--	hdmi_av_composer(hdmi, &connector->display_info, mode);
-+	hdmi_av_composer(hdmi, display, mode);
- 
--	/* HDMI Initializateion Step B.2 */
--	ret = hdmi->phy.ops->init(hdmi, hdmi->phy.data,
--				  &connector->display_info,
--				  &hdmi->previous_mode);
-+	/* HDMI Initialization Step B.2 */
-+	ret = hdmi->phy.ops->init(hdmi, hdmi->phy.data, display, mode);
- 	if (ret)
- 		return ret;
- 	hdmi->phy.enabled = true;
+ 	/* Set up horizontal active pixel width */
 -- 
 2.54.0
 
