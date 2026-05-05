@@ -1,142 +1,730 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010023.outbound.protection.outlook.com [52.101.201.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB3848A2AC
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 15:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777995995; cv=none; b=qY7Pg9LcfgLKve2oZ8Kq2qmr6V0qdOHvNzXhDfxDh8h4KRan7szvFN9C9SesyJal5jHXh6J4abGyTq0kT1E0o+9tT/CSWlYmZrXDTmgv8u9O11asCQUhJIpCxTDqK73eHVx4HSvUuG7M9mNQ/TrC4376R/Xfr0TQOgZuDF05fDs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777995995; c=relaxed/simple;
-	bh=rPgtOYp44AMEE4w8jb+sAMH6oh60u9dHF+uoLjTnEHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WAM45WWFdGF2qXsTkN6LT2yPJH4LWLLfY3JrfCgkVr/UrR8Ta6VcEwMxWduhjjNMd2TJ+DF4r1hySJ7EhCxjOCYujmeSeCl3xnFJCAQ7PG0OC+JNvth+Om5kkXQ9Ry43wbex7+Hn1sTgPKxNoRWZnBaNf/fdF/NVxXI8qcqTts8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKHyA-0002ON-5T; Tue, 05 May 2026 17:45:58 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKHy7-000bK5-3A;
-	Tue, 05 May 2026 17:45:56 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKHy8-00000001KYi-17yu;
-	Tue, 05 May 2026 17:45:56 +0200
-Date: Tue, 5 May 2026 17:45:56 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com, 
-	victor.liu@nxp.com, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
- reg property"
-Message-ID: <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
-References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
- <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
- <20260505141538.GA2547282-robh@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E313A5E8E
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 15:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777996389; cv=fail; b=O6Ky5AjXt//CLOPFc7tlqOmP+TxoNHzkE8nYlhKKRG5vo4DewNcOeQ36mLG+l1WI6MOQLk4lZhFEAiebHEVGjvKMaofkYyj7S+0pw8xL7jhOXWredjhFYVjrEtrvXwuzG/cuP5zm48QpAPGYxlvYmVALanUZ+sruvo+Q7WhqCK8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777996389; c=relaxed/simple;
+	bh=7eZJyp9urXy5ZYi5XFqs9o3wVQojeKAJNOcITiZKwGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FsSKA0aZKjH9c3xXCLWxiM9J3R/azuSkfm6rzjHnFtzJPSGXXIOeLd9tJYuF2WAQseweguIxiYFNz5j1pKp/EgGEgSAnwtCslLG7npc0xFUuOHjbF7UAfyOFTunvt4WM1zOsRBhRqW2o0JeiTxYbC7tjhLiKjZsrUsljavphyQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lQIELqcR; arc=fail smtp.client-ip=52.101.201.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lQIELqcR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O/sKDOhN9hJZdZg7mFnB6hyAqemM6n7Wy9Uszbtw+a6qLYcc3yrg/OgZV1KrFzV2SEYWFnr+AwmVLrNHT7YUWixqGy5srO1MfrQpwJM7nw6xt7KGN5I2goL723JYwoOa6LF31g+Ctn7l4mCxKp5J1wslOLPTA39S62J/SF77w3l7DmKmgJhd7mnMkQGVbQ7RVn6hK1NzI7Rs72g8mxLBqjvOIaDjx/C8Hts8F/S70S0duEe0KkM1k3G/AVDkfmhcEbJDWFfXs57qp9EvvtTllbpaqaVJyB0Z6rPupagdVZddtysDvaWvvJqqJi1RpngVCw36cRNpz8yFqg0IRklzjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sx0YRxLZ5cdpgr/IgpUnhVDSy0y0MQR9ySkU0kSvwUw=;
+ b=TdRkqpVZIfhcEAqlIxS/WXGbEoC8n8rkdNlD3r56wuNvCsRb/zoatuZUE6n4QbI6eQbSSGfSLfnTuxhImbs/ZYmpbEkXaq4XLw3xjUm/12sI21nRnTYm55o23u6EQnjweRdZgfEFTrYWHggRhjtxPYzk31sBTCnrhHSw1V2UYjTgUnMeAqiApz32pxEEKBUNEHpkx8HeOMqIkrgLwsCXqfjJM61gZ6zzPmer1Nhy8rjwahy1qHccAWEyoaumuTCnUkNUFtuMMdZSj3K9bxjZyOww/QYU0GjAXvZ2TpuMYBuuTbr/s50QZe35zvtYJDR0R+EO3zdVjHuhZ2sPSpUd4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=foss.st.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sx0YRxLZ5cdpgr/IgpUnhVDSy0y0MQR9ySkU0kSvwUw=;
+ b=lQIELqcR5d1ZVkTo3E7B39RqruyzvYmffGVXsRkAYfxc4AdDf17+yFeGTGQMGtdVcnG36GWPVUDkrnZCTFuhZX2rlg5Ewf+dT8/gtVPIOrqiK3cD3KvSPrxHuMBpn486BhPmFBRW66FK+2ibEhKHSUGgACK6HSw0OoVNhq5kh+0=
+Received: from CY5PR15CA0070.namprd15.prod.outlook.com (2603:10b6:930:18::6)
+ by SA5PPFAB8DFE4E8.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8db) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 15:52:57 +0000
+Received: from CY4PEPF0000FCBE.namprd03.prod.outlook.com
+ (2603:10b6:930:18:cafe::d) by CY5PR15CA0070.outlook.office365.com
+ (2603:10b6:930:18::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
+ 5 May 2026 15:52:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000FCBE.mail.protection.outlook.com (10.167.242.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Tue, 5 May 2026 15:52:56 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 5 May
+ 2026 10:52:53 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 5 May
+ 2026 10:52:52 -0500
+Received: from [172.31.134.241] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 5 May 2026 10:52:51 -0500
+Message-ID: <da3b79b7-9dad-48cb-b552-cf6df445899f@amd.com>
+Date: Tue, 5 May 2026 10:52:50 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260505141538.GA2547282-robh@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Reply-To: <tanmay.shah@amd.com>
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, <tanmay.shah@amd.com>,
+	Beleswar Prasad Padhi <b-padhi@ti.com>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>
+CC: Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew@lunn.ch>, "Linus
+ Walleij" <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan
+ Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, "Krzysztof Kozlowski"
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Bjorn Andersson"
+	<andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+ <22fb5fac-2568-42be-a7e3-7e89d0017eb3@ti.com>
+ <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6412a758-4560-4cf1-a0d0-5b24d1a715f1@lunn.ch>
+ <PAXPR04MB9185009A17DFDF3D6C8B44E789362@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6e01e114-e336-4744-b6b4-563ec42e321b@lunn.ch>
+ <PAXPR04MB9185A098D894B6A6EBCC13F889372@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <afImuoeHolxGgw3H@p14s>
+ <PAXPR04MB9185F2F6DDB55AC56C92D63B89342@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CANLsYkwvL0Z3+12MD=J+Dc2yAU2T8ypizyG=6AhYoWOh55odHA@mail.gmail.com>
+ <472f85bd-42c2-40c6-abfd-b76924797069@ti.com>
+ <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <c6f68ab5-271a-41ed-b285-75b739f1edd6@amd.com>
+ <87850f70-5275-4393-941f-d01146a9cffc@foss.st.com>
+Content-Language: en-US
+From: "Shah, Tanmay" <tanmays@amd.com>
+In-Reply-To: <87850f70-5275-4393-941f-d01146a9cffc@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB04.amd.com: tanmays@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCBE:EE_|SA5PPFAB8DFE4E8:EE_
+X-MS-Office365-Filtering-Correlation-Id: a50f5a7e-9bc7-4a9d-bf44-08deaabe6032
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|36860700016|376014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	SG5JlYUNmY7BqiTJVB5v8uxSwtx6n1Liuqa/zXQB27kTQn2LNeTcFnIXe1vt7wJ57QI8UjUJ7oykoQudgDKyQi4k0vsP83O3gM8sv12KsamN7LnwThxY3XHwSzB31K2wK9Z3QvKsvx93HgCL0jOft0qIarymeeycAiMAEROw+qMMSFRejmv3OEnsyqAhVL5BU1CSn219D29IuTDZSmN58qFBKJC3SYBLlSx9X0zscDeWxPmXrxTFLtgDWTU3K1nOkpbM0GD01Y3rHTUqP5GfenWxmEemP1w/z5KhousIoGL7XGtNwQaO7ww6krDvbrr5DVijm0dRooNR+bsdznWWwfw5m9aZDRSdS5Twlg1UHzzbrXNDiS4ZbZGZ8f0PEfptB9b4ECA3sQR6qK1LWZGEYuptjT6aJO5wMO1iA7aX4TiiXz5uloNNZNzdR6JBsIfLhC7HW0IQS56sOL1VfisT+ctvnLxO5etaKMmz+e1di1dnfC0JOAxFw/ix468W8jFj4Ae7uTxvwmB/JVwdDKBka6hSw8otwymglw6VB6Ey91bOLCI+u3YyntvMYksU2QqGSvA5NX/aotivQHmEMVTmRG2E26O2wrB4K5cOnh7uiJIOI3uGF9x0Ml8aGo0BTuWrR0ZGlMbsdIb7EIrOON3377vAFn93EQnNrPn6u48mbRs4uz+R++A6zcXBD8MlxfT7oj/7UnflAYgYJqEBJGMfjgNUnFGg3Am68CkAPohQV/4=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(36860700016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ejLsqNETho8u1AW81AkdEL750Co3/Pt6ZULjUSXIjTFrFwidy5wmpColcwTRKNr+lqTfZnmnBmTCZgHY/Le4Lw9auVmlCeEOK4LZbv36IgCTVMCSIZb+iLWnOWGHHqAiLIDs5qPm0xzqZ9sKvJzJwkMzcUwLjJoz5MeWh4O+kr8lgDaYmQUleEa+iluavZCTRLMYnV/Cm/C0QhJBKtfJ0QBDm31gVyIRcNRUAgOD8EysG+Y6M4jAF/uzMnPh+8MvK4fyp7MPfR3Fer+v1Ab2+a0U41NGU3/4h5UrYxBnfUqz38ZJXeO/S7qPvRjk63VqmzaG6oNAncbipfMMTbsUC6r9EOH1tL3pDaUiUrl8suBqKrW91OEK2IGgmVwZdxrX0fIkk6Zr0fCdijwRi/488xQ9E9e7F++9KBVpbfu4Hi5O0ApOQKONdKVjsWXfn7s4
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 15:52:56.6677
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a50f5a7e-9bc7-4a9d-bf44-08deaabe6032
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCBE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFAB8DFE4E8
 
-On 26-05-05, Rob Herring wrote:
-> On Mon, May 04, 2026 at 10:21:42PM +0200, Marco Felsch wrote:
-> > This reverts commit 16c8d76abe83d75b578d72ee22d25a52c764e14a.
-> > 
-> > Remove the 'reg' and 'reg-names' property from the LDB.
-> > 
-> > The LDB is either part of the IOMUX_GPR (i.MX6SX) or the BLKCTRL
-> > (i.MX8MP, i.MX93) register space. Both IOMUX_GPR and BLKCTRL are
-> > register ranges with loose register definitions. E.g.
-> > 
-> >   - On the i.MX8MP there is one register which controls the AXI
-> >     threshold for two different IPs (BIT(31:16) - IP1, BIT(15:0) - IP2).
-> >   - On the i.MX6SX IOMUXC_GPR5 controlls: CSI2 mux, WDOG3 settings, PXP
-> >     handshake, ...
-> > 
-> > In conclusion: it can't be ensured that one register belongs to one
-> > dedicated IP and the LDB is rather an exception than the rule.
+
+
+On 5/5/2026 4:28 AM, Arnaud POULIQUEN wrote:
+> Hi Tanmay,
 > 
-> It is fine if there's a child node for LDB if the LDB registers are 
-> consistent, but the other misc things are represented by the parent 
-> node. It is certainly not a requirement that either everything be in 
-> child nodes or nothing be in child nodes.
+> On 5/4/26 21:19, Shah, Tanmay wrote:
+>>
+>> Hello all,
+>>
+>> I have started reviewing this work as well.
+>> Thanks Shenwei for this work.
+>>
+>> I have gone through only the current revision, and would like to provide
+>> idea on how to achieve GPIO number multiplexing with the RPMsg protocol.
+>> Also, have some bindings related question.
+>>
+>> Please see below:
+>>
+>> On 4/30/2026 11:40 AM, Arnaud POULIQUEN wrote:
+>>>
+>>>
+>>> On 4/30/26 14:56, Beleswar Prasad Padhi wrote:
+>>>> Hello Arnaud,
+>>>>
+>>>> On 30/04/26 13:05, Arnaud POULIQUEN wrote:
+>>>>> Hello,
+>>>>>
+>>>>> On 4/29/26 21:20, Mathieu Poirier wrote:
+>>>>>> On Wed, 29 Apr 2026 at 12:07, Padhi, Beleswar <b-padhi@ti.com> wrote:
+>>>>>>>
+>>>>>>> Hi Mathieu,
+>>>>>>>
+>>>>>>> On 4/29/2026 11:03 PM, Mathieu Poirier wrote:
+>>>>>>>> On Wed, 29 Apr 2026 at 10:53, Shenwei Wang <shenwei.wang@nxp.com>
+>>>>>>>> wrote:
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>> -----Original Message-----
+>>>>>>>>>> From: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>>>>>>>>> Sent: Wednesday, April 29, 2026 10:42 AM
+>>>>>>>>>> To: Shenwei Wang <shenwei.wang@nxp.com>
+>>>>>>>>>> Cc: Andrew Lunn <andrew@lunn.ch>; Padhi, Beleswar <b-
+>>>>>>>>>> padhi@ti.com>; Linus
+>>>>>>>>>> Walleij <linusw@kernel.org>; Bartosz Golaszewski
+>>>>>>>>>> <brgl@kernel.org>; Jonathan
+>>>>>>>>>> Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
+>>>>>>>>>> Krzysztof Kozlowski
+>>>>>>>>>> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
+>>>>>>>>>> Andersson
+>>>>>>>>>> <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
+>>>>>>>>>> <s.hauer@pengutronix.de>; Shuah Khan
+>>>>>>>>>> <skhan@linuxfoundation.org>; linux-
+>>>>>>>>>> gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-
+>>>>>>>>>> kernel@vger.kernel.org;
+>>>>>>>>>> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+>>>>>>>>>> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
+>>>>>>>>>> devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
+>>>>>>>>>> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; dl-
+>>>>>>>>>> linux-imx <linux-
+>>>>>>>>>> imx@nxp.com>; Bartosz Golaszewski <brgl@bgdev.pl>
+>>>>>>>>>> Subject: [EXT] Re: [PATCH v13 3/4] gpio: rpmsg: add generic
+>>>>>>>>>> rpmsg GPIO driver
+>>>>>>>>>> On Tue, Apr 28, 2026 at 03:24:59PM +0000, Shenwei Wang wrote:
+>>>>>>>>>>>
+>>>>>>>>>>>> -----Original Message-----
+>>>>>>>>>>>> From: Andrew Lunn <andrew@lunn.ch>
+>>>>>>>>>>>> Sent: Monday, April 27, 2026 3:49 PM
+>>>>>>>>>>>> To: Shenwei Wang <shenwei.wang@nxp.com>
+>>>>>>>>>>>> Cc: Padhi, Beleswar <b-padhi@ti.com>; Linus Walleij
+>>>>>>>>>>>> <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>;
+>>>>>>>>>>>> Jonathan
+>>>>>>>>>>>> Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
+>>>>>>>>>>>> Krzysztof
+>>>>>>>>>>>> Kozlowski <krzk+dt@kernel.org>; Conor Dooley
+>>>>>>>>>>>> <conor+dt@kernel.org>;
+>>>>>>>>>>>> Bjorn Andersson <andersson@kernel.org>; Mathieu Poirier
+>>>>>>>>>>>> <mathieu.poirier@linaro.org>; Frank Li <frank.li@nxp.com>;
+>>>>>>>>>>>> Sascha
+>>>>>>>>>>>> Hauer <s.hauer@pengutronix.de>; Shuah Khan
+>>>>>>>>>>>> <skhan@linuxfoundation.org>; linux-gpio@vger.kernel.org; linux-
+>>>>>>>>>>>> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Pengutronix
+>>>>>>>>>>>> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+>>>>>>>>>>>> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
+>>>>>>>>>>>> devicetree@vger.kernel.org; linux- remoteproc@vger.kernel.org;
+>>>>>>>>>>>> imx@lists.linux.dev; linux-arm- kernel@lists.infradead.org;
+>>>>>>>>>>>> dl-linux-imx <linux-imx@nxp.com>; Bartosz Golaszewski
+>>>>>>>>>>>> <brgl@bgdev.pl>
+>>>>>>>>>>>> Subject: [EXT] Re: [PATCH v13 3/4] gpio: rpmsg: add generic
+>>>>>>>>>>>> rpmsg
+>>>>>>>>>>>> GPIO driver
+>>>>>>>>>>>>>> struct virtio_gpio_response {
+>>>>>>>>>>>>>>             __u8 status;
+>>>>>>>>>>>>>>             __u8 value;
+>>>>>>>>>>>>>> };
+>>>>>>>>>>>>> It is the same message format. Please see the message
+>>>>>>>>>>>>> definition
+>>>>>>>>>>>> (GET_DIRECTION) below:
+>>>>>>>>>>>>
+>>>>>>>>>>>>> +   +-----+-----+-----+-----+-----+----+
+>>>>>>>>>>>>> +   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05|
+>>>>>>>>>>>>> +   | 1   | 2   |port |line | err | dir|
+>>>>>>>>>>>>> +   +-----+-----+-----+-----+-----+----+
+>>>>>>>>>>>> Sorry, but i don't see how two u8 vs six u8 are the same
+>>>>>>>>>>>> message format.
+>>>>>>>>>>>>
+>>>>>>>>>>> Some changes to the message format are necessary.
+>>>>>>>>>>>
+>>>>>>>>>>> Virtio uses two communication channels (virtqueues): one for
+>>>>>>>>>>> requests and
+>>>>>>>>>> replies, and a second one for events.
+>>>>>>>>>>> In contrast, rpmsg provides only a single communication
+>>>>>>>>>>> channel, so a
+>>>>>>>>>>> type field is required to distinguish between different kinds
+>>>>>>>>>>> of messages.
+>>>>>>>>>>>
+>>>>>>>>>>> Since rpmsg replies and events share the same message format,
+>>>>>>>>>>> an additional
+>>>>>>>>>> line is introduced to handle both cases.
+>>>>>>>>>>> Finally, rpmsg supports multiple GPIO controllers, so a port
+>>>>>>>>>>> field is added to
+>>>>>>>>>> uniquely identify the target controller.
+>>>>>>>>>>
+>>>>>>>>>> I have commented on this before - RPMSG is already providing
+>>>>>>>>>> multiplexing
+>>>>>>>>>> capability by way of endpoints.  There is no need for a port
+>>>>>>>>>> field.  One endpoint,
+>>>>>>>>>> one GPIO controller.
+>>>>>>>>>>
+>>>>>>>>> You still need a way to let the remote side know which port the
+>>>>>>>>> endpoint maps to, either
+>>>>>>>>> by embedding the port information in the message (the current
+>>>>>>>>> way), or by sending it
+>>>>>>>>> separately.
+>>>>>>>>>
+>>>>>>>> An endpoint is created with every namespace request.  There
+>>>>>>>> should be
+>>>>>>>> one namespace request for every GPIO controller, which yields a
+>>>>>>>> unique
+>>>>>>>> endpoint for each controller and eliminates the need for an extra
+>>>>>>>> field to identify them.
+>>>>>>>
+>>>>>>>
+>>>>>>> Right, but this can still be done by just having one namespace
+>>>>>>> request.
+>>>>>>> We can create new endpoints bound to an existing namespace/
+>>>>>>> channel by
+>>>>>>> invoking rpmsg_create_ept(). This is what I suggested here too:
+>>>>>>> https://lore.kernel.org/all/29485742-6e49-482e-
+>>>>>>> b73d-228295daaeec@ti.com/
+>>>>>>>
+>>>>>>
+>>>>>> I will look at your suggestion (i.e link above) later this week or
+>>>>>> next week.
+>>>>>>
+>>>>>>> My mental model looks like this for the complete picture:
+>>>>>>>
+>>>>>>> 1. namespace/channel#1 = rpmsg-io
+>>>>>>>        a. ept1 -> gpio-controller@1
+>>>>>>>        b. ept2 -> gpio-controller@2
+>>>>>>>
+>>
+>> If my understanding of what gpio-controller is right, than this won't
+>> work. We need one rpmsg channel per gpio-controller, and in most cases
+>> there will be only one GPIO-controller on the remote side. If there are
+>> multiple or multiple instances of same controller, than we need separate
+>> channel name for that controller just like we would have separate device
+>> on the Linux.
 > 
-> What I don't see in this series is what problem does this fix? If you 
-> are going to break compatibility, then there had better be a good 
-> reason.
+> As done in ehe rpmsg_tty driver it could be instantiated several times with
+> the same channel/service name. This would imply a specific rpmsg to
+> retreive
+> the gpio controller index from the remote side.
+>>
+>>>>>>
+>>>>>> I've asked for one endpoint per GPIO controller since the very
+>>>>>> beginning.  I don't yet have a strong opinion on whether to use one
+>>>>>> namespace request per GPIO controller or a single request that spins
+>>>>>> off multiple endpoints.  I'll have to look at your link and
+>>>>>> reflect on
+>>>>>> that.  Regardless of how we proceed on that front, multiplexing needs
+>>>>>> to happen at the endpoint level rather than the packet level. 
+>>>>>> This is
+>>>>>> the only way this work can move forward.
+>>>>>>
+>>>>>
+>>>>> I would be more in favor of Mathieu’s proposal: “An endpoint is
+>>>>> created with every namespace request.”
+>>>>>
+>>>>> If the endpoint is created only on the Linux side, how do we match
+>>>>> the Linux endpoint address with the local port field on the remote
+>>>>> side?
+>>>>
+>>>>
+>>>> Simply by sending a message to the remote containing the newly created
+>>>> endpoint and the port idx. Note that is this done just one time, after
+>>>> this
+>>>> Linux need not have the port field in the message everytime its sending
+>>>> a message.
+>>>>
+>>>>>
+>>>>> With a multi-namespace approach, the namespace could be rpmsg-io-
+>>>>> [addr], where [addr] corresponds to the GPIO controller address in
+>>>>> the DT. This would:
+>>>>
+>>>>
+>>>> You will face the same problem in this case also that you asked above:
+>>>> "how do we match the Linux endpoint address with the local port field
+>>>> on the remote side?"
+>>>
+>>> Sorry I probably introduced confusion here
+>>> my sentence should be;
+>>>   With a multi-namespace approach, the namespace could be rpmsg-io-
+>>> [port],
+>>>   where [port] corresponds to the GPIO controller port in the DT.
+>>>
+>>>
+>>> For instance:
+>>>
+>>>        rpmsg {
+>>>          rpmsg-io {
+>>>            #address-cells = <1>;
+>>>            #size-cells = <0>;
+>>>
+>>>            gpio@25 {
+>>>              compatible = "rpmsg-gpio";
+>>>              reg = <25>;
+>>>              gpio-controller;
+>>>              #gpio-cells = <2>;
+>>>              #interrupt-cells = <2>;
+>>>              interrupt-controller;
+>>>            };
+>>>
+>>>            gpio@32 {
+>>>              compatible = "rpmsg-gpio";
+>>>              reg = <32>;
+>>>              gpio-controller;
+>>>              #gpio-cells = <2>;
+>>>              #interrupt-cells = <2>;
+>>>              interrupt-controller;
+>>>            };
+>>>          };
+>>>        };
+>>>
+>>>   rpmsg-io-25  would match with gpio@25
+>>>   rpmsg-io-32  would match with gpio@32
+>>>
+>>
+>> The problem with this approach is, we will endup creating way too many
+>> RPMsg devices/channels. i.e. one channel per one GPIO. That limits how
+>> many GPIOs can be handled by remote from memory perspective. At
+>> somepoint we might just run-out of number ept & channels created by the
+>> remote. As of now, open-amp library supports 128 epts I think.
+> 
+> Right, I proposed a solution in my previous answer to Beleswar who has
+> the same concern.
+> 
+>>
+>>>
+>>>>
+>>>> Because the endpoint that is created on a namespace request is also
+>>>> dynamic in nature. How will the remote know which endpoint addr
+>>>> Linux allocated for a namespace that it announced?
+>>>>
+>>>> As an example/PoC, I created a firmware example which announces
+>>>> 2 name services to Linux, one is the standard "rpmsg_chrdev" and
+>>>> the other is a TI specific name service "ti.ipc4.ping-pong". You can
+>>>> see it created 2 different addresses (0x400 and 0x401) for each of
+>>>> the name service request from the same firmware:
+>>>>
+>>>> root@j784s4-evm:~# dmesg | grep virtio0 | grep -i channel
+>>>> [    9.290275] virtio_rpmsg_bus virtio0: creating channel
+>>>> ti.ipc4.ping-pong addr 0xd
+>>>> [    9.311230] virtio_rpmsg_bus virtio0: creating channel rpmsg_chrdev
+>>>> addr 0xe
+>>>> [    9.496645] rpmsg_chrdev virtio0.rpmsg_chrdev.-1.14: DEBUG: Channel
+>>>> formed from src = 0x400 to dst = 0xe
+>>>> [    9.707255] rpmsg_client_sample virtio0.ti.ipc4.ping-pong.-1.13:
+>>>> new channel: 0x401 -> 0xd!
+>>>>
+>>>> So in this case, rpmsg-io-1 can have different ept addr than rpmsg-io-2
+>>>> Back to same problem. Simple solution is to reply to remote with the
+>>>> created ept addr and the index.
+>>>
+>>> That why I would like to suggest to use the name service field to
+>>> identify the port/controller, instead of the endpoint address.
+>>>>  
+>>>>>
+>>>>> - match the RPMsg probe with the DT,
+>>>>
+>>>>
+>>>> We can probe from all controllers with a single name service
+>>>> announcement too.
+>>>>
+>>>>> - provide a simple mapping between the port and the endpoint on both
+>>>>> sides,
+>>>>
+>>>>
+>>>> We are trying to get rid of this mapping from Linux side to adapt
+>>>> the gpio-virtio design.
+>>>>
+>>>>> - allow multiple endpoints on the remote side,
+>>>>
+>>>>
+>>>> We can support this as well with single nameservice model.
+>>>> There is no limitation. Remote has to send a message with
+>>>> its newly created ept that's all.
+>>>>
+>>>>> - provide a simple discovery mechanism for remote capabilities.
+>>>>
+>>>>
+>>>> A single announcement: "rpmsg-io" is also discovery mechanism.
+>>>>
+>>>> Feel free to let me know if you have concerns with any of the
+>>>> suggestions!
+>>>
+>>> My only concern, whatever the solution, is that we find a smart
+>>> solution to associate the correct endpoint with the correct GPIO
+>>> port/controller defined in the DT.
+>>>
+>>> I may have misunderstood your solution. Could you please help me
+>>> understand your proposal by explaining how you would handle three
+>>> GPIO ports defined in the DT, considering that the endpoint
+>>> addresses on the Linux side can be random?
+>>> If I assume there is a unique endpoint on the remote side,
+>>> I do not understand how you can match, on the firmware side,
+>>> the Linux endpoint address to the GPIO port.
+>>>
+>>> Thanks and Regards,Arnaud
+>>>
+>>>>
+>>>> Thanks,
+>>>> Beleswar
+>>>>
+>>>>>
+>>>>> Regards,
+>>>>> Arnaud
+>>>>>
+>>>>>>> 2. namespace/channel#2 = rpmsg-i2c
+>>>>>>>        a. ept1 -> i2c@1
+>>>>>>>        b. ept2 -> i2c@2
+>>>>>>>        c. ept3 -> i2c@3
+>>>>>>>
+>>>>>>> etc...
+>>>>>>>
+>>
+>> Just want to clear-up few terms before I jump to the solution:
+>>
+>> **RPMsg channel/device**:
+>>    - These are devices announced by the remote processor, and created by
+>> linux. They are created at: /sys/bus/rpmsg/devices
+>>    - The channel format: <name>.<src ept>.<dst ept>
+>>
+>> **RPMsg endpoint**:
+>>    - Endpoint is differnt than channel. Single channel can have multiple
+>> endpoints, and represented in the linux with: /dev/rpmsg? devices.
+>>
+>> To create endpoint device, we have rpmsg_create_ept API, which takes
+>> channel information as input, which has src-ept, dst-ept.
+>>
+>> Following is proposed solution:
+>>
+>> 1) Assign RPMsg channel/device per rpmsg-gpio controller (Not per GPIO
+>> pin/port).
+>>    - In our case that would be, single rpmsg-io node. (That makes me
+>> question if bindings are correct or not).
+>>
+>> 2) Assign GPIO number as src ept.
+>>
+>> i.e. *rpmsg-io.<GPIO number>.<dst ept>*. Do not randomly assign src
+>> endpoint.
+>>
+>> Now, RPMSG channel by spec reserves first 1024 endpoints [1], so we can
+>> add 1024 offset to the GPIO number:
+>>
+>> so, when calling rpmsg_create_ept() API, we assing src_endpoint as:
+>> (GPIO_NUMBER + RPMSG_RESERVED_ADDRESSES)
+>>
+>> Now on the remote side, there is single channel and only single-endpoint
+>> is needed that is mapped to the rpmsg-io channel callback.
+>>
+>> That callback will receive all the payloads from the Linux, which will
+>> have src-ept i.e. (RPMSG_RESERVED_ADDRESSES + GPIO_NUMBER).
+> 
+> 
+> Interesting approach. I also tried to find a similar solution.
+> 
+> The question here is: how can we guarantee continuous addresses? Given
+> the static and dynamic allocation of endpoint addresses that are
+> implemented, my conclusion was that it is not reliable enough.
+> 
+> but perhaps I missed something...
+> 
+>>
+>> It can retrieve GPIO_NUMBER easily, and convert to appropriate pin based
+>> on platform specific logic.
+>>
+>> This doesn't need PORT information at all. Also it makes sure that
+>> remote is using only single-endpoint so not much memory is used.
+>>
+>> *Example*:
+>> If only rpmsg-gpio channel is created by the remote side, than following
+>> is the representation of the devices when GPIO 25, 26, 27 is assigned to
+>> the rpmsg-io controller:
+>>
+>> Linux                                                      Remote
+>>
+>> rpmsg-channel: rpmsg-gpio.0x400.0x400
+>>
+>> /dev/rpmsg0 - GPIO25 ept (rpmsg-gpio.0x419.0x400)-|
+>>                                                    |
+>> /dev/rpmsg1 - GPIO26 ept (rpmsg-gpio.0x41a.0x400)-|-> rpmsg-gpio.*.0x400
+>>                                                    |
+>> /dev/rpmsg2 - GPIO27 ept (rpmsg-gpio.0x41b.0x400)-|  0x400 ept callback.
+>>
+>>
+>> *On remote side*:
+>>
+>> ept_0x400_callback(..., int src_ept, ...,)
+>> {
+>>     int gpio_num = src_ept - RPMSG_RESERVED_ADDRESSES;
+>>     // platform specific logic to convert gpio num to proper pin,
+>>     // just like you would convert gpio num to pin on a linux gpio
+>> controller.
+>> }
+>>
+>> My question on the binding:
+>>
+>> Why each GPIO is represented with the separate node? I think rpmsg-gpio
+>> can be represented just any other GPIO controller? Please let me know if
+>> I am missing something. So rpmsg channel/rpmsg device is not created per
+>> GPIO, but per controller. GPIO number multiplexing should be done with
+>> rpmsg src ept, that removes the need of having each GPIO as a separate
+>> node.
+>>
+>>
+>> rpmsg_gpio: rpmsg-gpio@0 {
+>>         compatible = "rpmsg-gpio";
+>>         reg = <0>;
+>>         gpio-controller;
+>>         #gpio-cells = <2>;
+>>         #interrupt-cells = <2>;
+>>         interrupt-controller;
+>>     };
+>>
+>> Then in DT, use like regular GPIO, but with the rpmsg-gpio controller:
+>>
+>> rpmsg-gpios = <&rpmsg_gpio (GPIO NUM) (flags)>;
+>>
+>> If the intent to create separate gpio nodes was only for the channel
+>> creation, then it's not really needed.
+>>
+>> [1]
+>> https://github.com/torvalds/linux/
+>> blob/6d35786de28116ecf78797a62b84e6bf3c45aa5a/drivers/rpmsg/
+>> virtio_rpmsg_bus.c#L136
+>>
+> 
+> It is already the case. bindings declare GPIO controllers, not directly
+> GPIOs in:
+> 
+> [PATCH v13 2/4] dt-bindings: remoteproc: imx_rproc: Add "rpmsg" subnode
+> support
+> 
+> The discussion is around having an unique RPmsg endpoint for all
+> GPIO controller or one RPmsg endpoint per GPIO controller.
+> 
 
-Hi Rob,
+Endpoint where remote side or linux side?
 
-with the upcoming i.MX9x SoCs the parent syscon (BLKCTRL) controlls
-multiple other IPs, e.g. a DPI mux added by commit 3feaa4342637
-("dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and
-example").
+If unique endpoint on remote side per gpio controller then it makes sense.
 
-During the discussion of the above commit we agreed that the sub-devices
-of the syscon shall not use the reg property due to the fact that one
-register serves multiple purposes. In the above case the same register
-controlling the dpi-mux also controlls MIPI-DSI bits. The MIPI-DSI bits
-can be abstracted as drm-bridge as well. Two sub-devs using the same
-'reg' property below the same parent seems odd and I don't know if this
-allowed either.
+Unique endpoint on linux side doesn't make sense. Instead, unique
+channel per gpio controller makes sense, and each channel will have
+multiple endpoints on linux side. As I replied to Beleswar on the other
+email, I will copy past my answer here too:
 
-Now the LDB is also part of this BLKCTRL syscon device but requires the
-reg property. TBH, I don't know why the reg property was added in the
-first place, due to the above fact (multiple sub-devs - same register).
 
-Of course, we could limit the breakage to i.MX9* SoCs only which is done
-by:
- - https://lore.kernel.org/all/20260329-fsl_ldb_schema_fix-v1-1-351372754bc0@nxp.com/
+To be more specific:
 
-but I don't think that this would be nice from user and from maintainer
-perspective, because:
- 1) The same LDB "IP" would have a different dt-binding
-    (user perspective)
- 2) It introduces another dimension drivers need to care about
-    (maintainer perspective)
+Linux:                               remote:
 
-Therefore I went this way to drop it all together to make it easier for
-the user and the maintainers.
+ch1: rpmsg-gpio.-1.1024 ->     gpio-controller@1024
+    - gpio-line ept1
+    - gpio-line ept2    ->     They all map to same callback_ept_1024.
+    - gpio-line ept3
 
-Regards,
-  Marco
+ch2: rpmsg-gpio.-1.1025 ->     gpio-controller@1025
+    - gpio-line ept1
+    - gpio-line ept2    ->     They all map to same callback_ept_1025.
+    - gpio-line ept3
 
+On the remote side, we have to hardcode Which rpmsg controller is mapped
+to which endpoint.
+
+> Or did I misunderstand your questions?
+> 
+> Thanks,
+> Arnaud
+> 
+
+
+I gave this patch more time yesterday, and I think the 'reg' property
+should represent remote endpoint, instead of the gpio-controller index.
+
+So in this approach remote implementation is expected to provide
+hard-coded (static) endpoints for each gpio-controller instance, and
+that same number should be represented with the 'reg' property.
+
+On remote side:
+
+#define RPMSG_GPIO_0_CONTROLLER_EPT (RPMSG_RESERVED_ADDRESSES + 1) // 1024
+
+ept_1024_callback() {
+
+	// handle appropriate gpio port ()
+
+}
+
+On linux side:
+
+So new representation of controller:
+
+ rpmsg_gpio_0:   gpio@1024 {
+             compatible = "rpmsg-gpio";
+             reg = <1024>;
+             gpio-controller;
+             #gpio-cells = <2>;
+             #interrupt-cells = <2>;
+             interrupt-controller;
+          };
+
+ rpmsg_gpio_1:   gpio@1025 {
+             compatible = "rpmsg-gpio";
+             reg = <1025>;
+             gpio-controller;
+             #gpio-cells = <2>;
+             #interrupt-cells = <2>;
+             interrupt-controller;
+          };
+
+gpios = <&rpmsg_gpio_0 (GPIO NUM or PIN) flags>,
+	<&rpmsg_gpio_1 (GPIO NUM or PIN) flags>;
+
+Now in the linux driver:
+
+You can easily retrieve destination endpoint when we want to send the
+command to the gpio controller via device's "reg" property.
+
+This approach also provides built-in security as well. Because now
+gpio-controller instance is hardcoded with the endpoint callback, it
+can't be modified/addressed without changing the 'reg' property.
+
+Just like you wouldn't change device address for the instance of the
+gpio-controller right?
+
+This approach can be easily adapted to all the other rpmsg controllers
+as well.
+
+So, dynamic endpoint allocation doesn't make sense in this case. Dynamic
+endpoint allocation makes more sense for user-space apps which don't
+really care about endpoints and only payloads.
+
+But, here we are multiplexing device-addresses with endpoints, and so it
+has to be fixed, and presented via 'reg' property. So, firmware can't
+change device-address without Linux knowing it.
+
+Thanks,
+Tanmay
 
 
 > 
-> Rob
+>>>>>>> This way device groups are isolated with each channel/namespace, and
+>>>>>>> instances within each device groups are also respected with specific
+>>>>>>> endpoints.
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Beleswar
+>>>>>>>
+>>>>>>
+>>>>>
+>>>
+>>>
+>>
 > 
 
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
