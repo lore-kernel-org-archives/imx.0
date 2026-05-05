@@ -1,117 +1,91 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B447D47DFB2
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 13:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3B1C3BF7;
+	Tue,  5 May 2026 14:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777989116; cv=none; b=WOBBQPtIDx8+AD10CQP1I/veJYzRH9I/Ru+d698SGc0BjGr3nMcsexbHtj9cLUdsMES6+fkGqiXyrUpUFNHLtfN0mnk6vLB9ZKIvz3Sqftl7yY9w9vhcy2tjr7VZ801N7mSo1mxRIxsAzgVFPlsL9Uc9vQB+t5KtuJ5DS33VbCU=
+	t=1777990541; cv=none; b=d9EhZMazA0aN4a37PlneJlS8Ed7EOZtNHh9QYnPx/Cl8we9Q3PzfmeoqEHF2iyl4Sjb4OMhN+MVLGEkBYOI0r4oTXhalnwPh32KMwhAW42KgHVsqCOtVIso/KUk7umJ7jdd6ch9TDW8WUD7Y70e8p4jw647sMYEGARQ6pKBPtXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777989116; c=relaxed/simple;
-	bh=nUXR2txkx0LMcLQZYptDj2ePjr3R0uywxYKqIgePB7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M121vD8KX1pR79T/D9QzKIXNhCPhNSdrqWnQ9l7BycWy0lpmhyp5tZr6cf3IzYEtzZ49f/HCnJHK2WeLRrIqtDhUcFMowjj5rIcMuGKWXN6ZQ17qf5iROB/+sFRF0xbB5/P9OT1vWFR3wxfyuK8fw6DKsCVjeGSwOa+BK6vneNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BBA9h9GV; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1777990541; c=relaxed/simple;
+	bh=FQsBhAgsYHplHV2/vcCwYjBqbsq7KXkPO3MRqXSfMok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TqbCeD1x3CQxvS1HkJxI9LYHue3T1CalSgIEI+mtxhjoz+j6kCC/v0lF4gerk+juj9WgTCKH4c/nChmSjUvV/P7v0JQs+OINZrGVtuRq6jLxUR5RbB8FqGV6v9twbdGf+6RnzYZpA2sHIH2Dr5uo+A6kdQjUJN7kuioQ459b6xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6osNGJm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BBA9h9GV"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4D23D4E42BC9;
-	Tue,  5 May 2026 13:51:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 246206053C;
-	Tue,  5 May 2026 13:51:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB48C11AD0190;
-	Tue,  5 May 2026 15:51:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777989112; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=V+yXS+YXYcFMGTArzrNiGaHYBdMMST6QBiAWRORJgjc=;
-	b=BBA9h9GVp1drtJAwZVzilUsv8E7PLBaHOiUprtI9h4VhKkm198SnQGn9gP8+8djAQsI5fS
-	blhGN/NGCZJH3Bagp3McchQSpahPkLG5PcpCErgI0jICLQwjC0TXEuAQiHdCB/j9SVqBzR
-	+rzZfX+ijiZ2bPmROieExjoKs8l/i0qRM8sKgAmgU4dQdz92L/v4I1kJKUt0JtUtOuQE9+
-	xBNQHsE7SRRiR0fdHbWPjPwuAUGHlTNkBNYXx1qHOb+hYEzyR/9qXq9l+2RlSsfzsxaHfv
-	C1OSYb35+cMEQsXEn40ffKJX3It1nni8XGIKQGs9bio6HBjZgmw6UFwnv4CjtQ==
-From: =?UTF-8?B?QmVub8OudA==?= Monin <benoit.monin@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev,
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH RFC 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather
- chaining
-Date: Tue, 05 May 2026 15:51:51 +0200
-Message-ID: <y-kZDXvATLGuBxQOHfCRwA@bootlin.com>
-In-Reply-To: <afjDoZbRlKnsNxwe@lizhi-Precision-Tower-5810>
-References:
- <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com>
- <20260430-fsl-edma-dyn-sg-v1-2-4e0ecbe2df66@bootlin.com>
- <afjDoZbRlKnsNxwe@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6osNGJm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698A6C2BCB4;
+	Tue,  5 May 2026 14:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777990540;
+	bh=FQsBhAgsYHplHV2/vcCwYjBqbsq7KXkPO3MRqXSfMok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E6osNGJmPtrOn/dO5V7lDP7Lu/A7Jxq46ChObn5PlgAvC6B/uvqi6QdXgDtylkKuM
+	 fustiBuO44Cvy9/Z8gnQ76Exw7F/EXMUM4tSZWdpthwoUGaAcvKTxfr129TuZP6AEp
+	 acVDIdJWpmY9DvuBke1cI4BAhj6/Bo7OzY2Lo5qNrUeNE3QZsRE8RiO0sPN9cQVgoK
+	 UIC3P1lMZp8WkwsjfaA+BGMryIpLkoMJpkbBeeXm28BjehqGYWBVps0s8ISiwSZ3ti
+	 UIk9UYCpdU0ypAKcGcmQqzOppY78h0DnZSdZF+XEj94/78Kh78Mv6n5pO1dnuOpRqM
+	 Sg6yu/4lU10xg==
+Date: Tue, 5 May 2026 09:15:38 -0500
+From: Rob Herring <robh@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com,
+	victor.liu@nxp.com, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
+ reg property"
+Message-ID: <20260505141538.GA2547282-robh@kernel.org>
+References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
+ <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
 
-On Monday, 4 May 2026 at 18:04:49 CEST, Frank Li wrote:
-> On Thu, Apr 30, 2026 at 11:49:33AM +0200, Beno=C3=AEt Monin wrote:
-> > Implement dynamic linking of scatter/gather transfers to enable
-> > chaining multiple DMA descriptors without stopping the channel.
-> > This avoids waiting for the channel to go idle if there is another
-> > transaction already issued.
-> >
-> > Add fsl_edma_link_sg() to dynamically link the last TCD of a previously
-> > submitted descriptor to the first TCD of a new descriptor by setting
-> > the scatter/gather address and the E_SG flag, and keeping the channel
-> > active by clearing the DREQ bit.
->=20
-> Thank for your trying this, which I want to do long time ago.
->=20
-> The key problem is
->=20
->         how to guarratee safe when link to last TCD and DMA is working it?
->         if update last TCD's next pointer before DMA load it, it is good.
->         but, if update last TCD's next pointer after DMA load it. DMA eng=
-ine
->         may stop.
->=20
-I followed what is described in the dynamic scatter/gather chapter of the
-i.MX93 reference manual. We update two registers of the last TCD when
-chaining SG transfers, first TCD_DLAST_SGA then TCD_CSR. This gives us
-three possibilities of concurrence between CPU writes and eDMA reads.
+On Mon, May 04, 2026 at 10:21:42PM +0200, Marco Felsch wrote:
+> This reverts commit 16c8d76abe83d75b578d72ee22d25a52c764e14a.
+> 
+> Remove the 'reg' and 'reg-names' property from the LDB.
+> 
+> The LDB is either part of the IOMUX_GPR (i.MX6SX) or the BLKCTRL
+> (i.MX8MP, i.MX93) register space. Both IOMUX_GPR and BLKCTRL are
+> register ranges with loose register definitions. E.g.
+> 
+>   - On the i.MX8MP there is one register which controls the AXI
+>     threshold for two different IPs (BIT(31:16) - IP1, BIT(15:0) - IP2).
+>   - On the i.MX6SX IOMUXC_GPR5 controlls: CSI2 mux, WDOG3 settings, PXP
+>     handshake, ...
+> 
+> In conclusion: it can't be ensured that one register belongs to one
+> dedicated IP and the LDB is rather an exception than the rule.
 
-* First case, both registers are updated before the eDMA reads the TCD, we
-  get the expected chaining.
-* Second case, both registers are updated too late and the eDMA have already
-  read the TCD, we are back to the current implementation. After processing
-  the last TCD, the eDMA will disable the channel and the call to
-  fsl_edma_xfer_desc() from fsl_edma_tx_chan_handler() will move to the next
-  issued descriptor and re-enable the channel.
-* Final case, only TCD_DLAST_SGA gets picked up by the eDMA. The eDMA will
-  also disable the channel after processing the last TCD, the only differen=
-ce
-  is that it will update TCD_DADDR by adding the value TCD_DLAST_SGA. Since
-  we are not reusing TCD_DADDR, this has no impact.
+It is fine if there's a child node for LDB if the LDB registers are 
+consistent, but the other misc things are represented by the parent 
+node. It is certainly not a requirement that either everything be in 
+child nodes or nothing be in child nodes.
 
->         how do you test it? and how much preformance improved?
-I did my tests by doing SPI transfers with the LPSPI controllers, doing DMA
-transactions with different number of buffers and different buffer sizes.
-Without chaining, interruptions on the SPI bus occur between each DMA
-transaction. With chaining, the activity on the SPI bus is continuous as
-long as DMA transactions are issued before the end of the current
-transaction.
+What I don't see in this series is what problem does this fix? If you 
+are going to break compatibility, then there had better be a good 
+reason.
 
-Best regards,
-=2D-=20
-Beno=C3=AEt Monin, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-
-
+Rob
