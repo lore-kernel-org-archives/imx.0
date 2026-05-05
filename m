@@ -1,121 +1,242 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DF93E4C6D
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 07:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777967672; cv=pass; b=Kz5TiZYf4kAPImhPqffiICCuwv3JB+X+K29QVD0eKtRn4aTUg0B+Bl1QoWsNQ8sufsiX5Ig7OXN0ANw3vWbIIRGU5dV2fNKPM9OY7kvFKylrS7HczfbrIWBk3I2w48UGzntxMY83Alq5yIoyb2q36Mylq9UxYqQ5mKzuzugBtFg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777967672; c=relaxed/simple;
-	bh=+qJ4YHyeQCm/Bg4W28ChXgXo4YJ3WH+NhGRvqcilHzs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JP7PW6Nf7pUUoriHKpUuy9FNIPclzUjnMgfPoN21LJCfm17fu1Dn2RQFdzLYSp1fTnuBJO20YLQ6Iy5gGjqdJo9VubW8qFwJ7r9ljTc5iakeO86OXQAec1gQwUAW1GCwL9SdMaOCAidnYDbRthtWwv4BIxCCNox/bJc7g/4WEgE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cWzMSesJ; arc=pass smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6C290DBB
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 08:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777969334; cv=none; b=SXLiT4sOznOh0tptXWh2ODliOUe4cOvs0f/TSgGE1iSzbsFgYS2AzopPTRO/yIKR82i82GwKuF19ew8EYvJg+4c81Hgie334vJ7jR/xw38+D5t2e8cw9zQhBBBkr/nM7ZWHaKlQ00Dp1QhzmqvQs49IsxASVsF1MQAGphO0uJdg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777969334; c=relaxed/simple;
+	bh=nK0j9juRgg0ZsV/8NnbWOopdIAYdgSZX1Hdc5+iIKv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GBeld9+gC1EpAcMyvLQA49ykCdOR7rzklKeyRVcOS36CLyhI9PAV6+KPlZq+KfEOcFQgSY7k7vTuPt5tOfLBPpd5foLCcXFYBQlUxydNxXqNMt6AiJZyBfy1bxww5xrww9+GkMHXeu71ZTuT/3ElvglT8698FrrhzfQbwmrudi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmrFh42M; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cWzMSesJ"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-65c364b893aso3500715d50.0
-        for <imx@lists.linux.dev>; Tue, 05 May 2026 00:54:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777967670; cv=none;
-        d=google.com; s=arc-20240605;
-        b=M35+AoxDYwg39os0sabC7A3ME/ViFi6lhXQA7qL08xllpwMFJBRd1e47uGLwlEjnEB
-         SnV6monf7yTAi6IBjE5OOWXhImoXe7gRFz/rd5KRo4vP/kc0oDNWTkMqj1REJaKT9hhF
-         nBI6zQDB5tWkvMzJ/TA8+/VEQb/P0BcD34AevShg544B2ciKOITmKfnUy/ikgEgvcRaD
-         tC53QibUk9awqaELE7ak38l6rPbLmtjrt0LID+2ZzsGnMH9jUnfQy/smuz3tr1t0FUTY
-         tekSeS1QX7oaebLs3mI5Vp+dp229ZElxzWjplYS3NSgAz3MjVdHCdIey8ggMa6V0M1wC
-         c3Iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=+qJ4YHyeQCm/Bg4W28ChXgXo4YJ3WH+NhGRvqcilHzs=;
-        fh=55FfXJzcH2PKn5qVDP+vBrpMOQyg3aryXtR5aVh4v9g=;
-        b=NMKk8vqwhuJy+83RaSFQmcdbQ5QCfQoJ/LsiMnbJ1KLooENul5WxMZ34kVr5REfy7B
-         +nW0BLYW+Kjla1WC+glM2HBFR3fWAVN74cRBS2NHierc/O9fABa6Q9nt5ge4W1Aq2TeB
-         7FFskCNdjTaf4oQ0pdR3VnDnFxCy69IqV/X9maE2/5WjApQdc9u5BameaAll1UF1Bvfr
-         EzoOZAzG6UISXprCMFcG9k1GTgRm6Klkb5XHrp30+91mdtGbmmK+Ji29SEQxL4y9NfAX
-         rH63xLAcUtBdCNWwtnHQk1ituAIDSApM26mpx8h85dHbOF/dAP/3Z2t+fy2Ft9B1tIbA
-         CrMQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmrFh42M"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36520a83186so1795734a91.3
+        for <imx@lists.linux.dev>; Tue, 05 May 2026 01:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777967670; x=1778572470; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qJ4YHyeQCm/Bg4W28ChXgXo4YJ3WH+NhGRvqcilHzs=;
-        b=cWzMSesJewBmW6McBXDs76P82Ww2LkqYHlNvZG6xG7X2NCIpvtOJ3ZL+corn21M+ds
-         4U6VsxkclV0Q5PKI5gX5eEXiN7f0QNkUrwYl9mcBknWQJ8Y5bgfe57/pyq6DdHcdhArJ
-         L6knRwOCiLNbMGQuG66ffh26IyIuzzGlZBjwu49M82jsZF9av8B6EGS84nmMqNyHNRf5
-         qNV8sQ4Cfp696X50XpXxP0mi9JrZp6A61hxeFhxZqY46Tpr97f7/fzgvlc/vi3L00zO3
-         YTa3Rw5diBHvJy5eVXtnj0mGsHu+FkTgJ0ayJLn9oYQ3EKE18xJ8vaj8l6u+ALVBjSQp
-         S1Bw==
+        d=gmail.com; s=20251104; t=1777969331; x=1778574131; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DoyB8695OKHFJLVaXhyFdUBCqi4FGLL4BEcb0wuk4uw=;
+        b=cmrFh42MI81O+kl45GDZ/sngXzJcyUlVJjoXIMwcr4FXr+jQ+nSPOst9BZREJLY4WE
+         l43yKIoFQbsS2GbQk9kO2rKp7CEe6VlGynO4lu5AT/NnpL1vXdxEu8aJKkWt7kVq7X0x
+         2sT5nTQ+RddC49bXJDrRx2m72cG3CnBY1c5zu0h9HKz9yxcYNME5EMnNEUDBVUkqnm5R
+         xdRrIoAi1iL0dNYvHcWMNLGrW9UcIUJqbHD4KqCqD0o3EHXOlEVCXBs96zYhPVxlpi1O
+         G2GVODPDzSL2bamxgFXWxPmLQQw0zjaVIscazkuzaQl3Uj+8GvuG0Zr45IDPxNIFgemc
+         D2Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777967670; x=1778572470;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1777969331; x=1778574131;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+qJ4YHyeQCm/Bg4W28ChXgXo4YJ3WH+NhGRvqcilHzs=;
-        b=M2GXAAe+ElwoVMTRPu1RPIwRfUEceZut8iPo5DRXJBtalCJhYFfHGow5ctJIc1Dldl
-         9YJ3K3ebnjQ7Kzqjwd93CFH7RfeOdI1fXCxsNlJL62fKk0QPwhbUMz/RLdyCR9hC5FQk
-         x0XrAwvw5yAbCqmRBDTPesIyzoCfHITX6mVOv8Fk875LUS5kGYGynogkrtueeFu4+53S
-         HPWo5jLmhvp0hpHiAGEtDWj/AA05HlsITqDs90EoVm4GEjHb5R+xmNRWCLhmPqAwjq4W
-         hbD2iPyzcjcHobQ1+0B8QeG8RpzLJopYUjf+ez73bvAiJJX2776QxMNgm2/HAjvafCSz
-         BOHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/OanHv972qhyYEQP0uM95jDphmcYJNHzbuui5ly3fsWIMObY2YMoJCumKBPrrvKtw9/jI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8qYxGNyxHdSo5l+xydU3nhYN8cs4ICd+G+/+tJWqtL1ILrcHb
-	Ea6GWv0ljN0uDcFtuessuDrmFv5FQ2wO0NLJ888vrLdG2wXh/ig39hwKZ8B/sGHbPeWRhxBE6xk
-	z6bf9G6NQNEtf47leCimj3YdtdOtqZ10=
-X-Gm-Gg: AeBDievUuXly28BlnKq5forVDBxhbClHYUV16qSZu5n30x7Xd7rF4TfduoJdrHMdSn6
-	Jkr55aITFKS3D2Oo39xCFcXZmwcyAOmPFEBPyItiRtZDAE7/EFTzhfvpkPdFyt8AtnSNptCOLGo
-	fvF69IZdH6yhvJA3BFwqL02+eY22BjQ2a7hyNKJymgeqZZM59FzBOw58WA6t2qE1eL9ZmuPEatm
-	WUOtXJmyJtfZdxlmALB7rz6TCPmNB7kHnEaN/KVUJkjoeN+s8wSnd9y6XicEIOIYGeA470ruT0+
-	dsc85D9BkOStWlKJZ+M=
-X-Received: by 2002:a05:690e:130b:b0:65c:391:4553 with SMTP id
- 956f58d0204a3-65c3d972826mr13438227d50.2.1777967670455; Tue, 05 May 2026
- 00:54:30 -0700 (PDT)
+        bh=DoyB8695OKHFJLVaXhyFdUBCqi4FGLL4BEcb0wuk4uw=;
+        b=D5nAhRo9FInxSbmc/cpadUZJoF26Ez5buhcicDkLPK0IsU/01AmNyp/+yU+uFWWVrZ
+         4OhXeN1qU0m6PpgYN2kiRIBOFm5r8anHnWp/vCcnNTpYRL9R7PAf9uR+q70jpvW7NLtU
+         ktEIRqyWtcZ+rIA8plwfNkLq4fTyAYWTxkuoraNJvgsb4lO64+nqxIfHm8VTkIhu3ZJD
+         zuEpux+J/RFdYjuUgA2bJPpMloPx/PvjkOCOa+iKbuu5nfng0/XZat6Nhp5JQyl1eASM
+         8lLsyVRmr97D6c1OTIuhVIfINKQTG0RlrqjLZahg6xWWWqSaJ3F8XbzNUK1ymxj+WPTf
+         PUSw==
+X-Forwarded-Encrypted: i=1; AFNElJ8DG8znU3cCXzKaRzr6I5HCqA873Q74qYNJqIeZzXnEwOveQpDVQL+zWSivsuAIUUETXik=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnGt6LonkRuaM7ABcyJ54MVQWWugwV3MbSqja0GBSnPoKgRzWL
+	3Vx4Asc+VPX0g5cQmopgb9p9kR1rRzqA3x8mJHuNRQqjz1GV68TkJzB2
+X-Gm-Gg: AeBDiev8NJCbWVnWOydgdTIKd4CQNnwSKSVBwXJz6Q1qBaJZYAW+KKG4pqkjay/2RQY
+	jMRRRDRgrXkui4zz4OOr3HW9+pkISo9NMsR9fY9YK+LHMicpvFLaQdhyUccnNE9Mj7B9SFEII4L
+	WdbCBij8g0DmPTOyOYkF0MqLz5WDOLne3V1lHDcU8bynaSqqOlezXItAfQwC4oRJPiLxNCe9/bM
+	Myaj1Qu5Hck1y337p263lssVnyoMsk+Ax2zHeLUaLmgIKYToUlHJU0DNOXNuvZjwIWZJsxEhhxY
+	CG8pdi96zhM7zgAspka0Hkf49xBRW4kvLokzKP89zaGCjhAHcsgA8QUhYl7PW5sVucC7tIT7Rj2
+	hRZMopNCbEWv4MmkqE6BbpZMPIZUg+a4P3gCQz+4HRUV+hcXhb+F2gPBOORHiWp+dp+/4rjIFxA
+	qpk1tZmwKIgo1VTaN1OyBsb86d
+X-Received: by 2002:a17:90b:3807:b0:35d:95eb:879a with SMTP id 98e67ed59e1d1-36577487bccmr2309864a91.13.1777969331396;
+        Tue, 05 May 2026 01:22:11 -0700 (PDT)
+Received: from lgs.. ([152.32.133.247])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3650e94126dsm11439814a91.5.2026.05.05.01.22.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 01:22:10 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with device_node cleanup
+Date: Tue,  5 May 2026 16:21:45 +0800
+Message-ID: <20260505082145.603262-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260502115528.530401-1-lgs201920130244@gmail.com> <afju2dg8fZ_RSD7-@lizhi-Precision-Tower-5810>
-In-Reply-To: <afju2dg8fZ_RSD7-@lizhi-Precision-Tower-5810>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Tue, 5 May 2026 15:54:21 +0800
-X-Gm-Features: AVHnY4LouAC2lU1dj0J8xcKYYWaYsdxpQJ4QBxgr9v4zBA8FqVVNp9OP76U4_MY
-Message-ID: <CANUHTR8VCdYS1NdTXU_P1hAkCwiZ=pbTApv3B3ShLB678Son9Q@mail.gmail.com>
-Subject: Re: [PATCH v3] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with
- device_node cleanup
-To: Frank Li <Frank.li@nxp.com>
-Cc: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
+on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
+value in a __free(device_node) variable before checking IS_ERR().
+When the function returns on the error path, the cleanup action calls
+of_node_put() on the ERR_PTR() value.
 
-Thanks for reviewing.
+Do not let a device_node cleanup variable hold error pointers. Return
+the error code from imx8qxp_pxl2dpi_get_available_ep_from_port()
+directly and pass the endpoint node through an output argument. This
+keeps the cleanup action operating only on NULL or a valid device_node,
+while preserving the existing error codes.
 
-On Tue, 5 May 2026 at 03:09, Frank Li <Frank.li@nxp.com> wrote:
->
-> >
-> > This issue was found by a custom static analysis tool.
->
-> Nit: needn't mention this.
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v4:
+  - Drop the sentence mentioning the custom static analysis tool.
+  - Add Frank's Reviewed-by tag.
+  - No functional code changes.
 
-I will drop that sentence in v4.
+v3:
+  - Do not change DEFINE_FREE(device_node, ...).
+  - Fix the driver pattern by making
+    imx8qxp_pxl2dpi_get_available_ep_from_port() return an int and
+    pass the endpoint via an output argument.
+  - Update both callers so __free(device_node) never holds ERR_PTR().
 
-Best regards,
-Guangshuo
+v2:
+  - Fix DEFINE_FREE(device_node, ...) directly.
+
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 54 ++++++++++----------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+index 441fd32dc91c..881ebb811eb3 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+@@ -222,52 +222,52 @@ static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
+ 			imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts,
+ };
+ 
+-static struct device_node *
++static int
+ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
+-					   u32 port_id)
++					   u32 port_id,
++					   struct device_node **ep)
+ {
+-	struct device_node *port, *ep;
++	struct device_node *port __free(device_node) =
++		of_graph_get_port_by_id(p2d->dev->of_node, port_id);
+ 	int ep_cnt;
+ 
+-	port = of_graph_get_port_by_id(p2d->dev->of_node, port_id);
++	*ep = NULL;
+ 	if (!port) {
+ 		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
+-		return ERR_PTR(-ENODEV);
++		return -ENODEV;
+ 	}
+ 
+ 	ep_cnt = of_get_available_child_count(port);
+ 	if (ep_cnt == 0) {
+ 		DRM_DEV_ERROR(p2d->dev, "no available endpoints of port@%u\n",
+ 			      port_id);
+-		ep = ERR_PTR(-ENODEV);
+-		goto out;
++		return -ENODEV;
+ 	} else if (ep_cnt > 1) {
+ 		DRM_DEV_ERROR(p2d->dev,
+ 			      "invalid available endpoints of port@%u\n",
+ 			      port_id);
+-		ep = ERR_PTR(-EINVAL);
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+-	ep = of_get_next_available_child(port, NULL);
+-	if (!ep) {
++	*ep = of_get_next_available_child(port, NULL);
++	if (!*ep) {
+ 		DRM_DEV_ERROR(p2d->dev,
+ 			      "failed to get available endpoint of port@%u\n",
+ 			      port_id);
+-		ep = ERR_PTR(-ENODEV);
+-		goto out;
++		return -ENODEV;
+ 	}
+-out:
+-	of_node_put(port);
+-	return ep;
++
++	return 0;
+ }
+ 
+ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
+ {
+-	struct device_node *ep __free(device_node) =
+-		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
+-	if (IS_ERR(ep))
+-		return PTR_ERR(ep);
++	struct device_node *ep __free(device_node) = NULL;
++	int ret;
++
++	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1, &ep);
++	if (ret)
++		return ret;
+ 
+ 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
+ 	if (!remote || !of_device_is_available(remote)) {
+@@ -287,26 +287,24 @@ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
+ 
+ static int imx8qxp_pxl2dpi_set_pixel_link_sel(struct imx8qxp_pxl2dpi *p2d)
+ {
+-	struct device_node *ep;
++	struct device_node *ep __free(device_node) = NULL;
+ 	struct of_endpoint endpoint;
+ 	int ret;
+ 
+-	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0);
+-	if (IS_ERR(ep))
+-		return PTR_ERR(ep);
++	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0, &ep);
++	if (ret)
++		return ret;
+ 
+ 	ret = of_graph_parse_endpoint(ep, &endpoint);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(p2d->dev,
+ 			      "failed to parse endpoint of port@0: %d\n", ret);
+-		goto out;
++		return ret;
+ 	}
+ 
+ 	p2d->pl_sel = endpoint.id;
+-out:
+-	of_node_put(ep);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int imx8qxp_pxl2dpi_parse_dt_companion(struct imx8qxp_pxl2dpi *p2d)
+-- 
+2.43.0
+
