@@ -1,69 +1,68 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012012.outbound.protection.outlook.com [52.101.66.12])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F2117A309
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 15:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903AC31716E
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 15:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777994099; cv=fail; b=PaqivloPMjlW8dlcjaZ9vWyo5r5b/fEn3X8qrzMTw+MNMLwxHsy1OvTPjk+ZtURMVrc28pmtzVz9HKUuj8BGOE+IEsLELMN1mz8GmeSycaqx1F2Rv0PMQVqPLIe28yo+WK90x8LSCK23WOB/P0dFMFzD20NN/ibuyUwpHtqs1wU=
+	t=1777995331; cv=fail; b=c0bNyY0GNJMuysqQLa95FZ6txEHx+bndjYu8qxwju3shSB+W7SRM8G3sJpiKrS9cPL8/uChmA8ITH6BeRDatL0cWg0jiTgVj+b/OmtCfQTECXUfjB4EbQ8y9AxYlx2+hWNZ2Fv15ILrQ7CWe4WVGQUDfsqqkL/facRJidF+mMuk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777994099; c=relaxed/simple;
-	bh=35ESPu8Q9P83o7gx72gymWtfRoGYPvynOlLlXEha37c=;
+	s=arc-20240116; t=1777995331; c=relaxed/simple;
+	bh=RTL4Fu3L2YuRPJB+M28NBuDb+/U4GxvZ2XQbUTV5ciU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cafUDmlDt7Y4YxZAdW+A8Dc5F3Pp7k2ISecblkUyzd0hjBWTC1tcDP1kLE3K5FZCSR8f1ojRbG1X0hjdtC7WC8IL8HDmD47zj/WMlRR4CQiLQiyM2wQc8eocWuvJBFQJtxNzlmwG6Ei0QD5ZMpHoeUG6GOzwMc3g9Yiov6vNHL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=k6NWPnsJ reason="signature verification failed"; arc=fail smtp.client-ip=52.101.66.12
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aNXg/R47lyHU7rOQDSmRCw1bpT5uVm9Sb0l15GgA7MQlXtE5TmTfXAYjAAl857fuzyLnOA6PEUve/WuDdPnRGIGPyx6jqwnpYgJn2uOhkwNooLBTV33qV6rqOTo37mKHjB5pw32kFKQTnZ1uKIhBdNbV0zaGsVKv+TWEAnu6v3Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=n2WqAZYb; arc=fail smtp.client-ip=52.101.66.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="k6NWPnsJ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="n2WqAZYb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NPh1uNrKLJB3ZPZiJ8Dea4CL1PGJmpTJtV22G/3M2QUv1Bs7AQVOamzsNteXyn3TRZtokV9RbxeXnWHQP6MsTEppYk5h5gTIi81Suuyq+5T173jn4ZnfG2k0GDrq4V3m4TEh9oWTWh5Xq/bP+VvceMc796x0xGrdyCoG+Hydjx5tLPpk9GIKqY5MPimvYEEqg0vHx5FNIz4ghcn2M1Smc5KvuRjWHT13TnnXT+Hc2zixKD45T0/MCItfP+osbonFRDkC7F7Bzc9hwx2mAcwaIMbmoKLNrP/peNKm9dY/6nfokEgZ3ccyj7NO5crxFBdr/KQi/wyaFVJYeJJlLkFJxg==
+ b=ucO7GI4BsuBflPfQ8QZfWAQ8zExp+kwbkMwWU9bsdFj5o4JpnUTB24E94nZoxM3Yp2J5E2NNtgdJ6i4qAUj26H42rmFg8LPlXOMFSdoypPoQTUlZAxXhYoefnxU2Xkg2vOtynCqB5wBXt/NIoBKa26IMCGw1UAszX+eaD2Owkocko/Th1OGNWF78TRK6uMwSCd/8P52nbuzGB6Sx13Iygl831WV0UIlT7/mcwTvrXi7dd+XkvmaS+NgdqkdzedO/luXt07ej4uBGfZTwDvFkKF9l92igqyuLcl/eYc39aykmSHNzY2IhHELjOx+cfSbtxtwogjss/k4eCNZqih+ZBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8+gtkGOVgyjT7X+DqcxNNy6R3uwv+zcZnVjZX+u8fN8=;
- b=YYgXjGY4PkiS9LG9lwymo+MLZZ/ORFPNCI1e3gaw0m7K2ENrR8WXz6IheARK/MPIdIJtntPf6B3afLoLRaU6EBpMPLJYb5921iGarUGkmkzH+016qxVNoirWpasSKUwhvwUGNXkWVcYACxyd+OGtjf3jJOkx4XCWH682Mtc5mKf+0Cc7fwU08JR3VBtDHwQ37TmPV06xa2eSs12zYyIXLJwlZlpggPhw4+RgtuTFsretaPrvoLj40ngDM1BM9Ihcf+EuiuL4cqw6pHDvlM1f6Q4mmDfAtuJCCWcLbIj0btrTXZf6beMqOSkxZbE7Yl11ecBd/2Mk+APzOIr0DV4dMQ==
+ bh=tJf/O4acA/OvYHIonYDlJYfQr3sd90ohw9CPzQrd1lY=;
+ b=NYZOBXaIZmC4gE37rEFXbDhZZ6GmTzmsARcB5xOvpLTyElLCSmtqCtPPjUvkqjbrC6hhThLsWTPjSqWACHk4oliZyzJi9aGELC5SH+6kqgcjN1aRY1uhjTsuzqjN8gQLImHUa7Y1T6YfWaRGGqOcSOcIBxUT4lCPh25+hKIrvVlahm0ibeanYR8w7U/nzrXAoUY5Da/W9FnzWG1zOnxbQqbw0HRNOpy/8oIYoEm9bN/zmhNAmD5BxwNzpiiGErNF/05xAypZPzWSpT1CjJOyTjha/XTohpi0pNVoQtUHDXotuRqCt6DHFaHeNq7SjsDb+ln+yK35kIrtvHO3O9zToQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8+gtkGOVgyjT7X+DqcxNNy6R3uwv+zcZnVjZX+u8fN8=;
- b=k6NWPnsJ2DyYwaNIG6TQC6QYiYclPPGl6mcfnG2kJTHJa7LVGWXTCvjnyluM0yITqb1kkZENFrhvFhBwiyXX+bDved1vVbkEMzIILQC8VOqCf2u85fUeJm+r6IixWchW0dO7/wFFlUJUUW1iBbgIcdz/pAwHXFAYCaDm0l3u6hULZ8HtTCEGndj8EVyEOsAy7uwm/kZx8gNDeH227SW6MtPu23OF27Qv1BKzisYQMRhnHnRTsMimk1/PEfMylYKZGAUvXI+TPtiLc33ea+6BKUb/vTQkudzqgs/5cHm7GE0iSyK7MxRDJu66giFHCOPb/xLQzndby5m3nyJTvRzdIQ==
+ bh=tJf/O4acA/OvYHIonYDlJYfQr3sd90ohw9CPzQrd1lY=;
+ b=n2WqAZYbbgFDQkHndNvnuekqS94jUs+xIBlHfgdecjKl7/ZK8QlPrhsZ83rC2mEqbnlcgvj+HtKQtsMECsLix3Iqt7KtRMlc6nPcuiHo/9vrUFJRgo5cmTzIq4dHYAs7CG5A6iyIRdBO+o0wQDHBol0pjBKBmZfvWFJNSq/Rid891ExhcJtxHp7OSAwFYLa7FE6ebLphdkSDZ/yyTRxHCAYIBGXQFnPMSkZBQMoaaHWopHV/nBfYeAqa8cTM/WHTexKKNXOubvvdOz+LjjQ3PCRdaZGZiqvbBlzPEHVRhDTyenax9F3p31eu2EGkjDAxpPwdUxsfUscXAG3g4lVUNw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI2PR04MB11099.eurprd04.prod.outlook.com (2603:10a6:800:298::16) with
+ by AS5PR04MB11370.eurprd04.prod.outlook.com (2603:10a6:20b:6c8::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 15:14:53 +0000
+ 2026 15:35:26 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9870.023; Tue, 5 May 2026
- 15:14:51 +0000
-Date: Tue, 5 May 2026 11:14:44 -0400
+ 15:35:26 +0000
+Date: Tue, 5 May 2026 11:35:18 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: =?iso-8859-1?Q?S=E9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Jacky Bai <ping.bai@nxp.com>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"open list:PIN CONTROLLER - FREESCALE" <linux-gpio@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] pinctrl: imx1: Allow parsing DT without function
- nodes
-Message-ID: <afoJZDlChRnPltVI@lizhi-Precision-Tower-5810>
-References: <20260504170836.1794372-1-Frank.Li@nxp.com>
- <b5f75901-29c0-4153-ad1f-543dcf7476e4@armadeus.com>
-Content-Type: text/plain; charset=iso-8859-1
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] arm64: dts: add tqma9596la-mba95xxca
+Message-ID: <afoONpDS1ccIfS7Q@lizhi-Precision-Tower-5810>
+References: <20260505061344.1785663-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b5f75901-29c0-4153-ad1f-543dcf7476e4@armadeus.com>
-X-ClientProxiedBy: SA1PR04CA0010.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::16) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260505061344.1785663-1-alexander.stein@ew.tq-group.com>
+X-ClientProxiedBy: SN7PR04CA0162.namprd04.prod.outlook.com
+ (2603:10b6:806:125::17) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,199 +71,177 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI2PR04MB11099:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4092ed6-8603-459d-4593-08deaab90e28
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS5PR04MB11370:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2e0e991-d01b-4232-ca6d-08deaabbedef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|376014|52116014|366016|38350700014|18002099003|56012099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|19092799006|52116014|376014|38350700014|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	kBbRFz7i/zeo34xAuDZj8yaE3tr8gHwX4AWlXLksPgYscwF6e1fw0rg6JbJJpUtP7W+6eOxGcLMGsSJuKQu83miS/zZ2C+Asq+/ttpdjDqeI/8fGN1/qeoyvC6cTgOIHNxM77iLPYnopAahlwRgfK0aMzSCyztzgqvfFVKyfcdDkf9+0K5XfFcgkU8HXRijKG/KukrMk2JNbXJ93EoNidvqzkxolwxCuwVExCStEfFarL+wvI6k17XOAi88sfqyCnTx/hCKfXRDc/4XVvltNvAELIh5hCoVovNMLfRr7tqj0tNs3lqBHJu4y/26poaZbYKfteZuteztslx9XNDwetSPwr1LaJt7Ji5g8fsPWYV/Qde2Sxg33cauJLBymvI3t1fN8UjD9QQEPdHaZvBKT9eXJSR4IOiRYn19EjWl7lAi/kFL4sGcd2ejay82d1HraIRXZCVzeI2WkjY6OQFrqCyXsJWGzmX2o5vD06+Dvy2pk/sy5FtglUnCaMesF72AZHwChYQgjqn/fq/fyvHDR2gDBaxkie1d433fOHHYqdz6qgq8sx6gFn9BBy0WNysVGLgOiV1MJ0hXTjMYSCVOz26MFRC6zMWyvbVXnDrOCbHzCUSgMQh8FpFijcY/z/wJ3Xh9ZGMo0Nf6mjcvlazUtQhgvzfwGcpiogmbl8lFXDVdzJ8D5Ow2mydxBheVLPc/miFIre8JMIX3uVrtBQQhbyWh+gwXYR+laOjsfmAaw2F+GrzvkY08fFNHcvEhn65PR
+	r65gkM0PhKUkOZcViCZ7yOsZ6fe6l0mCbSqDUH+QNYn+yM4qJiw903bn1YsGwhVnb+cPjFL5Bx7S9CfWl/rLaJ9JfZu8Ld1SMhHimiVGvsC58ye9VUn8+N8Xa7QzZPOt2vktvODpY4ikMsXSThIMOZn5VfFmunbjzs1ewELR6+BEs02MqnaAPQarW6RysaniPakaM0p8hFPcrMU6aEkDTowHRXNjrAERkymgfhhNv44UVefVV1Y7RuR9JiDDJAXiiz21pd62cCDQjP3eB1ccNqgPvkVOkcfSJcz/nlvVOaRA+ZiM8vtkjbHX8tqUfk2Bez6vezdvlrEKSJJOe9+zL9DpDOc2Ls/UfEnY4vwUynV/lo0hzrcSA+zdqNQ3Nf5jugI1faIqNBIpg7n0lpF/OURR2JpG/CF4elP4/PqrBA9YAsNTgLJHhu/xjS1T23AkaH6MnJcR7m+OVYqMEnP1TOkxwdah0T0robr/zhQb50c2ZF9dD2Ru8cF2gEIsbiUbDCWDq16Kb04+pho7JMpRj9CdEIAAiAUxr5JHn3BzbgHJX+hX9v25dgnFXDn8O6QrNBWUKM4nunNU2RvtFjuiILGHJs4EOzI25FauWEL7NwvhWxD9qwZxL2Nhq/W5y3MdadO7FwTEUNd59r4GRzNnj8QBWZfw3lJ7LG5id891TR0wuE1u3nJRjNuqQwHQxDr6WkyfTX/4rklQAYaSP21ElX7LwTR+eGxQYcg7oC8wfy1XtvX5uNd6fA1sPkfnvw3C
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(52116014)(366016)(38350700014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(19092799006)(52116014)(376014)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?Wb8qIaQniynit5e1pqE1yowUHVxqRAQwkpA+3Pbtv9xHYCtmkPrJWlfJ1L?=
- =?iso-8859-1?Q?hgo6N6RR2y4Ce2x1AL/3uQ1lqmj2Lq9SUHRIp4Y5PxjYhxOL2guVIFp0ks?=
- =?iso-8859-1?Q?X42I1xF27xg44Erjvrg6BcP8B+OGc4+MyvqZGbb+c1fvP/myIH4WvC4cVi?=
- =?iso-8859-1?Q?Q334PVCIRZWBwETzNeNd3PNDvLG38aANCIQh5r9m/R4BxeQILqZPS61HVU?=
- =?iso-8859-1?Q?nmiOhFDIR7UOAQsQ90jCH7wxIgdHYwaQN3IdonQJJPaBTSnR/4nBl0gjfR?=
- =?iso-8859-1?Q?S5SF649BY4whr7AUB1bqjqD19GjmHHRhShhugAuIWo2E4es8CBHkKFPpHZ?=
- =?iso-8859-1?Q?CCUrr1WVC0MD+Bqvobg60du1a9ZGlSbc6UmwaJfQ41AwmarwjEYLUmpMbM?=
- =?iso-8859-1?Q?nUU4SZmrQJu5K2lFW6a7Su0/2vQV5I8f7uone28MImBM554vf6CiWEZmmy?=
- =?iso-8859-1?Q?bWBeZuzcKfhjZAGtrZ+I+9P8inFvsChfa9nuNFe2sPHVPgUl7xYmuofRBG?=
- =?iso-8859-1?Q?hL562G5jym1Hm8NxoopCUj8jkgUUZ32cokkhyVAfDUmP19kmSHPX57YQwD?=
- =?iso-8859-1?Q?bPi3eu6w016/KvTNqGpkyDjC4QjMDvHX8rvDyOEu6vo7w8E+AB9wQgo/ZM?=
- =?iso-8859-1?Q?DCF2U2HVWmK5+9r2MoZqXTuH6dV/vseZ9B0V6aavBcNyQqHH+iStP6mWe0?=
- =?iso-8859-1?Q?8CpcdcgMIsYQ5RMssJPhs1D1mAQNKsWzCHv1JG49LiEuB6qTvKBXycu3FM?=
- =?iso-8859-1?Q?kKmH1Nzxf4UCy1ov0x1uLHrW5I9ZPRYYX7Fvuzx5myBNhfeu0owgAsMR68?=
- =?iso-8859-1?Q?vjGlADUp6tZ3nWPx76VUytt2vV3SJF6X52i59bX8bA9XzWrZ0tqrzjofMX?=
- =?iso-8859-1?Q?NNK7FbXUQunHFcTFkkUN1B7h4oiBRbJ2LkoQt0lWDPKWeNwOQZgZdBITyS?=
- =?iso-8859-1?Q?DBW7DWKAh7pcCS4uJs/EGPxXuz0KGAB+uya1CCBbr8+gVj+cO5pTa2+p6t?=
- =?iso-8859-1?Q?hILC72kjpkxcfv43UfwgVe6AL8R1ZUdYe/zFAkAstI/LJuKAAXwFNx11s8?=
- =?iso-8859-1?Q?bZb5CdT/1bAzrAcWtTaf6v3VXfffTFT887gXjJNbyV5suGu2mW9LAygVfm?=
- =?iso-8859-1?Q?X8F6J1g3X37q/lGrsxDVq09+80ToE1l/ORswlJBGo3+PBm6anWWRd6eYzH?=
- =?iso-8859-1?Q?k+TnrtEzgxYGH2Y9jsHr6s0cpxcVJbbTBlj1VjjppAIz6t/O56FvpiCYU1?=
- =?iso-8859-1?Q?BYt3udDQDvu+e5h8/mFq++vP5j2gT2J1wtTQpiAWtE8yXAz+VQgBHnK910?=
- =?iso-8859-1?Q?ePFIsafK3G9CzvfHORCqDz/zV9PkC3TkBfh6djeAQ7XRVO2nhxQpThpaJs?=
- =?iso-8859-1?Q?s2mhhqJ490rErZtIvNKRJCja9UK8CxcTi+MzjosOzZIZZIUs/oRKA1VUbQ?=
- =?iso-8859-1?Q?zbTFOQuGeVR4PNfOTVmHqIi07iWBlIOHj7LRFImbPgBL7H8CkKJLSFkDzC?=
- =?iso-8859-1?Q?rOSppC+nmUk5E2Q9Jhp89d9YkA/9TsRwDo/6LCA08UzUpd03CxjIgkRT2s?=
- =?iso-8859-1?Q?Qw1SuALeqGLbCj2tZsjIYIGTCvHaKPX9+CAiX9MybILx/Dak4WkgIZmYoX?=
- =?iso-8859-1?Q?hHJzTzdZ5QZitAfxLNHMDHqxWFCt1cINGIR72IJAQd0SKO50mlUWpXRIX7?=
- =?iso-8859-1?Q?JmfcN0N7fO9JOnUus+sfDxaFgjr+Yy4q4Yxf43oCqG81s0t/6cnrthuw8L?=
- =?iso-8859-1?Q?AnG+nL5vgiWsBjokwnnrJw6OakGt2hQCLe6Z1LWKWVCqNNXwYz6f1ycGmu?=
- =?iso-8859-1?Q?hw5iAvgxhg=3D=3D?=
+	=?us-ascii?Q?5ZJRFsZheK+l9+7yACax4OetD/3+1n+q/5NxsZmLrMbGENRy31xXNN+w+ke+?=
+ =?us-ascii?Q?EovLD1BGDExiF4SGEKr4Iw+Hrr2e6egvCWeWOMZbGn/CxH/wWcl7Fcamo2Hm?=
+ =?us-ascii?Q?b6OJwmLchLQuRu2MC3gBqUksmk6ItwK7K63smYJ9tFGH9stTm+ztsvJdN+PP?=
+ =?us-ascii?Q?vQ9Kgq6yAmyvpEkcd5sB7EabrG1EiLbvJH2CTdqfiGMDsd+1yIX5BvEO9HSU?=
+ =?us-ascii?Q?Gge84Qw4InHL15W5++O562UWWyZ6MUWkyXAlGICMOHWR+Ykp42o1y1NYiWcs?=
+ =?us-ascii?Q?LY9jxfzXd7FJNpIfxxgD5tZsqncWAONAu7/qMANG4ZvghJfvRD9nXbnvdK4k?=
+ =?us-ascii?Q?jFTkLskb9Cr25tD2kGiLkFLoVw/aXJIdaqDvIuWDEghvODT/r16p0tt0hvLb?=
+ =?us-ascii?Q?eN2M3VZutJ9M/Sna275k9c2GrEh9Vo7ZwT8VgJrcR7FAhW2cgDelKa7A9CCP?=
+ =?us-ascii?Q?P4plZcj/Laj9de5haSQjlyixx4Ir8JltPTQRKpnYjV+8F4jtjGX/nUKx9i8j?=
+ =?us-ascii?Q?W2YjN29UcpS4fjGhDZZfNqTDBNnYPOnKWM4ei6B58w/VbxTXdZDJJSv6I8i/?=
+ =?us-ascii?Q?eKyGk1bKiiBZupX4vpUk9s4+guUVH1BWaXyJBhehLltzUl0+COdq6ArLqiur?=
+ =?us-ascii?Q?S1Pl082BNjfynyBNLkW3HWNKTjRvarT0NgdGDgxnRc5DyRyA1YNoV3TM4ed2?=
+ =?us-ascii?Q?SOogquAJFObZk/+r9WO3Hjyw0Fg+qMLE9sE9YO1psLFE06ym4VYc6XHYB8RV?=
+ =?us-ascii?Q?278eudr00ZsJ+4eyxz1O2Bc5pzDV8TmT3W8gtzB5mcjeC9DuCAK3+Eznb7SN?=
+ =?us-ascii?Q?fUKlbgUI0DG4hQtQS8mZFhk+96FC3BF/djEtlPTFkGE9By/UPfNwDEttn1sU?=
+ =?us-ascii?Q?qFhjTtrP4baLZFEcfEBnG2K+CEIfmmWh6i7B7EKVSXbMrp8dP+mHMYjCClW0?=
+ =?us-ascii?Q?jdXei20wX56LDMnpoKEDCwedZkECXjVpPAztuO9qcJAd8B4joFgoYPaPUm7+?=
+ =?us-ascii?Q?i7hRMBt4xDNu1ODvaxUOwxv0kEkSrKy2n6RBq3qmNfxAPOWm1on/nHWndnQr?=
+ =?us-ascii?Q?B5wuUbSepih9o46FI6BGFeYyjCpf5Px2CYNIHETza7o5D1f2sdoO7xg1Uuj9?=
+ =?us-ascii?Q?3j9glM7hoIxP+evteStnK/y5z/ZHS1/i0RusPnH9n091i+ELHrd7wu7hSj70?=
+ =?us-ascii?Q?hfuEBJkoAkuwsqBevz1tCv7JwwX9MVr2xm+P9XlqG5mnKfXw5JxDBJiPNpW1?=
+ =?us-ascii?Q?KBaXB6U0Xpo4IUQ2l2C9ogTrAFSi4zmM2blJuzkAGenkOZ9PuXRH1VAoVvkR?=
+ =?us-ascii?Q?gOoo/7FEU5IeHy26W2U/gPIuVcL0aeJu37hT6XuqPSkaubKQBU+dztsYYvwe?=
+ =?us-ascii?Q?sZPRo4UBwpTAqw9sonVZAhqBmdNBVXGVDiDU6Y0J2f9kElVm+shtoBCd7snn?=
+ =?us-ascii?Q?jzM1Q0k9xD5CFvii7LUpIGSNTq7ypSTkCxwbRVgc6CWXDZnlz2bNJ090QfRx?=
+ =?us-ascii?Q?9Aj9bHIZpgTGNIa7z56XjKDj/CAmf56LDaT5kfxILYExH+b/nfdBAo9YuDDW?=
+ =?us-ascii?Q?8LPTxuPKRm7ugC7b25T01GItChnBc2fgYaSZS1kc6tPgu2PV2irbksSg5K/Z?=
+ =?us-ascii?Q?cYPJUqCgwtfWZ5jo/EKobPmvhzIKQtcTnP3bu+Bhoo1K62aOuAn/nkRl6NPX?=
+ =?us-ascii?Q?3zCzoVPHi7cWzVB80FzwSnJVSzEWGApoFHV0uqqXjuXtOkIi?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4092ed6-8603-459d-4593-08deaab90e28
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2e0e991-d01b-4232-ca6d-08deaabbedef
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 15:14:51.7800
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 15:35:26.2589
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 85PFUirQwgEzA2cEbZ7L/xit6olLs9lwWj/j3uvpxfPUk9Ru/yLuKAzy8fR14mp4+J3P61w+gr1G5kcpM1vnLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11099
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4h1qPj6p74HfKzCTwXHUbVZXU9+T6A1yZPrhXzVZ+stSrMkKnUKw2qsWSdUvhPVONbcvtyveWZ9eEzft/3dl9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11370
 
-On Tue, May 05, 2026 at 10:32:48AM +0200, Sébastien Szymanski wrote:
-> Hello,
+On Tue, May 05, 2026 at 08:13:42AM +0200, Alexander Stein wrote:
+> From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 >
-> On 5/4/26 7:08 PM, Frank Li wrote:
-> > The old format to define pinctrl settings for imx in DT has two hierarchy
-> > levels. The first level are function device nodes. The second level are
-> > pingroups which contain a property fsl,pins. The original ntention was to
-> > define all pin functions in a single dtsi file and just reference the
-> > correct ones in the board files.
-> >
-> > The commit ("5fcdf6a7ed95e pinctrl: imx: Allow parsing DT without function
-> > nodes") already make moden i.MX chip support flatten layout.
-> >
-> > Make legacy chipes (more than 15 years) support this flatten layout also.
-> >
-> > Fixes: e948cbdc41d6f ("ARM: dts: imx: remove redundant intermediate node in pinmux hierarchy")
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > build test only
-> >
-> > Sébastien Szymanski:
-> > 	Can you help test it? I am happy i.MX27 still alive.
+> This adds support for TQMa95xxLA modules, designed to be soldered
+> on a carrier board. MBa95xxCA is a carrier reference board / starter kit
+> design.
 >
-> Sure! Thanks for the patch! With this patch applied on Linux 7.1-rc2 the
-> board boots again. I see the following messages, though:
+> There is a common device tree for all variants with e.g. reduced
+> CPU core / feature count.
 >
-> [    0.085139] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.085226] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.085281] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.085327] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.085372] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.085416] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins property
-> (gpio)
-> [    0.092693] imx27-pinctrl 10015000.pinmux: initialized IMX pinctrl driver
+> Enable the external accessible PCIe controllers as host,
+> add clocking and reset GPIO. While at it, add hogs for GPIO
+> lines from the M.2 slots until M.2 connector driver is available.
 >
-> That's because there is no fsl,pins property in the 6 gpio subnodes.
+> Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+> Changes in v4:
+> * Fix LPSPI4 pad muxing and control
 >
-> Tested-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+> Changes in v3:
+> * Moved reserved-memory to board-lebel
+> * Remove VPU reserved memory (unused for now)
+> * Fix typo in connector comment
 >
-> I one have comment bellow.
+> Changes in v2:
+> * removed useless regulator
+> * added USB PD source configuration
+> * Removed unused uart-has-rtscts properties (unused by LPUART)
+> * Fixed RTS/CTS pullups in pinctrl
+> * Added thermalzone on module
 >
-> >
-> > Frank
-> > ---
-> >   drivers/pinctrl/freescale/pinctrl-imx1-core.c | 48 ++++++++++++++++---
-> >   1 file changed, 41 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/pinctrl/freescale/pinctrl-imx1-core.c b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-> > index b36c8a1461b7c..bf07e0c64a098 100644
-> > --- a/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-> > +++ b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
-> > @@ -540,10 +540,34 @@ static int imx1_pinctrl_parse_functions(struct device_node *np,
-> >   	return 0;
-> >   }
-> > +/*
-> > + * Check if the DT contains pins in the direct child nodes. This indicates the
-> > + * newer DT format to store pins. This function returns true if the first found
-> > + * fsl,pins property is in a child of np. Otherwise false is returned.
-> > + */
-> > +static bool imx1_pinctrl_dt_is_flat_functions(struct device_node *np)
-> > +{
-> > +	struct device_node *function_np;
-> > +	struct device_node *pinctrl_np;
-> > +
-> > +	for_each_child_of_node(np, function_np) {
-> > +		if (of_property_read_bool(function_np, "fsl,pins"))
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../freescale/imx95-tqma9596la-mba95xxca.dts  | 961 ++++++++++++++++++
+>  .../boot/dts/freescale/imx95-tqma9596la.dtsi  | 278 +++++
+>  3 files changed, 1240 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx95-tqma9596la.dtsi
 >
-> Isn't of_property_present better here...
->
-> > +			return true;
-> > +
-> > +		for_each_child_of_node(function_np, pinctrl_np) {
-> > +			if (of_property_read_bool(pinctrl_np, "fsl,pins"))
->
-> ...and here ?
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 711e36cc2c990..b47db26224bb9 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -507,6 +507,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596la-mba95xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596sa-mb-smarc-2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-var-dart-sonata.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-verdin-nonwifi-dahlia.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
+> new file mode 100644
+> index 0000000000000..1894c2b7db1f0
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596la-mba95xxca.dts
+> @@ -0,0 +1,961 @@
+> +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+> +/*
+> + * Copyright (c) 2024-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+> + * D-82229 Seefeld, Germany.
+> + * Author: Alexander Stein
+> + * Author: Markus Niebel
+> + */
+> +
+...
+> +
+> +		m2-keyb-wdisable1-hog {
+> +			gpio-hog;
+> +			gpios = <12 GPIO_ACTIVE_LOW>;
+> +			output-low;
+> +			line-name = "M2_KEYB_WDISABLE1#";
+> +		};
 
-Yes, I will update it and send v2.
+These GPIOs have not been refered, so ti,tca9539 may probe after pci driver.
+Please monitor thread about m.2 key e
+https://lore.kernel.org/linux-pci/7kpwgrxgtrpavmm2aezv66csuumma6wzsqtwvmojwgrtiqasjf@gczv34l6pnma/
+
+
+> +	};
+> +
+...
+> +
+> +/* X16 M2 / E-Key mPCIe */
+> +&pcie0 {
+> +	pinctrl-0 = <&pinctrl_pcie0>;
+> +	pinctrl-names = "default";
+> +	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPLL>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +		 <&pcieclk 1>;
+> +	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+
+use "extref", refer pci-imx6.c to use external clock.
+
+	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref", "extref"
+
+otherwise pcie controller will use internal pll by default.
+
+> +	reset-gpios = <&expander2 8 GPIO_ACTIVE_LOW>;
+> +	/* Not supported on REV.0100 */
+> +	/* supports-clkreq; */
+> +	status = "okay";
+> +};
+> +
+> +/* X17 M2 / B-Key PCIe */
+> +&pcie1 {
+> +	pinctrl-0 = <&pinctrl_pcie1>;
+> +	pinctrl-names = "default";
+> +	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPLL>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> +		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +		 <&pcieclk 0>;
+> +	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+
+the same here.
 
 Frank
 >
-> Regards,
->
-> > +				return false;
-> > +		}
-> > +	}
-> > +
-> > +	return true;
-> > +}
-> > +
-> >   static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
-> >   		struct imx1_pinctrl *pctl, struct imx1_pinctrl_soc_info *info)
-> >   {
-> >   	struct device_node *np = pdev->dev.of_node;
-> > +	bool flat_funcs;
-> >   	int ret;
-> >   	u32 nfuncs = 0;
-> >   	u32 ngroups = 0;
-> > @@ -552,9 +576,15 @@ static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
-> >   	if (!np)
-> >   		return -ENODEV;
-> > -	for_each_child_of_node_scoped(np, child) {
-> > -		++nfuncs;
-> > -		ngroups += of_get_child_count(child);
-> > +	flat_funcs = imx1_pinctrl_dt_is_flat_functions(np);
-> > +	if (flat_funcs) {
-> > +		nfuncs = 1;
-> > +		ngroups = of_get_child_count(np);
-> > +	} else {
-> > +		for_each_child_of_node_scoped(np, child) {
-> > +			++nfuncs;
-> > +			ngroups += of_get_child_count(child);
-> > +		}
-> >   	}
-> >   	if (!nfuncs) {
-> > @@ -574,10 +604,14 @@ static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
-> >   	if (!info->functions || !info->groups)
-> >   		return -ENOMEM;
-> > -	for_each_child_of_node_scoped(np, child) {
-> > -		ret = imx1_pinctrl_parse_functions(child, info, ifunc++);
-> > -		if (ret == -ENOMEM)
-> > -			return -ENOMEM;
-> > +	if (flat_funcs) {
-> > +		imx1_pinctrl_parse_functions(np, info, 0);
-> > +	} else {
-> > +		for_each_child_of_node_scoped(np, child) {
-> > +			ret = imx1_pinctrl_parse_functions(child, info, ifunc++);
-> > +			if (ret == -ENOMEM)
-> > +				return -ENOMEM;
-> > +		}
-> >   	}
-> >   	return 0;
->
->
-> --
-> Sébastien Szymanski, Armadeus Systems
-> Software engineer
