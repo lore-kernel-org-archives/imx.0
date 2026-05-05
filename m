@@ -1,72 +1,36 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from 7.mo560.mail-out.ovh.net (7.mo560.mail-out.ovh.net [188.165.48.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DDF330646
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 09:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FEF2EC54C
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 09:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.48.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777974242; cv=none; b=Yk4wiq4UuobttW872nlGc2V8yEpvF/x3ad3tEGd8NsY69yjRZURf7Su2Wnpz/Eh+LsBJ1xwRAX3qSckmAYGWKNaysYWwlbhva+wqqumo+7lK2flgZ9D1yALFrV0t/lI7pRYO8lYHE7XJDtMVnBmSD75VvGtdDbryI0GxkUYkA9k=
+	t=1777974669; cv=none; b=pSmesi4yGovA88qKDT+aHc7bdMTbWSaplJXIuKe7egzC91bcDviqzPuU9Sn+oiVYRW9/ADX3nDtApyJbHLQy1zobrQKSc1XVYw9ff7f11Uh1u2EuaccxzjnW5zWQFs5tswD19XWyY2Khw9odECttcasJlV3fN7MBzfjn1PHz9+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777974242; c=relaxed/simple;
-	bh=GB2zSiCiH2B2MkSpdmM8X1Yz2rkioSL551rkMUaheIg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J6qL0o/cTnzkigMxLwS1tKQKnoLkrSXkGIXQxOh6OjPtj1wa8KS8BkUfeFLxWw7pFM8j9OE8Wkiosihj4wsfF7sTCzoZ9+x4aBzKgv2Guwxk1ff6NB/Rk4tAmFUapgLmT8S+J5IrXiiDc/3Z6BQgQmXYKEg+YbMAE+X9L3trgEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dmaJ5jtd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777974669; c=relaxed/simple;
+	bh=UeIRA0xIGC2b+3SSnkE5bR3iIrYnOtlOcY4wZZXP7ko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mOsN2Xr4LQvuaKfjsvWhvGjE2TXCAZzIssXFpDW2j3QIWb5Yc70QplaMI3uhWlo7hVkzQLBxoYzhEHQKqMmoltaYqtILI0FL5eVsI2BtR/WQx3pJQqcF14oVjcNPTqPGQvO8+gIGjWwstXqtAX+OQDfFC6GcuOAlkVKstqMAsOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=Do6u5Ku7; arc=none smtp.client-ip=188.165.48.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dmaJ5jtd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777974237;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kmyJRtAdai9pCgAp5lRpf5bBAJMr8C8LzYPKP+rHxUU=;
-	b=dmaJ5jtdLJSdH9PZjrm+u5GTvfAiIM5WnJ5pZV7AxMxDAp13oCSR8MJ4clZAMBaG11nIxF
-	V8XMZmIbxNu7zOPnMlIOHDZK7ycUwLxFzLNaCnf7FSzL37NXYkdnocz5I9Li2F5gCgDaou
-	iKWnxA73AGYgd16jh6XY0Wxns1UJyno=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614--6PRfj36Mh62N1VAzqSPyA-1; Tue, 05 May 2026 05:43:55 -0400
-X-MC-Unique: -6PRfj36Mh62N1VAzqSPyA-1
-X-Mimecast-MFC-AGG-ID: -6PRfj36Mh62N1VAzqSPyA_1777974235
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48d035e8593so13286175e9.0
-        for <imx@lists.linux.dev>; Tue, 05 May 2026 02:43:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777974234; x=1778579034;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kmyJRtAdai9pCgAp5lRpf5bBAJMr8C8LzYPKP+rHxUU=;
-        b=BVJwh6LS1tXbrphWKf1LuGGEKedQ4Aj3xYE8l7arC5K3JafHUALXaDXTnIZvIrpD/n
-         afw2mbm71/lMHuCC9ODxvAizQXXaytLpA0hRSVoR6FoPtwLqE1vLBfEBF7emSW4DmJ8C
-         k/a+kBcwG8eiuLnIpiv/dskkL4DxTwr0awJQrElvFetL5y4J9RrVevZWERHI6QkIBTe/
-         HI0IDjgm38J9kd3BdrmhaNEJVRvzr8KltuL3FqHS4etT/TkgfU1wVwWywme7L7F0Mrkt
-         p7ff+bAqTkMh96oA2X712X2QFMAIBAIHws06uFxcR5+Uzw/e0X+J+4yjFu0ai/BYbwSH
-         RA7g==
-X-Forwarded-Encrypted: i=1; AFNElJ9RJdJ5SUWjzfH9zM6w5ar2Uv6z2KeLcWhT6BizrS6YtwHfFHGCFfJEArrJDFpKUoKk9jo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxF29pMgMgXP+LqWkjYygBtmsP7QwcyTVPdF++45GEAqIko0V8W
-	Blyst/W8tWtqbIt/K3hxX3v0bxGbvMB5ejMejHME1C+f0erWSS2UljYNI2CQ5p1gkb7coyGma37
-	mBm/cZ6IXfcU0Q4e/pYMqxdqiI6AQjwS/VhgQSEqSFNtONYfWd00wBg==
-X-Gm-Gg: AeBDietVfW11vgUWNxMugUhybXQgIT1nrNWsttUz0SObecPhP78SAeHFNMRgE3NBim6
-	x0WsjgZF+qOqUmWJFXCZ8G+8DdJdsPsHUb9ogQo+vXKytotxxT/b0PUQP9ssC1c1k0VQF3U0GQE
-	NQy8X8/w1UR8DgOLgBIKAasNJJEsfTt2odU90ptY7fwFB0P3B2EYaoIkZW37DpoPVxdiMr15a6M
-	mT7PhPmOl91antpjCF+p3HBuOlsyVOfOhHNvgAG1kkcXlFhejE3DvT7BmhqUNRp4s8Crn5VfPwH
-	XD7ygklIzw2RzP4pCkjCupLy8rUujx3e4yexNYncTCcCyl6ljO5N449Bkvr1LC8rQE88nV6Y4uR
-	wXksvl5hG3Ftrew7D2++licNvFR5p6Df02Fdy8yYj07VW9ikJysAKXVHVZSZQXrahVHY=
-X-Received: by 2002:a05:600c:46d1:b0:489:1d74:56d with SMTP id 5b1f17b1804b1-48a988ca441mr218127005e9.29.1777974234592;
-        Tue, 05 May 2026 02:43:54 -0700 (PDT)
-X-Received: by 2002:a05:600c:46d1:b0:489:1d74:56d with SMTP id 5b1f17b1804b1-48a988ca441mr218126385e9.29.1777974234170;
-        Tue, 05 May 2026 02:43:54 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.47])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8eb69698sm603894855e9.1.2026.05.05.02.43.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 02:43:53 -0700 (PDT)
-Message-ID: <37382811-ba47-4432-9911-6c39acea4f86@redhat.com>
-Date: Tue, 5 May 2026 11:43:51 +0200
+	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="Do6u5Ku7"
+Received: from director4.ghost.mail-out.ovh.net (unknown [10.109.249.167])
+	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4g8sGC1LR6zB9qs
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 08:32:51 +0000 (UTC)
+Received: from ghost-submission-7d8d68f679-92v2f (unknown [10.110.118.108])
+	by director4.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 74512C31BF;
+	Tue,  5 May 2026 08:32:49 +0000 (UTC)
+Received: from armadeus.com ([37.59.142.106])
+	by ghost-submission-7d8d68f679-92v2f with ESMTPSA
+	id muovFjGr+Wkn/wgAJ55Jkg
+	(envelope-from <sebastien.szymanski@armadeus.com>); Tue, 05 May 2026 08:32:49 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-106R006582a2f30-e56d-4c4f-8000-ab83c7f616fe,
+                    EF376445141242EFB525A4BC622796E311A81957) smtp.auth=sebastien.szymanski@armadeus.com
+X-OVh-ClientIp:90.126.104.208
+Message-ID: <b5f75901-29c0-4153-ad1f-543dcf7476e4@armadeus.com>
+Date: Tue, 5 May 2026 10:32:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,112 +38,200 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 15/15] net: dsa: netc: add support for ethtool
- private statistics
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, f.fainelli@gmail.com,
- frank.li@nxp.com, chleroy@kernel.org, horms@kernel.org, linux@armlinux.org.uk
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-References: <20260430024945.3413973-1-wei.fang@nxp.com>
- <20260430024945.3413973-16-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260430024945.3413973-16-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HABEPFDMjyc4cjuRswvW2fOAkfHyMY3oFd5NH3fscJs_1777974235
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH 1/1] pinctrl: imx1: Allow parsing DT without function
+ nodes
+To: Frank Li <Frank.Li@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ "open list:PIN CONTROLLER - FREESCALE" <linux-gpio@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260504170836.1794372-1-Frank.Li@nxp.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: =?UTF-8?Q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>
+Autocrypt: addr=sebastien.szymanski@armadeus.com; keydata=
+ xsBNBFNfZLEBCACv1lqSePHJNpRgcnER+3emy+Arjz84zFax3XkogjY/e3ZneihIgWrVKe5M
+ ql16pX4KTkzNgMUKz4bG/XwT3kjcrXshxFLlg7KrHMl287C+W+QOUjnjVeRi/su+SPmjz8VD
+ yr11h+ZkVLAWhS+uQJ93jy1NwG8M4t1kBLAVHHD5Vw4FJ+3ouaVYIp1X1Cr8bVKQw33Q1aTd
+ ro0kMBb96B9vNu7ciJZ3gvlaBzUEKOgNnq9KaywuLnqrqr4HUIn5JuxZjCjJzt9kTAKcTfp2
+ cJM8qpp+2FF5qtbkse9fZ6M64qozgOPr9Tk4Amf9fZEUQ6UNw14mmBZuXSzoHe75gI7TABEB
+ AAHNN1PDqWJhc3RpZW4gU1pZTUFOU0tJIDxzZWJhc3RpZW4uc3p5bWFuc2tpQGFybWFkZXVz
+ LmNvbT7CwJAEEwEIADoCGyMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgBYhBJwGygpYm/1C
+ /GCmwbCaKeiBMmTiBQJdhIHLAAoJELCaKeiBMmTixXIH/2W3kbzRG0UF81jtRRnp0H83rjDT
+ v0H+8fgFMRL/7HCJ1QPArkfRJlM2wlJkN+ChP09CCarYfUEHfRCHlTb7At6Yyrz1jziD7ZwX
+ 8IWHYRXnZkY5eZc5DsiUgq6JH49kt+GPzK8UVP9MTa6zkBpPCUf7LzZ4pD3FihdkT52BU3gI
+ d9P49fSI0TYySlb/VKn815aOhvwEr7+Dh3mZUjSh7saofbRmVUOr7p+R3MvvGI19/IJZjeOE
+ ZWliODDOt6HnBOtoGSXMcNIFF6snH52D5N5gY88njZjTwhgGGUBix1bsgf/EY0v4R5itZBXB
+ B/Ze4Tm++YHaB75hZK6PQu/YRv7OwE0EU19ksQEIALo7jhXddrXBTRu5SAjelV53jyHBJTX/
+ vN4nL/VbbW/saca+NJjDSxx5DBmotZbQdWIyZiSIjU/xnTREvtDrl6ZeSsKWd7ZqiuiY4fSR
+ zwuQp9rd0yqRuxesrWeyJB1zCSdEvLyKASERt+nxkOA+IzJ4y1qLtvnWr+SL1AXgTMw+Tkyw
+ KIDCRWHTIYas11ldGj82gOIpYeXnapeNLHfT4EQwg0NeWYHynJxAQWiX5aPlw0uSpAQSsBXQ
+ FIe3fpoveMSnXK+PG2BBOzexYv7r4S70a6sF9sgTTPpfKqUaqqC+u1+bUX6alTAKhGKJywaF
+ 6ViqLlgY8PfwohSyAlqlTRMAEQEAAcLAdgQYAQgAIAIbDBYhBJwGygpYm/1C/GCmwbCaKeiB
+ MmTiBQJdhIHSAAoJELCaKeiBMmTitU8IAK7NQM3fEwaF5XaKtepYWsVka44CD8A9e4r7NVK9
+ ugirKvXirIxBSDmN/Db862NmVpITsZ6ERNSNZLm/7k55N+TexKYiFZeU7G92TEfAM6qPElvx
+ DLEcrkNMq9r08YZeUloacsq31AL5fK4LW+xdvXudkdiKRMJsdTpmff3x5kIziGOHjwFP9wve
+ ZgEH52gpbRsP8Whx/Z2lNX/BBRmFM8OnEXFsjjqDzYThdxTq85wGPpkgvvUGyPNRD7TpbB1C
+ pajOUUkPxgj5LKt77HD1afeZNudWhgcdkbtT5PMQTT0WY6wvMEj9S1+bGPeXRGWLYB7gHQ+L
+ JNoSD7Kz6Y9qnKo=
+In-Reply-To: <20260504170836.1794372-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+x-ovh-tracer-id: 12335922329985537596
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTEb25FGR3nOhA5+91Dq+E8bxlVEcVCP3B9EOMEnmpQdQrRBSNwBHJU0A57XiRZ4GmB+NkrWNoaJJZf4PxdX7bZoE1Zke2M4w8q3Rfg7BvbKroSxA/zlnsoKKQS/N/AWiqL5Idv9FMD7K/VoPYEqV+elc7uCrH/8rED972sIVeCkCeVvlDksLJjByTIG8Q23/1G0jtGscTqpK10kJxDRm/Mp+5haI1GoD7Jl+zGF1HyrGjehGYc5vZiJxSSwQaMSEOGhdpfDPMB/SwMXFhrT4KRj3U2M+lFHBOTuwLimFt1oK7tX9qfwJO1xAmI4XSrkNceytXsRfjQ2a9nSOVnNE+wbZS5PwBV2DViLk7fkEZCkqrvXFHNJ2PI66QJGK0JFYoeTKDgcRGSvuNQHpN0u9zvVXnvac9eHwskxxB5YWirKawBIX81WJ13Xx/FKExjtY6UpdrY/bvMVLG19LhmnNKxuQRvpFftihsSzN0x4vuTRgqmmeoUWN1e39Zz+uF/HW3D6SikvOUTAMpS3c7m9htwhDdyVtADY+aMVc7GDLjjjzVzl0UlDpl46zzXlwqlgMtnyJsyxRaRSAUMnkPwhf6BqEhKyhdAAvGR7WKkOt+SzLTHKyq8cPyQpedLgL9LsLJwVjrYn2xBEGCST18XlFHyJy/PoHXlz9u/aYODKkjh05w
+DKIM-Signature: a=rsa-sha256; bh=iK2OTeqhoBSCveaCZexOJs9PVb4BkPBHaXlxF/rh3GY=;
+ c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
+ t=1777969971; v=1;
+ b=Do6u5Ku7eX6UIF3R96zMpCeUIo7GLJTLcUIMaDSuj8NcjGQZMI/tQAA+A0YJ+NRuaFvcfFDV
+ CXbFObklQuf4vnOOwLupte9otDmWc4h2nrBgM1N/6MLn6Z1EB2Qw6BOUxKE1hRq0dinoDnxDNJ0
+ EO97leMDcdFlDAaLYNI5n2q71LkjfowgDzVC/b8geyIOc1nJsLyKOUAcYKmXrtQMeMX6/I0Li+4
+ QHRirIyIrY/wDbtm9wsojJwDchDBqNcCj2Hm0Ua7wXAkJymFnyDRhF39tcqoCy1CrGu9MKSdp7J
+ n6ssmgchukE2veiUL3dAOcTM68HGTGSlsj5Jylt2e05UA==
 
-On 4/30/26 4:49 AM, Wei Fang wrote:
-> Implement the ethtool private statistics interface to expose additional
-> port-level and MAC-level counters that are not covered by the standard
-> IEEE 802.3 statistics. The pMAC counters are only reported when the port
-> supports Frame Preemption (802.1Qbu/802.3br).
+Hello,
+
+On 5/4/26 7:08 PM, Frank Li wrote:
+> The old format to define pinctrl settings for imx in DT has two hierarchy
+> levels. The first level are function device nodes. The second level are
+> pingroups which contain a property fsl,pins. The original ntention was to
+> define all pin functions in a single dtsi file and just reference the
+> correct ones in the board files.
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> The commit ("5fcdf6a7ed95e pinctrl: imx: Allow parsing DT without function
+> nodes") already make moden i.MX chip support flatten layout.
+> 
+> Make legacy chipes (more than 15 years) support this flatten layout also.
+> 
+> Fixes: e948cbdc41d6f ("ARM: dts: imx: remove redundant intermediate node in pinmux hierarchy")
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/net/dsa/netc/netc_ethtool.c   | 107 ++++++++++++++++++++++++++
->  drivers/net/dsa/netc/netc_main.c      |   3 +
->  drivers/net/dsa/netc/netc_switch.h    |   9 +++
->  drivers/net/dsa/netc/netc_switch_hw.h |  58 ++++++++++++++
->  4 files changed, 177 insertions(+)
+> build test only
 > 
-> diff --git a/drivers/net/dsa/netc/netc_ethtool.c b/drivers/net/dsa/netc/netc_ethtool.c
-> index ac8940b5a85c..8d04db534347 100644
-> --- a/drivers/net/dsa/netc/netc_ethtool.c
-> +++ b/drivers/net/dsa/netc/netc_ethtool.c
-> @@ -19,6 +19,56 @@ static const struct ethtool_rmon_hist_range netc_rmon_ranges[] = {
->  	{ }
->  };
->  
-> +static const struct netc_port_stat netc_port_counters[] = {
-> +	{ NETC_PTGSLACR,	"port gate late arrival frames" },
-> +	{ NETC_PSDFTCR,	"port SDF transmit frames" },
-> +	{ NETC_PSDFDDCR,	"port SDF drop duplicate frames" },
-> +	{ NETC_PRXDCR,		"port rx discard frames" },
-> +	{ NETC_PRXDCRRR,	"port rx discard read-reset" },
-> +	{ NETC_PRXDCRR0,	"port rx discard reason 0" },
-> +	{ NETC_PRXDCRR1,	"port rx discard reason 1" },
-> +	{ NETC_PTXDCR,		"port tx discard frames" },
-> +	{ NETC_PTXDCRRR,	"port tx discard read-reset" },
-> +	{ NETC_PTXDCRR0,	"port tx discard reason 0" },
-> +	{ NETC_PTXDCRR1,	"port tx discard reason 1" },
-> +	{ NETC_BPDCR,		"bridge port discard frames" },
-> +	{ NETC_BPDCRRR,	"bridge port discard read-reset" },
-> +	{ NETC_BPDCRR0,	"bridge port discard reason 0" },
-> +	{ NETC_BPDCRR1,	"bridge port discard reason 1" },
-> +};
+> Sébastien Szymanski:
+> 	Can you help test it? I am happy i.MX27 still alive.
+
+Sure! Thanks for the patch! With this patch applied on Linux 7.1-rc2 the 
+board boots again. I see the following messages, though:
+
+[    0.085139] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.085226] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.085281] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.085327] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.085372] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.085416] imx27-pinctrl 10015000.pinmux: Not a valid fsl,pins 
+property (gpio)
+[    0.092693] imx27-pinctrl 10015000.pinmux: initialized IMX pinctrl driver
+
+That's because there is no fsl,pins property in the 6 gpio subnodes.
+
+Tested-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+
+I one have comment bellow.
+
+> 
+> Frank
+> ---
+>   drivers/pinctrl/freescale/pinctrl-imx1-core.c | 48 ++++++++++++++++---
+>   1 file changed, 41 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/pinctrl/freescale/pinctrl-imx1-core.c b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
+> index b36c8a1461b7c..bf07e0c64a098 100644
+> --- a/drivers/pinctrl/freescale/pinctrl-imx1-core.c
+> +++ b/drivers/pinctrl/freescale/pinctrl-imx1-core.c
+> @@ -540,10 +540,34 @@ static int imx1_pinctrl_parse_functions(struct device_node *np,
+>   	return 0;
+>   }
+>   
+> +/*
+> + * Check if the DT contains pins in the direct child nodes. This indicates the
+> + * newer DT format to store pins. This function returns true if the first found
+> + * fsl,pins property is in a child of np. Otherwise false is returned.
+> + */
+> +static bool imx1_pinctrl_dt_is_flat_functions(struct device_node *np)
+> +{
+> +	struct device_node *function_np;
+> +	struct device_node *pinctrl_np;
 > +
-> +static const struct netc_port_stat netc_emac_counters[] = {
-> +	{ NETC_PM_ROCT(0),	"eMAC rx octets" },
-> +	{ NETC_PM_RVLAN(0),	"eMAC rx VLAN frames" },
-> +	{ NETC_PM_RERR(0),	"eMAC rx frame errors" },
-> +	{ NETC_PM_RUCA(0),	"eMAC rx unicast frames" },
-> +	{ NETC_PM_RDRP(0),	"eMAC rx dropped packets" },
-> +	{ NETC_PM_RPKT(0),	"eMAC rx packets" },
-> +	{ NETC_PM_TOCT(0),	"eMAC tx octets" },
-> +	{ NETC_PM_TVLAN(0),	"eMAC tx VLAN frames" },
-> +	{ NETC_PM_TFCS(0),	"eMAC tx FCS errors" },
-> +	{ NETC_PM_TUCA(0),	"eMAC tx unicast frames" },
-> +	{ NETC_PM_TPKT(0),	"eMAC tx packets" },
-> +	{ NETC_PM_TUND(0),	"eMAC tx undersized packets" },
-> +	{ NETC_PM_TIOCT(0),	"eMAC tx invalid octets" },
-> +};
+> +	for_each_child_of_node(np, function_np) {
+> +		if (of_property_read_bool(function_np, "fsl,pins"))
+
+Isn't of_property_present better here...
+
+> +			return true;
 > +
-> +static const struct netc_port_stat netc_pmac_counters[] = {
-> +	{ NETC_PM_ROCT(1),	"pMAC rx octets" },
-> +	{ NETC_PM_RVLAN(1),	"pMAC rx VLAN frames" },
-> +	{ NETC_PM_RERR(1),	"pMAC rx frame errors" },
-> +	{ NETC_PM_RUCA(1),	"pMAC rx unicast frames" },
-> +	{ NETC_PM_RDRP(1),	"pMAC rx dropped packets" },
-> +	{ NETC_PM_RPKT(1),	"pMAC rx packets" },
-> +	{ NETC_PM_TOCT(1),	"pMAC tx octets" },
-> +	{ NETC_PM_TVLAN(1),	"pMAC tx VLAN frames" },
-> +	{ NETC_PM_TFCS(1),	"pMAC tx FCS errors" },
-> +	{ NETC_PM_TUCA(1),	"pMAC tx unicast frames" },
-> +	{ NETC_PM_TPKT(1),	"pMAC tx packets" },
-> +	{ NETC_PM_TUND(1),	"pMAC tx undersized packets" },
-> +	{ NETC_PM_TIOCT(1),	"pMAC tx invalid octets" },
-> +};
+> +		for_each_child_of_node(function_np, pinctrl_np) {
+> +			if (of_property_read_bool(pinctrl_np, "fsl,pins"))
 
-Sashiko says:
+...and here ?
 
-Are these standard MAC and interface statistics being duplicated in the
-driver-private ethtool strings?
-The networking subsystem guidelines indicate that statistics which have
-a standard uAPI must not be duplicated in ethtool -S. Standard
-interfaces like struct rtnl_link_stats64 or struct ethtool_eth_mac_stats
-already exist for counters such as rx octets, rx packets, dropped
-packets, and FCS errors.
-Could these metrics be exposed through the standardized interfaces
-rather than adding them to the private string sets?
+Regards,
 
-Other comments are AFAICS false positives.
+> +				return false;
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>   static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
+>   		struct imx1_pinctrl *pctl, struct imx1_pinctrl_soc_info *info)
+>   {
+>   	struct device_node *np = pdev->dev.of_node;
+> +	bool flat_funcs;
+>   	int ret;
+>   	u32 nfuncs = 0;
+>   	u32 ngroups = 0;
+> @@ -552,9 +576,15 @@ static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
+>   	if (!np)
+>   		return -ENODEV;
+>   
+> -	for_each_child_of_node_scoped(np, child) {
+> -		++nfuncs;
+> -		ngroups += of_get_child_count(child);
+> +	flat_funcs = imx1_pinctrl_dt_is_flat_functions(np);
+> +	if (flat_funcs) {
+> +		nfuncs = 1;
+> +		ngroups = of_get_child_count(np);
+> +	} else {
+> +		for_each_child_of_node_scoped(np, child) {
+> +			++nfuncs;
+> +			ngroups += of_get_child_count(child);
+> +		}
+>   	}
+>   
+>   	if (!nfuncs) {
+> @@ -574,10 +604,14 @@ static int imx1_pinctrl_parse_dt(struct platform_device *pdev,
+>   	if (!info->functions || !info->groups)
+>   		return -ENOMEM;
+>   
+> -	for_each_child_of_node_scoped(np, child) {
+> -		ret = imx1_pinctrl_parse_functions(child, info, ifunc++);
+> -		if (ret == -ENOMEM)
+> -			return -ENOMEM;
+> +	if (flat_funcs) {
+> +		imx1_pinctrl_parse_functions(np, info, 0);
+> +	} else {
+> +		for_each_child_of_node_scoped(np, child) {
+> +			ret = imx1_pinctrl_parse_functions(child, info, ifunc++);
+> +			if (ret == -ENOMEM)
+> +				return -ENOMEM;
+> +		}
+>   	}
+>   
+>   	return 0;
 
-/P
 
+-- 
+Sébastien Szymanski, Armadeus Systems
+Software engineer
