@@ -1,242 +1,374 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013060.outbound.protection.outlook.com [40.107.162.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C6C290DBB
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 08:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777969334; cv=none; b=SXLiT4sOznOh0tptXWh2ODliOUe4cOvs0f/TSgGE1iSzbsFgYS2AzopPTRO/yIKR82i82GwKuF19ew8EYvJg+4c81Hgie334vJ7jR/xw38+D5t2e8cw9zQhBBBkr/nM7ZWHaKlQ00Dp1QhzmqvQs49IsxASVsF1MQAGphO0uJdg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777969334; c=relaxed/simple;
-	bh=nK0j9juRgg0ZsV/8NnbWOopdIAYdgSZX1Hdc5+iIKv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GBeld9+gC1EpAcMyvLQA49ykCdOR7rzklKeyRVcOS36CLyhI9PAV6+KPlZq+KfEOcFQgSY7k7vTuPt5tOfLBPpd5foLCcXFYBQlUxydNxXqNMt6AiJZyBfy1bxww5xrww9+GkMHXeu71ZTuT/3ElvglT8698FrrhzfQbwmrudi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmrFh42M; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74942EB5B8
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 08:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777970780; cv=fail; b=j1lA8SaCGedHx5/iLvq8K7OXE8IDIneZ2Tzm5nHHnCVNi/IUhcp3mB1qxIArHTofiFf5dLypgzTpkSrlPnoOEuICeY/iNA0RDQIv7G5cdaQqrMbuZlD2Is+vxIA+vZJVfrRDIVCJvSbE6qwMLhOTMnQ1E1PS0/YPc0Kr31DQQVU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777970780; c=relaxed/simple;
+	bh=Qh8tsWtYHAopmR85fg6TLMY9gqpHXYmXF9PsLiJuz3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=B6seSa7M/1hWGqhJr9w2csHCZ93bvDsNezaCvj2gU1zNOTTCSf+6q6bunm6BpcJ7i3Yf5eDzxOmgKjXmu0ZDPn3RaQytkWdRPwaj0Nj8Kl9vgdtuvkpVH8ohgLVbnMO1byOrDUxwPuuxKB0zWhHf2KJQ2tr+sQoHRPJXeOC6NGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=hewaSdMP; arc=fail smtp.client-ip=40.107.162.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmrFh42M"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36520a83186so1795734a91.3
-        for <imx@lists.linux.dev>; Tue, 05 May 2026 01:22:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777969331; x=1778574131; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DoyB8695OKHFJLVaXhyFdUBCqi4FGLL4BEcb0wuk4uw=;
-        b=cmrFh42MI81O+kl45GDZ/sngXzJcyUlVJjoXIMwcr4FXr+jQ+nSPOst9BZREJLY4WE
-         l43yKIoFQbsS2GbQk9kO2rKp7CEe6VlGynO4lu5AT/NnpL1vXdxEu8aJKkWt7kVq7X0x
-         2sT5nTQ+RddC49bXJDrRx2m72cG3CnBY1c5zu0h9HKz9yxcYNME5EMnNEUDBVUkqnm5R
-         xdRrIoAi1iL0dNYvHcWMNLGrW9UcIUJqbHD4KqCqD0o3EHXOlEVCXBs96zYhPVxlpi1O
-         G2GVODPDzSL2bamxgFXWxPmLQQw0zjaVIscazkuzaQl3Uj+8GvuG0Zr45IDPxNIFgemc
-         D2Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777969331; x=1778574131;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DoyB8695OKHFJLVaXhyFdUBCqi4FGLL4BEcb0wuk4uw=;
-        b=D5nAhRo9FInxSbmc/cpadUZJoF26Ez5buhcicDkLPK0IsU/01AmNyp/+yU+uFWWVrZ
-         4OhXeN1qU0m6PpgYN2kiRIBOFm5r8anHnWp/vCcnNTpYRL9R7PAf9uR+q70jpvW7NLtU
-         ktEIRqyWtcZ+rIA8plwfNkLq4fTyAYWTxkuoraNJvgsb4lO64+nqxIfHm8VTkIhu3ZJD
-         zuEpux+J/RFdYjuUgA2bJPpMloPx/PvjkOCOa+iKbuu5nfng0/XZat6Nhp5JQyl1eASM
-         8lLsyVRmr97D6c1OTIuhVIfINKQTG0RlrqjLZahg6xWWWqSaJ3F8XbzNUK1ymxj+WPTf
-         PUSw==
-X-Forwarded-Encrypted: i=1; AFNElJ8DG8znU3cCXzKaRzr6I5HCqA873Q74qYNJqIeZzXnEwOveQpDVQL+zWSivsuAIUUETXik=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnGt6LonkRuaM7ABcyJ54MVQWWugwV3MbSqja0GBSnPoKgRzWL
-	3Vx4Asc+VPX0g5cQmopgb9p9kR1rRzqA3x8mJHuNRQqjz1GV68TkJzB2
-X-Gm-Gg: AeBDiev8NJCbWVnWOydgdTIKd4CQNnwSKSVBwXJz6Q1qBaJZYAW+KKG4pqkjay/2RQY
-	jMRRRDRgrXkui4zz4OOr3HW9+pkISo9NMsR9fY9YK+LHMicpvFLaQdhyUccnNE9Mj7B9SFEII4L
-	WdbCBij8g0DmPTOyOYkF0MqLz5WDOLne3V1lHDcU8bynaSqqOlezXItAfQwC4oRJPiLxNCe9/bM
-	Myaj1Qu5Hck1y337p263lssVnyoMsk+Ax2zHeLUaLmgIKYToUlHJU0DNOXNuvZjwIWZJsxEhhxY
-	CG8pdi96zhM7zgAspka0Hkf49xBRW4kvLokzKP89zaGCjhAHcsgA8QUhYl7PW5sVucC7tIT7Rj2
-	hRZMopNCbEWv4MmkqE6BbpZMPIZUg+a4P3gCQz+4HRUV+hcXhb+F2gPBOORHiWp+dp+/4rjIFxA
-	qpk1tZmwKIgo1VTaN1OyBsb86d
-X-Received: by 2002:a17:90b:3807:b0:35d:95eb:879a with SMTP id 98e67ed59e1d1-36577487bccmr2309864a91.13.1777969331396;
-        Tue, 05 May 2026 01:22:11 -0700 (PDT)
-Received: from lgs.. ([152.32.133.247])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3650e94126dsm11439814a91.5.2026.05.05.01.22.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 01:22:10 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with device_node cleanup
-Date: Tue,  5 May 2026 16:21:45 +0800
-Message-ID: <20260505082145.603262-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="hewaSdMP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tJmXUhbGSxBCRdKvZWa7cxTNVES7NTvZCFHCpAV75X42hXc/DcqSepOaJdc0wWklIxPjyt/VzoiCJ3IS6NjLebSBAGj07TZ2qQbbXPkxLTrZOU1YIhKYxaQBOyykcHmHTHJG58j9SE0xv4ItKNl0cM47frvFZzg3uNyk9CQrYmHWs42tfGfVK5gN+3wY6uQJ/45iGkph6uENBvHgPNmDQI83Mm7rpmNBDEESw1do9q+HPlYUNAzUQV48AHGybJ+cLygiGQK3THyztkeO1uYojt9yYX2uwOPb/DHhu2Bds+djfu9vm2wsolhxRNtoT++5vmrJM4CNxxs18J7rOE7efw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z4AjqPoJgFglgf1h+oBdg1z5GXN2QohC9Na6DU3ov0M=;
+ b=CV0Ke53vrxZ2no15ggHcDIHrBlajAMizEy92X06n70MJdkqoC3guFCjn/jm/HA5MyhTBxTABb/Du+Jg7M/wnjjPJjdIdi3+G2i9GEsUKPbOkkwWYeJYOqX/X1i+sLstna24U3TPHE9kP5xiPW66VajNBxmCXC5cXkH2pdwyyKa4YXNERoT1o4lcsOrBC9L+MNnEQZ0hx1dPN82SQtLaAb9L7inHbODVBA4LY9E4eJ0MUxMx0SFPaZMkxcgGE2/yTaojYJczHuLkIp1YN/FRvRdaOMUU9gwcKHtJVzlYrUoOFVaPMibCBRFfMYM5Bc1jbChAASI5iIrHCrUlwpSdtyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=ti.com smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z4AjqPoJgFglgf1h+oBdg1z5GXN2QohC9Na6DU3ov0M=;
+ b=hewaSdMPQIrieewrm09cOzes0wJPBgVRqYCkYrHfVgtEG3uEutrkePdCt+2gO+IGsaA9EZQPWfkfjef22IFesYgMKhz0wdy7+2xua5Q14uSEej2knerCw51PRkBpDGP0zQViDDD0VvWoP1xXJuXnTQMeTiTGow8a19svZEyhLFSwrxJUUZAuPdzix5+4h5jtE37Db8lbMbOCb1gsbnL9bFuRMyes1wPYBgWRSine8NBQmNuQPR5Ou0Bb2jDyYG+5HgG3TN2c65wQf3tGXMoa7qYgYhRbfG1XD7SxYYA6WusZzbmQc/VnjySMWMTfrvsraxJxcuTtQcEU2GR6hPLkOQ==
+Received: from DU2PR04CA0174.eurprd04.prod.outlook.com (2603:10a6:10:2b0::29)
+ by AS2PR10MB7273.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:607::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 08:46:15 +0000
+Received: from DB3PEPF0000885A.eurprd02.prod.outlook.com
+ (2603:10a6:10:2b0:cafe::f6) by DU2PR04CA0174.outlook.office365.com
+ (2603:10a6:10:2b0::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Tue,
+ 5 May 2026 08:46:15 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ DB3PEPF0000885A.mail.protection.outlook.com (10.167.242.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Tue, 5 May 2026 08:46:14 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 5 May
+ 2026 10:49:30 +0200
+Received: from [10.48.87.127] (10.48.87.127) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 5 May
+ 2026 10:46:12 +0200
+Message-ID: <6917e3d7-8c6c-4e63-8eca-5308621ec3e8@foss.st.com>
+Date: Tue, 5 May 2026 10:46:11 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Beleswar Prasad Padhi <b-padhi@ti.com>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>
+CC: Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew@lunn.ch>, "Linus
+ Walleij" <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+	"Jonathan Corbet" <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"Peng Fan" <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20260422212849.1240591-1-shenwei.wang@nxp.com>
+ <PAXPR04MB91850A11C58419C03909145F89362@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6412a758-4560-4cf1-a0d0-5b24d1a715f1@lunn.ch>
+ <PAXPR04MB9185009A17DFDF3D6C8B44E789362@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6e01e114-e336-4744-b6b4-563ec42e321b@lunn.ch>
+ <PAXPR04MB9185A098D894B6A6EBCC13F889372@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <afImuoeHolxGgw3H@p14s>
+ <PAXPR04MB9185F2F6DDB55AC56C92D63B89342@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CANLsYkwvL0Z3+12MD=J+Dc2yAU2T8ypizyG=6AhYoWOh55odHA@mail.gmail.com>
+ <472f85bd-42c2-40c6-abfd-b76924797069@ti.com>
+ <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <268f8e00-91bc-43ea-ba95-077cf859e7f3@ti.com>
+ <9e2492d3-8753-46c7-8db6-5f1a80b4f2e9@foss.st.com>
+ <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+In-Reply-To: <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885A:EE_|AS2PR10MB7273:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5497c169-6dbd-4af4-87f8-08deaa82c41b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|7416014|1800799024|36860700016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	WSBbioC0ZQcApSDAB+icH+VDEDZR2u1+ovbDvMH5NVtKPC8jpTOBwAmYIZuHNV3WXxy/TNvPYzxtl3mP7SFQZonw1gZDp1tGeEk5Bdz9sn/MobR7xCQjS1jmxSlFy9fTFoMK3GjljFNQDiqbm/qezClIuTGv3dQXL5xyFWl7Y0B1dKDZ3rk1cJKQCQV9JYsjWRbriQjtyRjWK6IWcwniJDGZJEquUTgY7YlqRILhJkUaKKRl3QEHi9iVlPXItsXDMvWq0Cp5RBz1wN4S9SaUoLuwDSiHBAbgb+SsKPcplmCF9Yz8UteQS3DKI+VXT/gIC3IiXtadg7HCeeZETVo6XheBnvkKYkDJbV1rcejs1t6ltcWyMbANl/Obzl/5EjeXrR8q6JXePYIyaGkC1ZMd/aTNhlvDiQS9Bl+I6NRMB1PxgCl3MeYFv2fmqNZfju3GUaxgjvoWdnvyPpeNrkLoV8vgfhylkPDTY380hPHQQJZQvSqu+V8kLFwcUOLmZ4I3TpSDErro96iu0gd1648n+nyVLm9cecCVGUYR2cv8H/jBzgUe/Bg/wj7mEKqdIAmskmXCJraF9jklBr9w2poW8f3nrZibenCfGnyZUuyqAWKykg6EN8xezW8rl2vPF2kPObx/EyAB6XodAvD2CjESa1EHzKky685ataZmMQ0wMNKIsg1a2tVPEu2NA1GklcDRd5l+MNTNkaPsVpTzxIo+VOjKxO876DzKoyBvuqeYCzQ=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Lh8s8N77UKwxt2bcLTwTiLaVyd2Xy4UdkYLl0xqVBkrU5dCiFpcosa6CcduA+LftuEzW/c237Fs8Su90SfgzPBjMfo6UE5Q72UL0HozlkIGMssGVTjS0H4Nm48rtmh0+ove8U9VUwonHuGygsF/ZvambDYjFsvcH8YCttmgFDHDehU8rFtwXwSFyCQNoNK6t6lolHAVLArAWlTsARC5x6qP9D1VcK7KDpCGOFia1R4RoimZ61GCRo3ZzT/jG0rMmAMwCVsTM3BJGD3BzpD9s58zjeO0pGqpvJTTspEjm7O1nXefG+zOD6uTi61URqWxi1enceZsFg5vKzflMmxh9JVMp+xDYCixcCfC0oQzVyNinmorixzpdVd3Ed29Sg/bDZm9rZjiGAz4kChy3qODerl2rS9mEOoLIEN0G/iE6E4koQVg9vFuZtKxOpFoS3zgQ
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 08:46:14.4643
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5497c169-6dbd-4af4-87f8-08deaa82c41b
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885A.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB7273
 
-imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
-on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
-value in a __free(device_node) variable before checking IS_ERR().
-When the function returns on the error path, the cleanup action calls
-of_node_put() on the ERR_PTR() value.
+Hi Beleswar
 
-Do not let a device_node cleanup variable hold error pointers. Return
-the error code from imx8qxp_pxl2dpi_get_available_ep_from_port()
-directly and pass the endpoint node through an output argument. This
-keeps the cleanup action operating only on NULL or a valid device_node,
-while preserving the existing error codes.
+On 5/5/26 07:25, Beleswar Prasad Padhi wrote:
+> Hi Arnaud,
+> 
+> On 04/05/26 22:34, Arnaud POULIQUEN wrote:
+>> Hi Beleswar,
+>>
+>> On 5/4/26 10:17, Beleswar Prasad Padhi wrote:
+>>
+> 
+> [...]
+> 
+>>>
+>>>>
+>>>> I may have misunderstood your solution. Could you please help me
+>>>> understand your proposal by explaining how you would handle three
+>>>> GPIO ports defined in the DT, considering that the endpoint
+>>>> addresses on the Linux side can be random?
+>>>> If I assume there is a unique endpoint on the remote side,
+>>>> I do not understand how you can match, on the firmware side,
+>>>> the Linux endpoint address to the GPIO port.
+>>>
+>>>
+>>> Sure, let me take an example:
+>>> Assumptions: 3 GPIO ports in DT, 3 endpoints in Linux (one per port),
+>>> 1 endpoint in remote (0xd) and 1 rpmsg channel (rpmsg-io)
+>>>
+>>>          rpmsg {
+>>>            rpmsg-io {
+>>>              #address-cells = <1>;
+>>>              #size-cells = <0>;
+>>>
+>>>              gpio@25 {
+>>>                compatible = "rpmsg-gpio";
+>>>                reg = <25>;
+>>>                gpio-controller;
+>>>                #gpio-cells = <2>;
+>>>                #interrupt-cells = <2>;
+>>>                interrupt-controller;
+>>>              };
+>>>
+>>>              gpio@32 {
+>>>                compatible = "rpmsg-gpio";
+>>>                reg = <32>;
+>>>                gpio-controller;
+>>>                #gpio-cells = <2>;
+>>>                #interrupt-cells = <2>;
+>>>                interrupt-controller;
+>>>              };
+>>>
+>>>              gpio@35 {
+>>>                compatible = "rpmsg-gpio";
+>>>                reg = <35>;
+>>>                gpio-controller;
+>>>                #gpio-cells = <2>;
+>>>                #interrupt-cells = <2>;
+>>>                interrupt-controller;
+>>>              };
+>>>            };
+>>>          };
+>>>
+>>> Code Flow:
+>>> 1. "rpmsg-io" channel is announced from remote firmware with unique dst
+>>>       ept = 0xd.
+>>>
+>>> 2. rpmsg_core.c creates the default dynamic local ept for the channel
+>>>       ept = 0x405.
+>>>
+>>> 3. rpmsg_core.c assigns the allocated addr to rpdev device:
+>>>       rpdev->src = 0x405 and rpdev->dst = 0xd.
+>>>
+>>> 4. rpmsg_gpio_channel_probe() is triggered. For *each* of the GPIO ports
+>>>       in DT, it will trigger rpmsg_gpiochip_register() which will now:
+>>>          a. Call port->ept = rpmsg_create_ept(rpdev,
+>>>                                                                      rpmsg_gpio_channel_callback,
+>>>                                                                      port,
+>>>                                                                     {rpdev.id.name,
+>>>                                                                      RPMSG_ADDR_ANY,
+>>>                                                                      RPMSG_ADDR_ANY});
+>>>              Ex- port->ept->addr = 0x408
+>>>
+>>>          b. Prepare a 8-byte message having 2 fields:
+>>>              port->ept->addr (0x408) and port->idx (25)
+>>>
+>>>          c. Send this message to remote firmware on default channel ept
+>>>              (0x405 -> 0xd) by:
+>>>              rpmsg_send(rpdev->ept, &message, sizeof(message));
+>>>
+>>>          d. Remote side receives this message and creates a map of the
+>>>              linux_ept_addr to gpio_port. (0x408 <-> 25)
+>>>
+>>> 5. After this point, any gpio messages sent from Linux from gpio port
+>>>       endpoints (Ex- 0x408) can be decoded at remote side by looking up
+>>>       its map (Ex- map[0x408] = 25).
+>>>
+>>> 6. Any messages sent from remote to Linux for a particular gpio port can
+>>>       also be decoded at Linux by simply fetching the priv pointer to get
+>>>       the per-port device:
+>>>       struct rpmsg_gpio_port *port = priv;
+>>>
+>>
+>> Thanks for the details!
+>>
+>> To sum up:
+>> - the default endpoint acts as the GPIO controller (0x405),
+>> - one extra Linux endpoint is created per port defined in DT.
+>>
+>> This should work, but my concerns remain the same:
+>>
+>>    1) This implementation forces the remote processor to handle a single
+>>       endpoint instead of one endpoint per port. This may add complexity to
+>>       the remote firmware if each port is managed in a separate thread.
+> 
+> 
+> A. Not really, I just chose 1 remote endpoint for this example as you
+>      suggested to. We can scale it for two-way communication via the
+>      get_config message like you suggested below.
+> 
+> B. Isn't it a bad design of the firmware if it is handling 10 gpio ports
+>      in 10 threads? The logic to handle all the ports is the same, only
+>      the parameters (e.g. line number, msg) is different.
+> 
+>>
+>>    2) Linux, as a consumer, should not expose its capabilities to the remote
+>>       side (in your proposal it enumerates the ports defined in the DT).     In my view, the remote processor should expose its capabilities as the
+>>       provider.
+> 
+> 
+> Agreed on this.
+> 
+>>
+>>  From my perspective, based on your proposal:
+>>   1) Linux should send a get_config message to the remote proc (0x405 -> 0xD). 2) The remote processor would respond with the list of ports, associated
+>>      with an remote endpoint addresses.
+> 
+> 
+> Agreed, we can scale it for multiple remote endpoints like this.
+> 
+>>   3) Linux would parse the response, compare it with the DT, enable the GPIO
+>>      ports accordingly, creating it local endpoint and associating it with
+>>      the remote endpoint.
+>> Using name service to identify the ports should avoid step 1 & 2 ...
+> 
+> 
+> Yes, but won't that make a lot of hard-codings in the driver?
+> 
+> +static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
+> +    { .name = "rpmsg-io-25" },
+> +    { .name = "rpmsg-io-32" },
+> +    { .name = "rpmsg-io-35" },
+> +    { },
+> +};
+> 
+> What if tomorrow another vendor decides to add more remoteproc
+> controlled GPIO ports to Linux, they would have to update this struct in
+> the driver everytime. And the port indexes (25/32/35) could also differ
+> between vendors. We should make the driver dynamic i.e. vendor
+> agnostic.
+> 
+> I think querying the remote firmware at runtime (step 1 & 2 above) is a
+> common design pattern and makes the driver vendor agnostic. But feel
+> free to correct me.
+> 
 
-Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v4:
-  - Drop the sentence mentioning the custom static analysis tool.
-  - Add Frank's Reviewed-by tag.
-  - No functional code changes.
+You are right. My proposal would require a patch in rpmsg-core. The idea of
+allowing a postfix in the compatible string has been discussed before, but,
+if I remember correctly, it was not concluded.
 
-v3:
-  - Do not change DEFINE_FREE(device_node, ...).
-  - Fix the driver pattern by making
-    imx8qxp_pxl2dpi_get_available_ep_from_port() return an int and
-    pass the endpoint via an output argument.
-  - Update both callers so __free(device_node) never holds ERR_PTR().
+/* rpmsg devices and drivers are matched using the service name */
+static inline int rpmsg_id_match(const struct rpmsg_device *rpdev,
+				  const struct rpmsg_device_id *id)
+{
+	size_t len;
 
-v2:
-  - Fix DEFINE_FREE(device_node, ...) directly.
++	len = strnlen(id->name, RPMSG_NAME_SIZE);
++	if (len && id->name[len - 1] == '*')
++		return !strncmp(id->name, rpdev->id.name, len - 1);
 
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 54 ++++++++++----------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+	return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) == 0;
+}
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-index 441fd32dc91c..881ebb811eb3 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -222,52 +222,52 @@ static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
- 			imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts,
- };
- 
--static struct device_node *
-+static int
- imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
--					   u32 port_id)
-+					   u32 port_id,
-+					   struct device_node **ep)
- {
--	struct device_node *port, *ep;
-+	struct device_node *port __free(device_node) =
-+		of_graph_get_port_by_id(p2d->dev->of_node, port_id);
- 	int ep_cnt;
- 
--	port = of_graph_get_port_by_id(p2d->dev->of_node, port_id);
-+	*ep = NULL;
- 	if (!port) {
- 		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
- 	}
- 
- 	ep_cnt = of_get_available_child_count(port);
- 	if (ep_cnt == 0) {
- 		DRM_DEV_ERROR(p2d->dev, "no available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
--		goto out;
-+		return -ENODEV;
- 	} else if (ep_cnt > 1) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "invalid available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-EINVAL);
--		goto out;
-+		return -EINVAL;
- 	}
- 
--	ep = of_get_next_available_child(port, NULL);
--	if (!ep) {
-+	*ep = of_get_next_available_child(port, NULL);
-+	if (!*ep) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "failed to get available endpoint of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
--		goto out;
-+		return -ENODEV;
- 	}
--out:
--	of_node_put(port);
--	return ep;
-+
-+	return 0;
- }
- 
- static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- {
--	struct device_node *ep __free(device_node) =
--		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	struct device_node *ep __free(device_node) = NULL;
-+	int ret;
-+
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1, &ep);
-+	if (ret)
-+		return ret;
- 
- 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
- 	if (!remote || !of_device_is_available(remote)) {
-@@ -287,26 +287,24 @@ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- 
- static int imx8qxp_pxl2dpi_set_pixel_link_sel(struct imx8qxp_pxl2dpi *p2d)
- {
--	struct device_node *ep;
-+	struct device_node *ep __free(device_node) = NULL;
- 	struct of_endpoint endpoint;
- 	int ret;
- 
--	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0, &ep);
-+	if (ret)
-+		return ret;
- 
- 	ret = of_graph_parse_endpoint(ep, &endpoint);
- 	if (ret) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "failed to parse endpoint of port@0: %d\n", ret);
--		goto out;
-+		return ret;
- 	}
- 
- 	p2d->pl_sel = endpoint.id;
--out:
--	of_node_put(ep);
- 
--	return ret;
-+	return 0;
- }
- 
- static int imx8qxp_pxl2dpi_parse_dt_companion(struct imx8qxp_pxl2dpi *p2d)
--- 
-2.43.0
+Then, in rpmsg-gpio, and possibly in other drivers such as rpmsg-tty and
+a future rpmsg-i2c, we could use:
+static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
+     { .name = "rpmsg-io" },
+     { .name = "rpmsg-io-*" },
+     { },
+};
+
+If exact name matching is strongly required, then this proposal would 
+not be suitable.
+
+A third option would be a combination of both approaches: instantiate 
+the device using the same name service from the remote side, as done in 
+rpmsg-tty. In that case, a get_config message, or a similar mechanism, 
+would also be needed to retrieve the port information from the remote side.
+
+Tanmaya also proposed another alternative based on reserved addresses.
+
+At this point, I suggest letting Mathieu review the discussion and 
+recommend the most suitable approach.
+
+Thanks,
+Arnaud
+
+>>
+>> At the end, whatever solution is implemented, my main concern is that the
+>> Linux driver design should, if possible, avoid adding unnecessary complexity
+>> or limitations on the remote side (for instance in openAMP project).
+> 
+> 
+> Yes definitely, I want the same. Feel free to let me know if this does
+> not suit with the OpenAMP project.
+> 
+> Thanks,
+> Beleswar
+> 
+>>
+>> Thanks,
+>> Arnaud
+>>
+>>
+>>> So Linux does not need to send the port idx everytime while sending a
+>>> gpio message anymore.
+>>>
+>>> Thanks,
+>>> Beleswar
+>>>
+>>> [...]
+>>>
+>>
 
