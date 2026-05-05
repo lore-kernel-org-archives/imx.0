@@ -1,103 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC7F436372
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 12:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08EF47ECD7
+	for <imx@lists.linux.dev>; Tue,  5 May 2026 13:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777985433; cv=none; b=XPSZaml+iqNaATYM2yJG0usgJUPWrxI7LVXLDEXt2Z05EjiN6XQPyUsMJK5JyokM883UGlAvant/BySQ0yMAnNZzttnJhuczRUp1m9JT+IzxBAzDFkN+r3oSzDCz5vggVnihphAN/HsfWoZF8SEFbGqIznre4BcE7YWRT9IJ8Ps=
+	t=1777989110; cv=none; b=GnXxsaUwOOQhajEZpPeaWW/uKfOLPOa3f0bb682rtBEDdNazeK0l6unLWdeBZqs3qF/IDTvsadIjvXY7hM0vj2AxtQ8VoSAOMtk8wgJrtth8Ggc9/n0Fl7TfX3ai42NsyPSve1vF8Zb69hkjU1u+RWQi81t7fmE/6yllKYizEqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777985433; c=relaxed/simple;
-	bh=kJHxpSQ2RAsx52NGXeVPNpjdG3TF8+xCdq6mPtq3ZlA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uWF+h0/xUQgQdVsbzgLp6T2EQPUd7WZ1HpBrpMtcA+5PxGNZIMfjlSPQOwMnWA0HoRFU4wxnwmTb11uStWOgtEO1Bc0UwYB2x9LZ6AuRitpm5ZmuVmrHieY0R4nrBKxYvpDGmuZ6EiHs0FHKXClmW/nPXQ2IQNA10jK55i3SClc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ye08dOtX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777989110; c=relaxed/simple;
+	bh=xo5umndcEyLGiWOJhHMf9q3v4XEGsmwU7lViijkWpXM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uFsbhlUol1MSA2oxhshw/HU5d3TqxiGAzzgI4Lg7WoQPdavAwQRsV7V+bsX8iEKnIcCDI71oJTM7K5jrke5KwEwje+SjaI5p8PIenEn0kdx69JQsumq6mco+Upj1v6+7VPkXB+l9F1mjRUZx4wjGlR1Y774F/LwxIE9YksePzAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dltLJJY9; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ye08dOtX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47DEC2BCFF
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 12:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777985430;
-	bh=kJHxpSQ2RAsx52NGXeVPNpjdG3TF8+xCdq6mPtq3ZlA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ye08dOtX5KswflTgRy7PioBdoSHzsNA0RQxedsIJKIPz6V+B8rSm6nxQbmGoY57HM
-	 gEkEC0sm93CSINHwSl0nI1nz1Ow05cj7q5bmYMgP0D9vf9TggYlWvLtu6amg/rZS+y
-	 c8I8jmtAFKRujwezh0WXKHmuk1MmvTDAxhYDmxcadk1JaFGPpEtErVe63hJuzryrqr
-	 LO//AG5UIfxiImG4kzaWeDMSMjPl01UxhVyQj9SZsMdjlAEHtAGj9TjmCJEKYXBBXM
-	 e4Tk/Whzf+of6Av/vW8LQ1Heaw7ISyLlq7igxySdZ1dJs96zAP03l/SKWr27U5zOvb
-	 VqkrlnmvjVaCQ==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3939d2bd7ecso20749051fa.0
-        for <imx@lists.linux.dev>; Tue, 05 May 2026 05:50:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/wsrQDwQsssyY0uyXb63IYfkFwigM+YrFj8auIxuoXOcP711UZRmwAxb33AmUaKZkBbtY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwDH4VdDrXxRREhGMXnRUlNtmHziY0cHreZ51ShVivnzLMNRm2T
-	9r6+CRRBtprjY79d/AYtIuIE6byZWUxqyZ6FM1hKl5YWmX7YKatbaUF7Yg35AIVGGSQuP4flJO3
-	TkeY9KRrtRCbG2HFrKvuWjSyLPQ3V0T4=
-X-Received: by 2002:a05:651c:e07:b0:393:a39f:5826 with SMTP id
- 38308e7fff4ca-393b2bb72cemr10436711fa.21.1777985429375; Tue, 05 May 2026
- 05:50:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dltLJJY9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E62B4C5D739;
+	Tue,  5 May 2026 13:52:32 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EA4576053C;
+	Tue,  5 May 2026 13:51:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47E0411AD0190;
+	Tue,  5 May 2026 15:51:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777989105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=xo5umndcEyLGiWOJhHMf9q3v4XEGsmwU7lViijkWpXM=;
+	b=dltLJJY95nTFBOjhnhLmFVlYQMKVPbsLzwwbT8GLD4la63Nvrirx7k7dZ/oZHPVo+q4Y4l
+	RRg66/ed60XEZZgEIzIgjjHYAepLfvRJxwSPvkyWe/I+hh1F6bspOJDTx4Q8jho8zXoGO4
+	GQ1bvcQBpxuud1GES7Eq5/fg9CnWW2NdgOVdMGusW4NQmujr0HkJn3mPbiGiMWF9HBpsUg
+	ZrOB10stqv1DjM+1AXWsSzdBjl4vfBRTK16EpxfkwYRZbVa8YPSx2TJ7dKoHqwbYzTy4uO
+	WfjJx1k/m4/Ig4XyQ1th9yghakZdGq7cdWMYbUI/hFckfw8eZ6udrbmpoCCYQA==
+From: =?UTF-8?B?QmVub8OudA==?= Monin <benoit.monin@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev,
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH RFC 1/2] dmaengine: fsl-edma: Implement
+ device_prep_peripheral_dma_vec
+Date: Tue, 05 May 2026 15:51:43 +0200
+Message-ID: <BXbYyeoYQ824UWckgqlzqQ@bootlin.com>
+In-Reply-To: <afjCEG_Do01eVBBO@lizhi-Precision-Tower-5810>
+References:
+ <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com>
+ <20260430-fsl-edma-dyn-sg-v1-1-4e0ecbe2df66@bootlin.com>
+ <afjCEG_Do01eVBBO@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260504-pinctrl-mux-v6-0-8ea858ba3a5b@nxp.com>
-In-Reply-To: <20260504-pinctrl-mux-v6-0-8ea858ba3a5b@nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 5 May 2026 14:50:17 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmXvnf6sSWsGe+++u37ONJpFFvxFMUkLdvvxiiaWuf9gQ@mail.gmail.com>
-X-Gm-Features: AVHnY4KycpDZhMuiBecuVH9tsvrsrZHEaBFUypvKntpPBTYsQnaEicGr2XejHl0
-Message-ID: <CAD++jLmXvnf6sSWsGe+++u37ONJpFFvxFMUkLdvvxiiaWuf9gQ@mail.gmail.com>
-Subject: Re: [PATCH v6 0/7] pinctrl: Add generic pinctrl for board-level mux chips
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Last-TLS-Session-Version: TLSv1.3
 
-SGkgRnJhbmshDQoNCk9uIFR1ZSwgTWF5IDUsIDIwMjYgYXQgMTo1NeKAr0FNIEZyYW5rIExpIDxG
-cmFuay5MaUBueHAuY29tPiB3cm90ZToNCg0KPiBBZGQgYSBnZW5lcmljIHBpbmN0cmwgYmluZGlu
-ZyBmb3IgYm9hcmQtbGV2ZWwgcGlubXV4IGNoaXBzIHRoYXQgYXJlDQo+IGNvbnRyb2xsZWQgdGhy
-b3VnaCB0aGUgbXVsdGlwbGV4ZXIgc3Vic3lzdGVtLg0KPg0KPiBPbiBzb21lIGJvYXJkcywgZXNw
-ZWNpYWxseSBkZXZlbG9wbWVudCBib2FyZHMsIGV4dGVybmFsIG11eCBjaGlwcyBhcmUgdXNlZA0K
-PiB0byBzd2l0Y2ggU29DIHNpZ25hbHMgYmV0d2VlbiBkaWZmZXJlbnQgcGVyaXBoZXJhbHMgKGUu
-Zy4gTU1DIGFuZCBVQVJUKS4NCj4gVGhlIG11eCBzZWxlY3QgbGluZXMgYXJlIG9mdGVuIGRyaXZl
-biBieSBhIEdQSU8gZXhwYW5kZXIgb3ZlciBJMkMsDQo+IGFzIGlsbHVzdHJhdGVkIGJlbG93Og0K
-Pg0KPiAgICAgICAgIOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKUkCAgICAgIOKUjOKUgOKUgOKUgOKU
-gOKUgOKUkA0KPiAgICAgICAgIOKUgiBTT0MgIOKUgiAgICAgIOKUgiAgICAg4pSCICAgIOKUjOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUkA0KPiAgICAgICAgIOKUgiAgICAgIOKUgiAgICAgIOKUgiAg
-ICAg4pSC4pSA4pSA4pSA4pa64pSCIE1NQyAgIOKUgg0KPiAgICAgICAgIOKUgiAgICAgIOKUgiAg
-ICAgIOKUgiBNVVgg4pSCICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUmA0KPiAgICAgICAg
-IOKUgiAgICAgIOKUnOKUgOKUgOKUgOKUgOKUgOKWuuKUgiAgICAg4pSCICAgIOKUjOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUkA0KPiAgICAgICAgIOKUgiAgICAgIOKUgiAgICAgIOKUgiAgICAg4pSC
-4pSA4pSA4pSA4pa64pSCIFVBUlQgIOKUgg0KPiAgICAgICAgIOKUgiAgICAgIOKUgiAgICAgIOKU
-lOKUgOKUgOKUgOKUgOKUgOKUmCAgICDilJTilIDilIDilIDilIDilIDilIDilIDilJgNCj4gICAg
-ICAgICDilIIgICAgICDilIIgICAgICAgICDilrINCj4gICAgICAgICDilIIgICAgICDilIIgICAg
-4pSM4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSQDQo+ICAgICAgICAg4pSCIEkyQyAg4pSc4pSA4pSA4pSA4pa64pSCIEdQSU8gRXhwYW5k
-ZXIgICAgIOKUgg0KPiAgICAgICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUmCAgICDilJTilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJgN
-Cj4NCj4gVHJhZGl0aW9uYWxseSwgZ3Bpby1ob2cgaXMgdXNlZCB0byBjb25maWd1cmUgdGhlIG9u
-Ym9hcmQgbXV4IGF0IGJvb3QuDQo+IEhvd2V2ZXIsIHRoZSBHUElPIGV4cGFuZGVyIG1heSBwcm9i
-ZSBsYXRlciB0aGFuIGNvbnN1bWVyIGRldmljZXMgc3VjaCBhcw0KPiBNTUMuIEFzIGEgcmVzdWx0
-LCB0aGUgTVVYIG1pZ2h0IG5vdCBiZSBjb25maWd1cmVkIHdoZW4gdGhlIHBlcmlwaGVyYWwNCj4g
-ZHJpdmVyIHByb2JlcywgbGVhZGluZyB0byBpbml0aWFsaXphdGlvbiBmYWlsdXJlcyBvciBkYXRh
-IHRyYW5zZmVyIGVycm9ycy4NCj4NCj4gSW50cm9kdWNlIGEgZ2VuZXJpYyBwaW5jdHJsIGJpbmRp
-bmcgdGhhdCBtb2RlbHMgdGhlIGJvYXJkLWxldmVsIE1VWCBhcyBhDQo+IHBpbiBjb250cm9sIHBy
-b3ZpZGVyIGFuZCBidWlsZHMgcHJvcGVyIGRldmljZSBsaW5rcyBiZXR3ZWVuIHRoZSBNVVgsIGl0
-cw0KPiBHUElPIGNvbnRyb2xsZXIsIGFuZCBwZXJpcGhlcmFsIGRldmljZXMuIFRoaXMgZW5zdXJl
-cyBjb3JyZWN0IHByb2JlDQo+IG9yZGVyaW5nIGFuZCByZWxpYWJsZSBtdXggY29uZmlndXJhdGlv
-bi4NCj4NCj4gVGhlIGltcGxlbWVudGF0aW9uIGxldmVyYWdlcyB0aGUgc3RhbmRhcmQgbXVsdGlw
-bGV4ZXIgc3Vic3lzdGVtLCB3aGljaA0KPiBwcm92aWRlcyBicm9hZCBzdXBwb3J0IGZvciBvbmJv
-YXJkIG11eCBjb250cm9sbGVycyBhbmQgYXZvaWRzIHRoZSBuZWVkIGZvcg0KPiBwZXItZHJpdmVy
-IGN1c3RvbSBNVVggaGFuZGxpbmcNCj4NCj4gU2lnbmVkLW9mZi1ieTogRnJhbmsgTGkgPEZyYW5r
-LkxpQG54cC5jb20+DQoNCkkgcHV0IHRoZSBwaW5jdHJsIHBhdGNoZXMgb24gYW4gaW1tdXRhYmxl
-IGJyYW5jaCBmb3IgdGVzdGluZyBhZ2FpbiwNCmlmIG5vdGhpbmcgZXhwbG9kZXMgSSB3aWxsIHRy
-eSB0byBtZXJnZSBpdCBmb3IgbGludXgtbmV4dCBBU0FQIQ0KDQpZb3VycywNCkxpbnVzIFdhbGxl
-aWoNCg==
+On Monday, 4 May 2026 at 17:58:08 CEST, Frank Li wrote:
+> On Thu, Apr 30, 2026 at 11:49:32AM +0200, Beno=C3=AEt Monin wrote:
+> > Add implementation of .device_prep_peripheral_dma_vec() callback to set=
+up
+> > a scatter/gather DMA transfer from an array of dma_vec structures. Setup
+> > a cyclic transfer if the DMA_PREP_REPEAT flag is set.
+> >
+> > Signed-off-by: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+> > ---
+>=20
+> Please remove RFC for this patch.
+>=20
+Ok, will do.
+
+Best regards,
+=2D-=20
+Beno=C3=AEt Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+
+
