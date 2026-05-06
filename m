@@ -1,198 +1,229 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013003.outbound.protection.outlook.com [40.107.162.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9C03876C0
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 20:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778099435; cv=none; b=LMhbBnzxNkosMX5wn/CNXw9ZhIzwRVLTnNr4P/2rmIosmiw7iqPca7AqvTqk2gsHL+6/Pe8GylwXm2AMc4JVxiOsWwWeg4AyoJ6qvFzN+SR5w0gy3T9Q9K4sSkpAviP+x1b8oeKBcg1mHOjQVG0nya0KdjfBtzpaZWK2BfK+S3c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778099435; c=relaxed/simple;
-	bh=ElJosHTYLcI9BgvAkBOdPtaYbxUdlkp93c6ZPh+hIQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oh+zZ91cJdaqqm3Hn44tWu3DWdauSjNGYP7nSWNn7JWxhX1SNdU9cMqpl7eAZoQ5/7w95G3S0RRz/uRkHwcqqj6dCDZLHvYFKmMK4FD55QqTYGDvcTfRePQcggddC5Yk67kR8SEgiDUGg2oXXhTvTy2Nm7PssBqtOfN92r8kwdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=P6Hvk6+A; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CCB385520;
+	Wed,  6 May 2026 20:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778100276; cv=fail; b=nMwtng7OMB1ke1jyeV3jAsfNkGf/UlkszRHPkN1FWPmdCdLUuBEzNvkaPHRr7+9iUdPwlg3axGYHwGz4HJuqNxlcLetYnuYMBCksgLnpLkAjNIs2zwmvn7oIj25/ar9HDPCG6vN+RYQRqpX70TV6CoYYZgeuysNJElwMzrJuEqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778100276; c=relaxed/simple;
+	bh=1QDS7yalgH2vXGPIIRGsyPJsCl51h+sJw/j4GkUhGQQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=IGlUgoOYlEYhHnOeU0dooL+3TVmaqbgwyDGl1Z4di65rAB0QGf+Cr8IFlLWQy9FRLvxXrVyDR1e/ja4y58z1SxU93LSUrJ5EGFl/pVw1WKbuJ+cCSlDMONnO13r7ioBhNpjVfDWDg8vhFL+ugKwq83pgiISq0h2QM/Xjj+MAbGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=U3MtKphS; arc=fail smtp.client-ip=40.107.162.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="P6Hvk6+A"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5AE93C5DC51;
-	Wed,  6 May 2026 20:31:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CA07A6053C;
-	Wed,  6 May 2026 20:30:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 879BB107F1E2B;
-	Wed,  6 May 2026 22:30:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778099425; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Vrqq7dyzDgCl+FqaMvTiuXKBdsOhTj/wqsPWsAfCeVU=;
-	b=P6Hvk6+A9KAGIiXMc5ppzQ8YnInesNyobJwlVOScdEn3BK6ZEG23RDVXqJ6UhXoJCZ/ClQ
-	IUaW5ffmO1GB5JT6pTn4JtgmuSK+cRR3G1OcUYmDqGuh+VBCxuJ5HSm/LVFRPC4a7eFPCK
-	lYEJgLQ08RS58hm0mDonItlSHMq4n57ZfMggV7q1BtmhvLggvm/45yz/tuzkuo9gCOFf+u
-	3K5HNHEI5PY46RtLY6F5VEi1OqnYZRWCqhL897NXI0JaUY6wU9HQsCRvqSXESwzhM7jo2T
-	za6fvFc/XcHv7AFGlUDrBhtbj3FxDismo+IFvtdNJhuaoK/yerA+Brrcvr3ndA==
-Date: Wed, 6 May 2026 22:30:15 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
- Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang
- <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Shawn Guo <shawnguo@kernel.org>,
- Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v6 13/27] PCI: of: Remove fwnode_dev_initialized() call
- for a PCI root bridge node
-Message-ID: <20260506222846.68963c71@bootlin.com>
-In-Reply-To: <20260325202037.GA1291636@bhelgaas>
-References: <20260325143555.451852-14-herve.codina@bootlin.com>
-	<20260325202037.GA1291636@bhelgaas>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="U3MtKphS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hTzq1/QHI2hCTHCmUOpAyJbNTj1JgFH5XES7t/AfwQZVijX/3epFPLhsaxLE5wZxp2Sgu1KbqJkkhSt7aMdZxABF24FQCJf/pahxghLW8Sn1YvfyYNkgXaX2qNDrWm8zQlnU9DAMpwZKoKVwTkcw37ZfeG85lFEH+16cM6fVLp0ZqU9rLwH0D2pZE9Tfoy5xn6nsiPB/odLytuV1iUfwhMyxDdjppsKDKNcoI7/WrY16gwVTvcyWmC/X+mwLkORozR40Qdqtbig9qGMRTGY7bi0HjEX1foJHYwTjYomzlh2fV1YZsuMOYnCTpmHhxlgor7FXplfmIOgnYdjfE5JKGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ncu5t36Rod2R6b5mp9ZZJmHAVezXgYV3dEWrg/vr8lw=;
+ b=iOvjYW90Amp+uEZ4dWf+TSCajtE8gEvHzbGsgoBFhyAi37UawnVNSKc3hHcBICyb+sguiHMozRPjiLBMJjrke5on17KUWzlCqJQLajj4JbWN83N8qUoQAtsE1fEhiJfGae4l7rJR9l1S5pPEQhfccpI7kmghx14h2XMQYMmInBRXOxbeAs/fQXO/DTvUUE0SMIVgEucClbz9+RLKranqOimCKFBHl1S6Gsf5aC2+pHAnLRMo5NC/4ngnmNiONwZ0y6oAvxgWjJaVzPjvPgiGjGpkyO2yNypHxxIM25dcg/xzWtYqjhY96Ff+OEOwLQSz/dy7vNgmXCy0hNuDJOFtHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ncu5t36Rod2R6b5mp9ZZJmHAVezXgYV3dEWrg/vr8lw=;
+ b=U3MtKphSTyoE0+dENN24EjTt4sVn8EMkyygYhD/Mxz66Uqf9PDzhdP+BvFHof2nNulQMXYN6jRc596J4f5JVQk2FM0qU5sS9enwsUFCR2dauSNk3Xq5NLx81tmwVTP70mmRrPT+7ogPWpUMjpLsv57gE1DV6K39CjtMF2HCzYZD8MjeJYHqENuG9h/Pel9/iK4+KcddxgMGI1M7DYwz0B/HXm39Nxf3XQgybRCMKV3CkPBKBTWHb5Y5UJ7SLxYMVOV/WaN4hMDI/w+Q3uvjmmKmhLoCW7RSnKVK5xq5sQaLtr/9WL4EsP1HAlkbJEHmpK/yYwz/Xm6uUu8a80qfllg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
+ by GV1PR04MB10479.eurprd04.prod.outlook.com (2603:10a6:150:1cd::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
+ 2026 20:44:28 +0000
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9891.008; Wed, 6 May 2026
+ 20:44:28 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 0/9] dmaengine: Add new API to combine configuration and
+ descriptor preparation
+Date: Wed, 06 May 2026 16:44:12 -0400
+Message-Id: <20260506-dma_prep_config-v4-0-85b3d22babff@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAByo+2kC/23NSwqDMBSF4a1Ixk25uXmYdtR9lCIhiZqBD2IRi
+ 7j3RkHaYofnhu/PTAYfgx/INZtJ9GMYQtemIU4ZsbVpK0+DS5sgoGQIgrrGFH30fWG7tgwVVVK
+ wHBwKaZAkld7KMG3F+yPtOgzPLr62D0a2XveWPrRGRoFKLi5gpWceza2d+rPtGrKWRvzS7I/Gp
+ C3kkF80Vwz1r+a7VsBAHjVP2mihgSssncCPXpblDe/0BxsoAQAA
+X-Change-ID: 20251204-dma_prep_config-654170d245a2
+To: Vinod Koul <vkoul@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, 
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Koichiro Den <den@valinux.co.jp>, 
+ Niklas Cassel <cassel@kernel.org>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org, 
+ mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, 
+ Damien Le Moal <dlemoal@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778100264; l=3149;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=1QDS7yalgH2vXGPIIRGsyPJsCl51h+sJw/j4GkUhGQQ=;
+ b=kAOgIhphFrp720OIy2SnK9em0kuGsw1Hs/tzzu0Sw6s3snRyg/EUwfSeAGtoLokAkpExeXDue
+ zKrWSLFDZ8fBZSnvactMtYp2sZXM8k7DGzRYYmvEHG5VNskZAArEZWx
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SA1P222CA0051.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2d0::24) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|GV1PR04MB10479:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d3aa655-ba8a-4c4b-ee05-08deabb04450
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|376014|52116014|1800799024|7416014|921020|18002099003|38350700014|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	igPjOrxJLH6r613vpEY1gH26abxQ3DrSOvf76GyWCiG9dCnhi6y8jCshQFPyPuJQ/kGHA3/iSPO85e+U4lUPMXWDegOBYqathh1Yp68C7ZpZoE5LW88So0QyOuruLghMrXs2RsCDosj8F1XskJMKX7wuSiPKTEWFZJ6R/lCdIq1KMiB2MiiZEAEj0lB5KIYKqRcrsKCH7iB0l3hcA+nndI8qYorGGWtwgeCHpiA0FTTdcgR2taejBhTSv36YFDranok2+/cNwK6tqiKmRM7q07caAlPpP15/NJHt8KSCrX0fh8ySsTZpkh16CzRc9Ilz4AzXPWYv6chYXKD/Xc3LUT6CB0deTP2eDeYSqj/pZyo7m7oUO9zRho5hZWk9OVFIC7VchVY23yVfP3+1vxALA+165vVZgIsZsJMD0MRohFGUjqlNYt7JNJgLfBL3i99YCr6vJvug71IU6Jk5c3g9GOAK/LG6RimDkNNeRjxQ9CIWoL+d81PXFrwuOgkVkRDvhzbTTvIoPp+nSUvJvkuapYLDtENTA5heH38xaH0od4P4mgWvqmhtJMvw6BaN3ExJcyEUL+8CCxBpUTMuve1BLPwif7fkittlSaZ+iYlDFUbbUdz9aqxN7Rg4gfhJVCwH3nq/4L2g7+bvbAB85J3CUyTsYrfCCtSJ2UIjvtDDcq9eN0Ombo6qqCKt3QDQmzSoe0GD+D9o4pkthV9VGONEwk79xOeFfNAfrn8M3+rTy5CoYWlrMrjcW3orpQGGI5dU+ZXjJGMaylM/pqeKSRr56A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(52116014)(1800799024)(7416014)(921020)(18002099003)(38350700014)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VHk4MU55Q0V0cElOM0JETTk5YnZoM2N0NUZHUW9pQnNsYUJGVEhVYlMreTVK?=
+ =?utf-8?B?QXYwd1lkeHZxSXhTb1UxbFl5QXFzaW9VRCtUb0Uwc3ptU2JzdENGZlkwalJs?=
+ =?utf-8?B?ZW5xMkF1NUx5b2Fhd1FlS0VLSVU4Y0FKRVdmbVdsd3FreWhZK1NOLzd3Nk5U?=
+ =?utf-8?B?c1pUUUlIZnMrR2Y3RlpGTzZkMC9wcmxUZTNVU2E4bnIxWFNtY2NBSy9UQm41?=
+ =?utf-8?B?TEZQVURwc0tPalBWdkVOREVsTlhCeEo0aXpOVXZWTXpQL0FRTFk1UVc0WTBQ?=
+ =?utf-8?B?MVNlczYzVm1sMjBJc2t1bXJ1bXRuTWNGSCs0S3hGbW9GNFBOdU1YajRmVDRp?=
+ =?utf-8?B?VWVtbWUzNE44Y3hYMkFVR1ZlNktmMjVTOU5rdVRTNXp4WlBWYncrSDkxbUV5?=
+ =?utf-8?B?RnduWHZKa1JabUF1dlMwYVNEbEdkeWpkei9oNmtGVktCMGxSS3dmbGJHUDBm?=
+ =?utf-8?B?NmZMQWZHa2ZmUDR1SHNoZVY5bERQRTlOME0xZ0liZDRCdHBndTFQMnpndVB5?=
+ =?utf-8?B?WG8rcGNvNGZWcm40U1BjM2NHMEt3bEVZYVAzdWJ3Nm13U0JtOFJVSzlFVitk?=
+ =?utf-8?B?VXhNQkJvcW56NEY3b2tXb1RQOW9LMTZtSGlGY2J1REhyRE9nN1FiN2djdUt2?=
+ =?utf-8?B?NHpqNk03OFZxYk1kcFo1Y2lBZE9MaExBcFBzWTh4aGowUEpOVENQR2c1c1NB?=
+ =?utf-8?B?dnM3YkdEbTh2Q3plM01VNzRCVDZwYlN4em1tbi90aTJuRnY4WEFzTXVGWHIx?=
+ =?utf-8?B?eHhwNG1kYnJqOEo4L0dyc2hnZmRGdWZuZG8vSUFZQ3VraEtpMkxKN200QmpW?=
+ =?utf-8?B?SkF1WkdXeUFBSU9ZZXJuckR3dmdDd2lJTkJkdEdFODgrdENwYmw5dXpiUUhp?=
+ =?utf-8?B?Y1pHZmZiVmN0SEpseHhKLzJGVk55bkRzZWFyOTJmakhUajV6bWwzeUtJUTVm?=
+ =?utf-8?B?UjZwaEd0dC81OWJwaEd1OHI0dzdQbG1UV2k3ckQ1QzJHVjRMSnIwNEp6Qkpp?=
+ =?utf-8?B?b3NydjFHZVliR2pMOWt5SVFkVmxuNUlTbDFocnRmYW1wNERUSmg3Z1VPdEQy?=
+ =?utf-8?B?ajRnSW1qY0pwTXRWNkNWRWt6V0dMaGMvTmVzZlRaK3ZvYy9jelZPM3FCUEpV?=
+ =?utf-8?B?Y2djdFpTZUszeVBCZFhFZUp4allSSmJjSHdVcmlobkVPclVBWWlyNHY3S2FE?=
+ =?utf-8?B?SnVaRS9RQVIvR05DWDlpYlRna0hFWjdJYS90czNtK3J5cG50UVZGejNoVjJ4?=
+ =?utf-8?B?VjcyaU1WSmg4SGQrYzY5RWR3Rzg3TXZCYWM4K0c0bDBPS2FtQWt5WWg5bDVv?=
+ =?utf-8?B?ZVpaYm5VNS94UWZKY1hOTEhaSmowaFAzcEVMRlpqUHFEazNZSzV2V1hVWW1x?=
+ =?utf-8?B?Qm0zWGM0RERJM3czcG1DRmFUN09pVU11Y0QxRExncm1IdWc1TGtRNzFHWG1Q?=
+ =?utf-8?B?cEd0eDVEZ1IvamFTSFBSd1o3QzlvYkdjTWQ3S2pMcUl0bHoxaVh2NzByVVdy?=
+ =?utf-8?B?Wkw2MWl5dnFMbVhrNW55eWdyRGRyZlVxaUlLMXRLdVExOFYxaUZKbEszQWls?=
+ =?utf-8?B?UE5KN0V0REZVYlNxQWhhbCtReDdvaWlidU93Y3ZXdmV3QStIREUybDFTWHVU?=
+ =?utf-8?B?d2ZJblBsR2NqV2prUXFOekdKbFRac3prRUhoaU5QTUtRL0diRzk0d0FxcjZJ?=
+ =?utf-8?B?QmliUjh1YkljS2VaUnJHSEZSWkJ4dm5xdEZBWGdIUUROMGQvdVNVbWJ3OC94?=
+ =?utf-8?B?dHp2TExaUXlldjBDNWdFT2hhcWxENm9rcjd3dHRmUlYxc0Z4RTc5THVXcXhT?=
+ =?utf-8?B?MERjdUhPd0FBZDRZY0h3ZHNxSDkyZ3hnR0l2eHVoekg2c0FXeEhkaGZlbVZQ?=
+ =?utf-8?B?UWw1eUZTUG83UUREc3JNOEhERkVXR0xSQ1oxZktRV2xFWEVWb2FUZUNpanA5?=
+ =?utf-8?B?QUVKMW1JOHdYam5hTFZtM3ZSZzZkUTZPZmpKMlpuN2duaFZtb002WGV3M2kx?=
+ =?utf-8?B?cmtHVk4yTlZSQTJmdkxBQXpialpWR05JSGZKZnlMSm9ON2FEZlNoZDNkVjZJ?=
+ =?utf-8?B?K1Bwajc1MzIvT05vekhudkFBSXZCNUNocXR0a2d2enlIcjFSZjJrQUR3bDBW?=
+ =?utf-8?B?WWk5a3VqcFRtelVONGpzNlMxVG5UakJITkQ4OStROGYyb3kyVVFBTldYeFhs?=
+ =?utf-8?B?ZjJIRkJlODhobGt3eXA4aU5RbXN2UGtuSVFHaEtmdHBJTythdjYrUVM0OUpw?=
+ =?utf-8?B?R0h5M0x4OTJBMkx4ZURtS2tCUngwcVZSL0ZZcWdBUGhxbEVmSmExbVdrSTJD?=
+ =?utf-8?B?aFpURmFQTmJzazRhNnpQbDJBeG02RG11QlgydFlwbTUzR1RRWDVYdz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d3aa655-ba8a-4c4b-ee05-08deabb04450
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 20:44:28.6242
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0U8ip3M43oZPyDHbBne3ob64fYcUCG9ESplXlzYabktGegmt/e5hkVrzCumOeMJa432ZKSOXpSF1WRE2iSyTpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10479
 
-Hi Bjorn,
+Previously, configuration and preparation required two separate calls. This
+works well when configuration is done only once during initialization.
 
-On Wed, 25 Mar 2026 15:20:37 -0500
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+However, in cases where the burst length or source/destination address must
+be adjusted for each transfer, calling two functions is verbose.
 
-> On Wed, Mar 25, 2026 at 03:35:40PM +0100, Herve Codina wrote:
-> > During the instantiation of devices described by a device-tree overlay
-> > applied on a PCI device, devlink displays the following kind of debug
-> > messages instead of creating the expected links:
-> >    'Not linking xxxx - might never become dev'
-> > 
-> > Without those expected links, the device removal order cannot be
-> > correct.
-> > 
-> > Those debug traces are printed by fw_devlink_create_devlink(). In our
-> > use case, they are all printed because the supplier of the link has at
-> > least one of its ancestor with its fwnode flag FWNODE_FLAG_INITIALIZED
-> > set.
-> > 
-> > The culprit ancestor is the PCI root bridge.
-> > 
-> > The fwnode related to the PCI root bridge is created dynamically by the
-> > of_pci_make_host_bridge_node() function. During this creation
-> > fwnode_dev_initialized() is called which set the FWNODE_FLAG_INITIALIZED
-> > flag.
-> > 
-> > Calling fwnode_dev_initialized() tells devlink that the device related
-> > to this node is handled out of the driver core. This is not correct in
-> > our case. Indeed the device related to this firmware node is handled
-> > using driver core mechanisms and is fully compliant devlink
-> > expectations.
-> > 
-> > Simply remove the fwnode_dev_initialized() call. With that done, the
-> > devlink debug messages are no more displayed and links that were missing
-> > are correctly created.
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
-> 
-> I would ordinarily make sure the person who added
-> fwnode_dev_initialized() here was ok with its removal, but it looks
-> like you added this with 1f340724419e ("PCI: of: Create device tree
-> PCI host bridge node"), so I assume you're ok with removing it :)
+	if (dmaengine_slave_config(chan, &sconf)) {
+		dev_err(dev, "DMA slave config fail\n");
+		return -EIO;
+	}
 
-Yes, I am really ok to remove it :)
+	tx = dmaengine_prep_slave_single(chan, dma_local, len, dir, flags);
 
-> 
-> I suppose there could be a "Fixes: 1f340724419e" tag, but maybe
-> there's no need to backport this anywhere?
+After new API added
 
-Yes, I will add the Fixes tag.
+	tx = dmaengine_prep_config_single(chan, dma_local, len, dir, flags, &sconf);
 
-Also the previous patch ("PCI: of: Set fwnode device of newly created PCI
-device nodes") fixes 407d1a51921e ("PCI: Create device tree node for bridge")
+Additional, prevous two calls requires additional locking to ensure both
+steps complete atomically.
 
-I plan to add "Fixes: 407d1a51921e" to the previous patch to make things
-consistent.
+    mutex_lock()
+    dmaengine_slave_config()
+    dmaengine_prep_slave_single()
+    mutex_unlock()
 
-To ease backports and avoid conflicts, I plan to add 'Cc: stable' in 4
-patches:
- - patch 13 "PCI: of: Remove fwnode_dev_initialized() call for a PCI root
-   bridge node"
-   This current patch with Fixes added
+after new API added, mutex lock can be moved. See patch
+     nvmet: pci-epf: Use dmaengine_prep_config_single_safe() API
 
- - patch 12 "PCI: of: Set fwnode device of newly created PCI device nodes"
-   The previous patch with Fixes added
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v4:
+- remove void* context in config_prep() callback
+- use spin lock to protect config() and prep().
+- Link to v3: https://lore.kernel.org/r/20260105-dma_prep_config-v3-0-a8480362fd42@nxp.com
 
- - patch 11 "PCI: of: Use fw_devlink_set_device()"
-   Avoid conflict when patch 13 is applied
+Changes in v3:
+- collect review tags
+- create safe version in framework
+- Link to v2: https://lore.kernel.org/r/20251218-dma_prep_config-v2-0-c07079836128@nxp.com
 
- - patch 6  "driver core: fw_devlink: Introduce fw_devlink_set_device()"
-   Needed for patch 11 and 12
+Changes in v2:
+- Use name dmaengine_prep_config_single() and dmaengine_prep_config_sg()
+- Add _safe version to avoid confuse, which needn't additional mutex.
+- Update document/
+- Update commit message. add () for function name. Use upcase for subject.
+- Add more explain for remove lock.
+- Link to v1: https://lore.kernel.org/r/20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com
 
-Do you think it makes sense ?
+---
+Frank Li (9):
+      dmaengine: Add API to combine configuration and preparation (sg and single)
+      dmaengine: Add safe API to combine configuration and preparation
+      PCI: endpoint: pci-epf-test: Use dmaenigne_prep_config_single() to simplify code
+      dmaengine: dw-edma: Use new .device_prep_config_sg() callback
+      dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
+      nvmet: pci-epf: Remove unnecessary dmaengine_terminate_sync() on each DMA transfer
+      nvmet: pci-epf: Use dmaengine_prep_config_single_safe() API
+      PCI: epf-mhi: Use dmaengine_prep_config_single() to simplify code
+      crypto: atmel: Use dmaengine_prep_config_single() API
+
+ Documentation/driver-api/dmaengine/client.rst |   9 ++
+ drivers/crypto/atmel-aes.c                    |  10 +--
+ drivers/dma/dmaengine.c                       |   2 +
+ drivers/dma/dw-edma/dw-edma-core.c            |  41 ++++++---
+ drivers/nvme/target/pci-epf.c                 |  21 ++---
+ drivers/pci/endpoint/functions/pci-epf-mhi.c  |  52 ++++-------
+ drivers/pci/endpoint/functions/pci-epf-test.c |   8 +-
+ include/linux/dmaengine.h                     | 121 ++++++++++++++++++++++++--
+ 8 files changed, 180 insertions(+), 84 deletions(-)
+---
+base-commit: b9303e6bff706758c167af686b5315ad00233bf8
+change-id: 20251204-dma_prep_config-654170d245a2
 
 Best regards,
-Hervé
+--
+Frank Li <Frank.Li@nxp.com>
 
-> 
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> > ---
-> >  drivers/pci/of.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> > index b694fcda16b1..0993257fe025 100644
-> > --- a/drivers/pci/of.c
-> > +++ b/drivers/pci/of.c
-> > @@ -811,7 +811,6 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
-> >  	 */
-> >  	of_node_set_flag(np, OF_POPULATED);
-> >  	fw_devlink_set_device(&np->fwnode, &bridge->dev);
-> > -	fwnode_dev_initialized(&np->fwnode, true);
-> >  
-> >  	ret = of_changeset_apply(cset);
-> >  	if (ret)
-> > -- 
-> > 2.53.0
-> >   
-
-
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
