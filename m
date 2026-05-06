@@ -1,131 +1,131 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F46E3E1220
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 13:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE630BBAE;
+	Wed,  6 May 2026 13:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778072549; cv=none; b=W/ONCAnQrkBSAo4QzAh3RPCzsQBPnmcA+o1+1UqkB5WgpHkEgjBVFMMswYOoFKIS0fT3mvJyURBxiAKp9FsHbzd1QDIAA6UsRtfExd1Aqi1Wgtp0LthE7UTAnRyum4R8tJQH5N4PVNT8pMWkoyf7jSgGjKCuGjLgval9nQPv1GQ=
+	t=1778074444; cv=none; b=PMT/nmPMgKetSCPqEHFVWQZwnmrRtAAjrI+wjRgEGFJe2vqP1cAInZQgGi3Vf5Wm8dHJ9+8k4L/CDClDtEGROrlCwUQHOOu1TiQ6knQQWcx+DIo/7UOtYasyXmmmLIDyosWGbJ1CDP2hAjyKYBk2JJE9OOC7vGtgKIopS+jOHdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778072549; c=relaxed/simple;
-	bh=O1aeIGOQvGB7/OgikH+dEqEn84w48c8KWaQB1r1M41Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gBhTWxd21v5rx99Fonr1KGNKhG3fdiCMyQsxFig95NiPGhyf9ISXGWCW/9dPsb7KMnuT1DVvPBmY3Ycvhu7gUVXL1EDFS6dxHO3vAK+cAWzE73Ky2tPkMGprTYRkpaPoxGbz1Zhwq5j9O/eskGKVvgzqibHi/e4bm00j6CFJe+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJ47dOsT; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778074444; c=relaxed/simple;
+	bh=YshSG+jEZSwzCbdJ4jDr60hn3hQDUfkq89jqa5o9J50=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=umMjTqSO1MqAhLbpKOfKT/ebhePvhrx/G7rDd7lsSfjzQJ+6mhZGz+GO6QDd5eFCeYSca+0Lddz4Ag/4AWlEwulGE6wp8lLiOCUY+My7V0xvzRsvFiqnxB89gjSeFXV0bb4oLzM2E91YpQqvhEWaDwkjAanD+iDcOIdg3wUC1zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qdLAuEoa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJ47dOsT"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43eb05b1875so3432000f8f.3
-        for <imx@lists.linux.dev>; Wed, 06 May 2026 06:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778072532; x=1778677332; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6w/Ct8nuPMBPRpUy8/kJfgTP+J5orD9plu8W5VIflo=;
-        b=HJ47dOsTjyYogn8v9SOgnUswY+ZRVCUcKLV6P2udh0sdkhgWqe4qDskbjVSzrED994
-         I2+BfeU+LnhMN0A2dG9efvHoIMxmZMqOClqWc+Sfp7WbWY8E99pHrhCmcispHgHVzZcn
-         7p2XmjmwlqgVgDq2/5FtRIqI270ojGAxsXQKxh4M1Ok11RGZtIjWDIaI13wMU98UpHeM
-         HDvDP5BwjE3BKeQ1XNzVj7leF7ieGDzxGppCOVFnGinRbnmKNXNq2c2eNFzdygUuYkKq
-         nyrx7RLI6H2cJ5efsfxcAmayE220NVsO516mltHU+Xtm2UeD1FOywu1DFMdh/yFhsc6C
-         vUQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778072532; x=1778677332;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6w/Ct8nuPMBPRpUy8/kJfgTP+J5orD9plu8W5VIflo=;
-        b=XCMnxt8EUBKIUuYnnMnDRuwmPnS5bB8QP44tijO56r7zCe/iXQjStF69MdJ810/nY2
-         TVAgTlojyVZzBqxEOOaPHsUjzxMGVCnE6YI+7Ax3uaQW3Beb7+cjKLdLRf5D/7RoTltm
-         5sWvDKfOB+nXzwldbpRTEECyvnBfUr2k65rmv7dEZvkOT9gxxzGptDv7N6ibLCXHLehf
-         +rVDUAQX9f7JJDQqSXrV4a4aCMGAZ5IWjWMiyjXmrKcUc+kbUJ+XNOyucIG6KXSwlJgI
-         IciOL1vSGLB4k4IfhB9ulcVilmaBKfBUGpmuMs1Vg03nVBx0EEuFtvsWZq20w1wmH2p4
-         MLog==
-X-Forwarded-Encrypted: i=1; AFNElJ9w469SnHWT/skDgshqpyxgkuT4tFYy7lw64tmX91DbUG0AuO3q+8BYFHyKmFjlpsYI7JE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxY0q7QwQ1m/cL7hNuWMCRMA15iXsJLlee3ZeRY80ld0nS84IYo
-	dDa+Q4RsHbeCkGWQ4oWS8vmM9CFErv6B3fE8lT15R8JhCMCEPlO1p0gE
-X-Gm-Gg: AeBDieufpxiMHqOU+Rlfa8NnNEEhhliCXYLEJCgaVhBdNGrFdFXTR+Gqu5q/Jve53JR
-	Z1taICIxOh9DH/wuDQ4sM1RGyl22dl4/WvYTifwYZ1NviJL41+Jw36YlUdhoADnVlaDjSAS/t46
-	FB2HCd33XFISqKKnzhFGXmQOhVwdnfF9w42jSQMg89Le7B0TH6hDCWXNy4MaW9GoeYnynRgY3ix
-	3XDZAjViBqXyE2bwkw3HkJEtFmBu8aIZ7dOgXpOVyUA4Ya6TwE54HpxIsis9pkeqDW1/ObhNjHE
-	A09JYYuq/adevlbaoc9pOFCnBw6GzeogkT8+CNehIUV8WGqg9+0aptNWJabL008SbO6EGpcmFg1
-	QOkyEPnww62qu37cEy2jJD2oTau0X7e5/evg8vmcFkHHKQRNsbzH5dufTSHrS/DmYcsFHAqR9YX
-	ZXsf02iL6Y4W6LNQCClndemaw+47YZVcOm1Jl3v2BbrP9dP6+wfPuYwFsuTmt4iOxcfuOh9WtsY
-	hNcVpCKeTCL5bWeLSaoejmy0OdUQgTPAe/+3dJFcnhzv7cZoaMROyXlof4/xyy70uoDwJFPYfxb
-	WuouIrh2epI=
-X-Received: by 2002:a05:6000:268a:b0:451:3b12:9bca with SMTP id ffacd0b85a97d-4515ce1cde3mr5834248f8f.25.1778072528841;
-        Wed, 06 May 2026 06:02:08 -0700 (PDT)
-Received: from [127.0.1.1] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052a488d8sm12288076f8f.12.2026.05.06.06.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 06:02:08 -0700 (PDT)
-From: Franz Schnyder <fra.schnyder@gmail.com>
-Subject: [PATCH 0/3] arm64: dts: freescale: add Toradex Aquila iMX95
-Date: Wed, 06 May 2026 15:01:54 +0200
-Message-Id: <20260506-add-aquila-imx95-v1-0-69c8ee1c5413@toradex.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qdLAuEoa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A72BC2BCB8;
+	Wed,  6 May 2026 13:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778074443;
+	bh=YshSG+jEZSwzCbdJ4jDr60hn3hQDUfkq89jqa5o9J50=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qdLAuEoarlvWQFVS18RsdiGDZiM1aagLv4kBPglSttVyPwWiOKaZRqtzf7CVl8bsH
+	 vo66qBIcrlbi+mQJWAOBGKqrcV8ZzGwt7/kiuacW8HS+1ksIDS+NDW5ogV30ccR9aI
+	 iu3jMFPR18qwRRJTqZiuV41lPF5qrs6G8KEBmHDKBKhBBXSxu0BwCeKD13EulgBxTo
+	 u6S84xkkkFu7iBUyMF1Te74+ySF3/URpaJS6kaKZXeinLifk7+WLWJXTDNHDYwEVJ4
+	 1TuErwj9K1Hs9weQU/kSc3eoaqyjVBUghGtLi7rKdBGpX6Ue2LglK9H1krlMYggNIy
+	 ko1GkfQRSViLw==
+Message-ID: <5ad1e2df-85f3-4f9a-ab9d-b6ae34eebed3@kernel.org>
+Date: Wed, 6 May 2026 15:33:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAMI7+2kC/x3MSwqAMAwA0atI1gbaaAW9irgINmrAb4siiHe3u
- HyLmQeiBJUITfZAkEujbmuCzTPoJ15HQfXJQIYq44xF9h75OHVm1OWuHZZUkKt4KDxZSNkeZND
- 7X7bd+34RJCVxYgAAAA==
-X-Change-ID: 20260501-add-aquila-imx95-423256af3d21
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Franz Schnyder <franz.schnyder@toradex.com>, 
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- Francesco Dolcini <francesco@dolcini.it>, 
- Antoine Gouby <antoine.gouby@toradex.com>, 
- Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-X-Mailer: b4 0.14.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: dt-bindings: nxp,imx8mq-mipi-csi2: Fix example
+ endpoint label typo
+To: Robby Cai <robby.cai@nxp.com>, laurent.pinchart@ideasonboard.com,
+ Frank.Li@nxp.com, martink@posteo.de, rmfrfs@gmail.com, kernel@puri.sm,
+ mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, martin.kepplinger@puri.sm
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260506090124.2960477-1-robby.cai@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260506090124.2960477-1-robby.cai@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patch series adds support for the Toradex Aquila i.MX95 SoM and its
-currently available carrier boards: the Aquila Development Board and the
-Clover carrier board.
+On 06/05/2026 11:01, Robby Cai wrote:
+> The example in imx8mq-mipi-csi2.yaml uses imx8mm_mipi_csi_{in,out} endpoint
+> labels, which is confusing for an i.MX8MQ binding. Rename the labels to
+> imx8mq_mipi_csi_{in,out} for consistency.
+> 
+> Fixes: 37255747ecbd ("media: dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and controller")
 
-The module consists of an NXP i.MX95 family SoC, up to 16GB LPDDR5 RAM,
-up to 128GB of storage, a USB 3.2 OTG and USB 2.0 Host, a Gigabit
-Ethernet PHY, a 10 Gigabit Ethernet interface, an I2C EEPROM and 
-Temperature Sensor, an RX8130 RTC, one Quad lane CSI interface, one Quad
-lane DSI or CSI interface, one LVDS interface (one or two channels), and
-some optional addons: DisplayPort (through a DSI-DP bridge), TPM 2.0, 
-and a WiFi/BT module.
+Nothing to fix here. Otherwise explain the bug.
 
-Link: https://www.toradex.com/computer-on-modules/aquila-arm-family/nxp-imx95
-Link: https://www.toradex.com/products/carrier-board/aquila-development-board-kit
-Link: https://www.toradex.com/products/carrier-board/clover
-Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
----
-Antoine Gouby (1):
-      arm64: dts: freescale: imx95-aquila: Add Clover carrier board
+> Signed-off-by: Robby Cai <robby.cai@nxp.com>
+> ---
+>  .../devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> index 4fcfc4fd3565..71f79651dd96 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> @@ -220,7 +220,7 @@ examples:
+>              port@0 {
+>                  reg = <0>;
+>  
+> -                imx8mm_mipi_csi_in: endpoint {
+> +                imx8mq_mipi_csi_in: endpoint {
 
-Franz Schnyder (1):
-      dt-bindings: arm: fsl: add Aquila iMX95
+Drop the labels instead - they are not used.
 
-João Paulo Gonçalves (1):
-      arm64: dts: freescale: add Aquila iMX95 support
+This is just churn and for sure not a fix.
 
- Documentation/devicetree/bindings/arm/fsl.yaml     |    8 +
- arch/arm64/boot/dts/freescale/Makefile             |    2 +
- .../boot/dts/freescale/imx95-aquila-clover.dts     |  294 +++++
- arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts |  398 +++++++
- arch/arm64/boot/dts/freescale/imx95-aquila.dtsi    | 1160 ++++++++++++++++++++
- 5 files changed, 1862 insertions(+)
----
-base-commit: ebdfb84ecf7a0bba26d7a04edae98dd600fd4b42
-change-id: 20260501-add-aquila-imx95-423256af3d21
+NAK
+
 
 Best regards,
--- 
-Franz Schnyder <franz.schnyder@toradex.com>
-
+Krzysztof
