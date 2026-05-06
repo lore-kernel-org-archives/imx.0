@@ -1,210 +1,153 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA40480DC0
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26CD48033F
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778076652; cv=none; b=aRwNSdWSFOsu9CcUmSGEAgRssMQzzU6cacXp4AizMT1W7PcfPEGtZpcHneEEfjY8u78FKEf15WzgrgximXtmSIakiY24j/L8vCF7YPo+hSXSrhpqr+pi0UXywgoTxdI8j7+rtYBkGlUX4RnH6h6kEzWA9VDEzb/DMR43i5GUwPA=
+	t=1778076896; cv=none; b=gMRrk31jue1VXjEeBAznKDClY8onln+ELQb/yalMvuo4vNQ5RLAKcnLZOVBy4yTwDeF3R6WXBrGxLO0pHLSX3C1SwHsd0d0MPdCGeQd4pfhsMa8HkYqaZar2H3lmhUcgAD1tbi1+FxCbdY6TvFswBQB+G3dURJasNeCefW3Tooc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778076652; c=relaxed/simple;
-	bh=1bwhwdfvJlIzsKkfaxkktge9gzD6L0rgkayWyCUNTsY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k238fhRLz/t319EXTgXBRchvxZLCAK7yzv2iBKRq/qWheF1eyEHXqIf+RBFvGYH0ed/09vKkdjtDSsboN8NBji5ckeXfjXwmTq/kZs0hNYHK55DEX3+yyJIZCqfRlUelqXgWlO0v4jEWKgmtOdb8SkkogX+UabuO/uedSlCRSng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nykStisR; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1778076896; c=relaxed/simple;
+	bh=S/kmyfCtgRcnnR6uKuRsciK1a6EFOEAiOWDDIUPH/n8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J1eFxDUpjlpVsglxyfQjXFPxPlr9I08WB+R93YwjVR8zEYM/F+Xha38K46sckDVXWjMVb3bQz1qCoATQCKjjDxL1yqRPhvHFW8Lyy9smDaWcXe8ZFEqW7Yhb0vF4urX64Nnfilk42AcsCRX9E+d7viN4nF99Ecn86Qo8Qf2oEIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0TWWejF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nykStisR"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 894CA1A3552
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:10:49 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5FF9F6053C;
-	Wed,  6 May 2026 14:10:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 851E4107F1B41;
-	Wed,  6 May 2026 16:10:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778076648; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=aQaOLDa6vezVg2B4JDopiCIwlU8Ntmkdr40yY+rXlOE=;
-	b=nykStisR8Wi7ZQ9Eb4vjpnhsyAWt3tF0zF/p60/x5QJHZwFpkegkv5N8ceOoUo8issltIk
-	3SX+bnsEmM6s5XU5Pj4GipTPb7nbhr9ZpJUabTYepuTNwplZvWmQhTQMblDmEWJylFkDbm
-	cA8cnu8+3K+ooJTnedPeg47XOu7qOLVcMZtwGG/Uymvhf0Si6Xy+eMpdyPd/dHI8jOonyw
-	boSDKMS3CNDwSj+L2TFzsviBEuCPe2oZnSs+VcYLd8OViURCumqgeiDqwg6yo3drrKhZPT
-	E2bDdCx/+6ZnZvNawGpqOsLakUeerMcqV4K6DxyeuRtvEtMZOcbF7l1H+5aj7Q==
-From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Date: Wed, 06 May 2026 16:10:36 +0200
-Subject: [PATCH v2 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather
- chaining
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0TWWejF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC8BC2BD01
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778076896;
+	bh=S/kmyfCtgRcnnR6uKuRsciK1a6EFOEAiOWDDIUPH/n8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=P0TWWejFiVyGwBeEGQrswyDGhgdW3tEtXcFMPmnguQ8KcsqeSQOXhsZoC63lqhyb1
+	 QmlbF8fsIgMfwR6YxJgd5qY2LHmYtDUROxTPmuthCQPOXlzWT7ZzmrslZSdS40CIYa
+	 DfwGCgJlb+o3MaVxHG7+SS0gk9F2yfPPrSRWQLVtGDnAWsMj5Wk7q0qHFt9N/GmUPR
+	 xmVXMFYvPwe9jmt/1m46Cgb6S3RYyniJIegzXa4HQ4n2fNZmzDK7g3vZhnCZlRi87C
+	 xFfN0ManqEBJD90kQ3GaX5yB9dl1NUv+v+wEObvaHsQ+zcnGyUPMi056dk50UzOwFc
+	 ipcCbzgIEgF7g==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bad54961385so1047515166b.2
+        for <imx@lists.linux.dev>; Wed, 06 May 2026 07:14:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9a1KVK4C2Tyt4E3opkTiMPjHDbXGCgsgEZylhWcZlTOktnoBOfmMyvUOEzz6EdnLarLb0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwW4uq7kZH64BG3xcEDD+LVZI3ctnn96STTxnIl8FieWamB4Usm
+	nge3vHMAuI3wC1dFvbhaB/eSABBRTW/QJiUFsf+aI8aokGIf66NZhYt6KEnLpG4T7zbIeIqhf75
+	1D8roTghCeau1sHB+m2+GJFPBUKdBLw==
+X-Received: by 2002:a17:906:ef02:b0:ba7:b198:7d25 with SMTP id
+ a640c23a62f3a-bc56d13529bmr176376066b.21.1778076892767; Wed, 06 May 2026
+ 07:14:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260506-fsl-edma-dyn-sg-v2-2-66439cdd414e@bootlin.com>
-References: <20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com>
-In-Reply-To: <20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
+ <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
+ <20260505141538.GA2547282-robh@kernel.org> <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
+In-Reply-To: <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 6 May 2026 09:14:41 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com>
+X-Gm-Features: AVHnY4JuaUtVhW_AwoHvUdOyEnlQ7azzni1rJEniHezJvRpnnGicHK1-9_FNIHQ
+Message-ID: <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com>
+Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
+ reg property"
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com, 
+	victor.liu@nxp.com, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement dynamic linking of scatter/gather transfers to enable
-chaining multiple DMA descriptors without stopping the channel.
-This avoids waiting for the channel to go idle if there is another
-transaction already issued.
+On Tue, May 5, 2026 at 10:46=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> On 26-05-05, Rob Herring wrote:
+> > On Mon, May 04, 2026 at 10:21:42PM +0200, Marco Felsch wrote:
+> > > This reverts commit 16c8d76abe83d75b578d72ee22d25a52c764e14a.
+> > >
+> > > Remove the 'reg' and 'reg-names' property from the LDB.
+> > >
+> > > The LDB is either part of the IOMUX_GPR (i.MX6SX) or the BLKCTRL
+> > > (i.MX8MP, i.MX93) register space. Both IOMUX_GPR and BLKCTRL are
+> > > register ranges with loose register definitions. E.g.
+> > >
+> > >   - On the i.MX8MP there is one register which controls the AXI
+> > >     threshold for two different IPs (BIT(31:16) - IP1, BIT(15:0) - IP=
+2).
+> > >   - On the i.MX6SX IOMUXC_GPR5 controlls: CSI2 mux, WDOG3 settings, P=
+XP
+> > >     handshake, ...
+> > >
+> > > In conclusion: it can't be ensured that one register belongs to one
+> > > dedicated IP and the LDB is rather an exception than the rule.
+> >
+> > It is fine if there's a child node for LDB if the LDB registers are
+> > consistent, but the other misc things are represented by the parent
+> > node. It is certainly not a requirement that either everything be in
+> > child nodes or nothing be in child nodes.
+> >
+> > What I don't see in this series is what problem does this fix? If you
+> > are going to break compatibility, then there had better be a good
+> > reason.
+>
+> Hi Rob,
+>
+> with the upcoming i.MX9x SoCs the parent syscon (BLKCTRL) controlls
+> multiple other IPs, e.g. a DPI mux added by commit 3feaa4342637
+> ("dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and
+> example").
+>
+> During the discussion of the above commit we agreed that the sub-devices
+> of the syscon shall not use the reg property due to the fact that one
+> register serves multiple purposes. In the above case the same register
+> controlling the dpi-mux also controlls MIPI-DSI bits. The MIPI-DSI bits
+> can be abstracted as drm-bridge as well. Two sub-devs using the same
+> 'reg' property below the same parent seems odd and I don't know if this
+> allowed either.
 
-Add fsl_edma_link_sg() to dynamically link the last TCD of a previously
-submitted descriptor to the first TCD of a new descriptor by setting
-the scatter/gather address and the E_SG flag, and keeping the channel
-active by clearing the DREQ bit.
+It's not generally. There are some exceptions to define things at the
+bit-offset level rather than byte level.
 
-Linking is only done if the last TCD was set to disable the DMA channel,
-to prevent corrupting cyclic transaction.
+> Now the LDB is also part of this BLKCTRL syscon device but requires the
+> reg property. TBH, I don't know why the reg property was added in the
+> first place, due to the above fact (multiple sub-devs - same register).
 
-Update fsl_edma_xfer_desc() to avoid re-initializing the hardware when a
-transfer is already in progress, allowing seamless chaining of descriptors.
+Probably because we asked for it, but we don't always get a complete
+picture of all the h/w functions (though we ask for that too).
 
-Modify the transfer completion handler to check the DONE flag in the
-channel CSR before marking the transfer complete. Since this flag is
-only available on SoC with the split registers layout, we only link
-transactions for DMA controllers flagged with FSL_EDMA_DRV_SPLIT_REG.
+But nowhere have you said the LDB registers are mixed with other
+functions. If they aren't, then there is absolutely nothing to change
+in the binding. If they are, then yes, we shouldn't have 'reg'.
 
-Add trace event for scatter/gather linking operations.
+> Of course, we could limit the breakage to i.MX9* SoCs only which is done
+> by:
+>  - https://lore.kernel.org/all/20260329-fsl_ldb_schema_fix-v1-1-351372754=
+bc0@nxp.com/
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
----
- drivers/dma/fsl-edma-common.c | 64 ++++++++++++++++++++++++++++++++++++++++---
- drivers/dma/fsl-edma-trace.h  |  5 ++++
- 2 files changed, 65 insertions(+), 4 deletions(-)
+The rational for that doesn't answer my question either.
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index 26a5ecf493b9..7094c747defa 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
- 		list_del(&fsl_chan->edesc->vdesc.node);
- 		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
- 		fsl_chan->edesc = NULL;
--		fsl_chan->status = DMA_COMPLETE;
-+		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
-+		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
-+			fsl_chan->status = DMA_COMPLETE;
-+		}
- 	} else {
- 		vchan_cyclic_callback(&fsl_chan->edesc->vdesc);
- 	}
-@@ -673,6 +676,51 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
- 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
- }
- 
-+static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_edma_desc *fsl_desc)
-+{
-+	u32 flags = fsl_edma_drvflags(fsl_chan);
-+	struct virt_dma_desc *vdesc;
-+	struct fsl_edma_desc *prev_desc;
-+	struct fsl_edma_hw_tcd *last_tcd;
-+	u16 csr;
-+
-+	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
-+		return;
-+
-+	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
-+
-+	vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
-+					struct virt_dma_desc, node);
-+	if (!vdesc)
-+		vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
-+						struct virt_dma_desc, node);
-+	if (!vdesc)
-+		return;
-+
-+	prev_desc = to_fsl_edma_desc(vdesc);
-+	last_tcd = prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
-+
-+	csr = fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
-+	if (!(csr & EDMA_TCD_CSR_D_REQ))
-+		return;
-+
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast_sga);
-+
-+	csr &= ~EDMA_TCD_CSR_D_REQ;
-+	csr |= EDMA_TCD_CSR_E_SG;
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
-+
-+	if (prev_desc == fsl_chan->edesc && prev_desc->n_tcds == 1) {
-+		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
-+			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_csr);
-+
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
-+	}
-+
-+	trace_edma_link_sg(fsl_chan, last_tcd);
-+}
-+
- struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
- 		struct dma_chan *chan, const struct dma_vec *vecs,
- 		size_t nb, enum dma_transfer_direction direction,
-@@ -780,6 +828,9 @@ struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
- 		}
- 	}
- 
-+	if (!fsl_desc->iscyclic)
-+		fsl_edma_link_sg(fsl_chan, fsl_desc);
-+
- 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
- }
- 
-@@ -883,6 +934,8 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
- 		}
- 	}
- 
-+	fsl_edma_link_sg(fsl_chan, fsl_desc);
-+
- 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
- }
- 
-@@ -925,9 +978,12 @@ void fsl_edma_xfer_desc(struct fsl_edma_chan *fsl_chan)
- 	if (!vdesc)
- 		return;
- 	fsl_chan->edesc = to_fsl_edma_desc(vdesc);
--	fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
--	fsl_edma_enable_request(fsl_chan);
--	fsl_chan->status = DMA_IN_PROGRESS;
-+
-+	if (fsl_chan->status != DMA_IN_PROGRESS) {
-+		fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
-+		fsl_edma_enable_request(fsl_chan);
-+		fsl_chan->status = DMA_IN_PROGRESS;
-+	}
- }
- 
- void fsl_edma_issue_pending(struct dma_chan *chan)
-diff --git a/drivers/dma/fsl-edma-trace.h b/drivers/dma/fsl-edma-trace.h
-index d3541301a247..ac319d2dbb90 100644
---- a/drivers/dma/fsl-edma-trace.h
-+++ b/drivers/dma/fsl-edma-trace.h
-@@ -119,6 +119,11 @@ DEFINE_EVENT(edma_log_tcd, edma_fill_tcd,
- 	TP_ARGS(chan, tcd)
- );
- 
-+DEFINE_EVENT(edma_log_tcd, edma_link_sg,
-+	     TP_PROTO(struct fsl_edma_chan *chan, void *tcd),
-+	     TP_ARGS(chan, tcd)
-+);
-+
- #endif
- 
- /* this part must be outside header guard */
+>
+> but I don't think that this would be nice from user and from maintainer
+> perspective, because:
+>  1) The same LDB "IP" would have a different dt-binding
+>     (user perspective)
 
--- 
-2.54.0
+It's not the same if the register layout is different. The point of
+having sub nodes is because the sub-block is reused. If that's not the
+case, then there shouldn't be a sub node in the first place.
 
+>  2) It introduces another dimension drivers need to care about
+>     (maintainer perspective)
+
+I thought Linux didn't even look at 'reg' here.
+
+Rob
