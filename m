@@ -1,131 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE630BBAE;
-	Wed,  6 May 2026 13:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778074444; cv=none; b=PMT/nmPMgKetSCPqEHFVWQZwnmrRtAAjrI+wjRgEGFJe2vqP1cAInZQgGi3Vf5Wm8dHJ9+8k4L/CDClDtEGROrlCwUQHOOu1TiQ6knQQWcx+DIo/7UOtYasyXmmmLIDyosWGbJ1CDP2hAjyKYBk2JJE9OOC7vGtgKIopS+jOHdc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778074444; c=relaxed/simple;
-	bh=YshSG+jEZSwzCbdJ4jDr60hn3hQDUfkq89jqa5o9J50=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=umMjTqSO1MqAhLbpKOfKT/ebhePvhrx/G7rDd7lsSfjzQJ+6mhZGz+GO6QDd5eFCeYSca+0Lddz4Ag/4AWlEwulGE6wp8lLiOCUY+My7V0xvzRsvFiqnxB89gjSeFXV0bb4oLzM2E91YpQqvhEWaDwkjAanD+iDcOIdg3wUC1zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qdLAuEoa; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07184266AC
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 13:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778075899; cv=pass; b=Vr1W3XTZzLjpvCmxtoFpq0V6w6fEPuJXm5tSSQhUty4q9Kx+nfudc7DUQ7MBlIGnj0duGEVlXm0bLKUhqBguRU49w2BI6jVLYgIPTaOZybGpqDElzpl7xz8uEOkCtHHqcmgQ9A7YANlOuHLTYKVQ++mlnRzNisevdi0xta0wSHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778075899; c=relaxed/simple;
+	bh=eaImYnZHNc8mXAJzozd++XRV+p2+tu+Ffdsrm6vJlbY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U8Sz0mgaV+4+HDQ96ULYZZJB2QsmA1Pl4XG0jjgUm8s7f994oOoCFh4ACBfhHGYk4MMPm1s1pVr135799oPXlvRkR73A1TbBeQcGcfF2Dhh6W1HiDl6gv/kBZaxO7Em9Rm+mallSdiLZMUlPn6RstTaTc52W+S7j+zyIrI2++rk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuRrd1qZ; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qdLAuEoa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A72BC2BCB8;
-	Wed,  6 May 2026 13:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778074443;
-	bh=YshSG+jEZSwzCbdJ4jDr60hn3hQDUfkq89jqa5o9J50=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qdLAuEoarlvWQFVS18RsdiGDZiM1aagLv4kBPglSttVyPwWiOKaZRqtzf7CVl8bsH
-	 vo66qBIcrlbi+mQJWAOBGKqrcV8ZzGwt7/kiuacW8HS+1ksIDS+NDW5ogV30ccR9aI
-	 iu3jMFPR18qwRRJTqZiuV41lPF5qrs6G8KEBmHDKBKhBBXSxu0BwCeKD13EulgBxTo
-	 u6S84xkkkFu7iBUyMF1Te74+ySF3/URpaJS6kaKZXeinLifk7+WLWJXTDNHDYwEVJ4
-	 1TuErwj9K1Hs9weQU/kSc3eoaqyjVBUghGtLi7rKdBGpX6Ue2LglK9H1krlMYggNIy
-	 ko1GkfQRSViLw==
-Message-ID: <5ad1e2df-85f3-4f9a-ab9d-b6ae34eebed3@kernel.org>
-Date: Wed, 6 May 2026 15:33:57 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuRrd1qZ"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6563f83ae9fso6918926d50.1
+        for <imx@lists.linux.dev>; Wed, 06 May 2026 06:58:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778075898; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a5qP4Jl023WE3Jcbsf88GYPeea0wdG4rTfC6l7nYSTD2fazHhbrGfEM4bG733DUBFm
+         mWVwVYQ/8w/seOakZHOuq9AJEaYOxJRjb7JIBbzDSLbhk0uyaEdNaIp0hkgPPJEyfNYx
+         XTFy4jEDzXTfBWCd7uKzdXG3SevFDuDEq6reisQ63hH91eNDww7gydEyaSvavS6Vnohc
+         n3DjNHsCJCflC+mHn2mG5kC/EHdekx/VwIOeh4oE2tTsuLaJKhuBgBPtFbCt95XceNPy
+         nZIN0O1gYoUeiSLCL9+/2Jy9E8TuSYCRpY86rtxg6ryPei+uHqHqsYMB21lk8n3tzR9+
+         Ri6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=yAGZRzNWoj71eYuAlCwOROEzF/QQfxUQn3hZ1d0klWU=;
+        fh=dseSGs2Yn9+TFjaB1/6h4HbxcsdeTOk2RZFCvT019lc=;
+        b=dhgYNUz9Ki4e5KgbZhrDhXihkmtxz77gC4WrCtmGfmZPiarRpEPmpw3AW26PgkqO4v
+         PlD5sAm9MwWtPqyOWH2OApXotKUFzBGUTaVI0Y9vzpSYlTXE4Om7jt+1jPqTLFh2csV7
+         ecbYqOlmn+QjBIlFQWFfqesvNiqd3fx4Z5mJ462TxZs6OfHJOeVA/tEAGK9XTLF3/cYB
+         kWDjTCcmhw2kQdUfgSH+N2dHdGKEQhtXcCJ9cs8KVbUXFeTYCrDuX6TI43Ke9LsVLm1Y
+         WYL+6MPgulCy7K0Taur0PoWR8KtNW6cgrE9GCWLquyloQoko+vL8OfF/8J0jphby1DPP
+         LwYQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778075898; x=1778680698; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yAGZRzNWoj71eYuAlCwOROEzF/QQfxUQn3hZ1d0klWU=;
+        b=EuRrd1qZjch/+jvbUTHJ8u4YpR8zm+N56VIKtthjOytV96iPWQg++x5E1JXb2S1pPx
+         y9zV9+2+EGiamgkop5ESaKpdN2WvjpzKnuo/N8AYMlpEamKuqJ7xM7HyyFUSXOvBw2aR
+         LsC/VuVJ0bdDh+mnzk4qO9Ffjk13TpMZr7XRMGKP/O8FNFQX44mmcuz6QHvqBsdkJFX+
+         /qL1yoKtrul1PcoOEYKMx+XY4SAj5rMrzl55+AoXntapzn9RuJr74Mv9bdv0Xvw4g3i7
+         txBe4105wPaS4PkNVrgHM+FbFqqC2WSVERrlQdLvCkNVfePmIHTTTgeuB8PIX4pPZdzx
+         dl6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778075898; x=1778680698;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yAGZRzNWoj71eYuAlCwOROEzF/QQfxUQn3hZ1d0klWU=;
+        b=m5gJ5kw+S8TWMxKlt7qavFBsv3TRqTHNaY4eWVZIE4bvCAaOWOmMfi/btX6ZQg136I
+         bVzHS6kFIXykyvac684OdawM4tHsCkDnG9e08SQGCdBkE1tZ9FlGC1Gf5HpquUpwC2IN
+         eMwhtDlegJcUGi2y7NOH/xS3hboWr4Dg6W0Iph2HaFIqoC31bNZEFddFwn4Bx02mj5/V
+         ArjEPVsF3ypPhz0IccQWNAOlwQOD3vvGCqXGnBMGrZXZ8olsKbKi3omk7rD8eHeOywO7
+         n2PhsCN8mtSedyUl+2Ri5e8oB/g1TIPMAfsVBtC2cQT6YHiCUozUdLFZ+68niHHaDIhL
+         95Nw==
+X-Forwarded-Encrypted: i=1; AFNElJ85mw5iXMSupc8cSD6rPdQFMHzgZtg7f8FbJcCO/i5Su1b3TVO+aedSwVN9vfss4EIBRiw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxKHpFeu0kxIHJsKemk3NBLj8JhRIBAVmiAbY9594HNfQxb47dw
+	uwGgIYcYkIiRwuVibAPj1Ks7sWqnJ80JP6V26bKO0fxig7sbAAb4SEPzXfuHdcoPvIdtZ7qnBy1
+	o/127KewE7HzdUCiXQG+7IB5oiTWtZjo=
+X-Gm-Gg: AeBDieug7ck/YhAHsKOGlYq5K2gCwUFMuawZxWKmWCEraeHckMVGKIXQU8cZKloskKl
+	Ji/yumRpeafI549P60iZi38Dl6mt3KjOSG7VLspwIBBVWiTL3QMDrgSn8DRykYq336lzs4MGDqR
+	2XAQbWwfUkbd+rnVb2jxDGKuKq+vhaDm8p9iUGsnQdmy2xe2lPR+Nm4BQJ54BFhj1JkMOAUNOnf
+	lfPa/gn8vp3j2Jj7wwPmckS8H+bikHEAjKFJPESi5KOyyO6Hql+rVKQhie98lXHQFvLKS87bA1I
+	gJ2HUfeYj1bdM5+LQPn/V7OGhKPUJw==
+X-Received: by 2002:a05:690e:1688:b0:651:be8b:e87e with SMTP id
+ 956f58d0204a3-65c799989cemr4075950d50.34.1778075897748; Wed, 06 May 2026
+ 06:58:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: dt-bindings: nxp,imx8mq-mipi-csi2: Fix example
- endpoint label typo
-To: Robby Cai <robby.cai@nxp.com>, laurent.pinchart@ideasonboard.com,
- Frank.Li@nxp.com, martink@posteo.de, rmfrfs@gmail.com, kernel@puri.sm,
- mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, martin.kepplinger@puri.sm
-Cc: imx@lists.linux.dev, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260506090124.2960477-1-robby.cai@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260506090124.2960477-1-robby.cai@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260506092324.635014-1-lgs201920130244@gmail.com> <afsO9TxVuz79FFQ0@raspi>
+In-Reply-To: <afsO9TxVuz79FFQ0@raspi>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Wed, 6 May 2026 21:58:07 +0800
+X-Gm-Features: AVHnY4IW3B6qWimauAAC6R2YoxAVTsxlXp2RYpmYRhFA5w6dajkgOR-Qizc8_E8
+Message-ID: <CANUHTR8PNO-3hfEMCz4Zz_2ERLonE7OyNzPWtAaDtVpNB=YGhw@mail.gmail.com>
+Subject: Re: [PATCH v5] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with
+ device_node cleanup
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 06/05/2026 11:01, Robby Cai wrote:
-> The example in imx8mq-mipi-csi2.yaml uses imx8mm_mipi_csi_{in,out} endpoint
-> labels, which is confusing for an i.MX8MQ binding. Rename the labels to
-> imx8mq_mipi_csi_{in,out} for consistency.
-> 
-> Fixes: 37255747ecbd ("media: dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and controller")
+Hi Liu,
 
-Nothing to fix here. Otherwise explain the bug.
+Thanks for the clarification.
 
-> Signed-off-by: Robby Cai <robby.cai@nxp.com>
-> ---
->  .../devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> index 4fcfc4fd3565..71f79651dd96 100644
-> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> @@ -220,7 +220,7 @@ examples:
->              port@0 {
->                  reg = <0>;
->  
-> -                imx8mm_mipi_csi_in: endpoint {
-> +                imx8mq_mipi_csi_in: endpoint {
+On Wed, 6 May 2026 at 17:49, Liu Ying <victor.liu@nxp.com> wrote:
+>
 
-Drop the labels instead - they are not used.
+>
+> By "minimal" in v4 comment, I meant not to use __free(device_node)
+> in imx8qxp_pxl2dpi_get_available_ep_from_port() and
+> imx8qxp_pxl2dpi_set_pixel_link_sel() - please keep using
+> __free(device_node) in imx8qxp_pxl2dpi_find_next_bridge().
+>
+>
+> >   - Keep imx8qxp_pxl2dpi_get_available_ep_from_port() unchanged.
+>
+> No, please fix imx8qxp_pxl2dpi_get_available_ep_from_port() to make it
+> return int.
+>
+> >   - Do not change imx8qxp_pxl2dpi_set_pixel_link_sel().
+>
+> No, you need to change it.
+>
+> --
+> Regards,
+> Liu Ying
 
-This is just churn and for sure not a fix.
+I misunderstood your previous comment. I will update the patch to keep
+using __free(device_node) in imx8qxp_pxl2dpi_find_next_bridge(),
+change imx8qxp_pxl2dpi_get_available_ep_from_port() to return int and
+pass the endpoint through an output argument, but avoid adding cleanup
+action usage in imx8qxp_pxl2dpi_get_available_ep_from_port() and
+imx8qxp_pxl2dpi_set_pixel_link_sel().
 
-NAK
+I will also drop the unnecessary local NULL initialization for ep,
+since the helper initializes the output argument to NULL.
 
+I will send a v6.
 
 Best regards,
-Krzysztof
+Guangshuo
