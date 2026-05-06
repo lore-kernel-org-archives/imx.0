@@ -1,183 +1,222 @@
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3C846AEE1
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778076188; cv=pass; b=F8fTlfhZXUEvgaJ1qabJJDW+UzwZFd3LviUC96HUQa3VNMqnyV6Vph98zWn5Qoi1pD+wItLphC/w8iyc2m6rMaNXw0W1FuYamcx9bjFNBgFrSciOZlMwaIyClGVFjnnBJaaQZlw79kYpq5kcboS7GWXAsXCzKUIfsDpaPpKq6G8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778076188; c=relaxed/simple;
-	bh=+RS49Kd2DbvtubK5kt5W1aYVEDo05KG7Xep0OnmpGgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dBJK7MIg+FRuO4Ng2EBFkbLAjjYcv5YYEjWJ5H1cxjr1HvZwEEh1jrXnkZGs0efEAjTk7HpvZKWaUBlSDT8zysGlvwMANcz5e0OLJ41FpHQpSmotudte9OgYxGxZryZePiCEnE/kDt+nor+GHjOdNvvdXCfFsZoxGHTBbQdmrJw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k9L5enZp; arc=pass smtp.client-ip=209.85.222.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF5948033F
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 14:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778076650; cv=none; b=b5BCgeNzV9fon1ZUd3Q5fSICKVxCBEI8JQO+ARR73KGEoHvYVzYDb6lc2Jldt6Ph710vKH/2JqnNj7dGx7aTNiw8czjsDVVEHzm+cP/5+WG26tKDQQS0hyJNsl5v9YYFlBEpl95SJL7T0jM1x+38Sp99qviPX9NCpFqifWXtbu8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778076650; c=relaxed/simple;
+	bh=F9x43ZEfRU7wK83sMqGbjCkgc03IOGpd8Al76pMWLN0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qKu5oWGl6ndgNw9eOQ3paMW6r06yObAoaGCHnJx1sqbfvptQQFfPkCGYPJTEkwbNuszS41I05zPMDSe2fKnrgws9SMFxV6QJVSDlP30Pq1WOBZ7MmpPsgshypJXBJ/yPQ31IhK0SRJR6nCiupjqOOgfjUHNCTnIObMTKh9m5a8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Gg2YnvfC; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k9L5enZp"
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-94de664b541so2007227241.1
-        for <imx@lists.linux.dev>; Wed, 06 May 2026 07:03:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778076186; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PRTQBnfZhI5iXfLj1A9/1L/VEuDbXtILoErpZQ5UzDx59wohgQ/Dmy0cduPjLwdPPI
-         1eHIlknMup+oKfM14UA4SH0itXjVExE6pkj3/QZP4NNgwgOwMIGCjqSCLFozmuLaxVqd
-         iFEpVkzFglzHPteJ3cdvYgfSLMSwPCa8pNSqkZ2WfTrcUA7b359egUmR0/bg+lF9pgA0
-         somJWBfIrRw6nMFv7/Z0hLrxmAdW6I5pEEb03RyLi7SxsTog47SQnU0MGe4UkM5HN/XP
-         pPQYnb3CkVvAR26vUqxROxJSntde5SKJ274k32RJ+3sGnHft8BOIiJQciKCYlKFHdOz/
-         YMnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jsD9mMCCpukEdwiIZPox/sOpEjhE31kEGDjuvOB20/g=;
-        fh=8rUN2jO6YqiLk5ux6TnasGFS59ES7t+sd9sSr2MSTS8=;
-        b=e6xY1RULblMvxjXGiciW/v9zY+TyoYLVkLbmwLz8Eqq87B7SoanQ45YblxSenL92od
-         OyqNEu+pglnIgKgYpNxdtYVopN1ixFL3hifGzuQ4UoVUkWBBP1z9UV7Qs5Q5VwsyHY7M
-         vRo4IaZIl7yx/pT3AGB68dUy63tf5C537397PE6Ial0ANtSoki8CMQV0ai77dDhbbMN6
-         VZiKH3N1YPq3CqVfkuEUM2k4RBOAxJOwztozDM8am8dGSBr+QzNu4tTI8t1zuM6yqx6x
-         I2H6eBf2UIr4aTqvflN7KMxG/SLJ9HkLAj+hw4c47bVfLK2yEljLdxzdsm+KDn1gQMhQ
-         f/wQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778076186; x=1778680986; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jsD9mMCCpukEdwiIZPox/sOpEjhE31kEGDjuvOB20/g=;
-        b=k9L5enZpoLlEDs4Ai23gcXwpZ0Cc6Jf3/IB7ggGPfOEE5CGrojcoeTE1pbDXpgboy2
-         sDI/xwKjjoA/ovoPbdeOlMkUOcejEgGmoindaB0dwx+JX3XV3mrNd7uapKn9iFbL4psU
-         ocQjev+yHwX0e/JMweRH9n0cIVcHyl1FMjSuRCRGH3oDr8ub96AojSjOSVUUeRVgTgjI
-         zRXV/X3Gkcu3fQ/jbTDfUtlPeoC5dRR5gspCJO9Jy+MYoO2z1NLuDgYy6KG42RrIb/tZ
-         uO7ZfBT86dMOi6M3ThpQHfv5YoUcoekbO79T9vNPRwSfi8I40/tFpejmbZxFnyLL96ND
-         BSQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778076186; x=1778680986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jsD9mMCCpukEdwiIZPox/sOpEjhE31kEGDjuvOB20/g=;
-        b=AlIKrMZGa8FWRt4XsDQ3lDIwvdvmZOyLHPxX8xHL8FXItqj1kxo2giX4gKotlboBfs
-         kdS0gvSde+4VaRFdaqKxlA7tz5+t8oirMlGZzhxi0HgJnnDCVXqUaVp23G39mLxcIG1L
-         RufPR01uRPFyrM2ClWqj/ALbxEVK4Rk9+ZUctEgfABMTthkMdLw+AMJpP+SZbhip87mm
-         srBNEJUKy/IrVgn8Cd77bphTj+yVOvkEaaW08mD3pWSrMOztzjDtvcG+9Cs7eiLZHG4v
-         uFql9zl7juMo21Aac19JtUZa836jBitXHfVdaLTMQkwUknqpZ6XiVW42QGpb+lmGSZje
-         FKug==
-X-Forwarded-Encrypted: i=1; AFNElJ+W/XapbWKFBc3ZCsiJYJypZOCiSCp0HPtdG2P4shDv9tl6g0PqUhz0ajgAsBo7Rh0NYbc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw85w9+mpywCdUbEaQLo1O//FZiR3Ag6b3R4fcqUsy6ms1YsQ4Y
-	rJeXm/FC/SJBPLq1/BBrEEEvB7DOzXOgOkfxrO4HjlsnYzEcZbwi6xmuW7xsku/BsX9G3Zx7hSO
-	kJWVxF17K6dobAdHZ6ULgjd9XXNP1KDc=
-X-Gm-Gg: AeBDietcaSq6z1tUYJvbBVauFumP5wGd9Q8QoVLhw191pCgFT6yDlaAyLiUCK08Bw6s
-	w84FzEklkWrQ6Aej+UlWUmsZEZthqIr5/evvYwh09nDnjryp7eoYdTpvGTev/V1MFh5iIqEKFQp
-	JW+lTmh4qxLVMAh2LkK4c0/RUklSraAxJukG70T4yXSRyi1EA61AG+WRejW249ztdUEUfoWhxzm
-	CTLXEcWxgxm6xHfZoEXJIFN0OVtjeEzWg393RAFMuuk9aLEOznzgmnUyyamARUumqYS+UigyRbk
-	1sY04EREwcge0fJ5MJoD2cpE9cBYNAeD+DfuE2OOZD56Hb9/Kw==
-X-Received: by 2002:a05:6102:4a8c:b0:605:889a:89a1 with SMTP id
- ada2fe7eead31-630f9041b24mr1272953137.23.1778076137325; Wed, 06 May 2026
- 07:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Gg2YnvfC"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 38BE81A3551;
+	Wed,  6 May 2026 14:10:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0E2A16053C;
+	Wed,  6 May 2026 14:10:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87D4C107F1644;
+	Wed,  6 May 2026 16:10:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778076647; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=oIGsjd/LijliH2kV2hyJFY2dEYw5fLzhdT3QlZJobf4=;
+	b=Gg2YnvfCzTmyJlxv3sllWicBiCSCFKpJ/hcZbrYaNJArPV0bwNA2kju0Sqblfl3FkIQgfk
+	NZz5kuHR7Y8emHbSwGgHq5nhysU+cbNbZgPRoVrjNV2LbvyydSLH0AWvDYK3oE0hKsAiDn
+	D5Fz9TiOe1wIc706oRNKSh2dLFvR0g4ffYnevOYNk/vO11E7FPrtlKt8YcTp0bMiAgTbj8
+	t5+jV6NJ1rkl6bEVhj0fEvg9oIiK1LPUWK+QkKXjZQAV2hD8CfSnKfU0RLTK3gsyDo2z8B
+	6MhWMldMC9spu3qZFx5n+6q1Vl9plSrnQmmbfnXd8WoqF0WHat8LQN918Sa2Vg==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Date: Wed, 06 May 2026 16:10:35 +0200
+Subject: [PATCH v2 1/2] dmaengine: fsl-edma: Implement
+ device_prep_peripheral_dma_vec
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260501095433.1609309-1-mitltlatltl@gmail.com>
- <20260501095433.1609309-4-mitltlatltl@gmail.com> <OmTXoHZJTSGePymL9I-1Cw@puri.sm>
-In-Reply-To: <OmTXoHZJTSGePymL9I-1Cw@puri.sm>
-From: Pengyu Luo <mitltlatltl@gmail.com>
-Date: Wed, 6 May 2026 22:01:22 +0800
-X-Gm-Features: AVHnY4Jp93agdi_Y8mXGWuXYD7rYu7UJTV_Ohq4VXA590K98lCrI7__F8JibURM
-Message-ID: <CAH2e8h6YM1D6K-SKg8UUL_-jJ0uuEvU1iK-xZtguNTurfO-U4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] media: hi846: Add 6MP and 8MP modes support
-To: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Martin Kepplinger-Novakovic <martink@posteo.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Hans Verkuil <hverkuil@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260506-fsl-edma-dyn-sg-v2-1-66439cdd414e@bootlin.com>
+References: <20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com>
+In-Reply-To: <20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, May 6, 2026 at 8:51=E2=80=AFPM Sebastian Krzyszkowiak
-<sebastian.krzyszkowiak@puri.sm> wrote:
->
-> On pi=C4=85tek, 1 maja 2026 11:54:32 czas =C5=9Brodkowoeuropejski letni P=
-engyu Luo
-> wrote:
-> > Hi846 is an 8MP sensor, but the upstream driver has only supported 2MP
-> > mode for years. This patch adds 6MP and 8MP modes to maximize sensor
-> > utilization.
-> >
-> > Note that these modes require 4-lane MIPI CSI-2, as the downstream
-> > driver only exposes 2MP, 6MP, and 8MP configurations in 4-lane
-> > operation on the target device. The register sequences are extracted
-> > from the downstream Windows driver.
->
-> Has this been tested in this form at all? I tried, failed and looking at =
-the
-> driver I don't see how could it ever end up using these modes in its curr=
-ent
-> state. It can only cause troubles when used with 2 lanes, while 4 lanes a=
-re
-> completely broken.
->
+Add implementation of .device_prep_peripheral_dma_vec() callback to setup
+a scatter/gather DMA transfer from an array of dma_vec structures. Setup
+a cyclic transfer if the DMA_PREP_REPEAT flag is set.
 
-I may have messed up. I tested it with two more patches. The first
-patch removes 480P and 720P, the second uses a new 4-lane init list.(I
-just sincerely followed the downstream) Since I didn't think much, I
-thought removing modes would not break things, I just tested without
-the second patch, so it works for me.
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+ drivers/dma/fsl-edma-common.c | 110 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/dma/fsl-edma-common.h |   4 ++
+ drivers/dma/fsl-edma-main.c   |   2 +
+ 3 files changed, 116 insertions(+)
 
-> The driver defaults to its first supported mode, which happens to be a 64=
-0x480
-> mode that only defines its register list for 2 lanes. hi846_set_format wa=
-s
-> supposedly meant to check whether the mode returned by v4l2_find_nearest_=
-size
-> is compatible with the used lane count, but it does so too early - it act=
-ually
-> checks it against the already set mode rather than the one it's about to =
-set.
-> This means that you're never going to be able to set any valid mode when =
-using
-> 4 lanes without fixing this first.
->
-> And even if this was fixed, with 2 lanes this makes some calls from users=
-pace
-> that previously succeeded now fail when v4l2_find_nearest_size happens to=
- match
-> a mode that's only supported with 4 lanes. v4l2_find_nearest_size would h=
-ave to
-> be fed with already filtered list of modes to fix that (which would actua=
-lly
-> make the check mentioned above unnecessary).
->
-> Of course these are preexisting issues in the driver, but they make it
-> impossible to actually use what's being added in this patch and to add th=
-ese
-> modes without causing regressions. So far these didn't matter as this dri=
-ver
-> was only ever used with 2 lanes, but they have to be fixed first before a=
-dding
-> any actual 4 lane usage or modes that require 4 lanes.
->
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index bb7531c456df..26a5ecf493b9 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -673,6 +673,116 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
+ 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+ }
+ 
++struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
++		struct dma_chan *chan, const struct dma_vec *vecs,
++		size_t nb, enum dma_transfer_direction direction,
++		unsigned long flags)
++{
++	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
++	struct fsl_edma_desc *fsl_desc;
++	dma_addr_t src_addr, dst_addr, last_sg;
++	u16 soff, doff, iter;
++	u32 nbytes;
++	int i;
++
++	if (!is_slave_direction(direction))
++		return NULL;
++
++	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
++		return NULL;
++
++	fsl_desc = fsl_edma_alloc_desc(fsl_chan, nb);
++	if (!fsl_desc)
++		return NULL;
++	fsl_desc->iscyclic = flags & DMA_PREP_REPEAT;
++	fsl_desc->dirn = direction;
++
++	if (direction == DMA_MEM_TO_DEV) {
++		if (!fsl_chan->cfg.src_addr_width)
++			fsl_chan->cfg.src_addr_width = fsl_chan->cfg.dst_addr_width;
++		fsl_chan->attr =
++			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
++					      fsl_chan->cfg.dst_addr_width);
++		nbytes = fsl_chan->cfg.dst_addr_width *
++			fsl_chan->cfg.dst_maxburst;
++	} else {
++		if (!fsl_chan->cfg.dst_addr_width)
++			fsl_chan->cfg.dst_addr_width = fsl_chan->cfg.src_addr_width;
++		fsl_chan->attr =
++			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
++					      fsl_chan->cfg.dst_addr_width);
++		nbytes = fsl_chan->cfg.src_addr_width *
++			fsl_chan->cfg.src_maxburst;
++	}
++
++	for (i = 0; i < nb; i++) {
++		if (direction == DMA_MEM_TO_DEV) {
++			src_addr = vecs[i].addr;
++			dst_addr = fsl_chan->dma_dev_addr;
++			soff = fsl_chan->cfg.dst_addr_width;
++			doff = 0;
++		} else if (direction == DMA_DEV_TO_MEM) {
++			src_addr = fsl_chan->dma_dev_addr;
++			dst_addr = vecs[i].addr;
++			soff = 0;
++			doff = fsl_chan->cfg.src_addr_width;
++		} else {
++			/* DMA_DEV_TO_DEV */
++			src_addr = fsl_chan->cfg.src_addr;
++			dst_addr = fsl_chan->cfg.dst_addr;
++			soff = 0;
++			doff = 0;
++		}
++
++		/*
++		 * Choose the suitable burst length if dma_vec length is not
++		 * multiple of burst length so that the whole transfer length is
++		 * multiple of minor loop(burst length).
++		 */
++		if (vecs[i].len % nbytes) {
++			u32 width = (direction == DMA_DEV_TO_MEM) ? doff : soff;
++			u32 burst = (direction == DMA_DEV_TO_MEM) ?
++						fsl_chan->cfg.src_maxburst :
++						fsl_chan->cfg.dst_maxburst;
++			int j;
++
++			for (j = burst; j > 1; j--) {
++				if (!(vecs[i].len % (j * width))) {
++					nbytes = j * width;
++					break;
++				}
++			}
++			/* Set burst size as 1 if there's no suitable one */
++			if (j == 1)
++				nbytes = width;
++		}
++		iter = vecs[i].len / nbytes;
++		if (i < nb - 1) {
++			last_sg = fsl_desc->tcd[(i + 1)].ptcd;
++			fsl_edma_fill_tcd(fsl_chan, fsl_desc->tcd[i].vtcd, src_addr,
++					  dst_addr, fsl_chan->attr, soff,
++					  nbytes, 0, iter, iter, doff, last_sg,
++					  false, false, true);
++		} else {
++			if (fsl_desc->iscyclic) {
++				last_sg = fsl_desc->tcd[0].ptcd;
++				fsl_edma_fill_tcd(fsl_chan, fsl_desc->tcd[i].vtcd, src_addr,
++						  dst_addr, fsl_chan->attr, soff,
++						  nbytes, 0, iter, iter, doff, last_sg,
++						  true, false, true);
++			} else {
++				last_sg = 0;
++				fsl_edma_fill_tcd(fsl_chan, fsl_desc->tcd[i].vtcd, src_addr,
++						  dst_addr, fsl_chan->attr, soff,
++						  nbytes, 0, iter, iter, doff, last_sg,
++						  true, true, false);
++			}
++		}
++	}
++
++	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
++}
++
+ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
+ 		struct dma_chan *chan, struct scatterlist *sgl,
+ 		unsigned int sg_len, enum dma_transfer_direction direction,
+diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
+index 205a96489094..0d028048701d 100644
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -496,6 +496,10 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
+ 		struct dma_chan *chan, dma_addr_t dma_addr, size_t buf_len,
+ 		size_t period_len, enum dma_transfer_direction direction,
+ 		unsigned long flags);
++struct dma_async_tx_descriptor *fsl_edma_prep_peripheral_dma_vec(
++		struct dma_chan *chan, const struct dma_vec *vecs,
++		size_t nb, enum dma_transfer_direction direction,
++		unsigned long flags);
+ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
+ 		struct dma_chan *chan, struct scatterlist *sgl,
+ 		unsigned int sg_len, enum dma_transfer_direction direction,
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 36155ab1602a..6693b4270a1a 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -841,6 +841,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 	fsl_edma->dma_dev.device_free_chan_resources
+ 		= fsl_edma_free_chan_resources;
+ 	fsl_edma->dma_dev.device_tx_status = fsl_edma_tx_status;
++	fsl_edma->dma_dev.device_prep_peripheral_dma_vec
++		= fsl_edma_prep_peripheral_dma_vec;
+ 	fsl_edma->dma_dev.device_prep_slave_sg = fsl_edma_prep_slave_sg;
+ 	fsl_edma->dma_dev.device_prep_dma_cyclic = fsl_edma_prep_dma_cyclic;
+ 	fsl_edma->dma_dev.device_prep_dma_memcpy = fsl_edma_prep_memcpy;
 
-Thanks for your feedback. I think we can use specific modes for
-different lane modes. The snippet like
+-- 
+2.54.0
 
-    hi846->supported_modes =3D supported_modes;
-    hi846->num_modes =3D ARRAY_SIZE(supported_modes) - 2;
-    if (hi846->nr_lanes =3D=3D 4) {
-        hi846->supported_modes =3D supported_modes + 1;
-        hi846->num_modes =3D ARRAY_SIZE(supported_modes) - 1;
-    }
-
-Best wishes,
-Pengyu
-
-> S.
->
->
