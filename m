@@ -1,229 +1,213 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D732264C7
-	for <imx@lists.linux.dev>; Wed,  6 May 2026 00:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778028644; cv=none; b=oBrf/lbhCMgQkO8OzL7gNTiqiHAXhnT7W0ffjFiUQj6BTCErR1lR7IXOkZ9QgsvcW73Zxc2jv2lV1URmlrjdIKlYzcBDEU69GPKCJs9qi6DO6/eOPJElMRl9TvNVrJA6JPb1cuggp/2F7A3Ijkye62JgEedx++VjjxYVdsMbGqw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778028644; c=relaxed/simple;
-	bh=c/0o32UHHPR53Ko/1QO7CYkQ8/mLPJcwy6nuModIVJM=;
-	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=d0qZNxj+q8wkxY+EM8MGpD+O+j+lcKz25QIsBADl1WL0k5Uzpmkq6f+k7aZdLCoB21wx4TwjrVBSoLl7DzH7IuTqmHpLrCrsFWOOQ2eDy9jV5cyazb9u0B6A1jxmeFgv9I3XC1ij9ycVrbLLdtdFG5pf1x3tUkvo3NJvqJXFuc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fbNxiyj8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0DD1E511
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 03:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778037203; cv=fail; b=SExWPkwNuXDbUt9X/7bqhjmxwzPH5Mr3S6ZTxI4g+szaHF0e0aJhatrE8dIueN56AF8EZmwXy1tMmzqnrQ+lbimszOKr2ZIW5pEJhs8DCEVcuBJTBrHfXC7qGLZ2tfe5mGkdM3fD+hbWIqxQzlNTqIIUMZ3x+U8hMnoTHF3WfLk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778037203; c=relaxed/simple;
+	bh=FHgAC2iv4mH82NDmXv+NJNgSJlNoyAl9GgsORdAuP54=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D6uqyXN0uaF5RBZmG5gJbkJXbvJH48NWy5UZicrQPhkIIFEepQtXilJtgMBxrF1vQeNHXBORWjweF/WKgCbkkeKa9O/xz/+7KukTOYiWnHbYaV158Mop4ce4PEHOaCUfWhEqRx/qT5/U2ob60ly5U078V9upNXGButMAXJ8Lasc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=HaMyEKtO; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fbNxiyj8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778028640;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M/24W4AwvWyRwYbo6ULJEPyQOBfb+Ll9imS0OxoxU8g=;
-	b=fbNxiyj8ZL9VDpamgzbUNmkSNHfqTF/2ZIwamrt+JtW0rneaWaamfLuYa9y/02aHl+7hv/
-	010QCSUD/9Wn+ZkmpGeEQd2uOMX33EQ7sg4ApbRFKRO0ULbt1suC09S4w4jlNIkY6DShBH
-	DMlR5bdVFb4x47GKFf98J03U0mNARi0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-h-ny47WaP4m948ummS6tKw-1; Tue, 05 May 2026 20:50:35 -0400
-X-MC-Unique: h-ny47WaP4m948ummS6tKw-1
-X-Mimecast-MFC-AGG-ID: h-ny47WaP4m948ummS6tKw_1778028635
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8ed2c173d3bso1189482285a.2
-        for <imx@lists.linux.dev>; Tue, 05 May 2026 17:50:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778028635; x=1778633435;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M/24W4AwvWyRwYbo6ULJEPyQOBfb+Ll9imS0OxoxU8g=;
-        b=K5e0roVWl89f/jEuXJH2nKcM7OCYb1OzR4bNOAzVMfHNTOPx8ddNfyuSYRAp+dYSFf
-         VlrrdxD/8GM2j364ddW7OjqzsyKQKTjo445XseZ1n82tixUStEDVJGzthbh0cx/QKxnr
-         yjECFDMO+8LR5tcoDZ+mqk7yvrDG1Yo42CUuy9VFt3khYDbuNLroTJg0L/1w2AGjG85s
-         THTcaU6ymJ+rVMsKfOqunqUZ/XNOQmqln090NgRsrZRbm7ObeXr6RWmILlxEkckBAr+r
-         HbYQzR1w5Tm0MnJXp9Xr6VAY3CgJB2jCkc1+xRr/14k5aJOM1zh6qgvhqrP5g2yeCq17
-         Eivg==
-X-Forwarded-Encrypted: i=1; AFNElJ+t+v4FPPt+Sq7I4FWYHBybI+SDuhbVkKoaEobkmis6rjKWsnObnGUiBl7iY1CEnL4uMuU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyix3TCctcKf8RcZQqwH4ZEBuKiezFF+xss85tzpANrBFPoTxfl
-	hWCl3ipHG2oZiYBfXBvzSKkFB0CWwQoKZjtONvF6x2klPbnuMI4ljHygimkEA8OlNr0ZyTtNU20
-	OLD+DtBx6ALgNC7O9d7OYrLhhv6MXWwEkoCzDSYiCjBUXtr14M3DfCg==
-X-Gm-Gg: AeBDievA+Z+qQfQyFIbvF+epxMT49cJ3t/+GiR5X6O3HDpygZ0hWCryx0XjAA0GFQ0/
-	6xb4dfk9wjhSgrXjMeBOo8cd9WHy4shebA6sFoA9aH9fMiejKpuMhP1fUMkYyj3tOkLAi0zUWeT
-	tgw0plJIEapnk3mbRCwYORUfoXOX3trKsO0JGMF87u1L5m1cfoEtWjlG7bDYQ6KYZ7KNB8g+0Ho
-	hiJ6CL9qAPzLkp+D4r5rx4qzUUILxob3B73gDGaVvoDoMIs600CJK49HtI1WLmGS+H5gvNfg/jc
-	1CQtD41F33qziqsTGoBTMq52Lko6XTc4D7OFYhBuxqDiSsaDA/KjvxfyU4QA+FfwhhasPAUWKpY
-	EqAFkdhYT54HCBzQEFKl6DqzZU4JGFE7rhoEZ/ifkswCbKCsBWhcBG5DeM1AWpJNrxBAyok9A
-X-Received: by 2002:a05:620a:2697:b0:8ee:7878:af33 with SMTP id af79cd13be357-904d3fa461fmr222469485a.4.1778028635222;
-        Tue, 05 May 2026 17:50:35 -0700 (PDT)
-X-Received: by 2002:a05:620a:2697:b0:8ee:7878:af33 with SMTP id af79cd13be357-904d3fa461fmr222464185a.4.1778028634644;
-        Tue, 05 May 2026 17:50:34 -0700 (PDT)
-Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91fb3bsm1464933385a.41.2026.05.05.17.50.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 17:50:34 -0700 (PDT)
-From: Brian Masney <bmasney@redhat.com>
-Date: Tue, 05 May 2026 20:48:58 -0400
-Subject: [PATCH v3 02/15] clk: add clk_determine_rate_noop()
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="HaMyEKtO"
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6461J2iA2259166;
+	Wed, 6 May 2026 03:13:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	PPS06212021; bh=nGlW5Pc8uLrglD4Wx6FUn15mIJVb6z6mXwlBcGYZwjU=; b=
+	HaMyEKtO0Fek1aMunj0oFklfsAOpgF4DzgwkyfaV/7RrKg7XqAuLVLd76Hnjno5E
+	ztIuiBNWyajbMgUarYearYOGDKN+tWtMOblvReyc2t/sQN9K7FknRzR8WmhAWV8w
+	7H60mQpUgHCC+J6CuahH4nprtsCn8YwyHK/M6kY8K2orCRxonPhpu3Wf+Lbvfm9Z
+	zowxcgbv2LHVN19e2/apEnY6LeKgwamMByzgj30PnCfyIGFY030vMNjfN9ECodQZ
+	ueS4rSasysV97C3EDZJlPev/78Q6bRi/xC4Bflq3+qnJNvjn1Waz4TZWFI1wFPpV
+	yGIfLXzjLmjRxikd8gvvIA==
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012004.outbound.protection.outlook.com [52.101.48.4])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4dw8t5vd9w-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 06 May 2026 03:13:03 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TCAZb2zBSBu2jS+PRfMPGq4OrKxhUfDA3ltvIPv5pc9VjyTSNvPgggmC9dZar21336ygnC0QXydFATwCbBe6bQG0SRNhehWo44NjwTSDzaRUGE8/XxVB9xXvgM/wreYoB0wYTv1b991ZyGi1RsAl58HKgdXdw25vSjWVd580ENcCJYkQFjKzvW9VrVGWX3EYVtQ7fej8EUCspnfBmREzTUGR0wzwlJ0zDdCbfZCrbI9cUhYbRlUpxssrQ0OyfY6chA16NJIcpvVfk1AgUha9L7eUJgynUlYj4q73SGU665P8Rl/yWeiL2f6Pg5Bt3nddk4na7/q+Q3beN1dJAYKsHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nGlW5Pc8uLrglD4Wx6FUn15mIJVb6z6mXwlBcGYZwjU=;
+ b=WlQhpxczraTBJ5Wl7ojpo3TMlbUAP2ypurQx/E9PJ0zrSWx/IrFRvBvGx0VtXTlrEmDOkiWxwJnlXaAYpmjJ04/B5uCp3xnoRklGkuJD9TC9dwwYK9MiD5ghf2uNYVf1BsUsGePTIZFdCtmp+qiN7E1hncbqvzf7SwxfVRFqokLvyO1otrflCZr910LDRYEIrs3Cc591lMuOxcpEKV/cx3CvQOta1fIqOs5gNio/tEPQDOAbgQ1qSfrV00vKCSL43cKJmeYF2nAuXOWXeaiL4Nju9/IXZcofudtkcUCl5CuzQ3wlLf/8+BtPWJLauDKWb830uU55mikagAMxt1U3cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from SN7PR11MB7017.namprd11.prod.outlook.com (2603:10b6:806:2ac::17)
+ by BL3PR11MB6388.namprd11.prod.outlook.com (2603:10b6:208:3b8::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.27; Wed, 6 May
+ 2026 03:13:00 +0000
+Received: from SN7PR11MB7017.namprd11.prod.outlook.com
+ ([fe80::44b9:5767:8577:dee8]) by SN7PR11MB7017.namprd11.prod.outlook.com
+ ([fe80::44b9:5767:8577:dee8%6]) with mapi id 15.20.9870.023; Wed, 6 May 2026
+ 03:13:00 +0000
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+To: laurent.pinchart@ideasonboard.com, mchehab@kernel.org, Frank.li@nxp.com,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        aisheng.dong@nxp.com, jacopo@jmondi.org, guoniu.zhou@nxp.com,
+        s.riedmueller@phytec.de, Xiaolei.Wang@windriver.com
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v2 2/4] media: imx8-isi: add missing v4l2_subdev_cleanup() in crossbar and pipe
+Date: Wed,  6 May 2026 11:12:08 +0800
+Message-ID: <20260506031210.2769998-3-xiaolei.wang@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
+References: <20260506031210.2769998-1-xiaolei.wang@windriver.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0050.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::19)
+ To SN7PR11MB7017.namprd11.prod.outlook.com (2603:10b6:806:2ac::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20260505-clk-determine-rate-noop-v3-2-f3f829fbacdf@redhat.com>
-References: <20260505-clk-determine-rate-noop-v3-0-f3f829fbacdf@redhat.com>
-In-Reply-To: <20260505-clk-determine-rate-noop-v3-0-f3f829fbacdf@redhat.com>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Anson Huang <anson.huang@nxp.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Andrea della Porta <andrea.porta@suse.com>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Sudeep Holla <sudeep.holla@kernel.org>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Chunfeng Yun <chunfeng.yun@mediatek.com>, Vinod Koul <vkoul@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Ulf Hansson <ulfh@kernel.org>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- arm-scmi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org, 
- linux-pm@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4050; i=bmasney@redhat.com;
- s=20250903; h=from:subject:message-id;
- bh=c/0o32UHHPR53Ko/1QO7CYkQ8/mLPJcwy6nuModIVJM=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGDJ/TXD3X1X5dNIk97U9eepfJ2/Ueey2OvvzxVCDB6e+7
- NjO5lu4rKOUhUGMi0FWTJFlSa5RQUTqKtt7dzRZYOawMoEMYeDiFICJPItnZLi38Kv1kt/xKhcE
- lrD8PFhVqHlf+UzKp+/rPlyZ9Cvi0mxdRoa/X14/do/lFA8NtajlrzbRUt7fFtq1Z1vWXy0d6bZ
- H2pwA
-X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: h2hUrcL6F--9GV9mYx36-_mvXue5ZZRFl8srd_D5-fQ_1778028635
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7017:EE_|BL3PR11MB6388:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48f85a84-ab4f-4aa1-ccb1-08deab1d60ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|38350700014|921020|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+B0Qkadr+l96MKacDnPlp09rZ7gStF6cJzRCdjXs//JM4dlQcWV9StDKXrzkwYL0hPSoQU3DHgWmIJGDF5RlqFB2ZLhElZvtxgn0+EagfzEPAYHHx52pQJU94NsqiRAWPAr0qxHN5Opfhv/ceDd1ssptzGXPCigIEBozD0RWeCQzYmvpOhMUCv8NEYySDG78yX1+gLkm9w+1wKmYF/ZikTVmXrkZ1lLumVxNjqodfg6u6gtc20wfN1MGADSGIZg+Cxqe3lwFWI9GU4LYoD9ksLlX8te4+wQM7So3AemIba2e3vAhJ/KEqdN65DangkADslZx7k+ll+jvWsbgeLcKBy7ShCweQjBM8Nf96l0CZHG2HshKjiQtWJXJc5RbqBuEscrX8iLHI935DXRCtn4mfis1crXU4RyNJtWprmuc49zVyx0AbanFngq67rDAV3iS+Pxry8cEbZ6c9DhCDFSuFLRsIlFCAclOzzvznqH0LluYJxIrOs2L2afOHRUG3551LwhnZJyb80C/7nRPQo8vVzAReTLhnzlYxC3lyfQSxoqFQXefr426OO3UHay0c2WE72ly2+wy2F5EjD7eA0BO35ehyXjJNEEMJ5RKfJOgUUxIWXti2zeWuOFDySRRizbyUXQMU8Hz16pDUtWxnwvoDMhlf7zyJvE0ilglPpNhTEM6+3vBSEMKr8qx6Phv1C5TrSTHLINg1aqrqWHaZUTzH+ScyO5eUGEOxZOpHiw2jFCDcVmo4tvu3Q+BzJI5/eqefuiTtNrNe2VHEDED3np1qQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7017.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014)(921020)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?v8j10InFAQqGS9//+3cC0sdZwZS1se4xK3VosFuI2mSqa46kK0dHf5pj15x0?=
+ =?us-ascii?Q?364EIVTv9T1dKFNafWDCrq6TAs5qoRmv5ne3dUBT6ZQiKdC+MNnx89ZNGGEI?=
+ =?us-ascii?Q?dNM4/Zxx3E8Z5IuNxP6BliwC3wxmfXY26/Ir3v3QYCcrLB+KNF9xZg6Uh7aG?=
+ =?us-ascii?Q?Wym+yx/CfVMGwa5WnYqh4sfreNWwLKSzd+Ql/BHKBbBrGL+2VsFOfE+Ambzc?=
+ =?us-ascii?Q?KVHitHvhA4TU3P3+NNO2EkgtKhPJ3l9mgfFOv9TC9wZ62OKGiQXH+WXnbyZf?=
+ =?us-ascii?Q?wd5iuHPqDQogo7swGZ/71eAe0UJ1GRmamTWY82FM+2X8yBc3SVNk/7j3QAsK?=
+ =?us-ascii?Q?kK2d/hayXeyUA529Szhglo7U+butecPneNbix2ENpyRuEIhIQvL+s2HbQGJF?=
+ =?us-ascii?Q?XCpouTLD2mVcW0LFkwpn/60Nxk7QZbHmJ9C50SA/0TWBwsOwV2JxgqAAWXr7?=
+ =?us-ascii?Q?JSfox+5s0DJ99BH5QuSsZWbJg2T4jikzX+BFdTs7qkTEEvpk/AHLMLPewQpX?=
+ =?us-ascii?Q?HExrZFtsQ9FU2Rwrvtw2jpPHOzB6bJEDx3KRztwixFkp7+vAy6gjhfkjftEl?=
+ =?us-ascii?Q?vH1DZKWOrOLz2Q94gO/xUyMI630BDCO2isw+J/uy0aoIv9juhDVyaC0iJWI4?=
+ =?us-ascii?Q?eWD+fZRcA7ybXKvt/eAECBsnTual8Ux7Me8YA27UEPigZ3CwLvzWQglfp/C5?=
+ =?us-ascii?Q?MMX6ZztGtkhsmp3k8Y67Sn4uwX4lK3/jXCHx2tao5mbKp02BUjZZKCfGpDTz?=
+ =?us-ascii?Q?1BpPA8zgtmT48gWnjqZXHefck5djZOt7ox4Tl7ucSgPrWQrULVwDRFU8Vdug?=
+ =?us-ascii?Q?6ZD426hr2zgwNtT68yZLrQpyLWL9ln90hWOtZRFomiNV9mn66ASY1FW0de0+?=
+ =?us-ascii?Q?Kbr0ZWUlc4oiY33yFIrG/uMZqpOuV3zEp9JcIrKVTo02VivvtZqwPwRYlO41?=
+ =?us-ascii?Q?uCvhdTmI5kd0eqj8yM07iOhBocApSopgJhhW20SWtZ7wXEvaa3Wm/1Iw0Sta?=
+ =?us-ascii?Q?mQIghLCwY9UkQ4u2uUsPsMihCHOmF6LkKuNis74Pgb3FL0rFy78S8c5D+lp2?=
+ =?us-ascii?Q?zsmrSrFj3HrGy1N1qBvg9YW9ElIEEhMH1n+5sinPZxIGJVQLiNGIzyAqQLJ5?=
+ =?us-ascii?Q?QooGicq1xyOqDvRI4gO9oWzrIsNpelbSaKckQGvgigt8tRg2CnIaEAzFjuEl?=
+ =?us-ascii?Q?IQU6C1nBdab+a3+42MJve2uGw7kj8ipD9Eh2gChjPV9G1B/gqyd6BzaueL+J?=
+ =?us-ascii?Q?S5CrTS2nM70fu8KqLkcJF7AIpFuj6BnF3c7zCcAgIGYsfahBHJo+z5nCcYzN?=
+ =?us-ascii?Q?7FKEY6Ij4fxQThvubCJUZT340xEtvw8SgSAS1VKlNHMXi+pgRVYfwqORXF8p?=
+ =?us-ascii?Q?HfGoQgZXFgwPgzmlc5fPOx3WfxMLPsCsdaDpyVBFREOeiggSNqc08nvdzYzB?=
+ =?us-ascii?Q?3fZslPiQGxlrgWjP4QQhQ9+B3h+LgOMWqk/M2dGVwRi/3Nh2AcEQhi22yZTl?=
+ =?us-ascii?Q?pls8G/+QlnIgwwxJrkSVqx7huHp1HvBdZoaGD8BTixywWtUdpXkVKyOGBKZi?=
+ =?us-ascii?Q?21lx1ZNsrSxdpFdEyYQOlKro0ZGxqqEypL2D2ClEQ0iHBcR2ho4pAK+fAGeH?=
+ =?us-ascii?Q?Z/o5ga40By0mqcqoXgcFPGYjgve/adp9ui3gXHeNyh9YXu5X3PnMqzdUC/fH?=
+ =?us-ascii?Q?PCe0a+3w8bvWhk2NPJQW0JaFhfuBirNYTMtpSAhrdN3MyvZtCZ75Dr/WVv2w?=
+ =?us-ascii?Q?f/xG2mODruTRToDO05lnw0Xszms/QBw=3D?=
+X-Exchange-RoutingPolicyChecked:
+	j4IxXg3pT0BBWmcsBSmBus99bTiMy3ZJj4PQlXLgZPFF9xNUSTWBLOAkfZBr5Ss/xDsAUxFs/1LZm8PjMEA5zhRrmBwgvolSgzaEYKBrDKfRfaPQOmG7RAB6jsaAwQUUhGU1eAQ+BKbwuZNFEavqwF15xgnE9VXfCTLIDw2yy/em/I8P7c68sa1hplUXwSzSRwZL1NO0uBq0Q956nhoggVJc80Mwmv/ULVpl6Ge6v2/1TW7VP95GrHtfDO+O3pT6KCxNhy1u8vEz2QOlHAhxxmPytY4YdmcmnEk9GO5xgzSdDiitLHTitXqvLFAfgHcKwsHJcZ+FKl5J65VjrporaA==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48f85a84-ab4f-4aa1-ccb1-08deab1d60ab
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7017.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 03:13:00.0469
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sFV5fSmzwlp2sFLho5nEBVYnoUp7stbROOtn8gvp4OmVJsryPUIgXx2tDEBPulZaubcVpLV8R+Ayl1YDFDUQYqWO/r10DEtF/a0JXJbnE6Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6388
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDAyOSBTYWx0ZWRfXwj8oJ2uIAkeS
+ IQh55k526isuEnlw+3rcYZ5aAALs4YVR+Ii9S6M316O65DBzzKCPc4UR2+yKZU7Rmtw9VqUDNp6
+ gZSeyuCsL9IKnrYf+ulSpS/ZPMAsSuFCsQXT3nT3U4Sql5byhQBLkGKtrMkw44i1Jd0CB3eg8yC
+ fnOmL3igo722SXKXxQSxPEGTBx/OHFeIxG1ia5vF4TSBgJzFk2uu9iB2vnSg08NHbj4BgWJwL8q
+ lrnm975HdcqzzZHbmJgqbsBL0L15BbDsTjQ6gNCZxkGLIhdLOxZisEjs8ipjgDGIrxxs1VcbLFR
+ RWgk+zYzjOYwmj7jMpQ3INdijw2VBVV+UleSVQaZmErRGNiZp/w0V43mlgIYDSA+KKpXoYo1emT
+ SllS/C4HJkJRjv4ZIAsc+anfeuKXL3gg5KVid3uNDy5GDBRZLRcOgZPDq9RUjm6xJfG88Dlcjm0
+ heTn7WrqMoHaoP8ayyg==
+X-Proofpoint-ORIG-GUID: ae_tf4zsuTi9u0mOmA-2b1I5zaEuF91H
+X-Proofpoint-GUID: ae_tf4zsuTi9u0mOmA-2b1I5zaEuF91H
+X-Authority-Analysis: v=2.4 cv=BcLoFLt2 c=1 sm=1 tr=0 ts=69fab1bf cx=c_pps
+ a=2pTyoxkMaluYXS6DGsynPQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=fTW__CHxibyLmBMfj2wP:22 a=t7CeM3EgAAAA:8
+ a=8AirrxEcAAAA:8 a=vL01Oy7GyH0ke1FiNzYA:9 a=FdTzh2GWekK77mhwV6Dw:22
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 suspectscore=0 impostorscore=0 adultscore=0
+ phishscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060029
 
-Add a new helper clk_determine_rate_noop() that's for clocks where the
-rate rounding is handled by the firmware/hardware, or the clock is
-capable of any rate. The requested rate is passed through unchanged,
-and the actual rate will be learned via recalc_rate() after the rate
-is set.
+Both mxc_isi_crossbar_init() and mxc_isi_pipe_init() call
+v4l2_subdev_init_finalize() which allocates the subdev active state,
+but neither mxc_isi_crossbar_cleanup() nor mxc_isi_pipe_cleanup()
+calls v4l2_subdev_cleanup() to free it.
 
-This shared helper will be used to get rid of the driver-specific empty
-determine rate implementations that are present in the tree.
+This causes a memory leak on every rmmod, reported by kmemleak:
 
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+  unreferenced object 0xffff0000d06fc800 (size 192):
+    comm "(udev-worker)", pid 254, jiffies 4294913455
+    backtrace (crc 36eeae58):
+      kmemleak_alloc+0x34/0x40
+      __kvmalloc_node_noprof+0x5f8/0x7d8
+      __v4l2_subdev_state_alloc+0x1fc/0x30c
+      __v4l2_subdev_init_finalize+0x178/0x368
+
+Add the missing v4l2_subdev_cleanup() calls before media_entity_cleanup()
+in both crossbar and pipe cleanup paths.
+
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
-To: Michael Turquette <mturquette@baylibre.com>
-To: Stephen Boyd <sboyd@kernel.org>
-To: Brian Masney <bmasney@redhat.com>
-To: Abel Vesa <abelvesa@kernel.org>
-To: Peng Fan <peng.fan@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-To: Anson Huang <anson.huang@nxp.com>
-To: Bjorn Andersson <andersson@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Andrea della Porta <andrea.porta@suse.com>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-To: Chanwoo Choi <cw00.choi@samsung.com>
-To: Alim Akhtar <alim.akhtar@samsung.com>
-To: Sudeep Holla <sudeep.holla@kernel.org>
-To: Cristian Marussi <cristian.marussi@arm.com>
-To: Orson Zhai <orsonzhai@gmail.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Chunyan Zhang <zhang.lyra@gmail.com>
-To: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-To: Chunfeng Yun <chunfeng.yun@mediatek.com>
-To: Vinod Koul <vkoul@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: Ulf Hansson <ulfh@kernel.org>
-Cc: linux-clk@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-arm-msm@vger.kernel.org
-Cc: linux-renesas-soc@vger.kernel.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: arm-scmi@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-phy@lists.infradead.org
-Cc: linux-pm@vger.kernel.org
----
- drivers/clk/clk.c            | 18 ++++++++++++++++++
- include/linux/clk-provider.h |  1 +
- 2 files changed, 19 insertions(+)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 1 +
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 048adfa86a5d..956e147f4d4e 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -882,6 +882,24 @@ int clk_hw_determine_rate_no_reparent(struct clk_hw *hw,
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+index 605a45124103..c580c831972e 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -491,6 +491,7 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+ 
+ void mxc_isi_crossbar_cleanup(struct mxc_isi_crossbar *xbar)
+ {
++	v4l2_subdev_cleanup(&xbar->sd);
+ 	media_entity_cleanup(&xbar->sd.entity);
+ 	kfree(xbar->pads);
+ 	kfree(xbar->inputs);
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+index a41c51dd9ce0..cb50af2270f6 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+@@ -819,6 +819,7 @@ void mxc_isi_pipe_cleanup(struct mxc_isi_pipe *pipe)
+ {
+ 	struct v4l2_subdev *sd = &pipe->sd;
+ 
++	v4l2_subdev_cleanup(sd);
+ 	media_entity_cleanup(&sd->entity);
+ 	mutex_destroy(&pipe->lock);
  }
- EXPORT_SYMBOL_GPL(clk_hw_determine_rate_no_reparent);
- 
-+/**
-+ * clk_determine_rate_noop - clk_ops::determine_rate noop implementation
-+ * @hw: clk to determine rate on
-+ * @req: rate request
-+ *
-+ * Noop determine rate for clocks where the rate rounding is handled by the
-+ * firmware/hardware, or the clock is capable of any rate. The requested rate is
-+ * passed through unchanged, and the actual rate will be learned via
-+ * recalc_rate() after the rate is set.
-+ *
-+ * Returns: 0 always
-+ */
-+int clk_determine_rate_noop(struct clk_hw *hw, struct clk_rate_request *req)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(clk_determine_rate_noop);
-+
- /***        clk api        ***/
- 
- static void clk_core_rate_unprotect(struct clk_core *core)
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index b01a38fef8cf..334b9211a157 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -1431,6 +1431,7 @@ int clk_mux_determine_rate_flags(struct clk_hw *hw,
- 				 unsigned long flags);
- int clk_hw_determine_rate_no_reparent(struct clk_hw *hw,
- 				      struct clk_rate_request *req);
-+int clk_determine_rate_noop(struct clk_hw *hw, struct clk_rate_request *req);
- void clk_hw_reparent(struct clk_hw *hw, struct clk_hw *new_parent);
- void clk_hw_get_rate_range(struct clk_hw *hw, unsigned long *min_rate,
- 			   unsigned long *max_rate);
-
 -- 
-2.54.0
+2.43.0
 
