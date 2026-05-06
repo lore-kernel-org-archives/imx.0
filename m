@@ -1,148 +1,196 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011019.outbound.protection.outlook.com [52.101.70.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D143CC9F3
-	for <imx@lists.linux.dev>; Tue,  5 May 2026 20:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778012712; cv=fail; b=ZYXUYuLfq0Kk/aKs9VuYJHp1/9kzDIR9FKUIDlC5kN7KbGZFMYpXIuY4p47w4V/9K+MejFZga4n7Ehyd+WPhg/BI54geAchgLRu4BhRQ5uZP3RAFknHLKCBJp5sikPSjQDZtUDDwQehmfeVakMCm+rG6T7dmfwuBLhIWPEXghvc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778012712; c=relaxed/simple;
-	bh=rsjNZBoav7PxzTRQ9BITcRnyaJErT+gWvUoThpq9l1E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 Content-Type:MIME-Version; b=Wv7nkwE5qk9SEijPFIdWyxOGMgqKM+Wzf5CEF9Kb4qMkH02ojtTA8wRlgFDYxHL+rCt+AIcP/UrWHHOdHnqVs/lyuTEKifE+azgdtt3TyczkAuakg6QOBkbbjc0G7sk6HOO60uxIwvu8n2vvJ9ReDyHNP5pkGh8yRWGbk5goZQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N/JgsNzc; arc=fail smtp.client-ip=52.101.70.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AC923505E
+	for <imx@lists.linux.dev>; Wed,  6 May 2026 00:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778028632; cv=none; b=gujd27eGtdMlpo6TzGQBJHhz3t3wOm3/8t/r4O76keasPfm5I3jYfvKW4FufiQ8ikbTUxwdQVkYZirgXPKjCVINimEuX/H9l7+ZzxQGR5BaV/ugFTvpwNLm1hqfH6hqAP8ZwUYsTkV60naLBDVJ4Bui5qOOrXiqMOAbalb/9fHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778028632; c=relaxed/simple;
+	bh=zMeXAyyLpb1ycANNIw7NwRnIidpI1as921qDmQJS1JY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=D9Amhbc6KNL4q2KvL++N1PZNOGa9bhilZWH3AxHpWWN8IA0ABNARcAt9OuTBLjxWyqGfwCcLAXO1YPAm86Zuj2kL7ocLzbpTmJYduEB8vkwZKHGh/X68VG18RSi16ZVaRyqdfgAg27XHDmMGyGkeEyhwzeP/kqTuVoeBj3J27Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OfFDwYQE; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N/JgsNzc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aYl0P7/1GTsNjzxaRs+auk7eG/2o/qas5ys8PwQiS4fNYthOYthSIKPhbggc7g7PI8gmT5Kp+sqkftwSnxgwJZQNjYyKqG0chqK5qIPe0IQVR6FnKDR8qaYgIDXfERIDHr5EOirr0wWKvB45beC3+WhNR7w2lWZXbsP5P3VG6VZSLJINsaAKHCb8LwpI9HJ2onZUR36JR+ZUkOoY847Ur9o+nC08DH/NTBh/qnBrkVULjEHikAulD6iCLLfN4mxpx/qcMDORxGqzQ3rhGsrsZRkrIjWLSyziEtbjdwaS0Ga6iSzSr9AZEy2KEAK0KmiyOgBGeICVj36vZRPelk+5MQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ctsd4PdDpBGsNBKGZBuDuZRjP6TpjqlSSj+FZ8hEtUs=;
- b=YARgmfMX7vtSe86mm/6b3pmthYHU6sYwaKsuDGWzhmZTKoVJwu57ua0U+G4WTwOB4ZSuswjvINtjsWzfC3MG5GuOPBynTFzqXPOJu5e3+U2IuFjEV2cy//q9nPTdI+bOnlNEnzEAXDEVvRRNhxWIhO+X2Zunq+17i7Jkm1SCCqXRgaCC8FRJ7yrgCIHv4CPrDDP6470eYYIqZAbX9tbpid24i52aBzxyDuN7lkkv+AXWHb8nHpfiFu6YKhJLeFlM1fb9rJLNXajbD6D1Y34Nw37TenDQkOs5X8LOoFQJVs0bCs00hEQVe694Ngzw0nQwsjCfPuL1LaQGyRnzte8yrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ctsd4PdDpBGsNBKGZBuDuZRjP6TpjqlSSj+FZ8hEtUs=;
- b=N/JgsNzcjjrvUde1w/JoU8uccgC74BBV/wPk9eUJSnahKL5pHxaaM9sH7se9J0JizLKfUV1UFL/oM6EYUER6ivqQdrTDGn7HIAuxGdRpKLu1deFxNsCi5PHI7xHZu75S7Tm61DpEjY5moo+KTMAY3SzsFjerSZfzm//59Jp6dtHWit5KlSHMaK6HYBbTWtCbVTOdzKISqHemsxIyLlfwHl4vDO6eaoAC+wplGNoLXw8s+sct8Yg7QR2WjvffGOIKQUe8oP7TgKPEc4N6RabsxFuoMbVlSeVHUikUxTNXRjDAUVyQu0a3YucXCmGIdMaXx7p4AOBQOMRjIpbpHQ/LVQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AM9PR04MB8289.eurprd04.prod.outlook.com (2603:10a6:20b:3e8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 20:25:08 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9870.023; Tue, 5 May 2026
- 20:25:08 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@nabladev.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260422210939.81012-1-marex@nabladev.com>
-References: <20260422210939.81012-1-marex@nabladev.com>
-Subject: Re: [PATCH] arm64: dts: imx8mn: Sort ifm VHIP4 EvalBoard Makefile
- entries
-Message-Id: <177801270580.2104872.13120169880330713402.b4-ty@nxp.com>
-Date: Tue, 05 May 2026 16:25:05 -0400
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: PH7P221CA0011.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:32a::25) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OfFDwYQE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778028630;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=b9H8cYKTCyIKnl9+d/AL5JHJT5IYmUArCaFMH4v5EuY=;
+	b=OfFDwYQEsLlW9dTnaELgrooZ06vF5Oiyqt7ArBPjW0gW6ZqAx26/H44nEZVEWLS9Wl2RUd
+	MEqiHs2bNMK5An3Hcjx0wZ+eJZS3+n3WxT5s1/7dSvB4+imiOAFc+hmH69hHALxkKQa/tQ
+	9tbaeLVeCTT782R+TA9wHTIGE383bQI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-287-f_SJneQXOta9MozRBn8vkw-1; Tue, 05 May 2026 20:50:28 -0400
+X-MC-Unique: f_SJneQXOta9MozRBn8vkw-1
+X-Mimecast-MFC-AGG-ID: f_SJneQXOta9MozRBn8vkw_1778028628
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9012b756f76so662498185a.0
+        for <imx@lists.linux.dev>; Tue, 05 May 2026 17:50:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778028628; x=1778633428;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b9H8cYKTCyIKnl9+d/AL5JHJT5IYmUArCaFMH4v5EuY=;
+        b=mdJDIJDgs0E4j4S6osphht/52fbW7RPtHaP5/wk01z+z8sL5/83gq4V4VVdBP6xt3J
+         t2E7DAqlaSPZDkoLFhnWHzwrwCftuNzH7gSmrlkqAADl+C7jCFQZJB3yyGONvaisihXJ
+         t6/SKhF+OTg/GKzdFOqR5kQg1omI7SWXOCHR0AjhnKjZ63uhlwbSLoCAVmT7KfkuPenM
+         BE1+r13KZv9xNNr6yCCDhD3N8BL/8K9R6Acp3+q47NDMhX1IYHxQGgy+g0aVuAm6L6+T
+         9TZfFMgoadQ7R+6HM5qJJczdElLb1H1noHn3OFwtOmKJwjyQbnXodyvU2bb0BkWQda5y
+         n5Hw==
+X-Forwarded-Encrypted: i=1; AFNElJ+KVkCAJrT+55SyRFzdwc+VO7zVdgMHiRzdy8oae7fDA9+76PK44QphP1fdncfAurMQ3qk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+5tWbxlb5Nn8hJTy55Wo1ZpunyhD3IIsQhOumctWA1dkq7MD3
+	fzaTawFo+BA0onTLW4kANm6Jvh/aYSOjHagAWI/OrSmEIeW+8VO1AYHtX6vxqjKQv6CcusImPJQ
+	BFnpjpe+k6OhoyG98pF+tjPEn/8VI3vCmzC//y1B60ABBuV3kH5rxQA==
+X-Gm-Gg: AeBDietV/91baIe1gCutK2FcVhHmLh3skK4W7woGXidEE3P3cSBPPhbmsiILPfygzXN
+	+sNNIMbO6T0OuqomJCnaJh8crdwyTLmOlrtxb0xu3g8z7YtdpvX1gg6eWJvmGxPVuS0LUPZhFBm
+	EMv36QNniiYPKrrg4CEnM0v0Zn9YTQo0ZwtV33vF0e5RtoBWmtBPr7MdBdalzoxHb1O70wCSLYD
+	qi1azCJm2Np1hOwdU0d5gCjv67Yf1NF3X82OamvEBE2S/Mt4aqtQ6PcSEbagdz5tA4BU9F3SNK0
+	iUjYrA9jw76SntQKtZbc/YueBHobA4FNJ7KdqT4ubfVXpyJ3HahFbBqNKYpxdXlH39DgRkkotsb
+	Y1C4Lzo07XLZz/p0dWVeFfcPqN9uvqDuNaAGA5RnK7vyiNnYpCsaHIlLnxJ7OaUarN1wZLy6B
+X-Received: by 2002:a05:620a:454d:b0:8cd:7952:d449 with SMTP id af79cd13be357-904d5f00d9emr231853885a.29.1778028627988;
+        Tue, 05 May 2026 17:50:27 -0700 (PDT)
+X-Received: by 2002:a05:620a:454d:b0:8cd:7952:d449 with SMTP id af79cd13be357-904d5f00d9emr231848285a.29.1778028627449;
+        Tue, 05 May 2026 17:50:27 -0700 (PDT)
+Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91fb3bsm1464933385a.41.2026.05.05.17.50.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 17:50:26 -0700 (PDT)
+From: Brian Masney <bmasney@redhat.com>
+Subject: [PATCH v3 00/15] clk: introduce clk_determine_rate_noop() and
+ update drivers to use it
+Date: Tue, 05 May 2026 20:48:56 -0400
+Message-Id: <20260505-clk-determine-rate-noop-v3-0-f3f829fbacdf@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM9PR04MB8289:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2cdf8ca7-7c8f-465e-1fb8-08deaae46674
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|19092799006|7416014|376014|38350700014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	jt3pQgo5V1hmZNCYcHID4ggPIBJ6GllUOV5oh5/n2Y++ScYE0FbGRQr58YRMIm5FrS4xcKEmhOBgqaHg4OmhE+d+Cc0LY1uSYjk6fvsnk3r/tVErNJqyzheUSa1z5w/cFQKcTpZ3CmZLbdigRVO5Iz1243ihVi7j8Uj+2nFtvhs+5XB7GjvItP+4Cj6/04om8zgXl0/PrsQCZtngQ8/PkVgBSlxECpv7Bpf3+4Jcg15iXAX6Fphpso4HZHOqoVC4urY1VnZV1RwBqxLsY/rfXKPOk5MDKsaePf7ni2fOL7I42dlZWDdKG+esnMBCA8tOfY/oZtxgxsTJpfhoqO3nXo63ABRKDMqomlo0zqwwHItriH7XYl1YIxp/nxwc4HCUkeLr8vFfb55QUkHrGyR0bMUoQZsRSblSTblorJEZE+742E2g8VC8M8j/mbi92lGXSc9wl6Hhuv5LMRROzfMapJ0VrIiIWdCmTftBWs4vEbcUqs2aSSRzfnfk92iLJMPGtDTtI+FcGdR5nZn7rBKss2O0yidIRwyWy46qa3FhrtUoj5yw91gboIsubmXy+RTcsDGbgWrUfATrH7fsTv/rZeAX8Vdae/RzE7J7g397ITtqmIcbSyrmsssrhNVJM1CMY8gp+6iS5FkRhaps93aSHZ8YXEJZd5me18hAV9tFvNk5lr+qXJt13JAJjwDg5gqUfWk1lFW2a05e3TxBx2hfdhhEESbJUEkwew3dwLCQsKaI2EAAZrDXnWO/vtoz75UW
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(19092799006)(7416014)(376014)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OTdVSkc4WlU0a1IvUVBwY3hPbS9Kd1I2U3dFR0dkWm83dVVRZExBaE9WTi9r?=
- =?utf-8?B?MzhidzZlc045U05vZnJOd0w0Um0xaEcwY3QxV01Tdit5RFNuUFROK1EvNlVv?=
- =?utf-8?B?NWNQTlFNVUNUb1lpSEltZWx0UGZ1M0lZdkFoVG42Mm5uOUxIUEZ6eXRuSVp3?=
- =?utf-8?B?dThEV2Jsa0RhbWJyNlpTZXBIUDV4azZSVXIxQUhvQ3lFY0poMjJCVUI3WXBM?=
- =?utf-8?B?MVRRa0lTMU9ES3lsbmpoTDR5TVZHTE1sOEZpdlVQMkdMVnJXUWdqVEJwRktZ?=
- =?utf-8?B?L1VxMHc0clcxUWpWR0s0QWxrZERKQUhQRk9mNTRwcWJnRDU2QmFEMkVHOExR?=
- =?utf-8?B?ZTFWSlNMMkdCdDEzbmZJdkpaUmJDVEU4OXJON1NoTU05aDk2Y3hGeFd6aDQ4?=
- =?utf-8?B?bzdtTmVDTXJCanlJaXNuNDVxOUxyMm9LbFRTV1ZlZWdtQlFtbDIzVHk4eHhP?=
- =?utf-8?B?amJlNjE5b3FrdXJQWXVpNDhIQU16cnl2ZER3d0JwMFM3MnBXY1RzU2J4QjBY?=
- =?utf-8?B?R0JSa0NCNDA1Nmwwc2NrQkpyNjZicTd6d05OT3U4WjUxaDZuNWp0ZWxJZy9r?=
- =?utf-8?B?c2FPbjFGcGsrU1p3Z3BFS2hDUi9pdExGRnFETldHKzNMaGpQaTB2bzFvODJ0?=
- =?utf-8?B?NHQ0Zno3QmEwWXNkZWd2NU52WHJVZStpa3J1KzFaTzRXckJZVWN3RW1RQU1L?=
- =?utf-8?B?eE5QWmNJczZ6anpqTERPU09tTEpQNTloNzhkVjd6YjZUdjRoUXU4bVJXeFEy?=
- =?utf-8?B?K2lEaUZqeDNlckp0SUNjVUpaTW40UmEweHBSYTcxc3QzQTFjODRKUWRiM0lm?=
- =?utf-8?B?TVUwcUhvb2JCb0czTXNNT09TeEhLYVRWenlITFMzZ05JOVZGcTdmWk1KT3Fy?=
- =?utf-8?B?cG8xdEVLWk5URnA2bk5MaWpwdWJ3SEVFSUJyMVNDUUtUTnNXMUh5aS9jU2RH?=
- =?utf-8?B?WDRsRUV0SjF1UkYwWkpEYkt6bGlyRExpS3RqMHVrVzkveFNDdDhvMGNudnE4?=
- =?utf-8?B?WnYrQUp3MGVqQUN3SWdMZzhiTXNzS0FFZitqQStPdUpIVFhhc2ZCVWhTQTNE?=
- =?utf-8?B?dVJ6a1dYeFFndlFESGxYWnhrQ0VieVlJUklGdVplSmNrVnNHNlphQ016clIw?=
- =?utf-8?B?TzlkbEhEd0krUzNjMDRENmNNMktrbmVPc1llY1lGdE9KNTFGK0FuajQ4MHVR?=
- =?utf-8?B?SzRMdkhPZXRCUVhqTWhaUndvdVprVVRwNFduYVgvWHI2bXJrTTZLdWoyZEZk?=
- =?utf-8?B?d1o0c2hKTmNVbEJOR0M0Rk51NDE3NmMyRnhJUkpBR1JndUk3ajd5a2luWVF5?=
- =?utf-8?B?dXlpYkRxWS9HRVpwS1k2ZDJyMk5aVXM2cjFVYzFJMGZZVnQ3a0Q4SFJyMVJt?=
- =?utf-8?B?UzJtRTlUWVlMWCtTa05LYkEwdGRISSs2UGNBSmU2QWdoSmhreHlCQWlJSFRk?=
- =?utf-8?B?QXprdi9Balg5bnVFNHN5Y29kUGxTNERtN0g3MEluSUJrYlZDV0FvWGVrQ3Rs?=
- =?utf-8?B?bDg5ZVQ5Q0lFV1J2VDJQdlFobkhucEVvRGpNalEzZFFPOG5JL0Mzd2lRM05m?=
- =?utf-8?B?dHhYbm1sdjZVVy9YN1dpOGM1UWlESjZ4QVF3UjU3V2I0K2xMbkJvWTJpajRj?=
- =?utf-8?B?eXpJSzVQOVB3bExENHZRQzl2Ny8wVko1VlY0clp2N21yVUtOZXdXYXUxNndK?=
- =?utf-8?B?WW51dVJYcTZTWlhoVXlSeHNJOGlGVVRNbGxPUFJVUDFzdEdORVdObXlUVkJR?=
- =?utf-8?B?YXFxdkQrZHJ3RGkzMmh0QUJ1dVczcytseFN2eEMwQSt4SEx0UWRBdldPWjZ2?=
- =?utf-8?B?TDJBMElaQVVJYkRqalhqSTNDYldXek5yMk1tZy9LZ0tNa1g5ajN3cnc1V09i?=
- =?utf-8?B?bkxwemtjQWlYazZpb2FGd3hrK2ZuLzJIL1RIS2ViN2t2d1JzSzRmdGlwV0hm?=
- =?utf-8?B?aTdNQk53VS9HNEtadzlONVVaRlhXSlJwY2VXb2pKaDJQUDc3SnU0ZFhkVFFq?=
- =?utf-8?B?VnMyQS9wTVdMdHE5MjZ2RmhvRHNlcjdtVnBYNjg4Z2FNayt2VFR2ZzJ3OEo4?=
- =?utf-8?B?U3NuUm9td1c4eEw3V0RhVTdTMkVyaFgwaW9VR2ZYVHNQbTMrZFRsazQ0M0k4?=
- =?utf-8?B?bWZlbDBvbmdiRFBCOURqbCtnZzRYYVV1QVJWQzE0ZzVUMFZrayt5eEFFem0y?=
- =?utf-8?B?eTBod3FEdmlKSVVCZ2F4Q0JUMkdJN2NFa0M2czdUTlIwb0QzMktlOGhpakZ0?=
- =?utf-8?B?NG9tUFduWS9uc0RqcnFzUzBjdytNbzZzRGVwc3BvcnhjczFpRWFVR3NTbGZq?=
- =?utf-8?Q?hfoPigRnRq1nODXuHf?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2cdf8ca7-7c8f-465e-1fb8-08deaae46674
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 20:25:08.3202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +2pbZYpo8lAL6l/jBl9IeGDJ2lw7WaLXJrRAsOBECD7rObv/xqgSHFrnhLMw355FMd7fuseZAkTpmtg8E8Aizg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8289
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrDsQNVHpVYqLoH90aJvIREpBv
+ LvB5bd476AMFWR6VgcpfpIlxYL2UdG0+riAZS6mxjSdccbx9HnzjB36lQhWv4NjShvXvXfWhn4
+ w9UCl3hRB/vf5NZ7nBVsAcIVpAAAA
+X-Change-ID: 20260505-clk-determine-rate-noop-17a544f78018
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>
+Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>, Abel Vesa <abelvesa@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Anson Huang <anson.huang@nxp.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Andrea della Porta <andrea.porta@suse.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Sudeep Holla <sudeep.holla@kernel.org>, 
+ Cristian Marussi <cristian.marussi@arm.com>, 
+ Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Chunfeng Yun <chunfeng.yun@mediatek.com>, Vinod Koul <vkoul@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Ulf Hansson <ulfh@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ arm-scmi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org, 
+ linux-pm@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3477; i=bmasney@redhat.com;
+ s=20250903; h=from:subject:message-id;
+ bh=zMeXAyyLpb1ycANNIw7NwRnIidpI1as921qDmQJS1JY=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGDJ/TXBhDD/HJ+irfPCG5f8LBYvv8Dx9dmqr4NPkLyFFK
+ ++kbGS41lHKwiDGxSArpsiyJNeoICJ1le29O5osMHNYmUCGMHBxCsBEFrEwMqxq53uRvrC91Ddt
+ SpiPrVzUGZG/vn+yPrXy74upe2fVfJGRYcr2/5NeNj+qTdRbHh6S2B+gniyyo6Z0VsK7yHUStra
+ VbAA=
+X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
+ fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5-hn2FClQb9MkDo6zEpqVxDrkiszd4nIPbz5fn1SBKg_1778028628
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+There are some clocks where the determine_rate clk op is just an empty
+function that returns 0. This can be either because the rounding is
+managed by the firmware/hardware, or the clock is capable of any rate.
+Let's add a new new shared function to clk.c named
+clk_determine_rate_noop(), and update all of the drivers that have an
+empty determine_rate() ops to use this new shared function.
 
-On Wed, 22 Apr 2026 23:09:23 +0200, Marek Vasut wrote:
-> Sort the Makefile entries alphabetically. No functional change.
-> 
-> 
+The first patch in this series also includes a minor cleanup to
+drivers/clk/imx/clk-scu.c. I included it as the first patch so it
+doesn't get buried in the middle of this series. I change this same
+driver later in the series to use clk_determine_rate_noop().
 
-Applied, thanks!
+Changes since v2:
+https://lore.kernel.org/all/20260309-clk-det-rate-fw-managed-v2-0-c48ef5a3100a@redhat.com/
+- Dropped the NOOP flag and just use a dedicated noop function.
 
-[1/1] arm64: dts: imx8mn: Sort ifm VHIP4 EvalBoard Makefile entries
-      commit: ebdfb84ecf7a0bba26d7a04edae98dd600fd4b42
+Merge Strategy
+--------------
+All of this needs to be directly merged by Stephen as one series into
+his tree. Subsystem maintainers: please leave a Reviewed-by or Acked-by
+for Stephen. To reduce the noise, I am only CCing people on their
+respective drivers.
+
+Since there's only 3 drivers outside of drivers/clk that need to be
+updated, I included them in this same series for completeness. These
+should go through Stephen's tree as well.
+
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+---
+Brian Masney (15):
+      clk: imx: scu: drop redundant init.ops variable assignment
+      clk: add clk_determine_rate_noop()
+      clk: hisilicon: hi3660-stub: use clk_determine_rate_noop()
+      clk: imx: scu: use clk_determine_rate_noop()
+      clk: qcom: rpm: use clk_determine_rate_noop()
+      clk: qcom: rpmh: use clk_determine_rate_noop()
+      clk: qcom: smd-rpm: use clk_determine_rate_noop()
+      clk: renesas: rzg2l-cpg: use clk_determine_rate_noop()
+      clk: rp1: use clk_determine_rate_noop()
+      clk: samsung: acpm: use clk_determine_rate_noop()
+      clk: scpi: use clk_determine_rate_noop()
+      clk: sprd: use clk_determine_rate_noop()
+      phy: mediatek: phy-mtk-hdmi-mt2701: use clk_determine_rate_noop()
+      pmdomain: mediatek: airoha: use clk_determine_rate_noop()
+      pmdomain: mediatek: mtk-mfg: use clk_determine_rate_noop()
+
+ drivers/clk/clk-rp1.c                           |  8 +-------
+ drivers/clk/clk-scpi.c                          | 14 +-------------
+ drivers/clk/clk.c                               | 18 ++++++++++++++++++
+ drivers/clk/hisilicon/clk-hi3660-stub.c         | 12 +-----------
+ drivers/clk/imx/clk-scu.c                       | 24 +++---------------------
+ drivers/clk/qcom/clk-rpm.c                      | 15 ++-------------
+ drivers/clk/qcom/clk-rpmh.c                     |  8 +-------
+ drivers/clk/qcom/clk-smd-rpm.c                  | 13 +------------
+ drivers/clk/renesas/rzg2l-cpg.c                 |  8 +-------
+ drivers/clk/samsung/clk-acpm.c                  | 14 +-------------
+ drivers/clk/sprd/pll.c                          |  8 +-------
+ drivers/phy/mediatek/phy-mtk-hdmi-mt2701.c      |  8 +-------
+ drivers/pmdomain/mediatek/airoha-cpu-pmdomain.c |  8 +-------
+ drivers/pmdomain/mediatek/mtk-mfg-pmdomain.c    | 23 ++---------------------
+ include/linux/clk-provider.h                    |  1 +
+ 15 files changed, 36 insertions(+), 146 deletions(-)
+---
+base-commit: 4cd074ae20bbcc293bbbce9163abe99d68ae6ae0
+change-id: 20260505-clk-determine-rate-noop-17a544f78018
 
 Best regards,
 -- 
-Frank Li <Frank.Li@nxp.com>
+Brian Masney <bmasney@redhat.com>
 
