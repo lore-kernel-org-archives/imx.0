@@ -1,332 +1,151 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011017.outbound.protection.outlook.com [52.101.70.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5C3FE36D
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 14:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778163344; cv=none; b=Ubs24RIt3a6fvv6JZ6hVU9e8zA9K1K984K3Rf+ExoorL27dq350UqbK6jCzRMoWCGAlHh4Gk0+FIA8HVXkqxCJYxo8EXsL8GFhnpUXDCSkn4rv70o2VhWj2BMNSR/WQ3QPKH9JyFK0+sGLBaWE2P+/Dswtspm5hTpDlQe+3OgQc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778163344; c=relaxed/simple;
-	bh=/1UlkLy1JukbYaTDxZhf9h8PikBoYRj5dkEmUKqa7hs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A873FBEDE
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 14:37:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778164674; cv=fail; b=uOVvc5aNmIuFZq1gOCc90vbaj+GLv7vbJ1NLo9gnZB+JXkowfzdRqIAVTvxT5ZxLcZKYmtqN39RxrWczzwefY2g2SmdAX7VDwT1gqpB3HEAY+OdQCTpLSsJWFFPX06wVQopW35unA+Uur6ZXYJ0IzNQ4JCzvhM9VBC4l/QVQ32g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778164674; c=relaxed/simple;
+	bh=n9raPtLR1QS8WcBkkX1G4r37tH9WtwFNfkkhEweA/oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q4Igtnki4S2iPscDompMHXt7SI3dOtjAiM5ImzJgnSpnNiTzJLruMLuyXyKtenU1UyJfQp/2Qn+MjvyZP6dPG9EBhv8ckiFe22xikdaxq0r6fRri8GtiWXdX5O7u+l+VW+4k6cTCntBRqiI59NL+N/xaVE1XMCEGxngAlxNQRww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dHPBFWwq; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 Content-Type:MIME-Version; b=tQW01gn8CS97ZuB2eggIBcJi+eZr2vVYJyjh0tZtxixA3GQ+vMO1YGhQVRKlb0MvtuxTucKYoRaK5bGX36OLrCpsIZ6ALPgtMEf20R0soRVE+gAZ7/K1Lny/RHRa7U7pvAxXpukxzHjh7wdTPjJ94qmHcsSAk8A56DPS2jCg6LU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UrXbVKIZ; arc=fail smtp.client-ip=52.101.70.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dHPBFWwq"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 01BCD4E42C32;
-	Thu,  7 May 2026 14:15:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C1E2D60495;
-	Thu,  7 May 2026 14:15:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07783108194D5;
-	Thu,  7 May 2026 16:15:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778163335; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BBxwWahevST3lvVcvPvA5wzCA7WnP6UlZE2dbi27qno=;
-	b=dHPBFWwqwQL88Rzeu/p1Gt7uEoJ7Z4sm0iDuA/Ny3GKgkmBVg3ex4gNNX37RwkRDvJrVM3
-	2PMeVOqzKrjaIyaWuQFi1d4UfixjBLvn3uElrH2upplKILJAy/MwcAy1JMoM1aLPdMnk4y
-	ibPEVcoPFc8OBBmDh3wIgyFZFTvEWIN0FayaKfAc8pjUY2LOPG++oxGoUi4c4zLGt2EaRg
-	NDRmvFQTOO9fmlXSmIZYdHJOYZG9BPYbV1qNihYHmQUIDV/inKAmLJz8YiGB7RB4eGCATS
-	zgQEBIJaK7f8ojcbauX4VQVgG8TzXCyI9ewT+PLqYLLM4nZ9J4B/fyRWwsvD6Q==
-From: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Frank Li <Frank.Li@kernel.org>,
-	imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather chaining
-Date: Thu,  7 May 2026 16:15:19 +0200
-Message-ID: <a658efd5a6990632def9684007573fff3e130979.1778160702.git.benoit.monin@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <aftUorBAXzTD1BBD@lizhi-Precision-Tower-5810>
-References: <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com> <43uRGEDfSHihWPAxby2EOg@bootlin.com> <aftUorBAXzTD1BBD@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UrXbVKIZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H4G6ABtJ1jMMDWzbXmzQWprjbMD2uQRhDCfOroOtlse3hcPJhP+rPVA48DseuDZ9y6BjDays435OXGMyOMIYS1Kox1Gentbjl9C1S35rKVonnum9gVqpqNBMzsAiMPDu9zEVdKpE+H0oW/UVgJDchR9oi47DYRvu4i6/crW7ZhqlmhRsFlme/0Eq+ABeK+y6WN1GBq2iYcC7l7WdH3wvHqrrcsITZLu76LfRPoCsL4hsjhBCLYCyTpsZtnfGYhUcRKH2LBdtwqXvKPuBvd+sjkD2P2W1Jebt6LGEfZP0W9XddNNu5blxOx/26XMHiRGUagYdc5eQxiZnuK+r4ZBlkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n9raPtLR1QS8WcBkkX1G4r37tH9WtwFNfkkhEweA/oQ=;
+ b=BEfPn0hGgqB59UU/cxHUdKbjG5FfWolPOvGX44gbNLb8LvazFcu5sOnPcMoB/TCHBhn+bjpINOKpn4srZ9eDgGCdBFubznodJpdGRbKBBPru+5zKdRrvpQJkkK8SEuxuTpMqtfIrrWFGe6YBXQLaK/oYbM2b91i3tKsjxa30ZXLOaU5Glj6W1Z7+gcg9gxXMW9tTlp44BF9Iw5MMr5oGOlz3qv5zEbIgq7gvTUDFAN/wc5XQc6nmitR8t15djAQO/0WujUMxvMamFjYrb0/N32usV+HX7JcriUcKHJHz1AfkZbhZtnZK1WRLqEOOtgr2ww4EF4OkK8h/eIGt//nVXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n9raPtLR1QS8WcBkkX1G4r37tH9WtwFNfkkhEweA/oQ=;
+ b=UrXbVKIZ3/3vgAun2/EFmRIpMBM2hc/0zmjWoxWCdRMAF1/acGtS8N6PRlqAtIklgMTRz8pt0bQ0xmHuLxe5moCD4kjiCoxxf6x7Hpoy0Ynd1k63/F2qaNUCg/jL5EasIm/DzMJLWZCQj4s5sO12qy5pd9UPFenkJhH5Lp1ssUgz9NuzD68qGrWlsKDMi4tR25YHAoZ2a6/nx4oAG8j2lLj27ML+RxoAKgK8wmpCpguZT9txQZZu9YAJdkJ/kWqbHZx8Vmft6ZKrjuj3n3oK73M1CUKxYnZTJx2WxtHysI6DTmv2/OZQqUmXelO2jswHCUAuI1lKf0/PylKMl1XyPg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by AM8PR04MB7442.eurprd04.prod.outlook.com (2603:10a6:20b:1d8::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 14:37:49 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9891.016; Thu, 7 May 2026
+ 14:37:49 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: linux-kernel@vger.kernel.org,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH -next] firmware: drivers: imx: fix docs build warning
+Date: Thu,  7 May 2026 10:37:29 -0400
+Message-ID: <177816455843.131968.7029392453053016845.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260507012917.263124-1-rdunlap@infradead.org>
+References: <20260507012917.263124-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA1PR02CA0009.namprd02.prod.outlook.com
+ (2603:10b6:806:2cf::14) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM8PR04MB7442:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1da5b54-f304-4c7a-c1d2-08deac463654
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|1800799024|376014|38350700014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	hn3IL7wEoO9PMT+Vpobxj/HHroXpDmDocaGe4lxLpjMexUCXtx1cJYfOp+0ZtTNSFPdfm6zTVXJMTvx9+IalKok65lrNd+GxBDuZ0U9iZFh92+qDe3QM8FAOWffY8thwpGMqkY13mSyZt3LqgxiCXolv+eFChofZ65KhjpwnUZnIw5FFFb2S6mzDJfp71S51rAWaJReoyBIxKnjr6hemUy6eKlERdsKLoDmjlB3C1cZIkmBuTndK/GTM4wPud7QtanUWN5DS3tbV+OXh6dw9wqVcJ6Eya3/rwVmBY7ZzmZPkRnPb3TospjdSUApJ1QT2gumGTUnFBFaBWxcSZLUlxLx9+0ak18QSLjvSFlT1mhyeW/27vCb7mXBck71BZcvax5pqncFlrwzk9MZZP4FxLLcEgNqf8l0/whMBDey5Szrn//ED8Sj8d9w0r9Bvgh7uBXnCYnO7ZfpZQmBYBFGkeTD12ztgIP/uf4KfpDb88CD8rGBgfnIOM7Bx48IK1eTWLwClAjSNh6oCHMeUH5McpbjtBbNfQM1CUoFVDfAiys0QBfagrU/JK42VPQhPNlf8H40vQO40/abQVl8Y3qH0exSKXF48epWCevjwutK5Si7JcrKnkMAhNGk1SmFRVTvz9hcuysqQ+RUcHpr6IegBu4vSVn0nzzvtChdnJAFYffR8GPl9dujiNCF3U9ShIClGqz9iYhkV44BZTryg62Cr9AIZb4vM7Vlf1KVw7XxtucregQlgdjR+KDq1YbLMMkZ8
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(1800799024)(376014)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SGdCQmdYZ3NPSjgyWko3QU8wYm4vZ29NOXdFajFMQm9DbHZzd3J0Z1ZlVUtz?=
+ =?utf-8?B?c1JjUC9MNTlOWk90cXd3eFExdGlZNm1Gd3JjZk1sQTMxNUNqM0VvWDRKc1Vm?=
+ =?utf-8?B?THFQUGdObUgvYVAwd0lhSTZRcTgrdmQ3V0NLK3FVMWRISkZYS3BTeW15UTNo?=
+ =?utf-8?B?UDRrS0haRkI5ZG96ejZoY3ZPODZSVzNwY1RUa1BOdXRYelQ0R0hpSXJweXlw?=
+ =?utf-8?B?dlhWakpva1pUOGxsSlFVN3NnNk9PaTY1OWF6OGk4MlpEejlSOHBjOWp2SzIy?=
+ =?utf-8?B?a0x4Nk13WFFpN1F1dUFQdVNybkJkYW04QnBNUUdQSkozNzUzS3R3NkN5d1FX?=
+ =?utf-8?B?T0RGU25NNytvTVBZWjdUQi9kWHpHOGtVQXVvczhnbzUzSTU0MEVWdm83bm5O?=
+ =?utf-8?B?R0gwdW9YVytOekVDM2VuNGJEL0ZWa0hLUGpuTForS2k0b3Qwd1ZQd2F0U0Rp?=
+ =?utf-8?B?ejk4d3crM3Fwc09JT05qRWhpOWVLOUJaWXV3Ky9NRlQwZ0tZWkpiT0VOMENJ?=
+ =?utf-8?B?SlFzOVZjcDhpNWhGLzVjZU5NaXdWWWxrOFRvYmVwQ3J4dHZ3Vk81ZCtDZ0Zo?=
+ =?utf-8?B?aC94SHE2WWFxR1FNUUNUY1YvaVA4ODBUR3JiREdPenUxRFRwN1JnZUlOM0ZP?=
+ =?utf-8?B?eExCWkRVTjY5cDIyWVByZ2daeFpnNTIvaTBnN1hoN0FmSG5TcWxHK01hajNY?=
+ =?utf-8?B?WVVUNlZXdzJUejNDa0JCMGZTWWNNT0ExS3ZiZUFwK2VyWXFXZG96SWo5OHRm?=
+ =?utf-8?B?T0x4emZ5aUI4YzlZN3BxS3oycENEdkhJM2xZQjhpeG1SdWdUanBtQVFzZ2dh?=
+ =?utf-8?B?dWlhd2Z1LzNQT0JTdWxrR1NzTGx0cGFQSVpZeEVic2hIbTRnNExVSDdRWkxF?=
+ =?utf-8?B?bzV0REdTL0NyVU0zV0R5aWNKNEVhMjV0TWtlTXhQRVB1YktWQ1pqQ09nYXV6?=
+ =?utf-8?B?a3RQczB0MWRIMTh5ZWFJYUliWHdxNkJ4Rlh1S0htbGF0NU9NVzI1QWlaRzZ2?=
+ =?utf-8?B?RkI4Y09DemJTZmZPOXRxMDdmZjdkNE1rbG9SdUlkMWdTVHp4M05QMWp6bTh4?=
+ =?utf-8?B?TVkreDBPMlgzM2ZMSlF3MEFkMTFUTzdjWFQ0eGhWNkVvSGZxcFU0T2RON2Vv?=
+ =?utf-8?B?SnQrck96U3FUKzU0UzQrUXl6NFE0YUpGcS8xajhLMncydjRxakgzbUlGRlNq?=
+ =?utf-8?B?YWxHdkU3TmFTd3MwVTd0bk05cHg2d01idS9aLzhIL0xqaVQxRVQ4OVpPM2JG?=
+ =?utf-8?B?T1gvN2RtNkY0cWxZS3FHSHU5dkZUTlNZYURjNmhuYlcwVWR6d1hPcUtlbFdx?=
+ =?utf-8?B?b1lkdTZnWEtYYklKUk5mQnJNZzJyT3dPMkdjZ0JDMENWMTFhMlFSbU5ldk5t?=
+ =?utf-8?B?cGxLdnRvS21Mc1gzTUxrd2JVTmdsUHNVb21Qak9WTm8rY2hDL3pUd0ZBTjB0?=
+ =?utf-8?B?bmJndXJkcGhaVHdIM3kvMFgzV3VkWEFtSktIeDZ5OEtqdDZDM2duSGRJb0hn?=
+ =?utf-8?B?Q21kckZpaXg3RzM4S2Y4ZVBlWTZVNFF4STVIV01JM0JQYzJGZEllZEpiaEQr?=
+ =?utf-8?B?ZFlSSCtYTDF5V0ZMSkV2aXc3L1NuWlZNOUVleU5TWFI2VHFqMjhaMlo5RFJi?=
+ =?utf-8?B?YzJZYWxoNmNBOUdpR0NOZUUwNXJkRWRYYXRHZVc4QVJucFA0aThMdEtLOVNj?=
+ =?utf-8?B?U1hnSmF5OTlrU0ZUOW5yQkdSaFhNWEYybkk0SjJRM2h6QzJCb2p5OTFLcDhO?=
+ =?utf-8?B?eXVoL2FIb0NNZ0NIcTBvK0l4Um02QUgycUtHbVZEY2FkTVd4c0ZOcS9xUlZl?=
+ =?utf-8?B?bVFOdkpnQkRYc0FwcGh4ZkcxQlJIRXoyMVh6alJTT0s4MkFiYmJSeWs0K3Jk?=
+ =?utf-8?B?OVhMZ25FaEhkZCt1U1I0eTVpVGpaMTFacC9PRGNrcjZKZ1hFSFZ5RnNHeXlG?=
+ =?utf-8?B?TVo0Ry83K1VhY3V6Q1l5bjVCQXF3K3oyUUtFaUtnSm9Wc0swVjBmbEs5NEJY?=
+ =?utf-8?B?SkhsY2E3eC9reHM0U0ZPSS8xbjI3QXJMeWlkREpRcWtJZTBWUTJERHdVclBV?=
+ =?utf-8?B?OHFyMHZUcTkzMWFNRnEveTZnQU9rd2VNVEo0Y2xWZGFQdUhwU3B2TWNEdlBR?=
+ =?utf-8?B?RlpDaDhkYjFhMU9hN0xWNWFaSWJqdDE1b3NXRnJ2blM3QjVtaFAzMWprWDNK?=
+ =?utf-8?B?bTM5RGNkQTZTN2JYeVpMdlovTmc3djV0a0pKd2lLQ1dXc3dsTmlwMWtqZ1JO?=
+ =?utf-8?B?bURqWXA3Q2dQWExTaEZVWU50UnA0b09oSStEYW5Dc2d3ZGlQTk4ydGpLYjVr?=
+ =?utf-8?Q?u/P/c5P+pgZGbUMUc/?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1da5b54-f304-4c7a-c1d2-08deac463654
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 14:37:49.5384
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jzqj78iy9/T0Na5S+VAcktKuUM8lCrD7cvYIMRcmmuCDhfu5vtIVZ/PVsEmFBigQXbXlCTzs0oBx081Q8p8oqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7442
 
-On Wednesday, 6 May 2026 at 16:48:02 CEST, Frank Li wrote:
-> On Wed, May 06, 2026 at 04:01:37PM +0200, Benoît Monin wrote:
-> > On Tuesday, 5 May 2026 at 17:07:48 CEST, Frank Li wrote:
-> > > > >         how do you test it? and how much preformance improved?
-> > > > I did my tests by doing SPI transfers with the LPSPI controllers, doing DMA
-> > > > transactions with different number of buffers and different buffer sizes.
-> > > > Without chaining, interruptions on the SPI bus occur between each DMA
-> > > > transaction. With chaining, the activity on the SPI bus is continuous as
-> > > > long as DMA transactions are issued before the end of the current
-> > > > transaction.
-> > >
-> > > Does SPI support issue new transfers without wait for previous transfer
-> > > complete, or SPI transfer already support async queue?
-> > >
-> > This is done with a local version of fsl-lpspi driver adding a simple
-> > offload support by borrowing the DMA channels allocated to the SPI
-> > controller. I can then issue multiple DMA transactions with the dma_buf API
-> > of the IIO subsystem and trigger SG chaining.
-> 
-> Can you include these patches to reference?
-> 
-Here it is, beware that this is work in progress.
 
----
-WIP: spi: spi-fsl-lpspi: Add Rx offload support
+On Wed, 06 May 2026 18:29:17 -0700, Randy Dunlap wrote:
+> Add a blank line to fix a documentation build warning.
+> Also add a comma to separate the list of Users to improve
+> readability.
+>
+> Documentation/ABI/testing/se-cdev:1: ERROR: Unexpected indentation. [docutils]
+>
+>
+> [...]
 
-Add minimal support for SPI offload Currently, only the receive path
-can be offloaded. SPI offload is enabled when a trigger-sources entry
-is found in the device tree.
+Applied, thanks!
 
-SPI offload uses the Rx DMA channel that is normally used by the
-controller, thus non-offloaded SPI accesses are done in PIO mode
-if offloading is enabled.
+[1/1] firmware: drivers: imx: fix docs build warning
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
----
- drivers/spi/spi-fsl-lpspi.c | 180 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 179 insertions(+), 1 deletion(-)
+Squash to 4de71839142b ("firmware: drivers: imx: adds miscdev"), if any
+concern, let me know.
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index e201309f8aae..d873581a776a 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -23,6 +23,7 @@
- #include <linux/dma/imx-dma.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-+#include <linux/spi/offload/provider.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
- #include <linux/types.h>
-@@ -136,6 +137,12 @@ struct fsl_lpspi_data {
- 	struct completion dma_rx_completion;
- 	struct completion dma_tx_completion;
- 
-+	/* offload */
-+	struct spi_offload *offload;
-+	struct mutex offload_lock;
-+	u32 offload_caps;
-+	struct dma_chan *offload_rx_chan;
-+
- 	const struct fsl_lpspi_devtype_data *devtype_data;
- };
- 
-@@ -729,6 +736,10 @@ static int fsl_lpspi_dma_init(struct device *dev,
- {
- 	int ret;
- 
-+	/* The DMA channels are reserved for offload */
-+	if (fsl_lpspi->offload)
-+		return -EBUSY;
-+
- 	/* Prepare for TX DMA: */
- 	controller->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(controller->dma_tx)) {
-@@ -889,6 +900,151 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
- 
-+static int fsl_lpspi_optimize_message(struct spi_message *msg)
-+{
-+	struct spi_controller *controller = msg->spi->controller;
-+	struct fsl_lpspi_data *fsl_lpspi = spi_controller_get_devdata(controller);
-+	struct spi_transfer *xfer;
-+
-+	if (!msg->offload)
-+		return 0;
-+
-+	/* We can only offload one transfer */
-+	if (!list_is_singular(&msg->transfers))
-+		return -EINVAL;
-+
-+	/* gather info for offloaded message */
-+	xfer = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
-+	fsl_lpspi->config.mode = msg->spi->mode;
-+	fsl_lpspi->config.bpw = xfer->bits_per_word;
-+
-+	return 0;
-+}
-+
-+static struct spi_offload
-+*fsl_lpspi_get_offload(struct spi_device *spi,
-+		       const struct spi_offload_config *config)
-+{
-+	struct spi_controller *controller = spi->controller;
-+	struct fsl_lpspi_data *fsl_lpspi;
-+	int ret;
-+
-+	fsl_lpspi = spi_controller_get_devdata(controller);
-+
-+	if (!fsl_lpspi->offload)
-+		return ERR_PTR(-ENODEV);
-+
-+	if (config->capability_flags & ~fsl_lpspi->offload_caps)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (!mutex_trylock(&fsl_lpspi->offload_lock))
-+		return ERR_PTR(-EBUSY);
-+
-+	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
-+	if (ret < 0) {
-+		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
-+		return ERR_PTR(ret);
-+	}
-+
-+	fsl_lpspi_reset(fsl_lpspi);
-+
-+	return fsl_lpspi->offload;
-+}
-+
-+static void fsl_lpspi_put_offload(struct spi_offload *offload)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
-+
-+	pm_runtime_put_autosuspend(fsl_lpspi->dev);
-+
-+	mutex_unlock(&fsl_lpspi->offload_lock);
-+}
-+
-+static int fsl_lpspi_trigger_enable(struct spi_offload *offload)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
-+	enum dma_slave_buswidth buswidth;
-+	struct dma_slave_config cfg = {};
-+	u32 temp;
-+	int ret;
-+
-+	switch (fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
-+	case 4:
-+		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		break;
-+	case 2:
-+		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		break;
-+	case 1:
-+		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* configure the DMA channel */
-+	cfg.direction = DMA_DEV_TO_MEM;
-+	cfg.src_addr = fsl_lpspi->base_phys + IMX7ULP_RDR;
-+	cfg.src_addr_width = buswidth;
-+	cfg.src_maxburst = 1;
-+
-+	ret = dmaengine_slave_config(fsl_lpspi->offload_rx_chan, &cfg);
-+	if (ret) {
-+		dev_err(offload->provider_dev, "RX dma configuration failed with %d\n",
-+			ret);
-+		return ret;
-+	}
-+	fsl_lpspi_config(fsl_lpspi);
-+	fsl_lpspi_set_cmd(fsl_lpspi);
-+
-+	/* enable Rx DMA */
-+	temp = DER_RDDE;
-+	writel(temp, fsl_lpspi->base + IMX7ULP_DER);
-+
-+	return 0;
-+}
-+
-+static void fsl_lpspi_trigger_disable(struct spi_offload *offload)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
-+
-+	fsl_lpspi_reset(fsl_lpspi);
-+}
-+
-+static struct dma_chan
-+*fsl_lpspi_rx_stream_request_dma_chan(struct spi_offload *offload)
-+{
-+	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
-+	struct dma_slave_config cfg = {};
-+	int ret;
-+
-+	fsl_lpspi->offload_rx_chan = dma_request_chan(offload->provider_dev, "rx");
-+	if (IS_ERR(fsl_lpspi->offload_rx_chan))
-+		return fsl_lpspi->offload_rx_chan;
-+
-+	/* set a default configuration */
-+	cfg.direction = DMA_DEV_TO_MEM;
-+	cfg.src_addr = fsl_lpspi->base_phys + IMX7ULP_RDR;
-+	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+	cfg.src_maxburst = 1;
-+
-+	ret = dmaengine_slave_config(fsl_lpspi->offload_rx_chan, &cfg);
-+	if (ret) {
-+		dma_release_channel(fsl_lpspi->offload_rx_chan);
-+		dev_err(offload->provider_dev, "RX dma configuration failed with %d\n",
-+			ret);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return fsl_lpspi->offload_rx_chan;
-+}
-+
-+static const struct spi_offload_ops fsl_lpspi_offload_ops = {
-+	.trigger_enable = fsl_lpspi_trigger_enable,
-+	.trigger_disable = fsl_lpspi_trigger_disable,
-+	.rx_stream_request_dma_chan = fsl_lpspi_rx_stream_request_dma_chan,
-+};
-+
- static int fsl_lpspi_probe(struct platform_device *pdev)
- {
- 	const struct fsl_lpspi_devtype_data *devtype_data;
-@@ -958,6 +1114,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	if (device_property_present(&pdev->dev, "trigger-sources")) {
-+		fsl_lpspi->offload = devm_spi_offload_alloc(&pdev->dev, 0);
-+		ret = PTR_ERR_OR_ZERO(fsl_lpspi->offload);
-+		if (ret) {
-+			dev_err(fsl_lpspi->dev, "failed to allocate offload\n");
-+			return ret;
-+		}
-+		mutex_init(&fsl_lpspi->offload_lock);
-+		fsl_lpspi->offload->priv = fsl_lpspi;
-+		fsl_lpspi->offload->ops = &fsl_lpspi_offload_ops;
-+		fsl_lpspi->offload_caps = SPI_OFFLOAD_CAP_TRIGGER;
-+
-+		if (device_property_match_string(&pdev->dev, "dma-names", "rx") >= 0) {
-+			fsl_lpspi->offload->xfer_flags = SPI_OFFLOAD_XFER_RX_STREAM;
-+			fsl_lpspi->offload_caps |= SPI_OFFLOAD_CAP_RX_STREAM_DMA;
-+		}
-+	}
-+
- 	/* enable the clock */
- 	ret = fsl_lpspi_init_rpm(fsl_lpspi);
- 	if (ret)
-@@ -985,6 +1159,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	controller->transfer_one = fsl_lpspi_transfer_one;
- 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
- 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
-+	controller->optimize_message = fsl_lpspi_optimize_message;
-+	controller->get_offload = fsl_lpspi_get_offload;
-+	controller->put_offload = fsl_lpspi_put_offload;
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	controller->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
- 	controller->bus_num = pdev->id;
-@@ -997,7 +1174,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (ret == -EPROBE_DEFER)
- 		goto out_pm_get;
- 	if (ret < 0) {
--		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
-+		if (!fsl_lpspi->offload)
-+			dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
- 		enable_irq(irq);
- 	}
- 
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
