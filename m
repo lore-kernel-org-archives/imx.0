@@ -1,214 +1,482 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3210D3E9584
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 11:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA3F3F0AA3
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 12:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778154970; cv=none; b=Uh9HVziLo2wJy+965Icqxjng0go/8RVBxJ0VnsKGVe6SaT6wuRUZc1w2LLC9SL0ay/qEGLchJJ9owvUPZwNqwKNV1pA31YOCSIyLkSEe4IUAiE64QVqnP1KmlsgzDDzpJl5gZO4bWUrYACF0pcRI/u1I5PdmyxvJR5xhjDMH0OM=
+	t=1778157895; cv=none; b=oMT3qgEmYExhLS2ltvnZp21bzW1drRZ/8AI2NsHZSl1PLZBGRsIF2iuwWjSlQYjaF+SA4yFNAH9xYIGwMcvbIjNY9s2KiuZ6pBbXKgyTrsmCJ459CZZkaJUtXTZQhVA71FVzTwnF3Z230IyxVxH88uLBRkjfUr7K62+q7ae5CcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778154970; c=relaxed/simple;
-	bh=fSsad6JC2tWXR0V8y7aEkbKsYoPNLt1LXqCLLXq9fwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nMFrVLO5DFtpHjs+AZo1Exo61u+VRgU3lxJeN6I/W7L5DHPw0elAtGCPizyrMjnRvV+2alH774NPR4XizrTlK0Bkd7NGruaTPs/qS2tFZ06Bp87CTzB6BHtIddCpx+duKiVbbD/60A7cyzI1+aVxj91x5mroriWqN1OwJ1VggBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKxKI-00047R-LW; Thu, 07 May 2026 13:55:34 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKxKG-000unS-0Q;
-	Thu, 07 May 2026 13:55:32 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1wKxKG-00000005rBe-1kih;
-	Thu, 07 May 2026 13:55:32 +0200
-Date: Thu, 7 May 2026 13:55:32 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com, 
-	victor.liu@nxp.com, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
- reg property"
-Message-ID: <zbbez4lpme7szgnsd7fqufbuhmvcftw4sqrmwwwzyxu64i2ppb@fh2fgdkc6tat>
-References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
- <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
- <20260505141538.GA2547282-robh@kernel.org>
- <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
- <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com>
+	s=arc-20240116; t=1778157895; c=relaxed/simple;
+	bh=TBjr1uyd/wQGG+6E3XVx9I4/UCqvl2l0Z5ZAqYQxWxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bGJUsZZuL5qekAQLNGvjuyGfjy4CUxY2ODLcyN4P4wmNX5gYzxn9qcwgCxoEQ+lFnVtYwg0Ml7n3+psnxBje6NCemedRLp8/VnjFA8oh16emBwnauP4vjF/LWNR8R3bNQ3yQzfy4ZYi5kNwZ9j0UqqpTARGlIlZM6pVAcbIprpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FHUkH6Al; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FHUkH6Al"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9E50D4E42C2E;
+	Thu,  7 May 2026 12:44:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6829160495;
+	Thu,  7 May 2026 12:44:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9109510819491;
+	Thu,  7 May 2026 14:44:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778157885; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=rwIVVjmIEnqDiiPGwYTSnWAaq2tQIAapO4ksJdHV1KA=;
+	b=FHUkH6AlB5RFtdLF2lcGxWLZgfOI9EtcurYBu3XqwTTpEdVMSLQjgS+rK10L8XbULOb3Do
+	4aFnlg0nHpiHjKvZzQJ0Bm3EoPlikdol42qr68oBNf8uB2zX7+l2FYK475GEFrK0efCbgF
+	ZH/wa/ln0vaLISqeB7mS8BNMPuLHcjK4OpEu/lNYeQRw4wEOyIMKF6MOK8mFakNcTzwvUh
+	I7C3C/VBIU66Vgog4dIWMMQ0ELmjR9NeciKj060OZYC3xAlgI05Ii2hwh8GbFgCKLoscrW
+	J/Da+0HPYsswCYDYB7n26HOGY+49HJ9YLM8rl/U+9dGTVyz8qLH+BpBbgOHxOg==
+Message-ID: <6397da3a-4643-4d9d-97e1-70f7a9b8d5d8@bootlin.com>
+Date: Thu, 7 May 2026 14:44:34 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 net-next 11/15] net: dsa: netc: add phylink MAC
+ operations
+To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ f.fainelli@gmail.com, frank.li@nxp.com, chleroy@kernel.org,
+ horms@kernel.org, linux@armlinux.org.uk
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+References: <20260430024945.3413973-1-wei.fang@nxp.com>
+ <20260430024945.3413973-12-wei.fang@nxp.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260430024945.3413973-12-wei.fang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 26-05-06, Rob Herring wrote:
-> On Tue, May 5, 2026 at 10:46 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> >
-> > On 26-05-05, Rob Herring wrote:
-> > > On Mon, May 04, 2026 at 10:21:42PM +0200, Marco Felsch wrote:
-> > > > This reverts commit 16c8d76abe83d75b578d72ee22d25a52c764e14a.
-> > > >
-> > > > Remove the 'reg' and 'reg-names' property from the LDB.
-> > > >
-> > > > The LDB is either part of the IOMUX_GPR (i.MX6SX) or the BLKCTRL
-> > > > (i.MX8MP, i.MX93) register space. Both IOMUX_GPR and BLKCTRL are
-> > > > register ranges with loose register definitions. E.g.
-> > > >
-> > > >   - On the i.MX8MP there is one register which controls the AXI
-> > > >     threshold for two different IPs (BIT(31:16) - IP1, BIT(15:0) - IP2).
-> > > >   - On the i.MX6SX IOMUXC_GPR5 controlls: CSI2 mux, WDOG3 settings, PXP
-> > > >     handshake, ...
-> > > >
-> > > > In conclusion: it can't be ensured that one register belongs to one
-> > > > dedicated IP and the LDB is rather an exception than the rule.
-> > >
-> > > It is fine if there's a child node for LDB if the LDB registers are
-> > > consistent, but the other misc things are represented by the parent
-> > > node. It is certainly not a requirement that either everything be in
-> > > child nodes or nothing be in child nodes.
-> > >
-> > > What I don't see in this series is what problem does this fix? If you
-> > > are going to break compatibility, then there had better be a good
-> > > reason.
-> >
-> > Hi Rob,
-> >
-> > with the upcoming i.MX9x SoCs the parent syscon (BLKCTRL) controlls
-> > multiple other IPs, e.g. a DPI mux added by commit 3feaa4342637
-> > ("dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and
-> > example").
-> >
-> > During the discussion of the above commit we agreed that the sub-devices
-> > of the syscon shall not use the reg property due to the fact that one
-> > register serves multiple purposes. In the above case the same register
-> > controlling the dpi-mux also controlls MIPI-DSI bits. The MIPI-DSI bits
-> > can be abstracted as drm-bridge as well. Two sub-devs using the same
-> > 'reg' property below the same parent seems odd and I don't know if this
-> > allowed either.
+Hi,
+
+On 30/04/2026 04:49, Wei Fang wrote:
+> Different versions of NETC switches have different numbers of ports and
+> MAC capabilities. Add .phylink_get_caps() to struct netc_switch_info,
+> allowing each NETC switch version to implement its own callback for
+> obtaining MAC capabilities.
 > 
-> It's not generally. There are some exceptions to define things at the
-> bit-offset level rather than byte level.
-
-Thanks for the clarification.
-
-> > Now the LDB is also part of this BLKCTRL syscon device but requires the
-> > reg property. TBH, I don't know why the reg property was added in the
-> > first place, due to the above fact (multiple sub-devs - same register).
+> Implement the phylink_mac_ops callbacks: .mac_config(), .mac_link_up(),
+> and .mac_link_down(). Note that flow-control configuration is not yet
+> supported in .mac_link_up(), but will be implemented in a subsequent
+> patch.
 > 
-> Probably because we asked for it, but we don't always get a complete
-> picture of all the h/w functions (though we ask for that too).
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-I get your point completely and I don't blame anyone.
+The phylink part looks good to me,
 
-> But nowhere have you said the LDB registers are mixed with other
-> functions. If they aren't, then there is absolutely nothing to change
-> in the binding. If they are, then yes, we shouldn't have 'reg'.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-No they aren't mixed with other functions (for now). Can you please
-confirm that mixing 'reg' based sub-device nodes with non 'reg' based
-sub-device nodes  is allowed? E.g. if the below example is allowed?
+Maxime
 
-	system-controller@4ac10000 {
-		compatible = "fsl,imx93-media-blk-ctrl", "syscon";
-		reg = <0x4ac10000 0x10000>;
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		...
-
-		bridge@5c {
-			compatible = "fsl,imx8mp-ldb";
-			reg = <0x5c 0x4>, <0x128 0x4>;
-			reg-names = "ldb", "lvds";
-
-			...
-		};
-
-		dpi-bridge {
-			compatible = "nxp,imx93-pdfc";
-
-			...
-		};
-	};
-
-Furthermore I thought that for the MMIO bridge@5c device, the 'reg'
-porperty would either require the full register address, e.g. 0x4ac1005c
-or there needs to be a ranges property.
-
-> > Of course, we could limit the breakage to i.MX9* SoCs only which is done
-> > by:
-> >  - https://lore.kernel.org/all/20260329-fsl_ldb_schema_fix-v1-1-351372754bc0@nxp.com/
+> ---
+>  drivers/net/dsa/netc/netc_main.c      | 243 ++++++++++++++++++++++++++
+>  drivers/net/dsa/netc/netc_platform.c  |  38 ++++
+>  drivers/net/dsa/netc/netc_switch.h    |   4 +
+>  drivers/net/dsa/netc/netc_switch_hw.h |  26 +++
+>  4 files changed, 311 insertions(+)
 > 
-> The rational for that doesn't answer my question either.
-> 
-> >
-> > but I don't think that this would be nice from user and from maintainer
-> > perspective, because:
-> >  1) The same LDB "IP" would have a different dt-binding
-> >     (user perspective)
-> 
-> It's not the same if the register layout is different. The point of
-> having sub nodes is because the sub-block is reused. If that's not the
-> case, then there shouldn't be a sub node in the first place.
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+> index 90a2d8cfd3d2..edf50cb32cb6 100644
+> --- a/drivers/net/dsa/netc/netc_main.c
+> +++ b/drivers/net/dsa/netc/netc_main.c
+> @@ -44,6 +44,26 @@ static void netc_mac_port_wr(struct netc_port *np, u32 reg, u32 val)
+>  		netc_port_wr(np, reg + NETC_PMAC_OFFSET, val);
+>  }
+>  
+> +static void netc_mac_port_rmw(struct netc_port *np, u32 reg,
+> +			      u32 mask, u32 val)
+> +{
+> +	u32 old, new;
+> +
+> +	if (is_netc_pseudo_port(np))
+> +		return;
+> +
+> +	WARN_ON((mask | val) != mask);
+> +
+> +	old = netc_port_rd(np, reg);
+> +	new = (old & ~mask) | val;
+> +	if (new == old)
+> +		return;
+> +
+> +	netc_port_wr(np, reg, new);
+> +	if (np->caps.pmac)
+> +		netc_port_wr(np, reg + NETC_PMAC_OFFSET, new);
+> +}
+> +
+>  static void netc_port_get_capability(struct netc_port *np)
+>  {
+>  	u32 val;
+> @@ -522,10 +542,232 @@ static void netc_switch_get_ip_revision(struct netc_switch *priv)
+>  	priv->revision = FIELD_GET(IPBRR0_IP_REV, val);
+>  }
+>  
+> +static void netc_phylink_get_caps(struct dsa_switch *ds, int port,
+> +				  struct phylink_config *config)
+> +{
+> +	struct netc_switch *priv = ds->priv;
+> +
+> +	priv->info->phylink_get_caps(port, config);
+> +}
+> +
+> +static void netc_port_set_mac_mode(struct netc_port *np,
+> +				   unsigned int mode,
+> +				   phy_interface_t phy_mode)
+> +{
+> +	u32 mask = PM_IF_MODE_IFMODE | PM_IF_MODE_REVMII;
+> +	u32 val = 0;
+> +
+> +	switch (phy_mode) {
+> +	case PHY_INTERFACE_MODE_RGMII:
+> +	case PHY_INTERFACE_MODE_RGMII_ID:
+> +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		val |= IFMODE_RGMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RMII:
+> +		val |= IFMODE_RMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_REVMII:
+> +		val |= PM_IF_MODE_REVMII;
+> +		fallthrough;
+> +	case PHY_INTERFACE_MODE_MII:
+> +		val |= IFMODE_MII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +	case PHY_INTERFACE_MODE_2500BASEX:
+> +		val |= IFMODE_SGMII;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
+> +}
+> +
+> +static void netc_mac_config(struct phylink_config *config, unsigned int mode,
+> +			    const struct phylink_link_state *state)
+> +{
+> +	struct dsa_port *dp = dsa_phylink_to_port(config);
+> +
+> +	netc_port_set_mac_mode(NETC_PORT(dp->ds, dp->index), mode,
+> +			       state->interface);
+> +}
+> +
+> +static void netc_port_set_speed(struct netc_port *np, int speed)
+> +{
+> +	netc_port_rmw(np, NETC_PCR, PCR_PSPEED, PSPEED_SET_VAL(speed));
+> +}
+> +
+> +static void netc_port_set_rgmii_mac(struct netc_port *np,
+> +				    int speed, int duplex)
+> +{
+> +	u32 mask, val;
+> +
+> +	mask = PM_IF_MODE_SSP | PM_IF_MODE_HD | PM_IF_MODE_M10;
+> +
+> +	switch (speed) {
+> +	default:
+> +	case SPEED_1000:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_1G);
+> +		break;
+> +	case SPEED_100:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_100M);
+> +		break;
+> +	case SPEED_10:
+> +		val = FIELD_PREP(PM_IF_MODE_SSP, SSP_10M);
+> +		break;
+> +	}
+> +
+> +	if (duplex != DUPLEX_FULL)
+> +		val |= PM_IF_MODE_HD;
+> +
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
+> +}
+> +
+> +static void netc_port_set_rmii_mii_mac(struct netc_port *np,
+> +				       int speed, int duplex)
+> +{
+> +	u32 mask, val = 0;
+> +
+> +	mask = PM_IF_MODE_SSP | PM_IF_MODE_HD | PM_IF_MODE_M10;
+> +
+> +	if (speed == SPEED_10)
+> +		val |= PM_IF_MODE_M10;
+> +
+> +	if (duplex != DUPLEX_FULL)
+> +		val |= PM_IF_MODE_HD;
+> +
+> +	netc_mac_port_rmw(np, NETC_PM_IF_MODE(0), mask, val);
+> +}
+> +
+> +static void netc_port_mac_rx_enable(struct netc_port *np)
+> +{
+> +	netc_port_rmw(np, NETC_POR, POR_RXDIS, 0);
+> +	netc_mac_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_RX_EN,
+> +			  PM_CMD_CFG_RX_EN);
+> +}
+> +
+> +static void netc_port_wait_rx_empty(struct netc_port *np, int mac)
+> +{
+> +	u32 val;
+> +
+> +	/* PM_IEVENT_RX_EMPTY is a read-only bit, it is automatically set by
+> +	 * hardware if RX FIFO is empty and no RX packet receive in process.
+> +	 * And it is automatically cleared if RX FIFO is not empty or RX
+> +	 * packet receive in process.
+> +	 */
+> +	if (read_poll_timeout(netc_port_rd, val, val & PM_IEVENT_RX_EMPTY,
+> +			      100, 10000, false, np, NETC_PM_IEVENT(mac)))
+> +		dev_warn(np->switch_priv->dev,
+> +			 "swp%d MAC%d: RX is not idle\n", np->dp->index, mac);
+> +}
+> +
+> +static void netc_port_mac_rx_graceful_stop(struct netc_port *np)
+> +{
+> +	u32 val;
+> +
+> +	if (is_netc_pseudo_port(np))
+> +		goto rx_disable;
+> +
+> +	if (np->caps.pmac) {
+> +		netc_port_rmw(np, NETC_PM_CMD_CFG(1), PM_CMD_CFG_RX_EN, 0);
+> +		netc_port_wait_rx_empty(np, 1);
+> +	}
+> +
+> +	netc_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_RX_EN, 0);
+> +	netc_port_wait_rx_empty(np, 0);
+> +
+> +	if (read_poll_timeout(netc_port_rd, val, !(val & PSR_RX_BUSY),
+> +			      100, 10000, false, np, NETC_PSR))
+> +		dev_warn(np->switch_priv->dev, "swp%d RX is busy\n",
+> +			 np->dp->index);
+> +
+> +rx_disable:
+> +	netc_port_rmw(np, NETC_POR, POR_RXDIS, POR_RXDIS);
+> +}
+> +
+> +static void netc_port_mac_tx_enable(struct netc_port *np)
+> +{
+> +	netc_mac_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_TX_EN,
+> +			  PM_CMD_CFG_TX_EN);
+> +	netc_port_rmw(np, NETC_POR, POR_TXDIS, 0);
+> +}
+> +
+> +static void netc_port_wait_tx_empty(struct netc_port *np, int mac)
+> +{
+> +	u32 val;
+> +
+> +	/* PM_IEVENT_TX_EMPTY is a read-only bit, it is automatically set by
+> +	 * hardware if TX FIFO is empty. And it is automatically cleared if
+> +	 * TX FIFO is not empty.
+> +	 */
+> +	if (read_poll_timeout(netc_port_rd, val, val & PM_IEVENT_TX_EMPTY,
+> +			      100, 10000, false, np, NETC_PM_IEVENT(mac)))
+> +		dev_warn(np->switch_priv->dev,
+> +			 "swp%d MAC%d: TX FIFO is not empty\n",
+> +			 np->dp->index, mac);
+> +}
+> +
+> +static void netc_port_mac_tx_graceful_stop(struct netc_port *np)
+> +{
+> +	netc_port_rmw(np, NETC_POR, POR_TXDIS, POR_TXDIS);
+> +
+> +	if (is_netc_pseudo_port(np))
+> +		return;
+> +
+> +	netc_port_wait_tx_empty(np, 0);
+> +	if (np->caps.pmac)
+> +		netc_port_wait_tx_empty(np, 1);
+> +
+> +	netc_mac_port_rmw(np, NETC_PM_CMD_CFG(0), PM_CMD_CFG_TX_EN, 0);
+> +}
+> +
+> +static void netc_mac_link_up(struct phylink_config *config,
+> +			     struct phy_device *phy, unsigned int mode,
+> +			     phy_interface_t interface, int speed,
+> +			     int duplex, bool tx_pause, bool rx_pause)
+> +{
+> +	struct dsa_port *dp = dsa_phylink_to_port(config);
+> +	struct netc_port *np;
+> +
+> +	np = NETC_PORT(dp->ds, dp->index);
+> +	netc_port_set_speed(np, speed);
+> +
+> +	if (phy_interface_mode_is_rgmii(interface))
+> +		netc_port_set_rgmii_mac(np, speed, duplex);
+> +
+> +	if (interface == PHY_INTERFACE_MODE_RMII ||
+> +	    interface == PHY_INTERFACE_MODE_REVMII ||
+> +	    interface == PHY_INTERFACE_MODE_MII)
+> +		netc_port_set_rmii_mii_mac(np, speed, duplex);
+> +
+> +	netc_port_mac_tx_enable(np);
+> +	netc_port_mac_rx_enable(np);
+> +}
+> +
+> +static void netc_mac_link_down(struct phylink_config *config,
+> +			       unsigned int mode,
+> +			       phy_interface_t interface)
+> +{
+> +	struct dsa_port *dp = dsa_phylink_to_port(config);
+> +	struct netc_port *np;
+> +
+> +	np = NETC_PORT(dp->ds, dp->index);
+> +	netc_port_mac_rx_graceful_stop(np);
+> +	netc_port_mac_tx_graceful_stop(np);
+> +}
+> +
+> +static const struct phylink_mac_ops netc_phylink_mac_ops = {
+> +	.mac_config		= netc_mac_config,
+> +	.mac_link_up		= netc_mac_link_up,
+> +	.mac_link_down		= netc_mac_link_down,
+> +};
+> +
+>  static const struct dsa_switch_ops netc_switch_ops = {
+>  	.get_tag_protocol		= netc_get_tag_protocol,
+>  	.setup				= netc_setup,
+>  	.teardown			= netc_teardown,
+> +	.phylink_get_caps		= netc_phylink_get_caps,
+>  };
+>  
+>  static int netc_switch_probe(struct pci_dev *pdev,
+> @@ -564,6 +806,7 @@ static int netc_switch_probe(struct pci_dev *pdev,
+>  	ds->num_ports = priv->info->num_ports;
+>  	ds->num_tx_queues = NETC_TC_NUM;
+>  	ds->ops = &netc_switch_ops;
+> +	ds->phylink_mac_ops = &netc_phylink_mac_ops;
+>  	ds->priv = priv;
+>  	priv->ds = ds;
+>  
+> diff --git a/drivers/net/dsa/netc/netc_platform.c b/drivers/net/dsa/netc/netc_platform.c
+> index abd599ea9c8d..bb4f92d238cb 100644
+> --- a/drivers/net/dsa/netc/netc_platform.c
+> +++ b/drivers/net/dsa/netc/netc_platform.c
+> @@ -11,8 +11,46 @@ struct netc_switch_platform {
+>  	const struct netc_switch_info *info;
+>  };
+>  
+> +static void imx94_switch_phylink_get_caps(int port,
+> +					  struct phylink_config *config)
+> +{
+> +	config->mac_capabilities = MAC_1000FD;
+> +
+> +	switch (port) {
+> +	case 0 ... 1:
+> +		__set_bit(PHY_INTERFACE_MODE_SGMII,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> +			  config->supported_interfaces);
+> +		config->mac_capabilities |= MAC_2500FD;
+> +		fallthrough;
+> +	case 2:
+> +		config->mac_capabilities |= MAC_10 | MAC_100;
+> +		__set_bit(PHY_INTERFACE_MODE_MII,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_RMII,
+> +			  config->supported_interfaces);
+> +		/* Port 0 and 1 do not support REVMII */
+> +		if (port == 2)
+> +			__set_bit(PHY_INTERFACE_MODE_REVMII,
+> +				  config->supported_interfaces);
+> +
+> +		phy_interface_set_rgmii(config->supported_interfaces);
+> +		break;
+> +	case 3: /* CPU port */
+> +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
+> +			  config->supported_interfaces);
+> +		config->mac_capabilities |= MAC_10FD | MAC_100FD |
+> +					    MAC_2500FD;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +}
+> +
+>  static const struct netc_switch_info imx94_info = {
+>  	.num_ports = 4,
+> +	.phylink_get_caps = imx94_switch_phylink_get_caps,
+>  };
+>  
+>  static const struct netc_switch_platform netc_platforms[] = {
+> diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
+> index dac19bfba02b..eb65c36ecead 100644
+> --- a/drivers/net/dsa/netc/netc_switch.h
+> +++ b/drivers/net/dsa/netc/netc_switch.h
+> @@ -34,6 +34,7 @@ struct netc_switch;
+>  
+>  struct netc_switch_info {
+>  	u32 num_ports;
+> +	void (*phylink_get_caps)(int port, struct phylink_config *config);
+>  };
+>  
+>  struct netc_port_caps {
+> @@ -70,6 +71,9 @@ struct netc_switch {
+>  	struct ntmp_user ntmp;
+>  };
+>  
+> +#define NETC_PRIV(ds)			((struct netc_switch *)((ds)->priv))
+> +#define NETC_PORT(ds, port_id)		(NETC_PRIV(ds)->ports[(port_id)])
+> +
+>  /* Write/Read Switch base registers */
+>  #define netc_base_rd(r, o)		netc_read((r)->base + (o))
+>  #define netc_base_wr(r, o, v)		netc_write((r)->base + (o), v)
+> diff --git a/drivers/net/dsa/netc/netc_switch_hw.h b/drivers/net/dsa/netc/netc_switch_hw.h
+> index 0419f7f9207e..7d9afb493053 100644
+> --- a/drivers/net/dsa/netc/netc_switch_hw.h
+> +++ b/drivers/net/dsa/netc/netc_switch_hw.h
+> @@ -67,6 +67,14 @@
+>  #define  PQOSMR_VQMP			GENMASK(19, 16)
+>  #define  PQOSMR_QVMP			GENMASK(23, 20)
+>  
+> +#define NETC_POR			0x100
+> +#define  POR_TXDIS			BIT(0)
+> +#define  POR_RXDIS			BIT(1)
+> +
+> +#define NETC_PSR			0x104
+> +#define  PSR_TX_BUSY			BIT(0)
+> +#define  PSR_RX_BUSY			BIT(1)
+> +
+>  #define NETC_PTCTMSDUR(a)		(0x208 + (a) * 0x20)
+>  #define  PTCTMSDUR_MAXSDU		GENMASK(15, 0)
+>  #define  PTCTMSDUR_SDU_TYPE		GENMASK(17, 16)
+> @@ -123,6 +131,24 @@ enum netc_mfo {
+>  #define NETC_PM_MAXFRM(a)		(0x1014 + (a) * 0x400)
+>  #define  PM_MAXFRAM			GENMASK(15, 0)
+>  
+> +#define NETC_PM_IEVENT(a)		(0x1040 + (a) * 0x400)
+> +#define  PM_IEVENT_TX_EMPTY		BIT(5)
+> +#define  PM_IEVENT_RX_EMPTY		BIT(6)
+> +
+> +#define NETC_PM_IF_MODE(a)		(0x1300 + (a) * 0x400)
+> +#define  PM_IF_MODE_IFMODE		GENMASK(2, 0)
+> +#define   IFMODE_MII			1
+> +#define   IFMODE_RMII			3
+> +#define   IFMODE_RGMII			4
+> +#define   IFMODE_SGMII			5
+> +#define  PM_IF_MODE_REVMII		BIT(3)
+> +#define  PM_IF_MODE_M10			BIT(4)
+> +#define  PM_IF_MODE_HD			BIT(6)
+> +#define  PM_IF_MODE_SSP			GENMASK(14, 13)
+> +#define   SSP_100M			0
+> +#define   SSP_10M			1
+> +#define   SSP_1G			2
+> +
+>  #define NETC_PEMDIOCR			0x1c00
+>  #define NETC_EMDIO_BASE			NETC_PEMDIOCR
+>  
 
-You're absolutely right, different register layot == not the same IP.
-
-TBH I didn't payed to much attention to the LDB/LVDS bridge. I've now
-checked the i.MX8MP and i.MX93 reference manual and saw that the they
-are slightly different. The i.MX93 uses registers which are marked as
-"Reserved" on the i.MX8MP to control an asnyc FIFO. So the LDB on the
-i.MX93 could be a slightly improved version of the i.MX8MP.
-
-Also one bit was redefined between the i.MX8MP and the i.MX93 LVDS_CTRL.
-
-We do require the sub-node to wire up the of-graph for the display
-pipeline.
-
-> >  2) It introduces another dimension drivers need to care about
-> >     (maintainer perspective)
-> 
-> I thought Linux didn't even look at 'reg' here.
-
-There are patches which aren't merged yet: 
-https://lore.kernel.org/all/20260104213712.128982-1-marek.vasut@mailbox.org/
-
-Regards,
-  Marco
-
-> 
-> Rob
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
