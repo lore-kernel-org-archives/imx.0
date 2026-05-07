@@ -1,191 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012048.outbound.protection.outlook.com [52.101.66.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A6143E4A3
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 15:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778167554; cv=none; b=RHOBTApb5VE5nRzvpaDSF6YflC8kyNZLKdxzkbDc6jbj98clsDYr8Hq1WoAhzp/6cy/6YEXNtKLuxeaUe7dHcBzRvjfHISTFJoNxMqKWmmhpRd6vrpVkMIKxW3BZsG0uczxp6w46BtUfBm1Bqoi0oHc2gM1ydEA+WZshBFXsQNA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778167554; c=relaxed/simple;
-	bh=wWbaNgLjvgEK60SoLK00HREVJw2pjszb4CF+qYI0K7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=APhvYsQcY5yHR/ObRcz7UPpL5EcjeNb3C1BIPZfT99s3+Bf2p92eBQ4+9rO2fXm3KX/8Kj9//VDI1RPTW/8/JHX46imsr5MAiW5PZCZNiMs6CSg/GucLJ+5DGJTjUkBsibQyB0RW5dYl/fJ44Eq7ALvJNNZeFk5rHoeshX3+m9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IiYPc+6m; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A679B3CF695
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 15:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778167629; cv=fail; b=ewBsiCSMGVsssr3QwLdu6f6L/AxpCT/j3fqb98q4t7g7KnvvqOnXWxJFdDw6cXm51+qU1HvuUZbwwZlxEmr/Y3hvGC1SjxzG13nt9hAVMKHEeg64I8HxZdET9B7zm0/NtR8A/a3s4ioj5Odv6cZISMWduVUlqe2rGUvibtpMkK0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778167629; c=relaxed/simple;
+	bh=vBCmhhMqqlVvclcEGsvMZX4ldURUoWJ0+edYkWDrqYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dzb+vn2y4LFLjthUo5ODoV+rO5QIBTazdkW97TQx+ONm2/FdVOqdy179ObWZqJWJ3I9/7BIdiBPhdo0lUVtLVDfBNrC59NS7tzYBBk4aoRsee+EBWbzTZxJwP4fE4aEQa14gPeNRzOstg0JEStSTK/a/pMCu4duaU+PUgwSCMt4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fXcFtP3U; arc=fail smtp.client-ip=52.101.66.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IiYPc+6m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D17AC2BCFC
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 15:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778167554;
-	bh=wWbaNgLjvgEK60SoLK00HREVJw2pjszb4CF+qYI0K7w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IiYPc+6mLChtKGBenijU6gMwDozISCBsh5s0UVIU39zm0Ba+5cMfNhtyej2cT3POg
-	 8ooc59U+xSIwocabHngDh5KPtmqO78vRzCmxy/h2YsjWFtL/0rBmWevWbRcUsMtE+A
-	 rP5EIo5kx3kWPBEis8SbD9jWDTpmkV4Ni4me8YzqYRLDqJE6Nn8ZF/1sl7DWf3+KGn
-	 Sna6brPjZFimyNKAHYWhvMq8rpo5jCfK8anLeBC3AZiThqFAhu/wcRuXjhUufDxUTZ
-	 4zhI6VvgWLOKHK4JBtHrX2sSY3eRmi2w+/fnhYQKfne/Y1Wl+DLGzr+aH0vJwXIkiW
-	 dWDE+K/b0JHlg==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so1460134a12.1
-        for <imx@lists.linux.dev>; Thu, 07 May 2026 08:25:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+Jr435Vnbr2/ohe8Y8H9Lrf+eqwyykoggLAvdJGGuWSXvHp9XpC+18mvyFyoNrHzFIBl4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy2dz7buNpIIlwiSHznJoynwrfJ++oYjD2I3l3oa8bxJEfo8SkK
-	g+bRtLIFZAhFSry4ppDFf4OfTqEj1Jkfmc5USLaZcrqci901z7n4AlQ8+EC1yA71n6XUIGeIkgR
-	0p8u8/6i4kBQlgs0PhjIrf+Q/tdVeWw==
-X-Received: by 2002:a05:6402:5344:20b0:67d:98bd:e44e with SMTP id
- 4fb4d7f45d1cf-67e0efb390emr1326327a12.17.1778167552504; Thu, 07 May 2026
- 08:25:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fXcFtP3U"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h3QbN93sOv/NzLy3Rd+gzehJO8teogRCgMNzTQKYQHX0BwWpn0QFicrTnWOp4giDS7iDtLvg6L6w6UkN4WO62HY2uNL+PhIzSrsNoCVCOfvEbtIDQCLsRDxSwhZP0ybdekxqswPJzsZKPhTtc58pZo4c9+Y4qLf5Wq3Y8RetIPw/Vqi36BmYdcpLFvPk89ZsoF3ebx8wQlNf0oEygfUgiP3ul7QWisdLyqKp4690tjEJRIc+0yfyehDlV0In25uyqWG7NxH48axJEjwhLzuYhtCFNtIhmIUpJEIaNJhz1eRVkiz7QIpEjUPNB4cX2fcegk4it1ujf/lmx/iVtt8y6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vBCmhhMqqlVvclcEGsvMZX4ldURUoWJ0+edYkWDrqYE=;
+ b=gP/83L8owybjkMOgh42tNtifzEUv2MdeXPrjBvQ13f8dndHQbPdhEG7ChqOB/PQ6S6aeGc340uD1TIU7KmjNeA1eE3+Brb6e6zLu6FenZ2sR/lIbGQR0lCigiAce1XPnhQqlMV2Zdr8kP/CajhgJyCAFtCjBCo6TQHaJFeAyyB7GB3tyYT6vxu7pWA5xLzk9QAAYeymAp4jyW1NZrPxceDcP1T8OYZmvK8IZxIMCKQ8lLfJzCTu4gUEmcRKWHaY/1192ACu3Q2MRJAsT2ocU3kQuUl0FjMGopZcY2exlaPBF+PwJt8ZdKleD++oigGBVCmpkM3dONooQRKlSydKt3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vBCmhhMqqlVvclcEGsvMZX4ldURUoWJ0+edYkWDrqYE=;
+ b=fXcFtP3U382DdQq2yineZlVL2/0ERXuYTXwmVgE1g/6reeaZqd5jTJXZpLXMX21yF3YOhk0YMWsA1VkyD+74dwMxdAf0tCx9puDSB8CdDB68SEykfZvtHijwTEaSxAfKT6PxEgwoom9dcdSkaz/COZmRGopl9ylSTnE+Zbv93WQsPZnjPJ/D6QumnBYuwXiQX9oQQgPXznqGmdk1Z2TW8QwqrWNmBRLC/Hl4I+ESr1BBho0J9Ug67SwAPhsqmoJmyRrLZC5j3xnfUWXZQNNL1BnadOHZAk77Jn/u/CX9ufjm/Zd5OCs8IccbrHtvys1YGpUfog82dbh6A5PcpeonzA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DU2PR04MB8806.eurprd04.prod.outlook.com (2603:10a6:10:2e1::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
+ 2026 15:27:05 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9891.016; Thu, 7 May 2026
+ 15:27:05 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: linux-kernel@vger.kernel.org,
+	Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	frank.li@nxp.com,
+	imx@lists.linux.dev,
+	Dan Carpenter <error27@gmail.com>
+Subject: Re: [PATCH -next] firmware: imx: secure-enclave: bound read copy by user buffer size
+Date: Thu,  7 May 2026 11:26:51 -0400
+Message-ID: <177816572724.177840.9501752518116481193.b4-ty@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260507133016.1737279-1-pankaj.gupta@nxp.com>
+References: <20260507133016.1737279-1-pankaj.gupta@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR13CA0123.namprd13.prod.outlook.com
+ (2603:10b6:806:27::8) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260504-v7-1-topic-ldb-fixes-v1-0-0125d937ff7f@pengutronix.de>
- <20260504-v7-1-topic-ldb-fixes-v1-2-0125d937ff7f@pengutronix.de>
- <20260505141538.GA2547282-robh@kernel.org> <2bl2mwpk57xgkuye2gydliymjkzikiovnb7ovnb73olwtfkjwn@byn3732grvnh>
- <CAL_JsqLYS1sgU680KNR60+OvtNwEVKWovht7K2APO3sqeJe6Nw@mail.gmail.com> <zbbez4lpme7szgnsd7fqufbuhmvcftw4sqrmwwwzyxu64i2ppb@fh2fgdkc6tat>
-In-Reply-To: <zbbez4lpme7szgnsd7fqufbuhmvcftw4sqrmwwwzyxu64i2ppb@fh2fgdkc6tat>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 7 May 2026 10:25:41 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJWyRPh_hmJW8p7+VvtcqpS0a_azjMO-PyQgkqQUfLAGA@mail.gmail.com>
-X-Gm-Features: AVHnY4K59HFC-Lj0a6_OWOrJwlVTiPxlkDo7ivtKaVL4QyHlHtRcFSTM5LnBqeE
-Message-ID: <CAL_JsqJWyRPh_hmJW8p7+VvtcqpS0a_azjMO-PyQgkqQUfLAGA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] Revert "dt-bindings: display: bridge: ldb: Fill in
- reg property"
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, laurentiu.palcu@oss.nxp.com, 
-	victor.liu@nxp.com, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DU2PR04MB8806:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9d4bec2-34b3-4275-86e0-08deac4d1817
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|19092799006|366016|376014|38350700014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	d4MFi8VICB4YbM0uqjBqCUElzqhxHqb6gCWEbDEJAuk7/k7BlyMLoqRo0hAQnbvFlxdsF+ny8YvKb3wTZfXlcGcFw7FMs9t5xXVw5tUw3j9GSv9sJPtAbgHe3KEnbyKulqHZ+PLyME1dacJRH0aTVpo6oshWxwhTuYHbbD2aI/zHPeMzuYRuAqlkitnCJT84rTjUtt71DuRIbjP3k2li83A8F9/6j6uUafJK0nieEr5o/nVhhu5pltaEzgu4hVC/oIkbCqZ22V60C6OiuWWxOfN5xH1aZ7FttukPFejd7Kb/63emICXkbnw5lsgBvuxgo7hIHVcNHiiLWi8v4iwVTG0Ulru5bULtuCljJ0yYjKolAsVYnKcofsVQOq0DfVRMxim6w1HklsugNV14Gx+dAsci8Wsrl8wC8PrkzRzSHt/rSZN0IGinQZjYpzY4JExn03VCAeB6PR2TMybIn/6eIptp0EB73wVqOzINSxm/w33UHM1MrDOVM/1q70f4SCTOJ6pVNaSAfBh/LoAjwMS6+FPSTNzXxFvfLOyIBeFCqE52xe3mmlhVqhnIlbhhRt7guVKQaedVhec5xoLB3MCLWa1Kgprr8RTAQcLxgN7vZvWJlC6q7C7JCtcBFoiXz3d8AU9WFeZR3Jp7aPS/BxiJe6JMgomMNiQRzcZ5LHxJAQF2zkuONYSEfJ7nGznRlITmLcPh2b+6eYtMFHpAOlJVxFxxXmJELKeVvp/m9zMHwKX74w5Kjl4cYtYvH0Bh8kNN
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(19092799006)(366016)(376014)(38350700014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RVFSMGZYK0JqRGxIdjQydlBTYVdzeEpIV003eWZQUmpldGxoVlUwakNZcmNs?=
+ =?utf-8?B?UURyQVVadVFscXVCNjVRUitPckRENmdnTGQrOGRobU1KU1l3eWlPcDVGanZa?=
+ =?utf-8?B?QWlQbm9qUjdQMi92STdST243VGlBZ3BaS1AvTWhramg0dEwyWjRMTEFPckFB?=
+ =?utf-8?B?T2p6WDdIWEpmNTdoM1FmMHY0Tkc2Q3p2SHVhejJiWGVhS1ArSHNHQStpdzBp?=
+ =?utf-8?B?WlJsb1RuNDZkS050TGIxMTFZdDF3YzJzTDFZRkRVVVZkQzlobFlMSnAzWXZU?=
+ =?utf-8?B?dUtJVGxvZkt5MW42MUwzQmdXbnZtQkY3UTcvRllrRzVUMXA1Qmdka2tSWUhl?=
+ =?utf-8?B?OHcxZnU1VlBRN0l1V0lhRHBpUkhUUi84Mm5sMnZmNUZ0RzB3b24vaFVvZ0FT?=
+ =?utf-8?B?ZUc5SUNQL2xtWkFlWUZROVlTVFJRSVJpZ0xHdCt4bEx1L004clRSQmkvQ2lY?=
+ =?utf-8?B?UngydGNRWi9MM2NFdWxUMW9KR2ltUVRhT3NNVjUwbnNFRjNOTWJaQmxTS3V1?=
+ =?utf-8?B?dEFuWFZ0SGdNbFhRM0ZHRHRUK3JEUnIvckg1R0svQXNaa2NyODdpZStvRDlp?=
+ =?utf-8?B?ZUgyL0tONUJaNUQ0OGZ4VURsNS9JNlAvVlVxL0tDdS93L0NPWmFLcHk5QjE2?=
+ =?utf-8?B?eUwrbHR4ajA3SVBiYVVZcTk4OUVSMWIvQjN5STJ4cmI1dFpFUDMxdlFqZ21I?=
+ =?utf-8?B?UitNazJOOW91WUc1M2xYaGV0NlBPaS9PdThxcW1DU3cxVzBmRWR6RnRXeUN6?=
+ =?utf-8?B?Wm14R3lkSDVpY2ZpTEg0QXROMUIrTVFIb09CQ2ZQejFGcFpBQWF1Zm5tbnhk?=
+ =?utf-8?B?RllHeHFvaVlQVVdacEs5bGNyUWdNQ0JaV1VvbTRkK2V1K1A1WUF4aGF3cWxw?=
+ =?utf-8?B?ODRDTmh6VVBkV3FDbGsxVXZaR2JMVmFaWnBYcEdmUVNFdXJLdkl2aFFWc3Ix?=
+ =?utf-8?B?c1FueWxpLzF3SFFlSzd1REdtMVpYVWE0WlU5QjNtTTY3Ym5zYlVsWXpRblFT?=
+ =?utf-8?B?Q2pIcTRKc2FIQXNTeG9uTXZhLzNoUUJSeDY2UHUrUzZpaVQwaXpHSUMzNS9X?=
+ =?utf-8?B?Y1ZiV1REZWZTUWFUZEs1eUV4VTRMUTd4WTRNb2tWQXFHS0ozd2F3aEJCM2dK?=
+ =?utf-8?B?WUdzNXpFZXp1OTBjZkV0S2trZ21LY2NtYktGd1RvYUVHZ0FlSDluMllKdjRw?=
+ =?utf-8?B?RWFwWjJ3Q29qS2MzMUJZYitPMjlVVGRCU3lZdUpQbzFzazgwbGJqdjc2RDlZ?=
+ =?utf-8?B?QUFtQlF2cnlJVVFSNkpOY1dxcmRaTUlTcFdmdyt0NWlIb0VnWGM2NWxGU0tx?=
+ =?utf-8?B?cTNIOEJoYXl5U0xwU2EyNGNBWGpiZ3pzSTFvMUlxaWVUbEluMU1SQ085Um05?=
+ =?utf-8?B?MlNTUzFSLythSVNjZ2dYWGRySFlud2pYYi9MNklFQjhSeDNEdW8vTWM4WVd6?=
+ =?utf-8?B?aEdlY3FhN0dycHZZRnljSkFRK0U3UnNBeTJXYU9iVUUrRUFkODZod3VuUHhJ?=
+ =?utf-8?B?anBnaG1qM2FEakdNVWMrWGxtNU9ZSDhrQno2by96cC9sUWk5c3A5RFhxNmdt?=
+ =?utf-8?B?NlNMN3lqbGNmMFgyblBWc0tGOVZMaWtPeW5tOC8xeFVHazZJNWh2Si9aWGZ6?=
+ =?utf-8?B?eE9CbjRHZTQ3MWlPejQvZVg1VENYOVg2MUNqWWs4NEhDRURYUitYK0hvei84?=
+ =?utf-8?B?R3pXZ2lTc2luVVZhWUh5TjBGQkZKRGd0TngxSXBQMzZ1RE0ycXFjOTNaSEZV?=
+ =?utf-8?B?Mnc4SUVsdURobG1UOWRZMGR5RjZGWFBFVnBRK1dFRmpQY0RjelJSUGZONmdD?=
+ =?utf-8?B?T2htM3phMjlmaTJsUUhkLzNzOEw0Y3h6eFp1TkpZRW5lWm5ING1JVmExN1Uv?=
+ =?utf-8?B?M2dMbUhPR1p0ZlZJUUVBQnZUdFdFYjNJL0NvQjhzcEUrdVRIMnBObDAwemVz?=
+ =?utf-8?B?N1JIK05ObS9EWmtPYU80bUlsdXRRMGIyZTNwakZ6VzI2Rk04a0Rya0c3ZnF5?=
+ =?utf-8?B?NVEvNmVtUUZwcXl1Z1RhWlRiRHMvVUExa1h6L0gyWmFLQ1hDNGFHWkNmYkJS?=
+ =?utf-8?B?Um9LOGFrQUI4VStvbWFCTUJHc0ZzLzFRaE1GZktDc2pZV3pvNG9QelMwemJQ?=
+ =?utf-8?B?cWxxa2c1dUpIOENOL3NkNU43MXV1M1dNZk55T3IwK3J6SE1ndjdwTHlieklM?=
+ =?utf-8?B?ck96QTRndEZFQlBDc2k0RnQxQVhKQkFON0ZBd3dRdm9Udnphdm80c3I1SXQ5?=
+ =?utf-8?B?ZFBWYjJIZjJ2NWd3NWhDcnRuSldTcHRRN1NjKzJQTktjcHFFQU95anYwbzdW?=
+ =?utf-8?Q?ZGEOINLeLWXksxl1ly?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9d4bec2-34b3-4275-86e0-08deac4d1817
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 15:27:05.2817
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i21cBCBOSWeJtJRZ6jA/aHk4E7Wn9T2qosfSUROR2mujDQD5YGuGfDiEdB6T+xWZIyvt1wsGuQ6RFDung6Owjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8806
 
-On Thu, May 7, 2026 at 6:55=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.d=
-e> wrote:
->
-> On 26-05-06, Rob Herring wrote:
-> > On Tue, May 5, 2026 at 10:46=E2=80=AFAM Marco Felsch <m.felsch@pengutro=
-nix.de> wrote:
-> > >
-> > > On 26-05-05, Rob Herring wrote:
-> > > > On Mon, May 04, 2026 at 10:21:42PM +0200, Marco Felsch wrote:
-> > > > > This reverts commit 16c8d76abe83d75b578d72ee22d25a52c764e14a.
-> > > > >
-> > > > > Remove the 'reg' and 'reg-names' property from the LDB.
-> > > > >
-> > > > > The LDB is either part of the IOMUX_GPR (i.MX6SX) or the BLKCTRL
-> > > > > (i.MX8MP, i.MX93) register space. Both IOMUX_GPR and BLKCTRL are
-> > > > > register ranges with loose register definitions. E.g.
-> > > > >
-> > > > >   - On the i.MX8MP there is one register which controls the AXI
-> > > > >     threshold for two different IPs (BIT(31:16) - IP1, BIT(15:0) =
-- IP2).
-> > > > >   - On the i.MX6SX IOMUXC_GPR5 controlls: CSI2 mux, WDOG3 setting=
-s, PXP
-> > > > >     handshake, ...
-> > > > >
-> > > > > In conclusion: it can't be ensured that one register belongs to o=
-ne
-> > > > > dedicated IP and the LDB is rather an exception than the rule.
-> > > >
-> > > > It is fine if there's a child node for LDB if the LDB registers are
-> > > > consistent, but the other misc things are represented by the parent
-> > > > node. It is certainly not a requirement that either everything be i=
-n
-> > > > child nodes or nothing be in child nodes.
-> > > >
-> > > > What I don't see in this series is what problem does this fix? If y=
-ou
-> > > > are going to break compatibility, then there had better be a good
-> > > > reason.
-> > >
-> > > Hi Rob,
-> > >
-> > > with the upcoming i.MX9x SoCs the parent syscon (BLKCTRL) controlls
-> > > multiple other IPs, e.g. a DPI mux added by commit 3feaa4342637
-> > > ("dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema =
-and
-> > > example").
-> > >
-> > > During the discussion of the above commit we agreed that the sub-devi=
-ces
-> > > of the syscon shall not use the reg property due to the fact that one
-> > > register serves multiple purposes. In the above case the same registe=
-r
-> > > controlling the dpi-mux also controlls MIPI-DSI bits. The MIPI-DSI bi=
-ts
-> > > can be abstracted as drm-bridge as well. Two sub-devs using the same
-> > > 'reg' property below the same parent seems odd and I don't know if th=
-is
-> > > allowed either.
-> >
-> > It's not generally. There are some exceptions to define things at the
-> > bit-offset level rather than byte level.
->
-> Thanks for the clarification.
->
-> > > Now the LDB is also part of this BLKCTRL syscon device but requires t=
-he
-> > > reg property. TBH, I don't know why the reg property was added in the
-> > > first place, due to the above fact (multiple sub-devs - same register=
-).
-> >
-> > Probably because we asked for it, but we don't always get a complete
-> > picture of all the h/w functions (though we ask for that too).
->
-> I get your point completely and I don't blame anyone.
->
-> > But nowhere have you said the LDB registers are mixed with other
-> > functions. If they aren't, then there is absolutely nothing to change
-> > in the binding. If they are, then yes, we shouldn't have 'reg'.
->
-> No they aren't mixed with other functions (for now).
 
-For now? Is the h/w going to change or is the binding *still* incomplete.
+On Thu, 07 May 2026 19:00:16 +0530, Pankaj Gupta wrote:
+> se_if_fops_read() copied the full received message to userspace without
+> checking the size of the user-provided buffer. If the receive message
+> was larger than the buffer passed to read(), this could overflow user
+> memory.
+>
+> Fix this by limiting the copy length to the minimum of the userspace
+> buffer size and the received message size. Also drop logging on
+> copy_to_user() failure, as returning -EFAULT is sufficient.
+>
+> [...]
 
-> Can you please
-> confirm that mixing 'reg' based sub-device nodes with non 'reg' based
-> sub-device nodes  is allowed? E.g. if the below example is allowed?
->
->         system-controller@4ac10000 {
->                 compatible =3D "fsl,imx93-media-blk-ctrl", "syscon";
->                 reg =3D <0x4ac10000 0x10000>;
->                 #address-cells =3D <1>;
->                 #size-cells =3D <1>;
->
->                 ...
->
->                 bridge@5c {
->                         compatible =3D "fsl,imx8mp-ldb";
->                         reg =3D <0x5c 0x4>, <0x128 0x4>;
->                         reg-names =3D "ldb", "lvds";
->
->                         ...
->                 };
->
->                 dpi-bridge {
->                         compatible =3D "nxp,imx93-pdfc";
->
->                         ...
+Applied, thanks!
 
-Depends what is in "...". If only a compatible, then no. If there are
-actual resources defined, then yes.
+[1/1] firmware: imx: secure-enclave: bound read copy by user buffer size
+change min_t() to min() and squash to
+4de71839142b ("firmware: drivers: imx: adds miscdev")
 
->                 };
->         };
->
-> Furthermore I thought that for the MMIO bridge@5c device, the 'reg'
-> porperty would either require the full register address, e.g. 0x4ac1005c
-> or there needs to be a ranges property.
-
-There should be a ranges property no matter what.
-
-Rob
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
