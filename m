@@ -1,67 +1,67 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3230F346AFB
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 07:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F33F2E4257
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 07:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778137207; cv=none; b=f1GYCm68m5wLPG7k6bfT5qhTliSgNIgSUJiJ5WMZXKgWILkmjz04PUYyvUPvZRm1DMRM8p5FoMghMqr7C28A/s5MkYPvbq+822AP1fIXfW9K01G5PGnOtpaa/a+dl7GBKF6UoSP/iCETk7wnMrRYlpavuVacT28rospVsgD7lxY=
+	t=1778137631; cv=none; b=ZcmM0RZ2E8Ppp1oEAkuvVKzrD96sIYy7DVAIl3Kdj3DyVY6yt6WCLH73bSECtu+TWLuytJROWMY5PN0gZwJ/SwTNo1Qs+0DrEAyPVLTiCnFIMXo3IWarSUjSDEPcZwiHP/umkfg3iND9ypNQ8f6GCEVBEbWuCAbuRzZCCaErxKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778137207; c=relaxed/simple;
-	bh=rVrYFQ1E+kY6VCEFN/jsG7gFIK0ypJMGz3ypmp2ts2g=;
+	s=arc-20240116; t=1778137631; c=relaxed/simple;
+	bh=Mp8qOI0ymgTF7MRFMnrJSwKGm7qofNq7xAvwmlMuEdM=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dxyQ4tVrAc9f959R4h2VneyFoY7rEtODtTKXkZuzKsK9n1JvspB0XRQGLJ7agtlVTfxb4JRXKYXKqxZJBUH6bcMfUBykhUFPO18y/MsP+pV7RJFiauKbG9TzLLo/FmjSP/m68qT1KCIzEmeQpVePM1fuSiocDU1Cx3fuHmcRNzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/mipAXi; arc=none smtp.client-ip=209.85.161.43
+	 Content-Disposition; b=iCHj6XZxOyOWeCzTl1PuRqb8Rz4fTAZE05IoCTnkyhrtYtnYdtNrEE4gxMRwl+X0/9tz+E4dJGu69y9BCHwpS1LTUIyugQ20260hyeBg4qLikAp60cfM4fRVwcsLWJGPUYuzAYxn0W9Qq+Bm5mJogAxP355G6NN99fMIrqtT2eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y15YeY7+; arc=none smtp.client-ip=209.85.161.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/mipAXi"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6948fb494a0so271187eaf.2
-        for <imx@lists.linux.dev>; Thu, 07 May 2026 00:00:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y15YeY7+"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6948d7ccfbbso204467eaf.1
+        for <imx@lists.linux.dev>; Thu, 07 May 2026 00:07:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778137205; x=1778742005; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1778137629; x=1778742429; darn=lists.linux.dev;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=czRNdIGNEAGaOty2bfNlR72Q18qBDxJFeE6OnxRzYUI=;
-        b=g/mipAXiT6ERmJQsvmBL3MpTlZw4XyFtAxaLXqR0cDCdj4iOzCklBL90+cz/CSmRtC
-         BPJpMuB7P3E64PqfN2rggTyPYrL3WXHAhnJ8XczBWu4AJk/O0AV1X3IKy1+8ZgCUdu3g
-         irkYscb3pQgWzv0l8ACkOqSBmsxkbTatBfxPs8rA9H7HKhRz8IsXlscqulebya5gW3Sm
-         Qcks2sHNuhOPxUcuUAeHqJ8G+JmZL2Dvz8aBH2yIMyj94K4lvWSnRoTFLCB/i/HhoNIC
-         eaXVMlcM6yG+lRdCdWWDxitVH1WnoFQ0+Q0DctToTIXMVHZ4WU4EzGT7e+SGqz3/a4Cx
-         QL3A==
+        bh=vi6oCq53SohMFVYujJQqeHr+etB4I4bT/3jCDWLmU0g=;
+        b=Y15YeY7+xY32DdJ91zjhO4d8jQjIA8Ocj8SuWqg6sm83sndhmKtf+yhmUeSFQG6dLC
+         OHjBhfPZTlPMkS2+g0v+stesfPa3uh9j5K3EA0CxFjXUhw/CbzwClo/cR/tWFp897q3k
+         eBDL25NZai9I8+GT04CN+rPNAXR53eBor+L7XdYtH5THazO+uMgrdaJ0HTxaXlujZ3gC
+         wCcJesl5J9KzMyMj6smeQhtW/QolNHz+tGslt3eT21qJe0Es9zHsV7wKCtkEXFbjNThL
+         S8r6swuarV6es61gZlz7Lk/+2eNb2sNdAZuiFthTulTKpz7l6qhzaQIcyZR5HdeL1RKm
+         G+1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778137205; x=1778742005;
+        d=1e100.net; s=20251104; t=1778137629; x=1778742429;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=czRNdIGNEAGaOty2bfNlR72Q18qBDxJFeE6OnxRzYUI=;
-        b=plLCw72f90KCyzrHc7mQgjHPTOXzmyyv3lmtKN9OMRlELugA/oAYu+gGbxO3Cn06PG
-         x44QtfLGlSwdz1lfQkKcjntpkp54LmFcL8s8LwWjXeQrvqAVxPtSrrU6P9d5lPl06X1a
-         iommvuV0NOGoITmma+UCgx2GnhZdhxfnTB4vVFRB/tp1N74wxu589TOmNy+ot+/UMyme
-         cq+H+IequenaSBpZf0tTa6A6dbG3OH1myS55ZpeIUEys4x3ma+4PMkr3dI6zD7JBy9p4
-         nZQrYuA2ST8KJTA5XLXcAW3WJge8IEboUQjN70il0SWUtori3ju8swVSbKeMlCKatDMO
-         4XEg==
-X-Gm-Message-State: AOJu0YwlI/iOsXTcE1sEPb5lgKZQ5OtH13DBYA0ye5cIoMUjShRTJ84A
-	/rwmoKygztLcsFDztwtaXLdOzUBr3ex9Z8gJz5sAhn/+Fb+gxVjpFGi8
-X-Gm-Gg: AeBDietObzurauOokQTTTU+ThdQDoDHDIVTo9nbKDq13QQZbpc7xvy66ozGaNQHCgny
-	u6CzHkg6AjP1eGHbUrhUpWeoRSCswKwLhzKjtyW/3j0J/+kpsQHf3bWJKRpfrMNAvkm6EEDQxLE
-	56Iyv3zVJrqmE3bL4BxvqoKiSvljg+5SAzSXEkSVJCTOBvAyZcHR1rliVpj/MO2R4CnkyW7Nm19
-	4ihZmvxxu15xI+fGXiiD+dNBK31f9rQ0QjbFunDhWv2LwoqplbzSNOksDbkPlIqUggXe1Z/XATa
-	rtg9jkiSGKy1ceJSWa02eak4wTJD5f8gqWhGid4uWwkHNUurL4SlXKFIt3wa0HWLVibw8u+A1Rz
-	nBB9PPQF9VdfmT2s+8zrOK/OcilYPRDHIciYhCeNC7wRR56N4d+kKzozi4DySl3dCiUekNoqYbh
-	NkU5JjiN31Co1FVi00OD8q0f7GeqvP6A==
-X-Received: by 2002:a05:6820:2d0b:b0:694:8c67:5cb6 with SMTP id 006d021491bc7-69998d4d426mr3819602eaf.41.1778137205049;
-        Thu, 07 May 2026 00:00:05 -0700 (PDT)
+        bh=vi6oCq53SohMFVYujJQqeHr+etB4I4bT/3jCDWLmU0g=;
+        b=Ltof+oPv65hYTKnmLsFUI7mGn8Wy7naD9263dcbedXiVH6JvIPW0ttc1eB9i8es7BI
+         KHPaP5Pp+Btit179W/Hsj68PPsU7OkLkaVjBlP5zZCa+jv2YhXz2CMjhPtSOhmrsWIsU
+         fhCVB91brb/+rIbN2Icry/0iBb3DcdswP5L75QXDQpgFVzlQZfP6BBhjarzRjE4VHQMB
+         DUzOf+wbOLB93z1AsjGzKvR3Y+Qw34pXykzl26hbsh7VOWcZV3EOzPIDOogRmyy6zQB5
+         Ds/NsglIJuHsoX6DKxJMi9/+A3YMN5wRMBbnigIInL/Poe6w5+BS7nkCkO8IMQ03Piza
+         g5xA==
+X-Gm-Message-State: AOJu0YzduBAV5H99lBaFj8crpgsLXKNmSzpJIqVVx0r6CSLcv5pqiDJf
+	wiWggmdQCdhw6r6BZg3+rQRkVto+mMnSlopiZO6Pp/Vsvj2+c8B7HrSQ+OSK5ERv
+X-Gm-Gg: AeBDietslq6ZUZVFgpRQSUhshHTTggxNmdKxL44b3BFrGqiIE6+fzsVpWyVYLQQQ6ak
+	KmVuau2PHorYkUobDoeNoNOICQLjqTVx5Vz+mPgSBrjtEDK/cWUpPCdYaawRVfPkZxaCk6gI+uZ
+	ks17sEOSeN2o9os9ljq+Wq89+ggvCl3a4jRuE7y4WI1aM0CBpPFe10HxiOE1zCUN9srdoakqKUD
+	B+rvJh/KtrNtv8HsjzB2Bh0lomlzB0Ys7PlXrHMLYNbkN2v0H9N80E0a6ewAj9UvbcfElh9x4VN
+	EKXPHqqmoL9Ss1lRoy3JE2/jkNUfgwOiDiRQyD4xLa+n1x9EhF2aRTU5yMxYcU58q9/0w3d/hvb
+	8tUnvsaCUB0wD9TZTzJaJsx8xf3Ut8gpiz+XDHrMxOrLyfPscO6QeaG3lHcAzWl7xzZC1D2aj/O
+	rJd7Zsogw4LKFigNn76XDyxq6mHFZMCaGcxdzMMt1X
+X-Received: by 2002:a05:6820:612:b0:694:914a:ebe1 with SMTP id 006d021491bc7-69998d496f4mr3804389eaf.47.1778137629014;
+        Thu, 07 May 2026 00:07:09 -0700 (PDT)
 Received: from localhost ([206.212.255.140])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43454942dc1sm17256879fac.5.2026.05.07.00.00.00
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-434548c56fcsm19551255fac.4.2026.05.07.00.07.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 00:00:03 -0700 (PDT)
-Date: Thu, 7 May 2026 09:59:56 +0300
+        Thu, 07 May 2026 00:07:07 -0700 (PDT)
+Date: Thu, 7 May 2026 10:07:00 +0300
 From: Dan Carpenter <error27@gmail.com>
 To: Pankaj Gupta <pankaj.gupta@nxp.com>
 Cc: imx@lists.linux.dev
 Subject: [bug report] firmware: drivers: imx: adds miscdev
-Message-ID: <afw4bE8pzcHA1Mzd@stanley.mountain>
+Message-ID: <afw6FIcFDCUEv53L@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,94 +77,78 @@ Commit 4de71839142b ("firmware: drivers: imx: adds miscdev") from Jan
 22, 2026 (linux-next), leads to the following Smatch static checker
 warning:
 
-	drivers/firmware/imx/se_ctrl.c:681 se_ioctl_setup_iobuf_handler()
-	warn: integer overflow "io.length + 7"
+	drivers/firmware/imx/se_ctrl.c:826 se_if_fops_read()
+	warn: userbuf overflow? is 'priv->cmd_receiver_clbk_hdl.rx_msg_sz' <= 'size'
 
 drivers/firmware/imx/se_ctrl.c
-    644 static int se_ioctl_setup_iobuf_handler(struct se_if_device_ctx *dev_ctx,
-    645                                         void __user *uarg)
-    646 {
-    647         struct se_shared_mem *shared_mem = NULL;
-    648         struct se_ioctl_setup_iobuf io = {0};
-    649         int err = 0;
-    650         u32 pos;
-    651 
-    652         if (copy_from_user(&io, uarg, sizeof(io))) {
-    653                 dev_err(dev_ctx->priv->dev, "%s: Failed copy iobuf config from user.",
-    654                         dev_ctx->devname);
-    655                 return -EFAULT;
-    656         }
-    657 
-    658         dev_dbg(dev_ctx->priv->dev, "%s: io [buf: %p(%d) flag: %x].", dev_ctx->devname,
-    659                 io.user_buf, io.length, io.flags);
-    660 
-    661         if (io.length == 0 || !io.user_buf) {
-    662                 /*
-    663                  * Accept NULL pointers since some buffers are optional
-    664                  * in FW commands. In this case we should return 0 as
-    665                  * pointer to be embedded into the message.
-    666                  * Skip all data copy part of code below.
-    667                  */
-    668                 io.ele_addr = 0;
-    669                 goto copy;
-    670         }
-    671 
-    672         /* No specific requirement for this buffer. */
-    673         shared_mem = &dev_ctx->se_shared_mem_mgmt.non_secure_mem;
-    674 
-    675         /* Check there is enough space in the shared memory. */
-    676         dev_dbg(dev_ctx->priv->dev, "%s: req_size = %d, max_size= %d, curr_pos = %d",
-    677                 dev_ctx->devname, round_up(io.length, 8u), shared_mem->size,
-    678                 shared_mem->pos);
-    679 
-    680         if (shared_mem->size < shared_mem->pos ||
---> 681             round_up(io.length, 8u) > (shared_mem->size - shared_mem->pos)) {
+    789 static ssize_t se_if_fops_read(struct file *fp, char __user *buf, size_t size,
+                                                                          ^^^^^^^^^^^
+This function copies memory to the user but it doesn't take into
+consideration this size variable which is the size of the buffer
+in user space.
 
-If io.length is >= U32_MAX - 7 then round_up() is zero.
+    790                                loff_t *ppos)
+    791 {
+    792         struct se_if_device_ctx *dev_ctx = fp->private_data;
+    793         struct se_if_priv *priv = dev_ctx->priv;
+    794         int err;
+    795 
+    796         dev_dbg(priv->dev, "%s: read to buf %p(%zu), ppos=%lld.", dev_ctx->devname,
+    797                 buf, size, ((ppos) ? *ppos : 0));
+    798 
+    799         scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+    800                 if (dev_ctx != priv->cmd_receiver_clbk_hdl.dev_ctx) {
+    801                         err = -EINVAL;
+    802                         goto exit;
+    803                 }
+    804 
+    805                 err = ele_msg_rcv(dev_ctx, &priv->cmd_receiver_clbk_hdl);
+    806                 if (err < 0) {
+    807                         dev_err(priv->dev,
+    808                                 "%s: Er[0x%x]: Signal Interrupted. Current act-dev-ctx count: %d.",
+    809                                 dev_ctx->devname, err, dev_ctx->priv->active_devctx_count);
+    810                         goto exit;
+    811                 }
+    812 
+    813                 /* We may need to copy the output data to user before
+    814                  * delivering the completion message.
+    815                  */
+    816                 err = se_dev_ctx_cpy_out_data(dev_ctx);
+    817                 if (err < 0)
+    818                         goto exit;
+    819 
+    820                 /* Copy data from the buffer */
+    821                 print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4,
+    822                                      priv->cmd_receiver_clbk_hdl.rx_msg,
+    823                                      priv->cmd_receiver_clbk_hdl.rx_msg_sz,
+    824                                      false);
+    825 
+--> 826                 if (copy_to_user(buf, priv->cmd_receiver_clbk_hdl.rx_msg,
+    827                                  priv->cmd_receiver_clbk_hdl.rx_msg_sz)) {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We should only copy size bytes at most.
 
-    682                 dev_err(dev_ctx->priv->dev, "%s: Not enough space in shared memory.",
-    683                         dev_ctx->devname);
-    684                 return -ENOMEM;
-    685         }
-    686 
-    687         /* Allocate space in shared memory. 8 bytes aligned. */
-    688         pos = shared_mem->pos;
-    689         shared_mem->pos += round_up(io.length, 8u);
-    690         io.ele_addr = (u64)shared_mem->dma_addr + pos;
-    691 
-    692         memset(shared_mem->ptr + pos, 0, io.length);
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-And this memset() will crash.
 
-    693         if ((io.flags & SE_IO_BUF_FLAGS_IS_INPUT) ||
-    694             (io.flags & SE_IO_BUF_FLAGS_IS_IN_OUT)) {
-    695                 /*
-    696                  * buffer is input:
-    697                  * copy data from user space to this allocated buffer.
-    698                  */
-    699                 if (copy_from_user(shared_mem->ptr + pos, io.user_buf, io.length)) {
-    700                         dev_err(dev_ctx->priv->dev,
-    701                                 "%s: Failed copy data to shared memory.",
-    702                                 dev_ctx->devname);
-    703                         return -EFAULT;
-    704                 }
-    705         }
-    706 
-    707         err = add_b_desc_to_pending_list(shared_mem->ptr + pos, &io, dev_ctx);
-    708         if (err < 0)
-    709                 dev_err(dev_ctx->priv->dev, "%s: Failed to allocate/link b_desc.",
-    710                         dev_ctx->devname);
-    711 
-    712 copy:
-    713         /* Provide the EdgeLock Enclave address to user space only if success.*/
-    714         if (copy_to_user(uarg, &io, sizeof(io))) {
-    715                 dev_err(dev_ctx->priv->dev, "%s: Failed to copy iobuff setup to user.",
-    716                         dev_ctx->devname);
-    717                 err = -EFAULT;
-    718         }
-    719 
-    720         return err;
-    721 }
+
+    828                         dev_err(priv->dev, "%s: Failed to copy to user.",
+    829                                 dev_ctx->devname);
+
+Don't print an error message if copy_to/from_user fails.  Returning
+-EFAULT and crashing the program is communication enough.  No need
+to fill /var/log/messages with spam.
+
+    830                         err = -EFAULT;
+    831                 } else {
+    832                         err = priv->cmd_receiver_clbk_hdl.rx_msg_sz;
+    833                 }
+    834 exit:
+    835                 priv->cmd_receiver_clbk_hdl.rx_msg_sz = 0;
+    836 
+    837                 se_dev_ctx_shared_mem_cleanup(dev_ctx);
+    838 
+    839                 return err;
+    840         }
+    841 }
 
 This email is a free service from the Smatch-CI project [smatch.sf.net].
 
