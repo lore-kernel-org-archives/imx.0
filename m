@@ -1,103 +1,110 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8085337C0ED
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 08:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2D93C3BF3
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 09:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778143047; cv=none; b=d8egLIFhz3qWizL4/EPcyzi54PNEir36FfF2YGhIxCzaZ0EA4IA0aNrOm/G1TOCr7gOl59//fpJcb5AlYOw37i8o2go6w6LBS/KeyVVEapwhM/HXsKs9heIEumTpDKdZgv+hc2eGUHZu2boADx5ouk7AbSvA2vBHCbM9gBDjq4s=
+	t=1778146053; cv=none; b=RapPg+63/pMyUOe4ETDRW1Rf1z+Iy2BE4SqdQ+sILfHaLZMZHzYUU6rF73FHezqewgzBKTI9qfwzqBHPRvNV5DCEGY41FN4wo3eUllEI1ZeFMKlU49MKJU4tKbx/6yhgHs/oVrgTPcLCCR9FjvwklUunih9YM9AzUjh8Zpdtd/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778143047; c=relaxed/simple;
-	bh=yRFEhZivggtsy1WIFd6s2+6wukdiSm1BWUEOTkcdLww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2hDaDYPO9Lp2ZRj+AwSpJoWn7eSocIEue8ETEO05QNiY9MJI6OMBnZ95Jpx81HqIopYcCr9hx0MuAwBkM+iGuZS+cdvPv7Wyy53JmUP/O+mk01mjIoukMdfF7R7qK3U7IwOD1SRmQpYhd7EjtWY/6BsVxUeBc3Aqodn0q3YDZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oKycNdg5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1778146053; c=relaxed/simple;
+	bh=x/JAxKHI7Ael5G6MScPlk2H+HssAyXfZZlY70tK9iiU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JeJnYEXcJrGn4XDQWpz9AFKbzCHtKmOZipOcz3ditdt6LWZQYkd93VA1AZiJniuUznWXa7+xc4f4IBY5aACs0HZONq4mHTvP45FpELSUzZKWA8FveKuJe2n9ZmZ2lnCAz69yuGL2t28X0yuv0iEd5fluDOFC5AIRG1Sslw2xW6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLY+b/JI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oKycNdg5"
-Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 57D9E664;
-	Thu,  7 May 2026 10:37:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1778143035;
-	bh=yRFEhZivggtsy1WIFd6s2+6wukdiSm1BWUEOTkcdLww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oKycNdg59d7OwdoyMEAlp+6nNCTsV+oTKqmePm/AglampNq+MeTusQ8o2Qh2JiLrH
-	 iplD8fALtVKRbIXEOsWsS1zi44JawHQy32wTmkRWPyHwqWisAcKlVxnRrRs7J37S1q
-	 j7M7LegsLVeuWMI0blp6aZuSObq0z0jTSHTDGpFM=
-Date: Thu, 7 May 2026 11:37:17 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc: mchehab@kernel.org, Frank.li@nxp.com, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
-	jacopo@jmondi.org, guoniu.zhou@nxp.com, s.riedmueller@phytec.de,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] media: nxp: imx8-isi: Fix missing
- v4l2_subdev_cleanup() in pipe init error path
-Message-ID: <20260507083717.GH1778786@killaraus.ideasonboard.com>
-References: <20260507041318.491594-1-xiaolei.wang@windriver.com>
- <20260507041318.491594-4-xiaolei.wang@windriver.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLY+b/JI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F4FC2BCC7
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 09:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778146053;
+	bh=x/JAxKHI7Ael5G6MScPlk2H+HssAyXfZZlY70tK9iiU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jLY+b/JIweUhyC9EQbHXXX5+lUmjtPDCTb6CEWbCjVfCRDxJBarnaFFJzSN6Bzlh0
+	 uCBEKbVBx4QScxOyjQPbqKFL3Bu6RuD9bKJUAFyBz9J0FA4byC/YJXb0wVoxMsuReK
+	 3soKa5myCMdJejcLC2ivtOETqwzlHbP/ylHLwfkBHUJ9fLLxa/2mrtE2/52uncMt46
+	 UWtjOequ1q4un2go6HLe4u7eZZBLme1CZGfxagu1HpXGQOM+6JNistT2nFPmP0ex1D
+	 O7uWqQ49MgQjufgzK4+sdpbdDl6D0F/yZLKJyhL5sY3st+r4VSd5aLvszlIYA702LH
+	 Fc383SH2bck0Q==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a887ebb416so534661e87.2
+        for <imx@lists.linux.dev>; Thu, 07 May 2026 02:27:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+kZLVV8r5lavFoPI2gDag5L/sXGTV4vc69YsFNypQVG8nnwqJ19D+bLSj7PHJ13p3c9gI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YytRwdVNTiM2x3AKWCE5Hq6TMvQVFLiJrxO3SN7M4WkJnTdkKGH
+	YdbrsFlWlAk/t8LUEYPIQwd57Ee+OvipZH43/uZv+il74j5KcQWmf7s+KSgO2vSICb3X5thFcPy
+	2T1zL/AqUQqNS2VvYRYmHH26+WJMnZSI=
+X-Received: by 2002:a05:6512:3ba7:b0:5a4:d34:5b38 with SMTP id
+ 2adb3069b0e04-5a887ada944mr2206033e87.2.1778146051005; Thu, 07 May 2026
+ 02:27:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260507041318.491594-4-xiaolei.wang@windriver.com>
+References: <20260325143555.451852-1-herve.codina@bootlin.com>
+ <20260325143555.451852-21-herve.codina@bootlin.com> <CAD++jLkFu+Z22QBFiaa9S+Epeh=RJZOYX8BOLVDFw4bhEoYF1Q@mail.gmail.com>
+ <20260507092326.2f8e3b47@bootlin.com>
+In-Reply-To: <20260507092326.2f8e3b47@bootlin.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 7 May 2026 11:27:19 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmsaddK4MLYhfK+1OkK263QqJfMZ3HF=L0Y7QdDsgX4XQ@mail.gmail.com>
+X-Gm-Features: AVHnY4J4kpHKlWyF60L1gEgZ_kRiVmUaWPxnRdg2mF7S7on9qK93oGWvqiVfuCU
+Message-ID: <CAD++jLmsaddK4MLYhfK+1OkK263QqJfMZ3HF=L0Y7QdDsgX4XQ@mail.gmail.com>
+Subject: Re: [PATCH v6 20/27] misc: lan966x_pci: Fix dtso nodes ordering
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>, 
+	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 07, 2026 at 12:13:17PM +0800, Xiaolei Wang wrote:
-> After v4l2_subdev_init_finalize() succeeds in mxc_isi_pipe_init(), if
-> platform_get_irq() or devm_request_irq() fails, the error path jumps to
-> a label that only calls media_entity_cleanup() and mutex_destroy(),
-> missing the v4l2_subdev_cleanup() call needed to free the subdev active
-> state allocated by v4l2_subdev_init_finalize().
-> 
-> Add an error_subdev label that calls v4l2_subdev_cleanup() before
-> falling through to the existing error cleanup.
-> 
-> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+On Thu, May 7, 2026 at 9:23=E2=80=AFAM Herve Codina <herve.codina@bootlin.c=
+om> wrote:
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Recommended practice is:
+> >
+> > ethernet-switch@...
+(...)
+> > Recommended practice is:
+> > ethernet-port@...
+>
+> Yes, it should be but the DT binding [0] says "switch" and "port".
+(...)
+> Those node names have to follow the DT binding even if this binding doesn=
+'t
+> follow recommended practice.
 
-> ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index cb50af2270f6..a59b9456b590 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> @@ -796,18 +796,20 @@ int mxc_isi_pipe_init(struct mxc_isi_dev *isi, unsigned int id)
->  	irq = platform_get_irq(to_platform_device(isi->dev), id);
->  	if (irq < 0) {
->  		ret = irq;
-> -		goto error;
-> +		goto error_subdev;
->  	}
->  
->  	ret = devm_request_irq(isi->dev, irq, mxc_isi_pipe_irq_handler,
->  			       0, dev_name(isi->dev), pipe);
->  	if (ret < 0) {
->  		dev_err(isi->dev, "failed to request IRQ (%d)\n", ret);
-> -		goto error;
-> +		goto error_subdev;
->  	}
->  
->  	return 0;
->  
-> +error_subdev:
-> +	v4l2_subdev_cleanup(sd);
->  error:
->  	media_entity_cleanup(&sd->entity);
->  	mutex_destroy(&pipe->lock);
+Aha this binding is not referencing the standard ethernet-switch.yaml,
+that's why I got confused.
 
--- 
-Regards,
+OK let's just fix it then, I sent a patch.
 
-Laurent Pinchart
+Yours,
+Linus Walleij
