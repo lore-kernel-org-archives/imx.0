@@ -1,239 +1,332 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011034.outbound.protection.outlook.com [52.101.70.34])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002B23F65E0
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 13:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778161734; cv=fail; b=ovN4UhejPrXy842S/Bn7nVm++yZlnWjxqK7m2jOr3qMv5KaU7Q+teQNOOC+2nR1H/obsbHMj4hH+IVNUDcX3AhMZufTjKtAytKdaTPW5KVw+I5w0sfxg0ZwiX95IANRDbpy+e6o+h7PSf4S/KSSEzoYxUSA/IcWRTb6orBhwwD8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778161734; c=relaxed/simple;
-	bh=N65IclBsh9MTwLMTlBlE0HeCrsIpwGGIFnJLjSMO4Jg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oDRPqtRltuTGKZXXZZHYDgy87boIazblDO8VRNtVHr1yZuj/xjRCF3b3jjDFFvH+uyaCpDWijE1wWXgoElvFE2j1golSn5ft0NDelNpr2Vj0DOcWlrlSplTqwFeZ4Wey84AZYIlXfgz/A76ghF2kaqjbM+BnfaMw3GlCM8xqz94=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qitz8jdM; arc=fail smtp.client-ip=52.101.70.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5C3FE36D
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 14:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778163344; cv=none; b=Ubs24RIt3a6fvv6JZ6hVU9e8zA9K1K984K3Rf+ExoorL27dq350UqbK6jCzRMoWCGAlHh4Gk0+FIA8HVXkqxCJYxo8EXsL8GFhnpUXDCSkn4rv70o2VhWj2BMNSR/WQ3QPKH9JyFK0+sGLBaWE2P+/Dswtspm5hTpDlQe+3OgQc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778163344; c=relaxed/simple;
+	bh=/1UlkLy1JukbYaTDxZhf9h8PikBoYRj5dkEmUKqa7hs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q4Igtnki4S2iPscDompMHXt7SI3dOtjAiM5ImzJgnSpnNiTzJLruMLuyXyKtenU1UyJfQp/2Qn+MjvyZP6dPG9EBhv8ckiFe22xikdaxq0r6fRri8GtiWXdX5O7u+l+VW+4k6cTCntBRqiI59NL+N/xaVE1XMCEGxngAlxNQRww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dHPBFWwq; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qitz8jdM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hka5MmUEdlbMZygj6VNiC1ff7NT2vRW1qEburNa5N1nZSf/NMuoFvGUvyTYaAb/Y/oamOx0bizaK/usf8iaZy0nlbqs1LPK4pJwbUfYdae64hR5bluP7UWSuThMzbAzPL0vzLZV5/fuiXWgnl73ZHg9v4lfbnm/7XkrlpFf/STC9eiY+NSYJ9thqm+lNNNcK6kXgkJa8LaoLwsMMpcOv5NXmjcOjFiRnM/F5NHV4vhADgGMok4vmjvO1h+tHA/PAV+TlXciHVxBiZgx2PpdE4P7pWzvMTgDhSIN9BcJUJq/14mOr37V6DdzxRvf9825NIB9W8J2F0lJcIg687iVkWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iSw4QjQM8he6zGU30kFVNTyWkXnnb6rgk4NHDdpQR1k=;
- b=MHI5/B1DFRDmHUnc9/F6zmVWmN8mATvQk4e5ItHCAymObffG3rWSkBZm+dVs/HrY+gQ/ZjbC8VdYU/KD7/3rXPwBX05LTAvBymdTxaKoHZIHOsd28m3YkwjMOsAwbh9JgQGP8siNicHZaLrBX2B7oB7EiqBwfWMbhs2LOWsStHBwSo5/UcW1OomGNDleKwxh3IsbjcyTtz1KiYSMKR1kukNOxDA6Y0Q3lI6CBJssUyAmLkJ09R7i2mrsZEGTFbVNVUXLwdk5c2D8z6LhZlkHomBDYFrdRix3VwPif4S44Av67+YYeO9cxl+ovqww36770DJrxVvA9HT1vfJ8WiTYeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iSw4QjQM8he6zGU30kFVNTyWkXnnb6rgk4NHDdpQR1k=;
- b=Qitz8jdM/qVCG36qNfrgi0ufqQivem2ij6iQ+Tgg7LyUnTK5bGotGiKSyQisBQmSQcRBdafw8sHhFyysOFUKE+BIuoJT0jql/lx2ZG+wxq6kRzBwA2xHCGrYgLdiFTtCKH7TBM074OL1lRVM5uvb+Cj2UtytX7gXUdlYODF9614z1/kTN127mRFzbmHMegREMENva30M9ORvdUzpUT8ZpUfmWJlqyIY2qv1eIPVftB/csma52cbnl6A8/UsvQ7xN0SuHgK8AWIX2oWU4MuKC/9Y8uzByS+Sq/9JYc25/gPLTtvqorfdb25j71DGBBBB7Aw2O5uLoZl8ZS2ow7rd9rA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
- (2603:10a6:102:516::16) by AM8PR04MB8002.eurprd04.prod.outlook.com
- (2603:10a6:20b:247::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 13:48:50 +0000
-Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
- ([fe80::d3f0:3c24:f717:4989]) by PA6PR04MB11910.eurprd04.prod.outlook.com
- ([fe80::d3f0:3c24:f717:4989%4]) with mapi id 15.20.9870.023; Thu, 7 May 2026
- 13:48:49 +0000
-Message-ID: <96bff2f9-04ef-4272-b408-fefc7d1d5e11@nxp.com>
-Date: Thu, 7 May 2026 15:48:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 09/11] media: platform: Add NXP Neoisp Image Signal
- Processor
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com,
- daniel.baluta@nxp.com, peng.fan@nxp.com, frank.li@nxp.com,
- jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com,
- mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, michael.riesch@collabora.com, anthony.mcgivern@arm.com,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, ai.luthra@ideasonboard.com,
- paul.elder@ideasonboard.com
-References: <20260413160331.2611829-1-antoine.bouyer@nxp.com>
- <20260413160331.2611829-10-antoine.bouyer@nxp.com>
- <CAMuHMdXrvn+kwBsc96SQxWMABZv3Y6EPc3FLU7f-pOi2+J+S1A@mail.gmail.com>
-Content-Language: fr
-From: Antoine Bouyer <antoine.bouyer@nxp.com>
-In-Reply-To: <CAMuHMdXrvn+kwBsc96SQxWMABZv3Y6EPc3FLU7f-pOi2+J+S1A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P192CA0012.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5da::20) To PA6PR04MB11910.eurprd04.prod.outlook.com
- (2603:10a6:102:516::16)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dHPBFWwq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 01BCD4E42C32;
+	Thu,  7 May 2026 14:15:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C1E2D60495;
+	Thu,  7 May 2026 14:15:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07783108194D5;
+	Thu,  7 May 2026 16:15:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778163335; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BBxwWahevST3lvVcvPvA5wzCA7WnP6UlZE2dbi27qno=;
+	b=dHPBFWwqwQL88Rzeu/p1Gt7uEoJ7Z4sm0iDuA/Ny3GKgkmBVg3ex4gNNX37RwkRDvJrVM3
+	2PMeVOqzKrjaIyaWuQFi1d4UfixjBLvn3uElrH2upplKILJAy/MwcAy1JMoM1aLPdMnk4y
+	ibPEVcoPFc8OBBmDh3wIgyFZFTvEWIN0FayaKfAc8pjUY2LOPG++oxGoUi4c4zLGt2EaRg
+	NDRmvFQTOO9fmlXSmIZYdHJOYZG9BPYbV1qNihYHmQUIDV/inKAmLJz8YiGB7RB4eGCATS
+	zgQEBIJaK7f8ojcbauX4VQVgG8TzXCyI9ewT+PLqYLLM4nZ9J4B/fyRWwsvD6Q==
+From: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Frank Li <Frank.Li@kernel.org>,
+	imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+Date: Thu,  7 May 2026 16:15:19 +0200
+Message-ID: <a658efd5a6990632def9684007573fff3e130979.1778160702.git.benoit.monin@bootlin.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <aftUorBAXzTD1BBD@lizhi-Precision-Tower-5810>
+References: <20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com> <43uRGEDfSHihWPAxby2EOg@bootlin.com> <aftUorBAXzTD1BBD@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA6PR04MB11910:EE_|AM8PR04MB8002:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a33be15-bc04-42ef-36b5-08deac3f5e44
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|19092799006|366016|22082099003|3023799003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
- TsJ4EAX3Yz5oFH3S6kyq8oZfK0vMraLRBCtgOy1Ma5kB2K1Kw7/YbWxWOzg/IXmcQVQHazYLdfUeScdxAX9pII/KZH5EzMQYqjid6AM/C7jSR8JjrU5mv+haBsyaasVX7IHSwrMsKt9eNdFo37/LR2bgVZbJyj+yK2V6UYylZM5qjaoZ+ncDXxCWsYkSKkaYrWNpKbydkp5xm/YwODJsaYYLinSRLHKHdQgmEJ2rd5qv7M4HyYg0WovILR9WOBlqpFUw16WH0V5XFHwHHO9cDv9HgTe5jbHc4yr0ho+pC23npkw04RhvgWZOJKU6WXhJJxIhROfnrNVDEzORbq9ZdA4hrPWSaWLX/FFFW+LMULCeBGy/azfVeRYqiKIK6SfEsedeQKZR4Ijf7oSWJ7ojm80chq4/wB5lUGhRmsGkdHJmJPvgSuel0KpuTWugdUOek1ViWZeZ3GsbYqCuCM/7JUD+mWVqbFz6UK8kPL7itQfb26EmQzIGGqAYy6jW6LIa3yx18CaZa8VMlB4OFeSiVaDTzAwWPmc9Vt8IhTB+YqttgJCD80JNJm+dAtFCcTP0EXLe63Ew0WBd2BDft5sVzY5ZVLSRH4ExZ1tQteXG09ebbHmBSPNYeS8QBsXZGFl8D1D4ztB8xeIX+NiBiiw0mSEEfRaw3DSy9IuvE14vF5ngdWYocfbdfgKMJkYLUOso
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(19092799006)(366016)(22082099003)(3023799003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?bGNsSnJyWFFOdFVBNERqMjhkY1BlL1I2bzFmbmFZVVhZQkRraCtUWDhCQy9Q?=
- =?utf-8?B?NGpPa0wraGxGR0VMVStWai9paFNLZVd3bDlLK1FmQjI1ZnlEUnVBbXVNM0NJ?=
- =?utf-8?B?bzJDU2paSWIzc2dXbVVETlp0emNXTTV5amNXN2Y5TG0wUWhOTCs5cXJoWHRM?=
- =?utf-8?B?Z3dEbzdra2t0OG9FajVBOHpHUXdVV0preGU2QTJlYXgxL2F6aVJ6aUE3VDdO?=
- =?utf-8?B?UzNkMDZ3MzBnVTdnc0tsdzAvY09seXcyUUZGWjVSdjBuVytZNEQwYWJTeStR?=
- =?utf-8?B?dHQ3ZzBHUVN2WGVSRFozK1F3d0pjeU1jSzczbk1UNmRObW0yV2ZMam9RdWtG?=
- =?utf-8?B?RFJRbnhpOWM2YXpzSTJuSDRzcmdVYnhTZGtRdjBKYjNBSmtkVXNZeFk0K1BG?=
- =?utf-8?B?QWNwNWU1VnhldXozOEZqVDdQSWtYUVBmYU1KRkRraDBIUUxoVGpqYU9KZ0h2?=
- =?utf-8?B?TVJhRWJpT3NpZTd4b05vaHM3RFh6WmdmSG15K0piMm5YNUdmWUNtcTlkbjF3?=
- =?utf-8?B?aDdrSUVzekpVeXFCUjdPYW1qYXB4d29EODVPWENpRkhNeXlZUGlXUUlLUklz?=
- =?utf-8?B?RytOdFhidTV5Tk94cFFxcmEvT3RiaElKUGtlZTJBMmd5MmFRaDVsUFpxL2F3?=
- =?utf-8?B?ZkYvbWZQL0lZNjJBdzJKNUh3TnhkRzNCMkhOSkY2SUJsbjhtdUZsc21ZZC9k?=
- =?utf-8?B?Y3o1aENQd1I4dWI1UVB0bUpaay90YVRHUE5pc2o0TFdmYVBBUWduRW9kdkRY?=
- =?utf-8?B?bUx6emE0WWZwTU5NbUYzZ1BqWnhWTm5Obk1jWDZvVVRJN1ZoQWVGLzZlbmNv?=
- =?utf-8?B?U3JUR2pZb1ZGWDNPQTZWZjl5NDVpNE4xalE1K0h5SkdabVRVeEVZb2ZvM0Vj?=
- =?utf-8?B?eUhCaUg5enpMTHE0UEsxdUg1WFlpZG5xbm1iRDY4MVdsUGdXbHdJNkphWDUy?=
- =?utf-8?B?WXRMY3pSTEh5bTdBUmN3dHZmdG5UZHFYckNVamRtN0N4aXp3YVNMeFBndXda?=
- =?utf-8?B?bmc0dGtiQ3RxRm1GTXBnbUttcGdLVHpET3VqZE5MWmRRdHphaWZkQzNBTThw?=
- =?utf-8?B?SkNSdXJydE85aklEVExOM0xUYmduMFpoQ3Ftb0tmSytQNDA4NG9CeVR1QnU2?=
- =?utf-8?B?ZzhCK2ZrT2lXT2tZY0xkZURWbzNYWTlNcWs2WXZIUElNRFJCZ3BER3ZQWHAy?=
- =?utf-8?B?WHhFNERLNlBiT2krNEZpL0JVQWVGTVplMkpxdXRyS1hkblhsNTE5TDNEa1VP?=
- =?utf-8?B?djRTbDdxaTlHM0tSQVNVbW9iK0dQMVgwYWVHOGJGNjZ0eTEvNkorWk52Uks2?=
- =?utf-8?B?R3k5YjgyWVRMb3RsKzRQcUpWVlFhaytTMXhCcU9paGhCYURkWWFzYmhiUGVP?=
- =?utf-8?B?c0JoNTFqaVN4NXZRTWhNdW1yY0U3UEhYdDlCTGNJVXVxZU5aQ29ubjZOZ2Zs?=
- =?utf-8?B?RmlXajBvdDJ5bnA5VDBtdjgzQVBSQU1yd3NCSlNnaEpMTjk3cUdQSzZBVVNR?=
- =?utf-8?B?ZXFmY0FCZnF3R0kwbS9ZU0tWbVMySVkySFhWaGlSejJOOVhCVWZ3V1dYZzBp?=
- =?utf-8?B?amM3Zng2S2N1R0ZWK205NEI3VmRpaldOVkxCY0o5R0o4ZXVSWEExVU95UGpU?=
- =?utf-8?B?ZFlZNHRXWGxKT2VVaHFSS0c4NVZqQnM4aWtsSnBsU1JVUGVVdWJUeTZmZ0pQ?=
- =?utf-8?B?R2NEbXBuK3RRUzQxRDA5NGMzN2RNamRaS3JydkUwT0x1ekV6aWtCQmtsU0k3?=
- =?utf-8?B?eXNiWHNWWFRMZXc3bjhuTVRORlBGVmJNR2FTVlBWMFNVRGFDZjNnUDRNTWx6?=
- =?utf-8?B?K0kwTElDS0pZQmFVQWQ4VmJ2OW44cVY3aFRiZm1qZ2tXWGd2RDdBUXZXcHc2?=
- =?utf-8?B?ZG5OVnp3R01RRDlNbThHbjk2RUtQcVRGTU43T1RMR2FNUThFNFJOdzN5RlVC?=
- =?utf-8?B?N0hWdy82YWVVUElleGtNZ0h6TkFqV1doMGUvYnpqbC9yTzFOQ1QweWdsa1dt?=
- =?utf-8?B?Ny8vVWpYNWRueEVWTHFRRGVWVVNDQWp0TjUzRG1WVnV4TlVEdU1zbmVhKy9G?=
- =?utf-8?B?MnFGQXhMeC9Cb2FOZ1p3c0ViUklFcDNPNCszQ3B0eVpIbTA2Y2VCYk04TGhP?=
- =?utf-8?B?NTZoYmN3UXE1SlM4T3hib1NiOEJtYndKZ3dqWEFmTlAyK0pHUzdPZ2d4VWlj?=
- =?utf-8?B?cXFxeFNRT1FQQlB1TW9OdzhNZWdzVlZiNlhYWXlpdWZDaHU0ZWI3SWw4QkdP?=
- =?utf-8?B?M3FlL2o3ZXR4dGFKSkNhMVdSQzdUV3d4cFpKaEhUek90WE5RbEJidHo1MTVO?=
- =?utf-8?B?UEZ1V2F5QVhtQkwySVZJOXU3K2kzTGhLRHo2VDhJSFJOVkpVZHMydGR4alp0?=
- =?utf-8?Q?wknbrqCcWy46BklA=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a33be15-bc04-42ef-36b5-08deac3f5e44
-X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11910.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 13:48:49.8962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nm1ZZ0j048lq7x9aiY7F5NATzi5NaOdyxRQnnARp18pq1fnETs9eQYZHkPpFivgtp1yLAErF8dcQoK6hAUjD1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8002
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On Wednesday, 6 May 2026 at 16:48:02 CEST, Frank Li wrote:
+> On Wed, May 06, 2026 at 04:01:37PM +0200, Benoît Monin wrote:
+> > On Tuesday, 5 May 2026 at 17:07:48 CEST, Frank Li wrote:
+> > > > >         how do you test it? and how much preformance improved?
+> > > > I did my tests by doing SPI transfers with the LPSPI controllers, doing DMA
+> > > > transactions with different number of buffers and different buffer sizes.
+> > > > Without chaining, interruptions on the SPI bus occur between each DMA
+> > > > transaction. With chaining, the activity on the SPI bus is continuous as
+> > > > long as DMA transactions are issued before the end of the current
+> > > > transaction.
+> > >
+> > > Does SPI support issue new transfers without wait for previous transfer
+> > > complete, or SPI transfer already support async queue?
+> > >
+> > This is done with a local version of fsl-lpspi driver adding a simple
+> > offload support by borrowing the DMA channels allocated to the SPI
+> > controller. I can then issue multiple DMA transactions with the dma_buf API
+> > of the IIO subsystem and trigger SG chaining.
+> 
+> Can you include these patches to reference?
+> 
+Here it is, beware that this is work in progress.
 
-Hi Geert
+---
+WIP: spi: spi-fsl-lpspi: Add Rx offload support
 
-Le 06/05/2026 à 16:26, Geert Uytterhoeven a écrit :
-> 
-> Hi Antoine,
-> 
-> On Mon, 13 Apr 2026 at 18:10, Antoine Bouyer <antoine.bouyer@nxp.com> wrote:
->> First NXP neoisp driver version with the following contents:
->>
->> This driver was initially inspired from raspberrypi pisp_be driver. It
->> reuses same approach for ISP job scheduling.
->>
->> The Neoisp driver supports:
->> * 8, 10, 12, 14 and 16-bits RAW Bayer images input.
->> * Monochrome sensors input.
->> * RGB/YUV, IR and Greyscale output formats.
->>
->> The neoisp features are:
->> * Provides single context to limit amount of v4l2 devices.
->> * Supports M2M operations.
->> * Support SDR and HDR modes.
->> * Supports generic v4l2-isp framework for extensible Parameters and
->> Statistics buffers.
->> * Provides a `core_media_register` API to register neoisp's media entities
->> into another media graph.
->> * A module parameter to run in standalone mode with its own media device.
->>
->> Co-developed-by: Alexi Birlinger <alexi.birlinger@nxp.com>
->> Signed-off-by: Alexi Birlinger <alexi.birlinger@nxp.com>
->> Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
-> 
-> Thanks for your patch!
-> 
->> --- /dev/null
->> +++ b/drivers/media/platform/nxp/neoisp/Kconfig
->> @@ -0,0 +1,15 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +
->> +config VIDEO_NXP_NEOISP
->> +       tristate "NXP NEOISP v4l2 hardware driver"
->> +       depends on VIDEO_DEV
-> 
-> depends on ARCH_MXC || COMPILE_TEST
+Add minimal support for SPI offload Currently, only the receive path
+can be offloaded. SPI offload is enabled when a trigger-sources entry
+is found in the device tree.
 
-ack
+SPI offload uses the Rx DMA channel that is normally used by the
+controller, thus non-offloaded SPI accesses are done in PIO mode
+if offloading is enabled.
 
-Will integrate in v2. Thanks for proposal.
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 180 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 179 insertions(+), 1 deletion(-)
 
-> 
->> +       select MEDIA_CONTROLLER
->> +       select VIDEOBUF2_DMA_CONTIG
->> +       select V4L2_ISP
->> +       help
->> +         Enable this to support the NXP NEO Image Signal Processing (ISP)
->> +         module present in various NXP SoCs. This module offers multiple
->> +         functions for processing RAW images and generating RGB or YUV images.
->> +
->> +         To compile this driver as a module, choose M here: the module
->> +         will be called neoisp.
-> 
-> 
->> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_MASK GENMASK(23, 16)
->> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_SET(x) (((x) & GENMASK(7, 0)) << 16)
->> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_GET(x) (((x) >> 16) &  GENMASK(7, 0))
-> 
-> What about just:
-> 
->      #define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2 GENMASK(23, 16)
-> 
-> and using the helpers from include/linux/bitfield.h in the driver code?
-> 
->      FIELD_PREP(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, val)
->      FIELD_GET(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, reg)
-
-That file was auto generated, so I did not want to change it.
-
-But I agree, these macro would help to save a couple of lines, and 
-probably ease readability too. I need to double check the impact, making 
-sure there is no regression with such update.
-
-Could that wait for a v3 ? as I was about to send a v2 with other 
-changes first.
-
-Thanks
-Antoine
-
-> 
-> Gr{oetje,eeting}s,
-> 
->                          Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
-
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index e201309f8aae..d873581a776a 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -23,6 +23,7 @@
+ #include <linux/dma/imx-dma.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
++#include <linux/spi/offload/provider.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/types.h>
+@@ -136,6 +137,12 @@ struct fsl_lpspi_data {
+ 	struct completion dma_rx_completion;
+ 	struct completion dma_tx_completion;
+ 
++	/* offload */
++	struct spi_offload *offload;
++	struct mutex offload_lock;
++	u32 offload_caps;
++	struct dma_chan *offload_rx_chan;
++
+ 	const struct fsl_lpspi_devtype_data *devtype_data;
+ };
+ 
+@@ -729,6 +736,10 @@ static int fsl_lpspi_dma_init(struct device *dev,
+ {
+ 	int ret;
+ 
++	/* The DMA channels are reserved for offload */
++	if (fsl_lpspi->offload)
++		return -EBUSY;
++
+ 	/* Prepare for TX DMA: */
+ 	controller->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(controller->dma_tx)) {
+@@ -889,6 +900,151 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
+ 	return 0;
+ }
+ 
++static int fsl_lpspi_optimize_message(struct spi_message *msg)
++{
++	struct spi_controller *controller = msg->spi->controller;
++	struct fsl_lpspi_data *fsl_lpspi = spi_controller_get_devdata(controller);
++	struct spi_transfer *xfer;
++
++	if (!msg->offload)
++		return 0;
++
++	/* We can only offload one transfer */
++	if (!list_is_singular(&msg->transfers))
++		return -EINVAL;
++
++	/* gather info for offloaded message */
++	xfer = list_first_entry(&msg->transfers, struct spi_transfer, transfer_list);
++	fsl_lpspi->config.mode = msg->spi->mode;
++	fsl_lpspi->config.bpw = xfer->bits_per_word;
++
++	return 0;
++}
++
++static struct spi_offload
++*fsl_lpspi_get_offload(struct spi_device *spi,
++		       const struct spi_offload_config *config)
++{
++	struct spi_controller *controller = spi->controller;
++	struct fsl_lpspi_data *fsl_lpspi;
++	int ret;
++
++	fsl_lpspi = spi_controller_get_devdata(controller);
++
++	if (!fsl_lpspi->offload)
++		return ERR_PTR(-ENODEV);
++
++	if (config->capability_flags & ~fsl_lpspi->offload_caps)
++		return ERR_PTR(-EINVAL);
++
++	if (!mutex_trylock(&fsl_lpspi->offload_lock))
++		return ERR_PTR(-EBUSY);
++
++	ret = pm_runtime_resume_and_get(fsl_lpspi->dev);
++	if (ret < 0) {
++		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
++		return ERR_PTR(ret);
++	}
++
++	fsl_lpspi_reset(fsl_lpspi);
++
++	return fsl_lpspi->offload;
++}
++
++static void fsl_lpspi_put_offload(struct spi_offload *offload)
++{
++	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
++
++	pm_runtime_put_autosuspend(fsl_lpspi->dev);
++
++	mutex_unlock(&fsl_lpspi->offload_lock);
++}
++
++static int fsl_lpspi_trigger_enable(struct spi_offload *offload)
++{
++	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
++	enum dma_slave_buswidth buswidth;
++	struct dma_slave_config cfg = {};
++	u32 temp;
++	int ret;
++
++	switch (fsl_lpspi_bytes_per_word(fsl_lpspi->config.bpw)) {
++	case 4:
++		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
++		break;
++	case 2:
++		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
++		break;
++	case 1:
++		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/* configure the DMA channel */
++	cfg.direction = DMA_DEV_TO_MEM;
++	cfg.src_addr = fsl_lpspi->base_phys + IMX7ULP_RDR;
++	cfg.src_addr_width = buswidth;
++	cfg.src_maxburst = 1;
++
++	ret = dmaengine_slave_config(fsl_lpspi->offload_rx_chan, &cfg);
++	if (ret) {
++		dev_err(offload->provider_dev, "RX dma configuration failed with %d\n",
++			ret);
++		return ret;
++	}
++	fsl_lpspi_config(fsl_lpspi);
++	fsl_lpspi_set_cmd(fsl_lpspi);
++
++	/* enable Rx DMA */
++	temp = DER_RDDE;
++	writel(temp, fsl_lpspi->base + IMX7ULP_DER);
++
++	return 0;
++}
++
++static void fsl_lpspi_trigger_disable(struct spi_offload *offload)
++{
++	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
++
++	fsl_lpspi_reset(fsl_lpspi);
++}
++
++static struct dma_chan
++*fsl_lpspi_rx_stream_request_dma_chan(struct spi_offload *offload)
++{
++	struct fsl_lpspi_data *fsl_lpspi = offload->priv;
++	struct dma_slave_config cfg = {};
++	int ret;
++
++	fsl_lpspi->offload_rx_chan = dma_request_chan(offload->provider_dev, "rx");
++	if (IS_ERR(fsl_lpspi->offload_rx_chan))
++		return fsl_lpspi->offload_rx_chan;
++
++	/* set a default configuration */
++	cfg.direction = DMA_DEV_TO_MEM;
++	cfg.src_addr = fsl_lpspi->base_phys + IMX7ULP_RDR;
++	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
++	cfg.src_maxburst = 1;
++
++	ret = dmaengine_slave_config(fsl_lpspi->offload_rx_chan, &cfg);
++	if (ret) {
++		dma_release_channel(fsl_lpspi->offload_rx_chan);
++		dev_err(offload->provider_dev, "RX dma configuration failed with %d\n",
++			ret);
++		return ERR_PTR(ret);
++	}
++
++	return fsl_lpspi->offload_rx_chan;
++}
++
++static const struct spi_offload_ops fsl_lpspi_offload_ops = {
++	.trigger_enable = fsl_lpspi_trigger_enable,
++	.trigger_disable = fsl_lpspi_trigger_disable,
++	.rx_stream_request_dma_chan = fsl_lpspi_rx_stream_request_dma_chan,
++};
++
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
+ 	const struct fsl_lpspi_devtype_data *devtype_data;
+@@ -958,6 +1114,24 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	if (device_property_present(&pdev->dev, "trigger-sources")) {
++		fsl_lpspi->offload = devm_spi_offload_alloc(&pdev->dev, 0);
++		ret = PTR_ERR_OR_ZERO(fsl_lpspi->offload);
++		if (ret) {
++			dev_err(fsl_lpspi->dev, "failed to allocate offload\n");
++			return ret;
++		}
++		mutex_init(&fsl_lpspi->offload_lock);
++		fsl_lpspi->offload->priv = fsl_lpspi;
++		fsl_lpspi->offload->ops = &fsl_lpspi_offload_ops;
++		fsl_lpspi->offload_caps = SPI_OFFLOAD_CAP_TRIGGER;
++
++		if (device_property_match_string(&pdev->dev, "dma-names", "rx") >= 0) {
++			fsl_lpspi->offload->xfer_flags = SPI_OFFLOAD_XFER_RX_STREAM;
++			fsl_lpspi->offload_caps |= SPI_OFFLOAD_CAP_RX_STREAM_DMA;
++		}
++	}
++
+ 	/* enable the clock */
+ 	ret = fsl_lpspi_init_rpm(fsl_lpspi);
+ 	if (ret)
+@@ -985,6 +1159,9 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	controller->transfer_one = fsl_lpspi_transfer_one;
+ 	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
+ 	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
++	controller->optimize_message = fsl_lpspi_optimize_message;
++	controller->get_offload = fsl_lpspi_get_offload;
++	controller->put_offload = fsl_lpspi_put_offload;
+ 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	controller->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
+ 	controller->bus_num = pdev->id;
+@@ -997,7 +1174,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	if (ret == -EPROBE_DEFER)
+ 		goto out_pm_get;
+ 	if (ret < 0) {
+-		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
++		if (!fsl_lpspi->offload)
++			dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
+ 		enable_irq(irq);
+ 	}
+ 
