@@ -1,110 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2D93C3BF3
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 09:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778146053; cv=none; b=RapPg+63/pMyUOe4ETDRW1Rf1z+Iy2BE4SqdQ+sILfHaLZMZHzYUU6rF73FHezqewgzBKTI9qfwzqBHPRvNV5DCEGY41FN4wo3eUllEI1ZeFMKlU49MKJU4tKbx/6yhgHs/oVrgTPcLCCR9FjvwklUunih9YM9AzUjh8Zpdtd/k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778146053; c=relaxed/simple;
-	bh=x/JAxKHI7Ael5G6MScPlk2H+HssAyXfZZlY70tK9iiU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFC23BFE34
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 09:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778146872; cv=pass; b=KQkb2nkbEQOmqOx5nUjXZVGLt71oxIpm5nR3x09SRwbYo4JVOEDNpADZkavXr39wfOcezQFrw4NxEa5/0qCqSHlZp833Vk89BaxiPLTU7e0KHactGjF9wpaIs4F+aHc/T4c5v03KLGAZccfjfYMPkyUhpY3TB/HHc3DBXSZkxz0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778146872; c=relaxed/simple;
+	bh=hCxd+5uv4hdNBXidMCSMq1z3BpfTFZGcppb4STtJd00=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JeJnYEXcJrGn4XDQWpz9AFKbzCHtKmOZipOcz3ditdt6LWZQYkd93VA1AZiJniuUznWXa7+xc4f4IBY5aACs0HZONq4mHTvP45FpELSUzZKWA8FveKuJe2n9ZmZ2lnCAz69yuGL2t28X0yuv0iEd5fluDOFC5AIRG1Sslw2xW6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLY+b/JI; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=qMuGA6aQc5jfw9YhwF/ADi7PPYTA2HlDpEFQsUz0YVA4AX0lpFA/sgPO95Kag9MnyH+bc89ex2R8jwlGF9xg4qdIR7fZE7PEVjE6zXrTncLpN2zPYiIuFcpo5ZMi5eojF7vny7EanyJXxyp/O2Mk0RIEsYaRGBJpqXUHH5PAxvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DcgyW5tw; arc=pass smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLY+b/JI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F4FC2BCC7
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 09:27:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778146053;
-	bh=x/JAxKHI7Ael5G6MScPlk2H+HssAyXfZZlY70tK9iiU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jLY+b/JIweUhyC9EQbHXXX5+lUmjtPDCTb6CEWbCjVfCRDxJBarnaFFJzSN6Bzlh0
-	 uCBEKbVBx4QScxOyjQPbqKFL3Bu6RuD9bKJUAFyBz9J0FA4byC/YJXb0wVoxMsuReK
-	 3soKa5myCMdJejcLC2ivtOETqwzlHbP/ylHLwfkBHUJ9fLLxa/2mrtE2/52uncMt46
-	 UWtjOequ1q4un2go6HLe4u7eZZBLme1CZGfxagu1HpXGQOM+6JNistT2nFPmP0ex1D
-	 O7uWqQ49MgQjufgzK4+sdpbdDl6D0F/yZLKJyhL5sY3st+r4VSd5aLvszlIYA702LH
-	 Fc383SH2bck0Q==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a887ebb416so534661e87.2
-        for <imx@lists.linux.dev>; Thu, 07 May 2026 02:27:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+kZLVV8r5lavFoPI2gDag5L/sXGTV4vc69YsFNypQVG8nnwqJ19D+bLSj7PHJ13p3c9gI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YytRwdVNTiM2x3AKWCE5Hq6TMvQVFLiJrxO3SN7M4WkJnTdkKGH
-	YdbrsFlWlAk/t8LUEYPIQwd57Ee+OvipZH43/uZv+il74j5KcQWmf7s+KSgO2vSICb3X5thFcPy
-	2T1zL/AqUQqNS2VvYRYmHH26+WJMnZSI=
-X-Received: by 2002:a05:6512:3ba7:b0:5a4:d34:5b38 with SMTP id
- 2adb3069b0e04-5a887ada944mr2206033e87.2.1778146051005; Thu, 07 May 2026
- 02:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DcgyW5tw"
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-65c21049dafso612156d50.2
+        for <imx@lists.linux.dev>; Thu, 07 May 2026 02:41:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778146870; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HOK452/OvPY5lWECJuQEUbWmlQmcxq7HfmlQ9nC32FXdCEmL0LVqWSDUUlWykdiwPK
+         eFx4q2y1HyvsulH2G/PsGVOho4GsFKZ7Fzp/2xv4oWZgbz6rvVTCjHAYsESVctDOC77U
+         OlzVy4Hphp0/7eOpCjQIemAwPTfyvN6z/X5dx7bGDGSf0WVQy4YT3h+MfT/oYPZKAOey
+         XD8hrwtTOlR5erVrMsmd3Mz6nDiejyXl5hJF81K1rNoQX/7vxSodA8HmZQk7nWW1p2T9
+         Z+kM1s+7bQiMlnv9Nn0wJfGIgT8vctFtRrW6VXK88MtrPOg8DN52m57wb/Quqn4v/xlE
+         ZQtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=hCxd+5uv4hdNBXidMCSMq1z3BpfTFZGcppb4STtJd00=;
+        fh=S0o8hBXysBKV7UG/nsg8uhJt8t6V+eSzMsNJ5RLfv8I=;
+        b=Valo4y1bH/hb2G5WvpP8zqsIagFzvBzMb1EU8D5GR6gZa7M2iStx6JfLgNmD7CWFcH
+         MXffAJfStdWONcZWuSk58mk38CXxRFu2sPzNNG63YCHILW/BZHfj34iPKxju7GRGtdDf
+         vLLT8lcPgxAwMT0QNMtTPqRPsXKYU3lE6/lLNGwA9q7LI2iAvpm+4fw6QeGfalnzWbHA
+         J3++kaWOJ91CGyRLCNw4vrBLBbGkUjltKxKTNvvAf4WXWOYtJLI+OqzLSx3vc4EfYXpE
+         16uaLi8Pwh/VJa5P40FNNezxZM2EM1gP/QOmD9p0JeBJMiVChPi6YJScuoV4OYmu5CCO
+         fHow==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778146870; x=1778751670; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hCxd+5uv4hdNBXidMCSMq1z3BpfTFZGcppb4STtJd00=;
+        b=DcgyW5twOEjqP0ctvF0YKGs9pBGgWHwkUseCxHP2UmCnTfuk3RXJicg8d+RDTae/KS
+         8fbOWy8gZEk1n2Peym1gPd2VSoLM9EyEzu83ynxN/sSDpZDhIHfQJmnPZ6ZpF3LnlKsk
+         fPecDAu7tVyoF0REYlf7qwc37dM9heuyGm18rHLCv0fBBsOpX5pc/DcPDBqoPvMu0FFq
+         qvuolfU811Lei86ivwikEvkGHq8uV+ns0bgQlqAkzmylERrziTSr/ESw4e4CT0JGV/3m
+         fGOOIaopVNyKN9jEBxUyxhRUAYWjGZ/1SksdDm8l59tIHW/Zm5+7YaxyP4XgSh+vt6h0
+         D9Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778146870; x=1778751670;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hCxd+5uv4hdNBXidMCSMq1z3BpfTFZGcppb4STtJd00=;
+        b=NRqNIi2ey2mKWK4NjI+deY2beYHCMB0ezQJkHb6m+m/Y42d5Cz2avEsZntTCOPJ0cH
+         W3JcRlv2H1Zq4fCMgIjEMHwD+glAtKxg+kEI1LNV3iuJ30gRmEyN7+DC1MXlbTBiPOXL
+         YDemMa3QpL+1VWeWyUHNfcdEeYCRjx4ObP/VW/G2/KH5NtD1odNpS2MkotxTL3wP05GZ
+         pf4kbmBzjpvZq82R7NZKRKE//m8+tMBaX47H5WG7ilPeubDBA1+HcLVMmoIbXItdfQ+K
+         XXgcNvypcyaxfpKZnC2h03xWCM3xBbUS95WiTPDJ4gGcNjB6v7PAK9GImEwvOEr0CsYt
+         1dQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8iUtVzFcRvbjdGsQiSI4W9QibN5o71SOeeyFspmf4glm6lHeU6yd/7k4GPcq836rRTGzU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwATx1cXrLsenABkooQaWNoO1cvqr/xm8wWCEVX7czFUBXz1LjF
+	9ZG/xfItBnaEQ7YD/vcO9o83yRZiQnT0ZtS/XdC/PZfYE+Ic1e3bT350WBXpYSYnTPK6G/tVkpX
+	xU4FZMMqWOfg1xKqjUbXeJuZQCA0vaec=
+X-Gm-Gg: AeBDieu8iEsuhRdxhZUWjlc687MO8rDwmRHPNXnMuMCmuKRwqq0wnjhbLSy3oQaAVUx
+	7hXrJ9BQSoizbSyA6EdR14TXWcS12t3+qnYWJYGnxbZiXhzftp4uZsGJfE7+/UcDo02U7p8PC7D
+	5wvRaTDclHd/ONpcBZqut8JSo6PFo/yi/7M528IPf9Ebcr6FkLQPADRDWZd2crtErInasCQEc5o
+	VOKLwnYrrTytkdqFM5xZUr/agqAi9/zkqQuqRs9QMWglcx5uAgc6XY1XtbFps85IX2wnhYlsjGA
+	CeBwtcQfLz9yKC56poA=
+X-Received: by 2002:a05:690e:1516:b0:65d:796d:8f00 with SMTP id
+ 956f58d0204a3-65d796d9d08mr2772997d50.41.1778146870374; Thu, 07 May 2026
+ 02:41:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260325143555.451852-1-herve.codina@bootlin.com>
- <20260325143555.451852-21-herve.codina@bootlin.com> <CAD++jLkFu+Z22QBFiaa9S+Epeh=RJZOYX8BOLVDFw4bhEoYF1Q@mail.gmail.com>
- <20260507092326.2f8e3b47@bootlin.com>
-In-Reply-To: <20260507092326.2f8e3b47@bootlin.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 7 May 2026 11:27:19 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmsaddK4MLYhfK+1OkK263QqJfMZ3HF=L0Y7QdDsgX4XQ@mail.gmail.com>
-X-Gm-Features: AVHnY4J4kpHKlWyF60L1gEgZ_kRiVmUaWPxnRdg2mF7S7on9qK93oGWvqiVfuCU
-Message-ID: <CAD++jLmsaddK4MLYhfK+1OkK263QqJfMZ3HF=L0Y7QdDsgX4XQ@mail.gmail.com>
-Subject: Re: [PATCH v6 20/27] misc: lan966x_pci: Fix dtso nodes ordering
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20260506142434.643523-1-lgs201920130244@gmail.com> <afv21xfKE9PxGWuD@raspi>
+In-Reply-To: <afv21xfKE9PxGWuD@raspi>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Thu, 7 May 2026 17:40:59 +0800
+X-Gm-Features: AVHnY4KYf5mnb43sXj58-NXgedFQvaoKgE77KqA04IMyO14JzMOPYqCJb3R-yfY
+Message-ID: <CANUHTR8BS9fo0a6s=+M6bfgCgcWtrpepg3ayv3F2bkDoWkYmDg@mail.gmail.com>
+Subject: Re: [PATCH v6] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with
+ device_node cleanup
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Luca Ceresoli <luca.ceresoli@bootlin.com>, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 7, 2026 at 9:23=E2=80=AFAM Herve Codina <herve.codina@bootlin.c=
-om> wrote:
+Hi Liu,
 
-> > Recommended practice is:
-> >
-> > ethernet-switch@...
-(...)
-> > Recommended practice is:
-> > ethernet-port@...
+Thanks for the review.
+
+On Thu, 7 May 2026 at 10:18, Liu Ying <victor.liu@nxp.com> wrote:
 >
-> Yes, it should be but the DT binding [0] says "switch" and "port".
-(...)
-> Those node names have to follow the DT binding even if this binding doesn=
-'t
-> follow recommended practice.
+> On Wed, May 06, 2026 at 10:24:34PM +0800, Guangshuo Li wrote:
+>
+> [...]
+>
+> > Initialize the output
+> > argument to NULL so callers using cleanup variables hold either NULL or
+> > a valid device_node pointer on error paths.
+>
+> I'd rephrase:
+> Initialize the output argument to NULL so callers hold either NULL on
+> error paths or a valid device_node pointer on successful path.
+>
+> >
+> > Keep explicit of_node_put() usage in the helper and in
+> > imx8qxp_pxl2dpi_set_pixel_link_sel() so the fix avoids adding more
+> > cleanup action usage there.
+>
+> This sentence is not necessary, so I prefer to dropping it.
+>
+> With these fixed:
+> Reviewed-by: Liu Ying <victor.liu@nxp.com>
+> Thanks!
+>
+> --
+> Regards,
+> Liu Ying
 
-Aha this binding is not referencing the standard ethernet-switch.yaml,
-that's why I got confused.
+I will rephrase that sentence as suggested and drop the unnecessary
+sentence in v7.
 
-OK let's just fix it then, I sent a patch.
-
-Yours,
-Linus Walleij
+Best regards,
+Guangshuo
