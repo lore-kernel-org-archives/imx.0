@@ -1,160 +1,100 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CBF2874E6
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 10:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68FD3EC2E0
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 10:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778150774; cv=none; b=mJB3y4yISBJoSwf8+jGuXBo7ZpB7FR3K4zfZvNaGATsNAUewazz/Pa8C4jIeU8WOxd6muk4rNpoF5aG6q7C2f8Cf5kgbfOSmsH1WhnXtgC70EsMDn+bZsbJ+BU9Tfg/JESjqyQa1zj7mnRT8mckkNE+KbQp7PDxhoNkhcqy8dz0=
+	t=1778151482; cv=none; b=fRB0tywgwTywLF3HRHxjy7TkTyzexic2S8zECVhfd2J0mWW4TLUv3FdKUEBE+pL5IE5lhWj10YMo7ishF0E/ggiTp0mXgKSmddev/gnAm5l9w8KpWDse5my3PlXXVx0GOEPqt1NiBHWlgm7ABhX3gwOqJ5U+YhaeerAbzbpGUNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778150774; c=relaxed/simple;
-	bh=IpnQCAN2BL5UB6TQUTVwndlNHcb8l5UOE/u4Tph+Dnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfY8jLD5j9PWsZ7gGu2YDqM4Qt22/76kV0HJhl0tSzQzISdOqk9gzsh4STs9nJ+7DpFrywdAKRQf5g7QlaBMLo04FQwkehCXD+2Ks2Kw+fVd/gJAvS3IrUM/7RCgi1YPfn2jU5mqq6QVL/esOxsAjp/4AZ7eKK5L3Cs9vx9OH7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1C/K2Ge; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1C/K2Ge"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso4084445e9.3
-        for <imx@lists.linux.dev>; Thu, 07 May 2026 03:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778150770; x=1778755570; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ox+ASz/ygCGbDPlwbrM1KbYJZn86PmGYPGqT1vetcCo=;
-        b=d1C/K2GeXD82+9EAfnvgS0icA154iMOGxW8+z4zuKLLjLs/Z0OYrr+pQn2TnAp4CCj
-         dHCQG9iJ/iN8Oy37IPH0udtnIXDakTk/hcyDeACnxxUarF8Ti9Yf6+2pUj19hNpKlNgD
-         UQFb8d2uyg8zhlnkPeBdNfnCIB6xYW/Izp89rR77eCRzhUJOXvJvJ9FT3VXmoKkR6gR7
-         AtYEuQdeCbf6g+YWiARXBotyDnqEg2R0wKtA1oF8ggVTJOAgMcywrYHYXXBkk9vSzf0W
-         x4ZmutPVoKTSU148pqGfgyNhfgQt2xqCNwIztMknmk9gcqtgtSxzJfsgFTVoOtafeEhm
-         rEAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778150770; x=1778755570;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ox+ASz/ygCGbDPlwbrM1KbYJZn86PmGYPGqT1vetcCo=;
-        b=aFdqFs+Ynu3jcTFVjMsjZgQaE9h1SXqJoN1NH3WVyoeptUpAhnTiNkd2nIa8t6bOHh
-         kRT1fEGCsgfqlRA0/GwsxYxPoDrvwPjn5LyYC1qTl4p9H/xYQW+OudP2N9d2BvpLPcmn
-         zKCMd7Wlpm68EqJxIlPBei2ALRucDMqq5Tqk98y3JpM6Cd/BrqO/0bRC9tk8JvWo8Z07
-         NJ7UF0FsYFuUvKZ/5A3uWkiXcpQHM1tOFDc0WxOOgTswOxNSbdWwt1epnKsCtjoX637e
-         4QEylj4hHDkyA64bIgElGWNnAc8icuMCZ2ddII0mFqEOL7kXRqw8ctSkABs17ghm3j9D
-         wkgg==
-X-Forwarded-Encrypted: i=1; AFNElJ+CKSoYa9J2WD4YlE217yDZplnV9UwiMDSfjO30raDrMi06NSPS/btFyLa18FjQlO5WNnA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YycEBZZsK4uJEaJqdRWsIoo8PB7LlmGQtUcw5rnZ+0IT/wtn8yi
-	oiej3YS0V8rwV6jY1YBzqKWSjnC+xbFzP+GKiK5sUNlnASN5SazCYKty
-X-Gm-Gg: AeBDies4nKXy8rufQORY+YM62IAQHgV038D6CzF0D78ePMZV0YmJGQwwb+BYWKKy5Wa
-	Ru/OI8t0Bd4vqcLcaUm6BUNGy7ylvjlTyLs2/5AysELDTTtxmn9vuU6cD5XlfTnOm7bDaLmFJPd
-	BPzgvTlcqpGB8nJ9fxLj6a2FCiRMOwYBN3zc2D0G6i//0mguxEZ7zVCo6sgVHz3ic+nyuENitM7
-	CzwkUz1n4EyutA3xN3gDQbZ1bWueke6Liib2JRT0KbTMyFSO6JiQC6axDyXmkKDBS8Q+FDyT1XD
-	+bjqHkpgbTf5334HsGILQe29gFuzk4/Qqe8BW9VWeHbX+1aOiHyHZ01V19PgwssKDagPLKWjBUi
-	98lyG+h7Wt1q+ZMlq5Dn/MFfAl95T2sVsCVR1Z+jhK6YNWBVBY1pue+zreze6U5ib9N8dBosqAn
-	CMQG1gYN1oa/1NYaEzmPvPqqPZ0qS6rDiTwDnCuF5ioSE+0tBawvgHjAmQ0Y/r+s/h3SdnNX9q2
-	CvOtxCJh4A+6Qe393u49A07lzCrX+eksSQBCzFjYdjpB1jDJRzdEj0rPBMRDobjjAiiqawnbOdI
-	K9obom8Q
-X-Received: by 2002:a05:600c:8b04:b0:47e:e2eb:bc22 with SMTP id 5b1f17b1804b1-48e51f183demr114547455e9.5.1778150769818;
-        Thu, 07 May 2026 03:46:09 -0700 (PDT)
-Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b6e9bsm197646665e9.10.2026.05.07.03.46.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 03:46:09 -0700 (PDT)
-Date: Thu, 7 May 2026 12:46:08 +0200
-From: Franz Schnyder <fra.schnyder@gmail.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
-	Francesco Dolcini <francesco@dolcini.it>
-Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
- role
-Message-ID: <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
-References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
- <20260108081433.2119328-3-xu.yang_2@nxp.com>
+	s=arc-20240116; t=1778151482; c=relaxed/simple;
+	bh=6zED7wLJxbCqB+NzJWse7+pMVFcpbva1NJdJbRes3SA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l0Rx+XSEIM255DqNclkyqsdjm/G8ap3s/dm4TyF02t73AWckhMpTuAYR3oMNahZlpp23Gwk58I6IHz6xoPo8llYFed+cp+gnfzLxSVxHQ3tNSd8zD38EBCUEHmCFw6+ElUskT2VHqVy7NdBtzFbuBu9lacuMFq99q1/zORspGpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1wKwQI-00030s-PY; Thu, 07 May 2026 12:57:42 +0200
+Message-ID: <344d09f96081e785f1e70e75db3c5242c5eb315c.camel@pengutronix.de>
+Subject: Re: [PATCH] soc: imx8m: Fix match data lookup for soc device
+From: Lucas Stach <l.stach@pengutronix.de>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rob Herring (Arm)"
+ <robh@kernel.org>, Bartosz Golaszewski
+ <bartosz.golaszewski@oss.qualcomm.com>
+Cc: imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date: Thu, 07 May 2026 12:57:40 +0200
+In-Reply-To: <20260427-soc-imx8m-fix-v1-1-1fe5b43d8090@nxp.com>
+References: <20260427-soc-imx8m-fix-v1-1-1fe5b43d8090@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260108081433.2119328-3-xu.yang_2@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Jan 08, 2026 at 04:14:33PM +0800, Xu Yang wrote:
-> Do dwc3 core auto suspend enable for device and disable for host
-> , this can make sure dwc3 core device auto suspend setting is
-> correct all the time, the background of disable dwc3 core device
-> auto suspend is to make its parent device suspend immediately
-> (so wakeup enable can be enabled) after xhci-plat device suspended,
-> for device mode, we keep the dwc3 core device auto suspend is to
-> give some wait for gadget to be enumerated.
-> 
-> Note: It's a temporary solution until we switch to using the new
->       flatten model.
-> 
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Am Montag, dem 27.04.2026 um 09:01 +0800 schrieb Peng Fan (OSS):
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> The i.MX8M soc device is registered via platform_device_register_simple()=
+,
+> so it is not associated with a Device Tree node and the imx8m_soc_driver
+> has no of_match_table.
+>=20
+> As a result, device_get_match_data() always returns NULL when probing
+> the soc device.
+>=20
+> Retrieve the match data directly from the machine compatible using
+> of_machine_get_match_data(imx8_soc_match), which provides the correct SoC
+> data.
+>=20
+> Fixes: 2524b293a59e5 ("soc: imx8m: don't access of_root directly")
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Hi Xu,
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 
-We have a kernel issue introduced by this patch on an iMX95, where we 
-use the dwc3 usb as otg. This appears to be due to a race condition that
-occurs during probe, when the parent attempts to access the driver data
-from the dwc3 child. I saw your work on the new flattened model driver 
-for the iMX SoCs and that it will soon be applied to the iMX95 as well. 
-Does this mean that the issue shown below should no longer appear, as 
-there will be no parent/child dependency?
+Frank, please apply this fix for the 7.1-rc release series to get rid
+of the regression.
 
-Do you think there are any actions needed on this patch?
+Regards,
+Lucas
+> ---
+>  drivers/soc/imx/soc-imx8m.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+> index 77763a107edbd11302017e3f61ecb4369fda1ab0..fc080e56f50d423b88a673181=
+a6bc986eb4c1691 100644
+> --- a/drivers/soc/imx/soc-imx8m.c
+> +++ b/drivers/soc/imx/soc-imx8m.c
+> @@ -247,7 +247,7 @@ static int imx8m_soc_probe(struct platform_device *pd=
+ev)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	data =3D device_get_match_data(dev);
+> +	data =3D of_machine_get_match_data(imx8_soc_match);
+>  	if (data) {
+>  		soc_dev_attr->soc_id =3D data->name;
+>  		ret =3D imx8m_soc_prepare(pdev, data->ocotp_compatible);
+>=20
+> ---
+> base-commit: 70c8a7ec6715b5fb14e501731b5b9210a16684f7
+> change-id: 20260424-soc-imx8m-fix-90d7ce2397f5
+>=20
+> Best regards,
 
-Here the warning with decoded trace:
-
-[    6.905882] ------------[ cut here ]------------
-[    6.910518] WARNING: drivers/base/core.c:1640 at device_del+0x2b4/0x384, CPU#4: 5/87
-[    6.919309] Modules linked in: libaes(+) tcpci(+) ulpi tcpm phy_fsl_imx8mq_usb(+) gf128mul snd_soc_simple_card(+) ehci_hcd imx_pc4
-[    6.964627] CPU: 4 UID: 0 PID: 87 Comm: kworker/u24:5 Not tainted 7.0.0-rc1+ #2 PREEMPT
-[    6.972716] Hardware name: Aquila iMX95 on Aquila Development Board (DT)
-[    6.979409] Workqueue: events_unbound deferred_probe_work_func
-[    6.985247] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    6.992199] pc : device_del (drivers/base/core.c:1640 drivers/base/core.c:3882)
-[    6.996028] lr : device_del (drivers/base/core.c:1634 drivers/base/core.c:3882)
-[    6.999865] sp : ffff800080b339f0
-[    7.003169] x29: ffff800080b339f0 x28: 0000000000000000 x27: 0000000000000000
-[    7.010295] x26: ffff00008004ac28 x25: ffff0001ff067610 x24: ffff00008befdcc0
-[    7.017427] x23: ffff000080ad8810 x22: 0000000004208060 x21: ffffa5bb53ea78f0
-[    7.024560] x20: ffff00008befdc10 x19: ffff00008befdcb8 x18: 0000000000000000
-[    7.031693] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[    7.038825] x14: 0000000000000004 x13: ffff000080129910 x12: 0000000000000000
-[    7.045958] x11: ffff0000822ac0e8 x10: ffff0000822ac000 x9 : ffff000080129910
-[    7.053090] x8 : ffff0000822ac028 x7 : 0000000000000000 x6 : ffff0000822af458
-[    7.060223] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-[    7.067356] x2 : ffff00008253e580 x1 : 0000000000000003 x0 : ffff0000895d1400
-[    7.074485] Call trace:
-[    7.076923]  device_del (drivers/base/core.c:1640 drivers/base/core.c:3882) (P)
-[    7.080754]  platform_device_del.part.0 (drivers/base/platform.c:794)
-[    7.085458]  platform_device_unregister (drivers/base/platform.c:593 drivers/base/platform.c:835)
-[    7.090164]  of_platform_device_destroy (drivers/of/platform.c:621 drivers/of/platform.c:607)
-[    7.094950]  device_for_each_child_reverse (drivers/base/core.c:4048)
-[    7.099922]  of_platform_depopulate (./include/linux/of.h:208 drivers/of/platform.c:644 drivers/of/platform.c:640)
-[    7.104282] dwc3_imx8mp_probe (drivers/usb/dwc3/dwc3-imx8mp.c:291) dwc3_imx8mp
-[    7.109588]  platform_probe (drivers/base/platform.c:1449)
-[    7.113260]  really_probe (drivers/base/dd.c:583 drivers/base/dd.c:661)
-[    7.116833]  __driver_probe_device (drivers/base/dd.c:803)
-[    7.121199]  driver_probe_device (drivers/base/dd.c:833)
-[    7.125385]  __device_attach_driver (drivers/base/dd.c:962)
-[    7.129831]  bus_for_each_drv (drivers/base/bus.c:500)
-[    7.133663]  __device_attach (drivers/base/dd.c:1035)
-[    7.137494]  device_initial_probe (drivers/base/dd.c:1088)
-[    7.141671]  bus_probe_device (drivers/base/bus.c:576)
-[    7.145502]  deferred_probe_work_func (drivers/base/dd.c:125 (discriminator 14))
-[    7.150035]  process_one_work (kernel/workqueue.c:3286)
-[    7.154047]  worker_thread (kernel/workqueue.c:3352 kernel/workqueue.c:3439)
-[    7.157791]  kthread (kernel/kthread.c:467)
-[    7.161030]  ret_from_fork (arch/arm64/kernel/entry.S:861)
-[    7.164610] ---[ end trace 0000000000000000 ]---
-
-Best regards,
-
-Franz
