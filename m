@@ -1,247 +1,160 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E6C3D3CF4
-	for <imx@lists.linux.dev>; Thu,  7 May 2026 10:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CBF2874E6
+	for <imx@lists.linux.dev>; Thu,  7 May 2026 10:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778148527; cv=none; b=mpOWRFtRqIvKJ/Yu+6YnQUb2gGe0T799R1Cfeu05lFZlCMbfhIyv/p9Nq8DvWpM/z6JdVWYChmRF6YlQ6Uu9mh71vJ+Q4OEyTw3sJSjxDghPe8HUV7y+DTYlQlUvtePSK8k9PIshJSmuUCl8/+yhbDdsRBAVxBgEI8ByLkUr4wg=
+	t=1778150774; cv=none; b=mJB3y4yISBJoSwf8+jGuXBo7ZpB7FR3K4zfZvNaGATsNAUewazz/Pa8C4jIeU8WOxd6muk4rNpoF5aG6q7C2f8Cf5kgbfOSmsH1WhnXtgC70EsMDn+bZsbJ+BU9Tfg/JESjqyQa1zj7mnRT8mckkNE+KbQp7PDxhoNkhcqy8dz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778148527; c=relaxed/simple;
-	bh=sW1pkhQalveqOxhHkFt5QmsQqGRnLmYPsxwediic4l0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QNSeBGjmXm7FU/VDtrOqCKFgDM8G+UtWbqgaiHYgxDCCIfx99JPTPwRcTx+hSPGY0BPPZ7jt6LLU42F/xI4mKhri0wDnlfoT4ZWUmVbDhiCX2BaTK9xF1qOtHVs2VhxM5fVtWFjyfXb2xLVS7Y+14ZLrQbcUMawXhKClAUd59cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ba8fEegr; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1778150774; c=relaxed/simple;
+	bh=IpnQCAN2BL5UB6TQUTVwndlNHcb8l5UOE/u4Tph+Dnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dfY8jLD5j9PWsZ7gGu2YDqM4Qt22/76kV0HJhl0tSzQzISdOqk9gzsh4STs9nJ+7DpFrywdAKRQf5g7QlaBMLo04FQwkehCXD+2Ks2Kw+fVd/gJAvS3IrUM/7RCgi1YPfn2jU5mqq6QVL/esOxsAjp/4AZ7eKK5L3Cs9vx9OH7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1C/K2Ge; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ba8fEegr"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-824c9da9928so243653b3a.3
-        for <imx@lists.linux.dev>; Thu, 07 May 2026 03:08:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1C/K2Ge"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso4084445e9.3
+        for <imx@lists.linux.dev>; Thu, 07 May 2026 03:46:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778148526; x=1778753326; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lca9GgtebxHSmlkPkYgy6Y8kn+w8BgkxfJ8muffjImk=;
-        b=ba8fEegrn6avMCykST3ToxF2OQAKCvoUdR95yxxZ9m8QHGmVAi4a+6Z22pumMTaj5i
-         Qrt3h4LTY7Wmh5S/Ag/K7wv0gLbJxjZ0d5WuNlFeQNMUIuzbFFhOUqHWO312BnzLP6pM
-         L9N9E2Jbi2l8xLg+egZGRDlw/e4VXJNQfHPKQbK1hExrEpw0UYKr5+z9WoP10xsXUNNi
-         qkUhyIVL0K2WbNWv8LKgt3i2mofyrA9vSBKXFPnhuml446+DrD8y78ZvfQM2a1br64TE
-         QC0FDJjliB+XCVc3luNz0L/yWDS6Qup0pdgqTnAo2MF6mOPtGzW84kxEUkc6wM9aaRUn
-         mi0A==
+        d=gmail.com; s=20251104; t=1778150770; x=1778755570; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ox+ASz/ygCGbDPlwbrM1KbYJZn86PmGYPGqT1vetcCo=;
+        b=d1C/K2GeXD82+9EAfnvgS0icA154iMOGxW8+z4zuKLLjLs/Z0OYrr+pQn2TnAp4CCj
+         dHCQG9iJ/iN8Oy37IPH0udtnIXDakTk/hcyDeACnxxUarF8Ti9Yf6+2pUj19hNpKlNgD
+         UQFb8d2uyg8zhlnkPeBdNfnCIB6xYW/Izp89rR77eCRzhUJOXvJvJ9FT3VXmoKkR6gR7
+         AtYEuQdeCbf6g+YWiARXBotyDnqEg2R0wKtA1oF8ggVTJOAgMcywrYHYXXBkk9vSzf0W
+         x4ZmutPVoKTSU148pqGfgyNhfgQt2xqCNwIztMknmk9gcqtgtSxzJfsgFTVoOtafeEhm
+         rEAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778148526; x=1778753326;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lca9GgtebxHSmlkPkYgy6Y8kn+w8BgkxfJ8muffjImk=;
-        b=JthttJYwP/4ikRTUAWlIa/ocduz2c7O7bYGe0eSb7NqI+eeXJK0MxRbelJXonSnt7W
-         hNjFRBkYzMNZwYt5w34TkWow/cUiNJCG3OtOGGqAs3VmK8PMjV2WXldCUnDcBG2TyobU
-         cIXBxFIxLewl33OOQlsWomja4ShzInNloyistm9G+aq1imskKB4rxsPdCX1ql0sxetJo
-         irwRcrnxY0XK+tNdkHMPm00kkRnDH7kEdYzFv4sq1p2Q/IrUfw8Ru68DzxYLOMPRGXg8
-         0LjdXapCbtktj1Q0y/oSNGH7yhPOkllX1AmPtWqOzNC3yRWWJsOgSuR365xpjDhV87Vp
-         skJA==
-X-Forwarded-Encrypted: i=1; AFNElJ8rMo+ICehSclR+0NVe/mDKgN0dcylCVuo+PY07wKxN7JDFfErF+1MXqDAlov8hRzwQQbU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwKRf9iYkxvVda//0h0wyS1X9Qc9AES1w7CE1gktr2/nI+ZfoRe
-	T+N/WPuVdoptwUiPldmyVHqGRY4IeeJQyWmAAJCslI6My6YOkfU70Sgv
-X-Gm-Gg: AeBDievYCu8Oa18jxVGRT/eI2+AIEMsHs3rHB4vFROmAfIEp7MNu0I0kVyUvKsu2ryE
-	6vYw5+6E/IOTBLfdcthFsxnczks6ZBtq2XSNBXkG5mb/GsjR/RXlu4sVFcbODns6NziGl0s2Ie0
-	41niK7j1ty3nFc6ebgNiPq9sN81a9SjBr0+Te7v3OvzhQJ4OTxZdsO6Yg4kd1rCmintIpMGogGz
-	1qpvXNFS2XFqed5Knp04KkCFSfV9QeUK1bPqkAm1DRC2UhlE66ShFwjXI3ok4cwA3Cw7e9FkYeT
-	zSc/bkN2TtefiJI39EnWEeiFxQ1yTMQDrIoNjILarKNt4DohWlz4dgP7U0H/uwNz63vmPH1rWJw
-	E8Fl/pYFSA9RfGp4CMYb4uggHa1+f/mTnmyPnAbJz7oQgPobKqbB4a7+lvxUNoTHEwiYs0Sskml
-	PLFT/MU1wbHigeoz+X
-X-Received: by 2002:a05:6a00:22d5:b0:82a:f02:7355 with SMTP id d2e1a72fcca58-83a5d387595mr7014546b3a.32.1778148525580;
-        Thu, 07 May 2026 03:08:45 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1000::f280])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965d38ab5sm10162541b3a.26.2026.05.07.03.08.37
+        d=1e100.net; s=20251104; t=1778150770; x=1778755570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ox+ASz/ygCGbDPlwbrM1KbYJZn86PmGYPGqT1vetcCo=;
+        b=aFdqFs+Ynu3jcTFVjMsjZgQaE9h1SXqJoN1NH3WVyoeptUpAhnTiNkd2nIa8t6bOHh
+         kRT1fEGCsgfqlRA0/GwsxYxPoDrvwPjn5LyYC1qTl4p9H/xYQW+OudP2N9d2BvpLPcmn
+         zKCMd7Wlpm68EqJxIlPBei2ALRucDMqq5Tqk98y3JpM6Cd/BrqO/0bRC9tk8JvWo8Z07
+         NJ7UF0FsYFuUvKZ/5A3uWkiXcpQHM1tOFDc0WxOOgTswOxNSbdWwt1epnKsCtjoX637e
+         4QEylj4hHDkyA64bIgElGWNnAc8icuMCZ2ddII0mFqEOL7kXRqw8ctSkABs17ghm3j9D
+         wkgg==
+X-Forwarded-Encrypted: i=1; AFNElJ+CKSoYa9J2WD4YlE217yDZplnV9UwiMDSfjO30raDrMi06NSPS/btFyLa18FjQlO5WNnA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YycEBZZsK4uJEaJqdRWsIoo8PB7LlmGQtUcw5rnZ+0IT/wtn8yi
+	oiej3YS0V8rwV6jY1YBzqKWSjnC+xbFzP+GKiK5sUNlnASN5SazCYKty
+X-Gm-Gg: AeBDies4nKXy8rufQORY+YM62IAQHgV038D6CzF0D78ePMZV0YmJGQwwb+BYWKKy5Wa
+	Ru/OI8t0Bd4vqcLcaUm6BUNGy7ylvjlTyLs2/5AysELDTTtxmn9vuU6cD5XlfTnOm7bDaLmFJPd
+	BPzgvTlcqpGB8nJ9fxLj6a2FCiRMOwYBN3zc2D0G6i//0mguxEZ7zVCo6sgVHz3ic+nyuENitM7
+	CzwkUz1n4EyutA3xN3gDQbZ1bWueke6Liib2JRT0KbTMyFSO6JiQC6axDyXmkKDBS8Q+FDyT1XD
+	+bjqHkpgbTf5334HsGILQe29gFuzk4/Qqe8BW9VWeHbX+1aOiHyHZ01V19PgwssKDagPLKWjBUi
+	98lyG+h7Wt1q+ZMlq5Dn/MFfAl95T2sVsCVR1Z+jhK6YNWBVBY1pue+zreze6U5ib9N8dBosqAn
+	CMQG1gYN1oa/1NYaEzmPvPqqPZ0qS6rDiTwDnCuF5ioSE+0tBawvgHjAmQ0Y/r+s/h3SdnNX9q2
+	CvOtxCJh4A+6Qe393u49A07lzCrX+eksSQBCzFjYdjpB1jDJRzdEj0rPBMRDobjjAiiqawnbOdI
+	K9obom8Q
+X-Received: by 2002:a05:600c:8b04:b0:47e:e2eb:bc22 with SMTP id 5b1f17b1804b1-48e51f183demr114547455e9.5.1778150769818;
+        Thu, 07 May 2026 03:46:09 -0700 (PDT)
+Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b6e9bsm197646665e9.10.2026.05.07.03.46.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 03:08:45 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v7] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with device_node cleanup
-Date: Thu,  7 May 2026 18:06:03 +0800
-Message-ID: <20260507100604.667731-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Thu, 07 May 2026 03:46:09 -0700 (PDT)
+Date: Thu, 7 May 2026 12:46:08 +0200
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
+	Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
+ role
+Message-ID: <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
+References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
+ <20260108081433.2119328-3-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108081433.2119328-3-xu.yang_2@nxp.com>
 
-imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
-on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
-value in a __free(device_node) variable before checking IS_ERR().
-When the function returns on the error path, the cleanup action calls
-of_node_put() on the ERR_PTR() value.
+On Thu, Jan 08, 2026 at 04:14:33PM +0800, Xu Yang wrote:
+> Do dwc3 core auto suspend enable for device and disable for host
+> , this can make sure dwc3 core device auto suspend setting is
+> correct all the time, the background of disable dwc3 core device
+> auto suspend is to make its parent device suspend immediately
+> (so wakeup enable can be enabled) after xhci-plat device suspended,
+> for device mode, we keep the dwc3 core device auto suspend is to
+> give some wait for gadget to be enumerated.
+> 
+> Note: It's a temporary solution until we switch to using the new
+>       flatten model.
+> 
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Do not let a device_node cleanup variable hold error pointers. Change
-imx8qxp_pxl2dpi_get_available_ep_from_port() to return an int and pass
-the endpoint node through an output argument. Initialize the output
-argument to NULL so callers hold either NULL on error paths or a valid
-device_node pointer on successful path.
+Hi Xu,
 
-Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v7:
-  - Rephrase the commit message sentence about output argument
-    initialization as suggested by Liu Ying.
-  - Drop the unnecessary sentence about keeping explicit of_node_put()
-    usage.
-  - Add Liu Ying's Reviewed-by tag.
-  - No code changes.
+We have a kernel issue introduced by this patch on an iMX95, where we 
+use the dwc3 usb as otg. This appears to be due to a race condition that
+occurs during probe, when the parent attempts to access the driver data
+from the dwc3 child. I saw your work on the new flattened model driver 
+for the iMX SoCs and that it will soon be applied to the iMX95 as well. 
+Does this mean that the issue shown below should no longer appear, as 
+there will be no parent/child dependency?
 
-v6:
-  - Change imx8qxp_pxl2dpi_get_available_ep_from_port() to return int
-    and pass the endpoint through an output argument.
-  - Keep using __free(device_node) in imx8qxp_pxl2dpi_find_next_bridge().
-  - Keep ep initialized to NULL in imx8qxp_pxl2dpi_find_next_bridge()
-    to satisfy the __free pointer initialization requirement.
-  - Do not add cleanup action usage in
-    imx8qxp_pxl2dpi_get_available_ep_from_port() or
-    imx8qxp_pxl2dpi_set_pixel_link_sel().
+Do you think there are any actions needed on this patch?
 
-v5:
-  - Make the fix minimal for stable by avoiding __free(device_node)
-    for the endpoint node in imx8qxp_pxl2dpi_find_next_bridge().
-  - Keep imx8qxp_pxl2dpi_get_available_ep_from_port() unchanged.
-  - Do not change imx8qxp_pxl2dpi_set_pixel_link_sel().
-  - Drop Frank's Reviewed-by tag due to the implementation change.
+Here the warning with decoded trace:
 
-v4:
-  - Drop the sentence mentioning the custom static analysis tool.
-  - Add Frank's Reviewed-by tag.
-  - No functional code changes.
+[    6.905882] ------------[ cut here ]------------
+[    6.910518] WARNING: drivers/base/core.c:1640 at device_del+0x2b4/0x384, CPU#4: 5/87
+[    6.919309] Modules linked in: libaes(+) tcpci(+) ulpi tcpm phy_fsl_imx8mq_usb(+) gf128mul snd_soc_simple_card(+) ehci_hcd imx_pc4
+[    6.964627] CPU: 4 UID: 0 PID: 87 Comm: kworker/u24:5 Not tainted 7.0.0-rc1+ #2 PREEMPT
+[    6.972716] Hardware name: Aquila iMX95 on Aquila Development Board (DT)
+[    6.979409] Workqueue: events_unbound deferred_probe_work_func
+[    6.985247] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    6.992199] pc : device_del (drivers/base/core.c:1640 drivers/base/core.c:3882)
+[    6.996028] lr : device_del (drivers/base/core.c:1634 drivers/base/core.c:3882)
+[    6.999865] sp : ffff800080b339f0
+[    7.003169] x29: ffff800080b339f0 x28: 0000000000000000 x27: 0000000000000000
+[    7.010295] x26: ffff00008004ac28 x25: ffff0001ff067610 x24: ffff00008befdcc0
+[    7.017427] x23: ffff000080ad8810 x22: 0000000004208060 x21: ffffa5bb53ea78f0
+[    7.024560] x20: ffff00008befdc10 x19: ffff00008befdcb8 x18: 0000000000000000
+[    7.031693] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[    7.038825] x14: 0000000000000004 x13: ffff000080129910 x12: 0000000000000000
+[    7.045958] x11: ffff0000822ac0e8 x10: ffff0000822ac000 x9 : ffff000080129910
+[    7.053090] x8 : ffff0000822ac028 x7 : 0000000000000000 x6 : ffff0000822af458
+[    7.060223] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[    7.067356] x2 : ffff00008253e580 x1 : 0000000000000003 x0 : ffff0000895d1400
+[    7.074485] Call trace:
+[    7.076923]  device_del (drivers/base/core.c:1640 drivers/base/core.c:3882) (P)
+[    7.080754]  platform_device_del.part.0 (drivers/base/platform.c:794)
+[    7.085458]  platform_device_unregister (drivers/base/platform.c:593 drivers/base/platform.c:835)
+[    7.090164]  of_platform_device_destroy (drivers/of/platform.c:621 drivers/of/platform.c:607)
+[    7.094950]  device_for_each_child_reverse (drivers/base/core.c:4048)
+[    7.099922]  of_platform_depopulate (./include/linux/of.h:208 drivers/of/platform.c:644 drivers/of/platform.c:640)
+[    7.104282] dwc3_imx8mp_probe (drivers/usb/dwc3/dwc3-imx8mp.c:291) dwc3_imx8mp
+[    7.109588]  platform_probe (drivers/base/platform.c:1449)
+[    7.113260]  really_probe (drivers/base/dd.c:583 drivers/base/dd.c:661)
+[    7.116833]  __driver_probe_device (drivers/base/dd.c:803)
+[    7.121199]  driver_probe_device (drivers/base/dd.c:833)
+[    7.125385]  __device_attach_driver (drivers/base/dd.c:962)
+[    7.129831]  bus_for_each_drv (drivers/base/bus.c:500)
+[    7.133663]  __device_attach (drivers/base/dd.c:1035)
+[    7.137494]  device_initial_probe (drivers/base/dd.c:1088)
+[    7.141671]  bus_probe_device (drivers/base/bus.c:576)
+[    7.145502]  deferred_probe_work_func (drivers/base/dd.c:125 (discriminator 14))
+[    7.150035]  process_one_work (kernel/workqueue.c:3286)
+[    7.154047]  worker_thread (kernel/workqueue.c:3352 kernel/workqueue.c:3439)
+[    7.157791]  kthread (kernel/kthread.c:467)
+[    7.161030]  ret_from_fork (arch/arm64/kernel/entry.S:861)
+[    7.164610] ---[ end trace 0000000000000000 ]---
 
-v3:
-  - Do not change DEFINE_FREE(device_node, ...).
-  - Fix the driver pattern by making
-    imx8qxp_pxl2dpi_get_available_ep_from_port() return an int and
-    pass the endpoint via an output argument.
-  - Update both callers so __free(device_node) never holds ERR_PTR().
+Best regards,
 
-v2:
-  - Fix DEFINE_FREE(device_node, ...) directly.
-
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 40 +++++++++++---------
- 1 file changed, 23 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-index 441fd32dc91c..d64e328bf542 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -222,52 +222,58 @@ static const struct drm_bridge_funcs imx8qxp_pxl2dpi_bridge_funcs = {
- 			imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts,
- };
- 
--static struct device_node *
-+static int
- imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
--					   u32 port_id)
-+					   u32 port_id,
-+					   struct device_node **ep)
- {
--	struct device_node *port, *ep;
-+	struct device_node *port;
-+	int ret = 0;
- 	int ep_cnt;
- 
-+	*ep = NULL;
-+
- 	port = of_graph_get_port_by_id(p2d->dev->of_node, port_id);
- 	if (!port) {
- 		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
- 	}
- 
- 	ep_cnt = of_get_available_child_count(port);
- 	if (ep_cnt == 0) {
- 		DRM_DEV_ERROR(p2d->dev, "no available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
-+		ret = -ENODEV;
- 		goto out;
- 	} else if (ep_cnt > 1) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "invalid available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-EINVAL);
-+		ret = -EINVAL;
- 		goto out;
- 	}
- 
--	ep = of_get_next_available_child(port, NULL);
--	if (!ep) {
-+	*ep = of_get_next_available_child(port, NULL);
-+	if (!*ep) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "failed to get available endpoint of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
-+		ret = -ENODEV;
- 		goto out;
- 	}
- out:
- 	of_node_put(port);
--	return ep;
-+	return ret;
- }
- 
- static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- {
--	struct device_node *ep __free(device_node) =
--		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	struct device_node *ep __free(device_node) = NULL;
-+	int ret;
-+
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1, &ep);
-+	if (ret)
-+		return ret;
- 
- 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
- 	if (!remote || !of_device_is_available(remote)) {
-@@ -291,9 +297,9 @@ static int imx8qxp_pxl2dpi_set_pixel_link_sel(struct imx8qxp_pxl2dpi *p2d)
- 	struct of_endpoint endpoint;
- 	int ret;
- 
--	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0, &ep);
-+	if (ret)
-+		return ret;
- 
- 	ret = of_graph_parse_endpoint(ep, &endpoint);
- 	if (ret) {
--- 
-2.43.0
-
+Franz
