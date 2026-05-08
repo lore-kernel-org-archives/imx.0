@@ -1,178 +1,157 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013048.outbound.protection.outlook.com [52.101.83.48])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C5A31F981
-	for <imx@lists.linux.dev>; Fri,  8 May 2026 10:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778237737; cv=fail; b=PytFAO/CNNPi3uIw5ysz55/G7QI8JvcTxOvcqJzDCvjTrlfsTSttWf0ketL5B3Ct9Kz9LVLoeACyOQx08/WUu7SE0Q4rOGzBBMCMlbHbqXEDIjIWQ4bC4N1M2+w7ck2kkJesodgdB+jgFGzg2C/JUyRsngU67dL8VblVl1uOhBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778237737; c=relaxed/simple;
-	bh=danX3tVIJJeXo8N9myBmA1Azel+LDkd2lwodrc1uhRw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qpRyRtgrszgA6BtKnYTdXPotcAEfX3UJbIS39kAqOEkt+a4mZV9+dO6IpqFGgML5hJTU6FEQ74V1wlBEJSvjUuQId7vB8aN7aLV8nLZzFhrJtQuWD0qhpOqpkxQKAxcB/52D9WLwMoZREZNfIXqi9aqF9gMGfmJYXFV5de6uCE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c57m5I1o; arc=fail smtp.client-ip=52.101.83.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F31136167F
+	for <imx@lists.linux.dev>; Fri,  8 May 2026 11:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778239176; cv=none; b=EQ8wImU1+Zn+lZOohAJkoDStiokr9rriOZylj/UOii00c9zBw7YudCtq1BfHYr15mh4kKWJMnel03e+jLrqCk4kRinDXZNbGcEIV0w6HshnlWnCLIXcO3Q7236VEvt5cKaI2wZNDMb1mELLK+0gZoqkEXN4eCVoWVlOZzoXJ4eE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778239176; c=relaxed/simple;
+	bh=XIXa8EjOgez3qsla3pU5FqSnug5qtehX8v23sK1H1LY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NYhW3vOKyHenA/9uAm7iPDHC16xyzrHJeRZ4ipN5iPu06Iqm345rXU2ZcuycZRz3tyKD6gYUlnAjIuRllVpM4QRd10Yrw/GiUYcO4lLyXODEzuhWY30cXstrS3SEeLHbZjuynMzruQfnlNQVcvpMn9I4lv1xt7Tma9pqRBI7fSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LH9PwYO9; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bn2GZzoo; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c57m5I1o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LmjbK+UjI8otx4r2v9jglwo9Sp7Xax4WXKm4x9qM2N9qyHytYLcb7PZ/dK2+7Tuz3D6CAn7LcjZ40Yfrga8sSy8lOFCRBxO+Hh7PBeA4KkaJw2n6ICxE/jWTZ3cr3uzzR4EKzkO35ttcDeMAIRv0Rf7AZkLRRXcvyStBOmcAWnpx6brm0ftVNsm1nUVXViyCMGoJPWXAPzIY5qwQwW0OmLtndQamtj++83HVqH91Yv3aY/TjFlu7NOqiGUQSxY2sq3+nsg+UBuU68pEEP1QfUPVE1mvxjB3H8dl11mf/isHiiDkw/CGLd9LouglE3mwrK4hYWOn3XfvGMU8bn/y+qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SjWJnreqtFTxNsZq0wk4jLyvdTxmmVD0C4te3RVc+zs=;
- b=BOx88kM0V1Qe35TK7llw0Pv2w7gC8uwaba8HKfAsF0hqvs7H3l8NBVaxZWc52E07s+tn/SRfbG8obbe9KpYRVzbvebJcIEJKeDEPd6yvk3XZd/sQ1CqSZmyqRSTGg26vMqnSYLuWpfOl6RX4aTCaqB8CUC9mm0NC1kAfDpl/jmhsHoa0UH4AQKtFTYDsvY2U6E3PAMdTBodgqq6mqwdbVqQ7Fj/50bdxVQsPX+/dqgxuoGjvvVyYrTLGk6lSdw8l5aZzBvJvqoAJfv/xlGHmf7kcLLtW91VzqFeXGLLketO21Z/CBYDlmA6dD9lwWIjPYq7qFa2WTrqxlwvMUCx7mQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SjWJnreqtFTxNsZq0wk4jLyvdTxmmVD0C4te3RVc+zs=;
- b=c57m5I1ojZnqgkklb19HfxIea9d6tj5entUML+dKkpWLN/xGQic9HiF+LpAa0K8jrpX8njgOHo+0d7YKuk1MS0LjDq+DNoTptgjgVsSVb3ck8uBChscxS3FXIrRSKBJKBealTWPJ1P8lhsJIg6EFfDyX9tdrfAvkkUzHWaFPMhJpya97R/ReGjL+wAUP8Cp3Vq2ymjtwi9m69CS13wYCtaDSDqQqzLn825obB2tSm5CVezzehkCULxN6KXTnppSLZ4vCoSM1zxyy9ZUYJj1/6YIjuMBkJiUZ9g8TDXoEAMBo8ED/oO4F+MB3CnFxOTH4ssUiY7Oux2z4TLexkVCZ8Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by GV2PR04MB11349.eurprd04.prod.outlook.com (2603:10a6:150:29f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.19; Fri, 8 May
- 2026 10:55:32 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9891.008; Fri, 8 May 2026
- 10:55:32 +0000
-Date: Fri, 8 May 2026 18:54:40 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Franz Schnyder <fra.schnyder@gmail.com>
-Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
-	Francesco Dolcini <francesco@dolcini.it>
-Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
- role
-Message-ID: <jjwlrgusucoacaye75uqfuh76a4jhdv3ivzjuemgusw3trwseb@mymuy62cptxp>
-References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
- <20260108081433.2119328-3-xu.yang_2@nxp.com>
- <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
-X-ClientProxiedBy: FR4P281CA0009.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c8::11) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LH9PwYO9";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bn2GZzoo"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6489Vx3u2771502
+	for <imx@lists.linux.dev>; Fri, 8 May 2026 11:19:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Xe4gq/TPDXHM1b12bLr1gd6wDh+pc+1Zrgp9yNQWEIQ=; b=LH9PwYO9vUoLEIWx
+	r1y3sQG7C8wXlQW/DAN9DYySbt2kNsRK3Cwh3D0ioknOOpo8aH+JZZE9erreLTot
+	0WbrqaWh0FLZtBxMMeIecKZNpZE9hcgSx2s7f0jqVHgASs9T6MsTOsyskXTkAZ05
+	QtEJ0Eki2Bw2OHA/qg/8xtxNExYu4V1vAxXhdJeQ8rrvHC46vxmt8t3URw1VOW7W
+	dIwtEJPgir69s65jLcryrtFjkyPJbRfJlP4mAcQMCoLlj+Aeb/O4gcJrarYeGd4y
+	iw//+uh4lxoJbJqMKqiIDI2+UcNVKjoCmKODxSEZy3uLYRjIyu27b0DyNQ5ypPeI
+	fdch4g==
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0yt5kedm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 08 May 2026 11:19:34 +0000 (GMT)
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-56f71af9dddso221711e0c.1
+        for <imx@lists.linux.dev>; Fri, 08 May 2026 04:19:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778239173; x=1778843973; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xe4gq/TPDXHM1b12bLr1gd6wDh+pc+1Zrgp9yNQWEIQ=;
+        b=bn2GZzooA2ow5JPgxT0FTci5SGdB8MYsHkaxuG708wQOhTsBcJq1pc4KLoDvlJQTj2
+         g3LUYc4pMVs6O9NvgPI7LBjgHfzBN32C1QcuWvqxTMbRuVKO6TGAMSEN2seTUq0piXqT
+         JWKafeSTLyIFqKmH92nm4q1i5uM+6EBcU/Fe69+hfZ1zNVoRzwRgos/JX/3scmM3uY8U
+         II3O4Zs/TaO6xxPhO6efNqbSe37cXt9w5nVxkpELHu+89mF1DC8OUJKaJbtvp1aQWHAR
+         7tCIGvJ3excMtOhJX8m8ugfsau3c7zrAloL5g0UhZ0zAikSjuE5NF3j5Cz1ClqetcOqm
+         NZ+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778239173; x=1778843973;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xe4gq/TPDXHM1b12bLr1gd6wDh+pc+1Zrgp9yNQWEIQ=;
+        b=lrMe3npzrARagIYBV6jHHI4JgsD645XzpUkNyW2AbgUaeKAlDc6aJ6t+0Vmv8Kxonr
+         yBN38w3zitmICiJvKr+J0vTq2vPyGfDiLvZOK9hKsUVAp7bBL0iv0XOioqUDlJnhOvAr
+         E5IbhKqBGnPSNXGR/DteRN9LCfc6DjY5bx+uAL0fu3qaXzVW5WvkRoSWar0DFdC66Za2
+         RNJ3WOkeuZUQuXR7SBj1Z1lyBfGIyvMTfy1b9YYPlp4vWKRQui11+AVyqmJSYbFX76Ab
+         7SLsSnvbpjuK6jLEAv23OCaiIk/rHUzDyAP7t/QjCJhcp/dMYmp3bnszt66MDSKSkomr
+         RQbA==
+X-Forwarded-Encrypted: i=1; AFNElJ+BjByCDATlSMT1/ZhyEg+UZzOAO4aGXRmNtNr9yfhYX7/rxyqs2NluT/aga4SiyrpW4+o=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz9RHkpjYrgqr4DFQcaiQqmZFuM6Cp3Jm/XUAK8iLSGvy8AmeE5
+	X+rTqyHqb7aXj/8MYu+aDZN/9ZS6ba/ITC5mBLbzF51DZiYH4lBx9z1FQnA6eSO0lrpTdK+MdN6
+	YG1yZWi/0RR46ClCmv97YUGcDJ53WmGbl+cR32KHMaQb5ub6QbhDH1fg=
+X-Gm-Gg: Acq92OFmhDF7/cZDJp8yt/GLFuJH/vT1WTxWDm5QmBOsoR4jKSBOzycO5KxTh8FK9KN
+	GpsHK281+wxg1ZwXNCJUh+N+t/fHjeDRTOB8gdZ+Cfe3flQUrFl+cIzptM3tkcuMqF1BHOrIiA4
+	jW/oKHUz+8PkHQrZoiFtMxjjd5h8Nyev60yuoDLBs0kLNGNtezRjKIzkZRUW/CKPhHCPhrq2kQY
+	eQ4qH0oiS5Qyzd3SnEPrM1vZdvzO/HwZzz1RcB3iaFegq3C28LsSPiGn4g1mo6XAU9oGHXiyya/
+	Xoct/mMJBK5udHe6SRBnVBa8QvZsAM25clc876EyrUIauI8QCYMIlLh7Dl0dAOXc/UZ+oluW7XF
+	A/vzGuwORt0hASd80G/M3e4OlMmipPC1fDgahgpaOCPcpY63Hxm5+rAozV2EfDQtsvgFQ2CjwD0
+	lDFr3Ov11zuIGEdA==
+X-Received: by 2002:a05:6102:2ad0:b0:623:52cd:4cb7 with SMTP id ada2fe7eead31-630f8e77f88mr2676922137.1.1778239173573;
+        Fri, 08 May 2026 04:19:33 -0700 (PDT)
+X-Received: by 2002:a05:6102:2ad0:b0:623:52cd:4cb7 with SMTP id ada2fe7eead31-630f8e77f88mr2676908137.1.1778239173166;
+        Fri, 08 May 2026 04:19:33 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac398b017sm65898666b.38.2026.05.08.04.19.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 May 2026 04:19:32 -0700 (PDT)
+Message-ID: <a6d6e638-6e61-4e39-9e06-bbac7703c6ac@oss.qualcomm.com>
+Date: Fri, 8 May 2026 13:19:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GV2PR04MB11349:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9adceb6-83d8-4ed3-f3b2-08deacf05315
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|19092799006|376014|366016|38350700014|22082099003|3023799003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wuCNAmGJ4v7QMzulnF+e7iTF8omkXg2X1P/4zfqIZHFNXuANDsh9OnlSP6kjFu+7UItu3p9UCMNHFn1/9vOS9WNRtIeZK+bff3ZvWY46S9Q3dYpNYvMoQGfjgeEkrtdHaVHmRKJRuINQxTh9eggTj31KUNhEnkcsGXELn2xKOPv5VvNbaUb4WpjKd4M/7AavDs6z26QLuxyTUIiZHDsrF5qRJtWchzOguuWEm6Get1sfa7uQe8y+yT/ikHC+0eLIMPht7vCHzyNgXmHcg0n3/ZmoOpWSHhM08kp/wwfSboRyJ7kei9dNPaaAONzvlX2XxyQOODJ1fXHcfxTBjLRUtczeGt2yj2j4d28TpX7av5Wt8k3Jnu0SAsC2l8WTIpxuJtwWNw9Ye1yMhr4pPaPpII9c2EcMzV2iFi1ZaKswSNw6UcALeiuNh1YHmR0TPy87sJOJvAGFumor6FdTCAY5l8d51jTJKPSmzuFu4g/DtkJbsgWKZ/wE4tPKb7L7qm+j4CFG09p+ogwGAZEEiZA7qtVUFDU9NGHLjEqHGffLynS45DiDjW9+SrMcfHUsBPdXM2veFzmDdbbBVzoch2WjeOssQaPgvrwcHiF6tbnfq8eToojy8OP7r3zkuElOrh6pmQiJL44dtRFqrtL/OSYDf6ubqN5sF7C1BI7Ny0N/XzGnba7HoiZZ+nhB2MYZyec8UgpUYL49D4Dp4O6oeBDJTW1SX/2anJnwfEh8rfz8DIrTCBB1TkmazDVAmskgVhBz
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(19092799006)(376014)(366016)(38350700014)(22082099003)(3023799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?H6zkeSItdZI3yQyv3guCywfAkS6oMGer/5PNUIHSe3i/QXdo9hstZ2hMamEz?=
- =?us-ascii?Q?k8GOUlI4hoeET3nqcWq8BrhktM1qeKBoCS5wtjyVi6xliVwwfttpO70l/hNE?=
- =?us-ascii?Q?OfIhNiHujPJd2TwuUJR33gkJQLyOiHvitSsvTY0Vh8Z+29M4D4cvkmqZmcf9?=
- =?us-ascii?Q?kTm6mJFsGIbeiHQqSWJXp7hZvxUtt2DoEyV1SF122OP3IHodzDUlUhvYwvcL?=
- =?us-ascii?Q?KzCUl3HvDhBItSAXAzUWM0CNprbTM3N/RCzKJ54/hCdIDDK5TUO6j5VXkOn2?=
- =?us-ascii?Q?d0JfY70RJS9F6eJ5h2HMLWJ5FcMwL8hYFnZLeTA2rMN8tusWjkkOSbHo4D5+?=
- =?us-ascii?Q?by9SaowCoFS+biGPYbJiORWZ4ZCipSTqSm+zUu8hDBF7UKB9RTCX1VpV3J+F?=
- =?us-ascii?Q?wt+elKFjNqBl/6xk7n0vKRUioqHH3jr663Q+grcEQ1d7pthWLTS8d6SGqll4?=
- =?us-ascii?Q?92/UuWMOvADHQ80QhExCl8kmPQO/LsrnWGWdxisbeC0vAhvoc6sWjI59aCkm?=
- =?us-ascii?Q?S4tmRiZaBybJdCmzyaP3lOLnmFyadMdlbNjjfnfmY3f8Hk6X+mXeyFc4ujTf?=
- =?us-ascii?Q?Ns2mmUudfiiu6C4pKAUd0Rk4uHG4ILoCl5pUiDSHdVZgdnTVPAD5PIB2Ofc6?=
- =?us-ascii?Q?/m4x5G0xHhdAQbxzZARKpJzc6sDry5ik7coFFYpt64nuMlMEYDDUeMXn9bis?=
- =?us-ascii?Q?wgMG/rz4eTMioZKq4TFVO8/Eh8047c89HCduxFdzjsZ5PIJFqWUL4zbeammR?=
- =?us-ascii?Q?dDAroj6IkC4cohHabxKjcuG+42dywgl4lho6mjYxUbPSVR1qjmBxZE//F4pt?=
- =?us-ascii?Q?i844a3jnWBMvfWovfW9n8fO2NYF6bI11f3NOLAWSeTEnwfG0gSmvTTMhoaw4?=
- =?us-ascii?Q?mpA25U0Ay9F/t/cT6IGl5CVB1a/2OJReyK17DnFtPioxdRX5e379fuQVxe0v?=
- =?us-ascii?Q?d9mAVC2nyQ+KTVpRxo96G/yoiu+Jg3OcLkLGoQtoY1Mk09YDscT0ZONv0nrF?=
- =?us-ascii?Q?3GrRKphO2+io/UrBaccbgZKUOIVULJvJlybPCGRsAh4MIZTJGowJwIedWcv8?=
- =?us-ascii?Q?p4sBCwt1AGSQOxez8UBhpKtWF2i9C3bXV6by7R6xOno9hsbC6xAfDOqglPzg?=
- =?us-ascii?Q?Qykr0rDxVwksjt5HJUBCq49UFQGLZ3qe6XTqplYZRA1BxTIzL/oeJmW+YaAK?=
- =?us-ascii?Q?UXTkIE8CU9VHfur77+7UGY+lzbq0Z+1rALD/RXsdxuah1WhXwM5EfMPJIXyJ?=
- =?us-ascii?Q?WHoYhFXQiJCffQNViHg/12xAZglWF2czysoBxrEYzS32x+QS52LzSghnsdFh?=
- =?us-ascii?Q?OdfctogFwjo3NY+95YQUD2WMULD57pMQ9OwqVMZO0zBfY8sx6GXFCFcQoOl0?=
- =?us-ascii?Q?n3JUecS80MFqUSMSbyurDKPnibNAmbhLddhg9giDU0GqPxfCVzVWCafbkEPS?=
- =?us-ascii?Q?hg//dEv+jNDejjo7QqZuohz2iMa++nDFoI8iWdhxLqTjlKcpGVNsntmNenvp?=
- =?us-ascii?Q?NGytmX3727mY9J+4drdnjykQHdUc/+uXYtERuI8djADZ1lKy78lbB4UeGOhQ?=
- =?us-ascii?Q?XkzzWeHkpedUSwaaYa2qJRhAl9PvZDEhzIifOfRGJ45iHkGGCDxeIt2DGiSE?=
- =?us-ascii?Q?kyl5os4v/VgJAyvqXj2Z/NECs4jyg6eoTSvhElgxqeoWefBwMWcIuyUTOpKl?=
- =?us-ascii?Q?4nL5TfM6991dgqeKVKAVx20twV53EjXoCH5N41R78rH+jt7fdpniI7JEt/7w?=
- =?us-ascii?Q?gWZoxnH3tA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9adceb6-83d8-4ed3-f3b2-08deacf05315
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 10:55:32.2184
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uPmlIqDqO2G1IVmD0c5EinaJGzZZMz5XG2vIMfh3yKHtmFJNCFTDo7Ip1v0+xYGHbNLAv8oKWx5MniPTwu9V1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11349
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] arm64: qcom: imola: Move analogix video/audio output
+ to dtso
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Riccardo Mereu <r.mereu.kernel@arduino.cc>
+Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org,
+        linux@roeck-us.net, Jonathan.Cameron@huawei.com, wenswang@yeah.net,
+        naresh.solanki@9elements.com, michal.simek@amd.com, nuno.sa@analog.com,
+        chou.cosmo@gmail.com, grantpeltier93@gmail.com, eajames@linux.ibm.com,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev,
+        m.facchin@arduino.cc, dmitry.baryshkov@oss.qualcomm.com,
+        Riccardo Mereu <r.mereu@arduino.cc>
+References: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
+ <20260430132140.30369-3-r.mereu.kernel@arduino.cc>
+ <CAFEp6-31LQX+uHJ2PFES76RGqmZKS43dO3UoziVZ-KWQGCy6aQ@mail.gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <CAFEp6-31LQX+uHJ2PFES76RGqmZKS43dO3UoziVZ-KWQGCy6aQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=Dc0nbPtW c=1 sm=1 tr=0 ts=69fdc6c6 cx=c_pps
+ a=+D9SDfe9YZWTjADjLiQY5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=T26Fge9w-xJM3eegr2EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=vmgOmaN-Xu0dpDh8OwbV:22
+X-Proofpoint-GUID: Ae1tV92Ff3ZjBMfm-HCdrm-nx0nFnonp
+X-Proofpoint-ORIG-GUID: Ae1tV92Ff3ZjBMfm-HCdrm-nx0nFnonp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDExNyBTYWx0ZWRfX4ct9NOwfX+OE
+ 3MWal25kUkhsg5DahuCS/H50vVSLG3r8ycjVoMuuX8AuXN7OSt3yfdu6V8KUhAEeSVWRxCY8tzl
+ ItFZcfOnIqerLt2EDSJZ6G7aOtCFGftOFkpk1Z1rMTUDIr+1FggkgTfXTL9FWGZRH95w1679OD3
+ XazVrv+YANbwT0hBR82CmxR8mtzN2iUJO5DKZlwvuHWMSnz5B2Ejgku2+N70QeO5HwGGTcCLYK6
+ DQHcabRpfIPt9xDs6MYw8Y+i4obTM8YYh2LcBnToPnDhqaw+ucmIki4ECfClOEc2SN/P0Uy7igA
+ J6DS/RcI8F7H0BEdeo9mdpFGeZeVSTupmUzKPkFM3/8T4tfvj/mUq9X1fTPlRdkBWfDauLdTIWk
+ W2Yuab8WVcerdGOzjieeoWF0y9Wjtp2PHwAWzOvqaNh3VFYFBppkqjFUUQcJD4JRp+Ms3/3NTiz
+ SDeJBnhZkb9IlAzAAMQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080117
 
-Hi Franz,
-
-On Thu, May 07, 2026 at 12:46:08PM +0200, Franz Schnyder wrote:
-> On Thu, Jan 08, 2026 at 04:14:33PM +0800, Xu Yang wrote:
-> > Do dwc3 core auto suspend enable for device and disable for host
-> > , this can make sure dwc3 core device auto suspend setting is
-> > correct all the time, the background of disable dwc3 core device
-> > auto suspend is to make its parent device suspend immediately
-> > (so wakeup enable can be enabled) after xhci-plat device suspended,
-> > for device mode, we keep the dwc3 core device auto suspend is to
-> > give some wait for gadget to be enumerated.
-> > 
-> > Note: It's a temporary solution until we switch to using the new
-> >       flatten model.
-> > 
-> > Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+On 5/5/26 5:44 PM, Loic Poulain wrote:
+> On Thu, Apr 30, 2026 at 3:21 PM Riccardo Mereu
+> <r.mereu.kernel@arduino.cc> wrote:
+>>
+>> From: Riccardo Mereu <r.mereu@arduino.cc>
+>>
+>> This is done in order to support different video output over DSI.
+>> Since audio part is linked to Analogix USB-C controller it is moved to
+>> the same DTSO.
 > 
-> Hi Xu,
-> 
-> We have a kernel issue introduced by this patch on an iMX95, where we 
-> use the dwc3 usb as otg. This appears to be due to a race condition that
-> occurs during probe, when the parent attempts to access the driver data
-> from the dwc3 child. I saw your work on the new flattened model driver 
-> for the iMX SoCs and that it will soon be applied to the iMX95 as well. 
-> Does this mean that the issue shown below should no longer appear, as 
-> there will be no parent/child dependency?
-> 
-> Do you think there are any actions needed on this patch?
+> I'm a bit skeptical about having a separate DT overlay for this. Is
+> that really the right approach? The Analogix block is part of the main
+> board,
 
-Thanks for the report.
+Oh I skipped over this!
 
-It's strange that link->status is not DL_STATE_DORMANT or DL_STATE_NONE at
-the time which means the device core may not properly unbind consumer devices
-or handle something. The patch does a simple thing so the issue may not come
-from the patch itself.
+So, does the media board require that a switch is flipped or something
+like that, to route the lanes away from the analogix chip?
 
-1639:	list_for_each_entry_safe_reverse(link, ln, &dev->links.consumers, s_node) {
-1640:		WARN_ON(link->status != DL_STATE_DORMANT &&
-1641:			link->status != DL_STATE_NONE);
-1642:		__device_link_del(&link->kref);
-1643:	}
-
-Which kernel and dtb are you using? If it's a downstream repo, how do the USB
-controller and related DTS nodes look like?
-
-Does the issue easily happen? Does dwc3_imx8mp_probe() eventually succeed?
-
-Could you add "#define DEBUG" in the head of drivers/base/core.c, rerun and share the log?
-
-Yes, if you use the new driver, I think this issue won't happen at all.
-
-Thanks,
-Xu Yang
+Konrad
