@@ -1,246 +1,161 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011035.outbound.protection.outlook.com [52.101.70.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466436DA00
-	for <imx@lists.linux.dev>; Fri,  8 May 2026 09:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778231402; cv=fail; b=tyEZb188r+kngJSR0fH3niMlLUrJQJXOmToBXu7K7IyBq2l/cUsM7N5Vo0xNLYTHWEovT9RrU6cNAMzeXpRrISLeT2nBpEVCgI4MMBUskUkPVW55N9eLWyER4Dr17l+T5DUc5wto/nXFh7r7CVIOqj0U23qLNCGvIeSD2eeoSKM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778231402; c=relaxed/simple;
-	bh=eA0Jx8UBNjYtf3Xscq7vGbLW+onIsREIq4qweu0/aFQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ul0g7FVP00UTJ7Cq3UYVX9BSZb4G1gcW6oc4TsYaQFbzrQrWWW2rgjooIfhcMS0MAQFJsu/C+ZbcFQFxnRm8KivxAipVXr5NtNBaLf6++AIfKDHE9kvl7MXjqAuu8FMcYsQb8D1sYnfAmGl4H5VFCjgpkRUGWz8fKHjUq/XBKRM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ikpb43+v; arc=fail smtp.client-ip=52.101.70.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ikpb43+v"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=My4BWUtmpoq2SHoyBWoIwkkuC6ONtcd5H3+RJxp6oASBXn5nVGhZrTBTz9PE/N8CqHI5uJYWtgQFr2n2XJV8/X9/18MdQb4DloF7UnB4lgeAckyzqyWZsewV3cqe7eDzuTsVN2fw61j2RFef98D2Ne+d5Nrq9GX2NqJL76heXnRh6bTZ28uJcKO307HUvPC6jyaEQKXaAq6YvLg5KlhElWtv++x+1f/NH1UTi4ldfdIxsdDBDaWr0RORuT3I/QruDEh4mpRq0RXjVosBtlcG9I5bzUtx6g3DNkw7hvlxpNw74ZtffCwtSy/ETXWWSI+zXBy1Gn58kyD6r/XHlC3sUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fbNvkvZeDwHxvaZm0FB0QiZrF+/dy1p7HfvcOAkEX6E=;
- b=awmhs61Ysnh3aSHJVK1MwIjKojsnbmGVmNI7wDWqVL/vnYFvbU8Vwa155XzwDSkKuZXUrmJeeeUludMt+24NVDh76AhlP0eaHBOyBPacEqd8Wz/sl7yW4C8MK9VkSu6vBeu7nc6npfJsj5G1PSvFsnw88JrmA2nASHS/V84rfjYsETdsrlpqeFKhrM7EzxKjYFwRBgYuWFw2fTiVqK+Pq/opNcHMeu0D2j5lTzF8AIqcign4AVYGhm+0Sv820Puc9+D+cj1cCBdPNHOER18mF7leYGKBEJt60aY10qZUyrj86yeVPflxquitPpZTaZovCc6gOtsisnoDCzIOasYbnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fbNvkvZeDwHxvaZm0FB0QiZrF+/dy1p7HfvcOAkEX6E=;
- b=ikpb43+vwrFTy3zNZs8x6ZTdhmiLhNOmd8SYDPbEiIOeH1X0tT7YKqOd30zu1qAXi6lYfcQotozq2LROW/fVZT1fL58/JidHq+k2uYJAJgm205PE32RXryLdSqMGxOi5wqGUvIpxCJSSeeo/w7vWX2N6Q7GGm+j0/v274TvEP1ejVD56wrGw1uHiI8wWG9ALVUb7YQkc1DeMMKU0X7oub/2h0eUlfDp6QSEl/WrdyHdRzPGT2v7cq3mqefYSEO4nkjxuIu5rgvkcZzl5++qtcHvVemx2LIBczfCGsEgkk6fNNjldraoUGo9z3IyHOuuLDljI+uLDbJh4PYFAkSB7yw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
- by GV1PR04MB9087.eurprd04.prod.outlook.com (2603:10a6:150:22::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.19; Fri, 8 May
- 2026 09:09:52 +0000
-Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
- ([fe80::a551:cde0:6730:1d85%6]) with mapi id 15.20.9891.019; Fri, 8 May 2026
- 09:09:52 +0000
-Message-ID: <ff2ffdf6-5435-45c8-a0cd-bd2b5718c973@oss.nxp.com>
-Date: Fri, 8 May 2026 12:09:48 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 5/7] dt-bindings: pinctrl: s32g2-siul2: describe GPIO
- and EIRQ resources
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
- Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>,
- Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux Team <s32@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vincent Guittot <vincent.guittot@linaro.org>
-References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260504131148.3622697-6-khristineandreea.barbulescu@oss.nxp.com>
- <20260505-voracious-gregarious-stallion-ff6c34@quoll>
-Content-Language: en-US
-From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260505-voracious-gregarious-stallion-ff6c34@quoll>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0157.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:99::18) To AM9PR04MB8179.eurprd04.prod.outlook.com
- (2603:10a6:20b:3b5::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D28389E1F
+	for <imx@lists.linux.dev>; Fri,  8 May 2026 09:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778231448; cv=none; b=kGAB3D2TglfCVmuoBJVytIa2jpLTWRHmi1Lm4PhFmeoFiqPd8nQASohkzjRaYliWirkd2U4lkzZusGJhDgV8nbZrw6cP0/1mXCv5qMG+qd6aeJqj3JDaoK0x/0akq7dCxpbqPN6xDjTn1ZyJzd1UpIqU/eFdla8EihipWPyL8XE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778231448; c=relaxed/simple;
+	bh=Xc5j9CDKlFuLtIb9mG1NWd0Wa+Ic7rYDHKf0WsXQawY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r1+EO5zHcw69XaIct3fjptkeFIgMexDtXtygqgF0yWAP2bxOAujU0Nioeiry4Codat99lXX+VSJjzPwFSSb3qSBFq4rnUq34ogellCkhQYjjvhi1WWnt4XlUcSMA0ehUmRo15f9+4drQRGdUwbzYYW5x3lOvMwVcpuZ9rV85kQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5752b279662so573110e0c.2
+        for <imx@lists.linux.dev>; Fri, 08 May 2026 02:10:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778231441; x=1778836241;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=freA64yN3LTk8GeI+Wxty1utrJRjkdarC4+05051tIg=;
+        b=f9bhTPD9xH7CrD+q4OUzH2Nr+Jioc1Nh06aN6iBHme8JATx5v8a1nf/UKlXZDfJr3L
+         napzMAQF2TtT2oOcU8OuvO+K1UPnBv5yR8Lek79mDe5qWjdsAKHjqCbQezi+xPevIJpN
+         rOe6Dq5GqWGtOW3d6IOWUZffB9chtw0CzyIr6Wh8BkL0iHyRgt7jQaHZyB1cUn2O7Bhc
+         W559NOsXr9VPsYyuJ7DyXESAfWuY2znJK0v4WvbfaAjbnOfWMd5ikLwCBWn4joTFFPZH
+         l9pckk6dd5wfBUdENpUcXY60pkz4G/EUMwul6XCtcc8qW5MmXV+HQ2YFOkaWlhBDqw0w
+         JurQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8nmn5n965nXmo4qYEjLAzqBgIycSTUUWX6DTOVNUKHLM3OTY6HUs0Q8AqGUrezVMi6lxc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyx6QGnSJCwsys5XsJCVN3l8XGwc7SSHHFJB+xvTyhh+jSwO6/4
+	roF0dLCNl7e0Q3Ooa+DimsvCQJvhZ+E5ZCTv6BonXih7dByAVT87kELszu2TswIMVCw=
+X-Gm-Gg: Acq92OHDlv0sNPML9Vy45Y6jFl7h/VmYBQyPUZ2yseZiyLg1B6yNxtHccF1ygw/KdAr
+	oE1MGu3sQD2a5D1uxXMDvLd52JVs8aTTt+dazznX86ASkqykoaPZKzHpEpaRYsoh6//Cxm79sc8
+	pS9Whu332+TxKe5Rcc6bGcui8cJbkmKj3OEKFSj++/b/2Q5mlwbYnOeUqjWFz10wEiGwO4QGInq
+	wGXkVoVp9A6BtxIcUfmd613ZuBed8hNr08kgOI6dnXax/CSQbLZFklu62s9rG/FzHmo9XQ1ZiOd
+	Ij74VoYdASooZhfd6VSB//HxLOiFU7f/0BHYHoegHeEhC/+ODQTaZ+nzA3eUxU3nbOBiwIcuyNx
+	pAX4n1lIfd6+rsvkZIIeQ3a69DDxTpx8bbG5wd7VV7aiUlA0EdHtc6rK7wyVw47ZjNVIpF7bNiT
+	nsIkIhJK3IBPVlz91bjXbZItwVljoIUdqKgm5Xd0CyW1ZK96kBM5g/Ui8CO34L
+X-Received: by 2002:a05:6122:a07:b0:56e:f071:d4ef with SMTP id 71dfb90a1353d-575595be49amr5880938e0c.8.1778231441012;
+        Fri, 08 May 2026 02:10:41 -0700 (PDT)
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-57576d13773sm2077174e0c.16.2026.05.08.02.10.40
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 May 2026 02:10:40 -0700 (PDT)
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-6314a0eefb1so25682137.2
+        for <imx@lists.linux.dev>; Fri, 08 May 2026 02:10:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/DP0Q5kekvlQDV+VlFVwCp+/wwcqzq9KJDOf5we6LXK+9XvBdks22+9eKUCNfUIZ+FpdY=@lists.linux.dev
+X-Received: by 2002:a05:6102:854d:20b0:631:2f82:c3ce with SMTP id
+ ada2fe7eead31-6312f82cdadmr1563743137.10.1778231440310; Fri, 08 May 2026
+ 02:10:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|GV1PR04MB9087:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca4128ff-f561-42d2-752b-08deace19072
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|366016|7416014|376014|1800799024|3023799003|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
- 5GUqxsOiXv8tc3bfzPukdDr6HEZdSjoi0my0rZE6QtDhTXkuJqZNY7T0UaQVWZEw9cfD72SweNk6EWoARW2J6jVL7Ib8UVMhjFAdOfIEX8wXlcWC2gScu1pttZ182lZEsWRDSyuv4FHj68Hre99Pv8k27b1C0yroxw7pRj82/C3pTWSlq2DaQRfNzcHNcOuFu1Knunj7Rt2o7ZsfmeqG627Iu+4GSawfMJe6whpYc2ZjXAnG6Qb0AG3w4eEYMhogKNJs41yjLCYgy/yodoAI7vsF6Wo1HjgBc1XMs62sCvbaUBVSepGvLZSvsFDgdVZGolO7tw4fUqzr49u94Xk5pur68GiepFO3R+E/5MIGiUAqDOpnjL4igpFMXyS5EO8k9vvuX8vgf2hepGNcdiGiBoGfozTD+S8rWBdUZqXrfwbtuNJkz/XEdoppviGhgbUJO9P71wtOXznDtYXn/K6ITWZn590GDebYcwoYtuiWaRYfEebglvoi4iPGlMmNa6JJZA6eMyYu55mVapBrvW1cVUhqROYAF6EU4p2eQttEWSYBFbVNDKTDUtimrbX4/qDxhsIkFQFk/kdia+LUhSIzdih9qJ1/k/YXK+oDxxBDbchGiWLlrqzi1S71jagwYKXHF+EslojBlYQ3EdmYQagQyg==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(1800799024)(3023799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?NGd6eVpCdWZxM29KdnRYVDZneXBwR01HM2hjejVEY2hOajNxK2cyY3grKzZn?=
- =?utf-8?B?VXFYd05uOStpVFJYZjdxT3krZnNxbGZGMU9ZSDRtK0daemFJQlBVRW9KdW5K?=
- =?utf-8?B?NXJCcGFwbmEzdjdRWTkxSUo0Y3RXckVKdFNrNTZMclpDQkRvekt2d2EwSG1l?=
- =?utf-8?B?S2FIWklFRGpvUWJHQjdVbDdKcHhkUjA2YVVaQ20yM3hYakVtUkRSNE55MkpP?=
- =?utf-8?B?cERQU3pmZWI1SlJTNzY5cUpVVE1FckFvYk1FMEIrK29IL0x0V05QbmtGV01r?=
- =?utf-8?B?M2hoTkJHWnBhVTFLWnlZY2VxcFZGNDdMWlJhaytxRjhwZkxjYXQ2V0ZQL2s2?=
- =?utf-8?B?UGIvQ0JPaFh3c0pYdGoyNFc1WkVHQ2xNMXhlakV2TEJOV2tFdkJzWUZXalc3?=
- =?utf-8?B?aWlPWkJLb0hHTEMvai9jcDdWZStMSDB0TTVHTzZUcStObmF4N3FTL2M3OXEy?=
- =?utf-8?B?dHNqTTI5ZFA2WnlxeHNoWmsvQ1ZPOGs1VWp0TXMwYTRVNWNqb0lRL0VGODN5?=
- =?utf-8?B?dlp5bU96eXFzTTNGRy93bDdYL1p2bDNsVFhaUG1yWkhtQnFoa3JteTlRQnJF?=
- =?utf-8?B?akVkcFpBUmpod2xnVXdVQ1V0amZ3NkgxOE9YYWRZTUhjTWhwU3JaODhQTjFQ?=
- =?utf-8?B?a1ZDSEdZSTIxazl6TjhURENpdzg0K3dBQkpVZWliMERJMlROL2JPcS9zWmtl?=
- =?utf-8?B?RGE0Y2VuVFdLUEZnaXlSbWlqcFM5NHQyU1RBem5rRUdDMitQZ1IrUTdIK0Yz?=
- =?utf-8?B?cDVLRG1aOEsyZitzS1NhcEs1RklRdUZsZFdaMFJaWVA2R2xTbC9ZWkxxQ2VS?=
- =?utf-8?B?Ymk5enVCYzNGNDV0VTR3bkJ1N25XNVQvbzNuZ05uUXZlc3pYVWVSM0RkNm82?=
- =?utf-8?B?WlNBR2ExbWVhVzhvU1Bld21SSzJYSE1Fd08rS05Bb1ZNQ1Z4ck9rVElOOFE4?=
- =?utf-8?B?bnJJZjhHZExzL1RhNzZPL2c0eFlleDJmOVNHTGJ4aXN0aWxNTW9vSnRsTm1u?=
- =?utf-8?B?YWN1dW52VkJ6Z1JKZWFiQlVNSHhuNWlibmZITGQrMFFzK3ZhSjY2UlcwRkU2?=
- =?utf-8?B?dExrckZ4Y0l5MDdkREdySTRXajladlVsQ2h1NUl1OTRYem13eDIrSEh3RWlL?=
- =?utf-8?B?SUIzV00zaUhLdnlXVlQ3Q0p2aGV3SVdvaUROZU1jMUNFajVTK05ENHlQQmZR?=
- =?utf-8?B?MTk4TWkzMXFEdTVybVppS2lvL0h1dTBLQXNKblVoM1E5ZDBwVjNVdVUzQjRT?=
- =?utf-8?B?eExOMkhOT3pCSFMzYW9rSWVzZzVuUDVzSFd4MFRRVnFQNnpJbGlUQlpZMWo2?=
- =?utf-8?B?S0xnYlFQaTJXOUZGWGJhazRXWE5GUTM5Mm92cGpCNmtDT2dHcVBDMVByMUk2?=
- =?utf-8?B?QXRMOVc2L3dMb3VrU09yQmwwUDkvMGp4ZE1sTEwvajdCQ3QrOGxKOU5HdzI3?=
- =?utf-8?B?SGZ5M2pHem1uVEp4SnNnWWFjS1VBSmp0QUhDVE9lWGEvZTRGT3h1V25HT2Vl?=
- =?utf-8?B?Vlk1UDhtK3hMSmtWaDJQeEk4ZWZsNFJ0bGk0THVXUlZTVDM2NHRveGZ0N2FK?=
- =?utf-8?B?alBEVGVEYURSVExIY2wrcFp1UHJRZ0dkZnRiMzhDOURzRCtlYXRaaXRMbXNC?=
- =?utf-8?B?VVB4a2dVVTQxbDJiMllUY2xVUTVmYkNzSEY5OXkrYmRxUThteGxjTXFpckVR?=
- =?utf-8?B?UGo5bmFUZmVaQW1FL3A5RjFoaFRGZTU5aEVpb1orV05kK3U2cnNJR1VNVzNX?=
- =?utf-8?B?ZWhuQ0YwdVppOU1nbjFKV0p4R3I1M2VSWi9VM3NQbkJMV0NFemdMRTVsU3Jx?=
- =?utf-8?B?MFlBYVRGTGFpaGRMS2NHc0s2OFhBeUVJV2txWVhIUDdQU3JzSjdIdGx4cm15?=
- =?utf-8?B?M1FvL3F2ZTRzOXdsOGVrN1EwNU5XNTNHUTlpYVRoRXlzZFRYVkl2S2lqeC8r?=
- =?utf-8?B?QWE0eTkrQlFjYndGQm95TWYvQWFxczNxYjNLa0dOWXpzeXc4WitMSmx3aFVv?=
- =?utf-8?B?b0NaWS9YMFNwcTM5Z0IxVGwxV0NzQ21rYTZyQ0J6MWVuZHFHWmgyM1J4TnlU?=
- =?utf-8?B?dHpUYll6UUQ4VkM2UGgrZThCVy9YMmNZQVhGMWt3VFVtTWdWQ1ZSeXhnRWVO?=
- =?utf-8?B?RlgwVnJpVVlXRk81ckMzbklVVlpzMG9IcjkwOFZBUWR6NGZkVTlSV3lDYTZh?=
- =?utf-8?B?Q0ZhRzZ2Z3EzdUlPeFlscUgzR0YyUVl0N2tzemJvWG1hYnZ2ajhMQ1M1bFlH?=
- =?utf-8?B?cGNxS3ptL2hFajlMVFlHOWdEWkt4Q1JsVHdqRjlyNXpudmlIa2xyQ0xMMTNo?=
- =?utf-8?B?Y0loMmIyelM5UVAvUWZJcnp2RzQreEFSNCtRbkVIQTlCYXIwdk16NXN0SjVX?=
- =?utf-8?Q?0VjWVdlC7O1BHeFc2OaNgwHxz4MKDNdYWKqXo?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca4128ff-f561-42d2-752b-08deace19072
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 09:09:52.6495
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HqXK7B9ui67wbm0Eol019hMaXbe4W5UzJVygeUXtoYIfJc16GQ1Vfy58JduCW3hE01XPpSMAhKtr7cZYVpa3jXoQwC7qRPnet/Dv63iNu2FV7Bp4+KSc1WTkLXHxjeDN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9087
+References: <20260413160331.2611829-1-antoine.bouyer@nxp.com>
+ <20260413160331.2611829-10-antoine.bouyer@nxp.com> <CAMuHMdXrvn+kwBsc96SQxWMABZv3Y6EPc3FLU7f-pOi2+J+S1A@mail.gmail.com>
+ <96bff2f9-04ef-4272-b408-fefc7d1d5e11@nxp.com>
+In-Reply-To: <96bff2f9-04ef-4272-b408-fefc7d1d5e11@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 8 May 2026 11:10:27 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX_O-75kxbqEjLKQ1=5OZpvyCkuWo8CBzpvymzj0i2uUA@mail.gmail.com>
+X-Gm-Features: AVHnY4LHFQ2cNB28JlB_QeYS4eHTz1eigCbditGi6HUZBbCkr7_rXaltq2vUwkU
+Message-ID: <CAMuHMdX_O-75kxbqEjLKQ1=5OZpvyCkuWo8CBzpvymzj0i2uUA@mail.gmail.com>
+Subject: Re: [PATCH v1 09/11] media: platform: Add NXP Neoisp Image Signal Processor
+To: Antoine Bouyer <antoine.bouyer@nxp.com>
+Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com, daniel.baluta@nxp.com, 
+	peng.fan@nxp.com, frank.li@nxp.com, jacopo.mondi@ideasonboard.com, 
+	laurent.pinchart@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, michael.riesch@collabora.com, 
+	anthony.mcgivern@arm.com, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	ai.luthra@ideasonboard.com, paul.elder@ideasonboard.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/5/2026 9:36 AM, Krzysztof Kozlowski wrote:
-> On Mon, May 04, 2026 at 03:11:46PM +0200, Khristine Andreea Barbulescu wrote:
->> Extend the S32G2 SIUL2 pinctrl binding to describe the additional
->> resources used by the updated SIUL2 pinctrl driver.
-> 
-> Please describe hardware, not drivers. Statement is not even true -
-> drivers do not use these resources, unless you organized your patchset
-> wrong (see submitting bindings documents, both).
-> 
-> Nothing above explains why you need new compatible.
-> 
->>
->> Besides the MSCR and IMCR register ranges used for pinmux and
->> pin configuration, the SIUL2 block also contains PGPDO and PGPDI
->> registers for GPIO output and input operations, as well as EIRQ
->> registers used for external interrupt configuration.
->>
->> Add GPIO controller properties:
->>   - gpio-controller
->>   - #gpio-cells
->>   - gpio-ranges
->>
->> Add interrupt controller properties:
->>   - interrupt-controller
->>   - #interrupt-cells
->>   - interrupts
-> 
-> Do not explain what you did, but say why.
-> 
->>
->> Also update the binding example to show the complete SIUL2 register
->> layout, including the GPIO data and EIRQ register windows.
->>
->> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
->> ---
->>  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      | 107 ++++++++++++++++--
->>  1 file changed, 98 insertions(+), 9 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
->> index a24286e4def6..0bd341f1e84d 100644
->> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
->> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
->> @@ -1,5 +1,5 @@
->>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> -# Copyright 2022 NXP
->> +# Copyright 2022, 2026 NXP
->>  %YAML 1.2
->>  ---
->>  $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
->> @@ -17,26 +17,39 @@ description: |
->>      SIUL2_0 @ 0x4009c000
->>      SIUL2_1 @ 0x44010000
->>  
->> -  Every SIUL2 region has multiple register types, and here only MSCR and
->> -  IMCR registers need to be revealed for kernel to configure pinmux.
->> +  Every SIUL2 region has multiple register types. MSCR and IMCR registers
->> +  need to be revealed for kernel to configure pinmux. PGPDO and PGPDI
->> +  registers are used for GPIO output/input operations. EIRQ registers
->> +  are used for external interrupt configuration.
->>  
->>    Please note that some register indexes are reserved in S32G2, such as
->>    MSCR102-MSCR111, MSCR123-MSCR143, IMCR84-IMCR118 and IMCR398-IMCR429.
->>  
->>  properties:
->>    compatible:
->> -    enum:
->> -      - nxp,s32g2-siul2-pinctrl
->> +    oneOf:
->> +      - const: nxp,s32g2-siul2-pinctrl
->> +      - items:
->> +          - const: nxp,s32g2-siul2-pinctrl-gpio
->> +          - const: nxp,s32g2-siul2-pinctrl
-> 
-> I don't get how this binding develops. You were asked to grow existing
-> binding instead of deprecating it and now you did not grow it: you added
-> completely new compatible.
-> 
-> Please go back to previous version comments.
-> 
-> Best regards,
-> Krzysztof
-> 
+Hi Antoine,
 
-Hi Krzysztof,
+On Thu, 7 May 2026 at 15:48, Antoine Bouyer <antoine.bouyer@nxp.com> wrote:
+> Le 06/05/2026 =C3=A0 16:26, Geert Uytterhoeven a =C3=A9crit :
+> > On Mon, 13 Apr 2026 at 18:10, Antoine Bouyer <antoine.bouyer@nxp.com> w=
+rote:
+> >> First NXP neoisp driver version with the following contents:
+> >>
+> >> This driver was initially inspired from raspberrypi pisp_be driver. It
+> >> reuses same approach for ISP job scheduling.
+> >>
+> >> The Neoisp driver supports:
+> >> * 8, 10, 12, 14 and 16-bits RAW Bayer images input.
+> >> * Monochrome sensors input.
+> >> * RGB/YUV, IR and Greyscale output formats.
+> >>
+> >> The neoisp features are:
+> >> * Provides single context to limit amount of v4l2 devices.
+> >> * Supports M2M operations.
+> >> * Support SDR and HDR modes.
+> >> * Supports generic v4l2-isp framework for extensible Parameters and
+> >> Statistics buffers.
+> >> * Provides a `core_media_register` API to register neoisp's media enti=
+ties
+> >> into another media graph.
+> >> * A module parameter to run in standalone mode with its own media devi=
+ce.
+> >>
+> >> Co-developed-by: Alexi Birlinger <alexi.birlinger@nxp.com>
+> >> Signed-off-by: Alexi Birlinger <alexi.birlinger@nxp.com>
+> >> Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
 
-Thanks for your review.
+> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_MASK GENMASK(23, 16)
+> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_SET(x) (((x) & GENMASK=
+(7, 0)) << 16)
+> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_GET(x) (((x) >> 16) & =
+ GENMASK(7, 0))
+> >
+> > What about just:
+> >
+> >      #define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2 GENMASK(23, 16)
+> >
+> > and using the helpers from include/linux/bitfield.h in the driver code?
+> >
+> >      FIELD_PREP(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, val)
+> >      FIELD_GET(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, reg)
+>
+> That file was auto generated, so I did not want to change it.
 
-I will rework the binding and the commit message
-accordingly in the next version.
+Oh, the pleasure of auto-generated files ;-)
+Perhaps you can fix the generator?
 
-Best regards,
-Khristine
+Here you have 3 definitions per field, which is worse than the
+auto-generated AMD header files, which have only two (MASK + SHIFT), and
+have been dominating the changed-lines-of-code statistics recently...
+
+> But I agree, these macro would help to save a couple of lines, and
+> probably ease readability too. I need to double check the impact, making
+> sure there is no regression with such update.
+
+You can compare the generated assembler code, it should be more or
+less the same before/after.
+
+> Could that wait for a v3 ? as I was about to send a v2 with other
+> changes first.
+
+Sure, thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
