@@ -1,128 +1,157 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5662A39900C
-	for <imx@lists.linux.dev>; Fri,  8 May 2026 11:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCAB3783CC
+	for <imx@lists.linux.dev>; Fri,  8 May 2026 11:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778239603; cv=none; b=nX/w09GL2/CR29HI72DP8f+U5zEuJ9lENi7awtt/p1BRFyeqxG764orW4QcLSYcmEoZrATO43dK1/3eVl3AiHt+W0n2qOwx1Tzj/cpKLln4uTNXb5v0eADg3+TkfTi8jdEFt6w5vaSt0THoL7vQB9pPxLM3+XULKzxaLAIxOvcc=
+	t=1778240444; cv=none; b=phf0OXAq5Ak8ybybyS4KGFojL0ARMjhYI5M2+RPaD7n3qjFQaNV3QHlxoQLWK+ayu5esw26LYLM3NW6c0qJHCltep5EbC4auN6yQf/0metUp2dmj/qtbbHJQdEjH8WLUE3LS7GudGrhJ/okyByPNJFcki/i38Gzk1dPOvizPOpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778239603; c=relaxed/simple;
-	bh=QE7XiNGp11ntZ8cY+ErYOWVQH1yYu1BzYi3BRu8v/Cw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IzGhFyu+PM1kiim46ysT0aVD9JUmeobNSXY13KNFhSePJL6KW3hg3DPY1b7mio8+Fuwd2rNuD8/cHSj1nyJQFaM4/ghArR/Gbe78AwiEp+zC74kxmJDFxBMGmRcnHMCs5j8b/6QkId8sq2pAw6akVQRCvafEADyuzpH1iYGam3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cop4AObC; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778240444; c=relaxed/simple;
+	bh=tlYXAbOvt31oXqu51oDItTmnecupft6tIG0TNcDPb/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hFSa5M+/AqOScM+w7iSgMhlhBXMhjgZxl3SAB0k0ixpTBc96BVaugWaph+rCn8UQDJ74cA75OL9vsh2dERnEpvZ8mV8ikPLFfk9tYFi38slNYfDVAFenestfDHNwK/T7YQpmFX/1kVpUYn5jxOVawOWX65BpSfEUK0YlRmcgUJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ed/6gaIA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=buZGNGgk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cop4AObC"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so11553615e9.1
-        for <imx@lists.linux.dev>; Fri, 08 May 2026 04:26:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ed/6gaIA";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="buZGNGgk"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6489Ffus2770839
+	for <imx@lists.linux.dev>; Fri, 8 May 2026 11:40:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=OZp+cY3PvWZ7AXX+8WUitd6Y
+	Yr2WXghfEWf102S3Vyk=; b=Ed/6gaIAZdihHgkd595agWOjbCz7EywPKc6N6jQ0
+	qMZp7fybfb7YONqb322y1Wz0aUDcy11h/vBcHFuHIcCURCs0JOe9uHaO2j0P8nfd
+	FxlbFeRXW31Wti7FtVQtiqp6ooaDQVk4MkwtnkDer0GnMMk6RdjRJytLHC0LScY5
+	AdN/mE9Bw5piiSNoDhsTYhiUdw41dJhUeJO7NLslP14XSO+85oKtxwGsm32bYiAh
+	+5Kcm0gtguOPxTE1y7K/FcJX/3bGfmCG144AU/l8aqgxKeBnIC4TnMB9CW3Xdn7M
+	qn7wP0AXOfCY+sK7QKCJ1DiDLnPKbtbiN6wIMEY/CZseoA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0yt5kh3e-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 08 May 2026 11:40:42 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51306c1076dso40081751cf.3
+        for <imx@lists.linux.dev>; Fri, 08 May 2026 04:40:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778239601; x=1778844401; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xwMAiJr6rLTnqtrgyITSok37EhglhZRyua+A57fW1fo=;
-        b=cop4AObCM++LGBL5BigpKEMGrx5ValzjO8GbraVe+ZzAmjAr5T8+uA6Ie/Vh0h4FCH
-         CYHLdm8/kRnpWZRO/V8jKjwtlfMiKukiq8wDbvY7YgxtgcVOtn7vcwIu97EAmVy2/WaK
-         Z8D5EpCIbPCsYIrvq3ETEvRfoRodmBEB0TW5OWJ0wnvurjqTP2jDUgdzZNfZIgoOtn5L
-         e0MT5XS4Q9EC0uzf2LL7bJ43LvPFz4Ei0rXtwaJ/c4v7yN0MA2JF//TK/ZVb4vFWShKo
-         SR78K5KyfAiU0XAPcPDSnCO44LJP5MRopWaXpiymGD2FT7Fut5iP08EOz7E1tzBAFCYJ
-         gvbw==
+        d=oss.qualcomm.com; s=google; t=1778240442; x=1778845242; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OZp+cY3PvWZ7AXX+8WUitd6YYr2WXghfEWf102S3Vyk=;
+        b=buZGNGgkWmAY9j2VBb2CIB78IZ/sMGhs3iX82ukuAlxI/54C4pPU+QMRnH4WytklfB
+         nvQnWLV5ax70Ena2yqNYPQGZ9zQlcAlQmpWqXsjqwynzeymlzZQGmmYk8KcGbH7n5w0A
+         7tC21cx2XKbjtT75SpEW8GprIHdr4U2zDIRVW5GfLAeNMbS/o9mh7lOnRV6olz/k7CMH
+         5wqd3V0W/qxrxDbkkinIMzaV9XO1hXV46iFHCgsHcBltAg5Pwb7EMBtqOVU1BdrAkzXF
+         zGKuCkAhWSGMzkDGv0QN/+QODm38ZeQqLzTIsC0rsppyTVkFRFHOMw0+N3zmxyNZXaui
+         495w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778239601; x=1778844401;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xwMAiJr6rLTnqtrgyITSok37EhglhZRyua+A57fW1fo=;
-        b=L0B6oFNXsG919FcfSYwCg7kZPuQvcaorOeLxCQUIlHL2nmleP9XnItLt9J8oaFCvOe
-         iQsclbIJzwI9IKYNubSam7kUioGprFU5n7ikJAw25VPiEeT+DS2Fl9o4uX793NmGfwg+
-         Q3wh/S9zGT1MTyNnPooNXz1ImXi2kSn6tD4kXdpHSw+Va5ukrlMj+vtIN2HLaSRIGFXZ
-         n3ClFBdgz9eirgwcDQcEycUbHOBS4d+EnW8nngWN9obxhsgc1DyNPsQ6QLO5Sr9pWA8S
-         bYjp7uwTvpEYRUmJTYHPAypNYs2ar7C6LnNTaPMOb6rEwSnshQPzd/A1wqPV2avpforE
-         lalg==
-X-Forwarded-Encrypted: i=1; AFNElJ/zQU/knw//rk7nujHRxFlc9zU/dqkiL24/ODfD01m9lTsyxecgJcigql1RoKlkF5bi8Xg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyIfiIVTLk5EXflUeof8HYcAlAPdavgq2ntSaR3aoS6BQ8uacqT
-	wWwjRPvZQ5edPymujD9Jty4zHmCkriku+8Nozitj+cbl5UZZW8HGnaaN
-X-Gm-Gg: AeBDiesb6OCJS3rF5CdfP2NXfSARBuT/7dFyCUVjrhz+4FbD5gW8BGIS53S5VSvP62O
-	k1l1OBJ4jvCMlI1nPbyboy3kj6+dO+q0Hjr0uU7d6C2rNtcbDdzEJP1vMUL1YBwQmVspBxKXE3K
-	DgeWbbs1m9j4R8ezFeS4doOF/5V7lbALkVrKrZd/Eh5rqVS42Y10u3syt0npKUm0RFn9fOpJwjR
-	DKofnfMnF5BeXNPYTRZn7Hnw4WugiNSeSG8T5I28N9qEIYpS6/qTXrTdac7kTL6Kh9cdcFKnTt5
-	bEEFApleIGxt+ELbPc2+uqggtJqgmiUGwIoikFMsXf2lIjg0VZjwQtMMG/WYr45gA3zHEiq2z0D
-	JbrIjY8HMCLBP00/9vLTO59HXHmicZdCJI/ELl+f1zME5uy6AATX+kKiRk3LSh6YLuuJR4sGBW9
-	hOr2KaeneJ3Q+mBsxTlhwxKehZcFzSmWDGOQOGsEtwdoHL70h7iXPjOpirDF0hRvVtsfIXznhku
-	6ChXftKRjIrpQh9vwzXb94wTj7PZ9LFZ1Vywu1swhLN8/N3Wb0=
-X-Received: by 2002:a05:600c:3548:b0:488:c40b:c8a4 with SMTP id 5b1f17b1804b1-48e51e097a2mr188764295e9.1.1778239600520;
-        Fri, 08 May 2026 04:26:40 -0700 (PDT)
-Received: from [10.0.1.145] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e68edca90sm58547205e9.5.2026.05.08.04.26.39
+        d=1e100.net; s=20251104; t=1778240442; x=1778845242;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OZp+cY3PvWZ7AXX+8WUitd6YYr2WXghfEWf102S3Vyk=;
+        b=gilMO+dg9y5OCGt6pv/Xibi1B/LD866qZkwjX7HJJIu/T7FmnTQ1trFDD55uN/8EoE
+         vHrDVSX5zzzWjIwldXxNHLW1lpBU4aTD3XoeN59Vlo43xk74675dCH3xjAMRjQJyT0ry
+         r2tDlDusYgwmOJlS5qXg8n5SLzaeBLYkyHV1OKeW/xBfZMzuZ3zlaYPSf7YNpGdNY35U
+         kJV80QUslHqjFsTgWCWjOZ3Bp3oZOyl4DFlFQXjI4vEW7WDGuF6qlQYdhxOCrgjiYd9r
+         PwDUgU+rwMMV5YciCh7W3VLdSNUigr7pbxH3nHpYQ1wZ59ZD90AINBJw5gyet4WWlj84
+         AuvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8nGZq004egZym4Q0IiJ7sxghL8FfPHm37xbuO63vVlHSpPhNIuHUxJxF5saytA2Kpd9dU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy2BF16hrejZjiK9e11o21p62ffXsJvgEn9TrpxqNOC13X/87Wk
+	SoyWgMyPZRmnXC5UyAA5XfQXBgXBLeUHCPxVeDIHZ8trMARF1SGC7un9KJIzqquXqQ0gxNw8DNv
+	n4gQ4NedHFfTZjDj8OBdTkGMBLbvzH6IJ3Pq5ChP57eoLpe136xicdZg=
+X-Gm-Gg: AeBDietD5TBxUhd/4x9Dpn0RnhWkV9iNC51RzR0llCT6e7bUUGTdEQkTxafV3eNcTjI
+	U8i9x6Hj2ZeEU3kQ4xBLmCgCWqb4llrSNCIoQCjYWgsVZdW+NwH+w5fWLqZrqif/FLvS3hxq3x2
+	QY52MOauRyLk5L/0zpRjfSsLSC7QyzDsbXcd8un1CjT1mVhqFOEp8tp40PZ6JiuZ2/fg8P2E3vf
+	+6v871gC9gdfB3h27HlR8zDwu2L8RukLFSwog/d7VRUMI8k5dZhNAPjqC/Gb2wpPcg3drc7Sncd
+	hLZy9GBrAwoVWQ6B9U+1c9Zi+U/7TxAkcqEWTTkSxG/oKdhn98Y6ibt9WOzPS9W9btcrqT3sieu
+	Y3sqBa28Jf2iDcf65o8PX9LBpe2TW5vYxnm2ubJXAfODKN4JzECR+f5jY8zpP6zE7RwSgfAoZMh
+	/1lSCNJBqncaDdVTRgSLGz06zv5mdpAWdI5Aw=
+X-Received: by 2002:ac8:5ccd:0:b0:509:39b5:a97f with SMTP id d75a77b69052e-51461f9dd73mr171209701cf.29.1778240441786;
+        Fri, 08 May 2026 04:40:41 -0700 (PDT)
+X-Received: by 2002:ac8:5ccd:0:b0:509:39b5:a97f with SMTP id d75a77b69052e-51461f9dd73mr171209351cf.29.1778240441234;
+        Fri, 08 May 2026 04:40:41 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393f613ed94sm3958371fa.31.2026.05.08.04.40.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 04:26:39 -0700 (PDT)
-From: Antoine Gouby <antoine.gouby@gmail.com>
-Date: Fri, 08 May 2026 13:26:36 +0200
-Subject: [PATCH] arm64: dts: freescale: imx95-toradex-smarc: replace
- deprecated gpio property
+        Fri, 08 May 2026 04:40:40 -0700 (PDT)
+Date: Fri, 8 May 2026 14:40:38 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/bridge: imx93-mipi-dsi: Fix mode validation
+Message-ID: <utzkrmbx3uqys7gfepoi3gasylzxid3oqrcvdte6hn63pd3a3x@huwqowsbjgv4>
+References: <20260227-imx93-mipi-dsi-fix-mode-validation-v1-1-a9cd67991280@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260508-replace-gpio-property-v1-1-ec67cc64e576@toradex.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDQAxG4atI1gbSEUV6ldKFHX81UJyQKaKId
- +/g8lu8d1KGKzI9q5Mcm2ZNa8GjriguwzqDdSymIKGTVnp22HeI4Nk0sXky+O/gsQufRgRxaoR
- Ka45J9/v7el/XH5R0UcFnAAAA
-X-Change-ID: 20260508-replace-gpio-property-d62b300ecf30
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- Antoine Gouby <antoine.gouby@toradex.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1099;
- i=antoine.gouby@toradex.com; h=from:subject:message-id;
- bh=AB5PPdLVkqMs1sCS4RHSNfyDkv2JV7ytgY+zBknYgik=;
- b=owGbwMvMwCWm0rPo7MxLN2YynlZLYsj8eyI/eeLEqoz2PwW+K+TerhSMbTm52LC6oSnAW2BCx
- PSwshPVHaUsDGJcDLJiiiwZT1QF+RRCZD04mpNh5rAygQxh4OIUgInY5zMyzNbV9tFsTAvgXb5S
- lXdmpsGr09s4RT9JxixdvnOuAEtXNcN/X1GXxEDZZWkn7l6RO+hUlKvxrLl9h+5jTvnUd8HSBdf
- YAQ==
-X-Developer-Key: i=antoine.gouby@toradex.com; a=openpgp;
- fpr=68E425110E20541D48088363248CA2CD99D2D899
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227-imx93-mipi-dsi-fix-mode-validation-v1-1-a9cd67991280@nxp.com>
+X-Authority-Analysis: v=2.4 cv=Dc0nbPtW c=1 sm=1 tr=0 ts=69fdcbba cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=8AirrxEcAAAA:8
+ a=ghoAkTYV6uPXXgQErFYA:9 a=CjuIK1q_8ugA:10 a=zgiPjhLxNE0A:10
+ a=uxP6HrT_eTzRwkO_Te1X:22 a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-GUID: Cf_LVhsw2H7ioc_8tRdbMQGEgMGiVpMd
+X-Proofpoint-ORIG-GUID: Cf_LVhsw2H7ioc_8tRdbMQGEgMGiVpMd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEyMSBTYWx0ZWRfX7EzIOGH/F4yz
+ Mcp5YDZqX2Gh9gIWZlHNVKxs16z247DsWqeSiC4ivpPXqAgYBWK8UsGDv2eOycZg8Rf2Fr4Wo2t
+ O+9FWZHBKz1Yh6g3e3nH8XxWdXV0cPgXbkMFUnPssSrFJM7+dpETL/B/05b5/Sin3z7CWrA/6z6
+ eZGnG4jJaVQBFeTt4+6MOjthgIzipZtE4TtrIgAGSkbwPIWePz2PxJ2/fDGYsYsNwrqiEE2Z5FL
+ /l3mO57D+9Yu4SOpwLWNCe7ouk1JZc7JzHPZhsa5oeUV5jMPqyG78Sa2JPgw7hSmlyoU3QZp8p0
+ 8EWABP/cZXfNohSnOuz9AmIRAgQjTrhzNJkAWcL/xcpx/IXxfKnU/jwWz7smAnbmLmeR5ADdbOe
+ +c069JMTdFk7x8Ja5aQ8qrdpct7JSUvou9J+7DqplxtGdjA0S7cAj836hRCBQnyGOhxOT42Y2i0
+ sxVKI08yh+ZyURUqU5g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080121
 
-From: Antoine Gouby <antoine.gouby@toradex.com>
+On Fri, Feb 27, 2026 at 03:36:41PM +0800, Liu Ying wrote:
+> Instead of checking the last bridge's operation bit masks against
+> DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID to determine if allowing
+> +/-0.5% pixel clock rate deviation, check any bridge after this bridge,
+> because the last bridge is usually a display connector bridge without
+> any operation bit mask when the clock rate deviation is allowed.
 
-Replace deprecated "gpio" property with "gpios" in
-regulator-vmmc-usdhc2 fixed regulator node.
+It would be nice to add an explanation, why this check is performed only
+for these bridges.
 
-Signed-off-by: Antoine Gouby <antoine.gouby@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Fixes: ce62f8ea7e3f ("drm/bridge: imx: Add i.MX93 MIPI DSI support")
+> Fixes: 5849eff7f067 ("drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()")
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+>  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c | 33 ++++++++++++++++-------------
+>  1 file changed, 18 insertions(+), 15 deletions(-)
+> 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-index 8eef26eb0f87..7d760470201f 100644
---- a/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
-@@ -113,7 +113,7 @@ reg_usdhc2_vmmc: regulator-vmmc-usdhc2 {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_usdhc2_pwr_en>;
--		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
-+		gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 		off-on-delay-us = <100000>;
- 		regulator-max-microvolt = <3300000>;
-
----
-base-commit: d570a0d019a3d84832bfc6867647d3581b0052f3
-change-id: 20260508-replace-gpio-property-d62b300ecf30
-
-Best regards,
 -- 
-Antoine Gouby <antoine.gouby@toradex.com>
-
+With best wishes
+Dmitry
