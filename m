@@ -1,161 +1,178 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013048.outbound.protection.outlook.com [52.101.83.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D28389E1F
-	for <imx@lists.linux.dev>; Fri,  8 May 2026 09:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778231448; cv=none; b=kGAB3D2TglfCVmuoBJVytIa2jpLTWRHmi1Lm4PhFmeoFiqPd8nQASohkzjRaYliWirkd2U4lkzZusGJhDgV8nbZrw6cP0/1mXCv5qMG+qd6aeJqj3JDaoK0x/0akq7dCxpbqPN6xDjTn1ZyJzd1UpIqU/eFdla8EihipWPyL8XE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778231448; c=relaxed/simple;
-	bh=Xc5j9CDKlFuLtIb9mG1NWd0Wa+Ic7rYDHKf0WsXQawY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r1+EO5zHcw69XaIct3fjptkeFIgMexDtXtygqgF0yWAP2bxOAujU0Nioeiry4Codat99lXX+VSJjzPwFSSb3qSBFq4rnUq34ogellCkhQYjjvhi1WWnt4XlUcSMA0ehUmRo15f9+4drQRGdUwbzYYW5x3lOvMwVcpuZ9rV85kQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5752b279662so573110e0c.2
-        for <imx@lists.linux.dev>; Fri, 08 May 2026 02:10:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778231441; x=1778836241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=freA64yN3LTk8GeI+Wxty1utrJRjkdarC4+05051tIg=;
-        b=f9bhTPD9xH7CrD+q4OUzH2Nr+Jioc1Nh06aN6iBHme8JATx5v8a1nf/UKlXZDfJr3L
-         napzMAQF2TtT2oOcU8OuvO+K1UPnBv5yR8Lek79mDe5qWjdsAKHjqCbQezi+xPevIJpN
-         rOe6Dq5GqWGtOW3d6IOWUZffB9chtw0CzyIr6Wh8BkL0iHyRgt7jQaHZyB1cUn2O7Bhc
-         W559NOsXr9VPsYyuJ7DyXESAfWuY2znJK0v4WvbfaAjbnOfWMd5ikLwCBWn4joTFFPZH
-         l9pckk6dd5wfBUdENpUcXY60pkz4G/EUMwul6XCtcc8qW5MmXV+HQ2YFOkaWlhBDqw0w
-         JurQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8nmn5n965nXmo4qYEjLAzqBgIycSTUUWX6DTOVNUKHLM3OTY6HUs0Q8AqGUrezVMi6lxc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyx6QGnSJCwsys5XsJCVN3l8XGwc7SSHHFJB+xvTyhh+jSwO6/4
-	roF0dLCNl7e0Q3Ooa+DimsvCQJvhZ+E5ZCTv6BonXih7dByAVT87kELszu2TswIMVCw=
-X-Gm-Gg: Acq92OHDlv0sNPML9Vy45Y6jFl7h/VmYBQyPUZ2yseZiyLg1B6yNxtHccF1ygw/KdAr
-	oE1MGu3sQD2a5D1uxXMDvLd52JVs8aTTt+dazznX86ASkqykoaPZKzHpEpaRYsoh6//Cxm79sc8
-	pS9Whu332+TxKe5Rcc6bGcui8cJbkmKj3OEKFSj++/b/2Q5mlwbYnOeUqjWFz10wEiGwO4QGInq
-	wGXkVoVp9A6BtxIcUfmd613ZuBed8hNr08kgOI6dnXax/CSQbLZFklu62s9rG/FzHmo9XQ1ZiOd
-	Ij74VoYdASooZhfd6VSB//HxLOiFU7f/0BHYHoegHeEhC/+ODQTaZ+nzA3eUxU3nbOBiwIcuyNx
-	pAX4n1lIfd6+rsvkZIIeQ3a69DDxTpx8bbG5wd7VV7aiUlA0EdHtc6rK7wyVw47ZjNVIpF7bNiT
-	nsIkIhJK3IBPVlz91bjXbZItwVljoIUdqKgm5Xd0CyW1ZK96kBM5g/Ui8CO34L
-X-Received: by 2002:a05:6122:a07:b0:56e:f071:d4ef with SMTP id 71dfb90a1353d-575595be49amr5880938e0c.8.1778231441012;
-        Fri, 08 May 2026 02:10:41 -0700 (PDT)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-57576d13773sm2077174e0c.16.2026.05.08.02.10.40
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 May 2026 02:10:40 -0700 (PDT)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-6314a0eefb1so25682137.2
-        for <imx@lists.linux.dev>; Fri, 08 May 2026 02:10:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/DP0Q5kekvlQDV+VlFVwCp+/wwcqzq9KJDOf5we6LXK+9XvBdks22+9eKUCNfUIZ+FpdY=@lists.linux.dev
-X-Received: by 2002:a05:6102:854d:20b0:631:2f82:c3ce with SMTP id
- ada2fe7eead31-6312f82cdadmr1563743137.10.1778231440310; Fri, 08 May 2026
- 02:10:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C5A31F981
+	for <imx@lists.linux.dev>; Fri,  8 May 2026 10:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778237737; cv=fail; b=PytFAO/CNNPi3uIw5ysz55/G7QI8JvcTxOvcqJzDCvjTrlfsTSttWf0ketL5B3Ct9Kz9LVLoeACyOQx08/WUu7SE0Q4rOGzBBMCMlbHbqXEDIjIWQ4bC4N1M2+w7ck2kkJesodgdB+jgFGzg2C/JUyRsngU67dL8VblVl1uOhBY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778237737; c=relaxed/simple;
+	bh=danX3tVIJJeXo8N9myBmA1Azel+LDkd2lwodrc1uhRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qpRyRtgrszgA6BtKnYTdXPotcAEfX3UJbIS39kAqOEkt+a4mZV9+dO6IpqFGgML5hJTU6FEQ74V1wlBEJSvjUuQId7vB8aN7aLV8nLZzFhrJtQuWD0qhpOqpkxQKAxcB/52D9WLwMoZREZNfIXqi9aqF9gMGfmJYXFV5de6uCE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c57m5I1o; arc=fail smtp.client-ip=52.101.83.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c57m5I1o"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LmjbK+UjI8otx4r2v9jglwo9Sp7Xax4WXKm4x9qM2N9qyHytYLcb7PZ/dK2+7Tuz3D6CAn7LcjZ40Yfrga8sSy8lOFCRBxO+Hh7PBeA4KkaJw2n6ICxE/jWTZ3cr3uzzR4EKzkO35ttcDeMAIRv0Rf7AZkLRRXcvyStBOmcAWnpx6brm0ftVNsm1nUVXViyCMGoJPWXAPzIY5qwQwW0OmLtndQamtj++83HVqH91Yv3aY/TjFlu7NOqiGUQSxY2sq3+nsg+UBuU68pEEP1QfUPVE1mvxjB3H8dl11mf/isHiiDkw/CGLd9LouglE3mwrK4hYWOn3XfvGMU8bn/y+qQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SjWJnreqtFTxNsZq0wk4jLyvdTxmmVD0C4te3RVc+zs=;
+ b=BOx88kM0V1Qe35TK7llw0Pv2w7gC8uwaba8HKfAsF0hqvs7H3l8NBVaxZWc52E07s+tn/SRfbG8obbe9KpYRVzbvebJcIEJKeDEPd6yvk3XZd/sQ1CqSZmyqRSTGg26vMqnSYLuWpfOl6RX4aTCaqB8CUC9mm0NC1kAfDpl/jmhsHoa0UH4AQKtFTYDsvY2U6E3PAMdTBodgqq6mqwdbVqQ7Fj/50bdxVQsPX+/dqgxuoGjvvVyYrTLGk6lSdw8l5aZzBvJvqoAJfv/xlGHmf7kcLLtW91VzqFeXGLLketO21Z/CBYDlmA6dD9lwWIjPYq7qFa2WTrqxlwvMUCx7mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SjWJnreqtFTxNsZq0wk4jLyvdTxmmVD0C4te3RVc+zs=;
+ b=c57m5I1ojZnqgkklb19HfxIea9d6tj5entUML+dKkpWLN/xGQic9HiF+LpAa0K8jrpX8njgOHo+0d7YKuk1MS0LjDq+DNoTptgjgVsSVb3ck8uBChscxS3FXIrRSKBJKBealTWPJ1P8lhsJIg6EFfDyX9tdrfAvkkUzHWaFPMhJpya97R/ReGjL+wAUP8Cp3Vq2ymjtwi9m69CS13wYCtaDSDqQqzLn825obB2tSm5CVezzehkCULxN6KXTnppSLZ4vCoSM1zxyy9ZUYJj1/6YIjuMBkJiUZ9g8TDXoEAMBo8ED/oO4F+MB3CnFxOTH4ssUiY7Oux2z4TLexkVCZ8Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by GV2PR04MB11349.eurprd04.prod.outlook.com (2603:10a6:150:29f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.19; Fri, 8 May
+ 2026 10:55:32 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9891.008; Fri, 8 May 2026
+ 10:55:32 +0000
+Date: Fri, 8 May 2026 18:54:40 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Franz Schnyder <fra.schnyder@gmail.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
+	Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
+ role
+Message-ID: <jjwlrgusucoacaye75uqfuh76a4jhdv3ivzjuemgusw3trwseb@mymuy62cptxp>
+References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
+ <20260108081433.2119328-3-xu.yang_2@nxp.com>
+ <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
+X-ClientProxiedBy: FR4P281CA0009.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c8::11) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260413160331.2611829-1-antoine.bouyer@nxp.com>
- <20260413160331.2611829-10-antoine.bouyer@nxp.com> <CAMuHMdXrvn+kwBsc96SQxWMABZv3Y6EPc3FLU7f-pOi2+J+S1A@mail.gmail.com>
- <96bff2f9-04ef-4272-b408-fefc7d1d5e11@nxp.com>
-In-Reply-To: <96bff2f9-04ef-4272-b408-fefc7d1d5e11@nxp.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 8 May 2026 11:10:27 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX_O-75kxbqEjLKQ1=5OZpvyCkuWo8CBzpvymzj0i2uUA@mail.gmail.com>
-X-Gm-Features: AVHnY4LHFQ2cNB28JlB_QeYS4eHTz1eigCbditGi6HUZBbCkr7_rXaltq2vUwkU
-Message-ID: <CAMuHMdX_O-75kxbqEjLKQ1=5OZpvyCkuWo8CBzpvymzj0i2uUA@mail.gmail.com>
-Subject: Re: [PATCH v1 09/11] media: platform: Add NXP Neoisp Image Signal Processor
-To: Antoine Bouyer <antoine.bouyer@nxp.com>
-Cc: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com, daniel.baluta@nxp.com, 
-	peng.fan@nxp.com, frank.li@nxp.com, jacopo.mondi@ideasonboard.com, 
-	laurent.pinchart@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, michael.riesch@collabora.com, 
-	anthony.mcgivern@arm.com, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	ai.luthra@ideasonboard.com, paul.elder@ideasonboard.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GV2PR04MB11349:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9adceb6-83d8-4ed3-f3b2-08deacf05315
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|19092799006|376014|366016|38350700014|22082099003|3023799003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wuCNAmGJ4v7QMzulnF+e7iTF8omkXg2X1P/4zfqIZHFNXuANDsh9OnlSP6kjFu+7UItu3p9UCMNHFn1/9vOS9WNRtIeZK+bff3ZvWY46S9Q3dYpNYvMoQGfjgeEkrtdHaVHmRKJRuINQxTh9eggTj31KUNhEnkcsGXELn2xKOPv5VvNbaUb4WpjKd4M/7AavDs6z26QLuxyTUIiZHDsrF5qRJtWchzOguuWEm6Get1sfa7uQe8y+yT/ikHC+0eLIMPht7vCHzyNgXmHcg0n3/ZmoOpWSHhM08kp/wwfSboRyJ7kei9dNPaaAONzvlX2XxyQOODJ1fXHcfxTBjLRUtczeGt2yj2j4d28TpX7av5Wt8k3Jnu0SAsC2l8WTIpxuJtwWNw9Ye1yMhr4pPaPpII9c2EcMzV2iFi1ZaKswSNw6UcALeiuNh1YHmR0TPy87sJOJvAGFumor6FdTCAY5l8d51jTJKPSmzuFu4g/DtkJbsgWKZ/wE4tPKb7L7qm+j4CFG09p+ogwGAZEEiZA7qtVUFDU9NGHLjEqHGffLynS45DiDjW9+SrMcfHUsBPdXM2veFzmDdbbBVzoch2WjeOssQaPgvrwcHiF6tbnfq8eToojy8OP7r3zkuElOrh6pmQiJL44dtRFqrtL/OSYDf6ubqN5sF7C1BI7Ny0N/XzGnba7HoiZZ+nhB2MYZyec8UgpUYL49D4Dp4O6oeBDJTW1SX/2anJnwfEh8rfz8DIrTCBB1TkmazDVAmskgVhBz
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(19092799006)(376014)(366016)(38350700014)(22082099003)(3023799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?H6zkeSItdZI3yQyv3guCywfAkS6oMGer/5PNUIHSe3i/QXdo9hstZ2hMamEz?=
+ =?us-ascii?Q?k8GOUlI4hoeET3nqcWq8BrhktM1qeKBoCS5wtjyVi6xliVwwfttpO70l/hNE?=
+ =?us-ascii?Q?OfIhNiHujPJd2TwuUJR33gkJQLyOiHvitSsvTY0Vh8Z+29M4D4cvkmqZmcf9?=
+ =?us-ascii?Q?kTm6mJFsGIbeiHQqSWJXp7hZvxUtt2DoEyV1SF122OP3IHodzDUlUhvYwvcL?=
+ =?us-ascii?Q?KzCUl3HvDhBItSAXAzUWM0CNprbTM3N/RCzKJ54/hCdIDDK5TUO6j5VXkOn2?=
+ =?us-ascii?Q?d0JfY70RJS9F6eJ5h2HMLWJ5FcMwL8hYFnZLeTA2rMN8tusWjkkOSbHo4D5+?=
+ =?us-ascii?Q?by9SaowCoFS+biGPYbJiORWZ4ZCipSTqSm+zUu8hDBF7UKB9RTCX1VpV3J+F?=
+ =?us-ascii?Q?wt+elKFjNqBl/6xk7n0vKRUioqHH3jr663Q+grcEQ1d7pthWLTS8d6SGqll4?=
+ =?us-ascii?Q?92/UuWMOvADHQ80QhExCl8kmPQO/LsrnWGWdxisbeC0vAhvoc6sWjI59aCkm?=
+ =?us-ascii?Q?S4tmRiZaBybJdCmzyaP3lOLnmFyadMdlbNjjfnfmY3f8Hk6X+mXeyFc4ujTf?=
+ =?us-ascii?Q?Ns2mmUudfiiu6C4pKAUd0Rk4uHG4ILoCl5pUiDSHdVZgdnTVPAD5PIB2Ofc6?=
+ =?us-ascii?Q?/m4x5G0xHhdAQbxzZARKpJzc6sDry5ik7coFFYpt64nuMlMEYDDUeMXn9bis?=
+ =?us-ascii?Q?wgMG/rz4eTMioZKq4TFVO8/Eh8047c89HCduxFdzjsZ5PIJFqWUL4zbeammR?=
+ =?us-ascii?Q?dDAroj6IkC4cohHabxKjcuG+42dywgl4lho6mjYxUbPSVR1qjmBxZE//F4pt?=
+ =?us-ascii?Q?i844a3jnWBMvfWovfW9n8fO2NYF6bI11f3NOLAWSeTEnwfG0gSmvTTMhoaw4?=
+ =?us-ascii?Q?mpA25U0Ay9F/t/cT6IGl5CVB1a/2OJReyK17DnFtPioxdRX5e379fuQVxe0v?=
+ =?us-ascii?Q?d9mAVC2nyQ+KTVpRxo96G/yoiu+Jg3OcLkLGoQtoY1Mk09YDscT0ZONv0nrF?=
+ =?us-ascii?Q?3GrRKphO2+io/UrBaccbgZKUOIVULJvJlybPCGRsAh4MIZTJGowJwIedWcv8?=
+ =?us-ascii?Q?p4sBCwt1AGSQOxez8UBhpKtWF2i9C3bXV6by7R6xOno9hsbC6xAfDOqglPzg?=
+ =?us-ascii?Q?Qykr0rDxVwksjt5HJUBCq49UFQGLZ3qe6XTqplYZRA1BxTIzL/oeJmW+YaAK?=
+ =?us-ascii?Q?UXTkIE8CU9VHfur77+7UGY+lzbq0Z+1rALD/RXsdxuah1WhXwM5EfMPJIXyJ?=
+ =?us-ascii?Q?WHoYhFXQiJCffQNViHg/12xAZglWF2czysoBxrEYzS32x+QS52LzSghnsdFh?=
+ =?us-ascii?Q?OdfctogFwjo3NY+95YQUD2WMULD57pMQ9OwqVMZO0zBfY8sx6GXFCFcQoOl0?=
+ =?us-ascii?Q?n3JUecS80MFqUSMSbyurDKPnibNAmbhLddhg9giDU0GqPxfCVzVWCafbkEPS?=
+ =?us-ascii?Q?hg//dEv+jNDejjo7QqZuohz2iMa++nDFoI8iWdhxLqTjlKcpGVNsntmNenvp?=
+ =?us-ascii?Q?NGytmX3727mY9J+4drdnjykQHdUc/+uXYtERuI8djADZ1lKy78lbB4UeGOhQ?=
+ =?us-ascii?Q?XkzzWeHkpedUSwaaYa2qJRhAl9PvZDEhzIifOfRGJ45iHkGGCDxeIt2DGiSE?=
+ =?us-ascii?Q?kyl5os4v/VgJAyvqXj2Z/NECs4jyg6eoTSvhElgxqeoWefBwMWcIuyUTOpKl?=
+ =?us-ascii?Q?4nL5TfM6991dgqeKVKAVx20twV53EjXoCH5N41R78rH+jt7fdpniI7JEt/7w?=
+ =?us-ascii?Q?gWZoxnH3tA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9adceb6-83d8-4ed3-f3b2-08deacf05315
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 10:55:32.2184
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uPmlIqDqO2G1IVmD0c5EinaJGzZZMz5XG2vIMfh3yKHtmFJNCFTDo7Ip1v0+xYGHbNLAv8oKWx5MniPTwu9V1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11349
 
-Hi Antoine,
+Hi Franz,
 
-On Thu, 7 May 2026 at 15:48, Antoine Bouyer <antoine.bouyer@nxp.com> wrote:
-> Le 06/05/2026 =C3=A0 16:26, Geert Uytterhoeven a =C3=A9crit :
-> > On Mon, 13 Apr 2026 at 18:10, Antoine Bouyer <antoine.bouyer@nxp.com> w=
-rote:
-> >> First NXP neoisp driver version with the following contents:
-> >>
-> >> This driver was initially inspired from raspberrypi pisp_be driver. It
-> >> reuses same approach for ISP job scheduling.
-> >>
-> >> The Neoisp driver supports:
-> >> * 8, 10, 12, 14 and 16-bits RAW Bayer images input.
-> >> * Monochrome sensors input.
-> >> * RGB/YUV, IR and Greyscale output formats.
-> >>
-> >> The neoisp features are:
-> >> * Provides single context to limit amount of v4l2 devices.
-> >> * Supports M2M operations.
-> >> * Support SDR and HDR modes.
-> >> * Supports generic v4l2-isp framework for extensible Parameters and
-> >> Statistics buffers.
-> >> * Provides a `core_media_register` API to register neoisp's media enti=
-ties
-> >> into another media graph.
-> >> * A module parameter to run in standalone mode with its own media devi=
-ce.
-> >>
-> >> Co-developed-by: Alexi Birlinger <alexi.birlinger@nxp.com>
-> >> Signed-off-by: Alexi Birlinger <alexi.birlinger@nxp.com>
-> >> Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
+On Thu, May 07, 2026 at 12:46:08PM +0200, Franz Schnyder wrote:
+> On Thu, Jan 08, 2026 at 04:14:33PM +0800, Xu Yang wrote:
+> > Do dwc3 core auto suspend enable for device and disable for host
+> > , this can make sure dwc3 core device auto suspend setting is
+> > correct all the time, the background of disable dwc3 core device
+> > auto suspend is to make its parent device suspend immediately
+> > (so wakeup enable can be enabled) after xhci-plat device suspended,
+> > for device mode, we keep the dwc3 core device auto suspend is to
+> > give some wait for gadget to be enumerated.
+> > 
+> > Note: It's a temporary solution until we switch to using the new
+> >       flatten model.
+> > 
+> > Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> Hi Xu,
+> 
+> We have a kernel issue introduced by this patch on an iMX95, where we 
+> use the dwc3 usb as otg. This appears to be due to a race condition that
+> occurs during probe, when the parent attempts to access the driver data
+> from the dwc3 child. I saw your work on the new flattened model driver 
+> for the iMX SoCs and that it will soon be applied to the iMX95 as well. 
+> Does this mean that the issue shown below should no longer appear, as 
+> there will be no parent/child dependency?
+> 
+> Do you think there are any actions needed on this patch?
 
-> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_MASK GENMASK(23, 16)
-> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_SET(x) (((x) & GENMASK=
-(7, 0)) << 16)
-> >> +#define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2_GET(x) (((x) >> 16) & =
- GENMASK(7, 0))
-> >
-> > What about just:
-> >
-> >      #define NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2 GENMASK(23, 16)
-> >
-> > and using the helpers from include/linux/bitfield.h in the driver code?
-> >
-> >      FIELD_PREP(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, val)
-> >      FIELD_GET(NEO_AUTOFOCUS_FIL0_COEFFS0_CAM0_COEFF2, reg)
->
-> That file was auto generated, so I did not want to change it.
+Thanks for the report.
 
-Oh, the pleasure of auto-generated files ;-)
-Perhaps you can fix the generator?
+It's strange that link->status is not DL_STATE_DORMANT or DL_STATE_NONE at
+the time which means the device core may not properly unbind consumer devices
+or handle something. The patch does a simple thing so the issue may not come
+from the patch itself.
 
-Here you have 3 definitions per field, which is worse than the
-auto-generated AMD header files, which have only two (MASK + SHIFT), and
-have been dominating the changed-lines-of-code statistics recently...
+1639:	list_for_each_entry_safe_reverse(link, ln, &dev->links.consumers, s_node) {
+1640:		WARN_ON(link->status != DL_STATE_DORMANT &&
+1641:			link->status != DL_STATE_NONE);
+1642:		__device_link_del(&link->kref);
+1643:	}
 
-> But I agree, these macro would help to save a couple of lines, and
-> probably ease readability too. I need to double check the impact, making
-> sure there is no regression with such update.
+Which kernel and dtb are you using? If it's a downstream repo, how do the USB
+controller and related DTS nodes look like?
 
-You can compare the generated assembler code, it should be more or
-less the same before/after.
+Does the issue easily happen? Does dwc3_imx8mp_probe() eventually succeed?
 
-> Could that wait for a v3 ? as I was about to send a v2 with other
-> changes first.
+Could you add "#define DEBUG" in the head of drivers/base/core.c, rerun and share the log?
 
-Sure, thanks!
+Yes, if you use the new driver, I think this issue won't happen at all.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Thanks,
+Xu Yang
