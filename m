@@ -1,137 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011062.outbound.protection.outlook.com [40.107.130.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E48B2628D;
-	Sat,  9 May 2026 03:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778296735; cv=none; b=FK+2Q90OHc5CKnUOR4q4qnqETwtUFzDZCUsqXon1HT7qawLRS9lqL9A6NKAy0G64O2gPgA6MJJ7E9IMwoNX2ZDi85LzATHQ8sIOvSMogl5BGbh64K5ExmBzuxUq/dTpaB897sqeYptzG/STWY6QsPsBEJazanQjHe3YuIowWnmk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778296735; c=relaxed/simple;
-	bh=s6IPB8yheXhYc2bKGzXmtZpqftn4lGIIb65F9X/qrHo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z8yNOVWodLYIAlRAAtcIVmt22nu3ez+AXGjRm1Pnx61fH4eMDpMp/D0R8T6aImXsGYnkPhgEIqupbhq7qz9h/AlOnylTd1YT8lIajmCTT5P0w4QZiYUYoMpg5NEN/0OWgw10UYC9CT4YYOpkMOYxoa7GptqO5wcm4AwCtZ4yps8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoQKDAqO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951F52628D
+	for <imx@lists.linux.dev>; Sat,  9 May 2026 03:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778297377; cv=fail; b=NsUxoXH5ehDFIPT0QxhNQqwf7Ea//xiO+68MHaAlRCllDpWVLCX8ovAyBNcsqSTy/+aayL+/mvnaSD4GEjgKLGicMOVvakhTThURknifn3NJ8yl6+N7/5dwHShwNBqkuXScncBtxPNpDkKWs0BrjiJc3LeQA7j6cnqrT/5NqARE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778297377; c=relaxed/simple;
+	bh=o6p60fdDtnOzmXx7pO234pupMfnTUCZ0iT4hGZGHN6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oOEIw1fIfIDxV78x8Q0nabwq5bvu8B5ubu0T8ifay1X9YMTN9h1EjPJk5P/00vxA6oocy95+RfTJ74mgOvLW6xTYGyxrjjcsbeKxPiDUtHAzjfikF1F+1WoPolvwe1QaIVi1ovUGYZjoXHVC59DKIsZ5eCn9fHEp7QN+75OlEV8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rVm6KPf2; arc=fail smtp.client-ip=40.107.130.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoQKDAqO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1973DC2BCB0;
-	Sat,  9 May 2026 03:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778296735;
-	bh=s6IPB8yheXhYc2bKGzXmtZpqftn4lGIIb65F9X/qrHo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=ZoQKDAqOp3HtM+ZP6ZFfx4h1EE/hRgv7o1sqE9ivkHxTvLlYAKHq21L44SW+84x3i
-	 PNgNDA0pZ1OWdgkOtroFBAdVDVHWx/tmDGJ32N3XGcvuJ7W1GN+H6QlT8dzTEO4RDE
-	 efxIvQ8a/Ijfkogqp1dqxECwNkkx3JFP1V9vO/tpTPS3wC39TKMZIiQ4Q1iH5mJ8r8
-	 1lEDO61JiUpz3S9L2Tl3P2oM8IOxEfkZoP7vuQHUmRQfuL5h4HKq2oP+9QpxEUP7LU
-	 zZynizI3ggqhZXrVWqP32R5yTrUtzGNFd9zhWDBfQQ1PhwHyJP80C/n9lLb2mjLqHs
-	 yz7wicurR3MPg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/5] dt-bindings: connector: Add fsl,io-connector
- binding
-Reply-To: sashiko@lists.linux.dev
-To: "Chancel Liu" <chancel.liu@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260509024846.2094049-3-chancel.liu@nxp.com>
-References: <20260509024846.2094049-3-chancel.liu@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 09 May 2026 03:18:54 +0000
-Message-Id: <20260509031855.1973DC2BCB0@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rVm6KPf2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gRgZwK4hAoWgX8O+lJuJr4yC1z7kF6YDwMxAZk3xiqx36LLHXdU+K3lS+o1xQ6TO3oDH3iHK+H/LRJ+4/Ab64w9Qe10lX2bfDAoaHbHmsNIs1ONPVbjpiJc8itpHrLTkh/aconInhc+CYfMmo+QYyuCDcran2o+sQhA8nDb6WoFVBCTBAzQpanj6Mc2ziK2QBEBcVCKXtVmik+4PhB6001RhFNeXUolDPywTAFVqi5WZjLihubwgUeLlZkfh7+GfJKWO6/Lz8+kpTWWcC4wBTZR4fMYADGl5TWOi2wOTn8q5inS6MXAQ4mKNb4E+dM/TNKMnmCpjUZ7C/x1iJ9FZyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s+MrT6xe9/NVAluMgJJpH7mIxlbkoQNQVY6yAySGt40=;
+ b=qVoJaRwjHIJa7W//GbjEd9qt66yooMibTdcK7PFyZiFe58i33YfdT+lvOGwkk+v8mr8ogscaeQ69599dPMwlMMAxfvb6z5w1cZvgHf2BGZO8WNHBBNhhM2BTZl2/ICkNc/w0fRU4punXylAm7LsZOpl51gTAip4D3aV0mLKjeqtWi6qK9dUiUnNWGqWT1ks1XbBiIaxkT1/9Rs0kxIzURKid+iTkTACJl5XHCHBuKB1eV245Hd/K3L7xXFFoP6mVH8WR2KKqPR/SnGaP1dXqhJOM6SwZrLcSN7ZwAAjpz//btUATXpCM1wbAGXsFgHjlm3fC/r5c4Qh9tvfEd7WXhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s+MrT6xe9/NVAluMgJJpH7mIxlbkoQNQVY6yAySGt40=;
+ b=rVm6KPf2vR9emjf2U+RdvISeORFgqOCG8fNcSXckoIVTmbMn6AoYm3wcUXL+yCp+nv4J2Sb1cINpb7RBO+8ydGTYKDenlY7qga2Hqm+fRgsDNRsD5gzlt6KcIITdCmCi1EsHD65o3s96L1qqyJLdoq8dZwTxEqu9C1kXvgr49vI65S3zRJVNrEZGVMIUN/LMiVYdWXgHkPlFSMBk2RlUm60NpNQSF/fup7iM6YgBAsiT43Ar8gk9iJwN1RqaOtPepdBUtHK0jxxWtuivdfqxAcGkDekx8MetpQgopcdWRoTGix6K7HxfcIukYfnIYpq7EDBVaOQ5oKzPJOlxGrSL0A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from MRWPR04MB12330.eurprd04.prod.outlook.com (2603:10a6:501:7f::23)
+ by VE1PR04MB7469.eurprd04.prod.outlook.com (2603:10a6:800:1b0::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Sat, 9 May
+ 2026 03:29:32 +0000
+Received: from MRWPR04MB12330.eurprd04.prod.outlook.com
+ ([fe80::ca22:f8c8:6aca:7889]) by MRWPR04MB12330.eurprd04.prod.outlook.com
+ ([fe80::ca22:f8c8:6aca:7889%6]) with mapi id 15.20.9891.019; Sat, 9 May 2026
+ 03:29:32 +0000
+Date: Sat, 9 May 2026 11:32:13 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Jiafei Pan <Jiafei.Pan@nxp.com>
+Cc: daniel.baluta@nxp.com, Frank.Li@nxp.com, andersson@kernel.org,
+	festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, mathieu.poirier@linaro.org,
+	peng.fan@nxp.com, s.hauer@pengutronix.de
+Subject: Re: [PATCH v2] remoteproc: imx_rproc: Use device node name as
+ processor name
+Message-ID: <af6qvVOl5teiQH6t@shlinux89>
+References: <830f0c65-faca-4843-a6c9-693db7562037@oss.nxp.com>
+ <20260508032016.27716-1-Jiafei.Pan@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508032016.27716-1-Jiafei.Pan@nxp.com>
+X-ClientProxiedBy: SG2PR01CA0151.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::31) To MRWPR04MB12330.eurprd04.prod.outlook.com
+ (2603:10a6:501:7f::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MRWPR04MB12330:EE_|VE1PR04MB7469:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3cd0999-0042-4fff-1fb4-08dead7b2f49
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|19092799006|1800799024|366016|22082099003|56012099003|38350700014|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ZrV+lCtmZZk0Gb/YmaeUGqzFbTfkvBNgpojUovqS7GbrmUpF/mT4hrmMp2iDm8QV2GRDp+YhM+IIaGBoszDSyzZ77PTGvZ5On1SRp7khR23x6Ag1dndfPjCxOGs7wRs/65QSWikxIZl2vOiaSgJjXq37QikWnof9IrHldfvPUoyEY4AKmSOIJD/R8RrXLL2LpeVXePqA/rKUS4kn9frrdpgI+qxZzr+kO6p4OLO184G+Xb0YOSoeWLAmcpQPbsnaAbCt/nNE9wz5vP3ya8bXj2rUKJVsHk2+c/e10dcZL064XI6Iu39sJqrq4Yrr7kXyNqr5zOon1g2Sbc2W4GRZbqQGzKno/KftjhurE7C/+ODQ8bNVwBqZo8h4MU5KYo1BIj2TZDZDNqdkaRBIXEEWMwxTRs82/uJer+RINZoP5uTo0C7VPUPlM+XhhDJ1a5Srx/DNb2TRLsi/qL6bFhUxvvwBSp1cijjC/7YFbOtdKpcKKXD2pDp7NAwII2VhhLywGw6Hx17sbl8qgouvwwze+QZRj1tHZ0PavbsUi8hWRpF51jHiB9YyUWlJD00bfnL6l6wCjPVIm7IYs6cEarRDEKJLsHDKpbiyvSL07yOfQfjQDME9qP9I65Fhyl6fEbSC9YmOjaxWdoMMRn69hnpzbxPFqr4c2+GBsZP4ADyCtFDHzQqMDxPGoMwdMXZ13PsgCCt8NEg9CmH+cCNksjH9Ww==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12330.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(19092799006)(1800799024)(366016)(22082099003)(56012099003)(38350700014)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+9HnIhrbtr77Q63nYiiQ5ZaxfUjyjZ2KnbHjuIRsCavEv9XNfRS2mnP2Y9Gh?=
+ =?us-ascii?Q?YgjVoO9cYTVG0s+bmlPSgF5xLdKnOc1pU0nu+tVA4hI47f5CjhYemy3tjqxy?=
+ =?us-ascii?Q?xCHnvn5mW54fDwlVflJ0lFidk6RqBfvq5vBMTRKGzNGyRA7M+GV7L9uKMeNy?=
+ =?us-ascii?Q?xPCAwayjbX/1G8R4AnEbjer6UxETPzdVxRL1s69L9ga3rKGRPS7qqaNJbl+g?=
+ =?us-ascii?Q?0tZ2xBhH4dgMOV4QGg2AwcMhPmlpKGVCxxwFlJdGfHqcJqrqtipcypFs/1gr?=
+ =?us-ascii?Q?oYhj3fT0N7RcGhNcadXncZJ74nEajKHHJTGWlLFe6TUmUkSY+LAyp9HhEJnS?=
+ =?us-ascii?Q?/nnYN0yNMsWEbhg4pwEFTijcPWSCN9ttDtMnWDjT3KrAQYZnrvZbIxjQgr0X?=
+ =?us-ascii?Q?vIk6Y0SxSIkSKkuGyA0Qru0pBbw2K/tXo4Eq7U16l5PENid1+8GZSmaWM+Zp?=
+ =?us-ascii?Q?L1jmqRqTrFdiy9IGrzq4rWfYUeMC/JqBJCkteWMYDyTAth4evCFOTgzvwUBl?=
+ =?us-ascii?Q?+EIzr8JFWAoA/1udXsx+F/xi4NWWcoDWJVuqoFSTneLFJ9RO4xTSvafscOGw?=
+ =?us-ascii?Q?1vt4j3vpEOzs8Hno9zEAOr6dyOIw89rfPQQulSlofePooFsHaHbjj7le0i41?=
+ =?us-ascii?Q?Yz80e7vdJb32kKjSOZAijGVJjpnfUTPKnwr83pyOnJlgSgnTmngT2GhBCxGI?=
+ =?us-ascii?Q?4y+FtuLbM6znHotzbwfKKQtY21HgMOCwjAe5Zy9BdjAdQIZJHloXkvUn3b3t?=
+ =?us-ascii?Q?mbKJyOTqjWiOGfxS8u4h3AuWphK4g8zPBhoZCJZoo7FCV60V2CaSurCy+TVZ?=
+ =?us-ascii?Q?R3tMH/HHSirIkltv9d+udSwhicXbjNFovEtlABJqsOIG3cQr7CfIdvYDXrFe?=
+ =?us-ascii?Q?Yk5dIc8oKkKuMkvN8ZYlR+Azgyef6YvYNQHjPfefHFUu2akMEYqC5cBxgJLU?=
+ =?us-ascii?Q?LCuTL6LaxhV070VWBGohrXVHZWRmeEdjSGwqoTgGYqF+Br6pljbUxj/9a2/i?=
+ =?us-ascii?Q?B/eZVyhHBFafyGNIum9GntqltES8rVebVaUnwQmIacTOzfzt4ezh3KiQiOpj?=
+ =?us-ascii?Q?6NFWq2dDRdUm6fT4FFTC/NT8+SK+NUwsLZ8zZUAHO1Q5Rybq38tnz+S92tVS?=
+ =?us-ascii?Q?5NvpUP0cGcU26AEiqmSnYi1k1XR1bh/Fjzm3b1s/996wfct4UCdIRIhYX1V6?=
+ =?us-ascii?Q?+nZErs7G/w80W6+zpskgyUHq6oYC3W6VkhUhqDMo6mkduO6d0W6MbcE2tJaZ?=
+ =?us-ascii?Q?viWLP+ew5IjSCqyJj299vCuPUdu2F8+EmSnZpFxT3jK/LCYvQjosNf9leKrP?=
+ =?us-ascii?Q?Lf4+PbCEzx6esd4+rSqDWE/GTPATh7phN22nLKT1iYNWPknb2s/PmutC8zhi?=
+ =?us-ascii?Q?9Wvh4ta27gKFT69UHuJE/xpZCKDyWKDLW9tA1vnx2Dy5ambWUseF4EfPiTnE?=
+ =?us-ascii?Q?gyM51oo7zMB3L5eyW3X1DqP/+xHFNs76GHRriBtXEW825R9YKOloTOQ9B7uT?=
+ =?us-ascii?Q?cPLlFokmCxEzGtFXAuJTXvtAXQMcQc4EQQzIksgFvNFzgvoPymIs+6EIGsDx?=
+ =?us-ascii?Q?B3NT/sF20axmKFKqphEs3PaOn6dRji6t+J1v2JESWpciM86PnI6B3YrFtrHV?=
+ =?us-ascii?Q?EWY0HGISJnoU/m7hFkppxFI+5ydh53PvtkVZ1YbIvOWQeTnmuESlqiUzd6Ox?=
+ =?us-ascii?Q?NLqhg5Bwhro5Pj4I7AJcQq3wRKbqLruV6mdLeU7yCkpUDy/j+LCbU1sA+AHA?=
+ =?us-ascii?Q?tpopVF/9AA=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3cd0999-0042-4fff-1fb4-08dead7b2f49
+X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12330.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2026 03:29:32.0451
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3fWsA0kGVAJQ3i8RmHbaNikOt5npdeRRlxrl09y0+H/aYWd+uHFcqF4pMu0wOkYTLNNLk7WI67n7qeup+3OBlQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7469
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Missing `#pwm-cells` property definition causes valid PWM nexus =
-configurations to fail schema validation.
-- [Medium] Subsystem guide violation: Provider capabilities are missing fro=
-m the `required` list.
---
+On Fri, May 08, 2026 at 11:20:16AM +0800, Jiafei Pan wrote:
+>As currently there are maybe multiple remote processors, so change from
+>using fixed name to using device node name as remote processor name in
+>order to make them can be distinguished by through of name in sys
+>filesystem.
+>
+>Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
 
-commit b88adcce540a59e2da49df7e20b99d2c52021962
-Author: Chancel Liu <chancel.liu@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-dt-bindings: connector: Add fsl,io-connector binding
+BTW:
+please don't create thread with v1.
 
-The commit adds a device tree binding for the NXP I/O connector. It acts
-as a nexus node for routing GPIOs, clocks, PWMs, and interrupts through
-index-based mappings.
+2026-04-30  6:17 [PATCH] remoteproc: imx: use device node name as processor name Jiafei Pan
+2026-04-30 14:17 ` Daniel Baluta
+2026-05-08  3:16   ` Jiafei Pan
+2026-05-08  3:18   ` [PATCH v2] remoteproc: imx_rproc: Use " Jiafei Pan
+2026-05-08  3:20   ` Jiafei Pan
+2026-05-08  6:28     ` Daniel Baluta
 
-> diff --git a/Documentation/devicetree/bindings/connector/fsl,io-connector=
-.yaml b/Documentation/devicetree/bindings/connector/fsl,io-connector.yaml
-> new file mode 100644
-> index 0000000000000..8b5038a2332e3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/connector/fsl,io-connector.yaml
+https://lore.kernel.org/imx/ac390c82-91d9-4d8c-9514-b7cac0a4dd8a@oss.nxp.com/T/#mf211972b33053e6cb0b4adbe1002623d911e0214
 
-[ ... ]
+Regards
+Peng
 
->   pwm-map:
->     $ref: /schemas/types.yaml#/definitions/uint32-matrix
->=20
->   pwm-map-mask:
->     $ref: /schemas/types.yaml#/definitions/uint32-array
->=20
->   pwm-map-pass-thru:
->     $ref: /schemas/types.yaml#/definitions/uint32-array
->=20
->   '#address-cells':
->     const: 0
-
-Will this fail schema validation for valid PWM nexus nodes? Since
-additionalProperties is false, omitting #pwm-cells from the properties list
-means device trees including #pwm-cells will fail validation. The #pwm-cells
-property is required by the nexus mapping logic to parse PWM specifiers.
-Should #pwm-cells be added to the properties block?
-
-[ ... ]
-
->   interrupt-map: true
->=20
->   interrupt-map-mask: true
->=20
-> required:
->   - compatible
-
-Are there missing required provider capabilities here? According to the
-dt-bindings subsystem guidelines, when hardware gains provider capabilities
-like a GPIO controller, interrupt controller, or clock provider, the
-corresponding standard properties like gpio-controller, #gpio-cells,
-#clock-cells, interrupt-controller, #interrupt-cells, and #pwm-cells must be
-included in the required list. Could these be added to ensure incomplete
-nodes do not accidentally pass validation?
-
->=20
-> additionalProperties: false
->=20
-> examples:
->   - |
->     #include <dt-bindings/interrupt-controller/irq.h>
->=20
->     connector {
->         compatible =3D "fsl,io-connector";
->         gpio-controller;
->         #gpio-cells =3D <2>;
->         gpio-map =3D <0 0 &gpio1 8 1>;
->         gpio-map-mask =3D <0xff 0x0>;
->         gpio-map-pass-thru =3D <0x0 0x1>;
->         #clock-cells =3D <1>;
->         clock-map =3D <0 &clk 1>;
->         #address-cells =3D <0>;
->         interrupt-controller;
->         #interrupt-cells =3D <2>;
->         interrupt-map-mask =3D <0xff 0x0>;
->         interrupt-map =3D <0 0 &gpio2 27 IRQ_TYPE_LEVEL_LOW>;
->     };
-
-Should this example section include the PWM properties as well? The
-subsystem guidelines require the example to include all required properties
-to pass dt_binding_check.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260509024846.2094=
-049-1-chancel.liu@nxp.com?part=3D2
+>---
+>Fixes sine v1:
+>* Update patch subject to aligin prefix name with existing patches
+>
+> drivers/remoteproc/imx_rproc.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>
+>diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+>index e8d239bef5c9..38713f6f1c50 100644
+>--- a/drivers/remoteproc/imx_rproc.c
+>+++ b/drivers/remoteproc/imx_rproc.c
+>@@ -1356,8 +1356,7 @@ static int imx_rproc_probe(struct platform_device *pdev)
+> 	unsigned long cpus_bits;
+> 	int ret;
+> 
+>-	/* set some other name then imx */
+>-	rproc = devm_rproc_alloc(dev, "imx-rproc", &imx_rproc_ops,
+>+	rproc = devm_rproc_alloc(dev, np->name, &imx_rproc_ops,
+> 				 NULL, sizeof(*priv));
+> 	if (!rproc)
+> 		return -ENOMEM;
+>-- 
+>2.43.0
+>
