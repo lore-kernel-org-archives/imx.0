@@ -1,83 +1,62 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011071.outbound.protection.outlook.com [52.101.70.71])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013005.outbound.protection.outlook.com [52.101.83.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4EB3A451D
-	for <imx@lists.linux.dev>; Sat,  9 May 2026 10:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE9C33D6F9;
+	Sat,  9 May 2026 11:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778322569; cv=fail; b=AdrSnfUvNNE5N3Jk2Wxu/TZ7DjVZHVcWPlU8fxnq5uZ92Cof7Z7fPjT2hm8lKhx/vRxtX5L3J0nF6vjbxh4x1XDsOfmuCOvtXNaE4QAEJhd2cqkah+sRC3T7lIr9y+ddLQejkN1+guP6WcyMM5BuGe3KcteTM9Vv0tcqFWNnbq8=
+	t=1778325297; cv=fail; b=KlqI+HwZMWGzWOtP4mSPIoUj4kY0m35VK0VnMuv8uc2fdPmhq5fpEADJ9dnRJnKLRzQb94C7IBYLQUy8l5tBa3sozimwuCFXiIFhyjKWJkUd0Uk7Eu4Zdu5mhUxm/2WY8Bk/d+Kkqet3NQdyFm1/XSo6NaHJTJUOt0nB4lPECJ4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778322569; c=relaxed/simple;
-	bh=vm6w9BX2K45FFVTEENUG/You0sUJUDZnsZoFA7+COO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uK3SX+nTXocieEtLoSDanfqmx6GhVYhZDKU9A8zJlmACEIhKWfmMMLZU4OOHpVToq+/lGj4fMs1wogm++mFUlm8kFZr+uFVmHQ7ZWNYdb1SPOePcKuvOE6B/J38ro+RzMv0lpN1Otypdlr17mZ1GZot0nXqzfrBOZkWQxRmsB08=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VlwFsBjJ; arc=fail smtp.client-ip=52.101.70.71
+	s=arc-20240116; t=1778325297; c=relaxed/simple;
+	bh=il9/jmpkJGkPbnIGNLiq0f/E/NYhWuNYkon9DZV7tWE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=p1FdM0w5Cylsl77PZniflVzQWGSCZOLRGPc6uPaqaIScYvlr3hloAN32/5asgLk8NNMUT9TQXOu6AANImMM0cPCz7qsjkDt66ZyDNNZgVxs5S7YMStsbEVPpVDj6ciF9oSmEJY6HGslhsYNwancmNid9iEzeVsMfCeTJr9mXX64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LN9cSynY; arc=fail smtp.client-ip=52.101.83.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VlwFsBjJ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LN9cSynY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YCjPZZ78hrkeo0iKma49Vod0bdnUMIljltWMMc9ThuQMX8NxsXaf9KB614Zhmxg5kU7bzsJrWNvM5nrYtWcLdpSaoJQarz+/YtnVCUm3cp9AS7kTQ+uMFGzIMFnv07ChFlnJ8BCwA6xVH/jdWdAEU/LRC2WFbmQq2DupGCp19rpeiZnyqZPLtLVgTFuJWNjzfDfAHoJvmvmSi18OUHlyiuAhUvQlmOU+O9FfAsLLLw7u3jjygOtUPG7A+F0donsbzBNbTB8Si6ZykFg4+xgm1pJbT24vmnHQNiqAZpIKLDt5MDanR/MFnFIl0pBXJcByJaWjvEakguhxjBsB+eCmFA==
+ b=FwLYoEq2QJpcF5/4xE0WUk41JKS+AwGWA9qLDrl+ivKOLYbpmLYgLj10OJUUh0iWWszjssinsqQWjHeQOYQJ2NuLMIjllaPpdIHwFFdPzAgVE1Qn8SIdp4j3uODcLREwxC9KLR/7BYxh5TdO+Ezk7P2va1mAu8SqkZoX+5by94P4BxbpVTjATpeVXTTmAOPbHrxfo+she+mdb/X1+FZ/DcjV7ZhppaB2r/o+Whys2TxbGTnSPmWEInE52sOxnyNw9aow7Mplfbni8L+piBBP2S1H/vAAxxoefDj6yE9khq4KovzdD+vicHNqISZ/TTzI9ZgEEWSjJjxPaL5e3pOy5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bLL8kR60HWiGfBZjWm/4TuxGBOepa12A1njCqZE/dOg=;
- b=t/0JqkHFmsH9cqAPR7DqujLyrBDW1uPiUf4+FEoug3lR+Vv0EcLv36ThawwcHVpRz8tAg4ugzcxlSSg1RVk6laWjjzTU6wFV95hCX81a6/OuQMF0UqlB8bR4ylrjs8Im7Vs1VhP1yW0v/k2eDVmM8pY6bBq8wKXu2HFJWx77AdanIpE/ddVkezyaPz8v8PPeOxy2g+z3zsJxFow5YFScYyV0k/Y32pN/PJR/9lr1imn3neTtP/X+FsKpP0ZsO5xeZM5+1o6hSoxCgz6fnHLFFpdBSELW6mMuktaAeVCn9NNDLA4x3T+Zfj1NF3x7GS9yODD5bhblS7tIW7jrO5pw2w==
+ bh=0KhiZQfSP9eJn1XrUddwci45S4jIRZljujQ2PRB0wdM=;
+ b=gn6Uh6ASuR4IW/fvExOYmbsMmbzAk4BArbYb6+HAs2F/3wSVZ4irXghG5dKuZvv61hOrLzH0V8Ac1GwPqB6ZK+2DundNNbGUEdR48igZK9uAuT2Xqe9CpXkwK8F3oy4y/bE0xA4AwlnriLMYWZ3jlpE3EnEBEcqx1uG40kbS9Mq8r1CLYkJ7TPq/IsAQezjc9hUtuv1NVIVCXhp8CDurXvePPYg2ZDrJc+REfngx+GGmJqJX1yu4/iqvprPiig1yZ1glK/NHZaFuTP40V5sp/OrzCFb5Egx4Ef9YFujl+9FKuMUuEZ0xXK3AAHaKAtBQebniBexL7hC4yPIKiJYIqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bLL8kR60HWiGfBZjWm/4TuxGBOepa12A1njCqZE/dOg=;
- b=VlwFsBjJl5yyqBLBen3LVV7dqI8MnpKqYNVfVx1VHKol/UXCKEMl/cB12Tpq3veMjbPbVpYhkqqUAp8tmKpttuK1HWmivY3nz8sNzado1mFF3obKN0LARkIkaec9BwPNft6SCofq7Mu1+dsR03YdVThVFcyBCDgJQ8PqgtMwOrstKLQEnBQlQ4NLEwbkwZTdzgfKP7w+lfqR4sGzTe3Hu3XELBp5nbWM8HMrSi9LmKlFNm8hvnyMi0WD17tx4cIRQxydhocm/EUwKahyUJUKmeQA+yS2neX9DtcbsUjyCqBxWbrYUqy9pN0riDWZkJ25OzQuo4RWZAaiNlZ6rmz9ow==
+ bh=0KhiZQfSP9eJn1XrUddwci45S4jIRZljujQ2PRB0wdM=;
+ b=LN9cSynYQxb8FCic8LQC71YAxx7krC6TTiSeBYQuFgnrIHta/x2odnzHumk5ccr/DzclkyUNf/fIk83iCHpJbH3FKKUZzHU86SWOSdx9ZCro7YbvXCHUlrmbVAS3bGfbqgN+QnKzWsGFQNS2tAHH5qFJ6PoIFsd0zhR0NtqImOE+NLet8w++1J0iUudnGb71FKlZe2LVjNBZoD/HRjWAnFyjNdGD35BUW6PynJy/xqXz0/NnayRFsaZcA+AgM1CWFKlZW3/cu3jpjgkU/yrc4pvZVIJGHJxe8JbSeXfUj8WZruGDnUvB0l6o3RniZ2nRUrvdfcJM6HfVZSbdsUhKxg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by DU4PR04MB10385.eurprd04.prod.outlook.com (2603:10a6:10:56d::9) with
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by DU4PR04MB12082.eurprd04.prod.outlook.com (2603:10a6:10:645::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.20; Sat, 9 May
- 2026 10:29:24 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9891.019; Sat, 9 May 2026
- 10:29:24 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	f.fainelli@gmail.com,
-	frank.li@nxp.com,
-	chleroy@kernel.org,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com
-Cc: netdev@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Sat, 9 May
+ 2026 11:14:53 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9891.008; Sat, 9 May 2026
+ 11:14:53 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	saravanak@google.com
+Cc: driver-core@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: [PATCH v6 net-next 15/15] net: dsa: netc: add support for ethtool private statistics
-Date: Sat,  9 May 2026 18:29:54 +0800
-Message-Id: <20260509102954.4116624-16-wei.fang@nxp.com>
+Subject: [PATCH] driver core: avoid repeatedly printing the same 'Fixed dependency' log
+Date: Sat,  9 May 2026 19:17:28 +0800
+Message-Id: <20260509111728.4123331-1-xu.yang_2@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260509102954.4116624-1-wei.fang@nxp.com>
-References: <20260509102954.4116624-1-wei.fang@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0030.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::15) To DBBPR04MB7500.eurprd04.prod.outlook.com
- (2603:10a6:10:1f4::16)
+X-ClientProxiedBy: MA1P287CA0023.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a00:35::28) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,366 +64,101 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|DU4PR04MB10385:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6ef3643-d5a7-4446-ab8b-08deadb5d731
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DU4PR04MB12082:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1e2800a-01b3-42ce-e4cd-08deadbc317c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|19092799006|18002099003|22082099003|921020|38350700014|56012099003;
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|38350700014|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	exYvn6AuEFCaSZM5pa7I6DvsxideEJv7NSKTGBGt0rwSZMEs87Sswe7YWKOhijFHz16wY8ZO+Mia5tIXe8wPpcV7otvUGVaoXO+kyNvdey5Ukn5W2FDtD+fCwPWto+67+T8Cgdg9KtK6Df+00TOyHbDPGM2HhZKrAW2+MVijR2184RGZBSTCzzWSAKnEtkqwgIlaziq8d98QP53/8sNLXIdMyCmLsmyuR+x7M2dIeoa5HeDH2y70ooKcm5POLQr0UVrkx92V8tmYgIbj8M9FVoEDlckSNc94epZwf9c0VoWp1lc/rw+YAnXJHnORevRflOayLITUMkp16awkl2DzsriBVt4Iy+iybQ6/w50Gdq/kQcNKPtDX0mGAEh85shi7/xk8WC2RwDL72W8PWkYbbrnym0sSn9OoVlAg2Yj1OTwAaeojt38Jjc9/5jSzD65a6oiAG9JJWELysIKiSdPrar4TVHqjwVxS5hCta4DGIxO3iZeyllQDqyvMrtnLzToQeq5Aq94JJWv9EwFx3fpi3jeclMdK++yu/Ft5OVuQRTAmGb9yhuFZkc9mkRB39VsaYcV4ftG3uVjY+p7AZVozdGS0uKbrD6IWOThyNwMHojym6it9MFyxDFYCUdBNM6p4OaC9dTA6Yj5zsI2k5FggH66FWGD6yTuJrEihf/8aYTZDDOEVITzDCIa/Oezb7sx/TsAanBO8iqQ2cHmwZNPm9QYAI64EfYqoQPGESre6L9qWRo1ABpIWGGcFIFmBd4/eK155RNA/u9QmcvL8IJQQOA==
+	HUEYKCw3APl66jTE1p3/iEwuc/d/lV9nMy4ni+GihWPMrS9sQmtzIxbxH1PjSXp+31noHFbF2pTjQlxko4lgaLJ7lLdVdKkZ/xwFZkfzcpA8mIMFVw8TBRLhmmSl1hkxT3Z8L8b9UyYqG34YIknzZy4YLLVuEYBj96uP9P5jesPl2RCYR6HRxGSt4GJyAv9g50ReNo237oxWiV4hsw/SGHq9rtsmGt1Jw2A0GljKdAGo7vyn8np9t9P3LsUG9dFb5IW4xLNgjO/b4rMKnmO1Pov4ffSFqqLNzHXZCIHeXhQS67w7urM4Fs+5YaFi5INbcRDucv4gTBntRTRt3Z1McW3tVgYIEWpkqB3n3KzVSPBvKdCJh2oO+cYMWfrcarze3iE3tzXUjTyftSM0n84QhkJxVExEmGNrEXnTU0yuMLPi0nRLyfVcdbSnfN209cET6RwtTNfsUisZZXGk34cQRtU+KEWoLsa+kYIIRpyhaqxw0+lYBHi7TBHYFXkT60CD6WSzJOakBM5k0nYwsNbCgql7d7K33JQ5Cfb/0Gg/o+GeIVOuGCnW6zgeXAxeKCKGiCpF6XdWf/yrT4uu8HmRdWIyQT5juQxDFnquhNkZ40ZjC/LiNOR9hbdFkp2sEHxSQhKxamAwsqT2MMlqwg3Y+Z4FuMlFIe509o1YmVwk2MPvzxZ7V/MFG+EF7EeebL25HAuHHhKVNVIrU8RvepkLzu/T0MnhBrqvwnl4ge6IX+eLTiF2fAwh6xabwcCeF/eM
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(19092799006)(18002099003)(22082099003)(921020)(38350700014)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sVzY5zPlVSodKxIFy/g9nrDb8gvISTtV8+gubsrBOIXzhXhrrB/QoFKd24Xh?=
- =?us-ascii?Q?ro3V2nPrCsS22OR2bw1CEtttavupzsAGz7zuR0orLu31qHpHcjgBa1hPiiJ6?=
- =?us-ascii?Q?2+pBCPoxDL/HTOwMIoC1B3hkdfeHmEShLNdrhKVbQKW+ddIf/w5wJNdkL9aF?=
- =?us-ascii?Q?R1hPHgpCWdQ05aDq/v2b3BAwFBFiteq/Ux7230OtwKZ+XUTm7LC/f7LUpI09?=
- =?us-ascii?Q?h8ugzpwEhIQBN8GMpNMMejhiUPiN37+vgiVU889NoJAoRGB/oMxV+sf/U1nz?=
- =?us-ascii?Q?TTWGRGzVDmgzfDEKK4gZNm8O+Damcys7jjl0WMVZ8xR5lRU8GQXUOQBfHO06?=
- =?us-ascii?Q?uuAEdlFYWlvO+JjdI3Nt5SBt6xqQloOtXIUhUCM2Ys/+rEwTE9Dk9pBc+kU3?=
- =?us-ascii?Q?xDwXBt8evgxP4c0Q5ohkqrnOtaZ5CmdcGqMAKJeQ+UBxtovym038YzYUBa7E?=
- =?us-ascii?Q?3PGkJk6mwyRAjZTO07b3G14H594LKti0IZFgataKgzj5QHS+0a49zCKdQOvp?=
- =?us-ascii?Q?q0zHjfqPCYXVgkx7nZqpfWYcOvQESuhEC0iAQCCNbbOkN21tHgrQdXRbtVDE?=
- =?us-ascii?Q?cOr+Py5DQsT+46xnUz2d0wfEAXlwPc7/jiKDxFtYBf0zO8jfRpEeV0UF0SVP?=
- =?us-ascii?Q?/sE+XeiYUvsKgInqm67UzgWFS3+ME0ivjOOP6XoafVHEydVo+PbVChN66VR7?=
- =?us-ascii?Q?UZi+JC9ipHTgbrgnhPVkbq8iTzekw1XyqZj2TRoYd+gFEvxQ37WkqDs80lWv?=
- =?us-ascii?Q?sHRtIDH4RySH75xNxb6ggc7J/gZ9E5FJFixr6wgFRWNwZLq9ZM6ci5Ihs1fH?=
- =?us-ascii?Q?rPWt6MmUn1RAAGz60/tF3nCQmUHN70MdPXyMnXcCg8aB4fhzDnAfFIDCwgeq?=
- =?us-ascii?Q?+97+ZFz4eX2r9Uaw1VRLHj21lIbNqU0drWzoQSdSlU1jM+KEBBpEKbD3iNQ5?=
- =?us-ascii?Q?cIrq/sya7Nu9UVQJYhkp7USA1reNG45qvkmVGCrGOGPfpjjMdfXgtxVaSDXJ?=
- =?us-ascii?Q?RnERdC7ukAwRwEqOsS7ABCmEKTxtXozpMmt7JXtRZybm1Q3NQfwMwSpeV+oZ?=
- =?us-ascii?Q?bUvfmblHaLhn1zEk6+Q8Sf16B7yV2fuDwaLPCQmRoCb0y6cJB487fzjqph6S?=
- =?us-ascii?Q?awEmdCuUx6+XPPl1wI+/Lri8aar9meywwA0ZcJYcMfF56o6h6iIfqDUDDUhy?=
- =?us-ascii?Q?n3leJCJguZZ1+wUZEc6OITfC1hGjnGtepPZEH+ScU2Q015+Fh6Oi/26GvKce?=
- =?us-ascii?Q?Hu9DrARCNISfC6NKauGwB/xRCBShz4Fn4HnvE0a07ebu+KZRV3V5tMGsJOE5?=
- =?us-ascii?Q?iEOk6rhEMgPK+Ec8AooCONwH9/VgZ1lkHsTVHBOsiPVnuZ1d9GXL3n6ORmms?=
- =?us-ascii?Q?EfDEPFM/H13hhOQlQYwCXWxIw/xhMI/kz6NKqOy6j2JUMePPzPQgDsjSZEvH?=
- =?us-ascii?Q?niTzVxhdObUWBRgzPl1ywu5ca7ewKPoMxCNOQUlrdiqQgFexBiLYndhx6HTA?=
- =?us-ascii?Q?SrO0EAFYYUxe7s+WxvUlf8J/TKwDXKdiOziT0xAgsKjXpqPZNeiypL60XO85?=
- =?us-ascii?Q?Der2Z4ZYtWessO0ibJt2iqEmq7uusCZKGFvaU3j6zGwbBcMf3FbVIrXFd8cq?=
- =?us-ascii?Q?Mgb5rA5I6v9MaLWi0B0+lHXHTLsAYDHZ7M2nnnr5LjQWQZm15MeKj50RCpiy?=
- =?us-ascii?Q?du6NdCUTBV1FzvfKJ95cNb2UTGqAuiBkaLp1+bXiR1Eh+knd?=
+	=?us-ascii?Q?2o8EWegXyuxI8dZpF1HHXJCuuyoMbkXkQMsTITEQrpOoQmt1OVNGJnz8BzSa?=
+ =?us-ascii?Q?iTuLuXcuoTKv0Yg/TrLBxTiQWord9M8gv2MNv8QmZkEiFKW5Zm49NWn1tQbk?=
+ =?us-ascii?Q?3e+YxkzQQG0VEsRy11qmm2WeZG2kHZVXEHa7U26yvP1DroYzQOU8qD06k5oL?=
+ =?us-ascii?Q?JL4oj19Eq8Hv0UCyhezRDYcopIdmNhJHPIeKPlsEaDdek5MQ1eUXI9Q3H1I6?=
+ =?us-ascii?Q?+p8qcqhzUAUsJqPKjdz7Tkj2a32AXUCfWmjb7rMpFSyGM7JB4OvXJMUnd99+?=
+ =?us-ascii?Q?iGiFY7/ZSe4x9GX9FkwPIfMJdEeGaBpPoKPEhDl5+15bopVoRTFmY2oztsfS?=
+ =?us-ascii?Q?dGkANsQN6fg8tjVOa0n5acqUKYtv7+I2gyZfpHCQHk+ehL58g5WPoEJeVnAT?=
+ =?us-ascii?Q?xeyBj0EpBpKKiSCiBO/juidAbrNaDsF8S27Um2tCsQmEgYhh2NMu3ddRf1eT?=
+ =?us-ascii?Q?x/gbOT95bBmFd6A/nxJZNRvg3FiSR3mSNAl7fDpVfxpvRJ8Dja9vT7lKwWVL?=
+ =?us-ascii?Q?BHr+aoSr85bepmnS3EYq6CA26w3e5KRjaEILbN+EtwVL9pMUt33BZ9GKAPub?=
+ =?us-ascii?Q?7/1BLHdY2/GJgIHjLkM7idjJ/K+F7BmAn6p0XzO4QXNaDZ4tdVHRO6QolTTB?=
+ =?us-ascii?Q?tIve7LLLni6ODKUQ0oTkr1139cPUg7w2/vQDyGsmtsY2tzJjs5h2GrSmnqxN?=
+ =?us-ascii?Q?LA5/cPVoO80K+AeecrQG564DxigPiLUlw9tzG5VGBCKJWnBlfBv8BaMEz5TS?=
+ =?us-ascii?Q?tJ6e/cjDUhIZjmpkg8vTRiN7792gnFNS5KxF/sWnzoNZpfF/7qjVR/vUhlV3?=
+ =?us-ascii?Q?+aT62zi9BFxlLf9zb1uzZ/Dzfe/kuKdgAtrRLhagIv46xIGIXYOXGLqa8MAf?=
+ =?us-ascii?Q?YK8iyUbMrllTpKzLa4xt37dhKF/F7pqA1Z/kwwPvYliYsLgzO9n7hUtN19++?=
+ =?us-ascii?Q?K+ruEnAmfvZmg+1AkRzE9JO4L3Tc5W773zAj54XRJs6r6odUa3WJRIcfDX+4?=
+ =?us-ascii?Q?ZWMt8//NtBQ7LkLmdc9DopAL/fnguwhndpLmrYvI22tfzz1BT9x5ZtOPRZYV?=
+ =?us-ascii?Q?pMpjkj6HDzAc8VncGzaTxOSazsh85r5jLHfPnHjSPyLIiObwNmdUvJpQfScB?=
+ =?us-ascii?Q?oRnM8etv2d/ZA28QzBYfPei2g3fnBPebn+1gkWhiaZtpOqu/tPSvS/BAzYCa?=
+ =?us-ascii?Q?7lggJE0OnRKxROHO39yXg2BVGMcy42n2jMy3OQJIj/GBeZpvzVE9KBoHtl/O?=
+ =?us-ascii?Q?5i6I7Q/BbewuLVTSpgP8mqsix+y1QgteHRdlUyx+19FXBBuPmeEZAa0YqEeo?=
+ =?us-ascii?Q?7fYmYQSDsXuaP00EB9sBRVamw+Hf6VVu1HhRkIluhoImumS3lB1KcsdfIjzx?=
+ =?us-ascii?Q?6XYx3LWtx+x+a895AZRqmxtR/aYal2CXrCJAV9V5lycti7c+FqN9czsyceB1?=
+ =?us-ascii?Q?a9WjrF2R3T/JrOBsASyTUtaODYKjM67Y0RJteq+Ge6ThN01nCMKCBtCWTbVm?=
+ =?us-ascii?Q?VMZRWf2zNTamSsLipbENM51k4RfHuvNslV0J7jbfE85GxT/oty+hyuNRPXCo?=
+ =?us-ascii?Q?wjwVA2JDgGINuOT/KnHd8HLKKJvWJF3BoqDeQE4RviEnn/zPRsOCRk+Yz+rX?=
+ =?us-ascii?Q?ifRrhfT3FQ5qPynx5dJTa1Gke1pxFJPx0tWbW1x3Gy+GZ7wvaodWbRCcH6/N?=
+ =?us-ascii?Q?/jljFD0vfNDWfut5K0NYYwWovrK5vrfee9nx36jnGZ32Jw4vxE6q784FUvmr?=
+ =?us-ascii?Q?xO2GcGfaRQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6ef3643-d5a7-4446-ab8b-08deadb5d731
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1e2800a-01b3-42ce-e4cd-08deadbc317c
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2026 10:29:24.5954
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2026 11:14:53.1138
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x76wFTtaY7In+pPQvFu+phUSPU5TR+Z/ak9tmp2gox6l9QVw3L7yHjfKOT4UZt5f8WrLLs7eQ1ZbqnP+Y+IKAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10385
+X-MS-Exchange-CrossTenant-UserPrincipalName: OC+tww8SrNe0zfCR0ZIeLRpDVvayzviEjP7RLpAajWsooqs4l2AOTZSC+rkfRW6GyNAwMO+wfQK5OQhfNFnL4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12082
 
-Implement the ethtool private statistics interface to expose additional
-port-level and MAC-level counters that are not covered by the standard
-IEEE 802.3 statistics. The pMAC counters are only reported when the port
-supports Frame Preemption (802.1Qbu/802.3br).
+The "Fixed dependency cycle(s) with ..." log is printed for each cycle
+finding process. In particular, the same cycle may be parsed many times
+during the proxy link setup. For example, if /soc/bus@4c000000/usb@4c100000
+is a devicetree structure and node usb@4c100000 is in a cycle, then for
+each device registration (soc, 4c000000.bus and 4c100000.usb),
+fw_devlink_create_devlink() will find the same cycle and print a log.
+The repeat logs are redundant and may cause confusion for the user. Move
+the pr_debug() to __fwnode_link_cycle() and avoid printing the log if it
+has already been printed.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 ---
- drivers/net/dsa/netc/netc_ethtool.c   | 107 ++++++++++++++++++++++++++
- drivers/net/dsa/netc/netc_main.c      |   3 +
- drivers/net/dsa/netc/netc_switch.h    |   9 +++
- drivers/net/dsa/netc/netc_switch_hw.h |  58 ++++++++++++++
- 4 files changed, 177 insertions(+)
+ drivers/base/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/netc/netc_ethtool.c b/drivers/net/dsa/netc/netc_ethtool.c
-index ac8940b5a85c..8d04db534347 100644
---- a/drivers/net/dsa/netc/netc_ethtool.c
-+++ b/drivers/net/dsa/netc/netc_ethtool.c
-@@ -19,6 +19,56 @@ static const struct ethtool_rmon_hist_range netc_rmon_ranges[] = {
- 	{ }
- };
- 
-+static const struct netc_port_stat netc_port_counters[] = {
-+	{ NETC_PTGSLACR,	"port gate late arrival frames" },
-+	{ NETC_PSDFTCR,	"port SDF transmit frames" },
-+	{ NETC_PSDFDDCR,	"port SDF drop duplicate frames" },
-+	{ NETC_PRXDCR,		"port rx discard frames" },
-+	{ NETC_PRXDCRRR,	"port rx discard read-reset" },
-+	{ NETC_PRXDCRR0,	"port rx discard reason 0" },
-+	{ NETC_PRXDCRR1,	"port rx discard reason 1" },
-+	{ NETC_PTXDCR,		"port tx discard frames" },
-+	{ NETC_PTXDCRRR,	"port tx discard read-reset" },
-+	{ NETC_PTXDCRR0,	"port tx discard reason 0" },
-+	{ NETC_PTXDCRR1,	"port tx discard reason 1" },
-+	{ NETC_BPDCR,		"bridge port discard frames" },
-+	{ NETC_BPDCRRR,	"bridge port discard read-reset" },
-+	{ NETC_BPDCRR0,	"bridge port discard reason 0" },
-+	{ NETC_BPDCRR1,	"bridge port discard reason 1" },
-+};
-+
-+static const struct netc_port_stat netc_emac_counters[] = {
-+	{ NETC_PM_ROCT(0),	"eMAC rx octets" },
-+	{ NETC_PM_RVLAN(0),	"eMAC rx VLAN frames" },
-+	{ NETC_PM_RERR(0),	"eMAC rx frame errors" },
-+	{ NETC_PM_RUCA(0),	"eMAC rx unicast frames" },
-+	{ NETC_PM_RDRP(0),	"eMAC rx dropped packets" },
-+	{ NETC_PM_RPKT(0),	"eMAC rx packets" },
-+	{ NETC_PM_TOCT(0),	"eMAC tx octets" },
-+	{ NETC_PM_TVLAN(0),	"eMAC tx VLAN frames" },
-+	{ NETC_PM_TFCS(0),	"eMAC tx FCS errors" },
-+	{ NETC_PM_TUCA(0),	"eMAC tx unicast frames" },
-+	{ NETC_PM_TPKT(0),	"eMAC tx packets" },
-+	{ NETC_PM_TUND(0),	"eMAC tx undersized packets" },
-+	{ NETC_PM_TIOCT(0),	"eMAC tx invalid octets" },
-+};
-+
-+static const struct netc_port_stat netc_pmac_counters[] = {
-+	{ NETC_PM_ROCT(1),	"pMAC rx octets" },
-+	{ NETC_PM_RVLAN(1),	"pMAC rx VLAN frames" },
-+	{ NETC_PM_RERR(1),	"pMAC rx frame errors" },
-+	{ NETC_PM_RUCA(1),	"pMAC rx unicast frames" },
-+	{ NETC_PM_RDRP(1),	"pMAC rx dropped packets" },
-+	{ NETC_PM_RPKT(1),	"pMAC rx packets" },
-+	{ NETC_PM_TOCT(1),	"pMAC tx octets" },
-+	{ NETC_PM_TVLAN(1),	"pMAC tx VLAN frames" },
-+	{ NETC_PM_TFCS(1),	"pMAC tx FCS errors" },
-+	{ NETC_PM_TUCA(1),	"pMAC tx unicast frames" },
-+	{ NETC_PM_TPKT(1),	"pMAC tx packets" },
-+	{ NETC_PM_TUND(1),	"pMAC tx undersized packets" },
-+	{ NETC_PM_TIOCT(1),	"pMAC tx invalid octets" },
-+};
-+
- static void netc_port_pause_stats(struct netc_port *np, int mac,
- 				  struct ethtool_pause_stats *stats)
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index d49420e066de..af0371d4ed83 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -127,7 +127,13 @@ static void __fwnode_link_cycle(struct fwnode_link *link)
  {
-@@ -188,3 +238,60 @@ void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
- 		break;
- 	}
+ 	pr_debug("%pfwf: cycle: depends on %pfwf\n",
+ 		 link->consumer, link->supplier);
++
++	if (link->flags & FWLINK_FLAG_CYCLE)
++		return;
++
+ 	link->flags |= FWLINK_FLAG_CYCLE;
++	pr_info("%pfwf: Fixed dependency cycle(s) with %pfwf\n",
++		link->consumer, link->supplier);
  }
-+
-+int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int size;
-+
-+	if (sset != ETH_SS_STATS)
-+		return -EOPNOTSUPP;
-+
-+	size = ARRAY_SIZE(netc_port_counters) +
-+	       ARRAY_SIZE(netc_emac_counters);
-+
-+	if (np->caps.pmac)
-+		size += ARRAY_SIZE(netc_pmac_counters);
-+
-+	return size;
-+}
-+
-+void netc_port_get_strings(struct dsa_switch *ds, int port,
-+			   u32 sset, u8 *data)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int i;
-+
-+	if (sset != ETH_SS_STATS)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
-+		ethtool_cpy(&data, netc_port_counters[i].name);
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
-+		ethtool_cpy(&data, netc_emac_counters[i].name);
-+
-+	if (!np->caps.pmac)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
-+		ethtool_cpy(&data, netc_pmac_counters[i].name);
-+}
-+
-+void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data)
-+{
-+	struct netc_port *np = NETC_PORT(ds, port);
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
-+		*data++ = netc_port_rd(np, netc_port_counters[i].reg);
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
-+		*data++ = netc_port_rd64(np, netc_emac_counters[i].reg);
-+
-+	if (!np->caps.pmac)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
-+		*data++ = netc_port_rd64(np, netc_pmac_counters[i].reg);
-+}
-diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-index 338f2421ccb4..a82e156ce86e 100644
---- a/drivers/net/dsa/netc/netc_main.c
-+++ b/drivers/net/dsa/netc/netc_main.c
-@@ -1467,6 +1467,9 @@ static const struct dsa_switch_ops netc_switch_ops = {
- 	.get_rmon_stats			= netc_port_get_rmon_stats,
- 	.get_eth_ctrl_stats		= netc_port_get_eth_ctrl_stats,
- 	.get_eth_mac_stats		= netc_port_get_eth_mac_stats,
-+	.get_sset_count			= netc_port_get_sset_count,
-+	.get_strings			= netc_port_get_strings,
-+	.get_ethtool_stats		= netc_port_get_ethtool_stats,
- };
  
- static int netc_switch_probe(struct pci_dev *pdev,
-diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
-index 40e54af0c356..740e1f307c45 100644
---- a/drivers/net/dsa/netc/netc_switch.h
-+++ b/drivers/net/dsa/netc/netc_switch.h
-@@ -94,6 +94,11 @@ struct netc_fdb_entry {
- 	struct hlist_node node;
- };
- 
-+struct netc_port_stat {
-+	int reg;
-+	char name[ETH_GSTRING_LEN] __nonstring;
-+};
-+
- struct netc_switch {
- 	struct pci_dev *pdev;
- 	struct device *dev;
-@@ -160,5 +165,9 @@ void netc_port_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
- 				  struct ethtool_eth_ctrl_stats *ctrl_stats);
- void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
- 				 struct ethtool_eth_mac_stats *mac_stats);
-+int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset);
-+void netc_port_get_strings(struct dsa_switch *ds, int port,
-+			   u32 sset, u8 *data);
-+void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data);
- 
- #endif
-diff --git a/drivers/net/dsa/netc/netc_switch_hw.h b/drivers/net/dsa/netc/netc_switch_hw.h
-index f8d436ad9623..1b016e7dd03e 100644
---- a/drivers/net/dsa/netc/netc_switch_hw.h
-+++ b/drivers/net/dsa/netc/netc_switch_hw.h
-@@ -87,6 +87,17 @@
- #define  PSR_TX_BUSY			BIT(0)
- #define  PSR_RX_BUSY			BIT(1)
- 
-+#define NETC_PTGSLACR			0x130
-+
-+#define NETC_PRXDCR			0x1c0
-+#define NETC_PRXDCRRR			0x1c4
-+#define NETC_PRXDCRR0			0x1c8
-+#define NETC_PRXDCRR1			0x1cc
-+#define NETC_PTXDCR			0x1e0
-+#define NETC_PTXDCRRR			0x1e4
-+#define NETC_PTXDCRR0			0x1e8
-+#define NETC_PTXDCRR1			0x1ec
-+
- #define NETC_PTCTMSDUR(a)		(0x208 + (a) * 0x20)
- #define  PTCTMSDUR_MAXSDU		GENMASK(15, 0)
- #define  PTCTMSDUR_SDU_TYPE		GENMASK(17, 16)
-@@ -94,6 +105,9 @@
- #define   SDU_TYPE_MPDU			1
- #define   SDU_TYPE_MSDU			2
- 
-+#define NETC_PSDFTCR			0x4c4
-+#define NETC_PSDFDDCR			0x4c8
-+
- #define NETC_BPCR			0x500
- #define  BPCR_DYN_LIMIT			GENMASK(15, 0)
- #define  BPCR_MLO			GENMASK(22, 20)
-@@ -142,6 +156,11 @@ enum netc_stg_stage {
- 	NETC_STG_STATE_FORWARDING,
- };
- 
-+#define NETC_BPDCR			0x580
-+#define NETC_BPDCRRR			0x584
-+#define NETC_BPDCRR0			0x588
-+#define NETC_BPDCRR1			0x58c
-+
- /* Definition of Switch ethernet MAC port registers */
- #define NETC_PMAC_OFFSET		0x400
- #define NETC_PM_CMD_CFG(a)		(0x1008 + (a) * 0x400)
-@@ -176,6 +195,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Receive Ethernet Octets Counter */
- #define NETC_PM_REOCT(a)		(0x1100 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive Octets Counter */
-+#define NETC_PM_ROCT(a)			(0x1108 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Alignment Error Counter Register */
- #define NETC_PM_RALN(a)			(0x1110 + (a) * 0x400)
- 
-@@ -188,12 +210,27 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Receive Frame Check Sequence Error Counter */
- #define NETC_PM_RFCS(a)			(0x1128 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive VLAN Frame Counter */
-+#define NETC_PM_RVLAN(a)		(0x1130 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Frame Error Counter */
-+#define NETC_PM_RERR(a)			(0x1138 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Unicast Frame Counter */
-+#define NETC_PM_RUCA(a)			(0x1140 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Multicast Frame Counter */
- #define NETC_PM_RMCA(a)			(0x1148 + (a) * 0x400)
- 
- /* Port MAC 0/1 Receive Broadcast Frame Counter */
- #define NETC_PM_RBCA(a)			(0x1150 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Receive Dropped Packets Counter */
-+#define NETC_PM_RDRP(a)			(0x1158 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Receive Packets Counter */
-+#define NETC_PM_RPKT(a)			(0x1160 + (a) * 0x400)
-+
- /* Port MAC 0/1 Receive Undersized Packet Counter */
- #define NETC_PM_RUND(a)			(0x1168 + (a) * 0x400)
- 
-@@ -236,6 +273,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Ethernet Octets Counter */
- #define NETC_PM_TEOCT(a)		(0x1200 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Octets Counter */
-+#define NETC_PM_TOCT(a)			(0x1208 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Excessive Deferral Packet Counter */
- #define NETC_PM_TEDFR(a)		(0x1210 + (a) * 0x400)
- 
-@@ -245,15 +285,30 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Frame Counter */
- #define NETC_PM_TFRM(a)			(0x1220 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Frame Check Sequence Error Counter */
-+#define NETC_PM_TFCS(a)			(0x1228 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit VLAN Frame Counter */
-+#define NETC_PM_TVLAN(a)		(0x1230 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Frame Error Counter */
- #define NETC_PM_TERR(a)			(0x1238 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Unicast Frame Counter */
-+#define NETC_PM_TUCA(a)			(0x1240 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit Multicast Frame Counter */
- #define NETC_PM_TMCA(a)			(0x1248 + (a) * 0x400)
- 
- /* Port MAC 0/1 Transmit Broadcast Frame Counter */
- #define NETC_PM_TBCA(a)			(0x1250 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Packets Counter */
-+#define NETC_PM_TPKT(a)			(0x1260 + (a) * 0x400)
-+
-+/* Port MAC 0/1 Transmit Undersized Packet Counter */
-+#define NETC_PM_TUND(a)			(0x1268 + (a) * 0x400)
-+
- /* Port MAC 0/1 Transmit 64-Octet Packet Counter */
- #define NETC_PM_T64(a)			(0x1270 + (a) * 0x400)
- 
-@@ -293,6 +348,9 @@ enum netc_stg_stage {
- /* Port MAC 0/1 Transmit Excessive Collisions Counter */
- #define NETC_PM_TECOL(a)		(0x12f0 + (a) * 0x400)
- 
-+/* Port MAC 0/1 Transmit Invalid Octets Counter */
-+#define NETC_PM_TIOCT(a)		(0x12f8 + (a) * 0x400)
-+
- #define NETC_PEMDIOCR			0x1c00
- #define NETC_EMDIO_BASE			NETC_PEMDIOCR
+ /**
+@@ -2140,8 +2146,6 @@ static int fw_devlink_create_devlink(struct device *con,
+ 	if (__fw_devlink_relax_cycles(link->consumer, sup_handle)) {
+ 		__fwnode_link_cycle(link);
+ 		pr_debug("----- cycle: end -----\n");
+-		pr_info("%pfwf: Fixed dependency cycle(s) with %pfwf\n",
+-			link->consumer, sup_handle);
+ 	}
+ 	device_links_write_unlock();
  
 -- 
 2.34.1
