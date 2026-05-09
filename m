@@ -1,71 +1,107 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D72836A6
-	for <imx@lists.linux.dev>; Sat,  9 May 2026 11:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A8A35CB6F
+	for <imx@lists.linux.dev>; Sat,  9 May 2026 12:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778327693; cv=none; b=iV2pryQnQ7wvW4Eo/gqOSfNMVH/dbX7ujXR3UClO6kIP5n7hrGFAej3Lwd6m7doGO8RCQ0mHm5j1Bx1WAiLD/YPMOxzSHtkckzFvhy76cDdYVgI4XuLgMhT/wVOr/KQoDFGZaYugjBl9dZlSwpCCJWLMyIXGQxKCzC27YbJ4slQ=
+	t=1778331215; cv=none; b=a2P9AOBPZ2en8WhwqgmVEtmbv3f/CLs0+THLDO2ni8oMHRDJFXG9A0ai51+39CN6B632mUwI7ebDU4FYlkbESGxe1atPxKIa8wCbv1G0qrEzzOb29GNrqjkFn8HXvJVKHth9gXAxpNZhIKc/KZ6MQS4+cwsxyObtqHJEdgT1Nco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778327693; c=relaxed/simple;
-	bh=iAs6EW6YdM8NB3a+zMRfoB79ddSYVoirG6L/eVPkl2c=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=K4YP/ksxrUIgXnXxd97ziY5HKDH0YTRqiES5+T0stVDIu4XdRte8nfB0c6Nagj4yN8KGRf1TfOAEKAQgZmIfRCP0JJqDd4VPIsy8h6QplqaMmpW7ZRkBhIQaSOpMdsd95G1VA9+BkEZwn72t8VTQ5e4tlTWf2p4MCJpdDjMTRF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 754FC1A3AAB;
-	Sat,  9 May 2026 13:54:50 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3E5F21A3AB6;
-	Sat,  9 May 2026 13:54:50 +0200 (CEST)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id A403218002C2;
-	Sat,  9 May 2026 19:54:48 +0800 (+08)
-From: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-To: imx@lists.linux.dev,
-	linux-remoteproc@vger.kernel.org,
-	andersson@kernel.org,
-	mathieu.poirier@linaro.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-Subject: [PATCH] remoteproc: imx_rproc: add lost DRAM range for i.MX93
-Date: Sat,  9 May 2026 19:57:19 +0800
-Message-Id: <20260509115719.12546-1-Zhiqiang.Hou@nxp.com>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1778331215; c=relaxed/simple;
+	bh=86ICk8fw54DPgd94nqtiQGhB2I/taGncsTKIe8mdtH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EC+IS4qCmPhQwSAVrATreC37EegkrzjFE8glev9AbpVVyrwnUscrTf+QyCOTrt7IFuXDd+5DeMNFfsOWaw89jZHR6JzI/cYQoZcTI9/P1XUJhbY4Akm2FewEw/fBIZcpc63z1KVkiK5PdaT8bgw/1c4JpMfmmMHkEM57m0rwIf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=einSO+Oo; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="einSO+Oo"
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 4E62B1F963;
+	Sat,  9 May 2026 14:46:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1778330805;
+	bh=vcZDAYqZuZvTd/H5R6a61erP18H6V558gIpcykPUuzU=;
+	h=Received:Received:From:To:Subject;
+	b=einSO+OoEJhoKr6r94Hm64J+0cWCC0G6elT2VMo/9g7jVQ5YzFuiycxugg/uGTNq5
+	 7hNRXh98UZKOEr+aJ0jcApyVjnAHrZ2SOYhDVLvrzw0GUuEuLOzxTA0ISQEbaAlC97
+	 KQ80wimnI088XkcvUdisYVQ6oh0cTfxfiqysnjCeAVf8yLUMcQIOQgxlPo+o9ylvEQ
+	 KVQgb5EsSRn7QJKQm74pl50F3yrLLo0itdU+ouetM1Ev86EjCWBz9s38GwucCA/Yeo
+	 EUhtHjtZODdAnXQK2JiNK51jZSAT1I2H0FywgzPPeUSAtAZ7KKYqkTUnICKrrZy68O
+	 r+tcbIXRNdu3A==
+Received: from livingston (unknown [192.168.42.11])
+	by gaggiata.pivistrello.it (Postfix) with ESMTP id 046787F9D1;
+	Sat, 09 May 2026 14:46:45 +0200 (CEST)
+Received: from pivi by livingston with local (Exim 4.98.2)
+	(envelope-from <francesco@dolcini.it>)
+	id 1wLh4u-000000002l9-3poB;
+	Sat, 09 May 2026 14:46:44 +0200
+Date: Sat, 9 May 2026 14:46:44 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Franz Schnyder <fra.schnyder@gmail.com>, Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, jun.li@nxp.com,
+	Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
+ role
+Message-ID: <af8stIGhzVMfhyIQ@livingston.pivistrello.it>
+References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
+ <20260108081433.2119328-3-xu.yang_2@nxp.com>
+ <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
+ <jjwlrgusucoacaye75uqfuh76a4jhdv3ivzjuemgusw3trwseb@mymuy62cptxp>
+ <hsyy2owzbt7tsljktlrz5g4bnrnecznvcyy6zxt7gfyxb4xvgi@ysko6xe6h2zm>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <hsyy2owzbt7tsljktlrz5g4bnrnecznvcyy6zxt7gfyxb4xvgi@ysko6xe6h2zm>
 
-From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+On Fri, May 08, 2026 at 06:04:49PM +0200, Franz Schnyder wrote:
+> On Fri, May 08, 2026 at 06:54:40PM +0800, Xu Yang wrote:
+> > It's strange that link->status is not DL_STATE_DORMANT or DL_STATE_NONE at
+> > the time which means the device core may not properly unbind consumer devices
+> > or handle something. The patch does a simple thing so the issue may not come
+> > from the patch itself.
+> > 
+> > 1639:	list_for_each_entry_safe_reverse(link, ln, &dev->links.consumers, s_node) {
+> > 1640:		WARN_ON(link->status != DL_STATE_DORMANT &&
+> > 1641:			link->status != DL_STATE_NONE);
+> > 1642:		__device_link_del(&link->kref);
+> > 1643:	}
+> > 
+> > Which kernel and dtb are you using? If it's a downstream repo, how do the USB
+> > controller and related DTS nodes look like?
+> 
+> I was using kernel version 7.1-rc2 and noticed it while working on 
+> sending the Aquila iMX95 upstream.
+> https://lore.kernel.org/all/20260506-add-aquila-imx95-v1-2-69c8ee1c5413@toradex.com/
+> > 
+> > Does the issue easily happen? Does dwc3_imx8mp_probe() eventually succeed?
+> 
+> I did various boot attempts with the commit reverted and couldn't 
+> reproduce the issue. With the commit I ran into the issue in about one 
+> third of all boot attempts. So most of the time dwc3_imx8mp_prove 
+> actually succeeds.
 
-The M33 DRAM view of 256MB ranges 0x[a,b]0000000 are mapped to
-0xa0000000 of A55 mapping view.
+...
 
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
----
- drivers/remoteproc/imx_rproc.c | 3 +++
- 1 file changed, 3 insertions(+)
+> > Yes, if you use the new driver, I think this issue won't happen at all.
+> > 
+> So once your work is merged in the imx95.dtsi we should be fine.
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 7f54322244aca..175c2d3099794 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -198,6 +198,9 @@ static const struct imx_rproc_att imx_rproc_att_imx93[] = {
- 	{ 0x80000000, 0x80000000, 0x10000000, 0 },
- 	{ 0x90000000, 0x80000000, 0x10000000, 0 },
- 
-+	{ 0xA0000000, 0xA0000000, 0x10000000, 0 },
-+	{ 0xB0000000, 0xA0000000, 0x10000000, 0 },
-+
- 	{ 0xC0000000, 0xC0000000, 0x10000000, 0 },
- 	{ 0xD0000000, 0xC0000000, 0x10000000, 0 },
- };
--- 
-2.43.0
+To me it looks like a regression that should be taken care of.
+
+Maybe not relevant for aquila imx95, where you did reproduce it (the reason is
+that aquila imx95 is not in mainline, yet), but from the USB point of view this
+board is very similar to other boards using the i.MX95 SoC that are therefore
+likely affected.
+
+Francesco
 
