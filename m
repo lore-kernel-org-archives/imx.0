@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20DB372698;
-	Sun, 10 May 2026 10:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAE2371D08;
+	Sun, 10 May 2026 10:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778410115; cv=none; b=piw2BLUR1nGz748xb6I/bU+YqDe2GYhG1Mx2VkWTbDlvNx3UVkxwLRdaChTT//h3pFbLPclG6bbLQfasnfMQxsJeUCuDX3fGWyl3ywdDd0fL2iErhBgkdt3SrPh5ZyOH7bOcZGkpN0BQu/YKtLg7Qo4HBFXN4BPOk0FfjtNVHfw=
+	t=1778410116; cv=none; b=fioQpKKPwnS8qJkn1B1lPxDZJPDkQmkOkufQaQh3YKoA1XllKPUzV+oGc8OuXT8+ElmuMzjKNGR+SrQXIH0/QsiJ0ThIfK+gcrEtqdq73X+gVsqYfV2ebP+183edDT4hBzbkX0GsdaM6l63KbSNuE9z3O/9yi+YJM/EdVFQuh2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778410115; c=relaxed/simple;
-	bh=uMx4jqWM8TuPHyt/kUuU0uJ9ea4uC1/m5zNr0ebXMlE=;
+	s=arc-20240116; t=1778410116; c=relaxed/simple;
+	bh=15ROVA4JBJZYu6QGzMF7uxtHb5L+mYPao6hnehsdA70=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XJYfX53FlVy3Zo2tFue/g66hsozWL4v5oopwbJlkazovPt60XwZSYecSjBjt72JfTLr/LxaLwDQIopDENAQoh3nS59xDO2YIi3CduNnuKqtfqBKdVzePvmYddLJzm3Q8cYdBIRiCj03N+TbKaZHKnqLVzzeb2eMDkNzC0Gk67K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6ZxZ8xm; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=jY9sCiXfn9PD3WdswCsoUCZmtCslIKHjZk6Acvih9GF46Ccp/A0N24GRnpt8moPeuVfwzwsz59Yxw9W7iC43aDhZAHP7fCOI2CHnQaiUhzuTZhS6PBDcRKoPUXTUHJHDdlQjN63ykUD1vYPtYeIaFqsiY/8oS3Hoqb9Qr1mndM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dpjB81Tf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6ZxZ8xm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F27DC2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dpjB81Tf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0009C2BCB8;
 	Sun, 10 May 2026 10:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778410115;
-	bh=uMx4jqWM8TuPHyt/kUuU0uJ9ea4uC1/m5zNr0ebXMlE=;
+	s=k20201202; t=1778410116;
+	bh=15ROVA4JBJZYu6QGzMF7uxtHb5L+mYPao6hnehsdA70=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=p6ZxZ8xmzKUUWXMPeXKr2HIBjeJdcsbL6TYus3ZLa4+1Zh+KYXeudfOu+NbIC37MU
-	 PLkMbPxAXIyiFZGINlTtS8MLkUSIoNWpiTpSehCGQLiU8Zi+qHQLOxlo/H7NryJcpm
-	 15wJqB4mIb4foT0UpwrGI8/0sPZn/MXjS7srO1dlCYjA6dKPQE7T0Gs80KNAKyrGBk
-	 8GYbUxVt6Wco7cim6hLluPJNf9k4LYgDSOdsHQjxCe1b+0tlNMxoM0dRXK1a7Wttw0
-	 NwYasQl/hgfC74qBDpCCvav/zSzJIm604kVMizEvTTUY7XAd6eIO19rwLJiX9DhSDO
-	 BUwOudlxTVHcA==
+	b=dpjB81Tf/fHR+zFCtSWxW2Eh5ENCJEs4U3jgY0kOwdhqN7BwFz+HL71HFkDClsOut
+	 zlHxaAZoGbwpuhiLjVXgSvx8Ho+jKBGmWiy3FKiuTC9g8N5xsJei2X8AiZq7ap+hbL
+	 cOyo3Y9oP+QdrP2oZpmr4Wq+mzQR8QbD1Ee7MIrj0lJXa0yUgSE52G2FvPYj56t+16
+	 E7rZ0qht9uBqdZ7s4PMlFVH7rN+MG0dLzRtSmdcI3/quKUYMqPFfdbQXi9pOQ7xiIS
+	 yoOwUQoEHCDd05ru+OtkpBoLYiqo+nVfOPfmK8REdyYeXLz6QM7Nu47eBz7shoEsyY
+	 iw+WTaGzBQsMg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 net-next 07/15] net: enetc: add support for "Add" and
- "Delete" operations to IPFT
+Subject: Re: [PATCH v6 net-next 09/15] net: dsa: add NETC switch tag support
 Reply-To: sashiko@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
-Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260509102954.4116624-8-wei.fang@nxp.com>
-References: <20260509102954.4116624-8-wei.fang@nxp.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org
+In-Reply-To: <20260509102954.4116624-10-wei.fang@nxp.com>
+References: <20260509102954.4116624-10-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 10 May 2026 10:48:34 +0000
-Message-Id: <20260510104835.0F27DC2BCB8@smtp.kernel.org>
+Date: Sun, 10 May 2026 10:48:35 +0000
+Message-Id: <20260510104835.E0009C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,80 +45,55 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The IPFT Add request specifies the STSE update flag but omits the =
-STSE data in its structure, causing hardware to misread the CFGE data.
+- [High] Out-of-bounds memory read in `netc_flow_dissect()` due to missing =
+SKB header linearization.
 --
 
-commit 00a023617c26cf31c0233be20200f834604aaeaa
+commit 497c9819ff3bedb82e4e40b92e407f5f3d81f984
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: add support for "Add" and "Delete" operations to IPFT
+net: dsa: add NETC switch tag support
 
-This patch adds "Add" and "Delete" operations to the ingress port filter=20
-table (IPFT) for the ENETC driver. These interfaces allow the driver and=20
-switch to classify incoming traffic and apply specific actions based on=20
-a precedence value.
+This commit adds support for the NXP NETC proprietary switch tag to the
+DSA subsystem. It defines the NETC tag formats and implements the transmit,
+receive, and flow dissection operations for the new tag protocol.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/driver=
-s/net/ethernet/freescale/enetc/ntmp_private.h
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
+> diff --git a/net/dsa/tag_netc.c b/net/dsa/tag_netc.c
+> new file mode 100644
+> index 0000000000000..b29aa54b19881
+> --- /dev/null
+> +++ b/net/dsa/tag_netc.c
+
 [ ... ]
-> +/* Ingress Port Filter Table Request Data Buffer Format of Update and
-> + * Add actions
-> + */
-> +struct ipft_req_ua {
-> +	struct ntmp_cmn_req_data crd;
-> +	union ipft_access_key ak;
-> +	struct ipft_cfge_data cfge;
-> +};
-[ ... ]
-> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/et=
-hernet/freescale/enetc/ntmp.c
-> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-[ ... ]
-> +int ntmp_ipft_add_entry(struct ntmp_user *user,
-> +			struct ipft_entry_data *entry)
+
+> +static void netc_flow_dissect(const struct sk_buff *skb, __be16 *proto,
+> +			      int *offset)
 > +{
-[ ... ]
-> +	swcbd.size =3D sizeof(*resp);
-> +	err =3D ntmp_alloc_data_mem(user->dev, &swcbd, (void **)&req);
-> +	if (err)
-> +		return err;
+> +	struct netc_tag_cmn *tag_cmn =3D (struct netc_tag_cmn *)(skb->data - 2);
+> +	int tag_len =3D netc_get_rx_tag_len(tag_cmn->type);
 > +
-> +	ntmp_fill_crd(&req->crd, user->tbl.ipft_ver, NTMP_QA_ENTRY_ID,
-> +		      NTMP_GEN_UA_CFGEU | NTMP_GEN_UA_STSEU);
+> +	*offset =3D tag_len;
+> +	*proto =3D ((__be16 *)skb->data)[(tag_len / 2) - 1];
 
-Does setting the NTMP_GEN_UA_STSEU flag here cause the hardware to expect=20
-STSE data in the request buffer?
+Is it possible for the packet headers to span paged fragments when this is
+called?
 
-Looking at ipft_resp_query, the STSE data (__le64 match_count) sits=20
-strictly between KEYE and CFGE:
+Since flow_dissect takes a const struct sk_buff pointer and can be invoked
+on untrusted or non-linear SKBs (for example, those injected via AF_PACKET
+on the egress path), the linear portion of the buffer might be smaller
+than the expected tag length.
 
-struct ipft_resp_query {
-	__le32 status;
-	__le32 entry_id;
-	struct ipft_keye_data keye;
-	__le64 match_count; /* STSE_DATA */
-	struct ipft_cfge_data cfge;
-} __packed;
+If tag_len reaches up to 14 bytes, these direct accesses to skb->data
+could read past the linear boundary and trigger a page fault or read
+uninitialized memory.
 
-However, ipft_req_ua lacks this STSE data field, placing cfge immediately=20
-after ak.
+Would it be safer to use skb_header_pointer() here to reliably extract the
+tag and protocol fields instead of relying on direct pointer arithmetic?
 
-Since the hardware parses the buffer sequentially, could this cause it to=20
-misinterpret the req->cfge field as STSE data, and subsequently read past=20
-the valid data into the zero-initialized tail to populate the actual CFGE=20
-data?
+> +}
 
-If the STSE update is intended, should an STSE field be added to=20
-struct ipft_req_ua? Alternatively, should NTMP_GEN_UA_STSEU be removed=20
-from the update action flags?
-
-> +	req->ak.keye =3D entry->keye;
-> +	req->cfge =3D entry->cfge;
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260509102954.4116=
-624-1-wei.fang@nxp.com?part=3D7
+624-1-wei.fang@nxp.com?part=3D9
