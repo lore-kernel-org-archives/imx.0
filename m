@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C588635C181;
-	Sun, 10 May 2026 10:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20DB372698;
+	Sun, 10 May 2026 10:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778410114; cv=none; b=LLUZHJBxC5OfTnNxIlvZcw7iyZznUYgOZGrpipFfKjX4xt7dze7kBgb2L3Eg61OegF8/dCZtjXtYRjjtyj1RhcN3yVcSyctiK242IUY8hoy31kJkqlaotdH09Frj3bu3pwWmvDHplB0r0lea8UDnzBEApTOGyNji1wITjJ2jULk=
+	t=1778410115; cv=none; b=piw2BLUR1nGz748xb6I/bU+YqDe2GYhG1Mx2VkWTbDlvNx3UVkxwLRdaChTT//h3pFbLPclG6bbLQfasnfMQxsJeUCuDX3fGWyl3ywdDd0fL2iErhBgkdt3SrPh5ZyOH7bOcZGkpN0BQu/YKtLg7Qo4HBFXN4BPOk0FfjtNVHfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778410114; c=relaxed/simple;
-	bh=yeELburbxkfR8IuJsc2BxwtJBU7YBrT4ytnwWTV+ZUs=;
+	s=arc-20240116; t=1778410115; c=relaxed/simple;
+	bh=uMx4jqWM8TuPHyt/kUuU0uJ9ea4uC1/m5zNr0ebXMlE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sGPonKEjOzrcDmmBk5QwQwDLdENy/y529rxAQGf9IDbe4wHwhsDFzUHrMk13xNJ2W5pCx5WLFHmZliX74vGqJEuo/bHcUNhdK2RzSkeN+7wEvNhQ6xmrKJx1+7Mb6a2Pfi1VsBuuwG1/NMIyR+aHlRLCApUKvRML4lWqNJOsjz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3xj4XT+; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=XJYfX53FlVy3Zo2tFue/g66hsozWL4v5oopwbJlkazovPt60XwZSYecSjBjt72JfTLr/LxaLwDQIopDENAQoh3nS59xDO2YIi3CduNnuKqtfqBKdVzePvmYddLJzm3Q8cYdBIRiCj03N+TbKaZHKnqLVzzeb2eMDkNzC0Gk67K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6ZxZ8xm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3xj4XT+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA23C2BCB8;
-	Sun, 10 May 2026 10:48:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6ZxZ8xm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F27DC2BCB8;
+	Sun, 10 May 2026 10:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778410114;
-	bh=yeELburbxkfR8IuJsc2BxwtJBU7YBrT4ytnwWTV+ZUs=;
+	s=k20201202; t=1778410115;
+	bh=uMx4jqWM8TuPHyt/kUuU0uJ9ea4uC1/m5zNr0ebXMlE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=e3xj4XT+MdsW+jaTa9xtmYWkqvzE3VMh3VCtNLNr8sscDKq3mcY7YpqgcP4iM2+Mz
-	 1ir3AoKVS/GopWq9T5Lo4dtrfIiRYfpswWQ0BX/kE2eFC/BkCE0YqPSP5yeojYMR9W
-	 yLkMQuqcKSAfdZvELQLNBiLvvkF+kU6D5hqp6tiBK22TwCBUT/JG0BIJJsRIIl+NdS
-	 4DfSHTmPEh/ZGlRJ9p7gLRVGjtu3BI3COyjrvGMcRFcDcq+xzsX2h+q9UUVZyENSgE
-	 3syDC2iwtUPOpqYA7xnnBGPINQbqCS5l5Ds0HHS/HYRsFVx5GZCkkxQFmtH6JrRe4Q
-	 uIz9u8r9iug2w==
+	b=p6ZxZ8xmzKUUWXMPeXKr2HIBjeJdcsbL6TYus3ZLa4+1Zh+KYXeudfOu+NbIC37MU
+	 PLkMbPxAXIyiFZGINlTtS8MLkUSIoNWpiTpSehCGQLiU8Zi+qHQLOxlo/H7NryJcpm
+	 15wJqB4mIb4foT0UpwrGI8/0sPZn/MXjS7srO1dlCYjA6dKPQE7T0Gs80KNAKyrGBk
+	 8GYbUxVt6Wco7cim6hLluPJNf9k4LYgDSOdsHQjxCe1b+0tlNMxoM0dRXK1a7Wttw0
+	 NwYasQl/hgfC74qBDpCCvav/zSzJIm604kVMizEvTTUY7XAd6eIO19rwLJiX9DhSDO
+	 BUwOudlxTVHcA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 net-next 05/15] net: enetc: add support for the "Add"
- operation to VLAN filter table
+Subject: Re: [PATCH v6 net-next 07/15] net: enetc: add support for "Add" and
+ "Delete" operations to IPFT
 Reply-To: sashiko@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
-Cc: Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260509102954.4116624-6-wei.fang@nxp.com>
-References: <20260509102954.4116624-6-wei.fang@nxp.com>
+Cc: robh@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260509102954.4116624-8-wei.fang@nxp.com>
+References: <20260509102954.4116624-8-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 10 May 2026 10:48:33 +0000
-Message-Id: <20260510104834.3FA23C2BCB8@smtp.kernel.org>
+Date: Sun, 10 May 2026 10:48:34 +0000
+Message-Id: <20260510104835.0F27DC2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,46 +46,80 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Missing dummy implementation for `ntmp_vft_add_entry` when `CONFIG_=
-NXP_NETC_LIB` is disabled.
+- [High] The IPFT Add request specifies the STSE update flag but omits the =
+STSE data in its structure, causing hardware to misread the CFGE data.
 --
 
-commit 5e0769b9fed651ba9fec062f5b68e9fec7739814
+commit 00a023617c26cf31c0233be20200f834604aaeaa
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: add support for the "Add" operation to VLAN filter table
+net: enetc: add support for "Add" and "Delete" operations to IPFT
 
-This commit adds support for the Add operation to the VLAN filter table
-for the enetc switch driver. It introduces the ntmp_vft_add_entry helper
-function to facilitate adding entries using the table management protocol.
+This patch adds "Add" and "Delete" operations to the ingress port filter=20
+table (IPFT) for the ENETC driver. These interfaces allow the driver and=20
+switch to classify incoming traffic and apply specific actions based on=20
+a precedence value.
 
-> diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
-> index 4cfff835954e5..3672e0dc7726b 100644
-> --- a/include/linux/fsl/ntmp.h
-> +++ b/include/linux/fsl/ntmp.h
-
+> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/driver=
+s/net/ethernet/freescale/enetc/ntmp_private.h
+> --- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
+> +++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
 [ ... ]
+> +/* Ingress Port Filter Table Request Data Buffer Format of Update and
+> + * Add actions
+> + */
+> +struct ipft_req_ua {
+> +	struct ntmp_cmn_req_data crd;
+> +	union ipft_access_key ak;
+> +	struct ipft_cfge_data cfge;
+> +};
+[ ... ]
+> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/et=
+hernet/freescale/enetc/ntmp.c
+> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
+> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
+[ ... ]
+> +int ntmp_ipft_add_entry(struct ntmp_user *user,
+> +			struct ipft_entry_data *entry)
+> +{
+[ ... ]
+> +	swcbd.size =3D sizeof(*resp);
+> +	err =3D ntmp_alloc_data_mem(user->dev, &swcbd, (void **)&req);
+> +	if (err)
+> +		return err;
+> +
+> +	ntmp_fill_crd(&req->crd, user->tbl.ipft_ver, NTMP_QA_ENTRY_ID,
+> +		      NTMP_GEN_UA_CFGEU | NTMP_GEN_UA_STSEU);
 
-> @@ -125,6 +147,8 @@ int ntmp_fdbt_delete_entry(struct ntmp_user *user, u3=
-2 entry_id);
->  int ntmp_fdbt_search_port_entry(struct ntmp_user *user, int port,
->  				u32 *resume_entry_id,
->  				struct fdbt_entry_data *entry);
-> +int ntmp_vft_add_entry(struct ntmp_user *user, u16 vid,
-> +		       const struct vft_cfge_data *cfge);
->  #else
->  static inline int ntmp_init_cbdr(struct netc_cbdr *cbdr, struct device *=
-dev,
->  				 const struct netc_cbdr_regs *regs)
+Does setting the NTMP_GEN_UA_STSEU flag here cause the hardware to expect=20
+STSE data in the request buffer?
 
-Does this need a dummy implementation for ntmp_vft_add_entry() in the #else
-block?
+Looking at ipft_resp_query, the STSE data (__le64 match_count) sits=20
+strictly between KEYE and CFGE:
 
-Other functions in this file have a static inline stub when
-CONFIG_NXP_NETC_LIB is disabled. Without a stub here, configurations where
-the caller is built but the library is not might encounter build failures
-due to an undefined reference or implicit declaration.
+struct ipft_resp_query {
+	__le32 status;
+	__le32 entry_id;
+	struct ipft_keye_data keye;
+	__le64 match_count; /* STSE_DATA */
+	struct ipft_cfge_data cfge;
+} __packed;
+
+However, ipft_req_ua lacks this STSE data field, placing cfge immediately=20
+after ak.
+
+Since the hardware parses the buffer sequentially, could this cause it to=20
+misinterpret the req->cfge field as STSE data, and subsequently read past=20
+the valid data into the zero-initialized tail to populate the actual CFGE=20
+data?
+
+If the STSE update is intended, should an STSE field be added to=20
+struct ipft_req_ua? Alternatively, should NTMP_GEN_UA_STSEU be removed=20
+from the update action flags?
+
+> +	req->ak.keye =3D entry->keye;
+> +	req->cfge =3D entry->cfge;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260509102954.4116=
-624-1-wei.fang@nxp.com?part=3D5
+624-1-wei.fang@nxp.com?part=3D7
