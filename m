@@ -1,31 +1,31 @@
 Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC32E387377
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB96387371
 	for <imx@lists.linux.dev>; Sun, 10 May 2026 12:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778416992; cv=none; b=h6JHlEb7QMs4SHqGlTpS4O3S3iBtJaY750TDVWanyKrF0bWCzCVdC7Ba4k1FVZXDDPV7cZw9/obVng8tDfbOdtuvLjBMRGPPM+v9oQ2T0Y6Vb+GWiPLpAJqROCkory28KUJTMrST7h+fWl4heZWis+H0C+sD474ikytTw3+P/Xg=
+	t=1778416993; cv=none; b=JAf1TlKknirY3tMrdThhrtIaRkHtINmf9zWt8ZjW8Y73KJOek0RDbRRx2XgAOmEKoqGw86zOgSBAkv09ks5RiVfdWHTx5DDms62do5cIZBxMF8t5Bg4bxr1GWlcCHY+DHegGbHaJ0Vr0XJ7b9/zzenqD/blcGHsfnuATc1BYp+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778416992; c=relaxed/simple;
-	bh=szjSlANmYwTQ18ELmAQ8Lftj9MpHv+oGXrnroNgsjd0=;
+	s=arc-20240116; t=1778416993; c=relaxed/simple;
+	bh=oWrtOfnkAgovalkTV4i+6Q+8n+dnnt3mJeRhn9+ilFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVyDKCs0XtRU/baeEyycKgXkkqDRES8w/txggeClzhaRDXEp2NJEw45Yej8IzrlW6Ip3L1lkSlmCzqQh2sZoniN+wPe1o0qCd3CVImDzenKtYEk3EVk+2EMJN4Y/KhP8FBiFhmZaX4BLamRCDAOg0JO4sNbfNWQ1Miliv+ELORs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=WPOBAqvG; arc=none smtp.client-ip=121.127.44.66
+	 MIME-Version; b=fMFnS9kd76kRzFsCjKFyClwDaYYOqslqrEx8uQq7g4VLatSl8sz3nnXRsZ7ufvA52X7GsUtyx1D2Vsv346tLGFCCUd6Y1e39tNNfTM2m9RebaaZPYkJGCHVdeQgg0eDRwl3cgm3LhjBj1tLgdS2lgFQyYIVCmM1OH06pR2ssRZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=rwFduB8X; arc=none smtp.client-ip=121.127.44.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="WPOBAqvG"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="rwFduB8X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
  h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
  Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1778416990; bh=3GqVsmYGwtYL1lA8+dzYuKNA/PzhqGwOr6aKWiXkMl0=;
- b=WPOBAqvGwVe3rP/0T0n1ismaj4xpWzS3v7nUeGZjVCO3lrO3r/xDE8BoQdHgBXCen3CTcPbRh
- 0ESKbJc0lMM1ax5rE/JGKv23gHrX0MDZNhbeJ6qPGguRZyIhuJoYN0f70lVM0X/Sq7XmQ1BPma9
- zWB8X75EdCD7h1g36MhCZM9LIAre+NXnFeME3SKaajyfptPKq5VjZtnfaDZd0CENyfl6Opxvo2e
- EORYF86xiAPoM3NZIaWKeGFuWvOmP/+5PQHif1jjaBD7brHIdVzNKsoZTKp3/DxGkCQCzGXvyAh
- gVmdbOehoeF8cck16tG1k1v8dEv2k2yT27fv4AmShtPA==
-X-Forward-Email-ID: 6a007d410d91f03a31a0bd38
+ t=1778416990; bh=QE7Yi5vksJlhsc7/CDhIQcpwMEDHI3zUdRw0XaGmir8=;
+ b=rwFduB8XIZIHynR+EhuXwV2+sh9kLuSbOJMpmzwukJ9JMl0tr5XF0i109S9HoAKYBzghen+XE
+ 8/T0Eq7i/Bsh+//lB1/Ls9Muc1YnYF3iYvDkOT4iHQfbm++ThVOx+Z3iqaYBVWnAlpxNPTb9/OW
+ tpkIOpzfhFWyCfltQX15WrOc5zbUO5lsYyCb33QijBuyC95IrYXaA+Tu2MwAW6+4Krfy9+Vnu2O
+ m0dOKGHFHKY7yRjVIaTN8mGTWhrJL86cUCdkAvChWPOW2aV3CG8iOJQKS7NjVSnaA4oBkWouXWm
+ 29TJkQD/6oUXHFRpJ48vJMioPZUzODvcMX/OCFzHtueA==
+X-Forward-Email-ID: 6a007d3c0d91f03a31a0bd1b
 X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
  121.127.44.66
 X-Forward-Email-Version: 2.8.0
@@ -46,10 +46,7 @@ To: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+	Simona Vetter <simona@ffwll.ch>
 Cc: Liu Ying <victor.liu@nxp.com>,
 	Sandy Huang <hjc@rock-chips.com>,
 	Andy Yan <andy.yan@rock-chips.com>,
@@ -65,9 +62,9 @@ Cc: Liu Ying <victor.liu@nxp.com>,
 	linux-sunxi@lists.linux.dev,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 18/21] drm: bridge: dw_hdmi: Remove the empty dw_hdmi_setup_rx_sense()
-Date: Sun, 10 May 2026 12:41:02 +0000
-Message-ID: <20260510124111.1226584-19-jonas@kwiboo.se>
+Subject: [PATCH v5 17/21] drm: bridge: dw_hdmi: Rework HDP and RXSENSE interrupt handling
+Date: Sun, 10 May 2026 12:41:01 +0000
+Message-ID: <20260510124111.1226584-18-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260510124111.1226584-1-jonas@kwiboo.se>
 References: <20260510124111.1226584-1-jonas@kwiboo.se>
@@ -79,62 +76,281 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The dw_hdmi_setup_rx_sense() helper is empty and no longer needed after
-recent RXSENSE and HPD rework, remove it.
+The commit aeac23bda87f ("drm: bridge/dw_hdmi: improve HDMI
+enable/disable handling") added use of PHY RXSENSE indications to avoid
+triggering a full enable/disable of the HDMI block when a sink use a HPD
+low voltage level pulse to indicate changes of the EDID.
+
+HDMI Specification Version 1.4b chapter 8.5 mentions:
+
+  An HDMI Sink shall indicate any change to the contents of the E-EDID
+  by driving a low voltage level pulse on the Hot Plug Detect pin. This
+  pulse shall be at least 100 msec.
+
+A delayed work is now used to debounce reacting on a HPD low voltage
+level pulse when a sink changes the EDID.
+
+Remove RXSENSE handling to simplify the HPD interrupt handling and
+instead depend on the debounced HPD work to refresh EDID.
+
+This also ensures the initial HPD interrupt polarity is based on current
+HPD status to avoid an unnecessary interrupt from being triggered
+immediately at probe or resume when a sink is connected.
 
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
-v5: No change
+v5: Add comment about interrupt generation
 v4: New patch
 ---
- drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 5 -----
- drivers/gpu/drm/meson/meson_dw_hdmi.c     | 3 ---
- include/drm/bridge/dw_hdmi.h              | 2 --
- 3 files changed, 10 deletions(-)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 144 ++++------------------
+ 1 file changed, 21 insertions(+), 123 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-index 7fd2de41bc02..a388efeb6a87 100644
+index f32eea9106b0..7fd2de41bc02 100644
 --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
 +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-@@ -3000,11 +3000,6 @@ static irqreturn_t dw_hdmi_hardirq(int irq, void *dev_id)
- 	return ret;
+@@ -161,11 +161,7 @@ struct dw_hdmi {
+ 	struct pinctrl_state *unwedge_state;
+ 
+ 	struct mutex mutex;		/* for state below */
+-	enum drm_connector_force force;	/* mutex-protected force state */
+ 	struct drm_connector *curr_conn;/* current connector (only valid when !disabled) */
+-	bool disabled;			/* DRM has disabled our bridge */
+-	bool rxsense;			/* rxsense state */
+-	u8 phy_mask;			/* desired phy int mask settings */
+ 	u8 mc_clkdis;			/* clock disable register */
+ 
+ 	spinlock_t audio_lock;
+@@ -196,14 +192,6 @@ const struct dw_hdmi_plat_data *dw_hdmi_to_plat_data(struct dw_hdmi *hdmi)
+ }
+ EXPORT_SYMBOL_GPL(dw_hdmi_to_plat_data);
+ 
+-#define HDMI_IH_PHY_STAT0_RX_SENSE \
+-	(HDMI_IH_PHY_STAT0_RX_SENSE0 | HDMI_IH_PHY_STAT0_RX_SENSE1 | \
+-	 HDMI_IH_PHY_STAT0_RX_SENSE2 | HDMI_IH_PHY_STAT0_RX_SENSE3)
+-
+-#define HDMI_PHY_RX_SENSE \
+-	(HDMI_PHY_RX_SENSE0 | HDMI_PHY_RX_SENSE1 | \
+-	 HDMI_PHY_RX_SENSE2 | HDMI_PHY_RX_SENSE3)
+-
+ static inline void hdmi_writeb(struct dw_hdmi *hdmi, u8 val, int offset)
+ {
+ 	regmap_write(hdmi->regm, offset << hdmi->reg_shift, val);
+@@ -1702,36 +1690,25 @@ EXPORT_SYMBOL_GPL(dw_hdmi_phy_read_hpd);
+ void dw_hdmi_phy_update_hpd(struct dw_hdmi *hdmi, void *data,
+ 			    bool force, bool disabled, bool rxsense)
+ {
+-	u8 old_mask = hdmi->phy_mask;
+-
+-	if (force || disabled || !rxsense)
+-		hdmi->phy_mask |= HDMI_PHY_RX_SENSE;
+-	else
+-		hdmi->phy_mask &= ~HDMI_PHY_RX_SENSE;
+-
+-	if (old_mask != hdmi->phy_mask)
+-		hdmi_writeb(hdmi, hdmi->phy_mask, HDMI_PHY_MASK0);
+ }
+ EXPORT_SYMBOL_GPL(dw_hdmi_phy_update_hpd);
+ 
+ void dw_hdmi_phy_setup_hpd(struct dw_hdmi *hdmi, void *data)
+ {
+ 	/*
+-	 * Configure the PHY RX SENSE and HPD interrupts polarities and clear
+-	 * any pending interrupt.
++	 * Configure the PHY HPD interrupt polarity based on current HPD status
++	 * and clear any pending interrupt.
+ 	 */
+-	hdmi_writeb(hdmi, HDMI_PHY_HPD | HDMI_PHY_RX_SENSE, HDMI_PHY_POL0);
+-	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE,
+-		    HDMI_IH_PHY_STAT0);
++	hdmi_modb(hdmi, hdmi_readb(hdmi, HDMI_PHY_STAT0) & HDMI_PHY_HPD ?
++		  0 : HDMI_PHY_HPD, HDMI_PHY_HPD, HDMI_PHY_POL0);
++	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD, HDMI_IH_PHY_STAT0);
+ 
+ 	/* Enable cable hot plug irq. */
+-	hdmi_writeb(hdmi, hdmi->phy_mask, HDMI_PHY_MASK0);
++	hdmi_writeb(hdmi, ~HDMI_PHY_HPD, HDMI_PHY_MASK0);
+ 
+ 	/* Clear and unmute interrupts. */
+-	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE,
+-		    HDMI_IH_PHY_STAT0);
+-	hdmi_writeb(hdmi, ~(HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE),
+-		    HDMI_IH_MUTE_PHY_STAT0);
++	hdmi_writeb(hdmi, HDMI_IH_PHY_STAT0_HPD, HDMI_IH_PHY_STAT0);
++	hdmi_writeb(hdmi, ~HDMI_IH_PHY_STAT0_HPD, HDMI_IH_MUTE_PHY_STAT0);
+ }
+ EXPORT_SYMBOL_GPL(dw_hdmi_phy_setup_hpd);
+ 
+@@ -2395,26 +2372,6 @@ static void dw_hdmi_poweroff(struct dw_hdmi *hdmi)
+ 	}
  }
  
--void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense)
+-/*
+- * Adjust the detection of RXSENSE according to whether we have a forced
+- * connection mode enabled, or whether we have been disabled.  There is
+- * no point processing RXSENSE interrupts if we have a forced connection
+- * state, or DRM has us disabled.
+- *
+- * We also disable rxsense interrupts when we think we're disconnected
+- * to avoid floating TDMS signals giving false rxsense interrupts.
+- *
+- * Note: we still need to listen for HPD interrupts even when DRM has us
+- * disabled so that we can detect a connect event.
+- */
+-static void dw_hdmi_update_phy_mask(struct dw_hdmi *hdmi)
 -{
+-	if (hdmi->phy.ops->update_hpd)
+-		hdmi->phy.ops->update_hpd(hdmi, hdmi->phy.data,
+-					  hdmi->force, hdmi->disabled,
+-					  hdmi->rxsense);
 -}
--EXPORT_SYMBOL_GPL(dw_hdmi_setup_rx_sense);
 -
+ static enum drm_connector_status dw_hdmi_detect(struct dw_hdmi *hdmi)
+ {
+ 	enum drm_connector_status result;
+@@ -2512,9 +2469,7 @@ static void dw_hdmi_connector_force(struct drm_connector *connector)
+ 	struct dw_hdmi *hdmi = container_of(connector, struct dw_hdmi, connector);
+ 
+ 	mutex_lock(&hdmi->mutex);
+-	hdmi->force = connector->force;
+ 	hdmi->last_connector_result = connector->status;
+-	dw_hdmi_update_phy_mask(hdmi);
+ 	mutex_unlock(&hdmi->mutex);
+ 
+ 	dw_hdmi_connector_status_update(connector, connector->status);
+@@ -2932,10 +2887,8 @@ static void dw_hdmi_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	struct dw_hdmi *hdmi = bridge->driver_private;
+ 
+ 	mutex_lock(&hdmi->mutex);
+-	hdmi->disabled = true;
+ 	hdmi->curr_conn = NULL;
+ 	dw_hdmi_poweroff(hdmi);
+-	dw_hdmi_update_phy_mask(hdmi);
+ 	handle_plugged_change(hdmi, false);
+ 	mutex_unlock(&hdmi->mutex);
+ }
+@@ -2954,10 +2907,8 @@ static void dw_hdmi_bridge_atomic_enable(struct drm_bridge *bridge,
+ 	mode = &drm_atomic_get_new_crtc_state(state, crtc)->adjusted_mode;
+ 
+ 	mutex_lock(&hdmi->mutex);
+-	hdmi->disabled = false;
+ 	hdmi->curr_conn = connector;
+ 	dw_hdmi_poweron(hdmi, connector, mode);
+-	dw_hdmi_update_phy_mask(hdmi);
+ 	handle_plugged_change(hdmi, true);
+ 	mutex_unlock(&hdmi->mutex);
+ }
+@@ -3051,78 +3002,29 @@ static irqreturn_t dw_hdmi_hardirq(int irq, void *dev_id)
+ 
+ void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense)
+ {
+-	mutex_lock(&hdmi->mutex);
+-
+-	if (!hdmi->force) {
+-		/*
+-		 * If the RX sense status indicates we're disconnected,
+-		 * clear the software rxsense status.
+-		 */
+-		if (!rx_sense)
+-			hdmi->rxsense = false;
+-
+-		/*
+-		 * Only set the software rxsense status when both
+-		 * rxsense and hpd indicates we're connected.
+-		 * This avoids what seems to be bad behaviour in
+-		 * at least iMX6S versions of the phy.
+-		 */
+-		if (hpd)
+-			hdmi->rxsense = true;
+-
+-		dw_hdmi_update_phy_mask(hdmi);
+-	}
+-	mutex_unlock(&hdmi->mutex);
+ }
+ EXPORT_SYMBOL_GPL(dw_hdmi_setup_rx_sense);
+ 
  static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
  {
  	struct dw_hdmi *hdmi = dev_id;
-diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-index 9ba83bf4787c..3ad84cebf2c9 100644
---- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-@@ -524,9 +524,6 @@ static irqreturn_t dw_hdmi_top_thread_irq(int irq, void *dev_id)
- 		if (stat & HDMITX_TOP_INTR_HPD_RISE)
- 			hpd_connected = true;
- 
--		dw_hdmi_setup_rx_sense(dw_hdmi->hdmi, hpd_connected,
--				       hpd_connected);
+-	u8 intr_stat, phy_int_pol, phy_pol_mask, phy_stat;
+-	enum drm_connector_status status = connector_status_unknown;
 -
- 		drm_helper_hpd_irq_event(dw_hdmi->bridge->dev);
- 		drm_bridge_hpd_notify(dw_hdmi->bridge,
- 				      hpd_connected ? connector_status_connected
-diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdmi.h
-index d587c4076a25..cea6618f097c 100644
---- a/include/drm/bridge/dw_hdmi.h
-+++ b/include/drm/bridge/dw_hdmi.h
-@@ -187,8 +187,6 @@ struct dw_hdmi *dw_hdmi_bind(struct platform_device *pdev,
- void dw_hdmi_suspend(struct dw_hdmi *hdmi);
- void dw_hdmi_resume(struct dw_hdmi *hdmi);
- 
--void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense);
+-	intr_stat = hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
+-	phy_int_pol = hdmi_readb(hdmi, HDMI_PHY_POL0);
+-	phy_stat = hdmi_readb(hdmi, HDMI_PHY_STAT0);
 -
- int dw_hdmi_set_plugged_cb(struct dw_hdmi *hdmi, hdmi_codec_plugged_cb fn,
- 			   struct device *codec_dev);
- void dw_hdmi_set_sample_non_pcm(struct dw_hdmi *hdmi, unsigned int non_pcm);
+-	phy_pol_mask = 0;
+-	if (intr_stat & HDMI_IH_PHY_STAT0_HPD)
+-		phy_pol_mask |= HDMI_PHY_HPD;
+-	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE0)
+-		phy_pol_mask |= HDMI_PHY_RX_SENSE0;
+-	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE1)
+-		phy_pol_mask |= HDMI_PHY_RX_SENSE1;
+-	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE2)
+-		phy_pol_mask |= HDMI_PHY_RX_SENSE2;
+-	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE3)
+-		phy_pol_mask |= HDMI_PHY_RX_SENSE3;
+-
+-	if (phy_pol_mask)
+-		hdmi_modb(hdmi, ~phy_int_pol, phy_pol_mask, HDMI_PHY_POL0);
++	u8 intr_stat;
+ 
+ 	/*
+-	 * RX sense tells us whether the TDMS transmitters are detecting
+-	 * load - in other words, there's something listening on the
+-	 * other end of the link.  Use this to decide whether we should
+-	 * power on the phy as HPD may be toggled by the sink to merely
+-	 * ask the source to re-read the EDID.
++	 * Interrupt generation is accomplished in the following way:
++	 *   interrupt = (mask == 0) && (polarity == status)
++	 * All interrupts are forwarded to the Interrupt Handler sticky bit
++	 * register ih_phy_stat0 and muted using the register ih_mute_phy_stat0.
+ 	 */
+-	if (intr_stat &
+-	    (HDMI_IH_PHY_STAT0_RX_SENSE | HDMI_IH_PHY_STAT0_HPD)) {
+-		dw_hdmi_setup_rx_sense(hdmi,
+-				       phy_stat & HDMI_PHY_HPD,
+-				       phy_stat & HDMI_PHY_RX_SENSE);
++	intr_stat = hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
++	if (intr_stat & HDMI_IH_PHY_STAT0_HPD) {
++		enum drm_connector_status status;
+ 
+-		if ((intr_stat & HDMI_IH_PHY_STAT0_HPD) &&
+-		    (phy_stat & HDMI_PHY_HPD))
+-			status = connector_status_connected;
++		/* Set HPD interrupt polarity based on current HPD status. */
++		status = dw_hdmi_phy_read_hpd(hdmi, hdmi->phy.data);
++		hdmi_modb(hdmi, status == connector_status_connected ?
++			  0 : HDMI_PHY_HPD, HDMI_PHY_HPD, HDMI_PHY_POL0);
+ 
+-		if (!(phy_stat & (HDMI_PHY_HPD | HDMI_PHY_RX_SENSE)))
+-			status = connector_status_disconnected;
+-	}
+-
+-	if (status != connector_status_unknown) {
+ 		dev_dbg(hdmi->dev, "EVENT=%s\n",
+ 			status == connector_status_connected ?
+ 			"plugin" : "plugout");
+@@ -3132,8 +3034,7 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
+ 	}
+ 
+ 	hdmi_writeb(hdmi, intr_stat, HDMI_IH_PHY_STAT0);
+-	hdmi_writeb(hdmi, ~(HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE),
+-		    HDMI_IH_MUTE_PHY_STAT0);
++	hdmi_writeb(hdmi, ~HDMI_IH_PHY_STAT0_HPD, HDMI_IH_MUTE_PHY_STAT0);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -3324,9 +3225,6 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
+ 	hdmi->dev = dev;
+ 	hdmi->sample_rate = 48000;
+ 	hdmi->channels = 2;
+-	hdmi->disabled = true;
+-	hdmi->rxsense = true;
+-	hdmi->phy_mask = (u8)~(HDMI_PHY_HPD | HDMI_PHY_RX_SENSE);
+ 	hdmi->mc_clkdis = 0x7f;
+ 	hdmi->last_connector_result = connector_status_disconnected;
+ 
 -- 
 2.54.0
 
