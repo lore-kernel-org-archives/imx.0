@@ -1,183 +1,134 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099792236FD
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 06:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568C430C62E
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 07:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778482672; cv=fail; b=RUcXHbjwbO1YuEKPMiREIovJamTkQBuP8ij5fgNiIbcPDQagkeM0IYbsQrao+rlgdZeLWRMUP5i7Eo3qQokuKcWYYnAvZy3jF5b5ZqF6I+ADAHIh3H9Prd7mNsJKofRW+/1Ww08kZ6OjUqI4T9SUs1DUNC23VcUG9p+doUik6QI=
+	t=1778483022; cv=pass; b=ufAZnUHplp0zuVxeWy8fmwdkCkcyHFsRoW19wOSt9VTyCuqGNyVIZtgrgfpVoCre1cDQzEPdtcMI3abSAqn+MnnOEdgrpK4LZv0VBZxfzju9kiwGFRvg4vauSl7WVtVPrkDVoCiBs6213fXAP6IeQN8soLgaTr8KDHSDyZyXQHM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778482672; c=relaxed/simple;
-	bh=lwsk96Crtta6NG1+Z28CsbiNTU89z4zD5UuN3meuxXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sAk8eLyZ5Fi1svk9Xx6czeJMdFCMmY19hm663FCIYuU+N5jMbVgSLBkDeIcjd/ociYrt8TH2rorCe8hLxzGaZA6VI/nEgSM50tVvBRrnUb/JriSjzZY6+4BLqCoxZ6Kn+SGBMx/eFf5EChEe2XTkyQhKKQusAUzLAR6aUfLX9rI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Z8Dmx/o5; arc=fail smtp.client-ip=52.101.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1778483022; c=relaxed/simple;
+	bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pWAE3xICdEYPhHZrXCZ4A5TlRMkZubgfucpbHJ54LCpen7imi8fk1/mvdTf1v2rsWynlmoj7ZV7xHXGtdu0ihsJtW/qsQESiM2/+aYhwKEmd0hyX/2FVOoAUjzkic7Mm/xIuxBUG4HUZM0UMX4XwNWF8/hzyzaVVeCKcvzCFyH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc; spf=pass smtp.mailfrom=arduino.cc; dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b=fE7gbMPS; arc=pass smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arduino.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Z8Dmx/o5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a6Lzy5J3bY64CMHZBSw9jpmUGStqu2kjp5pnihphVWgnevRF9oHyjg0oZ6RBEXZRCu3O2MdNp4KA8+nmx7ulFEFislgSzQKlOCD7b+NEbbnS/jBFYpZxGeTAYP+tsrAwOt6t43XOi5zOY9ZXPxNg6tQQ/rJyquhIJYkMDsOhk2Kh4AywUiITbfjE+rRb4U7A7cR9lWn2IPrt6/bw9OdjHN8Ex8hZInzytHtHHpbkMVWmOcsWcRF5FLaPk/7ZPJgNAoMf16y4N2ASt5NOrYSV2dFQVEQkevuCWf8Rj3c9cES6nJY/HbJiWfNYeIgEFkj/hk0Lz9QXo7K3z7KmynuyVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w+knT8tQ8bP1GV3lpEZTxlMkMNNnEeEy4G3ws58vXRk=;
- b=KTMWAq69L/tLoRAefLhydJZXlnPOzoo1JtQpv5sJMZJsTCpm4t79mpc70f2zW0B6Zquch+zGdhqL/s+A2cDHCanIrd6nLi7JRibw7//h7M0OaGQFN++fxZj/wLE7TTPDH9CiKCwFCISWxGScKTwOgcnIL0dC8Phg+uh9ximvjord8Hf9LZQ4hlKj6z0dRDwBRNpW5WAIzfHyqk1fNpDlqfK+ROmMLKqQRI/E/+OPWXIe1swAPuPADWcpUHnBE2nD2UDzgBBw/1JwX2FPNEY84qy5wJJrIeq+9W8rZvRZ/XAmFcPmTeQFE0gGIStWHANAbDqCEcc2XFtNOzyy4u6q4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w+knT8tQ8bP1GV3lpEZTxlMkMNNnEeEy4G3ws58vXRk=;
- b=Z8Dmx/o5WyDnQ2GI917hu5ZM6FXwH9sk/4sbzWneEBW1nmrCKVGmxDQK9ucC2xX0Uo/1lNDbRCpAfIS945UJ1KD0IpIIBv7dyCYZ/Q1jvOG5+zUf4rpfB5wUEYKcF3xjS4mk5MPBpVXs6/mAU40i1yK9vJYKXSurq6u333L8V+vZDA+Kj3j+iyHxnkfJX5xxDFEaw6w9WFKgxQ/g+Nn1ib+4q2mQEOZLe20pOYZB/hunmLG03+iWL84g1wg7J9aNf0e6Q/fgTcmKC3Evu1vUoIi8vjiintAAFX7l1+EwB+MSjPsak+yh0RZbKOJNksqcOM74+qCa8YWPolFdA23iLg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MRWPR04MB12330.eurprd04.prod.outlook.com (2603:10a6:501:7f::23)
- by VI0PR04MB10232.eurprd04.prod.outlook.com (2603:10a6:800:241::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 06:57:46 +0000
-Received: from MRWPR04MB12330.eurprd04.prod.outlook.com
- ([fe80::ca22:f8c8:6aca:7889]) by MRWPR04MB12330.eurprd04.prod.outlook.com
- ([fe80::ca22:f8c8:6aca:7889%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 06:57:45 +0000
-Date: Mon, 11 May 2026 15:00:25 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Jiafei Pan <Jiafei.Pan@nxp.com>
-Cc: andersson@kernel.org, mathieu.poirier@linaro.org, peng.fan@nxp.com,
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] remoteproc: add Cortex-A Core remoteproc support
- on i.MX platforms
-Message-ID: <agF+iYRfUIoBu35M@shlinux89>
-References: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
-X-ClientProxiedBy: MA5P287CA0188.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b6::15) To MRWPR04MB12330.eurprd04.prod.outlook.com
- (2603:10a6:501:7f::23)
+	dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b="fE7gbMPS"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a858881ad2so4094887e87.3
+        for <imx@lists.linux.dev>; Mon, 11 May 2026 00:03:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778483019; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UksRBj4QLXmAZ9sBLLZaOp0YAU+SSag1pDAmZdOPr50Y1zjT+BkclaQgmYynHZ12ZM
+         G5j39ZXRnxQx8b971uKXhYNkmD5DAastlZ0VbEXIquTZyiaSOiI4wfKc7PjdquQqrDJM
+         xFDJEjFF8igYGz02RHKZyYWnWZ6vX/eSukuFzRMkYEUMpjmO5rqHcy1YXsWvhuNgatcO
+         opgzfd5pPDg49oCT0x3eO5dJNkaGcZ8UHo88bUscl5+LbCQOP7m7OpfGItU+CkqLvqIO
+         w/z9fVIpJntaGpJoE5tzlYbdOWko+SQ3YYrKrqxu+Wfq69qvXk7N1RDOJHgvCKtU02sa
+         9OVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
+        fh=JF9XkFfkZqkkozuH6O/aoz5O7tgdoB/Az/X3spI4tQ0=;
+        b=VPUAWsKTD95X/EEsaZIf5ujpgaoiMK8rrh580bExLV0rplhxL8XBTHrq4E5XYdy/u/
+         5qVEqunrgo1i5WXpFHD//tCGyDeLetPMYY97ei/Ckq9swjwV2cTTug4sIgXxhjLuOun0
+         QB8R7Xqjkn2Fd82tWrQSGWWknBifFukrFEfkVsE2he9dw2nnuV5XnO6af8e2XaJO165T
+         ovqEXEfnqQ3oZrNhKnrZcWZUlDswX9l9Ysu3KlanfRr3aLyrCfnus0/fnDLPG9p9aX/T
+         cQGw2Mg5QxAaViF0ZquD+48HNhiMXAzAO/5wL9osgus/xAyU3HyMl2w9hBG8Y71R6cX/
+         bEhw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arduino.cc; s=google; t=1778483019; x=1779087819; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
+        b=fE7gbMPSZ7b5hESaXPI4LwOLsqrmXAXEEUzJMa2y+XE6C3DbXLugKs8FUARAaHyMFS
+         gX035U2bMfxu2vKfrTmVYgd8HLlq8UjPge74Pg6Ly9GZ/PrtT87XJ/Mq2omHVWZBVKib
+         CjMdH4nPte7vG4vkpKxtTgdxga6Pg7qroC97k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778483019; x=1779087819;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
+        b=Xuo3sDgG9hTcqA+MPX7UdCMRGfCfcclLdjGVEZhq+esKvawbdCk3V9rrcyqKQ5bt+x
+         pvxn3Xfhqh6tKkTwcn6KnyPgESban/t7lZgSMRyeFkcd4D/a8FLBm76AN+rJzGHiZzkA
+         qdudCYcVRyG9pyljdTD8Is/1WnALnS2MHy5PaVjybS/+8u/NwqViNylQFHd26atpMnrq
+         ztr/CQIvk21nJgrQp7y79RTpISzkgDp+xh3mVzUn6Uvl75c3jFmGEJF5yZFnvHIkvXhs
+         +p9JKrsiQGjG7Yt00V8upH1hJWEia5KMkTQ/G/iCcbUBhVhMPYVixrFU4HtnDDkNhfSS
+         MipA==
+X-Forwarded-Encrypted: i=1; AFNElJ8CCF+JYdoJsi1DHStTcufcTNIdGzXWcwjTyehvhyXwMSNmzjRGYC8cmfv0IBIV3PKyaVc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTFOBG/mzP2E0J77HJl1Ip7oHNNRkxC0p2+MfEpa2b3EN6GHvX
+	oGP7Ak1sG4/O8LoXtuRMv9h1tgF5sQ5DQT7E9R++dQON+eMWRxuWzneWdSsE1nTnr9eT4Ok9AWE
+	luU0HHI9379sC9joZ1A6aVHj53bHDWzkhm0nAs6nYGA==
+X-Gm-Gg: Acq92OH4pRwlrB3Hv9CPVZ6RqKp34x6c7/8VQncAt5jKY6NYyagB3xr4f95VKc/mOPt
+	xRyvtGO1eYrvP0Zkr3ZNp+uu7MPMDmtU6rwdVn8yoa3JgdgA+VJ3qsW+GbYnL8VRO47bsmIxz/l
+	Dnngv46PR9XPwc8s0OvDj5YkTi5AtVfTI2/Q/23924+GbTvHQAa7PogAok9H4X+9uZmsSX3m6+v
+	8vHPqWoWpg6RwW69QhjJrMH3BgqxLpZ4rPHiEOwAH9RaOHt5P8O6iRbAeYTC3L+VI/CNyvYrwKB
+	nKJVkBGNTW9pigE=
+X-Received: by 2002:a05:6512:4008:b0:5a8:80ce:ba55 with SMTP id
+ 2adb3069b0e04-5a887ae1e90mr7551438e87.11.1778483019285; Mon, 11 May 2026
+ 00:03:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MRWPR04MB12330:EE_|VI0PR04MB10232:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f553ecc-6235-4d01-1d7a-08deaf2a9ab3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|19092799006|1800799024|22082099003|56012099003|18002099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	2O20byyUBvqa+D9aCzQOuI6r1Bh62H4w1YuI9aWES/tYeAMtB4UO9HRdjsRVp5tvizAg0wYyPOVay7jeQGWf4ZNRLMtjtvh1R3S7Zom6IvEqt//99u7da5c3drNNHviTs/5uGh2YDnrLF8Kvs+EA9qtG2bCKUo+x25sqpukvNTWZWnvcS9c5I8OMCKf3fUXtMHmDo5cDgEpEx8uR1Upy7lccu2FLs7vb+vCQRFr9GAtI0454q8prXcKnQinhq3ZlODMIWuIMyjfkWxR5IHHqZZn1iYOwkbrZpCDpR1piGLimAL5JgBadz2XPsIpew30SZqFXL7gMmdGNVKC4cbMbFc5CGd41oN64fzX1csHMhZ40VtzOFIErpZ+lZpbEBZbHmodF2zHDw/iu8IAazZkYrrJndCr6rfOJss0IV77X6jTsfxfoWQbCZaZvSBg49xOACbQxpJIVC7z+/ECa6Qyec+6KqTmkNArKf/XcE5JMqI5S6REbwjuebAllo+8Sj/zCoUVX6R+EgdqVv4gubAA9OdZSiZ/CcOWO/PDhXSM9N1eXFsPTTytMpMXR8nouvOyrz30TJQt9uOMThniOzurly23Kti/5x1RncykNU2sGt71DT0w23B8yzn5X48I+p0bxBvSaYzLA3ZCoEVVk8CQJ3gK6JAzTi2GMm0+qnEuZ4OzXDnj6kkUPpQTLeOevFQW0iHlWjcOS9F7R621BHWC1MFnM9MqOH55CoX+HZqQ+PDb94aO7t2hn2ozOhlmpEVGe
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12330.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(19092799006)(1800799024)(22082099003)(56012099003)(18002099003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e3aR1aDB1hwW4yXjIs6v8554yfDOnc9yVPeVBVW/u9UjHYN0a+7hNyKquf+l?=
- =?us-ascii?Q?qnZ1jNAfpV89BmKIjMmUY5eMrOJSgyTsMXj69Dp6ZNMhcemjNKifXwVyvIt1?=
- =?us-ascii?Q?+LEH+oA3QEWP4KkfMD8jhA5Q2INfcIlW5rvPw+qk2dK1/Im5+vehUh24SLOI?=
- =?us-ascii?Q?wwnwabLy4IqjKzBJ/nHWzIgU7jmMBYO7RzjVv7O4EwcpogWFU4gIJ85rKFWW?=
- =?us-ascii?Q?Yr7IY7ufoJlKVBRc3xz1udOcCj2l5RGywQksDdV5t7KIQh7GcXe9jZKWpbM7?=
- =?us-ascii?Q?cXOQBEW3nWb/kld+lIoGCSIH0ayyo8o4Xh4JlR4fOhcykFsXu8tjhrkwoBBA?=
- =?us-ascii?Q?DgzkArkUCP8ZEEGwOrdXdVu17rx9Ux3+jhUcFiJsH/QrbFn/dcLrpTC7gkml?=
- =?us-ascii?Q?hFIW7kXCOgrUOfZkw6664y7LkbUYRFSrwSNVNKIqGDuw/GvMvMRq1XTCeXBl?=
- =?us-ascii?Q?IvSu4tnFzUPb5lbReJFmiLXCxPd/07PfzW3ssRIiZsfrWdZq8FkcDT9buTsE?=
- =?us-ascii?Q?RDXg9u5J3ejnk5ENyGe2CbDFSPyzrCjwjeJ4zW7Z0wNUwhLMzbuPnOD4Gfqo?=
- =?us-ascii?Q?hWzKZmBYrTo5wnKbIPWxboxVwzXM1xXg7po5AyfA9f1GujcSMAlNjPDgIdNh?=
- =?us-ascii?Q?SEa5E2YTxs3FHQIhpigca/fZxMuaXVnMwcYo9xt0wAXsyMAU83j3Thl4M/ay?=
- =?us-ascii?Q?9+qdA71fQfTPsYteD8mh/WJy4BHdVhcYJmuws5MJye+uSj1BvOL3lZINBbQd?=
- =?us-ascii?Q?DsWUaRtk+dQc0a3FPpm3VLQST5mrbdRjd5+eSmFXNJuQkcPx7cmGq2LrmJph?=
- =?us-ascii?Q?TfOFT8DNnN1cn8tL9Gtnq/qVCLWyQKS90sPH+3R7cjHfzpceQ+tTLfdawhJM?=
- =?us-ascii?Q?uk9sdnIQtawmKBCqNmo6r6PFuqAc0nmiBf/4c6ec+Ow3LboKqwugAwCO8V9+?=
- =?us-ascii?Q?0rHTG3vHgteLIpk2yGuAPv/33MMlxZW2Xr5zvyZTwnuCnQt34XxoBnPMT8lb?=
- =?us-ascii?Q?SvCwrv42ZYGj6okxOeimK47K3E9+XiY1ZHhULPby6pUApsbJSwKt4EWhlgIE?=
- =?us-ascii?Q?SaYqWNhVBDW7q3CvZ9nLZ5+bfg8+q4PXdYoojb18neaeJAgyxt1g61HJpLgG?=
- =?us-ascii?Q?a5BPXhTO1CiYw8xDIlda0/V7exDku6B/DVpXz93fw20tuSu0VGH+OBI2gZCC?=
- =?us-ascii?Q?WoBpTNrteZ1WLYVt4aCkr987jhYkV3AyMswotiMhUBcVMLqJKOZGRfjB4Xt+?=
- =?us-ascii?Q?bOG/Gr1mfOIAjqs71rTkmyi1XLVsHqSDHuPs8NeS2kz6edvjNdNuEINnMdz7?=
- =?us-ascii?Q?4jo4lpR9xTctuo48XMMWL28OorxlkhdWM51Stffcd6U0fkR2bkPix5nh9i+r?=
- =?us-ascii?Q?wYcXTrpMLg7/8/Bop69s9A115l8KPu9dNAAu/6QiBrYaTiWr+Lfk5LMgyXLD?=
- =?us-ascii?Q?kFEBGmmw6ryj3N2AoVJ2YbDoedmCTmA2HrpvLNyuCC+dkjoQJVlN8g/RarnG?=
- =?us-ascii?Q?waR34GvWI+fKTJp1fBRJOLDIeqJc1VmSU68MN/kmfix25S2UPrIJNLKKybC/?=
- =?us-ascii?Q?6EXCflNwpX2ZufOZoOHE453gMwdQ3HJCiJ4gI5TKvGHvl0VlWOWrdUTMTKRg?=
- =?us-ascii?Q?SLgZhZhH6jdb6nRoArZgsiItlRuGAaT8aRdMP+ZUnpE3hdmsvKR1STNeQIPh?=
- =?us-ascii?Q?m9iUAbmXeeWhUTa5/BZCYTAlsKVDaXjZIrqUf+0G5sGAmH7DOVLG0/2e79kS?=
- =?us-ascii?Q?LWVW8UUckA=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f553ecc-6235-4d01-1d7a-08deaf2a9ab3
-X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12330.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 06:57:45.4846
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3SbiQV5FQ1T57Z98krH9P9JAbzZz3+/8l0NiIKG+rXr655GcX5Yi3Zy/FqrwgNRAej9XN4BGg6FCQgJCzFYRbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10232
+References: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
+ <20260430132140.30369-3-r.mereu.kernel@arduino.cc> <CAFEp6-31LQX+uHJ2PFES76RGqmZKS43dO3UoziVZ-KWQGCy6aQ@mail.gmail.com>
+ <a6d6e638-6e61-4e39-9e06-bbac7703c6ac@oss.qualcomm.com>
+In-Reply-To: <a6d6e638-6e61-4e39-9e06-bbac7703c6ac@oss.qualcomm.com>
+From: Riccardo Mereu Linux Kernel <r.mereu.kernel@arduino.cc>
+Date: Mon, 11 May 2026 09:03:27 +0200
+X-Gm-Features: AVHnY4KqvZ7gjq-ivtySQtnC8vX7jHJ3zr9wVqg3mRzKVkPEw_LUG_hW37iSbSA
+Message-ID: <CAKA1JhZHDPWbJVSuu3X4PH3T6Ko-uzZ6ktA0i+-w919ffuvEuw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] arm64: qcom: imola: Move analogix video/audio output
+ to dtso
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, andersson@kernel.org, 
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, broonie@kernel.org, linux@roeck-us.net, 
+	Jonathan.Cameron@huawei.com, wenswang@yeah.net, naresh.solanki@9elements.com, 
+	michal.simek@amd.com, nuno.sa@analog.com, chou.cosmo@gmail.com, 
+	grantpeltier93@gmail.com, eajames@linux.ibm.com, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev, 
+	m.facchin@arduino.cc, dmitry.baryshkov@oss.qualcomm.com, 
+	Riccardo Mereu <r.mereu@arduino.cc>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jiafei,
+On Fri, May 8, 2026 at 1:19=E2=80=AFPM Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> wrote:
+>
+> On 5/5/26 5:44 PM, Loic Poulain wrote:
+> > On Thu, Apr 30, 2026 at 3:21=E2=80=AFPM Riccardo Mereu
+> > <r.mereu.kernel@arduino.cc> wrote:
+> >>
+> >> From: Riccardo Mereu <r.mereu@arduino.cc>
+> >>
+> >> This is done in order to support different video output over DSI.
+> >> Since audio part is linked to Analogix USB-C controller it is moved to
+> >> the same DTSO.
+> >
+> > I'm a bit skeptical about having a separate DT overlay for this. Is
+> > that really the right approach? The Analogix block is part of the main
+> > board,
+>
+> Oh I skipped over this!
+>
+> So, does the media board require that a switch is flipped or something
+> like that, to route the lanes away from the analogix chip?
 
-On Mon, May 11, 2026 at 10:39:24AM +0800, Jiafei Pan wrote:
->This patch series is to add remoteproc support on Cortex-A Core of i.MX platforms:
->1. Adding dts binding for Cortex-A Core remoteproc
->2. Enable Cortex-A Core remoteproc support in remoteproc driver
->3. Adding dts example on imx93 platforms.
+No, DSI is shared without any switches in a "Y" connection.
+I agree with Loic that not splitting that part but modifying it would be be=
+tter.
+My goal in doing that was to write as little as possible to allow a
+bigger audience to play or repurpose DTSOs.
+Since V2 has no panel I'll avoid splitting them anyway.
 
-Normally, we only keep one patch or patch series from the same author that
-modifies the same file in the review queue at a time.
-
-You already have a patch for imx_rproc.c currently under review(got R-b, but
-need Mathieu to handle), so this patch series might be delayed to be reviewed.
-
-As I have replied in internal, to make multiple OS run on Cortex-A SMP without
-hypervsior, some GIC changes are required, without those GIC changes,
-this patchset is not testable using upstream tree.
-
-Thanks,
-Peng
-
->
->Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
->
->---
->Changes in v3:
->- Fixed dt_binding_check warnings
->- Updated prefix of patch subject
->
->Changes in v2:
->- Update arch/arm64/boot/dts/freescale/Makefile to add new dts
->
->---
->Hou Zhiqiang (1):
->  remoteproc: imx_rproc: add autoboot support for A-core
->
->Jiafei Pan (3):
->  dt-bindings: remoteproc: add imx-rproc-psci
->  remoteproc: imx_rproc: add support for Cortex-A Core
->  arm64: dts: imx93: Cortex-A Core remoteproc device node
->
-> .../remoteproc/fsl,imx-rproc-psci.yaml        |  51 ++++++
-> arch/arm64/boot/dts/freescale/Makefile        |   2 +
-> .../imx93-11x11-evk-multicore-rtos.dts        |  39 +++++
-> .../imx93-14x14-evk-multicore-rtos.dts        |  39 +++++
-> .../boot/dts/freescale/imx93-rproc-ca55.dtsi  |  14 ++
-> drivers/remoteproc/imx_rproc.c                | 150 ++++++++++++++++++
-> drivers/remoteproc/imx_rproc.h                |   2 +
-> 7 files changed, 297 insertions(+)
-> create mode 100644 Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc-psci.yaml
-> create mode 100644 arch/arm64/boot/dts/freescale/imx93-11x11-evk-multicore-rtos.dts
-> create mode 100644 arch/arm64/boot/dts/freescale/imx93-14x14-evk-multicore-rtos.dts
-> create mode 100644 arch/arm64/boot/dts/freescale/imx93-rproc-ca55.dtsi
->
->-- 
->2.43.0
->
+Riccardo
