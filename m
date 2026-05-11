@@ -1,188 +1,182 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D35D425CD4
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 15:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C4B426D17;
+	Mon, 11 May 2026 16:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778515137; cv=none; b=TcnOIfFzNSqEhGe+r+mX5an7QYkUAWDbOlyfM6b/5zkQMbaUiaGnTE5fXXTFGaIVRY2P8UkA8moKhzZW22kI206Kj2Qx5WMZKFKfmiOYnlai9Ih7wot42G68DTvLiLpX9DONuBHdjBizz55h7FK4navtaAnrbQhPvk98ySNXg4s=
+	t=1778515897; cv=none; b=la1cUMtF+BKtY5P4as4LJJ5vwU85DdjdxDtMBr7Q+pk1SVKTCWH+dNC6Xr35D1/+UZKvWl6/R/D1cY59y7Q+H8ZW6y3tUu5x/qWw5csOAWl9JNhPxGw9y7uVop9bEbBo4y4n5q45hzO+cjsqiL/Y6sxFYXCxOhkQlvoRp63CjIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778515137; c=relaxed/simple;
-	bh=JACkPVMi6kLYjvDay65/oaNnTW+0gdDyTP76FN4jbpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcAxWGcxl5xdccMFizaPecskaTxBJ/o8ZUfblY7MuwHxyVivLO4gQAyDSsyFwXeAUTH0A2rWz4As+4Xrsq7wj2g1FIIyOS1zRWuriQyjnS2K5QX/308IsDeA/oZbOOuyepfR+XvWns6lWzlT+LZWR+1rzJYBXwitwkEQ+s2TN3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b3nhhjXt; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1778515897; c=relaxed/simple;
+	bh=TXzIw50Ubej2grT0J9j5w81loy36TIzYfxvj4Vt5Kao=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DqD/8/JxP4YFRfHpg4h/W76WHxcIg8a8ZL18xsYkyrYCB0nZ4Fy8p3n+rWUiGOJODLmsMHZ5KDe4rdxPidRknOK9a94OTT8KZY6CI4rHZYGRsqWeEsTgXF10ZNLRNRv2b8Yt8+IZfG9RFjcVZf0AiyX5o9PiuGYrxN0sqkMKnTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tOYaqRnM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b3nhhjXt"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E488C4E42BF3;
-	Mon, 11 May 2026 15:58:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B6D6460646;
-	Mon, 11 May 2026 15:58:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 422DE11AF9E9C;
-	Mon, 11 May 2026 17:58:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778515132; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BMcCo2NEq+3I/LKffthF0Fo2WFktMRZxIo2NvB919j0=;
-	b=b3nhhjXtBGwh0KCqjI0N6xnELkPNge8O/OCyx6o8I6TZazi8Aao/V2j6PhT2g3dxRk1fcE
-	MSuINpl8YXqd6Gfu15PqKhOW6j4yzUKNNJOGx4UZOV4GQv85HD2+QIkWIAu+WfLcuYSNig
-	DjnIjJB9uuzJ5uYrX7VsUcPHijM5oofXF3iZBT+IsvjCZC3RiuxuttOGXQ+ZTqBGaUGX35
-	PUNyEjOKXm0FrMI03TeBLMjsOz3wYBdl83Zndmeg5HYX1xk4TH97ScUNE4BTj2HREzItR6
-	2zfoiHKPCa/CGCLp18EwuM0E7B1RApLLHQfT+O2Y1HY/fSWBwPe9gXpBvcmstw==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@google.com>
-Subject: [PATCH v7 3/3] driver core: Avoid warning when removing a device while its supplier is unbinding
-Date: Mon, 11 May 2026 17:57:50 +0200
-Message-ID: <20260511155755.34428-4-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260511155755.34428-1-herve.codina@bootlin.com>
-References: <20260511155755.34428-1-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tOYaqRnM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 84D22C2BCB0;
+	Mon, 11 May 2026 16:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778515897;
+	bh=TXzIw50Ubej2grT0J9j5w81loy36TIzYfxvj4Vt5Kao=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=tOYaqRnMnZpjApGIDeLX1I6OtZ/M3eYipRCKu+y2mWPrZOWlGmgd+jt9oOGjqKVTq
+	 rI8kTcCp8T/il25A3nYDKauYN6GcJg6fgqNBU04vkQJx7lAX0ziQgV/mLSw2Tt7+vf
+	 mzFghg6KrozNo2G748JUaTwvIAG4mXohoW7dJ5QBhp/pLeHwcYUTZJAfBPCohDDg0p
+	 TdTi49vbdZ2r58h/uChLGfAHLozvyuXhCPTBVGyay++zJdZJlXyjSD6ARrKDfk7spE
+	 oG5L+pOlLHyU319RxTKgLiZ0IkWmfPSk8uNd01u3XAXabGVbIPVaQyeM3w3u3owile
+	 jTLfZPDSule2g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CB09CD4840;
+	Mon, 11 May 2026 16:11:37 +0000 (UTC)
+From: Frank Li via B4 Relay <devnull+Frank.Li.nxp.com@kernel.org>
+Date: Mon, 11 May 2026 12:11:32 -0400
+Subject: [PATCH v2] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260511-eukrea-v2-1-cac317290978@nxp.com>
+X-B4-Tracking: v=1; b=H4sIALP/AWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDU0ND3dTS7KLURN1Uw1STFLOUNAtTg2QloOKCotS0zAqwQdGxtbUAvv0
+ jIlgAAAA=
+X-Change-ID: 20260511-eukrea-e1e4d6df850c
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778515897; l=3623;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=Rwk/LOK0vxBQRx6CqkcwOGhaMlXZZ3H+Gmi3nQ8Ktjk=;
+ b=yfLg9ZvkAKOdqtkLmmxjVBHQDEJoPg6f4s9MKabAOeMpcMsz63Modt+sltRQVkvuMojoNyw6/
+ 6y9bKqbFnHnCLkSVeziMmnJYU6xtSUMaxat65v2JW5HoDTBNuduF9sW
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-Endpoint-Received: by B4 Relay for Frank.Li@nxp.com/20240130 with
+ auth_id=121
+X-Original-From: Frank Li <Frank.Li@nxp.com>
+Reply-To: Frank.Li@nxp.com
 
-During driver removal, the following warning can appear:
-   WARNING: CPU: 1 PID: 139 at drivers/base/core.c:1497 __device_links_no_driver+0xcc/0xfc
-   ...
-   Call trace:
-     __device_links_no_driver+0xcc/0xfc (P)
-     device_links_driver_cleanup+0xa8/0xf0
-     device_release_driver_internal+0x208/0x23c
-     device_links_unbind_consumers+0xe0/0x108
-     device_release_driver_internal+0xec/0x23c
-     device_links_unbind_consumers+0xe0/0x108
-     device_release_driver_internal+0xec/0x23c
-     device_links_unbind_consumers+0xe0/0x108
-     device_release_driver_internal+0xec/0x23c
-     driver_detach+0xa0/0x12c
-     bus_remove_driver+0x6c/0xbc
-     driver_unregister+0x30/0x60
-     pci_unregister_driver+0x20/0x9c
-     lan966x_pci_driver_exit+0x18/0xa90 [lan966x_pci]
+From: Frank Li <Frank.Li@nxp.com>
 
-This warning is triggered when a consumer is removed because the links
-status of its supplier is not DL_DEV_DRIVER_BOUND and the link flag
-DL_FLAG_SYNC_STATE_ONLY is not set.
+Convert eukrea-tlv320.txt to yaml format.
 
-The topology in terms of consumers/suppliers used was the following
-(consumer ---> supplier):
-
-      i2c -----------> OIC ----> PCI device
-       |                ^
-       |                |
-       +---> pinctrl ---+
-
-When the PCI device is removed, the OIC (interrupt controller) has to be
-removed. In order to remove the OIC, pinctrl and i2c need to be removed
-and to remove pinctrl, i2c need to be removed. The removal order is:
-  1) i2c
-  2) pinctrl
-  3) OIC
-  4) PCI device
-
-In details, the removal sequence is the following (with 0000:01:00.0 the
-PCI device):
-  driver_detach: call device_release_driver_internal(0000:01:00.0)...
-    device_links_busy(0000:01:00.0):
-      links->status = DL_DEV_UNBINDING
-    device_links_unbind_consumers(0000:01:00.0):
-      0000:01:00.0--oic link->status = DL_STATE_SUPPLIER_UNBIND
-      call device_release_driver_internal(oic)...
-        device_links_busy(oic):
-          links->status = DL_DEV_UNBINDING
-        device_links_unbind_consumers(oic):
-          oic--pinctrl link->status = DL_STATE_SUPPLIER_UNBIND
-          call device_release_driver_internal(pinctrl)...
-            device_links_busy(pinctrl):
-              links->status = DL_DEV_UNBINDING
-            device_links_unbind_consumers(pinctrl):
-              pinctrl--i2c link->status = DL_STATE_SUPPLIER_UNBIND
-              call device_release_driver_internal(i2c)...
-                device_links_busy(i2c): links->status = DL_DEV_UNBINDING
-                __device_links_no_driver(i2c)...
-                  pinctrl--i2c link->status is DL_STATE_SUPPLIER_UNBIND
-                  oic--i2c link->status is DL_STATE_ACTIVE
-                  oic--i2c link->supplier->links.status is DL_DEV_UNBINDING
-
-The warning is triggered by the i2c removal because the OIC (supplier)
-links status is not DL_DEV_DRIVER_BOUND. Its links status is indeed set
-to DL_DEV_UNBINDING.
-
-It is perfectly legit to have the links status set to DL_DEV_UNBINDING
-in that case. Indeed we had started to unbind the OIC which triggered
-the consumer unbinding and didn't finish yet when the i2c is unbound.
-
-Avoid the warning when the supplier links status is set to
-DL_DEV_UNBINDING and thus support this removal sequence without any
-warnings.
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/base/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+change in v2
+- Add comments about "The AUDMUX port numbering should start at 1"
+  v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
+---
+ .../bindings/sound/eukrea,asoc-tlv320.yaml         | 55 ++++++++++++++++++++++
+ .../devicetree/bindings/sound/eukrea-tlv320.txt    | 26 ----------
+ 2 files changed, 55 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 478aa3fbf1e8..934da2566c61 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1500,7 +1500,8 @@ static void __device_links_no_driver(struct device *dev)
- 		if (link->supplier->links.status == DL_DEV_DRIVER_BOUND) {
- 			WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
- 		} else {
--			WARN_ON(!device_link_test(link, DL_FLAG_SYNC_STATE_ONLY));
-+			WARN_ON(link->supplier->links.status != DL_DEV_UNBINDING &&
-+				!device_link_test(link, DL_FLAG_SYNC_STATE_ONLY));
- 			WRITE_ONCE(link->status, DL_STATE_DORMANT);
- 		}
- 	}
--- 
-2.54.0
+diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..a95cd0323f6e489765deb8c1d1eee966750ac7aa
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Audio complex for Eukrea boards with tlv320aic23 codec.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: eukrea,asoc-tlv320
++
++  eukrea,model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description:
++      The user-visible name of this sound complex.
++
++  ssi-controller:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      The phandle of the SSI controller.
++
++  fsl,mux-int-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      The internal port of the i.MX audio muxer (AUDMUX).
++      Note: The AUDMUX port numbering should start at 1, which is consistent with
++      hardware manual.
++
++  fsl,mux-ext-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      The external port of the i.MX audio muxer.
++      Note: The AUDMUX port numbering should start at 1, which is consistent with
++      hardware manual.
++
++required:
++  - compatible
++  - eukrea,model
++  - ssi-controller
++
++additionalProperties: false
++
++examples:
++  - |
++    sound {
++        compatible = "eukrea,asoc-tlv320";
++        eukrea,model = "imx51-eukrea-tlv320aic23";
++        ssi-controller = <&ssi2>;
++        fsl,mux-int-port = <2>;
++        fsl,mux-ext-port = <3>;
++    };
+diff --git a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt b/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
+deleted file mode 100644
+index 6dfa88c4dc1e8b3aea1e39b79eaa62185e64c240..0000000000000000000000000000000000000000
+--- a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-Audio complex for Eukrea boards with tlv320aic23 codec.
+-
+-Required properties:
+-
+-  - compatible		: "eukrea,asoc-tlv320"
+-
+-  - eukrea,model	: The user-visible name of this sound complex.
+-
+-  - ssi-controller	: The phandle of the SSI controller.
+-
+-  - fsl,mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX).
+-
+-  - fsl,mux-ext-port	: The external port of the i.MX audio muxer.
+-
+-Note: The AUDMUX port numbering should start at 1, which is consistent with
+-hardware manual.
+-
+-Example:
+-
+-	sound {
+-		compatible = "eukrea,asoc-tlv320";
+-		eukrea,model = "imx51-eukrea-tlv320aic23";
+-		ssi-controller = <&ssi2>;
+-		fsl,mux-int-port = <2>;
+-		fsl,mux-ext-port = <3>;
+-	};
+
+---
+base-commit: b7719f5647f279b131c888e70c77dd9287b322d8
+change-id: 20260511-eukrea-e1e4d6df850c
+
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
+
 
