@@ -1,214 +1,169 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A720B29CE1;
-	Mon, 11 May 2026 02:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778466126; cv=fail; b=Wg6LDr0KewstrfICoISkbBo6gP2oIBsaKZgCeFC66PPGjwQfI4BPG3L5HsFmxGNM/jWKK8X7+k9yli4zpZ/ISRsFHTE9RLT8frA9UVBpEqCvHVFbtq+Kd6g+u0fK32mqRj0O2VRuwVMXg1qANHfstlRzbKKm+YLFiavCLUo7R+Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778466126; c=relaxed/simple;
-	bh=vyQDkI5xSVjRBHYFmDwtSVyiLGgDEBzfjyCFd+2QiRc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LOXU6/u59g2QJYSlAfAH0DserN04HDXXYChuhpRnwPiwwG3dMym1MU9QSoqZ0ANaTUak9aP7HfE+ThFIq8bwAHvL1KoRJSbu8tuBrZqIy0W+LayT+4qlI6R8j/6a4OhtST6hGDHzzwAkibFRt5A7wujaGP7Q05o0OZF2qlQbp9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MmCevei+; arc=fail smtp.client-ip=52.101.70.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A3A247DE1
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 02:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778466288; cv=none; b=UKFw+uUSgThQ3hP+4/WkPSNq5YbYg1xMWl9UGmB4GkCGN55T6EyR7yh3Dhr75n5F6qEhiGcWbwGnLZuYEl4cdophnR/WILUoMSP86h9THsFwwElgPJxRwQD0/OT3oQmINF96jvyG8BVq1PdysCMYyi7lm/h6TXSO8CbQedjkEcs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778466288; c=relaxed/simple;
+	bh=z/Oc9IGzqdgqt96PWJXKU1AhRYn4A/ccjjjMOkRN2Pk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aPBVoBwwXIJ3ZIhjTQ/RpetPKganbOPshDJ9+nr48WHPTTona0ejHE1HVzmIQ7SJN9352vn8jQsW5zPwNNLHHPyv1eTYWLaCEUUtYX6aOrVFtooc06gFO2KacvGVCna2OkCTfD1pj6AZRgq2quF1T11VwNDQ79EkWSv11ws58o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VXA8KIRd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fzTJv1Qd; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MmCevei+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YLi6TrlmNjDSsbs/Eg5A+UchWEACsDhHstg5H6LptN3DbbrCeabGaElgWNVLwDqnbV+YRjtkhWhnlAZ0kdSdnMW6zkTipuABz9SsQFvaIg4UuJbnQeoBeDZmpFhH+sL0vdJVvacNkgPGhWXmlWLGFuzdYkGnfJuO5CT0x+FJFjGATkGay1RdG9tITAe1/YE70ma6jQojw0Hhax4sGFsfzRRYcDQ8fME6NRnLRrVpBEE8ji3goLLVi+inINYN1ReJGHukNXnJ1CobSaJ1d8XUZvmNfrFmShnO5eDMWzYg6N+T2ZxQ3xAJa0g6jJLtThS4qJeaZ+vBDN3ygLX+pqhYdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RaLCmDK2jHthFvTZwqN4aKTA1TOMs7yiZieu+sX7Ivs=;
- b=LsdO513s6IiDtjeSzfkee4oUrTHeYyg6302pw+gjMuS1uB1iq7jUzb4O3YnDmVFVNXcfuDVINNYhoLf/ZlLx5OJF/Y75HQjmUr3pS4awr46i0+eS8yQELF1hcHaR3BcUqe8fWK/b75tRVvEFtnbUCkGhhWMLEQtJjh3CSJm6D29LAJH6tMAuzA3r+hNNPss4YyFKWKVdayQ9SBB5kZsPNCkW/xf++Q8byexG8RF1CKPQ1qAcDiPMPPidX9D4jUvQ1IiJvqstCLD3cXJoVPyPOBcdGz7b/jJKuWg5kcvGM9ylWePd+pseSiQA9Bs8MN8rV/A3/YIxVVJ74S5WOvo0tA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RaLCmDK2jHthFvTZwqN4aKTA1TOMs7yiZieu+sX7Ivs=;
- b=MmCevei+n1hepEv+FjNTaTxzw/r3oI5ba2CdceU2HmyL8GZWtFkPIKczm9n7FvDGoaFs16t9vpk6r+mQLCLnRuRGkvWrrepwtQDlQklqLPWiQ0J05IQ688aPzHE/lfHVsrEaENi8eZAdosxxQ94mIFWicYpNM8vsFrK1vBoF8n8rk6jUE+gFzxlaccsSiuqNOyNQDp0zJgGWWvREBNU870ubsqO3JnGEeOk5iqnQcgsXG+qQ7aTSUAnGsAUqpar3N7ZYtlqZZVi/3gv1F57Ki+IkIadJi0pVI5XCuJgYmLONGLtTmRKHWv6xKtDY39QaXHd6VzcuEAsMhXZ+Oh1cEQ==
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by AS4PR04MB9574.eurprd04.prod.outlook.com (2603:10a6:20b:4fc::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 02:22:01 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 02:22:01 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "sashiko@lists.linux.dev" <sashiko@lists.linux.dev>
-CC: "Frank.Li@kernel.org" <Frank.Li@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "robh@kernel.org"
-	<robh@kernel.org>, Networking <netdev@vger.kernel.org>
-Subject: RE: [PATCH v6 net-next 06/15] net: enetc: add support for the
- "Update" operation to buffer pool table
-Thread-Topic: [PATCH v6 net-next 06/15] net: enetc: add support for the
- "Update" operation to buffer pool table
-Thread-Index: AQHc356QOmzuSm991Uy4YWZhyqKJfbYHFdkAgAD8S+CAAAh3gA==
-Date: Mon, 11 May 2026 02:22:01 +0000
-Message-ID:
- <DBBPR04MB7500D3E90AF38CE5BF20A5D688382@DBBPR04MB7500.eurprd04.prod.outlook.com>
-References: <20260509102954.4116624-7-wei.fang@nxp.com>
- <20260510104833.5F0AEC2BCB8@smtp.kernel.org>
- <DBBPR04MB7500D614C25B584703C43BDD88382@DBBPR04MB7500.eurprd04.prod.outlook.com>
-In-Reply-To:
- <DBBPR04MB7500D614C25B584703C43BDD88382@DBBPR04MB7500.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|AS4PR04MB9574:EE_
-x-ms-office365-filtering-correlation-id: 03e88ec0-72cf-409f-0e53-08deaf0415fd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|19092799006|1800799024|366016|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- asH7qXsKAspsx3KvOHKNfATfS1wJ0VjPAdAp6UCuF9gdvPScE1XmRF5tUneOfb1ifKMHe7/6HPx1m1UE4+rpz1/2XHULs+teeS8w30t2wnooYjdEfNIHL2QtKVjfP0QZCBtK0bZ529u7scqU/63Mb/DzsuCQOutaHndI0oXqlLGmLTQKUjYrUWMHdus6OQmK8Yq50JnVK31s3e5R9C0oLVkoFfL6VktlxqsKdEYZve51ajsJm/ACRiY7NI8FnlvgtgLb0g017YYD0r9tuUJXzjPeRB2Q0HfNV0UsV3ypWoAOYlJBgzvfyfH01YwqpwRnOsbh4GsZkwKFfy86Ih4fHsomtKUMr+5hyMYGBDdOBmAeaeBExpsfuIFdAE3Y7VbAbbnlAYJ3VxLkqN/cQeyY5z/4gzhmjZHNRlTHJ13or7Bfg8XKp18Og2/eElOhoO4B1PkrmDxGO2kxPKZOc9/GVIgJH3BlvXCSnrQWQKzbxlTtMJyLmzfxSls9DqFPFP+I9/YhN16k59RlVGJxFmKH2HoiS9MttQgbv2qTCU6TjniHYRajfjV+Jel8Vm1n+RvPPBAKBaEMLQEBJ0ZHB/MVoQGCbklWaiiCs1e6w3aCARxyassxoaHTMxhq8fV+OkrXT9tlyqPZQrQySXN145DTf6ZZ/f09bSioAiMTrgyRMkkwKkknLZwgZGReNQeAS1ht0LiKQ+iamB7TTBbnB5Wo9RSWzREiP+Uky4YkScd5eXmzLSXsfc3PQ0nuLCMU63yg
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(1800799024)(366016)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ZDQxTtaMTzOcYC8Yq39dgF8Y4H5tiDU4LJyWFtHW7u/oZVmB6CTe+VPbWLLA?=
- =?us-ascii?Q?Lw2rrBhqcW3+P64ExtTfxefDAKHQRC5HyWhjNKHh6Ifz3SvbLdZaXTJ6v8Gn?=
- =?us-ascii?Q?US+fMhkAt9gKXzNCXXr7tSjVlvTkkSzjx9HdSuSqFhnkRVhGONbmkHbqHQsN?=
- =?us-ascii?Q?AUDH2+cRUwe0orb7GTB/4OFWEOL5kc/7AEcRQ0w9x5Y6nXBdkOtieVXjK1fJ?=
- =?us-ascii?Q?ROFivZqRksT2a0ukIl+jmiTB6pQWx6f8xWdcsMN0kLCGLVpU1XIXMvqzlWWI?=
- =?us-ascii?Q?iVeEMVISlMSJ1W0ccyYlFlXlR58FobQGxAN5SVcUoKgs8AIzX5EYiD6lniNq?=
- =?us-ascii?Q?Mu66LPWAFuFHuwADmSuqcvr8zUwT0iLlpbaUDfVo8AS67uh2WrpYEGKB0LdZ?=
- =?us-ascii?Q?ed0a2s1XjCCt1FeVGkWCcdW3gXnHLDcDcueus+/4YFVUUr+0wUwOxw6y1hPn?=
- =?us-ascii?Q?7i/jKGNqjUoNkHpqcUbZ/7mnYQLsxNsSSJJfi2wmEzHVz12OAHC7NHJhhB+2?=
- =?us-ascii?Q?8Q3LeUnMcouvBOVsViDMgVCp3PYk8ZAfzoTdlhwMvYCh620OYPrsj5n7cSwn?=
- =?us-ascii?Q?+BndwL0yZHTL8li9WryxBhEsf0hD9rMjz6wNacOfljTvENlY0TkTJRQPBDCC?=
- =?us-ascii?Q?UkVAP2aFjhTaUO7nLwxRi3laNZvcEiQZu7iGa/h2FSMlji/f8G/vh5TyBX1f?=
- =?us-ascii?Q?38vi5AXFzIRdtmxK8dV9XDlQwHVQzOP+LnHZc3+8DL5/72cqvhyEWuHF5CvN?=
- =?us-ascii?Q?n66iT9r7anX2gb9wHSJhcxwe98tVSpe8l36i5iDTndoWcucOF59HnuWL40C3?=
- =?us-ascii?Q?NWNp92THxbLPuZ1nR8jAesCF14GWJxBjUpr/sAwP0lBItnvAzmKisUlh2asV?=
- =?us-ascii?Q?zCHxMmc85erNx5YQHU2V8Jj3wqQ9euUV6t+0+Zfr4RT+1hMenDa4De+Gbf8P?=
- =?us-ascii?Q?fk+4saf0fyBm0sgs2bUvLQRK+uv/vxBviWJ4QFj1Ie0nNPo7KJxagGavQbTJ?=
- =?us-ascii?Q?2ExQJ22b7p6zEJ84YNryOEaMTxiFcF6lJEDwlqDB6buBZK1oMcdBDj9UkwG7?=
- =?us-ascii?Q?DPXDukuta3V5HXnJpZ+EttOHIvIPl4XnHzno1mZEk+rObQECKRBKJd/g3N6a?=
- =?us-ascii?Q?cVJIPy57oCT3338+W+dzHE91I4fznR4w/sI68hvSsLknnm8KLPwmilNNgcrP?=
- =?us-ascii?Q?xUZhvNokBW5Lpy5T3X2Urd978AQc9oKqV51HM43MClptlN1Ek3clW7HrbQi+?=
- =?us-ascii?Q?ERoGBigCF5rYoztsAjgS21gYzufPdEBI+4GkTZwys6bp5+lCiLhjewsz9FQG?=
- =?us-ascii?Q?re4++euBzo9DegVVIbIdSiGz6yFhRALLHU87Sng7GyU/gdLVMKznf6Umhzgz?=
- =?us-ascii?Q?X0oYoT5z+n90NJzYiWj0xJC7JC40O/xhmbFyEciB313s2OjfNL9WeGjQZxpC?=
- =?us-ascii?Q?gmWR7POQ4JZznxft+fPdnMvWmRR/Ut1+wUyUBPiFCDbJz6T+eXV+4NjUsaPZ?=
- =?us-ascii?Q?e0pG9g96YmIlT4crQ9TKKEo0EUt3zQGqkbdpw0CZncmzgba7VczFogcQUATz?=
- =?us-ascii?Q?1ThcpGzcg/Dv73AsthR8PfAZBhza2t/FUEuh78lQjgrryrhxV46atksaK2hR?=
- =?us-ascii?Q?S3+m6ie2lXyju2vvPzuGrLxhVHaEkbxpm5aavmye7jKsO//S8/AfBPDIZG3e?=
- =?us-ascii?Q?8vFwEXUvP9XJQj8AbsX3AT87cnqCd6FS+CQdPCRTVH1gOQXn?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VXA8KIRd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fzTJv1Qd"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64ANHUYl028663
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 02:24:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	NDiSg768CXBvGt79GGg+qABUaCPAYEyC3WguiTuB1ec=; b=VXA8KIRdowG6Ps/f
+	8zv0HVMzFMIYzuxxUOkhukFSFNHVQn9Y+kXeWGGtumsMTHHwFO8xGMF2Z0vQRGfh
+	Nw0OhfDZWAe/F/N3/a0auPLxWPJq0yy6pFojTg52SXyttklbyZNwOx35VvYw42zk
+	atPXPg9O1GbNJt1diMqlv/cCIhkMbNBbIgg4yxaXus7cdAtsu8YIx0aZW7FaW1mL
+	zznfWgwuJZ7BoIOr1vhRkb+6unfTHtDSb7zWeDSBnlfiDirQsxeQQEQ+m2iSfKrW
+	rCVmnKVmDTPWU20Zafee8J758wnULpxJCUELtLCBiouS3tO3RcvP6uz7IgJORWWX
+	IEQHxw==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e1wa9c16x-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 02:24:45 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8b5f089a5c3so65809026d6.3
+        for <imx@lists.linux.dev>; Sun, 10 May 2026 19:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778466285; x=1779071085; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NDiSg768CXBvGt79GGg+qABUaCPAYEyC3WguiTuB1ec=;
+        b=fzTJv1QdakEbc4VIQmUlN4tbiwpGM86J9p2yExB0TsPK3zx3UG1fuqaNQa2GbJptly
+         hFCAe2KSo3Am1pbpXjE5mSkzTM10Uv9LKCFI+MTbof1Fa9xVZGOfyh3Ug+GjDmVLoHsk
+         cMuo9CocH1UElRoEe39+bcZvj57BJfhptTa13urRfWuGVyP/Lz8L0A/ta4/+d1xnkEZP
+         23uH4xtTGwh8Xc4UVaz/qi7jFhkIwiupSzC7JuMN1iQg9Crm8iRxszfE+/Cz9sFSrBfu
+         yiWM3EdpJ2qRyphkM3dT3HsOGJRRvrdHKp/iqbxo35NdXbJkhQuJFwxNTCTYa9QX9F8W
+         9ing==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778466285; x=1779071085;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NDiSg768CXBvGt79GGg+qABUaCPAYEyC3WguiTuB1ec=;
+        b=X1MHjc9ix9wYaGDwd5A+qnydnfCsKVeWiEe/I6VVOP1LfzWyl+gmBTWDzyMGt1P/M9
+         GxdIHTppBRiUIQQM9cKHtchi1iGvwCP85YRLMjxgd+mkZEZlI8e69I9BSfWPweT6sqsY
+         7rU2AgT0TkWUrXJ6j2LtJUSuCGdT8652aUIJPHfn+nwyLpYUm3VKTaQNB0ZFzTCrc9oj
+         dITIrmUAvoD1/Rdfvj7qdwzCMvv2QTHROrK6dE1HBMzsmbhW2vpNWBPFMn4A0hwC/Eh8
+         hXzWnchZgviFPxj7ELXG92ZV7CSJFnUAdxJ5yXor1UU1Shwl2SU4+StZyXDbw0ArWUgL
+         Ym5Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9jVE9IHBk6x5JP8XwFhR7IRtTVeB35YeAvJUulSQ+ThMIfa2Mmhnwp47n4YxkY3wb6qqQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwAdRVQf0wZ+KU+QDAYjyO5p6BKuNNpRNHnA6/aRlRndPLO4uGc
+	ZnYwENKo7TTjI+gBa0tUXLs4BmK6OM7tgitGgKAuP6yJMbq+e21PR+sq+vR2viIPpvvmQkNcMtZ
+	VAqs9xKNGXjr/kO11i/ugFrBPIJLQECCO+DDMbB0aIl5M7GnGDFjLAN0=
+X-Gm-Gg: Acq92OGA2bXFn+w597vwdpXK7aKqT8SOHSdm7rvjI34tFwXBavz6pGsCqJ8n8tIrb+b
+	E6nyXsYuGVmK7+XwIBANi0nSnNEx3nctBzx+ABj1ImqRBY5eiXfPzexsumej7TvVL0JUNL2WmeO
+	LiBw3rgmraT9ibyWkvNJwciGKIz1UCh1MRVdS05I9ncTv6Cpnw6yTsaW8DUWucOGGaCatDjTWvL
+	wSjZKjV3cV2ydDKSL0mF7Pv1acTT3jR1exGS9Kj6UhZr/SFdUJUF4I4Hteup5N6Xg/QsZhQtxch
+	UvKNeq0Yv10/jec5B8wdAQNQVbxnQqy5CLrpdtrcYJtVmYZrpBqWeCT5aRvvJSwsU3gEAuGEUYd
+	Ctwy75F+wfQM07fGtd+7oA55dTNTbH72c2RhCRrq/X91kfnV5zNjGZKA/rNRbUVSg7iguLBNVc7
+	T8CNxKAPA=
+X-Received: by 2002:a05:6214:469b:b0:89e:a170:6af2 with SMTP id 6a1803df08f44-8c1afabc2c5mr138776806d6.41.1778466284600;
+        Sun, 10 May 2026 19:24:44 -0700 (PDT)
+X-Received: by 2002:a05:6214:469b:b0:89e:a170:6af2 with SMTP id 6a1803df08f44-8c1afabc2c5mr138776556d6.41.1778466284094;
+        Sun, 10 May 2026 19:24:44 -0700 (PDT)
+Received: from [10.38.243.40] (Global_NAT1_IAD_FW.qualcomm.com. [129.46.232.65])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53ce7e73dsm300484716d6.42.2026.05.10.19.24.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 May 2026 19:24:43 -0700 (PDT)
+Message-ID: <1d6b4182-7cef-4c00-a655-095c0388a038@oss.qualcomm.com>
+Date: Mon, 11 May 2026 10:24:34 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03e88ec0-72cf-409f-0e53-08deaf0415fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2026 02:22:01.6757
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ES0kC+Fci/oziOWcaFD9vAUJJViwtyuBOC5AhyC81KeZs79TKY5UY6rPb8/Yc8KM7nk6Frrm8aZKdu1o2oXBBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9574
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/7] Add dtsi to describe the xe180100 CAMSS block
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Bryan O'Donoghue <bod@kernel.org>, Robert Foss <rfoss@kernel.org>,
+        Todor Tomov <todor.too@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20260508-hamoa_evk-v2-0-3ebdca3e4ae2@oss.qualcomm.com>
+ <20260508-hamoa_evk-v2-4-3ebdca3e4ae2@oss.qualcomm.com>
+ <328860b4-1d4b-4a90-9d10-cb70207aaa5c@linaro.org>
+Content-Language: en-US
+From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+In-Reply-To: <328860b4-1d4b-4a90-9d10-cb70207aaa5c@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDAyMSBTYWx0ZWRfX9i0Qj63L42/I
+ EZHCDfMyXetUVfXeuZoy5Ab9kx/LdYSkfaJ53KOYBxMT1HJCEN/AtxwKkfX15FJAx5g4XTQtG/A
+ NOnV4m6flcTUx4dzNYJ2Q5lWljpkXsJEKmsMQW8DEapb+ytzU9Zwd7ChTYLoJUmof1aqTbc0guV
+ I7wU04P23Dfbz2bZtdxZdJMYALMindDZmxirtR6qOd1zQbp77eWNB6Oqf3LjH4gYra+2QqunbVM
+ t8vPam5HTrOQ1FgLZLqv3RVzpX99RSpQa+qdaEzEMXH2iUr1LilL4KRQnfWWyYPwEDtdwI/IdFK
+ 1mMpxS11uqFW/59gWvihS1Pban/NDOEyuyOt4IL8a4R+m0TYXQ3kLqQ/l/ccNIfErW+E/4CELcd
+ B8+H0VfKVqOGHz1n+ZQo+ye9RWEb2Hs884B2l3fanNhzE1Q3ZKTvodUtZH5Zd8OqlyZ5YsCSJh/
+ vmMxNGEbyxwCix6WKoA==
+X-Authority-Analysis: v=2.4 cv=HO7z0Itv c=1 sm=1 tr=0 ts=6a013ded cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=C3Dk8TwHQYyIj7nOf9RCJw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=SmDLwImcmQvp-VwJOJ8A:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: PmO8gHQjKy8utRFBSbNxjdGGbDcicI0_
+X-Proofpoint-ORIG-GUID: PmO8gHQjKy8utRFBSbNxjdGGbDcicI0_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_01,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ malwarescore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110021
 
-CC netdev to avoid the same comments
 
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to
-> > consider:
-> > - [High] The BPT update command incorrectly sets the `BPT_UA_BPSEU`
-> > flag without providing the required BPSE payload in the DMA buffer.
-> > --
-> >
-> > commit 04028be08f5e1d61341410aae72c568ebdb38953
-> > Author: Wei Fang <wei.fang@nxp.com>
-> >
-> > net: enetc: add support for the "Update" operation to buffer pool
-> > table
-> >
-> > This commit adds the ntmp_bpt_update_entry helper to support updating
-> > the specified entry of the buffer pool table.
-> >
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> > b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> > > --- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> > > +++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-> >
-> > [ ... ]
-> >
-> > > @@ -175,4 +175,10 @@ struct vft_req_ua {
-> > >  	struct vft_cfge_data cfge;
-> > >  };
-> > >
-> > > +/* Buffer Pool Table Request Data Buffer Format of Update action */
-> > > +struct bpt_req_update {
-> > > +	struct ntmp_req_by_eid rbe;
-> > > +	struct bpt_cfge_data cfge;
-> > > +};
-> > > +
-> >
-> > [ ... ]
-> >
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> > b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> > > --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-> > > +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-> >
-> > [ ... ]
-> >
-> > > @@ -749,5 +755,38 @@ int ntmp_vft_add_entry(struct ntmp_user *user,
-> > u16 vid,
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(ntmp_vft_add_entry);
-> > >
-> > > +int ntmp_bpt_update_entry(struct ntmp_user *user, u32 entry_id,
-> > > +			  const struct bpt_cfge_data *cfge) {
-> > > +	struct bpt_req_update *req;
-> > > +	struct netc_swcbd swcbd;
-> > > +	struct netc_cbdr *cbdr;
-> > > +	union netc_cbd cbd;
-> > > +	int err;
-> > > +
-> > > +	swcbd.size =3D sizeof(*req);
-> > > +	err =3D ntmp_alloc_data_mem(user->dev, &swcbd, (void **)&req);
-> > > +	if (err)
-> > > +		return err;
-> > > +
-> > > +	ntmp_fill_crd_eid(&req->rbe, user->tbl.bpt_ver, 0,
-> > > +			  NTMP_GEN_UA_CFGEU | BPT_UA_BPSEU, entry_id);
-> >
-> > Will this command fail due to a missing payload for the Buffer Pool
-> > Status Entry?
-> >
-> > The update action is instructed to process both CFGE and BPSE data by
-> > setting NTMP_GEN_UA_CFGEU | BPT_UA_BPSEU, but the allocated struct
-> > bpt_req_update shown above does not contain a struct bpt_bpse_data
-> > field.
-> >
-> > Because the provided swcbd.size is only sizeof(*req), does this cause
-> > the hardware to either reject the command with a length mismatch
-> > error, or unintentionally read past the end of the provided buffer?
->=20
-> According to the NETC reference manual, there is no BPSE_DATA in the requ=
-est
-> data, this data is maintained by the hardware's internal buffer. The
-> BPT_UA_BPSEU flag is used to indicate that the hardware should reset the
-> BPSE_DATA of the entry.
->=20
-> This is a false positive, please ignore it.
+
+On 5/8/2026 10:23 PM, Bryan O'Donoghue wrote:
+> On 08/05/2026 12:40, Wenmeng Liu wrote:
+>> From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>>
+>> 4 x CSIPHY
+>> 2 x CSID
+>> 2 x CSID Lite
+>> 2 x IFE
+>> 2 x IFE Lite
+>>
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+> I'll repost my working version with the PHY stuff so I'd kind of 
+> appreciate you not posting an old version here, just wait for it to land.
+> 
+> ---
+> bod
+
+If we are able to designate the old version as a candidate, and should 
+the new version continue to encounter substantial resistance, we can 
+provide a functional version.
+
+Thanks,
+Wenmeng
