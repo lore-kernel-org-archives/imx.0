@@ -1,86 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500C637E2FD
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 19:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A55A3A1E6A
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 20:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778529394; cv=none; b=QMVAjW6SQZTHzQg+o/6FFcVuULHxZGadYzb3C65Nd0GBeUYDlr24uEgpMRJyjSHYJtXCAnMOlIsiWb/qnDG/Dna0b0wu2v2nZ2zWQEhobBCaxKyqFMOBASTfV59SLNhpuB1H0ZLNAq/LojRbgoZAXYHuorW/iQvCcexq9UEUNgg=
+	t=1778531688; cv=none; b=t9gGc4NlTge5XqyJvzd364eFESZ/yc0FA7f5samD8A/pHJw17vGiN7F0UdZejnN4woxs4Q2NNdnbVJFnT8le6D9gfsvhrv8KEWWp2TTGjUg6J2PWLJRd89QrAVAozTJiXZX+d3psoDJgo9Zubdp244lT9PNtQtZ5rG50TZM1hdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778529394; c=relaxed/simple;
-	bh=36Y76l+8L/1TfCN9D9kVNldinwW1l3CEh723aHYy5Vk=;
+	s=arc-20240116; t=1778531688; c=relaxed/simple;
+	bh=pfDxlUWWZJepOCZjfdEmEkPzN7o0zQAK0IZPSz7H81M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eipGkNclNFFB9NVjIOMicpmKZNHIYT6Nc18tOK1SzBg9dAmDM1PuwWEU7JIjjpppmCYhux75muOxMO0VFHZ4YJfg4ah5UUvUZldaiqdRaggrBo+KmIry1yrb/06aSbg3BEVgaahLuSdRsqSM9z/u7MhOHU2T6AAqiMwTSuxHe3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eldR591f; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Rb862nij6u3CTJskXlrznM5oE1FClD+HxOa3BTAYhpZAX0KtFrg98bFM2dsaf02CXkgWLrojldZ+nu+aC/HrRTA40724qxVPJIKM7h/SWVT1dVMP5Sad3UgnF/SxBMDrJuGKKV437RaKLsFqV4jdhwneZkm7LkYZ+Cn2NLpp3LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5IWnmns; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eldR591f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AADC2BCFA
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 19:56:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5IWnmns"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E822C2BD01
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 20:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778529394;
-	bh=36Y76l+8L/1TfCN9D9kVNldinwW1l3CEh723aHYy5Vk=;
+	s=k20201202; t=1778531688;
+	bh=pfDxlUWWZJepOCZjfdEmEkPzN7o0zQAK0IZPSz7H81M=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eldR591fT7Hwm3wg3SqMducQlfxaAEHxkYFLr5Ef3J7xYD7RoGnrXJYcpIjwkbtlI
-	 6RSGX8VenN+l3okSDgTObaQdzW3nKaDtkQVQyz8HbpeUcAiD4w8JYhNVzMHW0NJuai
-	 Fm9F+Yn5JPhIKa5Ik/qO4zY6JsAApRuhtp2FRBfQe+euX7te7fPrt360tBOQLnIEiP
-	 8HDCu0DSrtyY5qYRTuX2fTByWiwkbgJBvri7Gjjl8axF6vpgQqJ8Ng5v5fCoIKq5ko
-	 I/7xfZLtRUW+fmv8qOK9KeMzhDU2X9Xbg8rMH4QBz8jAhhqftXszgIap+OhcVhV4gp
-	 AG3w6MEIHtqhg==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a8891f0c88so2786410e87.1
-        for <imx@lists.linux.dev>; Mon, 11 May 2026 12:56:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+oQBgLm/KAWcR2kUbVK6xSQc+fkDRyk5GSjEOQCcQ8OLBwlCkdsQzuf5+p2SCLclqEWjQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzO925oZ/hY1Ar/P+e39ETB3R/WAC+a9hT5f5r37+g+LwNy7HxG
-	JcHON2+EeULBCQLULDDXNuKBVM+WdCSdqrdPIWaOVXbD/MSKNNnkSaK/nU/A7EEbIhoS3/zXIry
-	YKF53GTS6fWeiFOf1w5tvYZ7lbLjbiP0=
-X-Received: by 2002:a05:6512:3d19:b0:5a8:99c8:94bc with SMTP id
- 2adb3069b0e04-5a899c89686mr7561830e87.28.1778529392892; Mon, 11 May 2026
- 12:56:32 -0700 (PDT)
+	b=l5IWnmnszX4yIlsBRwcZauDRDjLsshju3WeQ8Mfnk7HKw8C4aOvGcekN56lNTA761
+	 zHnwpsT5guPRrb372CdGuH1XRzjJsWAjX+CFc0yqjuRfFNnH0QsHrXN6FDD062YsLz
+	 MDOlqoL+JtTt20cTc/YgGBnUqZQGJSEJjgkN919VgdSU90p2W9QEBoMBs5j9JMfzHO
+	 tzPRoORvk2B2zcajxNqtRcoYPM6xGw2LT7MN1RNJWH93+D2S6o0LB1A1gU0L9Sd93A
+	 hgnASXHjDNKPcCvIsZ7a/5+xHRa81a5udY/K9yiH+Z7IYLTraMnVDyfEtZFfQhJmcb
+	 rbdVbcfSHZBCg==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a8d1f43432so1889837e87.3
+        for <imx@lists.linux.dev>; Mon, 11 May 2026 13:34:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9oiqJU9GnAtf1mTnwL/q6QfBa60Bg95YhWvVNrAN+DncbdxequVE0DVL4iR2oJiGvkCMs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy73W9T0lT1J3dCAtrNndiDlcbYg9H0KTNMJzefHxQZCDWpJsPH
+	eumhbiZFLrOFCySFs0AN2TaHcD1s3ZHgYMPEjeXyYJxlBiIyezmiXOjXKYDbR1+IsL8k/Yxvk8E
+	z7Bb0MH1vY8Vr7upphI6Ot+VVfY020YY=
+X-Received: by 2002:a05:6512:3ca1:b0:5a8:7be1:24c8 with SMTP id
+ 2adb3069b0e04-5a887ceaa65mr9872399e87.37.1778531686850; Mon, 11 May 2026
+ 13:34:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260505160902.1425532-1-Frank.Li@nxp.com>
-In-Reply-To: <20260505160902.1425532-1-Frank.Li@nxp.com>
+References: <20260504-pinctrl-mux-v6-0-8ea858ba3a5b@nxp.com>
+ <CAD++jLmXvnf6sSWsGe+++u37ONJpFFvxFMUkLdvvxiiaWuf9gQ@mail.gmail.com> <agIwOYrKXlnKbpII@lizhi-Precision-Tower-5810>
+In-Reply-To: <agIwOYrKXlnKbpII@lizhi-Precision-Tower-5810>
 From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 11 May 2026 21:56:20 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=BhoYCvTLvzCQyktRUiKsRrVyadUxOjCvLL7wxwBcR=Q@mail.gmail.com>
-X-Gm-Features: AVHnY4I-LNT372-vzpWf6Qi-_cAA5hInJN5Jx7npmbBI4rxSPCplPzmHk8NUQv4
-Message-ID: <CAD++jL=BhoYCvTLvzCQyktRUiKsRrVyadUxOjCvLL7wxwBcR=Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] pinctrl: imx1: Allow parsing DT without function nodes
-To: Frank Li <Frank.Li@nxp.com>
-Cc: =?UTF-8?Q?S=C3=A9bastien_Szymanski?= <sebastien.szymanski@armadeus.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, 
-	"open list:PIN CONTROLLER - FREESCALE" <linux-gpio@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
+Date: Mon, 11 May 2026 22:34:35 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=eqEaTcG7P=++Md7fqosmrGbRRPDb90+=Q4q8oQ=xqRA@mail.gmail.com>
+X-Gm-Features: AVHnY4ISeOUwTMvzSWT7CmqN0mVa50nOH_KekHRgu0RCcEYz-W900TVY-Ai2s7k
+Message-ID: <CAD++jL=eqEaTcG7P=++Md7fqosmrGbRRPDb90+=Q4q8oQ=xqRA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/7] pinctrl: Add generic pinctrl for board-level mux chips
+To: Frank Li <Frank.li@nxp.com>
+Cc: Peter Rosin <peda@axentia.se>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 5, 2026 at 6:09=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On Mon, May 11, 2026 at 9:38=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
 
-> The old format to define pinctrl settings for imx in DT has two hierarchy
-> levels. The first level are function device nodes. The second level are
-> pingroups which contain a property fsl,pins. The original ntention was to
-> define all pin functions in a single dtsi file and just reference the
-> correct ones in the board files.
+> I fixed a build warning by missing doc 'np',
+> https://lore.kernel.org/imx/20260507152117.240612-1-Frank.Li@nxp.com/
 >
-> The commit ("5fcdf6a7ed95e pinctrl: imx: Allow parsing DT without functio=
-n
-> nodes") already make moden i.MX chip support flatten layout.
->
-> Make legacy chipes (more than 15 years) support this flatten layout also.
->
-> Fixes: e948cbdc41d6f ("ARM: dts: imx: remove redundant intermediate node =
-in pinmux hierarchy")
-> Tested-by: S=C3=A9bastien Szymanski <sebastien.szymanski@armadeus.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Anything need me to do futher?
 
-No reaction from other i.MX maintainers but OK, patch applied for fixes!
+Sorry was busy!
+
+Applied this fixup on top of the branch and merged it into my
+devel branch for v7.2!
 
 Yours,
 Linus Walleij
