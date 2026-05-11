@@ -1,182 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C4B426D17;
-	Mon, 11 May 2026 16:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F333F5BA;
+	Mon, 11 May 2026 16:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778515897; cv=none; b=la1cUMtF+BKtY5P4as4LJJ5vwU85DdjdxDtMBr7Q+pk1SVKTCWH+dNC6Xr35D1/+UZKvWl6/R/D1cY59y7Q+H8ZW6y3tUu5x/qWw5csOAWl9JNhPxGw9y7uVop9bEbBo4y4n5q45hzO+cjsqiL/Y6sxFYXCxOhkQlvoRp63CjIg=
+	t=1778516032; cv=none; b=c/Upn2UyV1ZVvmaDF58f39jiVUfab+GCu58hnU68SZkM4bnylLvKnfkx6JcHffNmUXNCio4NOdR/Ocd8VUbq2RXkWeoBrRlghFRdQ5qFtU9Vab/sqd2y7Q5nR/eNhmC+yPPTIj6l9oG0fEk7yKc1iKdyadgteuplQRFvcekxpos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778515897; c=relaxed/simple;
-	bh=TXzIw50Ubej2grT0J9j5w81loy36TIzYfxvj4Vt5Kao=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DqD/8/JxP4YFRfHpg4h/W76WHxcIg8a8ZL18xsYkyrYCB0nZ4Fy8p3n+rWUiGOJODLmsMHZ5KDe4rdxPidRknOK9a94OTT8KZY6CI4rHZYGRsqWeEsTgXF10ZNLRNRv2b8Yt8+IZfG9RFjcVZf0AiyX5o9PiuGYrxN0sqkMKnTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tOYaqRnM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778516032; c=relaxed/simple;
+	bh=QypGpiv3go67+fhev00zHPn0ufklsR95vUHedW52PoU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tbcG4Ba/XymH7qAkltWFg27Py5qxsUXEM14R6OqlwRWl7PM9kUom9OsXJeGVw4oyaa3b72BphknoGAH0NhIQkMigiDP1ALPmNNI8ERY8NbYEVHKtDJo3um1yKz7bhI+hi8grmqNAZsMakxcYNCwKHVfNTyVu6CsxVEICQbFY1+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=k/nqdyIA; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tOYaqRnM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84D22C2BCB0;
-	Mon, 11 May 2026 16:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778515897;
-	bh=TXzIw50Ubej2grT0J9j5w81loy36TIzYfxvj4Vt5Kao=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=tOYaqRnMnZpjApGIDeLX1I6OtZ/M3eYipRCKu+y2mWPrZOWlGmgd+jt9oOGjqKVTq
-	 rI8kTcCp8T/il25A3nYDKauYN6GcJg6fgqNBU04vkQJx7lAX0ziQgV/mLSw2Tt7+vf
-	 mzFghg6KrozNo2G748JUaTwvIAG4mXohoW7dJ5QBhp/pLeHwcYUTZJAfBPCohDDg0p
-	 TdTi49vbdZ2r58h/uChLGfAHLozvyuXhCPTBVGyay++zJdZJlXyjSD6ARrKDfk7spE
-	 oG5L+pOlLHyU319RxTKgLiZ0IkWmfPSk8uNd01u3XAXabGVbIPVaQyeM3w3u3owile
-	 jTLfZPDSule2g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CB09CD4840;
-	Mon, 11 May 2026 16:11:37 +0000 (UTC)
-From: Frank Li via B4 Relay <devnull+Frank.Li.nxp.com@kernel.org>
-Date: Mon, 11 May 2026 12:11:32 -0400
-Subject: [PATCH v2] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="k/nqdyIA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
+	To:From:Date:subject:date:message-id:reply-to;
+	bh=S08ARNK4JyjFSmUJ+5xcB6ex0c/0uNFUV+SgRIJsO5s=; b=k/nqdyIA4uz/7q7lLSmEW3s1Lh
+	mpcsX4NwWiCr/zGvf1NN8TyRDt9KBqs/gYg/5h0m9Jshi34R5p19KCtp6w2+dv8f1pxclfwKjm4zR
+	iIZIFJDLiPQ8cni40gI+YrmvclJtLmWcE1+6gh46GICm359dhW4KeN80P8nsR81p1cuk=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61] helo=debian-lenovo)
+	by mail.hugovil.com with esmtpa (Exim 4.98.2)
+	(envelope-from <hugo@hugovil.com>)
+	id 1wMSng-000000004IO-1xyo;
+	Mon, 11 May 2026 11:44:08 -0400
+Date: Mon, 11 May 2026 11:44:06 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: krzk@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+ rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+ simona@ffwll.ch, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, shawnguo@kernel.org,
+ laurent.pinchart+renesas@ideasonboard.com, antonin.godard@bootlin.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 14/15] dt-bindings: display/lvds-codec: add
+ ti,sn65lvds93
+Message-Id: <20260511114406.24673c770d112b2ca4aba2eb@hugovil.com>
+In-Reply-To: <20260305180651.1827087-15-hugo@hugovil.com>
+References: <20260305180651.1827087-1-hugo@hugovil.com>
+	<20260305180651.1827087-15-hugo@hugovil.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-eukrea-v2-1-cac317290978@nxp.com>
-X-B4-Tracking: v=1; b=H4sIALP/AWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDU0ND3dTS7KLURN1Uw1STFLOUNAtTg2QloOKCotS0zAqwQdGxtbUAvv0
- jIlgAAAA=
-X-Change-ID: 20260511-eukrea-e1e4d6df850c
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778515897; l=3623;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=Rwk/LOK0vxBQRx6CqkcwOGhaMlXZZ3H+Gmi3nQ8Ktjk=;
- b=yfLg9ZvkAKOdqtkLmmxjVBHQDEJoPg6f4s9MKabAOeMpcMsz63Modt+sltRQVkvuMojoNyw6/
- 6y9bKqbFnHnCLkSVeziMmnJYU6xtSUMaxat65v2JW5HoDTBNuduF9sW
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-Endpoint-Received: by B4 Relay for Frank.Li@nxp.com/20240130 with
- auth_id=121
-X-Original-From: Frank Li <Frank.Li@nxp.com>
-Reply-To: Frank.Li@nxp.com
+X-Spam_score: -2.0
+X-Spam_bar: --
 
-From: Frank Li <Frank.Li@nxp.com>
+Hi,
 
-Convert eukrea-tlv320.txt to yaml format.
+On Thu,  5 Mar 2026 13:06:29 -0500
+Hugo Villeneuve <hugo@hugovil.com> wrote:
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- Add comments about "The AUDMUX port numbering should start at 1"
-  v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
----
- .../bindings/sound/eukrea,asoc-tlv320.yaml         | 55 ++++++++++++++++++++++
- .../devicetree/bindings/sound/eukrea-tlv320.txt    | 26 ----------
- 2 files changed, 55 insertions(+), 26 deletions(-)
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Add compatible string for TI SN65LVDS93. Similar to
+> SN65LVDS83 but with an industrial temperature range.
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..a95cd0323f6e489765deb8c1d1eee966750ac7aa
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-@@ -0,0 +1,55 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Audio complex for Eukrea boards with tlv320aic23 codec.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    const: eukrea,asoc-tlv320
-+
-+  eukrea,model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      The user-visible name of this sound complex.
-+
-+  ssi-controller:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      The phandle of the SSI controller.
-+
-+  fsl,mux-int-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The internal port of the i.MX audio muxer (AUDMUX).
-+      Note: The AUDMUX port numbering should start at 1, which is consistent with
-+      hardware manual.
-+
-+  fsl,mux-ext-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The external port of the i.MX audio muxer.
-+      Note: The AUDMUX port numbering should start at 1, which is consistent with
-+      hardware manual.
-+
-+required:
-+  - compatible
-+  - eukrea,model
-+  - ssi-controller
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "eukrea,asoc-tlv320";
-+        eukrea,model = "imx51-eukrea-tlv320aic23";
-+        ssi-controller = <&ssi2>;
-+        fsl,mux-int-port = <2>;
-+        fsl,mux-ext-port = <3>;
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt b/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-deleted file mode 100644
-index 6dfa88c4dc1e8b3aea1e39b79eaa62185e64c240..0000000000000000000000000000000000000000
---- a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-+++ /dev/null
-@@ -1,26 +0,0 @@
--Audio complex for Eukrea boards with tlv320aic23 codec.
--
--Required properties:
--
--  - compatible		: "eukrea,asoc-tlv320"
--
--  - eukrea,model	: The user-visible name of this sound complex.
--
--  - ssi-controller	: The phandle of the SSI controller.
--
--  - fsl,mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX).
--
--  - fsl,mux-ext-port	: The external port of the i.MX audio muxer.
--
--Note: The AUDMUX port numbering should start at 1, which is consistent with
--hardware manual.
--
--Example:
--
--	sound {
--		compatible = "eukrea,asoc-tlv320";
--		eukrea,model = "imx51-eukrea-tlv320aic23";
--		ssi-controller = <&ssi2>;
--		fsl,mux-int-port = <2>;
--		fsl,mux-ext-port = <3>;
--	};
+Now that this series landed in linux-next/master, except for this
+patch, we now have an error since it is required:
 
----
-base-commit: b7719f5647f279b131c888e70c77dd9287b322d8
-change-id: 20260511-eukrea-e1e4d6df850c
+https://lore.kernel.org/oe-kbuild-all/202605071909.lXKPelNA-lkp@intel.com/
 
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+Hugo.
 
 
+> ---
+>  Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> index 4f52e35d02537..f2cb74b86cc05 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
+> @@ -37,6 +37,7 @@ properties:
+>                - ti,ds90c185   # For the TI DS90C185 FPD-Link Serializer
+>                - ti,ds90c187   # For the TI DS90C187 FPD-Link Serializer
+>                - ti,sn75lvds83 # For the TI SN75LVDS83 FlatLink transmitter
+> +              - ti,sn75lvds93 # For the TI SN75LVDS93 FlatLink transmitter
+>            - const: lvds-encoder # Generic LVDS encoder compatible fallback
+>        - items:
+>            - enum:
+> -- 
+> 2.47.3
+> 
+> 
+
+
+Hugo Villeneuve <hugo@hugovil.com>
