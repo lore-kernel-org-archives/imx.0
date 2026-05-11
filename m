@@ -1,112 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85FE3BA235
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 08:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A663E2C3252
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 09:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489313; cv=none; b=aqdCUVKzlg7r4yTFR9Dp4tygBy3OyxPeItPEa05YibmQ0DOUG1dxtHZJsZ4kB/C8vQ5Spf+DGpPbaxAuPw+xx/JzW+K2mznEjBSnpCF25u2KgwsB0GY6pQUSKE0vf/3e7BBzh6mihLGfWUI2Li9P5y4aAbE4UueMI7EowLyHB/E=
+	t=1778490691; cv=none; b=RHC3f+fpi4Vm/rWad6tokb0fQAuTJvuoFBz0bL9U+GA08a5hVfqLA60SsswRvFAv03tnubE8Py3ylMJX+lUmtG56tTBUu/ldPh3And4L6vKvwBi+ROtubX4akLCbj700lI5LncoiT1koqwD/QGEOGyuIYwqaRbFhcwni4keV7BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489313; c=relaxed/simple;
-	bh=FS9Vcj76U9RM5XIubOjoexo/Q66e6Qb8ezAJTR8qo6Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/9bg+4mTCOcjQxQDkiW54Bjge9JMl+9uv9vr9zDM+a0UbU6i7oKgVuJhFia0wo+cDRJibDM2lEOokGV/MoDGS4L+Y7jrRnM230WvLmssls7V0Ugi65L8hfFagHBT+g7P+EPrLpDvld1yG8WDMuJ832Xlm4iGF4hCa4HARNYSeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkFL70sk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778490691; c=relaxed/simple;
+	bh=SZ8f9PPqWZU+1cRpq6Zl5ZieD1mgOP9e8yXexQ+jYTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L+/sFQQbxFXzwwmyww8YXtdOFFq2rGcjvloMktsttB6hfM6rmlFl1YppIHVnX9q0RWUkdVfYwJNpCRjlC7SGkFn8dQPu9VFGMm/5Tz2jlc6Ljj2fIUXPmLl4qQ/f9KKIzFKmoqhs2xg/AR13A0NQ2SsnvvR+KU60Y5xP/JgW7zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VjDqHfzT; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkFL70sk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87269C2BD05
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 08:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778489313;
-	bh=FS9Vcj76U9RM5XIubOjoexo/Q66e6Qb8ezAJTR8qo6Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BkFL70skeyMsxsAPovmmjWva/uA7ul3y+pIyc0IbC5Z6jp+X3h/7vsK1rfwOWZwPg
-	 yyof2+cc+0ChQ2ZmGzBckVM4Lho265t0+jpyzOhL0Z85yUbVdXmfJmgY+XWgfVuLx2
-	 XSMQHZ1SPx0FS7PtT6I/Kxdzu1DH/0TiUQvlV1AXSKc5p5bPkLemRqecW64jPWpgUX
-	 zorFbUkVKMMpZZClvBqYJNyNSAFy401fOr/YeNklUYQUHH0RP2e73Asc+fHm7CsYUZ
-	 lMVq0GCD6y86ofaHEztAM0IGwcsCFYuAtc+pTYuzFC128zk8vnCp1QfpB695rL+9Jg
-	 uZ3GOxabECP7A==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a86bfa2a4eso4663867e87.1
-        for <imx@lists.linux.dev>; Mon, 11 May 2026 01:48:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ//2mxJ5Ci2Vriwa5Hx8IF5xfBmd2sYEQJPLrR2saCeYhihay/F2pSaqmrHNXlfz14UIHQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwSIo5ILdkxToM+gSEFdxp95fN9TTZyyeKfjFK8uJZ+3oOzOCNX
-	BXNKipIfJ3klsJ759JpZ6++hN1q04UqoeRzpS9we6y6K74ttL3l2ZFRADH46DmJ9HyWs59TIOI0
-	J5e3axhrLJUPmSZ6wu+QZkPobtzPuk9g=
-X-Received: by 2002:a05:6512:304b:b0:5a8:6e64:a932 with SMTP id
- 2adb3069b0e04-5a887cea7efmr9393309e87.32.1778489312120; Mon, 11 May 2026
- 01:48:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VjDqHfzT"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-83ec36a13e9so360838b3a.0
+        for <imx@lists.linux.dev>; Mon, 11 May 2026 02:11:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778490688; x=1779095488; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XdyyhEj4/v2ra5ngAxTRu5GNOcioukMe9KhLVuT3bms=;
+        b=VjDqHfzTMIXuc3xlgF5hqJzI47wxDRr8KxpAKW0AMggXsSuIbHBoyx/LEG4g5j7Vvz
+         s/M6x3yUtuaFGh1rXKDC/MP9tCu3BsnVTa7smzj+A93yeVf2hBiLbNBdAhQGXIRFIX+y
+         sU5TxYEE7zWbf960G6tTwUI3QRzcNoum/8PDINAwjmuANBTiS1dPhGiuFwZdIfxi16Vz
+         bH7QyFznUZXGxItgel+Ui/IlD344nY3/6VZzMbIU95zFEcEaw/tHTSPL9wZfsfv9fdXJ
+         XYPe4Cb21+hMnxzYLV2ygv0btFehVlf7+LHF4+IMJYkIFaG4o8L82DSJGEY5kCpdvvBt
+         3mPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778490688; x=1779095488;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XdyyhEj4/v2ra5ngAxTRu5GNOcioukMe9KhLVuT3bms=;
+        b=k8lbHPOjT83b1X093+qUeOoy9JRjoMPJ3+5ZSbDdWF4odJUzfS/5YZERTbKknE8bXb
+         GXPJBNU3iJ2UTapYfPrm/MoB7GfOeEJYnXBJKIDL8hDfKL3eKj4Dj0lpHnPyxYi6/khF
+         zbz929thjCaVIBtOzKaKWttSFjDZUUQfoZxVl5xncFJtyjPqvV3kEryWNuQ4x/vkpDUM
+         /E20/1RRc1yP0OW/v3nc4xTUm5egoLatxa0SRk7JddKzgEh44Q8N3rVVnPblXfrwRB6m
+         3NYCKQNs4cJRDBSmhQMTbu1Wstls/8ocE9BAhpv0HOK4CHU8cEBDoFysw5StK0wiR/LG
+         O73Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+2JkZMkwxUvjnYpAPZyNwKI/R8o2Zmh3y7z597WtD+mkRBOReSQTcV7U721kg9F/UrNAM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyUcVMLoUObZSEvNqQ6WUmbelDNl03abE/Hs7tRrxShfIuY5r0g
+	SF/H0LEoRLz4+5KcniPzbbN0CRHkYbpeiRpV9TALFi78j55GYsomP1+c
+X-Gm-Gg: Acq92OG4lJNf2Xl9hnh2YCRzPSAWz8RcvjILpTG5dtKnD7PdLZojvJ4d7hO09/pH0sp
+	99bRlk3i3g6c9qDhB87PCOH4cbtkI8WKTyeC7Q+0Bmo5uEsvgroawLiW5rcUppwo1Bfva8EStPB
+	Q54w2HBoy6Jx6g2PXYhkTm2cMGDx4HFHNQL+QpkxGWHFH178f6GgG+rNGAcnanZ/zeDNrPI+Ij2
+	JRq/Pa56W+cb7Yl3zFTUr15QEFlUfcPIbvEB6372078iW8rvbbWpX7oaCrKFyLDqEG0aKfi5QuT
+	0LhGxHon8av5t1xb9d1WqyponQMbOqW3Uz1otq30dRaY+pmHC/KwhUcrEv+zZl4MGiOqUXLOXWC
+	JYgzXmX3f5HVYHSqWUw/B3Ka6l8OjWpb8oW6zCdLiyOsvzXvcKKstr6LtShQG+wOVk05qTyd4P2
+	1A03pCc54gOY9RXmV6sWAadHc=
+X-Received: by 2002:a05:6a00:2d96:b0:837:acd7:a78 with SMTP id d2e1a72fcca58-83a5b9d8131mr21057954b3a.16.1778490687914;
+        Mon, 11 May 2026 02:11:27 -0700 (PDT)
+Received: from nuvole ([2409:8a34:5f37:1974:abc5:99cd:a924:4e86])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8396563f11csm24775517b3a.3.2026.05.11.02.11.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 02:11:27 -0700 (PDT)
+From: Pengyu Luo <mitltlatltl@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	Pengyu Luo <mitltlatltl@gmail.com>
+Subject: [PATCH v3 0/5] fix and improve for Hi846
+Date: Mon, 11 May 2026 17:09:19 +0800
+Message-ID: <20260511090924.269106-1-mitltlatltl@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260504131148.3622697-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260504131148.3622697-7-khristineandreea.barbulescu@oss.nxp.com>
- <CAD++jLnk4q7L_cFzz+1gKkAqwhv=TW1_XSepuii7b_PHF7EPqQ@mail.gmail.com> <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com>
-In-Reply-To: <704e9e7b-0f45-4ed3-a686-9e20056eab2a@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 11 May 2026 10:48:18 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
-X-Gm-Features: AVHnY4Jgw80MuyK4ZGcKlHCdHrHAFZ3YKz8oTwazlDM_Kdt2Svy6qUsv6clMxog
-Message-ID: <CAD++jLk-7UqjCsM4jCdRmBMMaNNXe8Gi_E00fJ_MRMsEGQcMZQ@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] pinctrl: s32cc: implement GPIO functionality
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
-	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Srinivas Kandagatla <srini@kernel.org>, Alberto Ruiz <aruizrui@redhat.com>, 
-	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
-	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Vincent Guittot <vincent.guittot@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 8, 2026 at 11:07=E2=80=AFAM Khristine Andreea Barbulescu
-<khristineandreea.barbulescu@oss.nxp.com> wrote:
+This series fixes errors blocking Hi846 driver function, fixes
+link frequency and supports 6MP and 8MP modes on Hi846.
 
->I don't think the current driver is a good fit for
-> a full gpio-regmap conversion. Direction and GPIO mux are
-> handled through MSCR/pinctrl state (IBE/OBE/SSS), and the GPIO
-> logic spans multiple register regions across two SIUL2 instances.
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+---
+Changes in v3:
+- fix modes handling for different lane cases (Sebastian)
+- fix header missing (the Media CI robot)
+- Link to v2: https://lore.kernel.org/linux-media/20260501095433.1609309-1-mitltlatltl@gmail.com
 
-I don't see the problem with that?
+Changes in v2:
+- remove uncessary `else` (Sakari)
+- fix link frequency (Sakari)
+- correct link frequency for DT
+- Link to v1: https://lore.kernel.org/linux-media/20260429070351.1307204-1-mitltlatltl@gmail.com
 
-> A conversion would require stronger separation between
-> GPIO and pinctrl, leaving mux restoration entirely
-> to the pinctrl subsystem.
+Pengyu Luo (5):
+  media: hi846: fix hi846_write_reg_16 handling
+  media: hi846: fix link frequency handling
+  media: hi846: fix modes handling for different lane cases
+  media: hi846: Add 6MP and 8MP modes support
+  arm64: dts: imx8mq-librem5: Correct link frequency list
 
-Why is that so? Sorry I don't get the problem here.
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    |   2 +-
+ drivers/media/i2c/hi846.c                     | 251 +++++++++++++++---
+ 2 files changed, 210 insertions(+), 43 deletions(-)
 
-The pinmux operations have these callbacks:
+-- 
+2.54.0
 
-static const struct pinmux_ops s32_pmx_ops =3D {
-(...)
-        .gpio_request_enable =3D s32_pmx_gpio_request_enable,
-        .gpio_disable_free =3D s32_pmx_gpio_disable_free,
-        .gpio_set_direction =3D s32_pmx_gpio_set_direction,
-};
-
-So to me it looks like the pinctrl subsystem is *already*
-handling all the muxing of GPIO lines in these
-callbacks?
-
-> Would it be reasonable to keep the current approach for now
-> and revisit gpio-regmap later if needed?
-
-I'd prefer that you look into it now while you already
-have all the information at hand and fresh in your mind.
-
-You can forward my comments to your project lead
-/ JIRA instance and say it's Linus' fault you have to spend
-more time on this right now.
-
-Yours,
-Linus Walleij
