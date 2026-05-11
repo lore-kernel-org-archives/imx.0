@@ -1,42 +1,46 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C643FA5F1
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 13:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4258F3F7A86;
+	Mon, 11 May 2026 14:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778507865; cv=none; b=H1vFTy0QLp1kzCjErhIfZlbuBE8BCCi10TdQB1P10qgtbUPaE+ICYE5COt2uRgibTGbdxrZS++HSkOdxjxc3K6nuSfZnMfnKeloTSe6C3zOXh+pTdd2/wjlPPsKSgvNHbkuUK8sXY/6nghfEYQDQP+gaZXMbIN4r4nZK0iQhcDc=
+	t=1778509953; cv=none; b=B2tpGYdcjR5zF947lF0bXE7/LOcvQK8hH1JLRiQJonO3EQ8lyQpXe7UrxKyAb/EQfBNXYZEQD6ChZss2KckRuUw4xpjYMMM/qM5Usy1UODE6H2kic2cF0styAKhzLbwqXfms1H5743tU/wU4Fva+r5FNT+63plZhNl0r5r6uSVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778507865; c=relaxed/simple;
-	bh=zC2ID6l8GFBR4BwqI17VFWdO/ilVRuNe2iMT31YrZko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ra9pvIj7Dhg9vOEgPwnjwSSsVgyA+B7p2dV5dwWcnx0QZII6QcMITaIsdEzx2/IpqFrK9o/vtimdMOMcuDZUTHWx/4OI4ie/4IliulQ9M/jNW1Bm+oGP5HCG5n5BMDmHLGHhxg2PTBjVXJ95Ig3/i66eHnL0ce5N7aB93Mu9IQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZEiFWH4s; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1778509953; c=relaxed/simple;
+	bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=gr8PcyYhNJgCrCSLU8tSyxdsIz3kgwSeKUhHp71J8RFGbTH951w/Lfo/0ITtVUx2Qs6gaFmSu8XSwtPICsB4bzUfcI0IRqd2YgcshkqirEC7IRPAJrK0LuESPRdm6ejT17wa2jz/ps/f8ugy4aWg20vdfaJSk/EEqEJjcFVp0vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icPhxbc9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZEiFWH4s"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 26E58C5E157;
-	Mon, 11 May 2026 13:58:17 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9882160646;
-	Mon, 11 May 2026 13:57:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 64ED311AF9DE3;
-	Mon, 11 May 2026 15:57:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778507847; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=DZJQYNOuRsWLR9PD9/2j37j4WivCD7wFTOz83ku666g=;
-	b=ZEiFWH4sHQTRT8m8N0k6tThuYFmm0q66cxYnIe0fLpPnouwdbJnDAuavG3MTjQugQ9ppSp
-	Ov7RLdPyVbS0vnAny26t1jEYoxtA11zFEMNTU/Jh8QlwiL+H4KEXA8Yx2KZCJKYYeoLQmt
-	lAtgrjHhr7H1FZfan0OahLmN+BnuF0hj6Wkbj3EnBJxE9XWRPqQBM4EWMUhP46GHTQVL+T
-	YcITbEtQeGVFoezm8FyDzjIzevDDjdXDCzsTd8FF1xDdOSOmGc2L5zGeHq9wJgmLQBzvgM
-	77kt4R5jH1jAVZvSGfQGllfcBxK1qX2glgZvCV1wBmBdySdQLZZMRxPSdPPCJg==
-From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Date: Mon, 11 May 2026 15:57:20 +0200
-Subject: [PATCH v3 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather
- chaining
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icPhxbc9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B853C2BCB0;
+	Mon, 11 May 2026 14:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778509952;
+	bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=icPhxbc98tRXVJGF37J6eXmeRpm12v6pan1cFmoGM0830Cpvh691Wj04oH6/hPSox
+	 g6JS62vnM0lvZVuRfEF/xsyV7/un38Y+f6f9bxClpsCs5tS+1lyKmD14IsTMqR9dvJ
+	 bNhzafjdJYFJ53Psw9zHojjB+gPBQ8KC2YHV3xNgErJXfwkCYpOymSCjR5TtCmKA6O
+	 2lTZQdRweGWxqNGQqXY0+wh6gwQQVGe3ZFP0vIOzzEbpLyf2TWz0SdUMvNM54TfvnF
+	 0hCrtu8nHVnrmARng8NGBDlhXTjWjZuxl0HIw6cOsjQsRN33fzrNrbsOaxlfddQsGY
+	 AXQ6PTIJh9Ygg==
+From: Mark Brown <broonie@kernel.org>
+To: sunny.luo@amlogic.com, xianwei.zhao@amlogic.com, 
+ neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com, 
+ haibo.chen@nxp.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+ lhjeff911@gmail.com, hayashi.kunihiko@socionext.com, mhiramat@kernel.org, 
+ jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, 
+ Hans Zhang <18255117159@163.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
+In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
+References: <20260430155456.36998-1-18255117159@163.com>
+Subject: Re: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
+Message-Id: <177850111749.988959.3324914194988461245.b4-ty@b4>
+Date: Mon, 11 May 2026 21:05:17 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,212 +48,75 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260511-fsl-edma-dyn-sg-v3-2-98a181775dae@bootlin.com>
-References: <20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com>
-In-Reply-To: <20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2369; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqAeh8vjkGkzUWV0FtkGu3VAG7YFX76JbuewSvr
+ 7LFDYp1pNuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagHofAAKCRAk1otyXVSH
+ 0GgYB/0bjIyo5EXJiMTycuOQXtlDCYiBMJdMFY7I1IWduMD5RfXhniWXgWw9k/IIvjGySM8RXO0
+ IIhV/HTwGFzjDO2SXcPM4W+Jr/8ZF7Qgw9SE0jEpgJN4OAvuq+Xik1N3z68utaNT1f6RduItRcE
+ Zy7ES4g0a0t3V0NvEhMX9Mk5HL++3ycbAX6/3GtnZJOhFtHzPjYKbhhDxZiZYCsr+nKFTcHAFtq
+ jT3ZRGgXQKN3xMnPqBBedkhZqWWNnhB8QIFZg64/HuIhb4jAla7PrY4zWwZ5cIdM2zeACsGa6EQ
+ ddioBbSzHiHvztPDDNzxCiFvaq0EdY3ACBvex9ByywYEtj/R
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Implement dynamic linking of scatter/gather transfers to enable
-chaining multiple DMA descriptors without stopping the channel.
-This avoids waiting for the channel to go idle if there is another
-transaction already issued.
+On Thu, 30 Apr 2026 23:54:46 +0800, Hans Zhang wrote:
+> spi: Use FIELD_MODIFY() for bitfield operations
+> 
+> Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
+> macro across multiple SPI controller drivers. This improves readability and
+> adds compile-time checking without functional changes.
+> 
+> Each patch modifies a single driver, allowing independent review and
+> application.
+> 
+> [...]
 
-Add fsl_edma_link_sg() to dynamically link the last TCD of a previously
-submitted descriptor to the first TCD of a new descriptor by setting
-the scatter/gather address and the E_SG flag, and keeping the channel
-active by clearing the DREQ bit.
+Applied to
 
-Linking is done when the transaction is submitted by fsl_edma_tx_submit().
-To do so, the .tx_submit() callback is overridden for non-cyclic
-transactions prepared by fsl_edma_prep_peripheral_dma_vec() and
-fsl_edma_prep_slave_sg(). This ensures that transactions are linked
-in the order they are submitted.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-Update fsl_edma_xfer_desc() to avoid re-initializing the hardware when a
-transfer is already in progress, allowing seamless chaining of descriptors.
+Thanks!
 
-Modify the transfer completion handler to check the DONE flag in the
-channel CSR before marking the transfer complete. Since this flag is
-only available on SoC with the split registers layout, we only link
-transactions for DMA controllers flagged with FSL_EDMA_DRV_SPLIT_REG.
+[01/10] spi: amlogic-spifc-a1: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/8262b1421ddd
+[02/10] spi: amlogic-spisg: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/b69bfa593329
+[03/10] spi: cadence-xspi: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/6fa473f4c5dc
+[04/10] spi: meson-spicc: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/cfdab17cd2d7
+[05/10] spi: nxp-xspi: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/0f2efc6d4938
+[06/10] spi: sn-f-ospi: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/579fcc06576d
+[07/10] spi: stm32-ospi: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/21ee6902a576
+[08/10] spi: stm32-qspi: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/3e0530c087a9
+[09/10] spi: sunplus-sp7021: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/673214ac9bcd
+[10/10] spi: uniphier: Use FIELD_MODIFY()
+        https://git.kernel.org/broonie/spi/c/ce7984bea2a1
 
-Add trace event for scatter/gather linking operations.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
----
- drivers/dma/fsl-edma-common.c | 90 +++++++++++++++++++++++++++++++++++++++----
- drivers/dma/fsl-edma-trace.h  |  5 +++
- 2 files changed, 88 insertions(+), 7 deletions(-)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index c10190164926..b83d1b91dca2 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
- 		list_del(&fsl_chan->edesc->vdesc.node);
- 		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
- 		fsl_chan->edesc = NULL;
--		fsl_chan->status = DMA_COMPLETE;
-+		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
-+		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
-+			fsl_chan->status = DMA_COMPLETE;
-+		}
- 	} else {
- 		vchan_cyclic_callback(&fsl_chan->edesc->vdesc);
- 	}
-@@ -673,6 +676,68 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
- 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
- }
- 
-+static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_edma_desc *fsl_desc)
-+{
-+	u32 flags = fsl_edma_drvflags(fsl_chan);
-+	struct fsl_edma_hw_tcd *last_tcd;
-+	struct fsl_edma_desc *prev_desc;
-+	struct virt_dma_desc *vdesc;
-+	u16 csr;
-+
-+	lockdep_assert_held(&fsl_chan->vchan.lock);
-+
-+	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
-+		return;
-+
-+	vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
-+					struct virt_dma_desc, node);
-+	if (!vdesc)
-+		vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
-+						struct virt_dma_desc, node);
-+	if (!vdesc)
-+		return;
-+
-+	prev_desc = to_fsl_edma_desc(vdesc);
-+	last_tcd = prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
-+
-+	csr = fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
-+	if (!(csr & EDMA_TCD_CSR_D_REQ))
-+		return;
-+
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast_sga);
-+
-+	csr &= ~EDMA_TCD_CSR_D_REQ;
-+	csr |= EDMA_TCD_CSR_E_SG;
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
-+
-+	if (prev_desc == fsl_chan->edesc && prev_desc->n_tcds == 1) {
-+		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
-+			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_csr);
-+
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
-+	}
-+
-+	trace_edma_link_sg(fsl_chan, last_tcd);
-+}
-+
-+static dma_cookie_t fsl_edma_tx_submit(struct dma_async_tx_descriptor *tx)
-+{
-+	struct virt_dma_desc *vd = container_of(tx, struct virt_dma_desc, tx);
-+	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(tx->chan);
-+	struct fsl_edma_desc *fsl_desc = to_fsl_edma_desc(vd);
-+	struct virt_dma_chan *vc = to_virt_chan(tx->chan);
-+	dma_cookie_t cookie;
-+
-+	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
-+
-+	fsl_edma_link_sg(fsl_chan, fsl_desc);
-+	cookie = dma_cookie_assign(tx);
-+	list_move_tail(&vd->node, &vc->desc_submitted);
-+
-+	return cookie;
-+}
-+
- struct dma_async_tx_descriptor *
- fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *vecs,
- 				 size_t nb, enum dma_transfer_direction direction,
-@@ -680,6 +745,7 @@ fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *ve
- {
- 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
- 	dma_addr_t src_addr, dst_addr, last_sg;
-+	struct dma_async_tx_descriptor *tx;
- 	struct fsl_edma_desc *fsl_desc;
- 	u16 soff, doff, iter;
- 	u32 nbytes;
-@@ -779,7 +845,10 @@ fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *ve
- 		}
- 	}
- 
--	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx = vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	if (!fsl_desc->iscyclic)
-+		tx->tx_submit = fsl_edma_tx_submit;
-+	return tx;
- }
- 
- struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
-@@ -788,9 +857,10 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
- 		unsigned long flags, void *context)
- {
- 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
-+	dma_addr_t src_addr, dst_addr, last_sg;
-+	struct dma_async_tx_descriptor *tx;
- 	struct fsl_edma_desc *fsl_desc;
- 	struct scatterlist *sg;
--	dma_addr_t src_addr, dst_addr, last_sg;
- 	u16 soff, doff, iter;
- 	u32 nbytes;
- 	int i;
-@@ -882,7 +952,10 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
- 		}
- 	}
- 
--	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx = vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx->tx_submit = fsl_edma_tx_submit;
-+
-+	return tx;
- }
- 
- struct dma_async_tx_descriptor *fsl_edma_prep_memcpy(struct dma_chan *chan,
-@@ -924,9 +997,12 @@ void fsl_edma_xfer_desc(struct fsl_edma_chan *fsl_chan)
- 	if (!vdesc)
- 		return;
- 	fsl_chan->edesc = to_fsl_edma_desc(vdesc);
--	fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
--	fsl_edma_enable_request(fsl_chan);
--	fsl_chan->status = DMA_IN_PROGRESS;
-+
-+	if (fsl_chan->status != DMA_IN_PROGRESS) {
-+		fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
-+		fsl_edma_enable_request(fsl_chan);
-+		fsl_chan->status = DMA_IN_PROGRESS;
-+	}
- }
- 
- void fsl_edma_issue_pending(struct dma_chan *chan)
-diff --git a/drivers/dma/fsl-edma-trace.h b/drivers/dma/fsl-edma-trace.h
-index d3541301a247..ac319d2dbb90 100644
---- a/drivers/dma/fsl-edma-trace.h
-+++ b/drivers/dma/fsl-edma-trace.h
-@@ -119,6 +119,11 @@ DEFINE_EVENT(edma_log_tcd, edma_fill_tcd,
- 	TP_ARGS(chan, tcd)
- );
- 
-+DEFINE_EVENT(edma_log_tcd, edma_link_sg,
-+	     TP_PROTO(struct fsl_edma_chan *chan, void *tcd),
-+	     TP_ARGS(chan, tcd)
-+);
-+
- #endif
- 
- /* this part must be outside header guard */
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
--- 
-2.54.0
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
