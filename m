@@ -1,63 +1,63 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8313DA5BA
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 10:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110EB3D9020
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 10:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778496202; cv=none; b=YkezSpKHVKmu8C40yVVwRbA/+3hXUhYejf0yT9QUkcq+4F91l32rCLyPCRAVEvzNtD/hrB+CkjUS6+x18S5/YooTQAEzCDK2dk54CsPAAVFRLfrWPWUZ5jUKhCZbTrJ0Sp40rQ9rHkn0uOqexOMTTd17PLxVThqQc6me8oRQobc=
+	t=1778496215; cv=none; b=m+hI9zWZqPvTqVoVM1KltBVZkClLu3QvpWvNthZD3SLODL/3xj7zybrjvLSEJ7KktTwYZIQdq9ZyxQ/G9lD8s+v9Tx9VdHemT6a8Z9rC+ywK2iTnqlcBupOhoaBMOhG6hj+mNxw7Ah6qNlHw3XPPEsohBZXyITsL9MDeZflJJXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778496202; c=relaxed/simple;
-	bh=Arh65FwgpuoQyK0HMQPAmmIpzCVfFvZU3gN/HmExq5k=;
+	s=arc-20240116; t=1778496215; c=relaxed/simple;
+	bh=c5lr+YwyxmPJh4k5BNE+uOrKJBYoOBD+XzseEfCJKKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpDhwulw4otB8IPnNm0nSAFl0ZszuxW6jkrAoJiZyI8D1GJrwX52qzwhLPyWuFDYLXy68BlhFtPMBlRjMZ0q9bXHaHjB6wVRuRks3Us9zj342sxydmTNTdvR7FW02qK46LFGEe41ktmznRrM9WX7Q5140CIbD2Xk7BiCKaU0dYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R5JDjOJE; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=hMSALIYSWj40K9PLXHNYOzEAiHRePC+YngjiX2VEhCD/jhF9d2AKk/F8ovos2xxjfVRVwYrwSmi5abi4x2KLuE/ViPOIsrAHnpsrbLS8Kx+zGNiQG4K/rUljKNwA9MxzPnD1D9nZYtD5jjpZHV7dlV65fD0p5qPLZCYrrg7Oo0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OeO4fGJn; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R5JDjOJE"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3667cf0136fso2336038a91.2
-        for <imx@lists.linux.dev>; Mon, 11 May 2026 03:43:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OeO4fGJn"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-366375c43c2so2203212a91.2
+        for <imx@lists.linux.dev>; Mon, 11 May 2026 03:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778496200; x=1779101000; darn=lists.linux.dev;
+        d=gmail.com; s=20251104; t=1778496213; x=1779101013; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DRXDOC53itDbvSH3E3HyxAV1yZ2/7SesuEGqqAx3Huo=;
-        b=R5JDjOJEO9aMKCpjjnsM1ZRiLx0NjDPdcFY30Nt78TqIy5Y96WlHL00MkVS7D0avTO
-         3vym+A+swb6azq22rhBFCo4uqK2Nj+7Yz+B6ubqGUIRynOJ2Z4bN0MvitgKb/7zg90+Z
-         9OKpN4rsmwdLB+Ajxi+50s9P0LNGI8CTxrvfY92hf8nebPrXA1NrxHo3MGLjFqBph7Ly
-         rc0cmu/RZmJRVlkiwv9GdNfoHkX7FMMmJhfSWhfGJdVCbECOtliTFnsrrmeVFiVUAqQZ
-         LJbd+tOYWhizB1pP4v30ZkN5CqLDO23h1U4Tqf0BECRQy3MkHufeeuoBEiDKrQ0xjKB5
-         1Y2g==
+        bh=DqfIJWhfpQINNVwmdgP9tbjnCKPgaaqu67uO9dQrqdM=;
+        b=OeO4fGJnve/hXC9sOKSosWSokaJYSAcKHBEn21lnAuSXo5r5GXX+Ev6F/y22hlBWHr
+         gCUxHRK5GcolXMMPfMHzl3wg4e9PeEg7hzpf+vwb66KVHRtdeaVI0dxrR+SrdVhHNb9U
+         Z2cvQ82R+rmlvzBpwRxgeII/ZswgSHKu1aQMi0u3dH5nCM48ynbRhO/V2b2FFzr0fo5o
+         5lezO8B93BiIy3u5kNNdWPxLIOJRBnRkzqBd5lrWN4THhT6fcPiN0VMUHI8upjCfKd3+
+         I21dS0uFdGBrDi+EIYziNXFPRnhpkz1igX9d0XMswHWAdKMNU0vbSz2jOZRZczSQvivh
+         dGmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778496200; x=1779101000;
+        d=1e100.net; s=20251104; t=1778496213; x=1779101013;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DRXDOC53itDbvSH3E3HyxAV1yZ2/7SesuEGqqAx3Huo=;
-        b=jYkmWsbd2/H6okxzJRq10ed29JtcWx1v02cn1Uba5CFNchld8ef0W55jH2avx6Oo8e
-         pJ/sEBjjtzXlTHYvtkydjcSjuYa2UH+U16d4oC9JOkQfZoOi4K3mIV+xL5JEo2kkjaD0
-         mE1SpKrBSECXgEeo8unXPKPcfPzf8DeOKTjBK8o42w5njzQhuTimF17zgzGDm3peFXH/
-         6JiqaPXGVSUzMlsr00B3vsK72244TmjLwl95zBIplfABv0zXq6Xq43O6xHWYXM/t+wlP
-         tWgM1EoJ6nI0DzX9EcCiKWVPkB5mdZEzOn4m2NMkCZFUd/Zo+PS4JEKxXTKvHXbs3lYV
-         pTAA==
-X-Forwarded-Encrypted: i=1; AFNElJ81w4xIidU9YY9qY8oz/qsIUPZ9QzLO3/AAsAMLyYMus1+LZwKdX7CR+sAHymhoNpSpvYc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwyR4lxD2P42iWp7L06+JQeL0ZUR+KV7u/KfObsPeZmGq962StO
-	ICrW0RcKgKXnoPbQWjWMoEt/4JAD7uK/IM5H2IdUiFU5LwWnL/lx8MI0
-X-Gm-Gg: Acq92OGPKUGlmGWluHeYC1jNF/UxuqekedpCuRwTBOz9cjTnOCz0RmA4ZADGTPAWrjY
-	EGDyzjtjUAmk/a+Va2d2B47afHdF0d6NOPpMaYqM5OfqHuti56oaHDdXjXBKS7W8U+26hvL1Nlx
-	FxuK1WlMr6c4rcf5gJ9xZhutYHQcAgbpbzx7FJ0NO6LhSuYgZpjSEdXEBMzK7glBWpmjJkuEMhm
-	Aju9amJCbJ3o//MhUdgQh26FEnoHVnVi60ZGtXWz4goIB7Hz8Y1DGnp0LHVxfEcmWrxKLLGfwCG
-	A7fhQC1BOC9JICbKHrZ4MhjCtsU9WzDQP7cr6OtuJWaTOGywv59APs6FwYEHT9XMOo9tc05rk7n
-	AvqadsqH2nUVTDNptX/Vlwv8br1fHS9/iuLJMY4MrB8r8she1mKUvWIvQ1Ftj8ooP6lNuNFFrhj
-	hclpP2nDV3Qhy+K6wsbZbquJMHLqJg
-X-Received: by 2002:a17:90b:3903:b0:367:f9f1:af78 with SMTP id 98e67ed59e1d1-367f9f1b66amr8598826a91.7.1778496200549;
-        Mon, 11 May 2026 03:43:20 -0700 (PDT)
+        bh=DqfIJWhfpQINNVwmdgP9tbjnCKPgaaqu67uO9dQrqdM=;
+        b=Teo9AfHf0b6DE+jT8KrIXhjgMxwFxa0qjpkXLtQ7IS4hWKcTRMUO8x20H+/cNn48DT
+         5kyTfCLqa1wP/j24WxUCxmAKr19goHnbwNBbgvLnXVdXhPfOrnIfqzK9TpkDyPrBQwkt
+         zhy7QjC5OXxe823ovK8f1D/nQ3UJmGccTtT36ISIonrUxf9hrBT4ybK0XNOd0LcrZlpa
+         58LtceB7+5FxHvV16cmJ1ZPyoin5Mu4M27dmr1RA3+g89FNYX/KqomVnQUCxM5/I/5+p
+         ALUSQ0PvxCzsypgsfvxl3N2tnjg6JPHFtu0Mz9yx9TKyx+UVBLyFzDrGKGRsfskwuEVO
+         gmuA==
+X-Forwarded-Encrypted: i=1; AFNElJ8dg+y3bzoNwqZ5cA04vkNtT3+UdXmglopS5WtYu6NxjvV4u5F0r3BZ+6ww8RafW6R3xQk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgxcUle+E4MstCAY88+dYOnrDNRlmZBHqFTc80jdblKpO8r2Sk
+	/gdOyuuG2OtKlJSZLeOygzLcWoP919qEysOw3gEuwL0i5PZWEVpcRKjH
+X-Gm-Gg: Acq92OGTMkVVK0bFKECxO0zpNG86TpPZ2yy1YhhEmSwVOLxeapVd3WqiAeTrySaCEa+
+	wbyRtfE0VqXv7et+Im93ixcCIFS/+Sk5tUvyy0VRaJhIL7hPXHUkd2jmDacmgaXpa2eum8KjOhD
+	6f8ucCipSWtBCgjeJwpVbt3TGQwtG1wbOFTsa1yYARyTYbiniuOmRXt52jxjWpDRUL4OMqmCrU+
+	6sR7xhuq3AztkuRGrGzoa46upvnTQjrf68NPzpNyMb4zXW4oS1quPnaOxJmFxVnN4CORZoP110E
+	o87+WC9xfe8p4jqm4poikgxcKdvNv7hfDFQLNjRm06ty39l4xi8GWIMqjVTKM3sH7WPnUBrnbIt
+	72mOdLC8F6S3ZTx4Rml7WhFT/9f0zpNR5MZq9XUyun4cBZBuMLYOgqENWvWCXgoO2ithaIy8Epj
+	EOeBCymsGtjiLzFPtcaE5ThU0hVlv9
+X-Received: by 2002:a17:90b:1347:b0:366:10f2:8eae with SMTP id 98e67ed59e1d1-3664cd2492cmr13967723a91.23.1778496213228;
+        Mon, 11 May 2026 03:43:33 -0700 (PDT)
 Received: from nuvole ([144.202.86.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d684009esm7533423a91.11.2026.05.11.03.43.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d684009esm7533423a91.11.2026.05.11.03.43.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 03:43:20 -0700 (PDT)
+        Mon, 11 May 2026 03:43:32 -0700 (PDT)
 From: Pengyu Luo <mitltlatltl@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -77,9 +77,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH v4 3/5] media: hi846: fix modes handling for different lane cases
-Date: Mon, 11 May 2026 18:39:25 +0800
-Message-ID: <20260511103927.279550-4-mitltlatltl@gmail.com>
+Subject: [PATCH v4 4/5] media: hi846: Add 6MP and 8MP modes support
+Date: Mon, 11 May 2026 18:39:26 +0800
+Message-ID: <20260511103927.279550-5-mitltlatltl@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260511103927.279550-1-mitltlatltl@gmail.com>
 References: <20260511103927.279550-1-mitltlatltl@gmail.com>
@@ -91,104 +91,193 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When using 4-lane, v4l2_find_nearest_size may return an unsupported
-mode, 640x480 mode, and it is set to the default mode.
+Hi846 is an 8MP sensor, but the upstream driver has only supported 2MP
+mode for years. This patch adds 6MP and 8MP modes to maximize sensor
+utilization.
 
-To fix it, specifying the supported modes for different lane cases,
-once the lane count is determined.
+Note that these modes require 4-lane MIPI CSI-2, as the downstream
+driver only exposes 2MP, 6MP, and 8MP configurations in 4-lane
+operation on the target device. The register sequences are extracted
+from the downstream Windows driver.
 
-Reported-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Closes: https://lore.kernel.org/linux-media/OmTXoHZJTSGePymL9I-1Cw@puri.sm/
-Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
 Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
 ---
- drivers/media/i2c/hi846.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/media/i2c/hi846.c | 154 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 152 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-index 61297ef66a0e..c77b34a5e166 100644
+index c77b34a5e166..12df1dc96163 100644
 --- a/drivers/media/i2c/hi846.c
 +++ b/drivers/media/i2c/hi846.c
-@@ -1130,6 +1130,8 @@ static const struct hi846_mode supported_modes[] = {
- 		},
- 	}
+@@ -1028,6 +1028,106 @@ static const struct hi846_reg mode_1632x1224_mipi_4lane[] = {
+ 	{HI846_REG_TG_ENABLE,			0x0100},
  };
-+#define NUM_MODES_2LANE		ARRAY_SIZE(supported_modes)
-+#define NUM_MODES_4LANE		(ARRAY_SIZE(supported_modes) - 1)
+ 
++static const struct hi846_reg mode_3264x1836_config[] = {
++	{HI846_REG_MODE_SELECT,			0x0000},
++	{HI846_REG_Y_ODD_INC_FOBP,		0x1111},
++	{HI846_REG_Y_ODD_INC_VACT,		0x1111},
++	{HI846_REG_Y_ADDR_START_VACT_H,		0x0172},
++	{HI846_REG_Y_ADDR_END_VACT_H,		0x089d},
++	{HI846_REG_UNKNOWN_005C,		0x2101},
++	{HI846_REG_FLL,				0x09de},
++	{HI846_REG_LLP,				0x0ed8},
++	{HI846_REG_BINNING_MODE,		0x0022},
++	{HI846_REG_HBIN_MODE,			0x0000},
++	{HI846_REG_UNKNOWN_0A24,		0x0000},
++	{HI846_REG_X_START_H,			0x0000},
++	{HI846_REG_X_OUTPUT_SIZE_H,		0x0cc0},
++	{HI846_REG_Y_OUTPUT_SIZE_H,		0x072c},
++	{HI846_REG_EXPOSURE,			0x09d8},
++
++	/* For OTP */
++	{HI846_REG_UNKNOWN_021C,		0x0001},
++	{HI846_REG_UNKNOWN_021E,		0x0235},
++
++	{HI846_REG_ISP_EN_H,			0x014a},
++	{HI846_REG_UNKNOWN_0418,		0x023e},
++	{HI846_REG_UNKNOWN_0B02,		0xe04d},
++	{HI846_REG_UNKNOWN_0B10,		0x6821},
++	{HI846_REG_UNKNOWN_0B12,		0x0120},
++	{HI846_REG_UNKNOWN_0B14,		0x0001},
++	{HI846_REG_UNKNOWN_2008,		0x38fd},
++	{HI846_REG_UNKNOWN_326E,		0x0000},
++};
++
++static const struct hi846_reg mode_3264x1836_mipi_4lane[] = {
++	{HI846_REG_UNKNOWN_0900,		0x0300},
++	{HI846_REG_MIPI_TX_OP_MODE,		0xc319},
++	{HI846_REG_UNKNOWN_0914,		0xc109},
++	{HI846_REG_TCLK_PREPARE,		0x061a},
++	{HI846_REG_UNKNOWN_0918,		0x0407},
++	{HI846_REG_THS_ZERO,			0x0a0b},
++	{HI846_REG_TCLK_POST,			0x0e08},
++	{HI846_REG_UNKNOWN_091E,		0x0a00},
++	{HI846_REG_UNKNOWN_090C,		0x0427},
++	{HI846_REG_UNKNOWN_090E,		0x0059},
++	{HI846_REG_UNKNOWN_0954,		0x0089},
++	{HI846_REG_UNKNOWN_0956,		0x0000},
++	{HI846_REG_UNKNOWN_0958,		0xca80},
++	{HI846_REG_UNKNOWN_095A,		0x9240},
++	{HI846_REG_PLL_CFG_MIPI2_H,		0x4124},
++	{HI846_REG_TG_ENABLE,			0x0100},
++};
++
++static const struct hi846_reg mode_3264x2448_config[] = {
++	{HI846_REG_MODE_SELECT,			0x0000},
++	{HI846_REG_Y_ODD_INC_FOBP,		0x1111},
++	{HI846_REG_Y_ODD_INC_VACT,		0x1111},
++	{HI846_REG_Y_ADDR_START_VACT_H,		0x0040},
++	{HI846_REG_Y_ADDR_END_VACT_H,		0x09cf},
++	{HI846_REG_UNKNOWN_005C,		0x2101},
++	{HI846_REG_FLL,				0x09de},
++	{HI846_REG_LLP,				0x0ed8},
++	{HI846_REG_BINNING_MODE,		0x0022},
++	{HI846_REG_HBIN_MODE,			0x0000},
++	{HI846_REG_UNKNOWN_0A24,		0x0000},
++	{HI846_REG_X_START_H,			0x0000},
++	{HI846_REG_X_OUTPUT_SIZE_H,		0x0cc0},
++	{HI846_REG_Y_OUTPUT_SIZE_H,		0x0990},
++	{HI846_REG_EXPOSURE,			0x09d8},
++
++	/* For OTP */
++	{HI846_REG_UNKNOWN_021C,		0x0001},
++	{HI846_REG_UNKNOWN_021E,		0x0235},
++
++	{HI846_REG_ISP_EN_H,			0x014a},
++	{HI846_REG_UNKNOWN_0418,		0x0000},
++	{HI846_REG_UNKNOWN_0B02,		0xe04d},
++	{HI846_REG_UNKNOWN_0B10,		0x6821},
++	{HI846_REG_UNKNOWN_0B12,		0x0120},
++	{HI846_REG_UNKNOWN_0B14,		0x0001},
++	{HI846_REG_UNKNOWN_2008,		0x38fd},
++	{HI846_REG_UNKNOWN_326E,		0x0000},
++};
++
++static const struct hi846_reg mode_3264x2448_mipi_4lane[] = {
++	{HI846_REG_UNKNOWN_0900,		0x0300},
++	{HI846_REG_MIPI_TX_OP_MODE,		0xc319},
++	{HI846_REG_UNKNOWN_0914,		0xc109},
++	{HI846_REG_TCLK_PREPARE,		0x061a},
++	{HI846_REG_UNKNOWN_0918,		0x0407},
++	{HI846_REG_THS_ZERO,			0x0a0b},
++	{HI846_REG_TCLK_POST,			0x0e08},
++	{HI846_REG_UNKNOWN_091E,		0x0a00},
++	{HI846_REG_UNKNOWN_090C,		0x0427},
++	{HI846_REG_UNKNOWN_090E,		0x0059},
++	{HI846_REG_UNKNOWN_0954,		0x0089},
++	{HI846_REG_UNKNOWN_0956,		0x0000},
++	{HI846_REG_UNKNOWN_0958,		0xca80},
++	{HI846_REG_UNKNOWN_095A,		0x9240},
++	{HI846_REG_PLL_CFG_MIPI2_H,		0x4124},
++	{HI846_REG_TG_ENABLE,			0x0100},
++};
++
+ static const char * const hi846_test_pattern_menu[] = {
+ 	"Disabled",
+ 	"Solid Colour",
+@@ -1128,9 +1228,59 @@ static const struct hi846_mode supported_modes[] = {
+ 			.width = 1632 * 2,
+ 			.height = 1224 * 2,
+ 		},
+-	}
++	},
++	{
++		.width = 3264,
++		.height = 1836,
++		.pll_cfg_4lane = 0x4124, /* HI846_REG_PLL_CFG_MIPI2_H */
++		.fps = 30,
++		.frame_len = 2526,
++		.llp = HI846_LINE_LENGTH,
++		.reg_list_config = {
++			.num_of_regs = ARRAY_SIZE(mode_3264x1836_config),
++			.regs = mode_3264x1836_config,
++		},
++		.reg_list_2lane = {
++			.num_of_regs = 0,
++		},
++		.reg_list_4lane = {
++			.num_of_regs = ARRAY_SIZE(mode_3264x1836_mipi_4lane),
++			.regs = mode_3264x1836_mipi_4lane,
++		},
++		.crop = {
++			.left = 0x46,
++			.top = 0x172,
++			.width = 3264,
++			.height = 1836,
++		},
++	},
++	{
++		.width = 3264,
++		.height = 2448,
++		.pll_cfg_4lane = 0x4124, /* HI846_REG_PLL_CFG_MIPI2_H */
++		.fps = 30,
++		.frame_len = 2526,
++		.llp = HI846_LINE_LENGTH,
++		.reg_list_config = {
++			.num_of_regs = ARRAY_SIZE(mode_3264x2448_config),
++			.regs = mode_3264x2448_config,
++		},
++		.reg_list_2lane = {
++			.num_of_regs = 0,
++		},
++		.reg_list_4lane = {
++			.num_of_regs = ARRAY_SIZE(mode_3264x2448_mipi_4lane),
++			.regs = mode_3264x2448_mipi_4lane,
++		},
++		.crop = {
++			.left = 0x46,
++			.top = 0x40,
++			.width = 3264,
++			.height = 2448,
++		},
++	},
+ };
+-#define NUM_MODES_2LANE		ARRAY_SIZE(supported_modes)
++#define NUM_MODES_2LANE		(ARRAY_SIZE(supported_modes) - 2)
+ #define NUM_MODES_4LANE		(ARRAY_SIZE(supported_modes) - 1)
  
  struct hi846_datafmt {
- 	u32 code;
-@@ -1162,6 +1164,8 @@ struct hi846 {
- 
- 	struct mutex mutex; /* protect cur_mode, streaming and chip access */
- 	const struct hi846_mode *cur_mode;
-+	const struct hi846_mode *supported_modes;
-+	int num_modes;
- 	bool streaming;
- };
- 
-@@ -1736,8 +1740,8 @@ static int hi846_set_format(struct v4l2_subdev *sd,
- 	hi846->fmt = fmt;
- 
- 	hi846->cur_mode =
--		v4l2_find_nearest_size(supported_modes,
--				       ARRAY_SIZE(supported_modes),
-+		v4l2_find_nearest_size(hi846->supported_modes,
-+				       hi846->num_modes,
- 				       width, height, mf->width, mf->height);
- 	dev_dbg(&client->dev, "%s: found mode: %dx%d\n", __func__,
- 		hi846->cur_mode->width, hi846->cur_mode->height);
-@@ -1821,8 +1825,11 @@ static int hi846_enum_frame_size(struct v4l2_subdev *sd,
- 				 struct v4l2_subdev_frame_size_enum *fse)
- {
- 	struct i2c_client *client = v4l2_get_subdevdata(sd);
-+	struct hi846 *hi846 = to_hi846(sd);
-+	const struct hi846_mode *supported_modes = hi846->supported_modes;
-+
- 
--	if (fse->pad || fse->index >= ARRAY_SIZE(supported_modes))
-+	if (fse->pad || fse->index >= hi846->num_modes)
- 		return -EINVAL;
- 
- 	if (fse->code != HI846_MEDIA_BUS_FORMAT) {
-@@ -1950,12 +1957,12 @@ static int hi846_identify_module(struct hi846 *hi846)
- static s64 hi846_check_link_freqs(struct hi846 *hi846,
- 				  struct v4l2_fwnode_endpoint *ep)
- {
--	int freqs_count = ARRAY_SIZE(supported_modes);
-+	int freqs_count = hi846->num_modes;
- 	u64 link_freq;
- 	int i, j;
- 
- 	for (i = 0; i < freqs_count; i++) {
--		link_freq = hi846_get_link_freq(hi846, &supported_modes[i]);
-+		link_freq = hi846_get_link_freq(hi846, &hi846->supported_modes[i]);
- 		for (j = 0; j < ep->nr_of_link_frequencies; j++)
- 			if (link_freq == ep->link_frequencies[j])
- 				break;
-@@ -1999,6 +2006,13 @@ static int hi846_parse_dt(struct hi846 *hi846, struct device *dev)
- 
- 	hi846->nr_lanes = bus_cfg.bus.mipi_csi2.num_data_lanes;
- 
-+	hi846->supported_modes = supported_modes;
-+	hi846->num_modes = NUM_MODES_2LANE;
-+	if (hi846->nr_lanes == 4) {
-+		hi846->supported_modes = supported_modes + 1;
-+		hi846->num_modes = NUM_MODES_4LANE;
-+	}
-+
- 	if (!bus_cfg.nr_of_link_frequencies) {
- 		dev_err(dev, "link-frequency property not found in DT\n");
- 		ret = -EINVAL;
-@@ -2088,7 +2102,7 @@ static int hi846_probe(struct i2c_client *client)
- 	if (ret)
- 		goto err_power_off;
- 
--	hi846->cur_mode = &supported_modes[0];
-+	hi846->cur_mode = &hi846->supported_modes[0];
- 
- 	ret = hi846_init_controls(hi846);
- 	if (ret) {
 -- 
 2.54.0
 
