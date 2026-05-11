@@ -1,83 +1,76 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013048.outbound.protection.outlook.com [40.107.162.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973063A168E
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 12:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0833E8C74
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 13:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778503865; cv=fail; b=fDTDXytjJ7dOI9iSGuIYHn4Kr3e1EbJTrilUZDbMir6gDHhJlZyzExCIo5qKZ6cUnpqyE1FAHiu7AteUHbQilR/RMoc3H+cP8k2x+YbnZIeJW4ydZQJ4nFysBvkxvcsnalOSTC1103ZNzNU8nVhKfaJGr4lAJYKsc0mwn5Nu6tQ=
+	t=1778506017; cv=fail; b=Te7zTYbXrIer+bIOtyOXWRSs9rpRHiUegSAnSvBUQLBfi7lxNkinABbbpKcRSmdmTri0zwir6KK+biP5c0Ofn0rrC8mh27zmMQVPi4lUFYVa/3aNTIrNgsXUz2m0sqU3/4fD7nzaRQ3JJeDBfnStJYQD274x+IGYFr5tEq3chG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778503865; c=relaxed/simple;
-	bh=5y3lzHRt05tEUBjQlZNX9QUTTaIv5BkliLHN8vpjEXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Q2HuDL3ccYROlLxyxYOAEORODvVmD/DaMv2OqsiLQUg91YddyKZtbOBheWamdItBtI0rdLGvO5bQ8hbpaXJcg2/0FHxztjtVA6YRl2NeQ/jGL7J1fULMnbCbfhl4MI3xirbv7HC8IbkZz7Ywu7MFFZ4PZGrPqkESFToYkyQ81wk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gBQUG3xA; arc=fail smtp.client-ip=40.107.130.0
+	s=arc-20240116; t=1778506017; c=relaxed/simple;
+	bh=TwYbDSlLUlAuUXUjFtKXBciDf2Rv0ZFHbuD2/tO9Iw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bQcAYoryBdyunfKs3bTWgbMz5dltdHdnn8BrdR9ACoKnqcU0gz2tZIi7shs6stLOg0yuHH4Ffj6MjToSyh9mgzYqbvCttpb0E0tAAkhqiiLqIcCKNnkm6J9MUqpYVgl1maZQnWgBLyqmuOpzVIWaLxAxWaw80WEobUjzRmKNVeQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HnSQAYdl; arc=fail smtp.client-ip=40.107.162.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gBQUG3xA"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HnSQAYdl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oqqFyej1NW/yib/19ch1iwvutljtOKGn9byKpwBy/aQEI5z7V+l43/0rTvlYSUsE3hkPuHxop9rDnhMDeKCExukliGZJugu9bSU7kchzaS8Rv5NI58EKnA2M3FFv0g9PGtP5I9nUrZWZgUlPtSQHKtYCrufI4gSNL6SzZDy0gEz5eX2Mv59y/HG7tZmiZyKWGcdq1XUYkYc9OcvP6Enp72Dk4Bgwxl2Sgxcdps7ExYtL6EUdoFXuRdn4VUEUkbDFxpYilRP9BJp5l4dbpwBEbsVpBQIxdVxZX4TApHUGurNUpm8c3f9HkcSnk7xvQVoRv4EoET4cEsXWBkbhvxIQgQ==
+ b=isQASqipSJS6RBCDuFjZlj/rEK/IHV3o5Au9kQKOPc8das4g04w9wulOvIkXRu2HmW10zPLj1ZKzBa5Kg5rQ3iuROaMDmCErVNpAVosMoPnc+sDfNpqzEO3XKxk+aK1sZre27cyTce/yzFKAGQ72tHwXnmjX5Hnp2Izt2QbGMck8kkjWtv8YfBkIjY1lAfRWoQ8nF2Zyj71cbSLGP5vu5QkZTUXPnK3+LuOKT8noelVq3QH+E2m2j2SVjsw436kOX9w0NoByB7ghCLgIwdO+9GkIM0Fk6zT/cxYsyGowp3c9HQHr4DDOJKtSJDzH9UI17QEMxxzSRPR0ak0/Bb1Vlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RNH8C5+7tOQxdAAZ6NTB7EyYpIAICvt/J0Rvst60lSE=;
- b=E4xXIN//yWb2SVAwebfH2tIOcxkel/u0tc5kMtH70K/JwNVx7eJWzL/c2VXgYm822RtCRB2tRL46XnsmE0EjASYdgu+XUnbZY9zNehiqfPTvoZso+gvOgzRDoEDLsQaK3//eaftF+Zay/U2ZCFNmeTWDtKU0E1/tG+jD+rJcuVObuE7Fu+WyOihz3vuF8iKn0IbEWivfMZNOgXF6g4RUUa3uvzp7rHn1O7GHypHkXKW09xXRoAVdbLDo7BydsHsroN+NE1ri6jLYjMFn7+ooUH9cdeYNwIfhsEXyAbkGmx3HBA/GQRT0vWvk5bgols75bjvy307ZcCAW9jCjD4ZFYw==
+ bh=2ofEo6L54zG8kXtZdAWhrrtvz+4M4/oNXAxFrAD8uwk=;
+ b=oZwVxjoTuZlZrWSPXCBSbxgETCNyTMcJjvr5fJHb3uHVqYNR1KBBibOSFZSacLnuCq0F6Y34DCU/dKa+N+GILfpyrN1r2rXZJ2ycqZthTHPGDE93KF5DGQRCBf3rI7WqHUaamfKSQq8H+nCw7+wuq5JbAAf2V7Xp3CI9CtlA6ZD64ejr0h4V+sAQNRX1+advi3+q1f8umWGRe/MZMGNn9SdlyBOsBwmj8PwGpZw5BwBXz9fizs3qlPwt7pfKcIv2We5AnEppv41qOjtNVLUjiF0/Abus+DEdwYw5UT0dwg+6nUMJuWnRaPqQmBAhtpzjcK8Ncl06+BpqckSAZcqXjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNH8C5+7tOQxdAAZ6NTB7EyYpIAICvt/J0Rvst60lSE=;
- b=gBQUG3xAcbzgTw036USBo9EiKWLsRbymkgHK5LNmeK2PmEDJPmazuKlzs5rmb5WbL+vRTarnpB9jewnPR+Glt3blijA0tAWf8NM3jgFKdgEDao6O2r34h6SfWf/FDCPR2YszMkNYEre94gZxzk2BRhRlrnw9Ig8TevMk3h+SPHKAxfSKBJ/xrwsIWw+7Ylg9fckalbuPeXO4bvFMR09VghBrSmi3Q2VMOXKDrZBMc1ixz/R26kzZGp9Ho37viM6+0BGUK1nTHBjhi9OPdO4WGRIK5j9lqpV1ofp63x78pnBtStEsT2//Zk33FjfMY8530xJgnZ5yetQCjK4p6WPmrw==
+ bh=2ofEo6L54zG8kXtZdAWhrrtvz+4M4/oNXAxFrAD8uwk=;
+ b=HnSQAYdlYQtw26UPBm5RCpM1C/ZGOBiu0uyzGEiHaYObmrTKlJbuJI3LjRhgzGstVO/VWmI/gWgpqPLuokZlnU0dXQI4b9eY5NAe5UzZ35tmRFFwJZM3yatlZpSUge7C8GPkvcZM5oP6Fz236t8hxSfd1f58md21Z3rMSlINWcKQ0XgxQN7z+cPYDO94ZXV27DGLli3wnYt9nfokAly2JgnOfgXjMb45Y9Jo/8y6C6kP/1E5eF7qDL2XmtMIpprbosLQzG81Qi24RKW5ZGDb3BBY6zV+zBahkDHDKVxkbis62dpC+5GYavzXETSLWT1Yip+wo/CRqYr38e5FPQ3HKQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by DB9PR04MB9646.eurprd04.prod.outlook.com (2603:10a6:10:30a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.20; Mon, 11 May
- 2026 12:50:58 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9870.023; Mon, 11 May 2026
- 12:50:58 +0000
-Date: Mon, 11 May 2026 15:50:53 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH v4 2/2] arm64: dts: imx8dxl: Add SolidRun SoM and
- HummingBoard
-Message-ID: <20260511125053.xgzqic62zhhdjyn5@skbuf>
-References: <20260511-imx8dxl-sr-som-v4-0-64381b3bf80d@solid-run.com>
- <20260511-imx8dxl-sr-som-v4-0-64381b3bf80d@solid-run.com>
- <20260511-imx8dxl-sr-som-v4-2-64381b3bf80d@solid-run.com>
- <20260511-imx8dxl-sr-som-v4-2-64381b3bf80d@solid-run.com>
- <20260511112438.4fxvhelf242emzft@skbuf>
- <f0fdea25-6b2d-4b64-b925-a3f30c8e044c@solid-run.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f0fdea25-6b2d-4b64-b925-a3f30c8e044c@solid-run.com>
-X-ClientProxiedBy: WA2P291CA0023.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::19) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16) by OSKPR04MB11416.eurprd04.prod.outlook.com
+ (2603:10a6:e10:9b::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
+ 2026 13:26:52 +0000
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989]) by PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 13:26:52 +0000
+From: Antoine Bouyer <antoine.bouyer@nxp.com>
+To: julien.vuillaumier@nxp.com,
+	alexi.birlinger@nxp.com,
+	daniel.baluta@nxp.com,
+	peng.fan@nxp.com,
+	frank.li@nxp.com,
+	jacopo.mondi@ideasonboard.com,
+	laurent.pinchart@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	michael.riesch@collabora.com,
+	anthony.mcgivern@arm.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	ai.luthra@ideasonboard.com,
+	paul.elder@ideasonboard.com,
+	geert@linux-m68k.org,
+	Antoine Bouyer <antoine.bouyer@nxp.com>
+Subject: [PATCH v2 0/8] media: Add iMX95 neoisp driver
+Date: Mon, 11 May 2026 15:26:20 +0200
+Message-ID: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR2P281CA0135.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9e::19) To PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,145 +78,218 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|DB9PR04MB9646:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b5a6d92-81d5-4c2d-bcc6-08deaf5bf2a6
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11910:EE_|OSKPR04MB11416:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbe433d5-246f-45bc-216c-08deaf60f65a
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014|19092799006|11063799003|56012099003|18002099003|22082099003|3023799003;
+ BCL:0;ARA:13230040|19092799006|366016|52116014|7416014|376014|1800799024|18002099003|11063799003|921020|38350700014|3023799003|56012099003;
 X-Microsoft-Antispam-Message-Info:
- CzJu/bxZgM8UDsww5CkPWcDZ5HcVngSmRMfScpEsSxQcrmWGHZZUVSFyMtyY+zy6hmZj3pwBCc8cDtREtbOEzx83z+3v+98KwMAVVz1sRtRR0qFTDjJDwlmaIP9AittndKKjdy6UZpktJXwIUCPoBRY9QdcOnYN9QFD1koSObWtXF6zlAIpEi7/drNRAVI5zwSanVuWt9HfxIwodkOIhXIG3aQveT4YKouENOGvsQkllKBqSb6y3TadrU5FxbJCjziIDmz7do1g1usIfHRmpL+I4xSKVihC3VgRCQpdWAJRrVlvoGhkqcI0mlNRn3q/Vm06iL7XEZXyAVPObGEYXy75/rokhSaewF3+3oZJnoooxDvCZRR3LmyKA6SZOOM3AsXxcIoOiunPP7naSxiyW2ejTC0Fdjjt69yuFjY/0odAKiONebVUwkfGp7X7UXrhi28J1/SBwrPAFJBADGbpuUKE2sAEri8bANfvYrwHuGQ4ITyEqGLgSxO68lcAQN5YBd70T2J+j9X/pPINCly9dw2kNyg9DJVoRI2atMxsM4uOxzTCDNqpvRuj+0CY+KLAY9XFCDoIEm+3v0K0G1u9lc52NO4ecN3hXBRxGpRTk2AJUxfiPrsgVuxQ/kMRF+S6TkDn61+KII8wtOunlNXDLNq4AJv5/9+iiRoGjSz19v0zFRRGuXfXrlEOJxWeFGo15
+ 5+sKymuHGBXVH9lsq6zBoidqwVc7DV+/+RXX8ywdys4u3ARy4SfTwzNWIsRcLE26cfi0q9YKKHSrQiQ3Fq4mHHjst4m6dELE2St9j1tFGNmUHushe+d+Z6G6vXYdd/aDgwc4EnfUAWXGVia1hvJHg/2DX6SIFn65WCjQglRa6pExFgGHj7/e/CJiCIKqo/hohLTkR/naiu64U9A5EFzQjLA0Z2MpmTnYzf23OQJf68PUrT/mluIMqZCym/jI6k5KITDI5p2gbXRUJzUpkg0zG47kJQGcxWWpp5177fBFJUm3UDdrtY3bmxCRn26mLiQ0kUpnkIuZfUw5cjiynwn7xE1Td79UAmgkFba17JrkPboQBsLQG5LMSbjSKnPjXrzXEqQ78gE0qZDmiS2toVUDZlQcd6SCHIf14dLW5bYF+WtzfjaIc581mWxvOKpou2iUoElcwtPA1dkbQbLw6uDDOKLjXui1ILhVis6hUlAvcqvw7NfRpZHulHZZYeiHhLofnY20CsCfh5lCMWLi5cSJYbYMb7Wfvjs9jBKZTg9S/xNK8+PHfiqezkzwQo8ZK08apqgfP76njMm4GUJpq3RgVxlqDjJTlS5FaZ4b0JBW2GgGFvzS9bUu5tA4ZC2ZwKpcvcNorM7DAy4y+FUqIsYI7rmYPs5xeRhuo5YDggY6fK3Ujz0hX+VjY2qAwXae/eu8VQj+iIehVoepwBCAimdURoprlXLKEM2we44DsMpOaRa4z7cbQHNMAD1kinrL3iagUc4Pfs3VuvIkJxWac+fmaA==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014)(19092799006)(11063799003)(56012099003)(18002099003)(22082099003)(3023799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(7416014)(376014)(1800799024)(18002099003)(11063799003)(921020)(38350700014)(3023799003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?NM9A1a63lomkvlsrU/qi5RoI5ojLJpC0FivAqKiYMmNTXpOPlVtkT47FPVb4?=
- =?us-ascii?Q?UzExAVyj9nK1LU3/p9WNecjQ1H4xTqotm0D3j2o8iYuRznpnPRhFxJibw0Y/?=
- =?us-ascii?Q?9uH4K/D/LIrdlnTR8goUl+2lKSqsYn72w5YqyjqNjjq1o0lHBVRoiyJjzjmN?=
- =?us-ascii?Q?Huz0lE+GaSauIpnSpJRFNngE68ap74Ur2roEyRE87JjHlpHDZqOKcEboo+QU?=
- =?us-ascii?Q?IVU0tmw/5bfOlrYP9TibsIee43ebYuM8mKy1LPJGjv25v00OFfEOVu8Mwl0R?=
- =?us-ascii?Q?aRtB+3dMg4FDh/sJ4Pu+J1q25uVI8u7/Bj/5Bih4e3PoDG/gA2RMsjqQKW0e?=
- =?us-ascii?Q?sF4ue/SJwnrtumiZIX3ITkMTZfVLy4C/V/Y4Hsag+4LAexvwxRPWn0woJzJi?=
- =?us-ascii?Q?Jn4vEG/QqyGzB3fjXFjXI4CrDYYxGBQJLcBpVBeRLNMehJZBzSxR2jW4ktNT?=
- =?us-ascii?Q?ZDrDV4IqEA0VjhYCNRqrvGbJBHjySe0K8EX20Q/1wAC7EJP34jxvmDYxajyr?=
- =?us-ascii?Q?19g+usHbauf7G8cF7xEf37UxmTrr2Jva1Q04I3rr9hTA34i4xOvy4a0eOodS?=
- =?us-ascii?Q?E2hV+UiMDn9f4iXcYCiezn7LYQnzAveBRH37T7zK2aaIi6pqGruzsm6um+QZ?=
- =?us-ascii?Q?e/3CKAeBo2Gr+4vDU+UU4B6nXERtDgZWAWj60M13aCKSDpzesmDN0jzg7+12?=
- =?us-ascii?Q?i2GzBaDQEU3ifzCb58ShKTv0Y+Ohk7rPBoNGa2Oyse8lfLXroe3WpbJanS6l?=
- =?us-ascii?Q?AuWb0L6ux6M1DPnlJL1ty4G7+fVlADK0MCQP+Igbm9pTNNxNqYrENWiykh5r?=
- =?us-ascii?Q?ZUHWfhyfChW55RzYOPUuU71iu+B5GcEjMNdN3IhJDrpUR7tYS8IDA+Uu0630?=
- =?us-ascii?Q?U0s+I0GtXydGe6pzEVxHknS/sc/4u29bkk8BY4/c5pguURj/8WrpMIMX42if?=
- =?us-ascii?Q?NurarRz2NqKAXFwaKx61UN3/Q2/9DH7sCNa2RgeeGbre0JqOFrpR1BaiWI9V?=
- =?us-ascii?Q?2IGQafTzNpUqglhxkSyPjV8Vvo9j9pCWwov4Si6cWdtg2If4XHwdMow1LIeD?=
- =?us-ascii?Q?Wkxvidfx0KZC8YBJO+DHwjXyagaFYaVIn/K1U+Dgv1FDcvR/JsD0MGh77YVa?=
- =?us-ascii?Q?fhdAg7rKVrG1XWg6nMJ5Pi7Hd76F9TuvrebHQKDZSRsTxm0qj1i8aEnKaZIj?=
- =?us-ascii?Q?is3dF5WBGi5nxk3NRBwH2hanPQWiDGUm9wUKbsNYZ+T+8iTXrXdSx0Xq1ZpD?=
- =?us-ascii?Q?+bb2TsSbJGJnPqnYAOvf6SPqxwnvR2x3xMRCfPtw/Eu2gWWnalbZbdQv0Wew?=
- =?us-ascii?Q?v6LZUXOBOldsHCDxAb5nBXETVIG8+zGk5hn38I1IZ5p2BuazC8NiJEAOMNNe?=
- =?us-ascii?Q?nZEHJY5I8iO/m7JcoY2bSyO3gMC//c7UFAcfuKCHdFRWpR7kXoJ2QN3UzcPM?=
- =?us-ascii?Q?CqUEHDOgbKSRWn0U9OgVMabLbpDoS0K2ZXXFSQxks1mep1IkUvJ9h/SfH4Mh?=
- =?us-ascii?Q?oCf+dFVNBqKGjVk5A0MKFFaANZjFceeMc8RlVSPPBb7fz129ikL9U+TfZGU7?=
- =?us-ascii?Q?3d0ZMiXq4SU2XoFePMKB6Ulw270suWVLnuQZA2krxLnjOWAi/dhytPee/cIP?=
- =?us-ascii?Q?NVDyHBdZsGkKV6U9LeZqZbGcNoEnrOwqz/43vsuADOZB8hjYNBlxwnYMVtXX?=
- =?us-ascii?Q?a8l1gYI1orjEcK0bxIk+Cbb1S/U5l/ENOQx0DFO4vybiFSNazWvd6rXdHpc/?=
- =?us-ascii?Q?mpwom3gKmtckCaVKarCBlCv2fWHOS1QRp++l//kw7CLPgpY0DBU5LcicRRgs?=
-X-MS-Exchange-AntiSpam-MessageData-1: Z9LN23+HzOF0cXQJOoJJkbmojUzQV19aRFs=
+ =?us-ascii?Q?bR9cQ1cWqEgYthbTCjlV0EnTjaZgMiprYoQ1jr2h+rb8TSWr0AJocNvVG5ol?=
+ =?us-ascii?Q?3lqyqpqi07FONXu/isNRnLBeRtDIxdAXDBwKWVU1BFbReHNtJEDEYra6AoEZ?=
+ =?us-ascii?Q?p/d5IeL+3xNVPZXK6n3j5nX0TbGNtTvLe2zY3TGryC3p5kWNlx+3CdYWTApj?=
+ =?us-ascii?Q?SCaSJimb0pmYd+6gAPSylYsG6Y61DLWDIkl1mcNftj9b9XcxJrPdTrSRDA+G?=
+ =?us-ascii?Q?ZUU7IBFh/RHnUmYDacH4gzWs+nYjLEWUqDL+V+3VnKiio/X9/CqMnzRuNb15?=
+ =?us-ascii?Q?Cjs7YMbovC0//gzk23fy+7++Ey9IVoQC7j9UAG7Gf2UCY4/c4a99Ko2+tfJf?=
+ =?us-ascii?Q?4QCrsRbZOJ17driaZ7r+najx+45sa1NurgO9oz3v5TNpkWKzKXyLj4AAvyc9?=
+ =?us-ascii?Q?NN6UiVjK9/FW5aC7nKkMWO+Lb/tQ4G1vvmfD6K8i6lNVb+ZzyV2R2MaD96C6?=
+ =?us-ascii?Q?TvhbOQYChMdb0XtzAylgUCui5zrQRvHcKQgKPoSpkokFgorAzoSks9NMXm6u?=
+ =?us-ascii?Q?iYnkRcC4AAKfnC5tg00WI+B8JyzmHhvQln+t5Ife3UUaoEG2Mxr3dw2xZkWr?=
+ =?us-ascii?Q?EsiflZs3RyXw0Qm1xnamyLZW4ZAXdxyfhhMwc6jOwIw4xyXuVD93z6+k+rJZ?=
+ =?us-ascii?Q?B1l1G7H/GUqzVaCtprkQQh2jYp8nUFb0C5qw3tGBUtemiiPLePE/bAIV/ojZ?=
+ =?us-ascii?Q?SszRCCRjEDiFIvIyBrMRm0bZdryvX0TBAFX2XhxTLmwDdgelJCZGoU6n7SY+?=
+ =?us-ascii?Q?nGhLVIDDGJk2C41DCOkVdGXv5CcL5tRI7R6VV4iwYNenVKv//3vuQXdB4Yuw?=
+ =?us-ascii?Q?kQ+oLwnSNo+7yHSSnkF44S9ZR9wRuP/yWYkqLkVIMFsojMd4OmDIrKRgY08o?=
+ =?us-ascii?Q?OahwJFXCRWScW9xXTGhg4+MOTaMlJBweazx6/epC523mME8EOj9z62EMbedJ?=
+ =?us-ascii?Q?QnzkLtDLhaanGuP33unhD2nAMDSkuQr0EPuwRWgWqYjyZMk+8GSyqYTWtgRz?=
+ =?us-ascii?Q?6SZL6cWfIIvtmhv3qV+zqBQflO5YKh3da+vHq/2rYjrGn2vXTm+CYCCK+IGr?=
+ =?us-ascii?Q?aIPO2yK+PyOVGjtWLl/YeMb1rpABzMu4zD9uF/HPc4qp3hIu+TYx5Oo2oM+l?=
+ =?us-ascii?Q?rURd1KuAei0B+5WE+lfjLxsh5bYtACY2gw+uiO+mLiTIBqlneFhGVKzQAiPK?=
+ =?us-ascii?Q?3610q3Imz+9zCTTwPMz7oI+lQw57BB/NqF0ytgf4ruDbECN+V35U/oErh6w4?=
+ =?us-ascii?Q?L7uUzH4O9TbaJ3/2CUWUgFEgc9vfrbeNszc4iVlQfKLCwOOh6O8DFWMyPgPy?=
+ =?us-ascii?Q?XD5UmZaX/MZJBT+fNyOBSyHH3evW5/yV4qhqK4MV3sw+/D7fv4Hm+QXoCfxr?=
+ =?us-ascii?Q?JKVNx84EmSbkGLNGLpqDwCBqZNjNhARehTL3wnd6QapohryJMcnkfYJlj6jZ?=
+ =?us-ascii?Q?yGF6WKMWjLOUBsH4nLw+snx4kdIbzLkcQI89ZswsMA0DD/+Ao6UdICm8e3Vl?=
+ =?us-ascii?Q?A9XXe5RZEgdPbrUhqAawaJz2Vg6hEchOaGVr6TLXs4yROxndSHPYclDez8Eo?=
+ =?us-ascii?Q?HNcd8MQZh9FJk7Bmoaku5tGnYmhQc73+nhc8S1SkUt3GoAxIIIdiiz36DzyJ?=
+ =?us-ascii?Q?FgWQV0faWBQOYqzudI2aY1INtRlR5bjKvGFyYf/AzTXoYTFMm3H6me7u5Ppq?=
+ =?us-ascii?Q?GMVWvEB6EqFF5zny5YQ4UdswksVRSb/U866uazjhKwzviP7Y95tW3LATEpoN?=
+ =?us-ascii?Q?C/rVIEZtLQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b5a6d92-81d5-4c2d-bcc6-08deaf5bf2a6
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbe433d5-246f-45bc-216c-08deaf60f65a
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11910.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 12:50:58.2617
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 13:26:51.9786
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: niRrvrxzOika5EOtvT8M2xQiR1wpKHThAuchkfwLFwHz/nqvffnWt5pxXFuwaPYWGY11AET8tl1iVKBmej3Tlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9646
+X-MS-Exchange-CrossTenant-UserPrincipalName: autIeNs31KtUJLZmtbmr55eFsrTTder9WPW3+FmjBaLuXJhnD22h6byOqwAelRE1BvWETwfheuBZH2IXU35Ipw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSKPR04MB11416
 
-On Mon, May 11, 2026 at 12:30:35PM +0000, Josua Mayer wrote:
-> I had the reverse understanding, the switch port specifies rgmii-id,
-> and the cpu port specifies "rgmii".
-> 
-> The switch port has mode rgmii-id, indicating that someone should add delays.
+Hello
 
-Yes, but my understanding is that it is out of scope for the phy-mode = "rgmii-id"
-to decide who. It just means that there are no PCB delays.
+This patch series introduces the NXP Neo Image Signal Processor (ISP)
+driver, used in the NXP i.MX95 SoC and future devices in the i.MX9 family.
 
-> It is a fixed link without PHY, so switch must add the delays.
+---
+Dependencies
+------------
+This series is based on v1 of:
 
-This is an obsolete interpretation of phy-mode. sja1105_parse_rgmii_delays()
-explains that in the new interpretation, 'rgmii' or 'rgmii-id' doesn't
-indicate anything. The switch inserts the delays because of the
-"rx-internal-delay-ps" and "tx-internal-delay-ps" properties.
+  https://lore.kernel.org/linux-media/20260505-extensible-stats-v1-0-e16f326b8dad@ideasonboard.com
 
-> From the cpu (eqos) perspcetive it is also a fixed link without phy,
-> so I specify rgmii indicating nobody should add delays.
-> 
-> Is this correct?
 
-My understanding may be wrong, but I directly quote:
-- If the PCB does not add these delays via extra long traces,
-  'rgmii-id' should be used. Here, 'id' refers to 'internal delay',
-  where either the MAC or PHY adds the delay.
-- When the PCB does not implement the delays, the MAC or PHY must.
-  As such, this is software configuration, and so not described in
-  Device Tree.
+The reference tag I rebased all on is:
 
-> >
-> >> +	pinctrl-0 = <&eqos_pins>;
-> >> +	pinctrl-names = "default";
-> >> +	status = "okay";
-> >> +
-> >> +	fixed-link {
-> >> +		full-duplex;
-> >> +		speed = <1000>;
-> >> +	};
-> >> +};
-> >> +
-> >> +&lpspi0 {
-> >> +	cs-gpios = <&lsio_gpio1 8 GPIO_ACTIVE_LOW>, <&lsio_gpio1 7 GPIO_ACTIVE_LOW>;
-> >> +	pinctrl-0 = <&lpspi0_pins>, <&switch_pins>;
-> >> +	pinctrl-names = "default";
-> >> +	status = "okay";
-> >> +
-> >> +	ethernet-switch@0 {
-> >> +		compatible = "nxp,sja1110a";
-> >> +		reg = <0>;
-> >> +		reset-gpios = <&lsio_gpio4 3 GPIO_ACTIVE_LOW>;
-> >> +		spi-max-frequency = <4000000>;
-> >> +
-> >> +		ethernet-ports {
-> >> +			#address-cells = <1>;
-> >> +			#size-cells = <0>;
-> >> +
-> >> +			/* 100Base-TX on connector J26 */
-> >> +			port@1 {
-> > Some people might prefer seeing ethernet-port@N instead of port@N, to
-> > fully avoid confusion with dtschema/schemas/graph.yaml (although, the
-> > container node being ethernet-ports now, the confusion should be
-> > avoidable).
-> >
-> > Also, if you ever perform device tree fixups from the bootloader (like
-> > for setting status = "disabled" to status = "okay" for the ports that go
-> > to addon boards), please never hardcode fixup paths,
-> 
-> I was expecting device-tree overlays to be used, in which case aliases
-> are not needed.
+  next-20260505
 
-Ok, what do you need for device tree overlays to reference these nodes?
-Don't you need a label for them to appear in /__symbols__? Or do you
-reference by "&{/absolute/path}" (still bad)?
+---
+Description
+-----------
 
-> > but always use eth
-> > aliases to get to them.
-> However if it is okay to add eth[0-9]+ aliases also for switch ports, I'll add them.
+The Neo ISP processes one or more camera streams, converting RAW formats
+into YUV or RGB outputs. Its architecture is largely influenced by the
+PISP driver. To limit the number of v4l2 devices, the driver supports only
+one context, with three sink pads (main input, second input for HDR, and
+parameter buffers) and three source pads (RGB output, IR output, and
+statistics metadata).
 
-Absolutely ok.
+The driver uses the generic extensible v4l2-isp framework for parameters,
+similar to rkisp1 and mali-c55. The same mechanism is reused for
+statistics buffers by relying on the extensible stats introduced in
+Jacopo's series.
 
-> > This is in case the port node names ever change,
-> > to avoid bootloader regressions.
-> Good point!
+The driver currently supports M2M operation; inline mode (CSI-to-ISP
+streaming) is still under evaluation.
 
-I don't think there's any downside to adding aliases, so please do, in
-case anyone needs them, they should be there.
+A few checkpatch warnings in v4l2-ioctl.c are intentionally kept to match
+the existing coding style in that file. Another checkpatch warning
+related to job pointer initialization is also kept, as it matches the
+approach used in the pispbe driver.
+
+Testing was performed on the i.MX95 EVK with neoisp configured in
+standalone mode, with a vivid (Virtual Video Device) instance and a
+libcamera neo pipeline handler. An engineering version of the libcamera
+pipeline handler is under preparation, and can be shared as dedicated
+branch if needed.
+
+End-to-end camera-to-ISP capture, using a single media graph, has been
+validated using the downstream NXP kernel.
+
+Thanks,
+Antoine
+
+---
+link to v1: https://lore.kernel.org/linux-media/20260413160331.2611829-1-antoine.bouyer@nxp.com/
+Diff compared to v1:
+ * Fix dt_binding_check errors reported by Rob's bot.
+ * Remove extensible stats introduction, and use v4l2_isp patches
+   from Jacopo's series instead.
+ * Use the common v4l2_isp definitions for stats and params in neoisp.
+   Replace all occurences of v4l2_isp_params_* and v4l2_isp_stats_* by
+   the common structs and helpers.
+ * Use the new v4l2_isp helpers for statistics buffer handling.
+ * Apply comment from Geert in Kconfig.
+ * Fix some typo in the neoisp documentation.
+ * Remove `neoisp_feat_ctrl_s` from uapi (used only in legacy format
+   which is not supported anymore).
+
+link to RFC: https://lore.kernel.org/linux-media/20260123080938.3367348-1-antoine.bouyer@nxp.com/
+Diff compared to RFC:
+ * Integrate Krzysztof's comments in neoisp bindings document: use
+   maxItems for clocks, remove unused configs, and rename filename to
+   match compatible name used in imx95 SoC.
+ * Provide a `neoisp_core_media_register` API to let neoisp register
+   itself into an existing media graph, instead of creating its own. The
+   goal is to prepare for supporting inline mode alongside M2M mode, and
+   to allow userspace to select between these modes at runtime (the 2
+   modes cannot run together because of hardware constraints).
+ * Use only one Neo ISP context, whereas the RFC version prepared 8
+   contexts.
+ * Add a module parameter to support a standalone mode. When enabled,
+   neoisp registers its own media graph. The goal is to allow testing the
+   Neo ISP IP without a camera or other subdevice drivers, such as ISI,
+   pixel formatter, etc.
+ * Remove support of the legacy mode using fixed-size buffers for parameters
+   and statistics; only the generic extensible framework is supported.
+ * Remove support of the hardware version 1.
+ * Use job scheduling like pispbe driver, to limit impact on interrupt
+   handler.
+
+---
+Antoine Bouyer (8):
+  dt-bindings: media: Add nxp neoisp support
+  media: v4l2-ctrls: Add user control base for NXP neoisp controls
+  media: Add meta formats supported by NXP neoisp driver
+  media: uapi: Add NXP NEOISP user interface header file
+  media: Documentation: Add NXP neoisp driver documentation
+  media: platform: Add NXP Neoisp Image Signal Processor
+  media: platform: neoisp: Add debugfs support
+  arm64: dts: freescale: imx95: Add NXP neoisp device tree node
+
+ .../admin-guide/media/nxp-neoisp-diagram.dot  |   24 +
+ .../admin-guide/media/nxp-neoisp.dot          |   18 +
+ .../admin-guide/media/nxp-neoisp.rst          |  179 ++
+ .../admin-guide/media/v4l-drivers.rst         |    1 +
+ .../bindings/media/nxp,imx95-neoisp.yaml      |   62 +
+ .../userspace-api/media/v4l/meta-formats.rst  |    1 +
+ .../media/v4l/metafmt-nxp-neoisp.rst          |   70 +
+ MAINTAINERS                                   |    9 +
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |    4 +
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |   11 +
+ drivers/media/platform/nxp/Kconfig            |    1 +
+ drivers/media/platform/nxp/Makefile           |    1 +
+ drivers/media/platform/nxp/neoisp/Kconfig     |   16 +
+ drivers/media/platform/nxp/neoisp/Makefile    |    8 +
+ drivers/media/platform/nxp/neoisp/neoisp.h    |  263 ++
+ .../media/platform/nxp/neoisp/neoisp_core.h   |   30 +
+ .../media/platform/nxp/neoisp/neoisp_ctx.c    | 2657 +++++++++++++++++
+ .../media/platform/nxp/neoisp/neoisp_ctx.h    |   78 +
+ .../platform/nxp/neoisp/neoisp_debugfs.c      |  494 +++
+ .../media/platform/nxp/neoisp/neoisp_fmt.h    |  495 +++
+ drivers/media/platform/nxp/neoisp/neoisp_hw.h |  557 ++++
+ .../media/platform/nxp/neoisp/neoisp_main.c   | 1916 ++++++++++++
+ .../media/platform/nxp/neoisp/neoisp_nodes.h  |   54 +
+ .../media/platform/nxp/neoisp/neoisp_regs.h   | 2498 ++++++++++++++++
+ drivers/media/v4l2-core/v4l2-ioctl.c          |    2 +
+ include/uapi/linux/media/nxp/nxp_neoisp.h     | 1694 +++++++++++
+ include/uapi/linux/v4l2-controls.h            |    6 +
+ include/uapi/linux/videodev2.h                |    4 +
+ 28 files changed, 11153 insertions(+)
+ create mode 100644 Documentation/admin-guide/media/nxp-neoisp-diagram.dot
+ create mode 100644 Documentation/admin-guide/media/nxp-neoisp.dot
+ create mode 100644 Documentation/admin-guide/media/nxp-neoisp.rst
+ create mode 100644 Documentation/devicetree/bindings/media/nxp,imx95-neoisp.yaml
+ create mode 100644 Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
+ create mode 100644 drivers/media/platform/nxp/neoisp/Kconfig
+ create mode 100644 drivers/media/platform/nxp/neoisp/Makefile
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_core.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_ctx.c
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_ctx.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_debugfs.c
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_fmt.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_hw.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_main.c
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_nodes.h
+ create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_regs.h
+ create mode 100644 include/uapi/linux/media/nxp/nxp_neoisp.h
+
+---
+base-commit: 4cd074ae20bbcc293bbbce9163abe99d68ae6ae0
+prerequisite-patch-id: 2939dff7f477209138725aa8d86318d6580f4ea3
+prerequisite-patch-id: f77370d8fc480b2e972a773f7d56f33ff1995eef
+prerequisite-patch-id: bd3b231bc86129d25fca4ae34408a61db43bf883
+prerequisite-patch-id: 691322bcfe69b3c51a886441fb241067355b9bdc
+prerequisite-patch-id: a5f27213eba078f7ed5420d90df3ecd45151219e
+prerequisite-patch-id: 9b2fbe610fb17689030c6da6c529f7db91b86d9c
+-- 
+2.51.0
+
