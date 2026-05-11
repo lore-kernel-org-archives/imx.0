@@ -1,169 +1,300 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013026.outbound.protection.outlook.com [40.107.159.26])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012071.outbound.protection.outlook.com [52.101.66.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440AE255F52
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 03:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534661339B1;
+	Mon, 11 May 2026 03:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778468749; cv=fail; b=swTKUJLKEv0HxHKsgYh43YhgvRYj+AkSRrcLPUjoOvRlPGWOHp2g/azjbkeK4ud/sKgQ3Tss7o0VpKl4y4yCWX0WJIh36LLbTWZdUvXvyCilYIzlnlQpYggfynHLqe+FUrJGVkL+4nyrg/STtZXP9Ef9V27w5X841L+9upI7sfo=
+	t=1778469285; cv=fail; b=Vv48BPXnQNm4iomW0CdngEpYxbNkngwYDPZ6YMfMBwz7pOJXdelzOrIdR8tkdGib4LGl7U6TK6B+5Dk2YM03+Uq6LliNZ2ES115RJBaPEPSXa60EIHVyzDJAFsVcRMGJmd3uLzLXE2s6d5ngI7xYR8bT4ymspyDjRVnD6WHGHD0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778468749; c=relaxed/simple;
-	bh=/GfT59CWTvtfKPlx2qGv4bIrZQQTwN0w32myeFaro4A=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Lusih39Cb8hPzpk3Kx0u4+1yEMIE/GrDIkD2mGkpJGMliOAwTn6pjvPZGBSE+cp0PL3uVqUKnbkOz7BUqZe+vI4KURTiVDKuDXSzjyShn79xugPqh3jUrpGEwfiN/oxUX3pVpD2781Y9NoBmhaw06tWnFE7dJjmr40/nEevIsow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F7ymw4I1; arc=fail smtp.client-ip=40.107.159.26
+	s=arc-20240116; t=1778469285; c=relaxed/simple;
+	bh=iqTAuW2Se1nBDqvl9tAKb82A/sK1jGE6R67OhI+GNmo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tAOSeQ8zcnR4XBPG9bgsDVjze1jk/KdPPkjxXpvJapsnzN6EyhFuBNCE8kF3rjjC6Y1IaFLhNQJC4b625qyAHHFhXoArYn8T5XxBGyEx17TCflPygvqg2zwD+qVZn4v7iIpZT8EoXXe9Xffm/R04Lcm6PAGnt1ofmKPJgD5pLOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=P94sOQnr; arc=fail smtp.client-ip=52.101.66.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F7ymw4I1"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="P94sOQnr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kEWcIorsLH98OifYlGOdgh2f8rW/ALwx6uLlBziO0UOyj3UHomiUNvwbKVtxGfjTBCLikF2kSX0y2GrbXLnwtRRFlvxM3rxwgWN31Kb43iHevgOxpZPJsDrWHnELHywcJ31ZDwrJuBLyAISPY7GMYNIOSueQq6aJ7IyDZ2tTlXtAXJqxHbLFoqYq/j4g+kS3tSAIw+pCWVme3Lw4ei8fdFm3wFvFAUjFriMWFJ8jgPVnYhZk5QfCVILCKSUzSeXC2GYe4mitQvY56MGC4eCfGi0cg8CdXX7BbaWfOtm+cSpn+0Tqe4eXt4xkTGslwGMegCRT27vp3fxz4t3gN4Sg/Q==
+ b=LOv8GSBEAqVRHMFtU9fodHd1Ay8iE0jxcEu+TYK9YtcZwu2Afe3z8V17xopOSeO67TzOGsjH/qWEj09xVabg2TpvfsaXoSH2w1ZSLRsedBFedJj7lplelEHbwK+IAJt1uclDYrQUhDJECBpPRx5UCiceX4Dwee6cp+l97UEndGvJUXt3JSQ18hL2X3wXtsDZaPk+VhLlsvWiFhE9jVG6pF7+ovFHfaRyTsJP0q47KcJBFEFQnRSNFPlq1jPStrAt3FeD2Sg6o19TCJEex0prK5o/XrrZPqfbNKJVizF5iYyoky/IxMb7JwzbSio1orf/npDo0q8uXEETwSBlex2t5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KJZ6bcJuCYnwzFburPRzS0zjaab02t8JOX9KxYGNQg0=;
- b=wtpaFYk96QSaEtqeowr9jcmo2IJxP6zu4ik5ffyAYyfZ4c8B9swZJvITA+o/TfgtmgE5RM1zAetyYYG8gX39lg2ZgBm7dBh5JNbEchG1VBlINJrktAdX89VKV1uwfYUjIdNOlV7JB5oCPGgqtV/3CaLmogEr0DLNanFT+U4AKCXkEqC2ffDgbRR5LX7ItOCg/jKWStAQOAYHvxr6p+nrOwir+1TLU9hHqK1EENNs/VB0PJ7JYnjf7PHd9p6AYbeuHv2Emt3CTSQuD9eBsJe0L/xPz21W+9ZA871wOMBal/8zkM//DL7qbBX63/CbQj5fq1UMJWY3R3ogdRPqE/Fvyw==
+ bh=s+T+NALi8eKjps8Rx7LU1yMxmFMmrqoHmeGjfboVY8k=;
+ b=dzOXttmt5jJqBU/5FlAiD1nufAgGu1VnEok+gPaNrxAPxEF/HS3vDsiUJZz181SUB/AkQHNq+EgRc1xXo5/48JcWhP11lHjyQIABvQPidi9/FwBxiHPdzroPRRv9tNGKT15zRMftdLFBc+69CWoeE2egpzHwKRODN7W+c6RVUJj+u2dlUpaUAi3+vWlXoEOGUmzPo0RdqLZEuqba2OBdQ0jGW3ZWD2703xQcw7CSY30U5wxkPX4WJpDNcwD0OUGVi1luXGyg8zv1d/7fy3L52pn65L2JwhLeCY9l/9Wsr/l83xnrLuPi2Raf2yhkzTxwQPt51cw5d/wphhqdi3rFHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KJZ6bcJuCYnwzFburPRzS0zjaab02t8JOX9KxYGNQg0=;
- b=F7ymw4I17yrwkTkdugaasA+HDpxKIvldsUz+mLSP4B3xlYM5AvzCGco8XUmRcViZg7Y/jzqC+5ao+weEfgYLxv0Si3CmKhODwJa1jPbWlNkHvd+rZ0V6B3ouz/ASfYU98nhgbKHh65uDqBRuSgTutXElLGkTspck6DaMno8iuczEeH0C3iHb4LRwhgX6deqeFqdw63SueOZhAgK2LkoX8hF3aU9dpkeZ+ZE6TsNRE3Rjah0IpxY4ph/8MMVu3hS5sQPkdEA14cSdMEKJ/f4XPKlHMTwXwDR3/WoGttzX+ynfo1pwpKHH9MMfoku6s+AAEqZdVGRhI3VI2WmxwWWpJw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
- (2603:10a6:150:30c::14) by PA1PR04MB10502.eurprd04.prod.outlook.com
- (2603:10a6:102:44f::8) with Microsoft SMTP Server (version=TLS1_2,
+ bh=s+T+NALi8eKjps8Rx7LU1yMxmFMmrqoHmeGjfboVY8k=;
+ b=P94sOQnrOfmriyzbZhcl6UhdTSJ43RkNQvEKAQTJ0EVKf87YNaHs4BTWBHxPm/H06o9k9yY8v+3o80FPweeosg0H2WueT8E6SJuOirE36I2V6DphaKzFaftoOZK+uvo+pIAilSiCCHnXV6vb3C7VAjskvN8uWzwvP0Wb62lglzT/AYzMiLVLCwYzApYzgoK3dYeIJzZTOKHPmW0TYxd5c5rw9kqkUcYZOZQmjnNzSTFWkRuE8qdsEhdjJeaNclps5SntPL2/DLEzrOdfNx2eI82JPwIm1IRjaZFNuIozJG/Av6DSz34k+xC12+QV48qx2X7v9MEDROn7e4B6HqyC2g==
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by DB5PR04MB12203.eurprd04.prod.outlook.com (2603:10a6:10:64b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 03:05:44 +0000
-Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
- ([fe80::ed75:bac1:2554:5cbe]) by GV2PR04MB12019.eurprd04.prod.outlook.com
- ([fe80::ed75:bac1:2554:5cbe%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 03:05:44 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	frank.li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: kernel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v3] arm64: dts: imx95: Increase PCIe outbound address space to 4GB
-Date: Mon, 11 May 2026 11:07:51 +0800
-Message-Id: <20260511030751.3717935-1-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA0PR01CA0024.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::10) To GV2PR04MB12019.eurprd04.prod.outlook.com
- (2603:10a6:150:30c::14)
+ 2026 03:14:40 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 03:14:40 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "sashiko@lists.linux.dev" <sashiko@lists.linux.dev>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>,
+	Networking <netdev@vger.kernel.org>
+Subject: RE: [PATCH v6 net-next 12/15] net: dsa: netc: add FDB, STP, MTU, port
+ setup and host flooding support
+Thread-Topic: [PATCH v6 net-next 12/15] net: dsa: netc: add FDB, STP, MTU,
+ port setup and host flooding support
+Thread-Index: AQHc356oJ+jsDHmt5Eqn9ujFEA7UKbYHFeAAgAEMFuA=
+Date: Mon, 11 May 2026 03:14:40 +0000
+Message-ID:
+ <DBBPR04MB75004982323B70E4E942331688382@DBBPR04MB7500.eurprd04.prod.outlook.com>
+References: <20260509102954.4116624-13-wei.fang@nxp.com>
+ <20260510104838.8514DC2BCB8@smtp.kernel.org>
+In-Reply-To: <20260510104838.8514DC2BCB8@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|DB5PR04MB12203:EE_
+x-ms-office365-filtering-correlation-id: 75a0fb54-f26f-44af-090d-08deaf0b70a1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|38070700021|3023799003|56012099003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ SH4Yb/5M+finmqj7OfQvBn9n/KcHVcjvMJa27ltQMeNyuZIQd3YopIpwpjzzkpY83kD4M95YhKcKSmfgAwt5j223DPZSlGSp1c+OThH3v6RxPfUCaguZjyhMi6SDlsvZFv6evGjIQXw5fOTypbuzYock32PAkUSTTbY3CqfgTK55tHRDai3eLVyAeioOjonwRtPpRchx68Hv3+UgEmpC7qZVuVykvoSSWMdlzJSWQhkXUzTCWX40jv376vdV5RWZ9JcNRqkAaI1iHTLNMB9SQZbnyRyo02Ew8m6LKgQC1sxYaFLnM1nE8Oe/9SdLVQ+UFrafVbPDLwjfuE/JOM1y7xEF6Xf31cTx5vyY2mViO9mjd2gIWVglfuVZeLg797RmFmCUQuLL8xZmOgFXVWsJTOq9b9nYtamgpVUMmSFzJW8R3E12LrpZL6rGphIh54fepbWR8on65ILOJ+gZRVZ9xczmY4msesOl9/UNLtcFKJEfXihkV9AVuzh56v+u3JsnAySP/URARAQiPQJGQBZNAj/pftFUTFnkR0zgoGn3ZUzbm5V+HYgQoe176f9/Kg4LAM29wLl+QJ+LmndD+kjkNQQQD86ASX5naxZM4wNeLLysdWY1CbYjmtFMdY4dwruWO8fC2gkOCkXw8iZtodZ1LHMan6cDGnTOVMPUmVajUDmc7ywMsnZ8RIEE9Lh23FHLMGC/h4tFgaphQsa2nKE9QEowEKddb1Z2SRj4yjThllFSU8UUc5RnALanMzxFXVal
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(38070700021)(3023799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?o98GmBOCT0+0UBINaMpewNSGq6dXfvrGe0gTEoaJsZ1rorz3Fe2Et9ANt01Z?=
+ =?us-ascii?Q?3l8/GuvckNwZwyvokTjD8gRduuyeKY+qMdsGVkwQeJkJhqjK6qbaLHnKfkgL?=
+ =?us-ascii?Q?QcQr4uKKFsHT5VtXT7qMk1rWryri+6l67Q9f4904yiKZO9x0dCJQKf615JkQ?=
+ =?us-ascii?Q?IZRRQO/6enXswwMGWOlYaEICKAQU4J358f0xFzrx9hBJtTTNgb4Q3lLc8CX6?=
+ =?us-ascii?Q?OuaLhaimAP2LkKEg5ZePsCBdKcw1fZBhiSP5iEe7fbWrfbn9P3++w6sOKWfw?=
+ =?us-ascii?Q?cMUscpfyqxvCAYmdduN/mYWmB2GfwhvbmZhbKQXSnrs5YpXvbEHTCf0ZNjcb?=
+ =?us-ascii?Q?DBaE7UZ7gQiApeXj5fPQPy9/c4IjfJVR/90Uuw6FZExKGBlKWtOvWsFzcusa?=
+ =?us-ascii?Q?JC+tmd7B59nXQ/wPES2i1nfhpg9Mi3rRXIRC0DCPY7CQk3L1gT/xOcW+JNFJ?=
+ =?us-ascii?Q?IbS4WIer+seeTQrwlY/aGUEnsj4o5EIRZJgmqHgPrHvnW9HoqSVHfTIITLty?=
+ =?us-ascii?Q?2NaOITmrrMpOWglgSoe9eQ3x4n1Dga6K3gZeP8xVd/bWAUz7lKS/zCCMMf/+?=
+ =?us-ascii?Q?IBko+POIZUShjccbTuFtfH0xqk4uWmlyWjjyIaxi9ImYGSor5DAOeSKZkfNr?=
+ =?us-ascii?Q?LAqgyNXNl53GYBzV7BrhmOA+zQYH16J/sU9tzYna65Vh3JK+gyTuiW+UjCRU?=
+ =?us-ascii?Q?4GPttJxjHypbe40KahtFiFvhaatqhleBPC9cousO/qXBcpyCF2KoZDzaUta/?=
+ =?us-ascii?Q?bUxBI+qqTmUkJgWkMAUXletvi5+VBkdmT7kUiccqoFLy4AshSzy5ZyLcankK?=
+ =?us-ascii?Q?gZ0wJKLNEwpgRBgySSwuSoiy+DgdCv9ugSWErLUCMw9L1vqx9K8sfBzXeHY0?=
+ =?us-ascii?Q?kXnSVvJQ0cs3EyYrJl8f09yogbWuC4DmJRAzP52iXWakfQlcS6IQQ3k2C9N4?=
+ =?us-ascii?Q?zOIrOY3Lt0bBRA2bdCSJJXCF9C4142L4prbryTw8jVO5CBYZMb8w5G4CJUnH?=
+ =?us-ascii?Q?OwZJcJFe0w4+qG72RRLdqF8aS8JerE0B4oxhNbImVMokL6/9ubmyudKBKW8Z?=
+ =?us-ascii?Q?H6+uGJkWSXDTAvBHXXRjwZnnC83ElvhEkp84l6sFOcvjtqzv14QbSZbcY9vh?=
+ =?us-ascii?Q?+BzZ8VWa533Q1PujtUT/jImihA/9YIJ9G1kPTlq4+e/2Sc/G7ohVzxNF833a?=
+ =?us-ascii?Q?aMoZucVYEvE9lLW7b1N33A9l7cqCeNUafex2w9fMP0skolErGmzjhvOr4+pw?=
+ =?us-ascii?Q?2s2sP5CVZReCiX3dpnRHmD56X04ivNDqNOgBy5z1BOSF+83B7KjYtVKcBiZS?=
+ =?us-ascii?Q?uDSlr5BRELmrDs7tvBDSznmh3ag9RxNF7yaj+A83igmBTzXY8JsK6PKU0/9s?=
+ =?us-ascii?Q?4OMewbnlURCdCURz4iGUnroehBiiTw3xG/hK9rJ+DcXowkCncv0jxO239Mki?=
+ =?us-ascii?Q?it96Laai3BErQ+7A5PzdfWa9xAQGNmILrH3zByrbMGCerL5ZzYBerfV3toOx?=
+ =?us-ascii?Q?0sPVHABtltWnq9Dea8sJ028fh1wJMaF+xkSi+Ez5dC1AERlsRPUkNaaEYvee?=
+ =?us-ascii?Q?9qb5druUQqE4oYiVCBArx0bR5ZD0cSwP22YdksLcKyfemRdbCbXBvrQ8P441?=
+ =?us-ascii?Q?NkEqStwhj+eN156d7pWPnKUJE7jNUJ13ujS7jPOkwWDrWjU5lakkpUb1j54E?=
+ =?us-ascii?Q?QtIRYqqMGSF5hh/2xi2yFSiYkGMGV7M/z0cyTUNfE7X+2RVR?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB12019:EE_|PA1PR04MB10502:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63cfa3d6-a15d-4a0a-cf83-08deaf0a30ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|52116014|376014|1800799024|18002099003|38350700014|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	BSJvSo9Br+BWUBbnG94SH2ntLDWHVlfnpf6rKlFB6TpljAg0pv0wwkPmE4SODMiMT/x5Gq+plB1Y4VsBfWxaVl2ERA8GzHdMp1VHRxHEor1qpHIAljy4CTuIiycy7esgWeZMDYMIFOZSuiacbhnd427mMQ/Bx6sNHeuoQez94Rg5Kx1yYmwO9UZcARQF7211tL6vrkffxh8JBxrYByyE94K+A3/acxGTkhmpNhxe1s4JSTIK3MEGUy0oqIr5c8bwuHItmk8GRAsBC30DsgAGkYCxt1QJzp+LqAJQAcoW7qVrWNvMpaiZ2A33G7aoDGZBENjW1c+uVyUEgKrFt4Tbt8fUYCJrBr0EtT0IecSlpxFBQfqkvGKrFqo9Zzoy4ZUkyi11+owrHOYPK2hqPYlSBq1Cib76AvdWYuKDmoyA4rHn3/MYYCBHBV1rYE/OrK+P/rmzybtR5sqyU5LUjfRcW9geb9P7+x5bQgZM1AbpKDG0HklsbxCNxIPCxdcH3s5K5KHyvijUd9gOpogNQvaqJOrf+eh7tSIZW96LonxSItSyb/1a+Jx+osie8dvIh/U3Ham60cOxKqgPh/mLc3LIXZD5j+MjDYGTjI+RaNPYB0ECqcCto755GfAboHP6ejgP+Tvspp6BqzX+OZBPZF+82vYySTB26QNbpqa6A4K2o/1Z7gVgwfBrCdmxy+4c+DpyzehDSiS9Qu6Gfg2utlRHGeIPWUknwE+DRFs+22dL0nBWxb0LddX5/9SW5P5jaa12
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12019.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(52116014)(376014)(1800799024)(18002099003)(38350700014)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?r8KOJIGQsQaBbhaK3Vjg6WP1pnHmrSg2O4W9HV5AA/HULCsMoYa0PoJXEnmH?=
- =?us-ascii?Q?TuXukvilIXIGWlon+yPcJt8EsryAOxpkTYEGtacyOUmIe/BAPhWGO+Za3czJ?=
- =?us-ascii?Q?QEwB4xY9t3AL1dz8VIaE0+b8/r31KoG9BpleRvt8On4DlnESClFoIkbcyPG8?=
- =?us-ascii?Q?W5kccs1AUJ7yGSD6ToE4Mq9Q7SZqg9GzAsJwhsRI1omQ9oU9mf8ka9wyak/m?=
- =?us-ascii?Q?/tBF81H6nV0gKBGmJUBt1Jd/VeKkdYwvQV3rFAVMQ80Rtk1/uigK9UsBInBq?=
- =?us-ascii?Q?nv6yQAfc6Fiy7E4hfnaM/8N9wEqwPVIz7dgY8H+JB9zttafE3iRaQ6lBL41s?=
- =?us-ascii?Q?LVcUnBQn7qT39MHaC93ahL0BQmA+7LJIuYuTcQbKtRU8V5ZVFq5clwhwW+68?=
- =?us-ascii?Q?UsRMjNuXRkSyMHa8h4vYojXrXdFOpntqMdEfu2QtKHxCD2AoBNbVVV9j7o03?=
- =?us-ascii?Q?toV8towdNy1qguyl2GW8lFS7ycFVDDJaks+WTnPMMa8HgaPhN3ULk8U4OLC4?=
- =?us-ascii?Q?ZR9iZB3j1J2a3uTcWghp+wYOQdbUZ2qy6IXcVw7/d6WyRdkXu6lFuXtNnIAR?=
- =?us-ascii?Q?7SUGYLX3QgN23b3+hx1SASEkFuzpFe/YyZFChMAVIMEVYxmi4fV1cRNEeuI8?=
- =?us-ascii?Q?/30jzdB50se2K3bEOuRRfR8ChJtw1VumwtB3+sNujwgon968iGfYDwYc73js?=
- =?us-ascii?Q?y2+DYuwN5vsskAM8Dr6MU+4z7YJrqFpxGUzhZ7CR4LJC/moJK8l2uwZrb66d?=
- =?us-ascii?Q?MaD2voTtnUPO2Mi0T1JEZNqB6GxgOJadbjPzlAQJtiTaF0VvPxpPsgbE8Tza?=
- =?us-ascii?Q?0cBh+ABzIKbcDN8oBeah/vhgfyITOWASPK8C4WlqoAy1lvBb9Hgv0w8sbsb/?=
- =?us-ascii?Q?NAUhtrmp+PioY5+5gYGtt3dKtufpLycO0Xqgu9NJ3olUqXPUhSWQ5buCSqeJ?=
- =?us-ascii?Q?wpdlK33heOm9c9VdrDnTe1fvNCMBfT3zPyT5vh9xGst3mj9cEU1qtuiEyt2q?=
- =?us-ascii?Q?rJGmjZsVV22iQcsCY88tsmRmWY0UgAYR3Yw2TX/+4zIxS60gaL4k30I0ZKn2?=
- =?us-ascii?Q?4AO6nxHu3lQ9g3SCMK+7Efg1xlrk4k0qqTwYdpC8GjO3TKIJ7F4X+wUHq7k9?=
- =?us-ascii?Q?DrHd8Vkdb126eOqn85r+omvDFXqdDmWiX4cukUTD2Mqaf3k3Ua9iAvwpg5N7?=
- =?us-ascii?Q?kxe/XMxfLVuZbk9eDBahw6rfTqUN61qBkGPBqQBEjpMCD/v1zKuueScWmX0r?=
- =?us-ascii?Q?aGlx8GEMlyL1m0QN0S9U1RJxZLTeoN7O6jSrnKmqE6/4xbb667M7Aex16Dmm?=
- =?us-ascii?Q?An+zdsjvrWGHiwVnoz97zg+OwxHcKJPlRj9xJTYighj+pl7YdLZdhmttfnI9?=
- =?us-ascii?Q?hQhSnKbECyemamtlpgS27aLNeWCDPwmefmA1ksOUtolFVoqd0KTUm/vagF3f?=
- =?us-ascii?Q?fUtAI2X6ZgpkDDzBP2blNfxXpMqcRkC0/J7zdW7yy8HCQ2aockryq7XJsld+?=
- =?us-ascii?Q?5QWgRB0XcRbAIRrSCLlsLazV7tjQ73/kKUVndeK8jRrJRj56borLPh8zXa4p?=
- =?us-ascii?Q?GxDyQeg3QffdIZ33nJd5mXI3bImPyNbVTgpy2iN0s0k993NEfpjHsTvzyWf8?=
- =?us-ascii?Q?Orj+5bqilRA4tfMrSe0F27Ih9zGry3MIijdZTRMmEbp1a6coGOeqiic/gSjs?=
- =?us-ascii?Q?y0QNYNZOaIKFcLZi4CVUyy9la4wY0CR4vEZKNftSpwkvQgbv2q9BYBemffY3?=
- =?us-ascii?Q?MqnxhVSuqw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63cfa3d6-a15d-4a0a-cf83-08deaf0a30ef
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12019.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 03:05:44.1449
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75a0fb54-f26f-44af-090d-08deaf0b70a1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2026 03:14:40.2206
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7eVUHbee5rAoygVrmDRDeO28f17O4ZanHL6/oQf4Dtei4Z0IRXtW7Ut4XTCmLLh6VEi2L10HG/Pv3EPs5gLZ+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10502
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Pp5SHJxnPKBLLV8Zv2cR3ONquehysWiPIcUaUGDYVlprw0vbkc23XsUUtct1wUdYaSW2d5OEeG1ZiFkg5BWdKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR04MB12203
 
-Fix the PCIe outbound memory region size to 4GB, which is the actual
-hardware-supported memory space. The size was incorrectly set to 256MB
-during bring-up.
+> Thank you for your contribution! Sashiko AI review found 3 potential issu=
+e(s) to
+> consider:
+> - [High] Incorrect FDB port bitmap update causes roaming unicast entries =
+to be
+> flooded to multiple ports.
+> - [High] Local `u8` arrays `bcast` and `dmac_mask` are passed to
+> `ether_addr_copy` without ensuring 16-bit alignment.
+> - [Medium] The driver silently fails to delete dynamically learned FDB en=
+tries.
+> --
+>=20
+> commit 5ef406cd4ab0e5005f26e470e33265be68b4fe54
+> Author: Wei Fang <wei.fang@nxp.com>
+>=20
+> net: dsa: netc: add FDB, STP, MTU, port setup and host flooding support
+>=20
+> Expand the NETC switch driver with foundational features including FDB
+> management, STP, MTU configuration, and host flooding support. The driver
+> operates in standalone port mode.
+>=20
+> diff --git a/drivers/net/dsa/netc/netc_main.c
+> b/drivers/net/dsa/netc/netc_main.c
+> --- a/drivers/net/dsa/netc/netc_main.c
+> +++ b/drivers/net/dsa/netc/netc_main.c
+> [ ... ]
+> > @@ -363,6 +418,206 @@ static void netc_port_default_config(struct
+> netc_port *np)
+> [ ... ]
+> > +static int netc_port_set_fdb_entry(struct netc_port *np,
+> > +				   const unsigned char *addr, u16 vid)
+> > +{
+> [ ... ]
+> > +	cfge =3D &entry->cfge;
+> > +	/* If the entry already exists on the port, return 0 directly */
+> > +	if (unlikely(cfge->port_bitmap & cpu_to_le32(BIT(port))))
+> > +		goto unlock_fdbt;
+> > +
+> > +	/* If the entry already exists, but not on this port, we need to
+> > +	 * update the port bitmap. In general, it should only be valid
+> > +	 * for multicast or broadcast address.
+> > +	 */
+> > +	cfge->port_bitmap |=3D cpu_to_le32(BIT(port));
+>=20
+> Does this correctly handle roaming unicast MAC addresses?
+>=20
+> When a unicast MAC address roams from one port to another, or when a user
+> replaces a static unicast FDB entry using bridge fdb replace, the bridge =
+core
+> requests adding the entry on the new port.
+>=20
+> Because this unconditionally ORs the port into the bitmap, the unicast ad=
+dress
+> becomes associated with both the old and new ports simultaneously. This w=
+ill
+> cause the switch hardware to duplicate and flood unicast frames to multip=
+le
+> ports.
+>=20
+> Should this check is_multicast_ether_addr() and replace the port_bitmap
+> instead of ORing it for unicast addresses?
 
-Fixes: 3b1d5deb29ff ("arm64: dts: imx95: add pcie[0,1] and pcie-ep[0,1] support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
----
-Changes in v3:
-Update the commit message, and set the region size to the max
-hardware-supported memory space.
+netc_port_set_fdb_entry() is an interface shared by single port mode and br=
+idge
+mode. Currently, since only single port mode is supported, it doesn't have =
+any
+impact, as this mode only allows setting FDB entries on CPU ports. However,=
+ for
+future support of bridge mode, this is indeed a potential issue, and I will=
+ improve
+this shared interface in the next version.
 
-Changes in v2:
-Add the Fixes tag, and rebase to latest imx/dt64 branch.
+>=20
+> > +	err =3D ntmp_fdbt_update_entry(&priv->ntmp, entry->entry_id, cfge);
+> [ ... ]
+> > +static int netc_port_del_fdb_entry(struct netc_port *np,
+> > +				   const unsigned char *addr, u16 vid)
+> > +{
+> > +	struct netc_switch *priv =3D np->switch_priv;
+> > +	struct ntmp_user *ntmp =3D &priv->ntmp;
+> > +	struct netc_fdb_entry *entry;
+> > +	struct fdbt_cfge_data *cfge;
+> > +	int port =3D np->dp->index;
+> > +	int err =3D 0;
+> > +
+> > +	mutex_lock(&priv->fdbt_lock);
+> > +
+> > +	entry =3D netc_lookup_fdb_entry(priv, addr, vid);
+> > +	if (unlikely(!entry))
+> > +		goto unlock_fdbt;
+>=20
+> Can this silently fail to delete dynamically learned FDB entries?
+>=20
+> The netc_lookup_fdb_entry() function searches priv->fdb_list, which only
+> tracks static entries explicitly added by software.
+>=20
+> If the bridge core or user attempts to delete a hardware-learned dynamic =
+MAC
+> address, the lookup will return NULL. The function will then jump to
+> unlock_fdbt and silently return 0 (success) without actually issuing a de=
+lete
+> command to the hardware FDB.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index adcc0e1d3696b..7af25e880aa34 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1940,7 +1940,7 @@ pcie0: pcie@4c300000 {
- 			      <0 0x4c340000 0 0x4000>;
- 			reg-names = "dbi", "config", "atu", "app";
- 			ranges = <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
--				 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
-+				 <0x82000000 0x0 0x10000000 0x9 0x00000000 1 0x00000000>;
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 			device_type = "pci";
-@@ -2015,7 +2015,7 @@ pcie1: pcie@4c380000 {
- 			      <0 0x4c3c0000 0 0x4000>;
- 			reg-names = "dbi", "config", "atu", "app";
- 			ranges = <0x81000000 0 0x00000000 0x8 0x8ff00000 0 0x00100000>,
--				 <0x82000000 0 0x10000000 0xa 0x10000000 0 0x10000000>;
-+				 <0x82000000 0 0x10000000 0xa 0x00000000 1 0x00000000>;
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 			device_type = "pci";
+Currently, this patch set only supports single port mode, the MAC learning =
+is
+disabled, so there is no dynamically learned FDB entry. This interface will
+be improved when the bridge mode support is added. So please ignore this
+warning as we do not support bridge mode yet.
 
-base-commit: 5f9e9f83aee0fa8f2124c6f192505de2cdf7c5dc
--- 
-2.37.1
+>=20
+> > +
+> > +	cfge =3D &entry->cfge;
+> [ ... ]
+> > +static int netc_add_standalone_fdb_bcast_entry(struct netc_switch *pri=
+v)
+> > +{
+> > +	const u8 bcast[ETH_ALEN] =3D {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>=20
+> Are local byte arrays guaranteed to be 16-bit aligned?
+>=20
+> The ether_addr_equal() macro (used inside netc_lookup_fdb_entry which is
+> subsequently called by netc_port_set_fdb_entry) expects its pointer argum=
+ents
+> to be 16-bit aligned.
+>=20
+> Because bcast is declared as a simple u8 array on the stack, the compiler
+> only guarantees a 1-byte alignment by default. On architectures with stri=
+ct
+> alignment requirements, this could trigger an unaligned access exception.
+>=20
 
+The switch runs on ARM64 SoCs, CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+is always selected, so there is no need to align bcast to 16-bit. This is a=
+ false
+positive, please ignore it
+
+> > +	struct dsa_port *dp, *cpu_dp =3D NULL;
+> > +
+> > +	dsa_switch_for_each_cpu_port(dp, priv->ds) {
+> > +		cpu_dp =3D dp;
+> > +		break;
+> > +	}
+> > +
+> > +	if (!cpu_dp)
+> > +		return -ENODEV;
+> > +
+> > +	/* If the user port acts as a standalone port, then its PVID is 0,
+> > +	 * MLO is set to "disable MAC learning" and MFO is set to "discard
+> > +	 * frames if no matching entry found in FDB table". Therefore, we
+> > +	 * need to add a broadcast FDB entry on the CPU port so that the
+> > +	 * broadcast frames received on the user port can be forwarded to
+> > +	 * the CPU port.
+> > +	 */
+> > +	return netc_port_set_fdb_entry(NETC_PORT(priv->ds, cpu_dp->index),
+> > +				       bcast, NETC_STANDALONE_PVID);
+> > +}
+> [ ... ]
+> > +static int netc_port_add_host_flood_rule(struct netc_port *np,
+> > +					 bool uc, bool mc)
+> > +{
+> > +	const u8 dmac_mask[ETH_ALEN] =3D {0x1, 0, 0, 0, 0, 0};
+>=20
+> This has the same alignment concern as the bcast array above.
+>=20
+> The ether_addr_copy() macro expects its pointer arguments to be 16-bit
+> aligned. Passing a stack-allocated u8 array without explicit alignment co=
+uld
+> cause unaligned access faults on certain architectures.
+
+Likewise.
+
+--
+pw-bot: cr
