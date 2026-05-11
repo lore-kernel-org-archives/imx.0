@@ -1,156 +1,301 @@
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47013D9043
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 10:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BB13D9DAD
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 10:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778496177; cv=none; b=M66BfS0icRn2lRqbrxKQ8W+w+LcGgZP6hPbZgva7WMRzLMPjq2DmvXwbod2GxiYfqiopT3N7X5OYKyfO7OujXhZ5Y5fB2bt469mmMPVz+KCMjESkrIpoy3QCUvJK0qlMnduDetxULZLKAyxejZIV4x7hlTPFkv/h8baE/xdoawQ=
+	t=1778496191; cv=none; b=HM9sNOvDTMjFM/gr2cHjxjY4f4ajlcmzzRF6smEkmhDzQmYggRzMCZFlU+HUqztDDayXHLB4ONVOvq/HFkGijRl9xzKVIcnLZtSAJ/tm0QU+9/tseOBcs2Hp9PZgyDPdoEu0nfG8Ei2nXkiYxFFabalxJaiBaC1BFOz+FF1/IkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778496177; c=relaxed/simple;
-	bh=c2NhV/V5ArhiHcJnGLt7+hTyK2WILCNVFOJKPpZlTdY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=thyuUfBlwCZgTb3jqUi23XoDeLEw84xx0sR8wLfvmidH04u0JIux8LXtXsBNmKnlHJknmJNvVmv+4bmUXfH719RDYSpO6wyVOOWcLOXndGONqCapBrRsjDqFXjkh843kh9mg8yerldqLm9sZhEX74uJfMV0kXz7NamGhC/iOL1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=P2DUbgZS; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1778496191; c=relaxed/simple;
+	bh=86BVjg3fUi6L5l876V4g4U2aWxKi+IkwHNy/9JsGfvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kvSJflLc/ydtbx2mvld3xObMfiP7ZnKuFmaabfEIi4LkdiLKUJTWvQegW36c8zW671fWB6HD+Uayzz2Ji9DkLqCtYsC3OQqZgVdGaHqE+hmVEs3Xfsre7UBfn787X8oVaalSUkhKkOwv61ga+RK+TleZ994FJGjMceyJ55jqvrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J4BwSroQ; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="P2DUbgZS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1778496153; x=1779100953; i=markus.elfring@web.de;
-	bh=c2NhV/V5ArhiHcJnGLt7+hTyK2WILCNVFOJKPpZlTdY=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=P2DUbgZS5bPkZgCx+PULe3+WKkbfAPr0cD2DjJdb6drKBTLh4zYFE412rjpajdC2
-	 jVO7suyUKeViuT9JqHwhRHtnPGzdNBNhVw8e+RPY5jZCmdptkVYBzsYCbhjbMOHZJ
-	 zCdzZvKxEPn2NU27QXqdc+v7U9wZr7R8tkUBmAd7ABplOK/BesygUmpZhPjGV/RlM
-	 G147RYctBF/CUXHoHMHh4eoCq3169nh64tgBwoRQAUNNPCFdUrk2aN0tGro7FDiDG
-	 WAEbEcmEAL1UB+4L+QwSUTLNEnDEN/8r6HEFsEx7RhD1TgTrNjElXj/XPA9tWtMwa
-	 0H4Ku1fkRfcHXZbJJQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MGxQX-1wZoEN3pIZ-0055H7; Mon, 11
- May 2026 12:42:32 +0200
-Message-ID: <6b9e3d33-5e8d-4751-9ae7-5c748bcf3b58@web.de>
-Date: Mon, 11 May 2026 12:42:29 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J4BwSroQ"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36523acb0c1so2806027a91.0
+        for <imx@lists.linux.dev>; Mon, 11 May 2026 03:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778496189; x=1779100989; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pvfPrv6bBoCwpgk/d8yLJl6+NN2EUVD+9grDz7Fp0E0=;
+        b=J4BwSroQ/qYkBmTsKWY/lXq1mSQgRhSdSX1uiU06ic8t9bMdCbeZu6GlwkvkC8U/8Z
+         063/+CVpqtnF55XvQZymH1fKWrFFVMzFsoPhoieml5kt9ZKJuvJjMTnvGnfMJvRDvTwS
+         Tyk4TrQE7fKAws/oX35Eu2QoRGnZz06tiSXuSmHCNWKkrB2NKkdGz5tnpnppkJB5047E
+         5QY6wQ4ejpXky/ReEQjleNbwUm0HBWN7wwMCDEBBUyN498+EDp0MQTUqh+wZMt6R4jNX
+         yU1ZEz1SzgrzC6MlxWT0u1UEQwd/N9oN2plJfgkKeE7iJr6iX+GeTML1QZvuIpONYDhy
+         Og6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778496189; x=1779100989;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pvfPrv6bBoCwpgk/d8yLJl6+NN2EUVD+9grDz7Fp0E0=;
+        b=piDDXtLltRans5ObmOUi8cF0XY740b9PH6BAtPJXUVT18Ykbg92WBSsrL9ZXLArTXB
+         zIqXxjY2I7dbu/Q31Fk/LgIyXX2Kxrd1OTrmz56SfvCXRx0RtadX7K4x0YJ1npPbu4B3
+         85K3l3o1rn0Rfis5C4+JjsyMOrTLMEPqnG0mpf4QOVd+5GrFhPc79mVHip0wuGLrgTJL
+         B7mFwVtv8I8uWDlCpBJEGY8AkHO78qCbwYBrDK7QWlIuhRIswT6eq3xYxKRPmsZrOqjs
+         EE5firQrQc654U6ocYx/HiCMSkVLn9xqLWpQ//gk2bkd9i42OUwa8fo1ffiOEVhgfKer
+         LEoA==
+X-Forwarded-Encrypted: i=1; AFNElJ9hx2arFPIkFfrLnwlXjLxfnaxQdnjlP38hsaSrAG20c3lH9aU3p0TowrzyWHHKY+O73kc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdRWC1vj8ATM3rjl8UMtbvS1fX2BrHFt/LEvTM5wHiY1bjxQnf
+	fIBNgo1R6JvE0ZadhM63U9lTXNRxG5u7qgCGI2wNfXgrEv/3i0oEOJuq
+X-Gm-Gg: Acq92OFPnL+PpnSD2LHLPDml2sE5I3NEN5/HarU/Zl/fUuUaIlruKZfShYCNllW8UlN
+	0puU61tShYS4UO+WuTAgoRetbXSOVXe7pAA+VG9f2FlVl2Y+LFy1+fEINqIw7XGcIRrmOHd/1rl
+	Z67sjdCzINVrFa+Ce2DJ0yu4cjRNBoYFAOpzk2v7zp8RzLGD6yOWt10m8XzpLYZGTqwmTXWVbLX
+	x5JogPZsfr1KerPl8gUzaRDjPkUaRupL5TfPGcWp2hBMActmyG6s8JQFDtZzbDIpHxtZcb4slgo
+	xxbJWtBoj6BaufWCzHkCPCbnUASQmXLnEamr/nXJZJm2LXGspXfTEtUEG8ZCJQLT5ak4SHZqzlO
+	BTpNy/xipRqAPd0IjoSLx72ISiqY1mtVj7mfpU2jQLOaCHtqvV7rFEhu3wIZbdBpemw9exM5EXJ
+	PpIBLzK0uhnV7YJAeyXQ==
+X-Received: by 2002:a17:90a:4ca7:b0:367:c367:7e19 with SMTP id 98e67ed59e1d1-367c3678e61mr7498225a91.21.1778496188786;
+        Mon, 11 May 2026 03:43:08 -0700 (PDT)
+Received: from nuvole ([144.202.86.13])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d684009esm7533423a91.11.2026.05.11.03.42.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 03:43:08 -0700 (PDT)
+From: Pengyu Luo <mitltlatltl@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	Pengyu Luo <mitltlatltl@gmail.com>
+Subject: [PATCH v4 2/5] media: hi846: fix link frequency handling
+Date: Mon, 11 May 2026 18:39:24 +0800
+Message-ID: <20260511103927.279550-3-mitltlatltl@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260511103927.279550-1-mitltlatltl@gmail.com>
+References: <20260511103927.279550-1-mitltlatltl@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Pengyu Luo <mitltlatltl@gmail.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, kernel@pengutronix.de,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Frank Li <Frank.Li@nxp.com>, Hans Verkuil <hverkuil@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Martin Kepplinger-Novakovic <martink@posteo.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <20260511090924.269106-3-mitltlatltl@gmail.com>
-Subject: Re: [PATCH v3 2/5] media: hi846: fix link frequency handling
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260511090924.269106-3-mitltlatltl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:80HzGa3+fQLV3FJ3QcF3YVpzStBmG5jQ8bKZvpdDC1gsW94iccI
- yny6QI8Uem8ouexuTw33OLN8a7KMCHuGTHJMA32uCg4Qw5or1FiUO7qwKUgNA5IrZ5HtuB+
- bBb0hEyrIcnG7kcfIkgJWEOIUPzZSpLV5FnKcReMIXa/3gRw8AQkjzxP0RlAfx6bWF1RwJX
- OGw14kJ9u/EiPOIPBn+eg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xic/af5enp0=;d/WFWGLCsRYeFnDSw/mqulyXI4z
- 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
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> configuration. To implement this, this commit did
-=E2=80=A6
+link frequency is tied to PLL configuration, lane count, and external
+clock rate, so use runtime here instead of hardcoding for specific
+configuration. To implement this, this commit did
 
-See also once more:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv7.1-rc3#n94
+1. dropped exposed link freqs as a v4l2_ctrl, since we are runtime
+now, it is inconvenient and unnecessary to expose it, and
+hi846_set_ctrl has nothing to do with it.
 
-Regards,
-Markus
+2. attached pll_cfg_4lane to current mode, and use it with clock, lane
+count to calculate link frequency, we use 4-lane config as default,
+but we can double it easily for 2-lane case.
+
+3. dropped mclk clock rate check.
+
+Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+---
+ drivers/media/i2c/hi846.c | 75 ++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 37 deletions(-)
+
+diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+index 7f069aca0fce..61297ef66a0e 100644
+--- a/drivers/media/i2c/hi846.c
++++ b/drivers/media/i2c/hi846.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ // Copyright (c) 2021 Purism SPC
+ 
+-#include <linux/unaligned.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
+@@ -11,6 +11,7 @@
+ #include <linux/pm.h>
+ #include <linux/property.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/unaligned.h>
+ #include <media/v4l2-ctrls.h>
+ #include <media/v4l2-device.h>
+ #include <media/v4l2-fwnode.h>
+@@ -219,8 +220,8 @@ struct hi846_mode {
+ 	/* Horizontal timing size */
+ 	u32 llp;
+ 
+-	/* Link frequency needed for this resolution */
+-	u8 link_freq_index;
++	/* PLL configuration for 4-lane link at this resolution */
++	u16 pll_cfg_4lane;
+ 
+ 	u16 fps;
+ 
+@@ -1040,13 +1041,6 @@ static const char * const hi846_test_pattern_menu[] = {
+ 	"Resolution Pattern",
+ };
+ 
+-#define FREQ_INDEX_640	0
+-#define FREQ_INDEX_1280	1
+-static const s64 hi846_link_freqs[] = {
+-	[FREQ_INDEX_640] = 80000000,
+-	[FREQ_INDEX_1280] = 200000000,
+-};
+-
+ static const struct hi846_reg_list hi846_init_regs_list_2lane = {
+ 	.num_of_regs = ARRAY_SIZE(hi846_init_2lane),
+ 	.regs = hi846_init_2lane,
+@@ -1061,7 +1055,7 @@ static const struct hi846_mode supported_modes[] = {
+ 	{
+ 		.width = 640,
+ 		.height = 480,
+-		.link_freq_index = FREQ_INDEX_640,
++		.pll_cfg_4lane = 0x4924, /* HI846_REG_PLL_CFG_MIPI2_H */
+ 		.fps = 120,
+ 		.frame_len = 631,
+ 		.llp = HI846_LINE_LENGTH,
+@@ -1086,7 +1080,7 @@ static const struct hi846_mode supported_modes[] = {
+ 	{
+ 		.width = 1280,
+ 		.height = 720,
+-		.link_freq_index = FREQ_INDEX_1280,
++		.pll_cfg_4lane = 0x4924, /* HI846_REG_PLL_CFG_MIPI2_H */
+ 		.fps = 90,
+ 		.frame_len = 842,
+ 		.llp = HI846_LINE_LENGTH,
+@@ -1112,7 +1106,7 @@ static const struct hi846_mode supported_modes[] = {
+ 	{
+ 		.width = 1632,
+ 		.height = 1224,
+-		.link_freq_index = FREQ_INDEX_1280,
++		.pll_cfg_4lane = 0x4924, /* HI846_REG_PLL_CFG_MIPI2_H */
+ 		.fps = 30,
+ 		.frame_len = 2526,
+ 		.llp = HI846_LINE_LENGTH,
+@@ -1161,7 +1155,6 @@ struct hi846 {
+ 	struct v4l2_ctrl_handler ctrl_handler;
+ 	u8 nr_lanes;
+ 
+-	struct v4l2_ctrl *link_freq;
+ 	struct v4l2_ctrl *pixel_rate;
+ 	struct v4l2_ctrl *vblank;
+ 	struct v4l2_ctrl *hblank;
+@@ -1192,21 +1185,37 @@ static const struct hi846_datafmt *hi846_find_datafmt(u32 code)
+ 	return NULL;
+ }
+ 
+-static inline u8 hi846_get_link_freq_index(struct hi846 *hi846)
++static u64
++hi846_get_link_freq(struct hi846 *hi846, const struct hi846_mode *cur_mode)
+ {
+-	return hi846->cur_mode->link_freq_index;
+-}
++	u16 cfg = cur_mode->pll_cfg_4lane;
++	u64 mclk = clk_get_rate(hi846->clock);
+ 
+-static u64 hi846_get_link_freq(struct hi846 *hi846)
+-{
+-	u8 index = hi846_get_link_freq_index(hi846);
++	/* NOTE: 6, 7 actually map to 8, 10, but this won't be that big */
++	u8 post_div1 = 1 + FIELD_GET(GENMASK(10, 8), cfg);
++	u8 post_div2 = 1 << FIELD_GET(GENMASK(12, 11), cfg);
+ 
+-	return hi846_link_freqs[index];
++	/*
++	 * HI846_REG_PLL_CFG_MIPI1_H = 0x025a, it is fixed in listed modes
++	 * [11:8]: 0x02 => pre_div = 3
++	 * [7:0]: 0x5a => multiplier = 90
++	 */
++	u64 link_freq = mclk / 3 * 90 / post_div1 / post_div2;
++	/*
++	 * for shared modes, since lane count is halved for 2-lane, then getting
++	 * link_freq doubled to match the same data rate. Since 720x480 is
++	 * 2-lane only(reg_list_4lane.num_of_regs == 0), no pll cfg for 4-lane,
++	 * the pll cfg is for 2-lane, so use the cfg as is.
++	 */
++	if (hi846->nr_lanes == 2 && cur_mode->reg_list_4lane.num_of_regs)
++		link_freq *= 2;
++
++	return link_freq;
+ }
+ 
+ static u64 hi846_calc_pixel_rate(struct hi846 *hi846)
+ {
+-	u64 link_freq = hi846_get_link_freq(hi846);
++	u64 link_freq = hi846_get_link_freq(hi846, hi846->cur_mode);
+ 	u64 pixel_rate = link_freq * 2 * hi846->nr_lanes;
+ 
+ 	do_div(pixel_rate, HI846_RGB_DEPTH);
+@@ -1426,14 +1435,6 @@ static int hi846_init_controls(struct hi846 *hi846)
+ 
+ 	ctrl_hdlr->lock = &hi846->mutex;
+ 
+-	hi846->link_freq =
+-		v4l2_ctrl_new_int_menu(ctrl_hdlr, &hi846_ctrl_ops,
+-				       V4L2_CID_LINK_FREQ,
+-				       ARRAY_SIZE(hi846_link_freqs) - 1,
+-				       0, hi846_link_freqs);
+-	if (hi846->link_freq)
+-		hi846->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-
+ 	hi846->pixel_rate =
+ 		v4l2_ctrl_new_std(ctrl_hdlr, &hi846_ctrl_ops,
+ 				  V4L2_CID_PIXEL_RATE, 0,
+@@ -1503,10 +1504,10 @@ static int hi846_set_video_mode(struct hi846 *hi846, int fps)
+ 	u64 frame_length;
+ 	int ret = 0;
+ 	int dummy_lines;
+-	u64 link_freq = hi846_get_link_freq(hi846);
++	u64 link_freq = hi846_get_link_freq(hi846, hi846->cur_mode);
+ 
+ 	dev_dbg(&client->dev, "%s: link freq: %llu\n", __func__,
+-		hi846_get_link_freq(hi846));
++		link_freq);
+ 
+ 	do_div(link_freq, fps);
+ 	frame_length = link_freq;
+@@ -1749,7 +1750,6 @@ static int hi846_set_format(struct v4l2_subdev *sd,
+ 	mf->code = HI846_MEDIA_BUS_FORMAT;
+ 	mf->field = V4L2_FIELD_NONE;
+ 
+-	__v4l2_ctrl_s_ctrl(hi846->link_freq, hi846_get_link_freq_index(hi846));
+ 	__v4l2_ctrl_s_ctrl_int64(hi846->pixel_rate,
+ 				 hi846_calc_pixel_rate(hi846));
+ 
+@@ -1950,16 +1950,17 @@ static int hi846_identify_module(struct hi846 *hi846)
+ static s64 hi846_check_link_freqs(struct hi846 *hi846,
+ 				  struct v4l2_fwnode_endpoint *ep)
+ {
+-	const s64 *freqs = hi846_link_freqs;
+-	int freqs_count = ARRAY_SIZE(hi846_link_freqs);
++	int freqs_count = ARRAY_SIZE(supported_modes);
++	u64 link_freq;
+ 	int i, j;
+ 
+ 	for (i = 0; i < freqs_count; i++) {
++		link_freq = hi846_get_link_freq(hi846, &supported_modes[i]);
+ 		for (j = 0; j < ep->nr_of_link_frequencies; j++)
+-			if (freqs[i] == ep->link_frequencies[j])
++			if (link_freq == ep->link_frequencies[j])
+ 				break;
+ 		if (j == ep->nr_of_link_frequencies)
+-			return freqs[i];
++			return link_freq;
+ 	}
+ 
+ 	return 0;
+-- 
+2.54.0
+
