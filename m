@@ -1,122 +1,248 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4258F3F7A86;
-	Mon, 11 May 2026 14:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778509953; cv=none; b=B2tpGYdcjR5zF947lF0bXE7/LOcvQK8hH1JLRiQJonO3EQ8lyQpXe7UrxKyAb/EQfBNXYZEQD6ChZss2KckRuUw4xpjYMMM/qM5Usy1UODE6H2kic2cF0styAKhzLbwqXfms1H5743tU/wU4Fva+r5FNT+63plZhNl0r5r6uSVs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778509953; c=relaxed/simple;
-	bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=gr8PcyYhNJgCrCSLU8tSyxdsIz3kgwSeKUhHp71J8RFGbTH951w/Lfo/0ITtVUx2Qs6gaFmSu8XSwtPICsB4bzUfcI0IRqd2YgcshkqirEC7IRPAJrK0LuESPRdm6ejT17wa2jz/ps/f8ugy4aWg20vdfaJSk/EEqEJjcFVp0vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icPhxbc9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFE6366548
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 14:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778510612; cv=fail; b=vGGkudzfSbgTxQDkRvRphDhtnWxNMLIPUUacA8xsWrUdbiC0FrkouzQy1VHdXmHd9umSBtotJnxqST12I5/jlUvDsNOiWl07WlQKK/nVo/xL3C1UuplrgFYn8ZXzmCHZ2OOVWGyc6L81gGKJed+zL2SNpHOvZru9tRUEXNRJKf4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778510612; c=relaxed/simple;
+	bh=vE8zyXEG+lre6pf5Aam+OfzLj4ECz65xLdpSlDsrGtg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XXNLyFtRE6Y7BAjS5oL1YEqqHCvENH3bzWgJ1WmCAmKymFsRwfH/IainexQXocUTv45OQOFZslGqEnxDS/jg+A6wlOhBkppTZPwO4NLUgD0WrSpU165GbQkvpbL+JArtYhvcOkeJphiNoijE9sUmf2guMwGcMkkiiwB5BI29gY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R7bbSFzT; arc=fail smtp.client-ip=52.101.65.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icPhxbc9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B853C2BCB0;
-	Mon, 11 May 2026 14:32:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778509952;
-	bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=icPhxbc98tRXVJGF37J6eXmeRpm12v6pan1cFmoGM0830Cpvh691Wj04oH6/hPSox
-	 g6JS62vnM0lvZVuRfEF/xsyV7/un38Y+f6f9bxClpsCs5tS+1lyKmD14IsTMqR9dvJ
-	 bNhzafjdJYFJ53Psw9zHojjB+gPBQ8KC2YHV3xNgErJXfwkCYpOymSCjR5TtCmKA6O
-	 2lTZQdRweGWxqNGQqXY0+wh6gwQQVGe3ZFP0vIOzzEbpLyf2TWz0SdUMvNM54TfvnF
-	 0hCrtu8nHVnrmARng8NGBDlhXTjWjZuxl0HIw6cOsjQsRN33fzrNrbsOaxlfddQsGY
-	 AXQ6PTIJh9Ygg==
-From: Mark Brown <broonie@kernel.org>
-To: sunny.luo@amlogic.com, xianwei.zhao@amlogic.com, 
- neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com, 
- haibo.chen@nxp.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
- lhjeff911@gmail.com, hayashi.kunihiko@socionext.com, mhiramat@kernel.org, 
- jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, 
- Hans Zhang <18255117159@163.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
-In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
-References: <20260430155456.36998-1-18255117159@163.com>
-Subject: Re: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
-Message-Id: <177850111749.988959.3324914194988461245.b4-ty@b4>
-Date: Mon, 11 May 2026 21:05:17 +0900
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R7bbSFzT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MhcWsGcsxC4H+6yf2shentAw0PLADfFhTJMXzyN0NYvgz0eTRnpodCLMb33GGvbXsZX34K6NQnlYVCB/1/LgDnM5cnc7NDq5qYzhpCSQh4+rvCZ9kzcmalPNR6GDjvEKZiVo53CQhl3RIGRy/p6eBC7RfrfbfBAQ/UPR773gb8XEL8WVwMwdGnpCeP8esVrPJGUl+mxLzIC7iPbairQ6fhSBEYwCPcpM9pWQCxoNXI9uAzUzph06FjiKA3Yn5FTz1NWOAMLjgyQkksKJwX79He0N4/mLZTnRdVUikapKAqZJ0KhCbGfPM9GVpnOteMLZHFMjuAIupTxB/5fQKA6XXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bNFz6jC2PvY+woyTAk1mvISDZziHMet96hS6mpDilbA=;
+ b=gnY1tYNZdDVYYEUkg+/dr26Sjdjx62uVrwBSqfdzC+KCRvYDZrpuF+OFEv7E/j1TYkqjdhwpkqM/2nM9AtF60LDtxFjsYbvjn6JILH1ye51CsN+a0eZtABm5cFoD+XjoX9CDT0s+DJEjPv7ywQEzqx9n1kcwzsDIXZc2QP7ltTdNwBHcuTMcuT/kGbTS6ziHQoP1tATqzMlBKFdzd8Uoxl0kNuDilRC7/LaCLhbMGezlp7F0psbzhX4e0Deo9nCKfFCLO8WZBzBUet1wdpgMFOaAM3MJHFLAHgryDyp+LUsSSbYBk5e6EDGT6AE/8t7wAc1Q1uQvkTDsn0C1G7n48g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bNFz6jC2PvY+woyTAk1mvISDZziHMet96hS6mpDilbA=;
+ b=R7bbSFzTSnvFKZqVgVgUBkNnLDdWijvO4Tv2eAODQxBd241JJ9PhysOaSAyrR4rJRJtq8bwXZ8G/3JLYQcvcCeCn++tvxf/90QzA/nrxt+gL2ZM1SG+oSAG3yINvZ/Dm0kRM59frYeU8prPjQFLHFf6meVeqBU7GdNnKutV4rSMfaH5l+4Iv/fgrTnGgaBEaiWRf5LNOMI2Gd9r1gAMFUS5mEgVfI9Qrnjk4Z4wYRLQkXxl09HK6eb/oR3glujEQwzlubGIJO93enVmiApLS/ZdxmclYoCMTMs4e9pOPM2nkHBJ5P1p/iWmdvBuGUq/UPDWewN4PpwGpKDBBp2rl2Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16) by PR3PR04MB7371.eurprd04.prod.outlook.com
+ (2603:10a6:102:87::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 11 May
+ 2026 14:43:26 +0000
+Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989]) by PA6PR04MB11910.eurprd04.prod.outlook.com
+ ([fe80::d3f0:3c24:f717:4989%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 14:43:26 +0000
+Message-ID: <00b5463f-5c74-4e40-a1fa-dd43dfe3384b@nxp.com>
+Date: Mon, 11 May 2026 16:43:24 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] media: platform: Add NXP Neoisp Image Signal
+ Processor
+To: julien.vuillaumier@nxp.com, alexi.birlinger@nxp.com,
+ daniel.baluta@nxp.com, peng.fan@nxp.com, frank.li@nxp.com,
+ jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com,
+ mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, michael.riesch@collabora.com, anthony.mcgivern@arm.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, ai.luthra@ideasonboard.com,
+ paul.elder@ideasonboard.com, geert@linux-m68k.org
+References: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
+ <20260511132629.1300868-7-antoine.bouyer@nxp.com>
+Content-Language: en-US
+From: Antoine Bouyer <antoine.bouyer@nxp.com>
+In-Reply-To: <20260511132629.1300868-7-antoine.bouyer@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0183.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ca::6) To PA6PR04MB11910.eurprd04.prod.outlook.com
+ (2603:10a6:102:516::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2369; i=broonie@kernel.org;
- h=from:subject:message-id; bh=6yDaCsm6Fs9/qKu1KUmDi4lpZf7x22qyRdhvdJv9Oww=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqAeh8vjkGkzUWV0FtkGu3VAG7YFX76JbuewSvr
- 7LFDYp1pNuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagHofAAKCRAk1otyXVSH
- 0GgYB/0bjIyo5EXJiMTycuOQXtlDCYiBMJdMFY7I1IWduMD5RfXhniWXgWw9k/IIvjGySM8RXO0
- IIhV/HTwGFzjDO2SXcPM4W+Jr/8ZF7Qgw9SE0jEpgJN4OAvuq+Xik1N3z68utaNT1f6RduItRcE
- Zy7ES4g0a0t3V0NvEhMX9Mk5HL++3ycbAX6/3GtnZJOhFtHzPjYKbhhDxZiZYCsr+nKFTcHAFtq
- jT3ZRGgXQKN3xMnPqBBedkhZqWWNnhB8QIFZg64/HuIhb4jAla7PrY4zWwZ5cIdM2zeACsGa6EQ
- ddioBbSzHiHvztPDDNzxCiFvaq0EdY3ACBvex9ByywYEtj/R
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11910:EE_|PR3PR04MB7371:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6f7847d-cdbd-4f4d-5293-08deaf6ba8cc
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|19092799006|376014|921020|11063799003|56012099003|22082099003|18002099003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+ jSk3foutDkQ3GWZjTl1Z4qiSPjmXz0rgVu/XT3Bq1zw34D11BM134sXeokqaIzSTNRLvkqBSM9zHU0tfevqtJc4ipLIxzfREiFfQ+0LNfP7ItxBaFk+W5HY4tqAB5ZrLhW86t+lPKe9iZG+Mbhgr+CvM8XtambhkuXpd1HvZUhDs09gfQkdkm0OzS0DkEIVAcGR9O6ypRSogHHvD8/2x/vK9Fd3hx0coj/CGK+yrWMjnJ10jlziy3pyYfbzuBZ6CMr5P2FgDF6BRe0NLrOi7P1FgUJlyP5+XRUFMmeNwzZUrUSBMiiWZ/2SNRr0aO4RYfoQNoDRiVNnzW7NdOCz5pvKCIN/ogLqXBr5rIXxKqIiwCADhSD8y5GtC+w2Lw12kNifMYrQog6CYTpg5+iH0eRvegel6T349C/vgJQT0wJb/GB4WL/qS1OoekwzJk1x9Qw6w580i4TL6C6xbjpMXPZl6/eYI6cYHWOb7w07nHCMEedlwzovRVc8i52zBw1SvpK4zUwU2KSFgKHEyI6bF0D/OiHEoLlUrbqQHtd6SPZL5qJfpBGuh1FVt75UcjPsGMBx2xcBn8R0O2MYXIc3b4plGZ6Gmrgr1KKYhyLd3pl+RG/6wovlAsBYlkkGokLmZgTDQjiKqSOgeySRyfPozwjS/v6hrAepfOO1Ak3cSuyoh+JiJEqA5hfvePjvWB/BjQMfowBLYGGKAsiGJ8bERk5Qt5j1XCg8GYcaWjGqaLUo=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(19092799006)(376014)(921020)(11063799003)(56012099003)(22082099003)(18002099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?OWFpRWpROVNoTlZsLysvZk53djgvRUl4OUJHdFQwU3JwU3RVL04yVVc5UnFM?=
+ =?utf-8?B?cUV6RE9mSGlHUGdkY2hyRWM0N0NDZ2FySnI2aTRPNXloTmdPUGpLUEp0aWZ5?=
+ =?utf-8?B?YVRTWnlIUEtndGN4L1YwYVAvMnBzRjFFNjltVEVhYm5FWTYzbHphYThjL055?=
+ =?utf-8?B?eE1tbEJFcWRQcjZGdUFPbnl1Njd3ZFFKYStJbWcrWDR2dkM0MU5yN3pDMGI0?=
+ =?utf-8?B?SWljY2FmWVltYVU3Z3pvdUxGU1YybWhIVFVEaitROHllZlBiZWVRZGc3eVpK?=
+ =?utf-8?B?N1VnU1VUWURHTldQRXhBdkVvUHBmM1dGS0hsZmFVQTdpaTZLdWExV3M4VHVS?=
+ =?utf-8?B?UXYxTVREZlRFa3p0TE83OEp2NktFKyt3TmdIL3lWR3duYnlCaXFKWlFIUzM3?=
+ =?utf-8?B?Rk0yWXNxeEx1TS90aVFLVmd5Wlc4bVQ3dThkNjZkNHlhU3VuMnlGbUlkMDJq?=
+ =?utf-8?B?UjN4V1kxVnN0WFdkbGI5dEQ0U3JMOEFwL2pqdk1VbnROSEFWVnZtczF2akVw?=
+ =?utf-8?B?amliNnYvUTU0ODdwZlJBQkZpdnJ6OW15aDM0em9MemxhM3B4NG8xUnZhOUZL?=
+ =?utf-8?B?a1psUDExTWdWTmpUZ09sb0tsMFgrRmlvaXVSaUN6S0JENndQOHdTTGdIVzBV?=
+ =?utf-8?B?cExvOWxzbmpIZ1hrK1hXWnV6MGxBdjJ3dkNwZktxdzBkalVsVkQzbXJNRGM1?=
+ =?utf-8?B?R3p0Z1YzZEVHMzM0K2c4cDAvdGk3QnB0cU5wNjFaeURFMUcydlRnZmU3UDNq?=
+ =?utf-8?B?UU51VGNobU9obVhjZVZEZk1memtzR3UrUENXa2RuR21MbzFsNFQ1dE5YSFkv?=
+ =?utf-8?B?SjJXTTBMZ1hQaXc2VHBaWFB1VnllUGNtaU02UDRuanhrTVpVMVhGb2dkSXFK?=
+ =?utf-8?B?SHNLQTZrdlFLemN4ODJPL1UvcGRiSU5TOTVKQU5vZmpCSE1aN1FDUk5pRWM4?=
+ =?utf-8?B?a0FocjUvOWVOQkM2WDhQbXpoSVdaK3cvVDJMZXpUakhWTUtMSHQwVTFlUWwy?=
+ =?utf-8?B?MW9PTnRBOElpNEo0bE1pMEsxYlZqbXhOd21nbGFUdmE1VW1zZFp6SGpYQzcx?=
+ =?utf-8?B?emQ4bXZFdkdiNDdNc1EwY2FnVFI0NTgyaURQazBJL3BXYzkrTWo1SERyV2Va?=
+ =?utf-8?B?MzZ1ZGlrRGlVK1ZJZFd2UkQwandtRUNWUHZDWjRDamxQc0ExWVBKSEFsOHBl?=
+ =?utf-8?B?Skc3T1RyYVZ6bnNVS010dCtacG5YRXU5bzNrbFBwbGNQL2oveUs1ZWw4R2Zz?=
+ =?utf-8?B?Z281L04yT0ZZWktHVXA2NTFhdy8zWkNFQ2Y5M2NKNGxyVUZpaWlBVUlGWWpC?=
+ =?utf-8?B?eTZDMUdJd2FkT2ZiRG8zOXREaEI0ZFJ1aDN5ZWNYK0JHU05COFQ4M0N3SW5V?=
+ =?utf-8?B?NjZURjdVUVRqWWF1SUdob3IwMTVxVFc2cEdBR0FDRmQrWEcySE5BeUE1TDNJ?=
+ =?utf-8?B?VmRmUlJsVmJmUjBydk94aU15aVZFOXJLS0c2ZnA5RFk3SmQxWnhWbEltUkVy?=
+ =?utf-8?B?YVdlbnlzV1BjMFlMZ0UvelFRbi82aEJLeGQ1YzZFY1lCVUx4OGFYaFZTeU91?=
+ =?utf-8?B?QXJsbEVPUzFkZFJjTGxRSFYvSXJCblFHYXNRcXpvZjgwTnVINzdVWjdwVWEy?=
+ =?utf-8?B?TlArYy95ak5yVmlqbU9DMlFwQVk3WkVYbkVGMnh3aVVFQzJpd2JsbERUcmdZ?=
+ =?utf-8?B?TmtaTDY3U3dJeHRKdEhTTk1UOHFkd2dHYTAyNUtNR1pVbHJjRW5DaGhQQXV4?=
+ =?utf-8?B?cUlndlhsL1ZPY2lVMlB4dTBKY1I3OVZBNzZMTzBleGVXSURkbGFWQlJsMm0v?=
+ =?utf-8?B?ZFd2SEdWWkRobVUyelp4OTYwSTYydkp1UGU4UEMwRGVVOCtEL2ZaZUoxRXIy?=
+ =?utf-8?B?WWNIelltdytkdjA2TnNqZGtOSzBKdW52VUVGQlZmWUtSUWtmeUVIcnhiQlll?=
+ =?utf-8?B?U0hEc0oyRENDYUtOZ2pOVXFLSm5FWnZxcUE0Y0Y1OWdEbUJielFLY1RzbDND?=
+ =?utf-8?B?cEgvNTBOaHZUZTdzMjVlbjRmdlFkeDliUVdUNU1VM3VZY0pBL2IwaTFjenVK?=
+ =?utf-8?B?M2Z4UllUdjA5UjlMaFFqbzdJU1FaREZxT0psOUR0bHlNS2lkM3l6emhvMG1R?=
+ =?utf-8?B?eENWdG1aaVZHajVMOHRkSkFPdXJjUkt4VTNNYzM4emUva2dRcy8rQU5aUUY1?=
+ =?utf-8?B?VG43RllJRTQxR3dXT0hkMytnZW1ZTkxBS0lPOFZQUGdrS1lUTG05OWlaYjlP?=
+ =?utf-8?B?QVJlM1ZSdmNraU40RlNDQkovRHBvODdYRnFhc3pNdi9ORG94WVBXUFJMTCt0?=
+ =?utf-8?B?aXEyeHRXY3BPRGdvc3ZLanFLQjh1QnVyN0FxVnJGSC9BcTc2cmw2dz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6f7847d-cdbd-4f4d-5293-08deaf6ba8cc
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11910.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 14:43:26.3727
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: At6OKFu3BC+KucPNp6hoe/KGKFs1S6bgeeqcsI/UXJos4Eop0MgUqC0cYc0dw0wagku60TgMe9bHFZnxMBBLUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7371
 
-On Thu, 30 Apr 2026 23:54:46 +0800, Hans Zhang wrote:
-> spi: Use FIELD_MODIFY() for bitfield operations
+On 5/11/26 3:26 PM, Antoine Bouyer wrote:
+> First NXP neoisp driver version with the following contents:
 > 
-> Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
-> macro across multiple SPI controller drivers. This improves readability and
-> adds compile-time checking without functional changes.
+> This driver was initially inspired from raspberrypi pisp_be driver. It
+> reuses same approach for ISP job scheduling.
 > 
-> Each patch modifies a single driver, allowing independent review and
-> application.
+> The Neoisp driver supports:
+> * 8, 10, 12, 14 and 16-bits RAW Bayer images input.
+> * Monochrome sensors input.
+> * RGB/YUV, IR and Greyscale output formats.
 > 
-> [...]
+> The neoisp features are:
+> * Provides single context to limit amount of v4l2 devices.
+> * Supports M2M operations.
+> * Support SDR and HDR modes.
+> * Supports generic v4l2-isp framework for extensible Parameters and
+> Statistics buffers.
+> * Provides a `core_media_register` API to register neoisp's media entities
+> into another media graph.
+> * A module parameter to run in standalone mode with its own media device.
+> 
+> Co-developed-by: Alexi Birlinger <alexi.birlinger@nxp.com>
+> Signed-off-by: Alexi Birlinger <alexi.birlinger@nxp.com>
+> Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
+> ---
+>   MAINTAINERS                                   |    9 +
+>   drivers/media/platform/nxp/Kconfig            |    1 +
+>   drivers/media/platform/nxp/Makefile           |    1 +
+>   drivers/media/platform/nxp/neoisp/Kconfig     |   16 +
+>   drivers/media/platform/nxp/neoisp/Makefile    |    6 +
+>   drivers/media/platform/nxp/neoisp/neoisp.h    |  247 ++
+>   .../media/platform/nxp/neoisp/neoisp_core.h   |   30 +
+>   .../media/platform/nxp/neoisp/neoisp_ctx.c    | 2657 +++++++++++++++++
+>   .../media/platform/nxp/neoisp/neoisp_ctx.h    |   78 +
+>   .../media/platform/nxp/neoisp/neoisp_fmt.h    |  495 +++
+>   drivers/media/platform/nxp/neoisp/neoisp_hw.h |  557 ++++
+>   .../media/platform/nxp/neoisp/neoisp_main.c   | 1899 ++++++++++++
+>   .../media/platform/nxp/neoisp/neoisp_nodes.h  |   54 +
+>   .../media/platform/nxp/neoisp/neoisp_regs.h   | 2498 ++++++++++++++++
+>   include/uapi/linux/media/nxp/nxp_neoisp.h     |   67 -
+>   15 files changed, 8548 insertions(+), 67 deletions(-)
+>   create mode 100644 drivers/media/platform/nxp/neoisp/Kconfig
+>   create mode 100644 drivers/media/platform/nxp/neoisp/Makefile
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_core.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_ctx.c
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_ctx.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_fmt.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_hw.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_main.c
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_nodes.h
+>   create mode 100644 drivers/media/platform/nxp/neoisp/neoisp_regs.h
+> 
 
-Applied to
+[snip]
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_ctx.c b/drivers/media/platform/nxp/neoisp/neoisp_ctx.c
+> new file mode 100644
+> index 000000000000..cbb50257be57
+> --- /dev/null
+> +++ b/drivers/media/platform/nxp/neoisp/neoisp_ctx.c
+> @@ -0,0 +1,2657 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * NEOISP context registers/memory setting helpers
+> + *
+> + * Copyright 2023-2026 NXP
+> + */
+[snip]
 
-Thanks!
+> +void neoisp_ctx_get_stats(struct neoisp_dev_s *neoispd, struct neoisp_buffer_s *buf)
+> +{
+> +	struct neoisp_node_s *node = &neoispd->node[NEOISP_STATS_NODE];
+> +	u8 *src = (u8 *)(uintptr_t)neoispd->mmio_tcm;
+> +	struct v4l2_isp_buffer *stats;
+> +	u32 *blk_list, count;
+> +
+> +	/* Check if stats node link is enabled */
+> +	if (!neoisp_node_link_is_enabled(node))
+> +		return;
+> +
+> +	if (IS_ERR_OR_NULL(buf) || IS_ERR_OR_NULL(src)) {
+> +		dev_err(neoispd->dev, "Error: stats pointer\n");
+> +		return;
+> +	}
+> +
+> +	stats = (struct v4l2_isp_buffer *)get_vaddr(buf);
+> +	v4l2_isp_stats_init_buffer(stats, V4L2_ISP_VERSION_V1);
+> +
+> +	blk_list = (u32 *)neoisp_stats_blocks;
+> +	count = ARRAY_SIZE(neoisp_stats_blocks);
+> +	for (int i = 0; i < count; i++) {
+> +		struct v4l2_isp_block_header *header =
+> +			v4l2_isp_stats_init_block(neoispd->dev, stats,
+> +						  neoisp_stats_block_types_info,
+> +						  ARRAY_SIZE(neoisp_stats_block_types_info),
+> +						  blk_list[i], NEOISP_EXT_STATS_MAX_SIZE);
+> +		if (!header) {
 
-[01/10] spi: amlogic-spifc-a1: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/8262b1421ddd
-[02/10] spi: amlogic-spisg: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/b69bfa593329
-[03/10] spi: cadence-xspi: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/6fa473f4c5dc
-[04/10] spi: meson-spicc: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/cfdab17cd2d7
-[05/10] spi: nxp-xspi: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/0f2efc6d4938
-[06/10] spi: sn-f-ospi: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/579fcc06576d
-[07/10] spi: stm32-ospi: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/21ee6902a576
-[08/10] spi: stm32-qspi: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/3e0530c087a9
-[09/10] spi: sunplus-sp7021: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/673214ac9bcd
-[10/10] spi: uniphier: Use FIELD_MODIFY()
-        https://git.kernel.org/broonie/spi/c/ce7984bea2a1
+oops. I missed to apply the fix on my driver :(
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+IS_ERR(header) must be used instead of null pointer check.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+> +			dev_err(neoispd->dev, "Error: initializing stats block %d\n", i);
+> +			continue;
+> +		}
+> +
+> +		neoisp_ctx_get_stats_blk(neoispd, blk_list[i], src,
+> +					 (union neoisp_stats_block_u *)header);
+> +	}
+> +}
