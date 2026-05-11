@@ -1,351 +1,152 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010016.outbound.protection.outlook.com [52.101.69.16])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013008.outbound.protection.outlook.com [52.101.83.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63202363C57;
-	Mon, 11 May 2026 07:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218E63ACA46
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 07:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778483841; cv=fail; b=u403AVPTH/6wlrgZYRuGeTZHsDw8bwXOP2gBzuEs2ISFGEAVMLA3O/huxBQTzRSImYyt9NyrEz3xSI61uCGrlCJjpBAZTvKxIn193bFIpYvmPGcqU+aHsO6pS/HhBDDxnVVD8YvvP5A4IMX5TsNnXfM4lM7X0njPzIrzpDXcS+g=
+	t=1778486371; cv=fail; b=Ya0x3KjiIZ5NITOGI67nqwlL1oq0uZuOL0LbgKMBCMLgkeFhwzEVA+Fbp2YsI0CUhxHcaMNm1D4Ko3AByttUiEJ3TpRstKe9xUwg1HZxEExpTjOa6f5e9z3uGtSMBsCCqSehZ/yJ8TcTX2Rpu0x6xRAWeh2kTlQ6fptLlM86z1U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778483841; c=relaxed/simple;
-	bh=HR4SoSWWK7/pVFDq3BAtnNaWbeD9av/0GFD99p6U3as=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DCHLThQ6UWAwTfGJVUtzyNjLExhnZHoKAP5YNLZmsQ0c11rsoTy2mRVOfTrjoNODiApcjWvrBNLSoC4GbWajZqS+3BGGwFKKZrOeUwEmrboutp0GU5PrNU0kyEox64fulLto4sTy3U5isFTVQAyzsquIqMw5IQRRGWFTePdxaH4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TVYAyd9g; arc=fail smtp.client-ip=52.101.69.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1778486371; c=relaxed/simple;
+	bh=7to2BBq6ZiTCdDV4ci8QCYPqZdwVgSc2dZ0oaI1RRrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=E2lKf2HwU/GBABLsFAOPvk1zddKh0TEgi/hFfFBjE8xAV32vHxWIJyfLQxggrBhJVRKMPl2QdtsScpvkvoIwc14nRT4GqZwX43InhfjvIG6Ctz0lGDaRKJYwDgaHzbGdSAVxHyNMjgd13ZQXvZ7hRN9nt1sEC2YmQ2ryHtstHl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=f5WiGPBz; arc=fail smtp.client-ip=52.101.83.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TVYAyd9g"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="f5WiGPBz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MyVfVZvuHsnyX9xhgCIG9NPPkpoY1ldx2nTgat+OYrgFglxn6eeavP2rkrCFSA+Eg2ZXRmcYfULJY/9V66AVdugk3T7QEQDVE6dOK1czFU74AJm73hv78xTlNCzVLcsTlohnkQcWKIPkryOJSYFxrIPtv1+rqRD5gHCmTT6VsiXsUDzqnMrJNDOq6gvD5SOe7dGvQspiRwU29vOyve0kEkuGdBMnDk/yJwjPUqvBhU0rz5BgZ08h3qchxQaBl3BwVg9n6Sqc+BtE/7ULtU5k/OQO5PPelU2Ea8+UKkanQKYBfkCuiDWcI/kGVXp/I5DozpdHh7XRPrL7v+izR9WLuw==
+ b=VN0e09G4B7xOoK9PmIUnQAekjY6fmNDk/8dmOmBkkVFYF4Iovrju2zDd/QGYWrpazhYI+X8OC9i5z4IAHTzbo4stv0vCJpQbnvp2W+8hsSjRLJKKPTXXw6UAOdMngOzLtaHwSBUgeu7cXlov0jG5g+ozU8wOKe+SNoMc7gfhFRSYyoPkn+exGJIERSkZFZMpXili1bKuEsyT3Md74I7KO05UBEJz0ozZXvic2eLC+TFybcQXaQt7bwbtkvhByddazGL3NqcLLLcbJ/2C0eeMKC3QntIgSmBoX1siDOA7XnBkWU74ON9lN8X6XJNO3eHXt6tpH6Hm9Ubt4OUxFi0UzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xRS5TmrEKg7RXytcTXcpaOCY2vFS2mVxZ12suOM8L/w=;
- b=k/Qn7glTF+rIO2hWMdjw/+slAlGTNTuxs5vTyt/T9mrCX1MyGvrU25Di+1qZLza2QJZVNd1XC4LTCjsTB3HjMe/r7Ainl0avIqSKHYHfQPDSqNxbp6G9uxRq+n9qEbvQ7O82PlnCAuSsksZufdCqpUR0O27b+PBdnfFUT7VDHg6YaTSOKdfyRLmi8AcQpVOh4lTa+QJ3rERq0bdNJaDcpjwPDSkrNg5ND6BAn7qWZN3JXHHQSZo2Vvwi8N4PWhC/kR81hdp72i7MNZwt30bHgoRmfPUq+MIjwJfXQVqysPUVF5i9ACYwhN8PurKTnGc0YYMSljH/LPvvmkw0kxR7KA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=Yhf7Va2qE03OdWSTRymUrEKa4aA07ZjN+UxCUbh/ouo=;
+ b=eJw7HbWNVe0Rqhh6KvxDXntDX0om0N5rnVg2pE0PkunlORbIz8C+HfDs1/iGyctbo46oAk2mUVrNwv4zYDMttabTcd6MzVkeNqJtsN2+kAAfrLCTeOkQSGLb8JJdcTor4SgdY8it2+To22iMMD6ZK9gUp32nHUw3pX10CVLp3gBpmyuaMrJAjNgtIOO5d0DeWYWTw5lr4iXaVtfiMWPV/2VIn+afKXgnpi+NbHFjoBLkX57BE0aKVFdFrY6BEL0+sq4/Rmt4yC80pP4VQfqsyepJ7GWuRJIlzK9XJW+a/BP2SfmEDQySuKzCZEfJH26zhELX1a8CDdt8mLrVEGCqOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=163.com smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xRS5TmrEKg7RXytcTXcpaOCY2vFS2mVxZ12suOM8L/w=;
- b=TVYAyd9gC3/vh8oB6KX88SGfAq2dtXBmZSucH88hwC+PHT6cz1nyd6mvf4hRAXWSKrqP0KVjop6BSzRbSzvv/XnKDGqpdolIkSSGAryucghyRqaY4Z0AV3zOrzONAeIwd4SrMWDeRa4Q2+e9uVRJ0SVk06vU2Ny3idpeQ/6xKgCAbIyZ2CyAbSVXyRF3JiUarn+QJyfgcqt6QpzeXLYDDVCjqeIG1R1QXmH/AGuoGvuple/XUsx9XiLoimoo9oFyxdmlvb9MknmgsSd92cDBo2q0GaS13iuiLr2mHCV6pZrvQ3Qold1iaxQzRtU0gJjQGIenyjLo/5YF4rIL9A8iPw==
-Received: from PA4PR04MB7502.eurprd04.prod.outlook.com (2603:10a6:102:ef::21)
- by GV1PR04MB10893.eurprd04.prod.outlook.com (2603:10a6:150:209::12) with
+ bh=Yhf7Va2qE03OdWSTRymUrEKa4aA07ZjN+UxCUbh/ouo=;
+ b=f5WiGPBzfxG7HhljsWhHTDdWLaQdjDl9BLNqmowtU3+NMA5t7TwORnfuB9pDWO+plY9ERZKDI+s+K6+eDfIuvd6Hcdu7MUwKbYljbalY0nkwrZrGu+zp0RdUvLUDwLQXxyLsI3gojI+fuPXwVuaKqO7oTog4HegKmj5AJWCevZ8SFSc6LjYioTYPBEIYXEerNbY2H7vxqjBGAmZT3yT99Xxw56sMxPMAaEAJ8DwMfFVWvVQN16Tu5XM7G06lBWBlxSvh8N5NWZDZlD50IVcqNP1ztuNdt55vf0PNLnv8tjlgqVH36JELH6weFGeUCCYjur6+oax99g2M45Td1YTRNg==
+Received: from AS4P195CA0054.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:65a::14)
+ by PAXPR10MB5759.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:249::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 07:17:14 +0000
-Received: from PA4PR04MB7502.eurprd04.prod.outlook.com
- ([fe80::ff73:c7b3:5306:2ba0]) by PA4PR04MB7502.eurprd04.prod.outlook.com
- ([fe80::ff73:c7b3:5306:2ba0%3]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 07:17:14 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "sashiko@lists.linux.dev" <sashiko@lists.linux.dev>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"Frank.Li@kernel.org" <Frank.Li@kernel.org>, "robh@kernel.org"
-	<robh@kernel.org>, Networking <netdev@vger.kernel.org>
-Subject: RE: [PATCH v6 net-next 10/15] net: dsa: netc: introduce NXP NETC
- switch driver for i.MX94
-Thread-Topic: [PATCH v6 net-next 10/15] net: dsa: netc: introduce NXP NETC
- switch driver for i.MX94
-Thread-Index: AQHc356gdXpPrsGmkU2EqCuxvHl7wrYHFd0AgAE+JsA=
-Date: Mon, 11 May 2026 07:17:14 +0000
-Message-ID:
- <PA4PR04MB750282C2004F177F08BF602A88382@PA4PR04MB7502.eurprd04.prod.outlook.com>
-References: <20260509102954.4116624-11-wei.fang@nxp.com>
- <20260510104836.BDD50C2BCB8@smtp.kernel.org>
-In-Reply-To: <20260510104836.BDD50C2BCB8@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB7502:EE_|GV1PR04MB10893:EE_
-x-ms-office365-filtering-correlation-id: 3ac4a773-f464-4049-a7c6-08deaf2d53b5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|38070700021|18002099003|56012099003|22082099003;
-x-microsoft-antispam-message-info:
- 7DvbVGtLk5Yh6HY4gpCkhhfgg3M+njX4SxM9WA1o62VeZIHAeaDGqDPYyxqsfWPmsxIQb8iyQp16p/vA0NPglJdFesclGav11BpWhzJjY8gVizfxvYmYvPHszn73SbgZM601S5QepSzfd3/BJg0YkSWryxOlcqhcxOo3N1H8MMa0DPFG9xM6mtcPX4gaCA2zD1sO+rMlyIeBGkzL8aW58rYHucNZlcG635NqI+chiKN/WfumDKCJ7VA4A3xKsK5q6j7afeAdu6ySZ7005FqXb3mFaa/VPzNWGdGEB1397JR7biEAzVcuFC6K5+gSgTVdiBnmfv5BPbsAYlt+2KqYg//3fRKCtMAd2NUg2Gtr67ydt0WU37kNvi62N0EsI/uYoM747+DVzSKe8Ltj+jsOApdjYQkGxNn3FiXMtcDUcWVhx5sxMQnxp+8TgaDMiW0fKl+mvYdvoDl6MBN993rSpX24DavKZual+ehS73IeRmcwgabJuN3kMuB9rvLaB78CZbWwV8my6exPeRogyQZ8iG03MCe1DIg1y1ly36vIf2hHFkJmkRtmnkdDxyS/F6o3SVgW0GoStjyPHPJVzERh+Ycm/fIss9oFXyjEZ3Pokj8misFXGrRyc6PlSAFKFapCJ7Cbet/u+0bsdJ8ReBCDjsHU+a5cPpEtK8+ojg+ZwDt6SpdlrerJEVP6iKi67h6ctB1qU1rKObarvba19cEgzbIfg4fJQ0+P4LTp8wsOi9xx3oPGQ9zT9j21ZFf/Tn2H
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7502.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?koi8-r?Q?kUyjXHYXYSvhhQs1wEiXkSKUNjjAyMgjIrGKzIYNCUFjrTWjKlMKET5hDXuf3T?=
- =?koi8-r?Q?OusyUTIsv29KT+WhBOo1zgF2ECz815eP8z0sh1xILXQQD718CAL86iqiJJbxvM?=
- =?koi8-r?Q?do1+ulFhAsSWF0OHwMSXkS7mqDrPt5Xg/OAxo9pqaw2SY+8Jeh3bet57IdulU7?=
- =?koi8-r?Q?0vUawicQ1VF26ogkwN6Jo5GumWqCtVKZHrAdualcqrr2gfGNYi6icQ3OqzYShG?=
- =?koi8-r?Q?pq0uJZD/vBWpP7Fptpq1A0CYj/XyMotFumlnbL9dCzrq0kW6d82HrQqGNcZlrc?=
- =?koi8-r?Q?mwo4SewBPXBvM8juGbel8LnThSNjXJ4BhOw6K+rD4pyQPudGc/QP1k5HTDEPus?=
- =?koi8-r?Q?JZRhs0bfm8F7DeBqBDIqM9KDh7ca7u3ZUhoY06q0b0CE+5EtkAvV4Jjzr+M5D/?=
- =?koi8-r?Q?Ivct6mQ0NuOolzUZ2hjNAqDhuxfBpGvkavNvM137Zo+efWQz+RvGQGblzD9xo+?=
- =?koi8-r?Q?sMJIRJQXdrc6JlpIFUG0qaoLo0eyC/suiFDlV8X80nvyrIYjr8ojrcILsdkDQm?=
- =?koi8-r?Q?rz49gEmmfL797ZOZevBnMSrMi/oio4EgAoBQ46BL1R1ZoBPVliPOt+xnvSbzZ5?=
- =?koi8-r?Q?Y51RAxVHSeO299eaqRxSgMnmKaMXBhQ0XiZcALUY0r+/8t8jGzaJDegmyrBLN+?=
- =?koi8-r?Q?el/Ki42BjqWAv5u3Rde4wtPRra3mL6ux1ORWBVmvfNBWmTIWKG7sZ8KOYihY46?=
- =?koi8-r?Q?ooZRm5abYldkOb2n9geGC8YWfnzeBrsNE7GTyog9bVonEjrG8wc1M4izQT4iHk?=
- =?koi8-r?Q?S1GOeh3u0MAApL9mf3R7i3dGDfrpClzk3q9WF78dFk2EQKQM9tWJuQid6ORUX6?=
- =?koi8-r?Q?xXxOZd2IIYHRMeZEeoIQvde7T0swBdZ89WNlChMb6YF+xm0dB57VHMrMf4iC6L?=
- =?koi8-r?Q?L/USvmrrImqUjL/QcfhodTrRmGbeW6A9qbBveXUzvnzY44bAOMJa3A+MYeXza5?=
- =?koi8-r?Q?7E8mXueuR3nJPzdmXwHCTu/CjV4PgYt7TFHDPKvaXmA/yTPy5m1+s0Rf70YljR?=
- =?koi8-r?Q?fQuC8TGvnFuy1UcDsSqLawBNTwFHISzgPcAh+7+DY6J7pQpuCNgQvqeYfRndH/?=
- =?koi8-r?Q?YtwOhHvcS6heSJr4i4TeLhjo2Rda0OW6CDjj0Is9nEZmgtJ5n+6gXgNsJutxDt?=
- =?koi8-r?Q?XvUXMgy3+fZeHWvWSwOq73Qwv1Qv1Lz8UohMFI21A6LlnmNsAUznv6VYaPzrX6?=
- =?koi8-r?Q?0dCMkXv1AVjVSPbGQo/3N/omjwkyAqrnDU1ZpE5gi6Flw1hnoGuarBGMd10A3y?=
- =?koi8-r?Q?2nqfBi+ftgLzrnMSJiPEgRGldNvWFO0GL23nzFa8NsPcQgqsFNnKtgNd9m3gUL?=
- =?koi8-r?Q?U7Hj7v+NdOIXVB+glfoMV1u3iirGUyBZRaYxNmqRkYfm+jqgRDwINTTa/k5hWZ?=
- =?koi8-r?Q?24ZchDljLFmbp+L7gkGuVF03y0013aULlYEven/Xt9yxku85cKFPBwGKLg0206?=
- =?koi8-r?Q?ZDSlvS3Y6jC4j64DBQ8PeQjrPkIC257q4X+HAHEOeymSudOAaA4MlROjHN3IZ5?=
- =?koi8-r?Q?O95uoSoTAhuJkTocpegA2Jv24RJsxNFLRmz/NM2izdv0w+rNCj4oubg2gKXZ33?=
- =?koi8-r?Q?9wa1lIXp+xOOk2x/B4uEMQn23v1otVqmwms2K8hVmBk4/t4kO74bpLOn0D8BSH?=
- =?koi8-r?Q?EvI0Ks2LbXaRns225DxKHuVDldQWVl16qRpacgG+y+ftdTbua8mFkS?=
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.19; Mon, 11 May
+ 2026 07:59:14 +0000
+Received: from AMS1EPF00000043.eurprd04.prod.outlook.com
+ (2603:10a6:20b:65a:cafe::5c) by AS4P195CA0054.outlook.office365.com
+ (2603:10a6:20b:65a::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Mon,
+ 11 May 2026 07:59:13 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AMS1EPF00000043.mail.protection.outlook.com (10.167.16.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 07:59:13 +0000
+Received: from STKDAG1NODE1.st.com (10.75.128.132) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 11 May
+ 2026 10:02:55 +0200
+Received: from [10.48.87.93] (10.48.87.93) by STKDAG1NODE1.st.com
+ (10.75.128.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 11 May
+ 2026 09:59:06 +0200
+Message-ID: <283c1eb1-670f-45f3-bd33-dc8f9b0776ed@foss.st.com>
+Date: Mon, 11 May 2026 09:59:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7502.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ac4a773-f464-4049-a7c6-08deaf2d53b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2026 07:17:14.5819
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/10] spi: stm32-qspi: Use FIELD_MODIFY()
+To: Hans Zhang <18255117159@163.com>, <broonie@kernel.org>,
+	<sunny.luo@amlogic.com>, <xianwei.zhao@amlogic.com>,
+	<neil.armstrong@linaro.org>, <khilman@baylibre.com>, <han.xu@nxp.com>,
+	<haibo.chen@nxp.com>, <mcoquelin.stm32@gmail.com>,
+	<alexandre.torgue@foss.st.com>, <lhjeff911@gmail.com>,
+	<hayashi.kunihiko@socionext.com>, <mhiramat@kernel.org>,
+	<jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>
+CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-amlogic@lists.infradead.org>, <linux-arm-kernel@lists.infradead.org>,
+	<imx@lists.linux.dev>, <linux-stm32@st-md-mailman.stormreply.com>
+References: <20260430155456.36998-1-18255117159@163.com>
+ <20260430155456.36998-9-18255117159@163.com>
+Content-Language: en-US
+From: Patrice CHOTARD <patrice.chotard@foss.st.com>
+In-Reply-To: <20260430155456.36998-9-18255117159@163.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE1.st.com
+ (10.75.128.132)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000043:EE_|PAXPR10MB5759:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4230464-567f-4e52-4786-08deaf333156
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|376014|7416014|1800799024|22082099003|18002099003|56012099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	QHePOoj2iWA/aL0ExawxzWdh/fbJ15lFYwGI9d4DTWAvLfhf64BGGg0AoW9Py5tKdZeMg6ayykY8NA/ZJxQDTjhzvR4Ci2bvxNzgKUBRalNhi2yxgUbAYr5G9kXL2ohzQqzJYTSw3e0rt/3L+Nsplm+oBYvhO81G0Rc5L2cUcXT2DXEv5a4SoC6FDCvZ99YiHtvlJ3CnykHQ52GQOZif0EooQijjjoxXRnHSJ9tBGegFwga3w4Ulggm5AJBz8EcX5qKFi6415HkKv7STlDqEFPwzDUkG05QOoT09SMNHWcXhBo63ZvPJtWD6IWskhk5w9aKtULUgCJ6y1T6G6ZDKk3jk/WOFWtquXEPVUl5BQUfDaSfVt13XuqR9u2JfwOl3Ki/SudF0gtJ8wp3GFJ14B7KngWE34lgwWa+TtZ/Ix774wZg5ZvWFMbUCEGfmM+qgfp7goC6DbWQ9MNjdV1HPQ9uhpjBFi/MC4cloApoZg/oexEY9sndxIFJtMAN35TUD9vWN+8X6tkub0WJX+tRSRzZu5L03UEp7cniIAe9TvWWU1LJ/6O/udMVlqMfxZzNGtmWhutR5iZRg4jyjDlQihK0lLHEbaJ5/iXtyDZsskMnGzSRIPx/gQlbjGOMDtj3/xjdjcJik5AQy34mQW8OVUilypEqx4daSgF9FfjK+EVDXPVimVjOuQ55OrS5vdxcBMr29+cdf1EvXC4nFC7OgKIcKY1L6yZqV3frMuHm/xeaSpyKc70BLiEwRWKIr6mTbVchI06pOujBrsn58glN1LQ==
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(7416014)(1800799024)(22082099003)(18002099003)(56012099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	H8dHFFV1T5EiTXwr2V3NJuxotUURbZpgQqzjf4ph0BGBy5Wcy/Yt6Mlu4n+QpnSwgjDD72LW65WIr54eV0SaLkZUvejWcZzsdKUc/rcxUJTroWqUiFjBN2jy2XIMq6xU92zkCvUzt10BZ0Ky+Mt5Qfe8fCfifRf/m1VOgSs5c6vJdZROZvsp/Gm6FaHLhezvCbLOp2Y2HBnsOROrreARUmfKu49s0zBWdmMCwVcWrhRSoTz6huC54urtaQ/hxxcdU1sdwkka1d1qKhZjevzULXq6ixGqHEZE4lmaCc3uCwQLlFfU2/VbHBPnPjlANLMpn/Tv3AI2idlAaYs08k6XcUBfT0d3RTMDXqH65mG63XOoILsc3yaykYIO8EbtW8HZOWf7UTkNM8PzXKDZf/q861bJJXBNT44nltom7NCnf0uNfZddLLxHKHcjDMI0+bSf
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 07:59:13.8191
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Jlpj7JQaL0eALSBCp0Lp1PbVMY2pO1ieH6zcDUUSlQWn1zHq89l8nds8nrlEoMODQAgvDr9AjPksl7ViPBNrBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10893
-
-> Thank you for your contribution! Sashiko AI review found 3 potential issu=
-e(s) to
-> consider:
-> - [High] devres-managed functions are incorrectly used inside the DSA `.s=
-etup`
-> callback, leading to memory leaks and MDIO bus registration failures if t=
-he DSA
-> tree is unbound and rebound.
-> - [High] The driver's PCI shutdown callback fails to stop hardware DMA ri=
-ngs and
-> leaves PCI bus mastering enabled.
-> - [Low] Clearing the PCI driver data via pci_set_drvdata(pdev, NULL) in t=
-he
-> shutdown callback breaks potential subsequent unbind operations.
-> --
->=20
-> commit bee0164d1f3476eab41d58efbe3baf540bb03cda
-> Author: Wei Fang <wei.fang@nxp.com>
->=20
-> net: dsa: netc: introduce NXP NETC switch driver for i.MX94
->=20
-> This commit introduces the initial NXP NETC Ethernet switch driver for
-> the i.MX94 series. It provides basic probe and remove functionality, as
-> well as port capabilities and basic network setup.
->=20
-> > diff --git a/drivers/net/dsa/netc/netc_main.c
-> b/drivers/net/dsa/netc/netc_main.c
-> > index 0000000000000..8e3a3230226c3 100644
-> > --- /dev/null
-> > +++ b/drivers/net/dsa/netc/netc_main.c
->=20
-> [ ... ]
->=20
-> > +static int netc_port_create_emdio_bus(struct netc_port *np,
-> > +				      struct device_node *node)
-> > +{
-> > +	struct netc_switch *priv =3D np->switch_priv;
-> > +	struct enetc_mdio_priv *mdio_priv;
-> > +	struct device *dev =3D priv->dev;
-> > +	struct enetc_hw *hw;
-> > +	struct mii_bus *bus;
-> > +	int err;
-> > +
-> > +	hw =3D enetc_hw_alloc(dev, np->iobase);
-> > +	if (IS_ERR(hw))
-> > +		return dev_err_probe(dev, PTR_ERR(hw),
-> > +				     "Failed to allocate enetc_hw\n");
-> > +
-> > +	bus =3D devm_mdiobus_alloc_size(dev, sizeof(*mdio_priv));
->=20
-> [ ... ]
->=20
-> > +	err =3D devm_of_mdiobus_register(dev, bus, node);
->=20
-> [ ... ]
->=20
-> > +static int netc_init_all_ports(struct netc_switch *priv)
-> > +{
-> > +	struct device *dev =3D priv->dev;
-> > +	struct netc_port *np;
-> > +	struct dsa_port *dp;
-> > +	int err;
-> > +
-> > +	priv->ports =3D devm_kcalloc(dev, priv->info->num_ports,
-> > +				   sizeof(struct netc_port *),
-> > +				   GFP_KERNEL);
->=20
-> [ ... ]
->=20
-> > +	for (int i =3D 0; i < priv->info->num_ports; i++) {
-> > +		np =3D devm_kzalloc(dev, sizeof(*np), GFP_KERNEL);
->=20
-> [ ... ]
->=20
-> > +static int netc_init_all_cbdrs(struct netc_switch *priv)
-> > +{
-> > +	struct netc_switch_regs *regs =3D &priv->regs;
-> > +	struct ntmp_user *ntmp =3D &priv->ntmp;
-> > +	int i, err;
-> > +
-> > +	ntmp->cbdr_num =3D NETC_CBDR_NUM;
-> > +	ntmp->dev =3D priv->dev;
-> > +	ntmp->ring =3D devm_kcalloc(ntmp->dev, ntmp->cbdr_num,
-> > +				  sizeof(struct netc_cbdr),
-> > +				  GFP_KERNEL);
->=20
-> [ ... ]
->=20
-> > +static int netc_setup(struct dsa_switch *ds)
-> > +{
-> > +	struct netc_switch *priv =3D ds->priv;
-> > +	struct dsa_port *dp;
-> > +	int err;
-> > +
-> > +	err =3D netc_init_switch_id(priv);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err =3D netc_init_all_ports(priv);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err =3D netc_init_ntmp_user(priv);
->=20
-> Can these devres-managed allocations and registrations cause issues when =
-the
-> DSA tree unbinds and rebounds?
->=20
-> In the DSA subsystem, the .setup callback is invoked when the conduit
-> interface becomes available. If the conduit interface is unbound and rebo=
-und,
-> the DSA tree goes through a teardown and setup cycle, meaning netc_setup(=
-)
-> can be called multiple times during the lifetime of the underlying PCI de=
-vice.
-
-This analysis is wrong, the switch driver will be removed if the conduit in=
-terface
-is unbound. A device link is created between the switch and the conduit int=
-erface.
-See dsa_conduit_setup():
-
-if (!netif_is_lag_master(dev)) {
-		consumer_link =3D device_link_add(ds->dev, dev->dev.parent,
-						DL_FLAG_AUTOREMOVE_CONSUMER);
-		if (!consumer_link)
-			netdev_err(dev,
-				   "Failed to create a device link to DSA switch %s\n",
-				   dev_name(ds->dev));
-}
-
-For NETC switch it does not support LAG, so the consumer_link is created
-when dsa_conduit_setup() is called. netc_setup() is called only once during
-the lifetime of the switch device. The call stack is show below.
-netc_switch_probe()
-	=84=80=80dsa_register_switch()
-		 =84=80=80 dsa_switch_probe()
-			   =84=80=80 dsa_tree_setup()
-				     =84=80=80 dsa_tree_setup_switches()
-						   =84=80=80 dsa_switch_setup()
-
-This is a false positive, please ignore it.
-
->=20
-> Because netc_init_all_ports() and netc_init_ntmp_user() use devres functi=
-ons
-> (devm_kzalloc(), devm_kcalloc(), and devm_of_mdiobus_register()) tied to =
-the
-> PCI device, their resources will not be freed when .teardown is called. W=
-hen
-> the tree binds again, netc_setup() will execute anew, leaking the previou=
-sly
-> allocated memory. Also, devm_of_mdiobus_register() will attempt to regist=
-er an
-> MDIO bus with an ID that is already in use by the previous unfreed
-> registration, potentially causing .setup to fail.
->=20
-> Would it be better to either move these allocations to probe(), or manage=
- them
-> without devm_ helpers and explicitly clean them up in .teardown()?
->=20
-> [ ... ]
->=20
-> > +static void netc_switch_shutdown(struct pci_dev *pdev)
-> > +{
-> > +	struct netc_switch *priv =3D pci_get_drvdata(pdev);
-> > +
-> > +	if (!priv)
-> > +		return;
-> > +
-> > +	dsa_switch_shutdown(priv->ds);
->=20
-> Does the hardware continue to perform DMA after this shutdown callback ru=
-ns?
->=20
-> The netc_switch_pci_init() function enables PCI bus mastering and sets up=
- a
-> 64-bit DMA mask, and netc_init_all_cbdrs() initializes the Control BD rin=
-gs.
-> However, dsa_switch_shutdown() only closes the logical network ports with=
-out
-> invoking the DSA teardown callback, meaning the hardware BD rings are nev=
-er
-> disabled.
->=20
-> Leaving the hardware rings active with bus mastering enabled during a sys=
-tem
-> reboot or a transition to a kexec/kdump kernel might allow the device to
-> continue performing DMA into memory that may have been reassigned,
-> potentially
-> leading to silent memory corruption or IOMMU faults. Should the shutdown
-> callback explicitly disable the rings or call pci_clear_master() here?
-
-NETC switch is PCIe device, what I learned from pci_device_shutdown() is th=
-at
-it is unnecessary to call pci_clear_master() in netc_switch_shutdown().
-
-See the comment from pci_device_shutdown():
-    /*
-	 * If this is a kexec reboot, turn off Bus Master bit on the
-	 * device to tell it to not continue to do DMA. Don't touch
-	 * devices in D3cold or unknown states.
-	 * If it is not a kexec reboot, firmware will hit the PCI
-	 * devices with big hammer and stop their DMA any way.
-	 */
-
->=20
-> > +	pci_set_drvdata(pdev, NULL);
->=20
-> Could clearing the driver data here break subsequent unbind operations?
->=20
-> If a user manually unbinds the driver via sysfs shortly after a shutdown
-> event, netc_switch_remove() will read a NULL priv pointer and return earl=
-y,
-
-I believe this is a technically possible but meaningless edge case, and the=
-re
-is no need to make any changes to this meaningless situation.
-
-> skipping dsa_unregister_switch() and leaking the DSA state. Is it necessa=
-ry to
-> clear the driver data in the shutdown path?
-> > +}
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4230464-567f-4e52-4786-08deaf333156
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000043.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR10MB5759
 
 
+
+On 4/30/26 17:54, Hans Zhang wrote:
+> Use FIELD_MODIFY() to remove open-coded bit manipulation.
+> No functional change intended.
+> 
+> Signed-off-by: Hans Zhang <18255117159@163.com>
+> ---
+>  drivers/spi/spi-stm32-qspi.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+> index df1bbacec90a..ea69fe25686f 100644
+> --- a/drivers/spi/spi-stm32-qspi.c
+> +++ b/drivers/spi/spi-stm32-qspi.c
+> @@ -374,9 +374,8 @@ static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
+>  	int timeout, err = 0, err_poll_status = 0;
+>  
+>  	cr = readl_relaxed(qspi->io_base + QSPI_CR);
+> -	cr &= ~CR_PRESC_MASK & ~CR_FSEL;
+> -	cr |= FIELD_PREP(CR_PRESC_MASK, flash->presc);
+> -	cr |= FIELD_PREP(CR_FSEL, flash->cs);
+> +	FIELD_MODIFY(CR_PRESC_MASK, &cr, flash->presc);
+> +	FIELD_MODIFY(CR_FSEL, &cr, flash->cs);
+>  	writel_relaxed(cr, qspi->io_base + QSPI_CR);
+>  
+>  	if (op->data.nbytes)
+
+Hi Hans
+
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+
+Thanks
+Patrice
