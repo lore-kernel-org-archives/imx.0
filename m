@@ -1,134 +1,194 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011010.outbound.protection.outlook.com [40.107.130.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568C430C62E
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 07:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540BE30C62E
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 07:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778483022; cv=pass; b=ufAZnUHplp0zuVxeWy8fmwdkCkcyHFsRoW19wOSt9VTyCuqGNyVIZtgrgfpVoCre1cDQzEPdtcMI3abSAqn+MnnOEdgrpK4LZv0VBZxfzju9kiwGFRvg4vauSl7WVtVPrkDVoCiBs6213fXAP6IeQN8soLgaTr8KDHSDyZyXQHM=
+	t=1778483441; cv=fail; b=A+QZNyBEVSTD5Ny3PT9Q5pthCWawjVuPF/uJJGpw3ygJ6XFdDHzsNLEjpuSCB3S0Lzo+Cfm8qpOXuSbrhsHDeo4N1Zh2ES5At03cDuzUh73so3wV5660iHuvjJjXJCbsNXzvmebjOs45Zr7FcUWWKs4ALFfhNvDv33bt4UVoQgQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778483022; c=relaxed/simple;
-	bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pWAE3xICdEYPhHZrXCZ4A5TlRMkZubgfucpbHJ54LCpen7imi8fk1/mvdTf1v2rsWynlmoj7ZV7xHXGtdu0ihsJtW/qsQESiM2/+aYhwKEmd0hyX/2FVOoAUjzkic7Mm/xIuxBUG4HUZM0UMX4XwNWF8/hzyzaVVeCKcvzCFyH4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc; spf=pass smtp.mailfrom=arduino.cc; dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b=fE7gbMPS; arc=pass smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arduino.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arduino.cc
+	s=arc-20240116; t=1778483441; c=relaxed/simple;
+	bh=aH4VaXSpQtbvj5w1mWiqm6uzS7rrt2wOc0NpIuUxhxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bEZ676fbbO4j0f+7ku+8O2O0qhkcdiahEjmAqc0m6gAVuAw0cwrQ7natKOWg60DmHHJ2fL+Hw9A86NRbMQTRetVRDDuMeMaublBc0yhb3/apiDC+L2ka4v/PbyZa7KCnVc/SgcSTci9Fgs2Pt7eGVtV8M7w/hDkf5jVlbXlv8M0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=KQ87JDpB; arc=fail smtp.client-ip=40.107.130.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arduino.cc header.i=@arduino.cc header.b="fE7gbMPS"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a858881ad2so4094887e87.3
-        for <imx@lists.linux.dev>; Mon, 11 May 2026 00:03:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778483019; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UksRBj4QLXmAZ9sBLLZaOp0YAU+SSag1pDAmZdOPr50Y1zjT+BkclaQgmYynHZ12ZM
-         G5j39ZXRnxQx8b971uKXhYNkmD5DAastlZ0VbEXIquTZyiaSOiI4wfKc7PjdquQqrDJM
-         xFDJEjFF8igYGz02RHKZyYWnWZ6vX/eSukuFzRMkYEUMpjmO5rqHcy1YXsWvhuNgatcO
-         opgzfd5pPDg49oCT0x3eO5dJNkaGcZ8UHo88bUscl5+LbCQOP7m7OpfGItU+CkqLvqIO
-         w/z9fVIpJntaGpJoE5tzlYbdOWko+SQ3YYrKrqxu+Wfq69qvXk7N1RDOJHgvCKtU02sa
-         9OVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
-        fh=JF9XkFfkZqkkozuH6O/aoz5O7tgdoB/Az/X3spI4tQ0=;
-        b=VPUAWsKTD95X/EEsaZIf5ujpgaoiMK8rrh580bExLV0rplhxL8XBTHrq4E5XYdy/u/
-         5qVEqunrgo1i5WXpFHD//tCGyDeLetPMYY97ei/Ckq9swjwV2cTTug4sIgXxhjLuOun0
-         QB8R7Xqjkn2Fd82tWrQSGWWknBifFukrFEfkVsE2he9dw2nnuV5XnO6af8e2XaJO165T
-         ovqEXEfnqQ3oZrNhKnrZcWZUlDswX9l9Ysu3KlanfRr3aLyrCfnus0/fnDLPG9p9aX/T
-         cQGw2Mg5QxAaViF0ZquD+48HNhiMXAzAO/5wL9osgus/xAyU3HyMl2w9hBG8Y71R6cX/
-         bEhw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arduino.cc; s=google; t=1778483019; x=1779087819; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
-        b=fE7gbMPSZ7b5hESaXPI4LwOLsqrmXAXEEUzJMa2y+XE6C3DbXLugKs8FUARAaHyMFS
-         gX035U2bMfxu2vKfrTmVYgd8HLlq8UjPge74Pg6Ly9GZ/PrtT87XJ/Mq2omHVWZBVKib
-         CjMdH4nPte7vG4vkpKxtTgdxga6Pg7qroC97k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778483019; x=1779087819;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=75WL9mRL1dCJuocUI08WGLFPcO/+haYZ+pjQRPIFdi0=;
-        b=Xuo3sDgG9hTcqA+MPX7UdCMRGfCfcclLdjGVEZhq+esKvawbdCk3V9rrcyqKQ5bt+x
-         pvxn3Xfhqh6tKkTwcn6KnyPgESban/t7lZgSMRyeFkcd4D/a8FLBm76AN+rJzGHiZzkA
-         qdudCYcVRyG9pyljdTD8Is/1WnALnS2MHy5PaVjybS/+8u/NwqViNylQFHd26atpMnrq
-         ztr/CQIvk21nJgrQp7y79RTpISzkgDp+xh3mVzUn6Uvl75c3jFmGEJF5yZFnvHIkvXhs
-         +p9JKrsiQGjG7Yt00V8upH1hJWEia5KMkTQ/G/iCcbUBhVhMPYVixrFU4HtnDDkNhfSS
-         MipA==
-X-Forwarded-Encrypted: i=1; AFNElJ8CCF+JYdoJsi1DHStTcufcTNIdGzXWcwjTyehvhyXwMSNmzjRGYC8cmfv0IBIV3PKyaVc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxTFOBG/mzP2E0J77HJl1Ip7oHNNRkxC0p2+MfEpa2b3EN6GHvX
-	oGP7Ak1sG4/O8LoXtuRMv9h1tgF5sQ5DQT7E9R++dQON+eMWRxuWzneWdSsE1nTnr9eT4Ok9AWE
-	luU0HHI9379sC9joZ1A6aVHj53bHDWzkhm0nAs6nYGA==
-X-Gm-Gg: Acq92OH4pRwlrB3Hv9CPVZ6RqKp34x6c7/8VQncAt5jKY6NYyagB3xr4f95VKc/mOPt
-	xRyvtGO1eYrvP0Zkr3ZNp+uu7MPMDmtU6rwdVn8yoa3JgdgA+VJ3qsW+GbYnL8VRO47bsmIxz/l
-	Dnngv46PR9XPwc8s0OvDj5YkTi5AtVfTI2/Q/23924+GbTvHQAa7PogAok9H4X+9uZmsSX3m6+v
-	8vHPqWoWpg6RwW69QhjJrMH3BgqxLpZ4rPHiEOwAH9RaOHt5P8O6iRbAeYTC3L+VI/CNyvYrwKB
-	nKJVkBGNTW9pigE=
-X-Received: by 2002:a05:6512:4008:b0:5a8:80ce:ba55 with SMTP id
- 2adb3069b0e04-5a887ae1e90mr7551438e87.11.1778483019285; Mon, 11 May 2026
- 00:03:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="KQ87JDpB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JFBtDJ0Ljqgt86eGFAqtxv6xODcU0/OLzM69PtMp5kYcHSkHYL0Pfp/CROwAOqjbOtMmoz4dyhTxY7ihR2qLsxAzNbRrs52Cjw52kznUZKLOjUIbuzimLIUzDFJ7qmrAa/6AT12QwHzCBgOz86D713OLgftIaq+AIzztqxNd6QEiP+/ECdQ1mCQNc9EBQm1g+V54hqHwGkBBjJElsvz9ehT0BBzTsRXrKq9Pc/OYkKqptWS2Z8vXDI6skb5OJPmwa6A++Si51wSnORBGFsahXI5Nda72khv9wL50WCTLlKm/Wh5Bhq4nLDaB8BeExAROAwwNWqT3QpeWEAeC3tZS8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/xjdu3VxtYZ28io8DBLRvX9kig463+mEoghwQHa88to=;
+ b=s+7ZNUhphPnL3VZDAVReBUYjOnqwzMOSkgA+A2ciFPWv0Bdpq6f0OhZLB0ZYdbjATWPZLZ8t0JwCQ6F4hW+fOd6v92wyeGTZHXe6JaJFexId9ZgEfJS5KoaygU1QhT2Z0JEqoQ+jgDndJEkZZpt22k3JJhXTXyqdWvXYDKqkS/QFMse+G7d+iDP7nbizbnvYqTy1+zyw/pmh6MF6x5YUAMRxa9E5SRwGtsNoyCW1P/xxVcEaJF23cQTUhnNVaMt4w3gIV/HUr15OORCdo+6+yWcPv/051n6GHZASPYcUT30AxGa8nsVnQoYDNLcU2UIA+6/HWEO1cW4rVG4Zt7Tgxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=linaro.org smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/xjdu3VxtYZ28io8DBLRvX9kig463+mEoghwQHa88to=;
+ b=KQ87JDpBN4SIaEkf4XUqAeQiJuOJcvYZeKZpf/XSEqJqM1rBgLJiTkWJI5z/GDMiio8ArDnjuDxObZb+i26nz4/x+cYCFQ+LIl6V1QDGAKOQFryFm8NVq91wWSZCd4LHbFVtA4sw41feA2WMMa6MtedZvnXK5fMehjCiOtj+aOMV1Wp84QX3A6qBrhrd2PtOPIdccbvWiK7KijT8kqqNgohj6kOsJIImy0h8ytIgeBK128qzCRF3rU7yCXB9rxVcqasF6p8BHzflf/UVKoL0wb5gVC8z4MAIKPDnIuOPjgiAnieM4eCFtvbcyFUqY+whIB2zCfujV/ZNGeXwTarsOA==
+Received: from CWLP123CA0197.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:19c::20)
+ by GVXPR10MB8664.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1de::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
+ 2026 07:10:33 +0000
+Received: from AMS1EPF00000041.eurprd04.prod.outlook.com
+ (2603:10a6:400:19c:cafe::9c) by CWLP123CA0197.outlook.office365.com
+ (2603:10a6:400:19c::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Mon,
+ 11 May 2026 07:10:32 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AMS1EPF00000041.mail.protection.outlook.com (10.167.16.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 07:10:32 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 11 May
+ 2026 09:14:19 +0200
+Received: from [10.48.87.127] (10.48.87.127) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Mon, 11 May
+ 2026 09:10:30 +0200
+Message-ID: <92a8e53e-412a-4475-89dc-62caf12e8c56@foss.st.com>
+Date: Mon, 11 May 2026 09:10:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260430132140.30369-1-r.mereu.kernel@arduino.cc>
- <20260430132140.30369-3-r.mereu.kernel@arduino.cc> <CAFEp6-31LQX+uHJ2PFES76RGqmZKS43dO3UoziVZ-KWQGCy6aQ@mail.gmail.com>
- <a6d6e638-6e61-4e39-9e06-bbac7703c6ac@oss.qualcomm.com>
-In-Reply-To: <a6d6e638-6e61-4e39-9e06-bbac7703c6ac@oss.qualcomm.com>
-From: Riccardo Mereu Linux Kernel <r.mereu.kernel@arduino.cc>
-Date: Mon, 11 May 2026 09:03:27 +0200
-X-Gm-Features: AVHnY4KqvZ7gjq-ivtySQtnC8vX7jHJ3zr9wVqg3mRzKVkPEw_LUG_hW37iSbSA
-Message-ID: <CAKA1JhZHDPWbJVSuu3X4PH3T6Ko-uzZ6ktA0i+-w919ffuvEuw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] arm64: qcom: imola: Move analogix video/audio output
- to dtso
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, andersson@kernel.org, 
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, broonie@kernel.org, linux@roeck-us.net, 
-	Jonathan.Cameron@huawei.com, wenswang@yeah.net, naresh.solanki@9elements.com, 
-	michal.simek@amd.com, nuno.sa@analog.com, chou.cosmo@gmail.com, 
-	grantpeltier93@gmail.com, eajames@linux.ibm.com, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, festevam@gmail.com, imx@lists.linux.dev, 
-	m.facchin@arduino.cc, dmitry.baryshkov@oss.qualcomm.com, 
-	Riccardo Mereu <r.mereu@arduino.cc>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: Beleswar Prasad Padhi <b-padhi@ti.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Andrew Lunn <andrew@lunn.ch>, Linus Walleij
+	<linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson
+	<andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"Peng Fan" <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+References: <CANLsYkwvL0Z3+12MD=J+Dc2yAU2T8ypizyG=6AhYoWOh55odHA@mail.gmail.com>
+ <472f85bd-42c2-40c6-abfd-b76924797069@ti.com>
+ <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <268f8e00-91bc-43ea-ba95-077cf859e7f3@ti.com>
+ <9e2492d3-8753-46c7-8db6-5f1a80b4f2e9@foss.st.com>
+ <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
+ <6917e3d7-8c6c-4e63-8eca-5308621ec3e8@foss.st.com> <afzIABSh1xtMEGbf@p14s>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+In-Reply-To: <afzIABSh1xtMEGbf@p14s>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000041:EE_|GVXPR10MB8664:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9319f76a-efdb-4a3d-2e98-08deaf2c6433
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|36860700016|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	FjCfTf7bUzXnw4vuucvFnShpiDyo8qKnLED625/sW2VP2untk+ftSF2pV/9hFpLuRVd84j92lYBQyzZA4gf0tL/XYu42JNNbpF6t2jmZkIRQ93moFyPrBa0197/qdMg8FXtBOaw6EZj8//0blwJ122HJ7awnS2VFnBewygBMB6BjExZRoS3F6w3EhCIsiubQTyruAHyrQBslxsJu86MwYeUe6nO2/Se2aOhdugav3Eh3DYqLMoqZR+2b+ZUiSYAY+p5oLv5ZG6wjUsuMAFnemSZ+GXLYQKa74Ulsli188Y2FjlEmTx73tj9xM/FGarbUmLYD1gXKxOd+fNXg/Wvo2pKkzVsDL3hazSvjGLk3o4vyp8bSbkVLIDWQxnVQQWx78ZqgLvrmfMyEnL+roh8O2eUX0WEikFi4ac7dz9OgP6zQrqxJB7OVcrFmyj4zHEUi+sYnhWZFi1CliljUbIQtX3Gn3W+6ayU0G2G3i9Wox8DKjSlgy/luEN3//Ay0MvGAvXsGklCYF/kYi79km0Oy8hR7PqfVEwCOyMD5jJvOziatJEDpQB78VFzBQ6WnuRfvf0xC0jdKD1NUofI+k3kOjB+isUUHKUKMjUWPqQVR9nLV9F2a6fgE1w6ctFwfap0m1yW9tvvM/or5DlImb+nwf0l9n3IZr+LTnoRbiqGNWvolcxxa8gxlJOM/gQxL0zjVvwm7qbhT61cMJItX74/jD6U2Yg6EW8G5edjIIp6zU2g=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(36860700016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	2ag6a8+a2dCUMeGxPVIFyf8qRS8Si7BYvPj9A3w7oq7Mg1M5WVUHy0oKUMALYR6uQIsdaiaQrfrRv0TNKOQTaEahq5ok3atJdSrqnF6mR+dHc/fIRIMZEFKwIEwmRaYpDAY+GdsP35KEuhTZQbwVAuAF2F0fe54jBwfuB/hP36n0vailt5MyD/OYOTrigD4d1Gz3Zx9UxswEvkjOsO585hWVDIW6VEMteFB0L+aae0urTipKH/y9mYU7sE9UilpBIgwukeB9QN3+SJSIakxRg+PI+lt+SWYwAeSuyfNQrlIQw/ZqwZdH77YowZ+iK9ocJPXbGIn6alL84aeCIeoZDl+517ther3HuiBP6oPxREQzNEhHyyP5YZY5XOlTVQMQnXcGPM/nGQgSEEvK53o1JWSn3Z/Ba8/Rl0xom0ujCCSZbaBC3xQPAfsNkxLyB4gR
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 07:10:32.6847
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9319f76a-efdb-4a3d-2e98-08deaf2c6433
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000041.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB8664
 
-On Fri, May 8, 2026 at 1:19=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 5/5/26 5:44 PM, Loic Poulain wrote:
-> > On Thu, Apr 30, 2026 at 3:21=E2=80=AFPM Riccardo Mereu
-> > <r.mereu.kernel@arduino.cc> wrote:
-> >>
-> >> From: Riccardo Mereu <r.mereu@arduino.cc>
-> >>
-> >> This is done in order to support different video output over DSI.
-> >> Since audio part is linked to Analogix USB-C controller it is moved to
-> >> the same DTSO.
-> >
-> > I'm a bit skeptical about having a separate DT overlay for this. Is
-> > that really the right approach? The Analogix block is part of the main
-> > board,
->
-> Oh I skipped over this!
->
-> So, does the media board require that a switch is flipped or something
-> like that, to route the lanes away from the analogix chip?
+Hello Mathieu,
 
-No, DSI is shared without any switches in a "Y" connection.
-I agree with Loic that not splitting that part but modifying it would be be=
-tter.
-My goal in doing that was to write as little as possible to allow a
-bigger audience to play or repurpose DTSOs.
-Since V2 has no panel I'll avoid splitting them anyway.
+[...]
+>>
+>> A third option would be a combination of both approaches: instantiate the
+>> device using the same name service from the remote side, as done in
+>> rpmsg-tty. In that case, a get_config message, or a similar mechanism, would
+>> also be needed to retrieve the port information from the remote side.
+>>
+> 
+> I'm not overly fond of a get_config message because it is one more thing we
+> have to define and maintain.
+> 
+> Arnaud: is there a get_config message already defined for rpmsg_tty?
 
-Riccardo
+No there isn't.
+
+Regards,
+Arnaud
+
+> 
+> Beleswar: Can you provide a link to a virtio device that would use a get_config
+> message?
+>   
+>> Tanmaya also proposed another alternative based on reserved addresses.
+>>
+>> At this point, I suggest letting Mathieu review the discussion and recommend
+>> the most suitable approach.
+>>
+>> Thanks,
+>> Arnaud
+>>
+>>>>
+>>>> At the end, whatever solution is implemented, my main concern is that the
+>>>> Linux driver design should, if possible, avoid adding unnecessary complexity
+>>>> or limitations on the remote side (for instance in openAMP project).
+>>>
+>>>
+>>> Yes definitely, I want the same. Feel free to let me know if this does
+>>> not suit with the OpenAMP project.
+>>>
+>>> Thanks,
+>>> Beleswar
+>>>
+>>>>
+>>>> Thanks,
+>>>> Arnaud
+>>>>
+>>>>
+>>>>> So Linux does not need to send the port idx everytime while sending a
+>>>>> gpio message anymore.
+>>>>>
+>>>>> Thanks,
+>>>>> Beleswar
+>>>>>
+>>>>> [...]
+>>>>>
+>>>>
+>>
+
