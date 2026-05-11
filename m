@@ -1,46 +1,46 @@
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013039.outbound.protection.outlook.com [52.101.72.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478DF3F54CA
-	for <imx@lists.linux.dev>; Mon, 11 May 2026 13:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896E53F65F9
+	for <imx@lists.linux.dev>; Mon, 11 May 2026 13:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778506029; cv=fail; b=sqIaL6hKOEh1t+rezktg4n/KkmNDVatuRi0y0s2xjOKZZCwByg14Z5ptTEqi/HzjgkGjkscIX6m8eNKlyvdWtz7y7W2BdHjvI9i0z6NKxBskqtCrVqjqsOWx2Lt0hERP5ubGcD+MvegZq+rTrfjz6i2jHEZ4v7vWI/NbKDfKLSs=
+	t=1778506030; cv=fail; b=nrNwSN5mOx+O8PiPfeliNq8c8qNXOfAk5QoycEgs2Ey1z81nfaByJbDeO4DHt6yI4QX2EbLZaP+A5yCazt28iHO4k5j+ZJZ3OfujogU7+3p/4MMLztwnmeL61jZDEWyH08ItqWXNRb1mRVUPlA81PbN/y9h4SfaiElyIctMaSC8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778506029; c=relaxed/simple;
-	bh=ywAxMuC309Fpr4vIyYohLw/1OE0PlDYnflUBaQ8gGro=;
+	s=arc-20240116; t=1778506030; c=relaxed/simple;
+	bh=IL2fCbpUHUB8PEJwQyuxZLW1SnS2/j7K9hM13GPEim8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QflMI+vHJX+KNxzgJ5h6MskjfudFJklJeK9iZjJUL8okJjPcoB93nV56E6Vf+BY5WNcDtRkgJg2FEe3Ym9I2clpUvHFw8ltjIbfWfumUxLexjK2HSsuL6i4C5cvzTtoZGbnVF4pyfx5lKy0hx6sSklDFYkj8BXfv5Q//6a1zokc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nMYpKEqG; arc=fail smtp.client-ip=52.101.72.39
+	 Content-Type:MIME-Version; b=Rh+pogrlq4n3FV+rWy/ZoDI1HoffQZeghiYI2t8bGZQpupQZY4B8novHP7dNu71dDQgOrS8Ik1mscqGkWeQN0XVhPVILQY7LP7C/C8JznxLdZXx6z+HZNWEprwml8PgLi2C98pB1905peIef/5esigxA9NhVljOz7sXWjNUgiZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Gg5PHhyd; arc=fail smtp.client-ip=52.101.72.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nMYpKEqG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Gg5PHhyd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cHszMrLkvbFqsx2SSJWeBjkFgIh5WsSqzJ5semvtA6vFJTGveOjsJ4FoUUT1hm9cj5cvViRBaPOKeAzTMewW/2tngQsVf0slmDoZFH334l9N0xCQol2oSBc8wcX2RHt9DTADW85SVpLcIE0FfE0tSlsDI+DOq21OvfIVMilwNVAJ2BLSqovu0G774zsDDj6oErj9QIr1nIjrsHrIfQhEScvIpwW6z9pQwBD16ClYwaOTphMTDj8OaPbP2PRwfD4waxVfEEZm7haZ+5MfRtOTtO6mdDx9DYeDOCfXR3FiULKIeexF4lCS7qDlb+UO9Xi0qPVfJougMiDW7VcFg/jCeg==
+ b=V1czFakKUoKmDOvVjswrrU62dTU2nIpMUlBWFv7rt5nzaORvBc9t0KEnGVEA1egfIuMBQRVn5OqzfB/tS+x0ANnAOGlT6qXM4V3xJIS8TFCBekn9ClCU5hZVlkt2Re5vwkockoG7KE+R93Uc3nl1MBObcHFR7IW5ka7IWqoL0PJ0/udMdlGZt/1T+v5HXssFHUlnwf1sNYB1cm+XyGZJ168M/k5S+aV93gEXb+o2pY4IjfjTUu3d+z3FcsLZOnOqLpCwrsmGhSFKXYqVKPtLx1N1SCzDsQ7eh4XlxFpiNIoAJHXpR6+Aqro1qv9E8Fo2l5rZQ/qDJvtjhoS4gvtohQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5071r4wYGD74zaid4TTbjp5JjaHHPBhEr1eQDmYHP9M=;
- b=lQNkC1Q4uA5WXcgeKg9FVndOgs5WKZlApvG2leTG60qnr0XOpdrv4B74fEcuaiiMLKI04ioMUZu0fXaRkkPrHsSNkIwELt8ylm64bWb2gWNBrNe93DmvoXXpsSROcIJzYOtGEyBanDDv9u3UEJUOBbNzFD3AaZg2dyScd87sE91KtXX280Da4vGbu/mMOVPDytTIG+0OJU9KzF6XPS/F79UGFD1SZJbXV2EQEDrb11cBfAOpDE8Ap8RDmNgKaMFNKGjlToVvxeGd6wN4AoUx3ISzpFkAPpO1pvwkseS3B9+jRq/DI/ipL/tAXIjEMINEBBx9xsBYXBR6jcXEbNClJw==
+ bh=kRT1dS+fvpIOvX6B4bnEyIM7X/zK2B3E/PAYDvuI9LU=;
+ b=DvkrgfQhN+RTgNKK3zTY6VOkSXlE1MF5HVTLbHBh0+15NHg9nYchBilKc6H6otcHQLg2KXKKPzSR1QWMTKDMVUCmCrsf+VjqqIw58VvHoiWkQdmB44wMmuKdoMQworaRCbA9G1pmvrP7z4R75W9PMK9WVP009zAy/No+D5wdULuLRvcZsSdlUrebFa7ujS+ShW0Ckiut3MKRVbE/ryIYr7Ui5QGgY+8yrdjIFwzeRjGJ5WhKUF+CEPjTH0FDAgBlgFEhjzww0WH67EBZe0ZlNzv8nJnMgyEF/vOvM9qk9QtV+I1FoqzfcC2mm9CWRRV4T03QF7SJ9yR9C2hYvknGnw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5071r4wYGD74zaid4TTbjp5JjaHHPBhEr1eQDmYHP9M=;
- b=nMYpKEqGghnKHlUJaXa0PADC6fItu35iVx6wv3f5TPIVUCBm7dMU1EMg8/vYxSjFYWXCMLOU5otaJ4TSFw3DlGpn1gEUlHq40VUoSyhB6qqKyvMUi3qDcU1X9PnZiO+58kPoGX5UUHu7S0wFrRANHkIPE/8rGWg8cxO1JjP69K0hNevY1l3qK8E0afEA2uya70LKl8714GOnb5vYcOf0iQbTmKR2W7icApMarYe5VHlona3WbdaYN9Eh5PdlDaOUy9pzTFbXzXP/ixI/2GOHZvi5t+6cpYw8CSq7u2ytLKPYfubImv7VjA01EL69DKvMmDbrjI86H5VfvaE57VSPNw==
+ bh=kRT1dS+fvpIOvX6B4bnEyIM7X/zK2B3E/PAYDvuI9LU=;
+ b=Gg5PHhydPqY9js+iBCZfonuKICh6cfklR7JG5USIpOo0TDq/Zp6++vJudwotUZwojC0hSPgxk8DW1awVYXu8cKPPwE3c+2tCQEGipEj4nl3tD5G9JZUZnX7/bDATi735dGCFvzNPN/BIRKrV8SrpVXMPKjSBYZu1yQWegzcaF+UFtLsfAbqQJWK1CKtEAgHXWDQIbZarfSAmjFhFMRo3Ua1MsjfAlbnCtY2vDxOp0p/IL86ZTM6EIkxi3hzanIEqK3D1XlHclufIrD3/dCPVeoxFWemkYB7AJC4Sp2dXUgZ3mQpR9m4Wx02EDHBYM4nfeARdPdqBVQlchtwsyFaWKg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
  (2603:10a6:102:516::16) by AM9PR04MB8131.eurprd04.prod.outlook.com
  (2603:10a6:20b:3ed::21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 13:26:59 +0000
+ 2026 13:27:05 +0000
 Received: from PA6PR04MB11910.eurprd04.prod.outlook.com
  ([fe80::d3f0:3c24:f717:4989]) by PA6PR04MB11910.eurprd04.prod.outlook.com
  ([fe80::d3f0:3c24:f717:4989%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 13:26:59 +0000
+ 13:27:05 +0000
 From: Antoine Bouyer <antoine.bouyer@nxp.com>
 To: julien.vuillaumier@nxp.com,
 	alexi.birlinger@nxp.com,
@@ -63,9 +63,9 @@ Cc: linux-media@vger.kernel.org,
 	paul.elder@ideasonboard.com,
 	geert@linux-m68k.org,
 	Antoine Bouyer <antoine.bouyer@nxp.com>
-Subject: [PATCH v2 5/8] media: Documentation: Add NXP neoisp driver documentation
-Date: Mon, 11 May 2026 15:26:25 +0200
-Message-ID: <20260511132629.1300868-6-antoine.bouyer@nxp.com>
+Subject: [PATCH v2 8/8] arm64: dts: freescale: imx95: Add NXP neoisp device tree node
+Date: Mon, 11 May 2026 15:26:28 +0200
+Message-ID: <20260511132629.1300868-9-antoine.bouyer@nxp.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
 References: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
@@ -82,416 +82,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA6PR04MB11910:EE_|AM9PR04MB8131:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fcdc740-34be-4f7b-d678-08deaf60faa2
+X-MS-Office365-Filtering-Correlation-Id: fdab1ae6-38e3-4d9e-0a21-08deaf60fda7
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|22082099003|56012099003|18002099003|11063799003|8126099003|921020|38350700014|3023799003;
+ BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|22082099003|56012099003|18002099003|11063799003|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
- dLWUazDn2X01NZgL9ZSu6yDrnw0/QfJ/Hu3iyn0w2fecFTNnD3T4Qjznf0Qlqje4X0NLz71NveoNEP6McsPrNqwCV110GyU0HJ+pPNBIQVxYzbdlIgKPzUzCFWiKrJJtFQwL0corF//vQ2h7eCKbdeR15ERQFM6B4DyPgPKPvzLo2XLuNWQwiVDQ4dL53cUfxIphGmK2kNKCxw3kc0BuEpZYgSRZ4cRdjzOfwo8btMhrcwGPyXNFWBFvPCEWXdpYdInGMZsj94KhbEIFB9KbbMaVg16eQXyuF6Lk9mFbmnyH4HCWhBID4o549OBUnUUUsseR/tHibBHRdhMEOX8Q10gjciGxaFEWM3jOmcJb16mxJBiioJo48fl/1Z+k1QJCmGMMou6UBoQBzntnr2aSJAyMtmJBlbuNTv3cfoT45xQFyqTfWzlxc1CzA91L5DniJjHgZO9+Ur7wNOf2sROBgUIQBEc94MQtq5uxgPLleCof+fXykV/vvjUtD0ficEplRM8Ioebi+rES1zn3t8AudoOHKvPlfM13ireIHa4lDMxAbfkToOwc1hhtiR1b4CVTunla0YmJICS3RZTbSRJmTSjEqdQn02o90cCjxtNtMDcPVEj1kU/soCyMi7rUU/b1f5lHMsraU16cOA7tsywojpghbq4sVxip5iBbATXvcf+6g6N/zFHFZ5UAWSovfvbFpvgej8qynvIc4svkudh9cby3ByQpM6utT4PP/1vd/WcGzMdLn79XwUEYJla9zxfNR4GIWBNFr3kAxgHHEE35zQ==
+ /2oiJUoERT5CQh663r9lvgyoFlYewmiZoJaAGp/I0xwAMvi3qSQ6ipHHfWdG8cq7PuHHw6XAaBZ2j14OR/fkJOnApBoh7hANCAKqKNstBEtZ0I34bxGcA1sU63YiDT2dyAATIhY9fRXIqWGEkh5SG1Jv0fQQgUYglliz2k8MG009H5nZeWlZpoKegKB6sNPPGrWyJL8IQ9DBdL1l5OrWeQpc2UHhk43cJi8GwSl/4GACtds4GDQM93ZXE8EGkN6scB372k9G4QQ/cBqQGYC2l4ANE1rnoVPeckCF7VaeeTLfC4hFb1PZ+x9UMe3bLgGFmN4TAU5TttPiOAY1SZmM/yAl/DwPEA0aPBHMWvR0mfKcJpqiltcLJer18NGVTPRxQ3fqP4FUJCveBmu8ZT4NjzBjNKDbjKLbnoy5Piw9QW4MDU4aDvsx7LVbVxFsZ4ZoT5lgVFavQ7FxL1/2+ekr/Us9pcK8C9pCVzlsJZuFHrzRLVYH/Cy/I9fFIh4H6at/BGpWAxg2tTb2UDILVnHtIOM+xwYoHou1Pg5rhEpbwOQ3bJYbNewh0kN8GNwXniQrvhn8eXj3zCftbl7ZVNDW4fr9USgJRx5CyMd9l6l/GZbdv0ZOT4EN0DAHr/5+68zwesGpREzlhadn5GEcGjz9F6F/fnR80C+h96UiHIEgk8UNpUA57pmXxj1TFx55Ck2lVc/Yte/+VUvZE0lY9KqhuI/Rn7DVcqQJZiLSx63zwEOwgEISJyyh36ti6S2NUw1LUGhmxxAd+bYRfkFdWh28/A==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(22082099003)(56012099003)(18002099003)(11063799003)(8126099003)(921020)(38350700014)(3023799003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11910.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(22082099003)(56012099003)(18002099003)(11063799003)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?HPikS5arQIalWQsxdIRyqPSRpWTrbqtF/BPWt8y3gY8sdqGipQOPOcH7Ataj?=
- =?us-ascii?Q?sy8EXxIHM/rnbrmqFILXFYwhC7xESazgEs8MU3S3eqocWEk6zAuFpH4aLLwy?=
- =?us-ascii?Q?kCDVnEn1pyPs3uDkQK0nYymWE3Yb9n2KbYOCjwcgnRLCuyoP7+Irr5YRh8I+?=
- =?us-ascii?Q?DP5YyrlAlzMpGakcRkugtP7gIkPyej6KLTMu2eJ3r5LSvl5Tkd5xywZod+8R?=
- =?us-ascii?Q?L/koJvFqbKLHGbHyyqzFLg717JI3TFrY1gLUnA+vh+3UJGCCpk7gyV81pQkq?=
- =?us-ascii?Q?D4gTSjXB6ARv0ZtGWivDyKuii8rQoU6OkATeWZyAophUQc9n6FQfK2wGJaH9?=
- =?us-ascii?Q?mkiWGaR/H+mltZ4FsciSxpn/ava6XVb9y/876c6XT3HIniV6dr3TUsDRM6bJ?=
- =?us-ascii?Q?rbRb8uMtPTWL9DSDf1Zu9WEmeV/AAjoaJzfb4Zi+miXQ53of9LvPwLjSVLfE?=
- =?us-ascii?Q?nsRbPLxfbNGZCVOShHHka1w7BoQqnF/mxvyA2vBjUTWmhlNj54/iKqyPkJiA?=
- =?us-ascii?Q?YuMGaW/kaK29MiARdd70SYXng5LJbGVc86jlpvEDU3UGyqglA3beHXJsuvni?=
- =?us-ascii?Q?jzIJY+n+PClEgrbbc3RmCPQI0W3K/aPqno4e4RsqKXGCigiUqIYT5U0bogsv?=
- =?us-ascii?Q?0jWuZAf3K4TlkEdTYS2htVTDd3pmRAKMxDfNZYvQDmnIh/LrcLd4kzIbiq2t?=
- =?us-ascii?Q?F2IFyFtIGee/Np9y3f5N52Am0ZLwQq2gdTs958ing+llzF8f/2IQyQG1rNmd?=
- =?us-ascii?Q?1osikWatVQvNEyC2UCPIf9t3cZMI34X43ZAAJnA20iD2tMUKxJBpq85haqzW?=
- =?us-ascii?Q?U3K1IkwZKYR8GVOcDvsEjTxXzrNFgLR+OiteF2WxsTdz6urxquMR6yG7QWtE?=
- =?us-ascii?Q?d38OM4R3MT39Z69VRXlf6hLeidoyREmPbw1dDPyywlYNlwld4QbegNT8emOL?=
- =?us-ascii?Q?HPue84LtPi0cXpsyEKNBfmkHzob8llaIPPPLkQIcBpgmsp7wP3o4LnSsQZYF?=
- =?us-ascii?Q?+TqWf39FLYEqt9QNzlxO68EnitGSxlzd/A1aONRzfbg21FxByARpsMks81KY?=
- =?us-ascii?Q?JdOfX0U24RNQEApoWjyisEDy7+2XhIIbTK65cjRke7KwMU7lwlIqOabkwfYx?=
- =?us-ascii?Q?BhiDSURnPUSy4mAOnjEuUemDWQmfXgBlXcR6ZM+M2yX6ly7h+frx0fIn0xs3?=
- =?us-ascii?Q?fLZCsLZXI7xVkYJNIwozdQpQ6XmkoQpyryYA5MdLXKwLZB7YVHZ9uPVtYR8c?=
- =?us-ascii?Q?NPDVE1WIUL7tbqqbBcYeKWyOF7t53KvcPmBbFEouICj4DO8/poGWFTgcfi1f?=
- =?us-ascii?Q?5T3fOtFPyHUCNQbonT/aRpNw1knPB246RVqUHlPv2Z0ywSDfcq8In+7Vu6Ui?=
- =?us-ascii?Q?qehO91uL0Yfo8+z6t8PyJLngpFei4ktl7ImmNZd5K1ju2BMoI8ulRjqlhdS/?=
- =?us-ascii?Q?pCTwSs88sAv+b8tK7BeCHu3vjF4ZXSsHV4zuJSagfK+LJ/rA15K+Fg9d5Vot?=
- =?us-ascii?Q?aQaJMEEkb6aGT8XXXaeHSI3YFN1kgzhlM3FfC+/orp4aMpfyAJQLWmSZSC6S?=
- =?us-ascii?Q?LibvDJ/R9uMwz+4LaXL+3LPwevnkkQybiARPKrNwwgdoPZnwqKdD2n6yH3ib?=
- =?us-ascii?Q?1pO9bHFU0JZIQVBZ9mSIwBezGys8p/CD+OMN2Yb2GoKM+fv+oy3qi91ivhfZ?=
- =?us-ascii?Q?ZFLTNvo9M33IqQC2UJrCrdzii/AoDLYKJLq5+97YXjYv2AKmqFhGTJW+ssLi?=
- =?us-ascii?Q?uOl8ayWS9A=3D=3D?=
+ =?us-ascii?Q?cD1gIHNFm0C+S4XhVl+LH4+afD5BsIxc93s4Ci5D5AUpH68zunzToFNvEF6G?=
+ =?us-ascii?Q?iqo+bmeNlkFIkhUAMJaL07GWnYuvboFAipwMYo+cSVGagFeV4+1TsvyvQY33?=
+ =?us-ascii?Q?ZayaXrQMrb3sc93Pz9y/ldomEU9yBwujJbb4vK4ayj28CKTNEY9Wu8k+nWP2?=
+ =?us-ascii?Q?/WjNd3ehcN8y3cHAN4hK9i40kUXf6GBRuZmFpLGuNmeq37Wq9DZt03LZLMZR?=
+ =?us-ascii?Q?+HrUxTzhm/P4/LC3xAWueYvl8OtAxnlRQMpb2G5dvL0fnINqJqrtqUyx9VAT?=
+ =?us-ascii?Q?EvmQSGwxJOP1WsGK1SgkrBWiGWduszrk34CP3Q2lGjzYa7K5GtOKYlg1FLsG?=
+ =?us-ascii?Q?XAa8l8MDJq7qMqTmkJUSBACX20NJ9RVQroWXRRibFc7y9jiyrmgCdAGG+gFD?=
+ =?us-ascii?Q?o4Xl28czBgiFMf4DQNhV1V9wVGTclctiJPApsrZsyBNZkUpopkFta+xHyDH1?=
+ =?us-ascii?Q?/NBARXPdDeV9Nh4+bEg40/5YQIXv3r/Kxtl337ltUogGmXDDt54TncM+kf7a?=
+ =?us-ascii?Q?6ed1gQpYYuZ6WDReFJakm+/WK2YH0LR6HXsSHM+GSqmB+7ukauGvacEna7SN?=
+ =?us-ascii?Q?LO+7gDbt/vI3M4WFoCh/+CuKNN0RSorYRR++9x+CEdeKPrxkouoRJGMTeGln?=
+ =?us-ascii?Q?zTjVEzFBwcaPUSiD2tSbJ5AnW1b/9AaVtYp0CmWzGDtA6ZXVj65/1V2BjUZz?=
+ =?us-ascii?Q?hwo8ZGuHbdUsHOu6bxqfo3T/54JPZC7aJixd9wi50ZATMTFYXxs9Ze4JX9l4?=
+ =?us-ascii?Q?7FV4yy6Ff0eUN6Wo5nqmw/oJzXfISAlvfnpfM/A+/UcEfrmOxPeJ+6MGPtBw?=
+ =?us-ascii?Q?OG4dcdJm5V0aCGvE2/wS+mn1NpLGfYjgfAeMwVG11HAzC8HcVJvUGEndBB/4?=
+ =?us-ascii?Q?dLB2FxZioLmJVNIgqJE6Z9UkzyW3UetvZz3h5ynRJYETfml7LG+ozZpou3Qi?=
+ =?us-ascii?Q?G4EFZqg3uZuRKvulTwFiJJr4lTKxK/AoBYrjhTfA9RSlklQ581bwCQM0D4vx?=
+ =?us-ascii?Q?QuqbEWc3jlBsF0FwDqImVB0lD8x+p4HM4AXfUipJ0gLXP2IzSJUCvavpa2dy?=
+ =?us-ascii?Q?hOEokasSaNm4FuwKc25I49HfhHgg9kWpxTDzo/NvTHehCYdFMV+CTWfw9FLg?=
+ =?us-ascii?Q?5DOhobqhYhlqxtvcMuMMtoBVlfcvwas4/RAlcU6F/fMrH5XZfhDezAyszXda?=
+ =?us-ascii?Q?Bp4ofx9/taRa+XOhKTmaZu3ZD6L/oX8tZR7WBI66gtrlomV3Eyerxqo4bSPe?=
+ =?us-ascii?Q?hoO2UwdlhpkKoenZuLi20MGs+CGqcSZs+xkJvTk5wa9JxH4YJA9dD+ZTT7l0?=
+ =?us-ascii?Q?AuzAneSF7Q8TCTzDiX1k30IsEM5wEGjCQjvma+SmUsSz4Z5oG1DEDPTw4ytj?=
+ =?us-ascii?Q?iNZXIlFmvAlB4N5rZ+TTUGCI26qgZrxUN37eq8l1OHfNzynziHxUbtJ1utS/?=
+ =?us-ascii?Q?N1KJ/sFkPXd/KVsWCQAb4PnTyXqX77JwUR1xlhp+5WvdWc3rPOCojo5r0X+2?=
+ =?us-ascii?Q?Dw2WvA3uihXKZWYReoBX3a96PXIlZ75TYoRE0FhrCbjkAo2wNpzoS3ujihd6?=
+ =?us-ascii?Q?oFH4zhXP/TCSH2z51Xiu/P6V1JqblZo7eIGwLF6pPsYRMrbSGrpK/EM/RRDz?=
+ =?us-ascii?Q?xCVX4aFn/5/ysuHHRiHxRIseu0IVKzhFbUdxV9UVfeRwBZXkczelFRJaYiNZ?=
+ =?us-ascii?Q?Q0hAdoPsvOrPIhHn8mYlEXUYAV8R1iamYwRDfSe9B7h6PwG1hSITWpgfB2YU?=
+ =?us-ascii?Q?14HnSKM2ww=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fcdc740-34be-4f7b-d678-08deaf60faa2
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdab1ae6-38e3-4d9e-0a21-08deaf60fda7
 X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11910.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 13:26:59.6220
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 13:27:04.2553
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vqdXQrZnv46Pn0hXScnMpc5x40b+YOg0+7K2hS7onUpjv51GbMyF4SQDXWev4tVkV6hwrI5p3iQ9Rm99M/d8BQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: WYB8u6CGhTDnf+IYVh5ro7i+G0alnKjPeXb6Q+cSx/hpLRRjFVkh0e2+GyAh4WKGIXmUs7ovotxg/oaU58yxGQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8131
 
-Document the NXP neoisp driver both in the admin-guide for neoisp IP
-description, and in the userspace-api for neoisp interface description.
+Add neoisp device tree node to imx95.dtsi and enable it by default in
+19x19 evk board.
 
 Signed-off-by: Antoine Bouyer <antoine.bouyer@nxp.com>
 ---
- .../admin-guide/media/nxp-neoisp-diagram.dot  |  24 +++
- .../admin-guide/media/nxp-neoisp.dot          |  18 ++
- .../admin-guide/media/nxp-neoisp.rst          | 179 ++++++++++++++++++
- .../admin-guide/media/v4l-drivers.rst         |   1 +
- .../userspace-api/media/v4l/meta-formats.rst  |   1 +
- .../media/v4l/metafmt-nxp-neoisp.rst          |  70 +++++++
- 6 files changed, 293 insertions(+)
- create mode 100644 Documentation/admin-guide/media/nxp-neoisp-diagram.dot
- create mode 100644 Documentation/admin-guide/media/nxp-neoisp.dot
- create mode 100644 Documentation/admin-guide/media/nxp-neoisp.rst
- create mode 100644 Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |  4 ++++
+ arch/arm64/boot/dts/freescale/imx95.dtsi          | 11 +++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/Documentation/admin-guide/media/nxp-neoisp-diagram.dot b/Documentation/admin-guide/media/nxp-neoisp-diagram.dot
-new file mode 100644
-index 000000000000..362723d66bc9
---- /dev/null
-+++ b/Documentation/admin-guide/media/nxp-neoisp-diagram.dot
-@@ -0,0 +1,24 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+digraph G {
-+  rankdir = "LR";
-+  node [shape=rect];
-+  splines = ortho;
-+  label = "Neoisp pipeline diagram";
-+  {In0, In1 } -> HC -> {HDR_decomp0, HDR_decomp1};
-+  HDR_decomp0 -> OBWB0 -> HDR_merge;
-+  HDR_decomp1 -> OBWB1 -> HDR_merge;
-+  HDR_merge -> RGBIR -> IR_compression;
-+  RGBIR -> Statistics;
-+  RGBIR -> OBWB2 ->BNR -> Vignetting -> ColorTemp;
-+  Vignetting -> Demosaic -> RGB2YUV -> DRC -> AF;
-+  DRC-> NR -> EE -> DF -> Gamma -> Packetizer;
-+  DRC -> DMAP -> DF[weight=2];
-+  DRC -> CCONV -> CAS -> Gamma;
-+  {rank = "same"; RGBIR, DRC}
-+  {rank = "same"; AF, NR, DMAP}
-+  {rank = "same"; IR_compression, Vignetting}
-+  IR_compression -> AXIOutDMA;
-+  Packetizer -> AXIOutDMA [weight=3];
-+  AXIOutDMA -> {"Out0", "Out1"}
-+}
-diff --git a/Documentation/admin-guide/media/nxp-neoisp.dot b/Documentation/admin-guide/media/nxp-neoisp.dot
-new file mode 100644
-index 000000000000..79d9090dc1f9
---- /dev/null
-+++ b/Documentation/admin-guide/media/nxp-neoisp.dot
-@@ -0,0 +1,18 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+digraph board {
-+	rankdir=TB
-+	n00000001 [label="{{<port0> 0 | <port1> 1 | <port2> 2} | neoisp\n | {<port3> 3 | <port4> 4 | <port5> 5}}", shape=Mrecord, style=filled, fillcolor=green]
-+	n00000001:port3 -> n00000020 [style=dashed]
-+	n00000001:port4 -> n00000022 [style=dashed]
-+	n00000001:port5 -> n00000024 [style=dashed]
-+	n0000000a [label="neoisp-input0\n/dev/video0", shape=box, style=filled, fillcolor=yellow]
-+	n0000000a -> n00000001:port0 [style=bold]
-+	n00000010 [label="neoisp-input1\n/dev/video1", shape=box, style=filled, fillcolor=yellow]
-+	n00000010 -> n00000001:port1 [style=dashed]
-+	n00000016 [label="neoisp-params\n/dev/video2", shape=box, style=filled, fillcolor=yellow]
-+	n00000016 -> n00000001:port2 [style=dashed]
-+	n00000020 [label="neoisp-frame\n/dev/video3", shape=box, style=filled, fillcolor=yellow]
-+	n00000022 [label="neoisp-ir\n/dev/video4", shape=box, style=filled, fillcolor=yellow]
-+	n00000024 [label="neoisp-stats\n/dev/video5", shape=box, style=filled, fillcolor=yellow]
-+}
-diff --git a/Documentation/admin-guide/media/nxp-neoisp.rst b/Documentation/admin-guide/media/nxp-neoisp.rst
-new file mode 100644
-index 000000000000..16117112b701
---- /dev/null
-+++ b/Documentation/admin-guide/media/nxp-neoisp.rst
-@@ -0,0 +1,179 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+=======================================
-+NXP Neo Image Signal Processor (neoisp)
-+=======================================
-+
-+Introduction
-+============
-+
-+Neoisp performs a set of image processing tasks on the RAW camera stream, where
-+the input camera stream and Neoisp processed output image are stored in DDR or
-+any system memory fast enough to keep up with Neoisp processing.
-+The overall Neoisp operation is frame based, that is 1 complete image frame is
-+read and output pixel by pixel, line by line wise.
-+
-+Revisions
-+=========
-+
-+NXP Neoisp driver supports the Neoisp V2 hw revision, used in i.MX95 Soc family.
-+
-+Neoisp hardware
-+===============
-+
-+The Neoisp registers and pipeline processing are documented in the NXP Image
-+Signal Processor Specification document (under NDA).
-+
-+The NEO pipeline block diagram is shown below:
-+
-+.. kernel-figure:: nxp-neoisp-diagram.dot
-+    :alt:   Diagram of neoisp pipeline
-+    :align: center
-+
-+It is composed of the following HW blocks:
-+
-+- a Head Color (HC) selection block,
-+- two HDR decompression blocks, one for each input,
-+- three Optical Black correction and White Balance (OBWB) blocks at different
-+  stages in the pipeline,
-+- a HDR merge block for HDR image capture from the 2 input lines,
-+- a RGB-IR to RGGB converter,
-+- a Bayer Noise Reduction (BNR) block,
-+- a Vignetting block, aka Lens Shading Correction (LSC),
-+- a Demosaic block for RAW image conversion to RGB,
-+- a RGB Color Correction Matrix (CCM) and Color Space Converter aka CSC or
-+  RGB2YUV,
-+- a Dynamic Range Compression (DRC) block,
-+- the Denoising pipeline (composed by multiple blocks for Noise Reduction, Edge
-+  Enhancement, Gamma Compensation, etc),
-+- a Packetizer used for UV sub-sampling or RGB packing.
-+
-+All these blocks are controlled by SW through registers. Some of these
-+registers are accessible by the uAPI, so that userspace application and Image
-+Processing Algorithms (IPA) can configure them through the parameters buffers.
-+
-+Neoisp driver
-+=============
-+
-+Neoisp driver is located under drivers/media/platform/nxp/neoisp.
-+It uses the `V4L2 API` and the `V4L2 subdev API` to register capture and output
-+video devices in addition to a subdevice for neoisp that connects the video
-+devices into a media graph realized using the `Media Controller (MC) API`.
-+
-+Driver provides a core registration API that allows registering the neoisp core
-+media devices into an external media graph. In this case, the neoisp is fully
-+integrated into a main media graph which could include other subdevices such as
-+camera sensors, crossbar routing, etc. It also provides a module parameter to
-+allow running in standalone mode. In such case, the neoisp registers its media
-+devices into its own media graph.
-+
-+The media topology registered by Neoisp driver is represented below:
-+
-+.. kernel-figure:: nxp-neoisp.dot
-+    :alt:   Diagram of neoisp media device topology
-+    :align: center
-+
-+
-+The neoisp registers the following video device nodes:
-+
-+- neoisp-input0: output device for RAW frames to be submitted to the ISP for processing.
-+- neoisp-input1: output device for RAW frames short capture in HDR merge mode.
-+- neoisp-params: output meta device for parameters provided by user space 3A algorithms.
-+- neoisp-frame: capture device for RGB/YUV pixels of the processed images.
-+- neoisp-ir: capture device for the infra-red pixels of the processed images.
-+- neoisp-stats: capture meta device for generated image statistics for user space 3A algorithms.
-+
-+neoisp-input0, neoisp-input1
-+----------------------------
-+
-+Images to be processed by Neoisp are queued to the neoisp-input0 (and
-+neoisp-input1 when in HDR mode) output device nodes. Supported image formats
-+as input to the ISP are:
-+
-+- Raw bayer formats:
-+
-+  - 8 bits raw (V4L2_PIX_FMT_SRGGB8, V4L2_PIX_FMT_SBGGR8, V4L2_PIX_FMT_SGBRG8,
-+    V4L2_PIX_FMT_SGRBG8)
-+  - 10 bits raw (V4L2_PIX_FMT_SRGGB10, V4L2_PIX_FMT_SBGGR10,
-+    V4L2_PIX_FMT_SGBRG10, V4L2_PIX_FMT_SGRBG10)
-+  - 12 bits raw (V4L2_PIX_FMT_SRGGB12, V4L2_PIX_FMT_SBGGR12,
-+    V4L2_PIX_FMT_SGBRG12, V4L2_PIX_FMT_SGRBG12)
-+  - 14 bits raw (V4L2_PIX_FMT_SRGGB14, V4L2_PIX_FMT_SBGGR14,
-+    V4L2_PIX_FMT_SGBRG14, V4L2_PIX_FMT_SGRBG14)
-+  - 16 bits raw (V4L2_PIX_FMT_SRGGB16, V4L2_PIX_FMT_SBGGR16,
-+    V4L2_PIX_FMT_SGBRG16, V4L2_PIX_FMT_SGRBG16)
-+
-+- Monochrome formats:
-+
-+  - 8 bits Monochrome (V4L2_PIX_FMT_GREY)
-+  - 10 bits Monochrome (V4L2_PIX_FMT_Y10)
-+  - 12 bits Monochrome (V4L2_PIX_FMT_Y12)
-+  - 14 bits Monochrome (V4L2_PIX_FMT_Y14)
-+  - 16 bits Monochrome (V4L2_PIX_FMT_Y16)
-+
-+.. note::
-+   RGBIr camera sensors are supported as well, and can be used through user
-+   space activation of the IR block.
-+
-+.. note::
-+   neoisp-input1 link is mutable and should be enabled in case a short capture
-+   image buffer is provided to the ISP for HDR merge.
-+
-+.. _neoisp_params:
-+
-+neoisp-params
-+-------------
-+
-+The neoisp-params output meta device receives configuration data to be written
-+to Neoisp registers and internal memory for desired input image processing.
-+This v4l2 device accepts the generic `extensible parameters` format.
-+
-+In this format, the parameters buffer is defined by the generic
-+:c:type:`v4l2_isp_buffer`, and userspace should set
-+:ref:`V4L2_META_FMT_NEO_ISP_EXT_PARAMS <v4l2-meta-fmt-neo-isp-ext-params>`
-+as dataformat.
-+
-+When the related media link is disabled, the image decoding will be done based
-+on the default parameters of the ISP.
-+
-+neoisp-frame
-+------------
-+
-+The capture device writes to memory the RGB or YUV pixels of the image processed
-+by Neoisp when the media link is enabled. If the related media link is disabled,
-+the processed image will be written to dummy buffer and not delivered to the
-+neoisp-frame video device node.
-+
-+neoisp-ir
-+---------
-+
-+The capture device writes to memory the RGBIr pixels of the image processed by
-+Neoisp when the media link is enabled. If the related media link is disabled,
-+the processed image will not be delivered to the neoisp-ir video device node.
-+
-+.. _neoisp_stats:
-+
-+neoisp-stats
-+------------
-+
-+The neoisp-stats capture meta device provides statistics data generated by
-+Neoisp hardware while processing the input image. This v4l2 device accepts the
-+`extensible statistics` format.
-+
-+In this format, the statistics buffer is defined by the generic
-+:c:type:`v4l2_isp_buffer`, and userspace should set
-+:ref:`V4L2_META_FMT_NEO_ISP_EXT_STATS <v4l2-meta-fmt-neo-isp-ext-stats>` as
-+dataformat.
-+
-+When the related media link is disabled, the decoding statistics will not be
-+delivered to the neoisp-stats meta device node.
-+
-+Control
-+=======
-+
-+To support additional neoisp hardware revisions, the read-only bitmask control
-+`V4L2_CID_NEOISP_SUPPORTED_PARAMS_BLOCKS` can be used to query the list of
-+supported blocks. Each bit represents the availability of the corresponding
-+entry from the :c:type:`neoisp_param_block_type_e` enum. In current driver
-+version, default and max values represent the blocks supported by the i.MX95
-+SoC.
-diff --git a/Documentation/admin-guide/media/v4l-drivers.rst b/Documentation/admin-guide/media/v4l-drivers.rst
-index d31da8e0a54f..445269f87b17 100644
---- a/Documentation/admin-guide/media/v4l-drivers.rst
-+++ b/Documentation/admin-guide/media/v4l-drivers.rst
-@@ -21,6 +21,7 @@ Video4Linux (V4L) driver-specific documentation
- 	ivtv
- 	mali-c55
- 	mgb4
-+	nxp-neoisp
- 	omap3isp
- 	philips
- 	qcom_camss
-diff --git a/Documentation/userspace-api/media/v4l/meta-formats.rst b/Documentation/userspace-api/media/v4l/meta-formats.rst
-index 3e0cab153f0a..46268d955d3a 100644
---- a/Documentation/userspace-api/media/v4l/meta-formats.rst
-+++ b/Documentation/userspace-api/media/v4l/meta-formats.rst
-@@ -18,6 +18,7 @@ These formats are used for the :ref:`metadata` interface only.
-     metafmt-d4xx
-     metafmt-generic
-     metafmt-intel-ipu3
-+    metafmt-nxp-neoisp
-     metafmt-pisp-be
-     metafmt-pisp-fe
-     metafmt-rkisp1
-diff --git a/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst b/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
-new file mode 100644
-index 000000000000..5a1b0c555a03
---- /dev/null
-+++ b/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
-@@ -0,0 +1,70 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+*****************************************
-+V4L2_META_FMT_NEO_ISP_EXT_PARAMS ('nnep')
-+*****************************************
-+
-+The Neoisp image signal processor is configured by userspace through a buffer
-+of parameters to :ref:`neoisp-params <neoisp_params>` output device node using
-+the :c:type:`v4l2_meta_format` interface.
-+
-+The parameters buffer uses the generic `extensible parameters` configuration
-+format.
-+
-+.. _v4l2-meta-fmt-neo-isp-ext-params:
-+
-+Extensible parameters configuration format
-+==========================================
-+
-+When using the `extensible parameters` configuration format, parameters are
-+passed to the :ref:`neoisp-params <neoisp_params>` metadata output video node
-+using the `V4L2_META_FMT_NEO_ISP_EXT_PARAMS` meta format.
-+
-+The buffer contains a single instance of the C structure
-+:c:type:`v4l2_isp_buffer` defined in ``v4l2-isp.h``. The
-+:c:type:`v4l2_isp_buffer` structure is designed to allow userspace to
-+populate the data buffer with only the configuration data for the Neoisp blocks
-+it intends to configure. The extensible parameters format design allows
-+developers to define new block types to support new configuration parameters,
-+and defines a versioning scheme so that it can be extended and versioned
-+without breaking compatibility with existing applications.
-+
-+****************************************
-+V4L2_META_FMT_NEO_ISP_EXT_STATS ('nnes')
-+****************************************
-+
-+The Neoisp image signal processor generates statistics data while processing an
-+input image. These statistics are captured in a buffer and provided to
-+userspace through the :ref:`neoisp-stats <neoisp_stats>` capture video node
-+using the :c:type:`v4l2_meta_format` interface. The statistics data are
-+processed by userspace application to produce the next Neoisp parameters.
-+
-+The statistics buffer uses the generic `extensible statistics` format.
-+
-+.. _v4l2-meta-fmt-neo-isp-ext-stats:
-+
-+Extensible statistics format
-+============================
-+
-+When using the `extensible statistics` format, the statistics buffer is passed
-+from the :ref:`neoisp-stats <neoisp_stats>` metadata capture video node using
-+the `V4L2_META_FMT_NEO_ISP_EXT_STATS` meta format.
-+
-+The buffer contains a single instance of the C structure
-+:c:type:`v4l2_isp_buffer` defined in ``v4l2-isp.h``. The
-+:c:type:`v4l2_isp_buffer` structure is designed to allow future Neoisp
-+driver versions to populate the statistics buffer with future blocks
-+statistics, and defines a versioning scheme so that it can be extended and
-+versioned without breaking compatibility with existing applications.
-+
-+**********************
-+Neoisp uAPI data types
-+**********************
-+
-+This chapter describes the data types exposed to userspace by Neoisp driver.
-+
-+Some structure members are in a fixed-point format, in this case the related
-+description will be ended by a fixed-point definition between parenthesis.
-+
-+.. kernel-doc:: include/uapi/linux/media/nxp/nxp_neoisp.h
-+
+diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+index 041fd838fabb..a116fe0a6d79 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+@@ -511,6 +511,10 @@ &mu7 {
+ 	status = "okay";
+ };
+ 
++&neoisp0 {
++	status = "okay";
++};
++
+ &netcmix_blk_ctrl {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+index 71394871d8dd..bee796b9d34a 100644
+--- a/arch/arm64/boot/dts/freescale/imx95.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+@@ -1772,6 +1772,17 @@ smmu: iommu@490d0000 {
+ 			};
+ 		};
+ 
++		neoisp0: isp@4ae00000 {
++			compatible = "nxp,imx95-neoisp";
++			reg = <0x0 0x4ae00000 0x0 0x8000>,
++			      <0x0 0x4afe0000 0x0 0x10000>;
++			interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&scmi_clk IMX95_CLK_CAMCM0>;
++			clock-names = "camcm0";
++			power-domains = <&scmi_devpd IMX95_PD_CAMERA>;
++			status = "disabled";
++		};
++
+ 		usb3: usb@4c010010 {
+ 			compatible = "fsl,imx95-dwc3", "fsl,imx8mp-dwc3";
+ 			reg = <0x0 0x4c010010 0x0 0x04>,
 -- 
 2.51.0
 
