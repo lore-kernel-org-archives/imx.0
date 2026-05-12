@@ -1,152 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74D13BF672;
-	Tue, 12 May 2026 20:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7701283FE6;
+	Tue, 12 May 2026 21:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617513; cv=none; b=hxoBSO75wmA8ck7+tKElk7ZsYELzQdxw0FKnqA0eoC10/1aawDrVJCzq0gMnHWDp1ywLOEjWBnAsFATLjAlTtf+8eIsKE8DEaYnCGUoW+5XHtiV13HyELbDpkk3mcw5vW2X8SWxK5MciuB35YnGBAtPDWWIcD66Kd/GVdFplsZM=
+	t=1778620604; cv=none; b=d8RVoF2mFTMSWnZuHKVLcBOIGtHd0UMg35iOkzFebCs2bn0tQbGVHs7zxkSXKBrGU3NOG13AwaosqRyLCm996BVK+ck0OnvHbOFJ6NXi2iyaJj03fJCLPD4JBIs0K7UGsVJaUBQo55Klhx/oagcCp/Ugf7choWhl06A42jv+KYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617513; c=relaxed/simple;
-	bh=jrhhy1oHA57ylt9hf6z/42F0KO2nGzTAYcBMOukMeeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WUwUfEPioa7ZG8Q7/3eUpVL46NDEm5CxtLVZDTAe5RPwIdYAr6mtk01HMGSlEVJrfU2kQbeZxiVZS9D8my9GcRCCZzKuRFLCOxlTo+wuF59tPPhWWdziIVUqWLoqk6dSTmcpWkNGUm/Pi2CHHGOVJOVQHlDO16yOX3nfDYpGrz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/Ds6pRw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778620604; c=relaxed/simple;
+	bh=APePLdspSN7hGGceShzyPLNA9Svo0jqkScnt1ljbgPk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=snXYnnFf/jHAQp1M5/UmXu6yR2P0EHBDDiNmRytMEX/9EX/VNbIBFoPaW2lcWZHoGwgSHLorruhRfDD6nuMG29w/lEZgdApMlTwEQFsCvylSqkxixTVUINlXOicV4tKfhu9TqiJD4DZLKCljhEbXoXwraH4lnj729fD6BHxjLck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRYNSHl6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/Ds6pRw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DF0C2BCB0;
-	Tue, 12 May 2026 20:25:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRYNSHl6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5A6C2BCB0;
+	Tue, 12 May 2026 21:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778617513;
-	bh=jrhhy1oHA57ylt9hf6z/42F0KO2nGzTAYcBMOukMeeg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E/Ds6pRwtPimFQyLRRQvMzpFeZWI6A2q91YtmstNykm+NiVy/XvIM7undsTsvDrw+
-	 0TR+R7WC5dDB7c2aRJEq7qIBEB9hsvJyzjGGEHUFh1KaRAsmeJKCRPa3Z+QzbJOAK8
-	 Ei36b3VyPP2uRHydTMQXwpkou5/2QUMXPRMKGw3QAnI6FXkk1yo2yIrYj7d1OkoJwf
-	 XZlfay2iLQlhG6eN4E9Wli/xECvB1ekQg66fb40yyE0unanV983QMBzmU8UB1ov/Iu
-	 QwVe9+wryorwKcyZoFoJxPIlPG0z6roaNfE3OelljVpeb8fcamiDtS6YzmUtqmfooV
-	 GMWR4K/8Z5/tA==
-Date: Tue, 12 May 2026 21:25:08 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:DRM DRIVERS FOR FREESCALE IMX 5/6" <dri-devel@lists.freedesktop.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: display: imx: add deprecated property
- 'port' and 'display-timings'
-Message-ID: <20260512-yeast-platypus-ec8af080f7be@spud>
-References: <20260511220924.1905571-1-Frank.Li@nxp.com>
- <20260512-surgery-operative-046a90f84ef8@spud>
- <agNvt9RbRFQ395uE@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1778620604;
+	bh=APePLdspSN7hGGceShzyPLNA9Svo0jqkScnt1ljbgPk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=RRYNSHl6ns4OxYdPq99u8gvDxeoiaw/GZh0Zb+x+FA3tAJ0DQrMdFMNZetSh+GB0L
+	 0Fs3MZeEQZFQJw8dAKGkkT67BTyTE1ObP5zPs8Rq6Krnw2iu7mWEwZEIdEe+Fvc2OV
+	 7Tdqgn9302W2VI7uWdh8c9U3P84AtAicOL+Rv0l0ZkJ+LLtwCLRATseD88JcIW+nA4
+	 m1oUrUOGYoEtkRGrYzvbVqnCbx+S017QoaEawMDRLlnewa7hCqkIva28Icsd/YriB3
+	 DcCKD3dsY6RlPUZTE8W/IB+Q17Lvr6P0groVzGl2Yqz6NMCMxQ2P2KKW9ROUtVYj3X
+	 P0vrJ8a+b8Q2A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 2/3] of: dynamic: Fix overlayed devices not probing
+ because of fw_devlink
+Reply-To: sashiko@lists.linux.dev
+To: "Herve Codina" <herve.codina@bootlin.com>
+Cc: conor+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260511155755.34428-3-herve.codina@bootlin.com>
+References: <20260511155755.34428-3-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 12 May 2026 21:16:43 +0000
+Message-Id: <20260512211643.EB5A6C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="C9q5Jh7UHi2J/JRy"
-Content-Disposition: inline
-In-Reply-To: <agNvt9RbRFQ395uE@lizhi-Precision-Tower-5810>
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Missing `dev->fwnode` validation in `fw_devlink_pickup_dangling_co=
+nsumers()` leads to a kernel panic if the device's fwnode is NULL.
+--
 
---C9q5Jh7UHi2J/JRy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+commit eebf7e6f50a0aa0439d5a1099141444a70ec8219
+Author: Saravana Kannan <saravanak@kernel.org>
 
-On Tue, May 12, 2026 at 02:21:43PM -0400, Frank Li wrote:
-> On Tue, May 12, 2026 at 05:47:11PM +0100, Conor Dooley wrote:
-> > On Mon, May 11, 2026 at 06:09:24PM -0400, Frank Li wrote:
-> > > Add deprecated property 'port' and 'display-timings' for i.MX5 SoCs (=
-over
-> > > 15 years) to fix below CHECK_DTBS warnings:
-> > >   arm/boot/dts/nxp/imx/imx51-apf51dev.dtb: disp1 (fsl,imx-parallel-di=
-splay): 'display-timings', 'port' do not match any of the regexes: '^pinctr=
-l-[0-9]+$'
-> > >         from schema $id: http://devicetree.org/schemas/display/imx/fs=
-l,imx-parallel-display.yaml
-> >
-> > Instead of documenting the deprecated properties, could this
-> > device/devicetree be converted to non-deprecated properties?
->=20
-> Change dts will cause break back compatiblity. This is too old chips and
+of: dynamic: Fix overlayed devices not probing because of fw_devlink
 
-How would changing the dts impact backwards compatibility? That argument
-doesn't make sense to me, I am of course not suggesting removing support
-=66rom these properties from the driver.
+When an overlay is applied to an already probed device, fw_devlink logic
+is rerun. This allows newly created dangling consumers of overlayed device
+tree nodes to become consumers of the target device.
 
-I do accept that the argument of lacking info on the panel.
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@googl=
+e.com/
 
-> I have not information panel's detail information.
->=20
-> Frank
->=20
-> >
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../display/imx/fsl,imx-parallel-display.yaml         | 11 +++++++++=
-++
-> > >  1 file changed, 11 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx-pa=
-rallel-display.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx=
--parallel-display.yaml
-> > > index bbcfe7e2958b7..b0c5869771fae 100644
-> > > --- a/Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-=
-display.yaml
-> > > +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-=
-display.yaml
-> > > @@ -42,6 +42,17 @@ properties:
-> > >      unevaluatedProperties: false
-> > >      description: output port connected to a panel
-> > >
-> > > +  port:
-> > > +    $ref: /schemas/graph.yaml#/properties/port
-> > > +    unevaluatedProperties: false
-> > > +    deprecated: true
-> > > +    description: input port connected to the IPU display interface, =
-see port@0
-> > > +
-> > > +  display-timings:
-> > > +    $ref: /schemas/display/panel/display-timings.yaml#
-> > > +    unevaluatedProperties: false
-> > > +    deprecated: true
-> > > +
-> > >  required:
-> > >    - compatible
-> > >
-> > > --
-> > > 2.43.0
-> > >
->=20
->=20
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index bd2ddf2aab505..478aa3fbf1e83 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers(s=
+truct fwnode_handle *fwnode,
+>  		__fw_devlink_pickup_dangling_consumers(child, new_sup);
+>  }
+> =20
+> +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
+> +{
+> +	struct fwnode_handle *child;
+> +
+> +	guard(mutex)(&fwnode_link_lock);
+> +
+> +	fwnode_for_each_available_child_node(dev->fwnode, child)
+> +		__fw_devlink_pickup_dangling_consumers(child, dev->fwnode);
+> +	__fw_devlink_link_to_consumers(dev);
+> +}
 
---C9q5Jh7UHi2J/JRy
-Content-Type: application/pgp-signature; name="signature.asc"
+Is it possible for dev->fwnode to be NULL here?
 
------BEGIN PGP SIGNATURE-----
+The original logic in device_links_driver_bound() was protected by a
+dev->fwnode check. The newly added caller fw_devlink_refresh_fwnode()=20
+appears to call this without checking if dev->fwnode is still valid:
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCagOMowAKCRB4tDGHoIJi
-0vX9APsEvcsFkyeyT6CRZELAoZLP0zPbTYB91dRklH1/iBnXJwEAwFxCMprMsgoN
-X9HiNGN5youfvY5EoQapP1mcu580Qww=
-=nK/w
------END PGP SIGNATURE-----
+fw_devlink_refresh_fwnode()
+  dev =3D get_dev_from_fwnode(fwnode);
+  ...
+  if (dev->links.status =3D=3D DL_DEV_DRIVER_BOUND) {
+      fw_devlink_pickup_dangling_consumers(dev);
 
---C9q5Jh7UHi2J/JRy--
+If dev->fwnode is NULL, such as when it is cleared by a concurrent
+device_remove_of_node() before device_del() runs, the nested call to
+__fw_devlink_link_to_consumers() will dereference it:
+
+__fw_devlink_link_to_consumers(struct device *dev)
+{
+        struct fwnode_handle *fwnode =3D dev->fwnode;
+        ...
+        list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
+
+Could this lead to a crash when &fwnode->consumers is evaluated? Would it
+make sense to add an explicit check for !dev->fwnode at the start of
+fw_devlink_pickup_dangling_consumers() to mirror the structural safety
+previously provided in device_links_driver_bound()?
+
+[ ... ]
+
+> @@ -1312,16 +1385,8 @@ void device_links_driver_bound(struct device *dev)
+>  	 * child firmware node.
+>  	 */
+>  	if (dev->fwnode && dev->fwnode->dev =3D=3D dev) {
+> -		struct fwnode_handle *child;
+> -
+>  		fwnode_links_purge_suppliers(dev->fwnode);
+> -
+> -		guard(mutex)(&fwnode_link_lock);
+> -
+> -		fwnode_for_each_available_child_node(dev->fwnode, child)
+> -			__fw_devlink_pickup_dangling_consumers(child,
+> -							       dev->fwnode);
+> -		__fw_devlink_link_to_consumers(dev);
+> +		fw_devlink_pickup_dangling_consumers(dev);
+>  	}
+>  	device_remove_file(dev, &dev_attr_waiting_for_supplier);
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511155755.3442=
+8-1-herve.codina@bootlin.com?part=3D2
