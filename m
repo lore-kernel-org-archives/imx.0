@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D145271471;
-	Tue, 12 May 2026 03:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C775830148A;
+	Tue, 12 May 2026 03:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778556942; cv=none; b=LkLW+hD87kL5Mi/cBrcYhXrmmDsVn8ZkNY0ziYIpVjcC8kr3wbnYF6WLHV5mxHwjSTpYRnOxBswwpns/39yrJGa+hn3+Wxz0tijx+CaG8XbvsIocQsb8Cj1lFhLsspjnxoR5Dxp0lWEINZc2YEk1aes+GU4O9LWAR9vo/d7oD4A=
+	t=1778557081; cv=none; b=ebZYAzZ/jgVg95wvvPd4mrO3uXzsUVU5J4yFwPLaQb+J9AoXJ5wTK+UMWFrucX5vUxcNu6wokT497WF7vSgobPTbGSrTb2UYAGRtGPc11pyB0AfZKb0QUOrv5y3X6DMZeXx18UyRUl4DFNSBDZOWMoecZBU7hxS0zEpa3vSXxZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778556942; c=relaxed/simple;
-	bh=24giURlup5Rw9r3TcXRMBOBfwhI0bS0J4TuA+SIIe90=;
+	s=arc-20240116; t=1778557081; c=relaxed/simple;
+	bh=C0uKvBcsJshR+sAskrJ9qYCeCJ0hYo132tV0VbiynjA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lShm480xScF9u9oj7I3XUcjbL6v8HH7otyFR1HsmI/WgA8qI3GcgwbaMIZwgqzfhg4Yam41wRulkqEC0SXp4b7l3P+MCSsi9V7UScs7AAlvi8tCF/SPgWSA89xPl5kGpBJcmrn75LIFp4mej3oOLW71iK9v6wDfjFNyWu002IqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMh71eVx; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=IGvudX6Ruuk1uXwCFZZDaXMQuu3hB0R+qDQFeTN+NTkcOSw7XsiHOuPc7c/iZzTJn5I2rXLzcaAohCcBu+JJpa9UhqNxtydUGpis9o7HGPOMKPHrATRi9dmI+NAUEuki0g0ybzZNn/4XAsKlCoSrUX8KKwft1RcwzINj7CGJ/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsF2u6au; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMh71eVx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AB5C2BCB0;
-	Tue, 12 May 2026 03:35:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsF2u6au"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055CAC2BD05;
+	Tue, 12 May 2026 03:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778556942;
-	bh=24giURlup5Rw9r3TcXRMBOBfwhI0bS0J4TuA+SIIe90=;
+	s=k20201202; t=1778557081;
+	bh=C0uKvBcsJshR+sAskrJ9qYCeCJ0hYo132tV0VbiynjA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=YMh71eVxUyQKewxTJYARP5bY7xMfWc4O2UHq+NZ06aTCRp6AkSe+v5DJQySyhVZwM
-	 RRvlI1IEkGusVMvPHFapTCT3r37P5H5VKJv1p8kKfh1+L5zKB7N/zJqwm6RbTl4dyD
-	 Sy7XRtZ6U9oCNfEdZHG+4tgxfKbMh76x94Pslo6I+0OeVIXbht9B+nXTwXb25UgQyQ
-	 c7bcVahAHMZtzTPMk+gaoUqjTV1bD4yUX9O6KdNqRSP1SGitNM5hT4SFKpNvSDG7i2
-	 dEKRLWVUjwMFO/H/3SERGfngvfdf4RK9fd1Xdph9gaKqlyVhQNQjyAHo0EwxdWO546
-	 IEbyNhZMtJjWA==
+	b=HsF2u6auMwTDQESHqx4D9fVWAx9Jo4FvfHhrMJhw6+OfSXr0qgmrJLayjzCigmH95
+	 IxX+6YMM8uRUiBoAuK2HZESKSPFNksSoyfjNWwieJdRy3RN3JeSW2KwHguXt6bGOfc
+	 8EjzItLFBSZzQT9Fd8GHtgLydB0TFjBZEnewgHL8GMxvxSvUzmitnRCDDUrTC0ilH+
+	 utrhBfhEW5fm5f6aAngr/jy9Dy4vxN1p11448WvZc12HLtx8KF7+WEN5+PCajwyzSn
+	 yOaSslat1I+fKeASvH8vLr9pRNLzIfXwuK7BLEZwxpka2L/q0Q6XnXjisz79/ZwH9U
+	 KWIz0Vccy+9Wg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 15/21] drm: bridge: dw_hdmi: Add common suspend
- helper
+Subject: Re: [PATCH v4 1/5] media: hi846: fix hi846_write_reg_16 handling
 Reply-To: sashiko@lists.linux.dev
-To: "Jonas Karlman" <jonas@kwiboo.se>
-Cc: Frank.Li@kernel.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev
-In-Reply-To: <20260510124111.1226584-16-jonas@kwiboo.se>
-References: <20260510124111.1226584-16-jonas@kwiboo.se>
+To: "Pengyu Luo" <mitltlatltl@gmail.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260511103927.279550-2-mitltlatltl@gmail.com>
+References: <20260511103927.279550-2-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 03:35:41 +0000
-Message-Id: <20260512033542.41AB5C2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 03:38:00 +0000
+Message-Id: <20260512033801.055CAC2BD05@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,63 +45,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] NULL pointer dereference in dw_hdmi_rockchip_suspend if system sus=
-pends before component bind.
+- [High] Runtime PM usage count underflow and torn hardware state due to un=
+handled negative return values.
 --
 
-commit abc5ed0537352dd111abc436d5fc9ba8787addd8
-Author: Jonas Karlman <jonas@kwiboo.se>
+commit a7e288159f9d9020f112e24280a1cf27c80c8fca
+Author: Pengyu Luo <mitltlatltl@gmail.com>
 
-drm: bridge: dw_hdmi: Add common suspend helper
+media: hi846: fix hi846_write_reg_16 handling
 
-This commit adds a dw_hdmi_suspend() helper as the suspend-side counterpart
-to dw_hdmi_resume() and calls it from the i.MX8MP, Amlogic and Rockchip
-platform PM suspend callbacks. This routes suspend handling through common
-dw-hdmi code.
+This commit attempts to fix error propagation by resetting the error
+variable to 0 when it is positive. It clears the positive return value
+from pm_runtime_get_if_in_use() before performing I2C writes.
 
-> diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/dr=
-m/rockchip/dw_hdmi-rockchip.c
-> index 0dc1eb5d2ae39..9677424075eba 100644
-> --- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-> +++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-> @@ -651,6 +651,15 @@ static void dw_hdmi_rockchip_remove(struct platform_=
-device *pdev)
->  	component_del(&pdev->dev, &dw_hdmi_rockchip_ops);
->  }
+> diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+> index a3f77b8434ca7..7f069aca0fce5 100644
+> --- a/drivers/media/i2c/hi846.c
+> +++ b/drivers/media/i2c/hi846.c
+> @@ -1271,6 +1271,8 @@ static void hi846_write_reg_16(struct hi846 *hi846,=
+ u16 reg, u16 val, int *err)
+>  	if (*err < 0)
+>  		return;
 > =20
-> +static int __maybe_unused dw_hdmi_rockchip_suspend(struct device *dev)
-> +{
-> +	struct rockchip_hdmi *hdmi =3D dev_get_drvdata(dev);
+> +	*err =3D 0;
 > +
-> +	dw_hdmi_suspend(hdmi->hdmi);
 
-Could hdmi be NULL here if the system suspends before the component is boun=
-d?
+While this clears the positive return values from pm_runtime_get_if_in_use(=
+),
+does this leave negative return values unhandled in the caller?
 
-In dw_hdmi-rockchip.c, the probe function calls component_add(), so the
-platform device is registered before the driver's private data is allocated
-and set via platform_set_drvdata() during the bind callback.
+If pm_runtime_get_if_in_use() in hi846_set_ctrl() returns a negative error
+like -EINVAL when Runtime PM is disabled, the usage count is not incremente=
+d.
+The check for (!ret || ret =3D=3D -EAGAIN) fails, so execution falls throug=
+h with
+a negative value.
 
-If a system suspend occurs after probe but before bind (e.g., if the DRM
-master is deferred waiting on other components), dev_get_drvdata(dev) will
-return NULL. Accessing hdmi->hdmi would then cause a NULL pointer
-dereference.
+Because this negative value is passed into hi846_write_reg_16(), the check
+just above this change will cause I2C writes to be silently skipped for
+controls like V4L2_CID_EXPOSURE. Other controls like V4L2_CID_ANALOGUE_GAIN
+might ignore the error and execute unconditionally, leaving the hardware in=
+ a
+torn state.
 
-Although the pre-existing dw_hdmi_rockchip_resume() function suffers from t=
-he
-same missing check, this patch introduces the issue into the newly added
-suspend path.
+Finally, since execution continues, pm_runtime_put() is called unconditiona=
+lly
+at the end of hi846_set_ctrl().
 
-Should an explicit check for !hdmi be added here, similar to how it is
-handled in meson_dw_hdmi_pm_suspend()?
+Because the usage count was never incremented for the negative error case,
+will this cause a PM usage count underflow?
 
-> +
-> +	return 0;
-> +}
-> +
->  static int __maybe_unused dw_hdmi_rockchip_resume(struct device *dev)
->  {
+Would it be better to correctly validate the PM return value directly in
+hi846_set_ctrl() with a check like if (ret <=3D 0) return 0; instead of
+clearing the positive error here?
+
+>  	put_unaligned_be16(reg, buf);
+>  	put_unaligned_be16(val, buf + 2);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260510124111.1226=
-584-1-jonas@kwiboo.se?part=3D15
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511103927.2795=
+50-1-mitltlatltl@gmail.com?part=3D1
