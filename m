@@ -1,192 +1,81 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011071.outbound.protection.outlook.com [40.107.130.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3114418F0
-	for <imx@lists.linux.dev>; Tue, 12 May 2026 07:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778572322; cv=fail; b=mYatpxShMN7AcYFOPxy2EQxknLKCF6/Yr4ruN0NiDtT69uehD9xQpLC5Wm+VeWVqCuHWgWshsnbwzXP5b4zFxqFKT8/2H9Ab7H3L2WRRFEssh/Mw7Z2tPnkL6E+/gK0QFR+8SoWK6Lk2PP0BZ64ezMcP8bKaTRGtw3+HHv4RKV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778572322; c=relaxed/simple;
-	bh=hOe2gvUVxbl7JIL8RujkDO7AgnWqTWOUcqHo+4PLLjo=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VodiWLKMge/pa+WgZrE+4+HLTJot25En5meiBKlmFlWvvZkGQpFyUfr+U5MkWTEHh1SRo3ysQrJkvVA0LqrtlGNDMnLIrx9TcvBkl/urggLXee8g462ekQmxnzV7qVKar8S1voeXMKPHfsf1PvVpQhfCItnFILG0SylUmcFHxV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=c1zayC0N; arc=fail smtp.client-ip=40.107.130.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825933FF88D
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 07:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778572351; cv=none; b=cICuRiCjhmTzxcLQglOt6c250E5I4RRIv4JT5+/3Znz/tIK640oWAqjTbaTmbHHDLkZJ+WDe2oXMODpHa63vUl9Qk50kDKmwHumG6KWidDL56XKQtXkreZQfgEHG/zG4rzZlnPV4jEhSBp0QBHzh9DbVfBIBxQgMxqTIYnb1mE4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778572351; c=relaxed/simple;
+	bh=/HfvGp2DsesUS/hXOFdWeZ/1YblwL2ujRKKPFhaORCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c8BtWkufuaf5xyZ/KhbjkY6FdhSunkEAK8f4K61fs+Iv1mkJ6uPs1hm9SgfSRD42VxU5VUG022vLssEVsCn3ujRgTuydME0VjcPFfBIjlSJoCU6hINf1TxgQVvxBkyS2i+yeZDTGB9jAdoaX/rSnh4HIRcLIW7KLCboKiG1rWGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=k4BKNHCC; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="c1zayC0N"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iF/bRAtajzPxorOF5jIBfedc6bGGFgErChqIymV8eIXHjOjpYGjCFa0g8/saiQzA8h49rVmskKFb5SLOzZGbgTYaX2086gW/XuO1IbRxrtOy9v0sp40V/xHHT/QNIBIRRHO6ZLL5tRVHj05aBVwUdHFRc4DYRDQiuUdbbvjQngmazZ9GnnnlCcbyqIybfIqVbUOC9a6RPANFIJr76c1u50reLxFjj2xC59nv5H3R6dyyhlPKXeyKrpXcXb3i4/hCe5sA+WQqol1hFNDqGHlmWbz6se56SUW63uN0oR/UxeV6T4niq9fCAp/XSpTuNr0YYtR5xghIsMqvF6lTIIxX5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MMvu5EjGOwDd4XIX3LguYmjawm56TkgujV3fupHpXpY=;
- b=YwBXojLt0yBfy8UuenfyXVs1tmFlYnSaRKuv0vyqihTJk8mJNg13/yYkPF7gMhFXyODCq+M5ByVGOtaw3LVLfVpPf4+qZ0ObGF7bln+3kiD2X741Ysk/qhVVmrYkKEVYG2gJdSFbn+C9e077z8IbrRQOmkX2Qpj4wyZuQbvi2dmU/BspyNHm2CBYnbMbXiIRBQb/mbUxADciOdQ/aQuVSLjblD+caqNh6GBe5VIrzEgNS0Y0nJx6kSLaQgLPO7bmfx6P9Cj3XJvF+GZS63RD0i8A8yzDnITlZPgIc6UyHNT5wyAL2Xp2Ajfr33i9J0FB/fKDue/usfEoJK5ASqyf4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MMvu5EjGOwDd4XIX3LguYmjawm56TkgujV3fupHpXpY=;
- b=c1zayC0NriAyTekDrAN1y1mqVAwmeoBaYwDN6yXhBNC1MadThu5vRWUSfmlnNaVvWP84tZ6baTbAPY2vKsrqAGrBLSOymmMKgGTeulu38AslKFy4fZNqj7avwE+gtyatoF3EdutlEQWi4X1JPbR1SQLXVVvPGyOq23tRYtYHY50HBp6P/dwX0vykWxcI6smnEaONdrvRtb56lAvnnZ4lmjGaAYjRvi1Pw3EsRLYTO+Wv8YXyXYiUMg0PIJxCwuvMZxNBk7x576d2k4O9oqw/N7smdnqHElsiTtCxyavChyhUm+Qq5WvLZJVz9VaanN6ujajT7nX94CDEt3T837DbnA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by DB9PR04MB8074.eurprd04.prod.outlook.com (2603:10a6:10:24a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 12 May
- 2026 07:51:56 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 07:51:56 +0000
-Message-ID: <3b7f009c-dc4b-4fc0-becc-4d07eb4ff016@oss.nxp.com>
-Date: Tue, 12 May 2026 10:55:11 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] remoteproc: add helper for optional ELF resource
- tables
-To: Ben Levinsky <ben.levinsky@amd.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- linux-remoteproc@vger.kernel.org
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- tanmay.shah@amd.com
-References: <20260511211841.284809-1-ben.levinsky@amd.com>
- <20260511211841.284809-4-ben.levinsky@amd.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260511211841.284809-4-ben.levinsky@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0113.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::8) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="k4BKNHCC"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 3D3831FA0A;
+	Tue, 12 May 2026 09:52:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1778572348;
+	bh=J4lTy/dApuMcsfjzQY1Js5ALZSDDFfpNZfq5R1P+Z9E=; h=From:To:Subject;
+	b=k4BKNHCCUBnSwJqLOi09Ddx8mg7oBEONZde487DzKz0vc9v/Y1LI9Aj/EsKvxpOmY
+	 6d1L1508UM3+0Aq2/0fn197Uf57zKY05qqywumjNxOf5voeJAqHU+toU/xEUGTWs2W
+	 riQnUJK4xdc4t7pYMyaWLx3vmOE/Ni4BULcS+m215mWmfPk3rlxCz6O1IlMbWgpSsR
+	 +FzNjySF9OulrHmx3WnYZnmbgW3E99oohojtwpSweIn6NfmftOkaI1snTu5U4Esdan
+	 tU98SdOtbDR/MZwV5Z7sKDBwZ2kzbtE+ymBhP7V3l8lSoL/8SdS8g3o7iVfQQ7EcEU
+	 OgXRWB4UV5wWA==
+Date: Tue, 12 May 2026 09:52:27 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] ARM: dts: imx6qdl-sabrelite: add mdio phy address 0
+Message-ID: <20260512075227.GC5820@francesco-nb>
+References: <20260511-b4-imx25_dts_simple_warning-v1-0-01b855a5ce25@nxp.com>
+ <20260511-b4-imx25_dts_simple_warning-v1-1-01b855a5ce25@nxp.com>
+ <f04fadf2-8d73-435b-b713-9d07e48e80ae@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|DB9PR04MB8074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 167eb3e2-3e78-4d26-140c-08deaffb56a5
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|19092799006|1800799024|22082099003|18002099003|11063799003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	CMtEh16atBLwEK6H4IciK0iL6Z2nlAHp8UBvM8vkU0g8sRrTvHoOeBDlgosYvVudQJBdAyiCUk6CeqTqVVrNmEJCZhrB3OcLx98+9ZvL8dpQOKMTBOoUyLy4omC3OwntgUbMi4/h+ZnLr2JjJM8oB3V9JvkSUeshOoa8Aj2F29LXevMJdFIcngtchrWnzwFeV5K/4KbepFbXQVEPMtumTtZfmAUOAKQaX1d0BnG0hDEqYHVU5SzuTnhu4EwF3jjfnug9LvEGw8LSBn335q/UTd/o7yr3dYT5MsD28wtW8+kJG9xC94DZnRpxeI/9Tdh7Jo6yjbQR4DKYNsXDK/sMGhasXnsr98u3W0onBfpyg8L6SjBQA+Q8BrWRIWSdVXVo+8nyWmqMJUZmP+fhoKwZMBe86xv/hiZTnIYfRh8IKiPdvITYNLP4zIQLu1j2anuK2kgiB0c/2mJGmY6tZKiwN9BZBni2RLQ994PlW8HjFsgyMEgz03+YN73H6071ckjntQXAls3pHLGqcxEy0gMtk3Ts11ly5ngql+dg4f6WEMsHCuJ8elQEPVX2HZ1lDo0dAO89DOQWLr5TDqVd8M1V+YuKsltBTIFIXvoe2OgmZzlUT4t9zUa6Y8Lm3M1f5JmLXxs2CR0QkKcsGxuQpOAYzutAj/iKsT7wGCsR3Nt3X5ZFZtBwTmizL8iin6bqd7Tx
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(19092799006)(1800799024)(22082099003)(18002099003)(11063799003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YVRLZkg1QUVNMWV3Zk5FV1doMlVZQkNnQWsrV0pjMTJlU1NsekpTTXFHcWJy?=
- =?utf-8?B?TXdmaWdpY292Y0Q3WFVGU2lGTTduelFPZGhkV1JhUEFLbDRkWW5ZVDdkZ3J0?=
- =?utf-8?B?dzVMb3V2VzJ4UlkySnFxKzlSTk9URzBiTU5kRERDTEd6SStnVmI3cGRwbzFh?=
- =?utf-8?B?NzFQWVVIMk55dzBpZ0NzMXlFOXFYSkxnRDBxWlNZWnRmZGRDOTltMHU4MkZE?=
- =?utf-8?B?bkxoWCtuU3dOZnd6cmpWR04yOGdyeC95Yk8zMWJTLzZGRG1Tc3lUWnM4c0ZB?=
- =?utf-8?B?Z2l1RGx4VHp4aDdjRDVDYVN0YmJTYWRLdDR1TlVJaFRsT3lzZDVibWozSDlq?=
- =?utf-8?B?OThDcTZlbm53bFJQcUwzQjBqVDlNcUJqZ2ExRkxac3l0OUc4dHhzSWk2eHIr?=
- =?utf-8?B?azlsWUYyZ2daSGwzRFhzcXFqY2Rab0J6dWZxRlk2T0lXellSbGgvRXQ1cWRN?=
- =?utf-8?B?UzNUcEVlUk9vZWtRcDFkRlJONGtNbXZLek82R3NlN1pZVnZnOEdubVcrYWkv?=
- =?utf-8?B?ang3c21pMVVnRUJIcnQzcUpWV3JKbUFkRkhuT3F5bm5vYlJ3cEFQdGg2R2lU?=
- =?utf-8?B?aEl0NUN6aVZGNStsSlFoaDBtL01FaTJ4RGo1NGpwOFc5S1Jqb0hCdnVOVVRY?=
- =?utf-8?B?UmtIeXhVUWNwVFlxbzFwS1lUKzV4S3U0VHBCMlRnb1R3RUhiMEZIRitCczNk?=
- =?utf-8?B?VHQwREV4WWJvOXlYMG9YUE04Y0RPRE0raksrcFBYNndCeC9mZjBPRTFsazZP?=
- =?utf-8?B?L2QvWXBhd1hscUxuWmYvV0VIUkh3TUY1a0NTWFhUcDJNTXhGcHVIR2pOZjZ0?=
- =?utf-8?B?NTVyMmFuVVF5NjFMQnpuUkRDMDZCL0YwOTJCbUFmUG9IdEYvT081TXU3eVMz?=
- =?utf-8?B?YW5LRXJVaVk3Z1c2eFFVRm9QSTdmUzBoMWtTZHZjVWsrRWhNSElkRDhSWmV4?=
- =?utf-8?B?ZEEzVGNiVzdEYmF5bnhSVFhFeHIraERBd0pmeG0zSmJKekVxK0JleHFXdHRn?=
- =?utf-8?B?Q2QxZEdoVjY4V0s0bzBWUlQrZXdmQ2NhMDRsMzlEZ0FzRmZEcVB0VEswcnMw?=
- =?utf-8?B?Yjk4Z2lVTVJsWG1UdU5Bb1BITnhpcEtZQjRxNGVBVlZVb25nQWFBdEZlektv?=
- =?utf-8?B?S2NYOGc1ZWZaQjkvUW1YWTJ4czRoeUk0Y3ZUR1hoUlM4ZXRLT2kxRzNwckho?=
- =?utf-8?B?YlAzYmYxWHYxS3hYOXZ0Nm1adTA2azFUL3MwdW5RQ29QTFRVckdFd3UvTjdD?=
- =?utf-8?B?VHFPcXNrTklITlQ3NEUyamhhSkRCMDB6MWV6K3N5Ylo5RStydi94UTdoSjB6?=
- =?utf-8?B?cmowckREREdGZTMvSTRUUWM4L2NHdDVZQnhhYjhncEhpNDQ3V0VUK2pxbEFT?=
- =?utf-8?B?VEtEMDI0am5Ic1pscVJhVi85Y1FZclMrY0RCR1JPUlBQVWNlUWpaYUVCUU1j?=
- =?utf-8?B?d3NjOWJvT2dEa1A1QkNRNE92Q0RnV2h2SGtibmtmWFRMN3NnZDdwNWRteW1Z?=
- =?utf-8?B?Q1I4TGw5VHpZWjY5bzkra3h3NjhLYTRIK0dsb3R2UTVwcHNEemxybHloVTFt?=
- =?utf-8?B?YW9mZHc3VG5HcHZGeVdpRnAzQ1ByVFhHYWtxVzFMckFWbkFFSjVSRmczSUFZ?=
- =?utf-8?B?RWlja0JEOFVHamJjNXBaNG9oUGJ6aGR0cU5QSDcxZ3EvMFM1KzYzVjVoSVNP?=
- =?utf-8?B?WjlQL0N0U3VHM1lZdDdBT3kwbGdnSDEwY3QxNDdkako1WTRTUWs3RmZ0d2hx?=
- =?utf-8?B?R2Z2QldXdTNkdGVWaXkraU5LamxQbjF3WmpMc0YwMWEzanc3b0JvSWlMZUFG?=
- =?utf-8?B?VTczcCtoVG8yT2l2ZEpaS2c2SFJBeTNvWXd1bUFydkFyZHJWTDhPMTQ3a3k5?=
- =?utf-8?B?VUo4OHVOK3NMa3FkNXhPcGRkR2lMRDUxKytqV3VNeGJwVDdRWmx3ajdIVlVG?=
- =?utf-8?B?cSsxdE5lRWJvZHY0WDZva2F4K1pmYVhPYThBeWVobWZxK2tYL1NYdFNNbHBu?=
- =?utf-8?B?NUdYeVJnVUhLUndVUXBsRGxvNDdjQUZDei9ld3AxRzNpREFoak13alNHLzVD?=
- =?utf-8?B?Mm5DWHYycE50dlM4a0U0Q3pwUTFuRk0vWWU3RS85aUN1dEd1b0Y3bVZ3VmFR?=
- =?utf-8?B?L0o3a2FGcVBQdXd0eXdRNlhUMzU2ZFpZcmxPQklKNVR6dnM0MGNTRnc4ZzVw?=
- =?utf-8?B?MUpKZzlPbW9SbnRhQ3FuZEdWcTZsaGFWSXNUY2NsaHYzZnNycERPeVFMZTRi?=
- =?utf-8?B?emxsNG5hZlEyaVNjbys3TXBtMjdHS1RRV2t6OERLMXZOekQvUkdaL1dCTmdF?=
- =?utf-8?B?SHhiVHArK2JXNlIweCtlK285S1FmczdSQkpXM3VRa25ZbzdiOVZHdz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 167eb3e2-3e78-4d26-140c-08deaffb56a5
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 07:51:56.1187
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lkuCrXjuroAL6Gnjbmn2lUvwqib9R7u7b3MksM2PoS9NSFo6VCwa+jVwQqDpv6C5+im/liuDwej1DVeGa/6HAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8074
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f04fadf2-8d73-435b-b713-9d07e48e80ae@lunn.ch>
 
-On 5/12/26 00:18, Ben Levinsky wrote:
-> [You don't often get email from ben.levinsky@amd.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On Tue, May 12, 2026 at 12:15:08AM +0200, Andrew Lunn wrote:
+> On Mon, May 11, 2026 at 05:04:56PM -0400, Frank Li wrote:
+> > According to IEEE 802.3 Clause 22.2.4.5.5 PHYAD (PHY Address), A PHY that
+> > is connected to the station management entity via the mechanical interface
+> > defined in 22.6 shall always respond to transactions addressed to PHY
+> > Address zero <00000>.
 > 
-> Add a small helper around rproc_elf_load_rsc_table() for remoteproc
-> drivers that treat a missing ELF resource table as optional. The helper
-> returns success on -EINVAL and propagates other failures unchanged.
+> Did you read 22.6? I've not seen a mechanical interface as defined in
+> 22.6 for at least 20 years, maybe 30 years.
 > 
-> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
-> ---
->  drivers/remoteproc/remoteproc_internal.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> That cause does not apply in this context.
 > 
-> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remoteproc/remoteproc_internal.h
-> index 3724a47a9748..dff87e468837 100644
-> --- a/drivers/remoteproc/remoteproc_internal.h
-> +++ b/drivers/remoteproc/remoteproc_internal.h
-> @@ -146,6 +146,18 @@ static inline int rproc_mem_entry_iounmap(struct rproc *rproc,
->         return 0;
->  }
+> > -		ethphy: ethernet-phy {
+> > +		ethphy: ethernet-phy@0 {
+> >  			compatible = "ethernet-phy-ieee802.3-c22";
+> > +			reg = <0>;
 > 
-> +static inline int rproc_elf_load_rsc_table_optional(struct rproc *rproc,
-> +                                                   const struct firmware *fw)
-> +{
-> +       int ret;
-> +
-> +       ret = rproc_elf_load_rsc_table(rproc, fw);
-> +       if (ret == -EINVAL)
-> +               dev_dbg(&rproc->dev, "no resource table found\n");
+> This could very well break this board. Without a reg value, the core
+> will find the first PHY on the bus, at whatever address it is at. If
+> you hard code 0, the PHY must be at 0, otherwise it will not be found.
 
-You are changing loglevel here. Initial drivers use dev_info or dev_warn. At least I'm used
-with seeing this messages in the logs. 
+Whoops, I replied without reading your answer first.
 
-So, what do you think on adding at least dev_info to this instead of dev_dbg?
-
-> +
-> +       return ret == -EINVAL ? 0 : ret;
-> +}
-> +
->  static inline int rproc_prepare_device(struct rproc *rproc)
->  {
->         if (rproc->ops->prepare)
-> --
-> 2.34.1
-> 
-> 
+Yes, I agree, this change will break the board functionality.
 
