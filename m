@@ -1,201 +1,115 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010050.outbound.protection.outlook.com [52.101.84.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7522D5922
-	for <imx@lists.linux.dev>; Tue, 12 May 2026 02:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778552589; cv=fail; b=PAElkBVjnhGfI36hUP0y1WHU+8LzhoUg2fboXmFy0M4zYKue6MmO3yWiBC+qadcHyapBoATF8D9RGUprjsBuUNv36gXkK+23hbF3pgCeJmD2ZnY3bPOQaQOfGuxaX3Ap8o/tzmt8+jHSl8+mLBCV0c44sSsW43FxynBd/gQAHxE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778552589; c=relaxed/simple;
-	bh=O9nsuClT0EdZZSNNLJqRzrSwbxUPY2Q+dlxTPNuIzTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MmEjIiYFlUdDVlPhnxqj4IgX82wYbl/uM7D/bgBNE5DJA2Ark+y8UBFs2kmduPNmP4KSp6iQJebHRAj6UZ7cXSghtBg8NRrPKLMauJPQZekztkQoyL+xU0Y1N9N3k8dXMafYN5dieZo5Of+V6eAxmlRFdw+udpgNk9rCn5Y9Qfk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Cf5RorbF; arc=fail smtp.client-ip=52.101.84.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E7383304;
+	Tue, 12 May 2026 02:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778553317; cv=none; b=shoryC6r7mGi6JK5aFShx6PDHuh1Mcj8pKb+3gV0vQKkLnnsmveguUnr3d6OHCukxHxlY1IgxVWiiw6JFx3OKDhCg1uBrFms3Gb6H03wTvbQ11Gvr00aPCvZBJBFcqIw6o65jXwNBjAtwg3G4mD66b8IhG1IMMGcjY320nvIgeQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778553317; c=relaxed/simple;
+	bh=uleChJpoqAW87f0x7HJETNu7siu9u3abfSkbzLTZPD0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VTEQJO5Cv3BbLIiAG/t25NwZWwoeqfifHp9CDmSOWSK25VO2uuMHSqVa9bhTEbcv53roVAlycLrJX0trvLb+fw/Aj053ErLBiEW6yMRp8FEBVGt8G0ujMCIkhyQE0tOhXEwNZuLeveHudqkwIQaRPLh67lhkl7oaG7laL127R8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFtjLpr8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Cf5RorbF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XdHBMX3RrhbgcZgbl7NXR+D8L1QEKBcL5BRodeTJDisVzUQGgt4HZdkh8hZE5heXGMH5TG6IItmwRk/Ttlk6IfaJvBlZiGyESLzulkUNiIkwNS8xFDEc8L2UeIW61qTsuoZAzT7W6xj7GCnpKCFWu1TFZtLTGFhExZnt4o0J8R9FSFZNmlPbdBkn0ekTAe2i2I54+rvTr45R//y7Lq3S8dXWS5+uO3Wzka9VUqoy8PewImDoreobVlzFYjx+9bWraYPPVIS8ha41L76GVXQeCyQQrnIMYEtiiPnmFtS4ciHPe/y/GyRb61CNPCoLVkGxOk5x0ctoh9nv7q1B6yM1/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EW86ct5F352Em66veZJK9pXx2mHmypqLnNco3cEf8Dc=;
- b=IKh3+QHgltZcMsKvGe4zjxh3zDzePX1PUQweXjdSrBD+vSbw+BKNzZXsQhpRUdGmC0Qm4AnVe/nlqrozgNktLcrwC45645qvNff26DsmyAM1imZjho4ViGcWdzymHxJ95LxeXN7PgxrF3hpQqifxBjJ+fumGhMt2W8EVoZ3c8QDy0gARAEML9SK6FemsLB768nbICTy4MP+H3ImlPaJAvbi1zeb1H3jPvSKc4goP6OXDQs4ZkegzmWdqwQZtulxT2j7P1HMRRQVPd6hOfyz/l9uEL9ij6T7ttqB00HK11Bu7wMRI5MRd8x1cVd0zybMIFLUpG1x1AySEP8lVghVVvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EW86ct5F352Em66veZJK9pXx2mHmypqLnNco3cEf8Dc=;
- b=Cf5RorbFYmVW+4VgfGpkwZTdP2OP29p5wj/1nFfYk+jjX/WMgUKn5I2B4lMhAMJ+YuCV1VyoIkX1Ift9l8ruy78sL6FLvFHuFbFu0XYHiptu4SCcwZ4PvLqh1/9T2ypclxit13kZgUMC9MzCXkEIbkX7BpnyuNS8e2VUmIvL0qKtLKCCwJ5JNCW+L41JdBV5R+wlBeSP+u7hAKhBKs82zYYLzaH2eZsko9JcxtZgr+NzrGjzmBAZ1VqtdwOjdiNIiNaH3VlQ2QJ6kV1WrhMnSdIKnXUAddUmFmdiXanxwro8xSzB+xICjj7/qQp7AkPpJyyyLbLqclpJgnl1ow8y6A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::8)
- by PAXPR04MB8095.eurprd04.prod.outlook.com (2603:10a6:102:1c6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
- 2026 02:23:04 +0000
-Received: from AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c]) by AS1PR04MB9287.eurprd04.prod.outlook.com
- ([fe80::6f30:763d:17d2:b79c%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 02:23:04 +0000
-Date: Tue, 12 May 2026 10:24:28 +0800
-From: Liu Ying <victor.liu@nxp.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v7] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with
- device_node cleanup
-Message-ID: <agKPXPKGOklTSFJQ@raspi>
-References: <20260507100604.667731-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260507100604.667731-1-lgs201920130244@gmail.com>
-X-ClientProxiedBy: SG2PR02CA0134.apcprd02.prod.outlook.com
- (2603:1096:4:188::14) To AS1PR04MB9287.eurprd04.prod.outlook.com
- (2603:10a6:20b:4dd::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFtjLpr8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7DC2BCB0;
+	Tue, 12 May 2026 02:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778553317;
+	bh=uleChJpoqAW87f0x7HJETNu7siu9u3abfSkbzLTZPD0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=pFtjLpr8KfmRJMsU5tf/NePTpuFc0k9hFhxUsA9DGjXEpjfNT0KXoZv1BajN1b7am
+	 QzRLmRYBqyIzwjoIo9nCWlPJ/eaX59gO0mg8lMGzn2vAPwVhFb+/l0BSklUZdm1W5f
+	 wbXVtPy3d+s/9MJhUm1gRTAxU+wmDvqQXgGzgboXCDns+7PRT79fnAyeREBd6HHJhP
+	 Puzqxcij6DL7/y8wRdNT8LHq2fDWkA4joc12VPQFuc/0AKMqdt+y7Xb5uRIvb9/ahz
+	 PYmVJuU63CJUKrnzh+WH5b4t2l095TA/diItDPmux4ivL9PTKhw5hmdyHjyDMbBu++
+	 Eiswal/WpDDrA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/5] media: hi846: fix modes handling for different
+ lane cases
+Reply-To: sashiko@lists.linux.dev
+To: "Pengyu Luo" <mitltlatltl@gmail.com>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260511090924.269106-4-mitltlatltl@gmail.com>
+References: <20260511090924.269106-4-mitltlatltl@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 12 May 2026 02:35:16 +0000
+Message-Id: <20260512023517.45C7DC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9287:EE_|PAXPR04MB8095:EE_
-X-MS-Office365-Filtering-Correlation-Id: e83f31b4-194e-47dc-e886-08deafcd656c
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|7416014|376014|1800799024|366016|3023799003|11063799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
- eG2zaN5/5TSKuLYe3pAupphf13qyGnCd/9heKJjK2P4utEBLEUOqNNA1dK10mr06SByJ54NmNbsZm4x48RxUiGFjLYtsIZjnewta/aJuEKey50/yFp/YOOePgn/t99y9UL+oytg0s5P3hXUvhIrWVdczNrp+xGVyvvQ7paU3Xf/eWqwaTO0LsvEFGxmIErfVX5ERNXYZIkdkxukRE8+BUHAZelEm9ley3YuXcg3UkX6mHwYSDrPJXNxvw/J1hErascVf0UBTtuFA7iE5gqkrsEBE+/IxmKrT/39Rr0rglP1/98qN2l952FaOxNza+Ykj7FWQCiMDyArfSXO6Xjjm3Edt3vOv/3FZSwDVmc4UhuJHMIvCwb9SL9SEMmWsI0mjECkH+Zk1I14mQoyew0fCzIxmv/iCWxpNPpsJcmqGGt/227e9adVhRvGwZSZOv7qNEg+eToQyicwqOJvmjZk0GE1GKVQNYrMUnZRzJzkz/Nqma6EHMJu/T91rDaWY2bdBbAx2Xf3akfOFgnn+a6Jjj83ITXziC/cjanme6fLvKA/mnJ90VW3eBTLVFnlPd5MeyXDzy1fUw8+hdR+BlgYEXbKISZgFr3xziOupWbM5ed8Ek/3yTNGOchioTP8QaY+bbR7z8whmrLgDshQQHJNlfmnYDS61LhKsM7CJCaqb9y17KvFoKFkwmBPw+juOvqym
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR04MB9287.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(1800799024)(366016)(3023799003)(11063799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?VfmO+GO5GrwVsR5vqL9DlTASBhE/FZKfUc0J8stV3FmsGl83w81tPucHSDqa?=
- =?us-ascii?Q?H4IRmMxCsHFqFKz8LOyB5WJONdcMhbKNEW8hJ3Y8PydE4FhzTqqOFwtI+KtV?=
- =?us-ascii?Q?9NEC1bhpzzRzLepHFx+QTiLKYMxOFd4gRxtLP7Mm5O5MECd2AKeDcYlWCmQF?=
- =?us-ascii?Q?jrYCHG35Nfi285lzhRsrCwQlJ6veKpRbm3RZHlFQYHvMMdlYshtwBnHxIiTO?=
- =?us-ascii?Q?VipLenQb+A5nW83nUwNxmFHnXTcoDY2+w2z+Zo+pqqrMIlkEbOkMYZD3X9o2?=
- =?us-ascii?Q?cS/UCR4dMDU+AXCV6JDsg1iFYvbOksN5yvxHdDG1Ccm8NMAqLOqLacvB0aaj?=
- =?us-ascii?Q?dULSobgg6o9btNWOLtO2OMV/LHdEz1s6mzhWU/ZOIFhka9jYd9IeaBWpqxYM?=
- =?us-ascii?Q?OacbQ7r3XU9o0MMcEomX2y9yMHUvAlCsl3tQLXsM6jRESuZPWeg63Q9ur3Fu?=
- =?us-ascii?Q?jSvFzOIcmWPhkfbbnba1EEAhzaT2J5SrNG9/y58caGW35j+GSoTM6lU7iEOG?=
- =?us-ascii?Q?nwiz+nqthydS48vCxReSIT2aSfn+E/8aNaMC3X+mq4ShtT9dy0cYaWImQB4W?=
- =?us-ascii?Q?1OZKRgmRL97KdWFL4u+6g72oED6S7F1yE7rN+7zCjSVHwiT1lHlVrs0ZzEI7?=
- =?us-ascii?Q?qjJEk8Iia+8W76cUiFECOYFUOZn0keBE9UBI8QHXIAQM0UdlTBXiXOqt9fj+?=
- =?us-ascii?Q?uW3FAAqO+PIyq8w4i4trFDOYssR0zE5QAze17sXiBNMx5SGpvYycDQ1jYW8x?=
- =?us-ascii?Q?g+g3S96piARWTPV7FIe47V9jc21EP1e8gaO2OxVyQEO4oqn/hhDlLLPiUots?=
- =?us-ascii?Q?lwvCGGXXBcTcj0u6sQVWsiw7k1pbPEdZxKuZxGts9W3Z7KnNjgkOp5kWpD7b?=
- =?us-ascii?Q?kyFs5gPHSHsEro654ECX7FxNI2vzWRE4O7QimawGPp8sD0N7uN6NKZNspOdF?=
- =?us-ascii?Q?scSjQulqx3IJXVpMfubWQcY7UZaXnosRJXivloHx79Irxkv2EFWNjR3tGzER?=
- =?us-ascii?Q?ke5VShYKjt75UYWOad+Zp3NY0FsZ4l74Sj93JyvL6RbyxFBqwD3eJVWCMRTp?=
- =?us-ascii?Q?54t1w4h1qtjQRocZMaZas+7QKNmqTDje+xvGJg7Q2g1alogwhgMVS/VsDIzC?=
- =?us-ascii?Q?I4UPo7GmM5+qUIs25v5thsFQ/Ldq1wegh1jgcZ9nB9ic9VuTDi+QaFW2Cvna?=
- =?us-ascii?Q?HbguEbxFEutGmfZBcaKeASJvAEslFyT8+Tn1WBFuhgB1qSbSyA47qU/RSyke?=
- =?us-ascii?Q?1/stDueTpwBbp9XSmvdV8GR0KEnF9cY1dBK0dHAn8JyQVrddLGB8txii2afN?=
- =?us-ascii?Q?c/PhAiS2ISUfGvVgsHv8jxVR4s/yfKjh/07a2M0MlRuFXw+TAtvtBC1jZ7Lv?=
- =?us-ascii?Q?4Fe1TrpjcdyM1xgwbsFeD/dMG/qZ1JamvaKxtWXffAIrNfJFYAu+ErUPWROq?=
- =?us-ascii?Q?BD1c3XVvNazq2y+cYJFFD2AcMo0WxFLGnvFfDA1N9OqwKyZgMu4IL6+M9kbT?=
- =?us-ascii?Q?Y+0aVj65PacLo9S0RWdaPv1go8usXfxcI02eIOYeIngc3ODN/uujE5dZILjq?=
- =?us-ascii?Q?jppR9WV4RUvQ033itXF2nM1iExZANx7fxJhW7ZuQg6ZwGkwlgYXL8MnRTY/Q?=
- =?us-ascii?Q?jAaczqX/AltrXkjF8C/L1l22fox6XSR9xgSAr1/QDLgNOXeony8W4dVglGZM?=
- =?us-ascii?Q?ZV5p8uqp6A+x3NWmVAXhBA98UD9CZBLHHXUiO5z6VL0jK6iN6q1uMEwho6rm?=
- =?us-ascii?Q?ZNfWM+gg4w=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e83f31b4-194e-47dc-e886-08deafcd656c
-X-MS-Exchange-CrossTenant-AuthSource: AS1PR04MB9287.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 02:23:04.1574
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BIzAm26C5R4xim7boYUrdPE2GSgTjylzbG/uYLvryNkiMwm25pxt1YI3fxzJUkQs0wQZECwZE3NBEHQ7n4ojLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8095
 
-On Thu, May 07, 2026 at 06:06:03PM +0800, Guangshuo Li wrote:
-> imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
-> on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
-> value in a __free(device_node) variable before checking IS_ERR().
-> When the function returns on the error path, the cleanup action calls
-> of_node_put() on the ERR_PTR() value.
-> 
-> Do not let a device_node cleanup variable hold error pointers. Change
-> imx8qxp_pxl2dpi_get_available_ep_from_port() to return an int and pass
-> the endpoint node through an output argument. Initialize the output
-> argument to NULL so callers hold either NULL on error paths or a valid
-> device_node pointer on successful path.
-> 
-> Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v7:
->   - Rephrase the commit message sentence about output argument
->     initialization as suggested by Liu Ying.
->   - Drop the unnecessary sentence about keeping explicit of_node_put()
->     usage.
->   - Add Liu Ying's Reviewed-by tag.
->   - No code changes.
-> 
-> v6:
->   - Change imx8qxp_pxl2dpi_get_available_ep_from_port() to return int
->     and pass the endpoint through an output argument.
->   - Keep using __free(device_node) in imx8qxp_pxl2dpi_find_next_bridge().
->   - Keep ep initialized to NULL in imx8qxp_pxl2dpi_find_next_bridge()
->     to satisfy the __free pointer initialization requirement.
->   - Do not add cleanup action usage in
->     imx8qxp_pxl2dpi_get_available_ep_from_port() or
->     imx8qxp_pxl2dpi_set_pixel_link_sel().
-> 
-> v5:
->   - Make the fix minimal for stable by avoiding __free(device_node)
->     for the endpoint node in imx8qxp_pxl2dpi_find_next_bridge().
->   - Keep imx8qxp_pxl2dpi_get_available_ep_from_port() unchanged.
->   - Do not change imx8qxp_pxl2dpi_set_pixel_link_sel().
->   - Drop Frank's Reviewed-by tag due to the implementation change.
-> 
-> v4:
->   - Drop the sentence mentioning the custom static analysis tool.
->   - Add Frank's Reviewed-by tag.
->   - No functional code changes.
-> 
-> v3:
->   - Do not change DEFINE_FREE(device_node, ...).
->   - Fix the driver pattern by making
->     imx8qxp_pxl2dpi_get_available_ep_from_port() return an int and
->     pass the endpoint via an output argument.
->   - Update both callers so __free(device_node) never holds ERR_PTR().
-> 
-> v2:
->   - Fix DEFINE_FREE(device_node, ...) directly.
-> 
->  drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 40 +++++++++++---------
->  1 file changed, 23 insertions(+), 17 deletions(-)
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] The mode filtering logic for 4-lane setups relies on brittle array =
+pointer arithmetic and implicitly assumes a specific global array ordering.
+- [Low] A local variable shadows a global variable in `hi846_enum_frame_siz=
+e`.
+--
 
-Applied to misc/kernel.git (drm-misc-fixes), thanks!
+commit 809f6817858f4d273d756eeec1b017198bbcfa3a
+Author: Pengyu Luo <mitltlatltl@gmail.com>
 
--- 
-Regards,
-Liu Ying
+media: hi846: fix modes handling for different lane cases
+
+When using 4-lane, a 640x480 mode may be incorrectly set. This patch fixes
+the issue by specifying the supported modes and mode count dynamically based
+on the number of lanes.
+
+Closes: https://lore.kernel.org/linux-media/OmTXoHZJTSGePymL9I-1Cw@puri.sm/
+Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pix=
+el camera")
+
+> diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+> index befd54553df2e..9decfda747876 100644
+> --- a/drivers/media/i2c/hi846.c
+> +++ b/drivers/media/i2c/hi846.c
+
+[ ... ]
+
+> @@ -1821,8 +1825,11 @@ static int hi846_enum_frame_size(struct v4l2_subde=
+v *sd,
+>  				 struct v4l2_subdev_frame_size_enum *fse)
+>  {
+>  	struct i2c_client *client =3D v4l2_get_subdevdata(sd);
+> +	struct hi846 *hi846 =3D to_hi846(sd);
+> +	const struct hi846_mode *supported_modes =3D hi846->supported_modes;
+
+This isn't a bug, but does declaring supported_modes here shadow the global
+static array supported_modes[] defined earlier in the file?
+
+[ ... ]
+
+> @@ -1999,6 +2006,13 @@ static int hi846_parse_dt(struct hi846 *hi846, str=
+uct device *dev)
+> =20
+>  	hi846->nr_lanes =3D bus_cfg.bus.mipi_csi2.num_data_lanes;
+> =20
+> +	hi846->supported_modes =3D supported_modes;
+> +	hi846->num_modes =3D NUM_MODES_2LANE;
+> +	if (hi846->nr_lanes =3D=3D 4) {
+> +		hi846->supported_modes =3D supported_modes + 1;
+> +		hi846->num_modes =3D NUM_MODES_4LANE;
+> +	}
+
+Does this mode filtering logic rely on the exact ordering of the global
+supported_modes array?
+
+By advancing the array pointer by 1 and using a hardcoded mode count for the
+4-lane setup, this implicitly assumes the only mode incompatible with 4-lane
+operation is located exactly at the first index.
+
+If another 2-lane-only mode is added or the modes are reordered in the futu=
+re,
+could this silently corrupt the subdevice's mode list by misaligning the ar=
+ray
+bounds?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511090924.2691=
+06-1-mitltlatltl@gmail.com?part=3D3
