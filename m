@@ -1,74 +1,64 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012026.outbound.protection.outlook.com [52.101.66.26])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010045.outbound.protection.outlook.com [52.101.69.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B473A1E6A
-	for <imx@lists.linux.dev>; Tue, 12 May 2026 22:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985573A5E64
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 22:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778625136; cv=fail; b=JzFYsZloJntfKwLCvTxthuHBhxv9iasAK68sZ/SnCPXF7nsvqYHikkIaNDqCsEbXnuGIoD9Bh0XcEY2uyEl5NLjHDsE+ucNCcpN9kT3nvOHVgtvLwxoOVdNtoKbnscPmg1N1FvptYFNhW4zIHtrkxNdp9DscegcTWECy2PRGnHg=
+	t=1778625968; cv=fail; b=IGIPnrO//DUnDQQRUozCLNKcfpj5J0j7cp4nG1ggyVnw+dPjZ1QYF8dW2wpzpBLH8sLIN4fwHbOtPbNrhSmSkM3rq8N3E39ldWWTcK3+96siIxJeunSbwpwvbLepQ9CznO+F1t0ZUDPH85lbQXmssysVISZNGxRkkm5/3crkaKc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778625136; c=relaxed/simple;
-	bh=oHz61IbbuIDcykMeenug8Ruq+/vWCkXU2CzQqqrOy4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Yd+SKOQPE0lBSuOTN65fC8AfEwdmC8K02n9jkw6MlE/H/nyplsM0V6ONLGlLmqXqBtstEWF3sl9ATExXItprPQ1/KWFAfqpuWz5KpQFCulDy7N88TTZEr28zFqwWIs82zRe2YoblohI5Np2sAHrBiqKUaodoN7I7BiuNqm1QuVE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kEuwSJr8; arc=fail smtp.client-ip=52.101.66.26
+	s=arc-20240116; t=1778625968; c=relaxed/simple;
+	bh=x0QEtWKCFUf9gCC1LNZh9rGP1ZgA8jvInjBlk95bpn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mboRRxvmGzsbE0F0OMMMAYxcSd4+cy1eLhNGhD6PXb4JPVDA3HaYSw9+dkklu5++XXXBuvrkXCsjuJT3oAa65U5SnLpmzLho8fpja6CzigsJZxDfEmMERqJvODmcbipMzHkcvAPlHKyyUaIWtWEDLw89jqGGMCw1g57GMEd22Gc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GbA8Apc8; arc=fail smtp.client-ip=52.101.69.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kEuwSJr8"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GbA8Apc8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T1tKvflWpNeuWv5eB1JNEK9vBHM617PTsQXYY//e4BMlicE6GeK7MFMbp3hhXtHO+ON9k47H/H4UYLBUb9eaQBMN0WWvCw7X8Q1H3f6pMHIj15OxU7FIOWXdpK9p2Ys35+8SjC6ShcS6phOxZNnj0bCrhQJLA8u41FQVNHgr0zTKkwWfG3gFf/zmyB46YgsapLfgAFrDHJywCGfBktqIy609UtIE82uupnNX64ykOQNnPjw6Pa7aoUxrSTDiA5eHmVJxj/4ahyTcS8D1r4V8ZB2X8vtNnymc2c+RBktKmHdEB85R52H0j10mKotBubqhXfbNiGpyQgOdVOtzTZsFwA==
+ b=EQGHE8z0a39zSYLObvoVs9LkMkpns+gLEYcVjFZW8XQfgL+d2VabWIh+A75/8siFtblOvqhQWL9giL8k3lJGt6W1r4yKkcBW0p2Fn/4hck10ifuV83VcmRbsOxjIbzVymJSEwTIobU6GEKQOgTkTKzzQWy/cE3hCemOYGwkmUMsuf8rjk/D9Dw6qqpecsZRJLHkH3IslcEGDFcn4AIUXss19I22XEVR2P71Y+spnP7LwbiAmfERbB5cXFF+Dg8ZEGQYyqXjuvsV97g3YeoFT+t6V/51U9E0mdGQkohSdac+nURzCHN1CtGITJDfIXK1zSYUQzD+vtydV8si72ONbMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3imlcggKl0MMTERSCowpEOjuDFafiQdvbdJV6tWYJqA=;
- b=M1xfSdhVwCD+LZZGpwDg5QPiAyFhOU3atFae3DPtzEy+N6UKXedA/sRa8wDR/0EP+7+5u73L9GijgWXluupTNHzTpqZ0NMI43xWdPeitUZAopbyR7ui85cKayXP+GnLfonCffr/7NHyrlxAXX0gQ+toMTNG2JX4ZYlqSJLU7Ea7OlG/WsyUlIx5pa9zaLCoHr2SK6Luw0gLDJMydiqLAHwLMQWv/a7zo5nJxxabbChWyWMSmwIG1gIEFMZn7O+tqlm0qQE13T8ah8LL0qBzI0IKzIbIsmz0l3C3HZiR4VWSA+qcUL3sVppBBdHGqQQifSiqRJY24fTmotz4sYFqP2g==
+ bh=mkFvnIKT1rtLPtUq/44zJwaHL81U/rHtNAg51nY2KiU=;
+ b=iyToPNLYEwIQ59wMTyfvdQ6+wAIFmG+RU9cZhGjAa2eWPTnouUgWGD8CD3LebjzgWhvOPwzsLrR+htEIGMG96Hz5QPXUqN5d8uIx19R4X4+4jlgC69ex7+aN8I2+VZKu0p38khsCAE/6yJZkgssK4ZXmCXSdca5rZ+bSW3dkJ943na+vN6R2s7CyOb9AfzdJKRcqfY5NADInxjNiVoxv97adIwsIB3rTSRPS41MKRA/M5jfH3nULfRzjXQEYThSwCFCS/+G+uzSdEwx9An3IlbNXBWOj4SPTlOcgXdpzGDcNKJy/ehJNNkjwAxroZ3vJwa5FZdWJJ+qUzCF9PICgpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3imlcggKl0MMTERSCowpEOjuDFafiQdvbdJV6tWYJqA=;
- b=kEuwSJr8lBxymyBuUyq4JHT4vj91BV1xyrCVH8iFgKQsncEPYCT8P4FqfFB61En4pR2J6TG6zVtz7PppiTmKZlOEeddBu4QEWYzuUbpkYs+Gb7m13BF04ypHF/Xpv7k/uWhOtpkZkG4r4Oxha49aP3i99DfTRsd4x49pG9IuMeghFW6N2VDCHGrFN2HosbrrCfiT/qQ/A8L2k7vf79VbU2U9MSEOu2RJ7z/yKS2pUzyE4Qba77JO46afTmeQ5aeu/KxtZwSfLJfF5BggR1qo4Tr3q6/fk/zE05YlvgJveFtkI9LR/MlRVo0sqHM+BMQpqIFQFTxcNZP+g/JE0iv+Sg==
+ bh=mkFvnIKT1rtLPtUq/44zJwaHL81U/rHtNAg51nY2KiU=;
+ b=GbA8Apc8bjWmPI7cQgCxbw2D9R6tsw9ZDMGjLJ8SBW2pgDmKC5iud7x7E/unxXmt5hwMdV/+uiuEeHU2NlwZfBeBDikbhC4Br96+FNMBqwIP67LbDxbTWGq0PEQn48DSFgtjc8FpBHsGxVvkNXG7oIyXDNcDJB85kuYrbNaEqScmmyDy6O4UVXizsiv9g4DazdsBXa+49op0JQEu/UIhaKG26qLd8wOwKMrdf3d79/GIOezYpKJ46prcOf2dd/qPZV2298iPJv8TbmMZ9qSzgTOuYEHY3410UGxqwgRY8yx35E+Sy9UBPVXGnUyUIm0keMwFLgNt6bmGgc9lpw5+Bw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by GV1PR04MB10125.eurprd04.prod.outlook.com (2603:10a6:150:1ac::5) with
+ by AS5PR04MB9922.eurprd04.prod.outlook.com (2603:10a6:20b:67c::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
- 2026 22:32:06 +0000
+ 2026 22:46:03 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9913.009; Tue, 12 May 2026
- 22:32:06 +0000
+ 22:46:03 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR FREESCALE IMX 5/6),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
+	linux-kernel@vger.kernel.org (open list:VOLTAGE AND CURRENT REGULATOR FRAMEWORK),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: display: imx: Add television encoder (TVE) for imx53
-Date: Tue, 12 May 2026 18:31:35 -0400
-Message-ID: <20260512223137.1190096-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml format
+Date: Tue, 12 May 2026 18:45:42 -0400
+Message-ID: <20260512224544.1223283-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH5P222CA0006.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:34b::6) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+X-ClientProxiedBy: SJ0PR03CA0252.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::17) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,179 +66,328 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV1PR04MB10125:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb9cdf29-c4dc-40eb-232c-08deb0764be6
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS5PR04MB9922:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1dd930ee-8223-4781-4d8e-08deb0783edb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|52116014|376014|1800799024|38350700014|921020|18002099003|56012099003|11063799003|3023799003;
+	BCL:0;ARA:13230040|52116014|376014|19092799006|366016|1800799024|38350700014|18002099003|56012099003|3023799003|11063799003;
 X-Microsoft-Antispam-Message-Info:
-	VdD8Qj0flG1w81MUILO7ok4fUJfFB0PUzN/RnocVZliS+AFmpKn9FEuXxvb+u94GSy+i+H1yLU+79ELaRJ+yLUkhCRnw8ThxBGkWD9JhrlQOUYKA2edJ3sSSWfm51MCgGfGUNhOWWugs+7QYxzIZIxphuEQ6+xnT2L1QT+H1bzb8ZEt3LdhJOD4LWCLQZcaDqItaa+g9wSTo6+VffpvrVfJGVDvQffPOJWbayM4J/HQ8xmWME+4KfkTL0teIqALuS0qFaEAtHz9LMMJc+4iSeaatjZQ/RE+gwpk9GbLUgmuIpJRnppxEdbSYkimQic87TCRwV/oHerRKMY8NALxIICUdgN3huLOnuRKK/iOFCAHhWEft12k6IXVzYXTR5t3X+eq/ephrOYe8RzRFvp4Wrf6AJKkvQNV/rz4qKhW6QG0oB+yGYuIMrU6hEX39O3HPs/XBDt+i5P72Sm9M0gklQ8e1cLiuB8dhRgrfMEnAduh7Tg/Btk1VTeLjM3oCRS3cE5tgJD6Rf2NuMd2yS3KDS6Mcj/se1hgi7rc9/APGZipSpwpZ86ibBq8kYdQBt06NcIgyjrxJlIa51tMFOyC8NmU6f+vQGxDUPCe9NeMx0/jdHKqYRpBlA0s2RDnXdaUsoqLvaXZDy5LoTSt2Dd8z7g1CrndO1bMFjyw2fB/y/th02xah4P3D6pngvBsaLuOQMRO/jRhWBOzVupeL+RkM1IIybvEyTNn78s24NwX5gLk=
+	U9KihMVS0zgGHHR1jx1twgwxGNIx1XN2ABIDi4ElLeXws5oAmc7YJz//3DcswbkYGRXE4VR7QIqfcLXGd4FsJ8uDhY/hF9McGt3AtO+yGyXYLK+O8BWSMcvKGBSU9ri2GWvQXd3LkvOH/uvoqgj2G8RCpYMqR6KSRRbYxUf0PJygUzLt4CeyqwqA9fInYQ2kU90Iv/sN6/1CA+Woq0+BgPo63z4Ts+TcRRo3CijYcYy96U5Q/OJVCbtU4yyEp5d7by9/esJDlVv3w5g7mMN/kbpqOILXmLAE0aX3ZmpUZ9uwtEXSKyuo/iT0uc2qtBRTO1buz4jdGMIMm4EHSpJVT64Uy47AWIEu/tooa2sqLV0dZ4DnRBjPHl3iP/5aPv4/51nT6lfkorRoCMQoNa8DI8TCOgGWZ38emAqO9JmKjYPSlvUuALFfbrjFCFhdZGoUq2Dkjx+YZJ9ibyXjyUcppoeevGRZWuyMZna1wgzc9rEH43S2FhX3F6Wq4CeMEc7Fq9+yoPfQj2Y26/zXsq3moUkw3zliI4XliW22pfmMjB9VzM5Xh2hwpg+SuWiFkij/HFG1m8qdyUverdiFYp4q1tZu8npS53qyz2cn99f0HkTzBCtHd+5rLk39TU3+Lbm6L6QPX7t+WecRedNGAOusKDhJqO8s9Af0MntE8EJ4tDUWi1/hnnjpFTh/x/dRSp7tke1bLfDWviNq07FGFJCssA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(52116014)(376014)(1800799024)(38350700014)(921020)(18002099003)(56012099003)(11063799003)(3023799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(366016)(1800799024)(38350700014)(18002099003)(56012099003)(3023799003)(11063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9a+paHraas2ZRiiT1A8zwQ91UlzuWiol68IRpZXPcnS5KnN3jt/iQuCOq6aB?=
- =?us-ascii?Q?svJmv17YaqrMlweYDbzJyuZTxcbUzvR0N5swrRqcOP9iN3Pm45/E5qTb28v8?=
- =?us-ascii?Q?q0VsBLA+7sAbWF4HmNSbMhP9sOFUIItvsyJw31OzB59EFhpUw+nQOZkVCGMG?=
- =?us-ascii?Q?+otyRYtX8keRAaMfHTv7U/hckc/rovs54MkiiN1f3MBPrk8a8fKGAOXzyebL?=
- =?us-ascii?Q?poxVcyx8L94w8+SdZgCy/wqpxQmD9+DfI2K13xZEPsrEgKBGeOHYJGp82Fcu?=
- =?us-ascii?Q?lsW45n2cIkpz2WWtr6VtBwy7yr+/p2QmiCraAIq40Moy0zVms0pyPgat8qdt?=
- =?us-ascii?Q?QK2qMOBZkwCHqpteArmOcFPkHyiZondyA+KDswM5Xzcwa4gneF957ZhDMs/0?=
- =?us-ascii?Q?QhONcAiKpUm22ChBn0Um4De3x1fXLs0HAhmwq+FiEOFf/cYX+XQNqrWSqWK+?=
- =?us-ascii?Q?8xPbFqfCPVny+Koxf/l2dJZNs/pX7uLEu7adkx/a2oGQwbreKBAjGXbYmg4h?=
- =?us-ascii?Q?iFkcmwX7Q9ejI9NCi0P7XHmjgvWH+zuFc1PCDjYJg/HIhnnIkedvlgRkvfST?=
- =?us-ascii?Q?3fP8ZqU0iTWO601YCZH0GzhipxDOPfKmWlL8HBkftfYZ0mOij7I8NapapPeq?=
- =?us-ascii?Q?7mLSQQUSN5SknZC0yfO6rAGyoyS7t+rrq2YwiA4/kaQFh+MlQUHx5kUPsSyj?=
- =?us-ascii?Q?UzGCVVHTH4IZxqreff/ItoJS0DA2d9qsLEh++W1zRSIt3aVUkwlkLwBviyF0?=
- =?us-ascii?Q?3ejnWipiDgqU67ZKepYlZTIv4KXaNTncbUCw/5+SqwVN6P6LW4Ep5KIiUT2z?=
- =?us-ascii?Q?crgVSFuke2oFvzRJF7Edtj43M1OakW1QVQIbP2rfEqySy+EKKMoycG6ovIVo?=
- =?us-ascii?Q?BF4hMrO0Xt1HZnxejq3jkNYmbeV5Nz0cCYKtVHk7hCyts8SmbYJQv7Dp+lP/?=
- =?us-ascii?Q?ImbY39+0FycMIYMEciOZ+oTY3n/8p5ZW/9Y0aWprSoDLO5X4tR8YEt3roB0U?=
- =?us-ascii?Q?5hypNxKF26/1LDWBtrj7XzZq1cKW8lF3A4AsS25mLymVaZWgbkGxhdH7Ztxj?=
- =?us-ascii?Q?yNxlMHcUHR2qStpzut5jHAKOp4dB73qU9MKVyhb+lFXRO0W64roNKzfJPOaB?=
- =?us-ascii?Q?b8p7X15uUTtMTJBeIPJ9SKeOXkPIMqozUCYjcH5aoYvMbx+JlV1UUN3iDQhD?=
- =?us-ascii?Q?Ln2TsvXIYa11o70amyzw9lWkJwAJOGKBn51goWugT5O8fs2qyOgHVtcumn0j?=
- =?us-ascii?Q?QimGCsx5Wi/UjRMuQ3167eqIm6Cllx58yXZGkyaZN6Vsrop9Ref+KqBNnkCH?=
- =?us-ascii?Q?97IWSEmGswPNpdapv70KL+GSRRkmiFJv1Q/fHSADFuCD7JEohFxUeUPSUY1/?=
- =?us-ascii?Q?WCQWANgpOYURk6UfetUyErhdGg6tkaHAgX5y/VBkxEY812yl8XYObXoErsRK?=
- =?us-ascii?Q?A6WIiojS6qVGbzI/qqODH1b1f4mw5xdvnWAsgsVPjdTh2SAcBfLVeeg0L7Lo?=
- =?us-ascii?Q?s6yYHO/Nd882plQNg5uo1pHwafvMu4dGeblMLOCqQdz7p2YrdQXYeUgK1dkg?=
- =?us-ascii?Q?WXQvcTTD7JulVPLF9Z1JlZ5MF73OalTmPwffbTJ+ugveVvwfC3uVwmEKgmII?=
- =?us-ascii?Q?Z0XMVMS/EBnO2/Gx2z8QhxqsEJYSWOlhuGlHTddscymYlP78tNbu88hYBLvw?=
- =?us-ascii?Q?VR+ZVE/KeymSN/cPHBvtsaX7xn7ifPq9PCtz9tkTHE6fAh6J?=
+	=?us-ascii?Q?7gJBCJpx8kWyn1wt4es5GksA9XzM9hy5H6BjrQrgn1jAlmLO+d6Nbn1mEhQs?=
+ =?us-ascii?Q?Nus38yOtxACHCls07c3eSvzftjaoPcaXHIylUMyqkgor49q7ABvrALnMrjoO?=
+ =?us-ascii?Q?eylGMclP5/+2Ab8UJEQ++/IXWxdVRNkmjzf/2rjy061o6G20PGgtRkzNkpEs?=
+ =?us-ascii?Q?N5OwSqLkH5nvPNLeWI7NlKxxpQBhhCaxL8EWwGj20b270NAPDbs+Wg5AX1td?=
+ =?us-ascii?Q?YcIt1WQasrnzIQ20YL9z9V/DdK8C6Z+zyywrj372NtUdvkZLKUN/WfRCFLsI?=
+ =?us-ascii?Q?iKG0uL+YxhIfaOGBlNYeLQATD7w1CMgdCWPOWXpd8n9VrZBCu7IltXD0fMWI?=
+ =?us-ascii?Q?WQIaeU5n+I5V1cIifHZKc+oZuUa5u81yDAmmW8bgIV8ENni0zzJJacrZoW10?=
+ =?us-ascii?Q?w2gIdebwPoOiCDwPbiDdwts/PY6ULd5KK1EjVVOmPPdqdM+9wewGivtihe1C?=
+ =?us-ascii?Q?fgCpplZH4OZbehrqoDDg4w3Fqmh9HjBysZKUnqX3MH2y6IMc7KfynwgJ4vCJ?=
+ =?us-ascii?Q?3VqXKsVRP9i5LwhfqxCMBJff3F1IMNwKUqRLTIHgfYOIxSYPjEZfIe0fo3qw?=
+ =?us-ascii?Q?dSEm2czYJhyGk6yiC8DYSfE5RblrYwEdhnWJA88roPD0HVMPVF904eYotb4q?=
+ =?us-ascii?Q?80yMyge2QFiVz0Hy12e3z5sHqmLs/hKpkpvPfBRREJJ/+8+N2lb0CqMv73qD?=
+ =?us-ascii?Q?T58h7cO3CFs8amN5jwFitkvoHNE+532cAy2p0EgrVwVXHvfuATV+lyLgdhDm?=
+ =?us-ascii?Q?8i2PJP5aYX3bUZwrwbJECvXQPEpMPKph7N8DhXdFip7uMLCBYBWV2yolSx/a?=
+ =?us-ascii?Q?GoWYryvzOt2lZrvV/ojacC2YcJGePYptyRSx0euIiPeYYDhDSrDpeor6vBPG?=
+ =?us-ascii?Q?gdLvlf1x8yhE0haPRIaeBv3LoEccj5Lf/dIQtSHwvK7+9DGlLiP7gKQBSUkl?=
+ =?us-ascii?Q?zXzXDBt+8zOb+wsjsMlqXJG9+sBQkXGAM84ZmFyqu50T1MD1hSaJ0U1U0utI?=
+ =?us-ascii?Q?M7fWBaXB6wKEbr+Koe8pFz7degtfbetj+9L7ln6i6adCMD/FyA6YkxFZNf+I?=
+ =?us-ascii?Q?pFY7rxubWD1eSiFNPnd6Gi4j3zWrSFFGW3w/t8HNC94xF5kGuJ3Sl71KQMpT?=
+ =?us-ascii?Q?AOCpoE9rzgCzBjSabopMF8dALvW+Tu2W7UrleptZ8hVV2fL8UdZUKPPMnWlb?=
+ =?us-ascii?Q?49qL6nnfIilm1Ez2PEzkOp98qAdkoOJg95MUXtUOK24dX3FmBIrvjJmU58Hr?=
+ =?us-ascii?Q?m46iYeeb5daMECwN3dk18hpIsRY1eZh7AqYS/Omw9Dn7Kte+mElYPPIDaWoh?=
+ =?us-ascii?Q?w87fRabyZsyhYYU7D7G92sD7U8HoaQaPlwlYoSITAwDzz2BKdreCDw/yINkt?=
+ =?us-ascii?Q?TcpVWwFudAzEklRwEW52GrStw4qRx15TcY5ASTGRRMAVwYesSfmj2WKeC8XZ?=
+ =?us-ascii?Q?FIOt6HG+XWeJGHh2QTbvG8F4ViAVVrAOQKLgNe9XyVGMZnhMEGVAcoRgXUMh?=
+ =?us-ascii?Q?rLC01sYC7HOLZ1oElgrkwWZfR85FbBGqOIYM1bHC5eoGtmTbFKN2uHtlbxMP?=
+ =?us-ascii?Q?WmqR9Ioc9mpf9QawTlU66sa9eLYUvWQ0BBV+2ApthcCZLFwuUZu48Y7sNOPi?=
+ =?us-ascii?Q?X8nVQG+7KzJG6JjuB54TqPtFM48/OoF2bfNtJWgHuYqU8ikU97HMlx/yfwUR?=
+ =?us-ascii?Q?XzC/AvCU3MzheiVAqm4l9cBHfEuT4053zdZEqHU8fryiEMx6?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb9cdf29-c4dc-40eb-232c-08deb0764be6
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dd930ee-8223-4781-4d8e-08deb0783edb
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 22:32:06.1316
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 22:46:03.5109
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EZe4v4/LcVZfzNQjqG7AIHkC+WG7Orhx+UGLq+Box9K1vl/24Zd/S+3TLvsSKkSExzgCFVaaKat2k17klwt4Eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10125
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ftd0FfJyFmSVmmpPQyIqa/e+ZT/A7WTXQDgcqA+ZuKyoNyL392TnxgG74DxPfgyy4S+WQUCjz4E5ah6Egbpl3g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9922
 
-Add television encoder (TVE) for legacy i.MX53 (over 15 years) to fix below
-DTB_CHECK warnings:
-  arch/arm/boot/dts/nxp/imx/imx53-ard.dtb: /soc/bus@60000000/tve@63ff0000: failed to match any schema with compatible: ['fsl,imx53-tve']
+Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
+binding from text to yaml format.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-About cleanup 300 lines warnings for i.MX ARM platform
----
- .../bindings/display/imx/fsl,imx53-tve.yaml   | 102 ++++++++++++++++++
- 1 file changed, 102 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+ .../bindings/regulator/lltc,ltc3589.yaml      | 147 ++++++++++++++++++
+ .../devicetree/bindings/regulator/ltc3589.txt |  99 ------------
+ 2 files changed, 147 insertions(+), 99 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
+ delete mode 100644 Documentation/devicetree/bindings/regulator/ltc3589.txt
 
-diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+diff --git a/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
 new file mode 100644
-index 0000000000000..a7c971be1959b
+index 0000000000000..f406c2bd252d4
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
-@@ -0,0 +1,102 @@
++++ b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
+@@ -0,0 +1,147 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/imx/fsl,imx53-tve.yaml#
++$id: http://devicetree.org/schemas/regulator/lltc,ltc3589.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale i.MX53 Television Encoder (TVE)
++title: Linear Technology LTC3589, LTC3589-1, and LTC3589-2 8-output regulators
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
 +description:
-+  The Television Encoder (TVE) is a hardware block in the i.MX53 SoC that
-+  converts digital video data into analog TV signals (NTSC/PAL).
++  Regulators sw1, sw2, sw3, and ldo2 can regulate the feedback reference from
++  0.3625 V to 0.75 V in 12.5 mV steps. The output voltage thus ranges between
++  0.3625 * (1 + R1/R2) V and 0.75 * (1 + R1/R2) V. Regulators bb-out and ldo1
++  have a fixed 0.8 V reference and thus output 0.8 * (1 + R1/R2) V. The ldo3
++  regulator is fixed to 1.8 V on LTC3589 and to 2.8 V on LTC3589-1,2. The ldo4
++  regulator can output between 1.8 V and 3.3 V on LTC3589 and between 1.2 V
++  and 3.2 V on LTC3589-1,2 in four steps. The ldo1 standby regulator can not
++  be disabled and thus should have the regulator-always-on property set.
 +
 +properties:
 +  compatible:
-+    const: fsl,imx53-tve
++    enum:
++      - lltc,ltc3589
++      - lltc,ltc3589-1
++      - lltc,ltc3589-2
 +
 +  reg:
 +    maxItems: 1
 +
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: TVE gate clock
-+      - description: Display interface selector clock
-+
-+  clock-names:
-+    items:
-+      - const: tve
-+      - const: di_sel
-+
-+  ddc-i2c-bus:
-+    $ref: /schemas/types.yaml#/definitions/phandle
++  regulators:
++    type: object
 +    description:
-+      Phandle to the I2C bus used for DDC (Display Data Channel) communication
-+      to read EDID information from the connected display.
++      Contains eight regulator child nodes sw1, sw2, sw3, bb-out,
++      ldo1, ldo2, ldo3, and ldo4.
 +
-+  dac-supply:
-+    description:
-+      Regulator supply for the TVE DAC (Digital-to-Analog Converter).
++    patternProperties:
++      "^(sw[1-3]|bb-out|ldo[1-2])$":
++        type: object
++        $ref: regulator.yaml#
++        unevaluatedProperties: false
 +
-+  fsl,tve-mode:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      TVE output mode selection.
-+    enum:
-+      - ntsc
-+      - pal
-+      - vga
++        properties:
++          lltc,fb-voltage-divider:
++            description:
++              An array of two integers containing the resistor values R1 and R2
++              of the feedback voltage divider in ohms.
++            $ref: /schemas/types.yaml#/definitions/uint32-array
++            items:
++              - description: R1 resistor value in ohms
++              - description: R2 resistor value in ohms
 +
-+  fsl,hsync-pin:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Pin number for horizontal sync signal in VGA mode.
-+    minimum: 0
-+    maximum: 8
++        required:
++          - lltc,fb-voltage-divider
 +
-+  fsl,vsync-pin:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Pin number for vertical sync signal in VGA mode.
-+    minimum: 0
-+    maximum: 8
++      "^ldo[3-4]$":
++        type: object
++        $ref: regulator.yaml#
++        unevaluatedProperties: false
 +
-+  port:
-+    $ref: /schemas/graph.yaml#/properties/port
-+    description:
-+      Port node with one endpoint connected to the IPU display interface.
++    additionalProperties: false
 +
 +required:
 +  - compatible
 +  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
++  - regulators
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/clock/imx5-clock.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
 +
-+    tve@63ff0000 {
-+        compatible = "fsl,imx53-tve";
-+        reg = <0x63ff0000 0x1000>;
-+        interrupts = <92>;
-+        clocks = <&clks IMX5_CLK_TVE_GATE>,
-+                 <&clks IMX5_CLK_IPU_DI1_SEL>;
-+        clock-names = "tve", "di_sel";
++        pmic@34 {
++            compatible = "lltc,ltc3589-1";
++            reg = <0x34>;
 +
-+        port {
-+            endpoint {
-+                remote-endpoint = <&ipu_di1_tve>;
++            regulators {
++                sw1 {
++                    regulator-min-microvolt = <591930>;
++                    regulator-max-microvolt = <1224671>;
++                    lltc,fb-voltage-divider = <100000 158000>;
++                    regulator-ramp-delay = <7000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                sw2 {
++                    regulator-min-microvolt = <704123>;
++                    regulator-max-microvolt = <1456803>;
++                    lltc,fb-voltage-divider = <180000 191000>;
++                    regulator-ramp-delay = <7000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                sw3 {
++                    regulator-min-microvolt = <1341250>;
++                    regulator-max-microvolt = <2775000>;
++                    lltc,fb-voltage-divider = <270000 100000>;
++                    regulator-ramp-delay = <7000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                bb-out {
++                    regulator-min-microvolt = <3387341>;
++                    regulator-max-microvolt = <3387341>;
++                    lltc,fb-voltage-divider = <511000 158000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                ldo1 {
++                    regulator-min-microvolt = <1306329>;
++                    regulator-max-microvolt = <1306329>;
++                    lltc,fb-voltage-divider = <100000 158000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                ldo2 {
++                    regulator-min-microvolt = <704123>;
++                    regulator-max-microvolt = <1456806>;
++                    lltc,fb-voltage-divider = <180000 191000>;
++                    regulator-ramp-delay = <7000>;
++                    regulator-boot-on;
++                    regulator-always-on;
++                };
++
++                ldo3 {
++                    regulator-min-microvolt = <2800000>;
++                    regulator-max-microvolt = <2800000>;
++                    regulator-boot-on;
++                };
++
++                ldo4 {
++                    regulator-min-microvolt = <1200000>;
++                    regulator-max-microvolt = <3200000>;
++                };
 +            };
 +        };
 +    };
 +
+diff --git a/Documentation/devicetree/bindings/regulator/ltc3589.txt b/Documentation/devicetree/bindings/regulator/ltc3589.txt
+deleted file mode 100644
+index 8010530361465..0000000000000
+--- a/Documentation/devicetree/bindings/regulator/ltc3589.txt
++++ /dev/null
+@@ -1,99 +0,0 @@
+-Linear Technology LTC3589, LTC3589-1, and LTC3589-2 8-output regulators
+-
+-Required properties:
+-- compatible: "lltc,ltc3589", "lltc,ltc3589-1" or "lltc,ltc3589-2"
+-- reg: I2C slave address
+-
+-Required child node:
+-- regulators: Contains eight regulator child nodes sw1, sw2, sw3, bb-out,
+-  ldo1, ldo2, ldo3, and ldo4, specifying the initialization data as
+-  documented in Documentation/devicetree/bindings/regulator/regulator.txt.
+-
+-Each regulator is defined using the standard binding for regulators. The
+-nodes for sw1, sw2, sw3, bb-out, ldo1, and ldo2 additionally need to specify
+-the resistor values of their external feedback voltage dividers:
+-
+-Required properties (not on ldo3, ldo4):
+-- lltc,fb-voltage-divider: An array of two integers containing the resistor
+-  values R1 and R2 of the feedback voltage divider in ohms.
+-
+-Regulators sw1, sw2, sw3, and ldo2 can regulate the feedback reference from
+-0.3625 V to 0.75 V in 12.5 mV steps. The output voltage thus ranges between
+-0.3625 * (1 + R1/R2) V and 0.75 * (1 + R1/R2) V. Regulators bb-out and ldo1
+-have a fixed 0.8 V reference and thus output 0.8 * (1 + R1/R2) V. The ldo3
+-regulator is fixed to 1.8 V on LTC3589 and to 2.8 V on LTC3589-1,2. The ldo4
+-regulator can output between 1.8 V and 3.3 V on LTC3589 and between 1.2 V
+-and 3.2 V on LTC3589-1,2 in four steps. The ldo1 standby regulator can not
+-be disabled and thus should have the regulator-always-on property set.
+-
+-Example:
+-
+-	ltc3589: pmic@34 {
+-		compatible = "lltc,ltc3589-1";
+-		reg = <0x34>;
+-
+-		regulators {
+-			sw1_reg: sw1 {
+-				regulator-min-microvolt = <591930>;
+-				regulator-max-microvolt = <1224671>;
+-				lltc,fb-voltage-divider = <100000 158000>;
+-				regulator-ramp-delay = <7000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			sw2_reg: sw2 {
+-				regulator-min-microvolt = <704123>;
+-				regulator-max-microvolt = <1456803>;
+-				lltc,fb-voltage-divider = <180000 191000>;
+-				regulator-ramp-delay = <7000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			sw3_reg: sw3 {
+-				regulator-min-microvolt = <1341250>;
+-				regulator-max-microvolt = <2775000>;
+-				lltc,fb-voltage-divider = <270000 100000>;
+-				regulator-ramp-delay = <7000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			bb_out_reg: bb-out {
+-				regulator-min-microvolt = <3387341>;
+-				regulator-max-microvolt = <3387341>;
+-				lltc,fb-voltage-divider = <511000 158000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo1_reg: ldo1 {
+-				regulator-min-microvolt = <1306329>;
+-				regulator-max-microvolt = <1306329>;
+-				lltc,fb-voltage-divider = <100000 158000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo2_reg: ldo2 {
+-				regulator-min-microvolt = <704123>;
+-				regulator-max-microvolt = <1456806>;
+-				lltc,fb-voltage-divider = <180000 191000>;
+-				regulator-ramp-delay = <7000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo3_reg: ldo3 {
+-				regulator-min-microvolt = <2800000>;
+-				regulator-max-microvolt = <2800000>;
+-				regulator-boot-on;
+-			};
+-
+-			ldo4_reg: ldo4 {
+-				regulator-min-microvolt = <1200000>;
+-				regulator-max-microvolt = <3200000>;
+-			};
+-		};
+-	};
 -- 
 2.43.0
 
