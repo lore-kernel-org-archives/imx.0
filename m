@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DB972618;
-	Tue, 12 May 2026 01:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1022828F948;
+	Tue, 12 May 2026 01:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778549065; cv=none; b=B0xcR31kTSzlLCuEVa58T4rkdQGRV0Bqc64ylP1hf4ypme0kdxYkYgZofmo9VfswipyUz4y7LP/f0ZxSnIIayubpCbOvBjscXM2Kcw2+2LYQ8S/aaLPD+jIggPwnrUbL5GzBbQQm1dNaSd9iK5jYuqCH784qy/CASevsU4wzBPw=
+	t=1778550105; cv=none; b=sq4qxCJZAyRssDp+Fqm8emaRw+IS/uUhiTPnNkUdeQZ8FBSgx7vRSx8KDFTSryqLfi3BM7ZFHHmADgGJOLtkIWhYxjGBe8yMwXfPvWtMwNZ3LpQEt3CL4oM51IaQ8lS/AqUt+ChxF6kZuDIZWpaXAuiyoUsr9EKifZSyKc3dYZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778549065; c=relaxed/simple;
-	bh=5I4fFH78/urbTSm/Yv4MPrAehmDRePGY8oEbOsn8sW0=;
+	s=arc-20240116; t=1778550105; c=relaxed/simple;
+	bh=sebhaN6tzTE5Fs4/65z8od0hOE4cI7esAoaJnd5S92Q=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tbUCwiRPWgny3GBWA7qu92i2HIRRZWtyqzj7xt94n4YI6JsloDRpBXvWdctU9CHRa4rXx7AxF9uIXlHMtHlOZj2u0RRiTJwwDmrqChzz+okdXGQTXnBLrroxjxnAjB+EpoSIbsLq6cccEPSJg6fGCIBdJWGGetmd4ZCYFsNjiNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHRLLahh; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=u3X1+2Y17WI2W8UDkwoKoRHy7HgDk0ZTMZuQNtKZIv8P0onN8xM1nPbgjsXpcmU5T/7Rg+G0hgp2sGyUFI+sqjTgi2jcFj78gxcSRSvzAdBtC8QLLGeoPbdTj6cNYIkwZBVELO47JfdmtheK8Ir+VVJ4VwA6D3+zdV6RjBRjs+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAgfJ3D2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHRLLahh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A699C2BCB0;
-	Tue, 12 May 2026 01:24:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAgfJ3D2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4EDC2BCB0;
+	Tue, 12 May 2026 01:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778549064;
-	bh=5I4fFH78/urbTSm/Yv4MPrAehmDRePGY8oEbOsn8sW0=;
+	s=k20201202; t=1778550104;
+	bh=sebhaN6tzTE5Fs4/65z8od0hOE4cI7esAoaJnd5S92Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=kHRLLahhJacU00g94n+viL7SULG62LSmEaSCTGtRYzDBiajU1uOnWVXinK2wLBcdH
-	 mYx8WOaeQ6thJIAZx6k7EXcWfWm0jKbl10EP8aPkX5a3jWP/LY6RmVCBymEW1osxeZ
-	 rkDdeHD5qOxgUf6Ot+pZXc5lW6pwrbj0VDJ+HEinelqpJ2hZAF3rtq8i13AQTBJ7gk
-	 Vbpj9hACeWZ/r3HAuoxk26MMk9YVRN9vMz1XmRnIQa3IDBSZUuOxoqPxVeAQiq3JLr
-	 HfO7+TqZ+Njc+2ZRHT3qSOBMumQ/Zkbh1i+jHwDqdVbYmSV1HMZlHHb1asI3QCdTFv
-	 kIPIRnOzRCQ9A==
+	b=GAgfJ3D2cX2apchLYhUa55uI0nPsvPfw5DaDd9Yg36EIafnHXvADZ3x9kiUdQ1cOW
+	 lM+4NstJp4kWXp9h1RNWtFcVXXEKqUPXCpi/MsDvI96nLmxIRVslWXcdTydprHcT/+
+	 dlas9S1FAeyEFvRIPpwEPf89sn8mXgkbkmcWlcpw2HaUis3UpE/rRT7XSIY5VeY30w
+	 xWyLKjF2EiVMOrVjSW3yGDH9rBWo6HAwVy/NRhxHtHFMpCQ8ontYzGaQxzPo4sH7n7
+	 9dkj8byOV0DJWmhZEYS6rL07TjyPIGSnIb6mB3RhUwFyY6EWl6dnSUADhvucEgZSHI
+	 kbrPbw1Ljm8qA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/5] media: hi846: fix hi846_write_reg_16 handling
+Subject: Re: [PATCH v5 08/21] drm: bridge: dw_hdmi: Unregister CEC notifier
+ during connector cleanup
 Reply-To: sashiko@lists.linux.dev
-To: "Pengyu Luo" <mitltlatltl@gmail.com>
-Cc: imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260511090924.269106-2-mitltlatltl@gmail.com>
-References: <20260511090924.269106-2-mitltlatltl@gmail.com>
+To: "Jonas Karlman" <jonas@kwiboo.se>
+Cc: linux-sunxi@lists.linux.dev, imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260510124111.1226584-9-jonas@kwiboo.se>
+References: <20260510124111.1226584-9-jonas@kwiboo.se>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 01:24:23 +0000
-Message-Id: <20260512012424.4A699C2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 01:41:43 +0000
+Message-Id: <20260512014144.7B4EDC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,71 +46,64 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Unhandled negative error code from pm_runtime_get_if_in_use() caus=
-es silent failure of exposure/vblank controls and PM usage count underflow.
+- [High] State Corruption / Lifecycle Imbalance due to delayed CEC notifier=
+ unregistration
 --
 
-commit 4a36c43ca7959e04a86201166380c7cb4acf35d4
-Author: Pengyu Luo <mitltlatltl@gmail.com>
+commit 5799bf779b149e6405697c67460f8e90064bcce9
+Author: Jonas Karlman <jonas@kwiboo.se>
 
-media: hi846: fix hi846_write_reg_16 handling
+drm: bridge: dw_hdmi: Unregister CEC notifier during connector cleanup
 
-This commit fixes an issue where a positive return value from
-pm_runtime_get_if_in_use() propagates back to callers as an error. It resets
-the error pointer to 0 inside hi846_write_reg_16() before performing I2C
-operations.
+This commit moves the unregistration of the CEC notifier from the bridge
+detach path to the connector destroy path to better align the lifetime of
+the connector and the CEC notifier.
 
-> diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-> index a3f77b8434ca7..7f069aca0fce5 100644
-> --- a/drivers/media/i2c/hi846.c
-> +++ b/drivers/media/i2c/hi846.c
-> @@ -1271,6 +1271,8 @@ static void hi846_write_reg_16(struct hi846 *hi846,=
- u16 reg, u16 val, int *err)
->  	if (*err < 0)
->  		return;
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/=
+bridge/synopsys/dw-hdmi.c
+> index cbbd155780425..5fd26ff8f55b4 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -2532,6 +2532,11 @@ static void dw_hdmi_connector_destroy(struct drm_c=
+onnector *connector)
+>  {
+>  	struct dw_hdmi *hdmi =3D container_of(connector, struct dw_hdmi, connec=
+tor);
+> =20
+> +	mutex_lock(&hdmi->cec_notifier_mutex);
+> +	cec_notifier_conn_unregister(hdmi->cec_notifier);
 
-While this patch handles the positive return code, does it miss the case
-where pm_runtime_get_if_in_use() returns a negative error code like -EINVAL?
+Could moving this to the connector destroy path cause CEC state to be wiped
+out if the bridge is unbound and re-bound while a userspace application hol=
+ds
+a DRM file descriptor open?
 
-If runtime PM is disabled, pm_runtime_get_if_in_use() returns -EINVAL. In
-hi846_set_ctrl(), the error check misses this negative value:
+Because DRM connectors are refcounted, their destruction is delayed until
+userspace closes all references. If the driver is unbound and re-bound befo=
+re
+the old connector is destroyed, the new driver instance will call
+cec_notifier_conn_register(). Since the old notifier hasn't been unregister=
+ed
+yet, it will reuse it.
 
-drivers/media/i2c/hi846.c:hi846_set_ctrl() {
-    ...
-	ret =3D pm_runtime_get_if_in_use(&client->dev);
-	if (!ret || ret =3D=3D -EAGAIN)
-		return 0;
-    ...
-}
+When the userspace application finally closes the file descriptor, the dela=
+yed
+dw_hdmi_connector_destroy() executes for the old connector and calls
+cec_notifier_conn_unregister(), wiping out the active CEC state for the new=
+ly
+bound bridge.
 
-This allows the negative ret to propagate to hi846_write_reg_16(). Since
-*err is less than zero, the function returns immediately, silently skipping
-all hardware writes for V4L2_CID_EXPOSURE and V4L2_CID_VBLANK.
+This issue also doesn't seem to be fixed by the later patch 'drm: bridge:
+dw_hdmi: Use generic CEC notifier helpers', as tying unregistration to the
+drm_device lifetime means it is still delayed by open file descriptors.
 
-Additionally, does this cause a PM usage count underflow?
-
-At the end of hi846_set_ctrl(), pm_runtime_put() is called unconditionally:
-
-drivers/media/i2c/hi846.c:hi846_set_ctrl() {
-    ...
-	pm_runtime_put(&client->dev);
-
-	return ret;
-}
-
-Since the usage count was never incremented when pm_runtime_get_if_in_use()
-returned -EINVAL, this might trigger a usage count underflow warning.
-
-Could hi846_set_ctrl() explicitly isolate the PM status, set ret to 0 before
-making hardware writes, and only call pm_runtime_put() if the get function
-returned a value greater than 0?
-
-> +	*err =3D 0;
+> +	hdmi->cec_notifier =3D NULL;
+> +	mutex_unlock(&hdmi->cec_notifier_mutex);
 > +
->  	put_unaligned_be16(reg, buf);
->  	put_unaligned_be16(val, buf + 2);
->  	ret =3D i2c_master_send(client, buf, sizeof(buf));
+>  	drm_connector_cleanup(connector);
+>  	drm_bridge_put(&hdmi->bridge);
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511090924.2691=
-06-1-mitltlatltl@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260510124111.1226=
+584-1-jonas@kwiboo.se?part=3D8
