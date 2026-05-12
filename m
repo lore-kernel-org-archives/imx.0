@@ -1,135 +1,378 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013067.outbound.protection.outlook.com [40.107.159.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7701283FE6;
-	Tue, 12 May 2026 21:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778620604; cv=none; b=d8RVoF2mFTMSWnZuHKVLcBOIGtHd0UMg35iOkzFebCs2bn0tQbGVHs7zxkSXKBrGU3NOG13AwaosqRyLCm996BVK+ck0OnvHbOFJ6NXi2iyaJj03fJCLPD4JBIs0K7UGsVJaUBQo55Klhx/oagcCp/Ugf7choWhl06A42jv+KYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778620604; c=relaxed/simple;
-	bh=APePLdspSN7hGGceShzyPLNA9Svo0jqkScnt1ljbgPk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=snXYnnFf/jHAQp1M5/UmXu6yR2P0EHBDDiNmRytMEX/9EX/VNbIBFoPaW2lcWZHoGwgSHLorruhRfDD6nuMG29w/lEZgdApMlTwEQFsCvylSqkxixTVUINlXOicV4tKfhu9TqiJD4DZLKCljhEbXoXwraH4lnj729fD6BHxjLck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRYNSHl6; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7FA38A734
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 21:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778622452; cv=fail; b=pcJd+EVZ0OC+Fgv7XtY8NajQzNOOYThGN3SCaMp3+dWyah8YsrckJbwOlcnjYhV6nUSiONKBpXZhibfCoEjk3oQPQcfZEOR6vzq9xvn6abRVCXaERKHrsr/QD5/vAQTrhhreTtYjRr0q8NZwdb60LRW4RegE2p1j8Pr5sotOL78=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778622452; c=relaxed/simple;
+	bh=wltcME82shZiCkPLyr7ncxuE14e7tFnXAddVwazzhgY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=A0FDrKbJIGrGYAJ3LYLywnMT8jVA5L0cSl56RujLTJxSnFqcFeXfF4mN1DTzkjF837FKonsY3ycG3gUt0Fqd2tG70U/q0qL7FUdcXFW2xYWV9tK5nMasG11vqTiqHsEBakd8hux1z9NwcE64jH67EeKzu6MnetOO5ByjRi2k65w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QfjhSA4A; arc=fail smtp.client-ip=40.107.159.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRYNSHl6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5A6C2BCB0;
-	Tue, 12 May 2026 21:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778620604;
-	bh=APePLdspSN7hGGceShzyPLNA9Svo0jqkScnt1ljbgPk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=RRYNSHl6ns4OxYdPq99u8gvDxeoiaw/GZh0Zb+x+FA3tAJ0DQrMdFMNZetSh+GB0L
-	 0Fs3MZeEQZFQJw8dAKGkkT67BTyTE1ObP5zPs8Rq6Krnw2iu7mWEwZEIdEe+Fvc2OV
-	 7Tdqgn9302W2VI7uWdh8c9U3P84AtAicOL+Rv0l0ZkJ+LLtwCLRATseD88JcIW+nA4
-	 m1oUrUOGYoEtkRGrYzvbVqnCbx+S017QoaEawMDRLlnewa7hCqkIva28Icsd/YriB3
-	 DcCKD3dsY6RlPUZTE8W/IB+Q17Lvr6P0groVzGl2Yqz6NMCMxQ2P2KKW9ROUtVYj3X
-	 P0vrJ8a+b8Q2A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 2/3] of: dynamic: Fix overlayed devices not probing
- because of fw_devlink
-Reply-To: sashiko@lists.linux.dev
-To: "Herve Codina" <herve.codina@bootlin.com>
-Cc: conor+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260511155755.34428-3-herve.codina@bootlin.com>
-References: <20260511155755.34428-3-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 21:16:43 +0000
-Message-Id: <20260512211643.EB5A6C2BCB0@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QfjhSA4A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wz1qYQW4Nv3i4i8AVZNwjpVzqnV0XurWxIJu4/KLA8GdUPw8jjr2ED62EyUKD0+F2hvWIgFRYfndZ9xHRp73WsFNSiAQosdf5PQBLBSl1b+hLwkJZ+sgeWCiC8EGnRB851ranfigurJxADNCXhTwKg3Fgmyd1Z9DOOyyKBBo/gkkgKGiOv+IfDhgbLZZZxUttEwTN4iVsL1RtU5KyrTfpvDwEFi59FFI+lPNYtnQyZP6oVRl8Bd/2rGRYXDx6Rt+jVk9vQotShsgNCI1vwIAdqBnx70eJpTFYKJYmvW6aQJq6Xdqc+gQQz9KP7c374okw3iXiwOSX806/GncGKiv9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dm9vbSW+elDATPm1NqXx1sfIjXMEYAKVSHece4JBhWw=;
+ b=yAWuyb3Za3IskSaVvZr7xoQeRKh16T6QFGVoRomHEfV3EfPC98jTQCk34oNaikYv/JZ9+0Xa4wOPp4oWA/5vqAU1OYzHJPqSP2l+RYedZ/5ZLF4QAuv66lzERG/s85mIR+yPI3R6sRDYRQzNCGFFupoqfZ0FLAVBbwK3NuQx4KEnEzyJgxi30agpGL8KhKCVfO8EuTmh1r5Qfkap0htLlugROo1M+BvF6nUvpt01N/uoVkuOrLlrAh00go7yCkCYSwCxyX72mywlvJZUixnvnLJ23RD0nkXqoPAFxW6diMX7ZHnfNCX/p10hPH/FDluFPFVxRhIzkCdEOVgTjk+R6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dm9vbSW+elDATPm1NqXx1sfIjXMEYAKVSHece4JBhWw=;
+ b=QfjhSA4A8xis/E9uMA0umvZuBR0vWeUc/18w0c1dpfi7215thKdYznh8vBzkYSKWCe/quQEt2E+sunZkOTCL0U8NexHGP65tBUgUhVMV7eY6LaUoK/cBr/oU5X+DiLWQnwqoalMSUOXDWZrHld9sdI/C0WZzlYjWwmYhHChlEhG4+Ws5jvadGhzGpTcFW7QA0w+F6HKMuzIIX+UXJnSS9aBSTs11eFUpgd2sy3Sc5bLR0SLQLB7ZGaEToi6qbzjfRgfs1O9FCJOl2G61xWD869RtNDbjj9hUjcEWVZeQ85AOLLNI07v6zJ/u9mwl+w28QdM39fFvggZETLUvihWXcg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PAXPR04MB9399.eurprd04.prod.outlook.com (2603:10a6:102:2b3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 21:47:26 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 21:47:25 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
+Date: Tue, 12 May 2026 17:47:02 -0400
+Message-ID: <20260512214704.1084890-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::29) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAXPR04MB9399:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80808e14-7fe4-4cc9-488f-08deb0700e34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|7416014|52116014|376014|1800799024|38350700014|921020|18002099003|56012099003|11063799003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+	lhZjThALOeI1V+Bz01jkWsv9uUVV96Z3tX8pmF5QwNRAtJ6pfSb4/JolRGjXzdXByZxBoi5/HArthMCdhj3IyT93QESkesvFvhPN1cfoIVxq8OmL8SycPg7q673Q65DDcCnOxaDN+6t9DXfOHEfjcJUtzqXtERF4JqjoXVpU3B0pzuort5fOY+PNLFAzIRRkz9OkWmeesKGT8JpWuSeBghj4q504UuXheRCvTbEj6BoZ5uPyOFeow/n9fJWdubel6+PDyZjMfw4PMTT1LR7xzt7YtfiIZ1db2PryrkQTvvmP0w87jVx7LqELFxOrdW4JSrm4IpWR2LDgjsbD0Atz8xRtGV5KMw0iH16ITXo4GJENA/blEBkyr2xjniudSe87SeKd6mjRe7H6B3HHYF6w8jttvQVVLCNcJQ2SkphM+Op3zx0ku5XgzfRmeie+ljYmuGy5TboeoATIMDfUVbgMrgbABxfNzy3X/SX6kfBOi76lWJDJahibpLi43Edtf3rnbnO+BaOQ0h0CshL0rYICz/97oEaqo2d58gwEMpBTZXnBPrRvubCSH3tObJwX9oywKqjKBGJyOiCwvVfDop8NG47jmdpD+ozw/rBJ2Gk+3AHQrG89QAUiqXsLBgxCGBNAMKWWcz6mNZfdMmKX9G+QlCt3GuY4cH8oTvq3T6CiD3gI8gtAbQtNs+GyJgI7A5qtV2FUCvb4xnPzDWzp2c+yUw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(52116014)(376014)(1800799024)(38350700014)(921020)(18002099003)(56012099003)(11063799003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UgWet1Q6pP1ByOdtN1KUZQjCAogQwwoFwGo+G3W9dI+poMnTJyKUl3/9EAcR?=
+ =?us-ascii?Q?p82JNam1mTpTPAh9bfqSKeDxr6LwVLAv2oqVtL/AOoS1VWSqmT1WLfVVV4jl?=
+ =?us-ascii?Q?oKTLPp9eyROfew2gfOfpeqQtYlcKoJ92KSf87KcmtSo5oBqmRejwzHAc8JKE?=
+ =?us-ascii?Q?c+L6VYTRmI9oSqR0n7R3w6rz321OGLs71ADIkFthT1nsrokx6i8ya6kvo32Z?=
+ =?us-ascii?Q?LM5rp+GNEMzbk/gYeTSNix4YZLBq0dOFomMJHv9MN7f0s7MJ/Ne2dP3ty+xh?=
+ =?us-ascii?Q?EI0+m+5Le83w9SQwZqPxs7Hl6P5kw6aoHZcWpQOqyapo01T4V/rBANqNo3/i?=
+ =?us-ascii?Q?+HwzzCR4MTs1ZZvFXLE8E9x/iQpA/PBN3CT9hil393C62XpbF1Mn65qUqgzr?=
+ =?us-ascii?Q?HeMAQpiwL0o7ojibSzadffwXmxwdO+W9I1i453XdzOlIyFH8NuO0GuQOq131?=
+ =?us-ascii?Q?oHmteq+NADAHkBNpHovRVQ3JeifAZNc5wozHNk+AbAG336XH1S6FGUvAMoUq?=
+ =?us-ascii?Q?GGH/qfDIEqIen+vWGAT6QEtmRIsmA12t0Hayd0MfIg+JMvN120RpT0ZpfCn/?=
+ =?us-ascii?Q?pId3z+WR5r8FhqBIG49eZucKgpFMNhhxGrvnq+kFNVnLiZJxfAJleCaGIxwH?=
+ =?us-ascii?Q?zJXvYJcB2o32VrtGrg9xER2sauQqZAZcSpkO0g5ikASXu374X4UnTtTK1iml?=
+ =?us-ascii?Q?UjK1u0XSNN1OGeDAfddBoGTZ/OUy/SroyE+KjsmlpzE399CBkOcUnVgghtmj?=
+ =?us-ascii?Q?zTLiMQqloZt26ERHMlXcWs6JudFuPY4wVLyNTlOcG/blhIU47MmkGeqxQJp7?=
+ =?us-ascii?Q?Cn2JT7yHZt+Z+mUufgs983swUPTgvknHI4xU+3/ftstTTpKj3a4xf+8lr5Bs?=
+ =?us-ascii?Q?oNt3RncaSmg0WQ8YruEZUhPTdNE2MjspNYdENtbk8dZJ74r2LcWIh895yVuR?=
+ =?us-ascii?Q?kiebD9+RRp39ADkb58X2IMVrJcvTaFgoC7yuTXySGwANJK230OeCy5c8FW9j?=
+ =?us-ascii?Q?LQb1DSY5hVXDTlDJIKJwRJuE96p88TzQRfVCSbLg9EEbl5ef5UCBRBPyOKGw?=
+ =?us-ascii?Q?z786Cwgpt3DKapBDzEiuGy03HCDGzm4Dk3uslJXZVH6DQdNlcxDfyEKNtoO7?=
+ =?us-ascii?Q?OsIkd20rdEg5Kl8xCnDhQKvDfDLwa/vouPYeiVVsE4qJyktcNdwRmO1qCLfb?=
+ =?us-ascii?Q?Xm4OvNlHK7uROGcRNc8Po0tZAYsSgIYxOO7J+obzpPMN8G3j260N4yl6+Lgr?=
+ =?us-ascii?Q?YSpbb4gyoT2Ecn6YhWsC8bQb1C/AWzoAIAv78QJK2m+GHFkNfcKz+D/JNyo4?=
+ =?us-ascii?Q?cHDxxsZWX52jGqTAEnKoeqh3sapA8ve1RH8M79zRjMKbRztRtCTKR3GJTUrH?=
+ =?us-ascii?Q?LwAw/lBZo3sMUivGyycL7194J3Riy7mYfRUkWsoR7u648dq2LDrQhpGW/hg2?=
+ =?us-ascii?Q?BiEzaXajQCci+BIzA0OcGkE+BiCt9WTBhvXo+2bXXeqNmPtozNh+N0obUD/T?=
+ =?us-ascii?Q?QGFYw4DTDFqmOZTHvNkCVcpQfRjAv3UMe8Ga5k/stg+OKQqMWvhzZ3E0inxI?=
+ =?us-ascii?Q?tly7xoPw95zYTwj+ut5PJmMguam+eJt0dengvYoOn0dSGKKHNoHdZKYGqC5e?=
+ =?us-ascii?Q?auUqdpwoIIUthwfp6tWilBSbCinOHYDRAzgzJVz5ChsTtTTLYzPfLrVmW2Vq?=
+ =?us-ascii?Q?MRddzAtHqbW9IRNI/LITgwg6KILWMy5JFKRvAOFqj+5dHK+S?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80808e14-7fe4-4cc9-488f-08deb0700e34
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 21:47:25.8745
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v9s8qH3mnmZt0UywR6FyxycuKi3gPiwXJj1/FlZKnQaUlSyxUZTLHdKD7yk51MydcsPwdjQ/LMoIqclg6ZaQ6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9399
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Missing `dev->fwnode` validation in `fw_devlink_pickup_dangling_co=
-nsumers()` leads to a kernel panic if the device's fwnode is NULL.
---
+Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
+arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
 
-commit eebf7e6f50a0aa0439d5a1099141444a70ec8219
-Author: Saravana Kannan <saravanak@kernel.org>
+Addtional changes:
+  - rename switch-phy to switch in example.
 
-of: dynamic: Fix overlayed devices not probing because of fw_devlink
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../devicetree/bindings/net/dsa/lan9303.txt   | 100 --------------
+ .../bindings/net/dsa/smsc,lan9303.yaml        | 123 ++++++++++++++++++
+ 2 files changed, 123 insertions(+), 100 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/dsa/lan9303.txt
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
 
-When an overlay is applied to an already probed device, fw_devlink logic
-is rerun. This allows newly created dangling consumers of overlayed device
-tree nodes to become consumers of the target device.
+diff --git a/Documentation/devicetree/bindings/net/dsa/lan9303.txt b/Documentation/devicetree/bindings/net/dsa/lan9303.txt
+deleted file mode 100644
+index 46a732087f5ca..0000000000000
+--- a/Documentation/devicetree/bindings/net/dsa/lan9303.txt
++++ /dev/null
+@@ -1,100 +0,0 @@
+-SMSC/MicroChip LAN9303 three port ethernet switch
+--------------------------------------------------
+-
+-Required properties:
+-
+-- compatible: should be
+-  - "smsc,lan9303-i2c" for I2C managed mode
+-    or
+-  - "smsc,lan9303-mdio" for mdio managed mode
+-
+-Optional properties:
+-
+-- reset-gpios: GPIO to be used to reset the whole device
+-- reset-duration: reset duration in milliseconds, defaults to 200 ms
+-
+-Subnodes:
+-
+-The integrated switch subnode should be specified according to the binding
+-described in dsa/dsa.txt. The CPU port of this switch is always port 0.
+-
+-Note: always use 'reg = <0/1/2>;' for the three DSA ports, even if the device is
+-configured to use 1/2/3 instead. This hardware configuration will be
+-auto-detected and mapped accordingly.
+-
+-Example:
+-
+-I2C managed mode:
+-
+-	master: masterdevice@X {
+-
+-		fixed-link { /* RMII fixed link to LAN9303 */
+-			speed = <100>;
+-			full-duplex;
+-		};
+-	};
+-
+-	switch: switch@a {
+-		compatible = "smsc,lan9303-i2c";
+-		reg = <0xa>;
+-		reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
+-		reset-duration = <200>;
+-
+-		ports {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			port@0 { /* RMII fixed link to master */
+-				reg = <0>;
+-				ethernet = <&master>;
+-			};
+-
+-			port@1 { /* external port 1 */
+-				reg = <1>;
+-				label = "lan1";
+-			};
+-
+-			port@2 { /* external port 2 */
+-				reg = <2>;
+-				label = "lan2";
+-			};
+-		};
+-	};
+-
+-MDIO managed mode:
+-
+-	master: masterdevice@X {
+-		phy-handle = <&switch>;
+-
+-		mdio {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			switch: switch-phy@0 {
+-				compatible = "smsc,lan9303-mdio";
+-				reg = <0>;
+-				reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
+-				reset-duration = <100>;
+-
+-				ports {
+-					#address-cells = <1>;
+-					#size-cells = <0>;
+-
+-					port@0 {
+-						reg = <0>;
+-						ethernet = <&master>;
+-					};
+-
+-					port@1 { /* external port 1 */
+-						reg = <1>;
+-						label = "lan1";
+-					};
+-
+-					port@2 { /* external port 2 */
+-						reg = <2>;
+-						label = "lan2";
+-					};
+-				};
+-			};
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
+new file mode 100644
+index 0000000000000..42f8473538a07
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
+@@ -0,0 +1,123 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/dsa/smsc,lan9303.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: SMSC/MicroChip LAN9303 three port ethernet switch
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  The LAN9303 is a three port ethernet switch with integrated PHYs for the
++  two external ports. The third port is an RMII/MII interface to a host
++  processor. The device can be managed via I2C or MDIO.
++
++  Note - always use 'reg = <0/1/2>;' for the three DSA ports, even if the
++  device is configured to use 1/2/3 instead. This hardware configuration
++  will be auto-detected and mapped accordingly.
++
++properties:
++  compatible:
++    enum:
++      - smsc,lan9303-i2c
++      - smsc,lan9303-mdio
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    description:
++      GPIO to be used to reset the whole device
++    maxItems: 1
++
++  reset-duration:
++    description:
++      Reset duration in milliseconds
++    default: 200
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++allOf:
++  - $ref: dsa.yaml#
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    /* I2C managed mode */
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        switch@a {
++            compatible = "smsc,lan9303-i2c";
++            reg = <0xa>;
++            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
++            reset-duration = <200>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    label = "cpu";
++                    ethernet = <&master>;
++                };
++
++                port@1 {
++                    reg = <1>;
++                    label = "lan1";
++                };
++
++                port@2 {
++                    reg = <2>;
++                    label = "lan2";
++                };
++            };
++        };
++    };
++
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    /* MDIO managed mode */
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        switch@0 {
++            compatible = "smsc,lan9303-mdio";
++            reg = <0>;
++            reset-gpios = <&gpio7 6 GPIO_ACTIVE_LOW>;
++            reset-duration = <100>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    label = "cpu";
++                    ethernet = <&master>;
++                };
++
++                port@1 {
++                    reg = <1>;
++                    label = "lan1";
++                };
++
++                port@2 {
++                    reg = <2>;
++                    label = "lan2";
++                };
++            };
++        };
++    };
+-- 
+2.43.0
 
-Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@googl=
-e.com/
-
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index bd2ddf2aab505..478aa3fbf1e83 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers(s=
-truct fwnode_handle *fwnode,
->  		__fw_devlink_pickup_dangling_consumers(child, new_sup);
->  }
-> =20
-> +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
-> +{
-> +	struct fwnode_handle *child;
-> +
-> +	guard(mutex)(&fwnode_link_lock);
-> +
-> +	fwnode_for_each_available_child_node(dev->fwnode, child)
-> +		__fw_devlink_pickup_dangling_consumers(child, dev->fwnode);
-> +	__fw_devlink_link_to_consumers(dev);
-> +}
-
-Is it possible for dev->fwnode to be NULL here?
-
-The original logic in device_links_driver_bound() was protected by a
-dev->fwnode check. The newly added caller fw_devlink_refresh_fwnode()=20
-appears to call this without checking if dev->fwnode is still valid:
-
-fw_devlink_refresh_fwnode()
-  dev =3D get_dev_from_fwnode(fwnode);
-  ...
-  if (dev->links.status =3D=3D DL_DEV_DRIVER_BOUND) {
-      fw_devlink_pickup_dangling_consumers(dev);
-
-If dev->fwnode is NULL, such as when it is cleared by a concurrent
-device_remove_of_node() before device_del() runs, the nested call to
-__fw_devlink_link_to_consumers() will dereference it:
-
-__fw_devlink_link_to_consumers(struct device *dev)
-{
-        struct fwnode_handle *fwnode =3D dev->fwnode;
-        ...
-        list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
-
-Could this lead to a crash when &fwnode->consumers is evaluated? Would it
-make sense to add an explicit check for !dev->fwnode at the start of
-fw_devlink_pickup_dangling_consumers() to mirror the structural safety
-previously provided in device_links_driver_bound()?
-
-[ ... ]
-
-> @@ -1312,16 +1385,8 @@ void device_links_driver_bound(struct device *dev)
->  	 * child firmware node.
->  	 */
->  	if (dev->fwnode && dev->fwnode->dev =3D=3D dev) {
-> -		struct fwnode_handle *child;
-> -
->  		fwnode_links_purge_suppliers(dev->fwnode);
-> -
-> -		guard(mutex)(&fwnode_link_lock);
-> -
-> -		fwnode_for_each_available_child_node(dev->fwnode, child)
-> -			__fw_devlink_pickup_dangling_consumers(child,
-> -							       dev->fwnode);
-> -		__fw_devlink_link_to_consumers(dev);
-> +		fw_devlink_pickup_dangling_consumers(dev);
->  	}
->  	device_remove_file(dev, &dev_attr_waiting_for_supplier);
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511155755.3442=
-8-1-herve.codina@bootlin.com?part=3D2
