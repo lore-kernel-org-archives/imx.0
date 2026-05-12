@@ -1,148 +1,204 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F393D16F4;
-	Tue, 12 May 2026 05:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7C63D7D87;
+	Tue, 12 May 2026 05:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778564835; cv=none; b=RXnFEo1r3tlcCVA3GQE8KkjS/XQCUP4yGqaqmWGTnZKli2b8hZOX9tMRr/jim1j0oXeVFy0V5pS2H2OkGkJBntXR8LVPAnraJkkppPceZOsdjDwR04Vb0FXdWQ2RicAjr8fyyo2vE9NIbDYhObfEuTca3tgq2pWh3Detaay3JyQ=
+	t=1778564969; cv=none; b=SdAKICfTJJM79IeNR5y7MxUGDVmq/Ltz4oYRH4jhOaoLRQm3XEfPROkwqY2on9sExCO7HbedRQZhOKmjVv9Kh9aXikxyqoePJEk8RoJtFKUWIVXFcV2hDwr/lPOXflfx2eOqC4MYydWVW2FBaWG4DZFVm9E4kL/6MUOuzNq8+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778564835; c=relaxed/simple;
-	bh=LcwtjoJoEAyc9y80XNnj+U5uifz5TSpASZOqNzguJTg=;
+	s=arc-20240116; t=1778564969; c=relaxed/simple;
+	bh=Q65TO1rQfRL6O7q8oidi7Dfsx4Yk8cOPu4mQ582VQbM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uf2S9uj4Mm4NPnyvCbjoHxSXrrZmZRQqogZ/blpp2SnDRCo+KD0wpxjZKqw7kb0RoU/CWZzALNzJxtSxHXQCPNW+3LnNQ8OFMObl440Ofs1moMLQKpvaz+qgY1k0lS2IsZFC9WNq/ESSHxDgYkH3tvPKg0M5sdM+5ZvcUonFBkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of3o4UCb; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=H8H66QVFof6AozHQXzZgx3guGvT6lbMj4hmYPmRWGZ+OIQajQ85oMgrQAECwhhOdqDJm9Sqw4esDE+kC1X4g+r6JLi2870zCrNOOb8wxGRB5wOstsjVUemKnL0SZNB0eUHT9pp5Zbp7A83jFQKepi8Jca0nG422luvl60MPAxEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTUxUrUC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of3o4UCb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037E8C2BCB0;
-	Tue, 12 May 2026 05:47:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTUxUrUC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1FFC2BCB0;
+	Tue, 12 May 2026 05:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778564834;
-	bh=LcwtjoJoEAyc9y80XNnj+U5uifz5TSpASZOqNzguJTg=;
+	s=k20201202; t=1778564968;
+	bh=Q65TO1rQfRL6O7q8oidi7Dfsx4Yk8cOPu4mQ582VQbM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Of3o4UCb0/ChoessLMaxVmpsNjaQ93QNvllNioufJFu+SgwCDY8g+q/HSd4WzNzRM
-	 eQQXkphnV+QdtfXuFqqNyRAtuHVuAXuL2oy1d7X7Crklrbcm0H//ze7xMszTrHNU2d
-	 DNj2OdfNAHOXsKxnh/9OseWyfsRYZYScnaL6dzkmxlFfLLOEkkDTHrqrk4L6OG+X6l
-	 JST6oXoNjjgHbngX5g4CApSWojRkY8Xw1NdJbhMBZRUI2hKPFGhiUshOp8My/kTow0
-	 PVivqMQaDF5NATIaa8RwPlALbp1oSdLR7BIh+qWcu3tSv2jeu6fR4IMVCFGcoN26wa
-	 Jb3a/kwgyBIKA==
+	b=UTUxUrUCAowt/CBaPTnuAyKqfjEWpuQ/8ffhMublkcGj3xsELLcTaOfWo4Umqhs8V
+	 +/f//v95aeZ5bpaUzbnMdQObZvNtZvi9oDG21yIPZgPVlv82RwYqJcRk53obyUXwfd
+	 pYrQ8Lt/Ix25p+4AGBhtgaTuH0/adCDjUQdwSNkhw1S61FxrrtojLzatpKe5gJrocq
+	 kt6DZr/4ePTB1U30qIOWYUn12fprCJc9/XAynmc9t11f+CF7VeaGdQ/VxVWIsyP8sn
+	 bRw+/RL6BVq3sIkyx3QkizC9nku+ITQOyYuXhRecUWUn0dMA0+wk3tWtlkarrG9e3D
+	 SuHP6y+86zl+g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 7/8] media: platform: neoisp: Add debugfs support
+Subject: Re: [PATCH v3 2/2] dmaengine: fsl-edma: Support dynamic
+ scatter/gather chaining
 Reply-To: sashiko@lists.linux.dev
-To: "Antoine Bouyer" <antoine.bouyer@nxp.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260511132629.1300868-8-antoine.bouyer@nxp.com>
-References: <20260511132629.1300868-8-antoine.bouyer@nxp.com>
+To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260511-fsl-edma-dyn-sg-v3-2-98a181775dae@bootlin.com>
+References: <20260511-fsl-edma-dyn-sg-v3-2-98a181775dae@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 05:47:13 +0000
-Message-Id: <20260512054714.037E8C2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 05:49:27 +0000
+Message-Id: <20260512054927.CE1FFC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Critical] The probe error path skips cleanup of previously allocated dev=
-ices and debugfs files, leading to memory leaks and Use-After-Free.
-- [High] Direct pointer dereference of `__iomem` mapped memory causes undef=
-ined behavior and potential faults.
-- [Medium] PM runtime usage counter leak when `enable_debugfs` is true.
+- [Critical] Hardware executes dynamically linked descriptors before issue_=
+pending() is called, causing missed interrupts and double execution.
+- [Critical] TOCTOU race condition with the channel DONE bit in the interru=
+pt handler causes double execution of chained descriptors.
+- [High] Incorrect list check order in fsl_edma_link_sg() drops intermediat=
+e descriptors from the hardware scatter-gather chain.
+- [High] Clearing the channel DONE bit during dynamic linking causes a perm=
+anent DMA channel stall.
+- [High] Missing memory barrier when updating in-memory scatter-gather link=
+s risks torn hardware reads and system bus errors.
 --
 
-commit 8ed96f76ce4a3c28d7472942ee6dafd2b5be2f9a
-Author: Antoine Bouyer <antoine.bouyer@nxp.com>
+commit 09e7fbe06b869eaaa82c7821bd60464f115cd6b5
+Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
 
-media: platform: neoisp: Add debugfs support
+dmaengine: fsl-edma: Support dynamic scatter/gather chaining
 
-Add debugfs entries to dump ISP registers and internal memory regions used
-to store Vignetting and DRC coefficients. Debug mode is conditionally
-activated to avoid runtime suspend which blocks register access.
+This commit implements dynamic linking of scatter/gather transfers to enable
+chaining multiple DMA descriptors without stopping the channel. It adds
+fsl_edma_link_sg() which is called during tx_submit() to link the new
+descriptor to the previously submitted one.
 
-> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_debugfs.c b/drivers=
-/media/platform/nxp/neoisp/neoisp_debugfs.c
-> new file mode 100644
-> --- /dev/null
-> +++ b/drivers/media/platform/nxp/neoisp/neoisp_debugfs.c
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index c10190164926a..b83d1b91dca2b 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fs=
+l_chan)
+>  		list_del(&fsl_chan->edesc->vdesc.node);
+>  		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
+>  		fsl_chan->edesc =3D NULL;
+> -		fsl_chan->status =3D DMA_COMPLETE;
+> +		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
+> +		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
+> +			fsl_chan->status =3D DMA_COMPLETE;
+> +		}
+
+If the hardware dynamically chains from descriptor A to descriptor B, it
+still raises an interrupt for A. If the CPU is delayed and the hardware
+finishes executing B and halts, setting the DONE bit, won't the ISR for A
+see the DONE bit set here, set the status to DMA_COMPLETE, and then later
+explicitly re-enable the channel to execute B again, causing memory
+corruption?
+
+>  	} else {
+>  		vchan_cyclic_callback(&fsl_chan->edesc->vdesc);
+>  	}
 
 [ ... ]
 
-> +static inline int neoisp_dump_memory(struct seq_file *m, enum isp_block_=
-map_e map, int wsize)
+> @@ -673,6 +676,68 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cy=
+clic(
+>  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
+>  }
+> =20
+> +static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_=
+edma_desc *fsl_desc)
 > +{
-> +	struct neoisp_dev_s *neoispd =3D m->private;
-> +	union udata_t data;
-> +	u32 addr;
-> +	u32 *src =3D (u32 *)(uintptr_t)neoispd->mmio_tcm;
-> +	u32 offset =3D ISP_GET_OFF(map) / sizeof(u32);
-> +	u32 size =3D ISP_GET_SZ(map) / sizeof(u32);
-> +	int i, j;
+> +	u32 flags =3D fsl_edma_drvflags(fsl_chan);
+> +	struct fsl_edma_hw_tcd *last_tcd;
+> +	struct fsl_edma_desc *prev_desc;
+> +	struct virt_dma_desc *vdesc;
+> +	u16 csr;
 > +
-> +	for (i =3D 0; i < size; i++) {
-> +		addr =3D (offset + i) * sizeof(u32);
-> +		data.word =3D src[offset + i];
+> +	lockdep_assert_held(&fsl_chan->vchan.lock);
+> +
+> +	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
+> +		return;
+> +
+> +	vdesc =3D list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
+> +					struct virt_dma_desc, node);
+> +	if (!vdesc)
+> +		vdesc =3D list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
+> +						struct virt_dma_desc, node);
 
-Is it safe to directly dereference __iomem pointers here? It looks like
-mmio_tcm is mapped I/O memory, so bypassing I/O accessors like readl() or
-ioread32() might cause alignment faults or undefined behavior on ARM64.
+If desc_issued is not empty but there are also descriptors in
+desc_submitted, this will link against the tail of desc_issued instead of
+the newest descriptor at the tail of desc_submitted. Will this cause the
+hardware to skip intermediate submissions and corrupt the transfer sequence?
 
-[ ... ]
+> +	if (!vdesc)
+> +		return;
+> +
+> +	prev_desc =3D to_fsl_edma_desc(vdesc);
+> +	last_tcd =3D prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
+> +
+> +	csr =3D fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
+> +	if (!(csr & EDMA_TCD_CSR_D_REQ))
+> +		return;
+> +
+> +	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast=
+_sga);
+> +
+> +	csr &=3D ~EDMA_TCD_CSR_D_REQ;
+> +	csr |=3D EDMA_TCD_CSR_E_SG;
+> +	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
 
-> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_main.c b/drivers/me=
-dia/platform/nxp/neoisp/neoisp_main.c
-> --- a/drivers/media/platform/nxp/neoisp/neoisp_main.c
-> +++ b/drivers/media/platform/nxp/neoisp/neoisp_main.c
+Is a write memory barrier like dma_wmb() needed between updating dlast_sga
+and setting the E_SG bit in the csr? If the CPU or compiler reorders these
+writes, could the actively running eDMA controller observe the E_SG bit set
+with a stale dlast_sga pointer and trigger a bus error?
 
-[ ... ]
+> +
+> +	if (prev_desc =3D=3D fsl_chan->edesc && prev_desc->n_tcds =3D=3D 1) {
+> +		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
+> +			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_cs=
+r);
 
-> @@ -1758,9 +1763,18 @@ static int neoisp_probe(struct platform_device *pd=
-ev)
->  	neoisp_init_hw(neoispd);
->  	neoisp_set_default_context(neoispd);
-> =20
-> +	if (enable_debugfs) {
-> +		neoisp_debugfs_init(neoispd);
-> +		/* Increase pm_runtime counter to prevent suspend */
-> +		ret =3D pm_runtime_resume_and_get(dev);
-> +		if (ret)
-> +			goto err_pm_runtime_suspend;
+If the hardware has just finished executing the transfer and halted before
+this register access, the DONE bit is already set. Writing it back clears
+it. Will the subsequent completion interrupt ISR then wrongly assume the
+channel chained successfully, leaving the state as DMA_IN_PROGRESS and
+causing a permanent channel stall?
+
+> +
+> +		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
+> +		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
 > +	}
-> =20
->  	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
-
-If this pm_runtime_resume_and_get() fails and we take the goto
-err_pm_runtime_suspend path, does this leak the devices initialized by
-neoisp_init_devices() earlier in the probe function?
-
-Since neoispd is allocated via devm_kzalloc(), it will be freed when probe
-fails. If the V4L2 devices and debugfs files aren't cleaned up here, could
-userspace accessing the leaked files trigger a use-after-free on the freed
-neoispd pointer?
-
-[ ... ]
-
-> @@ -1777,6 +1791,9 @@ static void neoisp_remove(struct platform_device *p=
-dev)
->  {
->  	struct neoisp_dev_s *neoispd =3D platform_get_drvdata(pdev);
-> =20
-> +	if (neoispd->regset)
-> +		neoisp_debugfs_exit(neoispd);
 > +
->  	neoisp_destroy_devices(neoispd);
-> =20
->  	if (standalone_mdev)
+> +	trace_edma_link_sg(fsl_chan, last_tcd);
+> +}
+> +
+> +static dma_cookie_t fsl_edma_tx_submit(struct dma_async_tx_descriptor *t=
+x)
+> +{
+> +	struct virt_dma_desc *vd =3D container_of(tx, struct virt_dma_desc, tx);
+> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(tx->chan);
+> +	struct fsl_edma_desc *fsl_desc =3D to_fsl_edma_desc(vd);
+> +	struct virt_dma_chan *vc =3D to_virt_chan(tx->chan);
+> +	dma_cookie_t cookie;
+> +
+> +	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
+> +
+> +	fsl_edma_link_sg(fsl_chan, fsl_desc);
 
-Since we incremented the PM runtime usage counter with
-pm_runtime_resume_and_get() in probe when enable_debugfs is true, do we
-need to drop that extra reference here in the remove path?
+By dynamically chaining the new descriptor to the currently running hardware
+here, the hardware could start executing it before dma_async_issue_pending()
+is called.
 
-It seems like failing to do so could leak the usage counter and keep the
-device permanently awake after driver removal.
+If the hardware completes the new descriptor while it is still in the
+desc_submitted list, could the interrupt handler ignore its completion
+because it only processes desc_issued?
+
+If so, would this result in double execution later when issue_pending() is
+finally called and the software explicitly restarts the already-completed
+descriptor?
+
+> +	cookie =3D dma_cookie_assign(tx);
+> +	list_move_tail(&vd->node, &vc->desc_submitted);
+> +
+> +	return cookie;
+> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511132629.1300=
-868-1-antoine.bouyer@nxp.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511-fsl-edma-d=
+yn-sg-v3-0-98a181775dae@bootlin.com?part=3D2
