@@ -1,164 +1,172 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865F356777;
-	Tue, 12 May 2026 23:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285AD37B02B
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 23:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778627121; cv=none; b=mAaxk9IaJy9VzX0lD/erSE6MImLKQN+k0tKBbqRZqSFsmlpdfwRDCJRaaeWVv7oTrKiKwBbxuhOZiLnZX2NUdLKvxe/3Y900xSkK8ldK3/WsLN3SkFsLxQKLwlad1Q9I3fBvyEac86wye+bfdkILo+MfaqT83ZW6wAqyE0pjpCM=
+	t=1778628872; cv=none; b=N80iYSSknTuWj2q/QG46HRjCDC6KjPT2S1Q5GtSHXx5wcyBS4L2FPaYb7YGNgo2Bv9hbmraKGMkwla3v+ixQoUG3iqWXq6rYTKiQN2GVuhcEYGiLjDnkeaXCtt0mK0+ErVBGy1rH7/bOSbFI1mxx7PZmFC7cB/qTPbEPLo6/udY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778627121; c=relaxed/simple;
-	bh=DK+7J33A7910JwFbWH+4GGnFPn1eunMdNSYAga957Wc=;
+	s=arc-20240116; t=1778628872; c=relaxed/simple;
+	bh=ItuRr9HYj1MYHHJcZhuydsfbJbGNvcuUM+WM2IuEi6I=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qR6AOJnqT8ZzBIbV+h6eN1gwzf/FmOfOH11eKzGJF9egDCEqywjBcSxb4a6xz0nb1j1ByA+z7kTBcZg5MTMxgnfJcnyilsXS/QhekUkHBp0buLFJTfACoxCtKKVZSs1zGe3A7+e40Unfy8Br+qhgIwZ6YS/8tmx8WKCplRvuf+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uS/BZoI9; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=tz5MqhBuvSRGPaxV61sSUdZQYi1yONyNNv80rn3gC2JaooX25ec8lvEsV1g7moAWjhniweaUpsMouxndaxWEj5ptgId77NbVo9f1YRfss2WRCUOqz/4ahUZa6xDcTZX0vD3rWbpIUf/Ucv8Rv+8y383cDK9DtUhqtY6K9if37Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMEC4w8I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uS/BZoI9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC642C2BCB0;
-	Tue, 12 May 2026 23:05:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMEC4w8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B42C2BCB0;
+	Tue, 12 May 2026 23:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778627121;
-	bh=DK+7J33A7910JwFbWH+4GGnFPn1eunMdNSYAga957Wc=;
+	s=k20201202; t=1778628871;
+	bh=ItuRr9HYj1MYHHJcZhuydsfbJbGNvcuUM+WM2IuEi6I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=uS/BZoI95weEa3jFke426A2uK1R5djKpOfX8wMEuherRV/dHrfraU+ecpYeCtBPq4
-	 ze3SArqdAwAWHpE9VCL1CHHfgJSjXR98spoJY1YTTgsb3kjtnKisqI6DSNmzrkN6iN
-	 N82Wtqzbli52S3rH1GqjXbU+t4Ztt1cOGTJyeV7GvkylGlLEjajKM1XGqj32Ft2Sm5
-	 NVuR2toZfXEO4wP+tMhtz/Osr2EwQmH4bflyXuYXO5lQ09AUargBQUqpJx1MxUFKJ+
-	 oTYPEJnozoauTTV5FF7m+g/PvUu/yHSnrD2ihCbUPUqvczvJQys98/z9X9Giw+aCmc
-	 H1aF/MuFYyPpQ==
+	b=gMEC4w8IhBNTYrILglGtpkhSNbl/qLm2Rh/aBB0T9GMrlhpKfJtWqWPBL80/TsmmX
+	 yHv7ZX9NpbfwChSYIaNH31xEvAKG7WI/dykmiCCmzXufdOTepVrICU8TczqGsWL9ge
+	 bR752Br445Ktagv8igz4YL/pvsKHE6WH9CczVFRQn0840R5TKVbvgSeG/PCImA5HzG
+	 QiDpgc3OlNepF9taLns+7E0aLyWsUwB4nsPl9kmTSx9fViTD79mHQq4tL69sb3MChV
+	 2ZzDPGz/s9nu2H/sMXHSqd++sZC+H9FaosIiEVDlqhZgVCzzOykQwRFvK99LnzyvNu
+	 6lfT4lChKx2kQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] arm64: dts: imx8dxl: Add SolidRun SoM and
- HummingBoard
+Subject: Re: [PATCH net-next 14/15] net: enetc: refactor MR interrupt
+ enable/disable helpers
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josua Mayer" <josua@solid-run.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260511-imx8dxl-sr-som-v4-2-64381b3bf80d@solid-run.com>
-References: <20260511-imx8dxl-sr-som-v4-2-64381b3bf80d@solid-run.com>
+To: "Wei Fang" <wei.fang@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260511080805.2052495-15-wei.fang@nxp.com>
+References: <20260511080805.2052495-15-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 23:05:19 +0000
-Message-Id: <20260512230520.CC642C2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 23:34:31 +0000
+Message-Id: <20260512233431.A5B42C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [High] USB OTG1 port is configured as peripheral but breaks out to a Type=
--A host connector.
-- [High] Inconsistent and incorrect pad configurations for I2C2 and I2C3 GP=
-IO recovery pins.
-- [Medium] The 'reset-duration-us' property in the 'usb-device@1' node is u=
-ndocumented, unparsed by any kernel driver, and will fail schema validation.
-- [Low] Mismatch in the number of 100Base-T1 add-on ports between commit me=
-ssage and device tree.
+- [High] Teardown race in enetc_msg_psi_free() leading to Use-After-Free.
+- [High] Uninitialized work_struct access in enetc_msg_psi_init() leading t=
+o kernel panic.
+- [High] Resource leak and Use-After-Free on error path in enetc_msg_psi_in=
+it().
+- [High] DMA Memory Use-After-Free in enetc_msg_free_mbx().
+- [High] Race condition in enetc_msg_task() resulting in missed VF messages.
 --
 
-commit f382c89d7dfc4938b73c73c681a3544f6363435e
-Author: Josua Mayer <josua@solid-run.com>
+commit 776ed9b5141bfafabe9032ba504482f8555f1985
+Author: Wei Fang <wei.fang@nxp.com>
 
-arm64: dts: imx8dxl: Add SolidRun SoM and HummingBoard
+net: enetc: refactor MR interrupt enable/disable helpers
 
-This commit adds support for the SolidRun i.MX8DXL System-on-Module and its
-HummingBoard Telematics carrier board. It configures various hardware
-interfaces including ethernet, CAN, USB, a cellular modem, and I2C sensors.
+The patch consolidates enetc_msg_enable_mr_int() and
+enetc_msg_disable_mr_int() into a single enetc_msg_set_mr_int() helper
+that takes a boolean enable parameter. This prepares the code for
+dynamic interrupt mask generation based on the number of enabled VFs.
 
-> The multi-interface add-on board connector provides additional
-> interfaces (4x 100Base-T1, 2x SGMII, USB 2.0 shared with the cellular
-> modem, CAN, MDIO, SPI, UART, PCIe, I2C, and GPIO).
-
-This isn't a bug, but there is a mismatch between the commit message and the
-device tree. The message mentions 4x 100Base-T1 interfaces, but the code
-defines 5 disabled ports (port@5 through port@9) and 5 corresponding PHYs
-for the add-on connector. Could the commit message be updated to match the
-implemented ports?
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-hummingboard-telematic=
-s.dts b/arch/arm64/boot/dts/freescale/imx8dxl-hummingboard-telematics.dts
-> new file mode 100644
-> index 0000000000000..7e822cbd7a528
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-hummingboard-telematics.dts
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index f3e78865617e6..73e32c9b65a89 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
 
 [ ... ]
 
-> +&usbotg1 {
-> +	vbus-supply =3D <&vbus1>;
-> +};
+> @@ -171,7 +171,7 @@ static void enetc_msg_task(struct work_struct *work)
+>  		if (!mr_mask) {
+>  			/* re-arm MR interrupts, w1c the IDR reg */
+>  			enetc_wr(hw, ENETC_PSIIDR, ENETC_PSIIER_MR_MASK);
+> -			enetc_msg_enable_mr_int(hw);
+> +			enetc_msg_set_mr_int(pf, true);
+>  			return;
+>  		}
 
-Since the base SoM device tree sets dr_mode to peripheral, and the carrier
-board does not override it to host or otg, will this controller remain in
-peripheral mode?
+This isn't a bug in your patch, but is there a race condition here that
+could result in missed VF messages?
 
-Because this port breaks out to a USB Type-A connector on the evaluation ki=
-t,
-leaving it as a peripheral means it will not drive the VBUS regulator to
-power attached devices. Should this be explicitly set to host mode here on
-the carrier board?
+The code reads ENETC_PSIMSGRR earlier in the loop. If a VF sends a message
+after the read but before the write to ENETC_PSIIDR, the hardware will set
+the interrupt status bit, which is then immediately cleared by the write
+to ENETC_PSIIDR. When the interrupt is enabled shortly after, it will not
+fire.
 
-[ ... ]
-
-> +/* cellular modem */
-> +&usbotg2 {
-
-[ ... ]
-
-> +	usb-device@1 {
-> +		compatible =3D "usb2c7c,125";
-> +		reg =3D <1>;
-> +		reset-duration-us =3D <150000>;
-
-Is this reset-duration-us property supported by any upstream driver or
-documented in the device tree bindings?
-
-Because it appears to be unparsed by any kernel driver, will its inclusion
-cause schema validation warnings during the binding check?
+Should the driver clear the interrupt status before checking for messages?
 
 [ ... ]
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi b/arch/arm=
-64/boot/dts/freescale/imx8dxl-sr-som.dtsi
-> new file mode 100644
-> index 0000000000000..93a0eb4d7f770
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-sr-som.dtsi
+> @@ -264,7 +264,7 @@ static int enetc_msg_psi_init(struct enetc_pf *pf)
+>  	}
+> =20
+>  	/* enable MR interrupts */
+> -	enetc_msg_enable_mr_int(&si->hw);
+> +	enetc_msg_set_mr_int(pf, true);
+> =20
+>  	return 0;
 
-[ ... ]
+This isn't a bug in your patch, but looking at the surrounding code in
+enetc_msg_psi_init(), is there a risk of accessing an uninitialized
+work_struct?
 
-> +	i2c2_gpio_pins: pinctrl-i2c2-gpio-grp {
-> +		fsl,pins =3D <
-> +			/* io with pull-up and weak drive */
-> +			IMX8DXL_SPI1_SCK_LSIO_GPIO3_IO00		0x00000021
-> +			/* io with pull-up, weak drive, open-drain */
-> +			IMX8DXL_SPI1_SDO_LSIO_GPIO3_IO01		0x02000021
-> +		>;
-> +	};
+	vector =3D pci_irq_vector(si->pdev, ENETC_SI_INT_IDX);
+	err =3D request_irq(vector, enetc_msg_psi_msix, 0, pf->msg_int_name, si);
+	...
+	/* initialize PSI mailbox */
+	INIT_WORK(&pf->msg_task, enetc_msg_task);
 
-Do these GPIO values configure the pads correctly for I2C bus recovery?
+Since request_irq() enables the interrupt immediately, if a pending
+interrupt fires before INIT_WORK() is called, the handler will schedule
+the uninitialized work_struct. Should INIT_WORK() be called before
+request_irq()?
 
-The comments mention io with pull-up, but 0x00000021 and 0x02000021 both
-lack the pull-up enable bits present in the active I2C configuration.
+Also, looking at the error path just below this:
 
-Additionally, does using 0x00000021 for SDA leave the open-drain bit unset?
-Both lines generally must be open-drain during I2C bus recovery. If SDA is
-actively driven high via push-pull while a stuck slave device pulls the line
-low, can this cause an electrical short circuit on the bus?
+err_init_mbx:
+	for (i--; i >=3D 0; i--)
+		enetc_msg_free_mbx(si, i);
 
-[ ... ]
+	free_irq(vector, si);
 
-> +	i2c3_gpio_pins: pinctrl-i2c3-gpio-grp {
-> +		fsl,pins =3D <
-> +			/* io with pull-up and weak drive */
-> +			IMX8DXL_SPI1_CS0_LSIO_GPIO3_IO03		0x00000021
-> +			/* io with pull-up, weak drive, open-drain */
-> +			IMX8DXL_SPI1_SDI_LSIO_GPIO3_IO02		0x02000021
-> +		>;
-> +	};
+	return err;
 
-Does the same configuration issue apply to these I2C3 recovery pins as well?
+Does this code leak the scheduled work? If an interrupt fired during the
+allocation loop and scheduled pf->msg_task, free_irq() will wait for the
+handler to finish but will not cancel the scheduled work. After returning,
+the work could execute and access the freed mailbox memory. Should
+cancel_work_sync() be called in this error path?
+
+> =20
+> @@ -285,7 +285,7 @@ static void enetc_msg_psi_free(struct enetc_pf *pf)
+>  	cancel_work_sync(&pf->msg_task);
+> =20
+>  	/* disable MR interrupts */
+> -	enetc_msg_disable_mr_int(&si->hw);
+> +	enetc_msg_set_mr_int(pf, false);
+
+This isn't a bug in your patch, but is there a teardown race here?
+
+If a hardware interrupt fires right after cancel_work_sync() completes,
+the handler will execute and call schedule_work(&pf->msg_task). The work
+will then run after the mailboxes are freed and the IRQ is unregistered.
+
+Should enetc_msg_set_mr_int() and free_irq() be called before
+cancel_work_sync()?
+
+> =20
+>  	for (i =3D 0; i < pf->num_vfs; i++)
+>  		enetc_msg_free_mbx(si, i);
+
+While looking at this teardown path, I noticed enetc_msg_free_mbx() calls
+dma_free_coherent() before clearing the hardware base address registers
+(ENETC_PSIVMSGRCVAR0 and ENETC_PSIVMSGRCVAR1).
+
+If a VF sends a message before the registers are zeroed, could the hardware
+perform a DMA write to memory that has already been returned to the allocat=
+or?
+
+Should the hardware registers be cleared before the backing DMA memory
+is freed?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511-imx8dxl-sr=
--som-v4-0-64381b3bf80d@solid-run.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511080805.2052=
+495-1-wei.fang@nxp.com?part=3D14
