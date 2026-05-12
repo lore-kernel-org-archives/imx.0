@@ -1,167 +1,176 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011032.outbound.protection.outlook.com [40.107.130.32])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011002.outbound.protection.outlook.com [52.101.52.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FC3349CCC
-	for <imx@lists.linux.dev>; Tue, 12 May 2026 14:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15470357D1D
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 14:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778597311; cv=fail; b=lMG/nuDJkPPBUf7qE3lhMhPx972940cCxftOn0J9iK4XLNFcyJBB6gPYm4jtyNWAyv4pvU+d3AhFbPH2MbtRBwIwpMyXzaFdah9wJBFe2r3kmtfzwAr3C0vpXxmj1Fo08PUwamil4Mli7Rg/n6HjG/YX0N2xnqsvOuPocm2qFfM=
+	t=1778597635; cv=fail; b=gXFLmdWVGuN36KPNjAQWusxT0ZCnLWstyqwLF0/JgCuwgXIrylce362BCNkHFPXha7x45791wnvA6nYBRrgZQ7jG3XkGk939Z4B06ttP9fJ01CMO+hAYfJHTuCDzGeyePM5KoQ4quFuL0HaBRpZkVWZCLR43OQpAmgkOHTPtnAM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778597311; c=relaxed/simple;
-	bh=2e6/LjkOdvxk4UpTbkNZ/PRTSVW3XhCbxtJtWjP0q8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hqkehlU2DZ824DwRQ1wmFNpMNS7m7uDNo0ZiJaO07qbqsaWnwuSt8CiDcgX4N2PVfw9uSwV4pd22h4IkggtIx7W1IDJOcGSwThF0mRkeHgujHcNmlfeAAHEWfo/tDxWj59SAduACJPA5R7N9Ky2QAridYNLRnJvyANhWjGdcKGE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=G1Y0yjfp; arc=fail smtp.client-ip=40.107.130.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1778597635; c=relaxed/simple;
+	bh=ED7dmqZaBAmIOXVPxoE9ndNcVENFIuXeJ/pxd7W/IvM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VD3XYZ+o1d2Ci4T+sKcIeVJVLBg7eUSspdj6KhgWErMeNn+5VerUarivwAeKQt9EtWpPQ160BwI4OERrOmIbL3pwSigMtAh1eZbrir7vLJw2SD4FgiOwdVv3AyuF+3/cId0ifcTGIXLhGNdQCn8DBruCZW+QhV7z7OU8iyqj/6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IHbfPHG/; arc=fail smtp.client-ip=52.101.52.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="G1Y0yjfp"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IHbfPHG/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NYd71W3B+4YyhEleE1hRa/BKx86s6uQ57h3UivgcDf+CBzIPniRPZXmDLSXZGWEdoYcePiGXtJpOzmzEP+tmF7aFK5vOvr3QHzh89hMcoFgNM23HagiO5K027E6ntDLyX2YqTmRrDlrS7tmcy/d3DVrVE8hp/VbsNM3u/irptMzZhr8D2n4+vMa7lasrabwrB8G+Vtr03exwkKhMNgspYuGBxM4H1/sMuJRiaRN2PmCJE4ZLXHDrphVf78hVNbDSZ/kaPoeDgncYAvrF6Ge7VXJIqcEVuObIn8viGoXGrYOqZKCCsCPKBbJpKLuL8WgBxFq5G8XEWvTcqDjZfDzsmQ==
+ b=XZ6+ja7eu33zwPIPURlYkYHrK3wO1pMoNzuQSE648/ZJvcCLlyU8vAy/tbfNSI0bPYAR93AMcVcol9bjk6XodN4Ulx2M32ET17QAVyv/HMEhPs+WYjmjB9qiPN++EL7z1ue2y9tijtbWhk2Chy9EK2h6a1BIIFn16rVByZIBTlWFsTCGK9D/n16J/48i0RMKPolawDIst6WdpUeS9P6sPTS3sZF5EZTbWbiB0j0qttfVqNDrmutX+gH0QfUf7knYsChg041+vlEXC/y+uLHdgxAESdG0qVq9kkWqcdwvpkeXDWrPi4vcpY5mIGIfYnzrfAPaGuzGuY2gNXr1eX7UIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fd8WhdpCx7eQ8qzquudKo6XjDgmaDQd7jtMdGzQ+wYc=;
- b=SPsphCNY8WjPE2iQ25DOg9SXilcjPB/Eqkv7PN6xAfoZFJaoMjDgX43PWqTsLxv5NU/TzWCZ0AxhfgYkg1mkArDvFEv2uoUG8yUuhGgQB+gBaJuEmjos3yMai/RoLusPmiboK0E5n8N4xrH0lCXXgkuWStEKWTGeEa4coAImSHc2anh8J0X/TcEpw1hLpwDg3TVF+uZ32gK2FEopyBGkqfAL5kn+kqo/RIDR0M/MsdkDeJHOqa3WWehqtLcFFFXXsvk57kuBdkfCKveg9qKeL+h/5Qmr2cIC7NW8BvoVJnjjjLwsKe4dWna9p3nzkMziSxDbcMhOLyQOd5OadmIh1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=uzofhYUm9Mc1bK7p5TqwAz158lzxySiC+Tfppbo1rkU=;
+ b=oD5cFCtln6qE6Yg6EyZflMxz4bHgHyvECe4EAqPyAB3ZOKp5HDvhDAh2otVFrqmG1O9r9nlnsFWhm/XaEjLcB9VTRy6cDROpth9zXxdPlQE7SP3hdQLb8M4V+ALjS5oVX+k4iu3Q6Yp++Of+lfx2TW7gjlPQlxfaBf4klkOABoCbwy/RzMzm/1d4qE2lPAraWLVO2SgQiki3pvRPB1OIaMKiQmVaVmLw2GekjcxLKATB8w3w9CQIFtLts9JhXMzsJj9FQV8bK7X6IbzW8hmPFGy+VmnboKrPki9/WiDKGcU//xFMEo319ePuvn52V2ltW40PjO4v1649DpOEXW/xpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=oss.nxp.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fd8WhdpCx7eQ8qzquudKo6XjDgmaDQd7jtMdGzQ+wYc=;
- b=G1Y0yjfp9fwR5pnA5V09FImre/D7Rauzh4l5BeioP4w2BtVXzI2h5s8pGoSJGdFGeR762h+ue3imBuPWSIf7NGwM3qhD7UOJYLkHQBC0MLD4Z3nhZ45F+5vcPNfQ3q0LXiEjD/DEqGemGnapCYfVrN9Kx8uMMn+v5en+cYB2qmyNoWlx1J2f3/k6Ao6wGV1dXzaAHt7xsNuSpKL81+INoLK8uYYTjttwsdoGjz/RrQRScOooyjWAYWtGKLwnwvQoiVqMYm78ktH4YPYKrz4WolgM70wdsdd45FXuVpQ+VabcU36kJWIOULoTD+sorzEQdzQmzLO2JtVk9kNVPlBrxg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AMBPR04MB11810.eurprd04.prod.outlook.com (2603:10a6:20b:6ef::19) with
+ bh=uzofhYUm9Mc1bK7p5TqwAz158lzxySiC+Tfppbo1rkU=;
+ b=IHbfPHG/3L4VI8DOeca2m8UduNLqZyD8JisJNJzlY8TnK+BgiMuxuH/h69rmOrxnmJm4W7oRPqDlDJLViCo3qi/5ryKExJRhvAdqhb6wpqcfOhkuo5HJzDtWjXqqu+gqp4bfpAtEx7P7A1kolQkb+TyuvfRVU8clqRUF5kPlZlY=
+Received: from DS1P223CA0003.NAMP223.PROD.OUTLOOK.COM (2603:10b6:8:453::8) by
+ BY5PR12MB4099.namprd12.prod.outlook.com (2603:10b6:a03:20f::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
- 2026 14:48:26 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 14:48:26 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Linus Walleij <linusw@kernel.org>,
-	linux-gpio@vger.kernel.org (open list:PIN CONTROL SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH 1/1] pinctrl: Add OF dependency for PINCTRL_GENERIC_MUX
-Date: Tue, 12 May 2026 10:48:05 -0400
-Message-ID: <20260512144806.22447-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0044.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::19) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 14:53:47 +0000
+Received: from DS3PEPF0000C37B.namprd04.prod.outlook.com
+ (2603:10b6:8:453:cafe::73) by DS1P223CA0003.outlook.office365.com
+ (2603:10b6:8:453::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.24 via Frontend Transport; Tue,
+ 12 May 2026 14:53:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ DS3PEPF0000C37B.mail.protection.outlook.com (10.167.23.5) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 14:53:46 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 12 May
+ 2026 09:53:46 -0500
+Received: from [172.31.11.23] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Tue, 12 May 2026 09:53:45 -0500
+Message-ID: <9e3a88d9-1679-43ae-a96b-62a29bd45d9d@amd.com>
+Date: Tue, 12 May 2026 09:53:40 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: <tanmay.shah@amd.com>
+Subject: Re: [PATCH 3/4] remoteproc: add helper for optional ELF resource
+ tables
+To: Daniel Baluta <daniel.baluta@oss.nxp.com>, Ben Levinsky
+	<ben.levinsky@amd.com>, Bjorn Andersson <andersson@kernel.org>, "Mathieu
+ Poirier" <mathieu.poirier@linaro.org>, <linux-remoteproc@vger.kernel.org>
+CC: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, "Magnus
+ Damm" <magnus.damm@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>, <tanmay.shah@amd.com>
+References: <20260511211841.284809-1-ben.levinsky@amd.com>
+ <20260511211841.284809-4-ben.levinsky@amd.com>
+ <3b7f009c-dc4b-4fc0-becc-4d07eb4ff016@oss.nxp.com>
+Content-Language: en-US
+From: "Shah, Tanmay" <tanmays@amd.com>
+In-Reply-To: <3b7f009c-dc4b-4fc0-becc-4d07eb4ff016@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AMBPR04MB11810:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57b0ff61-a2a2-4392-100a-08deb03585d2
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37B:EE_|BY5PR12MB4099:EE_
+X-MS-Office365-Filtering-Correlation-Id: 083f1460-c57f-47fd-966e-08deb036453a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|38350700014|56012099003|11063799003|18002099003;
+	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|1800799024|18002099003|22082099003|11063799003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	fbC5OIOCrt62C/mOM3X3ArcJk9sTNdHfcW8cn7TogYnZsIogThOz4A36VFIf2FTXt3cE3fZ6ZgqqazEzDeGIROQ/MXommAFIqupfraxG/0wA4+ssBxHhFanmirHPiDfdC5F6FvlOJNv+lD1X7RY8oPjxT7OjxuuGqHvhwm4lp7diy5PNQJcjt4K9a7ztb2ZGiULOMZE8kvs8Az+38nIHT/zGSbSR+k4u7qA0bQOh0Xx/a4eKKKJSdropxRmRQATfIrv6VYJTTLPdmHoyxGBn8aWhzDSOzL3Sz4zFn1etm2vAHajE1jJ+7qMUDzft57dAyNoJvxjzE4KliZVFGiMV9u5o4+8+DscTuF68F83WTblYKa7PMZN4m+3SeE5FZGnZIV4mKHHMbaJqUJUFbbI0UVMW8MgECnDNFA8rq89m8YXA8JGXDHQ9Vm1VFSTDXt7kvN3vWGagpMfwy/ZShfUzb5MgfiIZYXGeKM9G5orLcYfgFBNMS8bRfSbDj1jolk5eUDxDMin7Zh03N8wnSTYxuRiTByEXlsX66CXhm90WdbYSurViiFuk10bHKCtlfSLB8Gw1Fvh/CG6BmjLfc1S02/m77tygHdBTElJzU/jLwPWUUZ6FAExzDpmUfUzSDHiyo0tbq7EZsf5BD2vH+wmD1mhF7wSTzO+ABhQ1nsZG2L9KWtEenGe0PZuxKLVBF64wjX48GqeWuTZyyAbAsCQOk4Zgd1LL19nWFDSnRBXNSikJDtS+a1yCRN/lQePsUlUz
+	+o8GsQ1vLTFZs1Zu9UqH1HX9O3nauPjzkg3+kDyocOoXdPnp/r43RdW4rNbBaCXB/rZXK+4v9EW0+FwxJBtIqpQDUKbd0j6RA2iYHRgB2hdZeAoaUoCzNncrHm8yNT0MKy+obnxgkUaGWM9IORnRqJibApIVsIvEVu6JtuEEyCWJXVcea2brFsXfS8snjGBeJ/CydEZOG85x3ERrhHahf/T9xjiv8p7mwyfVFOFWL24fFyk6Kr5uzTF4Px0gJlUTDIq+TSljTuC0IFQkYUAofQUoTnu8Le8bI27jVrm9SGa7C8mYnoMOc5csEsnY4dOKgZWGG0JJyJbFgSO7LzDhRC7sS5EnjOqRRSoKOs7D3zRcOYNGo3Ip3IsX8WDtE1hh0Qrr+QNvmrJX3bZ/jyXVpLIwjocf6U8kJotjh23lp/cDwbfrFCeYc49XAAl9quonCuP8sfSEGt8CsLZa9zCt3G53AM39CRmU8/rMKDQgwlLTmFkDm4Ulpj4VmCyqGn6bt6m80RDys+S6f9nOgc2yrFLDz+/tfLdIhvlXcQdjDqppHSBnyg7GDNTCmvymXfZL5D8tRqpk1vIWOJ/zZ/SkEndNbWiiVR9vciJGpkQE+mq571uG27lJAqNGbYbr+GHb9hJJ3CwBQYLEbGtHmdVUh2ZfCfzRIP5suran8Bo4B+9LJeeBDBZXOI+2GGrsF/Rf+nbMMYCGc3mC4fgXydNvLNdCIqUht5RoOH5+bKy7DIU=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(38350700014)(56012099003)(11063799003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(1800799024)(18002099003)(22082099003)(11063799003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OgKqKSmyh8P7jyUmvADnKDll0pWWlX+k0jlePdfH2+ejHoZ2dxLwTrgjP5+3?=
- =?us-ascii?Q?rNSrEcVO4pwlgWPmSLuS15VAlaRbJ4O8C4UZuSQ0AmEqzcUfQ0DOOIJwnb1K?=
- =?us-ascii?Q?x0xj4bDEcqz48KV0gPFL4mWFArlR0p0lUYcu4dmtfBTD2z29HjRNCdKAW/zU?=
- =?us-ascii?Q?zudK0FqBiB5JTuczu7HeI8fwAZviD631Ptb5G+wE6SnHMsFGLuaTbE+u4XVL?=
- =?us-ascii?Q?8yzM32cOwffKYSwgivWqDhv9LVP1clKK5ZVOp54DI1GLGHhp2iEGWrSSJGSL?=
- =?us-ascii?Q?4l9zMDdyvDe0EbqTSjlMJjpz9EFNom/CJee8Is6SAYC/jhu/6j4BtlOvSkkn?=
- =?us-ascii?Q?nyvG2L6OFyE0j2kl0x3BXNgE/CJxniRhSnSGCms9z2yKjFYcTd2OPLog1oVb?=
- =?us-ascii?Q?uW1AaNlyKUCN7/R4YzfGZJ8SDFUowA332Jkl7VycpNbB4/zt4r3+9EGerGdD?=
- =?us-ascii?Q?3hnebCRdyRc/kEevw4k3G1KHmWvu5SHXIkV1ZeF7phLOYRvd4IBeKHI3IZ7v?=
- =?us-ascii?Q?vU5P46dDmTdtK9ZFBu/vqUkbDsZZPOb4m0BlWCnX3f1xIg1u1LdVwz19wygh?=
- =?us-ascii?Q?qx1JhcGJ751/wL/4yAGu+QT8zTG0NLWR3kerAQ6r2F9rtG2DVbUwsesbmDvv?=
- =?us-ascii?Q?HjzL7fptzzeBR+50O1zA5mYp0IdGTJtfdwEUD3WRYKv98DoUIzHdVjVmcSrt?=
- =?us-ascii?Q?VwNIWQiT2UxttqLImXfhyjLJM7IYwnATqjzlkMKY2cc+1jfiSoGdwrzDEQEC?=
- =?us-ascii?Q?ifA2Rk2/07DZajTwpP86vBOfRC244S2vRZweeg7mk3ofKecCdn2N55Tb3o4v?=
- =?us-ascii?Q?ODoS3KgV10jXq+PoXp+qcADQFw8D4tXLQDlTinKtyGcH9tjOmA9yLZzTzP4x?=
- =?us-ascii?Q?gS1lWPgDtXN+CvfuvyvAdchpvN4ihKrh3GQ251+Iq5bm/h3ZlGTl6tD30rhd?=
- =?us-ascii?Q?dl17vEhosQSXRGHkgzvjAHZ6hT6fh5A2otcNc99YQMEXccih73IWg6whKR4r?=
- =?us-ascii?Q?u0NvJMzG/1tPnJOFrVPYne/pTBoCixO/Szbq0xZUvjSHsT09VXYswJCbuA6c?=
- =?us-ascii?Q?4WnUEAkG9QeLSUUSGQlo99gqFK6VnupSUXGudzq/FgYHv7Y+6RWyDEOlkFXt?=
- =?us-ascii?Q?wCs8sVSK3F8ZIwf7rin5Qj5lFS6LunWPNrv6L7/oWD6diWx8b/GRRGYEiMWQ?=
- =?us-ascii?Q?6sXl0hCyQd+lpBu37qGWvNxmI2LWFz2mF5GW8TR2fkcECHeG0v+0Vqx20kAL?=
- =?us-ascii?Q?tgecRKHDbVWSvUCKE49lLVERtGzyMvX1qCqBhhGb0KkjnR6LBScvVQhcyfWv?=
- =?us-ascii?Q?94AuqBjHnM9fNP5IP0ph4yrv7NeRrYxX3K9wwISIXMKaax7wYMvyvKHxZFIo?=
- =?us-ascii?Q?8805AI7hZ/O/EQwvHUTlKJ40Xl7zOsTZUdHTivkm5yhOm7C5n4qqdF6aPxGv?=
- =?us-ascii?Q?qIuBGUcc/yMZTblTUQ10cZN7gp6EAQwYQ/l6fEfX/VwbFYNpMt4k+91MDTEI?=
- =?us-ascii?Q?titiT4d43UxOJJJh86teeCy2La2yUZLjC2zlaqq40L99QECDafqgXNxC99U1?=
- =?us-ascii?Q?VIrQU4S1ClPyPCpehJz7pqgCtmK+HqS+hL/vOCr8ylhks/KVDOjTBOuZ2JbZ?=
- =?us-ascii?Q?GdFqPSZyLiutSuKMeEecYejuCQ4nLE4jVWjvJROt67mz3sS4Wnudz4zxuvMg?=
- =?us-ascii?Q?UJnbAD+KAJC+UpzNSiy5Pc9SoGlLCwClR34IjDVrMlvromNg?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57b0ff61-a2a2-4392-100a-08deb03585d2
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 14:48:26.1143
+	3olwf2wK95yBFQGC5kzvb9Kj6X/UcEdzlYlBMveR18PNEr208F5vqlGVivvI/x9RNyjhuw+7N2ACi2Rj2F/8ur/hbmXyWGAb4A2r6Gc+048GUvqPBJcM9pIO/Dkc4h2EOOprj4TZUGunO61qGmTOSu0T6/O6m+vw5unkFo6PHMtRohvlNB5467dFC/W+aiLTkCT2Fd8jwHusykjG2zAxAoEubLfPmuMhqeFIuqRAU65f9YeL0mIs27ki8EPnE8epZDeMzLJmdAGRxpOo9caUCNPKyHPg/k2rw3y0W9mw7dQfLyt2FmOfn8TtkcllHQ8GTQyRhBQ+AzwPzpvP9W7SihsPu8abRz86zaR8AxJ5Ksu1IBomDMmMVQIcWBs8PxJXppy1T2vhwvEPtYOQHdYGIWJEYfxPzPoXhs8tbeCOHqPkAk0Lu7yiTMoB2D2AmR3X
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 14:53:46.8682
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VLYKuXsGvml7CIJjKCGmPTe0L+0n6aFsqx/zg8lq6a7FKkUSEwtQEpgwKoi4wb9RGI1TMJVsGr65nyAPBJ4Uow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11810
+X-MS-Exchange-CrossTenant-Network-Message-Id: 083f1460-c57f-47fd-966e-08deb036453a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C37B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4099
 
-Add an explicit OF dependency for PINCTRL_GENERIC_MUX to ensure the
-generic mux support is only enabled when device tree is available.
 
-Also fix the stub implementation of pinctrl_generic_to_map() by correcting
-its last argument to match the non-stub prototype.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202604072013.aI84l57L-lkp@intel.com/
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Linus Walleij:
-	I am sorry for missed a previous fixes patch
-(https://lore.kernel.org/imx/20260408050702.2454661-1-Frank.Li@nxp.com/)
-when rebase since it is located another fixes tree.
+On 5/12/2026 2:55 AM, Daniel Baluta wrote:
+> On 5/12/26 00:18, Ben Levinsky wrote:
+>> [You don't often get email from ben.levinsky@amd.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> Add a small helper around rproc_elf_load_rsc_table() for remoteproc
+>> drivers that treat a missing ELF resource table as optional. The helper
+>> returns success on -EINVAL and propagates other failures unchanged.
+>>
+>> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
+>> ---
+>>  drivers/remoteproc/remoteproc_internal.h | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>
+>> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remoteproc/remoteproc_internal.h
+>> index 3724a47a9748..dff87e468837 100644
+>> --- a/drivers/remoteproc/remoteproc_internal.h
+>> +++ b/drivers/remoteproc/remoteproc_internal.h
+>> @@ -146,6 +146,18 @@ static inline int rproc_mem_entry_iounmap(struct rproc *rproc,
+>>         return 0;
+>>  }
+>>
+>> +static inline int rproc_elf_load_rsc_table_optional(struct rproc *rproc,
+>> +                                                   const struct firmware *fw)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret = rproc_elf_load_rsc_table(rproc, fw);
+>> +       if (ret == -EINVAL)
+>> +               dev_dbg(&rproc->dev, "no resource table found\n");
+> 
+> You are changing loglevel here. Initial drivers use dev_info or dev_warn. At least I'm used
+> with seeing this messages in the logs. 
+> 
+> So, what do you think on adding at least dev_info to this instead of dev_dbg?
+> 
 
-Frank
----
- drivers/pinctrl/Kconfig   | 1 +
- drivers/pinctrl/pinconf.h | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+Actually can we leave that choice to the platform driver ? There are
+many use cases where the remoteproc subsystem is used to load and start
+the remote core and the firmware doesn't have the resource table. We
+don't want to make info level log for such use cases, as the resource
+table is not expected in the first place there.
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 31d698fbaa01d..f4ffe1f3b720f 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -275,6 +275,7 @@ config PINCTRL_GEMINI
- config PINCTRL_GENERIC_MUX
- 	tristate "Generic Pinctrl driver by using multiplexer"
- 	depends on MULTIPLEXER
-+	depends on OF
- 	select PINMUX
- 	select GENERIC_PINCTRL
- 	help
-diff --git a/drivers/pinctrl/pinconf.h b/drivers/pinctrl/pinconf.h
-index fa8fb0d290d1d..9711d16c38b62 100644
---- a/drivers/pinctrl/pinconf.h
-+++ b/drivers/pinctrl/pinconf.h
-@@ -195,7 +195,7 @@ pinctrl_generic_to_map(struct pinctrl_dev *pctldev, struct device_node *parent,
- 		       unsigned int *num_maps, unsigned int *num_reserved_maps,
- 		       const char **group_name, unsigned int ngroups,
- 		       const char **functions, unsigned int *pins,
--		       void *function_data)
-+		       unsigned int npins)
- {
- 	return -ENOTSUPP;
- }
--- 
-2.43.0
+>> +
+>> +       return ret == -EINVAL ? 0 : ret;
+>> +}
+>> +
+>>  static inline int rproc_prepare_device(struct rproc *rproc)
+>>  {
+>>         if (rproc->ops->prepare)
+>> --
+>> 2.34.1
+>>
+>>
+> 
 
