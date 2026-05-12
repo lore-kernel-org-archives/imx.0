@@ -1,161 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A34F384CD0;
-	Tue, 12 May 2026 06:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420D2357D1A
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 07:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778568328; cv=none; b=fkTh01CIcHxm+Sx1KBgKP6G5upVgilpc6gsY1Ljr39hknNaBteXH5IcyvA40cF0sektjI7O+eIWjrvfjbc54mTdU4+cRgJGnACkglvD4kJNq40Nbtu9oqh3R/OuSThhVf6wNTvtMlEgvFkcN+emeIYYS6A7u2OYp+B+nwSjRmOc=
+	t=1778569648; cv=none; b=pSWxt6mVF3Ag08qIg2DtGzghtQ3VF01s5qwOPasqoPTKwV0PH4SzjgXmE0/0poGj+6wsiZOdAQp3hqX/0es0cw6ujC8oAAt4OMDf2VNY/zMaVqkY/b6iVD9QpoH3jnKKBIqFb2Q5tgnr09YpnYZbwWUa/a8bfgwmbT1ROoqYaqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778568328; c=relaxed/simple;
-	bh=dn/2TeYlo7UysBV7G8rvsmGFrF81gAfR8vsGzOKsmOg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AZJvTz6iiaxUPYLdhWLIOj3FXQMYQ6HzM7OAj8l/EpQnDwyQmEsFQd61qynqob7siZpZr+k+WPdp+TWg+nhmibqlbxlCWRaLCp2rr2Hwd80n0U0FgM2rhRuC3veLrfXHbDumWVF4x34MDbpowcu5yWlCw3yJUvG8PoAd+zqoEqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uc8tzNhB; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uc8tzNhB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCB9C2BCB0;
-	Tue, 12 May 2026 06:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778568325;
-	bh=dn/2TeYlo7UysBV7G8rvsmGFrF81gAfR8vsGzOKsmOg=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Uc8tzNhBZd26dCinIzbLQ9bR4MSBCAAUI84key7CvBkAYpls6HPZloNedoeQNJX90
-	 Z/PwTajwyZN3iNh6ckUdOGqN6tVq5bnTOTNNvi5uTrDfBOV/y/zPpq1rxYYwgBrso3
-	 hH09/fWhX8jmu5QbkcOs6FlPSXrzTmqGKwY4yrEagpXj2IIKOuPEns67KSUkjmFTFv
-	 IFhHx5jbc5gnbVPCanzejg6kIi/5WaVRvNBiwtiwKIUgTrS3cYzx57MolF5U1LRItJ
-	 p6xhnoTD1Kw3T0XuIVeGJSqrQiYIPQyzBEJdqD5x/+vJmmaiuBippRuK18MA/YB32g
-	 NXqwAxgBDNcqw==
-From: Enric Balletbo i Serra <eballetbo@kernel.org>
-Date: Tue, 12 May 2026 08:45:16 +0200
-Subject: [PATCH RESEND] clocksource: move NXP timer selection to
- drivers/clocksource
+	s=arc-20240116; t=1778569648; c=relaxed/simple;
+	bh=QOuhUbECchN9O5z4tSuzAVzWrzBcGh/7OTIvurcyros=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SIvWnWfHF40IukU1cNnBs0Bbzbq9Goxe+/GxBQwJpF3FoWxD5Tin6PhrfX3Yb5g4A6L+JEBP64tJ3f2nEpcqCvfqIKt+EPvXuN3IbmoXa9tDMxzGEZ+y7MMdaEJHCZwifQ/w4I0kqzcg65H5f25qImlW3aCrFy2dMR5+MPoyMmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-575212eb419so3715074e0c.1
+        for <imx@lists.linux.dev>; Tue, 12 May 2026 00:07:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778569644; x=1779174444;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2FuciPnJNj5AwtRdMcxDTBtjQGaobaVWkr7dCuNdv28=;
+        b=hbXVNdaoDZ0WZdltiLY0/ULSrIYGpeEQcNz3DiZ2AjlV+qc7uDL5cq5AEo+spEjI1Z
+         myLj2iOSZsARQ6ZvMrRXX7jvId86R46b0qVsbJT1ujwpyVcKxwjzfJ93AwbBgT1mEMU7
+         w9dTw+JUH5NxXhYBJu2sVhQMB7+w1eErtwBWsLmcrUnkmUU8LG6AjgNxwnsQWCzzL7gb
+         oQH1ChRMzXdsG5owy+z2UM4sHATDGr6TCXpmfLbW8TBScTkhfC6+jjPB6mT30hshW3Ub
+         66ZjiMK97Nxk7hV7EBar+KEbtp2pEbD9Fe+O2XpU45+CYeS/beUwBuJ6D6jYAcEFE9qn
+         g3aw==
+X-Forwarded-Encrypted: i=1; AFNElJ8VqBoghrQdOxjYiqtUohaUAZ2YWf1WqAffFghtc51Ri+MtaCpGLos+QjuBaZ+Fk/Ijbvo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyV0xH9Trm7awLBU0Fw1snj2Xt9b/XfgSmvVepHlDRAcWN6KJRQ
+	Ic+Zt+gWHKVaW1sdt76IkHeOLDT8GKQUAroa21g3P4yTWL0xkPY2UZTTlXLhEYni
+X-Gm-Gg: Acq92OE0cI/N/9Toa5lqFg1lVh33587T2BT4dGsObpyv6aJwXVlrwhhOnURt61f+RVG
+	olwb3uLnAuptPtUt9kxjlw67Ud6I0xHuDmNgktP6/sSjlg1J1WADZ8D+uacdu/bsoIPTAuLRJ2Q
+	8JT/tX5iptg9HbXY6h0Fx3fxVnxTp4wXIcaPQXh9fkOF1NKu2MwMTGneQ472Wx02dJuz2HLtom+
+	aT8OPBW5lviCzLdAPimFfoiI3cN82eYpN39FxAJN1x6A387kro9C94+ihU4w6TxwWcFtd29vGU5
+	oLxNXL/Vw9gIzw2gpGNGZ6ltVT+tRGAegGY++s1U0ipIIHSPWjthlk9CEdHBkMZzMVqPTL20ci6
+	x0brfew7poTdcuaTD/D77eAryU7NqdnzAIPHWcathocCPDyzH82ogGPg1At3Kx2nkwXWIv0Ao6E
+	czc+WvQVjLeE9usb3rQJcY2h/hPRolWEAFk5aG3ltXA0jyixlxGX9ihoPkBtQs
+X-Received: by 2002:a05:6122:d15:b0:575:2ec0:2000 with SMTP id 71dfb90a1353d-575cfe9bfa3mr1010117e0c.9.1778569643661;
+        Tue, 12 May 2026 00:07:23 -0700 (PDT)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-57586996d3esm8891219e0c.6.2026.05.12.00.07.22
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 00:07:23 -0700 (PDT)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6312bdd281eso3722439137.0
+        for <imx@lists.linux.dev>; Tue, 12 May 2026 00:07:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+74F/hHU8ywvX7l4TTaTrsYa+5ID332zqGZBzrNSI4VMn+2mkTx+uhebBiawHv0PBTTUo=@lists.linux.dev
+X-Received: by 2002:a05:6102:41a7:b0:631:5717:5248 with SMTP id
+ ada2fe7eead31-635d27ded2cmr1082007137.21.1778569642797; Tue, 12 May 2026
+ 00:07:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260512-fix-nxp-timer-v1-1-565e13ef3e46@redhat.com>
-To: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Enric Balletbo i Serra <eballetb@redhat.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778568323; l=3279;
- i=eballetb@redhat.com; s=20260512; h=from:subject:message-id;
- bh=68CbHFHwy1Owac9bautnuLw3iIFo+9q/vUbZH0bPUhA=;
- b=JNJcUDnKmmycT4dmRC9T5sdyzh+Q/h5coXo04/9HNdAC11NQs7WREfrGKMNQLU8o8GTMrWwj6
- pHEaHSSssP5B4h/qeXEbzY6Pa8V6/ILgsL3hzK1apeDxxHaM4VMtnPj
-X-Developer-Key: i=eballetb@redhat.com; a=ed25519;
- pk=HEWGfVmqrAZfJ4JLImY+V4jOfS+bkE5CQrdmm/kZq5Y=
+References: <20260511211841.284809-1-ben.levinsky@amd.com> <20260511211841.284809-5-ben.levinsky@amd.com>
+In-Reply-To: <20260511211841.284809-5-ben.levinsky@amd.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 12 May 2026 09:07:10 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV5UjAB35nPA9ghNm3J9oFavuEv3NHxkxxW3nOU5ZsMwQ@mail.gmail.com>
+X-Gm-Features: AVHnY4IHIx-N6TjHjhDj_v4IyNJlawKxUXPhLNy1xplrNwtoo77SAjjbsdZbWCo
+Message-ID: <CAMuHMdV5UjAB35nPA9ghNm3J9oFavuEv3NHxkxxW3nOU5ZsMwQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] remoteproc: switch drivers to optional resource-table helper
+To: Ben Levinsky <ben.levinsky@amd.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	linux-remoteproc@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	tanmay.shah@amd.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Enric Balletbo i Serra <eballetb@redhat.com>
+On Mon, 11 May 2026 at 23:18, Ben Levinsky <ben.levinsky@amd.com> wrote:
+> Use the shared optional resource-table helper in the remoteproc
+> drivers that currently ignore a missing table. This keeps the missing
+> resource-table case non-fatal while letting other parsing failures
+> propagate to the caller.
+>
+> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
 
-The Kconfig logic for selecting the scheduler clocksource on
-NXP Vybrid (VF610) uses a `choice` block restricted to 32-bit ARM. This
-prevents 64-bit architectures, such as the NXP S32 family, from enabling
-the NXP Periodic Interrupt Timer (PIT) driver (CONFIG_NXP_PIT_TIMER).
+>  drivers/remoteproc/rcar_rproc.c         | 13 +----------
 
-Relocate the NXP clocksource selection from arch/arm/mach-imx/Kconfig to
-drivers/clocksource/Kconfig. This allows the configuration to be shared
-across different architectures.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # rcar
 
-Update the selection to include support for ARCH_S32 and add a "None"
-option to allow using the standard ARM Architected Timer. The Vybrid
-Global Timer option is now specifically restricted to 32-bit ARM SOC_VF610
-platforms.
+Gr{oetje,eeting}s,
 
-Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32g2 / s32g3 support")
-Signed-off-by: Enric Balletbo i Serra <eballetb@redhat.com>
----
- arch/arm/mach-imx/Kconfig   | 21 ---------------------
- drivers/clocksource/Kconfig | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 21 deletions(-)
+                        Geert
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 6ea1bd55acf8..a361840d7a04 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -227,27 +227,6 @@ config SOC_VF610
- 	help
- 	  This enables support for Freescale Vybrid VF610 processor.
- 
--choice
--	prompt "Clocksource for scheduler clock"
--	depends on SOC_VF610
--	default VF_USE_ARM_GLOBAL_TIMER
--
--	config VF_USE_ARM_GLOBAL_TIMER
--		bool "Use ARM Global Timer"
--		depends on ARCH_MULTI_V7
--		select ARM_GLOBAL_TIMER
--		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
--		help
--		  Use the ARM Global Timer as clocksource
--
--	config VF_USE_PIT_TIMER
--		bool "Use PIT timer"
--		select NXP_PIT_TIMER
--		help
--		  Use SoC Periodic Interrupt Timer (PIT) as clocksource
--
--endchoice
--
- endif
- 
- endif
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index fd9112706545..b5c88ec65802 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -794,4 +794,35 @@ config RTK_SYSTIMER
- 	  this option only when building for a Realtek platform or for compilation
- 	  testing.
- 
-+choice
-+	prompt "NXP clocksource for scheduler clock"
-+	depends on SOC_VF610 || ARCH_S32
-+	# Default to Global Timer for Vybrid (32-bit)
-+	default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
-+	# Default to None for S32 (64-bit)
-+	default VF_TIMER_NONE if ARCH_S32
-+
-+	config VF_USE_ARM_GLOBAL_TIMER
-+		bool "Use NXP Vybrid Global Timer"
-+		# This option is ONLY visible if we are on 32-bit ARM
-+		depends on ARM && SOC_VF610
-+		select ARM_GLOBAL_TIMER
-+		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
-+		help
-+		  Use the NXP Vybrid Global Timer as clocksource.
-+
-+	config VF_USE_PIT_TIMER
-+		bool "Use NXP PIT timer"
-+		select NXP_PIT_TIMER
-+		help
-+		  Use NXP Periodic Interrupt Timer (PIT) as clocksource.
-+
-+	config VF_TIMER_NONE
-+		bool "None (Use standard Arch Timer)"
-+		help
-+		  Do not use any specific NXP timer driver. Use the standard
-+		  ARM Architected Timer instead.
-+
-+endchoice
-+
- endmenu
-
----
-base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-change-id: 20260302-fix-nxp-timer-9cb1fbd7afcd
-
-Best regards,
 -- 
-Enric Balletbo i Serra <eballetb@redhat.com>
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
