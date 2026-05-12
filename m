@@ -1,109 +1,160 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013037.outbound.protection.outlook.com [52.101.72.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BC447CC92
-	for <imx@lists.linux.dev>; Tue, 12 May 2026 07:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778570076; cv=none; b=YXHoI/iuMJtj8iodGVIXVDuqtJyaVmRp6eymR60c+g+EUYLg3XgeDuClNg+O5F8eB29B6akIhQWxenpNA205GZGh1O7ck0AXgi5u/Nfktew9Y9tFvEnx9DiuzZ95DAJOT/TBZJg8PZn5U8c2UJ1nryAWrcwFBmo6QAG2oP0k0D0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778570076; c=relaxed/simple;
-	bh=UcY4jP/18r1gef8ACE5/GJ4a0vJN1v/bPa2Q4C10n3Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jiJfdDCLnPR6ZlD50ypmGLAXjwz2alQB9j25RMQM7e2heZ1wvHYrflZlNtbeyHJ76hXGFY2CefiCWInM9HJ+cd+vNGp9njf2Mr2HdSPuG56nIf+AHUehhTUP6OwdIbR/c0ZUX+C44sPegFHdcAx4MzzyNf9w3ugqDxr6GY9xPEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-368977e334eso842799a91.2
-        for <imx@lists.linux.dev>; Tue, 12 May 2026 00:14:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778570071; x=1779174871;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6U9R02UyT6PCn4mJzYYl/CPWidpbIlIhzjolxdPX7hg=;
-        b=VyNS4jM3e7R81prNVE0JMcxuxDZOmFud51nBOvDSJxi/1+PvfsIZuksKG8FC89WPsh
-         Uyg6zxy29VRQjFkQQkz7YFD40wCOM9fqlS0gxv243bsP+fK5yK4OB0aaXXWiGlNheOdM
-         nIxiVabvrJtk3NtaPuN0vsAhmcEbB1b3beTHZMWDfkkBlW/cemYxRMa5nGafAj7FAzYp
-         VbXhtBNjtVs+nBxotaYTCSjpooNK/GGsjW1TfwZzftys8lSTtEdqWLkxi/AkngdAl1N+
-         VT268VhKCbTU9psnXzWg2peExbod6AqcgvOxZxtVTMD3ZiUsIoovLIfb4hP25tgYQmQo
-         ohqg==
-X-Forwarded-Encrypted: i=1; AFNElJ/W6XXiXuJxN8uhHzswlwg16M5NInSNIaYoBTr5N7zHcM4txGGNU6cKPv+2mRaVHAMt6i8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyR9RxrR7bseUVGqOytR0uppTc7Jg2PTN2wxgfWR+FFI0fTVwlK
-	XKsl7/+9zdq67ewuMVMy2tPzlsnBSYJNR5H/Po6AehUlATUPqK9Z3rF9JmRPXaxa
-X-Gm-Gg: Acq92OGfp9O9FJAT1vFTDHurxYNGkKxsbnNlv+qXIMToHDem9SLHZHyYCnTWsidTAFe
-	Q1QD8dG0hzW2lzlIvIUcbw4G5eKwkMJblu8V711AjUY6AfuK4ckxC+3soqjrmOcpPR4GcyIoXA2
-	1msSaa94BQjbDXWK0T2hsQM7fswuVh3XCmZkLb9E/NwKZu9TMc0K3XWEkUJGWiA5Nkc19+8l4U+
-	R36ppIJ4EhkNPTbcT51zz0xz+sOLydq+d46Mr8qLBAIr6kBMlZZ2y2V03RDlJQbpjCt/Q3fL5nV
-	aVBbcXaRTH04CTlTIBTqEWcKSSyG0VyurdRsWOQvcEbHBOGuF8LDiZt+m6M9Innqbpeoa6dAIuK
-	kZVh83sOr0OcoqRXUY0QWrJNfFJ5IbaXzZ90VaNE56DSkwJ/Esd6FritB+ztxGEoikpvgsLv1Vn
-	Y+gBtEqcqIQqncME4+SPa3RV/DWt5vGvc7Jhy2Hlv0OmDxInAg086mK9dWNzY=
-X-Received: by 2002:a17:90b:3d50:b0:366:346a:6891 with SMTP id 98e67ed59e1d1-368b269e663mr2080536a91.16.1778570070596;
-        Tue, 12 May 2026 00:14:30 -0700 (PDT)
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com. [74.125.82.47])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368b06d6b33sm572219a91.10.2026.05.12.00.14.30
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 00:14:30 -0700 (PDT)
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1335cb20406so137096c88.0
-        for <imx@lists.linux.dev>; Tue, 12 May 2026 00:14:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ878hdG2PonWkAOQCR/7ZTlKDwjVdziSm0qg0GYygkwZj9frgDJdvzHzYLcPmntT+B+Ff4=@lists.linux.dev
-X-Received: by 2002:a67:e7c5:0:b0:631:26f6:701c with SMTP id
- ada2fe7eead31-636187cd6ffmr637420137.31.1778569604976; Tue, 12 May 2026
- 00:06:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E9E35A387
+	for <imx@lists.linux.dev>; Tue, 12 May 2026 07:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778570563; cv=fail; b=qm3CB68wQPK4jFrs7+P+dXtJNpBtqIqyaW7CFh/mG0xA4OPhdaVhfN3YSdAKH1B0QGoGPalSz8J8GmnYQMkObLXKZwjc8wzi3WloGvWM9bQOjq/84cZxfW/mqn3EV+yDwPTp7RsUxUwC3NKVeMYkAbnJykbZ+E+myRDmxtw0VEw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778570563; c=relaxed/simple;
+	bh=0XSZ3QjbyfTg/VSzInHsJxAyfZfBra6qnG/6aQnw2Nc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kT1wfCc5zzKmWK9cWEA/VlZTTyukxspd9ObayaAa4LM4ea0QiO0kjbgWm4ghFfTPh79beexm4u4hshVGrmE1wrk0xwXPVAv4urzH7Tt4beu6lWpesoQKKMi5I/Ymyyt8l1jzk6T26NxfmeY2IsFhGX2bClb1f3QmXOsUSwwa4mk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=P5s05HhI; arc=fail smtp.client-ip=52.101.72.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="P5s05HhI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GHPXc06QFsAqg5GQpW5DGgjZt6cCqYvVCHda9mM+Vhx+jggBQpNAN8xMP2sDxQ23gdb3K4BIUyRAFEmATj35LtA9SO81Jlf/O1n0FXvCmqJoOwy/+NBH3095NTP3Pf1WLF69eHIJSiDDOa6szw3CpKtRbAXUOtgfB+nh+4Efd/DilVblzoohL7Xdrv5EVl7KBGTGCM+flD05Yzq9A4yyWcEDbHYFdYImVqlK61tKMnqXJHa4vgUiFEoRIixLEimg7oS0xRGrHcBg+RgVSy40Pof/cGJZv5ccPUMVw76MFV++5TOYjT5ZZ2+9F8SaiYh0wjZPAOMlV+B9snSxknBUdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0BQvqsDPIiLLXee18uinEnscC/Isnx6/C0B1jtawMyw=;
+ b=qE6ibZnk6+5wJQLXDPYbVNdueZUDgtprimNzIKarMvPrz55Q3Nb02LsPq3mBINOU4aON7G5KTQcsL+IGEWpawCm6JdxMf3JUIUbJb+gqfVskslLo6d72LoAJs87+Octtl6qR31xtHhC7lFsz9xaAYvi5NxC2ncTmHg0FlxXRzx/qGRMB8Bz8nA2jdoZ7LV8+DdqhF6I5z3c/ZuLW1jQ97z4SiZU02k8eAeYvQz5eAKF7pqVFsFXcnO6jd/fqxNF0tDcFdQA6SWgk2RoH+bSgVb9DRifAJTyBoX1y+w1nq45+r9g9crYcAjen3Mcn1Xr+un5yMfUU0UH2oZE6sW0TqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.60) smtp.rcpttodomain=lunn.ch smtp.mailfrom=foss.st.com; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0BQvqsDPIiLLXee18uinEnscC/Isnx6/C0B1jtawMyw=;
+ b=P5s05HhINtVO032fIHBmfXGFkMDCM0+6tlGgkD8bGKsMuFY0I+mNWh0Ws61olnvNXA337XU4at45fPSsRhKXQr6e+a8me3OwQaEGP3hORwpvauwRkL+uZNDt4XuVKMXPe5LWqocj9W0Sod9K9MuMiP251m6Bqs/7pyhJoqEP8xkDUx8/3CAyb8qIVGJxOdhgc7debqdB0uABlp3bZqnXPgfh+26q9+bgduLVkMKjmn/KTz+BJCjcx7GiwoP8waxlfObz/99mLHxQb/1Q96c9QIU8UP5F+SKx7YsnlBrWm5yGdbDaiEtw+rzhKYHVyD7yfBBXdOtwg/KmN0tMdFrd4g==
+Received: from AM9P193CA0015.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:21e::20)
+ by DB9PR10MB7995.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:39e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 07:22:32 +0000
+Received: from AM2PEPF0001C714.eurprd05.prod.outlook.com
+ (2603:10a6:20b:21e:cafe::6a) by AM9P193CA0015.outlook.office365.com
+ (2603:10a6:20b:21e::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Tue,
+ 12 May 2026 07:22:32 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.60)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.60 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.60; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.60) by
+ AM2PEPF0001C714.mail.protection.outlook.com (10.167.16.184) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 07:22:31 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpO365.st.com
+ (10.250.44.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 12 May
+ 2026 09:25:57 +0200
+Received: from [10.252.13.51] (10.252.13.51) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 12 May
+ 2026 09:22:29 +0200
+Message-ID: <c0dc5b7a-50be-4b4c-bdd7-ec6f92083070@foss.st.com>
+Date: Tue, 12 May 2026 09:22:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260511211841.284809-1-ben.levinsky@amd.com> <20260511211841.284809-3-ben.levinsky@amd.com>
-In-Reply-To: <20260511211841.284809-3-ben.levinsky@amd.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 12 May 2026 09:06:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXn8G-nJ-=_eVRnZO_1nzWuP-AjTVL5SWH-D1w2F2QVfA@mail.gmail.com>
-X-Gm-Features: AVHnY4Jzn5XG3w_TFgzZrTYfNPhFMcAA9wRYKEMGtDIRqvMdxDHMc6dhfvtpVZA
-Message-ID: <CAMuHMdXn8G-nJ-=_eVRnZO_1nzWuP-AjTVL5SWH-D1w2F2QVfA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] remoteproc: switch exact-match drivers to wc-ioremap callbacks
-To: Ben Levinsky <ben.levinsky@amd.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	linux-remoteproc@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, tanmay.shah@amd.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Andrew Lunn <andrew@lunn.ch>, Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: <tanmay.shah@amd.com>, Beleswar Prasad Padhi <b-padhi@ti.com>, "Shenwei
+ Wang" <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>, "Bartosz
+ Golaszewski" <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Frank Li
+	<frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Shuah Khan
+	<skhan@linuxfoundation.org>, "linux-gpio@vger.kernel.org"
+	<linux-gpio@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
+	<peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+References: <472f85bd-42c2-40c6-abfd-b76924797069@ti.com>
+ <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <c6f68ab5-271a-41ed-b285-75b739f1edd6@amd.com>
+ <87850f70-5275-4393-941f-d01146a9cffc@foss.st.com>
+ <da3b79b7-9dad-48cb-b552-cf6df445899f@amd.com>
+ <08c815f5-ccbe-404a-95a1-a549aac8a55d@amd.com>
+ <CANLsYkz8HpM_8eS7DjN_jmYs4T7P9xY0jYmdiAx5WO=_1zvFpQ@mail.gmail.com>
+ <4ae35920-2539-4b12-8dea-efd407b8aaeb@lunn.ch>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+In-Reply-To: <4ae35920-2539-4b12-8dea-efd407b8aaeb@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM2PEPF0001C714:EE_|DB9PR10MB7995:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e71eb21-8021-4d83-8b09-08deaff73b3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|7416014|376014|11063799003|3023799003|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	C0J3qLL7sVkaqFzhoNnB2T1tPR5WriMJDYGJp6A6aQQZTX69JzyDQwioKvZKJRUWvZa5UxzOc2asbUYuuy5UDpkryc33Lgiy0Lqg1RZCzuo8wp9do930/1YhUA3VzxptpHjuu5obOOPQBC9y6PnXp2f7PIKchU36dsZx4+VCnijfK5Aw7dxfgDwv6s1xHrqOPqmMHju7plciDQo+RtkoVcgR9CmZnGYzrMtKmFUQCuWRMMwHsiz5soDUit0k66APamhJdrz1VIivokfLUsTtSd1R75QHt9K3crxe5cvfJficQObH4kG/T93wQlVSROniPl+MZ7CXrrMcw2ZXss2K/eJ0qz90X/iA2p1479MtLPbZbmgafvPNxAL78XswIgIqeV4Vq2YQ+FK4nuEDDtweXlIvZKJWUBj1vNIZvz5vRjbVZiABeBiWRtHfbCa+D4NUELNWALOf8pM2y17rc6VbfQ0M4GiiP7lasHu2AJoMPkyT1UJp93aUd1eCQIvPhgXNzk0nEdN+rB/fuydM9o9eBT43I54cm7U2p605Wt3qVtetvcZlEVtGW55jKRd6eHmdjuyR5NA/y5EeAHze3S/EKFssd8itEA8V3X4oFcsPUR6YwFSzlJNlM9tcfwB3V6Qvb/8OsyCS7ucTr/Jg4DfhNejpNDmyWsKg5EKVpslTpzOvRMX9P0Ke779/a6Z8KVTd
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.60;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(7416014)(376014)(11063799003)(3023799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bVtiIqSoF9pwSyv6C/BmQcI9qYWFUvsnie2aSbcdtFRpdfvmQpSGigNGW3Mqv+5hOczapxA9xlGT2eO5rc9MWh2ratAczCaHwpoESl/J98rOCTnfvdvzJGSFQC/6k8sXIRg8vke9/FpBdBUEnrjTSWuqoKhxNBpkL/o2lPSTijElZYzRe3JriVQJ/TyTYlUa5Q570M6NWbczxOSaco8UsMgBnQaiuo0AQCx2vuUS0j+BDZEFqXeWeShPVaw2F741HUU1fskmaZ4wBb9C68AIujYpNKKD9FNriR/RunPw3jFd4VubmPpetIViC2dDeDulVjNQDr5kMUiTgLdNx8Kc+YBhdJvNIGjKXEtRoFX+mOj+csSac1NoFst0Y+CRGXzsLypqoY2JrrcvlcDFk2q4hn4eZyeryffuUEXZF1gEJrZVxndrO4n7nrP5CyKRR0OT
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 07:22:31.7999
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e71eb21-8021-4d83-8b09-08deaff73b3c
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.60];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM2PEPF0001C714.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB7995
 
-Hi Ben,
+Hello Andrew,
 
-On Mon, 11 May 2026 at 23:18, Ben Levinsky <ben.levinsky@amd.com> wrote:
-> Replace the exact-match carveout map and unmap callbacks in the
-> existing remoteproc drivers with the common wc-ioremap helpers. Leave
-> the zynqmp R5 TCM callbacks alone because they also clear the mapped
-> memory and are not exact matches.
->
-> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
+On 5/11/26 20:18, Andrew Lunn wrote:
+>> Arnaud, Beleswar, Andrew and I are all advocating for one endpoint per
+>> GPIO controller.  The remaining issue it about the best way to work
+>> out source and destination addresses between Linux and the remote
+>> processor.  I'm running out of time for today but I'll return to this
+>> thread with a final analysis by the end of the week.
+> 
+> How many of the participants here will be in Minneapolis next week for
+> the Embedded Linux Conference? There is even a talk about this:
+> 
+> https://osselcna2026.sched.com/event/2JQpx/building-virtual-drivers-with-rpmsg-key-design-principles-challenges-trade-offs-beleswar-prasad-padhi-texas-instruments?iframe=yes&w=100%&sidebar=yes&bg=no
+> 
+> Maybe we can get together and decide on the final design after the
+> session.
 
-Thanks for your patch!
+I won’t be there, but I can join remotely if a call is scheduled,
 
->  drivers/remoteproc/rcar_rproc.c         | 33 ++---------------
+Regards,
+Arnaud
 
-This change also makes sure mem->is_iomem is true, which looks like
-a valid bug fix. Do you know what was the impact of not setting
-this before?
+> 
+> 	Andrew
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # renesas
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
