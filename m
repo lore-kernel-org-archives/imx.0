@@ -1,110 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D83CE48F;
-	Tue, 12 May 2026 05:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F393D16F4;
+	Tue, 12 May 2026 05:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778564746; cv=none; b=KFd7yKi09C5cdYOXYVjGvNqH2HmY9uwYoD9OPCBFNXC+mitm46ZKojO0XbO8e6B+rctnVk1zt5awf5Wx3GOxVSgt8jwhW0exwK8TAc6y+OIhEHUJFrgADBiFKUSGvjytYzx0EHSM+wkMLPaMK43fyu3alNYe2r1bGbEz0gmem7c=
+	t=1778564835; cv=none; b=RXnFEo1r3tlcCVA3GQE8KkjS/XQCUP4yGqaqmWGTnZKli2b8hZOX9tMRr/jim1j0oXeVFy0V5pS2H2OkGkJBntXR8LVPAnraJkkppPceZOsdjDwR04Vb0FXdWQ2RicAjr8fyyo2vE9NIbDYhObfEuTca3tgq2pWh3Detaay3JyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778564746; c=relaxed/simple;
-	bh=m7eqOE7dz6YTHppZE7h30fUHc1l55jXnJs7JnS92WRU=;
+	s=arc-20240116; t=1778564835; c=relaxed/simple;
+	bh=LcwtjoJoEAyc9y80XNnj+U5uifz5TSpASZOqNzguJTg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OW+dAoPwX6B6DTr6qUvi990bCGOkd/sp96qBxMYFHeg1xDxDMglsYXft4BCdFMY0BGyVnCZwI+Ac0LtoaZzfw9OMIUjthkbgBjve0dUAlMxXxUWtj5Ok2ZR2LduDhJ+ENic5WADwWet+ZKOn8fbm6R6ICQ0njdnA9AN/iSiyTEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEEd//dZ; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=uf2S9uj4Mm4NPnyvCbjoHxSXrrZmZRQqogZ/blpp2SnDRCo+KD0wpxjZKqw7kb0RoU/CWZzALNzJxtSxHXQCPNW+3LnNQ8OFMObl440Ofs1moMLQKpvaz+qgY1k0lS2IsZFC9WNq/ESSHxDgYkH3tvPKg0M5sdM+5ZvcUonFBkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of3o4UCb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEEd//dZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF297C2BCB0;
-	Tue, 12 May 2026 05:45:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of3o4UCb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037E8C2BCB0;
+	Tue, 12 May 2026 05:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778564743;
-	bh=m7eqOE7dz6YTHppZE7h30fUHc1l55jXnJs7JnS92WRU=;
+	s=k20201202; t=1778564834;
+	bh=LcwtjoJoEAyc9y80XNnj+U5uifz5TSpASZOqNzguJTg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=UEEd//dZFk4EfiXKbX7kmKqVy582CEydqr01/mcT3krWetN5oMX7xSc/zksdfua88
-	 YY9mOikxSDZjTGjNGni4Yo/RVUth8hvOVLRFXZX+cEM3A+qyBQ489N1h3JVv4PssdM
-	 MdXrf3/82/OD0IslNAK7qZgOzOUhM9eJmnf0QJ7mhABWVMVJFKX19xjMtRV4HuBSG1
-	 EABEkhKHOQzRhAYKhGGKbZe7+kcv3VepMIgq+xMaN5X5jCLEoinFVoadkDiBWdp6dV
-	 83uHBOa4bcHoHdYcqLMK3w+R7GdggFZhtRHooKB7HuPjahCnD0hUK9mnM58cyhozdO
-	 Xq6bKqRibyRTw==
+	b=Of3o4UCb0/ChoessLMaxVmpsNjaQ93QNvllNioufJFu+SgwCDY8g+q/HSd4WzNzRM
+	 eQQXkphnV+QdtfXuFqqNyRAtuHVuAXuL2oy1d7X7Crklrbcm0H//ze7xMszTrHNU2d
+	 DNj2OdfNAHOXsKxnh/9OseWyfsRYZYScnaL6dzkmxlFfLLOEkkDTHrqrk4L6OG+X6l
+	 JST6oXoNjjgHbngX5g4CApSWojRkY8Xw1NdJbhMBZRUI2hKPFGhiUshOp8My/kTow0
+	 PVivqMQaDF5NATIaa8RwPlALbp1oSdLR7BIh+qWcu3tSv2jeu6fR4IMVCFGcoN26wa
+	 Jb3a/kwgyBIKA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/5] arm64: dts: imx8mq-librem5: Correct link
- frequency list
+Subject: Re: [PATCH v2 7/8] media: platform: neoisp: Add debugfs support
 Reply-To: sashiko@lists.linux.dev
-To: "Pengyu Luo" <mitltlatltl@gmail.com>
-Cc: conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260511103927.279550-6-mitltlatltl@gmail.com>
-References: <20260511103927.279550-6-mitltlatltl@gmail.com>
+To: "Antoine Bouyer" <antoine.bouyer@nxp.com>
+Cc: conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260511132629.1300868-8-antoine.bouyer@nxp.com>
+References: <20260511132629.1300868-8-antoine.bouyer@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 05:45:42 +0000
-Message-Id: <20260512054542.DF297C2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 05:47:13 +0000
+Message-Id: <20260512054714.037E8C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] The exact link frequencies of 187500000 and 375000000 will fail th=
-e exact-match validation in the hi846 driver, causing the sensor probe to f=
-ail with -EINVAL.
-- [Low] The arithmetic formula provided in the commit message is mathematic=
-ally incorrect and misrepresents the driver's internal logic.
+- [Critical] The probe error path skips cleanup of previously allocated dev=
+ices and debugfs files, leading to memory leaks and Use-After-Free.
+- [High] Direct pointer dereference of `__iomem` mapped memory causes undef=
+ined behavior and potential faults.
+- [Medium] PM runtime usage counter leak when `enable_debugfs` is true.
 --
 
-commit 1a95e1bc9a680037635b3deded93622acb02b6ed
-Author: Pengyu Luo <mitltlatltl@gmail.com>
+commit 8ed96f76ce4a3c28d7472942ee6dafd2b5be2f9a
+Author: Antoine Bouyer <antoine.bouyer@nxp.com>
 
-arm64: dts: imx8mq-librem5: Correct link frequency list
+media: platform: neoisp: Add debugfs support
 
-This commit updates the link frequencies for the hi846 camera sensor on the
-imx8mq-librem5 board to match the expected values calculated from the mclk.
+Add debugfs entries to dump ISP registers and internal memory regions used
+to store Vignetting and DRC coefficients. Debug mode is conditionally
+activated to avoid runtime suspend which blocks register access.
 
->     According to the hi846 datasheet and the register lists, they are
->=20
->     mclk / prediv * multiplier / post_div1 / post_div2 =3D
->     25Mhz / 3 * 90 / 1 / {1,2} =3D 187.5Mhz, 375Mhz
+> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_debugfs.c b/drivers=
+/media/platform/nxp/neoisp/neoisp_debugfs.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/drivers/media/platform/nxp/neoisp/neoisp_debugfs.c
 
-This isn't a bug, but is the arithmetic in the commit message correct?
+[ ... ]
 
-Mathematically, 25 / 3 * 90 is exactly 750. Dividing 750 by 1 and then by 1
-or 2 results in 750 MHz and 375 MHz. To arrive at 187.5 MHz, the division
-should be / 2 / 2, which corresponds to post_div1 =3D 2 and post_div2 =3D 2=
- in
-the driver logic.
+> +static inline int neoisp_dump_memory(struct seq_file *m, enum isp_block_=
+map_e map, int wsize)
+> +{
+> +	struct neoisp_dev_s *neoispd =3D m->private;
+> +	union udata_t data;
+> +	u32 addr;
+> +	u32 *src =3D (u32 *)(uintptr_t)neoispd->mmio_tcm;
+> +	u32 offset =3D ISP_GET_OFF(map) / sizeof(u32);
+> +	u32 size =3D ISP_GET_SZ(map) / sizeof(u32);
+> +	int i, j;
+> +
+> +	for (i =3D 0; i < size; i++) {
+> +		addr =3D (offset + i) * sizeof(u32);
+> +		data.word =3D src[offset + i];
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm=
-64/boot/dts/freescale/imx8mq-librem5.dtsi
-> index eee390c272105..959a5c8dcd0d3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> @@ -1122,7 +1122,7 @@ port {
->  			camera1_ep: endpoint {
->  				data-lanes =3D <1 2>;
->  				link-frequencies =3D /bits/ 64
-> -					<80000000 200000000 300000000>;
-> +					<187500000 375000000>;
+Is it safe to directly dereference __iomem pointers here? It looks like
+mmio_tcm is mapped I/O memory, so bypassing I/O accessors like readl() or
+ioread32() might cause alignment faults or undefined behavior on ARM64.
 
-Does this regression cause the sensor probe to fail with -EINVAL?
+[ ... ]
 
-The hi846 driver dynamically calculates expected link frequencies from mclk
-using the C expression: mclk / 3 * 90 / post_div1 / post_div2.
+> diff --git a/drivers/media/platform/nxp/neoisp/neoisp_main.c b/drivers/me=
+dia/platform/nxp/neoisp/neoisp_main.c
+> --- a/drivers/media/platform/nxp/neoisp/neoisp_main.c
+> +++ b/drivers/media/platform/nxp/neoisp/neoisp_main.c
 
-In C, operators with the same precedence are evaluated left-to-right. With
-mclk configured to 25,000,000 Hz, the division 25000000 / 3 occurs first
-and truncates to 8,333,333.
+[ ... ]
 
-Subsequent multiplication by 90 and division yields 187,499,992 and
-374,999,984 instead of exactly 187,500,000 and 375,000,000.
+> @@ -1758,9 +1763,18 @@ static int neoisp_probe(struct platform_device *pd=
+ev)
+>  	neoisp_init_hw(neoispd);
+>  	neoisp_set_default_context(neoispd);
+> =20
+> +	if (enable_debugfs) {
+> +		neoisp_debugfs_init(neoispd);
+> +		/* Increase pm_runtime counter to prevent suspend */
+> +		ret =3D pm_runtime_resume_and_get(dev);
+> +		if (ret)
+> +			goto err_pm_runtime_suspend;
+> +	}
+> =20
+>  	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
 
-Because 187500000 !=3D 187499992, the exact equality check in the driver:
-    if (link_freq =3D=3D ep->link_frequencies[j])
-will fail.
+If this pm_runtime_resume_and_get() fails and we take the goto
+err_pm_runtime_suspend path, does this leak the devices initialized by
+neoisp_init_devices() earlier in the probe function?
 
-This rejects these mathematically ideal frequencies and aborts the probe,
-breaking camera initialization.
+Since neoispd is allocated via devm_kzalloc(), it will be freed when probe
+fails. If the V4L2 devices and debugfs files aren't cleaned up here, could
+userspace accessing the leaked files trigger a use-after-free on the freed
+neoispd pointer?
+
+[ ... ]
+
+> @@ -1777,6 +1791,9 @@ static void neoisp_remove(struct platform_device *p=
+dev)
+>  {
+>  	struct neoisp_dev_s *neoispd =3D platform_get_drvdata(pdev);
+> =20
+> +	if (neoispd->regset)
+> +		neoisp_debugfs_exit(neoispd);
+> +
+>  	neoisp_destroy_devices(neoispd);
+> =20
+>  	if (standalone_mdev)
+
+Since we incremented the PM runtime usage counter with
+pm_runtime_resume_and_get() in probe when enable_debugfs is true, do we
+need to drop that extra reference here in the remove path?
+
+It seems like failing to do so could leak the usage counter and keep the
+device permanently awake after driver removal.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511103927.2795=
-50-1-mitltlatltl@gmail.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511132629.1300=
+868-1-antoine.bouyer@nxp.com?part=3D7
