@@ -1,146 +1,224 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44E41DF980;
-	Tue, 12 May 2026 05:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924E71B87C9;
+	Tue, 12 May 2026 05:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778562249; cv=none; b=V6dJrdY57T7loo7LBFS2Ttyae3xKhqqu8qBD9X5vWCkD3U60ZmicmHDCUI60yUNj2apvPalKRDEhYNDfdZnC8tpbvlXJnUj4rz9JVI+ye/WoNxrBIOYoO/D2+f+vSJ3yWnUN+ObB9jG4rMliyJKzx8UCbWZnlNcllOP89pg4M7w=
+	t=1778562376; cv=none; b=HuQujthbUioNyny5RAghG83kLJu7z5gC1LPY9x195d5MMlGoJe2qDTHpWYSPcWmnYjQhMUznNxpa1H/FuvV57e5GKrBTCN49lMDMQBav+sv3h+nUODm0FnpXRGYrCsQmu2qjsRw/dvkCyxNob60iP2l8Dc6bhdllCpXrx4pQWFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778562249; c=relaxed/simple;
-	bh=ilE8n+6369yxTQpa1EIPOVg/Vp18pYXUnPQehwSix4g=;
+	s=arc-20240116; t=1778562376; c=relaxed/simple;
+	bh=dr+UOCLaFPDAtPAef1gRcND9dMnR9xTCUTvLvZ9Kd8E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ur8UxUUR+hgp4fZwV797yNXUDGzTNbCE/HSE2KGcdhEXreI3/sattQiHsGegenSw2JJijvy4ETYy33g8nkapF0LGZ+pDY1a0ykD2it0SyHCWFjj7YhtLMcXrNtKGYi8wfOpCTnx+cideTL1SQVtDSmCyTBDiHeAt79TiDuXkngg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MStb6cHn; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=QUbOFv6HIjp0wcDQIZPf7mRp0JWgYVJRohOdpijayHa2XKsHjFrTo2kjkOQbpl7RErRBsY2J7eowlQ47REFeWtTl0PzBNFBvuxsW8mi/a8N1QE7xjQ9qSALN0a0ObtonufoVFFaHOKZR1LbtNngCVrwGeR20432L5uAXcDZfZ3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wg/YScQR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MStb6cHn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C428EC2BCB0;
-	Tue, 12 May 2026 05:04:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wg/YScQR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035BBC2BCB0;
+	Tue, 12 May 2026 05:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778562249;
-	bh=ilE8n+6369yxTQpa1EIPOVg/Vp18pYXUnPQehwSix4g=;
+	s=k20201202; t=1778562376;
+	bh=dr+UOCLaFPDAtPAef1gRcND9dMnR9xTCUTvLvZ9Kd8E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=MStb6cHnH42cu3dC27Mba4Tm0BoLZ2J+Izijso4k43pNCxyh/ZxB6sszuBhlSpse8
-	 5Zv/HpXR1xRKGlwUnkL5I7SBZo9DRShP4+YngW6bJKk3CAIYn8mu0nGoHNITKl4FvV
-	 pLB7GfrILM8YLUJrbDY/m6s/2ZEGtufkxa6ZA2kkjLQe3Nv04h32SGCwdAhQEcO3RX
-	 7EAlHR+D3pgiNWdfJqGxqKUJwtiiMFFB7DszuT2VBT6aJuLzcg46vxbfQjnDLCrInh
-	 8qOpwm532KbH7Mhe15v+rlyM29hqLjaq+Im5pHUQheD/RE0GCK/1PrJ9/zseuXWv/M
-	 DsMd7bwA5zlPw==
+	b=Wg/YScQRfI2XODcUO5H0m4r5VKE0cDOUpdWsl37/XcQFzRWgjUn2dWkr5SC3z6HdT
+	 ryihFF4C2LKonKRdY+72eD8aKuX3xZjrAbvpPj7c6VF6rpGRBAGBonB/c8HMvRf5vD
+	 YenoF3ui1ZzijSvvWTAHbrPP6XIe0ay7QJC+ptZT9jaAfZ1r0Cu0KUloBH6enMOeH1
+	 cYzX5iiQ4/mUZoA1jk/ObVpnn5TCREA6ck+g9cB6X+xtBlR2ZvFJGqCQGg5dKcsLSQ
+	 1cS7GHY0hHhQ7qHQKYIEf6GHE50GYiwkemPwUWXuhdCyas2et6l/LRHczR3jixYqHR
+	 OR0as3WMKq3FA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/8] media: Documentation: Add NXP neoisp driver
- documentation
+Subject: Re: [PATCH v3 1/2] dmaengine: fsl-edma: Implement
+ device_prep_peripheral_dma_vec
 Reply-To: sashiko@lists.linux.dev
-To: "Antoine Bouyer" <antoine.bouyer@nxp.com>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260511132629.1300868-6-antoine.bouyer@nxp.com>
-References: <20260511132629.1300868-6-antoine.bouyer@nxp.com>
+To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
+Cc: vkoul@kernel.org, dmaengine@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260511-fsl-edma-dyn-sg-v3-1-98a181775dae@bootlin.com>
+References: <20260511-fsl-edma-dyn-sg-v3-1-98a181775dae@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 05:04:08 +0000
-Message-Id: <20260512050408.C428EC2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 05:06:15 +0000
+Message-Id: <20260512050616.035BBC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Low] Incorrect use of single backticks will cause Sphinx build warnings =
-due to unresolved cross-references.
+- [High] Submitting a transfer with zero elements (nb =3D=3D 0) causes an o=
+ut-of-bounds memory read and kernel oops.
+- [High] Modulo by zero kernel panic for DMA_DEV_TO_DEV transfers with unal=
+igned lengths.
+- [High] Missing multi-FIFO support causes backward memory corruption for p=
+eripheral transfers.
+- [High] The nbytes burst size is never restored per loop iteration, causin=
+g subsequent vectors to permanently inherit a heavily degraded burst size.
 --
 
-commit 930837ef3aa44bc2f8f8a827637c74321c6a1710
-Author: Antoine Bouyer <antoine.bouyer@nxp.com>
+commit 995264f0108e475b7f259a8a9e431ac6988e4a11
+Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
 
-media: Documentation: Add NXP neoisp driver documentation
+dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
 
-This commit adds documentation for the NXP neoisp driver, describing its
-hardware pipeline, media topology, and userspace API. It introduces new
-ReST files and diagrams in the admin-guide and userspace-api sections.
+Add implementation of .device_prep_peripheral_dma_vec() callback to setup
+a scatter/gather DMA transfer from an array of dma_vec structures. Setup
+a cyclic transfer if the DMA_PREP_REPEAT flag is set.
 
-> diff --git a/Documentation/admin-guide/media/nxp-neoisp.rst b/Documentati=
-on/admin-guide/media/nxp-neoisp.rst
-> new file mode 100644
-> index 0000000000000..16117112b701e
-> --- /dev/null
-> +++ b/Documentation/admin-guide/media/nxp-neoisp.rst
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index bb7531c456dfa..c10190164926a 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
 
 [ ... ]
 
-> +Neoisp driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +struct dma_async_tx_descriptor *
+> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
+_vec *vecs,
+> +				 size_t nb, enum dma_transfer_direction direction,
+> +				 unsigned long flags)
+> +{
+> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
+> +	dma_addr_t src_addr, dst_addr, last_sg;
+> +	struct fsl_edma_desc *fsl_desc;
+> +	u16 soff, doff, iter;
+> +	u32 nbytes;
+> +	int i;
 > +
-> +Neoisp driver is located under drivers/media/platform/nxp/neoisp.
-> +It uses the `V4L2 API` and the `V4L2 subdev API` to register capture and=
- output
-> +video devices in addition to a subdevice for neoisp that connects the vi=
-deo
-> +devices into a media graph realized using the `Media Controller (MC) API=
-`.
-
-This isn't a bug, but does the use of single backticks here cause Sphinx
-build warnings?
-
-In the kernel documentation environment, the default Sphinx role interprets
-single backticks as cross-references. If there are no existing reference
-targets for these strings, the build will emit undefined label warnings.
-
-Should these use double backticks to format them as literal text instead?
-
-[ ... ]
-
-> +neoisp-params
-> +-------------
+> +	if (!is_slave_direction(direction))
+> +		return NULL;
 > +
-> +The neoisp-params output meta device receives configuration data to be w=
-ritten
-> +to Neoisp registers and internal memory for desired input image processi=
-ng.
-> +This v4l2 device accepts the generic `extensible parameters` format.
-
-Could this single backtick usage for the extensible parameters format also
-cause an undefined label warning?
-
-[ ... ]
-
-> +Control
-> +=3D=3D=3D=3D=3D=3D=3D
+> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
+> +		return NULL;
 > +
-> +To support additional neoisp hardware revisions, the read-only bitmask c=
-ontrol
-> +`V4L2_CID_NEOISP_SUPPORTED_PARAMS_BLOCKS` can be used to query the list =
-of
-> +supported blocks. Each bit represents the availability of the correspond=
-ing
+> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
 
-Will this single backtick usage for V4L2_CID_NEOISP_SUPPORTED_PARAMS_BLOCKS
-similarly trigger documentation build warnings?
+This problem wasn't introduced by this patch, but does this function need to
+validate that nb > 0?
 
-[ ... ]
+If nb =3D=3D 0 is provided, fsl_edma_alloc_desc() allocates a descriptor wi=
+th
+zero tcd structures in its flexible array. When the DMA engine later attemp=
+ts
+to execute it in fsl_edma_xfer_desc(), it unconditionally dereferences
+fsl_chan->edesc->tcd[0].vtcd. This reads a garbage pointer from adjacent he=
+ap
+memory and leads to an immediate kernel oops when trying to write to the DMA
+hardware registers.
 
-> diff --git a/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst=
- b/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
-> new file mode 100644
-> index 0000000000000..5a1b0c555a03e
-> --- /dev/null
-> +++ b/Documentation/userspace-api/media/v4l/metafmt-nxp-neoisp.rst
+Additionally, the subsequent patch Support dynamic scatter/gather chaining
+introduces prev_desc->n_tcds - 1, which underflows to UINT_MAX when nb =3D=
+=3D 0,
+guaranteeing another out-of-bounds crash on tx_submit().
 
-[ ... ]
-
-> +Extensible parameters configuration format
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +	if (!fsl_desc)
+> +		return NULL;
+> +	fsl_desc->iscyclic =3D flags & DMA_PREP_REPEAT;
+> +	fsl_desc->dirn =3D direction;
 > +
-> +When using the `extensible parameters` configuration format, parameters =
-are
-> +passed to the :ref:`neoisp-params <neoisp_params>` metadata output video=
- node
-> +using the `V4L2_META_FMT_NEO_ISP_EXT_PARAMS` meta format.
+> +	if (direction =3D=3D DMA_MEM_TO_DEV) {
+> +		if (!fsl_chan->cfg.src_addr_width)
+> +			fsl_chan->cfg.src_addr_width =3D fsl_chan->cfg.dst_addr_width;
+> +		fsl_chan->attr =3D
+> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
+> +					      fsl_chan->cfg.dst_addr_width);
+> +		nbytes =3D fsl_chan->cfg.dst_addr_width * fsl_chan->cfg.dst_maxburst;
+> +	} else {
+> +		if (!fsl_chan->cfg.dst_addr_width)
+> +			fsl_chan->cfg.dst_addr_width =3D fsl_chan->cfg.src_addr_width;
+> +		fsl_chan->attr =3D
+> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
+> +					      fsl_chan->cfg.dst_addr_width);
+> +		nbytes =3D fsl_chan->cfg.src_addr_width * fsl_chan->cfg.src_maxburst;
+> +	}
+> +
+> +	for (i =3D 0; i < nb; i++) {
 
-There are a few more instances of single backticks here. Should these be
-converted to double backticks as well to avoid Sphinx warnings?
+This isn't a regression from this patch, but does nbytes need to be restored
+to its default optimal value at the start of each loop iteration?
+
+If vecs[i].len is not a multiple of nbytes, nbytes is permanently reduced to
+a smaller valid multiple (or down to width). However, because nbytes is not
+reset to its default optimal value at the start of each loop iteration, all
+remaining vectors in the array will be forced to use the heavily degraded
+burst size, even if they are perfectly aligned.
+
+This exponentially increases the number of hardware DMA requests (minor loo=
+ps)
+for the remainder of the transfer, which can cause peripheral FIFO overruns
+on fast data streams.
+
+> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
+> +			src_addr =3D vecs[i].addr;
+> +			dst_addr =3D fsl_chan->dma_dev_addr;
+> +			soff =3D fsl_chan->cfg.dst_addr_width;
+> +			doff =3D 0;
+
+This problem wasn't introduced by this patch, but should soff and doff hand=
+le
+multi-FIFO support here?
+
+Unlike fsl_edma_prep_dma_cyclic(), which correctly assigns doff and soff to
+support multi-FIFO (e.g., doff =3D fsl_chan->is_multi_fifo ? 4 : 0), this
+function unconditionally hardcodes doff =3D 0 and soff =3D 0 for device add=
+resses.
+
+However, fsl_edma_fill_tcd() still applies a negative Minor Loop Offset
+(MLOFF) at the end of the minor loop if is_multi_fifo or port_window_size a=
+re
+enabled on the channel. Because the address never incrementally advanced
+during the minor loop, applying MLOFF forces the device address to step
+backwards continuously, severely corrupting system memory or registers loca=
+ted
+before the target device address.
+
+> +		} else if (direction =3D=3D DMA_DEV_TO_MEM) {
+> +			src_addr =3D fsl_chan->dma_dev_addr;
+> +			dst_addr =3D vecs[i].addr;
+> +			soff =3D 0;
+> +			doff =3D fsl_chan->cfg.src_addr_width;
+> +		} else {
+> +			/* DMA_DEV_TO_DEV */
+> +			src_addr =3D fsl_chan->cfg.src_addr;
+> +			dst_addr =3D fsl_chan->cfg.dst_addr;
+> +			soff =3D 0;
+> +			doff =3D 0;
+> +		}
+> +
+> +		/*
+> +		 * Choose the suitable burst length if dma_vec length is not
+> +		 * multiple of burst length so that the whole transfer length is
+> +		 * multiple of minor loop(burst length).
+> +		 */
+> +		if (vecs[i].len % nbytes) {
+> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
+> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
+> +						fsl_chan->cfg.src_maxburst :
+> +						fsl_chan->cfg.dst_maxburst;
+> +			int j;
+> +
+> +			for (j =3D burst; j > 1; j--) {
+> +				if (!(vecs[i].len % (j * width))) {
+
+This problem wasn't introduced by this patch, but can this cause a modulo by
+zero kernel panic for DMA_DEV_TO_DEV transfers?
+
+For DMA_DEV_TO_DEV transfers, both soff and doff are explicitly set to 0. If
+vecs[i].len is not divisible by the initial burst size nbytes, the driver
+assigns width =3D soff, which evaluates to 0.
+
+The loop then evaluates if (!(vecs[i].len % (j * width))), causing an
+immediate modulo by zero panic.
+
+Furthermore, if the loop finishes with j =3D=3D 1, nbytes is set to width (=
+0),
+and iter =3D vecs[i].len / nbytes triggers another division by zero.
+
+> +					nbytes =3D j * width;
+> +					break;
+> +				}
+> +			}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511132629.1300=
-868-1-antoine.bouyer@nxp.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511-fsl-edma-d=
+yn-sg-v3-0-98a181775dae@bootlin.com?part=3D1
