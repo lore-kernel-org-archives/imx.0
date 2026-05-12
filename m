@@ -1,224 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924E71B87C9;
-	Tue, 12 May 2026 05:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5C332635;
+	Tue, 12 May 2026 05:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778562376; cv=none; b=HuQujthbUioNyny5RAghG83kLJu7z5gC1LPY9x195d5MMlGoJe2qDTHpWYSPcWmnYjQhMUznNxpa1H/FuvV57e5GKrBTCN49lMDMQBav+sv3h+nUODm0FnpXRGYrCsQmu2qjsRw/dvkCyxNob60iP2l8Dc6bhdllCpXrx4pQWFk=
+	t=1778562784; cv=none; b=tRSsQSgC01LXn9A6VoYrRbYDcUeJ/M0NenkzAeQlZusZXvcACGZ9pg9xpsd8f/RDmSgUB+BylkRPoT4I/7/JJJptRiCPqqJj3LKbIVgcg2W3++x3hiMVPWgH8oMnSOpTuCtALsukGPVgyhnaq9QyA4GaclbG5gutb9AFxHIaQL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778562376; c=relaxed/simple;
-	bh=dr+UOCLaFPDAtPAef1gRcND9dMnR9xTCUTvLvZ9Kd8E=;
+	s=arc-20240116; t=1778562784; c=relaxed/simple;
+	bh=MO8afgFCICfmXxmbdiaMYmHHFZJchgcWA7TMHdmCU0E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QUbOFv6HIjp0wcDQIZPf7mRp0JWgYVJRohOdpijayHa2XKsHjFrTo2kjkOQbpl7RErRBsY2J7eowlQ47REFeWtTl0PzBNFBvuxsW8mi/a8N1QE7xjQ9qSALN0a0ObtonufoVFFaHOKZR1LbtNngCVrwGeR20432L5uAXcDZfZ3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wg/YScQR; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=mITTx1twaW6kv4ohPFi1414MYF3TmbrSqtJB/KkbzgNER+dgHDSkU7SA5muRQxMfONBGZmVlFpwRnwxb4a/0WyRtCGZjQkvQlbHPaTWPjdIW1CPfLwE6fZkfpvmrB5a5WzKx1ZIgcNElZaaL+bdwYn4CBqvXAW/JGqYva3W877Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsHJjsbI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wg/YScQR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035BBC2BCB0;
-	Tue, 12 May 2026 05:06:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsHJjsbI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4F1C2BCB8;
+	Tue, 12 May 2026 05:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778562376;
-	bh=dr+UOCLaFPDAtPAef1gRcND9dMnR9xTCUTvLvZ9Kd8E=;
+	s=k20201202; t=1778562783;
+	bh=MO8afgFCICfmXxmbdiaMYmHHFZJchgcWA7TMHdmCU0E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Wg/YScQRfI2XODcUO5H0m4r5VKE0cDOUpdWsl37/XcQFzRWgjUn2dWkr5SC3z6HdT
-	 ryihFF4C2LKonKRdY+72eD8aKuX3xZjrAbvpPj7c6VF6rpGRBAGBonB/c8HMvRf5vD
-	 YenoF3ui1ZzijSvvWTAHbrPP6XIe0ay7QJC+ptZT9jaAfZ1r0Cu0KUloBH6enMOeH1
-	 cYzX5iiQ4/mUZoA1jk/ObVpnn5TCREA6ck+g9cB6X+xtBlR2ZvFJGqCQGg5dKcsLSQ
-	 1cS7GHY0hHhQ7qHQKYIEf6GHE50GYiwkemPwUWXuhdCyas2et6l/LRHczR3jixYqHR
-	 OR0as3WMKq3FA==
+	b=GsHJjsbIjyPzgdzrGrGQqcumMQ8TrESTsLThSgudFBmnlb0gQmRtqQh7H+LXLQ6E4
+	 xKR+iJqF4cADaopgZsesG3/vlFWjcp/vC97B8n6RHGigyUvCrsnN/jrKaAXfPfI6Wj
+	 UlvaFtrwpZWvo/hv11pm9PPsXlBl6+wcNJ5YFdQhBctc4GmyCuy4HBLeGM4nYLXy1W
+	 lF6ltVnaj/tU6pK9p3xnIlNd3Dg5DCEwDfONhJYUfy7PEjHc20ahJxMwWRH9c3AEyz
+	 PG39GpboRsReA4tv+HfnHGWq+E7Kg/SUsQbOoHey16AqeAO0RT+jPkggp/Lz1CWt/7
+	 fVgn22K65J0Ig==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] dmaengine: fsl-edma: Implement
- device_prep_peripheral_dma_vec
+Subject: Re: [PATCH v4 4/5] media: hi846: Add 6MP and 8MP modes support
 Reply-To: sashiko@lists.linux.dev
-To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
-Cc: vkoul@kernel.org, dmaengine@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260511-fsl-edma-dyn-sg-v3-1-98a181775dae@bootlin.com>
-References: <20260511-fsl-edma-dyn-sg-v3-1-98a181775dae@bootlin.com>
+To: "Pengyu Luo" <mitltlatltl@gmail.com>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org
+In-Reply-To: <20260511103927.279550-5-mitltlatltl@gmail.com>
+References: <20260511103927.279550-5-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 05:06:15 +0000
-Message-Id: <20260512050616.035BBC2BCB0@smtp.kernel.org>
+Date: Tue, 12 May 2026 05:13:03 +0000
+Message-Id: <20260512051303.7D4F1C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Submitting a transfer with zero elements (nb =3D=3D 0) causes an o=
-ut-of-bounds memory read and kernel oops.
-- [High] Modulo by zero kernel panic for DMA_DEV_TO_DEV transfers with unal=
-igned lengths.
-- [High] Missing multi-FIFO support causes backward memory corruption for p=
-eripheral transfers.
-- [High] The nbytes burst size is never restored per loop iteration, causin=
-g subsequent vectors to permanently inherit a heavily degraded burst size.
+- [Medium] The V4L2 crop rectangles for the newly added 6MP and 8MP modes e=
+xceed the static V4L2 crop bounds returned by `hi846_get_selection()` and c=
+ontradict the hardware register configurations.
 --
 
-commit 995264f0108e475b7f259a8a9e431ac6988e4a11
-Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+commit ba8b377e2d211a8774704df370bcbc25d095a60c
+Author: Pengyu Luo <mitltlatltl@gmail.com>
 
-dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+media: hi846: Add 6MP and 8MP modes support
 
-Add implementation of .device_prep_peripheral_dma_vec() callback to setup
-a scatter/gather DMA transfer from an array of dma_vec structures. Setup
-a cyclic transfer if the DMA_PREP_REPEAT flag is set.
+This patch adds 6MP and 8MP modes to maximize sensor utilization on the
+hi846 sensor. These modes require 4-lane MIPI CSI-2 and use register
+sequences extracted from the downstream Windows driver.
 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index bb7531c456dfa..c10190164926a 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
+> diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+> index c77b34a5e1662..12df1dc96163e 100644
+> --- a/drivers/media/i2c/hi846.c
+> +++ b/drivers/media/i2c/hi846.c
+> @@ -1028,6 +1028,106 @@ static const struct hi846_reg mode_1632x1224_mipi=
+_4lane[] =3D {
 
 [ ... ]
 
-> +struct dma_async_tx_descriptor *
-> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
-_vec *vecs,
-> +				 size_t nb, enum dma_transfer_direction direction,
-> +				 unsigned long flags)
-> +{
-> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(chan);
-> +	dma_addr_t src_addr, dst_addr, last_sg;
-> +	struct fsl_edma_desc *fsl_desc;
-> +	u16 soff, doff, iter;
-> +	u32 nbytes;
-> +	int i;
-> +
-> +	if (!is_slave_direction(direction))
-> +		return NULL;
-> +
-> +	if (!fsl_edma_prep_slave_dma(fsl_chan, direction))
-> +		return NULL;
-> +
-> +	fsl_desc =3D fsl_edma_alloc_desc(fsl_chan, nb);
+> +static const struct hi846_reg mode_3264x2448_config[] =3D {
+> +	{HI846_REG_MODE_SELECT,			0x0000},
+> +	{HI846_REG_Y_ODD_INC_FOBP,		0x1111},
+> +	{HI846_REG_Y_ODD_INC_VACT,		0x1111},
+> +	{HI846_REG_Y_ADDR_START_VACT_H,		0x0040},
+> +	{HI846_REG_Y_ADDR_END_VACT_H,		0x09cf},
+> +	{HI846_REG_UNKNOWN_005C,		0x2101},
+> +	{HI846_REG_FLL,				0x09de},
+> +	{HI846_REG_LLP,				0x0ed8},
+> +	{HI846_REG_BINNING_MODE,		0x0022},
+> +	{HI846_REG_HBIN_MODE,			0x0000},
+> +	{HI846_REG_UNKNOWN_0A24,		0x0000},
+> +	{HI846_REG_X_START_H,			0x0000},
 
-This problem wasn't introduced by this patch, but does this function need to
-validate that nb > 0?
+Does this register configuration contradict the crop configuration below?=20
 
-If nb =3D=3D 0 is provided, fsl_edma_alloc_desc() allocates a descriptor wi=
-th
-zero tcd structures in its flexible array. When the DMA engine later attemp=
-ts
-to execute it in fsl_edma_xfer_desc(), it unconditionally dereferences
-fsl_chan->edesc->tcd[0].vtcd. This reads a garbage pointer from adjacent he=
-ap
-memory and leads to an immediate kernel oops when trying to write to the DMA
-hardware registers.
+HI846_REG_X_START_H is configured to 0x0000, meaning the hardware reads
+from column 0. However, the crop left offset is set to 0x46 (70). Exposing
+a left crop offset to userspace while the hardware is programmed to read
+from 0 seems contradictory.
 
-Additionally, the subsequent patch Support dynamic scatter/gather chaining
-introduces prev_desc->n_tcds - 1, which underflows to UINT_MAX when nb =3D=
-=3D 0,
-guaranteeing another out-of-bounds crash on tx_submit().
+> +	{HI846_REG_X_OUTPUT_SIZE_H,		0x0cc0},
+> +	{HI846_REG_Y_OUTPUT_SIZE_H,		0x0990},
 
-> +	if (!fsl_desc)
-> +		return NULL;
-> +	fsl_desc->iscyclic =3D flags & DMA_PREP_REPEAT;
-> +	fsl_desc->dirn =3D direction;
-> +
-> +	if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +		if (!fsl_chan->cfg.src_addr_width)
-> +			fsl_chan->cfg.src_addr_width =3D fsl_chan->cfg.dst_addr_width;
-> +		fsl_chan->attr =3D
-> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
-> +					      fsl_chan->cfg.dst_addr_width);
-> +		nbytes =3D fsl_chan->cfg.dst_addr_width * fsl_chan->cfg.dst_maxburst;
-> +	} else {
-> +		if (!fsl_chan->cfg.dst_addr_width)
-> +			fsl_chan->cfg.dst_addr_width =3D fsl_chan->cfg.src_addr_width;
-> +		fsl_chan->attr =3D
-> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
-> +					      fsl_chan->cfg.dst_addr_width);
-> +		nbytes =3D fsl_chan->cfg.src_addr_width * fsl_chan->cfg.src_maxburst;
-> +	}
-> +
-> +	for (i =3D 0; i < nb; i++) {
+[ ... ]
 
-This isn't a regression from this patch, but does nbytes need to be restored
-to its default optimal value at the start of each loop iteration?
+> @@ -1128,9 +1228,59 @@ static const struct hi846_mode supported_modes[] =
+=3D {
+>  			.width =3D 1632 * 2,
+>  			.height =3D 1224 * 2,
+>  		},
+> -	}
+> +	},
 
-If vecs[i].len is not a multiple of nbytes, nbytes is permanently reduced to
-a smaller valid multiple (or down to width). However, because nbytes is not
-reset to its default optimal value at the start of each loop iteration, all
-remaining vectors in the array will be forced to use the heavily degraded
-burst size, even if they are perfectly aligned.
+[ ... ]
 
-This exponentially increases the number of hardware DMA requests (minor loo=
-ps)
-for the remainder of the transfer, which can cause peripheral FIFO overruns
-on fast data streams.
+> +	{
+> +		.width =3D 3264,
+> +		.height =3D 2448,
+> +		.pll_cfg_4lane =3D 0x4124, /* HI846_REG_PLL_CFG_MIPI2_H */
+> +		.fps =3D 30,
+> +		.frame_len =3D 2526,
+> +		.llp =3D HI846_LINE_LENGTH,
+> +		.reg_list_config =3D {
+> +			.num_of_regs =3D ARRAY_SIZE(mode_3264x2448_config),
+> +			.regs =3D mode_3264x2448_config,
+> +		},
+> +		.reg_list_2lane =3D {
+> +			.num_of_regs =3D 0,
+> +		},
+> +		.reg_list_4lane =3D {
+> +			.num_of_regs =3D ARRAY_SIZE(mode_3264x2448_mipi_4lane),
+> +			.regs =3D mode_3264x2448_mipi_4lane,
+> +		},
+> +		.crop =3D {
+> +			.left =3D 0x46,
+> +			.top =3D 0x40,
+> +			.width =3D 3264,
+> +			.height =3D 2448,
 
-> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +			src_addr =3D vecs[i].addr;
-> +			dst_addr =3D fsl_chan->dma_dev_addr;
-> +			soff =3D fsl_chan->cfg.dst_addr_width;
-> +			doff =3D 0;
+Could this crop configuration break userspace boundary checks?=20
 
-This problem wasn't introduced by this patch, but should soff and doff hand=
-le
-multi-FIFO support here?
+In hi846_get_selection(), V4L2_SEL_TGT_CROP_BOUNDS unconditionally returns =
+a=20
+hardcoded rectangle:
 
-Unlike fsl_edma_prep_dma_cyclic(), which correctly assigns doff and soff to
-support multi-FIFO (e.g., doff =3D fsl_chan->is_multi_fifo ? 4 : 0), this
-function unconditionally hardcodes doff =3D 0 and soff =3D 0 for device add=
-resses.
+static int hi846_get_selection(...)
+{
+...
+	case V4L2_SEL_TGT_CROP_BOUNDS:
+	case V4L2_SEL_TGT_NATIVE_SIZE:
+		sel->r.top =3D 0;
+		sel->r.left =3D 0;
+		sel->r.width =3D 3264;
+		sel->r.height =3D 2448;
+		return 0;
+...
+}
 
-However, fsl_edma_fill_tcd() still applies a negative Minor Loop Offset
-(MLOFF) at the end of the minor loop if is_multi_fifo or port_window_size a=
-re
-enabled on the channel. Because the address never incrementally advanced
-during the minor loop, applying MLOFF forces the device address to step
-backwards continuously, severely corrupting system memory or registers loca=
-ted
-before the target device address.
+With the newly introduced 3264x2448 mode defining its active crop rectangle
+with .left =3D 70 and .top =3D 64, the right boundary becomes 3334 and the =
+bottom=20
+boundary becomes 2512.=20
 
-> +		} else if (direction =3D=3D DMA_DEV_TO_MEM) {
-> +			src_addr =3D fsl_chan->dma_dev_addr;
-> +			dst_addr =3D vecs[i].addr;
-> +			soff =3D 0;
-> +			doff =3D fsl_chan->cfg.src_addr_width;
-> +		} else {
-> +			/* DMA_DEV_TO_DEV */
-> +			src_addr =3D fsl_chan->cfg.src_addr;
-> +			dst_addr =3D fsl_chan->cfg.dst_addr;
-> +			soff =3D 0;
-> +			doff =3D 0;
-> +		}
-> +
-> +		/*
-> +		 * Choose the suitable burst length if dma_vec length is not
-> +		 * multiple of burst length so that the whole transfer length is
-> +		 * multiple of minor loop(burst length).
-> +		 */
-> +		if (vecs[i].len % nbytes) {
-> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
-> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
-> +						fsl_chan->cfg.src_maxburst :
-> +						fsl_chan->cfg.dst_maxburst;
-> +			int j;
-> +
-> +			for (j =3D burst; j > 1; j--) {
-> +				if (!(vecs[i].len % (j * width))) {
+These values strictly exceed the crop bounds. According to the V4L2
+specification, any valid crop rectangle must fit completely inside the crop
+bounds. Returning a crop bound that is physically smaller than the allowed=
+=20
+crop geometries breaks boundary checks in applications like libcamera.
 
-This problem wasn't introduced by this patch, but can this cause a modulo by
-zero kernel panic for DMA_DEV_TO_DEV transfers?
-
-For DMA_DEV_TO_DEV transfers, both soff and doff are explicitly set to 0. If
-vecs[i].len is not divisible by the initial burst size nbytes, the driver
-assigns width =3D soff, which evaluates to 0.
-
-The loop then evaluates if (!(vecs[i].len % (j * width))), causing an
-immediate modulo by zero panic.
-
-Furthermore, if the loop finishes with j =3D=3D 1, nbytes is set to width (=
-0),
-and iter =3D vecs[i].len / nbytes triggers another division by zero.
-
-> +					nbytes =3D j * width;
-> +					break;
-> +				}
-> +			}
+> +		},
+> +	},
+>  };
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511-fsl-edma-d=
-yn-sg-v3-0-98a181775dae@bootlin.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511103927.2795=
+50-1-mitltlatltl@gmail.com?part=3D4
