@@ -1,107 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C775830148A;
-	Tue, 12 May 2026 03:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A785B383309;
+	Tue, 12 May 2026 03:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778557081; cv=none; b=ebZYAzZ/jgVg95wvvPd4mrO3uXzsUVU5J4yFwPLaQb+J9AoXJ5wTK+UMWFrucX5vUxcNu6wokT497WF7vSgobPTbGSrTb2UYAGRtGPc11pyB0AfZKb0QUOrv5y3X6DMZeXx18UyRUl4DFNSBDZOWMoecZBU7hxS0zEpa3vSXxZQ=
+	t=1778557682; cv=none; b=eymSmMx/ZGvy4CiemLjvemsGDzFKnLEH3zX71gv8GH1GReSZVe7crc/pHxeDWXR9JWCfY9JyirG/1ZlG+3hKjF5Id6nfFxeSS1fnOEvo2YkNm74qPztA4bPLQoz3S9JVvvKIQiH5MrBq4FNkL6P96CZmBTSZZpfLaWWAuHiAUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778557081; c=relaxed/simple;
-	bh=C0uKvBcsJshR+sAskrJ9qYCeCJ0hYo132tV0VbiynjA=;
+	s=arc-20240116; t=1778557682; c=relaxed/simple;
+	bh=nG157jKMYBa7xM0NI2PbeEgV9zZsCwwL5OZpeKGj6Xk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IGvudX6Ruuk1uXwCFZZDaXMQuu3hB0R+qDQFeTN+NTkcOSw7XsiHOuPc7c/iZzTJn5I2rXLzcaAohCcBu+JJpa9UhqNxtydUGpis9o7HGPOMKPHrATRi9dmI+NAUEuki0g0ybzZNn/4XAsKlCoSrUX8KKwft1RcwzINj7CGJ/aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsF2u6au; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=IylQpuFeFB7uuleX1YZe16r8T+3s1B3srB2pDM7jor87ulc8ajPRr2fTMnB70k3mS8bEDF7dNScOKgByF+I7NH33qUgTxlV9nYxgmPCVO4nXOjMyiZ+h8G0s2SGCOEL98JnLeVQRfHdcFaKEaRwUZmcTIc5GSL52A+fGul7dTDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8pDjods; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsF2u6au"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055CAC2BD05;
-	Tue, 12 May 2026 03:38:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8pDjods"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBFEC2BCB0;
+	Tue, 12 May 2026 03:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778557081;
-	bh=C0uKvBcsJshR+sAskrJ9qYCeCJ0hYo132tV0VbiynjA=;
+	s=k20201202; t=1778557682;
+	bh=nG157jKMYBa7xM0NI2PbeEgV9zZsCwwL5OZpeKGj6Xk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=HsF2u6auMwTDQESHqx4D9fVWAx9Jo4FvfHhrMJhw6+OfSXr0qgmrJLayjzCigmH95
-	 IxX+6YMM8uRUiBoAuK2HZESKSPFNksSoyfjNWwieJdRy3RN3JeSW2KwHguXt6bGOfc
-	 8EjzItLFBSZzQT9Fd8GHtgLydB0TFjBZEnewgHL8GMxvxSvUzmitnRCDDUrTC0ilH+
-	 utrhBfhEW5fm5f6aAngr/jy9Dy4vxN1p11448WvZc12HLtx8KF7+WEN5+PCajwyzSn
-	 yOaSslat1I+fKeASvH8vLr9pRNLzIfXwuK7BLEZwxpka2L/q0Q6XnXjisz79/ZwH9U
-	 KWIz0Vccy+9Wg==
+	b=W8pDjodsNvgGdHogsIZTdaJuPFnOPx/jC6saApExUU4Y1lB1nQRFZYnBV0EcY9C1X
+	 xd9mwTBSN07asUKIW4EmMaYFJnF/X0b5g0TTVspK609YkU3Ig5SxepyLXhJgrnvBnD
+	 bgmPAjWu8FmfzXbDsZELUGYRLWia3yDvCzbjHlwu1WcGn0T7lVY/JGwMhdCbWg724d
+	 qpGvGcJYUvmZhHopA0jD5425h4wI7hR+frF//Hjf3bHfyyJ4zuojJD99Ykh3jLMRaW
+	 H8gJPPQHjQBQk59OfghHd4A6NO4jPi6xf+M8K4XPOq76fX9OAGNqqtwN5an7T5mkYG
+	 iaLbVuQJUgQzA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/5] media: hi846: fix hi846_write_reg_16 handling
+Subject: Re: [PATCH v3 5/5] arm64: dts: imx8mq-librem5: Correct link
+ frequency list
 Reply-To: sashiko@lists.linux.dev
 To: "Pengyu Luo" <mitltlatltl@gmail.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260511103927.279550-2-mitltlatltl@gmail.com>
-References: <20260511103927.279550-2-mitltlatltl@gmail.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260511090924.269106-6-mitltlatltl@gmail.com>
+References: <20260511090924.269106-6-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 03:38:00 +0000
-Message-Id: <20260512033801.055CAC2BD05@smtp.kernel.org>
+Date: Tue, 12 May 2026 03:48:01 +0000
+Message-Id: <20260512034801.ECBFEC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Runtime PM usage count underflow and torn hardware state due to un=
-handled negative return values.
+- [High] Strict equality check failure due to integer truncation precision =
+loss
+- [Medium] Device Tree ABI / Backward Compatibility break
+- [Low] Mathematical error in commit message derivation
 --
 
-commit a7e288159f9d9020f112e24280a1cf27c80c8fca
+commit e44214657fa2d9bae2190f57c8fa133a21051c14
 Author: Pengyu Luo <mitltlatltl@gmail.com>
 
-media: hi846: fix hi846_write_reg_16 handling
+arm64: dts: imx8mq-librem5: Correct link frequency list
 
-This commit attempts to fix error propagation by resetting the error
-variable to 0 when it is positive. It clears the positive return value
-from pm_runtime_get_if_in_use() before performing I2C writes.
+This commit updates the device tree binding for the imx8mq-librem5 board
+to correct the supported link frequencies for the hi846 camera sensor.
 
-> diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-> index a3f77b8434ca7..7f069aca0fce5 100644
-> --- a/drivers/media/i2c/hi846.c
-> +++ b/drivers/media/i2c/hi846.c
-> @@ -1271,6 +1271,8 @@ static void hi846_write_reg_16(struct hi846 *hi846,=
- u16 reg, u16 val, int *err)
->  	if (*err < 0)
->  		return;
-> =20
-> +	*err =3D 0;
-> +
+>     According to the hi846 datasheet and the register lists, they are
+>    =20
+>     mclk / prediv * multiplier / post_div1 / post_div2 =3D
+>     25Mhz / 3 * 90 / 1 / {1,2} =3D 187.5Mhz, 375Mhz
 
-While this clears the positive return values from pm_runtime_get_if_in_use(=
-),
-does this leave negative return values unhandled in the caller?
+Is this calculation completely accurate?
 
-If pm_runtime_get_if_in_use() in hi846_set_ctrl() returns a negative error
-like -EINVAL when Runtime PM is disabled, the usage count is not incremente=
-d.
-The check for (!ret || ret =3D=3D -EAGAIN) fails, so execution falls throug=
-h with
-a negative value.
+Mathematically, 25 / 3 * 90 / 1 / 1 equals 750 MHz, not 375 MHz. To achieve
+187.5 MHz and 375 MHz, does the post_div1 divisor need to be 2 instead of 1?
 
-Because this negative value is passed into hi846_write_reg_16(), the check
-just above this change will cause I2C writes to be silently skipped for
-controls like V4L2_CID_EXPOSURE. Other controls like V4L2_CID_ANALOGUE_GAIN
-might ignore the error and execute unconditionally, leaving the hardware in=
- a
-torn state.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8mq-librem5.dtsi
+> index eee390c272105..959a5c8dcd0d3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
 
-Finally, since execution continues, pm_runtime_put() is called unconditiona=
-lly
-at the end of hi846_set_ctrl().
+[ ... ]
 
-Because the usage count was never incremented for the negative error case,
-will this cause a PM usage count underflow?
+> @@ -1122,7 +1122,7 @@ port {
+>  			camera1_ep: endpoint {
+>  				data-lanes =3D <1 2>;
+>  				link-frequencies =3D /bits/ 64
+> -					<80000000 200000000 300000000>;
+> +					<187500000 375000000>;
 
-Would it be better to correctly validate the PM return value directly in
-hi846_set_ctrl() with a check like if (ret <=3D 0) return 0; instead of
-clearing the positive error here?
+Could this exact value specification cause the driver probe to fail due to
+integer truncation?
 
->  	put_unaligned_be16(reg, buf);
->  	put_unaligned_be16(val, buf + 2);
+The hi846 driver calculates the expected link frequency using the formula=20
+mclk / 3 * 90 / post_div1 / post_div2. Because mclk is exactly 25,000,000,=
+=20
+the C integer division 25000000 / 3 evaluates to 8,333,333. After the=20
+subsequent multiplications and divisions, the evaluated link frequencies ar=
+e=20
+187,499,992 Hz and 374,999,984 Hz.
+
+Since hi846_check_link_freqs() performs a strict equality check against the
+device tree values, this mismatch could cause it to reject the frequencies
+and fail probing.
+
+Additionally, does completely removing the old values break backward
+compatibility for older kernels?
+
+Prior to the driver update that dynamically calculates link frequencies, the
+hi846 driver strictly required the hardcoded frequencies 80000000 and
+200000000 to be present in the device tree. Appending the new values while
+keeping the old ones might preserve backward compatibility.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511103927.2795=
-50-1-mitltlatltl@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511090924.2691=
+06-1-mitltlatltl@gmail.com?part=3D5
