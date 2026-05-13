@@ -1,237 +1,153 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011055.outbound.protection.outlook.com [40.107.130.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE236404B
-	for <imx@lists.linux.dev>; Wed, 13 May 2026 17:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778691610; cv=fail; b=KwcO/bRtJ8qDpyUNdhHdmLH+C+l2/F9wIqpn1flmFHw9rVVD02EvAXFye8iNjvscS8+Bv0hKI1i8hGKELf6va9zKR+YGbpE7oYSuRtcS6RcVad+axbSwogRqVxqx44RHxeRgycLhpAmWWk0rZGJ9ecNwq9YD1wzEj7nZt+ECHtI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778691610; c=relaxed/simple;
-	bh=7Dz1ZIQUIESsB1d0rI+c9hZ+npi2QMktsGcWCauI1mU=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=KRD4cKruHMm/xtCVJJ2WKYUwy1SUhv5nlBvJsE5KobC0GyltDll92eo+XL6Zp9SlqxxnvHSc8Oq+q+MEPwL0MfCqHdQmOT/VE8nYYWA+2kRfh1WZyWdUPQDUwkbyIrz/1VYVXF+lrA+mwHtbUa/XF3CC9n2/y4p5Rm9gNcFybHI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Jmi9LvWP; arc=fail smtp.client-ip=40.107.130.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D78848B38F;
+	Wed, 13 May 2026 17:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778695192; cv=none; b=vAQkxPOxqD6Lb1NKOaQP2P5JW2kPdbt5KdTjz115xTREwYlCz2uqlqacVO+tX43ONPWPISSgn+xywZ3guKE/8WedJBjFTdz90rFJMZ7XT1NqWfvv2Bi+60StMX32v8/o6++O4umgoUG455hmCofo18YBD3I1rhk63RCeYGFACBo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778695192; c=relaxed/simple;
+	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pp1DK4OKoMgzxBigLzRmiG2gXpNRMMz8O8qXRVHaXiXx/xQPjc2hVTKEypq3bMShEYa5mYLSAUBk3ox751tlj6RzoWnQfygFvkDoNTTe/t1IpvTAhQEufaHFfqv92j1EyOO59AaaTQywR/jSU01pvNiC98LS8aYcopiA6M/FoVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9BOyPMw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Jmi9LvWP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y1leFM1VSduADbG6Xa4tbbbpjZjQIC3w7CiNzTNZGowaOjJbHs/6Bg2s42BBnITH9XjtlEqcB4i8/uBPFFQ/SyrfsT0+CD2q+iNh8ZK+BQd0AjHccYkJncbTgwxEyZu3+uehnqHwcz2Sz6BxNCw5OrY0IVCH0TnqJsUgJvNw1mmyb7ZaiKdwagwAsy0+IDWwejXcxLeRqt290KJwPRReQr7cq3vqLIZEbfB0IU2ZY6bnDIQi7tcRVs7gTpEbFQz7PGLWAOno/eXcTRNPYhePcfKCKylayj2ikAUKBncPNzKEQCNC1GmM4JTOSmWJUbF9FYTbNtXZwLX5DEgcHjaA0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kdoe5hTYeTo1qkhwlZalgpm1gRAaWjpAtqefQn1Vouc=;
- b=P59KSQoRHKgP9IMlIyTHiLwgh6NI2D3VAO/TKAAAtNh+1X7MktGrQHDwi62TPYA1Kpz6kgnWiZcwuqPpJ+8V5388bD0QHdZcsSi0UizBWYu/jUKLD+4Flj9jFdk13ZltqQuzSgZN+IlT0eeMtW4CH4wWSsPiX8uYkygZoS7+YVHDXyC/iBSS3U7XksAbv2dBkqR+evcGy6iYQOlW8fZEr72ayDue25hYAMZHLoQwJBFVcg4AYeKnyldDkIDUMEXW8WvoOVr1IRFHTaO91TjpbyS7w4lJ3qvTJUTd6xBLI2tDcpQa+oUmPPdrDrbx6/8G9KsJ2s4PR94efELTTu/4yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kdoe5hTYeTo1qkhwlZalgpm1gRAaWjpAtqefQn1Vouc=;
- b=Jmi9LvWPbghngibQzz8ao8UoYILmCklpkMYViTEZTZf1W2HyVi2mUa5zyIyvw/ictHx75/UleSrinr4KDOCWW75DR2z3prVlEKy516ikbQdWYHonwSYmu/wvG94CoBsRIKF9tBi/r95kOV48i+ey9BHJZOtOZ/Vilbyh4AehtwxlgDYqCd9N6r5SKLiYS8mmgzEBwkq22cu6/wi2q1kFqZv3suJxGQelq48mNu12JqSFfWyRg2AFxJlznOPY74MDyjH4dIgfBdh4jicrLWSy7HDjQXiAAXAP9HRQEct8taAGym0W1i+vf/vevZJTjqwoupAeI4sBVo/JPmwlZQBwDw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VE1PR04MB7488.eurprd04.prod.outlook.com (2603:10a6:800:1b0::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
- 2026 17:00:05 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 17:00:05 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v3 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
-Date: Wed, 13 May 2026 12:59:39 -0400
-Message-ID: <20260513165942.3742718-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR10CA0008.namprd10.prod.outlook.com
- (2603:10b6:a03:255::13) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9BOyPMw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B184C19425;
+	Wed, 13 May 2026 17:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778695191;
+	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K9BOyPMwzZtZ1o8TWVOTN1hX2Xu3tgzhJqLl//vPECR5ncJg6vT+X2ORxne0vrhno
+	 6LCPwrqbJ4UvLYBBpBKG0ht49nClZjpcu3cXU9ihJQtqITKu5/IHX7+HVg6LkoMbrr
+	 UcbH0CHuxtzo4+Xs1suhSAfPnTwdtLdIgAyJNDNPFZTDwESH/Hyn10gwCWuFtkGj7/
+	 gfsIm8/UdP9ly5bu93ZPeW6BfGtTGnTJ/EW10QAJmMlVUFYeOY9cpX0VZdLj39B+fi
+	 sAjvx1fDXB0APZBkkf5O1C6Ybk6yXtpAhC43Kj0yQKs5RVh1ZQsUyikf5tUiZZUbYq
+	 UmEqxTJSKhh9Q==
+Message-ID: <de3ae096-5edc-451e-8e93-74012797ce48@kernel.org>
+Date: Wed, 13 May 2026 19:59:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VE1PR04MB7488:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14129c09-cda1-45ba-8dda-08deb111149b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|52116014|38350700014|56012099003|18002099003|4133799003|3023799003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	5C98+CvOznIboWZaHfe3jgkOhYWtoGyCOxiw/iILKbPThtzyDoEPYNRR9tcqmFl3sbG1f96NsQsRJch2QQzcgd0s/Ro4WE0Dv3Z/9COZhqbQBrJMahkF5xBdXFbJ255yOsgmC57ZIURRAImZKGuni0aKP/WOhiP5Rm6U0DGG2+Hlpw9BNff+hhBaIGEZHU8stM3z11VI2FkDYIHDEMePt386SvA8i7NUJgWd0jNQIjp24KRoPeO4Mvki5achTgO3WHzbvSI8Vf7zUhM/YFnc++ogx66096ACXpKL7oj6Va+xa2YUJTQDoeVDAyVfRU8tWF8YspuIX7cMf1RKXYGFLBFAJwuy+Tl4/oYaVV7iqu8OQDFntoHI+4Wy0jdb6M4puUeTchbDV7sDDNYK/b5Sc9Fiw4MCKRW18ekGXdYDscyph/0TNWu5kdgWKuf1z4EQqRokxvna/K1YU+pK44KokTqTDwB9nYOvRk/fTwaM1ZiC2g6m7KdQyeRJ/pP/uHc+WTtODMiCVfwTW2krzklZ70z9I+nIMWtUFi958zNYdN9yDPAyZhLC7Z1omHHtLPzH98GdUXwSswExjRhXek4rrYmWCjLR6bhxPlX3KkOxQe1ydaFCk/y9p9mRcGB8C99hVmbwSd78gMH50UwH67uc4SuMPkpTxvtWgYgLwfgdC891v6ItDSmGpnlJxKYKeeLzw3Gj0AlrsWB+DSIfNiYUDQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(52116014)(38350700014)(56012099003)(18002099003)(4133799003)(3023799003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eaKz18vd2AIQrllBo3vFqVjuqlPXWxY3X4hY/i8KtOW1uv2zXOUBBSCAz1yj?=
- =?us-ascii?Q?e2G1O7G+HKX8QHJMQXvzpGdSpUeZi4O6pf18nsnZJUQ1XrAFa/KJPqcPsiWT?=
- =?us-ascii?Q?cBssvHjomvmodk35fy9ijVOGrPsoCjR3culeKX3piXgwiejVouTTXoogZLH3?=
- =?us-ascii?Q?xsTvxIaO7+1d0A18VqGjYp+UMMsu38njTFQ8UN7ynYBMPRolQj1T2OMocMPd?=
- =?us-ascii?Q?Fd5S7kvszEXjIPGsPGMvNrVXQ/N3qGvpiRQdPWkImj9jhttP7iNwwjvsI3XC?=
- =?us-ascii?Q?wiB2WxZ9yM4mAdt/4ycRKQm5ab2JfZYbPSjQdvg2/TdIpDtJjX6ZnRKcK5n5?=
- =?us-ascii?Q?yRrqpd6Hrs6eDZfy7Y8DyCEOuWaL6ioCxm2o2QJsBjeqmjh3oxPgBG4ZI2LE?=
- =?us-ascii?Q?9cTAP6oP5Jyz467bk5Q+o7f7qQc+LD13gg7lQOR/XwydbipinH4Nyn4Ppa1m?=
- =?us-ascii?Q?Syh91+hcR2PEF6VRVfrI3W87/rchiuB6bfxHrNKTQ1mqP0iz9xJopRK9iLoB?=
- =?us-ascii?Q?OGP+/5HC1H/F1F79nELdOOI0/hSHnSE/u9QjQS4OiVqo7vXFsWAdrqDlMvuw?=
- =?us-ascii?Q?wuzBnGtwfutH2Mpv3SvP0PNJZG8XWjGlFZ/G6mTHoFFqcvi/XDRCnGJ5MTri?=
- =?us-ascii?Q?LGzOyYzMe4iYhpvvbFtVXzRToGMS486RDGJtdlnM3FszCoFIv7BZdbbwGdyR?=
- =?us-ascii?Q?ww3FwcI+/b0Xb5y1zKXupseKojBQQEfL3E/bwuUpobLiHUir0vtqkyd5qGih?=
- =?us-ascii?Q?W/XZ+T3Jb+a/Vp/m5mlmXha6IvRxdJJREDs7La8pItt4pjSosaHzJfyJhCZO?=
- =?us-ascii?Q?FdBE/PcNaFH1ztuk60lbPXJR3rbAIdqTFdPDkY+xlgIklgcxU2C18KYm23Yt?=
- =?us-ascii?Q?3YB89Jw+JYX2a2QY2YRWwUB9nYWrOi0GbNgVzfvTZuC7jAH4FusqzQWeO3ON?=
- =?us-ascii?Q?/tXoZwGgYyG2gdaQiWgU4QD4zKIRlpDsL+Si3EjIijHrqPCZknnT9byB4Zwj?=
- =?us-ascii?Q?EAJ6W/FDr4kUPfYQdxkwZ6Idq0y7wQReFzXzfMIFJRPeHCPR+EjhVUfwTpXQ?=
- =?us-ascii?Q?WSUTTGqQc3ErCC+onI5KRm4pW99HjCY1uZXoiAXYqs06EZpxWpwQ9a4E1xr7?=
- =?us-ascii?Q?PXQaFbPM2MwlIS9HAkL9phC2P2BYKCq+LUMakyDGKFsFBxVOfyhDD9zrchAG?=
- =?us-ascii?Q?61dANlmuKACiUAohtq4Hst7nEgsuykPYl6MKJ/oslKAfOVjlnfYcaX1Wtw2g?=
- =?us-ascii?Q?JwijbzACrI4KAWo0VjVWJZ9pj3rnN3BZw/SMEJZV78XhqJe8oGFBv6uUf96C?=
- =?us-ascii?Q?34ZKi1Ap5X5J4VPHDZFmxH4D0gwoXCR0GaKwLhpbAKv2q2W4k+PV7T2nqF0m?=
- =?us-ascii?Q?xRbQzbo139CoO6v38szlsPPYS9WA/TpQF+1qbv5Ih8pq+lhmJT//YSusdjnt?=
- =?us-ascii?Q?ezVY9et4elSQInz6HZTQOTeZRiDDWZG0qgJWpDJrO6YPu+4qzWGbzyKvwA3q?=
- =?us-ascii?Q?HNA9iQ533GXQW0hS5kkIzHl0W2gMoHK1Im/cO4itQ9CgJ6zslEFq6/Qrd4Wr?=
- =?us-ascii?Q?3pqpyhexUb/LwK2e3TLz9vIs/ye8whkP34FQJf09rW+QdHYEcOY1hS7YV2Wg?=
- =?us-ascii?Q?zMAr2s6ukRUIBqCHOoByKkFvdk5qzOuyjVdg1I4JBhMqe151ZV6hwwBi6DeJ?=
- =?us-ascii?Q?iIPT/KnSiXGx7Fnbda/5pHn1IcRMHzYWDlWtdxatPIphmDOuZb8tJOHu3QSe?=
- =?us-ascii?Q?bN+FjB+vaA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14129c09-cda1-45ba-8dda-08deb111149b
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 17:00:05.3894
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1lRfRfH25D+6wkwzseVxnPtaqOBzOE8bgOncOchUD3xMc6BkZRI55hFtGpwqV7jCRJuSLjNS70tSro49r9ZeZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7488
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
+To: "Rob Herring (Arm)" <robh@kernel.org>, Liu Ying <victor.liu@nxp.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Clark
+ <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
+ <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul
+ <vkoul@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>,
+ Jackson Lee <jackson.lee@chipsnmedia.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mirela Rabulea <mirela.rabulea@nxp.com>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+ Heiko Stuebner <heiko@sntech.de>, Hugues Fruchet
+ <hugues.fruchet@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ Parvathi Pudi <parvathi@couthit.com>,
+ Mohan Reddy Putluru <pmohan@couthit.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Michal Simek <michal.simek@amd.com>, Mark Brown <broonie@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Linus Walleij <linusw@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Felix Fietkau <nbd@nbd.name>, "Andrew F. Davis" <afd@ti.com>,
+ Hussain Khaja <basharath@couthit.com>, Suman Anna <s-anna@ti.com>,
+ Ben Levinsky <ben.levinsky@amd.com>, Tanmay Shah <tanmay.shah@amd.com>,
+ Erwan Leray <erwan.leray@foss.st.com>,
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Roger Quadros <rogerq@ti.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20260511165942.2774868-1-robh@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Convert eukrea-tlv320.txt to yaml format.
+On 11/05/2026 18:59, Rob Herring (Arm) wrote:
+> The "sram" property has become a de facto standard property, so create a
+> common schema for it and drop all the duplicated definitions.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v3
-- add fsl,mux-int-port and fsl,mux-out-port to required
-change in v2
-- Add comments about "The AUDMUX port numbering should start at 1"
-  v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
----
- .../bindings/sound/eukrea,asoc-tlv320.yaml    | 57 +++++++++++++++++++
- .../bindings/sound/eukrea-tlv320.txt          | 26 ---------
- 2 files changed, 57 insertions(+), 26 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
- delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-new file mode 100644
-index 0000000000000..190c923468cad
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Audio complex for Eukrea boards with tlv320aic23 codec.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    const: eukrea,asoc-tlv320
-+
-+  eukrea,model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      The user-visible name of this sound complex.
-+
-+  ssi-controller:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      The phandle of the SSI controller.
-+
-+  fsl,mux-int-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The internal port of the i.MX audio muxer (AUDMUX).
-+      Note: The AUDMUX port numbering should start at 1, which is consistent with
-+      hardware manual.
-+
-+  fsl,mux-ext-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The external port of the i.MX audio muxer.
-+      Note: The AUDMUX port numbering should start at 1, which is consistent with
-+      hardware manual.
-+
-+required:
-+  - compatible
-+  - eukrea,model
-+  - ssi-controller
-+  - fsl,mux-int-port
-+  - fsl,mux-ext-port
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "eukrea,asoc-tlv320";
-+        eukrea,model = "imx51-eukrea-tlv320aic23";
-+        ssi-controller = <&ssi2>;
-+        fsl,mux-int-port = <2>;
-+        fsl,mux-ext-port = <3>;
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt b/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-deleted file mode 100644
-index 6dfa88c4dc1e8..0000000000000
---- a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
-+++ /dev/null
-@@ -1,26 +0,0 @@
--Audio complex for Eukrea boards with tlv320aic23 codec.
--
--Required properties:
--
--  - compatible		: "eukrea,asoc-tlv320"
--
--  - eukrea,model	: The user-visible name of this sound complex.
--
--  - ssi-controller	: The phandle of the SSI controller.
--
--  - fsl,mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX).
--
--  - fsl,mux-ext-port	: The external port of the i.MX audio muxer.
--
--Note: The AUDMUX port numbering should start at 1, which is consistent with
--hardware manual.
--
--Example:
--
--	sound {
--		compatible = "eukrea,asoc-tlv320";
--		eukrea,model = "imx51-eukrea-tlv320aic23";
--		ssi-controller = <&ssi2>;
--		fsl,mux-int-port = <2>;
--		fsl,mux-ext-port = <3>;
--	};
--- 
-2.43.0
-
+Best regards,
+Krzysztof
