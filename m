@@ -1,142 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB13381AFB
-	for <imx@lists.linux.dev>; Wed, 13 May 2026 03:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778641760; cv=none; b=ATvs73ZY5G2wQbjyizSyDfzA06C6xEVLaaG1swULIz7awfmchhJo2/VpqT6Ino01oTg/4xxYB219AiZjNpvlbsJ9B6bDzBP3Ywfl5CGuoczeJkVlurvqwUxaau/899jmg1R1XDdE9CKwzhgMcLbXTejfV6DpkcdhnX2aJn6JZHE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778641760; c=relaxed/simple;
-	bh=NG8vc/s3epyhQucgEBo0B/xcexpz0CpeI2YOdFfUUxU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qTz1PtyJK00kpXbRZ2SVY7AIdMyVNt3FP65i4cCCPOOxtChs2k5mr3HutqZXc48E9CR65LN0cI9jdsfjW4xvVjysoGyShGHU4xJf/4z/lvVwKkTd3SuqElHfItH6kD84VF/f0iwMCt/gpFgVtQve/lcS67AgZ/X8NAoQNLbYF9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kwo9jjFw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C939134AB19
+	for <imx@lists.linux.dev>; Wed, 13 May 2026 03:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778642383; cv=fail; b=DkfS7m35eIYzq7sEVoq1ScfcbrDpbJTvmTyGUkwhpjTTSc8gb0NoP78AmCWPN98vfd1Mc0PKXV2hr3mSvGt7QMGjT61roVptJhwpKkMWFA0NgY7NPhxAPxK8F54qlGvttnKFkvDUMQVXVWfGfHeH0EjcvkQDxZ3bA1esB/jis+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778642383; c=relaxed/simple;
+	bh=NOh9oyXNtrKNUzOUCcNXX3mmGaIirn1BWzB6gVayLOo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=K+ecZ+SerOTYa+++Km90cmgsfROr1j7VWmX7LVmBHs3Oeal1aQa6+uT3HS61EmPPeVf5rHzWntQFeTSFLkhiLbQ1IbbfJEN4U9KReq1IbNl9PO6+Bm81Tkyc5Dvpi8XXcXbjKNtaDzYHF4pw0/ySJKC4S7GVVdbvzqEHVU7UqiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NhCPGl8t; arc=fail smtp.client-ip=40.107.130.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kwo9jjFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DBFC2BCB0;
-	Wed, 13 May 2026 03:09:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778641760;
-	bh=NG8vc/s3epyhQucgEBo0B/xcexpz0CpeI2YOdFfUUxU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Kwo9jjFwT3JjYzioYCr8o5ge52Ca4aTHFSLaAXNi20dsaiA5trKNHTrxOsOgZK7fy
-	 Mp0OZL1jbR8KOYNHFkSLuPnSjcgy+jwHC0+wj0SKaclJcp6pVzLm1d371or9F/FzVC
-	 BnW7kyihAPqvhdhrJjTTN6ijKp2qyMVxOIc0vGGkbRUwhCTWFl0OXxaeJ7h0JuZqJI
-	 vsK93RpQKSoTaKe/tDdydKupLJb81vDrDvU+1InJjWKsXqohRkhSMtn32+9j0C3RtT
-	 tzR80CAeOO0+xUUNXRTRgcp9STXfdZwtKB6MaCtIHlCCv3DLZvxqmwrwZy3AkTLwOR
-	 PGpmm5TM5n11w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] arm: dts: imx: Add watchdog support for early boot
- stages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: alice.guo@oss.nxp.com
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260512024850.904551-1-alice.guo@oss.nxp.com>
-References: <20260512024850.904551-1-alice.guo@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NhCPGl8t"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H7avIj/6VmfsgtBw5ppYHCL89cSwQVYg2VpG0aNTa/yT5PCbXFDZmGK5d8vOfPSjgQHAglhkT4GChFgfXaF+jnVHResjN3/OQNNb0l5gNlbeGk15a4lT2yAVaocPN1li+ZtEawhd7G7GBJ0OhflVINH3tTxKy9NsGydSUHX3jhLyyLuj6qkTABRHoqCr5oJFUVEejG2an0/TKilSH1kv1DlDtoZNS8gHpBXrqG8m1vdEkv+PYvlgAfgqUJ8Pp2QakN2+gRl/bcCEo57/HqhArboW9GXuS/i7aqXNknUnw8wzyr+9G71MjrsWYjRDjLmpMBLJDDCwhoOvd9s9XM4G9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7HfzTTvIslIljk1fIwY8vvlobMaEcqsDqYgimgdYkuc=;
+ b=VZ1Lqq+CaV12aA/v8R08L61U9tP5ocn4GgsPGVPD8QUjANFSXvSLQXWsJvl89+DWp9CDPiltJwcjS7kPoZCc9xbG1bYGm694xhDsBnapF8qK5mLIftN5TdJTdY4Mnzwzh0Ncs3NwXxBHcWyJND7gRj9SWMXI0hY/TGGsWtLiZN+t/K7U6LxmTSCJEwUP0+iB6yA72MeBTRDXAk4/mGXdcTqGyVE9njZxnpNlwLyB0O1aTHbzbcfgcz2NePlOVLfPImXYbyn01tI9LpJ+8CHGzRBCzAixQKpCRZQkLUMCAU8HQOoxg6ozExD7JRQDp0vkvSLmudF8EuCSG92Py6OVYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7HfzTTvIslIljk1fIwY8vvlobMaEcqsDqYgimgdYkuc=;
+ b=NhCPGl8t4YwRW2q/hsB4nD3wXGbEDnsePLPWSQNc8lEjpNGxbIRNBm/ko22wqsOJ8m7dNC7PeCqu0k3bmuyTZCl2Xynu2CJAIIzFPf8Wzh1jPMFwh3OdGxL6i17CmGwwtTlxuXPRQ7y1zJxeSJK2qKD4MgLUIeLIv86Mf04SokwjomxUx+elfW1F0gBRj43Am/eaqQHbbgYrKs3JgKQWLCDHz2ds0K2u00SdpOlcjc4giKmPzWd/llt1zBH7Ub8uM1KxqRzxeNIVWBXYb0iRRPapIsJjNUnI65Jy/dHW37s2Kiq+uV48ALOAyzgMRQ6CFuSkw6arjZd6+omm/PvCrA==
+Received: from AM9PR04MB8353.eurprd04.prod.outlook.com (2603:10a6:20b:3ef::22)
+ by GV4PR04MB11903.eurprd04.prod.outlook.com (2603:10a6:150:2ea::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 03:19:35 +0000
+Received: from AM9PR04MB8353.eurprd04.prod.outlook.com
+ ([fe80::46ae:f774:f04c:a1bc]) by AM9PR04MB8353.eurprd04.prod.outlook.com
+ ([fe80::46ae:f774:f04c:a1bc%5]) with mapi id 15.20.9870.023; Wed, 13 May 2026
+ 03:19:35 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li
+	<frank.li@nxp.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>, "mturquette@baylibre.com"
+	<mturquette@baylibre.com>, "sboyd@kernel.org" <sboyd@kernel.org>
+CC: "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-clk@vger.kernel.org"
+	<linux-clk@vger.kernel.org>
+Subject: RE: [PATCH 1/5] clk: Add support for clock nexus dt bindings
+Thread-Topic: [PATCH 1/5] clk: Add support for clock nexus dt bindings
+Thread-Index: AQHc3158VfB70hHkmkqSrDXWncQcGLYLTw3A
+Date: Wed, 13 May 2026 03:19:35 +0000
+Message-ID:
+ <AM9PR04MB8353787A307A3064C669BD94E3062@AM9PR04MB8353.eurprd04.prod.outlook.com>
+References: <20260509024846.2094049-1-chancel.liu@nxp.com>
+ <20260509024846.2094049-2-chancel.liu@nxp.com>
+In-Reply-To: <20260509024846.2094049-2-chancel.liu@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8353:EE_|GV4PR04MB11903:EE_
+x-ms-office365-filtering-correlation-id: 0153fcd5-f07e-4ac8-6717-08deb09e7597
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|11063799003|18002099003|56012099003|22082099003|38070700021;
+x-microsoft-antispam-message-info:
+ VvzIDJYaGBDYvRnM6nRBej4JVZG7gKATrEM25WBd8dBRfUsAHamR8RMMafqh04JAnsjAcNEndk09N4X1jUXPHIx/lbWzPW+czvgrzX1/NEe4dACfHDt+WgUsyO86cFBfMTNWwuXneC+7Zb1fW8wJ7UyeIL3oD6djdK0KV7wEzIpmSclM6dXkDZfkHwI/y7BQDcJonvQAhxpVD+dZ9olJb8BLhgh3cZNC9gw8vNXEkoyw0ZCzY+aYhLtANL061aYuvebXobCXXVueK6A8D8zKS/a8DUjgFeS90JJzEE85aOhTSyoRQI8ENra45mpj9FeDglL+492+ZOAxdEaJowOx8TF519Dv7E1LZ+7L3i19UmH09VVdCfBD4apywOZlHzf9S9HXjHzO//do2IQw/oXk/UvRgtEYr/x5woGMbDQ6QzgJ+Qdenrm+CvUCyLRm5x4lrM+Xvnb1+URIf2eOH90xE5coAneW/3eaQ6nmSviNa2owb6loUchwLm6osLfYLIJ2AmJLsrekLYcUHFU1mXBzrHtjtk4P0f/MFPvIWVfB/6iyHD3G9n53Zw3m2O5ht65qjd3sWfi9LOfxOZCMHK1NnyooXb3swKZfSbXRk4Efv+bHo9PLX+a0wKuW1pA2A9mv2YuW/HB0/6EtptMeAwMwwZ5+8Lhptj0s/40Tv7b8nu+03kacGtHWavtEiLE3LV8xbRa9fGNGN/1KzRd7WtLz2bYO918+4JOChesk4Lj6FyYem/h4P/je6TQ/dzoMojTX
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8353.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(11063799003)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?o7QeS8gSeM45vRZ4IyvecbZHe9DT/rTx2W0DSY9TdQCwQ5c2GHve5mH7kp?=
+ =?iso-8859-1?Q?/th8XTSTbRmiYKUhyRw9bv0bV5jDZOlpegNXYyr9zzDiNeRHF8nfDOfpiz?=
+ =?iso-8859-1?Q?xaSFYSHwFEeD0J0snFFET+o65xf9H1vw1s0rmHyW9p5IgLuaYswK/bIfxC?=
+ =?iso-8859-1?Q?vVY4ucUxV0OH3Ne+RMZkjIvpD0TSHMlAZ5xbeC2eYRG4GYqN5F5eYwYRmg?=
+ =?iso-8859-1?Q?mUvAIEQSvliYWY1+d1VNVRRdmDtR+K0kkLG6EzpyaUS0Uok/u1GB9axZHh?=
+ =?iso-8859-1?Q?YQbjOmHU2mNJKXdorX7VBn+YmXO/kY4n/nGjD4BIIdfW9fwicCx8+/wwUL?=
+ =?iso-8859-1?Q?G+CN/J+OrxT5/yfGxLBDtBJyLdJzwrPl6Gwksx22vqwvS73QlVIB7+b0YO?=
+ =?iso-8859-1?Q?D3s30wNZ0qI6Xc7ckJVyF7kHT1/nQDC8qOval8toHNNvYAlh4vcUezjlha?=
+ =?iso-8859-1?Q?IxPqu5g8/9VstKjT0qoS1rq2imDfzaF61Vc50iheF2tLODMwWV0/6ixzk9?=
+ =?iso-8859-1?Q?zUpo6rLMFomSaLnXYHGVJmHJEAD+E9iVB70RQJKoGSgIoHPzc3A328uein?=
+ =?iso-8859-1?Q?7VyXXGbn3IBnjsNV1ouBNC7YmDQjPfpAiB/eSwJPa2+jRUV1L0O0wM1FSq?=
+ =?iso-8859-1?Q?pO47+hjezie1ajbD9Aw8wd8jK59e92FPVfoMG/3nMQca2rRJzvB1NSbIpm?=
+ =?iso-8859-1?Q?rnFSXZxPIrnPRSFRQ24+aCK53tcWPOnHJbUp7uCwQ3NnuOKsFp0sU+tQkZ?=
+ =?iso-8859-1?Q?RMGzZkKGrf3C1o9nISzL5de7Jep19GVH+kFX0ZAC3s+kVOFwNhamZ4BwVs?=
+ =?iso-8859-1?Q?8y/q0h8x6l8/1bLIUOPocrxIiiLBMltObnzVcTIlkkCoIUBqonIelYy7uW?=
+ =?iso-8859-1?Q?5JopPCbPi08o5aO8ZMUIspHAnGgLb89qlvAnjEj+2Js+mjo3QmywsJnAmJ?=
+ =?iso-8859-1?Q?VCCtXWMYhtnNYlokRQktnoD6YyRLCTcgor/CzTcKwZD8SSH5kTf5yZnhKd?=
+ =?iso-8859-1?Q?CK23DhNO3DbhTMHZMX2nth6gKKFtmjb5gdjXAESFcgvxR5HuD768v22UeA?=
+ =?iso-8859-1?Q?XF1+adV8FRKfJWAxCjUXJxJUBgOYvyTx/7R2wahmLBPAW5CCzsBqBIudNl?=
+ =?iso-8859-1?Q?PrBUUkczbvf64gxksiqipOivWcfFXS9zTIIyLHGN2LTh9KNjHv/Bwh0gIR?=
+ =?iso-8859-1?Q?Jppjmaw+ma+5rZfxFc5MaIik2r7z92iZSf0Ax9V9s/UoCsSEzMwqGjv4VS?=
+ =?iso-8859-1?Q?9tCarb2KDPqtLE34HJBgT7+PeIFlqXnk4FuqPvaJCjvP0xXHHm7ehyhdkl?=
+ =?iso-8859-1?Q?s8d8vskxLh+6wk8IUOQqzRZmbGvkyt5U381VPTFIrCXfaju9lSVj+2DfT+?=
+ =?iso-8859-1?Q?fCDNf8VNb6HNFY1IAFEg2IEQ7BDImV4Kahg3dbet19ToazV14Yqy2dz2A/?=
+ =?iso-8859-1?Q?mRv3VrDcO05CtOxO7NST4MMQaEZccJPecaDOCJN/RByDMbrcke+pcMGZDo?=
+ =?iso-8859-1?Q?vgkugG/XYt51qYTBDcgdelenMsl3oesv0GAtRW3VT7KJj5JfOasUMty6tc?=
+ =?iso-8859-1?Q?uL0jNH0H7KTumWlMp7P2WAfnO5qclYnLsc01WkEPm16jtqk/S2b5GXbrJx?=
+ =?iso-8859-1?Q?zYL1kKMyXzv3MmVDTXfbV5RvkaZh09EfvA7zNXRutBmHN9RG4tdEo1W14y?=
+ =?iso-8859-1?Q?3lVONjSOhYMVRa6p1ZgGSroO2bPIbjCLZ5d4VFE1IgWFqAoxgG7W1fRktF?=
+ =?iso-8859-1?Q?bD+Fdog5w82n60myoL89OeQNMBY/Moyddi6sHnXDGdht/6?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 03:09:19 +0000
-Message-Id: <20260513030920.27DBFC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8353.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0153fcd5-f07e-4ac8-6717-08deb09e7597
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2026 03:19:35.6870
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iVQ25XFILN1Ul6Cqfn3zIAxDsDkbpQsqysrc2Nb/blCQ0rjyFcrz9Xnooa/mLOdy/vA1z77FUa3EuhBLFJFDuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11903
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Hardware IRQ conflict: wdog4 and ddr-pmu share the same interrupt =
-in imx94.dtsi.
-- [Medium] Missing bootph-all property on the newly added wdog2 node in imx=
-7ulp.dtsi.
-- [Medium] Undocumented addition of multiple new watchdog hardware nodes.
---
+Hi all,
 
-commit 566f5af2df66e555eb4881057449fc8955a46103
-Author: Alice Guo <alice.guo@nxp.com>
+Please ignore this patch.
 
-arm: dts: imx: Add watchdog support for early boot stages
+I noticed that the same change was already posted earlier by Miquel Raynal
+as part of his series ([PATCH 10/16] clk: Add support for clock nexus dt bi=
+ndings):
+ https://lkml.org/lkml/2026/3/27/1983
 
-This commit adds the bootph-all property to watchdog nodes across several
-i.MX device trees to make them available during U-Boot's early boot phases.
-It also introduces several new watchdog nodes to the device trees.
+To avoid duplication, noise, and wasted review time, I will drop my patch.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/n=
-xp/imx/imx7ulp.dtsi
-> index 880b9a4f32b08..5e3e562225e58 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
-> @@ -297,6 +297,17 @@ smc1: clock-controller@40410000 {
->  			clock-names =3D "divcore", "hsrun_divcore";
->  		};
-> =20
-> +		wdog2: watchdog@40430000 {
-> +			compatible =3D "fsl,imx7ulp-wdt";
-> +			reg =3D <0x40430000 0x10000>;
-> +			interrupts =3D <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks =3D <&pcc2 IMX7ULP_CLK_WDG2>;
-> +			assigned-clocks =3D <&pcc2 IMX7ULP_CLK_WDG2>;
-> +			assigned-clock-parents =3D <&scg1 IMX7ULP_CLK_FIRC_BUS_CLK>;
-> +			timeout-sec =3D <40>;
-> +			status =3D "disabled";
-> +		};
+Regarding the questions raised by the sashiko review (e.g. assigned-clocks =
+/
+assigned-clock-parents behavior with nexus nodes), this aligns with the
+ongoing discussion in Miquel's thread so I suggest we continue the discussi=
+on there.
 
-Was the bootph-all property intentionally omitted from this node?
+Sorry for the noise.
 
-The commit message explicitly states the purpose of the patch is to add
-the bootph-all property to watchdog nodes, but it appears to be missing
-from this newly added wdog2 node.
+Regards,=A0
+Chancel Liu
 
-Additionally, is adding completely new hardware nodes expected within
-this patch?
+> Platforms can have a standardized connector/expansion slot that exposes
+> signals like clocks to expansion boards in an SoC agnostic way.
+>=20
+> The support for nexus node has been added to handle those cases in
+> commit bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through
+> a nexus node"). This commit introduced of_parse_phandle_with_args_map()
+> to handle nexus nodes in a generic way. Currently the gpio subsystem
+> adopted the support in commit c11e6f0f04db ("gpio: Support gpio nexus dt
+> bindings") and pwm subsystem adopted the support in commit
+> e71e46a6f19c4
+> ("pwm: Add support for pwm nexus dt bindings").
+>=20
+> Change the function call to use of_parse_phandle_with_args_map() that
+> parses the phandle lists of clocks to use the nexus variant. This
+> allows remapping phandles and their arguments through any number of
+> nexus nodes and end up with the actual clock provider being used.
+>=20
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> ---
+>  drivers/clk/clk.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 048adfa86a5d..4240f059bec2 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -5206,8 +5206,8 @@ static int of_parse_clkspec(const struct
+> device_node *np, int index,
+>  		 */
+>  		if (name)
+>  			index =3D of_property_match_string(np, "clock-names",
+> name);
+> -		ret =3D of_parse_phandle_with_args(np, "clocks", "#clock-cells",
+> -						 index, out_args);
+> +		ret =3D of_parse_phandle_with_args_map(np, "clocks", "clock",
+> +						     index, out_args);
+>  		if (!ret)
+>  			break;
+>  		if (name && index >=3D 0)
+> --
+> 2.50.1
 
-The commit message notes that the patch adds the bootph-all property
-to watchdog nodes, but the diff reveals the patch actually introduces
-entirely new watchdog nodes (such as wdog2 in imx7ulp.dtsi, and wdog4
-in imx94.dtsi, imx95.dtsi, and imx952.dtsi).
-
-Should the commit message be updated to explicitly document the
-addition of these new hardware nodes, or should these additions be split
-into a separate preparatory patch?
-
-[ ... ]
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx94.dtsi
-> index d2f31c8caf6eb..be366af8ac912 100644
-> --- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> @@ -1220,6 +1220,18 @@ wdog3: watchdog@49220000 {
->  				timeout-sec =3D <40>;
->  				fsl,ext-reset-output;
->  				status =3D "disabled";
-> +				bootph-all;
-> +			};
-> +
-> +			wdog4: watchdog@49230000 {
-> +				compatible =3D "fsl,imx94-wdt", "fsl,imx93-wdt";
-> +				reg =3D <0x49230000 0x10000>;
-> +				interrupts =3D <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
-
-Could this interrupt assignment conflict with existing hardware?
-
-Looking at the same imx94.dtsi file, GIC_SPI 91 is already assigned to the
-ddr-pmu node:
-
-		ddr-pmu@4e090dc0 {
-			compatible =3D "fsl,imx94-ddr-pmu", "fsl,imx93-ddr-pmu";
-			reg =3D <0x0 0x4e090dc0 0x0 0x200>;
-			interrupts =3D <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
-		};
-
-Sharing a GIC SPI interrupt between independent hardware blocks like a
-watchdog and a PMU is an unusual hardware description unless they are
-explicitly designed to share IRQ handling.
-
-Does this need to be updated to the correct hardware interrupt to prevent
-issues if the watchdog driver is updated to request this IRQ?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512024850.9045=
-51-1-alice.guo@oss.nxp.com?part=3D1
