@@ -1,105 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B9529408;
-	Wed, 13 May 2026 00:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB4E372070;
+	Wed, 13 May 2026 01:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778632716; cv=none; b=ljQNHrKFqsMaZyeNL8JpgTskyw+jyeYPhTE6eMI5PA4x616mlYlBvQIxGuTXLNgLg4L8oFYwgfMmHxWNBR60rrNIrLHrMnV/jwXihBwL80iAnqAiIQh37ZGMpu3COtUWhgEZjcZy1+ziTrDph/Z50bU5rb7SIJ/Sx2Qe/bBwSMw=
+	t=1778635709; cv=none; b=VrgRdbmenY9/vacvs43//Qmhm53P6zw9CINEexAtGnjZCEnhZ3iwUZiPo6oFg4QrIrhb8RVsd3iJKw4vxZZFCFVADJ03Gqo4al4rCUuzH/YdQy7lUUB+tQWRQ/S1bu3EtgiZ7MQIkSp9yh+A4L9ptvhnrmZay0Gcwu+s2rWBTUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778632716; c=relaxed/simple;
-	bh=yWYfOBMDuiH7DiV7DAbCJw8Ew2Ma9AQ6OS/bGgdcIsQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fyjRk7CJ+aV9BXLEHx287HLhX5uJy3vCBUbzGqgEDGuNjScQPZZTY6cX8xk2ubM1eenHBCvRZ05BwpQ/k8iSihY0I4qwyqKvodIA9jskCrls7wF9kL0rLrqsOMSl0uonEErhCvLRmZtoeLJe7s9uerD2EQjQy9xrjVBxE61A8SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqzjhkqY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778635709; c=relaxed/simple;
+	bh=VwRmf6yHkU6JoKiELg98yCtWicqZA1yRP4ajE53wTbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GTdaGnMw1ObU6BNEpUZW69HjuCLHeusDPyZgxU0b7cdjAKS4s2A1h+iptC7yMKLczVeUFftlSmy6szjZZLWSb9ZcTSW3vdcdOdXnIE/RQXZp+fYIviZslANF+LBB3tVJAqMP3USyHrSqyTz4IRsCHulqb9oxm/vIjxpzg0NCbe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHCu095Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqzjhkqY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C00C2BCB0;
-	Wed, 13 May 2026 00:38:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHCu095Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C27DC2BCB0;
+	Wed, 13 May 2026 01:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778632716;
-	bh=yWYfOBMDuiH7DiV7DAbCJw8Ew2Ma9AQ6OS/bGgdcIsQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=IqzjhkqYHo4jjoy0WeS0A7nwyX2FcktM8WfxvpKEQ+AYIAHVNQpODkfqgPKAtos3S
-	 wjXjTNZmkm5+netIgEMbT8XlPOSSTXGvtdLC3TORx19/MhdtQ9M557tiEitjWDUjIP
-	 Bs23YpHxfJaYuY3o1VucOldbV4xqmo+zw/VWywSzGRHlYX1RvaJNUQbzGTYzgJBwmB
-	 ujdr7s0gAI7l5GvctQy5Ul8wwHXgsa0aitbpAShc7SlnJN1c+FutG0LYXlugCnB2IB
-	 dNF1QfLeMJ+7uwfdXCl23UrUh5ttL8JpWncrGBzQ3sHpP393BIArnU6YCYCKUHxfQL
-	 gylrYLRvTvAmw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] ARM: dts: imx: add ti,deskew = <0> for ti,tfp410
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frank Li" <Frank.Li@nxp.com>
-Cc: krzk+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260511-b4-imx25_dts_simple_warning-v1-2-01b855a5ce25@nxp.com>
-References: <20260511-b4-imx25_dts_simple_warning-v1-2-01b855a5ce25@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 00:38:35 +0000
-Message-Id: <20260513003835.A8C00C2BCB0@smtp.kernel.org>
+	s=k20201202; t=1778635708;
+	bh=VwRmf6yHkU6JoKiELg98yCtWicqZA1yRP4ajE53wTbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WHCu095QlTDRuHeEtR0WAZcs4LkI0b2+2scgYYj3Gwvkkxzxz2fAqw4POpJ5aZlNw
+	 7CC13isgLxymBMezS3tQMVJehUOiMhZwIn0E2VNkvO/SjxvowipaMoOA2moo9JizWL
+	 N/N5NQZYROnJMzQ5OT9h5/jVJ8aoj7qA7wNQUNxoaYsSRBTxDPEub1jNwKCvUJVTCn
+	 OhCjbiv+MUpRR1la/13m7jrl8TFQMwwcu5GeJgM7AEEGIUCIRAhx010hryQCqDV09v
+	 0oiuaAAKrj+twa/Q41pazi69xLemU2G/7QOfxcvJDj/q8pci4/kGeSp29d3eAajTzY
+	 7GSLh3+BxvgiA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 0DBCD1AC58CB; Wed, 13 May 2026 02:28:26 +0100 (BST)
+Date: Wed, 13 May 2026 10:28:25 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:VOLTAGE AND CURRENT REGULATOR FRAMEWORK" <linux-kernel@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml
+ format
+Message-ID: <agPTuWhZQa6V5h5l@sirena.co.uk>
+References: <20260512224544.1223283-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="P/xE2IxuFcOJjISa"
+Content-Disposition: inline
+In-Reply-To: <20260512224544.1223283-1-Frank.Li@nxp.com>
+X-Cookie: Truckers welcome.
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Hardcoding incorrect hardware description based on a software dr=
-iver bug
---
 
-commit e68637a2ada078494e7ee776597edfdccd03a72c
-Author: Frank Li <Frank.Li@nxp.com>
+--P/xE2IxuFcOJjISa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-ARM: dts: imx: add ti,deskew =3D <0> for ti,tfp410
+On Tue, May 12, 2026 at 06:45:42PM -0400, Frank Li wrote:
+> Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
+> binding from text to yaml format.
 
-This commit adds the required ti,deskew property to ti,tfp410 nodes
-to fix dt_binding_check warnings. The value 0 is chosen based on the
-default value found in the driver.
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
->     Add required proprety ti,deskew for ti,tfp410, which have not defined
+--P/xE2IxuFcOJjISa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This isn't a bug, but there's a typo (proprety) in the commit message.
+-----BEGIN PGP SIGNATURE-----
 
->     default value in yaml. 0 is default value according to
->     drivers/gpu/drm/bridge/ti-tfp410.c.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoD07kACgkQJNaLcl1U
+h9BWOQf/algNi1ADgjw7NpMC3NNpA3KqQGA5HLHwZYZE8wQ3PqhMlE4Gi2qGQ/vV
+tq8gJBuCqEKak4ptf59km6d4B+uq2crUrHCVtqHG1cR82uZ7dMA+n8/1/E44NetI
+htY6zfxsDG7nRkK5+zAOwlyn8jrkCR+41AyeSxzmzwCQUKY3jtlLagIsjH5Mqvhj
+AndKJDE8KP8QvQySLANi5sp3dX0jpDdh2WiBXwKEXACFwh00RWwGJDbThZsEveUH
+vqhnFNBxXpKmfaeVUcr5jDTx6P/aLXTsFwZNJXn10Av1JsYkCoeC88OJYRY5/WG5
+kaZWhEjy4kdD8JJ1uq3UkcmjPlO6wg==
+=mtWK
+-----END PGP SIGNATURE-----
 
-Does this accurately describe the hardware, or is it mirroring a driver
-bug?
-
-Device Tree properties are intended to describe the physical hardware
-configuration, rather than reflecting software driver fallbacks.
-
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts b/arch/arm/boot/=
-dts/nxp/imx/imx51-babbage.dts
-> index b17264e06e691..a02e9cd0b3fa0 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx51-babbage.dts
-> @@ -126,6 +126,7 @@ dvi_connector_in: endpoint {
-> =20
->  	dvi-encoder {
->  		compatible =3D "ti,tfp410";
-> +		ti,deskew =3D <0>;
-
-The driver fallback of 0 appears to be a bug introduced in 2020 by commit
-"drm/bridge: tfp410: fix de-skew value retrieval from DT". That commit
-changed the ti,deskew scale from -4..3 to 0..7 but did not update the
-fallback value from 0 to 4.
-
-As a result, missing properties inadvertently apply maximum negative skew
-instead of neutral skew.
-
-By copying this fallback into the device trees, does this permanently
-enshrine maximum negative skew into the hardware description?=20
-
-If the driver is later fixed to use the correct neutral default, these
-boards will still apply maximum negative skew.
-
-Should the physical board schematics be consulted to determine the actual
-DK[3:1] pin strapping instead? If the pins are strapped for neutral skew,
-the value should likely be <4>.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511-b4-imx25_d=
-ts_simple_warning-v1-0-01b855a5ce25@nxp.com?part=3D2
+--P/xE2IxuFcOJjISa--
