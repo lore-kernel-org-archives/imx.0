@@ -1,102 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013068.outbound.protection.outlook.com [52.101.83.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86A23B1EF1
-	for <imx@lists.linux.dev>; Wed, 13 May 2026 05:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778651854; cv=none; b=aTDh/0+dQH5wtmBvyB0kLjST6rug3dMMSJzudG1CyoTKTW5KhV30s0IIvulSBSYrPL6pMqQexP5X1dvtfYR7yL1VLAYO9LLJOgGx1o3cClurjMkjOxn9Le4uh66wa4j60ErOiZDBpPjqGW/GmbZCpyaenJebpKoQ3bDCBQ5gmUc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778651854; c=relaxed/simple;
-	bh=Vx1A/dhZ77S1g+ESyaJKDLLH2C9WdGxPJRMnRBS+sZY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QsDPcMDb55tKxRgx0ou556COpiiYNyFEY+/5y7RXObZFF5IlVEvIbT4VgVyJqlZlTKJaOlRq2GYctojd9Kml0YaDLsaMQg9eI0dsvuLhj8Y47zzArqXqShifrCnh+kPNU48SRCMEsXW0pmqGVbUR+67MI06doh+oa+x60p8271M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABO2FbmG; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A7A3BF672
+	for <imx@lists.linux.dev>; Wed, 13 May 2026 06:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778653670; cv=fail; b=YlvLwD+YQawnSrhf8TwBmPsoTW4vsK9cSe7ptYDlEpAqVKjwx0DKdaLkLVDAHqHY2ZdNGhdPqLRp9GCmEsNzkJSPMhaAGE+wPsYBdi/P0HV7E2zUJBfT2io+2dq5EokUezhZ30PRPuSWQjgxCtgxG5zj4sBE4UQhOQLpMixS/s8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778653670; c=relaxed/simple;
+	bh=pkyGv/3nZd0uz1SPjqYQdJRrIDvjuOkQ+9ScUepqGWI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=PjFMFiLRmIUJJf7LdaZrM0pEOiwUaWcrfEjeuA1mzKqPX1WDLtBHoYfOw+Sl7Vu+D3+SQZZm4X56E7G1OiMsbzEdNWUM587j6Zk4JK1lypVaGvnLgCXohAYFnXiH2FeN0iX8/2MEPleFDRJ3+e5Ivuoe9halPrIwNyzEHK2Rtkc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kWXa3WQp; arc=fail smtp.client-ip=52.101.83.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABO2FbmG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE2CC2BCB7;
-	Wed, 13 May 2026 05:57:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778651853;
-	bh=Vx1A/dhZ77S1g+ESyaJKDLLH2C9WdGxPJRMnRBS+sZY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=ABO2FbmG51azvWkMUKtZmbV5Amg5+eRGtDtMbf0JMWZTrEWfdYqb0xLIty+rDwAo9
-	 kWIFCA037J8AntK2zw0Pcrp0Pt2/JeOH2sxLqOqq49LD/OVLjRWqy+dUmYkUier1eq
-	 EisC7AedZiBMFxo7/rruWesf6vLq0GuDkNlxjv6WsA0CiFagIXLOyoNjnIGq6fdnQr
-	 aqZI8ZvL6dp/fNo4KuiL1ftRbCRm2qZHHOPnu1uqvEZlbRFt738TL27Pq+hkzc0aW0
-	 YmZ9k0/7h2CiJ45H3eXrpzrOVKvROYX3jnlddKJgpgd7jvZRwVv82iSTjGNGFTsBk+
-	 6VQ9UBc8bMtgw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND] clocksource: move NXP timer selection to
- drivers/clocksource
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Enric Balletbo i Serra" <eballetbo@kernel.org>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260512-fix-nxp-timer-v1-1-565e13ef3e46@redhat.com>
-References: <20260512-fix-nxp-timer-v1-1-565e13ef3e46@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 05:57:33 +0000
-Message-Id: <20260513055733.BCE2CC2BCB7@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kWXa3WQp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FwGUvHBXKGYoEhYE0fmDbS2RCdiXzp86+M1THcmnbkC2i8w5p69Vkf2vg7QmQbC7haLQrJIj57xWYQYH0G5RO32VOuakKyCdbff4cISy6cD3JXbU+ORQcycWav1NcnNurqATbSUwcQLF+qjb3D4LDHSj3w6AqvPAT8DWP29KxPqtfGTuijOSl15Ph7BAPOoGDw2L2jdCrc8J+VrJ4VlVA8+9XozggPGwkipZJvfRC8XvtKQ2X/6oPi8tPlz9wgYJSS+mFgR2Zdjv/dHnpxOrQEpeHuiBHloH3CkdstC1iN1MIe/EjSqx/L8j98+1JpBG3F4NWY92jcAGNlmPEZv+KQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J80QfQDkMBEJElE7VsvGgWOfTV4inxrtLIVS9WrKCSQ=;
+ b=shLOo0dlxUavgNgZex8Bpz8O+DOt7HKSx8F1r3q2a+kL6UlwEjKgM9enQt7D9iXKbCHTSCfTOhEY0k1lCXAcRPxb/42jYOFvXydhNmkzn2SGDSYX0B3tlegATzZzkIeOomW9TVk6trKQq/+vrwXnrrtMa0Ql/qwxpkaVDe+TvV4tgZLV/4nehExs2FA8wksjHOJjbKAXdgewZ1EjsFqcYTxN8LS6l/g8a/FlwpR6bjo5LjueGG7CmRazLA9hC3Pq0dXA1d2y+yI76kekQ1KNyR3rkNphMVhuBsrze7i/JN43vz7G/mMeFzjf6O9vedUlP/DQm5Lbmm0Q+gD9wTDEFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J80QfQDkMBEJElE7VsvGgWOfTV4inxrtLIVS9WrKCSQ=;
+ b=kWXa3WQpoHqHi6CDVDhUQh+HjJzySNcBlHzE0b/8jcv9kc4V/+wZHGcdNwj4q6/01zdOZEyreQSozAtQDLTpWeXzFZbEl4R4GRkT+WnGcPNfLx7XtFo2WyQLV5MKn74NiLfqw9DFHpzmYubUcEFWd4xXuTqVLC+H/XeWUunXjJ3DN7gxaIhluQaX3kZVxH04c1aGCCWCm+32g7WBh2F3p6MjKhH910AyqkGVKXs3t7aImqhus+79jowMDS565edK34PxwXI574D/NCw8riowo6fak6q369jyZh25PURJAsHXzCN6YZqSv5vrDq1q3RFoj7jvpK8CXjsJwnO284KxbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
+ by PAXPR04MB9668.eurprd04.prod.outlook.com (2603:10a6:102:243::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.21; Wed, 13 May
+ 2026 06:27:42 +0000
+Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
+ ([fe80::fc6e:ca22:f065:def4%6]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 06:27:41 +0000
+Message-ID: <3b1c5579-a9de-4955-ad3c-df3f8c1860f4@oss.nxp.com>
+Date: Wed, 13 May 2026 09:30:56 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] remoteproc: add helper for optional ELF resource
+ tables
+To: tanmay.shah@amd.com, Ben Levinsky <ben.levinsky@amd.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ linux-remoteproc@vger.kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20260511211841.284809-1-ben.levinsky@amd.com>
+ <20260511211841.284809-4-ben.levinsky@amd.com>
+ <3b7f009c-dc4b-4fc0-becc-4d07eb4ff016@oss.nxp.com>
+ <9e3a88d9-1679-43ae-a96b-62a29bd45d9d@amd.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <9e3a88d9-1679-43ae-a96b-62a29bd45d9d@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0197.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e5::7) To GVXPR04MB12316.eurprd04.prod.outlook.com
+ (2603:10a6:150:2c6::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|PAXPR04MB9668:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d447fef-cecb-4607-d46a-08deb0b8bc86
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|19092799006|56012099003|22082099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	qIjv4+9lAOJxjodOP1VquSqIumo2bhnjDSGbVKvIdmGq70x57Y8ngZjDavyOG9Z0s5NqO4UBW/Rs0gy9F+MBcFNt4I2BQzb2olyGbUpUJO+xOaqKONNsbGTvQaMztrsOzxfheB3NgAnvc9c+P+oTA3qDVCyxCZw8HV7w6JKR76fr0sGhey2y4fUgkgxF1DsUrRf1FqWljf6dqIeuCLJOzsUEXD9jQ1CsnipeMkW2mJN/TeWX4aNmw7uT4MSTNgPeXMaoyhptA+1E0YLRpLhrgu+i8+94ZJShRcdOjE3sMf20bmbpBJAYiJhDuWij7E6nxdRq6JTFt1JJWpv89ZBEWK+OaCfvJ4KfNmf1MPNOpYU1OLSa7ilCE5SxDOsF95zCW1vlE8LAUH5CYTPOyFRm8vyW9+jIynpwdbnr1LIaH5L+ca2ab1TgoLGkkCXVZg50J15Wszt2YahPTyju9LU2tWtXesP6zoovGUBqd2p16qVPHZsXrU/Q7qwwF1Xi0SBlXX5nhb08t+sENAUy5ISUPI/o3K9z9EBmWlU4XzZCaVwZW1yi+ZPikBrETAJsMiq1xGSTaspWVLZLA5D1R/ncA2XM9CT2jVAYfZlESP4m+LKw7e3AlgarHcwf1Os9rtBsmme2gsWsQMd3pVoa6OkjUgEQXPxGelt9+aRLA/0ir7YT8FbLXNB4tFw/K+LMsdQY
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(19092799006)(56012099003)(22082099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eE9OcWNUaGR6bFFtdTVmZzA1U1FySXQ0OFAvdko0WnJsa0J1OFJoU0ZLTndZ?=
+ =?utf-8?B?T1pJMGNQVmJKUWxjOFY1S0ljR1gyWDFzQ2xhN1ZmeXFLc3JyU01DQWhGa08r?=
+ =?utf-8?B?TWRjb25yMnlWZk5QR1NNc3pqQVp5emdiZy9rU2E3d2NEc3FPcGsrT2tjYUwy?=
+ =?utf-8?B?OW5KTzZrM2xjVVZIcGlOTFlJMnJ2OEFUOFVFMlg5d3RGNGsrZmt5TTRMRldq?=
+ =?utf-8?B?c1pTSkFicTk4SDNyUU9TL0wzRk84RVhqME54R3I0a0Yrc3QxcTREUmdhendu?=
+ =?utf-8?B?cmpDY3RiQmJKQXJIb3hRRnVZbGdGZ3pqZitiMDZ3c3Q1djkxWFd3cEc2SEU5?=
+ =?utf-8?B?SGs0UHl6c0dXbzExbnBjRjh4YlRRK09FL0tRMWRPMHBOL2tMZnowWklrZUxj?=
+ =?utf-8?B?Y2lyS0lFOGh4WGhhRThSZERFcmxMZm1rU3V6SDU4U29EYmFuYzNNT2NxbU9K?=
+ =?utf-8?B?TURkeWZNVS9JTWp2c2p0M0JFMU5Qd01TSXZOWVd0aXZlclVNck5RaTZRUzlD?=
+ =?utf-8?B?czJ4SWpqWVhBVkh2MlVQcC9HWEM1OHp2Y2pHWk96UTVCMGg4aVJhT2RXNENq?=
+ =?utf-8?B?b1ZMdkVYL2pnM0JyK011eXk1MGo1bE40RmhjN3o5UDhoRERlRkhvRGZnWFZq?=
+ =?utf-8?B?N1JlRVBrQjZ5djZoYmZPcUE0SFZvaVdyN1hwT0x1MldBWEpiaXV2MVZPL3E2?=
+ =?utf-8?B?RXM5RWZCNWx0WDdMYnl6c0JZNDlJUDdtL3hJRTJDWUppZCtaOTRNemhZWVRB?=
+ =?utf-8?B?Vko1cTQ4NnpwbCtEL3IyN3grWVViRE12TFJEdC84alJRY05JcllIamFJQys1?=
+ =?utf-8?B?RjJuOW1SNnRmVC9qUmx4VHhLVGJrTFljWDRUTGVnbDFvZXYwakdhejB4akQy?=
+ =?utf-8?B?VWNnckFFUVJMSnlhV3ZobjlWV09KV0dWSkRlNEtpOWpTRmV0c3lQUDY4LzMw?=
+ =?utf-8?B?bWhLSVJVN0VXZmV3SGxURkR2Ykp1VnhadWJpNi9EK0VXNVlvTU5iZDJUMU9r?=
+ =?utf-8?B?OE9YcWNkYmhIZVU3MVlIamQ1LzRUcU9jQ0loM0RHdjJxZXRZWGNDbWN3VlU4?=
+ =?utf-8?B?a3M3dFVCNkg2Z3hTQ29lTmxDU09CTFdjaW5PdXFQQzJ4dlpYK0ltb2VEK1J4?=
+ =?utf-8?B?akNUNGFEakJzNDBlWUNDWmxBSk5OVlRRVEdTaUdQN2h6S2J1ZkllK0VwRENQ?=
+ =?utf-8?B?RkRWbjg4YStQM1A5SHoycVVOMmdoMkxveXR3Y2dhRDAxbnBTNjVDZmtCYWFs?=
+ =?utf-8?B?V3V0S2FKVEZ0MFIxUi95NzVoT3Y0Sm1ONHUrTDU4NXZVQzZ1TmdlY0tVYWQ2?=
+ =?utf-8?B?QlRUWmhaNmpjbGQwUksxN1RSUEVxb2NCUmFkTTRCWFhWdGZIbjl0aHVuNngr?=
+ =?utf-8?B?V0laR2JvN2l5OWlhTXNiNU1XYysvbVYvcTdTdXRnOXd4Y21TeHRWNUZDb0xi?=
+ =?utf-8?B?UUNGRUJvMGJSN0RLTS9YZW8wKzFUZjFLZWswbHJBQUU1VkFsZUNtSm9odVdE?=
+ =?utf-8?B?QklyV1NvR0NNa1VOeUtoSUZ0S1kvSElsRFd2SmRNb3VBbHo0c2lxSnVsanJO?=
+ =?utf-8?B?L3htTFlRN2pxY29yQ0xHREFtUUNoSklnRW95enF4YkpOVVNXY3NkWU1ZK29s?=
+ =?utf-8?B?WUxDK0c1Y29PdG5VMGpJcEFKaDRJcU4rSGJlV0ZaR2tVN3B2cUpwcko3YkRz?=
+ =?utf-8?B?Ym5rbEJ5N29rSVJQNm5BM3FJMXBNWFNiWkorUm1GZndFREhQTHpqczZmU0JV?=
+ =?utf-8?B?bHh3MytHTHdZaWZCanV5YXhVNmhreXplNUpwMmxnejBTeGFaSTNoVXZZL1ZD?=
+ =?utf-8?B?NlpCZVNKZjYveUlqVHpFczEvZ1RKZzFBamQ2Y3FSTzJ1d1B1dm1KUGRnL09K?=
+ =?utf-8?B?Q1p0QmRIRWhsWnlxYk1Ydld1aWxCMXFVSk9ROTUzamczODY2RWlJL09JUHk1?=
+ =?utf-8?B?SmFKazk4SU9FcEd1V0V3N2FpcjZMbkxCWXV4d1RRS2NJWGxtOTQ2TkJpRkhq?=
+ =?utf-8?B?VEp2ZHF0ZjQzdTJlZnc1ZUdxUUtkWGx2ejFjRFpaZkEvOVdXbUZJb3oveEJB?=
+ =?utf-8?B?aHQ4OFRFdUo0VE53V1V6a2l6NjBMN0FKR2dIblVQUFROTytHSWo1bFI1d05a?=
+ =?utf-8?B?Ny9wSG5kZTREVFNGQ0IyU29FQUFabllENkFQL2VkRUk4aWtudlhYVlIrYWVW?=
+ =?utf-8?B?elBzcjM2ay9qY00rZklFTEM3cHdJTUdUSDc5bHM3L0RKcHNuUnBmdWRHdmxR?=
+ =?utf-8?B?Ykc2VTB1YjNVT1hPeVpvWmRiS2VTbnN0MDZKQ2VCaGZROWVURE0zQWQ3UW5h?=
+ =?utf-8?B?amhGTU1YK20yeTdwbEZLektwN01heCtTR0h3K0lUc1Fkb2ZScTJiQT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d447fef-cecb-4607-d46a-08deb0b8bc86
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 06:27:41.8582
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ze3WeO+jJfc3mOuvZiDvAUjardt/AyoaKmQfRytBX3fTaOIujDrpZPuAS0YbzaxgRUWMFSx1LrOebjccrK2JRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9668
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The patch incorrectly broadens the dependency for `VF_USE_ARM_GLOB=
-AL_TIMER` from `ARCH_MULTI_V7` to `ARM && SOC_VF610`, which breaks the defa=
-ult clocksource selection for Cortex-M4 builds of the Vybrid SoC.
---
+On 5/12/26 17:53, Shah, Tanmay wrote:
+> 
+> 
+> On 5/12/2026 2:55 AM, Daniel Baluta wrote:
+>> On 5/12/26 00:18, Ben Levinsky wrote:
+>>> [You don't often get email from ben.levinsky@amd.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>>
+>>> Add a small helper around rproc_elf_load_rsc_table() for remoteproc
+>>> drivers that treat a missing ELF resource table as optional. The helper
+>>> returns success on -EINVAL and propagates other failures unchanged.
+>>>
+>>> Signed-off-by: Ben Levinsky <ben.levinsky@amd.com>
+>>> ---
+>>>  drivers/remoteproc/remoteproc_internal.h | 12 ++++++++++++
+>>>  1 file changed, 12 insertions(+)
+>>>
+>>> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remoteproc/remoteproc_internal.h
+>>> index 3724a47a9748..dff87e468837 100644
+>>> --- a/drivers/remoteproc/remoteproc_internal.h
+>>> +++ b/drivers/remoteproc/remoteproc_internal.h
+>>> @@ -146,6 +146,18 @@ static inline int rproc_mem_entry_iounmap(struct rproc *rproc,
+>>>         return 0;
+>>>  }
+>>>
+>>> +static inline int rproc_elf_load_rsc_table_optional(struct rproc *rproc,
+>>> +                                                   const struct firmware *fw)
+>>> +{
+>>> +       int ret;
+>>> +
+>>> +       ret = rproc_elf_load_rsc_table(rproc, fw);
+>>> +       if (ret == -EINVAL)
+>>> +               dev_dbg(&rproc->dev, "no resource table found\n");
+>>
+>> You are changing loglevel here. Initial drivers use dev_info or dev_warn. At least I'm used
+>> with seeing this messages in the logs. 
+>>
+>> So, what do you think on adding at least dev_info to this instead of dev_dbg?
+>>
+> 
+> Actually can we leave that choice to the platform driver ? There are
+> many use cases where the remoteproc subsystem is used to load and start
+> the remote core and the firmware doesn't have the resource table. We
+> don't want to make info level log for such use cases, as the resource
+> table is not expected in the first place there.
 
-commit cb813057e5be52d91a25b9ef118dc8090d04e9c6
-Author: Enric Balletbo i Serra <eballetb@redhat.com>
+Agree, this is the best way to go.
 
-clocksource: move NXP timer selection to drivers/clocksource
-
-This commit relocates the NXP clocksource selection from the mach-imx Kconf=
-ig
-to drivers/clocksource/Kconfig to allow sharing across architectures. It al=
-so
-updates the selection to support ARCH_S32 and adds an option to fall back to
-the standard ARM Architected Timer.
-
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index fd91127065454..b5c88ec658025 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-[ ... ]
-> +choice
-> +	prompt "NXP clocksource for scheduler clock"
-> +	depends on SOC_VF610 || ARCH_S32
-> +	# Default to Global Timer for Vybrid (32-bit)
-> +	default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
-> +	# Default to None for S32 (64-bit)
-> +	default VF_TIMER_NONE if ARCH_S32
-> +
-> +	config VF_USE_ARM_GLOBAL_TIMER
-> +		bool "Use NXP Vybrid Global Timer"
-> +		# This option is ONLY visible if we are on 32-bit ARM
-> +		depends on ARM && SOC_VF610
-
-Does this dependency change break Cortex-M4 builds for the Vybrid SoC?
-
-The Freescale Vybrid SoC supports both Cortex-A5 (ARCH_MULTI_V7) and
-Cortex-M4 (ARM_SINGLE_ARMV7M) configurations. Previously,
-VF_USE_ARM_GLOBAL_TIMER explicitly depended on ARCH_MULTI_V7. This correctly
-hid the option on M4 builds, allowing Kconfig to fall back to the PIT timer
-by default.
-
-Since ARM evaluates to true for all 32-bit ARM architectures, including
-ARM_SINGLE_ARMV7M, this option is now visible on Cortex-M4 builds. Because
-the choice block defaults to VF_USE_ARM_GLOBAL_TIMER for SOC_VF610, Kconfig
-will select the Cortex-A Global Timer by default for the Cortex-M4.
-
-Will the M4 core fail to boot since it lacks the ARM Global Timer and the
-required NXP_PIT_TIMER driver is no longer selected?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-fix-nxp-ti=
-mer-v1-1-565e13ef3e46@redhat.com?part=3D1
