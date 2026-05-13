@@ -1,86 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB4E372070;
-	Wed, 13 May 2026 01:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1E437CD41
+	for <imx@lists.linux.dev>; Wed, 13 May 2026 01:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778635709; cv=none; b=VrgRdbmenY9/vacvs43//Qmhm53P6zw9CINEexAtGnjZCEnhZ3iwUZiPo6oFg4QrIrhb8RVsd3iJKw4vxZZFCFVADJ03Gqo4al4rCUuzH/YdQy7lUUB+tQWRQ/S1bu3EtgiZ7MQIkSp9yh+A4L9ptvhnrmZay0Gcwu+s2rWBTUI=
+	t=1778636005; cv=none; b=DIHfRN+1l64BuQUt5eFqaWz/gyZNhxrqhwc6BdEX8iYo1b6+OCg/dKT8QLydhcZ2a1+Jaon+ZqCN4Hp/lvthnEuOFAkjbjJ6d03d+k6/faT87fjR3rbHVd9VR8GvWifhGn2gA3wcbF7PmMQmnaeDoCHhAhJzNUIX31biS+qHZ7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778635709; c=relaxed/simple;
-	bh=VwRmf6yHkU6JoKiELg98yCtWicqZA1yRP4ajE53wTbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GTdaGnMw1ObU6BNEpUZW69HjuCLHeusDPyZgxU0b7cdjAKS4s2A1h+iptC7yMKLczVeUFftlSmy6szjZZLWSb9ZcTSW3vdcdOdXnIE/RQXZp+fYIviZslANF+LBB3tVJAqMP3USyHrSqyTz4IRsCHulqb9oxm/vIjxpzg0NCbe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHCu095Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778636005; c=relaxed/simple;
+	bh=IIXoJjM39wo7MUTKx4ZWbAdDJ61KCv/Kgkf1otyMGYQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tsF0wadkgl55UbCGjhexQiwQdgESPxnfqFmWZsf8E7z/KD8zRmMMqGB+q1O9xHkTFE6FKgsMsU+AINayWun2FSoVf4GjO2vCNUowfxP+2cbwH166XX7jGlftn04t6NJ3xZcf5gxw9h86G4W2iDOIqaPLNxYvSQZnep/9J4WSeRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+yK8rou; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHCu095Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C27DC2BCB0;
-	Wed, 13 May 2026 01:28:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+yK8rou"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F59CC2BCB0;
+	Wed, 13 May 2026 01:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778635708;
-	bh=VwRmf6yHkU6JoKiELg98yCtWicqZA1yRP4ajE53wTbI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WHCu095QlTDRuHeEtR0WAZcs4LkI0b2+2scgYYj3Gwvkkxzxz2fAqw4POpJ5aZlNw
-	 7CC13isgLxymBMezS3tQMVJehUOiMhZwIn0E2VNkvO/SjxvowipaMoOA2moo9JizWL
-	 N/N5NQZYROnJMzQ5OT9h5/jVJ8aoj7qA7wNQUNxoaYsSRBTxDPEub1jNwKCvUJVTCn
-	 OhCjbiv+MUpRR1la/13m7jrl8TFQMwwcu5GeJgM7AEEGIUCIRAhx010hryQCqDV09v
-	 0oiuaAAKrj+twa/Q41pazi69xLemU2G/7QOfxcvJDj/q8pci4/kGeSp29d3eAajTzY
-	 7GSLh3+BxvgiA==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 0DBCD1AC58CB; Wed, 13 May 2026 02:28:26 +0100 (BST)
-Date: Wed, 13 May 2026 10:28:25 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:VOLTAGE AND CURRENT REGULATOR FRAMEWORK" <linux-kernel@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml
- format
-Message-ID: <agPTuWhZQa6V5h5l@sirena.co.uk>
-References: <20260512224544.1223283-1-Frank.Li@nxp.com>
+	s=k20201202; t=1778636004;
+	bh=IIXoJjM39wo7MUTKx4ZWbAdDJ61KCv/Kgkf1otyMGYQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=L+yK8rouj4SEYkHdd9dcol3T0GNTylNT7HWW/NsjMHWFA2UurC1ZZMnKF/1bxOBoR
+	 ZTPnyN82JsZ04aBYvAwaUlk9/L2n9huj7mzQTEvpo0jLjlyoypRRZ61AADv7cM71y+
+	 a8WWuAwdwMO8JSam7wpWSWB1krq0omHkZoXYr2pQW0iuxvGw9VNi94l3hgsWareaA3
+	 nBbthZiEiWIoV22fs/zrMAwVFeVJoiRiT6bSyw/mMazE7p9fvTE4ZDa2TxSl0oAG7J
+	 tYa5C1A3MoytLXw4HphDotzJAZclbln+hNiM/fCqVbKGAfMx9q0D0zwAISd3KOPiI2
+	 soOJ6dTa6IY0A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/4] remoteproc: switch exact-match drivers to
+ wc-ioremap callbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ben Levinsky" <ben.levinsky@amd.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com
+In-Reply-To: <20260511211841.284809-3-ben.levinsky@amd.com>
+References: <20260511211841.284809-3-ben.levinsky@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 13 May 2026 01:33:23 +0000
+Message-Id: <20260513013324.4F59CC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="P/xE2IxuFcOJjISa"
-Content-Disposition: inline
-In-Reply-To: <20260512224544.1223283-1-Frank.Li@nxp.com>
-X-Cookie: Truckers welcome.
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Implicit and undocumented behavioral change in memory access sem=
+antics, and introduced inconsistency.
+--
 
---P/xE2IxuFcOJjISa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+commit 33b97865cf4d72ce26fd26e8b0209b38daaf1222
+Author: Ben Levinsky <ben.levinsky@amd.com>
 
-On Tue, May 12, 2026 at 06:45:42PM -0400, Frank Li wrote:
-> Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
-> binding from text to yaml format.
+remoteproc: switch exact-match drivers to wc-ioremap callbacks
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+Replace the exact-match carveout map and unmap callbacks in the
+existing remoteproc drivers with the common wc-ioremap helpers. Leave
+the zynqmp R5 TCM callbacks alone because they also clear the mapped
+memory and are not exact matches.
 
---P/xE2IxuFcOJjISa
-Content-Type: application/pgp-signature; name="signature.asc"
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_=
+dsp_rproc.c
+> index 008741af9f11c..2d9f14fbef1da 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+[ ... ]
+> @@ -700,8 +674,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp=
+_rproc *priv)
+> =20
+>  		/* Register memory region */
+>  		mem =3D rproc_mem_entry_init(dev, NULL, (dma_addr_t)att->sa,
+> -					   att->size, da, imx_dsp_rproc_mem_alloc,
+> -					   imx_dsp_rproc_mem_release, "dsp_mem");
+> +					   att->size, da,
+> +					   rproc_mem_entry_ioremap_wc,
+> +					   rproc_mem_entry_iounmap,
+> +					   "dsp_mem");
 
------BEGIN PGP SIGNATURE-----
+Does replacing the custom callbacks with rproc_mem_entry_ioremap_wc()
+unintentionally alter the memory access semantics for these drivers?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoD07kACgkQJNaLcl1U
-h9BWOQf/algNi1ADgjw7NpMC3NNpA3KqQGA5HLHwZYZE8wQ3PqhMlE4Gi2qGQ/vV
-tq8gJBuCqEKak4ptf59km6d4B+uq2crUrHCVtqHG1cR82uZ7dMA+n8/1/E44NetI
-htY6zfxsDG7nRkK5+zAOwlyn8jrkCR+41AyeSxzmzwCQUKY3jtlLagIsjH5Mqvhj
-AndKJDE8KP8QvQySLANi5sp3dX0jpDdh2WiBXwKEXACFwh00RWwGJDbThZsEveUH
-vqhnFNBxXpKmfaeVUcr5jDTx6P/aLXTsFwZNJXn10Av1JsYkCoeC88OJYRY5/WG5
-kaZWhEjy4kdD8JJ1uq3UkcmjPlO6wg==
-=mtWK
------END PGP SIGNATURE-----
+The new rproc_mem_entry_ioremap_wc() helper explicitly sets
+mem->is_iomem =3D true. The previous custom callbacks like
+imx_dsp_rproc_mem_alloc() called ioremap_wc() but left mem->is_iomem as
+false.
 
---P/xE2IxuFcOJjISa--
+Setting is_iomem =3D true causes the ELF loader and coredump routines to
+switch from standard memcpy() and memset() to I/O accessors like
+memcpy_toio() and memset_io().
+
+While this is likely safer for I/O mapped memory, this behavioral change
+does not appear to be documented in the commit message. Should the commit
+message document this shift in memory access semantics?
+
+> Leave the zynqmp R5 TCM callbacks alone because they also clear the mapped
+> memory and are not exact matches.
+
+By leaving the ZynqMP R5 TCM callbacks untouched, does this create an
+inconsistency in how the remoteproc framework handles I/O mapped memory?
+
+The ZynqMP R5 TCM callbacks will continue to map memory using ioremap_wc()
+without setting is_iomem =3D true. Would it be better to update the ZynqMP
+callbacks to also set is_iomem so the framework accesses I/O memory
+consistently across all drivers?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260511211841.2848=
+09-1-ben.levinsky@amd.com?part=3D2
