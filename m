@@ -1,69 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9A62D29C8;
-	Wed, 13 May 2026 22:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DDD3876AF;
+	Wed, 13 May 2026 23:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778712886; cv=none; b=Wt+GK+cNjob+UAosvcYEVPHJN47I9VIo/DZvllfF2o9eK/VSAYs4OBuo3E8jyitqg179d+iLDvsB5p5D48WLAxUVqQa0+hdcxJOnWP3bWbJsjibb4i+o6IUstA/Euc6BtPZBg4NuLsG3KVmkIEsE/+DVyXt2YXWQsCexXo1fLgY=
+	t=1778714516; cv=none; b=qN+dwTXdl/9tGIm+Q0HkEAHKT7x9GC6GtKjdblog5FP4ZDk7faJX9xwZ9tmpOjc5ZkqTKLk0s5bhBTfyuPgQQuI5uEd/FJdbsK/fVEii4StIY8wLoUqux0dauEJNkNYAmksa9hhysBrpbADVQgCQ0spiEipW6YuZCNNyXCRIBug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778712886; c=relaxed/simple;
-	bh=ppN4BtPgCISrT1VuAeGbv8M0b6eeB+wblh5mGaVOfEA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m6CZOiXD5PjsfP4xpdhQt8OgW00Jx4hITlZNavLFfdF5RVIv/mlJDOXmhOdvnRlW6GmQlzWh7TC9L0W8C+A5nEygGsrTHF+XHoAdLqkrCrpKoXLhXN8NXlXV8xZk3QQ+7m96w5wIKpSJOFqV/TIe329BVo2MKq3cmbN+WJEmT0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LnDyw6XF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778714516; c=relaxed/simple;
+	bh=ll5Eobp7inAVZ69eRLBCF4V+h4LoqBc/5CUIOgWoCSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdpEcBIJJI+IgSD4nkGeL3mD/FB1X/DclobMOsCNojqGoUiyMI2zmXkN9hjl42b5SCi0ELneXCW/3Iw6AjMZ1Pylub6fAM79SApv/XaVDsp87fctkg24HTHA4fzfVhYxR5nRiwp3nwml9ACvpedAkIP/0Qe5GjGECBbd9XIIzJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ND0YnUaO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LnDyw6XF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AA8C19425;
-	Wed, 13 May 2026 22:54:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ND0YnUaO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CD7C19425;
+	Wed, 13 May 2026 23:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778712886;
-	bh=ppN4BtPgCISrT1VuAeGbv8M0b6eeB+wblh5mGaVOfEA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=LnDyw6XFxsoqXUe+pnBN/g+YqaYF3di94ps9xAKACxRB0sDUkKEzt41/VJXYtAS04
-	 oBNqbUhlisDxZgkdwJwcxhF+M6f8MpTLOIbwAr3xy5boKKkLqZAGJjpeTXLeTBKDrp
-	 duxpFZL1iOCx7J4Y2loAjKvL4IfsdZfjZ4vAwsZ9jjANmfiXw8M2kiqtzumNiVK1Kq
-	 OacVgBDFV2I3y3YL1yH2odzHd8i/wUnuvPxNNTK94tJY3Yt/gzwP04ms24XZqr3lZp
-	 nThCI/Tiv/+MGpmACamiLznwn0eJ3okXn07e6z8Ud/r4o7I/8qxhW7ZRTee7kiKa9b
-	 1DH9m3C8nBEuw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 05/10] dt-bindings: arm: fsl: Add solidrun lx2160a
- twins board
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josua Mayer" <josua@solid-run.com>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260512-lx2160-pci-v6-5-d0ff72d3c983@solid-run.com>
-References: <20260512-lx2160-pci-v6-5-d0ff72d3c983@solid-run.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 22:54:45 +0000
-Message-Id: <20260513225445.A8AA8C19425@smtp.kernel.org>
+	s=k20201202; t=1778714516;
+	bh=ll5Eobp7inAVZ69eRLBCF4V+h4LoqBc/5CUIOgWoCSY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ND0YnUaO14pMN8SMpuyphae5nfJMuisjOGeeLLsawE15whYkXNLfE+Z2RjNUB4Vv5
+	 dd+rV6P0mom6X149j4Eo6UCSvcr3rTngnYUtwScuLnGMniqYpPCJ2Eo7mfqeRkihVH
+	 quU/ViyYOaAg6L7LfvxnYd4zBTiBS3oEQQmub4fYjbwMABFzsZHajCC4s30oT/EvKL
+	 aSlIPfgnOpNeTdQFH65DoaY5NlIAgX8IH6wfd+JQzIz+OTnyHePpidETY1nN5YoSYm
+	 agi+nU6E3ozWy9cRxDBDv7uTUOpA9+c1tNPbeUlSnX6DRvdUZIlJToKlUBKfUzKrWu
+	 2+2FhJ/UOuWNQ==
+Date: Wed, 13 May 2026 18:21:53 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	Todor Tomov <todor.too@gmail.com>, linux-media@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Robert Foss <rfoss@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	devicetree@vger.kernel.org, Konrad Dybcio <konradybcio@kernel.org>,
+	imx@lists.linux.dev, Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	linux-arm-msm@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 2/7] dt-bindings: media: qcom: x1e80100-camss: drop
+ src clock
+Message-ID: <177871451261.2293485.3028106268219428837.robh@kernel.org>
+References: <20260508-hamoa_evk-v2-0-3ebdca3e4ae2@oss.qualcomm.com>
+ <20260508-hamoa_evk-v2-2-3ebdca3e4ae2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508-hamoa_evk-v2-2-3ebdca3e4ae2@oss.qualcomm.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The commit message contains spelling and grammar errors: 'with with=
- a sinle' should be 'with a single'.
---
 
-commit 2b66fde99c455bef77062b52de3d83d8ee016506
-Author: Josua Mayer <josua@solid-run.com>
+On Fri, 08 May 2026 19:39:58 +0800, Wenmeng Liu wrote:
+> The src clocks are always-on parent clocks and do not need to be
+> explicitly listed for CAMSS consumers. Drop cphy rx src clk.
+> 
+> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+> ---
+>  Documentation/devicetree/bindings/media/qcom,x1e80100-camss.yaml | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
 
-dt-bindings: arm: fsl: Add solidrun lx2160a twins board
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-This commit adds a device tree binding for the SolidRun LX2160A Twins board,
-specifically supporting the single CEX-7 module configuration.
-
-> The SolidRun LX2160A Twins board supports two configurations, one with
-> with a sinle CEX-7 module, and one with two (dual).
-
-This isn't a bug, but there is a typo in the commit message. "with with a
-sinle" should probably be "with a single".
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-lx2160-pci=
--v6-0-d0ff72d3c983@solid-run.com?part=3D5
