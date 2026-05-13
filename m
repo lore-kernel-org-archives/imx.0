@@ -1,139 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A52F3A3E7F
-	for <imx@lists.linux.dev>; Wed, 13 May 2026 20:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3E6360ED7
+	for <imx@lists.linux.dev>; Wed, 13 May 2026 20:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778702653; cv=none; b=JfaJgLvidvEXv/BMN0oVVZoedghQ7GmDUQDHffm7N8+gr+qVp6DTNp/vk2ANPn0V/ciVEzfxghdxL254AhkSnCelKR5OmYM6WBOiE1Zf6fWsWY7w3vCaO1wP0sTZxIWWEYkoQfslp/mb+ayhzmojjenfP6NY033+iHL2wObuw28=
+	t=1778703436; cv=none; b=O5pWXRx0zKf6YpzMkuw3Cx1kXlZ7aYRs0sf3F0Lm0b3NYQvZo3k9X0u/RtHaEQdq8mzojpWDAwn5MT4Pn4WYLgVM3ZKRdO/1l/D3evTgbLAwiHqxVpi9zAulqexRGpM2LWWqmP+z5+3Oyrlzmt99yxcjxVIvYt+ggkoolhzOu9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778702653; c=relaxed/simple;
-	bh=F+2A2B9W8YJoufqMmQU4xAuTsOkZo6tjhJsQvoXs0MA=;
+	s=arc-20240116; t=1778703436; c=relaxed/simple;
+	bh=n6Av5+It/dq13L65BHaA9DNbn8LYCOkzVdckl9DgXds=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iLoziA5Uya8peC09tSKo5X4bX0Pf2VwKtH8AhoPPAxjE7JZ9rSA2owYPGVPr3//zWo07pwr8CUDnVzn7oj1uox1Myvg6Mxxd529DYabOvd/JJI7dapa66e4ZcnbBK8r+XOvlM5L/ldajxtKtctJ39OchI9YxZnehXK+/0AtAjbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFLIaleW; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=lJ0BK+WcxISTWtFrE37/IhQLvq7R5RwlZyT/u8Zb4mpl2fq0c56fsrLr64uUBfjFeHz1ptLlOpne5FBy0K4POkPV1v8DYNm67E1vWaJWLQlJ8r5UIveQqg2hThCF26RN1ql12pfcpw/cIxLpFdgXi7bFFQLKdAuDbxY/zHzsy4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA0fQSkE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFLIaleW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D34C19425;
-	Wed, 13 May 2026 20:04:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA0fQSkE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACA2C19425;
+	Wed, 13 May 2026 20:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778702652;
-	bh=F+2A2B9W8YJoufqMmQU4xAuTsOkZo6tjhJsQvoXs0MA=;
+	s=k20201202; t=1778703435;
+	bh=n6Av5+It/dq13L65BHaA9DNbn8LYCOkzVdckl9DgXds=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=qFLIaleWHwcEZnvah4mcY2WZmQQ8IhgfSNNtNLL1FktbaHTDPRc3YtXVmpfdTT4r/
-	 JA2JcxewyvQ9BeR00PDuf2OTvMHfRi8jQjcqjxr4b4cZuts4y6mtmnVLZdxYySKuvo
-	 XZDFIC/it/orv2/m8H2DL0UeL8oMTjj0F6+VyEBsRO8/+wofmDamQFqvrnHuq6Xd4D
-	 nHF5ZCa7naVslgO2LohlAPdBUmBuFujFHaYEccZxGT9Ra0OZjyF2I2Asc8DvLpDsba
-	 B7n/I8FipvL/x9n7zSxLxgMc+/Gl111dudW8zA3RXtm+PdCYR/IiSiEKgPIij2OOzG
-	 W2x25yhfftkEA==
+	b=nA0fQSkEx10a50AlP4PhHng0sSNy1KP4Q6nKQ3/Z0rA958I6tERU01IJjT+KoHySQ
+	 5yX4FA6UeGcJBhKytYyc4yVg/QiLeeTWqwVk3dw1FkdLZ7ckeQa/BpD/Gidc3q4Mbp
+	 sP22ALd7syEMOkTuxqqenRVAdwGBjIMdV4zz/rpSFgMLjVXskLLY+tPEUpYbgGC6yB
+	 paYWe+xHlGzKMfMQiW2gdoP6KgCRZ+lzXppvO3SE+lWVE2ealBsyHwfTRZW2rQB0q4
+	 h0k7qPxLfAq6Sow8ejGh8jZvAn2yYn/WL/vr64SYqxPJD2/wwxgFKYTfqmWtU2pf/F
+	 9FhgLEskdNA4w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] clk: imx: Add audio PLL debugfs for K-divider control
+Subject: Re: [PATCH v2] drm/bridge: imx93-mipi-dsi: Fix mode validation
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jacky Bai" <ping.bai@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260512-imx8m_pll_debugfs-v1-1-e1e44b21be90@nxp.com>
-References: <20260512-imx8m_pll_debugfs-v1-1-e1e44b21be90@nxp.com>
+To: "Liu Ying" <victor.liu@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260512-imx93-mipi-dsi-fix-mode-validation-v2-1-7aec3be5da2c@nxp.com>
+References: <20260512-imx93-mipi-dsi-fix-mode-validation-v2-1-7aec3be5da2c@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 20:04:12 +0000
-Message-Id: <20260513200412.A7D34C19425@smtp.kernel.org>
+Date: Wed, 13 May 2026 20:17:15 +0000
+Message-Id: <20260513201715.AACA2C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Unchecked ERR_PTR dereference in `audio_pll_debug_init()` causes k=
-ernel panic if PLL registration fails.
-- [High] Lockless read-modify-write of PLL registers causes a race conditio=
-n with the Common Clock Framework.
-- [Medium] Missing bounds checking allows the K-divider to wrap around, cau=
-sing massive frequency jumps.
+- [High] Self-deadlock due to recursive acquisition of the non-recursive br=
+idge_chain_mutex.
 --
 
-commit 654083d958b35cc8cdcae8664a30b757df4a7f7a
-Author: Jacky Bai <ping.bai@nxp.com>
+commit 6ef22e8ad4391e28924570bebb26f8dec0d5af77
+Author: Liu Ying <victor.liu@nxp.com>
 
-clk: imx: Add audio PLL debugfs for K-divider control
+drm/bridge: imx93-mipi-dsi: Fix mode validation
 
-This commit adds debugfs support for runtime tuning of the audio PLL K
-divider on i.MX platforms. It exposes delta_k and pll_parameter interfaces
-to adjust and monitor the fractional dividers.
+This commit changes mode validation to iterate over all bridges after
+the current bridge to check for DRM_BRIDGE_OP_DETECT and DRM_BRIDGE_OP_EDID
+flags, instead of only checking the last bridge.
 
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> index 39600ee22be30..59f126f354741 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
+> diff --git a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c b/drivers/gpu/dr=
+m/bridge/imx/imx93-mipi-dsi.c
+> index 8f312f9edf974..6d65df9ed9701 100644
+> --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+> +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+> @@ -493,21 +493,24 @@ static enum drm_mode_status
+>  imx93_dsi_validate_mode(struct imx93_dsi *dsi, const struct drm_display_=
+mode *mode)
+>  {
+>  	struct drm_bridge *dmd_bridge =3D dw_mipi_dsi_get_bridge(dsi->dmd);
+> -	struct drm_bridge *last_bridge __free(drm_bridge_put) =3D
+> -		drm_bridge_chain_get_last_bridge(dmd_bridge->encoder);
+> -
+> -	if ((last_bridge->ops & DRM_BRIDGE_OP_DETECT) &&
+> -	    (last_bridge->ops & DRM_BRIDGE_OP_EDID)) {
+> -		unsigned long pixel_clock_rate =3D mode->clock * 1000;
+> -		unsigned long rounded_rate;
+> -
+> -		/* Allow +/-0.5% pixel clock rate deviation */
+> -		rounded_rate =3D clk_round_rate(dsi->clk_pixel, pixel_clock_rate);
+> -		if (rounded_rate < pixel_clock_rate * 995 / 1000 ||
+> -		    rounded_rate > pixel_clock_rate * 1005 / 1000) {
+> -			dev_dbg(dsi->dev, "failed to round clock for mode " DRM_MODE_FMT "\n",
+> -				DRM_MODE_ARG(mode));
+> -			return MODE_NOCLOCK;
+> +
+> +	drm_for_each_bridge_in_chain_from(dmd_bridge, bridge) {
+
+Can this cause a self-deadlock?
+
+imx93_dsi_validate_mode() acts as the .mode_valid callback for the bridge,
+which is invoked by drm_bridge_chain_mode_valid(). The DRM core iterates ov=
+er
+the bridge chain using the drm_for_each_bridge_in_chain_from() macro, which
+acquires and holds the non-recursive bridge->encoder->bridge_chain_mutex for
+the duration of the loop.
+
+By calling drm_for_each_bridge_in_chain_from() again inside the callback,
+does it attempt to acquire the exact same bridge_chain_mutex? Since standard
+mutexes are not recursive, this could result in an immediate deadlock.
+
+> +		if ((bridge->ops & DRM_BRIDGE_OP_DETECT) &&
+> +		    (bridge->ops & DRM_BRIDGE_OP_EDID)) {
+> +			unsigned long pixel_clock_rate =3D mode->clock * 1000;
 
 [ ... ]
-
-> @@ -551,3 +552,81 @@ struct clk_hw *imx_dev_clk_hw_pll14xx(struct device =
-*dev, const char *name,
-
-[ ... ]
-
-> +static int pll_delta_k_set(void *data, u64 val)
-> +{
-> +	struct clk_pll14xx *pll =3D to_clk_pll14xx(data);
-> +	s16 delta_k =3D (s16)val;
-> +	u32 div_ctl1;
-> +	s16 kdiv;
-> +
-> +	div_ctl1 =3D readl_relaxed(pll->base + DIV_CTL1);
-> +	kdiv =3D FIELD_GET(KDIV_MASK, div_ctl1) + delta_k;
-
-If a user provides a large positive delta_k that pushes kdiv beyond 32767,
-will this s16 addition wrap around to a large negative number? Does this
-need a clamp_val() check to prevent abrupt frequency discontinuities?
-
-> +	writel_relaxed(FIELD_PREP(KDIV_MASK, kdiv), pll->base + DIV_CTL1);
-
-Because this read-modify-write sequence is performed without acquiring the
-CCF prepare lock or a hardware spinlock, can it race with a concurrent
-clk_set_rate() operation?
-
-If CCF is updating DIV_CTL1 at the same time, could this overwrite the
-CCF's register changes and desynchronize the hardware state?
-
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +void audio_pll_debug_init(struct clk_hw *hws[], unsigned int num_plls)
-> +{
-> +	struct dentry *rootdir, *audio_pll_dir;
-> +	const char *pll_name;
-> +	int i;
-> +
-> +	rootdir =3D debugfs_create_dir("audio_pll_monitor", NULL);
-> +
-> +	for (i =3D 0; i < num_plls; i++) {
-> +		pll_name =3D clk_hw_get_name(hws[i]);
-
-In imx8mm_clocks_probe(), if the PLL fails to register, the hws array might
-contain an error pointer. When clk_hw_get_name() is called here, it directly
-dereferences hw->core:
-
-clk_hw_get_name(const struct clk_hw *hw)
-{
-	return hw->core->name;
-}
-
-Could this code cause a kernel panic by dereferencing an error pointer if
-the PLL registration failed earlier?
-
-> +		audio_pll_dir =3D debugfs_create_dir(pll_name, rootdir);
-> +		debugfs_create_file_unsafe("delta_k", 0200, audio_pll_dir,
-> +				hws[i], &delta_k_fops);
-> +		debugfs_create_file("pll_parameter", 0444, audio_pll_dir,
-> +				hws[i], &pll_setting_fops);
-> +	}
-> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-imx8m_pll_=
-debugfs-v1-1-e1e44b21be90@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-imx93-mipi=
+-dsi-fix-mode-validation-v2-1-7aec3be5da2c@nxp.com?part=3D1
