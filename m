@@ -1,153 +1,172 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D78848B38F;
-	Wed, 13 May 2026 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA3A39C637;
+	Wed, 13 May 2026 18:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778695192; cv=none; b=vAQkxPOxqD6Lb1NKOaQP2P5JW2kPdbt5KdTjz115xTREwYlCz2uqlqacVO+tX43ONPWPISSgn+xywZ3guKE/8WedJBjFTdz90rFJMZ7XT1NqWfvv2Bi+60StMX32v8/o6++O4umgoUG455hmCofo18YBD3I1rhk63RCeYGFACBo=
+	t=1778696578; cv=none; b=tV/CY4kBih93zCf5B4bNZr2/8ewEsPOxpLWG2rjs9pXaKxBBSjlpEA0efoIzbm1PsPWSebsVuBvQlzBW/zLdcDll8O2EZBnbICKKAztSFnaUpDoVw3o2s+pyNTJ+yGfpIGerP7D2k5LFJ+BmoIbZJTn9VN0imNteQU9S7ZvMPGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778695192; c=relaxed/simple;
-	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pp1DK4OKoMgzxBigLzRmiG2gXpNRMMz8O8qXRVHaXiXx/xQPjc2hVTKEypq3bMShEYa5mYLSAUBk3ox751tlj6RzoWnQfygFvkDoNTTe/t1IpvTAhQEufaHFfqv92j1EyOO59AaaTQywR/jSU01pvNiC98LS8aYcopiA6M/FoVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9BOyPMw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778696578; c=relaxed/simple;
+	bh=PSooL5ZH+dxgPjzMQBWlQZM+uqKj7LMtxK0Ge7AEP2c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=g+wOru/EnBVDzPsHihhFlYzsu/Wzhsi8CQlD+UOHB2keaaKJ0on1wdw0Ogpj/wukp/rM/lWjoKsCf68NKvvgKOvRBUaLIO8e4bV0UosrEdX8RToomaovGksf9Dal7dpsPujjBrcsa2bldMYrNUoOfnWePnsZa8ugyWBxAQe07ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAn1yUpH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9BOyPMw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B184C19425;
-	Wed, 13 May 2026 17:59:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAn1yUpH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C53C19425;
+	Wed, 13 May 2026 18:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778695191;
-	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K9BOyPMwzZtZ1o8TWVOTN1hX2Xu3tgzhJqLl//vPECR5ncJg6vT+X2ORxne0vrhno
-	 6LCPwrqbJ4UvLYBBpBKG0ht49nClZjpcu3cXU9ihJQtqITKu5/IHX7+HVg6LkoMbrr
-	 UcbH0CHuxtzo4+Xs1suhSAfPnTwdtLdIgAyJNDNPFZTDwESH/Hyn10gwCWuFtkGj7/
-	 gfsIm8/UdP9ly5bu93ZPeW6BfGtTGnTJ/EW10QAJmMlVUFYeOY9cpX0VZdLj39B+fi
-	 sAjvx1fDXB0APZBkkf5O1C6Ybk6yXtpAhC43Kj0yQKs5RVh1ZQsUyikf5tUiZZUbYq
-	 UmEqxTJSKhh9Q==
-Message-ID: <de3ae096-5edc-451e-8e93-74012797ce48@kernel.org>
-Date: Wed, 13 May 2026 19:59:33 +0200
+	s=k20201202; t=1778696578;
+	bh=PSooL5ZH+dxgPjzMQBWlQZM+uqKj7LMtxK0Ge7AEP2c=;
+	h=From:Date:Subject:To:Cc:From;
+	b=HAn1yUpHcqnEmLyfP5AQVDv9BTDnZDo9JQH+JTF9hqFbs/TVwugfxD84V0uG46UNK
+	 BM+7E/yky1TE+hymEG//F5XlCOYN2s6E9yL2HKKeqy1BVqpwikh23CjnhKfs9pkde8
+	 4BQX+IxWaT31v2aQp7mJlDdr2R0/r1yHtm65UNR1JhcMVAu3CFEsr57z1PzmaB7EXq
+	 e3uZ1Q1kCjCqYBygSxN4cGMkxpwn/M9HqXKClBvqHOaFyAj5Wi0DCOjdiqPgjugG6W
+	 hrGkKGTiEoRPSr3pP/G2aCSiVTdQsGjolLj/GGUQu+f8qbQLBvn2HcoeuPk6mV3gV6
+	 HVnx0yjHhu9KA==
+From: Enric Balletbo i Serra <eballetbo@kernel.org>
+Date: Wed, 13 May 2026 20:22:37 +0200
+Subject: [PATCH v2] clocksource: move NXP timer selection to
+ drivers/clocksource
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
-To: "Rob Herring (Arm)" <robh@kernel.org>, Liu Ying <victor.liu@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Akhil P Oommen <akhilpo@oss.qualcomm.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
- <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
- Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul
- <vkoul@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>,
- Jackson Lee <jackson.lee@chipsnmedia.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Mirela Rabulea <mirela.rabulea@nxp.com>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
- Heiko Stuebner <heiko@sntech.de>, Hugues Fruchet
- <hugues.fruchet@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
- Parvathi Pudi <parvathi@couthit.com>,
- Mohan Reddy Putluru <pmohan@couthit.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Michal Simek <michal.simek@amd.com>, Mark Brown <broonie@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Linus Walleij <linusw@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Felix Fietkau <nbd@nbd.name>, "Andrew F. Davis" <afd@ti.com>,
- Hussain Khaja <basharath@couthit.com>, Suman Anna <s-anna@ti.com>,
- Ben Levinsky <ben.levinsky@amd.com>, Tanmay Shah <tanmay.shah@amd.com>,
- Erwan Leray <erwan.leray@foss.st.com>,
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: Roger Quadros <rogerq@ti.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20260511165942.2774868-1-robh@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260513-fix-nxp-timer-v2-1-533b99c57b67@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WMOw7CMBAFrxJtzSLbREFQcY8ohT9rvEU+si0rK
+ PLdMekp5+nNHJAoMiV4dgdEKpx4XRqoSwc26OVNyK4xKKEGcRMKPe+47Btmniniwxrpjbtrbx0
+ 0Z4vUDmdvnBoHTnmNnzNf5G/9VyoSJWrfGzso13uvX5Fc0Plq1xmmWusX38DmnasAAAA=
+X-Change-ID: 20260302-fix-nxp-timer-9cb1fbd7afcd
+To: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Enric Balletbo i Serra <eballetb@redhat.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778696575; l=3631;
+ i=eballetb@redhat.com; s=20260512; h=from:subject:message-id;
+ bh=ZKQ+5Zn4AouJzksg8Q7tp9yGqOeq6zq6Pqnrb7HW66Y=;
+ b=E0GBl4K3fVMf8UCS5PUTZ6QiceEcqApT/KV1zILaMLewnWR37heyyMN5TMejYL6fh0Mw/N56C
+ gGLURCNdQtYCDVawSZbJi09SWYzjpQGA2SP0j40lEi7e7EmTl4KKlVL
+X-Developer-Key: i=eballetb@redhat.com; a=ed25519;
+ pk=HEWGfVmqrAZfJ4JLImY+V4jOfS+bkE5CQrdmm/kZq5Y=
 
-On 11/05/2026 18:59, Rob Herring (Arm) wrote:
-> The "sram" property has become a de facto standard property, so create a
-> common schema for it and drop all the duplicated definitions.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+From: Enric Balletbo i Serra <eballetb@redhat.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+The Kconfig logic for selecting the scheduler clocksource on
+NXP Vybrid (VF610) uses a `choice` block restricted to 32-bit ARM. This
+prevents 64-bit architectures, such as the NXP S32 family, from enabling
+the NXP Periodic Interrupt Timer (PIT) driver (CONFIG_NXP_PIT_TIMER).
+
+Relocate the NXP clocksource selection from arch/arm/mach-imx/Kconfig to
+drivers/clocksource/Kconfig. This allows the configuration to be shared
+across different architectures.
+
+Update the selection to include support for ARCH_S32 and add a "None"
+option to allow using the standard ARM Architected Timer. The Vybrid
+Global Timer option is restricted to ARCH_MULTI_V7 SOC_VF610 platforms
+to prevent it from being visible on Cortex-M4 builds, which lack the
+ARM Global Timer hardware.
+
+Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32g2 / s32g3 support")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Enric Balletbo i Serra <eballetb@redhat.com>
+---
+Changes in v2:
+- Fix VF_USE_ARM_GLOBAL_TIMER dependency: use ARCH_MULTI_V7 instead of
+  ARM to prevent the option from being visible on Cortex-M4 builds
+  (Sashiko AI review)
+- Link to v1: https://lore.kernel.org/r/20260302-fix-nxp-timer-v1-1-af4bc62d4ffa@redhat.com
+---
+ arch/arm/mach-imx/Kconfig   | 21 ---------------------
+ drivers/clocksource/Kconfig | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6ea1bd55acf8..a361840d7a04 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -227,27 +227,6 @@ config SOC_VF610
+ 	help
+ 	  This enables support for Freescale Vybrid VF610 processor.
+ 
+-choice
+-	prompt "Clocksource for scheduler clock"
+-	depends on SOC_VF610
+-	default VF_USE_ARM_GLOBAL_TIMER
+-
+-	config VF_USE_ARM_GLOBAL_TIMER
+-		bool "Use ARM Global Timer"
+-		depends on ARCH_MULTI_V7
+-		select ARM_GLOBAL_TIMER
+-		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+-		help
+-		  Use the ARM Global Timer as clocksource
+-
+-	config VF_USE_PIT_TIMER
+-		bool "Use PIT timer"
+-		select NXP_PIT_TIMER
+-		help
+-		  Use SoC Periodic Interrupt Timer (PIT) as clocksource
+-
+-endchoice
+-
+ endif
+ 
+ endif
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index d1a33a231a44..15c02d3e9dbf 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -793,4 +793,34 @@ config RTK_SYSTIMER
+ 	  this option only when building for a Realtek platform or for compilation
+ 	  testing.
+ 
++choice
++	prompt "NXP clocksource for scheduler clock"
++	depends on SOC_VF610 || ARCH_S32
++	# Default to Global Timer for Vybrid (32-bit)
++	default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
++	# Default to None for S32 (64-bit)
++	default VF_TIMER_NONE if ARCH_S32
++
++	config VF_USE_ARM_GLOBAL_TIMER
++		bool "Use NXP Vybrid Global Timer"
++		depends on ARCH_MULTI_V7 && SOC_VF610
++		select ARM_GLOBAL_TIMER
++		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
++		help
++		  Use the NXP Vybrid Global Timer as clocksource.
++
++	config VF_USE_PIT_TIMER
++		bool "Use NXP PIT timer"
++		select NXP_PIT_TIMER
++		help
++		  Use NXP Periodic Interrupt Timer (PIT) as clocksource.
++
++	config VF_TIMER_NONE
++		bool "None (Use standard Arch Timer)"
++		help
++		  Do not use any specific NXP timer driver. Use the standard
++		  ARM Architected Timer instead.
++
++endchoice
++
+ endmenu
+
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260302-fix-nxp-timer-9cb1fbd7afcd
 
 Best regards,
-Krzysztof
+-- 
+Enric Balletbo i Serra <eballetb@redhat.com>
+
