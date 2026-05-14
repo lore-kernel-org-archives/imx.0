@@ -1,101 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6758A3A7589;
-	Thu, 14 May 2026 03:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E430A3B8950;
+	Thu, 14 May 2026 04:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778730717; cv=none; b=bMLl9FbsIKBuT/QcJYjSAIJv5nbU30ovrFJGWgsxXENFxKYXdga3wlAqeVJ1BtPf5ik3o5GHIdm3cNwCKG6fS0SpUq/a8y9MEheT+mNsPkKU3OoETX4aNnN8QRaFth73vUQlIsI8dQLcV203dJcxvHCHnOVrcVugtpwOowxiT9A=
+	t=1778734550; cv=none; b=jvkmRiS7Cbrrlb5mSht1LC2NrN83GSq7fEoGfgAYvA34POliZ3ue47dPAuQacNQBysZxMnKirLtYnNpUK3usaub/ye52nq2cBUhsYdJ4hr2cQGLlatJTXNz+vIEiMLJsVWOXaXR0zracN/Jv95STtFAN+CktVYDqrCQoiRyCoO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778730717; c=relaxed/simple;
-	bh=lcwT8HtwcqVv38pdLA+NNjCkhbsvVABgFjkGbByRBQo=;
+	s=arc-20240116; t=1778734550; c=relaxed/simple;
+	bh=GiCsnbj5xJtYzAw8DqcmNOV4R8sx7quJIngvYKzo0J0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rBhgHNlb35SosQtHQu0I5Rhz2VhtqAEMYBCGIzg8rJnStLJdAREGbTdmbNVaZJzJfdICGIXTHGEMTi6mF5o6QJ6T+FPSNDwbxp79TYwouIJeHSn6BbjSK1RLr5A/2R6zRSJvhL1uHY3vrpR7JXJ9z4Aj1DL8eZzR99CLJv69T9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=savYF94r; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=asipbRUnUztftyOxu7nJtxn9/aCQtjueQlqCQ5jCHIhloTvDaJAZ7EICXvLPg5tps7o9YfBxqiQgbXpC5F+nOi5FMWBonjX8z39VaDKlJoJMuMcQxz2Jx153lK/LTMfYoO2Mexenubv2vkHDo8LcdtV2Hs9KMdlPri11EZ20LVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzQ0caEZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="savYF94r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6874C2BCC7;
-	Thu, 14 May 2026 03:51:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzQ0caEZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484CDC2BCB7;
+	Thu, 14 May 2026 04:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778730717;
-	bh=lcwT8HtwcqVv38pdLA+NNjCkhbsvVABgFjkGbByRBQo=;
+	s=k20201202; t=1778734549;
+	bh=GiCsnbj5xJtYzAw8DqcmNOV4R8sx7quJIngvYKzo0J0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=savYF94rduCNePvNGvmVyRZUnc6reYIMkNBpS1mOb1Jb3Gqsu5ah8dNEkmFnz3sDp
-	 sTCdEjqIm4yU903hSmg5UmiIzn5CfeS9Y6OEU1ih0jCBveKS8FbPnDOJ6WpCC6rQja
-	 R7x2WtYxyASmK1Uz4c8nTtnt1dyrpJqTu9gY7OKu1fJxL+TRM031u9mMjNufKqkKCl
-	 S9w+4vJCsRZ5t7Px+cgwG9IgOLwLovulm4QKTRkhmcNBStyAftB9zQQzEMTlZuqjL8
-	 E1DYc9bIV2u0WhLX0E71ZmDFRuen+wEvNtX/nmc6hO4vy/alVZLN8EErH8hssxr9TM
-	 fnsfNkvgTOQww==
+	b=KzQ0caEZqNctlB4t6vyLGjlg7kVTWWs4N98tRoD48W8Cr3UrmUutSsuL9gQEbX/yZ
+	 +9n9SuKXc1hcdnKU5LOWUndi/Ia79UyGyDwnG/+FhaqYUi6YSE60waYvYjR32geLB3
+	 t9Rqt8ZNDVN3inelHxFsQQzD9deAv22INfWmXkDLB/kS8QZyIcgvZus14KKtMIOh2X
+	 OJhrXXuNlP2cnRAYeWT1x6dBJ8l9ZEve/7gRVVzvnVfXwBA84h/D0vQV4wKss9dS7i
+	 FuFY1nf0XbUR/OtejnkKWLtc0q+ONsGUYVb/9GuwqWi1pFVUKQbPP8tCzqR6DDLglz
+	 NdB8HVwPpootA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: soc: imx: fsl,imx93-media-blk-ctrl:
- Allow LVDS Display Bridge child node
+Subject: Re: [PATCH v5 2/4] dmaengine: fsl-edma: use
+ devm_clk_get_optional_enabled() for DMA engine clock
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Liu Ying" <victor.liu@nxp.com>
-Cc: conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, Frank.Li@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260513-imx93-ldb-v1-1-d11c5c3cc197@nxp.com>
-References: <20260513-imx93-ldb-v1-1-d11c5c3cc197@nxp.com>
+To: "Joy Zou" <joy.zou@nxp.com>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, vkoul@kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260513-b4-b4-edma-runtime-opt-v5-2-1e595bfb8423@nxp.com>
+References: <20260513-b4-b4-edma-runtime-opt-v5-2-1e595bfb8423@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 03:51:55 +0000
-Message-Id: <20260514035156.A6874C2BCC7@smtp.kernel.org>
+Date: Thu, 14 May 2026 04:55:48 +0000
+Message-Id: <20260514045549.484CDC2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The `bridge@20` child node is allowed unconditionally for all ha=
-rdware variants in the binding, even though the i.MX91 hardware lacks an LV=
-DS Display Bridge (LDB).
+- [High] Removing mandatory clock validation risks kernel crashes on miscon=
+figured device trees.
+- [Medium] API Mismatch: `devm_clk_get_optional_enabled()` conflicts with t=
+he stated runtime PM intent, leading to unbalanced clock disables.
 --
 
-commit 1215972eab31b33c83565fc6226eed3ff41fba34
-Author: Liu Ying <victor.liu@nxp.com>
+commit 571d7197ad2ed67c4508436798804c62669d46f2
+Author: Joy Zou <joy.zou@nxp.com>
 
-dt-bindings: soc: imx: fsl,imx93-media-blk-ctrl: Allow LVDS Display Bridge =
-child node
+dmaengine: fsl-edma: use devm_clk_get_optional_enabled() for DMA engine clo=
+ck
 
-This commit allows the LVDS Display Bridge child node in the i.MX93 media
-blk-ctrl binding and adds it to the example. The LDB_CTRL and LVDS registers
-control video output through the LVDS interface.
+This commit replaces devm_clk_get_enabled() with
+devm_clk_get_optional_enabled() for the eDMA engine clock and removes the
+FSL_EDMA_DRV_HAS_DMACLK flag. The stated goal is to simplify clock handling
+and prepare for adding channel runtime PM support.
 
-> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-bl=
-k-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk=
--ctrl.yaml
-> index d828c2e82965c..ab563b457e07a 100644
-> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.=
-yaml
-> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.=
-yaml
+>     Prepare to add channel runtime pm support.
+
+If the intention is to manage this clock via runtime PM, does using
+devm_clk_get_optional_enabled() conflict with that?
+
+The devm_clk_get_optional_enabled() helper registers a devres action that
+automatically calls clk_disable_unprepare() upon driver unbind. If the devi=
+ce
+is runtime suspended and the clock is already disabled when the driver is
+unbound, the devres cleanup will attempt to disable the clock again.
+
+Can this trigger a WARN_ON in the clock core for an unbalanced enable count?
+
+Should the driver use devm_clk_get_optional() and manually handle
+clk_prepare_enable() instead?
+
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index 87f575d6ccaff..ecd14967bfbc0 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
 
 [ ... ]
 
-> @@ -92,6 +98,11 @@ properties:
->        - compatible
->        - ports
+> @@ -733,13 +733,11 @@ static int fsl_edma_probe(struct platform_device *p=
+dev)
+>  		regs =3D &fsl_edma->regs;
+>  	}
 > =20
-> +  bridge@20:
-> +    type: object
-> +    $ref: /schemas/display/bridge/fsl,ldb.yaml#
-> +    unevaluatedProperties: false
-> +
->  allOf:
->    - if:
->        properties:
+> -	if (drvdata->flags & FSL_EDMA_DRV_HAS_DMACLK) {
+> -		fsl_edma->dmaclk =3D devm_clk_get_enabled(&pdev->dev, "dma");
+> -		if (IS_ERR(fsl_edma->dmaclk))
+> -			return dev_err_probe(&pdev->dev,
+> -					     PTR_ERR(fsl_edma->dmaclk),
+> -					     "Missing DMA block clock.\n");
+> -	}
+> +	fsl_edma->dmaclk =3D devm_clk_get_optional_enabled(&pdev->dev, "dma");
+> +	if (IS_ERR(fsl_edma->dmaclk))
+> +		return dev_err_probe(&pdev->dev,
+> +				     PTR_ERR(fsl_edma->dmaclk),
+> +				     "Failed to get/enable DMA clock.\n");
 
-Since this binding is shared between fsl,imx91-media-blk-ctrl and
-fsl,imx93-media-blk-ctrl, does adding bridge@20 to the top-level properties
-unconditionally allow it for both variants?
+Does removing the driver-level validation for this clock risk kernel crashes
+on misconfigured device trees?
 
-If the i.MX91 hardware lacks the LVDS Display Bridge, should this child node
-be explicitly disallowed by adding bridge@20: false to the allOf conditional
-block for the i.MX91 compatible string?
+On platforms where the eDMA engine clock is physically required (e.g.,
+i.MX7ULP, i.MX8ULP, i.MX93), a missing "dma" clock in the device tree
+previously caused a graceful probe failure. Now,
+devm_clk_get_optional_enabled() will silently return NULL and probing will
+continue.
 
-Without this restriction, device trees incorrectly instantiating the LDB on
-i.MX91 hardware might silently pass schema validation.
+If the driver subsequently writes to unclocked eDMA registers, such as duri=
+ng
+edma_write_tcdreg(), can this trigger a synchronous external abort (bus fau=
+lt)
+and panic the kernel?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513-imx93-ldb-=
-v1-0-d11c5c3cc197@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513-b4-b4-edma=
+-runtime-opt-v5-0-1e595bfb8423@nxp.com?part=3D2
