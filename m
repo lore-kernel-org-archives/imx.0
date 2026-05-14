@@ -1,145 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7DD199FAB;
-	Thu, 14 May 2026 01:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935F4199FAB;
+	Thu, 14 May 2026 01:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778721381; cv=none; b=QogNnEmwoOq4pa2LhUL+iKw5JBkp61htkM6KmVyPUnBau2/asC52Fo162josYnNcxIFWyJaLPxLM4hnMjuDIk4NctGOX9CpetwTei/yjkh9cTJvd4ao1JwRtrQkS0M5BC3MjX8d0mdPIRitGgLRoqlkJvnu8WNqR192RM+nMbAw=
+	t=1778721382; cv=none; b=N1U1tH8/q/wtnxIxVs/T5GocaJ8pieesenxTtiXJDdaseii/m6YnRsjC3s56t8OY30+NvBfaTGp8mSxCQr3T6PKDAu89PqSvZCqxbsqQ7dsuQ+oxs/SwEHDIO+zcf355BJKyP6xVHAjdIRVJZPDu7aRu0B6+vCykv7RsPKh2I4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778721381; c=relaxed/simple;
-	bh=3T4/l0cYcsvO43u+Nr4UWLZS9aaPPniMiBrtIhuG2Zk=;
+	s=arc-20240116; t=1778721382; c=relaxed/simple;
+	bh=nxI1O/YyLz9vol3gd2j7QC0AYBKo7AvOvdBoc5iFUew=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AdXfGCCeLBjaYa8xglK3Rm8aDe0DD2xmVvv1D92EarRgPk09WhVE+PfmD/rnFgBz159YISju/nmbhAh7+5ke8sWv5ZiCWq6XvQbS5duNcCm/7FOSDAvFXL7GsLt61ddEiv/Fm2hGCH8EC+pBL5k8Uuq/k2otcFIdbF+ERfH+oUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=slLnwpqD; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=CKVC74vglCxL/wYXd8NvB4cmSPG+Pft6HTKDHHRG8PPUU2pkP8jjTcr9RGVcXbZTmu9WfDXr7gmGDDsyi047FOkgliEZRKZr8PLXUEAXFsoGdB+oW9GxT9IwpaJ4f5SmFxOSzSNwH4f9aGweaqXOFl9nZnvG0hxg3xjlw22Vhlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6iNDqYa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="slLnwpqD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065FDC19425;
-	Thu, 14 May 2026 01:16:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6iNDqYa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BD2C19425;
+	Thu, 14 May 2026 01:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778721381;
-	bh=3T4/l0cYcsvO43u+Nr4UWLZS9aaPPniMiBrtIhuG2Zk=;
+	s=k20201202; t=1778721382;
+	bh=nxI1O/YyLz9vol3gd2j7QC0AYBKo7AvOvdBoc5iFUew=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=slLnwpqDAuifXWl50CVAEz85b8gjXuXA3eEV0RMXaoF7f3W0RQfRwVBYHBPBdLYSl
-	 8de0kYgqB7Gg/VWfJImW7lXSNKw8qDr7tenRCrSFbChbuOV3CVEwRWxD+1/zF+k4kH
-	 Awy5uWgh67GfqlEhEsO209odkjPzaXVY1/xZUOQKgZ/didqe43PRj7/rwM44sWD9bC
-	 ddwWOFIbrmfIIOw1PNORAeT9VsewlQV/3C9tRCJeXBUX9M6ikEmz/wq9LRq/hhzuMw
-	 hvTqijyVCca8uGS5tb23SMKnzzpDep1vEvrANJz/osbWB3jo+4uH++N9BYHvhMOlfT
-	 bFX7L0Genh8hw==
+	b=k6iNDqYaEgcTHpZDUewQRUM3LGjid0VRNr7kkPjMdSpeJgMQsA5tTwFn/sZbi8QPw
+	 eU1/Q1HpQNj3d9CYR59tktcZA1iA2xXWJz+8unsLOGAsVP14N4d1ojSvklpTjmOti3
+	 9IRNxzR1izWGihS3osICutRNZN1U5ZRpCPvdnXMjHZuA0W0qpczHBay+/EmEeufk1c
+	 iVd+omWjCRKtvDOqBQkJJG4ITL7s+1w0fg7uJZRPi9hj0Q6s0fdLPV+K2/DMEbR2LN
+	 G/s97cr59qRc5psQ9/UmWVMOFgaP5FtvElx9Baq7ucvbCBhsb2cwCUeCEA52rtfA9j
+	 D5s98SMiuSlSw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 7/9] nvmet: pci-epf: Use
- dmaengine_prep_config_single_safe() API
+Subject: Re: [PATCH v4] arm64: dts: imx95: Increase PCIe outbound address
+ space to 4GB
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frank Li" <Frank.Li@nxp.com>
-Cc: vkoul@kernel.org, Frank.Li@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org
-In-Reply-To: <20260512-dma_prep_config-v5-7-26865bf7d935@nxp.com>
-References: <20260512-dma_prep_config-v5-7-26865bf7d935@nxp.com>
+To: "Richard Zhu" <hongxing.zhu@nxp.com>
+Cc: conor+dt@kernel.org, robh@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260513034456.1554188-1-hongxing.zhu@nxp.com>
+References: <20260513034456.1554188-1-hongxing.zhu@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 01:16:20 +0000
-Message-Id: <20260514011621.065FDC19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 01:16:21 +0000
+Message-Id: <20260514011621.E3BD2C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Removing the DMA serialization mutex causes severe CPU starvation,=
- spurious timeouts, and cascading DMA transfer aborts.
-- [Low] Unused local variable triggers a compiler warning and leaves dead m=
-utexes in the device structure.
+- [High] Unaligned 4GB PCIe outbound memory window causes iATU wrap-around =
+and address translation failure.
 --
 
-commit 4b68a703ef44d7ed4b6b20d869ad94bab23d5076
-Author: Frank Li <Frank.Li@nxp.com>
+commit 2c9468d72c0c22f965e76ce9a1c6ea0cf04f99fa
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-nvmet: pci-epf: Use dmaengine_prep_config_single_safe() API
+arm64: dts: imx95: Increase PCIe outbound address space to 4GB
 
-This commit uses the new dmaengine_prep_config_single_safe() API to combine
-DMA configuration and descriptor preparation into a single call. It also
-removes the mutex that was previously used in the DMA transfer path.
+This commit increases the PCIe outbound memory region size to 4GB to
+match the actual hardware-supported memory space. It updates the ranges
+for both pcie0 and pcie1.
 
-> Since dmaengine_prep_config_single_safe() performs the configuration and
-> preparation atomically and the mutex can be removed.
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index adcc0e1d3696b..d8a6a18ddfa1c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1940,7 +1940,7 @@ pcie0: pcie@4c300000 {
+>  			      <0 0x4c340000 0 0x4000>;
+>  			reg-names =3D "dbi", "config", "atu", "app";
+>  			ranges =3D <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+> -				 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+> +				 <0x83000000 0x0 0x10000000 0x9 0x00000000 1 0x00000000>;
 
-Is this description entirely accurate?
+Will this unaligned 4GB PCIe outbound memory window cause an iATU
+wrap-around and address translation failure?
 
-While the configuration and preparation might now be atomic, the mutex also
-strictly serialized the DMA transaction pipeline.
+The child PCI base address is left at 0x10000000. With a size of 4GB (1 0x0=
+),
+the PCI address range extends from 0x10000000 to 0x10FFFFFFF, which crosses
+a 32-bit boundary.
 
-> diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
-> index 2afe8f4d0e461..04d8f48d69503 100644
-> --- a/drivers/nvme/target/pci-epf.c
-> +++ b/drivers/nvme/target/pci-epf.c
-> @@ -388,22 +388,15 @@ static int nvmet_pci_epf_dma_transfer(struct nvmet_=
-pci_epf *nvme_epf,
->  		return -EINVAL;
->  	}
-> =20
-> -	mutex_lock(lock);
+The i.MX95 uses a DesignWare PCIe controller. Its internal Address Translat=
+ion
+Unit (iATU) generates outbound PCI target addresses by adding the CPU-side
+offset to a 32-bit lower target register.
 
-Does removing this mutex introduce concurrency regressions with the shared =
-DMA
-channel during the wait phase?
+Since this 32-bit adder does not propagate a carry bit to the upper 32-bit
+address register, the 32-bit addition overflows when the CPU accesses the t=
+op
+256MB of the new memory window (e.g., offsets >=3D 0xF0000000).
 
-With the mutex removed, multiple concurrent NVMe worker threads can submit
-transfers to the same channel. Since dma_sync_wait() busy-waits using
-cpu_relax(), could multiple threads spinning simultaneously lead to severe =
-CPU
-starvation?
+Instead of correctly crossing into the 0x100000000 PCI address space, the
+hardware silently wraps around to 0x00000000. This limitation will lead to
+PCI access failures or memory corruption if devices are allocated BARs in t=
+he
+upper section of the window.
 
-Additionally, dma_sync_wait() has a hardcoded 5-second timeout computed at
-entry. If concurrent transfers queue up, could later transfers spuriously
-time out while waiting for earlier ones to finish in hardware?
-
-If a spurious timeout occurs, the error path further down calls
-dmaengine_terminate_sync(chan). Does this unconditionally abort all active
-and pending transfers on the shared channel, potentially causing cascading
-data transfer failures?
-
-Could unbounded concurrent submissions also exhaust the DMA channel's
-fixed-size descriptor pool under load?
-
-> -
->  	dma_dev =3D dmaengine_get_dma_device(chan);
->  	dma_addr =3D dma_map_single(dma_dev, seg->buf, seg->length, dir);
->  	ret =3D dma_mapping_error(dma_dev, dma_addr);
->  	if (ret)
-> -		goto unlock;
-> -
-> -	ret =3D dmaengine_slave_config(chan, &sconf);
-> -	if (ret) {
-> -		dev_err(dev, "Failed to configure DMA channel\n");
-> -		goto unmap;
-> -	}
-> +		return ret;
+Should the child PCI address be 4GB-aligned (e.g., 0x0 0x00000000) to match
+the CPU alignment and ensure safe address translation?
 
 [ ... ]
 
-> @@ -426,9 +419,6 @@ static int nvmet_pci_epf_dma_transfer(struct nvmet_pc=
-i_epf *nvme_epf,
->  unmap:
->  	dma_unmap_single(dma_dev, dma_addr, seg->length, dir);
-> =20
-> -unlock:
-> -	mutex_unlock(lock);
-> -
->  	return ret;
->  }
+> @@ -2015,7 +2015,7 @@ pcie1: pcie@4c380000 {
+>  			      <0 0x4c3c0000 0 0x4000>;
+>  			reg-names =3D "dbi", "config", "atu", "app";
+>  			ranges =3D <0x81000000 0 0x00000000 0x8 0x8ff00000 0 0x00100000>,
+> -				 <0x82000000 0 0x10000000 0xa 0x10000000 0 0x10000000>;
+> +				 <0x83000000 0 0x10000000 0xa 0x00000000 1 0x00000000>;
 
-This isn't a bug, but does leaving the local lock variable and its assignme=
-nts
-in the preceding switch statement trigger a -Wunused-but-set-variable compi=
-ler
-warning?
+Does this node have the same address translation issue as pcie0?
 
-Also, since dma_rx_lock and dma_tx_lock in struct nvmet_pci_epf are no
-longer used anywhere else, should they be removed from the structure to avo=
-id
-leaving dead code?
+Like pcie0, the child PCI base address is 0x10000000 and the size is 4GB,
+which will also overflow the 32-bit iATU adder and wrap around.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-dma_prep_c=
-onfig-v5-0-26865bf7d935@nxp.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513034456.1554=
+188-1-hongxing.zhu@nxp.com?part=3D1
