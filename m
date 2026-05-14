@@ -1,118 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEB133689B;
-	Thu, 14 May 2026 20:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB732BF41
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 21:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778790548; cv=none; b=YoriRU9QfjBrZKV1MYE9GEwh9EgKey9sBSmIihX3DuEMAk9Al49oV3wkEwgPeRjiGJUvkjzZOsngiaBRYXqJu1mqa6hGFhumaO6oTIG9JQBvdhG33UX/lWUOxsZqdBU+98dB8SJPSjrexxsRY8OOSYwWgYfteZtcpLRyYiKy5Dc=
+	t=1778792420; cv=none; b=Qcbku1shf0eLcT8jluOiOGEbzvxG0DWJ4sQkBhXKgEG9Jg5p0XUWb25P/gVUvp0L6ZWFAK1e++X4RXq0qPIChE3Q95e/XL5gwWkMEhgzZPtrFP4Hbham/9GijyFtIwMvD1CMgntDyDsxY0PkEnNMkV64s5mTeJUNNINfREbjRSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778790548; c=relaxed/simple;
-	bh=WYEZ+dPObHt5hmrhhbH7GFqUbFObKwL+IZ1qBKpCbqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=STJe+EIgOi5ROY+7Ogi9HtNP6hoF+j81Ru9RAhmxR5kt895nZCjrJnDYcyEx+ONHPLQBCkkbPSQqrohHX3ur2ZyB8hOiRNKayIp7aXveJb3QTq2DjfoIl1ZLZGRDZK86BQ3qtkhtfMAQVBP0FXtYnSwmGRVFg6+8QyCfitmlXLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MfVLs6PB; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778792420; c=relaxed/simple;
+	bh=ATVlQX1TLJ59UJm6AtOUOqUW0tQ97xL1aOm+MPo6gAg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=EPnn6cvjUINufVYjQuQ4HRZHKMYmoSB3HbkNbgJB0cAlpswG/tf9/I8RPnWrLjrGvsqkgOPDu4bVMC8OXjg7y3EC6eBscKlIq/st138vrP89gfv3W+X7rTYUB6QUuTnnDQDgUHM+boN8WFyvdLSYgdqS8cOlf01qbXMf+HfhqA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGTMiWk0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MfVLs6PB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778790545; x=1810326545;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WYEZ+dPObHt5hmrhhbH7GFqUbFObKwL+IZ1qBKpCbqE=;
-  b=MfVLs6PBU5eOxjpIg8VoRaNFQqUS60n9Du4fcWFiXkqoksa70eTmP+GS
-   NE3MRBALeYPl30mM/ov3MCiKiSThlx4UUz9fa1zg7eL4DJoPHT5jCJyMR
-   bvlxGeHD4mSywQd6ryC0xKQeiV3v+ndrDtvaKvVzX6tnUWdm3MFHMucvx
-   vH8FqxDaIs36gXssJLBWqijF6SufLrjebshZzPRLqUsy4L55oJMk3/fZx
-   o/iI2sUVx+deaKTYDS/sPz3muiWBGfuOWYucQ5Np1wO46cji+kHHRa6sQ
-   +uDCSFzIUtMVLIr5fn2BBSM6bWtzNYNXoGt2k14qSbUBNSqJaZmDtC9YA
-   g==;
-X-CSE-ConnectionGUID: k0Cf3KpXS1yl3KfU3YtULA==
-X-CSE-MsgGUID: IzEPoCKcSUKh75kJ817WlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83355264"
-X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="83355264"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 13:29:05 -0700
-X-CSE-ConnectionGUID: G6h6ELAETkesj8PpJAy8FQ==
-X-CSE-MsgGUID: To/4DETzS4GEq19uZxuA5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="232092652"
-Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
-  by fmviesa009.fm.intel.com with ESMTP; 14 May 2026 13:29:01 -0700
-Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wNcfz-000000008rh-0Xcq;
-	Thu, 14 May 2026 20:28:59 +0000
-Date: Thu, 14 May 2026 22:28:54 +0200
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml
- format
-Message-ID: <202605142234.F1IZjPJb-lkp@intel.com>
-References: <20260512214704.1084890-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGTMiWk0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE14DC2BCB3;
+	Thu, 14 May 2026 21:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778792420;
+	bh=ATVlQX1TLJ59UJm6AtOUOqUW0tQ97xL1aOm+MPo6gAg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=YGTMiWk0ECXzFcAxuiAxnoJTqyAdiVUSUHW0sOf7tlye/UdIdP9kiyuyzqQ9he5Yh
+	 6EGesYxXV0+VXyhOV2AvcuwHQz7LvjsSZ8cx7SC1UFMfdM9e2XIojywW8ph5ITHNH6
+	 1VuNW5TzspyX1b9s/VibjpNnBbSwhRFr6P0UIz6jxKlgPl1e2hoEm3klDCclq1XO2+
+	 r8iT0tHLU//zZKngRW19j3e4MPSey4at9vhliHHGvtuAuBUYhJoficQxEToYvBIJj1
+	 Nhtb6yFAwReoXWOIsmuM/+Ec/jIDNTJ4n7a5+eHgHLlq0+WKNZpPw7suWow39AXRFH
+	 HuuQOVhyMtu3g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/5] remoteproc: switch exact-match drivers to
+ wc-ioremap callbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ben Levinsky" <ben.levinsky@amd.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com
+In-Reply-To: <20260514162129.1504162-3-ben.levinsky@amd.com>
+References: <20260514162129.1504162-3-ben.levinsky@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 14 May 2026 21:00:19 +0000
+Message-Id: <20260514210019.EE14DC2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512214704.1084890-1-Frank.Li@nxp.com>
 
-Hi Frank,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v7.1-rc3 next-20260508]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-net-dsa-Convert-lan9303-txt-to-yaml-format/20260514-202017
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20260512214704.1084890-1-Frank.Li%40nxp.com
-patch subject: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
-reproduce: (https://download.01.org/0day-ci/archive/20260514/202605142234.F1IZjPJb-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605142234.F1IZjPJb-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   Warning: Documentation/devicetree/bindings/regulator/motorola,cpcap-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/motorola,cpcap.yaml
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-   Warning: Documentation/devicetree/bindings/rtc/motorola,cpcap-rtc.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/motorola,cpcap.yaml
-   Warning: Documentation/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
-   Warning: Documentation/leds/leds-lp5812.rst references a file that doesn't exist: Documentation/ABI/testing/sysfs-class-led-multicolor.rst
->> Warning: Documentation/networking/dsa/lan9303.rst references a file that doesn't exist: Documentation/devicetree/bindings/net/dsa/lan9303.txt
-   Warning: Documentation/translations/it_IT/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
-   Warning: Documentation/translations/ja_JP/SubmittingPatches references a file that doesn't exist: linux-2.6.12-vanilla/Documentation/dontdiff
-   Warning: Documentation/translations/ja_JP/process/submit-checklist.rst references a file that doesn't exist: Documentation/translations/ja_JP/SubmitChecklist
-   Warning: Documentation/translations/zh_CN/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
-   Warning: Documentation/translations/zh_CN/filesystems/gfs2-glocks.rst references a file that doesn't exist: Documentation/filesystems/gfs2-glocks.rst
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Format string vulnerability when initializing rproc_mem_entry usin=
+g device tree node names
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+commit 1e23984cace57551a1444d0f4d0c49192a7ec852
+Author: Ben Levinsky <ben.levinsky@amd.com>
+
+remoteproc: switch exact-match drivers to wc-ioremap callbacks
+
+This patch replaces the exact-match carveout map and unmap callbacks in
+existing remoteproc drivers with the common wc-ioremap helpers.
+
+> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rp=
+roc.c
+> index 3c25625f966dc..e3121fadd2925 100644
+> --- a/drivers/remoteproc/rcar_rproc.c
+> +++ b/drivers/remoteproc/rcar_rproc.c
+[ ... ]
+> @@ -73,8 +44,8 @@ static int rcar_rproc_prepare(struct rproc *rproc)
+>  		mem =3D rproc_mem_entry_init(dev, NULL,
+>  					   res.start,
+>  					   resource_size(&res), da,
+> -					   rcar_rproc_mem_alloc,
+> -					   rcar_rproc_mem_release,
+> +					   rproc_mem_entry_ioremap_wc,
+> +					   rproc_mem_entry_iounmap,
+>  					   res.name);
+
+This isn't a regression introduced by this patch, but since these lines are
+being modified, could this cause a format string issue?
+
+Looking at rproc_mem_entry_init(), it takes a format string as the name
+parameter and passes it to vsnprintf(). If a dynamically loaded device
+tree overlay has a node name in res.name containing format specifiers,
+could it lead to arbitrary stack reads?
+
+Would it be safer to use "%s", res.name here?
+
+[ ... ]
+> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc=
+/xlnx_r5_remoteproc.c
+> index 45a62cb980725..e5d1903c9636a 100644
+> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
+> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+[ ... ]
+> @@ -560,8 +521,8 @@ static int add_sram_carveouts(struct rproc *rproc)
+>  		rproc_mem =3D rproc_mem_entry_init(&rproc->dev, NULL,
+>  						 dma_addr,
+>  						 len, da,
+> -						 zynqmp_r5_mem_region_map,
+> -						 zynqmp_r5_mem_region_unmap,
+> +						 rproc_mem_entry_ioremap_wc,
+> +						 rproc_mem_entry_iounmap,
+>  						 sram->sram_res.name);
+
+Similarly here, can passing sram->sram_res.name directly to
+rproc_mem_entry_init() trigger a format string vulnerability if the node
+name contains format specifiers?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514162129.1504=
+162-1-ben.levinsky@amd.com?part=3D2
