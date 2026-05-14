@@ -1,220 +1,179 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF493AEF44
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 11:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097F33AC0C5;
+	Thu, 14 May 2026 11:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778756783; cv=none; b=iFu/5DVVPMrdp3EiB56Qg8h66bD3apl6T2PPiOiUX5pZ7H2kY/bNnoKT6YTFDNlUk7rZJUrR7Olw59NTtlT9iIn3bnJMEimUuk7hqA1Fm6DRJCed8PbbQUmhGytWLFqtAaNZd4xBKzRIqbwuE/A0XVkZUPz1qPwwDZkWeGl9Ook=
+	t=1778757277; cv=none; b=ctjgmFj8r1dKReC9/bnqMDTbJL3p4e3jUOD+7sn+FX9PesuHffsTTDa5AS7D7YAuCqhAg6CB97mRf+91kUsPv0yog5ibbiMDmFUs/8ebi1Sqg+o1dIQLMrH2rhqbfMUcKEmJCq3BHTIUDLgeFuTjkiOaYD9vcCL+xyPQ3neXXao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778756783; c=relaxed/simple;
-	bh=LkCCxaFUglRYlE0CYNn2yifDP0Uz7IrZjqML7/Q6OzY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z0Sp/ESoPi6yhRh5c/kxySGqhTqoVMgiX3qGdSX9aFh8IL7Tu2NBLo0WAj02TKmEK3QFghJul7dg8BzGLSLgwm0chLuryC58WQDJq3Wxkmy2gV9NoU21u6DDPjTKNRg5kO0ynlvXQnv4rgLOaGvf6l++QshmVayp5754Uh++FTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Or3kV/+G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778757277; c=relaxed/simple;
+	bh=zWsNF/tTn94RSQdcgyRSetzkeSvxF7zjT9TnBTUpZKg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W+d6kBNHWQTYBPKuFY2QUGvAtylxOJk/E6aNy9q17R3l/b92xiY1QrMrL7ibc8m2Gtxmzc0Xf/HOh3CR7GOeyppmZ4Zw7GJoZvYtX56Edb5ilOgjWoMHn61zfj92LL8vlYkPwRqk1IzI5xcw6GMm7AjUxH6sINlO/ScLXhPkqwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsneuJLt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Or3kV/+G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A10C2BCB8;
-	Thu, 14 May 2026 11:06:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsneuJLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5E8C2BCB8;
+	Thu, 14 May 2026 11:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778756782;
-	bh=LkCCxaFUglRYlE0CYNn2yifDP0Uz7IrZjqML7/Q6OzY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Or3kV/+GrDcWIYzb4MUaLzUXz9xrcmgwO+DMHD0CfVZad637Zt+e0wsC0PP/4ZWyz
-	 CUpZQ8qO/z7VfGqVW+ChxwSXTgbuLePGqov1ruJCHNPzvdYZMbERpqGAG+rPuNWaWI
-	 LHRVSf+ma90/TUFPagmiWuDFltU9ygT7U3LpQKeVStSMlM9z4/5t4XepjHFh1GS9LM
-	 x3ua9rriz6B1pH2Bgroga+fXF40toeOqhcwNGT9zolrbnjYAZxggJ0kx4ICKrkk9Yu
-	 GlYYJtDAlmwBbLR9k2yBVFuuU9kL/VvCdtQHppfIuK3x28yNty7AH0cmSDpZHWViFL
-	 NZFJveuXzVnFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/1] media: v4l2-common: Add helper function
- media_bus_fmt_to_csi2_(bpp|dt)()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frank Li" <Frank.Li@nxp.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260513205949.105444-1-Frank.Li@nxp.com>
-References: <20260513205949.105444-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 11:06:22 +0000
-Message-Id: <20260514110622.83A10C2BCB8@smtp.kernel.org>
+	s=k20201202; t=1778757276;
+	bh=zWsNF/tTn94RSQdcgyRSetzkeSvxF7zjT9TnBTUpZKg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=IsneuJLtb21p+xUOoGkPQQ4Tkb4QVXAIZWj2T6Pyh8XHfhQ8in7QXVoSGd1V51f0Q
+	 qE5Jh2tLIC2zRxETNPq1FX3xH3f0vP4q9ipuBkE89HFtBgX65UQkvPhjR9ugrsFORD
+	 J0RBhKCXyznejSyizR7NfN7eVkhmB2YWHkNNgauKSU0ZkgbDF+KBVxGUpOJHKK1tXO
+	 MhsHdyZpo1SgXvzHHjhlYmzK6+06h0B1LwwwmMtHqudFn0h7jGl1BbAZeoNkVKfGNm
+	 oPs6cfEYNY+ift/2a8X4XvyK72lEd2NB/fr+nTz6wriAQvqKyLKjVkJx6IA8XT/5Cs
+	 8bh21ZBnqAKQg==
+From: Enric Balletbo i Serra <eballetbo@kernel.org>
+Date: Thu, 14 May 2026 13:14:17 +0200
+Subject: [PATCH v3] clocksource: move NXP timer selection to
+ drivers/clocksource
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WMywrCMBBFf0Vm7UiT9EFd+R/iIo+JnUUfJCVUS
+ v/dtBtRcHku95wVIgWmCNfTCoESRx6HDOp8Atvp4UnILjPIQtaFKiR6XnBYJpy5p4CtNcIb12h
+ vHWRnCpQPR+/+yNxxnMfwOvJJ7Ou/UhIoUPvS2Fq60nt9C+Q6PV/s2MOeSvKjV0L96jLrlVKmb
+ W3VmLr50rdtewO5yf1a6gAAAA==
+X-Change-ID: 20260302-fix-nxp-timer-9cb1fbd7afcd
+To: Russell King <linux@armlinux.org.uk>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Enric Balletbo i Serra <eballetb@redhat.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778757274; l=3908;
+ i=eballetb@redhat.com; s=20260512; h=from:subject:message-id;
+ bh=8pjGWairaSrRO06DfSoKsQGunA0RWo+g3nUWQxcUGpA=;
+ b=7m8+d8+HXSaZQcJXX+CZpLJUEAUJXtaBse0usCCid3aNoNa2P6OfNkJUVWIoqLJ5xJ1emN2e/
+ b3HZgce8tJkCiYdMH7Kmj8m8AulEqIdQBcKMKeO0CF+1HT0cBvfhivI
+X-Developer-Key: i=eballetb@redhat.com; a=ed25519;
+ pk=HEWGfVmqrAZfJ4JLImY+V4jOfS+bkE5CQrdmm/kZq5Y=
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] Uninitialized `.dt` fields default to 0 (`MIPI_CSI2_DT_FS`), causi=
-ng `media_bus_fmt_to_csi2_dt()` to return a valid CSI-2 data type instead o=
-f an error.
-- [High] Incorrect bit width per pixel (bpp) value for `MEDIA_BUS_FMT_AHSV8=
-888_1X32`.
-- [Low] Exported helper functions use signed `int` for bus format codes ins=
-tead of `u32`.
-- [Low] Grammatical errors in constant naming and code comments.
---
+From: Enric Balletbo i Serra <eballetb@redhat.com>
 
-commit e06117f0b6bd648be504f0b932d84a4e08205433
-Author: Frank Li <Frank.Li@nxp.com>
+The Kconfig logic for selecting the scheduler clocksource on
+NXP Vybrid (VF610) uses a `choice` block restricted to 32-bit ARM. This
+prevents 64-bit architectures, such as the NXP S32 family, from enabling
+the NXP Periodic Interrupt Timer (PIT) driver (CONFIG_NXP_PIT_TIMER).
 
-media: v4l2-common: Add helper function media_bus_fmt_to_csi2_(bpp|dt)()
+Relocate the NXP clocksource selection from arch/arm/mach-imx/Kconfig to
+drivers/clocksource/Kconfig. This allows the configuration to be shared
+across different architectures.
 
-This commit adds helper functions media_bus_fmt_to_csi2_bpp() and
-media_bus_fmt_to_csi2_dt() to map media bus formats to MIPI CSI-2 data
-types and bits-per-pixel.
+Update the selection to include support for ARCH_S32 and add a "None"
+option restricted to ARCH_S32, since Vybrid lacks the ARM Architected
+Timer. The Vybrid Global Timer option is restricted to ARCH_MULTI_V7
+SOC_VF610 platforms to prevent it from being visible on Cortex-M4 builds,
+which lack the ARM Global Timer hardware.
 
-> diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-c=
-ore/v4l2-common.c
-> index bceafc4e92c81..438aeb4c8435d 100644
-> --- a/drivers/media/v4l2-core/v4l2-common.c
-> +++ b/drivers/media/v4l2-core/v4l2-common.c
+Fixes: bee33f22d7c3 ("clocksource/drivers/nxp-pit: Add NXP Automotive s32g2 / s32g3 support")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Enric Balletbo i Serra <eballetb@redhat.com>
+---
+Changes in v3:
+- Restrict VF_TIMER_NONE to ARCH_S32 to prevent selecting it on Vybrid
+  platforms which lack the ARM Architected Timer
+- Link to v2: https://lore.kernel.org/r/20260513-fix-nxp-timer-v2-1-533b99c57b67@redhat.com
 
-[ ... ]
+Changes in v2:
+- Fix VF_USE_ARM_GLOBAL_TIMER dependency: use ARCH_MULTI_V7 instead of
+  ARM to prevent the option from being visible on Cortex-M4 builds
+  (Sashiko AI review)
+- Link to v1: https://lore.kernel.org/r/20260302-fix-nxp-timer-v1-1-af4bc62d4ffa@redhat.com
+---
+ arch/arm/mach-imx/Kconfig   | 21 ---------------------
+ drivers/clocksource/Kconfig | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 21 deletions(-)
 
-> @@ -808,3 +809,180 @@ struct clk *__devm_v4l2_sensor_clk_get(struct devic=
-e *dev, const char *id,
->  	return clk_hw->clk;
->  }
->  EXPORT_SYMBOL_GPL(__devm_v4l2_sensor_clk_get);
-> +
-> +/**
-> + * struct media_bus_fmt_info - information about a media bus format
-> + * @code: media bus format identifier (MEDIA_BUS_FMT_*)
-> + * @dt: data type define in MIPI spec (MIPI_CSI2_DT *)
-> + * @bpp: bit width per pixel, which is suffix from MEDIA_BUS_FMT_*, no p=
-ad. no
-> + *	 compressed data.
-> + */
-> +struct media_bus_fmt_info {
-> +	u32 code;
-> +	u8 dt;
-> +	u8 bpp;
-> +};
-> +
-> +static const struct media_bus_fmt_info media_bus_fmt_info[] =3D {
-> +	{ .code =3D MEDIA_BUS_FMT_RGB444_1X12, .bpp =3D 12 },
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6ea1bd55acf8..a361840d7a04 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -227,27 +227,6 @@ config SOC_VF610
+ 	help
+ 	  This enables support for Freescale Vybrid VF610 processor.
+ 
+-choice
+-	prompt "Clocksource for scheduler clock"
+-	depends on SOC_VF610
+-	default VF_USE_ARM_GLOBAL_TIMER
+-
+-	config VF_USE_ARM_GLOBAL_TIMER
+-		bool "Use ARM Global Timer"
+-		depends on ARCH_MULTI_V7
+-		select ARM_GLOBAL_TIMER
+-		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+-		help
+-		  Use the ARM Global Timer as clocksource
+-
+-	config VF_USE_PIT_TIMER
+-		bool "Use PIT timer"
+-		select NXP_PIT_TIMER
+-		help
+-		  Use SoC Periodic Interrupt Timer (PIT) as clocksource
+-
+-endchoice
+-
+ endif
+ 
+ endif
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index d1a33a231a44..d9c76dd443f8 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -793,4 +793,35 @@ config RTK_SYSTIMER
+ 	  this option only when building for a Realtek platform or for compilation
+ 	  testing.
+ 
++choice
++	prompt "NXP clocksource for scheduler clock"
++	depends on SOC_VF610 || ARCH_S32
++	# Default to Global Timer for Vybrid (32-bit)
++	default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
++	# Default to None for S32 (64-bit)
++	default VF_TIMER_NONE if ARCH_S32
++
++	config VF_USE_ARM_GLOBAL_TIMER
++		bool "Use NXP Vybrid Global Timer"
++		depends on ARCH_MULTI_V7 && SOC_VF610
++		select ARM_GLOBAL_TIMER
++		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
++		help
++		  Use the NXP Vybrid Global Timer as clocksource.
++
++	config VF_USE_PIT_TIMER
++		bool "Use NXP PIT timer"
++		select NXP_PIT_TIMER
++		help
++		  Use NXP Periodic Interrupt Timer (PIT) as clocksource.
++
++	config VF_TIMER_NONE
++		bool "None (Use standard Arch Timer)"
++		depends on ARCH_S32
++		help
++		  Do not use any specific NXP timer driver. Use the standard
++		  ARM Architected Timer instead.
++
++endchoice
++
+ endmenu
 
-Since dt is not explicitly initialized here, it will default to 0. In the M=
-IPI
-CSI-2 specification, 0x00 is a valid Data Type for Frame Start.
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260302-fix-nxp-timer-9cb1fbd7afcd
 
-When media_bus_fmt_to_csi2_dt() looks up one of these unmapped formats, will
-it return 0x00 instead of the expected MIPI_CSI2_DT_INVALIDATE?
+Best regards,
+-- 
+Enric Balletbo i Serra <eballetb@redhat.com>
 
-If so, does this risk drivers misprogramming the CSI-2 hardware to use
-Frame Start as a payload data type instead of failing gracefully?
-
-[ ... ]
-
-> +	{ .code =3D MEDIA_BUS_FMT_JPEG_1X8, .bpp =3D 8 },
-> +
-> +	{ .code =3D MEDIA_BUS_FMT_S5C_UYVY_JPEG_1X8, .bpp =3D 8 },
-> +
-> +	{ .code =3D MEDIA_BUS_FMT_AHSV8888_1X32, .bpp =3D 8 },
-
-Is this bpp value correct? AHSV8888 consists of four 8-bit channels, and its
-1X32 suffix denotes a 32-bit bus width.
-
-Should this be 32 instead of 8 to prevent miscalculating link frequencies
-or allocating undersized DMA buffers?
-
-> +
-> +	{ .code =3D MEDIA_BUS_FMT_META_8, .bpp =3D 8 },
-
-[ ... ]
-
-> +static const struct media_bus_fmt_info *media_bus_fmt_info_get(u32 bus_f=
-mt)
-> +{
-> +	unsigned int i;
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(media_bus_fmt_info); i++) {
-> +		if (media_bus_fmt_info[i].code =3D=3D bus_fmt)
-> +			return &media_bus_fmt_info[i];
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +u32 media_bus_fmt_to_csi2_dt(int bus_fmt)
-
-Is it intentional to use a signed int for bus_fmt here?
-
-The V4L2 subsystem typically defines and stores media bus format codes as
-unsigned 32-bit integers (u32). The internal media_bus_fmt_info_get() helper
-correctly uses u32.
-
-> +{
-> +	const struct media_bus_fmt_info *info =3D media_bus_fmt_info_get(bus_fm=
-t);
-> +
-> +	return info ? info->dt : MIPI_CSI2_DT_INVALIDATE;
-> +}
-> +EXPORT_SYMBOL_GPL(media_bus_fmt_to_csi2_dt);
-> +
-> +u32 media_bus_fmt_to_csi2_bpp(int bus_fmt)
-
-Similar to the function above, could this also take a u32 for bus_fmt
-to match the subsystem standard?
-
-> +{
-> +	const struct media_bus_fmt_info *info =3D media_bus_fmt_info_get(bus_fm=
-t);
-> +
-> +	return info ? info->bpp : 0;
-> +}
-> +EXPORT_SYMBOL_GPL(media_bus_fmt_to_csi2_bpp);
-> diff --git a/include/media/mipi-csi2.h b/include/media/mipi-csi2.h
-> index 40fc0264250d7..bd22d2ae57e81 100644
-> --- a/include/media/mipi-csi2.h
-> +++ b/include/media/mipi-csi2.h
-> @@ -44,4 +44,30 @@
->  #define MIPI_CSI2_DT_RAW20		0x2f
->  #define MIPI_CSI2_DT_USER_DEFINED(n)	(0x30 + (n))	/* 0..7 */
-> =20
-> +/* Use one undefined value in spec */
-> +#define MIPI_CSI2_DT_INVALIDATE		0xff
-
-This isn't a bug, but invalidate is a verb. To follow typical kernel state
-naming conventions, this should probably be named MIPI_CSI2_DT_INVALID or
-MIPI_CSI2_DT_UNKNOWN.
-
-> +
-> +/**
-> + * media_bus_fmt_to_csi2_dt - Get MIPI CSI2 data type from media bus for=
-mat
-> + *
-> + * @bus_fmt: media bus format identifier (MEDIA_BUS_FMT_*)
-> + *
-> + * return MIPI CSI2 data type MIPI_CSI2_DT_*, MIPI_CSI2_DT_INVALIDATE me=
-ans
-> + * can't get data type from bus_fmt.
-> + */
-> +u32 media_bus_fmt_to_csi2_dt(int bus_fmt);
-> +
-> +/**
-> + * media_bus_fmt_to_csi2_bpp - Get media bus format's bit width per pixel
-> + *
-> + * @bus_fmt: media bus format identifier (MEDIA_BUS_FMT_*)
-> + *
-> + * returns bit width per pixel, 0 is invalidate width, which can't get f=
-rom
-
-This isn't a bug, but there's a grammatical error here. It says invalidate
-width instead of invalid width.
-
-> + * bus_fmt.
-> + *
-> + * Notes: this bpp is suffix from MEDIA_BUS_FMT_*, no pad, not for compr=
-essed
-> + * data.
-> + */
-> +u32 media_bus_fmt_to_csi2_bpp(int bus_fmt);
-> +
->  #endif /* _MEDIA_MIPI_CSI2_H */
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513205949.1054=
-44-1-Frank.Li@nxp.com?part=3D1
