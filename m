@@ -1,135 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452EB39A075
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 19:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEB133689B;
+	Thu, 14 May 2026 20:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778785514; cv=none; b=CN+r4707I4CE8ipioxJQFyQyNX3Rgt+zpLnjeYHT9ICUo+vTVEc0rXokJPEXnyWV2VZf+RNqJLQV0G1iqvvza9fRH9wRcGwOMMUswEH8MmjyUseheg9BvH+1NJOj+PCWAkYzHhAitfbB1GjdgtcbIuQGOyFlskMxQC6Sg7rSoUE=
+	t=1778790548; cv=none; b=YoriRU9QfjBrZKV1MYE9GEwh9EgKey9sBSmIihX3DuEMAk9Al49oV3wkEwgPeRjiGJUvkjzZOsngiaBRYXqJu1mqa6hGFhumaO6oTIG9JQBvdhG33UX/lWUOxsZqdBU+98dB8SJPSjrexxsRY8OOSYwWgYfteZtcpLRyYiKy5Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778785514; c=relaxed/simple;
-	bh=IxufPOthI6kZEFAyqbsNWe925bkT6BdlzfAludx4V2g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iB4tSQ1UzPeTjq6IHugs8rsGwfcf7Z1rfGkO4WlV0ibRk3wXXIwN517ZzNhwyOuErb5hQruAgSNBTnrtpLtJ9yEUgYMlEJcG82NpoKD+DHm6z19UB+drWX12oRQw7AE9l7Fz4ZqFj0sx9tEnSPVs8diTbSa3CzKEpZjyvfrtUNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+H6aoyc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778790548; c=relaxed/simple;
+	bh=WYEZ+dPObHt5hmrhhbH7GFqUbFObKwL+IZ1qBKpCbqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=STJe+EIgOi5ROY+7Ogi9HtNP6hoF+j81Ru9RAhmxR5kt895nZCjrJnDYcyEx+ONHPLQBCkkbPSQqrohHX3ur2ZyB8hOiRNKayIp7aXveJb3QTq2DjfoIl1ZLZGRDZK86BQ3qtkhtfMAQVBP0FXtYnSwmGRVFg6+8QyCfitmlXLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MfVLs6PB; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+H6aoyc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63B0C2BCB3;
-	Thu, 14 May 2026 19:05:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778785513;
-	bh=IxufPOthI6kZEFAyqbsNWe925bkT6BdlzfAludx4V2g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=B+H6aoycESA5mCD8vs1YMzejb5tmMiqpZRvtUP2QjR38sjh1qdooNb7RQoglCcStO
-	 wfhiD4XiLLFbPWPECUaVUQb8v1MxDUto58QSoaUwRoY2dRkT5Y5vpZomCJgNcsv7Iz
-	 FR+daum3HqoN3KXJTzowZH1aQ/Wi1R9YJuANLzuo0SUc4IKPHsDU962Tktce/m0xWO
-	 SOLpcPoyuMCJEAYuom2XPruY34MBlTOwVmH7XNnS8XCjb3lXTpuwRXMOqy8xBiq5Cb
-	 +rQMDiUEFS56ym1E96zuXB2xmB/3libAjLdI6wZ3D+YzcL+RQtxGfWsq+hzOH5qcHX
-	 CBA0wHYIhQ1dQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] clocksource: move NXP timer selection to
- drivers/clocksource
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Enric Balletbo i Serra" <eballetbo@kernel.org>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
-References: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 19:05:13 +0000
-Message-Id: <20260514190513.B63B0C2BCB3@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MfVLs6PB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778790545; x=1810326545;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WYEZ+dPObHt5hmrhhbH7GFqUbFObKwL+IZ1qBKpCbqE=;
+  b=MfVLs6PBU5eOxjpIg8VoRaNFQqUS60n9Du4fcWFiXkqoksa70eTmP+GS
+   NE3MRBALeYPl30mM/ov3MCiKiSThlx4UUz9fa1zg7eL4DJoPHT5jCJyMR
+   bvlxGeHD4mSywQd6ryC0xKQeiV3v+ndrDtvaKvVzX6tnUWdm3MFHMucvx
+   vH8FqxDaIs36gXssJLBWqijF6SufLrjebshZzPRLqUsy4L55oJMk3/fZx
+   o/iI2sUVx+deaKTYDS/sPz3muiWBGfuOWYucQ5Np1wO46cji+kHHRa6sQ
+   +uDCSFzIUtMVLIr5fn2BBSM6bWtzNYNXoGt2k14qSbUBNSqJaZmDtC9YA
+   g==;
+X-CSE-ConnectionGUID: k0Cf3KpXS1yl3KfU3YtULA==
+X-CSE-MsgGUID: IzEPoCKcSUKh75kJ817WlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83355264"
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="83355264"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 13:29:05 -0700
+X-CSE-ConnectionGUID: G6h6ELAETkesj8PpJAy8FQ==
+X-CSE-MsgGUID: To/4DETzS4GEq19uZxuA5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="232092652"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by fmviesa009.fm.intel.com with ESMTP; 14 May 2026 13:29:01 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wNcfz-000000008rh-0Xcq;
+	Thu, 14 May 2026 20:28:59 +0000
+Date: Thu, 14 May 2026 22:28:54 +0200
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml
+ format
+Message-ID: <202605142234.F1IZjPJb-lkp@intel.com>
+References: <20260512214704.1084890-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512214704.1084890-1-Frank.Li@nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Shoehorning ARCH_S32 (ARM64) into the Vybrid scheduler clock choic=
-e block risks replacing the native ARM Architected Timer with a slower 32-b=
-it MMIO timer.
+Hi Frank,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on linus/master v7.1-rc3 next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-net-dsa-Convert-lan9303-txt-to-yaml-format/20260514-202017
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20260512214704.1084890-1-Frank.Li%40nxp.com
+patch subject: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260514/202605142234.F1IZjPJb-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605142234.F1IZjPJb-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   Warning: Documentation/devicetree/bindings/regulator/motorola,cpcap-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/motorola,cpcap.yaml
+   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+   Warning: Documentation/devicetree/bindings/rtc/motorola,cpcap-rtc.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/motorola,cpcap.yaml
+   Warning: Documentation/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
+   Warning: Documentation/leds/leds-lp5812.rst references a file that doesn't exist: Documentation/ABI/testing/sysfs-class-led-multicolor.rst
+>> Warning: Documentation/networking/dsa/lan9303.rst references a file that doesn't exist: Documentation/devicetree/bindings/net/dsa/lan9303.txt
+   Warning: Documentation/translations/it_IT/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
+   Warning: Documentation/translations/ja_JP/SubmittingPatches references a file that doesn't exist: linux-2.6.12-vanilla/Documentation/dontdiff
+   Warning: Documentation/translations/ja_JP/process/submit-checklist.rst references a file that doesn't exist: Documentation/translations/ja_JP/SubmitChecklist
+   Warning: Documentation/translations/zh_CN/doc-guide/parse-headers.rst references a file that doesn't exist: Documentation/userspace-api/media/Makefile
+   Warning: Documentation/translations/zh_CN/filesystems/gfs2-glocks.rst references a file that doesn't exist: Documentation/filesystems/gfs2-glocks.rst
+
 --
-
-commit 37ddcc4eb82e3bfe1a0ebf5e407f22b4f2b1bef7
-Author: Enric Balletbo i Serra <eballetb@redhat.com>
-
-clocksource: move NXP timer selection to drivers/clocksource
-
-This commit relocates the NXP clocksource Kconfig logic from
-arch/arm/mach-imx/Kconfig to drivers/clocksource/Kconfig. It updates
-the selection to include support for the 64-bit ARCH_S32 platform,
-adding a "None" option to fallback to the standard ARM Architected Timer.
-
-[ ... ]
-
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index d1a33a231a44c..d9c76dd443f8a 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -793,4 +793,35 @@ config RTK_SYSTIMER
->  	  this option only when building for a Realtek platform or for compilat=
-ion
->  	  testing.
-> =20
-> +choice
-> +	prompt "NXP clocksource for scheduler clock"
-> +	depends on SOC_VF610 || ARCH_S32
-> +	# Default to Global Timer for Vybrid (32-bit)
-> +	default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
-> +	# Default to None for S32 (64-bit)
-> +	default VF_TIMER_NONE if ARCH_S32
-> +
-> +	config VF_USE_ARM_GLOBAL_TIMER
-> +		bool "Use NXP Vybrid Global Timer"
-> +		depends on ARCH_MULTI_V7 && SOC_VF610
-> +		select ARM_GLOBAL_TIMER
-> +		select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
-> +		help
-> +		  Use the NXP Vybrid Global Timer as clocksource.
-> +
-> +	config VF_USE_PIT_TIMER
-> +		bool "Use NXP PIT timer"
-> +		select NXP_PIT_TIMER
-> +		help
-> +		  Use NXP Periodic Interrupt Timer (PIT) as clocksource.
-
-Could this replace the native ARM Architected Timer with a slower 32-bit MM=
-IO
-timer on S32 systems?
-
-Since NXP_PIT_TIMER has no prompt of its own, an S32 user needing the PIT
-timer for other valid purposes (like clock events) is forced to select
-VF_USE_PIT_TIMER from this choice block.
-
-If selected, the timer-nxp-pit.c driver unconditionally calls
-sched_clock_register() during initialization. This automatically overrides =
-the
-existing scheduler clock if the new clock's rate is higher than or equal to
-the current one.
-
-Because the PIT timer is typically driven by a high-speed system bus, its
-frequency will likely exceed the ARM Architected Timer's standard 25-50 MHz
-rate. Overriding the heavily optimized 64-bit system-register Architected
-Timer with a 32-bit memory-mapped PIT timer introduces massive read latency
-for every sched_clock() call.
-
-Would it be better to expose NXP_PIT_TIMER as a standalone option for S32,
-and modify the driver to avoid registering as sched_clock on ARM64
-architectures?
-
-> +
-> +	config VF_TIMER_NONE
-> +		bool "None (Use standard Arch Timer)"
-> +		depends on ARCH_S32
-> +		help
-> +		  Do not use any specific NXP timer driver. Use the standard
-> +		  ARM Architected Timer instead.
-> +
-> +endchoice
-> +
->  endmenu
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514-fix-nxp-ti=
-mer-v3-1-a3e68fdb505e@redhat.com?part=3D1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
