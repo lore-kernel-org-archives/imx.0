@@ -1,110 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB732BF41
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 21:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A309A31F999
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 21:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778792420; cv=none; b=Qcbku1shf0eLcT8jluOiOGEbzvxG0DWJ4sQkBhXKgEG9Jg5p0XUWb25P/gVUvp0L6ZWFAK1e++X4RXq0qPIChE3Q95e/XL5gwWkMEhgzZPtrFP4Hbham/9GijyFtIwMvD1CMgntDyDsxY0PkEnNMkV64s5mTeJUNNINfREbjRSY=
+	t=1778793007; cv=none; b=QPHdiIVqEVJQLn7qli7S00EhRUwj8rTdeNSYFQOvxfQkrD3E2EPFKS6garpsIBO3WPq3X+9ScO7BE6XbwP6WQs2PLhjapNKuNHhFDWGA0ZoK47e3iLwUfmURRtsHqag++416YhkKVFpR2hhqbp6qlPJIFQILfKtDBKLnCXFqVIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778792420; c=relaxed/simple;
-	bh=ATVlQX1TLJ59UJm6AtOUOqUW0tQ97xL1aOm+MPo6gAg=;
+	s=arc-20240116; t=1778793007; c=relaxed/simple;
+	bh=YNty6WllGMDBDmB/CvjQ9Q+/kUfzBD/Wi1XNuJ54Mfo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EPnn6cvjUINufVYjQuQ4HRZHKMYmoSB3HbkNbgJB0cAlpswG/tf9/I8RPnWrLjrGvsqkgOPDu4bVMC8OXjg7y3EC6eBscKlIq/st138vrP89gfv3W+X7rTYUB6QUuTnnDQDgUHM+boN8WFyvdLSYgdqS8cOlf01qbXMf+HfhqA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGTMiWk0; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=RkseZ4vQkVF6hB1+ksMptZ0Idn4vgtfdXJw1tMNdWkBcunFNo9KYJgia8nIkjSyDQPdDJMVod7CtQyiuabpKKZjczFvX1AdIcvfmKjnoUWOyNdBNZQ1/PRZeD4x3m785LVgT53a8KpaesEMoFHgaN4b/I7YrHstyWkA8B0dEAPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYLDoXYp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGTMiWk0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE14DC2BCB3;
-	Thu, 14 May 2026 21:00:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYLDoXYp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570A0C2BCB3;
+	Thu, 14 May 2026 21:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778792420;
-	bh=ATVlQX1TLJ59UJm6AtOUOqUW0tQ97xL1aOm+MPo6gAg=;
+	s=k20201202; t=1778793007;
+	bh=YNty6WllGMDBDmB/CvjQ9Q+/kUfzBD/Wi1XNuJ54Mfo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=YGTMiWk0ECXzFcAxuiAxnoJTqyAdiVUSUHW0sOf7tlye/UdIdP9kiyuyzqQ9he5Yh
-	 6EGesYxXV0+VXyhOV2AvcuwHQz7LvjsSZ8cx7SC1UFMfdM9e2XIojywW8ph5ITHNH6
-	 1VuNW5TzspyX1b9s/VibjpNnBbSwhRFr6P0UIz6jxKlgPl1e2hoEm3klDCclq1XO2+
-	 r8iT0tHLU//zZKngRW19j3e4MPSey4at9vhliHHGvtuAuBUYhJoficQxEToYvBIJj1
-	 Nhtb6yFAwReoXWOIsmuM/+Ec/jIDNTJ4n7a5+eHgHLlq0+WKNZpPw7suWow39AXRFH
-	 HuuQOVhyMtu3g==
+	b=UYLDoXYpTm5n/Dur3mWyHHL9SeOqZq7w9nspFnjfqCT/0QqbOOwmL6ku0EhUMJgPq
+	 5FzOTr5ybPQ4AFHgQXJAnWoCJcAXUEUDMbBVhbWO40NbQDWBlnYTzJfiwDdt+lG9/e
+	 MFvMVDZq3dGtEL/zZAVZ/czBI6aiNmRfdFq4op9sVy6PKhLvmSf8s7bKZRrgBu30SD
+	 FzhT9ln9/APHT6IxgWn6jVaOeld543L7SNKmbE7v5eCXYa1SwvG1adhWFFo5IKqHiM
+	 LqOyJzPMJKql+zyjaasPr0i6HSljzx+9aGtdS69qZSVZitxpISDm5rvAImjywheEFA
+	 99hybLVIvx8bA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/5] remoteproc: switch exact-match drivers to
- wc-ioremap callbacks
+Subject: Re: [PATCH v5 1/1] media: v4l2-common: Add helper function
+ media_bus_fmt_to_csi2_(bpp|dt)()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ben Levinsky" <ben.levinsky@amd.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com
-In-Reply-To: <20260514162129.1504162-3-ben.levinsky@amd.com>
-References: <20260514162129.1504162-3-ben.levinsky@amd.com>
+To: "Frank Li" <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260514183357.3088564-1-Frank.Li@nxp.com>
+References: <20260514183357.3088564-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 21:00:19 +0000
-Message-Id: <20260514210019.EE14DC2BCB3@smtp.kernel.org>
+Date: Thu, 14 May 2026 21:10:06 +0000
+Message-Id: <20260514211007.570A0C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Format string vulnerability when initializing rproc_mem_entry usin=
-g device tree node names
+- [High] media_bus_fmt_to_csi2_dt() incorrectly returns 0 (MIPI_CSI2_DT_FS)=
+ instead of MIPI_CSI2_DT_INVALID for formats without a mapped CSI-2 data ty=
+pe.
+- [Low] Mismatch between kernel-doc comment and macro definition for the in=
+valid data type indicator.
 --
 
-commit 1e23984cace57551a1444d0f4d0c49192a7ec852
-Author: Ben Levinsky <ben.levinsky@amd.com>
+commit dd2f0971f75dadcf691d8ed964c49386a1fc2170
+Author: Frank Li <Frank.Li@nxp.com>
 
-remoteproc: switch exact-match drivers to wc-ioremap callbacks
+media: v4l2-common: Add helper function media_bus_fmt_to_csi2_(bpp|dt)()
 
-This patch replaces the exact-match carveout map and unmap callbacks in
-existing remoteproc drivers with the common wc-ioremap helpers.
+This commit adds helper functions media_bus_fmt_to_csi2_bpp() and
+media_bus_fmt_to_csi2_dt() to convert media bus formats to MIPI CSI-2 bit
+depths and data types. This aims to reduce duplicate static mapping arrays
+across different CSI-2 drivers.
 
-> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rp=
-roc.c
-> index 3c25625f966dc..e3121fadd2925 100644
-> --- a/drivers/remoteproc/rcar_rproc.c
-> +++ b/drivers/remoteproc/rcar_rproc.c
-[ ... ]
-> @@ -73,8 +44,8 @@ static int rcar_rproc_prepare(struct rproc *rproc)
->  		mem =3D rproc_mem_entry_init(dev, NULL,
->  					   res.start,
->  					   resource_size(&res), da,
-> -					   rcar_rproc_mem_alloc,
-> -					   rcar_rproc_mem_release,
-> +					   rproc_mem_entry_ioremap_wc,
-> +					   rproc_mem_entry_iounmap,
->  					   res.name);
-
-This isn't a regression introduced by this patch, but since these lines are
-being modified, could this cause a format string issue?
-
-Looking at rproc_mem_entry_init(), it takes a format string as the name
-parameter and passes it to vsnprintf(). If a dynamically loaded device
-tree overlay has a node name in res.name containing format specifiers,
-could it lead to arbitrary stack reads?
-
-Would it be safer to use "%s", res.name here?
+> diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-c=
+ore/v4l2-common.c
+> index bceafc4e92c81..6c8afb96e60fe 100644
+> --- a/drivers/media/v4l2-core/v4l2-common.c
+> +++ b/drivers/media/v4l2-core/v4l2-common.c
 
 [ ... ]
-> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc=
-/xlnx_r5_remoteproc.c
-> index 45a62cb980725..e5d1903c9636a 100644
-> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-[ ... ]
-> @@ -560,8 +521,8 @@ static int add_sram_carveouts(struct rproc *rproc)
->  		rproc_mem =3D rproc_mem_entry_init(&rproc->dev, NULL,
->  						 dma_addr,
->  						 len, da,
-> -						 zynqmp_r5_mem_region_map,
-> -						 zynqmp_r5_mem_region_unmap,
-> +						 rproc_mem_entry_ioremap_wc,
-> +						 rproc_mem_entry_iounmap,
->  						 sram->sram_res.name);
 
-Similarly here, can passing sram->sram_res.name directly to
-rproc_mem_entry_init() trigger a format string vulnerability if the node
-name contains format specifiers?
+> +static const struct media_bus_fmt_info media_bus_fmt_info[] =3D {
+> +	{ .code =3D MEDIA_BUS_FMT_RGB444_1X12, .bpp =3D 12 },
+> +	{ .code =3D MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE, .bpp =3D 16 },
+
+[ ... ]
+
+> +u32 media_bus_fmt_to_csi2_dt(u32 bus_fmt)
+> +{
+> +	const struct media_bus_fmt_info *info =3D media_bus_fmt_info_get(bus_fm=
+t);
+> +
+> +	if (!info)
+> +		return MIPI_CSI2_DT_INVALID;
+> +
+> +	/* Check bpp because 0 (MIPI_CSI2_DT_FS) is a valid data type code */
+> +	return info->bpp ? info->dt : MIPI_CSI2_DT_INVALID;
+> +}
+
+Since uninitialized fields in a struct array are zero-initialized in C, any
+entry in media_bus_fmt_info without an explicit .dt value will have .dt =3D=
+ 0.
+
+Because every entry in the array defines a non-zero .bpp, info->bpp is alwa=
+ys
+true for matched formats. Doesn't this mean the function will return 0 for
+unmapped formats rather than MIPI_CSI2_DT_INVALID?
+
+If 0 is returned, this maps to MIPI_CSI2_DT_FS (Frame Start). Could this
+cause drivers to silently program the camera hardware with a short-packet
+Frame Start data type for pixel data instead of rejecting the unsupported
+format?
+
+> diff --git a/include/media/mipi-csi2.h b/include/media/mipi-csi2.h
+> index 40fc0264250d7..bb5054f0cf310 100644
+> --- a/include/media/mipi-csi2.h
+> +++ b/include/media/mipi-csi2.h
+
+[ ... ]
+
+> +/* Use one undefined value in spec */
+> +#define MIPI_CSI2_DT_INVALID		0xff
+> +
+> +/**
+> + * media_bus_fmt_to_csi2_dt - Get MIPI CSI2 data type from media bus for=
+mat
+> + *
+> + * @bus_fmt: media bus format identifier (MEDIA_BUS_FMT_*)
+> + *
+> + * Return: MIPI CSI2 data type MIPI_CSI2_DT_*, MIPI_CSI2_DT_INVALIDATE m=
+eans
+> + * can't get data type from bus_fmt.
+> + */
+
+This isn't a bug, but there is a typo in the documentation. The macro defin=
+ed
+above is MIPI_CSI2_DT_INVALID, but the kernel-doc references
+MIPI_CSI2_DT_INVALIDATE.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514162129.1504=
-162-1-ben.levinsky@amd.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514183357.3088=
+564-1-Frank.Li@nxp.com?part=3D1
