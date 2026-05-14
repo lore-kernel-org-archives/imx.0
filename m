@@ -1,102 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3D2190473;
-	Thu, 14 May 2026 00:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93A26F476;
+	Thu, 14 May 2026 00:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778717940; cv=none; b=ACiX1uKSwl2ojkw78dT8H2QvW1K56H5PeX/fbjwcf4wyWX/aSZUVW8Hp5HPZrYbc20n0MZtqRHh85XEXANMmCimLWeR9e76O8B/puvNynvpawoSUI7WL1qCIvdu7qSt8EN00vQ94JfbYWGZiHl6ouxZheojSqYuw4Kbw1vf7XPk=
+	t=1778719126; cv=none; b=CWc7R5HpIrm4wy5dUoO3urzFP8tSOy+ArjNm9cvP5NsYm493xabtmnZ4OymUkIy/vjD1IxoPuq236E8q83QY8yjcT8kJF5I/T1vgsSx1t90xRJdV8eKqdNOID2DI4Et/YW17lGF6bKaJAk2XUCyTXxkWK9+jsc621nOFdL3dEEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778717940; c=relaxed/simple;
-	bh=Kb8beeGldOMtP8VGFDc0GQozSIqbhJM6BE5TUhEp5JU=;
+	s=arc-20240116; t=1778719126; c=relaxed/simple;
+	bh=0pm2so/gT8FBwtcqO3Wc625VGbJi1uk65jlu5tB71k0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hnkxLMArZV3w1ydTk2W7Xyl7JXTNMA2pOzBmMWHNh6Chqt9VS0/1xloVgxRa5x6cifyoJFXBsuTWM+fTCGUyJwhfR5qGEOmwap6qCsTvlxzZQHj8+h8Pii/QDz/nRAFEL9l7z2kWEMVMbnIf3+26ti8jJzw4l3vPNOsvopBzHys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHSQV5vY; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=cHEkIaBJfLmrnF3LjCMuBgCTiY+++C212h52jA/HeLCjnhAPCEHcGpxjrUvaYlCjQikD8xIznv8zvv+2sqLVTyN2AYiWMFexQlz2lLfJvj5HLO7xRNFKGFaogNudFwG1tIEUB3u7eaLpHDbuWcXlh9RD6e8K8UJppctBmfBABFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmUVjk0V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHSQV5vY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C352C19425;
-	Thu, 14 May 2026 00:18:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmUVjk0V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBB2C19425;
+	Thu, 14 May 2026 00:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778717939;
-	bh=Kb8beeGldOMtP8VGFDc0GQozSIqbhJM6BE5TUhEp5JU=;
+	s=k20201202; t=1778719126;
+	bh=0pm2so/gT8FBwtcqO3Wc625VGbJi1uk65jlu5tB71k0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=gHSQV5vYwDVNncN/qBYrbfk6siiTKFckrADFmcCt0LMBcEogxgWQchKV852V/5PdC
-	 7vGKiOtrEb4YaGvd45caqGlUgmd5ex12ou+sLMeoIR+Le6AlUZHBb7VLPzqfaxrumt
-	 q0xk7nza3vxyCV1CKTlklr18fGVg98Hzp0hLWuHuM6oyuY+gZVl6jmtjrb8Iiwke1h
-	 5IaAQJ4w6ZmqLKYDXtdTOfs/wD2suq1iBnVUE/kKozbqi2bnJDsLFkX+j8T6FCsbXx
-	 z/n65+g2m/CZUtqIam96RdzFrr3Q7GfwzxoZIuNYMR+sGBkQoAwowriRFz1GGTejKo
-	 wXd7mgQ2jlBew==
+	b=dmUVjk0V6c3cIOQmVYOme1LOWxhrUKp5FhM1cWIovvW2z2o9QnlNrLHCsJeZf1J6N
+	 IRjjW16wKRp0F/+3PtCDEYkQa4llwobDFZZs0PIwGD8YgkexjZ9EXFtKIaRojr/CC8
+	 ITZgYUaTJxG6+HSFfGabOSsp92U4ewqvZiljTSUjDroYd6c2+Azu6VbLvKesBNEQRM
+	 5LakxrBYShlmh65Kx2zCosafj4AV8DlV0FjQBniRRvNEtrWHGIxLfJZqyEvMfsEeBJ
+	 uORTBsbuOrq7kGogBxd/AbTwQS/5e+a1Tu8ypbxIjueshqb1Mir4jAyeIgSgHjS1zx
+	 mwM1J/VaUjTtQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml
- format
+Subject: Re: [PATCH v5 5/9] dmaengine: dw-edma: Pass dma_slave_config to
+ dw_edma_device_transfer()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frank Li" <Frank.Li@nxp.com>
-Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org
-In-Reply-To: <20260512224544.1223283-1-Frank.Li@nxp.com>
-References: <20260512224544.1223283-1-Frank.Li@nxp.com>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260512-dma_prep_config-v5-5-26865bf7d935@nxp.com>
+References: <20260512-dma_prep_config-v5-5-26865bf7d935@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 00:18:58 +0000
-Message-Id: <20260514001859.6C352C19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 00:38:45 +0000
+Message-Id: <20260514003846.0CBB2C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The YAML binding schema omits the `interrupts` property, which b=
-reaks schema validation for valid hardware configurations that use the PMIC=
-'s interrupt line.
+- [High] The `dw_edma_device_prep_config_sg` function ignores the return va=
+lue of `dw_edma_device_config` and proceeds to use an explicitly rejected c=
+onfiguration for DMA transfers.
+- [High] The implementation fails to achieve the claimed "atomic configurat=
+ion" because it locklessly mutates shared channel state, corrupting concurr=
+ently active DMA transfers.
 --
 
-commit 6cc3d4149b88e8fe5fe483876ec1bdf0a91a59e7
+commit 8f2944930122fd18a6a04f03176bb9c6eddcd9ba
 Author: Frank Li <Frank.Li@nxp.com>
 
-dt-bindings: regulator: convert ltc3589 to yaml format
+dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
 
-Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
-binding from text to yaml format.
+This commit passes dma_slave_config to dw_edma_device_transfer() to
+support atomic configuration and descriptor preparation when a non-NULL
+configuration is provided to device_prep_config_sg().
 
-> diff --git a/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yam=
-l b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
-> new file mode 100644
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
+> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
+edma-core.c
+> index f7f58b0010e26..ec6f6b1e48256 100644
+> --- a/drivers/dma/dw-edma/dw-edma-core.c
+> +++ b/drivers/dma/dw-edma/dw-edma-core.c
 [ ... ]
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - lltc,ltc3589
-> +      - lltc,ltc3589-1
-> +      - lltc,ltc3589-2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  regulators:
-[ ... ]
-> +required:
-> +  - compatible
-> +  - reg
-> +  - regulators
-> +
-> +additionalProperties: false
+> @@ -595,7 +610,7 @@ dw_edma_device_prep_config_sg(struct dma_chan *dchan,=
+ struct scatterlist *sgl,
+>  	if (config)
+>  		dw_edma_device_config(dchan, config);
 
-Does this conversion accidentally drop support for the interrupts property?
+Should we check the return value of dw_edma_device_config() here?
 
-The LTC3589 driver in drivers/regulator/ltc3589.c checks for and requests
-an IRQ using client->irq to handle internal regulator events like thermal
-warnings and under-voltage.
+If an invalid configuration is passed, dw_edma_device_config() returns
+-EINVAL. By ignoring the return value, the code proceeds to extract the
+source and destination addresses from the explicitly rejected configuration
+via dw_edma_device_get_config(), potentially resulting in descriptors
+prepared with unvalidated hardware parameters.
 
-Since the schema enforces additionalProperties: false at the top level,
-valid device tree configurations that define the physical interrupt
-connection for this PMIC will be rejected by dtbs_check.
+Additionally, the commit message states this change supports atomic
+configuration, but dw_edma_device_config() mutates shared channel state:
 
-Should interrupts (e.g. with maxItems: 1) be explicitly permitted in the
-properties list?
+dw_edma_device_config() {
+        ...
+        if (cfg_non_ll || non_ll)
+                chan->non_ll =3D true;
+        ...
+        memcpy(&chan->config, config, sizeof(*config));
+}
+
+Since the dmaengine API allows concurrent descriptor preparations when
+device_prep_config_sg is provided, could this cause a data race on
+chan->config and chan->non_ll?
+
+If chan->non_ll is actively read by the interrupt handler to dictate
+hardware execution mode, could modifying it while preparing a new descriptor
+dynamically corrupt the execution mode of currently active transfers?
+
+> -	return dw_edma_device_transfer(&xfer);
+> +	return dw_edma_device_transfer(&xfer, dw_edma_device_get_config(dchan, =
+config));
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512224544.1223=
-283-1-Frank.Li@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-dma_prep_c=
+onfig-v5-0-26865bf7d935@nxp.com?part=3D5
