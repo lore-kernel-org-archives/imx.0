@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93A26F476;
-	Thu, 14 May 2026 00:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838F52F9D89;
+	Thu, 14 May 2026 01:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778719126; cv=none; b=CWc7R5HpIrm4wy5dUoO3urzFP8tSOy+ArjNm9cvP5NsYm493xabtmnZ4OymUkIy/vjD1IxoPuq236E8q83QY8yjcT8kJF5I/T1vgsSx1t90xRJdV8eKqdNOID2DI4Et/YW17lGF6bKaJAk2XUCyTXxkWK9+jsc621nOFdL3dEEA=
+	t=1778720688; cv=none; b=TXwmRz8gtc2rm304CsgP6nmxfTVMR3cDxl32kjgext2Rs9hL90o0d+PVha5Q7NwC7LLs2VwzfMgUN7JhPR/EukXq2uRa/oE3Eoh3JKZQQC70FeOdzX3EPSlUu8vHJKh1fz5uxjwW6MZlk3HfoWmS2vVU4R4LqEiSLFxnyKk3yrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778719126; c=relaxed/simple;
-	bh=0pm2so/gT8FBwtcqO3Wc625VGbJi1uk65jlu5tB71k0=;
+	s=arc-20240116; t=1778720688; c=relaxed/simple;
+	bh=Os8M03cI/bIK97UliIlzT2ruhXSS3WfDehObzml7PFo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cHEkIaBJfLmrnF3LjCMuBgCTiY+++C212h52jA/HeLCjnhAPCEHcGpxjrUvaYlCjQikD8xIznv8zvv+2sqLVTyN2AYiWMFexQlz2lLfJvj5HLO7xRNFKGFaogNudFwG1tIEUB3u7eaLpHDbuWcXlh9RD6e8K8UJppctBmfBABFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmUVjk0V; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=eKTaC92K8M/CLMqUs5zO7LVBRS48en99Mh6w6p8zAmM94uBTZOQXfkYpn1IzaUbc+nQoSUXd/yoVwfdMygOrjbE1mkXY6+nGHEtY6qDhp1C0TvvmrZLXHJU9Fi62HeWchi6slic0fG1+E9F9YG2J1ANinbWHcahW4qG17hW9y88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKrtDHjd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmUVjk0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBB2C19425;
-	Thu, 14 May 2026 00:38:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKrtDHjd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A329CC19425;
+	Thu, 14 May 2026 01:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778719126;
-	bh=0pm2so/gT8FBwtcqO3Wc625VGbJi1uk65jlu5tB71k0=;
+	s=k20201202; t=1778720688;
+	bh=Os8M03cI/bIK97UliIlzT2ruhXSS3WfDehObzml7PFo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=dmUVjk0V6c3cIOQmVYOme1LOWxhrUKp5FhM1cWIovvW2z2o9QnlNrLHCsJeZf1J6N
-	 IRjjW16wKRp0F/+3PtCDEYkQa4llwobDFZZs0PIwGD8YgkexjZ9EXFtKIaRojr/CC8
-	 ITZgYUaTJxG6+HSFfGabOSsp92U4ewqvZiljTSUjDroYd6c2+Azu6VbLvKesBNEQRM
-	 5LakxrBYShlmh65Kx2zCosafj4AV8DlV0FjQBniRRvNEtrWHGIxLfJZqyEvMfsEeBJ
-	 uORTBsbuOrq7kGogBxd/AbTwQS/5e+a1Tu8ypbxIjueshqb1Mir4jAyeIgSgHjS1zx
-	 mwM1J/VaUjTtQ==
+	b=pKrtDHjdS/8B/H4GKH0JtL2Lhv1p/9oevkUvp9K+dKgMbQSfJ1vSq0y+Bz8HNJWtV
+	 b7Z6yEidcnWeBfr94Bg8kDsy1EyBmGqhCfQLsMGOqTi7J863Fwcaj39dPo0VXXsZHM
+	 EgcHRbWOuTUkJ/hRgcyjrgQf4zQoR1y0uC3RrnerRh9kC9CgWMMDWezh+PhUCfmT7Q
+	 BxrgbvHocfoocTcC5L8uMh16kHVG0tfNmdxyHk8CM5s/J/tDUJZnddMiUYdkHKGh77
+	 qvdPbRRk+ta5KFaGQoS+VzangwppvM5BD6ejiP6qwd56LhZsHxcRZH5VR+3M4BsfeN
+	 mUFQfb1tx01Dw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 5/9] dmaengine: dw-edma: Pass dma_slave_config to
- dw_edma_device_transfer()
+Subject: Re: [PATCH v4 1/3] dt-bindings: PCI: imx6q-pcie: Add intr, aer and
+ pme interrupts
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Frank Li" <Frank.Li@nxp.com>
-Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260512-dma_prep_config-v5-5-26865bf7d935@nxp.com>
-References: <20260512-dma_prep_config-v5-5-26865bf7d935@nxp.com>
+To: "Richard Zhu" <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, linux-pci@vger.kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260513025101.1498104-2-hongxing.zhu@nxp.com>
+References: <20260513025101.1498104-2-hongxing.zhu@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 00:38:45 +0000
-Message-Id: <20260514003846.0CBB2C19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 01:04:47 +0000
+Message-Id: <20260514010447.A329CC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,66 +46,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The `dw_edma_device_prep_config_sg` function ignores the return va=
-lue of `dw_edma_device_config` and proceeds to use an explicitly rejected c=
-onfiguration for DMA transfers.
-- [High] The implementation fails to achieve the claimed "atomic configurat=
-ion" because it locklessly mutates shared channel state, corrupting concurr=
-ently active DMA transfers.
+- [Medium] Strictly ordered `items` array prevents omitting intermediate op=
+tional interrupts.
+- [Medium] Global addition of optional interrupts loosens schema validation=
+ for older hardware generations.
 --
 
-commit 8f2944930122fd18a6a04f03176bb9c6eddcd9ba
-Author: Frank Li <Frank.Li@nxp.com>
+commit c716cc823581eb06c45ae0ee7c1441e2e4b80ec3
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
+dt-bindings: PCI: imx6q-pcie: Add intr, aer and pme interrupts
 
-This commit passes dma_slave_config to dw_edma_device_transfer() to
-support atomic configuration and descriptor preparation when a non-NULL
-configuration is provided to device_prep_config_sg().
+This commit adds optional interrupt entries (intr, aer, pme) to the i.MX6Q
+PCIe binding to support event-based interrupt handling.
 
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
-edma-core.c
-> index f7f58b0010e26..ec6f6b1e48256 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
-[ ... ]
-> @@ -595,7 +610,7 @@ dw_edma_device_prep_config_sg(struct dma_chan *dchan,=
- struct scatterlist *sgl,
->  	if (config)
->  		dw_edma_device_config(dchan, config);
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/=
+Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> index 9d1349855b422..cf709132ff1e2 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> @@ -58,12 +58,18 @@ properties:
+>      items:
+>        - description: builtin MSI controller.
+>        - description: builtin DMA controller.
+> +      - description: PCIe event interrupt.
+> +      - description: builtin AER SPI standalone interrupt line.
+> +      - description: builtin PME SPI standalone interrupt line.
 
-Should we check the return value of dw_edma_device_config() here?
+By adding these optional interrupts at the top level, the maximum number
+of interrupts implicitly increases from 2 to 5 for all compatible strings
+in this binding.
 
-If an invalid configuration is passed, dw_edma_device_config() returns
--EINVAL. By ignoring the return value, the code proceeds to extract the
-source and destination addresses from the explicitly rejected configuration
-via dw_edma_device_get_config(), potentially resulting in descriptors
-prepared with unvalidated hardware parameters.
+Will this allow older hardware generations that physically only support
+2 interrupts to silently pass validation if they incorrectly specify up to =
+5?
 
-Additionally, the commit message states this change supports atomic
-configuration, but dw_edma_device_config() mutates shared channel state:
+Should the existing allOf conditional blocks explicitly restrict maxItems
+for the interrupts property on variants lacking these new capabilities?
 
-dw_edma_device_config() {
-        ...
-        if (cfg_non_ll || non_ll)
-                chan->non_ll =3D true;
-        ...
-        memcpy(&chan->config, config, sizeof(*config));
-}
+> =20
+>    interrupt-names:
+>      minItems: 1
+>      items:
+>        - const: msi
+>        - const: dma
+> +      - const: intr
+> +      - const: aer
+> +      - const: pme
 
-Since the dmaengine API allows concurrent descriptor preparations when
-device_prep_config_sg is provided, could this cause a data race on
-chan->config and chan->non_ll?
+If a hardware variant supports the msi and intr interrupts but lacks the
+optional dma interrupt, won't this strict array validation fail?
 
-If chan->non_ll is actively read by the interrupt handler to dictate
-hardware execution mode, could modifying it while preparing a new descriptor
-dynamically corrupt the execution mode of currently active transfers?
+Since dt-schema enforces exact positional matching for items arrays, a devi=
+ce
+tree specifying interrupt-names =3D "msi", "intr" would have the "intr" ent=
+ry
+evaluated against the second constraint (- const: dma).
 
-> -	return dw_edma_device_transfer(&xfer);
-> +	return dw_edma_device_transfer(&xfer, dw_edma_device_get_config(dchan, =
-config));
->  }
+Does this need an enum/anyOf structure with minItems/maxItems, or specific
+allOf conditionals per SoC to correctly handle omitting intermediate entrie=
+s?
+
+> =20
+>    reset-gpio:
+>      description: Should specify the GPIO for controlling the PCI bus dev=
+ice
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-dma_prep_c=
-onfig-v5-0-26865bf7d935@nxp.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513025101.1498=
+104-1-hongxing.zhu@nxp.com?part=3D1
