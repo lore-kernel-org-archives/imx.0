@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4083E37FF74;
-	Thu, 14 May 2026 17:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9537A344D8C
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 17:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778778185; cv=none; b=Eht4i5tlQIUfK8NCewnLzaJW8Ittuto67eXEjhKHiykj4Q8ajOyD+i4V5OOQ9PRFRtLpvmRRVLH5OJcr4r/5P1iN5zKHA1C0tWRRE1bFXbmDdRjoeBLeh3ZutfAQzdX9ldyBYAwQKhTR0D2N5L5Bs0xjz2lN6jBIiLKs8EXR/R4=
+	t=1778779568; cv=none; b=UkVjeyhOotqDBBx7B3ISN8783FExmMi79c04swb+dne8T91M69Rd8FKOEJbOaZhlF8CsZfVr+gofv5m/pDklLpAQE/tkOeZ0cnTr2nu10LVPQFrBrPTnL12ArDl7clcrYUx7ytL3IwHowCdyoVT8NBThprF0SG/1yi0BN3/FT6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778778185; c=relaxed/simple;
-	bh=YGbFkeB67cXBnD6gXxxQcrXQaTaB64pkM6u2Iug35R8=;
+	s=arc-20240116; t=1778779568; c=relaxed/simple;
+	bh=CayUSAvG7GveLy16UXqz5TS3K2BqOCkxt4Go+/dZus4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=N+A7MatU4mKhb8+Y6XLYeQFO0vxs0/LgzTXoSKXlRwzEGEv48H09+upOxL5/k7yeVbqbjS7KozhTe+s25qGLB4iKtXZ+X4fkjZqwLfvTeXRudTvLiO8L2Ngz8OsygFjWdRs0KA0aTSU6XBNEoV3Guhg5sy3l/cy2/8Za7KBiFeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAT0kZ7d; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=m/Jl/Gp8aDe4Y1IQEvoXxqMXFX+3eOFF/RtB3lBxbB5ybtmCSsfSiUjPZBO+G9SLHU/BGqrNTU3GHmjKO1iACe85MmtE7e+f4SRNmuKK45jOWe1N8x9Wjq/agmKr1PbzASj+aaZGRl5fGrN4bOiB12B8pLrn6kBy6Sw3V4J5eTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTxtfel8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAT0kZ7d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADE1C2BCB7;
-	Thu, 14 May 2026 17:03:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTxtfel8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB36EC2BCB3;
+	Thu, 14 May 2026 17:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778778184;
-	bh=YGbFkeB67cXBnD6gXxxQcrXQaTaB64pkM6u2Iug35R8=;
+	s=k20201202; t=1778779568;
+	bh=CayUSAvG7GveLy16UXqz5TS3K2BqOCkxt4Go+/dZus4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=NAT0kZ7dXqMcowdXwgSJ6kqDv0/v6a7E41HDuER7VfVCVXoJzbJHbUclUork5zMcJ
-	 Nob+p0oAjrIbM5BN0810UicTg4QyiARFDDOE8I8AgowKNoGw5FAprAkQrSvJxxuZga
-	 izAP7gRjPaV4j4w6cB5jgycuBjWcI+zzsEjWaO1YVcNDRktUAcY4AhnSYkckn7Awcu
-	 /6ga2G7DO2VEPNVxleRJkLPZW8WZ8SSl8A0xwNNm20+eR8Q+xYvihEeLbxC91Ke8g3
-	 DSTG1ugc0Myn7N3xVwew7dUFg9l/2ub8yIOtgoiCRiX+ZpWUIiTcmFIYIWlA1WnMk7
-	 2tqdpcM81AjmQ==
+	b=qTxtfel8FFHPFzWEw3023ok8pWVXc8GMf+ZJgfVQuR7TGnr2jZ0FWfX0o0bLrNa75
+	 3CKzbbuIGJqudCr/UV2uKEKEvEr0rSIJ5WmO5zWf7VVBuGITRKP0j9jQ4W25KZqpZX
+	 72nf5zdeIWqAukKZ6sR21ZqxE8aX7zjto54sAMKbBwMocofwPgb8ZIjTB80k4zNp5v
+	 QlDS70KJC5FWr0/E6qN+QES0qkpGM61vXhtB/AgV4H4rdI5BoaUQi/soYx30yLA/Q3
+	 QzN3R4wV7txHaEq2q1KGUL5XMYQKiHM4N35k/83y8gE/qHB/N7he2EnEqRznCaO2+C
+	 +IM4Ze63JHEfQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add SAR ADC support for s32g2
- and s32g3
+Subject: Re: [PATCH -next] firmware: imx: secure-enclave: drop invalid
+ overflow check in iobuf setup
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
+To: "Pankaj Gupta" <pankaj.gupta@nxp.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260514090321.2186877-1-pankaj.gupta@nxp.com>
+References: <20260514090321.2186877-1-pankaj.gupta@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 17:03:03 +0000
-Message-Id: <20260514170304.7ADE1C2BCB7@smtp.kernel.org>
+Date: Thu, 14 May 2026 17:26:07 +0000
+Message-Id: <20260514172607.DB36EC2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,86 +46,60 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] ADC1 is incorrectly configured to use `edma1` instead of `edma0`, =
-breaking DMA routing.
+- [Critical] Removing the `io.length > SIZE_MAX - 7` check introduces an in=
+teger overflow in `round_up()` on 32-bit architectures, leading to a massiv=
+e out-of-bounds write.
 --
 
-commit 3b1b0b80a34f00191fc6241e0894c052fd88edf8
-Author: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.c=
-om>
+commit f1f29a6c58c5d6e658a6207ce15040a2bef1f1c1
+Author: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-arm64: dts: s32g: add SAR ADC support for s32g2 and s32g3
+firmware: imx: secure-enclave: drop invalid overflow check in iobuf setup
 
-This commit adds ADC0 and ADC1 node definitions for the S32G2 and S32G3 SoC=
-s.
+This commit removes a check comparing io.length against SIZE_MAX - 7, as it
+always evaluates to false on 64-bit systems. It instead relies on size_t-ba=
+sed
+alignment and existing shared memory bounds validation.
 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g2.dtsi
-> index 51d00dac12deb..6f1952fbbcfee 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+Closes: https://lore.kernel.org/oe-kbuild-all/202605081441.lIHK75ug-lkp@int=
+el.com/
 
-[ ... ]
-
-> @@ -717,6 +727,16 @@ i2c4: i2c@402dc000 {
->  			status =3D "disabled";
->  		};
+> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
+l.c
+> index f88e581fc147e..1683b259864f1 100644
+> --- a/drivers/firmware/imx/se_ctrl.c
+> +++ b/drivers/firmware/imx/se_ctrl.c
+> @@ -670,11 +670,6 @@ static int se_ioctl_setup_iobuf_handler(struct se_if=
+_device_ctx *dev_ctx,
+>  		goto copy;
+>  	}
 > =20
-> +		adc1: adc@402e8000 {
-> +			compatible =3D "nxp,s32g2-sar-adc";
-> +			reg =3D <0x402e8000 0x1000>;
-> +			interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks =3D <&clks 0x41>;
-> +			dmas =3D <&edma1 1 32>;
+> -	if (io.length > SIZE_MAX - 7) {
+> -		dev_err(dev_ctx->priv->dev, "%s: Invalid buffer length.",
+> -			dev_ctx->devname);
+> -		return -EINVAL;
+> -	}
+>  	aligned_len =3D round_up((size_t)io.length, 8);
 
-Is it possible this should be routing to edma0 instead of edma1?
+On 32-bit platforms where size_t is 32 bits, can this round_up() overflow if
+io.length is near U32_MAX?
 
-It appears that other peripherals in the 0x402xxxxx memory range use DMAMUX=
- 1
-on the edma0 controller (e.g. <&edma0 1 ...>). Since the hardware DMA reque=
-st
-lines for ADC1 are wired to the first eDMA controller's multiplexer, assign=
-ing
-it to edma1 could result in silent DMA failures and timeouts during ADC1
-operations.
+If io.length is between 0xFFFFFFF9 and 0xFFFFFFFF, round_up() will wrap
+around to 0.
 
-> +			dma-names =3D "rx";
-> +			status =3D "disabled";
-> +		};
-> +
->  		usdhc0: mmc@402f0000 {
->  			compatible =3D "nxp,s32g2-usdhc";
->  			reg =3D <0x402f0000 0x1000>;
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index e314f3c7d61d0..5cfb37c1216a7 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+If aligned_len wraps to 0, does it bypass the subsequent shared memory boun=
+ds
+validation?
 
-[ ... ]
+	if (shared_mem->size < shared_mem->pos ||
+	    aligned_len > (shared_mem->size - shared_mem->pos)) {
 
-> @@ -792,6 +802,16 @@ i2c4: i2c@402dc000 {
->  			status =3D "disabled";
->  		};
-> =20
-> +		adc1: adc@402e8000 {
-> +			compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sar-adc";
-> +			reg =3D <0x402e8000 0x1000>;
-> +			interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks =3D <&clks 0x41>;
-> +			dmas =3D <&edma1 1 32>;
+This appears to cause a regression where the following memset() can perform=
+ an
+out-of-bounds write using the original un-rounded io.length value:
 
-Does this have the same eDMA controller routing regression as adc1 in
-s32g2.dtsi above?
-
-> +			dma-names =3D "rx";
-> +			status =3D "disabled";
-> +		};
-> +
->  		usdhc0: mmc@402f0000 {
->  			compatible =3D "nxp,s32g3-usdhc",
->  				     "nxp,s32g2-usdhc";
+	memset(shared_mem->ptr + pos, 0, io.length);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514082639.1181=
-240-2-khristineandreea.barbulescu@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514090321.2186=
+877-1-pankaj.gupta@nxp.com?part=3D1
