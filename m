@@ -1,263 +1,164 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012064.outbound.protection.outlook.com [52.101.66.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D2A34402B
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 18:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04DD34402B
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 18:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778783900; cv=pass; b=f+wHV8e1Uvn+jNhKDFxqaesaAu0DSj6vqEpxpUkjn3dsPMMFyHbzkghCssGuFkr6l/SdLBAqXP6cZ3wp1urxuZQzsUre3WmSj4Q6mf/ZbO1QocSsJNFFTJzDoAHpyCCaOaoVl9X+1xmxTbWlJJcvZ6QvyaCbztaSFWPnEswkuBI=
+	t=1778783929; cv=fail; b=czKLeVyVK4uq/ClJLimhP+C/wmEr5LY1WxfFjylHNX4+409qTt7roukUIToXDXL58wVlkbbQdomQZFK4AGx4gX9NSpmA2/Zx7VnREwhUviBfyGjfLsz7UnQ3rGQ8iDqacu91QKOKpGFgaRYRmJPUy9DXyJyUpSPQslduUcMzsjU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778783900; c=relaxed/simple;
-	bh=QmmK3gZXRGs6+Ov33ViGi5VndHouGarK1Vb3M71UiFM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GseVyd5d//Nl6KaQB2YL8bSO+ua2vgl/Pb7T2sLwooeTK70S5oQSIPiILkKrrTv9WFxJkURygQXyzdunPsUuIOfVZlOXc0mbaqTMz784g/1pArfLvL+9jiEV0rV+Z8h3dOkjJN+IUJgdemF3BXUHG4xCt6mHJd38j1RJQqCbLls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MFMpE3y1; arc=pass smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1778783929; c=relaxed/simple;
+	bh=Zclf6mTTlXpVTi/Zw5+RShNz6yJ/1MO4E/oVfwOIIHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Jot6L0R++GUbBoGq04CTcnjYM72c/XAulzF4q0N1FNL+Xbp8Cl1M3lMu6lymnQZbr67JxGk/a2nfJIALgbHxk36x95eLePSogIyG2s10QXExwUxPlF/44bgFCQd1aEBtlOaot5Jq/e4Rre2lM/UAnXKi50SWS9ov9UhaQsTrs8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bT1kaAaD; arc=fail smtp.client-ip=52.101.66.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MFMpE3y1"
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d55b97f358so5750844a34.3
-        for <imx@lists.linux.dev>; Thu, 14 May 2026 11:38:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778783896; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UOa+wqEEY+SDp8RBvCcJMdxeNcJPZZa9ClNiTBwEIyYCRwMGJ2oTaaiCYrdszXHtbt
-         NHwPVyGz+/+k1JiO0k4iAnvE0RRnK8ioauAjEH3Ycs6JMg1qcbwyBCGvN3/+yNdvpmcH
-         l6pOGHwTYkvh88pPotxEnDzzphIXRxBjJ2fkZ6UKB4Q+Tpm/z2sDukau21/qBw2K1Xup
-         YK+9PZjkEgXEzwk9deUnj0YkPk5ySYGEcfOT6dAz+LbakxUlTYB639KX0AufD+PUrzy3
-         o4SpjULkeqjzZmqIAV+7ghOlL/quaHjobgoNKSaVo+X9r4OGOXu+zckCaoatOFhlwt6+
-         1I3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8d3m45v6Iw/R68LfgUS67OuzNpSS1/BQBBitSivrqSE=;
-        fh=6EA17R1xz589oAuDbd0Y3UuuTnMhxBPqPJURvf0dTWo=;
-        b=k87I0rTFEeY31fleLagdrryL/6mNj1jH906HeQWnD4MnKM8wd4qH3RNrEXUfF3wMgn
-         4ENRRH3l04f0YTvXscysNaB6EcpTQZ3Eb0Qdy7fAPW3fbSGLz0v67E4iShUaRCWSf9Z4
-         sgER5DX6JPHqnkV/JQVu1KcT9xYrHpojXWHBU0TL7FcUv1cfdFZPecJrQY0A3FvH5ow8
-         bSercKqmTwiC2beIoYyiy06ODwizxPt8u4WZmZiR0hGF3LnNgXJTy7vABOSfqWE7vy7t
-         +y3dqRScAqWgBDwidKq1mvH7lSSs/gF3Ik/5/2dKU/JnUugIzAJQGw8V1ot0Ne9xpENP
-         x1sQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778783896; x=1779388696; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8d3m45v6Iw/R68LfgUS67OuzNpSS1/BQBBitSivrqSE=;
-        b=MFMpE3y1ot5TXZXUJtyQAf30A8Bzh7ePbgZ2msvUBUAh1RUjnfc9INl4mRh00kN184
-         SoW5UvGpqq4+f6vlWWIkiYSBXIYpYOY0PPje4rc5Carv9jijzIMY9e75YEXKQnHOmF2c
-         zPhVebLCbEzfvBHzKTjEHTA5koyNFynXefazNA0MN4TmhZStiZiCjsUWgGXkGqnFQgsw
-         XMQ10TIvOxqT/LmsnXitJda5grcVxYFezmy4O3fof30HyaX4Kn7o1gxV6+nYjCAZr5wK
-         7ba6Ajjgpfy6dWUyyHEey8lI7ARGY8zPnPRgtMrl3MF2B44Tss68blh5P5KfJJkHa162
-         tkSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778783896; x=1779388696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8d3m45v6Iw/R68LfgUS67OuzNpSS1/BQBBitSivrqSE=;
-        b=onIyD49UtSpIzPN0zKkoZMlKQZn2z/j4556ZExvuw7u3gSPJrNxTf18mu5tyWg+sbS
-         WNQEwie0c8Rr5tH/Gl4Yq2Y+90ovxzWWjo0OQTeltAF7AQL8WceGGR4adMLKX9rDOWqy
-         sLonVSgo57E24bNLL4up96pMLfN+7Gt4T7tCMycN4aJku/nYXqzkJuZ0unwb6OV2nIph
-         D7j+xXtmurYYvxqWSARkZ9C1SwTzITiX0O8/2sfoQTeNceqBV/X3NnzDL5ftl5wkWqmb
-         LBMzmqiiy7zRtHwjE/N9Gz+yW/zg0iYZdhyL2ySrfwII33frFl2rQX931Y9s9pDUD/du
-         Pp1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/L3wIBrDtSH+IsWORcEQOi77xo9m8KVJ+eeATHHvPGlAE0/yrALflwFSr6XkSNusBrWOk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw/nvgl4F6mAKn0g7lGH1LtxHwBZe0dwQdRSMlpJVHBT+O4Nt88
-	DlTherNSzOBMAn9wxvQJ1sw7kfHjrG2tZCCuvt3jxpCaFMoNfMj3iJLeS4ee32P4M4aBk2HCJ4v
-	MAxhjL3bgwBn8gmiOkvHMUYjBdSewuoenlLuGhJNX
-X-Gm-Gg: Acq92OGlUSgGK9p/ygm3tEOJcqOQ4J0lKmq2pPgvUF7lR+AO/4et8XB/SE8qJxUEgu3
-	+0KLcRBDSDu2VToMrSvi+RezPxKwoRB7NQ4qbyExRgoUv4jNt/4vT+y/YUA85C8V5+/zS5zFy4J
-	WCmnps8turf/D5lsbiCh997dfoseOdBnFwuzds35oVWy/Q5QX6btOPxZql7i0WZoLDl7ou1Xkkt
-	o7izEydJL3N01hKjEkt/IemnQuAzKlFi2IcN5slNRBska+s7X0YlMrn4zkoAUchT5YlPP43vs8g
-	V+AOigXxI/INTI1I/uZfeDtg8k6ltAfjncqAK2kwySNJ/48I
-X-Received: by 2002:a05:6820:221e:b0:694:9a0a:6fa9 with SMTP id
- 006d021491bc7-69c94319189mr457604eaf.26.1778783895868; Thu, 14 May 2026
- 11:38:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bT1kaAaD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b5Xrj0nWdjGta/oFDG95l0k8omrmz0cE1nnVv2pUfz8Yd4+QKzhHsCkO+xsBsl6mVR8AEsC2kQbQ+Q5ty2F0d2OyflHuUmQPS7RpmzzPPHBDwdAVMAY48eurnByFK5hWivbxJsZ59wBIB1t3/FgPpviquiJ/V2U/BaBM+D/kflyoBDTFFVqSX4YD2zles7He6SaOeEqSncB/piTM/u/sK9W48fApsuNNjHhBIX9D2KVHIEwQePiNSb+CaSja1ydPWozJ0JyWLWmDxuG1c9RB1tLIZTqtXvMFdPXzBoKuidYSgPVzBFC732biMhcTwFZlyfBYYRMAeGPmbAGyMTHx1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K2oVIC25K3l4vaP+V6wpdiBaxJrT5wtVrekZ77OU7IA=;
+ b=QU/QM4s4W863HIvgdsCHHd3PpqsapgB/28YSzI2fuEAKpm8eUpDi0M5k97aXLlx/8e2L6SA/ryEjmJJw4z7UdaGneFtA+yDTaPv79EcHjRwlalocIfJq2wlpklLkpHblrY3it71KdesNBLjO2w3MehhGB9M9sY0HttuHUjGgSC4R3c6YtfHIYY0KW97gqcIuxxPUUMMYa6l9mGiZWfg0ZixfOEY5VPYUKGBWeyAKwWC/RCrqsVb6J+hmQpKKMKakOfGNCl8oRV3RNO+22m32riSPBeMdfkqGGzFZwtDgG57j2STRFjVuP+ulf8C4nDi6XUrY11hXfLlVMdE2rc//sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K2oVIC25K3l4vaP+V6wpdiBaxJrT5wtVrekZ77OU7IA=;
+ b=bT1kaAaDk66edBY26ZiGnAHtHc3AgMyoMvO/5tfWYquwmk67xjzh4e/0xx+xVG6yrN1z0DnkHM+Y9Wtb6nIrbAVhMX4TLd4xALoNKQK3pPB6kkHEc/vRke8EPqwHkzUiTT8Ag6naD+cdIqeLD4rSN7tC4+fsp16+cKwzptVe3Mm4q5vq83MLmZy6a3qPyODG6Ow4Kkmwpdi66Zky/XoYGo83TKZ+iRhX+tHfYXyrFwSXv+kbl2ce4c+rQvJadKbvjDAMMRTUfW6LtbfVFl3A59iZva/3GMt3kiQLPckbc1IQ8lzdVuwtEQSqXSCTQZLsBuJYyzR2BYOLNg87Mxi2TA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DB9PR04MB9938.eurprd04.prod.outlook.com (2603:10a6:10:4ee::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Thu, 14 May
+ 2026 18:38:39 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9913.009; Thu, 14 May 2026
+ 18:38:39 +0000
+Date: Thu, 14 May 2026 14:38:30 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH 2/2] dt-bindings: timer: pit: add PIT node example for
+ s32g2/3 platforms
+Message-ID: <agYWpjBzgMXE6UbG@lizhi-Precision-Tower-5810>
+References: <20260514070605.996462-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
+X-ClientProxiedBy: BY3PR04CA0005.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260424074009.2979266-1-xu.yang_2@nxp.com> <ae8tabVDj2iH6IQf@kuha>
-In-Reply-To: <ae8tabVDj2iH6IQf@kuha>
-From: Badhri Jagan Sridharan <badhri@google.com>
-Date: Thu, 14 May 2026 11:37:38 -0700
-X-Gm-Features: AVHnY4KBVyf-SG8Xkj5bjhwsikanhfJWOZBg7c_1lmiP6TpWVoU1BDbUjw6MAe0
-Message-ID: <CAPTae5KX51fbs8Yd5LKtRhgOXKFEWzg8AE1Z8eUovTuxonYetw@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: typec: tcpm: fix debug accessory mode detection
- for sink ports
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Xu Yang <xu.yang_2@nxp.com>, gregkh@linuxfoundation.org, 
-	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB9938:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26d33c13-2286-4bbb-f048-08deb1e80465
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|7416014|52116014|1800799024|376014|38350700014|4143699003|18002099003|22082099003|56012099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+ aBecZ9MbWuZCuQmKcSTErftawfI+80Xrm46ITasDTBLcRKEBksYcgWqGQ9xAvxsao52WyIvwxXe/zJOgvtEWlreQbWiZAYzbpVNkcP6LXn4rfc2YmO+ym8jxNNopfiHK4yMhY5JuC43dsXwgWQyCUSHWKmEUaZN5kP4d/i0Nhmcs+FFQ46IvTNUR0W69PSFPtsPSaS4sa3xOmbpnsYPr36bPcmh9STcEMnXtwfZN84eUeYCg2yzwk1ooiZw1mkHRkKaamBuSsYsI0R2lq9tk5mrDEr5J12KVl4+QGyURuJIaJFQttA2t791nd8mhLNUiIwPxf9/W8KT7tZJYaupiZqniQ5ZQaI5hC4anqQvFI66y+MIKJDQ+su+a4KF8UhbkgJ0eS7GIZVpQtpY5wuOhCQ6qUVEUXcXm0caNI7CYHZ9pTV9s+hW6V32Av8UURLDq4NqpHwGPVcSkrruOJPMofU+bFOhSb2W4uHdckgvjKihvVosVGVkGmHiWMgDT8EEJwYQDpKikXvIWvxunq3xF9ZnfxWSP3G4oAfppynkRzuf0iDhA/wF4R7OJlq//Olb9NmyMdSkKdje38Y6eZ6odF2f9CjkNes95UWNhHmZIng5cPfUvZovX+jzM8s+hTM6pNtizFNJkvQYaoHhpExlqlOqTTdwDQgr4N9KrZYuQS2WdtA1bNoikaw5WATlZZY4cgzDVVoI3BtQf48Ac5uWlxs/Oj3Wn7KDlld51GsSaRuvnIIcwPpZBsOc6WAPu+GMK
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(52116014)(1800799024)(376014)(38350700014)(4143699003)(18002099003)(22082099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?YdAkVoTPMP0PAi1Lx7YRsElgyBDUA97fpN4mH4tx8FpmQ5t8KLKAFb7vyqVq?=
+ =?us-ascii?Q?HJljzMf3ou7W7ler2K9a0cjRlBfbD7PO2XI1cwk9Cz6Y3ZRnzI6zI4TsrH/t?=
+ =?us-ascii?Q?yRGB1JhZ+ohBaf8SvcfzTfBLDxCOakEkUAG621a77JFNLOwC9HgFCKfgx7ne?=
+ =?us-ascii?Q?TnwGNovhrXST/lLv8PRnW+rimUMpZUAdGpuQm6ZNHoAEo8g85DZBUDsfxth2?=
+ =?us-ascii?Q?xW3b/yPuoiP6NZ7FVtqDtP49eEsLUyqncCTJQN0yEk9d6BwVHAv5KHGj1udT?=
+ =?us-ascii?Q?U0rOA3QoglX07DAulPvneZwbFFGhuNoYwBQDtZ3+JLtuz4A0MTaK+Lv6Mjq6?=
+ =?us-ascii?Q?GFINV8Hfo8c8bncwnBS6y7z+Ip0PLG5JjDUpdQrF3bxU0xg1CTH9rvDQJV6W?=
+ =?us-ascii?Q?DrH0ryEAOBULAWCFTprPf7Uao+v3wlBHwKTMUdCG7xzXBp7W8hhOi79tYn8K?=
+ =?us-ascii?Q?gKQ3a2Q9Cy035xlaj03vIVF0V5CyNXr+y+v7YyOtQcEcfWdmawVbVxPw9Xux?=
+ =?us-ascii?Q?j+YnvpdyBfW7FOkUwdRRTLeYrPUOqRVb5W0HbRqq+ctrvoe1Sgd+Q+aOgJ1H?=
+ =?us-ascii?Q?qEKeuu9n8x6YKm9BhmJgLQCSBFVX1GVzoOSGYk4Ol32TkwJ1K59Ilx6mu24H?=
+ =?us-ascii?Q?5AQQnshFSXsRAoot5HRhmlqAJzN3D8LrVlRgSIXVWSIEBE8W113IVGVzhD5s?=
+ =?us-ascii?Q?xz5YGslGQb7PYfZf3n0PrlyO+wlHFtS169pbX9ONccIwoT02BDDy92xemKUR?=
+ =?us-ascii?Q?a1/EOHn3YF1DfwzlNNJztllOjFKxtp5rWuFOzjGAPba0LB95VsEzoL+n++UG?=
+ =?us-ascii?Q?AQsUD6afPknfqwSm7eYAwRH/7VWcoJDpt00yVGJkAsmOnA24umD2zzA/qa1F?=
+ =?us-ascii?Q?i/pba1wIWWqw/hHEdfnCGFAJh0xzWLeua3umEP3nBIVzmhHRF1zRKRouuTqM?=
+ =?us-ascii?Q?RSiPuRsIjnsLITg/Io7Q+Dy+trNWhWpJh5qHErCdPT1ICZKlC5l+HsT3nydo?=
+ =?us-ascii?Q?oS3O5dsOnYDdK+CoxNejTwBLkIqfmppzYX0AQcjbgQ5tLUqz+dbm2u0BFgWh?=
+ =?us-ascii?Q?6ywOskR/1iH8W+iIgKXbh9wXYwzEMCPh8RtiDjMD+OEXQPezAkRnLN/7CrFh?=
+ =?us-ascii?Q?FSMb7zvgV+M5OIQisv21d3YR/hGdv+GskGvSoR2mb37RDZEvtLsxXZVgYXWr?=
+ =?us-ascii?Q?c6aGRTSwe1XokgB/QK8goQiU/YlrvUkRI4wtxTIK47DHWay6Bh7VzzjtTbiR?=
+ =?us-ascii?Q?/32aChkxqhH35iL7f1le8/kfz4uDxgm3UwACqANGASG5DseOQxKRG537n0f1?=
+ =?us-ascii?Q?9nhx3m7vGYCklnFP3sBbfJM1uIOAjgTcb4TB0wpZdGtqSK7gIsGrzJYP/W8A?=
+ =?us-ascii?Q?oBHH9qEJyzg5V//E9POKZ1cH774xvTZUNvG6VOjLFNCGVdhc9PrJ+fFKl/G7?=
+ =?us-ascii?Q?XRoFHte1sYLiLfUkfx0Tkw/P9v51NHq00CqJJKWYe5GFTLzHrUVe4OBvOX5n?=
+ =?us-ascii?Q?yBC7VhzSqXmRJYpF5RpmVkDsN80hHumNqdhPw8MGEVEJEIHbJzeSnJwkHpS5?=
+ =?us-ascii?Q?rDfwBKhWIwHfZtNwi1KReIjrqBnKzwfUdRuPGaIVJhiKK4JVs0BiHBPlZ/tu?=
+ =?us-ascii?Q?owdWLHlgQi9Hs2Lt1b6Z6KCdNGSQSeu587LNZZ1ER6YgedN6B92BxIsNozOx?=
+ =?us-ascii?Q?ZvQWOq3N41XGXa6tduU/rdtAWeVtzKIV55zRyGaBGtKEsNXyOzr4u1UQaZmf?=
+ =?us-ascii?Q?8VXMRiv92A=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26d33c13-2286-4bbb-f048-08deb1e80465
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2026 18:38:39.8688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tGsiFPSMhW+Q5yBVl9mGDmFJNkOeAxLnVjVX9hLc0k8T00F0sQSCOoa35mQmcJLkBD2aM9wAPuwbpCxzw0V8TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9938
 
-On Mon, Apr 27, 2026 at 2:33=E2=80=AFAM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
+On Thu, May 14, 2026 at 09:06:05AM +0200, Khristine Andreea Barbulescu wrote:
+> Add devicetree binding example for the PIT timer as used on
+> NXP S32G2 and S32G3 platforms.
 >
-> On Fri, Apr 24, 2026 at 03:40:09PM +0800, Xu Yang wrote:
-> > The port in debug accessory mode can be either a source or sink. The
-> > previous tcpm_port_is_debug() function only checked for source port.
-> >
-> > Commit 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into
-> > accessory mode debug") changed the detection logic to support both role=
-s,
-> > but left some logic in _tcpm_cc_change() unchanged, This causes the sta=
-te
-> > machine to transition to an incorrect state when operating as a sink in
-> > debug accessory mode. Log as below:
-> >
-> > [  978.637541] CC1: 0 -> 5, CC2: 0 -> 5 [state TOGGLING, polarity 0, co=
-nnected]
-> > [  978.637567] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
-> > [  978.637596] pending state change SRC_ATTACH_WAIT -> DEBUG_ACC_ATTACH=
-ED @ 180 ms [rev1 NONE_AMS]
-> > [  978.647098] CC1: 5 -> 0, CC2: 5 -> 5 [state SRC_ATTACH_WAIT, polarit=
-y 0, connected]
-> > [  978.647115] state change SRC_ATTACH_WAIT -> SRC_ATTACH_WAIT [rev1 NO=
-NE_AMS]
-> >
-> > It should go to SNK_ATTACH_WAIT instead of SRC_ATTACH_WAIT state.
-> >
-> > To fix this, add tcpm_port_is_debug_source() and tcpm_port_is_debug_sin=
-k()
-> > helper to explicitly identify the power mode in debug accessory mode.
-> > Update the state transition logic in _tcpm_cc_change() to ensure the st=
-ate
-> > machine transitions comply with Type-C specification. Also update the l=
-ogic
-> > in run_state_machine() to keep consistency.
-> >
-> > Fixes: 8db73e6a42b6 ("usb: typec: tcpm: allow sink (ufp) to toggle into=
- accessory mode debug")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+> ---
+>  .../devicetree/bindings/timer/fsl,vf610-pit.yaml          | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 >
-> FWIW:
->
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> diff --git a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml b/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> index 42e130654d58..8696696776b3 100644
+> --- a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> +++ b/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> @@ -57,3 +57,11 @@ examples:
+>          clocks = <&clks VF610_CLK_PIT>;
+>          clock-names = "pit";
+>      };
+> +
+> +    pit@40188000 {
+> +        compatible = "nxp,s32g2-pit";
+> +        reg = <0x40188000 0x3000>;
+> +        interrupts = <53 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&clks 61>;
+> +        clock-names = "pit";
+> +    };
 
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Needn't change example
 
->
-> > ---
-> > Changes in v2:
-> >  - update tcpm_port_is_debug() in run_state_machine() as well
-> >    as suggested by Amit
-> > ---
-> >  drivers/usb/typec/tcpm/tcpm.c | 25 ++++++++++++++++---------
-> >  1 file changed, 16 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcp=
-m.c
-> > index dfbb94ddc98a..6d258efae6f0 100644
-> > --- a/drivers/usb/typec/tcpm/tcpm.c
-> > +++ b/drivers/usb/typec/tcpm/tcpm.c
-> > @@ -732,9 +732,14 @@ static const char * const pd_rev[] =3D {
-> >        (tcpm_cc_is_source((port)->cc2) && \
-> >         !tcpm_cc_is_source((port)->cc1)))
-> >
-> > +#define tcpm_port_is_debug_source(port) \
-> > +     (tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2)=
-)
-> > +
-> > +#define tcpm_port_is_debug_sink(port) \
-> > +     (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2))
-> > +
-> >  #define tcpm_port_is_debug(port) \
-> > -     ((tcpm_cc_is_source((port)->cc1) && tcpm_cc_is_source((port)->cc2=
-)) || \
-> > -      (tcpm_cc_is_sink((port)->cc1) && tcpm_cc_is_sink((port)->cc2)))
-> > +     (tcpm_port_is_debug_source(port) || tcpm_port_is_debug_sink(port)=
-)
-> >
-> >  #define tcpm_port_is_audio(port) \
-> >       (tcpm_cc_is_audio((port)->cc1) && tcpm_cc_is_audio((port)->cc2))
-> > @@ -5176,7 +5181,7 @@ static void run_state_machine(struct tcpm_port *p=
-ort)
-> >                       tcpm_set_state(port, SNK_UNATTACHED, PD_T_DRP_SNK=
-);
-> >               break;
-> >       case SRC_ATTACH_WAIT:
-> > -             if (tcpm_port_is_debug(port))
-> > +             if (tcpm_port_is_debug_source(port))
-> >                       tcpm_set_state(port, DEBUG_ACC_ATTACHED,
-> >                                      port->timings.cc_debounce_time);
-> >               else if (tcpm_port_is_audio(port))
-> > @@ -5434,7 +5439,7 @@ static void run_state_machine(struct tcpm_port *p=
-ort)
-> >                       tcpm_set_state(port, SRC_UNATTACHED, PD_T_DRP_SRC=
-);
-> >               break;
-> >       case SNK_ATTACH_WAIT:
-> > -             if (tcpm_port_is_debug(port))
-> > +             if (tcpm_port_is_debug_sink(port))
-> >                       tcpm_set_state(port, DEBUG_ACC_ATTACHED,
-> >                                      PD_T_CC_DEBOUNCE);
-> >               else if (tcpm_port_is_audio(port))
-> > @@ -5454,7 +5459,7 @@ static void run_state_machine(struct tcpm_port *p=
-ort)
-> >               if (tcpm_port_is_disconnected(port))
-> >                       tcpm_set_state(port, SNK_UNATTACHED,
-> >                                      PD_T_PD_DEBOUNCE);
-> > -             else if (tcpm_port_is_debug(port))
-> > +             else if (tcpm_port_is_debug_sink(port))
-> >                       tcpm_set_state(port, DEBUG_ACC_ATTACHED,
-> >                                      PD_T_CC_DEBOUNCE);
-> >               else if (tcpm_port_is_audio(port))
-> > @@ -6360,10 +6365,10 @@ static void _tcpm_cc_change(struct tcpm_port *p=
-ort, enum typec_cc_status cc1,
-> >
-> >       switch (port->state) {
-> >       case TOGGLING:
-> > -             if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) =
-||
-> > +             if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio=
-(port) ||
-> >                   tcpm_port_is_source(port))
-> >                       tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-> > -             else if (tcpm_port_is_sink(port))
-> > +             else if (tcpm_port_is_debug_sink(port) || tcpm_port_is_si=
-nk(port))
-> >                       tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
-> >               break;
-> >       case CHECK_CONTAMINANT:
-> > @@ -6371,9 +6376,11 @@ static void _tcpm_cc_change(struct tcpm_port *po=
-rt, enum typec_cc_status cc1,
-> >               break;
-> >       case SRC_UNATTACHED:
-> >       case ACC_UNATTACHED:
-> > -             if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) =
-||
-> > +             if (tcpm_port_is_debug_source(port) || tcpm_port_is_audio=
-(port) ||
-> >                   tcpm_port_is_source(port))
-> >                       tcpm_set_state(port, SRC_ATTACH_WAIT, 0);
-> > +             else if (tcpm_port_is_debug_sink(port))
-> > +                     tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
-> >               break;
-> >       case SRC_ATTACH_WAIT:
-> >               if (tcpm_port_is_disconnected(port) ||
-> > @@ -6395,7 +6402,7 @@ static void _tcpm_cc_change(struct tcpm_port *por=
-t, enum typec_cc_status cc1,
-> >               }
-> >               break;
-> >       case SNK_UNATTACHED:
-> > -             if (tcpm_port_is_debug(port) || tcpm_port_is_audio(port) =
-||
-> > +             if (tcpm_port_is_debug_sink(port) || tcpm_port_is_audio(p=
-ort) ||
-> >                   tcpm_port_is_sink(port))
-> >                       tcpm_set_state(port, SNK_ATTACH_WAIT, 0);
-> >               break;
-> > --
-> > 2.34.1
->
-> thanks,
->
+Frank
 > --
-> heikki
+> 2.34.1
+>
