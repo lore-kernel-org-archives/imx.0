@@ -1,122 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239FD184;
-	Wed, 13 May 2026 23:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D8078F26;
+	Thu, 14 May 2026 00:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778716501; cv=none; b=DZ2Mt+oRivcK8VLQs/3VK0LvGS/NF2D+hUhSecKah6PPp8Y4FpXNQsYgpAN6K6aqEbQP+JCTQ25cx6Cwm3ZC6LG5ROs5I/1Z0G0Uji4ear8oNsfAIxjP27NEU8trlT7vBmUQ9eXH4DM+FTNndSKPIKwklvW2g9yoDlbmSbAqDOI=
+	t=1778717426; cv=none; b=M9gmA3Y0g6H5RChBScqyTz4K+N92M9MdrvpQtb9HxO22S+IVlsnfY6eFvPF/qlgmDQlIarLj/OCriOhDRt4zVdXEFAdnjCFkSo3q/+tYADo2yCiQODpn9Lu3tMltjzPNYBzcgtmIZrGoqY6wVPqsk2F8krEctqcdK2YNuyMkw/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778716501; c=relaxed/simple;
-	bh=evQHOw2dQf4OuTeUzalmIlHr3ylZFYPAqqfBiZOG6MA=;
+	s=arc-20240116; t=1778717426; c=relaxed/simple;
+	bh=gppp5HdjLL8AzFManE8Yuhxxzc0ZHRZSSO5L0dVYbxI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CvIvwMSfN+L4y+ZSNYzLRj0WWyGlBPziEls19QgTg66PPxZ9FdxfLdLGMETWkqox27i6GAM5N6x8wDb5Iu7wCHeC+hdaqUse+kfdlJM7rvkSRsg6a3KDEsLjLalsvTe4zgUIt0oMYnJqBGGuro0h2m3ciRFU6HEqNYsqC5NTcSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvUydXaJ; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=L2LGOqx0wrg27GeCBTamZnX3uTn8z7fjlptDgLMsSddhXM+Jbms2REaLdqHPqHL0mdzEBJ8j0bTvw+sUUPdknaAXXQYgHWDlT00LvVmaFkdlrHA10m55hRNgZPMgl4pX97DURU5hInVFzopE1fuZujN5g5Ccqa07yGG7/vqp6Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LdjZGaIm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvUydXaJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738CDC19425;
-	Wed, 13 May 2026 23:55:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LdjZGaIm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4FBC19425;
+	Thu, 14 May 2026 00:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778716500;
-	bh=evQHOw2dQf4OuTeUzalmIlHr3ylZFYPAqqfBiZOG6MA=;
+	s=k20201202; t=1778717426;
+	bh=gppp5HdjLL8AzFManE8Yuhxxzc0ZHRZSSO5L0dVYbxI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=nvUydXaJ9/IJsDq4V7IXClUJ2cJucEO9+F1qS+f71vjiQkKo6FfKC8IfvXSlJvTL5
-	 vzm367jR3TXI2BpqI3AE9xvAZiKw4zW2fFF+mS+S4yGPL4+3LoKZVCAqHfd17O892S
-	 CQMOI1zRxQ4ffza8xln2KEU+6JnPldowU7BVUK9O3CJTE5dyr7hhu4qB71KCa+tuAB
-	 UAZ89LWM4lv0AvTdNJX+0eyfOuBFnbBhxkAWgcHGDZIPAwyzsIREIvURpsBBCMjDsA
-	 Cr8jzxOPk7dqz9VKNGHG5ukGxR5XyJoPx6l1whMuKYK1f+VVbNKkO6e3+Wn+AngNK2
-	 /XgcWQ68g4Olw==
+	b=LdjZGaImwwRE5mg747Yd2i/R4XIeBQB11GTofsZemtrr3cPLKI6+e2nmmcRywVEnx
+	 X1M0H8L8ly0cEDLOrJvv+wfXZSPb9ZXnER/uer1ZpcgYmEh0VkM+J9MHo6Mh4EePAB
+	 GTvB6pT2dzKvYuR7NFo4G+A1PveFunWflgue+2INRs3Q4utyxZENF1z5DMGyQMZ5Lk
+	 zmvC1QFt9iw1nX255sDPPTQeXNLRUHmk9RZaZQVvt6H97yDFrXn512ciKtxmAK9NPB
+	 xZBC1udt7nIQkMe6fuEYkXFHU/nIouymIV2hgYdPoeQmx3AdVTZVQVSx7UAR8idZTi
+	 y/E9fGuQIPthQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/9] dmaengine: Add safe API to combine configuration
- and preparation
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml
+ format
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frank Li" <Frank.Li@nxp.com>
-Cc: vkoul@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org, Frank.Li@kernel.org
-In-Reply-To: <20260512-dma_prep_config-v5-2-26865bf7d935@nxp.com>
-References: <20260512-dma_prep_config-v5-2-26865bf7d935@nxp.com>
+Cc: imx@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org
+In-Reply-To: <20260512214704.1084890-1-Frank.Li@nxp.com>
+References: <20260512214704.1084890-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 13 May 2026 23:54:59 +0000
-Message-Id: <20260513235500.738CDC19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 00:10:25 +0000
+Message-Id: <20260514001025.8D4FBC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Same-CPU deadlock due to `spin_lock()` usage in `dmaengine_prep_co=
-nfig_sg_safe()` without disabling interrupts or bottom halves.
-- [Medium] Meaningful documentation and implementation mismatch regarding t=
-he synchronization primitive.
+- [Low] Unresolved phandles in YAML examples will cause `dt_binding_check` =
+to fail.
 --
 
-commit ed90e3a56790f8af46ffd2c002993a841a7927be
+commit ff1d6b54c66febb1ac2492f6699ba1d476db3541
 Author: Frank Li <Frank.Li@nxp.com>
 
-dmaengine: Add safe API to combine configuration and preparation
+dt-bindings: net: dsa: Convert lan9303.txt to yaml format
 
-This commit introduces dmaengine_prep_config_sg_safe() and
-dmaengine_prep_config_single_safe() to provide a reentrant-safe way to
-combine slave configuration and transfer preparation. It uses a new device
-callback or falls back to a per-channel lock.
+This commit converts the SMSC/MicroChip LAN9303 device tree binding from
+text to YAML format. It also renames switch-phy to switch in the example
+to resolve warnings during device tree checks.
 
-> Drivers may implement the new device_prep_config_sg() callback to perform
-> both steps atomically. If the callback is not provided, the helpers fall
-> back to calling dmaengine_slave_config() followed by
-> dmaengine_prep_slave_sg() under per-channel mutex protection.
-
-This isn't a bug, but the commit message mentions mutex protection while
-the code implements a spinlock. Could the commit message be updated to
-reflect the actual synchronization primitive used?
-
-> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> index defa377d2ef54..83e8547de89bf 100644
-> --- a/include/linux/dmaengine.h
-> +++ b/include/linux/dmaengine.h
-
+> diff --git a/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml =
+b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
+> new file mode 100644
+> index 0000000000000..42f8473538a07
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/dsa/smsc,lan9303.yaml
 [ ... ]
-
-> +static inline struct dma_async_tx_descriptor *
-> +dmaengine_prep_config_sg_safe(struct dma_chan *chan, struct scatterlist =
-*sgl,
-> +			      unsigned int sg_len,
-> +			      enum dma_transfer_direction dir,
-> +			      unsigned long flags,
-> +			      struct dma_slave_config *config)
-> +{
-> +	struct dma_async_tx_descriptor *tx;
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
 > +
-> +	if (!chan || !chan->device)
-> +		return NULL;
+> +    /* I2C managed mode */
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
 > +
-> +	if (!chan->device->device_prep_config_sg)
-> +		spin_lock(&chan->lock);
+> +        switch@a {
+> +            compatible =3D "smsc,lan9303-i2c";
+> +            reg =3D <0xa>;
+> +            reset-gpios =3D <&gpio7 6 GPIO_ACTIVE_LOW>;
 
-Can this cause a same-CPU deadlock?
+Will this example fail dt_binding_check? The &gpio7 phandle is referenced
+here, but there does not appear to be a corresponding gpio7 label defined
+within the scope of the example.
 
-The documentation in struct dma_chan notes that *_prep() may be called
-from a completion callback. Since completion callbacks often execute in
-softirq or hardirq contexts, if a thread calls this function from
-process context, local interrupts remain enabled.
-
-If a DMA interrupt fires on the same CPU while the lock is held, the
-completion callback could attempt to call this function again to queue
-the next transfer, leading it to wait on the already-held chan->lock.
-
-Does this fallback path need to use spin_lock_irqsave() and
-spin_unlock_irqrestore() to safely disable interrupts?
-
+> +            reset-duration =3D <200>;
 > +
-> +	tx =3D dmaengine_prep_config_sg(chan, sgl, sg_len, dir, flags, config);
+> +            ports {
+> +                #address-cells =3D <1>;
+> +                #size-cells =3D <0>;
 > +
-> +	if (!chan->device->device_prep_config_sg)
-> +		spin_unlock(&chan->lock);
-> +
-> +	return tx;
-> +}
+> +                port@0 {
+> +                    reg =3D <0>;
+> +                    label =3D "cpu";
+> +                    ethernet =3D <&master>;
+
+Similarly, the &master phandle is used here but is not defined. When the
+example is compiled into a standalone DTS file during dt_binding_check,
+does this result in a reference to non-existent node or label error from
+dtc?=20
+
+Defining dummy nodes for these labels within the examples might be necessary
+to allow the schema to pass validation.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-dma_prep_c=
-onfig-v5-0-26865bf7d935@nxp.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512214704.1084=
+890-1-Frank.Li@nxp.com?part=3D1
