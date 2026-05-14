@@ -1,104 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CE0304976;
-	Thu, 14 May 2026 16:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4083E37FF74;
+	Thu, 14 May 2026 17:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778777609; cv=none; b=X+zgbS45Od8jldJ86ixp7mVTGoceBF+dvIwgFCc+A5rMDFb+lsqQ2xk17g/ndajMRRB7X8OV54jYGqtCWBFuoBVmaF6X3aUyNg+uft51oZuS/eLGUoHDjbR9WZMRjPh5q7ijXp1Ktamu3s5d+/CWg5UcP/ZTxP67nzH7gBrEKKA=
+	t=1778778185; cv=none; b=Eht4i5tlQIUfK8NCewnLzaJW8Ittuto67eXEjhKHiykj4Q8ajOyD+i4V5OOQ9PRFRtLpvmRRVLH5OJcr4r/5P1iN5zKHA1C0tWRRE1bFXbmDdRjoeBLeh3ZutfAQzdX9ldyBYAwQKhTR0D2N5L5Bs0xjz2lN6jBIiLKs8EXR/R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778777609; c=relaxed/simple;
-	bh=I3ia4TSW2T1WftlUh1qFzhtH883s/C7iU6UGEPhQ3bw=;
+	s=arc-20240116; t=1778778185; c=relaxed/simple;
+	bh=YGbFkeB67cXBnD6gXxxQcrXQaTaB64pkM6u2Iug35R8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=e/qpXUk1Ko0yGYNcjjid/NTTwclKJz6c255Q0yYPZdT5xuDNibsDJl1dNHwmx6ntoOfOc+4aoYSG9XZACnw4l5pZ3kDqH7vMimW8TLJsA9LQEj/hz+FfvrPZddVqAr+GBCX+Dyn9ZnezK2D8VUMUWW7xdk+fWBsGiybkjmFd1U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9EiMzHJ; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=N+A7MatU4mKhb8+Y6XLYeQFO0vxs0/LgzTXoSKXlRwzEGEv48H09+upOxL5/k7yeVbqbjS7KozhTe+s25qGLB4iKtXZ+X4fkjZqwLfvTeXRudTvLiO8L2Ngz8OsygFjWdRs0KA0aTSU6XBNEoV3Guhg5sy3l/cy2/8Za7KBiFeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAT0kZ7d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9EiMzHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6813C2BCB3;
-	Thu, 14 May 2026 16:53:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAT0kZ7d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADE1C2BCB7;
+	Thu, 14 May 2026 17:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778777609;
-	bh=I3ia4TSW2T1WftlUh1qFzhtH883s/C7iU6UGEPhQ3bw=;
+	s=k20201202; t=1778778184;
+	bh=YGbFkeB67cXBnD6gXxxQcrXQaTaB64pkM6u2Iug35R8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=R9EiMzHJi/g0vI2Yiekbl08L3J3T6VnqHlE9gDMjkDxPd/ZEvzdBWQ3i1dr2I3rt8
-	 adipw7zF9k4SPPq/eR8tKDNCvjVyPio4ne1Y4UqX1Qy+YEOjOs5ZtmtMO0los6k8R3
-	 RWhqP0RTM2fSPeYmwlvnDIBs+6LXR6yAzCC1GwxtDp4GDpa5o2AGE/AX4OXjeVi/tJ
-	 DxJbRcIlkJiyQIDS+QwKObARnwJ7SCWf0ISQ3S1ZtKcsx+GwyRIymQjZpgo7FQS377
-	 ZOjpJ7gTp1G39oXgKUzpmK9pFXQmlh1EDTISa/Drl8gafeeTsVqLwbUzuFeQmZ9CAz
-	 QSPOR+/6bG5QA==
+	b=NAT0kZ7dXqMcowdXwgSJ6kqDv0/v6a7E41HDuER7VfVCVXoJzbJHbUclUork5zMcJ
+	 Nob+p0oAjrIbM5BN0810UicTg4QyiARFDDOE8I8AgowKNoGw5FAprAkQrSvJxxuZga
+	 izAP7gRjPaV4j4w6cB5jgycuBjWcI+zzsEjWaO1YVcNDRktUAcY4AhnSYkckn7Awcu
+	 /6ga2G7DO2VEPNVxleRJkLPZW8WZ8SSl8A0xwNNm20+eR8Q+xYvihEeLbxC91Ke8g3
+	 DSTG1ugc0Myn7N3xVwew7dUFg9l/2ub8yIOtgoiCRiX+ZpWUIiTcmFIYIWlA1WnMk7
+	 2tqdpcM81AjmQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: timer: pit: add PIT node example for
- s32g2/3 platforms
+Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add SAR ADC support for s32g2
+ and s32g3
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Khristine Andreea Barbulescu" <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Frank.Li@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
+Cc: Frank.Li@kernel.org, devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 16:53:28 +0000
-Message-Id: <20260514165328.C6813C2BCB3@smtp.kernel.org>
+Date: Thu, 14 May 2026 17:03:03 +0000
+Message-Id: <20260514170304.7ADE1C2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Incorrect Interrupt Cells Representation in DT Example
-- [Low] Non-Generic Device Tree Node Name
-- [Low] Example Scope Confusion and Structural Redundancy
+- [High] ADC1 is incorrectly configured to use `edma1` instead of `edma0`, =
+breaking DMA routing.
 --
 
-commit 0c9d62d6961d94621407fcbe8691b419e9baf7f8
+commit 3b1b0b80a34f00191fc6241e0894c052fd88edf8
 Author: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.c=
 om>
 
-dt-bindings: timer: pit: add PIT node example for s32g2/3 platforms
+arm64: dts: s32g: add SAR ADC support for s32g2 and s32g3
 
-This commit adds a devicetree binding example for the PIT timer
-as used on nxp s32g2 and s32g3 platforms.
+This commit adds ADC0 and ADC1 node definitions for the S32G2 and S32G3 SoC=
+s.
 
-> diff --git a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml b=
-/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
-> --- a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
-> +++ b/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g2.dtsi
+> index 51d00dac12deb..6f1952fbbcfee 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+
 [ ... ]
-> @@ -57,3 +57,11 @@ examples:
->          clocks =3D <&clks VF610_CLK_PIT>;
->          clock-names =3D "pit";
->      };
+
+> @@ -717,6 +727,16 @@ i2c4: i2c@402dc000 {
+>  			status =3D "disabled";
+>  		};
+> =20
+> +		adc1: adc@402e8000 {
+> +			compatible =3D "nxp,s32g2-sar-adc";
+> +			reg =3D <0x402e8000 0x1000>;
+> +			interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks =3D <&clks 0x41>;
+> +			dmas =3D <&edma1 1 32>;
+
+Is it possible this should be routing to edma0 instead of edma1?
+
+It appears that other peripherals in the 0x402xxxxx memory range use DMAMUX=
+ 1
+on the edma0 controller (e.g. <&edma0 1 ...>). Since the hardware DMA reque=
+st
+lines for ADC1 are wired to the first eDMA controller's multiplexer, assign=
+ing
+it to edma1 could result in silent DMA failures and timeouts during ADC1
+operations.
+
+> +			dma-names =3D "rx";
+> +			status =3D "disabled";
+> +		};
 > +
-> +    pit@40188000 {
+>  		usdhc0: mmc@402f0000 {
+>  			compatible =3D "nxp,s32g2-usdhc";
+>  			reg =3D <0x402f0000 0x1000>;
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g3.dtsi
+> index e314f3c7d61d0..5cfb37c1216a7 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
 
-This isn't a bug, but the devicetree specification mandates generic node
-names reflecting the function of the device. Should this be named
-timer@40188000 instead of pit@40188000?
+[ ... ]
 
-> +        compatible =3D "nxp,s32g2-pit";
-> +        reg =3D <0x40188000 0x3000>;
-> +        interrupts =3D <53 IRQ_TYPE_LEVEL_HIGH>;
+> @@ -792,6 +802,16 @@ i2c4: i2c@402dc000 {
+>  			status =3D "disabled";
+>  		};
+> =20
+> +		adc1: adc@402e8000 {
+> +			compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sar-adc";
+> +			reg =3D <0x402e8000 0x1000>;
+> +			interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks =3D <&clks 0x41>;
+> +			dmas =3D <&edma1 1 32>;
 
-Since the nxp s32g2 platform is an arm64 soc using the arm generic interrupt
-controller (gicv3), doesn't it require a 3-cell interrupt specifier (such as
-<GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>)?
+Does this have the same eDMA controller routing regression as adc1 in
+s32g2.dtsi above?
 
-Will this 2-cell representation cause dtc compilation errors or misrepresent
-the physical hardware routing for users copying the example?
-
-> +        clocks =3D <&clks 61>;
-> +        clock-names =3D "pit";
-> +    };
-
-This isn't a bug, but adding this to the exact same yaml list item as the
-existing vf610 timer example causes the schema compiler to interpret them as
-existing simultaneously within the same root device tree.=20
-
-Since they share the exact same property structure, is a separate example
-for this platform strictly necessary, or could it just cause structural
-redundancy and bloat the schema?
+> +			dma-names =3D "rx";
+> +			status =3D "disabled";
+> +		};
+> +
+>  		usdhc0: mmc@402f0000 {
+>  			compatible =3D "nxp,s32g3-usdhc",
+>  				     "nxp,s32g2-usdhc";
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514070605.9964=
-62-1-khristineandreea.barbulescu@oss.nxp.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514082639.1181=
+240-2-khristineandreea.barbulescu@oss.nxp.com?part=3D1
