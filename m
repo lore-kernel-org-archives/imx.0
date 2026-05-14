@@ -1,281 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381CB30E0CC;
-	Thu, 14 May 2026 05:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7BF308F03;
+	Thu, 14 May 2026 05:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778738110; cv=none; b=E1ODzK58sElSvxwyNxdKXYO5kWtLRw5aGAP7zrpnnfjDUVFwxkq9ZhDgqhQVg0eENI11NJvqnn+ce3tFJNOBDdpfSRMolrHVpq/XF6MpUMByPdBKZA6VRFIu9lk/VLKFG/3irE51dvfD8U9qNrQxgJadSwUpNuD3/VqOCrC36lU=
+	t=1778738236; cv=none; b=HgC1KtjTM/Q3R20wl18WwyS1Uz4n6FkGbmghdV7BLKFRH5YmCtRBNkPZUBNA52mBDRsPsrutrml+g0Z7x/MlAeGsUoAl8zAyPNIW7mbTXvqXhHuEWisXySJQ2VkuwWoGir2FSsYcdTPrHpBwMkuWwUTUj9FgS1a3m3FiQnh352s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778738110; c=relaxed/simple;
-	bh=RAdR8/gNXVMQT+EGlj4+JLWsFJzkqXct04sDr14+dXc=;
+	s=arc-20240116; t=1778738236; c=relaxed/simple;
+	bh=rVS3Kj24bL/F+mbmo0ct9/KHSi4hXBrf7Yz3g+2Q8w8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qxMG4lstbkoMZ9VFUTx8ZV2tX0WRUG43/EwfrpaBTFEW6dfJCPKgrFLmGQWh9xKQ64BSIQ2KbbLqvycYnTyDksifOVenQLcCcDGB7mhO9/hZdY05jyXG33ZFZeBn8isJnRKU+sLq/Sda9JzF7/ixi757rjZ2e48L6NwKpp9so4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=op+pnWRx; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=akRVXfZLNUyA3lYAXwDtScWtGfqUEfYa5m+6ziUYfv7ZSsPeP6a3ZxDLinc4UWeJ6Eb3Ic0YHWWwuknVFGejdBqmghoRgqz3cjMO+oEjd11ypls8lvoJgtUYnBF5/WbWqhbI8TBNgfrNH70zZtgtqt1XVGaX1ujx3qy0osqSoHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bo9klVfA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="op+pnWRx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A379BC2BCB7;
-	Thu, 14 May 2026 05:55:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bo9klVfA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A004FC2BCB7;
+	Thu, 14 May 2026 05:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778738109;
-	bh=RAdR8/gNXVMQT+EGlj4+JLWsFJzkqXct04sDr14+dXc=;
+	s=k20201202; t=1778738236;
+	bh=rVS3Kj24bL/F+mbmo0ct9/KHSi4hXBrf7Yz3g+2Q8w8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=op+pnWRxbC2gqQ8Aau0NMY/CPkR0jRXsWcS57t+su+gigjQAzjndXOYCPCBTK0G26
-	 AA3tNUpoBMmynzz/q5SdX1Rb1uIoJmFFo1Ryk+v1QVc0699kC7bm+ORGAifjCmLDoN
-	 mHnA7hG1CFATLjhHH+673iRaxiv6PZxKtd01eCoKancUTleEc6/6Pigs3cX/hXzw+9
-	 BGYoMMdT53DGTwcaIkiiofw8z1opDg3uh4PnhCGVMDn/Pxe4YfUKJQH5jtMVwIvwMv
-	 7iKkUqO/lmNikaumfUMA4WuqO4gdcdq5UecO7qfLEgkQaGo1ymPhRCSfksbkX+/d4x
-	 zKc14NJOvTteg==
+	b=Bo9klVfAtT9Nn8bo3pdAbuWyVTyldoP0tiquuDNVoTkKPlZQIX3ry3FGMQUJVVEjE
+	 EBGjvzc9bV41pXg62a5V0LjDJk+OhFfJtPVfy1NIs1lIiz/3OaCite/tARJlLonBwG
+	 vkBArGt0CIQD0Gz1jXrx4shQO/QeYVhk/z8+2fBBMxBsEjCSdJKPpIbeibEkWx9ixK
+	 k8u50E0+OmQG0vE5fGxHeao1Tm+dKcyCt3xswxV9nvQJ8Q2Jfr0m6z3lzbO4cQX51g
+	 +648MH+K++q+HGIcmCSDt4lSvi7db83yk75XDfkwwJMSHRGWz4PVY0aL1NjFM1ZTx2
+	 sP+S8c5cCPeCw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/4] dmaengine: fsl-edma: add runtime suspend/resume
- support
+Subject: Re: [PATCH v7 net-next 10/15] net: dsa: netc: introduce NXP NETC
+ switch driver for i.MX94
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: vkoul@kernel.org, dmaengine@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260513-b4-b4-edma-runtime-opt-v5-4-1e595bfb8423@nxp.com>
-References: <20260513-b4-b4-edma-runtime-opt-v5-4-1e595bfb8423@nxp.com>
+To: "Wei Fang" <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+In-Reply-To: <20260513030454.1666570-11-wei.fang@nxp.com>
+References: <20260513030454.1666570-11-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 05:55:09 +0000
-Message-Id: <20260514055509.A379BC2BCB7@smtp.kernel.org>
+Date: Thu, 14 May 2026 05:57:15 +0000
+Message-Id: <20260514055715.A004FC2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 9 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Double-free and Use-After-Free in the probe error path if devi=
-ce_link_add() fails.
-- [Critical] Use-After-Free during driver unbind due to manual device link =
-deletion after core purging.
-- [Critical] Pre-existing Use-After-Free vulnerability in `fsl_edma3_detach=
-_pd`.
-- [Critical] Unclocked register access in shared IRQ handlers causing syste=
-m crashes.
-- [High] Initialization race condition exposing uninitialized DMA channels =
-to consumers.
-- [High] System hang risk due to enabling channel clocks before their corre=
-sponding power domains are resumed.
-- [High] Unbalanced clock disable and CCF underflow on driver removal.
-- [High] Hardware remains inaccessible, crashing the system if CONFIG_PM is=
- disabled.
-- [High] Unclocked register access during system resume (`resume_early`).
+- [High] Resource leaks and sysfs duplication upon DSA master interface unb=
+ind/rebind due to misuse of `devm_*` APIs in the `.setup` callback.
+- [Medium] Missing `pci_clear_master()` in the `.shutdown` callback risks m=
+emory corruption during kexec.
 --
 
-commit 29a9c658afa0aacc5ffd271f1b4ac1fc006b0536
-Author: Joy Zou <joy.zou@nxp.com>
+commit 61a3ea3e0b6e78c0e019f8c93113e82986d40e5e
+Author: Wei Fang <wei.fang@nxp.com>
+Subject: net: dsa: netc: introduce NXP NETC switch driver for i.MX94
 
-dmaengine: fsl-edma: add runtime suspend/resume support
+This commit introduces the initial NXP NETC switch driver for the i.MX94
+series, providing basic probe and remove functionality. The NETC IP provides
+integrated 802.1Q Ethernet switch functionality and internal ENETC
+connectivity via a pseudo MAC.
 
-Introduce runtime suspend and resume support for FSL eDMA. Enable
-per-channel power domain management to facilitate runtime suspend and
-resume operations.
+> diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc=
+_main.c
+> index 0000000000000..8e3a3230226c3
+> --- /dev/null
+> +++ b/drivers/net/dsa/netc/netc_main.c
+[ ... ]
+> +static int netc_port_create_emdio_bus(struct netc_port *np,
+> +				      struct device_node *node)
+> +{
+[ ... ]
+> +	bus =3D devm_mdiobus_alloc_size(dev, sizeof(*mdio_priv));
+> +	if (!bus)
+> +		return -ENOMEM;
+[ ... ]
+> +	err =3D devm_of_mdiobus_register(dev, bus, node);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "Cannot register EMDIO bus\n");
+[ ... ]
+> +static int netc_init_all_ports(struct netc_switch *priv)
+> +{
+> +	struct device *dev =3D priv->dev;
+> +	struct netc_port *np;
+> +	struct dsa_port *dp;
+> +	int err;
+> +
+> +	priv->ports =3D devm_kcalloc(dev, priv->info->num_ports,
+> +				   sizeof(struct netc_port *),
+> +				   GFP_KERNEL);
+> +	if (!priv->ports)
+> +		return -ENOMEM;
+[ ... ]
+> +	for (int i =3D 0; i < priv->info->num_ports; i++) {
+> +		np =3D devm_kzalloc(dev, sizeof(*np), GFP_KERNEL);
+> +		if (!np)
+> +			return -ENOMEM;
+[ ... ]
+> +static int netc_setup(struct dsa_switch *ds)
+> +{
+> +	struct netc_switch *priv =3D ds->priv;
+> +	struct dsa_port *dp;
+> +	int err;
+> +
+> +	err =3D netc_init_switch_id(priv);
+> +	if (err)
+> +		return err;
+> +
+> +	err =3D netc_init_all_ports(priv);
 
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index c12126ea6552d..9446a0c3bc576 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -629,7 +629,6 @@ static void fsl_edma3_detach_pd(struct fsl_edma_engin=
-e *fsl_edma)
->  			device_link_del(fsl_chan->pd_dev_link);
+The DSA subsystem can invoke the switch driver's .setup and .teardown
+callbacks multiple times over the device's lifetime, such as when the
+master netdevice is unbound and rebound.
 
-During driver unbind, the devres cleanups are executed in reverse order.
-The DMA engine and its channel devices are unregistered first via
-dmaenginem_async_device_unregister(), which triggers device_links_purge()
-to delete all links where the channel is a consumer.=20
+Because devm_kcalloc(), devm_kzalloc(), and devm_of_mdiobus_register()
+are tied to the PCI device's lifetime rather than the DSA switch tree,
+these resources won't be freed when netc_teardown() is executed.
 
-When the devres action later calls fsl_edma3_detach_pd() and reaches this
-device_link_del(), will it cause a use-after-free by attempting to delete
-a link that has already been purged by the driver core?
-
->  		if (fsl_chan->pd_dev) {
->  			dev_pm_domain_detach(fsl_chan->pd_dev, false);
-> -			pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
->  			pm_runtime_set_suspended(fsl_chan->pd_dev);
-
-This issue pre-dates the patch, but could this cause a use-after-free?
-
-For power domains attached via dev_pm_domain_attach_by_id(), calling
-dev_pm_domain_detach() unregisters and frees the underlying virtual device.
-Passing fsl_chan->pd_dev to pm_runtime_set_suspended() immediately after
-appears to use a freed pointer.
+If the master interface is rebound and netc_setup() runs again, could
+this cause memory leaks and a duplicate sysfs name collision when trying
+to register the same MDIO bus?
 
 [ ... ]
-
-> @@ -684,6 +668,29 @@ static int fsl_edma3_attach_pd(struct platform_devic=
-e *pdev, struct fsl_edma_eng
->  	return -EINVAL;
->  }
-> =20
-> +/* Per channel dma power domain */
-> +static int fsl_edma_chan_runtime_suspend(struct device *dev)
+> +static void netc_switch_shutdown(struct pci_dev *pdev)
 > +{
-> +	struct fsl_edma_chan *fsl_chan =3D dev_get_drvdata(dev);
+> +	struct netc_switch *priv =3D pci_get_drvdata(pdev);
 > +
-> +	clk_disable_unprepare(fsl_chan->clk);
+> +	if (!priv)
+> +		return;
 > +
-> +	return 0;
+> +	dsa_switch_shutdown(priv->ds);
+> +	pci_set_drvdata(pdev, NULL);
 > +}
 
-Does this function need to call synchronize_irq() before disabling the cloc=
-k?
+While dsa_switch_shutdown() brings the network interfaces down, does it
+guarantee that all hardware DMA engines (such as the switch-wide NTMP
+Command BD rings) are immediately halted?
 
-Since the driver uses shared interrupts (IRQF_SHARED), if another device on
-the same IRQ line triggers an interrupt while the channel is suspended,
-the eDMA interrupt handler might attempt to read hardware registers while t=
-he
-clock is disabled.
-
-Should the interrupt handlers (like fsl_edma3_tx_handler) also use
-pm_runtime_get_if_active() to ensure the device is powered before checking
-status registers?
-
-[ ... ]
-
-> @@ -869,6 +872,51 @@ static int fsl_edma_probe(struct platform_device *pd=
-ev)
->  		return dev_err_probe(&pdev->dev, ret,
->  				     "Can't register Freescale eDMA engine.\n");
-
-Is there a race condition here?
-
-By calling dmaenginem_async_device_register() before setting up the runtime
-PM domains and hardware registers below, clients can immediately request a
-channel.
-
-If a client allocates a channel concurrently, it could call
-fsl_edma_alloc_chan_resources() before devm_pm_runtime_enable() is called,
-or race with the unconditional clk_disable_unprepare() and edma_write_tcdre=
-g()
-in the loop below, potentially corrupting hardware state.
-
-> +	ret =3D devm_pm_runtime_enable(&pdev->dev);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "Can't enable eDMA engine PM run=
-time!");
-> +
-> +	for (i =3D 0; i < fsl_edma->n_chans; i++) {
-> +		struct fsl_edma_chan *fsl_chan =3D &fsl_edma->chans[i];
-> +		struct device *chan_dev;
-> +
-> +		if (fsl_edma->chan_masked & BIT(i))
-> +			continue;
-> +
-> +		chan_dev =3D &fsl_chan->vchan.chan.dev->device;
-> +		dev_set_drvdata(chan_dev, fsl_chan);
-> +		dev_pm_domain_set(chan_dev, &fsl_edma_chan_pm_domain);
-> +
-> +		if (fsl_chan->pd_dev) {
-> +			fsl_chan->pd_dev_link =3D device_link_add(chan_dev, fsl_chan->pd_dev,
-> +								DL_FLAG_STATELESS |
-> +								DL_FLAG_PM_RUNTIME);
-> +			if (!fsl_chan->pd_dev_link) {
-> +				fsl_edma3_detach_pd(fsl_edma);
-> +				return dev_err_probe(&pdev->dev, -EINVAL,
-> +						     "Failed to add device_link to %d\n", i);
-
-If device_link_add() fails, fsl_edma3_detach_pd() is called manually to det=
-ach
-domains and delete links, but it doesn't clear the pointers.
-
-Since devm_fsl_edma3_detach_pd() was already registered as a devres action
-earlier in probe, returning an error here will cause the devres framework to
-call fsl_edma3_detach_pd() a second time. Could this lead to a double-free
-of the device link and double-detach of the PM domain?
-
-> +			}
-> +		}
-> +		ret =3D devm_pm_runtime_enable(chan_dev);
-> +		if (ret)
-> +			return dev_err_probe(&pdev->dev, ret,
-> +					     "Can't enable eDMA channel PM runtime!");
-> +
-> +		if (fsl_chan->pd_dev) {
-> +			ret =3D pm_runtime_resume_and_get(fsl_chan->pd_dev);
-
-Since the earlier loop in probe acquires the channel clocks with
-devm_clk_get_optional_enabled(), the clocks are already enabled before we
-reach this point.
-
-Because the previous DL_FLAG_RPM_ACTIVE flag was removed from the device li=
-nk,
-does enabling the channel clock before its parent power domain is resumed
-risk an asynchronous external abort on NXP SoCs?
-
-> +			if (ret)
-> +				return dev_err_probe(&pdev->dev, ret,
-> +						     "Failed to power on eDMA channel %d\n",
-> +						     fsl_chan->vchan.chan.chan_id);
-> +		}
-> +
-> +		edma_write_tcdreg(fsl_chan, cpu_to_le32(0), csr);
-> +		fsl_edma_chan_mux(fsl_chan, 0, false);
-> +		clk_disable_unprepare(fsl_chan->clk);
-
-If the kernel is compiled with CONFIG_PM=3Dn, pm_runtime_resume_and_get()
-evaluates to 1 (success) but does not call the runtime PM resume callbacks.
-
-By unconditionally disabling the clocks here, do they remain permanently
-disabled when CONFIG_PM=3Dn, leading to bus faults on subsequent DMA reques=
-ts?
-
-> +		if (fsl_chan->pd_dev)
-> +			pm_runtime_put_sync_suspend(fsl_chan->pd_dev);
-> +	}
-> +
->  	ret =3D devm_of_dma_controller_register(&pdev->dev, np,
->  			drvdata->dmamuxs ? fsl_edma_xlate : fsl_edma3_xlate,
->  			fsl_edma);
-> @@ -880,6 +928,9 @@ static int fsl_edma_probe(struct platform_device *pde=
-v)
->  	if (!(drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
->  		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-> =20
-> +	clk_disable_unprepare(fsl_edma->dmaclk);
-> +	clk_bulk_disable_unprepare(fsl_edma->drvdata->dmamuxs, fsl_edma->muxclk=
-);
-
-These clocks were acquired using devm_clk_get_optional_enabled() earlier in
-probe.
-
-If they are manually disabled here, and the device is suspended during
-driver unbind, won't the devres cleanup attempt to disable them again,
-causing a Common Clock Framework underflow warning?
-
-Similarly, if CONFIG_PM=3Dn, these engine clocks will never be re-enabled.
-
-[ ... ]
-
-> @@ -928,6 +992,13 @@ static int fsl_edma_resume_early(struct device *dev)
->  		fsl_chan =3D &fsl_edma->chans[i];
->  		if (fsl_edma->chan_masked & BIT(i))
->  			continue;
-> +
-> +		if (pm_runtime_status_suspended(&fsl_chan->vchan.chan.dev->device) ||
-> +		    (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_PD) &&
-> +		     (fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) &&
-> +		     !fsl_chan->srcid))
-> +			continue;
-> +
->  		fsl_chan->pm_state =3D RUNNING;
->  		edma_write_tcdreg(fsl_chan, 0, csr);
->  		if (fsl_chan->srcid !=3D 0)
-> @@ -940,6 +1011,35 @@ static int fsl_edma_resume_early(struct device *dev)
->  	return 0;
->  }
-
-Before returning, fsl_edma_resume_early() writes to regs->cr:
-
-    if (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
-        edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-
-If all channels were idle prior to system suspend, the eDMA engine is in a
-runtime-suspended state and dmaclk is gated. Since the PM core doesn't
-automatically wake runtime-suspended devices during resume_early, could
-writing to regs->cr while dmaclk is gated trigger a bus fault?
+If not, should this function call pci_clear_master() to prevent
+the device from continuing pending DMA operations and potentially
+corrupting memory during a kexec boot?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513-b4-b4-edma=
--runtime-opt-v5-0-1e595bfb8423@nxp.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513030454.1666=
+570-1-wei.fang@nxp.com?part=3D10
