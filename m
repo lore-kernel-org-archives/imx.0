@@ -1,131 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18530FF20;
-	Thu, 14 May 2026 21:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD438F939
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 21:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778794078; cv=none; b=ZhC6ydo00SkTPvvZR4YPeYcF9Ok/KNd3HR1r178vzS0IS/UQZDdtzwRbETBDloBwOhBR9h6wZe6oayYAai7996hGijsB4i0EjnAELSJuD06tct0AtwLE9+3AgNtyIZFFKjsk5TBWhnZ95/HK1HLWOdtdKU/l0vdV95piGLVsroY=
+	t=1778795309; cv=none; b=Uc0A397yj3+9Owxo2jLw34ajh7tHCtqwaZGj+rP5LVIBYPBuPWEXUFaFC53ArayHrdT1kMjXnyD/fwvi141ScIHO52wLrG7w1b/YZlVByA+VfBTVzaCF+PNHMAdfMGBFl+SHJlKjBJkrn+ob/ogokAvVQeq/IXK/hR2FXJ0fV9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778794078; c=relaxed/simple;
-	bh=gc45MH4tNA2Zbfirgv0Vs2Zj8hjZgaKvCHh9gipAfKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sZeNmymrk+SvcAqOosx1+ju+u84AjUDZY7tqthQN8LolPeuqjRBTdi+4Kn+0OmOEa6hltLBfZOWvlJnTyTxgmNk5X9UOYPFJxiRCDJj4NcP5+3YEEkwqgtC/DXwq4XSxiLZmBxE73qUAMu0cz7CEge01NmdmlEyJ4AGYkpa+PI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEHNj7or; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778795309; c=relaxed/simple;
+	bh=jZ6W70kI18ldbRxuNsyyhbpjx3jDVyUk3ue5otGuTh0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=n2lpAvZDfRLetBFfUMUWIao8gkUHf878FJ0gxAvfBk+elXLYW74e9PBZT5MGucBuMQKE0MkmsDvi5kROBa+hidR+H8TQ5ZAfb4iT/WZUJOp5BlGP2ijm5Px69HcSjfh+VrAny1vnTNv4+PTMEGiCMvQGo62F+7Gk4NKesq+YIeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3Oqwe0M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEHNj7or"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4342CC2BCB3;
-	Thu, 14 May 2026 21:27:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3Oqwe0M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE5AC2BCB3;
+	Thu, 14 May 2026 21:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778794078;
-	bh=gc45MH4tNA2Zbfirgv0Vs2Zj8hjZgaKvCHh9gipAfKY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEHNj7or+o9UARK4AvxcAfJLge76uSCtWm3vMFjd6z6SEhiokMbE5K+g0QHQu3juz
-	 iZIJUhapkHk/JRb0i/PKXlVtZ2AUhxYqouifx0i9IL7CENrltOd3yHoOa8vjg7+/1T
-	 8dp6vKh0DqpfshrnD4Il6JX1Jl/PKas20XCjlVfyePJui4CrLNYqf4eTEz0h/12nd2
-	 Wlo7Jb5QqLSPGpwRt9yoPfpx3l5RdXBcY6xrlSWXw3BNhJtwZjcfeEwBzzeSOguQoN
-	 46UE5Vy9ZHSoykI9KgaC72bN954n3s6FROG7BTAaiyTMGJLYkXASTZOInaIFlGr6LW
-	 H4VmvZVT4Paiw==
-Date: Thu, 14 May 2026 22:27:55 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 1/1] pinctrl: Add OF dependency for PINCTRL_GENERIC_MUX
-Message-ID: <20260514-animation-barn-9f3aaa4331be@spud>
-References: <20260512144806.22447-1-Frank.Li@nxp.com>
+	s=k20201202; t=1778795309;
+	bh=jZ6W70kI18ldbRxuNsyyhbpjx3jDVyUk3ue5otGuTh0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=M3Oqwe0MQ7It3dlWBOmDsxQaESoaj670eLl9Yub+ZeCwoQB4FXl0kAYbxI2FzoCpt
+	 8jZuHsVdE+YjJZCopHmZBDUh30wKgUxwiMwbKOnk4q1D3+x//v4uFNLpbk2TBtrqKS
+	 e1378H08gXzMJW7GxUc8F7KfDnnyGgMSU+H0BoiGdduA9FcRz6ImktMBLF+4fe/fY5
+	 grnxPsZbfRd2RedyopgEOd0/pYuvXYKwHI+n6D0R8hu0DlJ96bbN9zvCFeFAiMDbeb
+	 NL7Iv6gzBH/NmcxXCb5RheylTTm4nIodRzM9r74gNVmzIbqn5of+7er7OjakUVNP/L
+	 1OflLh19yA6ug==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/5] remoteproc: mark wc-ioremap carveouts as iomem
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ben Levinsky" <ben.levinsky@amd.com>
+Cc: imx@lists.linux.dev, wsa+renesas@sang-engineering.com, Frank.Li@kernel.org
+In-Reply-To: <20260514162129.1504162-4-ben.levinsky@amd.com>
+References: <20260514162129.1504162-4-ben.levinsky@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 14 May 2026 21:48:28 +0000
+Message-Id: <20260514214829.3DE5AC2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="as4Oxx7xElh3JQlV"
-Content-Disposition: inline
-In-Reply-To: <20260512144806.22447-1-Frank.Li@nxp.com>
 
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [Critical] Integer Overflow in `rproc_elf_load_segments` allowing Out-of-=
+Bounds Read.
+- [Critical] Integer Overflow in `rproc_da_to_va` bounds check allowing Out=
+-of-Bounds Write.
+- [High] The patch correctly fixes the generic `rproc_mem_entry_ioremap_wc(=
+)` helper but overlooks driver-specific allocators and `da_to_va` callbacks=
+ that exhibit the exact same bug.
+- [High] Debugfs interface `rproc_trace_read` performs standard memory acce=
+sses on I/O memory, triggering panics.
+--
 
---as4Oxx7xElh3JQlV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+commit 185669571331faa11cc44eacd2568b0e202bcf9d
+Author: Ben Levinsky <ben.levinsky@amd.com>
 
-On Tue, May 12, 2026 at 10:48:05AM -0400, Frank Li wrote:
-> Add an explicit OF dependency for PINCTRL_GENERIC_MUX to ensure the
-> generic mux support is only enabled when device tree is available.
->=20
-> Also fix the stub implementation of pinctrl_generic_to_map() by correcting
-> its last argument to match the non-stub prototype.
->=20
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202604072013.aI84l57L-lkp@i=
-ntel.com/
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+remoteproc: mark wc-ioremap carveouts as iomem
 
-Having been baited into sending a fix for the incorrect signature cos
-the commit message here suggested that this was a dependency fix for
-just the driver, I think this should be split into two patches,
-especially since the commits fixed by each hunk here are different.
+This commit marks shared wc-ioremap carveouts as iomem in the generic
+rproc_mem_entry_ioremap_wc() helper. This ensures the remoteproc ELF loader
+uses the proper I/O memory accessors instead of falling back to standard
+memcpy() and memset().
 
-Additionally, looks like you're also missing fixes tags.
+> diff --git a/drivers/remoteproc/remoteproc_internal.h b/drivers/remotepro=
+c/remoteproc_internal.h
+> index f5b34aabed5bb..9955e512f073d 100644
+> --- a/drivers/remoteproc/remoteproc_internal.h
+> +++ b/drivers/remoteproc/remoteproc_internal.h
+> @@ -136,6 +136,7 @@ static inline int rproc_mem_entry_ioremap_wc(struct r=
+proc *rproc,
+>  	}
+> =20
+>  	mem->va =3D (__force void *)va;
+> +	mem->is_iomem =3D true;
 
-Cheers,
-Conor.
+Does this change also need to be applied to driver-specific allocators and
+da_to_va callbacks?
 
-> ---
-> Linus Walleij:
-> 	I am sorry for missed a previous fixes patch
-> (https://lore.kernel.org/imx/20260408050702.2454661-1-Frank.Li@nxp.com/)
-> when rebase since it is located another fixes tree.
->=20
-> Frank
-> ---
->  drivers/pinctrl/Kconfig   | 1 +
->  drivers/pinctrl/pinconf.h | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-> index 31d698fbaa01d..f4ffe1f3b720f 100644
-> --- a/drivers/pinctrl/Kconfig
-> +++ b/drivers/pinctrl/Kconfig
-> @@ -275,6 +275,7 @@ config PINCTRL_GEMINI
->  config PINCTRL_GENERIC_MUX
->  	tristate "Generic Pinctrl driver by using multiplexer"
->  	depends on MULTIPLEXER
-> +	depends on OF
->  	select PINMUX
->  	select GENERIC_PINCTRL
->  	help
-> diff --git a/drivers/pinctrl/pinconf.h b/drivers/pinctrl/pinconf.h
-> index fa8fb0d290d1d..9711d16c38b62 100644
-> --- a/drivers/pinctrl/pinconf.h
-> +++ b/drivers/pinctrl/pinconf.h
-> @@ -195,7 +195,7 @@ pinctrl_generic_to_map(struct pinctrl_dev *pctldev, s=
-truct device_node *parent,
->  		       unsigned int *num_maps, unsigned int *num_reserved_maps,
->  		       const char **group_name, unsigned int ngroups,
->  		       const char **functions, unsigned int *pins,
-> -		       void *function_data)
-> +		       unsigned int npins)
->  {
->  	return -ENOTSUPP;
+For example, in drivers/remoteproc/xlnx_r5_remoteproc.c, tcm_mem_map() maps
+memory via ioremap_wc() but does not set is_iomem to true.
+
+Similarly, keystone_rproc_da_to_va() and omap_rproc_da_to_va() appear to
+ignore the is_iomem pointer despite returning devm_ioremap_resource mapped
+memory. In imx_rproc_da_to_sys(), is_iomem is left false for regions mapped
+via devm_ioremap_wc() when ATT_IOMEM is not set.
+
+> =20
+>  	return 0;
 >  }
-> --=20
-> 2.43.0
->=20
 
---as4Oxx7xElh3JQlV
-Content-Type: application/pgp-signature; name="signature.asc"
+Are there potential integer overflows in rproc_elf_load_segments() when
+parsing ELF headers?
 
------BEGIN PGP SIGNATURE-----
+If offset and filesz are parsed directly from 64-bit ELF program headers,
+could their sum wrap around:
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCagY+WgAKCRB4tDGHoIJi
-0mUtAP0aSCPsYXs2gp49NArMcMu/OvVnuBHZ3DdRGlHtIFyXyAEAhO49MYUyQ4KD
-VLUMDkdri+QCJcO6mTLH1RwLVX27FQE=
-=8xRf
------END PGP SIGNATURE-----
+rproc_elf_load_segments() {
+    ...
+    if (offset + filesz > fw->size)
+    ...
+        memcpy(ptr, elf_data + offset, filesz);
+    ...
+}
 
---as4Oxx7xElh3JQlV--
+If offset is near the maximum 64-bit value and filesz is small, the bounds
+check could be bypassed, resulting in an out-of-bounds read.
+
+Is there a similar overflow risk in the bounds check within rproc_da_to_va(=
+)?
+
+rproc_da_to_va() {
+    ...
+    if (offset + len > carveout->len)
+    ...
+}
+
+If len is a size_t and offset is an int, could an ELF segment with a memsz
+near the maximum size_t value cause the sum to wrap around and bypass the
+bounds check?
+
+This could affect rproc_elf_load_segments() if it executes a memset using
+the large memsz value, resulting in an out-of-bounds write.
+
+Does the debugfs interface have a related regression with I/O memory access?
+
+In rproc_trace_read(), the memory type is ignored by passing NULL for the
+is_iomem flag to rproc_da_to_va():
+
+rproc_trace_read() {
+    ...
+    va =3D rproc_da_to_va(rproc, trace->da, trace->len, NULL);
+    ...
+}
+
+If the returned virtual address is mapped as device memory, such as via
+devm_ioremap_resource() in keystone_remoteproc.c, could passing it directly
+to strnlen() and simple_read_from_buffer() trigger alignment faults on
+strict architectures?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514162129.1504=
+162-1-ben.levinsky@amd.com?part=3D3
