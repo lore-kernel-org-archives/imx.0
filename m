@@ -1,135 +1,220 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE211238C1A
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF493AEF44
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 11:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778756305; cv=none; b=lCwhpFdcnWIfrQtKiIivuxUNPWidJv5WuA5xk4mnylzp9/lFHTKx6ztngZp93vyhMNemizS9oBPnWG+v51kG1nMzzhe9JHcll8K/8a0HPzC+fAcq3PiswaRq4f7QJ/450HBZL6m2pPWlHNeyZFcLEgiqlIHwzf03HXMTxSV5280=
+	t=1778756783; cv=none; b=iFu/5DVVPMrdp3EiB56Qg8h66bD3apl6T2PPiOiUX5pZ7H2kY/bNnoKT6YTFDNlUk7rZJUrR7Olw59NTtlT9iIn3bnJMEimUuk7hqA1Fm6DRJCed8PbbQUmhGytWLFqtAaNZd4xBKzRIqbwuE/A0XVkZUPz1qPwwDZkWeGl9Ook=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778756305; c=relaxed/simple;
-	bh=Zy6CDyIG48Ok7FIVr9qyyRIDlJJw/aO66ldCfsgpdKM=;
+	s=arc-20240116; t=1778756783; c=relaxed/simple;
+	bh=LkCCxaFUglRYlE0CYNn2yifDP0Uz7IrZjqML7/Q6OzY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jjeXNbADutqd4aEsuyGM28KLWh1w1J8sYKIWKW4XEoB8t6jGl2cjRJL4bNKBstK2CFI8bNF9oQyp2dJ7d4sWB1mzBSQIzhYhU0eockfw9g/8m28FpIww5mensVvV68OaDkq/gw5iEDuH7lwWNioLKdI7tdwMZ/RsZxbj4gjGq4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQIypqYb; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=Z0Sp/ESoPi6yhRh5c/kxySGqhTqoVMgiX3qGdSX9aFh8IL7Tu2NBLo0WAj02TKmEK3QFghJul7dg8BzGLSLgwm0chLuryC58WQDJq3Wxkmy2gV9NoU21u6DDPjTKNRg5kO0ynlvXQnv4rgLOaGvf6l++QshmVayp5754Uh++FTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Or3kV/+G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQIypqYb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC18C2BCB3;
-	Thu, 14 May 2026 10:58:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Or3kV/+G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A10C2BCB8;
+	Thu, 14 May 2026 11:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778756304;
-	bh=Zy6CDyIG48Ok7FIVr9qyyRIDlJJw/aO66ldCfsgpdKM=;
+	s=k20201202; t=1778756782;
+	bh=LkCCxaFUglRYlE0CYNn2yifDP0Uz7IrZjqML7/Q6OzY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=EQIypqYbBpx2yOPEV5EJizUR3qAyWgT5KgR3g8Cf56rXsloyeEm5V17U8wy+nfLZY
-	 IgvxCx5JXjtVjsudDmLYM1Nr3+lK4DgaVa5YaeK1Un/Bq9S39MFZY+nuXspXlaVhxa
-	 PJNuw4yH/jw4RKWoo1ur75L7Apqpf+yJhth9ByDAdN6wnu9NE+m/D5yNrZPaz1DEVp
-	 u0u6KCzV48cIe/u6KO0Zux+NNyDY4ZuiPfreggsI0/lbFWvxnRh0DnMyQ8Avg4GVt+
-	 huvBCJL7rFmTUQ5Y6FA+Byejp54cqcqPvMKv7AmLwN0n7KugFbh1Ytv2Hviw1F+m10
-	 xM3SkKxB4sJ/Q==
+	b=Or3kV/+GrDcWIYzb4MUaLzUXz9xrcmgwO+DMHD0CfVZad637Zt+e0wsC0PP/4ZWyz
+	 CUpZQ8qO/z7VfGqVW+ChxwSXTgbuLePGqov1ruJCHNPzvdYZMbERpqGAG+rPuNWaWI
+	 LHRVSf+ma90/TUFPagmiWuDFltU9ygT7U3LpQKeVStSMlM9z4/5t4XepjHFh1GS9LM
+	 x3ua9rriz6B1pH2Bgroga+fXF40toeOqhcwNGT9zolrbnjYAZxggJ0kx4ICKrkk9Yu
+	 GlYYJtDAlmwBbLR9k2yBVFuuU9kL/VvCdtQHppfIuK3x28yNty7AH0cmSDpZHWViFL
+	 NZFJveuXzVnFw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net 6/6] net: enetc: add ratelimiting to VF mailbox
- error messages
+Subject: Re: [PATCH v4 1/1] media: v4l2-common: Add helper function
+ media_bus_fmt_to_csi2_(bpp|dt)()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wei Fang" <wei.fang@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260513103021.2190593-7-wei.fang@nxp.com>
-References: <20260513103021.2190593-7-wei.fang@nxp.com>
+To: "Frank Li" <Frank.Li@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260513205949.105444-1-Frank.Li@nxp.com>
+References: <20260513205949.105444-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 10:58:23 +0000
-Message-Id: <20260514105824.4BC18C2BCB3@smtp.kernel.org>
+Date: Thu, 14 May 2026 11:06:22 +0000
+Message-Id: <20260514110622.83A10C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Critical] The VF MAC address is validated directly from a shared DMA buf=
-fer, allowing a malicious guest VM to bypass validation via a Time-Of-Check=
- to Time-Of-Use (TOCTOU) race condition.
-- [High] The unbounded loop in `enetc_msg_task()` allows a malicious guest =
-VM to cause a CPU soft lockup on the host, leading to a Denial of Service.
+- [High] Uninitialized `.dt` fields default to 0 (`MIPI_CSI2_DT_FS`), causi=
+ng `media_bus_fmt_to_csi2_dt()` to return a valid CSI-2 data type instead o=
+f an error.
+- [High] Incorrect bit width per pixel (bpp) value for `MEDIA_BUS_FMT_AHSV8=
+888_1X32`.
+- [Low] Exported helper functions use signed `int` for bus format codes ins=
+tead of `u32`.
+- [Low] Grammatical errors in constant naming and code comments.
 --
 
-commit 88150cd0493bf6368f09cabbbd2a6aba99ee0cf5
-Author: Wei Fang <wei.fang@nxp.com>
+commit e06117f0b6bd648be504f0b932d84a4e08205433
+Author: Frank Li <Frank.Li@nxp.com>
 
-net: enetc: add ratelimiting to VF mailbox error messages
+media: v4l2-common: Add helper function media_bus_fmt_to_csi2_(bpp|dt)()
 
-This commit replaces dev_err() and dev_warn() with their ratelimited
-counterparts in the vf-to-pf messaging paths. The change aims to prevent
-a buggy or malicious guest vm from flooding the host kernel log. This
-ensures errors remain debuggable while mitigating log flooding attacks.
+This commit adds helper functions media_bus_fmt_to_csi2_bpp() and
+media_bus_fmt_to_csi2_dt() to map media bus formats to MIPI CSI-2 data
+types and bits-per-pixel.
 
-Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
-p.com #1
+> diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-c=
+ore/v4l2-common.c
+> index bceafc4e92c81..438aeb4c8435d 100644
+> --- a/drivers/media/v4l2-core/v4l2-common.c
+> +++ b/drivers/media/v4l2-core/v4l2-common.c
 
-> Sashiko reported that a buggy or malicious guest VM can flood the host
-> kernel log by repeatedly sending VF-to-PF messages at a high rate,
-> degrading host performance and hiding important system logs [1].
+[ ... ]
 
-This isn't a regression introduced by this patch, but does the unbounded
-loop in enetc_msg_task() still allow a malicious guest vm to cause a cpu
-soft lockup on the host?
+> @@ -808,3 +809,180 @@ struct clk *__devm_v4l2_sensor_clk_get(struct devic=
+e *dev, const char *id,
+>  	return clk_hw->clk;
+>  }
+>  EXPORT_SYMBOL_GPL(__devm_v4l2_sensor_clk_get);
+> +
+> +/**
+> + * struct media_bus_fmt_info - information about a media bus format
+> + * @code: media bus format identifier (MEDIA_BUS_FMT_*)
+> + * @dt: data type define in MIPI spec (MIPI_CSI2_DT *)
+> + * @bpp: bit width per pixel, which is suffix from MEDIA_BUS_FMT_*, no p=
+ad. no
+> + *	 compressed data.
+> + */
+> +struct media_bus_fmt_info {
+> +	u32 code;
+> +	u8 dt;
+> +	u8 bpp;
+> +};
+> +
+> +static const struct media_bus_fmt_info media_bus_fmt_info[] =3D {
+> +	{ .code =3D MEDIA_BUS_FMT_RGB444_1X12, .bpp =3D 12 },
 
-In enetc_msg_task(), vf messages are processed within an unbounded loop:
+Since dt is not explicitly initialized here, it will default to 0. In the M=
+IPI
+CSI-2 specification, 0x00 is a valid Data Type for Frame Start.
 
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_task() {
-    ...
-	for (;;) {
-		mr_mask =3D enetc_rd(hw, ENETC_PSIMSGRR) & ENETC_PSIMSGRR_MR_MASK;
-		if (!mr_mask) {
-    ...
-}
+When media_bus_fmt_to_csi2_dt() looks up one of these unmapped formats, will
+it return 0x00 instead of the expected MIPI_CSI2_DT_INVALIDATE?
 
-If a malicious guest vm continuously sends messages at a high rate, the vf
-can instantly send another as soon as the pf acknowledges a message.
+If so, does this risk drivers misprogramming the CSI-2 hardware to use
+Frame Start as a payload data type instead of failing gracefully?
 
-Because the worker thread never yields (e.g., via cond_resched()) or enforc=
-es
-a processing budget, would the mr_mask check frequently evaluate to non-zer=
-o,
-causing the pf to spin indefinitely?
+[ ... ]
 
-Could this monopolize the host cpu core running the workqueue, leading to a
-watchdog soft lockup and a guest-to-host denial of service?
+> +	{ .code =3D MEDIA_BUS_FMT_JPEG_1X8, .bpp =3D 8 },
+> +
+> +	{ .code =3D MEDIA_BUS_FMT_S5C_UYVY_JPEG_1X8, .bpp =3D 8 },
+> +
+> +	{ .code =3D MEDIA_BUS_FMT_AHSV8888_1X32, .bpp =3D 8 },
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index 052cab48df514..73a899b00308b 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -505,8 +505,9 @@ static u16 enetc_msg_pf_set_vf_primary_mac_addr(struc=
-t enetc_pf *pf,
+Is this bpp value correct? AHSV8888 consists of four 8-bit channels, and its
+1X32 suffix denotes a 32-bit bus width.
+
+Should this be 32 instead of 8 to prevent miscalculating link frequencies
+or allocating undersized DMA buffers?
+
+> +
+> +	{ .code =3D MEDIA_BUS_FMT_META_8, .bpp =3D 8 },
+
+[ ... ]
+
+> +static const struct media_bus_fmt_info *media_bus_fmt_info_get(u32 bus_f=
+mt)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(media_bus_fmt_info); i++) {
+> +		if (media_bus_fmt_info[i].code =3D=3D bus_fmt)
+> +			return &media_bus_fmt_info[i];
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +u32 media_bus_fmt_to_csi2_dt(int bus_fmt)
+
+Is it intentional to use a signed int for bus_fmt here?
+
+The V4L2 subsystem typically defines and stores media bus format codes as
+unsigned 32-bit integers (u32). The internal media_bus_fmt_info_get() helper
+correctly uses u32.
+
+> +{
+> +	const struct media_bus_fmt_info *info =3D media_bus_fmt_info_get(bus_fm=
+t);
+> +
+> +	return info ? info->dt : MIPI_CSI2_DT_INVALIDATE;
+> +}
+> +EXPORT_SYMBOL_GPL(media_bus_fmt_to_csi2_dt);
+> +
+> +u32 media_bus_fmt_to_csi2_bpp(int bus_fmt)
+
+Similar to the function above, could this also take a u32 for bus_fmt
+to match the subsystem standard?
+
+> +{
+> +	const struct media_bus_fmt_info *info =3D media_bus_fmt_info_get(bus_fm=
+t);
+> +
+> +	return info ? info->bpp : 0;
+> +}
+> +EXPORT_SYMBOL_GPL(media_bus_fmt_to_csi2_bpp);
+> diff --git a/include/media/mipi-csi2.h b/include/media/mipi-csi2.h
+> index 40fc0264250d7..bd22d2ae57e81 100644
+> --- a/include/media/mipi-csi2.h
+> +++ b/include/media/mipi-csi2.h
+> @@ -44,4 +44,30 @@
+>  #define MIPI_CSI2_DT_RAW20		0x2f
+>  #define MIPI_CSI2_DT_USER_DEFINED(n)	(0x30 + (n))	/* 0..7 */
 > =20
->  	mutex_lock(&vf_state->lock);
->  	if (vf_state->flags & ENETC_VF_FLAG_PF_SET_MAC)
-> -		dev_warn(dev, "Attempt to override PF set mac addr for VF%d\n",
-> -			 vf_id);
-> +		dev_warn_ratelimited(dev,
-> +				     "VF%d attempted to override PF set MAC\n",
-> +				     vf_id);
->  	else
->  		enetc_pf_set_primary_mac_addr(&pf->si->hw, vf_id + 1, addr);
+> +/* Use one undefined value in spec */
+> +#define MIPI_CSI2_DT_INVALIDATE		0xff
 
-This isn't a regression introduced by this patch, but does validating the
-mac address directly from the shared dma buffer allow a time-of-check to
-time-of-use race condition?
+This isn't a bug, but invalidate is a verb. To follow typical kernel state
+naming conventions, this should probably be named MIPI_CSI2_DT_INVALID or
+MIPI_CSI2_DT_UNKNOWN.
 
-The pointer addr points directly into the msg->vaddr dma buffer. The pf
-validates the mac address by calling is_valid_ether_addr(addr) and then pas=
-ses
-the same pointer to enetc_pf_set_primary_mac_addr(), which reads the mac
-address again from the dma buffer to write it to the hardware.
+> +
+> +/**
+> + * media_bus_fmt_to_csi2_dt - Get MIPI CSI2 data type from media bus for=
+mat
+> + *
+> + * @bus_fmt: media bus format identifier (MEDIA_BUS_FMT_*)
+> + *
+> + * return MIPI CSI2 data type MIPI_CSI2_DT_*, MIPI_CSI2_DT_INVALIDATE me=
+ans
+> + * can't get data type from bus_fmt.
+> + */
+> +u32 media_bus_fmt_to_csi2_dt(int bus_fmt);
+> +
+> +/**
+> + * media_bus_fmt_to_csi2_bpp - Get media bus format's bit width per pixel
+> + *
+> + * @bus_fmt: media bus format identifier (MEDIA_BUS_FMT_*)
+> + *
+> + * returns bit width per pixel, 0 is invalidate width, which can't get f=
+rom
 
-Could a malicious vf exploit this by writing a valid mac address to the dma
-buffer to pass the validation check, and then overwriting it with an invalid
-or multicast mac address before the pf writes it to the hardware registers?
+This isn't a bug, but there's a grammatical error here. It says invalidate
+width instead of invalid width.
 
-Should the mac address be copied to a local stack buffer before validation?
+> + * bus_fmt.
+> + *
+> + * Notes: this bpp is suffix from MEDIA_BUS_FMT_*, no pad, not for compr=
+essed
+> + * data.
+> + */
+> +u32 media_bus_fmt_to_csi2_bpp(int bus_fmt);
+> +
+>  #endif /* _MEDIA_MIPI_CSI2_H */
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513103021.2190=
-593-1-wei.fang@nxp.com?part=3D6
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513205949.1054=
+44-1-Frank.Li@nxp.com?part=3D1
