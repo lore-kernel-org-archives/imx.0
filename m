@@ -1,134 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996B63C1F46;
-	Thu, 14 May 2026 11:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277932DF13B;
+	Thu, 14 May 2026 12:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778758709; cv=none; b=OflCABTIgazCxKy6XfNQ+NQdtuxscd9DROLqJMxXV4o2iN5IEyn/6LrAiRFahvI0tlM6gMjRouNdkSsBE0IbwT8cYEcKv8I+3663L4+2wLU8AdnvzY/mQxZPVpfTr7pQ6C4LutQ2mqqO/zPfgCfLeb789W7tGFj0EQOD/d6yNLY=
+	t=1778762095; cv=none; b=tr5QwXKU+pPKMuH3FgKYTTZ+X6NscUaNeZ5/Kot7dWi/h0Y0wkmRBM3kimO0tupjtY4HaOGGnqH4fxIzUMHfkE8UVVxXTlch8KaozQRcB6iGX+71bgwLI397By2jHu5lGSaBjN6bn/FabL5hxxV+FUvV/rO3UqW99gg/T0CPqDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778758709; c=relaxed/simple;
-	bh=r0B3lSKf8gQDDJW5cY+Yg6YjjIjao27p5dvnDeMp/SQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oY9ITGmO/ctzQfmJHFdFYnhv3iQ+E+rIZdSIBnCpum4Zw+ZJNZFre97sEHMNERoD4wGKkHGf4soiZga9OKxnRzJiS8Gx1HTiLPUkciordInnVpoLZ75bu3kggQUwF9cNAecb/BjFTgNNqcJWd3wWd8FLHCaEAP1nc3fEFPVh8Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNQ+9h8L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778762095; c=relaxed/simple;
+	bh=Q0aQbhWOe5zrFqltcKX0A4/s5aa95PmqTR8lLnlVuzo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NvP2ZYE1XeqYKNL1OaWozqm/F8Tr8eWtMo5sfkfc1B/BEqSxId+qRyBp9Vz79YT/m3NO/Oj9/sqS4bEA2raIw2Gp9gb1RgILvck64WCp11OxT/CqT9FfG4mgYGIeb1awtamcMu05rpo3P9Bssk4g7UkK1bXRg0ckgo2ChJ9Sqmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sx7kCtWv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNQ+9h8L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B0BC2BCC7;
-	Thu, 14 May 2026 11:38:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sx7kCtWv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F7AC2BCB8;
+	Thu, 14 May 2026 12:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778758709;
-	bh=r0B3lSKf8gQDDJW5cY+Yg6YjjIjao27p5dvnDeMp/SQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kNQ+9h8LGRxHG5m553fqqudypahupVGpFMNyboyE2iCh75htaN8icgnwxI/GA3+WZ
-	 gyrTswzGbrWWXcmgwvNeB2+GEhg7nMGhDVthLfAh4w/SPdZwbuBue0WcNg3f203vFE
-	 TU14B2cy1O90WgxLV3Wp+K3ND4Y8j3HavYyPYWy5yPhiCLIYinHlKd/qCSVAl6LclR
-	 MxTXtAQxX8HACwV3X5lGz9fmD0O3ihA0djCtH+exGx0LmIBRuqCTonuweozss6yk8a
-	 NSU2HeL7HcQHvv8zT3JWfwPmKfMOTZAsfvM89vsIIG+gOdgNehxJL5JK3VkiPxxbbZ
-	 JvFM3hSyoQWeQ==
-Date: Thu, 14 May 2026 13:38:27 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Jiafei Pan <Jiafei.Pan@nxp.com>
-Cc: andersson@kernel.org, mathieu.poirier@linaro.org, peng.fan@nxp.com, 
-	Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Zhiqiang.Hou@nxp.com, mingkai.hu@nxp.com, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: remoteproc: add imx-rproc-psci
-Message-ID: <20260514-omniscient-futuristic-macaque-af0718@quoll>
-References: <20260511023928.39640-1-Jiafei.Pan@nxp.com>
- <20260511023928.39640-2-Jiafei.Pan@nxp.com>
+	s=k20201202; t=1778762094;
+	bh=Q0aQbhWOe5zrFqltcKX0A4/s5aa95PmqTR8lLnlVuzo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Sx7kCtWvrOXCrQXy2983f0AYwHQot4xiXPULF3RW5kYiYbyUwzbIt5FfrS0xh4aXv
+	 s5fxJ5cNox8mE5Rx1DcB5tlVH0EAAZG6xkZEUr7imsMg0VY97QhhP8eKgFWii3VMuI
+	 5GhOCeqoNaXjX2fRHeAErcha64R8zyFBScFaPjRRJJsp3P/biekLZFQMSYxfe7yVml
+	 qfh64uhg3qTjfxBbY4pfNDfCFM2RnChG+dKo8sDBZoFptIOTo1RQwZ137mfSziin4k
+	 EN0+E69WgS/eOtyBth2PYJOqVl8mE5ugKbeVBuD3iixUoQ0Wk9ivfwEmcyzhZM/7hh
+	 c9ggp3RAcEYrg==
+Message-ID: <e15b9653-3d49-4300-9961-9303b983a4f5@kernel.org>
+Date: Thu, 14 May 2026 14:34:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260511023928.39640-2-Jiafei.Pan@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] media: Add iMX95 neoisp driver
+To: Antoine Bouyer <antoine.bouyer@nxp.com>, julien.vuillaumier@nxp.com,
+ alexi.birlinger@nxp.com, daniel.baluta@nxp.com, peng.fan@nxp.com,
+ frank.li@nxp.com, jacopo.mondi@ideasonboard.com,
+ laurent.pinchart@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, michael.riesch@collabora.com,
+ anthony.mcgivern@arm.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, ai.luthra@ideasonboard.com,
+ paul.elder@ideasonboard.com, geert@linux-m68k.org
+References: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260511132629.1300868-1-antoine.bouyer@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 11, 2026 at 10:39:25AM +0800, Jiafei Pan wrote:
-> Add compatible string "fsl,imx-rproc-psci" for i.MX Cortex-A Core's
-> remoteproc support.
-> 
-> Signed-off-by: Jiafei Pan <Jiafei.Pan@nxp.com>
+On 11/05/2026 15:26, Antoine Bouyer wrote:
 > 
 > ---
-> Changes in v3:
-> - Fixed dt_binding_check warnings
+> link to v1: https://lore.kernel.org/linux-media/20260413160331.2611829-1-antoine.bouyer@nxp.com/
+> Diff compared to v1:
+>  * Fix dt_binding_check errors reported by Rob's bot.
+>  * Remove extensible stats introduction, and use v4l2_isp patches
+>    from Jacopo's series instead.
+>  * Use the common v4l2_isp definitions for stats and params in neoisp.
+>    Replace all occurences of v4l2_isp_params_* and v4l2_isp_stats_* by
+>    the common structs and helpers.
+>  * Use the new v4l2_isp helpers for statistics buffer handling.
+>  * Apply comment from Geert in Kconfig.
+>  * Fix some typo in the neoisp documentation.
+>  * Remove `neoisp_feat_ctrl_s` from uapi (used only in legacy format
+>    which is not supported anymore).
 > 
-> ---
->  .../remoteproc/fsl,imx-rproc-psci.yaml        | 51 +++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc-psci.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc-psci.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc-psci.yaml
-> new file mode 100644
-> index 000000000000..28d00dbf8bc7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc-psci.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/remoteproc/fsl,imx-rproc-psci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX Cortex-A Core Remote Processor via PSCI
-> +
-> +maintainers:
-> +  - Jiafei Pan <Jiafei.Pan@nxp.com>
-> +
-> +description:
-> +  This binding provides support for managing Cortex-A cores as remote
+> link to RFC: https://lore.kernel.org/linux-media/20260123080938.3367348-1-antoine.bouyer@nxp.com/
+> Diff compared to RFC:
 
-Describe the hardware, not the binding.
-
-> +  processors on i.MX platforms using the PSCI (Power State Coordination
-> +  Interface) for CPU power management operations. This allows single
-> +  Cortex-A core or multiple Cortex-A cores to be controlled by Linux as
-> +  a remote processor, enabling them to run RTOS or bare-metal applications.
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,imx-rproc-psci
-
-Why isn't the compatible specific?
-
-> +
-> +  fsl,cpus-mask:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Bitmask indicating which CPU cores are assigned to this remote
-> +      processor instance. Each bit represents a CPU core, where bit N
-> +      corresponds to CPU N. For example, 0x2 (0b10) assigns CPU core 1,
-> +      while 0x6 (0b110) assigns CPU cores 1 and 2.
-
-So you partition existing Cortex-A cores? Or how exactly? Why isn't this
-deducible from the compatible (I assume you read carefully writing
-bindings)?
-
-> +
-> +  memory-region:
-> +    maxItems: 1
-> +    description:
-> +      Phandle to a reserved memory region to be used for the remote
-> +      processor's code and data.
-> +
-> +required:
-> +  - compatible
-> +  - fsl,cpus-mask
-> +  - memory-region
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +        remoteproc-ca55-1 {
-
-Implement previous comments.
+This was v1. You even called it v1. This is v3. When you mess the
+numbers you make review unnecessary difficult.
 
 Best regards,
 Krzysztof
-
