@@ -1,157 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE9E3B47C6
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952012848BA
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778756302; cv=none; b=c0ThRchVmhNsowpNC7X/y2qwbMUmJBuhsLU591x/MjLxr4Uh/Y52MlwCh+1NDyR3ethispO2a9Z6EOV3ohbTS1/oi8hF8Bg5vSObNGdEFfX26nc1WYqMUaDHCvVifOH8CTSnTduxZQ+oiTKQsgyiQFuFumvc9fh0wV7M+YO/ByU=
+	t=1778756303; cv=none; b=m8Sl2zaFvz7adDZn94not/bP5Giijud3CdLM4ki4YqYvwn+zzQc3V20klqM/kwz38i8nbHIs/ZTl8GKiciySOYxAYOFqMsf/MA6kl+1E+UsNMW0a2QHBDJ7uSNfMGMVhX1/quRyTiNr/yWhvUEjYcllhOGdzAxo3FDH78Q8yEVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778756302; c=relaxed/simple;
-	bh=VudyFqotvrY1bBkboKSvmYRbA1msT8emN5iF4c/zSSc=;
+	s=arc-20240116; t=1778756303; c=relaxed/simple;
+	bh=c9OG2AhwINnz5s4vHqD2MII6BtCaeLW4JUHjferOFBA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HdvIzka9Gn/eH7mk2ufI7ag2TJqDPz/RQXiturpFUmxxqs401JqRymjWS3zCWG6mk/1EAUp62C4z2wqi5vkm8yCxBe5ypUMc6wadoGk/XoYYRZxQVwlC4efMx9a1waOFRbWVgCV8X2u7j6rDnwI2HDZ5v8s/TyBMB6GwQ5dxSxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbQ4G0V4; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=Wj/BqBtv5ynuBXg7TkgAr2VXBCQ8+g3dbbWbQ+Mi0Qq6grPbB9XnamuzfCijwcLQrY/EmhaojyuV+sfyRMEge6REbMbCQt8F7QSCwDkcfh02R4O8/hebaOm0fqjWzeBpyXncLEh6zjoFExUa3MRxo2LB/Y8VcQJdhEA1U3lMZDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PN5NriGL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbQ4G0V4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3302CC2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PN5NriGL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D06C2BCB3;
 	Thu, 14 May 2026 10:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778756302;
-	bh=VudyFqotvrY1bBkboKSvmYRbA1msT8emN5iF4c/zSSc=;
+	s=k20201202; t=1778756303;
+	bh=c9OG2AhwINnz5s4vHqD2MII6BtCaeLW4JUHjferOFBA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=hbQ4G0V4b516lbhnJDxEpldVy6V1ZSmpTyZENCEvNBrvOC/QwFuCBqiqWlRfWDWvA
-	 zbpFuSxtnw8eqxMiaIrhL8cQb1WxdZRx5AXqnSyScjpEG18Zw1scUj3AmivjTMtYdo
-	 RhKuBQ+Z4SawwChBNSHMS+CXbWCk1ZsdjKrfJCdX4G+enqssH3rgD5qRNeyrU1XJaE
-	 8VPaOeRQeX6v9tu8i21hElb42vI/iimFml771Se8rXIdf0ojy1C0mqdo2Ne4zlkC8m
-	 EvI4tDEsZtec+6CN0D/aCXRRwwz/FQnNszJU9h0VTVcYls+ljCqX4R1b2lGIjby29G
-	 WBid67Sioy/nw==
+	b=PN5NriGLvDTAt39t2jjcA+Mk+O0Pl64mjuZTodjJx2Ir3xoOCfkyWsT0echUjp8tQ
+	 95HxXBbGpDI6bpUCIhWSqvj+bg4rjqaB7tK8nDWvEJ/E1llCDq5vb3RPx9qFdIte3V
+	 iuOr+qYCE+2MU6uSHADsJIVEm2JDC1vcABUeZN0tN/gxYtFQ4VKCqeuIj56we8seG7
+	 TkbdWhHAOL2imBBjf6kIP0SYhnKpK4TUKrswEV1fbLdqVmKYjMCRaiyZXahyLI+/Tr
+	 Dtwtz9Y9aZMYQwanTYIeu8ONz+Dq0vwr3E7wZcGBH5ZaT66zEOSToHxPtJl3EElsmW
+	 ejR4WVahM9r3g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net 3/6] net: enetc: fix use-after-free in mailbox
- cleanup on interrupt race
+Subject: Re: [PATCH net 4/6] net: enetc: avoid VF->PF mailbox timeout during
+ SR-IOV teardown
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260513103021.2190593-4-wei.fang@nxp.com>
-References: <20260513103021.2190593-4-wei.fang@nxp.com>
+In-Reply-To: <20260513103021.2190593-5-wei.fang@nxp.com>
+References: <20260513103021.2190593-5-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 10:58:21 +0000
-Message-Id: <20260514105822.3302CC2BCB3@smtp.kernel.org>
+Date: Thu, 14 May 2026 10:58:22 +0000
+Message-Id: <20260514105822.D3D06C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Reordering teardown leaves hardware interrupts enabled after u=
-nregistering the OS handler, causing pending MSI-X interrupts that crash th=
-e kernel on re-initialization.
-- [High] DMA memory Use-After-Free in mailbox cleanup because buffers are f=
-reed before clearing hardware receive registers.
-- [High] Initialization order bug in `enetc_msg_psi_init()` leading to kern=
-el panic on pending interrupts.
+- [Critical] Missing bounds checks on the number of VFs against the fixed-s=
+ize rxmsg array can lead to out-of-bounds heap reads/writes and out-of-boun=
+ds MMIO accesses.
+- [High] Missing cancel_work_sync() in the error path of enetc_msg_psi_init=
+() leads to a potential NULL pointer dereference or unhandled interrupt.
 --
 
-commit 7775e7cd27db0383dcec0aee22ae84d6c2378ee2
+commit 20bd14a48fb81c18f7cc12a0a4f0d93f01026fce
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: fix use-after-free in mailbox cleanup on interrupt race
-   =20
-This commit fixes a use-after-free regression in the PF mailbox teardown pa=
-th
-by reordering the shutdown sequence to prevent work requeuing.
+net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown
 
-Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
-p.com #1
+During SR-IOV teardown, this commit reorders the cleanup steps to call
+pci_disable_sriov() before cleaning up the mailbox resources. This
+eliminates a race window where VFs could send messages to an unresponsive
+PF and time out waiting for a reply.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
-et/ethernet/freescale/enetc/enetc_msg.c
-> index 40d22ebe9224f..fe9680a97b0e7 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> @@ -151,14 +151,14 @@ void enetc_msg_psi_free(struct enetc_pf *pf)
->  	struct enetc_si *si =3D pf->si;
->  	int i;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
+t/ethernet/freescale/enetc/enetc_pf.c
+> index 6939ab04dcdc0..052cab48df514 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+> @@ -544,9 +544,9 @@ static int enetc_sriov_configure(struct pci_dev *pdev=
+, int num_vfs)
+>  	int err;
 > =20
-> -	cancel_work_sync(&pf->msg_task);
-> +	/* de-register message passing interrupt handler */
-> +	free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
-> =20
-> -	/* disable MR interrupts */
-> -	enetc_msg_disable_mr_int(&si->hw);
-> +	cancel_work_sync(&pf->msg_task);
+>  	if (!num_vfs) {
+> +		pci_disable_sriov(pdev);
+>  		enetc_msg_psi_free(pf);
+>  		pf->num_vfs =3D 0;
+> -		pci_disable_sriov(pdev);
+>  	} else {
+>  		pf->num_vfs =3D num_vfs;
 
-Could moving free_irq() before enetc_msg_disable_mr_int() leave hardware
-interrupts enabled after the OS handler is unregistered?
+This problem wasn't introduced by this patch, but it exists in the codebase.
+In enetc_msg_psi_init(), if enetc_msg_alloc_mbx() fails:
 
-Because VFs are still active at this stage, a VF can send a message.
-cancel_work_sync() waits for the worker, which processes existing messages
-but then unconditionally re-arms the MR interrupt before exiting.
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_psi_init() {
+[ ... ]
+	for (i =3D 0; i < pf->num_vfs; i++) {
+		err =3D enetc_msg_alloc_mbx(si, i);
+		if (err)
+			goto err_init_mbx;
+	}
+[ ... ]
+err_init_mbx:
+	for (i--; i >=3D 0; i--)
+		enetc_msg_free_mbx(si, i);
 
-If a VF sends a message now, the hardware asserts the interrupt. Since
-the OS handler is removed and the vector is masked, it is recorded as pendi=
-ng
-in the MSI-X Pending Bit Array. enetc_msg_disable_mr_int() is called later
-but does not clear this array.
+	free_irq(vector, si);
 
-Upon the next SR-IOV enablement, request_irq() unmasks the vector, and
-the pending interrupt fires immediately, leading to a crash.
-
-This regression appears to be mitigated later in the patch series by
-commit 20bd14a48fb81 ("net: enetc: avoid VF->PF mailbox timeout during
-SR-IOV teardown") and commit fa9d7e3799c54 ("net: enetc: fix initialization
-order to prevent use of uninitialized resources").
-
->  	for (i =3D 0; i < pf->num_vfs; i++)
->  		enetc_msg_free_mbx(si, i);
-
-This isn't a regression introduced by this patch, but does the current
-implementation of enetc_msg_free_mbx() have a use-after-free risk for the
-mailbox memory?
-
-It calls dma_free_coherent() to free the mailbox memory before clearing the
-hardware DMA address registers:
-
-enetc_msg_free_mbx() {
-	...
-	dma_free_coherent(&si->pdev->dev, msg->size, msg->vaddr, msg->dma);
-	memset(msg, 0, sizeof(*msg));
-
-	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
-	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
+	return err;
 }
 
-Since VFs are still active during SR-IOV teardown, a VF could send a message
-during this window. This would cause the PF hardware to perform a DMA write
-using the uncleared receive address into the just-freed memory.
+Can this lead to a NULL pointer dereference or an unhandled interrupt?
 
-This regression appears to be mitigated later in the patch series by
-commit 20bd14a48fb81 ("net: enetc: avoid VF->PF mailbox timeout during
-SR-IOV teardown"), which disables SR-IOV before mailbox cleanup.
+If an interrupt fired and scheduled the work item before free_irq() was
+called, would the work item remain queued and run asynchronously after the
+function returns, since cancel_work_sync(&pf->msg_task) is missing?
 
-> -	/* de-register message passing interrupt handler */
-> -	free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
-> +	/* disable MR interrupts */
-> +	enetc_msg_disable_mr_int(&si->hw);
->  }
+A prior patch in the series fixed the cleanup in the normal teardown path,
+but does this error path remain vulnerable?
 
-Additionally, while not introduced by this patch, is there an initialization
-order regression in enetc_msg_psi_init()?
+If the executing enetc_msg_task() then runs, would it dereference the
+mailbox memory (msg->vaddr) that was just cleared if a message was pending?
+Would it also call enetc_msg_enable_mr_int(), enabling hardware interrupts
+when no handler is registered anymore?
 
-If request_irq() is called to register enetc_msg_psi_msix() before INIT_WOR=
-K()
-and enetc_msg_alloc_mbx() are executed, an immediate interrupt could cause =
-the
-handler to call schedule_work() on an uninitialized work structure or lead
-to a NULL pointer dereference.
 
-This regression appears to be fixed later in the patch series by
-commit fa9d7e3799c54 ("net: enetc: fix initialization order to prevent use
-of uninitialized resources").
+There is another problem that wasn't introduced by this patch, but exists
+in the codebase. During enetc_pf_probe(), the driver initializes
+pf->total_vfs:
+
+drivers/net/ethernet/freescale/enetc/enetc_pf.c:enetc_pf_probe() {
+[ ... ]
+	pf->total_vfs =3D pci_sriov_get_totalvfs(pdev);
+	if (pf->total_vfs) {
+		pf->vf_state =3D kzalloc_objs(struct enetc_vf_state,
+					    pf->total_vfs);
+[ ... ]
+}
+
+Does this code lack bounds checking on the number of VFs against the fixed
+size of the rxmsg array (ENETC_MAX_NUM_VFS)?
+
+If a PCIe device or hypervisor presents a capability with an artificially
+large TotalVFs, would loops iterating up to pf->num_vfs perform out-of-boun=
+ds
+accesses to the pf->rxmsg array when SR-IOV is enabled?
+
+Could this also result in out-of-bounds MMIO writes by indexing past
+valid registers?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513103021.2190=
-593-1-wei.fang@nxp.com?part=3D3
+593-1-wei.fang@nxp.com?part=3D4
