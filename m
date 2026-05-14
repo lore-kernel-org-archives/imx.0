@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60D2BB1D;
-	Thu, 14 May 2026 00:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F38CA5A;
+	Thu, 14 May 2026 00:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778717453; cv=none; b=OSMHpJQ6+wDEjNQQjfgjDGnuth91H5b59O8lhGmk/Mynt38n1xIsUmSc7XpxN2uJD/xu/800sNDOeE7SNytPYklQeUNuBSAVZI7a8yI+51mt5HQqOG1cG+DFDp/uRnW+KiE632QXii5aFZIseUpZvYgd+t5L9MnuvXyWG4U+N2w=
+	t=1778717595; cv=none; b=G3VtzQFdiOVwU9R6fpA6bqa8LxIPVW+2Fy+47ptJKgL9wnS8Y/OlSlLi9uidaxlproRv7bazD7IqAi4lqrPUiiNFYTomb0GP19Cw+G8NRvbWHg72iewf6e97n4PO/w6+LdpAjxjWIkK6xsvSeb3SRix7q5jJm0kSqs8PD7U3K4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778717453; c=relaxed/simple;
-	bh=y4irLMsIHMcEQrL53y0pEP1UQ/K/1Si8tzza2rhUW58=;
+	s=arc-20240116; t=1778717595; c=relaxed/simple;
+	bh=BCqfcNlIh76PwxmR4FmkOrE0wSlAD+JUt6orQn0vQZo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=N3684Se6c/ZgYzY16RT6HFktBrxHnH0eGeNYCz3/lmdEe6cvQRhiIAlVGrEBmuvi3D0aZ2+C3epyycTb6hnIMlEOeeRp/Jgw2LTu9U4x13vJWTEEGAe+xnka6Tmv0EFHWkxs0mfYhdKoJNXYpdVB5jLf+tTt9iJ4kLfc3YO/s84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wh/d1w0E; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=phqdFLRbYyruwlOjKNxG/upkM7u2j4a46i4WlPjxfbL2Qvs3BwQ7+Ed9qCrBojnUyZfw/wxdkQHsOj8WOO2esxw6A7ShBNWvMInuB2hAcoS8rbA5XZZ+J/7xQfzAceKx82gefoU0KROoMvEBuk55pW7/ChDPdQRRVIg5zzH9/fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7O00zJ4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wh/d1w0E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6F5C19425;
-	Thu, 14 May 2026 00:10:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7O00zJ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D66C19425;
+	Thu, 14 May 2026 00:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778717452;
-	bh=y4irLMsIHMcEQrL53y0pEP1UQ/K/1Si8tzza2rhUW58=;
+	s=k20201202; t=1778717594;
+	bh=BCqfcNlIh76PwxmR4FmkOrE0wSlAD+JUt6orQn0vQZo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Wh/d1w0EulmLQjspVtY459lpQC0HL8hXsRoBJg5PTWmXClH0VGbPuPGz+5AQlBCTV
-	 n230/mC82mmjwiDOPIp2ZKANU0tvWPqoaVavxWUixc7KZ97v5f2MhaYNf2e8blSOXI
-	 TgmGRwFLB9onJri0NW1QnqQGxBGgU3Ur2T0KLLhlBd17HMU6bYheKiRHA4bhvJtJFz
-	 muPtBqMaelkA4id93Nl8AqnvbYy/vqaim06jOLMrpOvnsjXyvCcelQHHi+XagMd3V+
-	 c7uXCNoTXz3ONXcgiYqUKboNgDnZeyC2OQ25/MxhNoCUcZtw/uv4+Qk1Sq/Ak/oTzW
-	 XrFzfFVUST5ew==
+	b=T7O00zJ4SVosI/Oh9flU1uvJGnFKtOCiamdsLXLDwf+f12ubQAjTZRuNo+jkHaApr
+	 OtQ5/9bN48f9QHvQgwkVn4k2/lMHuUGl6t3FTx99Wo39DS5tmDJ0TS/3/Pa7fR1Gpp
+	 M2xGjmwBjFHJ+hBg4QVt6OcCA7Y7wIsP7dOC2MeydrBsKGU2ikdseq9AsfBPTT1yF/
+	 O+KZGePdeLK8wZaA1DcxlaCHwjAa/gnpcuB78aebpLYk/IFA6qGReTYfrVHTCe0pBv
+	 ncgPG5SeS49CFFGWaFo3dgTdc0tkazdVgPXL4V0HxGebxrZlLYcK3CBYTDS8zg0BJb
+	 tQW6v16JbCJvQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/9] dmaengine: dw-edma: Use new
- .device_prep_config_sg() callback
+Subject: Re: [PATCH 1/1] dt-bindings: display: imx: Add television encoder
+ (TVE) for imx53
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frank Li" <Frank.Li@nxp.com>
-Cc: dmaengine@vger.kernel.org, Frank.Li@kernel.org, vkoul@kernel.org, imx@lists.linux.dev, linux-pci@vger.kernel.org
-In-Reply-To: <20260512-dma_prep_config-v5-4-26865bf7d935@nxp.com>
-References: <20260512-dma_prep_config-v5-4-26865bf7d935@nxp.com>
+Cc: krzk+dt@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260512223137.1190096-1-Frank.Li@nxp.com>
+References: <20260512223137.1190096-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 00:10:51 +0000
-Message-Id: <20260514001052.7F6F5C19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 00:13:13 +0000
+Message-Id: <20260514001314.68D66C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,77 +46,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The return value of dw_edma_device_config() is ignored, leading to=
- silent failures and state corruption.
-- [High] The .device_prep_config_sg callback mutates shared channel state w=
-ithout locks, violating atomicity guarantees.
+- [Low] Missing conditional constraints for VGA mode sync pins.
+- [Low] The `fsl,tve-mode` property lacks a defined default and is not requ=
+ired.
 --
 
-commit cc74cf96b36ed28ea1019078a61ff3eac8097031
+commit 18cf39d8e659ce17f310f753763d63085e707e24
 Author: Frank Li <Frank.Li@nxp.com>
 
-dmaengine: dw-edma: Use new .device_prep_config_sg() callback
+dt-bindings: display: imx: Add television encoder (TVE) for imx53
 
-This commit introduces the .device_prep_config_sg() callback to the dw-edma
-driver to combine configuration and descriptor preparation.
+This commit adds the device tree binding schema for the Freescale i.MX53
+Television Encoder (TVE). It documents properties required to configure
+the TVE module, which converts digital video to analog TV signals.
 
-> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-=
-edma-core.c
-> index c2feb3adc79fa..f7f58b0010e26 100644
-> --- a/drivers/dma/dw-edma/dw-edma-core.c
-> +++ b/drivers/dma/dw-edma/dw-edma-core.c
+> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.=
+yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+> new file mode 100644
+> index 0000000000000..a7c971be1959b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+> @@ -0,0 +1,102 @@
+
 [ ... ]
-> @@ -591,6 +592,9 @@ dw_edma_device_prep_slave_sg(struct dma_chan *dchan, =
-struct scatterlist *sgl,
->  	xfer.flags =3D flags;
->  	xfer.type =3D EDMA_XFER_SCATTER_GATHER;
-> =20
-> +	if (config)
-> +		dw_edma_device_config(dchan, config);
 
-Does this need to check the return value of dw_edma_device_config()?
+> +  fsl,tve-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description:
+> +      TVE output mode selection.
+> +    enum:
+> +      - ntsc
+> +      - pal
+> +      - vga
 
-If dw_edma_device_config() returns an error like -EINVAL, the driver will
-silently proceed to dw_edma_device_transfer() with the old configuration.
-
-Also, dw_edma_device_config() unconditionally clears chan->non_ll before
-validating the new configuration:
-
-static int dw_edma_device_config(...) {
-	...
-	chan->non_ll =3D false;
-	if (chan->dw->chip->mf =3D=3D EDMA_MF_HDMA_NATIVE) {
-		if (config->peripheral_config &&
-		    config->peripheral_size !=3D sizeof(int)) {
-			dev_err(dchan->device->dev, ...);
-			return -EINVAL;
-		}
-	...
-}
-
-By ignoring the error, the transfer function might calculate bursts_max
-incorrectly using a corrupted chan->non_ll flag. I see that subsequent
-commits in this series do not appear to fix this missing error check.
-
-Additionally, can this sequence result in a data race if called concurrentl=
-y?
-
-When a driver implements .device_prep_config_sg, the dmaengine framework
-skips its internal spinlock in dmaengine_prep_config_sg_safe() and delegates
-atomicity guarantees to the driver.
-
-However, dw_edma_device_config() locklessly mutates shared channel state
-such as chan->config and the chan->non_ll flag.
-
-While a later commit in this series attempts to fix this by passing config
-directly to the transfer function, dw_edma_device_config() still mutates
-the shared chan->non_ll flag without locks, which is then read by
-dw_edma_device_transfer() to determine bursts_max.
+Since fsl,tve-mode is not listed in the required properties, should it have
+a default value defined to clarify what output mode the device assumes when
+this property is absent?
 
 > +
->  	return dw_edma_device_transfer(&xfer);
->  }
+> +  fsl,hsync-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Pin number for horizontal sync signal in VGA mode.
+> +    minimum: 0
+> +    maximum: 8
+> +
+> +  fsl,vsync-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Pin number for vertical sync signal in VGA mode.
+> +    minimum: 0
+> +    maximum: 8
+
+Is it necessary to add an allOf conditional block to enforce the dependency
+between these sync pins and VGA mode?
+
+Without it, device trees could pass validation while specifying these pins
+for incompatible modes like NTSC or PAL, or they might omit them entirely
+when VGA mode is selected.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-dma_prep_c=
-onfig-v5-0-26865bf7d935@nxp.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512223137.1190=
+096-1-Frank.Li@nxp.com?part=3D1
