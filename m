@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C6E38F934;
-	Thu, 14 May 2026 05:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D6E381C4;
+	Thu, 14 May 2026 05:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778735922; cv=none; b=DYf34qAvtuxNNOEDW2GPTPUnNCND73X3PxEqrnxyOns0oGq1C3T8E6M1ssQI2peCKpbPrrtcCpvh5IEZajP14gKssb4bMxLK4d6tGvaW/fGE7C3TudoRbWIsnRI1yrjIa93T1MFQOrzBT5lUaCHE3Ron5Te9+mCGc6wcNPZRmT8=
+	t=1778736124; cv=none; b=PgvFjVd3wH5RFInqyGZkqQ2fxyOTovgPlPR7umO+nTuLWTf+bfCZKYOGGccY/Ijsp0P/GA0wCss54EMz/MMwBCgxoEjd/8+7Mrhru6dSZPo335RHJFzK80Vt/CvZjwweBCu+EnkBlZMIpngFXSrXzupaXmfMwf9+NW+lkWCjo1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778735922; c=relaxed/simple;
-	bh=sYwbwqRF98uuFyhlJII/S/CDAenAqNuV3CAHUgEgjew=;
+	s=arc-20240116; t=1778736124; c=relaxed/simple;
+	bh=F0hLRQYvgM4FYnU85AviTiv7NndLLm3mP/J3cRFEhnU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=d25RQGAd1ULbNA2lA48viclOX1eLhlgCiq1Vo3ETiH9+MEX/wDfkTIrYzNp4cfFBTKUSVwrEbjkyv4IMQVFQuAGvBCHvaRtNmbYY06d6BK390OtCoXY4ZvZDZGQHd24Zdw4GR2/vwVbcEIWc+MYzKTmB0MgLJFXl9FqY1+EaMDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/op5/0w; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=XdIxwpvubmHLwlhIME24NszcbZFhOq9/Kcztg0hbX3qPVPkYQAyoGT5wMhgX8I7qZjPQpAto25WsQf4yxDC+V4YXO6MfPhtD8svhjJiFTF+8FNz8KS9MyDbC3VgLz0iY1O10l9JOXhTVFzYq+/zx4Unkb4gVrpBLlKncAJdzDMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+LziL6U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/op5/0w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B727C2BCB7;
-	Thu, 14 May 2026 05:18:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+LziL6U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A35C2BCB7;
+	Thu, 14 May 2026 05:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778735922;
-	bh=sYwbwqRF98uuFyhlJII/S/CDAenAqNuV3CAHUgEgjew=;
+	s=k20201202; t=1778736123;
+	bh=F0hLRQYvgM4FYnU85AviTiv7NndLLm3mP/J3cRFEhnU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=U/op5/0w3y/zN3rz33jMyASMvSLyZ58VjKkS95U8AhEZPn9pVH+t3qixejR94DwzB
-	 YJZKWHhNJ69wf/wNXog+KwyEibkkP5oT7ia+uAvV0LyPM88Kvrx4Obbnu6ZyJnN1Hl
-	 V+R3lEDyYls17yCyu4UtnLrIVjHSz3Y2f0grYzhfG+khB/91D/jBL51RS805PnpX81
-	 r0mulOZ/mmSwGpUObAoRzfs+YNfAKUmI6D2XSL4MjO8d9Bi71M6vaG4BQOjPjFs6ss
-	 zU3+iuQ5R79oafQL01+qIMfO8juufTx6IHnUmng1gv7A0gAaT28A6rv3yWW9PH0LlF
-	 nY+v+BuWeFgmw==
+	b=m+LziL6U6hxyqpSK1pV/nNO1f6F1a/+vZ2A5TX3jXDt7ZUmwu8I/AjTYJSNyio+8k
+	 K4PwYiClxRu+EJRpOPbkp2KBhUCpvssn6qHmAyQAEsxKV7DD7QtqMq2gYvZ/A1Hyh0
+	 f6SEf9Dep03BDuOUeOlblDJcnmE7bsojUjbuVH1NB6A4snsUumAq9ct2oesTmE7BHw
+	 KwATjfQpAbG2K0uqoluFadUtfv91ICN1MUbgdQseQ5zf4EzaMQTCm3bhUqWQKm3F2O
+	 k0Zh+rm0oMQHifPyOZ4aP0757BknbgUmMBX2qK9qp9hHC+tTKVOWdgRFTQ6hWHDDNE
+	 sGtNXjJ8UWVTw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/4] dmaengine: fsl-edma: convert DMAMUX clock
- handling to bulk clock API
+Subject: Re: [PATCH v7 net-next 09/15] net: dsa: add NETC switch tag support
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: Frank.Li@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260513-b4-b4-edma-runtime-opt-v5-3-1e595bfb8423@nxp.com>
-References: <20260513-b4-b4-edma-runtime-opt-v5-3-1e595bfb8423@nxp.com>
+To: "Wei Fang" <wei.fang@nxp.com>
+Cc: krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260513030454.1666570-10-wei.fang@nxp.com>
+References: <20260513030454.1666570-10-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 05:18:41 +0000
-Message-Id: <20260514051842.1B727C2BCB7@smtp.kernel.org>
+Date: Thu, 14 May 2026 05:22:02 +0000
+Message-Id: <20260514052203.57A35C2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,92 +45,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Switching to `devm_clk_bulk_get_optional_enable()` silently drops =
-validation for missing DMAMUX clocks, leading to a system bus hang during p=
-robe on misconfigured device trees.
+- [High] The `netc_flow_dissect` function accesses `skb->data` out-of-bound=
+s without verifying the SKB's linear length.
 --
 
-commit ac85fd72d931ccb00828f78ca0682e23cee58abe
-Author: Joy Zou <joy.zou@nxp.com>
+commit 93fb7c6739d18313bc6426f6ff8df23c472a2795
+Author: Wei Fang <wei.fang@nxp.com>
 
-dmaengine: fsl-edma: convert DMAMUX clock handling to bulk clock API
+net: dsa: add NETC switch tag support
 
-This commit converts the DMAMUX clock management from individual clock
-operations to the bulk clock API to simplify the code. This is in
-preparation for adding runtime PM support.
+This commit adds support for the NXP NETC switch tag, a proprietary header
+added to frames after the source MAC address. It implements the Forward tag,
+SubType 0 of the To_Port tag, and Subtype 0 of the To_Host tag.
 
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index ecd14967bfbc0..c12126ea6552d 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
+> diff --git a/net/dsa/tag_netc.c b/net/dsa/tag_netc.c
+> new file mode 100644
+> index 0000000000000..07684e0ff0647
+> --- /dev/null
+> +++ b/net/dsa/tag_netc.c
 
 [ ... ]
 
-> @@ -747,23 +739,28 @@ static int fsl_edma_probe(struct platform_device *p=
-dev)
->  		fsl_edma->chan_masked |=3D chan_mask[0];
->  	}
-> =20
-> -	for (i =3D 0; i < fsl_edma->drvdata->dmamuxs; i++) {
-> -		char clkname[32];
-> -
-> -		fsl_edma->muxbase[i] =3D devm_platform_ioremap_resource(pdev,
-> -								      1 + i);
-> -		if (IS_ERR(fsl_edma->muxbase[i])) {
-> -			/* on error: disable all previously enabled clks */
-> -			fsl_disable_clocks(fsl_edma, i);
-> -			return PTR_ERR(fsl_edma->muxbase[i]);
-> +	if (fsl_edma->drvdata->dmamuxs) {
-> +		fsl_edma->muxclk =3D devm_kcalloc(&pdev->dev, fsl_edma->drvdata->dmamu=
-xs,
-> +						sizeof(*fsl_edma->muxclk), GFP_KERNEL);
-> +		if (!fsl_edma->muxclk)
-> +			return -ENOMEM;
+> +static void netc_flow_dissect(const struct sk_buff *skb, __be16 *proto,
+> +			      int *offset)
+> +{
+> +	struct netc_tag_cmn *tag_cmn =3D (struct netc_tag_cmn *)(skb->data - 2);
+> +	int subtype =3D FIELD_GET(NETC_TAG_SUBTYPE, tag_cmn->type);
+
+Is it safe to access skb->data directly here without validating the linear
+length of the skb?
+
+While the comment below notes that hardware-received frames will have
+sufficient linear data, skb_flow_dissect() can also be invoked on locally
+injected packets (for example, via AF_PACKET sockets, bpf_prog_test_run,
+or tc hooks). For these locally generated packets, skb_headlen(skb) might
+be extremely small or even zero.
+
+Could this lead to an out-of-bounds read and kernel panic if the skb is
+fragmented? Would it be better to use skb_header_pointer() or validate that
+skb_headlen(skb) is large enough before dereferencing?
+
+> +	int type =3D FIELD_GET(NETC_TAG_TYPE, tag_cmn->type);
+> +	int tag_len =3D netc_get_rx_tag_len(type, subtype);
 > +
-> +		for (i =3D 0; i < fsl_edma->drvdata->dmamuxs; i++) {
-> +			fsl_edma->muxbase[i] =3D devm_platform_ioremap_resource(pdev, 1 + i);
-> +			if (IS_ERR(fsl_edma->muxbase[i]))
-> +				return PTR_ERR(fsl_edma->muxbase[i]);
-> +
-> +			fsl_edma->muxclk[i].id =3D devm_kasprintf(&pdev->dev, GFP_KERNEL,
-> +								"dmamux%d", i);
-> +			if (!fsl_edma->muxclk[i].id)
-> +				return -ENOMEM;
->  		}
-> =20
-> -		sprintf(clkname, "dmamux%d", i);
-> -		fsl_edma->muxclk[i] =3D devm_clk_get_enabled(&pdev->dev, clkname);
-> -		if (IS_ERR(fsl_edma->muxclk[i]))
-> -			return dev_err_probe(&pdev->dev,
-> -					     PTR_ERR(fsl_edma->muxclk[i]),
-> -					     "Missing DMAMUX block clock.\n");
-> +		ret =3D devm_clk_bulk_get_optional_enable(&pdev->dev, fsl_edma->drvdat=
-a->dmamuxs,
-> +							fsl_edma->muxclk);
-
-Does using devm_clk_bulk_get_optional_enable() silently drop validation for
-missing DMAMUX clocks?
-
-The previous code used devm_clk_get_enabled(), which safely aborted the pro=
-be
-if clocks were missing. Because the optional variant returns 0 when the clo=
-cks
-are missing in the device tree, the probe will continue.
-
-If the probe continues without the clocks enabled, the driver later calls
-fsl_edma_chan_mux() which accesses the unclocked muxbase registers. On NXP
-SoCs, accessing unclocked registers can trigger a system bus hang or
-asynchronous external abort.
-
-Should this use a mandatory bulk clock API to ensure the clocks are actually
-present and enabled?
-
-> +		if (ret)
-> +			return dev_err_probe(&pdev->dev, ret,
-> +					     "Failed to enable DMAMUX block clock.\n");
->  	}
->
+> +	/* The RX minimum frame length of the NETC switch port is 64 bytes,
+> +	 * and the frame is received by the ENETC driver. From the hardware
+> +	 * perspective, the receive buffer of RX BD is at least 128 bytes,
+> +	 * so the switch tag header is guaranteed to be in the linear region
+> +	 * of the skb.
+> +	 */
+> +	*offset =3D tag_len;
+> +	*proto =3D ((__be16 *)skb->data)[(tag_len / 2) - 1];
+> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513-b4-b4-edma=
--runtime-opt-v5-0-1e595bfb8423@nxp.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513030454.1666=
+570-1-wei.fang@nxp.com?part=3D9
