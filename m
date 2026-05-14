@@ -1,110 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F38CA5A;
-	Thu, 14 May 2026 00:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3D2190473;
+	Thu, 14 May 2026 00:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778717595; cv=none; b=G3VtzQFdiOVwU9R6fpA6bqa8LxIPVW+2Fy+47ptJKgL9wnS8Y/OlSlLi9uidaxlproRv7bazD7IqAi4lqrPUiiNFYTomb0GP19Cw+G8NRvbWHg72iewf6e97n4PO/w6+LdpAjxjWIkK6xsvSeb3SRix7q5jJm0kSqs8PD7U3K4k=
+	t=1778717940; cv=none; b=ACiX1uKSwl2ojkw78dT8H2QvW1K56H5PeX/fbjwcf4wyWX/aSZUVW8Hp5HPZrYbc20n0MZtqRHh85XEXANMmCimLWeR9e76O8B/puvNynvpawoSUI7WL1qCIvdu7qSt8EN00vQ94JfbYWGZiHl6ouxZheojSqYuw4Kbw1vf7XPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778717595; c=relaxed/simple;
-	bh=BCqfcNlIh76PwxmR4FmkOrE0wSlAD+JUt6orQn0vQZo=;
+	s=arc-20240116; t=1778717940; c=relaxed/simple;
+	bh=Kb8beeGldOMtP8VGFDc0GQozSIqbhJM6BE5TUhEp5JU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=phqdFLRbYyruwlOjKNxG/upkM7u2j4a46i4WlPjxfbL2Qvs3BwQ7+Ed9qCrBojnUyZfw/wxdkQHsOj8WOO2esxw6A7ShBNWvMInuB2hAcoS8rbA5XZZ+J/7xQfzAceKx82gefoU0KROoMvEBuk55pW7/ChDPdQRRVIg5zzH9/fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7O00zJ4; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=hnkxLMArZV3w1ydTk2W7Xyl7JXTNMA2pOzBmMWHNh6Chqt9VS0/1xloVgxRa5x6cifyoJFXBsuTWM+fTCGUyJwhfR5qGEOmwap6qCsTvlxzZQHj8+h8Pii/QDz/nRAFEL9l7z2kWEMVMbnIf3+26ti8jJzw4l3vPNOsvopBzHys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHSQV5vY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7O00zJ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D66C19425;
-	Thu, 14 May 2026 00:13:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHSQV5vY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C352C19425;
+	Thu, 14 May 2026 00:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778717594;
-	bh=BCqfcNlIh76PwxmR4FmkOrE0wSlAD+JUt6orQn0vQZo=;
+	s=k20201202; t=1778717939;
+	bh=Kb8beeGldOMtP8VGFDc0GQozSIqbhJM6BE5TUhEp5JU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=T7O00zJ4SVosI/Oh9flU1uvJGnFKtOCiamdsLXLDwf+f12ubQAjTZRuNo+jkHaApr
-	 OtQ5/9bN48f9QHvQgwkVn4k2/lMHuUGl6t3FTx99Wo39DS5tmDJ0TS/3/Pa7fR1Gpp
-	 M2xGjmwBjFHJ+hBg4QVt6OcCA7Y7wIsP7dOC2MeydrBsKGU2ikdseq9AsfBPTT1yF/
-	 O+KZGePdeLK8wZaA1DcxlaCHwjAa/gnpcuB78aebpLYk/IFA6qGReTYfrVHTCe0pBv
-	 ncgPG5SeS49CFFGWaFo3dgTdc0tkazdVgPXL4V0HxGebxrZlLYcK3CBYTDS8zg0BJb
-	 tQW6v16JbCJvQ==
+	b=gHSQV5vYwDVNncN/qBYrbfk6siiTKFckrADFmcCt0LMBcEogxgWQchKV852V/5PdC
+	 7vGKiOtrEb4YaGvd45caqGlUgmd5ex12ou+sLMeoIR+Le6AlUZHBb7VLPzqfaxrumt
+	 q0xk7nza3vxyCV1CKTlklr18fGVg98Hzp0hLWuHuM6oyuY+gZVl6jmtjrb8Iiwke1h
+	 5IaAQJ4w6ZmqLKYDXtdTOfs/wD2suq1iBnVUE/kKozbqi2bnJDsLFkX+j8T6FCsbXx
+	 z/n65+g2m/CZUtqIam96RdzFrr3Q7GfwzxoZIuNYMR+sGBkQoAwowriRFz1GGTejKo
+	 wXd7mgQ2jlBew==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] dt-bindings: display: imx: Add television encoder
- (TVE) for imx53
+Subject: Re: [PATCH 1/1] dt-bindings: regulator: convert ltc3589 to yaml
+ format
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frank Li" <Frank.Li@nxp.com>
-Cc: krzk+dt@kernel.org, imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@kernel.org, robh@kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20260512223137.1190096-1-Frank.Li@nxp.com>
-References: <20260512223137.1190096-1-Frank.Li@nxp.com>
+Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org
+In-Reply-To: <20260512224544.1223283-1-Frank.Li@nxp.com>
+References: <20260512224544.1223283-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 00:13:13 +0000
-Message-Id: <20260514001314.68D66C19425@smtp.kernel.org>
+Date: Thu, 14 May 2026 00:18:58 +0000
+Message-Id: <20260514001859.6C352C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Missing conditional constraints for VGA mode sync pins.
-- [Low] The `fsl,tve-mode` property lacks a defined default and is not requ=
-ired.
+- [Medium] The YAML binding schema omits the `interrupts` property, which b=
+reaks schema validation for valid hardware configurations that use the PMIC=
+'s interrupt line.
 --
 
-commit 18cf39d8e659ce17f310f753763d63085e707e24
+commit 6cc3d4149b88e8fe5fe483876ec1bdf0a91a59e7
 Author: Frank Li <Frank.Li@nxp.com>
 
-dt-bindings: display: imx: Add television encoder (TVE) for imx53
+dt-bindings: regulator: convert ltc3589 to yaml format
 
-This commit adds the device tree binding schema for the Freescale i.MX53
-Television Encoder (TVE). It documents properties required to configure
-the TVE module, which converts digital video to analog TV signals.
+Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
+binding from text to yaml format.
 
-> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.=
-yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
+> diff --git a/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yam=
+l b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
 > new file mode 100644
-> index 0000000000000..a7c971be1959b
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx53-tve.yaml
-> @@ -0,0 +1,102 @@
-
+> +++ b/Documentation/devicetree/bindings/regulator/lltc,ltc3589.yaml
 [ ... ]
-
-> +  fsl,tve-mode:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description:
-> +      TVE output mode selection.
+> +properties:
+> +  compatible:
 > +    enum:
-> +      - ntsc
-> +      - pal
-> +      - vga
-
-Since fsl,tve-mode is not listed in the required properties, should it have
-a default value defined to clarify what output mode the device assumes when
-this property is absent?
-
+> +      - lltc,ltc3589
+> +      - lltc,ltc3589-1
+> +      - lltc,ltc3589-2
 > +
-> +  fsl,hsync-pin:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Pin number for horizontal sync signal in VGA mode.
-> +    minimum: 0
-> +    maximum: 8
+> +  reg:
+> +    maxItems: 1
 > +
-> +  fsl,vsync-pin:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Pin number for vertical sync signal in VGA mode.
-> +    minimum: 0
-> +    maximum: 8
+> +  regulators:
+[ ... ]
+> +required:
+> +  - compatible
+> +  - reg
+> +  - regulators
+> +
+> +additionalProperties: false
 
-Is it necessary to add an allOf conditional block to enforce the dependency
-between these sync pins and VGA mode?
+Does this conversion accidentally drop support for the interrupts property?
 
-Without it, device trees could pass validation while specifying these pins
-for incompatible modes like NTSC or PAL, or they might omit them entirely
-when VGA mode is selected.
+The LTC3589 driver in drivers/regulator/ltc3589.c checks for and requests
+an IRQ using client->irq to handle internal regulator events like thermal
+warnings and under-voltage.
+
+Since the schema enforces additionalProperties: false at the top level,
+valid device tree configurations that define the physical interrupt
+connection for this PMIC will be rejected by dtbs_check.
+
+Should interrupts (e.g. with maxItems: 1) be explicitly permitted in the
+properties list?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512223137.1190=
-096-1-Frank.Li@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512224544.1223=
+283-1-Frank.Li@nxp.com?part=3D1
