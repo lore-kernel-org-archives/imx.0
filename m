@@ -1,144 +1,202 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952012848BA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31E73B841C
 	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778756303; cv=none; b=m8Sl2zaFvz7adDZn94not/bP5Giijud3CdLM4ki4YqYvwn+zzQc3V20klqM/kwz38i8nbHIs/ZTl8GKiciySOYxAYOFqMsf/MA6kl+1E+UsNMW0a2QHBDJ7uSNfMGMVhX1/quRyTiNr/yWhvUEjYcllhOGdzAxo3FDH78Q8yEVs=
+	t=1778756304; cv=none; b=HVzDfb6lY/cwgyxNfb7Mw0xyVrlzbdGshQmCFGNp61CGry03VAy4+0olVCfHbCZYvOZ7PkR4pCooLHr8/sdTOvVNByizMCcD5xDAKeugbkXIV8yZOeT0ILy/muHSjyZGsXo1BocrmR6yMXeGb6MXoCVhTNTK3L3YGt20zFOFzUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778756303; c=relaxed/simple;
-	bh=c9OG2AhwINnz5s4vHqD2MII6BtCaeLW4JUHjferOFBA=;
+	s=arc-20240116; t=1778756304; c=relaxed/simple;
+	bh=0g+5SuVx4QLgYk/EVjQdUmmRnPVzGRD3nxARfUiWhc0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Wj/BqBtv5ynuBXg7TkgAr2VXBCQ8+g3dbbWbQ+Mi0Qq6grPbB9XnamuzfCijwcLQrY/EmhaojyuV+sfyRMEge6REbMbCQt8F7QSCwDkcfh02R4O8/hebaOm0fqjWzeBpyXncLEh6zjoFExUa3MRxo2LB/Y8VcQJdhEA1U3lMZDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PN5NriGL; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=mwhGZI/ndoOkBHHT89tnh03bA7n5V4GokSohQmm12GbJLOB5JKCFbnZHJP6aZNphUdVNcko4SJ82SB97TCLqp8x1Q0B0U6XjKKyNVqcaAmJWSzlIv2EeCUERiRGopW6MnVXqHOeLLNEwkFg5tprTmeGIO7MCdlwX0VJ1hGiMNzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PV4Jawz5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PN5NriGL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D06C2BCB3;
-	Thu, 14 May 2026 10:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PV4Jawz5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AC6C2BCB8;
+	Thu, 14 May 2026 10:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778756303;
-	bh=c9OG2AhwINnz5s4vHqD2MII6BtCaeLW4JUHjferOFBA=;
+	bh=0g+5SuVx4QLgYk/EVjQdUmmRnPVzGRD3nxARfUiWhc0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=PN5NriGLvDTAt39t2jjcA+Mk+O0Pl64mjuZTodjJx2Ir3xoOCfkyWsT0echUjp8tQ
-	 95HxXBbGpDI6bpUCIhWSqvj+bg4rjqaB7tK8nDWvEJ/E1llCDq5vb3RPx9qFdIte3V
-	 iuOr+qYCE+2MU6uSHADsJIVEm2JDC1vcABUeZN0tN/gxYtFQ4VKCqeuIj56we8seG7
-	 TkbdWhHAOL2imBBjf6kIP0SYhnKpK4TUKrswEV1fbLdqVmKYjMCRaiyZXahyLI+/Tr
-	 Dtwtz9Y9aZMYQwanTYIeu8ONz+Dq0vwr3E7wZcGBH5ZaT66zEOSToHxPtJl3EElsmW
-	 ejR4WVahM9r3g==
+	b=PV4Jawz5ZtgoBkVBXd0imRMVQ1QlayJyYHgLc36ZR4s+GIVTfI2jKMGu+iNo8a0Is
+	 x8S88xhIbDsR5GAH290V4nrUoK01g5d4E59wvfv00Xubt/VYM55EJgl/YS4wpO1/dq
+	 B91kDDuD4AD8FeiKnXrEFSgC/KsX/2HgUabv28IhNa26/sIiSzRbBERsJDdrekepHo
+	 zlplEZpBbE/Tnito8ctQmVerxty2tMoTdR6mZVBdX3NX01MEQz6cK66ZBApheVTwS5
+	 F/yEhKEelVlTUUCGovsdsClUOYQAhYKY1KyV5ZhEPA557TIUKZKKD7+SHPEyBU0zbA
+	 Y8c4WbNo4dqTg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net 4/6] net: enetc: avoid VF->PF mailbox timeout during
- SR-IOV teardown
+Subject: Re: [PATCH net 5/6] net: enetc: fix initialization order to prevent
+ use of uninitialized resources
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260513103021.2190593-5-wei.fang@nxp.com>
-References: <20260513103021.2190593-5-wei.fang@nxp.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260513103021.2190593-6-wei.fang@nxp.com>
+References: <20260513103021.2190593-6-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 10:58:22 +0000
-Message-Id: <20260514105822.D3D06C2BCB3@smtp.kernel.org>
+Date: Thu, 14 May 2026 10:58:23 +0000
+Message-Id: <20260514105823.84AC6C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Critical] Missing bounds checks on the number of VFs against the fixed-s=
-ize rxmsg array can lead to out-of-bounds heap reads/writes and out-of-boun=
-ds MMIO accesses.
-- [High] Missing cancel_work_sync() in the error path of enetc_msg_psi_init=
-() leads to a potential NULL pointer dereference or unhandled interrupt.
+- [Critical] This problem wasn't introduced by this patch, but lack of boun=
+ds checking on `pf->num_vfs` leads to an out-of-bounds array access in `ene=
+tc_msg_alloc_mbx()`.
+- [High] This problem wasn't introduced by this patch, but in `enetc_msg_fr=
+ee_mbx()`, `dma_free_coherent()` is called to free the mailbox DMA buffer b=
+efore writing 0 to the device's DMA address registers (`ENETC_PSIVMSGRCVAR0=
+/1`).
+- [High] This problem wasn't introduced by this patch, but stale hardware s=
+tate in the Message Receive Register (`ENETC_PSIMSGRR`) can cause an infini=
+te loop in the `enetc_msg_task()` workqueue handler.
+- [High] This problem wasn't introduced by this patch, but lockless read-mo=
+dify-write operations on the `ENETC_PSIIER` register can clobber interrupt =
+states.
 --
 
-commit 20bd14a48fb81c18f7cc12a0a4f0d93f01026fce
+commit fa9d7e3799c5420c70515e10bd1626738a874ff5
 Author: Wei Fang <wei.fang@nxp.com>
+net: enetc: fix initialization order to prevent use of uninitialized resour=
+ces
 
-net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown
+This commit reorders the initialization sequence in enetc_msg_psi_init() to
+ensure all resources, including the msg_task work struct and mailbox DMA
+buffers, are fully initialized before the interrupt handler is registered.
+This prevents spurious interrupts from causing kernel panics or memory
+corruption by scheduling an uninitialized work struct.
 
-During SR-IOV teardown, this commit reorders the cleanup steps to call
-pci_disable_sriov() before cleaning up the mailbox resources. This
-eliminates a race window where VFs could send messages to an unresponsive
-PF and time out waiting for a reply.
+Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
+p.com #1
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index 6939ab04dcdc0..052cab48df514 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -544,9 +544,9 @@ static int enetc_sriov_configure(struct pci_dev *pdev=
-, int num_vfs)
->  	int err;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index fe9680a97b0e7..c156a566a751e 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -109,6 +109,15 @@ int enetc_msg_psi_init(struct enetc_pf *pf)
+>  	struct enetc_si *si =3D pf->si;
+>  	int vector, i, err;
 > =20
->  	if (!num_vfs) {
-> +		pci_disable_sriov(pdev);
->  		enetc_msg_psi_free(pf);
->  		pf->num_vfs =3D 0;
-> -		pci_disable_sriov(pdev);
->  	} else {
->  		pf->num_vfs =3D num_vfs;
+> +	/* initialize PSI mailbox */
+> +	INIT_WORK(&pf->msg_task, enetc_msg_task);
 
-This problem wasn't introduced by this patch, but it exists in the codebase.
-In enetc_msg_psi_init(), if enetc_msg_alloc_mbx() fails:
+This problem wasn't introduced by this patch, but can stale hardware state =
+in
+the Message Receive Register (ENETC_PSIMSGRR) cause an infinite loop in the
+enetc_msg_task() workqueue handler?
 
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_psi_init() {
+If the device was previously configured with more VFs, and a bit for a high=
+er
+VF remains set in ENETC_PSIMSGRR, re-initializing the driver with fewer VFs
+might trigger a deadlock.
+
+The inner loop in enetc_msg_task() only iterates up to the current pf->num_=
+vfs
+and therefore ignores the stale bit. Because the bit is never cleared
+(it is a w1c register), the outer for (;;) loop continuously reads a non-ze=
+ro
+mr_mask and spins indefinitely, locking up the kernel worker thread.
+
+> +
+> +	for (i =3D 0; i < pf->num_vfs; i++) {
+> +		err =3D enetc_msg_alloc_mbx(si, i);
+
+This problem wasn't introduced by this patch, but does the lack of bounds
+checking on pf->num_vfs lead to an out-of-bounds array access in
+enetc_msg_alloc_mbx()?
+
+The array pf->rxmsg has a fixed size of ENETC_MAX_NUM_VFS (2). However,
+pf->num_vfs is populated from the user-requested SR-IOV VFs, bounded only by
+the hardware's total_VFs capability.
+
+If a device reports total_VFs > 2, a user could request more than 2 VFs,
+causing enetc_msg_alloc_mbx() to iterate past the end of the rxmsg array.
+
+This out-of-bounds write would corrupt subsequent fields in struct enetc_pf
+(including the msg_task workqueue struct initialized by this patch), leading
+to kernel crashes and potential privilege escalation when the corrupted work
+struct is scheduled.
+
+> +		if (err)
+> +			goto free_mbx;
+> +	}
+> +
+
 [ ... ]
-	for (i =3D 0; i < pf->num_vfs; i++) {
-		err =3D enetc_msg_alloc_mbx(si, i);
-		if (err)
-			goto err_init_mbx;
-	}
+
+> @@ -117,32 +126,21 @@ int enetc_msg_psi_init(struct enetc_pf *pf)
+
 [ ... ]
-err_init_mbx:
-	for (i--; i >=3D 0; i--)
-		enetc_msg_free_mbx(si, i);
 
-	free_irq(vector, si);
+>  	/* enable MR interrupts */
+>  	enetc_msg_enable_mr_int(&si->hw);
 
-	return err;
+This problem wasn't introduced by this patch, but can lockless
+read-modify-write operations on the ENETC_PSIIER register clobber interrupt
+states?
+
+Looking at enetc_msg_enable_mr_int():
+
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_enable_mr_int() {
+	u32 psiier =3D enetc_rd(hw, ENETC_PSIIER);
+
+	enetc_wr(hw, ENETC_PSIIER, psiier | ENETC_PSIIER_MR_MASK);
 }
 
-Can this lead to a NULL pointer dereference or an unhandled interrupt?
+enetc_msg_enable_mr_int() and enetc_msg_disable_mr_int() perform unprotected
+read-modify-write operations on the ENETC_PSIIER register.
 
-If an interrupt fired and scheduled the work item before free_irq() was
-called, would the work item remain queued and run asynchronously after the
-function returns, since cancel_work_sync(&pf->msg_task) is missing?
+Because enetc_msg_enable_mr_int() can run in process context (via the
+workqueue or during initialization) and enetc_msg_disable_mr_int() runs in
+hard interrupt context (enetc_msg_psi_msix()), a race exists.
 
-A prior patch in the series fixed the cleanup in the normal teardown path,
-but does this error path remain vulnerable?
+If an interrupt fires while the workqueue is executing the RMW operation, t=
+he
+workqueue could write back a stale value of ENETC_PSIIER, obliterating the
+state changes made by the interrupt handler. Should this be protected by a
+spinlock?
 
-If the executing enetc_msg_task() then runs, would it dereference the
-mailbox memory (msg->vaddr) that was just cleared if a message was pending?
-Would it also call enetc_msg_enable_mr_int(), enabling hardware interrupts
-when no handler is registered anymore?
+> =20
+>  	return 0;
+> =20
+> -err_init_mbx:
+> +free_mbx:
+>  	for (i--; i >=3D 0; i--)
+>  		enetc_msg_free_mbx(si, i);
 
+This problem wasn't introduced by this patch, but in enetc_msg_free_mbx(), =
+is
+the mailbox DMA buffer freed before clearing the device's DMA address
+registers?
 
-There is another problem that wasn't introduced by this patch, but exists
-in the codebase. During enetc_pf_probe(), the driver initializes
-pf->total_vfs:
+Looking at enetc_msg_free_mbx():
 
-drivers/net/ethernet/freescale/enetc/enetc_pf.c:enetc_pf_probe() {
-[ ... ]
-	pf->total_vfs =3D pci_sriov_get_totalvfs(pdev);
-	if (pf->total_vfs) {
-		pf->vf_state =3D kzalloc_objs(struct enetc_vf_state,
-					    pf->total_vfs);
-[ ... ]
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_free_mbx() {
+	...
+	dma_free_coherent(&si->pdev->dev, msg->size, msg->vaddr, msg->dma);
+	memset(msg, 0, sizeof(*msg));
+
+	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
 }
 
-Does this code lack bounds checking on the number of VFs against the fixed
-size of the rxmsg array (ENETC_MAX_NUM_VFS)?
+Freeing the DMA memory before clearing the hardware registers allows the
+hardware to perform a DMA write into freed kernel memory if a message arriv=
+es
+or a pending DMA completes in that race window, leading to memory corruptio=
+n.
 
-If a PCIe device or hypervisor presents a capability with an artificially
-large TotalVFs, would loops iterating up to pf->num_vfs perform out-of-boun=
-ds
-accesses to the pf->rxmsg array when SR-IOV is enabled?
-
-Could this also result in out-of-bounds MMIO writes by indexing past
-valid registers?
+Should the hardware DMA configuration be cleared before the backing memory =
+is
+freed?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513103021.2190=
-593-1-wei.fang@nxp.com?part=3D4
+593-1-wei.fang@nxp.com?part=3D5
