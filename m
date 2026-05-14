@@ -1,188 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16EC3B992A
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE9E3B47C6
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 10:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778756301; cv=none; b=drKfNjCmE3jxDqrRDn/RbCQJATy0BZxjOuh9KW/i0WB+Op7+5IwPIFEnBE5E14O+jfPG11HyovswuyoxeDQphwfuzmgpng8HmDR3L9SpnP4HoWFSqw8AlvVwfWk+iUuuJX0HfBhYBvseqekQhm+/YkMh6oA73nF0pnr+Lkl7HFk=
+	t=1778756302; cv=none; b=c0ThRchVmhNsowpNC7X/y2qwbMUmJBuhsLU591x/MjLxr4Uh/Y52MlwCh+1NDyR3ethispO2a9Z6EOV3ohbTS1/oi8hF8Bg5vSObNGdEFfX26nc1WYqMUaDHCvVifOH8CTSnTduxZQ+oiTKQsgyiQFuFumvc9fh0wV7M+YO/ByU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778756301; c=relaxed/simple;
-	bh=V56qGwAA0QUapxaEJLeWNeWT0dEzw0qpr2zOx9y6Ofw=;
+	s=arc-20240116; t=1778756302; c=relaxed/simple;
+	bh=VudyFqotvrY1bBkboKSvmYRbA1msT8emN5iF4c/zSSc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FXBwFuf0OluIkNbDUgQE55NYEWae3TbWQ1/5QHxi9lMKL/zXbcCYVhwJU7jQpLhVQaJfyfZEoM/nfBkv9betXjeOKrRmwf63HTNZOV/ne0SQd5pNZncm9kopvqMyoHasNNZxTIQIAoxLGGoDxosj8aXeVMw3koBgLi+AmLKhjok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODVSbJL3; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=HdvIzka9Gn/eH7mk2ufI7ag2TJqDPz/RQXiturpFUmxxqs401JqRymjWS3zCWG6mk/1EAUp62C4z2wqi5vkm8yCxBe5ypUMc6wadoGk/XoYYRZxQVwlC4efMx9a1waOFRbWVgCV8X2u7j6rDnwI2HDZ5v8s/TyBMB6GwQ5dxSxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbQ4G0V4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODVSbJL3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B993C2BCB8;
-	Thu, 14 May 2026 10:58:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbQ4G0V4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3302CC2BCB3;
+	Thu, 14 May 2026 10:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778756301;
-	bh=V56qGwAA0QUapxaEJLeWNeWT0dEzw0qpr2zOx9y6Ofw=;
+	s=k20201202; t=1778756302;
+	bh=VudyFqotvrY1bBkboKSvmYRbA1msT8emN5iF4c/zSSc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=ODVSbJL3hT9G+PRKy4plw/bpMDfPt6tmAQla5qc024UEym3+xYJXwtG8o4rGpK1zQ
-	 cnhTLCG3YNrumJ9LsohpOCrFT00eh7WUi85BK2EPflF0lOcDApbzrzERHA74myGzIv
-	 EvvJxvDNtLazRLyhlE/SWStQBzSZWSdwar4+kAHWhNCJcOwyag4eY9CVQSHCS5MTZx
-	 BSACDSNPl/nhUylBoZNnt1GUc1H+tMNlVd/kwixOAY2n3nKZC2CfJ0lS32E+DglBR/
-	 AVuN4xIF7I/pPqqeZC/AVf9njNLCyuHj29RZYFahrH5ly0PZtAO+j+JlTPxu6D3oMl
-	 pwlgnNDJiXoWA==
+	b=hbQ4G0V4b516lbhnJDxEpldVy6V1ZSmpTyZENCEvNBrvOC/QwFuCBqiqWlRfWDWvA
+	 zbpFuSxtnw8eqxMiaIrhL8cQb1WxdZRx5AXqnSyScjpEG18Zw1scUj3AmivjTMtYdo
+	 RhKuBQ+Z4SawwChBNSHMS+CXbWCk1ZsdjKrfJCdX4G+enqssH3rgD5qRNeyrU1XJaE
+	 8VPaOeRQeX6v9tu8i21hElb42vI/iimFml771Se8rXIdf0ojy1C0mqdo2Ne4zlkC8m
+	 EvI4tDEsZtec+6CN0D/aCXRRwwz/FQnNszJU9h0VTVcYls+ljCqX4R1b2lGIjby29G
+	 WBid67Sioy/nw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net 2/6] net: enetc: fix race condition in VF MAC
- address configuration
+Subject: Re: [PATCH net 3/6] net: enetc: fix use-after-free in mailbox
+ cleanup on interrupt race
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260513103021.2190593-3-wei.fang@nxp.com>
-References: <20260513103021.2190593-3-wei.fang@nxp.com>
+In-Reply-To: <20260513103021.2190593-4-wei.fang@nxp.com>
+References: <20260513103021.2190593-4-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Thu, 14 May 2026 10:58:21 +0000
-Message-Id: <20260514105821.6B993C2BCB8@smtp.kernel.org>
+Message-Id: <20260514105822.3302CC2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Missing return value assignment in enetc_pf_probe() on memory allo=
-cation failure leads to false probe success and a later kernel panic.
-- [High] Endianness portability bug: Hardware MAC address programming uses =
-native-endian __raw_writel and lacks memory barriers.
-- [High] A Time-of-Check to Time-of-Use (TOCTOU) vulnerability exists when =
-validating the VF MAC address from shared DMA memory.
-- [Medium] Unbalanced lifecycle: The dynamically allocated vf_state->lock m=
-utexes are never destroyed.
+- [Critical] Reordering teardown leaves hardware interrupts enabled after u=
+nregistering the OS handler, causing pending MSI-X interrupts that crash th=
+e kernel on re-initialization.
+- [High] DMA memory Use-After-Free in mailbox cleanup because buffers are f=
+reed before clearing hardware receive registers.
+- [High] Initialization order bug in `enetc_msg_psi_init()` leading to kern=
+el panic on pending interrupts.
 --
 
-commit 1c1cbdf4d36cff2b27997a549d795686b791e573
+commit 7775e7cd27db0383dcec0aee22ae84d6c2378ee2
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: fix race condition in VF MAC address configuration
-
-The VF message handler runs asynchronously and accesses vf_state->flags
-without locking. Concurrently, the host can change the VF MAC address
-via enetc_pf_set_vf_mac() under RTNL lock, creating TOCTOU races and
-torn MAC address writes. Fix this by introducing a per-VF mutex to
-serialize access.
+net: enetc: fix use-after-free in mailbox cleanup on interrupt race
+   =20
+This commit fixes a use-after-free regression in the PF mailbox teardown pa=
+th
+by reordering the shutdown sequence to prevent work requeuing.
 
 Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
 p.com #1
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> @@ -252,8 +252,12 @@ static int enetc_pf_set_vf_mac(struct net_device *nd=
-ev, int vf, u8 *mac)
->  		return -EADDRNOTAVAIL;
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index 40d22ebe9224f..fe9680a97b0e7 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -151,14 +151,14 @@ void enetc_msg_psi_free(struct enetc_pf *pf)
+>  	struct enetc_si *si =3D pf->si;
+>  	int i;
 > =20
->  	vf_state =3D &pf->vf_state[vf];
-> +
-> +	mutex_lock(&vf_state->lock);
->  	vf_state->flags |=3D ENETC_VF_FLAG_PF_SET_MAC;
->  	enetc_pf_set_primary_mac_addr(&priv->si->hw, vf + 1, mac);
+> -	cancel_work_sync(&pf->msg_task);
+> +	/* de-register message passing interrupt handler */
+> +	free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
+> =20
+> -	/* disable MR interrupts */
+> -	enetc_msg_disable_mr_int(&si->hw);
+> +	cancel_work_sync(&pf->msg_task);
 
-Is it safe to use __raw_writel and __raw_writew when programming the hardwa=
-re
-MAC address?
+Could moving free_irq() before enetc_msg_disable_mr_int() leave hardware
+interrupts enabled after the OS handler is unregistered?
 
-Looking at enetc_pf_set_primary_mac_addr():
+Because VFs are still active at this stage, a VF can send a message.
+cancel_work_sync() waits for the worker, which processes existing messages
+but then unconditionally re-arms the MR interrupt before exiting.
 
-static void enetc_pf_set_primary_mac_addr(struct enetc_hw *hw, int si,
-					  const u8 *addr)
-{
-	u32 upper =3D get_unaligned_le32(addr);
-	u16 lower =3D get_unaligned_le16(addr + 4);
+If a VF sends a message now, the hardware asserts the interrupt. Since
+the OS handler is removed and the vector is masked, it is recorded as pendi=
+ng
+in the MSI-X Pending Bit Array. enetc_msg_disable_mr_int() is called later
+but does not clear this array.
 
-	__raw_writel(upper, hw->port + ENETC_PSIPMAR0(si));
-	__raw_writew(lower, hw->port + ENETC_PSIPMAR1(si));
+Upon the next SR-IOV enablement, request_irq() unmasks the vector, and
+the pending interrupt fires immediately, leading to a crash.
+
+This regression appears to be mitigated later in the patch series by
+commit 20bd14a48fb81 ("net: enetc: avoid VF->PF mailbox timeout during
+SR-IOV teardown") and commit fa9d7e3799c54 ("net: enetc: fix initialization
+order to prevent use of uninitialized resources").
+
+>  	for (i =3D 0; i < pf->num_vfs; i++)
+>  		enetc_msg_free_mbx(si, i);
+
+This isn't a regression introduced by this patch, but does the current
+implementation of enetc_msg_free_mbx() have a use-after-free risk for the
+mailbox memory?
+
+It calls dma_free_coherent() to free the mailbox memory before clearing the
+hardware DMA address registers:
+
+enetc_msg_free_mbx() {
+	...
+	dma_free_coherent(&si->pdev->dev, msg->size, msg->vaddr, msg->dma);
+	memset(msg, 0, sizeof(*msg));
+
+	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
 }
 
-On big-endian architectures, these native writes lack byte-swapping, which
-might result in the hardware register receiving the MAC address bytes in
-reverse order compared to little-endian systems. They also lack memory
-barriers, which could allow the CPU to reorder the writes.
+Since VFs are still active during SR-IOV teardown, a VF could send a message
+during this window. This would cause the PF hardware to perform a DMA write
+using the uncleared receive address into the just-freed memory.
 
-Could this use the standard writel and writew accessors instead to ensure
-proper CPU-to-device endianness conversion?
+This regression appears to be mitigated later in the patch series by
+commit 20bd14a48fb81 ("net: enetc: avoid VF->PF mailbox timeout during
+SR-IOV teardown"), which disables SR-IOV before mailbox cleanup.
 
-> +	mutex_unlock(&vf_state->lock);
-> +
->  	return 0;
+> -	/* de-register message passing interrupt handler */
+> -	free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
+> +	/* disable MR interrupts */
+> +	enetc_msg_disable_mr_int(&si->hw);
 >  }
 
-[ ... ]
+Additionally, while not introduced by this patch, is there an initialization
+order regression in enetc_msg_psi_init()?
 
-> @@ -499,12 +503,15 @@ static u16 enetc_msg_pf_set_vf_primary_mac_addr(str=
-uct enetc_pf *pf,
->  		return ENETC_MSG_CMD_STATUS_FAIL;
->  	}
-> =20
-> +	mutex_lock(&vf_state->lock);
+If request_irq() is called to register enetc_msg_psi_msix() before INIT_WOR=
+K()
+and enetc_msg_alloc_mbx() are executed, an immediate interrupt could cause =
+the
+handler to call schedule_work() on an uninitialized work structure or lead
+to a NULL pointer dereference.
 
-Does the addition of this mutex widen a race condition where the VF could
-modify the MAC address?
-
-Earlier in enetc_msg_pf_set_vf_primary_mac_addr(), the addr pointer is set
-to cmd->mac.sa_data, which points into the message buffer msg->vaddr.
-
-If msg->vaddr is in coherent DMA memory accessible by the VF, the PF driver
-validates the MAC address before taking the mutex, but reads it again inside
-enetc_pf_set_primary_mac_addr() after taking the mutex.
-
-Could a malicious VF exploit this double-fetch by writing an invalid MAC
-address into the shared DMA buffer right after the validation check passes,
-bypassing the check entirely? Might it be safer to copy the message to a
-local buffer before validating it?
-
->  	if (vf_state->flags & ENETC_VF_FLAG_PF_SET_MAC)
->  		dev_warn(dev, "Attempt to override PF set mac addr for VF%d\n",
->  			 vf_id);
->  	else
->  		enetc_pf_set_primary_mac_addr(&pf->si->hw, vf_id + 1, addr);
-> =20
-> +	mutex_unlock(&vf_state->lock);
-> +
->  	return ENETC_MSG_CMD_STATUS_OK;
->  }
-
-[ ... ]
-
-> @@ -968,6 +975,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
->  					    pf->total_vfs);
->  		if (!pf->vf_state)
->  			goto err_alloc_vf_state;
-
-If the allocation for pf->vf_state fails here, err does not appear to be
-assigned a failure code before the jump.
-
-Since err would still hold 0 from the earlier successful call to
-enetc_pf_register_with_ierb(), could this cause the probe function to false=
-ly
-return success to the PCI subsystem?
-
-If so, this might lead to a kernel panic later when enetc_pf_remove() attem=
-pts
-to dereference the unallocated device structure.
-
-> +
-> +		for (int i =3D 0; i < pf->total_vfs; i++)
-> +			mutex_init(&pf->vf_state[i].lock);
-
-Is it necessary to call mutex_destroy() for these dynamically allocated
-mutexes?
-
-If kfree(pf->vf_state) is called during the probe error path or during
-device removal, freeing the active mutex memory without destroying it first
-might cause lockdep to report use-after-free or list corruption warnings
-when debugging options are enabled.
-
->  	}
-> =20
->  	err =3D enetc_setup_mac_addresses(node, pf);
+This regression appears to be fixed later in the patch series by
+commit fa9d7e3799c54 ("net: enetc: fix initialization order to prevent use
+of uninitialized resources").
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260513103021.2190=
-593-1-wei.fang@nxp.com?part=3D2
+593-1-wei.fang@nxp.com?part=3D3
