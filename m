@@ -1,250 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D42388E6E
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 17:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A349039769E;
+	Thu, 14 May 2026 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778781093; cv=none; b=nNaDjV8iX+g45Z2LJdZFV6LWmcAXkIDqH/Rx3Wv2kjTWvkus8+48YPcHhPo4mwgKvz1yllSbMP6TenjQG4bPa3G+NEgn+5a4OdSFv5gRUTYAwBYDG+Y1PGOy0SadijHDE+rwLLk8ZvbaMXHwX7PDR0d6B240XyEcDXfT98qKXxc=
+	t=1778782473; cv=none; b=ZnZ9pEDqS5vSHJ285eXl9s64gCpR7uxw4oB+y52/F3X0jZCOxfc/RzA80Rg8Yd6Nn4wMYGVv7cMHyA63tKwqOWZB5cmmK66RyqSuOS5slo22TE4Ax4/iQS87do2M9OHdwuVxe0MQe6jOu/7owUwD9AZDVSRa5CySqLKKPqHD5sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778781093; c=relaxed/simple;
-	bh=WKnWvxFnTyiQL+KDjiAi/V6FNaUtq/slHAeyYfWRa04=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=em0og7n7lm+bMEi2fkrc1EZRDW+TWsvIqTSIpNGINjC6vmdDH5kFnUCWq5GpyOjD1eVGr4teS6l1MakGY73rh3QpclaGvPQuFPr7OYcNKDxn0aZGfuSXP5WpkxdD2RstGlj7ilHsZukHY3xOblplIdiRSkShvy71mHiGpXLFjWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfrluTcG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778782473; c=relaxed/simple;
+	bh=uJ+OslMzGkZCCzZkBjIfav+BmWpyOjO8077z/eM7t/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I2CmxrcABecyWfkutFROGFo39HMZ3GZnE1fGANTQads41nGMU94xrnq/ewqU/O7nG7OsESHFnRtEbtTwXUYZu2PU508sHrVr45YUSW5R8a3ZTrxvtMjtyX+XzoplQV2hDx1K2Kfs4vYUyPwSm0ZW3cpPA2panG8wo2gCK7mexhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1iZhv8n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfrluTcG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF00C2BCB3;
-	Thu, 14 May 2026 17:51:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1iZhv8n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9E0C2BCFD;
+	Thu, 14 May 2026 18:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778781093;
-	bh=WKnWvxFnTyiQL+KDjiAi/V6FNaUtq/slHAeyYfWRa04=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=mfrluTcGepAHXV6GMjYHzBqd/F8mNpreSDZIYlFwRpoI2Ukq3dDcMAlJd8dGJ4m6V
-	 fE0H1SOIH8XnvMG34tSzcgBjVU6JDdeqd15hQI7b0kCJXN3Yo/5MyKB57PNFyWxFNP
-	 VJeULXevJnAnHcR7LzHIRNR58P+Olfs+Y/mnl/h8K7Rqy3Kz4FvIMN8aj8UDQ0q8Do
-	 B26EIvwuZE0aFXDbbjrk44eYUwcNSjOR+xsR28lPurUfFP61uH8N39vG4gk3dT6h2T
-	 qew09Aihr6HdeNncusdxi9CN3BSDIdm2e8vcC57NaKrYfURwI8mkrTXpnSBdwxtO9t
-	 dHXsztpJJj/ow==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH -next] firmware: imx: se_ctrl: fix init_device_context()
- error path
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pankaj Gupta" <pankaj.gupta@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260514090457.2186933-1-pankaj.gupta@nxp.com>
-References: <20260514090457.2186933-1-pankaj.gupta@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 17:51:32 +0000
-Message-Id: <20260514175132.EEF00C2BCB3@smtp.kernel.org>
+	s=k20201202; t=1778782473;
+	bh=uJ+OslMzGkZCCzZkBjIfav+BmWpyOjO8077z/eM7t/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K1iZhv8n2vhLCyYDrIOoFYRJVaLKVZyJ07rcZ9+//ZJ+5w2J1zfWRqu0K8tv8Ys9T
+	 RDcLHohpSIXSFOuCbFtYeXF2drvVfbOlukDdUnSPP/3yVKbzdvXW1ukjOq9KpM/yu5
+	 bpNmY2IUNlaED4aeiOvdS8hJ0v0Dkfhd6JSFhTUf5dZA9Z/IXxAmrHbLpfeMpX46vN
+	 Y5kPycRP6i7EUEUnku5piuOYJnJQXgSv+6eSjwOR0LJp+86Fm+zfAQHNVSnEMpeI5v
+	 OENhrtenTVgWHflYw1lSQ68sDq8cYvxHHI50ue0iFC64ZYuuX3f3qpmcBpY3b5AnXH
+	 CXzjL4BVOTs3A==
+Date: Thu, 14 May 2026 19:14:27 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH 2/2] dt-bindings: timer: pit: add PIT node example for
+ s32g2/3 platforms
+Message-ID: <20260514-ovary-upload-469fb61d1c0b@spud>
+References: <20260514070605.996462-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LPyhFypBzE8ZWWrK"
+Content-Disposition: inline
+In-Reply-To: <20260514070605.996462-3-khristineandreea.barbulescu@oss.nxp.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] Use-After-Free of `dev_ctx` during implicit `mutex_unlock` in `se_=
-if_fops_close()`.
-- [High] Data race and list corruption on `priv->dev_ctx_list` due to misma=
-tched locks.
-- [High] Permanent resource leak and Denial of Service (DoS) in `.release` =
-handler due to interruptible locking.
-- [High] Double free, list poisoning, and Use-After-Free vulnerabilities du=
-ring driver unbind.
-- [High] Use-After-Free of asynchronous mailbox messages in `se_if_fops_wri=
-te()`.
-- [High] Data race and memory leak in `se_ioctl()` `SE_IOCTL_ENABLE_CMD_RCV=
-` command.
---
 
-commit 9c0909012d811bb09f3480d4ef3613f8e888ad7a
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
-firmware: imx: se_ctrl: fix init_device_context() error path
+--LPyhFypBzE8ZWWrK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This commit moves the addition of the new device context to the list=20
-and the increment of the active count to the success path in=20
-init_device_context(). It ensures that the insertion and count updates=20
-are not left behind if init_se_shared_mem() fails.
+On Thu, May 14, 2026 at 09:06:05AM +0200, Khristine Andreea Barbulescu wrot=
+e:
+> Add devicetree binding example for the PIT timer as used on
+> NXP S32G2 and S32G3 platforms.
+>=20
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
+oss.nxp.com>
 
-Link: https://lore.kernel.org/oe-kbuild-all/202605090441.GzJS1R6y-lkp@intel=
-.com/
+This doesn't add anything to the binding of value, all properties appear
+the same as the existing example?
+pw-bot: rejected
 
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index f88e581fc147e..e68ad57c9073f 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -481,16 +481,17 @@ static int init_device_context(struct se_if_priv *p=
-riv, int ch_id,
->  	dev_ctx->priv =3D priv;
->  	*new_dev_ctx =3D dev_ctx;
-> =20
-> -	list_add_tail(&dev_ctx->link, &priv->dev_ctx_list);
-> -	priv->active_devctx_count++;
-> -
->  	ret =3D init_se_shared_mem(dev_ctx);
->  	if (ret < 0) {
->  		kfree(dev_ctx->devname);
->  		kfree(dev_ctx);
->  		*new_dev_ctx =3D NULL;
-> +		return ret;
->  	}
-> =20
-> +	list_add_tail(&dev_ctx->link, &priv->dev_ctx_list);
+Cheers,
+Conor.
 
-Can this list manipulation cause a data race and list corruption?=20
-init_device_context() is called by se_if_fops_open() which holds the global=
-=20
-misc_dev_ctx->fops_lock to protect this list insertion. However,=20
-se_if_fops_close() calls list_del(&dev_ctx->link) while holding only the=20
-per-file lock dev_ctx->fops_lock:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-        ...
-		list_del(&dev_ctx->link);
-        ...
-}
-
-If multiple files are closed concurrently, or an open and close happen at t=
-he=20
-same time, couldn't this corrupt the doubly linked list?
-
-> +	priv->active_devctx_count++;
+> ---
+>  .../devicetree/bindings/timer/fsl,vf610-pit.yaml          | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml b=
+/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> index 42e130654d58..8696696776b3 100644
+> --- a/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> +++ b/Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> @@ -57,3 +57,11 @@ examples:
+>          clocks =3D <&clks VF610_CLK_PIT>;
+>          clock-names =3D "pit";
+>      };
 > +
->  	return ret;
->  }
+> +    pit@40188000 {
+> +        compatible =3D "nxp,s32g2-pit";
+> +        reg =3D <0x40188000 0x3000>;
+> +        interrupts =3D <53 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks =3D <&clks 61>;
+> +        clock-names =3D "pit";
+> +    };
+> --=20
+> 2.34.1
+>=20
 
-This isn't a bug in the diff, but is there a use-after-free in=20
-se_if_fops_close()?
+--LPyhFypBzE8ZWWrK
+Content-Type: application/pgp-signature; name="signature.asc"
 
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-        ...
-		kfree(dev_ctx->devname);
-		kfree(dev_ctx);
-	}
-    ...
-}
+-----BEGIN PGP SIGNATURE-----
 
-Because scoped_cond_guard automatically calls mutex_unlock(&dev_ctx->fops_l=
-ock)
-when the scope block terminates, won't it unlock the mutex after=20
-kfree(dev_ctx) has already freed the memory containing the lock?
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCagYRAwAKCRB4tDGHoIJi
+0qe2AP43Jcddsk1vQtUeGmyvuM1PQfpHSFt1zeVsEASRUQa5kAD/Xgyk9cfO4R8Z
+nUQtK+g102NNkzpri5rVTmvq/L6CvA8=
+=SD0V
+-----END PGP SIGNATURE-----
 
-
-This isn't a bug in the diff, but does the interruptible lock cause a=20
-permanent memory leak and potential denial of service when closing the file?
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-        ...
-		kfree(dev_ctx);
-	}
-
-	return 0;
-}
-
-If the calling process has a pending signal, the lock acquisition fails and=
-=20
-returns -EBUSY, skipping the kfree and DMA cleanup. Since the VFS ignores=20
-the return value of the release handler and destroys the file unconditional=
-ly,=20
-does this permanently leak dev_ctx and its DMA memory, allowing an attacker=
-=20
-to exhaust system memory by repeatedly opening and forcefully closing the=20
-device?
-
-
-This isn't a bug in the diff, but could driver unbind cause a double free=20
-or list poisoning?
-
-During driver unbind, devres automatically frees the priv structure.=20
-Then se_if_probe_cleanup() iterates over the list:
-
-drivers/firmware/imx/se_ctrl.c:se_if_probe_cleanup() {
-    ...
-	if (priv->dev_ctx_mono_count) {
-		list_for_each_entry_safe(dev_ctx, t_dev_ctx, &priv->dev_ctx_list, link) {
-			list_del(&dev_ctx->link);
-			priv->active_devctx_count--;
-		}
-	}
-    ...
-}
-
-Since it removes the links but doesn't free dev_ctx or revoke open file=20
-descriptors, if a userspace process later closes a surviving file descripto=
-r,=20
-won't se_if_fops_close() call list_del(&dev_ctx->link) again on the removed=
-=20
-node, and also dereference the already-freed dev_ctx->priv structure?
-
-
-This isn't a bug in the diff, but is there a use-after-free for asynchronou=
-s=20
-mailbox messages?
-
-In se_if_fops_write(), tx_msg is allocated and queued:
-
-drivers/firmware/imx/se_ctrl.c:se_if_fops_write() {
-    ...
-		struct se_api_msg *tx_msg __free(kfree) =3D memdup_user(buf, size);
-		if (IS_ERR(tx_msg))
-			return PTR_ERR(tx_msg);
-        ...
-		err =3D ele_msg_send(dev_ctx, tx_msg, size);
-
-		return err;
-	}
-}
-
-The mailbox channel is non-blocking (priv->se_mb_cl.tx_block =3D false), so=
-=20
-the framework can queue the message pointer asynchronously. Because tx_msg=
-=20
-uses the __free(kfree) attribute, it is immediately freed upon returning.=20
-When the mailbox controller processes the queue later, won't it read from=20
-the freed memory?
-
-
-This isn't a bug in the diff, but does SE_IOCTL_ENABLE_CMD_RCV have a data=
-=20
-race?
-
-The command modifies the global driver state:
-
-drivers/firmware/imx/se_ctrl.c:se_ioctl() {
-    ...
-	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-		switch (cmd) {
-		case SE_IOCTL_ENABLE_CMD_RCV:
-			if (!priv->cmd_receiver_clbk_hdl.dev_ctx) {
-				if (!priv->cmd_receiver_clbk_hdl.rx_msg) {
-					priv->cmd_receiver_clbk_hdl.rx_msg =3D
-						kzalloc(MAX_NVM_MSG_LEN,
-							GFP_KERNEL);
-        ...
-				priv->cmd_receiver_clbk_hdl.dev_ctx =3D dev_ctx;
-    ...
-}
-
-Since this section is only protected by the per-file lock dev_ctx->fops_loc=
-k,=20
-if two processes invoke this ioctl concurrently, they hold different locks.=
-=20
-Can they both bypass the !priv->cmd_receiver_clbk_hdl.dev_ctx check, leadin=
-g=20
-to concurrent kzalloc allocations that overwrite the shared pointer and lea=
-k=20
-memory?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514090457.2186=
-933-1-pankaj.gupta@nxp.com?part=3D1
+--LPyhFypBzE8ZWWrK--
