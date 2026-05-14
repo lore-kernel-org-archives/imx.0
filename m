@@ -1,105 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9537A344D8C
-	for <imx@lists.linux.dev>; Thu, 14 May 2026 17:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4194394E93
+	for <imx@lists.linux.dev>; Thu, 14 May 2026 17:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778779568; cv=none; b=UkVjeyhOotqDBBx7B3ISN8783FExmMi79c04swb+dne8T91M69Rd8FKOEJbOaZhlF8CsZfVr+gofv5m/pDklLpAQE/tkOeZ0cnTr2nu10LVPQFrBrPTnL12ArDl7clcrYUx7ytL3IwHowCdyoVT8NBThprF0SG/1yi0BN3/FT6Y=
+	t=1778780118; cv=none; b=oYlz3ayHvg938duSpRg87f/miBh8r58ufpc6MMUmLReqV+YIcoeI0dUuy8YBhv5Fdxr+O+SBpAJj/NaaN0WytjzEv4GbetFtSWBwJ7qObggeMvm1xNvRHkNzhFXygYWTO5fRTBKML8RdllbxqwM+Pp5rsHlPIGViq9ShhmeeCqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778779568; c=relaxed/simple;
-	bh=CayUSAvG7GveLy16UXqz5TS3K2BqOCkxt4Go+/dZus4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m/Jl/Gp8aDe4Y1IQEvoXxqMXFX+3eOFF/RtB3lBxbB5ybtmCSsfSiUjPZBO+G9SLHU/BGqrNTU3GHmjKO1iACe85MmtE7e+f4SRNmuKK45jOWe1N8x9Wjq/agmKr1PbzASj+aaZGRl5fGrN4bOiB12B8pLrn6kBy6Sw3V4J5eTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTxtfel8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778780118; c=relaxed/simple;
+	bh=csxAARw7TMe4p9kUCeBN9DmScREv2ZSHrFWQS2btBrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBNRlB/04wwQhOlk3YB6tLxDTBAJuWEhAqdv3SsQl6E/7d8FVue42Bzlk4a5PJhOCtRuc1r5axVGI1m4Gd45NDcrv4563ur0ulpigszYm4myU5OL9x4zl/lG6uYU0BnhrJcyM5VvUQGLMfOCAVlh8RTnmB+qSfjh+NTzyIsP0v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eU3QZKmm; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTxtfel8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB36EC2BCB3;
-	Thu, 14 May 2026 17:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778779568;
-	bh=CayUSAvG7GveLy16UXqz5TS3K2BqOCkxt4Go+/dZus4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=qTxtfel8FFHPFzWEw3023ok8pWVXc8GMf+ZJgfVQuR7TGnr2jZ0FWfX0o0bLrNa75
-	 3CKzbbuIGJqudCr/UV2uKEKEvEr0rSIJ5WmO5zWf7VVBuGITRKP0j9jQ4W25KZqpZX
-	 72nf5zdeIWqAukKZ6sR21ZqxE8aX7zjto54sAMKbBwMocofwPgb8ZIjTB80k4zNp5v
-	 QlDS70KJC5FWr0/E6qN+QES0qkpGM61vXhtB/AgV4H4rdI5BoaUQi/soYx30yLA/Q3
-	 QzN3R4wV7txHaEq2q1KGUL5XMYQKiHM4N35k/83y8gE/qHB/N7he2EnEqRznCaO2+C
-	 +IM4Ze63JHEfQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH -next] firmware: imx: secure-enclave: drop invalid
- overflow check in iobuf setup
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pankaj Gupta" <pankaj.gupta@nxp.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260514090321.2186877-1-pankaj.gupta@nxp.com>
-References: <20260514090321.2186877-1-pankaj.gupta@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 14 May 2026 17:26:07 +0000
-Message-Id: <20260514172607.DB36EC2BCB3@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eU3QZKmm"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8353fd1cb5fso60211b3a.0
+        for <imx@lists.linux.dev>; Thu, 14 May 2026 10:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1778780112; x=1779384912; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JC+WHcUhpCEgLv+z/dz5uJKI5jcxrqy0Eu1amoyfn8U=;
+        b=eU3QZKmm6TiZ0yffOrOQdLTv0LMu5W3w6Htcn/ZEFWSJiIQcbz4cwwrQeWiityuWNW
+         G35E9ZCErKo2s4310orEDXlI7FexXK2iDwQW8pMYg6QaTRVNwn9F7mHHnNTB/bLrAL+B
+         V9497rEKsUNrJbXixLa1VK6ItZl4/S4dXy8A5eUYSod0xWxX2tMYLwTNOUWrnWvSVBOE
+         97C7GAH8hcUSqoXi7AFVppK6KeUrrlOGd25/Vm9aF0m+6+6PgzHu3GOav3Ag/aCCScjb
+         nZO3vMdBzMiiiUHh4wz6GiyxgPydDZ//dDiWLbVD2PI5i6bRc6M+Jl0lI0u8HNrN5Qx5
+         728Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778780112; x=1779384912;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JC+WHcUhpCEgLv+z/dz5uJKI5jcxrqy0Eu1amoyfn8U=;
+        b=SN8FIrGriuZpJBKiXEHDfWE5aId5gElairskqmRp1fFTHZlnlugR29eqR5o0+9UPF+
+         3K7rOOhvaR5IX5Ii/7ON2u+g0UcEaDWO0KpcYsTEfB9iAS73PftrQ9G3rIXakfKmlDlX
+         jzveqefqn+N7tNl+hgpz1ZgAIZaaiMqOVKya2jZMunkhE3NEfigBN79gi3HRJwx+H7B7
+         Z+kEpK2z0sZWFe7/H8KyBQCx2jW4SpYiMFNLp3MGl0QXjI6+bhUYPTSR0aamOTbPp+Ax
+         YuT7FdyDYdZwoCcZaFR9pF/HJIVvVxpPH7NnxstUDPAKPVecUPhpXCfuXOnuDEdQfevc
+         iWhg==
+X-Forwarded-Encrypted: i=1; AFNElJ9K+9Xk1ppbbYdbE9qBhGFyZDXCPWKYifgP+w/rXL30L3QbNbswHOotnMfPy+OdibOZWO8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxftEfugfl07DBabCi7SsFbXzYvVtLxFNXQyEtEHiVP+h7aA6Lr
+	Z4u1+1HqDOThfdYJ2NQFApHiICRqBmvT+aHpisevB2d4AkYzga80mXGJRSPlxQp+8Wk=
+X-Gm-Gg: Acq92OHe7QNzs3zO7sK72+UnEZr5MBwffVt76YU7A24xVjqs06vlBdOdb4YpXingzxl
+	GI6GIWPVDjGWgvH/KmziiDx6235hsawYeFwM/FjfhTJpD+gru97WSX1+T1VH6+7hGalDRQgROvz
+	yoK8rYbg2M0gyN90BZf2C73oUWneSDOy5aGFw3Rq+98SgOQztwdHA4+pA39lFMGMmaJrcpoHJJF
+	VTVlDU+scZw3lcnfGhQxCd7M8VGFAVMxkwr4oVICK/OyKPotXkuiEumVovrQ/D8wmGbwckgw20s
+	wiJhwj/IaDW1HEySUJjRZnBNTs2XXKO+pCAcGxW3uJyB3zZIe+VDLxbVVytdWwQlEfZsK/VHwKN
+	CMyK0rfmwsNN6e+R3YOI5U1UK3Joa+PCrTCrADcpe1Wo/kjFAjfHtBwoILOx27SKbpkJAORNcaT
+	sVTA3yaFcAynprnXEUfpkibFS109M=
+X-Received: by 2002:a05:6a00:909a:b0:837:6bb9:acc1 with SMTP id d2e1a72fcca58-83f18dbabc2mr4476063b3a.13.1778780112051;
+        Thu, 14 May 2026 10:35:12 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:30c0:f7f8:e305:407f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19c7ed3fsm3281092b3a.45.2026.05.14.10.35.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 10:35:11 -0700 (PDT)
+Date: Thu, 14 May 2026 11:35:08 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
+	Beleswar Prasad Padhi <b-padhi@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>, Frank Li <frank.li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+Message-ID: <agYHzH-nJLl1HFIn@p14s>
+References: <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <268f8e00-91bc-43ea-ba95-077cf859e7f3@ti.com>
+ <9e2492d3-8753-46c7-8db6-5f1a80b4f2e9@foss.st.com>
+ <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
+ <6917e3d7-8c6c-4e63-8eca-5308621ec3e8@foss.st.com>
+ <afzIABSh1xtMEGbf@p14s>
+ <PAXPR04MB9185BFA6E7375FAD0B15B021893C2@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB9185BFA6E7375FAD0B15B021893C2@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] Removing the `io.length > SIZE_MAX - 7` check introduces an in=
-teger overflow in `round_up()` on 32-bit architectures, leading to a massiv=
-e out-of-bounds write.
---
+On Thu, May 07, 2026 at 07:43:33PM +0000, Shenwei Wang wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > Sent: Thursday, May 7, 2026 12:13 PM
+> > To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+> > Cc: Beleswar Prasad Padhi <b-padhi@ti.com>; Shenwei Wang
+> > <shenwei.wang@nxp.com>; Andrew Lunn <andrew@lunn.ch>; Linus Walleij
+> > <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>; Jonathan Corbet
+> > <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> > <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn Andersson
+> > <andersson@kernel.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
+> > <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
+> > gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> > <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
+> > devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
+> > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; dl-linux-imx <linux-
+> > imx@nxp.com>; Bartosz Golaszewski <brgl@bgdev.pl>
+> > Subject: [EXT] Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+> > > > >  From my perspective, based on your proposal:
+> > > > >   1) Linux should send a get_config message to the remote proc (0x405 ->
+> > 0xD). 2) The remote processor would respond with the list of ports, associated
+> > > > >      with an remote endpoint addresses.
+> > > >
+> > > >
+> > > > Agreed, we can scale it for multiple remote endpoints like this.
+> > > >
+> > > > >   3) Linux would parse the response, compare it with the DT, enable the
+> > GPIO
+> > > > >      ports accordingly, creating it local endpoint and associating it with
+> > > > >      the remote endpoint.
+> > > > > Using name service to identify the ports should avoid step 1 & 2 ...
+> > > >
+> > > >
+> > > > Yes, but won't that make a lot of hard-codings in the driver?
+> > > >
+> > > > +static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
+> > > > +    { .name = "rpmsg-io-25" },
+> > > > +    { .name = "rpmsg-io-32" },
+> > > > +    { .name = "rpmsg-io-35" },
+> > > > +    { },
+> > > > +};
+> > > >
+> > > > What if tomorrow another vendor decides to add more remoteproc
+> > > > controlled GPIO ports to Linux, they would have to update this
+> > > > struct in the driver everytime. And the port indexes (25/32/35)
+> > > > could also differ between vendors. We should make the driver dynamic
+> > > > i.e. vendor agnostic.
+> > > >
+> > > > I think querying the remote firmware at runtime (step 1 & 2 above)
+> > > > is a common design pattern and makes the driver vendor agnostic. But
+> > > > feel free to correct me.
+> > > >
+> > >
+> > > You are right. My proposal would require a patch in rpmsg-core. The
+> > > idea of allowing a postfix in the compatible string has been discussed
+> > > before, but, if I remember correctly, it was not concluded.
+> > >
+> > 
+> > I also remember discussing this.  I even reviewed one of Arnaud's patch and
+> > submitted one myself.  This must have been in 2020 and the reason why it wasn't
+> > merged has escaped my memory.
+> > 
+> > > /* rpmsg devices and drivers are matched using the service name */
+> > > static inline int rpmsg_id_match(const struct rpmsg_device *rpdev,
+> > >                                 const struct rpmsg_device_id *id) {
+> > >       size_t len;
+> > >
+> > > +     len = strnlen(id->name, RPMSG_NAME_SIZE);
+> > > +     if (len && id->name[len - 1] == '*')
+> > > +             return !strncmp(id->name, rpdev->id.name, len - 1);
+> > >
+> > >       return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) == 0;
+> > > }
+> > >
+> > > Then, in rpmsg-gpio, and possibly in other drivers such as rpmsg-tty
+> > > and a future rpmsg-i2c, we could use:
+> > > static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
+> > >     { .name = "rpmsg-io" },
+> > >     { .name = "rpmsg-io-*" },
+> > >     { },
+> > > };
+> > 
+> > That was my initial approach.  We don't even need an additional "rpmsg-io-*" in
+> > rpmsg_gpio_channel_id_table[].  All we need is:
+> > 
+> > /* rpmsg devices and drivers are matched using the service name */ static inline
+> > int rpmsg_id_match(const struct rpmsg_device *rpdev,
+> >                                  const struct rpmsg_device_id *id) {
+> >  +     size_t len = strnlen(id->name, RPMSG_NAME_SIZE);
+> > 
+> >  -     return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) == 0;
+> >  +     return strncmp(id->name, rpdev->id.name, len) == 0;
+> > }
+> > 
+> 
+> If we encode the port index directly into ept->src, for example:
+> 
+>     ept->src = (baseaddr << 8) | port_index;
+>
 
-commit f1f29a6c58c5d6e658a6207ce15040a2bef1f1c1
-Author: Pankaj Gupta <pankaj.gupta@nxp.com>
+There is no rpmsg_endpoint::src.  You likely meant ept->addr.  This would work
+but not optimal on two front:
 
-firmware: imx: secure-enclave: drop invalid overflow check in iobuf setup
+(1) rpms_endpoint::addr is a u32 and idr_alloc() returns an 'int'.  As such
+there is a possibility of conflict.  I concede the possibility is marginal, but
+it still exists.
 
-This commit removes a check comparing io.length against SIZE_MAX - 7, as it
-always evaluates to false on 64-bit systems. It instead relies on size_t-ba=
-sed
-alignment and existing shared memory bounds validation.
+(2) By proceeding this way, the kernel exposes the GPIO controller it knows
+about.  It is preferrable to have the remote processor tell the kernel about the
+GPIO controller it wants.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202605081441.lIHK75ug-lkp@int=
-el.com/
+I am done reviewing this revision.  Given the amount of refactoring needed, I
+will not look at the code.  Please refer to this reply [1] for what I am
+expecting in the next revision. 
 
-> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctr=
-l.c
-> index f88e581fc147e..1683b259864f1 100644
-> --- a/drivers/firmware/imx/se_ctrl.c
-> +++ b/drivers/firmware/imx/se_ctrl.c
-> @@ -670,11 +670,6 @@ static int se_ioctl_setup_iobuf_handler(struct se_if=
-_device_ctx *dev_ctx,
->  		goto copy;
->  	}
-> =20
-> -	if (io.length > SIZE_MAX - 7) {
-> -		dev_err(dev_ctx->priv->dev, "%s: Invalid buffer length.",
-> -			dev_ctx->devname);
-> -		return -EINVAL;
-> -	}
->  	aligned_len =3D round_up((size_t)io.length, 8);
-
-On 32-bit platforms where size_t is 32 bits, can this round_up() overflow if
-io.length is near U32_MAX?
-
-If io.length is between 0xFFFFFFF9 and 0xFFFFFFFF, round_up() will wrap
-around to 0.
-
-If aligned_len wraps to 0, does it bypass the subsequent shared memory boun=
-ds
-validation?
-
-	if (shared_mem->size < shared_mem->pos ||
-	    aligned_len > (shared_mem->size - shared_mem->pos)) {
-
-This appears to cause a regression where the following memset() can perform=
- an
-out-of-bounds write using the original un-rounded io.length value:
-
-	memset(shared_mem->ptr + pos, 0, io.length);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514090321.2186=
-877-1-pankaj.gupta@nxp.com?part=3D1
+[1]. https://lwn.net/ml/all/CANLsYkwBk0KbN-k9ce+5=oT+scdZ3nU5AOr3Fz4zT=0AFzghDA@mail.gmail.com/
+ 
+> where baseaddr can be derived from the channel address, we can avoid the possible address conflict.
+> 
+> With this approach, the patch to rpmsg-core would no longer be necessary.
+> 
+> Thanks,
+> Shenwei
+> 
+> > And let the rpmsg-virtio-gpio driver parse @rpdev->id.name to match with a
+> > GPIO controller in the DT.
+> > 
+> > >
+> > > If exact name matching is strongly required, then this proposal would
+> > > not be suitablea.
+> > >
+> > > A third option would be a combination of both approaches: instantiate
+> > > the device using the same name service from the remote side, as done
+> > > in rpmsg-tty. In that case, a get_config message, or a similar
+> > > mechanism, would also be needed to retrieve the port information from the
+> > remote side.
+> > >
+> > 
+> > I'm not overly fond of a get_config message because it is one more thing we have
+> > to define and maintain.
+> > 
+> > Arnaud: is there a get_config message already defined for rpmsg_tty?
+> > 
+> > Beleswar: Can you provide a link to a virtio device that would use a get_config
+> > message?
+> > 
+> > > Tanmaya also proposed another alternative based on reserved addresses.
+> > >
+> > > At this point, I suggest letting Mathieu review the discussion and
+> > > recommend the most suitable approach.
+> > >
+> > > Thanks,
+> > > Arnaud
+> > >
+> > > > >
+> > > > > At the end, whatever solution is implemented, my main concern is
+> > > > > that the Linux driver design should, if possible, avoid adding
+> > > > > unnecessary complexity or limitations on the remote side (for instance in
+> > openAMP project).
+> > > >
+> > > >
+> > > > Yes definitely, I want the same. Feel free to let me know if this
+> > > > does not suit with the OpenAMP project.
+> > > >
+> > > > Thanks,
+> > > > Beleswar
+> > > >
+> > > > >
+> > > > > Thanks,
+> > > > > Arnaud
+> > > > >
+> > > > >
+> > > > > > So Linux does not need to send the port idx everytime while
+> > > > > > sending a gpio message anymore.
+> > > > > >
+> > > > > > Thanks,
+> > > > > > Beleswar
+> > > > > >
+> > > > > > [...]
+> > > > > >
+> > > > >
+> > >
