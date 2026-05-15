@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B35C3EDE4B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9EF3EDE7D;
 	Fri, 15 May 2026 21:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778881236; cv=none; b=bxGE5y9dnffSCQjgzSWa6zprRC5tXE3WjdXcPr8JRBKfgQ5AOu/rzXKTt8dtUx35sBCvQyIuyE1hpl+bw/z1/d6Jo9iMnOYiOZLPWmO7r4y+LSU5LGGtmVnHcKZthGXF/dKeeK6VZMF5kQNJb749VCa1z4MHLzrMOcMRPbtRlrQ=
+	t=1778881236; cv=none; b=tAbWS+PKEax85RokqEYoYHHwlUQo1moQhA+a3WZRX7azurL3cEMA+Wvc7oRKINftnFdvec1HLLEK1rWpO+OjwKO0o7pGu1Lk+AZSpYf2v4v+WqwGiW90cJ6eUpLIZ4wf1rwb2Z4eY+jKY3JPedQ550m+6Cu97t1ZaJE8Cc96Oas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778881236; c=relaxed/simple;
-	bh=0Ah9riKcMKwBIpqNmOBl467uryMyUb2ojTGT0CiJ5h4=;
+	bh=iHR42uvynaw9Y8gIAY8rdBOv8ZX9fIc9NWtVHx2Zq3I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O05pV0eMEYelb2OXt5xalsz2Hp987a01unAW5zbh30U/IOTc/kpplqSnZo67q7LHqtvGydsaW/OTPb7mESL1HPxZNbu8YZWSCngk89SpyqWjVo1lMBV7aq5s46Aen6R6VlDJ/5pj1L6rGQIhQpgmFOQEwSPvEkaUNRbqowcGjbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAAYLiDO; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=c7+Tdp5lVyTdCDxAC8BjtVe5i3buEu4qOCE+GJyx0sbRxpapqN4usKp7HeQXMe+FoNT847QrsaKsSeHRmP3NCrJ3Pq6god6MaSxWxBeK9m31iEyGbGcKm9AyYArU2i84CwYd9oWjJKoP6Xw2alp0r7sB1GejecRqSSn9+pCncfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPiZRLZC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAAYLiDO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 281F3C2BCC9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPiZRLZC"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3D21DC2BCFA;
 	Fri, 15 May 2026 21:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778881236;
-	bh=0Ah9riKcMKwBIpqNmOBl467uryMyUb2ojTGT0CiJ5h4=;
+	bh=iHR42uvynaw9Y8gIAY8rdBOv8ZX9fIc9NWtVHx2Zq3I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=AAAYLiDOreL+3Zi6wdbHcPlPeTZ6MIYwwKeJ5T5TOcFWtNfL8Fuakn106SqpVNip4
-	 ov1AQ+fR7Ke1OW2EZQ//cOMsncvDnhcN7rPzFDmPP0rsWoO2uKCmrnJJ6MyYFIvXAc
-	 NvD8me6xAv8KYFSPXolehZVgcQG0mv6GNRzx0G0s2KokZE2NUztMflHop2sqARkabg
-	 t5+GGDgSasCQsRriKI14wryy6RX3GeeLSHfY1t+77H2IiEU731DJpL8zdcgrpmRaE2
-	 YmJuQsrmoqo8b/UeoODjApDz5wHaNk7JvopYJcHmzBbrOVpZ9FOQsHrj2FKKqubjAL
-	 P9SFfqAlENxBg==
+	b=VPiZRLZCz5TXnuoSJO7dQLfx0FU/jV4n0/EpWtp1wUhbxOOCgIBpqW0sA+wYH2Bgd
+	 IIONWjr4TRaL50sa0SC8JOfy0azol6a0EKbYtW7Yt02Uz0+CHC36YYazZrJpDCOv4H
+	 W9IPYGQ71WUW7/f6D3u2H/3hbAqMpcVOy2XnXZg7QkKvdqprSTSXJorQXAwgmPcr6v
+	 D0Zks8u4Ze3JaPJFjw1CMD/pWhn4SOMcduXdqLElaikmwIR3XcUq0YQJKkggvqIsWg
+	 TAS43jv9TKoTdo2USsbat0T8uUcYIuZ4sc9VRNnOwLSPXtmtRjVNSumenckSC1WoLD
+	 4OZqgDEjz+KrA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EE11CD4F46;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 355D9CD4F3C;
 	Fri, 15 May 2026 21:40:36 +0000 (UTC)
 From: Frank Li via B4 Relay <devnull+Frank.Li.nxp.com@kernel.org>
-Date: Fri, 15 May 2026 17:40:33 -0400
-Subject: [PATCH 2/6] ARM: dts: imx: remove redundant bus-width for
- video-mux
+Date: Fri, 15 May 2026 17:40:34 -0400
+Subject: [PATCH 3/6] ARM: dts: imx: Add bus-type for ov5642/ov5640
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-imx25_dts_simple_warning_2-v1-2-b06bff192a05@nxp.com>
+Message-Id: <20260515-imx25_dts_simple_warning_2-v1-3-b06bff192a05@nxp.com>
 References: <20260515-imx25_dts_simple_warning_2-v1-0-b06bff192a05@nxp.com>
 In-Reply-To: <20260515-imx25_dts_simple_warning_2-v1-0-b06bff192a05@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,11 +51,11 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778881235; l=6988;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778881235; l=1774;
  i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=lsqAi27NmpHk2hV97xNohJAnacVRFQ+MMLjYxzPWZII=;
- b=AHjVm4kP5ZBOwXAvyxgR1y3F1numoUiNMtCVDVF44m8Uwv2IPBvF/EUr72fiCcFdgBNjZ5XoF
- XiJUvRuwFQOA81ff2FysicwFU/v1pUWvCG/7ThNK/7DhisZ3aOpX9zn
+ bh=HGMs+AFWVIG/7Db0qb4OWvzhAHmrd9vKYw4rG4RNH/M=;
+ b=BrOivWXgIRm6WZZQFShvH95LUpQF7Ss1xcHT4UfO/710V+1sIlkj1h/Wd+IZPa2kE/HFX76hq
+ udFGBEuy6jEB5qPuPvkaMk0/k8QHcioEeOjEOLfl+n3gl4ScLOt0j3x
 X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
  pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
 X-Endpoint-Received: by B4 Relay for Frank.Li@nxp.com/20240130 with
@@ -66,210 +65,49 @@ Reply-To: Frank.Li@nxp.com
 
 From: Frank Li <Frank.Li@nxp.com>
 
-Remove redundant bus-width property according to video-mux.yaml to fix
-below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-gw51xx.dtb: ipu1_csi0_mux (video-mux): port@4:endpoint: Unevaluated properties are not allowed ('bus-width' was unexpected)
-        from schema $id: http://devicetree.org/schemas/media/video-mux.yaml
-
-The bus-width already set at remote endpoint (camera).
+Add bus-type (MEDIA_BUS_TYPE_PARALLEL) for ov5642/ov5640. i.MX53 and
+i.MX6UL only supports parallel csi interface. Fix below CHECK_DTBS
+warnings:
+  arm/boot/dts/nxp/imx/imx53-smd.dtb: ov5642@3c (ovti,ov5642): port:endpoint: 'bus-type' is a required property
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dts      | 2 --
- arch/arm/boot/dts/nxp/imx/imx6dl-gw53xx.dts      | 2 --
- arch/arm/boot/dts/nxp/imx/imx6dl-gw54xx.dts      | 2 --
- arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dts       | 2 --
- arch/arm/boot/dts/nxp/imx/imx6q-gw53xx.dts       | 2 --
- arch/arm/boot/dts/nxp/imx/imx6q-gw54xx.dts       | 4 ----
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw51xx.dtsi    | 2 --
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi    | 2 --
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi    | 2 --
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi | 2 --
- 10 files changed, 22 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx53-smd.dts         | 2 ++
+ arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dts
-index 9ea23dd54f3ce0d8e3abad2c2ced7798a2854489..62b05fe70cd97b16553b65371ee8efb77168d61b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dts
-@@ -32,12 +32,10 @@ adv7180_to_ipu1_csi1_mux: endpoint {
- };
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-smd.dts b/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
+index a1e19f9709b2c7c7d02812f2b5c2afd382fb5d86..8c02731c7ba9db794627e085feb8a4e957d8c5c3 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-smd.dts
+@@ -5,6 +5,7 @@
  
- &ipu1_csi1_from_ipu1_csi1_mux {
--	bus-width = <8>;
- };
+ /dts-v1/;
+ #include <dt-bindings/input/input.h>
++#include <dt-bindings/media/video-interfaces.h>
+ #include "imx53.dtsi"
  
- &ipu1_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw53xx.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw53xx.dts
-index 182e8194c2490b520aa065e11933795aaa6d7a71..c1787510d3941d77ca1e9f76560d2e57852bf995 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw53xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw53xx.dts
-@@ -32,12 +32,10 @@ adv7180_to_ipu1_csi1_mux: endpoint {
- };
- 
- &ipu1_csi1_from_ipu1_csi1_mux {
--	bus-width = <8>;
- };
- 
- &ipu1_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw54xx.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw54xx.dts
-index a106c4e3e32995f4fe7801f04ce549dd50283c85..934b0325e6f5acffd72f8063bf7d9e5de02b1093 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw54xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw54xx.dts
-@@ -32,12 +32,10 @@ adv7180_to_ipu1_csi1_mux: endpoint {
- };
- 
- &ipu1_csi1_from_ipu1_csi1_mux {
--	bus-width = <8>;
- };
- 
- &ipu1_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dts
-index 6e1c493c9c8c49343313a71f0c72570915a311cd..31996ddde117acbe50166da8fbe6a6290a895211 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dts
-@@ -32,12 +32,10 @@ adv7180_to_ipu2_csi1_mux: endpoint {
- };
- 
- &ipu2_csi1_from_ipu2_csi1_mux {
--	bus-width = <8>;
- };
- 
- &ipu2_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu2_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu2_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw53xx.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw53xx.dts
-index f13df8e9c8c4b213d4371d93ef6e4a19e969dcd6..f224273fa863ecbc41e14df1f0324b5ef4192a9e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw53xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw53xx.dts
-@@ -32,12 +32,10 @@ adv7180_to_ipu2_csi1_mux: endpoint {
- };
- 
- &ipu2_csi1_from_ipu2_csi1_mux {
--	bus-width = <8>;
- };
- 
- &ipu2_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu2_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu2_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw54xx.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw54xx.dts
-index d5d46908cf6ed8f15ec03584146d7af5b2d9d72d..804ee044be52d716a6e6cfb97b8aa4520d3b9baa 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw54xx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw54xx.dts
-@@ -90,12 +90,10 @@ tda1997x_to_ipu1_csi0_mux: endpoint {
- };
- 
- &ipu1_csi0_from_ipu1_csi0_mux {
--	bus-width = <16>;
- };
- 
- &ipu1_csi0_mux_from_parallel_sensor {
- 	remote-endpoint = <&tda1997x_to_ipu1_csi0_mux>;
--	bus-width = <16>;
- };
- 
- &ipu1_csi0 {
-@@ -104,12 +102,10 @@ &ipu1_csi0 {
- };
- 
- &ipu2_csi1_from_ipu2_csi1_mux {
--	bus-width = <8>;
- };
- 
- &ipu2_csi1_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu2_csi1_mux>;
--	bus-width = <8>;
- };
- 
- &ipu2_csi1 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw51xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw51xx.dtsi
-index beff5a0f58ab48d4d7b8f14f9e695763dc2e3bdf..fb18b87adb441e4e11ddab602c3e3a8e302fa81c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw51xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw51xx.dtsi
-@@ -384,12 +384,10 @@ adv7180_to_ipu1_csi0_mux: endpoint {
- };
- 
- &ipu1_csi0_from_ipu1_csi0_mux {
--	bus-width = <8>;
- };
- 
- &ipu1_csi0_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi0_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi0 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-index 6136a95b9259977bd2debb05e2a480cd1e2fb765..55647c1dacfa5d26c386ebf490c50ef825b99e94 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-@@ -440,12 +440,10 @@ tda1997x_to_ipu1_csi0_mux: endpoint {
- };
- 
- &ipu1_csi0_from_ipu1_csi0_mux {
--	bus-width = <16>;
- };
- 
- &ipu1_csi0_mux_from_parallel_sensor {
- 	remote-endpoint = <&tda1997x_to_ipu1_csi0_mux>;
--	bus-width = <16>;
- };
- 
- &ipu1_csi0 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-index 552114a69f5b9575a3685fcbbae11a7fc2673e45..bdbcad5e35d8258353831f211776e4fd8c2e684d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-@@ -397,12 +397,10 @@ adv7180_to_ipu1_csi0_mux: endpoint {
- };
- 
- &ipu1_csi0_from_ipu1_csi0_mux {
--	bus-width = <8>;
- };
- 
- &ipu1_csi0_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi0_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi0 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-index b9dde0af3b995feb49fef38fb0fda69eee3a5750..40d8887cb8bc7f3ce1948fbeadbde6c0d4d1ff0c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-@@ -245,12 +245,10 @@ accelerometer@1c {
- };
- 
- &ipu1_csi0_from_ipu1_csi0_mux {
--	bus-width = <8>;
- };
- 
- &ipu1_csi0_mux_from_parallel_sensor {
- 	remote-endpoint = <&adv7180_to_ipu1_csi0_mux>;
--	bus-width = <8>;
- };
- 
- &ipu1_csi0 {
+ / {
+@@ -314,6 +315,7 @@ camera: ov5642@3c {
+ 		port {
+ 			ov5642_to_ipu_csi0: endpoint {
+ 				remote-endpoint = <&ipu_csi0_from_parallel_sensor>;
++				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
+ 				bus-width = <8>;
+ 				hsync-active = <1>;
+ 				vsync-active = <1>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi
+index 3d147b160ecf150f2f3b6afa8b5873fabc2ba96f..32afe4130e21126bf6e476db1091c4a45b8cf5bc 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi
+@@ -217,6 +217,7 @@ camera@3c {
+ 		port {
+ 			ov5640_to_parallel: endpoint {
+ 				remote-endpoint = <&parallel_from_ov5640>;
++				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
+ 				bus-width = <8>;
+ 				data-shift = <2>; /* lines 9:2 are used */
+ 				hsync-active = <0>;
 
 -- 
 2.43.0
