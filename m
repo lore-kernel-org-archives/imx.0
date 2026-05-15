@@ -1,212 +1,188 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012029.outbound.protection.outlook.com [52.101.66.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716163F0A8D
-	for <imx@lists.linux.dev>; Fri, 15 May 2026 07:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AF33FFAB0;
+	Fri, 15 May 2026 09:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778830788; cv=pass; b=Mmyb1N6zXUhTQkwr+qgWenSu1iTwfgwfEjHPkrQmNMHWFixw+GRIvPmjhWn7ugSyqmbR9U8ikhhjyV891JO9YFKhLWsCUrg1rLFn0BXR3UIaecArYa+E/sDH0v1PnBqYQa1gMvpxHtvksaEMnnqYASqHab3La5ImxFMoxqLcuQI=
+	t=1778837139; cv=fail; b=L8Rke0MqvYpKSPuPgOUoHbC2E0kyBdHkRadUKkEffK1OBVamcz41zpE9oSeDvnVnT7Vz2TX+zLuOskAfxQbf7XWXlNCfAInNr+G4D3MSik0QKNn5qB1/gyNFzGKIx9OhhSn6J6vvMKzPP5r24ZMkEcfN9g07x+B+jSSIyQs+dio=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778830788; c=relaxed/simple;
-	bh=DvITViv1UdcN77dGzCmSWIw/wgiaxHKidIibKZfFpOA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HRMliFr4nCv0XkYboXDpyoN9j+Tum6+XpGzphT58jYRdRUsLiYfhFaiBVMl9YdpqguVzSKCMVyt5pRJZn322PbSo9H9zalA5DCR+wB8sAp7F+Lj/b8jwUAYYDAETcuxLhwjEp4Uy27BWkv7UmGzugSCdBrGS8tYyD06dNX2x76U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ktwczmpN; arc=pass smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778837139; c=relaxed/simple;
+	bh=mDrZHS/nmQIVg3131cmM01AzkxWvP/T0/EXglaYiiLQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lqM6za5MnPPAOejN/USOezbscUWkCsfD5+0MyEx+qvLewnceeRiGL1Yj7SDTjANvfwSEfCH+7L7sq9M41FdMUIqGuiPiLAKZQ7ayfT3kGUF35MPL8L8zLRjMbE4aLQEpUP9+9FjgDyrKb9PyMxy6zvL9WFmPgOeNAgAvtLzd7OA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QmZ2iRMW; arc=fail smtp.client-ip=52.101.66.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ktwczmpN"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c629a31d1d0so627281a12.1
-        for <imx@lists.linux.dev>; Fri, 15 May 2026 00:39:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778830784; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kkqbCmsvwsCyxSWMtkA7utxK1Nur1F8Hgh2JhVJfo+YjyWEs68hnZTLmf0YxEYuiNV
-         xi/JvekAon9i7LRqimdrbma7Ht9Vkk9Sh+s/unjoVUoiv/yFAabJB63sFjvskAB9Q66g
-         /QSp3a0lEMOfEZ0+w0it45ZFm3vfj4tuvKPtdTL77Kqt3WVjx73rm7DI7BxZQiIF1Vys
-         KiXEIWdne/GizuB25ZuiJsn27Tfu19bIFvyd56vrIgRz27Fvb1SjvaVd6SC+Pz9Ds9F4
-         NWLfrDna8XzoXefmFYLR7R/OQ4hP9ad6CW8cxRUHqtZxbkL8f4+9VbyjqMb+iNPz8ZFM
-         j+8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AxCLltORc5KKdU6k9QBsTr54hF7033gaoDGXRcDln6Y=;
-        fh=rSOyu4vl8OAdoDpnIEylXlWlWFe5PM20gihhje/tWtw=;
-        b=NHCnGhuy8RXgPrISEk6yBT0HIfC5ZQ+GvnKoSq6yvW1a8OBzsMALJ5lf6eGf1Wv5b3
-         kRpXTev3pXi7iLOzzdJRsAN+yNTc4oL58r+m3yX3LJY40mTD5hzh56B4Gua6aXz1NSPX
-         YIi2Q6TmU3JgSTOg32TQ4gB4JWmrbQFdP8EXjs9tsGcPPKutcIyUEiratBY3QdaJe9TE
-         Rk21yskeub/7z5V+WglN3f1Nt5Bl7rS3wljLRazEqm9KRv0H1H98Bmd0gxVNNmZBC+Gm
-         Yq7MTPRIWFcFR2AJcWtHx1PRMCbr3xyhoQByOIkg+RthL1/fDFeZUrmuWD4hHae16q/z
-         JjkQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778830784; x=1779435584; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AxCLltORc5KKdU6k9QBsTr54hF7033gaoDGXRcDln6Y=;
-        b=ktwczmpNMa8zOMHBSd+vNbFULrPIK610PZ98fnHspBz4SW51f4En+DV+olWZe1k1ED
-         PZZ2OsfUj6e0S9IPoKag5VXQsMb/9HzUHr4XcWU38qKnxWdcCg7p/unXE63FXMw+PS9R
-         U6jaKphyUtDAv+9lXTpOpYmigfh254fIveQ0NmDemVWdP2I5fwv6mDcVYFSoorxfQZYE
-         Au4SFDaeRfnzBW3Pv2j9fEPH9AWASNbr41eBD49+NjsjWYpOTpfXTgBh2SFvK03TW6Pd
-         WP2/9mSmiy67mzhaNq2m/5zXw5OIlSBc+m7r6UVxSgrqvvZs8mCRfsadnnHaZy5h7A7O
-         kvtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778830784; x=1779435584;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AxCLltORc5KKdU6k9QBsTr54hF7033gaoDGXRcDln6Y=;
-        b=nhSPPnffFTFvY/4Q6g/puinpHAiScjS3HC2IdfCW58k6g45aPBmEHvpAuqsEpliBHI
-         WDf2hyjtwQnSknH2o3DWqQ8Oz6/i6Sn4AUbaGSNzncD4R+uN6WT9Hq+p/rAytQOS6dZD
-         p7AbqLutU1RlteHNAFAcDxjjJAB0imB+FZhjzpXbmNJeZ2c5JfV7t4e0O0LPvo/PgUIP
-         JiMBsb7OtPtTDZItX3ybZdVjk7wEK5p5dW2/7cnsoMM8Qq8tT60n/TAZiy0ICPq9tUMM
-         T+2hvqkiAGKE7gqv2Pwnvh4PyeKyL7NINGCzJOqGiULyoJ+O2LA2IXj2ZySH1ThZwgvT
-         e7Yw==
-X-Forwarded-Encrypted: i=1; AFNElJ9SVfJocG+5t8ww8V/jK8nlFkf1tJ2CaEs14Au4xxdm+ein/oEkOvdbwmgjtdrYNpMG1OE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQbWdnVo9CM7EmLyj2jlXbsD63mnqxgx9d5v4ZkRjStCsk1LsG
-	v+FUGCxOHeC+YCeX8xv3Y62g8Vw/xyX5DOFSSfiWMM8h21mn0l+EWH1/YcBBwoOwZxPFS7yj6TQ
-	sMxpmk916aLT1Ig0a2GhBsT6tZyQFLks=
-X-Gm-Gg: Acq92OHKw49UThxT9nsrr3di7vIM1iOaIxgTIJM+xyL3CLwNSqx53HwxV7Fd2FKyMHF
-	5RvB8/sdxAs9DGAOleke1soUNcgwkzlFd1m6WuWrcTYjsRkvzcq4rT7aDdBn1xgvTf+zVNyTY+S
-	pODJgC7NOkx+AjzoBTWuYNEh2djfmezfIAr9cznOdkbznV4HqMHRESOeA59+r405n43NbIiJYLR
-	EaL19szBTpf29QBLffKdhvHrjGs40449uIUocy1h3DH2I3yNVyOZnoi7Ydu++cK/h+HsoI866Yz
-	1WICS2CC51VR2niI3YfhjEcXjnvszNdNrOPn4Sk=
-X-Received: by 2002:a05:6a00:4c94:b0:834:e09b:de73 with SMTP id
- d2e1a72fcca58-83f33dda422mr1604434b3a.7.1778830784359; Fri, 15 May 2026
- 00:39:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QmZ2iRMW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IY8GVx2jsuOZazkA2KCVjHUPd2LMYdkJB2EKY/P9XqUMsb2wR5om8sZCjIT/NsAEFGblTfL0bpK8X8gaHOdmiG6XaSuZ1338uGwHB1IzllC2xl5h/ZCJ5S6rrwxSIYztsVeRViEh03dNLyzo8evz62bFq+g3HVF6W0kzFtC2UVRoedAVZ/lpEMadVmkMsfuqysRD/fzgCrCOnZWsXgeMNmtNGYUjxwADftAd2BGrtPWgpDzZJ5qs0Lemw+Gt0wrkEnkjMbTtH5igq2o7Vxb90IKTgWDHF6FJKdtOiZwTAK1g6Y0bikQgTFqbssTUykzR+PZ5xnEBKTXo+EX//bPdMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=45NxpZq8yld4bP0Miy0hpyUtZpo947RY6bao6FYr1ow=;
+ b=NWbLw/SCIvSPvECogm6v1olvHml6VhI7TidZzZBj5+IcIEMl4V49ZbTVqpQQmZ0FQ/nbv4yziXTN4RAgDC+bAGOCbsAqNfhE09WdLlZGQm7rD5Wuv+aHwIQfl1WNLVAF03p07jnnY/e0nLLkrLcP0jkV2VDZt/8xNH4U8pVOJnXqbFsl5vo6YVF/77d72stnycHirsYzO6BpubX11KbCHPbQROQk5Y4GQkPQkKxPP881pvmKGbMRBZ2zFMeT/vZ/LuP3d9Q/ucwIpwrz5VgXG7v0Wn42phowjcdkBJLctM01/D65yLYa5P8x3338zOeuNFuvN/MppwnfksBAi2yWRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=45NxpZq8yld4bP0Miy0hpyUtZpo947RY6bao6FYr1ow=;
+ b=QmZ2iRMWmUbsg8leHOqYJD2wV+WgdKqMRYqMlpKmD51BcKgdKyTlUz/9/7IAMKuPYvdM7NTbkBiDHWo/N/ibY9g+2EVdgemtQilLSru3XG5sua4z29JuZ2gF1tdghyv7r2xBTblLHaPfg78pqZ2OwhpS4IXqP9vhO2SocM98zqB5NrQpL23DxjiiGg6RzehRCrqxamHJUx7Q41cZUlgrd3SlAqdV1udoEU+iMOs4eVHVkE9XaweiNn1f80Kq0B9kY3GK9VUqVZJJY4YrdJeiTFCz7ICx15kNkr53vQrZO/Uhef8GIWbz9uGRcyP0wfK4BIEeETmuD3Hg8h9QFNS7tg==
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by PA6PR04MB11715.eurprd04.prod.outlook.com (2603:10a6:102:525::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Fri, 15 May
+ 2026 09:25:34 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Fri, 15 May 2026
+ 09:25:34 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>
+Subject: RE: [PATCH net 2/6] net: enetc: fix race condition in VF MAC address
+ configuration
+Thread-Topic: [PATCH net 2/6] net: enetc: fix race condition in VF MAC address
+ configuration
+Thread-Index: AQHc4sc4Iq7A9Uw0c0iMl2VGLzv4TbYNW5mAgAF0eCA=
+Date: Fri, 15 May 2026 09:25:34 +0000
+Message-ID:
+ <DBBPR04MB7500E299684A7D0981BC514288042@DBBPR04MB7500.eurprd04.prod.outlook.com>
+References: <20260513103021.2190593-3-wei.fang@nxp.com>
+ <20260514105821.6B993C2BCB8@smtp.kernel.org>
+In-Reply-To: <20260514105821.6B993C2BCB8@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|PA6PR04MB11715:EE_
+x-ms-office365-filtering-correlation-id: 293540bd-4cc1-45d6-419d-08deb263ead1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|38070700021|11063799003|56012099003|4143699003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ 2rn4/uL7gQLMOB1AMrj7rsVNfPNChKe3Pw/Y4eUfuXmStHNOOiBZkZ/L6l6qlKwLC30heEoi5g0p84KIZNwA79DH/97GqLYEp2iTl6KOOUIQo5j/eYdvmMH5IPmLTNjJ546wYpZ5xfvczt061qDpZc5qmXqhQWeFrr5BH2p+IicsaeQVuD+OzdmZhWRRKnYupdNs7Yop2PB8M2HyXetFU12uhRwwISkpPM39ZmM2HOwh6ft2XlGO0JtOqX8C+Ml1ZKMyLrM+aTxtEu0WvHZxxhBqeCRlDxmoPVgdMEVmh84ySLL64Sv1f5ym+lLiXjGQ7DY/mbVhPVIosoqJumy92W6wzAMQdkHab/+6q8Di/uAH/zPve0VT9P3aFl4Cjyr+ypBt+BPaM9mO7GQb+MenQpGsZbcADpwXTHbJdTJ7Nglgv+O/wQ3gSjZOkSAKqwe1QhEB45GtlwDim1NeuJHTmdBwMekyM/rxzHEasmx6z1sKNAODmiKDseSmNUV722AeXBE3dGKVH8iq/EimrCGiuYnemHSeKe4W0bp/GgEPmSWt4NDUrwNm4hLI4G2v2ViGUASkuvP5loif7xL0eWxYRIT9xmSld00741MXzSCm+YzbXQ+6K5q1uR5gapyK5zchd4swjbLSKuLU52vtC7EsjGYI6LL2IMbStJQ7MRBDMsS3hLQOqm+eFeHYwEXdMDv3UHh3fSF7uFTxSG2YAG4w+7QhH7UIJHAYsno+o1Yl54AzH8nWgt80diBGfdUmIDya
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(38070700021)(11063799003)(56012099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/DGZXqQJdV7wr1bUvh667335rlyN4soxD+8acRJd24aLgAlGm2+oFeJ70RtN?=
+ =?us-ascii?Q?mM16cSBk6L6/Is6AUQPZpVmUO7BchpyTZDl1SNBZcw8hzcQ/N0w/q8Ff4j5H?=
+ =?us-ascii?Q?G2F6y8HYx0RqC9Mj25sCoK0zJX1tuvWtSbWO2WXnxz0iRZyBRMw8yaEcFOK1?=
+ =?us-ascii?Q?yK1fMUY35RviwpNykmViwA6Up9h5PB8LC80tdhMxg1faNugMGcJayoHQCiUu?=
+ =?us-ascii?Q?+fGIA0Ell/NaT/i3N+bOsl/lllBNgYpMI/KMh33jXeAmtaoICIBsBPXei4qE?=
+ =?us-ascii?Q?yFWmDnzp5/LWPbw016wHRcKygjdJLeWdDcP/yl/ZYvunES8XdZCKUtdoIYsU?=
+ =?us-ascii?Q?joh/1EUVhKeCZ3shj9Lhcxd35dZfNaYtORYIkv+IM/cHPMr8wpqxDGhncP/k?=
+ =?us-ascii?Q?vyYhWWIMW5oRNmIBfk+37yZ6rASZTJwJXj5f4J5QIsI4/D5ZILZKrmVEFoXq?=
+ =?us-ascii?Q?zmHeqio2bUPrdQVlKNGrN7a3lu7zo5QvZQ3ag09CaEdfvGg7GKbCsCFV94P3?=
+ =?us-ascii?Q?5F09ifLZjEPRTuKwoPLFd/nD4q/zYo5FgNkbBM7fc5PStGoIurVZaTnuVqvN?=
+ =?us-ascii?Q?1E4/4QT3uQgJTg/XBtvLZ/99hKloVNNiiex3ziYl9k+l/MPhZdQt9xBvX5xx?=
+ =?us-ascii?Q?3iEi7/DQkd3seiS/KVPSfuW2fg/3pAdBOx+M+v37rVsg/Qd67xwCnQSTJ7iD?=
+ =?us-ascii?Q?gK913ED4XSDsGOq9mGS03EeiDavRO3HOFlx+LGI6XlnktdgpsUpMJ+MzejKK?=
+ =?us-ascii?Q?hy9kBhcy5XJ+hoYvIJ5RCMheqY0sSKbC9H2ot494S+hY8swyQurCEJroGYZm?=
+ =?us-ascii?Q?W+c0xl3ITkysxU2Gtf4fVEVZleWTA+T8GO09FjNJYyCpYcOd5fiklAwZjna9?=
+ =?us-ascii?Q?ZeMsfbmcsbddXUeQ5362XKEtd8JwhlJb+TqUr3VKDeCEr7l6mboGyKRW6NAa?=
+ =?us-ascii?Q?dgO+VRvdosYEaBLSJjV+uUmjrcqyNPkQRvIhfnvmv/pcKP9kLLtVdh7ZzQIP?=
+ =?us-ascii?Q?649aBnrLsiA3O7ZCsIG6KbI8QqWbc0EFD4OLsIpY/BhWAlFa71ER88x2xOuz?=
+ =?us-ascii?Q?fE1NYLb/FNcgMlmsBgfmCnnmje/FH/G+dvStwi9oTZTLJyOc2NnxEgD5UE21?=
+ =?us-ascii?Q?Y4hU3zuMpf8jVxlYtHS0T3LkPWGETWUUdU4Sd4sEM5DsujKbOhoBZwOYRu6t?=
+ =?us-ascii?Q?2TKlC1eP30yn3C+8cS8ZJgkEm6VeX/alBG21HtA5jtc0JUGd231MsjPVhRIV?=
+ =?us-ascii?Q?fO4FJYmpSSP5dd/rCvzeI/U9wM65vmLu4t9GThh49D/fdoI6w1LX+8BAuOdC?=
+ =?us-ascii?Q?x/louMFtbLKRKi2fQ++9b2fFudC6m3Ofbns96ov8xznnGCIOZv97MPr/d54g?=
+ =?us-ascii?Q?4/hQUjgsR2Bh7Db2lDKEd/XNpN6yGkJ8H9T4CJAsk8STHQ3O3JBtSVWJD1kS?=
+ =?us-ascii?Q?DSDT36+Iu7AogYK/S1EENuukIzJMKfrRjeJhRAghhmkyumpDEHsK4VNE+rkd?=
+ =?us-ascii?Q?mqW3Thlw9sc4IRKR/AqAIatDVZ6+aqKzxFCWgHOKfOmGwtTn+t104PJehabJ?=
+ =?us-ascii?Q?4W3sfVHrDfxd5dyY1NTpV4mnGrcQWRxm7b9x0W+Vpnk206+SEzv7cMIG6G0n?=
+ =?us-ascii?Q?ShLrkL+X5BXX7mLmwwN6jQHtoHn1rl+6dyD0ekVaBj2NsXMMKt8i1m3gQKAu?=
+ =?us-ascii?Q?i0JEh7AAoJIN3GJvUk6UCaqOcGod1CYEC07r4EskEHvT2NjF?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat.com> <20260514190513.B63B0C2BCB3@smtp.kernel.org>
-In-Reply-To: <20260514190513.B63B0C2BCB3@smtp.kernel.org>
-From: Enric Balletbo Serra <eballetbo@gmail.com>
-Date: Fri, 15 May 2026 09:39:32 +0200
-X-Gm-Features: AVHnY4J-2kUxNSnCaxn1q1NJi14Qby2UbiNzsr_nf6encMzHQBB6QijVzBgdRDA
-Message-ID: <CAFqH_52d3o4U_K64yBXWTHhys73nUqL1u6sM7GfUTP_6TycQ4g@mail.gmail.com>
-Subject: Re: [PATCH v3] clocksource: move NXP timer selection to drivers/clocksource
-To: sashiko-reviews@lists.linux.dev
-Cc: Enric Balletbo i Serra <eballetbo@kernel.org>, imx@lists.linux.dev, Frank.Li@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 293540bd-4cc1-45d6-419d-08deb263ead1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2026 09:25:34.4174
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DbRplRw7p65FK/c5HE4lDhJ68T89qeywtkB0qPXckzzMEd6WhtP73I7nHR6y8+CutKIrlAC2wt0QXZvocFJL/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11715
 
-Hi,
-
-For some reason this doesn't appear as a thread in my original email.
-Answering your question below.
-
-Missatge de l'adre=C3=A7a <sashiko-bot@kernel.org> del dia dj., 14 de maig
-2026 a les 21:05:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [High] Shoehorning ARCH_S32 (ARM64) into the Vybrid scheduler clock cho=
-ice block risks replacing the native ARM Architected Timer with a slower 32=
--bit MMIO timer.
-> --
->
-> commit 37ddcc4eb82e3bfe1a0ebf5e407f22b4f2b1bef7
-> Author: Enric Balletbo i Serra <eballetb@redhat.com>
->
-> clocksource: move NXP timer selection to drivers/clocksource
->
-> This commit relocates the NXP clocksource Kconfig logic from
-> arch/arm/mach-imx/Kconfig to drivers/clocksource/Kconfig. It updates
-> the selection to include support for the 64-bit ARCH_S32 platform,
-> adding a "None" option to fallback to the standard ARM Architected Timer.
->
-> [ ... ]
->
-> > diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> > index d1a33a231a44c..d9c76dd443f8a 100644
-> > --- a/drivers/clocksource/Kconfig
-> > +++ b/drivers/clocksource/Kconfig
-> > @@ -793,4 +793,35 @@ config RTK_SYSTIMER
-> >         this option only when building for a Realtek platform or for co=
-mpilation
-> >         testing.
+> > @@ -252,8 +252,12 @@ static int enetc_pf_set_vf_mac(struct net_device
+> *ndev, int vf, u8 *mac)
+> >  		return -EADDRNOTAVAIL;
 > >
-> > +choice
-> > +     prompt "NXP clocksource for scheduler clock"
-> > +     depends on SOC_VF610 || ARCH_S32
-> > +     # Default to Global Timer for Vybrid (32-bit)
-> > +     default VF_USE_ARM_GLOBAL_TIMER if SOC_VF610
-> > +     # Default to None for S32 (64-bit)
-> > +     default VF_TIMER_NONE if ARCH_S32
+> >  	vf_state =3D &pf->vf_state[vf];
 > > +
-> > +     config VF_USE_ARM_GLOBAL_TIMER
-> > +             bool "Use NXP Vybrid Global Timer"
-> > +             depends on ARCH_MULTI_V7 && SOC_VF610
-> > +             select ARM_GLOBAL_TIMER
-> > +             select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
-> > +             help
-> > +               Use the NXP Vybrid Global Timer as clocksource.
-> > +
-> > +     config VF_USE_PIT_TIMER
-> > +             bool "Use NXP PIT timer"
-> > +             select NXP_PIT_TIMER
-> > +             help
-> > +               Use NXP Periodic Interrupt Timer (PIT) as clocksource.
->
-> Could this replace the native ARM Architected Timer with a slower 32-bit =
-MMIO
-> timer on S32 systems?
->
-> Since NXP_PIT_TIMER has no prompt of its own, an S32 user needing the PIT
-> timer for other valid purposes (like clock events) is forced to select
-> VF_USE_PIT_TIMER from this choice block.
->
-> If selected, the timer-nxp-pit.c driver unconditionally calls
-> sched_clock_register() during initialization. This automatically override=
-s the
-> existing scheduler clock if the new clock's rate is higher than or equal =
-to
-> the current one.
->
-> Because the PIT timer is typically driven by a high-speed system bus, its
-> frequency will likely exceed the ARM Architected Timer's standard 25-50 M=
-Hz
-> rate. Overriding the heavily optimized 64-bit system-register Architected
-> Timer with a 32-bit memory-mapped PIT timer introduces massive read laten=
-cy
-> for every sched_clock() call.
->
-> Would it be better to expose NXP_PIT_TIMER as a standalone option for S32=
-,
-> and modify the driver to avoid registering as sched_clock on ARM64
-> architectures?
->
+> > +	mutex_lock(&vf_state->lock);
+> >  	vf_state->flags |=3D ENETC_VF_FLAG_PF_SET_MAC;
+> >  	enetc_pf_set_primary_mac_addr(&priv->si->hw, vf + 1, mac);
+>=20
+> Is it safe to use __raw_writel and __raw_writew when programming the
+> hardware MAC address?
+>=20
+> Looking at enetc_pf_set_primary_mac_addr():
+>=20
+> static void enetc_pf_set_primary_mac_addr(struct enetc_hw *hw, int si,
+> 					  const u8 *addr)
+> {
+> 	u32 upper =3D get_unaligned_le32(addr);
+> 	u16 lower =3D get_unaligned_le16(addr + 4);
+>=20
+> 	__raw_writel(upper, hw->port + ENETC_PSIPMAR0(si));
+> 	__raw_writew(lower, hw->port + ENETC_PSIPMAR1(si)); }
+>=20
+> On big-endian architectures, these native writes lack byte-swapping, whic=
+h
+> might result in the hardware register receiving the MAC address bytes in
+> reverse order compared to little-endian systems. They also lack memory ba=
+rriers,
+> which could allow the CPU to reorder the writes.
 
-This is pre-existing driver behavior that applies equally on Vybrid
-today. The choice block defaults to VF_TIMER_NONE on S32, so the PIT
-is only selected if the user explicitly requests it. The choice prompt
-("NXP clocksource for scheduler clock") makes the intent clear.
+Both v1 and v4 are used in little-endian architectures, so there is no need=
+ to
+worry too much about this problem that does not exist in actual use.
 
-Decoupling NXP_PIT_TIMER from sched_clock registration on arm64 would
-be a worthwhile improvement to the driver itself, but I think that's a
-separate change from this Kconfig reorganization.
-
-Does it make sense?
-
-Cheers,
-  Enric
+[...]
 
 > > +
-> > +     config VF_TIMER_NONE
-> > +             bool "None (Use standard Arch Timer)"
-> > +             depends on ARCH_S32
-> > +             help
-> > +               Do not use any specific NXP timer driver. Use the stand=
-ard
-> > +               ARM Architected Timer instead.
-> > +
-> > +endchoice
-> > +
-> >  endmenu
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260514-fix-nxp-=
-timer-v3-1-a3e68fdb505e@redhat.com?part=3D1
+> > +		for (int i =3D 0; i < pf->total_vfs; i++)
+> > +			mutex_init(&pf->vf_state[i].lock);
+>=20
+> Is it necessary to call mutex_destroy() for these dynamically allocated m=
+utexes?
+>=20
+> If kfree(pf->vf_state) is called during the probe error path or during de=
+vice
+> removal, freeing the active mutex memory without destroying it first migh=
+t
+> cause lockdep to report use-after-free or list corruption warnings when
+> debugging options are enabled.
+
+In enetc_pf_probe(), SR-IOV is not enabled and pf->vf_state is freed after =
+the
+PF's network device is deregistered, so the mutex is not held when freeing
+pf->vf_state.
+
+In enetc_pf_remove(), pf->vf_state is only freed after SR-IOV is disabled a=
+nd
+the PF's network device is deregistered. So the mutex is not held when free=
+ing
+pf->vf_state.
+
+Therefore, the problem mentioned above does not exist.
+
