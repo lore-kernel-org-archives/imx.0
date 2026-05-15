@@ -1,63 +1,66 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010004.outbound.protection.outlook.com [52.101.84.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6173B5850;
-	Fri, 15 May 2026 14:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFEE36C5B3
+	for <imx@lists.linux.dev>; Fri, 15 May 2026 14:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778855731; cv=fail; b=OSrl79Jnj8p8L4abZgCVWpHhNO6/K23J22ji7/aRS9ZaC16bYsxhDtOHuso9k8Zay8+VWceal0RvwyjZdRaDqwgrFzJDZo9g72bniQ1sa+Mr10lszxeHNhsKjRrNa4w9hYkVvSzB7KbYmGiv4dI4U4pklxWSkNcraXK/VGq57X8=
+	t=1778856749; cv=fail; b=OXCzibB/snnJRfOL9jskyp0HbkaZCiZbvuBaOjkbkoeETHoYeuZWNSM8tcDVUT2r6FhLBat8CU58oaqEkiEIq17pcVBzlklfHCUO2876k2o7mCnRtTlno4LJIuuKYoFx0/XRL9TW3cfPEup+e83a0EmjdgdYt5ZvydF4DTjR2a4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778855731; c=relaxed/simple;
-	bh=HjvX65GSer+BBC/6rubPEVfspecCj3oFj7UIT28rA6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nyqO19rjCozqBedswtXoV7N8UOvg/IPFXYqikOu62hDLUdANY3H7qID/O9tYyqNug0h5UDQa/niej+ZQO/SXgB2fucri9C7+rfRzHEjZCF0ulJY+b0ubVOarCyDoY13yIPCWJibHhenLMcIRMIscPenvP5XLtdhmjrT+dgGnN7A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WVmokrcb reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1778856749; c=relaxed/simple;
+	bh=OY7wuodj85PDNZox5JfCfuleGN3jyhtKd3kZCwhyp2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pCUM/MTVyxD9fNfKc7Pu/xktLWnYpRn+DiZHSgab7NWgIVqQwsbaxH/XMXlXdG8XbhuNMOMm2Sb1FlODLyLBAL2oOnCDWURn3W75WdAB8t8Sstr2ssUXcOKLxYvq1lwzFk6nVP5zW+qWjsyWBbBattvioy+tnSMrAzbtItZowS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EAWYO+cn; arc=fail smtp.client-ip=52.101.84.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WVmokrcb"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EAWYO+cn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+VOoqK7tvBCnFL4mW9n/vNmJj1+UY0XmDmUtMT8ovuaXviBvi6t9j+QrXIQEz3p8FNLxyrQgsLn6t5tBxHK9TBheyqV+z0eVIqak8wFwuNZZi+1JNzwZgpg05ZtAOGHc9wdpjdU3B4a+xhS0NCc0sH+1++7bdVXk8IJXI0Gjtvd6OAf5nbUpIGBtpo0Wj3nvm+YUy0TXira/p00nE1LM2pkG0egSjP7dhWaFauI4M9/MLgUePZUps0T3OkQOQ6s+9n0QN+uNihJV0q93AuNuE8gxPizWBlAxaNBsBoroNJmaqq/SxlLVvd8AiiQ+nqi1jQxFUKiw9CfilOu/cFYSw==
+ b=OPXLemDYDJA9/LsRVnxf6kPFs26+5XMLLIX/jxB1Y6yHqYXE7iyZNzWBY4MLA328oyxj33R9/Ra/4FFHOQdnI88fQsSFM+T3ZeOk71X+vwzTZ28cfwHTJIsXE1eux1dtB7U/eBHXx8ahG8tklpDk6b5S0b6xmbAbHFuxuLAMyEV4IlC22usGxbLIod/b5+xEkBCRcCzNv8Yd2dsSntMQi3M8fHNHXtHWvPAetpiONEE9hvsKcajL8FV9b7EM/NskwXHwbrtrZ5G/csUsiEVrj8bs2GXg4c5E8nkI1ruNrCsM6l/OdZSrwxRD72gkA2ELTL7Zu7AWevouuUkDSyCYdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HeAINXacJh37H+mSyVBCY8ws9epvKTUxUWweUqJXiAw=;
- b=N4WHwrZx/Vr68RpSWapjolpbMJLz+YN/BHTD+/s+bO2LS8pAN7Hf0b0QGUqCz586DmG1VrDyGrdoPl5GYGHv8DnDllxfJSj8KfOajCJgfFEjoV3nj7PncNmqIOVqi4J7eTSCakn+dCNEo7wH1NWMGsUAA4X0r94ciSG2E7SsOWhpjwU3c7Fe4glC3f395PwXwGjPxPb9AdIDR4rvsuYeVM1aA2zGtQ/a2r/bPEfqqWl2d7Z64S9OjefL0ADOogUd2PBUwePpc8Atyssu9TMuN17za9Xe31pgNaQ2Uj4PP62oIIqaqNLTqU9fbGjpQgixpq+azMXji8hVVQCEIW0JAw==
+ bh=oeki5v86GUXOt1phRY5JmI6qGi9qy5KEusHP+V/RARI=;
+ b=I25kgxTpT1fqgbh4X+NjRqYhmLoJJPrdJLkhzufuNF8TwhDHAv/wIUCrQQ4qULvbvpcH8rIH+tu1llIlZxqnxDRHCgdnwsKZe3xH4r4FbYrdABUnQFz06OMdaDGQXo78cC/hcwiE56IbZnQwZCxYW4EeAiQPidtj1sA7t3ol3sPtf3r7mOnDGTuFJCVKx5sGQpBU5uuL39/+LRnajWB7VfBd7EIG/9rpo2wR0hfaWG+LI4ZD6My5hFWk0ep1Y2nuUILVP7u1j3MscB6ZOZS83BZPvvuWbZhLD8S+SXECEN0RRKE2rN+8nblx5NejrQiIgkf1UCjOa2HC2Bjp4nQvsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HeAINXacJh37H+mSyVBCY8ws9epvKTUxUWweUqJXiAw=;
- b=WVmokrcb02CP8HzMCZ7K5Oh6m7VIPEwnexzOw53yjojO4AKheEPbJ983hFONa9eAR1VJoeMU0XxoqIBOjfWKMtJoY5Ey43rUcRklGOms8CpTFIRaA2mbu/JgCZhRMkrkOlomFH06PSyKRwvnJQLCS/NHLYavbd2yRVGegXJsw+8CVDVGIRIDx5AULLeYsxY5OZPbiozcuQAXU3D1iLYQVima/z3+pgPYzS2qJk+W7vY2+nzjQXA9rnhE3Tw4xYcTiXrtZaB+inBBYoC5OPKudOm02OmRN66jEsrKXsC9aDHg93Fe8/InOSF4lWwvItgKlFX/KxHM7K4TXW3M1eo6vQ==
+ bh=oeki5v86GUXOt1phRY5JmI6qGi9qy5KEusHP+V/RARI=;
+ b=EAWYO+cnS95XHWc3MHQoCrrKPitqMIJSPgajiI2qsGWZr/NDnAdBBPTcJKlFWoVH+uiGEusoSTTD810BBXBuxc7w0+MglCJt7QN8hdxL+u+ZghBp5hW/jnNFbXH7de+jIAJiWMAHEBahziEqqOPfnFEvJzcGEI3RVKP04+9Lav6zepxBA8BfkDkQ2/1bOs3XStv0EMBBlTseJzPR920vqVYA2M4BZBZMmFHqOdLCkV/3otmvQz7eQGLxUp7aT4YdNiwoo9MViHZuE6V3MU/q19GYQOlN8zoga0D8FoU2/qf7g/RFpWJsEfGktQy/hE4vL4XN2LQWyWEn/H210xUsfQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by GV2PR04MB11959.eurprd04.prod.outlook.com (2603:10a6:150:2f1::20) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by GV1PR04MB11016.eurprd04.prod.outlook.com (2603:10a6:150:206::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
- 2026 14:35:20 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 14:35:20 +0000
-Date: Fri, 15 May 2026 10:35:13 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Pankaj Gupta <pankaj.gupta@nxp.com>, imx@lists.linux.dev,
-	Frank.Li@kernel.org
-Subject: Re: [PATCH -next] firmware: imx: se_ctrl: fix init_device_context()
- error path
-Message-ID: <agcvIVe0y_B4tOlu@lizhi-Precision-Tower-5810>
-References: <20260514090457.2186933-1-pankaj.gupta@nxp.com>
- <20260514175132.EEF00C2BCB3@smtp.kernel.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ 2026 14:52:11 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.20.9913.009; Fri, 15 May 2026
+ 14:52:11 +0000
+From: Frank.Li@oss.nxp.com
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v4 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
+Date: Fri, 15 May 2026 10:52:03 -0400
+Message-ID: <20260515145205.1696584-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260514175132.EEF00C2BCB3@smtp.kernel.org>
-X-ClientProxiedBy: SJ0PR13CA0216.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::11) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+Content-Type: text/plain
+X-ClientProxiedBy: SA1PR05CA0016.namprd05.prod.outlook.com
+ (2603:10b6:806:2d2::25) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,205 +68,179 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB11959:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3eeb1da3-3b48-4649-fb99-08deb28f3097
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB11016:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12391271-d2d1-47f6-1006-08deb2918b3e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|52116014|376014|1800799024|38350700014|4143699003|22082099003|18002099003|56012099003|11063799003;
+	BCL:0;ARA:13230040|376014|1800799024|366016|19092799006|11063799003|56012099003|18002099003|4133799003|3023799003;
 X-Microsoft-Antispam-Message-Info:
-	XplKbaIf3R9pXYwKrhTJ5uinjiPEE+ma6oKPwy6LDdfOpQqSU437GlUJBU0SzQX3pLZvYnFF+i8vWyWeOia1AIaDQIZZ38YXfgl6yM+mS8tJps5gKxxVzDR+URbvXgOTbk/HV3YWxXV3B9o0Nr37HAC8ZysW5fP5AEuxaL18AQlaqCUSonG4sP6wDg6BujXzs8BcfIkxEQsiYKKJda6avxxfnpawZAhkXjat78FY3hl29w8GfK0AfHOPDxMAggnFrWCm/62sAGpIOoA3CGLjbnd0f3DoLnYqHl0LlCjhTIQppCPvlda1cbdwOgltgp3jBCFYmru1+Za1KfwnYCPq78X/UgvJ9SitKv+OtjaC0bCAAIUJYwakye/5hfW8cgIzk+AMp3pCajl+Q6DxkbkAz7kzUazHdpqkIO4kp8dEpuvF2jrwsQ7bO59GIEST5js5R5knJXhEMFQM/h/G4BEzBapa3PnnzVwlrBxvJRmn9E6Rzr1yZ7dHFpaZ0CHK1E8kZ4B4/dl6Fv5I+TLVhHHBlDXr3arzKE9O2yPqsR8fd4ebZtWWqMQjstGlYC8m+hSzX3BMXuSXHZGNfnUz/KyJN/DxiVpk282xqXztym6RJyCmWKc/6CJli5ickF799W0kMQkP0LOXXMYtmWmr5xT/QGUnpuHyAkXA+OATknc/AC2QoTK2ZVjnNiyb94bSSXtj
+	YRmFmXwWVUpnMOjvYqjChs8u4OPg3zdgFREmlevFqdmPtAUxD3Z6lB7k/XTo3Dxx9vlUjwkFYli/Xr7F2JWVUAsjswft161SGe2F9lzv+tHFQlLwVjyDJcLT3HL8Z9nMbEDItTF8tjN40m2M+DvKOqtioe/ODrsIbcbUxdVq5moeUrpOK8fFe6TUgJp9nL9URihyPBdXKiq5qvnmQAwk94hzE1JI9cNnnyglbhyUEXHgKnPtZdvuA1QYeeR6xLS+rI55VL+0vTIvIfHVodq9aWXz+BCzuvXkVzWsLaVV18EEFGgwGErdM6ZRew28ecoNPujdlR+6GjCA8gexYN6Pp5DJgs7xh/IBvrSk1yemu1g+wbn3Tik87S0vdNhKjt1sIDDgNFnfr+E5wXOLMD3Z9mZhVmhx4wSopB0nMEopF9sLJUNweMOCRjNKRPiA1xlLUHvXQgF6cy9+RozNHBcFHmLIB6xD/TbGZOdvUYUHsslXme9iEsbshFjoBnyzaKABer1nq/PPpTKWHvMt/56ERKwKRaLa22N9hA3uz4iwUtWq6OwZVuWLNsEtyZgDGx1s2so0wLZK4q28opnNjZDv/+FCBDr250UdbwHyQgueetyfrTqjMLY8rfy6oHkwi5mq+Ah/rUY8+vsXzhCZHRDzkw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(376014)(1800799024)(38350700014)(4143699003)(22082099003)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(19092799006)(11063799003)(56012099003)(18002099003)(4133799003)(3023799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?zML2JtFHeYsdfuFYVngetLYwoiBxFF+/ZyZfoOok7r5bAswcvMNELSNItm?=
- =?iso-8859-1?Q?TrjYPeKIdBp/xsSfx2xCg9FQsvIacQlntB+Hl8Fv+OJZ0O3zpspcuSSY/O?=
- =?iso-8859-1?Q?XENNHZGEXdgq5I0La9NqfmGcrGW8PJBrkUQMedM0SEyRO7I6KeqLVVWLYL?=
- =?iso-8859-1?Q?L6Znc4fv8eVAe0WuhHErtR2a9eNRJu4lFhUrdkX4+uJGZhPmDOYNJ6kNHz?=
- =?iso-8859-1?Q?bGjGkw3e+nBLSEfOo6GIoFTGwhNv4eBC8476iN3TYtnuvNX3gfhZxyGgkq?=
- =?iso-8859-1?Q?LmryucvHSVJHwZOttdrAx5HXgXabk1tgpIl7GMvTLbQSVA1hKapZS0ObpJ?=
- =?iso-8859-1?Q?fiSm4Kiu9CZl+Pyq34z3JRbiA1NeB26PKFnWlVbR/Vjk8W4AbZnZZVc49E?=
- =?iso-8859-1?Q?cDxAcfdqdrGheoH7ovj2BDromb9Q4Ic/UN38smPNHStbcrHIq7SkcNxiIc?=
- =?iso-8859-1?Q?kr9XdjVke+xkh3P5jzbr2E7Q6B9lKEmBqT9KBfXDGh5xQm09EarEiJQYwO?=
- =?iso-8859-1?Q?6SeVUnrDv2joQxy6KM0F9WnHhetcecb/Eura6wFrYl+CUJ2HOjQRa7J6Xe?=
- =?iso-8859-1?Q?IWZYrrySmoiaVq5gD9V0YHXorvuBDKWA/KKUmbHssvnQmlFk8fEfcxmqVa?=
- =?iso-8859-1?Q?16DnTmbipKmuLwFdTXQGvic2q/pwhtB/f31tRqfOUzzxfgjQezku+R14NN?=
- =?iso-8859-1?Q?XJ/Kc7T+AGunXeC7/7r+WVv93Eq4YKizliOKRbDVqiSduS92q94W4klZmU?=
- =?iso-8859-1?Q?KSFKm/0kOPRnzC/gumdxEAn93+41I+u9KvfUXsy2KYwvKuhhWFE+Jw3ZEr?=
- =?iso-8859-1?Q?fO3OwCd5V7bOXb7QeLyiZX4auwDt+18dlQoSjpGQ5IVP5qxJo59uE8beCK?=
- =?iso-8859-1?Q?B260c7/i/KAdWzabv4oVY4QPd0bloKs3di2iKUkKEmKs7bsKFyzYZ4VUC1?=
- =?iso-8859-1?Q?2e/bkWtryDabvEQ9Cutohg4s11P0N3Y5BWQJwSN7mSlff/I0T9FwKHQVJ+?=
- =?iso-8859-1?Q?yxOOsw5pR/Gjz0F+1uL24WsRbCqlEuQBUIrLU3J9Pn3VjMNlfHKxR3Trwf?=
- =?iso-8859-1?Q?kpLGHmOy5bO9YB2PCiWcl3QTr8Ar/WFcm/9L1egAeW9EN1UGVPKuqw97qI?=
- =?iso-8859-1?Q?OXNy686a/EjKKC4WniPkr4xZb3NX372mSYC7sqLgjLgMBo46DkTG703tv0?=
- =?iso-8859-1?Q?blIYWYfqKe6D2JDRuIqUyJ/HrbncWU2J7WW95BjDmR+SjBktjFBD/zamkA?=
- =?iso-8859-1?Q?n4oToRfh2pFe2xo4Gut6LlQxPCEhyyKeVj92PvXNWpOygq0WaojD0KFsBj?=
- =?iso-8859-1?Q?kaoxIcg8+4Xn9Kze/Cwm7OAf5k+pXFjPxbFtTDkyitXGxe1MttFE1xJyuH?=
- =?iso-8859-1?Q?YGYe9ss7GQdOr0T5nIkef3ADcd2h7Dqr07xASumNEn0Rs874FGWHm47ukw?=
- =?iso-8859-1?Q?ttyEYg/eUPtA029kK49QnqgMZmXpbGhcmROFUTkhfMPwXPh5eAuV+KZV2t?=
- =?iso-8859-1?Q?BtC9aD/lzGUBehvCozQl4ldBasqHSwg7nDyErl5MEan04iIJvihmRO4AQF?=
- =?iso-8859-1?Q?SrLHPAnqyh2PJrtihKKRp7j7zmUSMba9ChDiG+ehW3A1uzb8LMDdWnn3yG?=
- =?iso-8859-1?Q?nbPCV5uKa13l2lnjUHvcmkYaSTmvYRiQIHCXVlJ47nZJ8KCuTNaasV2GqB?=
- =?iso-8859-1?Q?+mKq2NfQhjAsmOOxAUnweBR+Bu8Dm3YVbcRh5xHS3VGgbSzuPgblUo5ndw?=
- =?iso-8859-1?Q?eanhUUxZN7KC6wJdOTwaP+xQ63n/odojVcDa253vLrZDgM?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3eeb1da3-3b48-4649-fb99-08deb28f3097
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+	=?us-ascii?Q?czDnQOmqA9GQi7fJobLAOLwimq23d8ssgFb7Gx9ZZTuRKPUz0IE4LhD94ZNg?=
+ =?us-ascii?Q?vSqziJyRHxfwU/N4y/e9qi430yDeX6va8QcjfogB90ZMPEOcOjdwx+/fwujH?=
+ =?us-ascii?Q?WBsIQF41NSfg4fXv7j27IUvWvAOSVs4z5/vzxyHgZtuEfUBaarluLZXCurVX?=
+ =?us-ascii?Q?MnNsI8ks05hdJWupdPl022HLsf1/N3JLT/qRTKmOEr73K/hEMfN1VcnNFv7E?=
+ =?us-ascii?Q?bMK+TyRpTM6QjlXzsCkY1U70mHcK4Ub+7A2f3oqQXfzE99qISqtn9ifJnvor?=
+ =?us-ascii?Q?hRPMXoCdl8VaWFyD97cGcTmPtqrTynqk+DfyYVUUOuf+c/X/oXGeXAMszCHr?=
+ =?us-ascii?Q?WfuzpxJmCif42nFGVnGoSPshInUitJ1aULTNNWIU0PvrRRSAB3fy/pa24tBQ?=
+ =?us-ascii?Q?k2o02x6k86maD5ILServ0WoDnJcA9puim1lmi+jFgggNJ3h2vn3YS/35tT/Q?=
+ =?us-ascii?Q?X6ikaIxU1YWc6Stq1IMLTmMNo2rvASvSJwCCKopm0ZTEvRPvYHmCr/UbnzLZ?=
+ =?us-ascii?Q?Qk6LgJNOo1P5nVqQy/e778zffR0tGLn6tpXTFbqahNvZRiTZeffFSt21Fkxw?=
+ =?us-ascii?Q?o/7YJS9LVreemP/BMdmmBh9s4mpbF4PXviszmjcZAyUqc0grxV2ZnuGZFyem?=
+ =?us-ascii?Q?4r84wjOvJ85i40XPRiTjIuxfrIDC+fCDaCUv329PCJ0DbBCldWTA8+bXzRSl?=
+ =?us-ascii?Q?8W+cpY46BSxkiLWj4llNrECcUCIX/IeG+MulL4P4MjlUGCiXXNrmI1l1mgt9?=
+ =?us-ascii?Q?nijP9c83FyEjFJcvClJNFlV/3YmlHipDlHY4Qnj2Wc+eHA/HQGoATsI+fv9b?=
+ =?us-ascii?Q?8oY1UHyDZmfW3WGgFN7Hl5+lcmlv/jaKZRchP5kNxHP///8nIOhNBW8QWGB1?=
+ =?us-ascii?Q?0gOJDnbDkqyzfn5H3hkk1k4Fv2/+uGonxKJlSHwK4kBk3RlyYELEfIqxBW+v?=
+ =?us-ascii?Q?MNoVBIKdjhMxr7buGSSRwDuZ8ZN6+Tknctuacj7E8YS6WW/5WA+hVsy2mQWx?=
+ =?us-ascii?Q?1G9YmOcFZLBj9gF7Zd2M74wtyD9Xf7e6dr8H+pqbp3Cq5Rc6uxAyocBsp4wK?=
+ =?us-ascii?Q?UDjjmbBVtyq+pZ/bWEjWZGZaT8/bYDF+VG3gqpnURsUPJcsAN02QQi5AbP9S?=
+ =?us-ascii?Q?hQ2eo8ra8HdLP6bTFA9XfJJuv/R2W/pdVx1tPjftXWALBoNhVh3GEJysgkZU?=
+ =?us-ascii?Q?gavZSFPu1DTRwA3bFXy9QXBmtKh/J37e9ziuQQWvfQ4gSrkni73hBc/TUMIc?=
+ =?us-ascii?Q?XEkjeEMPrsk7aFpNuJCOC61kvG0B8FwXhUZyXa0PcmbywwxReo/c/VCnLLqD?=
+ =?us-ascii?Q?Ywj4HAXsE8cTG9Q+zhEj9RUBZyIiB4ceSLMPspmD++0/lsHo+bdzNB0cQacE?=
+ =?us-ascii?Q?ocVoxZPWvaUEEyYxj6xevAmfxoH+RIF0A1+NV1tCJ938DjK20aewLeW0gy/v?=
+ =?us-ascii?Q?Nlw5lrkZYQ+j64ALTMGAviWWypdL+4EL80Ba3gWL9Kx4PFYy4dBr/QvWNntR?=
+ =?us-ascii?Q?j+qES3AYcWi9lltucIc/a0f/il7mpdDu3V1wR5tW1lFn//IfKd/0BKxkuTAk?=
+ =?us-ascii?Q?wuKZw5/WUGuwqZPgSCRhMBGytPmunnEe3FfipTLo45foYTjGCZl+VbDCoN+8?=
+ =?us-ascii?Q?LLF+gFRbulBxjpy05xsFnB+yaVnUSpSCu76ppbtvcjhG1i0LXFN8Ru41ZWYO?=
+ =?us-ascii?Q?IT+YkQj8avH/H4sP5fZz8OJTMhU/nfnnqKUG32I+W9eTsmgxVM0GdkE8f25A?=
+ =?us-ascii?Q?C73H24Wh8y/9hwylcqwfQ6xVcZ29/rI=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12391271-d2d1-47f6-1006-08deb2918b3e
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 14:35:20.0261
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 14:52:11.2813
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o0Bvz0KZJNqoYraO3ko/jY0v8+PMXBB56uMJlW9jna/SWVvvOFbivW9qKY5D/d3F8iY3DNACL8NrH6BDVnzvZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11959
+X-MS-Exchange-CrossTenant-UserPrincipalName: UO700xdtSPQRD7D3O+FhOtfb9HsIJGfmaFX844xh8ck01DgMYV0luN7l6/u55SjBHjawFeI1aSzqZpqWkLAWGWbtafTbzWGTtrRJKISiWtYjwT0nczk2bvwx/oxbaPCr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB11016
 
-On Thu, May 14, 2026 at 05:51:32PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
-> - [High] Use-After-Free of `dev_ctx` during implicit `mutex_unlock` in `se_if_fops_close()`.
-> - [High] Data race and list corruption on `priv->dev_ctx_list` due to mismatched locks.
-> - [High] Permanent resource leak and Denial of Service (DoS) in `.release` handler due to interruptible locking.
-> - [High] Double free, list poisoning, and Use-After-Free vulnerabilities during driver unbind.
-> - [High] Use-After-Free of asynchronous mailbox messages in `se_if_fops_write()`.
-> - [High] Data race and memory leak in `se_ioctl()` `SE_IOCTL_ENABLE_CMD_RCV` command.
-> --
->
-...
->
-> drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
->     ...
-> 	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
->         ...
-> 		list_del(&dev_ctx->link);
->         ...
-> }
->
-> If multiple files are closed concurrently, or an open and close happen at the
-> same time, couldn't this corrupt the doubly linked list?
->
-> > +	priv->active_devctx_count++;
-> > +
-> >  	return ret;
-> >  }
->
-> This isn't a bug in the diff, but is there a use-after-free in
-> se_if_fops_close()?
->
-> drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
->     ...
-> 	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
->         ...
-> 		kfree(dev_ctx->devname);
-> 		kfree(dev_ctx);
-> 	}
->     ...
-> }
->
-> Because scoped_cond_guard automatically calls mutex_unlock(&dev_ctx->fops_lock)
-> when the scope block terminates, won't it unlock the mutex after
-> kfree(dev_ctx) has already freed the memory containing the lock?
+From: Frank Li <Frank.Li@nxp.com>
 
-Looks like it makes sense. you can't free dev_ctx in this guard. Please
-double check other AI review result.
+Convert eukrea-tlv320.txt to yaml format.
 
-Frank
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v4
+- add minimum and maximum for fsl,mux-int-port and fsl,mux-out-port.
+change in v3
+- add fsl,mux-int-port and fsl,mux-out-port to required
+change in v2
+- Add comments about "The AUDMUX port numbering should start at 1"
+  v1: https://lore.kernel.org/linux-devicetree/CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com/
+---
+ .../bindings/sound/eukrea,asoc-tlv320.yaml    | 61 +++++++++++++++++++
+ .../bindings/sound/eukrea-tlv320.txt          | 26 --------
+ 2 files changed, 61 insertions(+), 26 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
 
->
->
-> This isn't a bug in the diff, but does the interruptible lock cause a
-> permanent memory leak and potential denial of service when closing the file?
->
-> drivers/firmware/imx/se_ctrl.c:se_if_fops_close() {
->     ...
-> 	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
->         ...
-> 		kfree(dev_ctx);
-> 	}
->
-> 	return 0;
-> }
->
-> If the calling process has a pending signal, the lock acquisition fails and
-> returns -EBUSY, skipping the kfree and DMA cleanup. Since the VFS ignores
-> the return value of the release handler and destroys the file unconditionally,
-> does this permanently leak dev_ctx and its DMA memory, allowing an attacker
-> to exhaust system memory by repeatedly opening and forcefully closing the
-> device?
->
->
-> This isn't a bug in the diff, but could driver unbind cause a double free
-> or list poisoning?
->
-> During driver unbind, devres automatically frees the priv structure.
-> Then se_if_probe_cleanup() iterates over the list:
->
-> drivers/firmware/imx/se_ctrl.c:se_if_probe_cleanup() {
->     ...
-> 	if (priv->dev_ctx_mono_count) {
-> 		list_for_each_entry_safe(dev_ctx, t_dev_ctx, &priv->dev_ctx_list, link) {
-> 			list_del(&dev_ctx->link);
-> 			priv->active_devctx_count--;
-> 		}
-> 	}
->     ...
-> }
->
-> Since it removes the links but doesn't free dev_ctx or revoke open file
-> descriptors, if a userspace process later closes a surviving file descriptor,
-> won't se_if_fops_close() call list_del(&dev_ctx->link) again on the removed
-> node, and also dereference the already-freed dev_ctx->priv structure?
->
->
-> This isn't a bug in the diff, but is there a use-after-free for asynchronous
-> mailbox messages?
->
-> In se_if_fops_write(), tx_msg is allocated and queued:
->
-> drivers/firmware/imx/se_ctrl.c:se_if_fops_write() {
->     ...
-> 		struct se_api_msg *tx_msg __free(kfree) = memdup_user(buf, size);
-> 		if (IS_ERR(tx_msg))
-> 			return PTR_ERR(tx_msg);
->         ...
-> 		err = ele_msg_send(dev_ctx, tx_msg, size);
->
-> 		return err;
-> 	}
-> }
->
-> The mailbox channel is non-blocking (priv->se_mb_cl.tx_block = false), so
-> the framework can queue the message pointer asynchronously. Because tx_msg
-> uses the __free(kfree) attribute, it is immediately freed upon returning.
-> When the mailbox controller processes the queue later, won't it read from
-> the freed memory?
->
->
-> This isn't a bug in the diff, but does SE_IOCTL_ENABLE_CMD_RCV have a data
-> race?
->
-> The command modifies the global driver state:
->
-> drivers/firmware/imx/se_ctrl.c:se_ioctl() {
->     ...
-> 	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
-> 		switch (cmd) {
-> 		case SE_IOCTL_ENABLE_CMD_RCV:
-> 			if (!priv->cmd_receiver_clbk_hdl.dev_ctx) {
-> 				if (!priv->cmd_receiver_clbk_hdl.rx_msg) {
-> 					priv->cmd_receiver_clbk_hdl.rx_msg =
-> 						kzalloc(MAX_NVM_MSG_LEN,
-> 							GFP_KERNEL);
->         ...
-> 				priv->cmd_receiver_clbk_hdl.dev_ctx = dev_ctx;
->     ...
-> }
->
-> Since this section is only protected by the per-file lock dev_ctx->fops_lock,
-> if two processes invoke this ioctl concurrently, they hold different locks.
-> Can they both bypass the !priv->cmd_receiver_clbk_hdl.dev_ctx check, leading
-> to concurrent kzalloc allocations that overwrite the shared pointer and leak
-> memory?
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260514090457.2186933-1-pankaj.gupta@nxp.com?part=1
+diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+new file mode 100644
+index 0000000000000..24b793feb02df
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Audio complex for Eukrea boards with tlv320aic23 codec.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: eukrea,asoc-tlv320
++
++  eukrea,model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description:
++      The user-visible name of this sound complex.
++
++  ssi-controller:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      The phandle of the SSI controller.
++
++  fsl,mux-int-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      The internal port of the i.MX audio muxer (AUDMUX).
++      Note: The AUDMUX port numbering should start at 1, which is consistent with
++      hardware manual.
++    minimum: 1
++    maximum: 8
++
++  fsl,mux-ext-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      The external port of the i.MX audio muxer.
++      Note: The AUDMUX port numbering should start at 1, which is consistent with
++      hardware manual.
++    minimum: 1
++    maximum: 8
++
++required:
++  - compatible
++  - eukrea,model
++  - ssi-controller
++  - fsl,mux-int-port
++  - fsl,mux-ext-port
++
++additionalProperties: false
++
++examples:
++  - |
++    sound {
++        compatible = "eukrea,asoc-tlv320";
++        eukrea,model = "imx51-eukrea-tlv320aic23";
++        ssi-controller = <&ssi2>;
++        fsl,mux-int-port = <2>;
++        fsl,mux-ext-port = <3>;
++    };
+diff --git a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt b/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
+deleted file mode 100644
+index 6dfa88c4dc1e8..0000000000000
+--- a/Documentation/devicetree/bindings/sound/eukrea-tlv320.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-Audio complex for Eukrea boards with tlv320aic23 codec.
+-
+-Required properties:
+-
+-  - compatible		: "eukrea,asoc-tlv320"
+-
+-  - eukrea,model	: The user-visible name of this sound complex.
+-
+-  - ssi-controller	: The phandle of the SSI controller.
+-
+-  - fsl,mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX).
+-
+-  - fsl,mux-ext-port	: The external port of the i.MX audio muxer.
+-
+-Note: The AUDMUX port numbering should start at 1, which is consistent with
+-hardware manual.
+-
+-Example:
+-
+-	sound {
+-		compatible = "eukrea,asoc-tlv320";
+-		eukrea,model = "imx51-eukrea-tlv320aic23";
+-		ssi-controller = <&ssi2>;
+-		fsl,mux-int-port = <2>;
+-		fsl,mux-ext-port = <3>;
+-	};
+-- 
+2.43.0
+
