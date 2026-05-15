@@ -1,107 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0783EF64D;
-	Fri, 15 May 2026 21:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8F2010EE;
+	Fri, 15 May 2026 21:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778881236; cv=none; b=Ywks+OHoBC5B4rfK+T0LKzGtUIQR4OLgEuW8dE32P/JAOUOQdhX0xxnbKW6x693aSykv+p+F3KoFdTQPjP0RV5uzoeAxvhaTqkSj7i/mrahlAmTBg7cwGLNDkwwfvWGVhvnpr2o+Y/f4Ke26bK243DKYG6kf2mePGfL/wv2kXZw=
+	t=1778881961; cv=none; b=Xa8Qd5TtSetfet5MiLmY/TKEMmHLH6NV/vz7EFMZkJ3KDZK+ohPHr21Gr49iRjwOltdtxXyAHF0Bw/ImwyaBeby58pvq6s6NTvB79ksYW2KE2q3p0cVDYSabczY0cDw5ns7MwFcYDGGWE1yIvQZth9JnJcctNoAWe12gvHx105g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778881236; c=relaxed/simple;
-	bh=rX6r/+0B06uXvQR5Rend/nvCLxZh6GVTshJGCcYbsLM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aFOG/2GQ6EbSl6ahX6jiD/q2SeKTnzl3QMjPhlRUoTRaPGoLBzS5ihLw3e/WOack8ukLoTuAlBBPPmbJibygIhwvxHkeVhrzQk7q68lgYRbW943IiQsiM7GgYVWJe6IQREzY5RyBpi08PpyMeXUtFl06Yc8tUN7Ilm/QVCFSRnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VccQFmxy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778881961; c=relaxed/simple;
+	bh=io1mo3XLPCwCYCHxlFo+KOBQf0uvj9xY+ciVNMK0NxI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=iUNAYzW/ogijb/axyvSXZoqKymt0QLNXM7eP/VsZeX5zrAuZU/g9zYefu0yHMhGNHnlAi9RZCVWMglnos8fV4ajypflRP0JGqq7LvKlUj7XCglmZCgy4kzlV5ZYqib7lLYI0BEIqu6Xs6xI1UyfT04Z7S8OGMsxqTcTH0kScOHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P213e4aX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VccQFmxy"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 75D2BC2BCB0;
-	Fri, 15 May 2026 21:40:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P213e4aX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A644C2BCB0;
+	Fri, 15 May 2026 21:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778881236;
-	bh=rX6r/+0B06uXvQR5Rend/nvCLxZh6GVTshJGCcYbsLM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VccQFmxyQ0Y7N4jXYWXR9uq3K3pLblpJQiNEWWRyzI0cuiAZopwzXsmnd7h/Lp6yj
-	 wGYZu+y2C0I+lGDmqhGRx2IXSBVCb1JAWYNIvFhjRHNK/LBeR2KIw9+mBekA7VOXK2
-	 y5MRXW9MFwDWGaHDwIOj/xXwABpQCWBwwmSEiuazyhHpECDuj33tEE0msku6rbFxjP
-	 42gAUPeiN/Wmut6G7xNpq//oT8UVICUPosCwrLQbMdyLLLZby/0fLiQpgNfhAGk6Z8
-	 PNm3ZcsYQGNcZBbtXq6xn27ejrjmkLJjlMNyAkSgaWf76VoNC1ZmhmWzdAnsUYWjUb
-	 6EUoJAesXX6xA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FE27CD4F46;
-	Fri, 15 May 2026 21:40:36 +0000 (UTC)
-From: Frank Li via B4 Relay <devnull+Frank.Li.nxp.com@kernel.org>
-Date: Fri, 15 May 2026 17:40:37 -0400
-Subject: [PATCH 6/6] ARM: dts: imx6-display5: replace marvell,88E1510 with
- ethernet-phy-ieee802.3-c22
+	s=k20201202; t=1778881961;
+	bh=io1mo3XLPCwCYCHxlFo+KOBQf0uvj9xY+ciVNMK0NxI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=P213e4aXb9HJvDg8/dZMthaVg/w35t010uFFR4cIyU0eH1vo6+UizfHD2h6SeEiM/
+	 XPwvUjjcoksDiLrokomu7n/grMB1lDV8wSTywzV+vB0t+YLSczx/4Srs5R3/NpB71R
+	 zP6d6rZ5h7wH9y7WqobfGP44YA+4I9e0yx8PQ0dIxT8t8lMDi6pDnGaoNDMA98E3aD
+	 xvYPvrmBCrBOAJN2P1fdFcxn+ADUY5vLxeHXeKJbJFGZhN4cSzl7Oqd2shDHBF3uCp
+	 cQb+LsMEI1hstJ6m5SrwnbzrpSuO1SyIOr1bGpvkCe+MOlsAki5CnH7z1iYWdcc/JU
+	 zMKHYnHL0d0DQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/6] ARM: dts: imx: add (power|vdd)-supply for related
+ node
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Frank Li via B4 Relay" <devnull+Frank.Li.nxp.com@kernel.org>
+Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
+In-Reply-To: <20260515-imx25_dts_simple_warning_2-v1-1-b06bff192a05@nxp.com>
+References: <20260515-imx25_dts_simple_warning_2-v1-1-b06bff192a05@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 15 May 2026 21:52:39 +0000
+Message-Id: <20260515215240.7A644C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-imx25_dts_simple_warning_2-v1-6-b06bff192a05@nxp.com>
-References: <20260515-imx25_dts_simple_warning_2-v1-0-b06bff192a05@nxp.com>
-In-Reply-To: <20260515-imx25_dts_simple_warning_2-v1-0-b06bff192a05@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778881235; l=1530;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=pOOTdBIy4O5VkcyQTkfiAAoOW2MNieyUh8U6TN+0VYE=;
- b=A2KlQ7H7PfGwYPV+Uj5xHeMPOwdRYv6ImnK7llmb68mG9ga9y0abIlg3GhkfwjAVWWnVuaufZ
- 0IY7PFmRaaHCEtwGR86hp42oWznfdMNFRFjwbnv1Ilrts9EACVrZoEr
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-Endpoint-Received: by B4 Relay for Frank.Li@nxp.com/20240130 with
- auth_id=121
-X-Original-From: Frank Li <Frank.Li@nxp.com>
-Reply-To: Frank.Li@nxp.com
 
-From: Frank Li <Frank.Li@nxp.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The newly added `reg_5v` regulator in `imx53-sk-imx53.dts` incor=
+rectly has `regulator-name =3D "usb_vbus"`.
+--
 
-Replace the vendor-specific PHY compatible string with the generic
-ethernet-phy-ieee802.3-c22 compatible.
+commit 1eaf7d9176cad41b8d33d56943e5b16020f26bf0
+Author: Frank Li <Frank.Li@nxp.com>
 
-The marvell,88E1510 compatible is listed in whitelist_phys[] and is
-never matched against a PHY driver. PHY devices are expected to use
-the generic ethernet-phy-ieee802.3-c22 compatible unless a specific
-MDIO driver match is required.
+ARM: dts: imx: add (power|vdd)-supply for related node
 
-The 88E1510 is compatible with Clause 22 PHY devices, so use the
-generic compatible string instead.
+This commit adds required power-supply and vdd-supply properties to fix
+CHECK_DTB warnings for several imx devicetrees.
 
-Fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6q-display5-tianma-tm070-1280x768.dtb: /soc/bus@2100000/ethernet@2188000/mdio/ethernet-phy@0: failed to match any schema with compatible: ['marvell,88E1510']
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts b/arch/arm/boot=
+/dts/nxp/imx/imx53-sk-imx53.dts
+> index 1a00d290092ad..c1e065359fd2d 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts
+> @@ -29,6 +29,13 @@ memory@70000000 {
+>  		reg =3D <0x70000000 0x20000000>;
+>  	};
+> =20
+> +	reg_5v: regulator-5v {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "usb_vbus";
 
-Known other user (uboot) did not use marvell,88E1510.
+Is "usb_vbus" the intended name for this regulator?
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm/boot/dts/nxp/imx/imx6q-display5.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Since this regulator is used to power the display panel, the name appears
+to be a copy-paste error from the reg_usb1_vbus node directly below it.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-display5.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-display5.dtsi
-index 4e448b4810f27ba67332811519a199a7ff0ee004..21e8bbdab4e695c0da169f1a8714398c6964ca35 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-display5.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-display5.dtsi
-@@ -208,7 +208,7 @@ mdio {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		ethernet_phy0: ethernet-phy@0 {
--			compatible = "marvell,88E1510";
-+			compatible = "ethernet-phy-ieee802.3-c22";
- 			device_type = "ethernet-phy";
- 			/* Set LED0 control: */
- 			/* On - Link, Blink - Activity, Off - No Link */
+Defining multiple regulators with the exact same name can cause sysfs
+directory collisions and registration warnings in the regulator subsystem.
 
--- 
-2.43.0
+Would a unique name like "5V" or "panel-5v" be more appropriate here?
 
+> +		regulator-min-microvolt =3D <5000000>;
+> +		regulator-max-microvolt =3D <5000000>;
+> +	};
+> +
+>  	reg_usb1_vbus: regulator-usb-vbus {
+>  		compatible =3D "regulator-fixed";
+>  		regulator-name =3D "usb_vbus";
 
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260515-imx25_dts_=
+simple_warning_2-v1-0-b06bff192a05@nxp.com?part=3D1
