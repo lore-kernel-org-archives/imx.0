@@ -1,114 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC47367F54;
-	Sat, 16 May 2026 19:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F6361DC3
+	for <imx@lists.linux.dev>; Sat, 16 May 2026 19:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778961145; cv=none; b=jFx5c13yk2I8iEeiQMAlxgeVXuGgQ+JvA42XlVnW3y3NX3f/q/Hdv2u7T5s1s7IBfJNcjT7D6e8Ig7d6cDQBBeoRE8bF051lSF9G7GR1HYoKLbHO1K2nZhZpEA3iqZi2LJrK0SEe2IwRbj2BxmL3Wo/cphFzhjSmTFoOABQ2SGs=
+	t=1778961364; cv=none; b=Rma0NqDMc6xtwnyqFDRlyfL+kGExxX4uwEYU8x1ET+ICY52k9F2v6dk7GOr6xsj/l0rxZihSL/KptV9V3KfE9o3ZDvbQ6jwirK817NrzhlNNVD/iUIN0Zrj9bEZOZLwQW2Lb6SrycGCZrLLOXNzimbC5FoiG6qBA3mz0LByTpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778961145; c=relaxed/simple;
-	bh=fAsWNGwQAqu+EJ+8N3R741IrNe5Q1D1pfyWbyfS013c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=H9ceFquAKjgDXQugJLs59iYSovSUhhpPV65ZSCGEb24b/LEr/sPHtUgg2tfV+qYwx0BM6GRTpPNPYlKefa53EAw3m9gYW8BO63IRayQaEWI45aUOykjODnLkhllai2AuhphemDWPzS8TP1EgFeTVa0+C6TnmwIcNVG01MKVHWvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkD+Pp0m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778961364; c=relaxed/simple;
+	bh=JfD9Hlu97LqqJV9hlPrlm1V5es7eRWmhU7ujIh/pYg8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DjiHN2+dXcmmE9nPAERxECwEn0e8fhH2Vq8RaE5cIcmNxhDc0AmbBwUk58eC42Nf8Ln38guvumejmwcm1rOx6KVXy4Ryhgfn1PcRMeSYW+bk51T0LzopS7PuHY7Ibk9g7LOgu7QAduZy3djNZzM9kYBZA+WbuhR2hm+7GFTe/3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=m2kPke8l; arc=none smtp.client-ip=121.127.44.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkD+Pp0m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2CBC19425;
-	Sat, 16 May 2026 19:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778961144;
-	bh=fAsWNGwQAqu+EJ+8N3R741IrNe5Q1D1pfyWbyfS013c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=jkD+Pp0mnYYfYMurlZ0SylntRAn6adUMDneQodqK2Yynhiiqww3xyg206Mlm3OCmO
-	 Nx8Tca0M4muyaUFAKOzJ26mQsfG9ixOI5NQBxWGQsIy9uadf66v3Sf6vOgZwERq6ss
-	 iAnA1b4nyw1MOXw+DFw1j3BE76yIj1faGc+uFYDae1WRFeHvOs6ej4OHVkZVM/l2XJ
-	 U2IYcgAal+X+CjB2B1o1YOva8k0BdmDpyr+7dCWakTlrznZhLhb7zpwOdSbmxdQzNY
-	 P/jXi1/GzsDXfqYdR/1hhR5ckBnWXZt54xMDKn10YWfXgqdrrrqo0xoe1zQTtWUdgs
-	 aI6WaxiO6UAAQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 17/22] drm: bridge: dw_hdmi: Drop call to
- drm_bridge_hpd_notify()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jonas Karlman" <jonas@kwiboo.se>
-Cc: neil.armstrong@linaro.org, linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260516183838.2024991-18-jonas@kwiboo.se>
-References: <20260516183838.2024991-18-jonas@kwiboo.se>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 16 May 2026 19:52:24 +0000
-Message-Id: <20260516195224.9E2CBC19425@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="m2kPke8l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-e1b5cab7be; t=1778961341;
+ bh=7KwXbsoQkt5g3Yq+y4zPwYLzcJYd55j756I8OfP4haw=;
+ b=m2kPke8l5Eqc/a7eWSK1ADZc/qi+2wGdwDYFdX8BjQPv4K3/T5eoStEqHUOLiZJ7FvkfdKSyy
+ Ls0CqMOAW4Ms+ORKvEcKaBSMPjNTrE2ia8DV/Z8XljnehSCmQBMie1/dssyPDLcXmO1IawFqRbq
+ kkLaure1cWqFeTohL/JSO9alTVYH1si81QHDvztTaIYvu7MQenhoJ8Npm1E5P/p46LkjkY5zzh/
+ CsFfY1w7KsmN2C/D5z5CYD4cnrXVBMVFV70Sz3CADmRPHLrxkQPBJ2C92zaLhkLPmBvEeSsSBF7
+ f2zUV3NSXUEu1Jz5OGRnDCnwTbVzGuoRQx/d/JrpuO5w==
+X-Forward-Email-ID: 6a08cbb4c8d8ef6421a41898
+X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
+ 121.127.44.73
+X-Forward-Email-Version: 2.8.12
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <bd537b77-405e-480e-8056-6516505ff4da@kwiboo.se>
+Date: Sat, 16 May 2026 21:55:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 19/22] drm: bridge: dw_hdmi: Rework HDP and RXSENSE
+ interrupt handling
+To: sashiko-reviews@lists.linux.dev
+Cc: neil.armstrong@linaro.org, linux-amlogic@lists.infradead.org,
+ imx@lists.linux.dev, linux-sunxi@lists.linux.dev, Frank.Li@kernel.org
+References: <20260516183838.2024991-20-jonas@kwiboo.se>
+ <20260516194314.4211FC19425@smtp.kernel.org>
+Content-Language: en-US
+From: Jonas Karlman <jonas@kwiboo.se>
+In-Reply-To: <20260516194314.4211FC19425@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Removing drm_bridge_hpd_notify() violates the DRM bridge API contr=
-act and causes hotplug events to be permanently lost during system suspend.
---
+On 5/16/2026 9:43 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Clearing the W1C HPD interrupt after reading the live status and setting the new polarity creates a race condition that can permanently break hotplug detection.
+> --
+> 
+> commit 40973548d3ce7bfe1722c0d53b828f8ef0ca4d81
+> Author: Jonas Karlman <jonas@kwiboo.se>
+> 
+> drm: bridge: dw_hdmi: Rework HDP and RXSENSE interrupt handling
+> 
+> This commit removes RXSENSE handling to simplify the HPD interrupt
+> handling, depending instead on a delayed work to detect connection
+> status or EDID changes. It also ensures the initial HPD interrupt
+> polarity is based on the current HPD status.
+> 
+>> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+>> index 300dac4a6c358..39e94d22249b2 100644
+>> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+>> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> 
+> [ ... ]
+> 
+>> @@ -3060,78 +3011,29 @@ static irqreturn_t dw_hdmi_hardirq(int irq, void *dev_id)
+>>  
+>>  static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
+>>  {
+>>  	struct dw_hdmi *hdmi = dev_id;
+>> -	u8 intr_stat, phy_int_pol, phy_pol_mask, phy_stat;
+>> -	enum drm_connector_status status = connector_status_unknown;
+>> -
+>> -	intr_stat = hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
+>> -	phy_int_pol = hdmi_readb(hdmi, HDMI_PHY_POL0);
+>> -	phy_stat = hdmi_readb(hdmi, HDMI_PHY_STAT0);
+>> -
+>> -	phy_pol_mask = 0;
+>> -	if (intr_stat & HDMI_IH_PHY_STAT0_HPD)
+>> -		phy_pol_mask |= HDMI_PHY_HPD;
+>> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE0)
+>> -		phy_pol_mask |= HDMI_PHY_RX_SENSE0;
+>> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE1)
+>> -		phy_pol_mask |= HDMI_PHY_RX_SENSE1;
+>> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE2)
+>> -		phy_pol_mask |= HDMI_PHY_RX_SENSE2;
+>> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE3)
+>> -		phy_pol_mask |= HDMI_PHY_RX_SENSE3;
+>> -
+>> -	if (phy_pol_mask)
+>> -		hdmi_modb(hdmi, ~phy_int_pol, phy_pol_mask, HDMI_PHY_POL0);
+>> +	u8 intr_stat;
+>>  
+>>  	/*
+>> -	 * RX sense tells us whether the TDMS transmitters are detecting
+>> -	 * load - in other words, there's something listening on the
+>> -	 * other end of the link.  Use this to decide whether we should
+>> -	 * power on the phy as HPD may be toggled by the sink to merely
+>> -	 * ask the source to re-read the EDID.
+>> +	 * Interrupt generation is accomplished in the following way:
+>> +	 *   interrupt = (mask == 0) && (polarity == status)
+>> +	 * All interrupts are forwarded to the Interrupt Handler sticky bit
+>> +	 * register ih_phy_stat0 and muted using the register ih_mute_phy_stat0.
+>>  	 */
+>> -	if (intr_stat &
+>> -	    (HDMI_IH_PHY_STAT0_RX_SENSE | HDMI_IH_PHY_STAT0_HPD)) {
+>> -		dw_hdmi_setup_rx_sense(hdmi,
+>> -				       phy_stat & HDMI_PHY_HPD,
+>> -				       phy_stat & HDMI_PHY_RX_SENSE);
+>> -
+>> -		if ((intr_stat & HDMI_IH_PHY_STAT0_HPD) &&
+>> -		    (phy_stat & HDMI_PHY_HPD))
+>> -			status = connector_status_connected;
+>> +	intr_stat = hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
+>> +	if (intr_stat & HDMI_IH_PHY_STAT0_HPD) {
+>> +		enum drm_connector_status status;
+>>  
+>> -		if (!(phy_stat & (HDMI_PHY_HPD | HDMI_PHY_RX_SENSE)))
+>> -			status = connector_status_disconnected;
+>> -	}
+>> +		/* Set HPD interrupt polarity based on current HPD status. */
+>> +		status = dw_hdmi_phy_read_hpd(hdmi, hdmi->phy.data);
+>> +		hdmi_modb(hdmi, status == connector_status_connected ?
+>> +			  0 : HDMI_PHY_HPD, HDMI_PHY_HPD, HDMI_PHY_POL0);
+>>  
+>> -	if (status != connector_status_unknown) {
+>>  		dev_dbg(hdmi->dev, "EVENT=%s\n",
+>>  			status == connector_status_connected ?
+>>  			"plugin" : "plugout");
+>> @@ -3141,8 +3043,7 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
+>>  	}
+>>  
+>>  	hdmi_writeb(hdmi, intr_stat, HDMI_IH_PHY_STAT0);
+> 
+> Can this sequence create a race condition that breaks hotplug detection?
+> 
+> If the HPD line toggles (for example, due to contact bounce) after
+> dw_hdmi_phy_read_hpd() but before this final hdmi_writeb(), the hardware
+> could generate a new interrupt and set the sticky bit again.
+> 
+> Since the final hdmi_writeb() writes the original intr_stat (which has the
+> HPD bit set) back to the register, and the register is write-1-to-clear, it
+> will clear this newly generated interrupt.
 
-commit 6b3491e39082015ab62431ea0c93c74c9344b995
-Author: Jonas Karlman <jonas@kwiboo.se>
+No, the sticky bit is muted, meaning that no interrupt should be generated
+until this run has completed, the sticky bit is cleared and then unmuted.
 
-drm: bridge: dw_hdmi: Drop call to drm_bridge_hpd_notify()
+Regards,
+Jonas
 
-This commit removes the drm_bridge_hpd_notify() call from the dw_hdmi IRQ
-handler, relying instead only on drm_helper_hpd_irq_event() to avoid sending
-duplicate hotplug uevents to userspace.
+> This could leave the driver and hardware out of sync, with the hardware
+> waiting for a polarity transition that has already occurred, causing all
+> future plug/unplug events to be ignored.
+> 
+> Should the interrupt status be cleared before reading the live state and
+> updating the polarity to close this race window?
+> 
+>> -	hdmi_writeb(hdmi, ~(HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE),
+>> -		    HDMI_IH_MUTE_PHY_STAT0);
+>> +	hdmi_writeb(hdmi, ~HDMI_IH_PHY_STAT0_HPD, HDMI_IH_MUTE_PHY_STAT0);
+>>  
+>>  	return IRQ_HANDLED;
+>>  }
+> 
 
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/=
-bridge/synopsys/dw-hdmi.c
-> index e9c4e24c090ca..6cc7b2a860bd8 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> @@ -3101,10 +3101,8 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_=
-id)
->  			status =3D=3D connector_status_connected ?
->  			"plugin" : "plugout");
-> =20
-> -		if (hdmi->bridge.dev) {
-> +		if (hdmi->bridge.dev)
->  			drm_helper_hpd_irq_event(hdmi->bridge.dev);
-> -			drm_bridge_hpd_notify(&hdmi->bridge, status);
-> -		}
->  	}
-
-Will removing drm_bridge_hpd_notify() cause hotplug events to be permanently
-lost if they occur during system suspend?
-
-Since the driver advertises DRM_BRIDGE_OP_HPD, does the DRM bridge API
-contract still require it to call drm_bridge_hpd_notify() to properly
-propagate hotplug events to the rest of the bridge chain?
-
-Looking at drm_helper_hpd_irq_event(), it aborts early if polling is
-disabled:
-
-drivers/gpu/drm/drm_probe_helper.c:drm_helper_hpd_irq_event() {
-	struct drm_connector *connector, *first_changed_connector =3D NULL;
-	struct drm_connector_list_iter conn_iter;
-	int changed =3D 0;
-
-	if (!dev->mode_config.poll_enabled)
-		return false;
-...
-}
-
-During system suspend, drm_kms_helper_poll_disable() sets poll_enabled
-to false. If an HPD interrupt fires while the system is suspended, won't
-drm_helper_hpd_irq_event() silently drop the event without updating the
-connector status or scheduling any deferred work?
-
-Furthermore, when the system resumes, output_poll_execute() explicitly skips
-connectors that use the DRM_CONNECTOR_POLL_HPD flag, and the dw_hdmi resume
-handler does not appear to manually trigger a hotplug event check.
-
-Could this result in the system being completely unaware of any display
-connections or disconnections that happened while suspended, at least until
-a manual reprobe is forced by userspace?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260516183838.2024=
-991-1-jonas@kwiboo.se?part=3D17
