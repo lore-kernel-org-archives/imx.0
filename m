@@ -1,73 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9B637C937;
-	Sat, 16 May 2026 09:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA86405C31;
+	Sat, 16 May 2026 09:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778923272; cv=none; b=Nsadhjl1DStIdoMTvOsWEeVSE8JjCHexLcEUmDAKCf0s5GlBcNH+PsyFUB2eIA/iqH9BjHu/GfzxxhYLCrNfurrXBAy5j3sAahoilG+8EC03tY/woOpSkjjcG31H638LQhmRKLSWdbt1maQVEQtPvPwFerL/VS5hZvTPAG4Xtsg=
+	t=1778924899; cv=none; b=eD1GfAbVpQzda0LljumYYVzG3zXi4hIVc8w1mpe2bJgvmgwXRdwoPZUTol+YNJBMf7dQPzXrpZ0CsJTG0XXnVb4VR34SUSp6wq155gJizYaocYXgiBhtDc6L9RS4VMshAclD4pybltHaFcHYNUJuePPgdyzI9gNUqV3Yu5ao7/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778923272; c=relaxed/simple;
-	bh=RptzUI/9dLkuw+X2YVD/z/myI/ty916as3fpPLYgGAI=;
+	s=arc-20240116; t=1778924899; c=relaxed/simple;
+	bh=GMEbDAIzdQ2hXeXKUawK2V5xvfKIsnx6HU6ur9Via9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qeg6IVFajov7hxlHIbK8R+AoPd4oMtEaNCN7D1EyVd3DL4mcDDY7x6ywDYu0nW8aRPJkiAy8C6Zd2ojihvM2ZO00OD+JucX9rgy91sz1jlmvMIBR32m9Whxu1lJ3erSRhBd5LJZVYQpk9FjvFYDa5MvGKbPD+gxmNaFogHrSmeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jz7wK0GG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lazFjmi4N5lpiYQVGJ55u9RYOcd3kzZmxj2/rnu04O3DypZNEKGMBYDff6qqS4W6zUCE4JG6/qhgUYTNHGE4ryTL7/qZDpMhhdwqAWw80dtDo7rzkwEyhBLaPm4Otc5XLz61Tyk6Qxgc3vRBCLMGAUoNI40zNxGyYsaJ8sBD0p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkgF1hvT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jz7wK0GG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA68FC19425;
-	Sat, 16 May 2026 09:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778923272;
-	bh=RptzUI/9dLkuw+X2YVD/z/myI/ty916as3fpPLYgGAI=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkgF1hvT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0BFC19425;
+	Sat, 16 May 2026 09:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778924899;
+	bh=GMEbDAIzdQ2hXeXKUawK2V5xvfKIsnx6HU6ur9Via9I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jz7wK0GGMPUK9P9chAnahfGDsKfQrsotbIj4xw3k9+dtLr7Tt/K6vft7Vlw79il/w
-	 6CcJRtPsPh1bRiPFYNQZB6/Bwv/lzN4PE/3KVmqy/kFCPqwaJLQZQv+dYSIgrEIgcu
-	 AJW1aXCKHHPsePjCHluoNwc3X8Sg8rBP+9rWE9ws=
-Date: Sat, 16 May 2026 11:20:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Stepan Ionichev <sozdayvek@gmail.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, shawnguo@kernel.org, hcazarim@yahoo.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] firmware: imx: scu-irq: accumulate wakeup sources via
- sysfs_emit_at()
-Message-ID: <2026051656-corral-edgy-290c@gregkh>
-References: <2026051633-doorstep-sequence-6782@gregkh>
- <20260516090726.38362-1-sozdayvek@gmail.com>
+	b=IkgF1hvTkzoyAWuWIWAL1wbwTbgwLjH+7Fw1mq/PSCKgeuE6+JhAmjxhqKLF4Xmhb
+	 /nTKxFm9OX4bCMSjjKRgp6F1Plykj08xGLImrDUcIYcmYeIa1n+ZfgWqGUCyW5z0Tr
+	 eDfPVmysmCZS4Bwb1nvgVwXToNV07smkb9jMyYAjKMvp3NLhI0s7vOoywBFR9mP/Up
+	 +MlW4sr1bSrFuMHUBqTO/IJ6V6wcVcBiIXRhN3CtCoeQbQ0i9Il9ds3aBgJAI0U/k9
+	 87tNKbb33j1McFl1LrMwlXx0W9+kCNoIq4quDIyKwy4PYxFiyUdF+jHqmC1Yw8i9aC
+	 jLb5/wjiO3mIA==
+Date: Sat, 16 May 2026 11:48:16 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	"open list:VOLTAGE AND CURRENT REGULATOR FRAMEWORK" <linux-kernel@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] regulator: dt-bindings: convert ltc3589 to yaml
+ format
+Message-ID: <20260516-fascinating-tapir-from-lemuria-7ac5ba@quoll>
+References: <20260515150657.1731008-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260516090726.38362-1-sozdayvek@gmail.com>
+In-Reply-To: <20260515150657.1731008-1-Frank.Li@oss.nxp.com>
 
-On Sat, May 16, 2026 at 02:07:26PM +0500, Stepan Ionichev wrote:
-> On Sat, May 16, 2026 at 09:15:54AM +0200, Greg Kroah-Hartman wrote:
-> > This is a horrible sysfs file, and breaks all the rules.  Why not just
-> > delete it and use the proper api for it instead?
+On Fri, May 15, 2026 at 11:06:54AM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Yeah, fair. The sprintf change just papers over the real issue, which
-> is the interface itself.
+> Convert the Linear Technology LTC3589/LTC3589-1/LTC3589-2 regulator
+> binding from text to yaml format.
 > 
-> Quick check: no Documentation/ABI/ entry, github code search returns
-> nothing outside the kernel tree itself
-> (https://github.com/search?q=scu_wakeup_irqs&type=code), and
-> codesearch.debian.net also shows zero hits. So removing the attribute
-> looks doable.
+> Additional changes:
+> - Add existing optional interrupt (drivers/regulator/ltc3589.c).
 > 
-> Frank, Sascha -- any out-of-tree readers of
-> /sys/firmware/scu_wakeup_irqs/wakeup_src I should worry about?  If
-> not, I'll send v2 that drops the attribute and logs the wakeup source
-> via dev_info() instead.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Close, but no, don't use dev_info(), when drivers work properly, they
-are quiet.  Make it dev_dbg() so that if anyone wants to see it, they
-can dynamically turn it on.  Or make it a debugfs file.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-thanks,
+Best regards,
+Krzysztof
 
-greg k-h
