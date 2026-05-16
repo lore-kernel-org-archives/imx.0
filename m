@@ -1,96 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8F2010EE;
-	Fri, 15 May 2026 21:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01765695;
+	Sat, 16 May 2026 00:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778881961; cv=none; b=Xa8Qd5TtSetfet5MiLmY/TKEMmHLH6NV/vz7EFMZkJ3KDZK+ohPHr21Gr49iRjwOltdtxXyAHF0Bw/ImwyaBeby58pvq6s6NTvB79ksYW2KE2q3p0cVDYSabczY0cDw5ns7MwFcYDGGWE1yIvQZth9JnJcctNoAWe12gvHx105g=
+	t=1778890708; cv=none; b=ZBD2mwg8Z1oZacAKFuoz3UltYCkqjKOQAB8XQDZIegcok0hoEcx84PvHl9P0g1sIOCNu2KGNk9ttEQkk2TYpxTLy/44wrnBq319NGF7nXwiLOlVqYmAc+UYBRGZJ78C6FrKiuDQCk3Oo5FgfmYy6iRDRYjXq7Na9lBEY8+XciNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778881961; c=relaxed/simple;
-	bh=io1mo3XLPCwCYCHxlFo+KOBQf0uvj9xY+ciVNMK0NxI=;
+	s=arc-20240116; t=1778890708; c=relaxed/simple;
+	bh=Tyq7mD6hXsGUCi+fVaRbLiqkQ90EYTsiUFCtMxpfUi4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iUNAYzW/ogijb/axyvSXZoqKymt0QLNXM7eP/VsZeX5zrAuZU/g9zYefu0yHMhGNHnlAi9RZCVWMglnos8fV4ajypflRP0JGqq7LvKlUj7XCglmZCgy4kzlV5ZYqib7lLYI0BEIqu6Xs6xI1UyfT04Z7S8OGMsxqTcTH0kScOHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P213e4aX; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=NJ5XjZ/3rhMad1Y1V1l5LisoOX0bhpuogcjjLfXwpFyfG+dK5FIWlC+mWcTPCXyMVuTgdgY22njGqiMUnraWun6Tr+hvvpXX5XbX6zs2rEEUCnWnclGHIXrBygzYRSNIr3//MjJFC7bi1ISqTrxXA8XnlMV/zegABlq7d5BmDKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caJ2LKly; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P213e4aX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A644C2BCB0;
-	Fri, 15 May 2026 21:52:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caJ2LKly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2C6C2BCB0;
+	Sat, 16 May 2026 00:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778881961;
-	bh=io1mo3XLPCwCYCHxlFo+KOBQf0uvj9xY+ciVNMK0NxI=;
+	s=k20201202; t=1778890708;
+	bh=Tyq7mD6hXsGUCi+fVaRbLiqkQ90EYTsiUFCtMxpfUi4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=P213e4aXb9HJvDg8/dZMthaVg/w35t010uFFR4cIyU0eH1vo6+UizfHD2h6SeEiM/
-	 XPwvUjjcoksDiLrokomu7n/grMB1lDV8wSTywzV+vB0t+YLSczx/4Srs5R3/NpB71R
-	 zP6d6rZ5h7wH9y7WqobfGP44YA+4I9e0yx8PQ0dIxT8t8lMDi6pDnGaoNDMA98E3aD
-	 xvYPvrmBCrBOAJN2P1fdFcxn+ADUY5vLxeHXeKJbJFGZhN4cSzl7Oqd2shDHBF3uCp
-	 cQb+LsMEI1hstJ6m5SrwnbzrpSuO1SyIOr1bGpvkCe+MOlsAki5CnH7z1iYWdcc/JU
-	 zMKHYnHL0d0DQ==
+	b=caJ2LKly5r0HILD19wseqJVug1ZS8368NAYabqXVpFSseFq6/vor+Mtp5gM7VAU7J
+	 ThwHdQM1KGhv583t6idWYyTWaxEnJAVfr8bdh5inbW1jvAfITCBtTQT2JcpCJ/SOPR
+	 Y/Ll99EUzPh5QNabSZz7JR4+fRHugBJOgoXCqQG7gmPXDuASe6N9X0A/dbVC70DWLT
+	 JlOIn5VzZpmOBPfXaSEaLEMJa9o1nTTDXSWcHuwb6Ijy1hV/qGaFGfC5Qxe/ix6TUp
+	 eJazYbbI4QN9DQS+W0dUsPJ/5sZhuil+7v08HMJ7odG+qdB8qMv6Y0h/VF6/sikBMF
+	 xRrsPVQCIDgug==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/6] ARM: dts: imx: add (power|vdd)-supply for related
- node
+Subject: Re: [PATCH 5/6] ARM: dts: imx: replace undocumented compatible
+ string edt,edt-ft5x06 with edt,edt-ft5206
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Frank Li via B4 Relay" <devnull+Frank.Li.nxp.com@kernel.org>
-Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, robh@kernel.org
-In-Reply-To: <20260515-imx25_dts_simple_warning_2-v1-1-b06bff192a05@nxp.com>
-References: <20260515-imx25_dts_simple_warning_2-v1-1-b06bff192a05@nxp.com>
+Cc: Frank.Li@kernel.org, conor+dt@kernel.org, imx@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260515-imx25_dts_simple_warning_2-v1-5-b06bff192a05@nxp.com>
+References: <20260515-imx25_dts_simple_warning_2-v1-5-b06bff192a05@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 15 May 2026 21:52:39 +0000
-Message-Id: <20260515215240.7A644C2BCB0@smtp.kernel.org>
+Date: Sat, 16 May 2026 00:18:27 +0000
+Message-Id: <20260516001828.1C2C6C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The newly added `reg_5v` regulator in `imx53-sk-imx53.dts` incor=
-rectly has `regulator-name =3D "usb_vbus"`.
+- [Medium] The commit message inaccurately claims that the 'edt,edt-ft5x06'=
+ compatible string is not used by the existing driver.
+- [Low] Incomplete replacement of the 'edt,edt-ft5x06' compatible string in=
+ the i.MX device trees.
 --
 
-commit 1eaf7d9176cad41b8d33d56943e5b16020f26bf0
+commit 41200cd2fe9679c5de99c8f7d34c6e5a590d761b
 Author: Frank Li <Frank.Li@nxp.com>
 
-ARM: dts: imx: add (power|vdd)-supply for related node
+ARM: dts: imx: replace undocumented compatible string edt,edt-ft5x06 with e=
+dt,edt-ft5206
 
-This commit adds required power-supply and vdd-supply properties to fix
-CHECK_DTB warnings for several imx devicetrees.
+This commit replaces the undocumented edt,edt-ft5x06 compatible string with
+edt,edt-ft5206 across various i.MX device trees to resolve dtbs_check
+schema validation warnings.
 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts b/arch/arm/boot=
-/dts/nxp/imx/imx53-sk-imx53.dts
-> index 1a00d290092ad..c1e065359fd2d 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx53-sk-imx53.dts
-> @@ -29,6 +29,13 @@ memory@70000000 {
->  		reg =3D <0x70000000 0x20000000>;
->  	};
-> =20
-> +	reg_5v: regulator-5v {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "usb_vbus";
+> ABI impact consideration:
+> Not affect Linux kernel ABI because edt,edt-ft5x06 is not used by the
+> existing driver. U-Boot does not parse or use edt,edt-ft* touchscreen
+> compatibles.
 
-Is "usb_vbus" the intended name for this regulator?
+This isn't a bug, but is this explanation of the ABI impact accurate?
 
-Since this regulator is used to power the display panel, the name appears
-to be a copy-paste error from the reg_usb1_vbus node directly below it.
+The I2C subsystem uses a legacy fallback mechanism where it strips the vend=
+or
+prefix from the compatible string to derive the client name, resulting in
+edt-ft5x06.
 
-Defining multiple regulators with the exact same name can cause sysfs
-directory collisions and registration warnings in the regulator subsystem.
+This derived client name successfully matches against the driver's
+i2c_device_id table in drivers/input/touchscreen/edt-ft5x06.c, which
+explicitly contains an entry for:
 
-Would a unique name like "5V" or "panel-5v" be more appropriate here?
+	{ .name =3D "edt-ft5x06", .driver_data =3D (long)&edt_ft5x06_data },
 
-> +		regulator-min-microvolt =3D <5000000>;
-> +		regulator-max-microvolt =3D <5000000>;
-> +	};
-> +
->  	reg_usb1_vbus: regulator-usb-vbus {
->  		compatible =3D "regulator-fixed";
->  		regulator-name =3D "usb_vbus";
+Because of this, the driver was actively binding to these devices based on
+this compatible string. While changing it to the documented edt,edt-ft5206
+is functionally correct to cleanly match the of_match_table, does the
+rationale provided in the commit message reflect the I2C/OF core matching
+semantics?
 
 [ ... ]
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts b/arch/arm/boot=
+/dts/nxp/imx/imx53-m53menlo.dts
+> index 2acbc86cabb31..aa1c7e5012c6a 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-m53menlo.dts
+> @@ -248,7 +248,7 @@ &i2c1 {
+>  	status =3D "okay";
+> =20
+>  	touchscreen@38 {
+> -		compatible =3D "edt,edt-ft5x06";
+> +		compatible =3D "edt,edt-ft5206";
+
+Are there still remaining instances of this undocumented compatible string
+in the tree?
+
+It appears the exact same string still remains in the tree:
+
+arch/arm/boot/dts/nxp/imx/imx6qdl-nitrogen6_som2.dtsi:
+	touchscreen@38 {
+		compatible =3D "edt,edt-ft5x06";
+		reg =3D <0x38>;
+		...
+	};
+
+Because this occurrence was omitted, will schema validation warnings
+persist for any board incorporating this dtsi file?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260515-imx25_dts_=
-simple_warning_2-v1-0-b06bff192a05@nxp.com?part=3D1
+simple_warning_2-v1-0-b06bff192a05@nxp.com?part=3D5
