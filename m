@@ -1,169 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F1A2EA749;
-	Sat, 16 May 2026 19:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB01D363C4B
+	for <imx@lists.linux.dev>; Sat, 16 May 2026 19:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778960594; cv=none; b=XnY9s8gnmTR3PotXikk39wHTHIUXzzH6eEsxFoeUqlXYFJlDu4dm4cBy9shP1sDoHDQcUU9uPoZadk1ckngAD6MwskAFwVfBKUNsN4ud0dsQ8tD3PO1xGbJ5G7bRD6hNylO98MNd29l7t3B5LwLmq2GwRcniDRnKDRmnjwfUsU8=
+	t=1778960637; cv=none; b=mdRbhrLjWb1i88d6lHKOwDx55fjeJ7LGUPrpcopcOkic+WhXJMGffxvWE6CM+FRboO0Th+n/7dokfZRvWsRB1bxmLQ+xV3dwp2npT0tqYGpgMP9arGIOn5d6iCW3gr4NwP5TDX6iE4Nm/ghrxp6BvB02Bla3ypqh0KdHiLyPURE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778960594; c=relaxed/simple;
-	bh=4p1ja3PdkljLMW/wiFgeXQ+4PM2PIeQxKd65WFYC730=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lyZFffaz2cRuk7iP+jUgLIpizsaTSCb9+ba/IzonjfJj8JgJdKxWkwnexdViWc8esP8lxDf2SxoVAcEqBD6CIVq2+W2LOlQHScCBQhDpNg/7QsakjOama8GFDjD01pACEHVgvPiP9MqeiWDcfGd5REelzjLjJ2WiZQyKZlFMt2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUb8r7rc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778960637; c=relaxed/simple;
+	bh=bYlta0w20xk/enusfdwKFxIvCllKKtiNmuIAyRU2IW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dkhZ3oQLAcwVVWg0kBXOwCyNKRfWlglW6WQ37LHFq6MIBf3hRKydisW9Q+xfZC8UWrUir1LRzTXHIddO5gKXtGo+bG3KueQMXuuUgaeW1AZDdR7RdeCiSyqg8gkP30raDk07nXt1rCkiNTHxeLH1nf/sFPjIGliqBdAg0wvfhgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=maXnbBqm; arc=none smtp.client-ip=121.127.44.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUb8r7rc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4211FC19425;
-	Sat, 16 May 2026 19:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778960594;
-	bh=4p1ja3PdkljLMW/wiFgeXQ+4PM2PIeQxKd65WFYC730=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=fUb8r7rcqcinn/8MiCslPLweUwWjvjJW1lS7AqLFan8gLSu0ZW033W0Dakzm8jHRA
-	 g9dXp0fA7UCuS8dsJyfykaDWWBIH1PyLOm6gydPtzSG2yqRmbfO0XcclIfN5tEr0D6
-	 7+rKLeO8T+DoPTMNYv8Y8w0uPl0XpG4II0AS+DXI7kjd6aGfYaoZIzRL1GqoP4anPm
-	 tJjfderQdJZZhXGTR3KlOvdUQXSLLY7QmIWQYoc2ord7zuQakwMEPS1TQ8wrkq2Ydw
-	 yIlVpobUWhx12A7406t1mKYH7igK/8XIxyQTHegwF7SFOdYYuZ8UrmEQtS9m6GmkPq
-	 4qePyl6zB2bFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 19/22] drm: bridge: dw_hdmi: Rework HDP and RXSENSE
- interrupt handling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jonas Karlman" <jonas@kwiboo.se>
-Cc: neil.armstrong@linaro.org, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-sunxi@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260516183838.2024991-20-jonas@kwiboo.se>
-References: <20260516183838.2024991-20-jonas@kwiboo.se>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 16 May 2026 19:43:13 +0000
-Message-Id: <20260516194314.4211FC19425@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="maXnbBqm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-e1b5cab7be; t=1778960629;
+ bh=qdqxexX5mOstRuzAbF9sWFbFUGmWoYy5Hp06rH3GWRM=;
+ b=maXnbBqmmn78ODf4Pki/yC06ZnSBMrzZkx5iIhHLwZgJ8zeQbY6z4ezXxdLDlRhqMd4CwF/LY
+ QnmQaZuBTiIETiV9jEzpdLQmENBqdKrCkBhUiokmjvjNO+zFEmbF5DG3yctXzg7L8rtaWZHKvth
+ ByeU5qZ8MT/6KjyHRm/5Ry3/KLiyE/L4upXLsZq2AoxNH0zoDERjW9F0c3R2FCxOcPnIsO8qB7P
+ 2MXqmbmefEh54fLTqHEesp+zEl2WzW/K26WvkAeISFx6PFGTaElWCR294ySFz4YZdjGucLToWag
+ 9I46faQCQ5vyW3svrasZzPKim/K01y/7FusBeS7nNnGQ==
+X-Forward-Email-ID: 6a08c8e55c12e46019b2216b
+X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
+ 121.127.44.66
+X-Forward-Email-Version: 2.8.12
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <533dd01f-9516-4267-9376-1e5ba42ba124@kwiboo.se>
+Date: Sat, 16 May 2026 21:43:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 13/22] drm: bridge: dw_hdmi: Use generic CEC notifier
+ helpers
+To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
+ neil.armstrong@linaro.org, linux-amlogic@lists.infradead.org
+References: <20260516183838.2024991-14-jonas@kwiboo.se>
+ <20260516192001.27E4EC19425@smtp.kernel.org>
+Content-Language: en-US
+From: Jonas Karlman <jonas@kwiboo.se>
+In-Reply-To: <20260516192001.27E4EC19425@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Clearing the W1C HPD interrupt after reading the live status and s=
-etting the new polarity creates a race condition that can permanently break=
- hotplug detection.
---
+On 5/16/2026 9:20 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Use-After-Free and Memory Leak in CEC notifier cleanup due to drmm and manual lifecycle mismatch
+> --
+> 
+> commit eb59f6fe976b03aa5f719b79a28355b27f403bfe
+> Author: Jonas Karlman <jonas@kwiboo.se>
+> Subject: drm: bridge: dw_hdmi: Use generic CEC notifier helpers
+> 
+> This commit replaces open-coded CEC notifier handling with generic CEC
+> helpers using drmm_connector_hdmi_cec_notifier_register. It also removes
+> the manual notifier unregistration from dw_hdmi_connector_destroy.
+> 
+>> The drmm release action for the generic CEC notifier should run just
+>> before dw_hdmi_connector_destroy(), closely matching the lifetime of
+>> the replaced CEC notifier and the connector.
+> 
+> Is this lifecycle assumption accurate for drivers that do not use drmm
+> for mode config?
 
-commit 40973548d3ce7bfe1722c0d53b828f8ef0ca4d81
-Author: Jonas Karlman <jonas@kwiboo.se>
+Yes, drm_mode_config_init() was converted to call its drmm_ variant in
+v5.8-rc1, with commit c3b790ea07a1 ("drm: Manage drm_mode_config_init
+with drmm_"). Effectively meaning that all drm drivers use drmm for mode
+config.
 
-drm: bridge: dw_hdmi: Rework HDP and RXSENSE interrupt handling
+>> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+>> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+>> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> [ ... ]
+>> @@ -2547,9 +2543,6 @@ static void dw_hdmi_connector_destroy(struct drm_connector *connector)
+>>  {
+>>  	struct dw_hdmi *hdmi = container_of(connector, struct dw_hdmi, connector);
+>>  
+>> -	cec_notifier_conn_unregister(hdmi->cec_notifier);
+>> -	hdmi->cec_notifier = NULL;
+>> -
+>>  	drm_connector_cleanup(connector);
+>>  	drm_bridge_put(&hdmi->bridge);
+>>  }
+> 
+> Since drm_connector_cleanup() zeroes the connector memory, and
+> drm_bridge_put() can drop the final reference to the bridge (which frees
+> the dw_hdmi structure and its embedded connector), could this lead to a
+> use-after-free?
 
-This commit removes RXSENSE handling to simplify the HPD interrupt
-handling, depending instead on a delayed work to detect connection
-status or EDID changes. It also ensures the initial HPD interrupt
-polarity is based on the current HPD status.
+It should not, destroy() is the last call made for the connector, and
+the drm_bridge_put() is here to ensure that the struct dw_hdmi is still
+around when drm_connector_cleanup() is called, to avoid a use-after-free.
 
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/=
-bridge/synopsys/dw-hdmi.c
-> index 300dac4a6c358..39e94d22249b2 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> If a user-space application holds an open file descriptor to the DRM device
+> during driver unbind, the DRM device remains alive. The deferred drmm
+> release action will only execute later when the file descriptor is closed
+> and the DRM device's refcount drops to zero.
+> 
+> When the drmm action eventually runs, it will dereference the freed
+> connector pointer.
+> 
+> Additionally, because drm_connector_cleanup() executes
+> memset(connector, 0, sizeof(*connector)), won't connector->cec.data become
+> NULL? This would cause the delayed drmm release action to silently skip
+> unregistration, leaking the cec_notifier object.
 
-[ ... ]
+It should not, drmm release actions are called in reverse order, and
+drmm_connector_hdmi_cec_notifier_register() is called last, meaning its
+release action should be called before drm_mode_config_cleanup() is
+called by the the release action for drmm_mode_config_init().
 
-> @@ -3060,78 +3011,29 @@ static irqreturn_t dw_hdmi_hardirq(int irq, void =
-*dev_id)
-> =20
->  static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
->  {
->  	struct dw_hdmi *hdmi =3D dev_id;
-> -	u8 intr_stat, phy_int_pol, phy_pol_mask, phy_stat;
-> -	enum drm_connector_status status =3D connector_status_unknown;
-> -
-> -	intr_stat =3D hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
-> -	phy_int_pol =3D hdmi_readb(hdmi, HDMI_PHY_POL0);
-> -	phy_stat =3D hdmi_readb(hdmi, HDMI_PHY_STAT0);
-> -
-> -	phy_pol_mask =3D 0;
-> -	if (intr_stat & HDMI_IH_PHY_STAT0_HPD)
-> -		phy_pol_mask |=3D HDMI_PHY_HPD;
-> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE0)
-> -		phy_pol_mask |=3D HDMI_PHY_RX_SENSE0;
-> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE1)
-> -		phy_pol_mask |=3D HDMI_PHY_RX_SENSE1;
-> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE2)
-> -		phy_pol_mask |=3D HDMI_PHY_RX_SENSE2;
-> -	if (intr_stat & HDMI_IH_PHY_STAT0_RX_SENSE3)
-> -		phy_pol_mask |=3D HDMI_PHY_RX_SENSE3;
-> -
-> -	if (phy_pol_mask)
-> -		hdmi_modb(hdmi, ~phy_int_pol, phy_pol_mask, HDMI_PHY_POL0);
-> +	u8 intr_stat;
-> =20
->  	/*
-> -	 * RX sense tells us whether the TDMS transmitters are detecting
-> -	 * load - in other words, there's something listening on the
-> -	 * other end of the link.  Use this to decide whether we should
-> -	 * power on the phy as HPD may be toggled by the sink to merely
-> -	 * ask the source to re-read the EDID.
-> +	 * Interrupt generation is accomplished in the following way:
-> +	 *   interrupt =3D (mask =3D=3D 0) && (polarity =3D=3D status)
-> +	 * All interrupts are forwarded to the Interrupt Handler sticky bit
-> +	 * register ih_phy_stat0 and muted using the register ih_mute_phy_stat0.
->  	 */
-> -	if (intr_stat &
-> -	    (HDMI_IH_PHY_STAT0_RX_SENSE | HDMI_IH_PHY_STAT0_HPD)) {
-> -		dw_hdmi_setup_rx_sense(hdmi,
-> -				       phy_stat & HDMI_PHY_HPD,
-> -				       phy_stat & HDMI_PHY_RX_SENSE);
-> -
-> -		if ((intr_stat & HDMI_IH_PHY_STAT0_HPD) &&
-> -		    (phy_stat & HDMI_PHY_HPD))
-> -			status =3D connector_status_connected;
-> +	intr_stat =3D hdmi_readb(hdmi, HDMI_IH_PHY_STAT0);
-> +	if (intr_stat & HDMI_IH_PHY_STAT0_HPD) {
-> +		enum drm_connector_status status;
-> =20
-> -		if (!(phy_stat & (HDMI_PHY_HPD | HDMI_PHY_RX_SENSE)))
-> -			status =3D connector_status_disconnected;
-> -	}
-> +		/* Set HPD interrupt polarity based on current HPD status. */
-> +		status =3D dw_hdmi_phy_read_hpd(hdmi, hdmi->phy.data);
-> +		hdmi_modb(hdmi, status =3D=3D connector_status_connected ?
-> +			  0 : HDMI_PHY_HPD, HDMI_PHY_HPD, HDMI_PHY_POL0);
-> =20
-> -	if (status !=3D connector_status_unknown) {
->  		dev_dbg(hdmi->dev, "EVENT=3D%s\n",
->  			status =3D=3D connector_status_connected ?
->  			"plugin" : "plugout");
-> @@ -3141,8 +3043,7 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_i=
-d)
->  	}
-> =20
->  	hdmi_writeb(hdmi, intr_stat, HDMI_IH_PHY_STAT0);
+Regards,
+Jonas
 
-Can this sequence create a race condition that breaks hotplug detection?
+> [ ... ]
+>> @@ -2609,15 +2600,8 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+> [ ... ]
+>> -	notifier = cec_notifier_conn_register(hdmi->dev, NULL, &conn_info);
+>> -	if (!notifier)
+>> -		return -ENOMEM;
+>> -
+>> -	hdmi->cec_notifier = notifier;
+>> -
+>> -	return 0;
+>> +	return drmm_connector_hdmi_cec_notifier_register(connector, NULL,
+>> +							 hdmi->dev);
+>>  }
+> 
 
-If the HPD line toggles (for example, due to contact bounce) after
-dw_hdmi_phy_read_hpd() but before this final hdmi_writeb(), the hardware
-could generate a new interrupt and set the sticky bit again.
-
-Since the final hdmi_writeb() writes the original intr_stat (which has the
-HPD bit set) back to the register, and the register is write-1-to-clear, it
-will clear this newly generated interrupt.
-
-This could leave the driver and hardware out of sync, with the hardware
-waiting for a polarity transition that has already occurred, causing all
-future plug/unplug events to be ignored.
-
-Should the interrupt status be cleared before reading the live state and
-updating the polarity to close this race window?
-
-> -	hdmi_writeb(hdmi, ~(HDMI_IH_PHY_STAT0_HPD | HDMI_IH_PHY_STAT0_RX_SENSE),
-> -		    HDMI_IH_MUTE_PHY_STAT0);
-> +	hdmi_writeb(hdmi, ~HDMI_IH_PHY_STAT0_HPD, HDMI_IH_MUTE_PHY_STAT0);
-> =20
->  	return IRQ_HANDLED;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260516183838.2024=
-991-1-jonas@kwiboo.se?part=3D19
