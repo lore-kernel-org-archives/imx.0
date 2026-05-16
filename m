@@ -1,31 +1,31 @@
 Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A778344D8E
-	for <imx@lists.linux.dev>; Sat, 16 May 2026 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B53B3446DE
+	for <imx@lists.linux.dev>; Sat, 16 May 2026 18:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778956776; cv=none; b=JyDCF7/TirelqHPsrbY3P63d5CcBuc200g2dqvMaWr3NLI/DWEjG+TyXUKLU2CT9cquTeHhsElwz/LzbXKV0jEMq82kEycfLGNOCLQP1jVMSX1I7tciO8ephx4CkXYfow9wTnIN43BRTv4UwxYHxn7SfcmLWJql9po0n/5w/ZQQ=
+	t=1778956776; cv=none; b=SaRmgMMktlzopnuccto5+S/cYECc4whku/4WhTPYax0EP5qZhfT7VrOC1i+8tjgtfyXwgYtWvJ3rsFCyokaCoyAf1T2wVOXUyQQXOWSzPWCSyjqU0dD35pilC8DY5KZVRoiI9M0euxVHXsFIbksogdnuDzoYQYQBNVGCyE97c1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778956776; c=relaxed/simple;
-	bh=nfrltQ1ygtsUUX5MUTW0mSgxmwQftjxHpYfygMldvwA=;
+	bh=b1larF18e7n9Ud4l2VdVtScHW2jmxxFPQrcYxYJmBB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugK2e/Jib2wJeMlqXPn7F4u5t3d8kYJrH6kmxfxd4iS9evbuzdttfAJf32n86FOPyZwonPXAgNefT3BkKQODTCq3leh77vurFDDE2Pua9HP9fu5yFroDiZL7Bg5IN7ZUbZowdgDGMIT7a+jJ1jqwiycW6S8xX6Qgh3K9v/GyNjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=Y8qNEPwd; arc=none smtp.client-ip=121.127.44.73
+	 MIME-Version; b=ZQSuDnwHaCq/KwqjJnDjmAQMWH4uEmPfk0dreW1btShGKb5uG+SbCvohcVCBxuPz9vux34Fjp5dcsVgSBl+F4YtLMiWv5Cao24yUxdZ3uCYfJozJ+13wgv1pm8oNv8lKM8tLDfFVWRGJFLY/qGzkMrvK4Jd/WB31lnX8DAgoHzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=YnV9wxYV; arc=none smtp.client-ip=121.127.44.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="Y8qNEPwd"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="YnV9wxYV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
  h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
  Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1778956773; bh=etCmMOciJIgNX3eaD2okOUAveAuWOXF+n5IDKEpiqOY=;
- b=Y8qNEPwdf7+461/xQ7MAqKis+eGv2ILUdcegJ6oV9C3USehXSMN1G5HJksYxe7nWtWi55OTXM
- URYq9U6ER3kl1S+wUFLGyY4t4T5jdAsORDpjtvliG+DPErKbgMBVpeIHjN6+dRKvRW966FbEtNQ
- DKF0D3of0izOdBv6Hi1mFZQAaE3Xve+Ac3Lu+IILLXQU9CPse2PmvFzPIs+gG3p6Fxks2IQI5xp
- Fkwmlp70GakPAoY5E64rKoLNgykXet3JsJtkMh3ab0NMwFBzwVbVTpN99OU9ovx6y2hdYq0KywQ
- nrh0KPEM7j+8rHpFu7rmnm5vTKFtRttvSvK1jaF0KQmA==
-X-Forward-Email-ID: 6a08b9d779c7625f20eeede5
+ t=1778956774; bh=dj/ugFTuxg9Y2gUue7F99f8b7+N9oaRDZ7y+GQkj02E=;
+ b=YnV9wxYVbTka7ZvM+aAHIlKYXchM6d4R+2jg68LRRBE5Fk31AVR/s/lsPK6xz3KHVORDOkBZA
+ r14pnE88fGwkxCIj0QXDfu8LO0dGH2CZpg10etBvA/t3cuWDGefgay10ojs3y3wUHx9QN9e6Rcd
+ 6IF3z4QI7yJLJtDxSXstWekbdY9nrA0d3Z01wcTWk8A8VMJyYoLQ3LSRr1aatTS7vXK01I7ax7I
+ Jon8w5n5QGjaRjya9wWashFPhwhY6fXqU9lARvhY48u2/WKwZPR4q5nGwfH41ROk+asREM7mTi7
+ dwfXEqJocnw5CDdxz/06AZ1aSb/0xrBuGUOS5/Uf+0Yg==
+X-Forward-Email-ID: 6a08b9db79c7625f20eeee00
 X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
  121.127.44.73
 X-Forward-Email-Version: 2.8.12
@@ -62,9 +62,9 @@ Cc: Liu Ying <victor.liu@nxp.com>,
 	linux-sunxi@lists.linux.dev,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 08/22] drm: bridge: dw_hdmi: Unregister CEC notifier during connector cleanup
-Date: Sat, 16 May 2026 18:38:18 +0000
-Message-ID: <20260516183838.2024991-9-jonas@kwiboo.se>
+Subject: [PATCH v6 09/22] drm: bridge: dw_hdmi: Invalidate CEC phys addr from connector detect
+Date: Sat, 16 May 2026 18:38:19 +0000
+Message-ID: <20260516183838.2024991-10-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260516183838.2024991-1-jonas@kwiboo.se>
 References: <20260516183838.2024991-1-jonas@kwiboo.se>
@@ -76,63 +76,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The CEC notifier is being unregistered when the bridge detach,
-something that happens earlier than normal connector cleanup.
+Wait until the connector detect ops is called to invalidate CEC phys
+addr instead of doing it directly from the irq handler.
 
-Change to unregister the CEC notifier at connector cleanup, in the
-connector .destroy() func, to align the lifetime of the connector and
-the CEC notifier and closer match a drmres handled generic CEC notifier.
-
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Tested-by: Diederik de Haas <diederik@cknow-tech.com>  # Rock64, RockPro64, Quartz64-B
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
 v6: Collect t-b tag
-v5: New patch
+v5: No change
+v4: No change
+v3: No change
+v2: Collect r-b tag
 ---
- drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-index cbbd15578042..5fd26ff8f55b 100644
+index 5fd26ff8f55b..aae1b890167b 100644
 --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
 +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-@@ -2532,6 +2532,11 @@ static void dw_hdmi_connector_destroy(struct drm_connector *connector)
+@@ -2472,7 +2472,17 @@ dw_hdmi_connector_detect(struct drm_connector *connector, bool force)
  {
- 	struct dw_hdmi *hdmi = container_of(connector, struct dw_hdmi, connector);
- 
-+	mutex_lock(&hdmi->cec_notifier_mutex);
-+	cec_notifier_conn_unregister(hdmi->cec_notifier);
-+	hdmi->cec_notifier = NULL;
-+	mutex_unlock(&hdmi->cec_notifier_mutex);
+ 	struct dw_hdmi *hdmi = container_of(connector, struct dw_hdmi,
+ 					     connector);
+-	return dw_hdmi_detect(hdmi);
++	enum drm_connector_status status;
 +
- 	drm_connector_cleanup(connector);
- 	drm_bridge_put(&hdmi->bridge);
- }
-@@ -2909,16 +2914,6 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge,
- 	return dw_hdmi_connector_create(hdmi);
++	status = dw_hdmi_detect(hdmi);
++
++	if (status == connector_status_disconnected) {
++		mutex_lock(&hdmi->cec_notifier_mutex);
++		cec_notifier_phys_addr_invalidate(hdmi->cec_notifier);
++		mutex_unlock(&hdmi->cec_notifier_mutex);
++	}
++
++	return status;
  }
  
--static void dw_hdmi_bridge_detach(struct drm_bridge *bridge)
--{
--	struct dw_hdmi *hdmi = bridge->driver_private;
+ static int dw_hdmi_connector_get_modes(struct drm_connector *connector)
+@@ -3106,12 +3116,6 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
+ 				       phy_stat & HDMI_PHY_HPD,
+ 				       phy_stat & HDMI_PHY_RX_SENSE);
+ 
+-		if ((phy_stat & (HDMI_PHY_RX_SENSE | HDMI_PHY_HPD)) == 0) {
+-			mutex_lock(&hdmi->cec_notifier_mutex);
+-			cec_notifier_phys_addr_invalidate(hdmi->cec_notifier);
+-			mutex_unlock(&hdmi->cec_notifier_mutex);
+-		}
 -
--	mutex_lock(&hdmi->cec_notifier_mutex);
--	cec_notifier_conn_unregister(hdmi->cec_notifier);
--	hdmi->cec_notifier = NULL;
--	mutex_unlock(&hdmi->cec_notifier_mutex);
--}
--
- static enum drm_mode_status
- dw_hdmi_bridge_mode_valid(struct drm_bridge *bridge,
- 			  const struct drm_display_info *info,
-@@ -2996,7 +2991,6 @@ static const struct drm_bridge_funcs dw_hdmi_bridge_funcs = {
- 	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
- 	.atomic_reset = drm_atomic_helper_bridge_reset,
- 	.attach = dw_hdmi_bridge_attach,
--	.detach = dw_hdmi_bridge_detach,
- 	.atomic_check = dw_hdmi_bridge_atomic_check,
- 	.atomic_get_output_bus_fmts = dw_hdmi_bridge_atomic_get_output_bus_fmts,
- 	.atomic_get_input_bus_fmts = dw_hdmi_bridge_atomic_get_input_bus_fmts,
+ 		if ((intr_stat & HDMI_IH_PHY_STAT0_HPD) &&
+ 		    (phy_stat & HDMI_PHY_HPD))
+ 			status = connector_status_connected;
 -- 
 2.54.0
 
