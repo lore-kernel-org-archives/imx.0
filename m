@@ -1,132 +1,74 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084FB19ABC6
-	for <imx@lists.linux.dev>; Sat, 16 May 2026 20:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10A52E1F06
+	for <imx@lists.linux.dev>; Sun, 17 May 2026 08:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778961652; cv=none; b=gbb0CEOpiMH6MJ1KBcTyy5EU6Yjxbb+WZRrgBrgpfY+lJCwSGFQOEG07pY+i4sEXKeNqEb49BkaS5ZkyUr/HZpLaAYIm5cfK/gY0KXFcDdEx4Yx3gEzNkfOwMbdo4DuWkWKhcvHkmaCkh18zUIMgEkygRuzdpw/2bWJ9IW72bJI=
+	t=1779004860; cv=none; b=NaWFtJe+fyYPHhZ+myiu83P+0YnIHfCYwIKsNUNARlQof21ZQnPID7+nk77uFECqRbAcUM80Dn3ljMquLxtajsrKac6jWZsDum4yzdCKfeZMrbNoWVySUb0BJdvZsxxc04AIU2PwSs2SC0ntuArdSx1Uq9fU0ESxDQMYfuDujBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778961652; c=relaxed/simple;
-	bh=lYofOrRJCtEReyJfejE0Rov1Uh7hUo2eVXSluoQHin8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KJBBjVCsirw3M2RDvwUvhAfNqd02opKqNSaJyqa1736XPkAYtOWPHNHJFcENqVPoD7Dju2B5wi8+IbTsyr+unkiZiIDiIj3/DG9+9Drj2KR57NUS/oJaLuN3YoIHxGLN5hqWQ6qob8zMVmtDa0K6O7PqrWZi8xnUCatBUeAQaL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=SSgJCf26; arc=none smtp.client-ip=121.127.44.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="SSgJCf26"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-e1b5cab7be; t=1778961641;
- bh=vlHCAIotM5Ww/YlAnImpQ9bOoYRl3nXprmzP151Dkbk=;
- b=SSgJCf26IHWzViC4Mqjp7kaHw4Voe24xcDlLfPNaGVaIEBl9u2cUje+522Bwh/z/5YEubA1YL
- JnUAz9iBXwgWU1KtLT7yzVoRGwxOTKjmXssAyu0oACHwvCGuOv6vLSvcwyTAvgH7NzoKFoTA7cc
- cEsZVwGxYSdQU3EohWtGiPKLnjckM0Y64bJ6CfdBXFOkUR1Djxpf6P+bG/E/sgxC1syQC3re8nJ
- Zj+61N1mmlAm9VRPTrg71OLIvSWD1WJVtt7w95CtJuoNhVAzIraNah/pbaP8wPcDRLnCOdx5tJd
- jnxJdKizPqUciktoKFSpDv6RmAy26FiIZn0mjXvt+VJg==
-X-Forward-Email-ID: 6a08cce65c12e46019b2272e
-X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
- 121.127.44.66
-X-Forward-Email-Version: 2.8.12
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <2ff890b4-ee97-467d-ba27-a3471861ef48@kwiboo.se>
-Date: Sat, 16 May 2026 22:00:36 +0200
+	s=arc-20240116; t=1779004860; c=relaxed/simple;
+	bh=7xlmiF2cKn9+mTGPsHYhQtTJHz+rY9y3OXOe/uN+ZI4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=fAnYK1L43OC3AVRWA2CX6AluSXKv67h6JxJG+HRkCPcl87Zw0nVJJI1kjQoEF/lRpIYIBrG0RheQaHWXIdNTQokL2pqy10TiC9uiEIahwZ/7YqP4KsY+71Mwrqv0JFVqM5+x+pQJRE3/v7yOkxNwX0HKJMI/UeyZMPK9WNXEgr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C28CD202C3E;
+	Sun, 17 May 2026 10:00:49 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8C7722008AE;
+	Sun, 17 May 2026 10:00:49 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E13221800093;
+	Sun, 17 May 2026 16:00:47 +0800 (+08)
+From: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
+To: imx@lists.linux.dev,
+	linux-remoteproc@vger.kernel.org,
+	andersson@kernel.org,
+	mathieu.poirier@linaro.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Subject: [PATCHv2] remoteproc: imx_rproc: add missing DRAM range for i.MX93
+Date: Sun, 17 May 2026 16:03:01 +0800
+Message-Id: <20260517080301.24774-1-Zhiqiang.Hou@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 17/22] drm: bridge: dw_hdmi: Drop call to
- drm_bridge_hpd_notify()
-To: sashiko-reviews@lists.linux.dev
-Cc: neil.armstrong@linaro.org, linux-sunxi@lists.linux.dev,
- linux-amlogic@lists.infradead.org, Frank.Li@kernel.org, imx@lists.linux.dev
-References: <20260516183838.2024991-18-jonas@kwiboo.se>
- <20260516195224.9E2CBC19425@smtp.kernel.org>
-Content-Language: en-US
-From: Jonas Karlman <jonas@kwiboo.se>
-In-Reply-To: <20260516195224.9E2CBC19425@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 5/16/2026 9:52 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Removing drm_bridge_hpd_notify() violates the DRM bridge API contract and causes hotplug events to be permanently lost during system suspend.
-> --
-> 
-> commit 6b3491e39082015ab62431ea0c93c74c9344b995
-> Author: Jonas Karlman <jonas@kwiboo.se>
-> 
-> drm: bridge: dw_hdmi: Drop call to drm_bridge_hpd_notify()
-> 
-> This commit removes the drm_bridge_hpd_notify() call from the dw_hdmi IRQ
-> handler, relying instead only on drm_helper_hpd_irq_event() to avoid sending
-> duplicate hotplug uevents to userspace.
-> 
->> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> index e9c4e24c090ca..6cc7b2a860bd8 100644
->> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> @@ -3101,10 +3101,8 @@ static irqreturn_t dw_hdmi_irq(int irq, void *dev_id)
->>  			status == connector_status_connected ?
->>  			"plugin" : "plugout");
->>  
->> -		if (hdmi->bridge.dev) {
->> +		if (hdmi->bridge.dev)
->>  			drm_helper_hpd_irq_event(hdmi->bridge.dev);
->> -			drm_bridge_hpd_notify(&hdmi->bridge, status);
->> -		}
->>  	}
-> 
-> Will removing drm_bridge_hpd_notify() cause hotplug events to be permanently
-> lost if they occur during system suspend?
+From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 
-No, drm_mode_config_helper_resume() is called at resume.
+The M33 DRAM view of 256MB ranges 0x[a,b]0000000 are mapped to
+0xa0000000 of A55 mapping view.
 
-> Since the driver advertises DRM_BRIDGE_OP_HPD, does the DRM bridge API
-> contract still require it to call drm_bridge_hpd_notify() to properly
-> propagate hotplug events to the rest of the bridge chain?
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+---
+V2:
+ - Refined the patch subject.
 
-No, hpd_notify() funcs are still called from bridge connector detect().
+ drivers/remoteproc/imx_rproc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> Looking at drm_helper_hpd_irq_event(), it aborts early if polling is
-> disabled:
-> 
-> drivers/gpu/drm/drm_probe_helper.c:drm_helper_hpd_irq_event() {
-> 	struct drm_connector *connector, *first_changed_connector = NULL;
-> 	struct drm_connector_list_iter conn_iter;
-> 	int changed = 0;
-> 
-> 	if (!dev->mode_config.poll_enabled)
-> 		return false;
-> ...
-> }
-> 
-> During system suspend, drm_kms_helper_poll_disable() sets poll_enabled
-> to false. If an HPD interrupt fires while the system is suspended, won't
-> drm_helper_hpd_irq_event() silently drop the event without updating the
-> connector status or scheduling any deferred work?
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 7f54322244ac..175c2d309979 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -198,6 +198,9 @@ static const struct imx_rproc_att imx_rproc_att_imx93[] = {
+ 	{ 0x80000000, 0x80000000, 0x10000000, 0 },
+ 	{ 0x90000000, 0x80000000, 0x10000000, 0 },
+ 
++	{ 0xA0000000, 0xA0000000, 0x10000000, 0 },
++	{ 0xB0000000, 0xA0000000, 0x10000000, 0 },
++
+ 	{ 0xC0000000, 0xC0000000, 0x10000000, 0 },
+ 	{ 0xD0000000, 0xC0000000, 0x10000000, 0 },
+ };
+-- 
+2.17.1
 
-No, drm_mode_config_helper_suspend/resume() will call hpd_enable/disable()
-to signal when the connector/bridge should start listening for HPD. I.e.
-not during suspend.
-
-> Furthermore, when the system resumes, output_poll_execute() explicitly skips
-> connectors that use the DRM_CONNECTOR_POLL_HPD flag, and the dw_hdmi resume
-> handler does not appear to manually trigger a hotplug event check.
-> 
-> Could this result in the system being completely unaware of any display
-> connections or disconnections that happened while suspended, at least until
-> a manual reprobe is forced by userspace?
-
-No, drm_mode_config_helper_resume() is called at resume.
-
-Regards,
-Jonas
