@@ -1,239 +1,282 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013003.outbound.protection.outlook.com [40.107.159.3])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013033.outbound.protection.outlook.com [52.101.72.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED3B30567F;
-	Mon, 18 May 2026 07:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95B63E2778
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 08:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779090587; cv=fail; b=b1+DwfagjLaRVcv//EZeIa1IRgme3Be3tVi57nAIoZ9VejyEk347NSlcrAwQihIiX+F58NL9KM0x9qKWteEj0Quio42PeugQMWr0ejVzaGC1t3kAIJpnqV+iuWsX9hdCPd0WqQiMgBgJEHHmaDoyciGuzRft4/TX0gf9t9rzoAQ=
+	t=1779092559; cv=fail; b=p4YzwUvcsUC+Q/OXQ2bri4l8Jf+LcF9uivTdtds9Pa1OmxUQU/lGw18SRxLgC8BqzCGNvYL2X1MyubOU56dnrofx4Z7hxkjePohCc0g1S3cNcOz9D4LxB3M6jhgyAOC/aQN7GAGLv8xzCCVg72l98GbS8D5aca+jVHPks9efkrc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779090587; c=relaxed/simple;
-	bh=uI6A4X+vyjrk9nIboH2p+PpQhXfoghPUjuFDLAlFPB4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BHynBqqw2p8i8mKgnMD+y6wY267OTAEvdSeCrBjVTHj+bnSrEMzLm0Jghr3bTJNuLLt4mb/lEFIShRaMJEJ5Y4iFrFBTm9xlsxTgsWAMSj/bw9Go86Y0heivv5alQSJw/Hcf2a3u1B+lndn1Yhm/7cWV60JpqY29NWILkBrwN6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xnVR8jdl; arc=fail smtp.client-ip=40.107.159.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1779092559; c=relaxed/simple;
+	bh=ntHOg9q7WLvJYOLgpv4gJnITVcB6YY8rMQ1o7HHUzzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WVxztDBinVPbUYJWey660aaBYn00PG2iYa+87ap1aKajMm8ahN9k51SUkbjmmxYrzbFzVhPPp+/vX3m2iF6JRYICjXI/v3MT7LgdnmHVFNB2u9NkiXZ99VklhxCl2Y1Zm+XDZ3Qf2CH8PeKkAt8OYjPJYWACwfEU7yAss6T1aYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l+efqyhP; arc=fail smtp.client-ip=52.101.72.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xnVR8jdl"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l+efqyhP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gTL5LPeH1guUrs3jjX4m2dK90Xxd1vgC67b50m5EgffIIdVIVxASlFG3FvsNOvWfsyLzUKyNkNGZlxzWks42GzMQ4zDDeV2x5pdaxg6hnNYRrbWvTEOZiqLnSEbYVQi2PBnOw3B6kBcvvkP131EMcZCi9OpKSloFR0GD5lb1nGi8SyrTLpyq6zi5g7i64Wc+NeYUrVhCREjOSo9egkuzYPSkbU3pd49FUwtOL8VbS0+c95tqM3VcmBOYER+RFE/hq/PwadLQpq8ZtUJpvGOFpewdmTTIqlpzeeeRLXu7+7Ql9U7dL+MA80YANMeLd23puQrZaMYPiHLbN0+0G3d6+g==
+ b=sblKV1yTogt64eO5fGMz+j9CDi2n5iS36+PphtHXBEq6eVObXLQDlRrHhEcpWlSAiiiq8R0BCIUFtacQzIQFk/e5IHr6+rvKOckdpEl4If1YdTURdaBGdkGdLpdm+vE4Pt+uLxELnWdPp0FCAc5ySmX6Xt0Q+Jlofp/NWvgfa6rW1JYS6Tbk2B8D/rDho8iodIbaZ0oW0uzjXY22V7BYJDh1k1IWKVd1yp6EgneCdPYqFCaHF+IE+2dT3qR8bFH31LALHzzZncZfyxfThhD7TGLNy0SQpuiZrnYHXByTUQzLz2rVoPPh86kX4+pbUMk8IY+dW719oYbjiCiOcxOCUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sQXgFkJqbzmMeN3TiIicMDagP2MAammaCWcAfXEqj5E=;
- b=ZIO8Oerja+7MIibWnqqJoeWAiayC1CGVvukd1tAQIqi3wRK+83bqw9nDuItsM9s1cjQEBnPJ2S6WQiDUMSsC/rnu0hSMZf7Mu518XFnGbudFOjV/mDdGE0Kv7bZhyC7/HfUwTG289qbBdo+De4S1tL8OlQ8FhniNUDJWF60Ic9Iz6jbz79Q8znr/vdjkXD0FbX0SAliUYBxMzrBUV5BczyFqgbQaJ3kQC+lwp/VE25PgXdmOci10ZyNyt1s4DDQlxtrND0iJeAJiQYEjG6qJxadzGbBMdlRkV98lkUZ9UtAlneIyZMc5N7Rk2wnL+c3/LLvb4xtv2grZFLD2Jmb/Mg==
+ bh=u/AwtKtJ1cHYQaBxNYDgUizbz+huTSjEEo9GXTCRbBs=;
+ b=iRdah5FFmQ7uzRe2vWAVoMtMZVW0m0mic/gm3GhYA0CDDstMPh6xCGaJsvP0TwVzeP/kLdDQn/PFjq13FHw6IxYM9P6z81WkyjXIaa4EVpQ0YP4q/SOUheCp2UpEBYp6o0v2DF1NGkzuim0Vuee9eL+q2qv2nzee+4KZw1kyvGOicJutqYhUd9qHFm0eXfwBBSipBOk6n/6Mry6QGLFBDO9DeZIt9ORV4IlmGaJGu4zjuCrktX+pjVZ6VbAIqeJU+FgQu9pbCSoktvSbOM3b3vbf9Phpzym49MgFrK4AMcN8Tg3NC040cqVC6FXMihD19Og2U8erECnRlKkfNkJy3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sQXgFkJqbzmMeN3TiIicMDagP2MAammaCWcAfXEqj5E=;
- b=xnVR8jdlpV1t+DkXJU4TEazcnJTr6z3PDEQEZERgmiJWwzV+PKuik71eit68Dg7HUsydAFvIWtLFz86jHOby2A7xJX/6LzeLwyxGurXdvldkkwDE/J9S3Hq8qd1pw8IQnwAm01nOxm+NG/WakR3tc5bMHEQjfWs0lPs+0GNtDh3BPTNrgcPt5xOpkMiMl4BXLqZAZlr8N7mcQzmpV23mpbef0nlN7i9NrG67qhmpefzCX1DVRsXAbmcX6t3mH7B9RHx1w2suLpk/N+JARpWDaFAUl+Ka4+sqOEJ/Tu2mZY4wDi5WVjtSUjCLMDuHtfqrEkrdHmiaisHz7KL1v54ZrQ==
+ bh=u/AwtKtJ1cHYQaBxNYDgUizbz+huTSjEEo9GXTCRbBs=;
+ b=l+efqyhP+5uTax/8bR1n6kPPCjlmGLAdt4Nz7soDea/uEf58TR06xqa60WrXVvKqY1pa5kP3pTc80OUuTujgpoC/C0zkJVfXP78lyxNvvGoSO10SOQd44B8NDOjCHOKOZf6QSjEMycCaULLxdEBre51ajxULnxQmaoyFsN8Z18gkvCXEBZYHIlnBxjKi2EQjPeUIoht1ryPiUT2vxxqlNdvONfEXDRgEFVan/N686InyJ55Bh/eTu/HT3A+Ir8eOWMIMrt0dnKxyEoXO9VUDPCiT0SAV5A3btO6yP5AcgaSnqb3cKFCJfG4tynSPCNZFEGiSjLthpk0feCQWwhZPKQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from MRWPR04MB12117.eurprd04.prod.outlook.com (2603:10a6:501:97::14)
- by PAXPR04MB9187.eurprd04.prod.outlook.com (2603:10a6:102:221::16) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by AM9PR04MB7713.eurprd04.prod.outlook.com (2603:10a6:20b:2d4::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
- 2026 07:49:39 +0000
-Received: from MRWPR04MB12117.eurprd04.prod.outlook.com
- ([fe80::9a10:5b39:708:7f43]) by MRWPR04MB12117.eurprd04.prod.outlook.com
- ([fe80::9a10:5b39:708:7f43%6]) with mapi id 15.21.0025.022; Mon, 18 May 2026
- 07:49:39 +0000
-Message-ID: <91a27e49-c6d0-4959-a792-6ba3b197bc9e@oss.nxp.com>
-Date: Mon, 18 May 2026 15:49:32 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] Re: [PATCH v4 2/2] arm64: dts: freescale: add i.MX95 19x19
- FRDM PRO board dts
-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, conor+dt@kernel.org,
- robh@kernel.org, Frank.Li@kernel.org
-References: <20260518-imx95_frdm_pro-v4-2-975346555a9b@nxp.com>
- <20260518032046.198F0C2BCB3@smtp.kernel.org>
-Content-Language: en-US
-From: "Joseph Guo (OSS)" <qijian.guo@oss.nxp.com>
-In-Reply-To: <20260518032046.198F0C2BCB3@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2P153CA0031.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::18)
- To MRWPR04MB12117.eurprd04.prod.outlook.com (2603:10a6:501:97::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Mon, 18 May
+ 2026 08:22:34 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Mon, 18 May 2026
+ 08:22:34 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH v8 net-next 00/15] Add preliminary NETC switch support for i.MX94
+Date: Mon, 18 May 2026 16:24:51 +0800
+Message-Id: <20260518082506.1318236-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0005.APCP153.PROD.OUTLOOK.COM (2603:1096::15) To
+ DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MRWPR04MB12117:EE_|PAXPR04MB9187:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b604aa8-40df-4878-9de2-08deb4b2039d
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|AM9PR04MB7713:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7e8e5bc-1b1c-468e-e667-08deb4b69ca3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|19092799006|22082099003|18002099003|56012099003|11063799003|4143699003;
+	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|19092799006|366016|38350700014|921020|18002099003|56012099003|3023799003|11063799003;
 X-Microsoft-Antispam-Message-Info:
-	U2Y/mjhvgqP5Eb92OJ297rWVS4FkanVnGoXlTLK62FoDUzuXkcgbKtAJxnZTlpLgTYMxS/rwUMvLh7j+gQUMmzys8Wee9m2B3SdLiWIc+BBFmoIVEmtduf+x9LAJtmpnwWgz5+ugy5zNal4u2C5NmDlP+48UXJ3YakcneFI8YW7Gsj5XIRPxFGAX4JZJ3If/CmoH1c5C2SLW7h7ukhTVrbCeKzm40LOYvzx4rzkt+nVHnciCUn3KjzxRqw1+BFn7z+Vth76u6E+Rop4D0u/OT45Y7g4zpZPzziswlsq+zJ5dJ+gOy73Xt5I0Te2JWks+2RvymM22B7zppf0XiuKtTQnQNMThszheRK64CgjHLFrbOhAtt2yNjGpaAIonclqnzCFAZ6frISaY6eLt4OAsqX/oA3nm8QwjACUFrSvoDvpuvh7iYeycRrY5HQjLK5kdXGjozjkdrXFnq7Q9trUkJaxg+Wc7eZCifXQrR2K36mh+Cad/HW42XWkjkmet/UZ7unfcWTdnE4BEcrk2at/WHmXVNoLwyIiwiNB3d1c0uyY8ixmm8Y7xtZwlpYVDcKxLYyHSDKVwr0ERck89d4sb73baKhMHZfdrtchxNqiU6eW7IEVtQgXv744ipgt1CH3yfLRJzwskgprR0vPBPMO5yB2+WKLiRk9uzthsgmc7A2ke8DX/DGsSr3nfePhyXEL/
+	zBJvU9npTtjF79fhlTH535n0NMZxjYmPq3rXqWoFfN+Klo0fBDIYGlVIh9DaeVCstdyvAYrkJizn0jy5Ae+q+1szGqT61WBE+qbmd6Y8+UbPHYpyDj/2QtZq1e3V+tV0UNUiGDBWGBtsVFeBG32iTN3SoFsqZI5A8VVBjb+6J3ci3i7vOigKvcloXeKplihSPlRK12jtL5XAPNsA2xyfwCRxDfzmmJwtCr0WWh/dEzZzgHecnIBJ9KfNWdhnxKKbf64Yyy7AV0UFNeLhzN4/QZLT1aeERSTNi9WsUo2lLkfbaywodORHJyB2MSf3Sn2NXVJWBVh+6yeYI73f0w8X90G81i8T5bAOFZ5jX7adVATfTVNLLCR5B+95WXnaJNgqrrYBgXLtRwIFMyHsv21RnkeYXJpnh6RkErMii5GSWKijOetDjfjFU8SrrYQNfFKpGQIAi0mquIa8gbmMKFi/mlCVn2Vh7O8ONdKftPz9PZc7+V4si0Fk4VzOk/OTRrLvmEX63lKrEd/sukYVlMcZp6ljUI0hTPi04LZ3cMvOE36bJcyG/B+x1sIOJAmO75xMJCM8hjlNX1eOIiOBsRyx7pjU9s6fXJ+YduJB5Qr0ZmA+dAp+Lo8si4ohijZBaKoXxefXrTjFnuxT9rIvH5J1V9o/76m9w3HrNwcVd6B4G7HWzR9BurCH+fAK7VZScMQdC6riIyqJaQI8hlQfdu2DnBltSyo7uLBGWPWE43Oe2qmEZdu7FoaOF0mvOWUrhAoOD+qPfWw9emLElc4xtNMbPg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRWPR04MB12117.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(19092799006)(22082099003)(18002099003)(56012099003)(11063799003)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(19092799006)(366016)(38350700014)(921020)(18002099003)(56012099003)(3023799003)(11063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VmJVQ2NiRTEyVkhZK1NWWTgxRXFldmF4ZEkrVE1QL29VcWV5ZFpBYkw1NWor?=
- =?utf-8?B?d2FONEhoZElMTFMvZXA1Z3RVUnFvekhkRjZOeVA4Y2JsdXB6elZwbk9DUWlT?=
- =?utf-8?B?T0VneHpwUk9yRmhVUndrSzVhYWlyMDBBbEZ5NUhpWkJwRWxtaUx5dGVIVzJu?=
- =?utf-8?B?SEVkZDFycnJlOE40VmEvekdSbzhOb0dZRmVYUnBickFOY2hldE9aWk9GYXZk?=
- =?utf-8?B?Y3N6aHVqTlNzd2JqZnB1ZTdWTUx5YjVtcng2VzV1UE1sNkdTTTlZNGZ3RFBy?=
- =?utf-8?B?UDBJVzVDVy9naS9ObEtaWllSRlFPeDVPY2xuQ3g1YmhKaURYYlZKMHhRVWda?=
- =?utf-8?B?dWdqOFZacnJxdHAwdmhLUWdOelpsdVNEVmZhQXZyODM4MXJ1cnNGQVllNXhK?=
- =?utf-8?B?WXhYaTUwczFENTRGZUpXd0g5T04vdUlCenVCZEg5UUZ0Y3QzTDJGdHZKOS9D?=
- =?utf-8?B?K1ZqNHFmcUIrL3F1TnpEMkE5SjVDNXcvWmU1L1BzM05ITTY0UzVZTTdwOXln?=
- =?utf-8?B?WUxsbDJpVW5SOUlIY2JrNEtEVlRvK1kvdTRkNnN1MXROL01tZG54MGRTSm52?=
- =?utf-8?B?RHZlSmJuN3dLRFRKWithRnhMbVd1dWg0Y1V4Ujd4eGJkL3pYVnRsaEkwQjRN?=
- =?utf-8?B?QUM1V0o1cmIzQkFaWWRLaW04RSthclBMRk9LOUpxbEVjT0tJTkllVkY1cmx6?=
- =?utf-8?B?SUVIekVMUUFmQWlNT3BkcnRyTHhJclQvd2VINDdteWdrZjFPNjZ1S1NDRG01?=
- =?utf-8?B?M0M4a0V4NkhFa2JoKzc0S1RKRlhmdXBTR01HVXdEd21VcnJOSUZSV1M5bGJH?=
- =?utf-8?B?dVRaOWNPWVRQaFB2OU44N3QyU3V0WTV5VjFYK0R0UlJyMzdvVkhiTVBUWFZv?=
- =?utf-8?B?RTIvMEZrNXlZUlpsUjZJQWUvODc1TTdpU040NURnc2xuaDVIdTdUTmxKSnMy?=
- =?utf-8?B?U1lIRExRU3BnbHVUMStTSmlGc2lpbVN4SkppSEMrSUJ5RjhZbTVlSHhoYlNz?=
- =?utf-8?B?OUUreW12cHlMSDBQa3F4eS85RXdNOTFna00zcTJmVlRWd1ZUYUMyOTZkUXY0?=
- =?utf-8?B?YVZyNS85TTkxZTVuam5WN0pRU2pULzB3UzFnSElWVFFXZkFSTnh2akFPZE13?=
- =?utf-8?B?THpKTzJZeEFLUkFSd2piNmI3ellZWmpsQUdTc256V2ZVZ0p6Ym02QkNMK2ha?=
- =?utf-8?B?NzY1V3E4WW1LcVFCOWh0ZmJJd0M0ODM2TVNwdnhpbFZnam9CRG5FTjNVc0E3?=
- =?utf-8?B?TDFTa29Jc1JqUEhjWXVBS01hdVdzazNpL1hiU0crb05JNjA4eldOQmZ2RE56?=
- =?utf-8?B?L21rMVl2VUZNaDRaanB5OTUyVFNsYzBOc0htbThMSkJjVmQ3OHlmY2tOS2lt?=
- =?utf-8?B?cmt6TkJNK0dXaHpnVDZiYVdqSm53ZGdnZGdiUlJWZVNsQmVLdDh0QkhnZ1Jm?=
- =?utf-8?B?Z0NQZmNvWlVPdU00alR2REs1RTNycDNXU0srbXlhMkdyTVByM2VSQitrWks3?=
- =?utf-8?B?UTR3WEFRbnVySEFhZFdRNzNCU1NqcnBXSTVyVlpvYkQ0dzlpbWNBU2h6R3Rx?=
- =?utf-8?B?Z2tNYWpKaWVDeGw3ai9xVXpSWVJiSEFGK1VUSHc2dEduTVBndk9GWUgwZ0JH?=
- =?utf-8?B?T1Z4SFdySUJRS20reHFmNHhubUdXdWtCMFpHMHdBY1J6c2pjWnlnZGhEcVQz?=
- =?utf-8?B?MXQ0bzZzdGZVLzl5NlRsRjBCM1NNb0FGd0pTeUttODlnU0FyeWhRZTBSZVhC?=
- =?utf-8?B?QTBZNGxSODYyMkJxdzFWS2ZNN002TDl4MGhmbHRML1JzZ0hjdDdMYVhpbkgv?=
- =?utf-8?B?Ky91c0FRbFJFb0U3OXdrNGRLaTRLcXQxTGpxQWJnUUt0TURCdUlqb0JoODFU?=
- =?utf-8?B?bzBSbXBqRFNMUTBDb1hza3NZM29nUFFad2svMFhPdGxJc2xQUFlDVkhTcnB6?=
- =?utf-8?B?MVg0UU16dGxvd0h1WGFvK0xwZE9YN1hQM2FzSGdheXZWSE5XenhQQzdObDNB?=
- =?utf-8?B?dWFpS3JGRVQrS2FMOS9PMElOUUFmTUJZRmpXdnlibmxQdStnMDY5UlBaZVE0?=
- =?utf-8?B?bm5IOW9zbjBFaFN0b1ljK09LWGVDRmlxU2lFZW5uVGJldWJ6Yk9IbFZCUjVH?=
- =?utf-8?B?QUV2dmF4Sys4Wjh1QmlVQ3oyQWhOekFhRUdQdHY0U3JGR09KSFYzTytPT2x4?=
- =?utf-8?B?VnJvcmNMc2dxS1dLVndqVU56K1d1cWsvN3paUVYzT0kzU1NVVUVVcCs1alN2?=
- =?utf-8?B?U0xBVmFmbEhMQWRvTWM3dEt4LzBQa2JkTWswN0sramVyTDM3Y0gxVlRMN3Qw?=
- =?utf-8?B?UElzUExqTFNCR0RDZ0wwVXhJMFRNK3pqTGF2SXhYbDM0Q2N2WjRTZz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b604aa8-40df-4878-9de2-08deb4b2039d
-X-MS-Exchange-CrossTenant-AuthSource: MRWPR04MB12117.eurprd04.prod.outlook.com
+	=?us-ascii?Q?bOn5R3UfBuyBlFur35aFvNSKX/4s6/KyywGHolrrIgrNhvP4KyNh1LNHfSyt?=
+ =?us-ascii?Q?KYFnUdUCDWQOMYSzv8YLJn3cPWoIfC6OCcdwEpbA3zXkXKlCklKVAOWp/1iA?=
+ =?us-ascii?Q?rSOL5+JkRMeAB3v1507rVT278iDj5Yh2by+08KCYJb5OGk7HMX3jbcYF+cuK?=
+ =?us-ascii?Q?TPr13g20gzmAnThbYlIh4jPKUmlpa58EyXkZQdUmAutlB98oh2dWud+Iu7zm?=
+ =?us-ascii?Q?lZOtsiz+CXFoMVj4nUdYregLCAqQm35eexSoUChijMeYp4CHjDgo6q8AqIFb?=
+ =?us-ascii?Q?kT/eCdU47+HzMRjCna4Db2bFKignIxuNkC9hau82girueJ2rSDtbvQFyGuF3?=
+ =?us-ascii?Q?ApZM5OKzL5ZGwaFNehW/DGQzj36Fpy80R4cq3ZNGc+NJgjx11xCEsuu2UcZK?=
+ =?us-ascii?Q?uNIgdxiOKQi6dPvlAqK+srprLJZLzdXqBNi+wkBuuJNdhFlL4ihTIjBSK5sP?=
+ =?us-ascii?Q?lu5U50hnMy1P0uOceCow/SuqZk8ftQVAD/VguGd5eoxHKhVSwSDDBg6U32dN?=
+ =?us-ascii?Q?zE3H5TUDyiPKen1uHyct5DoWsUz8XYSxv7OTvcD5yVBD1yT+K7d+RLqBjKoH?=
+ =?us-ascii?Q?mOwYgxkBXr7+e93XQW3FHn1HIngiCK4tBcIkHKU8iNcA53LejpHBdYe2OoEG?=
+ =?us-ascii?Q?HZ6dqKgc4iLVhfq31odaEW6D3zqzEMX6Ldh7aIJ3Dz3bEQJEJvM2lUXQ7smP?=
+ =?us-ascii?Q?cHe/L2eogywnVnxydVA1OxAQWUMoohEGhj3DqiXXDRvXlDW9WHIOkBalNwhk?=
+ =?us-ascii?Q?b6/HZqO2iVFZUBj7HnV9WGTKa+YCuNavHSfOMr2ouwQTjdBHa0zyHgER7RSW?=
+ =?us-ascii?Q?VmJosUeP3JKYqlF+1Yk5A7P2WICKzoCKyytlSEzP17jlbqhB6HIoUQhR7kyr?=
+ =?us-ascii?Q?ndlR/1TVsHziRxXWUaKEs44NYe/oUoNug7Z7zHYuIU+j1FaumcGo55KOI4KK?=
+ =?us-ascii?Q?JnV6sr2erCkzlB8gX2fMLcSdSr5VE38ZhDm/UdVGm1cOuKe8CcldQ1/XDwDd?=
+ =?us-ascii?Q?/z/PwKXJYzXG68txwxjDkxm7C0KmNm2uqf3p2R7TtrR1Usrwm6cN2/PAguJ9?=
+ =?us-ascii?Q?joZ/ewvkUqfPqGFBoklEGjsdIXQPxNUNz6ktAyAMqvYZzwlFEBvCnKRM/28f?=
+ =?us-ascii?Q?b4ijUa6ir9Ob74P/TkdxaFUHM+SA3w1XEDntZNAa5qavSy7voqnDeVBJJ/3I?=
+ =?us-ascii?Q?QsN17uqZTguILrZxuY6U6nl55FnAlJcLNpZ3RUJLO1jo+Kegglv3WFXrhAO5?=
+ =?us-ascii?Q?H5l4DUfDzYRaopmBwfMHyoLvTjLCuZhgWPAn4GGbq5glAeAUpcEoLJQYfMGt?=
+ =?us-ascii?Q?bHCN/80DkfInXKRSPTz7W5mrzJ9wtZRiMjdWpkW/nX7hpyQafJ62QJkdpoh2?=
+ =?us-ascii?Q?95oP0y0vhw8S1Kppt9FndYzHR369YYn280NbLQWv5z1PUzi6MweL2RDousIA?=
+ =?us-ascii?Q?vefi4W6pvItECWvBLFq+bKtTds75GC4BtNwbW8a+3fJWREpsYRY6ZOgs7P4i?=
+ =?us-ascii?Q?6OLAzBg+f6iLWC7p6wlwCmp8aIjYjH/8b6rHfFzzCcUHWrnIo8nTEazq/1KC?=
+ =?us-ascii?Q?sciG045hlIdgmjpwlFwgdumqOlFAMTMljZwhFJnEJLSJYyQzprzeJtz8Ttc7?=
+ =?us-ascii?Q?pr992d2/ahHShnZnl75q9FqA+GEsdpHzpmodQdfre6pNLlkIetnNV5V7NLDQ?=
+ =?us-ascii?Q?iRar7o1hSc3LdfzSOUov+GRMzwAUObSwDttJVG1YB3IkoOe8fwsMGMbW8EO2?=
+ =?us-ascii?Q?XBqg7Dy/8w=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7e8e5bc-1b1c-468e-e667-08deb4b69ca3
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 07:49:39.3764
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 08:22:34.0891
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xWWeWPpvJJpGeQ+bpfzyp9vIQ4FFghPSKju8jml+d556VaESyKABblzSQR5n7dr0/VzMsJGxwwwmKyw5g8/VUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9187
+X-MS-Exchange-CrossTenant-UserPrincipalName: MiiVFywOLoM3ywpP1UWvgnI36ktg86hRuIZcm8jlHgasN7Ou7QCPzXzNy3NFn8ZQVCjt6kAOBO4ajm1yGHWBVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7713
 
-On 5/18/2026 11:20 AM, sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
-> - [High] Architectural flaw preventing the M7 core from using the CAN1 transceiver.
-> - [High] Incorrect drive strength in `pinctrl_usdhc2_200mhz` causing potential SD card instability.
-> - [Medium] Mismatch between commit message claiming 10G ETH support and device tree implementation.
-> - [Medium] Dead pinctrl configuration in the reserved `flexcan1` node.
-> - [Low] Unused `reg_3p3v` regulator node.
-> --
-> 
-> commit 65457c99452cde3ade57a7afda12053dd0e2d5ee
-> Author: Joseph Guo <qijian.guo@nxp.com>
-> 
-> arm64: dts: freescale: add i.MX95 19x19 FRDM PRO board dts
-> 
-> This commit adds the device tree for the NXP i.MX95 19x19 FRDM PRO board,
-> which is based on the i.MX95 19x19 SoC. It configures various peripherals
-> including USB, PCIe, ethernet, CAN, and regulators.
-> 
->> - 10G ETH interface
-> 
-> The commit message claims support for a 10G ETH interface, but the device tree
-> only configures enetc_port0 and enetc_port1 as 1 Gbps rgmii-id interfaces and
-> entirely omits the i.MX95 10G Ethernet MAC. Is this omission intentional?
-> 
-10G ETH interface is not enabled in this device tree. But it is supported by hardware.
+i.MX94 NETC (v4.3) integrates 802.1Q Ethernet switch functionality, the
+switch provides advanced QoS with 8 traffic classes and a full range of
+TSN standards capabilities. It has 3 user ports and 1 CPU port, and the
+CPU port is connected to an internal ENETC through the pseduo link, so
+instead of a back-to-back MAC, the lightweight "pseudo MAC" is used at
+both ends of the pseudo link to transfer Ethernet frames. The pseudo
+link provides a zero-copy interface (no serialization delay) and lower
+power (less logic and memory).
 
+Like most Ethernet switches, the NETC switch also supports a proprietary
+switch tag, is used to carry in-band metadata information about frames.
+This in-band metadata information can include the source port from which
+the frame was received, what was the reason why this frame got forwarded
+to the entity, and for the entity to indicate the precise destination
+port of a frame. The NETC switch tag is added to frames after the source
+MAC address. There are three types of switch tags, and each type has 1
+to 4 subtypes, more details are as follows.
 
->> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
->> new file mode 100644
->> index 0000000000000..b87a26b0d7fcf
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-frdm-pro.dts
->> @@ -0,0 +1,1021 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->> +/*
->> + * Copyright 2026 NXP
->> + */
-> 
-> [ ... ]
-> 
->> +     flexcan1_phy: can-phy0 {
->> +             compatible = "nxp,tja1057";
->> +             #phy-cells = <0>;
->> +             max-bitrate = <5000000>;
->> +             silent-gpios = <&i2c4_gpio_expander_22 11 GPIO_ACTIVE_HIGH>;
->> +     };
-> 
-> [ ... ]
-> 
->> +     reg_3p3v: regulator-3p3v {
->> +             compatible = "regulator-fixed";
->> +             regulator-name = "+V3.3_SW";
->> +             regulator-max-microvolt = <3300000>;
->> +             regulator-min-microvolt = <3300000>;
->> +     };
-> 
-> Is this regulator used anywhere? It doesn't have the regulator-always-on
-> property and isn't referenced by any device node as a supply.
-> 
+Forward switch tag (Type = 0): Represents forwarded frames.
+  - SubType = 0 - Normal frame processing.
 
-Reference 3v3 here. I think should keep it here.> [ ... ]
-> 
->> +&flexcan1 {
->> +     phys = <&flexcan1_phy>;
->> +     pinctrl-0 = <&pinctrl_flexcan1>;
->> +     pinctrl-names = "default";
->> +     status = "reserved";
->> +};
-> 
-> Will the M7 core be able to use the CAN1 transceiver with this setup?
-> 
-> Since flexcan1 is marked as reserved, the Linux CAN driver won't probe it.
-> As a result, Linux will never power on flexcan1_phy or drive the standby GPIO
-> low. The Linux driver core will also ignore the pinctrl-0 configuration.
-> 
-> If the M7 core depends on Linux to set up the pin multiplexing and enable the
-> PHY, does this need a gpio-hog on the expander and the pinctrl moved to an
-> active pinctrl_hog group instead?
-> 
-M7 core didn't reply any linux side to set up the CAN1.
+To_Port switch tag (Type = 1): Represents frames that are to be sent to
+a specific switch port.
+  - SubType = 0. No request to perform timestamping.
+  - SubType = 1. Request to perform one-step timestamping.
+  - SubType = 2. Request to perform two-step timestamping.
+  - SubType = 3. Request to perform both one-step timestamping and
+    two-step timestamping.
 
-> [ ... ]
-> 
->> +     pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
->> +             fsl,pins = <
->> +                     IMX95_PAD_SD2_CLK__USDHC2_CLK                           0x158e
->> +                     IMX95_PAD_SD2_CMD__USDHC2_CMD                           0x138e
->> +                     IMX95_PAD_SD2_DATA0__USDHC2_DATA0                       0x138e
->> +                     IMX95_PAD_SD2_DATA1__USDHC2_DATA1                       0x138e
->> +                     IMX95_PAD_SD2_DATA2__USDHC2_DATA2                       0x138e
->> +                     IMX95_PAD_SD2_DATA3__USDHC2_DATA3                       0x138e
->> +                     IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT                   0x51e
->> +             >;
->> +     };
-> 
-> Are these pad settings correct for 200MHz operation?
-> 
-> These use the exact same pad settings (0x138e and 0x158e) as the 100MHz group,
-> whereas usdhc1 and usdhc3 correctly configure higher drive strength (0x13fe and
-> 0x15fe) for 200MHz. Can this lower drive strength cause signal integrity
-> issues or CRC errors with the SD card at 200MHz?
-> 
+To_Host switch tag (Type = 2): Represents frames redirected or copied to
+the switch management port.
+  - SubType = 0. Received frames redirected or copied to the switch
+     management port.
+  - SubType = 1. Received frames redirected or copied to the switch
+    management port with captured timestamp at the switch port where
+    the frame was received.
+  - SubType = 2. Transmit timestamp response (two-step timestamping).
 
-For SD card. The driver strength is enough for 200Mhz. No CRC error was found during stress test.
+Currently, this patch set supports Forward tag, SubType 0 of To_Port tag
+and SubType 0 of To_Host tag. More tags will be supported in the future.
+
+In addition, the switch supports NETC Table Management Protocol (NTMP),
+some switch functionality is controlled using control messages sent to
+the hardware using BD ring interface with 32B descriptors similar to the
+packet Transmit BD ring used on ENETC. This interface is referred to as
+the command BD ring. This is used to configure functionality where the
+underlying resources may be shared between different entities or being
+too large to configure using direct registers.
+
+For this patch set, we have supported the following tables through the
+command BD ring interface.
+
+FDB Table: It contains forwarding and/or filtering information about MAC
+addresses. The FDB table is used for MAC learning lookups and MAC
+forwarding lookups.
+
+VLAN Filter Table: It contains configuration and control information for
+each VLAN configured on the switch.
+
+Buffer Pool Table: It contains buffer pool configuration and operational
+information. Each entry corresponds to a buffer pool. Currently, we use
+this table to implement flow control feature on each port.
+
+Ingress Port Filter Table: It contains a set of filters each capable of
+classifying incoming traffic using a mix of L2, L3, and L4 parsed and
+arbitrary field data. We use this table to implement host flood support
+to the switch port.
+
+The switch also supports other tables, and we will add more advanced
+features through them in the future.
+
+---
+v8:
+1. Remove the duplicated 'is' in the help text of NET_DSA_NETC_SWITCH
+2. Replace num_fdb_gmac with htmcapr_num_words
+3. Update NETC_PAUSE_THRESH and related thresholds of buffer pool entry
+4. Remove the read-reset registers from netc_port_counters, and also
+   update the commit message of patch 15
+v7 link: https://lore.kernel.org/imx/20260513030454.1666570-1-wei.fang@nxp.com/
+v6 link: https://lore.kernel.org/imx/20260509102954.4116624-1-wei.fang@nxp.com/
+v5 link: https://lore.kernel.org/imx/20260430024945.3413973-1-wei.fang@nxp.com/
+v4 link: https://lore.kernel.org/imx/20260331113025.1566878-1-wei.fang@nxp.com/
+v3 link: https://lore.kernel.org/imx/20260326062917.3552334-1-wei.fang@nxp.com/
+v2 link: https://lore.kernel.org/imx/20260323060752.1157031-1-wei.fang@nxp.com/
+v1 link: https://lore.kernel.org/imx/20260316094152.1558671-1-wei.fang@nxp.com/
+---
+
+Wei Fang (15):
+  dt-bindings: net: dsa: update the description of 'dsa,member' property
+  dt-bindings: net: dsa: add NETC switch
+  net: enetc: add pre-boot initialization for i.MX94 switch
+  net: enetc: add basic operations to the FDB table
+  net: enetc: add support for the "Add" operation to VLAN filter table
+  net: enetc: add support for the "Update" operation to buffer pool
+    table
+  net: enetc: add support for "Add" and "Delete" operations to IPFT
+  net: enetc: add multiple command BD rings support
+  net: dsa: add NETC switch tag support
+  net: dsa: netc: introduce NXP NETC switch driver for i.MX94
+  net: dsa: netc: add phylink MAC operations
+  net: dsa: netc: add FDB, STP, MTU, port setup and host flooding
+    support
+  net: dsa: netc: initialize buffer pool table and implement
+    flow-control
+  net: dsa: netc: add support for the standardized counters
+  net: dsa: netc: add support for ethtool private statistics
+
+ .../devicetree/bindings/net/dsa/dsa.yaml      |    6 +-
+ .../bindings/net/dsa/nxp,netc-switch.yaml     |  131 ++
+ MAINTAINERS                                   |   11 +
+ drivers/net/dsa/Kconfig                       |    2 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/netc/Kconfig                  |   15 +
+ drivers/net/dsa/netc/Makefile                 |    3 +
+ drivers/net/dsa/netc/netc_ethtool.c           |  291 +++
+ drivers/net/dsa/netc/netc_main.c              | 1585 +++++++++++++++++
+ drivers/net/dsa/netc/netc_platform.c          |   87 +
+ drivers/net/dsa/netc/netc_switch.h            |  173 ++
+ drivers/net/dsa/netc/netc_switch_hw.h         |  366 ++++
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  |  185 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   |  391 +++-
+ .../ethernet/freescale/enetc/ntmp_private.h   |  122 +-
+ include/linux/dsa/tag_netc.h                  |   14 +
+ include/linux/fsl/netc_global.h               |    6 +
+ include/linux/fsl/ntmp.h                      |  186 +-
+ include/net/dsa.h                             |    2 +
+ include/uapi/linux/if_ether.h                 |    1 +
+ net/dsa/Kconfig                               |   10 +
+ net/dsa/Makefile                              |    1 +
+ net/dsa/tag_netc.c                            |  214 +++
+ 23 files changed, 3773 insertions(+), 30 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/nxp,netc-switch.yaml
+ create mode 100644 drivers/net/dsa/netc/Kconfig
+ create mode 100644 drivers/net/dsa/netc/Makefile
+ create mode 100644 drivers/net/dsa/netc/netc_ethtool.c
+ create mode 100644 drivers/net/dsa/netc/netc_main.c
+ create mode 100644 drivers/net/dsa/netc/netc_platform.c
+ create mode 100644 drivers/net/dsa/netc/netc_switch.h
+ create mode 100644 drivers/net/dsa/netc/netc_switch_hw.h
+ create mode 100644 include/linux/dsa/tag_netc.h
+ create mode 100644 net/dsa/tag_netc.c
+
+-- 
+2.34.1
 
