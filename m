@@ -1,255 +1,142 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D36413229
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 12:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA34730F7EB
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 13:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779107815; cv=none; b=Mq5109j5pBiPLlBsT+2yx7LkYw3w92ZfFSCqEQSy+GyHFo0tkv5q+pv9MZu5gEECpbU/QKN4IqFD4ihFBM6OYd+EP9mwC2FDZTzUV/JNQEw9b/2n6kraWnegrWCJQkvgeRLkexoj1y7WJP2H+3UCCdvhTs8Ej2ZZgbuyEPIG268=
+	t=1779109396; cv=none; b=bzjpyJnM2DxtklF8t8N7n3x7X06ClKbN7n8FN3LZOKFq9vK3pXiIdPUhwKgGH4EFwkHonCsfA4ghj/pZhyki2VuDGThjqBPbKIABno/YwDw17oh9+jTqTTxWTmDNV9v8gNuMvCT7f6AN0jkZ0CzU32/Dc0wvu9tGnxVC3E+Hlr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779107815; c=relaxed/simple;
-	bh=G7RMPyishAieeB8BYJsbiqtbGJJSNDe3OdP3a3YfKMA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i6Hrzry6bysci7VzgHrFLNJ2WO+a6bbqCImeXaBfOfwgJaXSUY12c9ULBW3tatuaxWMY0Fb3hytr0o5JNeKF6m+WAMxWCL3vXfbQ1lrEA3r/wJ6SiI2Il5ZKDnCkDeQst2M0GvQ6YdHTtgXy76H6mohC2IDGgIvEyZ/O5p8hSzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2opEB9Ci; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1779109396; c=relaxed/simple;
+	bh=wssxgGrG4IDoGJpbDk8e0YhsxqyFUXYrnmnvjioRl3U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nUZW5lu5/p1Pppc3E+6TMgr7PQjzQ7FABXSu+fCypsVxooIKk9Jgg/Ys+doopPWda+USgwPUgb1NUDQDWTrEML6Ozn2aRrA5DFSAzjVEFKq7MiYU6ROQtWbk6c6tD39lyUoTkMed3wFaL5a1Y2b/8K/owScOmtBTkzGP+EyTBRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKrlU9X8; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2opEB9Ci"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 959604E42CE3;
-	Mon, 18 May 2026 12:36:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 63D3F5FFA3;
-	Mon, 18 May 2026 12:36:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C9C211AF8B33;
-	Mon, 18 May 2026 14:36:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779107811; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=fS5jED2APYID6ACtGXnR88TqQ9pgAD4ONbbk9HSWgmM=;
-	b=2opEB9CiqtgfLj2wA73JbNFxid9Q1IS4772mMWybrumJib0vh//fq+1e2dkBn7Dm1ZaEUL
-	hOeClOiJkfc/g4pJE/r4gaqN201xgC67FU78qJDzfPdEHmWfClw8f3Yp0JyaGqYQMVLRoq
-	VQao6pXpKbl5momtsQjLnYdUqBcEIUhE0szEqE4cWKJkTLc7Vsso215EaNSLetepfagv7I
-	FEJeTTRtI6TPw9OQ3ogmbIjZDQuDnPz6+sabL0rAO8G/2hcsVtitwENCfkRiWFH0/Xxl2a
-	obH9SWE2vSVHkqAKxk24J6zi0/nRBiNFLnk/IJvHDRRBq8k+XN5q+yyxBHMUFA==
-From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Date: Mon, 18 May 2026 14:36:45 +0200
-Subject: [PATCH v4 2/2] dmaengine: fsl-edma: Support dynamic scatter/gather
- chaining
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKrlU9X8"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b788a98557so12809645ad.2
+        for <imx@lists.linux.dev>; Mon, 18 May 2026 06:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779109394; x=1779714194; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/IrfhLvzq8OFRdclHXEtAh9TYJ/Z5qr3AsT/nk30p7k=;
+        b=qKrlU9X8uk4ek6svskC53EekvydYxt7eAzz7Rg0wV15LbI3rJjy349wpohhUQCNWyI
+         585LVnpmx9DOgwoSkdtXuO+Y7Ad3N6yASmYpu/835DSgn1x/PTb8gkgGf1s6YRP8nXwU
+         6Jn/b8nUXYzk/fCF0S93WAwxqGi/zoUOzUz6EJRoZ17QLur9s2/QHVppd7TN03xi1W+P
+         eVJpFx1mXv0QFpQAcM/fDaOjLszK2ByTeRcaC3jTvyksgwYyxCU06z+IdHb+NwzVNuN2
+         J2bLy+z+Az4XipibBO0OEnwsfoc/Ob+jxjBoRmdDc2shRp7H/WPSeeDQjLKJ/HZNTZt6
+         WeVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779109394; x=1779714194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/IrfhLvzq8OFRdclHXEtAh9TYJ/Z5qr3AsT/nk30p7k=;
+        b=kRT2Nua4ox3wx/U3Ovxigp7fRweRdO/uMNhCaxth3ULbgW7C0eI2QnmvEDQeRheNWa
+         ARrBjsl63fBLq4wNKyaRKCFZPubXozf7fDjZ7id/s0SpdAqlQC0yW6sBtmZsnihYlNsp
+         WBqrikQ+35ulmMIa4ld1YG/a2PTjW42Kaf8DYy0spcoXZ5tL12zE96+7UQbkWrcaHloP
+         5qO48z9UYnqKNB/UFBxR/q7a8G+d5hlh9yIeQVP+Gqjv7WRsxbR8XFtojmZRnB++rfxk
+         xxbGqOltnsfakDT6WdNrSIr5SQ+pGtwrmtuWH7qie9gS2X2shxUgmiq73b0UlTiG25CA
+         W+lw==
+X-Forwarded-Encrypted: i=1; AFNElJ992ovbo7LGYzehp9g9i7FXwam/Ca+vbq+sQ/wMSsXyulosd3rlflBtpCQFbRwjQmCH5Co=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6L06OefM7VIYCC5N/CHRRBeFMKvEgpas/B1JZBNu+FMn/J9+a
+	7G1kpptAJvWcyS6mvMgYH+/hqOnDB5mONrA7/3ONJxJcIlwEA7OIzeav
+X-Gm-Gg: Acq92OErMOKwfEllWVZikKw/bUdkCOBMykeAUEyAQFlUntIhmpUhPDqSPpvZWk44GRY
+	wZO5Ps8L428FuPgmV5nyr6k5Al9Aao7T2r4ZuwDBcG6RNY1YsZsnvHMvpS2qkHddC2W7m9+EPMK
+	Um7Ox2IhfaX/uY9lGhJFXRdUL4la+eP8mW0wHRvA7/Lr4oIe7ohNj9CV0Qhp9ryq3N0NRJyKhQa
+	5zBSpP5QW1+zVuj+rAly7jNQmuJQcRIbv/KhMa3QeiJyFgzj1cE5tq1ieVDvq68uOEwmjykEMK5
+	mQ3QK+VB70N1Avw5FtzlDyg99N1iJNB/g4mIuI5NC9QltCZ/aVk3uVm3bTXnDwuaOiN7MWAYWha
+	V8bfBbHPYYUb7Mw0+pbBK2fqbW1hRMcfQamL6orYHf0nX7OeOb/KiSzPmSmI+TtqM79tNFxkK0H
+	BQRZEHKbeqF67Y
+X-Received: by 2002:a17:903:28c:b0:2b4:5b82:a8e3 with SMTP id d9443c01a7336-2bd7e8fdd1emr162494125ad.24.1779109394031;
+        Mon, 18 May 2026 06:03:14 -0700 (PDT)
+Received: from lgs.. ([101.36.106.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d2360e8sm159283565ad.82.2026.05.18.06.03.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 06:03:13 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>
+Subject: [PATCH] media: imx-jpeg: avoid double free on video register failure
+Date: Mon, 18 May 2026 21:02:59 +0800
+Message-ID: <20260518130259.1001956-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260518-fsl-edma-dyn-sg-v4-2-8ce7d95b1ce9@bootlin.com>
-References: <20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com>
-In-Reply-To: <20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
 
-Implement dynamic linking of scatter/gather transfers to enable
-chaining multiple DMA descriptors without stopping the channel.
-This avoids waiting for the channel to go idle if there is another
-transaction already issued.
+mxc_jpeg_probe() allocates a video_device with video_device_alloc() and
+releases it from the err_vdev_register error path if
+video_register_device() fails.
 
-Add fsl_edma_link_sg() to dynamically link the last TCD of a previously
-submitted descriptor to the first TCD of a new descriptor by setting
-the scatter/gather address and the E_SG flag, and keeping the channel
-active by clearing the DREQ bit.
+This can double free the video_device when __video_register_device()
+reaches device_register() and that call fails:
 
-Linking is done when the transaction is submitted by fsl_edma_tx_submit().
-To do so, the .tx_submit() callback is overridden for non-cyclic
-transactions prepared by fsl_edma_prep_peripheral_dma_vec() and
-fsl_edma_prep_slave_sg(). This ensures that transactions are linked
-in the order they are submitted.
+  video_register_device()
+    -> __video_register_device()
+       -> device_register() fails
+          -> put_device(&vdev->dev)
+             -> v4l2_device_release()
+                -> vdev->release(vdev)
+                   -> video_device_release(vdev)
 
-Update fsl_edma_xfer_desc() to avoid re-initializing the hardware when a
-transfer is already in progress, allowing seamless chaining of descriptors.
+  mxc_jpeg_probe()
+    -> err_vdev_register
+       -> video_device_release(jpeg->dec_vdev)
 
-Modify the transfer completion handler to check the DONE flag in the
-channel CSR before marking the transfer complete. Since this flag is
-only available on SoC with the split registers layout, we only link
-transactions for DMA controllers flagged with FSL_EDMA_DRV_SPLIT_REG.
+Use video_device_release_empty() while registering the device so that
+registration failure paths do not free jpeg->dec_vdev through
+vdev->release(). mxc_jpeg_probe() then releases jpeg->dec_vdev exactly
+once from err_vdev_register. Restore video_device_release() after
+successful registration so the registered device keeps its normal lifetime
+handling.
 
-Add trace event for scatter/gather linking operations.
+This issue was found by a static analysis tool I am developing.
 
-Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/dma/fsl-edma-common.c | 90 +++++++++++++++++++++++++++++++++++++++----
- drivers/dma/fsl-edma-trace.h  |  5 +++
- 2 files changed, 88 insertions(+), 7 deletions(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index c10190164926..6e5820051f29 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fsl_chan)
- 		list_del(&fsl_chan->edesc->vdesc.node);
- 		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
- 		fsl_chan->edesc = NULL;
--		fsl_chan->status = DMA_COMPLETE;
-+		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
-+		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
-+			fsl_chan->status = DMA_COMPLETE;
-+		}
- 	} else {
- 		vchan_cyclic_callback(&fsl_chan->edesc->vdesc);
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index b442dcba02e7..fe8a373576ef 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -2943,7 +2943,7 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
+ 	jpeg->dec_vdev->fops = &mxc_jpeg_fops;
+ 	jpeg->dec_vdev->ioctl_ops = &mxc_jpeg_ioctl_ops;
+ 	jpeg->dec_vdev->minor = -1;
+-	jpeg->dec_vdev->release = video_device_release;
++	jpeg->dec_vdev->release = video_device_release_empty;
+ 	jpeg->dec_vdev->lock = &jpeg->lock; /* lock for ioctl serialization */
+ 	jpeg->dec_vdev->v4l2_dev = &jpeg->v4l2_dev;
+ 	jpeg->dec_vdev->vfl_dir = VFL_DIR_M2M;
+@@ -2962,6 +2962,8 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
+ 		dev_err(dev, "failed to register video device\n");
+ 		goto err_vdev_register;
  	}
-@@ -673,6 +676,68 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cyclic(
- 	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
- }
- 
-+static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_edma_desc *fsl_desc)
-+{
-+	u32 flags = fsl_edma_drvflags(fsl_chan);
-+	struct fsl_edma_hw_tcd *last_tcd;
-+	struct fsl_edma_desc *prev_desc;
-+	struct virt_dma_desc *vdesc;
-+	u16 csr;
++	jpeg->dec_vdev->release = video_device_release;
 +
-+	lockdep_assert_held(&fsl_chan->vchan.lock);
-+
-+	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
-+		return;
-+
-+	vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
-+					struct virt_dma_desc, node);
-+	if (!vdesc)
-+		vdesc = list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
-+						struct virt_dma_desc, node);
-+	if (!vdesc)
-+		return;
-+
-+	prev_desc = to_fsl_edma_desc(vdesc);
-+	last_tcd = prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
-+
-+	csr = fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
-+	if (!(csr & EDMA_TCD_CSR_D_REQ))
-+		return;
-+
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast_sga);
-+
-+	csr &= ~EDMA_TCD_CSR_D_REQ;
-+	csr |= EDMA_TCD_CSR_E_SG;
-+	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
-+
-+	if (prev_desc == fsl_chan->edesc && prev_desc->n_tcds == 1) {
-+		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
-+			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_csr);
-+
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
-+		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
-+	}
-+
-+	trace_edma_link_sg(fsl_chan, last_tcd);
-+}
-+
-+static dma_cookie_t fsl_edma_tx_submit(struct dma_async_tx_descriptor *tx)
-+{
-+	struct virt_dma_desc *vd = container_of(tx, struct virt_dma_desc, tx);
-+	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(tx->chan);
-+	struct fsl_edma_desc *fsl_desc = to_fsl_edma_desc(vd);
-+	struct virt_dma_chan *vc = to_virt_chan(tx->chan);
-+	dma_cookie_t cookie;
-+
-+	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
-+
-+	fsl_edma_link_sg(fsl_chan, fsl_desc);
-+	cookie = dma_cookie_assign(tx);
-+	list_move_tail(&vd->node, &vc->desc_submitted);
-+
-+	return cookie;
-+}
-+
- struct dma_async_tx_descriptor *
- fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *vecs,
- 				 size_t nb, enum dma_transfer_direction direction,
-@@ -680,6 +745,7 @@ fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *ve
- {
- 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
- 	dma_addr_t src_addr, dst_addr, last_sg;
-+	struct dma_async_tx_descriptor *tx;
- 	struct fsl_edma_desc *fsl_desc;
- 	u16 soff, doff, iter;
- 	u32 nbytes;
-@@ -779,7 +845,10 @@ fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma_vec *ve
- 		}
- 	}
- 
--	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx = vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	if (!fsl_desc->iscyclic)
-+		tx->tx_submit = fsl_edma_tx_submit;
-+	return tx;
- }
- 
- struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
-@@ -788,9 +857,10 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
- 		unsigned long flags, void *context)
- {
- 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
-+	dma_addr_t src_addr, dst_addr, last_sg;
-+	struct dma_async_tx_descriptor *tx;
- 	struct fsl_edma_desc *fsl_desc;
- 	struct scatterlist *sg;
--	dma_addr_t src_addr, dst_addr, last_sg;
- 	u16 soff, doff, iter;
- 	u32 nbytes;
- 	int i;
-@@ -882,7 +952,10 @@ struct dma_async_tx_descriptor *fsl_edma_prep_slave_sg(
- 		}
- 	}
- 
--	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx = vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
-+	tx->tx_submit = fsl_edma_tx_submit;
-+
-+	return tx;
- }
- 
- struct dma_async_tx_descriptor *fsl_edma_prep_memcpy(struct dma_chan *chan,
-@@ -924,9 +997,12 @@ void fsl_edma_xfer_desc(struct fsl_edma_chan *fsl_chan)
- 	if (!vdesc)
- 		return;
- 	fsl_chan->edesc = to_fsl_edma_desc(vdesc);
--	fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
--	fsl_edma_enable_request(fsl_chan);
--	fsl_chan->status = DMA_IN_PROGRESS;
-+
-+	if (fsl_chan->status != DMA_IN_PROGRESS) {
-+		fsl_edma_set_tcd_regs(fsl_chan, fsl_chan->edesc->tcd[0].vtcd);
-+		fsl_edma_enable_request(fsl_chan);
-+		fsl_chan->status = DMA_IN_PROGRESS;
-+	}
- }
- 
- void fsl_edma_issue_pending(struct dma_chan *chan)
-diff --git a/drivers/dma/fsl-edma-trace.h b/drivers/dma/fsl-edma-trace.h
-index d3541301a247..ac319d2dbb90 100644
---- a/drivers/dma/fsl-edma-trace.h
-+++ b/drivers/dma/fsl-edma-trace.h
-@@ -119,6 +119,11 @@ DEFINE_EVENT(edma_log_tcd, edma_fill_tcd,
- 	TP_ARGS(chan, tcd)
- );
- 
-+DEFINE_EVENT(edma_log_tcd, edma_link_sg,
-+	     TP_PROTO(struct fsl_edma_chan *chan, void *tcd),
-+	     TP_ARGS(chan, tcd)
-+);
-+
- #endif
- 
- /* this part must be outside header guard */
-
+ 	if (mode == MXC_JPEG_ENCODE)
+ 		v4l2_info(&jpeg->v4l2_dev,
+ 			  "encoder device registered as /dev/video%d (%d,%d)\n",
 -- 
-2.54.0
+2.43.0
 
