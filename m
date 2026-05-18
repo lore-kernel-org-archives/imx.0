@@ -1,115 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F1E395D87
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 21:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FE39183A;
+	Mon, 18 May 2026 22:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779140289; cv=none; b=tsIzmgUT1EivxeiUjh2brlf1UB3EWnJ1oJxe1LV5zEGFja2rO7+eNtHJV114YvbgVEimR/5mDqEkdcp8JColjHFk7JKrStQo4uh4PERdmG/wtAVn0akeaPU+hCIQt1SqyV+AyKIFLJowlCtX7+DgGubt6EmP94G9xR0XnDEMtGM=
+	t=1779143880; cv=none; b=N6Qj3Q9PI/2898Oduix/pGfOtTN4dM0noThNxsho2RiCRifuhRpcI88Ut54OffLF06ufy2BDykWoD/U5CU2JcAH2SZJsN68zZOtbuJD+sAIX4PlITPSsDvNtYfM69z7FNIdWPhY3fSsjlY4dFXQyjyV8eiDNLyCeiNjae2I9gR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779140289; c=relaxed/simple;
-	bh=WxYUQWQDuXY7F2LdFF8xfEtMhKLtMIoX57o5ihqVGro=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uwoOJ1FEcdwCvgg+iWoUriDscqkBUv/8GfBicg4u4cS1wzUJAUmWDF+DYZgMlW1iM5VOEoMiGmuPOQeAWHVe95lYW8mCwvrnSL/ZDgt3yTQrLumglKK43n82vpPPF2/VQcL/A8lnNAYAokREAdj3DrnGGkf2oTZmyo556jPxOEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOOXLkQm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779143880; c=relaxed/simple;
+	bh=yCPh+HXQRcTVsmUvu2yXJQlDcVHXXFcwMfPUyflHlTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Bz4PI20TcS92fgR0Qq4wQvdWCO9+GIGTEULd4awQykKS4HxUU9GSYkfKw+e0/dkLuYXghMxwYuMU01tm4igXFRzxLv+TotmHffW2zRtWZt2Ee4K2DxqJp0r85V9a3s5qznY+buYNyZZ3sPGapYooUPFaCAq/BtfrkWtlpc1vf7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIV9oMFs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOOXLkQm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23571C2BCB7;
-	Mon, 18 May 2026 21:38:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIV9oMFs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE48DC2BCB7;
+	Mon, 18 May 2026 22:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779140289;
-	bh=WxYUQWQDuXY7F2LdFF8xfEtMhKLtMIoX57o5ihqVGro=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=iOOXLkQmza8nsFCGHrvYO4fk6o0MQgwtWefd26O976/JMusJoGBpK29YOcgJfkgd/
-	 fHbi69mStT3prRWTBXIdpJtNzyowSM1p9sRKqgugBrDvzTikB3+qJDlGh0RauWMWtR
-	 YFNR8SSKKY06lDUCctD85Q+SoiSWS1P9tZFJTbpV0YgMwQ+XGLb6eMYEiBgcjncLxA
-	 n2VxxhxWYHiwcLjmmxMXZj+6/lIyNhWQgjDbn8a61xI6jJETO0ioQNmU+35vNIhXO0
-	 FwjbmfW/pCPtQvciH1wPQSk+rC5e1tpVzT/xz1pryOK7hEGH0pRd+BYMY81lXyBQuS
-	 Uh5D8B3hfp2VQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] fbdev: imxfb: Use of_device_get_match_data()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rosen Penev" <rosenp@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260518211303.10777-1-rosenp@gmail.com>
-References: <20260518211303.10777-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 21:38:08 +0000
-Message-Id: <20260518213809.23571C2BCB7@smtp.kernel.org>
+	s=k20201202; t=1779143879;
+	bh=yCPh+HXQRcTVsmUvu2yXJQlDcVHXXFcwMfPUyflHlTc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=uIV9oMFsZiB2k1H5yl4LvHnzDb5kbXykJcpKi7D9HmO3wpF30Fm7LMuqdkV/3wCSx
+	 OZUB0KApB6xzK86w+pr1GMGjcouh1CpiLyTubSJWy5Iizzi4Sh0lwp+iUl5vy4gPCe
+	 hVUHFUGhHj/5bI5VhZ5jEFySJ7rdeKgSF+J7SO1dmKKI7ondlimEn9G0rFsSQFIxzS
+	 Wuph+R9JnXLbtGU5Xvac38Cp0cMt9u0DQ5P/aqPnpoAQKMIdGejHfufT4c+eB+oPta
+	 6aFZyhcUkwnug9239xE8FvofQgCMdSkFJZtUA2kDeuTuF14eScoCCQb/PcZbUrT3Wg
+	 Ty4V3IdCqwS6Q==
+Date: Mon, 18 May 2026 17:37:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V14 02/12] PCI: host-generic: Add common helpers for
+ parsing Root Port properties
+Message-ID: <20260518223758.GA649325@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VI0PR04MB1211452312EB9BC6EF1ED2E0192032@VI0PR04MB12114.eurprd04.prod.outlook.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The patch introduces a NULL pointer dereference for non-Device Tre=
-e probes by unconditionally assigning the result of `of_device_get_match_da=
-ta()` to `pdev->id_entry`.
-- [High] This problem wasn't introduced by this patch, but there is a Use-A=
-fter-Free vulnerability during driver removal due to mismatched manual and =
-`devm`-managed cleanups.
---
+On Mon, May 18, 2026 at 08:42:38AM +0000, Sherry Sun wrote:
+> > Subject: Re: [PATCH V14 02/12] PCI: host-generic: Add common helpers for
+> > parsing Root Port properties
+> > 
+> > On Wed, Apr 22, 2026 at 05:35:39PM +0800, Sherry Sun wrote:
+> > > Introduce generic helper functions to parse Root Port device tree
+> > > nodes and extract common properties like reset GPIOs. This allows
+> > > multiple PCI host controller drivers to share the same parsing logic.
+> > >
+> > > Define struct pci_host_port to hold common Root Port properties
+> > > (currently only list of PERST# GPIO descriptors) and add
+> > > pci_host_common_parse_ports() to parse Root Port nodes from device
+> > tree.
+> > >
+> > > Also add the 'ports' list to struct pci_host_bridge for better
+> > > maintain parsed Root Port information.
+> > > ...
+> > 
+> > > +static int pci_host_common_parse_port(struct device *dev,
+> > > +				      struct pci_host_bridge *bridge,
+> > > +				      struct device_node *node)
+> > > +{
+> > > +	struct pci_host_port *port;
+> > > +	int ret;
+> > > +
+> > > +	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
+> > > +	if (!port)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	INIT_LIST_HEAD(&port->perst);
+> > > +
+> > > +	ret = pci_host_common_parse_perst(dev, port, node);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	/*
+> > > +	 * 1. PERST# found in RP or its child nodes - list is not empty, continue
+> > > +	 * 2. PERST# not found in RP/children, but found in RC node - return -
+> > ENODEV
+> > > +	 *    to fallback legacy binding
+> > > +	 * 3. PERST# not found anywhere - list is empty, continue (optional
+> > PERST#)
+> > > +	 */
+> > > +	if (list_empty(&port->perst)) {
+> > > +		if (of_property_present(dev->of_node, "reset-gpios") ||
+> > > +		    of_property_present(dev->of_node, "reset-gpio"))
+> > > +			return -ENODEV;
+> > 
+> > This doesn't seem right to me.  The parser of per-Root Port properties should
+> > not be responsible for deciding whether legacy methods are valid, i.e.,
+> > whether a property is in the Root Complex node.  I think it's up to the caller
+> > to decide whether it needs to look elsewhere.
+> > 
+> > I don't think this even needs to return a "success/failure" value because there
+> > may be more properties in the future, and not all will be required.  This
+> > function can't tell which properties a specific driver requires and which are
+> > optional.
+> > 
+> > The caller can check whether we found what it needs and fall back to a legacy
+> > method as needed.
+> 
+> Hi Bjorn,
+> The code here was suggested by Mani, https://lore.kernel.org/all/lnzprzrdwra7pn7d6m3sbj5pvjy64blwpjl6i3lmlnfbyho63b@czpyhpgz5vum/.
+> I think your suggestion here is reasonable, the per-Root Port parser shouldn't
+> check the RC-level binding. That's a policy decision that belongs to the caller.
+> 
+> Hi Mani, if you also agree, I'll rework this so that:
+> 1. pci_host_common_parse_port() only parses properties from the Root Port
+>     (and its children) without checking the RC node.
+> 2. The function won't return failure for "property not found" - it will only return
+>      errors for real failures (e.g., -ENOMEM, GPIO acquisition errors).
+> 3. The legacy fallback logic will be moved to the caller, which can inspect the
+>      parsed result and decide whether to fall back to the legacy binding.
 
-commit bacef9a3e606a55e0a0cb62b81ba7008a6e42804
-Author: Rosen Penev <rosenp@gmail.com>
-
-fbdev: imxfb: Use of_device_get_match_data()
-
-This commit simplifies the driver by replacing an open-coded of_match_devic=
-e()
-lookup with a direct call to of_device_get_match_data() and drops an unused
-include.
-
-> diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-> index a077bf346bdf4..7a021da0a32a2 100644
-> --- a/drivers/video/fbdev/imxfb.c
-> +++ b/drivers/video/fbdev/imxfb.c
-[ ... ]
-> @@ -891,9 +889,7 @@ static int imxfb_probe(struct platform_device *pdev)
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	of_id =3D of_match_device(imxfb_of_dev_id, &pdev->dev);
-> -	if (of_id)
-> -		pdev->id_entry =3D of_id->data;
-> +	pdev->id_entry =3D of_device_get_match_data(&pdev->dev);
-
-For devices matched via the legacy platform bus, of_device_get_match_data()
-returns NULL.
-
-This unconditionally overwrites the previously valid pdev->id_entry with NU=
-LL.
-
-When imxfb_probe() subsequently calls imxfb_init_fbinfo(), does this cause a
-NULL pointer dereference on pdev->id_entry?
-
-drivers/video/fbdev/imxfb.c:imxfb_init_fbinfo() {
-    ...
-	fbi->pdev =3D pdev;
-	fbi->devtype =3D pdev->id_entry->driver_data;
-    ...
-}
-
-This problem wasn't introduced by this patch, but the driver registers the =
-LCD
-device using devm_lcd_device_register(), and explicitly frees the backing
-memory structure fbi during imxfb_remove() and in probe error paths:
-
-drivers/video/fbdev/imxfb.c:imxfb_remove() {
-    ...
-	framebuffer_release(info);
-}
-
-Because devm cleanup runs only after the remove function returns, the LCD
-device and its sysfs attributes remain active while pointing to freed memor=
-y.
-
-If a userspace process accesses a sysfs attribute during this window, can it
-trigger a use-after-free regression on the fbi structure?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518211303.1077=
-7-1-rosenp@gmail.com?part=3D1
+This is only used for imx6 so far, so I think this is OK as-is for
+v7.2.  We can file this under "possible future rework or kernel
+mentee project."
