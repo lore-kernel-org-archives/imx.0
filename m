@@ -1,229 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA52F481AB3;
-	Mon, 18 May 2026 13:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722124315F
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 14:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779111270; cv=none; b=OiK9uJAMy5hyifs5u+IlhrPazZB2498BXD398TbA0nUQUD2iu2Vx1RTQMfbeMX8RLK+3lkHW8AYPleX0lOCY4NfjGEmRnK1mm+KRAUQS1AP3KLZ+gNenP6l1kDW5uH3aJFioAx0Dr9efJwBPn/EzD4p78JCW+SIwAiRPV7MgAhM=
+	t=1779113662; cv=none; b=LoOut2heEGAzXIE2q7fwMmSmp/ubQP3b/IYWa4mpS+zgHM3vXiv55tHdpwIZ9pJRpv8KI2oNDr9FpCXfolkYdetcQrPwJOVGGHWGefLjGSomu4oYKnPNNlzCSH/XaFsUOtGMgzkEQi09O253gNuG00cmdkxzmdKwEqjSa7teN8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779111270; c=relaxed/simple;
-	bh=C5ZNdV4rGhd86tahVs7o/fg39e4HnRxfK7iI1v/MnVI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AxxDn6W1C/VKKWE+pZurGA8WxQsXboqqLhUXpFM0Afn2aoY5fmS2vqjQxeH+HqaBbWcEE+Udq7exgqzPJXKd5XWVFAcR9o/2yORT7M4kQlF3k8WxFOpMbKX+fZPmYx2xLnfkko5sSOTeZJv/CiRgml5of/yJZ1ByirVe/8nkiz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iW0Nh3+i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779113662; c=relaxed/simple;
+	bh=5qDpVkMt4wmJAuvajXr0K3vaIjTuOXwvJrhqj7SsGUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B7DnTaDKhzt3KBNe8BC7U9CTlSPmR2h+T0rSlKWaI4k9Q2/75sYxcQLacPL4TUXfmVUfgzi3bAdo820tYVEvElTn2Rgp7tDO5AnMfazLBLk2XRGra/s6eL+jmLcG7Yg61CL3Ptr5D8k+6OVnyGhTfDPj5k3VFFtldNnOwcV539A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XcCKlePQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iW0Nh3+i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896ABC2BCC7;
-	Mon, 18 May 2026 13:34:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779111270;
-	bh=C5ZNdV4rGhd86tahVs7o/fg39e4HnRxfK7iI1v/MnVI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=iW0Nh3+il/v7D299IpegHB1K4NwtXyR9agGseN8IU+fVjhVAOhKbAOzECCSk+4yd+
-	 dOT/Pe0Iql6MJnN9sQ88Uv3RA0xEEOlLSuRmS2PAMVKi9DywiN3HNvRnehkvjlkFah
-	 4s5FjFzZxRKO3N87cSqBu3yUEAEE/wil/amaNbRQAOMed+alb+IwG7hU9Mxzqr2gBD
-	 19OkbuSyGMZTFSgmdP+p38gA5qRhE+DVlhB2Y0rIjCWQ/v4PYCT6Wt9EbZNkO7wZto
-	 BPyuB3NQLY04pbomELhXDOyh199QRrrhH+TIQKWm7Vbsi1aOzDfiOl9nRWnY1uIAjV
-	 MhDFpH92Wi8SA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] dmaengine: fsl-edma: Support dynamic
- scatter/gather chaining
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
-Cc: dmaengine@vger.kernel.org, Frank.Li@kernel.org, vkoul@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260518-fsl-edma-dyn-sg-v4-2-8ce7d95b1ce9@bootlin.com>
-References: <20260518-fsl-edma-dyn-sg-v4-2-8ce7d95b1ce9@bootlin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 13:34:29 +0000
-Message-Id: <20260518133429.896ABC2BCC7@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XcCKlePQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779113660;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X0PKPpLFUcJ5PNICdj+fODP+ieu23TytLui2uhS6hnY=;
+	b=XcCKlePQRCeNFJsGcLMSHXQ/fSrJvamD5A2GxmWdoGZQL/RrWD2lyIlTxFTNF9BMo6BpbY
+	w0/EpsruSfyA3I1DLVcmyCwiy2DO/qTcIZpk/Bm8sU+YKDkio4I76oPJ2p6UBwLkGoA+Yp
+	a20GsbyKFpt8c+g3HBJT5doI0gxJFyA=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-mU3r8NGHM7KTOA_cPFPwRQ-1; Mon, 18 May 2026 10:14:18 -0400
+X-MC-Unique: mU3r8NGHM7KTOA_cPFPwRQ-1
+X-Mimecast-MFC-AGG-ID: mU3r8NGHM7KTOA_cPFPwRQ_1779113656
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5a870f93c99so207036e87.0
+        for <imx@lists.linux.dev>; Mon, 18 May 2026 07:14:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779113656; x=1779718456;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X0PKPpLFUcJ5PNICdj+fODP+ieu23TytLui2uhS6hnY=;
+        b=d8etaDGqSj4x9sLYzNT2h18RBprxPH6Yg+hMUtLQ/GuyZXh4YHrIiQUAal/tVkgduJ
+         0egW/YLEJUP9b9DCoHewT64KUhwQUZT4ff6fq913EXGmwwn2qd5KNdhxDwjs4q9UP8/N
+         hoZ83Nb4Em+oouxGEE5PyFUPVW4VatJUE8V4ktBTI7vqKb2uzUy8DDVwIS6xgZlHX0NN
+         9hDEINdJGeDy6MeZ8Y6bRuu5eQ6/8T+fPB2ia5z4Pc5znmKHGjSTYxHESEboVD4tZ9ja
+         i+x/8L4HlrPy4L6xI8MkJrbysWpiX/mu3pzmypYmJsv7lffg7qPDjUHlXc2EkpTaGEtS
+         soiA==
+X-Forwarded-Encrypted: i=1; AFNElJ8MjCxD3f0WawkSoGE6P8xI/JBWbni+BNTm2XiCgx+7d+H6SC63PSsChYzGwY7787eQ7Ug=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZZzblOeNFwnGMd1rSoj6YdfmJ9iUJX/jlpZusuhKfz4QeUUBT
+	v77ht4owMONgBmH4ZkgrpeMo+GNr3avufTe9YJlwIZKtksM/sY5ZYtQrAfCeLEs2vrNdglnjTrO
+	UOh7BjuAh+uUWVOWdAHhMBllFTA5QyDLHQcvoHR28WKTNa3ZLdRncTnq467dTM01iZ5nh36vu2O
+	wBDFFrbnGlQuC7BDb0eBJl1Xx0k0GO
+X-Gm-Gg: Acq92OGrwTabVzZSCqOdqDBr2NleF1iiU4z+UeW/Py75U5gqDauV7pUvmlGc7z4qm/I
+	QWHiQ/f4alJm0r5/w22W084P/3Pg+L9hcNbx4pxf2HjOy4+7nNR51gzFiFxn9OVMtSFh55HJpzK
+	CCcTpypjrgzogdCIBV5d0Wmv/2AsJMhTQz0jtI18DIP1t3Q0f7ypXevYYFSTGgqeWHLwFVXigki
+	TsEag==
+X-Received: by 2002:a05:651c:410e:b0:38f:f6a2:a61d with SMTP id 38308e7fff4ca-39561f2f883mr11802501fa.4.1779113656355;
+        Mon, 18 May 2026 07:14:16 -0700 (PDT)
+X-Received: by 2002:a05:651c:410e:b0:38f:f6a2:a61d with SMTP id
+ 38308e7fff4ca-39561f2f883mr11802281fa.4.1779113655655; Mon, 18 May 2026
+ 07:14:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com> <aaGkGwbk-sh0YJqj@jkangas-thinkpadp1gen3.rmtuswa.csb>
+In-Reply-To: <aaGkGwbk-sh0YJqj@jkangas-thinkpadp1gen3.rmtuswa.csb>
+From: Enric Balletbo i Serra <eballetb@redhat.com>
+Date: Mon, 18 May 2026 16:14:02 +0200
+X-Gm-Features: AVHnY4JRP0kGP-z42K5FI0qcb3gAysvgY6dzw7kUR8X3jOVZKVkXLna2nVCi7XY
+Message-ID: <CALE0LRuahJy2EKa7YUukGRq1w9iws6kDvjZ7o33ahJUGc2JSsw@mail.gmail.com>
+Subject: Re: [PATCH 00/13] Add DMA support for LINFlexD UART driver
+To: Jared Kangas <jkangas@redhat.com>
+Cc: Larisa Grigore <larisa.grigore@oss.nxp.com>, gregkh@linuxfoundation.org, 
+	jirislaby@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com, 
+	chester62515@gmail.com, cosmin.stoica@nxp.com, adrian.nitu@freescale.com, 
+	stefan-gabriel.mirea@nxp.com, Mihaela.Martinas@freescale.com, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, s32@nxp.com, 
+	imx@lists.linux.dev, clizzi@redhat.com, aruizrui@redhat.com, 
+	echanude@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Zu69kr7iOZTfig-aBV0lTjiO08M2Yu2aYgy1aloRwPI_1779113656
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] Dynamically linking descriptors in the .tx_submit() callback c=
-auses premature execution, lost interrupts, and permanent channel stalls.
-- [Critical] Relying on the asynchronous hardware DONE flag in the completi=
-on handler creates a race condition leading to double-execution of DMA tran=
-sfers.
-- [High] Clearing the hardware DONE bit during active descriptor linking ca=
-uses a Time-of-Check to Time-of-Use (TOCTOU) race that permanently deadlock=
-s the DMA channel.
-- [High] Modifying scatter/gather fields of an active multi-TCD descriptor =
-in coherent memory without a memory barrier causes fatal DMA bus errors.
---
+Hi all,
 
-commit c846f40d8bb27c4bedc449b94402c8b84f93b59c
-Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+Any chance these series can be considered? They still apply on top of
+the mainline kernel.
 
-dmaengine: fsl-edma: Support dynamic scatter/gather chaining
+On Fri, Feb 27, 2026 at 3:03=E2=80=AFPM Jared Kangas <jkangas@redhat.com> w=
+rote:
+>
+> Hi Larisa,
+>
+> On Mon, Feb 16, 2026 at 04:01:52PM +0100, Larisa Grigore wrote:
+> > This patchset enhances the LINFlexD UART driver and its device tree bin=
+dings to
+> > support DMA transfers, configurable clock inputs, dynamic baudrate chan=
+ges, and
+> > termios features. It also includes a series of fixes and improvements t=
+o ensure
+> > reliable operation across various modes and configurations.
+> >
+> > The changes added can be summarized as follows:
+> > 1. Fixes with respect to FIFO handling, locking, interrupt related regi=
+sters and
+> > INITM mode transition.
+>
+> Tested this series with the default devicetree configuration by booting
+> the board to a login prompt about 200 times. Without the series applied,
+> I was seeing a bug roughly every 30-50 boots where the kernel would
+> would hang in linflex_console_putchar() waiting for DTFTFF. In my tests
+> with the series applied, I didn't see any regressions and the bug no
+> longer appeared. Thanks for the fix!
+>
+> Tested-by: Jared Kangas <jkangas@redhat.com> # S32G3, interrupt-driven
+>
 
-Implement dynamic linking of scatter/gather transfers to enable chaining
-multiple DMA descriptors without stopping the channel.
+FWIW I also reproduced the issue Jared faced. Current state of the
+LinFLEX serial driver in mainline seems a bit buggy and I can confirm
+that these fix the problem.
 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> index c10190164926a..6e5820051f292 100644
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -58,7 +58,10 @@ void fsl_edma_tx_chan_handler(struct fsl_edma_chan *fs=
-l_chan)
->  		list_del(&fsl_chan->edesc->vdesc.node);
->  		vchan_cookie_complete(&fsl_chan->edesc->vdesc);
->  		fsl_chan->edesc =3D NULL;
-> -		fsl_chan->status =3D DMA_COMPLETE;
-> +		if (!(fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_SPLIT_REG) ||
-> +		    (edma_readl_chreg(fsl_chan, ch_csr) & EDMA_V3_CH_CSR_DONE)) {
-> +			fsl_chan->status =3D DMA_COMPLETE;
-> +		}
+Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
 
-Could this DONE flag check lead to a race condition where a chained DMA=20
-transfer is executed twice?
+> > 2. Removal of the earlycon workaround, as proper FIFO handling and INIT=
+M
+> > transitions now ensure stable behavior.
+> > 3. Support for configurable stop bits and dynamic baudrate changes base=
+d on
+> > clock inputs and termios settings.
+> > 4. Optional DMA support for RX and TX paths, preventing character loss =
+during
+> > high-throughput operations like copy-paste. Cyclic DMA is used for RX t=
+o avoid
+> > gaps between transactions.
+> >
+> > Larisa Grigore (8):
+> >   serial: linflexuart: Clean SLEEP bit in LINCR1 after suspend
+> >   serial: linflexuart: Check FIFO full before writing
+> >   serial: linflexuart: Correctly clear UARTSR in buffer mode
+> >   serial: linflexuart: Update RXEN/TXEN outside INITM mode
+> >   serial: linflexuart: Ensure FIFO is empty when entering INITM
+> >   serial: linflexuart: Revert earlycon workaround
+> >   serial: linflexuart: Add support for configurable stop bits
+> >   serial: linflexuart: Add DMA support
+> >
+> > Radu Pirea (5):
+> >   serial: linflexuart: Fix locking in set_termios
+> >   dt-bindings: serial: fsl-linflexuart: add clock input properties
+> >   dt-bindings: serial: fsl-linflexuart: add dma properties
+> >   serial: linflexuart: Add support for changing baudrate
+> >   serial: linflexuart: Avoid stopping DMA during receive operations
+> >
+> >  .../bindings/serial/fsl,s32-linflexuart.yaml  |  31 +
+> >  drivers/tty/serial/fsl_linflexuart.c          | 972 +++++++++++++++---
+> >  2 files changed, 846 insertions(+), 157 deletions(-)
+> >
+> > --
+> > 2.47.0
+> >
+>
 
-If descriptor A is chained to descriptor B, and both A and B complete in=20
-hardware before the CPU services A's completion interrupt, the hardware=20
-will halt and set the DONE flag.
-
-The interrupt handler for A would then see the DONE flag set, assume the=20
-channel cleanly stopped after A, and set the status to DMA_COMPLETE. Later=
-=20
-in the same handler, fsl_edma_xfer_desc() will fetch descriptor B from the=
-=20
-virtual channel and, seeing the DMA_COMPLETE status, unconditionally write=
-=20
-B's TCD into the hardware and restart the channel, causing B to execute=20
-a second time.
-
-[ ... ]
-
-> @@ -673,6 +676,68 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_cy=
-clic(
->  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
->  }
-> =20
-> +static void fsl_edma_link_sg(struct fsl_edma_chan *fsl_chan, struct fsl_=
-edma_desc *fsl_desc)
-> +{
-> +	u32 flags =3D fsl_edma_drvflags(fsl_chan);
-> +	struct fsl_edma_hw_tcd *last_tcd;
-> +	struct fsl_edma_desc *prev_desc;
-> +	struct virt_dma_desc *vdesc;
-> +	u16 csr;
-> +
-> +	lockdep_assert_held(&fsl_chan->vchan.lock);
-> +
-> +	if (!(flags & FSL_EDMA_DRV_SPLIT_REG))
-> +		return;
-> +
-> +	vdesc =3D list_last_entry_or_null(&fsl_chan->vchan.desc_submitted,
-> +					struct virt_dma_desc, node);
-> +	if (!vdesc)
-> +		vdesc =3D list_last_entry_or_null(&fsl_chan->vchan.desc_issued,
-> +						struct virt_dma_desc, node);
-> +	if (!vdesc)
-> +		return;
-> +
-> +	prev_desc =3D to_fsl_edma_desc(vdesc);
-> +	last_tcd =3D prev_desc->tcd[prev_desc->n_tcds - 1].vtcd;
-> +
-> +	csr =3D fsl_edma_get_tcd_to_cpu(fsl_chan, last_tcd, csr);
-> +	if (!(csr & EDMA_TCD_CSR_D_REQ))
-> +		return;
-> +
-> +	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, fsl_desc->tcd[0].ptcd, dlast=
-_sga);
-> +
-> +	csr &=3D ~EDMA_TCD_CSR_D_REQ;
-> +	csr |=3D EDMA_TCD_CSR_E_SG;
-> +	fsl_edma_set_tcd_to_le(fsl_chan, last_tcd, csr, csr);
-
-Is a memory barrier needed between updating dlast_sga and updating the csr=
-=20
-to set EDMA_TCD_CSR_E_SG?
-
-Since this descriptor is in DMA coherent memory and actively visible to the=
-=20
-hardware, the CPU or memory subsystem might reorder these writes. If the eD=
-MA=20
-engine fetches the TCD while E_SG is set but dlast_sga is still stale or=20
-uninitialized, it might fetch the next descriptor from an invalid physical=
-=20
-address and trigger a fatal bus error.
-
-> +
-> +	if (prev_desc =3D=3D fsl_chan->edesc && prev_desc->n_tcds =3D=3D 1) {
-> +		if (flags & FSL_EDMA_DRV_CLEAR_DONE_E_SG)
-> +			edma_writel_chreg(fsl_chan, edma_readl_chreg(fsl_chan, ch_csr), ch_cs=
-r);
-
-Does this read and write-back of ch_csr introduce a race condition that can=
-=20
-deadlock the channel?
-
-If the hardware transfer completes just before the channel lock is acquired=
-,=20
-the channel becomes idle and the DONE bit is set. The driver then implicitl=
-y=20
-clears the write-1-to-clear DONE bit and sets E_SG, but setting E_SG on an=
-=20
-already halted channel will not restart it.
-
-When the delayed completion interrupt runs, it will read ch_csr, see that=20
-DONE is 0, incorrectly assume the channel seamlessly continued, and leave=20
-the status as DMA_IN_PROGRESS. This would prevent fsl_edma_xfer_desc() from
-enabling the hardware request, leaving the channel stopped indefinitely.
-
-> +
-> +		edma_cp_tcd_to_reg(fsl_chan, last_tcd, dlast_sga);
-> +		edma_cp_tcd_to_reg(fsl_chan, last_tcd, csr);
-> +	}
-> +
-> +	trace_edma_link_sg(fsl_chan, last_tcd);
-> +}
-> +
-> +static dma_cookie_t fsl_edma_tx_submit(struct dma_async_tx_descriptor *t=
-x)
-> +{
-> +	struct virt_dma_desc *vd =3D container_of(tx, struct virt_dma_desc, tx);
-> +	struct fsl_edma_chan *fsl_chan =3D to_fsl_edma_chan(tx->chan);
-> +	struct fsl_edma_desc *fsl_desc =3D to_fsl_edma_desc(vd);
-> +	struct virt_dma_chan *vc =3D to_virt_chan(tx->chan);
-> +	dma_cookie_t cookie;
-> +
-> +	guard(spinlock_irqsave)(&fsl_chan->vchan.lock);
-> +
-> +	fsl_edma_link_sg(fsl_chan, fsl_desc);
-> +	cookie =3D dma_cookie_assign(tx);
-> +	list_move_tail(&vd->node, &vc->desc_submitted);
-> +
-> +	return cookie;
-> +}
-
-Can calling fsl_edma_link_sg() directly from the tx_submit callback lead to=
-=20
-premature execution and lost interrupts?
-
-By modifying the active hardware TCD to link the new descriptor before the=
-=20
-client calls dma_async_issue_pending(), the hardware can transition to and=
-=20
-start executing the newly submitted descriptor automatically.
-
-If the completion interrupt for the previous descriptor fires before=20
-issue_pending() is called, vchan_next_desc() won't find the new descriptor=
-=20
-because it is still sitting in the desc_submitted list rather than the=20
-desc_issued list.
-
-This would leave fsl_chan->edesc as NULL, meaning when the new descriptor=20
-finishes, its completion interrupt is dropped. When issue_pending() is=20
-finally called, the channel may either permanently stall or mistakenly=20
-restart the descriptor and execute it a second time.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518-fsl-edma-d=
-yn-sg-v4-0-8ce7d95b1ce9@bootlin.com?part=3D2
