@@ -1,31 +1,31 @@
 Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3837351C22
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 18:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868EE38239B
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 18:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779127356; cv=none; b=OFyCgWThfcfmcToe6rNhILUQgWGexsIXnhq1RaMySubXfDbQqNdEdhgB+6+y6lHBezys8XxFNzRfBOF6zDYZ0xSb0iliwhJzdITAoFmjORjmp2WqLqppsxwgRBucd2LXQEMjDHeJMX2yExA9HkEy1GpTzIKHKFiZ/siJKCeebNk=
+	t=1779127359; cv=none; b=RNuw3LXtHNBTRBszpY5BuVMQczM7CwTasOpkrE8waLBqzlZ1V4/nLEkoV6eIHCqUp6J4h50AZa65BtV8vGzGJa2OexycmXkPgzgg7gSNR2zvJx9hI1lkxp121D9kEDHZhizaFHeKqWB7LP92i+nY/HM5UYNG27724I2ROnEuzLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779127356; c=relaxed/simple;
-	bh=+EzzxgqWIWtl9fpOuLcA4N1A62StxktT0wkipKF9bQk=;
+	s=arc-20240116; t=1779127359; c=relaxed/simple;
+	bh=09QitLERPIBz65/8xeO8cESTBv8KCG/K8BGM5+8dujs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8pS/YBJzTXWp0zL6P7cB1uAhimtgjxkIbVGsyzPCqdX2/g1cBuo8cgVn0R2alBmTVGz+EXEf0GzOyUIszoNXlDsxRtsOehU8K4vXcrvr7OI5GaMJrPiRiIHTc5/uquud784NzLOURwS5xtpl9rp1dpS6xiAP3ilQ42Xl/d7RL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=z6ghaNZp; arc=none smtp.client-ip=121.127.44.66
+	 MIME-Version; b=UY6wBGw985IadI9mWPv2Gy3oN3tSmhgx5I2sGT0AZHU+BYDSiAunOhf4Lt3Efy59VDBkIXms2Yc3Lb5kJgBCjotJKeXr+5rIlcxOzUnMJICpgMp8ax7NyWgV+VuV0qMR9Z4kmNxRCjZW7g7M11t/+DKUF+QZm9mGn12xd/ELGK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=wFZvUq26; arc=none smtp.client-ip=121.127.44.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="z6ghaNZp"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="wFZvUq26"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
  h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
  Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1779127354; bh=RDtWO1bQ5DXpi9puwzpO7ZNdN3UnLZgsoflq5+aG8Jc=;
- b=z6ghaNZpIrjoJT6scbQh8SGXYYJ9TVwK3OS6E/rsIWXalh/DIg7pKMyUe51JVYSdIEiBLFtft
- euBRQz/Z7/xc/wWlzEWHeGrTpzMpufTu0LS3s+f8vFRacKJ7kk6uGpF6gV/oOym4nU4op6Jab90
- 4qqHRM8O4nCIRRpk7qYL8CwhvsBVPpdiG5kDtMjcpSRGnHP0SqlVxqvxo6bs6Jq2hguVURuHidw
- 41gS3qDytf2I3RBxRLHvoNbGYljrTBdeUjTpno54y0iXVEC06tXXDY5HrjPjSZJa/h4KbotwL9d
- dsFZgJt5CsFz0vRxTlgpvyVG+rNB4fxbq88mvN+6MWVA==
-X-Forward-Email-ID: 6a0b5432b84dbc72d2274de5
+ t=1779127357; bh=rHR6JQhfCZioVtWjb43UfYe+VOtInpIVxB1wWysQtG0=;
+ b=wFZvUq265pmgZIn9bJUibLh7MbQt0NXimNi5/9kxcpnZK7pBG2jdjG7UoYr2pP+KqdbYGpgJG
+ N9IntEIMuSXQHe5FsUUB0OVvIq9BoT1MGbk8rO0msCUV6JD5VLlAMeh5xWjMm9XdzvV2RzmD3vb
+ 6EIvw0npPkyXQd1p8phJme7gDqvGdpvh6mOV5UieCkX/lcIIGTntXa0jtafPFVz8hZgpI+i1w2o
+ q7w5OGXr5QA7R5T7rH6SSJ3n8J1gdIGo9aDiDeyrNR+paFZj44Q5Nl/8YASd4RE2AdViokjuAmS
+ iPcqHAjdRovspbzahyjLF8Lj1FpymT2hqVDuwards25A==
+X-Forward-Email-ID: 6a0b5436b84dbc72d2274e00
 X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
  121.127.44.66
 X-Forward-Email-Version: 2.8.12
@@ -47,9 +47,8 @@ To: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Archit Taneja <architt@codeaurora.org>
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: Liu Ying <victor.liu@nxp.com>,
 	Sandy Huang <hjc@rock-chips.com>,
 	Andy Yan <andy.yan@rock-chips.com>,
@@ -65,9 +64,9 @@ Cc: Liu Ying <victor.liu@nxp.com>,
 	linux-sunxi@lists.linux.dev,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 03/23] drm: bridge: dw_hdmi: Free IRQ before CEC adapter is unregistered
-Date: Mon, 18 May 2026 18:01:39 +0000
-Message-ID: <20260518180206.2480119-4-jonas@kwiboo.se>
+Subject: [PATCH v7 04/23] drm: bridge: dw_hdmi: Hold bridge ref until connector cleanup
+Date: Mon, 18 May 2026 18:01:40 +0000
+Message-ID: <20260518180206.2480119-5-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260518180206.2480119-1-jonas@kwiboo.se>
 References: <20260518180206.2480119-1-jonas@kwiboo.se>
@@ -79,68 +78,107 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The interrupt allocated with devm_request_threaded_irq() can be
-use-after-free when the devres release action try to free_irq().
+drmres connector cleanup typically run after devres has released the
+last dw-hdmi bridge reference. Since struct dw_hdmi, where the connector
+lives, is freed when the last bridge reference is released, connector
+cleanup can end up accessing freed memory.
 
-KASAN report a slab-use-after-free in dw_hdmi_cec_hardirq during unbind:
-
-Call trace:
+Call trace without a bridge reference held until connector cleanup:
+- dw_hdmi_bridge_detach()
+- dw_hdmi_bridge_destroy()      <<-- struct dw_hdmi is free()
+- [drm:drm_managed_release] drmres release begin
+- [drm:drm_managed_release] REL (...) drm_mode_config_init_release (0 bytes)
+- dw_hdmi_connector_destroy()
+  - drm_connector_cleanup()     <<-- drm_connector is use-after-free
   [...]
-  dw_hdmi_cec_hardirq+0x4cc/0x560
-  free_irq+0x48c/0x7e4
-  devm_irq_release+0x54/0x90
-  dr_node_release+0x38/0x5c
-  release_nodes+0xac/0x130
-  devres_release_all+0xf4/0x1b0
-  device_unbind_cleanup+0x28/0x1f8
-  device_release_driver_internal+0x358/0x470
-  device_release_driver+0x18/0x24
-  bus_remove_device+0x33c/0x4f0
-  device_del+0x2d8/0x790
-  platform_device_del+0x34/0x1e0
-  platform_device_unregister+0x14/0x3c
-  dw_hdmi_remove+0x74/0x180
-  [...]
+- [drm:drm_managed_release] drmres release end
 
-Freed by:
-  [...]
-  kfree+0x1dc/0x5dc
-  cec_delete_adapter+0xd4/0x118
-  cec_devnode_release+0xa4/0xe0
-  device_release+0xa0/0x200
-  kobject_put+0x14c/0x26c
-  put_device+0x14/0x30
-  cec_unregister_adapter+0x20c/0x280
-  dw_hdmi_cec_remove+0x8c/0xd0
-  [...]
+Hold a bridge reference for as long as the connector exists and drop it
+after drm_connector_cleanup() has completed to keep struct dw_hdmi alive
+until connector teardown is finished and avoids the use-after-free.
 
-Explicitly devm_free_irq() before the CEC adapter is unregistered to
-fix this possible use-after-free issue.
+Call trace with a bridge reference held until connector cleanup:
+- dw_hdmi_bridge_detach()
+- [drm:drm_managed_release] drmres release begin
+- [drm:drm_managed_release] REL (...) drm_mode_config_init_release (0 bytes)
+- dw_hdmi_connector_destroy()
+  - drm_connector_cleanup()     <<-- drm_connector is destroy()
+  - drm_bridge_put()
+- dw_hdmi_bridge_destroy()      <<-- struct dw_hdmi is free()
+  [...]
+- [drm:drm_managed_release] drmres release end
 
-Fixes: a616e63c56ef ("drm/bridge: dw-hdmi: add cec driver")
+Fixes: ed6987b67418 ("drm/bridge: dw-hdmi: convert to devm_drm_bridge_alloc() API")
+Tested-by: Diederik de Haas <diederik@cknow-tech.com>  # Rock64, RockPro64, Quartz64-B
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
-v7: New patch
+v7: Add fixes tag, re-order patch
+v6: Collect t-b tag
+v5: New patch
 
-KASAN report a slab-use-after-free in dw_hdmi_cec_hardirq when,
+This use-after-free issue likely existed before commit ed6987b67418 when
+devm_kzalloc() was used instead of devm_drm_bridge_alloc(). However,
+v6.16-rc1 first introduced bridge refcount and drm_bridge_put(),
+parts that are used to help fix the use-after-free issue.
+
+KASAN report a slab-use-after-free in __refcount_add_not_zero when,
   echo fe0a0000.hdmi > /sys/bus/platform/drivers/dwhdmi-rockchip/unbind
 on a Rockchip RK3566 device prior to this fix.
 ---
- drivers/gpu/drm/bridge/synopsys/dw-hdmi-cec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-cec.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-cec.c
-index 9549dabde941..67a2a242d3ca 100644
---- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-cec.c
-+++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-cec.c
-@@ -309,6 +309,7 @@ static void dw_hdmi_cec_remove(struct platform_device *pdev)
- 	struct dw_hdmi_cec *cec = platform_get_drvdata(pdev);
- 
- 	cec_notifier_cec_adap_unregister(cec->notify, cec->adap);
-+	devm_free_irq(&pdev->dev, cec->irq, cec->adap);
- 	cec_unregister_adapter(cec->adap);
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index b7bfc0e9a6b2..9d795c550f8a 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -2568,10 +2568,18 @@ static void dw_hdmi_connector_force(struct drm_connector *connector)
+ 	mutex_unlock(&hdmi->mutex);
  }
  
++static void dw_hdmi_connector_destroy(struct drm_connector *connector)
++{
++	struct dw_hdmi *hdmi = container_of(connector, struct dw_hdmi, connector);
++
++	drm_connector_cleanup(connector);
++	drm_bridge_put(&hdmi->bridge);
++}
++
+ static const struct drm_connector_funcs dw_hdmi_connector_funcs = {
+ 	.fill_modes = drm_helper_probe_single_connector_modes,
+ 	.detect = dw_hdmi_connector_detect,
+-	.destroy = drm_connector_cleanup,
++	.destroy = dw_hdmi_connector_destroy,
+ 	.force = dw_hdmi_connector_force,
+ 	.reset = drm_atomic_helper_connector_reset,
+ 	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
+@@ -2588,6 +2596,7 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+ 	struct drm_connector *connector = &hdmi->connector;
+ 	struct cec_connector_info conn_info;
+ 	struct cec_notifier *notifier;
++	int ret;
+ 
+ 	if (hdmi->version >= 0x200a)
+ 		connector->ycbcr_420_allowed =
+@@ -2600,10 +2609,14 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+ 
+ 	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
+ 
+-	drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
+-				    &dw_hdmi_connector_funcs,
+-				    DRM_MODE_CONNECTOR_HDMIA,
+-				    hdmi->ddc);
++	ret = drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
++					  &dw_hdmi_connector_funcs,
++					  DRM_MODE_CONNECTOR_HDMIA,
++					  hdmi->ddc);
++	if (ret)
++		return ret;
++
++	drm_bridge_get(&hdmi->bridge);
+ 
+ 	/*
+ 	 * drm_connector_attach_max_bpc_property() requires the
 -- 
 2.54.0
 
