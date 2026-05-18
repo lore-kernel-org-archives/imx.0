@@ -1,69 +1,87 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010046.outbound.protection.outlook.com [52.101.193.46])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86B625D527
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 15:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779116518; cv=fail; b=Lk94KLSv8icZOsL02Ldu96KOdKXF3Ijb4Gjm9k+EbSr1qvVmmDMBBKd4wGPj3r5LG2+2M4Z0CBo5M9MZqZThJ34tef2GU39czAd9E5p1sAzVACHrBLqJKlWXx1vNwhyKEu6zlBZ01N8DqcZ2Em/ICRZp4IeovVvngybDr+mzhqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779116518; c=relaxed/simple;
-	bh=5EPluYsQTyrg8H8HAY8S9RDSHHgQ49E0PRIZklmKknc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MVhxg0lUFy7D2YKA9tSDWkFi5Si7GWE77u7IiTyPtlXwcZdHZgMfA31b76o5MyYr5xk4eOthe+Njt869wt9ipCKOopsSYA1UxDesxyywiQQlQq4KpbLu0jH2//pi5JhuMUVcdmZB7VWL68b2VswO701HzhcAWZ9kijnuf5Y4f+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dSvYOi9y; arc=fail smtp.client-ip=52.101.193.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5F23822AB
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 17:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779127020; cv=none; b=Fz+w1cq6+JBitwuigwshotuInZ//MhpMCEe0AdMLm13OGihTkxztw4eJ6RGjiwa8LpZ15VUzJLDVUoaE/cBbg5Z6yGJYqiJS7QFzyqjBggbfRNz1Ywxq3RAMe3l/HpLgOi6Bo7IburOMa3XDFrtgVDKXLVTuU9ozoS63KJv8dMI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779127020; c=relaxed/simple;
+	bh=hveTFc5TuR1bKQ6wXVEDZpt4zR1cJ5gHeLtBc3YT0EU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dks3ybqKraSG1yYk11h2sapoRVWr+Kiay0H1/jp8BskkDhThiS3e7JU7MyNq5/W1WDS9FIKhmVVTYXmuFHI0dluMM5oZLITgW/9H56eBuPlLMkYGlqR6+d/Z8EqymJ4V7Ojy4FIbw/hX0pMDbjGh7b55W/ad8lVxDQtJ8iiKFnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pz/vDsbV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dFBRyfAX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dSvYOi9y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h/MLlWwRXpdmycHp8+fZxjcXJdQZ9QSsfvytFOwZ9rtSIYgHlDPUu/XZw5UIDwYIHaQLYVFDLyiVAhHIbYAgM0WIpWEPDkjjxr4uERiq00bdD9AcD7y9FNWOu1+cI/XmtEjSjACReopntb0jIK/Qe1jK+qgCpRwTXyXOy3LE/649wzXMEyJwEAQRChanLrMeqVewRWmCBeP2g48f0xJr2WDMWl1YJkdSQO29IgYBf0Kk+3wBnLIpI/BhdpZbWtwEbX3dzWP27+ElHI2nYyabFF2rOUUbBCkwj3cgs/MTfJteUN+KRHnlIqldHQBZWg235vm4meRxhEYMttqPDK/eVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BvLj49y1Cv0WBKsChKHd46/85V+NR0jQnbAm1ZNw62k=;
- b=ls+OV+KoYogQYjQiv/a5r0gGKrvsGEYV3oGs8qm2ai5B2eucoq/o1utl6x/KlJXFu8TZEeqHIPtEc4s5N3a05HOfNHh8rLsOup9Y/X1+aftX9Z/DEPQ5JKZ2zHcUv+lmBXol5e6cdroMVy764GfTp5GhnNPLfb4UXw/Sg5G8w7nOJlLUYCL4H8iLuPyMTcmPkYGGTKYPHcbJ1nvIQcjlL5qcbQQuQP5ou9zDX5dPBDSucAC3eMCaJE1c6i8S8fVo1/o5MO2+E+u4AArBL+NmbrgcB/D+MGjZLXAdA4dLCkeP9JHr6oiv06mXsh9bEXTX7kiVKbAc9McNzDkdrKt/0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nxp.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BvLj49y1Cv0WBKsChKHd46/85V+NR0jQnbAm1ZNw62k=;
- b=dSvYOi9yPen7APyx0UtoLUn5125xvvsm23Vp6TzY+4xdQrJiOQGtgSHkmpZMB2EHlU8b/l1gAWPSdvpVJg58kQMW5KsmvFLESkuZZS5+Qp0jUbOQRwrjXmnIFvriqeB9loEUJIf9FrMh67zyq2Hx/KP8c2ud6Y/pRjQjdNcBRHM=
-Received: from BN9PR03CA0568.namprd03.prod.outlook.com (2603:10b6:408:138::33)
- by DS4PR12MB9771.namprd12.prod.outlook.com (2603:10b6:8:29b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Mon, 18 May
- 2026 15:01:52 +0000
-Received: from BN2PEPF00004FBD.namprd04.prod.outlook.com
- (2603:10b6:408:138:cafe::4f) by BN9PR03CA0568.outlook.office365.com
- (2603:10b6:408:138::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.23 via Frontend Transport; Mon, 18
- May 2026 15:01:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF00004FBD.mail.protection.outlook.com (10.167.243.183) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Mon, 18 May 2026 15:01:51 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.41; Mon, 18 May
- 2026 10:01:42 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 18 May
- 2026 10:01:41 -0500
-Received: from [172.31.11.23] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 18 May 2026 10:01:39 -0500
-Message-ID: <43a11a8e-75a9-4625-a3a0-c55f2a1af296@amd.com>
-Date: Mon, 18 May 2026 10:01:38 -0500
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pz/vDsbV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dFBRyfAX"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IGXjV62685332
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 17:56:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	MIxIK0Wuilz+yl4PP/k27Iy80ZOIVvKw4mIo1azk82c=; b=pz/vDsbVtXDpaDLA
+	RXb0yTPq+pa4kGzKlQgwRXaYiAwcvn1BL+ftJhNufpHGwfK4yh3SnxPA9dIpCmVr
+	sknNhlY70m295zXJCEciJNfiZs4/DxxLciyh35IHH+ytoGbFfwAaLy5BwgCUbb+0
+	kdZ8jagWJIx9rYTtbBBegG5gHkfs5PLGyt/wuP7kXluURzFbTn+beeLeB8jQ0ZAI
+	hpeiDXtFcRoQquLguHhijUX4iTgG72Kf0L6h3+GxcSAchtwHMNNNbNjJjGLVTPxy
+	NGbgoWHM7mdwrJo9MYyRG1Fnc5dW8J+6S/RjlCpI1XAygnQl/cqro8IiW0L+VWrw
+	A6HXJA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7vrbu22a-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 17:56:58 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50d5d1c2289so83864801cf.2
+        for <imx@lists.linux.dev>; Mon, 18 May 2026 10:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779127017; x=1779731817; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MIxIK0Wuilz+yl4PP/k27Iy80ZOIVvKw4mIo1azk82c=;
+        b=dFBRyfAXOIJutHjEbymD4RHwnQPponIiH7hHWFzoFM4NMjI347N0ZrvG1cMjCg0HDq
+         njHC4hWi2jztjFP9on7o2HjjZOvZjt1xYFcJo4X3dSOqOqKyMkm32Xd4sXjyZoSE77LT
+         SP1w49eB7YClkkLf9Z4zh90AVTc2DXYUVMkO9vj0fxBG4b8BR2rHN/9einxfeW2DS/jf
+         b9l4fjldnKjohVzZ+V7R2y5MfxgTpb31USsUn9t/uvoLvJlpb8ehKgdCHn/kTc/p9Zc0
+         azImJi8uLN1OEpKuOYC87ibtB7eF2cFToaLWgGYW6P+r5LfxpC+7ULpVyuUJr34RnblI
+         Axwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779127017; x=1779731817;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MIxIK0Wuilz+yl4PP/k27Iy80ZOIVvKw4mIo1azk82c=;
+        b=WnqqsdMsrRZYxfSk1d6Gg6o2tDvhXL1KhEbfVNxXD7BjS+XHheLbh/g6kcqdsHmjHY
+         HA8rSR4z8JKq2bgKNtRKLBxfs8PjnRzPxtX5WcGChs/YRpffYr+d/ZS4vGDQ5vGkPHK1
+         JB1dNJgUQKcaQibZSTHJ82KNCVZNSHWopfD6rYwxCVmwfJVOr3niRRVyFm8piJWuni4J
+         bl+geJk1VKN0BauhstcUq3wILmj0jBZWZUlCSXbfD9YCXDz+ErlH/2LMmJgU1WqoBkf7
+         a36TBJ9cw+7q2mwds0rclbRP+SJlySlJRcSy2XfXBCfBCdvCinHeBx+2Mmpv2l8Qroz6
+         C4/w==
+X-Forwarded-Encrypted: i=1; AFNElJ+22oeh2AvAMN4SHCQVyMgvsXIOue1URwdRRsDjoW32P7hm538wy/lEdD4fEdH8GCDFtU0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+nwdrBJsDCj1giB90UywS1gcteDuDJujwm16QQzEnpRUFQ1o/
+	qsXn426/dSAzWjL4jOyCYAo2D42vkRBlM6RAWgnKOW+HIgo/HrlXhAix9v+BDPjHiupU0iDcNO6
+	Q5/MPOyJTbeC4Zd411W06Tze2lFfKpBQOjTUD1UQ039DxkL+E2/KnC0U=
+X-Gm-Gg: Acq92OFEUdXIZrNBERHjYT6KlJanSS89yMxGYDV7xFGcnJsH1wLfLd4iLIWBmWTLIHD
+	NKDfZzuxTBiKJNFDtiJpiRP+tkXcgauq4Zz52mo+fiWSgvVwsfVsJXJi0nM24eTca7G1JtCrPUx
+	+8ZnX1XEtxOw3Pe4xOLy8lOuTAZLo/6cCbadBU/AG0AQwIroF7498LE47A3s57rGfNWcQzV/5Rr
+	QTmsl78CkVqv9YSpq2HQ1O/fsGVKH0y4A5gxRQEuHopcHHfXpljjtubLw6kVxNgyQOJ1FAsffiA
+	e3vaXmE16nM110DNHNoiGcV+49qL3d0IELf/VJy2tvZkO0F3BlhUYJJXVa9bMu8WVEzXPukdPCT
+	dJgh6A7uJI76h9qT0HjjNQDJyzVtVXDZcrdrv3ksYgA0K9xlwSKWmQWzj6kneFZ4TWcOAbRJ9FI
+	z7s5chTNrR
+X-Received: by 2002:ac8:7f53:0:b0:50f:ae44:515b with SMTP id d75a77b69052e-5165a0df71dmr223765231cf.37.1779127017478;
+        Mon, 18 May 2026 10:56:57 -0700 (PDT)
+X-Received: by 2002:ac8:7f53:0:b0:50f:ae44:515b with SMTP id d75a77b69052e-5165a0df71dmr223764831cf.37.1779127017114;
+        Mon, 18 May 2026 10:56:57 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:e390:12f5:ed3c:ffd9? ([2a05:6e02:1041:c10:e390:12f5:ed3c:ffd9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5ab527asm299815105e9.11.2026.05.18.10.56.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 10:56:56 -0700 (PDT)
+Message-ID: <1155ed3f-12d2-4a98-bbae-b3dc61846e75@oss.qualcomm.com>
+Date: Mon, 18 May 2026 19:56:55 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,149 +89,50 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: <tanmay.shah@amd.com>
-Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>
-CC: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Beleswar Prasad Padhi
-	<b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>, Linus Walleij
-	<linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson
-	<andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"Peng Fan" <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-References: <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
- <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
- <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
- <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
- <268f8e00-91bc-43ea-ba95-077cf859e7f3@ti.com>
- <9e2492d3-8753-46c7-8db6-5f1a80b4f2e9@foss.st.com>
- <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
- <6917e3d7-8c6c-4e63-8eca-5308621ec3e8@foss.st.com> <afzIABSh1xtMEGbf@p14s>
- <PAXPR04MB9185BFA6E7375FAD0B15B021893C2@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <agYHzH-nJLl1HFIn@p14s>
- <PAXPR04MB918587A8812B51BBB2A46A2C89032@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH] thermal: imx: do not split quoted string across lines
+To: Mayur Kumar <kmayur809@gmail.com>, rafael@kernel.org,
+        daniel.lezcano@kernel.org, Frank.Li@nxp.com, s.hauer@pengutronix.de,
+        rui.zhang@intel.com, lukasz.luba@arm.com, festevam@gmail.com
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de
+References: <20260511174255.215207-1-kmayur809@gmail.com>
 Content-Language: en-US
-From: "Shah, Tanmay" <tanmays@amd.com>
-In-Reply-To: <PAXPR04MB918587A8812B51BBB2A46A2C89032@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <20260511174255.215207-1-kmayur809@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: tanmays@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBD:EE_|DS4PR12MB9771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2488e9ce-8c37-40d5-92e8-08deb4ee64b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|22082099003|18002099003|56012099003|4143699003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	cgyFGAw5lbc0Jpxw1uSPmXGj7YRdBA5eCuFhSq7zr8LTvPfbkT1DiAvsGyP0XUNfsw8yhn1HW3cDCy2veamtN4iuEo/Fi7UHzuu1qFLUF50B0t8ayaOu28w/0cnG2BVQiT/o8TO9VukfEvSd7HD60vIK5hru2F6Y+WABGtatlRVtvS3mS8upnOZb2JbkK9ebBCTPH77CO4bUdKfSTaT9cJfunulZnTCT21t/Z9rMSzricPfaUVAOXygbXjAZggydA8StNDR6O0TvSN48tisVB/gibhpj6ukp6VMtnjADA+IjVOEMEbLkmwootj91fYyjMWyvEJHP7SLcqHsDsp+vWnOtST0a9R+kVE20hCvAhLg9t6rzDUJAnOpCYNqKYrhnPaI99u6s0NFiCHtKt+w920rVkiTahWbQAsp1RduYdKndLB2gv8sZ3eLRZLtvtLtBTee91NaH2BIbXh0nmXKYG6AJNG1TDh6KLXRE5DovwHOrTcsZBF3naDrXXAvtQBH6/49M5Q0XyY/lKMa++eF5/N/Hms7C4YpiODcLR6j5+PF5y2vNjKqoGvm9zDILub2pFmpnh6KpVllCoo/M7ByxYighWYMgBcfTDPIlLLrkXW7+5iJzm6RVZ/lF7milZb3sszQygz9uB+rVWeIb32ryUdrqC/aGiWRG19M0vYf0HkMqyBeb3i1PyXb/gEgJ4Qp7TDasCUnJscfQzs+MhkNK1pcB/dExShgyXfgi3X4xfUI=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(22082099003)(18002099003)(56012099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	A7QkFlrwtNT7/tzyYYVoRnfKW4Rwz8ELHQSu3IQY/DsSuCACp8MyQLf5KR43qqrrIYjiSUMi0bjWYjrenX2Yjv4lu8c+55dZq0ge2qUQyx0raJXlTkYH+CMfMkW2cQE/IDMMZxAvV3dtMySX974cVNyQpxhj/ChPqkRs/fYdddcs7C1i6M7GYfMj7CbbGV2cMq2MHAfOhp6EQG7gWdBMI+0O7Wh96N7Jk0fS+E8Y0r8J/lacmg9FSdgvG8VgnwKINl6DeWwNwVEq0k9NxwgEaxXeKIFeGvIIWjviP4uYpmJGe2taYQ3m3n+xld1fnkfZL/uW3A66wNpNGFUWD5j45CZrCf1bZY11XbSe0sPv4saxzyTPpJ5ssSJWW9C4vUsKlQpTn6BF0zRBbd6Tq4VgQmtHsifKWNPwvkQZ+FHgRYMprd9tz58zX7jDn+u6HAPp
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 15:01:51.7631
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2488e9ce-8c37-40d5-92e8-08deb4ee64b5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF00004FBD.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9771
+X-Proofpoint-GUID: vpkEGffSEQLpkCjs4cCapMegvttSpEtI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE3NyBTYWx0ZWRfX4ep1bf9aOysQ
+ +W5wXDrRFA05XqljXAzSY1bvyWXX8xwyOo9EwekoEznpVlLvmPlB0y3tZYWSekhuCKREk9NcgDy
+ EkAkZIN++ybSLt177tk74Ism7g3GOkNWEz8MKjS5DUE6h9ebWh+cTQJcnhYZPjIcT5gSeLh0Jzi
+ GGXn6Lz8ZwJWWqyLMQoMB7HUYW5yOMNJ/QtExVBTzE1keV/eP3TTrnQK93NRjJJHliFSp+MYoY8
+ nvrVQ5Ky26wydexKTL4X6CoMHSNzUkfY6hQVhAt/cr3DQDAVb7g39iR3roKFXS+XKoCWP5+XrcN
+ ptO8ezykelktsAKfUj/mmmOSFGUmbXd+mNTJUoswBOK88L+lMwKV5f2l3PMEwWWL/szRnoRY+Es
+ Z5o+CHWh5AWjrsDr9Ag5Lm8yw97FkVA3OKBFglGB80RVETs2fPrLpE8nRgFlA+ZD9vpBGtfp0g+
+ niiQFd2Y/7dUd3hDOjw==
+X-Authority-Analysis: v=2.4 cv=KZ3idwYD c=1 sm=1 tr=0 ts=6a0b52ea cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=pGLkceISAAAA:8
+ a=fjfue5pgiGPxETPXDXYA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: vpkEGffSEQLpkCjs4cCapMegvttSpEtI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180177
 
+On 5/11/26 19:42, Mayur Kumar wrote:
+> The checkpatch tool warns against splitting quoted strings across
+> multiple lines. Join the dev_info message into a single line to
+> improve the ability to grep for the message in the source.
+> 
+> Signed-off-by: Mayur Kumar <kmayur809@gmail.com>
+> ---
 
-
-On 5/18/2026 9:24 AM, Shenwei Wang wrote:
-> 
-> 
->  
->>
->> On Thu, May 07, 2026 at 07:43:33PM +0000, Shenwei Wang wrote:
->>>
->>>
->>>> That was my initial approach.  We don't even need an additional
->>>> "rpmsg-io-*" in rpmsg_gpio_channel_id_table[].  All we need is:
->>>>
->>>> /* rpmsg devices and drivers are matched using the service name */
->>>> static inline int rpmsg_id_match(const struct rpmsg_device *rpdev,
->>>>                                  const struct rpmsg_device_id *id) {
->>>>  +     size_t len = strnlen(id->name, RPMSG_NAME_SIZE);
->>>>
->>>>  -     return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) == 0;
->>>>  +     return strncmp(id->name, rpdev->id.name, len) == 0;
->>>> }
->>>>
->>>
->>> If we encode the port index directly into ept->src, for example:
->>>
->>>     ept->src = (baseaddr << 8) | port_index;
->>>
->>
->> There is no rpmsg_endpoint::src.  You likely meant ept->addr.  This would work
->> but not optimal on two front:
->>
->> (1) rpms_endpoint::addr is a u32 and idr_alloc() returns an 'int'.  As such there is a
->> possibility of conflict.  I concede the possibility is marginal, but it still exists.
->>
-> 
-> I think there may be a misunderstanding in the implementation. In this case, we do not 
-> need the return value from idr_alloc.
-> 
-> When the driver calls rpmsg_create_ept, it can pass an rpmsg_channel_info structure as an
->  input parameter. This allows you to specify the source address you want to bind.
-> Please refer to the definitions below:
-> 
-> struct rpmsg_endpoint *rpmsg_create_ept(struct rpmsg_device *rpdev,
-> 					rpmsg_rx_cb_t cb, void *priv,
-> 					struct rpmsg_channel_info chinfo)
-> 
-> struct rpmsg_channel_info {
-> 	char name[RPMSG_NAME_SIZE];
-> 	u32 src;
-> 	u32 dst;
-> };
-> 
->> (2) By proceeding this way, the kernel exposes the GPIO controller it knows
->> about.  It is preferrable to have the remote processor tell the kernel about the
->> GPIO controller it wants.
->>
-> 
-> If everyone agrees with this namespace announcement approach, I will prepare the 
-> next revision based on it, even though it is not as clean as the source address encoding solution.
-> 
-
-I have ack on the namespace announcement approach. To me it is very
-simple contract between the firmware and the Linux which allows dynamic
-endpoint allocation without giving up security concerns. Also this
-approach can be easily extended for any other rpmsg devices like i2c,
-spi etc..  With the fix in the rpmsg_core.c, this will work. I will have
-to see the actual implementation in the next rev to provide further
-feedback.
-
-Thanks,
-Tanmay
-
-> Shenwei
-> 
->> I am done reviewing this revision.  Given the amount of refactoring needed, I will
->> not look at the code.  Please refer to this reply [1] for what I am expecting in the
->> next revision.
->>
-> 
+Applied, thanks
 
