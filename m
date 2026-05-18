@@ -1,170 +1,222 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011043.outbound.protection.outlook.com [40.107.130.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722124315F
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 14:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779113662; cv=none; b=LoOut2heEGAzXIE2q7fwMmSmp/ubQP3b/IYWa4mpS+zgHM3vXiv55tHdpwIZ9pJRpv8KI2oNDr9FpCXfolkYdetcQrPwJOVGGHWGefLjGSomu4oYKnPNNlzCSH/XaFsUOtGMgzkEQi09O253gNuG00cmdkxzmdKwEqjSa7teN8Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779113662; c=relaxed/simple;
-	bh=5qDpVkMt4wmJAuvajXr0K3vaIjTuOXwvJrhqj7SsGUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B7DnTaDKhzt3KBNe8BC7U9CTlSPmR2h+T0rSlKWaI4k9Q2/75sYxcQLacPL4TUXfmVUfgzi3bAdo820tYVEvElTn2Rgp7tDO5AnMfazLBLk2XRGra/s6eL+jmLcG7Yg61CL3Ptr5D8k+6OVnyGhTfDPj5k3VFFtldNnOwcV539A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XcCKlePQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB9913D8B1
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 14:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779114302; cv=fail; b=MNyZQOHOyy4g7Tycr9eaYUVQgOU/xGQZR2H3OmTWXTJYzNO3YftJyVcCwU3T4AsfW5TcHRrKFgvct9WqnMeALRLc2vhI0A4cFBZfAfn81uur++oy/L/1dskFh8CDtp78jraGf6Od13QK6LCaEx3QDpKOXnGAIt1+zejwTnHNg/U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779114302; c=relaxed/simple;
+	bh=gtDkKBoka/4fPhh9RFpwNZkNfPLoLPSj9IS/ZG41XPs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Oyis7SJWTGChlW5lynA5FXpwtASzV7x1bguCgCSCtdf9lQKb5KA/SPCCNHu4OWNQ0nDFd7spsSW2lM+se5FZyXjDFlV56tiKRxEU0wyAUiPy9TnoLVm0gm1ZeeuWqEMk38MtxeqU9Aym9VqPbQILdJeFDSB4kNIrmhhWU09nA3E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JD649LyF; arc=fail smtp.client-ip=40.107.130.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XcCKlePQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779113660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X0PKPpLFUcJ5PNICdj+fODP+ieu23TytLui2uhS6hnY=;
-	b=XcCKlePQRCeNFJsGcLMSHXQ/fSrJvamD5A2GxmWdoGZQL/RrWD2lyIlTxFTNF9BMo6BpbY
-	w0/EpsruSfyA3I1DLVcmyCwiy2DO/qTcIZpk/Bm8sU+YKDkio4I76oPJ2p6UBwLkGoA+Yp
-	a20GsbyKFpt8c+g3HBJT5doI0gxJFyA=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-mU3r8NGHM7KTOA_cPFPwRQ-1; Mon, 18 May 2026 10:14:18 -0400
-X-MC-Unique: mU3r8NGHM7KTOA_cPFPwRQ-1
-X-Mimecast-MFC-AGG-ID: mU3r8NGHM7KTOA_cPFPwRQ_1779113656
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5a870f93c99so207036e87.0
-        for <imx@lists.linux.dev>; Mon, 18 May 2026 07:14:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779113656; x=1779718456;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X0PKPpLFUcJ5PNICdj+fODP+ieu23TytLui2uhS6hnY=;
-        b=d8etaDGqSj4x9sLYzNT2h18RBprxPH6Yg+hMUtLQ/GuyZXh4YHrIiQUAal/tVkgduJ
-         0egW/YLEJUP9b9DCoHewT64KUhwQUZT4ff6fq913EXGmwwn2qd5KNdhxDwjs4q9UP8/N
-         hoZ83Nb4Em+oouxGEE5PyFUPVW4VatJUE8V4ktBTI7vqKb2uzUy8DDVwIS6xgZlHX0NN
-         9hDEINdJGeDy6MeZ8Y6bRuu5eQ6/8T+fPB2ia5z4Pc5znmKHGjSTYxHESEboVD4tZ9ja
-         i+x/8L4HlrPy4L6xI8MkJrbysWpiX/mu3pzmypYmJsv7lffg7qPDjUHlXc2EkpTaGEtS
-         soiA==
-X-Forwarded-Encrypted: i=1; AFNElJ8MjCxD3f0WawkSoGE6P8xI/JBWbni+BNTm2XiCgx+7d+H6SC63PSsChYzGwY7787eQ7Ug=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxZZzblOeNFwnGMd1rSoj6YdfmJ9iUJX/jlpZusuhKfz4QeUUBT
-	v77ht4owMONgBmH4ZkgrpeMo+GNr3avufTe9YJlwIZKtksM/sY5ZYtQrAfCeLEs2vrNdglnjTrO
-	UOh7BjuAh+uUWVOWdAHhMBllFTA5QyDLHQcvoHR28WKTNa3ZLdRncTnq467dTM01iZ5nh36vu2O
-	wBDFFrbnGlQuC7BDb0eBJl1Xx0k0GO
-X-Gm-Gg: Acq92OGrwTabVzZSCqOdqDBr2NleF1iiU4z+UeW/Py75U5gqDauV7pUvmlGc7z4qm/I
-	QWHiQ/f4alJm0r5/w22W084P/3Pg+L9hcNbx4pxf2HjOy4+7nNR51gzFiFxn9OVMtSFh55HJpzK
-	CCcTpypjrgzogdCIBV5d0Wmv/2AsJMhTQz0jtI18DIP1t3Q0f7ypXevYYFSTGgqeWHLwFVXigki
-	TsEag==
-X-Received: by 2002:a05:651c:410e:b0:38f:f6a2:a61d with SMTP id 38308e7fff4ca-39561f2f883mr11802501fa.4.1779113656355;
-        Mon, 18 May 2026 07:14:16 -0700 (PDT)
-X-Received: by 2002:a05:651c:410e:b0:38f:f6a2:a61d with SMTP id
- 38308e7fff4ca-39561f2f883mr11802281fa.4.1779113655655; Mon, 18 May 2026
- 07:14:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JD649LyF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sn/DUjonm5cW2K+AKb2AXlddk0+XiQtev8CX02potS5OaH5+57nQhTDoZtC+g/SQ+UIppWgDxxgX1sYWEMtiSHhk48/4l/m4jZqfBZDbgDSoShh9e31rAhvTR6eI+2is3oVEA0OnyDzdFLo/edgmy1G2uK6q8J1bK1TDIyWS2tedSwk17uesTlnppEfwtX7H4w+5n1ozuunrb26PlJGq7CF+plrm1zqQL2euFQz9ZhOFAVlxEbr3Ycc679Gfj0cEhEJEVAOzs5v7+kM2NI0Vk3J8sZzPrSepiuN7QKgenjgm8XTbUJclDTJcTdAQR56keLwzVUQOj6mNso0LB1BjMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qxHm4meEDR/VqQA5H0e8VZkmUep5xrh1RAghaDopVXc=;
+ b=B0mAkfcleZxB0YxJHriGOI9CPF0sLWyaulU9dH818YVMYCHQDixObeeEzhbKP4XVTjiQTE1pXR38t8W2eSsr5/KEDvKDQIucbSCdsxXu//Ko/CUhbQH2vdCtqB45LtlylN2yPTfm9Mo0EykLXAJEF5rYGeZo3Z91v5+nZIeterByLyfCsLpiEKIIkD94TnEI0WijpzB7jzKP7uGAjtigdiorIz0d2PSToQSgO1Ylm9mw9bgkaWuk9cJzkw3auuWaWY8VJChjIxGqBIyM65t38vxU7geuWtUhLwyRfS57mQQ3eXVcfGUWIEHsUElR5tXaWnRd5IL8e9DgrmMKvLlmYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qxHm4meEDR/VqQA5H0e8VZkmUep5xrh1RAghaDopVXc=;
+ b=JD649LyFqZURxDpCB7eWadVS//daWutY8YoloIfOECbQKpcOQAAy++SbZdwMrVfdEnEYXFExn4KB8EWGmouKLDghkrN8l9hXdQeg0zRrzwXMB5/2H9Ot4na7DA2SgB9jfGWTuNE4HvWCXN+G/DAXtwVe3Q+P7wzAu8d1a3R0+lfeTXOuLxHQVYuzUQFsERFzX3biw+UXj3ZUgekjOsmCrBHXXfSfcNw29elctgg++ApItV3QrC53ejgN3Oz0qBPzb0meav0Wij2vxs4qIwqkFqDRBpJX2PWlzz+KN199uSgI2UtOLHmxFO//XwYKGvT9UJOoUK5z+WIpT1Q1q6efsQ==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DU2PR04MB8566.eurprd04.prod.outlook.com (2603:10a6:10:2d5::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
+ 2026 14:24:52 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.21.0025.022; Mon, 18 May 2026
+ 14:24:52 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Beleswar Prasad Padhi
+	<b-padhi@ti.com>, Andrew Lunn <andrew@lunn.ch>, Linus Walleij
+	<linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson
+	<andersson@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
+ Fan <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Topic: [PATCH v13 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Index: AQHc5tIXt84GDNmf8UW04dpFalLnKg==
+Date: Mon, 18 May 2026 14:24:52 +0000
+Message-ID:
+ <PAXPR04MB918587A8812B51BBB2A46A2C89032@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References:
+ <CANLsYkzt9xUczxSU28u-TfZAAjr0ufZKXAj8Eqfq=45gufXW3w@mail.gmail.com>
+ <f7ef3417-eb84-4467-ac72-a9bc8b0c81e8@foss.st.com>
+ <21de8440-adf7-454b-acfc-06e50882e075@ti.com>
+ <4c526816-b127-43e7-86e9-eee4dc1152bc@foss.st.com>
+ <268f8e00-91bc-43ea-ba95-077cf859e7f3@ti.com>
+ <9e2492d3-8753-46c7-8db6-5f1a80b4f2e9@foss.st.com>
+ <db4c18be-1c8d-4227-9fcc-1d25cec50e37@ti.com>
+ <6917e3d7-8c6c-4e63-8eca-5308621ec3e8@foss.st.com> <afzIABSh1xtMEGbf@p14s>
+ <PAXPR04MB9185BFA6E7375FAD0B15B021893C2@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <agYHzH-nJLl1HFIn@p14s>
+In-Reply-To: <agYHzH-nJLl1HFIn@p14s>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DU2PR04MB8566:EE_
+x-ms-office365-filtering-correlation-id: d0ac6241-20cc-47c8-52ae-08deb4e93a04
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006|18002099003|56012099003|22082099003|11063799003|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ U1ZutsWIEoHWD0nClukdc+2LWVu6209SN6YbjCDw/tPNDf5o8sN578GO0482igKzgnPkGtW2NqOb0hR77ls5G9hL87QmYB4YOgukCbmwb1uAqUObQmS6dsANeec1ludvxwbTzwFcBeeqs4ArUJ69mhoceCCFonTvV+oWX5++IfbLQ+PSbqT5DRzzSSmCdAGUXOvz5O+HlI+dankOg5upYu5NcxAAKxqvEMgTyGF3Ow3HJFOhPTt8SXXVUPGLjtk+HZGKryU/gfv/5dh5nMQCtXDCG5z1E5Le97k60JQEaQEWkUJK1nvMRiKlusbIIuU8AhqEDU+XsaWivE9qHtaoEvwvfXMhHdLIeot5apDXpx6VkRqUB9fQO1nZbHxqeMPlmNqdeSqjFXC5tPJRwT9+L/h3jBeFWcIMMrfiWCU/qO/7TxMxtTUCadp38iiI4MxF5Uc3sl+YlnfWG/ocZpIoAxqhi6GdT3sI3OP4YxToZzTbHrZ3C6Iehf/S3I1IOwv9k7l7dDb5DBauW7ekAa3jjDxIqoeIATq9JRgNDn0F6hMBhGAuiGrUp5QLsY60QPCk+OakHb93zTZwVZjYsc6SoismQ9o9Y3XxWJ1iacBjq4u+q/cVbBgHFOHKgyh85ROgaCLooFnyLEFqpIzEt1b+oB+ZBpU61HcEVvymfo4fUw5f5knCZSgjaNcYTNS0t8sfPhYinua8DXZrSZ0XF1N8lmDUMxFJ8QHMSm4uK5B/TmPgUFZGgHAqBji2ze3/0bQz
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006)(18002099003)(56012099003)(22082099003)(11063799003)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?kvJ1K/0MTw5f+vLk69iqVnMvUwPq7F485yLiwpVsefAPxpLogCaHppRD9fih?=
+ =?us-ascii?Q?3/DV6j1DuiekbHrTJB0KngRzuD2Cf/acHnROlG0YL8okrt5iivPumOL4BMhc?=
+ =?us-ascii?Q?L3jKgARg5BkMbYDGC3CSEi4bXHmETSm02jkFouOmUuz4kGbgVLAA2qmI0Ae0?=
+ =?us-ascii?Q?rE4/wvjkQ+V6VunjqR8mXkhMHRU2Mh+BjKlcWYtvmil9IC4IAE7vcZNvaWF7?=
+ =?us-ascii?Q?G+wFphozNKkI7y4HRBFcpCSWyzhJVJDIytoX25zAYzB6WN7jkNG2gS+Ld0UG?=
+ =?us-ascii?Q?EY5F2k8PFUrIkRuuhkVRYyASX7WeqbGL6S5BvH26Sh5AubUj6dwVdsZWsM3b?=
+ =?us-ascii?Q?YU8rC+oEWC0L3/JaYT7r+TRO9KSHYCI8o/VDjTzzJw7mEJoRdgnwVfqExert?=
+ =?us-ascii?Q?TAttnPvzPp+EsJx2VNG4hz7RNDy2KFUQFfMP6626CXBCcbZwaEPEvrHKhr+e?=
+ =?us-ascii?Q?8Rt8ZdlxTvVcCC+KD+80nbOH/SktmeAD8OrbzC3WcwMHBUn3hviVAiNeyJwS?=
+ =?us-ascii?Q?fva6Rjp+G7Ar6H60cnczBiRTtwLsuDdiG23z6dtnXS30qS4NnQXUfrWcdFVI?=
+ =?us-ascii?Q?P8dgcXFFNnCrOhN4dVAbF4usru3KebaXBJMJb5zFw+oiQCTSmHHAkuI7O/7A?=
+ =?us-ascii?Q?ip3fbWqvy0KwQjL1CpjohupT0ncWMpODqe98mk075QzoAi/xoY/BIx55uEHY?=
+ =?us-ascii?Q?rI6mYYljwmxbIyHXwHfNT4bP/1JsD/9LwdLdJP8BzD9u+0PxoGiQ9+oOTpob?=
+ =?us-ascii?Q?XsY5M1DcGv1/IEnfUu8wXcVwr2jMOMQmVrjdLD8hNHgEhnGSo3YzdnouCK8w?=
+ =?us-ascii?Q?vFzN7/L2VI/aqdQmKB9Bzi5kBxjPdKV/zx1Gs1C6hkkNkUt4cvNDjZXSETZA?=
+ =?us-ascii?Q?ttzyteYWBF0dM9gMG619caB61Syialsf+9DPNjAUjjXutS52FKuUiAMFLam/?=
+ =?us-ascii?Q?GJjKVGoByC5/ZSDJrkF9TC3BSUyXRkAS1DL4IDFiaEtvyTnMQxELzUQmyoy6?=
+ =?us-ascii?Q?OZBztcCEg4Jijjy5YZ1vKvFzWBBYo7Pc8TqVQF3MBSjUY5HnUzfSsxNS43E2?=
+ =?us-ascii?Q?kV3TgjCD8w3P5eQ9mEAjOSfoyj49HRWPKxU0Ij0a8Je9FeIQ9Vsxpjs1shfB?=
+ =?us-ascii?Q?UE73or8pBrF7+XwhGUqUNswMqXDhdT0NV1be1hpGVYE6+I4SXHlH8HFpD9KU?=
+ =?us-ascii?Q?Fo/AIf+XpwoSNiZw9eXTrNFSgiUVuLAfhxbvkDNLVM4TaP3QhrG9DYPjQ22x?=
+ =?us-ascii?Q?tKN3q5uMpv0FcSuqHD5NlqR655lNX/RCYtkV+5ubfejCMwtrKCLWeJxkDERB?=
+ =?us-ascii?Q?F5P1yHoPb6/8DhtgqRekzxAWV+fTvlHynqwfEyzSRaMR+fgNMyibjE0Px1y0?=
+ =?us-ascii?Q?olRsh33I+skRWliDQPwyVPGmmLF5pEw9O4kRiq66+uIlbtJq+NLmd+x/D16q?=
+ =?us-ascii?Q?xWZkL/AXsXvEanJU6u7UqFGW7cwad4EFkHu42K4ZcLO13r2SCXFUZRsKnVhh?=
+ =?us-ascii?Q?oMRHkEG8rKD/pK2B2+6XuOvkYnQlxd5ZhqYN6pWAnQNce7llJJDYER5uPRfm?=
+ =?us-ascii?Q?s9IxL3c3PqIyMkcWIxyfYGVLRxccJxAU2lX/5NpBBV179Ihv1y6+1iQf55ec?=
+ =?us-ascii?Q?4c2d5kdWShOidkhOlz5QnweTR0LCllpjVi10O2WzuKh5HYk1k+FteVvzphJI?=
+ =?us-ascii?Q?u2OKsFi4eA4HHsq0rTYj9MRnka2Vw2sf+RurH3QI6QBRcb9H?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com> <aaGkGwbk-sh0YJqj@jkangas-thinkpadp1gen3.rmtuswa.csb>
-In-Reply-To: <aaGkGwbk-sh0YJqj@jkangas-thinkpadp1gen3.rmtuswa.csb>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Mon, 18 May 2026 16:14:02 +0200
-X-Gm-Features: AVHnY4JRP0kGP-z42K5FI0qcb3gAysvgY6dzw7kUR8X3jOVZKVkXLna2nVCi7XY
-Message-ID: <CALE0LRuahJy2EKa7YUukGRq1w9iws6kDvjZ7o33ahJUGc2JSsw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] Add DMA support for LINFlexD UART driver
-To: Jared Kangas <jkangas@redhat.com>
-Cc: Larisa Grigore <larisa.grigore@oss.nxp.com>, gregkh@linuxfoundation.org, 
-	jirislaby@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com, 
-	chester62515@gmail.com, cosmin.stoica@nxp.com, adrian.nitu@freescale.com, 
-	stefan-gabriel.mirea@nxp.com, Mihaela.Martinas@freescale.com, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, s32@nxp.com, 
-	imx@lists.linux.dev, clizzi@redhat.com, aruizrui@redhat.com, 
-	echanude@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Zu69kr7iOZTfig-aBV0lTjiO08M2Yu2aYgy1aloRwPI_1779113656
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0ac6241-20cc-47c8-52ae-08deb4e93a04
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2026 14:24:52.6773
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: X090dRCRvWPZqulirG8/212UIsZc0XOKVIgOP9CfAZhqqcXed1BHrM7xMqBpCaqxAi5GqsORtyYK27nmAAHCKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8566
 
-Hi all,
 
-Any chance these series can be considered? They still apply on top of
-the mainline kernel.
 
-On Fri, Feb 27, 2026 at 3:03=E2=80=AFPM Jared Kangas <jkangas@redhat.com> w=
-rote:
->
-> Hi Larisa,
->
-> On Mon, Feb 16, 2026 at 04:01:52PM +0100, Larisa Grigore wrote:
-> > This patchset enhances the LINFlexD UART driver and its device tree bin=
-dings to
-> > support DMA transfers, configurable clock inputs, dynamic baudrate chan=
-ges, and
-> > termios features. It also includes a series of fixes and improvements t=
-o ensure
-> > reliable operation across various modes and configurations.
+=20
+>=20
+> On Thu, May 07, 2026 at 07:43:33PM +0000, Shenwei Wang wrote:
 > >
-> > The changes added can be summarized as follows:
-> > 1. Fixes with respect to FIFO handling, locking, interrupt related regi=
-sters and
-> > INITM mode transition.
->
-> Tested this series with the default devicetree configuration by booting
-> the board to a login prompt about 200 times. Without the series applied,
-> I was seeing a bug roughly every 30-50 boots where the kernel would
-> would hang in linflex_console_putchar() waiting for DTFTFF. In my tests
-> with the series applied, I didn't see any regressions and the bug no
-> longer appeared. Thanks for the fix!
->
-> Tested-by: Jared Kangas <jkangas@redhat.com> # S32G3, interrupt-driven
->
+> >
+> > > That was my initial approach.  We don't even need an additional
+> > > "rpmsg-io-*" in rpmsg_gpio_channel_id_table[].  All we need is:
+> > >
+> > > /* rpmsg devices and drivers are matched using the service name */
+> > > static inline int rpmsg_id_match(const struct rpmsg_device *rpdev,
+> > >                                  const struct rpmsg_device_id *id) {
+> > >  +     size_t len =3D strnlen(id->name, RPMSG_NAME_SIZE);
+> > >
+> > >  -     return strncmp(id->name, rpdev->id.name, RPMSG_NAME_SIZE) =3D=
+=3D 0;
+> > >  +     return strncmp(id->name, rpdev->id.name, len) =3D=3D 0;
+> > > }
+> > >
+> >
+> > If we encode the port index directly into ept->src, for example:
+> >
+> >     ept->src =3D (baseaddr << 8) | port_index;
+> >
+>=20
+> There is no rpmsg_endpoint::src.  You likely meant ept->addr.  This would=
+ work
+> but not optimal on two front:
+>=20
+> (1) rpms_endpoint::addr is a u32 and idr_alloc() returns an 'int'.  As su=
+ch there is a
+> possibility of conflict.  I concede the possibility is marginal, but it s=
+till exists.
+>=20
 
-FWIW I also reproduced the issue Jared faced. Current state of the
-LinFLEX serial driver in mainline seems a bit buggy and I can confirm
-that these fix the problem.
+I think there may be a misunderstanding in the implementation. In this case=
+, we do not=20
+need the return value from idr_alloc.
 
-Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+When the driver calls rpmsg_create_ept, it can pass an rpmsg_channel_info s=
+tructure as an
+ input parameter. This allows you to specify the source address you want to=
+ bind.
+Please refer to the definitions below:
 
-> > 2. Removal of the earlycon workaround, as proper FIFO handling and INIT=
-M
-> > transitions now ensure stable behavior.
-> > 3. Support for configurable stop bits and dynamic baudrate changes base=
-d on
-> > clock inputs and termios settings.
-> > 4. Optional DMA support for RX and TX paths, preventing character loss =
-during
-> > high-throughput operations like copy-paste. Cyclic DMA is used for RX t=
-o avoid
-> > gaps between transactions.
-> >
-> > Larisa Grigore (8):
-> >   serial: linflexuart: Clean SLEEP bit in LINCR1 after suspend
-> >   serial: linflexuart: Check FIFO full before writing
-> >   serial: linflexuart: Correctly clear UARTSR in buffer mode
-> >   serial: linflexuart: Update RXEN/TXEN outside INITM mode
-> >   serial: linflexuart: Ensure FIFO is empty when entering INITM
-> >   serial: linflexuart: Revert earlycon workaround
-> >   serial: linflexuart: Add support for configurable stop bits
-> >   serial: linflexuart: Add DMA support
-> >
-> > Radu Pirea (5):
-> >   serial: linflexuart: Fix locking in set_termios
-> >   dt-bindings: serial: fsl-linflexuart: add clock input properties
-> >   dt-bindings: serial: fsl-linflexuart: add dma properties
-> >   serial: linflexuart: Add support for changing baudrate
-> >   serial: linflexuart: Avoid stopping DMA during receive operations
-> >
-> >  .../bindings/serial/fsl,s32-linflexuart.yaml  |  31 +
-> >  drivers/tty/serial/fsl_linflexuart.c          | 972 +++++++++++++++---
-> >  2 files changed, 846 insertions(+), 157 deletions(-)
-> >
-> > --
-> > 2.47.0
-> >
->
+struct rpmsg_endpoint *rpmsg_create_ept(struct rpmsg_device *rpdev,
+					rpmsg_rx_cb_t cb, void *priv,
+					struct rpmsg_channel_info chinfo)
 
+struct rpmsg_channel_info {
+	char name[RPMSG_NAME_SIZE];
+	u32 src;
+	u32 dst;
+};
+
+> (2) By proceeding this way, the kernel exposes the GPIO controller it kno=
+ws
+> about.  It is preferrable to have the remote processor tell the kernel ab=
+out the
+> GPIO controller it wants.
+>=20
+
+If everyone agrees with this namespace announcement approach, I will prepar=
+e the=20
+next revision based on it, even though it is not as clean as the source add=
+ress encoding solution.
+
+Shenwei
+
+> I am done reviewing this revision.  Given the amount of refactoring neede=
+d, I will
+> not look at the code.  Please refer to this reply [1] for what I am expec=
+ting in the
+> next revision.
+>=20
