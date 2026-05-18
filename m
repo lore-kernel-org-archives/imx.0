@@ -1,211 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A451143CEF8;
-	Mon, 18 May 2026 13:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B9F481A89
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109462; cv=none; b=L4muQEkkAaT0A1O38KLyUo++OIy1npaGTVccqLFLS0AjUkHlUg32XK9RzvkGuludqo6BuwGt1MciXQP9D0UliplSrj6EQSDLmf/S4aaUXP+lO9TpVty9lY98mY3LOE/D22RQeGSXJKceNQMd+eAc6xXXcOa8GoSkWkStx8I87ec=
+	t=1779111046; cv=none; b=DOLOoEPxnx8nn/3ZhUKP/IyCCRjVNKGVp8fAcPL7puHxY6BBh6RYN1uN5i+mgozd/p9QZ3luiA9wP7cK+lVR+7jglT4I7vxC+ix1zew6ByREDthzIzVYarcJ0SuJQXk+n16V9m7KZVMQjeOO5SDJ8JNwGnIsl8S/yn4V29JHlSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109462; c=relaxed/simple;
-	bh=fG+rMofuUIICNDHejS1SDH4JtmE6INN0P/Wta8HO1ok=;
+	s=arc-20240116; t=1779111046; c=relaxed/simple;
+	bh=OkfzfSZ1MHNWS6tKJDnBfsZ6YmccDkIMfq1dublw3Xw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FdQ9msxbynUDGGA3Qws8Jav6RVn5ZfC7R3JaJjkGL3Zm1ufTdjwBcVxaY+4vY7muCQ+Z2raYQ7yHdonXSNUUxeBWL8g52JY9NTkUCpJyrC03jSCwSP92bJ36nQx8i2xxPSl6RKbPNPNlE8r8TPKjgU5Jf9XbAF3IZKNMWtf94qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpl5pj7G; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=OHGM0AwqorZ+10mFfZ5dnR7dV6EIuvd6e4Ah21dCGO4BmqjtJMx1BOno895TPB8jgfIP2KGDFUC++sDEFuG3p6FD05nctTuQE+ck2JB1pCSr5yOMsDCV3vLRlrLLyq5RXIMBQ4G+Mxvi4i5vfc8zABo2Sj20FiRNgaundOSPspY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FbPUNRIV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpl5pj7G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06664C2BCB7;
-	Mon, 18 May 2026 13:04:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FbPUNRIV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36D4C2BCB7;
+	Mon, 18 May 2026 13:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779109462;
-	bh=fG+rMofuUIICNDHejS1SDH4JtmE6INN0P/Wta8HO1ok=;
+	s=k20201202; t=1779111045;
+	bh=OkfzfSZ1MHNWS6tKJDnBfsZ6YmccDkIMfq1dublw3Xw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=fpl5pj7Gc5Oj09mXYrZGeR4Nj3r5VRe7P2F+Qx/Vyc6TK9yKcsOZGeUGX4sEtOhQI
-	 MOctYssWswowGQoATdG5uX1M20aRAkFDSuPmmtcItJCGWZPKxh/2j5liB3JF+s2IUk
-	 xD4feAJVy3Hl+UI7pmWyOBrOOAe258Dwxz015lpgJT/qSlhZzuQnRnVpRO5rmaSASn
-	 KRGUKuNXoW2hMKQ39ZFZhOx4+QmJvACBTwui53kG0yjy3VkOLYiI9ewVNxvASG9l1D
-	 KhboBy2fjmzZlUkZnM6xCCHl0/EhRiGfP7vRx4TFFwkCv06LUnLE95QTBXLXxGQy97
-	 iLhdz8O03Rwpg==
+	b=FbPUNRIVNbesba94WEIQyBSQzgvkj2PvEH3UD9LKpiGmNW9G9yF29Z+EJb27H2i3N
+	 4jhiy/w5czEnfCavowdyEEODy6i3g/UlGSCPVGMPWhyKQY3Vta2tVhtrkWPCv2Ya/F
+	 blZ8i+pvMQHeqMmLAQLkxUhmwJP991jSln5QfzIeMPx9zCWrJSEi2sZyu3Ww3GQtwi
+	 Gn/8hRDDYVBNf1C8lupcJgL/53/ebDnRAYwbhXvXnn0eBnaqohpOA9rowaK54/mNva
+	 jKBM9H5xn9BOZ/hbi655kT2BKvezF9/81cvELQOkeW30PN+fPDjoXpmoG5RSYMcdeJ
+	 KH7B/csUcF1tg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/2] dmaengine: fsl-edma: Implement
- device_prep_peripheral_dma_vec
+Subject: Re: [PATCH] media: imx-jpeg: avoid double free on video register
+ failure
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QmVub8OudCBNb25pbg==?= <benoit.monin@bootlin.com>
-Cc: dmaengine@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, vkoul@kernel.org
-In-Reply-To: <20260518-fsl-edma-dyn-sg-v4-1-8ce7d95b1ce9@bootlin.com>
-References: <20260518-fsl-edma-dyn-sg-v4-1-8ce7d95b1ce9@bootlin.com>
+To: "Guangshuo Li" <lgs201920130244@gmail.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260518130259.1001956-1-lgs201920130244@gmail.com>
+References: <20260518130259.1001956-1-lgs201920130244@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 13:04:21 +0000
-Message-Id: <20260518130422.06664C2BCB7@smtp.kernel.org>
+Date: Mon, 18 May 2026 13:30:45 +0000
+Message-Id: <20260518133045.B36D4C2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Multiple deterministic division by zero kernel panics in burst=
- length and offset calculations.
-- [High] Transfer lengths smaller than the bus width result in a 0 iteratio=
-n count, causing a massive hardware memory overflow.
-- [High] Incorrect memory address offsets (`soff` and `doff`) are used when=
- source and destination bus widths differ, causing overlapping memory acces=
-s.
+- [Critical] Registration Race Condition causing Use-After-Free on Probe Er=
+ror Path
+- [High] Improper Lifetime Management leading to Use-After-Free on Registra=
+tion Failure
 --
 
-commit f9b345d16d721fb5194b3218cae1f0adbbad0340
-Author: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
+commit 614dd46b2e11c4ca6a905198dee1fa73cda5fc0e
+Author: Guangshuo Li <lgs201920130244@gmail.com>
+Subject: media: imx-jpeg: avoid double free on video register failure
 
-dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+This patch changes the error handling path for video_register_device()
+to prevent a double-free. It temporarily sets the release callback to an
+empty function during registration and explicitly releases the device if
+registration fails.
 
-Add implementation of .device_prep_peripheral_dma_vec() callback to setup
-a scatter/gather DMA transfer from an array of dma_vec structures. Setup
-a cyclic transfer if the DMA_PREP_REPEAT flag is set.
+> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/med=
+ia/platform/nxp/imx-jpeg/mxc-jpeg.c
+> index 725e941528848..d38944e40f469 100644
+> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> @@ -3004,7 +3004,7 @@ static int mxc_jpeg_probe(struct platform_device *p=
+dev)
+>  	jpeg->dec_vdev->fops =3D &mxc_jpeg_fops;
+>  	jpeg->dec_vdev->ioctl_ops =3D &mxc_jpeg_ioctl_ops;
+>  	jpeg->dec_vdev->minor =3D -1;
+> -	jpeg->dec_vdev->release =3D video_device_release;
+> +	jpeg->dec_vdev->release =3D video_device_release_empty;
+>  	jpeg->dec_vdev->lock =3D &jpeg->lock; /* lock for ioctl serialization */
+>  	jpeg->dec_vdev->v4l2_dev =3D &jpeg->v4l2_dev;
+>  	jpeg->dec_vdev->vfl_dir =3D VFL_DIR_M2M;
 
-> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-> --- a/drivers/dma/fsl-edma-common.c
-> +++ b/drivers/dma/fsl-edma-common.c
-> @@ -673,6 +673,115 @@ struct dma_async_tx_descriptor *fsl_edma_prep_dma_c=
-yclic(
->  	return vchan_tx_prep(&fsl_chan->vchan, &fsl_desc->vdesc, flags);
->  }
-> =20
-> +struct dma_async_tx_descriptor *
-> +fsl_edma_prep_peripheral_dma_vec(struct dma_chan *chan, const struct dma=
-_vec *vecs,
-> +				 size_t nb, enum dma_transfer_direction direction,
-> +				 unsigned long flags)
-> +{
-[ ... ]
-> +	if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +		if (!fsl_chan->cfg.src_addr_width)
-> +			fsl_chan->cfg.src_addr_width =3D fsl_chan->cfg.dst_addr_width;
-> +		fsl_chan->attr =3D
-> +			fsl_edma_get_tcd_attr(fsl_chan->cfg.src_addr_width,
-> +					      fsl_chan->cfg.dst_addr_width);
-> +		nbytes =3D fsl_chan->cfg.dst_addr_width * fsl_chan->cfg.dst_maxburst;
+By temporarily setting the release callback to a no-op and synchronously
+calling video_device_release() if registration fails, could this introduce
+a regression where a use-after-free occurs if userspace acquires temporary
+references to sysfs files?
 
-This regression appears to be duplicated from the existing fsl_edma_prep_sl=
-ave_sg
-logic.
+video_register_device() calls device_register(), which initializes the
+embedded struct device and exposes it via sysfs. If device_register()
+fails after the kobject is made visible, userspace might still have
+lingering references.
 
-If a client leaves dst_addr_width or src_addr_width as 0 (undefined), does
-this evaluate to nbytes =3D 0?
+In such cases, the put_device() call inside the V4L2 core drops its
+reference, but the kobject refcount might not reach zero. Forcing a
+synchronous kfree() in the driver via video_device_release() would free
+the memory while these references still exist.
 
-The driver relies on fsl_edma_get_tcd_attr() to handle undefined values:
+When those references are eventually dropped, will the kernel attempt to
+access the freed memory to decrement the refcount and invoke the release
+callback?
 
-static unsigned int fsl_edma_get_tcd_attr(...)
-{
-    if (src_addr_width =3D=3D DMA_SLAVE_BUSWIDTH_UNDEFINED)
-        src_addr_width =3D DMA_SLAVE_BUSWIDTH_4_BYTES;
-    ...
-}
-
-However, that function takes arguments by value and does not update the
-fsl_chan->cfg structures. If nbytes evaluates to 0 here, it will lead to a
-divide-by-zero panic shortly after in the modulo operation:
-
-    if (vecs[i].len % nbytes)
-
-> +	} else {
-[ ... ]
-> +	}
+> @@ -3023,6 +3023,8 @@ static int mxc_jpeg_probe(struct platform_device *p=
+dev)
+>  		dev_err(dev, "failed to register video device\n");
+>  		goto err_vdev_register;
+>  	}
+> +	jpeg->dec_vdev->release =3D video_device_release;
 > +
-> +	for (i =3D 0; i < nb; i++) {
-> +		if (direction =3D=3D DMA_MEM_TO_DEV) {
-> +			src_addr =3D vecs[i].addr;
-> +			dst_addr =3D fsl_chan->dma_dev_addr;
-> +			soff =3D fsl_chan->cfg.dst_addr_width;
-> +			doff =3D 0;
-> +		} else if (direction =3D=3D DMA_DEV_TO_MEM) {
 
-Is it intentional that the source address offset (soff) is set to
-dst_addr_width here?
+This isn't a regression introduced by this patch, but does registering
+the video device before probe is complete introduce a race condition?
 
-For a DMA_MEM_TO_DEV transfer, memory is the source. The hardware will perf=
-orm
-reads sized according to src_addr_width (configured in the SSIZE attribute).
-If a client configures the memory side with a 4-byte width but the peripher=
-al
-with a 1-byte width, the DMA engine will read 4 bytes per minor loop, but
-increment the source address by only 1 byte.
+If a subsequent initialization step fails, like devm_pm_runtime_enable()
+or pm_runtime_resume_and_get(), the driver initiates cleanup, calls
+video_unregister_device(), and returns an error. This causes devres to
+automatically free the mxc_jpeg_dev structure.
 
-Could this regression result in overlapping memory reads and corrupted data
-being sent to the peripheral? (And conversely for DMA_DEV_TO_MEM where doff
-is tied to src_addr_width).
+If userspace opens the device node in the narrow window between
+successful registration and a subsequent probe failure, it holds a
+reference to the video device. video_unregister_device() prevents new
+opens but does not close existing ones.
 
-> +			src_addr =3D fsl_chan->dma_dev_addr;
-> +			dst_addr =3D vecs[i].addr;
-> +			soff =3D 0;
-> +			doff =3D fsl_chan->cfg.src_addr_width;
-> +		} else {
-> +			/* DMA_DEV_TO_DEV */
-> +			src_addr =3D fsl_chan->cfg.src_addr;
-> +			dst_addr =3D fsl_chan->cfg.dst_addr;
-> +			soff =3D 0;
-> +			doff =3D 0;
-> +		}
-> +
-> +		/*
-> +		 * Choose the suitable burst length if dma_vec length is not
-> +		 * multiple of burst length so that the whole transfer length is
-> +		 * multiple of minor loop(burst length).
-> +		 */
-> +		if (vecs[i].len % nbytes) {
-> +			u32 width =3D (direction =3D=3D DMA_DEV_TO_MEM) ? doff : soff;
+When userspace eventually closes the file, will v4l2_release() call
+mxc_jpeg_release() and dereference the freed mxc_jpeg_dev? Would it be
+safer to move video_register_device() to the very end of the probe
+function?
 
-If the direction is DMA_DEV_TO_DEV, both soff and doff are explicitly set to
-0 above. This means width will evaluate to 0.
-
-If vecs[i].len is not a multiple of nbytes, the fallback loop will then
-evaluate:
-
-    if (!(vecs[i].len % (j * width)))
-
-Will this trigger a divide-by-zero panic?
-
-Furthermore, if the loop finishes with j =3D=3D 1, nbytes is set to width (=
-0),
-which leads to another divide-by-zero panic at iter =3D vecs[i].len / nbyte=
-s.
-
-> +			u32 burst =3D (direction =3D=3D DMA_DEV_TO_MEM) ?
-> +						fsl_chan->cfg.src_maxburst :
-> +						fsl_chan->cfg.dst_maxburst;
-> +			int j;
-> +
-> +			for (j =3D burst; j > 1; j--) {
-> +				if (!(vecs[i].len % (j * width))) {
-> +					nbytes =3D j * width;
-> +					break;
-> +				}
-> +			}
-> +			/* Set burst size as 1 if there's no suitable one */
-> +			if (j =3D=3D 1)
-> +				nbytes =3D width;
-> +		}
-> +
-> +		iter =3D vecs[i].len / nbytes;
-
-If a transfer length (vecs[i].len) is smaller than the bus width, the fallb=
-ack
-block above sets nbytes =3D width. The integer division iter =3D vecs[i].le=
-n /
-nbytes will then truncate to 0.
-
-Does writing 0 to the iteration count registers on Freescale eDMA hardware
-cause the counter to decrement before checking for zero?
-
-If so, programming the hardware's CITER and BITER registers with 0 could be
-interpreted as the maximum possible iterations (e.g. 32768 or 65536). Inste=
-ad
-of safely rejecting the invalid sub-word transfer, could this regression
-initiate a massive DMA transfer that silently accesses thousands of bytes p=
-ast
-the client's buffer boundaries?
+>  	if (mode =3D=3D MXC_JPEG_ENCODE)
+>  		v4l2_info(&jpeg->v4l2_dev,
+>  			  "encoder device registered as /dev/video%d (%d,%d)\n",
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518-fsl-edma-d=
-yn-sg-v4-0-8ce7d95b1ce9@bootlin.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518130259.1001=
+956-1-lgs201920130244@gmail.com?part=3D1
