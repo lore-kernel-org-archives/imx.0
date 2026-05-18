@@ -1,128 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF3A31714F
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 10:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2096A355F25
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 12:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779098896; cv=none; b=P0G3YBXsH1/KMqEEO3xOkP/Zp/9Ifc36uidgF6I64i0GSLvDujg2FcNsNIAEW7k4paTMZGbWj0kHiQvodgw1PvRH9zqLNpUBExGLgJifJPc1D1lcpFOWhQ7oOLidfgZUerYW5dX782dk2WmHYsnhAoXHtvANtj7zeVMTMu5i9YM=
+	t=1779107814; cv=none; b=cZysYxXrA+7lEMH6JPa9uIeCVgW61i6pG2BXSZAwyXhBna9GenJ0Hbj5fvOYqX4EhMMGmBrqI9lEFXOfcQJJrdaWNiatum/GrHV+gHqbS2Zv9mRj4uuJrccPUlsfdQq1qoRoC4n4/BRJvLoYwXJ+xt3bKc5TTTST2KjFXhu77FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779098896; c=relaxed/simple;
-	bh=a4y3DzSQvhuM9ARYNTiRhSU4C6WETGBs7L9eYn6uXQ0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UbvlQhzQdcA6WXlkDwhWq/WYMji3Q8HDvzuIL2qK+Bx4TdUwJ63CbMbtH5YgnzWzeYbmoN+CnwxYHaQ+b7LJ07WaCZhryflA3VZtytyPE4R6KobSlzPRt5B3Kq3HeghuaKm1lqg6WsVhgeHz3m0WGfayeJmg4e/dsriPAneRGfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rf93CqOI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779107814; c=relaxed/simple;
+	bh=lJZ1bIEqT6yZAkOy+PRBH5lcFmCQiBOr5Cicv0A4aoE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uDojKAA45PrqJ4ODnOnyowPga791Q237mPLf6scLM+tdtRZOgmkhj4/FGf/mp9ybwGuxZcsqwKynw2JN+4IjO7XR/wh1R4mfInC5tPN+gcgnIyzj/mV+HWIPSJzzCNYAcg44NTmmIn9zQU/G8b6q+pjQRs4zU60WYuY/v9Icg1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xjcmmQhf; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rf93CqOI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FBCC2BCB7;
-	Mon, 18 May 2026 10:08:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779098896;
-	bh=a4y3DzSQvhuM9ARYNTiRhSU4C6WETGBs7L9eYn6uXQ0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Rf93CqOIezGXj78A2dLDNbhHMpgBoiPKflBBjW2HlW9rcZPikiygboVmbp6pcjW4Z
-	 Jdao99ZypUXNp5aCM+DLueta6NK4HX0mAuIIkQHsUUsNMmD561pd+ESWRQ7Qn4DAYv
-	 SwSvGOOAWdd7ldIwhM1UBunzKlmWBDNEcXUdffkLIHwAF/rWEM0vlDowUEYqENM9Qh
-	 MKjNf567McsbO1EhWLr5frrak9bI1ZVWHErK0ib1XMZdHNm6k3vAHr5ppnx2JYCIxk
-	 v+DQ4TQ76DiPGQkgQ/hhGn4TbPxAeqAm5bjokTNb3Gf7k7OkWe/BH8WRre3j1iTBvS
-	 FSC9Uv/0xZ9Lw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] firmware: imx: scu-irq: drop wakeup_src sysfs file,
- log via dev_dbg()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Stepan Ionichev" <sozdayvek@gmail.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260518093934.1910-1-sozdayvek@gmail.com>
-References: <20260518093934.1910-1-sozdayvek@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 10:08:15 +0000
-Message-Id: <20260518100816.38FBCC2BCB7@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xjcmmQhf"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 9550E1A35F1;
+	Mon, 18 May 2026 12:36:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6919C5FFA3;
+	Mon, 18 May 2026 12:36:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54A3A11AF8B3D;
+	Mon, 18 May 2026 14:36:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779107809; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Saj7XiA4fS/zBkDTwVOtqGvdE0DdpdrrEvRxI1uonvc=;
+	b=xjcmmQhfZCdtStqOibFHqgNIPiQepRjqHCtwV4DXdyaiOtXuTafFlq5mIlQR10vwAnYgfp
+	Sh1pAt7YLHC5ZgPp/3SdfOfmtejpuVgnUIKUSGaQxnr5AVm3yqpP7l0E4Cw53bYYqX3oxm
+	e0zUOprglikfZWbRYrOjeLbFfurSudUI+3RxEejx6BaKgCqd7SHSzPSijvRrlrIOrEctuD
+	IvJ3rm7A7aji3iEVUsWaVteUVo0G67dixK4IHb9Mj/SX8MTEE+Nk91lzoAkYCqy0T6YV4o
+	do39bKzHNZg0S8k7yoMn/na0vR7HLwR+TrYyyyx00gWG04Qt0TGysGvln881SQ==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH v4 0/2] dmaengine: fsl-edma: Scatter/gather improvements
+Date: Mon, 18 May 2026 14:36:43 +0200
+Message-Id: <20260518-fsl-edma-dyn-sg-v4-0-8ce7d95b1ce9@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANsHC2oC/2XNTQ6CMBCG4auQrq3pHwVceQ/jorQD1EBrKBIJ4
+ e4WNNHI8k2+eWZGAXoLAZ2SGfUw2mC9iyEOCdKNcjVga2IjRpgkguW4Ci0G0ylsJodDjQtJMk6
+ BZ0YxFK/uPVT2uYmX67vDo7yBHlZmXTQ2DL6ftpcjXXcfnZOdPlJMsAACugRmKinPpfdDa91R+
+ w6t/si+QkrkXmBRkFLwQhsjqIC9wH8ESvcCj0KRK5rTLEuN+hOWZXkBkxVUbUYBAAA=
+X-Change-ID: 20260428-fsl-edma-dyn-sg-960731e37da2
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Frank Li <Frank.Li@kernel.org>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The global device pointer `imx_sc_irq_dev` is cached without acqui=
-ring a reference, risking a Use-After-Free.
-- [Medium] Race condition in `imx_sc_irq_dev` initialization exposes an uni=
-nitialized pointer to the work handler.
---
+This series adds support for scatter/gather DMA transfers via dma_vec
+and dynamic descriptor chaining to the Freescale eDMA controller driver.
 
-commit 3ac9bd2a1c44ca3562cddf96e23e9b5c60b0feea
-Author: Stepan Ionichev <sozdayvek@gmail.com>
+The first patch implements the .device_prep_peripheral_dma_vec() callback,
+enabling the DMA engine to accept an array of dma_vec structures. This
+callback supports both regular and cyclic transfer modes.
 
-firmware: imx: scu-irq: drop wakeup_src sysfs file, log via dev_dbg()
+The second patch introduces dynamic scatter/gather chaining, which allows
+multiple DMA descriptors to be linked together without stopping the channel.
+This optimization eliminates idle periods when back-to-back transfers are
+submitted, improving throughput and reducing latency. The implementation
+carefully preserves cyclic transfer semantics and respects hardware
+constraints on platforms with split register layouts.
 
-This commit removes the undocumented sysfs attribute for waking up sources,
-along with its supporting variables and kobject. It replaces the sysfs
-interface with dynamic debug logging of the wakeup information via
-dev_dbg() in the work handler.
+I tested it on the i.MX93. The dynamic scatter/gather chaining should
+work with other eDMA controller with split register layout.
 
-Link: https://lore.kernel.org/all/2026051656-corral-edgy-290c@gregkh/
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Changes in v4:
+- To keep transactions in order, link DMA transaction to the end of
+  submitted list first, only lookup the issued list is the submitted
+  list is empty.
+- Link to v3: https://patch.msgid.link/20260511-fsl-edma-dyn-sg-v3-0-98a181775dae@bootlin.com
 
-> diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/im=
-x-scu-irq.c
-> --- a/drivers/firmware/imx/imx-scu-irq.c
-> +++ b/drivers/firmware/imx/imx-scu-irq.c
+Changes in v3:
+- Fix formatting errors reported by Frank Li.
+- Add fsl_edma_tx_submit() to link the DMA transactions
+  when they are submitted, not when they are prepared.
+- Link to v2: https://patch.msgid.link/20260506-fsl-edma-dyn-sg-v2-0-66439cdd414e@bootlin.com
 
-[ ... ]
+Changes in v2:
+- Drop the RFC prefix, as asked by Frank Li
+- No code change
+- Link to v1: https://patch.msgid.link/20260430-fsl-edma-dyn-sg-v1-0-4e0ecbe2df66@bootlin.com
 
-> @@ -233,29 +199,11 @@ int imx_scu_enable_general_irq_channel(struct devic=
-e *dev)
->  	if (IS_ERR(ch)) {
->  		ret =3D PTR_ERR(ch);
->  		dev_err(dev, "failed to request mbox chan gip3, ret %d\n", ret);
-> -		goto free_cl;
-> -	}
-> -
-> -	/* Create directory under /sysfs/firmware */
-> -	wakeup_obj =3D kobject_create_and_add("scu_wakeup_source", firmware_kob=
-j);
-> -	if (!wakeup_obj) {
-> -		ret =3D -ENOMEM;
-> -		goto free_ch;
-> +		devm_kfree(dev, cl);
-> +		return ret;
->  	}
-> =20
-> -	ret =3D sysfs_create_file(wakeup_obj, &wakeup_source_attr.attr);
-> -	if (ret) {
-> -		dev_err(dev, "Cannot create wakeup source src file......\n");
-> -		kobject_put(wakeup_obj);
-> -		goto free_ch;
-> -	}
-> +	imx_sc_irq_dev =3D dev;
+To: Frank Li <Frank.Li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Frank Li <Frank.Li@kernel.org>
+Cc: imx@lists.linux.dev
+Cc: dmaengine@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-Can the work handler execute before imx_sc_irq_dev is initialized?
+---
+Benoît Monin (2):
+      dmaengine: fsl-edma: Implement device_prep_peripheral_dma_vec
+      dmaengine: fsl-edma: Support dynamic scatter/gather chaining
 
-If mbox_request_channel_byname() successfully enables the channel right
-before this block, an interrupt could fire immediately, invoke
-imx_scu_irq_callback() and schedule the work.
+ drivers/dma/fsl-edma-common.c | 197 ++++++++++++++++++++++++++++++++++++++++--
+ drivers/dma/fsl-edma-common.h |   4 +
+ drivers/dma/fsl-edma-main.c   |   2 +
+ drivers/dma/fsl-edma-trace.h  |   5 ++
+ 4 files changed, 202 insertions(+), 6 deletions(-)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260428-fsl-edma-dyn-sg-960731e37da2
 
-If the work handler imx_scu_irq_work_handler() executes before the
-assignment to imx_sc_irq_dev completes, dev_dbg() will receive a NULL
-pointer. While __dev_printk() handles NULL gracefully by printing
-"(NULL device *)", it would mask the intended debug output.
+Best regards,
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-Should imx_sc_irq_dev be assigned before requesting the mailbox channel?
-
-Does caching the global device pointer here also risk a use-after-free?
-
-The dev pointer is stored in imx_sc_irq_dev without acquiring a reference.
-Since the workqueue and mailbox channel aren't explicitly torn down on
-failure or unbind, the pending asynchronous work might still run after the
-device is removed.
-
-If the device is freed, accessing it in imx_scu_irq_work_handler() via
-dev_dbg() could lead to a use-after-free.
-
-Would it be safer to take a reference with get_device() to guarantee the
-device's lifetime during asynchronous execution?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518093934.1910=
--1-sozdayvek@gmail.com?part=3D1
