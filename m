@@ -1,31 +1,31 @@
 Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EF2381B14
-	for <imx@lists.linux.dev>; Mon, 18 May 2026 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE9338236A
+	for <imx@lists.linux.dev>; Mon, 18 May 2026 18:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779127360; cv=none; b=pD35tGM/q1uinPE22Tao0G8A95cfKZXIkKA0pp/Q3HlLBCLUxHGyuT87YWHP+SfS5MDVfKfSAe2MkgPYDrUUY6SppLNMKITfxUxN19Jyjx2nf6ruhThHqnYx/q9eKsvM0gbO5saEkm2RfbV7JEn75lv+7DlJnIt3UVGPYP0TY2E=
+	t=1779127365; cv=none; b=GcvxLBqCgeHQpZ/O7bByMak9Bgu1MYGa7sJvg4TW4ucH0byNsQOG9h2q6C/43xSPKDOzAzLmkhqZsF1P6kfR8FMJS8bscUHLctBVDwy8VKOZXR4cfVabrB2ajHVt2fKIEqt6kCHRHt4ZEyZHtA7G/fg6VmThxOZFINw2cUANZ/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779127360; c=relaxed/simple;
-	bh=1Zrx6uTOGkPC+BKJ5nx36MlypCB2PNKCChinpj1ft4w=;
+	s=arc-20240116; t=1779127365; c=relaxed/simple;
+	bh=+GHMXgMkveoSB6+q+uagvPBDuTCXIBe2XtS7lx2O3YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQH67jgCG0h7dh8Z/KgdC6gHehVWoNPr2DIGWODXuJjWk+YYeqe1ds134mwByQ0sJX8DED81oHodoLyDqVZYL+edjTAyZewab5oN1GkOml8efA/NOt0Xndn1/U/bOXn3nh8PrgWYGfovYqKx7X/O/GRvNqDAXq+6ovc/AVoekEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=JTDmkPFH; arc=none smtp.client-ip=121.127.44.73
+	 MIME-Version; b=h98HuO97hC4tkztbRbne+wQ/lpyxbNe272j7zzO+V0HcFHJkhKGxwsF1TqAnFyK6OOHum/j0PyMW8jhcUNDdA3fBI/zNFg6DMwYgScpciu8iaIETeoSQVcv0LITP8yDaiOdSbB6bIWo4ifrmUKLbqHJRCsCbbrYugj9+SKnVqGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=CRB6o8XB; arc=none smtp.client-ip=121.127.44.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="JTDmkPFH"
+	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="CRB6o8XB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
  h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
  Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1779127358; bh=UTke0A6Lv/1fUQtQniAEq60/oKDmSb3Qk0p4Red78bM=;
- b=JTDmkPFH2LghijAXdAhxQtNmQjjyrgZ2TovQSP9Go09EMxz3vU8uVfKjK6sQPJpo15dUifM9D
- /Lf5V5JF8XSyBTjxKL7yMqeehF2VhKBn2W1yL6eM/NLNDSGcr6LAjZFpeqayq73RrxYD/cVkiF1
- vWbBHMLy2an0SW0pdUf1injwLQ/cg9a4HtszAWxgHdzpLGzsH3eBf4HiO0eYeFzLjlP1U9Rn9dV
- qYYjiTGEZ8mJD9DS59h9ioCT97dqdCn++vkR6IYw+D2laq1hluw6S4pNrmKki0km3/7yVIaVpE+
- mpzAdDM0KWYUJu/gh9FkE9279u9BkqTPVw8sJu13HmAg==
-X-Forward-Email-ID: 6a0b543bb84dbc72d2274e1b
+ t=1779127363; bh=XfdOVcCGyUBMZGBHIeMbtLWfoogDufTONgzIIn0zATo=;
+ b=CRB6o8XBodaiYa17wZgDnUHnEpaZBPRUsvmjHxBQO9HL11rcfqt/0QTxOH/vjfxsXhHjERzwz
+ dUQQVPYa6rPKPt5xS+o7f16q6Y0c9/fgsMLKgDpyPULXfcMcZycdyK8JGq3/Mt2qnSSCbJDJzki
+ LOnqPEp6jerk2i6kZ+tXP3K5nkcdlKkI/QkD81ZIfH2BDEd4FROsDwI3IPkoHoWmmafx54HAmhk
+ 5jODAw3/NtY7S63AaLDp1oieLDhk0cPC2voVERIPTbuPde0dgWCihszX26/iC818jVb0491r4F8
+ Dgr1LgYkDboYXfUjrAqXaaZze2DGiOVmQ2fZjDUr8mvg==
+X-Forward-Email-ID: 6a0b543fb84dbc72d2274e36
 X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
  121.127.44.73
 X-Forward-Email-Version: 2.8.12
@@ -62,9 +62,9 @@ Cc: Liu Ying <victor.liu@nxp.com>,
 	linux-sunxi@lists.linux.dev,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 05/23] drm: bridge: dw_hdmi: Call poweron/poweroff from atomic enable/disable
-Date: Mon, 18 May 2026 18:01:41 +0000
-Message-ID: <20260518180206.2480119-6-jonas@kwiboo.se>
+Subject: [PATCH v7 06/23] drm: bridge: dw_hdmi: Use passed mode instead of stored previous_mode
+Date: Mon, 18 May 2026 18:01:42 +0000
+Message-ID: <20260518180206.2480119-7-jonas@kwiboo.se>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260518180206.2480119-1-jonas@kwiboo.se>
 References: <20260518180206.2480119-1-jonas@kwiboo.se>
@@ -76,114 +76,54 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Change to only call poweron/poweroff from atomic_enable/atomic_disable
-funcs instead of trying to be clever by keeping a bridge_is_on state and
-poweron/off in the hotplug IRQ handler.
+Use the passed mode instead of mixing use of passed mode and the stored
+previous_mode in dw_hdmi_setup(). The passed mode is currenly always the
+previous_mode.
 
-The bridge is already enabled/disabled depending on connection status
-with the call to drm_helper_hpd_irq_event() in hotplug IRQ handler.
+Also fix a small typo and add a variable to help shorten a code line.
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Tested-by: Diederik de Haas <diederik@cknow-tech.com>  # Rock64, RockPro64, Quartz64-B
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 ---
 v7: No change
-v6: Update commit message,
-    Collect t-b tag
+v6: Collect t-b tag
 v5: No change
 v4: No change
 v3: Collect r-b tag
-v2: Update commit message
+v2: Update commit message, s/type/typo/
 ---
- drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 33 ++---------------------
- 1 file changed, 2 insertions(+), 31 deletions(-)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-index 9d795c550f8a..8bec9b5cd803 100644
+index 8bec9b5cd803..7a9b4a7e9cbf 100644
 --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
 +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
-@@ -171,7 +171,6 @@ struct dw_hdmi {
- 	enum drm_connector_force force;	/* mutex-protected force state */
- 	struct drm_connector *curr_conn;/* current connector (only valid when !disabled) */
- 	bool disabled;			/* DRM has disabled our bridge */
--	bool bridge_is_on;		/* indicates the bridge is on */
- 	bool rxsense;			/* rxsense state */
- 	u8 phy_mask;			/* desired phy int mask settings */
- 	u8 mc_clkdis;			/* clock disable register */
-@@ -2400,8 +2399,6 @@ static void initialize_hdmi_ih_mutes(struct dw_hdmi *hdmi)
- 
- static void dw_hdmi_poweron(struct dw_hdmi *hdmi)
+@@ -2258,6 +2258,7 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi,
+ 			 const struct drm_connector *connector,
+ 			 const struct drm_display_mode *mode)
  {
--	hdmi->bridge_is_on = true;
--
- 	/*
- 	 * The curr_conn field is guaranteed to be valid here, as this function
- 	 * is only be called when !hdmi->disabled.
-@@ -2415,30 +2412,6 @@ static void dw_hdmi_poweroff(struct dw_hdmi *hdmi)
- 		hdmi->phy.ops->disable(hdmi, hdmi->phy.data);
- 		hdmi->phy.enabled = false;
- 	}
--
--	hdmi->bridge_is_on = false;
--}
--
--static void dw_hdmi_update_power(struct dw_hdmi *hdmi)
--{
--	int force = hdmi->force;
--
--	if (hdmi->disabled) {
--		force = DRM_FORCE_OFF;
--	} else if (force == DRM_FORCE_UNSPECIFIED) {
--		if (hdmi->rxsense)
--			force = DRM_FORCE_ON;
--		else
--			force = DRM_FORCE_OFF;
--	}
--
--	if (force == DRM_FORCE_OFF) {
--		if (hdmi->bridge_is_on)
--			dw_hdmi_poweroff(hdmi);
--	} else {
--		if (!hdmi->bridge_is_on)
--			dw_hdmi_poweron(hdmi);
--	}
- }
++	const struct drm_display_info *display = &connector->display_info;
+ 	int ret;
  
- /*
-@@ -2563,7 +2536,6 @@ static void dw_hdmi_connector_force(struct drm_connector *connector)
+ 	hdmi_disable_overflow_interrupts(hdmi);
+@@ -2303,12 +2304,10 @@ static int dw_hdmi_setup(struct dw_hdmi *hdmi,
+ 	hdmi->hdmi_data.video_mode.mdataenablepolarity = true;
  
- 	mutex_lock(&hdmi->mutex);
- 	hdmi->force = connector->force;
--	dw_hdmi_update_power(hdmi);
- 	dw_hdmi_update_phy_mask(hdmi);
- 	mutex_unlock(&hdmi->mutex);
- }
-@@ -3001,7 +2973,7 @@ static void dw_hdmi_bridge_atomic_disable(struct drm_bridge *bridge,
- 	mutex_lock(&hdmi->mutex);
- 	hdmi->disabled = true;
- 	hdmi->curr_conn = NULL;
--	dw_hdmi_update_power(hdmi);
-+	dw_hdmi_poweroff(hdmi);
- 	dw_hdmi_update_phy_mask(hdmi);
- 	handle_plugged_change(hdmi, false);
- 	mutex_unlock(&hdmi->mutex);
-@@ -3019,7 +2991,7 @@ static void dw_hdmi_bridge_atomic_enable(struct drm_bridge *bridge,
- 	mutex_lock(&hdmi->mutex);
- 	hdmi->disabled = false;
- 	hdmi->curr_conn = connector;
--	dw_hdmi_update_power(hdmi);
-+	dw_hdmi_poweron(hdmi);
- 	dw_hdmi_update_phy_mask(hdmi);
- 	handle_plugged_change(hdmi, true);
- 	mutex_unlock(&hdmi->mutex);
-@@ -3119,7 +3091,6 @@ void dw_hdmi_setup_rx_sense(struct dw_hdmi *hdmi, bool hpd, bool rx_sense)
- 		if (hpd)
- 			hdmi->rxsense = true;
+ 	/* HDMI Initialization Step B.1 */
+-	hdmi_av_composer(hdmi, &connector->display_info, mode);
++	hdmi_av_composer(hdmi, display, mode);
  
--		dw_hdmi_update_power(hdmi);
- 		dw_hdmi_update_phy_mask(hdmi);
- 	}
- 	mutex_unlock(&hdmi->mutex);
+-	/* HDMI Initializateion Step B.2 */
+-	ret = hdmi->phy.ops->init(hdmi, hdmi->phy.data,
+-				  &connector->display_info,
+-				  &hdmi->previous_mode);
++	/* HDMI Initialization Step B.2 */
++	ret = hdmi->phy.ops->init(hdmi, hdmi->phy.data, display, mode);
+ 	if (ret)
+ 		return ret;
+ 	hdmi->phy.enabled = true;
 -- 
 2.54.0
 
