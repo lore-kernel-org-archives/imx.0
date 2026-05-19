@@ -1,252 +1,195 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013051.outbound.protection.outlook.com [40.107.162.51])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010047.outbound.protection.outlook.com [52.101.69.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B55233957
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A3370ACE
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779186570; cv=fail; b=SviqXDL3wWm7f+ZteOj3Zeo0rMz3L2Qa67yvU58pAAIeVmyjkFnYUcpVxVbNZ9flenUqWZdquXfpBmBlfqZcmMlVCDatRCS8fVdyX+qDFJUhZo2GeVoTptMcjJ01d8JCWVklZS/TyPN4F9IN9dabU1107AIEfxn+5+zX1Ivcpb8=
+	t=1779186998; cv=fail; b=IcraHsqM7rJQxfjta2kQYN6GoXKhmHsHqwvSS1kqnj3B9FMFff3tuXHY9DFjikSzomNF4TGb/qqkPUx2kEWsW7zQvK2fik66lIdFeKCJLzdc3FHXi/CnNfuJzLSMzuPOUr74bMFD73avB3vQwNZ44QMS2r+Ps0eeTHAr1AxpdPU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779186570; c=relaxed/simple;
-	bh=063L4fGo6e7EDlHRm79dr8amqOoUmIQYQ8kDGyWVugY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZhwPMVOUU/L9YtYw8kZU8jof0gwcWW+Xf8IiewuOLVB2JDUdnPxQPaovlZ2ZrlufanQzXd75z03R43G2V1uolLgkpQi0dDG8grAiyEEvwiz3cQo8gYEKpNw58520FIboSIvHBV9DaFbOeI9M1Psd98VIZX04tsdEb5LoIuM4RiE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=RAVQwlWR; arc=fail smtp.client-ip=40.107.162.51
+	s=arc-20240116; t=1779186998; c=relaxed/simple;
+	bh=Mw6ct51/FBjFeRJsOv+cNNBU9PYrzmG+GVW/GKYtmQY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AQ2sqcQtmNwDDtg0wUVNl5sSjfM82TPtEGMNbT11f/CAEWbxqZr19jrRSdihQ9A84iL+QoOGAdxSRjLVgccgsnvobz4IUjU6GmKwemyWS637nparp0xLSrDQcJamvOVVnsPgn61cIRQNPJMmf33RTW2HIzs8G6sA4fHdblHxlGs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xS/ryIf2; arc=fail smtp.client-ip=52.101.69.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="RAVQwlWR"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xS/ryIf2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yUlVA6tNoYmDOqr7D4ymkm8q47YvBaNjtxQnos6oUD3J5DyRQ6RjUSzewD3mjaT+pPVtC5YC6q2M0c1mWDSEJhl/y+xC3XIBMKKgq8rlAl9AwtdmDh0MBtlUDnKz/A9unfBYUL0joSWYBSVfBJA+d84/hvn+6WAwvWk7vq+C7XHHlrXAyNrcdkvfjS6k9iqTYa5uXLNCTcq/fVzHCLJxo9iIXKNLwPnM6Lkl025CfN20F6g46LByjLh8NBq6mZT4h12rjymvesLLQPS9B7rtSIKTXJjvjfceD9OybakJyl/HRQon9F2+lICVSGzT4MxoVs7lD2AWyLmCp4iDpvXXTg==
+ b=r2mG5ecBwlb0pmDNtf7hFrUwmn/pPmAfIt0pA/lVBNi5e1aoBJ2EoRwK2k1qLiuJh6+gNixsu88lDQ4BWSDe/sgDHR3zvVjRqiInRPCA4rK5ByS18EWMuuzF7C+1mASK2wPLHCC/7VqyDx5yn3ufmN5tHufWn0Q0T+XG78PmwG7mCMi8pXmZETZ80fcHtuP/zQIPJl4vpy36UN7g6+2+muIA6SkinyR0mi3wrYqeaJ049WBb1twpF8xaEtZOcDmaVY+/2Vx5T5ZCqqbV0HtmnswsN2C99H0/srWlhOLD8Nc2MIKtzv+y7K1+mB5AHFqs1fhM429KOlCaxPQIfpiZhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=am7jvwkbY6jyqfuriP3RFgX+2K8jxunc+OAC35XrW/Q=;
- b=WHz3W1/nJs34C72OXZGwubQVpA0/pIbEZvdsxHmTp+AFedqumFoe6IdP2bFXhkTC4RlxP9DAWUN639dlKCw11LaD0ypjhozbdbdL1rtiSDfIzmaWonZ4gxRmT2t5UheGVzlC6dUJzfAraDxaFveT9/NW/WQI45jO7ovY8zykorGvi7v3yj2ZGokbZpoIcDmFkPfQ1PyyCH52mx/OzbVhh1yNXS22sWAV0vSTK7wVutlgFTVVERJMiOc00bhnJA0v4qwLI12Wsz5BMznJE/wlYK3+1BJJlZa1/djZ+EqQhy9wsAPCOa3gwmBtEWiJ9vdkcjspNRl722NtuczcI32TOA==
+ bh=tF9Q1PEQPHzIP5zIlZRB1mj7+T4VfHMs95W00a6V1ZM=;
+ b=QVQOSOJaKL6KbxcGUP0hnl10U5fy/VseGxs8kEyyEUmG7/kbsIf/mwDz1fpsTlioCNz6uhRrS4AfVev7kOQljSYwLKGQg7E2miysg0dCr9OCASH8yUq+6SYlaDkhMnJ4AR/uYVoqhiQ246o+CASrVKUhsbEUOreL3+3T1lemNejrE0ENmO3oqJQrxpGiyvpEHltR0/StigwBEqA0Dd1bYXsNg3wZPhijkWE08wpCkOiT4byC48KqbC/c8hvembxLE9yeLlEoxOKMDdjL4TqAMI3Z+sUJcMyqQ2l1LzRbLUrntFqcONCXRQIUIbY5KLZAQpEoyDsTkDONUj0QoBozeQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=am7jvwkbY6jyqfuriP3RFgX+2K8jxunc+OAC35XrW/Q=;
- b=RAVQwlWRPD8XfLlsvSfP6W8J+K8EQJs6Bz+WvnwBhS99uk4S7CYDQzPMzQDu1nUBSA2skaVQebgcNi+R6nDWKzvAF88EpjnN16pHd8wNHIMgNvpKTc1MF+Irs9dsr6ZrySqE5sCUHFQuxj117yGXQoXL+QPuhPnTXjwDprwdo5U86VaSnomVBfVyMkN4es9Lonklp/EOz0rQvCnA2r3an98ArVxKpRDb6qIbU+yODM95WBk6Pd7ATCLDw4JFUEvFb4EGhg/lBm/CsdrNH+49WNKn+3KaNrtNmn8B+o31rBolfJe24HNmbfY5EKix7zULEWkYbXj9cuqe6e8PxldZFQ==
+ bh=tF9Q1PEQPHzIP5zIlZRB1mj7+T4VfHMs95W00a6V1ZM=;
+ b=xS/ryIf28m92SI6+fZy0CNtaNdfv4MYAYdM//UIM7zwfIHYwLYIDs19jrmgBjHux8APzRslLRB/6tWJQc3MJbaVWEBqILY+Y5fSoH8vQKszXeb3ML33XDatO2JOD40n9deQLWpNfaH4cDqPkzrut4wiH4mc8dzoTGOZDbT9orXlKwgSRulpkfRF84iv0bThqz9CDJnpLcjUhtxTIeavorQWXFRBaNnFtvxS9XJJliOT+VVGswrnQ+Oje/ds+y8rAqOGcQzUMQuiaMqv/A3PWJtz8AVVX3bT1VZfief6IWHGDhNkcpdlQj8sY3d6yTC+9dpkQ88JuR3aMcPdfXksp8A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by FRWPR04MB11175.eurprd04.prod.outlook.com (2603:10a6:d10:171::10) with
+ by DBBPR04MB7946.eurprd04.prod.outlook.com (2603:10a6:10:1ec::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May
- 2026 10:29:23 +0000
+ 2026 10:36:11 +0000
 Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
  ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
  ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
- 10:29:23 +0000
+ 10:36:10 +0000
 From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: Dan Scally <dan.scally@ideasonboard.com>
-CC: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio
- Estevam <festevam@gmail.com>, Gao Pan <b54642@freescale.com>, Fugang Duan
-	<B38611@freescale.com>, Wolfram Sang <wsa@kernel.org>, Oleksij Rempel
-	<o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: RE: [PATCH v2 1/2] i2c: imx: Don't recover bus when arbitration lost
-Thread-Topic: [PATCH v2 1/2] i2c: imx: Don't recover bus when arbitration lost
-Thread-Index: AQHc53pc4k+85GXPs0Ks28dbDeCpbw==
-Date: Tue, 19 May 2026 10:29:23 +0000
-Message-ID:
- <AM0PR04MB680225F01902AD7990E4B6E5E8002@AM0PR04MB6802.eurprd04.prod.outlook.com>
-References: <20260424-i2c-imx-fixes-v2-0-34fb9504aaeb@ideasonboard.com>
- <20260424-i2c-imx-fixes-v2-1-34fb9504aaeb@ideasonboard.com>
- <aa1a6931-1a98-4f72-b8fc-ae05df28f931@ideasonboard.com>
-In-Reply-To: <aa1a6931-1a98-4f72-b8fc-ae05df28f931@ideasonboard.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR04MB6802:EE_|FRWPR04MB11175:EE_
-x-ms-office365-filtering-correlation-id: 404e936e-0011-4ec6-b88c-08deb5917ea9
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|376014|366016|7416014|38070700021|22082099003|56012099003|11063799006|18002099003|4143699003;
-x-microsoft-antispam-message-info:
- 0gQc0pwAyERDFDtr+gDgZnOhwCUl+j3psV1wLLAgj7nsWu0jdQK8tiLGxbQrToasVhJXEk2A+rGtIPO2cvF83vg6LEGA++uk8U03GNYA/9i8RbRFZgiuLa+r6qkXrRp0BZe9fwzTI+t1eBeGIZpK9AXjbku75M3YWISZ+in6VPyW/79bHI+kfvh+LGFcQelE2JY9Vsi6/r5AtYEQ8WlOCnsbDgOIzlw+ktcVMMVAecQi2VIrdbT5lN57me0gWYmx4Wan+RdXCefheDUGqvYHjiyYlsdyk09I58rzSG4+s1DuUmcRVyye1t4kAx0KRhXsuUWDlwVyOCcJCnmldkk3vYxurUzcdoonFUFY0eX1tF+a+1ZybhvvzBqTmj0bWd2lFNZ4J+cmdMqLlNxXDbQzRGLLYpq11VQwiXfEl0Rm4mCS3A+aCAfx+XUiOgJwpZoKq8XHpamamUtLF9db54ph9IOScElmIFZ1/gsjUw1UwL7QmXJpDBZGpMI1bv0Y1WWSnDssh0Jx0SyjzaLfjeI+tZdOGRxnxfQXt/mBCTrY4nIf+jJHhi5Cot7fDU+9j8Ywk7EWndLiKgPG5z416P5HpNbBiQxJ0TSd5+9On2JEX3J1t/HP9Td0KKgUGBadyvOl1ZDRK3vLJWtCz0vpIXtv6n5od0/bsW56fzqRJywRsj3ipAmbIAC9qPIYkCf6GM6/7nCi6suT//2C7Owl8MCJuRKVavtwp2TRNCd6LWIGrrZyITWA7/0HFx/5qCZ9LAdx
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(366016)(7416014)(38070700021)(22082099003)(56012099003)(11063799006)(18002099003)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?deVZ6Oq+ht7owonsMPpvoWe8g97YWANEQWYOz8wO9a6p6YqzUW0ZsjSvzPsF?=
- =?us-ascii?Q?7uRi8vVPYsVductmmRMUI/CSG28wqERR5HggIAknuGpT2CXT3Bb6W7/RZ3/c?=
- =?us-ascii?Q?03kNydHqTKedrp0ddQGYu5qs9R7RYlgJrdyS5ie0VjPnY0p12dWvnSe6r3Rm?=
- =?us-ascii?Q?fMi93EvVAEB+UyOpyB6D8mt14rddDCwb8VX+ThPpGPVm0jqlJBTbo75L52IQ?=
- =?us-ascii?Q?LpJTcmpoECz3BKP+rv6nWcf1zfA9R6zUhrmDcvweJEKiXrhjMug2O5e7mdrB?=
- =?us-ascii?Q?Yy5F3WwEyCCMydvlN4Nv654JMjZUCY+JxmkrDXO0mroZag7pbStXvrVVsTgq?=
- =?us-ascii?Q?4g9djE2SZWFjd01n0LKPbSyCtW5E+D/YprsYaL4OeE+0S52MSGb3h3TP10Dm?=
- =?us-ascii?Q?Z+GfcOpsy06/bJCPOcZVx16knlRYzxwVGF6ZDKzrcz/PkefkfW9kLCzEsQEn?=
- =?us-ascii?Q?TRp7gReE14oJh3wD6SsSPuB006AIHeijKHUmSNMJAhZMcZMuczU3KwE23uw/?=
- =?us-ascii?Q?RllQWj8eK148UvFyK7KM+BrXf16E7+Cbl03JNYemsA1R0acSLLy1t+wcRaNi?=
- =?us-ascii?Q?Al4qwPBWWTvPpejh5PCOKV5peBc+05giogjsh9rpVAdKaVh6yhMXF7AefGpq?=
- =?us-ascii?Q?tzD5VXtjOpLYBrs+OcgP7EASA1dFasdtZDKCqO4VTi4XMI4PiJwOB999l4ye?=
- =?us-ascii?Q?1gNPZmc61/1QG0lCasWGptfhvfqG+H8VS7emcviaE0YMEFs+IhQHiy8Eqi37?=
- =?us-ascii?Q?Pe6zMbmqhdSfJ0g+uaKlkTFtY2fLN9LfHcvw7Rqy53WCEcuZyIVLs3P+SzgE?=
- =?us-ascii?Q?QaZ47MZZBcr5p3FTRyneuXTP/nracBy6fWRnkStXJC4659zM69bFBDx97LDD?=
- =?us-ascii?Q?fuBCgkjT7jPqaACezX+/r4Y/DwplyfWP7axBkiHu+wTLR5k+9m8ObJqs6OkV?=
- =?us-ascii?Q?3Lt0svhvpDKxqL/zopiHy2tDEVm+tMAMcqwP8oD3lBCkc4hsOID+78n3C+kl?=
- =?us-ascii?Q?xhqHLE8Vg1ya2A6QXLjbAD+KLgkyZ7anFRizI1pYWxs7Xzy+Wq2wYlkM6u5n?=
- =?us-ascii?Q?DDvLkIpxjFEw6kVQshrJWrdhGF8ovX/GBoIopXlTd6zk4dddUgu1SL2+Ff5W?=
- =?us-ascii?Q?Ks4M+5+qVPN4FsHLfUK5rP6x9LloEzobf0TpwbK3gLVebGDFl27/bQ/gjMDk?=
- =?us-ascii?Q?ligOeu6TjQh1Y0n06+Bm3blVhRX15X7TR39IqXY/oGOpKx5/PDjuaNiH/s0B?=
- =?us-ascii?Q?LwmCJ9PFxuDskAzfCfOmdXlZatglTqGNahNcEjb74HtSkeNB3zP+JsoQXzV5?=
- =?us-ascii?Q?Nn2ZjyYV50I+S0sRxOvKbW6Wt2NtvGfb+Z7iw8p+uyJzX+kJDBXWsTE1mN++?=
- =?us-ascii?Q?56z6FhfAO0P1l8YXYsnZ2NqbFXhqMpJwoS3j5Wo77y7hER5uMcJk+1xHgNFI?=
- =?us-ascii?Q?k95bB2Z40IQ0U5V5fzJaEQN5AwgRnZBiMxD6BQKLahNMF4RRoltzgHJByklS?=
- =?us-ascii?Q?spWU6bQCsMbsXX6gvT13TUwZahLZCPE/PP2ZrUeLsUUYPYmiaTPQ322id04y?=
- =?us-ascii?Q?1IhMCXSSc0t4eAiKaOq230BX6PXeQj6S/fLiXXEMGVIKuovOdNlO5ZhqInoT?=
- =?us-ascii?Q?JHOw80XBAFtC7s2T+nF6DGdvnVHu+hrq9VzjjFv7JceVS3dw6KsSxWGYYicU?=
- =?us-ascii?Q?pmUriEsVfWax/K0IdhMOQvZdVtK+LpYMFQXvnz0yG59d/Av/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	carlos.song@nxp.com,
+	haibo.chen@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] i2c: imx: mark I2C adapter when hardware is powered down
+Date: Tue, 19 May 2026 18:38:15 +0800
+Message-ID: <20260519103815.2793953-1-carlos.song@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM8P251CA0021.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::26) To AM0PR04MB6802.eurprd04.prod.outlook.com
+ (2603:10a6:208:184::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|DBBPR04MB7946:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b9b5fec-de92-4f5a-037d-08deb592715b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|19092799006|1800799024|366016|56012099003|18002099003|11063799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	xmXLCUdwtvZPOPfja9JFgxuItFepnAs+2IDXoKnG9kFdAaIez/h4TKXro6Ei/F7PL/ES5WnWFcyJTByg9CPhVytn0IF4YyVgUWwhsWe4aam532THxTfKm54BBF2lrto+5ZdNRiUiTFnRSHJoLIqlSB+wfgokoj4bCS1O48fJi7MFwpfpD7af3z8fz5G2GCO4xQS2xsk8NVHxZ5JJhYoSBmk3Iv4flgfweyyAymQG57iUkf05YKq03rPdxDSR83shdHSdeqa8nXxKV+pRd+bSBrSihdfSppwjus6/XYVP0aSQNJ6hrhV8cDF4uLJJSjkCcTuTUc7UJPdhnso8X8JTQsLikzGordcRBNuh2uLBXtEb7aobNjdX89nVN0Kv7wBHzNQOw8e4w0z9LpBjtd8ue+xyMHs+8Hi8GNhM+qH0EBkqNh9fmr76djP/EMQTDx6UMUnrxkoUWR2OA31LDa8golSz6YrpdjQrgz+UM+RNbcsQmaurFjJz486zWtLvPNlkUklpBvXZPOtrjrqXVZdboCc/FVJbHX6KHwOXzc+8Xlbr5lk4gcSqGfl91DU8q7Tu3zVhNxQjUk/ygwe4VlrQSjsRxeza0KhHxMzg0OE6scwX8yl2sk20amlaaWeQh9GjWPen2kCi5IIuypx9urUxjjQ/ZHqeSV8ufGElkDW/ujZy9I74Dc3wYAT+abci63HONBf6GPBp9t1DsZ18fWRDDtY5LKJoejlqAFBr+QPWkrWWwSlEfGff4gS0/u59ph5M
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(19092799006)(1800799024)(366016)(56012099003)(18002099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dGcSqyU953l4OFlcj0CWXWxD9Jv035450PalfgnC6/e4qiMdwsjOI0aAn92l?=
+ =?us-ascii?Q?/7N79hcBhFMqGgIkjxTdclylNH5zk0ElBvksG8P1NfUTgiJ4uNmSffkF/CPy?=
+ =?us-ascii?Q?YUh8khPwrL6CWHt7CSS8XbRbD3BlLtit+FxLiIDSVDlV28axHjLuZ9K29IoY?=
+ =?us-ascii?Q?rjN1ELd3ho3FAxvRVUF6/iYeYtmhshLGg+KHwYwu0rUkM2g5068+1niKhXcE?=
+ =?us-ascii?Q?yHRLqKjOi6SEMP4aI0kPVmfrwJ2sQ2UboVzWJ6pmsvPbxpnB2NPehkGzS19C?=
+ =?us-ascii?Q?Om21EhGX7McrrD6eH6g2YmjcfSEqRAEXDMLDaE++5zc1MqzdZ11LPvQkAneN?=
+ =?us-ascii?Q?8KGn3hrDwUpqO8tzbgnOaD0YzuqTfyqwWkChXshkmifdUeE+CiMhhyRoUpnd?=
+ =?us-ascii?Q?ZSRXXDcCYmOs+r5pSQUrnSil/l6Fy8SHSJfBvVg8ezlYRjp+nYnng8rdgqix?=
+ =?us-ascii?Q?RNpi31Rh449l2unRkW16lZMaB90XGxyN1uEIit7mq/IILsoely2KiDdO7F+J?=
+ =?us-ascii?Q?d8bdhyDGEV33EVkDH8d4pqXGspN6fItJEMcb+7SR16lFY1KUfKa0AIrTpP9S?=
+ =?us-ascii?Q?bdaJ80HbgRuU/JajuCVDQWoMnvn0OKxxFczTlBWbCvlWu6bOyivUn4U6xUDh?=
+ =?us-ascii?Q?ufS0yaUz+drK+EG4gFrNK75TsU3yWANbS7IkJ4sR43OoLkuKdbOFrqnICVfF?=
+ =?us-ascii?Q?9HQJzmLrK6aZVOFsh0aUSa3V62Drz0goRwMl6beIYjukWPcm+oTq1g1OM60E?=
+ =?us-ascii?Q?RbOX4Lop5Lhb2Eo6Mdvfog7XGsn2VWvvWMztZnlcMMk75+mbjVJxqDlnDX/7?=
+ =?us-ascii?Q?JWQf1t4Hg0n0/ww4K4VZQ7X0gI+L8o7NXky/rc+SXis9uyM/2rJxUk7ISEMC?=
+ =?us-ascii?Q?8++QuFiFcVmVC0e9C4eFR2fLbAR12Wp75HVTPnwbO0yZn0gCAD7uT2kCfrRh?=
+ =?us-ascii?Q?eGLuk59FVJyh9Qk69uPrsHuJL4V6DaB7XnZOs8OlSKAaWocV/RJ2rBySTEwt?=
+ =?us-ascii?Q?83+grMC7q13a4/SjmEYv7O6zZjurrEjkGxqsDygm2ZCAB0PW+1R8GtPtSXyd?=
+ =?us-ascii?Q?XZkF82Akl4EEWPXcCc+tYyZfWgBp8sAhlf2K6vd9j0iGfo4EAMlKnj6Xq04C?=
+ =?us-ascii?Q?HSPl9GogPB+qnNfa/fE6G2zCjmq2DfgcL/HjS6UbtdLkRWsfUAac0c0WU4Pl?=
+ =?us-ascii?Q?4mzihJcCwsTAxqyuv9x1SjldWwKGqS71f5IBJfKKcn3yyEdqdrsebFKqehKu?=
+ =?us-ascii?Q?py5ix7vSrFLpHbquriNINEgThzmKWe76N4gWHyeJihrfKoexPbMsEb26+QM7?=
+ =?us-ascii?Q?o1AoJEDb6YIl/NHTuuJufRzFBjk84UjN8ah29IOllO9cA3rH5H1RYDSXBlE1?=
+ =?us-ascii?Q?QjCRsGn2Omz4wpVYKfY6EIN8GCjSeej1Qw9svxwmnIctrl6+M3crGdgIiwLp?=
+ =?us-ascii?Q?0N4efOlBdNFZ0aTxx0i8WNCxB4eT1pH9T2ePpPdeoNicRtPrZSfUTBah3ikA?=
+ =?us-ascii?Q?fwFtRCg20z48GF8lS626jo2DzOFYUsJjKVYoKNwSom4BijUPt9pyHbarYksS?=
+ =?us-ascii?Q?LE6upN4yVwuGt9Hh9ueHJHuns2DA8huEOIMeHDEstqGJWcV1/YEIMXDfhOVW?=
+ =?us-ascii?Q?UPC6HG1TGomHv4ZATsGFYHFj8g+1q5VoW0dJpuJrF5QlfwQ5x3xxIh6Su84Y?=
+ =?us-ascii?Q?7vg/2HvXyiK4qe8haef/RkBfralmCT+o8bUK7r7GiV8NJESo7jVMoVgdgCk7?=
+ =?us-ascii?Q?f3AUUEm/Tw=3D=3D?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b9b5fec-de92-4f5a-037d-08deb592715b
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 404e936e-0011-4ec6-b88c-08deb5917ea9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2026 10:29:23.2813
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 10:36:10.9154
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9vmW7CcSNkafIEtECm/fizEYTvEe+win/1Ppz+ZMxA2XdiqIsUDQJKL+bAcLyEamG/B5I5dX765NuL0nSYRjeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11175
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gmp8p5tBjpGi8LMQYB0oGQskf87Xb8Ip/EWfhS9EMtmGAuBY0jxHsD7muQ/QP8zvrBMsGTN/lCEnSF1qSySb+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7946
 
+From: Carlos Song <carlos.song@nxp.com>
 
+Mark the I2C adapter as suspended during system suspend to block further
+transfers, and resume it on system resume. This prevents potential hangs
+when the hardware is powered down but clients still attempt I2C transfers.
 
-> -----Original Message-----
-> From: Dan Scally <dan.scally@ideasonboard.com>
-> Sent: Tuesday, May 19, 2026 4:42 PM
-> To: Oleksij Rempel <o.rempel@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>
-> Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
-> linux-arm-kernel@lists.infradead.org; Andi Shyti <andi.shyti@kernel.org>;=
- Frank
-> Li <frank.li@nxp.com>; Sascha Hauer <s.hauer@pengutronix.de>; Fabio
-> Estevam <festevam@gmail.com>; Gao Pan <b54642@freescale.com>; Fugang
-> Duan <B38611@freescale.com>; Wolfram Sang <wsa@kernel.org>
-> Subject: Re: [PATCH v2 1/2] i2c: imx: Don't recover bus when arbitration =
-lost
->=20
-> [You don't often get email from dan.scally@ideasonboard.com. Learn why th=
-is is
-> important at https://aka.ms/LearnAboutSenderIdentification ]
->=20
-> Hello Oleksij / all
->=20
-> On 24/04/2026 13:36, Daniel Scally wrote:
-> > In i2c_imx_xfer_common(), the driver attempts bus recovery whenever
-> > i2c_imx_start() fails. One of the failure modes for i2c_imx_start() is
-> > an arbitration-lost signal which results when a second I2C master on
-> > the bus tries to control the bus simultaneously, which is a normal and
-> > expected behaviour.
-> >
-> > Bus recovery is not the right response for this case. Add a check for
-> > the -EAGAIN return code to avoid running the bus recovery.
-> >
-> > Fixes: 1c4b6c3bcf30d ("i2c: imx: implement bus recovery")
-> > Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-> > ---
->=20
-> I raised this patch after we had issues with one of the i2c controllers o=
-n imx8mp.
-> In that case, the bus had multiple masters that were causing the SoC's i2=
-c
-> controller to lose arbitration. The result was that the framework attempt=
-ed to
-> run i2c_generic_scl_recovery() and regularly hit the "SCL is stuck low, e=
-xit
-> recovery" message [1] because the bus was busy rather than stuck.
->=20
-> I'm now experiencing a different issue with the imx8mp in which a differe=
-nt
-> controller - which isn't on a multiple-masters bus - starts transacting f=
-ine early in
-> boot, but then seems to get stuck - any attempt to start a transaction by=
- either
-> a driver or i2ctransfer results in the IAL bit in I2C_I2SR being set and =
-so the
-> driver reports that it's lost arbitration [2]. In this case, the bus reco=
-very is
-> needed to fix the problem, and so this commit hurts things rather than he=
-lps
-> them. This problem isn't consistent - I get it on maybe 10% of boots.
->=20
-Hi Dan,
+Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+---
+ drivers/i2c/busses/i2c-imx.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-This is the RM shows:
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index a208fefd3c3b..3b19d4a424ca 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1913,6 +1913,34 @@ static int i2c_imx_runtime_resume(struct device *dev)
+ 	return ret;
+ }
+ 
++static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
++{
++	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_suspend(dev);
++	if (ret)
++		return ret;
++
++	i2c_mark_adapter_suspended(&i2c_imx->adapter);
++
++	return 0;
++}
++
++static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
++{
++	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_resume(dev);
++	if (ret)
++		return ret;
++
++	i2c_mark_adapter_resumed(&i2c_imx->adapter);
++
++	return 0;
++}
++
+ static int i2c_imx_suspend(struct device *dev)
+ {
+ 	/*
+@@ -1946,8 +1974,8 @@ static int i2c_imx_resume(struct device *dev)
+ }
+ 
+ static const struct dev_pm_ops i2c_imx_pm_ops = {
+-	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+-				  pm_runtime_force_resume)
++	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
++				  i2c_imx_resume_noirq)
+ 	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
+ 	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
+ };
+-- 
+2.43.0
 
-Arbitration lost. Set by hardware in the following circumstances (IAL must =
-be cleared by software by
-writing a "0" to it at the start of the interrupt service routine):
-* I2Cn_SDA input samples low when the master drives high during an address =
-or data-transmit cycle.
-* I2Cn_SDA input samples low when the master drives high during the acknowl=
-edge bit of a datareceive
-cycle.
-For the above two cases, the bit is set at the falling edge of the ninth I2=
-Cn_SCL clock during the ACK
-cycle.
-* A Start cycle is attempted when the bus is busy.
-* A Repeated Start cycle is requested in Slave mode.
-* A Stop condition is detected when the master did not request it.
-NOTE: Software cannot set the bit.
-0 No arbitration lost.
-1 Arbitration is lost.
-
-From my understanding:
-The IAL (Arbitration Lost) bit is set not only when true arbitration is los=
-t, but also in several other conditions:
-
-- SDA is sampled low when the master drives it high (during address/data or=
- ACK phase)
-- A START is attempted while the bus is busy
-- A STOP condition is detected unexpectedly
-- A repeated START occurs in slave mode
-
-So in practice, IAL can be asserted not only by real arbitration loss, but =
-also when the controller detects abnormal bus conditions.
-
-Since your system is single-master, this is unlikely to be a true arbitrati=
-on scenario. Instead, it is more likely caused by signal integrity or timin=
-g-related issues, such as:
-- weak pull-up / slow rising edges
-- noise or glitches on SDA
-- timing violations from the slave device
-- others
-
-As a workaround, you can enable the 'single-master' property to disable arb=
-itration checks in single-master systems, for example:
-
-&i2c1 {
-    clock-frequency =3D <400000>;
-    pinctrl-names =3D "default", "gpio";
-    pinctrl-0 =3D <&pinctrl_i2c1>;
-    pinctrl-1 =3D <&pinctrl_i2c1_gpio>;
-    scl-gpios =3D <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-    sda-gpios =3D <&gpio5 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-    single-master;
-    status =3D "okay";
-};
-
-Hope it will help some.
-
-Carlos
