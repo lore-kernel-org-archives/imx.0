@@ -1,85 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC519370ADC;
-	Tue, 19 May 2026 11:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28D335201A
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779189795; cv=none; b=orcmbvhhFjF+B6eN+VuNH/n50JsGMu+KSbeVcUs62OrIB6rvqvX1+3Urel6ScpF77FBzh8HjUkqwy/ARSFBbqBbi1sP8OVsxfyFGcH8ijokp9TlhybdGbuyRmB0ECSf/WFZx3JxuqJ9dSYAdrsuOXcsy9n6efVgOzoYuim/voGQ=
+	t=1779190328; cv=none; b=MIapII4iGexLU0b2DjMim1AtL06n7H5GyvOxSApJTttf2bZ1SnCJ3rg/Cs9Mw8wOancyXUS9Xht7yShe/TjMniiu63TtyIcuAXYt6RZONJISvQ7VZKf8ebUz4IysH9P50T9034hcmeD7J6G6mpFpibbqVHUUkUYYNf2qsxKLXQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779189795; c=relaxed/simple;
-	bh=loj1+n2vySVdJanSsQ9F7HvwtQ+iMfKR3llSQmOLjyg=;
+	s=arc-20240116; t=1779190328; c=relaxed/simple;
+	bh=SJsRi33E4kIHt9TZWM/7bBMF6tujPTxfK/WBb6gZdYI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GjYdxuukgOZPgvU9bfRFFCgVby9oiWeAsDhi8t9af7G84SVsWHgaQVh0QKIcjjwNB9USs9Wj6lGoOa3FfGTZAmkDSR2QYCBKp3FEIPY6urx8yWUSMJM29wpl3EHBrwK2wyPdCwnXGIRfbAypDOkzGXZ4BQZvJ3+yphix3goFu+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNJRtqX9; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=D5UHHQaFLtFH65H1TKAfCWKoj+jd4Tu3ylm14bGUaGgnVncV90GtyKbGDpcz+F259BdXXdnp0NKjhUecXfGnLXoVIDV86v+1aExOhUGJJd/az0KVlOtQPRY/ngEVPvy4TyVJ+8MA40owL5/Cczu93h0AKZASdCn6Ws9kaeafg5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cu4MiLvP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNJRtqX9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D28C2BCB3;
-	Tue, 19 May 2026 11:23:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cu4MiLvP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF97C2BCB3;
+	Tue, 19 May 2026 11:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779189794;
-	bh=loj1+n2vySVdJanSsQ9F7HvwtQ+iMfKR3llSQmOLjyg=;
+	s=k20201202; t=1779190328;
+	bh=SJsRi33E4kIHt9TZWM/7bBMF6tujPTxfK/WBb6gZdYI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=TNJRtqX97YAh8vyPRyD81vqx6RmsYzkLNDGw66l7fiQ6+0a7amM+GcKqHStDBl17E
-	 2ABPNpGg8PnCpRHqov0wWcXRsJqEhuTFUzylewscDtAO+d6H+qiE0KWu7qDjCIxNIE
-	 Fq1ub6Aktr3J+4E5VTnOeMEJpN3miMNdrV7SMYD6AP8BNV7Fkb7Y/GBsalumWRQ3iV
-	 pJCizVBbeBaZcfKdJ5VZvRZCEDz5g9S4IOFYzG9GhopsQnwKtSyBUY76wql+9lblgY
-	 H6Pg4D5ORaZ01p+2Bek7i1GwvGX2Wcn+YqfOzCecHRIbc48tGB5jBspU9yG0OX1DEp
-	 gumGQHeueebzg==
+	b=cu4MiLvPihrKHQfknmo4nstZqQfY34Ncwc3XBhrcri/kbr5QSa3COPTz6O08yO30+
+	 xUUPMYQD+W0584CjrUiLZdQGnUkJIPXHBza3HbX7dTNCOYQTY6kGPh7JoHvkB/XuCf
+	 nE22xDfd4eJpACNpVckShQ/kNM1va9ZeKCG/6OvQULlI7p1K7Sstvm5h5Zk615Ia08
+	 B4KJU5Mj87XgJjJPc+8rZqQmn81Y4qJpknwNkOsXy7XDa8023Ew8A+rBcxZYoB0ACk
+	 JT5LvsyteuzP0oGKJcMkUBqJuhuVjb3F18E+dPp5fUrUUqlEEpEYhZ2ks4sUi1wIQd
+	 fDdghorKyzlzQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/5] arm64: dts: imx91-9x9-qsb: remove unused property
- clock-frequency from mdio node
+Subject: Re: [PATCH 27/37] drm/bridge: notify about detached bridges
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260519-b4-imx91-qsb-opt-v1-1-9b416d2dc224@nxp.com>
-References: <20260519-b4-imx91-qsb-opt-v1-1-9b416d2dc224@nxp.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-27-45e2bdb3dfb4@bootlin.com>
+References: <20260519-drm-bridge-hotplug-v1-27-45e2bdb3dfb4@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 11:23:13 +0000
-Message-Id: <20260519112314.60D28C2BCB3@smtp.kernel.org>
+Date: Tue, 19 May 2026 11:32:07 +0000
+Message-Id: <20260519113207.CAF97C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Removing a valid hardware description property because the curre=
-nt Linux driver does not use it violates Device Tree design principles.
+- [High] Dangling pointer: `bridge->encoder` is not cleared on detach, lead=
+ing to potential Use-After-Free.
+- [High] Premature teardown of atomic state, list linkages, and bridge reso=
+urces before pipeline deconfiguration leads to UAF and list corruption.
 --
 
-commit c26ce3df4b77107e385684e72957f14db0b4c96d
-Author: Joy Zou <joy.zou@nxp.com>
+commit 0a150cb9f7d5a0eebc9c0a446f33672c0a09a80b
+Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-arm64: dts: imx91-9x9-qsb: remove unused property clock-frequency from mdio=
- node
+drm/bridge: notify about detached bridges
 
-This commit removes the clock-frequency property from the mdio node, stating
-that it is not implemented and removing it cleans up the device tree.
+In preparation to support DRM bridge hotplug, let the drm_bridge code emit
+an event when a bridge is detached, so that this event can trigger the
+actions needed to deconfigure the pipeline and unregister the connector as
+appropriate.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts b/arch/arm64=
-/boot/dts/freescale/imx91-9x9-qsb.dts
-> --- a/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx91-9x9-qsb.dts
-> @@ -79,7 +79,6 @@ mdio {
->  		compatible =3D "snps,dwmac-mdio";
->  		#address-cells =3D <1>;
->  		#size-cells =3D <0>;
-> -		clock-frequency =3D <5000000>;
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index e7e17bf4fdf9e..62413fff35fcb 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
+[ ... ]
+> @@ -638,6 +639,9 @@ void drm_bridge_detach(struct drm_bridge *bridge)
+>  		bridge->funcs->detach(bridge);
+> =20
+>  	list_del_init(&bridge->chain_node);
+> +
+> +	drm_event_notifier_notify(DRM_BRIDGE_DETACHED, bridge);
 
-Could removing this property introduce a regression in the hardware
-description?
+The commit message mentions this event is meant to trigger actions to
+deconfigure the pipeline. Since this event is emitted after tearing down the
+bridge's atomic state, list linkages, and bridge resources, could this cause
+issues when the listener attempts to safely disable the pipeline?
 
-The device tree is meant to be an OS-agnostic hardware description. The
-clock-frequency property is standard for this node and accurately describes
-the hardware's intended MDIO bus speed of 5MHz.
+Specifically, earlier in this function:
 
-Removing valid hardware properties due to temporary software limitations
-strips away useful context that alternative operating systems, bootloaders
-like U-Boot, or future Linux driver enhancements might rely on.
+	if (drm_bridge_is_atomic(bridge))
+		drm_atomic_private_obj_fini(&bridge->base);
+
+This destroys the bridge's modeset lock and frees its active atomic state. =
+Any
+concurrent atomic commit (like a userspace page flip) or a teardown commit
+triggered by the listener might access freed memory or destroyed locks.
+
+Additionally:
+
+	list_del_init(&bridge->chain_node);
+
+This locklessly modifies the encoder's bridge chain, which might corrupt the
+list if a concurrent atomic commit is iterating the chain.
+
+Finally, bridge->funcs->detach() has already executed, meaning the bridge h=
+as
+released its internal resources, potentially making subsequent atomic disab=
+le
+operations unsafe. Should the notification be emitted before the bridge sta=
+te
+and linkages are forcefully torn down?
+
+> +
+>  	bridge->dev =3D NULL;
+
+Does this code also need to clear bridge->encoder?
+
+Since bridges are refcounted, and listeners or other users might hold their
+own references via drm_bridge_get(), the bridge can outlive the encoder.
+If the encoder is destroyed (e.g., during driver unbind), could any access
+to bridge->encoder by asynchronous event listeners or delayed cleanup
+workers result in a use-after-free?
+
+>  	drm_bridge_put(bridge);
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-b4-imx91-q=
-sb-opt-v1-0-9b416d2dc224@nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-drm-bridge=
+-hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D27
