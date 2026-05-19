@@ -1,78 +1,79 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BCD409612
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 13:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D492140963D
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197007; cv=none; b=DB1cRCJ6MAZ5FELVHsnQKqWRZxULhpyylUlh1bu3TKHYSeWHPRqWsQ9oGyiAtdZTABq3SfXNyqKV6oztvdEyZQ2+BRzen6I+fc14DvOe0ivGNoTySX+V1RtPKBnMrXKimdGjg7AED8aURJY3nlJ94aiRw1tUjjJu5dPjUBIJVP0=
+	t=1779197303; cv=none; b=BfDgb5GCob2clR5Av/gqfgcm+pRjXtVXSeFR/S6JAoKnxyswxR0T2CidPLxftrlT2XQ8u5pE2Wc4qUM+226TWpXEkX3NaKxljR3VehD3pdqyNHoClhlnfFJVJ+oQyKAnhlTJrOW1ByIaXwZ8GA918/yLW9ZQwWIUI+2iqB94Hto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197007; c=relaxed/simple;
-	bh=P0R1xOsfpQqki1vEBgvaHmTz6ftpxthYcxHuok2B86M=;
+	s=arc-20240116; t=1779197303; c=relaxed/simple;
+	bh=AJDpfP9UZspHTC3+uZ4OkTygJiOxBWBP3cwoWE7gENs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+0jmAO936tPlZbK6Gg7iwPE1d+iFd5A+vE1HDpfjpuz1OoGUyVTqY/OBtnwFhw2YprTPfdB2twXy6hpNLE/SCiRj8vwXPJ0EN/2xS3/w8ttgJKdsCEyzeHH7pH30DKG7q1srH8vYgUUUmrtKPUTc17u7KyIH4mPbdazNf/lcas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TmV1RHfh; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=Pu8RotRp7pwEK+YDgfr1mW6aIjlKyqYc5ucJvLuRVTFh1hGmzq3l6GMgoriB6esecoPFVjRtijZxfVsQ3pfmlU+ju/ZC12ssDhUWh2PgP8HAlkh0Jzz72mjBGpc2edJE3UIqo3IeYDXeEWxRhPBK6IQgp9aNkTzx1DTp2Egw76o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dm7scVGy; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TmV1RHfh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dm7scVGy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779197005;
+	s=mimecast20190719; t=1779197290;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vSZwixHkv2muy60wUJhbvc6cwMeXT0Usg6Pp1th8RbU=;
-	b=TmV1RHfhOxRgdlJZe2p9hfrbHYw9qYCC9nTMf5G+wQ24zzh8fsgQglTVbq48C0UtchdbWr
-	I+19+EKVfWZdj4/Rs1VLSdiPoZLmwch6XbsYaNab/UcBp7oMOmn5+Jxa6SohzUzIjUyrfH
-	tWZqWAZAaSV7OGQEPENo9FBQ/exwHN0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=u5YvULhhts6qX2IWUm0kkAdZMFsRNKK4rnVt+gyCyWw=;
+	b=dm7scVGyFAG63mmKHJxzVmU9fqvQzvsbgilTjBFchj+hgjN/KZg2RdzJKvtfaFoTsxolYH
+	gcVL/16Plz87oBhhbM51GTHUaWk1wICyO/UMIgfBgBFxosQf7AwxxZHlT91PZUuoV0zCu9
+	d0ppYZYiyj9QFahVabaL0Z3zfKjevr4=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-mMQpNyyUO8i93tJM6w18-w-1; Tue, 19 May 2026 09:23:22 -0400
-X-MC-Unique: mMQpNyyUO8i93tJM6w18-w-1
-X-Mimecast-MFC-AGG-ID: mMQpNyyUO8i93tJM6w18-w_1779197001
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5a8d72e2f0aso260021e87.2
-        for <imx@lists.linux.dev>; Tue, 19 May 2026 06:23:21 -0700 (PDT)
+ us-mta-342-Y4GrAxDWPtyfv9DgLL44_A-1; Tue, 19 May 2026 09:28:09 -0400
+X-MC-Unique: Y4GrAxDWPtyfv9DgLL44_A-1
+X-Mimecast-MFC-AGG-ID: Y4GrAxDWPtyfv9DgLL44_A_1779197288
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5a86b49dfc9so256271e87.3
+        for <imx@lists.linux.dev>; Tue, 19 May 2026 06:28:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779197000; x=1779801800;
+        d=1e100.net; s=20251104; t=1779197288; x=1779802088;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vSZwixHkv2muy60wUJhbvc6cwMeXT0Usg6Pp1th8RbU=;
-        b=TcbqltcWtVszSmc8mbx8HWoqXCeuCqV6i7mZetprAlgPA1XP1GYldBZrLFpfJqUX5r
-         ajoZb44G7NBKhfw1J9L9SSKn0U1IOmwWHYNZ5yt85jGg+eOcfzuWao/btKWyhAqQ2BIz
-         MA48tFbPKxTOrBNf7WFBx/A5twkbIt/j3IYNQC9bp7US8bu9zxmFnalwr0qCDI1x3zhd
-         ReH4sehVzV2wpxnCq3yiuGKOn9CeHwY6d9F9VNSYzvr0hXsiaRpY/co2M4aEB988QsfA
-         tnZX0iRg4xCDBYgnFX/tjp5WXvMbcgWxFbJoDG538KqXIdaNCw+6zprd8C6byCrSkNyK
-         xWig==
-X-Forwarded-Encrypted: i=1; AFNElJ+N/2JWwz7mqt6Xo8/Bi7GEyttcHgmh3pSqFpXPjwrFT4VSMDBbp4b8OTh0OMpMw5yxaXk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx67I6djTaCmXBF1DEcJ3GOg8uvHwt8xKHRIVcHimWvUh5dz51Q
-	5ibiSXrX07uJs3AzdUDzFiSaCjIOuXnwFgEPZ1rH2nVzk1jLNEZp5c4kfirqyfknkq1Qwntl25C
-	TDDNA+SFTY0CyevWb98uW+FKikObhpaCISaXtEfxeIz9w7UW+eK9E9NkUkasFpavY+c4xPDxZT2
-	X5RsXRy14h/1okk5UqdbHHsPYTOeZ5
-X-Gm-Gg: Acq92OH+jg7GxjxDN+S1cXUUszxgbiYAuFapASEr5kDHqY8lj8fFsxxzW75L1PMSN/D
-	vmybCxDFGy/ikChGUUccm7omePyAg+7nsKNRevp+2s3FvjIiTAr6/7P/zoYS1NLHe2m1HkS/P8s
-	YuryE+uvIfma49IdrM6zIlEMr4dn3TzAnUHSj0rSan/NZT3yRDLae+/M80Nq7o4UZEwSVv6pqsE
-	2Uu3w==
-X-Received: by 2002:a05:651c:881:b0:395:9f86:b433 with SMTP id 38308e7fff4ca-3959f86b5bamr7821371fa.6.1779197000480;
-        Tue, 19 May 2026 06:23:20 -0700 (PDT)
-X-Received: by 2002:a05:651c:881:b0:395:9f86:b433 with SMTP id
- 38308e7fff4ca-3959f86b5bamr7821311fa.6.1779196999921; Tue, 19 May 2026
- 06:23:19 -0700 (PDT)
+        bh=u5YvULhhts6qX2IWUm0kkAdZMFsRNKK4rnVt+gyCyWw=;
+        b=qW6VYojXERO2sROAXxgX/TFkDvRxnoCZV7r1e4wd+nAsvNKvfOhZzCpEDfTmc3mup3
+         puwtoQ1FR8B7xqS2Z+Kzg5SEwu9uKfeuhHvmCiu/mav7+cx7FqFY+29TmVPAOGzjH5w/
+         cmb63rHsK6j/sdbD0XZNi3lDnyqyEfcb9a94DBXNi3NXSvroXwT+/Fy0TLSFsK92Veh5
+         ZEMxUSl3+20CdHi25V4UYdP/EeVMoY5GR29gNF+JWzFPafsrUp6UXwccbzDGmNYA87Ql
+         7haJpxa/aHOxXPpcpqLw64wk35BKQrlq9ADW5IRO42h+S2akMCWtRF16u+Jni8DpsUvf
+         xf5g==
+X-Forwarded-Encrypted: i=1; AFNElJ+DP34GW0/MGxcD6HBKMBPgCMYfFX5qxlYIopE6cb1Mnsu13rDww200iWBwnFi8qcrY+7U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMcen0MU94LVtXxz7/64itFU3mZy9BowiYo0jN5Rnk4NXWUhFz
+	rrVb9mO030zzJ+Oaux0gXXfzuV3mvc+D/p9r+BIaa1LKFX93LURbdbko1xnSQkcYlUUIbAD5jjn
+	ezMa5bsVs/U3E3rDDXMkNMdEUvaqk6nRLh4xgDE4Q74j1XFVGcD0L4V0dk8vACKtHuKSqRIMuOZ
+	SFapGZDZy9fJ6ft22ixjYMT23YlhCw
+X-Gm-Gg: Acq92OFH3vimhmD1G13+/ExHf6Q2YuZaEapYMjVpwamPkR43PF1rpCQ25Fb6zGRkYYM
+	poSvFZr9ZcmqPbXjAMZ1lnckYS7pjlNl8uqzTE5h67MoEQij5IysjCm7gbl8mzj2hwLusRiCmr5
+	yQgBfRhKyiIzrXkLKubcBkwZNy88F0OjMjWe1e11FvJFBcELOZbABcGiSWYe+i20xrsXtXZc0Mj
+	VxtKQ==
+X-Received: by 2002:a05:6512:3409:b0:5a8:7396:63e3 with SMTP id 2adb3069b0e04-5aa0e74a2cdmr2307645e87.5.1779197287923;
+        Tue, 19 May 2026 06:28:07 -0700 (PDT)
+X-Received: by 2002:a05:6512:3409:b0:5a8:7396:63e3 with SMTP id
+ 2adb3069b0e04-5aa0e74a2cdmr2307625e87.5.1779197287356; Tue, 19 May 2026
+ 06:28:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260518063547.2890353-1-khristineandreea.barbulescu@oss.nxp.com> <20260518063547.2890353-2-khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260518063547.2890353-2-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260514082639.1181240-1-khristineandreea.barbulescu@oss.nxp.com> <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
 From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Tue, 19 May 2026 15:23:08 +0200
-X-Gm-Features: AVHnY4Ku0WK3_tTMCuY00U13A1ewKmhxwVXJEJLHH0cS_8oPrxB1SflVfjvcxDY
-Message-ID: <CALE0LRss3eXM-+sA9VzpvKnv-UsHh0X_SWBRBYKDP3-1i=svsw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add PIT support for s32g2 and s32g3
+Date: Tue, 19 May 2026 15:27:55 +0200
+X-Gm-Features: AVHnY4JqE7oGhtd31y_8FQnK1agHYemkPRFMHImGIc2hHQQvFQ7fi52Nv9jZBbM
+Message-ID: <CALE0LRuk2J-BHNytia52xuKm-SU4ukCiP-Ow2rU9bRMfdhh4kg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add SAR ADC support for s32g2
+ and s32g3
 To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
 	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
@@ -82,24 +83,17 @@ Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
 	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: E5mkU9bttdOjti5maQ55R4zMxwODXAxzZqk7fj4XF6I_1779197001
+X-Mimecast-MFC-PROC-ID: yjfmCzqmcjcHnP_G4DT-5CEMr4Hj-AvSBsGmRWcPe7c_1779197288
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-Somewhat related I'd appreciate a review to:
-
-https://lore.kernel.org/all/20260514-fix-nxp-timer-v3-1-a3e68fdb505e@redhat=
-.com/
-
-The changes looks good to me, so
-
-On Mon, May 18, 2026 at 8:36=E2=80=AFAM Khristine Andreea Barbulescu
+On Thu, May 14, 2026 at 10:26=E2=80=AFAM Khristine Andreea Barbulescu
 <khristineandreea.barbulescu@oss.nxp.com> wrote:
 >
-> Add PIT0 and PIT1 for S32G2 and S32G3 SoCs
+> Add ADC0 and ADC1 for S32G2 and S32G3 SoCs.
 >
 > Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
 oss.nxp.com>
@@ -110,13 +104,13 @@ Thanks,
    Enric
 
 > ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi | 20 +++++++++++++++++++-
->  arch/arm64/boot/dts/freescale/s32g3.dtsi | 20 +++++++++++++++++++-
->  2 files changed, 38 insertions(+), 2 deletions(-)
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi | 22 +++++++++++++++++++++-
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi | 22 +++++++++++++++++++++-
+>  2 files changed, 42 insertions(+), 2 deletions(-)
 >
 > diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
 ts/freescale/s32g2.dtsi
-> index 51d00dac12de..57ff97e44507 100644
+> index 51d00dac12de..6f1952fbbcfe 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
 > +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
 > @@ -3,7 +3,7 @@
@@ -128,41 +122,43 @@ ts/freescale/s32g2.dtsi
 >   */
 >
 >  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -417,6 +417,15 @@ edma0: dma-controller@40144000 {
->                         clock-names =3D "dmamux0", "dmamux1";
+> @@ -554,6 +554,16 @@ i2c2: i2c@401ec000 {
+>                         status =3D "disabled";
 >                 };
 >
-> +               pit0: pit@40188000 {
-> +                       compatible =3D "nxp,s32g2-pit";
-> +                       reg =3D <0x40188000 0x3000>;
-> +                       interrupts =3D <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 61>;
-> +                       clock-names =3D "pit";
+> +               adc0: adc@401f8000 {
+> +                       compatible =3D "nxp,s32g2-sar-adc";
+> +                       reg =3D <0x401f8000 0x1000>;
+> +                       interrupts =3D <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
+> +                       clocks =3D <&clks 0x41>;
+> +                       dmas =3D <&edma0 0 32>;
+> +                       dma-names =3D "rx";
 > +                       status =3D "disabled";
 > +               };
 > +
->                 can0: can@401b4000 {
->                         compatible =3D "nxp,s32g2-flexcan";
->                         reg =3D <0x401b4000 0xa000>;
-> @@ -622,6 +631,15 @@ edma1: dma-controller@40244000 {
->                         clock-names =3D "dmamux0", "dmamux1";
+>                 swt4: watchdog@40200000 {
+>                         compatible =3D "nxp,s32g2-swt";
+>                         reg =3D <0x40200000 0x1000>;
+> @@ -717,6 +727,16 @@ i2c4: i2c@402dc000 {
+>                         status =3D "disabled";
 >                 };
 >
-> +               pit1: pit@40288000 {
-> +                       compatible =3D "nxp,s32g2-pit";
-> +                       reg =3D <0x40288000 0x3000>;
-> +                       interrupts =3D <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 61>;
-> +                       clock-names =3D "pit";
+> +               adc1: adc@402e8000 {
+> +                       compatible =3D "nxp,s32g2-sar-adc";
+> +                       reg =3D <0x402e8000 0x1000>;
+> +                       interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+> +                       clocks =3D <&clks 0x41>;
+> +                       dmas =3D <&edma1 1 32>;
+> +                       dma-names =3D "rx";
 > +                       status =3D "disabled";
 > +               };
 > +
->                 can2: can@402a8000 {
->                         compatible =3D "nxp,s32g2-flexcan";
->                         reg =3D <0x402a8000 0xa000>;
+>                 usdhc0: mmc@402f0000 {
+>                         compatible =3D "nxp,s32g2-usdhc";
+>                         reg =3D <0x402f0000 0x1000>;
 > diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
 ts/freescale/s32g3.dtsi
-> index e314f3c7d61d..efe5398e1240 100644
+> index e314f3c7d61d..5cfb37c1216a 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
 > +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
 > @@ -1,6 +1,6 @@
@@ -173,38 +169,42 @@ ts/freescale/s32g3.dtsi
 >   *
 >   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
 >   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-> @@ -475,6 +475,15 @@ edma0: dma-controller@40144000 {
->                         clock-names =3D "dmamux0", "dmamux1";
+> @@ -617,6 +617,16 @@ i2c2: i2c@401ec000 {
+>                         status =3D "disabled";
 >                 };
 >
-> +               pit0: pit@40188000 {
-> +                       compatible =3D "nxp,s32g3-pit", "nxp,s32g2-pit";
-> +                       reg =3D <0x40188000 0x3000>;
-> +                       interrupts =3D <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 61>;
-> +                       clock-names =3D "pit";
+> +               adc0: adc@401f8000 {
+> +                       compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sa=
+r-adc";
+> +                       reg =3D <0x401f8000 0x1000>;
+> +                       interrupts =3D <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
+> +                       clocks =3D <&clks 0x41>;
+> +                       dmas =3D <&edma0 0 32>;
+> +                       dma-names =3D "rx";
 > +                       status =3D "disabled";
 > +               };
 > +
->                 can0: can@401b4000 {
->                         compatible =3D "nxp,s32g3-flexcan",
->                                            "nxp,s32g2-flexcan";
-> @@ -693,6 +702,15 @@ edma1: dma-controller@40244000 {
->                         clock-names =3D "dmamux0", "dmamux1";
+>                 swt4: watchdog@40200000 {
+>                         compatible =3D "nxp,s32g3-swt", "nxp,s32g2-swt";
+>                         reg =3D <0x40200000 0x1000>;
+> @@ -792,6 +802,16 @@ i2c4: i2c@402dc000 {
+>                         status =3D "disabled";
 >                 };
 >
-> +               pit1: pit@40288000 {
-> +                       compatible =3D "nxp,s32g3-pit", "nxp,s32g2-pit";
-> +                       reg =3D <0x40288000 0x3000>;
-> +                       interrupts =3D <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 61>;
-> +                       clock-names =3D "pit";
+> +               adc1: adc@402e8000 {
+> +                       compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sa=
+r-adc";
+> +                       reg =3D <0x402e8000 0x1000>;
+> +                       interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+> +                       clocks =3D <&clks 0x41>;
+> +                       dmas =3D <&edma1 1 32>;
+> +                       dma-names =3D "rx";
 > +                       status =3D "disabled";
 > +               };
 > +
->                 can2: can@402a8000 {
->                         compatible =3D "nxp,s32g3-flexcan",
->                                            "nxp,s32g2-flexcan";
+>                 usdhc0: mmc@402f0000 {
+>                         compatible =3D "nxp,s32g3-usdhc",
+>                                      "nxp,s32g2-usdhc";
 > --
 > 2.34.1
 >
