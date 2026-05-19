@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809E4DB558
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2719B4DBD68
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779187168; cv=none; b=LtYEf+iQ3c5SAEKwIfh+VV2t9iJFd99Eq7iXB8bSz9Ep3xYx9MU1UWulemI+5QKvHv/y+pSa5+2EmqMRAhFglCac4oZhK/pfZAYkgsfJ10UVZ/GAWSlXweuz56QtmkyBjbara7zuqr5s6J7crwBFe0sIXmtFD/2RjIQIh/95NT0=
+	t=1779187171; cv=none; b=THjzk7dKu/x36WquCFEL5QyBfLvwKZ9ReVxB62+dKolfdsYLEXEw+XZ3rSdYQwBOOhi+urzQs3YAxvZJ3UUK7ZMpeNockJ+JWskJVKkA7GZqJKcbO1ZCtgv9d8YjyVBeNRcZEAUztg7g5CuR4wWTOwOWZW88hkjiT7S6BI9Mpug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779187168; c=relaxed/simple;
-	bh=U2iO7K6G/XoN0sfD4STz5u/lsimDw/ZGrpK5zBP2DN8=;
+	s=arc-20240116; t=1779187171; c=relaxed/simple;
+	bh=avAnBR6BIJzQQBJfeRfYXgmcOJAAOyJbcO+kCfQGJXQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nyazmXPWrR1snhk1WbX/FzzVVhVks1eVccunXg/X+3IAxEY95aWji40AStXK39lKhRUKrYzPbJJ6wUoSgAWFxBHKn6kJ+qShHd8lOhF4z6j/TIvMZQE2ecP34S/0gAOY8oJqVg8wvsfZMbS6dLxUEmSQLCHWx8C9awyNEnnKUUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZY2oKp7d; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=ZBfQB6bPchfkliLllUfWNKKJsyrXNq0hYbmKg6Wh9QbV2AH7W5evGpy1YVfssfN0FlUNbqPKjpLSUyhe1+efJ9F4Hg3LZcrzojNjROR7T8Tf3ZeCByAWNiFrazjGeXFp2ojFwRPZ87+8HimzPybdo0I5vbrAbHUu109c+G6W3+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IIQiFWvN; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZY2oKp7d"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IIQiFWvN"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1DC994E42CF1;
-	Tue, 19 May 2026 10:39:25 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1910DC2B9DB;
+	Tue, 19 May 2026 10:40:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DCF30606E9;
-	Tue, 19 May 2026 10:39:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CC8B107E8ABA;
-	Tue, 19 May 2026 12:39:19 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E2635606E9;
+	Tue, 19 May 2026 10:39:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA268107E8AE0;
+	Tue, 19 May 2026 12:39:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779187163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779187167; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=NREKLKfWOcPRruTk5u0cJPgt+kQBoWF03bP7a1G1JZo=;
-	b=ZY2oKp7d30FIAIsJ9UVTUw/DX/O0NjcbXa3fMn7sYbGqoKkfw8V8Gtvos/MoJAFuuVJYKP
-	TKsj2pDmWvT+qQpu+9gDAqH/tpbRJhXKmvetb8u9z+noBIrC5R5lYvCk1nF0RGcqudysQW
-	Y/5bESKfLXeK4oYOy4oKRwt5G/hLOVzRW0BjPPoNVfpz6rFR3in5KYMwIrFhQGGYO20k+H
-	bFU4OA4HYSLDx3hNYeTZmWgtL59yCE8/HzBthzAyyHV2z0I81/FFgUCAHmNtOhA8HqNbyG
-	Fx1g52AXRG6YrYoLPjzvBgRn45+0MAZCQ6T8Bl7PQ+Q9nPm09LWymqCve/wG8g==
+	bh=viok0NZbuZ8e/hD57hUPyDwRDr0DwR3pZjydZmRPEJY=;
+	b=IIQiFWvNhiB4jeRRZP+AbU7H+nswsdO7rN2CHIxfxHWCb9p85Lo2MX8g+God7kNUYM6QqT
+	eex8Oq4KVgVP9LWOyYMRfAtUclVVk/qVJRvY9MlyVUrWnVDpqNLn9ZoIzsPdubT6m+0ozZ
+	72wGxTOzSj0HhmcJw6q+bYhj9qV0r8yqb9QAIoHN1Rna7oNG1nd+FO2saAWOQOkmOho3+g
+	zwELy0KhvMn3tJ2XTIYYkEZUzYpm0NUYi7oP4qnhOdKczQfLRT9egTI3gpnAuqPFfgDPdT
+	W50AuSHxDuUytCTc5ai93A0f25XxPAXswScof0rdzd2njB/4mGJhmR/wMJ/YZA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 19 May 2026 12:37:35 +0200
-Subject: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge on
- host_detach
+Date: Tue, 19 May 2026 12:37:36 +0200
+Subject: [PATCH 19/37] drm/bridge: samsung-dsim: move drm_bridge_add() call
+ to probe
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-drm-bridge-hotplug-v1-18-45e2bdb3dfb4@bootlin.com>
+Message-Id: <20260519-drm-bridge-hotplug-v1-19-45e2bdb3dfb4@bootlin.com>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 In-Reply-To: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -69,130 +69,97 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-In preparation for DRM bridge hot-plugging, we need to handle the dynamic
-lifetime of the following bridge in case the samsung-dsim is always present
-and the following bridge (next_bridge) is hot-unplugged.
+This bridge driver calls drm_bridge_add() in the DSI host .attach callback
+instead of in the probe function.
 
-Based on the 'if (!IS_ERR(panel))' check in samsung_dsim_host_attach(), the
-next_bridge could be A) a panel bridge created by this driver via
-devm_drm_panel_bridge_add() or B) a pre-existing bridge obtained via
-of_drm_find_and_get_bridge().
+This works for current use cases but is problematic for supporting hotplug
+of DRM bridges. The problematic case is when this DSI host is always
+present while its DSI device is hot-pluggable. In such case with the
+current code the DRM card will not be populated until after the DSI device
+attaches to the host, which could happen a very long time after booting, or
+even not happen at all.
 
-For case B) we need to put that reference when the next_bridge is removed,
-which is already handled by calling drm_bridge_clear_and_put() in
-samsung_dsim_host_detach() and in the samsung_dsim_host_attach() error
-management code.
+The reason is that the previous pipeline component (the encoder in this
+case) when probing cannot find the samsung-dsim bridge. What happens is:
 
-In case A) we additionally have to remove the panel bridge. Currently it is
-created by devm_drm_panel_bridge_add(), which adds two devm actions with
-the refcounted panel bridge:
+ [1 and 2 can happen in any order, same result]
+ 1) samsung-dsim probes (does not drm_bridge_add() itself)
+ 2) The lcdif starts probing multiple times, but
+    lcdif_probe
+    -> lcdif_load
+       -> lcdif_attach_bridge
+          -> devm_drm_of_get_bridge() returns -EPROBE_DEFER because
+             the samsung-dsim is not in the global bridge_list
+             (deferred probe pending: imx-lcdif: Cannot connect bridge)
 
- - drm_bridge_put_void() via devm_drm_bridge_alloc() on panel->dev
- - devm_drm_panel_bridge_release() via devm_drm_panel_bridge_add_typed()
-   on the consumer device (samsung-dsim)
+The samsung-dsim will not drm_bridge_add() itself until a DSI device will
+try to mipi_dsi_attach() to the DSI Host, which can happen arbitratily late
+on hot-pluggable hardware.
 
-The first action is OK: being tied to panel->dev it will happen when the
-panel is unplugged.
+As a preliminary step to supporting hotplug move drm_bridge_add() at probe
+time, so that the samsung-dsim DSI host bridge is available during boot,
+even without a connected DSI device. This results in:
 
-The second action is bound to the consumer device, so the devm semantics is
-not useful here when introducing hotplug. Indeed we need to drop the
-next_bridge in samsung_dsim_host_detach() anyway, before the driver .remove
-function, in order to support {add, {attach, detach} x N, remove} hotplug
-event sequences.
-
-Thus move to the non-devm drm_panel_bridge_add() along with the matching
-drm_panel_bridge_remove(), so the lifetime of the panel-bridge is tied to
-the host_attach/host_detach cycle and not the whole samsung-dsim device
-lifetime.
+ 1) samsung-dsim probes (and adds to drm_bridge_add() itself)
+ 2) The lcdif starts probing multiple times, but
+    lcdif_probe
+    -> lcdif_load
+       -> lcdif_attach_bridge
+          -> devm_drm_of_get_bridge() --> OK, returns samsung-dsim ptr
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
 ---
-
-In a previous discussion with Maxime he mentioned a plan to make every
-drm_panel always have a wrapping bridge. With that done, all the code
-handling the panel and adding the panel_bridge would become useless here
-(and in many other places) and could be entirely removed. This patch is a
-temporary solution until that happens. The best pointer I could find to
-that discussion is [0], but there might be more recent material I could not
-find at the moment.
-
-[0] https://lore.kernel.org/lkml/20250218-faithful-white-magpie-da9ac9@houat/
----
- drivers/gpu/drm/bridge/samsung-dsim.c | 17 ++++++++++++++---
- include/drm/bridge/samsung-dsim.h     |  2 ++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/samsung-dsim.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 5b799619e07e..2af287221e22 100644
+index 2af287221e22..cefb20ec68ad 100644
 --- a/drivers/gpu/drm/bridge/samsung-dsim.c
 +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1951,14 +1951,16 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
- 	if (!remote)
- 		return -ENODEV;
+@@ -1980,8 +1980,6 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 		     mipi_dsi_pixel_format_to_bpp(device->format),
+ 		     device->mode_flags);
  
-+	dsi->panel_bridge_added = false;
- 	panel = of_drm_find_panel(remote);
- 	if (!IS_ERR(panel)) {
--		next_bridge = devm_drm_panel_bridge_add(dev, panel);
-+		next_bridge = drm_panel_bridge_add(panel);
- 		if (IS_ERR(next_bridge)) {
- 			ret = PTR_ERR(next_bridge);
- 			next_bridge = NULL; // Inhibit the cleanup action on an ERR_PTR
- 		} else {
- 			drm_bridge_get(next_bridge);
-+			dsi->panel_bridge_added = true;
- 		}
- 	} else {
- 		next_bridge = of_drm_find_and_get_bridge(remote);
-@@ -1989,7 +1991,7 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
- 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
- 		ret = samsung_dsim_register_te_irq(dsi, &device->dev);
- 		if (ret)
--			goto err_remove_bridge;
-+			goto err_remove_panel_bridge;
- 	}
- 
- 	// The next bridge can be used by host_ops->attach
-@@ -2011,8 +2013,12 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
- 	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
+-	drm_bridge_add(&dsi->bridge);
+-
+ 	/*
+ 	 * This is a temporary solution and should be made by more generic way.
+ 	 *
+@@ -2014,7 +2012,6 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
  	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
  		samsung_dsim_unregister_te_irq(dsi);
--err_remove_bridge:
-+err_remove_panel_bridge:
- 	drm_bridge_remove(&dsi->bridge);
-+	if (dsi->panel_bridge_added) {
-+		drm_panel_bridge_remove(next_bridge);
-+		dsi->panel_bridge_added = false;
-+	}
- 	return ret;
+ err_remove_panel_bridge:
+-	drm_bridge_remove(&dsi->bridge);
+ 	if (dsi->panel_bridge_added) {
+ 		drm_panel_bridge_remove(next_bridge);
+ 		dsi->panel_bridge_added = false;
+@@ -2040,8 +2037,6 @@ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
+ 
+ 	samsung_dsim_unregister_te_irq(dsi);
+ 
+-	drm_bridge_remove(&dsi->bridge);
+-
+ 	return 0;
  }
  
-@@ -2022,6 +2028,11 @@ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
- 	struct samsung_dsim *dsi = host_to_dsi(host);
- 	const struct samsung_dsim_plat_data *pdata = dsi->plat_data;
+@@ -2242,6 +2237,8 @@ int samsung_dsim_probe(struct platform_device *pdev)
+ 			goto err_disable_runtime;
+ 	}
  
-+	if (dsi->panel_bridge_added) {
-+		drm_panel_bridge_remove(dsi->bridge.next_bridge);
-+		dsi->panel_bridge_added = false;
-+	}
++	drm_bridge_add(&dsi->bridge);
 +
- 	if (pdata->host_ops && pdata->host_ops->detach)
- 		pdata->host_ops->detach(dsi, device);
+ 	return 0;
  
-diff --git a/include/drm/bridge/samsung-dsim.h b/include/drm/bridge/samsung-dsim.h
-index 03005e474704..3620f7aa9394 100644
---- a/include/drm/bridge/samsung-dsim.h
-+++ b/include/drm/bridge/samsung-dsim.h
-@@ -131,6 +131,8 @@ struct samsung_dsim {
- 	const struct samsung_dsim_plat_data *plat_data;
+ err_disable_runtime:
+@@ -2255,6 +2252,8 @@ void samsung_dsim_remove(struct platform_device *pdev)
+ {
+ 	struct samsung_dsim *dsi = platform_get_drvdata(pdev);
  
- 	void *priv;
++	drm_bridge_remove(&dsi->bridge);
 +
-+	bool panel_bridge_added; /* true iff next_bridge is a panel_bridge we created */
- };
+ 	pm_runtime_disable(&pdev->dev);
  
- extern int samsung_dsim_probe(struct platform_device *pdev);
+ 	if (dsi->plat_data->host_ops && dsi->plat_data->host_ops->unregister_host)
 
 -- 
 2.54.0
