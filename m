@@ -1,114 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8FE481227
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF40A35200A
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779189377; cv=none; b=mb1Q4YsOyYAx3EUnifZXoQ/+7Jse5gQZ+Bospn7/zJaUXwCJKFVXd1W/ikuYF7H7RjzNaln5/SfAxxuH4MgHBfP7r8ehiCM8ZCmLxQ0Bj36Beu/hXk5biIpfo+4wnXcmkcFFHPbD7XABhaQnovrNgyNRA3HBr3ENdgyUW1YqLtM=
+	t=1779189385; cv=none; b=bu9etS7XBN5t2LIFGMp6vZpOC+08vIdjd1yPG6t4wGnaehLpZLKbepJTB+n/P269mhaB8PluzhbFyUlDyr4qlkQ0zzX3R5uInl7C/9OTry1zlCvQHIaoGwo/a6rKs+yRmWvW5kT+cOXRxhKWvCDktgl0Vjnaay9+0UFuwjW0xI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779189377; c=relaxed/simple;
-	bh=urflexjXIdARgjs4wt3ZjC8l+b2mqz+xWXPPbf11FCw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nLs4w0xSPlBgDUy9dXI1IyXFRwxxoehgMzdMO5SnTVescuyLkAqwFkNOUrMvlf5UUOWMxGvqnZ8jkB0VVVnu12hWUyTKHIVNo/rQAIaBixdkPn3EitW7zP4JyT6YRCXDCXtT+WJxm6aL1GVm+QZQn6Wx9gC6pPUk8TDXtuYiAhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nR5afop1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779189385; c=relaxed/simple;
+	bh=3OyZagvs/c/AZ3thfNtj/zpz0ROajpZkPUCJZ6VG7r4=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=f9bEp/ASN/neL9196pALeK/+OntRxRlf+qZAIro3D1sAhaXpPoJ0RHdxkco1NZbYhD20xo6d1yoePQnqQk0uXf9rNyIz4WcO/9UflEjDDC5XJvKyGUfTPakizWBYb7tnBuOUbbXuJq66UfrYQiS5H6rmxgXBuIJvTVgJ1tKwFeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B11IrVm+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nR5afop1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BCCC2BCB3;
-	Tue, 19 May 2026 11:16:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B11IrVm+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8328C2BCB3;
+	Tue, 19 May 2026 11:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779189377;
-	bh=urflexjXIdARgjs4wt3ZjC8l+b2mqz+xWXPPbf11FCw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=nR5afop1fZjQWT3zWluV3+fuLvJhOkTyJoLXeYFbGUJCKIU4N+B/s9jjCrbzipl91
-	 kQcUA+uEMHNg+2Vgv/xTKzZdH51GxXGj9Gd8WRmuwumFi8piUycMGGrPUEj4Le2R/A
-	 OErUwt0e50Z10RB1QBk1ktxglG14MZVUZRAlohEl2ZMXlSedlcd4dv/CvBe6RKGCus
-	 q7EwOXcjLDRjZbrrWveQIB5h7UelIkNorR+Cguay2nFpbSJq585YyNgUBXZ5WpLtui
-	 N/pBR9Dv+O8SUQTnceDOtO1bIvQaMgyV82GPKdIa+qnMBG4f0ynGlnmNFET7QlK3UQ
-	 XiT7NGDZ8kX1Q==
+	s=k20201202; t=1779189384;
+	bh=3OyZagvs/c/AZ3thfNtj/zpz0ROajpZkPUCJZ6VG7r4=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date:From;
+	b=B11IrVm+WSrFjKS3eV6UPHyVXvsRx6XbMMMvW0g4GuTOh9Q22yBZSi3Avde4k3oh6
+	 u1J09PCFioThFQvL5kV3lfjc4a+oA22aF7Qvx2RPbtF7BHPcEkH2RbRq7C7AG6vN8K
+	 jXqfCv9vWSUyED9Xk13oQNIaOqbsg5s6OOy+Mqaon5tpHPgXe0D9czFyz+CYK6EiiM
+	 34psKkMW3ITDZLOa7eVT43ldm6sEDEXOOE9RD/kiSpTkxhvDbluHGS+M8dqvfsGxSv
+	 CLAiE1lyexnJvgF88C8Ntw0Bk2w0Y1cq4DQLWy/o8cvXQ8gqK4Enu1z0oYXWNrLDaf
+	 l1wQVt8cmKLEQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 19/37] drm/bridge: samsung-dsim: move drm_bridge_add()
- call to probe
+Subject: Re: [PATCH] spi: imx: replace dmaengine_terminate_all with
+ dmaengine_terminate_sync
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260519-drm-bridge-hotplug-v1-19-45e2bdb3dfb4@bootlin.com>
-References: <20260519-drm-bridge-hotplug-v1-19-45e2bdb3dfb4@bootlin.com>
+Cc: imx@lists.linux.dev, Frank.Li@kernel.org
+In-Reply-To: <20260519104659.2794476-1-carlos.song@oss.nxp.com>
+References: <20260519104659.2794476-1-carlos.song@oss.nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 11:16:16 +0000
-Message-Id: <20260519111617.40BCCC2BCB3@smtp.kernel.org>
+Date: Tue, 19 May 2026 11:16:17 +0000
+Message-Id: <20260519111624.B8328C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Moving drm_bridge_add() to probe() breaks probe deferral, causing =
-a permanent -EINVAL failure.
-- [Medium] Lockless data race on bridge state and next_bridge pointer when =
-the panel attaches asynchronously.
+- [High] In target mode, a target abort will not wake up DMA transfers, lea=
+ding to a permanent hang of the SPI worker thread.
 --
 
-commit 8b9a88707049c09bf2d0cddc2aeab67e8c2ea0b4
-Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
+commit 573a78e09f9746dd840d3530cc2836c91d1a815b
+Author: Carlos Song <carlos.song@nxp.com>
 
-drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
+spi: imx: replace dmaengine_terminate_all with dmaengine_terminate_sync
 
-This commit moves the drm_bridge_add() call from the DSI host attach
-callback to the probe function to allow the DRM card to populate even
-without a connected DSI device.
+This commit updates the driver to use dmaengine_terminate_sync() instead of
+the deprecated dmaengine_terminate_all() API.
 
-> diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/brid=
-ge/samsung-dsim.c
-> --- a/drivers/gpu/drm/bridge/samsung-dsim.c
-> +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 480d1e8b281f1..ae9912905c67a 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
 [ ... ]
-> @@ -2222,6 +2217,8 @@ int samsung_dsim_probe(struct platform_device *pdev)
->  			goto err_disable_runtime;
->  	}
-> =20
-> +	drm_bridge_add(&dsi->bridge);
-> +
->  	return 0;
+> @@ -1793,15 +1793,15 @@ static int spi_imx_dma_submit(struct spi_imx_data=
+ *spi_imx,
+>  		if (wait_for_completion_interruptible(&spi_imx->dma_tx_completion) ||
+>  		    READ_ONCE(spi_imx->target_aborted)) {
 
-Does moving drm_bridge_add() to the probe function break probe deferral?
+This is not a bug introduced by this commit, but looking at this target mode
+wait logic, will a target abort actually wake up the DMA transfers?
 
-By registering the DRM bridge here, the bridge becomes immediately available
-to the DRM master (like imx-lcdif) before the downstream DSI panel has prob=
-ed.
-When the DRM master probes, it finds the bridge and calls drm_bridge_attach=
-().
-This routes to samsung_dsim_attach(), which unconditionally attempts to att=
-ach
-dsi->bridge.next_bridge.=20
+Because wait_for_completion_interruptible() blocks until the completion is
+signaled or a task signal is received, it appears the worker thread will not
+wake up to evaluate READ_ONCE(spi_imx->target_aborted).
 
-Because the panel hasn't attached yet, next_bridge is NULL. Passing a NULL
-bridge to drm_bridge_attach() returns -EINVAL. This seems to cause the
-display controller's probe to fail permanently instead of properly deferring
-via -EPROBE_DEFER.
+If the host aborts the transfer and stops providing the clock, the DMA
+completion might never arrive. Could this cause the SPI worker thread to
+hang indefinitely waiting for a DMA completion?
 
-I noticed this is resolved later in the series by commit b9977e0ebaa4d
-(drm/bridge: samsung-dsim: attach: return -EPROBE_DEFER is next bridge not =
-yet
-available), but it introduces a regression at this point in the tree.
+It looks like spi_imx_target_abort() sets spi_imx->target_aborted to true
+and signals spi_imx->xfer_done, but doesn't signal the DMA completions.
+Would it make sense to also complete the DMA completions during an abort to
+prevent this potential hang?
 
-Also, does this introduce a data race on the bridge state when the panel
-attaches asynchronously?
-
-Since the bridge is now exposed to the global bridge_list early, the DRM co=
-re
-or master could access it while the downstream panel is still probing. The
-dsi->bridge.next_bridge pointer and configurations like lanes, format, and
-mode_flags are updated later in samsung_dsim_host_attach() without acquiring
-any locks.=20
-
-Is it possible for atomic callbacks or the DRM master's probe to read a
-partially-updated next_bridge pointer or uninitialized configuration state
-during this window?
+>  			dev_dbg(spi_imx->dev, "I/O Error in DMA TX interrupted\n");
+> -			dmaengine_terminate_all(controller->dma_tx);
+> -			dmaengine_terminate_all(controller->dma_rx);
+> +			dmaengine_terminate_sync(controller->dma_tx);
+> +			dmaengine_terminate_sync(controller->dma_rx);
+>  			return -EINTR;
+>  		}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-drm-bridge=
--hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D19
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519104659.2794=
+476-1-carlos.song@oss.nxp.com?part=3D1
