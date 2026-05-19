@@ -1,139 +1,91 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0BD3DCDAB
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 08:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA2A394474;
+	Tue, 19 May 2026 08:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779180148; cv=none; b=WvuzvXL+KhBVesxBhiJEIeIoOF34ax7zUDnpiOmUnxkQ4WVYA7xYJnecw7ZrH+M/JjPk8zgtB/fkPt7ZsAEdwmXYXguuNEiqKLOPp0p3dq7tDUGhKfFRw/ZljotC+H5yi6YQpWGn6CPAP12HyQPRQyENPQkZy6ZK41MPTwrGlcM=
+	t=1779180749; cv=none; b=MuoDxWFQ/jIu2Y42aG1B0EpkZfrI9nffEaxcKUDUUFC6hKekTlKEgWddamYbc1fwTNRh8QEk0Nrosp4uStfKo9ShcN9dOhz1q/h6yGUfD74cFSw4MXfBwQJ82/9AA1ir4R1r7cZfK20J9/l4iVraumHBW2+Jpt8k9a1aOfEiGvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779180148; c=relaxed/simple;
-	bh=uAg7yvTbG/5q1gosYB1549ltiBRHNpEsmfMFqy3jHOg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FEt0GXtmE44D/Iv7+buv2RsDM1DcT8P2QCH+WUVaCZtlFQdtHIP8NrQ5usuA/fIgJiOZC4smdMApHp5b3wyxrxTv9ZZqmWRO1yGkvon3czJmFv/dzsryj3N+h5AnpRdZvQU6smbvJwSGX//+eK6fSBg/NSSkNuwT0RGmNLP/A+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qSRHcn+l; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1779180749; c=relaxed/simple;
+	bh=+HfGak7yHuL/XgYwB0Bq0zu3smcoi8dm7pRi4GjPR8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D1C+In+OAHIJ14aMCedjtig0wRbhrgHUa6uCEDgNxRWeBQYOCoSvJPYaMn14ZFTqBo+WCw8Ym2TwkHv0mc/BB9v7JMIUIgpnUMIM1gkcX8jKxZBJglSCkDQkzADQRdcxy2N44DN1FoaAxnp1vjxOO53+NSrYYs6GkZQSAZVDkJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2CO19Ew; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qSRHcn+l"
-Received: from [IPV6:2a01:cb1d:8f2:800:77df:2bd9:9512:fa38] (unknown [IPv6:2a01:cb1d:8f2:800:77df:2bd9:9512:fa38])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DAEA37CA;
-	Tue, 19 May 2026 10:42:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1779180132;
-	bh=uAg7yvTbG/5q1gosYB1549ltiBRHNpEsmfMFqy3jHOg=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=qSRHcn+lzeu6fDeaUcxPlTE3lkBrWPG/abpXHks6LmGtSBYVq6A6ioTC24EZ8hlYT
-	 DUro/YUHjsAAGZdWm2/44hI/tbarw4K7F2eb2oeZ09i78pk9i1P0U4VIZZ5GqHs/fV
-	 nvSVgujyz7x03K+oG+L/y2nYX5sVY6mJK5f8pcYo=
-Message-ID: <aa1a6931-1a98-4f72-b8fc-ae05df28f931@ideasonboard.com>
-Date: Tue, 19 May 2026 10:42:21 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2CO19Ew"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2447C2BCB3;
+	Tue, 19 May 2026 08:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779180749;
+	bh=+HfGak7yHuL/XgYwB0Bq0zu3smcoi8dm7pRi4GjPR8o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y2CO19EwhBh9ujMggPV1riiBBdFi0ZpZd4G6bSZiquF4m7Yj7ba1rTdZ/21o2nT/r
+	 mJUiJ2WVwaPjXjzPknmGinP2N5r+wa2t1EgcUyR6Ie2W8KIIkTAQdFngJxYhnxyzsY
+	 EI11iIQHMp8QNKwddp8rwcNP2xiH2BVlB90fu0fMcxA2SwjIxXikODspgdzf7nlZfY
+	 6RjdTGEoLu8EEPIzvYOTgurM+twW40ejwhCnRxv+SVv7ar4pl9RbCxpPM1/KTyZf5u
+	 x1LznxrbbM63VSdPi4kVrqOtXiRBwclF/rjYiEM6G7iFmSBghs1OBCHR/Tii6oW0g2
+	 Rwr0GnJXuxc9A==
+Date: Tue, 19 May 2026 09:52:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Zhengyu He <hezhy472013@gmail.com>
+Cc: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	Cody Kang <cody.kang.hk@outlook.com>
+Subject: Re: [PATCH 1/3] spi: dt-bindings: fsl-qspi: support SpacemiT K3
+Message-ID: <c7833af4-eab0-4651-821a-68c53b9a62fc@sirena.org.uk>
+References: <20260519-k3-pico-itx-qspi-v1-v1-0-c32afeeaf741@gmail.com>
+ <20260519-k3-pico-itx-qspi-v1-v1-1-c32afeeaf741@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Dan Scally <dan.scally@ideasonboard.com>
-Subject: Re: [PATCH v2 1/2] i2c: imx: Don't recover bus when arbitration lost
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Andi Shyti <andi.shyti@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Gao Pan <b54642@freescale.com>,
- Fugang Duan <B38611@freescale.com>, Wolfram Sang <wsa@kernel.org>
-References: <20260424-i2c-imx-fixes-v2-0-34fb9504aaeb@ideasonboard.com>
- <20260424-i2c-imx-fixes-v2-1-34fb9504aaeb@ideasonboard.com>
-Content-Language: en-US
-In-Reply-To: <20260424-i2c-imx-fixes-v2-1-34fb9504aaeb@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8SblKUXhOngtSLCU"
+Content-Disposition: inline
+In-Reply-To: <20260519-k3-pico-itx-qspi-v1-v1-1-c32afeeaf741@gmail.com>
+X-Cookie: Huh?
 
-Hello Oleksij / all
 
-On 24/04/2026 13:36, Daniel Scally wrote:
-> In i2c_imx_xfer_common(), the driver attempts bus recovery whenever
-> i2c_imx_start() fails. One of the failure modes for i2c_imx_start()
-> is an arbitration-lost signal which results when a second I2C master
-> on the bus tries to control the bus simultaneously, which is a normal
-> and expected behaviour.
-> 
-> Bus recovery is not the right response for this case. Add a check for
-> the -EAGAIN return code to avoid running the bus recovery.
-> 
-> Fixes: 1c4b6c3bcf30d ("i2c: imx: implement bus recovery")
-> Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+--8SblKUXhOngtSLCU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, May 19, 2026 at 02:15:55PM +0800, Zhengyu He wrote:
+> Add the SpacemiT K3 QSPI compatible to the fsl-qspi binding.
+>=20
+> K3 has its own SoC integration, so board DTs should describe it
+> with a K3-specific compatible instead of reusing the K1 string.
+>=20
+> Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
+> Signed-off-by: Cody Kang <cody.kang.hk@outlook.com>
 > ---
 
-I raised this patch after we had issues with one of the i2c controllers on imx8mp. In that case, the 
-bus had multiple masters that were causing the SoC's i2c controller to lose arbitration. The result 
-was that the framework attempted to run i2c_generic_scl_recovery() and regularly hit the "SCL is 
-stuck low, exit recovery" message [1] because the bus was busy rather than stuck.
+The signoff of whoever is sending the patch should be last in the list
+of signoffs, each signoff is certifying the ones before.
 
-I'm now experiencing a different issue with the imx8mp in which a different controller - which isn't 
-on a multiple-masters bus - starts transacting fine early in boot, but then seems to get stuck - any 
-attempt to start a transaction by either a driver or i2ctransfer results in the IAL bit in I2C_I2SR 
-being set and so the driver reports that it's lost arbitration [2]. In this case, the bus recovery 
-is needed to fix the problem, and so this commit hurts things rather than helps them. This problem 
-isn't consistent - I get it on maybe 10% of boots.
+--8SblKUXhOngtSLCU
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I'm trying to find a way to handle the two problems together. I can move the retries into the 
-i2x-imx driver like below, and that works so far:
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index a208fefd3c3b3..cee333236646a 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1551,7 +1551,20 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
-         int use_dma = 0;
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoMJMUACgkQJNaLcl1U
+h9ChuQf+PprmNVxKDo7Qo1X+Me5eypSTZ1LJGD9uf589k2G4Z5l1SAIJ6UvdSCTC
+uNghM/uNx0j6KPxpgPYumiVC5kSiMpFCq3AAalBE+TyuIrQkSbUCsOFuE+2wyJfo
+vD6hBOUXU3r48JRY2YaZAnO51xdP8IpFTx09WpnWmsw9fgehpOGjumEgc7aK34VQ
+MMDyRi2ex/gRHqFw4dPhJt+LTtC1DAPUUMLNFH5f/uUiDlN9mE93qE3q99m1XLWz
+D7tTorYqemjTVt6XBmuodAeO0ubJFSEcPTp3QPdkRIfdCaYsCr04/+AcvT4DEHq0
+sDa6//E+EXqeM3SX6Aul9vW6hvlX1w==
+=VJUZ
+-----END PGP SIGNATURE-----
 
-         /* Start I2C transfer */
--       result = i2c_imx_start(i2c_imx, atomic);
-+       for (unsigned int try = 0; try <= 3; try++) {
-+               result = i2c_imx_start(i2c_imx, atomic);
-+               if (result == -EAGAIN) {
-+                       i2c_imx_stop(i2c_imx, atomic);
-+
-+                       if (i2c_imx->slave)
-+                               i2c_imx_slave_init(i2c_imx);
-+
-+                       continue;
-+               }
-+
-+               break;
-+       }
-+
-         if (result) {
-                 /*
-                  * Bus recovery uses gpiod_get_value_cansleep() which is not
-
-That way it retries 3 times if i2c_bus_busy() reports -EAGAIN from lost arbitration, but then gives 
-up and runs the bus recovery if none of the retries works. I do wonder why the i2c controller is 
-setting the IAL bit though given there's no other master on the bus. If I use a logic analyser to 
-track traffic on the bus I can't see anything anomalous, so I thought I'd check whether anyone has 
-experienced something similar before.
-
-
-[1] https://elixir.bootlin.com/linux/v7.0.1/source/drivers/i2c/i2c-core-base.c#L254
-[2] https://elixir.bootlin.com/linux/v7.0.1/source/drivers/i2c/busses/i2c-imx.c#L548
-
->   drivers/i2c/busses/i2c-imx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index a208fefd3c3b35672a00eda8448f24859aaa793a..b68a0f7105682006bbcfee52891c9a9c2d8c009e 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -1552,7 +1552,7 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
->   
->   	/* Start I2C transfer */
->   	result = i2c_imx_start(i2c_imx, atomic);
-> -	if (result) {
-> +	if (result && result != -EAGAIN) {
->   		/*
->   		 * Bus recovery uses gpiod_get_value_cansleep() which is not
->   		 * allowed within atomic context.
-> 
-
+--8SblKUXhOngtSLCU--
