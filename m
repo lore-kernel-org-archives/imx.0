@@ -1,106 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6029339870
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 03:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2911C338925
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 03:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779159854; cv=none; b=KAM1kIpxYZ6QgeR1rDARTfivvzN99tLoNPS6bXzffo6LXG0FjxkkSzY1ek7cu1l8JcQyc1fmiGeDLd1S9v6UyWlHGNA4g1xTADegG0eTnBkoJ86N0EB5PrGMZrgh+/HLck3RVqidFDX75w4oo8eZPi0lx1FfIMjKLQ+0FWb0u2Q=
+	t=1779159855; cv=none; b=mdksTbvjIUVULplKsDBomSVP+lwWAR16aA+EbJaKG5gDCwDlzRLj5dcwViqqak5VZLHyfOGEPh0w5AZK/bMLcfdmOK7gA5vf8blQQeNi4UrNS/SWuyXPKJ5Pa8t4HkvzP4u8j/sCxRwR6zJbcOmSf1z3hTYIpRskaTagfDhQOo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779159854; c=relaxed/simple;
-	bh=l4FDQKx2FnFKpP8gMilR6UBiYUb9byVAayChk1yagyg=;
+	s=arc-20240116; t=1779159855; c=relaxed/simple;
+	bh=xa1con7ASPWgvCMTrQP7JC4nDeeRlYdES3yP9zI4zCQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jxbjNjmFfLw4ZrII9JFrOsd4GAdRaOFlypqJUo5gWSqGRi17bzpKk9D4xW1KjzO8XgdsHncBeYZn8/gtgOqJ/eD3Y5v1jp0Pt0eU/RLDeZ/Wn1j7ffCgIhyG/f8hr4Je5yPugVS0wH8bS8Cid2gvxTUcxKsouSuVbZvsZRS/ofA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egH/sYUC; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=VonsfPb6KlLf3G5rP20IElOBogQ3F4TVdutfJilNWp73Jo+6/EnV/C747wpNhJQ1DdnBZbZMXMTM/nAcarnZGaG/+Jy1u7qu7qRKDvGj5ibPo+j8Hmpj/19wVpdpDHNknmgz/tBL4QaUANUoHFfMC65lkJD8CCM/u5OJXtHeONM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrHS+MHF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egH/sYUC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2E1C2BCB7;
-	Tue, 19 May 2026 03:04:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrHS+MHF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F5C2BCB7;
+	Tue, 19 May 2026 03:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779159853;
-	bh=l4FDQKx2FnFKpP8gMilR6UBiYUb9byVAayChk1yagyg=;
+	s=k20201202; t=1779159854;
+	bh=xa1con7ASPWgvCMTrQP7JC4nDeeRlYdES3yP9zI4zCQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=egH/sYUCzzghjD6a/ykRtLtJA90H1yjBE30+01pvpAqS1HyS9dLk1behwC2R8KtEO
-	 l85rlJbjjTwBTfgxebCBz4kMkz9IkFTdvSAiEImXm3LLnQKTXM7y9x4mg8GTGXe+Kl
-	 YZbQbIpFyDIL26Z1R97BPZLYSl2bTndthL5V7MVFM3oJsEqcs1asjewlBc/WDG9FpI
-	 UOW6+Y/Vs49BwLnOjLUOvIaPLb6+j3GqvoH/J7ulOmnKUdOD4+tc5xrSFh5o1Hlyrz
-	 J21sdWlnVJHtoOChraxAf2rsr3fYli9kU5y0N/9hpAbk+rUKvQOUlz78M8IowSTwnp
-	 lDg2WMS6zb1PA==
+	b=mrHS+MHFLgSBS3ex9MFuUPznkXXAdVpywl5EEiQ7ZBiahtIQ+jcwKZ/M6Qw/eom6a
+	 ifPBcFX44whWTXKBIpZgZxp/J6vz3EVII6N8J5Dny1k3qC7DKkfNizOrkElB1n5CfS
+	 MTSnnCb5SXjMxpT9S9s+P7qkBU+YYT+Ef5F3VnR2QMS1aImm7umgnU7fwJkd4imJ9b
+	 npZy3M9qWG+6PTuFx/kJOvuR75/EQU0Xx5jb9YPSIXJmvPkbBkXyTwF/N8lsPbmIUy
+	 NoHAA6t+ds6blPJVbKG4AO5mZr9gDLrhuAcAPPhMQjfIpkRUK/dmsect2SlomsBlZQ
+	 bxLfcgXDprceQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net 5/9] net: enetc: fix race condition in VF MAC
- address configuration
+Subject: Re: [PATCH v2 net 6/9] net: enetc: fix DMA write to freed memory in
+ enetc_msg_free_mbx()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wei Fang" <wei.fang@nxp.com>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260518030535.1057228-6-wei.fang@nxp.com>
-References: <20260518030535.1057228-6-wei.fang@nxp.com>
+In-Reply-To: <20260518030535.1057228-7-wei.fang@nxp.com>
+References: <20260518030535.1057228-7-wei.fang@nxp.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 03:04:13 +0000
-Message-Id: <20260519030413.8C2E1C2BCB7@smtp.kernel.org>
+Date: Tue, 19 May 2026 03:04:14 +0000
+Message-Id: <20260519030414.A81F5C2BCB7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Low] The dynamically allocated vf_state->lock mutexes are never destroye=
-d on failure paths or during device removal.
+- [Critical] Memory corruption at physical address 0x0 due to zeroing DMA t=
+argets while VFs are active.
+- [High] Unflushed posted PCI writes leave a race window for DMA into freed=
+ memory.
+- [High] Teardown race condition leading to NULL pointer dereference or Use=
+-After-Free.
 --
 
-commit db9f948a9f4c7ba009b69fe241fc7fda20cc8986
+commit dd65c0648588abad91771aef96f48b4812bd1952
 Author: Wei Fang <wei.fang@nxp.com>
 
-net: enetc: fix race condition in VF MAC address configuration
+net: enetc: fix DMA write to freed memory in enetc_msg_free_mbx()
 
-This commit adds a per-VF mutex to the enetc_vf_state structure to serialize
-access and prevent race conditions between the VF message handler and
-administrative MAC configuration from the host.
+The teardown sequence in enetc_msg_psi_free() frees the DMA buffer before
+clearing the device's DMA address registers. If a VF sends a message or a
+pending DMA transfer completes within this window, the hardware will
+perform a DMA write into the kernel memory that has already been returned
+to the allocator.
 
-Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nx=
-p.com #1
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/ne=
-t/ethernet/freescale/enetc/enetc_pf.c
-> index 09c6420408923..8e11a023d516b 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-
-[ ... ]
-
-> @@ -989,6 +996,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
->  			err =3D -ENOMEM;
->  			goto err_alloc_vf_state;
->  		}
-> +
-> +		for (int i =3D 0; i < pf->total_vfs; i++)
-> +			mutex_init(&pf->vf_state[i].lock);
->  	}
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index 40d22ebe9224f..b4d7457097e60 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -96,12 +96,12 @@ static void enetc_msg_free_mbx(struct enetc_si *si, i=
+nt idx)
+>  	struct enetc_hw *hw =3D &si->hw;
+>  	struct enetc_msg_swbd *msg;
 > =20
->  	err =3D enetc_setup_mac_addresses(node, pf);
+> +	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+> +	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
 
-Should these newly initialized mutexes be cleaned up with mutex_destroy() on
-the error paths in this function?
+Since enetc_wr() performs a posted memory-mapped I/O write over PCIe, does =
+it
+need a dummy read-back (such as enetc_rd()) to flush the writes?
 
-If a subsequent initialization step like enetc_setup_mac_addresses() fails,
-the probe function jumps to the err_setup_mac_addresses label and directly
-frees the array:
+Without a read-back, could dma_free_coherent() execute and unmap the memory
+while the write is still buffered in the PCIe hierarchy? This might leave a
+window where an incoming DMA could still write to the memory being freed.
 
-err_setup_mac_addresses:
-	kfree(pf->vf_state);
+Could writing 0 to the DMA address registers here cause memory corruption at
+physical address 0x0?
 
-This leaves the initialized mutexes without a matching mutex_destroy() call.
+Since VFs are still fully active at this point in the teardown sequence
+(before pci_disable_sriov() is called), an active VF might send a message
+right after these registers are zeroed, causing the PF hardware to perform
+a DMA write to physical address 0x0.
 
-While the memory for the locks is freed alongside the array, missing the
-destroy call bypasses lock debugging validations when kernel mutex debugging
-is enabled.
+I noticed this is fixed later in the patch series by commit 675d55bcc7801
+(net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown).
 
-Would it make sense to iterate and destroy these locks before freeing the
-array on the error path, and also ensure they are destroyed in
-enetc_pf_remove() during normal device teardown?
+> +
+>  	msg =3D &pf->rxmsg[idx];
+>  	dma_free_coherent(&si->pdev->dev, msg->size, msg->vaddr, msg->dma);
+>  	memset(msg, 0, sizeof(*msg));
+> -
+> -	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+> -	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
+>  }
+
+Regarding the teardown sequence in enetc_msg_psi_free(), is there a race
+condition that could cause a regression like a NULL pointer dereference or
+use-after-free?
+
+If cancel_work_sync(&pf->msg_task) is called before enetc_msg_disable_mr_in=
+t()
+and free_irq(), an interrupt could fire immediately after cancel_work_sync()
+returns. The IRQ handler (enetc_msg_psi_msix) would execute and
+unconditionally call schedule_work(&pf->msg_task), re-queuing the work.
+
+Then enetc_msg_free_mbx() frees the DMA buffer and zeros out the msg_swbd
+structure. When the mistakenly re-queued worker task executes
+enetc_msg_handle_rxmsg(), it would attempt to read from the nullified
+msg_swbd->vaddr or freed memory.
+
+I noticed this is fixed later in the patch series by commit 915d29ad4ee42
+(net: enetc: fix initialization order to prevent use of uninitialized resou=
+rces).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518030535.1057=
-228-1-wei.fang@nxp.com?part=3D5
+228-1-wei.fang@nxp.com?part=3D6
