@@ -1,211 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013024.outbound.protection.outlook.com [40.107.159.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D492140963D
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 13:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197303; cv=none; b=BfDgb5GCob2clR5Av/gqfgcm+pRjXtVXSeFR/S6JAoKnxyswxR0T2CidPLxftrlT2XQ8u5pE2Wc4qUM+226TWpXEkX3NaKxljR3VehD3pdqyNHoClhlnfFJVJ+oQyKAnhlTJrOW1ByIaXwZ8GA918/yLW9ZQwWIUI+2iqB94Hto=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197303; c=relaxed/simple;
-	bh=AJDpfP9UZspHTC3+uZ4OkTygJiOxBWBP3cwoWE7gENs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pu8RotRp7pwEK+YDgfr1mW6aIjlKyqYc5ucJvLuRVTFh1hGmzq3l6GMgoriB6esecoPFVjRtijZxfVsQ3pfmlU+ju/ZC12ssDhUWh2PgP8HAlkh0Jzz72mjBGpc2edJE3UIqo3IeYDXeEWxRhPBK6IQgp9aNkTzx1DTp2Egw76o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dm7scVGy; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E05492528
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 14:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779200791; cv=fail; b=tPWiX64jEwU8eCeiRpW8k4rHs9Ax2ZNHpTx2gn3uzp3MXW8dRAvk3OhkgFpgGRBwrIa6KzsXyfEKO1bwnfNyxGarHHwn3KXcDGaDWSou8Z0RqJYH9rlV+nIywas24MUZZlLDmKMFzgfyfL0PZcbwfd3zKkFjfbG+vPhyrajmERU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779200791; c=relaxed/simple;
+	bh=4ONLNC92zimahbrQBasBPzd9eHijv8P9KXbWxU0IXq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EF+ILKzd6cyGsoDYK82xftuNWID4OXn5pxjNbLRDg2iNJhvZPVVxpslqMq6tfJtZm2HWEuVAmgjlYRF2Aj/GEYARh5N3FR7oHee8pXCpNt4xhqmaP2vYnJJ/hoVkjVGpZwEEx4DwS6VgaEyST2OIfrnEJ8sGAy2lPksoCRY+1v4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HtMd/wxG; arc=fail smtp.client-ip=40.107.159.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dm7scVGy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779197290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u5YvULhhts6qX2IWUm0kkAdZMFsRNKK4rnVt+gyCyWw=;
-	b=dm7scVGyFAG63mmKHJxzVmU9fqvQzvsbgilTjBFchj+hgjN/KZg2RdzJKvtfaFoTsxolYH
-	gcVL/16Plz87oBhhbM51GTHUaWk1wICyO/UMIgfBgBFxosQf7AwxxZHlT91PZUuoV0zCu9
-	d0ppYZYiyj9QFahVabaL0Z3zfKjevr4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-Y4GrAxDWPtyfv9DgLL44_A-1; Tue, 19 May 2026 09:28:09 -0400
-X-MC-Unique: Y4GrAxDWPtyfv9DgLL44_A-1
-X-Mimecast-MFC-AGG-ID: Y4GrAxDWPtyfv9DgLL44_A_1779197288
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5a86b49dfc9so256271e87.3
-        for <imx@lists.linux.dev>; Tue, 19 May 2026 06:28:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779197288; x=1779802088;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u5YvULhhts6qX2IWUm0kkAdZMFsRNKK4rnVt+gyCyWw=;
-        b=qW6VYojXERO2sROAXxgX/TFkDvRxnoCZV7r1e4wd+nAsvNKvfOhZzCpEDfTmc3mup3
-         puwtoQ1FR8B7xqS2Z+Kzg5SEwu9uKfeuhHvmCiu/mav7+cx7FqFY+29TmVPAOGzjH5w/
-         cmb63rHsK6j/sdbD0XZNi3lDnyqyEfcb9a94DBXNi3NXSvroXwT+/Fy0TLSFsK92Veh5
-         ZEMxUSl3+20CdHi25V4UYdP/EeVMoY5GR29gNF+JWzFPafsrUp6UXwccbzDGmNYA87Ql
-         7haJpxa/aHOxXPpcpqLw64wk35BKQrlq9ADW5IRO42h+S2akMCWtRF16u+Jni8DpsUvf
-         xf5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+DP34GW0/MGxcD6HBKMBPgCMYfFX5qxlYIopE6cb1Mnsu13rDww200iWBwnFi8qcrY+7U=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMcen0MU94LVtXxz7/64itFU3mZy9BowiYo0jN5Rnk4NXWUhFz
-	rrVb9mO030zzJ+Oaux0gXXfzuV3mvc+D/p9r+BIaa1LKFX93LURbdbko1xnSQkcYlUUIbAD5jjn
-	ezMa5bsVs/U3E3rDDXMkNMdEUvaqk6nRLh4xgDE4Q74j1XFVGcD0L4V0dk8vACKtHuKSqRIMuOZ
-	SFapGZDZy9fJ6ft22ixjYMT23YlhCw
-X-Gm-Gg: Acq92OFH3vimhmD1G13+/ExHf6Q2YuZaEapYMjVpwamPkR43PF1rpCQ25Fb6zGRkYYM
-	poSvFZr9ZcmqPbXjAMZ1lnckYS7pjlNl8uqzTE5h67MoEQij5IysjCm7gbl8mzj2hwLusRiCmr5
-	yQgBfRhKyiIzrXkLKubcBkwZNy88F0OjMjWe1e11FvJFBcELOZbABcGiSWYe+i20xrsXtXZc0Mj
-	VxtKQ==
-X-Received: by 2002:a05:6512:3409:b0:5a8:7396:63e3 with SMTP id 2adb3069b0e04-5aa0e74a2cdmr2307645e87.5.1779197287923;
-        Tue, 19 May 2026 06:28:07 -0700 (PDT)
-X-Received: by 2002:a05:6512:3409:b0:5a8:7396:63e3 with SMTP id
- 2adb3069b0e04-5aa0e74a2cdmr2307625e87.5.1779197287356; Tue, 19 May 2026
- 06:28:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HtMd/wxG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F+1MaPHbS4Ey4Cpz05KyT018y5zqkGnUFX45V9uuzzhBMPW2TkZHCzYotvqMpY8Z2GU3U22S6NoK7svLcAyOEeZQMKh0R3nzseuFuJsubLCnQAfeI8XCF0tEya5dFjxyo7lw2pKuzKl2/9ExO+QVETfXKsxfpCjIMeYeuBhZR3NogCBjK89uhd+ARH7SsU0iKPnGdnTtGv/YSoBzySQah6JoljhK7p4/YSLx1abvQ1g3IW2ypibDZCtnz/HOG5Yyyyee9fRZVAvRqJBEH54ayJu2f0Kyu37xi0LaRm3vU0TDck16ocVmB+v7bdI9V9I1IQgykR0ywe8D+6p+UMQP+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o0N0iV9AfWsuuaEPuiOJOOK8UNEX2u555MmO8yvCwqs=;
+ b=ikf/dpnVbkowPzVt5AmIP2E4pvnnrX+PgOObN0DTOqpPqGLL1VV384aEK7yZA4znKcAc6gzXza2KilYpAcc60BXESqUrlcn5ac0yQOPiKpZvGi94VgrlI0D8UgY44QbrG4HZ/dwUkbpd/stTTcrNaW+eSVIkTTu8zo16UG+YJpmNaSjIFO/i4SihjwellUz/FmlfJUZpEv97FnnxsyCyA8Q6x9yFv8mW5r0ivrhY31vxtfjckA/U4EjBilkBrg7qqxeaQvr1YevJPascDNcz6LohkiGCub+CfPUVmjVpVSRvELMmBKBOkyWeg5EecCComdDhXxdtIz1uwigPtwM/VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o0N0iV9AfWsuuaEPuiOJOOK8UNEX2u555MmO8yvCwqs=;
+ b=HtMd/wxG/XE8OAODcck8YVdZxstsg44jQf59OJQ4Luok0BF3B/8NUjKgR2Lu/eEiMLdtECYjQNliDt2h0x3GQbQ9yrlUNVrVsGgP53tr0E4F4V8jpJ8bWfAUCPFv40valhtp6sLBuEjmgJPrUVJ1Xf2jbu6SNk15abkBEBNTpf1ewtk5lYnlxGbEJzis4kw+UT8z1OyVzwkALFKEGFnZLg7pAXQs3N9FFCYbt/woB6rSCMKjPjRpc5axg8/xyuN0b9Ij6bbhlQkQl12JD/jyRR06VWS749uKJ4HyODvLYwcewXVXAc8p268Lxjp4gD/OL9fstDpJOrkGG6kLBoj/wg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
+ by PA2PR04MB10446.eurprd04.prod.outlook.com (2603:10a6:102:415::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May
+ 2026 14:26:24 +0000
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::3826:2706:1e81:c9e2]) by GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::3826:2706:1e81:c9e2%5]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 14:26:23 +0000
+Date: Tue, 19 May 2026 17:26:18 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Parshuram Thombare <pthombar@cadence.com>, 
+	Swapnil Jakhade <sjakhade@cadence.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-phy@lists.infradead.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux@ew.tq-group.com, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Ying Liu <victor.liu@nxp.com>
+Subject: Re: [PATCH v22 6/8] phy: freescale: Add DisplayPort/HDMI Combo-PHY
+ driver for i.MX8MQ
+Message-ID: <brv6sgyrwplbrf2hgqowvzwfxmnv7mea5jlbhyscdhyhse3nd2@mvuxnkgknmc3>
+References: <20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d@oss.nxp.com>
+ <20260424-dcss-hdmi-upstreaming-v22-6-30a28f89298d@oss.nxp.com>
+ <afd9juuQh8OB6SEw@vaman>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afd9juuQh8OB6SEw@vaman>
+X-ClientProxiedBy: AM0PR05CA0075.eurprd05.prod.outlook.com
+ (2603:10a6:208:136::15) To GV1PR04MB9135.eurprd04.prod.outlook.com
+ (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260514082639.1181240-1-khristineandreea.barbulescu@oss.nxp.com> <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260514082639.1181240-2-khristineandreea.barbulescu@oss.nxp.com>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Tue, 19 May 2026 15:27:55 +0200
-X-Gm-Features: AVHnY4JqE7oGhtd31y_8FQnK1agHYemkPRFMHImGIc2hHQQvFQ7fi52Nv9jZBbM
-Message-ID: <CALE0LRuk2J-BHNytia52xuKm-SU4ukCiP-Ow2rU9bRMfdhh4kg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] arm64: dts: s32g: add SAR ADC support for s32g2
- and s32g3
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yjfmCzqmcjcHnP_G4DT-5CEMr4Hj-AvSBsGmRWcPe7c_1779197288
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|PA2PR04MB10446:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cbbaa63-8fe7-4a60-26b2-08deb5b29a89
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|366016|7416014|376014|11063799006|18002099003|22082099003|56012099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+ 3Xcp99mchCcT5a0ytck5zF1loRFAG7uH+0Ytsu1nFMak2Rb4eijsDWS5SpSexUxlVUCFCXsBepS8bbr+PoBGVKcScbBCKXiB32muNexsEQM690jSWJZtHpc+83lnOWGmV8I9bpED4dNOT+HmXX7sisXsEPjaZawIxI4R9+Hq9EksuvVIUP8u3hcybuHXEOzITf1V9+0gGs1O9wVNeP27QweIftXcfB1J0JBIoN7JMdnrkHjs6rtvkSVkhsy9RuQ31Gfg/X2Ks0Po9R4fGxAuaR/Z8ZvwDfmJrAI75We+YpUs2czQ0fOWNOyWmqgeb9uOdhb/M7+RgHm0c/6WCPjclrH8E1d+9mqN4ReplKnEUf4Uig9/8m69cFmXAqmnXC6b/FA7Dzs7BjbWLJp0Tnr4DOROfFgfdi+DminHFV+jw7iwgLYhh4XDbP4hfzqPfQZ0buLJYY41oaJU8rnAD2/xW5EOc0tizHYvjvRwxoCI2OkQ7tpqa1pC0lERHFDwdznWip2ksX3wMI4LmwXRlh/3aE49MD2TKd6QgjvmlMnsyvmVuSnIkpHXXKPk/gOuXtk0u8+hjzAgQrpTEa88V5EsNq0tZFadAnNwqemFsvhNMa9NEj/HEe6bt+vfIm+laqKI
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(7416014)(376014)(11063799006)(18002099003)(22082099003)(56012099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?YlzdRHxf9K6ccZGR18VGbSdemfOUi6nOSkM6VwLKjyjTT+4ixYNtVgr09BAS?=
+ =?us-ascii?Q?0xFygaRz3EFBlXFTYEeckOQ8SSqOzMTii0umKAXGTcKvmfEIDpqw38/XX7d+?=
+ =?us-ascii?Q?N6RMY7JvF07WLNPa7VS8XtddVHVJN20/iA/qfX7h8uXk9OSDinIGSzOSpOIQ?=
+ =?us-ascii?Q?6ppuiTAvy6+DCD9jIOIBWwBYc45FqpPje3opZ3FIbZ29MIKt+uTgYj5d6wKk?=
+ =?us-ascii?Q?bxMpmzEmj3GyQbAF3BnNLXJwkdmG3oqYpehcS9hE1oZ8/n01y54ZslZl+XqC?=
+ =?us-ascii?Q?OYBy7VhbPAlDZrg9GmiivGcrvFg7MWNiPmeab0l9Mo7bQbCkAZm5gXJqcY7f?=
+ =?us-ascii?Q?k1eW4x9P8lzOXrhh7vfpKOcnbuveWu68ioRmaZYVy44esISOct/5TkP5OBrt?=
+ =?us-ascii?Q?JqTps+zMseAqVZiQ1OSZFiG7rkAlWSHebc4ueixKs0rFGoEBEEKWj/GpJZbL?=
+ =?us-ascii?Q?kClS0fWrxEb0m8ytHIxgieOQlxPQUVjUSK65kayDtdlZ1ddHGwWX8MgD+cF2?=
+ =?us-ascii?Q?2si+67XmtQqD0XxoCM5AVL16pyC4n0FXEeUpGNdIp0efErYLBadewrfhL5Df?=
+ =?us-ascii?Q?k8SuA5gVuzuxHExmC+w4Nn9bh6CZIVFVHXKqnUUN5z5zoITEsBYgXHBYYfjI?=
+ =?us-ascii?Q?kdKagnxaB6rhsYRC4SKH+9G0wQ6K0nhn7ZT2REhF/mQfZTlVONVPw7YGG9nh?=
+ =?us-ascii?Q?okMLRNRFR6D0XOCoox0cWidcjjkQx5D96Oz2xu3X2AkfWMKzWU0o0LTusGLU?=
+ =?us-ascii?Q?GTt/a49NpM/SFraRViGow3lbyf75vrGOUyCWDV4H4udm9PsiM6srA4VGQgZu?=
+ =?us-ascii?Q?CqA/Xp3Ltyr+fEbyoQwYhnRdk/yT52tUIL4unqnDQUoWTsPvv0XpBGaJZQhp?=
+ =?us-ascii?Q?C0YOa6CL4tsRDtgCHyGgupbRyHo7K59xewp0q8zDr8t3MmgFjUHDW9tY6vQp?=
+ =?us-ascii?Q?QkoEOSj2NlVo88ExZv8EtUyvoLiX3+ihK5Opm9cSVB7MasIYe7Y6Hk0wkyIO?=
+ =?us-ascii?Q?n96s/LugZw9VU+VvAEHw/mV0KfpbFBNJC8L1qV97Y5FO7+ie99T8YLnIm+SE?=
+ =?us-ascii?Q?YJ/0WYCPGhk4DJjvGQLHXKY5dABhPZVMWlCPxm6PUaslYWTlpD4S/3M99Dry?=
+ =?us-ascii?Q?ZyKGUoI3Nn+ERuDuSjnrFZ9M3GOcjYxbYpFaaf6iVZaKUkZZJDgrB8HKIEXB?=
+ =?us-ascii?Q?eJYo7ofe9t7MkOEAkgVqrivw8VYC1TGf3723tuh+zIvkQwfXMCOsVciXKQYd?=
+ =?us-ascii?Q?xE4XdR4rvCQYYJB3Cm8Q0mi0DlRlPED9rmc8G/G5k0Rk3nPP49tcbGVAERi3?=
+ =?us-ascii?Q?WhAOxa1xDtYnCXj21Yeq5Gr8Um/xW4mkeSEPqg0Emtap+6jcXr0OL9FSdpL4?=
+ =?us-ascii?Q?tYtB6iInOVNXnpH9DdJ1OTQjI3fsgbgaosPi5svmyThgTpn21TYUTbjEZD+e?=
+ =?us-ascii?Q?rMCbvdaXSYs1nv9UzdY4oAHS8Z4ripGeagW0EmXlANvLdlo/uH5zK7G3Tpg/?=
+ =?us-ascii?Q?BLEOdC+o43Ar116koSU/P45DiKNCU0Rz+dKfLzB7T62jNfAQ+3KPtoFpUnUx?=
+ =?us-ascii?Q?xk39MocEBYCfMMahPQRp6FQDAEFJsDyQOnCKujjMRjRYL6aBxHP4wO/Pya+X?=
+ =?us-ascii?Q?TnCkQ/vV/ZoZpEMEryFdL7KTTJaruEOQrKYKaiZyEbLKQAESY9tY2Ud988f5?=
+ =?us-ascii?Q?+48aQX2PxVr9+vP4ZcwL2GXKq66Lwsu/+02utCm/1kivPOhsDrr9O7fJwixv?=
+ =?us-ascii?Q?+EITU1CodR/+RlvMhjiixtVj1b1Qs9M=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cbbaa63-8fe7-4a60-26b2-08deb5b29a89
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 14:26:23.7603
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VV2iq5H+fk/clfZmzCJWa4wDzcthpTZh5CP62HXyDkrTG0Oz19XGsiYw/efVp6p1wjjiwGFzajLB6avQW1AXYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10446
 
-Hi,
+Hi Vinod,
 
-On Thu, May 14, 2026 at 10:26=E2=80=AFAM Khristine Andreea Barbulescu
-<khristineandreea.barbulescu@oss.nxp.com> wrote:
->
-> Add ADC0 and ADC1 for S32G2 and S32G3 SoCs.
->
-> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
-oss.nxp.com>
+On Sun, May 03, 2026 at 10:23:34PM +0530, Vinod Koul wrote:
+> On 24-04-26, 11:07, Laurentiu Palcu wrote:
+> > From: Sandor Yu <Sandor.yu@nxp.com>
+> > 
+> > Add Cadence HDP-TX DisplayPort and HDMI PHY driver for i.MX8MQ.
+> > 
+> > Cadence HDP-TX PHY could be put in either DP mode or
+> > HDMI mode base on the configuration chosen.
+> > DisplayPort or HDMI PHY mode is configured in the driver.
+> 
+> Hi,
+> 
+> Please consider if this can be split from rest of the series and posted
+> as phy driver
 
-Reviewed-by: Enric Balletbo i Serra <eballetb@redhat.com>
+Unfortunately it cannot be split. It depends on mailbox helper functions
+added in the first patch.
 
+> 
+> Also sasiko has flagged some issues, please take a look https://sashiko.dev/#/patchset/20260424-dcss-hdmi-upstreaming-v22-0-30a28f89298d%40oss.nxp.com
+
+I will address them.
+
+-- 
 Thanks,
-   Enric
-
-> ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi | 22 +++++++++++++++++++++-
->  arch/arm64/boot/dts/freescale/s32g3.dtsi | 22 +++++++++++++++++++++-
->  2 files changed, 42 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g2.dtsi
-> index 51d00dac12de..6f1952fbbcfe 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -3,7 +3,7 @@
->   * NXP S32G2 SoC family
->   *
->   * Copyright (c) 2021 SUSE LLC
-> - * Copyright 2017-2021, 2024-2025 NXP
-> + * Copyright 2017-2021, 2024-2026 NXP
->   */
->
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -554,6 +554,16 @@ i2c2: i2c@401ec000 {
->                         status =3D "disabled";
->                 };
->
-> +               adc0: adc@401f8000 {
-> +                       compatible =3D "nxp,s32g2-sar-adc";
-> +                       reg =3D <0x401f8000 0x1000>;
-> +                       interrupts =3D <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 0x41>;
-> +                       dmas =3D <&edma0 0 32>;
-> +                       dma-names =3D "rx";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 swt4: watchdog@40200000 {
->                         compatible =3D "nxp,s32g2-swt";
->                         reg =3D <0x40200000 0x1000>;
-> @@ -717,6 +727,16 @@ i2c4: i2c@402dc000 {
->                         status =3D "disabled";
->                 };
->
-> +               adc1: adc@402e8000 {
-> +                       compatible =3D "nxp,s32g2-sar-adc";
-> +                       reg =3D <0x402e8000 0x1000>;
-> +                       interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 0x41>;
-> +                       dmas =3D <&edma1 1 32>;
-> +                       dma-names =3D "rx";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 usdhc0: mmc@402f0000 {
->                         compatible =3D "nxp,s32g2-usdhc";
->                         reg =3D <0x402f0000 0x1000>;
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index e314f3c7d61d..5cfb37c1216a 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->  /*
-> - * Copyright 2021-2025 NXP
-> + * Copyright 2021-2026 NXP
->   *
->   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
->   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-> @@ -617,6 +617,16 @@ i2c2: i2c@401ec000 {
->                         status =3D "disabled";
->                 };
->
-> +               adc0: adc@401f8000 {
-> +                       compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sa=
-r-adc";
-> +                       reg =3D <0x401f8000 0x1000>;
-> +                       interrupts =3D <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 0x41>;
-> +                       dmas =3D <&edma0 0 32>;
-> +                       dma-names =3D "rx";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 swt4: watchdog@40200000 {
->                         compatible =3D "nxp,s32g3-swt", "nxp,s32g2-swt";
->                         reg =3D <0x40200000 0x1000>;
-> @@ -792,6 +802,16 @@ i2c4: i2c@402dc000 {
->                         status =3D "disabled";
->                 };
->
-> +               adc1: adc@402e8000 {
-> +                       compatible =3D "nxp,s32g3-sar-adc", "nxp,s32g2-sa=
-r-adc";
-> +                       reg =3D <0x402e8000 0x1000>;
-> +                       interrupts =3D <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-> +                       clocks =3D <&clks 0x41>;
-> +                       dmas =3D <&edma1 1 32>;
-> +                       dma-names =3D "rx";
-> +                       status =3D "disabled";
-> +               };
-> +
->                 usdhc0: mmc@402f0000 {
->                         compatible =3D "nxp,s32g3-usdhc",
->                                      "nxp,s32g2-usdhc";
-> --
-> 2.34.1
->
-
+Laurentiu
