@@ -1,158 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E47480332
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C17A369D62
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188768; cv=none; b=MKw2W1Yjy7XHeDktIBEJqc1PjCaxDBRG0uUm6Z2q/A4+CBDsHs2n7lVx1/3eLiTmp7fQBvpFq5rg5K5iflC4nMnDKHXA9hnkrkt5BGWougWLiYCGv//QkFeoMXXRsFLRB/3XC4Vw0I2N5q5UIxJsUiakahVdDlGE4BeqeZQzAMI=
+	t=1779188861; cv=none; b=lhVrH6+lNt0aGwE43qFRQEMIGATBr8+i4BjkqV4c7iUzQmEHB60UTLx3viEU9ElYahuUtDgK7nZ9V5YZJFrOwz4MOhdOZZfDdeAsd/MXXbdiduS1UtktnJouZDD24PoTFv5ZgoAEc3rsU5x9PSsPc/2fmMAIyFXIXIHqAcgyiJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188768; c=relaxed/simple;
-	bh=CwCtFdewT31KuAO/Wt0Uonm0TMb1Kif8cJPuZ1jmzZU=;
+	s=arc-20240116; t=1779188861; c=relaxed/simple;
+	bh=Qf3bAbZwtREEBJj5qSMLwdtShZW3yIoVvpJuaji+xiw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TZi/K/7qfTjpTh6ogxn0Uz8QWyNjQnbs+kPLyKocTikK3DjKjhgNXJx+itttwhuumXQTSHXs69MdaWaLbhY+rqcsLrgZ2xP3iIXuHGMCNO2lbko790IwdfEbUxdCIElj2ELqoAkEZD1B16gR6aIYrx1GUyzioNdOV0Z2vb2MKHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGbTqrNM; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=qM98KbOxJmvBUmO/1JmchFbeCilKiVhoL5CHGg1tkE/z4YIjss+8Mp8fwy68UJBxItbTdGA3ZmUExyqOAyjUK2U8n8QsxUtMwUDLkWbOUrUVaX/SPQ2Ewr32t0ppe3SLY4h7aNTMbKPHAXUHDNxN8T6wOAddNVs3BVxSS5AY0qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWSVVnWN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGbTqrNM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB44DC2BCB8;
-	Tue, 19 May 2026 11:06:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWSVVnWN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7203C2BCB3;
+	Tue, 19 May 2026 11:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779188767;
-	bh=CwCtFdewT31KuAO/Wt0Uonm0TMb1Kif8cJPuZ1jmzZU=;
+	s=k20201202; t=1779188860;
+	bh=Qf3bAbZwtREEBJj5qSMLwdtShZW3yIoVvpJuaji+xiw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=UGbTqrNMy05uV1p3pWMKw7xvzVeiC8oX+FNIOn3Qxm7Lux95xIkKWUvYFJW8Nguw1
-	 DviA9C0Q/OvrUWn9Hd8zI5QFnHaxMLbVSKlru90JTnpnOVfXZmft3UjVegEzb8qgdE
-	 5yO+MSKJla9hyePoH9siVg0uNl7mo3Ah8XgubTgJNvz2b9zJPyTl+vHR2anjG2vi1A
-	 lmkIZ2QuRyBzG/XzLPLAyQ9mj0bpo7KETb8SXa6U3gaDLKS7DZlYOcINWJC+J+TqLD
-	 fePy6ioajTEdj3T21eetVHzScWL/f22K4cEvpxrJvd2ao03X7Qygu0IaHiaxxHYINc
-	 T4nU/UIJS/tLA==
+	b=IWSVVnWN0Td4QZRuATHFShwbZtk3RK3OLtOAmzDIWN9jCyV35fDD/Ht6SeRyb07so
+	 oSwQ3A6Ufgj+nChTWjLUgnYyY0mkHz2L6NX+PLkVj/3WRjq7gx5ozU8AQaeaggM0Cl
+	 yyR0TmhC9t2RSXJepzc7gdNd2M3SuHdA5uBrsUtZPap83pFneRm4HdKahjS7XrN+2W
+	 wI8S4CMA1AZCG+1KjXHNvNSxNPFueb3ePuyHpKKyCAJXvoHfX9yxrDctcQfNDvLz7A
+	 AsGQgkxizGsCMVBlHKJLPyBoQJW8SX7eD393JTOT55LeDHAl42TA7+XKC0rk+1OicP
+	 pV00kIw/5V/XA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 26/37] drm: event-notifier: add mechanism to notify
- about hotplug events
+Subject: Re: [PATCH 28/37] drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
-References: <20260519-drm-bridge-hotplug-v1-26-45e2bdb3dfb4@bootlin.com>
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-28-45e2bdb3dfb4@bootlin.com>
+References: <20260519-drm-bridge-hotplug-v1-28-45e2bdb3dfb4@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 11:06:07 +0000
-Message-Id: <20260519110607.BB44DC2BCB8@smtp.kernel.org>
+Date: Tue, 19 May 2026 11:07:40 +0000
+Message-Id: <20260519110740.B7203C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Global blocking notifier chain couples independent DRM devices.
-- [Low] Missing forward declaration for `struct notifier_block` in header.
-- [Low] Kernel-doc mismatch for DRM_BRIDGE_DETACHED enum value.
+- [Medium] Missing module_exit() routine in drm_mipi_dsi.c
+- [Low] Linker error due to IS_ENABLED(CONFIG_DRM_MIPI_DSI) evaluating to t=
+rue when built as a module
 --
 
-commit 233daf5d4ef6810bfafb5fb5ba8829a7db6987d3
+commit 980deb1ce9940525b50bf77a81377ee0a4c56aad
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm: event-notifier: add mechanism to notify about hotplug events
+drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
 
-This patch introduces a DRM event notifier to allow interested parties
-to be notified about bridge hotplug events. It adds a new common file
-implementing the notifier and defines initial events for bridge detach
-and MIPI DSI attach.
+This commit converts the DRM_MIPI_DSI configuration option from a boolean
+to a tristate, allowing it to be built as a loadable module. This also
+enables other tristate modules to depend on it when it is built as a module.
 
-> diff --git a/drivers/gpu/drm/drm_event_notifier.c b/drivers/gpu/drm/drm_e=
-vent_notifier.c
-> new file mode 100644
-> index 0000000000000..76af4dd4cdb02
-> --- /dev/null
-> +++ b/drivers/gpu/drm/drm_event_notifier.c
-> @@ -0,0 +1,58 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Internal event notifier for DRM drivers
-> + *
-> + * Copyright (C) 2026 GE HealthCare
-> + * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/notifier.h>
-> +
-> +#include <drm/drm_event_notifier.h>
-> +
-> +static BLOCKING_NOTIFIER_HEAD(drm_event_notifier);
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index e730e04447418..6a14bb03607a7 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -43,7 +43,7 @@ config DRM_MIPI_DBI
+>  	select DRM_KMS_HELPER
+> =20
+>  config DRM_MIPI_DSI
+> -	bool
+> +	tristate
 
-Does using a single, global blocking notifier for all DRM hotplug events ri=
-sk
-coupling independent DRM devices?
+Since DRM_MIPI_DSI can now be built as a module, does drm_mipi_dsi.c
+need a module_exit() routine?
 
-When an event occurs on one device, it appears this will trigger callbacks =
-for
-every registered listener across the entire system. Could this lead to
-cross-device lock contention, or cause listeners on unrelated hardware to
-unexpectedly react to the event?
+Currently, drm_mipi_dsi.c uses postcore_initcall(mipi_dsi_bus_init) but does
+not define a corresponding module_exit() function to unregister the bus.
+Without this, the module will be permanently pinned in memory after loading
+and cannot be unloaded.
 
-[ ... ]
+Could this change also cause a linker regression if CONFIG_DRM=3Dy and
+CONFIG_DRM_MIPI_DSI=3Dm?
 
-> diff --git a/include/drm/drm_event_notifier.h b/include/drm/drm_event_not=
-ifier.h
-> new file mode 100644
-> index 0000000000000..78afc014ec9a6
-> --- /dev/null
-> +++ b/include/drm/drm_event_notifier.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Internal event notifier for DRM drivers
-> + *
-> + * Copyright (C) 2026 GE HealthCare
-> + * Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> + */
-> +
-> +#ifndef _DRM_EVENT_NOTIFIER_H_
-> +#define _DRM_EVENT_NOTIFIER_H_
-> +
-> +/**
-> + * enum drm_event_notifier_event - DRM bridge events
-> + */
-> +enum drm_event_notifier_event {
-> +	/**
-> +	 * @DRM_MIPI_DSI_ATTACHED: A MIPI DSI device has just been attached
-> +	 * to its MIPI DSI host. @data is a pointer to the &struct
-> +	 * mipi_dsi_device that has just attached.
-> +	 */
-> +	DRM_MIPI_DSI_ATTACHED,
-> +	/**
-> +	 * @DRM_BRIDGE_NOTIFY_DETACHED: A bridge has just been detached
+Core DRM code like drm_of.c uses IS_ENABLED(CONFIG_DRM_MIPI_DSI) to
+conditionally compile drm_of_get_dsi_bus(). IS_ENABLED() evaluates to true
+for both y and m.
 
-This isn't a bug, but the kernel-doc references @DRM_BRIDGE_NOTIFY_DETACHED
-while the actual enum value is DRM_BRIDGE_DETACHED. Will this cause warnings
-during documentation builds?
+If DRM is built-in and MIPI_DSI is a module, drm_of.c will compile
+drm_of_get_dsi_bus(), which calls of_find_mipi_dsi_host_by_node(). This
+function is exported by the drm_mipi_dsi module, so it won't be present in
+vmlinux, resulting in an undefined reference.
 
-> +	 * from the encoder bridge chain. Emitted at the end of
-> +	 * drm_bridge_detach(), after removing the bridge from the encoder
-> +	 * chain. @data is a pointer to the &struct drm_bridge that has
-> +	 * just been detached.
-> +	 */
-> +	DRM_BRIDGE_DETACHED,
-> +};
-> +
-> +int drm_event_notifier_register(struct notifier_block *nb);
+Does the Kconfig dependency need to be adjusted, or should
+IS_REACHABLE(CONFIG_DRM_MIPI_DSI) be used instead to avoid this?
 
-Should there be a forward declaration for struct notifier_block here, or an
-include for <linux/notifier.h>?
-
-Without it, files including this header might get compiler warnings about t=
-he
-struct being declared inside a parameter list, since kernel headers are
-typically expected to be self-contained.
-
-> +int drm_event_notifier_unregister(struct notifier_block *nb);
-> +void drm_event_notifier_notify(unsigned long event, void *data);
-> +
-> +#endif /* _DRM_EVENT_NOTIFIER_H_ */
+>  	depends on DRM
+> =20
+>  config DRM_KMS_HELPER
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-drm-bridge=
--hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D26
+-hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D28
