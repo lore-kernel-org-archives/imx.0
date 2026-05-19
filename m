@@ -1,42 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4264D2EF6
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809E4DB558
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779187163; cv=none; b=X69Rfytj8+L0/epgDBa/FTdOKvZrJzjnILCge1tw0+2eHanfgZEQUXMK+tr7SAnl7w0H6rZvW0ZwJbOpNjfK+i2/efWoksRE4vu5sXo5Xpbe2sJ2+xMZUTXFWsDRh9kJzt9wVs7suzkjSGO3Xdl2fCUF/8yrjRs9wuy6HcFKQD8=
+	t=1779187168; cv=none; b=LtYEf+iQ3c5SAEKwIfh+VV2t9iJFd99Eq7iXB8bSz9Ep3xYx9MU1UWulemI+5QKvHv/y+pSa5+2EmqMRAhFglCac4oZhK/pfZAYkgsfJ10UVZ/GAWSlXweuz56QtmkyBjbara7zuqr5s6J7crwBFe0sIXmtFD/2RjIQIh/95NT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779187163; c=relaxed/simple;
-	bh=6tZr755GEhwo/7aN3+ctTOpQ+AiSu4iO5zIwvlPSnOs=;
+	s=arc-20240116; t=1779187168; c=relaxed/simple;
+	bh=U2iO7K6G/XoN0sfD4STz5u/lsimDw/ZGrpK5zBP2DN8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PJO3uUA7m9JXiIIPU+WFKrXdyG2WDs9B83nhWwOTF+HVTo4JPleUKVFtFM49HpmCYrmom4Jml0NjVW5mr26N+4FdHAAqEQSeODqDgYHGzUqucx5mHJZGInHHAMJQdfsWcXRT9EDsAwbAynrWts9W61xPB64t3UhmQT6MUERqLS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B8IVN01N; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=nyazmXPWrR1snhk1WbX/FzzVVhVks1eVccunXg/X+3IAxEY95aWji40AStXK39lKhRUKrYzPbJJ6wUoSgAWFxBHKn6kJ+qShHd8lOhF4z6j/TIvMZQE2ecP34S/0gAOY8oJqVg8wvsfZMbS6dLxUEmSQLCHWx8C9awyNEnnKUUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZY2oKp7d; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B8IVN01N"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZY2oKp7d"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E22854E42CF1;
-	Tue, 19 May 2026 10:39:20 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1DC994E42CF1;
+	Tue, 19 May 2026 10:39:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A9D18606E9;
-	Tue, 19 May 2026 10:39:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8938E107E8AE7;
-	Tue, 19 May 2026 12:39:14 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DCF30606E9;
+	Tue, 19 May 2026 10:39:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CC8B107E8ABA;
+	Tue, 19 May 2026 12:39:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779187158; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779187163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Hruhb1ZCQ/MBija+fhFHFu8qDzgA34c2IABg7xr74FQ=;
-	b=B8IVN01NRf+lvOHxqOAWPpYJOgdPVyJMoN+pKM3crUPNsOwQ6/0jMT/Ug4Nebna24uoapa
-	mtDelWsbPRs9BYKYo8+M24XUYWPeBUDjJUvlGvhex4UeR6lRjMVjN9saKY2tZ9mEy15VVu
-	lynCgYEA6tVoVMJm2bBGpMjQjEfVcE0tqyqpn+tpghSSy7kZeAN10ZTRFNNi6q0iDANvbx
-	1n641SLj8gnd8VgQ46kfjal6Z6sEJt1e7UFwyj3mRVLK+QbgjkR4xCR0OO/rmcVAOfVA5s
-	WryYGacIJ8LUCHaIKH2+oKLeLKLaVzB0+qGE2E3MqGh0PqBOzbOjWTwDR0W3vg==
+	bh=NREKLKfWOcPRruTk5u0cJPgt+kQBoWF03bP7a1G1JZo=;
+	b=ZY2oKp7d30FIAIsJ9UVTUw/DX/O0NjcbXa3fMn7sYbGqoKkfw8V8Gtvos/MoJAFuuVJYKP
+	TKsj2pDmWvT+qQpu+9gDAqH/tpbRJhXKmvetb8u9z+noBIrC5R5lYvCk1nF0RGcqudysQW
+	Y/5bESKfLXeK4oYOy4oKRwt5G/hLOVzRW0BjPPoNVfpz6rFR3in5KYMwIrFhQGGYO20k+H
+	bFU4OA4HYSLDx3hNYeTZmWgtL59yCE8/HzBthzAyyHV2z0I81/FFgUCAHmNtOhA8HqNbyG
+	Fx1g52AXRG6YrYoLPjzvBgRn45+0MAZCQ6T8Bl7PQ+Q9nPm09LWymqCve/wG8g==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 19 May 2026 12:37:34 +0200
-Subject: [PATCH 17/37] drm/display: bridge-connector: protect dynconn
- creation and destruction with a mutex
+Date: Tue, 19 May 2026 12:37:35 +0200
+Subject: [PATCH 18/37] drm/bridge: samsung-dsim: remove the panel_bridge on
+ host_detach
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-drm-bridge-hotplug-v1-17-45e2bdb3dfb4@bootlin.com>
+Message-Id: <20260519-drm-bridge-hotplug-v1-18-45e2bdb3dfb4@bootlin.com>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 In-Reply-To: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -69,67 +69,130 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Bridge hotplug will make the connector dynamically created and destroyed
-based on hotplug events.
+In preparation for DRM bridge hot-plugging, we need to handle the dynamic
+lifetime of the following bridge in case the samsung-dsim is always present
+and the following bridge (next_bridge) is hot-unplugged.
 
-In preparation for that, add a mutex to mutually exclude connector creation
-and destruction.
+Based on the 'if (!IS_ERR(panel))' check in samsung_dsim_host_attach(), the
+next_bridge could be A) a panel bridge created by this driver via
+devm_drm_panel_bridge_add() or B) a pre-existing bridge obtained via
+of_drm_find_and_get_bridge().
+
+For case B) we need to put that reference when the next_bridge is removed,
+which is already handled by calling drm_bridge_clear_and_put() in
+samsung_dsim_host_detach() and in the samsung_dsim_host_attach() error
+management code.
+
+In case A) we additionally have to remove the panel bridge. Currently it is
+created by devm_drm_panel_bridge_add(), which adds two devm actions with
+the refcounted panel bridge:
+
+ - drm_bridge_put_void() via devm_drm_bridge_alloc() on panel->dev
+ - devm_drm_panel_bridge_release() via devm_drm_panel_bridge_add_typed()
+   on the consumer device (samsung-dsim)
+
+The first action is OK: being tied to panel->dev it will happen when the
+panel is unplugged.
+
+The second action is bound to the consumer device, so the devm semantics is
+not useful here when introducing hotplug. Indeed we need to drop the
+next_bridge in samsung_dsim_host_detach() anyway, before the driver .remove
+function, in order to support {add, {attach, detach} x N, remove} hotplug
+event sequences.
+
+Thus move to the non-devm drm_panel_bridge_add() along with the matching
+drm_panel_bridge_remove(), so the lifetime of the panel-bridge is tied to
+the host_attach/host_detach cycle and not the whole samsung-dsim device
+lifetime.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/gpu/drm/display/drm_bridge_connector.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
-index bd421b6beb7c..b83da529cc7a 100644
---- a/drivers/gpu/drm/display/drm_bridge_connector.c
-+++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-@@ -8,6 +8,7 @@
- #include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/property.h>
- #include <linux/slab.h>
-@@ -152,6 +153,11 @@ struct drm_bridge_connector {
- 	 * @dynconn: The DRM connector added by the drm_bridge_connector
- 	 */
- 	struct drm_bridge_connector_dynconn *dynconn;
-+	/**
-+	 * @dynconn_mutex: Protect @dynconn from concurrent creation and
-+	 * destruction
-+	 */
-+	struct mutex dynconn_mutex;
+---
+
+In a previous discussion with Maxime he mentioned a plan to make every
+drm_panel always have a wrapping bridge. With that done, all the code
+handling the panel and adding the panel_bridge would become useless here
+(and in many other places) and could be entirely removed. This patch is a
+temporary solution until that happens. The best pointer I could find to
+that discussion is [0], but there might be more recent material I could not
+find at the moment.
+
+[0] https://lore.kernel.org/lkml/20250218-faithful-white-magpie-da9ac9@houat/
+---
+ drivers/gpu/drm/bridge/samsung-dsim.c | 17 ++++++++++++++---
+ include/drm/bridge/samsung-dsim.h     |  2 ++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index 5b799619e07e..2af287221e22 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1951,14 +1951,16 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 	if (!remote)
+ 		return -ENODEV;
+ 
++	dsi->panel_bridge_added = false;
+ 	panel = of_drm_find_panel(remote);
+ 	if (!IS_ERR(panel)) {
+-		next_bridge = devm_drm_panel_bridge_add(dev, panel);
++		next_bridge = drm_panel_bridge_add(panel);
+ 		if (IS_ERR(next_bridge)) {
+ 			ret = PTR_ERR(next_bridge);
+ 			next_bridge = NULL; // Inhibit the cleanup action on an ERR_PTR
+ 		} else {
+ 			drm_bridge_get(next_bridge);
++			dsi->panel_bridge_added = true;
+ 		}
+ 	} else {
+ 		next_bridge = of_drm_find_and_get_bridge(remote);
+@@ -1989,7 +1991,7 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
+ 		ret = samsung_dsim_register_te_irq(dsi, &device->dev);
+ 		if (ret)
+-			goto err_remove_bridge;
++			goto err_remove_panel_bridge;
+ 	}
+ 
+ 	// The next bridge can be used by host_ops->attach
+@@ -2011,8 +2013,12 @@ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 	drm_bridge_clear_and_put(&dsi->bridge.next_bridge);
+ 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
+ 		samsung_dsim_unregister_te_irq(dsi);
+-err_remove_bridge:
++err_remove_panel_bridge:
+ 	drm_bridge_remove(&dsi->bridge);
++	if (dsi->panel_bridge_added) {
++		drm_panel_bridge_remove(next_bridge);
++		dsi->panel_bridge_added = false;
++	}
+ 	return ret;
+ }
+ 
+@@ -2022,6 +2028,11 @@ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
+ 	struct samsung_dsim *dsi = host_to_dsi(host);
+ 	const struct samsung_dsim_plat_data *pdata = dsi->plat_data;
+ 
++	if (dsi->panel_bridge_added) {
++		drm_panel_bridge_remove(dsi->bridge.next_bridge);
++		dsi->panel_bridge_added = false;
++	}
++
+ 	if (pdata->host_ops && pdata->host_ops->detach)
+ 		pdata->host_ops->detach(dsi, device);
+ 
+diff --git a/include/drm/bridge/samsung-dsim.h b/include/drm/bridge/samsung-dsim.h
+index 03005e474704..3620f7aa9394 100644
+--- a/include/drm/bridge/samsung-dsim.h
++++ b/include/drm/bridge/samsung-dsim.h
+@@ -131,6 +131,8 @@ struct samsung_dsim {
+ 	const struct samsung_dsim_plat_data *plat_data;
+ 
+ 	void *priv;
++
++	bool panel_bridge_added; /* true iff next_bridge is a panel_bridge we created */
  };
  
- static struct drm_bridge_connector_dynconn *
-@@ -810,6 +816,8 @@ static const struct drm_connector_hdmi_cec_funcs drm_bridge_connector_hdmi_cec_f
- 
- static void drm_bridge_connector_dynconn_release(struct drm_bridge_connector *bridge_connector)
- {
-+	guard(mutex)(&bridge_connector->dynconn_mutex);
-+
- 	if (!bridge_connector->dynconn)
- 		return;
- 
-@@ -1050,6 +1058,8 @@ static int drm_bridge_connector_add_connector(struct drm_bridge_connector *bridg
- 	int connector_type;
- 	int ret;
- 
-+	guard(mutex)(&bridge_connector->dynconn_mutex);
-+
- 	struct drm_bridge_connector_dynconn *dynconn = kzalloc_obj(*dynconn);
- 	if (!dynconn)
- 		return -ENOMEM;
-@@ -1177,6 +1187,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
- 	if (!bridge_connector)
- 		return ERR_PTR(-ENOMEM);
- 
-+	mutex_init(&bridge_connector->dynconn_mutex);
- 	bridge_connector->drm = drm;
- 	bridge_connector->encoder = encoder;
- 
+ extern int samsung_dsim_probe(struct platform_device *pdev);
 
 -- 
 2.54.0
