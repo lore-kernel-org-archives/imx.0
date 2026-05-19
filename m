@@ -1,105 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE33F4DD8
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA92370AE1
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188203; cv=none; b=lFE3YkjPT+F2YSkorAFf44k1jK1wbL/XRNk/F+ZvxeUZCQ06zGFEGJhgcAZmkMIQfESsNyVibwYG60OolG4Mf+GsgXRu8eLxkz4ydSpCzVNtHFw0mMySHfokUMF9WW4s4T3018g2erFf25GGK229i2NxLHIboqIvqX+Mbp1o4Sc=
+	t=1779188233; cv=none; b=JfebmIWt4AmBahSdKGawas+tv382w3lvmVN4Aat4r6Qv/ZROm3hCGra5tuuhWbrXS/QN3UuLttoObeaphqGKtMPZLtv8zruJfR0taX1gh1TioDnQm5vsUAbDY6js08FttlGQOEQGh1o9mgYK5J1v5Ei/eqKmFXxU3meIHIdRAnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188203; c=relaxed/simple;
-	bh=uJ1lQ/aLlA2/QceM+5YA0tTGCFYKCeXAoS7GvKNyLwg=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TF0PP1TLwt/RVz7Mr2C3l/UbYYg+RIhlnc/X7GFrZkdqd4JxYW6ozkgtNdN+iR6lzULJVaQf3Eh7mJVSaQtn1pftvdiAgYaubLVdiEYilan/QsSIaayw2FKjw9BRfmzlz0VXWjLL9LayJvVo5yhGnheLQfgLzygGBIBXY/R/Ru4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArQGp0V7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779188233; c=relaxed/simple;
+	bh=7MZ1guN0UkiPXWcHW5Uy5DvV9Cpvsw3IXkzXQiNKLvE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=A9RvQCfREeN42cpV0ZlHqdCft5ppRMz0x8rT0drDsHXGWVgBWPFVMbMktERT8LmnvqcOSwkYLWpEY7Nk5WkNv2kwD/dQRIvCOWuPigClRQYs0mhvw3+3dU636i/dugYZz78/9CmQu4RDLFubHgyyUYkoKfKS4LSjDXcUMVqY8w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cj3qUN64; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArQGp0V7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059F6C2BCB3;
-	Tue, 19 May 2026 10:56:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cj3qUN64"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2799C2BCB3;
+	Tue, 19 May 2026 10:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779188203;
-	bh=uJ1lQ/aLlA2/QceM+5YA0tTGCFYKCeXAoS7GvKNyLwg=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date:From;
-	b=ArQGp0V747RrX60ILL2Q/Mti/IzUg66bYhWsBNHDk7KqjjvdMrZ/d4lIyig1vE6FU
-	 6wkOWBfzUljKYusEUfmlBuuiBXyz8QB9o80IESwmlP1R1ia1AaHLtgVlaSbPXMYRjr
-	 kQWfUiBuE/KIoF7c3WvRRrr2bxM/LmHqU/n1/IEOwIe7V13/h1eOyUnY14P4zZjSR0
-	 5BdV+S011xsviNno53gb7C2gyiJtdADiVRzWxlT0f6X1210fvK0MJzcA5OL/WGGAoS
-	 o9IpOncAehE1qhLwArFPTlYZwmDlRTW/eJesTw3xDN47MocyisumqLcL0AEa+taKKO
-	 IeNElN/Rxe1IQ==
+	s=k20201202; t=1779188233;
+	bh=7MZ1guN0UkiPXWcHW5Uy5DvV9Cpvsw3IXkzXQiNKLvE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=Cj3qUN64jcAE+F4mIMZ/y90nMmMO1ht2qxJ9LASOZhpbO4VOLQ5suldyzRz3kzQZ3
+	 qR09yhFPUKTNv9BvmGMkHqcChKZhG5a0BGn9+Qe46co8yRGIkjZmp9S3n+pJbf5l9z
+	 +ayJ4STva0sKpCeQRGPIQ/76QeKpVMrC2R241s6SSa3G35btapViHHsw/DVDCWcZdB
+	 Qbe5uLbaJCxvTTTuzeeV9w6UwK1u2OAireErNUblNODJAjOFUC1r03fTARWJOk8M5x
+	 Q7S4y/thDY060KxsL7wCvEPAL24xnCyFrKzOOaLkwCVw6xvFxK6wyfWyLi66QSxTs5
+	 8awBZeOMn0gvg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] i2c: imx-lpi2c: reset controller in probe stage
+Subject: Re: [PATCH 24/37] drm/atomic: move drm_atomic_helper_disable_all()
+ and drm_atomic_helper_shutdown() from drm_atomic_helper to drm_atomic
 Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260519104214.2794176-1-carlos.song@oss.nxp.com>
-References: <20260519104214.2794176-1-carlos.song@oss.nxp.com>
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-24-45e2bdb3dfb4@bootlin.com>
+References: <20260519-drm-bridge-hotplug-v1-24-45e2bdb3dfb4@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 10:56:42 +0000
-Message-Id: <20260519105643.059F6C2BCB3@smtp.kernel.org>
+Date: Tue, 19 May 2026 10:57:12 +0000
+Message-Id: <20260519105712.D2799C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Moving devm_request_irq() after PM runtime initialization causes a=
- PM runtime usage counter and clock leak if the IRQ request fails.
+- [Low] Outdated function references in kernel-doc blocks after rename.
+- [Low] Use of return with an expression in a void function.
 --
 
-commit 3005ae3d3fdbe3e9115c8d88256efdcb9d2fcde9
-Author: Carlos Song <carlos.song@nxp.com>
+commit 8c33c13c9d809fde9c0dc4ffcc59c09b05d47d10
+Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-i2c: imx-lpi2c: reset controller in probe stage
+drm/atomic: move drm_atomic_helper_disable_all() and drm_atomic_helper_shut=
+down() from drm_atomic_helper to drm_atomic
 
-This commit resets the I2C controller in the probe stage to avoid an
-unexpected LPI2C controller state left from previous stages that could hang
-system boot.
+This commit moves drm_atomic_helper_shutdown() and
+drm_atomic_helper_disable_all() to the drm_atomic module, renaming them to
+drop the "_helper" infix. The move resolves a module dependency loop to
+support upcoming DRM bridge hotplug features, replacing the original
+functions with deprecated wrappers.
 
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
-imx-lpi2c.c
-> index a01c236964819..da40b365a07f0 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
+> index 170de30c28ae4..36fc57e147cb5 100644
+> --- a/drivers/gpu/drm/drm_atomic.c
+> +++ b/drivers/gpu/drm/drm_atomic.c
+> @@ -1987,6 +1987,121 @@ int __drm_atomic_helper_set_config(struct drm_mod=
+e_set *set,
 [ ... ]
-> @@ -1535,10 +1530,23 @@ static int lpi2c_imx_probe(struct platform_device=
- *pdev)
->  	pm_runtime_set_active(&pdev->dev);
->  	pm_runtime_enable(&pdev->dev);
-> =20
-> +	/*
-> +	 * Reset all internal controller logic and registers to avoid effects o=
-f previous status
-> +	 * The reset takes effect immediately and there is no minimum delay req=
-uired before
-> +	 * clearing the software reset.
-> +	 */
-> +	writel(MCR_RST, lpi2c_imx->base + LPI2C_MCR);
-> +	writel(0, lpi2c_imx->base + LPI2C_MCR);
-> +
->  	temp =3D readl(lpi2c_imx->base + LPI2C_PARAM);
->  	lpi2c_imx->txfifosize =3D 1 << (temp & 0x0f);
->  	lpi2c_imx->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
-> =20
-> +	ret =3D devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQ=
-F_NO_SUSPEND,
-> +			       pdev->name, lpi2c_imx);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_im=
-x->irq);
+> + * This is used for example in suspend/resume to disable all currently a=
+ctive
+> + * functions when suspending. If you just want to shut down everything a=
+t e.g.
+> + * driver unload, look at drm_atomic_helper_shutdown().
 
-Does this code leak the PM runtime usage counter and hardware clocks if the
-IRQ request fails?
+This isn't a bug, but since the functions were renamed, should this
+kernel-doc comment be updated to point to the new drm_atomic_shutdown()
+function instead of the deprecated drm_atomic_helper_shutdown() wrapper?
 
-Because this block was moved after pm_runtime_enable() and
-pm_runtime_set_active(), a direct return bypasses the rpm_disable cleanup
-path.
+[ ... ]
+> + * See also:
+> + * drm_atomic_helper_suspend(), drm_atomic_helper_resume() and
+> + * drm_atomic_helper_shutdown().
+> + */
+> +int drm_atomic_disable_all(struct drm_device *dev,
 
-Should this instead jump to rpm_disable rather than returning directly, so
-that pm_runtime_put_sync() and pm_runtime_disable() can run and disable the
-clocks?
+Similar to the above, should this refer to drm_atomic_shutdown()?
+
+[ ... ]
+> +/**
+> + * drm_atomic_shutdown - shutdown all CRTC
+> + * @dev: DRM device
+> + *
+> + * This shuts down all CRTC, which is useful for driver unloading. Shutd=
+own on
+> + * suspend should instead be handled with drm_atomic_helper_suspend(), s=
+ince
+> + * that also takes a snapshot of the modeset state to be restored on res=
+ume.
+> + *
+> + * This is just a convenience wrapper around drm_atomic_helper_disable_a=
+ll(),
+> + * and it is the atomic version of drm_helper_force_disable_all().
+> + */
+> +void drm_atomic_shutdown(struct drm_device *dev)
+
+Should this documentation state that it is a wrapper around the new
+drm_atomic_disable_all() rather than the deprecated
+drm_atomic_helper_disable_all()?
+
+> diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_at=
+omic_helper.c
+> index 51f39edc31edc..afedfab9b5682 100644
+> --- a/drivers/gpu/drm/drm_atomic_helper.c
+> +++ b/drivers/gpu/drm/drm_atomic_helper.c
+[ ... ]
+> @@ -3673,21 +3623,7 @@ EXPORT_SYMBOL(drm_atomic_helper_reset_crtc);
+>   */
+>  void drm_atomic_helper_shutdown(struct drm_device *dev)
+>  {
+> -	struct drm_modeset_acquire_ctx ctx;
+> -	int ret;
+> -
+> -	if (dev =3D=3D NULL)
+> -		return;
+> -
+> -	DRM_MODESET_LOCK_ALL_BEGIN(dev, ctx, 0, ret);
+> -
+> -	ret =3D drm_atomic_helper_disable_all(dev, &ctx);
+> -	if (ret)
+> -		drm_err(dev,
+> -			"Disabling all crtc's during unload failed with %i\n",
+> -			ret);
+> -
+> -	DRM_MODESET_LOCK_ALL_END(dev, ctx, ret);
+> +	return drm_atomic_shutdown(dev);
+>  }
+
+Since both drm_atomic_helper_shutdown() and drm_atomic_shutdown() are decla=
+red
+as returning void, does returning an expression here violate ISO C standard=
+s?
+It might be better to just call drm_atomic_shutdown(dev) without the return
+keyword to avoid compiler warnings from stricter configurations like sparse=
+ or
+Clang.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519104214.2794=
-176-1-carlos.song@oss.nxp.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-drm-bridge=
+-hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D24
