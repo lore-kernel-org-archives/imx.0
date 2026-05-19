@@ -1,133 +1,173 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010042.outbound.protection.outlook.com [52.101.84.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E85400E1B
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 15:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779203966; cv=none; b=fbevx+Un3kX/2BS7CPPipMI8fNgWKgNsXggeVtoBKK7fl/onpCHN+xBXtRR4diL/XXqRbC//RwtEUvIEzhIni2psEh5tBLEt3T8DFedN5TxqS89jrLrEoP0XgnQlt+qrc+EWiUroT/+Q2qXkcCYwK2AXKj6T+GhpxbJP72j0XTU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779203966; c=relaxed/simple;
-	bh=hCrBEIZfioLWNiUwANxK4I+0OvSRmFvvo7djd05KLOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZB355gl6ye740d/t9MRJ9h30H/jfi5nSXtIHsHPieyd8c2tonjdfIWfSibfdFyMB4YYKEfixy2QLyxp4a2UBSd+JnBiutc2RQdQfflOC/DoAwze80wzBfdStoRyQvK8IH5EJwUhbf5jMmTdyhlHBWDcY7X9Rn9dZ7xo6uo2Y3X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=aKUtM7zx; arc=none smtp.client-ip=121.127.44.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kwiboo.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43473EA94C
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 15:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779204142; cv=fail; b=tNT4naOI+yVqzayQhiggSZ96tDh10QVMpTZaiBo272hNF5OwpTMSXQQilXQvFlbu0+pGMhFlkenIGJrUO/Pu0KoyzJzHL1pZeNMvtsltPE8bSyvjgaDGURlNQkNy7gLTr9heVMDboxg7zWohNRO8JVuBgYzZtiZ8uJC/nYwerjY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779204142; c=relaxed/simple;
+	bh=O2CD5QjwjQ0DDdj+Ueg9zJD3/viOWbVgm85EnXxFyOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MeSML1cn79NuA+Z6lSn/3ruOvwTIe/px1E0QhV8XH3MXt9mK66zC2zkta4ZMv1KYCmBvJFcEWOFKcI8mtTt0wUtPrjzud0h89HX9+ESBySg9MfICb6DqzIjkbSel/VYUp3P+otWnvvafqvX5RF9Mt0XkqnR4ercZ9uMqPSP4QXQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Xu9JdgiK; arc=fail smtp.client-ip=52.101.84.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="aKUtM7zx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-e1b5cab7be; t=1779203953;
- bh=UysSrWx2IaBnmq7p+RKc3cNjOUxboHqJt85KySMdL0U=;
- b=aKUtM7zxR9CBNmTevvNgOFk89rSqEMwWO1aRXK/MrZpaQYBecfwJDDsVR1aENQonRmpcahq9l
- Mqzh2YwUndiwMhMUyjI4N2g+BsdGKzuO6uJjt4MR1Wi9qqFvrhbegnGJljyZZ05SPswAma7rS2H
- 5Y5s8VaJY/K1nA4OjOjqTJgnaJtJ7ID8eaMG7ltyYZn/T+lIAXFD4cirywF0zB5NkMYTxjXmRp4
- MMoEUFR0tlKgvObfD0SaLOVe4hSqFlTldZSKpPy/bGqVX23BEXLTvHTPrGshTxPaJMde4ZJVkkC
- Ds1LJiZrxy/PXFXExyYvEsXWy+wh/sUx9s7sPvfdPHbw==
-X-Forward-Email-ID: 6a0c7f56b6cbacb3a8d0c696
-X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
- 121.127.44.66
-X-Forward-Email-Version: 2.8.12
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <e90eddfc-2f57-418a-ae05-43a411d72b99@kwiboo.se>
-Date: Tue, 19 May 2026 17:18:40 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Xu9JdgiK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LN3LQTvu14FCbhlYoGeJZEkR/v84UJpaZ59wuOtN9TmiI8FVeaAm6x0BsOI83Vvi8dMrLkhCZ8cJufVsQOR33Riw6mU5fkGgyv9eHYkc96Cgwc3gLzbL6bVA3DD1UsrL2hfbXL1reL1pVoTkF1dtfuKb4eFjwLeIyEIQgU38G4S1x5YanKRKRVl37++vkQMughIj6qd2R/vXLmG2NgtHoSs/Qnq3xYsLxfUL/RyDd2RMrb7uXzdbIDa/9FuvxiEmdzd/Fvkedj39UUGmF2o0AWSRvWq8VXFotkTHnuHsInvwkTAdH4WCnNWNSXyMY6yHLTqj7KkMhpwcW93z/3F8kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N4XCGrrXjQqg8YuImuqKz2THBt+Kl+10S20qTfl+JZY=;
+ b=AauGLQZhVuU9EXgk+OMMOK+QTY//Wz3Fjj4NC+0xSx8MrmODiQi7LoXobJ3KIOE/LgwEksyemrQU3mq4wgHuPyDtL4lT6sY+gLGmaZ1MhyZ+qA/pScxVCGaTlJfum0/v9VPi+XAwtAvJziVXh35E9FXG5J5BEjMxSxqtFQWY6GX639XGpzufveTkuZ902b0UQQlVKdKeufP4JBp2KzVDQMmnRKfY2zVdgBJdkoZo+qKg4DyW67gyvbdrppM7exFVL9ZWqEVUvo/c2O9LjB/0CPOj1ksH+seRpHporSMwJSA2XK8PrDzFSH5GvSB2NSI2gWs4Fm+1vPSM6gmHi5FncQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N4XCGrrXjQqg8YuImuqKz2THBt+Kl+10S20qTfl+JZY=;
+ b=Xu9JdgiKPC7a1uBS2UcaYQTS/nUcDc+AZwVBM+cUXvhOE9mH0rxkd3n5LtcpheBB3QViXjhtP1s9mFWbjuG+4jrAc1FVYJWPWD3/dWQW9HWus8rPOF50aTM1nY8uQ5WPtgy9hGcXDcG0hnnd5a3i1dvJxx6G8jGlx4p90HOJRM0kET8lPsonKQvSdQ1LopcWiOpkMOwu9Z9LBRxKiXUdwn24sv0bxUKuvXCyoRnmpITR0NoBCn/evj44kk3A8llaqBEzMDbdktCYcehHko07zhoclapChjnECkmQYUn9IobjzbFQbk2sZDtzOdive3O/bdDAuEDN73e+8DDeWwYaVg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM9PR04MB7618.eurprd04.prod.outlook.com (2603:10a6:20b:2dc::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
+ 2026 15:22:16 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 15:22:16 +0000
+From: Frank.Li@oss.nxp.com
+To: Lee Jones <lee@kernel.org>,
+	Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Maud Spierings <maudspierings@gocontroll.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: (subset) [PATCH v8 0/4] backlight: add new max25014 backlight driver
+Date: Tue, 19 May 2026 11:22:08 -0400
+Message-ID: <177920411775.2493788.16026675003480715688.b4-ty@b4>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260407-max25014-v8-0-14eac7ed673a@gocontroll.com>
+References: <20260407-max25014-v8-0-14eac7ed673a@gocontroll.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH0P220CA0022.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/23] drm: bridge: dw_hdmi: Hold bridge ref until
- connector cleanup
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Heiko Stuebner <heiko@sntech.de>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>, Liu Ying <victor.liu@nxp.com>,
- Sandy Huang <hjc@rock-chips.com>, Andy Yan <andy.yan@rock-chips.com>,
- Chen-Yu Tsai <wens@kernel.org>, Christian Hewitt
- <christianshewitt@gmail.com>, Diederik de Haas <diederik@cknow-tech.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260518180206.2480119-1-jonas@kwiboo.se>
- <20260518180206.2480119-5-jonas@kwiboo.se>
- <177919241969.545972.18169905222569864569.b4-review@b4>
-Content-Language: en-US
-From: Jonas Karlman <jonas@kwiboo.se>
-In-Reply-To: <177919241969.545972.18169905222569864569.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB7618:EE_
+X-MS-Office365-Filtering-Correlation-Id: b97b2140-4ba3-4dc0-5a93-08deb5ba68a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|22082099003|18002099003|56012099003|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	ycoqj1wxUpEjZt9JljCoRRcsPsjp+I1MV25wOdlQ14AUWBJJmZJFMKCSba2b8++kYbpYmEy8Ilpdfy6fPPtE66HuPnYDHT08PUlB92jhbIJQQ48+fPSNs71/BU3mGXzh/6wHw4d7hl2tCon4YqXIlVTiyooZvX80+lBjPqs79tyHuE9nl5j5c71yUI+1J0gasSAOif5hLJaBIEpWIEOjK9Xu65U/KnlQ3mTsrzKJbMzuDOl6F0wRSNAn9yn19p9pEp9HHnkASlHLKcqQxrUyU5GTKgjfIcBPpK7jB6vdmW34IuWIntqw8sbLk1VX9WF46GqMH5qSrJ+DqeYR2sjAJAGMr94nJ4ySCSJsgWvUaJ9++9E98tF7XKda8aWHvq/kmu8kywNtgQo0De7EmHwNd3wkZZA+LM8FgAPc09mH1T208qUmq05DuY2XnFQP1IL+h5UOVvv9Xw1j1+8Q3r8krSvJ2H0FbHnfDF5F9ISbF1nh5TeM85ih1Je1ZDwpcx6APy4Ms6i1vmB7AMTYhHTQuIuWJi6edsmno5WkKcXXs7Cw5PxsgwkI3fENbGByfRWtaFoZNrlgqTKoIZ2JQ+GOtpCuFOEic9eMNIe+yPuxQWqMv0JAWnevt/tQDqwGuddvrcGGxJN0Qe6ArlIp0XJGhJD/eYegvKxhMRUbY1OA3UGpnIVOl25u3cOUxFkPDW6n1N0dmyKWhTx0fhtMl0X2Y1kc4PigrULJUW4a+UHU4Hg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(22082099003)(18002099003)(56012099003)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eUZVUzZ4OVlPQkRLNG1KQ2FpWTM1ZHdWblRva1ovK2tjREtwWFV4b3NVMk9S?=
+ =?utf-8?B?S09GQk9jZnRTN25rczg0RnkzSFBJYlVacEw5NTMvbElXWjN6Tmp2bnh6cS9v?=
+ =?utf-8?B?ZE52VjlKQ1BRb3dSQ256bWJ2TmpJSWVwYURxY2RoYStad3VwZzRRUThUWisy?=
+ =?utf-8?B?RTJxU2lsOXRWSW5FZGxmWi9aYW9BUC9rZkVTZkZDb0duYjRLcDlCRVhFL1V3?=
+ =?utf-8?B?ZzhjL3VJTGFIb2dqUlF1LzdHbzYxNFQrb0RqVC9Ucm95RVBjUTJ6YXh6UjNn?=
+ =?utf-8?B?a0hkQXUrWVgzbGJtMkxkcGQxZzVGTXpnR1JwTVVCRGx6VVFiMWZoQThhTkc1?=
+ =?utf-8?B?TmZaUzhnamt4NVRER2xQMWo0b0NNQ0lsdTNzeXcxa2NWQWxLWjRxU25PZXlQ?=
+ =?utf-8?B?c3VJTS92U0ljYXVYaHQycVprampWNTBEM2gzOFhHMlBSVG9EWDlSd2tyQTNJ?=
+ =?utf-8?B?b3pnV2cyT09jdWkxU0xHV2JnWlNkdFdSYkNOZHkrcW90eE9tYjQvV2liSU9U?=
+ =?utf-8?B?Y215VGtFTHg1OWJsZFhOMVNYckdkUGVlL2VQNzlLU1paZ3dVSFRCSDBlMzdw?=
+ =?utf-8?B?bjRxWDNuaHJrRnhnaVZlNTlHYTRJYUkvbXpWNTVoYW9oRDc5M3RNZ1JEM3Zu?=
+ =?utf-8?B?Z042YXB5UHhzcmpPR2tUV0NoZTJhM1AxQzMvL1dtZUJHdGlTbCt2dmFEdlR1?=
+ =?utf-8?B?amNCaHJWUXlBVDEwTEhnZnQrTlVtY2UyOStqbFRXc1VETW5sMU5DdHBQb1Uz?=
+ =?utf-8?B?eE4zZU5TendGaGZiUUw3VTVwaGRoSEJsSUZSczNaL1RFMXd0L3BaS2JMc0Fa?=
+ =?utf-8?B?RSttSTFBemJNbkFDMkt5eURUaGxhRDl6OThITUlmeW55Um9HbWQzSFk5eUsy?=
+ =?utf-8?B?RFkzTE1JbkZBaFp1MDNDUzhDSFRjTlJkWEppSHllanZ2dklHeHFMQ3k0R3dB?=
+ =?utf-8?B?aUlWbmRTWEFrckxZQjllUnpqQWlmdkFjNkxBRUY2bjhJMVVIUUlTeFZ0R0VG?=
+ =?utf-8?B?bnNHbnZRL0pwM2wwOTY2aGhhTFhKYkNKSXB5UVB5M090a3BsOU9xdUVPVCty?=
+ =?utf-8?B?dUNxald4L0hpaUgxekN3a0VLRFV0TlFvZVJBMUQ2anJuS3pwZDRtaExwZ1Bv?=
+ =?utf-8?B?STRSNzNES2xyRlBMbURBS3dQdHMzbzZXZ1ljMldxUU1MdTVBK1R6bFV1ME15?=
+ =?utf-8?B?UWpBaEkwMjJubkxhZHpwRzY3K1dVWHpLYnlJOXJ5NFRzSzJzWmZuaUJWcVVW?=
+ =?utf-8?B?Z1pzbVBibFNZK1lGWWEvMVlPSHVPcCt4c29jMGpUZURTMCtnM1VLTHF0bHZJ?=
+ =?utf-8?B?Tyt5WDJpVlJlN0VDY0dvTHQzd3ZVVGE1a290VHVzRkY4Qm04R1E5U3U4QVQz?=
+ =?utf-8?B?K3dnZ0U3N2lIbVBNMk5NNlRLclNnbXFCazZQYUtyaUtrb29qT3hxaW9CZDVo?=
+ =?utf-8?B?TGRhOWMwZkNydklxMjg3SVV0SmJZWFRKdk9MckVsU1FCcUtQVFNzcEpwVndV?=
+ =?utf-8?B?NUZjUkJCWG90VWRBZGFtWEFEWlF0bkxJanBFcXlqdFViWkY3alFYYkR0UWRN?=
+ =?utf-8?B?Q0cvNEozS3V4QUJnZkl0Ynh2SDJkWkpZVnR4aXhaM2xGakE3em15RjJkWFJ0?=
+ =?utf-8?B?V0tuWG1wbkVNN2Y5Zi9UU1BHQ1lOWS9nV3hTb0hOSk5TeFZHT2hKUmcwcU1B?=
+ =?utf-8?B?WXE5VTNNWXhmTERiK3NWOEdtYk9wSTFIVkFJRmhtenp1S0h1MEFiQXY5UFEv?=
+ =?utf-8?B?UlRoZEVjbW5mdnd0b1R6Zm15cGl6U2lwaVpES2o5cXRMakZxS0kxdktJanEx?=
+ =?utf-8?B?OXJOdUg3dHd0K0JlOEVSQi9tVXBVdmp2M054QStLaCtMMVRXdDAzaWxLamtO?=
+ =?utf-8?B?bEp3L1RVT0VsSWNPYWEwOUdQaTIrd1VkNy9EbkptdDkzbFRTdGhmUHBkS3Jj?=
+ =?utf-8?B?THVKa1EzV3FCMUZKc2gxdURrc0VmK0U1UnpQcHJkYXlQY1h5c05qT2FGUWcx?=
+ =?utf-8?B?YXpjSFNaa2RVVVlzK1FTOWZhUXpBM2RBbUczUGRnUXpFNnRPL1ViUXIzQ25K?=
+ =?utf-8?B?NlRrWU5sZnBMVXZMaUY5UDJoeFd3MGZxUlZJKzd4SjA1d1dMdlBCeU5CQkZB?=
+ =?utf-8?B?UU9xOEdFQzhNSjN5U2F3NzBOUFBHbENLWXFzdTdhSytXWUFCdi9mNUtVSWFY?=
+ =?utf-8?B?bjZwLy9FbGN3bStJQ1loWkFMMWRUSUEzUHlmZFpjMDNHYjd6WEwzYU9qVzN4?=
+ =?utf-8?B?Y3ZrYndMK21BK1cyMUxpS013eVJocjN5Q0RqR2g3Mlpyc3oyc0N1SWoxeE9H?=
+ =?utf-8?B?Ni9LVmNUWVRuV2hTVWNLd1ErVE9MQ0JzckNSc3BoVENhMk04UmVYem9Bci9S?=
+ =?utf-8?Q?3hoUYrYxccMJw32zYCpgzwP5Ho/PUps6ag46l?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b97b2140-4ba3-4dc0-5a93-08deb5ba68a4
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 15:22:15.9154
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zgj5tSa9MWblnYRe4LsVF7dP+NI6Cq5lWF3dAxFWriEkNT9UzQE/yx3uf/BOo3RohKiL0oauY3a5x7DfRdkPTD2003IIcCy9uO50Npe6Qt7JZO4+1CwJao9ZC/A5GyK5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7618
 
-Hello Luca,
+From: Frank Li <Frank.Li@nxp.com>
 
-On 5/19/2026 2:06 PM, Luca Ceresoli wrote:
-> On Mon, 18 May 2026 18:01:40 +0000, Jonas Karlman <jonas@kwiboo.se> wrote:
+
+On Tue, 07 Apr 2026 16:41:41 +0200, Maud Spierings wrote:
+> The Maxim MAX25014 is an automotive grade backlight driver IC. Its
+> datasheet can be found at [1].
 > 
-> Hello Jonas,
+> With its integrated boost controller, it can power 4 channels (led
+> strings) and has a number of different modes using pwm and or i2c.
+> Currently implemented is only i2c control.
 > 
->>
->> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> index b7bfc0e9a6b2..9d795c550f8a 100644
->> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
->> @@ -2600,10 +2609,14 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
->>  
->>  	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
->>  
->> -	drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
->> -				    &dw_hdmi_connector_funcs,
->> -				    DRM_MODE_CONNECTOR_HDMIA,
->> -				    hdmi->ddc);
->> +	ret = drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
->> +					  &dw_hdmi_connector_funcs,
->> +					  DRM_MODE_CONNECTOR_HDMIA,
->> +					  hdmi->ddc);
->> +	if (ret)
->> +		return ret;
->> +
->> +	drm_bridge_get(&hdmi->bridge);
-> 
-> I'm not fully following the code paths, but both the report and the fix
-> make sense to me. Only I'd move the drm_bridge_get() before
-> drm_connector_init_with_ddc(), to avoid a short window where no reference
-> is held and the bridge might be destroyed before drm_bridge_get() is
-> called. I'm not sure this can happen, but it's better to write the code in
-> a way that clearly makes it impossible.
+> [...]
 
-dw_hdmi_connector_create() is only called from dw_hdmi_bridge_attach()
-so the bridge should already have a ref for the lifetime of this call.
+Applied, thanks!
 
-I explicitly chose the placement after drm_connector_init_with_ddc()
-to ensure ref count is correctly balanced without having to add a
-drm_bridge_put() call in any error path. I.e. connector destroy() is
-only called when drm_connector_init_with_ddc() succeeds.
+[3/4] arm64: dts: freescale: moduline-display-av101hdt-a10: add backlight
+      commit: 10fd5ba8fae66d60c65ec4bdb51fbbe5e34d9d83
+[4/4] arm64: dts: freescale: moduline-display-av123z7m-n17: add backlight
+      commit: 159746425710c94befb317132816f5eece4ea25d
 
-This code/call is also planned to be removed in a future series, so I do
-not think moving drm_bridge_get() is necessary unless you think we need
-to protect against possible bad behavior from DRM core?
-
-Regards,
-Jonas
-
-> 
-> Otherwise looks good.
-> 
-> Luca
-> 
-
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>
