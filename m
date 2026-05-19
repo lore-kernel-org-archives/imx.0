@@ -1,59 +1,59 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010069.outbound.protection.outlook.com [52.101.84.69])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013007.outbound.protection.outlook.com [52.101.83.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8EF2BEFFD;
-	Tue, 19 May 2026 03:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEB21A317D;
+	Tue, 19 May 2026 03:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779161020; cv=fail; b=ra6h1m4kS+SfZtf5iihgfrtcK4NP+VcNxmCqBPwCP7eTZstgNZpZ9aLkVWAWZFMsbCVCMo1k3R/16BKA33pfW0HtKOiYoDAwlEaQlI/YrIQL566yvGMlL00AW+BYKYkx4KIeENMo3ujF1K0wZmUlKw32aO/ldamp/5vmx9ss4hA=
+	t=1779161390; cv=fail; b=gCMxay7ggF76K9Jgw/HBGgIGZs6l1vLGMRg8xE98NIO0ICMC3HwIoFM3am0UP1v176tNWSI3Ok+Wml4GWHjUXC6+0DzRS4khfMzCtUKz8J8c4+BcjBMKQv1DMZ9K4C9FZQqjEKr6WoERCjPORjBh4f43jvZEmNOnR/lGsq4jpdw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779161020; c=relaxed/simple;
-	bh=RKWZ8/31uSEZTjq+O1lpIqHECI4Yn+MS7r2WX6pX1zs=;
+	s=arc-20240116; t=1779161390; c=relaxed/simple;
+	bh=z4lgW7t4viYFGoOGMvZ0bhmlUysvpVWT9uPm578//f0=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KCB5GdwnWqFu6F8a3ZTzvqj53XbqES7TwIfJZex3v8eVyYVsIfJpLZB5twxvL5CLTx3Tr2ArkzfEDMPJH6zUAiceg92DeS5xUIPHZ2VVrQ8XZwzdUcq+6of1TcJea+qL/WQ+ovb9fcmJFiJizully7sIOJ7pP6ZUhaMq8JK2DWs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lpG0VXwC; arc=fail smtp.client-ip=52.101.84.69
+	 Content-Type:MIME-Version; b=A8Fkkp54cu7v8vdQJeZWbwub27vQ3G2R4P0pUYZbemhyAEes8BbnEeUenYwFqKg/Lk0AietWBpx5kQD0zxnsF74coln2Rby+gn7BBCeTo0MufpmbOvjVOl48wNzkjDmsHP562hVEebxfFShAC50AAA6HwLfVi4bwKXw39nZUa+0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fIFyup1G; arc=fail smtp.client-ip=52.101.83.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lpG0VXwC"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fIFyup1G"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QiyM9B+YOhQESw5H8yluC8nI/RYymO5EymaVinNtX+5bAawFRNVA6nuRxXI+qoRYiXW2qgaG+s9ah8wpgxn4qv0sHXV41CKyG0JD+JiW4kvzUaapeehNc06LWCb3wCAwrahGtwK9NY3joXHPgD+VnAWayWYxmXbKDF9dXbfsa28h2DzD8VEc/clw9xVCnpxkzw8lWUBwIULiRhuR6DLHeY0HSWLi7+LFMx1mHHCJA07BuCErKgaM2FLZ4O9RyXntVZjrBHAkQ28wHJ1JzG25ol85a8ZjsUVIjqwhzQ72iVkyZvAYMzmwCtJ3eC9TNdOwqNN9GpsNbL78oW07BgWTFw==
+ b=ZTxTL4sdeDCfDs72/hITVV9KBtU/YQKIxTEta7Cz5ya43Y/GKl60ai3FBg5snbtOmuQBUhMbwaU/3arHDbO0PegapnQVdyDwxI4YfBgAbWdgLdlg5g2JA9abwJOHdC/mtyNEitKRrKVKFluuKXNrUBbdeZflMEFnwwMr1uA7WjRB90af0kKVFa851SPYGPmyJL0Ze+YDVVSs939trDr3iyoYxCnFnN1WfEwix0vTBuDlrronUuL/cBDuuPBrxqoBEiyh6S4vRg9ke2PHkOJDyyMF3zGDg+Rv8t982XQs2pXT54o2lvoRIply8wcEbnX90pv3k4PbmD26GAU9XKrfeQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AKPxHznZYmJW+jcEGniI5eiZ2FQVoq5JtSBKVbXbiy4=;
- b=XNe/oKi77zdJP8QX7g2E09v3unQ3VngtD7OYtZAGXrSGxKsMSlj3feYIZv1N0z6K+GoeGvujei/MIeOIOumkITWJzoEc3yfCQPl5ctJCoyLhsGLSzy0XJLrWMtYygBrfqrf4DHZtppnGLiGRJcX16VIrfUcyr3ublaK3fITlIn9hBkcGyLSe+ZjCy9oBWAU+hxTLjjVuFEG7+r7haUOi4zcHkYnIf3jpFzwUsv6cgmarrC2DZ7/V19QVtfxhemwzzEvmbKtTVZm6Dca7g1+dAQ19Y85u8kQEmIqbq8lxDtLKLYj/afHzdkdKJqqTOPx8PuYtwt4mLnH9d12t7Pee7A==
+ bh=6bWxCRpUmUPasYvdXmqeEEY2nGrwsQvD1UINnVeg9kI=;
+ b=uIG67WvFT71bah7Waw+0VpUlJSVsovh8Ge7jCDP87wEuXn8gtmELXwGP551ugvVA5rsFSVcnZ0ssaNSMRcTLID6U4mS45+tw4ZCztvdKQOUqZgZ6VHDXgpr267JjVnu7qsparVOud6hJDrU+vc1rURNrdE5zv0A+vMT7iacvru+KhIF3aJpuX0dr7AT3K+9xoIyOxXR/cMBJJ/2ErH+mgcG49xBRmhdzU7WixM/5fjsSSIbbWd5k3fi+rkEMl+ghAi+BNjGi9uyu6fYI7MWKOAIdCMHCgrL4RvsETvBiUmvNC0E4/oYhdzqQmm3Ozz17ZaVDQygYFO7tmYpUNwCyXA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AKPxHznZYmJW+jcEGniI5eiZ2FQVoq5JtSBKVbXbiy4=;
- b=lpG0VXwCwQBysW4yD+ccG5KxF5fRemdAex9XEcQZSMcLXu/3q3Y8oJQ1N+uQqOhMRKgiCsJyzWpqJ5F7ytob22YR7UIpwjDcWfL6ndQsPoD+eGjnHybhlgF6hthj+sqsg01+08xXFsPjsGGkJKxTZdXRxDenoCzimBWBMUE6XZk4qvZTXUT6zT+RDeBfJ0fUnLttU5D7mOiIEG7wX8QLXrlVw7SrekLcL+MlgOkIXyMb2aFCNC2h667vopkUh17zeQwoVxItK1g/m/ednCUX62TzpZs+cIVa7enMUHKxNDN6mNQU7b/Q+RLzga/Z9cz15KFoLM36mU0X2aj/pYdNFw==
+ bh=6bWxCRpUmUPasYvdXmqeEEY2nGrwsQvD1UINnVeg9kI=;
+ b=fIFyup1GPeOkdV03xo5uyxIV5juEF42X8haEwFlbAakHA1TgksdXJO9geLKBWQeQtYU2+L8yFRjUr+NTBz/3F0KfY8G2ZJQNckJISo+ZdZfPxyfy+9D3Sww+I1cajJ9T4Ywb7spLWnkuxXL4ZDjSvsauc0SVT3SKS20KKjViRecl0tkrNOp7XjyOHrDuNRNXRhzKe8WBreoGnnqhiArunhDAcvfduwhUkdevhXp3eoTl7VZlHutQ2OVoQh/LUVFxRzexZm8dNbir1aSAbYCgMG+Qwea8Uegc87L0F+tYpTdz6wWhaAm9EEHoRVzXwBjFgAXy7IposyaZozcgGpGDQQ==
 Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
  by DBBPR04MB7804.eurprd04.prod.outlook.com (2603:10a6:10:1e0::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
- 2026 03:23:36 +0000
+ 2026 03:29:44 +0000
 Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
  ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
  ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Tue, 19 May 2026
- 03:23:36 +0000
+ 03:29:44 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
 CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
 	<Frank.Li@kernel.org>
-Subject: RE: [PATCH v2 net 5/9] net: enetc: fix race condition in VF MAC
- address configuration
-Thread-Topic: [PATCH v2 net 5/9] net: enetc: fix race condition in VF MAC
- address configuration
-Thread-Index: AQHc5nLhMUF/EWJG2Uuh4aFJ2thSmbYUq3GAgAAEk9A=
-Date: Tue, 19 May 2026 03:23:36 +0000
+Subject: RE: [PATCH v2 net 6/9] net: enetc: fix DMA write to freed memory in
+ enetc_msg_free_mbx()
+Thread-Topic: [PATCH v2 net 6/9] net: enetc: fix DMA write to freed memory in
+ enetc_msg_free_mbx()
+Thread-Index: AQHc5nLkR7ztlu/ZUES1GoacGXsUa7YUq3IAgAAGA4A=
+Date: Tue, 19 May 2026 03:29:44 +0000
 Message-ID:
- <DBBPR04MB7500404B43BE9278EF55A66E88002@DBBPR04MB7500.eurprd04.prod.outlook.com>
-References: <20260518030535.1057228-6-wei.fang@nxp.com>
- <20260519030413.8C2E1C2BCB7@smtp.kernel.org>
-In-Reply-To: <20260519030413.8C2E1C2BCB7@smtp.kernel.org>
+ <DBBPR04MB750031213CC74766AD9277FE88002@DBBPR04MB7500.eurprd04.prod.outlook.com>
+References: <20260518030535.1057228-7-wei.fang@nxp.com>
+ <20260519030414.A81F5C2BCB7@smtp.kernel.org>
+In-Reply-To: <20260519030414.A81F5C2BCB7@smtp.kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -62,46 +62,46 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|DBBPR04MB7804:EE_
-x-ms-office365-filtering-correlation-id: 8c8f2ba8-6df3-4533-6c46-08deb5560379
+x-ms-office365-filtering-correlation-id: 265e0bcf-8039-426f-e049-08deb556df21
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
  BCL:0;ARA:13230040|376014|1800799024|19092799006|366016|38070700021|11063799003|4143699003|56012099003|22082099003|18002099003;
 x-microsoft-antispam-message-info:
- RodkDsjiofqmpHqwazOV/454ZsRTB7fiIpERkD5vJz2BuXfTqo4y1bS/+Z7iHMkobThc+5aw6T5k+04C2kTMgEDrnw1T7bLWKWxzlB+duLvtbSn6O3VmD8IpFhu/78Ms+lJDi+be5+czrEgoKn2CKyS7+A1dueiWc/KlFJN9zCGewEM5H8srZj3vhw9ZuSf5Wlbqf0OEUtVwtplYT2SyKu8XaeJsJhnsiR2uHE0O7eNgkWgmTxtOmeixItEUyUBYcWdgc12TryNl/7H899ZQBaELOIx3aFwsR2uPUwoLzPTJC+JfbLZg/Hh34kmaqmVDDMFca/2NVy8C36aWl1Q5oCGjrsOTcVEL5Wd20buFB3Vi3Aq1fJaczQIjokrlcQ/JHNMpaEDgsrlS9j6zgGthgZhYonQUJ0t16svEnLLk9uv04ZXzo7FCz9F3kyBXkE5RS8JWaTfbDhDwVdaMpdEJjWMsPkAVb05rrtoUKi6nfbYH2g9GX8qaS3b7JGDVF9feaJGHzPqzAuPOGeO1px5vsHHRZ3Tz3910tktwifB48cmw7gw4J8ofoL7hnmFevnMguGfTsdyWgf7c6xKRI85cedFkY39bmvqFrEXJPBtpsvgDhZve//RV7QKyZ6uhwfoscewOx3l4CD8kmJ2ArhXr4YBM2EiDTlqq14Y/vshVF0UvBBkgI6X5grxbE1mYcfX5Wpzmiw/Dx4AD3x42njwda0ThfzurZr6aKV5G5LW+LXVOgsuZ8O6giNEudgEE6RWw
+ 1f+K+1UANxYiPN2lQstskqAp3371Fw8Ty4zwEMF9G5AcZQHNT2MLqKRXjZa+Jej3zuFaBZWsV8hBlj8v+uFx5DA5yu489/uXfGOJIdglga7glVCnSAwGrPl8lGc/ajb9Q3YclCnp9lzqhUbw6sezKtZEsUCpX/gGaJvs+Fip9XM1n50dULtROz9YQM31w9l37y+iUCDuQ8MyQF36UI4SMwLKS3mYZqNJslKSS/GNIaBpgCTBB7mXiYzcu5LtYv3R0CvUdYzQiKZ/SHy1DrUfEm3Csz0uqaPtANGrjWBZA49ww3JTi78M/4P0u8syIEj5vMJw0muK5R+ShiHoDFtGG1u6GMxMa936PBVZsUZcmpxvKjrPmfeR3slmhLZQzaNqk6452k0KjOQJYG4/tsk9bqohWhNntfgPFfKUyfK1LNgjPdeTKVd6ObzL4jsJfnaJNNTuvfJ3GEy5gFeU0P+36HFVp6dY3h5VU4kHY+dOGOn4F4ylMX2ybwXMNo/kzHMBr1awmwxMg4LhRWT2mx3az0Z0qWYglbnRIz8wYD6EatAiT8kJM571+YLuxReN76TsqKp4YHhKTJjFFV5GdyGhk+ubeeI53gtA5h+IJs8sc6Amaa0ASzHxogdbKPc7hR21AjsIlqlszrR/oyNMR0S8Nf8rZhVfGhiyfuDgac+N4HgSrvFnuSPwO6i52Ou20kt8fDENNhvRIVQNCuRNMNWPM5WHMjxgGyEze4gDCuziLLTilG4djK5mu5l+klsZC01r
 x-forefront-antispam-report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(366016)(38070700021)(11063799003)(4143699003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ZdR0NAVUgiEH6XwtRGfNmahYUDpJa5cfXtIzbWLLmH2ZcdNkXFAVoHglquWy?=
- =?us-ascii?Q?RFlq1As+0Lq0jPx+2r42Rp64RgR+U0fFa8D4Hn5hejeQt3fCN88HChk1t8kl?=
- =?us-ascii?Q?Zx/rv9NMKiwl1IYWKdD+S0K7JJZGthyFLvoMWZ/G+OAD0FeUxNF8QtHjHAKx?=
- =?us-ascii?Q?h3R1nCOoNzMrWomX4rDMKW2E/hWSjug6EEmDbTkNHe8JibZ9KOSo2g5SFuar?=
- =?us-ascii?Q?euLodq2EcwrAcIOhrSF6QnsTo+cdWmRenfP9MV3O9w7+DFWvjsscy8cJisNa?=
- =?us-ascii?Q?JWvYTRRohSwZcYafYYgfls9ATfhRxIb888gOZcPEd9mf8nJwgi3NTgmLdWQM?=
- =?us-ascii?Q?mAi37SlfJAXMeB+OufIMe+C/vyueGE4XjnYirqZNxSTFPM/kJkUnH8bU6p5Z?=
- =?us-ascii?Q?Rb8oMRF798GtdNAHH1aRJq5blyXDFjUrfFKg1gfoY5mz+2Xz8I8XugFabUnv?=
- =?us-ascii?Q?x5y06G0qIdTKy3mMz23nGfxsAXM7hSSGd53cmO6JxOUWGNc1Ig55R9U8u6AG?=
- =?us-ascii?Q?eFpnZZ+hcruSjFTEBEe7U/TnNTycw4xXA3yktup6Mj6sN/RGQM+0DEMazdOH?=
- =?us-ascii?Q?NYphhm2hur+AbNM3XskJH91Ix+CvjLUc3L/ydGvq+Uw1JN1gHoKV1lpRY7DW?=
- =?us-ascii?Q?2rKBJwHzTC/7AA/DcRSC2lBX6SAp8vaPkKKuZaiAoyQtF3jwcYcgHg9u9WBS?=
- =?us-ascii?Q?P6Jj1a6GWMow/NYcz/o/CtyiFyTsyzixryJ2OUuK7npjIlnUIJMkyOp53a8c?=
- =?us-ascii?Q?FVMt8lpDgKoc6hsB1ymh/RBAoa6vqBWywuNnbsuiwRkUN6dz+BOIaE2M/yqc?=
- =?us-ascii?Q?+4CfBWwhTYiojGnlYokzuK/OAV2VJcng/Af0+2eF7iSt4S6i9HWy97MW18Eo?=
- =?us-ascii?Q?3PhLIOSUxumLUxGaRj8D2Ha5UULyB0jsfvkV9OeAFJkkLZ6TQlErfMHCRan5?=
- =?us-ascii?Q?DR5B6pgwpAOYOYxajxGEOzLrllLJm0RHH73uITAfTmjiYu+z9IsoxA91qzSZ?=
- =?us-ascii?Q?NFfmz++U+8Ts5+fsRj5FzrsBHU0gD7tInzUYSbUmm8i62n/Kt3PsJm76Ozwj?=
- =?us-ascii?Q?3OlsKTNZ2xSEEDXmujw+JPhyvZHNfh/OP9vCtfmOzkWTbK0jq4fg7NS/w/Ug?=
- =?us-ascii?Q?NlwVJDwWCbTS0B12kYVk/jgH3MDADTNmp2m2nw6lPyxkhW38iNq+iwdtZX/r?=
- =?us-ascii?Q?OS2rPcDXe6uzrxBEnz5xQoBTXvhQSAmW7IUndHEX9mB2bihzP2NNLma/ORck?=
- =?us-ascii?Q?h78lpgHjkKN+UNFwKCWNekhwYd4fMyqiWjyHP6lNydC1MPrcQ933JZLq9XkJ?=
- =?us-ascii?Q?nO9vJQbcUkPH5chjio3+2Va2+gl62QlUZuw3Wc7vOFQA05Uo7hEOSOswSwNe?=
- =?us-ascii?Q?5f5o8C3KInw4VmeWYG3R0jaXbbyCD9nxuUcNJ3x+Bv/+WNabYxcavKDd3xXO?=
- =?us-ascii?Q?Wx7xzLdY3fk7VCXqu8Yd79tj2QsOCSBWdyFMkEj9W+mVrfHY3m4VFL8/zcNU?=
- =?us-ascii?Q?TgTW5PwQetnj+VPm6sICP7sf5itGbsE11ZxTtJrsUIgF2NVCUlILTMaRtdiv?=
- =?us-ascii?Q?Ck6RrU7Wg2ghMzcbM/edQ3Jh5+/f7kHoebwwtoYAgwSZRKJocwtEFXYOqRIH?=
- =?us-ascii?Q?HW47YqydT/CvCvKymipQHymrQWZDmPRCn/ynGf8+tbfdDy9I85WUVZlNUctp?=
- =?us-ascii?Q?2pAEPIjXs0l4peizcUTv7mnOkN6Se0bSuXf972B0Dk8MtFOV?=
+ =?us-ascii?Q?XHMyQfoOpYxX0K3h/37TmOvY0GtUaMy+5DRQpNFEryDRZCMSrFxSMtXhGuCz?=
+ =?us-ascii?Q?aZ8AW3mc2yZlJWpgOUki++kk9bSvEIKkaYUZpWCCN7YzziOLYhp3R9lvuWKA?=
+ =?us-ascii?Q?f3fZaN4bkl4tPBcY7ccTUVFbE03tnkRMw/8jyUp7BVkwCrptkWXw4g32KdFB?=
+ =?us-ascii?Q?7lFe0HVIJFq2CQ8sHGCMq8wG7ErAhwaS9Klut6FlyJsSTNNs10Wlr5R/YcX9?=
+ =?us-ascii?Q?+E/ZvcZegY8vigbxDxoyyCq5XCqUfu2Sq9qHq+Chu6okofG1qqqjN8E0LpMz?=
+ =?us-ascii?Q?ijuEKbEF8PMici6fpEcYqwoqWwFN+cBZbfWiMmf8FZfE3tO2udjAmDvak18E?=
+ =?us-ascii?Q?eRylfhcOlgs24Bn9OnwBZioZi8RL9ardNw43DmgrjznGTSMQcISBr/l/Hu/a?=
+ =?us-ascii?Q?q64UFrOYAA/7Ag3lRkTDOm7KySmvLqZeOYs2zRwnV/ObwSF86VsinM7RvHz+?=
+ =?us-ascii?Q?ZBrikWRgG0q8mozDyUPsracT9zMDwCXz/GsoHDorNpoFYjpxdy8Iyo1KGvno?=
+ =?us-ascii?Q?56P8glHBZD7uwLFwEnT3Enb4hOeup9HgJEwuILlkq2IS740mnp/4ahQzm8vs?=
+ =?us-ascii?Q?mzLAT1tqpsgx6Mfwvly56tMr46AbQaDeTP5ZKZX/nAgluIuvYEnT6gQaM2UL?=
+ =?us-ascii?Q?UMKsuxR0/IBsyvJ8x0b5NGZRnSlYlpk68msTmFtyaWNSkHu5AAvPPLxguErS?=
+ =?us-ascii?Q?tWswgOoJtCz2yYvnf++sWTGsc8FkzT9owzxXV/65SdR0ApevaRzHEdKfUJ4e?=
+ =?us-ascii?Q?SGFszrqS3N9N69WtOvGTwqAWx/tFiZg2/t67GM5BwmZURIm4XG9x7xfWXlc7?=
+ =?us-ascii?Q?YzIu66F8BmBW4EGyxeymPx6d43Lg/kF+fT1B5Jx237YKqCpwAxvHc2r3STlC?=
+ =?us-ascii?Q?kADYQsp9+J7KdUZnV9wzhDHxHpMfICWMk4Ml+TgzDwvpb9t53VtDa/X7ltpY?=
+ =?us-ascii?Q?nOpX6F8Qukg74L+jxwflonyC70zSnyIv6JPIckat3oqyKHB/390MXsgnW/Dq?=
+ =?us-ascii?Q?CZKOnzL5rmiR4nK4J63tS8Lz9Zqy3YEZhkK3XEEAsPQxtSJ6oLxorzk26qj/?=
+ =?us-ascii?Q?K3dQWz1gH6KSBVsk5mWHs7AhYqe9nxPB6nKACrxRHMjYZGHV6YRHIdNm3QfO?=
+ =?us-ascii?Q?IDxXZP1uxts8v6C6pLZ727jm2TBS1fm/qgwD5QXIITuLt4Qq5Vx81mMYiWb9?=
+ =?us-ascii?Q?nDfdJrYEx5dw/aqcMUzQwE3pbr2bLXcbalQtkC5FjcP7/yU/U3G1EI3IjbSM?=
+ =?us-ascii?Q?nNdmfQcgwPE72nzEbRDXcA8SeQV3Edxeo1hQbwsoB9iRcAiI3EiPbwHmZmoE?=
+ =?us-ascii?Q?5AGEsLIG6ifeM3DjK3Qhy+A469S2eCR/S8kkRm/TasLnso6sjBoa6uKao+D5?=
+ =?us-ascii?Q?fU6GJMWA8XcLtDuFXbjv1kpOjGxWGjpgwq1KSOPzV6Jzs84TBCxTJ+H0EjOA?=
+ =?us-ascii?Q?zgSzIVf46oLXUo09tOXhlGnK4b21TpzIhMoOlMKLtKUTcwxzlfq1tTTZ1u/r?=
+ =?us-ascii?Q?uar5g2rySr7zfZOBsyiDic6kd7OXVLRhoRwjt1TXGdQwz/vF/CXjAF0l2xd+?=
+ =?us-ascii?Q?2e1G6Nw+pHkgcNZoxs03FpqXjEaERB6HHUl2vNukaTts0O9f0sa9pmSEiWC+?=
+ =?us-ascii?Q?oIgUWqY0DmUiKCVFtFW2Wj5NME9Mg90DQGodCcet2rAOt82Vz5QCME9QrqSe?=
+ =?us-ascii?Q?Ml34OeAqdde2+7CkRONYYIJ0ZDux5HtO6heXUNLlP+ckcxTU?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -113,62 +113,89 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c8f2ba8-6df3-4533-6c46-08deb5560379
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2026 03:23:36.3146
+X-MS-Exchange-CrossTenant-Network-Message-Id: 265e0bcf-8039-426f-e049-08deb556df21
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2026 03:29:44.8028
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: W5pIifLGbYAlQ2v1oy+i0hg4tb6PCWf+A4lZjOOLUEdgu+7PU0Ci9j/8mdG+vAemTXb0Pn2+0fGpYAksFnzbxw==
+X-MS-Exchange-CrossTenant-userprincipalname: gJV/kxFE970vso7XI5x10khYyZoMefEmYNuJNBTw8nxnmCTgaLxW6HN+UzCNp99bat2uPqstRKTEqf5XEOHgrg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7804
 
-> > @@ -989,6 +996,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
-> >  			err =3D -ENOMEM;
-> >  			goto err_alloc_vf_state;
-> >  		}
-> > +
-> > +		for (int i =3D 0; i < pf->total_vfs; i++)
-> > +			mutex_init(&pf->vf_state[i].lock);
-> >  	}
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > index 40d22ebe9224f..b4d7457097e60 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > @@ -96,12 +96,12 @@ static void enetc_msg_free_mbx(struct enetc_si *si,
+> int idx)
+> >  	struct enetc_hw *hw =3D &si->hw;
+> >  	struct enetc_msg_swbd *msg;
 > >
-> >  	err =3D enetc_setup_mac_addresses(node, pf);
+> > +	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+> > +	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
 >=20
-> Should these newly initialized mutexes be cleaned up with mutex_destroy()=
- on
-> the error paths in this function?
+> Since enetc_wr() performs a posted memory-mapped I/O write over PCIe, doe=
+s
+> it
+> need a dummy read-back (such as enetc_rd()) to flush the writes?
+>=20
+> Without a read-back, could dma_free_coherent() execute and unmap the
+> memory
+> while the write is still buffered in the PCIe hierarchy? This might leave=
+ a
+> window where an incoming DMA could still write to the memory being freed.
+>=20
+> Could writing 0 to the DMA address registers here cause memory corruption=
+ at
+> physical address 0x0?
+>=20
+> Since VFs are still fully active at this point in the teardown sequence
+> (before pci_disable_sriov() is called), an active VF might send a message
+> right after these registers are zeroed, causing the PF hardware to perfor=
+m
+> a DMA write to physical address 0x0.
+>=20
+> I noticed this is fixed later in the patch series by commit 675d55bcc7801
+> (net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown).
 
-No need.
-In enetc_pf_probe(), SR-IOV is not enabled and pf->vf_state is freed after =
-the
-PF's network device is deregistered, so the mutex is not held when freeing
-pf->vf_state.
+These patches are part of a series and are all designed to address issues
+introduced by commit beb74ac878c8 ("enetc: Add vf to pf messaging
+support"). If subsequent patches have already resolved the issue you're
+reporting, please refrain from reporting it again; it's pointless and a was=
+te
+of time.
 
 >=20
-> If a subsequent initialization step like enetc_setup_mac_addresses() fail=
-s,
-> the probe function jumps to the err_setup_mac_addresses label and directl=
-y
-> frees the array:
+> > +
+> >  	msg =3D &pf->rxmsg[idx];
+> >  	dma_free_coherent(&si->pdev->dev, msg->size, msg->vaddr, msg->dma);
+> >  	memset(msg, 0, sizeof(*msg));
+> > -
+> > -	enetc_wr(hw, ENETC_PSIVMSGRCVAR0(idx), 0);
+> > -	enetc_wr(hw, ENETC_PSIVMSGRCVAR1(idx), 0);
+> >  }
 >=20
-> err_setup_mac_addresses:
-> 	kfree(pf->vf_state);
+> Regarding the teardown sequence in enetc_msg_psi_free(), is there a race
+> condition that could cause a regression like a NULL pointer dereference o=
+r
+> use-after-free?
 >=20
-> This leaves the initialized mutexes without a matching mutex_destroy() ca=
-ll.
+> If cancel_work_sync(&pf->msg_task) is called before
+> enetc_msg_disable_mr_int()
+> and free_irq(), an interrupt could fire immediately after cancel_work_syn=
+c()
+> returns. The IRQ handler (enetc_msg_psi_msix) would execute and
+> unconditionally call schedule_work(&pf->msg_task), re-queuing the work.
 >=20
-> While the memory for the locks is freed alongside the array, missing the
-> destroy call bypasses lock debugging validations when kernel mutex debugg=
-ing
-> is enabled.
+> Then enetc_msg_free_mbx() frees the DMA buffer and zeros out the msg_swbd
+> structure. When the mistakenly re-queued worker task executes
+> enetc_msg_handle_rxmsg(), it would attempt to read from the nullified
+> msg_swbd->vaddr or freed memory.
 >=20
-> Would it make sense to iterate and destroy these locks before freeing the
-> array on the error path, and also ensure they are destroyed in
-> enetc_pf_remove() during normal device teardown?
+> I noticed this is fixed later in the patch series by commit 915d29ad4ee42
+> (net: enetc: fix initialization order to prevent use of uninitialized res=
+ources).
 
-In enetc_pf_remove(), pf->vf_state is freed after SR-IOV is disabled and th=
-e
-PF's network device is deregistered. So the mutex is not held when freeing
-pf->vf_state.
-
-It's pointless or unnecessary to add muxtex_destroy() in the teardown path.
+Likewise.
 
