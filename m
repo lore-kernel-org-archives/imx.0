@@ -1,102 +1,118 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140303B19DC
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 07:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFCD3CF02E;
+	Tue, 19 May 2026 07:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779174547; cv=none; b=CTLRuEegAFz95vFnR1CQQOE7ubwNnvVUgLSXiYcktxeYRYKDIEbCd0mVg/0Nalt+SBk+Ro1vR2kPVvd/b57wbGGUMVc+BTpeNjZZ9HOXEws9V2vx2l/D6pFBLBIP5tFnhHM+jzIjpLG2+XTVtStODJl02Kqm0Cf9dtWjFrpKWRE=
+	t=1779175303; cv=none; b=GlK9ginvtePsEg3bM9Qn/Wi5/PLJ+KVrzVU/wQ7PT/sShs2ZEYnVmXNyvEbMRUbdQycLSEvEyJeM8RdTL6zhKl4Fd3KRA52ROXjuu0xm948IUKF5a9zWK7EhHMWKWUFgFeN2OCgxaH45uCGsxAU2HNKKsfZ19w0Tovte/fDUK0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779174547; c=relaxed/simple;
-	bh=ImIuCAcIqyqmBNWHBa3iu6wn7MLrAlHo7NfzYiVsx7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e3Vjvbe+Aljm6T2BnLZdsNyT0HwfsHjqN0HFNiskQWVbidBeyhMkzQDXkjRAyQkJhl6p9AAdCWbPNVzCLBlQYqASKspu9OWTwKA74sQNAFTOpVBoFi84HeVWDNUkgIlCBXuxJc0LyT3gxc5ap2/v7zlDqnEmjAm+CB6qtWz0xDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S07rSsjA; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779175303; c=relaxed/simple;
+	bh=jbEDqUKIlL++vLBxJkg3oedkFsR/L9hz2AvkQGhaX9A=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=TPe9WQ+46SLYQkeUE/4SgAIY4AUMcpzKGAyII51McPbd+GAix1XwFuJluHVPgpgyNSszj9Xg/Y0Woanifkul/qBMd+dfD9HKrY7YmyI5Om9r8TSk/URBxhM7OIUaZiOc9i91i/P2HJUTijiTeDspf+r27gX6f/Zx2XT+QG+hfR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URxwBbEz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S07rSsjA"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so46654255e9.2
-        for <imx@lists.linux.dev>; Tue, 19 May 2026 00:09:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779174544; x=1779779344; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T6a2r8a0BWvk68vyPMWjRdbCGVjXTo9hI370AIbfJYM=;
-        b=S07rSsjA6l8eTDs5qJ1J46HeNoFBdSVMHxzy/jdERWJX78Za4KEAHaQeSDcpDyAtm0
-         vn3qv+vMXEE7nsqqVCHlBUKDoyfqy8tqLUavYRS5RjU76uHv4+n5Sxj5Lomi+KBEtXM1
-         zPZDxSw5DzoJfQZl4qGmWAwrx0Hh4LHpU8GC8fzQ8sImZ2Yp/40CYqGTXdgvfenUJRzY
-         rGNTwHzLzHe8B+3GF8kZlg8E4K/le5oaD5on24rGsh/kImemV4eOQ/FGjvaiBSz3uJUo
-         KFWDgVrBrljXQqzG2QcrI31OJIEgGymHpTOtouArYbOg6cea3nBW2oIRcHxSpWBa4Qkl
-         /FzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779174544; x=1779779344;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T6a2r8a0BWvk68vyPMWjRdbCGVjXTo9hI370AIbfJYM=;
-        b=l6wYmgznkk++G5mtrt5zxzG/US4QoGuSKQsBkWNSnkf5R1qxUgIyOPdvU38g7q74/4
-         eCMdKumDn0JmMsYYlDyRn2uPOj25oV3KdXZzSbunQoiNgllayF6vGtLaOK3E+uo1XoVd
-         jkoo5zyesv+dk703RfRHA3zzlAv47PRX5JuQOUu8OgtUG8Mt/VdkizNENNgATJWMG0M+
-         +EwvbalO9jMtnuadkGdDZApDs42RCOBeIVwLeED/c58Vt4ePeJafot4SM94VJINm6yFJ
-         4wq7bQ2LVc1Hk1EY8AxZbaFsl3KpD1/dKyuK9X1V1y0jWrHU7BDD3rWwzIE66DDsJ2gv
-         KqCA==
-X-Forwarded-Encrypted: i=1; AFNElJ+VlBn+7at5deYsxjVHMqmWwhOtEyoVeh72me73CtdC/Owcs0rD3hH9YGt6yWxmmE4+zus=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3YxMVria/Zv06SHhsDlJA5uawePd9FIW6QxVJcarAIfozKpfZ
-	mLZbTjaMR1furcDVot04jGrXbHMuQcWBnd12itt4v7/00SiHyhoyqadY
-X-Gm-Gg: Acq92OEpmo2QvGk21jvsg/pBIti184B7IAVaSeHXIg+7XN1ewycNmLGXSYKwSa8M30C
-	bSFo2NzbO0TxYgmTySeTMrYNN6JXge33SXpqtR0HXR/WorLEXfc07TqF//i0tzbzyRTuKKbyrEX
-	EfCQjMUW8heb2CfxjdSdp2SeiiQZxyNjmx263wKP9+Gb1ghdxuvhMhqFjkqvwZSSGHWkU5QXhG9
-	fzi4w0zHGHavV/BU7QoqW/5elxfkj7pjERfal+iakJayOhYDoACbJ/coiT8ICrKhPDgjKBQomUE
-	FNJMmDWl8hLFLrupSxoAHXH6C5LXSDJJBlnUMYphG2ECP5shSlim+D12d/NucyOFHR/cIP98j7+
-	cBGjM40zgkwnEyd6BNnPTPc9gAYl5ESg2JK3REZfFHJSHd2aTDxFPxGNgp6i4EN/y1IWBBXJeQ1
-	higoI9m2yYgCuVe5nDmTzyB1X/mLFVmYBQBg==
-X-Received: by 2002:a05:600c:3487:b0:48e:7f22:d90 with SMTP id 5b1f17b1804b1-49017d45a80mr77427095e9.4.1779174544309;
-        Tue, 19 May 2026 00:09:04 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe83ba2sm98359475e9.35.2026.05.19.00.09.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 00:09:03 -0700 (PDT)
-Date: Tue, 19 May 2026 10:09:00 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Frank.Li@kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH next] firmware: imx: fix use after free in
- init_device_context()
-Message-ID: <agwMjD3sjAaSMIuw@stanley.mountain>
-References: <agv_jhP-2CNTfQXk@stanley.mountain>
- <20260519064057.31E09C2BCB3@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URxwBbEz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8C0C2BCB3;
+	Tue, 19 May 2026 07:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779175302;
+	bh=jbEDqUKIlL++vLBxJkg3oedkFsR/L9hz2AvkQGhaX9A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=URxwBbEzDvIvR9ivAz1H1ScmNRTZSRAtr77rPLP5rHHUkrsdD1g+mmRwpzd72zte5
+	 Ftpj+nCH+Qond3tSzl/6WoVnRrimhgvYoerSHFn0uEY7TvEOfYzZgESFyS8IB/ZrBZ
+	 8pnkv5wFidogtDwxhoUD7vmiFebscJ2+7u+pgMOj0u1Ftl5rd4sWxoPBlVoz58Mwnj
+	 qVfbqBSeF9unx0eACckJVShznIAUx5r9nWiBh3NQkKKHkc+/svSenxjLcVEW7WOtmf
+	 0oJlmjTXaGahwp7xD9BMnyBKN6kpUYRVb9/H8pJgbq7cri+crhPTDNwQ9QDPn7gp1g
+	 HPcYMHp3SEytA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6] arm64: dts: imx95: Correct PCIe outbound address
+ space configuration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Richard Zhu" <hongxing.zhu@nxp.com>
+Cc: Frank.Li@kernel.org, conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260519070223.361106-1-hongxing.zhu@nxp.com>
+References: <20260519070223.361106-1-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 19 May 2026 07:21:41 +0000
+Message-Id: <20260519072142.0D8C0C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519064057.31E09C2BCB3@smtp.kernel.org>
 
-On Tue, May 19, 2026 at 06:40:50AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
-> - [Critical] Unlocking `dev_ctx->fops_lock` after `dev_ctx` has been freed in `se_if_fops_close`.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Expanding the 32-bit PCIe outbound memory window to cover 3.84GB (=
+from 0x00000000 to 0xefffffff) intercepts and blackholes inbound 32-bit DMA=
+ transactions, breaking device DMA.
+--
 
-That's true.  There is a use after free in se_if_fops_close().  Someone
-else care to fix this?
+commit d83be49665e8cce20876ad202979b5eb76f6a536
+Author: Richard Zhu <hongxing.zhu@nxp.com>
 
-> - [Critical] Invalid `kfree()` of an error pointer initialized from `memdup_user()` causes a kernel panic.
+arm64: dts: imx95: Correct PCIe outbound address space configuration
 
-The way I remember it, I'm the person who said that __cleanup code
-needs to handle error pointers and so for as I can see it still does.
+This commit expands the PCIe outbound memory ranges from 256MB to ~3840MB
+for both pcie0 and pcie1 controllers on i.MX95. It also relocates the 1MB
+I/O region to offset 0xf0000000 within each window.
 
-> - [Critical] Direct dereference of a user-space pointer without `copy_from_user()` in `se_chk_tx_msg_hdr()`.
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index 71394871d8dd0..074f8865eb2d3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1852,8 +1852,8 @@ pcie0: pcie@4c300000 {
+>  			      <0 0x4c360000 0 0x10000>,
+>  			      <0 0x4c340000 0 0x4000>;
+>  			reg-names =3D "dbi", "config", "atu", "app";
+> -			ranges =3D <0x81000000 0x0 0x00000000 0x0 0x6ff00000 0 0x00100000>,
+> -				 <0x82000000 0x0 0x10000000 0x9 0x10000000 0 0x10000000>;
+> +			ranges =3D <0x82000000 0x0 0x00000000 0x9 0x00000000 0x0 0xf0000000>,
+> +				 <0x81000000 0x0 0x00000000 0x9 0xf0000000 0x0 0x00100000>;
 
-Heh.  Sashiko is smoking crack.
+Will mapping this 3.84GB window into the 32-bit PCI address space intercept
+inbound 32-bit DMA transactions?
 
-> - [High] Concurrent modifications to the global shared list `priv->dev_ctx_list` leading to memory corruption.
-> - [High] Concurrent access to shared `cmd_receiver_clbk_hdl` state in `se_ioctl` causes a memory leak and state corruption.
-> - [High] The `.release` file operation uses an interruptible mutex lock, permanently leaking resources if interrupted.
-> --
+Because this uses the 0x82000000 flag (32-bit memory space), it covers the
+PCI address range from 0x00000000 to 0xEFFFFFFF. A Root Port will typically
+not forward memory requests from the PCIe link to the system bus if the
+target address falls within its programmed downstream memory base and limit.
 
-regards,
-dan carpenter
+This means inbound DMA from a PCIe endpoint using an address in this 3.84GB
+range might be treated as a peer-to-peer transaction and dropped or routed
+downstream, failing to reach system memory.
 
+If the IOMMU is enabled, the PCI core will reserve this 3.84GB window in the
+IOMMU allocator to prevent overlap. Will this leave only 256MB of 32-bit IO=
+VA
+space available, potentially exhausting it and breaking drivers with 32-bit
+DMA masks?
+
+Could this outbound window either be kept small, or mapped into the 64-bit =
+PCI
+address space (using the 0x83000000 flag) at an address above 4GB to preser=
+ve
+the 32-bit PCI address space for inbound DMA?
+
+[ ... ]
+
+> @@ -1927,8 +1927,8 @@ pcie1: pcie@4c380000 {
+>  			      <0 0x4c3e0000 0 0x10000>,
+>  			      <0 0x4c3c0000 0 0x4000>;
+>  			reg-names =3D "dbi", "config", "atu", "app";
+> -			ranges =3D <0x81000000 0 0x00000000 0x8 0x8ff00000 0 0x00100000>,
+> -				 <0x82000000 0 0x10000000 0xa 0x10000000 0 0x10000000>;
+> +			ranges =3D <0x82000000 0x0 0x00000000 0xa 0x00000000 0x0 0xf0000000>,
+> +				 <0x81000000 0x0 0x00000000 0xa 0xf0000000 0x0 0x00100000>;
+
+Does the same 32-bit DMA mapping limitation apply to this pcie1 configurati=
+on
+as well?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519070223.3611=
+06-1-hongxing.zhu@nxp.com?part=3D1
