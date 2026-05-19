@@ -1,41 +1,41 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B123F1AA0
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5593A3F1AD2
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779187229; cv=none; b=KTz3oeHWjWVTx88wC6ROzgRwP4K9MEjl2WZegCxOMQgiudTmR6VujaY1IhYUqQ9BNqDv1eWWsO6vahkuoikgzUDUAUi1s4TJZ4AD1FYKG5Ydbout0EremD3vPVHmQcRhrXbM5UjsYGRrOb7rSNtoZcMRa35Zkam6SDzgJOtXKm0=
+	t=1779187235; cv=none; b=UNzIroiJAqJsY+xHxrWGy/xheYE8zPmndbkp0kgLTaVPu2uE+WPRS2fZmOpU7IgBz4P04Yxu2QS31yRgAtPVkgl5MYzVl4oPlzPIOgPmz/D1eXxwsnOPuxNtbC2FoxnkDCsbLtoZUBCXvc4zAFzB9N+3MtUol0V/Xe4jWU+D6YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779187229; c=relaxed/simple;
-	bh=lkjVZg9vpS4ljCAhd540O9Rhi31RLmW0pLx/SUaTQfM=;
+	s=arc-20240116; t=1779187235; c=relaxed/simple;
+	bh=5j43y7DFu3qB/mMWIPqHQC6IjsUzLol2f2RUaMpvjQE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eA4+/a6C7+NchDjZDjJWt7fwid0HJYIvfHSO1oC4T2Fxh1W7GnFWG7izd9wNiZhQPL2rVOECMmKyQdkq9jCC8dF83iopALx294xeYyYVHngwswVu5JBA94ochdnQ/s0T76QRfkN4Zc1h4vOlgp0pZogm6Uz9PowEU6e2rKxuCZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=T2N7PCEV; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=oR3tRYLwMP7AN6sJ0TBRKrd/HQqkb+ZdUGUrh3U0mleydjFS7NUJ9bDdVUmrW7JbIVXrRpownWP/jTdd6BFPDsDdVgcQ3UfvHJC1vuJT0TLb9t6hKZ3yl8qXsC/iF2BvRyNCePOKsZ7v9zg3dpmopMRudgddcjhOz1ur1MCS7io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MWJTDn5r; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T2N7PCEV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MWJTDn5r"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A929A1A362A;
-	Tue, 19 May 2026 10:40:26 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EDCA21A3629;
+	Tue, 19 May 2026 10:40:30 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D843606E9;
-	Tue, 19 May 2026 10:40:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 48445107E8B03;
-	Tue, 19 May 2026 12:40:19 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C19AB606E9;
+	Tue, 19 May 2026 10:40:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BEFB107E8AF0;
+	Tue, 19 May 2026 12:40:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779187224; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779187229; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=oaDZzNhhlsYfML//xOFG6wXWu65nBogs+zUTIz1RF5A=;
-	b=T2N7PCEVTYuTIU/5aFtL7cpuaWtxZfffb3xfVtA1+0l/280seqzJHH8z3a/bdTY6qX2Phx
-	oKG+/QhlBnQZfNJ5rX3rGKFbSn7vXUx8uBPdiqPsUIzfFuR65GWIaKc3hmcSTOnTBVeIRz
-	xG9jrGkyD223AxSEW2TUMqu6WQ0Geb/xr4X6CLxuEg30pGGb8heXHi704vaN+dRhDREnGy
-	x0KKbq7d/YONoI+Qan9EJ+f6kSQLIqfh55AxPUD7mqrRY8eCBQ0RkCLOZL2VoSJdRsQfXB
-	xSFH5qg0P3s3x9Js61QcoCHSCkAataRa3DRieMQtzs1d/4s1hARFu47Y9jrYXA==
+	bh=31ncBWdHqHsdjEKSp4vtUwOjKggaE/FUwi7+sB64GTA=;
+	b=MWJTDn5rArD4HU8/88qXnibhNRKlApYd92dhmLobr0VRJBSg9i4Nmt6jrwGXpugMvv5OmY
+	TpUfO/dBOabgxWRFrU/10zDCAXFxbLEZqFMDOe9SMZ+IWfixPQSIzlnfZPdcq/IlO/VGIr
+	dFET0eus81/DZyOLH05lag+6WmQfcgQnsk9qalj79k6mddr5R/6pKyUA6GZXb+BAR3V3S1
+	23cN1nXngjKQfI+YmsdZ5lezoxal0KuUEipbhLwhHbrw/NnM5TGhNO3cytPQaGQ/MYB3KT
+	wOl5qttM4Y1u2RSkUny+veut8wkeTbVCYw/TqNDZb1xMDLD4atb2o1XR1eJ69A==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 19 May 2026 12:37:49 +0200
-Subject: [PATCH 32/37] drm/bridge: display-connector: implement .is_tail
+Date: Tue, 19 May 2026 12:37:50 +0200
+Subject: [PATCH 33/37] drm/bridge: samsung-dsim: implement .is_tail
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-drm-bridge-hotplug-v1-32-45e2bdb3dfb4@bootlin.com>
+Message-Id: <20260519-drm-bridge-hotplug-v1-33-45e2bdb3dfb4@bootlin.com>
 References: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 In-Reply-To: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -68,46 +68,46 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-This bridge is always a tail bridge, i.e. it never needs a following bridge
+This bridge is never a tail bridge, i.e. it always needs a following bridge
 to complete the pipeline. Add a is_tail func to expose this.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/display-connector.c | 7 +++++++
+ drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
-index 16c0631adeb1..1c8111bdc89e 100644
---- a/drivers/gpu/drm/bridge/display-connector.c
-+++ b/drivers/gpu/drm/bridge/display-connector.c
-@@ -33,6 +33,11 @@ to_display_connector(struct drm_bridge *bridge)
- 	return container_of(bridge, struct display_connector, bridge);
- }
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index 3c70a45c5dce..55f4b0f16ade 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1716,6 +1716,11 @@ static const u32 samsung_dsim_pixel_output_fmts[] = {
+ 	MEDIA_BUS_FMT_RGB888_1X24,
+ };
  
-+static bool display_connector_is_tail(struct drm_bridge *bridge)
++static bool samsung_dsim_is_tail(struct drm_bridge *bridge)
 +{
-+	return true;
++	return false;
 +}
 +
- static int display_connector_attach(struct drm_bridge *bridge,
- 				    struct drm_encoder *encoder,
- 				    enum drm_bridge_attach_flags flags)
-@@ -176,6 +181,7 @@ static u32 *display_connector_get_input_bus_fmts(struct drm_bridge *bridge,
+ static bool samsung_dsim_pixel_output_fmt_supported(u32 fmt)
+ {
+ 	int i;
+@@ -1836,6 +1841,7 @@ static int samsung_dsim_attach(struct drm_bridge *bridge,
  }
  
- static const struct drm_bridge_funcs display_connector_bridge_funcs = {
-+	.is_tail = display_connector_is_tail,
- 	.attach = display_connector_attach,
- 	.detect = display_connector_bridge_detect,
- 	.edid_read = display_connector_edid_read,
-@@ -370,6 +376,7 @@ static int display_connector_probe(struct platform_device *pdev)
+ static const struct drm_bridge_funcs samsung_dsim_bridge_funcs = {
++	.is_tail			= samsung_dsim_is_tail,
+ 	.atomic_duplicate_state		= drm_atomic_helper_bridge_duplicate_state,
+ 	.atomic_destroy_state		= drm_atomic_helper_bridge_destroy_state,
+ 	.atomic_reset			= drm_atomic_helper_bridge_reset,
+@@ -2225,6 +2231,7 @@ int samsung_dsim_probe(struct platform_device *pdev)
  
- 	conn->bridge.of_node = pdev->dev.of_node;
+ 	pm_runtime_enable(dev);
  
-+	conn->bridge.ops = DRM_BRIDGE_OP_IS_TAIL;
- 	if (conn->bridge.ddc)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_EDID
- 				 |  DRM_BRIDGE_OP_DETECT;
++	dsi->bridge.ops = DRM_BRIDGE_OP_IS_TAIL;
+ 	dsi->bridge.of_node = dev->of_node;
+ 	dsi->bridge.type = DRM_MODE_CONNECTOR_DSI;
+ 
 
 -- 
 2.54.0
