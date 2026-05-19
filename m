@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28D335201A
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B8A2FD675
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 11:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779190328; cv=none; b=MIapII4iGexLU0b2DjMim1AtL06n7H5GyvOxSApJTttf2bZ1SnCJ3rg/Cs9Mw8wOancyXUS9Xht7yShe/TjMniiu63TtyIcuAXYt6RZONJISvQ7VZKf8ebUz4IysH9P50T9034hcmeD7J6G6mpFpibbqVHUUkUYYNf2qsxKLXQY=
+	t=1779190394; cv=none; b=UEDc+S6isM4md3JQVb9srtphxDipfP+LA97WKjOJ/7HFH3vI49MkSoFWLSnaPQ1ehHvz4W3GSABtA5KnazEx9p7T5V3iurP1vLUvJz+C5L+5ExaU7YxEG3YJAAMMZZWkcAFHO+N6ZLQlCnnQ+xqgp9b9Bc4mCgGd3mZQrFm6btQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779190328; c=relaxed/simple;
-	bh=SJsRi33E4kIHt9TZWM/7bBMF6tujPTxfK/WBb6gZdYI=;
+	s=arc-20240116; t=1779190394; c=relaxed/simple;
+	bh=r54uRwRqxpOQypX/frjfGN0PHmjLa3wNrR38hGtq0Jw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=D5UHHQaFLtFH65H1TKAfCWKoj+jd4Tu3ylm14bGUaGgnVncV90GtyKbGDpcz+F259BdXXdnp0NKjhUecXfGnLXoVIDV86v+1aExOhUGJJd/az0KVlOtQPRY/ngEVPvy4TyVJ+8MA40owL5/Cczu93h0AKZASdCn6Ws9kaeafg5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cu4MiLvP; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id; b=AtWFZ8WiWAWQqyWxK97o2y20v+jmTc7Z3XnsXSIJwYpTZ4+1711PgOt2hKEUE23QEmWr/1EmClreJniQ/C7EAmlTVCVq85tYL7HS3Rqolnpku+oWnOf8vi9t4wdwlOxwi40yYPKZFKootRDsQgXNFY7egh8paY6LLaViN1m3zUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sABc04NV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cu4MiLvP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF97C2BCB3;
-	Tue, 19 May 2026 11:32:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sABc04NV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E32BC2BCC6;
+	Tue, 19 May 2026 11:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779190328;
-	bh=SJsRi33E4kIHt9TZWM/7bBMF6tujPTxfK/WBb6gZdYI=;
+	s=k20201202; t=1779190394;
+	bh=r54uRwRqxpOQypX/frjfGN0PHmjLa3wNrR38hGtq0Jw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=cu4MiLvPihrKHQfknmo4nstZqQfY34Ncwc3XBhrcri/kbr5QSa3COPTz6O08yO30+
-	 xUUPMYQD+W0584CjrUiLZdQGnUkJIPXHBza3HbX7dTNCOYQTY6kGPh7JoHvkB/XuCf
-	 nE22xDfd4eJpACNpVckShQ/kNM1va9ZeKCG/6OvQULlI7p1K7Sstvm5h5Zk615Ia08
-	 B4KJU5Mj87XgJjJPc+8rZqQmn81Y4qJpknwNkOsXy7XDa8023Ew8A+rBcxZYoB0ACk
-	 JT5LvsyteuzP0oGKJcMkUBqJuhuVjb3F18E+dPp5fUrUUqlEEpEYhZ2ks4sUi1wIQd
-	 fDdghorKyzlzQ==
+	b=sABc04NVPCF/EvAw+UvIiIdC0aQDHvHZfT+7o91IrwfF5vic9KjgtTCd6gspZkxlr
+	 bK2FZ7gdnDhDayP7P6MW4bXSuw23iBXbhY2pfNChGrSHppP6d1DDdKIJ5jpsbPx/0g
+	 bGMgAmkEYMCwLg/Ffh3ezCW0WDQfV3d4EG9I/Ey/M3HbE/I4QD5lPX879+6bHe2Oeo
+	 EBeB09A9oZvyge1h+YR/DBU3hsYnRWvu2NFmYx7bO5X+H+9nsVHIOk58h09MokyU1a
+	 +lGJwaZsj2X0EtW0cSS1Tw6Z6j/s2VvSF6SzfFLt8kI6Gs5TPtgiyqLiYQwBgfkmz6
+	 XsxKRqor1pb9Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 27/37] drm/bridge: notify about detached bridges
+Subject: Re: [PATCH 37/37] drm/mxsfb/lcdif: enable bridge hotplug
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260519-drm-bridge-hotplug-v1-27-45e2bdb3dfb4@bootlin.com>
-References: <20260519-drm-bridge-hotplug-v1-27-45e2bdb3dfb4@bootlin.com>
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260519-drm-bridge-hotplug-v1-37-45e2bdb3dfb4@bootlin.com>
+References: <20260519-drm-bridge-hotplug-v1-37-45e2bdb3dfb4@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 11:32:07 +0000
-Message-Id: <20260519113207.CAF97C2BCB3@smtp.kernel.org>
+Date: Tue, 19 May 2026 11:33:13 +0000
+Message-Id: <20260519113314.0E32BC2BCC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,78 +45,85 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Dangling pointer: `bridge->encoder` is not cleared on detach, lead=
-ing to potential Use-After-Free.
-- [High] Premature teardown of atomic state, list linkages, and bridge reso=
-urces before pipeline deconfiguration leads to UAF and list corruption.
+- [High] Use-After-Free via global DRM event notifier due to lifetime misma=
+tch.
+- [High] The newly introduced API `drmm_bridge_connector_init()` returns NU=
+LL instead of the allocated pointer on success.
 --
 
-commit 0a150cb9f7d5a0eebc9c0a446f33672c0a09a80b
+commit cc8f05ac9a777f8eb1ce4636df74812c2db5a92c
 Author: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-drm/bridge: notify about detached bridges
+drm/mxsfb/lcdif: enable bridge hotplug
 
-In preparation to support DRM bridge hotplug, let the drm_bridge code emit
-an event when a bridge is detached, so that this event can trigger the
-actions needed to deconfigure the pipeline and unregister the connector as
-appropriate.
+This commit switches to the new drmm_bridge_connector_init() function
+to allow the drm_bridge_connector to handle bridge hotplugging.
 
-> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-> index e7e17bf4fdf9e..62413fff35fcb 100644
-> --- a/drivers/gpu/drm/drm_bridge.c
-> +++ b/drivers/gpu/drm/drm_bridge.c
+> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lc=
+dif_drv.c
+> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
 [ ... ]
-> @@ -638,6 +639,9 @@ void drm_bridge_detach(struct drm_bridge *bridge)
->  		bridge->funcs->detach(bridge);
+> @@ -94,9 +94,9 @@ static int lcdif_attach_bridge(struct lcdif_drm_private=
+ *lcdif)
+>  					     "Failed to attach bridge for endpoint%u\n",
+>  					     of_ep.id);
 > =20
->  	list_del_init(&bridge->chain_node);
-> +
-> +	drm_event_notifier_notify(DRM_BRIDGE_DETACHED, bridge);
+> -		connector =3D drm_bridge_connector_init(lcdif->drm, encoder);
+> -		if (IS_ERR(connector))
+> -			return dev_err_probe(dev, PTR_ERR(connector),
+> +		bridge_connector =3D drmm_bridge_connector_init(lcdif->drm, encoder);
 
-The commit message mentions this event is meant to trigger actions to
-deconfigure the pipeline. Since this event is emitted after tearing down the
-bridge's atomic state, list linkages, and bridge resources, could this cause
-issues when the listener attempts to safely disable the pipeline?
+Could this regression lead to a use-after-free if the physical device
+is unbound?
 
-Specifically, earlier in this function:
+The encoder passed to drmm_bridge_connector_init() is allocated earlier in
+this function using devm_kzalloc(), which ties its lifetime to the physical
+device.
 
-	if (drm_bridge_is_atomic(bridge))
-		drm_atomic_private_obj_fini(&bridge->base);
+However, drmm_bridge_connector_init() ties the new bridge connector to the =
+DRM
+device's lifetime and registers a global hotplug notifier that references t=
+his
+encoder.
 
-This destroys the bridge's modeset lock and frees its active atomic state. =
-Any
-concurrent atomic commit (like a userspace page flip) or a teardown commit
-triggered by the listener might access freed memory or destroyed locks.
+If the physical device is unbound while a userspace file descriptor is still
+open, the DRM device and its notifier remain active after devres has freed =
+the
+encoder.
 
-Additionally:
+A subsequent bridge hotplug event (such as DRM_MIPI_DSI_ATTACHED) could then
+trigger the notifier, causing it to dereference the freed encoder when lock=
+ing
+encoder->bridge_chain_mutex.
 
-	list_del_init(&bridge->chain_node);
+Would it be safer to allocate the encoder using drmm_encoder_alloc() instead
+of devm_kzalloc() so its lifetime matches the DRM device?
 
-This locklessly modifies the encoder's bridge chain, which might corrupt the
-list if a concurrent atomic commit is iterating the chain.
+> +		if (IS_ERR(bridge_connector))
+> +			return dev_err_probe(dev, PTR_ERR(bridge_connector),
 
-Finally, bridge->funcs->detach() has already executed, meaning the bridge h=
-as
-released its internal resources, potentially making subsequent atomic disab=
-le
-operations unsafe. Should the notification be emitted before the bridge sta=
-te
-and linkages are forcefully torn down?
+Does the new drmm_bridge_connector_init() API return a NULL pointer instead
+of the allocated object on success?
 
-> +
->  	bridge->dev =3D NULL;
+Looking at the core implementation of drmm_bridge_connector_init(), it appe=
+ars
+to correctly allocate and initialize the bridge connector, but incorrectly =
+ends
+with return 0 instead of returning the allocated object.
 
-Does this code also need to clear bridge->encoder?
+Since IS_ERR() evaluates to false for NULL, the check here passes, but this
+regression means any code trying to use the returned bridge_connector point=
+er
+later will encounter a NULL pointer dereference.
 
-Since bridges are refcounted, and listeners or other users might hold their
-own references via drm_bridge_get(), the bridge can outlive the encoder.
-If the encoder is destroyed (e.g., during driver unbind), could any access
-to bridge->encoder by asynchronous event listeners or delayed cleanup
-workers result in a use-after-free?
+Does the implementation in drivers/gpu/drm/display/drm_bridge_connector.c
+need to be updated to return the allocated object?
 
->  	drm_bridge_put(bridge);
->  }
+>  					     "Failed to init bridge_connector for endpoint%u\n",
+>  					     of_ep.id);
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-drm-bridge=
--hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D27
+-hotplug-v1-0-45e2bdb3dfb4@bootlin.com?part=3D37
