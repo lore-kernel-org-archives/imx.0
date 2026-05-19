@@ -1,91 +1,307 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA2A394474;
-	Tue, 19 May 2026 08:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79033EE1EA
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 08:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779180749; cv=none; b=MuoDxWFQ/jIu2Y42aG1B0EpkZfrI9nffEaxcKUDUUFC6hKekTlKEgWddamYbc1fwTNRh8QEk0Nrosp4uStfKo9ShcN9dOhz1q/h6yGUfD74cFSw4MXfBwQJ82/9AA1ir4R1r7cZfK20J9/l4iVraumHBW2+Jpt8k9a1aOfEiGvs=
+	t=1779180904; cv=none; b=RQEAPeMsuu8cR8kV4SLhnEUdPImEmszeMlwJmfd5ww4MaaYDOTPmZTWMqTo/U1DZ1RtXmhHibXFX+k5MIG9bqWAWXdr9EjNZdbKK1yxPqqlVBHUr05FsiegZmR/45zfhffz2GfKYEgr0StgHcumLWESZCSlUb0aALWSlQqdCVqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779180749; c=relaxed/simple;
-	bh=+HfGak7yHuL/XgYwB0Bq0zu3smcoi8dm7pRi4GjPR8o=;
+	s=arc-20240116; t=1779180904; c=relaxed/simple;
+	bh=jL1wRQJLe5WLat50It2LrgPluh3+w7X+ACNLGMeqek0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1C+In+OAHIJ14aMCedjtig0wRbhrgHUa6uCEDgNxRWeBQYOCoSvJPYaMn14ZFTqBo+WCw8Ym2TwkHv0mc/BB9v7JMIUIgpnUMIM1gkcX8jKxZBJglSCkDQkzADQRdcxy2N44DN1FoaAxnp1vjxOO53+NSrYYs6GkZQSAZVDkJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2CO19Ew; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aDhsZKGRP38x/XIIcSNR4Oe76c0fRVUh9YZw9+udmO1xIgKGkUvXBM85E5CrLkM5jgwySrxw2IDq8JjjgOJ5V/WE0EF3UsBtBcDcBkJ1FV1dulR3DC2LTZw83SIK90w02VmbLJ2b5KiXkbsakvACnwOYZz5LmgO4n+7MwQHkAT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qm2YPekt; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2CO19Ew"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2447C2BCB3;
-	Tue, 19 May 2026 08:52:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779180749;
-	bh=+HfGak7yHuL/XgYwB0Bq0zu3smcoi8dm7pRi4GjPR8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y2CO19EwhBh9ujMggPV1riiBBdFi0ZpZd4G6bSZiquF4m7Yj7ba1rTdZ/21o2nT/r
-	 mJUiJ2WVwaPjXjzPknmGinP2N5r+wa2t1EgcUyR6Ie2W8KIIkTAQdFngJxYhnxyzsY
-	 EI11iIQHMp8QNKwddp8rwcNP2xiH2BVlB90fu0fMcxA2SwjIxXikODspgdzf7nlZfY
-	 6RjdTGEoLu8EEPIzvYOTgurM+twW40ejwhCnRxv+SVv7ar4pl9RbCxpPM1/KTyZf5u
-	 x1LznxrbbM63VSdPi4kVrqOtXiRBwclF/rjYiEM6G7iFmSBghs1OBCHR/Tii6oW0g2
-	 Rwr0GnJXuxc9A==
-Date: Tue, 19 May 2026 09:52:22 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Zhengyu He <hezhy472013@gmail.com>
-Cc: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	Cody Kang <cody.kang.hk@outlook.com>
-Subject: Re: [PATCH 1/3] spi: dt-bindings: fsl-qspi: support SpacemiT K3
-Message-ID: <c7833af4-eab0-4651-821a-68c53b9a62fc@sirena.org.uk>
-References: <20260519-k3-pico-itx-qspi-v1-v1-0-c32afeeaf741@gmail.com>
- <20260519-k3-pico-itx-qspi-v1-v1-1-c32afeeaf741@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qm2YPekt"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-441209fb77eso1918199f8f.1
+        for <imx@lists.linux.dev>; Tue, 19 May 2026 01:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779180900; x=1779785700; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ttEEnCBEgUK+wfN1BWs0jMhy7eonfn0k5yN/j3m945E=;
+        b=qm2YPektnpL/KBVg85y+DNN6Lf97FuniQjkZH+v7W3FYaCsXUxhw/GGuS+N/PApipk
+         Tvvz1aBNXxMCCuB4a+SphXBMKPYt9qjRMLC3Gf5mXESTWezY9PGnKqiEKQltqacd7wps
+         O2Xhv0mtmM8gthqX/CsQ2QnC38506sC5V5gvIM5TgBdu/iDw61JfSS8n/RxLRspE9eHA
+         5nj+9eAg9b5/iH1PW8uZsh166QQCfnfMuisjs2kU+Fs3Ash6mO1ojmeBtmX8K6xYFiAh
+         eK3bqEfc1KMLc1x3zZAX1waC7hNflkJb4uynTDyrREt118ou8eFLjZ0wTZ1bPeQBxgib
+         gj8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779180900; x=1779785700;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ttEEnCBEgUK+wfN1BWs0jMhy7eonfn0k5yN/j3m945E=;
+        b=ES4GKTwRQH+9XQbifm2wREPtW9VN2PWm68ot7ye6jILbR9iuLtk8xPCcD33bn1uFWl
+         j20i2FFFmlHTuWWdJ2TxvaJNlKmUzxoKdMHX1i6YWLmvgBvZlTTZ+16akYpa5yc5ZUVY
+         grclOVilX7z+gMgND5VAOonBsrGz7oLhvQDG99VMrh/z3EF7aWWqyORkjF4nyx9zDn+Z
+         o9Vf7Ev/F2KZEcEFLOgUzmVUxWRjy0Pvlf9g0sRQsz20XRJ3r/3dYoFsxnCl1V6Be/Om
+         /EGW3/tSyrdACSl51fjsFEzQTkHTZihO828uPXu+q0gDAfP2H6fshRz4nqaMdsqbQd8u
+         Skgw==
+X-Forwarded-Encrypted: i=1; AFNElJ+CMKAHoZP455RlYd7t9vOXkT3iIAXvHOv/Q7PeJxEB36awPvlM8grVyF7LEEpiiEYYhxs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwesLGfu2IBPF0D3QZXlSRrpdU+exxSMoVdcUtvyn1aNpFwY6WQ
+	CQQ08F/qEf4rJVRW/5gWLF1KlIRerYwQqOYZyO9+1OYa2dnF0MoK1iME
+X-Gm-Gg: Acq92OHgXeBjc4tbpTy3UMnhmAHd0tqC589sJs+hMhIiUbDsqda42W/JM5UI2raJWmC
+	TeFJO8uBXtsChBiRbziMkDNBDLetyYJwWAHojwG/JUWikwdEk83yGpT5xRNRRVcLTN2k6ZSovud
+	JaDg1AVNpRXTPV2/WcLslToQOqDPwVPoihMEyl5sdXy5uBDw/ue6PfvvLKK4BnZq/bxnz5bnY7m
+	csDhtRumYNJidXXQTn/EEnYvns+Y7Z8V1XjM/yojFSZ7m18xPjVpqUPRiXSjvGfYy09HWHRBdE7
+	VhhyzyXunvEwCw2qY5w8cfnCSv/57a75G+7bkV9m34Sh1uRTvS/TmCgsbc+pWj53bWR4M8Q51xE
+	IpyeyvvyxMxRV0VeX+nZmV+Fajd9JLBngQ25b+px6n6b5PZHW0Y7pF6Gs4Ba7gszmPe9nhWVaoE
+	VrMnapG7Mthpi5eqele/eoCxebr4k74hYTNFJHc3dEaNWMfa5zRKPBeBBip+Vt173942Li2WjpE
+	UQ+UtIXl5G0H5yN0EuJxeJnqa0O+QBz+PHio/tj9uEUY6lIPdcqAScKleiP+lUXcw+w1HFidTM=
+X-Received: by 2002:a05:6000:4404:b0:448:908a:398b with SMTP id ffacd0b85a97d-45d9288b8c2mr25159333f8f.14.1779180899971;
+        Tue, 19 May 2026 01:54:59 -0700 (PDT)
+Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a17ec2sm41021489f8f.24.2026.05.19.01.54.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 01:54:59 -0700 (PDT)
+Date: Tue, 19 May 2026 10:54:58 +0200
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
+	Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH v3 3/3] usb: dwc3: imx8mp: disable auto suspend for host
+ role
+Message-ID: <6btg6x2bsgu6jzzxds3koyha3ucaf37apbshhfgpu2vxdgb5oz@npvm7tkg3bxh>
+References: <20260108081433.2119328-1-xu.yang_2@nxp.com>
+ <20260108081433.2119328-3-xu.yang_2@nxp.com>
+ <k2sxmwhrv3tivustfnpz54ehuufkcrcruu2uuukuyugqtqljzl@5roxndm5fn5u>
+ <jjwlrgusucoacaye75uqfuh76a4jhdv3ivzjuemgusw3trwseb@mymuy62cptxp>
+ <hsyy2owzbt7tsljktlrz5g4bnrnecznvcyy6zxt7gfyxb4xvgi@ysko6xe6h2zm>
+ <5zz6yhc4ymoccovibmjlse2l2d6y3g3dwu5r5a677rplpfdnwu@fo2ed54hqzeh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8SblKUXhOngtSLCU"
-Content-Disposition: inline
-In-Reply-To: <20260519-k3-pico-itx-qspi-v1-v1-1-c32afeeaf741@gmail.com>
-X-Cookie: Huh?
-
-
---8SblKUXhOngtSLCU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <5zz6yhc4ymoccovibmjlse2l2d6y3g3dwu5r5a677rplpfdnwu@fo2ed54hqzeh>
 
-On Tue, May 19, 2026 at 02:15:55PM +0800, Zhengyu He wrote:
-> Add the SpacemiT K3 QSPI compatible to the fsl-qspi binding.
->=20
-> K3 has its own SoC integration, so board DTs should describe it
-> with a K3-specific compatible instead of reusing the K1 string.
->=20
-> Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
-> Signed-off-by: Cody Kang <cody.kang.hk@outlook.com>
-> ---
+Hi Xu
 
-The signoff of whoever is sending the patch should be last in the list
-of signoffs, each signoff is certifying the ones before.
+On Tue, May 12, 2026 at 05:53:57PM +0800, Xu Yang wrote:
+> 
+> OK. I mean, does dwc3_imx8mp_probe() still succeed after the kernel dumps
+> at the end?
+Ah yes, afterwards it still succeeds.
 
---8SblKUXhOngtSLCU
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> OK. More debug information will be helpful.
+> 
 
------BEGIN PGP SIGNATURE-----
+I've attached the logs below with and without the commit. looking at 
+what happens before the warning I think the problem is that after probe
+deferral the depopulate path races with the device link state changes 
+from the fw_devlink cycle fixup.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoMJMUACgkQJNaLcl1U
-h9ChuQf+PprmNVxKDo7Qo1X+Me5eypSTZ1LJGD9uf589k2G4Z5l1SAIJ6UvdSCTC
-uNghM/uNx0j6KPxpgPYumiVC5kSiMpFCq3AAalBE+TyuIrQkSbUCsOFuE+2wyJfo
-vD6hBOUXU3r48JRY2YaZAnO51xdP8IpFTx09WpnWmsw9fgehpOGjumEgc7aK34VQ
-MMDyRi2ex/gRHqFw4dPhJt+LTtC1DAPUUMLNFH5f/uUiDlN9mE93qE3q99m1XLWz
-D7tTorYqemjTVt6XBmuodAeO0ubJFSEcPTp3QPdkRIfdCaYsCr04/+AcvT4DEHq0
-sDa6//E+EXqeM3SX6Aul9vW6hvlX1w==
-=VJUZ
------END PGP SIGNATURE-----
+One important thing to mention is, that we build dwc3 and typec as modules.
+If I build them as built-in I can't reproduce the kernel warning so far. 
 
---8SblKUXhOngtSLCU--
+Logs whith commit present and when the warning appears:
+
+  [    6.405710] device: '4c100000.usb': device_add
+  [    6.414620] ----- cycle: start -----
+  [    6.414626] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.414640] ----- cycle: start -----
+  [    6.414643] /soc/phy@4c1f0040: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.414661] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/phy@4c1f0040
+  [    6.414671] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.414680] ----- cycle: end -----
+  [    6.414683] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: Fixed dependency cycle(s) with /soc/usb@4c010010/usb@4c100000
+  [    6.414700] device: 'platform:4c100000.usb--i2c:1-0052': device_add
+  [    6.414783] i2c 1-0052: Linked as a sync state only consumer to 4c100000.usb
+  [    6.414790] ----- cycle: start -----
+  [    6.414793] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.414805] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.414814] ----- cycle: end -----
+  [    6.414816] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.414827] ----- cycle: start -----
+  [    6.414829] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.414839] /soc/phy@4c1f0040: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.414857] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/phy@4c1f0040
+  [    6.414864] ----- cycle: end -----
+  [    6.414866] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/phy@4c1f0040
+  [    6.414880] device: 'platform:4c1f0040.phy--platform:4c100000.usb': device_add
+  [    6.414943] platform 4c100000.usb: Linked as a sync state only consumer to 4c1f0040.phy
+  [    6.414947] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /soc/phy@4c1f0040
+  [    6.414956] platform 4c100000.usb: Not linking /interrupt-controller@48000000 - might never become dev
+  [    6.414962] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /interrupt-controller@48000000
+  [    6.414979] device: 'scmi_protocol:scmi_dev.7--platform:4c100000.usb': device_add
+  [    6.415027] devices_kset: Moving 4c100000.usb to end of list
+  [    6.415032] platform 4c100000.usb: Linked as a consumer to scmi_dev.7
+  [    6.415035] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /firmware/scmi/protocol@14
+  [    6.416216] imx8mp-dwc3 4c010010.usb: error -EPROBE_DEFER: failed to get dwc3 platform data
+  [    6.416310] platform 4c100000.usb: Dropping the link to scmi_dev.7
+  [    6.416317] device: 'scmi_protocol:scmi_dev.7--platform:4c100000.usb': device_unregister
+  [    6.416680] platform 4c100000.usb: Dropping the link to 4c1f0040.phy
+  [    6.416687] device: 'platform:4c1f0040.phy--platform:4c100000.usb': device_unregister
+  [    6.416892] i2c 1-0052: Dropping the link to 4c100000.usb
+  [    6.416898] device: 'platform:4c100000.usb--i2c:1-0052': device_unregister
+  [    6.419266] devices_kset: Moving 4c010010.usb to end of list
+  [    6.454423] device: 'phy-4c1f0040.phy.0': device_add
+  [    6.454545] device: '4c100000.usb': device_add
+  [    6.454659] ----- cycle: start -----
+  [    6.454664] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.454680] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.454689] ----- cycle: end -----
+  [    6.454692] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: Fixed dependency cycle(s) with /soc/usb@4c010010/usb@4c100000
+  [    6.454706] device: 'platform:4c100000.usb--i2c:1-0052': device_add
+  [    6.454763] i2c 1-0052: Linked as a sync state only consumer to 4c100000.usb
+  [    6.454770] ----- cycle: start -----
+  [    6.454773] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.454786] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.454795] ----- cycle: end -----
+  [    6.454797] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.455132] imx8mp-dwc3 4c010010.usb: error -EPROBE_DEFER: failed to get dwc3 platform data
+  [    6.455211] i2c 1-0052: Dropping the link to 4c100000.usb
+  [    6.455215] device: 'platform:4c100000.usb--i2c:1-0052': device_unregister
+  [    6.455831] devices_kset: Moving 4c010010.usb to end of list
+  [    6.456354] device: '4c100000.usb': device_add
+  [    6.456458] ----- cycle: start -----
+  [    6.456463] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.456479] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.456488] ----- cycle: end -----
+  [    6.456491] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: Fixed dependency cycle(s) with /soc/usb@4c010010/usb@4c100000
+  [    6.456505] device: 'platform:4c100000.usb--i2c:1-0052': device_add
+  [    6.456563] i2c 1-0052: Linked as a sync state only consumer to 4c100000.usb
+  [    6.456571] ----- cycle: start -----
+  [    6.456573] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.456586] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.456595] ----- cycle: end -----
+  [    6.456598] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.456940] imx8mp-dwc3 4c010010.usb: error -EPROBE_DEFER: failed to get dwc3 platform data
+  [    6.457022] i2c 1-0052: Dropping the link to 4c100000.usb
+  [    6.457026] device: 'platform:4c100000.usb--i2c:1-0052': device_unregister
+  [    6.474614] devices_kset: Moving 4c010010.usb to end of list
+  [    6.522012] device: '4c100000.usb': device_add
+  [    6.522299] ----- cycle: start -----
+  [    6.522317] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.522335] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.522347] ----- cycle: end -----
+  [    6.522454] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: Fixed dependency cycle(s) with /soc/usb@4c010010/usb@4c100000
+  [    6.533826] device: 'platform:4c100000.usb--i2c:1-0052': device_add
+  [    6.534139] i2c 1-0052: Linked as a sync state only consumer to 4c100000.usb
+  [    6.534164] ----- cycle: start -----
+  [    6.534169] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+  [    6.534192] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.534203] ----- cycle: end -----
+  [    6.534207] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.545615] device: 'regulator:regulator.4--platform:4c1f0040.phy': device_add
+  [    6.548513] devices_kset: Moving 4c1f0040.phy to end of list
+  [    6.548537] devices_kset: Moving phy-4c1f0040.phy.0 to end of list
+  [    6.548547] imx8mq-usb-phy 4c1f0040.phy: Linked as a consumer to regulator.4
+  [    6.549386] device: '4c1f0040.phy-switch': device_add
+  [    6.549395] imx8mp-dwc3 4c010010.usb: error -EPROBE_DEFER: failed to get dwc3 platform data
+  [    6.558846] /soc/phy@4c1f0040 Dropping the fwnode link to /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+  [    6.568591] imx_usb 4c200000.usb: Linked as a consumer to regulator.5
+  [    6.575430] ------------[ cut here ]------------
+  [    6.580063] WARNING: drivers/base/core.c:1640 at device_del+0x2bc/0x38c, CPU#1: kworker/u24:7/85
+  [    6.588847] Modules linked in: tcpci(+) tcpm gf128mul aead snd_soc_fsl_sai(+) fsl_imx9_ddr_perf ci_hdrc_imx(+) ina2xx(+) amc6821(+) imx_pcm_dma
+  snd_soc4
+  [    6.636591] CPU: 1 UID: 0 PID: 85 Comm: kworker/u24:7 Not tainted 7.1.0-rc4+ #14 PREEMPT
+  [    6.644767] Hardware name: Aquila iMX95 on Aquila Development Board (DT)
+  [    6.651466] Workqueue: events_unbound deferred_probe_work_func
+  [    6.657300] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  [    6.664250] pc : device_del+0x2bc/0x38c
+  [    6.668094] lr : device_del+0x18c/0x38c
+  [    6.671934] sp : ffff800080b0b9b0
+  [    6.675237] x29: ffff800080b0b9d0 x28: 0000000000000000 x27: 0000000000000000
+  [    6.682372] x26: 0000000000000000 x25: 0000000000000000 x24: ffff000086c15cc8
+  [    6.689504] x23: ffff000086c15cc0 x22: ffff000080a71010 x21: 0000000004208060
+  [    6.696637] x20: ffffd5f0e544ab58 x19: ffff000086c15c10 x18: 0000000000000000
+  [    6.703770] x17: 0000000000000000 x16: 0000000000000003 x15: 0000000000000400
+  [    6.710902] x14: ffff000081b3e7d0 x13: 0000000000000000 x12: ffff00008316d380
+  [    6.718035] x11: ffff00008012d910 x10: ffff00008316d240 x9 : 0000000000000017
+  [    6.725175] x8 : ffff800080b0b8f8 x7 : 0000000000000000 x6 : fefefefefefeff64
+  [    6.732301] x5 : 0000000000000001 x4 : 0000000000000000 x3 : ffff00008746ff00
+  [    6.739433] x2 : ffff000081b3e740 x1 : 0000000000000003 x0 : ffff000086c15800
+  [    6.746573] Call trace:
+  [    6.749024]  device_del+0x2bc/0x38c (P)
+  [    6.752857]  platform_device_del+0x2c/0x9c
+  [    6.756947]  platform_device_unregister+0x14/0x3c
+  [    6.761652]  of_platform_device_destroy+0xf0/0x100
+  [    6.766438]  device_for_each_child_reverse+0x70/0xc8
+  [    6.771402]  of_platform_depopulate+0x34/0x78
+  [    6.775761]  dwc3_imx8mp_probe+0x234/0x3c0 [dwc3_imx8mp]
+  [    6.781073]  platform_probe+0x5c/0xa4
+  [    6.784738]  really_probe+0xc0/0x3dc
+  [    6.788312]  __driver_probe_device+0x88/0x1a0
+  [    6.792663]  driver_probe_device+0x3c/0x11c
+  [    6.796840]  __device_attach_driver+0xbc/0x17c
+  [    6.801281]  bus_for_each_drv+0x88/0xe8
+  [    6.805108]  __device_attach+0x9c/0x1cc
+  [    6.808939]  device_initial_probe+0x54/0x60
+  [    6.810462] ci_hdrc ci_hdrc.0: EHCI Host Controller
+  [    6.813112]  bus_probe_device+0x34/0xa0
+  [    6.821216] ci_hdrc ci_hdrc.0: new USB bus registered, assigned bus number 1
+  [    6.821796]  deferred_probe_work_func+0xa8/0x104
+  [    6.821802]  process_one_work+0x15c/0x2a0
+  [    6.821810]  worker_thread+0x18c/0x300
+  [    6.821814]  kthread+0x118/0x124
+  [    6.821822]  ret_from_fork+0x10/0x20
+  [    6.833454] ---[ end trace 0000000000000000 ]--
+
+Log with commit reverted:
+
+[    6.370196] device: '4c100000.usb': device_add
+[    6.378088] ----- cycle: start -----
+[    6.378095] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.378109] ----- cycle: start -----
+[    6.378111] /soc/phy@4c1f0040: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.378129] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/phy@4c1f0040
+[    6.378138] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+[    6.378148] ----- cycle: end -----
+[    6.378151] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: Fixed dependency cycle(s) with /soc/usb@4c010010/usb@4c100000
+[    6.378166] device: 'platform:4c100000.usb--i2c:1-0052': device_add
+[    6.378233] i2c 1-0052: Linked as a sync state only consumer to 4c100000.usb
+[    6.378240] ----- cycle: start -----
+[    6.378243] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+[    6.378255] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.378265] ----- cycle: end -----
+[    6.378267] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.378277] ----- cycle: start -----
+[    6.378280] /soc/bus@44000000/i2c@44350000/tcpc@52/connector: cycle: depends on /soc/usb@4c010010/usb@4c100000
+[    6.378289] /soc/phy@4c1f0040: cycle: depends on /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.378298] /soc/usb@4c010010/usb@4c100000: cycle: depends on /soc/phy@4c1f0040
+[    6.378305] ----- cycle: end -----
+[    6.378307] /soc/usb@4c010010/usb@4c100000: Fixed dependency cycle(s) with /soc/phy@4c1f0040
+[    6.378317] device: 'platform:4c1f0040.phy--platform:4c100000.usb': device_add
+[    6.378365] platform 4c100000.usb: Linked as a sync state only consumer to 4c1f0040.phy
+[    6.378369] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /soc/phy@4c1f0040
+[    6.378378] platform 4c100000.usb: Not linking /interrupt-controller@48000000 - might never become dev
+[    6.378383] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /interrupt-controller@48000000
+[    6.378402] device: 'scmi_protocol:scmi_dev.7--platform:4c100000.usb': device_add
+[    6.378448] devices_kset: Moving 4c100000.usb to end of list
+[    6.378454] platform 4c100000.usb: Linked as a consumer to scmi_dev.7
+[    6.378457] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /firmware/scmi/protocol@14
+[    6.412551] imx8mp-dwc3 4c010010.usb: Dropping the link to 4c1f0040.phy
+[    6.420383] device: 'platform:4c1f0040.phy--platform:4c010010.usb': device_unregister
+[    6.448740] /soc/phy@4c1f0040 Dropping the fwnode link to /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.455463] /soc/usb@4c010010/usb@4c100000 Dropping the fwnode link to /soc/bus@44000000/i2c@44350000/tcpc@52/connector
+[    6.466316] wm8904 1-001a: Linked as a consumer to regulator.2
+[    6.467099] device: 'phy-4c1f0040.phy.0': device_add
+[    6.467280] device: 'regulator:regulator.4--platform:4c1f0040.phy': device_add
+[    6.469337] devices_kset: Moving 4c1f0040.phy to end of list
+[    6.477641] devices_kset: Moving phy-4c1f0040.phy.0 to end of list
+[    6.477672] imx8mq-usb-phy 4c1f0040.phy: Linked as a consumer to regulator.4
+[    6.477755] device: '4c1f0040.phy-switch': device_add
+[    6.479392] imx_usb 4c200000.usb: Linked as a consumer to regulator.5
+[    6.653448] spi-nor spi0.0: Linked as a consumer to regulator.0
+[    6.655937] device: 'phy:phy-4c1f0040.phy.0--platform:4c100000.usb': device_add
+[    6.656027] devices_kset: Moving 4c100000.usb to end of list
+[    6.656039] dwc3 4c100000.usb: Linked as a consumer to phy-4c1f0040.phy.0
+[    6.662812] device: '4c100000.usb': device_add
+[    6.665219] device: '4c100000.usb-role-switch': device_add
+
+
+Kind regards,
+
+Franz
