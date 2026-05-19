@@ -1,101 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8EA3F1ABE;
-	Tue, 19 May 2026 12:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1284BCAC0
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 12:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779192312; cv=none; b=uVILZioNedGUzUSR1gzSZ9bfgeEBIPP8xI5SacryANn7UoHkC6TzoU8oiFH5YQCdq7GlaixbQlKVgm70x2dhSrWb237wcd2rUTHAJuLhlBITAU1dM+zlQPjf1s9GaoV1MoxK8mTqgRhkIXFJc7Eoj13kNFKOxzQbCFWsbe7H2rU=
+	t=1779192444; cv=none; b=ZOx5qaeohnY3i85SH8si1xMzuXUsOI0sacFJWuWYyJ1+IVxG59N1mTUnnLXzcx5b+pG1B/nkr2eOmahrfgCyVNDrTvOZ8l0vnt7Pw0gyC8/xKCO7Vw9D/ZOnK0VdXveTS6WmEqk7MnpLWIwIgSmhdFwhZWnkTteRnnqWXVwtrq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779192312; c=relaxed/simple;
-	bh=olUzPpsBrLxSZhP0MDNfwmCwBg+SPAPq90oOw52FViM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=H29S0MCt9pZJ8YNGnDxL1udUCcBI5oVxCWosI3oKcQawF2mjPtJRgvdTeaYMljvEB6inbiRCUxJaOAzg4MRomkyaB6/TEuCYgk3EHferLUZMwtpXA1QyVX1FtGtqJ66rGdh/p8eFagS9+41ZTnyApyXZZU4IJZ+hqupRtkGyWn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTHArOr/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779192444; c=relaxed/simple;
+	bh=jGKInCOacNp/akJLjCsFHmAv2cDDCx+X4edUr6PdPKM=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=tT8kmqXmI/sY37nQXzLcSzwLVCIjSzeO5c04tDBgEHsnMxjabZU0nhLvU6kVjribN7rEZzBUwePRoABeViFKtzAPdBGtKFfRR/dJIVswwEDtKJma+3a4aAdKIkoARl7rwkpTuq6lerOWZ/KNFzTGtghzWxsTO8aYVIvxFAApwTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ymtu9AaI; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTHArOr/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59D6C2BCB3;
-	Tue, 19 May 2026 12:05:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779192312;
-	bh=olUzPpsBrLxSZhP0MDNfwmCwBg+SPAPq90oOw52FViM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=eTHArOr/DQmMe8RrQvsJ9zWYX69Osh63JEGRvSqFUM3ggmpYZ2f7MPa4NvVJudT5/
-	 3i3NziZBaOCb+jEhwRJeTJqzP6682+cdKnh3s4ytEWJrAtcvZg5kkWSQEDOaHaYqes
-	 ttHbnP21eEAdZQSgWUnqM9WSODTQMkQM9vOy28StDmabI8eaFzmaSt+Np4GDh4hQtd
-	 uIrscmYbZ+EyHJ3UgtY3VzPMA80S8+/6i4VThimDcT7ijFzV9jGO3xThdRUeRs3k6J
-	 8NHEEIwAXcLL2WnDubTJvuJQhF5kzkYmpNevHIc1MtRdqzzSw+Yfb5RuQo4rtryoQv
-	 RGm+YdrCvNmjA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/5] arm64: dts: imx91-11x11-evk: add reset gpios for
- ethernet PHYs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joy Zou" <joy.zou@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, robh@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260519-b4-imx91-qsb-opt-v1-4-9b416d2dc224@nxp.com>
-References: <20260519-b4-imx91-qsb-opt-v1-4-9b416d2dc224@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 19 May 2026 12:05:11 +0000
-Message-Id: <20260519120511.C59D6C2BCB3@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ymtu9AaI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0BB6D4E42CF1;
+	Tue, 19 May 2026 12:07:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BE4DD5FFC8;
+	Tue, 19 May 2026 12:07:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 417C4107E8B5B;
+	Tue, 19 May 2026 14:07:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779192438; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=JTYht0YD317H5z8s11sE9p+sChcQcjLL5Rm+qvRnlWI=;
+	b=Ymtu9AaIOAYtMzeHcJnz7kpZBVJR2o2INASsjHOQRVGEwpOtL4mMyHhwnV2iCRdBMgGl+c
+	ClN6WzKjjHGx5f25xNG5nSqp0gr+yXcAYykptOBJ5wU0v5jOfci3mny1fyAK8eoZrrNn15
+	ZtoKIrylwo2ctxoeNL0E5/0vwwC/clOWCSMv79Q4jj0i23p3/0xg4VxnPkWj1cbRfjeitu
+	1xpuDnbu2s0w2jJRyKj/HGkp2kFUda6muU6uvzKDKskXVPtPUT+eFw+owoqiRF38q439yZ
+	QXoI/RxTFfnEnDKHffzKuSB9z5QvKjKiTFAete010Ldbp9v0oQ/vkT7Yo75HWg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7 04/23] drm: bridge: dw_hdmi: Hold bridge ref until
+ connector cleanup
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Jonas Karlman <jonas@kwiboo.se>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, Liu Ying <victor.liu@nxp.com>, 
+ Sandy Huang <hjc@rock-chips.com>, Andy Yan <andy.yan@rock-chips.com>, 
+ Chen-Yu Tsai <wens@kernel.org>, 
+ Christian Hewitt <christianshewitt@gmail.com>, 
+ Diederik de Haas <diederik@cknow-tech.com>, 
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260518180206.2480119-5-jonas@kwiboo.se>
+References: <20260518180206.2480119-1-jonas@kwiboo.se>
+ <20260518180206.2480119-5-jonas@kwiboo.se>
+Date: Tue, 19 May 2026 14:06:59 +0200
+Message-Id: <177919241969.545972.18169905222569864569.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Missing `compatible` string with PHY ID in ethernet-phy nodes caus=
-es silent probe failure when using reset-gpios.
---
+On Mon, 18 May 2026 18:01:40 +0000, Jonas Karlman <jonas@kwiboo.se> wrote:
 
-commit 3c4c46607dcfd2582ce8a02581310d0901a9d667
-Author: Joy Zou <joy.zou@nxp.com>
+Hello Jonas,
 
-arm64: dts: imx91-11x11-evk: add reset gpios for ethernet PHYs
+>
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> index b7bfc0e9a6b2..9d795c550f8a 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -2600,10 +2609,14 @@ static int dw_hdmi_connector_create(struct dw_hdmi *hdmi)
+>  
+>  	drm_connector_helper_add(connector, &dw_hdmi_connector_helper_funcs);
+>  
+> -	drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
+> -				    &dw_hdmi_connector_funcs,
+> -				    DRM_MODE_CONNECTOR_HDMIA,
+> -				    hdmi->ddc);
+> +	ret = drm_connector_init_with_ddc(hdmi->bridge.dev, connector,
+> +					  &dw_hdmi_connector_funcs,
+> +					  DRM_MODE_CONNECTOR_HDMIA,
+> +					  hdmi->ddc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	drm_bridge_get(&hdmi->bridge);
 
-This commit adds reset GPIO properties for the ethernet PHYs using
-an I2C GPIO expander. This allows the PHYs on both the EQOS and FEC
-interfaces to be reset during initialization.
+I'm not fully following the code paths, but both the report and the fix
+make sense to me. Only I'd move the drm_bridge_get() before
+drm_connector_init_with_ddc(), to avoid a short window where no reference
+is held and the bridge might be destroyed before drm_bridge_get() is
+called. I'm not sure this can happen, but it's better to write the code in
+a way that clearly makes it impossible.
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts b/arch/arm=
-64/boot/dts/freescale/imx91-11x11-evk.dts
-> --- a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-[ ... ]
-> @@ -198,6 +198,9 @@ mdio {
-> =20
->  		ethphy1: ethernet-phy@1 {
->  			reg =3D <1>;
-> +			reset-gpios =3D <&pcal6524 15 GPIO_ACTIVE_LOW>;
+Otherwise looks good.
 
-Will this cause a silent probe failure if the PHY is held in reset at boot?
+Luca
 
-Because there is no explicit compatible string with the PHY ID (for example,
-compatible =3D "ethernet-phy-idXXXX.YYYY"), the MDIO core must auto-detect
-the PHY by reading its ID registers over the MDIO bus.
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-If the PHY is currently held in reset, the MDIO read will fail and return
-0xFFFF. This causes get_phy_device() to return -ENODEV before the device
-is created.
-
-Since the device instantiation is skipped, the reset-gpios are never reques=
-ted
-or deasserted, and the I2C expander probe deferral mechanism is bypassed,
-leaving the ethernet interface permanently disabled.
-
-Should these PHY nodes explicitly include the PHY ID in the compatible prop=
-erty
-to bypass the hardware ID read, allowing the kernel to wait for the I2C
-expander to be ready and properly deassert the reset?
-
-> +			reset-assert-us =3D <10000>;
-> +			reset-deassert-us =3D <80000>;
->  			realtek,clkout-disable;
->  		};
->  	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260519-b4-imx91-q=
-sb-opt-v1-0-9b416d2dc224@nxp.com?part=3D4
