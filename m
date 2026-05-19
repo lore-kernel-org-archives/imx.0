@@ -1,189 +1,241 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011039.outbound.protection.outlook.com [52.101.70.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030954968E4
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 16:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320433FC5D6
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 17:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779208417; cv=fail; b=oDXDxstk5bfqomHU0dRUOY+8XMMgsR7+jsj3swtOkP+eISRB6KAespCn10nUSX0fzs85/+I5VFURIVDvqHoFdbELXn28cuc3tdYcX2tXyLuWCQCQEA4+BtPRcjR7IdBb6AHjhaCjwynsj38JMnQ8Qwa4+LImg2zeCXMcXFP3fa0=
+	t=1779210950; cv=pass; b=Yn2gZrx13Txg8Hnd05AC3rwV6m91OVgaJ+qeTmASLjelyTMvX6o3wWh1hc28mkCNdtsL+Bwr6oB7vGDej+v1Vpi/gLqRa5X3ct+h7e0yD5Ohh/m2DdcNZ/ZlgmHJMpYvcfZIrHr+mYR1lPGLH4+t5GktjLcq3cjsArFUAPrJv+k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779208417; c=relaxed/simple;
-	bh=bRPdFdwbnv0CYfBNs7SER/VcNLNwIoFhQh7/RCq2LTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cM8kylvtw/Bm2yw8/aUHjMs2PUea49MITqAzROG+OG0R4fw8YxYFNNlS5YCsfjzngMTdLM7esV3k/hFV/LtGL7L2JnTP147Et6hyawO19RmGo2EikRST58nImoyX6+1ZPILD7J1VcO+QKp+0rSAOMj/rTOpl9Hxl72EmLzUTw4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RqDtID2h reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1779210950; c=relaxed/simple;
+	bh=/0+dScbTUNEJGVDgwal5JUJ0gDF/D9hpkgWOKCeMMaY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QLT52DAKZJowbh1Og+X4LC3o3ezd9GY0VvAjrsyg8NSBTFjdGjH1zn1ump98ZPvi9vHsIti/uc2w5BfOKBVkFw03Fi1Ozg12nRHhLTaaqZOh0UrG16/tSdFuQGXsBm9rk9kAX23WzW1O3YqayLjhK9G6Hzy/qRdLiFM+o7AB/2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uvspCQIQ; arc=pass smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RqDtID2h"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SHqImdohD3qlXmVs3m1h1MXmWsJZimCDqWpJCsOHgZCPR8woYJlybkTXmrzIEBbznkl9fTZHG6D+/gTcsPyRvSjegM0dZjv//+ZCSZan3o4tCFdo01icIzMkyehejyyv1NajkGj5Pj481FyU7bHx5940d4gsRDGaqv5+CG2p0OGgcXAWJGb7RWjxb9OikBNTE7eLsXGM1PYdQYsinI96+h2geK3l119XA7EzcyEOMDYeGltZPVAGctsEkpr7w4FOjTlzhM4luWbJU1drGgmDu9DAnKNLoazfE86Kd5crzhKtch9E3gjwCqW163fDnB4yN7sHfOI4xN+cmoDrPazD4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fp7LcO4KXBSqAGESkHq5Rj9V7Bt2LAXjY5BsYawZJ5g=;
- b=agS+Tyxtpq/Sz7y30ARuN+ywcCU7YI5Hxb+eVbuxXCJ+Uoaxshva4Lt+33ht5Mk+cttiTsmUThATGvaM0sjSO0lJ9dr+mA/b802z1tWN/f2+l6RmmEKKsMLVxtihcKRgUGV6KHpoKvOYYneaBf/2AhJ1sV0fU/kTI3qUgd4UieuMZiDk4HqgSEg4kpuZJaibQsCueywSs8YT7VHthrHXxVZ0C13u976Z+esZHRTcUGmpenaHDW6Idrmwd7IkKhixvxhJqVXDGDEeeXk8r+domukB4djIRsNCvgSYPVGbNTsOuhgDYbzWj+CzRcKsA0b4fDqlCu3VNc3bELf4w6UMoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fp7LcO4KXBSqAGESkHq5Rj9V7Bt2LAXjY5BsYawZJ5g=;
- b=RqDtID2hWWtLou6bkijtaTwpkrnQed/SnrwohMDkbCqE6K3FXYiKtoFIUcpTI50tSnZ0q+zqJ4pnp42PXCfjoothh4GitrFzo9QHwLe8PPilnmSELgwRcV3d7Ekt5/bEHbQ8RVJuC4DKhuMlRbXLh7wNWoirVH+ltctUxTjYWcGmxHzH7qHnn3ZO3Vt49t+d+nu/G+ArL54EEGpZ7Sa7Uo4EGmP4UUFoUKD87FNakD2VimJex0A3UAb4y+LiGcg2uQ1ZBxIQK0JXV2qEcMr1NArLBTIHeTzMJIkb1XwtinoDbQIKP6HFGqD3bdavYlnUuzcv8ItuMdLf1+LJMCpnlQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
- by VI1PR04MB9978.eurprd04.prod.outlook.com (2603:10a6:800:1d7::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
- 2026 16:33:27 +0000
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
- 16:33:27 +0000
-Date: Tue, 19 May 2026 12:33:18 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Franz Schnyder <fra.schnyder@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Franz Schnyder <franz.schnyder@toradex.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Antoine Gouby <antoine.gouby@toradex.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: add Aquila iMX95 support
-Message-ID: <agyQzmR7wxgOlD2X@lizhi-Precision-Tower-5810>
-References: <20260506-add-aquila-imx95-v1-0-69c8ee1c5413@toradex.com>
- <20260506-add-aquila-imx95-v1-2-69c8ee1c5413@toradex.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260506-add-aquila-imx95-v1-2-69c8ee1c5413@toradex.com>
-X-ClientProxiedBy: PH7PR13CA0020.namprd13.prod.outlook.com
- (2603:10b6:510:174::27) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uvspCQIQ"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ba180a022dso115ad.1
+        for <imx@lists.linux.dev>; Tue, 19 May 2026 10:15:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779210947; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HfsngSsr2kyO5AVWyCjpffXmhCl4FfD3uXeRwvHhcWprZa25SVr0TGJ7RZ/9HwPzjg
+         +JKCDtla6F0LKBzBhaIMKTR3Ld+4B/k09kdL31vr7JqHw54bas72DOH+j7PaSDk6Nhcz
+         7U59UZX4vxuP8wRL37C8T9bDJ2WnzTrJW4v7ZDRqBC+cS7awYbBmUopvxHbfkQMJjsvS
+         Z1WAoHcXOslWfbqiP7jgBLZ10k8cK7ZQoQX19bLLz4gJ5O/VIuS+Vu//6T4XtSKltPVa
+         VaNT8sErg78/cSr8Wjjj6t9q1E67bLmKQkEj/NbkXduYxCrUctNFpOJT4cZthaXJX2e/
+         t/AA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cuQNgYy+WG+dzOE/c8QzcyHW5Fy6rAQMouLvUCWrgMI=;
+        fh=zhERmdrpxVZKCX5qc7ol63YISq6xR8mTLjRoT1nc7uo=;
+        b=hsMhpXsONMn6OvdoyG89TxjADXYpLg2w4DJjkBCSEVRYoocbfwOfIPWHBwskinaB1x
+         Fv9oUlX8k0/JFR9SsPpSPgkXG2E2xGELzCFumiTG8S+nswQNKemL61VcoroENxrvfvVN
+         1wQGoGzX1uIVFG0QBq9AJTXFCz3JGibTU+PCDBrjBF7j7wVtS5bmj8+isH+YWrV09P8v
+         sTwlGlYz0xuyJkHLShkEoFTrsnkbY6T7gd0V557L2gYTLHHMvk2ha9IoL7yQtxcmqarV
+         bhAor2SaNXoN0z0VeUIkvxgEU96MQO5Gj4uPl1LH7hLrsfH0nhldnw/6fCHRSHgEuth8
+         o/eA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779210947; x=1779815747; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cuQNgYy+WG+dzOE/c8QzcyHW5Fy6rAQMouLvUCWrgMI=;
+        b=uvspCQIQGWH5eBofIcr5Nqc611QJOxeLHDd++Kcjnc2leqoAmvWk02cJxsCzzyO5Qq
+         gHSsVDtT4hfKviqdKvDareCg34lRpWANOo0Ue8s9h4/Y+O++6E0BNb/bl4O42k2Mweru
+         eyi7ILJRCPGMWgOxm5Fo1xEmGk8Vnd8FJxgb0Pejs6fXd/00ouNtQwVtURdJps/UMcHU
+         LCZ5LP3rQgeT1hw1M8BqJ3L+RIcxD4Qpy4HUjy6B9zJfg2cU4OL+kFhJY03/XPRHW9d4
+         1CQlB3AtZv/+lC0YycsimYQADDVjxCreE5PMJNZxKM7L0YIGvvlUuwy5VRSJfAlYYBlz
+         MLgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779210947; x=1779815747;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cuQNgYy+WG+dzOE/c8QzcyHW5Fy6rAQMouLvUCWrgMI=;
+        b=UJe3A1ujmfoIOrqnctiDkikmsQxixdsAoyweriklXILsw+i1mGXZs1kwvFMQ/F31/u
+         l4xgk5AYSrwLjwaPUBEo4MUGFpLgFw+28+TLCko91nW1/5sQ4quN47sD4ThblbrVTpnb
+         9pQtiK+mBhXaZXfrDRCscz1B9KGyPv8HsY6mnXrFim9QJ/aLelA88Qz1FzADaIeai/pV
+         muGWUrsipj1b4x0Parh+OmiqYDlMmb3Ei5IhXPxCt6p1wsdw4n6ODzxZ4jA0h1n0vSZ3
+         Jx5is8eGIlEK5/aX26Cg8upYE8BWOGWYPdaSacnun4AJwCPZKykEnZ+i8xGTyIAkjcyv
+         gCHA==
+X-Forwarded-Encrypted: i=1; AFNElJ/NXTizbkSidEUbzQgQ2FCBQ8qkbPubMDhsuNqBh/gePb4yNCm3TswTGVuhgNexi8CJV04=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1+xKDkWAbHcZFQN8FU1QWifzsFc1aVJJfBEb7D4fgWEfaT0aH
+	nvRHcg4WhHOzZwbvPjoy12j8WAvfWpw66jBINWeFUOoLHwLMfjfBIehX6J7c510O9l9VO4WA62x
+	xpsTSmCHlnSifm0rngtJzElYmOc7dboGbhu7euDxs
+X-Gm-Gg: Acq92OEF5ONPZDpUJoYWLfviGIKqdwEF18zwJlLm6b5M8B1qTR6lU709SZQkjlJIhO4
+	3fyP5FBN5kK9i1hIDh22Rb27W1a3z6Uwq27kTugYUTGT5s5Qzmy4KfDb+Che60iLYi5/D5uXXH2
+	QVA2wAaSopBsvsvvSlEqEq0hRXKuL/kymRyogVefAmNFxfHMzqdR4EPE1tXKocVEena8Q+q8uMe
+	jloe2yiGXe0BeRvmxV48dc3cwytSMQMPsUSgP9OU5hhPdhPAr8jbU1t1cIoDBukOY137IdY13fY
+	/v96onp8SNoS4M4t03Hi28U+Kb8BBizO3d+FRrkuGouolmkTqyWTL6PuqfhdOG2rypQSaQzztZX
+	Znta1ewM9D39kSlRz
+X-Received: by 2002:a17:902:cf0d:b0:2b4:6529:7bae with SMTP id
+ d9443c01a7336-2bdb329b56bmr6839545ad.17.1779210946312; Tue, 19 May 2026
+ 10:15:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|VI1PR04MB9978:EE_
-X-MS-Office365-Filtering-Correlation-Id: e198afe3-eb8a-48a2-8979-08deb5c45a30
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|7416014|376014|52116014|366016|38350700014|4143699003|56012099003|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Eyz5PMBy3jMYeZZnqvlyAHLiY6earofbGkVH94Pr4duubV+MCAlM9rxnTabuqTLIqUB8eYsFVF7Im5yzhLBwBCy2GmRqTjFjsx96N2ZvYbHxis8nCp72Do/cLjwgZw+p5loWzFu2XKnUF6MJ+z48NoDFuKI7HPmJQfoNyHlaPF2J5u9ncxcAFGt1zE6Qw9jhsw4HtXV5TjU9pLZMl3DsAw+Tb/xuKCCsnFEaElIo5xHhO5HSG8O8B7K4wfcwOuo5huPv3rP/VJaEV5vGge45ptnWkGqvjrUS0bY9wRDKAkbkXJZCF3KVKPE9NOlInZXw1TMtEz93A/6MliFEmyZrlgf8NLVdvRisRrgR9KDdxEChfJL3j1gzRs6qrbfIhi8TOH8fnsnQd77+WbRIEcf2Yun01RrUDQwLhj9JefWE0UeDXT2IIrpn5cU9tJDGQNmlB6C/dNgJ76QGbfsquYQVNdvP5pFjG5kGjrzysxiJaJ3kCtR+I9iYN/2wO8+ihAUaw98gRRplPAp0Gwfihnla5XSiHkp5tKcsTo0ah3hrpCfVrVbQGKYGqv2VH5sxYB3AOPTAdNTrI7qtn5NxwqvUTAOqLhNIbJamNCnEOJ+xashuf+y8R5gyV/SyNfdiJGKxBDtqzYefINdHmq5wBwnQbQqJ7j2opuogioy9rk7YqUYFL7I2ZJBNDMPhNpX70XqLLDbMSLm3+oSQLMXwINHxRkg2f6PH8ISFJrjkkiYH9G7zid4Rgw3GzAV6L1BZOkgY
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(376014)(52116014)(366016)(38350700014)(4143699003)(56012099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?Us7y8ckhH+zzmG7nyFhOI9Pei6akS1vUf/es2CFmgyUFPE1WRre44XA1yq?=
- =?iso-8859-1?Q?5CSKxOSegu5FZv7VDBIU+KnhkjLqEis7BESHK6km251YAlgHzslFxQnEZ6?=
- =?iso-8859-1?Q?TjA5YmNP0bVHXZCzi/7+RPLJTkg4qrriaY/MZ9JJOTU7Y5Pq5TK71GbcAg?=
- =?iso-8859-1?Q?FN23x4epu/NqE+xgO6QllJI1jcwqbj3xzITORapQlQAQl58/Ab0PWPVMVf?=
- =?iso-8859-1?Q?1AXykB3O1sOItL2+7rY5jSSjRKknlYw5a+c6UKmqG2q7L4IK38Wwz0fTyi?=
- =?iso-8859-1?Q?yQPPZeSw9slDjqxNYWgsHntkh9F3mD7EQbPAvfquajugMEbJA6eiwqSLHO?=
- =?iso-8859-1?Q?lVxu20ft1j+pkDjKLhNmdV0H+oEAYN8J94BkHUcoDpI2BibxewymAngsKn?=
- =?iso-8859-1?Q?YgFAMF6ndPlSZgNtmqTm/bceZ4OSg+cNjOSZZ4KHha9s0DjPV1f/S2vHeP?=
- =?iso-8859-1?Q?NsX4YcahsNBsNpsN0nfzvSilHo3U6o59I8Ob0GHp5H0zodvawRhJ6fM4OS?=
- =?iso-8859-1?Q?55tD6ERbtCMdT59erX6LXSPLbhOPhWv1Xrk3eLpw7vRcwDiaIR7H9ejV5g?=
- =?iso-8859-1?Q?UWPjG8y7AJ+4IddLsBhtsgG5JoG+nfmGpyt91+mCNf5I7YtyyD7wMEHncN?=
- =?iso-8859-1?Q?EHfWYZwfTSoMqxTk3qQHEqitfN7+r02QYetIINfUHqn61HbF1AC9faGXXn?=
- =?iso-8859-1?Q?a4+Tcx9DuFVNcykJZBo+rn9LlJcPk04rVIdp5YOVbdl6zOyFms/FStgXe0?=
- =?iso-8859-1?Q?1gkTwTA7SiGo7IsFMSoj9NDLqZnK+YEIv00UvL2+k6xZkRfZfScfi/ELEu?=
- =?iso-8859-1?Q?MaTv7TWqrfxu2tv2KtbYi0Po1HXGsOiiuEoVoCotUFh3G67bJEqjI03vP+?=
- =?iso-8859-1?Q?pqS1hVi0rOrZE4iMHEkoSdLUdYtLoH2YFZJBVJD+GuL3ck4SK3QC6CYQVu?=
- =?iso-8859-1?Q?OURd9D/+xqZpB6JXrPQiCIO1F7syeQq3ufz4I6KXvmPexWnGcJx+nNpuvy?=
- =?iso-8859-1?Q?BLxDNiJi4VTOd0jBNlkJpENo8HzpaDtctwPVZA+CxrVYPglnOYU+YAkSVo?=
- =?iso-8859-1?Q?AJmEJ5Se9A24sZ6x7oZ4ncCbpV39VSrvsvawyI7w+WBTFmAMa0sWQB0fDj?=
- =?iso-8859-1?Q?qMojnr/ro+j1zUh2IjxAflVNcurIyotif3MwGD8LPpuueTscTmxbKiXP5N?=
- =?iso-8859-1?Q?VIOxnXoEoUtiuqLWmPgGwBBhR4J11EgWHsBmuWu7lqMwu48wSt2U8GVK+9?=
- =?iso-8859-1?Q?beNLYqq6o/ubd1Lx8Uy3rJ6gT2M5Z1zIy08B98lNfQPCZQwLz2/zcNKBXt?=
- =?iso-8859-1?Q?GEADXspb+KdbGLhVwe3+Re/NchpbFuMbi6qPZAUJUtATICdaZcPO7BK4+l?=
- =?iso-8859-1?Q?2ExsRcByn3q9JTEU58Tlidlr02EX1AmN8rrBsrHG9PascKS4EHMnNMXjDI?=
- =?iso-8859-1?Q?uNHKEIVOzKDoE4HDg9ffWgIo2uFfgaPfwF9erA+PgeGAIJrVBzMtwF10ks?=
- =?iso-8859-1?Q?9ntegtGL+8gKLRqer5imMHWdSkWhI6Em5s5wR/E5Rpcv3TT6U3NKd8p419?=
- =?iso-8859-1?Q?zgTEhS5g8Xz/N3ai2H5UbTcNAzJ9W2CrPtIM/7uRVvvrhMKaJxwp3J0Mdc?=
- =?iso-8859-1?Q?QlN/JM7lp0PahQYX/TsYYzAlQ9SNp3tHwBkqMSvVyYLWPJDMvcb1qW9D3D?=
- =?iso-8859-1?Q?LyGMY5Z6w42WkgSLDzIEbGAtl0Djo2O7yDTrN68/g0MoyZiHRXUwb48b8+?=
- =?iso-8859-1?Q?u6JTkgaZGwLe0uLxGojm/kLvJAZ4may3mdgfRd5Y7N4GPjBM8ufcvYzN0L?=
- =?iso-8859-1?Q?/lP9AVASJA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e198afe3-eb8a-48a2-8979-08deb5c45a30
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 16:33:26.9192
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VC3CiHn4bDVV0IY6JCQ2xhOpg/7I28wTUK4WkveqRIZrgqW1vvT5OMfCrPArgBcJlzHKG4oHSK8+PhvHxBmXwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9978
+References: <20260518030535.1057228-1-wei.fang@nxp.com> <20260518030535.1057228-9-wei.fang@nxp.com>
+In-Reply-To: <20260518030535.1057228-9-wei.fang@nxp.com>
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+Date: Tue, 19 May 2026 10:15:34 -0700
+X-Gm-Features: AVHnY4LtmoXAhWXvNiu-0-asmSu8v-CvGeSzm-1g8vS_8O9j5-ZboIjVtfmFLj4
+Message-ID: <CAEAWyHfk7y691oYNmYy5W8dA8cnpwG4ejnXPssMLOUO+Ljo24g@mail.gmail.com>
+Subject: Re: [PATCH v2 net 8/9] net: enetc: fix initialization order to
+ prevent use of uninitialized resources
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	catalin.horghidan@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 06, 2026 at 03:01:56PM +0200, Franz Schnyder wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Sun, May 17, 2026 at 8:09=E2=80=AFPM Wei Fang <wei.fang@nxp.com> wrote:
 >
-> Add support for the Toradex Aquila iMX95 and its development carrier
-> board.
+> Sashiko reported a potential issue in enetc_msg_psi_init() where the IRQ
+> handler is registered before DMA resources are fully initialized [1].
 >
-> The module consists of an NXP i.MX95 family SoC, up to 16GB LPDDR5 RAM,
-> up to 128GB of storage, a USB 3.2 OTG and USB 2.0 Host, a Gigabit
-> Ethernet PHY, a 10 Gigabit Ethernet interface, an I2C EEPROM and
-> Temperature Sensor, an RX8130 RTC, one Quad lane CSI interface, one Quad
-> lane DSI or CSI interface, one LVDS interface (one or two channels), and
-> some optional addons: DisplayPort (through a DSI-DP bridge), TPM 2.0,
-> and a WiFi/BT module.
+> The current initialization sequence is:
 >
-...
+>   1. request_irq(enetc_msg_psi_msix)    <- IRQ handler registered
+>   2. INIT_WORK(&pf->msg_task, ...)      <- work_struct initialized
+>   3. enetc_msg_alloc_mbx()              <- mailbox DMA allocated
+>
+> This ordering is unsafe because if a spurious interrupt or pending
+> interrupt from a previous device state fires immediately after
+> request_irq() returns, the registered ISR enetc_msg_psi_msix() will
+> execute and unconditionally call:
+>
+>   schedule_work(&pf->msg_task)
+>
+> At this point, pf->msg_task has not been initialized by INIT_WORK(), so
+> the work_struct contains garbage values in its internal linked list
+> pointers (work_struct->entry). Passing an uninitialized work_struct to
+> schedule_work() could corrupt the kernel's workqueue linked lists,
+> potentially leading to:
+>
+>   - Kernel panic in __queue_work()
+>   - Memory corruption in workqueue data structures
+>   - System deadlock or undefined behavior
+>
+> Additionally, even if the work_struct were initialized, the mailbox DMA
+> buffers (pf->rxmsg[]) may not yet be allocated when the work handler
+> enetc_msg_task() runs, resulting in NULL pointer dereference.
+>
+> Fix by reordering the initialization sequence to ensure all resources are
+> properly initialized before the interrupt handler can execute:
+>
+>   1. enetc_msg_alloc_mbx()              <- Allocate all mailboxes
+>   2. INIT_WORK(&pf->msg_task, ...)      <- Initialize work first
+>   3. request_irq(enetc_msg_psi_msix)    <- Register IRQ last
+>   4. Configure hardware & enable MR interrupts
+>
+> This guarantees that when enetc_msg_psi_msix() runs:
+>   - pf->msg_task is properly initialized (safe for schedule_work)
+>   - pf->rxmsg[] buffers are allocated (safe for work handler access)
+>   - Hardware is configured appropriately
+>
+> Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40=
+nxp.com #1
+> Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  .../net/ethernet/freescale/enetc/enetc_msg.c  | 35 ++++++++++---------
+>  1 file changed, 18 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/n=
+et/ethernet/freescale/enetc/enetc_msg.c
+> index 39f057fe85c7..a999f1e7817f 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -109,6 +109,15 @@ int enetc_msg_psi_init(struct enetc_pf *pf)
+>         struct enetc_si *si =3D pf->si;
+>         int vector, i, err;
+>
+> +       for (i =3D 0; i < pf->num_vfs; i++) {
+> +               err =3D enetc_msg_alloc_mbx(si, i);
+> +               if (err)
+> +                       goto free_mbx;
+> +       }
 > +
-> +&scmi_iomuxc {
-> +	/* Aquila ETH_2_XGMII_MDIO */
-> +	pinctrl_emdio: emdiogrp {
-> +		fsl,pins = <IMX95_PAD_ENET2_MDC__NETCMIX_TOP_NETC_MDC	0x57e>, /* Aquila B90 */
-> +			   <IMX95_PAD_ENET2_MDIO__NETCMIX_TOP_NETC_MDIO	0x97e>; /* Aquila B89 */
-> +	};
+> +       /* initialize PSI mailbox */
+> +       INIT_WORK(&pf->msg_task, enetc_msg_task);
 > +
-> +	/* Aquila ETH_1 */
-> +	pinctrl_enetc0: enetc0grp {
-> +		fsl,pins = <IMX95_PAD_ENET1_TX_CTL__NETCMIX_TOP_ETH0_RGMII_TX_CTL	0x57e>, /* ENET1_TX_CTL */
-> +			   <IMX95_PAD_ENET1_TXC__NETCMIX_TOP_ETH0_RGMII_TX_CLK		0x58e>, /* ENET1_TXC    */
-> +			   <IMX95_PAD_ENET1_TD0__NETCMIX_TOP_ETH0_RGMII_TD0		0x50e>, /* ENET1_TDO    */
-> +			   <IMX95_PAD_ENET1_TD1__NETCMIX_TOP_ETH0_RGMII_TD1		0x50e>, /* ENET1_TD1    */
-> +			   <IMX95_PAD_ENET1_TD2__NETCMIX_TOP_ETH0_RGMII_TD2		0x50e>, /* ENET1_TD2    */
-> +			   <IMX95_PAD_ENET1_TD3__NETCMIX_TOP_ETH0_RGMII_TD3		0x50e>, /* ENET1_TD3    */
-> +			   <IMX95_PAD_ENET1_RX_CTL__NETCMIX_TOP_ETH0_RGMII_RX_CTL	0x57e>, /* ENET1_RX_CTL */
-> +			   <IMX95_PAD_ENET1_RXC__NETCMIX_TOP_ETH0_RGMII_RX_CLK		0x58e>, /* ENET1_RXC    */
-> +			   <IMX95_PAD_ENET1_RD0__NETCMIX_TOP_ETH0_RGMII_RD0		0x57e>, /* ENET1_RD0    */
-> +			   <IMX95_PAD_ENET1_RD1__NETCMIX_TOP_ETH0_RGMII_RD1		0x57e>, /* ENET1_RD1    */
-> +			   <IMX95_PAD_ENET1_RD2__NETCMIX_TOP_ETH0_RGMII_RD2		0x57e>, /* ENET1_RD2    */
-> +			   <IMX95_PAD_ENET1_RD3__NETCMIX_TOP_ETH0_RGMII_RD3		0x57e>; /* ENET1_RD3    */
-> +	};
+>         /* register message passing interrupt handler */
+>         snprintf(pf->msg_int_name, sizeof(pf->msg_int_name), "%s-vfmsg",
+>                  si->ndev->name);
+> @@ -117,32 +126,21 @@ int enetc_msg_psi_init(struct enetc_pf *pf)
+>         if (err) {
+>                 dev_err(&si->pdev->dev,
+>                         "PSI messaging: request_irq() failed!\n");
+> -               return err;
+> +               goto free_mbx;
+>         }
+>
+>         /* set one IRQ entry for PSI message receive notification (SI int=
+) */
+>         enetc_wr(&si->hw, ENETC_SIMSIVR, ENETC_SI_INT_IDX);
+>
+> -       /* initialize PSI mailbox */
+> -       INIT_WORK(&pf->msg_task, enetc_msg_task);
+> -
+> -       for (i =3D 0; i < pf->num_vfs; i++) {
+> -               err =3D enetc_msg_alloc_mbx(si, i);
+> -               if (err)
+> -                       goto err_init_mbx;
+> -       }
+> -
+>         /* enable MR interrupts */
+>         enetc_msg_enable_mr_int(&si->hw);
+>
+>         return 0;
+>
+> -err_init_mbx:
+> +free_mbx:
+>         for (i--; i >=3D 0; i--)
+>                 enetc_msg_free_mbx(si, i);
+>
+> -       free_irq(vector, si);
+> -
+>         return err;
+>  }
+>
+> @@ -151,14 +149,17 @@ void enetc_msg_psi_free(struct enetc_pf *pf)
+>         struct enetc_si *si =3D pf->si;
+>         int i;
+>
+> +       /* disable MR interrupts */
+> +       enetc_msg_disable_mr_int(&si->hw);
 > +
-> +	pinctrl_ctrl_dp_clk_en: dpclkengrp {
-> +		fsl,pins = <IMX95_PAD_SAI1_TXFS__AONMIX_TOP_GPIO1_IO_BIT11	0x11e>; /* CTRL_DP_CLK_EN */
-> +	};
+> +       /* de-register message passing interrupt handler */
+> +       free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
 > +
-> +	pinctrl_ctrl_gpio_exp_int: gpioexpintgrp {
-> +		fsl,pins = <IMX95_PAD_SAI1_TXD0__AONMIX_TOP_GPIO1_IO_BIT13	0x31e>; /* CTRL_GPIO_EXP_INT# */
-> +	};
-> +
-> +	/* Aquila CTRL_WAKE1_MICO# */
-> +	pinctrl_ctrl_wake1_mico: ctrlwake1micogrp {
-> +		fsl,pins = <IMX95_PAD_XSPI1_SS1_B__GPIO5_IO_BIT11	0x31e>; /* Aquila D6 */
-> +	};
+>         cancel_work_sync(&pf->msg_task);
+>
+> -       /* disable MR interrupts */
+> +       /* MR interrupts may be re-enabled by workqueue */
+>         enetc_msg_disable_mr_int(&si->hw);
+>
+>         for (i =3D 0; i < pf->num_vfs; i++)
+>                 enetc_msg_free_mbx(si, i);
+> -
+> -       /* de-register message passing interrupt handler */
+> -       free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
 
-This list is quite long, need keep alphabet order by node name. To reduce
-this kinds problem, suggest run https://github.com/lznuaa/dt-format for
-new dts.
+Code looks good to me but a nit: would be good if the change here in
+enetc_msg_psi_free() is also called out in the commit message.
 
-Frank
+>  }
+> --
+> 2.34.1
+>
+>
