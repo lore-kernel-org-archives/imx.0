@@ -1,195 +1,375 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010047.outbound.protection.outlook.com [52.101.69.47])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A3370ACE
-	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779186998; cv=fail; b=IcraHsqM7rJQxfjta2kQYN6GoXKhmHsHqwvSS1kqnj3B9FMFff3tuXHY9DFjikSzomNF4TGb/qqkPUx2kEWsW7zQvK2fik66lIdFeKCJLzdc3FHXi/CnNfuJzLSMzuPOUr74bMFD73avB3vQwNZ44QMS2r+Ps0eeTHAr1AxpdPU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779186998; c=relaxed/simple;
-	bh=Mw6ct51/FBjFeRJsOv+cNNBU9PYrzmG+GVW/GKYtmQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AQ2sqcQtmNwDDtg0wUVNl5sSjfM82TPtEGMNbT11f/CAEWbxqZr19jrRSdihQ9A84iL+QoOGAdxSRjLVgccgsnvobz4IUjU6GmKwemyWS637nparp0xLSrDQcJamvOVVnsPgn61cIRQNPJMmf33RTW2HIzs8G6sA4fHdblHxlGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xS/ryIf2; arc=fail smtp.client-ip=52.101.69.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C035CBCB
+	for <imx@lists.linux.dev>; Tue, 19 May 2026 10:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779187090; cv=none; b=Kgx6T0JPZDYi0/XiSJicPo7FPafUw0KjjrtOqV9r191k7+I+ArWmvzmtLGo9rkQ1Kt5rz11TvaC/GGoVyoXLz+9OCP0mGzVJvIWPk+mCbc+KtiCHXyeVCBmAELWII7Nyk9GE2sG8WVfZ6G5J0zmEFptBJ7CI1Re+meAQ6hFztmw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779187090; c=relaxed/simple;
+	bh=MVg0+lKTALLPd71sMwzrWjnTYzcZ8RQW60jpsE48v2Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RWkAaBUzHqbkemZA4aO94zUheGXlSsUyRzdMrwH8OW1JmgRmMECwPmyxCahqqA+MV8DZKc2ynDB9D+mKNVfUBJLXLlWLlxmH0a1Mp6WxGBD/O3Vm38IR9nyWcJ8mDy3gpFmKt+fXdb9uWq/9N/MulPFisRq2zCq+zp3VGSYi3g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oVyM9Ujh; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xS/ryIf2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r2mG5ecBwlb0pmDNtf7hFrUwmn/pPmAfIt0pA/lVBNi5e1aoBJ2EoRwK2k1qLiuJh6+gNixsu88lDQ4BWSDe/sgDHR3zvVjRqiInRPCA4rK5ByS18EWMuuzF7C+1mASK2wPLHCC/7VqyDx5yn3ufmN5tHufWn0Q0T+XG78PmwG7mCMi8pXmZETZ80fcHtuP/zQIPJl4vpy36UN7g6+2+muIA6SkinyR0mi3wrYqeaJ049WBb1twpF8xaEtZOcDmaVY+/2Vx5T5ZCqqbV0HtmnswsN2C99H0/srWlhOLD8Nc2MIKtzv+y7K1+mB5AHFqs1fhM429KOlCaxPQIfpiZhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tF9Q1PEQPHzIP5zIlZRB1mj7+T4VfHMs95W00a6V1ZM=;
- b=QVQOSOJaKL6KbxcGUP0hnl10U5fy/VseGxs8kEyyEUmG7/kbsIf/mwDz1fpsTlioCNz6uhRrS4AfVev7kOQljSYwLKGQg7E2miysg0dCr9OCASH8yUq+6SYlaDkhMnJ4AR/uYVoqhiQ246o+CASrVKUhsbEUOreL3+3T1lemNejrE0ENmO3oqJQrxpGiyvpEHltR0/StigwBEqA0Dd1bYXsNg3wZPhijkWE08wpCkOiT4byC48KqbC/c8hvembxLE9yeLlEoxOKMDdjL4TqAMI3Z+sUJcMyqQ2l1LzRbLUrntFqcONCXRQIUIbY5KLZAQpEoyDsTkDONUj0QoBozeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tF9Q1PEQPHzIP5zIlZRB1mj7+T4VfHMs95W00a6V1ZM=;
- b=xS/ryIf28m92SI6+fZy0CNtaNdfv4MYAYdM//UIM7zwfIHYwLYIDs19jrmgBjHux8APzRslLRB/6tWJQc3MJbaVWEBqILY+Y5fSoH8vQKszXeb3ML33XDatO2JOD40n9deQLWpNfaH4cDqPkzrut4wiH4mc8dzoTGOZDbT9orXlKwgSRulpkfRF84iv0bThqz9CDJnpLcjUhtxTIeavorQWXFRBaNnFtvxS9XJJliOT+VVGswrnQ+Oje/ds+y8rAqOGcQzUMQuiaMqv/A3PWJtz8AVVX3bT1VZfief6IWHGDhNkcpdlQj8sY3d6yTC+9dpkQ88JuR3aMcPdfXksp8A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by DBBPR04MB7946.eurprd04.prod.outlook.com (2603:10a6:10:1ec::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May
- 2026 10:36:11 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
- 10:36:10 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: o.rempel@pengutronix.de,
-	kernel@pengutronix.de,
-	andi.shyti@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	carlos.song@nxp.com,
-	haibo.chen@nxp.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] i2c: imx: mark I2C adapter when hardware is powered down
-Date: Tue, 19 May 2026 18:38:15 +0800
-Message-ID: <20260519103815.2793953-1-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM8P251CA0021.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:21b::26) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oVyM9Ujh"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 499CBC2B9DB;
+	Tue, 19 May 2026 10:38:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E81E6606E9;
+	Tue, 19 May 2026 10:38:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E240107E8AB2;
+	Tue, 19 May 2026 12:37:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779187083; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=2HHwOejiA0v96EaB9cJgeNaDUC0EGsbdFq71eccbvCI=;
+	b=oVyM9UjhG5nU/qJDP9Dyr8xpxqY85zTlYabmB1DqVUxiGuKfLtfYNlNi3nGaRR7YhRJ9X+
+	vFxPXnXc7J7y3hPpowFRhn0gwjw6qqakaGelEq1M2ohDqon7ETgj9VOhLsaHdFMLIFgqcO
+	9cM1GAhHLemMRPxGfACUNx8xJ1koeIgNPmH58VtXIXSUQo9JMdqkufodItqMtlkHYHWWJE
+	xDbJIcRY4rp3m/GPyyK3r9C7L5ivAoaF4h25MhF1yNitCFAho1NKVSx57yo3GbXv9IEpI+
+	PQt3UqiRDF/+EEQwTe4m9zs/IP7KX8QJdu7pHzWdn/Qdv3CmzFQboomAPeWnDA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/37] drm bridge hotplug
+Date: Tue, 19 May 2026 12:37:17 +0200
+Message-Id: <20260519-drm-bridge-hotplug-v1-0-45e2bdb3dfb4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|DBBPR04MB7946:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b9b5fec-de92-4f5a-037d-08deb592715b
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|19092799006|1800799024|366016|56012099003|18002099003|11063799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	xmXLCUdwtvZPOPfja9JFgxuItFepnAs+2IDXoKnG9kFdAaIez/h4TKXro6Ei/F7PL/ES5WnWFcyJTByg9CPhVytn0IF4YyVgUWwhsWe4aam532THxTfKm54BBF2lrto+5ZdNRiUiTFnRSHJoLIqlSB+wfgokoj4bCS1O48fJi7MFwpfpD7af3z8fz5G2GCO4xQS2xsk8NVHxZ5JJhYoSBmk3Iv4flgfweyyAymQG57iUkf05YKq03rPdxDSR83shdHSdeqa8nXxKV+pRd+bSBrSihdfSppwjus6/XYVP0aSQNJ6hrhV8cDF4uLJJSjkCcTuTUc7UJPdhnso8X8JTQsLikzGordcRBNuh2uLBXtEb7aobNjdX89nVN0Kv7wBHzNQOw8e4w0z9LpBjtd8ue+xyMHs+8Hi8GNhM+qH0EBkqNh9fmr76djP/EMQTDx6UMUnrxkoUWR2OA31LDa8golSz6YrpdjQrgz+UM+RNbcsQmaurFjJz486zWtLvPNlkUklpBvXZPOtrjrqXVZdboCc/FVJbHX6KHwOXzc+8Xlbr5lk4gcSqGfl91DU8q7Tu3zVhNxQjUk/ygwe4VlrQSjsRxeza0KhHxMzg0OE6scwX8yl2sk20amlaaWeQh9GjWPen2kCi5IIuypx9urUxjjQ/ZHqeSV8ufGElkDW/ujZy9I74Dc3wYAT+abci63HONBf6GPBp9t1DsZ18fWRDDtY5LKJoejlqAFBr+QPWkrWWwSlEfGff4gS0/u59ph5M
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(19092799006)(1800799024)(366016)(56012099003)(18002099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dGcSqyU953l4OFlcj0CWXWxD9Jv035450PalfgnC6/e4qiMdwsjOI0aAn92l?=
- =?us-ascii?Q?/7N79hcBhFMqGgIkjxTdclylNH5zk0ElBvksG8P1NfUTgiJ4uNmSffkF/CPy?=
- =?us-ascii?Q?YUh8khPwrL6CWHt7CSS8XbRbD3BlLtit+FxLiIDSVDlV28axHjLuZ9K29IoY?=
- =?us-ascii?Q?rjN1ELd3ho3FAxvRVUF6/iYeYtmhshLGg+KHwYwu0rUkM2g5068+1niKhXcE?=
- =?us-ascii?Q?yHRLqKjOi6SEMP4aI0kPVmfrwJ2sQ2UboVzWJ6pmsvPbxpnB2NPehkGzS19C?=
- =?us-ascii?Q?Om21EhGX7McrrD6eH6g2YmjcfSEqRAEXDMLDaE++5zc1MqzdZ11LPvQkAneN?=
- =?us-ascii?Q?8KGn3hrDwUpqO8tzbgnOaD0YzuqTfyqwWkChXshkmifdUeE+CiMhhyRoUpnd?=
- =?us-ascii?Q?ZSRXXDcCYmOs+r5pSQUrnSil/l6Fy8SHSJfBvVg8ezlYRjp+nYnng8rdgqix?=
- =?us-ascii?Q?RNpi31Rh449l2unRkW16lZMaB90XGxyN1uEIit7mq/IILsoely2KiDdO7F+J?=
- =?us-ascii?Q?d8bdhyDGEV33EVkDH8d4pqXGspN6fItJEMcb+7SR16lFY1KUfKa0AIrTpP9S?=
- =?us-ascii?Q?bdaJ80HbgRuU/JajuCVDQWoMnvn0OKxxFczTlBWbCvlWu6bOyivUn4U6xUDh?=
- =?us-ascii?Q?ufS0yaUz+drK+EG4gFrNK75TsU3yWANbS7IkJ4sR43OoLkuKdbOFrqnICVfF?=
- =?us-ascii?Q?9HQJzmLrK6aZVOFsh0aUSa3V62Drz0goRwMl6beIYjukWPcm+oTq1g1OM60E?=
- =?us-ascii?Q?RbOX4Lop5Lhb2Eo6Mdvfog7XGsn2VWvvWMztZnlcMMk75+mbjVJxqDlnDX/7?=
- =?us-ascii?Q?JWQf1t4Hg0n0/ww4K4VZQ7X0gI+L8o7NXky/rc+SXis9uyM/2rJxUk7ISEMC?=
- =?us-ascii?Q?8++QuFiFcVmVC0e9C4eFR2fLbAR12Wp75HVTPnwbO0yZn0gCAD7uT2kCfrRh?=
- =?us-ascii?Q?eGLuk59FVJyh9Qk69uPrsHuJL4V6DaB7XnZOs8OlSKAaWocV/RJ2rBySTEwt?=
- =?us-ascii?Q?83+grMC7q13a4/SjmEYv7O6zZjurrEjkGxqsDygm2ZCAB0PW+1R8GtPtSXyd?=
- =?us-ascii?Q?XZkF82Akl4EEWPXcCc+tYyZfWgBp8sAhlf2K6vd9j0iGfo4EAMlKnj6Xq04C?=
- =?us-ascii?Q?HSPl9GogPB+qnNfa/fE6G2zCjmq2DfgcL/HjS6UbtdLkRWsfUAac0c0WU4Pl?=
- =?us-ascii?Q?4mzihJcCwsTAxqyuv9x1SjldWwKGqS71f5IBJfKKcn3yyEdqdrsebFKqehKu?=
- =?us-ascii?Q?py5ix7vSrFLpHbquriNINEgThzmKWe76N4gWHyeJihrfKoexPbMsEb26+QM7?=
- =?us-ascii?Q?o1AoJEDb6YIl/NHTuuJufRzFBjk84UjN8ah29IOllO9cA3rH5H1RYDSXBlE1?=
- =?us-ascii?Q?QjCRsGn2Omz4wpVYKfY6EIN8GCjSeej1Qw9svxwmnIctrl6+M3crGdgIiwLp?=
- =?us-ascii?Q?0N4efOlBdNFZ0aTxx0i8WNCxB4eT1pH9T2ePpPdeoNicRtPrZSfUTBah3ikA?=
- =?us-ascii?Q?fwFtRCg20z48GF8lS626jo2DzOFYUsJjKVYoKNwSom4BijUPt9pyHbarYksS?=
- =?us-ascii?Q?LE6upN4yVwuGt9Hh9ueHJHuns2DA8huEOIMeHDEstqGJWcV1/YEIMXDfhOVW?=
- =?us-ascii?Q?UPC6HG1TGomHv4ZATsGFYHFj8g+1q5VoW0dJpuJrF5QlfwQ5x3xxIh6Su84Y?=
- =?us-ascii?Q?7vg/2HvXyiK4qe8haef/RkBfralmCT+o8bUK7r7GiV8NJESo7jVMoVgdgCk7?=
- =?us-ascii?Q?f3AUUEm/Tw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b9b5fec-de92-4f5a-037d-08deb592715b
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 10:36:10.9154
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gmp8p5tBjpGi8LMQYB0oGQskf87Xb8Ip/EWfhS9EMtmGAuBY0jxHsD7muQ/QP8zvrBMsGTN/lCEnSF1qSySb+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7946
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAF09DGoC/y2N2wqDMBBEf0X22YDGJoi/UnxQs+oWb90kIoj/3
+ m3r42FmzpzgkQk9VMkJjDt5WheBPE2gG5tlQEVOGHSmbWZyoxzPqmVykoxr2KY4qIfV1rii0X1
+ pQIYbY0/HT/qs/+xj+8IufE13g/Ed5S3ctev6AEYmRBOLAAAA
+X-Change-ID: 20260515-drm-bridge-hotplug-46265d3a2f85
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, Marek Vasut <marex@denx.de>, 
+ Stefan Agner <stefan@agner.ch>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Carlos Song <carlos.song@nxp.com>
+Hello,
 
-Mark the I2C adapter as suspended during system suspend to block further
-transfers, and resume it on system resume. This prevents potential hangs
-when the hardware is powered down but clients still attempt I2C transfers.
+this series adds support for Linux-based devices with a DRM pipeline whose
+final components, including one or more bridges, can be hot-plugged and
+hot-unplugged.
 
-Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
+TL;DR:
+
+ * This new approach is totally different from the one proposed in the
+   past [0], and the code is an almost completely rewrite
+ * If you already know the use case, feel free to skip to the "Design"
+   section below
+
+Use case
+========
+
+This series targets as its first use case a professional product (GE SUNH)
+that is composed of a "main" part, with the main SoC and able to work
+autonomously with limited features, and an optional "add-on" that enables
+more features by adding more hardware peripherals.
+
+The hotplug connector has a MIPI DSI bus. The addon has a DSI-to-LVDS
+bridge and an LVDS panel attached to it. Different addon models can have
+different components. As a consequence, a DRM bridge must be added and
+removed at runtime without tearing down the whole card. This is currently
+not possible, and this series enables it.
+
+DRM already supports pipelines whose display can be removed, but all the
+components preceding it (all the display controller and any bridges) are
+assumed to be fixed and cannot be plugged, removed or modified at
+runtime. Additionally, dynamic drm_connectors are supported for DP MST.
+
+This picture summarizes the DRM structure implemented by this series:
+
+ .------------------------.
+ |   DISPLAY CONTROLLER   |
+ | .---------.   .------. |
+ | | ENCODER |<--| CRTC | |
+ | '---------'   '------' |
+ '------|-----------------'
+        |              MACHANICAL
+        |DSI            HOTPLUG
+        V              CONNECTOR
+   .---------.        .--.    .-.        .---------.         .-------.
+   | 0 to N  |        | _|   _| |        | 1 to N  |         |       |
+   | BRIDGES |--DSI-->||_   |_  |--DSI-->| BRIDGES |--LVDS-->| PANEL |
+   |         |        |  |    | |        |         |         |       |
+   '---------'        '--'    '-'        '---------'         '-------'
+
+ [--- fixed components --]  [----------- removable add-on -----------]
+
+The video bus is MIPI DSI in the example and in the implementation provided
+by this series, but the implementation is meant to allow generalization to
+other video busses without native hotplug support, such as parallel video
+and LVDS. Addons which terminate with a HDMI/DP connector are possible too.
+
+== Design
+
+The old approach [0] was based on a hotplug-bridge driver, connected
+between the last fixed bridge and the first removable bridge.
+
+That approach has been rejected, and this new approach is based on a
+central place to handle DRM hotplug, not a specific driver.
+
+The drm_bridge_connector is nowadays the recommended way to implement DRM
+connectors when a chain of bridges is used. It takes care of adding the
+drm_connector when the pipeline is composed by an arbitrarily long chain of
+bridges, which it scans to properly implement the drm_connector
+operations. 
+
+As such the drm_bridge_connector looked like the ideal component to
+implement DRM bridge hotplug. 
+
+This series augments the drm_bridge_connector code to be able to create and
+destroy the drm_connector reacting on hot(un)plug events.
+
+== Series description
+
+This series has many preparatory patches: to make the drm_bridge_connector
+code allocate the drm_connector dynamically and to prepare various other
+parts of the involved DRM code.
+
+In current code the last bridge in the encoder chain is always assumed to
+complete the pipeline. There is no way for a bridge to tell "I'm currently
+the last bridge in the encoder chain, but I need an next bridge to
+work". This series has some patches to allow such a behaviour:
+
+ * bridges can now report whether they conclude the pipeline or not (I
+   propose the "tail bridge" naming to tell this)
+ * returning -EPROBE_DEFER on bridge attach is not considered a hard error
+   anymore, it's normal when the next bridge is needed but not yet present
+
+Compared to the hotplug-bridge approach, now bridge drivers need a bit of
+adaptation in order to support that the following bridge is
+hotpluggable. So there are a few changes to the samsung-dsim bridge driver,
+which in the hardware I'm working on is the last fixed bridge.
+
+Finally, as the current drm_bridge_connector API is unable to support
+hotplug, a new API is added to enable the new features. This makes existing
+drivers not affected by the changes. The last patch shows to changes needed
+to an encoder driver to switch to the new API enabling hotplug support.
+
+== Series layout
+
+ 1. Add a dynamic variant of drm_connector_hdmi_init()
+    (needed for the bridge-connector to allocate the connector dynamically)
+
+     * drm/connector: split drmm_connector_hdmi_init() in 3 parts
+     * drm/connector: add drm_connector_hdmi_dynamic_init()
+
+ 2. bridge-connector: split the long drm_bridge_connector_init() in various
+    parts in preparation to be called in different ways
+
+     * drm/display: bridge-connector: rename variable for consistency
+     * drm/display: bridge-connector: store the drm_device pointer
+     * drm/display: bridge-connector: split code creating the connector to a subfunction
+     * drm/display: bridge-connector: use a drm_bridge_connector internally, not a drm_connector
+     * drm/display: bridge-connector: extract drm_bridge_connector_get_bridges()
+     * drm/display: bridge-connector: return int from drm_bridge_connector_get_bridges()
+     * drm/display: bridge-connector: extract drm_bridge_connector_init_hdmi_audio_cec()
+     * drm/display: bridge-connector: return int from drm_bridge_connector_init_hdmi_audio_cec()
+     * drm/display: bridge-connector: return int from drm_bridge_connector_add_connector()
+
+ 3. bridge-connector: create the drm_connector dynamically
+
+     * drm/display: bridge-connector: hoist error management to common code
+     * drm/display: bridge-connector: move drm_bridge_connector_put_bridges() definition eariler
+     * drm/display: bridge-connector: add non-drmm variant of drm_bridge_connector_put_bridges()
+     * drm/display: bridge-connector: allocate the connector dynamically
+     * drm/display: bridge-connector: move per-connector fields to the dynamic connector
+     * drm/display: bridge-connector: protect dynconn creation and destruction with a mutex
+
+ 4. samsung-dsim: prepare driver to work when the following bridge is hotpluggable
+
+     * drm/bridge: samsung-dsim: remove the panel_bridge on host_detach
+     * drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
+     * drm/bridge: samsung-dsim: attach: return -EPROBE_DEFER is next bridge not yet available
+
+ 5. Misc preparation work
+ 
+     * drm/bridge: initialize chain_node list head on allocation
+     * drm/bridge: initialize chain_node list head on detach and attach errors
+
+ 6. drm_bridge: stop pipeline when a bridge is removed
+
+     * drm/encoder: add drm_encoder_cleanup_from()
+     * drm/atomic: move drm_atomic_helper_disable_all() and drm_atomic_helper_shutdown() from drm_atomic_helper to drm_atomic
+     * drm/bridge: shutdown and cleanup on bridge unplug
+
+ 7. Add notifier mechanism to let common code (the bridge-connector)
+    take actions on hotplug events
+
+     * drm: event-notifier: add mechanism to notify about hotplug events
+     * drm/bridge: notify about detached bridges
+     * drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
+     * drm/mipi-dsi: notify about DSI attach
+
+ 8. Allow common code to know when the pipeline is complete
+
+     * drm/bridge: add drm_bridge_is_tail() to know whether a bridge completes the pipeline
+     * drm/bridge: panel: implement .is_tail
+     * drm/bridge: display-connector: implement .is_tail
+     * drm/bridge: samsung-dsim: implement .is_tail
+     * drm/bridge: ti-sn65dsi83: implement .is_tail
+
+ 9. Allow probing incomplete pipelines
+
+     * drm/bridge: drm_bridge_attach(): don't fail on -EPROBE_DEFER
+
+ 10. Implement bridge hotplug in bridge-connector, enable it in a driver
+
+     * drm/display: bridge-connector: handle bridge hotplug
+     * drm/mxsfb/lcdif: enable bridge hotplug
+
+== Grand plan
+
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
+
+Here's the work breakdown (➜ marks the current series):
+
+ 1. … add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. … add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. ✔ protect encoder bridge chain with a mutex (v7.2)
+       7. ✔ of_drm_find_bridge
+          a. ✔ add of_drm_get_bridge() (v7.0),
+               convert basic direct users (v7.0-v7.1)
+          b. ✔ convert direct of_drm_get_bridge() users, part 2 (v7.0)
+          c. ✔ convert direct of_drm_get_bridge() users, part 3 (v7.0)
+          d. ✔ convert direct of_drm_get_bridge() users, part 4 (v7.1-v7.2)
+          e. ✔ bridge-only drm_of_find_panel_or_bridge() users (v7.2)
+       8.   drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_bridge_enter/exit() to protect device resources (v7.0)
+    B. … protect private_obj removal from list
+    C. ✔ Add drm_bridge_clear_and_put() (v7.1)
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. ✔ Migrate i.MX LCDIF driver to bridge-connector (v7.2)
+ 6. ➜ DRM bridge hotplug
+    A. ➜ Bridge hotplug management in the DRM core
+       1. ✔ bridge-connector: attach encoder to the connector (v7.2)
+       2. ➜ drm bridge hotplug
+    B.   Device tree description
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+
+== Dependencies
+
+This series depends on:
+
+ * "drm/atomic: drm_atomic_private_obj_fini: protect private_obj removal
+    from list"
+   - https://lore.kernel.org/lkml/20260324-drm-bridge-atomic-vs-remove-private_obj-v3-1-64deefe84044@bootlin.com/
+   - Reason: avoid sporadic deadlock
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/i2c/busses/i2c-imx.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+Luca Ceresoli (37):
+      drm/connector: split drmm_connector_hdmi_init() in 3 parts
+      drm/connector: add drm_connector_hdmi_dynamic_init()
+      drm/display: bridge-connector: rename variable for consistency
+      drm/display: bridge-connector: store the drm_device pointer
+      drm/display: bridge-connector: split code creating the connector to a subfunction
+      drm/display: bridge-connector: use a drm_bridge_connector internally, not a drm_connector
+      drm/display: bridge-connector: extract drm_bridge_connector_get_bridges()
+      drm/display: bridge-connector: return int from drm_bridge_connector_get_bridges()
+      drm/display: bridge-connector: extract drm_bridge_connector_init_hdmi_audio_cec()
+      drm/display: bridge-connector: return int from drm_bridge_connector_init_hdmi_audio_cec()
+      drm/display: bridge-connector: return int from drm_bridge_connector_add_connector()
+      drm/display: bridge-connector: hoist error management to common code
+      drm/display: bridge-connector: move drm_bridge_connector_put_bridges() definition eariler
+      drm/display: bridge-connector: add non-drmm variant of drm_bridge_connector_put_bridges()
+      drm/display: bridge-connector: allocate the connector dynamically
+      drm/display: bridge-connector: move per-connector fields to the dynamic connector
+      drm/display: bridge-connector: protect dynconn creation and destruction with a mutex
+      drm/bridge: samsung-dsim: remove the panel_bridge on host_detach
+      drm/bridge: samsung-dsim: move drm_bridge_add() call to probe
+      drm/bridge: samsung-dsim: attach: return -EPROBE_DEFER is next bridge not yet available
+      drm/bridge: initialize chain_node list head on allocation
+      drm/bridge: initialize chain_node list head on detach and attach errors
+      drm/encoder: add drm_encoder_cleanup_from()
+      drm/atomic: move drm_atomic_helper_disable_all() and drm_atomic_helper_shutdown() from drm_atomic_helper to drm_atomic
+      drm/bridge: shutdown and cleanup on bridge unplug
+      drm: event-notifier: add mechanism to notify about hotplug events
+      drm/bridge: notify about detached bridges
+      drm/mipi-dsi: turn DRM_MIPI_DSI into a tristate
+      drm/mipi-dsi: notify about DSI attach
+      drm/bridge: add drm_bridge_is_tail() to know whether a bridge completes the pipeline
+      drm/bridge: panel: implement .is_tail
+      drm/bridge: display-connector: implement .is_tail
+      drm/bridge: samsung-dsim: implement .is_tail
+      drm/bridge: ti-sn65dsi83: implement .is_tail
+      drm/bridge: drm_bridge_attach(): don't fail on -EPROBE_DEFER
+      drm/display: bridge-connector: handle bridge hotplug
+      drm/mxsfb/lcdif: enable bridge hotplug
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index a208fefd3c3b..3b19d4a424ca 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1913,6 +1913,34 @@ static int i2c_imx_runtime_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
-+{
-+	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret)
-+		return ret;
-+
-+	i2c_mark_adapter_suspended(&i2c_imx->adapter);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
-+{
-+	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	i2c_mark_adapter_resumed(&i2c_imx->adapter);
-+
-+	return 0;
-+}
-+
- static int i2c_imx_suspend(struct device *dev)
- {
- 	/*
-@@ -1946,8 +1974,8 @@ static int i2c_imx_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops i2c_imx_pm_ops = {
--	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				  pm_runtime_force_resume)
-+	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
-+				  i2c_imx_resume_noirq)
- 	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
- 	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
- };
--- 
-2.43.0
+ drivers/gpu/drm/Kconfig                        |   7 +-
+ drivers/gpu/drm/Makefile                       |   2 +
+ drivers/gpu/drm/bridge/display-connector.c     |   7 +
+ drivers/gpu/drm/bridge/panel.c                 |   8 +-
+ drivers/gpu/drm/bridge/samsung-dsim.c          |  36 +-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c          |   7 +
+ drivers/gpu/drm/display/drm_bridge_connector.c | 835 +++++++++++++++++--------
+ drivers/gpu/drm/drm_atomic.c                   | 115 ++++
+ drivers/gpu/drm/drm_atomic_helper.c            |  76 +--
+ drivers/gpu/drm/drm_bridge.c                   |  47 +-
+ drivers/gpu/drm/drm_connector.c                | 155 +++--
+ drivers/gpu/drm/drm_encoder.c                  |  38 ++
+ drivers/gpu/drm/drm_event_notifier.c           |  58 ++
+ drivers/gpu/drm/drm_mipi_dsi.c                 |   3 +
+ drivers/gpu/drm/mxsfb/lcdif_drv.c              |   8 +-
+ include/drm/bridge/samsung-dsim.h              |   2 +
+ include/drm/drm_atomic.h                       |   3 +
+ include/drm/drm_bridge.h                       |  19 +
+ include/drm/drm_bridge_connector.h             |   2 +
+ include/drm/drm_connector.h                    |   9 +
+ include/drm/drm_encoder.h                      |   1 +
+ include/drm/drm_event_notifier.h               |  36 ++
+ 22 files changed, 1078 insertions(+), 396 deletions(-)
+---
+base-commit: 289b9a790d52a6865db3006f07922a9191faa54e
+change-id: 20260515-drm-bridge-hotplug-46265d3a2f85
+
+Best regards,
+--  
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
