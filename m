@@ -1,165 +1,164 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013062.outbound.protection.outlook.com [52.101.83.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9723CCA15
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 09:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779270086; cv=fail; b=OMlO5wZeQVfeyd/XIpEhpqLZKUZVbDU16Lc7wQ/9Qt/8QdM/6Ct/Xrk+56CxbE1y9m5e65Aq4fHKrO2kaH/kYgIUc9SP7OiGqCIUhrAEjvkWts2N/GDhRV5ZmZTjyhn6nqYM0Yh2E6u494Lk0K419ouzbK70SyL0nyd4sQ1grnE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779270086; c=relaxed/simple;
-	bh=eUszgNfvg+TV0q1yMHsg+qXwob9SUFi5ua1XlMQzqn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MwRQaTi7oP188mp6Ox9dyiIjLgC57325+VZOOmghlYPpbwQkx/2Kna34s1qbMdarwVbpOKe9yZ+dBn/dq0aLa30VJ1d6WVHcJ1dM3H0FkDnBEAUdYuod0ZZviChLRylJQXMwUC4Z1XAKpGP4WDXMixRvz7fbRNW4ykDEu85y95I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AUrMyMOx; arc=fail smtp.client-ip=52.101.83.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F43836494F
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 09:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779270433; cv=none; b=J6ZZhcTZqtW1/26Ki8F10WOmHgQ3GeYoWhC0H9MZvzNo8N1HAPxL+InNTInxUG7PrK6CBzgDTf2hX5tPKz/a2DQs8eU3rQlhu3mh87x7Rbb+4MdPaefNfc4PxmAtDQ5qjMxnzzkkPmuQ3dT8HbflQQ1WPGiYrC7qpZVax0Bsg7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779270433; c=relaxed/simple;
+	bh=X7BW7D861hv39ykQLFRhXTQJi3myg20TO6jLy1ItELg=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KNS2HpH1PQflLAmkdvgORFDJq8D5HqshPwdpXv8+mz8eGS0k/bbMyMyDeeJYrYS5donl1bKIV/AH5gLcsr2X0zvtdMlIvA62QWhyG2BEvlrBLALEEINz2DatfGG76K/7zYRROpQYeipTuK7kuEWDDNPBEZ4A5OX2J6vX8MG578E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5DH5mQ+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AUrMyMOx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ymg7Z9y1WZklL+VTMlga4gnHsUTu4/W6mzV3kotd2Tg14Qb00tSpEUZ79fCytXm12r4nITgoiyuVAQJBClkfsP4mPTYN+gZAv0gDQFPGeYa/HN7a/utYXu5QAeHyNUjRimTZY/eJIWEmVGuWSN5JYowpjEoMU15M0yaC9V1a2fhDfI985lOnSZOA1rrV9taKCn735Rpy9XtpRxOpaB+adKaBumDdd7GPYVuydGjcIngOceKkVPpHnk31psawcCw/RjMQUR1sIq+nQy53TSa6bt5bbs1gseySIWOtYNzhPtkqebrj4ZRzaPHUS0iEIm4kfmao08wrItUlW5oVqmMPKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=08pRR6fBUm3OEqKTRX3ApiG/BBLOhDiex9gg/EHM7l4=;
- b=UuxCTlvNfEOGRKBNAXDawoWA6Z98Rguzj1610SNULVAA61Ze8UbbbQO0afP9LNugiHjihEnBeCRIIGA0XB5mIrH42ZuGdNgNVDupk27eEQgQVC/z6KWWIz33F/l6AToywZo/IBdu/bTUZodliWDgQeLQQ4tEJzMRxEVDD1fUP9xC05Tt1PJF1m+OdZPUX4ziHjMpN8qSDm4aps14UYyOBtBEZskLlCfugWHDrqc3uTLKVZ2FfCjcoOxU2+P84dxDUeyTwDQFbBSOn56mDGrgG4m8VFUMQVUF3mYCEqb63cYXebZl5I/qfYNjx7WnXp1V2in97bHeJaDcoTpx56q9wg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=08pRR6fBUm3OEqKTRX3ApiG/BBLOhDiex9gg/EHM7l4=;
- b=AUrMyMOx1ypsp7FdqLsG5ubH8KK6mZoDQjATobLdhjQGUPnoxtLXl/VKr2QJujgA8I7hRTLPc81LGuR1GMV24vz0CV+0KBbj+bLr/SmPhZT2lynmBjZAWfgvx8KvtPh9zn+UxcC54ig4V6/Aw6cZE7UfltL7o4NZwBwXfbgAHbx3OmGqbh7UEK4CvjFVE21vBHWZOO/KTrg6DMC0HTTzE4sGfqEHvObL6YAP7pPqiKX3mvNVhuNmkFpr0ZmbIUTCIZ3Lz6wIBbkukZ5kNo/VNsCFgQSVgTj8rdTdPC9uEul63+7vfgEeWma/zSPa6nFPkGaRZeRD0XJVdhk6bp0Lfw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by AS8PR04MB8531.eurprd04.prod.outlook.com (2603:10a6:20b:422::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 09:41:18 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 09:41:18 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: Frank.Li@nxp.com,
-	broonie@kernel.org,
-	xiaoning.wang@nxp.com,
-	Fugang.duan@nxp.com
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] spi: fsl-lpspi: fix missing RX DMA termination on TX prepare failure
-Date: Wed, 20 May 2026 17:43:08 +0800
-Message-ID: <20260520094308.2882892-3-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260520094308.2882892-1-carlos.song@oss.nxp.com>
-References: <20260520094308.2882892-1-carlos.song@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0448.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c6::15) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5DH5mQ+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1461F000E9;
+	Wed, 20 May 2026 09:47:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779270431;
+	bh=gH/m+j/Gk/MK9tXm9gys/18jYH1BF48k+XfPxdB4phk=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=V5DH5mQ+aCj+8WHerUmaDmdhdzQ5FTzvOGpwxu2nCv6xJ8Gr6PIQfkluPJ3Lta7N/
+	 Mty2EBI0tB/7NDm30B4jhQOWVBH6Ld5WAdbH8DkBtBbbx5JTazLwabR+V88o0pc3ue
+	 UaEEE2VrK/cOFTmyVdNDClqEsHK64PZrNWrR/0EStIeDMRfHfBJN9Tf4iuQ5L/NEi5
+	 hnXM469CFZmDVzogDeoOwJ6M3vWwK/oseairQrfMPDzr1jz+LLR/sFNucSf2V4ARJU
+	 S8/nr8QaTOKYZYgCVTmrZqoA3IsCgd/5qIuOLqhZHdlLgBEfHojY/58p3LnTJYq3jH
+	 fXDIt2wqx18zg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] i2c: imx-lpi2c: reset controller in probe stage
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: Frank.Li@kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260520091658.2879993-1-carlos.song@oss.nxp.com>
+References: <20260520091658.2879993-1-carlos.song@oss.nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 20 May 2026 09:47:11 +0000
+Message-Id: <20260520094711.AF1461F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|AS8PR04MB8531:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1f1b505-19a3-4620-37a8-08deb653f109
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|19092799006|38350700014|18002099003|56012099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	wodxcNN5SA2Q/DFBgrPOssGaRDU4+JCJowhdyTwgN0XFzOLO0+BP/CrngyUxCQdlKBgVojYqVrdPflDMJqzgiI9R9JKjzCk1syretHicl85rFqxuynsVy3ESFIHM+LnQCYEsOeQlpMrrz7nucOyeos37uJR9rIcQdicz3fG5Wy0hudXTpMlE+UGPi+XlpkU5BwaEovwZeRbgguE47G1cCUMmiSOc1qaOnAPBXDMNX83qFcnspaGQ53J0QQUE+dGIP2itpVW1dRmi+kHBjgvMZgfF9PSgaZRVdBBL4EL6U6AnophI4WODuZFszmUSf7ZVd9EcyCCtHj1kVxEx3l3Ww9WH20J1ho/DGlhXzbcAhBG+wbVmXo21mScuwTc/Q29OeLF2msya70NvzozhrFWdXSTeKJKEneFpeWJo5lPGynC7YVsRxhE+JmLgY1v/ygAKxuZKpjKY463t4Ft1fiecGFG+vBBTbupEykzgNPWUH3WXIibkkWkIGJo1Jq4XZn2df28O7K07z2PIoNDSI+0dRA6cVgdvYJwT2+OuA8KcyrxkuoG0x5Efm7O1t/fDl5Xh6zfBt5+KnqVudVblw0iSHTFck54QWyUCUcx2LgFcf1Dx1MXAfuRMojdnA8UTBayfGTgflhmHAQxeZH45gT39fNuxzYTaayFTsgzoB7j588q2ogrCkqQ60EOl6+fuRUpPmppFg0sXXFD0dy10rKnpBEq3oS1nxMs8j4G9oSs1r8iQbZV+Z4fjERHBdGXept8W
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(19092799006)(38350700014)(18002099003)(56012099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bakefi+/sV6oY1fA5EQvxPoQgD9LnBxgNJ2xGT8yMLHUEB7hg6sDRZ5pQ286?=
- =?us-ascii?Q?hz4ML+qIts0YeFnY0ZJReE5nYs6iHeaFx+MbQ6+9oIsRASqnNaJRQb+JnWGo?=
- =?us-ascii?Q?/jLAGY+H+dgMMkKbRSo/5Ojsl4cy3Q1xxc+lxH858jVUoSzmbz8/MQxJPFJj?=
- =?us-ascii?Q?8ECgKaI8XALZ/ifNJEC111xD03BVfsuieHBldaN+YRMnWKTYvnrbC6z8ynKk?=
- =?us-ascii?Q?U8qkGn4HYImYc9hvRFdOzhPcK0RdTa0RE73mGqEbbrpAg8ej2KxK3HN+Cfa0?=
- =?us-ascii?Q?fqHQBEJ6K59sjTDvYXH93c1qqN0C2uD6EJ60E/a40VFVyb25JxtXpGjmfik5?=
- =?us-ascii?Q?L6xBKVegKjXRjIuvassUdHGl1naug9uvO12UxbGsDJ+7Xb9orECssJCHFAns?=
- =?us-ascii?Q?+maGZacH0remlkPsmB5xwbPTuNE+8AUDp9haiAaeXfpcyPU7qExGaR4uSGxe?=
- =?us-ascii?Q?W0N8gVKjcHlqAP8hoqJltKVAhT2zo2wLg5CppG9r0+R9fdnHmFgjOFCCTkVr?=
- =?us-ascii?Q?o3FusUN/JeBkGhwKjZ7eySIO+qIEI/di6UyjIbSstZ1mclCaqKC+zxtQZiCc?=
- =?us-ascii?Q?3GIva91k8/QQnn7k7DrrizAdMTXr0Ofak+Y7SM1ruLYtcZl7Iit4oAelSpUA?=
- =?us-ascii?Q?TeAqwcNrpz0I9l5ZJStHDefWsSw4E/Yfy/phJH4CuwVtrjejppVoGfnuMz42?=
- =?us-ascii?Q?+B2pYo3v1l9M1oCgPfmrGYbiW5m6HmKe75hSLAdjElxhMZ6WwV441ZVYJGVu?=
- =?us-ascii?Q?InO0WqSGlOm4HCf4E/nmzFBA2miS96GW72nOgTWSA4WUdHe7Adthh5XxiTBo?=
- =?us-ascii?Q?CuGNmDg9LwGRDTx+H31mDVcKp3tWBBrlR+CiyiejVUv4d0hA2x6Sf/JY6t2+?=
- =?us-ascii?Q?mYA7dL6YKbPuQR1WYExx3ytVDuYux/YbXnsuIPSJRd5eQcgxu+ceDc2sbhxD?=
- =?us-ascii?Q?U0294R/q43IB2X92AXB1jvDpZWLcE1qRdmmJtQl0/hwt89IqzXXpCjDK8ysZ?=
- =?us-ascii?Q?AKUIt+V5PslGD7X/0IQoW3U3AdTiYG0rHTycckenkXLUwW4v8qcpPvcYbFoi?=
- =?us-ascii?Q?UPdN2TLgEu0HB1ZZBqLUFXHTxrlI/tVO1gm8epHGHtYy0DomnRjL+Coq5lBF?=
- =?us-ascii?Q?iBfy72OOF3esRmMlmOujD1bt7sHgVvon4T7BaU+kg2Kzas5wWaA6Zy6U4Cgl?=
- =?us-ascii?Q?i7I01H5JDYEyxkTylDvRvDf7Ai8qJ3qaCBFAp63bDmc7SKepAJT/0XNVAYwN?=
- =?us-ascii?Q?ornOnyoihH/sWjIT9dQQIH8YBIjzAHK3FnMBE+CWSzp8R7he/CRVm8M0daww?=
- =?us-ascii?Q?T6Q6sIbc4Z/XEjSMqzBhCyJxibenxdKKgPG1jNpZYwXOrW2QqEwGGE7z16x/?=
- =?us-ascii?Q?BZl6FMN0t2KNn47PWVlPquVTf/ucVrDEqZ6v22/4Q/NQSuSrAuN8IdMUFQEH?=
- =?us-ascii?Q?8NAEU4nGpWKOc3iKqjDqkrA9S0iS47QE4KflQu/sSin47aLSlxEMekxnebid?=
- =?us-ascii?Q?/A5CIZG9PNZk0h3NKiy/hXPcHWSE262BoOIogJZUzxh9GWaMRfCFYZlAWvOq?=
- =?us-ascii?Q?8y66VNpu3i2DIU+zt4MofKJfMw07F3oQCSt/GfFW8qYA7vT2PDgHe12s8Y41?=
- =?us-ascii?Q?w1z5APBMq5n06VJtgfjxTtVm1l7Pp9Lp//ymsARRplW/LJcoJMi4lgX6/oXH?=
- =?us-ascii?Q?chh+LiBLmzviMNFufTMYI2IKrq7POg7G9c/nkZqyyB3A76tPzMRRg9ErL7+1?=
- =?us-ascii?Q?x6RD7COFaw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1f1b505-19a3-4620-37a8-08deb653f109
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:41:17.9744
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JUIX0kylZjlnZYmViKR3/EmxIh10DSdrD2WsqQuOzFJzd8CaCTjHF9MpJO/sD8HFGCCtpKoJ6ydYzVV7MA5uxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8531
 
-From: Carlos Song <carlos.song@nxp.com>
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-When dmaengine_prep_slave_sg() fails for the TX channel, the error path
-only terminates the TX DMA channel but leaves the RX channel running.
-Since the RX channel was already submitted and issued prior to preparing
-the TX descriptor, returning -EINVAL causes the SPI core to unmap the
-DMA buffers while the RX DMA engine continues writing to them, leading
-to potential memory corruption or use-after-free.
+New issues:
+- [High] Failure of devm_request_irq() triggers a devres WARN_ON due to an =
+invalid devm_free_irq() call in the error path.
+- [Low] Discarded return value of dev_err_probe().
 
-Fix this by also terminating the RX channel before returning on the TX
-prepare failure path.
+Pre-existing issues:
+- [High] Clocks and device power may be left enabled indefinitely after dri=
+ver removal.
+- [High] The software reset only resets the Master logic, leaving the drive=
+r vulnerable to an interrupt storm if Target (Slave) logic was left active =
+by previous stages.
+--
 
-Fixes: 09c04466ce7e ("spi: lpspi: add dma mode support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-change for v2:
-  - Add fix missing RX DMA termination on TX prepare failure.
----
- drivers/spi/spi-fsl-lpspi.c | 1 +
- 1 file changed, 1 insertion(+)
+commit 593975fdf4a4ccf02192ff29b2ef1c36d90b2a3d
+Author: Carlos Song <carlos.song@nxp.com>
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 1a94a42fac31..906892453a84 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -647,6 +647,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc_tx) {
-+		dmaengine_terminate_sync(controller->dma_rx);
- 		dmaengine_terminate_sync(controller->dma_tx);
- 		return -EINVAL;
- 	}
--- 
-2.43.0
+i2c: imx-lpi2c: reset controller in probe stage
 
+Reset I2C controller in probe stage to avoid unexpected LPI2C controller
+state left from previous stages and hang system boot.
+
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
+imx-lpi2c.c
+> index a01c236964819..16b6a1cf177bb 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+[ ... ]
+> @@ -1535,10 +1530,25 @@ static int lpi2c_imx_probe(struct platform_device=
+ *pdev)
+>  	pm_runtime_set_active(&pdev->dev);
+>  	pm_runtime_enable(&pdev->dev);
+> =20
+> +	/*
+> +	 * Reset all internal controller logic and registers to avoid effects o=
+f previous status
+> +	 * The reset takes effect immediately and there is no minimum delay req=
+uired before
+> +	 * clearing the software reset.
+> +	 */
+> +	writel(MCR_RST, lpi2c_imx->base + LPI2C_MCR);
+> +	writel(0, lpi2c_imx->base + LPI2C_MCR);
+
+[Severity: High]
+This is a pre-existing issue, but does this software reset only reset the
+Master logic?
+
+The LPI2C_MCR register controls the Master logic, but the Target (Slave) lo=
+gic
+has its own independent reset in the LPI2C_SCR register (SCR_RST).
+
+If a bootloader left the Target logic active with interrupts enabled, the
+hardware IRQ line would remain asserted. When devm_request_irq() is called,
+the ISR lpi2c_imx_isr() will fire. Because lpi2c_imx->target is NULL, the
+ISR falls through to lpi2c_imx_master_isr(), reads 0 from MIER, and returns
+IRQ_NONE without acknowledging the Target interrupt.
+
+Could this result in an unacknowledged level-triggered interrupt, causing an
+interrupt storm and system hang?
+
+> =20
+>  	temp =3D readl(lpi2c_imx->base + LPI2C_PARAM);
+>  	lpi2c_imx->txfifosize =3D 1 << (temp & 0x0f);
+>  	lpi2c_imx->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
+> =20
+> +	ret =3D devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQ=
+F_NO_SUSPEND,
+> +			       pdev->name, lpi2c_imx);
+> +	if (ret) {
+> +		dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_imx->irq);
+
+[Severity: Low]
+Is the return value of dev_err_probe() intended to be discarded here?
+
+The error code is already stored in ret, but dev_err_probe() is usually
+assigned back to the return variable.
+
+> +		goto rpm_disable;
+
+[Severity: High]
+Could this error path trigger multiple kernel warnings?
+
+When devm_request_irq() fails, we jump to rpm_disable, which calls
+pm_runtime_put_sync(&pdev->dev). This drops the runtime PM usage count to 0
+and synchronously invokes the lpi2c_runtime_suspend() callback.
+
+On platforms where need_request_free_irq is true (like imx8qxp), this
+callback unconditionally executes devm_free_irq(). Since
+devm_request_irq() failed, the IRQ was never added to devres.
+
+Will devm_free_irq() fail to find the devres entry, triggering a WARN_ON in
+devres_release(), and then call free_irq() on an unallocated IRQ, triggering
+another WARN_ON?
+
+> +	}
+
+[Severity: High]
+This is a pre-existing issue, but can clocks and device power be left enabl=
+ed
+indefinitely after driver removal?
+
+In lpi2c_imx_remove(), the driver calls pm_runtime_disable() and
+pm_runtime_dont_use_autosuspend() without first ensuring the device is
+suspended.
+
+If the device was active at the time of removal (for example, if an async
+autosuspend timer was still ticking), pm_runtime_disable() cancels the pend=
+ing
+suspend work and leaves the device permanently in the RPM_ACTIVE state.
+
+Because the driver relies exclusively on lpi2c_runtime_suspend() to disable
+the clocks, leaving the device active means the runtime suspend callback is
+never invoked and the clocks are leaked indefinitely. Should the device be
+suspended before disabling runtime PM?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520091658.2879=
+993-1-carlos.song@oss.nxp.com?part=3D1
