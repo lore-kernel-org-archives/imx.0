@@ -1,111 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011046.outbound.protection.outlook.com [40.107.130.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043913955C4
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 10:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779271236; cv=none; b=cfP3PGeaLUM8HSOml60m+EwpKt0N6mkTSvzurq+4x9eiLZvUhOU+lSpYf+tNXEAzuPfHgsxLKP9U23ewJQdu+5OvTXvKGKMA141awk5h6MqJzIB0JGXIlyCi7KLXKAkn31LECWmceBInNKFjmR1DNGTg6argWIeqtt4vWI8AQro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779271236; c=relaxed/simple;
-	bh=0YYj2Amngi2rUPkMp7bZftJygSU9wxR54Afde9Qwn+U=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=R4vtmC9aWWkinX+W34EvYIqIBtZc60+CeCGvujnOh1zJW+WtkslykJdmqkbUGd0rmZAyE6SrrrimjtezMg9G1h9W8BkYTdwuyMZDMaLZ3FWQykDDNwPEYGOVpY2mifOLY8xK4ug772DakO3uZ60BMipk9DtBdbcfzI07W1meES0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6JIAbJB; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D8839934B
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 10:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779271996; cv=fail; b=GCdCn1K6agV1AyXNqj9TUP8L0SdpRINLM5lCHGXMDD2wqPDAuCqpjjvzBPtKEVFkUbQwpqGoGxSF6oavKVxhoXvRlV5n/qQE45kmRFfOkn0xw4v36I3QY60dq2oDuPOQntfCKBTctfWINb5eTSLExw74MBiZwwxexJVWMmFk/hw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779271996; c=relaxed/simple;
+	bh=kvMnWTyUwDZnPkBfngriN4lDAOMtBe9jb5PlLGiKk2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=BWfIJY08nhPXZxGliCRXn6r1duf+7UffcdPy+tBdOKQXpXTLFa0d6YNw2p3ZqnYMHGUHIXouYH5vpYlU0D99nDNfLeDxUEfYFtDn+YbCx0SrtPJ7HrBdX+W5De8H2S67CKYNA8KGgVCUf6A7nRIba+n0hYJfgyBy6ShTMHr2Vss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FEUPZOga; arc=fail smtp.client-ip=40.107.130.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6JIAbJB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F4D1F000E9;
-	Wed, 20 May 2026 10:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779271234;
-	bh=cvubTdTbBCi6A/+OcCEUEdo4NTFyJFaBg9uty87oAqg=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=c6JIAbJBr6kB0jsQPBb3/AdyccLzgo78SqOWU7VlGQITcRmNqItbLUnzbqG8mw/TE
-	 mXu9l2YmYfS1qljjOUVY0uJ03rEmZfaZZeZ14l1w7WfMAbBCYj1jjUF9Q00WOjB4fn
-	 3S4ryRaoIFqzYfG7PLNzZSOFWVw3MGwdfgt2eNFwNBkOS/uQwpBvqSzQqKe52NSK4O
-	 tb12gXENdtHlDnq5E4mbac+OjJqs0ETpiQ+hIWuvL/xQSC5IN8hhpWOKGawWUNqtP/
-	 Yl2n5jg+8zQB6+FG1mZ9qoMxvBG2qOag5wVqq6j2vTUPOSVANf241y/qZEWjY3Vm9/
-	 Eg/LU993etazQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] spi: fsl-lpspi: replace dmaengine_terminate_all
- with dmaengine_terminate_sync
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: imx@lists.linux.dev, Frank.Li@kernel.org
-In-Reply-To: <20260520094308.2882892-2-carlos.song@oss.nxp.com>
-References: <20260520094308.2882892-2-carlos.song@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 20 May 2026 10:00:34 +0000
-Message-Id: <20260520100034.A4F4D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FEUPZOga"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=acWBQJH/Rt/qzC98JidIPtedNv7RcHHT29V58zogqBRxGXJQBZ5Uds27tOOjTqqSw+GMGfysAXrfheVVCroscKJDiJZ4RCghqGSKMeP6gSyk+N/s36VGi83bHKIqkvA9v+xlqEHQYz6pRYWt8cHdJR1OYveOUIyhmpBcvHIZnKJAdJ+5g5IczwuZNWwRLTYIFlE3Qrdb2C7PiRR1oZaf0dru6hKJu2xwuVREWNDC+Y7jw0aiJKsO+ASVGNc8uXgxTLOtiqAxBR7jOL6/kZssHq+89oQSvml1jTS8fofbNyDAAHr2LD3UACdGJCUlVbWUMu5+G4dkwfFqwSs+UCUgCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IM5aHDmdHUaLMeolZDnNUMi1Lfky8OYfS7KhD0kGMmw=;
+ b=y7uQVS/O/COCAmVZXZ3KqUL+2retTgqorqHH+ElZJA01VQF4VcyTo+Vw2vRUYGOBzBQgBavYorED1H8uA6ep79xYffl04a7Bj8cAVeAu7A66xP7XxGtY1dYHFChGa5lsWXGpgRwJnY9xWQbtc+f9bUDtSprAPwqhKxm7TdJ2FkT9SKIEDN2AC9bAhfQ1RU7zoM7atSTSJFD8FQWJFf1Zh8I+eEG4oVIbj2CUiwwhRVofV2F/+uh1ogXp9RbMXXGmmiNIGoxGflZxx56TNELWhLUUakmRjNr68wP4eQK+ZFr7f+abaQyi0Da54wWP5FLyXw8Db2+lTWYT10PAQ0dHyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IM5aHDmdHUaLMeolZDnNUMi1Lfky8OYfS7KhD0kGMmw=;
+ b=FEUPZOgalJndUhvGPPQzC6Jic+bFT/+LEDdBpBOUMXvhiWI3d+j7at+prKRkWpg9AGPqGTfoo8RM8CLyfuF6XDEz2s8yhy44KPWG34QI7ftKGkYaRbX+5mcvVTBV0xZcajOcWkgfJ33SdStACgr+uh9bqU6qbuOczrNRZy72wZu5h5q3P+aw/fz5Aa7HId96ncsnhPz/aGAPlSf26CXJIoTtg1xuSF6KB+i7/tTl3rLFHbGDOK/uZkjppeJystAIFM+dU70a1GGPS82875un3GWy1pirBo+IYix/+Ek0TohZfAQKh9BriZ9Vg8GXVULVz75ekn5eU+sNS6zFMvv6ZQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
+ by VI0PR04MB11892.eurprd04.prod.outlook.com (2603:10a6:800:305::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
+ 2026 10:13:05 +0000
+Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
+ ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
+ 10:13:05 +0000
+From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	carlos.song@nxp.com,
+	haibo.chen@nxp.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] i2c: imx: mark I2C adapter when hardware is powered down
+Date: Wed, 20 May 2026 18:15:04 +0800
+Message-ID: <20260520101504.2885873-1-carlos.song@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P195CA0013.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e2::16) To AM0PR04MB6802.eurprd04.prod.outlook.com
+ (2603:10a6:208:184::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|VI0PR04MB11892:EE_
+X-MS-Office365-Filtering-Correlation-Id: 098f2bf4-90b2-40bf-cb8a-08deb65861e8
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|19092799006|366016|18002099003|56012099003|11063799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	dB1aQSjnaQzEKj6XQ6UNTOe37U9cDa+L9UOIRJhyuA4ybEHJrzO2fP1OqZCFUPh1OO2rkyawLGoFW/hIpi3K7YKpPV0HbFpUZZsVck1nWlx3WNrQrLzF/IWeSQ8PtvdrISefL7+kZqH1fVcMuE4RDSbyUEIQassHMY+vmw/42gCt0//IMI/fZOagQfEuLf8jebT92ESSLaF1q9VDPWNagp0Us8Cjt/ggXpUZnXNUmAGY6frVYHfTz9g2MB+Kq1QsnjfqC/DynvnmTw2oA1HDWfLEEVQ/JPm+1rT0iZ1LeT0N62lvasJk0ADG153jlCKAa/f0VppbbZygM8vVKNQc8sYLi5JsMkFcFHlzi54yWV/Zq4xTsnKlx8paRSyX+h+YJ8KnP8XZADCdhxw+sdAq7kX3FhoFJ7SDQY/zSH+56fXkzau2lcdo2b6HzDODHvlct8ztdWPkxNBDsKlWCUub2FivJ+Za+9Vwh28awf6HTWEdZuujtt33SrTSMhkYW1i45nzN8hR8bzfq2w6RQIkWhYjAQrF0GMyOH/qGCKleSa/V9RQ2UyEeXqK22uB4ugZcngi+lvzzVa5oN1xOAxO5f1E3oEU3rAKrl71iFslG91b+F5dbRxFpa8hp7zHERKX1IO1jaRQ6aaRHB4oazlHXbODMyXsqyQf0hTbgcqBvzkyeCuKIzA1fhTCuTRf+CTkqZytyZ3dv2V/2ZmVRF2fE6o4lHb4VOhWNcwU5+X773IkXrwzqdvoF7Sgq35diuPSc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(19092799006)(366016)(18002099003)(56012099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wI1/SyppS9DFuTvDoiOggamCMRnWcipfBBXQHvGQbUHwlIaxAb/188rYc4Xp?=
+ =?us-ascii?Q?V340zSDEIwxkEd6SQJIVVaGEVNZoZ/fYK+u8KkWRJwUIhWrTy6dIRMJ0/jAH?=
+ =?us-ascii?Q?nzKHy2ScR2v+yAFCvsNfd7CZMoAKUsFOi3AGBZW+mH6W+C88YbgEzcVlPyIv?=
+ =?us-ascii?Q?oJTTLjdPQ0Qxpg0PmSBtBYNB1tK38jDSBA1ocvIJ9L8//togzzH/HEY7Ykq6?=
+ =?us-ascii?Q?8rXUz+hXN8B9XgpSlnhfoMpVXRNdlg4h6Vr0e+tp0vT01BkBrnpvziMs/45i?=
+ =?us-ascii?Q?Zf6912ISELmoGtVn05cpAgQHwhcTQXuiIy7wKEWnHbTixSWDrXRPixKMW6dh?=
+ =?us-ascii?Q?C81iqh/2Pt1nhYTA4U29EaxXrm3PiI+OFgd9yODVUCQNzdJO1SBXWJqCdykP?=
+ =?us-ascii?Q?4z8GRwEFOPCh+JorRx/z2ZEzYEObuQNWPY4yWQ+7MPww5fAxhe44XEu36W5Y?=
+ =?us-ascii?Q?hWYVI+1zhQn2bsiCfXai/2LJAz8n+yWNMtdOfU2ltXFiMOAQuFUvx9xlVkMw?=
+ =?us-ascii?Q?gltJX9rA2PNHSvtP2lzsW1ZlQLoSJFrxMUqjnLD8bpDnxlxHlBzXwObE835o?=
+ =?us-ascii?Q?VTKMYALBojMzsoAI88rXGqosANg9ONG68Rpa4VtNyZzMYOscF7zInkP502lS?=
+ =?us-ascii?Q?0TpSdbFZREoFP3pPQupowjq+iyqFz41Hd7NSq4jRjk+VDniJb0mSQTrCfvSY?=
+ =?us-ascii?Q?PC5eprUJAUy1jbZrBW9wu5LZFLj3E9qpi4zkxInnZAPVgRXqToIvcqpDWq2j?=
+ =?us-ascii?Q?SJnkTEtCvLj7b9h90ykmydDkNxVvDfrlk++ro8DrvMoOzX7uK8YNJv8Q+918?=
+ =?us-ascii?Q?kstpUrnO9uUtooclNq7fGy3jsR33Up4VpF5CfC1cfm5cvYZHcveK9MPF5Rxz?=
+ =?us-ascii?Q?5MIpOv++8YalkSixeZlECLtX1vDvl4uQKHHkK6ZBIXYveYaYkHpCXcFImo5l?=
+ =?us-ascii?Q?6TZs/i5GPmg1iXy/xO8JsxUFlvLufF+7xl+EsMY3FUCff/hglL2AO/gED5DF?=
+ =?us-ascii?Q?vAQlPAqAhAn4x5kn0MYCGnvJ/u1AKtxMKxk1scR0mJUjJGN6pf8CvHRa2Jvb?=
+ =?us-ascii?Q?bdHWffoKcfLVK+gR+uSjn9rRLrskwCSzWyTdUO54EWBET88oWzQvF11WrpMS?=
+ =?us-ascii?Q?n/PGqPU73Ybz2BMlW5yXPbXBiN+p0kndrlqpsgibcXqS7TG+mLLSgjUahKJi?=
+ =?us-ascii?Q?6BZoA0EhJGG0oCzphQMOdFbIhvGp0VbQx05tGa2BQAZOkqFJmo3rxaCJoO5b?=
+ =?us-ascii?Q?vOF5+WL1D0B5ih9O3yKcNkEmB6tnUZmM6N3/63zigaKGClfslFFP7w6M9Q8t?=
+ =?us-ascii?Q?O4vYmlD96uBe6+kZ99y/IHk04EK629bn/V86vZSEesIwhGPrtP+UQ+y0iMic?=
+ =?us-ascii?Q?CspNjdVtaGcOqXpuWhtv9gPYhqqO5OOaKbeIi8uFv+Z53FfNXNZyeqa6VGN8?=
+ =?us-ascii?Q?4Sxi+gPFCLKBRqcL11z8mlDIGbrVlNzEqW7isy2dhrC+QBkcjuEj8UhUUL9I?=
+ =?us-ascii?Q?Hh9oS8y1G73+2Yt9DkGpzqMGKmnQNqs3jpMBUERcNpUpKQFvt6+1ZIpFOejo?=
+ =?us-ascii?Q?hkEldQTEFkqZJh1namqLAV1f/rf9qQsfrq80wzeKfHvXolRLgzLHhj0Yx1sT?=
+ =?us-ascii?Q?uXFRr9Gga9t/IzCyqnBWExD+KuTdEfT8hOIqpnnezVf0NE2uP88JNhW5vXjz?=
+ =?us-ascii?Q?BgUdjX4+xnGJLkRBpNFeCLQBbeEsWOKxQqAkYMzy3eLcF1MA7C+ARMvK++3X?=
+ =?us-ascii?Q?okw7ouZIeg=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 098f2bf4-90b2-40bf-cb8a-08deb65861e8
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 10:13:05.2953
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 93sIP7fuGtt7P0xnZvbOXdhcNVybqbEIyYKhHlo9dAfotJlPH4LrTFQa7OHiwfafi2VWoQzd8kMPt7MwjOlvZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11892
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Carlos Song <carlos.song@nxp.com>
 
-Pre-existing issues:
-- [High] Lockless initialization of `target_aborted` after `reinit_completi=
-on` overwrites concurrent aborts, causing missed DMA termination and memory=
- corruption.
---
+Mark the I2C adapter as suspended during system suspend to block further
+transfers, and resume it on system resume. This prevents potential hangs
+when the hardware is powered down but clients still attempt I2C transfers.
 
-commit ad3a6e81718f2fdf6938f3f573651fd3ac718677
-Author: Carlos Song <carlos.song@nxp.com>
+Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+---
+Change for v3:
+  - Add hrtimer_cancel in i2c_imx_suspend_noirq to cancel slave_timer for
+    safe suspend in i2c slave mode.
+Change for v2:
+  - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
+    to prevent potential deadlock if a transfer is active during suspend.
+  - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
+    fails.
+---
+ drivers/i2c/busses/i2c-imx.c | 41 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-spi: fsl-lpspi: replace dmaengine_terminate_all with dmaengine_terminate_sy=
-nc
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index a208fefd3c3b..d651ade86267 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1913,6 +1913,43 @@ static int i2c_imx_runtime_resume(struct device *dev)
+ 	return ret;
+ }
+ 
++static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
++{
++	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	i2c_mark_adapter_suspended(&i2c_imx->adapter);
++
++	/*
++	 * Cancel the slave timer before powering down to prevent
++	 * i2c_imx_slave_timeout() from accessing hardware registers
++	 * while the clock is disabled.
++	 */
++	hrtimer_cancel(&i2c_imx->slave_timer);
++
++	ret = pm_runtime_force_suspend(dev);
++	if (ret) {
++		i2c_mark_adapter_resumed(&i2c_imx->adapter);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
++{
++	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_resume(dev);
++	if (ret)
++		return ret;
++
++	i2c_mark_adapter_resumed(&i2c_imx->adapter);
++
++	return 0;
++}
++
+ static int i2c_imx_suspend(struct device *dev)
+ {
+ 	/*
+@@ -1946,8 +1983,8 @@ static int i2c_imx_resume(struct device *dev)
+ }
+ 
+ static const struct dev_pm_ops i2c_imx_pm_ops = {
+-	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+-				  pm_runtime_force_resume)
++	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
++				  i2c_imx_resume_noirq)
+ 	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
+ 	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
+ };
+-- 
+2.43.0
 
-This commit replaces the deprecated dmaengine_terminate_all API with
-dmaengine_terminate_sync to improve the fsl-lpspi driver.
-
-> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-> index e201309f8aae3..1a94a42fac319 100644
-> --- a/drivers/spi/spi-fsl-lpspi.c
-> +++ b/drivers/spi/spi-fsl-lpspi.c
-[ ... ]
-> @@ -688,8 +688,8 @@ static int fsl_lpspi_dma_transfer(struct spi_controll=
-er *controller,
->  			fsl_lpspi->target_aborted) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but could this target_aborted ch=
-eck
-miss concurrent aborts due to a race condition earlier in the function?
-
-In fsl_lpspi_dma_transfer(), the driver locklessly sets
-fsl_lpspi->target_aborted =3D false after reinitializing the completions and
-issuing pending DMA transfers.=20
-
-If the SPI core or a slave protocol driver calls spi_target_abort()
-concurrently, the abort handler will set target_aborted =3D true and signal=
- the
-completions.
-
-Thread execution ordering could cause the fsl_lpspi->target_aborted =3D fal=
-se
-assignment to immediately overwrite the true abort state. When the driver
-subsequently waits on the completions here, it consumes the abort signal but
-fails this check because the flag evaluates to false.=20
-
-Since the driver falsely assumes the transfer completed successfully,
-it skips calling the dmaengine_terminate_sync() added in this block. The
-SPI core would then proceed to unmap the scatterlist buffers while the DMA
-is still actively transferring data, which leads to writing into unmapped
-or freed memory.
-
->  			dev_dbg(fsl_lpspi->dev,
->  				"I/O Error in DMA TX interrupted\n");
-> -			dmaengine_terminate_all(controller->dma_tx);
-> -			dmaengine_terminate_all(controller->dma_rx);
-> +			dmaengine_terminate_sync(controller->dma_tx);
-> +			dmaengine_terminate_sync(controller->dma_rx);
->  			fsl_lpspi_reset(fsl_lpspi);
->  			return -EINTR;
->  		}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520094308.2882=
-892-1-carlos.song@oss.nxp.com?part=3D1
