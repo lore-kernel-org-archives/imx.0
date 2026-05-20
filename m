@@ -1,254 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010049.outbound.protection.outlook.com [52.101.69.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF9A3AC0E4;
-	Wed, 20 May 2026 08:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264825; cv=none; b=d8oNSk9tf6De1cMKXcFwPFu/0aRFFnjnzWxsABnNrJNAIrClrsGtXezO3mo0sj88ZnlieQlg0RmWsreoHzi1gVwd5AGl8uNHjEt6GCgS8ppDYgaM37hI3dp0pEroc/oI6RDYVUy6xvijd0PvzBb6lWtwoZzib5gJRW+gGjRAUlU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779264825; c=relaxed/simple;
-	bh=0w45RpFwA6keXNTvQqmYNbouz6Am7+btlJss54a17Gk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=c5Qv+rbs8bdNjvDcdlAc8bJAeweOnFNLyEuzH+qjeH/+RAMQHhYWQVWUlqgStbfPjdHYC2aCnCDSjhxgz+r93n7VUHcOOaS2VkSVfBi6F0PcCOh1H8o6XNBqXlRy+mjbd024Vr0UWjmADf0wrFk0a5hAZxXfWt1h9sC1y78OhRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQxqs486; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C699C345738
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 08:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779266819; cv=fail; b=TUtLEfcQk/D3KiWKP33+GhGY1LZsD3NgzLMB3cTSOR7c7hBkOEMwOeBRBwWKx0VZz9IAGIMuXogAKn5KN6SBVRaaZCCxDUsPEicP27gntMUnzUXqvVYiM5MB82+9dRK6DenevqHDPpfAq3I6EPNnOoYzORTB6XO+LkDKMue4x6U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779266819; c=relaxed/simple;
+	bh=h/vA/3rKRKmivm7BbgvDaeVQvKONPUf6h0eDjnwhAOI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fqKMoUlT8rH+ZdscFWoFtLnAMJ6Rq5FmVoG4DilWKDbVHf75At6PTkpiGllJzdY2KvEd+1y7tqPji34RjrDFDFSkqeQyCLZx+STNHBPL7p+MYhVqbtnuhZj4RcWRtii5gr+hTyhMQAhqusfApS8nzJISkSBC+QFecWhNMSq58l8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=VA3Ahtkm; arc=fail smtp.client-ip=52.101.69.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQxqs486"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153F51F00894;
-	Wed, 20 May 2026 08:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779264823;
-	bh=BJttpTR+K8jLpIrSpvbL3LP2BZLPtwUAQdNDcTHBsgY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dQxqs486h2pYI8Df9pgu/jlzSN6WFedRBx3lWmF3q1Tm1jsF3ip2mUA5YCTaxCkHW
-	 QFZDilK9cNiaiJ3J1YwEhH0NkhhzK+S/EK4R5Y14Ia2UanvPnYAfwpeZowZ1W+Wxi6
-	 dUp/vnNq6UBYYQPt/9ZYB1udVAYuj0ZVoD4vyhhASPDcn94yBMcTF3TrAj1QFqzNyc
-	 SZSs6hW1LMsIIjyowhMokE2WeIRrOakkr0i7sLAAeW0fh15YTJRUl3fbhfJu3kjWer
-	 OCug3NtzpWA6ztXGl6LFgmkggDEcukikW1rHYRdCE/ITysmd+DrL77pl8yfnNoLoEV
-	 2P5sWlVFpXeuA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add initial device tree
- for TQMa8MPQS with i.MX8MP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, robh@kernel.org
-In-Reply-To: <20260520074754.1631543-2-alexander.stein@ew.tq-group.com>
-References: <20260520074754.1631543-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 20 May 2026 08:13:42 +0000
-Message-Id: <20260520081343.153F51F00894@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="VA3Ahtkm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pFndW2Vrb2OnxGWugJaHOf/boHsUo+ehgXv8M9JJSj/tbN0WmsYDXzH6keVMCeXYD5uN8FcDEqmuqiINJUVdmYEvIv+hO1cj5wbZBk0BJUGiI3JwByOVIsbS8FVU/hj/nZZWFtMADrLhjk9AambF5xrovpPdgslTdb789+PyKPhdqEXgtb6vIiRz7DLbHT3NPxVuwHnypYgQkmyrOg+DibLNdAzAbBbgA37RjnmLskU/gdsA4I7QkEUBaVtd2XOnS1QCAqBvLBrszynjYLkGB2TPheh4pY4Gmc0cvWjLVoTQXP4vd/Ffoigpc9rZnKxTFCpGYrn6h2/14kPLYPHuZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NotSxDzkLl3XodU6+tmsSytnAicz7VFdyjsxTvFPwdI=;
+ b=cwZ/D9eddkvlMnvJ84sg8NUOQMpIvBbicsfuSlcmwlBC1yZkRzNV+z67qXN1n5u0S+f9KTOp3uAzpKWE0jl4H35myIJ3kUNkoe1CIfRFV6IG6avDfyeKOHSd2IMXPfV2vId3Y6mfh0mSQ79FoSewtEVwU4ETIBYNeGNHilkaO+TrNbF0sBnakifWJdtzCUt1+NOsiCgspJK2iA0XbZrNYjeZwg+jJQaQ/5NxZvRIzweY/CmSiNvpWpoqnkK4pyGf01Ib7Z24oZGiH+TYZwGlripJAoZPlDdYFsGelvRWhgCRhNFEsjBrAMgQ1EDtqMQV4B1VfUspb2YExTZt2TVabg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NotSxDzkLl3XodU6+tmsSytnAicz7VFdyjsxTvFPwdI=;
+ b=VA3Ahtkmgrz4VLk/UeOmS2W2o6I9J9oqOztI5PiWkgYDWrUBTxbs3vhG5FTb2TWuOTMeqhAhuYyEstFk4Z80gwr2j5D9budkbSePSJCvJz5smwmSJApw0QOJDSOExiAH/xnFlaSrsQ1s8gOPYK25T6lao/gnRj6JUX6qlw+Vrg2kJJXER3VCCvfqdFKNIMq0tzE+D/5D6HMGGOcA48QKZJZ/odOWCDTdOTsZHHrIyv89kgzXHbzr3DyyIN/mLeJwuj7RrwID8OtGHBEgif5bbxI17WUl0b8C+QLXmLkiCuwFQaOkp3OOkypSgjasDbFMHZ9aNtEqjKp+hlMyL3Z3Ag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com (2603:10a6:800:296::7)
+ by AM8PR04MB7442.eurprd04.prod.outlook.com (2603:10a6:20b:1d8::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Wed, 20 May
+ 2026 08:46:55 +0000
+Received: from VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be]) by VI2PR04MB11276.eurprd04.prod.outlook.com
+ ([fe80::60d7:a8e5:eb88:9be%2]) with mapi id 15.21.0048.013; Wed, 20 May 2026
+ 08:46:55 +0000
+From: "Sherry Sun (OSS)" <sherry.sun@oss.nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	bhelgaas@google.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de
+Cc: imx@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sherry.sun@nxp.com
+Subject: [PATCH V3 0/8] PCI: imx6: Integrate pwrctrl API and update device trees
+Date: Wed, 20 May 2026 16:48:56 +0800
+Message-Id: <20260520084904.2424253-1-sherry.sun@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0201.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1aa::9) To VI2PR04MB11276.eurprd04.prod.outlook.com
+ (2603:10a6:800:296::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11276:EE_|AM8PR04MB7442:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55136acb-a06d-43d8-438a-08deb64c5821
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|921020|56012099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	1wz2hbQKQnmXxFL6uFPmmW/z8jvNZFxUSlDNBR0LhW8ML0ekJO20BWKv0iNY6sR/vdNAumRHgokMJUBVNQO0/FtgiYrGkeOm1wJ1hX6w7uQrm1MDwTx4zqpzF8PPa/y5K9IAQpyfpPYW4EYUJYn1sQmt27Wb+qVG81w6w8N72cU/N5n2HQrsiXSeeP9U7r9KVfNRK2j8WUM4lrvpuh50TNH5V6IbaiGZIkRELmD436Hp9lWF/7DK+IQW91ZBS9+dFnnS4GNIMF4v1kYk4CtxPS4fj4oMzxmSIKXWbUGWug2+Bris9HAcUhCCr0Q8B5y46+AOSDSie7hWgk/OJhq1mSD7PeJMEk18OhFVhnkekrIgzLYv1LBD4jPkyoodjFL1lPxV7lZd4XR5sc3MLC7wfuwIgv2U9QjdZc0Q38uvtt+UBlHSeGtSqJNNPZkSrXkrGv/88rb8I9ARfgXCQfBGdJlZrfsHZdBexTlavnzxtj55XqctSo+Sp7xRnHpYRZiqV3tcQ6eTFieB0He5HkIqDKeYtYTB5YmmNmrxhvDnvYIlQx8We/rnJFpaiydtmQoYiXieHl/JmytMf15czaMEcRcUNe0sVs8uSFRnB/npWHG7JQCAbCokLCuTnwpU7N9/poMduz4YLRGYSPN/KX6/3n+v+FkZB6f4wDl40D8CFh8jUOw8RIERo8pSIvAUvxS3mzr5HJn9DxlwmtufQA6VRD4uga2na9iUp68foE/sPow=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11276.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(921020)(56012099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JuD5Dy1Kn3BX3KIuLYmmOs8xvhmueBElUWF5lxmlewsjDAuXy+ZI5xp7ZCn3?=
+ =?us-ascii?Q?yUugmQtMPRWzAtdMGzec3ShVCG+JIJrjR0h/J20NsmRvmKKlcI2tHEgzostP?=
+ =?us-ascii?Q?lHm7QwR71W+NtbxhGszqO0G0mBleG80DCUYHFQuBtkqXGl5mZpapqmqH64r1?=
+ =?us-ascii?Q?dOYC/jGu4pleOIvU0291Qgrx/iug5dBq+xeeOTLg61BDcVMkCFtAtUrMYMBk?=
+ =?us-ascii?Q?/cnFzfBDIdlpr4hvM6pj0UdTDErjNiM82dcxUUXKvkZZUQn34PL2AQ5IUcM/?=
+ =?us-ascii?Q?po4r48v14dk+do6Qw1L9DYIn3E4LK9GgY+r4Si/ITh6g3XQzjrIY3e8R65gp?=
+ =?us-ascii?Q?hALTaDVp3mw2nLYmt7SYR8Fjl7rIqhUug7OS/dpd8nPOFI54KlYDQm8eMLxw?=
+ =?us-ascii?Q?h9/+KQM1r0iR58ccX9ssGn1I8Thq4bn5GT8fOHtvsBqhZEa3Fdqt40aU72xH?=
+ =?us-ascii?Q?X+d5/Mfux7WMtHdVRvFkyaXPZ/YpJPCSl/lhwLJ5XdGJr98s8ptmsT24Nc8F?=
+ =?us-ascii?Q?D4TcKBd5+7TLbBnZOVj9Qs9AqC8CFvbCuVkl0FhlM+UpWOO9nQUMDETdRzJp?=
+ =?us-ascii?Q?lMWRQEo05kD31HiQYX6rJKJk23zBIMNEX4nwmG8wNPwyKiJeqHBtz+sBNn7h?=
+ =?us-ascii?Q?+jWCf5VYqd1UNZRR1Y8VuIcTfhGCt6XUI7PSkYI62PUJFcYLJ9gkS8+hR9uv?=
+ =?us-ascii?Q?ZypKckOHWGFCCHXC8qMSB/V1Vin2FBUBjhNTEtADIXUjtheWP8IHHdV68qI4?=
+ =?us-ascii?Q?faVW/48ERugiUMfRd7g+LeBlZZhrw4p78Zfo55Mdplyp9vDhPEShNZLRPMxZ?=
+ =?us-ascii?Q?buwe5Mosg2hLPDhaE9U8LLT10i+zM8qEzKirqFSjFoWjRYpdiCRumoxPt2QD?=
+ =?us-ascii?Q?RBaC4g1EO7qBrGVInW+xv3ZR4CNVPI7BgEZYVLZwbFDC45sSYQrXLH1x3LaJ?=
+ =?us-ascii?Q?R3zROtcwV/04PNHIR9cS3hOlbthOR1tPb1cVJE9TrvfiSunaDs87vP1zS2ED?=
+ =?us-ascii?Q?2UN9Vojs/k2nDC6jRTGFawXdFHHy4s4V6MeGatPbTlOTbdyj7IzCoC+cKlsp?=
+ =?us-ascii?Q?hlV1tC0RlHmRbJSGF87d+LOF627NHuuVqTeMy6I7a/zHVfLMISM6KlXsG8jE?=
+ =?us-ascii?Q?hq1pMfqCqrdlCPGx2TVPAv10gsOwFo3LFmP+yvf5TSZHfULKhS8PDVi2CQaW?=
+ =?us-ascii?Q?rbbeZks5hqCSSzRm4ryORjpzzBkDI9oG5p4tCyXVrQqCXHipU9xBgRPTypPb?=
+ =?us-ascii?Q?7wtf5twMRoqgZNO/yYS4HYuA1x7yqNXB5pX1d73kmbHMZkPQUs7KNzzuPm+Z?=
+ =?us-ascii?Q?l4LxRxB9oW4eQPn6zq2ETIzqFUNuZCxmwem5ksZpSxdZhLVnuKvyJQ3Lkkbw?=
+ =?us-ascii?Q?3SUVj7UG72tOk9CGg/MyAfK03dOdRiGx5XNPl31B5bRrXMUekrqq4tmPuy+k?=
+ =?us-ascii?Q?5PNTtreFjMikgiuN52AxmZ7WJ4kNxVmrfSW06nByrfeqKQ1cfacPDeNXYLUp?=
+ =?us-ascii?Q?fXhHAZrKRkkb5NmJ4jNIoMPwSym+HjNEjrbNxB+nw6yWUGiNzTzuWNooqvpk?=
+ =?us-ascii?Q?qPDyqxP+afCD+re0xiTVADDTsgBgoOSMKwIHiK/w+OJnXXrnhS+KqL6ZHDK/?=
+ =?us-ascii?Q?TiGO/PCZ6Rli4eOrMKmPPLaBaSATmuo3pz3klSq8dShpCvK5qP9TMyOk6FrD?=
+ =?us-ascii?Q?0phWMm9aI04CbMW3Q78ZU+LpJl/sibs7Q0WZnIihz3oGlUsKRmSLdTJBZmAN?=
+ =?us-ascii?Q?g2QLCpqBhaanaCDMVoSy2xCFgOa0CfUO6DssRcI2AzIs3HOmWr4u?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55136acb-a06d-43d8-438a-08deb64c5821
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11276.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 08:46:54.9743
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x2FGHZU/ioypPoSuP8Y93qb0UkrXc1zMldYCryKNusn+OOv4XQ/ht88Z8Y5MKIpinvTZdBG4sHNS7eAZ0G3HtN4E7i03ZGtV7NwUmq83vHu+lcxRfms7PjLNMY6cclvi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7442
 
-Thank you for your contribution! Sashiko AI review found 8 potential issue(=
-s) to consider:
-- [High] PCIe peripheral reset (PERST#) is statically hogged high instead o=
-f being managed by the PCIe controller driver.
-- [High] The DisplayPort bridge `reset-gpios` property is configured as `GP=
-IO_ACTIVE_HIGH` for an active-high Enable pin, which will cause the driver =
-to permanently disable the bridge.
-- [High] The `.dtsi` file uses the `IMX8_PCIE_REFCLK_PAD_INPUT` macro witho=
-ut including the required header.
-- [High] Mismatch in array lengths between `assigned-clocks` and `assigned-=
-clock-parents` in `media_blk_ctrl`.
-- [Medium] The pin `MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05` is configured twice=
- with conflicting pad settings in the same state.
-- [Medium] The `dp-hpd-int-hog` claims a GPIO pin whose pinmux configuratio=
-n is located in a disabled device node.
-- [Medium] The `tmp1075` temperature sensor node lacks the `interrupts` pro=
-perty, disabling its alarm functionality.
-- [Medium] Active device interrupt lines are redundantly claimed as `gpio-h=
-og` inputs.
---
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 94f71b7114703e908e4afab6cc26436862728cfb
-Author: Paul Gerber <paul.gerber@tq-group.com>
+This series integrates the PCI pwrctrl framework into the pci-imx6
+driver and updates i.MX EVK board device trees to support it.
 
-arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8MP
-   =20
-This adds support for TQMa8MPQS module on MB-SMARC-2 board.
+Patches 2-8 update device trees for i.MX EVK boards which maintained
+by NXP to move power supply properties from the PCIe controller node
+to the Root Port child node, which is required for pwrctrl framework.
+Affected boards:
+- i.MX6Q/DL SABRESD
+- i.MX6SX SDB
+- i.MX8MM EVK
+- i.MX8MP EVK
+- i.MX8MQ EVK
+- i.MX8DXL/QM/QXP EVK
+- i.MX95 15x15/19x19 EVK
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi b/arch/a=
-rm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
-> new file mode 100644
-> index 0000000000000..9576152657405
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
-> @@ -0,0 +1,1177 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> +/*
-> + * Copyright 2025-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
-> + * D-82229 Seefeld, Germany.
-> + * Author: Paul Gerber
-> + */
-> +
-> +#include <dt-bindings/net/ti-dp83867.h>
-> +#include "imx8mp.dtsi"
+The driver maintains legacy regulator handling for device trees that
+haven't been updated yet. Both old and new device tree structures are
+supported.
 
-[Severity: High]
-Does this file need to include <dt-bindings/phy/phy-imx8-pcie.h>?
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+Changes in V3:
+1. Rebased on top of latest 7.1.0-rc4
 
-The IMX8_PCIE_REFCLK_PAD_INPUT macro is used later in the &pcie_phy node,
-which could cause a compilation error if another board includes this .dtsi
-without manually adding the missing header.
+Changes in V2:
+1. After commit 2d8c5098b847 ("PCI/pwrctrl: Do not power off on pwrctrl
+   device removal"), the pwrctrl drivers no longer power off devices
+   during removal. Update pci-imx6 driver's shutdown callback in patch#1
+   to explicitly call pci_pwrctrl_power_off_devices() before 
+   pci_pwrctrl_destroy_devices() to ensure devices are properly powered
+   off.
+---
 
-[ ... ]
-> +&gpio1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_gpio1>;
-> +
-> +	gpio-line-names =3D "SLEEP", "BATLOW#", "", "LID",
-> +			  "", "GPIO10", "CHARGING#", "CHG_PRSNT#",
-> +			  "PMIC_IRQ#", "ESPI_CS1_ALERT#", "USB1_OTG_ID", "USB2_OTG_ID",
-> +			  "", "", "", "",
-> +			  "", "", "", "",
-> +			  "", "", "", "",
-> +			  "", "", "", "",
-> +			  "", "", "", "";
-> +
-> +	pmic_irq_hog: pmic-irq-hog {
-> +		gpio-hog;
-> +		gpios =3D <8 0>;
-> +		input;
-> +		line-name =3D "PMIC_IRQ#";
-> +	};
-> +};
+Sherry Sun (8):
+  PCI: imx6: Integrate new pwrctrl API for pci-imx6
+  arm: dts: imx6qdl-sabresd: Move power supply property to Root Port
+    node
+  arm: dts: imx6sx-sdb: Move power supply property to Root Port node
+  arm64: dts: imx8mm-evk: Move power supply property to Root Port node
+  arm64: dts: imx8mp-evk: Move power supply properties to Root Port node
+  arm64: dts: imx8mq-evk: Move power supply properties to Root Port node
+  arm64: dts: imx8dxl/qm/qxp: Move power supply properties to Root Port
+    node
+  arm64: dts: imx95: Move power supply properties to Root Port node
 
-[Severity: Medium]
-Is this gpio-hog for the interrupt pin necessary?
+ .../arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |  2 +-
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |  4 ++--
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |  4 ++--
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  |  4 ++--
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  4 ++--
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts |  4 ++--
+ .../boot/dts/freescale/imx95-15x15-evk.dts    |  4 ++--
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |  8 +++----
+ drivers/pci/controller/dwc/Kconfig            |  1 +
+ drivers/pci/controller/dwc/pci-imx6.c         | 24 ++++++++++++++++++-
+ 12 files changed, 43 insertions(+), 20 deletions(-)
 
-Active device interrupt lines such as PMIC_IRQ#, ENET0_INT#, ENET_INT#, and
-RTC_INT# are assigned to their respective devices using the interrupts
-property. Simultaneously claiming these pins as gpio-hog inputs requests
-exclusive ownership of the GPIO descriptor, which might conflict with the
-interrupt subsystem's attempt to use them.
+-- 
+2.37.1
 
-[ ... ]
-> +&gpio2 {
-[ ... ]
-> +	perst-hog {
-> +		gpio-hog;
-> +		gpios =3D <10 0>;
-> +		output-high;
-> +		line-name =3D "PERST#";
-> +	};
-
-[Severity: High]
-Will this static PERST# configuration prevent the PCIe driver from properly
-sequencing the reset?
-
-The PCI Express specification requires the host to toggle the PERST# signal
-during link training. By hogging the pin statically high and omitting
-reset-gpios from the &pcie node, the controller driver cannot toggle the pi=
-n.
-
-[ ... ]
-> +&gpio3 {
-[ ... ]
-> +	temp-event--hog {
-> +		gpio-hog;
-> +		gpios =3D <28 0>;
-> +		input;
-> +		line-name =3D "TEMP_EVENT#";
-> +	};
-> +};
-
-[Severity: Medium]
-Should this pin be configured as an interrupt for the tmp1075 device instead
-of a static gpio-hog?
-
-The tmp1075 temperature sensor node applies pinctrl_tmp1075 to multiplex
-GPIO3_IO28 for the TEMP_EVENT# alert pin, but lacks the interrupts and
-interrupt-parent properties. Without them, the thermal alarm feature is
-unusable.
-
-[ ... ]
-> +&gpio5 {
-[ ... ]
-> +	dp-hpd-int-hog {
-> +		gpio-hog;
-> +		gpios =3D <21 0>;
-> +		input;
-> +		line-name =3D "DP_HPD_INT";
-> +	};
-> +};
-
-[Severity: Medium]
-Will this gpio-hog function correctly when its corresponding pinmux
-configuration is located in a disabled device node?
-
-This claims GPIO5_IO21 as an input, but the required pinmux setting
-(pinctrl_tc9595) is assigned to the dp_bridge node, which has
-status =3D "disabled". The pinctrl is never applied, leaving the physical
-pin in its default state.
-
-[ ... ]
-> +&i2c3 {
-[ ... ]
-> +	dp_bridge: dp-bridge@f {
-> +		compatible =3D "toshiba,tc9595", "toshiba,tc358767";
-> +		reg =3D <0xf>;
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_tc9595>;
-> +		clock-names =3D "ref";
-> +		clocks =3D <&clk_dp>;
-> +		reset-gpios =3D <&expander0 4 GPIO_ACTIVE_HIGH>;
-
-[Severity: High]
-Could this polarity configuration keep the bridge permanently disabled?
-
-The DP_BRIDGE_EN pin is an enable pin that requires driving HIGH. When the
-driver deasserts the reset (logical 0), it will drive the physical line LOW
-due to the GPIO_ACTIVE_HIGH polarity. Should this be GPIO_ACTIVE_LOW so
-that deasserting the reset translates to driving the pin HIGH?
-
-[ ... ]
-> +// Change parent clock of disp1 pixel clock to audio_pll2
-> +&media_blk_ctrl {
-> +	assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_AXI>,
-> +			  <&clk IMX8MP_CLK_MEDIA_APB>,
-> +			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
-> +			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-> +			  <&clk IMX8MP_CLK_MEDIA_ISP>,
-> +			  <&clk IMX8MP_VIDEO_PLL1>;
-> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> +				 <&clk IMX8MP_SYS_PLL1_800M>,
-> +				 <&clk IMX8MP_AUDIO_PLL2_OUT>,
-> +				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> +				 <&clk IMX8MP_SYS_PLL2_500M>;
-> +};
-
-[Severity: High]
-Are we missing a clock parent in the assigned-clock-parents list?
-
-The assigned-clocks list contains 6 elements, but assigned-clock-parents
-only has 5. There is also no assigned-clock-rates property. This means
-IMX8MP_VIDEO_PLL1 will not find a corresponding parent or rate entry.
-
-[ ... ]
-> +&iomuxc {
-[ ... ]
-> +	pinctrl_espi_rst: espirstgrp {
-> +		fsl,pins =3D <MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05		0x144>;
-> +	};
-[ ... ]
-> +	pinctrl_gpio4: gpio4grp {
-> +		fsl,pins =3D <MX8MP_IOMUXC_SAI1_RXC__GPIO4_IO01		0x10>,
-> +			   <MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04		0x10>,
-> +			   <MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05		0x10>,
-
-[Severity: Medium]
-Is this pin meant to be configured twice with different pad settings?
-
-The &gpio4 node applies both pinctrl_gpio4 and pinctrl_espi_rst, configuring
-MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05 twice with conflicting settings
-(0x144 and 0x10). This creates a pinmux overlap that can result in
-unpredictable pin configurations.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520074754.1631=
-543-1-alexander.stein@ew.tq-group.com?part=3D2
