@@ -1,197 +1,254 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9526C37107E
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 08:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF9A3AC0E4;
+	Wed, 20 May 2026 08:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264364; cv=none; b=Y4dQz1l7RmS7F1Z6uy5Qgox6Ukff1GDyoSoDdpmlCEduB44+Dki8asUqTNOuhHg8umZhhtA9GtvDcz94iNE4U/DTDC0n+MDw1UTkAaEDlD0lgRmpxPgWYAvpgcK8djRVf/jDQhkjXJfYkbfiEPaL+91Z9ZPK226cy8Og4RZMit8=
+	t=1779264825; cv=none; b=d8oNSk9tf6De1cMKXcFwPFu/0aRFFnjnzWxsABnNrJNAIrClrsGtXezO3mo0sj88ZnlieQlg0RmWsreoHzi1gVwd5AGl8uNHjEt6GCgS8ppDYgaM37hI3dp0pEroc/oI6RDYVUy6xvijd0PvzBb6lWtwoZzib5gJRW+gGjRAUlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779264364; c=relaxed/simple;
-	bh=KUaCdDomY2qU9nG60VsZNCEO7wba/w9qv4eRI81YKo4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UkYLZ88x8Hx0vwbsYidl6j5L8Ip/k09UCu/M7yAWS3vH5qa9V6IexW3wbEzPLU3fRVL/fN9zlDJML9k1D1hURopE9ew6Mvti+MMWKgobDtlbsxQUDHq/m8A0Gwp8RlwRV1R0eE1EdmS0BIUBZWhf9IDAQ2gLdu9j8gjtmiYuK5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZaRSheFu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XWekdPmp; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779264825; c=relaxed/simple;
+	bh=0w45RpFwA6keXNTvQqmYNbouz6Am7+btlJss54a17Gk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=c5Qv+rbs8bdNjvDcdlAc8bJAeweOnFNLyEuzH+qjeH/+RAMQHhYWQVWUlqgStbfPjdHYC2aCnCDSjhxgz+r93n7VUHcOOaS2VkSVfBi6F0PcCOh1H8o6XNBqXlRy+mjbd024Vr0UWjmADf0wrFk0a5hAZxXfWt1h9sC1y78OhRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQxqs486; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZaRSheFu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XWekdPmp"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64K7KP9G1725603
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 08:05:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	h4o4tguLJ2M8UFVCSQAOmrgjGYGYAaNNp+BkOJSYljs=; b=ZaRSheFuPELGrHrU
-	5bq5fVMfyqResKiQ70JQ9GcmVcwVO++BNdtAGa8VE2RcuXKOS1fdXMzwTJtDbph5
-	Kdz4noyWWRWd6d23UxPQMSbSlVPYhaCaEpU8/dR7MIrPBCAKu4u2eeLWD7A9h8Ru
-	U3reVb2kI1+5mBFvP29oQxg4eDYm25BSrQS33OCcAsX2dxLWXMzwkxEAzAllr/T5
-	SbMuaMtk4zoKuAm4QahqJUCu0TasoEKPmouhj+BzAYKQPlph23Nquuv+5EWqtMuO
-	plY7E2DXbNgLQ53IfLC/cnaAcIDD30ZwYB/zcqQY/p+D8n8MDMmrXgdUON6gqfI7
-	uk+kjg==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e8t3qkq8k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 08:05:54 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c709551ec08so7320040a12.3
-        for <imx@lists.linux.dev>; Wed, 20 May 2026 01:05:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779264354; x=1779869154; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h4o4tguLJ2M8UFVCSQAOmrgjGYGYAaNNp+BkOJSYljs=;
-        b=XWekdPmp/ZfoYuUH35B5QNo78OZzszgz40m+Nc9R/TBXvHWM9ufArFM5RMXBSluqXJ
-         wqNjI3cahC3lLwEJJQiiYc9v/7SCTDqLFmQFg2qeqLri06K4r7N1YTnEp5/jYe7WtzYz
-         i0CDGjSaDL1G0g9w5WE+oCUTS5zEO0hOq5wOjUkkT/IYcPyLdb2to1M5S+wglaRvsQCf
-         5PJGQA9noe2yGqKUJ/bFkMcD+EfyzTSlbaVTb+8zP0SUHWqoNTc5x9brJ5y8UWQpT6mW
-         8dsfjXrzOcLq0euJQqJ11PbToRHkrAWba2j5teEymDWd29n76mSWpt6CI+j3FbHNLSbP
-         XtIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779264354; x=1779869154;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h4o4tguLJ2M8UFVCSQAOmrgjGYGYAaNNp+BkOJSYljs=;
-        b=X1GrLh+BFv6Y/HVT7nNeF1FMX65IGejpKMCIE4kdPa5zAZZzlby8Fg8AUXCKp+0lhE
-         JGbKmTkPv08C9O/ZWjnQLRS8uxOB009K5XevjgIgxpvhrKBXdNNJlzRyv5miyMSintl5
-         I0vA+V+uzX0IyFpbJPHrnE3sXysd8hY/usk3WkEWsFcEvWRsD9CTpWLdt8x8Yug+gHkH
-         vnI/ErnSmcWYVk9CB61KASxcM720htLF5eUTEo/AUQnov2In2LyuKvhSSVaNibV52BH+
-         1Hxg/bjgnH1bD8KoAzxl/jn4NzBZBc24ihy9HPtPf3Dl4c+bmwW5aQhdrm1wBgHICOrz
-         qjRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+bAgOd1z8Wx2ZD822FbQUEnDwkoZe8Zobsk3euaJeDvgD1CybLXr3a5dU4bv+OtuQ5G8M=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0logTXy/kGUukvYtXRTltRGcw/v7cam3bCO0zUMfIoUAIBJI/
-	i3OeQAKcRrNdR+RIhAGl3f5xqTCf7F/o1G9wgFUB4FANdQt74OHMvB2vuBY8Ivt8Ui96ah5to9J
-	ADllmqqiQTroQyzFVtTJM81U2E2tEc044CyhU7sYPC3p2SSHvPAsHRo4=
-X-Gm-Gg: Acq92OGLDp0+gJFrTMwxPpMofKd4kq29Matwdv5b23NyobZav1HULAvZfInUWyJHqyQ
-	wXSDtcJEb/Kk1JpJ/miLh6H/lSca86bZOz3OexEFXZ6V4ZoELpFhavJenBzDCfbC6JeE88WjM1g
-	0S/KNJrZdL0Um0Q6jBtAQ6Vw0lvKS9IQFEBrgLgT1uRV25yhvf5hbErxdEjOWnfqVFHDZRvcQs0
-	hzTPaC6QmCdAc9sQ3NXKqgs5C2dgztZWKDmKoGEKcRXlnCvwXgK9Y9h2BNhqWcoX/JB4xqWuXdR
-	bnMirDT83Fkd/E9aVcTY863mxyrrE7SBJzVbSDZR02q9KMi3GkMGI5MTp81DaVJRZ86dRPJtMvD
-	HGTwG/RQLaawBCM271BzEakvy0QP9r18RwetxwDdi6CY+PymT4XN98/KXiph/Y5pwjcc=
-X-Received: by 2002:a05:6a20:7d9f:b0:398:ac0d:9a0b with SMTP id adf61e73a8af0-3b22ecb031amr25955135637.50.1779264353659;
-        Wed, 20 May 2026 01:05:53 -0700 (PDT)
-X-Received: by 2002:a05:6a20:7d9f:b0:398:ac0d:9a0b with SMTP id adf61e73a8af0-3b22ecb031amr25955066637.50.1779264353199;
-        Wed, 20 May 2026 01:05:53 -0700 (PDT)
-Received: from [10.219.57.109] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb11683fsm18637582a12.26.2026.05.20.01.05.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 01:05:52 -0700 (PDT)
-Message-ID: <11b91838-9b24-4a62-8760-fdeb3703afc4@oss.qualcomm.com>
-Date: Wed, 20 May 2026 13:35:30 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQxqs486"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153F51F00894;
+	Wed, 20 May 2026 08:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779264823;
+	bh=BJttpTR+K8jLpIrSpvbL3LP2BZLPtwUAQdNDcTHBsgY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dQxqs486h2pYI8Df9pgu/jlzSN6WFedRBx3lWmF3q1Tm1jsF3ip2mUA5YCTaxCkHW
+	 QFZDilK9cNiaiJ3J1YwEhH0NkhhzK+S/EK4R5Y14Ia2UanvPnYAfwpeZowZ1W+Wxi6
+	 dUp/vnNq6UBYYQPt/9ZYB1udVAYuj0ZVoD4vyhhASPDcn94yBMcTF3TrAj1QFqzNyc
+	 SZSs6hW1LMsIIjyowhMokE2WeIRrOakkr0i7sLAAeW0fh15YTJRUl3fbhfJu3kjWer
+	 OCug3NtzpWA6ztXGl6LFgmkggDEcukikW1rHYRdCE/ITysmd+DrL77pl8yfnNoLoEV
+	 2P5sWlVFpXeuA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add initial device tree
+ for TQMa8MPQS with i.MX8MP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alexander Stein" <alexander.stein@ew.tq-group.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev, wsa+renesas@sang-engineering.com, robh@kernel.org
+In-Reply-To: <20260520074754.1631543-2-alexander.stein@ew.tq-group.com>
+References: <20260520074754.1631543-2-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 20 May 2026 08:13:42 +0000
+Message-Id: <20260520081343.153F51F00894@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 0/3] of: parsing of multi #{iommu,msi}-cells in maps
-To: Rob Herring <robh@kernel.org>
-Cc: Nipun Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal
- <nikhil.agarwal@amd.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Marc Zyngier <maz@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Bjorn Helgaas
- <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski
- <krzk+dt@kernel.org>,
-        Prakash Gupta <prakash.gupta@oss.qualcomm.com>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-pci@vger.kernel.org, imx@lists.linux.dev,
-        xen-devel@lists.xenproject.org, linux-arm-msm@vger.kernel.org,
-        Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-References: <20260424-parse_iommu_cells-v14-0-fd02f11b6c38@oss.qualcomm.com>
- <20260506221915.GA3290640-robh@kernel.org>
-Content-Language: en-US
-From: Vijayanand Jitta <vijayanand.jitta@oss.qualcomm.com>
-In-Reply-To: <20260506221915.GA3290640-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDA3NiBTYWx0ZWRfX9mj6PQgW8Rqv
- XfPqIROs1Q44aeL2hyfUF5vyKdcaf0INoA4YoPXRQ+ccm2mXq1t8h/MqtJL8nFgOe5qB2q34aSe
- K0tFH1PFmXDe7UC63GjsaQTJ0PLHZwTEFEQcjXOChgo9okalhGBEZcq2gQmoG/CVPlw5P12S3/0
- SJBMmoMe8mp3JpPxr/UQ0bNKk7nqi8wEUffImpTIAlIXLdyYOWd82L3hGUG9/YYCJ5hG5gZtJZy
- x2CIznkJl2ks5fMl8fXfYU0QYP/Bynl8pe/83XzR7JgUIpPyhb3cRmY4KP20r/GCO64vZ8oPmSW
- RzmWaAaWeFBkmNxw8xBQYzljeUION/2PlanJPQFo+GEfjG9YzzTomaFyt9VgAYbC5ohvc/Kf3Sa
- ep6W1Tai354lvgHkides1UCUw8paMIO8rmdOOcNxvl/DlK1NcBP7a0I0r2rvWifY19cst33zvGX
- +JzlG+iAL1otVVh6gbg==
-X-Authority-Analysis: v=2.4 cv=N9cZ0W9B c=1 sm=1 tr=0 ts=6a0d6b62 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=c92rfblmAAAA:8 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=zmrd7r8un3QtD10oEDQA:9
- a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22 a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-GUID: ZUIazZABGqDGyM1cQ54rn-nb5a7_9Xw3
-X-Proofpoint-ORIG-GUID: ZUIazZABGqDGyM1cQ54rn-nb5a7_9Xw3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
- suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605200076
 
+Thank you for your contribution! Sashiko AI review found 8 potential issue(=
+s) to consider:
+- [High] PCIe peripheral reset (PERST#) is statically hogged high instead o=
+f being managed by the PCIe controller driver.
+- [High] The DisplayPort bridge `reset-gpios` property is configured as `GP=
+IO_ACTIVE_HIGH` for an active-high Enable pin, which will cause the driver =
+to permanently disable the bridge.
+- [High] The `.dtsi` file uses the `IMX8_PCIE_REFCLK_PAD_INPUT` macro witho=
+ut including the required header.
+- [High] Mismatch in array lengths between `assigned-clocks` and `assigned-=
+clock-parents` in `media_blk_ctrl`.
+- [Medium] The pin `MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05` is configured twice=
+ with conflicting pad settings in the same state.
+- [Medium] The `dp-hpd-int-hog` claims a GPIO pin whose pinmux configuratio=
+n is located in a disabled device node.
+- [Medium] The `tmp1075` temperature sensor node lacks the `interrupts` pro=
+perty, disabling its alarm functionality.
+- [Medium] Active device interrupt lines are redundantly claimed as `gpio-h=
+og` inputs.
+--
 
+commit 94f71b7114703e908e4afab6cc26436862728cfb
+Author: Paul Gerber <paul.gerber@tq-group.com>
 
-On 5/7/2026 3:49 AM, Rob Herring wrote:
-> On Fri, Apr 24, 2026 at 11:26:07AM +0530, Vijayanand Jitta wrote:
->> So far our parsing of {iommu,msi}-map properties has always blindly
->> assumed that the output specifiers will always have exactly 1 cell.
->> This typically does happen to be the case, but is not actually enforced
->> (and the PCI msi-map binding even explicitly states support for 0 or 1
->> cells) - as a result we've now ended up with dodgy DTs out in the field
->> which depend on this behaviour to map a 1-cell specifier for a 2-cell
->> provider, despite that being bogus per the bindings themselves.
->>
->> Since there is some potential use[1] in being able to map at least
->> single input IDs to multi-cell output specifiers (and properly support
->> 0-cell outputs as well), add support for properly parsing and using the
->> target nodes' #cells values, albeit with the unfortunate complication of
->> still having to work around expectations of the old behaviour too.
->> 							-- Robin.
->>
->> Unlike single #{}-cell, it is complex to establish a linear relation
->> between input 'id' and output specifier for multi-cell properties, thus
->> it is always expected that len never going to be > 1.
->>
->> These changes have been tested on QEMU for the arm64 architecture.
->>
->> Since, this would also need update in dt-schema, raised PR[2] for the
->> same.
-> 
-> Sashiko has some thoughts on the series:
-> 
-> https://sashiko.dev/#/patchset/20260424-parse_iommu_cells-v14-0-fd02f11b6c38%40oss.qualcomm.com
-> 
-> Rob
+arm64: dts: freescale: add initial device tree for TQMa8MPQS with i.MX8MP
+   =20
+This adds support for TQMa8MPQS module on MB-SMARC-2 board.
 
-Thanks for the feedback, I have Posted v15 addressing comments from Sashiko.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi b/arch/a=
+rm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+> new file mode 100644
+> index 0000000000000..9576152657405
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpqs.dtsi
+> @@ -0,0 +1,1177 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2025-2026 TQ-Systems GmbH <linux@ew.tq-group.com>,
+> + * D-82229 Seefeld, Germany.
+> + * Author: Paul Gerber
+> + */
+> +
+> +#include <dt-bindings/net/ti-dp83867.h>
+> +#include "imx8mp.dtsi"
 
-v15: https://lore.kernel.org/all/20260520-parse_iommu_cells-v15-0-b5f99ad4e7e8@oss.qualcomm.com/
+[Severity: High]
+Does this file need to include <dt-bindings/phy/phy-imx8-pcie.h>?
 
-Thanks,
-Vijay
+The IMX8_PCIE_REFCLK_PAD_INPUT macro is used later in the &pcie_phy node,
+which could cause a compilation error if another board includes this .dtsi
+without manually adding the missing header.
+
+[ ... ]
+> +&gpio1 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_gpio1>;
+> +
+> +	gpio-line-names =3D "SLEEP", "BATLOW#", "", "LID",
+> +			  "", "GPIO10", "CHARGING#", "CHG_PRSNT#",
+> +			  "PMIC_IRQ#", "ESPI_CS1_ALERT#", "USB1_OTG_ID", "USB2_OTG_ID",
+> +			  "", "", "", "",
+> +			  "", "", "", "",
+> +			  "", "", "", "",
+> +			  "", "", "", "",
+> +			  "", "", "", "";
+> +
+> +	pmic_irq_hog: pmic-irq-hog {
+> +		gpio-hog;
+> +		gpios =3D <8 0>;
+> +		input;
+> +		line-name =3D "PMIC_IRQ#";
+> +	};
+> +};
+
+[Severity: Medium]
+Is this gpio-hog for the interrupt pin necessary?
+
+Active device interrupt lines such as PMIC_IRQ#, ENET0_INT#, ENET_INT#, and
+RTC_INT# are assigned to their respective devices using the interrupts
+property. Simultaneously claiming these pins as gpio-hog inputs requests
+exclusive ownership of the GPIO descriptor, which might conflict with the
+interrupt subsystem's attempt to use them.
+
+[ ... ]
+> +&gpio2 {
+[ ... ]
+> +	perst-hog {
+> +		gpio-hog;
+> +		gpios =3D <10 0>;
+> +		output-high;
+> +		line-name =3D "PERST#";
+> +	};
+
+[Severity: High]
+Will this static PERST# configuration prevent the PCIe driver from properly
+sequencing the reset?
+
+The PCI Express specification requires the host to toggle the PERST# signal
+during link training. By hogging the pin statically high and omitting
+reset-gpios from the &pcie node, the controller driver cannot toggle the pi=
+n.
+
+[ ... ]
+> +&gpio3 {
+[ ... ]
+> +	temp-event--hog {
+> +		gpio-hog;
+> +		gpios =3D <28 0>;
+> +		input;
+> +		line-name =3D "TEMP_EVENT#";
+> +	};
+> +};
+
+[Severity: Medium]
+Should this pin be configured as an interrupt for the tmp1075 device instead
+of a static gpio-hog?
+
+The tmp1075 temperature sensor node applies pinctrl_tmp1075 to multiplex
+GPIO3_IO28 for the TEMP_EVENT# alert pin, but lacks the interrupts and
+interrupt-parent properties. Without them, the thermal alarm feature is
+unusable.
+
+[ ... ]
+> +&gpio5 {
+[ ... ]
+> +	dp-hpd-int-hog {
+> +		gpio-hog;
+> +		gpios =3D <21 0>;
+> +		input;
+> +		line-name =3D "DP_HPD_INT";
+> +	};
+> +};
+
+[Severity: Medium]
+Will this gpio-hog function correctly when its corresponding pinmux
+configuration is located in a disabled device node?
+
+This claims GPIO5_IO21 as an input, but the required pinmux setting
+(pinctrl_tc9595) is assigned to the dp_bridge node, which has
+status =3D "disabled". The pinctrl is never applied, leaving the physical
+pin in its default state.
+
+[ ... ]
+> +&i2c3 {
+[ ... ]
+> +	dp_bridge: dp-bridge@f {
+> +		compatible =3D "toshiba,tc9595", "toshiba,tc358767";
+> +		reg =3D <0xf>;
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&pinctrl_tc9595>;
+> +		clock-names =3D "ref";
+> +		clocks =3D <&clk_dp>;
+> +		reset-gpios =3D <&expander0 4 GPIO_ACTIVE_HIGH>;
+
+[Severity: High]
+Could this polarity configuration keep the bridge permanently disabled?
+
+The DP_BRIDGE_EN pin is an enable pin that requires driving HIGH. When the
+driver deasserts the reset (logical 0), it will drive the physical line LOW
+due to the GPIO_ACTIVE_HIGH polarity. Should this be GPIO_ACTIVE_LOW so
+that deasserting the reset translates to driving the pin HIGH?
+
+[ ... ]
+> +// Change parent clock of disp1 pixel clock to audio_pll2
+> +&media_blk_ctrl {
+> +	assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_AXI>,
+> +			  <&clk IMX8MP_CLK_MEDIA_APB>,
+> +			  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+> +			  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+> +			  <&clk IMX8MP_CLK_MEDIA_ISP>,
+> +			  <&clk IMX8MP_VIDEO_PLL1>;
+> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
+> +				 <&clk IMX8MP_SYS_PLL1_800M>,
+> +				 <&clk IMX8MP_AUDIO_PLL2_OUT>,
+> +				 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> +				 <&clk IMX8MP_SYS_PLL2_500M>;
+> +};
+
+[Severity: High]
+Are we missing a clock parent in the assigned-clock-parents list?
+
+The assigned-clocks list contains 6 elements, but assigned-clock-parents
+only has 5. There is also no assigned-clock-rates property. This means
+IMX8MP_VIDEO_PLL1 will not find a corresponding parent or rate entry.
+
+[ ... ]
+> +&iomuxc {
+[ ... ]
+> +	pinctrl_espi_rst: espirstgrp {
+> +		fsl,pins =3D <MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05		0x144>;
+> +	};
+[ ... ]
+> +	pinctrl_gpio4: gpio4grp {
+> +		fsl,pins =3D <MX8MP_IOMUXC_SAI1_RXC__GPIO4_IO01		0x10>,
+> +			   <MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04		0x10>,
+> +			   <MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05		0x10>,
+
+[Severity: Medium]
+Is this pin meant to be configured twice with different pad settings?
+
+The &gpio4 node applies both pinctrl_gpio4 and pinctrl_espi_rst, configuring
+MX8MP_IOMUXC_SAI1_RXD3__GPIO4_IO05 twice with conflicting settings
+(0x144 and 0x10). This creates a pinmux overlap that can result in
+unpredictable pin configurations.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520074754.1631=
+543-1-alexander.stein@ew.tq-group.com?part=3D2
