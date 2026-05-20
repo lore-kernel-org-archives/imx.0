@@ -1,195 +1,180 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011043.outbound.protection.outlook.com [52.101.70.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBD03630A3
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 09:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779268502; cv=fail; b=EdDX384pAKDCBvvOhSQtW1wABkJouZWbejDj6iH1/AhiowNd1KuwCekxnSU0A9PwMB2KK4vRCuJs5xTbOUUKdh74Z/O6TuDm36RIvabaWDWoEBwovKNYEFUL1l9jb21qs5vzF6QUSyMSbh+hJtunFYU6Dn/CqcmD93YbEfZzyYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779268502; c=relaxed/simple;
-	bh=xYkSLUCTqY0nC/unrf2T3sagdGFXTzuV3zIo90VwzQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IVjNsnHxTOjRhNg4JJ5GwF3BRG6F65U91yFpvnvHdSGpPkoena21gJLBUOvle6afl+XO1G7HEV0ZYG+qo4PK6ev1N6Gcp6GDeJvqNIfCQASKYYuh7KWwwTY8k3yfKLfihsc2Hskgy4+QSUG8dJffsgg4UN7V/HYmhbi9rNCz4LI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=e0HS2T4x; arc=fail smtp.client-ip=52.101.70.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BF13BE642
+	for <imx@lists.linux.dev>; Wed, 20 May 2026 09:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779268643; cv=none; b=afcPFaV+DmKueBqydbgAimFAY9ppW6R8CTv3SmObX5SqsRxudFqSAUHSbfn1kTs5PHoEJr7m9sz+97eVdAIAitwgEyzUEUT3IxQpHFKmlXdZj6B4bDK8wZQGMTLQEaKCU4cYXIvg7S4r3AbZ/w5rlRr9C1HAVW/hS4lI4AM7MEY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779268643; c=relaxed/simple;
+	bh=D8sx2BsPwomajinB0SVjMtIZ/irs2rdJpVD0gaZczv0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kffuIB5I2TNDBoYv7FmuoFyIvpnGTR1pznXNihaZLMLPlQWwbvN2F3ZKhV0Qys/SbJXrMoIJdqQ/3utwpD8FogXCO/rl+Im81XHaxhvjKsn+X7l++kORWW1ZV70YoLp/3mtql2IVLOvomv2X0AV8/cGwxjdXuYDkvMEDS9S7m8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BcT5nl2D; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="e0HS2T4x"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kWdS4YdOKdMTuHwnHZJzMKtTDe5sdtKhmqyUOYiG6PlpkvBw/9K5g1JR1jn9rUe2We5qq6AQM0hqfyP6CYBYYt1mKf9qn/HLXcObMTt+X3vuOSyIy/xBvGjD5qUeoVQk9SgsYqV6iFQiLM5j6pwiw6tlKznEO/vhMNzIxAlrXkxBIZ7XsBAMHjseCjH4i43WnRM0GDTGfzTFQlNNxKSwEXZqOxok9Dq4q3PN7FcXGPungdMfC/drAIH4XMhESkxvk6gD21PNeCE614UQ+kqC0Rc/WaUPZZ81OEvbOePAA0CVY5dF6s2zcrLoGOUeWIGv0AnENo3z8s1nk3eVz5o3rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1TAnnbkU6v/FIMFN+agEfcUFITZ0lNJKAerEhwwjMl0=;
- b=d+Ml1TGHH+KBGWeZC3PJ5Z680bTqYmFNSvssux5mODjAQn8EI7A5aSfhze2TmZfeeO/kKjdgWRLsvFcTh181zPdGaxj4aHOi2dfqz3if/Z0Sj6DLziZPlEDQZmRwa7AO3HBolasMOOxksBV5xqyjuMKzbhnX/JvNHDrxd3NSHaq6g3fjBoOw+thRXTIGKMLFVD+TQ7LvO3aOsAhgtlBUXQZBQN+M94hiG07/YV6X8ZAtX+ibksVJ70DEAKEGaLQC1FrDtpADgIUQ1YE6ycid7Qg+hY90XckU4ZpBg+O+I2p8Oh5na0uJrL2p3ak50fEpochWvqFHjdHFAPkpuM2aMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1TAnnbkU6v/FIMFN+agEfcUFITZ0lNJKAerEhwwjMl0=;
- b=e0HS2T4xmx3GhRcyu4Qvdut/0FMfLiVmTCWNP2ZrS3ubzwp4FNzoWLUArLq4CG7vkaMhbgB2sZCDAX3TGqtU7tZvgLx+5NH3xu2aUGRZthEpYa5TXquF0OwPpYWZPI16V8YJGw/FQdnawGBVCuPExwtvbc4Mq7woZ36xBG3Bk/U+hLkqqMt9c+HLp6UYyJn2V+0t6lOfFDDyeeUXlQvVXuBZWbOOK/0qK5jtf8SJI2fRBPPe9fyzkYmb3WesnirbHbm6a7+caZgf/7uPwcEF2UbtifjA2uPxdw7AoyfTAEKFph14nmtjthrqajBfwF6zFKICXBywlmcOYp6H41oekg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by FRZPR04MB12432.eurprd04.prod.outlook.com (2603:10a6:d10:1ca::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Wed, 20 May
- 2026 09:14:58 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 09:14:57 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: aisheng.dong@nxp.com,
-	andi.shyti@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>
-Subject: [PATCH v2] i2c: imx-lpi2c: reset controller in probe stage
-Date: Wed, 20 May 2026 17:16:57 +0800
-Message-ID: <20260520091658.2879993-1-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGAP274CA0019.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::31)
- To AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BcT5nl2D"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so26918615e9.3
+        for <imx@lists.linux.dev>; Wed, 20 May 2026 02:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779268637; x=1779873437; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MQM11Mg1okAZbmmFPoevnMUA1OvrXb8LaWj00KaDlLQ=;
+        b=BcT5nl2DIXsQs1TEO/LpFe4Npe86agWuWKVDwe7h4i7ZfOsc1Uzoefgintt0mr3Zuu
+         SboAya1nGY8vHfwlngcj0PRUJAn4+eprj70qbqItumEYVATIW+aAPy8ZYnrnsKfoXeQw
+         NOyy+9aUpTLY4Cx/Z6GftwdIMTukAxvChx/goTplE32m0RHRDnbzX091mU3VLazga1nF
+         avv6ThYtQHPozVmw6NlTbaeoYPER2eoMq8qgMwEXISHnFYr9P1cP22Vxx5z+kP7OB+Yr
+         REW4k8yTi8uLHGX4E/1Rzik0WacJGU7eHhshE90/6K6wuBuRzG1nlnig66SivrWt5937
+         cIAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779268637; x=1779873437;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MQM11Mg1okAZbmmFPoevnMUA1OvrXb8LaWj00KaDlLQ=;
+        b=p5hoKGFWVaIOySpQ9wDM97IWSWCIV+U417EPWMJ2MnYPpva09yIEjpBSXNp9/mqMW+
+         NTTw9/FBOzqUqjPd9XOjlWl3WhAdf8I2Qi8HNyRP0rWKgkZRwYBpLt5Yqe2n25xQg7DE
+         XOJmJF16JAIHjfWGbXBVG66mjAbEu+s6/O2TmraUJOHl2Ro2GqmySqdo1BS2yxaxzG8I
+         3b2OnCFdIc/gToYb9oKm5aidmj0a3xncMPOZ/4uVkKAnZkMh8XEtel91Buz8/sJxYReJ
+         vmKpQNuQi9SAHMbMlbspfwjpVOqqw6OSFUlUI8ntnlPrEDtGwL4jzUaPUeyS07aXjUTd
+         f0PQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9gCWSLvQrpV7KcxtPe8K40CtHvIM/zDwyT5kn5KO5ODRko39PNnPtwLGGH4YyAd6dJPqo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9WBWF0hMERx1UJHOIznmPFTS5AcPaxYgW0et6+TCkGlnJT0rH
+	/n3lqUgpMLdX7FyRMW64ZYcpUdrnnoT7M4+IBTfJwK7Ul8/PT6XCuMRzlJ8/gCMqyLc=
+X-Gm-Gg: Acq92OG9a1ZyzufCyhp7Hk+CrEPJpw7VDJTDztoKbySmzc48oKQWzSBdaDOj6D7x126
+	gitoZt0o5Hech7dL2dPDSmFSiEP0wSdjCMNK6ITQ1S3VPNR1a5bKZbVJ1C285pn16mnkda5bQdz
+	tG/DKoEmSHCmx2AKUIoqGsWjA/GL0b80v3K1cCsLXB27SOJQ12hHx7mTaupotl/bJtn6GJBDCDA
+	wUXF02Gh3PVIe/j3EQ1GOQxJzWkX/COUTm9uPZh9zfYnGia7cnXuYBpMZtzENM/9U5Yor39bp4z
+	sxdzFaRaVzpbKWqpvJzTF9Go0ZEUzVfcfQ1cHOfsYt/KlgRJ8yJz4M2pQkCVWrfZOZrIayYb5FH
+	YDhS5xUtxnD7XKK0AXhVo+rIFc1OjSq2D7jG6gqQhvfyiyq38MiGr7qZgmmIabfCTV+sBV3FlH9
+	Nb/4D9v/a7a7OY6mj//+yIOFaPwTRwP9sVdMpI8tAKl59imsaJrU7avFOdXmhqD6mrDbnrCC2Tm
+	2M+
+X-Received: by 2002:a05:600c:4e87:b0:48a:768b:eea9 with SMTP id 5b1f17b1804b1-48fe60e51bamr379132105e9.4.1779268636948;
+        Wed, 20 May 2026 02:17:16 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:5dda:3751:f88e:6ff? ([2a01:e0a:106d:1080:5dda:3751:f88e:6ff])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe7543asm127859995e9.28.2026.05.20.02.17.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 May 2026 02:17:16 -0700 (PDT)
+Message-ID: <b9499456-3fd5-4c0b-a0a4-7a6344f21708@linaro.org>
+Date: Wed, 20 May 2026 11:17:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|FRZPR04MB12432:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b693ff7-3739-4920-2be3-08deb6504351
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|52116014|376014|11063799006|18002099003|56012099003|5023799004|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	zXf3xjqN2CHNsVPZHjt9OVOUl8mgL0C3tAr7+njvnxqNhQlK99f8TTCihFqtFiR6rOe3FZkIsS95tHmutR5Mzwu3ZJEcJmN7AgeO4JtbbGPWOKO0EtOMHapkzPlOyn4l3tTvZK73s9alqme7ly3qLQ1GXbPMxfb5ZHRSe8Bxj5AlGntj9VL4SnstzQrFUYeWkdQa6tYrf5jy1tPc9j533iZ79RFIr623XtFVck6tkCZ280zXzRWqhd+tDuqxxbfKMRUUgedFjVy69tEJdB1v2Z7XD5w/+/1+eCH/MhbrKOoSYBhqEOdm1HzG1uDaMgr1Pd004vtUAMxOdNgrXLsNi4x3cDz4azkpsIm6cHa2OpRLqqgzi2Bb10iVzBY90t9ydIvlEnB2A1hT0rLQ8/G/5Ek90VabvNJVOOfVm4z2+eHEOy7w0sewSzGTyQeSJpN+ijlcsefTE2FbcibYrNcbwyVr2aZFbqJ1L2M00K/XCEFqjB/yDrz0+WwO4Yzi/HG3EriOQTy3VJ9SVrFyp+oQNdlKBTi7h7jzpRelFSWnIOT9rHW32/erievKLbWU891z7lqS+FGq1L2/+uKC4refCIB4E1HM4QlqtNmMC3tsaIBf/yj/CuNBKDA5sAHC5PXHvu4Kqwx6ECt7ugzfP5slBd3yYmMLOxaWRb1tNqm63EvDlCCFn5ZYPYn5Hz1dqouutMY1ZDFP6l0TyOlBuqiZ/vsKbqHbsTWgKOw2M+0eKGsPo6lhU2cjmYRR3+isw2Kr
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(52116014)(376014)(11063799006)(18002099003)(56012099003)(5023799004)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CuieKSzhnXICc8nNQ1SLEPSiTlCPYsh3GtA9kBPqotXlRuSfHf5GIVbzaMBT?=
- =?us-ascii?Q?SJxR+Bk4zJpfzjXq2X9KS4kHXQZxaaqW54UOj7RIk2hVUJtwCYBNnoN87L1j?=
- =?us-ascii?Q?3+WZCwidwkqHEi9FR1QjJGLy/IaJZ5OViZt0HzLUPQvZP5zzEkS51bU0hDnU?=
- =?us-ascii?Q?3ETWr1VgKU1fA5c0745NylZTkIncT74qxvNoMgf2nFy62e/Nz9BdD74q8u/4?=
- =?us-ascii?Q?5OVZwrOmN0YdCCuPnRhU/t7EhgXoKLaC/HoEr4pgLUYJpzF3WNeIR1csMZhQ?=
- =?us-ascii?Q?YKHZElKubtf5+r0H3l9/LjFcfarH+UHj6oykvy8tpHbQJNpfkWORg6e+Ao/2?=
- =?us-ascii?Q?+UASKQ4djQThtTtEba7Sn55vCJ1HDQ/lwm2buPiMRHIHVbmCjNmjG7m210bU?=
- =?us-ascii?Q?uXRM3NlTpn43EBx8n1TJGJC9LdpGECmbNV431rb/ITCf/G4lONjAHc5EQMHc?=
- =?us-ascii?Q?5WqvPdueAraV0CyemkgW/8oTTjXG2gB1LzUOwuSfSdCHX6lLsiwldecquwM2?=
- =?us-ascii?Q?M8D3wf1R5H8VoLF1f/xJjF787ygWdjrkOX6P+9PZMAyWfGA8XX8g2xeZouqn?=
- =?us-ascii?Q?POkgF7Y1Vlzk8cymT9MbUxeE2oGvEJWeFFzxOiQpr0c4D2cT0f5QEs96I1R3?=
- =?us-ascii?Q?Ec05aRGKixZYc7k5s/ktsWXqKZY/COhDimCubGOPXO5eM6Ohw8q3vo4eEPfG?=
- =?us-ascii?Q?ti5/k68sfj1dDJTyXmU5qfTfmMkVrXRd7x7PTSsY4R9/+uKIb6FWK+jqBtb0?=
- =?us-ascii?Q?8ccpjiJMR21tzPs07oGckOXYbh5Q8vbriaLwLM+RV6abqV6GJinImj5ELGeq?=
- =?us-ascii?Q?V84rReVa2EfMWBs2tjfEIY2ALLaX1WKaexQxixviwSjU0aDo0aEoYxwMQ0fX?=
- =?us-ascii?Q?z2DFg895dAt54r/H5FqdvwwHZdYlwcnFeOlf2/v2HlxEBI54PgO6ZWzBOuji?=
- =?us-ascii?Q?odjpnRqbzrXn2nY0IWvrWoU9pldeXru/fIpeiMu9MoogoOudrd9jyHwHiWxW?=
- =?us-ascii?Q?QAeqNn1myBkTyxZOHFeNx0c2C67+uhlRu9zHC2CyTKFbumsZwj+2oWBdVstL?=
- =?us-ascii?Q?FTIMJz5Y3TF7CzUoJMqtUyAZgF7XHlmUNJAKbJ67+eCGhE3VBja7LfZYdDhm?=
- =?us-ascii?Q?oVsxXj37xp3k8gklUcpKPvd6vT7QtuaN1YKK6SltD5BzsvnS89AIRqXYGI3I?=
- =?us-ascii?Q?QSVjHW+gSuc7LFaFoBIPImo0CrkIhO/90xfZF5+OJwwxg1D+SUmCgl4USIb9?=
- =?us-ascii?Q?rLPPf+mfiALP0DJ6kCpMY8kTkkqXgsNhl2efY6KyDidu1VhCQIMm0EMPGEfH?=
- =?us-ascii?Q?kQWtl+jiTc1gHqJOMJrB0DZQlfYoe6k4dERYVVV/03veoGUjSUNdh4e4S0KD?=
- =?us-ascii?Q?DgLFKv1PFkARZuQcGhRRJM7dDRbqkQbJ9105fbGOVaGLK6Yksp4Xs5P/Cvpv?=
- =?us-ascii?Q?P0bxd7PbG+FpIy4f12G8iSiquOZllSn0+DCzYsVsmYfvmI4Fe/q9784mECUx?=
- =?us-ascii?Q?IRofdEEhWI322Gq37S8rlUICtFPPPZ8Fji635xqtCkwKKFZOuW2Hcqw0dWo+?=
- =?us-ascii?Q?UExoQAqBirdiNcG65javO9Y9Pvcs9sJmOEhjsPUBIupOIhOfqV7o4e+HJyk0?=
- =?us-ascii?Q?X40k4RgDHe+lKHcKTniYbtsLKuySWrDY6FyN6o3llp4m2DcPwtnNdtvMyCeN?=
- =?us-ascii?Q?NuY1sAT8oRju/L1jnyUWXqM0fz6c44mv4xhXPww5m1+QzLj2FLiG7FpZtrVc?=
- =?us-ascii?Q?FE0Jkle/wQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b693ff7-3739-4920-2be3-08deb6504351
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:14:57.9059
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wQ+tzYHWTEYthHgCp1LslKmyOkIRCOHmjxJ6qQWq6jvHUS3HMt93cSlnn4ZIAWAMwfsYn3M3KXL/YLCTb0COiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRZPR04MB12432
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v7 16/23] drm: bridge: dw_hdmi: Update EDID and CEC phys
+ addr in bridge detect()
+To: Jonas Karlman <jonas@kwiboo.se>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Robert Foss <rfoss@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Liu Ying <victor.liu@nxp.com>, Sandy Huang <hjc@rock-chips.com>,
+ Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Christian Hewitt <christianshewitt@gmail.com>,
+ Diederik de Haas <diederik@cknow-tech.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260518180206.2480119-1-jonas@kwiboo.se>
+ <20260518180206.2480119-17-jonas@kwiboo.se>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260518180206.2480119-17-jonas@kwiboo.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Carlos Song <carlos.song@nxp.com>
+On 5/18/26 20:01, Jonas Karlman wrote:
+> Update EDID and CEC phys addr in the bridge detect() func to closely
+> match the behavior of a bridge connector with a HDMI bridge attached
+> and the dw-hdmi connector.
+> 
+> This change introduce a slight delay to the bridge connector detect()
+> and get_modes() funcs due to multiple EDID reads. This is an acceptable
+> added delay to help ensure EDID and CEC phys addr always are correct.
+> 
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+> ---
+> v7: Update commit message
+> v6: New patch
+> 
+> This is a temporary change until dw-hdmi is fully converted into a
+> HDMI bridge in a future part of this multi-series effort.
+> 
+> The patch "drm/bridge-connector: Use cached connector status in
+> .get_modes()" [1] can help remove one unnecessary EDID read until
+> dw-hdmi is fully converted into a HDMI bridge.
+> 
+> [1] https://lore.kernel.org/dri-devel/20260426-dw-hdmi-qp-scramb-v5-3-d778e70c317b@collabora.com/
+> ---
+>   drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> index 37406555af7b..0c4388e7aa5e 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -2947,8 +2947,17 @@ static enum drm_connector_status
+>   dw_hdmi_bridge_detect(struct drm_bridge *bridge, struct drm_connector *connector)
+>   {
+>   	struct dw_hdmi *hdmi = bridge->driver_private;
+> +	enum drm_connector_status status;
+>   
+> -	return dw_hdmi_detect(hdmi);
+> +	status = dw_hdmi_detect(hdmi);
+> +
+> +	/*
+> +	 * Update EDID and CEC phys addr to match the behavior of a bridge
+> +	 * connector with a HDMI bridge attached and the dw-hdmi connector.
+> +	 */
+> +	dw_hdmi_connector_status_update(hdmi, connector, status);
+> +
+> +	return status;
+>   }
+>   
+>   static const struct drm_edid *dw_hdmi_bridge_edid_read(struct drm_bridge *bridge,
 
-Reset I2C controller in probe stage to avoid unexpected LPI2C controller
-state left from previous stages and hang system boot.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Per the LPI2C reference manual, section 7.1.4 "Controller Control (MCR)",
-the RST bit (bit 1) description states:
-
-  "The reset takes effect immediately and remains asserted until negated
-  by software. There is no minimum delay required before clearing the
-  software reset."
-
-Therefore, it is safe to write 0 to MCR immediately after asserting the
-RST bit without any additional delay.
-
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Change for v2:
-  - Jump to rpm_disable instread of returning directly if the IRQ request
-    fails
----
- drivers/i2c/busses/i2c-imx-lpi2c.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index 01ee38131ef2..6e298424de5e 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -1499,11 +1499,6 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
- 	if (ret)
- 		lpi2c_imx->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
- 
--	ret = devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQF_NO_SUSPEND,
--			       pdev->name, lpi2c_imx);
--	if (ret)
--		return dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_imx->irq);
--
- 	i2c_set_adapdata(&lpi2c_imx->adapter, lpi2c_imx);
- 	platform_set_drvdata(pdev, lpi2c_imx);
- 
-@@ -1535,10 +1530,25 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
-+	/*
-+	 * Reset all internal controller logic and registers to avoid effects of previous status
-+	 * The reset takes effect immediately and there is no minimum delay required before
-+	 * clearing the software reset.
-+	 */
-+	writel(MCR_RST, lpi2c_imx->base + LPI2C_MCR);
-+	writel(0, lpi2c_imx->base + LPI2C_MCR);
-+
- 	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
- 	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
- 	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
- 
-+	ret = devm_request_irq(&pdev->dev, lpi2c_imx->irq, lpi2c_imx_isr, IRQF_NO_SUSPEND,
-+			       pdev->name, lpi2c_imx);
-+	if (ret) {
-+		dev_err_probe(&pdev->dev, ret, "can't claim irq %d\n", lpi2c_imx->irq);
-+		goto rpm_disable;
-+	}
-+
- 	/* Init optional bus recovery function */
- 	ret = lpi2c_imx_init_recovery_info(lpi2c_imx, pdev);
- 	/* Give it another chance if pinctrl used is not ready yet */
--- 
-2.43.0
-
+Thanks,
+Neil
