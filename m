@@ -1,101 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20280373BF2;
-	Wed, 20 May 2026 11:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7176325491;
+	Wed, 20 May 2026 12:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779278359; cv=none; b=ubSPuOoOZeP1W3uRBhaNuHxpH4cv/7cCl6dDW0f5U/jFfrOC698ZrqrMpyFt12fJ8RPX0sKTcw6bCh0rfAWzJICWiPt7UoYdoFxFKfwNffkWK5UOn/tFS7JsZNtJL/XYb/X8oUrj0SwHHLsQYQqhOBh3e39drhlHGpjiYT+mlkk=
+	t=1779279402; cv=none; b=a+PnMoMTWQRvU5D6D3QmqAzfveD52LZLHYWFceZcGbCr9lHUIF13DCi5/m6bEJLrMRCuBZHjl98X4Hvx8NltlVeJHXgrX8qcv4upIDr75W5C3Ogm8IgvkFnc5Qcmf1FyOvAc3Kg7ufyPkJMGXES3iT+3YQW3KrjFGFMWdEjtxpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779278359; c=relaxed/simple;
-	bh=1S++i96JDFQjS97dK4xYoTMS0qYDHU5MteH1/znkST0=;
+	s=arc-20240116; t=1779279402; c=relaxed/simple;
+	bh=NGoOU3Z4rOZ1Tcqf+wi74ye+svzH+jA3Vj9YZFQhbJ8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=t6vA8fG5LqZnEL6CPQpK2JBtc5CFApoKeg+tA8U+z1BIGOt8u+hlYCNBGyd9OxyMSX2mLi7U18AY3u9MzJo7KcTpHWpimWoDdzkSf/lQkJ2hdV2BK6MvhzRxrttjCrXo8FnU5KfFdOqAKB814j8N1U/EGKBTx0dJkq7qsP+23oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/YMjFhn; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=BcEED5IZtmBUkfiAZ2IW3E8aCDTC+f/zN4kSzUEfTJ+KPQNygdsVjn6cqMweJ3T1VHuLCv85ZVCUQE03AxyWHxgYYQQb+fYk5dayeyjCBlcnj/ckh1s/ALKWE5DDvh9sYDt135DbaLJBsPtNRaWF4Tuk2ugdJZZNYCL4IiRG11w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpVGGMWu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/YMjFhn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8521F000E9;
-	Wed, 20 May 2026 11:59:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpVGGMWu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C711F000E9;
+	Wed, 20 May 2026 12:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779278357;
-	bh=/JrQZaBwZX3lsxf2XAZJsTlzsnuZdkW7GF2WdgexCMw=;
+	s=k20260515; t=1779279399;
+	bh=+ZH6Rx+nARLKQ6V4H3k9RxfcHDh6K3AZprg5NAg0PfI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z/YMjFhnkoBfsIGGTlk66ItiybL+2V9ptHEBFzljMnSPO3ovydffwb7nCIpSig5ZF
-	 cXDHn8vQCEk/ShPb95yMfyuXWpyud4KmzKPWZfuCTswOFTriR6fCsyZPgXMMurZzLT
-	 s/Q2nOj9mnof5cgbryn0nlKVdvIhvsySONEOhebksueh7U3B/czev0hZXMgZJl7NS4
-	 y7UXQNSm+FgYv1OSndff+T/fEzlVTvUWe8ALH5/JpUCvN/M6osUjqC1qPKfMCdxKgA
-	 cmjN/yDnmP6C5nvtrur93gRMsGT3Oss5hYRsqPU1ncEfpnmi3qaJayEsCdZZOZbuRk
-	 GJiwlr8T7LOUQ==
+	b=EpVGGMWu6rzsb1NTj6OngVhZ5SZ4N236E+cQOH2+BERKcbfsLpgG8AQ+Ew7gI2qK5
+	 9o7mFcdgZxgG8/lMXHcs1POUt2ksosf8EXiujUdfyuyaVgmDKkh8Yg1Kqqf/GOvIEx
+	 bWIxQ2YzXu69bo6WUEKoq5KxFef++nmtVYbTUOPxuzM821uExpxeq2+r7gfrMaedag
+	 pfo+6osuXLM8qVjyaKkNhiOVA+uaJ4uLFSQv+c+uiKn4Sl1YKx6KSpZfPzhWA5FKvu
+	 g5Kt8VbpxrfQL0HTtUTxnKOzWuNjtfqPueDuL6E8xJQuvuSYK23n0/RrLxsR/+MdPT
+	 5wC3bzhNYsAVQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: add Aquila iMX95 support
+Subject: Re: [PATCH v2 3/3] arm64: dts: freescale: imx95-aquila: Add Clover
+ carrier board
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Franz Schnyder" <fra.schnyder@gmail.com>
-Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org, Frank.Li@kernel.org, imx@lists.linux.dev
-In-Reply-To: <20260520-add-aquila-imx95-v2-2-06424a51e33a@toradex.com>
-References: <20260520-add-aquila-imx95-v2-2-06424a51e33a@toradex.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, robh@kernel.org, Frank.Li@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260520-add-aquila-imx95-v2-3-06424a51e33a@toradex.com>
+References: <20260520-add-aquila-imx95-v2-3-06424a51e33a@toradex.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 20 May 2026 11:59:16 +0000
-Message-Id: <20260520115917.8C8521F000E9@smtp.kernel.org>
+Date: Wed, 20 May 2026 12:16:38 +0000
+Message-Id: <20260520121639.97C711F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The pinctrl nodes for 8-bit and 4-bit FlexSPI configurations share=
- the exact same node name, causing unintended merging and overwriting.
-- [High] The DisplayPort bridge (`som_dsi2dp_bridge`) input endpoint is dis=
-connected, rendering the DisplayPort output non-functional.
-- [Low] Cadence-specific QSPI timing properties are defined within a flash =
-node connected to an NXP FlexSPI controller.
-- [Low] The commit message claims support for hardware interfaces (10GbE, L=
-VDS, CSI) that are omitted from the Device Tree.
+- [Low] The flexspi1 flash node incorrectly uses Cadence QSPI specific prop=
+erties (cdns,*) with an NXP FlexSPI controller.
 --
 
-commit cac45cd52355d1edaa432d9d405d04c96f38d7b2
-Author: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+commit 58fa26ce8327e303e6d4b9e4915178ba8d66e5b7
+Author: Antoine Gouby <antoine.gouby@toradex.com>
 
-arm64: dts: freescale: add Aquila iMX95 support
+arm64: dts: freescale: imx95-aquila: Add Clover carrier board
 
-This commit adds device tree support for the Toradex Aquila iMX95 computer
-on module and its corresponding development carrier board.
+This commit adds device tree support for the Aquila i.MX95 SoM mated with
+the Clover carrier board. It configures basic interfaces including DP,
+Ethernet, CAN, and the FlexSPI controller.
 
 Link: https://www.toradex.com/computer-on-modules/aquila-arm-family/nxp-imx=
 95
-Link: https://www.toradex.com/products/carrier-board/aquila-development-boa=
-rd-kit
+Link: https://www.toradex.com/products/carrier-board/clover
 
->     The module consists of an NXP i.MX95 family SoC, up to 16GB LPDDR5 RA=
-M,
->     up to 128GB of storage, a USB 3.2 OTG and USB 2.0 Host, a Gigabit
->     Ethernet PHY, a 10 Gigabit Ethernet interface, an I2C EEPROM and
->     Temperature Sensor, an RX8130 RTC, one Quad lane CSI interface, one Q=
-uad
->     lane DSI or CSI interface, one LVDS interface (one or two channels), =
-and
->     some optional addons: DisplayPort (through a DSI-DP bridge), TPM 2.0,
->     and a WiFi/BT module.
-
-[Severity: Low]
-Does this commit message accurately reflect the contents of the patch?
-
-The commit message claims support for a 10 Gigabit Ethernet interface, one
-LVDS interface, and one Quad lane CSI interface, but there doesn't seem to =
-be
-any device tree node configurations, enablement, or pin multiplexing for th=
-ese
-interfaces.
-
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts b/arch/ar=
-m64/boot/dts/freescale/imx95-aquila-dev.dts
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts b/arch=
+/arm64/boot/dts/freescale/imx95-aquila-clover.dts
 > new file mode 100644
-> index 0000000000000..b2a53847d5079
+> index 0000000000000..021d437763412
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-dev.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila-clover.dts
+
 [ ... ]
+
+> +/* Aquila QSPI_1 */
+> +&flexspi1 {
+> +	pinctrl-0 =3D <&pinctrl_flexspi1_4bit>,
+> +		    <&pinctrl_qspi_cs1>;
+> +
+> +	status =3D "okay";
+> +
 > +	flash@0 {
 > +		compatible =3D "jedec,spi-nor";
 > +		reg =3D <0x0>;
@@ -109,89 +92,16 @@ m64/boot/dts/freescale/imx95-aquila-dev.dts
 > +		cdns,tslch-ns =3D <8>;
 
 [Severity: Low]
-Is it necessary to include these Cadence-specific timing properties here?
+Are these cdns,* properties intended for the NXP FlexSPI controller?
 
-The parent controller is the NXP FlexSPI controller, which doesn't appear to
-use or parse the cdns,* properties.
+The imx95 SoC utilizes the NXP FlexSPI controller, but these cdns properties
+are specific to the Cadence QSPI driver. The NXP FlexSPI driver does not
+parse or support any cdns,* properties, so these timing configurations will
+be silently ignored by the kernel.
 
 > +	};
 > +};
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi b/arch/arm64=
-/boot/dts/freescale/imx95-aquila.dtsi
-> new file mode 100644
-> index 0000000000000..c6dc48852ac6c
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-aquila.dtsi
-[ ... ]
-> +			port@0 {
-> +				reg =3D <0>;
-> +
-> +				dsi2dp_in: endpoint {
-> +				};
-
-[Severity: High]
-Does this DisplayPort bridge configuration work without a remote-endpoint?
-
-The input endpoint dsi2dp_in is declared without any remote-endpoint
-linking it to the SoC's DSI controller, which breaks the video pipeline and
-prevents the DisplayPort output from functioning.
-
-> +			};
-> +
-> +			port@1 {
-> +				reg =3D <1>;
-[ ... ]
-> +	/* Aquila QSPI_1 (8 bit) */
-> +	pinctrl_flexspi1_8bit: flexspi18bitgrp {
-> +		fsl,pins =3D <IMX95_PAD_XSPI1_SCLK__FLEXSPI1_A_SCLK	0x3fe>, /* Aquila =
-B65 */
-> +			   <IMX95_PAD_XSPI1_DATA0__FLEXSPI1_A_DATA_BIT0	0x3fe>, /* Aquila B68=
- */
-> +			   <IMX95_PAD_XSPI1_DATA1__FLEXSPI1_A_DATA_BIT1	0x3fe>, /* Aquila B67=
- */
-> +			   <IMX95_PAD_XSPI1_DATA2__FLEXSPI1_A_DATA_BIT2	0x3fe>, /* Aquila B61=
- */
-> +			   <IMX95_PAD_XSPI1_DATA3__FLEXSPI1_A_DATA_BIT3	0x3fe>, /* Aquila B60=
- */
-> +			   <IMX95_PAD_XSPI1_DATA4__FLEXSPI1_A_DATA_BIT4	0x3fe>, /* Aquila B70=
- */
-> +			   <IMX95_PAD_XSPI1_DATA5__FLEXSPI1_A_DATA_BIT5	0x3fe>, /* Aquila B71=
- */
-> +			   <IMX95_PAD_XSPI1_DATA6__FLEXSPI1_A_DATA_BIT6	0x3fe>, /* Aquila B72=
- */
-> +			   <IMX95_PAD_XSPI1_DATA7__FLEXSPI1_A_DATA_BIT7	0x3fe>, /* Aquila B73=
- */
-> +			   <IMX95_PAD_XSPI1_DQS__FLEXSPI1_A_DQS		0x3fe>; /* Aquila B63 */
-> +	};
-> +
-> +	/* Aquila QSPI_1 (4 bit) */
-> +	pinctrl_flexspi1_4bit: flexspi18bitgrp {
-
-[Severity: High]
-Is this node name meant to be different from the 8-bit configuration above?
-
-Because this 4-bit configuration shares the exact same node name
-(flexspi18bitgrp) as the 8-bit configuration under the same parent
-(&scmi_iomuxc), the device tree compiler will merge them.
-
-This silently overwrites the 8-bit configuration with the 4-bit properties,
-causing 8-bit QSPI transfers to fail because data pins 4-7 are left
-unconfigured.
-
-> +		fsl,pins =3D <IMX95_PAD_XSPI1_SCLK__FLEXSPI1_A_SCLK	0x3fe>, /* Aquila =
-B65 */
-> +			   <IMX95_PAD_XSPI1_DATA0__FLEXSPI1_A_DATA_BIT0	0x3fe>, /* Aquila B68=
- */
-> +			   <IMX95_PAD_XSPI1_DATA1__FLEXSPI1_A_DATA_BIT1	0x3fe>, /* Aquila B67=
- */
-> +			   <IMX95_PAD_XSPI1_DATA2__FLEXSPI1_A_DATA_BIT2	0x3fe>, /* Aquila B61=
- */
-> +			   <IMX95_PAD_XSPI1_DATA3__FLEXSPI1_A_DATA_BIT3	0x3fe>, /* Aquila B60=
- */
-> +			   <IMX95_PAD_XSPI1_DQS__FLEXSPI1_A_DQS		0x3fe>; /* Aquila B63 */
-> +	};
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260520-add-aquila=
--imx95-v2-0-06424a51e33a@toradex.com?part=3D2
+-imx95-v2-0-06424a51e33a@toradex.com?part=3D3
