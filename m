@@ -1,203 +1,183 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011052.outbound.protection.outlook.com [52.101.65.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBA834DCC8
-	for <imx@lists.linux.dev>; Wed, 20 May 2026 07:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779260856; cv=fail; b=OEoU519CXk/zEJMXrhzXtSti+mY9FBQIkKQZSU8ENe9iI+D2M67T1rIHsQMHIgWT5Xsb/TUw/qm6l6i+GKppszTUz9ks4MumCe9rDoydGW7acweJqpsf5dUXASmt/JzkbdjH8ijUQ60Lora+2mV9p+tynyi8WlN2ZGQ2be465yM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779260856; c=relaxed/simple;
-	bh=/+CbY9heiz/gaQzhSKBixlT/o7GEoGYaeW94zwEskEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=qo2F8ii2q6BKnUSBCVyBOIHBVQxSI0hceSrhUMGi3eHd9EhCd3rv8SeucgFttTC1s7nhv0zJYklO5HYZrg+PKU6V3AnuRbGJ2d58wEy3cdloLlk8Uhaj8YN0gD+mFqIuf/b+HxDN/qMS72WASQwDQVhQq5nNA77jCWLHS2FVPZE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FXdhoMso; arc=fail smtp.client-ip=52.101.65.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750CA34DCC8;
+	Wed, 20 May 2026 07:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779260929; cv=none; b=RixnZ3vnlHPBjhzbGxkHQ9jpg6y1r4VJoAaabpYO9su0k1aYu5+T2EWfP18KwqQQJ/OvKyySxmj+4V99UcesS/ATfRCuC3kxigMfpCW+h/zzpwocURWMeka9KVq8Nov/plEbvWUcSAwyMsJ9h5zZGc6Gf2iADm0/43qwqtuQ8Rg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779260929; c=relaxed/simple;
+	bh=cHsla/zNIEn/HMJjSW7hwYgnB9sKgdnBigr/N0K3iDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=upSYCNqTWtvoCG5iIfEGizO+t4iKpHC0emRYl9zWakLFBfrCTWnB+JzgFUzDfo7g4rtBGfXphuktHLaiPVSJxoOgNGdx28SyVUPW3gpZnutzU6Kk9CyeN7CkysOEQmSzIpI7Bgn9G+Edd7PDjVtHCBrrFCK652WehIwJFI9x6UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9Bu3nZD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FXdhoMso"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LqWeg/8I2KcLUrp8OIuS3Yi9D0kCAPGxcoqY0WgrSJAr+MMZSQQymecemsILFGPeVvJYvXCuYXjIp5dlQk47FLnPYcD/EzsR3Nm/Ln2UULqn+0QWEwR+wUwICdzfxl+ej6T50yGuzihNwQCTleHZReEJuRbYo0u0uyXQiaclOBQip3yVvM9sjFJA5bHGmoPcoTHKRBucwqF5WhUbDsR8Jsk8gh+yTt8+xCCipGcxBDo480Hd2PMPv0a9Zu3uiH5W/YYSGY5HlDR49dW2BS+BCJsYyO14kjqP5awnw6r5ilcutHbSC8kCCrCyiBKAwWw8n7WDAO7qzrIs53VXIYragQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4jmx6mNI17trKxUFwHiXdlbwfgwbEnV34NvGB/UgtqY=;
- b=l+TdQY9EF1mimcLoUJSOo6VfydvHQqd3bAg5SRedFkYDTCTawH5Pb8vQ0uOLIFNp7xmHLNznw5cr716RhwxLp6ykLZodNUPdWE3gmbtm+lli9py4H6ohcjSg+vsVxpKZVCINI7ASZDIPO/wM+vt5hpYTvThcQi2WqZwcCjEe0FM0mW/DqueCq/Klryw80nEn0XryWnXpJVheBQREveElbVarAnnC7XlYqk8+zp5z8Ldi+M30Y/WAp+fdefAMdOqfHm7FWd62mcdcF2NPMPTKtSuFK6ECTB8zAQsy133QkcRvkt1rq1HvnIjS4a4tiuJVtFOYN/hO74CsK2AQ74na9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4jmx6mNI17trKxUFwHiXdlbwfgwbEnV34NvGB/UgtqY=;
- b=FXdhoMso+GRrapE/c2fJwuHrMH7O1JjUQMatRHzawd6BinWTUea6xgpLWWsFIXNGLH8G2NH0vsSHnc3mp2Zoeu1S//C3yv9Xdp+eXSQWToel7gsbgxisLhuWN89VN+xm9Hf4a0PXPuPKlBAlwMVgFxE/fBhWxWht57PdZGS6cQQUPzOm9VxyAvltLtziK8byPuOBb9qQR6B4JF8P0jiTnlY9xx0dPd8GRWHlm6HPHtueCNTJpB4UGOl2xdIupVfhZOcCOneoNf2Qxb+49tVNinaRVPI9kglTP66esWx/OpK31kUNIBWf+v7ZEqTVU6ytJvePO5FZC/wQTXBXEM4rEw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by PAXPR04MB8160.eurprd04.prod.outlook.com (2603:10a6:102:1cb::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 07:07:31 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 07:07:31 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: o.rempel@pengutronix.de,
-	kernel@pengutronix.de,
-	andi.shyti@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	carlos.song@nxp.com,
-	haibo.chen@nxp.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PACTH v2] i2c: imx: mark I2C adapter when hardware is powered down
-Date: Wed, 20 May 2026 15:09:34 +0800
-Message-ID: <20260520070934.2874114-1-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0010.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::12) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9Bu3nZD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4391F000E9;
+	Wed, 20 May 2026 07:08:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779260928;
+	bh=5sJis8pObID1kGXbTsB3IgBpTH0zVnG6Ljg/eY2IOOw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=A9Bu3nZDhvaFcfELXf4UkmdvoHWG8zM8SVVoHH7y6l+aB2QgVl8ziyb6OuCzbkNyF
+	 5UIZamzIkBLHtjR6dG+v9RE+0sfdwvGqQ4ZABQFXrHKtZ7e9Wsz8Nyv0Gh/9suiH58
+	 9Z/uuZdPald2ZugknTF69bFdLoqzoPSwGRbNU4+UAIfTrF4o5UKmmzV62LLo7gx71B
+	 uH+M69vBBd2wuT98G+aEoquU/Txyr825E2Lv9AJjia5z2fF3NQ60Gw01SIi7t6LVEe
+	 gUuc5o7RNTlNTvxtKtS5r3MCQIqXIJmyI420QmmU62ZW1N2dGmpg0HrL+PoAfPnN34
+	 Dc40T4gV6/cbg==
+Message-ID: <e23a610f-e1ad-4536-80fb-8b5707e77f39@kernel.org>
+Date: Wed, 20 May 2026 09:08:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|PAXPR04MB8160:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc806088-6927-4ea8-3b18-08deb63e7588
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|52116014|7416014|376014|1800799024|56012099003|18002099003|38350700014|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	aOPYzIV83nHbGOlq37X0jxIlvrlJbMAl/ySNgVT0cOb7qx/NJCypb7XUidN84+8DxOfIAvZShIkKbDHBAsd+Sc+XkULijM0H27IS5ZlXMa7n0ccG7irGHBMKGeBCxq1/bpoLqHXi772KzZHIGO2n6p0ZOXs1Hluhg0NbtWe5Q2tdMEKUw8C+9HAtM49lHN7nWz7Vl0GHfY9XgSBO+adEaJc3N374BWKSLINBUKZBp5G7Noir6JzJ3UxkiuYFVGvaPg6b6bGOBqYXHZTb+KCQKpMOP6ZzklojirWs/M56NhG7dfX5yb1HD/Rv4TLTE+mUfZPObFLmiA1HsbXRYdG3SFjypSlAJeBYnxY5JxSCGoKafZfirgfiWXX2H572XWYCbVmFJKRueXzO8XxGIV8i6LaLZ7+1MDwEB6DhSpE9Qae/7T4MwxbxhZw7z2FxtLJgVimIuHCPZ92oVt4/QRSFirrbHhLkNYl6uMiireMYrIGg+cfgYXksTD5hhD1fkSuPXcwSloPzHGN3oo4k54npfDXJ3RJ9pjNBYVnDncu3yC/exCOYAlQALorVza3ZUzEmkljSX+/cT4rwUCAaxKEbfAb5Q6HINXRO2yJEsyN1dxLaQZAG/AJtm8orc9ICsz8dasxltltxBPAGqurAP6i0KduCrW+DyXyr0nQZRCFi9cZLX8ayFboWwOfzoV6QQMElVdTdKW4eUS6eUxFcC7/4/R4TeS3FM/lFvVmOcXBrlB8jknekd0U0sVG1w2WprLRg
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(7416014)(376014)(1800799024)(56012099003)(18002099003)(38350700014)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?g1tkee3nWTCvzIXclWHeVvqeYGNTYEoieLDecMFEgdAad7nXj6HbYc8yxIVu?=
- =?us-ascii?Q?7qyXh9YTmkZavoyn0VbSyQasxMbKbKWcOXo8k6zhE3oqfNmfsjvBdd2axEKr?=
- =?us-ascii?Q?XIhIYCoXChCfWRz9m+/gfkPzVS73U64zda56ifXlcRn8seQp8e03zmy2tV6o?=
- =?us-ascii?Q?24TNdu8kuYW9mW70HUcQsGGPw6gmHoDlT0pR7Ces71E1LTAj4PkcJOW8itol?=
- =?us-ascii?Q?/+LoYyxslGqJ8qL8zXrNuz3Q5zZNWVqcbw3CtZIb0en2R3V57eLjb9YonK4B?=
- =?us-ascii?Q?1YAv/sxqn1KDpkwcjl7a/Z+4m6dXde1oJWbcjAGjAZQNE23N9U4it7AZ4fV5?=
- =?us-ascii?Q?aQWtq7kiOtiX6YD4vzoJmMuehKUxrv6jxrE+1hUfARKiWVP3IiciycAPm0fW?=
- =?us-ascii?Q?qSydFgU5knNU27+9zYiTNvwr4IoGV+lau4tiWheW6h9TWKxEl8GK+xXV4s7q?=
- =?us-ascii?Q?KFrajJ+hCMosT/FKOSj0BhVmdZ/lfkHNpy9QWtsIt3f+YDZgswlOV2YmfheN?=
- =?us-ascii?Q?4USN3dEpntABb7/TqxFYt7IW8JDHTDno7tU70iP2dXAO7XtYe1mUxsedvfu+?=
- =?us-ascii?Q?p9dSavnP5kpwGh4v3r79DOPcAPEGn8ICbMqYCqoJ1utRSPixGRewCV3MpNka?=
- =?us-ascii?Q?a2HTc3JzWK4NiGZDwJ39j80mjPvx8PeMIn8xlRztn4LTjz2osSL3eEOds4Iu?=
- =?us-ascii?Q?RAa114bm30wJRH+S70+3lugT16ic+j9Xlro+Ax22o23HOw50EKaxjIh+q1X9?=
- =?us-ascii?Q?V+sOBZ0gRcco0FF/FQctEsHcjWhVk8gC92xx105BIe5ZU5rwGL3C31by6kgu?=
- =?us-ascii?Q?dGGZH5JvoNhLiclsRQyMTXlzTqkqirNY35qzOgJpcc1j8F+/swvc/QbDymSL?=
- =?us-ascii?Q?+Zzm9fh6cZIFWCv6Deutybq4jtwQzDsDXuB3dMEcg1PL3w0GV1HHpZipVsy7?=
- =?us-ascii?Q?pd8GhU3Yf99GQalTnpA8TGt2uGk3T+1+uafp2QyL0Z4q7/KPPSOoTFTOHLdv?=
- =?us-ascii?Q?E2ZMyQvjVxL0B+gTw/YfbjdJPm/jRHfIqq7qWN5yq9XW3bYlnIyNGxPuMw0K?=
- =?us-ascii?Q?hG4UPGbnoHgXgfIYClsfLRtlWkiwx/ridC6DNTRPdwZ53knpYX8GulcHMZ75?=
- =?us-ascii?Q?13yC3cdP6hGVQflGgL/T/VFt/8xybsHqtomwm0zZFHPAYvCWyyqjwxO3AgUb?=
- =?us-ascii?Q?7yKe7sUfcR7bOoSdlcPYC/TeRWV3VWPci+X75+4pQjJ31YCUodT1uqU/xaCy?=
- =?us-ascii?Q?kFxEgDJu2rq0u0FRurKR73prbzbH2cJ4RqHlstl67LpJPpo0ql0zK545FC2n?=
- =?us-ascii?Q?uLkUX1UbA4VwGmudQj/HJE+/G+xFBzsiKMEUEjWb+1Fhp84jWvc01zbP/Q+l?=
- =?us-ascii?Q?Bd7EIe/+r1LAvrH9b+Zbf/S8VcA0BrRi1bb8wDAe9E9iNQC2Yme8ufBxjT0H?=
- =?us-ascii?Q?bW6uaoXLGdzQbhCB7fLtnWPwIDQbcOK2NmBubxgbESuGAmVLxth9fRFQ/ADx?=
- =?us-ascii?Q?iUZkFV5WR5lTLkUUR284Mk6MPD/IzCRC/q+33GUZCaEqABtYSXcnV/nOq1+y?=
- =?us-ascii?Q?AGoO0xPM0hf05DzBf3tq7zM4QUcVA4t8UtBO2ZvA0lPbcz8mnO0qLPkQaYwm?=
- =?us-ascii?Q?+8i6nG+XH0t7GLzf/qy/4gJa0GZTH9ucAVVl1bnILt8fPtyWsfPim4ylxHqo?=
- =?us-ascii?Q?bYYXFSYbsatTLb5/oCXpyhYBBTQzUGV8t3VhUf70JeTDykn6aJJDfwnoisnn?=
- =?us-ascii?Q?y5G9/khMWQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc806088-6927-4ea8-3b18-08deb63e7588
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 07:07:31.2090
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3WGC0wLI1hK/3NT+0e6zbRVzJ7Wx9GhTJJoH5BZ2/c2j9ofHXJapK/m42Rj5Xkg0t7rjioxIiNxFVeFIQ4s61Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8160
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] dt-bindings: connector: Add fsl,io-connector binding
+To: "Chancel Liu (OSS)" <chancel.liu@oss.nxp.com>,
+ Chancel Liu <chancel.liu@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>, Frank Li <frank.li@nxp.com>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "mturquette@baylibre.com" <mturquette@baylibre.com>,
+ "sboyd@kernel.org" <sboyd@kernel.org>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
+References: <20260509024846.2094049-1-chancel.liu@nxp.com>
+ <20260509024846.2094049-3-chancel.liu@nxp.com>
+ <20260515-resourceful-singing-roadrunner-ce25ec@quoll>
+ <AM9PR04MB8353FE81D06852D45514E460E3032@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <d2b13e51-1684-4acb-a5ed-294c8aa95906@kernel.org>
+ <AM9PR04MB83538C4A07A6835FF8A74793E3002@AM9PR04MB8353.eurprd04.prod.outlook.com>
+ <20260519-macho-degu-from-nibiru-960af2@quoll>
+ <AM9PR04MB8353B563519EBC1AD6C5BFE1E3012@AM9PR04MB8353.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <AM9PR04MB8353B563519EBC1AD6C5BFE1E3012@AM9PR04MB8353.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Carlos Song <carlos.song@nxp.com>
+On 20/05/2026 07:02, Chancel Liu (OSS) wrote:
+>>>>>>> +description:
+>>>>>>> +  The NXP I/O connector represents a physically present I/O
+>>>>>>> +connector on the
+>>>>>>> +  base board. It acts as a nexus that exposes a constrained set
+>> of
+>>>>>>> +I/O
+>>>>>>> +  resources, such as GPIOs, clocks, PWMs and interrupts, through
+>>>>>>> +fixed
+>>>>>>> +  electrical wiring. All actual hardware providers reside on the
+>> base
+>>>> board.
+>>>>>>> +  The connector node only defines index-based mappings to those
+>>>>>> providers.
+>>>>>>> +
+>>>>>>> +properties:
+>>>>>>> +  compatible:
+>>>>>>> +    const: fsl,io-connector
+>>>>>>
+>>>>>> Everything is IO. Everything is connector, so your compatible does
+>>>>>> not match requirements from writing bindings.
+>>>>>>
+>>>>>
+>>>>> Yes, this compatible is too generic. I will rename the compatible to
+>>>>> fsl,aud-io-connector.
+>>>>
+>>>> aud is not much better. Which boards have it? What's the pinout?
+>> What's
+>>>> standard? Is it described anywhere? If so, provide reference to
+>> spec/docs.
+>>>>
+>>>
+>>> This is not an industry standard electrical interface. This connector
+>>
+>> Then if you do not have standard, then you have board specific layouts
+>> thus you need board-specific compatibles. You can use fallbacks. Generic
+>> fallback could work, but both io-connector and aud-io-connector are just
+>> too generic. Every connector is "connector" and "io", thus absolutely
+>> anything can be "io-connector". "aud" improves it only a bit, thus
+>> honestly I would go with board specific fallback as well.
+>>
+> 
+> How about board specific + common fallback compatible like this:
+>   compatible:
+>     items:
+>       - enum:
+>           - fsl,imx95-19x19-evk-aud-io-connector
+>           - fsl,imx952-evk-aud-io-connector
+>       - const: fsl,imx-aud-io-connector
+> Since the daughter board is named “IMX-AUD-IO” in publicly available
 
-Mark the I2C adapter as suspended during system suspend to block further
-transfers, and resume it on system resume. This prevents potential hangs
-when the hardware is powered down but clients still attempt I2C transfers.
+I don't think it is named like that.
 
-Fixes: 358025ac091e ("i2c: imx: make controller available until system suspend_noirq() and from resume_noirq()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Change for v2:
-  - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
-    to prevent potential deadlock if a transfer is active during suspend.
-  - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
-    fails.
----
- drivers/i2c/busses/i2c-imx.c | 34 ++++++++++++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+git grep -i imx-aud-io
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index a208fefd3c3b..cf6e1333b084 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -1913,6 +1913,36 @@ static int i2c_imx_runtime_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int __maybe_unused i2c_imx_suspend_noirq(struct device *dev)
-+{
-+	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	i2c_mark_adapter_suspended(&i2c_imx->adapter);
-+
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret) {
-+		i2c_mark_adapter_resumed(&i2c_imx->adapter);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused i2c_imx_resume_noirq(struct device *dev)
-+{
-+	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	i2c_mark_adapter_resumed(&i2c_imx->adapter);
-+
-+	return 0;
-+}
-+
- static int i2c_imx_suspend(struct device *dev)
- {
- 	/*
-@@ -1946,8 +1976,8 @@ static int i2c_imx_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops i2c_imx_pm_ops = {
--	NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				  pm_runtime_force_resume)
-+	NOIRQ_SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend_noirq,
-+				  i2c_imx_resume_noirq)
- 	SYSTEM_SLEEP_PM_OPS(i2c_imx_suspend, i2c_imx_resume)
- 	RUNTIME_PM_OPS(i2c_imx_runtime_suspend, i2c_imx_runtime_resume, NULL)
- };
--- 
-2.43.0
+> documentation, common compatible clearly indicates that this connector
+> is intended for that.
+> 
+> Also, I want to talk about the topic of generic connector. It's a common
+> design that daughter board is connected to base board through a
+> connector. This connector more often acts as a nexus that exposes a
+> constrained subset of GPIO, clock, PWM and interrupt resources to the
+> daughter board. Can we document this kind of connector as a generic
+> binding?
 
+So this binding is the connector between carrier and some addon? Then
+you don't get a compatible for that at all, because it is not necessary,
+not useful and NEVER used. Do you see socket LGA "connector" bindings? No.
+
+
+Best regards,
+Krzysztof
